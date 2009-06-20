@@ -28,13 +28,13 @@ void ee25xxx_init();
 void ee25xxx_chip_select();
 void ee25xxx_chip_deselect();
 
+int ee25xxx_is_ready();
+
 int ee25xxx_set_write_enable();
 int ee25xxx_set_write_disable();
 
 int ee25xxx_write_status_register(const uint8_t byte);
 int ee25xxx_read_status_register(uint8_t *byte);
-
-int ee25xxx_is_ready();
 
 int ee25xxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte);
 int ee25xxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte);

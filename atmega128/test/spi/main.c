@@ -14,7 +14,6 @@ void test_spi_adis16350();
 int main(void)
 {
 	void initPio();
-	void initSpi();
 
 	enum { MODE_SPI_EE93Cxx = 0, MODE_SPI_EE25xxx, MODE_SPI_ADIS16350 };
 
@@ -26,13 +25,13 @@ int main(void)
 	switch (mode)
 	{
 	case MODE_SPI_EE93Cxx:
-		ee93Cxx_init(1);
+		ee93Cxx_init();
 		break;
 	case MODE_SPI_EE25xxx:
-		ee25xxx_init(1);
+		ee25xxx_init();
 		break;
 	case MODE_SPI_ADIS16350:
-		adis16350_init(1);
+		adis16350_init();
 		break;
 	}
 	sei();
@@ -79,16 +78,13 @@ void initSystem()
 
 void test_spi_ee93Cxx()
 {
+	// FIXME [add] >>
 }
 
 void test_spi_ee25xxx()
 {
-/*
- * FIXME [check] >> do not complete test yet. so need to check
- */
-
 	int ret;
-	uint8_t byte = 0x00;
+	uint8_t status = 0x00;
 
 	//
 	PORTA = 0xFF;
@@ -98,13 +94,13 @@ void test_spi_ee25xxx()
 
 	//
 	while (!ee25xxx_is_ready()) ;
-	_delay_ms(100);
+	_delay_ms(10);
 
-	ret = ee25xxx_read_status_register(&byte);
+	ret = ee25xxx_read_status_register(&status);
 	if (0 != ret)
 	{
-		PORTA = byte;
-		_delay_ms(2000);
+		PORTA = status;
+		_delay_ms(1000);
 	}
 	else
 	{
@@ -112,13 +108,40 @@ void test_spi_ee25xxx()
 		return;
 	}
 
+	// set write-disable
+	while (!ee25xxx_is_ready()) ;
+
+	ret = ee25xxx_set_write_disable();
+	if (0 == ret)
+	{
+		PORTA = 0xF4;
+		return;
+	}
+
 	//
-	//PORTA = 0x4F;
-	//_delay_ms(500);
+	PORTA = 0xFF;
+	_delay_ms(500);
+	PORTA = 0x00;
+	_delay_ms(500);
 
 	//
 	while (!ee25xxx_is_ready()) ;
-	_delay_ms(100);
+
+	status = 0x00;
+	ret = ee25xxx_read_status_register(&status);
+	if (0 != ret)
+	{
+		PORTA = status;
+		_delay_ms(1000);
+	}
+	else
+	{
+		PORTA = 0xF2;
+		return;
+	}
+
+	// set write-enable
+	while (!ee25xxx_is_ready()) ;
 
 	ret = ee25xxx_set_write_enable();
 	if (0 == ret)
@@ -135,14 +158,13 @@ void test_spi_ee25xxx()
 
 	//
 	while (!ee25xxx_is_ready()) ;
-	_delay_ms(100);
 
-	byte = 0x00;
-	ret = ee25xxx_read_status_register(&byte);
+	status = 0x00;
+	ret = ee25xxx_read_status_register(&status);
 	if (0 != ret)
 	{
-		PORTA = byte;
-		_delay_ms(2000);
+		PORTA = status;
+		_delay_ms(1000);
 	}
 	else
 	{
@@ -155,64 +177,61 @@ void test_spi_ee25xxx()
 	_delay_ms(500);
 	PORTA = 0x00;
 	_delay_ms(500);
-/*
-	PORTA = 0xC0;
-	_delay_ms(500);
-	PORTA = 0x00;
 
+	//
+	const uint16_t eeaddr = 0x0080;
 	const uint16_t len = 64;
 	uint8_t buf[len];
+
 	for (uint16_t i = 0; i < len; ++i)
 	{
-		//buf[i] = i + 1;
-		buf[i] = len - i;
+		buf[i] = i + 1;
+		//buf[i] = len - i;
 		//buf[i] = (i + 1) * 2;
 	}
 	
-	const uint16_t eeaddr = 0x0080;
-	int ret;
-
-	// write a byte
+	// write bytes
 	for (uint16_t i = 0; i < len; ++i)
 	{
-		PORTB &= ~(_BV(PB0));  // chip select
+		ret = ee25xxx_write_a_byte(eeaddr + i, buf[i]);
+		while (!ee25xxx_is_ready()) ;
+
+		// caution: write-enable process is necessary
+		//	after write-data process, write-enable bit come to be reset
 		ret = ee25xxx_set_write_enable();
-		PORTB |= _BV(PB0);  // chip deselect
-		_delay_ms(20);  // necessary: delay for twr time
-
-		PORTB &= ~(_BV(PB0));  // chip select
-		ret = ee93Cxx_write_a_byte(eeaddr + i, buf[i]);
-		PORTB |= _BV(PB0);  // chip deselect
-		_delay_ms(20);  // necessary: delay for twr time
-
-		//if (ret) PORTA = buf[i];
-		//else PORTA = ret & 0x00FF;
-		//_delay_ms(500);
+		while (!ee25xxx_is_ready()) ;
+/*
+		if (ret) PORTA = buf[i];
+		_delay_ms(50);
+		PORTA = 0x00;
+		_delay_ms(50);
+*/
 	}
 
 	//
-	PORTA = 0xC0;
-	_delay_ms(1000);
+	PORTA = 0xFF;
+	_delay_ms(500);
 	PORTA = 0x00;
+	_delay_ms(500);
 
-	// read a byte
-	uint8_t byte = 0x00;
+	// read bytes
 	for (uint16_t i = 0; i < len; ++i)
 	{
-		byte = 0x00;
-		PORTB &= ~(_BV(PB0));  // chip select
-		ret = ee93Cxx_read_a_byte(eeaddr + i, &byte);
-		PORTB |= _BV(PB0);  // chip deselect
+		uint8_t byte = 0x00;
+		ret = ee25xxx_read_a_byte(eeaddr + i, &byte);
+		while (!ee25xxx_is_ready()) ;
 
 		if (ret) PORTA = byte;
-		else PORTA = ret & 0x00FF;
-		_delay_ms(500);
+		_delay_ms(200);
+		PORTA = 0x00;
+		_delay_ms(110);
 	}
 
 	//
-	PORTA = 0xC0;
+	PORTA = 0xFF;
 	_delay_ms(500);
-*/
+	PORTA = 0x00;
+	_delay_ms(500);
 }
 
 void test_spi_adis16350()

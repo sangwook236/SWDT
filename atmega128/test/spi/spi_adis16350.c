@@ -87,12 +87,12 @@ int adis16350_read_a_register(const uint8_t addr, uint16_t *word)
 	const uint8_t lower = spi_master_transmit_a_byte(0x00);  // dummy
 */
 	spi_master_receive_bytes((uint8_t *)word, 2);
-	PORTA = 0xCC;
-	_delay_ms(5000);
+	//PORTA = 0xCC;
+	//_delay_ms(5000);
 	adis16350_chip_deselect();
 	spi_disable_interrupt();
-	PORTA = 0x33;
-	_delay_ms(5000);
+	//PORTA = 0x33;
+	//_delay_ms(5000);
 /*
 	*word = ((upper << 8) & 0xFF00) | (lower & 0x00FF);
 */

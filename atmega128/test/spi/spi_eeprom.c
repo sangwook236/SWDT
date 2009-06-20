@@ -165,6 +165,13 @@ int ee93Cxx_write_all(const uint8_t byte)
 //-----------------------------------------------------------------------------
 // for 25128/25256
 
+#define EE25xxx_INSTRUCTION_WREN 0x06
+#define EE25xxx_INSTRUCTION_WRDI 0x04
+#define EE25xxx_INSTRUCTION_RDSR 0x05
+#define EE25xxx_INSTRUCTION_WRSR 0x01
+#define EE25xxx_INSTRUCTION_READ 0x03
+#define EE25xxx_INSTRUCTION_WRITE 0x02
+
 void ee25xxx_init()
 {
 	//SPCR = 0x00;
@@ -214,13 +221,18 @@ void ee25xxx_chip_deselect()
 	PORTB |= _BV(PB0);
 }
 
+int ee25xxx_is_ready()
+{
+	uint8_t status = 0xFF;
+	ee25xxx_read_status_register(&status);
+	return (status & 0x01) == 0x00;
+}
+
 int ee25xxx_set_write_enable()
 {
-	const uint8_t OP_CODE = 0x06;  // write enable
-
 	spi_disable_interrupt();
 	ee25xxx_chip_select();
-	spi_master_transmit_a_byte(OP_CODE & 0x07);
+	spi_master_transmit_a_byte(EE25xxx_INSTRUCTION_WREN & 0x07);  // write enable
 	ee25xxx_chip_deselect();
 	spi_enable_interrupt();
 
@@ -229,11 +241,9 @@ int ee25xxx_set_write_enable()
 
 int ee25xxx_set_write_disable()
 {
-	const uint8_t OP_CODE = 0x04;  // write disable
-
 	spi_disable_interrupt();
 	ee25xxx_chip_select();
-	spi_master_transmit_a_byte(OP_CODE & 0x07);
+	spi_master_transmit_a_byte(EE25xxx_INSTRUCTION_WRDI & 0x07);  // write disable
 	ee25xxx_chip_deselect();
 	spi_enable_interrupt();
 
@@ -242,11 +252,9 @@ int ee25xxx_set_write_disable()
 
 int ee25xxx_write_status_register(const uint8_t byte)
 {
-	const uint8_t OP_CODE = 0x01;  // write status register
-
 	spi_disable_interrupt();
 	ee25xxx_chip_select();
-	spi_master_transmit_a_byte(OP_CODE & 0x07);
+	spi_master_transmit_a_byte(EE25xxx_INSTRUCTION_WRSR & 0x07);  // write status register
 	spi_master_transmit_a_byte(byte);
 	ee25xxx_chip_deselect();
 	spi_enable_interrupt();
@@ -256,11 +264,9 @@ int ee25xxx_write_status_register(const uint8_t byte)
 
 int ee25xxx_read_status_register(uint8_t *byte)
 {
-	const uint8_t OP_CODE = 0x05;  // read status register
-
 	spi_disable_interrupt();
 	ee25xxx_chip_select();
-	spi_master_transmit_a_byte(OP_CODE & 0x07);
+	spi_master_transmit_a_byte(EE25xxx_INSTRUCTION_RDSR & 0x07);  // read status register
 	*byte = spi_master_transmit_a_byte(0xFF);  // dummy
 	ee25xxx_chip_deselect();
 	spi_enable_interrupt();
@@ -268,20 +274,11 @@ int ee25xxx_read_status_register(uint8_t *byte)
 	return 1;
 }
 
-int ee25xxx_is_ready()
-{
-	uint8_t status = 0xFF;
-	ee25xxx_read_status_register(&status);
-	return (status & 0x01) == 0x00;
-}
-
 int ee25xxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 {
-	const uint8_t OP_CODE = 0x02;  // write data
-
 	spi_disable_interrupt();
 	ee25xxx_chip_select();
-	spi_master_transmit_a_byte(OP_CODE & 0x07);
+	spi_master_transmit_a_byte(EE25xxx_INSTRUCTION_WRITE & 0x07);  // write data
 	spi_master_transmit_a_byte((eeaddr >> 8) & 0x00FF);
 	spi_master_transmit_a_byte(eeaddr & 0x00FF);
 	spi_master_transmit_a_byte(byte);
@@ -293,11 +290,9 @@ int ee25xxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 
 int ee25xxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 {
-	const uint8_t OP_CODE = 0x03;  // read data
-
 	spi_disable_interrupt();
 	ee25xxx_chip_select();
-	spi_master_transmit_a_byte(OP_CODE & 0x07);
+	spi_master_transmit_a_byte(EE25xxx_INSTRUCTION_READ & 0x07);  // read data
 	spi_master_transmit_a_byte((eeaddr >> 8) & 0x00FF);
 	spi_master_transmit_a_byte(eeaddr & 0x00FF);
 	*byte = spi_master_transmit_a_byte(0xFF);  // dummy
