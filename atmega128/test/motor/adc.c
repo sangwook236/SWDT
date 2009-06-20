@@ -29,9 +29,3 @@ void initAdc()
 	ADCSRA &= ~(_BV(ADPS1));  // ADC prescaler select bit #1
 	ADCSRA &= ~(_BV(ADPS0));  // ADC prescaler select bit #0
 }
-
-void initAnalogComparator()
-{
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
-}

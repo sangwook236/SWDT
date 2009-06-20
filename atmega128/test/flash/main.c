@@ -2,7 +2,14 @@
 #include <avr/interrupt.h>
 
 
-void initSystem();
+void initSystem()
+{
+	/*
+	 *	analog comparator
+	 */
+	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
+	ACSR |= _BV(ACD);  // analog comparator disable
+}
 
 int main(void)
 {
@@ -28,9 +35,3 @@ int main(void)
 	return 0;
 }
 
-void initSystem()
-{
-	// Analog Comparator
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
-}

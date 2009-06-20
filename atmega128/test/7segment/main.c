@@ -3,17 +3,29 @@
 #include <stdint.h>
 
 
-void initSystem();
+void initSystem()
+{
+	/*
+	 *	analog comparator
+	 */
+	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
+	ACSR |= _BV(ACD);  // analog comparator disable
+
+	/*
+	 *	I/O port
+	 */
+	// uses all pins on PortA & PortC for output
+	DDRA = 0xFF;
+	DDRC = 0xFF;
+}
 
 int main()
 {
-	void initPio();
 	void four_digit_seven_segment_anode_commmon(const uint16_t four_digits);
 	void four_digit_seven_segment_cathode_commmon(const uint16_t four_digits);
 
 	cli();
 	initSystem();
-	initPio();
 	sei();
 
 	const uint16_t num1 = 1234;
@@ -33,9 +45,3 @@ int main()
 	return 0;
 }
 
-void initSystem()
-{
-	// Analog Comparator
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
-}

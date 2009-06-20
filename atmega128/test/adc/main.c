@@ -3,17 +3,32 @@
 #include <util/delay.h>
 
 
-void initSystem();
+void initSystem()
+{
+ 	/*
+	 *	ADC
+	 */
+	// ADC Noise Reduction Mode
+	set_sleep_mode(SLEEP_MODE_ADC);
 
+ 	/*
+	 *	analog comparator
+	 */
+	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
+	ACSR |= _BV(ACD);  // analog comparator disable
+
+	/*
+	 *	I/O port
+	 */
+	DDRA = 0xFF;  // uses all pins on PortA for output
+}
 
 int main(void)
 {
-	void initPio();
 	void initAdc();
 	void startAdc();
 	void resetAdcComplete();
 	uint8_t isAdcComplete();
-	void initAnalogComparator();
 	void initUsart();
 	int8_t isEmpty_Usart0();
 	int8_t pushChar_Usart0(const uint8_t ch);
@@ -24,9 +39,7 @@ int main(void)
 
 	cli();
 	initSystem();
-	initPio();
 	initAdc();
-	initAnalogComparator();
 	initUsart();
 	sei();
 
@@ -60,8 +73,3 @@ int main(void)
 	return 0;
 }
 
-void initSystem()
-{
-	// ADC Noise Reduction Mode
-	set_sleep_mode(SLEEP_MODE_ADC);
-}

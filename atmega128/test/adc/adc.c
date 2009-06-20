@@ -54,9 +54,3 @@ uint8_t isAdcComplete()
 {
 	return 1 == gs_isAdcComplete;
 }
-
-void initAnalogComparator()
-{
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
-}

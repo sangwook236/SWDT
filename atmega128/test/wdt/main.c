@@ -4,18 +4,42 @@
 #include <util/delay.h>
 
 
-void initSystem();
+void initSystem()
+{
+	/*
+	 *	watchdog timer
+	 */
+	wdt_enable(WDTO_2S);
+
+	/*
+	 *	analog comparator
+	 */
+	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
+	ACSR |= _BV(ACD);  // analog comparator disable
+
+	/*
+	 *	I/O port
+	 */
+/*
+	// uses all pins on PortA for input
+	DDRA = 0x00;
+	// it makes port input register(PINn) internally pulled-up state that port output register(PORTn) outputs 1(high)
+	PORTA = 0xFF;
+	// it makes port input register(PINn) high-impedence state that port output register(PORTn) outputs 0(low)
+	// so that we can share the pin with other devices
+	//PORTA = 0x00;
+*/
+	// uses all pins on PortD for output
+	DDRD = 0xFF;
+}
 
 int main(void)
 {
-	void initPio();
-
 	const int8_t doesUseWdt = 0;
   	uint8_t led;
 
 	cli();
 	initSystem();
-	initPio();
 	sei();
 
 	led = 1;  // init variable representing the LED state
@@ -37,14 +61,4 @@ int main(void)
 	}
 
 	return 0;
-}
-
-void initSystem()
-{
-	// Watchdog Timer
-	wdt_enable(WDTO_2S);
-
-	// Analog Comparator
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
 }

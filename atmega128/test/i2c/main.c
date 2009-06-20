@@ -5,13 +5,41 @@
 #include <util/delay.h>
 
 
-void initSystem();
 void test_i2c_eeprom();
 void test_i2c_rtc();
 
+void initSystem()
+{
+	/*
+	 *	analog comparator
+	 */
+	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
+	ACSR |= _BV(ACD);  // analog comparator disable
+
+	/*
+	 *	I/O port
+	 */
+/*
+	// uses all pins on PortA for input
+	DDRA = 0x00;
+	// it makes port input register(PINn) internally pulled-up state that port output register(PORTn) outputs 1(high)
+	PORTA = 0xFF;
+	// it makes port input register(PINn) high-impedence state that port output register(PORTn) outputs 0(low)
+	// so that we can share the pin with other devices
+	//PORTA = 0x00;
+*/
+	// uses all pins on PortD for output
+	DDRD = 0xFF;
+
+	// uses all pins on PortA for output
+	DDRA = 0xFF;
+
+	// uses all pins on PortC for output
+	DDRC = 0xFF;
+}
+
 int main(void)
 {
-	void initPio();
 	void initI2c(const uint8_t is_fast_mode);
 
 	enum { MODE_I2C_EEPROM = 0, MODE_I2C_RTC = 1 };
@@ -21,7 +49,6 @@ int main(void)
 
 	cli();
 	initSystem();
-	initPio();
 	initI2c(MODE_I2C_RTC == mode ? 0 : 1);
 	sei();
 
@@ -40,13 +67,6 @@ int main(void)
 		sleep_mode(); 
 
 	return 0;
-}
-
-void initSystem()
-{
-	// Analog Comparator
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
 }
 
 void test_i2c_eeprom()
