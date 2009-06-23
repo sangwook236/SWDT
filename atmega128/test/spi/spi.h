@@ -24,7 +24,12 @@ typedef enum tagSPI_STATUS
 
 void spi_init_as_master();
 void spi_init_as_slave();
+
 uint8_t spi_is_master();
+
+#if defined(__SWL_AVR__USE_SPI_INTERRUPT)
+uint8_t spi_is_transmit_busy();
+#endif  // __SWL_AVR__USE_SPI_INTERRUPT
 
 uint8_t spi_master_transmit_a_byte(const uint8_t byte);
 void spi_master_transmit_bytes(const uint8_t *buf, const uint16_t lengthToBeWritten);

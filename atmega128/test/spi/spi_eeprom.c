@@ -13,7 +13,7 @@ void ee93Cxx_init()
 	//SPCR = 0x00;
 
 	// data order: if 0, MSB to LSB. if 1, LSB to MSB.
-	SPCR |= _BV(DORD);
+	SPCR &= ~(_BV(DORD));  // the MSB is the first bit transmitted and received
 
 	// SPI mode		CPOL	CPHA	at leading edge		at trailing edge
 	//--------------------------------------------------------------------
@@ -39,18 +39,20 @@ void ee93Cxx_init()
 	SPCR &= ~(_BV(SPR1));
 	SPCR |= _BV(SPR0);
 
+	// switch SS pin to output mode
+	DDRB |= _BV(PB0);
+
+	//
 	spi_init_as_master();
 }
 
 void ee93Cxx_chip_select()
 {
-	// FIXME [check] >>
 	PORTB |= _BV(PB0);
 }
 
 void ee93Cxx_chip_deselect()
 {
-	// FIXME [check] >>
 	PORTB &= ~(_BV(PB0));
 }
 
@@ -177,7 +179,7 @@ void ee25xxx_init()
 	//SPCR = 0x00;
 
 	// data order: if 0, MSB to LSB. if 1, LSB to MSB.
-	SPCR |= _BV(DORD);
+	SPCR &= ~(_BV(DORD));  // the MSB is the first bit transmitted and received
 
 	// SPI mode		CPOL	CPHA	at leading edge		at trailing edge
 	//--------------------------------------------------------------------
@@ -205,19 +207,20 @@ void ee25xxx_init()
 	SPCR &= ~(_BV(SPR1));
 	SPCR &= ~(_BV(SPR0));
 
+	// switch SS pin to output mode
+	DDRB |= _BV(PB0);
+
 	//
 	spi_init_as_master();
 }
 
 void ee25xxx_chip_select()
 {
-	// FIXME [check] >>
 	PORTB &= ~(_BV(PB0));
 }
 
 void ee25xxx_chip_deselect()
 {
-	// FIXME [check] >>
 	PORTB |= _BV(PB0);
 }
 

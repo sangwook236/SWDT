@@ -22,7 +22,7 @@ void eeprom_write_dword(uint32_t *__p, uint32_t __value);
 void eeprom_write_block(const void *__src, void *__dst, size_t __n);
 */
 
-void initSystem()
+void system_init()
 {
 	/*
 	 *	analog comparator
@@ -49,7 +49,7 @@ void initSystem()
 int main(void)
 {
 	cli();
-	initSystem();
+	system_init();
 	sei();
 
 	PORTA = 0xFF;

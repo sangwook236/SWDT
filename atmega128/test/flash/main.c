@@ -2,7 +2,7 @@
 #include <avr/interrupt.h>
 
 
-void initSystem()
+void system_init()
 {
 	/*
 	 *	analog comparator
@@ -14,7 +14,7 @@ void initSystem()
 int main(void)
 {
 	cli();
-	initSystem();
+	system_init();
 	sei();
 
 	const prog_char ch = { 'Z' };

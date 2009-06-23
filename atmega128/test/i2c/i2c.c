@@ -10,7 +10,7 @@ ISR(TWI_vect)
 	TWCR |= _BV(TWINT);  // TWI interrupt flag clear
 }
 
-void initI2c(const uint8_t is_fast_mode)
+void i2c_init(const uint8_t is_fast_mode)
 {
 	TWDR = 0;
 	TWCR = 0x00;

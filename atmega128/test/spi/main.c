@@ -8,9 +8,10 @@
 void test_spi_ee93Cxx();
 void test_spi_ee25xxx();
 void test_spi_adis16350();
+void test_spi_adis16350_self_test();
 
 
-void initSystem()
+void system_init()
 {
 	/*
 	 *	analog comparator
@@ -30,24 +31,23 @@ void initSystem()
 	// so that we can share the pin with other devices
 	//PORTA = 0x00;
 */
-	// uses all pins on PortB for SPI
-	//DDRB = 0xFF;
-
-	// uses all pins on PortA for output
-	DDRA = 0xFF;
-
-	// uses all pins on PortC for output
-	DDRC = 0xFF;
+	DDRA = 0xFF;  // uses all pins on PortA for output
+	//DDRB = 0xFF;  // uses all pins on PortB for SPI
+	DDRC = 0xFF;  // uses all pins on PortC for output
+	DDRD = 0xFF;  // uses all pins on PortD for output
 }
 
 int main()
 {
-	enum { MODE_SPI_EE93Cxx = 0, MODE_SPI_EE25xxx, MODE_SPI_ADIS16350 };
+	void usart0_init();
 
-	const uint8_t mode = MODE_SPI_ADIS16350;
+	//
+	enum { MODE_SPI_EE93Cxx = 0, MODE_SPI_EE25xxx, MODE_SPI_ADIS16350, MODE_SPI_ADIS16350_SELF_TEST };
+
+	const uint8_t mode = MODE_SPI_ADIS16350_SELF_TEST;
 
 	cli();
-	initSystem();
+	system_init();
 	switch (mode)
 	{
 	case MODE_SPI_EE93Cxx:
@@ -57,6 +57,8 @@ int main()
 		ee25xxx_init();
 		break;
 	case MODE_SPI_ADIS16350:
+		usart0_init();
+	case MODE_SPI_ADIS16350_SELF_TEST:
 		adis16350_init();
 		break;
 	}
@@ -75,15 +77,19 @@ int main()
 	case MODE_SPI_ADIS16350:
 		adis16350_chip_deselect();
 		break;
+	case MODE_SPI_ADIS16350_SELF_TEST:
+		adis16350_chip_deselect();
+		test_spi_adis16350_self_test();
+		break;
 	}
 
-
-	for (;;)
+	while (1)
 	{
 		switch (mode)
 		{
 		case MODE_SPI_EE93Cxx:
 		case MODE_SPI_EE25xxx:
+		case MODE_SPI_ADIS16350_SELF_TEST:
 			sleep_mode(); 
 			break;
 		case MODE_SPI_ADIS16350:
@@ -113,8 +119,6 @@ void test_spi_ee25xxx()
 
 	//
 	while (!ee25xxx_is_ready()) ;
-	_delay_ms(10);
-
 	ret = ee25xxx_read_status_register(&status);
 	if (0 != ret)
 	{
@@ -129,7 +133,6 @@ void test_spi_ee25xxx()
 
 	// set write-disable
 	while (!ee25xxx_is_ready()) ;
-
 	ret = ee25xxx_set_write_disable();
 	if (0 == ret)
 	{
@@ -145,7 +148,6 @@ void test_spi_ee25xxx()
 
 	//
 	while (!ee25xxx_is_ready()) ;
-
 	status = 0x00;
 	ret = ee25xxx_read_status_register(&status);
 	if (0 != ret)
@@ -161,7 +163,6 @@ void test_spi_ee25xxx()
 
 	// set write-enable
 	while (!ee25xxx_is_ready()) ;
-
 	ret = ee25xxx_set_write_enable();
 	if (0 == ret)
 	{
@@ -177,7 +178,6 @@ void test_spi_ee25xxx()
 
 	//
 	while (!ee25xxx_is_ready()) ;
-
 	status = 0x00;
 	ret = ee25xxx_read_status_register(&status);
 	if (0 != ret)
@@ -197,75 +197,92 @@ void test_spi_ee25xxx()
 	PORTA = 0x00;
 	_delay_ms(500);
 
-	//
-	const uint16_t eeaddr = 0x0080;
-	const uint16_t len = 64;
-	uint8_t buf[len];
-
-	for (uint16_t i = 0; i < len; ++i)
+	for (int k = 0; k <= 3; ++k)
 	{
-		buf[i] = i + 1;
-		//buf[i] = len - i;
-		//buf[i] = (i + 1) * 2;
-	}
+		//
+		const uint16_t eeaddr = 0x0080;
+		//const uint16_t eeaddr = 0x0145;
+		//const uint16_t eeaddr = 0x2121;
+		const uint16_t len = 64;
+		uint8_t buf[len];
+
+		for (uint16_t i = 0; i < len; ++i)
+		{
+			if (0 == k) buf[i] = i + 1;
+			else if (1 == k) buf[i] = len - i;
+			else if (2 == k) buf[i] = (i + 1) * 2;
+			else buf[i] = 0;
+		}
 	
-	// write bytes
-	for (uint16_t i = 0; i < len; ++i)
-	{
-		ret = ee25xxx_write_a_byte(eeaddr + i, buf[i]);
-		while (!ee25xxx_is_ready()) ;
+		// write bytes
+		for (uint16_t i = 0; i < len; ++i)
+		{
+			// caution: write-enable process is necessary
+			//	after write-data process, write-enable bit come to be reset
+			//	so before write-data process, it is necessary to make write-enable bit on
+			while (!ee25xxx_is_ready()) ;
+			ret = ee25xxx_set_write_enable();
 
-		// caution: write-enable process is necessary
-		//	after write-data process, write-enable bit come to be reset
-		ret = ee25xxx_set_write_enable();
-		while (!ee25xxx_is_ready()) ;
-/*
-		if (ret) PORTA = buf[i];
-		_delay_ms(50);
+			while (!ee25xxx_is_ready()) ;
+			ret = ee25xxx_write_a_byte(eeaddr + i, buf[i]);
+	/*
+			if (ret) PORTA = buf[i];
+			_delay_ms(50);
+			PORTA = 0x00;
+			_delay_ms(50);
+	*/
+		}
+
+		// read bytes
+		for (uint16_t i = 0; i < len; ++i)
+		{
+			uint8_t byte = 0x00;
+			while (!ee25xxx_is_ready()) ;
+			ret = ee25xxx_read_a_byte(eeaddr + i, &byte);
+
+			if (ret) PORTA = byte;
+			_delay_ms(200);
+			PORTA = 0x00;
+			_delay_ms(10);
+		}
+
+		//
+		PORTA = 0xFF;
+		_delay_ms(500);
 		PORTA = 0x00;
-		_delay_ms(50);
-*/
+		_delay_ms(500);
 	}
-
-	//
-	PORTA = 0xFF;
-	_delay_ms(500);
-	PORTA = 0x00;
-	_delay_ms(500);
-
-	// read bytes
-	for (uint16_t i = 0; i < len; ++i)
-	{
-		uint8_t byte = 0x00;
-		ret = ee25xxx_read_a_byte(eeaddr + i, &byte);
-		while (!ee25xxx_is_ready()) ;
-
-		if (ret) PORTA = byte;
-		_delay_ms(200);
-		PORTA = 0x00;
-		_delay_ms(110);
-	}
-
-	//
-	PORTA = 0xFF;
-	_delay_ms(500);
-	PORTA = 0x00;
-	_delay_ms(500);
 }
 
 void test_spi_adis16350()
 {
-	int ret;
-	uint16_t word = 0x0000;
+	int8_t usart0_is_empty();
+	int8_t usart0_push_char(const uint8_t ch);
+	void usart0_pop_char();
+	uint8_t usart0_top_char();
+	uint8_t hex2ascii(const uint8_t hex);
+	uint8_t ascii2hex(const uint8_t ascii);
 
 	//
-	ret = adis16350_read_a_register(ADIS16350_XGYRO_OUT, &word);
+	int ret;
+	uint16_t word = 0x0000;
+	ret = adis16350_read_a_register(ADIS16350_XACCL_OUT, &word);
 	if (0 != ret)
 	{
-		PORTA = (uint8_t)((word >> 8) & 0x00FF);
-		_delay_ms(500);
-		PORTA = (uint8_t)(word & 0x00FF);
-		_delay_ms(500);
+		const uint8_t nd_flag = ((word >> 15) & 0x01) == 0x01;  // new data indicator
+		const uint8_t ea_flag = ((word >> 14) & 0x01) == 0x01;  // system error or alarm condition
+		const uint16_t data = word & 0x3FFF;  // output data
+
+		//PORTA = (uint8_t)((data >> 8) & 0x00FF);
+		//PORTA = (uint8_t)(data & 0x00FF);
+		//_delay_ms(10);
+
+		usart0_push_char(nd_flag ? 'y' : 'n');
+		usart0_push_char(ea_flag ? 'y' : 'n');
+		usart0_push_char(hex2ascii((data >> 12) & 0x0F));
+		usart0_push_char(hex2ascii((data >> 8) & 0x0F));
+		usart0_push_char(hex2ascii((data >> 4) & 0x0F));
+		usart0_push_char(hex2ascii(data & 0x0F));
 	}
 	else
 	{
@@ -275,4 +292,54 @@ void test_spi_adis16350()
 
 	PORTA = 0x00;
 	_delay_ms(10);
+}
+
+void test_spi_adis16350_self_test()
+{
+	uint16_t word = 0x0000;
+	int ret;
+
+	//
+	PORTA = 0xFF;
+	_delay_ms(500);
+	PORTA = 0x00;
+	_delay_ms(500);
+/*
+	ret = adis16350_write_a_register(ADIS16350_MSC_CTRL, 0x0001);
+	_delay_ms(50);
+
+	// manual flash update command to store the nonvolatile data registers
+	ret = adis16350_write_a_register(ADIS16350_COMMAND, 0x0001 << 3);
+	_delay_ms(100);
+
+	//
+	ret = adis16350_read_a_register(ADIS16350_MSC_CTRL, &word);
+
+	PORTA = (uint8_t)((word >> 8) & 0x00FF);
+	_delay_ms(500);
+	PORTA = (uint8_t)(word & 0x00FF);
+	_delay_ms(500);
+
+	//
+	word |= 0x01 << 9;
+	ret = adis16350_write_a_register(ADIS16350_MSC_CTRL, word);
+
+	//
+	ret = adis16350_read_a_register(ADIS16350_STATUS, &word);
+
+	PORTA = (uint8_t)((word >> 4) & 0x01);
+	_delay_ms(500);
+*/
+	while (1)
+	{
+		ret = adis16350_read_a_register(ADIS16350_SMPL_PRD, &word);
+		//ret = adis16350_read_a_register(ADIS16350_SENS_AVG, &word);
+		_delay_ms(1000);
+	}
+
+	//
+	PORTA = 0xFF;
+	_delay_ms(500);
+	PORTA = 0x00;
+	_delay_ms(500);
 }

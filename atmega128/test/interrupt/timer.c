@@ -38,7 +38,7 @@ ISR(TIMER1_OVF_vect)
 	//TCNT1L = 0xFF;
 }
 
-void initTimer()
+void timer_init()
 {
 	TCCR0 = 0x02;  // normal mode(up counter), Fcpu / 8 = 16MHz / 8 = 2MHz
 	TCCR1A = 0x00;

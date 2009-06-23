@@ -2,7 +2,7 @@
 #include <avr/interrupt.h>
 
 
-void initSystem()
+void system_init()
 {
 	/*
 	 *	analog comparator
@@ -33,11 +33,11 @@ void initSystem()
 
 int main(void)
 {
-	void initTimer();
+	void timer_init();
 
 	cli();
-	initSystem();
-	initTimer();
+	system_init();
+	timer_init();
 	sei();
 
 	for (;;)

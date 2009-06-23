@@ -48,7 +48,7 @@ ISR(INT7_vect)
 }
 */
 
-void initExtInt()
+void ext_int_init()
 {
 	EICRA = 0x00;
 	// ISCn0	ISCn1	(when n = 0 ~ 3)

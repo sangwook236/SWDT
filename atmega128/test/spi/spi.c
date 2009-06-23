@@ -21,27 +21,25 @@ void spi_init_as_master()
 {
 	//SPSR = 0x00;
 	//SPDR = 0;
-
 	//SPCR = 0x00;  // must not set SPCR
-
-	//PORTB = 0x00;
 
 	// check whether PB0 is an input
 	if (bit_is_clear(DDRB, PB0))
-	 {
-		// switch SS pin to output mode (?)
-		DDRB |= _BV(PB0);
+	{
 	    // if yes, activate the pull-up
 	    PORTB |= _BV(PB0);
 	}
 
 	// switch SCK and MOSI pins to output mode
 	DDRB |= _BV(PB1) | _BV(PB2);
+	//PORTB &= ~(_BV(PB2));  // enable MOSI high-impedence
 
-	// switch MISO pin to input mode (?)
+	// switch MISO pin to input mode
 	DDRB &= ~(_BV(PB3));
-	// enable MISO pull-up
-	PORTB |= _BV(PB3);
+	//PORTB |= _BV(PB3);  // enable MISO pull-up
+
+	//PORTB &= 0xF0;  // make PB0 ~ PB3 high-impedence
+	//PORTB |= 0x0F;  // make PB0 ~ PB3 pull-up
 
 	// activate the SPI hardware
 	//	SPIE: SPI interrupt enable

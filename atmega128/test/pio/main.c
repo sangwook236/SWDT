@@ -4,7 +4,7 @@
 
 #define TargetPort PORTA
 
-void initSystem()
+void system_init()
 {
 	/*
 	 *	analog comparator
@@ -37,7 +37,7 @@ int main(void)
   	uint8_t led;
 
 	cli();
-	initSystem();
+	system_init();
 	sei();
 
 	led = 1;  // init variable representing the LED state

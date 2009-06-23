@@ -3,13 +3,12 @@
 #include <util/delay.h>
 
 
-void initSystem()
+void system_init()
 {
  	/*
 	 *	ADC
 	 */
-	// ADC Noise Reduction Mode
-	set_sleep_mode(SLEEP_MODE_ADC);
+	set_sleep_mode(SLEEP_MODE_ADC);  // ADC noise reduction mode
 
  	/*
 	 *	analog comparator
@@ -25,43 +24,45 @@ void initSystem()
 
 int main(void)
 {
-	void initAdc();
-	void startAdc();
-	void resetAdcComplete();
-	uint8_t isAdcComplete();
-	void initUsart();
-	int8_t isEmpty_Usart0();
-	int8_t pushChar_Usart0(const uint8_t ch);
-	void popChar_Usart0();
-	uint8_t topChar_Usart0();
+	void adc_init();
+	void adc_start();
+	void adc_reset_complete();
+	uint8_t adc_is_complete();
+
+	void usart0_init();
+	int8_t usart0_is_empty();
+	int8_t usart0_push_char(const uint8_t ch);
+	void usart0_pop_char();
+	uint8_t usart0_top_char();
+
 	uint8_t hex2ascii(const uint8_t hex);
 	uint8_t ascii2hex(const uint8_t ascii);
 
 	cli();
-	initSystem();
-	initAdc();
-	initUsart();
+	system_init();
+	adc_init();
+	usart0_init();
 	sei();
 
 	for (;;)
 	{
 		//sleep_mode();
-		startAdc();
+		adc_start();
 
-		while (!isAdcComplete());
+		while (!adc_is_complete());
 
 		uint16_t result = ADCL;
 		result |= (ADCH << 8);
 
 		PORTA = (result & 0xFF);
 
-		//pushChar_Usart0(hex2ascii((result >> 12) & 0x0F));
-		pushChar_Usart0(hex2ascii((result >> 8) & 0x03));
-		pushChar_Usart0(hex2ascii((result >> 4) & 0x0F));
-		pushChar_Usart0(hex2ascii(result & 0x0F));
-		pushChar_Usart0(' ');
+		//usart0_push_char(hex2ascii((result >> 12) & 0x0F));
+		usart0_push_char(hex2ascii((result >> 8) & 0x03));
+		usart0_push_char(hex2ascii((result >> 4) & 0x0F));
+		usart0_push_char(hex2ascii(result & 0x0F));
+		usart0_push_char(' ');
 
-		resetAdcComplete();
+		adc_reset_complete();
 
 		// a maximal possible delay time is (262.14 / Fosc in MHz) ms
 		// if Fosc = 16 MHz, a maximal possible delay time = 16.38375 ms

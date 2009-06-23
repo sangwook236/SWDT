@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 
-void initSystem()
+void system_init()
 {
 	/*
 	 *	analog comparator
@@ -25,7 +25,7 @@ int main()
 	void four_digit_seven_segment_cathode_commmon(const uint16_t four_digits);
 
 	cli();
-	initSystem();
+	system_init();
 	sei();
 
 	const uint16_t num1 = 1234;

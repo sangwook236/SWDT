@@ -3,7 +3,7 @@
 #include <util/delay.h>
 
 
-void initSystem()
+void system_init()
 {
 	/*
 	 *	analog comparator
@@ -33,14 +33,14 @@ void initSystem()
 
 int main(void)
 {
-	void initTimer();
-	void initExtInt();
+	void timer_init();
+	void ext_int_init();
 
 	cli();
 	///EIFR = 0x00;
-	initSystem();
-	//initTimer();
-	initExtInt();
+	system_init();
+	//timer_init();
+	ext_int_init();
 	//EIFR = 0x00;
 	sei();
 

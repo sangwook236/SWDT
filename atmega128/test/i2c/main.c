@@ -8,7 +8,7 @@
 void test_i2c_eeprom();
 void test_i2c_rtc();
 
-void initSystem()
+void system_init()
 {
 	/*
 	 *	analog comparator
@@ -40,7 +40,7 @@ void initSystem()
 
 int main(void)
 {
-	void initI2c(const uint8_t is_fast_mode);
+	void i2c_init(const uint8_t is_fast_mode);
 
 	enum { MODE_I2C_EEPROM = 0, MODE_I2C_RTC = 1 };
 
@@ -48,8 +48,8 @@ int main(void)
 	const uint8_t mode = MODE_I2C_RTC;
 
 	cli();
-	initSystem();
-	initI2c(MODE_I2C_RTC == mode ? 0 : 1);
+	system_init();
+	i2c_init(MODE_I2C_RTC == mode ? 0 : 1);
 	sei();
 
 	//

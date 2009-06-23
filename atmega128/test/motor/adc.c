@@ -10,7 +10,7 @@ ISR(ANALOG_COMP_vect)
 {
 }
 
-void initAdc()
+void adc_init()
 {
 	ADMUX = 0x00;
 	// reference voltage source: uses internal 2.56V

@@ -13,7 +13,7 @@ ISR(ANALOG_COMP_vect)
 {
 }
 
-void initAdc()
+void adc_init()
 {
 	ADMUX = 0x00;
 	// reference voltage source: uses internal 2.56V
@@ -39,18 +39,18 @@ void initAdc()
 	ADCSRA &= ~(_BV(ADPS0));  // ADC prescaler select bit #0
 }
 
-void startAdc()
+void adc_start()
 {
 	gs_isAdcComplete = 0;
 	ADCSRA |= _BV(ADSC);  // ADC start conversion
 }
 
-void resetAdcComplete()
+void adc_reset_complete()
 {
 	gs_isAdcComplete = 0;
 }
 
-uint8_t isAdcComplete()
+uint8_t adc_is_complete()
 {
 	return 1 == gs_isAdcComplete;
 }

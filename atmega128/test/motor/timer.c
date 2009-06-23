@@ -69,7 +69,7 @@ ISR(TIMER1_CAPT_vect)
 {
 }
 */
-void initTimer()
+void timer_init()
 {
 	TCCR0 = 0x6A;  // fast PWM mode(up counter), normal PWM output, Fcpu / 8 = 16MHz / 8 = 2MHz
 	TCCR1A = 0x00;

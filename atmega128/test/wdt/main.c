@@ -4,7 +4,7 @@
 #include <util/delay.h>
 
 
-void initSystem()
+void system_init()
 {
 	/*
 	 *	watchdog timer
@@ -39,7 +39,7 @@ int main(void)
   	uint8_t led;
 
 	cli();
-	initSystem();
+	system_init();
 	sei();
 
 	led = 1;  // init variable representing the LED state

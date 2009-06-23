@@ -3,7 +3,7 @@
 #include <util/delay.h>
 
 
-void initSystem()
+void system_init()
 {
 	/*
 	 *	analog comparator
@@ -32,50 +32,86 @@ void initSystem()
 
 int main(void)
 {
-	void initUsart();
+	void usart0_init();
+	int8_t usart0_is_empty();
+	int8_t usart0_push_char(const uint8_t ch);
+	void usart0_pop_char();
+	uint8_t usart0_top_char();
 
-	int8_t isEmpty_Usart0();
-	int8_t pushChar_Usart0(const uint8_t ch);
-	void popChar_Usart0();
-	uint8_t topChar_Usart0();
+	void usart1_init();
+	int8_t usart1_is_empty();
+	int8_t usart1_push_char(const uint8_t ch);
+	void usart1_pop_char();
+	uint8_t usart1_top_char();
+
 	uint8_t hex2ascii(const uint8_t hex);
 	uint8_t ascii2hex(const uint8_t ascii);
 
 	cli();
-	initSystem();
-	initUsart();
+	system_init();
+	usart0_init();
 	sei();
 
 	PORTD = 0xFF;
 	_delay_ms(100);
 	PORTD = 0x00;
 
-	for (;;) {
-		if (!isEmpty_Usart0()) {
+	while (1)
+	{
+		if (!usart0_is_empty())
+		{
 /*
 #if 0
-			uint8_t hex = topChar_Usart0();
-			popChar_Usart0();
+			uint8_t hex = usart0_top_char();
+			usart0_pop_char();
 #else
-			uint8_t ascii = topChar_Usart0();
-			popChar_Usart0();
+			uint8_t ascii = usart0_top_char();
+			usart0_pop_char();
 			uint8_t hex = ascii2hex(ascii);
 #endif
-			pushChar_Usart0(hex2ascii((hex + 1) % 256));
+			usart0_push_char(hex2ascii((hex + 1) % 256));
 
 			PORTD = hex;
 */
-			uint8_t ascii = topChar_Usart0();
-			popChar_Usart0();
+			uint8_t ascii = usart0_top_char();
+			usart0_pop_char();
 			uint8_t hex = ascii2hex(ascii);
 
 			PORTA = hex;
 
 			uint16_t num = 0xABCD;
-			pushChar_Usart0(hex2ascii((num >> 12) & 0x0F));
-			pushChar_Usart0(hex2ascii((num >> 8) & 0x0F));
-			pushChar_Usart0(hex2ascii((num >> 4) & 0x0F));
-			pushChar_Usart0(hex2ascii(num & 0x0F));
+			usart0_push_char(hex2ascii((num >> 12) & 0x0F));
+			usart0_push_char(hex2ascii((num >> 8) & 0x0F));
+			usart0_push_char(hex2ascii((num >> 4) & 0x0F));
+			usart0_push_char(hex2ascii(num & 0x0F));
+		}
+
+		if (!usart1_is_empty())
+		{
+/*
+#if 0
+			uint8_t hex = usart1_top_char();
+			usart1_pop_char();
+#else
+			uint8_t ascii = usart1_top_char();
+			usart1_pop_char();
+			uint8_t hex = ascii2hex(ascii);
+#endif
+			usart1_push_char(hex2ascii((hex + 1) % 256));
+
+			PORTD = hex;
+*/
+			uint8_t ascii = usart1_top_char();
+			usart1_pop_char();
+			uint8_t hex = ascii2hex(ascii);
+
+			PORTA = hex;
+
+			uint16_t num = 0xABCD;
+			usart1_push_char(hex2ascii((num >> 12) & 0x0F));
+			usart1_push_char(hex2ascii((num >> 8) & 0x0F));
+			usart1_push_char(hex2ascii((num >> 4) & 0x0F));
+			usart1_push_char(hex2ascii(num & 0x0F));
 		}
 
 		//sleep_mode();
