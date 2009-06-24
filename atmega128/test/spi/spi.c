@@ -90,7 +90,8 @@ void spi_init_as_slave()
 
 uint8_t spi_is_master()
 {
-	return (SPCR & _BV(MSTR)) == _BV(MSTR);
+	//return (SPCR & _BV(MSTR)) == _BV(MSTR);
+	return bit_is_set(SPCR, MSTR);
 }
 
 uint8_t spi_master_transmit_a_byte(const uint8_t byte)

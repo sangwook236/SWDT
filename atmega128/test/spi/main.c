@@ -40,9 +40,7 @@ void system_init()
 
 int main()
 {
-	//
 	enum { MODE_SPI_EE93Cxx = 0, MODE_SPI_EE25xxx, MODE_SPI_ADIS16350, MODE_SPI_ADIS16350_SELF_TEST };
-
 	const uint8_t mode = MODE_SPI_ADIS16350_SELF_TEST;
 
 	cli();
