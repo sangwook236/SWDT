@@ -1,4 +1,4 @@
-#include <avr/sfr_defs.h>
+#include "usart.h"
 
 
 uint8_t hex2ascii(const uint8_t hex)

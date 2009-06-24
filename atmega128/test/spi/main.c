@@ -1,5 +1,6 @@
 #include "spi_eeprom.h"
 #include "spi_adis16350.h"
+#include "usart.h"
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -39,8 +40,6 @@ void system_init()
 
 int main()
 {
-	void usart0_init();
-
 	//
 	enum { MODE_SPI_EE93Cxx = 0, MODE_SPI_EE25xxx, MODE_SPI_ADIS16350, MODE_SPI_ADIS16350_SELF_TEST };
 
@@ -256,14 +255,6 @@ void test_spi_ee25xxx()
 
 void test_spi_adis16350()
 {
-	int8_t usart0_is_empty();
-	int8_t usart0_push_char(const uint8_t ch);
-	void usart0_pop_char();
-	uint8_t usart0_top_char();
-	uint8_t hex2ascii(const uint8_t hex);
-	uint8_t ascii2hex(const uint8_t ascii);
-
-	//
 	int ret;
 	uint16_t word = 0x0000;
 	ret = adis16350_read_a_register(ADIS16350_XACCL_OUT, &word);

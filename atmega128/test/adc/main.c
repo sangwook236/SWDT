@@ -1,3 +1,5 @@
+#include "adc.h"
+#include "usart.h"
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -24,20 +26,6 @@ void system_init()
 
 int main(void)
 {
-	void adc_init();
-	void adc_start();
-	void adc_reset_complete();
-	uint8_t adc_is_complete();
-
-	void usart0_init();
-	int8_t usart0_is_empty();
-	int8_t usart0_push_char(const uint8_t ch);
-	void usart0_pop_char();
-	uint8_t usart0_top_char();
-
-	uint8_t hex2ascii(const uint8_t hex);
-	uint8_t ascii2hex(const uint8_t ascii);
-
 	cli();
 	system_init();
 	adc_init();
@@ -49,7 +37,7 @@ int main(void)
 		//sleep_mode();
 		adc_start();
 
-		while (!adc_is_complete());
+		while (!adc_is_complete()) ;
 
 		uint16_t result = ADCL;
 		result |= (ADCH << 8);

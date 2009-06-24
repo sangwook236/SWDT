@@ -1,21 +1,133 @@
-#include "usart_base.h"
+#include "usart.h"
 #include <avr/interrupt.h>
 #include <avr/sfr_defs.h>
 
 
-void usart1_init_buffer();
-int8_t usart1_push_char(const uint8_t ch);
-void usart1_pop_char();
-uint8_t usart1_top_char();
-int8_t usart1_is_empty();
-uint32_t usart1_get_size();
-
-
-uint8_t hex2ascii(const uint8_t hex);
-uint8_t ascii2hex(const uint8_t ascii);
-
 #if defined(__cplusplus)
-static volatile UsartBuffer usart1Buf;
+class Usart1Buffer
+{
+public:
+	Usart1Buffer()
+	: rxBufLen_(64UL), txBufLen_(64UL),
+	  rxBufStartIndex_(0), rxBufEndIndex_(0), txBufStartIndex_(0), txBufEndIndex_(0),
+	  isTxBufFull_(0), isTransmitActive_(0)
+	{
+		for (int i = 0; i < rxBufLen_; ++i)
+			rxBuf_[i] = 0;
+
+		for (int i = 0; i < txBufLen_; ++i)
+			txBuf_[i] = 0;
+	}
+	~Usart1Buffer()
+	{}
+
+private:
+	Usart1Buffer(const Usart1Buffer &);  // un-implemented
+	Usart1Buffer & Usart1Buffer(const Usart1Buffer &);  // un-implemented
+
+public:
+	void reset()
+	{
+		// empties reception buffers
+		rxBufStartIndex_ = rxBufEndIndex_ = 0;
+		// empties transmission buffers
+		txBufStartIndex_ = txBufEndIndex_ = 0;
+		// clears 'isTxBufFull_' & 'isTransmitActive_' flags
+		isTxBufFull_ = isTransmitActive_ = 0;
+	}
+
+	int8_t pushChar(const uint8_t ch)
+	{
+		if (!isTxBufFull_)  // transmits only if buffer is not full
+		{
+			if (!isTransmitActive_)  // if transmitter is not active
+			{
+				// transfers the first char direct to UDR1 to start transmission
+				isTransmitActive_ = 1;
+				UDR1 = ch;
+			}
+			else
+			{
+				UCSR1B &= ~(_BV(TXCIE1));  // disables USART1 TX complete interrupt after buffer is updated
+				txBuf_[txBufEndIndex_++ & (txBufLen_ - 1)] = ch;
+				// puts a char to transmission buffer
+				if (((txBufEndIndex_ ^ txBufStartIndex_) & (txBufLen_ - 1)) == 0)
+				{
+					isTxBufFull_ = 1;
+				}
+				UCSR1B |= _BV(TXCIE1);  // enables USART1 TX complete interrupt after buffer is updated
+			}
+
+			return 1;
+		}
+		else return 0;
+	}
+
+	void popChar()
+	{
+		if (rxBufEndIndex_ != rxBufStartIndex_)
+		{
+			UCSR1B &= ~(_BV(RXCIE1));  // disables USART1 RX complete interrupt after buffer is updated
+			//ch = rxBuf_[++rxBufStartIndex_ & (rxBufLen_ - 1)];
+			++rxBufStartIndex_;
+			UCSR1B |= _BV(RXCIE1);  // enables USART1 RX complete interrupt after buffer is updated
+		}
+	}
+
+	uint8_t topChar() const
+	{
+		uint8_t ch = 0xFF;
+
+		if (rxBufEndIndex_ != rxBufStartIndex_)
+		{
+			UCSR1B &= ~(_BV(RXCIE1));  // disables USART1 RX complete interrupt after buffer is updated
+			ch = rxBuf_[rxBufStartIndex_ & (rxBufLen_ - 1)];
+			UCSR1B |= _BV(RXCIE1);  // enables USART1 RX complete interrupt after buffer is updated
+		}
+
+		return ch;
+	}
+
+	int8_t isRxBufEmpty() const
+	{  return rxBufEndIndex_ == rxBufStartIndex_;  }
+
+	uint32_t getRxBufSize() const
+	{
+		return rxBufEndIndex_ >= rxBufStartIndex_ ? rxBufEndIndex_ - rxBufStartIndex_ : (uint32_t)((0x01 << sizeof(uint8_t)) - rxBufStartIndex_ + rxBufEndIndex_);
+	}
+
+	void setTxBufFull(const int8_t flag)
+	{  isTxBufFull_ = flag;  }
+	const int8_t & isTxBufFull() const
+	{  return isTxBufFull_;  }
+
+	void setTransmitActive(const int8_t flag)
+	{  isTransmitActive_ = flag;  }
+	const int8_t & isTransmitActive() const
+	{  return isTransmitActive_;  }
+
+public:
+	const uint32_t rxBufLen_;
+	const uint32_t txBufLen_;
+
+private:
+	// start & end indexes of USARTn reception buffer
+	uint8_t rxBufStartIndex_, rxBufEndIndex_;
+	// a storage for USARTn reception buffer
+	uint8_t rxBuf_[rxBufLen_];
+
+	// start & end indexes of USARTn transmission buffer
+	uint8_t txBufStartIndex_, txBufEndIndex_;
+	// a storage for USARTn transmission buffer
+	uint8_t txBuf_[txBufLen_];
+
+	// marks a USARTn transmission buffer flag full
+	int8_t isTxBufFull_;
+	// marks a USARTn transmitter flag active
+	int8_t isTransmitActive_;
+};
+
+static volatile Usart1Buffer usart1Buf;
 #else  // __cplusplus
 #define RxBufLen_Usart1 64  // a size of USART1 reception buffer
 static volatile uint8_t rxBufStartIndex_Usart1, rxBufEndIndex_Usart1;  // start & end indexes of USART1 reception buffer

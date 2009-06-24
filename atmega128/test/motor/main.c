@@ -1,3 +1,4 @@
+#include "usart.h"
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
 

@@ -1,3 +1,4 @@
+#include "usart.h"
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -32,21 +33,6 @@ void system_init()
 
 int main(void)
 {
-	void usart0_init();
-	int8_t usart0_is_empty();
-	int8_t usart0_push_char(const uint8_t ch);
-	void usart0_pop_char();
-	uint8_t usart0_top_char();
-
-	void usart1_init();
-	int8_t usart1_is_empty();
-	int8_t usart1_push_char(const uint8_t ch);
-	void usart1_pop_char();
-	uint8_t usart1_top_char();
-
-	uint8_t hex2ascii(const uint8_t hex);
-	uint8_t ascii2hex(const uint8_t ascii);
-
 	cli();
 	system_init();
 	usart0_init();

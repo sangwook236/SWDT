@@ -1,3 +1,4 @@
+#include "adc.h"
 #include <avr/interrupt.h>
 #include <avr/sfr_defs.h>
 
