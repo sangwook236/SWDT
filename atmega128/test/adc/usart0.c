@@ -88,6 +88,15 @@ public:
 		return ch;
 	}
 
+	//
+	int8_t isTxBufEmpty() const
+	{  return txBufEndIndex_ == txBufStartIndex_;  }
+
+	uint32_t getTxBufSize() const
+	{
+		return txBufEndIndex_ >= txBufStartIndex_ ? txBufEndIndex_ - txBufStartIndex_ : (uint32_t)((0x01 << sizeof(uint8_t)) - txBufStartIndex_ + txBufEndIndex_);
+	}
+
 	int8_t isRxBufEmpty() const
 	{  return rxBufEndIndex_ == rxBufStartIndex_;  }
 
@@ -105,6 +114,16 @@ public:
 	{  isTransmitActive_ = flag;  }
 	const int8_t & isTransmitActive() const
 	{  return isTransmitActive_;  }
+
+	//
+	uint8_t getCharToTransmit()
+	{
+		return txBuf_[txBufStartIndex_++ & (txBufLen_- 1)];
+	}
+	void setCharToBeReceived(const uint8_t ch)
+	{
+		rxBuf_[rxBufEndIndex_++ & (rxBufLen_ - 1)] = ch;
+	}
 
 public:
 	const uint32_t rxBufLen_;
@@ -147,8 +166,8 @@ ISR(USART0_TX_vect)
 	// if chars are in a Tx buffer, transmits a char
 	if (!usart0Buf.isTxBufEmpty())
 	{
-		// FIXME [add] >>
-
+		// TODO [check] >>
+		UDR0 = getCharToTransmit();
 		usart0Buf.setTxBufFull(0);
 	}
 	else usart0Buf.setTransmitActive(0);
@@ -174,7 +193,8 @@ ISR(USART0_RX_vect)
 #if defined(__cplusplus)
 	if (!usart0Buf.isRxBufFull())  // Rx buffer is not full
 	{
-		// FIXME [add] >>
+		// TODO [check] >>
+		setCharToBeReceived(ch);
 	}
 #else  // __cplusplus
 	if (rxBufStartIndex_Usart0 + RxBufLen_Usart0 != rxBufEndIndex_Usart0)  // Rx buffer is not full
