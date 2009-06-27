@@ -36,6 +36,7 @@ int main(void)
 	cli();
 	system_init();
 	usart0_init();
+	usart1_init();
 	sei();
 
 	PORTD = 0xFF;
@@ -55,9 +56,11 @@ int main(void)
 			usart0_pop_char();
 			uint8_t hex = ascii2hex(ascii);
 #endif
-			usart0_push_char(hex2ascii((hex + 1) % 256));
-
-			PORTD = hex;
+			uint16_t num = 0xABCD;
+			usart1_push_char(hex2ascii((num >> 12) & 0x0F));
+			usart1_push_char(hex2ascii((num >> 8) & 0x0F));
+			usart1_push_char(hex2ascii((num >> 4) & 0x0F));
+			usart1_push_char(hex2ascii(num & 0x0F));
 */
 			uint8_t ascii = usart0_top_char();
 			usart0_pop_char();
@@ -65,11 +68,7 @@ int main(void)
 
 			PORTA = hex;
 
-			uint16_t num = 0xABCD;
-			usart0_push_char(hex2ascii((num >> 12) & 0x0F));
-			usart0_push_char(hex2ascii((num >> 8) & 0x0F));
-			usart0_push_char(hex2ascii((num >> 4) & 0x0F));
-			usart0_push_char(hex2ascii(num & 0x0F));
+			usart0_push_char(ascii);
 		}
 
 		if (!usart1_is_empty())
@@ -83,9 +82,12 @@ int main(void)
 			usart1_pop_char();
 			uint8_t hex = ascii2hex(ascii);
 #endif
-			usart1_push_char(hex2ascii((hex + 1) % 256));
+			uint16_t num = 0xABCD;
+			usart1_push_char(hex2ascii((num >> 12) & 0x0F));
+			usart1_push_char(hex2ascii((num >> 8) & 0x0F));
+			usart1_push_char(hex2ascii((num >> 4) & 0x0F));
+			usart1_push_char(hex2ascii(num & 0x0F));
 
-			PORTD = hex;
 */
 			uint8_t ascii = usart1_top_char();
 			usart1_pop_char();
@@ -93,11 +95,7 @@ int main(void)
 
 			PORTA = hex;
 
-			uint16_t num = 0xABCD;
-			usart1_push_char(hex2ascii((num >> 12) & 0x0F));
-			usart1_push_char(hex2ascii((num >> 8) & 0x0F));
-			usart1_push_char(hex2ascii((num >> 4) & 0x0F));
-			usart1_push_char(hex2ascii(num & 0x0F));
+			usart1_push_char(ascii);
 		}
 
 		//sleep_mode();

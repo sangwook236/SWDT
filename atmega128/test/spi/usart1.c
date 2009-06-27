@@ -147,7 +147,7 @@ ISR(USART1_TX_vect)
 	// if chars are in a Tx buffer, transmits a char
 	if (!usart1Buf.isTxBufEmpty())
 	{
-		// need to add
+		// FIXME [add] >>
 
 		usart1Buf.setTxBufFull(0);
 	}
@@ -174,7 +174,7 @@ ISR(USART1_RX_vect)
 #if defined(__cplusplus)
 	if (!usart1Buf.isRxBufFull())  // Rx buffer is not full
 	{
-		// need to add
+		// FIXME [add] >>
 	}
 #else  // __cplusplus
 	if (rxBufStartIndex_Usart1 + RxBufLen_Usart1 != rxBufEndIndex_Usart1)  // Rx buffer is not full

@@ -158,15 +158,21 @@ void test_i2c_rtc()
 		return;
 	}
 
+#if 0
 	// set date & time: call just once after power-on
-/*
-	if (0 == ds1307_set_date_time(9, 2, 6, 5, 16, 26, 0))
+	if (0 == ds1307_set_date_time(9, 6, 26, 5, 20, 26, 0))
 	{
 		PORTA = 0x4F;
 		_delay_ms(500);
 		return;
 	}
-*/
+	else
+	{
+		PORTA = 0xFF;
+		_delay_ms(500);
+		return;
+	}
+#else
 	//
 	uint8_t year = 0, month = 0, date = 0, day_of_week = 0;
 	uint8_t hour = 0, minute = 0, second = 0;
@@ -209,4 +215,5 @@ void test_i2c_rtc()
 
 		_delay_ms(1);
 	}
+#endif
 }
