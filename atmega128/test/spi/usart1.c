@@ -118,7 +118,7 @@ public:
 	//
 	uint8_t getCharToTransmit()
 	{
-		return txBuf_[txBufStartIndex_++ & (txBufLen_- 1)];
+		return txBuf_[txBufStartIndex_++ & (txBufLen_ - 1)];
 	}
 	void setCharToBeReceived(const uint8_t ch)
 	{
