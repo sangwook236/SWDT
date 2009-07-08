@@ -45,7 +45,8 @@ void i2c_init(const uint8_t is_fast_mode)
 #if F_CPU < 3600000UL
  	TWBR = 10;  /// smallest TWBR value
 #else
-	// regular mode: 100 kbps, fast mode: 400 kbps
+	// standard(regular) mode: 	100 kbps
+	// fast mode: 				400 kbps
 	const uint32_t Fscl = is_fast_mode ? 400000UL : 100000UL;
 	TWBR = (uint8_t)((float)(F_CPU / Fscl - 16) / (float)(2 * prescaler));
 #endif

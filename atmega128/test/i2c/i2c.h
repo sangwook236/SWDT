@@ -27,8 +27,10 @@ I2C_STATUS i2c_sla_r(const uint8_t sla);
 I2C_STATUS i2c_address(const uint8_t addr);
 
 I2C_STATUS i2c_master_write_a_byte(const uint8_t byte);
+// write data from MSB(buf[0]) to LSB(data[n])
 I2C_STATUS i2c_master_write_bytes(const uint16_t bufLen, const uint8_t *buf, uint16_t *byteLenWritten);
 I2C_STATUS i2c_master_read_a_byte(uint8_t *byte);
+// read data from MSB(buf[0]) to LSB(data[n])
 I2C_STATUS i2c_master_read_bytes(const uint16_t bufLen, uint8_t *buf, uint16_t *byteLenRead);
 
 

@@ -1,5 +1,6 @@
 #include "i2c_eeprom.h"
 #include "i2c_rtc.h"
+#include "i2c_hmc6352.h"
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -7,6 +8,7 @@
 
 void test_i2c_eeprom();
 void test_i2c_rtc();
+void test_i2c_hmc6352();
 
 void system_init()
 {
@@ -31,25 +33,38 @@ void system_init()
 	// uses all pins on PortD for output
 	DDRD = 0xFF;
 
-	// uses all pins on PortA for output
+	// for 7-segment
 	DDRA = 0xFF;
-
-	// uses all pins on PortC for output
 	DDRC = 0xFF;
+	// for two yellow LEDs
+	DDRG = 0x03;
 }
 
 int main(void)
 {
 	void i2c_init(const uint8_t is_fast_mode);
 
-	enum { MODE_I2C_EEPROM = 0, MODE_I2C_RTC = 1 };
+	enum { MODE_I2C_EEPROM = 0, MODE_I2C_RTC = 1, MODE_I2C_HMC6352 = 2 };
 
 	//const uint8_t mode = MODE_I2C_EEPROM;
-	const uint8_t mode = MODE_I2C_RTC;
+	//const uint8_t mode = MODE_I2C_RTC;
+	const uint8_t mode = MODE_I2C_HMC6352;
+
+	uint8_t is_fast_mode = 0;
+	switch (mode)
+	{
+	case MODE_I2C_EEPROM:
+	case MODE_I2C_HMC6352:
+		is_fast_mode = 0;
+		break;
+	case MODE_I2C_RTC:
+		is_fast_mode = 1;
+		break;
+	}
 
 	cli();
 	system_init();
-	i2c_init(MODE_I2C_RTC == mode ? 0 : 1);
+	i2c_init(is_fast_mode);
 	sei();
 
 	//
@@ -60,6 +75,9 @@ int main(void)
 		break;
 	case MODE_I2C_RTC:
 		test_i2c_rtc();
+		break;
+	case MODE_I2C_HMC6352:
+		test_i2c_hmc6352();
 		break;
 	}
 
@@ -216,4 +234,51 @@ void test_i2c_rtc()
 		_delay_ms(1);
 	}
 #endif
+}
+
+void test_i2c_hmc6352()
+{
+	void four_digit_seven_segment_anode_commmon(const uint16_t four_digits);
+	void four_digit_seven_segment_cathode_commmon(const uint16_t four_digits);
+
+	uint8_t data[2] = { 0, 0 };
+	uint16_t angle = 0;
+	int idx = 0;
+	int flag = 1;
+
+	while (1)
+	{
+		if (0 == idx)
+		{
+			hmc6352_get_data(data);  // [0, 3599]
+
+			//const uint8_t high = data[0];
+			//const uint8_t low = data[1];
+			angle = ((data[0] << 8) & 0xFF00) | (data[1] & 0x00FF);
+
+			//PORTA = data[1];
+			if (1 == flag)
+			{
+				PORTG =  0x01;
+				flag = 0;
+			}
+			else
+			{
+				PORTG =  0x02;
+				flag = 1;
+			}
+		}
+
+		//four_digit_seven_segment_anode_commmon(angle);
+		four_digit_seven_segment_cathode_commmon(angle);
+		_delay_ms(5);
+
+		idx = (idx + 1) % 10;
+	}
+
+	//
+	PORTA = 0xFF;
+	_delay_ms(200);
+	PORTA = 0x00;
+	_delay_ms(50);
 }
