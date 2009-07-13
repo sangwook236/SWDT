@@ -21,6 +21,23 @@ const char HMC6352_CMD_E = 'E';  // exit user calibration mode
 const char HMC6352_CMD_L = 'L';  // save OP mode to EEPROM
 const char HMC6352_CMD_A = 'A';  // get data. compensate & calculate new heading
 
+// EEPROM addresses
+
+const uint8_t HMC6352_EEPROM__I2C_SLAVE_ADDR = 0x00;
+const uint8_t HMC6352_EEPROM__X_OFFSET_MSB = 0x01;
+const uint8_t HMC6352_EEPROM__X_OFFSET_LSB = 0x02;
+const uint8_t HMC6352_EEPROM__Y_OFFSET_MSB = 0x03;
+const uint8_t HMC6352_EEPROM__Y_OFFSET_LSB = 0x04;
+const uint8_t HMC6352_EEPROM__TIME_DELAY = 0x05;
+const uint8_t HMC6352_EEPROM__NUM_SUMMED_MEASUREMENT = 0x06;
+const uint8_t HMC6352_EEPROM__SW_VER = 0x07;
+const uint8_t HMC6352_EEPROM__OPERATIONAL_MODE = 0x08;
+
+// RAM register addresses
+
+const uint8_t HMC6352_RAM__OPERATIONAL_MODE = 0x74;
+const uint8_t HMC6352_RAM__OUTPUT_DATA_MODE = 0x4E;
+
 //-----------------------------------------------------------------------------
 //
 
@@ -148,7 +165,7 @@ int hmc6352_get_data(uint8_t *data)
 	return dataLen == dataLenRead ? 1 : 0;
 }
 
-int hmc6352_read_one_byte_data(uint8_t *datum)
+int hmc6352_read_byte_data(uint8_t *datum)
 {
 	// patch HMC6352 address into SLA
 	const uint8_t sla = TWI_SLA_HMC6352;
@@ -200,7 +217,7 @@ int hmc6352_read_one_byte_data(uint8_t *datum)
 	return 1;
 }
 
-int hmc6352_read_two_byte_data(uint8_t *data)
+int hmc6352_read_word_data(uint8_t *data)
 {
 	// patch HMC6352 address into SLA
 	const uint8_t sla = TWI_SLA_HMC6352;

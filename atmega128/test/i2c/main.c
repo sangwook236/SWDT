@@ -241,22 +241,100 @@ void test_i2c_hmc6352()
 	void four_digit_seven_segment_anode_commmon(const uint16_t four_digits);
 	void four_digit_seven_segment_cathode_commmon(const uint16_t four_digits);
 
-	uint8_t data[2] = { 0, 0 };
-	uint16_t angle = 0;
+	PORTA = 0xFF;
+	_delay_ms(100);
+	PORTA = 0x00;
+	_delay_ms(10);
+
+#if 0
+	//
+	// operational mode
+	//
+	uint8_t op_mode = 0x00;
+	hmc6352_read_from_ram(HMC6352_RAM__OPERATIONAL_MODE, &op_mode);
+
+	//op_mode = (op_mode & 0xFC) | 0x00;  // stand-by mode
+	op_mode = (op_mode & 0xFC) | 0x01;  // query mode
+	//op_mode = (op_mode & 0xFC) | 0x02;  // continuous mode
+	hmc6352_write_to_ram(HMC6352_RAM__OPERATIONAL_MODE, op_mode);
+	_delay_ms(10);
+	op_mode = 0x00;
+	hmc6352_read_from_ram(HMC6352_RAM__OPERATIONAL_MODE, &op_mode);
+	PORTA = op_mode;
+	_delay_ms(1000);
+
+	op_mode = (op_mode & 0xFC) | 0x00;  // stand-by mode
+	//op_mode = (op_mode & 0xFC) | 0x01;  // query mode
+	//op_mode = (op_mode & 0xFC) | 0x02;  // continuous mode
+	hmc6352_write_to_ram(HMC6352_RAM__OPERATIONAL_MODE, op_mode);
+	_delay_ms(10);
+	op_mode = 0x00;
+	hmc6352_read_from_ram(HMC6352_RAM__OPERATIONAL_MODE, &op_mode);
+	PORTA = op_mode;
+	_delay_ms(1000);
+
+	//
+	// output data mode
+	//
+	uint8_t out_mode = 0x00;
+	hmc6352_read_from_ram(HMC6352_RAM__OUTPUT_DATA_MODE, &out_mode);
+	PORTA = out_mode;
+	_delay_ms(1000);
+
+	PORTA = 0xFF;
+	_delay_ms(100);
+	PORTA = 0x00;
+	_delay_ms(10);
+#endif
+
+	uint8_t data[2] = { 0x00, 0x00 };
+
+	enum { MODE_STAND_BY, MODE_QUERY, MODE_CONTINUOUS } mode = MODE_STAND_BY;
+
+	uint8_t op_mode = 0x00;
+	hmc6352_read_from_ram(HMC6352_RAM__OPERATIONAL_MODE, &op_mode);
+	switch (mode)
+	{
+	case MODE_STAND_BY:
+		op_mode = (op_mode & 0xFC) | 0x00;  // stand-by mode
+		hmc6352_write_to_ram(HMC6352_RAM__OPERATIONAL_MODE, op_mode);
+		_delay_ms(10);
+		break;
+	case MODE_QUERY:
+		op_mode = (op_mode & 0xFC) | 0x01;  // query mode
+		hmc6352_write_to_ram(HMC6352_RAM__OPERATIONAL_MODE, op_mode);
+		_delay_ms(10);
+		hmc6352_get_data(data);
+		break;
+	case MODE_CONTINUOUS:
+		op_mode = (op_mode & 0xFC) | 0x02;  // continuous mode
+		hmc6352_write_to_ram(HMC6352_RAM__OPERATIONAL_MODE, op_mode);
+		_delay_ms(10);
+		break;
+	}
+
+	uint16_t angle = 0x0000;
 	int idx = 0;
 	int flag = 1;
-
 	while (1)
 	{
 		if (0 == idx)
 		{
-			hmc6352_get_data(data);  // [0, 3599]
+			switch (mode)
+			{
+			case MODE_STAND_BY:
+				hmc6352_get_data(data);  // [0, 3599]
+				break;
+			case MODE_QUERY:
+			case MODE_CONTINUOUS:
+				hmc6352_read_word_data(data);  // [0, 3599]
+				break;
+			}
 
-			//const uint8_t high = data[0];
-			//const uint8_t low = data[1];
+			//const uint8_t high = data[0];  // MSB
+			//const uint8_t low = data[1];  // LSB
 			angle = ((data[0] << 8) & 0xFF00) | (data[1] & 0x00FF);
 
-			//PORTA = data[1];
 			if (1 == flag)
 			{
 				PORTG =  0x01;
@@ -275,10 +353,4 @@ void test_i2c_hmc6352()
 
 		idx = (idx + 1) % 10;
 	}
-
-	//
-	PORTA = 0xFF;
-	_delay_ms(200);
-	PORTA = 0x00;
-	_delay_ms(50);
 }

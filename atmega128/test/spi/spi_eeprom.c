@@ -5,6 +5,7 @@
 
 //-----------------------------------------------------------------------------
 // for 93C46/93C56/93C66: use 8-bit access
+// [ref] "AVR ATmega128 ¸¶½ºÅÍ", À±´ö¿ë Àú, Ohm»ç. pp. 636~644
 
 static const uint8_t SPI_START_BIT_93CXX = 0x01 << 3;
 
@@ -15,14 +16,17 @@ void ee93Cxx_init()
 	// data order: if 0, MSB to LSB. if 1, LSB to MSB.
 	SPCR &= ~(_BV(DORD));  // the MSB is the first bit transmitted and received
 
+	// clock polarity: if 0, leading edge = rising edge. if 1, leading edge = falling edge.
+	// clock phase: if 0, sample at leading edge. if 1, sample at trailing edge
+
 	// SPI mode		CPOL	CPHA	at leading edge		at trailing edge
 	//--------------------------------------------------------------------
 	// 0			0		0		sample (rising)		setup (falling)
 	// 1			0		1		setup (rising)		sample (falling)
 	// 2			1		0		sample (falling)	setup (rising)
 	// 3			1		1		setup (falling)		sample (rising)
-	SPCR |= _BV(CPOL);  // clock polarity: if 0, leading edge = rising edge. if 1, leading edge = falling edge.
-	SPCR |= _BV(CPHA);  // clock phase: if 0, sample at leading edge. if 1, sample at trailing edge
+	SPCR |= _BV(CPOL);
+	SPCR |= _BV(CPHA);
 
 	// SCK clock rate
 	// SPI2X	SPR1	SPR0	SCK frequency
@@ -181,16 +185,19 @@ void ee25xxx_init()
 	// data order: if 0, MSB to LSB. if 1, LSB to MSB.
 	SPCR &= ~(_BV(DORD));  // the MSB is the first bit transmitted and received
 
+	// clock polarity: if 0, leading edge = rising edge. if 1, leading edge = falling edge.
+	// clock phase: if 0, sample at leading edge. if 1, sample at trailing edge
+
 	// SPI mode		CPOL	CPHA	at leading edge		at trailing edge
 	//--------------------------------------------------------------------
 	// 0			0		0		sample (rising)		setup (falling)
 	// 1			0		1		setup (rising)		sample (falling)
 	// 2			1		0		sample (falling)	setup (rising)
 	// 3			1		1		setup (falling)		sample (rising)
-	SPCR &= ~(_BV(CPOL));  // clock polarity: if 0, leading edge = rising edge. if 1, leading edge = falling edge.
-	SPCR &= ~(_BV(CPHA));  // clock phase: if 0, sample at leading edge. if 1, sample at trailing edge
-	//SPCR |= _BV(CPOL);  // clock polarity: if 0, leading edge = rising edge. if 1, leading edge = falling edge.
-	//SPCR |= _BV(CPHA);  // clock phase: if 0, sample at leading edge. if 1, sample at trailing edge
+	SPCR &= ~(_BV(CPOL));
+	SPCR &= ~(_BV(CPHA));
+	//SPCR |= _BV(CPOL);
+	//SPCR |= _BV(CPHA);
 
 	// SCK clock rate
 	// SPI2X	SPR1	SPR0	SCK frequency

@@ -40,8 +40,7 @@ void system_init()
 
 int main()
 {
-	enum { MODE_SPI_EE93Cxx = 0, MODE_SPI_EE25xxx, MODE_SPI_ADIS16350, MODE_SPI_ADIS16350_SELF_TEST };
-	const uint8_t mode = MODE_SPI_ADIS16350_SELF_TEST;
+	enum { MODE_SPI_EE93Cxx = 0, MODE_SPI_EE25xxx, MODE_SPI_ADIS16350, MODE_SPI_ADIS16350_SELF_TEST } mode = MODE_SPI_ADIS16350_SELF_TEST;
 
 	cli();
 	system_init();
@@ -322,7 +321,14 @@ void test_spi_adis16350_self_test()
 	while (1)
 	{
 		ret = adis16350_read_a_register(ADIS16350_SMPL_PRD, &word);
-		//ret = adis16350_read_a_register(ADIS16350_SENS_AVG, &word);
+		//PORTA = (uint8_t)((word >> 8) & 0x00FF);
+		//_delay_ms(1000);
+		PORTA = (uint8_t)(word & 0x00FF);
+		_delay_ms(1000);
+		ret = adis16350_read_a_register(ADIS16350_SENS_AVG, &word);
+		//PORTA = (uint8_t)((word >> 8) & 0x00FF);
+		//_delay_ms(1000);
+		PORTA = (uint8_t)(word & 0x00FF);
 		_delay_ms(1000);
 	}
 

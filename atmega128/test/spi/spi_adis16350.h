@@ -1,6 +1,7 @@
 #if !defined(__SWL_AVR__SPI_ADIS16350_H_)
 #define __SWL_AVR__SPI_ADIS16350_H_ 1
 
+
 #include <stdint.h>
 
 
