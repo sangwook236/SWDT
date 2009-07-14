@@ -14,7 +14,7 @@ uint8_t ascii2hex(const uint8_t ascii);
 //-----------------------------------------------------------------------------
 //
 
-void usart0_init();
+void usart0_init(const uint32_t baudrate);
 void usart0_init_buffer();
 int8_t usart0_push_char(const uint8_t ch);
 void usart0_pop_char();
@@ -25,7 +25,7 @@ uint32_t usart0_get_size();
 //-----------------------------------------------------------------------------
 //
 
-void usart1_init();
+void usart1_init(const uint32_t baudrate);
 void usart1_init_buffer();
 int8_t usart1_push_char(const uint8_t ch);
 void usart1_pop_char();

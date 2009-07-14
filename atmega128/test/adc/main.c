@@ -49,7 +49,7 @@ int main(void)
 	cli();
 	system_init();
 	adc_init();
-	usart0_init();
+	usart0_init(57600UL);
 	switch (mode)
 	{
 	case MODE_ADC_MMA7260:

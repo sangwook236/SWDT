@@ -35,8 +35,8 @@ int main(void)
 {
 	cli();
 	system_init();
-	usart0_init();
-	usart1_init();
+	usart0_init(57600UL);
+	usart1_init(57600UL);
 	sei();
 
 	PORTD = 0xFF;

@@ -53,7 +53,7 @@ int main()
 		ee25xxx_init();
 		break;
 	case MODE_SPI_ADIS16350:
-		usart0_init();
+		usart0_init(57600UL);
 	case MODE_SPI_ADIS16350_SELF_TEST:
 		adis16350_init();
 		break;

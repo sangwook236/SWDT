@@ -208,7 +208,7 @@ ISR(USART0_UDRE_vect)
 {
 }
 
-void usart0_init()
+void usart0_init(const uint32_t baudrate)
 {
 	UDR0 = 0;
 
@@ -245,9 +245,9 @@ void usart0_init()
 	//		UBRRn = Fosc / (2 * baudrate) - 1
 
 	// baud rate: 57600
-	const uint32_t baudrate = 57600UL;
+	//const uint32_t baudrate = 57600UL;
 	const uint16_t ubrr0 = (uint16_t)(F_CPU / (16.0 * baudrate) - 1.0);
-	UBRR0H = (uint8_t)((ubrr0 & 0xFF00) >> 8);
+	UBRR0H = (uint8_t)((ubrr0 >> 8) & 0x00FF);
 	UBRR0L = (uint8_t)(ubrr0 & 0x00FF);
 
 #if defined(__cplusplus)
