@@ -40,7 +40,7 @@ void system_init()
 
 int main()
 {
-	enum { MODE_SPI_EE93Cxx = 0, MODE_SPI_EE25xxx, MODE_SPI_ADIS16350, MODE_SPI_ADIS16350_SELF_TEST } mode = MODE_SPI_ADIS16350_SELF_TEST;
+	enum { MODE_SPI_EE93Cxx = 0, MODE_SPI_EE25xxx, MODE_SPI_ADIS16350, MODE_SPI_ADIS16350_SELF_TEST } mode = MODE_SPI_ADIS16350;
 
 	cli();
 	system_init();
@@ -254,7 +254,7 @@ void test_spi_adis16350()
 {
 	int ret;
 	uint16_t word = 0x0000;
-	ret = adis16350_read_a_register(ADIS16350_XACCL_OUT, &word);
+	ret = adis16350_read_a_register(ADIS16350_ZGYRO_OUT, &word);
 	if (0 != ret)
 	{
 		const uint8_t nd_flag = ((word >> 15) & 0x01) == 0x01;  // new data indicator
@@ -265,12 +265,14 @@ void test_spi_adis16350()
 		//PORTA = (uint8_t)(data & 0x00FF);
 		//_delay_ms(10);
 
+		usart0_push_char('$');  // stx
 		usart0_push_char(nd_flag ? 'y' : 'n');
 		usart0_push_char(ea_flag ? 'y' : 'n');
 		usart0_push_char(hex2ascii((data >> 12) & 0x0F));
 		usart0_push_char(hex2ascii((data >> 8) & 0x0F));
 		usart0_push_char(hex2ascii((data >> 4) & 0x0F));
 		usart0_push_char(hex2ascii(data & 0x0F));
+		usart0_push_char('&');  // etx
 	}
 	else
 	{
@@ -279,7 +281,7 @@ void test_spi_adis16350()
 	}
 
 	PORTA = 0x00;
-	_delay_ms(10);
+	_delay_ms(500);
 }
 
 void test_spi_adis16350_self_test()
@@ -320,16 +322,40 @@ void test_spi_adis16350_self_test()
 */
 	while (1)
 	{
-		ret = adis16350_read_a_register(ADIS16350_SMPL_PRD, &word);
-		//PORTA = (uint8_t)((word >> 8) & 0x00FF);
-		//_delay_ms(1000);
-		PORTA = (uint8_t)(word & 0x00FF);
-		_delay_ms(1000);
-		ret = adis16350_read_a_register(ADIS16350_SENS_AVG, &word);
-		//PORTA = (uint8_t)((word >> 8) & 0x00FF);
-		//_delay_ms(1000);
-		PORTA = (uint8_t)(word & 0x00FF);
-		_delay_ms(1000);
+		PORTA = 0xFF;
+		_delay_ms(200);
+		PORTA = 0x00;
+		_delay_ms(200);
+
+		const int test_mode = 3;
+		if (1 == test_mode)
+		{
+			ret = adis16350_read_a_register(ADIS16350_SMPL_PRD, &word);
+			PORTA = (uint8_t)(word & 0xFF);
+			_delay_ms(500);
+		}
+		else if (2 == test_mode)
+		{
+			ret = adis16350_read_a_register(ADIS16350_SENS_AVG, &word);
+			PORTA = (uint8_t)((word >> 8) & 0x07);
+			_delay_ms(500);
+			PORTA = (uint8_t)(word & 0x07);
+			_delay_ms(500);
+		}
+		else if (3 == test_mode)
+		{
+			adis16350_write_a_register(ADIS16350_GPIO_CTRL, 0x0201);
+			_delay_ms(500);
+
+			ret = adis16350_read_a_register(ADIS16350_GPIO_CTRL, &word);
+			_delay_ms(100);
+
+			ret = adis16350_read_a_register(ADIS16350_GPIO_CTRL, &word);
+			PORTA = (uint8_t)((word >> 8) & 0x03);
+			_delay_ms(500);
+			PORTA = (uint8_t)(word & 0x03);
+			_delay_ms(500);
+		}
 	}
 
 	//

@@ -20,11 +20,12 @@
 #define ADIS16350_ZTEMP_OUT		0x14
 #define ADIS16350_AUX_ADC		0x16
 
-#define ADIS16350_COMMAND		0x3E
+#define ADIS16350_GPIO_CTRL		0x32
+#define ADIS16350_MSC_CTRL		0x34
 #define ADIS16350_SMPL_PRD		0x36
 #define ADIS16350_SENS_AVG		0x38
-#define ADIS16350_MSC_CTRL		0x34
 #define ADIS16350_STATUS		0x3C
+#define ADIS16350_COMMAND		0x3E
 
 void adis16350_init();
 void adis16350_chip_select();

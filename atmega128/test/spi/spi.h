@@ -22,9 +22,6 @@ typedef enum tagSPI_STATUS
 } SPI_STATUS;
 
 
-void spi_init_as_master();
-void spi_init_as_slave();
-
 uint8_t spi_is_master();
 
 #if defined(__SWL_AVR__USE_SPI_INTERRUPT)

@@ -7,9 +7,63 @@
 //-----------------------------------------------------------------------------
 // for ADIS16350
 
+
+void adis16350_chip_select()
+{
+	PORTB &= ~(_BV(PB0));
+}
+
+void adis16350_chip_deselect()
+{
+	PORTB |= _BV(PB0);
+}
+
 void adis16350_init()
 {
-	//SPCR = 0x00;
+	// step 1
+	const uint8_t is_master = 1;
+
+	//PORTB = 0x00;
+	if (is_master)
+	{
+		// switch SS pin to output mode
+		DDRB |= _BV(PB0);
+		// check whether PB0 is an input
+		if (bit_is_clear(DDRB, PB0))
+		{
+		    // if yes, activate the pull-up
+		    PORTB |= _BV(PB0);
+		}
+
+		// switch SCK and MOSI pins to output mode
+		DDRB |= _BV(PB1) | _BV(PB2);
+		//PORTB &= ~(_BV(PB2));  // enable MOSI high-impedence
+
+		// switch MISO pin to input mode
+		DDRB &= ~(_BV(PB3));
+		//PORTB |= _BV(PB3);  // enable MISO pull-up
+
+		//PORTB &= 0xF0;  // make PB0 ~ PB3 high-impedence
+		//PORTB |= 0x0F;  // make PB0 ~ PB3 pull-up
+	}
+	else
+	{
+		// switch MOSI pin to input mode (?)
+		DDRB &= ~(_BV(PB2));
+		// enable MOSI pull-up
+		PORTB |= _BV(PB2);
+
+		// switch MISO pin to output mode
+		DDRB |= _BV(PB3);
+	}
+
+	// step 2: initialize ADIS16350 SPI module
+	adis16350_chip_deselect();
+
+	// step 3
+	//SPSR = 0x00;
+	//SPDR = 0;
+	//SPCR = 0x00;  // must not set SPCR
 
 	// data order: if 0, MSB to LSB. if 1, LSB to MSB.
 	SPCR &= ~(_BV(DORD));  // the MSB is the first bit transmitted and received
@@ -40,29 +94,34 @@ void adis16350_init()
 
 	// sampling period of ADIS16350
 	//	SPI SCK <= 2.5 MHz for FAST MODE (SMPL_PRD register <= 0x09)
-	//SPSR |= _BV(SPI2X);
+	SPSR |= _BV(SPI2X);
+	SPCR &= ~(_BV(SPR1));
+	SPCR |= _BV(SPR0);
+	//	SPI SCK <= 1 MHz for NORMAL MODE (SMPL_PRD register > 0x09)
+	//SPSR &= ~(_BV(SPI2X));
 	//SPCR &= ~(_BV(SPR1));
 	//SPCR |= _BV(SPR0);
-	//	SPI SCK <= 1 MHz for NORMAL MODE (SMPL_PRD register > 0x09)
-	SPSR &= ~(_BV(SPI2X));
-	SPCR |= _BV(SPR1);
-	SPCR |= _BV(SPR0);
 
-	// switch SS pin to output mode
-	DDRB |= _BV(PB0);
+	// step 4
+	// activate the SPI hardware
+	//	SPIE: SPI interrupt enable
+	//	SPE: SPI enable
+#if defined(__SWL_AVR__USE_SPI_INTERRUPT)
+	if (is_master)
+		SPCR |= _BV(SPIE) | _BV(SPE) | _BV(MSTR);
+	else
+		SPCR |= _BV(SPIE) | _BV(SPE);
+#else
+	if (is_master)
+		SPCR |= _BV(SPE) | _BV(MSTR);
+	else
+		SPCR |= _BV(SPE);
+#endif  // __SWL_AVR__USE_SPI_INTERRUPT
 
-	//
-	spi_init_as_master();
-}
-
-void adis16350_chip_select()
-{
-	PORTB &= ~(_BV(PB0));
-}
-
-void adis16350_chip_deselect()
-{
-	PORTB |= _BV(PB0);
+	// clear status flags: the SPIF & WCOL flags
+	uint8_t dummy;
+	dummy = SPSR;
+	dummy = SPDR;
 }
 
 int adis16350_write_a_register(const uint8_t addr, const uint16_t word)
@@ -70,23 +129,20 @@ int adis16350_write_a_register(const uint8_t addr, const uint16_t word)
 	const uint8_t OP_CODE = 0x80;  // write
 
 	spi_disable_interrupt();
+
 	adis16350_chip_select();
-	// FIXME [check] >>
-	spi_master_transmit_a_byte(OP_CODE | (addr & 0x3F));
-	spi_master_transmit_a_byte(word);
-	spi_master_transmit_a_byte((word >> 8) & 0x0F);
-/*
-	spi_master_transmit_a_byte(OP_CODE | (addr & 0x3F));
-	spi_master_transmit_bytes((uint8_t *)&word, 2);
-*/
-/*
-	spi_master_transmit_a_byte(OP_CODE | (addr & 0x3F));
-	spi_master_transmit_a_byte(word);
 	spi_master_transmit_a_byte(OP_CODE | ((addr + 1) & 0x3F));
-	spi_master_transmit_a_byte((word >> 8) & 0x0F);
-*/
+	spi_master_transmit_a_byte((word >> 8) & 0xFF);
 	adis16350_chip_deselect();
-	spi_disable_interrupt();
+
+	_delay_ms(10);
+
+	adis16350_chip_select();
+	spi_master_transmit_a_byte(OP_CODE | (addr & 0x3F));
+	spi_master_transmit_a_byte(word & 0xFF);
+	adis16350_chip_deselect();
+
+	spi_enable_interrupt();
 
 	return 1;
 }
@@ -96,25 +152,17 @@ int adis16350_read_a_register(const uint8_t addr, uint16_t *word)
 	const uint8_t OP_CODE = 0x00;  // read
 
 	spi_disable_interrupt();
+
 	adis16350_chip_select();
-	// FIXME [check] >>
-	spi_master_transmit_a_byte(OP_CODE | (addr & 0x3F));
-	spi_master_transmit_a_byte(0x00);  // dummy
-	const uint8_t upper = spi_master_transmit_a_byte(0x00);  // dummy
+	const uint8_t upper = spi_master_transmit_a_byte(OP_CODE | (addr & 0x3F));
 	const uint8_t lower = spi_master_transmit_a_byte(0x00);  // dummy
-/*
-	spi_master_transmit_a_byte(OP_CODE | (addr & 0x3F));
-	spi_master_transmit_a_byte(0x00);
-	spi_master_receive_bytes((uint8_t *)word, 2);
-*/
+	//const uint8_t upper = spi_master_transmit_a_byte(0x00);  // dummy
+	//const uint8_t lower = spi_master_transmit_a_byte(0x00);  // dummy
 	adis16350_chip_deselect();
-	spi_disable_interrupt();
+
+	spi_enable_interrupt();
 
 	*word = ((upper << 8) & 0xFF00) | (lower & 0x00FF);
-	PORTA = upper;
-	_delay_ms(500);
-	PORTA = lower;
-	_delay_ms(500);
 
 	return 1;
 }

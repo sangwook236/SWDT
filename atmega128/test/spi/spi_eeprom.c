@@ -9,9 +9,62 @@
 
 static const uint8_t SPI_START_BIT_93CXX = 0x01 << 3;
 
+void ee93Cxx_chip_select()
+{
+	PORTB |= _BV(PB0);
+}
+
+void ee93Cxx_chip_deselect()
+{
+	PORTB &= ~(_BV(PB0));
+}
+
 void ee93Cxx_init()
 {
-	//SPCR = 0x00;
+	// step 1
+	const uint8_t is_master = 1;
+
+	//PORTB = 0x00;
+	if (is_master)
+	{
+		// switch SS pin to output mode
+		DDRB |= _BV(PB0);
+		// check whether PB0 is an input
+		if (bit_is_clear(DDRB, PB0))
+		{
+		    // if yes, activate the pull-up
+		    PORTB |= _BV(PB0);
+		}
+
+		// switch SCK and MOSI pins to output mode
+		DDRB |= _BV(PB1) | _BV(PB2);
+		//PORTB &= ~(_BV(PB2));  // enable MOSI high-impedence
+
+		// switch MISO pin to input mode
+		DDRB &= ~(_BV(PB3));
+		//PORTB |= _BV(PB3);  // enable MISO pull-up
+
+		//PORTB &= 0xF0;  // make PB0 ~ PB3 high-impedence
+		//PORTB |= 0x0F;  // make PB0 ~ PB3 pull-up
+	}
+	else
+	{
+		// switch MOSI pin to input mode (?)
+		DDRB &= ~(_BV(PB2));
+		// enable MOSI pull-up
+		PORTB |= _BV(PB2);
+
+		// switch MISO pin to output mode
+		DDRB |= _BV(PB3);
+	}
+
+	// step 2: initialize EE93Cxx SPI module
+	ee93Cxx_chip_deselect();
+
+	// step 3
+	//SPSR = 0x00;
+	//SPDR = 0;
+	//SPCR = 0x00;  // must not set SPCR
 
 	// data order: if 0, MSB to LSB. if 1, LSB to MSB.
 	SPCR &= ~(_BV(DORD));  // the MSB is the first bit transmitted and received
@@ -43,22 +96,28 @@ void ee93Cxx_init()
 	SPCR &= ~(_BV(SPR1));
 	SPCR |= _BV(SPR0);
 
-	// switch SS pin to output mode
-	DDRB |= _BV(PB0);
+	// step 4
+	// activate the SPI hardware
+	//	SPIE: SPI interrupt enable
+	//	SPE: SPI enable
+#if defined(__SWL_AVR__USE_SPI_INTERRUPT)
+	if (is_master)
+		SPCR |= _BV(SPIE) | _BV(SPE) | _BV(MSTR);
+	else
+		SPCR |= _BV(SPIE) | _BV(SPE);
+#else
+	if (is_master)
+		SPCR |= _BV(SPE) | _BV(MSTR);
+	else
+		SPCR |= _BV(SPE);
+#endif  // __SWL_AVR__USE_SPI_INTERRUPT
 
-	//
-	spi_init_as_master();
+	// clear status flags: the SPIF & WCOL flags
+	uint8_t dummy;
+	dummy = SPSR;
+	dummy = SPDR;
 }
 
-void ee93Cxx_chip_select()
-{
-	PORTB |= _BV(PB0);
-}
-
-void ee93Cxx_chip_deselect()
-{
-	PORTB &= ~(_BV(PB0));
-}
 
 int ee93Cxx_set_write_enable()
 {
@@ -178,10 +237,59 @@ int ee93Cxx_write_all(const uint8_t byte)
 #define EE25xxx_INSTRUCTION_READ 0x03
 #define EE25xxx_INSTRUCTION_WRITE 0x02
 
+void ee25xxx_chip_select()
+{
+	PORTB &= ~(_BV(PB0));
+}
+
+void ee25xxx_chip_deselect()
+{
+	PORTB |= _BV(PB0);
+}
+
 void ee25xxx_init()
 {
-	//SPCR = 0x00;
+	// step 1
+	const uint8_t is_master = 1;
 
+	//PORTB = 0x00;
+	if (is_master)
+	{
+		// switch SS pin to output mode
+		DDRB |= _BV(PB0);
+		// check whether PB0 is an input
+		if (bit_is_clear(DDRB, PB0))
+		{
+		    // if yes, activate the pull-up
+		    PORTB |= _BV(PB0);
+		}
+
+		// switch SCK and MOSI pins to output mode
+		DDRB |= _BV(PB1) | _BV(PB2);
+		//PORTB &= ~(_BV(PB2));  // enable MOSI high-impedence
+
+		// switch MISO pin to input mode
+		DDRB &= ~(_BV(PB3));
+		//PORTB |= _BV(PB3);  // enable MISO pull-up
+
+		//PORTB &= 0xF0;  // make PB0 ~ PB3 high-impedence
+		//PORTB |= 0x0F;  // make PB0 ~ PB3 pull-up
+	}
+	else
+	{
+		// switch MOSI pin to input mode (?)
+		DDRB &= ~(_BV(PB2));
+		// enable MOSI pull-up
+		PORTB |= _BV(PB2);
+
+		// switch MISO pin to output mode
+		DDRB |= _BV(PB3);
+	}
+
+	// step 2: initialize EE25xxx SPI module
+	ee25xxx_chip_deselect();
+
+	// step 3
 	// data order: if 0, MSB to LSB. if 1, LSB to MSB.
 	SPCR &= ~(_BV(DORD));  // the MSB is the first bit transmitted and received
 
@@ -214,22 +322,28 @@ void ee25xxx_init()
 	SPCR &= ~(_BV(SPR1));
 	SPCR &= ~(_BV(SPR0));
 
-	// switch SS pin to output mode
-	DDRB |= _BV(PB0);
+	// step 4
+	// activate the SPI hardware
+	//	SPIE: SPI interrupt enable
+	//	SPE: SPI enable
+#if defined(__SWL_AVR__USE_SPI_INTERRUPT)
+	if (is_master)
+		SPCR |= _BV(SPIE) | _BV(SPE) | _BV(MSTR);
+	else
+		SPCR |= _BV(SPIE) | _BV(SPE);
+#else
+	if (is_master)
+		SPCR |= _BV(SPE) | _BV(MSTR);
+	else
+		SPCR |= _BV(SPE);
+#endif  // __SWL_AVR__USE_SPI_INTERRUPT
 
-	//
-	spi_init_as_master();
+	// clear status flags: the SPIF & WCOL flags
+	uint8_t dummy;
+	dummy = SPSR;
+	dummy = SPDR;
 }
 
-void ee25xxx_chip_select()
-{
-	PORTB &= ~(_BV(PB0));
-}
-
-void ee25xxx_chip_deselect()
-{
-	PORTB |= _BV(PB0);
-}
 
 int ee25xxx_is_ready()
 {
