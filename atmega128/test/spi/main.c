@@ -47,15 +47,15 @@ int main()
 	switch (mode)
 	{
 	case MODE_SPI_EE93Cxx:
-		ee93Cxx_init();
+		ee93Cxx_init(1);
 		break;
 	case MODE_SPI_EE25xxx:
-		ee25xxx_init();
+		ee25xxx_init(1);
 		break;
 	case MODE_SPI_ADIS16350:
 		usart0_init(57600UL);
 	case MODE_SPI_ADIS16350_SELF_TEST:
-		adis16350_init();
+		adis16350_init(1);
 		break;
 	}
 	sei();
@@ -63,18 +63,18 @@ int main()
 	switch (mode)
 	{
 	case MODE_SPI_EE93Cxx:
-		ee93Cxx_chip_deselect();
+		//ee93Cxx_chip_deselect();
 		test_spi_ee93Cxx();
 		break;
 	case MODE_SPI_EE25xxx:
-		ee25xxx_chip_deselect();
+		//ee25xxx_chip_deselect();
 		test_spi_ee25xxx();
 		break;
 	case MODE_SPI_ADIS16350:
-		adis16350_chip_deselect();
+		//adis16350_chip_deselect();
 		break;
 	case MODE_SPI_ADIS16350_SELF_TEST:
-		adis16350_chip_deselect();
+		//adis16350_chip_deselect();
 		test_spi_adis16350_self_test();
 		break;
 	}

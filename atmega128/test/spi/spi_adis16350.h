@@ -27,10 +27,10 @@
 #define ADIS16350_STATUS		0x3C
 #define ADIS16350_COMMAND		0x3E
 
-void adis16350_init();
 void adis16350_chip_select();
 void adis16350_chip_deselect();
 
+void adis16350_init(const uint8_t is_master);
 int adis16350_write_a_register(const uint8_t addr, const uint16_t word);
 int adis16350_read_a_register(const uint8_t addr, uint16_t *word);
 

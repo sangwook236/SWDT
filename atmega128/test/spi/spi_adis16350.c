@@ -7,7 +7,6 @@
 //-----------------------------------------------------------------------------
 // for ADIS16350
 
-
 void adis16350_chip_select()
 {
 	PORTB &= ~(_BV(PB0));
@@ -18,11 +17,9 @@ void adis16350_chip_deselect()
 	PORTB |= _BV(PB0);
 }
 
-void adis16350_init()
+void adis16350_init(const uint8_t is_master)
 {
 	// step 1
-	const uint8_t is_master = 1;
-
 	//PORTB = 0x00;
 	if (is_master)
 	{

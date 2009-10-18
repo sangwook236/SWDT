@@ -19,11 +19,9 @@ void ee93Cxx_chip_deselect()
 	PORTB &= ~(_BV(PB0));
 }
 
-void ee93Cxx_init()
+void ee93Cxx_init(const uint8_t is_master)
 {
 	// step 1
-	const uint8_t is_master = 1;
-
 	//PORTB = 0x00;
 	if (is_master)
 	{
@@ -247,11 +245,9 @@ void ee25xxx_chip_deselect()
 	PORTB |= _BV(PB0);
 }
 
-void ee25xxx_init()
+void ee25xxx_init(const uint8_t is_master)
 {
 	// step 1
-	const uint8_t is_master = 1;
-
 	//PORTB = 0x00;
 	if (is_master)
 	{

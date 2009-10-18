@@ -7,10 +7,10 @@
 //-----------------------------------------------------------------------------
 // for 93C46/93C56/93C66: use 8-bit access
 
-void ee93Cxx_init();
 void ee93Cxx_chip_select();
 void ee93Cxx_chip_deselect();
 
+void ee93Cxx_init(const uint8_t is_master);
 int ee93Cxx_set_write_enable();
 int ee93Cxx_set_write_disable();
 
@@ -24,10 +24,10 @@ int ee93Cxx_write_all(const uint8_t byte);
 //-----------------------------------------------------------------------------
 // for 25128/25256
 
-void ee25xxx_init();
 void ee25xxx_chip_select();
 void ee25xxx_chip_deselect();
 
+void ee25xxx_init(const uint8_t is_master);
 int ee25xxx_is_ready();
 
 int ee25xxx_set_write_enable();
