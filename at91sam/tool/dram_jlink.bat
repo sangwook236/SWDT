@@ -1,0 +1,1 @@
+arm-elf-insight -x .\prj\sam7s256_ram_jlink.gdb test_ram.elf

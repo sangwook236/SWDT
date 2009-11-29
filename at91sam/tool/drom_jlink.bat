@@ -1,0 +1,1 @@
+arm-elf-insight -x .\prj\sam7s256_rom_jlink.gdb test_rom.elf
