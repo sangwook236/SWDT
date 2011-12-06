@@ -1,0 +1,1044 @@
+!SESSION 2009-08-29 20:54:30.390 -----------------------------------------------
+eclipse.buildId=I20090611-1540
+java.version=1.6.0_15
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.php.debug.core 4 4 2009-08-29 20:55:14.078
+!MESSAGE The debug port 10000 is in use. Please select a different port for the debugger.
+
+!ENTRY org.eclipse.php.debug.core 4 4 2009-08-29 20:55:14.187
+!MESSAGE The debug port 9000 is in use. Please select a different port for the debugger.
+
+!ENTRY org.eclipse.epp.usagedata.recording 1 0 2009-08-29 20:55:30.968
+!MESSAGE Usage data uploaded to http://udc.eclipse.org/upload.php in 1968 milliseconds.
+
+!ENTRY org.eclipse.jdt.ui 4 10001 2009-08-29 21:22:29.921
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:141)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:33)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:252)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:234)
+	at org.eclipse.jdt.internal.ui.wizards.buildpaths.BuildPathsBlock.createProject(BuildPathsBlock.java:697)
+	at org.eclipse.jdt.ui.wizards.JavaCapabilityConfigurationPage.createProject(JavaCapabilityConfigurationPage.java:251)
+	at org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo.updateProject(NewJavaProjectWizardPageTwo.java:231)
+	at org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo.access$2(NewJavaProjectWizardPageTwo.java:198)
+	at org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo$1$UpdateRunnable.run(NewJavaProjectWizardPageTwo.java:159)
+	at org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation.execute(WorkspaceModifyDelegatingOperation.java:69)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1800)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: OK
+Contains: D:\work_sw_dev\java\swl overlaps the workspace location: D:\work_sw_dev\java\swl\build
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2009-08-29 21:22:29.937
+!MESSAGE Invalid project description.
+!SUBENTRY 2 org.eclipse.core.runtime 0 0 2009-08-29 21:22:29.937
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2009-08-29 21:22:29.937
+!MESSAGE D:\work_sw_dev\java\swl overlaps the workspace location: D:\work_sw_dev\java\swl\build
+
+!ENTRY org.eclipse.jdt.ui 4 10001 2009-08-29 21:22:40.812
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:141)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:33)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:252)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:234)
+	at org.eclipse.jdt.internal.ui.wizards.buildpaths.BuildPathsBlock.createProject(BuildPathsBlock.java:697)
+	at org.eclipse.jdt.ui.wizards.JavaCapabilityConfigurationPage.createProject(JavaCapabilityConfigurationPage.java:251)
+	at org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo.updateProject(NewJavaProjectWizardPageTwo.java:231)
+	at org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo.access$2(NewJavaProjectWizardPageTwo.java:198)
+	at org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo$1$UpdateRunnable.run(NewJavaProjectWizardPageTwo.java:159)
+	at org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation.execute(WorkspaceModifyDelegatingOperation.java:69)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1800)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: OK
+Contains: D:\work_sw_dev\java\swl overlaps the workspace location: D:\work_sw_dev\java\swl\build
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2009-08-29 21:22:40.812
+!MESSAGE Invalid project description.
+!SUBENTRY 2 org.eclipse.core.runtime 0 0 2009-08-29 21:22:40.812
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2009-08-29 21:22:40.812
+!MESSAGE D:\work_sw_dev\java\swl overlaps the workspace location: D:\work_sw_dev\java\swl\build
+
+!ENTRY org.eclipse.jdt.ui 4 10001 2009-08-29 21:22:58.359
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:141)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:33)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:252)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:234)
+	at org.eclipse.jdt.internal.ui.wizards.buildpaths.BuildPathsBlock.createProject(BuildPathsBlock.java:697)
+	at org.eclipse.jdt.ui.wizards.JavaCapabilityConfigurationPage.createProject(JavaCapabilityConfigurationPage.java:251)
+	at org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo.updateProject(NewJavaProjectWizardPageTwo.java:231)
+	at org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo.access$2(NewJavaProjectWizardPageTwo.java:198)
+	at org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo$1$UpdateRunnable.run(NewJavaProjectWizardPageTwo.java:159)
+	at org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation.execute(WorkspaceModifyDelegatingOperation.java:69)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1800)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: OK
+Contains: D:\work_sw_dev\java overlaps the workspace location: D:\work_sw_dev\java\swl\build
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2009-08-29 21:22:58.359
+!MESSAGE Invalid project description.
+!SUBENTRY 2 org.eclipse.core.runtime 0 0 2009-08-29 21:22:58.359
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2009-08-29 21:22:58.359
+!MESSAGE D:\work_sw_dev\java overlaps the workspace location: D:\work_sw_dev\java\swl\build
+
+!ENTRY org.eclipse.jdt.ui 4 10001 2009-08-29 21:23:12.703
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:141)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:33)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:252)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:234)
+	at org.eclipse.jdt.internal.ui.wizards.buildpaths.BuildPathsBlock.createProject(BuildPathsBlock.java:697)
+	at org.eclipse.jdt.ui.wizards.JavaCapabilityConfigurationPage.createProject(JavaCapabilityConfigurationPage.java:251)
+	at org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo.updateProject(NewJavaProjectWizardPageTwo.java:231)
+	at org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo.access$2(NewJavaProjectWizardPageTwo.java:198)
+	at org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageTwo$1$UpdateRunnable.run(NewJavaProjectWizardPageTwo.java:159)
+	at org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation.execute(WorkspaceModifyDelegatingOperation.java:69)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1800)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: OK
+Contains: D:\work_sw_dev\java overlaps the workspace location: D:\work_sw_dev\java\swl\build
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2009-08-29 21:23:12.703
+!MESSAGE Invalid project description.
+!SUBENTRY 2 org.eclipse.core.runtime 0 0 2009-08-29 21:23:12.703
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2009-08-29 21:23:12.703
+!MESSAGE D:\work_sw_dev\java overlaps the workspace location: D:\work_sw_dev\java\swl\build
+
+!ENTRY org.eclipse.ui.ide 4 4 2009-08-29 21:24:21.156
+!MESSAGE Problems occurred refreshing the selected resources.
+!SUBENTRY 1 org.eclipse.core.resources 4 567 2009-08-29 21:24:21.156
+!MESSAGE The project description file (.project) for 'swl' is missing.  This file contains important information about the project.  The project will not function properly until this file is restored.
+!SESSION 2009-08-29 21:33:10.312 -----------------------------------------------
+eclipse.buildId=I20090611-1540
+java.version=1.6.0_15
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.php.debug.core 4 4 2009-08-29 21:33:38.671
+!MESSAGE The debug port 10000 is in use. Please select a different port for the debugger.
+
+!ENTRY org.eclipse.php.debug.core 4 4 2009-08-29 21:33:38.703
+!MESSAGE The debug port 9000 is in use. Please select a different port for the debugger.
+!SESSION 2009-08-29 21:59:02.250 -----------------------------------------------
+eclipse.buildId=I20090611-1540
+java.version=1.6.0_15
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.core.resources 4 567 2009-08-29 21:59:10.265
+!MESSAGE Workspace restored, but some problems occurred.
+!SUBENTRY 1 org.eclipse.core.resources 4 567 2009-08-29 21:59:10.265
+!MESSAGE Could not read metadata for 'swl'.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: The project description file (.project) for 'swl' is missing.  This file contains important information about the project.  The project will not function properly until this file is restored.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:714)
+	at org.eclipse.core.internal.resources.SaveManager.restoreMetaInfo(SaveManager.java:797)
+	at org.eclipse.core.internal.resources.SaveManager.restoreMetaInfo(SaveManager.java:777)
+	at org.eclipse.core.internal.resources.SaveManager.restore(SaveManager.java:663)
+	at org.eclipse.core.internal.resources.SaveManager.startup(SaveManager.java:1353)
+	at org.eclipse.core.internal.resources.Workspace.startup(Workspace.java:1957)
+	at org.eclipse.core.internal.resources.Workspace.open(Workspace.java:1716)
+	at org.eclipse.core.resources.ResourcesPlugin.start(ResourcesPlugin.java:379)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:782)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:773)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:754)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:352)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.start(AbstractBundle.java:280)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:408)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:111)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClass(ClasspathManager.java:449)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.findLocalClass(DefaultClassLoader.java:211)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:376)
+	at org.eclipse.osgi.internal.loader.SingleSourcePackage.loadClass(SingleSourcePackage.java:33)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:449)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:405)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:393)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:105)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at java.lang.ClassLoader.loadClassInternal(Unknown Source)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:114)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:194)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:368)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:559)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:514)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1311)
+!SUBENTRY 2 org.eclipse.core.resources 4 567 2009-08-29 21:59:10.265
+!MESSAGE The project description file (.project) for 'swl' is missing.  This file contains important information about the project.  The project will not function properly until this file is restored.
+!SESSION 2009-08-29 22:01:42.296 -----------------------------------------------
+eclipse.buildId=I20090611-1540
+java.version=1.6.0_15
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2009-08-29 22:01:50.046
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.656
+!MESSAGE NLS unused message: missingOneOfTwoAttributes in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.656
+!MESSAGE NLS unused message: categoryNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.656
+!MESSAGE NLS unused message: actionNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.656
+!MESSAGE NLS unused message: actionAlreadyDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.656
+!MESSAGE NLS unused message: presetNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.656
+!MESSAGE NLS unused message: templateNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.656
+!MESSAGE NLS unused message: invalidActionType in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.656
+!MESSAGE NLS unused message: invalidEventHandlerType in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.656
+!MESSAGE NLS unused message: invalidRequiresConstraint in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.656
+!MESSAGE NLS unused message: invalidConflictsConstraint in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.671
+!MESSAGE NLS unused message: deprecatedRuntimeChangedAction in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.671
+!MESSAGE NLS unused message: tracingActionSorting in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.671
+!MESSAGE NLS unused message: tracingFrameworkActivationStarting in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.671
+!MESSAGE NLS unused message: tracingFrameworkActivationFinished in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.671
+!MESSAGE NLS missing message: problemCaseNotRecognized in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2009-08-29 22:03:12.671
+!MESSAGE NLS missing message: runtimeComponentTypeNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.wst.common.project.facet.core 4 0 2009-08-29 22:03:12.671
+!MESSAGE Project facet jst.web has not been defined. It is used in plugin org.eclipse.wst.jsdt.web.core.
+!SESSION 2009-08-29 22:15:02.796 -----------------------------------------------
+eclipse.buildId=I20090611-1540
+java.version=1.6.0_15
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.core.resources 4 567 2009-08-29 22:15:12.750
+!MESSAGE Workspace restored, but some problems occurred.
+!SUBENTRY 1 org.eclipse.core.resources 4 567 2009-08-29 22:15:12.750
+!MESSAGE Could not read metadata for 'swl'.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: The project description file (.project) for 'swl' is missing.  This file contains important information about the project.  The project will not function properly until this file is restored.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:714)
+	at org.eclipse.core.internal.resources.SaveManager.restoreMetaInfo(SaveManager.java:797)
+	at org.eclipse.core.internal.resources.SaveManager.restoreMetaInfo(SaveManager.java:777)
+	at org.eclipse.core.internal.resources.SaveManager.restore(SaveManager.java:663)
+	at org.eclipse.core.internal.resources.SaveManager.startup(SaveManager.java:1353)
+	at org.eclipse.core.internal.resources.Workspace.startup(Workspace.java:1957)
+	at org.eclipse.core.internal.resources.Workspace.open(Workspace.java:1716)
+	at org.eclipse.core.resources.ResourcesPlugin.start(ResourcesPlugin.java:379)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:782)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:773)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:754)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:352)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.start(AbstractBundle.java:280)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:408)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:111)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClass(ClasspathManager.java:449)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.findLocalClass(DefaultClassLoader.java:211)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:376)
+	at org.eclipse.osgi.internal.loader.SingleSourcePackage.loadClass(SingleSourcePackage.java:33)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:449)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:405)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:393)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:105)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at java.lang.ClassLoader.loadClassInternal(Unknown Source)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:114)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:194)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:368)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:559)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:514)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1311)
+!SUBENTRY 2 org.eclipse.core.resources 4 567 2009-08-29 22:15:12.750
+!MESSAGE The project description file (.project) for 'swl' is missing.  This file contains important information about the project.  The project will not function properly until this file is restored.
+
+!ENTRY org.eclipse.php.debug.core 4 4 2009-08-29 22:15:18.718
+!MESSAGE The debug port 10000 is in use. Please select a different port for the debugger.
+
+!ENTRY org.eclipse.php.debug.core 4 4 2009-08-29 22:15:18.718
+!MESSAGE The debug port 9000 is in use. Please select a different port for the debugger.
+!SESSION 2009-08-29 22:35:45.984 -----------------------------------------------
+eclipse.buildId=I20090611-1540
+java.version=1.6.0_15
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.php.debug.core 4 4 2009-08-29 22:35:59.968
+!MESSAGE The debug port 10000 is in use. Please select a different port for the debugger.
+
+!ENTRY org.eclipse.php.debug.core 4 4 2009-08-29 22:35:59.984
+!MESSAGE The debug port 9000 is in use. Please select a different port for the debugger.
+!SESSION 2009-09-16 00:07:16.281 -----------------------------------------------
+eclipse.buildId=I20090611-1540
+java.version=1.6.0_15
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.epp.usagedata.recording 1 0 2009-09-16 00:07:48.312
+!MESSAGE Usage data uploaded to http://udc.eclipse.org/upload.php in 9000 milliseconds.
+!SESSION 2010-02-08 15:31:59.490 -----------------------------------------------
+eclipse.buildId=M20090917-0800
+java.version=1.6.0_18
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -data D:\work_sw_dev\java\swl\build -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.equinox.app 0 0 2010-02-08 15:32:00.961
+!MESSAGE Product org.eclipse.platform.sdk could not be found.
+!SESSION 2010-02-08 20:23:29.544 -----------------------------------------------
+eclipse.buildId=M20090917-0800
+java.version=1.6.0_18
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -data D:\work_sw_dev\java\swl\build -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.equinox.app 0 0 2010-02-08 20:23:31.036
+!MESSAGE Product org.eclipse.platform.sdk could not be found.
+!SESSION 2010-05-15 17:46:26.291 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_19
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -data D:\work_center\sw_dev\java\swl\build -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.core.resources 4 567 2010-05-15 17:46:28.371
+!MESSAGE Workspace restored, but some problems occurred.
+!SUBENTRY 1 org.eclipse.core.resources 4 567 2010-05-15 17:46:28.371
+!MESSAGE Could not read metadata for 'swl'.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: The project description file (.project) for 'swl' is missing.  This file contains important information about the project.  The project will not function properly until this file is restored.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:714)
+	at org.eclipse.core.internal.resources.SaveManager.restoreMetaInfo(SaveManager.java:797)
+	at org.eclipse.core.internal.resources.SaveManager.restoreMetaInfo(SaveManager.java:777)
+	at org.eclipse.core.internal.resources.SaveManager.restore(SaveManager.java:663)
+	at org.eclipse.core.internal.resources.SaveManager.startup(SaveManager.java:1353)
+	at org.eclipse.core.internal.resources.Workspace.startup(Workspace.java:1957)
+	at org.eclipse.core.internal.resources.Workspace.open(Workspace.java:1716)
+	at org.eclipse.core.resources.ResourcesPlugin.start(ResourcesPlugin.java:379)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:783)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:774)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:755)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:352)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.start(AbstractBundle.java:280)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:408)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:111)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClass(ClasspathManager.java:449)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.findLocalClass(DefaultClassLoader.java:211)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:381)
+	at org.eclipse.osgi.internal.loader.SingleSourcePackage.loadClass(SingleSourcePackage.java:33)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:454)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:410)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:398)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:105)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:114)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:194)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:368)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:559)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:514)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1311)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1287)
+!SUBENTRY 2 org.eclipse.core.resources 4 567 2010-05-15 17:46:28.372
+!MESSAGE The project description file (.project) for 'swl' is missing.  This file contains important information about the project.  The project will not function properly until this file is restored.
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2010-05-15 17:46:30.522
+!MESSAGE Registering: com.google.appengine.eclipse.sdkbundle.1.3.0_1.3.0.v200912141120
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2010-05-15 17:46:30.639
+!MESSAGE Registering: com.google.gwt.eclipse.sdkbundle.2.0.1_2.0.1.v201002021445
+
+!ENTRY org.eclipse.jface 2 0 2010-05-15 17:46:33.458
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2010-05-15 17:46:33.458
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SESSION 2010-05-16 20:36:59.358 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_19
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2010-05-16 20:37:42.953
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2010-05-16 20:37:42.953
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SESSION 2010-05-16 20:59:35.610 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_19
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2010-05-16 21:04:08.935
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2010-05-16 21:04:08.935
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:05:10.387
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.team.svn.core.svnnature 2 0 2010-05-16 21:05:10.387
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:05:10.387
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:05:10.387
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:05:10.387
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:05:10.387
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:05:10.387
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:05:10.388
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:05:10.475
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.team.svn.core.svnnature 2 0 2010-05-16 21:05:10.475
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:05:10.475
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:05:10.475
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:05:10.475
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:05:10.475
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:05:10.475
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:05:10.475
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:08:52.891
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.team.svn.core.svnnature 2 0 2010-05-16 21:08:52.891
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:08:52.891
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:08:52.891
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:08:52.891
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:08:52.891
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:08:52.891
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:08:52.891
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:09:13.090
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.team.svn.core.svnnature 2 0 2010-05-16 21:09:13.090
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:09:13.090
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:09:13.091
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:09:13.091
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:09:13.091
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:09:13.091
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:09:13.091
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:09:43.509
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:09:43.509
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:09:43.509
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:09:43.510
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:09:43.510
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:09:43.510
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:09:43.510
+!MESSAGE Software being installed: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:09:43.510
+!MESSAGE Missing requirement: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl16.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:09:43.515
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:09:43.515
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:09:43.515
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:09:43.515
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:09:43.516
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:09:43.516
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:09:43.516
+!MESSAGE Software being installed: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:09:43.516
+!MESSAGE Missing requirement: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl16.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:10:21.891
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:10:21.891
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:21.891
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:21.891
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:21.891
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:10:21.891
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:10:21.891
+!MESSAGE Software being installed: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:10:21.891
+!MESSAGE Missing requirement: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl16.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:10:21.896
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:10:21.896
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:21.896
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:21.896
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:21.896
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:10:21.896
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:10:21.896
+!MESSAGE Software being installed: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:10:21.896
+!MESSAGE Missing requirement: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl16.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:10:26.764
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:10:26.764
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:26.764
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:26.764
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:26.764
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:10:26.764
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:10:26.764
+!MESSAGE Software being installed: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:10:26.764
+!MESSAGE Missing requirement: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl16.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:10:26.768
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:10:26.768
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:26.768
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:26.768
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:26.768
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:10:26.768
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:10:26.768
+!MESSAGE Software being installed: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:10:26.768
+!MESSAGE Missing requirement: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl16.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:10:39.194
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 4 10050 2010-05-16 21:10:39.194
+!MESSAGE Cannot complete the request.  See the error log for details.
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:39.194
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:10:39.201
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 4 10050 2010-05-16 21:10:39.201
+!MESSAGE Cannot complete the request.  See the error log for details.
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:10:39.201
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:11:06.145
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:11:06.145
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:11:06.145
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:11:06.145
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:11:06.145
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:06.145
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:06.145
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:11:06.150
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:11:06.150
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:11:06.150
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:11:06.150
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:11:06.150
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:06.150
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:06.150
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:11:25.453
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:11:25.453
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:11:25.453
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:11:25.453
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:11:25.453
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:25.453
+!MESSAGE Software being installed: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:25.453
+!MESSAGE Missing requirement: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl16.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:11:25.459
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:11:25.459
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:11:25.459
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:11:25.459
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:11:25.459
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:25.459
+!MESSAGE Software being installed: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:25.459
+!MESSAGE Missing requirement: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl16.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:11:41.160
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:11:41.160
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:41.160
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:41.160
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:11:41.165
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:11:41.165
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:41.165
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:41.165
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:11:53.884
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:11:53.884
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:53.884
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:53.884
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:11:53.888
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:11:53.888
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:53.888
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:53.888
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:11:56.837
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:11:56.837
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:11:56.837
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:11:56.837
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:56.837
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:56.837
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-05-16 21:11:56.844
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:11:56.844
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:11:56.844
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-05-16 21:11:56.844
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:56.844
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-05-16 21:11:56.844
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 2 0 2010-05-16 21:12:11.820
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:12:11.820
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:12:11.820
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+
+!ENTRY org.eclipse.equinox.p2.ui 2 0 2010-05-16 21:12:11.845
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:12:11.845
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:12:11.845
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+
+!ENTRY org.eclipse.equinox.p2.ui 2 0 2010-05-16 21:12:11.888
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:12:11.888
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-05-16 21:12:11.888
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SESSION 2010-05-16 21:13:03.902 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_19
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2010-05-16 21:26:53.027
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2010-05-16 21:26:53.027
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.equinox.p2.ui 2 0 2010-05-16 21:28:53.602
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:28:53.602
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10005 2010-05-16 21:28:53.602
+!MESSAGE "Google Plugin for Eclipse 3.5" will be ignored because it is already installed.
+
+!ENTRY org.eclipse.equinox.p2.ui 2 0 2010-05-16 21:28:53.603
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:28:53.603
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10005 2010-05-16 21:28:53.603
+!MESSAGE "Google Plugin for Eclipse 3.5" will be ignored because it is already installed.
+
+!ENTRY org.eclipse.equinox.p2.ui 2 0 2010-05-16 21:28:53.663
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-05-16 21:28:53.663
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10005 2010-05-16 21:28:53.663
+!MESSAGE "Google Plugin for Eclipse 3.5" will be ignored because it is already installed.
+!SESSION 2010-05-16 21:33:32.038 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_19
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2010-05-16 21:37:23.489
+!MESSAGE Registering: com.google.appengine.eclipse.sdkbundle.1.3.3_1.3.3.v201004231111
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2010-05-16 21:37:23.715
+!MESSAGE Registering: com.google.gwt.eclipse.sdkbundle.2.0.3_2.0.3.v201002191036
+
+!ENTRY org.eclipse.jface 2 0 2010-05-16 21:37:26.315
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2010-05-16 21:37:26.315
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SESSION 2011-05-11 13:49:40.378 -----------------------------------------------
+eclipse.buildId=M20110210-1200
+java.version=1.6.0_25
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -data D:\work_center\sw_dev\java\swl\build -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.jface 2 0 2011-05-11 13:49:51.204
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2011-05-11 13:49:51.204
+!MESSAGE A conflict occurred for ALT+CTRL+R:
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.CompareWithRevisionCommand,URL...,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.python.pydev.debug.setnext,Set Next Statement,
+		,
+		Category(org.python.pydev.ui.category.run,Pydev - Run,Python run category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2011-05-11 13:49:51.204
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.epp.usagedata.recording 1 0 2011-05-11 13:50:08.259
+!MESSAGE Usage data uploaded to http://udc.eclipse.org/upload.php in 2614 milliseconds.
+!SESSION 2011-05-11 13:52:40.813 -----------------------------------------------
+eclipse.buildId=M20110210-1200
+java.version=1.6.0_25
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -data D:\work_center\sw_dev\java\swl\build -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.jface 2 0 2011-05-11 13:52:45.746
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2011-05-11 13:52:45.746
+!MESSAGE A conflict occurred for ALT+CTRL+R:
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.CompareWithRevisionCommand,URL...,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.python.pydev.debug.setnext,Set Next Statement,
+		,
+		Category(org.python.pydev.ui.category.run,Pydev - Run,Python run category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2011-05-11 13:52:45.746
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SESSION 2011-05-11 17:40:01.592 -----------------------------------------------
+eclipse.buildId=M20110210-1200
+java.version=1.6.0_25
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -data D:\work_center\sw_dev\java\swl\build -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.jface 2 0 2011-05-11 17:40:07.505
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2011-05-11 17:40:07.505
+!MESSAGE A conflict occurred for ALT+CTRL+R:
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.CompareWithRevisionCommand,URL...,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.python.pydev.debug.setnext,Set Next Statement,
+		,
+		Category(org.python.pydev.ui.category.run,Pydev - Run,Python run category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2011-05-11 17:40:07.505
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)

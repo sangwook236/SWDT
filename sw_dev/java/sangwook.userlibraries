@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<eclipse-userlibraries version="2">
+    <library name="Ant" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/ant.jar"/>
+    </library>
+    <library name="Apache-Tomcat" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/annotations-api.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/catalina.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/catalina-ant.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/catalina-ha.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/catalina-tribes.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/ecj-3.6.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/el-api.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/jasper.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/jasper-el.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/jsp-api.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/servlet-api.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/tomcat-api.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/tomcat-coyote.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/tomcat-dbcp.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/tomcat-i18n-es.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/tomcat-i18n-fr.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/tomcat-i18n-ja.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/tomcat-util.jar"/>
+    </library>
+    <library name="Commons-Collections" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-collections-3.2.1.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-collections-3.2.1-javadoc.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-collections-3.2.1-sources.jar"/>
+    </library>
+    <library name="Commons-Configuration" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-configuration-1.6.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-configuration-1.6-javadoc.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-configuration-1.6-sources.jar"/>
+    </library>
+    <library name="Commons-Daemon" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-daemon-1.0.3.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-daemon-1.0.3-javadoc.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-daemon-1.0.3-sources.jar"/>
+    </library>
+    <library name="Commons-DbUtils" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-dbutils-1.2.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-dbutils-1.2-javadoc.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-dbutils-1.2-sources.jar"/>
+    </library>
+    <library name="Commons-Lang" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-lang-2.4.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-lang-2.4-javadoc.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-lang-2.4-sources.jar"/>
+    </library>
+    <library name="Commons-Logging" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-logging-1.1.1.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-logging-1.1.1-javadoc.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-logging-1.1.1-sources.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-logging-adapters-1.1.1.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-logging-api-1.1.1.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-logging-tests.jar"/>
+    </library>
+    <library name="Commons-Math" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-math-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-math-2.0-javadoc.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/commons-math-2.0-sources.jar"/>
+    </library>
+    <library name="gdata" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-analytics-2.1.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-analytics-meta-2.1.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-appsforyourdomain-1.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-appsforyourdomain-meta-1.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-base-1.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-blogger-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-blogger-meta-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-books-1.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-books-meta-1.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-calendar-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-calendar-meta-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-client-1.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-client-meta-1.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-codesearch-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-codesearch-meta-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-contacts-3.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-contacts-meta-3.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-core-1.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-docs-3.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-docs-meta-3.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-finance-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-finance-meta-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-gtt-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-gtt-meta-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-health-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-health-meta-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-maps-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-maps-meta-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-media-1.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-photos-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-photos-meta-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-projecthosting-2.1.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-projecthosting-meta-2.1.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-sidewiki-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-sidewiki-meta-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-sites-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-sites-meta-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-spreadsheet-3.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-spreadsheet-meta-3.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-webmastertools-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-webmastertools-meta-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-youtube-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/gdata-youtube-meta-2.0.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/google-collect-1.0-rc1.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/jsr305.jar"/>
+    </library>
+    <library name="Jakarta-JMeter" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/ApacheJMeter.jar"/>
+    </library>
+    <library name="Jakarta-Oro" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/jakarta-oro-2.0.8.jar"/>
+    </library>
+    <library name="Jakarta-Regexp" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/jakarta-regexp-1.5.jar"/>
+    </library>
+    <library name="JavaBeans-Activation-Framework" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/activation.jar"/>
+    </library>
+    <library name="JavaMail" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/mail.jar"/>
+    </library>
+    <library name="JUnit" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/junit-4.7.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/junit-4.7-src.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/junit-dep-4.7.jar"/>
+    </library>
+    <library name="Log4j" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/log4j-1.2.15.jar"/>
+    </library>
+    <library name="XC" systemlibrary="false">
+        <archive path="D:/work_center/sw_dev/java/ext/lib/xc-2.2.jar"/>
+        <archive path="D:/work_center/sw_dev/java/ext/lib/xc-2.2.src.jar"/>
+    </library>
+</eclipse-userlibraries>

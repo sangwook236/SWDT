@@ -1,0 +1,6 @@
+#Sun Aug 23 01:37:06 KST 2009
+__DEFAULT__=false
+org.eclipse.sdk.Eclipse.master=true
+org.eclipse.sdk.Google.master=true
+org.eclipse.help.ui.localSearch.master=true
+expression=project-relative path

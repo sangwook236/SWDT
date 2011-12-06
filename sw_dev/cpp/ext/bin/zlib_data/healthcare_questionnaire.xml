@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="euc-kr" standalone="yes"?>
+<!DOCTYPE QUESTIONNAIRE [
+<!ELEMENT QUESTIONNAIRE (QUESTION_GROUP+)>
+<!ATTLIST QUESTIONNAIRE
+	VERSION CDATA #REQUIRED>
+<!ELEMENT QUESTION_GROUP (QUESTION*)>
+<!ATTLIST QUESTION_GROUP
+	NAME CDATA #REQUIRED
+	MEASUREMENT_WEIGHT CDATA "0.5"
+	QUESTIONNAIRE_WEIGHT CDATA "0.5">
+<!ELEMENT QUESTION (SENTENCE+,CHOICE_SET+)>
+<!ATTLIST QUESTION
+	WEIGHT CDATA #REQUIRED
+	REPEATABLE (TRUE | FALSE) "TRUE">
+<!ELEMENT SENTENCE (#PCDATA)>
+<!ATTLIST SENTENCE
+	CHOICE_SET_ID CDATA "0">
+<!ELEMENT CHOICE_SET (CHOICE+)>
+<!ATTLIST CHOICE_SET
+	ID CDATA #REQUIRED>
+<!ELEMENT CHOICE (#PCDATA)>
+<!ATTLIST CHOICE
+	FACTOR CDATA #REQUIRED>
+]>
+
+<!-- Healthcare Project Questionnaire V3 -->
+
+<QUESTIONNAIRE VERSION="3.0">
+	<QUESTION_GROUP NAME="순환지수" MEASUREMENT_WEIGHT="0.6" QUESTIONNAIRE_WEIGHT="0.4">
+		<QUESTION WEIGHT="0.25" REPEATABLE="TRUE">
+			<SENTENCE>가슴이 두근거리거나 울렁거리는 느낌을 받습니까?</SENTENCE>
+			<SENTENCE>맥박이 고르지 않게 뛰나요?</SENTENCE>
+			<SENTENCE>가슴이 두근거리나요?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">이유없이 자주</CHOICE>
+				<CHOICE FACTOR="0.5">가끔</CHOICE>
+				<CHOICE FACTOR="1.0">전혀 없다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.15" REPEATABLE="TRUE">
+			<SENTENCE>가슴이 답답한 느낌이 듭니까?</SENTENCE>
+			<SENTENCE>가슴이 막힌 느낌이 듭니까?</SENTENCE>
+			<SENTENCE>가슴에 갑자기 통증을 느끼는 경우가 있습니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">이유없이 자주</CHOICE>
+				<CHOICE FACTOR="0.5">가끔</CHOICE>
+				<CHOICE FACTOR="1.0">전혀 없다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.10" REPEATABLE="TRUE">
+			<SENTENCE>조금만 움직여도 숨이 찹니까?</SENTENCE>
+			<SENTENCE>계단을 한 층만 올라가도 숨이 찹니까?</SENTENCE>
+			<SENTENCE>지하철역을 오르내리는 것이 힘에 부칩니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">많이</CHOICE>
+				<CHOICE FACTOR="0.5">보통</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.10" REPEATABLE="TRUE">
+			<SENTENCE>잠을 자다가 숨이 차서 깨어나는 경우가 있습니까?</SENTENCE>
+			<SENTENCE>수면 중 호흡곤란으로 눈이 떠지는 경우가 있습니까?</SENTENCE>
+			<SENTENCE>자다가 가슴 통증으로 깨어나는 경우가 있습니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">자주</CHOICE>
+				<CHOICE FACTOR="0.5">가끔</CHOICE>
+				<CHOICE FACTOR="1.0">전혀 없다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.10" REPEATABLE="TRUE">
+			<SENTENCE>평소 이유없이 뒷목과 어깨가 뻐근하면서 어지럽습니까?</SENTENCE>
+			<SENTENCE>평소 어지러우면서 어깨가 뻐근하십니까?</SENTENCE>
+			<SENTENCE>평소에 어지럼증과 뒷골 당김을 함께 느끼십니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">자주</CHOICE>
+				<CHOICE FACTOR="0.5">가끔</CHOICE>
+				<CHOICE FACTOR="1.0">전혀 없다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.10" REPEATABLE="TRUE">
+			<SENTENCE>팔다리가 저립니까?</SENTENCE>
+			<SENTENCE>팔다리에 피가 통하지 않는 느낌이 듭니까?</SENTENCE>
+			<SENTENCE>팔다리에 감각이 둔하고 힘이 없습니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">심하다</CHOICE>
+				<CHOICE FACTOR="0.5">어느정도</CHOICE>
+				<CHOICE FACTOR="1.0">전혀 없다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.10" REPEATABLE="FALSE">
+			<SENTENCE>가족 중에 심혈관 질환자가 있습니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">예</CHOICE>
+				<CHOICE FACTOR="1.0">아니오</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.10" REPEATABLE="FALSE">
+			<SENTENCE>최근 갈증을 심하게 느끼고 물을 자주 찾습니까?</SENTENCE>
+			<SENTENCE>이유 없이 체중이 감소하였습니까?</SENTENCE>
+			<SENTENCE>소변 색이 짙고 단 냄새가 납니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">심하다</CHOICE>
+				<CHOICE FACTOR="0.5">어느정도 있다</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+	</QUESTION_GROUP>
+
+	<QUESTION_GROUP NAME="스트레스지수" MEASUREMENT_WEIGHT="0.6" QUESTIONNAIRE_WEIGHT="0.4">
+		<QUESTION WEIGHT="0.20" REPEATABLE="TRUE">
+			<SENTENCE>얼굴이 달아오르면서 상기가 됩니까?</SENTENCE>
+			<SENTENCE>상기되어 얼굴에 열이 오릅니까?</SENTENCE>
+			<SENTENCE>상기되어 얼굴이 화끈거립니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">심하다</CHOICE>
+				<CHOICE FACTOR="0.5">어느정도 있다</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.20" REPEATABLE="TRUE">
+			<SENTENCE>나도 모르게 한숨이 나오는 편입니까?</SENTENCE>
+			<SENTENCE>한숨이 저절로 나옵니까?</SENTENCE>
+			<SENTENCE>시도 때도 없이 한숨을 쉬는 편입니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">심하다</CHOICE>
+				<CHOICE FACTOR="0.5">어느정도 있다</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.10" REPEATABLE="TRUE">
+			<SENTENCE>평소 뒷골이 당깁니까?</SENTENCE>
+			<SENTENCE>뒷골이 뻑적지근한 느낌을 받습니까?</SENTENCE>
+			<SENTENCE>뒷골이 묵직합니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">심하다</CHOICE>
+				<CHOICE FACTOR="0.5">어느정도 있다</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.10" REPEATABLE="TRUE">
+			<SENTENCE>속이 더부룩한 느낌이 듭니까?</SENTENCE>
+			<SENTENCE>소화가 잘 안되십니까?</SENTENCE>
+			<SENTENCE>속이 체한 느낌입니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">심하다</CHOICE>
+				<CHOICE FACTOR="0.5">어느정도 있다</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.10" REPEATABLE="TRUE">
+			<SENTENCE>두통이 있습니까?</SENTENCE>
+			<SENTENCE>머리가 욱신욱신합니까?</SENTENCE>
+			<SENTENCE>머리가 지끈지끈합니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">심하다</CHOICE>
+				<CHOICE FACTOR="0.5">어느정도 있다</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.10" REPEATABLE="TRUE">
+			<SENTENCE>깊은 잠에 들지 못하는 편입니까?</SENTENCE>
+			<SENTENCE>자다가 여러 번 깨는 편입니까?</SENTENCE>
+			<SENTENCE>선잠을 자는 편입니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">심하다</CHOICE>
+				<CHOICE FACTOR="0.5">어느정도 있다</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.10" REPEATABLE="TRUE">
+			<SENTENCE>감정의 기복이 커서 쉽게 짜증을 내는 편입니까?</SENTENCE>
+			<SENTENCE>마음이 불안하고 초조하십니까?</SENTENCE>
+			<SENTENCE>감정 조절이 어려워서 불안하십니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">심하다</CHOICE>
+				<CHOICE FACTOR="0.5">어느정도 있다</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.10" REPEATABLE="TRUE">
+			<SENTENCE>안 좋은 일로 마음이 불편하십니까?</SENTENCE>
+			<SENTENCE>걱정거리가 생겨 심적 부담을 느끼십니까?</SENTENCE>
+			<SENTENCE>기분 나쁜 일로 스트레스를 받았습니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">심하다</CHOICE>
+				<CHOICE FACTOR="0.5">어느정도 있다</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+	</QUESTION_GROUP>
+
+	<QUESTION_GROUP NAME="관리지수" MEASUREMENT_WEIGHT="0.2" QUESTIONNAIRE_WEIGHT="0.8">
+		<QUESTION WEIGHT="0.25" REPEATABLE="TRUE">
+			<SENTENCE>몇 회 정도 규칙적으로 운동을 합니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">월 1회 이하</CHOICE>
+				<CHOICE FACTOR="0.5">주 1-2회</CHOICE>
+				<CHOICE FACTOR="1.0">주 3회 이상</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.25" REPEATABLE="TRUE">
+			<SENTENCE>하루에 어느 정도의 담배를 피우십니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">한갑 이상</CHOICE>
+				<CHOICE FACTOR="0.5">반갑 정도</CHOICE>
+				<CHOICE FACTOR="1.0">안 피운다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.05" REPEATABLE="TRUE">
+			<SENTENCE>어느 정도의 술을 마시는 편입니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">주 3회 이상</CHOICE>
+				<CHOICE FACTOR="0.5">주 1-2회</CHOICE>
+				<CHOICE FACTOR="1.0">월 1-2회 이하</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.05" REPEATABLE="TRUE">
+			<SENTENCE>하루에 어느 정도의 커피를 마시는 편입니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">다섯 잔 이상</CHOICE>
+				<CHOICE FACTOR="0.5">2~4잔 정도</CHOICE>
+				<CHOICE FACTOR="1.0">한 잔 이하</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.05" REPEATABLE="TRUE">
+			<SENTENCE>밤 9시 이후에 야식이나 간식을 어느 정도 먹는 편입니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">거의 매일</CHOICE>
+				<CHOICE FACTOR="0.5">주 3~4회 정도</CHOICE>
+				<CHOICE FACTOR="1.0">주 2회 이하</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.05" REPEATABLE="TRUE">
+			<SENTENCE>식사를 규칙적으로 하는 편입니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">불규칙적이다</CHOICE>
+				<CHOICE FACTOR="0.5">어느 정도 규칙적이다</CHOICE>
+				<CHOICE FACTOR="1.0">규칙적이다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.05" REPEATABLE="TRUE">
+			<SENTENCE>과음 과식을 하는 편입니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">자주</CHOICE>
+				<CHOICE FACTOR="0.5">어느 정도</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.05" REPEATABLE="TRUE">
+			<SENTENCE>인스턴트 식품을 즐겨 먹는 편입니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">그렇다</CHOICE>
+				<CHOICE FACTOR="0.5">어느 정도</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.05" REPEATABLE="TRUE">
+			<SENTENCE>음식을 짜고 맵게 먹는 편입니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">그렇다</CHOICE>
+				<CHOICE FACTOR="0.5">어느 정도</CHOICE>
+				<CHOICE FACTOR="1.0">아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.05" REPEATABLE="TRUE">
+			<SENTENCE>식사 후 눕는 습관이 있습니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">자주</CHOICE>
+				<CHOICE FACTOR="0.5">어느 정도</CHOICE>
+				<CHOICE FACTOR="1.0">없다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.05" REPEATABLE="TRUE">
+			<SENTENCE CHOICE_SET_ID="0">건강한 성생활을 유지하고 있습니까?</SENTENCE>
+			<SENTENCE CHOICE_SET_ID="1">성생활은 문제가 없나요?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">건강하지 않다</CHOICE>
+				<CHOICE FACTOR="0.5">보통이다</CHOICE>
+				<CHOICE FACTOR="1.0">건강한 편이다</CHOICE>
+			</CHOICE_SET>
+			<CHOICE_SET ID="1">
+				<CHOICE FACTOR="0.0">문제가 심하다</CHOICE>
+				<CHOICE FACTOR="0.5">어느 정도</CHOICE>
+				<CHOICE FACTOR="1.0">문제가 전혀 없다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+		<QUESTION WEIGHT="0.05" REPEATABLE="TRUE">
+			<SENTENCE>감정적으로 행동하지 않습니까?</SENTENCE>
+
+			<CHOICE_SET ID="0">
+				<CHOICE FACTOR="0.0">심히 감정적이다</CHOICE>
+				<CHOICE FACTOR="0.5">어느 정도</CHOICE>
+				<CHOICE FACTOR="1.0">감정적이 아니다</CHOICE>
+			</CHOICE_SET>
+		</QUESTION>
+	</QUESTION_GROUP>
+
+  <QUESTION_GROUP NAME="비만지수" MEASUREMENT_WEIGHT="1.0" QUESTIONNAIRE_WEIGHT="0.0">
+  </QUESTION_GROUP>
+</QUESTIONNAIRE>

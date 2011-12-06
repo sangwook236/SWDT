@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestClassLibrary</name>
+    </assembly>
+    <members>
+        <member name="T:TestClassLibrary.Hello">
+            <summary>
+            Hello class
+            </summary>
+        </member>
+        <member name="T:TestClassLibrary.World">
+            <summary>
+            World class.
+            </summary>
+        </member>
+        <member name="T:TestClassLibrary.Adder">
+            <summary>
+            Adder class
+            </summary>
+        </member>
+        <member name="M:TestClassLibrary.Adder.add(System.Int32,System.Int32)">
+            <summary>
+            add() static function
+            </summary>
+            <param name="lhs">left-hand operand</param>
+            <param name="rhs">right-hand operand</param>
+            <returns>result of lhs + rhs</returns>
+        </member>
+    </members>
+</doc>

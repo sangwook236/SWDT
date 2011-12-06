@@ -1,0 +1,571 @@
+!SESSION 2010-06-03 00:41:11.444 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_19
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2010-06-03 00:41:18.292
+!MESSAGE Registering: com.google.appengine.eclipse.sdkbundle.1.3.0_1.3.0.v200912141120
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2010-06-03 00:41:18.632
+!MESSAGE Registering: com.google.gwt.eclipse.sdkbundle.2.0.1_2.0.1.v201002021445
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2010-06-03 00:41:18.878
+!MESSAGE Registering: com.google.appengine.eclipse.sdkbundle.1.3.3_1.3.3.v201004231111
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2010-06-03 00:41:19.093
+!MESSAGE Registering: com.google.gwt.eclipse.sdkbundle.2.0.3_2.0.3.v201002191036
+
+!ENTRY org.eclipse.jface 2 0 2010-06-03 00:41:25.287
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2010-06-03 00:41:25.287
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SESSION 2010-06-03 00:44:38.042 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_19
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2010-06-03 00:44:47.189
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2010-06-03 00:44:47.189
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SESSION 2010-06-03 00:47:19.311 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_19
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2010-06-03 00:47:40.175
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2010-06-03 00:47:40.175
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-06-03 00:48:37.517
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.team.svn.core.svnnature 2 0 2010-06-03 00:48:37.517
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:48:37.517
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:48:37.517
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:48:37.517
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:48:37.517
+!MESSAGE "Native JavaHL 1.4 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-06-03 00:48:37.517
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-06-03 00:48:37.517
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-06-03 00:48:37.517
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-06-03 00:48:37.608
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.team.svn.core.svnnature 2 0 2010-06-03 00:48:37.609
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:48:37.609
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:48:37.609
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:48:37.609
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:48:37.609
+!MESSAGE "Native JavaHL 1.4 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-06-03 00:48:37.609
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-06-03 00:48:37.609
+!MESSAGE Software being installed: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-06-03 00:48:37.609
+!MESSAGE Missing requirement: JavaHL 1.4.5 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 2 0 2010-06-03 00:49:30.025
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-06-03 00:49:30.025
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:30.025
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:30.025
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:30.025
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+
+!ENTRY org.eclipse.equinox.p2.ui 2 0 2010-06-03 00:49:30.057
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-06-03 00:49:30.057
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:30.057
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:30.057
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:30.057
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+
+!ENTRY org.eclipse.equinox.p2.ui 2 0 2010-06-03 00:49:30.099
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-06-03 00:49:30.099
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:30.099
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:30.099
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:30.099
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-06-03 00:49:51.223
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-06-03 00:49:51.223
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:51.223
+!MESSAGE "Native JavaHL 1.4 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:51.223
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:51.223
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:51.223
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-06-03 00:49:51.223
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-06-03 00:49:51.223
+!MESSAGE Software being installed: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-06-03 00:49:51.223
+!MESSAGE Missing requirement: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl16.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2010-06-03 00:49:51.231
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-06-03 00:49:51.231
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:51.231
+!MESSAGE "Native JavaHL 1.4 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:51.231
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:51.231
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:51.231
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 1 2010-06-03 00:49:51.231
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-06-03 00:49:51.231
+!MESSAGE Software being installed: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2010-06-03 00:49:51.231
+!MESSAGE Missing requirement: JavaHL 1.6.0 Win32 Binaries (Optional) 2.2.1.I20091009-1900 (org.polarion.eclipse.team.svn.connector.javahl16.win32.feature.group 2.2.1.I20091009-1900) requires 'org.polarion.eclipse.team.svn.connector.javahl16.win32 [2.2.1.I20091009-1900]' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.ui 2 0 2010-06-03 00:49:55.334
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-06-03 00:49:55.334
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:55.334
+!MESSAGE "Native JavaHL 1.4 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:55.334
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:55.334
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:55.334
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+
+!ENTRY org.eclipse.equinox.p2.ui 2 0 2010-06-03 00:49:55.344
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-06-03 00:49:55.344
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:55.344
+!MESSAGE "Native JavaHL 1.4 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:55.344
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:55.344
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:55.344
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+
+!ENTRY org.eclipse.equinox.p2.ui 2 0 2010-06-03 00:49:55.348
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.ui 2 10001 2010-06-03 00:49:55.348
+!MESSAGE Your original request has been modified.
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:55.348
+!MESSAGE "Native JavaHL 1.4 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:55.348
+!MESSAGE "Native JavaHL 1.6 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:55.348
+!MESSAGE "Subversive SVN Connectors" will be ignored because a newer version is already installed. 
+!SUBENTRY 2 org.eclipse.equinox.p2.ui 2 10004 2010-06-03 00:49:55.348
+!MESSAGE "SVNKit 1.3.0 Implementation (Optional)" will be ignored because a newer version is already installed. 
+!SESSION 2010-06-03 00:52:03.149 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_19
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2010-06-03 00:52:18.909
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2010-06-03 00:52:18.909
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.cdt.core 1 0 2010-06-03 00:54:11.864
+!MESSAGE Indexed 'rl_glue' (1 sources, 13 headers) in 0.28 sec: 1 declarations; 0 references; 14 unresolved inclusions; 0 syntax errors; 7 unresolved names (87.50%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2010-06-03 00:58:47.318
+!MESSAGE Indexed 'rl_glue' (1 sources, 45 headers) in 0.70 sec: 499 declarations; 501 references; 12 unresolved inclusions; 2 syntax errors; 13 unresolved names (1.28%)
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.509
+!MESSAGE NLS unused message: missingOneOfTwoAttributes in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.509
+!MESSAGE NLS unused message: categoryNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.509
+!MESSAGE NLS unused message: actionNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.510
+!MESSAGE NLS unused message: actionAlreadyDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.510
+!MESSAGE NLS unused message: presetNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.510
+!MESSAGE NLS unused message: templateNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.511
+!MESSAGE NLS unused message: invalidActionType in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.511
+!MESSAGE NLS unused message: invalidEventHandlerType in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.511
+!MESSAGE NLS unused message: invalidRequiresConstraint in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.511
+!MESSAGE NLS unused message: invalidConflictsConstraint in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.512
+!MESSAGE NLS unused message: deprecatedRuntimeChangedAction in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.512
+!MESSAGE NLS unused message: tracingActionSorting in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.512
+!MESSAGE NLS unused message: tracingFrameworkActivationStarting in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.512
+!MESSAGE NLS unused message: tracingFrameworkActivationFinished in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.513
+!MESSAGE NLS missing message: problemCaseNotRecognized in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2010-06-03 01:00:13.513
+!MESSAGE NLS missing message: runtimeComponentTypeNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.wst.common.project.facet.core 4 0 2010-06-03 01:00:13.514
+!MESSAGE Project facet jst.web has not been defined. It is used in plugin org.eclipse.wst.jsdt.web.core.
+
+!ENTRY org.eclipse.cdt.launch 4 104 2010-06-03 01:01:29.362
+!MESSAGE Program file does not exist
+!STACK 0
+java.io.FileNotFoundException: E:\work_center\sw_dev\cpp\rnd\test\rl_glue\rl_glue.exe not found
+	at org.eclipse.cdt.launch.AbstractCLaunchDelegate.verifyProgramPath(AbstractCLaunchDelegate.java:455)
+	at org.eclipse.cdt.launch.internal.LocalCDILaunchDelegate.runLocalApplication(LocalCDILaunchDelegate.java:83)
+	at org.eclipse.cdt.launch.internal.LocalCDILaunchDelegate.launch(LocalCDILaunchDelegate.java:69)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:853)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:703)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:866)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$8.run(DebugUIPlugin.java:1069)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 org.eclipse.cdt.launch 4 104 2010-06-03 01:01:29.363
+!MESSAGE E:\work_center\sw_dev\cpp\rnd\test\rl_glue\rl_glue.exe not found
+!STACK 0
+java.io.FileNotFoundException: E:\work_center\sw_dev\cpp\rnd\test\rl_glue\rl_glue.exe not found
+	at org.eclipse.cdt.launch.AbstractCLaunchDelegate.verifyProgramPath(AbstractCLaunchDelegate.java:455)
+	at org.eclipse.cdt.launch.internal.LocalCDILaunchDelegate.runLocalApplication(LocalCDILaunchDelegate.java:83)
+	at org.eclipse.cdt.launch.internal.LocalCDILaunchDelegate.launch(LocalCDILaunchDelegate.java:69)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:853)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:703)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:866)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$8.run(DebugUIPlugin.java:1069)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SESSION 2010-07-08 16:20:46.187 -----------------------------------------------
+eclipse.buildId=I20100608-0911
+java.version=1.6.0_19
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2010-07-08 16:22:30.441
+!MESSAGE Registering: com.google.appengine.eclipse.sdkbundle.1.3.5_1.3.5.v201006301309
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2010-07-08 16:22:30.670
+!MESSAGE Registering: com.google.gwt.eclipse.sdkbundle.2.0.4_2.0.4.v201006301309
+
+!ENTRY com.google.gwt.eclipse.core 4 0 2010-07-08 16:22:30.759
+!MESSAGE Unexpected Exception
+!STACK 0
+java.lang.ClassNotFoundException: com.google.gwt.dev.About
+	at java.net.URLClassLoader$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at com.google.gwt.eclipse.core.runtime.GWTRuntime.getVersion(GWTRuntime.java:460)
+	at com.google.gdt.eclipse.core.sdk.AbstractSdk.toXml(AbstractSdk.java:95)
+	at com.google.gdt.eclipse.core.sdk.SdkSet.toXml(SdkSet.java:112)
+	at com.google.gdt.eclipse.core.sdk.SdkSetSerializer.serialize(SdkSetSerializer.java:77)
+	at com.google.gdt.eclipse.core.sdk.SdkManager.setSdks(SdkManager.java:171)
+	at com.google.gwt.eclipse.core.sdk.GWTSdkRegistrant.registerSdk(GWTSdkRegistrant.java:88)
+	at com.google.gwt.eclipse.sdkbundle.SdkBundleRegistrant.register(SdkBundleRegistrant.java:55)
+	at com.google.gdt.eclipse.suite.preferences.GdtPreferences.registerSdks(GdtPreferences.java:195)
+	at com.google.gdt.eclipse.suite.GdtPlugin.start(GdtPlugin.java:364)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:783)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:774)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:755)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:370)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.start(AbstractBundle.java:284)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:417)
+	at org.eclipse.osgi.internal.loader.BundleLoader.setLazyTrigger(BundleLoader.java:265)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:106)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClass(ClasspathManager.java:453)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.findLocalClass(DefaultClassLoader.java:216)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:393)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:469)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:422)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:410)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:107)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at org.eclipse.osgi.internal.loader.BundleLoader.loadClass(BundleLoader.java:338)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.loadClass(BundleHost.java:232)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.loadClass(AbstractBundle.java:1197)
+	at org.eclipse.core.internal.registry.osgi.RegistryStrategyOSGI.createExecutableExtension(RegistryStrategyOSGI.java:174)
+	at org.eclipse.core.internal.registry.ExtensionRegistry.createExecutableExtension(ExtensionRegistry.java:904)
+	at org.eclipse.core.internal.registry.ConfigurationElement.createExecutableExtension(ConfigurationElement.java:243)
+	at org.eclipse.core.internal.registry.ConfigurationElementHandle.createExecutableExtension(ConfigurationElementHandle.java:55)
+	at org.eclipse.ui.internal.util.Util.safeLoadExecutableExtension(Util.java:879)
+	at org.eclipse.ui.internal.menus.DynamicToolBarContributionItem.createContributionItem(DynamicToolBarContributionItem.java:111)
+	at org.eclipse.ui.internal.menus.DynamicToolBarContributionItem.getContributionItem(DynamicToolBarContributionItem.java:104)
+	at org.eclipse.ui.internal.menus.DynamicToolBarContributionItem.createControl(DynamicToolBarContributionItem.java:206)
+	at org.eclipse.jface.action.ControlContribution.fill(ControlContribution.java:97)
+	at org.eclipse.jface.action.ToolBarManager.update(ToolBarManager.java:353)
+	at org.eclipse.jface.action.ToolBarManager.createControl(ToolBarManager.java:111)
+	at org.eclipse.ui.internal.menus.TrimContributionManager$ToolBarTrimProxy.dock(TrimContributionManager.java:88)
+	at org.eclipse.ui.internal.menus.TrimContributionManager.update(TrimContributionManager.java:265)
+	at org.eclipse.ui.internal.WorkbenchWindow.updateLayoutDataForContents(WorkbenchWindow.java:3830)
+	at org.eclipse.ui.internal.WorkbenchWindow.setLayoutDataForContents(WorkbenchWindow.java:3841)
+	at org.eclipse.ui.internal.WorkbenchWindow.createDefaultContents(WorkbenchWindow.java:1124)
+	at org.eclipse.ui.internal.WorkbenchWindowConfigurer.createDefaultContents(WorkbenchWindowConfigurer.java:623)
+	at org.eclipse.ui.application.WorkbenchWindowAdvisor.createWindowContents(WorkbenchWindowAdvisor.java:268)
+	at org.eclipse.ui.internal.WorkbenchWindow.createContents(WorkbenchWindow.java:1010)
+	at org.eclipse.jface.window.Window.create(Window.java:431)
+	at org.eclipse.ui.internal.Workbench$63.runWithException(Workbench.java:3589)
+	at org.eclipse.ui.internal.StartupThreading$StartupRunnable.run(StartupThreading.java:31)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:134)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4041)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3660)
+	at org.eclipse.ui.application.WorkbenchAdvisor.openWindows(WorkbenchAdvisor.java:803)
+	at org.eclipse.ui.internal.Workbench$31.runWithException(Workbench.java:1566)
+	at org.eclipse.ui.internal.StartupThreading$StartupRunnable.run(StartupThreading.java:31)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:134)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4041)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3660)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2537)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2427)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:670)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:663)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:115)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:369)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:619)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:574)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1407)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1383)
+
+!ENTRY com.google.gwt.eclipse.core 4 0 2010-07-08 16:22:30.761
+!MESSAGE Unexpected Exception
+!STACK 0
+java.lang.ClassNotFoundException: com.google.gwt.dev.About
+	at java.net.URLClassLoader$1.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at com.google.gwt.eclipse.core.runtime.GWTRuntime.getVersion(GWTRuntime.java:460)
+	at com.google.gdt.eclipse.core.sdk.AbstractSdk.toXml(AbstractSdk.java:95)
+	at com.google.gdt.eclipse.core.sdk.SdkSet.toXml(SdkSet.java:112)
+	at com.google.gdt.eclipse.core.sdk.SdkSetSerializer.serialize(SdkSetSerializer.java:77)
+	at com.google.gdt.eclipse.core.sdk.SdkManager.setSdks(SdkManager.java:171)
+	at com.google.gwt.eclipse.core.sdk.GWTSdkRegistrant.registerSdk(GWTSdkRegistrant.java:88)
+	at com.google.gwt.eclipse.sdkbundle.SdkBundleRegistrant.register(SdkBundleRegistrant.java:55)
+	at com.google.gdt.eclipse.suite.preferences.GdtPreferences.registerSdks(GdtPreferences.java:195)
+	at com.google.gdt.eclipse.suite.GdtPlugin.start(GdtPlugin.java:364)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:783)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:774)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:755)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:370)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.start(AbstractBundle.java:284)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:417)
+	at org.eclipse.osgi.internal.loader.BundleLoader.setLazyTrigger(BundleLoader.java:265)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:106)
+	at org.eclipse.osgi.baseadaptor.loader.ClasspathManager.findLocalClass(ClasspathManager.java:453)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.findLocalClass(DefaultClassLoader.java:216)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:393)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:469)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:422)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:410)
+	at org.eclipse.osgi.internal.baseadaptor.DefaultClassLoader.loadClass(DefaultClassLoader.java:107)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at org.eclipse.osgi.internal.loader.BundleLoader.loadClass(BundleLoader.java:338)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.loadClass(BundleHost.java:232)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.loadClass(AbstractBundle.java:1197)
+	at org.eclipse.core.internal.registry.osgi.RegistryStrategyOSGI.createExecutableExtension(RegistryStrategyOSGI.java:174)
+	at org.eclipse.core.internal.registry.ExtensionRegistry.createExecutableExtension(ExtensionRegistry.java:904)
+	at org.eclipse.core.internal.registry.ConfigurationElement.createExecutableExtension(ConfigurationElement.java:243)
+	at org.eclipse.core.internal.registry.ConfigurationElementHandle.createExecutableExtension(ConfigurationElementHandle.java:55)
+	at org.eclipse.ui.internal.util.Util.safeLoadExecutableExtension(Util.java:879)
+	at org.eclipse.ui.internal.menus.DynamicToolBarContributionItem.createContributionItem(DynamicToolBarContributionItem.java:111)
+	at org.eclipse.ui.internal.menus.DynamicToolBarContributionItem.getContributionItem(DynamicToolBarContributionItem.java:104)
+	at org.eclipse.ui.internal.menus.DynamicToolBarContributionItem.createControl(DynamicToolBarContributionItem.java:206)
+	at org.eclipse.jface.action.ControlContribution.fill(ControlContribution.java:97)
+	at org.eclipse.jface.action.ToolBarManager.update(ToolBarManager.java:353)
+	at org.eclipse.jface.action.ToolBarManager.createControl(ToolBarManager.java:111)
+	at org.eclipse.ui.internal.menus.TrimContributionManager$ToolBarTrimProxy.dock(TrimContributionManager.java:88)
+	at org.eclipse.ui.internal.menus.TrimContributionManager.update(TrimContributionManager.java:265)
+	at org.eclipse.ui.internal.WorkbenchWindow.updateLayoutDataForContents(WorkbenchWindow.java:3830)
+	at org.eclipse.ui.internal.WorkbenchWindow.setLayoutDataForContents(WorkbenchWindow.java:3841)
+	at org.eclipse.ui.internal.WorkbenchWindow.createDefaultContents(WorkbenchWindow.java:1124)
+	at org.eclipse.ui.internal.WorkbenchWindowConfigurer.createDefaultContents(WorkbenchWindowConfigurer.java:623)
+	at org.eclipse.ui.application.WorkbenchWindowAdvisor.createWindowContents(WorkbenchWindowAdvisor.java:268)
+	at org.eclipse.ui.internal.WorkbenchWindow.createContents(WorkbenchWindow.java:1010)
+	at org.eclipse.jface.window.Window.create(Window.java:431)
+	at org.eclipse.ui.internal.Workbench$63.runWithException(Workbench.java:3589)
+	at org.eclipse.ui.internal.StartupThreading$StartupRunnable.run(StartupThreading.java:31)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:134)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4041)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3660)
+	at org.eclipse.ui.application.WorkbenchAdvisor.openWindows(WorkbenchAdvisor.java:803)
+	at org.eclipse.ui.internal.Workbench$31.runWithException(Workbench.java:1566)
+	at org.eclipse.ui.internal.StartupThreading$StartupRunnable.run(StartupThreading.java:31)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:134)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4041)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3660)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2537)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2427)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:670)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:663)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:115)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:369)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:619)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:574)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1407)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1383)
+
+!ENTRY org.eclipse.jface 2 0 2010-07-08 16:22:36.685
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2010-07-08 16:22:36.685
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(com.python.pydev.analysis.actions.pyGlobalsBrowserWorkbench,Python Show Class Browser,
+		Show Class Browser,
+		Category(org.python.pydev.ui.category.source,Pydev - Editor,Pydev editor category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.cdt.core 1 0 2010-07-08 16:22:38.351
+!MESSAGE Indexed 'rl_glue' (1 sources, 45 headers) in 1.06 sec: 499 declarations; 501 references; 12 unresolved inclusions; 2 syntax errors; 13 unresolved names (1.28%)

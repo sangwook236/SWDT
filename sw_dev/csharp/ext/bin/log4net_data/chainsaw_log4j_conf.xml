@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration>
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
+
+  <appender name="A2" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.SimpleLayout"/>
+  </appender>
+
+  <plugin name="SocketReceiver" class="org.apache.log4j.net.SocketReceiver">
+    <param name="name" value="swlSocketReceiver" />
+    <param name="port" value="4560" />
+    <param name="threshold" value="TRACE" />
+  </plugin>
+
+  <plugin name="XMLSocketReceiver" class="org.apache.log4j.net.XMLSocketReceiver">
+    <param name="name" value="swlXMLSocketReceiver" />
+    <param name="decoder" value="org.apache.log4j.xml.XMLDecoder" />
+    <param name="port" value="4448" />
+    <param name="threshold" value="TRACE" />
+  </plugin>
+
+  <root>
+    <priority value="debug" />
+  </root>
+
+</log4j:configuration>

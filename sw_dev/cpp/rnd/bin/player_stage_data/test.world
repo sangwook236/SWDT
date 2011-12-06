@@ -1,0 +1,84 @@
+include "map.inc"
+include "bigbob.inc"
+
+# time to pause (in GUI mode) or quit (in headless mode (-g)) the simulation
+quit_time 3600  # 1 hour of simulated time
+
+paused 1
+
+#resolution 0.02
+
+# size of the whole simulation
+size [15 15]
+
+# configure the GUI window
+window
+(
+	size [700.0 700.0]  # in pixels
+	scale 46.6667  # pixels per meter: 700/15 rounded up a bit
+	center [-0.019 -0.282]
+	rotate [0 0]
+			
+	show_data 1  # 1=on 0=off
+)
+
+# load an environment bitmap
+floorplan
+(
+	name "cave"
+	bitmap "bitmaps/cave.png"
+	size [15 15 0.8]
+	pose [0 0 0 0]
+)
+
+bigbob
+(
+	name "bob1"
+	pose [-5 -6 45]
+	color "green"
+)
+
+bigbob
+(
+	name "bob2"
+	pose [5 6 225]
+	color "yellow"
+)
+
+define orange model
+(
+	# this is a picture of a black circle
+	bitmap "bitmaps/circle.png"
+	size [0.15 0.15]
+	color "orange"
+	
+	gui_outline 0
+	gripper_return 1
+)
+
+define carton model
+(
+	# a carton is rectangular
+	polygons 1
+	polygon[0].points 4
+	polygon[0].point[0] [0 0]
+	polygon[0].point[1] [0 1]
+	polygon[0].point[2] [1 1]
+	polygon[0].point[3] [1 0]
+	
+	# average liter carton size is ~ 20cm x 10cm x 5cm
+	size [0.1 0.2]
+	
+	color "DarkBlue"
+	gripper_return 1
+)
+
+orange (name "orange1" pose [-1 -5 0])
+orange (name "orange2" pose [-2 -5 0])
+orange (name "orange3" pose [-3 -5 0])
+orange (name "orange4" pose [-4 -5 0])
+
+carton (name "carton1" pose [-2 -4 0])
+carton (name "carton2" pose [-2 -3 0])
+carton (name "carton3" pose [-2 -2 0])
+carton (name "carton4" pose [-2 -1 0])

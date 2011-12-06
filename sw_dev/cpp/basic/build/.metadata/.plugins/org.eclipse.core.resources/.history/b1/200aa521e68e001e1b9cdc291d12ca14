@@ -1,0 +1,13 @@
+/*
+ * Api.cpp
+ *
+ *  Created on: 2009. 8. 22
+ *      Author: sangwook
+ */
+
+#include "header/Api.h"
+
+void printHello()
+{
+	std::cout << "Hello, World !!!" << std::endl;
+}

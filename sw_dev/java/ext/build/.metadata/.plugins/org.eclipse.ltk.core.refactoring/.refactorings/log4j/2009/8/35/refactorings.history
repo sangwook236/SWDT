@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;log4j&apos; to &apos;ext&apos;&#x0D;&#x0A;- Original project: &apos;log4j&apos;&#x0D;&#x0A;- Original element: &apos;log4j/src/log4j&apos;&#x0D;&#x0A;- Renamed element: &apos;log4j/src/ext&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename package &apos;log4j&apos;" flags="589830" hierarchical="false" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;log4j" name="ext" qualified="false" references="true" stamp="1251551348546" textual="false" version="1.0"/>
+</session>
