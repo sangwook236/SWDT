@@ -1,0 +1,980 @@
+Library {
+  Name			  "myblocksets"
+  Version		  6.3
+  MdlSubVersion		  0
+  SavedCharacterEncoding  "windows-949"
+  LibraryType		  "BlockLibrary"
+  SaveDefaultBlockParams  on
+  SampleTimeColors	  off
+  LibraryLinkDisplay	  "none"
+  WideLines		  off
+  ShowLineDimensions	  off
+  ShowPortDataTypes	  off
+  ShowLoopsOnError	  on
+  IgnoreBidirectionalLines off
+  ShowStorageClass	  off
+  ShowTestPointIcons	  on
+  ShowViewerIcons	  on
+  SortedOrder		  off
+  ExecutionContextIcon	  off
+  ShowLinearizationAnnotations on
+  CovSaveName		  "covdata"
+  CovMetricSettings	  "dw"
+  CovNameIncrementing	  off
+  CovHtmlReporting	  on
+  covSaveCumulativeToWorkspaceVar on
+  CovSaveSingleToWorkspaceVar on
+  CovCumulativeReport	  off
+  CovReportOnPause	  on
+  ScopeRefreshTime	  0.035000
+  OverrideScopeRefreshTime on
+  DisableAllScopes	  off
+  BlockNameDataTip	  off
+  BlockParametersDataTip  off
+  BlockDescriptionStringDataTip	off
+  ToolBar		  on
+  StatusBar		  on
+  BrowserShowLibraryLinks off
+  BrowserLookUnderMasks	  off
+  Created		  "Thu Dec 04 22:38:42 2008"
+  UpdateHistory		  "UpdateHistoryNever"
+  ModifiedByFormat	  "%<Auto>"
+  LastModifiedBy	  "sangwook"
+  ModifiedDateFormat	  "%<Auto>"
+  LastModifiedDate	  "Thu Dec 04 22:40:05 2008"
+  ModelVersionFormat	  "1.%<AutoIncrement:1>"
+  ConfigurationManager	  "None"
+  LinearizationMsg	  "none"
+  Profile		  off
+  ParamWorkspaceSource	  "MATLABWorkspace"
+  ExtModeBatchMode	  off
+  ExtModeEnableFloating	  on
+  ExtModeTrigType	  "manual"
+  ExtModeTrigMode	  "normal"
+  ExtModeTrigPort	  "1"
+  ExtModeTrigElement	  "any"
+  ExtModeTrigDuration	  1000
+  ExtModeTrigDurationFloating "auto"
+  ExtModeTrigHoldOff	  0
+  ExtModeTrigDelay	  0
+  ExtModeTrigDirection	  "rising"
+  ExtModeTrigLevel	  0
+  ExtModeArchiveMode	  "off"
+  ExtModeAutoIncOneShot	  off
+  ExtModeIncDirWhenArm	  off
+  ExtModeAddSuffixToVar	  off
+  ExtModeWriteAllDataToWs off
+  ExtModeArmWhenConnect	  on
+  ExtModeSkipDownloadWhenConnect off
+  ExtModeLogAll		  on
+  ExtModeAutoUpdateStatusClock on
+  StrictBusMsg		  "Warning"
+  ProdHWDeviceType	  "32-bit Generic"
+  ShowModelReferenceBlockVersion off
+  ShowModelReferenceBlockIO off
+  BlockDefaults {
+    Orientation		    "right"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    NamePlacement	    "normal"
+    FontName		    "arial"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    ShowName		    on
+  }
+  BlockParameterDefaults {
+    Block {
+      BlockType		      Demux
+      Outputs		      "4"
+      DisplayOption	      "none"
+      BusSelectionMode	      off
+    }
+    Block {
+      BlockType		      Inport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      DataType		      "auto"
+      OutDataType	      "sfix(16)"
+      OutScaling	      "2^0"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      LatchByDelayingOutsideSignal off
+      LatchByCopyingInsideSignal off
+      Interpolate	      on
+    }
+    Block {
+      BlockType		      Outport
+      Port		      "1"
+      UseBusObject	      off
+      BusObject		      "BusObject"
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      SampleTime	      "-1"
+      DataType		      "auto"
+      OutDataType	      "sfix(16)"
+      OutScaling	      "2^0"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      OutputWhenDisabled      "held"
+      InitialOutput	      "[]"
+    }
+    Block {
+      BlockType		      "S-Function"
+      FunctionName	      "system"
+      SFunctionModules	      "''"
+      PortCounts	      "[]"
+    }
+    Block {
+      BlockType		      SubSystem
+      ShowPortLabels	      on
+      Permissions	      "ReadWrite"
+      PermitHierarchicalResolution "All"
+      SystemSampleTime	      "-1"
+      RTWFcnNameOpts	      "Auto"
+      RTWFileNameOpts	      "Auto"
+      SimViewingDevice	      off
+      DataTypeOverride	      "UseLocalSettings"
+      MinMaxOverflowLogging   "UseLocalSettings"
+    }
+    Block {
+      BlockType		      Terminator
+    }
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    "center"
+    VerticalAlignment	    "middle"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    FontName		    "arial"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  LineDefaults {
+    FontName		    "arial"
+    FontSize		    9
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  System {
+    Name		    "myblocksets"
+    Location		    [480, 93, 1060, 386]
+    Open		    on
+    ModelBrowserVisibility  off
+    ModelBrowserWidth	    200
+    ScreenColor		    "white"
+    PaperOrientation	    "landscape"
+    PaperPositionMode	    "auto"
+    PaperType		    "A4"
+    PaperUnits		    "centimeters"
+    ZoomFactor		    "100"
+    ReportName		    "simulink-default.rpt"
+    Block {
+      BlockType		      SubSystem
+      Name		      "Embedded\nMATLAB Function"
+      Ports		      [1, 1]
+      Position		      [90, 32, 160, 78]
+      FontSize		      10
+      TreatAsAtomicUnit	      off
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      MaskHideContents	      off
+      MaskType		      "Stateflow"
+      MaskDescription	      "Embedded MATLAB block"
+      MaskDisplay	      "disp('rotx');"
+      MaskSelfModifiable      on
+      MaskIconFrame	      on
+      MaskIconOpaque	      off
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      System {
+	Name			"Embedded\nMATLAB Function"
+	Location		[257, 457, 812, 717]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "t"
+	  Position		  [20, 101, 40, 119]
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Demux
+	  Name			  " Demux "
+	  Ports			  [1, 1]
+	  Position		  [270, 160, 320, 200]
+	  Outputs		  "1"
+	}
+	Block {
+	  BlockType		  "S-Function"
+	  Name			  " SFunction "
+	  Tag			  "Stateflow S-Function myblocksets 2"
+	  Ports			  [1, 2]
+	  Position		  [180, 100, 230, 160]
+	  FunctionName		  "sf_sfun"
+	  PortCounts		  "[1 2]"
+	  Port {
+	    PortNumber		    2
+	    Name		    "r"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  " Terminator "
+	  Position		  [460, 171, 480, 189]
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "r"
+	  Position		  [460, 101, 480, 119]
+	  IconDisplay		  "Port number"
+	  BusOutputAsStruct	  off
+	}
+	Line {
+	  SrcBlock		  " SFunction "
+	  SrcPort		  1
+	  Points		  [0, 65]
+	  DstBlock		  " Demux "
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  " Demux "
+	  SrcPort		  1
+	  DstBlock		  " Terminator "
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "t"
+	  SrcPort		  1
+	  DstBlock		  " SFunction "
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "r"
+	  Labels		  [0, 0]
+	  SrcBlock		  " SFunction "
+	  SrcPort		  2
+	  DstBlock		  "r"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Embedded\nMATLAB Function1"
+      Ports		      [1, 1]
+      Position		      [90, 122, 160, 168]
+      FontSize		      10
+      TreatAsAtomicUnit	      off
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      MaskHideContents	      off
+      MaskType		      "Stateflow"
+      MaskDescription	      "Embedded MATLAB block"
+      MaskDisplay	      "disp('roty');"
+      MaskSelfModifiable      on
+      MaskIconFrame	      on
+      MaskIconOpaque	      off
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      System {
+	Name			"Embedded\nMATLAB Function1"
+	Location		[257, 457, 812, 717]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "t"
+	  Position		  [20, 101, 40, 119]
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Demux
+	  Name			  " Demux "
+	  Ports			  [1, 1]
+	  Position		  [270, 160, 320, 200]
+	  Outputs		  "1"
+	}
+	Block {
+	  BlockType		  "S-Function"
+	  Name			  " SFunction "
+	  Tag			  "Stateflow S-Function myblocksets 1"
+	  Ports			  [1, 2]
+	  Position		  [180, 100, 230, 160]
+	  FunctionName		  "sf_sfun"
+	  PortCounts		  "[1 2]"
+	  Port {
+	    PortNumber		    2
+	    Name		    "r"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  " Terminator "
+	  Position		  [460, 171, 480, 189]
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "r"
+	  Position		  [460, 101, 480, 119]
+	  IconDisplay		  "Port number"
+	  BusOutputAsStruct	  off
+	}
+	Line {
+	  SrcBlock		  " SFunction "
+	  SrcPort		  1
+	  Points		  [0, 65]
+	  DstBlock		  " Demux "
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  " Demux "
+	  SrcPort		  1
+	  DstBlock		  " Terminator "
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "t"
+	  SrcPort		  1
+	  DstBlock		  " SFunction "
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "r"
+	  Labels		  [0, 0]
+	  SrcBlock		  " SFunction "
+	  SrcPort		  2
+	  DstBlock		  "r"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Embedded\nMATLAB Function2"
+      Ports		      [1, 1]
+      Position		      [90, 207, 160, 253]
+      FontSize		      10
+      TreatAsAtomicUnit	      off
+      MinAlgLoopOccurrences   off
+      RTWSystemCode	      "Auto"
+      MaskHideContents	      off
+      MaskType		      "Stateflow"
+      MaskDescription	      "Embedded MATLAB block"
+      MaskDisplay	      "disp('rotz');"
+      MaskSelfModifiable      on
+      MaskIconFrame	      on
+      MaskIconOpaque	      off
+      MaskIconRotate	      "none"
+      MaskIconUnits	      "autoscale"
+      System {
+	Name			"Embedded\nMATLAB Function2"
+	Location		[257, 457, 812, 717]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "t"
+	  Position		  [20, 101, 40, 119]
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Demux
+	  Name			  " Demux "
+	  Ports			  [1, 1]
+	  Position		  [270, 160, 320, 200]
+	  Outputs		  "1"
+	}
+	Block {
+	  BlockType		  "S-Function"
+	  Name			  " SFunction "
+	  Tag			  "Stateflow S-Function myblocksets 3"
+	  Ports			  [1, 2]
+	  Position		  [180, 100, 230, 160]
+	  FunctionName		  "sf_sfun"
+	  PortCounts		  "[1 2]"
+	  Port {
+	    PortNumber		    2
+	    Name		    "r"
+	    RTWStorageClass	    "Auto"
+	    DataLoggingNameMode	    "SignalName"
+	  }
+	}
+	Block {
+	  BlockType		  Terminator
+	  Name			  " Terminator "
+	  Position		  [460, 171, 480, 189]
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "r"
+	  Position		  [460, 101, 480, 119]
+	  IconDisplay		  "Port number"
+	  BusOutputAsStruct	  off
+	}
+	Line {
+	  SrcBlock		  " SFunction "
+	  SrcPort		  1
+	  Points		  [0, 65]
+	  DstBlock		  " Demux "
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  " Demux "
+	  SrcPort		  1
+	  DstBlock		  " Terminator "
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "t"
+	  SrcPort		  1
+	  DstBlock		  " SFunction "
+	  DstPort		  1
+	}
+	Line {
+	  Name			  "r"
+	  Labels		  [0, 0]
+	  SrcBlock		  " SFunction "
+	  SrcPort		  2
+	  DstBlock		  "r"
+	  DstPort		  1
+	}
+      }
+    }
+  }
+}
+
+# Finite State Machines
+#
+#    Stateflow Version 6.2 (R14SP2) dated Aug  4 2005, 10:13:39
+#
+#
+
+Stateflow {
+
+	machine {
+		id                   		1
+		name                 		"myblocksets"
+		created              		"04-Dec-2008 22:38:50"
+		isLibrary            		1
+		firstTarget          		23
+		sfVersion            		62014000
+	}
+
+	chart {
+		id                                        		2
+		name                                      		"Embedded\n"
+					"MATLAB Function1"
+		windowPosition                            		[375.75 203.25 200.25 189.75]
+		viewLimits                                		[0 156.75 0 153.75]
+		screen                                    		[1 1 1920 1200 1.333333333333333]
+		treeNode                                  		[0 3 0 0]
+		firstTransition                           		5
+		firstJunction                             		4
+		viewObj                                   		2
+		machine                                   		1
+		toolbarMode                               		LIBRARY_TOOLBAR
+		decomposition                             		CLUSTER_CHART
+		type                                      		EML_CHART
+		firstData                                 		6
+		chartFileNumber                           		1
+		disableImplicitCasting                    		1
+		eml {
+			name       		"roty"
+		}
+	}
+
+	state {
+		id                           		3
+		labelString                  		"eML_blk_kernel()"
+		position                     		[18 64.5 118 66]
+		fontSize                     		12
+		chart                        		2
+		treeNode                     		[2 0 0 0]
+		superState                   		SUBCHART
+		subviewer                    		2
+		type                         		FUNC_STATE
+		decomposition                		CLUSTER_STATE
+		eml {
+			isEML           		1
+			script          		"%ROTY Rotation about Y axis\n"
+						"%\n"
+						"%\tTR = ROTY(theta)\n"
+						"%\n"
+						"% Returns a homogeneous transformation representing a rotat"
+						"ion of theta \n"
+						"% about the Y axis.\n"
+						"%\n"
+						"% See also: ROTX, ROTZ, ROTVEC.\n"
+						"\n"
+						"% $Log: roty.m,v $\n"
+						"% Revision 1.2  2002/04/01 11:47:16  pic\n"
+						"% General cleanup of code: help comments, see also, copyrig"
+						"ht, remnant dh/dyn\n"
+						"% references, clarification of functions.\n"
+						"%\n"
+						"% $Revision: 1.2 $\n"
+						"% Copyright (C) 1993-2002, by Peter I. Corke\n"
+						"\n"
+						"function r = roty(t)\n"
+						"\tct = cos(t);\n"
+						"\tst = sin(t);\n"
+						"\tr =    [ct\t0\tst\t0\n"
+						"\t\t0\t1\t0\t0\n"
+						"\t\t-st\t0\tct\t0\n"
+						"\t\t0\t0\t0\t1];\n"
+						""
+			editorLayout    		"100 M4x1[146 214 671 364]"
+			fimathString    		"fimath(...\n"
+								"'RoundMode', 'floor',...\n"
+								"'OverflowMode', 'wrap',...\n"
+								"'ProductMode', 'KeepLSB', 'ProductWordLength', 32,..."
+								"\n"
+								"'SumMode', 'KeepLSB', 'SumWordLength', 32,...\n"
+								"'CastBeforeSum', false)"
+			treatIntsAsFixpt		0
+		}
+	}
+
+	junction {
+		id         		4
+		position   		[23.5747 49.5747 7]
+		chart      		2
+		linkNode   		[2 0 0]
+		subviewer  		2
+		type       		CONNECTIVE_JUNCTION
+	}
+
+	transition {
+		id             		5
+		labelString    		"{eML_blk_kernel();}"
+		labelPosition  		[32.125 19.875 102.544 14.964]
+		fontSize       		12
+		src {
+			intersection		[0 0 1 0 23.5747 14.625 0 0]
+		}
+		dst {
+			id          		4
+			intersection		[7 0 -1 -1 23.5747 42.5747 0 0]
+		}
+		midPoint       		[23.5747 24.9468]
+		chart          		2
+		linkNode       		[2 0 0]
+		dataLimits     		[21.175 25.975 14.625 42.575]
+		subviewer      		2
+		drawStyle      		SMART
+		executionOrder 		1
+	}
+
+	data {
+		id                            		6
+		name                          		"t"
+		linkNode                      		[2 0 7]
+		scope                         		INPUT_DATA
+		machine                       		1
+		props {
+			array {
+				size      		"-1"
+			}
+			type {
+				method    		SF_INHERITED_TYPE
+			}
+			complexity  		SF_COMPLEX_INHERITED
+		}
+		dataType                      		"inherited"
+		fixptType {
+			slope   		1
+			baseType		SF_INT16_TYPE
+		}
+		complexity                    		SF_COMPLEX_INHERITED
+	}
+
+	data {
+		id                            		7
+		name                          		"r"
+		linkNode                      		[2 6 0]
+		scope                         		OUTPUT_DATA
+		machine                       		1
+		props {
+			array {
+				size      		"-1"
+			}
+			type {
+				method    		SF_INHERITED_TYPE
+			}
+			complexity  		SF_COMPLEX_INHERITED
+		}
+		dataType                      		"inherited"
+		fixptType {
+			slope   		1
+			baseType		SF_INT16_TYPE
+		}
+		complexity                    		SF_COMPLEX_INHERITED
+	}
+
+	instance {
+		id     		8
+		name   		"Embedded\n"
+					"MATLAB Function1"
+		machine		1
+		chart  		2
+	}
+
+	chart {
+		id                                        		9
+		name                                      		"Embedded\n"
+					"MATLAB Function"
+		windowPosition                            		[375.75 203.25 200.25 189.75]
+		viewLimits                                		[0 156.75 0 153.75]
+		screen                                    		[1 1 1920 1200 1.333333333333333]
+		treeNode                                  		[0 10 0 0]
+		firstTransition                           		12
+		firstJunction                             		11
+		viewObj                                   		9
+		machine                                   		1
+		toolbarMode                               		LIBRARY_TOOLBAR
+		decomposition                             		CLUSTER_CHART
+		type                                      		EML_CHART
+		firstData                                 		13
+		chartFileNumber                           		2
+		disableImplicitCasting                    		1
+		eml {
+			name       		"rotx"
+		}
+	}
+
+	state {
+		id                           		10
+		labelString                  		"eML_blk_kernel()"
+		position                     		[18 64.5 118 66]
+		fontSize                     		12
+		chart                        		9
+		treeNode                     		[9 0 0 0]
+		superState                   		SUBCHART
+		subviewer                    		9
+		type                         		FUNC_STATE
+		decomposition                		CLUSTER_STATE
+		eml {
+			isEML           		1
+			script          		"%ROTX Rotation about X axis\n"
+						"%\n"
+						"%\tTR = ROTX(theta)\n"
+						"%\n"
+						"% Returns a homogeneous transformation representing a rotat"
+						"ion of theta \n"
+						"% about the X axis.\n"
+						"%\n"
+						"% See also: ROTY, ROTZ, ROTVEC.\n"
+						"\n"
+						"% $Log: rotx.m,v $\n"
+						"% Revision 1.2  2002/04/01 11:47:16  pic\n"
+						"% General cleanup of code: help comments, see also, copyrig"
+						"ht, remnant dh/dyn\n"
+						"% references, clarification of functions.\n"
+						"%\n"
+						"% $Revision: 1.2 $\n"
+						"% Copyright (C) 1993-2002, by Peter I. Corke\n"
+						"\n"
+						"function r = rotx(t)\n"
+						"\tct = cos(t);\n"
+						"\tst = sin(t);\n"
+						"\tr =    [1\t0\t0\t0\n"
+						"\t\t0\tct\t-st\t0\n"
+						"\t\t0\tst\tct\t0\n"
+						"\t\t0\t0\t0\t1];\n"
+						""
+			editorLayout    		"100 M4x1[146 214 671 364]"
+			fimathString    		"fimath(...\n"
+								"'RoundMode', 'floor',...\n"
+								"'OverflowMode', 'wrap',...\n"
+								"'ProductMode', 'KeepLSB', 'ProductWordLength', 32,..."
+								"\n"
+								"'SumMode', 'KeepLSB', 'SumWordLength', 32,...\n"
+								"'CastBeforeSum', false)"
+			treatIntsAsFixpt		0
+		}
+	}
+
+	junction {
+		id         		11
+		position   		[23.5747 49.5747 7]
+		chart      		9
+		linkNode   		[9 0 0]
+		subviewer  		9
+		type       		CONNECTIVE_JUNCTION
+	}
+
+	transition {
+		id             		12
+		labelString    		"{eML_blk_kernel();}"
+		labelPosition  		[32.125 19.875 102.544 14.964]
+		fontSize       		12
+		src {
+			intersection		[0 0 1 0 23.5747 14.625 0 0]
+		}
+		dst {
+			id          		11
+			intersection		[7 0 -1 -1 23.5747 42.5747 0 0]
+		}
+		midPoint       		[23.5747 24.9468]
+		chart          		9
+		linkNode       		[9 0 0]
+		dataLimits     		[21.175 25.975 14.625 42.575]
+		subviewer      		9
+		drawStyle      		SMART
+		executionOrder 		1
+	}
+
+	data {
+		id                            		13
+		name                          		"t"
+		linkNode                      		[9 0 14]
+		scope                         		INPUT_DATA
+		machine                       		1
+		props {
+			array {
+				size      		"-1"
+			}
+			type {
+				method    		SF_INHERITED_TYPE
+			}
+			complexity  		SF_COMPLEX_INHERITED
+		}
+		dataType                      		"inherited"
+		fixptType {
+			slope   		1
+			baseType		SF_INT16_TYPE
+		}
+		complexity                    		SF_COMPLEX_INHERITED
+	}
+
+	data {
+		id                            		14
+		name                          		"r"
+		linkNode                      		[9 13 0]
+		scope                         		OUTPUT_DATA
+		machine                       		1
+		props {
+			array {
+				size      		"-1"
+			}
+			type {
+				method    		SF_INHERITED_TYPE
+			}
+			complexity  		SF_COMPLEX_INHERITED
+		}
+		dataType                      		"inherited"
+		fixptType {
+			slope   		1
+			baseType		SF_INT16_TYPE
+		}
+		complexity                    		SF_COMPLEX_INHERITED
+	}
+
+	instance {
+		id     		15
+		name   		"Embedded\n"
+					"MATLAB Function"
+		machine		1
+		chart  		9
+	}
+
+	chart {
+		id                                        		16
+		name                                      		"Embedded\n"
+					"MATLAB Function2"
+		windowPosition                            		[375.75 203.25 200.25 189.75]
+		viewLimits                                		[0 156.75 0 153.75]
+		screen                                    		[1 1 1920 1200 1.333333333333333]
+		treeNode                                  		[0 17 0 0]
+		firstTransition                           		19
+		firstJunction                             		18
+		viewObj                                   		16
+		machine                                   		1
+		toolbarMode                               		LIBRARY_TOOLBAR
+		decomposition                             		CLUSTER_CHART
+		type                                      		EML_CHART
+		firstData                                 		20
+		chartFileNumber                           		3
+		disableImplicitCasting                    		1
+		eml {
+			name       		"rotz"
+		}
+	}
+
+	state {
+		id                           		17
+		labelString                  		"eML_blk_kernel()"
+		position                     		[18 64.5 118 66]
+		fontSize                     		12
+		chart                        		16
+		treeNode                     		[16 0 0 0]
+		superState                   		SUBCHART
+		subviewer                    		16
+		type                         		FUNC_STATE
+		decomposition                		CLUSTER_STATE
+		eml {
+			isEML           		1
+			script          		"%ROTZ Rotation about Z axis\n"
+						"%\n"
+						"%\tTR = ROTZ(theta)\n"
+						"%\n"
+						"% Returns a homogeneous transformation representing a rotat"
+						"ion of theta \n"
+						"% about the Z axis.\n"
+						"%\n"
+						"% See also: ROTX, ROTY, ROTVEC.\n"
+						"\n"
+						"% $Log: rotz.m,v $\n"
+						"% Revision 1.2  2002/04/01 11:47:16  pic\n"
+						"% General cleanup of code: help comments, see also, copyrig"
+						"ht, remnant dh/dyn\n"
+						"% references, clarification of functions.\n"
+						"%\n"
+						"% $Revision: 1.2 $\n"
+						"% Copyright (C) 1993-2002, by Peter I. Corke\n"
+						"\n"
+						"function r = rotz(t)\n"
+						"\tct = cos(t);\n"
+						"\tst = sin(t);\n"
+						"\tr =    [ct\t-st\t0\t0\n"
+						"\t\tst\tct\t0\t0\n"
+						"\t\t0\t0\t1\t0\n"
+						"\t\t0\t0\t0\t1];\n"
+						""
+			editorLayout    		"100 M4x1[146 214 671 364]"
+			fimathString    		"fimath(...\n"
+								"'RoundMode', 'floor',...\n"
+								"'OverflowMode', 'wrap',...\n"
+								"'ProductMode', 'KeepLSB', 'ProductWordLength', 32,..."
+								"\n"
+								"'SumMode', 'KeepLSB', 'SumWordLength', 32,...\n"
+								"'CastBeforeSum', false)"
+			treatIntsAsFixpt		0
+		}
+	}
+
+	junction {
+		id         		18
+		position   		[23.5747 49.5747 7]
+		chart      		16
+		linkNode   		[16 0 0]
+		subviewer  		16
+		type       		CONNECTIVE_JUNCTION
+	}
+
+	transition {
+		id             		19
+		labelString    		"{eML_blk_kernel();}"
+		labelPosition  		[32.125 19.875 102.544 14.964]
+		fontSize       		12
+		src {
+			intersection		[0 0 1 0 23.5747 14.625 0 0]
+		}
+		dst {
+			id          		18
+			intersection		[7 0 -1 -1 23.5747 42.5747 0 0]
+		}
+		midPoint       		[23.5747 24.9468]
+		chart          		16
+		linkNode       		[16 0 0]
+		dataLimits     		[21.175 25.975 14.625 42.575]
+		subviewer      		16
+		drawStyle      		SMART
+		executionOrder 		1
+	}
+
+	data {
+		id                            		20
+		name                          		"t"
+		linkNode                      		[16 0 21]
+		scope                         		INPUT_DATA
+		machine                       		1
+		props {
+			array {
+				size      		"-1"
+			}
+			type {
+				method    		SF_INHERITED_TYPE
+			}
+			complexity  		SF_COMPLEX_INHERITED
+		}
+		dataType                      		"inherited"
+		fixptType {
+			slope   		1
+			baseType		SF_INT16_TYPE
+		}
+		complexity                    		SF_COMPLEX_INHERITED
+	}
+
+	data {
+		id                            		21
+		name                          		"r"
+		linkNode                      		[16 20 0]
+		scope                         		OUTPUT_DATA
+		machine                       		1
+		props {
+			array {
+				size      		"-1"
+			}
+			type {
+				method    		SF_INHERITED_TYPE
+			}
+			complexity  		SF_COMPLEX_INHERITED
+		}
+		dataType                      		"inherited"
+		fixptType {
+			slope   		1
+			baseType		SF_INT16_TYPE
+		}
+		complexity                    		SF_COMPLEX_INHERITED
+	}
+
+	instance {
+		id     		22
+		name   		"Embedded\n"
+					"MATLAB Function2"
+		machine		1
+		chart  		16
+	}
+
+	target {
+		id                        		23
+		name                      		"sfun"
+		description               		"Default Simulink S-Function Target."
+		machine                   		1
+		linkNode                  		[1 0 0]
+	}
+}
