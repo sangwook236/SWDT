@@ -1,6 +1,0 @@
- INFO [    9] swlLogger.logger (D:\work_sw_dev\csharp\ext\test\log4net_test\Program.cs:25) 12:51:53,542 - Entering application.
- INFO [    9] swlLogger.logger (D:\work_sw_dev\csharp\ext\test\log4net_test\Program.cs:28) 12:51:53,573 - Exiting application.
- INFO [    1] swlLogger.logger (D:\work_sw_dev\csharp\ext\test\log4net_test\Program.cs:25) 13:07:03,480 - Entering application.
- INFO [    1] swlLogger.logger (D:\work_sw_dev\csharp\ext\test\log4net_test\Program.cs:28) 13:07:03,698 - Exiting application.
- INFO [    1] swlLogger.logger (D:\work_sw_dev\csharp\ext\test\log4net_test\Program.cs:25) 13:11:57,667 - Entering application.
- INFO [    1] swlLogger.logger (D:\work_sw_dev\csharp\ext\test\log4net_test\Program.cs:28) 13:11:57,714 - Exiting application.
