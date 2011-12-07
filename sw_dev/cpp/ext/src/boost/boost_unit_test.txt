@@ -1,0 +1,104 @@
+[execution monitor]
+  execution_monitor
+  
+[program execution monitor]
+  program_execution_monitor
+  cpp_main()
+
+[minimal testing facility]
+  test_main()
+
+[unit test framework]
+  BOOST_TEST_MAIN
+  BOOST_TEST_MODULE
+  BOOST_TEST_NO_MAIN
+
+  unit_test_main()
+  init_unit_test_suite()
+
+  static library variant
+  dynamic library variant
+    <boost/test/unit_test.hpp>
+  single-header variant
+    <boost/test/included/unit_test.hpp>
+  external test runner variant
+
+  boost::unit_test::test_case
+  boost::unit_test::test_suite
+  boost::unit_test::framework::master_test_suite()
+
+[test case generator]
+  BOOST_TEST_CASE
+  BOOST_AUTO_TEST_CASE
+    automated registration
+  BOOST_PARAM_TEST_CASE
+  BOOST_TEST_CASE_TEMPLATE
+    BOOST_TEST_CASE_TEMPLATE_FUNCTION
+  BOOST_AUTO_TEST_CASE_TEMPLATE
+  BOOST_TEST_SUITE
+  BOOST_AUTO_TEST_SUITE
+  BOOST_AUTO_TEST_SUITE_END
+  BOOST_FIXTURE_TEST_CASE
+  BOOST_FIXTURE_TEST_SUITE
+  BOOST_GLOBAL_FIXTURE
+    boost::unit_test::global_fixture
+
+[test log]
+  test log ==> standard output (by default)
+  test report ==> standard error output (by default)
+  test progress ==> standard output (by default)
+
+  log level
+
+  BOOST_TEST_MESSAGE
+  BOOST_TEST_CHECKPOINT
+  BOOST_TEST_PASSPOINT
+
+  BOOST_TEST_DONT_PRINT_LOG_VALUE
+
+  boost::unit_test::unit_test_log
+    boost::unit_test::unit_test_log.set_stream()
+    boost::unit_test::unit_test_log.set_threshold_level()
+    boost::unit_test::unit_test_log.set_format()
+  boost::unit_test::unit_test_report
+  boost::unit_test::runtime_config::log_level()
+
+  boost::unit_test::progress_monitor
+    boost::unit_test::progress_monitor.set_stream()
+
+[testing tool]
+  BOOST_WARN
+  BOOST_CHECK
+  BOOST_REQUIRE
+
+  BOOST_ERROR
+  BOOST_FAIL
+  BOOST_IS_DEFINED
+
+  BOOST_<level>
+  BOOST_<level>_BITWISE_EQUAL
+  BOOST_<level>_CLOSE
+  BOOST_<level>_CLOSE_FRACTION
+  BOOST_<level>_EQUAL
+  BOOST_<level>_EQUAL_COLLECTION
+  BOOST_<level>_EXCEPTION
+  BOOST_<level>_GE
+  BOOST_<level>_GT
+  BOOST_<level>_LE
+  BOOST_<level>_LT
+  BOOST_<level>_MESSAGE
+  BOOST_<level>_NE
+  BOOST_<level>_NO_THROW
+  BOOST_<level>_PREDICATE
+  BOOST_<level>_SMALL
+  BOOST_<level>_THROW
+
+  boost::test_tools::output_test_stream
+    is_empty()
+    check_length()
+    is_equal()
+    match_pattern()
+
+  custom predicate
+    BOOST_CHECK_PREDICATE
+    boost::test_tools::predicate_result

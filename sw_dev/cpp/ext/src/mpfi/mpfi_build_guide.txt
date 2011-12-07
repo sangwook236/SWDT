@@ -1,0 +1,58 @@
+[ref]
+gmp_build_guide.txt
+
+<<주의>> static library로 build 됨.
+
+---------------------------------------------------------------------
+
+[1] build static library in Cygwin & MinGW
+	run "Cygwin Bash" or "MSYS"
+	cd ${mpfi_build}
+	./configure --prefix=${mpfi_install} --with-mpfr-include=${mpfr_install}/include --with-mpfr-lib=${mpfr_install}/lib --with-gmp-include=${gmp_install}/include --with-gmp-lib=${gmp_install}/lib
+	make
+	(optional) make check
+	(optional) make install
+
+[2] build shared library in Cygwin & MinGW
+	1. build shared library
+		run "Cygwin Bash" or "MSYS"
+		cd ${mpfi_build}
+		./configure --prefix=${mpfi_install} --with-mpfr-include=${mpfr_install}/include --with-mpfr-lib=${mpfr_install}/lib --with-gmp-include=${gmp_install}/include --with-gmp-lib=${gmp_install}/lib --disable-static --enable-shared
+		make
+		(optional) make check
+		(optional) make install
+
+		a windows DLL "cygmpfi-1.dll" (Cygwin) or "libmpfi-1.dll" (MinGW) will be generated.
+
+	2. to ensure that these DLLs can be called by a Microsoft Visual C++ program
+		you must generate an import library (.lib) for them.
+
+		if you have an existing DLL already, you need to build a Cygwin-compatible import library.
+
+		(1) if there is no def file in ${mpfi_build}/src/.libs, generate def file
+			cd ${mpfi_build}/src/.libs or ${mpfi_install}/bin
+			echo EXPORTS > ${mpfi_lib_name}.dll.def
+			nm ${mpfi_lib_name}.dll | grep ' T _' | sed 's/.* T _//' >> ${mpfi_lib_name}.dll.def
+
+			where ${mpfi_lib_name} means cygmpfi-1 (Cygwin) or libmpfi-1 (MinGW)
+
+			Note that this will only work if the DLL is not stripped.
+			Otherwise you will get an error message: "No symbols in ${mpfi_lib_name}.dll".
+
+		(2) once you have the ${mpfi_lib_name}.dll.def file, you can create an import library from it like this.
+
+			(주의) dll file과 def file의 이름이 다르다면 def file의 이름과 형식에 맞추어 dll file과 lib file의 이름을 정해야 한다. (확인 필요)
+				e.g.) libmpfi-10.dll & libmpfi-1.dll.def ==> libmpfi-1.dll.dll & libmpfi-1.dll.def
+
+			cd ${mpfi_build}/src/.libs
+			mv ${mpfi_lib_name}.dll ${mpfi_lib_name}.dll.dll
+			(a) using dlltool in Cygwin & MinGW
+				dlltool --def ${mpfi_lib_name}.dll.def --dllname ${mpfi_lib_name}.dll.dll --output-lib ${mpfi_lib_name}.dll.lib
+			(b) using Microsoft LIB tool
+				lib /machine:i386 /def:${mpfi_lib_name}.dll.def /out:${mpfi_lib_name}.dll.lib
+
+		(3) (optional) in Cygwin & MinGW
+			removes unnecessary information from executable binary programs and object files,
+			thus potentially resulting in better performance and sometimes significantly less disk space usage.
+
+			strip ${mpfi_lib_name}.lib

@@ -1,0 +1,111 @@
+<<  Building  >>
+
+[-] ACE site file download
+	-. http://www.cs.wustl.edu/~schmidt/ACE.html
+[-] ACE_ROOT 환경변수 설정
+	-. on Windows
+		ACE_ROOT="C:\ACE\ACE_wrappers"
+	-. on cygwin32
+		export ACE_ROOT=/ACE/ACE_wrappers
+[-] config.h file 생성
+	-. %ACE_ROOT%/ace/config.h
+	-. on Windows
+		#include "ace/config-win32.h"
+[-] load the workspace file for ACE
+	<-> MSVC6
+		-. %ACE_ROOT%/ace/ace.dsw
+	<-> MSVC7.1
+		-. %ACE_ROOT%/ace/ace.sln
+[-] set building environment
+	<-> %ACE_ROOT%/ACE-INSTALL 읽어볼 것
+	<-> building option
+		-. if you want to use the standard C++ headers (iostream, cstdio, ... as defined by the C++ Standard Draft 2) that comes with MSVC, then add the line
+				#define ACE_HAS_STANDARD_CPP_LIBRARY 1
+			before the #include statement in %ACE_ROOT%/ace/config.h
+		-. static version of ACE libraries are build with ACE_AS_STATIC_LIBS defined.
+			this macro should also be used in application projects that link to static ACE libraries.
+			optionally you can also add the line
+				#define ACE_NO_INLINE
+			before the #include statement in %ACE_ROOT%/ace/config.h to disable inline function and reduce the size of static libraries (and your executables.)
+		-. on Windows
+			-> if you are building on Windows 9x/Me
+					#define ACE_HAS_WINNT4 0
+				before the #include statement in %ACE_ROOT%/ace/config.h and it will turn off some WinNT/Win2K-specific code in ACE
+			-> to use ACE with MFC libraries, also add the following to your %ACE_ROOT%/ace/config.h file.
+					#define ACE_HAS_MFC 1
+				notice that if you want to spawn a new thread with CWinThread, make sure you spawn the thread with THR_USE_AFX flag set.
+				by default, all of the ACE projects use the DLL versions of the MSVC run-time libraries.
+				you can still choose use the static (LIB) versions of ACE libraries regardless of run-time libraries.
+			-> if you prefer to link MFC as a static library into ACE,
+				you can do this by defining ACE_USES_STATIC_MFC in your %ACE_ROOT%/ace/config.h file.
+				however, if you would like to link everything (including the MSVC run-time libraries) statically,
+				you'll need to modify the project files in ACE yourself.
+			-> sample for %ACE_ROOT%/ace/config.h
+				#ifndef ACE_CONFIG_H
+				#define ACE_CONFIG_H
+
+				#define ACE_HAS_STANDARD_CPP_LIBRARY 1
+				//#define ACE_USES_STATIC_MFC 1
+				#define ACE_USES_WCHAR 1
+
+				//#define ACE_HAS_MFC 1
+				//#define ACE_DOESNT_INSTANTIATE_NONSTATIC_OBJECT_MANAGER 1
+
+				#include "ace/config-win32.h"
+
+				#endif /* ACE_CONFIG_H */
+		-. on cygwin32
+			-> platform_macros.GNU file 생성
+				>> %ACE_ROOT%/include/makeinclude/platform_macros.GNU
+				>> include %ACE_ROOT%/include/makeinclude/platform_cygwin32.GNU
+	<-> when an entry point other than main is calling
+		-. If you really need to call your entry point something other than main,
+			you'll need to construct and destroy the ACE_Object_Manager.
+			The best way to do that is to call ACE::init() and ACE::fini().
+			Or, see the #define of main(int, char *[]) in %ACE_ROOT%/ace/OS.h
+			to see how ACE does that for entry points named main.
+		-. ref
+			in %ACE_ROOT%/ace/OS_main.h
+				ace_os_wmain_i()
+				ace_os_wintmain_i()
+			in %ACE_ROOT%/ace/OS_main.cpp
+				ace_os_wmain_i()
+				ace_os_wintmain_i()
+		-. solution
+			-> using MFC
+				>> macros as below are defined in the preprocessor
+					ACE_HAS_MFC=1
+					ACE_DOESNT_INSTANTIATE_NONSTATIC_OBJECT_MANAGER=1
+				>> code as below are inserted
+					BOOL C...App::InitInstance()
+					{
+						//...
+						
+						ACE::init();
+					
+						//ACE_TP_Reactor *my_reactor = new ACE_TP_Reactor;
+						ACE_WFMO_Reactor *my_reactor = new ACE_WFMO_Reactor;
+						//ACE_Msg_WFMO_Reactor *my_reactor = new ACE_Msg_WFMO_Reactor;
+						ACE_Reactor *new_reactor = new ACE_Reactor(my_reactor, 1);
+						ACE_Reactor::instance(new_reactor, 1);
+				
+						//...
+					}
+					int C...App::ExitInstance() 
+					{
+						//...
+						
+						ACE::fini();
+					
+						//...
+					}
+[-] when linking with STLport
+	<-> debug mode buidling
+		-. _STLP_DEBUG macro should be defined	
+
+
+<<  Troubleshooting  >>
+
+[-] STLport building ios error 
+	#define ACE_HAS_STANDARD_CPP_LIBRARY 1
+	before the #include statement in %ACE_ROOT%/ace/config.h

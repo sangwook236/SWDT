@@ -1,0 +1,83 @@
+<<  Building  >>
+
+[-] STLport site로부터 library를 download
+	-. http://www.stlport.org/
+[-] 압축 해제
+[-] STLport 환경 설정
+	<-> run configure
+		-. target file
+			%STLPORT_ROOT%/build/lib/configure.bat
+		-. command
+			>> for a dynamic linking
+				configure.bat -c msvc71 --rtl-dynamic --extra-cxxflag /Zc:wchar_t
+			>> for a static linking
+				configure.bat -c msvc71 --rtl-static --extra-cxxflag /Zc:wchar_t
+	<-> sets compile options
+		-. uses STL debug mode
+			-> uses as a compile option
+				library or application building시에 compile option으로 _STLP_DEBUG 지정
+			-> modifies user config file
+				>> target file
+					%STLPORT_ROOT%/stlport/stl_user_config.h
+				>> turn on the debug mode for STLport
+					_STLP_DEBUG macro
+					STLport가 제공하는 debugging facility를 사용하기 위해 turn on
+					1. "%STLPORT_ROOT%/stlport/stl_user_config.h"에서 macro 활성화
+						#if defined(_DEBUG) || defined(DEBUG)
+						#	define _STLP_DEBUG 1
+						#else
+						#	undef _STLP_DEBUG
+						#endif
+					2. define _STLP_DEBUG macro before including any STL header
+					3. supply the definition via compiler command-line or within CXXFLAGS in a makefile
+						gcc -g -D_STLP_DEBUG foo.cpp
+	<-> sets link options
+		-. sets linking type
+			-> target file
+				%STLPORT_ROOT%/stlport/stl/_site_config.h
+			-> for a dynamic linking
+				#define _STLP_USE_DYNAMIC_LIB 1
+			-> for a static linking
+				#define _STLP_USE_STATIC_LIB 1
+[-] MSVC 환경변수 설정
+	-. Visual Studio 6.0
+		>> %VC6_ROOT%/Vc98/bin/vcvars32.bat 실행
+		>> command
+			vcvars32.bat > nul
+	-. Visual Studio .NET 2003
+		>> %VC71_ROOT%/Vc7/bin/vcvars32.bat 실행
+		>> command
+			vcvars32.bat > nul
+[-] install STLport library
+	-. command
+		>> Visual Studio 6.0
+			nmake -f nmake-vc6.mak install
+		>> Visual Studio .NET 2003
+			nmake -f nmake-vc71.mak install
+	-. resulting library files are installed into a subdirectory
+			%STLPORT_ROOT%/lib/stlport_d50.lib
+			%STLPORT_ROOT%/lib/stlport_r50.lib
+			%STLPORT_ROOT%/lib/stlport_stld50.lib
+			%STLPORT_ROOT%/bin/stlport_d50.dll
+			%STLPORT_ROOT%/bin/stlport_r50.dll
+			%STLPORT_ROOT%/bin/stlport_sltd50.dll
+[-] set path
+	-. Visual Studio IDE에서 아래의 directory를 include path의 '최상위'에 추가
+			
+
+<<  Trouble Shooting  >>
+
+[-] MSVC 7.1에서 native wchar_t를 지원하게 하기 위해서
+	-. STLport compiling시 compile option을 변경하여야 함
+		>> target file
+			%STLPORT_ROOT%/build/Makefiles/nmake/vc71.mak
+		>> add "/Zc:wchar_t" to compile flags
+			CFLAGS_COMMON = /nologo /W4 /GR /GX /Zc:wchar_t
+			CXXFLAGS_COMMON = /nologo /W4 /GR /GX /Zc:wchar_t
+[-] Makes VC Warning Disable
+	-. ref
+		%STLPORT_5.0RC2_ROOT%/src/vc_warning_disable.h
+[-] %STLPORT_ROOT%/build/lib/configure.bat 실행시 error
+	<-> The system cannot find the batch label specified - oc_msvc71
+		-. oc_msvc71 label이 붙은 paragraph를 다른 곳으로 이동시킴
+			e.g. oc_msvc6 paragraph 앞

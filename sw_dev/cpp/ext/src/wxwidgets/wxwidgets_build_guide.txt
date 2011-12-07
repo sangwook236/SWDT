@@ -1,0 +1,65 @@
+<<  Building  >>
+
+[-] downloads files from wxWidgets site
+	-. http://www.wxwidgets.org
+[-] builds a project
+	<-> ver. 2.6 & msvc
+		-. in Visual Studio IDE
+			-> target project file
+				"%WXWIDGETS_ROOT%/build/msw/wx.dsw"
+				"%WXWIDGETS_ROOT%/build/msw/wx_dll.dsw"
+			-> there are project dependencies
+				0: wxexpat.lib wxjpeg.lib wxpng.lib wxregex.lib wxtiff.lib wxzlib.lib
+				1: wxbase.lib
+				2: wxmsw_core.lib
+				3: wxbase_net.lib wxbase_odbc.lib wxbase_xml.lib
+				4: wxmsw_adv.lib wxmsw_gl.lib wxmsw_html.lib wxmsw_media.lib wxmsw_qa.lib wxmsw_xrc.lib
+				5: wxmsw_dbgrid.lib
+		-. in CLI
+			-> target project file
+				"%WXWIDGETS_ROOT%/build/msw/"
+			-> command
+			 	nmake -f makefile.vc
+			 	nmake -f makefile.vc clean
+
+
+<<  Linking  >>
+
+[-] Include Path
+	<-> standard
+		%WXWIDGETS_ROOT%/include/wx
+		%WXWIDGETS_ROOT%/include/msvc/wx
+	<-> when there is a certain problem(?)
+		-. when static linking: depending on building modes
+			%WXWIDGETS_ROOT%/lib/vc_lib/msw
+			%WXWIDGETS_ROOT%/lib/vc_lib/mswd
+			%WXWIDGETS_ROOT%/lib/vc_lib/mswu
+			%WXWIDGETS_ROOT%/lib/vc_lib/mswud
+			%WXWIDGETS_ROOT%/lib/vc_lib/mswuniv
+			%WXWIDGETS_ROOT%/lib/vc_lib/mswunivd
+			%WXWIDGETS_ROOT%/lib/vc_lib/mswunivu
+			%WXWIDGETS_ROOT%/lib/vc_lib/mswunivud
+		-. when dynamic linking: depending on building modes
+			%WXWIDGETS_ROOT%/lib/vc_dll/msw
+			%WXWIDGETS_ROOT%/lib/vc_dll/mswd
+			%WXWIDGETS_ROOT%/lib/vc_dll/mswu
+			%WXWIDGETS_ROOT%/lib/vc_dll/mswud
+			%WXWIDGETS_ROOT%/lib/vc_dll/mswuniv
+			%WXWIDGETS_ROOT%/lib/vc_dll/mswunivd
+			%WXWIDGETS_ROOT%/lib/vc_dll/mswunivu
+			%WXWIDGETS_ROOT%/lib/vc_dll/mswunivud
+[-] Library Path
+	%WXWIDGETS_ROOT%/lib/vc_lib
+	%WXWIDGETS_ROOT%/lib/vc_dll
+[-] Linking Library
+	-. Windows Libraries
+	 	kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib
+		winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib
+		uuid.lib rpcrt4.lib advapi32.lib wsock32.lib oleacc.lib odbc32.lib 
+	-. ver. 2.6
+		wxexpat.lib wxjpeg.lib wxpng.lib wxregex.lib wxtiff.lib wxzlib.lib
+		wxbase.lib
+		wxmsw_core.lib
+		wxbase_net.lib wxbase_odbc.lib wxbase_xml.lib
+		wxmsw_adv.lib wxmsw_gl.lib wxmsw_html.lib wxmsw_media.lib wxmsw_qa.lib wxmsw_xrc.lib
+		wxmsw_dbgrid.lib

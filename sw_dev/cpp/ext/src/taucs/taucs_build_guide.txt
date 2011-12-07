@@ -1,0 +1,8 @@
+1.
+	vsvars32.bat 실행
+2.
+	configure.bat 실행
+3.
+	set OSTYPE=win32 설정
+4.
+	nmake -f build/OSTYPE/makefile

@@ -1,0 +1,28 @@
+<<  Building  >>
+
+[-] downloads files
+	http://www.graphviz.org/
+	http://www.research.att.com/sw/tools/graphviz/
+[-]	adds the third-party libraries
+	-. downloads third-party executable packages
+		http://www.research.att.com/sw/tools/graphviz/dist/third-party.zip
+		http://www.graphviz.org/
+	-. sets include & library paths of third-party libraries
+		"%GRAPHVIZ_ROOT%/third-party/include"
+		"%GRAPHVIZ_ROOT%/third-party/lib"
+[-] builds a project
+	<-> ref
+		"%GRAPHVIZ_ROOT%/doc/build.html"
+	<-> graphviz-win-2.2.1 & msvc
+		-. in Visual Studio IDE
+			-> target project file
+				"%GRAPHVIZ_ROOT%/makearch/win32/static/graphviz.dsw"
+				"%GRAPHVIZ_ROOT%/makearch/win32/static/Tools.dsw"
+			-> static linking library
+				there are no project dependencies
+		-. in CLI
+			"%GRAPHVIZ_ROOT%/build.bat"
+			"%GRAPHVIZ_ROOT%/install.bat"
+
+
+<<  Linking  >>

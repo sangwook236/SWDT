@@ -1,0 +1,135 @@
+Boost.Build V2 (Milestone 12)
+Boost.Jam 03.1.16
+
+Project-specific help:
+
+  Project has jamfile at Jamroot
+
+Usage:
+
+  bjam [options] [install|stage]
+
+  Builds and installs Boost.
+
+Targets and Related Options:
+
+  install                 Install headers and compiled library files to the
+  =======                 configured locations (below).
+
+  --prefix=<PREFIX>       Install architecture independent files here.
+                          Default; C:\Boost on Win32
+                          Default; /usr/local on Unix. Linux, etc.
+
+  --exec-prefix=<EPREFIX> Install architecture dependent files here.
+                          Default; <PREFIX>
+
+  --libdir=<DIR>          Install library files here.
+                          Default; <EPREFIX>/lib
+
+  --includedir=<HDRDIR>   Install header files here.
+                          Default; <PREFIX>/include
+
+  stage                   Build and install only compiled library files
+  =====                   to the stage directory.
+
+  --stagedir=<STAGEDIR>   Install library files here
+                          Default; ./stage
+
+Other Options:
+
+  --build-type=<type>     Build the specified pre-defined set of variations
+                          of the libraries. Note, that which variants get
+                          built depends on what each library supports.
+
+                              minimal (default) - Builds the single
+                              "release" version of the libraries. This
+                              release corresponds to specifying:
+                              "release <threading>multi <link>shared
+                              <runtime-link>shared" as the Boost.Build
+                              variant to build.
+
+                              complete - Attempts to build all possible
+                              variations.
+
+  --build-dir=DIR         Build in this location instead of building
+                          within the distribution tree. Recommended!
+
+  --toolset=toolset       Indicates the toolset to build with.
+
+  --show-libraries        Displays the list of Boost libraries that require
+                          build and installation steps, then exit.
+
+  --layout=<layout>       Determines whether to choose library names 
+                          and header locations such that multiple 
+                          versions of Boost or multiple compilers can
+                          be used on the same system.
+
+                              versioned (default) - Names of boost
+                              binaries include the Boost version
+                              number and the name and version of the
+                              compiler.  Boost headers are installed
+                              in a subdirectory of <HDRDIR> whose
+                              name contains the Boost version
+                              number.
+
+                              system - Binaries names do not include
+                              the Boost version number or the name
+                              and version number of the compiler.
+                              Boost headers are installed directly
+                              into <HDRDIR>.  This option is
+                              intended for system integrators who
+                              are building distribution packages.
+
+  --buildid=ID            Adds the specified ID to the name of built
+                          libraries.  The default is to not add anything.
+
+  --help                  This message.
+
+  --with-<library>        Build and install the specified <library>
+                          If this option is used, only libraries
+                          specified using this option will be built.
+
+  --without-<library>     Do not build, stage, or install the specified
+                          <library>. By default, all libraries are built.
+
+Configuration help:
+
+  Configuration file at D:\work\programming\cpp\ext\src\boost\boost_1_35_0
+  tools\build\v2\user-config.jam
+
+ This file is used to configure your Boost.Build installation.
+ You can modify this file in place, or you can place it it
+ permanent location so that it's not overwritten should you
+ get new version of Boost.Build. See:
+
+   http://boost.org/boost-build2/doc/html/bbv2/reference.html#bbv2.reference.init
+
+ for documentation about permanent location.
+
+General command line usage:
+
+    bjam [options] [properties] [targets]
+
+  Options, properties and targets can be specified in any order.
+      
+Important Options:
+
+  * --clean Remove targets instead of building
+  * -a Rebuild everything
+  * -n Don't execute the commands, only print them
+  * -d+2 Show commands as they are executed
+  * -d0 Supress all informational messages
+  * -q Stop at first error
+  * --debug-configuration Diagnose configuration
+  * --debug-building Report which targets are built with what properties
+  * --debug-generator Diagnose generator search/execution
+
+Further Help:
+
+  The following options can be used to obtain additional documentation.
+
+  * --help-options Print more obscure command line options.
+  * --help-internal Boost.Build implementation details.
+  * --help-doc-options Implementation details doc formatting.
+
+...found 1 target...

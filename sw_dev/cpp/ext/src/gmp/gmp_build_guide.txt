@@ -1,0 +1,125 @@
+[ref]
+http://cs.nyu.edu/exact/core/gmp/
+http://gladman.plushost.co.uk/oldsite/computing/gmp4win.php
+
+---------------------------------------------------------------------
+
+[1] build static library in Cygwin & MinGW
+	run "Cygwin Bash" or "MSYS"
+	cd ${gmp_build}
+	./configure --prefix=${gmp_install}
+	make
+	(optional) make check
+	make install
+
+[2] build shared library in Cygwin & MinGW
+	1. build shared library
+		run "Cygwin Bash" or "MSYS"
+		cd ${gmp_build}
+		./configure --prefix=${gmp_install} --disable-static --enable-shared
+		make
+		(optional) make check
+		make install
+
+		a windows DLL "cyggmp-3.dll" (Cygwin) or "libgmp-3.dll" (MinGW) will be generated.
+
+	2. to ensure that these DLLs can be called by a Microsoft Visual C++ program
+		you must generate an import library (.lib) for them.
+
+		if you have an existing DLL already, you need to build a Cygwin-compatible import library.
+
+		(1) if there is no def file in ${gmp_build}/.libs, generate def file
+			cd ${gmp_build}/.libs or ${gmp_install}/bin
+			echo EXPORTS > ${gmp_lib_name}.def
+			nm ${gmp_lib_name}.dll | grep ' T _' | sed 's/.* T _//' >> ${gmp_lib_name}.def
+
+			where ${gmp_lib_name} means cyggmp-3 (Cygwin) or libgmp-3 (MinGW)
+
+			Note that this will only work if the DLL is not stripped.
+			Otherwise you will get an error message: "No symbols in ${gmp_lib_name}.dll".
+
+		(2) once you have the ${gmp_lib_name}.dll.def file, you can create an import library from it like this.
+
+			(주의) dll file과 def file의 이름이 다르다면 def file의 이름과 형식에 맞추어 dll file과 lib file의 이름을 정해야 한다.
+				e.g.) libgmp-10.dll & libgmp-3.dll.def ==> libgmp-3.dll.dll & libgmp-3.dll.def
+
+			cd ${gmp_build}/.libs
+			mv ${gmp_lib_name}.dll ${gmp_lib_name}.dll.dll
+			(a) using dlltool in Cygwin & MinGW
+				dlltool --def ${gmp_lib_name}.dll.def --dllname ${gmp_lib_name}.dll.dll --output-lib ${gmp_lib_name}.dll.lib
+			(b) using Microsoft LIB tool
+				lib /machine:i386 /def:${gmp_lib_name}.dll.def /out:${gmp_lib_name}.dll.lib
+
+		(3) (optional) in Cygwin & MinGW
+			removes unnecessary information from executable binary programs and object files,
+			thus potentially resulting in better performance and sometimes significantly less disk space usage.
+
+			strip ${gmp_lib_name}.lib
+
+---------------------------------------------------------------------
+
+[1] Cygwin & MinGW (Building static GMP library)
+Cygwin
+	Download latest GMP from GNU MP to ${gmp_download}. 
+	Run "Cygwin Bash", unzip and untar GMP into ${gmp_build} using following command: 
+		cd ${gmp_build}
+		tar xzvf ${gmp_download}/gmp-x.x.x.tar.gz
+	Configure GMP for compilation: 
+		cd gmp-x.x.x
+		./configure --prefix=${gmp_install}
+	Build GMP: 
+		make
+	Install GMP header files and lib files: 
+	make install
+
+MinGW
+	Download latest GMP from GNU MP to ${gmp_download}. 
+	Run "MSYS", unzip and untar GMP into ${gmp_build} using following command: 
+		cd ${gmp_build}
+		tar xzvf ${gmp_download}/gmp-x.x.x.tar.gz
+	Configure GMP for compilation: 
+		cd gmp-x.x.x
+		./configure --prefix=${gmp_install}
+	Build GMP: 
+		make
+	Install GMP header files and lib files: 
+		make install
+
+For those who would like to use the Cygwin environment for development MinGW, you can follow these steps: 
+	(For MinGW 2.0 earlier only) Rename MinGW's "make.exe" (${mingw}/bin/make.exe) to "mingw32-make.exe". 
+	Add ${mingw}/bin at the beginning of the environment variable PATH. 
+		export PATH=${mingw}/bin:$PATH (for bash, sh)
+		or
+		setenv PATH ${mingw}/bin:$PATH (for csh, tcsh)
+	Download latest GMP from GNU MP to ${gmp_download}. 
+	Run "Cygwin Bash", unzip and untar GMP into ${gmp_build} using following command: 
+		cd ${gmp_build}
+		tar xzvf ${gmp_download}/gmp-x.x.x.tar.gz
+	Modify the "configure" script in GMP, change these lines (toward the end) 
+		# Make a symlink if possible; otherwise try a hard link.
+		ln -s $ac_rel_source $ac_dest 2>/dev/null || ln $srcdir/$ac_source $ac_dest ||
+		to
+		# Make a symlink if possible; otherwise try a hard link.
+		#ln -s $ac_rel_source $ac_dest 2>/dev/null || ln $srcdir/$ac_source $ac_dest ||
+		(Add a comment on first "ln -s" so hard link are created instead of symbolic link) 
+	Configure GMP for compilation: 
+		cd gmp-x.x.x
+		./configure --build=pentium3-pc-mingw32 --prefix=${gmp_install}
+		(replace "pentium3-pc" by your CPU type) 
+	Build GMP: 
+		make
+	Install GMP header files and lib files: 
+		make install
+
+[2] Cygwin & MinGW (Building dynamic GMP library)
+	GMP cannot build static and shared libraries at the same time and it will only build static library by default.
+	To use dynamic library, i.e DLL under windows platform, you need to add the options "--disable-static --enable-shared" when you configure GMP, i.e. run this command: 
+		./configure --prefix=${gmp_install} --disable-static --enable-shared
+	A windows DLL "cyggmp-3.dll" (Cygwin) or "libgmp-3.dll" (MinGW) will be generated and you can link it with your executable programs as usual under Cygwin & MinGW
+	except that when you run them, you have put these DLLs in some path which is listed in environment variable $PATH.
+	To ensure that these DLLs can be called by a Microsoft Visual C++ program,
+	you must generate an import library (.lib) for them, using Microsoft LIB tool: 
+		cd gmp-x.x.x/.libs
+		lib /machine:i386 /def:cyggmp-3.dll-def (for Cygwin) 
+		or
+		lib /machine:i386 /def:libgmp-3.dll-def (for MinGW) 

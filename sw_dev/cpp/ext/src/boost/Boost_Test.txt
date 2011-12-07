@@ -1,0 +1,33 @@
+<<  Basic  >>
+
+[-] Execution Monitor
+	-. it is a lower level component of Boost Test Library
+	-. it's used as a base for implementing all other Boost Test components
+		but also could be used standalone to get a benefit of controlled execution of error prone functions with a uniform error notification
+
+	-. including: boost/test/execution_monitor.hpp
+	-. using: boost::execution_monitor
+
+[-] Program Execution Monitor
+	-. it relieves users from messy error detection and reporting duties
+	
+	-. using: boost::execution_monitor
+	-. calling: int cpp_main(int argc, char* argv[]);
+
+[-] Test Tools
+	-. it supplies a toolbox to ease a creation and a maintenance of test programs and provide a uniform error reporting mechanism
+	
+	-. including: boost/test/test_tools.hpp
+
+[-] Test Execution Monitor
+	-. it is intended for fairly simple test programs or to dig a problem in an existent production code
+	
+	-. using: boost::unit_test::test_case
+	-. calling: int test_main(int argc, char* argv[]);
+
+[-] Unit Test Framework
+	-. it provides facilities to simplify writing test cases using Test Tools and organizing them into test suites hierarchy
+
+	-. including: boost/test/unit_test.hpp
+	-. using: boost::unit_test::test_suite
+	-. calling: boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]);

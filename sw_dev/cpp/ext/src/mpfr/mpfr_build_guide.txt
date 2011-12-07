@@ -1,0 +1,56 @@
+[ref]
+gmp_build_guide.txt
+
+---------------------------------------------------------------------
+
+[1] build static library in Cygwin & MinGW
+	run "Cygwin Bash" or "MSYS"
+	cd ${mpfr_build}
+	./configure --prefix=${mpfr_install} --with-gmp-include=${gmp_install}/include --with-gmp-lib=${gmp_install}/lib
+	make
+	(optional) make check
+	(optional) make install
+
+[2] build shared library in Cygwin & MinGW
+	1. build shared library
+		run "Cygwin Bash" or "MSYS"
+		cd ${mpfr_build}
+		./configure --prefix=${mpfr_install} --with-gmp-include=${gmp_install}/include --with-gmp-lib=${gmp_install}/lib --disable-static --enable-shared
+		make
+		(optional) make check
+		(optional) make install
+
+		a windows DLL "cygmpfr-4.dll" (Cygwin) or "libmpfr-4.dll" (MinGW) will be generated.
+
+	2. to ensure that these DLLs can be called by a Microsoft Visual C++ program
+		you must generate an import library (.lib) for them.
+
+		if you have an existing DLL already, you need to build a Cygwin-compatible import library.
+
+		(1) if there is no def file in ${mpfr_build}/src/.libs, generate def file
+			cd ${mpfr_build}/src/.libs or ${mpfr_install}/bin
+			echo EXPORTS > ${mpfr_lib_name}.dll.def
+			nm ${mpfr_lib_name}.dll | grep ' T _' | sed 's/.* T _//' >> ${mpfr_lib_name}.dll.def
+
+			where ${mpfr_lib_name} means cygmpfr-4 (Cygwin) or libmpfr-4 (MinGW)
+
+			Note that this will only work if the DLL is not stripped.
+			Otherwise you will get an error message: "No symbols in ${mpfr_lib_name}.dll".
+
+		(2) once you have the ${mpfr_lib_name}.dll.def file, you can create an import library from it like this.
+
+			(주의) dll file과 def file의 이름이 다르다면 def file의 이름과 형식에 맞추어 dll file과 lib file의 이름을 정해야 한다. (확인 필요)
+				e.g.) libmpfr-4.dll & libmpfr-4.dll.def ==> libmpfr-4.dll.dll & libmpfr-4.dll.def
+
+			cd ${mpfr_build}/src/.libs
+			mv ${mpfr_lib_name}.dll ${mpfi_lib_name}.dll.dll
+			(a) using dlltool in Cygwin & MinGW
+				dlltool --def ${mpfr_lib_name}.dll.def --dllname ${mpfr_lib_name}.dll.dll --output-lib ${mpfr_lib_name}.dll.lib
+			(b) using Microsoft LIB tool
+				lib /machine:i386 /def:${mpfr_lib_name}.dll.def /out:${mpfr_lib_name}.dll.lib
+
+		(3) (optional) in Cygwin & MinGW
+			removes unnecessary information from executable binary programs and object files,
+			thus potentially resulting in better performance and sometimes significantly less disk space usage.
+
+			strip ${mpfr_lib_name}.lib

@@ -1,0 +1,34 @@
+<<  Building  >>
+
+[-] TIFF site로부터 file download
+	-. http://logging.apache.org/log4cxx/
+[-] MSVC 환경변수 설정
+	-. Visual Studio 6.0
+		>< %VC6_ROOT%/Vc98/bin/vcvars32.bat 실행
+		>< command
+			vcvars32.bat > nul
+	-. Visual Studio .NET 2003
+		>< %VC71_ROOT%/Vc7/bin/vcvars32.bat 실행
+		>< command
+			vcvars32.bat > nul
+[-] build library
+	-. Visual Studio 6.0
+		>< %LOG4CXX_ROOT%/msvc/log4cxx.dsw
+	-. Visual Studio .NET 2003
+		>< %LOG4CXX_ROOT%/msvc/log4cxx.sln
+[-] output files
+	-. output directory
+		%LOG4CXX_ROOT%/msvc/bin
+		%LOG4CXX_ROOT%/msvc/lib
+
+
+<<  Trouble Shooting  >>
+
+[-] rename output files
+	-. debug-build "NTEventLogAppender.dll"
+		>> target file
+			%LOG4CXX_ROOT%/include/log4cxx/nt/EventLogCategories.mc
+		>> debug mode를 위한 "NTEventLogAppender.dll"의 이름을 "NTEventLogAppenderd.dll"으로 변경하려면
+			1. click right mouse button on "EventLogCategories.mc" in Visual Studio IDE
+			2. click "Properties" item
+			3. change the DLL's name into "NTEventLogAppenderd.dll" in Custom Build Step

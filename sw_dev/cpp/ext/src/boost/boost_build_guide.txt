@@ -1,0 +1,291 @@
+<<  Building & Installation  >>
+
+[-] boost site로 부터 file download
+	-. related files
+		boost package
+		boost-jam file
+	-. http://www.boost.org
+[-] Linking with STLport
+	-. environmental variable 설정
+		STLPORT_PATH
+		STLPORT_VERSION
+		e.g.) when linking with STL port in "%STLPORT_HOME%/STLport-4.6.2"
+			set STLPORT_PATH="%STLPORT_HOME%"
+			set STLPORT_VERSION=4.6.2
+	-. building된 STLport 관련 lib/dll file들이 특정 directory에 존재해야 함
+		"%STLPORT_PATH%/STLport-4.6.2/lib" directory
+	-. STLport debug mode가 정의되어 있어야 함
+		#define _STLP_DEBUG 1
+[-] MSVC 환경변수 설정
+	-. Visual Studio 6.0
+		>> %VC6_ROOT%/Vc98/bin/vcvars32.bat 실행
+		>> command
+			vcvars32.bat > nul
+	-. Visual Studio .NET 2003
+		>> %VC71_ROOT%/Vc7/bin/vcvars32.bat 실행
+		>> command
+			vcvars32.bat > nul
+[-] sets compiler specific configuration policy
+	-. %BOOST_ROOT%/boost/config/user.hpp
+[-] runs batch file
+	-. boost_build.bat 실행
+	-. 특정 library만을 building하고자 한다면 해당 option을 추가
+		e.g.) boost::date_time library만을 building하는 경우
+			bjam --with-date_time "-sBUILD=debug" install
+[-] installation
+	-. include files
+		"%BOOST_PREFIX_DIR%/include"
+	-. library files
+		"%BOOST_PREFIX_DIR%/lib"
+[-] run a batch file
+	-. e.g.
+		boost_build_1_32_0_vc71.bat clean > error.log
+		boost_build_1_32_0_vc71.bat stage > error.log
+		boost_build_1_32_0_vc71.bat install > error.log
+
+
+<<  Trouble Shooting  >>
+
+[-] configuration of boost library
+	-. boost library에는 user configuration을 위한 file을 제공
+		%BOOST_HEADER_ROOT%/config/user.hpp
+[-] library linking시 error가 발생할 때
+	-. boost building시에 outpur message를 file로 redirection해 "failed"된 원인을 제거
+		e.g.)
+			1. boost_build > error.log
+			2. error.log file에서 "failed"를 검색
+[-] building시 boost library source와 같이 배포되는 jam file을 이용해야 함
+[-] ver. 1.32.0에서 boost::date_time library를 MSVC6/STLport를 이용하여 building할 때
+	-. 알 수 없는 error 발생시
+		>< "boost/date_time/date_formatting.hpp"을 아래와 같이 수정
+			[ref] http://lists.boost.org/MailArchives/boost/msg76452.php
+		<수정전>
+			public:
+				// Workaround for ICE in MSVC 6 when building with STLport IOstreams
+				//! Formats a month as as string into an ostream
+				/*! This function demands that month_type provide
+				 *  functions for converting to short and long strings
+				 *  if that capability is used.
+				 */
+				static std::basic_ostream<charT>& format_month(const month_type& month,
+				                                  std::basic_ostream<charT>& os)
+		<수정후>
+			public:
+				// Workaround for ICE in MSVC 6 when building with STLport IOstreams
+			#if defined(BOOST_MSVC) && BOOST_MSVC <= 1200 && \
+			    (defined(__SGI_STL_PORT) || defined(_STLPORT_VERSION)) && \
+			    !defined(_STLP_NO_OWN_IOSTREAMS)
+			private:
+				typedef std::basic_ostream<charT> _ostream_type;
+			public:
+				static _ostream_type &format_month(const month_type& month, _ostream_type &os)
+			#else
+			public:
+				//! Formats a month as as string into an ostream
+				/*! This function demands that month_type provide
+				 *  functions for converting to short and long strings
+				 *  if that capability is used.
+				 */
+				static std::basic_ostream<charT>& format_month(const month_type& month,
+				                                  std::basic_ostream<charT>& os)
+			#endif
+	-. _i64toa 관련 error 발생시
+		>< "boost/date_time/posix_time/date_formatters.hpp"을 아래와 같이 수정
+			[ref] http://lists.boost.org/MailArchives/boost/msg76453.php
+		>< 두 곳을 수정해야 함
+		<수정전>
+			template<class charT>
+			inline std::basic_string<charT> to_simple_string_type(time_duration td) {
+				//...
+			    charT buff[32];
+			    _i64toa(frac_sec, buff, 10);
+			    //...
+			}
+		<수정후>
+			#if (defined(BOOST_MSVC) && (_MSC_VER <= 1200))  // 1200 == VC++ 6.0
+			namespace detail {
+				template <typename charT> struct convert_int64;
+				template <> struct convert_int64<char> {
+					static char *convert (char *buff, boost::int64_t i)
+					{ return _i64toa(i, buff, 10); }
+				};
+				template <> struct convert_int64<wchar_t> {
+					static wchar_t *convert (wchar_t *buff, boost::int64_t i)
+					{ return _i64tow(i, buff, 10); }
+				};
+			}
+			#endif
+			
+			template<class charT>
+			inline std::basic_string<charT> to_simple_string_type(time_duration td) {
+				//...
+			    charT buff[32];
+			    detail::convert_int64<charT>::convert(buff, frac_sec);
+			    //...
+			}
+
+[-] ver. 1.32.0을 MSVC7.1/STLport를 이용하여 building할 때
+	-. boost::lexical_cast 관련 error 발생한다면
+		>< build option 추가
+			<native-wchar_t>on
+			e.g.) "-sBUILD=release <native-wchar_t>on"
+
+[-] Microsoft VC++ Compiler를 위한 project file(.dsw, *.sln)이 존재하는 library
+	-. serialisation library
+		>< directory where project files exist
+			%BOOST_ROOT%/libs/serialization/vc6ide
+			%BOOST_ROOT%/libs/serialization/vc7ide
+			%BOOST_ROOT%/libs/serialization/borland6ide
+		>< Visual Studio .NET(_MSC_VER >= 1300)에서만 정상적으로 building
+	-. python library
+		>< directory where project files exist
+			%BOOST_ROOT%/libs/python/build
+	-. test library
+		>< directory where project files exist
+			%BOOST_ROOT%/libs/test/build
+
+[-] ver. 1.33.0 & MSVC7.1/STLport5.0RC5를 이용하여 building할 때
+	<-> library linking error
+		-. error message
+			LINK : fatal error LNK1181: cannot open input file 'stlport_vc71.lib'
+			LINK : fatal error LNK1181: cannot open input file 'stlport_vc71_stldebug.lib'
+		-. building 관련 파일 수정
+			-> STLport library base name 수정
+				>> in %BOOST_ROOT%/tools/build/v1/vc-7_1-stlport-tools.jam
+					(변경전) STLPORT_LIB_BASE_NAME = stlport_vc71;
+					(변경후) STLPORT_LIB_BASE_NAME = stlport;		
+			-> STLport library debug suffix 수정
+				>> in %BOOST_ROOT%/tools/build/v1/stlport.jam
+					(변경전)
+						STLPORT_LIB_DEBUG_SUFFIX ?= _stldebug;
+					(변경후)
+						STLPORT_LIB_DEBUG_SUFFIX ?= _stld50;
+						STLPORT_LIB_RELEASE_SUFFIX ?= _r50;
+					
+					(변경전)
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>debug/<runtime-link>static    : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_DEBUG_SUFFIX)$(STLPORT_LIB_STATIC_SUFFIX) ;
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>debug/<runtime-link>dynamic   : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_DEBUG_SUFFIX) ;
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>release/<runtime-link>static  : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_STATIC_SUFFIX) ;
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>release/<runtime-link>dynamic : $(STLPORT_LIB_BASE_NAME) ;
+					(변경후)
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>debug/<runtime-link>static    : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_STATIC_SUFFIX)$(STLPORT_LIB_DEBUG_SUFFIX) ;
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>debug/<runtime-link>dynamic   : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_DEBUG_SUFFIX) ;
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>release/<runtime-link>static  : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_STATIC_SUFFIX)$(STLPORT_LIB_RELEASE_SUFFIX) ;
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>release/<runtime-link>dynamic : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_RELEASE_SUFFIX) ;
+				>> in %BOOST_ROOT%/tools/build/v2/tools/stlport.jam
+					(변경전)
+						if $(debug) = "on"
+			            {
+			            	name = $(name)_stldebug;
+			            }
+			        (변경후)
+			            if $(debug) = "on"
+			            {
+			                name = $(name)_stld50 ;
+			            }
+			            else {
+			                name = $(name)_r50 ;
+			            }
+
+[-] ver. 1.33.0 & MSVC7.1/STLport5.0RC6를 이용하여 building할 때
+	<-> STLport library linking error
+		-. error message
+			LINK : fatal error LNK1181: cannot open input file 'stlport_vc71.lib'
+			LINK : fatal error LNK1181: cannot open input file 'stlport_vc71_stldebug.lib'
+		-. building 관련 파일 수정
+			-> STLport library base name 수정
+				>> in %BOOST_ROOT%/tools/build/v1/vc-7_1-stlport-tools.jam
+					(변경전) STLPORT_LIB_BASE_NAME = stlport_vc71 ;
+					(변경후) STLPORT_LIB_BASE_NAME = stlport ;		
+			-> STLport library debug suffix 수정
+				>> in %BOOST_ROOT%/tools/build/v1/stlport.jam
+					(변경전)
+						STLPORT_LIB_DEBUG_SUFFIX ?= _stldebug ;
+					(변경후)
+						STLPORT_LIB_DEBUG_SUFFIX ?= stld.5.0.0 ;
+						STLPORT_LIB_RELEASE_SUFFIX ?= .5.0.0 ;
+					
+					(변경전)
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>debug/<runtime-link>static    : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_DEBUG_SUFFIX)$(STLPORT_LIB_STATIC_SUFFIX) ;
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>debug/<runtime-link>dynamic   : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_DEBUG_SUFFIX) ;
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>release/<runtime-link>static  : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_STATIC_SUFFIX) ;
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>release/<runtime-link>dynamic : $(STLPORT_LIB_BASE_NAME) ;
+					(변경후)
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>debug/<runtime-link>static    : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_STATIC_SUFFIX)$(STLPORT_LIB_DEBUG_SUFFIX) ;
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>debug/<runtime-link>dynamic   : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_DEBUG_SUFFIX) ;
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>release/<runtime-link>static  : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_STATIC_SUFFIX)$(STLPORT_LIB_RELEASE_SUFFIX) ;
+						flags $(CURR_TOOLSET) FINDLIBS <stlport-iostream>on/<runtime-build>release/<runtime-link>dynamic : $(STLPORT_LIB_BASE_NAME)$(STLPORT_LIB_RELEASE_SUFFIX) ;
+				>> in %BOOST_ROOT%/tools/build/v2/tools/stlport.jam
+					(변경전)
+						if $(debug) = "on"
+			            {
+			            	name = $(name)_stldebug ;
+			            }
+			        (변경후)
+			            if $(debug) = "on"
+			            {
+			                name = $(name)stld.5.0.0 ;
+			            }
+			            else {
+			                name = $(name).5.0.0 ;
+			            }
+	<-> thread library compiling error
+		-. error message
+			error C3861: '_snprintf': identifier not found, even with argument-dependent lookup
+		-. target file
+			-> %BOOST_ROOT%/libs/thread/src/read_write_mutex.cpp
+				(before)
+					bool boost_error(char const* expr, char const* func, char const* file, long line)
+					{
+					    #if WINVER
+					        using namespace std;
+					
+					        #ifndef ELEMENTS
+					        #define ELEMENTS(a) (sizeof(a)/sizeof(*(a)))
+					        #endif
+					
+					        TCHAR message[200];
+					        _sntprintf(message,ELEMENTS(message),TEXT("Assertion failed (func=%s, file=%s, line=%d): %s"), func, file, line, expr);
+					
+					        ::OutputDebugString(message);
+					
+					        if(::IsDebuggerPresent())
+					            ::DebugBreak();
+					    #endif
+					
+					    return false;
+					}
+				(after)
+					/*
+					bool boost_error(char const* expr, char const* func, char const* file, long line)
+					{
+					    #if WINVER
+					        using namespace std;
+					
+					        #ifndef ELEMENTS
+					        #define ELEMENTS(a) (sizeof(a)/sizeof(*(a)))
+					        #endif
+					
+					        TCHAR message[200];
+					        _sntprintf(message,ELEMENTS(message),TEXT("Assertion failed (func=%s, file=%s, line=%d): %s"), func, file, line, expr);
+					
+					        ::OutputDebugString(message);
+					
+					        if(::IsDebuggerPresent())
+					            ::DebugBreak();
+					    #endif
+					
+					    return false;
+					}
+					*/
+	<-> regex library linking error
+		-. error situation
+			basic_string linking error
+		-. target file
+			-> %BOOST_ROOT%/boost/regex/config.hpp
+				(before)
+					#  define BOOST_REGEX_HAS_OTHER_WCHAR_T
+				(after)
+					//#  define BOOST_REGEX_HAS_OTHER_WCHAR_T
+					
+

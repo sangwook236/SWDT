@@ -1,0 +1,20 @@
+1.
+	copy Make.inc.Linux in Lapack to Make.inc
+2.
+	mkdir my_build_dir
+	cd my_build_dir
+3.
+	for static library
+	../configure -b 32 -D c -DPentiumCPS=2400
+	for shared library
+	../configure -b 32 -D c -DPentiumCPS=2400 -Fa alg -fPIC
+	
+	error가 발생하는 경우가 있는데 이럴 경우 다시 해볼 것.
+4.
+	make
+	make check
+	make time
+	make install
+5.
+	[ref] http://www.terborg.net/research/kml/installation.html
+	libatlas.a를 포함하는 directory에서 kml_win_dll.sh 실행

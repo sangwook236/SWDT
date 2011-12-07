@@ -1,0 +1,60 @@
+[-] VC project file
+	PNL
+		${PNL_ROOT}/c_pgmtk/make/pnl.dsw
+		${PNL_ROOT}/c_pgmtk/make/*.dsp
+		${PNL_ROOT}/c_pgmtk/examples/??/*.dsp
+		${PNL_ROOT}/trs/make/trs.dsp
+	cxore
+		${PNL_ROOT}/cxcore/cxcore/make/cxcore.dsw
+		${PNL_ROOT}/cxcore/cxcore/make/cxcore.dsp
+
+	dsp file (& dsw file)을 상위의 vcproj file, vcxproj file (& sln file)로 변환할 때
+	"Cannot load the project due to a corrupt project file."와 같은 error가 발생하는 경우가 있다.
+	이는 dsp file (& dsw file)의 개행문자가 DOS style 아니라 UNIX style이어서 발생한다.
+	따라서 모든 dsp file (& dsw file)를 열어 DOS style로 저장을 한 후
+	vcproj file, vcxproj file (& sln file)로 변환하면 된다.
+	[ref] http://connect.microsoft.com/VisualStudio/feedback/details/546432/problems-with-vs2010rc-doing-conversion-of-vs6-dsp-file-vcproj-file
+	
+	VC6 project file을 VC9 & VC10 project file로 직접 변환하여도 정상 작동함.
+
+[-] original PNL library를 사용하는 경우
+	[ref] http://sourceforge.net/projects/openpnl/
+
+	cxcore & pnl library가 모두 정상적으로 build되지만
+	실제 사용하는 경우 icxGetProcessorType() 함수 (${PNL_ROOT}/cxcore/cxcore/cxswitcher.cpp 안에 존재) 안의
+	cpuid() 함수를 실행하는 동안 error 발생
+		CPU info를 얻어오는 함수인데 이의 구현에 문제가 있는 것으로 판단.
+		VC가 제공하는 __cpuid() 함수로 대체 구현 가능
+
+		[ref] http://msdn.microsoft.com/en-us/library/hskdteyh.aspx
+		[ref] http://en.wikipedia.org/wiki/CPUID
+
+		icxGetProcessorType() 함수 안에서 version & features를 계산하는 부분을 아래와 같이 변경하면 됨
+			const int a = 1;
+			int b[4];
+			__cpuid(b, a);
+
+			const int version = b[0];
+			const int features = b[3];
+
+[-] crishoj-OpenPNL를 사용하는 경우
+	[ref] https://github.com/crishoj/OpenPNL
+	
+	(주의) build가 되지 않음
+
+	${PNL_ROOT}/cxcore/cxcore/make/cxcore.dsp를 building하기 위해서 아래 사항을 수정하여야 한다.
+		(1) Compiler & Linker option 변경
+			"C/C++ option --> Preprocessor --> Processor Definition"에 "CVAPI_EXPORTS" 추가
+			"Linker option --> Input item --> Module Definition File"에서 "..\src\_cxexport.def"를 모두 삭제
+		(2) project에 아래의 파일을 추가
+			${PNL_ROOT}/cxcore/cxcore/src/cxlut.cpp
+			${PNL_ROOT}/cxcore/cxcore/src/cximage.cpp
+		(3) Output file인 dll file & lib file의 파일명을 수정
+			cxcore{d}.dll --> pnl_cxcore{d}.dll
+			cxcore{d}.lib --> pnl_cxcore{d}.lib
+
+	${PNL_ROOT}/c_pgmtk/make/pnl.dsp를 building하기 위해서 아래 사항을 수정하여야 한다.
+		(1) Compiler & Linker option 변경
+			"Linker option --> Input item --> Additional Dependencies"에서 cxcore{d}.lib -> pnl_excore{d}.lib로 변경
+		(2) ${PNL_ROOT}/c_pgmtk/src/include/cart/inlines.h 파일 변경
+			#include <inttypes.h>를 주석 처리
