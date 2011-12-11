@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 		//bayesian_network();
 		//bnet();
 
-		// Markov model
+		// Markov network
 		//mnet();
 		//mrf();
 

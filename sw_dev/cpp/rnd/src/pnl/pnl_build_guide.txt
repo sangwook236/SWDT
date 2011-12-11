@@ -20,22 +20,42 @@
 [-] original PNL library를 사용하는 경우
 	[ref] http://sourceforge.net/projects/openpnl/
 
-	cxcore & pnl library가 모두 정상적으로 build되지만
-	실제 사용하는 경우 icxGetProcessorType() 함수 (${PNL_ROOT}/cxcore/cxcore/cxswitcher.cpp 안에 존재) 안의
-	cpuid() 함수를 실행하는 동안 error 발생
-		CPU info를 얻어오는 함수인데 이의 구현에 문제가 있는 것으로 판단.
-		VC가 제공하는 __cpuid() 함수로 대체 구현 가능
-
-		[ref] http://msdn.microsoft.com/en-us/library/hskdteyh.aspx
-		[ref] http://en.wikipedia.org/wiki/CPUID
-
-		icxGetProcessorType() 함수 안에서 version & features를 계산하는 부분을 아래와 같이 변경하면 됨
-			const int a = 1;
-			int b[4];
-			__cpuid(b, a);
-
-			const int version = b[0];
-			const int features = b[3];
+	[1] cxcore library 이름 변경
+		PNL이 cxcore library를 사용하는데 OpenCV와의 충돌을 피하기 위해 pnl_cxcore로 이름을 변경하는 경우.
+		pnl project 뿐만 아니라 다른 project들에서도 cxcore library를 사용하고 있으시 모두 변경하여야 함.
+	[2] class template인데 PNL_API macro를 통해 __declspec(dllexport)가 적용된 class가 있음.
+		PNL_API를 class header에서 제거.
+		CNumericDenseMatrix in pnlNumericDenseMatrix.hpp
+		iC2DNumericDenseMatrix in pnli2dnumericdensematrix.hpp
+	[3] iC2DNumericDenseMatrix template class의 convesion ctor에서 error 발생.
+		iCNumericDenseMatrix가 CNumericDenseMatrix의 base class이므로 downcasting이 필요.
+		iC2DNumericDenseMatrix<Type>::iC2DNumericDenseMatrix( const iCNumericDenseMatrix<Type> & inputMat )
+		                               :CNumericDenseMatrix<Type>( inputMat ) {}
+		iC2DNumericDenseMatrix<Type>::iC2DNumericDenseMatrix( const iCNumericDenseMatrix<Type> & inputMat )
+		                               :CNumericDenseMatrix<Type>( dynamic_cast<const CNumericDenseMatrix<Type> &>(inputMat) ) {}
+	[4] iterator의 잘못된 초기화.
+		in pnlBKnferenceEngine.cpp
+			distrPVector::iterator sepIt = distrPVector::iterator(0);
+			distrPVector::iterator sepIt;
+		in pnlFactorGraph.cpp
+			intVector::iterator locInShrinked = intVector::iterator(0);
+			intVector::iterator locInShrinked;
+	[5] cxcore & pnl library가 모두 정상적으로 build되지만
+		실제 사용하는 경우 icxGetProcessorType() 함수 (${PNL_ROOT}/cxcore/cxcore/cxswitcher.cpp 안에 존재) 안의
+		cpuid() 함수를 실행하는 동안 error 발생
+			CPU info를 얻어오는 함수인데 이의 구현에 문제가 있는 것으로 판단.
+			VC가 제공하는 __cpuid() 함수로 대체 구현 가능
+	
+			[ref] http://msdn.microsoft.com/en-us/library/hskdteyh.aspx
+			[ref] http://en.wikipedia.org/wiki/CPUID
+	
+			icxGetProcessorType() 함수 안에서 version & features를 계산하는 부분을 아래와 같이 변경하면 됨
+				const int a = 1;
+				int b[4];
+				__cpuid(b, a);
+	
+				const int version = b[0];
+				const int features = b[3];
 
 [-] crishoj-OpenPNL를 사용하는 경우
 	[ref] https://github.com/crishoj/OpenPNL

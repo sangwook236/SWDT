@@ -10,10 +10,10 @@ pnl::CDBN * create_model()
 {
 	// create static model
 	const int numNodes = 4;  // number of nodes
-	const int numNodeTypes = 1;  // number of Node types (all nodes are discrete)
+	const int numNodeTypes = 1;  // number of node types (all nodes are discrete)
 
 	// 1) first need to specify the graph structure of the model.
-	const int numOfNeigh[] = { 2, 2, 2, 2 };
+	const int numNeigh[] = { 2, 2, 2, 2 };
 	const int neigh0[] = { 1, 2 };
 	const int neigh1[] = { 0, 3 };
 	const int neigh2[] = { 0, 3 };
@@ -26,11 +26,11 @@ pnl::CDBN * create_model()
 	const pnl::ENeighborType orient3[] = { pnl::ntParent, pnl::ntParent };
 	const pnl::ENeighborType *orient[] = { orient0, orient1, orient2, orient3 };
 	
-	pnl::CGraph *pGraph = pnl::CGraph::Create(numNodes, numOfNeigh, neigh, orient);
+	pnl::CGraph *pGraph = pnl::CGraph::Create(numNodes, numNeigh, neigh, orient);
 	
 	// 2) create the Model Domain.
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes[0].SetType(1, 2);
+	nodeTypes[0].SetType(true, 2);
 
 	pnl::intVector nodeAssociation;
 	nodeAssociation.assign(numNodes, 0);
@@ -48,45 +48,52 @@ pnl::CDBN * create_model()
 
 void infer_model()
 {
+#if 1
 	pnl::CBNet *pBNetForArHMM = pnl::pnlExCreateRndArHMM();
 	pnl::CDBN *pArHMM = pnl::CDBN::Create(pBNetForArHMM);
-	//pnl::CDBN *pArHMM = create_model();
+#else
+	pnl::CDBN *pArHMM = create_model();
+#endif
+
+	// get content of Graph
+	pArHMM->GetGraph()->Dump();
+	pnl::CGraph *g = pArHMM->GetGraph();
 
 	// create an inference engine
 	pnl::C1_5SliceJtreeInfEngine *pInfEng = pnl::C1_5SliceJtreeInfEngine::Create(pArHMM);
 
 	// number of time slices for unrolling
-	int nTimeSlices = 5;
+	const int numTimeSlices = 5;
 	const pnl::CPotential *pQueryJPD = NULL;
 
 	// create evidence for every slice
-	pnl::CEvidence **pEvidences = new pnl::CEvidence *[nTimeSlices];
+	pnl::CEvidence **pEvidences = new pnl::CEvidence *[numTimeSlices];
 
 	// let node 1 is always observed
-	const int obsNodesNums[] = { 1 };
+	const int numObsNodes[] = { 1 };
 	pnl::valueVector obsNodesVals(1);
 
-	for (int i = 0; i < nTimeSlices; ++i)
+	for (int i = 0; i < numTimeSlices; ++i)
 	{
 		// generate random value
 		// all nodes in the model are discrete
 		obsNodesVals[0].SetInt(std::rand() % 2);
-		pEvidences[i] = pnl::CEvidence::Create(pArHMM, 1, obsNodesNums, obsNodesVals);
+		pEvidences[i] = pnl::CEvidence::Create(pArHMM, 1, numObsNodes, obsNodesVals);
 	}
 
 	//---------------------------------------------------------------
 	// create smoothing procedure
-	pInfEng->DefineProcedure(pnl::ptSmoothing, nTimeSlices);
+	pInfEng->DefineProcedure(pnl::ptSmoothing, numTimeSlices);
 	// enter created evidences
-	pInfEng->EnterEvidence(pEvidences, nTimeSlices);
+	pInfEng->EnterEvidence(pEvidences, numTimeSlices);
 	// start smoothing process
 	pInfEng->Smoothing();
 
 	// choose query set of nodes for every slice
-	int queryPrior[] = { 0 };
-	int queryPriorSize = 1;
-	int query[] = { 0, 2 };
-	int querySize = 2;
+	const int queryPrior[] = { 0 };
+	const int queryPriorSize = 1;
+	const int query[] = { 0, 2 };
+	const int querySize = 2;
 
 	// inference results gaining and representation
 	std::cout << " Results of smoothing " << std::endl;
@@ -121,7 +128,7 @@ void infer_model()
 	}
 	std::cout << std::endl;
 
-	for (slice = 1; slice < nTimeSlices; ++slice)
+	for (slice = 1; slice < numTimeSlices; ++slice)
 	{
 		pInfEng->MarginalNodes(query, querySize, slice);
 		pQueryJPD = pInfEng->GetQueryJPD();
@@ -144,7 +151,7 @@ void infer_model()
 	std::cout << " Results of filtering " << std::endl;
 	std::cout << " Query slice " << slice << std::endl;
 	pQueryJPD->Dump();
-	for (slice = 1; slice < nTimeSlices; ++slice)
+	for (slice = 1; slice < numTimeSlices; ++slice)
 	{
 		pInfEng->EnterEvidence(&(pEvidences[slice]), 1);
 		pInfEng->Filtering(slice);
@@ -158,7 +165,7 @@ void infer_model()
 
 	//---------------------------------------------------------------
 	// create fixed-lag smoothing (online)
-	int lag = 2;
+	const int lag = 2;
 	pInfEng->DefineProcedure(pnl::ptFixLagSmoothing, lag);
 
 	for (slice = 0; slice < lag + 1; ++slice)
@@ -177,7 +184,7 @@ void infer_model()
 
 	std::cout << std::endl;
 
-	for ( ; slice < nTimeSlices; ++slice)
+	for ( ; slice < numTimeSlices; ++slice)
 	{
 		pInfEng->EnterEvidence(&(pEvidences[slice]), 1);
 		pInfEng->FixLagSmoothing(slice);
@@ -190,7 +197,7 @@ void infer_model()
 	}
 	delete pInfEng;
 
-	for (slice = 0; slice < nTimeSlices; ++slice)
+	for (slice = 0; slice < numTimeSlices; ++slice)
 	{
 		delete pEvidences[slice];
 	}

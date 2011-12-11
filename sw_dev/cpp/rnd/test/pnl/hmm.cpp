@@ -22,7 +22,7 @@ pnl::CDBN * create_simple_hmm()
 	const int numNodeTypes = 2;  // number of node types (all nodes are discrete)
 
 	// specify the graph structure of the model
-	const int numOfNeigh[] = { 2, 1, 2, 1 };
+	const int numNeigh[] = { 2, 1, 2, 1 };
 	const int neigh0[] = { 1, 2 };
 	const int neigh1[] = { 0 };
 	const int neigh2[] = { 0, 3 };
@@ -35,7 +35,7 @@ pnl::CDBN * create_simple_hmm()
     const pnl::ENeighborType orient3[] = { pnl::ntParent };
     const pnl::ENeighborType *orient[] = { orient0, orient1, orient2, orient3 };
 	
-	pnl::CGraph *pGraph = pnl::CGraph::Create(numNodes, numOfNeigh, neigh, orient);
+	pnl::CGraph *pGraph = pnl::CGraph::Create(numNodes, numNeigh, neigh, orient);
 
 	// create static BNet
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
@@ -106,13 +106,13 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
 	const int numNodeTypes = 2;  // number of node types (all nodes are discrete)
 
 	pnl::CNodeType *nodeTypes = new pnl::CNodeType [numNodeTypes];
-	nodeTypes[0] = pnl::CNodeType(1, 2);
-	nodeTypes[1] = pnl::CNodeType(0, 1);
+	nodeTypes[0].SetType(true, 2);
+	nodeTypes[1].SetType(false, 1);
 
 	const int nodeAssociation[] = { 0, 1, 0, 1 };
 
 	// create a DAG
-	const int numOfNeigh[] = { 2, 2, 2, 2 };
+	const int numNeigh[] = { 2, 2, 2, 2 };
 	const int neigh0[] = { 1, 2 };
 	const int neigh1[] = { 0, 3 };
 	const int neigh2[] = { 0, 3 };
@@ -125,7 +125,7 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
 	const pnl::ENeighborType orient3[] = { pnl::ntParent, pnl::ntParent };
 	const pnl::ENeighborType *orient[] = { orient0, orient1, orient2, orient3 };
 
-	pnl::CGraph *pGraph = pnl::CGraph::Create(numNodes, numOfNeigh, neigh, orient);
+	pnl::CGraph *pGraph = pnl::CGraph::Create(numNodes, numNeigh, neigh, orient);
 
 	// create static BNet
 	pnl::CBNet *pBNet = pnl::CBNet::Create(numNodes, numNodeTypes, nodeTypes, nodeAssociation, pGraph);
@@ -179,14 +179,20 @@ void hmm()
 	// simple HMM
 	{
 		boost::scoped_ptr<pnl::CDBN> simpleHMM(local::create_simple_hmm());
+		//boost::scoped_ptr<pnl::CDBN> simpleHMM(local::create_hmm_with_ar_gaussian_observations());
 
+		// get content of Graph
+		simpleHMM->GetGraph()->Dump();
+ 
+		{
 			const pnl::CGraph *pGraph = simpleHMM->GetGraph();
 
-			int                 numOfNbrs1, numOfNbrs2;
-			const int           *nbrs1, *nbrs2;
+			int numNbrs1, numNbrs2;
+			const int *nbrs1, *nbrs2;
 			const pnl::ENeighborType *nbrsTypes1, *nbrsTypes2;
-			pGraph->GetNeighbors(0, &numOfNbrs1, &nbrs1, &nbrsTypes1);
-			pGraph->GetNeighbors(1, &numOfNbrs2, &nbrs2, &nbrsTypes2);
+			pGraph->GetNeighbors(0, &numNbrs1, &nbrs1, &nbrsTypes1);
+			pGraph->GetNeighbors(1, &numNbrs2, &nbrs2, &nbrsTypes2);
+		}
 
 		// create an inference engine
 		boost::scoped_ptr<pnl::C1_5SliceJtreeInfEngine> inferEng(pnl::C1_5SliceJtreeInfEngine::Create(simpleHMM.get()));
@@ -223,5 +229,8 @@ void hmm()
 	// HMM with AR Gaussian observations
 	{
 		boost::scoped_ptr<pnl::CDBN> arHMM(local::create_hmm_with_ar_gaussian_observations());
+
+		// get content of Graph
+		arHMM->GetGraph()->Dump();
 	}
 }

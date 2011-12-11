@@ -24,6 +24,7 @@ pnl::CBNet * create_model()
 		pnl::intVector matrixData(numNodes * numNodes, 0);
 		pnl::CDenseMatrix<int> *adjMat = pnl::CDenseMatrix<int>::Create(numAdjMatDims, ranges, &matrixData.front());
 
+		// assign indices of child nodes to each node
 		int indices[] = { 0, 1 };
 		adjMat->SetElementByIndexes(1, indices);
 		indices[1] = 2;
@@ -71,8 +72,7 @@ pnl::CBNet * create_model()
 
 	// number of node types is 1, because all nodes are of the same type
 	// all four are discrete and binary
-	pnl::CNodeType nt(1, 2);
-	nodeTypes.push_back(nt);
+	nodeTypes.push_back(pnl::CNodeType(true, 2));
 
 	pnl::intVector nodeAssociation;
 	// reflects association between node numbers and node types
@@ -110,24 +110,27 @@ pnl::CBNet * create_model()
 void infer_model()
 {
 	// create Water-Sprinkler BNet
+#if 1
 	pnl::CBNet *pWSBnet = pnl::pnlExCreateWaterSprinklerBNet();
-	//pnl::CBNet *pWSBnet = create_model();
+#else
+	pnl::CBNet *pWSBnet = create_model();
+#endif
 
 	// get content of Graph
 	pWSBnet->GetGraph()->Dump();
 
 	// create simple evidence for node 0 from BNet
-	pnl::CEvidence *pEvidForWS = 0L;
+	pnl::CEvidence *pEvidForWS = NULL;
 	{
 		// make one node observed
-		int nObsNds = 1;
+		const int numObsNodes = 1;
 		// the observed node is 0
-		int obsNds[] = { 0 };
+		const int obsNodes[] = { 0 };
 		// node 0 takes its second value (from two possible values {0, 1})
-		pnl::valueVector obsVals;
-		obsVals.resize(1);
+		pnl::valueVector obsVals(numObsNodes);
 		obsVals[0].SetInt(1);
-		pEvidForWS = pnl::CEvidence::Create(pWSBnet, nObsNds, obsNds, obsVals);
+
+		pEvidForWS = pnl::CEvidence::Create(pWSBnet, numObsNodes, obsNodes, obsVals);
 	}
 
 	// create Naive inference for BNet
@@ -137,56 +140,58 @@ void infer_model()
 	pNaiveInf->EnterEvidence(pEvidForWS);
 
 	// get a marginal for query set of nodes
-	int numQueryNds = 2;
-	int queryNds[] = { 1, 3 };
+	const int numQueryNodes = 2;
+	const int queryNodes[] = { 1, 3 };
 
-	pNaiveInf->MarginalNodes(queryNds, numQueryNds);
+	pNaiveInf->MarginalNodes(queryNodes, numQueryNodes);
 	const pnl::CPotential *pMarg = pNaiveInf->GetQueryJPD();
 
 	{
-		pnl::intVector obsNds;
-		pnl::pConstValueVector obsVls;
-		pEvidForWS->GetObsNodesWithValues(&obsNds, &obsVls);
+		pnl::intVector obsNodes;
+		pnl::pConstValueVector obsVals;
+		pEvidForWS->GetObsNodesWithValues(&obsNodes, &obsVals);
 
-		for (int i = 0; i < obsNds.size(); ++i)
+		for (int i = 0; i < obsNodes.size(); ++i)
 		{
-			std::cout << " observed value for node " << obsNds[i];
-			std::cout << " is " << obsVls[i]->GetInt() << std::endl;
+			std::cout << " observed value for node " << obsNodes[i];
+			std::cout << " is " << obsVals[i]->GetInt() << std::endl;
 		}
+
+		int nnodes;
+		const int *domain = NULL;
+		pMarg->GetDomain(&nnodes, &domain);
+		std::cout << " inference results: " << std::endl;
+		std::cout << " probability distribution for nodes [ ";
+		for (int i = 0; i < nnodes; ++i)
+		{
+			std::cout << domain[i] << " ";
+		}
+		std::cout << "]" << std::endl;
 	}
 
-	int nnodes;
-	const int *domain = 0L;
-	pMarg->GetDomain(&nnodes, &domain);
-	std::cout << " inference results: " << std::endl;
-	std::cout << " probability distribution for nodes [ ";
-	for (int i = 0; i < nnodes; ++i)
 	{
-		std::cout << domain[i] << " ";
+		pnl::CMatrix<float> *pMat = pMarg->GetMatrix(pnl::matTable);
+
+		// graphical model hase been created using dense matrix
+		// so, the marginal is also dense
+		const pnl::EMatrixClass type = pMat->GetMatrixClass();
+		if (!(type == pnl::mcDense || type == pnl::mcNumericDense || type == pnl::mc2DNumericDense))
+		{
+			assert(0);
+		}
+
+		int nEl;
+		const float *data = NULL;
+		static_cast<pnl::CNumericDenseMatrix<float> *>(pMat)->GetRawData(&nEl, &data);
+		for (int i = 0; i < nEl; ++i)
+		{
+			std::cout << " " << data[i];
+		}
+		std::cout << std::endl;
 	}
-	std::cout << "]" << std::endl;
 
-	pnl::CMatrix<float> *pMat = pMarg->GetMatrix(pnl::matTable);
-
-	// graphical model hase been created using dense matrix
-	// so, the marginal is also dense
-	pnl::EMatrixClass type = pMat->GetMatrixClass();
-	if (!(type == pnl::mcDense || type == pnl::mcNumericDense || type == pnl::mc2DNumericDense))
-	{
-		assert(0);
-	}
-
-	int nEl;
-	const float *data = NULL;
-	static_cast<pnl::CNumericDenseMatrix<float> *>(pMat)->GetRawData(&nEl, &data);
-	for (int i = 0; i < nEl; ++i)
-	{
-		std::cout << " " << data[i];
-	}
-	std::cout << std::endl;
-
-	delete pEvidForWS;
 	delete pNaiveInf;
+	delete pEvidForWS;
 	delete pWSBnet;
 }
 

@@ -7,11 +7,11 @@
 namespace {
 namespace local {
 
-pnl::CMRF2 * create_simple_mrf()
+pnl::CMRF2 * create_simple_pairwise_mrf()
 {
 	const int numNodes = 7;
 	const int numNodeTypes = 2;
-	const int numberOfCliques = 6;
+	const int numCliques = 6;
 
 #if 0
 	const int cliqueSizes[] = { 2, 2, 2, 2, 2, 2 };
@@ -26,14 +26,14 @@ pnl::CMRF2 * create_simple_mrf()
 	const int *cliques[] = { clique0, clique1, clique2, clique3, clique4, clique5 };
 
 	pnl::CNodeType *nodeTypes = new pnl::CNodeType [numNodeTypes];
-	nodeTypes[0].SetType(1, 3);
-	nodeTypes[1].SetType(1, 4);
+	nodeTypes[0].SetType(true, 3);
+	nodeTypes[1].SetType(true, 4);
 
 	int *nodeAssociation = new int [numNodes];
 	for (int i = 0; i < numNodes; ++i)
 		nodeAssociation[i] = i % 2;
 
-	pnl::CMRF2 *mrf2 = pnl::CMRF2::Create(numNodes, numNodeTypes, nodeTypes, nodeAssociation, numberOfCliques, cliqueSizes, cliques);
+	pnl::CMRF2 *mrf2 = pnl::CMRF2::Create(numNodes, numNodeTypes, nodeTypes, nodeAssociation, numCliques, cliqueSizes, cliques);
 #else
 	pnl::intVecVector cliques;
 	{
@@ -51,9 +51,12 @@ pnl::CMRF2 * create_simple_mrf()
 		cliques.push_back(pnl::intVector(clique5, clique5 + sizeof(clique5) / sizeof(clique5[0])));
 	}
 
+	//pnl::nodeTypeVector nodeTypes;
+	//nodeTypes.push_back(pnl::CNodeType(true, 3));
+	//nodeTypes.push_back(pnl::CNodeType(true, 4));
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes.push_back(pnl::CNodeType(1, 3));
-	nodeTypes.push_back(pnl::CNodeType(1, 4));
+	nodeTypes[0].SetType(true, 3);
+	nodeTypes[1].SetType(true, 4);
 
 	pnl::intVector nodeAssociation(numNodes);
 	for (int i = 0; i < numNodes; ++i)
@@ -63,12 +66,15 @@ pnl::CMRF2 * create_simple_mrf()
 #endif
 
 	mrf2->AllocFactors();
-	for (int i = 0; i < numberOfCliques; ++i)
+	for (int i = 0; i < numCliques; ++i)
 		mrf2->AllocFactor(i);
+
+	// get content of Graph
+	mrf2->GetGraph()->Dump();
 
 	//
 	const int numQueries = 13;
-	const int queryLength[] = { 1, 1, 1, 1, 1, 1,	1, 2, 2, 2, 2, 2, 2 };
+	const int queryLength[] = { 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2 };
 	const int queries[13][2] =
 	{
 		{ 0 },
@@ -109,8 +115,8 @@ pnl::CMRF2 * create_simple_mrf()
 
 void mrf()
 {
-	// simple MRF
+	// simple pairwise MRF
 	{
-		boost::scoped_ptr<pnl::CMRF2> mrf2(local::create_simple_mrf());
+		boost::scoped_ptr<pnl::CMRF2> mrf2(local::create_simple_pairwise_mrf());
 	}
 }

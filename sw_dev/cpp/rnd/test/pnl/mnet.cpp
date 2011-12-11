@@ -11,27 +11,26 @@ pnl::CMNet * create_simle_markov_network()
 {
 	const int numNodes = 7;
 	const int numNodeTypes = 2;
-	const int numberOfCliques = 4;
+	const int numCliques = 4;
 
-#if 0
+#if 1
 	const int cliqueSizes[] = { 3, 3, 3, 4 };
 
 	const int clique0[] = { 1, 2, 3 };
 	const int clique1[] = { 0, 1, 3 };
 	const int clique2[] = { 4, 5, 6 };
 	const int clique3[] = { 0, 3, 4, 5 };
-	
 	const int *cliques[] = { clique0, clique1, clique2, clique3 };
 
 	pnl::CNodeType *nodeTypes = new pnl::CNodeType [numNodeTypes];
-	nodeTypes[0].SetType(1, 3);
-	nodeTypes[1].SetType(1, 4);
+	nodeTypes[0].SetType(true, 3);
+	nodeTypes[1].SetType(true, 4);
 
 	int *nodeAssociation = new int [numNodes];
 	for (int i = 0; i < numNodes; ++i)
 		nodeAssociation[i] = i % 2;
 
-    pnl::CMNet *mnet = pnl::CMNet::Create(numNodes, numNodeTypes, nodeTypes, nodeAssociation, numberOfCliques, cliqueSizes, cliques);
+    pnl::CMNet *mnet = pnl::CMNet::Create(numNodes, numNodeTypes, nodeTypes, nodeAssociation, numCliques, cliqueSizes, cliques);
 #else
 	pnl::intVecVector cliques;
 	{
@@ -45,9 +44,12 @@ pnl::CMNet * create_simle_markov_network()
 		cliques.push_back(pnl::intVector(clique3, clique3 + sizeof(clique3) / sizeof(clique3[0])));
 	}
 
+	//pnl::nodeTypeVector nodeTypes;
+	//nodeTypes.push_back(pnl::CNodeType(true, 3));
+	//nodeTypes.push_back(pnl::CNodeType(true, 4));
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes.push_back(pnl::CNodeType(1, 3));
-	nodeTypes.push_back(pnl::CNodeType(1, 4));
+	nodeTypes[0].SetType(true, 3);
+	nodeTypes[1].SetType(true, 4);
 
 	pnl::intVector nodeAssociation(numNodes);
 	for (int i = 0; i < numNodes; ++i)
@@ -57,13 +59,16 @@ pnl::CMNet * create_simle_markov_network()
 #endif
 
 	mnet->AllocFactors();
-	for (int i = 0; i < numberOfCliques; ++i)
+	for (int i = 0; i < numCliques; ++i)
 		mnet->AllocFactor(i);
+
+	// get content of Graph
+	mnet->GetGraph()->Dump();
 
 	//
 	const int numQueries = 27;
 	const int queryLength[] = { 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4 };
-	const int queries[28][4] =
+	const int queries[27][4] =
 	{
 		{ 0 },
 		{ 1 },
@@ -91,7 +96,7 @@ pnl::CMNet * create_simle_markov_network()
 		{ 6, 4, 5 },
 		{ 0, 4, 3 },
 		{ 0, 4, 5 },
-		{ 4, 3, 5, 0 },
+		{ 4, 3, 5, 0 }
 	};
 
 	pnl::pFactorVector params;

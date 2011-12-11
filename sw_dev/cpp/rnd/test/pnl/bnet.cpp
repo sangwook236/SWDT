@@ -36,8 +36,8 @@ pnl::CBNet * create_simle_bayesian_network()
 	//
 #if 0
 	pnl::CNodeType *nodeTypes = new pnl::CNodeType [numNodeTypes];
-	nodeTypes[0].SetType(1, 3);
-	nodeTypes[1].SetType(1, 4);
+	nodeTypes[0].SetType(true, 3);
+	nodeTypes[1].SetType(true, 4);
 
 	int *nodeAssociation = new int [numNodes];
 	for (int i = 0; i < numNodes; ++i)
@@ -45,9 +45,12 @@ pnl::CBNet * create_simle_bayesian_network()
 
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, numNodeTypes, nodeTypes, nodeAssociation, graph);
 #else
+	//pnl::nodeTypeVector nodeTypes;
+	//nodeTypes.push_back(pnl::CNodeType(true, 3));
+	//nodeTypes.push_back(pnl::CNodeType(true, 4));
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes.push_back(pnl::CNodeType(1, 3));
-	nodeTypes.push_back(pnl::CNodeType(1, 4));
+	nodeTypes[0].SetType(true, 3);
+	nodeTypes[1].SetType(true, 4);
 
 	pnl::intVector nodeAssociation(numNodes);
 	for (int i = 0; i < numNodes; ++i)
@@ -59,6 +62,9 @@ pnl::CBNet * create_simle_bayesian_network()
 	bnet->AllocFactors();
 	for (int i = 0; i < numNodes; ++i)
 		bnet->AllocFactor(i);
+
+	// get content of Graph
+	bnet->GetGraph()->Dump();
 
 	//
 	const int numQueries = 28;
