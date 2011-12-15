@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "neural_network", "..\test\neural_network\neural_network.csproj", "{F10C5F7A-0E2D-4F05-BC2F-CF2A6E140C15}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "neural_network", "..\test\neural_network\neural_network_msvc8.csproj", "{F10C5F7A-0E2D-4F05-BC2F-CF2A6E140C15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
