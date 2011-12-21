@@ -17,7 +17,7 @@
 	
 	VC6 project file을 VC9 & VC10 project file로 직접 변환하여도 정상 작동함.
 
-[-] original PNL library를 사용하는 경우
+[-] Building in VC (original version)
 	[ref] http://sourceforge.net/projects/openpnl/
 
 	[1] cxcore library 이름 변경
@@ -27,6 +27,8 @@
 		PNL_API를 class header에서 제거.
 		CNumericDenseMatrix in pnlNumericDenseMatrix.hpp
 		iC2DNumericDenseMatrix in pnli2dnumericdensematrix.hpp
+		CMatrix in pnlMatrix.hpp
+		CMatrixIterator, CDenseMatrixIterator, & CSparseMatrixIterator in pnlMatrixIterator.hpp
 	[3] iC2DNumericDenseMatrix template class의 convesion ctor에서 error 발생.
 		iCNumericDenseMatrix가 CNumericDenseMatrix의 base class이므로 downcasting이 필요.
 		iC2DNumericDenseMatrix<Type>::iC2DNumericDenseMatrix( const iCNumericDenseMatrix<Type> & inputMat )
@@ -57,24 +59,100 @@
 				const int version = b[0];
 				const int features = b[3];
 
-[-] crishoj-OpenPNL를 사용하는 경우
+[-] Building in Cygwin (original version)
+	[1] building
+		[ref] follow instructions in readme.txt
+
+		1. Go to the root directory (it contain this file and changes.txt)
+		2. Run './configure.gcc'
+		3. Run 'make' to compile sources
+		4. Run 'make check' to compile and launch test suite (optionally)
+		5. Run 'make install' to install library
+
+		Notes:
+		- Step 2 (Run './configure.gcc') should be run on initial or on compiler changing
+		- If you want to install library to some directory instead of '/usr/local' (as default),
+			you can use '--prefix' option of 'configure' script in 'configure.gcc' file
+			(run './configure -h' to read more)
+		- You can use object directory to build library.
+			In this case step 2 looks like 'SRCROOT/configure.gcc',
+			where 'SRCROOT' is relative path to source root directory
+		- If you have some error during compiling or if you want to view compiling message later,
+			run 'make 2>&1 | tee compiling.log' instead of 'make'
+	[2] pnl library
+		-. 여러 syntax error를 수정해야 함
+		-. error 처리
+			${PNL_ROOT}/c_pgmtk/src/libpnl.la file의 "dependency_libs=' -ldl -lcxcore /usr/lib/gcc/i686-pc-cygwin/4.5.3/libstdc++.la'"에 의해 발생하는 문제로 추측.
+
+			pnl library를 buidling 할 때 "ld: cannot find -lcxcore"라는 경우
+			해당 project의 "Src/Makefile"의 "LDFLAGS ="를 아래와 같이 수정하여야 함.
+				LDFLAGS = -L$(top_builddir)/cxcore/cxcore/src
+					cxcore library building 후 libcxcore.a는 ${PNL_ROOT}/cxcore/cxcore/src dicretory하에 생성.
+				LDFLAGS = -L/usr/local/lib
+					libcxcore.a가 cxcore library building 후 /usr/local/lib directory에 설치되어 있어야 함.
+	[3] pnl high library (PNL wrapper)
+		-. pnl & cxcore library의 기능을 찾지 못하는 error 발생
+			"${PNL_ROOT}/high/source/Makefile"에 아래의 내용을 추가해야 함.
+				LDFLAGS = -L$(top_srcdir)/c_pgmtk/src/.libs -L$(top_srcdir)/cxcore/cxcore/src
+				LIBS = -ldl -lm -lpnl.dll -lcxcore
+
+[-] Building in VC (crishoj-OpenPNL version)
 	[ref] https://github.com/crishoj/OpenPNL
 	
 	(주의) build가 되지 않음
 
-	${PNL_ROOT}/cxcore/cxcore/make/cxcore.dsp를 building하기 위해서 아래 사항을 수정하여야 한다.
+	[1] cxcore library
+		${PNL_ROOT}/cxcore/cxcore/make/cxcore.dsp를 building하기 위해서 아래 사항을 수정하여야 한다.
 		(1) Compiler & Linker option 변경
 			"C/C++ option --> Preprocessor --> Processor Definition"에 "CVAPI_EXPORTS" 추가
 			"Linker option --> Input item --> Module Definition File"에서 "..\src\_cxexport.def"를 모두 삭제
+			Solution Explorer 창에서 "__cxexport.def"를 제거하거나 build로부터 제외
 		(2) project에 아래의 파일을 추가
 			${PNL_ROOT}/cxcore/cxcore/src/cxlut.cpp
 			${PNL_ROOT}/cxcore/cxcore/src/cximage.cpp
 		(3) Output file인 dll file & lib file의 파일명을 수정
 			cxcore{d}.dll --> pnl_cxcore{d}.dll
 			cxcore{d}.lib --> pnl_cxcore{d}.lib
-
-	${PNL_ROOT}/c_pgmtk/make/pnl.dsp를 building하기 위해서 아래 사항을 수정하여야 한다.
+	[2] pnl library
+		${PNL_ROOT}/c_pgmtk/make/pnl.dsp를 building하기 위해서 아래 사항을 수정하여야 한다.
 		(1) Compiler & Linker option 변경
+			"Linker option --> General item --> Additional Library Directories"에서 "../../../lib" -> "../../../../lib"로 변경
+			"Linker option --> Input item --> Additional Dependencies"에서 pnl{d}.lib 추가
 			"Linker option --> Input item --> Additional Dependencies"에서 cxcore{d}.lib -> pnl_excore{d}.lib로 변경
 		(2) ${PNL_ROOT}/c_pgmtk/src/include/cart/inlines.h 파일 변경
 			#include <inttypes.h>를 주석 처리
+		(3) CMatrix<T>::Dump()의 구현이 없음
+			"${PNL_ROOT}/c_pgmtk/include/pnlMatrix.hpp" file 안에 CMatrix<T>::Dump()의 구현부가 없음
+			"${PNL_ROOT}/c_pgmtk/include/pnlMatrix_imple.hpp" file안에 존재
+			따라서 "${PNL_ROOT}/c_pgmtk/include/pnlMatrix.hpp" file 끝부분에 아래의 code를 추가해야 함
+				#include "pnlMatrix_impl.hpp"
+	[3] pnl high library (PNL wrapper)
+
+[-] Building in Cygwin (crishoj-OpenPNL version)
+	[1] building
+		[ref] follow instructions in readme.txt
+
+		1. Go to the root directory (it contain this file and changes.txt)
+		2. Run './configure.gcc'
+		3. Run 'make' to compile sources
+		4. Run 'make check' to compile and launch test suite (optionally)
+		5. Run 'make install' to install library
+
+		Notes:
+		- Step 2 (Run './configure.gcc') should be run on initial or on compiler changing
+		- If you want to install library to some directory instead of '/usr/local' (as default),
+			you can use '--prefix' option of 'configure' script in 'configure.gcc' file
+			(run './configure -h' to read more)
+		- You can use object directory to build library.
+			In this case step 2 looks like 'SRCROOT/configure.gcc',
+			where 'SRCROOT' is relative path to source root directory
+		- If you have some error during compiling or if you want to view compiling message later,
+			run 'make 2>&1 | tee compiling.log' instead of 'make'
+	[3] pnl high library (PNL wrapper)
+		-. "${PNL_ROOT}/high/source/pnlWProbabilisticNet.cpp" file에 아래의 두 file을 including.
+			#include "pnlContextPersistence.hpp"
+			#include "pnlEvidence.hpp"
+		-. pnl & cxcore library의 기능을 찾지 못하는 error 발생
+			"${PNL_ROOT}/high/source/Makefile"에 아래의 내용을 추가해야 함.
+				LDFLAGS = -L$(top_srcdir)/c_pgmtk/src/.libs -L$(top_srcdir)/cxcore/cxcore/src
+				LIBS = -ldl -lm -lpnl -lcxcore
