@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="29" version="2.0">
+<workbench progressCount="30" version="2.0">
 <workbenchAdvisor/>
 <window height="768" maximized="true" width="1024" x="22" y="29">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
 <itemSize x="160"/>
 </perspectiveBar>
-<coolbarLayout locked="0">
+<coolbarLayout>
 <coolItem id="group.file" itemType="typeGroupMarker"/>
-<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="122" y="22"/>
-<coolItem id="com.google.gdt.eclipse.suite.GDTPulldownToolbar" itemType="typeToolBarContribution" x="122" y="22"/>
+<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="160" y="22"/>
+<coolItem id="com.google.gdt.eclipse.suite.GDTPulldownToolbar" itemType="typeToolBarContribution" x="53" y="22"/>
 <coolItem id="additions" itemType="typeGroupMarker"/>
-<coolItem id="adt.actionSet.avdManager" itemType="typeToolBarContribution" x="38" y="22"/>
+<coolItem id="adt.actionSet.avdManager" itemType="typeToolBarContribution" x="61" y="22"/>
+<coolItem id="adt.actionSet.lint" itemType="typeToolBarContribution" x="38" y="22"/>
 <coolItem id="adt.actionSet.wizards" itemType="typeToolBarContribution" x="84" y="22"/>
 <coolItem id="com.google.gdt.eclipse.suite.actionSet" itemType="typeToolBarContribution" x="84" y="22"/>
 <coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="167" y="22"/>
@@ -63,30 +64,28 @@
 <customFilters userDefinedPatternsEnabled="false">
 <xmlDefinedFilters>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.LibraryFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.CuAndClassFileFilter" isEnabled="false"/>
-<child filterId="org.eclipse.pde.ui.ExternalPluginLibrariesFilter1" isEnabled="true"/>
-<child filterId="org.eclipse.gmf.codegen.ui.hide_generated" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.FieldsFilter" isEnabled="false"/>
-<child filterId="jdt.external.source.project.filter" isEnabled="true"/>
-<child filterId="org.eclipse.jdt.internal.ui.PackageExplorer.HideInnerClassFilesFilter" isEnabled="true"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.NonPublicFilter" isEnabled="false"/>
-<child filterId="org.eclipse.pde.ui.BinaryProjectFilter1" isEnabled="false"/>
-<child filterId="org.eclipse.mylyn.java.ui.MembersFilter" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.LocalTypesFilter" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.StaticsFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.ContainedLibraryFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.NonJavaElementFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.NonSharedProjectsFilter" isEnabled="false"/>
+<child filterId="org.eclipse.pde.ui.ExternalPluginLibrariesFilter1" isEnabled="true"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.ClosedProjectsFilter" isEnabled="false"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.NonSharedProjectsFilter" isEnabled="false"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.NonJavaElementFilter" isEnabled="false"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.ContainedLibraryFilter" isEnabled="false"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.CuAndClassFileFilter" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.NonJavaProjectsFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.PackageDeclarationFilter" isEnabled="true"/>
 <child filterId="org.eclipse.jdt.internal.ui.PackageExplorer.EmptyInnerPackageFilter" isEnabled="true"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.PackageDeclarationFilter" isEnabled="true"/>
 <child filterId="org.eclipse.jdt.internal.ui.PackageExplorer.EmptyPackageFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.ImportDeclarationFilter" isEnabled="true"/>
 <child filterId="com.google.gdt.eclipse.managedapis.ui.ManagedApiContainerFilter" isEnabled="true"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.ImportDeclarationFilter" isEnabled="true"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.FieldsFilter" isEnabled="false"/>
+<child filterId="org.eclipse.jdt.internal.ui.PackageExplorer.HideInnerClassFilesFilter" isEnabled="true"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.NonPublicFilter" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer_patternFilterId_.*" isEnabled="true"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.EmptyLibraryContainerFilter" isEnabled="true"/>
+<child filterId="org.eclipse.pde.ui.BinaryProjectFilter1" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.SyntheticMembersFilter" isEnabled="true"/>
+<child filterId="org.eclipse.m2e.MavenModuleFilter" isEnabled="false"/>
 </xmlDefinedFilters>
 </customFilters>
 </viewState>
@@ -141,6 +140,8 @@
 <alwaysOnActionSet id="org.eclipse.debug.ui.profileActionSet"/>
 <alwaysOnActionSet id="org.eclipse.mylyn.doc.actionSet"/>
 <alwaysOnActionSet id="com.google.gdt.eclipse.core.actionSet"/>
+<alwaysOnActionSet id="adt.actionSet.lint"/>
+<alwaysOnActionSet id="org.eclipse.wb.core.ui.actionset"/>
 <show_view_action id="org.eclipse.jdt.ui.PackageExplorer"/>
 <show_view_action id="org.eclipse.jdt.ui.TypeHierarchy"/>
 <show_view_action id="org.eclipse.jdt.ui.SourceView"/>
@@ -312,6 +313,7 @@
 <actionBarAdvisor/>
 <trimLayout>
 <trimArea IMemento.internal.id="128">
+<trimItem IMemento.internal.id="org.eclipse.mylyn.tasks.ui.trim.container"/>
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
 </trimArea>
 <trimArea IMemento.internal.id="1024">

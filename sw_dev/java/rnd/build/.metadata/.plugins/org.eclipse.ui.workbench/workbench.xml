@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="29" version="2.0">
+<workbench progressCount="32" version="2.0">
 <workbenchAdvisor/>
 <window height="768" maximized="true" width="1024" x="198" y="261">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
 <itemSize x="160"/>
 </perspectiveBar>
-<coolbarLayout locked="0">
+<coolbarLayout>
 <coolItem id="group.file" itemType="typeGroupMarker"/>
-<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="122" y="22"/>
-<coolItem id="com.google.gdt.eclipse.suite.GDTPulldownToolbar" itemType="typeToolBarContribution" x="122" y="22"/>
+<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="160" y="22"/>
+<coolItem id="com.google.gdt.eclipse.suite.GDTPulldownToolbar" itemType="typeToolBarContribution" x="53" y="22"/>
 <coolItem id="additions" itemType="typeGroupMarker"/>
-<coolItem id="adt.actionSet.avdManager" itemType="typeToolBarContribution" x="38" y="22"/>
+<coolItem id="adt.actionSet.avdManager" itemType="typeToolBarContribution" x="61" y="22"/>
+<coolItem id="adt.actionSet.lint" itemType="typeToolBarContribution" x="38" y="22"/>
 <coolItem id="adt.actionSet.wizards" itemType="typeToolBarContribution" x="84" y="22"/>
 <coolItem id="com.google.gdt.eclipse.suite.actionSet" itemType="typeToolBarContribution" x="84" y="22"/>
 <coolItem id="org.eclipse.cdt.ui.editor.CEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="167" y="22"/>
-<coolItem id="org.eclipse.jdt.ui.CompilationUnitEditor" itemType="typePlaceholder" x="-1" y="-1"/>
+<coolItem id="org.eclipse.jdt.ui.CompilationUnitEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.jdt.ui.JavaElementCreationActionSet" itemType="typeToolBarContribution" x="99" y="22"/>
 <coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="99" y="22"/>
 <coolItem id="org.eclipse.ui.DefaultTextEditor" itemType="typePlaceholder" x="-1" y="-1"/>
-<coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="130" y="22"/>
+<coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="107" y="22"/>
 <coolItem id="org.eclipse.wst.xml.ui.perspective.NewFileToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
@@ -35,18 +36,23 @@
 <editorArea activeWorkbook="DefaultEditorWorkbook">
 <info part="DefaultEditorWorkbook">
 <folder appearance="1" expanded="2">
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+</presentation>
 </folder>
 </info>
 </editorArea>
+<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ArffLoader.java" partName="ArffLoader.java" path="D:/work_center/sw_dev/java/rnd/test/weka/src/ArffLoader.java" title="ArffLoader.java" tooltip="weka/src/ArffLoader.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/weka/src/ArffLoader.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
 </editors>
 <views>
 <view id="org.eclipse.jdt.ui.TypeHierarchy" partName="Hierarchy"/>
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
-<category IMemento.internal.id="Errors (5 items)"/>
-<category IMemento.internal.id="Errors"/>
+<category IMemento.internal.id="Warnings (100 of 453 items)"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="64" org.eclipse.ui.ide.markerType="94" org.eclipse.ui.ide.pathField="124" org.eclipse.ui.ide.resourceField="94" org.eclipse.ui.ide.severityAndDescriptionField="819"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -61,30 +67,28 @@
 <customFilters userDefinedPatternsEnabled="false">
 <xmlDefinedFilters>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.LibraryFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.CuAndClassFileFilter" isEnabled="false"/>
-<child filterId="org.eclipse.pde.ui.ExternalPluginLibrariesFilter1" isEnabled="true"/>
-<child filterId="org.eclipse.gmf.codegen.ui.hide_generated" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.FieldsFilter" isEnabled="false"/>
-<child filterId="jdt.external.source.project.filter" isEnabled="true"/>
-<child filterId="org.eclipse.jdt.internal.ui.PackageExplorer.HideInnerClassFilesFilter" isEnabled="true"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.NonPublicFilter" isEnabled="false"/>
-<child filterId="org.eclipse.pde.ui.BinaryProjectFilter1" isEnabled="false"/>
-<child filterId="org.eclipse.mylyn.java.ui.MembersFilter" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.LocalTypesFilter" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.StaticsFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.ContainedLibraryFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.NonJavaElementFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.NonSharedProjectsFilter" isEnabled="false"/>
+<child filterId="org.eclipse.pde.ui.ExternalPluginLibrariesFilter1" isEnabled="true"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.ClosedProjectsFilter" isEnabled="false"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.NonSharedProjectsFilter" isEnabled="false"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.NonJavaElementFilter" isEnabled="false"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.ContainedLibraryFilter" isEnabled="false"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.CuAndClassFileFilter" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.NonJavaProjectsFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.PackageDeclarationFilter" isEnabled="true"/>
 <child filterId="org.eclipse.jdt.internal.ui.PackageExplorer.EmptyInnerPackageFilter" isEnabled="true"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.PackageDeclarationFilter" isEnabled="true"/>
 <child filterId="org.eclipse.jdt.internal.ui.PackageExplorer.EmptyPackageFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.ImportDeclarationFilter" isEnabled="true"/>
 <child filterId="com.google.gdt.eclipse.managedapis.ui.ManagedApiContainerFilter" isEnabled="true"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.ImportDeclarationFilter" isEnabled="true"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.FieldsFilter" isEnabled="false"/>
+<child filterId="org.eclipse.jdt.internal.ui.PackageExplorer.HideInnerClassFilesFilter" isEnabled="true"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.NonPublicFilter" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer_patternFilterId_.*" isEnabled="true"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.EmptyLibraryContainerFilter" isEnabled="true"/>
+<child filterId="org.eclipse.pde.ui.BinaryProjectFilter1" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.SyntheticMembersFilter" isEnabled="true"/>
+<child filterId="org.eclipse.m2e.MavenModuleFilter" isEnabled="false"/>
 </xmlDefinedFilters>
 </customFilters>
 </viewState>
@@ -112,7 +116,7 @@
 <view id="org.eclipse.jdt.ui.SourceView" partName="Declaration"/>
 <view id="org.eclipse.jdt.ui.JavadocView" partName="Javadoc"/>
 </views>
-<perspectives activePart="org.eclipse.jdt.ui.PackageExplorer" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
+<perspectives activePart="org.eclipse.jdt.ui.CompilationUnitEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.jdt.internal.ui.JavaPerspectiveFactory" id="org.eclipse.jdt.ui.JavaPerspective" label="Java"/>
 <alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
@@ -138,6 +142,8 @@
 <alwaysOnActionSet id="org.eclipse.debug.ui.profileActionSet"/>
 <alwaysOnActionSet id="org.eclipse.mylyn.doc.actionSet"/>
 <alwaysOnActionSet id="com.google.gdt.eclipse.core.actionSet"/>
+<alwaysOnActionSet id="adt.actionSet.lint"/>
+<alwaysOnActionSet id="org.eclipse.wb.core.ui.actionset"/>
 <show_view_action id="org.eclipse.jdt.ui.PackageExplorer"/>
 <show_view_action id="org.eclipse.jdt.ui.TypeHierarchy"/>
 <show_view_action id="org.eclipse.jdt.ui.SourceView"/>
@@ -248,13 +254,21 @@
 </perspective>
 </perspectives>
 <workingSets/>
-<navigationHistory/>
+<navigationHistory>
+<editors>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/weka/src/ArffLoader.java"/>
+</editors>
+<item active="true" historyLabel="ArffLoader.java" index="0">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+</navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
 </page>
 <workbenchWindowAdvisor/>
 <actionBarAdvisor/>
 <trimLayout>
 <trimArea IMemento.internal.id="128">
+<trimItem IMemento.internal.id="org.eclipse.mylyn.tasks.ui.trim.container"/>
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
 </trimArea>
 <trimArea IMemento.internal.id="1024">
