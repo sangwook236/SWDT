@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="sse"
+	Name="simd"
 	ProjectGUID="{C9069975-991D-40C3-B269-12023BDE7495}"
-	RootNamespace="sse"
+	RootNamespace="simd"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>

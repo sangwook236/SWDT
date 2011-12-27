@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>sse</ProjectName>
+    <ProjectName>simd</ProjectName>
     <ProjectGuid>{C9069975-991D-40C3-B269-12023BDE7495}</ProjectGuid>
-    <RootNamespace>sse</RootNamespace>
+    <RootNamespace>simd</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
