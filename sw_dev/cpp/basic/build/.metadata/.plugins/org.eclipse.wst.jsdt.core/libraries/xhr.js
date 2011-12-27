@@ -18,7 +18,7 @@
 * @type XMLHttpRequest
 * @memberOf Window
 */
-Window.prototype.createRequest=new function(){return new XMLHttpRequest();};
+Window.prototype.createRequest= function(){return new XMLHttpRequest();};
 /**
 * Object XMLHttpRequest
 * @super Global

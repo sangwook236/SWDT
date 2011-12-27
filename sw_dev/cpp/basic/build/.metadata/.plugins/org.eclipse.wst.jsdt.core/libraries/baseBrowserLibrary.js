@@ -439,6 +439,18 @@ Document.prototype.importNode=function(importedNode, deep){return new Node();};
  */
 Document.prototype.createElementNS=function(namespaceURI, qualifiedName){return new HTMLElement();}; 
 /**
+ * function createEvent(String eventType) 
+ * http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html
+ * 
+ * @param {String} eventType
+ * @returns {Object}
+ * @throws DOMException
+ * @since Standard ECMA-262 3rd. Edition 
+ * @since Level 2 Document Object Model Core Definition.
+ * @see Element        
+ */
+Document.prototype.createEvent=function(eventType){return new Object();}; 
+/**
  * function createAttributeNS(namespaceURI, qualifiedName)
  * http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html
  * 
@@ -1142,6 +1154,47 @@ Element.prototype=new Node();
  * @since Level 2 Document Object Model Core Definition.     
  */
 Element.prototype.tagName="";
+/**
+ * function addEventListener(Stirng type, Function listener, Boolean useCapture) 
+ * http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html 
+ * 
+ * @param {String} type
+ * @param {Function} listener
+ * @param {Boolean} useCapture
+ * @since Standard ECMA-262 3rd. Edition 
+ * @since Level 2 Document Object Model Core Definition.    
+ */
+Element.prototype.addEventListener=function(type, listener, useCapture){}; 
+/**
+ * function attachEvent(String type, Function listener) 
+ * http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html 
+ * 
+ * @param {String} type
+ * @param {Function} listener
+ * @since Standard ECMA-262 3rd. Edition 
+ * @since Level 2 Document Object Model Core Definition.    
+ */
+Element.prototype.attachEvent=function(type, listener){}; 
+/**
+ * function detachEvent(String type, Function listener) 
+ * http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html 
+ * 
+ * @param {String} type
+ * @param {Function} listener
+ * @since Standard ECMA-262 3rd. Edition 
+ * @since Level 2 Document Object Model Core Definition.    
+ */
+Element.prototype.detachEvent=function(type, listener){}; 
+/**
+ * function dispatchEvent(Object event) 
+ * http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html 
+ * 
+ * @param {Object} event
+ * @returns {Boolean}
+ * @since Standard ECMA-262 3rd. Edition 
+ * @since Level 2 Document Object Model Core Definition.    
+ */
+Element.prototype.dispatchEvent=function(event){return false;}; 
 /**
  * function getAttribute(name) 
  * http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/ecma-script-binding.html 

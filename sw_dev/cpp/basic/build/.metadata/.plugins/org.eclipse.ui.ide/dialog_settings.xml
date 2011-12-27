@@ -4,30 +4,30 @@
 		<item value="451" key="DIALOG_Y_ORIGIN"/>
 		<item value="654" key="DIALOG_X_ORIGIN"/>
 	</section>
-	<section name="ExternalProjectImportWizard">
-		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
-		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
-	</section>
 	<section name="WORKBENCH_SETTINGS">
 		<list key="ENABLED_TRANSFERS">
 		</list>
 	</section>
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+	</section>
 	<section name="ResourceListSelectionDialogSettings">
 		<item value="376" key="DIALOG_WIDTH"/>
 		<item value="-35" key="DIALOG_Y_ORIGIN"/>
-		<item value="434" key="DIALOG_HEIGHT"/>
 		<item value="7" key="DIALOG_X_ORIGIN"/>
+		<item value="434" key="DIALOG_HEIGHT"/>
 		<item value="1|굴림|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|굴림" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="NewWizardAction">
 	</section>
 	<section name="CleanDialogSettings">
 		<item value="492" key="DIALOG_WIDTH"/>
 		<item value="false" key="BUILD_NOW"/>
-		<item value="true" key="BUILD_ALL"/>
 		<item value="363" key="DIALOG_Y_ORIGIN"/>
-		<item value="419" key="DIALOG_HEIGHT"/>
+		<item value="true" key="BUILD_ALL"/>
 		<item value="714" key="DIALOG_X_ORIGIN"/>
+		<item value="419" key="DIALOG_HEIGHT"/>
 		<item value="false" key="TOGGLE_SELECTED"/>
-	</section>
-	<section name="NewWizardAction">
 	</section>
 </section>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python", "..\src\python\python_msvc10.vcxproj", "{3707F402-986D-4105-8A14-DBD761BC1637}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python", "..\test\python\python_msvc10.vcxproj", "{3707F402-986D-4105-8A14-DBD761BC1637}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

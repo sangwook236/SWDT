@@ -1,30 +1,30 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddFront", "..\src\microsoft_com\AddFront\AddFront_msvc9.vcproj", "{EA58AA86-7B03-42A7-9162-1B5563567737}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddFront", "..\test\microsoft_com\AddFront\AddFront_msvc9.vcproj", "{EA58AA86-7B03-42A7-9162-1B5563567737}"
 	ProjectSection(ProjectDependencies) = postProject
 		{29131C0F-14EF-4F45-82EC-F6F9E90AEC72} = {29131C0F-14EF-4F45-82EC-F6F9E90AEC72}
 		{546BC67E-AE36-48F8-B702-A02075ED9F3D} = {546BC67E-AE36-48F8-B702-A02075ED9F3D}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddFrontConsole", "..\src\microsoft_com\AddFrontConsole\AddFrontConsole_msvc9.vcproj", "{D716E799-B44F-4C43-9873-E309CC9BA56D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddFrontConsole", "..\test\microsoft_com\AddFrontConsole\AddFrontConsole_msvc9.vcproj", "{D716E799-B44F-4C43-9873-E309CC9BA56D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{29131C0F-14EF-4F45-82EC-F6F9E90AEC72} = {29131C0F-14EF-4F45-82EC-F6F9E90AEC72}
 		{546BC67E-AE36-48F8-B702-A02075ED9F3D} = {546BC67E-AE36-48F8-B702-A02075ED9F3D}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBackServer", "..\src\microsoft_com\AddBackServer\AddBackServer_msvc9.vcproj", "{29131C0F-14EF-4F45-82EC-F6F9E90AEC72}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBackServer", "..\test\microsoft_com\AddBackServer\AddBackServer_msvc9.vcproj", "{29131C0F-14EF-4F45-82EC-F6F9E90AEC72}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBackServerPS", "..\src\microsoft_com\AddBackServer\AddBackServerPS_msvc9.vcproj", "{05D69D04-BBF4-4E25-B16A-32BEAD0F889A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBackServerPS", "..\test\microsoft_com\AddBackServer\AddBackServerPS_msvc9.vcproj", "{05D69D04-BBF4-4E25-B16A-32BEAD0F889A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddFront_byAttrib", "..\src\microsoft_com\AddFront_byAttrib\AddFront_byAttrib_msvc9.vcproj", "{D2FB93DA-4E9F-4558-98D6-D474674DFBFA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddFront_byAttrib", "..\test\microsoft_com\AddFront_byAttrib\AddFront_byAttrib_msvc9.vcproj", "{D2FB93DA-4E9F-4558-98D6-D474674DFBFA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{29131C0F-14EF-4F45-82EC-F6F9E90AEC72} = {29131C0F-14EF-4F45-82EC-F6F9E90AEC72}
 		{546BC67E-AE36-48F8-B702-A02075ED9F3D} = {546BC67E-AE36-48F8-B702-A02075ED9F3D}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBack_byAttrib", "..\src\microsoft_com\AddBack_byAttrib\AddBack_byAttrib_msvc9.vcproj", "{546BC67E-AE36-48F8-B702-A02075ED9F3D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBack_byAttrib", "..\test\microsoft_com\AddBack_byAttrib\AddBack_byAttrib_msvc9.vcproj", "{546BC67E-AE36-48F8-B702-A02075ED9F3D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBack_byAttribPS", "..\src\microsoft_com\AddBack_byAttrib\AddBack_byAttribPS_msvc9.vcproj", "{0D4232B6-16BF-4B5E-B1A1-C32B80D0D02C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBack_byAttribPS", "..\test\microsoft_com\AddBack_byAttrib\AddBack_byAttribPS_msvc9.vcproj", "{0D4232B6-16BF-4B5E-B1A1-C32B80D0D02C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{546BC67E-AE36-48F8-B702-A02075ED9F3D} = {546BC67E-AE36-48F8-B702-A02075ED9F3D}
 	EndProjectSection
