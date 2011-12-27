@@ -137,15 +137,10 @@
   <ItemGroup>
     <ClCompile Include="AddBack.cpp" />
     <ClCompile Include="AddBackServer.cpp" />
+    <ClCompile Include="AddBackServer_i.c" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="AddBackServer_i.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,12 +153,12 @@
     <Midl Include="AddBackServer.idl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddBackServer.h" />
     <ClInclude Include="_IAddBackEvents_CP.h" />
     <ClInclude Include="AddBack.h" />
     <ClInclude Include="IAddBackEvents_CP.H" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="AddBackServer.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AddBackServer.rc" />

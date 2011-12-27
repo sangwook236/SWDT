@@ -96,9 +96,9 @@ Exit 1
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="dlldata.c" />
     <ClCompile Include="_AddBack_byAttrib_i.c" />
     <ClCompile Include="_AddBack_byAttrib_p.c" />
-    <ClCompile Include="dlldata.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AddBack_byAttribps.def" />
