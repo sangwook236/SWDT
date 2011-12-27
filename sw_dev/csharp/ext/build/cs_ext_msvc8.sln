@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net_test", "..\test\log4net_test\log4net_test.csproj", "{911457B3-8762-4907-BC07-861F4DE5BD32}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net_test_msvc8", "..\test\log4net_test\log4net_test_msvc8.csproj", "{911457B3-8762-4907-BC07-861F4DE5BD32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit_test", "..\test\nunit_test\nunit_test.csproj", "{383CE2C8-BA38-45EA-9888-15A4A31545AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit_test_msvc8", "..\test\nunit_test\nunit_test_msvc8.csproj", "{383CE2C8-BA38-45EA-9888-15A4A31545AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mathnet_test", "..\test\mathnet_test\mathnet_test.csproj", "{FEB1CB04-A7AE-4B88-9C86-4433772881F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mathnet_test_msvc8", "..\test\mathnet_test\mathnet_test_msvc8.csproj", "{FEB1CB04-A7AE-4B88-9C86-4433772881F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

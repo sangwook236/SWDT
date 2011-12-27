@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net_test", "..\test\log4net_test\log4net_test_msvc10.csproj", "{911457B3-8762-4907-BC07-861F4DE5BD32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit_test_msvc10", "..\test\nunit_test\nunit_test_msvc10.csproj", "{383CE2C8-BA38-45EA-9888-15A4A31545AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mathnet_test_msvc10", "..\test\mathnet_test\mathnet_test_msvc10.csproj", "{FEB1CB04-A7AE-4B88-9C86-4433772881F8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{911457B3-8762-4907-BC07-861F4DE5BD32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{911457B3-8762-4907-BC07-861F4DE5BD32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{911457B3-8762-4907-BC07-861F4DE5BD32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{911457B3-8762-4907-BC07-861F4DE5BD32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{383CE2C8-BA38-45EA-9888-15A4A31545AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{383CE2C8-BA38-45EA-9888-15A4A31545AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{383CE2C8-BA38-45EA-9888-15A4A31545AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{383CE2C8-BA38-45EA-9888-15A4A31545AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEB1CB04-A7AE-4B88-9C86-4433772881F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEB1CB04-A7AE-4B88-9C86-4433772881F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEB1CB04-A7AE-4B88-9C86-4433772881F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEB1CB04-A7AE-4B88-9C86-4433772881F8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

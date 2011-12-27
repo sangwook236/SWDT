@@ -1,10 +1,10 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGuiComponent", "..\src\TestGuiComponent\TestGuiComponent.csproj", "{D3558F59-41A3-4773-9FBC-C3738F2E1A05}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGuiComponent_msvc10", "..\test\TestGuiComponent\TestGuiComponent_msvc10.csproj", "{D3558F59-41A3-4773-9FBC-C3738F2E1A05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestClassLibrary", "..\src\TestClassLibrary\TestClassLibrary.csproj", "{9C241F47-F357-4C9D-81EF-117AFCBA5908}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestClassLibrary_msvc10", "..\test\TestClassLibrary\TestClassLibrary_msvc10.csproj", "{9C241F47-F357-4C9D-81EF-117AFCBA5908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "..\src\TestApp\TestApp.csproj", "{B52AB0D5-1911-4943-B274-40BD245D5AFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp_msvc10", "..\test\TestApp\TestApp_msvc10.csproj", "{B52AB0D5-1911-4943-B274-40BD245D5AFB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9C241F47-F357-4C9D-81EF-117AFCBA5908} = {9C241F47-F357-4C9D-81EF-117AFCBA5908}
 	EndProjectSection
