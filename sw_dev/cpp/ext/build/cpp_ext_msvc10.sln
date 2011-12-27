@@ -42,11 +42,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "eigen", "..\test\eigen\eige
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "atlas", "..\test\atlas\atlas_msvc10.vcxproj", "{E656295F-9106-42B9-8229-38B37FCD12C7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphviz", "..\test\graphviz\graphviz.vcxproj", "{A1B6BE76-CDC7-4E13-8601-3973907748A7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphviz", "..\test\graphviz\graphviz_msvc10.vcxproj", "{A1B6BE76-CDC7-4E13-8601-3973907748A7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cairo", "..\test\cairo\cairo.vcxproj", "{046579FF-F6FF-4378-BA3E-61951BD731FB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cairo", "..\test\cairo\cairo_msvc10.vcxproj", "{046579FF-F6FF-4378-BA3E-61951BD731FB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plplot", "..\test\plplot\plplot.vcxproj", "{641DC327-36C6-4091-8BD4-A1029DF1018A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plplot", "..\test\plplot\plplot_msvc10.vcxproj", "{641DC327-36C6-4091-8BD4-A1029DF1018A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cuda", "..\test\cuda\cuda_msvc10.vcxproj", "{05AC83E8-E05E-46BA-8C19-CED811F98BC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -150,6 +152,10 @@ Global
 		{641DC327-36C6-4091-8BD4-A1029DF1018A}.Debug|Win32.Build.0 = Debug|Win32
 		{641DC327-36C6-4091-8BD4-A1029DF1018A}.Release|Win32.ActiveCfg = Release|Win32
 		{641DC327-36C6-4091-8BD4-A1029DF1018A}.Release|Win32.Build.0 = Release|Win32
+		{05AC83E8-E05E-46BA-8C19-CED811F98BC9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{05AC83E8-E05E-46BA-8C19-CED811F98BC9}.Debug|Win32.Build.0 = Debug|Win32
+		{05AC83E8-E05E-46BA-8C19-CED811F98BC9}.Release|Win32.ActiveCfg = Release|Win32
+		{05AC83E8-E05E-46BA-8C19-CED811F98BC9}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
