@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 		}
 
 		{
-			factory();
+			//factory();
 
 			//smart_ptr();
 			//any();
@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
 			//mtl_matrix();
 
 			//polygon();
-			//geometry();
+			geometry();
 
 			//graph();
 		}

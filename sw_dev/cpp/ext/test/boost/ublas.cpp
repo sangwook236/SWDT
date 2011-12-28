@@ -12,30 +12,8 @@
 #endif
 
 
-void ublas_basic();
-void ublas_vector_operation();
-void ublas_matrix_operation();
-void ublas_matrix_vector_operation();
-void ublas_matrix_matrix_operation();
-void ublas_lu();
-
-void ublas_inv();
-void ublas_qr();
-
-void ublas()
-{
-	ublas_basic();
-	ublas_vector_operation();
-	ublas_matrix_operation();
-	ublas_matrix_vector_operation();
-	ublas_matrix_matrix_operation();
-	ublas_lu();
-
-	ublas_inv();
-	ublas_qr();
-}
-
 namespace {
+namespace local {
 
 /**
 * Invert a matrix via gauss-jordan algorithm (PARTIAL PIVOT)
@@ -45,7 +23,7 @@ namespace {
 * @return If singular is false, then the inverted matrix is returned. Otherwise it contains random values.
 */
 template<class T>
-boost::numeric::ublas::matrix<T> ublas_inv(const boost::numeric::ublas::matrix<T> &m, bool &singular)
+boost::numeric::ublas::matrix<T> ublas_inv_by_gj(const boost::numeric::ublas::matrix<T> &m, bool &singular)
 {
 	const T eps = (T)1.0e-15;
 
@@ -84,45 +62,45 @@ boost::numeric::ublas::matrix<T> ublas_inv(const boost::numeric::ublas::matrix<T
 	boost::numeric::ublas::matrix_range<boost::numeric::ublas::matrix<T> > Aright(A, boost::numeric::ublas::range(0, size), boost::numeric::ublas::range(size, 2*size));
 	Aright = boost::numeric::ublas::identity_matrix<T>(size);
 
-	// Doing partial pivot
+	// Swap rows to eliminate zero diagonal elements.
 	for (int k = 0; k < size; ++k)
 	{
-		// Swap rows to eliminate zero diagonal elements.
-		for (int k = 0; k < size; ++k)
+		if (A(k,k) == 0) // XXX: test for "small" instead
 		{
-			if (A(k,k) == 0) // XXX: test for "small" instead
+			// Find a row(l) to swap with row(k)
+			int l = -1;
+			for (int i = k+1; i < size; i++) 
 			{
-				// Find a row(l) to swap with row(k)
-				int l = -1;
-				for (int i = k+1; i < size; i++) 
+				if ( A(i,k) != 0 )
 				{
-					if ( A(i,k) != 0 )
-					{
-						l = i; 
-						break;
-					}
+					l = i; 
+					break;
 				}
+			}
 
-				// Swap the rows if found
-				if (l < 0) 
-				{
-					//std::cerr << "Error:" << __FUNCTION__ << ": Input matrix is singular, because cannot find a row to swap while eliminating zero-diagonal.";
-					singular = true;
-					return Aleft;
-				}
-				else 
-				{
-					boost::numeric::ublas::matrix_row<boost::numeric::ublas::matrix<T> > rowk(A, k);
-					boost::numeric::ublas::matrix_row<boost::numeric::ublas::matrix<T> > rowl(A, l);
-					rowk.swap(rowl);
+			// Swap the rows if found
+			if (l < 0) 
+			{
+				//std::cerr << "Error:" << __FUNCTION__ << ": Input matrix is singular, because cannot find a row to swap while eliminating zero-diagonal.";
+				singular = true;
+				return Aleft;
+			}
+			else 
+			{
+				boost::numeric::ublas::matrix_row<boost::numeric::ublas::matrix<T> > rowk(A, k);
+				boost::numeric::ublas::matrix_row<boost::numeric::ublas::matrix<T> > rowl(A, l);
+				rowk.swap(rowl);
 
 //#if defined(DEBUG) || !defined(NDEBUG)
 //					std::cerr << __FUNCTION__ << ":" << "Swapped row " << k << " with row " << l << ":" << A << std::endl;
 //#endif
-				}
 			}
 		}
+	}
 
+	// Doing partial pivot
+	for (int k = 0; k < size; ++k)
+	{
 		// normalize the current row
 		for (int j = k+1; j < 2*size; ++j)
 			A(k,j) /= A(k,k);
@@ -150,6 +128,31 @@ boost::numeric::ublas::matrix<T> ublas_inv(const boost::numeric::ublas::matrix<T
 	singular = false;
 	return Aright;
 }
+
+// Matrix inversion routine. Uses lu_factorize and lu_substitute in uBLAS to invert a matrix
+template<class T>
+bool ublas_inv_by_lu(const boost::numeric::ublas::matrix<T> &input, boost::numeric::ublas::matrix<T> &inverse)
+{
+	typedef boost::numeric::ublas::permutation_matrix<std::size_t> pmatrix_t;
+
+	// create a working copy of the input
+	boost::numeric::ublas::matrix<T> A(input);
+	// create a permutation matrix for the LU-factorization
+	pmatrix_t pm(A.size1());
+
+	// perform LU-factorization
+	const int res = boost::numeric::ublas::lu_factorize(A,pm);
+	if (0 != res) return false;
+
+	// create identity matrix of "inverse"
+	inverse.assign(boost::numeric::ublas::identity_matrix<T>(A.size1()));
+
+	// backsubstitute to get the inverse
+	boost::numeric::ublas::lu_substitute(A, pm, inverse);
+
+	return true;
+}
+
 
 template<class T>
 void TransposeMultiply(const boost::numeric::ublas::vector<T> &v, boost::numeric::ublas::matrix<T> &m)
@@ -229,8 +232,6 @@ bool ublas_qr(const boost::numeric::ublas::matrix<T> &M, boost::numeric::ublas::
 
 	return true;
 }
-
-}  // unnamed namespace
 
 void ublas_basic()
 {
@@ -592,11 +593,17 @@ void ublas_inv()
 	std::cout << "A = " << A << std::endl;
 
 	bool is_singular;
-	const boost::numeric::ublas::matrix<double> &invA = ublas_inv(A, is_singular);
+	const boost::numeric::ublas::matrix<double> &invA1 = ublas_inv_by_gj(A, is_singular);
 	if (is_singular)
 		std::cout << "A is singular" << std::endl;
 	else
-		std::cout << "inverse using LU: inv(A) = " << invA << std::endl;
+		std::cout << "inverse using G-J: inv(A) = " << invA1 << std::endl;
+
+	boost::numeric::ublas::matrix<double> invA2(A.size1(), A.size2());
+	if (ublas_inv_by_lu(A, invA2))
+		std::cout << "inverse using LU: inv(A) = " << invA2 << std::endl;
+	else
+		std::cout << "A is singular" << std::endl;
 }
 
 void ublas_qr()
@@ -612,11 +619,27 @@ void ublas_qr()
 	if (ublas_qr(A, Q, R))
 	{
 		boost::numeric::ublas::matrix<double> Z = boost::numeric::ublas::prod(Q, R) - A;
-		const float f = boost::numeric::ublas::norm_1(Z);
+		const double f = boost::numeric::ublas::norm_1(Z);
 		std::cout << "Q = " << Q << std::endl;
 		std::cout << "R = " << R << std::endl;
 		std::cout << "|Q*R - A| = " << f << std::endl;
 	}
 	else
 		std::cout << "error: cann't compute inverse" << std::endl;
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void ublas()
+{
+	local::ublas_basic();
+	local::ublas_vector_operation();
+	local::ublas_matrix_operation();
+	local::ublas_matrix_vector_operation();
+	local::ublas_matrix_matrix_operation();
+	local::ublas_lu();
+
+	local::ublas_inv();
+	local::ublas_qr();
 }
