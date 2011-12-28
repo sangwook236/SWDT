@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="python"
+	Name="embedding"
 	ProjectGUID="{3707F402-986D-4105-8A14-DBD761BC1637}"
-	RootNamespace="python"
+	RootNamespace="embedding"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\Program Files\Python31\include"
+				AdditionalIncludeDirectories="C:\Program Files\Python32\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,9 +63,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="python31.lib"
+				AdditionalDependencies="python32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="C:\Program Files\Python31\libs"
+				AdditionalLibraryDirectories="C:\Program Files\Python32\libs"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				RandomizedBaseAddress="1"
@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="C:\Program Files\Python31\include"
+				AdditionalIncludeDirectories="C:\Program Files\Python32\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -139,9 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="python31.lib"
+				AdditionalDependencies="python32.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="C:\Program Files\Python31\libs"
+				AdditionalLibraryDirectories="C:\Program Files\Python32\libs"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -182,7 +182,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\embedding1.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\simple_embedding.cpp"
 				>
 			</File>
 		</Filter>

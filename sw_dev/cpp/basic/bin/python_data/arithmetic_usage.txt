@@ -1,1 +1,0 @@
-python.exe arithmetic add 3 2

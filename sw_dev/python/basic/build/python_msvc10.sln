@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python", "..\test\python\python_msvc10.vcxproj", "{3707F402-986D-4105-8A14-DBD761BC1637}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "embedding", "..\test\embedding\embedding_msvc10.vcxproj", "{3707F402-986D-4105-8A14-DBD761BC1637}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "extending", "..\test\extending\extending_msvc10.vcxproj", "{3A816F19-5E48-4CE8-B75A-F916E0B0DDA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +15,10 @@ Global
 		{3707F402-986D-4105-8A14-DBD761BC1637}.Debug|Win32.Build.0 = Debug|Win32
 		{3707F402-986D-4105-8A14-DBD761BC1637}.Release|Win32.ActiveCfg = Release|Win32
 		{3707F402-986D-4105-8A14-DBD761BC1637}.Release|Win32.Build.0 = Release|Win32
+		{3A816F19-5E48-4CE8-B75A-F916E0B0DDA3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3A816F19-5E48-4CE8-B75A-F916E0B0DDA3}.Debug|Win32.Build.0 = Debug|Win32
+		{3A816F19-5E48-4CE8-B75A-F916E0B0DDA3}.Release|Win32.ActiveCfg = Release|Win32
+		{3A816F19-5E48-4CE8-B75A-F916E0B0DDA3}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

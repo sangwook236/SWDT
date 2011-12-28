@@ -69,8 +69,6 @@ int main(int argc, char* argv[])
 	void asio_tcp_udp_server();
 	void asio_serial_port();
 
-	void python();
-
 	void image();
 
 	try
@@ -148,8 +146,6 @@ int main(int argc, char* argv[])
 		}
 
 		{
-			//python();
-
 			//image();  // Oops !!! not working
 		}
 	}
