@@ -1,9 +1,9 @@
-#Sun Apr 11 19:46:30 KST 2010
+#Wed Dec 28 15:59:26 KST 2011
 useQuickDiffPrefPage=true
 tabWidthPropagated=true
 proposalOrderMigrated=true
 useAnnotationsPrefPage=true
-org.eclipse.jface.textfont=1|Courier New|10.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Courier New;
+org.eclipse.jface.textfont=1|Consolas|10.0|0|WINDOWS|1|0|0|0|0|0|0|0|0|1|0|0|0|0|Consolas;
 spelling_locale_initialized=true
 org.eclipse.wst.jsdt.ui.javadoclocations.migrated=true
 eclipse.preferences.version=1

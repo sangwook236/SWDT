@@ -62,6 +62,10 @@
 		<item value="org.polarion.eclipse.team.svn.connector:2.2.1.I20091009-1900"/>
 		<item value="org.python.pydev.feature:1.5.6.2010033101"/>
 	</list>
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+	</section>
 	<section name="ResourceNavigator">
 		<item value="Aggregate for window 1235281755302" key="ResourceWorkingSetFilter.STORE_WORKING_SET"/>
 		<item value="1" key="ResourceViewer.STORE_SORT_TYPE"/>

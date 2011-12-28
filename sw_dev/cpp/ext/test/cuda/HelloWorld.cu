@@ -1,7 +1,15 @@
-#include <cutil_inline.h>
+#include <cuda_runtime.h>
 #include <iostream>
 
-void HelloWorld()
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+__global__ void HelloWorld()
 {
 	std::cout << "Hello World!" << std::endl;
 }
+
+#if defined(__cplusplus)
+}  // extern "C"
+#endif

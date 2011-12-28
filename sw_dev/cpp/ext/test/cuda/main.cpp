@@ -1,5 +1,16 @@
+#include <cuda_runtime.h>
 #include <iostream>
 
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+//__global__ void HelloWorld();
+__global__ void HelloWorld()
+{
+	std::cout << "Hello World!" << std::endl;
+}
 
 #if defined(UNICODE) || defined(_UNICODE)
 int wmain(int argc, wchar_t **argv)
@@ -7,7 +18,6 @@ int wmain(int argc, wchar_t **argv)
 int main(int argc, char **argv)
 #endif
 {
-	void HelloWorld();
 
 	try
 	{
@@ -29,3 +39,6 @@ int main(int argc, char **argv)
     return 0;
 }
 
+#if defined(__cplusplus)
+}  // extern "C"
+#endif
