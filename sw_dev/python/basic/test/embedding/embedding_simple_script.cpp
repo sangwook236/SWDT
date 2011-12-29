@@ -4,9 +4,9 @@
 
 
 #if defined(_UNICODE) || defined(UNICODE)
-bool embedding1(int argc, wchar_t* argv[])
+bool embedding_simple_script(int argc, wchar_t* argv[])
 #else
-bool embedding1(int argc, char* argv[])
+bool embedding_simple_script(int argc, char* argv[])
 #endif
 {
 	if (argc < 3)
@@ -48,7 +48,7 @@ bool embedding1(int argc, char* argv[])
 			{
 				// TODO [check] >> is it correct?
 #if defined(_UNICODE) || defined(UNICODE)
-				pValue = PyLong_FromUnicode(argv[i + 3], 0, 0);
+				pValue = PyLong_FromUnicode(argv[i + 3], std::wcslen(argv[i + 3]), 0);
 #else
 				pValue = PyLong_FromLong(atoi(argv[i + 3]));
 				//pValue = PyLong_FromString(argv[i + 3], NULL, 0);

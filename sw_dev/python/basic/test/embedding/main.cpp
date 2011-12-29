@@ -8,19 +8,17 @@ int wmain(int argc, wchar_t* argv[])
 int main(int argc, char* argv[])
 #endif
 {
-	void simple_embedding();
+	void embedding_simple_string();
 #if defined(_UNICODE) || defined(UNICODE)
-	bool embedding1(int argc, wchar_t* argv[]);
+	bool embedding_simple_script(int argc, wchar_t* argv[]);
 #else
-	bool embedding1(int argc, char* argv[]);
+	bool embedding_simple_script(int argc, char* argv[]);
 #endif
 
 	try
 	{
-		bool retval;
-
-		simple_embedding();
-		//retval = embedding1(argc, argv);
+		//embedding_simple_string();
+		const bool retval = embedding_simple_script(argc, argv);
 	}
 	catch (const std::exception &e)
 	{
