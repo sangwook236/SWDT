@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
 			//bind();
 			//signals_slots();
 
-			//serialization();
+			serialization();
 		}
 
 		{
@@ -125,7 +125,7 @@ int main(int argc, char* argv[])
 			//mtl_matrix();
 
 			//polygon();
-			geometry();
+			//geometry();
 
 			//graph();
 		}

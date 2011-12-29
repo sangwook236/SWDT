@@ -6,7 +6,6 @@
 #include <string>
 
 #include <boost/archive/tmpdir.hpp>
-
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
@@ -15,10 +14,18 @@
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/utility.hpp>
 #include <boost/serialization/list.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/nvp.hpp>
+#include <boost/serialization/version.hpp>
 #include <boost/serialization/assume_abstract.hpp>
+#include <boost/serialization/utility.hpp>
 
+
+// NVP: a name-value pair for XML serialization
+//#define __MACRO_USE_NVP_FOR_XML_SERIALIZATION_ 1
 
 //namespace {
+//namespace local {
 
 /////////////////////////////////////////////////////////////
 // gps coordinate
@@ -28,7 +35,7 @@
 class gps_position
 {
 	friend std::ostream & operator<<(std::ostream &os, const gps_position &gp);
-	friend class boost::serialization::access;
+	friend class ::boost::serialization::access;
 
 	int degrees;
 	int minutes;
@@ -37,15 +44,21 @@ class gps_position
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /* file_version */)
 	{
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 		ar & degrees & minutes & seconds;
+#else
+		ar & BOOST_SERIALIZATION_NVP(degrees)
+			& BOOST_SERIALIZATION_NVP(minutes)
+			& BOOST_SERIALIZATION_NVP(seconds);
+#endif
 	}
 
 public:
 	// every serializable class needs a constructor
 	gps_position()
 	{}
-	gps_position(int _d, int _m, float _s)
-	: degrees(_d), minutes(_m), seconds(_s)
+	gps_position(int d, int m, float s)
+	: degrees(d), minutes(m), seconds(s)
 	{}
 };
 
@@ -69,17 +82,22 @@ class bus_stop
 
 	gps_position latitude;
 	gps_position longitude;
-	template<class Archive>
 
+	template<class Archive>
 	void serialize(Archive &ar, const unsigned int version)
 	{
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 		ar & latitude;
 		ar & longitude;
+#else
+		ar & BOOST_SERIALIZATION_NVP(latitude);
+		ar & BOOST_SERIALIZATION_NVP(longitude);
+#endif
 	}
 
 protected:
-	bus_stop(const gps_position & _lat, const gps_position & _long)
-	: latitude(_lat), longitude(_long)
+	bus_stop(const gps_position &lat, const gps_position &lon)
+	: latitude(lat), longitude(lon)
 	 {}
 
 public:
@@ -116,15 +134,21 @@ class bus_stop_corner : public bus_stop
 	void serialize(Archive &ar, const unsigned int version)
 	{
 		// save/load base class information
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 		ar & boost::serialization::base_object<bus_stop>(*this);
 		ar & street1 & street2;
+#else
+		ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(bus_stop);
+		ar & BOOST_SERIALIZATION_NVP(street1);
+		ar & BOOST_SERIALIZATION_NVP(street2);
+#endif
 	}
 
 public:
 	bus_stop_corner()
 	{}
-	bus_stop_corner(const gps_position & _lat, const gps_position & _long, const std::string & _s1, const std::string & _s2)
-	: bus_stop(_lat, _long), street1(_s1), street2(_s2)
+	bus_stop_corner(const gps_position &lat, const gps_position &lon, const std::string &s1, const std::string &s2)
+	: bus_stop(lat, lon), street1(s1), street2(s2)
 	{}
 };
 
@@ -142,15 +166,20 @@ class bus_stop_destination : public bus_stop
 	template<class Archive>
 	void serialize(Archive &ar, const unsigned int version)
 	{
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 		ar & boost::serialization::base_object<bus_stop>(*this) & name;
+#else
+		ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(bus_stop)
+			& BOOST_SERIALIZATION_NVP(name);
+#endif
 	}
 
 public:
 
 	bus_stop_destination()
 	{}
-	bus_stop_destination(const gps_position & _lat, const gps_position & _long, const std::string & _name)
-	: bus_stop(_lat, _long), name(_name)
+	bus_stop_destination(const gps_position &lat, const gps_position &lon, const std::string &n)
+	: bus_stop(lat, lon), name(n)
 	{}
 };
 
@@ -186,7 +215,11 @@ class bus_route
 		ar.register_type(static_cast<bus_stop_destination *>(NULL));
 		// serialization of stl collections is already defined
 		// in the header
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 		ar & stops;
+#else
+		ar & BOOST_SERIALIZATION_NVP(stops);
+#endif
 	}
 
 public:
@@ -204,7 +237,7 @@ std::ostream & operator<<(std::ostream &os, const bus_route &br)
 {
 	// note: we're displaying the pointer to permit verification
 	// that duplicated pointers are properly restored.
-	for (std::list<bus_stop *>::const_iterator it = br.stops.begin(); it != br.stops.end(); it++)
+	for (std::list<bus_stop *>::const_iterator it = br.stops.begin(); it != br.stops.end(); ++it)
 	{
 		os << '\n' << std::hex << "0x" << *it << std::dec << ' ' << **it;
 	}
@@ -234,12 +267,22 @@ public:
 		template<class Archive>
 		void serialize(Archive &ar, const unsigned int file_version)
 		{
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 			// in versions 2 or later
 			if (file_version >= 2)
 				// read the drivers name
 				ar & driver;
 			// all versions have the follwing info
 			ar & hour & minute;
+#else
+			// in versions 2 or later
+			if(file_version >= 2)
+				// read the drivers name
+				ar & BOOST_SERIALIZATION_NVP(driver);
+			// all versions have the follwing info
+			ar  & BOOST_SERIALIZATION_NVP(hour)
+				& BOOST_SERIALIZATION_NVP(minute);
+#endif
 		}
 
 		// starting time
@@ -250,8 +293,8 @@ public:
 
 		trip_info()
 		{}
-		trip_info(int _h, int _m, const std::string &_d)
-		: hour(_h), minute(_m), driver(_d)
+		trip_info(int h, int m, const std::string &d)
+		: hour(h), minute(m), driver(d)
 		{}
 	};
 
@@ -265,18 +308,23 @@ private:
 	template<class Archive>
 	void serialize(Archive &ar, const unsigned int version)
 	{
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 		ar & schedule;
+#else
+		ar & BOOST_SERIALIZATION_NVP(schedule);
+#endif
 	}
 
 public:
-	void append(const std::string &_d, int _h, int _m, bus_route *_br)
+	void append(const std::string &d, int h, int m, bus_route *br)
 	{
-		schedule.insert(schedule.end(), std::make_pair(trip_info(_h, _m, _d), _br));
+		schedule.insert(schedule.end(), std::make_pair(trip_info(h, m, d), br));
 	}
 
 	bus_schedule()
 	{}
 };
+BOOST_CLASS_VERSION(bus_schedule::trip_info, 3)
 BOOST_CLASS_VERSION(bus_schedule, 2)
 
 std::ostream & operator<<(std::ostream &os, const bus_schedule::trip_info &ti)
@@ -286,54 +334,44 @@ std::ostream & operator<<(std::ostream &os, const bus_schedule::trip_info &ti)
 
 std::ostream & operator<<(std::ostream &os, const bus_schedule &bs)
 {
-	for (std::list<std::pair<bus_schedule::trip_info, bus_route *> >::const_iterator it = bs.schedule.begin(); it != bs.schedule.end(); it++)
+	for (std::list<std::pair<bus_schedule::trip_info, bus_route *> >::const_iterator it = bs.schedule.begin(); it != bs.schedule.end(); ++it)
 	{
 		os << it->first << *(it->second);
 	}
 	return os;
 }
 
-void save_schedule(const bus_schedule &s, const char * filename)
+void save_schedule(const bus_schedule &s, const char *filename)
 {
 	// make an archive
 	std::ofstream ofs(filename);
     assert(ofs.good());
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 	boost::archive::text_oarchive oa(ofs);
 	oa << s;
+#else
+    boost::archive::xml_oarchive oa(ofs);
+	oa << BOOST_SERIALIZATION_NVP(s);
+#endif
 }
 
-void restore_schedule(bus_schedule &s, const char * filename)
+void restore_schedule(bus_schedule &s, const char *filename)
 {
 	// open the archive
 	std::ifstream ifs(filename);
     assert(ifs.good());
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 	boost::archive::text_iarchive ia(ifs);
 	// restore the schedule from the archive
 	ia >> s;
-}
-
-void save_schedule_in_xml(const bus_schedule &s, const char * filename)
-{
-    // make an archive
-    std::ofstream ofs(filename);
-    assert(ofs.good());
-    boost::archive::xml_oarchive oa(ofs);
-	oa << BOOST_SERIALIZATION_NVP(s);
-}
-
-void restore_schedule_in_xml(bus_schedule &s, const char * filename)
-{
-	// open the archive
-	std::ifstream ifs(filename);
-    assert(ifs.good());
+#else
 	boost::archive::xml_iarchive ia(ifs);
 	// restore the schedule from the archive
 	ia >> BOOST_SERIALIZATION_NVP(s);
+#endif
 }
 
-//}  // unnamed namespace
-
-void serialization()
+void serialization_bus_schedule()
 {   
 	// make the schedule
 	bus_schedule original_schedule;
@@ -388,8 +426,11 @@ void serialization()
 	std::cout << original_schedule;
 
 	{
-		std::string filename(boost::archive::tmpdir());
-		filename += "/demofile.txt";
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
+		const std::string filename(std::string(boost::archive::tmpdir()) + std::string("/demofile.txt"));
+#else
+		const std::string filename(std::string(boost::archive::tmpdir()) + std::string("/demofile.xml"));
+#endif
 
 		// save the schedule
 		save_schedule(original_schedule, filename.c_str());
@@ -406,27 +447,135 @@ void serialization()
 		// should be the same as the old one. (except for the pointer values)
 	}
 
-	{
-		std::string filename(boost::archive::tmpdir());
-		filename += "/demofile.xml";
-
-		// save the schedule
-		save_schedule_in_xml(original_schedule, filename.c_str());
-
-		// ... some time later
-		// make  a new schedule
-		bus_schedule new_schedule;
-
-		restore_schedule_in_xml(new_schedule, filename.c_str());
-
-		// and display
-		std::cout << "\nrestored schedule in xml";
-		std::cout << new_schedule;
-		// should be the same as the old one. (except for the pointer values)
-	}
-
 	delete bs0;
 	delete bs1;
 	delete bs2;
 	delete bs3;
+}
+
+class gps_position_intrusive
+{
+private:
+	friend class boost::serialization::access;
+
+	// When the class Archive corresponds to an output archive, the
+	// & operator is defined similar to <<.  Likewise, when the class Archive
+	// is a type of input archive the & operator is defined similar to >>.
+	template<class Archive>
+	void serialize(Archive &ar, const unsigned int version)
+	{
+		ar & degrees;
+		ar & minutes;
+		ar & seconds;
+	}
+
+	int degrees;
+	int minutes;
+	float seconds;
+
+public:
+	gps_position_intrusive()
+	{}
+	gps_position_intrusive(int d, int m, float s)
+	: degrees(d), minutes(m), seconds(s)
+	{}
+};
+
+void serialization_intrusive()
+{
+	const std::string filename("boost_data/gps_intrusive.archive");
+
+	// save data to archive
+	{
+		// create class instance
+		const gps_position_intrusive g(35, 59, 24.567f);
+
+		// create and open a character archive for output
+		std::ofstream ofs(filename.c_str());
+		boost::archive::text_oarchive oa(ofs);
+		// write class instance to archive
+		oa << g;
+		// archive and stream closed when destructors are called
+	}
+
+	// ... some time later restore the class instance to its orginal state
+	{
+		gps_position_intrusive newg;
+
+		// create and open an archive for input
+		std::ifstream ifs(filename.c_str());
+		boost::archive::text_iarchive ia(ifs);
+		// read class state from archive
+		ia >> newg;
+		// archive and stream closed when destructors are called
+	}
+}
+
+class gps_position_nonintrusive
+{
+public:
+	int degrees;
+	int minutes;
+	float seconds;
+
+	gps_position_nonintrusive()
+	{}
+	gps_position_nonintrusive(int d, int m, float s)
+	: degrees(d), minutes(m), seconds(s)
+	{}
+};
+
+namespace boost {
+namespace serialization {
+
+template<class Archive>
+void serialize(Archive &ar, gps_position_nonintrusive &g, const unsigned int version)
+{
+	ar & g.degrees;
+	ar & g.minutes;
+	ar & g.seconds;
+}
+
+} // namespace serialization
+} // namespace boost
+
+void serialization_nonintrusive()
+{
+	const std::string filename("boost_data/gps_nonintrusive.archive");
+
+	// save data to archive
+	{
+		// create class instance
+		const gps_position_nonintrusive g(35, 59, 24.567f);
+
+		// create and open a character archive for output
+		std::ofstream ofs(filename.c_str());
+		boost::archive::text_oarchive oa(ofs);
+		// write class instance to archive
+		oa << g;
+		// archive and stream closed when destructors are called
+	}
+
+	// ... some time later restore the class instance to its orginal state
+	{
+		gps_position_nonintrusive newg;
+
+		// create and open an archive for input
+		std::ifstream ifs(filename.c_str());
+		boost::archive::text_iarchive ia(ifs);
+		// read class state from archive
+		ia >> newg;
+		// archive and stream closed when destructors are called
+	}
+}
+
+//}  // namespace local
+//}  // unnamed namespace
+
+void serialization()
+{
+	serialization_intrusive();
+	serialization_nonintrusive();
+
+	serialization_bus_schedule();
 }

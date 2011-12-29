@@ -128,15 +128,8 @@
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="program_options.cpp" />
     <ClCompile Include="property_map.cpp" />
-    <ClCompile Include="python.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="random.cpp" />
-    <ClCompile Include="serialization.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="serialization.cpp" />
     <ClCompile Include="signals_slots.cpp" />
     <ClCompile Include="smart_ptr.cpp" />
     <ClCompile Include="spirit_classic.cpp" />
