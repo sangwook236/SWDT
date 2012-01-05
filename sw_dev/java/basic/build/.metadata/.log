@@ -3513,3 +3513,76 @@ java.lang.NullPointerException
 	at com.android.ide.eclipse.adt.internal.welcome.AdtStartup.access$2(AdtStartup.java:174)
 	at com.android.ide.eclipse.adt.internal.welcome.AdtStartup$3.run(AdtStartup.java:151)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SESSION 2012-01-05 11:36:09.453 -----------------------------------------------
+eclipse.buildId=M20110909-1335
+java.version=1.6.0_25
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2012-01-05 11:36:40.662
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2012-01-05 11:36:40.662
+!MESSAGE A conflict occurred for ALT+CTRL+R:
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.CompareWithRevisionCommand,URL...,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.python.pydev.debug.setnext,Set Next Statement,
+		,
+		Category(org.python.pydev.ui.category.run,PyDev - Run,Python run category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY com.android.ide.eclipse.ddms 4 0 2012-01-05 11:36:41.332
+!MESSAGE DDMS files not found: D:\platform_center\android\android-sdk-windows\platform-tools\adb.exe D:\platform_center\android\android-sdk-windows\tools\hprof-conv.exe D:\platform_center\android\android-sdk-windows\tools\traceview.bat 
+
+!ENTRY org.eclipse.osgi 2 1 2012-01-05 11:36:42.729
+!MESSAGE NLS unused message: CodeAssistPreferencePage_showStub in: org.eclipse.php.internal.ui.PHPUIMessages
+!SESSION 2012-01-05 16:28:12.055 -----------------------------------------------
+eclipse.buildId=M20110909-1335
+java.version=1.6.0_25
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2012-01-05 16:28:54.859
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2012-01-05 16:28:54.859
+!MESSAGE A conflict occurred for ALT+CTRL+R:
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.CompareWithRevisionCommand,URL...,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.python.pydev.debug.setnext,Set Next Statement,
+		,
+		Category(org.python.pydev.ui.category.run,PyDev - Run,Python run category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.osgi 2 1 2012-01-05 16:29:11.735
+!MESSAGE NLS unused message: CodeAssistPreferencePage_showStub in: org.eclipse.php.internal.ui.PHPUIMessages
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2012-01-05 16:29:32.058
+!MESSAGE pingUsageServer failed
+!STACK 0
+java.lang.NullPointerException
+	at com.android.ide.eclipse.adt.internal.welcome.AdtStartup.getVersion(AdtStartup.java:166)
+	at com.android.ide.eclipse.adt.internal.welcome.AdtStartup.pingUsageServer(AdtStartup.java:176)
+	at com.android.ide.eclipse.adt.internal.welcome.AdtStartup.access$2(AdtStartup.java:174)
+	at com.android.ide.eclipse.adt.internal.welcome.AdtStartup$3.run(AdtStartup.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
