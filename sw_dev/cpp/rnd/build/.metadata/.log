@@ -654,3 +654,36 @@ Binding(ALT+CTRL+R,
 
 !ENTRY org.eclipse.cdt.core 1 0 2011-12-27 16:04:47.591
 !MESSAGE Indexed 'rl_glue' (1 sources, 13 headers) in 0.20 sec: 1 declarations; 0 references; 14 unresolved inclusions; 0 syntax errors; 7 unresolved names (87.50%)
+!SESSION 2012-01-05 11:42:26.961 -----------------------------------------------
+eclipse.buildId=M20110909-1335
+java.version=1.6.0_25
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Command-line arguments:  -data D:\work_center\sw_dev\cpp\rnd\build -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2012-01-05 11:42:32.802
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2012-01-05 11:42:32.802
+!MESSAGE A conflict occurred for ALT+CTRL+R:
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.CompareWithRevisionCommand,URL...,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+R,
+	ParameterizedCommand(Command(org.python.pydev.debug.setnext,Set Next Statement,
+		,
+		Category(org.python.pydev.ui.category.run,PyDev - Run,Python run category,true),
+		,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY com.android.ide.eclipse.ddms 4 0 2012-01-05 11:42:33.675
+!MESSAGE DDMS files not found: D:\platform_center\android\android-sdk-windows\platform-tools\adb.exe D:\platform_center\android\android-sdk-windows\tools\hprof-conv.exe D:\platform_center\android\android-sdk-windows\tools\traceview.bat 
+
+!ENTRY org.eclipse.osgi 2 1 2012-01-05 11:42:34.203
+!MESSAGE NLS unused message: CodeAssistPreferencePage_showStub in: org.eclipse.php.internal.ui.PHPUIMessages

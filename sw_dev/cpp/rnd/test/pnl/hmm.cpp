@@ -9,12 +9,31 @@ namespace local {
 
 pnl::CDBN * create_simple_hmm()
 {
+#if 0
 /*
 	a simple HMM
 		X0 -> X1
 		|     | 
 		v     v
 		Y0    Y1 
+*/
+	
+/*
+	states = ('Rainy', 'Sunny')
+ 
+	observations = ('walk', 'shop', 'clean')
+ 
+	start_probability = {'Rainy': 0.6, 'Sunny': 0.4}
+ 
+	transition_probability = {
+	   'Rainy' : {'Rainy': 0.7, 'Sunny': 0.3},
+	   'Sunny' : {'Rainy': 0.4, 'Sunny': 0.6},
+	}
+ 
+	emission_probability = {
+	   'Rainy' : {'walk': 0.1, 'shop': 0.4, 'clean': 0.5},
+	   'Sunny' : {'walk': 0.6, 'shop': 0.3, 'clean': 0.1},
+	}
 */
 
 	// create static model
@@ -39,8 +58,8 @@ pnl::CDBN * create_simple_hmm()
 
 	// create static BNet
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes[0].SetType(1, 2);
-	nodeTypes[1].SetType(1, 3);
+	nodeTypes[0].SetType(true, 2);
+	nodeTypes[1].SetType(true, 3);
 
 	pnl::intVector nodeAssociation(numNodes);
 	nodeAssociation[0] = 0;
@@ -49,24 +68,6 @@ pnl::CDBN * create_simple_hmm()
 	nodeAssociation[3] = 1;
 	
 	pnl::CBNet *pBNet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, pGraph);
-
-/*
-	states = ('Rainy', 'Sunny')
- 
-	observations = ('walk', 'shop', 'clean')
- 
-	start_probability = {'Rainy': 0.6, 'Sunny': 0.4}
- 
-	transition_probability = {
-	   'Rainy' : {'Rainy': 0.7, 'Sunny': 0.3},
-	   'Sunny' : {'Rainy': 0.4, 'Sunny': 0.6},
-	}
- 
-	emission_probability = {
-	   'Rainy' : {'walk': 0.1, 'shop': 0.4, 'clean': 0.5},
-	   'Sunny' : {'walk': 0.6, 'shop': 0.3, 'clean': 0.1},
-	}
-*/
 
 	// create raw data tables for CPDs
 	const float table0[] = { 0.6f, 0.4f };
@@ -84,6 +85,20 @@ pnl::CDBN * create_simple_hmm()
 	pBNet->GetFactor(2)->AllocMatrix(table2, pnl::matTable);
 	pBNet->AllocFactor(3);
 	pBNet->GetFactor(3)->AllocMatrix(table3, pnl::matTable);
+#else
+	pnl::CBNet *pBNet = pnl::pnlExCreateRndArHMM();
+
+	const int numFactors = pBNet->GetNumberOfFactors();
+	const pnl::CFactor *factor = pBNet->GetFactor(3);
+	const pnl::CMatrix<float> *cpd = factor->GetMatrix(pnl::matTable);
+
+	const int dims = cpd->GetNumberDims();
+
+	int ddims;
+	int *ranges = new int [dims];
+	cpd->GetRanges(&ddims, (const int **)&ranges);
+	delete [] ranges;
+#endif;
 
 	// create DBN
 	pnl::CDBN *pDBN = pnl::CDBN::Create(pBNet);

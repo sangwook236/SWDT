@@ -57,6 +57,7 @@ int main(int argc, char **argv)
 	void train_by_svm();
 	void train_by_ann();
 	void object_detection();
+	void face_detection();
 	void human_detection();
 	void camera_geometry();
 	void homography();
@@ -130,6 +131,7 @@ int main(int argc, char **argv)
 		//train_by_ann();
 
 		//object_detection();
+		face_detection();
 		//human_detection();
 
 		//camera_geometry();
@@ -153,7 +155,7 @@ int main(int argc, char **argv)
 		//----------------------------------------------
 		// application
 
-		hand_pose_estimation();
+		//hand_pose_estimation();
 		//hand_detection();
 
 		//motion_segmentation();

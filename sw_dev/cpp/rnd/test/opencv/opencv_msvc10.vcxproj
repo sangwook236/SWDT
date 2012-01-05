@@ -102,6 +102,7 @@
     <ClCompile Include="color_filtering.cpp" />
     <ClCompile Include="convex_hull.cpp" />
     <ClCompile Include="convolution_correlation.cpp" />
+    <ClCompile Include="face_detection.cpp" />
     <ClCompile Include="feature_extraction_and_matching_by_signature.cpp" />
     <ClCompile Include="hand_detection.cpp" />
     <ClCompile Include="human_detection.cpp" />

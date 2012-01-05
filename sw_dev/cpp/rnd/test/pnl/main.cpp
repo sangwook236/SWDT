@@ -29,8 +29,8 @@ int main(int argc, char **argv)
 		//mrf();
 
 		// dynamic Bayesian network
-		dbn();
-		//hmm();
+		//dbn();
+		hmm();
 	}
 	catch (const std::exception &e)
 	{
