@@ -1,0 +1,12 @@
+[] Execution Setting
+	-. vld configuration file은 executable file과 동일한 directory에 존재하여야 함.
+		configuration file: vld.ini
+		존재하지 않는 경우 기본 설정이 적용됨.
+	-. 정상적인 실행을 위해서 아래의 file 필요.
+		vld_x86.dll (vld.dll) & vld.lib
+		dbghelp.dll
+
+[] Programming Setting
+	-. vld.h는 library or executable project의 하나의 file에서만 include 되면 됨. (?)
+	-. 실행이 정상 종료되는 경우에 결과가 생성됨.
+	-. 실행된 경로 상에 존재하는 memory leakage만을 detection

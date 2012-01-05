@@ -1,10 +1,4 @@
 #include "stdafx.h"
-#include <cstddef> // NULL
-#include <iomanip>
-#include <iostream>
-#include <fstream>
-#include <string>
-
 #include <boost/archive/tmpdir.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -20,9 +14,15 @@
 #include <boost/serialization/assume_abstract.hpp>
 #include <boost/serialization/utility.hpp>
 
+#include <iomanip>
+#include <iostream>
+#include <fstream>
+#include <string>
+//#include <cstddef>  // NULL
+
 
 // NVP: a name-value pair for XML serialization
-//#define __MACRO_USE_NVP_FOR_XML_SERIALIZATION_ 1
+#define __MACRO_USE_NVP_FOR_XML_SERIALIZATION_ 1
 
 //namespace {
 //namespace local {
@@ -464,9 +464,15 @@ private:
 	template<class Archive>
 	void serialize(Archive &ar, const unsigned int version)
 	{
-		ar & degrees;
-		ar & minutes;
-		ar & seconds;
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
+		ar & degrees
+			& minutes
+			& seconds;
+#else
+		ar & BOOST_SERIALIZATION_NVP(degrees)
+			& BOOST_SERIALIZATION_NVP(minutes)
+			& BOOST_SERIALIZATION_NVP(seconds);
+#endif
 	}
 
 	int degrees;
@@ -483,7 +489,11 @@ public:
 
 void serialization_intrusive()
 {
-	const std::string filename("boost_data/gps_intrusive.archive");
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
+	const std::string filename("boost_data/gps_intrusive_archive.txt");
+#else
+	const std::string filename("boost_data/gps_intrusive_archive.xml");
+#endif
 
 	// save data to archive
 	{
@@ -492,9 +502,14 @@ void serialization_intrusive()
 
 		// create and open a character archive for output
 		std::ofstream ofs(filename.c_str());
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 		boost::archive::text_oarchive oa(ofs);
 		// write class instance to archive
 		oa << g;
+#else
+		boost::archive::xml_oarchive oa(ofs);
+		oa << BOOST_SERIALIZATION_NVP(g);
+#endif
 		// archive and stream closed when destructors are called
 	}
 
@@ -504,9 +519,14 @@ void serialization_intrusive()
 
 		// create and open an archive for input
 		std::ifstream ifs(filename.c_str());
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 		boost::archive::text_iarchive ia(ifs);
 		// read class state from archive
 		ia >> newg;
+#else
+		boost::archive::xml_iarchive ia(ifs);
+		ia >> BOOST_SERIALIZATION_NVP(newg);
+#endif
 		// archive and stream closed when destructors are called
 	}
 }
@@ -531,9 +551,15 @@ namespace serialization {
 template<class Archive>
 void serialize(Archive &ar, gps_position_nonintrusive &g, const unsigned int version)
 {
-	ar & g.degrees;
-	ar & g.minutes;
-	ar & g.seconds;
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
+	ar & g.degrees
+		& g.minutes
+		& g.seconds;
+#else
+	ar & BOOST_SERIALIZATION_NVP(g.degrees)
+		& BOOST_SERIALIZATION_NVP(g.minutes)
+		& BOOST_SERIALIZATION_NVP(g.seconds);
+#endif
 }
 
 } // namespace serialization
@@ -541,7 +567,11 @@ void serialize(Archive &ar, gps_position_nonintrusive &g, const unsigned int ver
 
 void serialization_nonintrusive()
 {
-	const std::string filename("boost_data/gps_nonintrusive.archive");
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
+	const std::string filename("boost_data/gps_nonintrusive_archive.txt");
+#else
+	const std::string filename("boost_data/gps_nonintrusive_archive.xml");
+#endif
 
 	// save data to archive
 	{
@@ -550,9 +580,14 @@ void serialization_nonintrusive()
 
 		// create and open a character archive for output
 		std::ofstream ofs(filename.c_str());
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 		boost::archive::text_oarchive oa(ofs);
 		// write class instance to archive
 		oa << g;
+#else
+		boost::archive::xml_oarchive oa(ofs);
+		oa << BOOST_SERIALIZATION_NVP(g);
+#endif
 		// archive and stream closed when destructors are called
 	}
 
@@ -562,9 +597,14 @@ void serialization_nonintrusive()
 
 		// create and open an archive for input
 		std::ifstream ifs(filename.c_str());
+#if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
 		boost::archive::text_iarchive ia(ifs);
 		// read class state from archive
 		ia >> newg;
+#else
+		boost::archive::xml_iarchive ia(ifs);
+		ia >> BOOST_SERIALIZATION_NVP(newg);
+#endif
 		// archive and stream closed when destructors are called
 	}
 }

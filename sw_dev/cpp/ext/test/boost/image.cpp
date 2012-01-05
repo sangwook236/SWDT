@@ -1,5 +1,7 @@
 #include "stdafx.h"
-//#include <boost/gil/gil_all.hpp>
+#if 0
+#include <boost/gil/gil_all.hpp>
+#else
 #include <boost/gil/image.hpp>
 #include <boost/gil/typedefs.hpp>
 #include <boost/gil/color_convert.hpp>
@@ -10,6 +12,7 @@
 #include <boost/gil/extension/numeric/resample.hpp>
 #include <boost/gil/extension/numeric/kernel.hpp>
 #include <boost/gil/extension/numeric/convolve.hpp>
+#endif
 #include <boost/mpl/vector.hpp>
 #include <iostream>
 
@@ -23,12 +26,12 @@ namespace local {
 void resize()
 {
 	boost::gil::rgb8_image_t img;
-	boost::gil::jpeg_read_image(".\\boost_data\\image\\lena_rgb.jpg", img);
+	boost::gil::jpeg_read_image("./boost_data/image/lena_rgb.jpg", img);
 
 	// scale the image to 100x100 pixels using bilinear resampling
 	boost::gil::rgb8_image_t square100x100(100, 100);
 	boost::gil::resize_view(boost::gil::const_view(img), boost::gil::view(square100x100), boost::gil::bilinear_sampler());
-	boost::gil::jpeg_write_view(".\\boost_data\\image\\lena_rgb.resize_out.jpg", boost::gil::const_view(square100x100));
+	boost::gil::jpeg_write_view("./boost_data/image/lena_rgb.resize_out.jpg", boost::gil::const_view(square100x100));
 }
 
 void dynamic_image()
@@ -36,24 +39,24 @@ void dynamic_image()
 	typedef boost::mpl::vector<boost::gil::gray8_image_t, boost::gil::rgb8_image_t, boost::gil::gray16_image_t, boost::gil::rgb16_image_t> my_images_t;
 
 	boost::gil::any_image<my_images_t> dynamic_img;
-	boost::gil::jpeg_read_image(".\\boost_data\\image\\lena_rgb.jpg", dynamic_img);
+	boost::gil::jpeg_read_image("./boost_data/image/lena_rgb.jpg", dynamic_img);
 
 	// save the image upside down, preserving its native color space and channel depth
-	boost::gil::jpeg_write_view(".\\boost_data\\image\\lena_rgb.dynamic_image_out.jpg", boost::gil::flipped_up_down_view(boost::gil::const_view(dynamic_img)));
+	boost::gil::jpeg_write_view("./boost_data/image/lena_rgb.dynamic_image_out.jpg", boost::gil::flipped_up_down_view(boost::gil::const_view(dynamic_img)));
 }
 
 void affine()
 {
 	boost::gil::rgb8_image_t img;
-	boost::gil::jpeg_read_image(".\\boost_data\\image\\lena_rgb.jpg",img);
+	boost::gil::jpeg_read_image("./boost_data/image/lena_rgb.jpg",img);
 
 	// transform the image by an arbitrary affine transformation using nearest-neighbor resampling
 	boost::gil::rgb8_image_t transf(boost::gil::rgb8_image_t::point_t(boost::gil::view(img).dimensions() * 2));
-	boost::gil::fill_pixels(boost::gil::view(transf), boost::gil::rgb8_pixel_t(255,0,0));  // the background is red
+	boost::gil::fill_pixels(boost::gil::view(transf), boost::gil::rgb8_pixel_t(255, 0, 0));  // the background is red
 
-	const boost::gil::matrix3x2<double> mat = boost::gil::matrix3x2<double>::get_translate(-boost::gil::point2<double>(200,250)) * boost::gil::matrix3x2<double>::get_rotate(-15 * 3.14/ 180.0);
+	const boost::gil::matrix3x2<double> mat = boost::gil::matrix3x2<double>::get_translate(-boost::gil::point2<double>(200, 250)) * boost::gil::matrix3x2<double>::get_rotate(-15 * 3.14 / 180.0);
 	boost::gil::resample_pixels(boost::gil::const_view(img), boost::gil::view(transf), mat, boost::gil::nearest_neighbor_sampler());
-	boost::gil::jpeg_write_view(".\\boost_data\\image\\lena_rgb.affine_OUT.jpg", boost::gil::view(transf));
+	boost::gil::jpeg_write_view("./boost_data/image/lena_rgb.affine_out.jpg", boost::gil::view(transf));
 }
 
 template <typename GrayView, typename R>
@@ -73,7 +76,7 @@ void get_hist(const V &img_view, R &hist)
 void histogram()
 {
 	boost::gil::rgb8_image_t img;
-	boost::gil::jpeg_read_image(".\\boost_data\\image\\lena_rgb.jpg", img);
+	boost::gil::jpeg_read_image("./boost_data/image/lena_rgb.jpg", img);
 
 	int histogram[256];
 	std::fill(histogram, histogram + 256, 0);
@@ -81,6 +84,7 @@ void histogram()
 
 	for (std::size_t ii = 0; ii < 256; ++ii)
 		std::cout << histogram[ii] << ", ";
+	std::cout << std::endl;
 }
 
 template <typename Out>
@@ -111,20 +115,20 @@ void x_gradient(const SrcView &src, const DstView &dst)
 void gradient()
 {
 	boost::gil::rgb8_image_t img;
-	boost::gil::jpeg_read_image(".\\boost_data\\image\\lena_rgb.jpg", img);
+	boost::gil::jpeg_read_image("./boost_data/image/lena_rgb.jpg", img);
 
 	boost::gil::gray8s_image_t img_out(img.dimensions());
 	boost::gil::fill_pixels(boost::gil::view(img_out), boost::gil::bits8s(0));
 
 	typedef boost::gil::pixel<typename boost::gil::channel_type<const boost::gil::rgb8_image_t::const_view_t>::type, boost::gil::gray_layout_t> gray_pixel_t;
 	x_gradient(boost::gil::color_converted_view<gray_pixel_t>(boost::gil::const_view(img)), boost::gil::view(img_out));
-	boost::gil::jpeg_write_view(".\\boost_data\\image\\lena_rgb.x_gradient_out.jpg", boost::gil::color_converted_view<boost::gil::gray8_pixel_t>(boost::gil::const_view(img_out)));
+	boost::gil::jpeg_write_view("./boost_data/image/lena_rgb.x_gradient_out.jpg", boost::gil::color_converted_view<boost::gil::gray8_pixel_t>(boost::gil::const_view(img_out)));
 }
 
 void convolution()
 {
 	boost::gil::rgb8_image_t img;
-	boost::gil::jpeg_read_image(".\\boost_data\\image\\lena_rgb.jpg", img);
+	boost::gil::jpeg_read_image("./boost_data/image/lena_rgb.jpg", img);
 
 	// convolve the rows and the columns of the image with a fixed kernel
 	boost::gil::rgb8_image_t convolved(img);
@@ -165,19 +169,20 @@ void convolution()
 		0.0023129794f, 0.0011314391f, 0.00052009715f, 0.00022466264f,
 	};
 */
+	std::cout << "processing convolution ..." << std::endl;
 
 	const boost::gil::kernel_1d_fixed<float, 9> kernel(gaussian_1, 4);
 
 	boost::gil::convolve_rows_fixed<boost::gil::rgb32f_pixel_t>(boost::gil::const_view(convolved), kernel, boost::gil::view(convolved));
 	boost::gil::convolve_cols_fixed<boost::gil::rgb32f_pixel_t>(boost::gil::const_view(convolved), kernel, boost::gil::view(convolved));
-	boost::gil::jpeg_write_view(".\\boost_data\\image\\lena_rgb.convolution1_out.jpg", boost::gil::view(convolved));
+	boost::gil::jpeg_write_view("./boost_data/image/lena_rgb.convolution1_out.jpg", boost::gil::view(convolved));
 
 	// use a resizable kernel
 	const boost::gil::kernel_1d<float> kernel2(gaussian_1, 9 ,4);
 	
 	boost::gil::convolve_rows<boost::gil::rgb32f_pixel_t>(boost::gil::const_view(img), kernel2, boost::gil::view(img));
 	boost::gil::convolve_cols<boost::gil::rgb32f_pixel_t>(boost::gil::const_view(img), kernel2, boost::gil::view(img));
-	boost::gil::jpeg_write_view(".\\boost_data\\image\\lena_rgb.convolution2_out.jpg", boost::gil::view(img));
+	boost::gil::jpeg_write_view("./boost_data/image/lena_rgb.convolution2_out.jpg", boost::gil::view(img));
 }
 
 }  // local

@@ -221,28 +221,28 @@ void RandomNumberGenerator()
 
 void LUInvertAndDecomp()
 {
-     gsl::matrix a(3, 3);
-     gsl::matrix b(3, 3);
-     srand(10);
+	gsl::matrix a(3, 3);
+	gsl::matrix b(3, 3);
+	srand(10);
 
-     for (size_t i = 0; i < a.size1(); ++i)
-  	   for (size_t j = 0; j < a.size2(); ++j) a(i, j)=rand();
-     for (size_t i = 0; i < b.size1(); ++i)
-  	   for (size_t j = 0; j < b.size2(); ++j) b(i, j)=rand();
+	for (size_t i = 0; i < a.size1(); ++i)
+		for (size_t j = 0; j < a.size2(); ++j) a(i, j) = rand();
+	for (size_t i = 0; i < b.size1(); ++i)
+		for (size_t j = 0; j < b.size2(); ++j) b(i, j) = rand();
 
-     cout << "a:" << endl << a << endl;
-     cout << "b:" << endl << b << endl;
+	cout << "a:" << endl << a << endl;
+	cout << "b:" << endl << b << endl;
 
-     cout << "a + b:" << endl << a + b << endl;
-     cout << "a - b:" << endl << a - b << endl;
-     cout << "a + 1.0:" << endl << a + 1.0 << endl;
-     cout << "1.0 - a:" << endl << 1.0 - a << endl;
-     cout << "a * 10.0:" << endl << a * 10.0 << endl;
-     cout << "10.0 * a:" << endl << 10.0 * a << endl;
-     cout << "a / 10.0:" << endl << a / 10.0 << endl;
-     cout << "a * b:" << endl << a * b << endl;
-     cout << "a.LU_decomp():" << endl << a.LU_decomp() << endl;
-     cout << "a.LU_invert():" << endl << a.LU_invert() << endl;
-     cout << "a.LU_invert() * a:" << endl << a.LU_invert() * a << endl;
+	cout << "a + b:" << endl << a + b << endl;
+	cout << "a - b:" << endl << a - b << endl;
+	cout << "a + 1.0:" << endl << a + 1.0 << endl;
+	cout << "1.0 - a:" << endl << 1.0 - a << endl;
+	cout << "a * 10.0:" << endl << a * 10.0 << endl;
+	cout << "10.0 * a:" << endl << 10.0 * a << endl;
+	cout << "a / 10.0:" << endl << a / 10.0 << endl;
+	cout << "a * b:" << endl << a * b << endl;
+	cout << "a.LU_decomp():" << endl << a.LU_decomp() << endl;
+	cout << "a.LU_invert():" << endl << a.LU_invert() << endl;
+	cout << "a.LU_invert() * a:" << endl << a.LU_invert() * a << endl;
 } 
 

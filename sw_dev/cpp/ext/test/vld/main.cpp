@@ -1,56 +1,43 @@
 #include <vld/vld.h>
-#include <boost/thread.hpp>
-#include <boost/smart_ptr.hpp>
 #include <iostream>
 
 
-// vld configuration file:
-//	vld.ini
+//----------------------------------------------------
+// -. vld configuration file (vld.ini)은 executable file과 동일한 directory에 존재하여야 함.
+//	  존재하지 않는 경우 기본 설정이 적용됨.
+// -. 실행이 정상 종료되는 경우에 결과가 생성됨.
+// -. 실행된 경로 상에 존재하는 memory leakage만을 detection
+// -. vld.h는 library or executable project의 하나의 file에서만 include 되면 됨. (?)
+// -. 정상적인 실행을 위해서 vld_x86.dll & dbghelp.dll 필요.
 
-struct thread_proc
+
+#if defined(_UNICODE) || defined(UNICODE)
+int wmain(int argc, wchar_t* argv[])
+#else
+int main(int argc, char* argv[])
+#endif
 {
-	void operator()()
-	{
-		int *pi = new int [50];
-		long *pl = new long [10];
-		float *pf = new float [30];
-		double *pd = new double [50];
+	void basic(const bool leakage);
+	void boost_thread(const bool leakage);
 
-		delete [] pi;
-		pi = NULL;
-		//delete [] pl;
-		//pl = NULL;
-		//delete [] pf;
-		//pf = NULL;
-		//delete [] pd;
-		//pd = NULL;
+	try
+	{
+		const bool leakage = true;
+
+		basic(leakage);
+		boost_thread(leakage);
 	}
-};
-
-int main()
-{
-	boost::scoped_ptr<boost::thread> thrd(new boost::thread(thread_proc()));  // create thread
-
+	catch (const std::exception &e)
 	{
-		int *pi = new int [50];
-		long *pl = new long [10];
-		float *pf = new float [30];
-		double *pd = new double [50];
-
-		delete [] pi;
-		pi = NULL;
-		//delete [] pl;
-		//pl = NULL;
-		//delete [] pf;
-		//pf = NULL;
-		//delete [] pd;
-		//pd = NULL;
+		std::cout << "std::exception occurred: " << e.what() << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "unknown exception occurred" << std::endl;
 	}
 
-	thrd->join();
-
-	std::cout << "press any key to terminate ..." << std::endl;
+	std::cout << "press any key to exit ..." << std::flush;
 	std::cin.get();
 
-	return 0;
+    return 0;
 }

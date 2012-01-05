@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
 			//bind();
 			//signals_slots();
 
-			serialization();
+			//serialization();
 		}
 
 		{
@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
 		}
 
 		{
-			//image();  // Oops !!! not working
+			image();
 		}
 	}
 	catch (const std::exception &e)
