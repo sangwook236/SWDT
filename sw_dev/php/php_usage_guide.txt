@@ -1,0 +1,6 @@
+[-] Execution
+	-. www home directory, ${WWW_HOME}의 subdirectory에 php file을 위치시키고
+		web browser에서 해당 php file을 실행하면 됨
+	-. php interpreter를 이용해 command line에서 실행 가능.
+		e.g.) php.exe test.php or php.exe -f test.php
+	-. Eclipse IDE에서 실행하는 방법은 아직 모름.

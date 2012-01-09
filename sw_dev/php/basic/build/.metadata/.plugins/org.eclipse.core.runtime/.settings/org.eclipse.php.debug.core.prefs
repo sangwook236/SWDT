@@ -1,0 +1,9 @@
+#Mon Jan 09 21:26:43 KST 2012
+org.eclipse.php.debug.coreinstalledPHPInis=D\:\\MyProgramFiles\\wamp\\bin\\php\\php5.3.8\\php.ini;null
+org.eclipse.php.debug.coreinstalledPHPDebuggers=org.eclipse.php.debug.core.zendDebugger;org.eclipse.php.debug.core.zendDebugger
+org.eclipse.php.debug.coreinstalledPHPDefaults=org.eclipse.php.debug.core.zendDebugger\=PHP 5.3.8 2
+eclipse.preferences.version=1
+org.eclipse.php.debug.coreinstalledPHPLocations=D\:\\MyProgramFiles\\wamp\\bin\\php\\php5.3.8\\php.exe;D\:\\MyProgramFiles\\wamp\\bin\\php\\php5.3.8\\php.exe
+DefaultProjectBasePath=/test
+org.eclipse.php.debug.corephp_versions=null;null
+org.eclipse.php.debug.coreinstalledPHPNames=PHP 5.3.8;PHP 5.3.8 2
