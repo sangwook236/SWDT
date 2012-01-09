@@ -1,4 +1,4 @@
-function displayDate()
+function displayDate(id)
 {
-	document.getElementById("demo").innerHTML=Date();
+	document.getElementById(id).innerHTML = Date();
 }

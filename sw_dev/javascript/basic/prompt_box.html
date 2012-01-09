@@ -1,0 +1,19 @@
+<html>
+<head>
+<script type="text/javascript">
+function display_prompt()
+{
+	var name = prompt("Please enter your name", "Harry Potter");
+	if (null != name && "" != name)
+	{
+		document.write("Hello " + name + "! How are you today?");
+	}
+}
+</script>
+</head>
+<body>
+
+<input type="button" onclick="display_prompt()" value="Display prompt box" />
+
+</body>
+</html> 
