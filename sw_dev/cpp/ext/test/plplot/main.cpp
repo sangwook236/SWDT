@@ -10,6 +10,7 @@ int main(int argc, char* argv[])
 {
 	try
 	{
+		throw std::runtime_error("not yet implemented");
 	}
 	catch (const std::exception &e)
 	{

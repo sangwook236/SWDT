@@ -50,6 +50,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plplot", "..\test\plplot\pl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cuda", "..\test\cuda\cuda_msvc10.vcxproj", "{05AC83E8-E05E-46BA-8C19-CED811F98BC9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yaml", "..\test\yaml\yaml_msvc10.vcxproj", "{6D7D3B43-54BB-448F-9EC4-EAB6660BDB54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -156,6 +158,10 @@ Global
 		{05AC83E8-E05E-46BA-8C19-CED811F98BC9}.Debug|Win32.Build.0 = Debug|Win32
 		{05AC83E8-E05E-46BA-8C19-CED811F98BC9}.Release|Win32.ActiveCfg = Release|Win32
 		{05AC83E8-E05E-46BA-8C19-CED811F98BC9}.Release|Win32.Build.0 = Release|Win32
+		{6D7D3B43-54BB-448F-9EC4-EAB6660BDB54}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6D7D3B43-54BB-448F-9EC4-EAB6660BDB54}.Debug|Win32.Build.0 = Debug|Win32
+		{6D7D3B43-54BB-448F-9EC4-EAB6660BDB54}.Release|Win32.ActiveCfg = Release|Win32
+		{6D7D3B43-54BB-448F-9EC4-EAB6660BDB54}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
