@@ -103,11 +103,19 @@
     <ClCompile Include="convex_hull.cpp" />
     <ClCompile Include="convolution_correlation.cpp" />
     <ClCompile Include="face_detection.cpp" />
+    <ClCompile Include="face_detection_using_gpu.cpp" />
     <ClCompile Include="feature_extraction_and_matching_by_signature.cpp" />
+    <ClCompile Include="feature_extraction_and_matching_using_gpu.cpp" />
     <ClCompile Include="hand_detection.cpp" />
+    <ClCompile Include="histogram_using_gpu.cpp" />
     <ClCompile Include="human_detection.cpp" />
+    <ClCompile Include="human_detection_using_gpu.cpp" />
+    <ClCompile Include="image_filtering_using_gpu.cpp" />
+    <ClCompile Include="image_labeling_using_gpu.cpp" />
+    <ClCompile Include="image_processing_using_gpu.cpp" />
     <ClCompile Include="image_pyramid.cpp" />
     <ClCompile Include="kalman_filtering.cpp" />
+    <ClCompile Include="matrix_operation_using_gpu.cpp" />
     <ClCompile Include="object_detection.cpp" />
     <ClCompile Include="PascalVocDataset.cpp" />
     <ClCompile Include="stereo_matching.cpp" />
@@ -146,6 +154,7 @@
     <ClCompile Include="skin_color_filtering.cpp" />
     <ClCompile Include="snake.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="stereo_matching_using_gpu.cpp" />
     <ClCompile Include="template_matching.cpp" />
     <ClCompile Include="text_output.cpp" />
     <ClCompile Include="vector_operation.cpp" />

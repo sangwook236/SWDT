@@ -9,7 +9,7 @@ namespace local {
 
 pnl::CDBN * create_simple_hmm()
 {
-#if 0
+#if 1
 /*
 	a simple HMM
 		X0 -> X1
@@ -87,17 +87,6 @@ pnl::CDBN * create_simple_hmm()
 	pBNet->GetFactor(3)->AllocMatrix(table3, pnl::matTable);
 #else
 	pnl::CBNet *pBNet = pnl::pnlExCreateRndArHMM();
-
-	const int numFactors = pBNet->GetNumberOfFactors();
-	const pnl::CFactor *factor = pBNet->GetFactor(3);
-	const pnl::CMatrix<float> *cpd = factor->GetMatrix(pnl::matTable);
-
-	const int dims = cpd->GetNumberDims();
-
-	int ddims;
-	int *ranges = new int [dims];
-	cpd->GetRanges(&ddims, (const int **)&ranges);
-	delete [] ranges;
 #endif;
 
 	// create DBN
@@ -186,6 +175,85 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
     return pArHMM;
 }
 
+void infer_mpe_in_hmm(pnl::CDBN *pHMM)
+{
+	//
+	const pnl::intVector obsNodes(1, 1);  // 1st node ==> observed node
+	pnl::valueVector obsNodesVals(1);
+#if 0
+	const int observations[] = { 0, 1, 2, 0, 1, 2, 2, 2 };
+#elif 1
+	const int observations[] = { 2, 1, 0, 0, 2, 1 };
+#else
+	const int observations[] = { 0, 1, 2 };
+#endif
+
+	// number of time slices for unrolling
+	const int numTimeSlices = sizeof(observations) / sizeof(observations[0]);
+
+	// create evidence for every time-slice
+	pnl::pEvidencesVector evidences(numTimeSlices);
+	for (int time_slice = 0; time_slice < numTimeSlices; ++time_slice)
+	{
+		obsNodesVals[0].SetInt(observations[time_slice]);
+		evidences[time_slice] = pnl::CEvidence::Create(pHMM, obsNodes, obsNodesVals);
+	}
+
+	// create an inference engine
+	boost::scoped_ptr<pnl::C1_5SliceJtreeInfEngine> inferEng(pnl::C1_5SliceJtreeInfEngine::Create(pHMM));
+
+	// create inference (smoothing) for DBN
+	inferEng->DefineProcedure(pnl::ptViterbi, numTimeSlices);
+	inferEng->EnterEvidence(&evidences.front(), numTimeSlices);
+	inferEng->FindMPE();
+
+	pnl::intVector queryPrior(1), query(2);
+	queryPrior[0] = 0;  // 0th node ==> hidden state
+	query[0] = 0;  query[1] = 2;  // 0th & 2nd nodes ==> hidden states
+
+	for (int time_slice = 0; time_slice < numTimeSlices; ++time_slice)
+	{
+		if (time_slice)  // for the transition network
+		{
+			inferEng->MarginalNodes(&query.front(), query.size(), time_slice);
+		}
+		else  // for the prior network
+		{
+			inferEng->MarginalNodes(&queryPrior.front(), queryPrior.size(), time_slice);
+		}
+
+		const pnl::CPotential *queryMPE = inferEng->GetQueryMPE();
+		
+		std::cout << ">>> Query time-slice: " << time_slice << std::endl;
+
+		int numNodes = 0;
+		const int *domain = NULL;
+		queryMPE->GetDomain(&numNodes, &domain);
+
+		std::cout << " domain: ";
+		for (int i = 0; i < numNodes; ++i)
+		{
+			std::cout << domain[i] << " ";
+		}
+		std::cout << std::endl;
+
+		// TODO [check] >> is this code really correct?
+		const pnl::CEvidence *mpe = inferEng->GetMPE();
+		std::cout << " MPE node value: ";
+#if 0
+		for (int i = 0; i < numNodes; ++i)
+		{
+			const int mpeNodeVal = mpe->GetValue(domain[i])->GetInt();
+			std::cout << mpeNodeVal << " ";
+		}
+		std::cout << std::endl;
+#else
+		const int mpeNodeVal = mpe->GetValue(domain[numNodes-1])->GetInt();
+		std::cout << mpeNodeVal << std::endl;
+#endif
+}
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -196,9 +264,16 @@ void hmm()
 		boost::scoped_ptr<pnl::CDBN> simpleHMM(local::create_simple_hmm());
 		//boost::scoped_ptr<pnl::CDBN> simpleHMM(local::create_hmm_with_ar_gaussian_observations());
 
+		if (!simpleHMM)
+		{
+			std::cout << "can't create a probabilistic graphic model" << std::endl;
+			return;
+		}
+
 		// get content of Graph
 		simpleHMM->GetGraph()->Dump();
  
+		if (false)
 		{
 			const pnl::CGraph *pGraph = simpleHMM->GetGraph();
 
@@ -209,41 +284,18 @@ void hmm()
 			pGraph->GetNeighbors(1, &numNbrs2, &nbrs2, &nbrsTypes2);
 		}
 
-		// create an inference engine
-		boost::scoped_ptr<pnl::C1_5SliceJtreeInfEngine> inferEng(pnl::C1_5SliceJtreeInfEngine::Create(simpleHMM.get()));
-
-		// number of time slices for unrolling
-		const int numTimeSlices = 3;
-		const pnl::CPotential *pQueryJPD = NULL;
-
-		// create evidence for every slice
-		pnl::CEvidence **pEvidences = new pnl::CEvidence *[numTimeSlices];
-
-		//
-		const int obsNodesNums[] = { 1 };
-		pnl::valueVector obsNodesVals(1);
-		obsNodesVals[0].SetInt(0);
-		pEvidences[0] = pnl::CEvidence::Create(simpleHMM.get(), 1, obsNodesNums, obsNodesVals);
-		obsNodesVals[0].SetInt(1);
-		pEvidences[1] = pnl::CEvidence::Create(simpleHMM.get(), 1, obsNodesNums, obsNodesVals);
-		obsNodesVals[0].SetInt(2);
-		pEvidences[2] = pnl::CEvidence::Create(simpleHMM.get(), 1, obsNodesNums, obsNodesVals);
-
-		inferEng->DefineProcedure(pnl::ptViterbi, numTimeSlices);
-		inferEng->EnterEvidence(pEvidences, numTimeSlices);
-		inferEng->FindMPE();
-
-		const pnl::CEvidence *mpe = inferEng->GetMPE();
-
-		//
-		for (int slice = 0; slice < numTimeSlices; ++slice)
-			delete pEvidences[slice];
-		delete [] pEvidences;
+		local::infer_mpe_in_hmm(simpleHMM.get());
 	}
 
 	// HMM with AR Gaussian observations
 	{
 		boost::scoped_ptr<pnl::CDBN> arHMM(local::create_hmm_with_ar_gaussian_observations());
+
+		if (!arHMM)
+		{
+			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			return;
+		}
 
 		// get content of Graph
 		arHMM->GetGraph()->Dump();

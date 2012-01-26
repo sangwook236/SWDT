@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <pnl_dll.hpp>
 #include <iostream>
 #include <ctime>
 
@@ -21,7 +22,7 @@ int main(int argc, char **argv)
 		std::srand((unsigned int)std::time(NULL));
 
 		// Bayesian network
-		//bayesian_network();
+		//bayesian_network();  // from PNL's example
 		//bnet();
 
 		// Markov network
@@ -29,12 +30,16 @@ int main(int argc, char **argv)
 		//mrf();
 
 		// dynamic Bayesian network
-		//dbn();
+		//dbn();  // from PNL's example
 		hmm();
+	}
+	catch (const pnl::CException &e)
+	{
+		std::cout << "OpenPNL exception occurred !!!: " << e.GetMessage() << std::endl;
 	}
 	catch (const std::exception &e)
 	{
-		std::wcout << L"exception occurred !!!: " << e.what() << std::endl;
+		std::cout << "exception occurred !!!: " << e.what() << std::endl;
 	}
 	catch (...)
 	{

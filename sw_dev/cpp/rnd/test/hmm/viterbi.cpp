@@ -7,11 +7,29 @@ namespace Viterbi {
     states__.push_back("Rainy");
     states__.push_back("Sunny");
 
+#if 0
+	observations__.push_back("walk");
+    observations__.push_back("shop");
+    observations__.push_back("clean");
     observations__.push_back("walk");
     observations__.push_back("shop");
     observations__.push_back("clean");
-
-    start_probability__["Rainy"] = 0.6;
+    observations__.push_back("clean");
+    observations__.push_back("clean");
+#elif 1
+	observations__.push_back("clean");
+    observations__.push_back("shop");
+    observations__.push_back("walk");
+    observations__.push_back("walk");
+    observations__.push_back("clean");
+    observations__.push_back("shop");
+#else
+	observations__.push_back("walk");
+    observations__.push_back("shop");
+    observations__.push_back("clean");
+#endif
+	
+	start_probability__["Rainy"] = 0.6;
     start_probability__["Sunny"] = 0.4;
 
     transition_probability__["Rainy"]["Rainy"] = 0.7;

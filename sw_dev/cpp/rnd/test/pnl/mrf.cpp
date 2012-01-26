@@ -118,5 +118,11 @@ void mrf()
 	// simple pairwise MRF
 	{
 		boost::scoped_ptr<pnl::CMRF2> mrf2(local::create_simple_pairwise_mrf());
+
+		if (!mrf2)
+		{
+			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			return;
+		}
 	}
 }

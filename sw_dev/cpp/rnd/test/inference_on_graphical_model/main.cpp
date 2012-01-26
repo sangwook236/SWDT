@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 	}
 	catch (const std::exception &e)
 	{
-		std::wcout << L"exception occurred !!!: " << e.what() << std::endl;
+		std::cout << "exception occurred !!!: " << e.what() << std::endl;
 	}
 	catch (...)
 	{

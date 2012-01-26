@@ -106,7 +106,6 @@ pnl::CMNet * create_simle_markov_network()
 
 		// TODO [add] >>
 
-
 		params.clear();
 	}
 	
@@ -126,5 +125,11 @@ void mnet()
 	// simple markov network
 	{
 		boost::scoped_ptr<pnl::CMNet> mnet(local::create_simle_markov_network());
+
+		if (!mnet)
+		{
+			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			return;
+		}
 	}
 }

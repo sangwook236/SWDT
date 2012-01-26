@@ -81,9 +81,27 @@ void init_variables(void)
 	states.push_back("Rainy");
 	states.push_back("Sunny");
 
+#if 0
 	observations.push_back("walk");
 	observations.push_back("shop");
 	observations.push_back("clean");
+	observations.push_back("walk");
+	observations.push_back("shop");
+	observations.push_back("clean");
+	observations.push_back("clean");
+	observations.push_back("clean");
+#elif 1
+	observations.push_back("clean");
+	observations.push_back("shop");
+	observations.push_back("walk");
+	observations.push_back("walk");
+	observations.push_back("clean");
+	observations.push_back("shop");
+#else
+	observations.push_back("walk");
+	observations.push_back("shop");
+	observations.push_back("clean");
+#endif
 
 	start_probability["Rainy"] = 0.6;
 	start_probability["Sunny"] = 0.4;

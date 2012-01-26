@@ -20,15 +20,19 @@ int main(int argc, char **argv)
 {
 	void text_output();
 	void matrix_operation();
+	void matrix_operation_using_gpu();  // not yet implemented
 	void vector_operation();
 	void image_operation();
 	void image_sequence();
 	void image_conversion();
 	void image_filtering();
+	void image_filtering_using_gpu();  // not yet implemented
+	void image_processing_using_gpu();  // not yet implemented
 	void color_filtering();
 	void color_correction();
 	void skin_color_filtering();
 	void histogram();
+	void histogram_using_gpu();  // not yet implemented
 	void convolution_correlation();
 	void fourier_transform();
 	void morphological_operation();
@@ -50,18 +54,23 @@ int main(int argc, char **argv)
 	void feature_matching();
 	void feature_extraction_and_matching();
 	void feature_extraction_and_matching_by_signature();
+	void feature_extraction_and_matching_using_gpu();  // not yet implemented
 	void generic_description_and_matching();
 	void bag_of_words();
 	void pca();
 	void clustering();
 	void train_by_svm();
 	void train_by_ann();
-	void object_detection();
+	void object_detection();  // not yet implemented
 	void face_detection();
+	void face_detection_using_gpu();  // not yet implemented
 	void human_detection();
+	void human_detection_using_gpu();  // not yet implemented
 	void camera_geometry();
 	void homography();
+	void image_labeling_using_gpu();  // not yet implemented
 	void stereo_matching();
+	void stereo_matching_using_gpu();  // not yet implemented
 	void change_detection();
 	void object_tracking();
 	void kalman_filtering();
@@ -82,16 +91,20 @@ int main(int argc, char **argv)
 		//text_output();
 
 		//matrix_operation();
+		//matrix_operation_using_gpu();  // not yet implemented
 		//vector_operation();
 		//image_operation();
 		//image_conversion();
 		//image_sequence();
 		
 		//image_filtering();
+		//image_filtering_using_gpu();  // not yet implemented
+		//image_processing_using_gpu();  // not yet implemented
 		//color_filtering();
 		//color_correction();
 		//skin_color_filtering();
 		//histogram();
+		//histogram()_using_gpu();  // not yet implemented
 
 		//convolution_correlation();
 		//fourier_transform();
@@ -120,6 +133,7 @@ int main(int argc, char **argv)
 		//feature_matching();
 		//feature_extraction_and_matching();
 		//feature_extraction_and_matching_by_signature();
+		//feature_extraction_and_matching_using_gpu();  // not yet implemented
 		//generic_description_and_matching();
 
 		//bag_of_words();
@@ -130,14 +144,18 @@ int main(int argc, char **argv)
 		//train_by_svm();
 		//train_by_ann();
 
-		//object_detection();
+		//object_detection();  // not yet implemented
 		face_detection();
+		//face_detection_using_gpu();  // not yet implemented
 		//human_detection();
+		//human_detection_using_gpu();  // not yet implemented
 
 		//camera_geometry();
 		//homography();
 
+		//image_labeling_using_gpu();  // not yet implemented
 		//stereo_matching();
+		//stereo_matching_using_gpu();  // not yet implemented
 
 		//change_detection();
 
@@ -163,11 +181,17 @@ int main(int argc, char **argv)
 	}
 	catch (const cv::Exception &e)
 	{
-		std::cout << "OpenCV exception occurred !!!: " << e.what() << std::endl;
+		//std::cout << "OpenCV exception occurred !!!: " << e.what() << std::endl;
+		//std::cout << "OpenCV exception occurred !!!: " << cvErrorStr(e.code) << std::endl;
+		std::cout << "OpenCV exception occurred !!!:" << std::endl
+			<< "\tdescription: " << e.err << std::endl
+			<< "\tline:        " << e.line << std::endl
+			<< "\tfunction:    " << e.func << std::endl
+			<< "\tfile:        " << e.file << std::endl;
 	}
 	catch (const std::exception &e)
 	{
-		std::wcout << L"exception occurred !!!: " << e.what() << std::endl;
+		std::cout << "exception occurred !!!: " << e.what() << std::endl;
 	}
 	catch (...)
 	{

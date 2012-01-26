@@ -126,5 +126,11 @@ void bnet()
 	// simple Bayesina network
 	{
 		boost::scoped_ptr<pnl::CBNet> bnet(local::create_simle_bayesian_network());
+
+		if (!bnet)
+		{
+			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			return;
+		}
 	}
 }

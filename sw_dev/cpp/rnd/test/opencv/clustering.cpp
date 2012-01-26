@@ -14,6 +14,7 @@
 
 
 namespace {
+namespace local {
 
 void kmeans()
 {
@@ -188,9 +189,10 @@ void kmeans()
 	cvReleaseImage(&img);
 }
 
-}
+}  // namespace local
+}  // unnamed namespace
 
 void clustering()
 {
-	kmeans();
+	local::kmeans();
 }

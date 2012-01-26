@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <pnl_dll.hpp>
+#include <boost/smart_ptr.hpp>
 #include <iostream>
 
 
@@ -107,18 +108,8 @@ pnl::CBNet * create_model()
 	return pBNet;
 }
 
-void infer_model()
+void infer_model(pnl::CBNet *pBNet)
 {
-	// create Water-Sprinkler BNet
-#if 1
-	pnl::CBNet *pWSBnet = pnl::pnlExCreateWaterSprinklerBNet();
-#else
-	pnl::CBNet *pWSBnet = create_model();
-#endif
-
-	// get content of Graph
-	pWSBnet->GetGraph()->Dump();
-
 	// create simple evidence for node 0 from BNet
 	pnl::CEvidence *pEvidForWS = NULL;
 	{
@@ -130,11 +121,11 @@ void infer_model()
 		pnl::valueVector obsVals(numObsNodes);
 		obsVals[0].SetInt(1);
 
-		pEvidForWS = pnl::CEvidence::Create(pWSBnet, numObsNodes, obsNodes, obsVals);
+		pEvidForWS = pnl::CEvidence::Create(pBNet, numObsNodes, obsNodes, obsVals);
 	}
 
 	// create Naive inference for BNet
-	pnl::CNaiveInfEngine *pNaiveInf = pnl::CNaiveInfEngine::Create(pWSBnet);
+	pnl::CNaiveInfEngine *pNaiveInf = pnl::CNaiveInfEngine::Create(pBNet);
 
 	// enter evidence created before
 	pNaiveInf->EnterEvidence(pEvidForWS);
@@ -192,7 +183,6 @@ void infer_model()
 
 	delete pNaiveInf;
 	delete pEvidForWS;
-	delete pWSBnet;
 }
 
 }  // namespace local
@@ -200,5 +190,21 @@ void infer_model()
 
 void bayesian_network()
 {
-	local::infer_model();
+	// create Water-Sprinkler BNet
+#if 1
+	boost::scoped_ptr<pnl::CBNet> wsBNet(pnl::pnlExCreateWaterSprinklerBNet());
+#else
+	boost::scoped_ptr<pnl::CBNet> wsBNet(local::create_model());
+#endif
+
+	if (!wsBNet)
+	{
+		std::cout << "can't create a probabilistic graphical model" << std::endl;
+		return;
+	}
+
+	// get content of Graph
+	wsBNet->GetGraph()->Dump();
+
+	local::infer_model(wsBNet.get());
 }

@@ -17,6 +17,10 @@ int main(int argc, char* argv[])
 		//basic_parsing();
 		basic_emitting();
 	}
+	catch (const YAML::RepresentationException &e)
+	{
+		std::cout << "YAML::RepresentationException occurred: " << e.what() << std::endl;
+	}
 	catch (const YAML::ParserException &e)
 	{
 		std::cout << "YAML::ParserException occurred: " << e.what() << std::endl;
@@ -24,10 +28,6 @@ int main(int argc, char* argv[])
 	catch (const YAML::EmitterException &e)
 	{
 		std::cout << "YAML::EmitterException occurred: " << e.what() << std::endl;
-	}
-	catch (const YAML::RepresentationException &e)
-	{
-		std::cout << "YAML::RepresentationException occurred: " << e.what() << std::endl;
 	}
 	catch (const YAML::Exception &e)
 	{
