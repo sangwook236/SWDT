@@ -27,20 +27,20 @@ pnl::CDBN * create_model()
 	//		nodes belonging to the time-slice, ts ==> 2 & 3
 
 	// 1) first need to specify the graph structure of the model.
-	const int numNeigh[] = { 2, 2, 2, 2 };
+	const int numNeighbors[] = { 2, 2, 2, 2 };
 	const int neigh0[] = { 1, 2 };
 	const int neigh1[] = { 0, 3 };
 	const int neigh2[] = { 0, 3 };
 	const int neigh3[] = { 1, 2 };
-	const int *neigh[] = { neigh0, neigh1, neigh2, neigh3 };
+	const int *neighs[] = { neigh0, neigh1, neigh2, neigh3 };
 
 	const pnl::ENeighborType orient0[] = { pnl::ntChild, pnl::ntChild };
 	const pnl::ENeighborType orient1[] = { pnl::ntParent, pnl::ntChild };
 	const pnl::ENeighborType orient2[] = { pnl::ntParent, pnl::ntChild };
 	const pnl::ENeighborType orient3[] = { pnl::ntParent, pnl::ntParent };
-	const pnl::ENeighborType *orient[] = { orient0, orient1, orient2, orient3 };
+	const pnl::ENeighborType *orients[] = { orient0, orient1, orient2, orient3 };
 	
-	pnl::CGraph *pGraph = pnl::CGraph::Create(numNodes, numNeigh, neigh, orient);
+	pnl::CGraph *pGraph = pnl::CGraph::Create(numNodes, numNeighbors, neighs, orients);
 	
 	// 2) create the Model Domain.
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
@@ -363,17 +363,17 @@ void maximum_probability_explanation(pnl::CDBN *pDBN)
 		std::cout << std::endl;
 
 		// TODO [check] >> is this code really correct?
-		const pnl::CEvidence *mpe = pInfEng->GetMPE();
+		const pnl::CEvidence *mpeEvid = pInfEng->GetMPE();
 		std::cout << " MPE node value: ";
 #if 0
 		for (int i = 0; i < numNodes; ++i)
 		{
-			const int mpeNodeVal = mpe->GetValue(domain[i])->GetInt();
+			const int mpeNodeVal = mpeEvid->GetValue(domain[i])->GetInt();
 			std::cout << mpeNodeVal << " ";
 		}
 		std::cout << std::endl;
 #else
-		const int mpeNodeVal = mpe->GetValue(domain[numNodes-1])->GetInt();
+		const int mpeNodeVal = mpeEvid->GetValue(domain[numNodes-1])->GetInt();
 		std::cout << mpeNodeVal << std::endl;
 #endif
 	}
@@ -382,7 +382,7 @@ void maximum_probability_explanation(pnl::CDBN *pDBN)
 }  // namespace local
 }  // unnamed namespace
 
-void dbn()
+void dbn_example()
 {
 #if 1
 	boost::scoped_ptr<pnl::CDBN> arHMM(pnl::CDBN::Create(pnl::pnlExCreateRndArHMM()));

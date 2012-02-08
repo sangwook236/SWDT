@@ -17,7 +17,7 @@ pnl::CDBN * create_simple_hmm()
 		v     v
 		Y0    Y1 
 */
-	
+
 /*
 	states = ('Rainy', 'Sunny')
  
@@ -175,6 +175,9 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
     return pArHMM;
 }
 
+// [ref]
+//	CompareMPE() in ${PNL_ROOT}/c_pgmtk/tests/src/AJTreeInfDBN.cpp
+//	CompareViterbyArHMM() in ${PNL_ROOT}/c_pgmtk/tests/src/A1_5JTreeInfDBNCondGauss.cpp
 void infer_mpe_in_hmm(pnl::CDBN *pHMM)
 {
 	//
@@ -238,20 +241,20 @@ void infer_mpe_in_hmm(pnl::CDBN *pHMM)
 		std::cout << std::endl;
 
 		// TODO [check] >> is this code really correct?
-		const pnl::CEvidence *mpe = inferEng->GetMPE();
+		const pnl::CEvidence *mpeEvid = inferEng->GetMPE();
 		std::cout << " MPE node value: ";
 #if 0
 		for (int i = 0; i < numNodes; ++i)
 		{
-			const int mpeNodeVal = mpe->GetValue(domain[i])->GetInt();
+			const int mpeNodeVal = mpeEvid->GetValue(domain[i])->GetInt();
 			std::cout << mpeNodeVal << " ";
 		}
 		std::cout << std::endl;
 #else
-		const int mpeNodeVal = mpe->GetValue(domain[numNodes-1])->GetInt();
+		const int mpeNodeVal = mpeEvid->GetValue(domain[numNodes-1])->GetInt();
 		std::cout << mpeNodeVal << std::endl;
 #endif
-}
+	}
 }
 
 }  // namespace local
@@ -262,11 +265,10 @@ void hmm()
 	// simple HMM
 	{
 		boost::scoped_ptr<pnl::CDBN> simpleHMM(local::create_simple_hmm());
-		//boost::scoped_ptr<pnl::CDBN> simpleHMM(local::create_hmm_with_ar_gaussian_observations());
 
 		if (!simpleHMM)
 		{
-			std::cout << "can't create a probabilistic graphic model" << std::endl;
+			std::cout << "can't create a probabilistic graphical model" << std::endl;
 			return;
 		}
 
