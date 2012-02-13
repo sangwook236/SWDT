@@ -797,9 +797,8 @@ void bayesian_network()
 		}
 
 		{
-			const pnl::CGraph *graph = mogBNet->GetGraph();
-			std::cout << " Graph";
-			graph->Dump();
+			std::cout << " graph of mixture-of-Gaussians Bayesian network";
+			mogBNet->GetGraph()->Dump();
 		}
 
 		//local::learn_mixture_of_gaussians_bayesian_network(mogBNet);  // not yet implemented
