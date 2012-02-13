@@ -124,8 +124,9 @@ pnl::CMNet * create_simle_markov_network()
 void mnet_example()
 {
 	// simple Markov network
+	std::cout << "========== simple Markov network" << std::endl;
 	{
-		boost::scoped_ptr<pnl::CMNet> mnet(local::create_simle_markov_network());
+		const boost::scoped_ptr<pnl::CMNet> mnet(local::create_simle_markov_network());
 
 		if (!mnet)
 		{

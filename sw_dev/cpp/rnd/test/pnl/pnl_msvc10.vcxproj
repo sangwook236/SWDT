@@ -90,10 +90,12 @@
   <ItemGroup>
     <ClCompile Include="bayesian_network.cpp" />
     <ClCompile Include="bayesian_network_example.cpp" />
+    <ClCompile Include="dbn.cpp" />
     <ClCompile Include="dbn_example.cpp" />
     <ClCompile Include="hmm.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mnet_example.cpp" />
+    <ClCompile Include="mrf2.cpp" />
     <ClCompile Include="mrf_example.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

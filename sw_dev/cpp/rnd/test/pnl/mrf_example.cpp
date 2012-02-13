@@ -117,8 +117,9 @@ pnl::CMRF2 * create_simple_pairwise_mrf()
 void mrf_example()
 {
 	// simple pairwise MRF
+	std::cout << "========== simple pairwise MRF" << std::endl;
 	{
-		boost::scoped_ptr<pnl::CMRF2> mrf2(local::create_simple_pairwise_mrf());
+		const boost::scoped_ptr<pnl::CMRF2> mrf2(local::create_simple_pairwise_mrf());
 
 		if (!mrf2)
 		{

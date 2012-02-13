@@ -7,7 +7,7 @@
 namespace {
 namespace local {
 
-pnl::CDBN * create_hmm_1()
+pnl::CDBN * create_simple_hmm()
 {
 /*
 	a simple HMM
@@ -86,15 +86,13 @@ pnl::CDBN * create_hmm_1()
 	hmm_bnet->GetFactor(3)->AllocMatrix(table3, pnl::matTable);
 
 	// create DBN
-	pnl::CDBN *hmm = pnl::CDBN::Create(hmm_bnet);
-
-	return hmm;
+	return pnl::CDBN::Create(hmm_bnet);
 }
 
 // [ref]
 //	CompareMPE() in ${PNL_ROOT}/c_pgmtk/tests/src/AJTreeInfDBN.cpp
 //	CompareViterbyArHMM() in ${PNL_ROOT}/c_pgmtk/tests/src/A1_5JTreeInfDBNCondGauss.cpp
-void infer_mpe_in_hmm(pnl::CDBN *hmm)
+void infer_mpe_in_hmm(const boost::scoped_ptr<pnl::CDBN> &hmm)
 {
 	//
 	const pnl::intVector obsNodes(1, 1);  // 1st node ==> observed node
@@ -115,11 +113,11 @@ void infer_mpe_in_hmm(pnl::CDBN *hmm)
 	for (int time_slice = 0; time_slice < numTimeSlices; ++time_slice)
 	{
 		obsNodesVals[0].SetInt(observations[time_slice]);
-		evidences[time_slice] = pnl::CEvidence::Create(hmm, obsNodes, obsNodesVals);
+		evidences[time_slice] = pnl::CEvidence::Create(hmm.get(), obsNodes, obsNodesVals);
 	}
 
 	// create an inference engine
-	boost::scoped_ptr<pnl::C1_5SliceJtreeInfEngine> inferEng(pnl::C1_5SliceJtreeInfEngine::Create(hmm));
+	boost::scoped_ptr<pnl::C1_5SliceJtreeInfEngine> inferEng(pnl::C1_5SliceJtreeInfEngine::Create(hmm.get()));
 
 	// create inference (smoothing) for DBN
 	inferEng->DefineProcedure(pnl::ptViterbi, numTimeSlices);
@@ -171,6 +169,12 @@ void infer_mpe_in_hmm(pnl::CDBN *hmm)
 		std::cout << mpeNodeVal << std::endl;
 #endif
 	}
+
+	//
+	for (int i = 0; i < numTimeSlices; ++i)
+	{
+		delete evidences[i];
+	}
 }
 
 }  // namespace local
@@ -178,11 +182,16 @@ void infer_mpe_in_hmm(pnl::CDBN *hmm)
 
 void viterbi_segmentation()
 {
-	boost::scoped_ptr<pnl::CDBN> hmm(local::create_hmm_1());
-
-	if (!hmm)
+	std::cout << "========== simple HMM" << std::endl;
 	{
-		std::cout << "can't create a probabilistic graphical model" << std::endl;
-		return;
+		const boost::scoped_ptr<pnl::CDBN> hmm(local::create_simple_hmm());
+
+		if (!hmm)
+		{
+			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			return;
+		}
+
+		local::infer_mpe_in_hmm(hmm);
 	}
 }

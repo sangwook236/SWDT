@@ -40,7 +40,7 @@ pnl::CDBN * create_model()
 	const pnl::ENeighborType orient3[] = { pnl::ntParent, pnl::ntParent };
 	const pnl::ENeighborType *orients[] = { orient0, orient1, orient2, orient3 };
 	
-	pnl::CGraph *pGraph = pnl::CGraph::Create(numNodes, numNeighbors, neighs, orients);
+	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighbors, neighs, orients);
 	
 	// 2) create the Model Domain.
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
@@ -49,43 +49,41 @@ pnl::CDBN * create_model()
 	pnl::intVector nodeAssociation;
 	nodeAssociation.assign(numNodes, 0);
 	
-	pnl::CModelDomain *pMD = pnl::CModelDomain::Create(nodeTypes, nodeAssociation);
+	pnl::CModelDomain *md = pnl::CModelDomain::Create(nodeTypes, nodeAssociation);
 	
 	// 3) create static BNet with random matrices.
-	pnl::CBNet *pBNet = pnl::CBNet::CreateWithRandomMatrices(pGraph, pMD);
+	pnl::CBNet *bnet = pnl::CBNet::CreateWithRandomMatrices(graph, md);
 	
 	// 4) create DBN.
-	pnl::CDBN *pDBN = pnl::CDBN::Create(pBNet);
-
-	return pDBN;
+	return pnl::CDBN::Create(bnet);
 }
 
-void smoothing(pnl::CDBN *pDBN)
+void smoothing(const boost::scoped_ptr<pnl::CDBN> &dbn)
 {
 	// number of time slices for unrolling
-	const int numTimeSlices = 5;
+	const int numTimeSeries = 5;
 
 	// let node 1 be always observed
 	const int obsNodes[] = { 1 };  // 1st node ==> observed node
 	pnl::valueVector obsNodesVals(1);
 
 	// create evidence for every time-slice
-	pnl::CEvidence **pEvidences = new pnl::CEvidence *[numTimeSlices];
-	for (int time_slice = 0; time_slice < numTimeSlices; ++time_slice)
+	pnl::CEvidence **pEvidences = new pnl::CEvidence * [numTimeSeries];
+	for (int time_slice = 0; time_slice < numTimeSeries; ++time_slice)
 	{
 		// generate random value
 		// all nodes in the model are discrete
 		obsNodesVals[0].SetInt(std::rand() % 2);
-		pEvidences[time_slice] = pnl::CEvidence::Create(pDBN, 1, obsNodes, obsNodesVals);
+		pEvidences[time_slice] = pnl::CEvidence::Create(dbn.get(), 1, obsNodes, obsNodesVals);
 	}
 
 	// create an inference engine
-	pnl::C1_5SliceJtreeInfEngine *pInfEng = pnl::C1_5SliceJtreeInfEngine::Create(pDBN);
+	pnl::C1_5SliceJtreeInfEngine *pInfEng = pnl::C1_5SliceJtreeInfEngine::Create(dbn.get());
 
 	// create smoothing procedure
-	pInfEng->DefineProcedure(pnl::ptSmoothing, numTimeSlices);
+	pInfEng->DefineProcedure(pnl::ptSmoothing, numTimeSeries);
 	// enter created evidences
-	pInfEng->EnterEvidence(pEvidences, numTimeSlices);
+	pInfEng->EnterEvidence(pEvidences, numTimeSeries);
 	// start smoothing process
 	pInfEng->Smoothing();
 
@@ -142,7 +140,7 @@ void smoothing(pnl::CDBN *pDBN)
 		const int query[] = { 0, 2 };  // 0th & 2nd nodes ==> hidden states
 		const int querySize = 2;
 
-		for (int time_slice = 1; time_slice < numTimeSlices; ++time_slice)
+		for (int time_slice = 1; time_slice < numTimeSeries; ++time_slice)
 		{
 			pInfEng->MarginalNodes(query, querySize, time_slice);
 
@@ -156,34 +154,34 @@ void smoothing(pnl::CDBN *pDBN)
 
 	//
 	delete pInfEng;
-	for (int time_slice = 0; time_slice < numTimeSlices; ++time_slice)
+	for (int time_slice = 0; time_slice < numTimeSeries; ++time_slice)
 	{
 		delete pEvidences[time_slice];
 	}
 	delete [] pEvidences;
 }
 
-void filtering(pnl::CDBN *pDBN)
+void filtering(const boost::scoped_ptr<pnl::CDBN> &dbn)
 {
 	// number of time slices for unrolling
-	const int numTimeSlices = 5;
+	const int numTimeSeries = 5;
 
 	// let node 1 be always observed
 	const int obsNodes[] = { 1 };  // 1st node ==> observed node
 	pnl::valueVector obsNodesVals(1);
 
 	// create evidence for every time-slice
-	pnl::CEvidence **pEvidences = new pnl::CEvidence *[numTimeSlices];
-	for (int time_slice = 0; time_slice < numTimeSlices; ++time_slice)
+	pnl::CEvidence **pEvidences = new pnl::CEvidence * [numTimeSeries];
+	for (int time_slice = 0; time_slice < numTimeSeries; ++time_slice)
 	{
 		// generate random value
 		// all nodes in the model are discrete
 		obsNodesVals[0].SetInt(std::rand() % 2);
-		pEvidences[time_slice] = pnl::CEvidence::Create(pDBN, 1, obsNodes, obsNodesVals);
+		pEvidences[time_slice] = pnl::CEvidence::Create(dbn.get(), 1, obsNodes, obsNodesVals);
 	}
 
 	// create an inference engine
-	pnl::C1_5SliceJtreeInfEngine *pInfEng = pnl::C1_5SliceJtreeInfEngine::Create(pDBN);
+	pnl::C1_5SliceJtreeInfEngine *pInfEng = pnl::C1_5SliceJtreeInfEngine::Create(dbn.get());
 
 	// create filtering procedure
 	pInfEng->DefineProcedure(pnl::ptFiltering);
@@ -210,7 +208,7 @@ void filtering(pnl::CDBN *pDBN)
 		const int query[] = { 0, 2 };  // 0th & 2nd nodes ==> hidden states
 		const int querySize = 2;
 
-		for (int time_slice = 1; time_slice < numTimeSlices; ++time_slice)
+		for (int time_slice = 1; time_slice < numTimeSeries; ++time_slice)
 		{
 			pInfEng->EnterEvidence(&(pEvidences[time_slice]), 1);
 			pInfEng->Filtering(time_slice);
@@ -225,34 +223,34 @@ void filtering(pnl::CDBN *pDBN)
 
 	//
 	delete pInfEng;
-	for (int time_slice = 0; time_slice < numTimeSlices; ++time_slice)
+	for (int time_slice = 0; time_slice < numTimeSeries; ++time_slice)
 	{
 		delete pEvidences[time_slice];
 	}
 	delete [] pEvidences;
 }
 
-void fixed_lag_smoothing(pnl::CDBN *pDBN)
+void fixed_lag_smoothing(const boost::scoped_ptr<pnl::CDBN> &dbn)
 {
 	// number of time slices for unrolling
-	const int numTimeSlices = 5;
+	const int numTimeSeries = 5;
 
 	// let node 1 be always observed
 	const int obsNodes[] = { 1 };  // 1st node ==> observed node
 	pnl::valueVector obsNodesVals(1);
 
 	// create evidence for every time-slice
-	pnl::CEvidence **pEvidences = new pnl::CEvidence *[numTimeSlices];
-	for (int time_slice = 0; time_slice < numTimeSlices; ++time_slice)
+	pnl::CEvidence **pEvidences = new pnl::CEvidence * [numTimeSeries];
+	for (int time_slice = 0; time_slice < numTimeSeries; ++time_slice)
 	{
 		// generate random value
 		// all nodes in the model are discrete
 		obsNodesVals[0].SetInt(std::rand() % 2);
-		pEvidences[time_slice] = pnl::CEvidence::Create(pDBN, 1, obsNodes, obsNodesVals);
+		pEvidences[time_slice] = pnl::CEvidence::Create(dbn.get(), 1, obsNodes, obsNodesVals);
 	}
 
 	// create an inference engine
-	pnl::C1_5SliceJtreeInfEngine *pInfEng = pnl::C1_5SliceJtreeInfEngine::Create(pDBN);
+	pnl::C1_5SliceJtreeInfEngine *pInfEng = pnl::C1_5SliceJtreeInfEngine::Create(dbn.get());
 
 	// create fixed-lag smoothing (online)
 	const int lag = 2;
@@ -283,7 +281,7 @@ void fixed_lag_smoothing(pnl::CDBN *pDBN)
 		const int query[] = { 0, 2 };  // 0th & 2nd nodes ==> hidden states
 		const int querySize = 2;
 
-		for (int time_slice = lag + 1; time_slice < numTimeSlices; ++time_slice)
+		for (int time_slice = lag + 1; time_slice < numTimeSeries; ++time_slice)
 		{
 			pInfEng->EnterEvidence(&(pEvidences[time_slice]), 1);
 			pInfEng->FixLagSmoothing(time_slice);
@@ -298,7 +296,7 @@ void fixed_lag_smoothing(pnl::CDBN *pDBN)
 
 	//
 	delete pInfEng;
-	for (int time_slice = 0; time_slice < numTimeSlices; ++time_slice)
+	for (int time_slice = 0; time_slice < numTimeSeries; ++time_slice)
 	{
 		delete pEvidences[time_slice];
 	}
@@ -306,37 +304,37 @@ void fixed_lag_smoothing(pnl::CDBN *pDBN)
 }
 
 // [ref] CompareViterbyArHMM() in "${PNL_ROOT}/c_pgmtk/tests/src/A1_5JTreeInfDBNCondGauss.cpp"
-void maximum_probability_explanation(pnl::CDBN *pDBN)
+void maximum_probability_explanation(const boost::scoped_ptr<pnl::CDBN> &dbn)
 {
 	// number of time slices for unrolling
-	const int numTimeSlices = 5;
+	const int numTimeSeries = 5;
 
 	// let node 1 be always observed
 	const pnl::intVector obsNodes(1, 1);  // 1st node ==> observed node
 	pnl::valueVector obsNodesVals(1);
 
 	// create values for evidence for every time-slice from t=0 to t=nTimeSlice
-	pnl::pEvidencesVector evidences(numTimeSlices);
-	for (int time_slice = 0; time_slice < numTimeSlices; ++time_slice)
+	pnl::pEvidencesVector evidences(numTimeSeries);
+	for (int time_slice = 0; time_slice < numTimeSeries; ++time_slice)
 	{
 		//obsNodesVals[0].SetFlt(float(std::rand() % 10));  // compile-time error
 		obsNodesVals[0].SetInt(std::rand() % 2);
-		evidences[time_slice] = pnl::CEvidence::Create(pDBN, obsNodes, obsNodesVals);
+		evidences[time_slice] = pnl::CEvidence::Create(dbn.get(), obsNodes, obsNodesVals);
 	}
 
 	// create an inference engine
-	pnl::C1_5SliceJtreeInfEngine *pInfEng = pnl::C1_5SliceJtreeInfEngine::Create(pDBN);
+	pnl::C1_5SliceJtreeInfEngine *pInfEng = pnl::C1_5SliceJtreeInfEngine::Create(dbn.get());
 
 	// create inference (smoothing) for DBN
-	pInfEng->DefineProcedure(ptViterbi, numTimeSlices);
-	pInfEng->EnterEvidence(&evidences.front(), numTimeSlices);
+	pInfEng->DefineProcedure(ptViterbi, numTimeSeries);
+	pInfEng->EnterEvidence(&evidences.front(), numTimeSeries);
 	pInfEng->FindMPE();
 
 	pnl::intVector queryPrior(1), query(2);
 	queryPrior[0] = 0;  // 0th node ==> hidden state
 	query[0] = 0;  query[1] = 2;  // 0th & 2nd nodes ==> hidden states
 
-	for (int time_slice = 0; time_slice < numTimeSlices; ++time_slice)
+	for (int time_slice = 0; time_slice < numTimeSeries; ++time_slice)
 	{
 		if (time_slice)  // for the transition network
 		{
@@ -377,6 +375,83 @@ void maximum_probability_explanation(pnl::CDBN *pDBN)
 		std::cout << mpeNodeVal << std::endl;
 #endif
 	}
+
+	//
+	for (int i = 0; i < numTimeSeries; ++i)
+	{
+		delete evidences[i];
+	}
+}
+
+void learn_parameters_of_dbn(const boost::scoped_ptr<pnl::CDBN> &dbn)
+{
+	const int numTimeSeries = 500;
+
+	// define number of slices in the every time series
+	pnl::intVector numSlices(numTimeSeries);
+	pnl::pnlRand(numTimeSeries, &numSlices.front(), 3, 20);
+	
+	// generate evidences in a random way
+	pnl::pEvidencesVecVector evidences;
+	dbn->GenerateSamples(&evidences, numSlices);
+
+	// create DBN for learning
+	const boost::scoped_ptr<pnl::CDBN> dbnToLearn(pnl::CDBN::Create(pnl::pnlExCreateRndArHMM()));
+
+	// create learning engine
+	const boost::scoped_ptr<pnl::CEMLearningEngineDBN> learnEngine(pnl::CEMLearningEngineDBN::Create(dbnToLearn.get()));
+	
+	// set data for learning
+	learnEngine->SetData(evidences);
+
+	// start learning
+	try
+	{
+		learnEngine->Learn();
+	}
+	catch (const pnl::CAlgorithmicException &e)
+	{
+		std::cout << "fail to learn parameters of a DBN" << e.GetMessage() << std::endl;
+		return;
+	}
+
+	//
+	const int numFactors = dbnToLearn->GetNumberOfFactors();
+	const pnl::CTabularDistribFun *distribFun = NULL;
+	const pnl::CFactor *cpd = NULL;
+	for (int i = 0; i < numFactors; ++i)
+	{
+		cpd = dbn->GetFactor(i);
+
+		int nnodes;
+		const int *domain;
+		cpd->GetDomain(&nnodes, &domain);
+
+		std::cout << " #-- node " << domain[nnodes - 1] << " has the parents ";
+		for (int node = 0; node < nnodes - 1; ++node)
+		{
+			std::cout << domain[node] << " ";
+		}
+		std::cout << std::endl << " #-- conditional probability distribution for node " << i << std::endl;
+
+		std::cout << " #-- initial model" << std::endl;
+		distribFun = static_cast<const pnl::CTabularDistribFun *>(cpd->GetDistribFun());
+		distribFun->Dump();
+
+		std::cout << " #-- model after learning" << std::endl;
+		cpd = dbnToLearn->GetFactor(i);
+		distribFun = static_cast<const pnl::CTabularDistribFun *>(cpd->GetDistribFun());
+		distribFun->Dump();
+	}
+
+	//
+	for (int i = 0; i < evidences.size(); ++i)
+	{
+		for (int j = 0; j < evidences[i].size(); ++j)
+		{
+			delete evidences[i][j];
+		}
+	}
 }
 
 }  // namespace local
@@ -384,24 +459,44 @@ void maximum_probability_explanation(pnl::CDBN *pDBN)
 
 void dbn_example()
 {
+	// infer DBN
+	std::cout << "========== infer DBN with AR Gaussian observations" << std::endl;
+	{
 #if 1
-	boost::scoped_ptr<pnl::CDBN> arHMM(pnl::CDBN::Create(pnl::pnlExCreateRndArHMM()));
+		const boost::scoped_ptr<pnl::CDBN> arHMM(pnl::CDBN::Create(pnl::pnlExCreateRndArHMM()));
+		//const boost::scoped_ptr<pnl::CDBN> arHMM(pnl::CDBN::Create(pnl::pnlExCreateCondGaussArBNet()));
 #else
-	boost::scoped_ptr<pnl::CDBN> arHMM(local::create_model());
+		const boost::scoped_ptr<pnl::CDBN> arHMM(local::create_model());
 #endif
 
-	if (!arHMM)
-	{
-		std::cout << "can't create a probabilistic graphical model" << std::endl;
-		return;
+		if (!arHMM)
+		{
+			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			return;
+		}
+
+		// get content of Graph
+		arHMM->GetGraph()->Dump();
+		pnl::CGraph *g = arHMM->GetGraph();
+
+		//local::smoothing(arHMM.get());
+		//local::filtering(arHMM.get());
+		//local::fixed_lag_smoothing(arHMM.get());
+		local::maximum_probability_explanation(arHMM);  // MPE by Viterbi algorithm
 	}
 
-	// get content of Graph
-	arHMM->GetGraph()->Dump();
-	pnl::CGraph *g = arHMM->GetGraph();
+	// learn parameters of DBN
+	std::cout << "\n========== learn DBN with AR Gaussian observations" << std::endl;
+	{
+		const boost::scoped_ptr<pnl::CDBN> arHMM(pnl::CDBN::Create(pnl::pnlExCreateRndArHMM()));
+		//const boost::scoped_ptr<pnl::CDBN> arHMM(pnl::CDBN::Create(pnl::pnlExCreateCondGaussArBNet()));
 
-	//local::smoothing(arHMM.get());
-	//local::filtering(arHMM.get());
-	//local::fixed_lag_smoothing(arHMM.get());
-	local::maximum_probability_explanation(arHMM.get());  // MPE by Viterbi algorithm
+		if (!arHMM)
+		{
+			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			return;
+		}
+
+		local::learn_parameters_of_dbn(arHMM);
+	}
 }

@@ -108,7 +108,7 @@ pnl::CBNet * create_model()
 	return pBNet;
 }
 
-void infer_model(pnl::CBNet *pBNet)
+void infer_bayesian_network_using_naive_inference_algorithm(const boost::scoped_ptr<pnl::CBNet> &bnet)
 {
 	// create simple evidence for node 0 from BNet
 	pnl::CEvidence *pEvidForWS = NULL;
@@ -121,11 +121,11 @@ void infer_model(pnl::CBNet *pBNet)
 		pnl::valueVector obsVals(numObsNodes);
 		obsVals[0].SetInt(1);
 
-		pEvidForWS = pnl::CEvidence::Create(pBNet, numObsNodes, obsNodes, obsVals);
+		pEvidForWS = pnl::CEvidence::Create(bnet.get(), numObsNodes, obsNodes, obsVals);
 	}
 
 	// create Naive inference for BNet
-	pnl::CNaiveInfEngine *pNaiveInf = pnl::CNaiveInfEngine::Create(pBNet);
+	pnl::CNaiveInfEngine *pNaiveInf = pnl::CNaiveInfEngine::Create(bnet.get());
 
 	// enter evidence created before
 	pNaiveInf->EnterEvidence(pEvidForWS);
@@ -185,26 +185,38 @@ void infer_model(pnl::CBNet *pBNet)
 	delete pEvidForWS;
 }
 
+// [ref] ${PNL_ROOT}/c_pgmtk/tests/src/APearlInfEngine.cpp
+void infer_bayesian_network_using_belief_propagation_algorithm(const boost::scoped_ptr<pnl::CBNet> &bnet)
+{
+	throw std::runtime_error("not yet implemented");
+}
+
 }  // namespace local
 }  // unnamed namespace
 
 void bayesian_network_example()
 {
-	// create Water-Sprinkler BNet
+	std::cout << "========== infer water-sprinkler Bayesian network" << std::endl;
+	{
+		// create Water-Sprinkler BNet
 #if 1
-	boost::scoped_ptr<pnl::CBNet> wsBNet(pnl::pnlExCreateWaterSprinklerBNet());
+		const boost::scoped_ptr<pnl::CBNet> wsBNet(pnl::pnlExCreateWaterSprinklerBNet());
 #else
-	boost::scoped_ptr<pnl::CBNet> wsBNet(local::create_model());
+		const boost::scoped_ptr<pnl::CBNet> wsBNet(local::create_model());
 #endif
 
-	if (!wsBNet)
-	{
-		std::cout << "can't create a probabilistic graphical model" << std::endl;
-		return;
+		if (!wsBNet)
+		{
+			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			return;
+		}
+
+		// get content of Graph
+		wsBNet->GetGraph()->Dump();
+
+		// naive inference algorithm
+		local::infer_bayesian_network_using_naive_inference_algorithm(wsBNet);
+		// belief propagation (Pearl inference) algorithm
+		//local::infer_bayesian_network_using_belief_propagation_algorithm(wsBNet);  // not yet implemented
 	}
-
-	// get content of Graph
-	wsBNet->GetGraph()->Dump();
-
-	local::infer_model(wsBNet.get());
 }

@@ -41,20 +41,24 @@ pnl::CDBN * create_simple_hmm()
 	const int numNodeTypes = 2;  // number of node types (all nodes are discrete)
 
 	// specify the graph structure of the model
-	const int numNeigh[] = { 2, 1, 2, 1 };
+	const int numNeighs[] = {
+		2, 1,  // 1st time-slice
+		2, 1  // 2nd time-slice
+	};
+
 	const int neigh0[] = { 1, 2 };
 	const int neigh1[] = { 0 };
 	const int neigh2[] = { 0, 3 };
 	const int neigh3[] = { 2 };
-    const int *neigh[] = { neigh0, neigh1, neigh2, neigh3 };
+    const int *neighs[] = { neigh0, neigh1, neigh2, neigh3 };
 
     const pnl::ENeighborType orient0[] = { pnl::ntChild, pnl::ntChild };
     const pnl::ENeighborType orient1[] = { pnl::ntParent };
     const pnl::ENeighborType orient2[] = { pnl::ntParent, pnl::ntChild };
     const pnl::ENeighborType orient3[] = { pnl::ntParent };
-    const pnl::ENeighborType *orient[] = { orient0, orient1, orient2, orient3 };
+    const pnl::ENeighborType *orients[] = { orient0, orient1, orient2, orient3 };
 	
-	pnl::CGraph *pGraph = pnl::CGraph::Create(numNodes, numNeigh, neigh, orient);
+	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighs, neighs, orients);
 
 	// create static BNet
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
@@ -67,7 +71,7 @@ pnl::CDBN * create_simple_hmm()
 	nodeAssociation[2] = 0;
 	nodeAssociation[3] = 1;
 	
-	pnl::CBNet *pBNet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, pGraph);
+	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
 
 	// create raw data tables for CPDs
 	const float table0[] = { 0.6f, 0.4f };
@@ -76,25 +80,24 @@ pnl::CDBN * create_simple_hmm()
 	const float table3[] = { 0.1f, 0.4f, 0.5f, 0.6f, 0.3f, 0.1f };
 
 	// create factors and attach their to model
-	pBNet->AllocFactors();
-	pBNet->AllocFactor(0); 
-	pBNet->GetFactor(0)->AllocMatrix(table0, pnl::matTable);
-	pBNet->AllocFactor(1);
-	pBNet->GetFactor(1)->AllocMatrix(table1, pnl::matTable);
-	pBNet->AllocFactor(2);
-	pBNet->GetFactor(2)->AllocMatrix(table2, pnl::matTable);
-	pBNet->AllocFactor(3);
-	pBNet->GetFactor(3)->AllocMatrix(table3, pnl::matTable);
+	bnet->AllocFactors();
+	bnet->AllocFactor(0); 
+	bnet->GetFactor(0)->AllocMatrix(table0, pnl::matTable);
+	bnet->AllocFactor(1);
+	bnet->GetFactor(1)->AllocMatrix(table1, pnl::matTable);
+	bnet->AllocFactor(2);
+	bnet->GetFactor(2)->AllocMatrix(table2, pnl::matTable);
+	bnet->AllocFactor(3);
+	bnet->GetFactor(3)->AllocMatrix(table3, pnl::matTable);
 #else
-	pnl::CBNet *pBNet = pnl::pnlExCreateRndArHMM();
+	pnl::CBNet *bnet = pnl::pnlExCreateRndArHMM();
 #endif;
 
 	// create DBN
-	pnl::CDBN *pDBN = pnl::CDBN::Create(pBNet);
-
-	return pDBN;
+	return pnl::CDBN::Create(bnet);
 }
 
+// [ref] pnlExCreateCondGaussArBNet() & pnlExCreateRndArHMM() in ${PNL_ROOT}/c_pgmtk/src/pnlExampleModels.cpp
 pnl::CDBN * create_hmm_with_ar_gaussian_observations()
 {
 /*
@@ -109,35 +112,62 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
 	const int numNodes = 4;  // number of nodes    
 	const int numNodeTypes = 2;  // number of node types (all nodes are discrete)
 
+	// create a DAG
+	const int numNeighs[] = {
+		2, 2,  // 1st time-slice
+		2, 2  // 2nd time-slice
+	};
+
+	const int neigh0[] = { 1, 2 };
+	const int neigh1[] = { 0, 3 };
+	const int neigh2[] = { 0, 3 };
+	const int neigh3[] = { 1, 2 };
+	const int *neighs[] = { neigh0, neigh1, neigh2, neigh3 };
+
+	const pnl::ENeighborType orient0[] = { pnl::ntChild, pnl::ntChild };
+	const pnl::ENeighborType orient1[] = { pnl::ntParent, pnl::ntChild };
+	const pnl::ENeighborType orient2[] = { pnl::ntParent, pnl::ntChild };
+	const pnl::ENeighborType orient3[] = { pnl::ntParent, pnl::ntParent };
+	const pnl::ENeighborType *orients[] = { orient0, orient1, orient2, orient3 };
+
+	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighs, neighs, orients);
+
+	// create static BNet
+/*
 	pnl::CNodeType *nodeTypes = new pnl::CNodeType [numNodeTypes];
 	nodeTypes[0].SetType(true, 2);
 	nodeTypes[1].SetType(false, 1);
 
 	const int nodeAssociation[] = { 0, 1, 0, 1 };
 
-	// create a DAG
-	const int numNeigh[] = { 2, 2, 2, 2 };
-	const int neigh0[] = { 1, 2 };
-	const int neigh1[] = { 0, 3 };
-	const int neigh2[] = { 0, 3 };
-	const int neigh3[] = { 1, 2 };
-	const int *neigh[] = { neigh0, neigh1, neigh2, neigh3 };
+	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, numNodeTypes, nodeTypes, nodeAssociation, graph);
 
-	const pnl::ENeighborType orient0[] = { pnl::ntChild, pnl::ntChild };
-	const pnl::ENeighborType orient1[] = { pnl::ntParent, pnl::ntChild };
-	const pnl::ENeighborType orient2[] = { pnl::ntParent, pnl::ntChild };
-	const pnl::ENeighborType orient3[] = { pnl::ntParent, pnl::ntParent };
-	const pnl::ENeighborType *orient[] = { orient0, orient1, orient2, orient3 };
+	delete [] nodeTypes;
+	nodeTypes = NULL;
+*/
+	pnl::nodeTypeVector nodeTypes(numNodeTypes);
+	nodeTypes[0].SetType(true, 2);
+	nodeTypes[1].SetType(false, 1);
 
-	pnl::CGraph *pGraph = pnl::CGraph::Create(numNodes, numNeigh, neigh, orient);
+	pnl::intVector nodeAssociation(numNodes);
+	nodeAssociation[0] = 0;
+	nodeAssociation[0] = 1;
+	nodeAssociation[0] = 0;
+	nodeAssociation[0] = 1;
 
-	// create static BNet
-	pnl::CBNet *pBNet = pnl::CBNet::Create(numNodes, numNodeTypes, nodeTypes, nodeAssociation, pGraph);
-	pBNet->AllocFactors();
+	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
+
+	//
+	bnet->AllocFactors();
 
 	// let arbitrary distribution is
+#if 1
 	const float tableNode0[] = { 0.95f, 0.05f };
 	const float tableNode2[] = { 0.1f, 0.9f, 0.5f, 0.5f };
+#else
+	const float tableNode0[] = { 0.7f, 0.3f };
+    const float tableNode2[] = { 0.2f, 0.8f, 0.3f, 0.7f };
+#endif
 
 	const float mean1w0 = -3.2f;  const float cov1w0 = 0.00002f; 
 	const float mean1w1 = -0.5f;  const float cov1w1 = 0.0001f;
@@ -145,40 +175,38 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
 	const float mean3w0 = 6.5f;  const float cov3w0 = 0.03f;  const float weight3w0 = 1.0f;
 	const float mean3w1 = 7.5f;  const float cov3w1 = 0.04f;  const float weight3w1 = 0.5f;
 
-	pBNet->AllocFactor(0);
-	pBNet->GetFactor(0)->AllocMatrix(tableNode0, pnl::matTable);
+	bnet->AllocFactor(0);
+	bnet->GetFactor(0)->AllocMatrix(tableNode0, pnl::matTable);
 
-	pBNet->AllocFactor(1);
-	int parent[] = { 0 };
-	pBNet->GetFactor(1)->AllocMatrix(&mean1w0, pnl::matMean, -1, parent);
-	pBNet->GetFactor(1)->AllocMatrix(&cov1w0, pnl::matCovariance, -1, parent);
-	parent[0] = 1;
-	pBNet->GetFactor(1)->AllocMatrix(&mean1w1, pnl::matMean, -1, parent);
-	pBNet->GetFactor(1)->AllocMatrix(&cov1w1, pnl::matCovariance, -1, parent);
+	bnet->AllocFactor(1);
+	int parentVal[] = { 0 };
+	bnet->GetFactor(1)->AllocMatrix(&mean1w0, pnl::matMean, -1, parentVal);
+	bnet->GetFactor(1)->AllocMatrix(&cov1w0, pnl::matCovariance, -1, parentVal);
+	parentVal[0] = 1;
+	bnet->GetFactor(1)->AllocMatrix(&mean1w1, pnl::matMean, -1, parentVal);
+	bnet->GetFactor(1)->AllocMatrix(&cov1w1, pnl::matCovariance, -1, parentVal);
 
-	pBNet->AllocFactor(2);
-	pBNet->GetFactor(2)->AllocMatrix(tableNode2, pnl::matTable);
+	bnet->AllocFactor(2);
+	bnet->GetFactor(2)->AllocMatrix(tableNode2, pnl::matTable);
 
-	pBNet->AllocFactor(3);
-	parent[0] = 0;
-	pBNet->GetFactor(3)->AllocMatrix(&mean3w0, pnl::matMean, -1, parent);
-	pBNet->GetFactor(3)->AllocMatrix(&cov3w0, pnl::matCovariance, -1, parent);
-	pBNet->GetFactor(3)->AllocMatrix(&weight3w0, pnl::matWeights, 0, parent);
-	parent[0] = 1;
-	pBNet->GetFactor(3)->AllocMatrix(&mean3w1, pnl::matMean, -1, parent);
-	pBNet->GetFactor(3)->AllocMatrix(&cov3w1, pnl::matCovariance, -1, parent);
-	pBNet->GetFactor(3)->AllocMatrix(&weight3w1, pnl::matWeights, 0, parent);
+	bnet->AllocFactor(3);
+	parentVal[0] = 0;
+	bnet->GetFactor(3)->AllocMatrix(&mean3w0, pnl::matMean, -1, parentVal);
+	bnet->GetFactor(3)->AllocMatrix(&cov3w0, pnl::matCovariance, -1, parentVal);
+	bnet->GetFactor(3)->AllocMatrix(&weight3w0, pnl::matWeights, 0, parentVal);
+	parentVal[0] = 1;
+	bnet->GetFactor(3)->AllocMatrix(&mean3w1, pnl::matMean, -1, parentVal);
+	bnet->GetFactor(3)->AllocMatrix(&cov3w1, pnl::matCovariance, -1, parentVal);
+	bnet->GetFactor(3)->AllocMatrix(&weight3w1, pnl::matWeights, 0, parentVal);
 
 	// create DBN using BNet	
-	pnl::CDBN *pArHMM = pnl::CDBN::Create(pBNet);
-
-    return pArHMM;
+	return pnl::CDBN::Create(bnet);
 }
 
 // [ref]
 //	CompareMPE() in ${PNL_ROOT}/c_pgmtk/tests/src/AJTreeInfDBN.cpp
 //	CompareViterbyArHMM() in ${PNL_ROOT}/c_pgmtk/tests/src/A1_5JTreeInfDBNCondGauss.cpp
-void infer_mpe_in_hmm(pnl::CDBN *pHMM)
+void infer_mpe_in_hmm(const boost::scoped_ptr<pnl::CDBN> &hmm)
 {
 	//
 	const pnl::intVector obsNodes(1, 1);  // 1st node ==> observed node
@@ -195,20 +223,20 @@ void infer_mpe_in_hmm(pnl::CDBN *pHMM)
 	const int numTimeSlices = sizeof(observations) / sizeof(observations[0]);
 
 	// create evidence for every time-slice
-	pnl::pEvidencesVector evidences(numTimeSlices);
+	pnl::pEvidencesVector evidencesForDBN(numTimeSlices);
 	for (int time_slice = 0; time_slice < numTimeSlices; ++time_slice)
 	{
 		obsNodesVals[0].SetInt(observations[time_slice]);
-		evidences[time_slice] = pnl::CEvidence::Create(pHMM, obsNodes, obsNodesVals);
+		evidencesForDBN[time_slice] = pnl::CEvidence::Create(hmm.get(), obsNodes, obsNodesVals);
 	}
 
 	// create an inference engine
-	boost::scoped_ptr<pnl::C1_5SliceJtreeInfEngine> inferEng(pnl::C1_5SliceJtreeInfEngine::Create(pHMM));
+	boost::scoped_ptr<pnl::C1_5SliceJtreeInfEngine> infEngine(pnl::C1_5SliceJtreeInfEngine::Create(hmm.get()));
 
 	// create inference (smoothing) for DBN
-	inferEng->DefineProcedure(pnl::ptViterbi, numTimeSlices);
-	inferEng->EnterEvidence(&evidences.front(), numTimeSlices);
-	inferEng->FindMPE();
+	infEngine->DefineProcedure(pnl::ptViterbi, numTimeSlices);
+	infEngine->EnterEvidence(&evidencesForDBN.front(), numTimeSlices);
+	infEngine->FindMPE();
 
 	pnl::intVector queryPrior(1), query(2);
 	queryPrior[0] = 0;  // 0th node ==> hidden state
@@ -218,14 +246,14 @@ void infer_mpe_in_hmm(pnl::CDBN *pHMM)
 	{
 		if (time_slice)  // for the transition network
 		{
-			inferEng->MarginalNodes(&query.front(), query.size(), time_slice);
+			infEngine->MarginalNodes(&query.front(), query.size(), time_slice);
 		}
 		else  // for the prior network
 		{
-			inferEng->MarginalNodes(&queryPrior.front(), queryPrior.size(), time_slice);
+			infEngine->MarginalNodes(&queryPrior.front(), queryPrior.size(), time_slice);
 		}
 
-		const pnl::CPotential *queryMPE = inferEng->GetQueryMPE();
+		const pnl::CPotential *queryMPE = infEngine->GetQueryMPE();
 		
 		std::cout << ">>> Query time-slice: " << time_slice << std::endl;
 
@@ -241,7 +269,7 @@ void infer_mpe_in_hmm(pnl::CDBN *pHMM)
 		std::cout << std::endl;
 
 		// TODO [check] >> is this code really correct?
-		const pnl::CEvidence *mpeEvid = inferEng->GetMPE();
+		const pnl::CEvidence *mpeEvid = infEngine->GetMPE();
 		std::cout << " MPE node value: ";
 #if 0
 		for (int i = 0; i < numNodes; ++i)
@@ -255,6 +283,123 @@ void infer_mpe_in_hmm(pnl::CDBN *pHMM)
 		std::cout << mpeNodeVal << std::endl;
 #endif
 	}
+
+	//
+	for (int i = 0; i < numTimeSlices; ++i)
+	{
+		delete evidencesForDBN[i];
+	}
+}
+
+// [ref] ${PNL_ROOT}/c_pgmtk/tests/src/ALearningCondGaussDBN.cpp
+void learn_hmm_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> &dbn)
+{
+    //pnl::CBNet *bnetDBN = pnl::pnlExCreateCondGaussArBNet();
+	//const boost::scoped_ptr<pnl::CDBN> dbn(pnl::CDBN::Create(bnetDBN));
+	const pnl::CBNet *bnetDBN = dynamic_cast<const pnl::CBNet *>(dbn->GetStaticModel());
+
+	//
+	pnl::CGraph *graphDBN = pnl::CGraph::Copy(bnetDBN->GetGraph());
+	pnl::CModelDomain *mdDBN = bnetDBN->GetModelDomain();
+
+	const boost::scoped_ptr<pnl::CBNet> bnetToLearn(pnl::CBNet::CreateWithRandomMatrices(graphDBN, mdDBN));
+	const boost::scoped_ptr<pnl::CDBN> dbnToLearn(pnl::CDBN::Create(pnl::CBNet::Copy(bnetToLearn.get())));
+
+	// generate sample
+	const int numSamples = 5000;
+
+	const pnl::intVector numSlices(numSamples, 2);
+	pnl::pEvidencesVecVector evidencesForDBN;
+	dbn->GenerateSamples(&evidencesForDBN, numSlices);
+
+	pnl::pEvidencesVector evidencesForBNet;
+	bnetToLearn->GenerateSamples(&evidencesForBNet, numSamples);
+
+	for (int i = 0; i < numSamples; ++i)
+	{
+		pnl::valueVector vls1, vls2;
+		(evidencesForDBN[i])[0]->GetRawData(&vls1);
+		(evidencesForDBN[i])[1]->GetRawData(&vls2);
+
+		pnl::valueVector newData(vls1.size() + vls2.size());
+		std::memcpy(&newData.front(), &vls1.front(), vls1.size() * sizeof(pnl::Value));
+		std::memcpy(&newData[vls1.size()], &vls2.front(), vls2.size() * sizeof(pnl::Value));
+
+		evidencesForBNet[i]->SetData(newData);
+
+		//(evidencesForDBN[i])[0]->MakeNodeHiddenBySerialNum(0);
+		//(evidencesForDBN[i])[1]->MakeNodeHiddenBySerialNum(0);
+
+		//evidencesForBNet[i]->MakeNodeHiddenBySerialNum(0);
+		//evidencesForBNet[i]->MakeNodeHiddenBySerialNum(2);
+	}
+
+	// forbids matrix change in learning process
+	const int parentIndices[] = { 0 };
+	bnetToLearn->GetFactor(1)->GetDistribFun()->GetMatrix(pnl::matMean, -1, parentIndices)->SetClamp(1);
+	bnetToLearn->GetFactor(3)->GetDistribFun()->GetMatrix(pnl::matCovariance, -1, parentIndices)->SetClamp(1);
+	bnetToLearn->GetFactor(3)->GetDistribFun()->GetMatrix(pnl::matCovariance, 0, parentIndices)->SetClamp(1);
+
+	// learn
+	const int maxIteration = 10;
+
+	const boost::scoped_ptr<pnl::CEMLearningEngine> learnerForBNet(pnl::CEMLearningEngine::Create(bnetToLearn.get()));
+	learnerForBNet->SetData(numSamples, &evidencesForBNet.front());
+	learnerForBNet->SetMaxIterEM(maxIteration);
+	try
+	{
+		learnerForBNet->Learn();
+	}
+	catch (const pnl::CAlgorithmicException &e)
+	{
+		std::cout << "fail to learn parameters of a unrolled Bayesian network of a HMM w/ AR Gaussian observations" << e.GetMessage() << std::endl;
+		return;
+	}
+
+	const boost::scoped_ptr<pnl::CEMLearningEngineDBN> learnerForDBN(pnl::CEMLearningEngineDBN::Create(dbnToLearn.get()));
+	learnerForDBN->SetData(evidencesForDBN);
+	learnerForDBN->SetMaxIterEM(maxIteration);
+	try
+	{
+		learnerForDBN->Learn();
+	}
+	catch (const pnl::CAlgorithmicException &e)
+	{
+		std::cout << "fail to learn parameters of a HMM w/ AR Gaussian observations" << e.GetMessage() << std::endl;
+		return;
+	}
+
+	//
+	const pnl::CMatrix<float> *matBNet = bnetToLearn->GetFactor(0)->GetDistribFun()->GetStatisticalMatrix(pnl::stMatTable);
+	const pnl::CMatrix<float> *matDBN = dbnToLearn->GetFactor(0)->GetDistribFun()->GetStatisticalMatrix(pnl::stMatTable);
+
+	const float eps = 0.1f;
+	for (int i = 0; i < 4; ++i)
+	{
+		std::cout << "\n ___ node " << i << "_________________________" << std::endl;
+		std::cout << "\n____ BNet_________________________________" << std::endl;
+		bnetToLearn->GetFactor(i)->GetDistribFun()->Dump();
+
+		if (!bnetDBN->GetFactor(i)->IsFactorsDistribFunEqual(dbnToLearn->GetFactor(i), eps, 0))
+		{
+			std::cout << "\n____ DBN__________________________________" << std::endl;
+			dbnToLearn->GetFactor(i)->GetDistribFun()->Dump();
+			std::cout << "\n____ Initial DBN__________________________" << std::endl;
+			bnetDBN->GetFactor(i)->GetDistribFun()->Dump();
+			std::cout << "\n___________________________________________" << std::endl;
+		}
+	}
+
+	//
+	for (int i = 0; i < numSamples; ++i)
+	{
+		for (int j = 0; j < evidencesForDBN[i].size(); ++j)
+		{
+			delete (evidencesForDBN[i])[j];
+		}
+
+		delete evidencesForBNet[i];
+	}
 }
 
 }  // namespace local
@@ -263,8 +408,9 @@ void infer_mpe_in_hmm(pnl::CDBN *pHMM)
 void hmm()
 {
 	// simple HMM
+	std::cout << "========== infer MPE in a simple HMM" << std::endl;
 	{
-		boost::scoped_ptr<pnl::CDBN> simpleHMM(local::create_simple_hmm());
+		const boost::scoped_ptr<pnl::CDBN> simpleHMM(local::create_simple_hmm());
 
 		if (!simpleHMM)
 		{
@@ -286,12 +432,14 @@ void hmm()
 			pGraph->GetNeighbors(1, &numNbrs2, &nbrs2, &nbrsTypes2);
 		}
 
-		local::infer_mpe_in_hmm(simpleHMM.get());
+		local::infer_mpe_in_hmm(simpleHMM);
 	}
 
-	// HMM with AR Gaussian observations
+	// HMM with autoregressive Gaussian observations
+	std::cout << "\n========== infer HMM with AR Gaussian observations" << std::endl;
 	{
-		boost::scoped_ptr<pnl::CDBN> arHMM(local::create_hmm_with_ar_gaussian_observations());
+		const boost::scoped_ptr<pnl::CDBN> arHMM(local::create_hmm_with_ar_gaussian_observations());
+		//const boost::scoped_ptr<pnl::CDBN> arHMM(pnl::CDBN::Create(pnl::pnlExCreateRndArHMM()));
 
 		if (!arHMM)
 		{
@@ -301,5 +449,8 @@ void hmm()
 
 		// get content of Graph
 		arHMM->GetGraph()->Dump();
+
+		//
+		local::learn_hmm_with_ar_gaussian_observations(arHMM);
 	}
 }

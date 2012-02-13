@@ -63,7 +63,7 @@ pnl::CBNet * create_discrete_bayesian_network()
 	for (int i = 0; i < numNodes; ++i)
 		bnet->AllocFactor(i);
 
-	// get content of Graph
+	// get content of graph
 	bnet->GetGraph()->Dump();
 
 	//
@@ -141,6 +141,8 @@ CBNet * create_single_mixture_of_gaussians_bayesian_network()
 
 	// first need to specify the graph structure of the model/
 	const int numNodes = 2;
+
+#if 0
 	const int numNeighbors[numNodes] = { 1, 1 };
 
 	const int nbrs0[] = { 1 };
@@ -156,6 +158,27 @@ CBNet * create_single_mixture_of_gaussians_bayesian_network()
 	const pnl::ENeighborType *nbrsTypes[] = { nbrsTypes0, nbrsTypes1 };
 
 	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighbors, nbrs, nbrsTypes);
+#else
+	pnl::intVecVector nbrs(numNodes);
+	{
+		pnl::intVector nbr(1);
+		nbr[0] = 1;
+		nbrs[0] = nbr;
+		nbr[0] = 0;
+		nbrs[1] = nbr;
+	}
+
+	pnl::neighborTypeVecVector nbrsTypes(numNodes);
+	{
+		pnl::neighborTypeVector nbrType(1);
+		nbrType[0] = pnl::ntChild;
+		nbrsTypes[0] = nbrType;
+		nbrType[0] = pnl::ntParent;
+		nbrsTypes[1] = nbrType;
+	}
+
+	pnl::CGraph *graph = pnl::CGraph::Create(nbrs, nbrsTypes);
+#endif
 
 	// number of node types is 1, because all nodes are of the same type
 	// all four are discrete and binary
@@ -207,7 +230,7 @@ CBNet * create_single_mixture_of_gaussians_bayesian_network()
 // [ref] ${PNL_ROOT}/c_pgmtk/tests/src/AMixtureGaussainLearning.cpp
 void learn_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<pnl::CBNet> &mogBNet)
 {
-	// FIXME [check] >> this implementation doesn't be verified
+	// FIXME [fix] >> run-time error
 
 	// create data for learning
 	const int numEvidences = 100;
@@ -218,9 +241,22 @@ void learn_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<
 	// learn single mixture-of-Gaussians BNet
 	boost::scoped_ptr<pnl::CBNet> mogBNetToLearn(pnl::CBNet::Copy(mogBNet.get()));
 
+#if 0
 	boost::scoped_ptr<pnl::CEMLearningEngine> learnEngine(pnl::CEMLearningEngine::Create(mogBNetToLearn.get()));
+#else
+	boost::scoped_ptr<pnl::CJtreeInfEngine> juncTreeInfEngine(pnl::CJtreeInfEngine::Create(mogBNet.get()));
+	boost::scoped_ptr<pnl::CEMLearningEngine> learnEngine(pnl::CEMLearningEngine::Create(mogBNetToLearn.get(), juncTreeInfEngine.get()));
+#endif
 	learnEngine->SetData(numEvidences, &evidences.front());
-	learnEngine->Learn();
+	try
+	{
+		learnEngine->Learn();
+	}
+	catch (const pnl::CAlgorithmicException &e)
+	{
+		std::cout << "fail to learn parameters of a single mixture-of-Gaussians Bayesian Network" << e.GetMessage() << std::endl;
+		return;
+	}
 
 	//
 	const int numNodes = mogBNet->GetNumberOfNodes();
@@ -235,24 +271,25 @@ void learn_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<
 		}
 	}
 
+	//
 	for (int i = 0; i < numEvidences; ++i)
+	{
 		delete evidences[i];
+	}
 	evidences.clear();
 }
 
 void infer_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<pnl::CBNet> &mogBNet)
 {
-	// FIXME [check] >> this implementation doesn't be verified
-
-	// create evidence on all Gaussian nodes
+	// FIXME [fix] >> run-time error
 
 	//const int numNodes = mogBNet->GetNumberOfNodes();
 
-	// create evidence for inference
+	// create evidence on all Gaussian nodes for inference
 	const int numObsNodes = 1;
 	const int obsNodes[] = { 1 };
 
-	pnl::valueVector obsVals(numObsNodes, (pnl::Value)0);
+	pnl::valueVector obsVals(numObsNodes, pnl::Value(0));
 	obsVals[0].SetFlt(2.0f);
 
 	boost::scoped_ptr<pnl::CEvidence> evidence(CEvidence::Create(mogBNet.get(), numObsNodes, obsNodes, obsVals));
@@ -266,14 +303,12 @@ void infer_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<
 		const int maximizeFlag = 1;
 		const int queryNode = 0;
 
-		std::cout << "123" << std::endl;  // FIXME [delete] >>
 		// naive inference
 		naiveInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 		naiveInfEngine->MarginalNodes(&queryNode, 1);
 		const pnl::CEvidence *mpeEvidNaive = naiveInfEngine->GetMPE();
 		const int mpeValNaive = mpeEvidNaive->GetValue(queryNode)->GetInt();
 
-		std::cout << "456" << std::endl;  // FIXME [delete] >>
 		// junction tree inference
 		juncTreeInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 		juncTreeInfEngine->MarginalNodes(&queryNode, 1);
@@ -678,27 +713,27 @@ void infer_mixture_of_gaussians_bayesian_network_2(const boost::scoped_ptr<pnl::
 	const int numQueryNodes = 1;
 	const int queryNodes[] = { 0 };
 	juncTreeInfEngine->MarginalNodes(queryNodes, numQueryNodes);
-	const pnl::CPotential *pQueryPot = juncTreeInfEngine->GetQueryJPD();
+	const pnl::CPotential *queryPot = juncTreeInfEngine->GetQueryJPD();
 	// node 0 is discrete, then query potential is tabular
 
-	const pnl::CDistribFun *distribFun = pQueryPot->GetDistribFun();
-	const pnl::CMatrix<float> *pMat = distribFun->GetMatrix(pnl::matTable);
+	const pnl::CDistribFun *distribFun = queryPot->GetDistribFun();
+	const pnl::CMatrix<float> *queryPotMat = distribFun->GetMatrix(pnl::matTable);
 
 	const int node0Size = modelDomain->GetVariableType(0)->GetNodeSize();
 
 	for (int index = 0; index < node0Size; ++index)
 	{
-		const float val = pMat->GetElementByIndexes(&index);
+		const float val = queryPotMat->GetElementByIndexes(&index);
 		std::cout << " Probability of event node 0 take on a value ";
 		std::cout << index << " is ";
-		std::cout << val<< std::endl;
+		std::cout << val << std::endl;
 	}
 
 	// distribution of the query hase dense matrix
 	// the row data is
 	int numElem;
 	const float *data;
-	static_cast<const pnl::CNumericDenseMatrix<float> *>(pMat)->GetRawData(&numElem, &data);
+	static_cast<const pnl::CNumericDenseMatrix<float> *>(queryPotMat)->GetRawData(&numElem, &data);
 	std::cout << " The raw data of the query distribution is: ";
 
 	for (int i = 0; i < numElem; ++i)
@@ -719,21 +754,23 @@ void bayesian_network()
 	// discrete Bayesian network
 	std::cout << "========== discrete Bayesian network" << std::endl;
 	{
-		boost::scoped_ptr<pnl::CBNet> discreteBNet(local::create_discrete_bayesian_network());
+		const boost::scoped_ptr<pnl::CBNet> discreteBNet(local::create_discrete_bayesian_network());
 
 		if (!discreteBNet)
 		{
 			std::cout << "can't create a probabilistic graphical model" << std::endl;
 			return;
 		}
+
+		//boost::scoped_ptr<pnl::CJtreeInfEngine> juncTreeInfEngine(pnl::CJtreeInfEngine::Create(discreteBNet.get()));  // runtime-error
 	}
 
 	std::cout << "\n========== single mixture-of-Gaussians Bayesian network" << std::endl;
 	// single mixture-of-Gaussians Bayesian network
 	{
 		// create single mixture-of-Gaussians BNet
-		boost::scoped_ptr<pnl::CBNet> mogBNet(local::create_single_mixture_of_gaussians_bayesian_network());
-		//boost::scoped_ptr<pnl::CBNet> mogBNet(pnl::pnlExCreateSingleGauMix());
+		//const boost::scoped_ptr<pnl::CBNet> mogBNet(local::create_single_mixture_of_gaussians_bayesian_network());
+		const boost::scoped_ptr<pnl::CBNet> mogBNet(pnl::pnlExCreateSingleGauMix());
 
 		if (!mogBNet)
 		{
@@ -741,20 +778,17 @@ void bayesian_network()
 			return;
 		}
 
-		std::cout << "1" << std::endl;  // FIXME [delete] >>
-		local::learn_single_mixture_of_gaussians_bayesian_network(mogBNet);  // to be verified
-		std::cout << "2" << std::endl;  // FIXME [delete] >>
-		local::infer_single_mixture_of_gaussians_bayesian_network(mogBNet);  // to be verified
-		std::cout << "3" << std::endl;  // FIXME [delete] >>
+		local::learn_single_mixture_of_gaussians_bayesian_network(mogBNet);  // run-time error: to be verified
+		local::infer_single_mixture_of_gaussians_bayesian_network(mogBNet);  // run-time error: to be verified
 	}
 
 	std::cout << "\n========== mixture-of-Gaussians Bayesian network" << std::endl;
 	// mixture-of-Gaussians Bayesian network
 	{
 		// create mixture-of-Gaussians BNet
-		boost::scoped_ptr<pnl::CBNet> mogBNet(local::create_mixture_of_gaussians_bayesian_network());
-		//boost::scoped_ptr<pnl::CBNet> discreteBNet(pnl::pnlExCreateVerySimpleGauMix());
-		//boost::scoped_ptr<pnl::CBNet> discreteBNet(pnl::pnlExCreateSimpleGauMix());
+		const boost::scoped_ptr<pnl::CBNet> mogBNet(local::create_mixture_of_gaussians_bayesian_network());
+		//const boost::scoped_ptr<pnl::CBNet> discreteBNet(pnl::pnlExCreateVerySimpleGauMix());
+		//const boost::scoped_ptr<pnl::CBNet> discreteBNet(pnl::pnlExCreateSimpleGauMix());
 
 		if (!mogBNet)
 		{

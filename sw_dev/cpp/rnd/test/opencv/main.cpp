@@ -20,19 +20,19 @@ int main(int argc, char **argv)
 {
 	void text_output();
 	void matrix_operation();
-	void matrix_operation_using_gpu();  // not yet implemented
+	void matrix_operation_using_gpu();
 	void vector_operation();
 	void image_operation();
 	void image_sequence();
 	void image_conversion();
 	void image_filtering();
-	void image_filtering_using_gpu();  // not yet implemented
-	void image_processing_using_gpu();  // not yet implemented
+	void image_filtering_using_gpu();
+	void image_processing_using_gpu();
 	void color_filtering();
 	void color_correction();
 	void skin_color_filtering();
 	void histogram();
-	void histogram_using_gpu();  // not yet implemented
+	void histogram_using_gpu();
 	void convolution_correlation();
 	void fourier_transform();
 	void morphological_operation();
@@ -54,23 +54,23 @@ int main(int argc, char **argv)
 	void feature_matching();
 	void feature_extraction_and_matching();
 	void feature_extraction_and_matching_by_signature();
-	void feature_extraction_and_matching_using_gpu();  // not yet implemented
+	void feature_extraction_and_matching_using_gpu();
 	void generic_description_and_matching();
 	void bag_of_words();
 	void pca();
 	void clustering();
 	void train_by_svm();
 	void train_by_ann();
-	void object_detection();  // not yet implemented
+	void object_detection();
 	void face_detection();
-	void face_detection_using_gpu();  // not yet implemented
+	void face_detection_using_gpu();
 	void human_detection();
-	void human_detection_using_gpu();  // not yet implemented
+	void human_detection_using_gpu();
 	void camera_geometry();
 	void homography();
-	void image_labeling_using_gpu();  // not yet implemented
+	void image_labeling_using_gpu();
 	void stereo_matching();
-	void stereo_matching_using_gpu();  // not yet implemented
+	void stereo_matching_using_gpu();
 	void change_detection();
 	void object_tracking();
 	void kalman_filtering();

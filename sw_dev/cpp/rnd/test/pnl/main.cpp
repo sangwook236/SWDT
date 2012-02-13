@@ -19,6 +19,7 @@ int main(int argc, char **argv)
 	void bayesian_network();
 	void mnet_example();
 	void mrf_example();
+	void mrf2();
 	void dbn_example();
 	void dbn();
 	void hmm();
@@ -31,15 +32,16 @@ int main(int argc, char **argv)
 
 		// Bayesian network
 		//bayesian_network_example();  // from an example in "PNL: User Guide & Reference Manual"
-		bayesian_network();
+		//bayesian_network();
 
 		// Markov network
 		//mnet_example();  // from a test of PNL
 		//mrf_example();  // from a test of PNL
+		mrf2();
 
 		// dynamic Bayesian network
 		//dbn_example();  // from an example in "PNL: User Guide & Reference Manual"
-		//dbn();
+		//dbn();  // not yet implemented
 		//hmm();
 
 		// application
