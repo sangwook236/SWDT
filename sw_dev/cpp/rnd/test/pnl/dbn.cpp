@@ -177,7 +177,7 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 				V   V        V   V
 	         (2)Y-->Z(3)  (6)Y-->Z(7)
 
-		X - Tabular nodes, Z - Gaussain mixture node
+		X - Tabular nodes, Z - Gaussian mixture node
 		Y - mixture node
 */
 
@@ -214,7 +214,7 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 					V            V
 	         (2)Y-->Z(3)  (6)Y-->Z(7)
 
-		X - Tabular nodes, Z - Gaussain mixture node
+		X - Tabular nodes, Z - Gaussian mixture node
 		Y - mixture node
 */
 

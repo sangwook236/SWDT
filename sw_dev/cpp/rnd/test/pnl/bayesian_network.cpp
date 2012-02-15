@@ -266,6 +266,8 @@ void learn_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<
 	{
 		if (!mogBNet->GetFactor(i)->IsFactorsDistribFunEqual(mogBNetToLearn->GetFactor(i), eps, 0))
 		{
+			std::cout << "original model & learned model are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
+
 			mogBNet->GetFactor(i)->GetDistribFun()->Dump();
 			mogBNetToLearn->GetFactor(i)->GetDistribFun()->Dump();
 		}
@@ -341,7 +343,8 @@ void infer_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<
 		const float eps = 1.5e-1f;
 		if (!marginalJTree->IsFactorsDistribFunEqual(marginalNaive, eps))
 		{
-			// FIXME [implement] >>
+			// TODO [implement] >>
+			std::cout << "results of junction tree inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 		}
 	}
 }
@@ -669,7 +672,8 @@ void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::
 		const float eps = 1.5e-1f;
 		if (!marginalJTree->IsFactorsDistribFunEqual(marginalNaive, eps))
 		{
-			// FIXME [implement] >>
+			// TODO [implement] >>
+			std::cout << "results of junction tree inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 		}
 	}
 }

@@ -382,6 +382,8 @@ void learn_hmm_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> 
 
 		if (!bnetDBN->GetFactor(i)->IsFactorsDistribFunEqual(dbnToLearn->GetFactor(i), eps, 0))
 		{
+			std::cout << "original model & learned model are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
+
 			std::cout << "\n____ DBN__________________________________" << std::endl;
 			dbnToLearn->GetFactor(i)->GetDistribFun()->Dump();
 			std::cout << "\n____ Initial DBN__________________________" << std::endl;

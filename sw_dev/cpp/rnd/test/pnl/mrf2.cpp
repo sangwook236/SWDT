@@ -78,6 +78,7 @@ void infer_simple_mrf2_using_belief_propagation_algorithm(const boost::scoped_pt
 	const boost::scoped_ptr<pnl::CEvidence> emptyEvid(pnl::CEvidence::Create(mrf2.get(), 0, NULL, pnl::valueVector()));
 
 	// now we can compare naive inf. results with Pearl inf. results
+	// belief propagation (Pearl inference)
 	const boost::scoped_ptr<pnl::CPearlInfEngine> pearlInfEngine(pnl::CPearlInfEngine::Create(mrf2.get()));
 	pearlInfEngine->EnterEvidence(emptyEvid.get());
 
@@ -129,6 +130,7 @@ void infer_simple_mrf2_using_belief_propagation_algorithm(const boost::scoped_pt
 			if (!jpdForPearl->IsFactorsDistribFunEqual(jpdForNaive, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of Pearl inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 		}
 	}
@@ -176,6 +178,7 @@ void infer_simple_mrf2_using_belief_propagation_algorithm(const boost::scoped_pt
 			if (!jpdForPearl->IsFactorsDistribFunEqual(jpdForNaive, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of Pearl inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 		}
 	}
@@ -184,16 +187,19 @@ void infer_simple_mrf2_using_belief_propagation_algorithm(const boost::scoped_pt
 // [ref] ${PNL_ROOT}/c_pgmtk/tests/src/AGaussianMRF2.cpp
 pnl::CMRF2 * create_gaussian_mrf2_1()
 {
+/*
+	the model is
+
+	             0 --> 1 --> 2
+
+		0, 1, & 2 - univariate Gaussian nodes
+*/
+
 	const int numNodes = 3;
 	const int numNodeTypes = 3;
 	const int numCliques = 2;
 
-	pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));
-	for (int i = 0; i < numNodeTypes; ++i)
-	{
-		nodeTypes[i].SetType(false, i + 1);
-	}
-
+	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(false, 1));
 	const pnl::intVector nodeAssociation(numNodes, 0);
 
 /*
@@ -276,12 +282,14 @@ void infer_gaussian_mrf2_using_inference_algorithm_1(const boost::scoped_ptr<pnl
 		emptyNaiveInfEngine->EnterEvidence(emptyEvid.get());
 
 		const boost::scoped_ptr<pnl::CFactorGraph> factorGraph(pnl::CFactorGraph::ConvertFromMNet(mrf2.get()));  // TODO [check] >> is it correct?
+		// belief propagation on a factor graph model
 		const boost::scoped_ptr<pnl::CFGSumMaxInfEngine> emptyFGSumMaxInfEngine(pnl::CFGSumMaxInfEngine::Create(factorGraph.get()));
 		emptyFGSumMaxInfEngine->EnterEvidence(emptyEvid.get());
 
 		const boost::scoped_ptr<pnl::CInfEngine> emptyJTreeInfEngine(pnl::CJtreeInfEngine::Create(mrf2.get()));
 		emptyJTreeInfEngine->EnterEvidence(emptyEvid.get());
 
+		// belief propagation (Pearl inference)
 		const boost::scoped_ptr<pnl::CPearlInfEngine> emptyPearlInfEngine(pnl::CPearlInfEngine::Create(mrf2.get()));
 		emptyPearlInfEngine->EnterEvidence(emptyEvid.get());
 
@@ -305,18 +313,22 @@ void infer_gaussian_mrf2_using_inference_algorithm_1(const boost::scoped_ptr<pnl
 			if (!jpdForPearl->IsFactorsDistribFunEqual(jpdForNaive, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of Pearl inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 			if (!jpdForFGSumMax->IsFactorsDistribFunEqual(jpdForPearl, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of sum-max inference & Pearl inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 			if (!jpdForJTree->IsFactorsDistribFunEqual(jpdForNaive, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of junction tree inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 			if (!jpdForJTree->IsFactorsDistribFunEqual(jpdForPearl, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of junction tree inference & Pearl inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 		}
 	}
@@ -333,11 +345,13 @@ void infer_gaussian_mrf2_using_inference_algorithm_1(const boost::scoped_ptr<pnl
 		const boost::scoped_ptr<pnl::CNaiveInfEngine> oneNaiveInfEngine(pnl::CNaiveInfEngine::Create(mrf2.get()));
 		oneNaiveInfEngine->EnterEvidence(oneEvid.get());
 
+		// belief propagation (Pearl inference)
 		const boost::scoped_ptr<pnl::CPearlInfEngine> onePearlInfEngine(pnl::CPearlInfEngine::Create(mrf2.get()));
 		onePearlInfEngine->SetMaxNumberOfIterations(10);
 		onePearlInfEngine->EnterEvidence(oneEvid.get());
 
 		const boost::scoped_ptr<pnl::CFactorGraph> factorGraph(pnl::CFactorGraph::ConvertFromMNet(mrf2.get()));  // TODO [check] >> is it correct?
+		// belief propagation on a factor graph model
 		const boost::scoped_ptr<pnl::CFGSumMaxInfEngine> oneFGSumMaxInfEngine(pnl::CFGSumMaxInfEngine::Create(factorGraph.get()));
 		oneFGSumMaxInfEngine->EnterEvidence(oneEvid.get());
 
@@ -364,18 +378,22 @@ void infer_gaussian_mrf2_using_inference_algorithm_1(const boost::scoped_ptr<pnl
 			if (!jpdForPearl->IsFactorsDistribFunEqual(jpdForNaive, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of Pearl inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 			if (!jpdForFGSumMax->IsFactorsDistribFunEqual(jpdForPearl, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of sum-max inference & Pearl inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 			if (!jpdForFGSumMax->IsFactorsDistribFunEqual(jpdForNaive, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of sum-max inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 			if (!jpdForJTree->IsFactorsDistribFunEqual(jpdForNaive, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of junction tree inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 		}
 	}
@@ -384,6 +402,16 @@ void infer_gaussian_mrf2_using_inference_algorithm_1(const boost::scoped_ptr<pnl
 // [ref] ${PNL_ROOT}/c_pgmtk/tests/src/AGaussianMRF2.cpp
 pnl::CMRF2 * create_gaussian_mrf2_2()
 {
+/*
+	the model is
+
+	             0 --> 1 --> 2
+
+		0 - bivariate Gaussian node
+		1 - trivariate Gaussian node
+		2 - univariate Gaussian node
+*/
+
 	const int numNodes = 3;
 	const int numNodeTypes = 3;
 	const int numCliques = 2;
@@ -419,14 +447,14 @@ pnl::CMRF2 * create_gaussian_mrf2_2()
 	pnl::CMRF2 *mrf2 = pnl::CMRF2::Create(numNodes, nodeTypes, nodeAssociation, cliques);
 
 	//
-	const float mean0[] = { 0.6f, 0.4f, 1.3f, 1.7f, 1.9f };
-	const float mean1[] = { 1.6f, 1.7f, 1.8f, 2.1f };
+	const float mean0[] = { 0.6f, 0.4f, 1.3f, 1.7f, 1.9f };  // 5 <- 2 + 3
+	const float mean1[] = { 1.6f, 1.7f, 1.8f, 2.1f };  // 4 <- 3 + 1
 	const float *means[] = { mean0, mean1 };
 
-	const float cov0[] = { 7.4f, 7.5f, 7.6f, 7.4f, 7.3f, 7.5f, 7.2f, 7.3f, 7.3f, 7.5f, 7.6f, 7.3f, 7.8f, 7.1f, 7.1f, 7.4f, 7.3f, 7.1f, 7.1f, 7.6f, 7.3f, 7.5f, 7.1f, 7.6f, 7.3f  };
-	//const float cov0[] = { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.2f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.8f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0, 1.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f  };
-	const float cov1[] = { 3.0f, 4.0f, 5.0f, 6.0f, 4.0f, 8.0f, 9.0f, 1.0f, 5.0f, 9.0f, 3.0f, 4.0f, 6.0f, 1.0f, 4.0f, 8.0f };
-	//const float cov1[] = { 2.0f, 0.0f, 0.0f, 0.0f, 0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 4.0f };
+	const float cov0[] = { 7.4f, 7.5f, 7.6f, 7.4f, 7.3f, 7.5f, 7.2f, 7.3f, 7.3f, 7.5f, 7.6f, 7.3f, 7.8f, 7.1f, 7.1f, 7.4f, 7.3f, 7.1f, 7.1f, 7.6f, 7.3f, 7.5f, 7.1f, 7.6f, 7.3f  };  // 5 x 5
+	//const float cov0[] = { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.2f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.8f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0, 1.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f  };  // 5 x 5
+	const float cov1[] = { 3.0f, 4.0f, 5.0f, 6.0f, 4.0f, 8.0f, 9.0f, 1.0f, 5.0f, 9.0f, 3.0f, 4.0f, 6.0f, 1.0f, 4.0f, 8.0f };  // 4 x 4
+	//const float cov1[] = { 2.0f, 0.0f, 0.0f, 0.0f, 0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 4.0f };  // 4 x 4
 	const float *covs[] = { cov0, cov1 };
 
 	const float coeffs[] = { 1.0f, 1.0f };
@@ -473,12 +501,14 @@ void infer_gaussian_mrf2_using_inference_algorithm_2(const boost::scoped_ptr<pnl
 	{
 		const boost::scoped_ptr<pnl::CEvidence> emptyEvid(pnl::CEvidence::Create(mrf2.get(), 0, NULL, pnl::valueVector()));
 
+		// belief propagation on a factor graph model
 		const boost::scoped_ptr<pnl::CFGSumMaxInfEngine> emptyFGSumMaxInfEngine(pnl::CFGSumMaxInfEngine::Create(factorGraph.get()));
 		emptyFGSumMaxInfEngine->EnterEvidence(emptyEvid.get());
 
 		const boost::scoped_ptr<pnl::CInfEngine> emptyNaiveInfEngine(pnl::CNaiveInfEngine::Create(mrf2.get()));
 		emptyNaiveInfEngine->EnterEvidence(emptyEvid.get());
 
+		// belief propagation (Pearl inference)
 		const boost::scoped_ptr<pnl::CInfEngine> emptyPearlInfEngine(pnl::CPearlInfEngine::Create(mrf2.get()));
 		emptyPearlInfEngine->EnterEvidence(emptyEvid.get());
 
@@ -494,13 +524,15 @@ void infer_gaussian_mrf2_using_inference_algorithm_2(const boost::scoped_ptr<pnl
 			emptyPearlInfEngine->MarginalNodes(&query, 1);
 			const pnl::CPotential *jpdForPearl = emptyPearlInfEngine->GetQueryJPD();
 
-			if (!jpdForFGSumMax->IsFactorsDistribFunEqual(static_cast<const pnl::CFactor *>(jpdForNaive), eps, 0))
+			if (!jpdForFGSumMax->IsFactorsDistribFunEqual(jpdForNaive, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of sum-max inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
-			if (!jpdForPearl->IsFactorsDistribFunEqual(static_cast<const pnl::CFactor *>(jpdForNaive), eps, 0))
+			if (!jpdForPearl->IsFactorsDistribFunEqual(jpdForNaive, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of Pearl inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 		}
 	}
@@ -516,34 +548,38 @@ void infer_gaussian_mrf2_using_inference_algorithm_2(const boost::scoped_ptr<pnl
 
 		const boost::scoped_ptr<pnl::CEvidence> oneEvid(pnl::CEvidence::Create(mrf2.get(), 1, &obsNode, vals));
 
-		const boost::scoped_ptr<pnl::CFGSumMaxInfEngine> iSmFGInfOne(pnl::CFGSumMaxInfEngine::Create(factorGraph.get()));
-		iSmFGInfOne->EnterEvidence(oneEvid.get());
+		// belief propagation on a factor graph model
+		const boost::scoped_ptr<pnl::CFGSumMaxInfEngine> oneFGSumMaxInfEngine(pnl::CFGSumMaxInfEngine::Create(factorGraph.get()));
+		oneFGSumMaxInfEngine->EnterEvidence(oneEvid.get());
 
-		const boost::scoped_ptr<pnl::CInfEngine> iSmNaiveOne(pnl::CNaiveInfEngine::Create(mrf2.get()));
-		iSmNaiveOne->EnterEvidence(oneEvid.get());
+		const boost::scoped_ptr<pnl::CInfEngine> oneNaiveInfEngine(pnl::CNaiveInfEngine::Create(mrf2.get()));
+		oneNaiveInfEngine->EnterEvidence(oneEvid.get());
 
-		const boost::scoped_ptr<pnl::CInfEngine> iSmPearlOne(pnl::CPearlInfEngine::Create(mrf2.get()));
-		iSmPearlOne->EnterEvidence(oneEvid.get());
+		// belief propagation (Pearl inference)
+		const boost::scoped_ptr<pnl::CInfEngine> onePearlInfEngine(pnl::CPearlInfEngine::Create(mrf2.get()));
+		onePearlInfEngine->EnterEvidence(oneEvid.get());
 
 		int query = 0;
 		const float eps = 1e-5f;
 		for (int i = 0; i < numNodes; ++i)
 		{
 			query = i;
-			iSmFGInfOne->MarginalNodes(&query, 1);
-			const pnl::CPotential *jpdForFGSumMax = iSmFGInfOne->GetQueryJPD();
-			iSmNaiveOne->MarginalNodes(&query, 1);
-			const pnl::CPotential *jpdForNaive = iSmNaiveOne->GetQueryJPD();
-			iSmPearlOne->MarginalNodes(&query, 1);
-			const pnl::CPotential *jpdForPearl = iSmPearlOne->GetQueryJPD();
+			oneFGSumMaxInfEngine->MarginalNodes(&query, 1);
+			const pnl::CPotential *jpdForFGSumMax = oneFGSumMaxInfEngine->GetQueryJPD();
+			oneNaiveInfEngine->MarginalNodes(&query, 1);
+			const pnl::CPotential *jpdForNaive = oneNaiveInfEngine->GetQueryJPD();
+			onePearlInfEngine->MarginalNodes(&query, 1);
+			const pnl::CPotential *jpdForPearl = onePearlInfEngine->GetQueryJPD();
 
 			if (!jpdForPearl->IsFactorsDistribFunEqual(jpdForNaive, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of Pearl inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 			if (!jpdForFGSumMax->IsFactorsDistribFunEqual(jpdForNaive, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of sum-max inference & naive inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 		}
 	}
@@ -552,6 +588,26 @@ void infer_gaussian_mrf2_using_inference_algorithm_2(const boost::scoped_ptr<pnl
 // [ref] ${PNL_ROOT}/c_pgmtk/tests/src/AGaussianMRF2.cpp
 pnl::CMRF2 * create_gaussian_mrf2_3()
 {
+/*
+	the model is
+
+	                0
+				  /   \
+				 /     \
+				V       V
+			    1       4
+			   / \     / \
+              V   V   V   V
+			  2   3   5   6
+                         / \
+						V   V
+						7   8
+
+		0, 1, 4, & 8 - univariate Gaussian nodes
+		2, 5, & 6 - bivariate Gaussian nodes
+		3, & 7 - trivariate Gaussian nodes
+*/
+
 	const int numNodes = 9;
 	const int numNodeTypes = 3;
 	const int numCliques =8;
@@ -589,32 +645,32 @@ pnl::CMRF2 * create_gaussian_mrf2_3()
 	mrf2->AllocFactors();
 
 	// create array of data for every parameter
-	const float mean0[] = { 0.6f, 0.4f };
-	const float mean1[] = { 1.5f, 1.5f, 1.7f };
-	const float mean2[] = { 2.1f, 2.9f, 2.3f, 2.7f };
-	const float mean3[] = { 3.1f, 3.9f };
-	const float mean4[] = { 4.2f, 4.8f, 4.3f };
-	const float mean5[] = { 5.4f, 5.6f, 5.6f };
-	const float mean6[] = { 6.8f, 6.2f, 6.9f, 6.1f, 6.7f };
-	const float mean7[] = { 7.1f, 7.4f, 7.3f };
+	const float mean0[] = { 0.6f, 0.4f };  // 2 <- 1 + 1
+	const float mean1[] = { 1.5f, 1.5f, 1.7f };  // 3 <- 1 + 2
+	const float mean2[] = { 2.1f, 2.9f, 2.3f, 2.7f };  // 4 <- 1 + 3
+	const float mean3[] = { 3.1f, 3.9f };  // 2 <- 1 + 1
+	const float mean4[] = { 4.2f, 4.8f, 4.3f };  // 3 <- 1 + 2
+	const float mean5[] = { 5.4f, 5.6f, 5.6f };  // 3 <- 1 + 2
+	const float mean6[] = { 6.8f, 6.2f, 6.9f, 6.1f, 6.7f };  // 5 <- 2 + 3
+	const float mean7[] = { 7.1f, 7.4f, 7.3f };  // 3 <- 2 + 1
 	const float *means[] = { mean0, mean1, mean2, mean3, mean4, mean5, mean6, mean7 };
 
-	const float cov0[] = { 1.0f, 3.0f, 3.0f, 4.0f };
-	//const float cov0[] = { 1.0f, 0.0f, 0.0f, 4.0f };
-	const float cov1[] = { 2.0f, 3.0f, 4.0f, 3.0f, 6.0f, 7.0f, 4.0f, 7.0f, 1.0f };
-	//const float cov1[] = { 2.0f, 0.0f, 0.0f, 0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 1.0f };
-	const float cov2[] = { 3.0f, 4.0f, 5.0f, 6.0f, 4.0f, 8.0f, 9.0f, 1.0f, 5.0f, 9.0f, 3.0f, 4.0f, 6.0f, 1.0f, 4.0f, 8.0f };
-	//const float cov2[] = { 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 8.0f, 0.0f, 0.0f, 0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 8.0f };
-	const float cov3[] = { 4.0f, 6.0f, 6.0f, 7.0f };
-	//const float cov3[] = { 4.0f, 0.0f, 0.0f, 7.0f };
-	const float cov4[] = { 5.0f, 6.0f, 7.0f, 6.0f, 9.0f, 1.0f, 7.0f, 1.0f, 4.0f };
-	//const float cov4[] = { 5.0f, 0.0f, 0.0f, 0.0f, 9.0f, 0.0f, 0.0f, 0.0f, 4.0f };
-	const float cov5[] = { 6.0f, 7.0f, 8.0f, 7.0f, 1.0f, 2.0f, 8.0f, 2.0f, 5.0f };
-	//const float cov5[] = { 6.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 5.0f };
-	const float cov6[] = { 7.4f, 7.5f, 7.6f, 7.4f, 7.3f, 7.5f, 7.2f, 7.3f, 7.3f, 7.5f, 7.6f, 7.3f, 7.8f, 7.1f, 7.1f, 7.4f, 7.3f, 7.1f, 7.1f, 7.6f, 7.3f, 7.5f, 7.1f, 7.6f, 7.3f };
-	//const float cov6[] = { 7.4f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 7.2f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 7.8f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 7.1f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 7.3f };
-	const float cov7[] = { 8.0f, 9.0f, 1.0f, 9.0f, 3.0f, 4.0f, 1.0f, 4.0f, 7.0f };
-	//const float cov7[] = { 8.0f, 0.0f, 0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 7.0f };
+	const float cov0[] = { 1.0f, 3.0f, 3.0f, 4.0f };  // 2 x 2
+	//const float cov0[] = { 1.0f, 0.0f, 0.0f, 4.0f };  // 2 x 2
+	const float cov1[] = { 2.0f, 3.0f, 4.0f, 3.0f, 6.0f, 7.0f, 4.0f, 7.0f, 1.0f };  // 3 x 3
+	//const float cov1[] = { 2.0f, 0.0f, 0.0f, 0.0f, 6.0f, 0.0f, 0.0f, 0.0f, 1.0f };  // 3 x 3
+	const float cov2[] = { 3.0f, 4.0f, 5.0f, 6.0f, 4.0f, 8.0f, 9.0f, 1.0f, 5.0f, 9.0f, 3.0f, 4.0f, 6.0f, 1.0f, 4.0f, 8.0f };  // 4 x 4
+	//const float cov2[] = { 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 8.0f, 0.0f, 0.0f, 0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 8.0f };  // 4 x 4
+	const float cov3[] = { 4.0f, 6.0f, 6.0f, 7.0f };  // 2 x 2
+	//const float cov3[] = { 4.0f, 0.0f, 0.0f, 7.0f };  // 2 x 2
+	const float cov4[] = { 5.0f, 6.0f, 7.0f, 6.0f, 9.0f, 1.0f, 7.0f, 1.0f, 4.0f };  // 3 x 3
+	//const float cov4[] = { 5.0f, 0.0f, 0.0f, 0.0f, 9.0f, 0.0f, 0.0f, 0.0f, 4.0f };  // 3 x 3
+	const float cov5[] = { 6.0f, 7.0f, 8.0f, 7.0f, 1.0f, 2.0f, 8.0f, 2.0f, 5.0f };  // 3 x 3
+	//const float cov5[] = { 6.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 5.0f };  // 3 x 3
+	const float cov6[] = { 7.4f, 7.5f, 7.6f, 7.4f, 7.3f, 7.5f, 7.2f, 7.3f, 7.3f, 7.5f, 7.6f, 7.3f, 7.8f, 7.1f, 7.1f, 7.4f, 7.3f, 7.1f, 7.1f, 7.6f, 7.3f, 7.5f, 7.1f, 7.6f, 7.3f };  // 5 x 5
+	//const float cov6[] = { 7.4f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 7.2f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 7.8f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 7.1f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 7.3f };  // 5 x 5
+	const float cov7[] = { 8.0f, 9.0f, 1.0f, 9.0f, 3.0f, 4.0f, 1.0f, 4.0f, 7.0f };  // 3 x 3
+	//const float cov7[] = { 8.0f, 0.0f, 0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 7.0f };  // 3 x 3
 	const float *covs[] = { cov0, cov1, cov2, cov3, cov4, cov5, cov6, cov7 };
 
 	const float coeffs[] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
@@ -645,10 +701,12 @@ void infer_gaussian_mrf2_using_inference_algorithm_3(const boost::scoped_ptr<pnl
 		const boost::scoped_ptr<pnl::CInfEngine> naiveInfEngine(pnl::CNaiveInfEngine::Create(mrf2.get()));
 		naiveInfEngine->EnterEvidence(evid.get());
 
+		// belief propagation (Pearl inference)
 		const boost::scoped_ptr<pnl::CInfEngine> pearlInfEngine(pnl::CPearlInfEngine::Create(mrf2.get()));
 		pearlInfEngine->EnterEvidence(evid.get());
 
-		const boost::scoped_ptr<pnl::CFactorGraph> factorGraph(pnl::CFactorGraph::ConvertFromMNet(mrf2.get()));
+		const boost::scoped_ptr<pnl::CFactorGraph> factorGraph(pnl::CFactorGraph::ConvertFromMNet(mrf2.get()));  // TODO [check] >> is it correct?
+		// belief propagation on a factor graph model
 		const boost::scoped_ptr<pnl::CInfEngine> fgSumMaxInfEngine(pnl::CFGSumMaxInfEngine::Create(factorGraph.get()));
 		fgSumMaxInfEngine->EnterEvidence(evid.get());
 
@@ -664,13 +722,15 @@ void infer_gaussian_mrf2_using_inference_algorithm_3(const boost::scoped_ptr<pnl
 			fgSumMaxInfEngine->MarginalNodes(&query, 1);
 			const pnl::CPotential *jpdForFGSumMax = fgSumMaxInfEngine->GetQueryJPD();
 
-			if (!jpdForPearl->IsFactorsDistribFunEqual(static_cast<const pnl::CFactor *>(jpdForFGSumMax), eps, 0))
+			if (!jpdForPearl->IsFactorsDistribFunEqual(jpdForFGSumMax, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of Pearl inference & sum-max inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
-			if (!jpdForNaive->IsFactorsDistribFunEqual(static_cast<const pnl::CFactor *>(jpdForFGSumMax), eps, 0))
+			if (!jpdForNaive->IsFactorsDistribFunEqual(jpdForFGSumMax, eps, 0))
 			{
 				// TODO [implement] >>
+				std::cout << "results of naive inference & sum-max inference are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 			}
 		}
 	}
