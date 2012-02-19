@@ -10,11 +10,12 @@ namespace local {
 pnl::CBNet * create_model()
 {
 	const int numNodes = 4;
+	const int numNodeTypes = 1;
 
 	// 1 STEP:
 	// need to specify the graph structure of the model;
 	// there are two way to do it
-	pnl::CGraph *pGraph = NULL;
+	pnl::CGraph *graph = NULL;
 	if (true)
 	{
 		// graph creation using adjacency matrix
@@ -37,7 +38,7 @@ pnl::CBNet * create_model()
 		adjMat->SetElementByIndexes(1, indices);
 
 		// this is a creation of directed graph for the BNet model based on adjacency matrix
-		pGraph = pnl::CGraph::Create(adjMat);
+		graph = pnl::CGraph::Create(adjMat);
 
 		delete adjMat;
 	}
@@ -64,29 +65,26 @@ pnl::CBNet * create_model()
 		const pnl::ENeighborType *nbrsTypes[] = { nbrsTypes0, nbrsTypes1, nbrsTypes2, nbrsTypes3 };
 
 		// this is creation of a directed graph for the BNet model using neighbors list
-		pGraph = pnl::CGraph::Create(numNodes, numOfNbrs, nbrs, nbrsTypes);
+		graph = pnl::CGraph::Create(numNodes, numOfNbrs, nbrs, nbrsTypes);
 	}
 
 	// 2 STEP:
 	// creation NodeType objects and specify node types for all nodes of the model.
-	pnl::nodeTypeVector nodeTypes;
-
+	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));
 	// number of node types is 1, because all nodes are of the same type
 	// all four are discrete and binary
-	nodeTypes.push_back(pnl::CNodeType(true, 2));
 
-	pnl::intVector nodeAssociation;
+	const pnl::intVector nodeAssociation(numNodes, 0);
 	// reflects association between node numbers and node types
 	// nodeAssociation[k] is a number of node type object in the node types array for the k-th node
-	nodeAssociation.assign(numNodes, 0);
 
 	// 2 STEP:
 	// create base for BNet using Graph, types of nodes and nodes association
-	pnl::CBNet *pBNet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, pGraph);
+	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
 
 	// 3 STEP:
 	// allocation space for all factors of the model
-	pBNet->AllocFactors();
+	bnet->AllocFactors();
 
 	// 4 STEP:
 	// create factors and attach their to model
@@ -96,22 +94,22 @@ pnl::CBNet * create_model()
 	const float table1[] = { 0.5f, 0.5f, 0.9f, 0.1f };
 	const float table2[] = { 0.8f, 0.2f, 0.2f, 0.8f };
 	const float table3[] = { 1.0f, 0.0f, 0.1f, 0.9f, 0.1f, 0.9f, 0.01f, 0.99f };
-	const float *table[] = { table0, table1, table2, table3 };
+	const float *tables[] = { table0, table1, table2, table3 };
 
 	for (int i = 0; i < numNodes; ++i)
 	{
-		pBNet->AllocFactor(i);
-		pnl::CFactor *pFactor = pBNet->GetFactor(i);
-		pFactor->AllocMatrix(table[i], pnl::matTable);
+		bnet->AllocFactor(i);
+		pnl::CFactor *factor = bnet->GetFactor(i);
+		factor->AllocMatrix(tables[i], pnl::matTable);
 	}
 
-	return pBNet;
+	return bnet;
 }
 
 void infer_bayesian_network_using_naive_inference_algorithm(const boost::scoped_ptr<pnl::CBNet> &bnet)
 {
 	// create simple evidence for node 0 from BNet
-	pnl::CEvidence *pEvidForWS = NULL;
+	pnl::CEvidence *evidForWS = NULL;
 	{
 		// make one node observed
 		const int numObsNodes = 1;
@@ -121,26 +119,26 @@ void infer_bayesian_network_using_naive_inference_algorithm(const boost::scoped_
 		pnl::valueVector obsVals(numObsNodes);
 		obsVals[0].SetInt(1);
 
-		pEvidForWS = pnl::CEvidence::Create(bnet.get(), numObsNodes, obsNodes, obsVals);
+		evidForWS = pnl::CEvidence::Create(bnet.get(), numObsNodes, obsNodes, obsVals);
 	}
 
 	// create Naive inference for BNet
-	pnl::CNaiveInfEngine *pNaiveInf = pnl::CNaiveInfEngine::Create(bnet.get());
+	pnl::CNaiveInfEngine *naiveInFEngine = pnl::CNaiveInfEngine::Create(bnet.get());
 
 	// enter evidence created before
-	pNaiveInf->EnterEvidence(pEvidForWS);
+	naiveInFEngine->EnterEvidence(evidForWS);
 
 	// get a marginal for query set of nodes
 	const int numQueryNodes = 2;
 	const int queryNodes[] = { 1, 3 };
 
-	pNaiveInf->MarginalNodes(queryNodes, numQueryNodes);
-	const pnl::CPotential *pMarg = pNaiveInf->GetQueryJPD();
+	naiveInFEngine->MarginalNodes(queryNodes, numQueryNodes);
+	const pnl::CPotential *jpd = naiveInFEngine->GetQueryJPD();
 
 	{
 		pnl::intVector obsNodes;
 		pnl::pConstValueVector obsVals;
-		pEvidForWS->GetObsNodesWithValues(&obsNodes, &obsVals);
+		evidForWS->GetObsNodesWithValues(&obsNodes, &obsVals);
 
 		for (int i = 0; i < obsNodes.size(); ++i)
 		{
@@ -150,7 +148,7 @@ void infer_bayesian_network_using_naive_inference_algorithm(const boost::scoped_
 
 		int nnodes;
 		const int *domain = NULL;
-		pMarg->GetDomain(&nnodes, &domain);
+		jpd->GetDomain(&nnodes, &domain);
 		std::cout << " inference results: " << std::endl;
 		std::cout << " probability distribution for nodes [ ";
 		for (int i = 0; i < nnodes; ++i)
@@ -161,11 +159,11 @@ void infer_bayesian_network_using_naive_inference_algorithm(const boost::scoped_
 	}
 
 	{
-		pnl::CMatrix<float> *pMat = pMarg->GetMatrix(pnl::matTable);
+		pnl::CMatrix<float> *jpdMat = jpd->GetMatrix(pnl::matTable);
 
 		// graphical model hase been created using dense matrix
 		// so, the marginal is also dense
-		const pnl::EMatrixClass type = pMat->GetMatrixClass();
+		const pnl::EMatrixClass type = jpdMat->GetMatrixClass();
 		if (!(type == pnl::mcDense || type == pnl::mcNumericDense || type == pnl::mc2DNumericDense))
 		{
 			assert(0);
@@ -173,7 +171,7 @@ void infer_bayesian_network_using_naive_inference_algorithm(const boost::scoped_
 
 		int numElem;
 		const float *data = NULL;
-		static_cast<pnl::CNumericDenseMatrix<float> *>(pMat)->GetRawData(&numElem, &data);
+		static_cast<pnl::CNumericDenseMatrix<float> *>(jpdMat)->GetRawData(&numElem, &data);
 		for (int i = 0; i < numElem; ++i)
 		{
 			std::cout << " " << data[i];
@@ -181,8 +179,8 @@ void infer_bayesian_network_using_naive_inference_algorithm(const boost::scoped_
 		std::cout << std::endl;
 	}
 
-	delete pNaiveInf;
-	delete pEvidForWS;
+	delete naiveInFEngine;
+	delete evidForWS;
 }
 
 // [ref] ${PNL_ROOT}/c_pgmtk/tests/src/APearlInfEngine.cpp
@@ -207,7 +205,7 @@ void bayesian_network_example()
 
 		if (!wsBNet)
 		{
-			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 

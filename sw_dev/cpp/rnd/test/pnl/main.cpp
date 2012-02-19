@@ -30,6 +30,9 @@ int main(int argc, char **argv)
 	{
 		std::srand((unsigned int)std::time(NULL));
 
+		std::ofstream logFileStream("pnl.log", std::ios::app);
+		pnl::LogDrvStream logDriver(&logFileStream, pnl::eLOG_ALL, pnl::eLOGSRV_ALL);
+
 		// Bayesian network
 		//bayesian_network_example();  // from an example in "PNL: User Guide & Reference Manual"
 		//bayesian_network();
@@ -37,12 +40,12 @@ int main(int argc, char **argv)
 		// Markov network
 		//mnet_example();  // from a test of PNL
 		//mrf_example();  // from a test of PNL
-		mrf2();
+		//mrf2();
 
 		// dynamic Bayesian network
 		//dbn_example();  // from an example in "PNL: User Guide & Reference Manual"
-		//dbn();  // not yet implemented
-		//hmm();
+		//dbn();
+		hmm();
 
 		// application
 		//viterbi_segmentation();

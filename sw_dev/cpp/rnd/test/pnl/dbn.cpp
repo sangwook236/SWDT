@@ -34,25 +34,29 @@ pnl::CDBN * create_Kjaerulff_dbn()
 
 	The inter structure is 0->0, 3->3, 7->7.
 
-	----------------------------------------
+	=================================================================
+
 	1st slice              2nd slice
 
 		0 -------------------> 8(1)
 		|  \                   |  \
-		V    V                 V    V
+		v    v                 v    v
 		2 <- 1                 9 -> 10
 		|                      |
-		V                      V
+		v                      v
 		3 -------------------> 11(3)
 		| \                    | \
-		V   V                  V   V
+		v   v                  v   v
 		4   5                  12  13
 		| /                    | /
-		V                      V
+		v                      v
 		6                      14
 		|                      |
-		V                      V
+		v                      v
 		7 -------------------> 15(7)
+
+	where
+		0, 1, 2, ..., 15 - bivariate tabular nodes
 */
 
 	const int numNodes = 16;
@@ -121,8 +125,8 @@ pnl::CDBN * create_Kjaerulff_dbn()
 
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, numNodeTypes, nodeTypes, nodeAssociation, graph);
 */
-	pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));
-	pnl::intVector nodeAssociation(numNodes, 0);
+	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));
+	const pnl::intVector nodeAssociation(numNodes, 0);
 
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
 
@@ -167,18 +171,20 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 /*
 	the model #1 is
 
-	               W(0) ------> W(4)
-	                |            |
-	                |            |
-					V            V
-	               X(1) ------> X(5)
-	              / |          / |
-	             /  |         /  |
-				V   V        V   V
-	         (2)Y-->Z(3)  (6)Y-->Z(7)
+		       W(0) ------> W(4)
+		       |            |
+		       |            |
+		       v            v
+		       X(1) ------> X(5)
+		     / |          / |
+		    /  |         /  |
+		   v   v        v   v
+	    (2)Y-->Z(3)  (6)Y-->Z(7)
 
-		X - Tabular nodes, Z - Gaussian mixture node
-		Y - mixture node
+	where
+		X - tabular node (bivariate)
+		Z - Gaussian mixture node (univariate)
+		Y - mixture node (bivariate)
 */
 
 	const int numNeighs[] = { 2, 4, 2, 2, 2, 4, 2, 2 };
@@ -204,18 +210,20 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 /*
 	the model #2 is
 
-	               W(0) ------> W(4)
-	                |            |
-	                |            |
-					V            V
-	               X(1) ------> X(5)
-	                |            |
-	                |            |
-					V            V
-	         (2)Y-->Z(3)  (6)Y-->Z(7)
+		       W(0) ------> W(4)
+		       |            |
+		       |            |
+		       v            v
+		       X(1) ------> X(5)
+		       |            |
+		       |            |
+		       v            v
+	    (2)Y-->Z(3)  (6)Y-->Z(7)
 
-		X - Tabular nodes, Z - Gaussian mixture node
-		Y - mixture node
+	where
+		X - tabular node (bivariate)
+		Z - Gaussian mixture node (univariate)
+		Y - mixture node (bivariate)
 */
 
 	const int numNeighs[] = { 2, 3, 1, 2, 2, 3, 1, 2 };
@@ -282,18 +290,6 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
 
-	//
-	const float table0[] = { 0.7f, 0.3f };  // node X
-	const float table1[] = { 0.79f, 0.21f, 0.65f, 0.35f };
-	const float table2[] = { 0.5f, 0.5f, 0.5f, 0.5f };
-	const float table3[] = { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
-	//const float table1[] = { 0.1f, 0.9f };  // node Y
-
-	const float mean100 = 1.0f, cov100 = 0.5f;  // node Z for X = 0, Y = 0
-	const float mean110 = -5.0f, cov110 = 4.0f;  // node Z for X = 1, Y = 0
-	const float mean101 = -3.0f, cov101 = 1.5f;  // node Z for X = 0, Y = 1
-	const float mean111 = 2.0f, cov111 = 1.0f;  // node Z for X = 1, Y = 1
-
 	// create domains
 #if 0
 	// model #1
@@ -350,6 +346,18 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 
 	bnet->AllocFactors();
 
+	//
+	const float table0[] = { 0.7f, 0.3f };  // node X
+	const float table1[] = { 0.79f, 0.21f, 0.65f, 0.35f };
+	const float table2[] = { 0.5f, 0.5f, 0.5f, 0.5f };
+	const float table3[] = { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
+	//const float table1[] = { 0.1f, 0.9f };  // node Y
+
+	const float mean100 = 1.0f, cov100 = 0.5f;  // node Z for X = 0, Y = 0
+	const float mean110 = -5.0f, cov110 = 4.0f;  // node Z for X = 1, Y = 0
+	const float mean101 = -3.0f, cov101 = 1.5f;  // node Z for X = 0, Y = 1
+	const float mean111 = 2.0f, cov111 = 1.0f;  // node Z for X = 1, Y = 1
+
 	pnl::CTabularCPD *cpd0 = pnl::CTabularCPD::Create(domains[0], nodeNumbers[0], bnet->GetModelDomain(), table0);
 	bnet->AttachFactor(cpd0);
 
@@ -397,17 +405,17 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 // [ref]
 //	${PNL_ROOT}/c_pgmtk/tests/src/AJtreeInfMixtureDBN.cpp
 //	${PNL_ROOT}/c_pgmtk/tests/src/A1_5JTreeInfDBNCondGauss.cpp
-void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_inference_algorithm(const boost::scoped_ptr<pnl::CDBN> &arHMM)
+void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_inference_algorithm(const boost::scoped_ptr<pnl::CDBN> &hmm)
 {
 	const int numTimeSlices = 4;
-	const int numNodes = arHMM->GetStaticModel()->GetNumberOfNodes();  // TODO [check] >> has it a correct value?
+	const int numNodes = hmm->GetStaticModel()->GetNumberOfNodes();  // TODO [check] >> has it a correct value?
 
-	const boost::scoped_ptr<const pnl::CBNet> unrolledBNet(static_cast<pnl::CBNet *>(arHMM->UnrollDynamicModel(numTimeSlices)));
+	const boost::scoped_ptr<const pnl::CBNet> unrolledBNet(static_cast<pnl::CBNet *>(hmm->UnrollDynamicModel(numTimeSlices)));
 
 	// create evidence for every slice
 	pnl::pEvidencesVector evidences(numTimeSlices);
 
-	// let node 3 is always observed
+	// node 3 is always observed
 	const pnl::intVector obsNodeNums(1, 3);
 	pnl::valueVector obsVals(1);
 	pnl::intVector obsNodeNumsForUnrolled(numTimeSlices);
@@ -417,7 +425,7 @@ void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_in
 		const float ft = std::rand() / 10.0f;
 
 		obsVals[0].SetFlt(ft);
-		evidences[i] = pnl::CEvidence::Create(arHMM->GetModelDomain(), obsNodeNums, obsVals);
+		evidences[i] = pnl::CEvidence::Create(hmm->GetModelDomain(), obsNodeNums, obsVals);
 
 		obsValsForUnrolled[i].SetFlt(ft);
 		obsNodeNumsForUnrolled[i] = obsNodeNums[0] + numNodes / 2 * i;
@@ -426,7 +434,7 @@ void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_in
 	const boost::scoped_ptr<pnl::CEvidence> evidencesForUnrolled(pnl::CEvidence::Create(unrolledBNet->GetModelDomain(), obsNodeNumsForUnrolled, obsValsForUnrolled));
 
 	//
-	const boost::scoped_ptr<pnl::C1_5SliceJtreeInfEngine> infEngine(pnl::C1_5SliceJtreeInfEngine::Create(arHMM.get()));
+	const boost::scoped_ptr<pnl::C1_5SliceJtreeInfEngine> infEngine(pnl::C1_5SliceJtreeInfEngine::Create(hmm.get()));
 	infEngine->DefineProcedure(pnl::ptSmoothing, numTimeSlices);
 	infEngine->EnterEvidence(&evidences.front(), numTimeSlices);
 	infEngine->Smoothing();
@@ -482,13 +490,13 @@ void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_in
 // [ref]
 //	${PNL_ROOT}/c_pgmtk/tests/src/ABKInfDBN.cpp
 //	${PNL_ROOT}/c_pgmtk/tests/src/ABKInfUsingClusters.cpp
-void infer_dbn_with_mixture_of_gaussians_observations_using_boyen_koller_inference_algorithm(const boost::scoped_ptr<pnl::CDBN> &arHMM)
+void infer_dbn_with_mixture_of_gaussians_observations_using_boyen_koller_inference_algorithm(const boost::scoped_ptr<pnl::CDBN> &hmm)
 {
 	throw std::runtime_error("not yet implemented");
 }
 
 // [ref] ${PNL_ROOT}/c_pgmtk/tests/src/A2TPFInfDBN.cpp
-void infer_dbn_with_mixture_of_gaussians_observations_using_2T_slice_particle_filtering_inference_algorithm(const boost::scoped_ptr<pnl::CDBN> &arHMM)
+void infer_dbn_with_mixture_of_gaussians_observations_using_2T_slice_particle_filtering_inference_algorithm(const boost::scoped_ptr<pnl::CDBN> &hmm)
 {
 	throw std::runtime_error("not yet implemented");
 }
@@ -506,7 +514,7 @@ void dbn()
 
 		if (!dbn)
 		{
-			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 

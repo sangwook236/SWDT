@@ -123,7 +123,7 @@ void mrf_example()
 
 		if (!mrf2)
 		{
-			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 	}

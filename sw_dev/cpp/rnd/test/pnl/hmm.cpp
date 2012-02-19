@@ -12,10 +12,15 @@ pnl::CDBN * create_simple_hmm()
 #if 1
 /*
 	a simple HMM
+
 		X0 -> X1
 		|     | 
 		v     v
 		Y0    Y1 
+
+	where
+		X0, X1 - tabular nodes (bivariate)
+		Y0, Y1 - tabular nodes (trivariate)
 */
 
 /*
@@ -102,10 +107,15 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
 {
 /*
 	an HMM with autoregressive Gaussian observations
+
 		X0 -> X1
 		|     | 
 		v     v
 		Y0 -> Y1 
+
+	where
+		X0, X1 - tabular nodes (bivariate)
+		Y0, Y1 - Gaussian nodes (univariate)
 */
 
 	// create static model
@@ -151,9 +161,9 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
 
 	pnl::intVector nodeAssociation(numNodes);
 	nodeAssociation[0] = 0;
-	nodeAssociation[0] = 1;
-	nodeAssociation[0] = 0;
-	nodeAssociation[0] = 1;
+	nodeAssociation[1] = 1;
+	nodeAssociation[2] = 0;
+	nodeAssociation[3] = 1;
 
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
 
@@ -300,22 +310,37 @@ void learn_hmm_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> 
 
 	//
 	pnl::CGraph *graphDBN = pnl::CGraph::Copy(bnetDBN->GetGraph());
-	pnl::CModelDomain *mdDBN = bnetDBN->GetModelDomain();
+	pnl::CModelDomain *modelDomainDBN = bnetDBN->GetModelDomain();
 
-	const boost::scoped_ptr<pnl::CBNet> bnetToLearn(pnl::CBNet::CreateWithRandomMatrices(graphDBN, mdDBN));
+	const boost::scoped_ptr<pnl::CBNet> bnetToLearn(pnl::CBNet::CreateWithRandomMatrices(graphDBN, modelDomainDBN));
 	const boost::scoped_ptr<pnl::CDBN> dbnToLearn(pnl::CDBN::Create(pnl::CBNet::Copy(bnetToLearn.get())));
 
-	// generate sample
-	const int numSamples = 5000;
+	// the definitions of time series & time slices
+	//	[ref] "Probabilistic Network Library: User Guide and Reference Manual", pp. 3-290 & 2-32
 
-	const pnl::intVector numSlices(numSamples, 2);
+	// generate sample
+	const int numTimeSeries = 5000;
+
+	const pnl::intVector numSlices(numTimeSeries, 2);
 	pnl::pEvidencesVecVector evidencesForDBN;
 	dbn->GenerateSamples(&evidencesForDBN, numSlices);
 
-	pnl::pEvidencesVector evidencesForBNet;
-	bnetToLearn->GenerateSamples(&evidencesForBNet, numSamples);
+	// FIXME [delete] >>
+	{
+		const boost::scoped_ptr<const pnl::CBNet> unrolledBNet(static_cast<pnl::CBNet *>(dbn->UnrollDynamicModel(numTimeSeries)));
+		const int a = unrolledBNet->GetNumberOfNodes();
+		std::cout << "########### " << a << std::endl;
+		for (int i = 0; i < numTimeSeries; ++i)
+		{
+			std::cout << evidencesForDBN[i].size() << ", ";
+		}
+		std::cout << std::endl;
+	}
 
-	for (int i = 0; i < numSamples; ++i)
+	pnl::pEvidencesVector evidencesForBNet;
+	bnetToLearn->GenerateSamples(&evidencesForBNet, numTimeSeries);
+
+	for (int i = 0; i < numTimeSeries; ++i)
 	{
 		pnl::valueVector vls1, vls2;
 		(evidencesForDBN[i])[0]->GetRawData(&vls1);
@@ -344,7 +369,7 @@ void learn_hmm_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> 
 	const int maxIteration = 10;
 
 	const boost::scoped_ptr<pnl::CEMLearningEngine> learnerForBNet(pnl::CEMLearningEngine::Create(bnetToLearn.get()));
-	learnerForBNet->SetData(numSamples, &evidencesForBNet.front());
+	learnerForBNet->SetData(numTimeSeries, &evidencesForBNet.front());
 	learnerForBNet->SetMaxIterEM(maxIteration);
 	try
 	{
@@ -393,15 +418,241 @@ void learn_hmm_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> 
 	}
 
 	//
-	for (int i = 0; i < numSamples; ++i)
+	for (int i = 0; i < numTimeSeries; ++i)
 	{
 		for (int j = 0; j < evidencesForDBN[i].size(); ++j)
-		{
 			delete (evidencesForDBN[i])[j];
-		}
 
 		delete evidencesForBNet[i];
 	}
+}
+
+pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
+{
+/*
+	an HMM with (autoregressive) mixture-of-Gaussians observations
+
+		    0 ---> 3
+		    |      |
+		    |      |
+		    v      v
+	    1-->2  4-->5
+
+	where
+		0, 3 - tabular nodes (k-variate)
+		2, 5 - Gaussian mixture nodes (univariate)
+		1, 4 - mixture nodes (p-variate)
+*/
+
+	// create static model
+	const int numNodes = 6;
+	const int numNodeTypes = 3;
+
+	// TODO [check] >> these are magic numbers
+	const int numStates = 5;  // k-variate
+	const int numMixtures = 5;  // p-variate
+
+	// create a DAG
+	const int numNeighs[] = {
+		2, 1, 2,  // 1st time-slice
+		2, 1, 2  // 2nd time-slice
+	};
+
+	const int neigh0[] = { 2, 3 };
+	const int neigh1[] = { 2 };
+	const int neigh2[] = { 0, 1 };
+	const int neigh3[] = { 0, 5 };
+	const int neigh4[] = { 5 };
+	const int neigh5[] = { 3, 4 };
+	const int *neighs[] = { neigh0, neigh1, neigh2, neigh3, neigh4, neigh5 };
+
+	const pnl::ENeighborType orient0[] = { pnl::ntChild, pnl::ntChild };
+	const pnl::ENeighborType orient1[] = { pnl::ntChild };
+	const pnl::ENeighborType orient2[] = { pnl::ntParent, pnl::ntParent };
+	const pnl::ENeighborType orient3[] = { pnl::ntParent, pnl::ntChild };
+	const pnl::ENeighborType orient4[] = { pnl::ntChild };
+	const pnl::ENeighborType orient5[] = { pnl::ntParent, pnl::ntParent };
+	const pnl::ENeighborType *orients[] = { orient0, orient1, orient2, orient3, orient4, orient5 };
+
+	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighs, neighs, orients);
+
+	// create static BNet
+	pnl::nodeTypeVector nodeTypes(numNodeTypes);
+	nodeTypes[0].SetType(true, numStates);
+	nodeTypes[2].SetType(true, numMixtures);
+	nodeTypes[1].SetType(false, 1);
+
+	pnl::intVector nodeAssociation(numNodes);
+	nodeAssociation[0] = 0;
+	nodeAssociation[1] = 1;
+	nodeAssociation[2] = 2;
+	nodeAssociation[3] = 0;
+	nodeAssociation[4] = 1;
+	nodeAssociation[5] = 2;
+
+	//
+#if 1
+	pnl::CModelDomain *modelDomain = pnl::CModelDomain::Create(nodeTypes, nodeAssociation);
+
+	// to be learned
+	pnl::CBNet *bnet = pnl::CBNet::CreateWithRandomMatrices(graph, modelDomain);
+#else
+	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
+
+	//
+	bnet->AllocFactors();
+
+	// FIXME [check] >> these parameters are to be determined
+	const float tableNode0[] = { 0.95f, 0.05f };
+	const float tableNode1[] = { 0.95f, 0.05f };
+	const float tableNode3[] = { 0.1f, 0.9f };
+	const float tableNode4[] = { 0.1f, 0.9f };
+
+	const float mean2w00 = -3.2f, cov2w00 = 0.00002f;  // node2 for node0 = 0 & node1 = 0
+	const float mean2w10 = -0.5f, cov2w10 = 0.0001f;  // node2 for node0 = 1 & node1 = 0
+	const float mean2w01 = -3.2f, cov2w01 = 0.00002f;   // node2 for node0 = 0 & node1 = 1
+	const float mean2w11 = -0.5f, cov2w11 = 0.0001f;  // node2 for node0 = 1 & node1 = 1
+
+	const float mean5w00 = 6.5f, cov5w00 = 0.03f, weight5w00 = 1.0f;  // node5 for node3 = 0 & node4 = 0
+	const float mean5w10 = 7.5f, cov5w10 = 0.04f, weight5w10 = 0.5f;  // node5 for node3 = 1 & node4 = 0
+	const float mean5w01 = 6.5f, cov5w01 = 0.03f, weight5w01 = 1.0f;  // node5 for node3 = 0 & node4 = 1
+	const float mean5w11 = 7.5f, cov5w11 = 0.04f, weight5w11 = 0.5f;  // node5 for node3 = 1 & node4 = 1
+
+	bnet->AllocFactor(0);
+	bnet->GetFactor(0)->AllocMatrix(tableNode0, pnl::matTable);
+
+	bnet->AllocFactor(1);
+	bnet->GetFactor(1)->AllocMatrix(tableNode1, pnl::matTable);
+
+	bnet->AllocFactor(2);
+	int parentVal[] = { 0, 0 };  // node0 = 0 & node1 = 0
+	bnet->GetFactor(2)->AllocMatrix(&mean2w00, pnl::matMean, -1, parentVal);
+	bnet->GetFactor(2)->AllocMatrix(&cov2w00, pnl::matCovariance, -1, parentVal);
+	//bnet->GetFactor(2)->AllocMatrix(&weight2w00, pnl::matWeights, 0, parentVal);
+	parentVal[1] = 1;  // node0 = 0 & node1 = 1
+	bnet->GetFactor(2)->AllocMatrix(&mean2w01, pnl::matMean, -1, parentVal);
+	bnet->GetFactor(2)->AllocMatrix(&cov2w01, pnl::matCovariance, -1, parentVal);
+	//bnet->GetFactor(2)->AllocMatrix(&weight2w01, pnl::matWeights, 0, parentVal);
+	parentVal[0] = 1;  // node0 = 1 & node1 = 1
+	bnet->GetFactor(2)->AllocMatrix(&mean2w11, pnl::matMean, -1, parentVal);
+	bnet->GetFactor(2)->AllocMatrix(&cov2w11, pnl::matCovariance, -1, parentVal);
+	//bnet->GetFactor(2)->AllocMatrix(&weight2w11, pnl::matWeights, 0, parentVal);
+	parentVal[1] = 0;  // node0 = 1 & node1 = 0
+	bnet->GetFactor(2)->AllocMatrix(&mean2w10, pnl::matMean, -1, parentVal);
+	bnet->GetFactor(2)->AllocMatrix(&cov2w10, pnl::matCovariance, -1, parentVal);
+	//bnet->GetFactor(2)->AllocMatrix(&weight2w10, pnl::matWeights, 0, parentVal);
+
+	bnet->AllocFactor(3);
+	bnet->GetFactor(3)->AllocMatrix(tableNode3, pnl::matTable);
+
+	bnet->AllocFactor(4);
+	bnet->GetFactor(4)->AllocMatrix(tableNode4, pnl::matTable);
+
+	bnet->AllocFactor(5);
+	parentVal[0] = parentVal[1] = 0;  // node3 = 0 & node4 = 0
+	bnet->GetFactor(5)->AllocMatrix(&mean5w00, pnl::matMean, -1, parentVal);
+	bnet->GetFactor(5)->AllocMatrix(&cov5w00, pnl::matCovariance, -1, parentVal);
+	bnet->GetFactor(5)->AllocMatrix(&weight5w00, pnl::matWeights, 0, parentVal);
+	parentVal[1] = 1;  // node3 = 0 & node4 = 1
+	bnet->GetFactor(5)->AllocMatrix(&mean5w01, pnl::matMean, -1, parentVal);
+	bnet->GetFactor(5)->AllocMatrix(&cov5w01, pnl::matCovariance, -1, parentVal);
+	bnet->GetFactor(5)->AllocMatrix(&weight5w01, pnl::matWeights, 0, parentVal);
+	parentVal[1] = 1;  // node3 = 1 & node4 = 1
+	bnet->GetFactor(5)->AllocMatrix(&mean5w11, pnl::matMean, -1, parentVal);
+	bnet->GetFactor(5)->AllocMatrix(&cov5w11, pnl::matCovariance, -1, parentVal);
+	bnet->GetFactor(5)->AllocMatrix(&weight5w11, pnl::matWeights, 0, parentVal);
+	parentVal[1] = 1;  // node3 = 1 & node4 = 0
+	bnet->GetFactor(5)->AllocMatrix(&mean5w10, pnl::matMean, -1, parentVal);
+	bnet->GetFactor(5)->AllocMatrix(&cov5w10, pnl::matCovariance, -1, parentVal);
+	bnet->GetFactor(5)->AllocMatrix(&weight5w10, pnl::matWeights, 0, parentVal);
+#endif
+
+	// create DBN using BNet	
+	return pnl::CDBN::Create(bnet);
+}
+
+// [ref]
+//	"Probabilistic Network Library: User Guide and Reference Manual", pp. 2-32 ~ 33
+//	learn_parameters_of_dbn() in dbn_example.cpp
+void learn_hmm_with_mixture_of_gaussians_observations(const boost::scoped_ptr<pnl::CDBN> &dbn, const int numTimeSeries)
+{
+	// define number of slices in the every time series
+	// FIXME [check] >> what is the definition of 'slice'?
+#if 1
+	// [ref] learn_parameters_of_dbn() in dbn_example.cpp
+	pnl::intVector numSlices(numTimeSeries);
+	pnl::pnlRand(numTimeSeries, &numSlices.front(), 3, 20);
+
+	// FIXME [delete] >>
+	{
+		const boost::scoped_ptr<const pnl::CBNet> unrolledBNet(static_cast<pnl::CBNet *>(dbn->UnrollDynamicModel(numTimeSeries)));
+		const int a = unrolledBNet->GetNumberOfNodes();
+		std::cout << "########### " << a << std::endl;
+		for (int i = 0; i < numTimeSeries; ++i)
+		{
+			std::cout << numSlices[i] << ", ";
+		}
+		std::cout << std::endl;
+	}
+
+	//
+	const boost::scoped_ptr<const pnl::CBNet> unrolledBNet(static_cast<pnl::CBNet *>(dbn->UnrollDynamicModel(numTimeSeries)));
+
+	// [ref] smoothing(), filtering(), fixed_lag_smoothing(), maximum_probability_explanation() in dbn_example.cpp
+#else
+	// [ref] learn_hmm_with_ar_gaussian_observations() in this file
+	const pnl::intVector numSlices(numTimeSeries, 2);
+#endif
+
+#if 0
+	// generate evidences in a random way
+	pnl::pEvidencesVecVector evidences;
+	dbn->GenerateSamples(&evidences, numSlices);
+
+	// create DBN for learning
+	// FIXME [check] >> this implementation isn't verified
+	const pnl::CBNet *bnetDBN = dynamic_cast<const pnl::CBNet *>(dbn->GetStaticModel());
+	const boost::scoped_ptr<pnl::CDBN> dbnToLearn(pnl::CDBN::Create(pnl::CBNet::Copy(bnetDBN)));
+
+	// create learning engine
+	const boost::scoped_ptr<pnl::CEMLearningEngineDBN> learnEngine(pnl::CEMLearningEngineDBN::Create(dbnToLearn.get()));
+#else
+	pnl::pEvidencesVecVector evidences;
+
+	// FIXME [add] >> evidences need to be filled
+
+	// create learning engine
+	const boost::scoped_ptr<pnl::CEMLearningEngineDBN> learnEngine(pnl::CEMLearningEngineDBN::Create(dbn.get()));
+#endif
+
+	// set data for learning
+	learnEngine->SetData(evidences);
+
+	// start learning
+	try
+	{
+		const float precision = 0.001f;
+		const int numMaxIteration = 30;
+
+		learnEngine->SetTerminationToleranceEM(precision);
+		learnEngine->SetMaxIterEM(numMaxIteration);
+
+		learnEngine->Learn();
+	}
+	catch (const pnl::CAlgorithmicException &e)
+	{
+		std::cout << "fail to learn HMM with mixture-of-Gaussians observations" << e.GetMessage() << std::endl;
+		return;
+	}
+
+	//
+	for (int i = 0; i < evidences.size(); ++i)
+	{
+		for (int j = 0; j < evidences[i].size(); ++j)
+			delete evidences[i][j];
+	}
+
+	// FIXME [implement] >>
 }
 
 }  // namespace local
@@ -416,7 +667,7 @@ void hmm()
 
 		if (!simpleHMM)
 		{
-			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
@@ -438,14 +689,14 @@ void hmm()
 	}
 
 	// HMM with autoregressive Gaussian observations
-	std::cout << "\n========== infer HMM with AR Gaussian observations" << std::endl;
+	std::cout << "\n========== HMM with AR Gaussian observations" << std::endl;
 	{
 		const boost::scoped_ptr<pnl::CDBN> arHMM(local::create_hmm_with_ar_gaussian_observations());
 		//const boost::scoped_ptr<pnl::CDBN> arHMM(pnl::CDBN::Create(pnl::pnlExCreateRndArHMM()));
 
 		if (!arHMM)
 		{
-			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
@@ -454,5 +705,21 @@ void hmm()
 
 		//
 		local::learn_hmm_with_ar_gaussian_observations(arHMM);
+	}
+
+	// HMM with (autoregressive) mixture-of-Gaussians observations
+	std::cout << "\n========== HMM with mixture-of-Gaussians observations" << std::endl;
+	{
+		const boost::scoped_ptr<pnl::CDBN> hmm(local::create_hmm_with_mixture_of_gaussians_observations());
+
+		if (!hmm)
+		{
+			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			return;
+		}
+
+		//
+		const int numTimeSeries = 500;
+		local::learn_hmm_with_mixture_of_gaussians_observations(hmm, numTimeSeries);
 	}
 }

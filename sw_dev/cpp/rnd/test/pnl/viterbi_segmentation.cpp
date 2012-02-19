@@ -11,10 +11,15 @@ pnl::CDBN * create_simple_hmm()
 {
 /*
 	a simple HMM
+
 		X0 -> X1
 		|     | 
 		v     v
 		Y0    Y1 
+
+	where
+		X0, X1 - bivariate tabular nodes
+		Y0, Y1 - trivariate tabular nodes
 */
 
 /*
@@ -40,20 +45,21 @@ pnl::CDBN * create_simple_hmm()
 	const int numNodeTypes = 2;  // number of node types (all nodes are discrete)
 
 	// specify the graph structure of the model
-	const int numNeigh[] = { 2, 1, 2, 1 };
+	const int numNeighs[] = { 2, 1, 2, 1 };
+
 	const int neigh0[] = { 1, 2 };
 	const int neigh1[] = { 0 };
 	const int neigh2[] = { 0, 3 };
 	const int neigh3[] = { 2 };
-    const int *neigh[] = { neigh0, neigh1, neigh2, neigh3 };
+    const int *neighs[] = { neigh0, neigh1, neigh2, neigh3 };
 
     const pnl::ENeighborType orient0[] = { pnl::ntChild, pnl::ntChild };
     const pnl::ENeighborType orient1[] = { pnl::ntParent };
     const pnl::ENeighborType orient2[] = { pnl::ntParent, pnl::ntChild };
     const pnl::ENeighborType orient3[] = { pnl::ntParent };
-    const pnl::ENeighborType *orient[] = { orient0, orient1, orient2, orient3 };
+    const pnl::ENeighborType *orients[] = { orient0, orient1, orient2, orient3 };
 	
-	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeigh, neigh, orient);
+	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighs, neighs, orients);
 
 	// create static BNet
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
@@ -141,7 +147,7 @@ void infer_mpe_in_hmm(const boost::scoped_ptr<pnl::CDBN> &hmm)
 
 		const pnl::CPotential *queryMPE = inferEng->GetQueryMPE();
 		
-		std::cout << ">>> Query time-slice: " << time_slice << std::endl;
+		std::cout << ">>> query time-slice: " << time_slice << std::endl;
 
 		int numNodes = 0;
 		const int *domain = NULL;
@@ -188,7 +194,7 @@ void viterbi_segmentation()
 
 		if (!hmm)
 		{
-			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 

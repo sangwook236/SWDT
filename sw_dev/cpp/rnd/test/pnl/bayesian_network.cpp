@@ -132,11 +132,12 @@ CBNet * create_single_mixture_of_gaussians_bayesian_network()
 
 	  0 -> 1
 
-		0 - Tabular nodes. It is a special node - mixture node.
-			It is used for storage summing coefficients for Gaussians.
-			It must be a last dicrete node among all discrete parents for Gausian mixture node.
+	where
+		0 - tabular nodes. It is a special node - mixture node.
+			it is used for storage summing coefficients for Gaussians.
+			it must be a last dicrete node among all discrete parents for Gaussian mixture node.
 		1 - Gaussain mixture node. (univariate)
-		Nodes 0 & 1 together correspond to node Y.
+		nodes 0 & 1 together correspond to node Y.
 */
 
 	// first need to specify the graph structure of the model/
@@ -483,7 +484,7 @@ pnl::CBNet * create_mixture_of_gaussians_bayesian_network()
 
 	    A
 	    |
-	    V	 
+	    v	 
 	B-->C-->D
 
 		where A is the discrete node; B & D are Gaussian; C is mixture Gaussian node
@@ -492,18 +493,19 @@ pnl::CBNet * create_mixture_of_gaussians_bayesian_network()
 
 	    0  1
 	    | /
-	    V
+	    v
 	2-->3-->4
 
-		0 - Tabular node corresponding to node A
+	where
+		0 - tabular node corresponding to node A
 		2 - Gaussian node corresponing to node B (univariate)
 		4 - Gaussian node corresponing to node D (bivariate)
 
-		1 - Tabular nodes. It is a special node - mixture node.
-			It is used for storage summing coefficients for Gaussians.
-			It must be a last dicrete node among all discrete parents for Gausian mixture node.
+		1 - tabular nodes. It is a special node - mixture node.
+			it is used for storage summing coefficients for Gaussians.
+			it must be a last dicrete node among all discrete parents for Gaussian mixture node.
 		3 - Gaussain mixture node. (univariate)
-		Nodes 1 & 3 together correspond to node C.
+		nodes 1 & 3 together correspond to node C.
 */
 
 	// 1) first need to specify the graph structure of the model;
@@ -543,7 +545,7 @@ pnl::CBNet * create_mixture_of_gaussians_bayesian_network()
 	nodeTypes[2].SetType(false, 2);  // bivariate
 
 	const int nnodes = graph->GetNumberOfNodes();
-	pnl::intVector nodeAssociation(nnodes, 1);
+	pnl::intVector nodeAssociation(nnodes, 1);  // { 0, 0, 1, 1, 2 }
 	nodeAssociation[0] = 0;
 	nodeAssociation[1] = 0;
 	nodeAssociation[4] = 2;
@@ -683,7 +685,7 @@ void infer_mixture_of_gaussians_bayesian_network_2(const boost::scoped_ptr<pnl::
 	// create simple evidence for nodes 2, 3, 4 from BNet
 	const pnl::CModelDomain *modelDomain = mogBNet->GetModelDomain();
 
-	// let nodes 2, 3, 4 are observed
+	// let nodes 2, 3, & 4 be observed
 	const int numObsNodes = 3;
 	const int obsNodes[] = { 2, 3, 4 };
 
@@ -762,7 +764,7 @@ void bayesian_network()
 
 		if (!discreteBNet)
 		{
-			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
@@ -778,7 +780,7 @@ void bayesian_network()
 
 		if (!mogBNet)
 		{
-			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
@@ -796,7 +798,7 @@ void bayesian_network()
 
 		if (!mogBNet)
 		{
-			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 

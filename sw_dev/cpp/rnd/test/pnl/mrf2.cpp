@@ -10,6 +10,28 @@ namespace local {
 // [ref] ${PNL_ROOT}/c_pgmtk/tests/src/APearlInfEngineMRF2.cpp
 pnl::CMRF2 * create_simple_mrf2_model()
 {
+/*
+	the model is
+
+	                0
+				  /   \
+				 /     \
+                /       \
+			   1         4
+			  / \       / \
+             /   \     /   \
+			2     3   5     6
+                           /|\
+						  / | \
+						 7  8  9
+                               |
+                               |
+                               10
+
+	where
+		0, 1, 2, ..., 10 - bivariate tabular nodes
+*/
+
 	const int numNodes = 11; //4;//7;
 	const int numNodeTypes = 1;
 	const int numCliques = 10; //3;// 6;
@@ -44,16 +66,16 @@ pnl::CMRF2 * create_simple_mrf2_model()
 
 	// to create factors we need to create their tables
 	// create array of data for every parameter
-	const float table0[] = { 0.6f, 0.4f, 0.8f, 0.2f };
-	const float table1[] = { 0.5f, 0.5f, 0.7f, 0.3f };
-	const float table2[] = { 0.1f, 0.9f, 0.3f, 0.7f };
-	const float table3[] = { 0.1f, 0.9f, 0.2f, 0.8f }; //{ 0.01f, 0.99f, 0.02f, 0.98f };
-	const float table4[] = { 0.2f, 0.8f, 0.3f, 0.7f };
-	const float table5[] = { 0.4f, 0.6f, 0.6f, 0.4f };
-	const float table6[] = { 0.8f, 0.2f, 0.9f, 0.1f };
-	const float table7[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	const float table8[] = { 0.5f, 0.5f, 0.5f, 0.5f };
-	const float table9[] = { 0.1f, 0.9f, 0.2f, 0.8f };
+	const float table0[] = { 0.6f, 0.4f, 0.8f, 0.2f };  // 2 x 2
+	const float table1[] = { 0.5f, 0.5f, 0.7f, 0.3f };  // 2 x 2
+	const float table2[] = { 0.1f, 0.9f, 0.3f, 0.7f };  // 2 x 2
+	const float table3[] = { 0.1f, 0.9f, 0.2f, 0.8f }; //{ 0.01f, 0.99f, 0.02f, 0.98f };  // 2 x 2
+	const float table4[] = { 0.2f, 0.8f, 0.3f, 0.7f };  // 2 x 2
+	const float table5[] = { 0.4f, 0.6f, 0.6f, 0.4f };  // 2 x 2
+	const float table6[] = { 0.8f, 0.2f, 0.9f, 0.1f };  // 2 x 2
+	const float table7[] = { 1.0f, 0.0f, 0.0f, 1.0f };  // 2 x 2
+	const float table8[] = { 0.5f, 0.5f, 0.5f, 0.5f };  // 2 x 2
+	const float table9[] = { 0.1f, 0.9f, 0.2f, 0.8f };  // 2 x 2
 	const float *tables[] = { table0, table1, table2, table3, table4, table5, table6, table7, table8, table9 };
 
 	// number of factors is the same as number of cliques - one per clique
@@ -190,9 +212,10 @@ pnl::CMRF2 * create_gaussian_mrf2_1()
 /*
 	the model is
 
-	             0 --> 1 --> 2
+	             0 -- 1 -- 2
 
-		0, 1, & 2 - univariate Gaussian nodes
+	where
+		0, 1, 2 - univariate Gaussian nodes
 */
 
 	const int numNodes = 3;
@@ -200,7 +223,7 @@ pnl::CMRF2 * create_gaussian_mrf2_1()
 	const int numCliques = 2;
 
 	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(false, 1));
-	const pnl::intVector nodeAssociation(numNodes, 0);
+	const pnl::intVector nodeAssociation(numNodes, 0);  // { 0, 0, 0 }
 
 /*
 	const int cliqueSizes[] = { 2, 2 };
@@ -222,12 +245,12 @@ pnl::CMRF2 * create_gaussian_mrf2_1()
 	pnl::CMRF2 *mrf2 = pnl::CMRF2::Create(numNodes, nodeTypes, nodeAssociation, cliques);
 
 	//
-	const float mean0[] = { 1.0f, 2.0f };
-	const float mean1[] = { 4.0f, 3.0f };
+	const float mean0[] = { 1.0f, 2.0f };  // 2 <- 1 + 1
+	const float mean1[] = { 4.0f, 3.0f };  // 2 <- 1 + 1
 	const float *means[] = { mean0, mean1 };
 
-	const float cov0[] = { 3.0f, 3.0f, 3.0f, 4.0f };
-	const float cov1[] = { 1.0f, 1.0f, 1.0f, 3.0f };
+	const float cov0[] = { 3.0f, 3.0f, 3.0f, 4.0f };  // 2 x 2
+	const float cov1[] = { 1.0f, 1.0f, 1.0f, 3.0f };  // 2 x 2
 	const float *covs[] = { cov0, cov1 };
 
 	const float coeffs[] = { 1.0f, 1.0f };
@@ -405,8 +428,9 @@ pnl::CMRF2 * create_gaussian_mrf2_2()
 /*
 	the model is
 
-	             0 --> 1 --> 2
+	             0 -- 1 -- 2
 
+	where
 		0 - bivariate Gaussian node
 		1 - trivariate Gaussian node
 		2 - univariate Gaussian node
@@ -422,7 +446,7 @@ pnl::CMRF2 * create_gaussian_mrf2_2()
 		nodeTypes[i].SetType(false, i + 1);
 	}
 
-	pnl::intVector nodeAssociation(numNodes, 0);
+	pnl::intVector nodeAssociation(numNodes, 0);  // { 1, 2, 0 }
 	nodeAssociation[0] = 1;
 	nodeAssociation[1] = 2;
 	nodeAssociation[2] = 0;
@@ -594,18 +618,19 @@ pnl::CMRF2 * create_gaussian_mrf2_3()
 	                0
 				  /   \
 				 /     \
-				V       V
-			    1       4
-			   / \     / \
-              V   V   V   V
-			  2   3   5   6
-                         / \
-						V   V
-						7   8
+                /       \
+			   1         4
+			  / \       / \
+             /   \     /   \
+			2     3   5     6
+                           / \
+						  /   \
+						 7     8
 
-		0, 1, 4, & 8 - univariate Gaussian nodes
-		2, 5, & 6 - bivariate Gaussian nodes
-		3, & 7 - trivariate Gaussian nodes
+	where
+		0, 1, 4, 8 - univariate Gaussian nodes
+		2, 5, 6 - bivariate Gaussian nodes
+		3, 7 - trivariate Gaussian nodes
 */
 
 	const int numNodes = 9;
@@ -625,7 +650,7 @@ pnl::CMRF2 * create_gaussian_mrf2_3()
 	nodeAssociation[6] = 1;
 	nodeAssociation[7] = 2;
 
-	// create graphical model by clqs;
+	// create graphical model by cliques.
 	const std::vector<int> cliqueSizes(numNodes, 2);
 
 	const int clique0[] = { 0, 1 };
@@ -741,9 +766,6 @@ void infer_gaussian_mrf2_using_inference_algorithm_3(const boost::scoped_ptr<pnl
 
 void mrf2()
 {
-	std::ofstream logFileStream("logMRF2.txt", std::ios::app);
-	pnl::LogDrvStream logDriver(&logFileStream, pnl::eLOG_ALL, pnl::eLOGSRV_ALL);
-
 	// simple pairwise MRF
 	std::cout << "========== simple pairwise MRF" << std::endl;
 	{
@@ -751,7 +773,7 @@ void mrf2()
 
 		if (!mrf2)
 		{
-			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
@@ -768,7 +790,7 @@ void mrf2()
 
 		if (!mrf2_1 || !mrf2_2 || !mrf2_3)
 		{
-			std::cout << "can't create a probabilistic graphical model" << std::endl;
+			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
