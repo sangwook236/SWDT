@@ -8,11 +8,11 @@ int wmain(int argc, wchar_t **argv)
 int main(int argc, char **argv)
 #endif
 {
-	void flood_library();
+	void flood_library();  // flood library
 
 	try
 	{
-		flood_library();
+		flood_library();  // not yet implemented
 	}
 	catch (const std::exception &e)
 	{

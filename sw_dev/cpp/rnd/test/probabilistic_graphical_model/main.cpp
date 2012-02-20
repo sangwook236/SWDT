@@ -9,10 +9,13 @@ int main(int argc, char **argv)
 #endif
 {
 	void mrf();
+	void hmm();
 
 	try
 	{
-		mrf();
+		mrf();  // not yet implemented
+
+		hmm();
 	}
 	catch (const std::exception &e)
 	{

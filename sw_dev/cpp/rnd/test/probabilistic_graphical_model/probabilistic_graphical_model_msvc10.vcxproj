@@ -13,8 +13,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{326CF11F-0264-4D95-930B-0D6DAD809C96}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>inference_on_graphical_model</RootNamespace>
-    <ProjectName>inference_on_graphical_model</ProjectName>
+    <RootNamespace>probabilistic_graphical_model</RootNamespace>
+    <ProjectName>probabilistic_graphical_model</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -86,11 +86,15 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="viterbi.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="hmm.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mrf.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="viterbi.cpp" />
+    <ClCompile Include="viterbi_algorithm.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
