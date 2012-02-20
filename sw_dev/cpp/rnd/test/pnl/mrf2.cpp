@@ -773,7 +773,7 @@ void mrf2()
 
 		if (!mrf2)
 		{
-			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
@@ -790,7 +790,7 @@ void mrf2()
 
 		if (!mrf2_1 || !mrf2_2 || !mrf2_3)
 		{
-			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 

@@ -205,7 +205,7 @@ void bayesian_network_example()
 
 		if (!wsBNet)
 		{
-			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 

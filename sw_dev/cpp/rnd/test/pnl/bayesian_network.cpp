@@ -135,7 +135,7 @@ CBNet * create_single_mixture_of_gaussians_bayesian_network()
 	where
 		0 - tabular nodes. It is a special node - mixture node.
 			it is used for storage summing coefficients for Gaussians.
-			it must be a last dicrete node among all discrete parents for Gaussian mixture node.
+			it must be a last discrete node among all discrete parents for Gaussian mixture node.
 		1 - Gaussain mixture node. (univariate)
 		nodes 0 & 1 together correspond to node Y.
 */
@@ -503,7 +503,7 @@ pnl::CBNet * create_mixture_of_gaussians_bayesian_network()
 
 		1 - tabular nodes. It is a special node - mixture node.
 			it is used for storage summing coefficients for Gaussians.
-			it must be a last dicrete node among all discrete parents for Gaussian mixture node.
+			it must be a last discrete node among all discrete parents for Gaussian mixture node.
 		3 - Gaussain mixture node. (univariate)
 		nodes 1 & 3 together correspond to node C.
 */
@@ -764,7 +764,7 @@ void bayesian_network()
 
 		if (!discreteBNet)
 		{
-			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
@@ -780,7 +780,7 @@ void bayesian_network()
 
 		if (!mogBNet)
 		{
-			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
@@ -798,7 +798,7 @@ void bayesian_network()
 
 		if (!mogBNet)
 		{
-			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 

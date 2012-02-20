@@ -40,19 +40,20 @@ pnl::CDBN * create_ar_hmm()
 
 	// 1) first need to specify the graph structure of the model.
 	const int numNeighbors[] = { 2, 2, 2, 2 };
+
 	const int neigh0[] = { 1, 2 };
 	const int neigh1[] = { 0, 3 };
 	const int neigh2[] = { 0, 3 };
 	const int neigh3[] = { 1, 2 };
 	const int *neighs[] = { neigh0, neigh1, neigh2, neigh3 };
 
-	const pnl::ENeighborType orient0[] = { pnl::ntChild, pnl::ntChild };
-	const pnl::ENeighborType orient1[] = { pnl::ntParent, pnl::ntChild };
-	const pnl::ENeighborType orient2[] = { pnl::ntParent, pnl::ntChild };
-	const pnl::ENeighborType orient3[] = { pnl::ntParent, pnl::ntParent };
-	const pnl::ENeighborType *orients[] = { orient0, orient1, orient2, orient3 };
+	const pnl::ENeighborType neighType0[] = { pnl::ntChild, pnl::ntChild };
+	const pnl::ENeighborType neighType1[] = { pnl::ntParent, pnl::ntChild };
+	const pnl::ENeighborType neighType2[] = { pnl::ntParent, pnl::ntChild };
+	const pnl::ENeighborType neighType3[] = { pnl::ntParent, pnl::ntParent };
+	const pnl::ENeighborType *neighTypes[] = { neighType0, neighType1, neighType2, neighType3 };
 	
-	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighbors, neighs, orients);
+	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighbors, neighs, neighTypes);
 	
 	// 2) create the Model Domain.
 	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));
@@ -462,7 +463,7 @@ void learn_dbn_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> 
 
 void dbn_example()
 {
-	// infer DBN
+	// infer DBN with AR Gaussian observations
 	std::cout << "========== infer DBN with AR Gaussian observations" << std::endl;
 	{
 #if 1
@@ -474,21 +475,22 @@ void dbn_example()
 
 		if (!arHMM)
 		{
-			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
 		// get content of Graph
-		arHMM->GetGraph()->Dump();
-		pnl::CGraph *g = arHMM->GetGraph();
+		{
+			arHMM->GetGraph()->Dump();
+		}
 
-		//local::smoothing(arHMM.get());
-		//local::filtering(arHMM.get());
-		//local::fixed_lag_smoothing(arHMM.get());
-		local::maximum_probability_explanation(arHMM);  // MPE by Viterbi algorithm
+		local::smoothing(arHMM);
+		//local::filtering(arHMM);
+		//local::fixed_lag_smoothing(arHMM);
+		//local::maximum_probability_explanation(arHMM);  // MPE by Viterbi algorithm
 	}
 
-	// learn parameters of DBN
+	// learn DBN with AR Gaussian observations
 	std::cout << "\n========== learn DBN with AR Gaussian observations" << std::endl;
 	{
 		const boost::scoped_ptr<pnl::CDBN> arHMM(pnl::CDBN::Create(pnl::pnlExCreateRndArHMM()));
@@ -496,7 +498,7 @@ void dbn_example()
 
 		if (!arHMM)
 		{
-			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 

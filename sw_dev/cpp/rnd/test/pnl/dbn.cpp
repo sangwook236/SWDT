@@ -184,7 +184,9 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	where
 		X - tabular node (bivariate)
 		Z - Gaussian mixture node (univariate)
-		Y - mixture node (bivariate)
+		Y - tabular nodes. It is a special node - mixture node (bivariate)
+			it is used for storage summing coefficients for Gaussians.
+			it must be a last discrete node among all discrete parents for Gaussian mixture node.
 */
 
 	const int numNeighs[] = { 2, 4, 2, 2, 2, 4, 2, 2 };
@@ -223,7 +225,9 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	where
 		X - tabular node (bivariate)
 		Z - Gaussian mixture node (univariate)
-		Y - mixture node (bivariate)
+		Y - tabular nodes. It is a special node - mixture node (bivariate)
+			it is used for storage summing coefficients for Gaussians.
+			it must be a last discrete node among all discrete parents for Gaussian mixture node.
 */
 
 	const int numNeighs[] = { 2, 3, 1, 2, 2, 3, 1, 2 };
@@ -237,19 +241,19 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	const int neigh6[] = { 7 };
 	const int neigh7[] = { 5, 6 };
 
-	const pnl::ENeighborType orient0[] = { pnl::ntChild, pnl::ntChild };
-	const pnl::ENeighborType orient1[] = { pnl::ntParent, pnl::ntChild, pnl::ntChild };
-	const pnl::ENeighborType orient2[] = { pnl::ntChild };
-	const pnl::ENeighborType orient3[] = { pnl::ntParent, pnl::ntParent };
-	const pnl::ENeighborType orient4[] = { pnl::ntParent, pnl::ntChild };
-	const pnl::ENeighborType orient5[] = { pnl::ntParent, pnl::ntParent, pnl::ntChild };
-	const pnl::ENeighborType orient6[] = { pnl::ntChild };
-	const pnl::ENeighborType orient7[] = { pnl::ntParent, pnl::ntParent };
+	const pnl::ENeighborType neighType0[] = { pnl::ntChild, pnl::ntChild };
+	const pnl::ENeighborType neighType1[] = { pnl::ntParent, pnl::ntChild, pnl::ntChild };
+	const pnl::ENeighborType neighType2[] = { pnl::ntChild };
+	const pnl::ENeighborType neighType3[] = { pnl::ntParent, pnl::ntParent };
+	const pnl::ENeighborType neighType4[] = { pnl::ntParent, pnl::ntChild };
+	const pnl::ENeighborType neighType5[] = { pnl::ntParent, pnl::ntParent, pnl::ntChild };
+	const pnl::ENeighborType neighType6[] = { pnl::ntChild };
+	const pnl::ENeighborType neighType7[] = { pnl::ntParent, pnl::ntParent };
 #endif
 	const int *neighs[] = { neigh0, neigh1, neigh2, neigh3, neigh4, neigh5, neigh6, neigh7 };
-	const pnl::ENeighborType *orients[] = { orient0, orient1, orient2, orient3, orient4, orient5, orient6, orient7 };
+	const pnl::ENeighborType *neighTypes[] = { neighType0, neighType1, neighType2, neighType3, neighType4, neighType5, neighType6, neighType7 };
 
-	pnl::CGraph *graph = CGraph::Create(numNodes, numNeighs, neighs, orients);
+	pnl::CGraph *graph = CGraph::Create(numNodes, numNeighs, neighs, neighTypes);
 
 	//
 /*
@@ -278,14 +282,8 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	nodeTypes[0].SetType(true, 2);
 	nodeTypes[1].SetType(false, 1);
 
-	pnl::intVector nodeAssociation(numNodes);
-	nodeAssociation[0] = 0;
-	nodeAssociation[1] = 0;
-	nodeAssociation[2] = 0;
+	pnl::intVector nodeAssociation(numNodes, 0);  // { 0, 0, 0, 1, 0, 0, 0, 1 }
 	nodeAssociation[3] = 1;
-	nodeAssociation[4] = 0;
-	nodeAssociation[5] = 0;
-	nodeAssociation[6] = 0;
 	nodeAssociation[7] = 1;
 
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
@@ -405,12 +403,12 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 // [ref]
 //	${PNL_ROOT}/c_pgmtk/tests/src/AJtreeInfMixtureDBN.cpp
 //	${PNL_ROOT}/c_pgmtk/tests/src/A1_5JTreeInfDBNCondGauss.cpp
-void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_inference_algorithm(const boost::scoped_ptr<pnl::CDBN> &hmm)
+void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_inference_algorithm(const boost::scoped_ptr<pnl::CDBN> &dbn)
 {
 	const int numTimeSlices = 4;
-	const int numNodes = hmm->GetStaticModel()->GetNumberOfNodes();  // TODO [check] >> has it a correct value?
+	const int numNodes = dbn->GetStaticModel()->GetNumberOfNodes();  // TODO [check] >> does it have a correct value?
 
-	const boost::scoped_ptr<const pnl::CBNet> unrolledBNet(static_cast<pnl::CBNet *>(hmm->UnrollDynamicModel(numTimeSlices)));
+	const boost::scoped_ptr<const pnl::CBNet> unrolledBNet(static_cast<pnl::CBNet *>(dbn->UnrollDynamicModel(numTimeSlices)));
 
 	// create evidence for every slice
 	pnl::pEvidencesVector evidences(numTimeSlices);
@@ -420,12 +418,13 @@ void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_in
 	pnl::valueVector obsVals(1);
 	pnl::intVector obsNodeNumsForUnrolled(numTimeSlices);
 	pnl::valueVector obsValsForUnrolled(numTimeSlices);
+
 	for (int i = 0; i < numTimeSlices; ++i)
 	{
 		const float ft = std::rand() / 10.0f;
 
 		obsVals[0].SetFlt(ft);
-		evidences[i] = pnl::CEvidence::Create(hmm->GetModelDomain(), obsNodeNums, obsVals);
+		evidences[i] = pnl::CEvidence::Create(dbn->GetModelDomain(), obsNodeNums, obsVals);
 
 		obsValsForUnrolled[i].SetFlt(ft);
 		obsNodeNumsForUnrolled[i] = obsNodeNums[0] + numNodes / 2 * i;
@@ -434,7 +433,7 @@ void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_in
 	const boost::scoped_ptr<pnl::CEvidence> evidencesForUnrolled(pnl::CEvidence::Create(unrolledBNet->GetModelDomain(), obsNodeNumsForUnrolled, obsValsForUnrolled));
 
 	//
-	const boost::scoped_ptr<pnl::C1_5SliceJtreeInfEngine> infEngine(pnl::C1_5SliceJtreeInfEngine::Create(hmm.get()));
+	const boost::scoped_ptr<pnl::C1_5SliceJtreeInfEngine> infEngine(pnl::C1_5SliceJtreeInfEngine::Create(dbn.get()));
 	infEngine->DefineProcedure(pnl::ptSmoothing, numTimeSlices);
 	infEngine->EnterEvidence(&evidences.front(), numTimeSlices);
 	infEngine->Smoothing();
@@ -514,7 +513,7 @@ void dbn()
 
 		if (!dbn)
 		{
-			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 

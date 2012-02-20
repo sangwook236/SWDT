@@ -265,7 +265,7 @@ void infer_mpe_in_hmm(const boost::scoped_ptr<pnl::CDBN> &hmm)
 
 		const pnl::CPotential *queryMPE = infEngine->GetQueryMPE();
 		
-		std::cout << ">>> Query time-slice: " << time_slice << std::endl;
+		std::cout << ">>> query time-slice: " << time_slice << std::endl;
 
 		int numNodes = 0;
 		const int *domain = NULL;
@@ -324,18 +324,6 @@ void learn_hmm_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> 
 	const pnl::intVector numSlices(numTimeSeries, 2);
 	pnl::pEvidencesVecVector evidencesForDBN;
 	dbn->GenerateSamples(&evidencesForDBN, numSlices);
-
-	// FIXME [delete] >>
-	{
-		const boost::scoped_ptr<const pnl::CBNet> unrolledBNet(static_cast<pnl::CBNet *>(dbn->UnrollDynamicModel(numTimeSeries)));
-		const int a = unrolledBNet->GetNumberOfNodes();
-		std::cout << "########### " << a << std::endl;
-		for (int i = 0; i < numTimeSeries; ++i)
-		{
-			std::cout << evidencesForDBN[i].size() << ", ";
-		}
-		std::cout << std::endl;
-	}
 
 	pnl::pEvidencesVector evidencesForBNet;
 	bnetToLearn->GenerateSamples(&evidencesForBNet, numTimeSeries);
@@ -407,11 +395,11 @@ void learn_hmm_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> 
 
 		if (!bnetDBN->GetFactor(i)->IsFactorsDistribFunEqual(dbnToLearn->GetFactor(i), eps, 0))
 		{
-			std::cout << "original model & learned model are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "original & learned models are not equal at " << __LINE__ << " in " << __FILE__ << std::endl;
 
 			std::cout << "\n____ DBN__________________________________" << std::endl;
 			dbnToLearn->GetFactor(i)->GetDistribFun()->Dump();
-			std::cout << "\n____ Initial DBN__________________________" << std::endl;
+			std::cout << "\n____ initial DBN__________________________" << std::endl;
 			bnetDBN->GetFactor(i)->GetDistribFun()->Dump();
 			std::cout << "\n___________________________________________" << std::endl;
 		}
@@ -430,7 +418,7 @@ void learn_hmm_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> 
 pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 {
 /*
-	an HMM with (autoregressive) mixture-of-Gaussians observations
+	an HMM with mixture-of-Gaussians observations
 
 		    0 ---> 3
 		    |      |
@@ -441,7 +429,9 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 	where
 		0, 3 - tabular nodes (k-variate)
 		2, 5 - Gaussian mixture nodes (univariate)
-		1, 4 - mixture nodes (p-variate)
+		1, 4 - tabular nodes. they are special nodes - mixture nodes (p-variate)
+			   they are used for storage summing coefficients for Gaussians.
+			   they must be last discrete nodes among all discrete parents for Gaussian mixture node.
 */
 
 	// create static model
@@ -510,7 +500,7 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 
 	const float mean2w00 = -3.2f, cov2w00 = 0.00002f;  // node2 for node0 = 0 & node1 = 0
 	const float mean2w10 = -0.5f, cov2w10 = 0.0001f;  // node2 for node0 = 1 & node1 = 0
-	const float mean2w01 = -3.2f, cov2w01 = 0.00002f;   // node2 for node0 = 0 & node1 = 1
+	const float mean2w01 = -3.2f, cov2w01 = 0.00002f;  // node2 for node0 = 0 & node1 = 1
 	const float mean2w11 = -0.5f, cov2w11 = 0.0001f;  // node2 for node0 = 1 & node1 = 1
 
 	const float mean5w00 = 6.5f, cov5w00 = 0.03f, weight5w00 = 1.0f;  // node5 for node3 = 0 & node4 = 0
@@ -573,41 +563,28 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 
 // [ref]
 //	"Probabilistic Network Library: User Guide and Reference Manual", pp. 2-32 ~ 33
-//	learn_parameters_of_dbn() in dbn_example.cpp
+//	learn_dbn_with_ar_gaussian_observations() in dbn_example.cpp
 void learn_hmm_with_mixture_of_gaussians_observations(const boost::scoped_ptr<pnl::CDBN> &dbn, const int numTimeSeries)
 {
 	// define number of slices in the every time series
-	// FIXME [check] >> what is the definition of 'slice'?
 #if 1
-	// [ref] learn_parameters_of_dbn() in dbn_example.cpp
+	// [ref] learn_dbn_with_ar_gaussian_observations() in dbn_example.cpp
 	pnl::intVector numSlices(numTimeSeries);
 	pnl::pnlRand(numTimeSeries, &numSlices.front(), 3, 20);
 
-	// FIXME [delete] >>
-	{
-		const boost::scoped_ptr<const pnl::CBNet> unrolledBNet(static_cast<pnl::CBNet *>(dbn->UnrollDynamicModel(numTimeSeries)));
-		const int a = unrolledBNet->GetNumberOfNodes();
-		std::cout << "########### " << a << std::endl;
-		for (int i = 0; i < numTimeSeries; ++i)
-		{
-			std::cout << numSlices[i] << ", ";
-		}
-		std::cout << std::endl;
-	}
-
 	//
 	const boost::scoped_ptr<const pnl::CBNet> unrolledBNet(static_cast<pnl::CBNet *>(dbn->UnrollDynamicModel(numTimeSeries)));
-
-	// [ref] smoothing(), filtering(), fixed_lag_smoothing(), maximum_probability_explanation() in dbn_example.cpp
 #else
 	// [ref] learn_hmm_with_ar_gaussian_observations() in this file
 	const pnl::intVector numSlices(numTimeSeries, 2);
 #endif
 
-#if 0
+#if 1
 	// generate evidences in a random way
 	pnl::pEvidencesVecVector evidences;
+	std::cout << "****** 1" << std::endl;  // FIXME [delete] >>
 	dbn->GenerateSamples(&evidences, numSlices);
+	std::cout << "****** 2" << std::endl;  // FIXME [delete] >>
 
 	// create DBN for learning
 	// FIXME [check] >> this implementation isn't verified
@@ -627,6 +604,7 @@ void learn_hmm_with_mixture_of_gaussians_observations(const boost::scoped_ptr<pn
 
 	// set data for learning
 	learnEngine->SetData(evidences);
+	std::cout << "****** 3" << std::endl;  // FIXME [delete] >>
 
 	// start learning
 	try
@@ -637,7 +615,9 @@ void learn_hmm_with_mixture_of_gaussians_observations(const boost::scoped_ptr<pn
 		learnEngine->SetTerminationToleranceEM(precision);
 		learnEngine->SetMaxIterEM(numMaxIteration);
 
+		std::cout << "****** 4" << std::endl;  // FIXME [delete] >>
 		learnEngine->Learn();
+		std::cout << "****** 5" << std::endl;  // FIXME [delete] >>
 	}
 	catch (const pnl::CAlgorithmicException &e)
 	{
@@ -660,6 +640,7 @@ void learn_hmm_with_mixture_of_gaussians_observations(const boost::scoped_ptr<pn
 
 void hmm()
 {
+/*
 	// simple HMM
 	std::cout << "========== infer MPE in a simple HMM" << std::endl;
 	{
@@ -667,7 +648,7 @@ void hmm()
 
 		if (!simpleHMM)
 		{
-			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
@@ -696,7 +677,7 @@ void hmm()
 
 		if (!arHMM)
 		{
-			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
@@ -706,15 +687,15 @@ void hmm()
 		//
 		local::learn_hmm_with_ar_gaussian_observations(arHMM);
 	}
-
-	// HMM with (autoregressive) mixture-of-Gaussians observations
+*/
+	// HMM with mixture-of-Gaussians observations
 	std::cout << "\n========== HMM with mixture-of-Gaussians observations" << std::endl;
 	{
 		const boost::scoped_ptr<pnl::CDBN> hmm(local::create_hmm_with_mixture_of_gaussians_observations());
 
 		if (!hmm)
 		{
-			std::cout << "can't create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
