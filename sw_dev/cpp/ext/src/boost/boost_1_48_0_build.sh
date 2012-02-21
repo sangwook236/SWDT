@@ -12,6 +12,7 @@ bjam --toolset=gcc debug release link=static,shared --build-type=complete --opti
 # # -------------------
 
 # # Configure specific gcc version (searched for in standard locations and PATH).
+# # using gcc : 4.6.1 ;
 # # using gcc : 4.6.1 : [c++-compile-command] : [compiler options] ;
 
 # # ---------------------
