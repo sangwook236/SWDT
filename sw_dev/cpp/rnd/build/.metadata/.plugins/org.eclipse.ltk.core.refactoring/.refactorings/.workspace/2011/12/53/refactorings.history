@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;rl_glue&apos;" deleteContents="false" description="Delete resource &apos;rl_glue&apos;" element1="/rl_glue" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1324969463101"/>
-</session>
