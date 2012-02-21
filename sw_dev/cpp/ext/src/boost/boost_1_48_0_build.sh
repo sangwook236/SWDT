@@ -3,12 +3,12 @@
 # bjam --toolset=msvc link=static,shared --without-python --without-mpi stage
 # bjam -sICU_PATH=${ICU_ROOT} --toolset=msvc link=static,shared stage
 
-bjam --toolset=gcc debug release link=static,shared --build-type=complete --without-mpi stage
+bjam --toolset=gcc debug release link=static,shared --build-type=complete --optimization=full stage
 
 # ${BOOST_ROOT}/tools/build/v2/user-config.jam
 
 # # -------------------
-# # MSVC configuration.
+# # GCC configuration.
 # # -------------------
 
 # # Configure specific gcc version (searched for in standard locations and PATH).
