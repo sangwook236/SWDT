@@ -2,13 +2,17 @@
 
 rem bootstrap.bat
 
-rem bjam --toolset=msvc-8.0 debug release optimization={off/full/space/speed} link=static,shared threading=single,multi runtime-link=single,shared --build-type=complete {stage/install/clean}
-rem bjam --toolset=msvc link=static,shared --with-thread --with-regex --with-python stage
-rem bjam --toolset=msvc link=static,shared --without-python --without-mpi stage
-rem bjam -sICU_PATH=%ICU_ROOT% --toolset=msvc link=static,shared stage
+rem bjam  {stage/install/clean} debug release --toolset=msvc-8.0 optimization={off/full/space/speed} link=static,shared threading=single,multi runtime-link=single,shared --build-type=complete
 
-rem bjam --toolset=msvc-8.0 debug release link=static,shared --build-type=complete --without-python --without-mpi stage
-bjam --toolset=msvc debug release link=static,shared --build-type=complete --without-mpi stage
+rem bjam stage --toolset=msvc link=static,shared --with-thread --with-regex --with-python
+rem bjam stage --toolset=msvc link=static,shared --without-python --without-mpi
+rem bjam stage -sICU_PATH=%ICU_ROOT% --toolset=msvc link=static,shared
+
+rem bjam stage debug release --toolset=msvc-8.0 link=static,shared --build-type=complete --without-python --without-mpi
+bjam stage debug release --toolset=msvc link=static,shared --build-type=complete --without-mpi
+
+rem bjam install --prefix=/bin/local
+rem bjam --clean debug release
 
 rem %BOOST_ROOT%/tools/build/v2/user-config.jam
 
