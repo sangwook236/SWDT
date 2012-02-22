@@ -7,6 +7,7 @@
 # bjam stage -sICU_PATH=${ICU_ROOT} --toolset=msvc link=static,shared
 
 ./bjam stage release --toolset=gcc --without-mpi link=static,shared
+./bjam stage debug --toolset=gcc --without-mpi link=static,shared
 
 # ./bjam install --prefix=/bin/local
 # ./bjam --clean debug release
