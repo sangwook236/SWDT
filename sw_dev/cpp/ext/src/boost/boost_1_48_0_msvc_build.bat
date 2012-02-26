@@ -2,7 +2,7 @@
 
 rem bootstrap.bat
 
-rem bjam  {stage/install/clean} debug release --toolset=msvc-8.0 optimization={off/full/space/speed} link=static,shared threading=single,multi runtime-link=single,shared --build-type=complete
+rem bjam {stage/install/clean} debug release --toolset=msvc-8.0 optimization={off/full/space/speed} link=static,shared threading=single,multi runtime-link=single,shared --build-type=complete
 
 rem bjam stage --toolset=msvc link=static,shared --with-thread --with-regex --with-python
 rem bjam stage --toolset=msvc link=static,shared --without-python --without-mpi

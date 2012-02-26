@@ -5,7 +5,7 @@
 	-. CLAPACK version 2.0
 		clapack2.tgz
 		CLAw32.zip
-		==>  clapack2.tgz의 압축을 먼저 푼 후 CLAw32.zip의 압축을 풀면서 중복되는 file은 덮어씀
+		==> clapack2.tgz의 압축을 먼저 푼 후 CLAw32.zip의 압축을 풀면서 중복되는 file은 덮어씀
 	-. CLAPACK version 3.0
 		CLAPACK3-Windows.zip
 [-] 압축 해제
@@ -18,11 +18,11 @@
 	-. "clapack" project로 building
 [-] install library & header
 	-. resulting library files are installed into a subdirectory
-		%CLAPACK_ROOT%/release/clapack.lib
-		%CLAPACK_ROOT%/debug/clapack.lib
+		${CLAPACK_ROOT}/release/clapack.lib
+		${CLAPACK_ROOT}/debug/clapack.lib
 	-. resulting include files are installed into a subdirectory
-		%CLAPACK_ROOT%/install/f2c.h
-		%CLAPACK_ROOT%/clapack.h
+		${CLAPACK_ROOT}/install/f2c.h
+		${CLAPACK_ROOT}/clapack.h
 
 
 <<  Linking  >>
@@ -41,6 +41,6 @@
 		==> including 순서 중요
 [-] download 받은 file 안에 이미 built된 library file이 존재함
 	-. release mode
-		%CLAPACK_ROOT%/Release/clapack.lib
+		${CLAPACK_ROOT}/Release/clapack.lib
 	-. debug mode
-		%CLAPACK_ROOT%/Debug/clapack.lib
+		${CLAPACK_ROOT}/Debug/clapack.lib

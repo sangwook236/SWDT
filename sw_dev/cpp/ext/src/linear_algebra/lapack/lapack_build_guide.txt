@@ -1,0 +1,7 @@
+<<  Building in Windows  >>
+
+[ref] http://icl.cs.utk.edu/lapack-for-windows/lapack/
+
+<<  Building in MinGW  >>
+
+[ref] http://icl.cs.utk.edu/lapack-for-windows/lapack/
