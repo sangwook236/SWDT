@@ -6,8 +6,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opencv", "..\test\opencv\op
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opencv_win", "..\test\opencv_win\opencv_win_msvc10.vcxproj", "{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgal", "..\test\cgal\cgal_msvc10.vcxproj", "{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "galib", "..\test\galib\galib_msvc10.vcxproj", "{F47404DC-D671-4C97-8477-9447118B238A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ode", "..\test\ode\ode_msvc10.vcxproj", "{86A474F8-4ABB-46B3-A034-26496D316349}"
@@ -32,10 +30,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ransac", "..\test\ransac\ra
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openni", "..\test\openni\openni_msvc10.vcxproj", "{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pcl", "..\test\pcl\pcl_msvc10.vcxproj", "{68409235-BBDE-4F93-9264-DE2B7397D28D}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openmesh", "..\test\openmesh\openmesh_msvc10.vcxproj", "{882C2420-A3A2-454A-9F01-9BC81DFA62BF}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "probabilistic_graphical_model", "..\test\probabilistic_graphical_model\probabilistic_graphical_model_msvc10.vcxproj", "{326CF11F-0264-4D95-930B-0D6DAD809C96}"
 EndProject
 Global
@@ -56,10 +50,6 @@ Global
 		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Debug|Win32.Build.0 = Debug|Win32
 		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Release|Win32.ActiveCfg = Release|Win32
 		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Release|Win32.Build.0 = Release|Win32
-		{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}.Debug|Win32.ActiveCfg = Debug|Win32
-		{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}.Debug|Win32.Build.0 = Debug|Win32
-		{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}.Release|Win32.ActiveCfg = Release|Win32
-		{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}.Release|Win32.Build.0 = Release|Win32
 		{F47404DC-D671-4C97-8477-9447118B238A}.Debug|Win32.ActiveCfg = Debug|Win32
 		{F47404DC-D671-4C97-8477-9447118B238A}.Debug|Win32.Build.0 = Debug|Win32
 		{F47404DC-D671-4C97-8477-9447118B238A}.Release|Win32.ActiveCfg = Release|Win32
@@ -108,14 +98,6 @@ Global
 		{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}.Debug|Win32.Build.0 = Debug|Win32
 		{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}.Release|Win32.ActiveCfg = Release|Win32
 		{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}.Release|Win32.Build.0 = Release|Win32
-		{68409235-BBDE-4F93-9264-DE2B7397D28D}.Debug|Win32.ActiveCfg = Debug|Win32
-		{68409235-BBDE-4F93-9264-DE2B7397D28D}.Debug|Win32.Build.0 = Debug|Win32
-		{68409235-BBDE-4F93-9264-DE2B7397D28D}.Release|Win32.ActiveCfg = Release|Win32
-		{68409235-BBDE-4F93-9264-DE2B7397D28D}.Release|Win32.Build.0 = Release|Win32
-		{882C2420-A3A2-454A-9F01-9BC81DFA62BF}.Debug|Win32.ActiveCfg = Debug|Win32
-		{882C2420-A3A2-454A-9F01-9BC81DFA62BF}.Debug|Win32.Build.0 = Debug|Win32
-		{882C2420-A3A2-454A-9F01-9BC81DFA62BF}.Release|Win32.ActiveCfg = Release|Win32
-		{882C2420-A3A2-454A-9F01-9BC81DFA62BF}.Release|Win32.Build.0 = Release|Win32
 		{326CF11F-0264-4D95-930B-0D6DAD809C96}.Debug|Win32.ActiveCfg = Debug|Win32
 		{326CF11F-0264-4D95-930B-0D6DAD809C96}.Debug|Win32.Build.0 = Debug|Win32
 		{326CF11F-0264-4D95-930B-0D6DAD809C96}.Release|Win32.ActiveCfg = Release|Win32

@@ -2,15 +2,16 @@
 #include <iostream>
 
 
-#if defined(_UNICODE) || defined(UNICODE)
-int wmain(int argc, wchar_t* argv[])
-#else
-int main(int argc, char* argv[])
-#endif
+int main(const int argc, const char * argv[])
 {
+	void x01_main(int argc, const char **argv);
+	void x21_main(int argc, const char **argv);
+
 	try
 	{
-		throw std::runtime_error("not yet implemented");
+		// examples
+		x01_main(argc, argv);
+		//x21_main(argc, argv);
 	}
 	catch (const std::exception &e)
 	{
