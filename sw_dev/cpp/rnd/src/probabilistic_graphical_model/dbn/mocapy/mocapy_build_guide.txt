@@ -1,0 +1,35 @@
+<< Building & Installation in MinGW32 >>
+
+[-] building external libraries
+	-. external library들을 MinGW32 환경에서 building
+		boost, lapack, pthread
+		boost는 shared library를 사용해야 정상적으로 building (?)
+[-] setting build environment
+	-. Windows command window에서 ${MINGW32_ROOT}/bin을 path 설정
+		set path=${MINGW32_ROOT}/bin;%path%
+	-. software building을 위해서 ${MINGW32_ROOT}/bin 하위의 executable file을 사용
+		"mingw32-"이 없는 executable file을 사용
+			e.g.)
+				mingw32-gcc.exe (X) ==> gcc.exe (O)
+				mingw32-g++.exe (X) ==> g++.exe (O)
+		단, make의 경우 mingw32-make.exe를 사용
+			make.exe (X) ==> mingw32-make.exe (O)
+[-] creating makefile using CMake
+	-. Windows command window에서 cmake-gui 실행
+	-. 필요한 library 등을 설정
+		install prefix는 ${MINGW32_ROOT}로 설정하면 아래의 directory에 file이 설치
+			${MINGW32_ROOT}/include
+			${MINGW32_ROOT}/lib
+	-. makefile 생성
+	-. building
+		mingw32-make all
+		mingw32-make clean
+
+<< Execution >>
+
+[-] setting execution environment
+	-. shared object library를 사용하는 경우 Windows command window에서 ${MINGW32_ROOT}/lib을 path 설정
+		set path=${MINGW32_ROOT}/lib;%path%
+
+
+<< Trouble Shooting >>

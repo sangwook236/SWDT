@@ -11,13 +11,13 @@ rem bjam stage --toolset=gcc link=static,shared --with-thread --with-regex --wit
 rem bjam stage --toolset=gcc link=static,shared --without-python --without-mpi
 rem bjam stage -sICU_PATH=${ICU_ROOT} --toolset=gcc link=static,shared
 
-rem bjam stage debug release --toolset=gcc link=static,shared --build-type=complete --without-python --without-mpi
-bjam stage debug release --toolset=gcc link=static,shared --build-type=complete --without-python --without-mpi
+bjam stage debug release --toolset=gcc link=shared --build-type=complete --without-python --without-mpi
+bjam stage debug release --toolset=gcc link=static --build-type=complete --without-python --without-mpi
 
 rem bjam install --prefix=/bin/local --toolset=gcc --without-python --without-mpi
 rem bjam --clean debug release
 
-rem %BOOST_ROOT%/tools/build/v2/user-config.jam
+rem ${BOOST_ROOT}/tools/build/v2/user-config.jam
 
 rem # -------------------
 rem # GCC configuration.

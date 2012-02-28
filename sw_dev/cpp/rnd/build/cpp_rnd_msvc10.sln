@@ -32,6 +32,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openni", "..\test\openni\op
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "probabilistic_graphical_model", "..\test\probabilistic_graphical_model\probabilistic_graphical_model_msvc10.vcxproj", "{326CF11F-0264-4D95-930B-0D6DAD809C96}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pcl", "..\test\pcl\pcl_msvc10.vcxproj", "{68409235-BBDE-4F93-9264-DE2B7397D28D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -102,6 +104,10 @@ Global
 		{326CF11F-0264-4D95-930B-0D6DAD809C96}.Debug|Win32.Build.0 = Debug|Win32
 		{326CF11F-0264-4D95-930B-0D6DAD809C96}.Release|Win32.ActiveCfg = Release|Win32
 		{326CF11F-0264-4D95-930B-0D6DAD809C96}.Release|Win32.Build.0 = Release|Win32
+		{68409235-BBDE-4F93-9264-DE2B7397D28D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{68409235-BBDE-4F93-9264-DE2B7397D28D}.Debug|Win32.Build.0 = Debug|Win32
+		{68409235-BBDE-4F93-9264-DE2B7397D28D}.Release|Win32.ActiveCfg = Release|Win32
+		{68409235-BBDE-4F93-9264-DE2B7397D28D}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
