@@ -1,6 +1,7 @@
 #include <vector>
 #include <functional>
 #include <algorithm>
+#include <iterator>
 #include <iostream>
 
 void stl_algorithm_remove();
