@@ -1,8 +1,10 @@
+#if defined(_MSC_VER)
 #include "stdafx.h"
+#endif
 #include <pnl_dll.hpp>
 #include <boost/smart_ptr.hpp>
 #include <iostream>
-
+#include <stdexcept>
 
 namespace {
 namespace local {
@@ -140,7 +142,7 @@ void infer_bayesian_network_using_naive_inference_algorithm(const boost::scoped_
 		pnl::pConstValueVector obsVals;
 		evidForWS->GetObsNodesWithValues(&obsNodes, &obsVals);
 
-		for (int i = 0; i < obsNodes.size(); ++i)
+		for (size_t i = 0; i < obsNodes.size(); ++i)
 		{
 			std::cout << " observed value for node " << obsNodes[i];
 			std::cout << " is " << obsVals[i]->GetInt() << std::endl;

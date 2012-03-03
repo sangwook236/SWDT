@@ -1,7 +1,10 @@
+#if defined(_MSC_VER)
 #include "stdafx.h"
+#endif
 #include <pnl_dll.hpp>
 #include <boost/smart_ptr.hpp>
 #include <iostream>
+#include <stdexcept>
 
 
 namespace {
@@ -119,7 +122,7 @@ pnl::CBNet * create_discrete_bayesian_network()
 }
 
 // [ref] pnlExCreateSingleGauMix() in ${PNL_ROOT}/c_pgmtk/src/pnlExampleModels.cpp
-CBNet * create_single_mixture_of_gaussians_bayesian_network()
+pnl::CBNet * create_single_mixture_of_gaussians_bayesian_network()
 {
 /*
 	the model
@@ -295,7 +298,7 @@ void infer_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<
 	pnl::valueVector obsVals(numObsNodes, pnl::Value(0));
 	obsVals[0].SetFlt(2.0f);
 
-	boost::scoped_ptr<pnl::CEvidence> evidence(CEvidence::Create(mogBNet.get(), numObsNodes, obsNodes, obsVals));
+	boost::scoped_ptr<pnl::CEvidence> evidence(pnl::CEvidence::Create(mogBNet.get(), numObsNodes, obsNodes, obsVals));
 
 	// create inference engine
 	boost::scoped_ptr<pnl::CNaiveInfEngine> naiveInfEngine(pnl::CNaiveInfEngine::Create(mogBNet.get()));
@@ -401,7 +404,7 @@ pnl::CCPD * create_mixture_of_gaussians_cpd_for_node_3(pnl::CModelDomain *md)
 	// discrete nodes 0 & 1 have 2 possible values.
 	// if node 0 = 0 & node 1 = 0
 	const float mean00 = 1.0f;
-	const float cov00 = 0.005f; 
+	const float cov00 = 0.005f;
 	const float weight00 = 0.02f;
 
 	// if node 0 = 1 & node 1 = 0
@@ -484,7 +487,7 @@ pnl::CBNet * create_mixture_of_gaussians_bayesian_network()
 
 	    A
 	    |
-	    v	 
+	    v
 	B-->C-->D
 
 		where A is the discrete node; B & D are Gaussian; C is mixture Gaussian node
@@ -534,10 +537,10 @@ pnl::CBNet * create_mixture_of_gaussians_bayesian_network()
 	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighbors, nbrs, nbrsTypes);
 
 	// 2) creation of the model domain.
-	//	there are 3 several types of nodes in the example: 
-	//	1) discrete nodes 0 & 1 with 2 possible values 
+	//	there are 3 several types of nodes in the example:
+	//	1) discrete nodes 0 & 1 with 2 possible values
 	//	2) scalar continuous (Gaussian) nodes 2, 3
-	//	3) multivariate Gaussian node 4 (consists of 2 values) 
+	//	3) multivariate Gaussian node 4 (consists of 2 values)
 	const int numNodeTypes = 3;
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
 	nodeTypes[0].SetType(true, 2);  // 2 possible values
@@ -599,7 +602,7 @@ void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::
 	obsVals[1].SetFlt(2.0f);
 	obsVals[2].SetFlt(1.0f);
 
-	boost::scoped_ptr<pnl::CEvidence> evidence(CEvidence::Create(mogBNet.get(), numObsNodes, obsNodes, obsVals));
+	boost::scoped_ptr<pnl::CEvidence> evidence(pnl::CEvidence::Create(mogBNet.get(), numObsNodes, obsNodes, obsVals));
 
 	// create inference engine
 	boost::scoped_ptr<pnl::CNaiveInfEngine> naiveInfEngine(pnl::CNaiveInfEngine::Create(mogBNet.get()));
@@ -689,8 +692,8 @@ void infer_mixture_of_gaussians_bayesian_network_2(const boost::scoped_ptr<pnl::
 	const int numObsNodes = 3;
 	const int obsNodes[] = { 2, 3, 4 };
 
-	// 
-	int numObsValues = 0; 
+	//
+	int numObsValues = 0;
 	for (int i = 0; i < numObsNodes; ++i)
 	{
 		numObsValues += modelDomain->GetNumVlsForNode(obsNodes[i]);

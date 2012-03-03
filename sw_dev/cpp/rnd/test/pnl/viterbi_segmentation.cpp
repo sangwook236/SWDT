@@ -1,4 +1,6 @@
+#if defined(_MSC_VER)
 #include "stdafx.h"
+#endif
 #include <pnl_dll.hpp>
 #include <boost/smart_ptr.hpp>
 #include <iostream>
@@ -13,9 +15,9 @@ pnl::CDBN * create_simple_hmm()
 	a simple HMM
 
 		X0 -> X1
-		|     | 
+		|     |
 		v     v
-		Y0    Y1 
+		Y0    Y1
 
 	where
 		X0, X1 - bivariate tabular nodes
@@ -24,16 +26,16 @@ pnl::CDBN * create_simple_hmm()
 
 /*
 	states = ('Rainy', 'Sunny')
- 
+
 	observations = ('walk', 'shop', 'clean')
- 
+
 	start_probability = {'Rainy': 0.6, 'Sunny': 0.4}
- 
+
 	transition_probability = {
 	   'Rainy' : {'Rainy': 0.7, 'Sunny': 0.3},
 	   'Sunny' : {'Rainy': 0.4, 'Sunny': 0.6},
 	}
- 
+
 	emission_probability = {
 	   'Rainy' : {'walk': 0.1, 'shop': 0.4, 'clean': 0.5},
 	   'Sunny' : {'walk': 0.6, 'shop': 0.3, 'clean': 0.1},
@@ -58,7 +60,7 @@ pnl::CDBN * create_simple_hmm()
     const pnl::ENeighborType orient2[] = { pnl::ntParent, pnl::ntChild };
     const pnl::ENeighborType orient3[] = { pnl::ntParent };
     const pnl::ENeighborType *orients[] = { orient0, orient1, orient2, orient3 };
-	
+
 	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighs, neighs, orients);
 
 	// create static BNet
@@ -71,7 +73,7 @@ pnl::CDBN * create_simple_hmm()
 	nodeAssociation[1] = 1;
 	nodeAssociation[2] = 0;
 	nodeAssociation[3] = 1;
-	
+
 	pnl::CBNet *hmm_bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
 
 	// create raw data tables for CPDs
@@ -82,7 +84,7 @@ pnl::CDBN * create_simple_hmm()
 
 	// create factors and attach their to model
 	hmm_bnet->AllocFactors();
-	hmm_bnet->AllocFactor(0); 
+	hmm_bnet->AllocFactor(0);
 	hmm_bnet->GetFactor(0)->AllocMatrix(table0, pnl::matTable);
 	hmm_bnet->AllocFactor(1);
 	hmm_bnet->GetFactor(1)->AllocMatrix(table1, pnl::matTable);
@@ -146,7 +148,7 @@ void infer_mpe_in_hmm(const boost::scoped_ptr<pnl::CDBN> &hmm)
 		}
 
 		const pnl::CPotential *queryMPE = inferEng->GetQueryMPE();
-		
+
 		std::cout << ">>> query time-slice: " << time_slice << std::endl;
 
 		int numNodes = 0;

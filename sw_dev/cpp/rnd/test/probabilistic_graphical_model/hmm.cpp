@@ -3,13 +3,13 @@
 #include <iostream>
 
 
+void viterbi_algorithm();
+
 namespace {
 namespace local {
 
 void viterbi_algorithm_1()
 {
-	void viterbi_algorithm();
-
 	//
 	std::cout << "********** method 1" << std::endl;
 	viterbi_algorithm();

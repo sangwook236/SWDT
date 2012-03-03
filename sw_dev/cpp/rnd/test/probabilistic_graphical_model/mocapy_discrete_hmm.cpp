@@ -1,19 +1,18 @@
 //#include "stdafx.h"
+#include <mocapy.h>
+#include <iostream>
+#include <ctime>
 
 #if !defined(M_PI)
 #include <boost/math/constants/constants.hpp>
 #define M_PI (boost::math::constants::pi<double>())
 #endif
 
-#include <mocapy.h>
-#include <iostream>
-#include <ctime>
-
 
 namespace {
-	namespace local {
+namespace local {
 
-	}  // namespace local
+}  // namespace local
 }  // unnamed namespace
 
 // [ref] ${MOCAPY_ROOT}/examples/examples.cpp

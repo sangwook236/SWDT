@@ -1,4 +1,6 @@
+#if defined(_MSC_VER)
 #include "stdafx.h"
+#endif
 #include <pnl_dll.hpp>
 #include <boost/smart_ptr.hpp>
 #include <iostream>
@@ -13,9 +15,9 @@ pnl::CDBN * create_ar_hmm()
 	an HMM with autoregressive Gaussian observations
 
 		0 -> 2
-		|    | 
+		|    |
 		v    v
-		1 -> 3 
+		1 -> 3
 
 	where
 		0, 1, 2, 3 - tabular nodes (bivariate)
@@ -52,18 +54,18 @@ pnl::CDBN * create_ar_hmm()
 	const pnl::ENeighborType neighType2[] = { pnl::ntParent, pnl::ntChild };
 	const pnl::ENeighborType neighType3[] = { pnl::ntParent, pnl::ntParent };
 	const pnl::ENeighborType *neighTypes[] = { neighType0, neighType1, neighType2, neighType3 };
-	
+
 	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighbors, neighs, neighTypes);
-	
+
 	// 2) create the Model Domain.
 	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));
 	const pnl::intVector nodeAssociation(numNodes, 0);
-	
+
 	pnl::CModelDomain *modelDomain = pnl::CModelDomain::Create(nodeTypes, nodeAssociation);
-	
+
 	// 3) create static BNet with random matrices.
 	pnl::CBNet *bnet = pnl::CBNet::CreateWithRandomMatrices(graph, modelDomain);
-	
+
 	// 4) create DBN.
 	return pnl::CDBN::Create(bnet);
 }
@@ -99,7 +101,7 @@ void smoothing(const boost::scoped_ptr<pnl::CDBN> &dbn)
 
 	// inference results gaining and representation
 	std::cout << "========== results of smoothing " << std::endl;
-	
+
 	// choose query set of nodes for every time-slice
 	// for the prior network
 	{
@@ -330,7 +332,7 @@ void maximum_probability_explanation(const boost::scoped_ptr<pnl::CDBN> &dbn)
 	pnl::C1_5SliceJtreeInfEngine *infEngine = pnl::C1_5SliceJtreeInfEngine::Create(dbn.get());
 
 	// create inference (smoothing) for DBN
-	infEngine->DefineProcedure(ptViterbi, numTimeSlices);
+	infEngine->DefineProcedure(pnl::ptViterbi, numTimeSlices);
 	infEngine->EnterEvidence(&evidences.front(), numTimeSlices);
 	infEngine->FindMPE();
 
@@ -397,7 +399,7 @@ void learn_dbn_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> 
 	// define number of slices in the every time series
 	pnl::intVector numSlices(numTimeSeries);
 	pnl::pnlRand(numTimeSeries, &numSlices.front(), 3, 20);
-	
+
 	// generate evidences in a random way
 	pnl::pEvidencesVecVector evidences;
 	dbn->GenerateSamples(&evidences, numSlices);
@@ -407,7 +409,7 @@ void learn_dbn_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> 
 
 	// create learning engine
 	const boost::scoped_ptr<pnl::CEMLearningEngineDBN> learnEngine(pnl::CEMLearningEngineDBN::Create(dbnToLearn.get()));
-	
+
 	// set data for learning
 	learnEngine->SetData(evidences);
 
@@ -423,9 +425,9 @@ void learn_dbn_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> 
 	}
 
 	//
-	for (int i = 0; i < evidences.size(); ++i)
+	for (size_t i = 0; i < evidences.size(); ++i)
 	{
-		for (int j = 0; j < evidences[i].size(); ++j)
+		for (size_t j = 0; j < evidences[i].size(); ++j)
 			delete evidences[i][j];
 	}
 

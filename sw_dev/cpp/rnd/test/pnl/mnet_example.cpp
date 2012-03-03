@@ -1,4 +1,6 @@
+#if defined(_MSC_VER)
 #include "stdafx.h"
+#endif
 #include <pnl_dll.hpp>
 #include <boost/smart_ptr.hpp>
 #include <iostream>
@@ -109,7 +111,7 @@ pnl::CMNet * create_simle_markov_network()
 
 		params.clear();
 	}
-	
+
 #if 0
 	delete [] nodeAssociation;
 	delete [] nodeTypes;

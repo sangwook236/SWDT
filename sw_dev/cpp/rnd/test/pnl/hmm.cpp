@@ -1,4 +1,6 @@
+#if defined(_MSC_VER)
 #include "stdafx.h"
+#endif
 #include <pnl_dll.hpp>
 #include <boost/smart_ptr.hpp>
 #include <iostream>
@@ -14,9 +16,9 @@ pnl::CDBN * create_simple_hmm()
 	a simple HMM
 
 		X0 -> X1
-		|     | 
+		|     |
 		v     v
-		Y0    Y1 
+		Y0    Y1
 
 	where
 		X0, X1 - tabular nodes (bivariate)
@@ -25,16 +27,16 @@ pnl::CDBN * create_simple_hmm()
 
 /*
 	states = ('Rainy', 'Sunny')
- 
+
 	observations = ('walk', 'shop', 'clean')
- 
+
 	start_probability = {'Rainy': 0.6, 'Sunny': 0.4}
- 
+
 	transition_probability = {
 	   'Rainy' : {'Rainy': 0.7, 'Sunny': 0.3},
 	   'Sunny' : {'Rainy': 0.4, 'Sunny': 0.6},
 	}
- 
+
 	emission_probability = {
 	   'Rainy' : {'walk': 0.1, 'shop': 0.4, 'clean': 0.5},
 	   'Sunny' : {'walk': 0.6, 'shop': 0.3, 'clean': 0.1},
@@ -62,7 +64,7 @@ pnl::CDBN * create_simple_hmm()
     const pnl::ENeighborType orient2[] = { pnl::ntParent, pnl::ntChild };
     const pnl::ENeighborType orient3[] = { pnl::ntParent };
     const pnl::ENeighborType *orients[] = { orient0, orient1, orient2, orient3 };
-	
+
 	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighs, neighs, orients);
 
 	// create static BNet
@@ -75,7 +77,7 @@ pnl::CDBN * create_simple_hmm()
 	nodeAssociation[1] = 1;
 	nodeAssociation[2] = 0;
 	nodeAssociation[3] = 1;
-	
+
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
 
 	// create raw data tables for CPDs
@@ -86,7 +88,7 @@ pnl::CDBN * create_simple_hmm()
 
 	// create factors and attach their to model
 	bnet->AllocFactors();
-	bnet->AllocFactor(0); 
+	bnet->AllocFactor(0);
 	bnet->GetFactor(0)->AllocMatrix(table0, pnl::matTable);
 	bnet->AllocFactor(1);
 	bnet->GetFactor(1)->AllocMatrix(table1, pnl::matTable);
@@ -96,7 +98,7 @@ pnl::CDBN * create_simple_hmm()
 	bnet->GetFactor(3)->AllocMatrix(table3, pnl::matTable);
 #else
 	pnl::CBNet *bnet = pnl::pnlExCreateRndArHMM();
-#endif;
+#endif
 
 	// create DBN
 	return pnl::CDBN::Create(bnet);
@@ -109,9 +111,9 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
 	an HMM with autoregressive Gaussian observations
 
 		X0 -> X1
-		|     | 
+		|     |
 		v     v
-		Y0 -> Y1 
+		Y0 -> Y1
 
 	where
 		X0, X1 - tabular nodes (bivariate)
@@ -119,7 +121,7 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
 */
 
 	// create static model
-	const int numNodes = 4;  // number of nodes    
+	const int numNodes = 4;  // number of nodes
 	const int numNodeTypes = 2;  // number of node types (all nodes are discrete)
 
 	// create a DAG
@@ -179,7 +181,7 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
     const float tableNode2[] = { 0.2f, 0.8f, 0.3f, 0.7f };
 #endif
 
-	const float mean1w0 = -3.2f;  const float cov1w0 = 0.00002f; 
+	const float mean1w0 = -3.2f;  const float cov1w0 = 0.00002f;
 	const float mean1w1 = -0.5f;  const float cov1w1 = 0.0001f;
 
 	const float mean3w0 = 6.5f;  const float cov3w0 = 0.03f;  const float weight3w0 = 1.0f;
@@ -209,7 +211,7 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
 	bnet->GetFactor(3)->AllocMatrix(&cov3w1, pnl::matCovariance, -1, parentVal);
 	bnet->GetFactor(3)->AllocMatrix(&weight3w1, pnl::matWeights, 0, parentVal);
 
-	// create DBN using BNet	
+	// create DBN using BNet
 	return pnl::CDBN::Create(bnet);
 }
 
@@ -264,7 +266,7 @@ void infer_mpe_in_hmm(const boost::scoped_ptr<pnl::CDBN> &hmm)
 		}
 
 		const pnl::CPotential *queryMPE = infEngine->GetQueryMPE();
-		
+
 		std::cout << ">>> query time-slice: " << time_slice << std::endl;
 
 		int numNodes = 0;
@@ -408,7 +410,7 @@ void learn_hmm_with_ar_gaussian_observations(const boost::scoped_ptr<pnl::CDBN> 
 	//
 	for (int i = 0; i < numTimeSeries; ++i)
 	{
-		for (int j = 0; j < evidencesForDBN[i].size(); ++j)
+		for (size_t j = 0; j < evidencesForDBN[i].size(); ++j)
 			delete (evidencesForDBN[i])[j];
 
 		delete evidencesForBNet[i];
@@ -557,7 +559,7 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 	bnet->GetFactor(5)->AllocMatrix(&weight5w10, pnl::matWeights, 0, parentVal);
 #endif
 
-	// create DBN using BNet	
+	// create DBN using BNet
 	return pnl::CDBN::Create(bnet);
 }
 
@@ -626,9 +628,9 @@ void learn_hmm_with_mixture_of_gaussians_observations(const boost::scoped_ptr<pn
 	}
 
 	//
-	for (int i = 0; i < evidences.size(); ++i)
+	for (size_t i = 0; i < evidences.size(); ++i)
 	{
-		for (int j = 0; j < evidences[i].size(); ++j)
+		for (size_t j = 0; j < evidences[i].size(); ++j)
 			delete evidences[i][j];
 	}
 
@@ -654,7 +656,7 @@ void hmm()
 
 		// get content of Graph
 		simpleHMM->GetGraph()->Dump();
- 
+
 		if (false)
 		{
 			const pnl::CGraph *pGraph = simpleHMM->GetGraph();

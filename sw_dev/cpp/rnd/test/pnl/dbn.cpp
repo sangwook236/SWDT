@@ -1,7 +1,10 @@
+#if defined(_MSC_VER)
 #include "stdafx.h"
+#endif
 #include <pnl_dll.hpp>
 #include <boost/smart_ptr.hpp>
 #include <iostream>
+#include <stdexcept>
 
 
 namespace {
@@ -16,7 +19,7 @@ pnl::CDBN * create_Kjaerulff_dbn()
 	The intra structure is (all arcs point downwards)
 
 		0 -> 1
-		|  /                   
+		|  /
 		V
 		2
 		|
@@ -61,7 +64,7 @@ pnl::CDBN * create_Kjaerulff_dbn()
 
 	const int numNodes = 16;
 	const int numNodeTypes = 1;
-	
+
 	const int numNeighs[] = {
 		3, 2, 3, 4, 2, 2, 3, 2,  // 1st time-slice
 		3, 2, 3, 4, 2, 2, 3, 2  // 2nd time-slice
@@ -155,9 +158,9 @@ pnl::CDBN * create_Kjaerulff_dbn()
 
 		factor->AllocMatrix(&prior.front(), pnl::matTable);
 		dynamic_cast<pnl::CTabularCPD *>(factor)->NormalizeCPD();
-	}	
+	}
 
-	// create DBN 	
+	// create DBN
 	return pnl::CDBN::Create(bnet);
 }
 
@@ -253,7 +256,7 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	const int *neighs[] = { neigh0, neigh1, neigh2, neigh3, neigh4, neigh5, neigh6, neigh7 };
 	const pnl::ENeighborType *neighTypes[] = { neighType0, neighType1, neighType2, neighType3, neighType4, neighType5, neighType6, neighType7 };
 
-	pnl::CGraph *graph = CGraph::Create(numNodes, numNeighs, neighs, neighTypes);
+	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighs, neighs, neighTypes);
 
 	//
 /*
@@ -466,7 +469,7 @@ void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_in
 		for (int t = 1; t < numTimeSlices; ++t)
 		{
 			infEngine->MarginalNodes(&query.front(), query.size(), t);
-	
+
 			std::cout << " #-- initial model: time-slice " << t << std::endl;
 			infEngine->GetQueryJPD()->Dump();
 

@@ -1,6 +1,10 @@
+#if defined(_MSC_VER)
 #include "stdafx.h"
+#endif
 #include <pnl_dll.hpp>
+#if defined(WIN32)
 #include <vld/vld.h>
+#endif
 #include <iostream>
 #include <ctime>
 
