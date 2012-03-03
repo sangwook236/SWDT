@@ -101,7 +101,6 @@ x01::x01(int argc, const char ** argv)
     fontset = 1;
     f_name  = NULL;
 
-
     // plplot initialization
     // Divide page into 2x2 plots unless user overrides.
 
@@ -155,8 +154,7 @@ x01::x01(int argc, const char ** argv)
     // Open a new device, make it current, copy parameters,
     // and replay the plot buffer
 
-    if ( f_name ) // command line option '-save filename'
-
+    if (f_name) // command line option '-save filename'
     {
         std::cout << "The current plot was saved in color Postscript under the name `" << f_name << "'" << std::endl;
         plstream *pls2;
@@ -369,7 +367,7 @@ void x01::plot3()
 }  // local
 }  // unnamed namespace
 
-void x01_main(const int argc, const char **argv)
+void example_x01(const int argc, const char **argv)
 {
     boost::scoped_ptr<local::x01> x(new local::x01(argc, argv));
 }

@@ -4,14 +4,14 @@
 
 int main(const int argc, const char * argv[])
 {
-	void x01_main(int argc, const char **argv);
-	void x21_main(int argc, const char **argv);
+	void example_x01(int argc, const char **argv);
+	void example_x21(int argc, const char **argv);
 
 	try
 	{
 		// examples
-		x01_main(argc, argv);
-		//x21_main(argc, argv);
+		example_x01(argc, argv);
+		//example_x21(argc, argv);
 	}
 	catch (const std::exception &e)
 	{
