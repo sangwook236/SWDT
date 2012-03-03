@@ -25,11 +25,15 @@
 		mingw32-make all
 		mingw32-make clean
 
+
 << Execution >>
 
 [-] setting execution environment
 	-. shared object library를 사용하는 경우 Windows command window에서 ${MINGW32_ROOT}/lib을 path 설정
 		set path=${MINGW32_ROOT}/lib;%path%
+[-] MinGW32에서 build된 static library(libMocapy.a)를 MSVC에서 사용
+	[ref] http://stackoverflow.com/questions/2096519/from-mingw-static-library-a-to-visual-studio-static-library-lib
+	==> libMocapy.a를 MSVC에서 사용하기 쉽지 않을 듯함.
 
 
 << Trouble Shooting >>

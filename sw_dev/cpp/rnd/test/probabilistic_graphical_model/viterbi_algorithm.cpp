@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "viterbi.hpp"
 #include <string>
 #include <vector>

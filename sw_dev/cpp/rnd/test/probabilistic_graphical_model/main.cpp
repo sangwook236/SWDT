@@ -1,4 +1,5 @@
 //#include "stdafx.h"
+#include <vld/vld.h>
 #include <iostream>
 
 
@@ -10,12 +11,18 @@ int main(int argc, char **argv)
 {
 	void mrf();
 	void hmm();
+	void mocapy_discrete_hmm();
 
 	try
 	{
-		mrf();  // not yet implemented
+		// Markov network
+		//mrf();  // not yet implemented
 
-		hmm();
+		// dynamic Bayesian network
+		//hmm();
+
+		// Mocapy++ library
+		mocapy_discrete_hmm();
 	}
 	catch (const std::exception &e)
 	{

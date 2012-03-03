@@ -1,4 +1,4 @@
-[-] VC project file
+[-] MSVC project file
 	PNL
 		${PNL_ROOT}/c_pgmtk/make/pnl.dsw
 		${PNL_ROOT}/c_pgmtk/make/*.dsp
@@ -14,10 +14,10 @@
 	따라서 모든 dsp file (& dsw file)를 열어 DOS style로 저장을 한 후
 	vcproj file, vcxproj file (& sln file)로 변환하면 된다.
 	[ref] http://connect.microsoft.com/VisualStudio/feedback/details/546432/problems-with-vs2010rc-doing-conversion-of-vs6-dsp-file-vcproj-file
-	
-	VC6 project file을 VC9 & VC10 project file로 직접 변환하여도 정상 작동함.
 
-[-] Building in VC (original version)
+	MSVC6 project file을 MSVC9 & MSVC10 project file로 직접 변환하여도 정상 작동함.
+
+[-] Building in MSVC (original version)
 	[ref] http://sourceforge.net/projects/openpnl/
 
 	[1] cxcore library 이름 변경
@@ -46,18 +46,46 @@
 		실제 사용하는 경우 icxGetProcessorType() 함수 (${PNL_ROOT}/cxcore/cxcore/cxswitcher.cpp 안에 존재) 안의
 		cpuid() 함수를 실행하는 동안 error 발생
 			CPU info를 얻어오는 함수인데 이의 구현에 문제가 있는 것으로 판단.
-			VC가 제공하는 __cpuid() 함수로 대체 구현 가능
-	
+			MSVC가 제공하는 __cpuid() 함수로 대체 구현 가능
+
 			[ref] http://msdn.microsoft.com/en-us/library/hskdteyh.aspx
 			[ref] http://en.wikipedia.org/wiki/CPUID
-	
+
 			icxGetProcessorType() 함수 안에서 version & features를 계산하는 부분을 아래와 같이 변경하면 됨
 				const int a = 1;
 				int b[4];
 				__cpuid(b, a);
-	
+
 				const int version = b[0];
 				const int features = b[3];
+
+[-] Building in MinGW32 (original version)
+	-. Windows command window에서 ${MINGW32_ROOT}/bin & ${MSYS_ROOT}/bin을 path 설정
+		${MSYS_ROOT}/bin를 path 설정하는 것은 sh를 사용하기 위함
+		set path=${MINGW32_ROOT}/bin;${MSYS_ROOT}/bin;%path%
+	-. software building을 위해서 ${MINGW32_ROOT}/bin 하위의 executable file을 사용
+		"mingw32-"이 없는 executable file을 사용
+			e.g.)
+				mingw32-gcc.exe (X) ==> gcc.exe (O)
+				mingw32-g++.exe (X) ==> g++.exe (O)
+		단, make의 경우 mingw32-make.exe를 사용
+			make.exe (X) ==> mingw32-make.exe (O)
+	-. building
+		[ref] follow instructions in readme.txt
+
+		1. Go to the root directory (it contain this file and changes.txt)
+		2. Run 'sh ./configure.gcc'
+		3. Run 'make' to compile sources
+		4. Run 'make check' to compile and launch test suite (optionally)
+		5. Run 'make install' to install library
+	-. compile-time error 발생
+		GetTime() in ${PNL_ROOT}/trs/src/trsapi.c 에서 error 발생
+			RDTSC(addr) macro의 asm 처리 부분에서 error
+		PNL의 linux version에서도 동일한 error 발생
+
+[-] Building in MSYS (original version)
+	-. compile-time error 발생
+		MinGW32에서와 동일한 이유로 MSYS에서도 compile-time error 발생
 
 [-] Building in Cygwin (original version)
 	[1] building
@@ -96,9 +124,9 @@
 				LDFLAGS = -L$(top_srcdir)/c_pgmtk/src/.libs -L$(top_srcdir)/cxcore/cxcore/src
 				LIBS = -ldl -lm -lpnl.dll -lcxcore
 
-[-] Building in VC (crishoj-OpenPNL version)
+[-] Building in MSVC (crishoj-OpenPNL version)
 	[ref] https://github.com/crishoj/OpenPNL
-	
+
 	(주의) build가 되지 않음
 
 	[1] cxcore library
