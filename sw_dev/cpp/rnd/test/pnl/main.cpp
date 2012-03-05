@@ -45,9 +45,9 @@ int main(int argc, char **argv)
 		//mrf2();
 
 		// dynamic Bayesian network
-		dbn_example();  // from an example in "PNL: User Guide & Reference Manual"
+		//dbn_example();  // from an example in "PNL: User Guide & Reference Manual"
 		//dbn();
-		//hmm();
+		hmm();
 
 		// application
 		//viterbi_segmentation();

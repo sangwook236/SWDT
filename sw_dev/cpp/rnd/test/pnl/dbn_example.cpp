@@ -56,7 +56,7 @@ pnl::CDBN * create_ar_hmm()
 	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighbors, neighs, neighTypes);
 
 	// 2) create the Model Domain.
-	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));
+	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));  // discrete & binary
 	const pnl::intVector nodeAssociation(numNodes, 0);
 
 	pnl::CModelDomain *modelDomain = pnl::CModelDomain::Create(nodeTypes, nodeAssociation);

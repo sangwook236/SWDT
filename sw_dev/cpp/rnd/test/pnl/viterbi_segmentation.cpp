@@ -63,8 +63,8 @@ pnl::CDBN * create_simple_hmm()
 
 	// create static BNet
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes[0].SetType(true, 2);
-	nodeTypes[1].SetType(true, 3);
+	nodeTypes[0].SetType(true, 2);  // discrete & binary
+	nodeTypes[1].SetType(true, 3);  // continuous & trinary
 
 	pnl::intVector nodeAssociation(numNodes);
 	nodeAssociation[0] = 0;

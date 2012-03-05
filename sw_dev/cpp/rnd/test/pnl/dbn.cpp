@@ -126,7 +126,7 @@ pnl::CDBN * create_Kjaerulff_dbn()
 
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, numNodeTypes, nodeTypes, nodeAssociation, graph);
 */
-	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));
+	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));  // discrete & binary
 	const pnl::intVector nodeAssociation(numNodes, 0);
 
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
@@ -259,8 +259,8 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	//
 /*
 	pnl::CNodeType *nodeTypes = new pnl::CNodeType [numNodeTypes];
-	nodeTypes[0] = pnl::CNodeType(true, 2);
-	nodeTypes[1] = pnl::CNodeType(false, 1);
+	nodeTypes[0] = pnl::CNodeType(true, 2);  // discrete & binary
+	nodeTypes[1] = pnl::CNodeType(false, 1);  // continuous & univariate
 
 	int *nodeAssociation = new int [numNodes];
 	nodeAssociation[0] = 0;
@@ -280,8 +280,8 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	nodeAssociation = NULL;
 */
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes[0].SetType(true, 2);
-	nodeTypes[1].SetType(false, 1);
+	nodeTypes[0].SetType(true, 2);  // discrete & binary
+	nodeTypes[1].SetType(false, 1);  // continuous & univariate
 
 	pnl::intVector nodeAssociation(numNodes, 0);  // { 0, 0, 0, 1, 0, 0, 0, 1 }
 	nodeAssociation[3] = 1;

@@ -70,7 +70,7 @@ pnl::CBNet * create_model()
 
 	// 2 STEP:
 	// creation NodeType objects and specify node types for all nodes of the model.
-	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));
+	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));  // discrete & binary
 	// number of node types is 1, because all nodes are of the same type
 	// all four are discrete and binary
 

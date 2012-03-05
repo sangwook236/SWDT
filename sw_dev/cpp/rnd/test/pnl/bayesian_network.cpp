@@ -186,8 +186,8 @@ pnl::CBNet * create_single_mixture_of_gaussians_bayesian_network()
 	// all four are discrete and binary
 	const int numNodeTypes = 2;
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes[0].SetType(true, 2);  // 2 possible values
-	nodeTypes[1].SetType(false, 1);  // univariate
+	nodeTypes[0].SetType(true, 2);  // discrete & binary
+	nodeTypes[1].SetType(false, 1);  // continuous & univariate
 
 	pnl::intVector nodeAssociation(numNodes);
 	nodeAssociation[0] = 0;
@@ -541,9 +541,9 @@ pnl::CBNet * create_mixture_of_gaussians_bayesian_network()
 	//	3) multivariate Gaussian node 4 (consists of 2 values)
 	const int numNodeTypes = 3;
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes[0].SetType(true, 2);  // 2 possible values
-	nodeTypes[1].SetType(false, 1);  // univariate
-	nodeTypes[2].SetType(false, 2);  // bivariate
+	nodeTypes[0].SetType(true, 2);  // discrete & binary
+	nodeTypes[1].SetType(false, 1);  // continuous & univariate
+	nodeTypes[2].SetType(false, 2);  // continuous & bivariate
 
 	const int nnodes = graph->GetNumberOfNodes();
 	pnl::intVector nodeAssociation(nnodes, 1);  // { 0, 0, 1, 1, 2 }

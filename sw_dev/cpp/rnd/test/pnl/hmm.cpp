@@ -67,8 +67,8 @@ pnl::CDBN * create_simple_hmm()
 
 	// create static BNet
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes[0].SetType(true, 2);
-	nodeTypes[1].SetType(true, 3);
+	nodeTypes[0].SetType(true, 2);  // discrete & binary
+	nodeTypes[1].SetType(true, 3);  // discrete & trinary
 
 	pnl::intVector nodeAssociation(numNodes);
 	nodeAssociation[0] = 0;
@@ -145,8 +145,8 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
 	// create static BNet
 /*
 	pnl::CNodeType *nodeTypes = new pnl::CNodeType [numNodeTypes];
-	nodeTypes[0].SetType(true, 2);
-	nodeTypes[1].SetType(false, 1);
+	nodeTypes[0].SetType(true, 2);  // discrete & binary
+	nodeTypes[1].SetType(false, 1);  // continuous & univariate
 
 	const int nodeAssociation[] = { 0, 1, 0, 1 };
 
@@ -156,8 +156,8 @@ pnl::CDBN * create_hmm_with_ar_gaussian_observations()
 	nodeTypes = NULL;
 */
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes[0].SetType(true, 2);
-	nodeTypes[1].SetType(false, 1);
+	nodeTypes[0].SetType(true, 2);  // discrete & binary
+	nodeTypes[1].SetType(false, 1);  // continuous & univariate
 
 	pnl::intVector nodeAssociation(numNodes);
 	nodeAssociation[0] = 0;
@@ -440,7 +440,7 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 
 	// TODO [check] >> these are magic numbers
 	const int numStates = 5;  // k-variate
-	const int numMixtures = 5;  // p-variate
+	const int numMixtures = 6;  // p-variate
 
 	// create a DAG
 	const int numNeighs[] = {
@@ -468,9 +468,9 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 
 	// create static BNet
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes[0].SetType(true, numStates);
-	nodeTypes[2].SetType(true, numMixtures);
-	nodeTypes[1].SetType(false, 1);
+	nodeTypes[0].SetType(true, numStates);  // discrete & k-nary
+	nodeTypes[1].SetType(true, numMixtures);  // discrete & p-nary
+	nodeTypes[2].SetType(false, 1);  // continous & univariate
 
 	pnl::intVector nodeAssociation(numNodes);
 	nodeAssociation[0] = 0;
@@ -481,12 +481,15 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 	nodeAssociation[5] = 2;
 
 	//
-#if 1
+#if 0
 	pnl::CModelDomain *modelDomain = pnl::CModelDomain::Create(nodeTypes, nodeAssociation);
 
 	// to be learned
 	pnl::CBNet *bnet = pnl::CBNet::CreateWithRandomMatrices(graph, modelDomain);
 #else
+    // compile-time error
+    //  I have no idea of this cause
+
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
 
 	//
@@ -495,7 +498,7 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 	// FIXME [check] >> these parameters are to be determined
 	const float tableNode0[] = { 0.95f, 0.05f };
 	const float tableNode1[] = { 0.95f, 0.05f };
-	const float tableNode3[] = { 0.1f, 0.9f };
+	const float tableNode3[] = { 0.1f, 0.9f, 0.1f, 0.9f };
 	const float tableNode4[] = { 0.1f, 0.9f };
 
 	const float mean2w00 = -3.2f, cov2w00 = 0.00002f;  // node2 for node0 = 0 & node1 = 0
@@ -542,19 +545,19 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 	parentVal[0] = parentVal[1] = 0;  // node3 = 0 & node4 = 0
 	bnet->GetFactor(5)->AllocMatrix(&mean5w00, pnl::matMean, -1, parentVal);
 	bnet->GetFactor(5)->AllocMatrix(&cov5w00, pnl::matCovariance, -1, parentVal);
-	bnet->GetFactor(5)->AllocMatrix(&weight5w00, pnl::matWeights, 0, parentVal);
+	//bnet->GetFactor(5)->AllocMatrix(&weight5w00, pnl::matWeights, 0, parentVal);
 	parentVal[1] = 1;  // node3 = 0 & node4 = 1
 	bnet->GetFactor(5)->AllocMatrix(&mean5w01, pnl::matMean, -1, parentVal);
 	bnet->GetFactor(5)->AllocMatrix(&cov5w01, pnl::matCovariance, -1, parentVal);
-	bnet->GetFactor(5)->AllocMatrix(&weight5w01, pnl::matWeights, 0, parentVal);
+	//bnet->GetFactor(5)->AllocMatrix(&weight5w01, pnl::matWeights, 0, parentVal);
 	parentVal[1] = 1;  // node3 = 1 & node4 = 1
 	bnet->GetFactor(5)->AllocMatrix(&mean5w11, pnl::matMean, -1, parentVal);
 	bnet->GetFactor(5)->AllocMatrix(&cov5w11, pnl::matCovariance, -1, parentVal);
-	bnet->GetFactor(5)->AllocMatrix(&weight5w11, pnl::matWeights, 0, parentVal);
+	//bnet->GetFactor(5)->AllocMatrix(&weight5w11, pnl::matWeights, 0, parentVal);
 	parentVal[1] = 1;  // node3 = 1 & node4 = 0
 	bnet->GetFactor(5)->AllocMatrix(&mean5w10, pnl::matMean, -1, parentVal);
 	bnet->GetFactor(5)->AllocMatrix(&cov5w10, pnl::matCovariance, -1, parentVal);
-	bnet->GetFactor(5)->AllocMatrix(&weight5w10, pnl::matWeights, 0, parentVal);
+	//bnet->GetFactor(5)->AllocMatrix(&weight5w10, pnl::matWeights, 0, parentVal);
 #endif
 
 	// create DBN using BNet
@@ -691,7 +694,9 @@ void hmm()
 	// HMM with mixture-of-Gaussians observations
 	std::cout << "\n========== HMM with mixture-of-Gaussians observations" << std::endl;
 	{
+	    std::cout << "****** 11" << std::endl;  //-- [] 2012/03/06: Sang-Wook Lee
 		const boost::scoped_ptr<pnl::CDBN> hmm(local::create_hmm_with_mixture_of_gaussians_observations());
+	    std::cout << "****** 22" << std::endl;  //-- [] 2012/03/06: Sang-Wook Lee
 
 		if (!hmm)
 		{

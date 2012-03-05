@@ -36,7 +36,7 @@ pnl::CMRF2 * create_simple_mrf2_model()
 	const int numNodeTypes = 1;
 	const int numCliques = 10; //3;// 6;
 
-	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));
+	const pnl::nodeTypeVector nodeTypes(numNodeTypes, pnl::CNodeType(true, 2));  // discrete & binary
 	const pnl::intVector nodeAssociation(numNodes, 0);
 
 	//const boost::scoped_ptr<pnl::CModelDomain> modelDomain(pnl::CModelDomain::Create(nodeTypes, nodeAssociation));  // run-time error
