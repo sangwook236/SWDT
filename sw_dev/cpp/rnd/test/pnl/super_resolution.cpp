@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #endif
 #include <pnl_dll.hpp>
+#include <stdexcept>
 
 
 namespace {

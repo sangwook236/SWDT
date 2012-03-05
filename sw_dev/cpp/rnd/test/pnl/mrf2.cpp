@@ -81,7 +81,7 @@ pnl::CMRF2 * create_simple_mrf2_model()
 	const float *tables[] = { table0, table1, table2, table3, table4, table5, table6, table7, table8, table9 };
 
 	// number of factors is the same as number of cliques - one per clique
-	std::vector<pnl::CFactor *> potentials(numCliques, NULL);
+	std::vector<pnl::CFactor *> potentials(numCliques, (pnl::CFactor *)NULL);
 	for (int i = 0; i < numCliques; ++i)
 	{
 		potentials[i] = pnl::CTabularPotential::Create(cliques[i], 2, modelDomain);
@@ -262,7 +262,7 @@ pnl::CMRF2 * create_gaussian_mrf2_1()
 	pnl::CModelDomain *modelDomain = mrf2->GetModelDomain();
 	pnl::CFactorGraph *factorGraph = pnl::CFactorGraph::Create(modelDomain, numCliques);
 
-	std::vector<pnl::CFactor *> potentials(numCliques, NULL);
+	std::vector<pnl::CFactor *> potentials(numCliques, (pnl::CFactor *)NULL);
 	//const pnl::CNodeType *domainNodeTypes[2];
 	for (int i = 0; i < numCliques; ++i)
 	{
@@ -488,7 +488,7 @@ pnl::CMRF2 * create_gaussian_mrf2_2()
 	mrf2->AllocFactors();
 
 	pnl::CModelDomain *modelDomain = mrf2->GetModelDomain();
-	std::vector<pnl::CFactor *> potentials(numCliques, NULL);
+	std::vector<pnl::CFactor *> potentials(numCliques, (pnl::CFactor *)NULL);
 	//const pnl::CNodeType *domainNodeTypes[2];
 	//const boost::scoped_ptr<pnl::CFactors> factors(pnl::CFactors::Create(numCliques));  // TODO [check] >>
 	for (int i = 0; i < numCliques; ++i)
@@ -704,7 +704,7 @@ pnl::CMRF2 * create_gaussian_mrf2_3()
 
 	pnl::CModelDomain *modelDomain = mrf2->GetModelDomain();
 	// number of factors is the same as number of cliques - one per clique
-	std::vector<pnl::CFactor *> potentials(numCliques, NULL);
+	std::vector<pnl::CFactor *> potentials(numCliques, (pnl::CFactor *)NULL);
 	for (int i = 0; i < numCliques; ++i)
 	{
 		potentials[i] = pnl::CGaussianPotential::Create(cliques[i], 2, modelDomain);
