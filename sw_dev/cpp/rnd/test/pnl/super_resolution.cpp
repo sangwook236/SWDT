@@ -1,6 +1,4 @@
-#if defined(_MSC_VER)
-#include "stdafx.h"
-#endif
+//#include "stdafx.h"
 #include <pnl_dll.hpp>
 #include <stdexcept>
 

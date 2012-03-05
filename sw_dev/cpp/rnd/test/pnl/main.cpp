@@ -1,6 +1,4 @@
-#if defined(_MSC_VER)
-#include "stdafx.h"
-#endif
+//#include "stdafx.h"
 #include <pnl_dll.hpp>
 #if defined(WIN32)
 #include <vld/vld.h>
@@ -48,8 +46,8 @@ int main(int argc, char **argv)
 
 		// dynamic Bayesian network
 		dbn_example();  // from an example in "PNL: User Guide & Reference Manual"
-		dbn();
-		hmm();
+		//dbn();
+		//hmm();
 
 		// application
 		//viterbi_segmentation();
