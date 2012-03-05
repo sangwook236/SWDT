@@ -36,10 +36,13 @@
 		</Compiler>
 		<Linker>
 			<Add library="Mocapy" />
+			<Add library="lapack" />
+			<Add library="boost_serialization" />
 		</Linker>
 		<Unit filename="hmm.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mocapy_discrete_hmm.cpp" />
+		<Unit filename="mocapy_main.cpp" />
 		<Unit filename="viterbi.cpp" />
 		<Unit filename="viterbi.hpp" />
 		<Unit filename="viterbi_algorithm.cpp" />

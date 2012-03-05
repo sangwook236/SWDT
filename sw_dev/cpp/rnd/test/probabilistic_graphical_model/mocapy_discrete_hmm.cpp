@@ -1,6 +1,6 @@
 //#include "stdafx.h"
 
-#if !defined(M_PI)
+#if defined(_MSC_VER) && !defined(M_PI)
 #include <boost/math/constants/constants.hpp>
 #define M_PI (boost::math::constants::pi<double>())
 #endif

@@ -37,9 +37,9 @@
 			<Add directory="/usr/local/high/include" />
 		</Compiler>
 		<Linker>
-			<Add library="cxcore" />
-			<Add library="high" />
 			<Add library="pnl" />
+			<Add library="high" />
+			<Add library="cxcore" />
 		</Linker>
 		<Unit filename="bayesian_network.cpp" />
 		<Unit filename="bayesian_network_example.cpp" />
@@ -50,8 +50,6 @@
 		<Unit filename="mnet_example.cpp" />
 		<Unit filename="mrf2.cpp" />
 		<Unit filename="mrf_example.cpp" />
-		<Unit filename="stdafx.cpp" />
-		<Unit filename="stdafx.h" />
 		<Unit filename="super_resolution.cpp" />
 		<Unit filename="viterbi_segmentation.cpp" />
 		<Extensions>

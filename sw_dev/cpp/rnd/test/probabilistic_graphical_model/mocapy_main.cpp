@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include <framework/MocapyExceptions.h>
+#include <framework/mocapyexceptions.h>
 #include <iostream>
 
 
