@@ -1,12 +1,13 @@
 //#include "stdafx.h"
-#include <mocapy.h>
-#include <iostream>
-#include <ctime>
 
 #if !defined(M_PI)
 #include <boost/math/constants/constants.hpp>
 #define M_PI (boost::math::constants::pi<double>())
 #endif
+
+#include <mocapy.h>
+#include <iostream>
+#include <ctime>
 
 
 namespace {
@@ -33,6 +34,7 @@ void mocapy_discrete_hmm()
 	// Gibbs sampling parameters
 	const int MCMC_BURN_IN = 10;
 
+	//---------------------------------------------------------------
 	// HMM hidden and observed node sizes
 	const uint H_SIZE = 2;
 	const uint O_SIZE = 2;
@@ -59,6 +61,7 @@ void mocapy_discrete_hmm()
 	tdbn.add_inter("th0", "th1");
 	tdbn.construct();
 
+	//---------------------------------------------------------------
 	// the model DBN (this DBN will be trained)
 	// for mh0, get the CPD from th0 and fix parameters
 	mocapy::Node *mh0 = mocapy::NodeFactory::new_discrete_node(H_SIZE, "mh0", init_random, mocapy::CPD(), th0, true);
@@ -82,6 +85,7 @@ void mocapy_discrete_hmm()
 	std::cout << *mh1 << std::endl;
 	std::cout << *mo0 << std::endl;
 
+	//---------------------------------------------------------------
 	std::vector<mocapy::Sequence> seq_list;
 	std::vector<mocapy::MDArray<mocapy::eMISMASK> > mismask_list;
 
@@ -101,6 +105,7 @@ void mocapy_discrete_hmm()
 	}
 	std::cout << "average LL: " << sum_LL/N << std::endl;
 
+	//---------------------------------------------------------------
 	mocapy::GibbsRandom mcmc = mocapy::GibbsRandom(&mdbn);
 	mocapy::EMEngine em = mocapy::EMEngine(&mdbn, &mcmc, &seq_list, &mismask_list);
 
@@ -157,7 +162,6 @@ void mocapy_discrete_hmm()
 	std::cout << *mh0 << std::endl;
 	std::cout << *mh1 << std::endl;
 	std::cout << *mo0 << std::endl;
-
 
 	delete th0;
 	delete th1;

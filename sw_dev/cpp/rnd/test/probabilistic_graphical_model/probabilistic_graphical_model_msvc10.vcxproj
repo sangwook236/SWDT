@@ -90,6 +90,7 @@
     <ClCompile Include="hmm.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mocapy_discrete_hmm.cpp" />
+    <ClCompile Include="mocapy_main.cpp" />
     <ClCompile Include="mrf.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="viterbi.cpp" />

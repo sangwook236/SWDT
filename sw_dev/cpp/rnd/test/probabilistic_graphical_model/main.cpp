@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 {
 	void mrf();
 	void hmm();
-	void mocapy_discrete_hmm();
+	void mocapy_main();
 
 	try
 	{
@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 		//hmm();
 
 		// Mocapy++ library
-		mocapy_discrete_hmm();
+		mocapy_main();
 	}
 	catch (const std::exception &e)
 	{
