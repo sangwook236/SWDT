@@ -1,0 +1,3 @@
+http://code.google.com/p/pmtk3/
+http://www.cs.ubc.ca/~murphyk/Software/HMM/hmm.html
+http://www.cs.ubc.ca/~murphyk/Software/
