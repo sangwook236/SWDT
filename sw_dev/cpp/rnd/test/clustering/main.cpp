@@ -18,8 +18,8 @@ int main(int argc, char **argv)
 	{
 		std::srand((unsigned int)time(NULL));
 
-		k_means();
-		k_medoids();
+		k_means();  // not yet implemented
+		k_medoids();  // not yet implemented
 	}
 	catch (const std::exception &e)
 	{
