@@ -1,0 +1,3 @@
+http://stackoverflow.com/questions/4575098/documentation-concerning-platform-specific-macros-in-linux-posix
+http://www.linuxtopia.org/online_books/programming_tool_guides/redhat_using_cpp_c_preprocessor/predefined-macros.html
+http://msdn.microsoft.com/en-us/library/b0084kay.aspx
