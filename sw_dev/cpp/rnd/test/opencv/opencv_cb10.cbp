@@ -35,11 +35,11 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Linker>
-			<Add library="opecv_core" />
+			<Add library="opencv_core" />
 			<Add library="opencv_highgui" />
 			<Add library="opencv_ml" />
 			<Add library="opencv_imgproc" />
-			<Add library="opencv_features2s" />
+			<Add library="opencv_features2d" />
 			<Add library="opencv_objdetect" />
 			<Add library="opencv_flann" />
 			<Add library="opencv_video" />
