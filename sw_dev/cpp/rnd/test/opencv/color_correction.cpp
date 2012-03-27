@@ -41,7 +41,7 @@ void calc_color_correction_matrix_2(const cv::Mat &trueColorMat, const cv::Mat &
 	cv::Mat I_actual_aug(cv::Mat::ones(IMG_HEIGHT * IMG_WIDTH, 4, CV_32FC1));
 	//I_actual.assignTo(I_actual_aug(cv::Range::all(), cv::Range(0, 3)));  // error !!! not working
 #if defined(__GNUC__)
-    cv::Mat I_actual_aug2(I_actual_aug(cv::Range::all(), cv::Range(0, 3)));
+    cv::Mat I_actual_aug2(I_actual_aug, cv::Range::all(), cv::Range(0, 3));
 	I_actual.copyTo(I_actual_aug);  // apply when the same type
 #else
 	I_actual.copyTo(I_actual_aug(cv::Range::all(), cv::Range(0, 3)));  // apply when the same type
@@ -161,28 +161,28 @@ void color_correction_test_1()
 #if defined(__GNUC__)
 	cv::Mat actual_white_balance_patch_images(PATCH_HEIGHT, PATCH_WIDTH * WHITE_BALANCE_PATCH_NUM, CV_32FC3);
 	{
-        cv::Mat awbpi(actual_white_balance_patch_images(cv::Range::all(), cv::Range(0,PATCH_WIDTH)));
+        cv::Mat awbpi(actual_white_balance_patch_images, cv::Range::all(), cv::Range(0,PATCH_WIDTH));
         image(blackRect).convertTo(awbpi, CV_32FC3, 1, 0);
 	}
 	{
-        cv::Mat awbpi(actual_white_balance_patch_images(cv::Range::all(), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH)));
+        cv::Mat awbpi(actual_white_balance_patch_images, cv::Range::all(), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH));
         image(grayRect).convertTo(awbpi, CV_32FC3, 1, 0);
 	}
 	{
-        cv::Mat awbpi(actual_white_balance_patch_images(cv::Range::all(), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH)));
+        cv::Mat awbpi(actual_white_balance_patch_images, cv::Range::all(), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH));
         image(whiteRect).convertTo(awbpi, CV_32FC3, 1, 0);
 	}
 	cv::Mat actual_color_correction_patch_mat(PATCH_HEIGHT, PATCH_WIDTH * COLOR_CORRECTION_PATCH_NUM, CV_32FC3);
 	{
-        cv::Mat accpm(actual_color_correction_patch_mat(cv::Range::all(), cv::Range(0,PATCH_WIDTH)));
+        cv::Mat accpm(actual_color_correction_patch_mat, cv::Range::all(), cv::Range(0,PATCH_WIDTH));
         image(redRect).convertTo(accpm, CV_32FC3, 1, 0);
 	}
 	{
-        cv::Mat accpm(actual_color_correction_patch_mat(cv::Range::all(), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH)));
+        cv::Mat accpm(actual_color_correction_patch_mat, cv::Range::all(), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH));
         image(greenRect).convertTo(accpm, CV_32FC3, 1, 0);
 	}
 	{
-        cv::Mat accpm(actual_color_correction_patch_mat(cv::Range::all(), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH)));
+        cv::Mat accpm(actual_color_correction_patch_mat, cv::Range::all(), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH));
         image(blueRect).convertTo(accpm, CV_32FC3, 1, 0);
 	}
 #else
@@ -230,27 +230,27 @@ void color_correction_test_1()
 	cv::Mat actual_patched_images(2 * PATCH_HEIGHT, std::max(WHITE_BALANCE_PATCH_NUM, COLOR_CORRECTION_PATCH_NUM) * PATCH_WIDTH, CV_8UC3);
 #if defined(__GNUC__)
 	{
-	    cv::Mat api(actual_patched_images(cv::Range(0,PATCH_HEIGHT), cv::Range(0,PATCH_WIDTH)));
+	    cv::Mat api(actual_patched_images, cv::Range(0,PATCH_HEIGHT), cv::Range(0,PATCH_WIDTH));
         image(blackRect).convertTo(api, CV_8UC3, 1, 0);
 	}
 	{
-	    cv::Mat api(actual_patched_images(cv::Range(0,PATCH_HEIGHT), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH)));
+	    cv::Mat api(actual_patched_images, cv::Range(0,PATCH_HEIGHT), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH));
         image(grayRect).convertTo(api, CV_8UC3, 1, 0);
 	}
 	{
-	    cv::Mat api(actual_patched_images(cv::Range(0,PATCH_HEIGHT), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH)));
+	    cv::Mat api(actual_patched_images, cv::Range(0,PATCH_HEIGHT), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH));
         image(whiteRect).convertTo(api, CV_8UC3, 1, 0);
 	}
 	{
-	    cv::Mat api(actual_patched_images(cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range(0,PATCH_WIDTH)));
+	    cv::Mat api(actual_patched_images, cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range(0,PATCH_WIDTH));
         image(redRect).convertTo(api, CV_8UC3, 1, 0);
 	}
 	{
-	    cv::Mat api(actual_patched_images(cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH)));
+	    cv::Mat api(actual_patched_images, cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH));
         image(greenRect).convertTo(api, CV_8UC3, 1, 0);
 	}
 	{
-	    cv::Mat api(actual_patched_images(cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH)));
+	    cv::Mat api(actual_patched_images, cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH));
         image(blueRect).convertTo(api, CV_8UC3, 1, 0);
 	}
 #else
@@ -313,9 +313,9 @@ void color_correction_test_1()
 		std::cout << "total correction matrix = " << M_wc << std::endl;
 
 #if defined(__GNUC__)
-        cv::Mat cpm_tmp1(corrected_patch_images(cv::Range(0,PATCH_HEIGHT), cv::Range::all()));
+        cv::Mat cpm_tmp1(corrected_patch_images, cv::Range(0,PATCH_HEIGHT), cv::Range::all());
 		corrected_patch_mat1.convertTo(cpm_tmp1, CV_8UC3, 1, 0);
-		cv::Mat cpm_tmp2(corrected_patch_images(cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range::all()));
+		cv::Mat cpm_tmp2(corrected_patch_images, cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range::all());
 		corrected_patch_mat2.convertTo(cpm_tmp2, CV_8UC3, 1, 0);
 #else
 		corrected_patch_mat1.convertTo(corrected_patch_images(cv::Range(0,PATCH_HEIGHT), cv::Range::all()), CV_8UC3, 1, 0);
@@ -419,27 +419,27 @@ void color_correction_test_2()
 #if defined(__GNUC__)
 	cv::Mat actual_color_correction_patch_mat(PATCH_HEIGHT, PATCH_WIDTH * PATCH_NUM, CV_32FC3);
 	{
-        cv::Mat accpm(actual_color_correction_patch_mat(cv::Range::all(), cv::Range(0,PATCH_WIDTH)));
+        cv::Mat accpm(actual_color_correction_patch_mat, cv::Range::all(), cv::Range(0,PATCH_WIDTH));
         image(blackRect).convertTo(accpm, CV_32FC3, 1, 0);
 	}
 	{
-        cv::Mat accpm(actual_color_correction_patch_mat(cv::Range::all(), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH)));
+        cv::Mat accpm(actual_color_correction_patch_mat, cv::Range::all(), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH));
         image(grayRect).convertTo(accpm, CV_32FC3, 1, 0);
 	}
 	{
-        cv::Mat accpm(actual_color_correction_patch_mat(cv::Range::all(), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH)));
+        cv::Mat accpm(actual_color_correction_patch_mat, cv::Range::all(), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH));
         image(whiteRect).convertTo(accpm, CV_32FC3, 1, 0);
 	}
 	{
-        cv::Mat accpm(actual_color_correction_patch_mat(cv::Range::all(), cv::Range(3*PATCH_WIDTH,4*PATCH_WIDTH)));
+        cv::Mat accpm(actual_color_correction_patch_mat, cv::Range::all(), cv::Range(3*PATCH_WIDTH,4*PATCH_WIDTH));
         image(redRect).convertTo(accpm, CV_32FC3, 1, 0);
 	}
 	{
-        cv::Mat accpm(actual_color_correction_patch_mat(cv::Range::all(), cv::Range(4*PATCH_WIDTH,5*PATCH_WIDTH)));
+        cv::Mat accpm(actual_color_correction_patch_mat, cv::Range::all(), cv::Range(4*PATCH_WIDTH,5*PATCH_WIDTH));
         image(greenRect).convertTo(accpm, CV_32FC3, 1, 0);
 	}
 	{
-        cv::Mat accpm(actual_color_correction_patch_mat(cv::Range::all(), cv::Range(5*PATCH_WIDTH,6*PATCH_WIDTH)));
+        cv::Mat accpm(actual_color_correction_patch_mat, cv::Range::all(), cv::Range(5*PATCH_WIDTH,6*PATCH_WIDTH));
         image(blueRect).convertTo(accpm, CV_32FC3, 1, 0);
 	}
 #else
@@ -457,27 +457,27 @@ void color_correction_test_2()
 	cv::Mat actual_patched_images(2 * PATCH_HEIGHT, std::max(WHITE_BALANCE_PATCH_NUM, COLOR_CORRECTION_PATCH_NUM) * PATCH_WIDTH, CV_8UC3);
 #if defined(__GNUC__)
 	{
-	    cv::Mat api(actual_patched_images(cv::Range(0,PATCH_HEIGHT), cv::Range(0,PATCH_WIDTH)));
+	    cv::Mat api(actual_patched_images, cv::Range(0,PATCH_HEIGHT), cv::Range(0,PATCH_WIDTH));
         image(blackRect).convertTo(api, CV_8UC3, 1, 0);
 	}
 	{
-	    cv::Mat api(actual_patched_images(cv::Range(0,PATCH_HEIGHT), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH)));
+	    cv::Mat api(actual_patched_images, cv::Range(0,PATCH_HEIGHT), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH));
         image(grayRect).convertTo(api, CV_8UC3, 1, 0);
 	}
 	{
-	    cv::Mat api(actual_patched_images(cv::Range(0,PATCH_HEIGHT), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH)));
+	    cv::Mat api(actual_patched_images, cv::Range(0,PATCH_HEIGHT), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH));
         image(whiteRect).convertTo(api, CV_8UC3, 1, 0);
 	}
 	{
-	    cv::Mat api(actual_patched_images(cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range(0,PATCH_WIDTH)));
+	    cv::Mat api(actual_patched_images, cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range(0,PATCH_WIDTH));
         image(redRect).convertTo(api, CV_8UC3, 1, 0);
 	}
 	{
-	    cv::Mat api(actual_patched_images(cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH)));
+	    cv::Mat api(actual_patched_images, cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range(PATCH_WIDTH,2*PATCH_WIDTH));
         image(greenRect).convertTo(api, CV_8UC3, 1, 0);
 	}
 	{
-	    cv::Mat api(actual_patched_images(cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH)));
+	    cv::Mat api(actual_patched_images, cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range(2*PATCH_WIDTH,3*PATCH_WIDTH));
         image(blueRect).convertTo(api, CV_8UC3, 1, 0);
 	}
 #else
@@ -527,9 +527,9 @@ void color_correction_test_2()
 		std::cout << "color correction matrix = " << M << std::endl;
 
 #if defined(__GNUC__)
-        cv::Mat cpm_tmp1(corrected_patch_images(cv::Range(0,PATCH_HEIGHT), cv::Range::all()));
+        cv::Mat cpm_tmp1(corrected_patch_images, cv::Range(0,PATCH_HEIGHT), cv::Range::all());
 		corrected_patch_mat(cv::Range::all(), cv::Range(0,3*PATCH_HEIGHT)).convertTo(cpm_tmp1, CV_8UC3, 1, 0);
-        cv::Mat cpm_tmp2(corrected_patch_images(cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range::all()));
+        cv::Mat cpm_tmp2(corrected_patch_images, cv::Range(PATCH_HEIGHT,2*PATCH_HEIGHT), cv::Range::all());
 		corrected_patch_mat(cv::Range::all(), cv::Range(3*PATCH_HEIGHT,6*PATCH_HEIGHT)).convertTo(cpm_tmp2, CV_8UC3, 1, 0);
 #else
 		corrected_patch_mat(cv::Range::all(), cv::Range(0,3*PATCH_HEIGHT)).convertTo(corrected_patch_images(cv::Range(0,PATCH_HEIGHT), cv::Range::all()), CV_8UC3, 1, 0);

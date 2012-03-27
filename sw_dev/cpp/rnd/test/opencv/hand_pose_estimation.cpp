@@ -191,7 +191,7 @@ void make_contour(const cv::Mat &segmentMask, const cv::Rect &roi, const int seg
 	{
 #if defined(__GNUC__)
         {
-            cv::Mat segmentMask_roi(segmentMask(roi));
+            cv::Mat segmentMask_roi(segmentMask, roi);
             cv::findContours(segmentMask_roi, contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
             //cv::findContours(segmentMask_roi, contours2, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
         }

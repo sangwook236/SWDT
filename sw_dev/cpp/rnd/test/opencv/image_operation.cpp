@@ -42,12 +42,9 @@ void image_handling()
 					CV_IMAGE_ELEM(img, unsigned char, i, j) = (unsigned char)ii;
 
 			std::cout << "image =>" << std::endl;
-#if defined(__GNUC__)
-#else
 			print_opencv_matrix(cv::Mat(rdim, cdim, CV_8UC1, (void *)img->imageData));
-#endif
 			//const unsigned char *p = (unsigned char *)img->imageData;
-			//print_opencv_matrix(&cvMat(rdim, cdim, CV_8UC1, (void*)p));
+			//print_opencv_matrix(cv::Mat(rdim, cdim, CV_8UC1, (void*)p));
 		}
 		else if (iplDepth == IPL_DEPTH_32F)
 		{
@@ -60,7 +57,7 @@ void image_handling()
 			std::cout << "image =>" << std::endl;
 			print_opencv_matrix(cv::Mat(rdim, cdim, CV_32FC1, (void *)img->imageData));
 			//p = (float *)img->imageData;
-			//print_opencv_matrix(&cvMat(rdim, cdim, CV_32FC1, (void *)p));
+			//print_opencv_matrix(cv::Mat(rdim, cdim, CV_32FC1, (void *)p));
 		}
 		else
 			assert(false);

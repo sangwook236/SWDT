@@ -22,7 +22,7 @@ void make_contour(const cv::Mat &img, const cv::Rect &roi, const int segmentId, 
 	{
 #if defined(__GNUC__)
         {
-            cv::Mat img_roi(img(roi));
+            cv::Mat img_roi(img, roi);
             cv::findContours(img_roi, contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
         }
 #else

@@ -773,7 +773,7 @@ HistogramAccumulator::HistogramAccumulator(const size_t histogramNum, const std:
 void HistogramAccumulator::accumulateHistograms()
 {
 #if defined(__GNUC__)
-	accumulatedHistogram_, cv::MatND();
+	accumulatedHistogram_ = cv::MatND();
 #else
 	std::swap(accumulatedHistogram_, cv::MatND());
 #endif

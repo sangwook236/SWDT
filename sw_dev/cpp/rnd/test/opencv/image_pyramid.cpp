@@ -109,7 +109,7 @@ void image_pyramid()
 	for (std::list<cv::Mat>::const_iterator it = pyramids.begin(); it != pyramids.end(); ++it, ++k)
 	{
 #if defined(__GNUC__)
-        cv::Mat disp_img_roi(disp_img(cv::Range(0, it->rows), cv::Range(start, start + it->cols)));
+        cv::Mat disp_img_roi(disp_img, cv::Range(0, it->rows), cv::Range(start, start + it->cols));
 		it->copyTo(disp_img_roi);
 #else
 		it->copyTo(disp_img(cv::Range(0, it->rows), cv::Range(start, start + it->cols)));

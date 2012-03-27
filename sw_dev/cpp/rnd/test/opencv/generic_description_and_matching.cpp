@@ -14,11 +14,11 @@ void drawCorrespondences(const cv::Mat &img1, const std::vector<cv::KeyPoint> &f
 	img_corr.create(img1.rows + img2.rows, std::max(img1.cols, img2.cols), CV_8UC1);
 #if defined(__GNUC__)
 	{
-	    cv::Mat imgtmp(img_corr(cv::Rect(0, 0, img1.rows, img1.cols)));
+	    cv::Mat imgtmp(img_corr, cv::Rect(0, 0, img1.rows, img1.cols));
         cv::cvtColor(img1, imgtmp, CV_GRAY2RGB);
 	}
 	{
-	    cv::Mat imgtmp(img_corr(cv::Rect(img1.rows, 0, img2.rows, img2.cols)));
+	    cv::Mat imgtmp(img_corr, cv::Rect(img1.rows, 0, img2.rows, img2.cols));
         cv::cvtColor(img2, imgtmp, CV_GRAY2RGB);
 	}
 #else

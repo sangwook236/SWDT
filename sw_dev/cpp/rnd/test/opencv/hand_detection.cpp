@@ -186,7 +186,14 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		edge_img.setTo(cv::Scalar::all(0), edge < (minVal + (maxVal - minVal) * thresholdRatio));
 
 		processed_img = cv::Mat::zeros(img.size(), CV_8UC1);
+#if defined(__GNUC__)
+        {
+            cv::Mat processed_img_tmp(processed_img, aabb);
+			edge_img.copyTo(processed_img_tmp);
+        }
+#else
 		edge_img.copyTo(processed_img(aabb));
+#endif
 #elif defined(__USE_SOBEL)
 		cv::Mat gray, edge, edge_img;
 		cv::cvtColor(img(aabb), gray, CV_BGR2GRAY);
@@ -204,7 +211,7 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		processed_img = cv::Mat::zeros(img.size(), CV_8UC1);
 #if defined(__GNUC__)
         {
-            cv::Mat processed_img_tmp(processed_img(aabb));
+            cv::Mat processed_img_tmp(processed_img, aabb);
             edge_img.copyTo(processed_img_tmp);
         }
 #else

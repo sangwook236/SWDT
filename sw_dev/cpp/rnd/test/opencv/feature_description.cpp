@@ -329,9 +329,9 @@ void fern(const std::string &modelFilename, const cv::Mat &img1, const cv::Mat &
 	// draw match points
 	cv::Mat img_correspondence(object.rows + image.rows, std::max(object.cols, image.cols), CV_8UC3, cv::Scalar::all(0));
 #if defined(__GNUC__)
-    cv::Mat ic_tmp1(img_correspondence(cv::Rect(0, 0, object.cols, object.rows)));
+    cv::Mat ic_tmp1(img_correspondence, cv::Rect(0, 0, object.cols, object.rows));
 	cv::cvtColor(object, ic_tmp1, CV_GRAY2BGR);
-    cv::Mat ic_tmp2(img_correspondence(cv::Rect(0, object.rows, image.cols, image.rows)));
+    cv::Mat ic_tmp2(img_correspondence, cv::Rect(0, object.rows, image.cols, image.rows));
     cv::cvtColor(image, ic_tmp2, CV_GRAY2BGR);
 #else
 	cv::cvtColor(object, img_correspondence(cv::Rect(0, 0, object.cols, object.rows)), CV_GRAY2BGR);
