@@ -821,8 +821,8 @@ void findFingertips(const std::vector<std::vector<cv::Point> > &fingerContours, 
 		size_t minIdx = -1, maxIdx = -1;
 		if (findCurvaturePoints(*it, displaceIndex, minIdx, maxIdx))
 		{
-			if (-1 != minIdx) minFingerTipPoints.push_back((*it)[minIdx]);
-			if (-1 != maxIdx) maxFingerTipPoints.push_back((*it)[maxIdx]);
+			if ((size_t)-1 != minIdx) minFingerTipPoints.push_back((*it)[minIdx]);
+			if ((size_t)-1 != maxIdx) maxFingerTipPoints.push_back((*it)[maxIdx]);
 		}
 	}
 

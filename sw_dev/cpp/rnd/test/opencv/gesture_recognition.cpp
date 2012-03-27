@@ -892,7 +892,7 @@ GestureClassifier::GestureType GestureClassifier::classifyGesture(const boost::c
 	cv::MatND hist = cv::MatND::zeros(binNum_, 1, CV_32F);
 	float *binPtr = (float *)hist.data;
 	for (boost::circular_buffer<size_t>::const_iterator it = matchedHistogramIndexes.begin(); it != matchedHistogramIndexes.end(); ++it)
-		if (*it != -1) ++(binPtr[*it]);
+		if ((size_t)-1 != *it) ++(binPtr[*it]);
 #endif
 
 	// match histogram
