@@ -41,10 +41,21 @@
 		</Linker>
 		<Unit filename="hmm_em.cpp" />
 		<Unit filename="hmm_forward_backward.cpp" />
+		<Unit filename="hmm_sample.cpp" />
 		<Unit filename="hmm_viterbi.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mocapy_discrete_hmm.cpp" />
 		<Unit filename="mocapy_main.cpp" />
+		<Unit filename="umdhmm_backward.cpp" />
+		<Unit filename="umdhmm_baum.cpp" />
+		<Unit filename="umdhmm_forward.cpp" />
+		<Unit filename="umdhmm_hmm.h" />
+		<Unit filename="umdhmm_hmmrand.cpp" />
+		<Unit filename="umdhmm_hmmutils.cpp" />
+		<Unit filename="umdhmm_nrutil.cpp" />
+		<Unit filename="umdhmm_nrutil.h" />
+		<Unit filename="umdhmm_sequence.cpp" />
+		<Unit filename="umdhmm_viterbi.cpp" />
 		<Unit filename="viterbi.cpp" />
 		<Unit filename="viterbi.hpp" />
 		<Unit filename="viterbi_algorithm.cpp" />

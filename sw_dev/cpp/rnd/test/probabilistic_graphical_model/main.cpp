@@ -15,6 +15,7 @@ int main(int argc, char **argv)
 	void hmm_forward_backward();
 	void hmm_viterbi();
 	void hmm_em();
+	void hmm_sample();
 	void mocapy_main();
 
 	try
@@ -23,14 +24,15 @@ int main(int argc, char **argv)
 		//mrf();  // not yet implemented
 
         // hidden Markov model (HMM)
-		//hmm_forward_backward();
+		//hmm_forward_backward();  // not yet implemented
 		//hmm_viterbi();
-		//hmm_em();
+		//hmm_em();  // not yet implemented
+		//hmm_sample();  // not yet implemented
 
 		// dynamic Bayesian network (DBN)
 
 		// Mocapy++ library
-		mocapy_main();
+		//mocapy_main();
 	}
 	catch (const std::exception &e)
 	{

@@ -2,7 +2,7 @@
 **      Author: Tapas Kanungo, kanungo@cfar.umd.edu
 **      Date:   15 December 1997
 **      File:   hmm.h
-**      Purpose: datastructures used for HMM. 
+**      Purpose: datastructures used for HMM.
 **      Organization: University of Maryland
 **
 **	Update:
@@ -43,35 +43,27 @@ int GenInitalState(HMM *phmm);
 int GenNextState(HMM *phmm, int q_t);
 int GenSymbol(HMM *phmm, int q_t);
 
- 
+
 void Forward(HMM *phmm, int T, int *O, double **alpha, double *pprob);
-void ForwardWithScale(HMM *phmm, int T, int *O, double **alpha,
-        double *scale, double *pprob);
+void ForwardWithScale(HMM *phmm, int T, int *O, double **alpha, double *scale, double *pprob);
 void Backward(HMM *phmm, int T, int *O, double **beta, double *pprob);
-void BackwardWithScale(HMM *phmm, int T, int *O, double **beta,
-        double *scale, double *pprob);
-void BaumWelch(HMM *phmm, int T, int *O, double **alpha, double **beta,
-        double **gamma, int *niter, 
-	double *plogprobinit, double *plogprobfinal);
+void BackwardWithScale(HMM *phmm, int T, int *O, double **beta, double *scale, double *pprob);
+void BaumWelch(HMM *phmm, int T, int *O, double **alpha, double **beta, double **gamma, int *niter, double *plogprobinit, double *plogprobfinal);
 
 double *** AllocXi(int T, int N);
 void FreeXi(double *** xi, int T, int N);
-void ComputeGamma(HMM *phmm, int T, double **alpha, double **beta,
-        double **gamma);
-void ComputeXi(HMM* phmm, int T, int *O, double **alpha, double **beta,
-        double ***xi);
-void Viterbi(HMM *phmm, int T, int *O, double **delta, int **psi,
-        int *q, double *pprob);
-void ViterbiLog(HMM *phmm, int T, int *O, double **delta, int **psi,
-        int *q, double *pprob);
+void ComputeGamma(HMM *phmm, int T, double **alpha, double **beta, double **gamma);
+void ComputeXi(HMM* phmm, int T, int *O, double **alpha, double **beta, double ***xi);
+void Viterbi(HMM *phmm, int T, int *O, double **delta, int **psi, int *q, double *pprob);
+void ViterbiLog(HMM *phmm, int T, int *O, double **delta, int **psi, int *q, double *pprob);
 
 /* random number generator related functions*/
 
 int hmmgetseed(void);
 void hmmsetseed(int seed);
 double hmmgetrand(void);
- 
+
 #define MAX(x,y)        ((x) > (y) ? (x) : (y))
 #define MIN(x,y)        ((x) < (y) ? (x) : (y))
- 
+
 #endif  // __umdhmm_hmm_h__

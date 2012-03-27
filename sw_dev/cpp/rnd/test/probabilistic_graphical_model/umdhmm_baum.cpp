@@ -3,29 +3,27 @@
 **      Date:   15 December 1997
 **      File:   baumwelch.c
 **      Purpose: Baum-Welch algorithm for estimating the parameters
-**              of a HMM model, given an observation sequence. 
+**              of a HMM model, given an observation sequence.
 **      Organization: University of Maryland
 **
-**	Update: 
+**	Update:
 **	Author: Tapas Kanungo
 **	Date:	19 April 1999
 **	Purpose: Changed the convergence criterion from ratio
-**		to absolute value. 
+**		to absolute value.
 **
 **      $Id: baumwelch.c,v 1.6 1999/04/24 15:58:43 kanungo Exp kanungo $
 */
 
 #include "umdhmm_nrutil.h"
 #include "umdhmm_hmm.h"
-#include <cstdio> 
+#include <cstdio>
 #include <cmath>
 
 static char rcsid[] = "$Id: baumwelch.c,v 1.6 1999/04/24 15:58:43 kanungo Exp kanungo $";
 
-#define DELTA 0.001 
-void BaumWelch(HMM *phmm, int T, int *O, double **alpha, double **beta,
-	double **gamma, int *pniter, 
-	double *plogprobinit, double *plogprobfinal)
+#define DELTA 0.001
+void BaumWelch(HMM *phmm, int T, int *O, double **alpha, double **beta, double **gamma, int *pniter, double *plogprobinit, double *plogprobfinal)
 {
 	int	i, j, k;
 	int	t, l = 0;
@@ -49,32 +47,32 @@ void BaumWelch(HMM *phmm, int T, int *O, double **alpha, double **beta,
 	ComputeXi(phmm, T, O, alpha, beta, xi);
 	logprobprev = logprobf;
 
-	do  {	
+	do  {
 
 		/* reestimate frequency of state i in time t=1 */
-		for (i = 1; i <= phmm->N; i++) 
+		for (i = 1; i <= phmm->N; i++)
 			phmm->pi[i] = .001 + .999*gamma[1][i];
 
 		/* reestimate transition matrix  and symbol prob in
 		   each state */
-		for (i = 1; i <= phmm->N; i++) { 
+		for (i = 1; i <= phmm->N; i++) {
 			denominatorA = 0.0;
-			for (t = 1; t <= T - 1; t++) 
+			for (t = 1; t <= T - 1; t++)
 				denominatorA += gamma[t][i];
 
 			for (j = 1; j <= phmm->N; j++) {
 				numeratorA = 0.0;
-				for (t = 1; t <= T - 1; t++) 
+				for (t = 1; t <= T - 1; t++)
 					numeratorA += xi[t][i][j];
-				phmm->A[i][j] = .001 + 
+				phmm->A[i][j] = .001 +
 						.999*numeratorA/denominatorA;
 			}
 
-			denominatorB = denominatorA + gamma[T][i]; 
+			denominatorB = denominatorA + gamma[T][i];
 			for (k = 1; k <= phmm->M; k++) {
 				numeratorB = 0.0;
 				for (t = 1; t <= T; t++) {
-					if (O[t] == k) 
+					if (O[t] == k)
 						numeratorB += gamma[t][i];
 				}
 
@@ -88,24 +86,23 @@ void BaumWelch(HMM *phmm, int T, int *O, double **alpha, double **beta,
 		ComputeGamma(phmm, T, alpha, beta, gamma);
 		ComputeXi(phmm, T, O, alpha, beta, xi);
 
-		/* compute difference between log probability of 
+		/* compute difference between log probability of
 		   two iterations */
-		delta = logprobf - logprobprev; 
+		delta = logprobf - logprobprev;
 		logprobprev = logprobf;
 		l++;
-		
+
 	}
-	while (delta > DELTA); /* if log probability does not 
-                                  change much, exit */ 
- 
+	while (delta > DELTA); /* if log probability does not
+                                  change much, exit */
+
 	*pniter = l;
 	*plogprobfinal = logprobf; /* log P(O|estimated model) */
 	FreeXi(xi, T, phmm->N);
 	free_dvector(scale, 1, T);
 }
 
-void ComputeGamma(HMM *phmm, int T, double **alpha, double **beta, 
-	double **gamma)
+void ComputeGamma(HMM *phmm, int T, double **alpha, double **beta, double **gamma)
 {
 
 	int 	i, j;
@@ -119,21 +116,20 @@ void ComputeGamma(HMM *phmm, int T, double **alpha, double **beta,
 			denominator += gamma[t][j];
 		}
 
-		for (i = 1; i <= phmm->N; i++) 
+		for (i = 1; i <= phmm->N; i++)
 			gamma[t][i] = gamma[t][i]/denominator;
 	}
 }
 
-void ComputeXi(HMM* phmm, int T, int *O, double **alpha, double **beta, 
-	double ***xi)
+void ComputeXi(HMM* phmm, int T, int *O, double **alpha, double **beta, double ***xi)
 {
 	int i, j;
 	int t;
 	double sum;
 
 	for (t = 1; t <= T - 1; t++) {
-		sum = 0.0;	
-		for (i = 1; i <= phmm->N; i++) 
+		sum = 0.0;
+		for (i = 1; i <= phmm->N; i++)
 			for (j = 1; j <= phmm->N; j++) {
 				xi[t][i][j] = alpha[t][i]*beta[t+1][j]
 					*(phmm->A[i][j])
@@ -141,8 +137,8 @@ void ComputeXi(HMM* phmm, int T, int *O, double **alpha, double **beta,
 				sum += xi[t][i][j];
 			}
 
-		for (i = 1; i <= phmm->N; i++) 
-			for (j = 1; j <= phmm->N; j++) 
+		for (i = 1; i <= phmm->N; i++)
+			for (j = 1; j <= phmm->N; j++)
 				xi[t][i][j]  /= sum;
 	}
 }

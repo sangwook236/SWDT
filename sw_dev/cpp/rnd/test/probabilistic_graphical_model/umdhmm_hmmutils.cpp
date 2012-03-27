@@ -2,7 +2,7 @@
 **      Author: Tapas Kanungo, kanungo@cfar.umd.edu
 **      Date:   15 December 1997
 **      File:   hmmutils.c
-**      Purpose: utilities for reading, writing HMM stuff. 
+**      Purpose: utilities for reading, writing HMM stuff.
 **      Organization: University of Maryland
 **
 **      $Id: hmmutils.c,v 1.4 1998/02/23 07:51:26 kanungo Exp kanungo $
@@ -21,32 +21,32 @@ void ReadHMM(FILE *fp, HMM *phmm)
 {
 	int i, j, k;
 
-	fscanf(fp, "M= %d\n", &(phmm->M)); 
+	fscanf(fp, "M= %d\n", &(phmm->M));
 
-	fscanf(fp, "N= %d\n", &(phmm->N)); 
+	fscanf(fp, "N= %d\n", &(phmm->N));
 
 	fscanf(fp, "A:\n");
 	phmm->A = (double **) dmatrix(1, phmm->N, 1, phmm->N);
-	for (i = 1; i <= phmm->N; i++) { 
+	for (i = 1; i <= phmm->N; i++) {
 		for (j = 1; j <= phmm->N; j++) {
-			fscanf(fp, "%lf", &(phmm->A[i][j])); 
+			fscanf(fp, "%lf", &(phmm->A[i][j]));
 		}
 		fscanf(fp,"\n");
 	}
 
 	fscanf(fp, "B:\n");
 	phmm->B = (double **) dmatrix(1, phmm->N, 1, phmm->M);
-	for (j = 1; j <= phmm->N; j++) { 
+	for (j = 1; j <= phmm->N; j++) {
 		for (k = 1; k <= phmm->M; k++) {
-			fscanf(fp, "%lf", &(phmm->B[j][k])); 
+			fscanf(fp, "%lf", &(phmm->B[j][k]));
 		}
 		fscanf(fp,"\n");
 	}
 
 	fscanf(fp, "pi:\n");
 	phmm->pi = (double *) dvector(1, phmm->N);
-	for (i = 1; i <= phmm->N; i++) 
-		fscanf(fp, "%lf", &(phmm->pi[i])); 
+	for (i = 1; i <= phmm->N; i++)
+		fscanf(fp, "%lf", &(phmm->pi[i]));
 
 }
 
@@ -61,7 +61,7 @@ void FreeHMM(HMM *phmm)
 ** InitHMM() This function initializes matrices A, B and vector pi with
 **	random values. Not doing so can result in the BaumWelch behaving
 **	quite weirdly.
-*/ 
+*/
 
 void InitHMM(HMM *phmm, int N, int M, int seed)
 {
@@ -72,79 +72,79 @@ void InitHMM(HMM *phmm, int N, int M, int seed)
 	/* initialize random number generator */
 
 
-	hmmsetseed(seed);	
+	hmmsetseed(seed);
 
        	phmm->M = M;
- 
+
         phmm->N = N;
- 
+
         phmm->A = (double **) dmatrix(1, phmm->N, 1, phmm->N);
 
         for (i = 1; i <= phmm->N; i++) {
 		sum = 0.0;
                 for (j = 1; j <= phmm->N; j++) {
-                        phmm->A[i][j] = hmmgetrand(); 
+                        phmm->A[i][j] = hmmgetrand();
 			sum += phmm->A[i][j];
 		}
-                for (j = 1; j <= phmm->N; j++) 
+                for (j = 1; j <= phmm->N; j++)
 			 phmm->A[i][j] /= sum;
 	}
- 
+
         phmm->B = (double **) dmatrix(1, phmm->N, 1, phmm->M);
 
         for (j = 1; j <= phmm->N; j++) {
-		sum = 0.0;	
+		sum = 0.0;
                 for (k = 1; k <= phmm->M; k++) {
                         phmm->B[j][k] = hmmgetrand();
 			sum += phmm->B[j][k];
 		}
-                for (k = 1; k <= phmm->M; k++) 
+                for (k = 1; k <= phmm->M; k++)
 			phmm->B[j][k] /= sum;
 	}
- 
+
         phmm->pi = (double *) dvector(1, phmm->N);
 	sum = 0.0;
         for (i = 1; i <= phmm->N; i++) {
-                phmm->pi[i] = hmmgetrand(); 
+                phmm->pi[i] = hmmgetrand();
 		sum += phmm->pi[i];
 	}
-        for (i = 1; i <= phmm->N; i++) 
+        for (i = 1; i <= phmm->N; i++)
 		phmm->pi[i] /= sum;
 }
 
 void CopyHMM(HMM *phmm1, HMM *phmm2)
 {
         int i, j, k;
- 
+
         phmm2->M = phmm1->M;
 
- 
+
         phmm2->N = phmm1->N;
- 
+
         phmm2->A = (double **) dmatrix(1, phmm2->N, 1, phmm2->N);
- 
+
         for (i = 1; i <= phmm2->N; i++)
                 for (j = 1; j <= phmm2->N; j++)
                         phmm2->A[i][j] = phmm1->A[i][j];
- 
+
         phmm2->B = (double **) dmatrix(1, phmm2->N, 1, phmm2->M);
         for (j = 1; j <= phmm2->N; j++)
                 for (k = 1; k <= phmm2->M; k++)
                         phmm2->B[j][k] = phmm1->B[j][k];
- 
+
         phmm2->pi = (double *) dvector(1, phmm2->N);
         for (i = 1; i <= phmm2->N; i++)
-                phmm2->pi[i] = phmm1->pi[i]; 
- 
+                phmm2->pi[i] = phmm1->pi[i];
+
 }
 
 void PrintHMM(FILE *fp, HMM *phmm)
 {
         int i, j, k;
 
-	fprintf(fp, "M= %d\n", phmm->M); 
-	fprintf(fp, "N= %d\n", phmm->N); 
- 
+	fprintf(fp, "M= %d\n", phmm->M);
+	fprintf(fp, "N= %d\n", phmm->N);
+
 	fprintf(fp, "A:\n");
         for (i = 1; i <= phmm->N; i++) {
                 for (j = 1; j <= phmm->N; j++) {
@@ -152,7 +152,7 @@ void PrintHMM(FILE *fp, HMM *phmm)
 		}
 		fprintf(fp, "\n");
 	}
- 
+
 	fprintf(fp, "B:\n");
         for (j = 1; j <= phmm->N; j++) {
                 for (k = 1; k <= phmm->M; k++){
@@ -160,11 +160,10 @@ void PrintHMM(FILE *fp, HMM *phmm)
 		}
 		fprintf(fp, "\n");
 	}
- 
+
 	fprintf(fp, "pi:\n");
         for (i = 1; i <= phmm->N; i++) {
 		fprintf(fp, "%f ", phmm->pi[i]);
 	}
 	fprintf(fp, "\n\n");
 }
-

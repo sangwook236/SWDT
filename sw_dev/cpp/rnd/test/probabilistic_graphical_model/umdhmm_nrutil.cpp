@@ -2,7 +2,7 @@
 **      File:   nrutil.c
 **      Purpose: Memory allocation routines borrowed from the
 **		book "Numerical Recipes" by Press, Flannery, Teukolsky,
-**		and Vetterling. 
+**		and Vetterling.
 **              state sequence and probablity of observing a sequence
 **              given the model.
 **      Organization: University of Maryland
@@ -12,6 +12,7 @@
 
 #include <malloc.h>
 #include <cstdio>
+#include <cstdlib>
 
 
 static char rcsid[] = "$Id: nrutil.c,v 1.2 1998/02/19 16:31:35 kanungo Exp kanungo $";
@@ -19,8 +20,6 @@ static char rcsid[] = "$Id: nrutil.c,v 1.2 1998/02/19 16:31:35 kanungo Exp kanun
 
 void nrerror(const char *error_text)
 {
-	void exit(int);
-
 	fprintf(stderr, "Numerical Recipes run-time error...\n");
 	fprintf(stderr, "%s\n", error_text);
 	fprintf(stderr, "...now exiting to system...\n");
