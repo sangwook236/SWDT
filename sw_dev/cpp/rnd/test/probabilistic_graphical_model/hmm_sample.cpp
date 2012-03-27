@@ -7,8 +7,8 @@ namespace {
 namespace local {
 
 // [ref] umdhmm (http://www.kanungo.com/software/software.html#umdhmm)
-//	baum.c & esthmm.c
-void hmm_em_umdhmm()
+//	genseq.c
+void hmm_sample_umdhmm()
 {
 	throw std::runtime_error("not yet implemented");
 }
@@ -16,8 +16,8 @@ void hmm_em_umdhmm()
 }  // namespace local
 }  // unnamed namespace
 
-void hmm_em()
+void hmm_sample()
 {
-    local::hmm_em_umdhmm();
+    local::hmm_sample_umdhmm();
 }
 
