@@ -12,7 +12,9 @@ int main(int argc, char **argv)
 #endif
 {
 	void mrf();
-	void hmm();
+	void hmm_forward_backward();
+	void hmm_viterbi();
+	void hmm_em();
 	void mocapy_main();
 
 	try
@@ -20,8 +22,12 @@ int main(int argc, char **argv)
 		// Markov network
 		//mrf();  // not yet implemented
 
-		// dynamic Bayesian network
-		//hmm();
+        // hidden Markov model (HMM)
+		//hmm_forward_backward();
+		//hmm_viterbi();
+		//hmm_em();
+
+		// dynamic Bayesian network (DBN)
 
 		// Mocapy++ library
 		mocapy_main();

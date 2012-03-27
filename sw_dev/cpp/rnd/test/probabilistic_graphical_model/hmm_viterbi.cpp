@@ -29,7 +29,7 @@ void viterbi_algorithm_2()
 }  // namespace local
 }  // unnamed namespace
 
-void hmm()
+void hmm_viterbi()
 {
 	local::viterbi_algorithm_1();
 	local::viterbi_algorithm_2();
