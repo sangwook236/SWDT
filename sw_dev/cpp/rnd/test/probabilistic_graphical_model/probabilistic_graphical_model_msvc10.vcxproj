@@ -91,6 +91,7 @@
   <ItemGroup>
     <ClCompile Include="hmm_em.cpp" />
     <ClCompile Include="hmm_forward_backward.cpp" />
+    <ClCompile Include="hmm_sample.cpp" />
     <ClCompile Include="hmm_viterbi.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mocapy_discrete_hmm.cpp" />
