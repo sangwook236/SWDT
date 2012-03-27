@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -180,8 +180,19 @@ void pair_wise_geometrical_histogram()
 
 	//
 	CvSeq *contours1 = NULL, *contours2 = NULL;
+#if defined(__GNUC__)
+    {
+        IplImage image1_ipl = (IplImage)image1;
+        cvFindContours(&image1_ipl, storage, &contours1, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE, cvPoint(0, 0));
+    }
+    {
+        IplImage image2_ipl = (IplImage)image2;
+        cvFindContours(&image2_ipl, storage, &contours2, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE, cvPoint(0, 0));
+    }
+#else
 	cvFindContours(&(IplImage)image1, storage, &contours1, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE, cvPoint(0, 0));
 	cvFindContours(&(IplImage)image2, storage, &contours2, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE, cvPoint(0, 0));
+#endif
 
 	//
 	const int dims[] = { 8, 8 };
@@ -223,8 +234,19 @@ void pair_wise_geometrical_histogram()
 		std::cout << "\tmin distance: " << min_dist << ", processing time: " << ((endTime - startTime) / ((double)cv::getTickFrequency() * 1000.0)) << " ms" << std::endl;
 
 		const int r = std::rand() % 256, g = std::rand() % 256, b = std::rand() % 256;
+#if defined(__GNUC__)
+        {
+            IplImage img1_ipl = (IplImage)img1;
+            cvDrawContours(&img1_ipl, contour1, CV_RGB(r, g, b), CV_RGB(r, g, b), 0, 2, 8, cvPoint(0, 0));
+        }
+        {
+            IplImage img2_ipl = (IplImage)img2;
+            cvDrawContours(&img2_ipl, matched_contour, CV_RGB(r, g, b), CV_RGB(r, g, b), 0, 2, 8, cvPoint(0, 0));
+        }
+#else
 		cvDrawContours(&(IplImage)img1, contour1, CV_RGB(r, g, b), CV_RGB(r, g, b), 0, 2, 8, cvPoint(0, 0));
 		cvDrawContours(&(IplImage)img2, matched_contour, CV_RGB(r, g, b), CV_RGB(r, g, b), 0, 2, 8, cvPoint(0, 0));
+#endif
 
 		cv::imshow(windowName1, img1);
 		cv::imshow(windowName2, img2);

@@ -1,16 +1,14 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 #include <list>
 #include <iostream>
+#include <cstring>
 #include <ctime>
 #include <cassert>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace {
 
@@ -23,9 +21,17 @@ void extract_features(const IplImage *image, CvMemStorage *storage, CvSeq *&keyp
 	else
 	{
 		grayImage = cvCreateImage(cvGetSize(image), image->depth, 1);
+#if defined(__GNUC__)
+		if (strcasecmp(image->channelSeq, "RGB") == 0)
+#else
 		if (_stricmp(image->channelSeq, "RGB") == 0)
+#endif
 			cvCvtColor(image, grayImage, CV_RGB2GRAY);
+#if defined(__GNUC__)
+		else if (strcasecmp(image->channelSeq, "BGR") == 0)
+#else
 		else if (_stricmp(image->channelSeq, "BGR") == 0)
+#endif
 			cvCvtColor(image, grayImage, CV_BGR2GRAY);
 		else
 			assert(false);

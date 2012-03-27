@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d/features2d.hpp>
@@ -7,6 +7,7 @@
 #include <iostream>
 #include <iterator>
 #include <list>
+#include <limits>
 #include <ctime>
 
 
@@ -67,7 +68,7 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 
 	cvReleaseImage(&tmp_img);
 
-	// find the contours 
+	// find the contours
 	CvSeq *contour = NULL;
 	CvMemStorage *storage = cvCreateMemStorage(0);
 	cvFindContours(img, storage, &contour, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
@@ -76,7 +77,7 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 	CvPoint *points = new CvPoint [NUMBER_OF_SNAKE_POINTS];
 	while (contour)
 	{
-		if (contour->total >= NUMBER_OF_SNAKE_POINTS) 
+		if (contour->total >= NUMBER_OF_SNAKE_POINTS)
 		{
 			//memset(points, 0, NUMBER_OF_SNAKE_POINTS * sizeof(CvPoint));
 
@@ -108,14 +109,14 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 #endif
 
 			// snake
-			cvSnakeImage(img, points, NUMBER_OF_SNAKE_POINTS, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient); 
+			cvSnakeImage(img, points, NUMBER_OF_SNAKE_POINTS, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
 
 			// draw snake on image
 			cvPolyLine(srcImage, (CvPoint **)&points, &NUMBER_OF_SNAKE_POINTS, 1, 1, CV_RGB(255, 0, 0), 3, 8, 0);
 		}
 
 		// get next contours
-		contour = contour->h_next; 
+		contour = contour->h_next;
 	}
 
 	//
@@ -163,7 +164,7 @@ void mser(IplImage *srcImage, IplImage *grayImage)
 		const CvContour *contour = *(CvContour **)cvGetSeqElem(contours, i);
 		const CvBox2D box = cvFitEllipse2(contour);
 		//box.angle = (float)CV_PI / 2.0f - box.angle;
-		
+
 		cvEllipseBox(srcImage, box, CV_RGB(255, 0, 0), 2, 8, 0);
 	}
 
@@ -173,7 +174,14 @@ void mser(IplImage *srcImage, IplImage *grayImage)
 void make_contour(const cv::Mat &segmentMask, const cv::Rect &roi, const int segmentId, std::vector<std::vector<cv::Point> > &contours, std::vector<cv::Vec4i> &hierarchy)
 {
 	std::vector<std::vector<cv::Point> > contours2;
+#if defined(__GNUC__)
+    {
+        cv::Mat segmentMask_tmp(roi.width == 0 || roi.height == 0 ? segmentMask : segmentMask(roi));
+        cv::findContours(segmentMask_tmp, contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
+    }
+#else
 	cv::findContours(roi.width == 0 || roi.height == 0 ? segmentMask : segmentMask(roi), contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
+#endif
 	if (roi.width == 0 || roi.height == 0)
 	{
 		cv::findContours((cv::Mat &)segmentMask, contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
@@ -181,8 +189,16 @@ void make_contour(const cv::Mat &segmentMask, const cv::Rect &roi, const int seg
 	}
 	else
 	{
+#if defined(__GNUC__)
+        {
+            cv::Mat segmentMask_roi(segmentMask(roi));
+            cv::findContours(segmentMask_roi, contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
+            //cv::findContours(segmentMask_roi, contours2, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
+        }
+#else
 		cv::findContours(segmentMask(roi), contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
 		//cv::findContours(segmentMask(roi), contours2, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
+#endif
 	}
 
 	if (contours2.empty()) return;
@@ -216,7 +232,7 @@ void make_convex_hull(const cv::Mat &segmentMask, const cv::Rect &roi, const int
 		}
 
 	if (points.empty()) return;
-	
+
 	std::vector<int> hull;
 	cv::convexHull(cv::Mat(points), hull, false);
 
@@ -235,6 +251,21 @@ void make_convex_hull(const cv::Mat &segmentMask, const cv::Rect &roi, const int
 	cv::approxPolyDP(cv::Mat(tmp_points), convexHull, 3.0, true);
 #endif
 }
+
+struct IncreaseHierarchyOp
+{
+    IncreaseHierarchyOp(const int offset)
+    : offset_(offset)
+    {}
+
+    cv::Vec4i operator()(const cv::Vec4i &rhs) const
+    {
+        return cv::Vec4i(rhs[0] == -1 ? -1 : (rhs[0] + offset_), rhs[1] == -1 ? -1 : (rhs[1] + offset_), rhs[2] == -1 ? -1 : (rhs[2] + offset_), rhs[3] == -1 ? -1 : (rhs[3] + offset_));
+    }
+
+private:
+    const int offset_;
+};
 
 void segment_motion_using_mhi(const bool useConvexHull, const cv::Mat &prev_gray_img, const cv::Mat &curr_gray_img, cv::Mat &mhi, cv::Mat &segmentMask, std::vector<std::vector<cv::Point> > &pointSets, std::vector<cv::Vec4i> &hierarchy)
 {
@@ -260,9 +291,9 @@ void segment_motion_using_mhi(const bool useConvexHull, const cv::Mat &prev_gray
 	//
 	cv::Mat processed_mhi;  // processed MHI
 	{
-		const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1)); 
-		const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1)); 
-		const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1)); 
+		const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1));
+		const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));
+		const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
 		cv::erode(mhi, processed_mhi, selement5);
 		cv::dilate(processed_mhi, processed_mhi, selement5);
 	}
@@ -277,26 +308,16 @@ void segment_motion_using_mhi(const bool useConvexHull, const cv::Mat &prev_gray
 	// segment motion: get sequence of motion components
 	// segmask is marked motion components map. it is not used further
 	IplImage *segmask = cvCreateImage(cvSize(curr_gray_img.cols, curr_gray_img.rows), IPL_DEPTH_32F, 1);  // motion segmentation map
+#if defined(__GNUC__)
+    IplImage processed_mhi_ipl = (IplImage)processed_mhi;
+	CvSeq *seq = cvSegmentMotion(&processed_mhi_ipl, segmask, storage, timestamp, motion_segment_threshold);
+#else
 	CvSeq *seq = cvSegmentMotion(&(IplImage)processed_mhi, segmask, storage, timestamp, motion_segment_threshold);
+#endif
 
 	//
 	//cv::Mat(segmask, false).convertTo(segmentMask, CV_8SC1, 1.0, 0.0);  // Oops !!! error
 	cv::Mat(segmask, false).convertTo(segmentMask, CV_8UC1, 1.0, 0.0);
-
-	struct IncreaseHierarchyOp
-	{
-		IncreaseHierarchyOp(const int offset)
-		: offset_(offset)
-		{}
-
-		cv::Vec4i operator()(const cv::Vec4i &rhs) const
-		{
-			return cv::Vec4i(rhs[0] == -1 ? -1 : (rhs[0] + offset_), rhs[1] == -1 ? -1 : (rhs[1] + offset_), rhs[2] == -1 ? -1 : (rhs[2] + offset_), rhs[3] == -1 ? -1 : (rhs[3] + offset_));
-		}
-
-	private:
-		const int offset_;
-	};
 
 	//
 	double minVal = 0.0, maxVal = 0.0;
@@ -406,7 +427,7 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
 		// expand the thressholded image of ones -smoothing the edge.
 		// and move start position of snake out since there are no ballon force
 		{
-			const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1)); 
+			const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
 			cv::dilate(binary_img, binary_img, selement, cv::Point(-1, -1), 3);
 		}
 
@@ -424,7 +445,7 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
 	// run through the found coutours
 	const size_t &numPts = contour.size();
 	const size_t numSnakePts = 0 == numSnakePoints ? numPts : numSnakePoints;
-	if (numPts >= numSnakePts) 
+	if (numPts >= numSnakePts)
 	{
 		CvPoint *points = new CvPoint [numSnakePts];
 
@@ -439,7 +460,12 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
 		}
 
 		// snake
-		cvSnakeImage(&(IplImage)blurred_img, points, numSnakePts, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient); 
+#if defined(__GNUC__)
+        IplImage blurred_img_ipl = (IplImage)blurred_img;
+		cvSnakeImage(&blurred_img_ipl, points, numSnakePts, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
+#else
+		cvSnakeImage(&(IplImage)blurred_img, points, numSnakePts, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
+#endif
 
 		snake_contour.assign(points, points + numSnakePts);
 		delete [] points;
@@ -489,9 +515,9 @@ void findBetterHandContour(const cv::Size &imgSize, const std::vector<std::vecto
 
 	gray = gray > 192;
 
-	//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1)); 
-	const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1)); 
-	//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1)); 
+	//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
+	const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));
+	//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1));
 	const int iterations = 1;
 	cv::morphologyEx(gray, gray, cv::MORPH_OPEN, selement, cv::Point(-1, -1), iterations);
 
@@ -515,9 +541,9 @@ void findBetterHandContour(const cv::Size &imgSize, const std::vector<cv::Point>
 
 	gray = gray > 192;
 
-	//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1)); 
-	const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1)); 
-	//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1)); 
+	//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
+	const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));
+	//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1));
 	const int iterations = 1;
 	cv::morphologyEx(gray, gray, cv::MORPH_OPEN, selement, cv::Point(-1, -1), iterations);
 
@@ -637,7 +663,7 @@ void findConvexityDefect(CvMemStorage *storage, const std::vector<cv::Point> &co
 		delete [] defects;
 
 		// get next contour
-		convexityDefectSeq = convexityDefectSeq->h_next; 
+		convexityDefectSeq = convexityDefectSeq->h_next;
 	}
 
 	// calculate a point on palm
@@ -763,7 +789,9 @@ bool findCurvaturePoints(const std::vector<cv::Point> &fingerContour, const size
 	double curvature;
 	for (size_t i = 0; i < endIdx; ++i)
 	{
-		if (calculateCurvature(cv::Point2d(fingerContour[i] - fingerContour[displaceIndex + i]), cv::Point2d(fingerContour[2 * displaceIndex + i] - fingerContour[displaceIndex + i]), curvature))
+	    const cv::Point &pt1 = fingerContour[i] - fingerContour[displaceIndex + i];
+	    const cv::Point &pt2 = fingerContour[2 * displaceIndex + i] - fingerContour[displaceIndex + i];
+		if (calculateCurvature(cv::Point2d(pt1.x, pt1.y), cv::Point2d(pt2.x, pt2.y), curvature))
 		{
 			if (curvature < minCurvature)
 			{
@@ -841,7 +869,11 @@ void findFingertips(const std::vector<std::vector<cv::Point> > &fingerContours, 
 
 	// FIXME [check] >> is it correct?
 	const cv::Point v1(hullCenterPoint - palmCenterPoint);
+#if defined(__GNUC__)
+	std::vector<cv::Point>::iterator it = fingertips.begin();
+#else
 	std::vector<cv::Point>::const_iterator it = fingertips.begin();
+#endif
 	while (it != fingertips.end())
 	{
 		const cv::Point v2(*it - palmCenterPoint);
@@ -895,7 +927,7 @@ bool findFingerOrder(std::vector<cv::Point> &fingertips)
 {
 	const size_t &thumbIdx = findThumb(fingertips);
 
-	if (-1 != thumbIdx)
+	if (size_t(-1) != thumbIdx)
 	{
 		std::sort(fingertips.begin(), fingertips.end(), FingerDistanceComparator(fingertips[thumbIdx]));
 		return true;
@@ -1140,7 +1172,7 @@ bool estimateHandPose(const cv::Mat &img, const cv::Mat &gray, cv::Point &palmCe
 
 				itPrev = it;
 			}
-	
+
 			const bool retval = segmentFinger(cedge_img, *itPrev, convexityDefectPoints.front(), maxAreaSilhouetteContour, distanceThreshold, fingerContours);
 		}
 	}
@@ -1634,9 +1666,9 @@ void hand_pose_estimation()
 		if (!pointSets.empty() && -1 != maxAreaIdx)
 		{
 			{
-				const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1)); 
-				const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1)); 
-				const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1)); 
+				const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1));
+				const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));
+				const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
 				cv::dilate(segmentMask, segmentMask, selement3, cv::Point(-1, -1), 3);
 				cv::erode(segmentMask, segmentMask, selement3, cv::Point(-1, -1), 5);
 			}

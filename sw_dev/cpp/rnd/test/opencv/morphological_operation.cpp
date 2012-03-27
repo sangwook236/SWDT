@@ -1,9 +1,10 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
 #include <list>
+#include <stdexcept>
 
 
 namespace {
@@ -38,7 +39,7 @@ void gradient(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const i
 
 void hit_and_miss()
 {
-	throw std::runtime_error("Oops !!! not implemented");
+	throw std::runtime_error("not yet implemented");
 }
 
 void top_hat(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations)
@@ -95,9 +96,9 @@ void morphological_operation()
 			cv::cvtColor(img, gray, CV_BGR2GRAY);
 			//cv::cvtColor(img, gray, CV_RGB2GRAY);
 
-		//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1)); 
-		const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1)); 
-		//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1)); 
+		//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
+		const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));
+		//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1));
 
 		const int iterations = 1;
 		cv::Mat result;

@@ -1,23 +1,23 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 #include <string>
 #include <iostream>
 #include <cassert>
+#if defined(WIN32)
 #include <windows.h>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
 #endif
+
 
 #define __KERNEL_SIZE 4
 
-void print_opencv_matrix(const CvMat* mat);
+void print_opencv_matrix(const CvMat *mat);
+void print_opencv_matrix(const cv::Mat &mat);
 
-void rotate_kernel_180_deg(const CvMat* src, CvMat* dst);
-void correlation(const IplImage* src, IplImage* dst, const CvMat* kernel, const CvPoint& anchor = cvPoint(-1, -1));
-void correlation(const CvMat* src, CvMat* dst, const CvMat* kernel, const CvPoint& anchor = cvPoint(-1, -1));
+void rotate_kernel_180_deg(const CvMat *src, CvMat *dst);
+void correlation(const IplImage *src, IplImage *dst, const CvMat *kernel, const CvPoint &anchor = cvPoint(-1, -1));
+void correlation(const CvMat *src, CvMat *dst, const CvMat *kernel, const CvPoint &anchor = cvPoint(-1, -1));
 
 void convolution_correlation()
 {
@@ -42,22 +42,22 @@ void convolution_correlation()
 	// the reason is that a center of kernel in doing correlation & convolution is (2, 2) in OpenCV & (1, 1) in matlab (zero-based index)
 	// the solution is to use filter anchor in OpenCV
 	//const CvPoint filterAnchor(cvPoint(-1, -1));  // if it is at the kernel center
-	const CvPoint filterAnchor(cvPoint(1, 1));  // the result is the same as one using replication in matlab 
+	const CvPoint filterAnchor(cvPoint(1, 1));  // the result is the same as one using replication in matlab
 	const int dimKernel = 4;
 	const double H[dimKernel * dimKernel] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0 };
 #endif
 
-	CvMat matH = cvMat(dimKernel, dimKernel, CV_64FC1, (void*)H);  // caution !!!: row-major matrix
-	CvMat* matH_180 = cvCreateMat(dimKernel, dimKernel, CV_64FC1);
+	CvMat matH = cvMat(dimKernel, dimKernel, CV_64FC1, (void *)H);  // caution !!!: row-major matrix
+	CvMat *matH_180 = cvCreateMat(dimKernel, dimKernel, CV_64FC1);
 	rotate_kernel_180_deg(&matH, matH_180);
 
 	//const int iplDepth = IPL_DEPTH_8U;
 	const int iplDepth = IPL_DEPTH_32F;
 
 	const int rdim = 4, cdim = 4;
-	IplImage* imgA = cvCreateImage(cvSize(rdim, cdim), iplDepth, 1);
-	IplImage* imgA_corr = cvCreateImage(cvSize(rdim, cdim), iplDepth, 1);
-	IplImage* imgA_conv = cvCreateImage(cvSize(rdim, cdim), iplDepth, 1);
+	IplImage *imgA = cvCreateImage(cvSize(rdim, cdim), iplDepth, 1);
+	IplImage *imgA_corr = cvCreateImage(cvSize(rdim, cdim), iplDepth, 1);
+	IplImage *imgA_conv = cvCreateImage(cvSize(rdim, cdim), iplDepth, 1);
 
 	if (iplDepth == IPL_DEPTH_8U)
 	{
@@ -81,13 +81,13 @@ void convolution_correlation()
 		correlation(imgA, imgA_conv, matH_180, filterAnchor);  // by zero-padding
 
 		std::cout << "source image =>" << std::endl;
-		print_opencv_matrix(&cvMat(rdim, cdim, CV_8UC1, (void*)imgA->imageData));
+		print_opencv_matrix(cv::Mat(imgA));
 		std::cout << "kernel =>" << std::endl;
 		print_opencv_matrix(&matH);
 		std::cout << "filtered image: correlation =>" << std::endl;
-		print_opencv_matrix(&cvMat(rdim, cdim, CV_8UC1, (void*)imgA_corr->imageData));
+		print_opencv_matrix(cv::Mat(imgA_corr));
 		std::cout << "filtered image: convolution =>" << std::endl;
-		print_opencv_matrix(&cvMat(rdim, cdim, CV_8UC1, (void*)imgA_conv->imageData));
+		print_opencv_matrix(cv::Mat(imgA_conv));
 	}
 	else if (iplDepth == IPL_DEPTH_32F)
 	{
@@ -112,13 +112,13 @@ void convolution_correlation()
 		correlation(imgA, imgA_conv, matH_180, filterAnchor);  // by zero-padding
 
 		std::cout << "source image =>" << std::endl;
-		print_opencv_matrix(&cvMat(rdim, cdim, CV_32FC1, (void*)imgA->imageData));
+		print_opencv_matrix(cv::Mat(imgA));
 		std::cout << "kernel =>" << std::endl;
 		print_opencv_matrix(&matH);
 		std::cout << "filtered image: correlation =>" << std::endl;
-		print_opencv_matrix(&cvMat(rdim, cdim, CV_32FC1, (void*)imgA_corr->imageData));
+		print_opencv_matrix(cv::Mat(imgA_corr));
 		std::cout << "filtered image: convolution =>" << std::endl;
-		print_opencv_matrix(&cvMat(rdim, cdim, CV_32FC1, (void*)imgA_conv->imageData));
+		print_opencv_matrix(cv::Mat(imgA_conv));
 	}
 	else
 		assert(false);
@@ -131,20 +131,20 @@ void convolution_correlation()
 	//
 	std::cout << "correlation by row & column vectors =>" << std::endl;
 	{
-		CvMat* mask1 = cvCreateMat(2 * 1 + 1, 1, CV_64FC1);
-		CvMat* mask2 = cvCreateMat(1, 2 * 1 + 1, CV_64FC1);
+		CvMat *mask1 = cvCreateMat(2 * 1 + 1, 1, CV_64FC1);
+		CvMat *mask2 = cvCreateMat(1, 2 * 1 + 1, CV_64FC1);
 		cvSet(mask1, cvScalarAll(1), 0);
 		cvSet(mask2, cvScalarAll(1), 0);
-		IplImage* imgA1 = cvCreateImage(cvSize(3, 3), IPL_DEPTH_32F, 1);
-		IplImage* imgA2 = cvCreateImage(cvSize(3, 3), IPL_DEPTH_32F, 1);
-		IplImage* imgA3 = cvCreateImage(cvSize(3, 3), IPL_DEPTH_32F, 1);
-		float* p = (float*)imgA1->imageData;
+		IplImage *imgA1 = cvCreateImage(cvSize(3, 3), IPL_DEPTH_32F, 1);
+		IplImage *imgA2 = cvCreateImage(cvSize(3, 3), IPL_DEPTH_32F, 1);
+		IplImage *imgA3 = cvCreateImage(cvSize(3, 3), IPL_DEPTH_32F, 1);
+		float *p = (float*)imgA1->imageData;
 		for (int i = 0, ii = 1; i < 3; ++i)
 			for (int j = 0; j < 3; ++j, ++ii)
 				p[i*3 + j] = (float)ii;
 		correlation(imgA1, imgA2, mask1);  // by zero-padding
 		correlation(imgA2, imgA3, mask2);  // by zero-padding
-		print_opencv_matrix(&cvMat(3, 3, CV_32FC1, (void*)imgA3->imageData));
+		print_opencv_matrix(cv::Mat(imgA3));
 
 		cvReleaseMat(&mask1);
 		cvReleaseMat(&mask2);
@@ -156,20 +156,20 @@ void convolution_correlation()
 	//
 	std::cout << "correlation by row & column vectors =>" << std::endl;
 	{
-		CvMat* mask1 = cvCreateMat(2 * 1 + 1, 1, CV_64FC1);
-		CvMat* mask2 = cvCreateMat(1, 2 * 1 + 1, CV_64FC1);
+		CvMat *mask1 = cvCreateMat(2 * 1 + 1, 1, CV_64FC1);
+		CvMat *mask2 = cvCreateMat(1, 2 * 1 + 1, CV_64FC1);
 		cvSet(mask1, cvScalarAll(1), 0);
 		cvSet(mask2, cvScalarAll(1), 0);
-		CvMat* imgA1 = cvCreateMat(3, 3, CV_64FC1);
-		CvMat* imgA2 = cvCreateMat(3, 3, CV_64FC1);
-		CvMat* imgA3 = cvCreateMat(3, 3, CV_64FC1);
-		double* p = (double*)imgA1->data.db;
+		CvMat *imgA1 = cvCreateMat(3, 3, CV_64FC1);
+		CvMat *imgA2 = cvCreateMat(3, 3, CV_64FC1);
+		CvMat *imgA3 = cvCreateMat(3, 3, CV_64FC1);
+		double *p = (double*)imgA1->data.db;
 		for (int i = 0, ii = 1; i < 3; ++i)
 			for (int j = 0; j < 3; ++j, ++ii)
 				p[i*3 + j] = (double)ii;
 		correlation(imgA1, imgA2, mask1);  // by zero-padding
 		correlation(imgA2, imgA3, mask2);  // by zero-padding
-		print_opencv_matrix(&cvMat(3, 3, CV_64FC1, (void*)imgA3->data.db));
+		print_opencv_matrix(cv::Mat(imgA3));
 
 		cvReleaseMat(&mask1);
 		cvReleaseMat(&mask2);
@@ -179,7 +179,7 @@ void convolution_correlation()
 	}
 }
 
-void rotate_kernel_180_deg(const CvMat* src, CvMat* dst)
+void rotate_kernel_180_deg(const CvMat *src, CvMat *dst)
 {
 	for (int i = 0; i < src->height; ++i)
 		for (int j = 0; j < src->width; ++j)
@@ -187,7 +187,7 @@ void rotate_kernel_180_deg(const CvMat* src, CvMat* dst)
 }
 
 template<typename T>
-void correlation(const T* src, T* dst, const int src_width, const int src_height, const int dst_width, const int dst_height, const CvMat* kernel, const CvPoint& anchor)
+void correlation(const T *src, T *dst, const int src_width, const int src_height, const int dst_width, const int dst_height, const CvMat *kernel, const CvPoint &anchor)
 {
 	const int kwidth = kernel->width, kheight = kernel->height;
 
@@ -210,7 +210,7 @@ void correlation(const T* src, T* dst, const int src_width, const int src_height
 		}
 }
 
-void correlation(const IplImage* src, IplImage* dst, const CvMat* kernel, const CvPoint& anchor /*= cvPoint(-1, -1)*/)
+void correlation(const IplImage *src, IplImage *dst, const CvMat *kernel, const CvPoint &anchor /*= cvPoint(-1, -1)*/)
 {
 	const int width = src->width, height = src->height;
 
@@ -230,7 +230,7 @@ void correlation(const IplImage* src, IplImage* dst, const CvMat* kernel, const 
 	else assert(false);
 }
 
-void correlation(const CvMat* src, CvMat* dst, const CvMat* kernel, const CvPoint& anchor /*= cvPoint(-1, -1)*/)
+void correlation(const CvMat *src, CvMat *dst, const CvMat *kernel, const CvPoint &anchor /*= cvPoint(-1, -1)*/)
 {
 	const int width = src->width, height = src->height;
 

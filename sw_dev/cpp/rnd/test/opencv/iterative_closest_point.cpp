@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -17,10 +17,10 @@ void ShowPoints(cv::Mat &im, cv::Mat &X, const cv::Scalar &c = cv::Scalar(255))
 	{
 		cv::Point p;
 		if (X.type() == CV_32SC1 || X.type() == CV_32SC2)
-			p = X.at<cv::Point>(i, 0); 
+			p = X.at<cv::Point>(i, 0);
 		else if (X.type() == CV_32FC1 || X.type() == CV_32FC2)
 		{
-			const cv::Point2f &_p = X.at<cv::Point2f>(i, 0); 
+			const cv::Point2f &_p = X.at<cv::Point2f>(i, 0);
 			p.x = (int)_p.x;
 			p.y = (int)_p.y;
 		}
@@ -36,10 +36,10 @@ void ShowLines(cv::Mat &im, cv::Mat &X, cv::Mat &X_bar, const cv::Scalar &c1 = c
 	{
 		cv::Point p;
 		if (X.type() == CV_32SC1 || X.type() == CV_32SC2)
-			p = X.at<cv::Point>(i, 0); 
+			p = X.at<cv::Point>(i, 0);
 		else if (X.type() == CV_32FC1 || X.type() == CV_32FC2)
 		{
-			const cv::Point2f &_p = X.at<cv::Point2f>(i, 0); 
+			const cv::Point2f &_p = X.at<cv::Point2f>(i, 0);
 			p.x = (int)_p.x;
 			p.y = (int)_p.y;
 		}
@@ -57,7 +57,7 @@ void ShowLines(cv::Mat &im, cv::Mat &X, cv::Mat &X_bar, const cv::Scalar &c1 = c
 				p_tag = X.at<cv::Point>(i-1, 0);
 			else if (X.type() == CV_32FC1 || X.type() == CV_32FC2)
 			{
-				const cv::Point2f &_p = X.at<cv::Point2f>(i-1, 0); 
+				const cv::Point2f &_p = X.at<cv::Point2f>(i-1, 0);
 				p_tag.x = (int)_p.x;
 				p_tag.y = (int)_p.y;
 			}
@@ -91,7 +91,7 @@ float flann_knn(cv::Mat &m_destinations, cv::Mat &m_object, std::vector<int> &pt
 	assert(dest_32f.type() == CV_32F);
 
 	cv::flann::Index flann_index(dest_32f, cv::flann::KDTreeIndexParams(2));  // using 2 randomized kdtrees
-	flann_index.knnSearch(obj_32f, m_indices, m_dists, 1, cv::flann::SearchParams(64)); 
+	flann_index.knnSearch(obj_32f, m_indices, m_dists, 1, cv::flann::SearchParams(64));
 
 	int *indices_ptr = m_indices.ptr<int>(0);
 	//float *dists_ptr = m_dists.ptr<float>(0);
@@ -101,7 +101,12 @@ float flann_knn(cv::Mat &m_destinations, cv::Mat &m_object, std::vector<int> &pt
 	}
 
 	dists.resize(m_dists.rows);
+#if defined(__GNUC__)
+    cv::Mat dists_mat(dists);
+	m_dists.copyTo(dists_mat);
+#else
 	m_dists.copyTo(cv::Mat(dists));
+#endif
 
 	return (float)cv::sum(m_dists)[0];
 }
@@ -199,7 +204,7 @@ void findBestTransform(cv::Mat &X, cv::Mat &X_bar)
 	for (int i = 0; i < 4; ++i) std::cout << sd[i] << ",";
 	std::cout << std::endl;
 
-	// 2D totation matrix 
+	// 2D totation matrix
 	float _R[4] = { sd[0], sd[1], -sd[1], sd[0] };
 	cv::Mat R(2, 2, CV_32FC1, _R);
 

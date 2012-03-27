@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -15,10 +15,10 @@ void normalized_cross_correlation()
 	//const std::string filename2("opencv_data\\melon_3.png");
 
 	const cv::Mat &templ0 = cv::imread(filename1, CV_LOAD_IMAGE_GRAYSCALE);
-	cv::Mat &image = cv::imread(filename2, CV_LOAD_IMAGE_GRAYSCALE);
+	cv::Mat image(cv::imread(filename2, CV_LOAD_IMAGE_GRAYSCALE));
 
-	const size_t TEMPL_WIDTH = 120;
-	const size_t TEMPL_HEIGHT = 120;
+	const int TEMPL_WIDTH = 120;
+	const int TEMPL_HEIGHT = 120;
 
 	if (image.rows <= TEMPL_HEIGHT || image.cols <= TEMPL_WIDTH)
 	{
@@ -34,7 +34,14 @@ void normalized_cross_correlation()
 	std::cout << "\tinserted location: (" << pos_x << ", " << pos_y << ")" << std::endl;
 
 	// insert template to image
+#if defined(__GNUC__)
+    {
+        cv::Mat image_roi(image, cv::Range(pos_y, pos_y + TEMPL_HEIGHT), cv::Range(pos_x, pos_x + TEMPL_WIDTH));
+       	templ.copyTo(image_roi);
+    }
+#else
 	templ.copyTo(image(cv::Range(pos_y, pos_y + TEMPL_HEIGHT), cv::Range(pos_x, pos_x + TEMPL_WIDTH)));
+#endif
 
 	// perform NCC
 	// CV_TM_SQDIFF, CV_TM_SQDIFF_NORMED, CV_TM_CCORR, CV_TM_CCORR_NORMED, CV_TM_CCOEFF, CV_TM_CCOEFF_NORMED

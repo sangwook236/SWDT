@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
@@ -6,11 +6,6 @@
 #include <string>
 #include <iostream>
 #include <ctime>
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 
 namespace {

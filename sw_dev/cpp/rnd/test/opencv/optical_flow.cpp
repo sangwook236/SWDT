@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
@@ -6,11 +6,6 @@
 #include <vector>
 #include <string>
 #include <ctime>
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 #if defined(min)
 #undef min
@@ -170,7 +165,7 @@ void block_matching_optical_flow_algorithm()
 			vel_x = cvCreateImage(cvSize((sz.width - block_size.width) / shift_size.width, (sz.height - block_size.height) / shift_size.height), IPL_DEPTH_32F, 1);
 			vel_y = cvCreateImage(cvSize((sz.width - block_size.width) / shift_size.width, (sz.height - block_size.height) / shift_size.height), IPL_DEPTH_32F, 1);
 		}
-		
+
 		cvCopy(frame, img, 0);
 		cvCvtColor(img, grey, CV_BGR2GRAY);
 
@@ -214,7 +209,7 @@ void block_matching_optical_flow_algorithm()
 
 	IplImage *grey1 = cvCreateImage(cvGetSize(img1), IPL_DEPTH_8U, 1);
 	IplImage *grey2 = cvCreateImage(cvGetSize(img2), IPL_DEPTH_8U, 1);
-	
+
 	cvCvtColor(img1, grey1, CV_BGR2GRAY);
 	cvCvtColor(img2, grey2, CV_BGR2GRAY);
 
@@ -313,7 +308,7 @@ void Horn_Schunck_optical_flow_algorithm()
 			vel_x = cvCreateImage(sz, IPL_DEPTH_32F, 1);
 			vel_y = cvCreateImage(sz, IPL_DEPTH_32F, 1);
 		}
-		
+
 		cvCopy(frame, img, 0);
 		cvCvtColor(img, grey, CV_BGR2GRAY);
 
@@ -359,7 +354,7 @@ void Horn_Schunck_optical_flow_algorithm()
 	IplImage *grey2 = cvCreateImage(cvGetSize(img2), IPL_DEPTH_8U, 1);
 	IplImage *vel_x = cvCreateImage(cvGetSize(img1), IPL_DEPTH_32F, 1);
 	IplImage *vel_y = cvCreateImage(cvGetSize(img1), IPL_DEPTH_32F, 1);
-	
+
 	cvCvtColor(img1, grey1, CV_BGR2GRAY);
 	cvCvtColor(img2, grey2, CV_BGR2GRAY);
 
@@ -453,7 +448,7 @@ void Lucas_Kanade_optical_flow_algorithm()
 			vel_x = cvCreateImage(sz, IPL_DEPTH_32F, 1);
 			vel_y = cvCreateImage(sz, IPL_DEPTH_32F, 1);
 		}
-		
+
 		cvCopy(frame, img, 0);
 		cvCvtColor(img, grey, CV_BGR2GRAY);
 
@@ -473,7 +468,7 @@ void Lucas_Kanade_optical_flow_algorithm()
 		cvShowImage("Lucas Kanade optical flow", img);
 		cvShowImage("Lucas Kanade optical flow: Horizontal Flow", vel_x);
 		cvShowImage("Lucas Kanade optical flow: Vertical Flow", vel_y);
-		
+
 		cvWaitKey(10);
 
 		CV_SWAP(prev_grey, grey, swap_temp);
@@ -499,7 +494,7 @@ void Lucas_Kanade_optical_flow_algorithm()
 	IplImage *grey2 = cvCreateImage(cvGetSize(img2), IPL_DEPTH_8U, 1);
 	IplImage *vel_x = cvCreateImage(cvGetSize(img1), IPL_DEPTH_32F, 1);
 	IplImage *vel_y = cvCreateImage(cvGetSize(img1), IPL_DEPTH_32F, 1);
-	
+
 	cvCvtColor(img1, grey1, CV_BGR2GRAY);
 	cvCvtColor(img2, grey2, CV_BGR2GRAY);
 
@@ -756,7 +751,7 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_1()
 	IplImage *grey2 = cvCreateImage(cvGetSize(img2), IPL_DEPTH_8U, 1);
 	IplImage *vel_x = cvCreateImage(cvGetSize(img1), IPL_DEPTH_32F, 1);
 	IplImage *vel_y = cvCreateImage(cvGetSize(img1), IPL_DEPTH_32F, 1);
-	
+
 	cvCvtColor(img1, grey1, CV_BGR2GRAY);
 	cvCvtColor(img2, grey2, CV_BGR2GRAY);
 
@@ -778,7 +773,7 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_1()
     CvPoint2D32f *features1 = NULL, *features2 = NULL;
 	char *status = (char*)cvAlloc(1);
 	*status = 0;
-	
+
 	features1 = (CvPoint2D32f*)cvAlloc(sizeof(CvPoint2D32f));
 	features2 = (CvPoint2D32f*)cvAlloc(sizeof(CvPoint2D32f));
     features1->x = (float)pt_x;
@@ -852,7 +847,7 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_1()
 				cvCircle(img2, ptSelected, radius, CV_RGB(r, g, b), CV_FILLED, 8, 0);
 #endif
 			}
-			
+
 		cvNamedWindow("pyramid Lucas Kanade optical flow: Image 1", CV_WINDOW_AUTOSIZE);
 		cvNamedWindow("pyramid Lucas Kanade optical flow: Image 2", CV_WINDOW_AUTOSIZE);
 
@@ -974,11 +969,11 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_2()
 				//std::cout << k << ": (" << prev_points[k].x << "," << prev_points[k].y << "), (" << curr_points[k].x << "," << curr_points[k].y << ")" << std::endl;
 
 				if (!*it) continue;
-				
+
 				const int x = prev_points[k].x < 0.0 ? 0 : (prev_points[k].x >= flow.cols ? flow.cols-1 : cvRound(prev_points[k].x));
 				const int y = prev_points[k].y < 0.0 ? 0 : (prev_points[k].y >= flow.rows ? flow.rows-1 : cvRound(prev_points[k].y));
 				flow.at<cv::Point2f>(y, x) = curr_points[k] - prev_points[k];
-				
+
 				cv::circle(cflow, curr_points[k], 3, CV_RGB(0,255,0), -1, 8, 0);
 			}
 

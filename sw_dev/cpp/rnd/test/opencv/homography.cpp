@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
@@ -9,16 +9,13 @@
 #include <ctime>
 #include <cassert>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 #if defined(max)
 #undef max
 #endif
 #if defined(min)
 #undef min
 #endif
+
 
 namespace {
 
@@ -31,9 +28,17 @@ void extract_features(const IplImage *image, CvMemStorage *storage, CvSeq *&keyp
 	else
 	{
 		grayImage = cvCreateImage(cvGetSize(image), image->depth, 1);
+#if defined(__GNUC__)
+		if (strcasecmp(image->channelSeq, "RGB") == 0)
+#else
 		if (_stricmp(image->channelSeq, "RGB") == 0)
+#endif
 			cvCvtColor(image, grayImage, CV_RGB2GRAY);
+#if defined(__GNUC__)
+		else if (strcasecmp(image->channelSeq, "BGR") == 0)
+#else
 		else if (_stricmp(image->channelSeq, "BGR") == 0)
+#endif
 			cvCvtColor(image, grayImage, CV_BGR2GRAY);
 		else
 			assert(false);
@@ -313,7 +318,7 @@ void homography()
 #if 0
 		//cvWarpAffine(inputImage, image, homography, CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS + CV_WARP_INVERSE_MAP, cvScalarAll(0));
 		//cvWarpAffine(inputImage, image, invH, CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS, cvScalarAll(0));
-	
+
 		cvWarpPerspective(inputImage, image, homography, CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS + CV_WARP_INVERSE_MAP, cvScalarAll(0));
 		//cvWarpPerspective(inputImage, image, invH, CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS, cvScalarAll(0));
 #elif 1

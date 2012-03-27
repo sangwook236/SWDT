@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -102,9 +102,9 @@ void watershed_algorithm(const cv::Mat &img0)
             int i, j, compCount = 0;
             std::vector<std::vector<cv::Point> > contours;
             std::vector<cv::Vec4i> hierarchy;
-            
+
             cv::findContours(watershed_markerMask, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
-            
+
             if( contours.empty() )
                 continue;
             cv::Mat markers(watershed_markerMask.size(), CV_32S);
@@ -115,14 +115,14 @@ void watershed_algorithm(const cv::Mat &img0)
 
             if( compCount == 0 )
                 continue;
-            
+
             std::vector<cv::Vec3b> colorTab;
             for( i = 0; i < compCount; i++ )
             {
                 int b = cv::theRNG().uniform(0, 255);
                 int g = cv::theRNG().uniform(0, 255);
                 int r = cv::theRNG().uniform(0, 255);
-                
+
                 colorTab.push_back(cv::Vec3b((uchar)b, (uchar)g, (uchar)r));
             }
 
@@ -132,7 +132,7 @@ void watershed_algorithm(const cv::Mat &img0)
             printf( "execution time = %gms\n", t*1000./cv::getTickFrequency() );
 
             cv::Mat wshed(markers.size(), CV_8UC3);
-            
+
             // paint the watershed image
             for( i = 0; i < markers.rows; i++ )
                 for( j = 0; j < markers.cols; j++ )
@@ -481,7 +481,7 @@ void segmentation()
 	//const std::string filename("opencv_data\\hand_01.jpg");
 	//const std::string filename("opencv_data\\hand_05.jpg");
 	//const std::string filename("opencv_data\\hand_24.jpg");
-	
+
 	//const std::string filename("opencv_data\\hand_01.jpg");
 	//const std::string filename("opencv_data\\hand_02.jpg");
 	//const std::string filename("opencv_data\\hand_03.jpg");

@@ -1,13 +1,9 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
 #include <iostream>
 #include <cassert>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 void print_opencv_matrix(const CvMat* mat);
 
@@ -75,28 +71,31 @@ void intrinsic_camera_params(const bool isPlanarCalibrationRigs)
 		500, 528, 337, 681, 795, 1050, 739, 130, 261, 273, 367, 178,      460, 511, 358, 686, 783, 982, 702, 57, 233, 175, 258, 76,
 	};
 
+#if 1
 	// method #1
-	CvMat* objPts = cvCreateMat(correspondenceCount * imageCount, 3, CV_64FC1);
-	CvMat* imgPts = cvCreateMat(correspondenceCount * imageCount, 2, CV_64FC1);
-	//const CvMat objPts_arr = cvMat(3, correspondenceCount * imageCount, CV_64FC1, (void*)worldPts);
-	//const CvMat imgPts_arr = cvMat(2, correspondenceCount * imageCount, CV_64FC1, (void*)imagePts);
-	//cvTranspose(&objPts_arr, objPts);
-	//cvTranspose(&imgPts_arr, imgPts);
-	cvTranspose(&cvMat(3, correspondenceCount * imageCount, CV_64FC1, (void*)worldPts), objPts);
-	cvTranspose(&cvMat(2, correspondenceCount * imageCount, CV_64FC1, (void*)imagePts), imgPts);
-/*
+	CvMat *objPts = cvCreateMat(correspondenceCount * imageCount, 3, CV_64FC1);
+	CvMat *imgPts = cvCreateMat(correspondenceCount * imageCount, 2, CV_64FC1);
+	{
+        //cvTranspose(&cvMat(3, correspondenceCount * imageCount, CV_64FC1, (void *)worldPts), objPts);
+        //cvTranspose(&cvMat(2, correspondenceCount * imageCount, CV_64FC1, (void *)imagePts), imgPts);
+        const CvMat objPts_arr = cvMat(3, correspondenceCount * imageCount, CV_64FC1, (void *)worldPts);
+        const CvMat imgPts_arr = cvMat(2, correspondenceCount * imageCount, CV_64FC1, (void *)imagePts);
+        cvTranspose(&objPts_arr, objPts);
+        cvTranspose(&imgPts_arr, imgPts);
+	}
+#elif 0
 	// method #2
-	CvMat* objPts_arr = cvCreateMat(3, correspondenceCount * imageCount, CV_64FC1);
-	CvMat* imgPts_arr = cvCreateMat(2, correspondenceCount * imageCount, CV_64FC1);
+	CvMat *objPts_arr = cvCreateMat(3, correspondenceCount * imageCount, CV_64FC1);
+	CvMat *imgPts_arr = cvCreateMat(2, correspondenceCount * imageCount, CV_64FC1);
 	cvSetData(objPts_arr, (void*)worldPts, sizeof(double) * correspondenceCount * imageCount);
 	cvSetData(imgPts_arr, (void*)imagePts, sizeof(double) * correspondenceCount * imageCount);
-	CvMat* objPts = cvCreateMat(correspondenceCount * imageCount, 3, CV_64FC1);
-	CvMat* imgPts = cvCreateMat(correspondenceCount * imageCount, 2, CV_64FC1);
+	CvMat *objPts = cvCreateMat(correspondenceCount * imageCount, 3, CV_64FC1);
+	CvMat *imgPts = cvCreateMat(correspondenceCount * imageCount, 2, CV_64FC1);
 	cvTranspose(objPts_arr, objPts);
 	cvTranspose(imgPts_arr, imgPts);
 	cvReleaseMat(&objPts_arr);
 	cvReleaseMat(&imgPts_arr);
-*/
+#endif
 	//print_opencv_matrix(objPts);
 	//print_opencv_matrix(imgPts);
 
@@ -184,11 +183,17 @@ void extrinsic_camera_params()
 			1885.6097240797815, 0.0, 914.71724853916419, 0.0, 1885.6097240797815, 880.01640227244650, 0.0, 0.0, 1.2054610012686870
 		};
 
-		CvMat* objPts = cvCreateMat(correspondenceCount, 3, CV_64FC1);
-		CvMat* imgPts = cvCreateMat(correspondenceCount, 2, CV_64FC1);
-		const CvMat intrinsicParams = cvMat(3, 3, CV_64FC1, (void*)calibrationMat);
-		cvTranspose(&cvMat(3, correspondenceCount, CV_64FC1, (void*)worldPts), objPts);
-		cvTranspose(&cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts), imgPts);
+		CvMat *objPts = cvCreateMat(correspondenceCount, 3, CV_64FC1);
+		CvMat *imgPts = cvCreateMat(correspondenceCount, 2, CV_64FC1);
+		const CvMat intrinsicParams = cvMat(3, 3, CV_64FC1, (void *)calibrationMat);
+		{
+            //cvTranspose(&cvMat(3, correspondenceCount, CV_64FC1, (void *)worldPts), objPts);
+            //cvTranspose(&cvMat(2, correspondenceCount, CV_64FC1, (void *)imagePts), imgPts);
+            const CvMat objPts_arr = cvMat(3, correspondenceCount, CV_64FC1, (void *)worldPts);
+            const CvMat imgPts_arr = cvMat(2, correspondenceCount, CV_64FC1, (void *)imagePts);
+            cvTranspose(&objPts_arr, objPts);
+            cvTranspose(&imgPts_arr, imgPts);
+		}
 
 		//print_opencv_matrix(objPts);
 		//print_opencv_matrix(imgPts);
@@ -250,8 +255,14 @@ void extrinsic_camera_params()
 		CvMat* objPts = cvCreateMat(correspondenceCount, 3, CV_64FC1);
 		CvMat* imgPts = cvCreateMat(correspondenceCount, 2, CV_64FC1);
 		const CvMat intrinsicParams = cvMat(3, 3, CV_64FC1, (void*)calibrationMat);
-		cvTranspose(&cvMat(3, correspondenceCount, CV_64FC1, (void*)worldPts), objPts);
-		cvTranspose(&cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts), imgPts);
+		{
+            //cvTranspose(&cvMat(3, correspondenceCount, CV_64FC1, (void*)worldPts), objPts);
+            //cvTranspose(&cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts), imgPts);
+            const CvMat objPts_arr = cvMat(3, correspondenceCount, CV_64FC1, (void*)worldPts);
+            const CvMat imgPts_arr = cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts);
+            cvTranspose(&objPts_arr, objPts);
+            cvTranspose(&imgPts_arr, imgPts);
+		}
 
 		//print_opencv_matrix(objPts);
 		//print_opencv_matrix(imgPts);
@@ -307,7 +318,12 @@ void fundamental_matrix()
 	//const int method = CV_FM_8POINT;
 	const int method = CV_FM_RANSAC;
 	//const int method = CV_FM_LMEDS;
-	cvFindFundamentalMat(&cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts1), &cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts2), fundamentalMat, method, 1.0, 0.9, NULL);
+	{
+        //cvFindFundamentalMat(&cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts1), &cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts2), fundamentalMat, method, 1.0, 0.9, NULL);
+        const CvMat imgPts1_arr = cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts1);
+        const CvMat imgPts2_arr = cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts2);
+        cvFindFundamentalMat(&imgPts1_arr, &imgPts2_arr, fundamentalMat, method, 1.0, 0.9, NULL);
+	}
 /*
 	CvMat* imgPts1 = cvCreateMat(correspondenceCount, 2, CV_64FC1);
 	cvTranspose(&cvMat(2, correspondenceCount, CV_64FC1, (void*)imagePts1), imgPts1);
@@ -337,10 +353,10 @@ void fundamental_matrix()
 /*
 		// from fundamental matrix by OpenCV (RANSAC)
 		const double worldPts[] = {
-			-237.284, -286.76, -211.318, -507.963, 294.396, 368.306, -564.07, -2642.36, -262.828, -452.599, -323.59, -383.079, 
-			-221.346, -191.868, -69.296, -284.743, 206.95, 545.618, -589.86, -300.123, -88.1931, -253.845, -319.251, -137.862, 
-			-0.443655, -0.363451, -0.203656, -0.418073, 0.260298, 0.519506, -0.797832, -2.29736, -0.337817, -0.929263, -0.892615, -0.773805, 
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+			-237.284, -286.76, -211.318, -507.963, 294.396, 368.306, -564.07, -2642.36, -262.828, -452.599, -323.59, -383.079,
+			-221.346, -191.868, -69.296, -284.743, 206.95, 545.618, -589.86, -300.123, -88.1931, -253.845, -319.251, -137.862,
+			-0.443655, -0.363451, -0.203656, -0.418073, 0.260298, 0.519506, -0.797832, -2.29736, -0.337817, -0.929263, -0.892615, -0.773805,
+			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		};
 */
 /*
@@ -354,10 +370,10 @@ void fundamental_matrix()
 */
 		// gold standard algorithm
 		const double worldPts[] = {
-			-1757.2, -1899.02, -2040.06, -1740.36, -1681.35, -1559.64, -1718.06, 7617.01, -2485.62, -3107.88, -2352.11, -2700.05, 
-			-1738.51, -1290.53, -593.144, -914.247, -1137.14, -2276.97, -1821.03, -88.2632, -876.719, -1994.88, -2410.09, -1278.06, 
-			-2.89832, -2.37988, -2.03237, -1.45603, -1.50094, -2.20518, -2.40227, 7.55785, -3.12209, -5.159, -4.57036, -4.31562, 
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 
+			-1757.2, -1899.02, -2040.06, -1740.36, -1681.35, -1559.64, -1718.06, 7617.01, -2485.62, -3107.88, -2352.11, -2700.05,
+			-1738.51, -1290.53, -593.144, -914.247, -1137.14, -2276.97, -1821.03, -88.2632, -876.719, -1994.88, -2410.09, -1278.06,
+			-2.89832, -2.37988, -2.03237, -1.45603, -1.50094, -2.20518, -2.40227, 7.55785, -3.12209, -5.159, -4.57036, -4.31562,
+			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 		};
 
 		CvMat X = cvMat(4, correspondenceCount, CV_64FC1, (void*)worldPts);  // caution !!!: row-major matrix

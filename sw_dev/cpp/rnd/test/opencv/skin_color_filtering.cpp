@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -309,7 +309,7 @@ void GmmSkinColorModel::filter(const cv::Mat &img, const float theta, cv::Mat &m
 
 			float probSkin = 0.0f, probNonskin = 0.0f;
 #if 0
-			for (int k = 0; k < GAUSSIAN_COMPONENT_NUM; ++k, muSkinPtr += 3, sigmaSkinPtr += 3, ++constSkinPtr, muNonskinPtr += 3, sigmaNonskinPtr += 3, ++constNonskinPtr)
+			for (size_t k = 0; k < GAUSSIAN_COMPONENT_NUM; ++k, muSkinPtr += 3, sigmaSkinPtr += 3, ++constSkinPtr, muNonskinPtr += 3, sigmaNonskinPtr += 3, ++constNonskinPtr)
 			{
 				x0 = red - muSkinPtr[0];
 				x1 = green - muSkinPtr[1];
@@ -322,7 +322,7 @@ void GmmSkinColorModel::filter(const cv::Mat &img, const float theta, cv::Mat &m
 				probNonskin += *constNonskinPtr * std::exp(-0.5f * (y0*y0/sigmaNonskinPtr[0] + y1*y1/sigmaNonskinPtr[1] + y2*y2/sigmaNonskinPtr[2]));
 			}
 #else
-			for (int k = 0; k < GAUSSIAN_COMPONENT_NUM; ++k)
+			for (size_t k = 0; k < GAUSSIAN_COMPONENT_NUM; ++k)
 			{
 				x0 = red - *(muSkinPtr++);
 				x1 = green - *(muSkinPtr++);
@@ -518,7 +518,15 @@ void adaptive_skin_color_filtering()
 			filter_mask = cv::Mat::zeros(img.size(), CV_8UC1);
 
 		const std::clock_t &clock = std::clock();
+#if defined(__GNUC__)
+        {
+            IplImage img_ipl = (IplImage)img;
+            IplImage filter_mask_ipl = (IplImage)filter_mask;
+            filter.process(&img_ipl, &filter_mask_ipl);  // skin color detection
+        }
+#else
 		filter.process(&(IplImage)img, &(IplImage)filter_mask);  // skin color detection
+#endif
 		std::cout << "elapsed time: " << (std::clock() - clock) << std::endl;
 
 		filtered_img.setTo(cv::Scalar(0,255,0), filter_mask);

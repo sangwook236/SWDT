@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -10,11 +10,6 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
-
-
-#ifdef _DEBUG
-//#define new DEBUG_NEW
-#endif
 
 
 namespace {
@@ -57,9 +52,9 @@ void segment_motion_using_mhi(const double timestamp, const double mhiTimeDurati
 
 	//
 	{
-		const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1)); 
-		const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1)); 
-		const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1)); 
+		const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1));
+		const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));
+		const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
 		cv::erode(mhi, processed_mhi, selement5);
 		cv::dilate(processed_mhi, processed_mhi, selement5);
 
@@ -84,7 +79,12 @@ void segment_motion_using_mhi(const double timestamp, const double mhiTimeDurati
 	// segment motion: get sequence of motion components
 	// segmask is marked motion components map. it is not used further
 	IplImage *segmask = cvCreateImage(cvSize(curr_gray_img.cols, curr_gray_img.rows), IPL_DEPTH_32F, 1);  // motion segmentation map
+#if defined(__GNUC__)
+    IplImage processed_mhi_ipl = (IplImage)processed_mhi;
+	CvSeq *seq = cvSegmentMotion(&processed_mhi_ipl, segmask, storage, timestamp, motion_segment_threshold);
+#else
 	CvSeq *seq = cvSegmentMotion(&(IplImage)processed_mhi, segmask, storage, timestamp, motion_segment_threshold);
+#endif
 
 	//cv::Mat(segmask, false).convertTo(component_label_map, CV_8SC1, 1.0, 0.0);  // Oops !!! error
 	cv::Mat(segmask, false).convertTo(component_label_map, CV_8UC1, 1.0, 0.0);
@@ -343,7 +343,7 @@ void gesture_recognition_by_frequency(cv::VideoCapture &capture)
 				// FIXME [delete] >>
 				pixel_count_times.push_back(dT);
 
-/*				
+/*
 				if (pixel_count_buf.size() > 20)
 				{
 					const double mag_threshold1 = 10000.0;
@@ -754,7 +754,7 @@ private:
 	const size_t histogramNum_;
 	const std::vector<float> weights_;
 
-	boost::circular_buffer<const cv::MatND> histograms_;
+	boost::circular_buffer<cv::MatND> histograms_;
 	cv::MatND accumulatedHistogram_;
 };
 
@@ -772,12 +772,16 @@ HistogramAccumulator::HistogramAccumulator(const size_t histogramNum, const std:
 
 void HistogramAccumulator::accumulateHistograms()
 {
+#if defined(__GNUC__)
+	accumulatedHistogram_, cv::MatND();
+#else
 	std::swap(accumulatedHistogram_, cv::MatND());
+#endif
 
 	if (weights_.empty())
 	{
 		// simple running averaging
-		for (boost::circular_buffer<const cv::MatND>::const_iterator it = histograms_.begin(); it != histograms_.end(); ++it)
+		for (boost::circular_buffer<cv::MatND>::const_iterator it = histograms_.begin(); it != histograms_.end(); ++it)
 		{
 			if (accumulatedHistogram_.empty()) accumulatedHistogram_ = *it;
 			else accumulatedHistogram_ += *it;
@@ -787,7 +791,7 @@ void HistogramAccumulator::accumulateHistograms()
 	{
 		// weighted averaging
 		size_t step = 0;
-		for (boost::circular_buffer<const cv::MatND>::const_reverse_iterator rit = histograms_.rbegin(); rit != histograms_.rend(); ++rit, ++step)
+		for (boost::circular_buffer<cv::MatND>::const_reverse_iterator rit = histograms_.rbegin(); rit != histograms_.rend(); ++rit, ++step)
 		{
 			if (accumulatedHistogram_.empty()) accumulatedHistogram_ = (*rit) * weights_[step];
 			else accumulatedHistogram_ += (*rit) * weights_[step];
@@ -828,7 +832,7 @@ public:
 	{
 		GT_UNDEFINED = 0,
 		GT_LEFT_MOVE, GT_RIGHT_MOVE, GT_UP_MOVE, GT_DOWN_MOVE,
-		GT_LEFT_FAST_MOVE, GT_RIGHT_FAST_MOVE, 
+		GT_LEFT_FAST_MOVE, GT_RIGHT_FAST_MOVE,
 		GT_HORIZONTAL_FLIP, GT_VERTICAL_FLIP,
 		GT_JAMJAM,
 		GT_LEFT_90_TURN, GT_RIGHT_90_TURN,
@@ -1181,7 +1185,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 				const double scale = (255.0 - 1.0) / (maxVal - minVal);
 				const double offset = 1.0 - scale * minVal;
 				processed_mhi.convertTo(tmp_img, CV_8UC1, scale, offset);
-			
+
 				// TODO [decide] >> want to use it ?
 				tmp_img.setTo(cv::Scalar(0), component_label_map == 0);
 
@@ -1345,7 +1349,14 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 					{
 						// calculate matched index histogram
 						cv::MatND hist2;
+#if defined(__GNUC__)
+                        {
+                            const cv::Mat matched_histogram_indexes_mat(std::vector<unsigned char>(matched_histogram_indexes.begin(), matched_histogram_indexes.end()));
+                            cv::calcHist(&matched_histogram_indexes_mat, 1, indexHistChannels, cv::Mat(), hist2, histDims, indexHistSize, indexHistRanges, true, false);
+                        }
+#else
 						cv::calcHist(&cv::Mat(std::vector<unsigned char>(matched_histogram_indexes.begin(), matched_histogram_indexes.end())), 1, indexHistChannels, cv::Mat(), hist2, histDims, indexHistSize, indexHistRanges, true, false);
+#endif
 
 						// normalize histogram
 						//normalize_histogram(hist2, MAX_MATCHED_HISTOGRAM_NUM);
@@ -1353,11 +1364,11 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 						// draw matched index histogram
 						cv::Mat histImg2(cv::Mat::zeros(indexHistMaxHeight, indexHistBins*indexHistBinWidth, CV_8UC3));
 						draw_histogram_1D(hist2, indexHistBins, MAX_MATCHED_HISTOGRAM_NUM, indexHistBinWidth, indexHistMaxHeight, histImg2);
-						
+
 						std::ostringstream sstream;
 						sstream << "count: " << matched_histogram_indexes.size();;
 						cv::putText(histImg2, sstream.str(), cv::Point(10, 15), cv::FONT_HERSHEY_COMPLEX, 0.5, CV_RGB(255, 0, 255), 1, 8, false);
-						
+
 						cv::imshow(windowName4, histImg2);
 					}
 

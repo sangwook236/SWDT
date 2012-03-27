@@ -439,8 +439,8 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 	const int numNodeTypes = 3;
 
 	// TODO [check] >> these are magic numbers
-	const int numStates = 5;  // k-variate
-	const int numMixtures = 6;  // p-variate
+	const int numStates = 2;  // k-variate
+	const int numMixtures = 2;  // p-variate
 
 	// create a DAG
 	const int numNeighs[] = {
@@ -481,7 +481,7 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 	nodeAssociation[5] = 2;
 
 	//
-#if 0
+#if 1
 	pnl::CModelDomain *modelDomain = pnl::CModelDomain::Create(nodeTypes, nodeAssociation);
 
 	// to be learned
@@ -545,21 +545,22 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 	parentVal[0] = parentVal[1] = 0;  // node3 = 0 & node4 = 0
 	bnet->GetFactor(5)->AllocMatrix(&mean5w00, pnl::matMean, -1, parentVal);
 	bnet->GetFactor(5)->AllocMatrix(&cov5w00, pnl::matCovariance, -1, parentVal);
-	//bnet->GetFactor(5)->AllocMatrix(&weight5w00, pnl::matWeights, 0, parentVal);
+	bnet->GetFactor(5)->AllocMatrix(&weight5w00, pnl::matWeights, 0, parentVal);
 	parentVal[1] = 1;  // node3 = 0 & node4 = 1
 	bnet->GetFactor(5)->AllocMatrix(&mean5w01, pnl::matMean, -1, parentVal);
 	bnet->GetFactor(5)->AllocMatrix(&cov5w01, pnl::matCovariance, -1, parentVal);
-	//bnet->GetFactor(5)->AllocMatrix(&weight5w01, pnl::matWeights, 0, parentVal);
+	bnet->GetFactor(5)->AllocMatrix(&weight5w01, pnl::matWeights, 0, parentVal);
 	parentVal[1] = 1;  // node3 = 1 & node4 = 1
 	bnet->GetFactor(5)->AllocMatrix(&mean5w11, pnl::matMean, -1, parentVal);
 	bnet->GetFactor(5)->AllocMatrix(&cov5w11, pnl::matCovariance, -1, parentVal);
-	//bnet->GetFactor(5)->AllocMatrix(&weight5w11, pnl::matWeights, 0, parentVal);
+	bnet->GetFactor(5)->AllocMatrix(&weight5w11, pnl::matWeights, 0, parentVal);
 	parentVal[1] = 1;  // node3 = 1 & node4 = 0
 	bnet->GetFactor(5)->AllocMatrix(&mean5w10, pnl::matMean, -1, parentVal);
 	bnet->GetFactor(5)->AllocMatrix(&cov5w10, pnl::matCovariance, -1, parentVal);
-	//bnet->GetFactor(5)->AllocMatrix(&weight5w10, pnl::matWeights, 0, parentVal);
+	bnet->GetFactor(5)->AllocMatrix(&weight5w10, pnl::matWeights, 0, parentVal);
 #endif
 
+    std::cout << "***** 33" << std::endl;  //-- [] 2012/03/06: Sang-Wook Lee
 	// create DBN using BNet
 	return pnl::CDBN::Create(bnet);
 }
@@ -694,9 +695,9 @@ void hmm()
 	// HMM with mixture-of-Gaussians observations
 	std::cout << "\n========== HMM with mixture-of-Gaussians observations" << std::endl;
 	{
-	    std::cout << "****** 11" << std::endl;  //-- [] 2012/03/06: Sang-Wook Lee
+	    std::cout << "***** 11" << std::endl;  //-- [] 2012/03/06: Sang-Wook Lee
 		const boost::scoped_ptr<pnl::CDBN> hmm(local::create_hmm_with_mixture_of_gaussians_observations());
-	    std::cout << "****** 22" << std::endl;  //-- [] 2012/03/06: Sang-Wook Lee
+	    std::cout << "***** 22" << std::endl;  //-- [] 2012/03/06: Sang-Wook Lee
 
 		if (!hmm)
 		{

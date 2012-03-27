@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
@@ -8,11 +8,8 @@
 #include <cassert>
 #include <cstdlib>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 //#define __USE_OPENCV_1_0 1
+
 
 namespace {
 
@@ -137,7 +134,7 @@ void capture_image_by_callback()
 	retval = cvcamSetProperty(camId, CVCAM_PROP_WINDOW, &hCamWnd);
 	if (retval < 0)
 		std::cout << "error occurs when cvcamSetProperty(?, CVCAM_PROP_WINDOW, ?) is call" << std::endl;
-	
+
 	// width & height of window
 	retval = cvcamSetProperty(camId, CVCAM_RNDWIDTH, (void*)&imageWidth);
 	if (retval < 0)
@@ -238,12 +235,12 @@ void capture_image_by_thread()
 	isCapturing = true;
     HANDLE hWorkerThread = CreateThread(
 		NULL,
-		0, 
+		0,
         opencv_capture_thread_proc,
 		(void*)&size,
 		0,
 		NULL
-	);  
+	);
     if (!hWorkerThread)
 		std::cout << "capture thread fail to be created" << std::endl;
 

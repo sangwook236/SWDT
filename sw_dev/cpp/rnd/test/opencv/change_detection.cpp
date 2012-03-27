@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -6,11 +6,6 @@
 #include <opencv2/video/background_segm.hpp>
 #include <string>
 #include <iostream>
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 
 namespace {
@@ -63,9 +58,9 @@ void background_segmentation()
 		double t = (double)cvGetTickCount();
 
 		cvUpdateBGStatModel(image, bg_model, update_bg_model ? -1 : 0);
-		
+
 		std::cout << "frame: " << fr << ", time: " << ((double)cvGetTickCount() - t) / (cvGetTickFrequency() * 1000.) << std::endl;
-		
+
 		cvShowImage("BG", bg_model->background);
 		cvShowImage("FG", bg_model->foreground);
 
@@ -139,7 +134,7 @@ void background_segmentation_by_mog()
 
 	cv::BackgroundSubtractorMOG bgSubtractor;
 	bgSubtractor.noiseSigma = 10;
-    
+
     bool update_bg_model = true;
 	cv::Mat frame, fgMask, segmented_img;
 	for (;;)
@@ -216,7 +211,7 @@ void change_detection_using_codebook()
 
 	if (!capture)
 	{
-		printf("Can not initialize video capturing\n\n");
+		std::cout << "Can not initialize video capturing\n\n";
 		//help();
 		return;
 	}
@@ -228,7 +223,7 @@ void change_detection_using_codebook()
 		{
 			rawImage = cvQueryFrame(capture);
 			++nframes;
-			if (!rawImage) 
+			if (!rawImage)
 				break;
 		}
 		if (singlestep)
@@ -248,7 +243,7 @@ void change_detection_using_codebook()
 			cvNamedWindow("CodeBook_ConnectComp", 1);
 		}
 
-		// If we've got an rawImage and are good to go:                
+		// If we've got an rawImage and are good to go:
 		if (rawImage)
 		{
 			cvCvtColor(rawImage, yuvImage, CV_BGR2YCrCb);  // YUV For codebook method
@@ -265,7 +260,7 @@ void change_detection_using_codebook()
 				// Find foreground by codebook method
 				cvBGCodeBookDiff(model, yuvImage, ImaskCodeBook);
 				// This part just to visualize bounding boxes and centers if desired
-				cvCopy(ImaskCodeBook, ImaskCodeBookCC);	
+				cvCopy(ImaskCodeBook, ImaskCodeBookCC);
 				cvSegmentFGMask(ImaskCodeBookCC);
 			}
 
@@ -307,11 +302,11 @@ void change_detection_using_codebook()
 		case 'u': case '1':
 		case 'v': case '2':
 		case 'a': case '3':
-		case 'b': 
+		case 'b':
 			ch[0] = c == 'y' || c == '0' || c == 'a' || c == '3';
 			ch[1] = c == 'u' || c == '1' || c == 'a' || c == '3' || c == 'b';
 			ch[2] = c == 'v' || c == '2' || c == 'a' || c == '3' || c == 'b';
-			printf("CodeBook YUV Channels active: %d, %d, %d\n", ch[0], ch[1], ch[2]);
+			std::cout << "CodeBook YUV Channels active: " << ch[0] << ", " << ch[1] << ", " << ch[2] << std::endl;
 			break;
 		case 'i': //modify max classification bounds (max bound goes higher)
 		case 'o': //modify max classification bounds (max bound goes lower)
@@ -326,13 +321,13 @@ void change_detection_using_codebook()
 						int v = ptr[n] + (c == 'i' || c == 'l' ? 1 : -1);
 						ptr[n] = cv::saturate_cast<uchar>(v);
 					}
-					printf("%d,", ptr[n]);
+					std::cout << ptr[n] << ',';
 				}
-				printf(" CodeBook %s Side\n", c == 'i' || c == 'o' ? "High" : "Low");
+				std::cout << " CodeBook " << (c == 'i' || c == 'o' ? "High" : "Low") << " Side" << std::endl;
 			}
 			break;
 		}
-	}		
+	}
 
 	cvReleaseCapture(&capture);
 	cvDestroyWindow("Raw");

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -65,7 +65,7 @@ void save_ref_hand_image()
 	cv::namedWindow(windowName1, cv::WINDOW_AUTOSIZE);
 	cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
 
-	for (std::list<std::string>::const_iterator it = img_filenames.cbegin(); it != img_filenames.cend(); ++it)
+	for (std::list<std::string>::const_iterator it = img_filenames.begin(); it != img_filenames.end(); ++it)
 	{
 		const cv::Mat &in_gray = cv::imread(*it, CV_LOAD_IMAGE_GRAYSCALE);
 		cv::Mat gray;
@@ -99,7 +99,7 @@ void save_ref_hand_image()
 
 			cv::imshow(windowName2, edge_img);
 		}
-		
+
 		const int key = cv::waitKey(0);
 		if (27 == key) break;
 	}
@@ -202,7 +202,14 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		edge_img.setTo(cv::Scalar::all(0), edge < (minVal + (maxVal - minVal) * thresholdRatio));
 
 		processed_img = cv::Mat::zeros(img.size(), CV_8UC1);
+#if defined(__GNUC__)
+        {
+            cv::Mat processed_img_tmp(processed_img(aabb));
+            edge_img.copyTo(processed_img_tmp);
+        }
+#else
 		edge_img.copyTo(processed_img(aabb));
+#endif
 #endif
 #else
 		img.copyTo(processed_img, mask);
@@ -276,9 +283,9 @@ void segment_motion_using_mhi(const double timestamp, const double mhiTimeDurati
 
 	//
 	{
-		const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1)); 
-		const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1)); 
-		const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1)); 
+		const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1));
+		const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));
+		const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
 		cv::erode(mhi, processed_mhi, selement5);
 		cv::dilate(processed_mhi, processed_mhi, selement5);
 
@@ -303,7 +310,12 @@ void segment_motion_using_mhi(const double timestamp, const double mhiTimeDurati
 	// segment motion: get sequence of motion components
 	// segmask is marked motion components map. it is not used further
 	IplImage *segmask = cvCreateImage(cvSize(curr_gray_img.cols, curr_gray_img.rows), IPL_DEPTH_32F, 1);  // motion segmentation map
+#if defined(__GNUC__)
+    IplImage processed_mhi_ipl = (IplImage)processed_mhi;
+	CvSeq *seq = cvSegmentMotion(&processed_mhi_ipl, segmask, storage, timestamp, motion_segment_threshold);
+#else
 	CvSeq *seq = cvSegmentMotion(&(IplImage)processed_mhi, segmask, storage, timestamp, motion_segment_threshold);
+#endif
 
 	//cv::Mat(segmask, false).convertTo(component_label_map, CV_8SC1, 1.0, 0.0);  // Oops !!! error
 	cv::Mat(segmask, false).convertTo(component_label_map, CV_8UC1, 1.0, 0.0);
@@ -432,7 +444,7 @@ void detect_hand_by_motion()
 				const double scale = (255.0 - 1.0) / (maxVal - minVal);
 				const double offset = 1.0 - scale * minVal;
 				processed_mhi.convertTo(tmp_img, CV_8UC1, scale, offset);
-			
+
 				// TODO [decide] >> want to use it ?
 				tmp_img.setTo(cv::Scalar(0), component_label_map == 0);
 

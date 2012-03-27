@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -70,7 +70,7 @@ void laplacian_image_pyramid(const cv::Mat &img, const int depth, std::list<cv::
 #endif
 	}
 }
-	
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -108,7 +108,12 @@ void image_pyramid()
 	int k = 0, start = 0;
 	for (std::list<cv::Mat>::const_iterator it = pyramids.begin(); it != pyramids.end(); ++it, ++k)
 	{
+#if defined(__GNUC__)
+        cv::Mat disp_img_roi(disp_img(cv::Range(0, it->rows), cv::Range(start, start + it->cols)));
+		it->copyTo(disp_img_roi);
+#else
 		it->copyTo(disp_img(cv::Range(0, it->rows), cv::Range(start, start + it->cols)));
+#endif
 		start += it->cols;
 	}
 #endif

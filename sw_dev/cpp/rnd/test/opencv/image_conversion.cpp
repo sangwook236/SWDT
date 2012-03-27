@@ -1,17 +1,11 @@
-// Test.cpp : 콘솔 응용 프로그램에 대한 진입점을 정의합니다.
-//
-
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cv.h>
 #include <opencv/cxcore.h>
 #include <opencv/highgui.h>
 #include <string>
 #include <iostream>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+#include <stdexcept>
 
 
 void print_opencv_matrix(const CvMat* mat);
@@ -50,9 +44,17 @@ void convert_image_to_gray(const std::string &srcImageName, const std::string &d
 		else
 		{
 			grayImg = cvCreateImage(cvGetSize(srcImage), srcImage->depth, 1);
+#if defined(__GNUC__)
+			if (strcasecmp(srcImage->channelSeq, "RGB") == 0)
+#else
 			if (_stricmp(srcImage->channelSeq, "RGB") == 0)
+#endif
 				cvCvtColor(srcImage, grayImg, CV_RGB2GRAY);
+#if defined(__GNUC__)
+			else if (strcasecmp(srcImage->channelSeq, "BGR") == 0)
+#else
 			else if (_stricmp(srcImage->channelSeq, "BGR") == 0)
+#endif
 				cvCvtColor(srcImage, grayImg, CV_BGR2GRAY);
 			else
 				assert(false);
@@ -67,7 +69,11 @@ void convert_image(const std::string &imageName, const std::string &srcImageExt,
 {
 	const std::string::size_type extPos = imageName.find_last_of('.');
 
+#if defined(__GNUC__)
+	if (strcasecmp(imageName.substr(extPos + 1).c_str(), srcImageExt.c_str()) == 0)
+#else
 	if (_stricmp(imageName.substr(extPos + 1).c_str(), srcImageExt.c_str()) == 0)
+#endif
 	{
 		const std::string repstr = std::string(imageName).replace(extPos + 1, imageName.length() - extPos -1, dstImageExt);
 		//convert_image(imageName, repstr);
@@ -77,33 +83,37 @@ void convert_image(const std::string &imageName, const std::string &srcImageExt,
 
 void convert_images(const std::string &dirName, const std::string &srcImageExt, const std::string &dstImageExt)
 {
+#if defined(WIN32)
 	WIN32_FIND_DATAA FindFileData;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
 	DWORD dwError;
 
 	hFind = FindFirstFileA((dirName + std::string("\\*")).c_str(), &FindFileData);
-	if (INVALID_HANDLE_VALUE == hFind) 
+	if (INVALID_HANDLE_VALUE == hFind)
 	{
 		std::cout << "Invalid file handle. Error is " << GetLastError() << std::endl;
 		return;
-	} 
-	else 
+	}
+	else
 	{
 		convert_image(dirName + std::string("\\") + std::string(FindFileData.cFileName), srcImageExt, dstImageExt);
 
-		while (FindNextFileA(hFind, &FindFileData) != 0) 
+		while (FindNextFileA(hFind, &FindFileData) != 0)
 		{
 			convert_image(dirName + std::string("\\") + std::string(FindFileData.cFileName), srcImageExt, dstImageExt);
 		}
 
 		dwError = GetLastError();
 		FindClose(hFind);
-		if (ERROR_NO_MORE_FILES != dwError) 
+		if (ERROR_NO_MORE_FILES != dwError)
 		{
 			std::cout << "FindNextFile error. Error is " << dwError << std::endl;
 			return;
 		}
 	}
+#else
+    throw std::runtime_error("not yet implemented");
+#endif
 }
 
 void convert_bmp_to_pgm()

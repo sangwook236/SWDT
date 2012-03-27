@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d/features2d.hpp>
@@ -8,12 +8,8 @@
 #include <string>
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-
-void print_opencv_matrix(const CvMat* mat);
+void print_opencv_matrix(const cv::Mat &mat);
 
 namespace {
 namespace local {
@@ -46,7 +42,10 @@ void image_handling()
 					CV_IMAGE_ELEM(img, unsigned char, i, j) = (unsigned char)ii;
 
 			std::cout << "image =>" << std::endl;
-			print_opencv_matrix(&cvMat(rdim, cdim, CV_8UC1, (void *)img->imageData));
+#if defined(__GNUC__)
+#else
+			print_opencv_matrix(cv::Mat(rdim, cdim, CV_8UC1, (void *)img->imageData));
+#endif
 			//const unsigned char *p = (unsigned char *)img->imageData;
 			//print_opencv_matrix(&cvMat(rdim, cdim, CV_8UC1, (void*)p));
 		}
@@ -59,7 +58,7 @@ void image_handling()
 					CV_IMAGE_ELEM(img, float, i, j) = (float)ii;
 
 			std::cout << "image =>" << std::endl;
-			print_opencv_matrix(&cvMat(rdim, cdim, CV_32FC1, (void *)img->imageData));
+			print_opencv_matrix(cv::Mat(rdim, cdim, CV_32FC1, (void *)img->imageData));
 			//p = (float *)img->imageData;
 			//print_opencv_matrix(&cvMat(rdim, cdim, CV_32FC1, (void *)p));
 		}
@@ -83,9 +82,17 @@ void show_image()
 	else
 	{
 		grayImg = cvCreateImage(cvGetSize(img), img->depth, 1);
+#if defined(__GNUC__)
+		if (strcasecmp(img->channelSeq, "RGB") == 0)
+#else
 		if (_stricmp(img->channelSeq, "RGB") == 0)
+#endif
 			cvCvtColor(img, grayImg, CV_RGB2GRAY);
+#if defined(__GNUC__)
+		else if (strcasecmp(img->channelSeq, "BGR") == 0)
+#else
 		else if (_stricmp(img->channelSeq, "BGR") == 0)
+#endif
 			cvCvtColor(img, grayImg, CV_BGR2GRAY);
 		else
 			assert(false);

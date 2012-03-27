@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
@@ -41,7 +41,7 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 		cvReleaseImage(&tmp_img);
 	}
 
-	// find the contours 
+	// find the contours
 	CvSeq *contour = NULL;
 	CvMemStorage *storage = cvCreateMemStorage(0);
 	cvFindContours(img, storage, &contour, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
@@ -50,7 +50,7 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 	CvPoint *points = new CvPoint [NUMBER_OF_SNAKE_POINTS];
 	while (contour)
 	{
-		if (contour->total >= NUMBER_OF_SNAKE_POINTS) 
+		if (contour->total >= NUMBER_OF_SNAKE_POINTS)
 		{
 			//memset(points, 0, NUMBER_OF_SNAKE_POINTS * sizeof(CvPoint));
 
@@ -82,14 +82,14 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 #endif
 
 			// snake
-			cvSnakeImage(img, points, NUMBER_OF_SNAKE_POINTS, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient); 
+			cvSnakeImage(img, points, NUMBER_OF_SNAKE_POINTS, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
 
 			// draw snake on image
 			cvPolyLine(srcImage, (CvPoint **)&points, &NUMBER_OF_SNAKE_POINTS, 1, 1, CV_RGB(255, 0, 0), 3, 8, 0);
 		}
 
 		// get next contours
-		contour = contour->h_next; 
+		contour = contour->h_next;
 	}
 
 	//
@@ -140,9 +140,17 @@ void snake()
 		else
 		{
 			grayImage = cvCreateImage(cvGetSize(srcImage), srcImage->depth, 1);
+#if defined(__GNUC__)
+			if (strcasecmp(srcImage->channelSeq, "RGB") == 0)
+#else
 			if (_stricmp(srcImage->channelSeq, "RGB") == 0)
+#endif
 				cvCvtColor(srcImage, grayImage, CV_RGB2GRAY);
+#if defined(__GNUC__)
+			else if (strcasecmp(srcImage->channelSeq, "BGR") == 0)
+#else
 			else if (_stricmp(srcImage->channelSeq, "BGR") == 0)
+#endif
 				cvCvtColor(srcImage, grayImage, CV_BGR2GRAY);
 			else
 				assert(false);

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
@@ -6,10 +6,8 @@
 #include <iostream>
 #include <list>
 #include <cassert>
+#include <cstring>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace {
 
@@ -122,7 +120,7 @@ void star_keypoint(IplImage *srcImage, IplImage *grayImage)
 
 void mser(IplImage *srcImage, IplImage *grayImage)
 {
-	const CvScalar colors[] = 
+	const CvScalar colors[] =
 	{
 		{{0,0,255}},
 		{{0,128,255}},
@@ -137,7 +135,7 @@ void mser(IplImage *srcImage, IplImage *grayImage)
 		{{255,255,196}}
 	};
 
-	const unsigned char bcolors[][3] = 
+	const unsigned char bcolors[][3] =
 	{
 		{0,0,255},
 		{0,128,255},
@@ -185,7 +183,7 @@ void mser(IplImage *srcImage, IplImage *grayImage)
 		const CvContour *contour = *(CvContour **)cvGetSeqElem(contours, i);
 		const CvBox2D box = cvFitEllipse2(contour);
 		//box.angle = (float)CV_PI / 2.0f - box.angle;
-		
+
 		if (contour->color > 0)
 			cvEllipseBox(srcImage, box, colors[9], 2, 8, 0);
 		else
@@ -286,9 +284,17 @@ void feature_extraction()
 		else
 		{
 			grayImage = cvCreateImage(cvGetSize(srcImage), srcImage->depth, 1);
+#if defined(__GNUC__)
+			if (strcasecmp(srcImage->channelSeq, "RGB") == 0)
+#else
 			if (_stricmp(srcImage->channelSeq, "RGB") == 0)
+#endif
 				cvCvtColor(srcImage, grayImage, CV_RGB2GRAY);
+#if defined(__GNUC__)
+			else if (strcasecmp(srcImage->channelSeq, "BGR") == 0)
+#else
 			else if (_stricmp(srcImage->channelSeq, "BGR") == 0)
+#endif
 				cvCvtColor(srcImage, grayImage, CV_BGR2GRAY);
 			else
 				assert(false);

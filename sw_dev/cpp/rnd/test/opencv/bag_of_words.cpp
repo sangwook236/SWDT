@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "PascalVocDataset.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
@@ -8,6 +8,9 @@
 #include <iostream>
 #if defined WIN32 || defined _WIN32
 #include <Windows.h>
+#endif
+#if defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
+#include <sys/stat.h>
 #endif
 
 namespace {

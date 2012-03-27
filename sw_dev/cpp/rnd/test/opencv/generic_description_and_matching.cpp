@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d/features2d.hpp>
@@ -12,8 +12,19 @@ namespace {
 void drawCorrespondences(const cv::Mat &img1, const std::vector<cv::KeyPoint> &features1, const cv::Mat &img2, const std::vector<cv::KeyPoint> &features2, const std::vector<cv::DMatch> &desc_idx, cv::Mat &img_corr)
 {
 	img_corr.create(img1.rows + img2.rows, std::max(img1.cols, img2.cols), CV_8UC1);
+#if defined(__GNUC__)
+	{
+	    cv::Mat imgtmp(img_corr(cv::Rect(0, 0, img1.rows, img1.cols)));
+        cv::cvtColor(img1, imgtmp, CV_GRAY2RGB);
+	}
+	{
+	    cv::Mat imgtmp(img_corr(cv::Rect(img1.rows, 0, img2.rows, img2.cols)));
+        cv::cvtColor(img2, imgtmp, CV_GRAY2RGB);
+	}
+#else
 	cv::cvtColor(img1, img_corr(cv::Rect(0, 0, img1.rows, img1.cols)), CV_GRAY2RGB);
 	cv::cvtColor(img2, img_corr(cv::Rect(img1.rows, 0, img2.rows, img2.cols)), CV_GRAY2RGB);
+#endif
 
 	for (size_t i = 0; i < features1.size(); ++i)
 	{

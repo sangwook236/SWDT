@@ -1,14 +1,9 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 #include <iostream>
 #include <ctime>
-
-
-#ifdef _DEBUG
-//#define new DEBUG_NEW
-#endif
 
 
 //#define __USE_ARRAY 1
@@ -93,7 +88,7 @@ void convex_hull_basic()
 		}
 
 		cvShowImage(windowName, img);
-		
+
 		const int key = cvWaitKey(0);
 		if (key == 27)  // ESC
 			break;
@@ -147,7 +142,7 @@ void convexity_defect()
 		{
 			pts[2] = *CV_GET_SEQ_ELEM(CvPoint, ptseq, i);
 
-			cvFillPoly(img, &(CvPoint *)pts, &npts, 1, CV_RGB(127, 127, 127), 8, 0);
+			cvFillPoly(img, &pts, &npts, 1, CV_RGB(127, 127, 127), 8, 0);
 
 			pts[0] = pts[1];
 			pts[1] = pts[2];
@@ -210,11 +205,11 @@ void convexity_defect()
 			delete [] defects;
 
 			// get next contour
-			convexityDefect = convexityDefect->h_next; 
+			convexityDefect = convexityDefect->h_next;
 		}
 
 		cvShowImage(windowName, img);
-		
+
 		const int key = cvWaitKey(0);
 		if (key == 27)  // ESC
 			break;

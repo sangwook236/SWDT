@@ -2,6 +2,7 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
 		<Project filename="../test/pnl/pnl_cb10.cbp" />
-		<Project filename="../test/probabilistic_graphical_model/probabilistic_graphical_model_cb10.cbp" active="1" />
+		<Project filename="../test/probabilistic_graphical_model/probabilistic_graphical_model_cb10.cbp" />
+		<Project filename="../test/opencv/opencv_cb10.cbp" active="1" />
 	</Workspace>
 </CodeBlocks_workspace_file>

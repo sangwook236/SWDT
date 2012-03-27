@@ -1,13 +1,11 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 #include <iostream>
+#include <stdexcept>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 void print_opencv_matrix(const CvMat* mat);
 
@@ -28,7 +26,16 @@ void stereo_correspondence_using_block_matching_algorithm1(const cv::Mat &leftIm
 
 	// computes the disparity map using block matching algorithm
 	disparity = cv::Mat::zeros(leftImage.size(), CV_32FC1);  // disparity: single-channel 16-bit signed, or 32-bit floating-point disparity map
+#if defined(__GNUC__)
+    {
+        IplImage leftImage_ipl = (IplImage)leftImage;
+        IplImage rightImage_ipl = (IplImage)rightImage;
+        IplImage disparity_ipl = (IplImage)disparity;
+        cvFindStereoCorrespondenceBM(&leftImage_ipl, &rightImage_ipl, &disparity_ipl, state);
+    }
+#else
 	cvFindStereoCorrespondenceBM(&(IplImage)leftImage, &(IplImage)rightImage, &(IplImage)disparity, state);
+#endif
 
 	cvReleaseStereoBMState(&state);
 }
@@ -42,7 +49,17 @@ void stereo_correspondence_using_graph_cut_based_algorithm(const cv::Mat &leftIm
 	const int useDisparityGuess = 0;
 	leftDisparity = cv::Mat::zeros(leftImage.size(), CV_16SC1);  // disparity: single-channel 16-bit signed left disparity map
 	rightDisparity = cv::Mat::zeros(leftImage.size(), CV_16SC1);  // disparity: single-channel 16-bit signed left disparity map
+#if defined(__GNUC__)
+    {
+        IplImage leftImage_ipl = (IplImage)leftImage;
+        IplImage rightImage_ipl = (IplImage)rightImage;
+        IplImage leftDisparity_ipl = (IplImage)leftDisparity;
+        IplImage rightDisparity_ipl = (IplImage)rightDisparity;
+        cvFindStereoCorrespondenceGC(&leftImage_ipl, &rightImage_ipl, &leftDisparity_ipl, &rightDisparity_ipl, state, useDisparityGuess);
+    }
+#else
 	cvFindStereoCorrespondenceGC(&(IplImage)leftImage, &(IplImage)rightImage, &(IplImage)leftDisparity, &(IplImage)rightDisparity, state, useDisparityGuess);
+#endif
 
 	cvReleaseStereoGCState(&state);
 }
@@ -362,7 +379,7 @@ void stereo_matching()
 		const local::SimilarityComparisonMethod method = local::SCM_SAD;
 		local::stereo_correspondence_using_similarity_measure(left_image, right_image, window_size, min_disparity, max_disparity, method, disparity);
 		//local::stereo_correspondence_using_similarity_measure(right_image, left_image, window_size, min_disparity, max_disparity, method, disparity);
-			
+
 		double minVal = 0.0, maxVal = 0.0;
 		cv::minMaxLoc(disparity, &minVal, &maxVal);
 		const double alpha = 255.0 / (maxVal - minVal), beta = -alpha * minVal;

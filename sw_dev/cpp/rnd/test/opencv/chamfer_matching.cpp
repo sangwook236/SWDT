@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -17,15 +17,15 @@ void chamfer_matching()
 #elif 1
 	const std::string filename1("opencv_data\\box.png");
 	const std::string filename2("opencv_data\\box_in_scene.png");
-#elif 
+#elif 0
 	const std::string filename1("opencv_data\\melon_target.png");
 	//const std::string filename2("opencv_data\\melon_1.png");
 	//const std::string filename2("opencv_data\\melon_2.png");
 	const std::string filename2("opencv_data\\melon_3.png");
 #endif
 
-	cv::Mat &templ = cv::imread(filename1, CV_LOAD_IMAGE_GRAYSCALE);
-	cv::Mat &image = cv::imread(filename2, CV_LOAD_IMAGE_GRAYSCALE);
+	cv::Mat templ(cv::imread(filename1, CV_LOAD_IMAGE_GRAYSCALE));
+	cv::Mat image(cv::imread(filename2, CV_LOAD_IMAGE_GRAYSCALE));
 
 	// if the image and the template are not edge maps but normal grayscale images, you might want to uncomment the lines below to produce the maps.
 	// you can also run Sobel instead of Canny.

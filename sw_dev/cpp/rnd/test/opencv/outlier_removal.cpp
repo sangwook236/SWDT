@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
@@ -9,9 +9,6 @@
 #include <ctime>
 #include <cmath>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace {
 
@@ -24,9 +21,17 @@ void extract_features(const IplImage *image, CvMemStorage *storage, CvSeq *&keyp
 	else
 	{
 		grayImage = cvCreateImage(cvGetSize(image), image->depth, 1);
+#if defined(__GNUC__)
+		if (strcasecmp(image->channelSeq, "RGB") == 0)
+#else
 		if (_stricmp(image->channelSeq, "RGB") == 0)
+#endif
 			cvCvtColor(image, grayImage, CV_RGB2GRAY);
+#if defined(__GNUC__)
+		else if (strcasecmp(image->channelSeq, "BGR") == 0)
+#else
 		else if (_stricmp(image->channelSeq, "BGR") == 0)
+#endif
 			cvCvtColor(image, grayImage, CV_BGR2GRAY);
 		else
 			assert(false);
@@ -197,7 +202,7 @@ void match_features_using_ransac()
 	const int descriptorLength = useExtendedDescriptor ? 128 : 64;
 	const double distanceThreshold = 0.4;  // too sensitive !!!  ==>  need to reject outliers
 	match_using_k_nearest_neighbor(targetKeypoints, targetDescriptors, inputKeypoints, inputDescriptors, descriptorLength, distanceThreshold, matchedPairs);
-	
+
 	std::map<ClusterBinInfo, std::list<int> > clusterBins;
 	remove_outlier_using_hough_transform_voting(targetKeypoints, targetDescriptors, inputKeypoints, inputDescriptors, descriptorLength, matchedPairs, clusterBins);
 	//remove_outlier_using_ransac(targetKeypoints, targetDescriptors, inputKeypoints, inputDescriptors, descriptorLength, matchedPairs);

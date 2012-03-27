@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d/features2d.hpp>
@@ -36,8 +36,17 @@ void feature_extraction_and_matching_by_signature_1()
 	const CvSURFParams params = cvSURFParams(500, 1);
 	CvMemStorage *storage = cvCreateMemStorage(0);
 
+#if defined(__GNUC__)
+    {
+        IplImage img_tmp1 = (IplImage)img1;
+        cvExtractSURF(&img_tmp1, 0, &objectKeypoints, &objectDescriptors, storage, params);
+        IplImage img_tmp2 = (IplImage)img2;
+        cvExtractSURF(&img_tmp2, 0, &imageKeypoints, &imageDescriptors, storage, params);
+    }
+#else
 	cvExtractSURF(&(IplImage)img1, 0, &objectKeypoints, &objectDescriptors, storage, params);
 	cvExtractSURF(&(IplImage)img2, 0, &imageKeypoints, &imageDescriptors, storage, params);
+#endif
 
 	cv::RTreeClassifier detector;
 	const int patch_width = cv::RandomizedTree::PATCH_SIZE;
@@ -49,7 +58,12 @@ void feature_extraction_and_matching_by_signature_1()
 	for (int i = 0; i < n_points; ++i)
 	{
 		CvSURFPoint *point = (CvSURFPoint *)cvGetSeqElem(objectKeypoints, i);
+#if defined(__GNUC__)
+        IplImage img_tmp1 = (IplImage)img1;
+		base_set.push_back(cv::BaseKeypoint(point->pt.x, point->pt.y, &img_tmp1));
+#else
 		base_set.push_back(cv::BaseKeypoint(point->pt.x, point->pt.y, &(IplImage)img1));
+#endif
 	}
 
 	// train detector
@@ -74,8 +88,14 @@ void feature_extraction_and_matching_by_signature_1()
 		int part_idx = -1;
 		float prob = 0.0f;
 		CvRect roi = cvRect((int)(point->pt.x) - patch_width/2, (int)(point->pt.y) - patch_height/2, patch_width, patch_height);
+#if defined(__GNUC__)
+        IplImage img2_ipl = (IplImage)img2;
+        cvSetImageROI(&img2_ipl, roi);
+        roi = cvGetImageROI(&img2_ipl);
+#else
 		cvSetImageROI(&(IplImage)img2, roi);
 		roi = cvGetImageROI(&(IplImage)img2);
+#endif
 		if(roi.width != patch_width || roi.height != patch_height)
 		{
 			best_corr_idx[i] = part_idx;
@@ -83,10 +103,18 @@ void feature_extraction_and_matching_by_signature_1()
 		}
 		else
 		{
-			cvSetImageROI(&(IplImage)img2, roi);
+#if defined(__GNUC__)
+ 			cvSetImageROI(&img2_ipl, roi);
+#else
+ 			cvSetImageROI(&(IplImage)img2, roi);
+#endif
 
 			IplImage *roi_image = cvCreateImage(cvSize(roi.width, roi.height), img2.depth(), img2.channels());
+#if defined(__GNUC__)
+			cvCopy(&img2_ipl, roi_image);
+#else
 			cvCopy(&(IplImage)img2, roi_image);
+#endif
 			detector.getSignature(roi_image, signature);
 			//detector.getSparseSignature(roi_image, signature, thres);
 
@@ -104,7 +132,11 @@ void feature_extraction_and_matching_by_signature_1()
 			if (roi_image) cvReleaseImage(&roi_image);
 		}
 
+#if defined(__GNUC__)
+		cvResetImageROI(&img2_ipl);
+#else
 		cvResetImageROI(&(IplImage)img2);
+#endif
 	}
 
 	delete [] best_corr;

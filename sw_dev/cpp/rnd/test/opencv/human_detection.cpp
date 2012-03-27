@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -39,7 +39,7 @@ void human_detection_using_hog()
 
 	for (std::list<std::string>::iterator it = filenames.begin(); it != filenames.end(); ++it)
     {
-		cv::Mat &img = cv::imread(*it, CV_LOAD_IMAGE_COLOR);
+		cv::Mat img(cv::imread(*it, CV_LOAD_IMAGE_COLOR));
 		if (img.empty())
 		{
 			std::cout << "fail to load image file: " << *it << std::endl;

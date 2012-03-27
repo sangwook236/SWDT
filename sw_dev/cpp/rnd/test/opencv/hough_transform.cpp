@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
@@ -6,9 +6,6 @@
 #include <iostream>
 #include <cassert>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace {
 
@@ -17,7 +14,7 @@ void hough_line_standard(IplImage *srcImage, IplImage *grayImage)
 	CvMemStorage *storage = cvCreateMemStorage(0);
 
 	cvCanny(grayImage, grayImage, 50.0, 200.0, 3);
-	
+
 	const CvSeq *lines = cvHoughLines2(
 		grayImage,
 		storage,
@@ -56,7 +53,7 @@ void hough_line_probabilistic(IplImage *srcImage, IplImage *grayImage)
 	CvMemStorage *storage = cvCreateMemStorage(0);
 
 	cvCanny(grayImage, grayImage, 50.0, 200.0, 3);
-	
+
 	const CvSeq *lines = cvHoughLines2(
 		grayImage,
 		storage,
@@ -84,7 +81,7 @@ void hough_circle(IplImage *srcImage, IplImage *grayImage)
 	CvMemStorage *storage = cvCreateMemStorage(0);
 
 	cvSmooth(grayImage, grayImage, CV_GAUSSIAN, 9, 9, 0.0, 0.0);
-	
+
 	const CvSeq *circles = cvHoughCircles(
 		grayImage,
 		storage,
@@ -130,9 +127,17 @@ void hough_transform()
 	else
 	{
 		grayImage = cvCreateImage(cvGetSize(srcImage), srcImage->depth, 1);
+#if defined(__GNUC__)
+		if (strcasecmp(srcImage->channelSeq, "RGB") == 0)
+#else
 		if (_stricmp(srcImage->channelSeq, "RGB") == 0)
+#endif
 			cvCvtColor(srcImage, grayImage, CV_RGB2GRAY);
+#if defined(__GNUC__)
+		else if (strcasecmp(srcImage->channelSeq, "BGR") == 0)
+#else
 		else if (_stricmp(srcImage->channelSeq, "BGR") == 0)
+#endif
 			cvCvtColor(srcImage, grayImage, CV_BGR2GRAY);
 		else
 			assert(false);

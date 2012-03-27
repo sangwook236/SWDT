@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
@@ -6,11 +6,8 @@
 #include <iostream>
 #include <cassert>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 #define _INITIALIZE_HISTOGRAM_FROM_FILE 1
+
 
 namespace {
 
@@ -60,9 +57,17 @@ public:
 		if (NULL == image) return false;
 		if (NULL == hsvImage_ || NULL == hueImage_ || NULL == maskImage_) return false;
 
+#if defined(__GNUC__)
+		if (strcasecmp(image->channelSeq, "RGB") == 0)
+#else
 		if (_stricmp(image->channelSeq, "RGB") == 0)
+#endif
 			cvCvtColor(image, hsvImage_, CV_RGB2HSV);
+#if defined(__GNUC__)
+		else if (strcasecmp(image->channelSeq, "BGR") == 0)
+#else
 		else if (_stricmp(image->channelSeq, "BGR") == 0)
+#endif
 			cvCvtColor(image, hsvImage_, CV_BGR2HSV);
 		else
 		{
@@ -100,9 +105,17 @@ public:
 		IplImage *hue = cvCreateImage(imageSize, IPL_DEPTH_8U, 1);
 		IplImage *mask = cvCreateImage(imageSize, IPL_DEPTH_8U, 1);
 
+#if defined(__GNUC__)
+		if (strcasecmp(targetImage->channelSeq, "RGB") == 0)
+#else
 		if (_stricmp(targetImage->channelSeq, "RGB") == 0)
+#endif
 			cvCvtColor(targetImage, hsv, CV_RGB2HSV);
+#if defined(__GNUC__)
+		else if (strcasecmp(targetImage->channelSeq, "BGR") == 0)
+#else
 		else if (_stricmp(targetImage->channelSeq, "BGR") == 0)
+#endif
 			cvCvtColor(targetImage, hsv, CV_BGR2HSV);
 		else
 		{
@@ -133,9 +146,17 @@ public:
 		if (NULL == image) return false;
 		if (NULL == hsvImage_ || NULL == hueImage_ || NULL == maskImage_ || NULL == backProjImage_) return false;
 
+#if defined(__GNUC__)
+		if (strcasecmp(image->channelSeq, "RGB") == 0)
+#else
 		if (_stricmp(image->channelSeq, "RGB") == 0)
+#endif
 			cvCvtColor(image, hsvImage_, CV_RGB2HSV);
+#if defined(__GNUC__)
+		else if (strcasecmp(image->channelSeq, "BGR") == 0)
+#else
 		else if (_stricmp(image->channelSeq, "BGR") == 0)
+#endif
 			cvCvtColor(image, hsvImage_, CV_BGR2HSV);
 		else
 		{

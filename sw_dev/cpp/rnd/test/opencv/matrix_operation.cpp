@@ -1,12 +1,9 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
 #include <iostream>
 #include <cassert>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 void print_opencv_matrix(const CvMat* mat);
 

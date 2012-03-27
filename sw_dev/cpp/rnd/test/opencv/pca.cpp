@@ -1,16 +1,12 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <opencv/cxcore.h>
 #include <algorithm>
 #include <vector>
 #include <cassert>
 #include <cmath>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
 #define __COLUMN_MAJOR 1
+
 
 void pca()
 {

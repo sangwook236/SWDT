@@ -1,12 +1,8 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/core/core.hpp>
 #include <iostream>
 #include <ctime>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 
 void print_opencv_matrix(const CvMat *mat);
@@ -96,7 +92,7 @@ int main(int argc, char **argv)
 		//image_operation();
 		//image_conversion();
 		//image_sequence();
-		
+
 		//image_filtering();
 		//image_filtering_using_gpu();  // not yet implemented
 		//image_processing_using_gpu();  // not yet implemented
@@ -122,7 +118,7 @@ int main(int argc, char **argv)
 		//chamfer_matching();
 		//shape_finding();
 		//shape_matching();
-		
+
 		//snake();
 		//segmentation();
 
@@ -235,6 +231,6 @@ void print_opencv_matrix(const cv::Mat &mat)
 	std::cout << mat << std::endl;
 	//std::cout << cv::format(mat, "python") << std::endl;
 	//std::cout << cv::format(mat, "numpy") << std::endl;
-	//std::cout << cv::format(mat, "csv") << std::endl; 
+	//std::cout << cv::format(mat, "csv") << std::endl;
 	//std::cout << cv::format(mat, "C") << std::endl;
 }

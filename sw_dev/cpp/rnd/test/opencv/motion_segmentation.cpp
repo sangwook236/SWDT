@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -20,8 +20,15 @@ void make_contour(const cv::Mat &img, const cv::Rect &roi, const int segmentId, 
 	}
 	else
 	{
+#if defined(__GNUC__)
+        {
+            cv::Mat img_roi(img(roi));
+            cv::findContours(img_roi, contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
+        }
+#else
 		cv::findContours(img(roi), contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
 		//cv::findContours(img : img(roi), contours2, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
+#endif
 	}
 
 	if (contours2.empty()) return;
@@ -55,7 +62,7 @@ void make_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int segment
 		}
 
 	if (points.empty()) return;
-	
+
 	std::vector<int> hull;
 	cv::convexHull(cv::Mat(points), hull, false);
 
@@ -74,6 +81,21 @@ void make_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int segment
 	cv::approxPolyDP(cv::Mat(tmp_points), convexHull, 3.0, true);
 #endif
 }
+
+struct IncreaseHierarchyOp
+{
+    IncreaseHierarchyOp(const int offset)
+    : offset_(offset)
+    {}
+
+    cv::Vec4i operator()(const cv::Vec4i &rhs) const
+    {
+        return cv::Vec4i(rhs[0] == -1 ? -1 : (rhs[0] + offset_), rhs[1] == -1 ? -1 : (rhs[1] + offset_), rhs[2] == -1 ? -1 : (rhs[2] + offset_), rhs[3] == -1 ? -1 : (rhs[3] + offset_));
+    }
+
+private:
+    const int offset_;
+};
 
 void segment_motion_using_mhi(const cv::Mat &prev_gray_img, const cv::Mat &curr_gray_img, cv::Mat &mhi, std::vector<std::vector<cv::Point> > &pointSets, std::vector<cv::Vec4i> &hierarchy)
 {
@@ -99,9 +121,9 @@ void segment_motion_using_mhi(const cv::Mat &prev_gray_img, const cv::Mat &curr_
 	//
 	cv::Mat processed_mhi;  // processed MHI
 	{
-		const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1)); 
-		const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1)); 
-		const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1)); 
+		const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1));
+		const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));
+		const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
 		cv::erode(mhi, processed_mhi, selement5);
 		cv::dilate(processed_mhi, processed_mhi, selement5);
 	}
@@ -116,7 +138,12 @@ void segment_motion_using_mhi(const cv::Mat &prev_gray_img, const cv::Mat &curr_
 	// segment motion: get sequence of motion components
 	// segmask is marked motion components map. it is not used further
 	IplImage *segmask = cvCreateImage(cvSize(curr_gray_img.cols, curr_gray_img.rows), IPL_DEPTH_32F, 1);  // motion segmentation map
+#if defined(__GNUC__)
+    IplImage processed_mhi_ipl = (IplImage)processed_mhi;
+    CvSeq *seq = cvSegmentMotion(&processed_mhi_ipl, segmask, storage, timestamp, motion_segment_threshold);
+#else
 	CvSeq *seq = cvSegmentMotion(&(IplImage)processed_mhi, segmask, storage, timestamp, motion_segment_threshold);
+#endif
 
 	// FIXME [modify] >>
 #if 1
@@ -137,21 +164,6 @@ void segment_motion_using_mhi(const cv::Mat &prev_gray_img, const cv::Mat &curr_
 	const cv::Mat segmask_id(segmask_id0, true);
 	cvReleaseImage(&segmask_id0);
 #endif
-
-	struct IncreaseHierarchyOp
-	{
-		IncreaseHierarchyOp(const int offset)
-		: offset_(offset)
-		{}
-
-		cv::Vec4i operator()(const cv::Vec4i &rhs) const
-		{
-			return cv::Vec4i(rhs[0] == -1 ? -1 : (rhs[0] + offset_), rhs[1] == -1 ? -1 : (rhs[1] + offset_), rhs[2] == -1 ? -1 : (rhs[2] + offset_), rhs[3] == -1 ? -1 : (rhs[3] + offset_));
-		}
-
-	private:
-		const int offset_;
-	};
 
 	//
 	double minVal = 0.0, maxVal = 0.0;
@@ -318,7 +330,7 @@ void motion_segmentation()
 					}
 				}
 
-				if (-1 != maxAreaIdx)
+				if ((size_t)-1 != maxAreaIdx)
 					cv::drawContours(img, pointSets, maxAreaIdx, CV_RGB(255, 0, 0), 1, 8, hierarchy, 0, cv::Point());
 					//cv::drawContours(img, pointSets, maxAreaIdx, CV_RGB(255, 0, 0), 1, 8, hierarchy, maxLevel, cv::Point());
 #endif

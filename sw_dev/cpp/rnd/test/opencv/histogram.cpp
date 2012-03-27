@@ -1,13 +1,9 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 //#define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 #include <iostream>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 
 namespace {
@@ -64,7 +60,7 @@ void draw_histogram_2D(const cv::MatND &hist, const int horzBinCount, const int 
 			cv::rectangle(
 				histImg,
 				cv::Point(h*horzBinSize, v*vertBinSize), cv::Point((h+1)*horzBinSize - 1, (v+1)*vertBinSize - 1),
-				*binPtr > maxVal ? CV_RGB(255, 0, 0) : cv::Scalar::all(cvRound(*binPtr * 255.0 / maxVal)),
+				*binPtr > maxVal ? cv::Scalar(CV_RGB(255, 0, 0)) : cv::Scalar::all(cvRound(*binPtr * 255.0 / maxVal)),
 				CV_FILLED
 			);
 		}

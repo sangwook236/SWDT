@@ -1,16 +1,10 @@
-// Test.cpp : 콘솔 응용 프로그램에 대한 진입점을 정의합니다.
-//
-
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <opencv/ml.h>
 #include <vector>
 #include <iostream>
 #include <iomanip>
 #include <ctime>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 const size_t trainingSampleNum = 8;  // # of rows
 const size_t trainingFeatureNum = 8;  // # of cols
@@ -61,9 +55,9 @@ void train_by_svm()
 	//
 	CvMat *trainInput = cvCreateMat(trainingSampleNum, trainingFeatureNum, CV_32FC1);
 	CvMat *trainOutput = cvCreateMat(trainingSampleNum, 1, CV_32FC1);
-	for (int i = 0; i < trainingSampleNum; ++i)
+	for (size_t i = 0; i < trainingSampleNum; ++i)
 	{
-		for (int j = 0; j < trainingFeatureNum; ++j)
+		for (size_t j = 0; j < trainingFeatureNum; ++j)
 		{
 			//cvmSet(trainInput, i, j, i == j ? 0.9 : -0.9);
 			const int val = rand() % 10000;
@@ -74,14 +68,14 @@ void train_by_svm()
 	}
 
 	std::cout << "<svm> training input:" << std::endl;
-	for (int i = 0; i < trainingSampleNum; ++i)
+	for (size_t i = 0; i < trainingSampleNum; ++i)
 	{
-		for (int j = 0; j < trainingFeatureNum; ++j)
+		for (size_t j = 0; j < trainingFeatureNum; ++j)
 			std::cout << '\t' << cvmGet(trainInput, i, j);
 		std::cout << std::endl;
 	}
 	std::cout << "<svm> training output:" << std::endl;
-	for (int i = 0; i < trainingSampleNum; ++i)
+	for (size_t i = 0; i < trainingSampleNum; ++i)
 		std::cout << '\t' << cvmGet(trainOutput, i, 0);
 	std::cout << std::endl;
 
@@ -96,7 +90,7 @@ void train_by_svm()
 	CvMat *predictInput = cvCreateMat(1, trainingFeatureNum, CV_32FC1);
 	std::vector<float> predictOutput(trainingSampleNum);
 	std::vector<int> predictInputIdx(trainingSampleNum);
-	for (int i = 0; i < trainingSampleNum; ++i)
+	for (size_t i = 0; i < trainingSampleNum; ++i)
 	{
 		predictInputIdx[i] = rand() % trainingSampleNum;
 		cvGetRow(trainInput, predictInput, predictInputIdx[i]);
@@ -109,16 +103,16 @@ void train_by_svm()
 
 	//
 	std::cout << "<svm> prediction input index:" << std::endl;
-	for (int i = 0; i < trainingSampleNum; ++i)
+	for (size_t i = 0; i < trainingSampleNum; ++i)
 		std::cout << '\t' << predictInputIdx[i];
 	std::cout << std::endl << "<svm> prediction output:" << std::endl;
-	for (int i = 0; i < trainingSampleNum; ++i)
+	for (size_t i = 0; i < trainingSampleNum; ++i)
 		std::cout << '\t' << predictOutput[i];
 	switch (whichSvmType)
 	{
 	case 0:
 		std::cout << std::endl << "<svm> prediction result:" << std::endl;
-		for (int i = 0; i < trainingSampleNum; ++i)
+		for (size_t i = 0; i < trainingSampleNum; ++i)
 			std::cout << '\t' << (predictOutput[i] == predictInputIdx[i] ? 'o' : 'x');
 		std::cout << std::endl;
 		break;
@@ -139,7 +133,7 @@ void train_by_ann()
 	// possible activation functions: IDENTITY, SIGMOID_SYM, GAUSSIAN
 	CvANN_MLP neuralNetwork(&layerSizes, CvANN_MLP::SIGMOID_SYM, 1.0, 1.0);
 
-	// Create neuron network classification using training examples 
+	// Create neuron network classification using training examples
 	CvANN_MLP_TrainParams annParams;
 	annParams.term_crit.type = CV_TERMCRIT_ITER | CV_TERMCRIT_EPS;
 	annParams.term_crit.max_iter = 5000;
@@ -162,30 +156,30 @@ void train_by_ann()
 
 	CvMat *trainInput = cvCreateMat(trainingSampleNum, inputLayerNeuronNum, CV_32FC1);
 	CvMat *trainOutput = cvCreateMat(trainingSampleNum, ouputLayerNeuronNum, CV_32FC1);
-	for (int i = 0; i < trainingSampleNum; ++i)
+	for (size_t i = 0; i < trainingSampleNum; ++i)
 	{
-		for (int j = 0; j < inputLayerNeuronNum; ++j)
+		for (size_t j = 0; j < inputLayerNeuronNum; ++j)
 		{
 			//cvmSet(trainInput, i, j, i == j ? 0.9 : -0.9);
 			const int val = rand() % 10000;
 			const int sgn = rand() % 2 ? 1 : -1;
 			cvmSet(trainInput, i, j, (double)sgn * (double)val * 0.01);
 		}
-		for (int j = 0; j < ouputLayerNeuronNum; ++j)
+		for (size_t j = 0; j < ouputLayerNeuronNum; ++j)
 			cvmSet(trainOutput, i, j, i == j ? 1.0 : -1.0);
 	}
 
 	std::cout << "<ann> training input:" << std::endl;
-	for (int i = 0; i < trainingSampleNum; ++i)
+	for (size_t i = 0; i < trainingSampleNum; ++i)
 	{
-		for (int j = 0; j < inputLayerNeuronNum; ++j)
+		for (size_t j = 0; j < inputLayerNeuronNum; ++j)
 			std::cout << '\t' << cvmGet(trainInput, i, j);
 		std::cout << std::endl;
 	}
 	std::cout << "<ann> training(desired) output:" << std::endl;
-	for (int i = 0; i < trainingSampleNum; ++i)
+	for (size_t i = 0; i < trainingSampleNum; ++i)
 	{
-		for (int j = 0; j < ouputLayerNeuronNum; ++j)
+		for (size_t j = 0; j < ouputLayerNeuronNum; ++j)
 			std::cout << '\t' << cvmGet(trainOutput, i, j);
 		std::cout << std::endl;
 	}
@@ -201,16 +195,16 @@ void train_by_ann()
 
 	//
 	std::cout << "<ann> prediction output:" << std::endl;
-	for (int i = 0; i < trainingSampleNum; ++i)
+	for (size_t i = 0; i < trainingSampleNum; ++i)
 	{
-		for (int j = 0; j < ouputLayerNeuronNum; ++j)
+		for (size_t j = 0; j < ouputLayerNeuronNum; ++j)
 			std::cout << '\t' << std::setprecision(4) << cvmGet(predictOutput, i, j);
 		std::cout << std::endl;
 	}
 	std::cout << "<ann> prediction result:" << std::endl;
-	for (int i = 0; i < trainingSampleNum; ++i)
+	for (size_t i = 0; i < trainingSampleNum; ++i)
 	{
-		for (int j = 0; j < ouputLayerNeuronNum; ++j)
+		for (size_t j = 0; j < ouputLayerNeuronNum; ++j)
 		{
 			const char ch = fabs((cvmGet(predictOutput, i, j) >= 0 ? 1.0 : -1.0) - cvmGet(trainOutput, i, j)) < 1.0e-5 ? 'o' : 'x';
 			std::cout << '\t' << std::setprecision(4) << ch;
