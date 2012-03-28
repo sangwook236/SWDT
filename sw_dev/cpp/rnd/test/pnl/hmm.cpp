@@ -482,13 +482,13 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 	nodeAssociation[5] = 2;
 
 	//
-#if 0
+#if 1
 	pnl::CModelDomain *modelDomain = pnl::CModelDomain::Create(nodeTypes, nodeAssociation);
 
 	// to be learned
 	pnl::CBNet *bnet = pnl::CBNet::CreateWithRandomMatrices(graph, modelDomain);
 #else
-    // compile-time error
+    // FIXME [correct] >> compile-time error
     //  I have no idea of this cause
 
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
@@ -513,7 +513,7 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 	const float mean5w11 = 7.5f, cov5w11 = 0.04f, weight5w11 = 0.5f;  // node5 for node3 = 1 & node4 = 1
 
 #if 0
-    // run-time error
+    // FIXME [correct] >> run-time error
     //  I have no idea of this cause
 
 	bnet->AllocFactor(0);
@@ -589,6 +589,7 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 	pnl::CTabularCPD *cpd1 = pnl::CTabularCPD::Create(domains[1], numDomains[1], bnet->GetModelDomain(), tableNode1);
 	bnet->AttachFactor(cpd1);
 
+    // FIXME [check] >> what does the 'normCoeff' parameter in CMixtureGaussianCPD::AllocDistribution() mean?
 	pnl::CMixtureGaussianCPD *cpd2 = pnl::CMixtureGaussianCPD::Create(domains[2], numDomains[2], bnet->GetModelDomain(), tableNode1);
 	int parentVal[] = { 0, 0 };  // node0 = 0 & node1 = 0
 	cpd2->AllocDistribution(&mean2w00, &cov2w00, 2.0f, NULL, parentVal);
