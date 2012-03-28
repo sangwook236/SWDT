@@ -16,13 +16,15 @@
 #include <cstdlib>
 
 
+namespace umdhmm {
+
 /*
 ** hmmgetseed() generates an arbitary seed for the random number generator.
 */
 int  hmmgetseed(void) 
 {
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-	return ((int) getpid());
+	return ((int)getpid());
 #else
 	return (int)std::time(NULL);
 #endif
@@ -41,9 +43,9 @@ void hmmsetseed(int seed)
 **  hmmgetrand() returns a (double) pseudo random number in the
 **  interval [0,1).
 */
-
 double hmmgetrand(void)
 {
-	return (double) std::rand()/RAND_MAX;
+	return (double)std::rand() / RAND_MAX;
 }
 
+}  // umdhmm

@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 	void mrf();
 	void hmm_forward_backward();
 	void hmm_viterbi();
-	void hmm_em();
+	void hmm_learning();
 	void hmm_sample();
 	void mocapy_main();
 
@@ -24,10 +24,10 @@ int main(int argc, char **argv)
 		//mrf();  // not yet implemented
 
         // hidden Markov model (HMM)
-		//hmm_forward_backward();  // not yet implemented
+		//hmm_forward_backward();
 		//hmm_viterbi();
-		//hmm_em();  // not yet implemented
-		//hmm_sample();  // not yet implemented
+		//hmm_learning();
+		hmm_sample();
 
 		// dynamic Bayesian network (DBN)
 
