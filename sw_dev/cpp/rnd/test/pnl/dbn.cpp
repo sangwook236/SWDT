@@ -302,15 +302,15 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	const int domain7[] = { 5, 6, 7 };
 	const int *domains[] = { domain0, domain1, domain2, domain3, domain4, domain5, domain6, domain7 };
 
-	std::vector<int> nodeNumbers(numNodes, 0);
-	nodeNumbers[0] = 1;
-	nodeNumbers[1] = 2;
-	nodeNumbers[2] = 2;
-	nodeNumbers[3] = 3;
-	nodeNumbers[4] = 2;
-	nodeNumbers[5] = 3;
-	nodeNumbers[6] = 2;
-	nodeNumbers[7] = 3;
+	std::vector<int> numDomains(numNodes, 0);
+	numDomains[0] = 1;
+	numDomains[1] = 2;
+	numDomains[2] = 2;
+	numDomains[3] = 3;
+	numDomains[4] = 2;
+	numDomains[5] = 3;
+	numDomains[6] = 2;
+	numDomains[7] = 3;
 #else
 	// model #2
 	const int domain0[] = { 0 };
@@ -323,21 +323,21 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	const int domain7[] = { 5, 6, 7 };
 	const int *domains[] = { domain0, domain1, domain2, domain3, domain4, domain5, domain6, domain7 };
 
-	std::vector<int> nodeNumbers(numNodes, 0);
-	nodeNumbers[0] = 1;
-	nodeNumbers[1] = 2;
-	nodeNumbers[2] = 1;
-	nodeNumbers[3] = 3;
-	nodeNumbers[4] = 2;
-	nodeNumbers[5] = 3;
-	nodeNumbers[6] = 1;
-	nodeNumbers[7] = 3;
+	std::vector<int> numDomains(numNodes, 0);
+	numDomains[0] = 1;
+	numDomains[1] = 2;
+	numDomains[2] = 1;
+	numDomains[3] = 3;
+	numDomains[4] = 2;
+	numDomains[5] = 3;
+	numDomains[6] = 1;
+	numDomains[7] = 3;
 #endif
 
 	pnl::pnlVector<pnl::pConstNodeTypeVector> nt(numNodes, pnl::pConstNodeTypeVector());
 	for (int i = 0; i < numNodes; ++i)
 	{
-		const int size = nodeNumbers[i];
+		const int size = numDomains[i];
 
 		for (int j = 0; j < size; ++j)
 			nt[i].push_back(bnet->GetNodeType(domains[i][j]));
@@ -357,16 +357,16 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	const float mean101 = -3.0f, cov101 = 1.5f;  // node Z for X = 0, Y = 1
 	const float mean111 = 2.0f, cov111 = 1.0f;  // node Z for X = 1, Y = 1
 
-	pnl::CTabularCPD *cpd0 = pnl::CTabularCPD::Create(domains[0], nodeNumbers[0], bnet->GetModelDomain(), table0);
+	pnl::CTabularCPD *cpd0 = pnl::CTabularCPD::Create(domains[0], numDomains[0], bnet->GetModelDomain(), table0);
 	bnet->AttachFactor(cpd0);
 
-	pnl::CTabularCPD *cpd1 = pnl::CTabularCPD::Create(domains[1], nodeNumbers[1], bnet->GetModelDomain(), table1);
+	pnl::CTabularCPD *cpd1 = pnl::CTabularCPD::Create(domains[1], numDomains[1], bnet->GetModelDomain(), table1);
 	bnet->AttachFactor(cpd1);
 
-	pnl::CTabularCPD *cpd2 = pnl::CTabularCPD::Create(domains[2], nodeNumbers[2], bnet->GetModelDomain(), table1);
+	pnl::CTabularCPD *cpd2 = pnl::CTabularCPD::Create(domains[2], numDomains[2], bnet->GetModelDomain(), table1);
 	bnet->AttachFactor(cpd2);
 
-	pnl::CMixtureGaussianCPD *cpd3 = pnl::CMixtureGaussianCPD::Create(domains[3], nodeNumbers[3], bnet->GetModelDomain(), table1);
+	pnl::CMixtureGaussianCPD *cpd3 = pnl::CMixtureGaussianCPD::Create(domains[3], numDomains[3], bnet->GetModelDomain(), table1);
 	pnl::intVector parentVal(2, 0);
 	cpd3->AllocDistribution(&mean100, &cov100, 2.0f, NULL, &parentVal.front());
 	parentVal[1] = 1;
@@ -377,16 +377,16 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	cpd3->AllocDistribution(&mean110, &cov110, 1.0f, NULL, &parentVal.front());
 	bnet->AttachFactor(cpd3);
 
-	pnl::CTabularCPD *cpd4 = pnl::CTabularCPD::Create(domains[4], nodeNumbers[4], bnet->GetModelDomain(), table2);
+	pnl::CTabularCPD *cpd4 = pnl::CTabularCPD::Create(domains[4], numDomains[4], bnet->GetModelDomain(), table2);
 	bnet->AttachFactor(cpd4);
 
-	pnl::CTabularCPD *cpd5 = pnl::CTabularCPD::Create(domains[5], nodeNumbers[5], bnet->GetModelDomain(), table3);
+	pnl::CTabularCPD *cpd5 = pnl::CTabularCPD::Create(domains[5], numDomains[5], bnet->GetModelDomain(), table3);
 	bnet->AttachFactor(cpd5);
 
-	pnl::CTabularCPD *cpd6 = pnl::CTabularCPD::Create(domains[6], nodeNumbers[6], bnet->GetModelDomain(), table1);
+	pnl::CTabularCPD *cpd6 = pnl::CTabularCPD::Create(domains[6], numDomains[6], bnet->GetModelDomain(), table1);
 	bnet->AttachFactor(cpd6);
 
-	pnl::CMixtureGaussianCPD *cpd7 = pnl::CMixtureGaussianCPD::Create(domains[7], nodeNumbers[7], bnet->GetModelDomain(), table1);
+	pnl::CMixtureGaussianCPD *cpd7 = pnl::CMixtureGaussianCPD::Create(domains[7], numDomains[7], bnet->GetModelDomain(), table1);
 	parentVal.assign(2, 0);
 	cpd7->AllocDistribution(&mean100, &cov100, 2.0f, NULL, &parentVal.front());
 	parentVal[1] = 1;
