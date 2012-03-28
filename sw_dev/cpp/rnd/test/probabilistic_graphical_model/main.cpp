@@ -26,8 +26,8 @@ int main(int argc, char **argv)
         // hidden Markov model (HMM)
 		//hmm_forward_backward();
 		//hmm_viterbi();
-		//hmm_learning();
-		hmm_sample();
+		hmm_learning();
+		//hmm_sample();
 
 		// dynamic Bayesian network (DBN)
 

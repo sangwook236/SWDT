@@ -39,8 +39,8 @@
 			<Add library="lapack" />
 			<Add library="boost_serialization" />
 		</Linker>
-		<Unit filename="hmm_em.cpp" />
 		<Unit filename="hmm_forward_backward.cpp" />
+		<Unit filename="hmm_learning.cpp" />
 		<Unit filename="hmm_sample.cpp" />
 		<Unit filename="hmm_viterbi.cpp" />
 		<Unit filename="main.cpp" />
