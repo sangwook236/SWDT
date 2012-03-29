@@ -3,8 +3,8 @@ extern "C" {
 #endif
 
 //#include <clapack/blaswrap.h>
-#include <lapack/f2c.h>
-#include <lapack/clapack.h>
+#include <clapack/f2c.h>
+#include <clapack/clapack.h>
 #if defined(abs)
 #	undef abs
 #endif
@@ -56,9 +56,8 @@ void transpose_matrix(const real *mat1, const integer row1, const integer col1, 
 }
 
 #define __CLAPACK_DRIVER_TYPE_FOR_EIGENPROBLEM 0
-void clapack()
+void clapack_main()
 {
-	try
 	{
 		integer dim = 2;
 
@@ -81,12 +80,7 @@ void clapack()
 		delete [] eigval;
 		delete [] work;
 	}
-	catch (const std::exception& e)
-	{
-		std::cout << "Exception: " << e.what() << std::endl;
-	}
 
-	try
 	{
 		integer row_dim = 2, col_dim = 3;
 
@@ -158,9 +152,5 @@ void clapack()
 		delete [] isuppz;
 		delete [] iwork;
 #endif
-	}
-	catch (const std::exception &e)
-	{
-		std::cout << "Exception: " << e.what() << std::endl;
 	}
 }

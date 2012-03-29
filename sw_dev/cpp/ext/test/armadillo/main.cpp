@@ -6,13 +6,15 @@
 
 int main(int argc, char* argv[])
 {
-	void cblas_main();
-	void clapack_main();
+	void vector_arithmetic();
+	void matrix_arithmetic();
+	void cube_arithmetic();
 
 	try
 	{
-		cblas_main();
-		clapack_main();
+		//vector_arithmetic();
+		//matrix_arithmetic();
+		cube_arithmetic();
 	}
 	catch (const std::exception &e)
 	{
@@ -26,5 +28,6 @@ int main(int argc, char* argv[])
 	std::cout << "press any key to exit ..." << std::flush;
 	std::cin.get();
 
-	return 0;
+    return 0;
 }
+
