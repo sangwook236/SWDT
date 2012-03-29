@@ -184,6 +184,14 @@ void signals_slots__calling_and_passing_value()
 	}
 }
 
+struct NewsMessageArea: public boost::signals::trackable
+{
+    void displayNews(const std::string &news) const
+    {
+        // do something
+    }
+};
+
 void signals_slots__connention_management()
 {
 	// disconnecting slots #1
@@ -248,14 +256,6 @@ void signals_slots__connention_management()
 	// automatic connection management
 	{
 		boost::signal<void (const std::string &)> deliverNews;
-
-		struct NewsMessageArea: public boost::signals::trackable
-		{
-			void displayNews(const std::string &news) const
-			{
-				// do something
-			}
-		};
 
 		NewsMessageArea *newsMessageArea = new NewsMessageArea();
 		deliverNews.connect(boost::bind(&NewsMessageArea::displayNews, newsMessageArea, _1));

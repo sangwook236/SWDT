@@ -5,6 +5,7 @@
 
 
 namespace {
+namespace local {
 
 bool find_file(const boost::filesystem::path & dir_path, const std::string & file_name, boost::filesystem::path & path_found)
 {
@@ -29,7 +30,11 @@ bool find_file(const boost::filesystem::path & dir_path, const std::string & fil
 
 bool file_size(const std::string &path)
 {
+#if defined(__GNUC__)
+	boost::filesystem::path p(path.c_str());
+#else
 	boost::filesystem::path p(path.c_str(), boost::filesystem::native);
+#endif
 
 	if (!boost::filesystem::exists(p))
 	{
@@ -53,7 +58,11 @@ bool ls(const std::string &path)
 
 	boost::filesystem::path full_path(boost::filesystem::initial_path<boost::filesystem::path>());
 
+#if defined(__GNUC__)
+	full_path = boost::filesystem::system_complete(boost::filesystem::path(path.c_str()));
+#else
 	full_path = boost::filesystem::system_complete(boost::filesystem::path(path.c_str(), boost::filesystem::native));
+#endif
 
 	unsigned long file_count = 0;
 	unsigned long dir_count = 0;
@@ -105,12 +114,13 @@ bool ls(const std::string &path)
 	}
 	else // must be a file
 	{
-		std::cout << "\nFound: " << full_path.string() << "\n";    
+		std::cout << "\nFound: " << full_path.string() << "\n";
 	}
 
 	return true;
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void filesystem()
@@ -132,7 +142,9 @@ void filesystem()
 
 		//std::cout << "[ 4] " << my_path.external_file_string() << std::endl;  // deprecated
 		///std::cout << "[ 5] " << my_path.external_directory_string() << std::endl;  // deprecated
+#if !defined(__GNUC__)
 		std::wcout << L"[ 4] " << my_path.native() << std::endl;
+#endif
 
 		std::cout << "[ 6] " << my_path.root_name() << std::endl;
 		std::cout << "[ 7] " << my_path.root_directory() << std::endl;
@@ -156,11 +168,11 @@ void filesystem()
 	}
 
 	boost::filesystem::path path_found(boost::filesystem::initial_path<boost::filesystem::path>());
-	if (find_file(".", "cheeze", path_found))
+	if (local::find_file(".", "cheeze", path_found))
 		std::cout << "File Found: " << path_found.string() << std::endl;
 	else
 		std::cout << "File Not Found" << std::endl;
 
-	file_size("boost_data/foobar/cheeze");
-	ls("boost_data/foobar/");
+	local::file_size("boost_data/foobar/cheeze");
+	local::ls("boost_data/foobar/");
 }

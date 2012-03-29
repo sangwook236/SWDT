@@ -8,7 +8,7 @@
 #include <ctime>
 
 
-void random()
+void random_boost()
 {
 	typedef boost::minstd_rand base_generator_type;
 	base_generator_type baseGenerator(static_cast<unsigned int>(std::time(NULL)));

@@ -1,5 +1,6 @@
 #include <boost/multi_array.hpp>
 #include <iostream>
+#include <cstring>
 
 
 void multi_array()
@@ -28,7 +29,7 @@ void multi_array()
 
 	// assign values to the elements
 	int values = 0;
-	for(index_type i = 0; i != size1; ++i) 
+	for(index_type i = 0; i != size1; ++i)
 		for(index_type j = 0; j != size2; ++j)
 			for(index_type k = 0; k != size3; ++k)
 				marrA[i][j][k] = ++values;
@@ -38,13 +39,13 @@ void multi_array()
 		for (int i = 0; i < size1 * size2 * size3; ++i)
 			std::cout << data[i] << ", ";
 		std::cout << std::endl;
-		
+
 		data[0] = -1;
 		data[1] = -2;
 		data[2] = -3;
 		data[3] = -4;
 		data[4] = -5;
-		for(index_type i = 0; i != size1; ++i) 
+		for(index_type i = 0; i != size1; ++i)
 			for(index_type j = 0; j != size2; ++j)
 				for(index_type k = 0; k != size3; ++k)
 					std::cout << marrA[i][j][k] << ", ";

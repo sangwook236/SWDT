@@ -514,7 +514,8 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 
 #if 0
     // FIXME [correct] >> run-time error
-    //  I have no idea of this cause
+    //  Gaussian mixture observation densities can not be created.
+    //  So, I can not create a DBN model.
 
 	bnet->AllocFactor(0);
 	bnet->GetFactor(0)->AllocMatrix(tableNode0, pnl::matTable);
@@ -567,6 +568,10 @@ pnl::CDBN * create_hmm_with_mixture_of_gaussians_observations()
 	bnet->GetFactor(5)->AllocMatrix(&weight5w10, pnl::matWeights, -1, parentVal);
     std::cout << "***** 333" << std::endl;  // FIXME [delete] >>
 #else
+    // FIXME [correct] >> run-time error
+    //  Gaussian mixture observation densities can be created int this model.
+    //  But this models can not be learned.
+
 	const int domain0[] = { 0 };
 	const int domain1[] = { 1 };
 	const int domain2[] = { 0, 1, 2 };

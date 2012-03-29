@@ -122,11 +122,14 @@ void simple_thread_1()
 	//boost::scoped_ptr<boost::thread> thrd(new boost::thread(alarm));  // create thread
 	boost::scoped_ptr<boost::thread> thrd(new boost::thread(thread_alarm(secs)));  // create thread
 
-	//boost::xtime xt;
-	//boost::xtime_get(&xt, boost::TIME_UTC);
-	//xt.sec += secs - 2;
-	//boost::thread::sleep(xt);
+#if 0
+	boost::xtime xt;
+	boost::xtime_get(&xt, boost::TIME_UTC);
+	xt.sec += secs - 2;
+	boost::thread::sleep(xt);
+#else
 	boost::this_thread::sleep(boost::posix_time::seconds(secs - 2));
+#endif
 
 	thrd.reset();  // terminate thread
 
@@ -147,12 +150,16 @@ void simple_thread_2()
 	boost::thread thrdb(&simple_thread_2_proc, (void*)&thrdb_id);
 	//boost::thread thrdb(thread_adapter(&simple_thread_2_proc, (void*)&thrdb_id));
 
-	//boost::xtime xt;
-	//boost::xtime_get(&xt, boost::TIME_UTC);
-	//xt.sec += 1;
-	//boost::thread::sleep(xt);
-	boost::this_thread::sleep(boost::posix_time::seconds(1));
+#if 0
+	boost::xtime xt;
+	boost::xtime_get(&xt, boost::TIME_UTC);
+	xt.sec += 1;
+	boost::thread::sleep(xt);
 	//boost::thread::yield();
+#else
+	boost::this_thread::sleep(boost::posix_time::seconds(1));
+	//boost::this_thread::yield();
+#endif
 
 	thrda.join();
 	thrdb.join();

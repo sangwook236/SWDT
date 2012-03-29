@@ -4,11 +4,7 @@
 #include <iostream>
 
 
-#if defined(_UNICODE) || defined(UNICODE)
-int wmain(int argc, wchar_t* argv[])
-#else
 int main(int argc, char* argv[])
-#endif
 {
 	void utility();
 	void utility_binary();
@@ -48,7 +44,7 @@ int main(int argc, char* argv[])
 	void math_floating_point_utilities();
 	void math_special_functions();
 	void math_statistical_distributions();
-	void random();
+	void random_boost();
 	void ublas();
 	void math_bindings();
 	void numeric_bindings();
@@ -135,7 +131,7 @@ int main(int argc, char* argv[])
 			//asio_timer();
 			//asio_synchronizing_handler();
 			//asio_line_based_operation();
-	
+
 			//asio_tcp_server();
 			//asio_udp_server();
 			//asio_tcp_udp_server();

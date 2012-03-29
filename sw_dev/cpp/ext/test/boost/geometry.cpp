@@ -666,7 +666,7 @@ void affine_transform_2d()
 
 	const std::string file("06_b_transformation_example.svg");
 
-	std::ofstream ofs(file);
+	std::ofstream ofs(file.c_str());
 	svg_output<std::ofstream> svg(ofs, 0.5);
 
 	// G1 - create subject for affine transformations

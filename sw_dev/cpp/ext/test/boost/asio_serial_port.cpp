@@ -418,8 +418,11 @@ void asio_async_serial_port_better()
 			}
 
 			boost::scoped_ptr<boost::thread> thrd(new boost::thread(serial_port_thread_functor(ioService)));
+#if defined(WIN32)
 			Sleep(0);  // un-necessary
-
+#else
+            boost::this_thread::yield();
+#endif
 			handler1.write("serial port 1: test message #1");
 			handler2.write("serial port 2: test message #1");
 			handler1.write("serial port 1: test message #2");
@@ -442,7 +445,11 @@ void asio_async_serial_port_better()
 
 			boost::scoped_ptr<boost::thread> thrd1(new boost::thread(serial_port_thread_functor(ioService1)));
 			boost::scoped_ptr<boost::thread> thrd2(new boost::thread(serial_port_thread_functor(ioService2)));
+#if defined(WIN32)
 			Sleep(0);  // un-necessary
+#else
+            boost::this_thread::yield();
+#endif
 
 			handler1.write("serial port 1: test message #1");
 			handler2.write("serial port 2: test message #1");

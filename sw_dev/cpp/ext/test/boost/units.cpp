@@ -11,21 +11,8 @@
 #include <iostream>
 
 
-void units_unit();
-void units_quantity();
-void units_si_system();
-
-
-void units()
-{
-	units_unit();
-	std::cout << std::endl;
-	units_quantity();
-	std::cout << std::endl;
-	units_si_system();
-}
-
 namespace {
+namespace local {
 
 //>>>>> step #1: base dimension
 /// base dimension of length
@@ -63,7 +50,7 @@ typedef boost::units::unit<area_dimension, mks_system>          area;
 typedef boost::units::unit<energy_dimension, mks_system>        energy;
 
 //>>>>> step #6: unit constant
-/// unit constants 
+/// unit constants
 BOOST_UNITS_STATIC_CONSTANT(meter, length);
 BOOST_UNITS_STATIC_CONSTANT(meters, length);
 BOOST_UNITS_STATIC_CONSTANT(kilogram, mass);
@@ -75,27 +62,6 @@ BOOST_UNITS_STATIC_CONSTANT(square_meter, area);
 BOOST_UNITS_STATIC_CONSTANT(square_meters, area);
 BOOST_UNITS_STATIC_CONSTANT(joule, energy);
 BOOST_UNITS_STATIC_CONSTANT(joules, energy);
-
-}  // namespace
-
-//>>>>> step #7: base unit info
-template<> struct boost::units::base_unit_info<meter_base_unit>
-{
-    static std::string name()               { return "meter"; }
-    static std::string symbol()             { return "m"; }
-};
-
-template<> struct boost::units::base_unit_info<kilogram_base_unit>
-{
-    static std::string name()               { return "kilogram"; }
-    static std::string symbol()             { return "kg"; }
-};
-
-template<> struct boost::units::base_unit_info<second_base_unit>
-{
-    static std::string name()               { return "second"; }
-    static std::string symbol()             { return "s"; }
-};
 
 void units_unit()
 {
@@ -170,7 +136,7 @@ void units_si_system()
     boost::units::quantity<boost::units::si::force> F(2.0 * boost::units::si::newton);
     boost::units::quantity<boost::units::si::length> dx(2.0 * boost::units::si::meter);
     boost::units::quantity<boost::units::si::energy> E(work(F, dx));
-    
+
     std::cout << "F  = " << F << std::endl
               << "dx = " << dx << std::endl
               << "E  = " << E << std::endl
@@ -178,15 +144,52 @@ void units_si_system()
 
     // check complex quantities
     typedef std::complex<double> complex_type;
-    
+
     boost::units::quantity<boost::units::si::electric_potential, complex_type> v = complex_type(12.5, 0.0) * boost::units::si::volts;
     boost::units::quantity<boost::units::si::current, complex_type> i = complex_type(3.0, 4.0) * boost::units::si::amperes;
     boost::units::quantity<boost::units::si::resistance, complex_type> z = complex_type(1.5, -2.0) * boost::units::si::ohms;
-    
+
     std::cout << "V   = " << v << std::endl
               << "I   = " << i << std::endl
               << "Z   = " << z << std::endl
               << "I*Z = " << i * z << std::endl
               << "I*Z == V? " << std::boolalpha << (i * z == v) << std::endl
               << std::endl;
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+namespace boost {
+namespace units {
+
+//>>>>> step #7: base unit info
+template<> struct base_unit_info<local::meter_base_unit>
+{
+    static std::string name()               { return "meter"; }
+    static std::string symbol()             { return "m"; }
+};
+
+template<> struct base_unit_info<local::kilogram_base_unit>
+{
+    static std::string name()               { return "kilogram"; }
+    static std::string symbol()             { return "kg"; }
+};
+
+template<> struct base_unit_info<local::second_base_unit>
+{
+    static std::string name()               { return "second"; }
+    static std::string symbol()             { return "s"; }
+};
+
+}  // namespace units
+}  // unnamed boost
+
+void units()
+{
+	local::units_unit();
+	std::cout << std::endl;
+	local::units_quantity();
+	std::cout << std::endl;
+	local::units_si_system();
 }

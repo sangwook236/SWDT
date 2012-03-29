@@ -7,9 +7,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="..\..\bin\boost" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin" />
-				<Option object_output=".\Debug\" />
+				<Option output="../../bin/boost" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin" />
+				<Option object_output="./Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -17,9 +17,9 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="..\..\bin\boost" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin" />
-				<Option object_output=".\Release\" />
+				<Option output="../../bin/boost" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin" />
+				<Option object_output="./Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -33,7 +33,44 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-DUNICODE" />
+			<Add option="-D_UNICODE" />
+			<Add option="-DBOOST_SYSTEM_NO_DEPRECATED" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
+		<Linker>
+			<Add library="boost_chrono" />
+			<Add library="boost_date_time" />
+			<Add library="boost_exception" />
+			<Add library="boost_filesystem" />
+			<Add library="boost_graph" />
+			<Add library="boost_iostreams" />
+			<Add library="boost_locale" />
+			<Add library="boost_math_c99" />
+			<Add library="boost_math_c99f" />
+			<Add library="boost_math_c99l" />
+			<Add library="boost_math_tr1" />
+			<Add library="boost_math_tr1f" />
+			<Add library="boost_math_tr1l" />
+			<Add library="boost_prg_exec_monitor" />
+			<Add library="boost_program_options" />
+			<Add library="boost_python" />
+			<Add library="boost_random" />
+			<Add library="boost_regex" />
+			<Add library="boost_serialization" />
+			<Add library="boost_signals" />
+			<Add library="boost_system" />
+			<Add library="boost_test_exec_monitor" />
+			<Add library="boost_thread" />
+			<Add library="boost_timer" />
+			<Add library="boost_unit_test_framework" />
+			<Add library="boost_wave" />
+			<Add library="boost_wserialization" />
+			<Add library="lapack" />
+			<Add library="blas" />
+			<Add library="jpeg" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
 		<Unit filename="any.cpp" />
 		<Unit filename="array.cpp" />
 		<Unit filename="asio_line_based_operation.cpp" />
@@ -46,7 +83,6 @@
 		<Unit filename="asio_udp_client.cpp" />
 		<Unit filename="asio_udp_server.cpp" />
 		<Unit filename="bind.cpp" />
-		<Unit filename="calc_plain.cpp" />
 		<Unit filename="conversion.cpp" />
 		<Unit filename="date_time.cpp" />
 		<Unit filename="factory.cpp" />
@@ -56,12 +92,18 @@
 		<Unit filename="graph.cpp" />
 		<Unit filename="image.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="math_bindings.cpp" />
+		<Unit filename="math_bindings.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="math_constants.cpp" />
 		<Unit filename="math_floating_point_utilities.cpp" />
 		<Unit filename="math_special_functions.cpp" />
 		<Unit filename="math_statistical_distributions.cpp" />
-		<Unit filename="mtl.cpp" />
+		<Unit filename="mtl.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="multi_array.cpp" />
 		<Unit filename="numeric_bindings.cpp" />
 		<Unit filename="polygon.cpp" />

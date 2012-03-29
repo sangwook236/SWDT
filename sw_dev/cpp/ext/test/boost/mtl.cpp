@@ -3,26 +3,8 @@
 #include <complex>
 
 
-void mtl_matrix_element();
-void mtl_insert();
-void mtl_matrix_operation();
-void mtl_matrix_function();
-void mtl_vector_operation();
-void mtl_vector_function();
-void mtl_matrix_vector_operation();
-
-void mtl_matrix()
-{
-	//mtl_matrix_element();
-	//mtl_insert();
-	//mtl_matrix_operation();
-	//mtl_matrix_function();
-
-	//mtl_vector_operation();
-	//mtl_vector_function();
-
-	mtl_matrix_vector_operation();
-}
+namespace {
+namespace local {
 
 template <typename Matrix>
 void fill_element(Matrix& m)
@@ -38,7 +20,7 @@ void fill_element(Matrix& m)
 	mtl::matrix::inserter<Matrix, mtl::update_plus<value_type> > ins(m, 3);
 
 	// Define element matrix (array)
-	double m1[2][2] = {{1.0, -.4}, {-0.5, 2.0}}; 
+	double m1[2][2] = {{1.0, -.4}, {-0.5, 2.0}};
 
 	// Corresponding indices of the elements
 	std::vector<int> v1(2);
@@ -53,10 +35,10 @@ void fill_element(Matrix& m)
 
 	// Use element matrix type with dynamic size
 	mtl::dense2D<double> m2(2, 3);
-	m2[0][0] = 1; m2[0][1] = 0.2; m2[0][2] = 0.1; 
+	m2[0][0] = 1; m2[0][1] = 0.2; m2[0][2] = 0.1;
 	m2[1][0] = 2; m2[1][1] = 1.2; m2[1][2] = 1.1;
 
-	// Vector for column indices 
+	// Vector for column indices
 	mtl::dense_vector<int> v2(3);
 	// Indices can be out of order
 	v2[0] = 4; v2[1] = 1; v2[2] = 3;
@@ -76,7 +58,7 @@ void mtl_matrix_element()
 
 	// Fill the matrices generically
 	fill_element(A); fill_element(B); fill_element(C);
-	std::cout << "A is \n" << mtl::with_format(A, width, precision) 
+	std::cout << "A is \n" << mtl::with_format(A, width, precision)
 		  << "\nB is \n" << mtl::with_format(B, width, precision)
 		  << "\nC is \n" << mtl::with_format(C, width, precision);
 }
@@ -137,7 +119,7 @@ void mtl_insert()
 
 	// Modify the matrices generically
 	modify_insert(A); modify_insert(B); modify_insert(C);
-	std::cout << "\n\nAfter modification:\nA is \n" << A 
+	std::cout << "\n\nAfter modification:\nA is \n" << A
 		  << "\nB is \n" << B << "\nC is \n" << C;
 }
 
@@ -153,7 +135,7 @@ void mtl_matrix_operation()
 		B = 0;
 		D = 0;
 
-		D(2, 2) = 3; 
+		D(2, 2) = 3;
 		B[1][2] = 4;
 
 		C = 2.0;
@@ -169,9 +151,9 @@ void mtl_matrix_operation()
 		mtl::morton_dense<double, mtl::doppled_64_row_mask> C(n, n);
 
 		mtl::hessian_setup(A, 3.0);
-		mtl::hessian_setup(B, 1.0); 
+		mtl::hessian_setup(B, 1.0);
 		mtl::hessian_setup(C, 2.0);
-		
+
 		// A = B * B;
 		mtl::mult(B, B, A);
 
@@ -208,7 +190,7 @@ void mtl_matrix_function()
 		const unsigned row = 2, col = 5, n = row * col;
 		mtl::compressed2D<complex_type> A(n, n);
 
-		mtl::matrix::laplacian_setup(A, row, col); 
+		mtl::matrix::laplacian_setup(A, row, col);
 
 		// Fill imaginary part of the matrix
 		A *= complex_type(1, -1);
@@ -354,7 +336,7 @@ void mtl_matrix_vector_operation()
 	mtl::compressed2D<double> B(n, n);
 
 	mtl::matrix::hessian_setup(A, 3.0);
-	mtl::matrix::laplacian_setup(B, xd, yd); 
+	mtl::matrix::laplacian_setup(B, xd, yd);
 
 	typedef std::complex<double> complex_type;
 	mtl::dense_vector<complex_type> v(n), w(n);
@@ -366,4 +348,20 @@ void mtl_matrix_vector_operation()
 
 	std::cout << "v is " << v << "\n";
 	std::cout << "w is " << w << "\n";
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void mtl_matrix()
+{
+	//local::mtl_matrix_element();
+	//local::mtl_insert();
+	//local::mtl_matrix_operation();
+	//local::mtl_matrix_function();
+
+	//local::mtl_vector_operation();
+	//local::mtl_vector_function();
+
+	local::mtl_matrix_vector_operation();
 }
