@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/math/special_functions/round.hpp>
 #include <boost/math/special_functions/trunc.hpp>
 #include <boost/math/special_functions/modf.hpp>
@@ -7,9 +6,6 @@
 #include <boost/math/special_functions/next.hpp>
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace {
 

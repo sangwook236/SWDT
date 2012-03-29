@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/multi_array.hpp>
 #include <iostream>
 

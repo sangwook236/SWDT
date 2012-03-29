@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #if 0
 #include <boost/gil/gil_all.hpp>
 #else
@@ -16,9 +15,6 @@
 #include <boost/mpl/vector.hpp>
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace {
 namespace local {

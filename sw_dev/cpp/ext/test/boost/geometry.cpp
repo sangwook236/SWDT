@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include <boost/foreach.hpp>
 #include <boost/random.hpp>
 #include <boost/bind.hpp>
@@ -32,10 +30,6 @@
 #if defined(HAVE_SVG)
 #  include <boost/geometry/extensions/io/svg/write_svg.hpp>
 #  include <boost/geometry/extensions/io/svg/svg_mapper.hpp>
-#endif
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
 #endif
 
 

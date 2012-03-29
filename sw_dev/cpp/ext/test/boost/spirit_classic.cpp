@@ -1,11 +1,7 @@
-#include "stdafx.h"
 #include <boost/spirit/include/classic.hpp>
 #include <iostream>
 #include <string>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace
 {

@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/utility.hpp>
 #include <list>
 #include <iostream>

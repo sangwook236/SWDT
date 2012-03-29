@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/smart_ptr.hpp>
 #include <list>
 #include <iostream>

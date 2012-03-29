@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/functional/value_factory.hpp>
 #include <boost/functional/factory.hpp>
 #include <boost/function.hpp>
@@ -7,9 +6,6 @@
 #include <map>
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace {
 namespace local {

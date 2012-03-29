@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/type_traits.hpp>
 #include <iostream>
 

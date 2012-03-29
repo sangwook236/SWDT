@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/statechart/state_machine.hpp>
 #include <boost/statechart/simple_state.hpp>
 #include <boost/statechart/event.hpp>
@@ -6,9 +5,6 @@
 #include <iostream>
 #include <ctime>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 void statechart_stop_watch();
 

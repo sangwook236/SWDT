@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/math/special_functions/gamma.hpp>
 #include <boost/math/special_functions/factorials.hpp>
 #include <boost/math/special_functions/binomial.hpp>
@@ -17,9 +16,6 @@
 #include <boost/math/special_functions/expint.hpp>
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace {
 

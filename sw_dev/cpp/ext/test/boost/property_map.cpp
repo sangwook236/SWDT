@@ -1,11 +1,7 @@
-#include "stdafx.h"
 #include <boost/property_map/property_map.hpp>
 #include <boost/property_map/dynamic_property_map.hpp>
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace {
 namespace local {

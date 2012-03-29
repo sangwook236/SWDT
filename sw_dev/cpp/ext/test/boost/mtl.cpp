@@ -2,10 +2,6 @@
 #include <iostream>
 #include <complex>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 
 void mtl_matrix_element();
 void mtl_insert();

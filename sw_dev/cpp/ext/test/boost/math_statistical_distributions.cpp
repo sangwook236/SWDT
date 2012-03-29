@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/math/distributions/negative_binomial.hpp>  // for negative_binomial_distribution
 using boost::math::negative_binomial_distribution;  // default type is double.
 using boost::math::negative_binomial;  // typedef provides default type is double.
@@ -8,9 +7,6 @@ using boost::math::negative_binomial;  // typedef provides default type is doubl
 #include <boost/math/distributions/normal.hpp>  // for normal_distribution.
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace {
 }  // unnamed namespace

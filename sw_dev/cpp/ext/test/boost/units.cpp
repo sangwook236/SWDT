@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/units/systems/si/energy.hpp>
 #include <boost/units/systems/si/force.hpp>
 #include <boost/units/systems/si/length.hpp>
@@ -11,9 +10,6 @@
 #include <complex>
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 void units_unit();
 void units_quantity();

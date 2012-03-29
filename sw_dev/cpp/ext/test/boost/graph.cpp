@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/config.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -7,9 +6,6 @@
 #include <algorithm>
 #include <utility>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace {
 namespace local {

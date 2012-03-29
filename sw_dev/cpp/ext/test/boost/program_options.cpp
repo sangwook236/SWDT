@@ -1,12 +1,8 @@
-#include "stdafx.h"
 #include <boost/program_options.hpp>
 #include <iostream>
 #include <fstream>
 #include <vector>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 template<class T>
 std::ostream & operator<<(std::ostream& os, const std::vector<T>& v)

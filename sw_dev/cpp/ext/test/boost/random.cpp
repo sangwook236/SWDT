@@ -7,9 +7,6 @@
 #include <fstream>
 #include <ctime>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 void random()
 {

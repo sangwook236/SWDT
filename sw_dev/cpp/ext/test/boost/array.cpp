@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/array.hpp>
 #include <functional>
 #include <string>

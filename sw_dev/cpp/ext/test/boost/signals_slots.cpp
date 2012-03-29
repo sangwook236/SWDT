@@ -1,9 +1,9 @@
-#include "stdafx.h"
 #include <boost/signal.hpp>
 #include <boost/bind.hpp>
 #include <vector>
 #include <iostream>
 #include <cassert>
+
 
 namespace {
 namespace local {

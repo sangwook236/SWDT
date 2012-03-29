@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="boost" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="..\..\bin\boost" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin" />
+				<Option object_output=".\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="..\..\bin\boost" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin" />
+				<Option object_output=".\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="any.cpp" />
+		<Unit filename="array.cpp" />
+		<Unit filename="asio_line_based_operation.cpp" />
+		<Unit filename="asio_serial_port.cpp" />
+		<Unit filename="asio_synchronizing_handler.cpp" />
+		<Unit filename="asio_tcp_client.cpp" />
+		<Unit filename="asio_tcp_server.cpp" />
+		<Unit filename="asio_tcp_udp_server.cpp" />
+		<Unit filename="asio_timer.cpp" />
+		<Unit filename="asio_udp_client.cpp" />
+		<Unit filename="asio_udp_server.cpp" />
+		<Unit filename="bind.cpp" />
+		<Unit filename="calc_plain.cpp" />
+		<Unit filename="conversion.cpp" />
+		<Unit filename="date_time.cpp" />
+		<Unit filename="factory.cpp" />
+		<Unit filename="filesystem.cpp" />
+		<Unit filename="function.cpp" />
+		<Unit filename="geometry.cpp" />
+		<Unit filename="graph.cpp" />
+		<Unit filename="image.cpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="math_bindings.cpp" />
+		<Unit filename="math_constants.cpp" />
+		<Unit filename="math_floating_point_utilities.cpp" />
+		<Unit filename="math_special_functions.cpp" />
+		<Unit filename="math_statistical_distributions.cpp" />
+		<Unit filename="mtl.cpp" />
+		<Unit filename="multi_array.cpp" />
+		<Unit filename="numeric_bindings.cpp" />
+		<Unit filename="polygon.cpp" />
+		<Unit filename="program_options.cpp" />
+		<Unit filename="property_map.cpp" />
+		<Unit filename="property_tree.cpp" />
+		<Unit filename="random.cpp" />
+		<Unit filename="serialization.cpp" />
+		<Unit filename="signals_slots.cpp" />
+		<Unit filename="smart_ptr.cpp" />
+		<Unit filename="spirit_classic.cpp" />
+		<Unit filename="statechart.cpp" />
+		<Unit filename="thread.cpp" />
+		<Unit filename="tokenizer.cpp" />
+		<Unit filename="tuple.cpp" />
+		<Unit filename="type_traits.cpp" />
+		<Unit filename="ublas.cpp" />
+		<Unit filename="units.cpp" />
+		<Unit filename="utility.cpp" />
+		<Unit filename="utility_binary.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

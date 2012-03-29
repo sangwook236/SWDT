@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/numeric/ublas/symmetric.hpp>
 #include <boost/numeric/ublas/matrix_proxy.hpp>
 #include <boost/numeric/ublas/operation.hpp>
@@ -6,10 +5,6 @@
 #include <boost/numeric/ublas/blas.hpp>
 #include <boost/numeric/ublas/io.hpp>
 #include <iostream>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 
 namespace {

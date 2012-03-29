@@ -1,9 +1,8 @@
-#include "stdafx.h"
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 #if defined(_UNICODE) || defined(UNICODE)
 int wmain(int argc, wchar_t* argv[])
@@ -31,6 +30,7 @@ int main(int argc, char* argv[])
 	void tuple();
 	void multi_array();
 	void property_map();
+	void property_tree();
 
 	void function();
 	void bind();
@@ -94,6 +94,7 @@ int main(int argc, char* argv[])
 			//multi_array();
 
 			//property_map();
+			property_tree();
 		}
 
 		{
@@ -146,7 +147,7 @@ int main(int argc, char* argv[])
 		}
 
 		{
-			image();
+			//image();
 		}
 	}
 	catch (const std::exception &e)

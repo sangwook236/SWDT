@@ -128,6 +128,7 @@
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="program_options.cpp" />
     <ClCompile Include="property_map.cpp" />
+    <ClCompile Include="property_tree.cpp" />
     <ClCompile Include="random.cpp" />
     <ClCompile Include="serialization.cpp" />
     <ClCompile Include="signals_slots.cpp" />

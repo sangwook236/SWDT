@@ -1,10 +1,6 @@
-#include "stdafx.h"
 #include <boost/math/constants/constants.hpp>
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 void math_constants()
 {

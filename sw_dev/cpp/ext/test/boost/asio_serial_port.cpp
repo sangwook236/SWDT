@@ -1,6 +1,6 @@
-#include "stdafx.h"
-
+#if defined(WIN32)
 #define _WIN32_WINNT 0x0501
+#endif
 
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
@@ -9,6 +9,7 @@
 #include <boost/smart_ptr.hpp>
 #include <deque>
 #include <iostream>
+
 
 #if !defined(BOOST_ASIO_HAS_SERIAL_PORT)
 #error Boost.Asio does not support serial port

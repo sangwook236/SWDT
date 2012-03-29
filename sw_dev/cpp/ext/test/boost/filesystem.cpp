@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/progress.hpp>

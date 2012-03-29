@@ -3,7 +3,6 @@
 //#define BIND_FORTRAN_LOWERCASE_UNDERSCORE 1  // caution !!!
 //#define BOOST_NUMERIC_BINDINGS_LAPACK_2 1  // caution !!!
 
-#include "stdafx.h"
 #include <cassert>  // necessary
 //#include <boost/numeric/bindings/atlas/clapack.hpp>
 #include <boost/numeric/bindings/lapack/geev.hpp>

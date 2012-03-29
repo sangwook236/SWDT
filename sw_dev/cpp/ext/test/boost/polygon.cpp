@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <boost/polygon/polygon.hpp>
 #include <iostream>
 #include <vector>
@@ -7,9 +6,6 @@
 #include <set>
 #include <cassert>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 namespace {
 namespace local {

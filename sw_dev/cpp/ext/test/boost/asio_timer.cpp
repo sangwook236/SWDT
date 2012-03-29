@@ -1,6 +1,6 @@
-#include "stdafx.h"
-
+#if defined(WIN32)
 #define _WIN32_WINNT 0x0501
+#endif
 
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
