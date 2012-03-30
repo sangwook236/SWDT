@@ -7,9 +7,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="..\..\bin\eigen" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin\" />
-				<Option object_output=".\Debug\" />
+				<Option output="../../bin/eigen" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="./Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -17,9 +17,9 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="..\..\bin\eigen" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin\" />
-				<Option object_output=".\Release\" />
+				<Option output="../../bin/eigen" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="./Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -33,15 +33,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-DUNICODE" />
+			<Add option="-D_UNICODE" />
+			<Add directory="/usr/include/eigen3" />
 		</Compiler>
-		<Unit filename="Tutorial_simple_example_dynamic_size.cpp" />
-		<Unit filename="Tutorial_simple_example_fixed_size.cpp" />
+		<Unit filename="basic_operation.cpp" />
 		<Unit filename="cholesky.cpp" />
-		<Unit filename="class_Block.cpp" />
-		<Unit filename="class_CwiseBinaryOp.cpp" />
-		<Unit filename="class_CwiseUnaryOp.cpp" />
-		<Unit filename="class_FixedBlock.cpp" />
 		<Unit filename="evd.cpp" />
+		<Unit filename="linear_system.cpp" />
 		<Unit filename="lu.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="qr.cpp" />

@@ -1,8 +1,6 @@
 //#include "stdafx.h"
 #define EIGEN2_SUPPORT 1
-#include <Eigen/SVD>
-#include <Eigen/Array>
-#include <Eigen/Core>
+#include <Eigen/Dense>
 #include <iostream>
 
 
@@ -30,9 +28,9 @@ void svd()
 	const Eigen::Matrix<double, ncol, 1> &sigmas = svd.singularValues();
 	std::cout << sigmas << std::endl;
 	std::cout << "singular value matrix:" << std::endl;
-	const Eigen::DiagonalMatrix<Eigen::Matrix<double, ncol, 1> > &S = sigmas.asDiagonal();
+	const Eigen::DiagonalMatrix<double, ncol> &S = sigmas.asDiagonal();
 	//const Eigen::DiagonalMatrix<Eigen::VectorXd> &S = sigmas.asDiagonal();  // error !!!
-	std::cout << S << std::endl;
+	std::cout << Eigen::Matrix<double, ncol, ncol>(S) << std::endl;
 
 	// MxK matrix
 	std::cout << "left singular vectors:" << std::endl;

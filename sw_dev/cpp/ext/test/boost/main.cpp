@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	void utility();
 	void utility_binary();

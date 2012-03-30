@@ -1,5 +1,6 @@
 #include "Complex.h"
 #include <cppunit/extensions/HelperMacros.h>
+#include <stdexcept>
 
 
 class ComplexTest: public CppUnit::TestFixture
@@ -15,22 +16,22 @@ public:
 	{
 		m_10_1 = new Complex<double>(10, 1);
 		m_1_1 = new Complex<double>(1, 1);
-		m_11_2 = new Complex<double>(11, 2);  
+		m_11_2 = new Complex<double>(11, 2);
 	}
-	
-	void tearDown() 
+
+	void tearDown()
 	{
 		delete m_10_1;
 		delete m_1_1;
 		delete m_11_2;
 	}
-	
+
 	void testEquality()
 	{
 		CPPUNIT_ASSERT(*m_10_1 == *m_10_1);
 		CPPUNIT_ASSERT(!(*m_10_1 == *m_11_2));
 	}
-	
+
 	void testAddition()
 	{
 		CPPUNIT_ASSERT(*m_10_1 + *m_1_1 == *m_11_2);

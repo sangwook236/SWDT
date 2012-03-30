@@ -4,10 +4,12 @@
 #include <cmath>
 
 
+#if defined(_MSC_VER)
+const double M_PI = std::atan(1.0) * 4.0;
+#endif
+
 namespace {
 namespace local {
-
-const double M_PI = std::atan(1.0) * 4.0;
 
 void draw_ellipse()
 {

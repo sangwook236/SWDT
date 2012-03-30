@@ -4,10 +4,12 @@
 #include <cmath>
 
 
+#if defined(_MSC_VER)
+const double M_PI = std::atan(1.0) * 4.0;
+#endif
+
 namespace {
 namespace local {
-
-const double M_PI = std::atan(1.0) * 4.0;
 
 }  // namespace local
 }  // unnamed namespace
@@ -82,11 +84,11 @@ void text_extents()
 
 	/* text's advance */
 	cairo_set_source_rgba (cr, 0, 0, 0.75, 0.5);
-	cairo_arc (cr, x + te.x_advance, y + te.y_advance, 5 * px, 0, 2 * local::M_PI);
+	cairo_arc (cr, x + te.x_advance, y + te.y_advance, 5 * px, 0, 2 * M_PI);
 	cairo_fill (cr);
 
 	/* reference point */
-	cairo_arc (cr, x, y, 5 * px, 0, 2 * local::M_PI);
+	cairo_arc (cr, x, y, 5 * px, 0, 2 * M_PI);
 	cairo_set_source_rgba (cr, 0.75, 0, 0, 0.5);
 	cairo_fill (cr);
 

@@ -7,7 +7,9 @@
 #endif  // _DEBUG
 
 #define ILUT_USE_OPENGL
+#if defined(WiN32)
 #include <IL/config.h>
+#endif
 #include <IL/il.h>
 #include <IL/ilu.h>
 #include <IL/ilut.h>

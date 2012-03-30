@@ -1,8 +1,6 @@
 //#include "stdafx.h"
-#include <Eigen/Cholesky>
-#include <Eigen/LU>
-#include <Eigen/Array>
-#include <Eigen/Core>
+//#define EIGEN2_SUPPORT 1
+#include <Eigen/Dense>
 #include <iostream>
 
 
@@ -22,9 +20,9 @@ void llt()
 
 
 	//const Eigen::LLT<MatrixType> llt(m);
-	const Eigen::LLT<MatrixType> llt = m.llt(); 
+	const Eigen::LLT<MatrixType> llt = m.llt();
 	std::cout << "Cholesky decomposition: L * L^T:" << std::endl;
-	if (llt.isPositiveDefinite())
+	//if (llt.isPositiveDefinite())  // not supported in EIGEN3
 	{
 		std::cout << "L matrix:" << std::endl;
 		const Eigen::Matrix<double, dim, dim> &L = llt.matrixL();
@@ -34,8 +32,8 @@ void llt()
 		std::cout << "reconstruct the original matrix m:" << std::endl;
 		std::cout << L * L.transpose() << std::endl;
 	}
-	else
-		std::cout << "the matrix is not a positive definite" << std::endl;
+	//else
+	//	std::cout << "the matrix is not a positive definite" << std::endl;
 }
 
 void ldlt()
@@ -50,15 +48,15 @@ void ldlt()
 	std::cout << "matrix m:" << std::endl << m << std::endl;
 
 	//const Eigen::LDLT<MatrixType> ldlt(m);
-	const Eigen::LDLT<MatrixType> ldlt = m.ldlt(); 
+	const Eigen::LDLT<MatrixType> ldlt = m.ldlt();
 	std::cout << "Cholesky decomposition: L * D * L^T:" << std::endl;
-	if (ldlt.isPositiveDefinite())
+	//if (ldlt.isPositiveDefinite())
 	{
 		std::cout << "D vector:" << std::endl;
 		const Eigen::Matrix<double, dim, 1> &vecD = ldlt.vectorD();
 		std::cout << vecD << std::endl;
-		const Eigen::DiagonalMatrix<Eigen::Matrix<double, dim, 1> > &D = vecD.asDiagonal();
-		std::cout << D << std::endl;
+		const Eigen::DiagonalMatrix<double, dim> &D = vecD.asDiagonal();
+		std::cout << Eigen::Matrix<double, dim, dim>(D) << std::endl;
 
 		std::cout << "L matrix:" << std::endl;
 		const Eigen::Matrix<double, dim, dim> &L = ldlt.matrixL();
@@ -68,8 +66,8 @@ void ldlt()
 		std::cout << "reconstruct the original matrix m:" << std::endl;
 		std::cout << L * D * L.transpose() << std::endl;
 	}
-	else
-		std::cout << "the matrix is not a positive definite" << std::endl;
+	//else
+	//	std::cout << "the matrix is not a positive definite" << std::endl;
 }
 
 }  // namespace local

@@ -4,10 +4,12 @@
 #include <cmath>
 
 
+#if defined(_MSC_VER)
+const double M_PI = std::atan(1.0) * 4.0;
+#endif
+
 namespace {
 namespace local {
-
-const double M_PI = std::atan(1.0) * 4.0;
 
 void tutorial_1()
 {
@@ -196,7 +198,7 @@ void tutorial_3()
 
 		const char *text = "Hello";
 
-		
+
 		cairo_font_options_t *options = cairo_font_options_create();
 		cairo_get_font_options(cr, options);
 		cairo_set_font_options(cr, options);

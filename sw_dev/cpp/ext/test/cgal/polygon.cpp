@@ -42,9 +42,20 @@ void polygon2()
 	std::cout << "The polygon is " << (pgn.is_convex() ? "" : "not ") << "convex." << std::endl;
 
 	// check if the polygon is simple.
+#if defined(__GNUC__)
+    {
+        point_type pt1(0.5, 0.5);
+        check_inside(pt1, points, points + 4, kernel_type());
+        point_type pt2(1.5, 2.5);
+        check_inside(pt2, points, points + 4, kernel_type());
+        point_type pt3(2.5, 0);
+        check_inside(pt3, points, points + 4, kernel_type());
+    }
+#else
 	check_inside(point_type(0.5, 0.5), points, points + 4, kernel_type());
 	check_inside(point_type(1.5, 2.5), points, points + 4, kernel_type());
 	check_inside(point_type(2.5, 0), points, points + 4, kernel_type());
+#endif
 }
 
 }  // namespace local

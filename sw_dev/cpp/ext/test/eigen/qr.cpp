@@ -1,7 +1,6 @@
 //#include "stdafx.h"
-#include <Eigen/QR>
-#include <Eigen/Array>
-#include <Eigen/Core>
+//#define EIGEN2_SUPPORT 1
+#include <Eigen/Dense>
 #include <iostream>
 
 
@@ -21,20 +20,17 @@ void qr()
 
 	// MxN matrix, K=min(M,N), M>=N
 	//const Eigen::QR<MatrixType> qr(m);
-	const Eigen::QR<MatrixType> qr = m.qr();
+#if 1
+	const Eigen::ColPivHouseholderQR<MatrixType> qr = m.colPivHouseholderQr();
+#elif 0
+	const Eigen::FullPivHouseholderQR<MatrixType> qr = m.fullPivHouseholderQr();
+#else
+	const Eigen::HouseholderQR<MatrixType> qr = m.householderQr();
+#endif
 	std::cout << "QR decomposition:" << std::endl;
 
-	// MxK matrix
-	std::cout << "Q matrix:" << std::endl;
-	const Eigen::Matrix<double, nrow, ncol> &Q = qr.matrixQ();
-	std::cout << Q << std::endl;
-
-	// KxN matrix
-	std::cout << "R matrix:" << std::endl;
-	const Eigen::Matrix<double, ncol, ncol> &R = qr.matrixR();
-	std::cout << R << std::endl;
-
 	//
-	std::cout << "reconstruct the original matrix m:" << std::endl;
-	std::cout << Q * R << std::endl;
+	std::cout << "QR matrix:" << std::endl;
+	const Eigen::Matrix<double, nrow, ncol> &QR = qr.matrixQR();
+	std::cout << QR << std::endl;
 }
