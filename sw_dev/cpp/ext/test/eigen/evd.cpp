@@ -1,9 +1,15 @@
-#include "stdafx.h"
-#include <Eigen/QR>
-#include <Eigen/LU>
+//#include "stdafx.h"
+#include <Eigen/Eigen>
 #include <Eigen/Array>
 #include <Eigen/Core>
+#include <iostream>
 
+
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
 
 void evd()
 {

@@ -1,13 +1,45 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <gsl/gsl_multimin.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+
+namespace {
+namespace local {
 
 static double my_f(const gsl_vector* v, void* params);
 static void my_df(const gsl_vector* v, void* params, gsl_vector* df);
 static void my_fdf(const gsl_vector* x, void* params, double* f, gsl_vector* df);
+
+// Paraboloid centered on (dp[0],dp[1])
+double my_f(const gsl_vector* v, void* params)
+{
+	const double* dp = (double*)params;
+
+	const double x = gsl_vector_get(v, 0);
+	const double y = gsl_vector_get(v, 1);
+	return 10.0 * (x - dp[0]) * (x - dp[0]) + 20.0 * (y - dp[1]) * (y - dp[1]) + 30.0;
+}
+
+// The gradient of f, df = (df/dx, df/dy)
+void my_df(const gsl_vector* v, void* params, gsl_vector* df)
+{
+	const double* dp = (double*)params;
+
+	const double x = gsl_vector_get(v, 0);
+	const double y = gsl_vector_get(v, 1);
+
+	gsl_vector_set(df, 0, 20.0 * (x - dp[0]));
+	gsl_vector_set(df, 1, 40.0 * (y - dp[1]));
+}
+
+// Compute both f and df together
+void my_fdf(const gsl_vector* x, void* params, double* f, gsl_vector* df)
+{
+	*f = my_f(x, params);
+	my_df(x, params, df);
+}
+
+}  // namespace local
+}  // unnamed namespace
 
 void conjugate_gradient()
 {
@@ -16,9 +48,9 @@ void conjugate_gradient()
 
 	gsl_multimin_function_fdf my_func;
 
-	my_func.f = &my_f;
-	my_func.df = &my_df;
-	my_func.fdf = &my_fdf;
+	my_func.f = &local::my_f;
+	my_func.df = &local::my_df;
+	my_func.fdf = &local::my_fdf;
 	my_func.n = 2;  // the dimension of the system, i.e. the number of components of the vectors x
 	my_func.params = (void*)&par;
 
@@ -60,33 +92,4 @@ void conjugate_gradient()
 	//
 	gsl_multimin_fdfminimizer_free(s);
 	gsl_vector_free(x);
-}
-
-// Paraboloid centered on (dp[0],dp[1])
-double my_f(const gsl_vector* v, void* params)
-{
-	const double* dp = (double*)params;
-
-	const double x = gsl_vector_get(v, 0);
-	const double y = gsl_vector_get(v, 1);
-	return 10.0 * (x - dp[0]) * (x - dp[0]) + 20.0 * (y - dp[1]) * (y - dp[1]) + 30.0;
-}
-
-// The gradient of f, df = (df/dx, df/dy)
-void my_df(const gsl_vector* v, void* params, gsl_vector* df)
-{
-	const double* dp = (double*)params;
-
-	const double x = gsl_vector_get(v, 0);
-	const double y = gsl_vector_get(v, 1);
-
-	gsl_vector_set(df, 0, 20.0 * (x - dp[0]));
-	gsl_vector_set(df, 1, 40.0 * (y - dp[1]));
-}
-
-// Compute both f and df together
-void my_fdf(const gsl_vector* x, void* params, double* f, gsl_vector* df)
-{
-	*f = my_f(x, params);
-	my_df(x, params, df);
 }

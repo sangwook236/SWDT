@@ -1,18 +1,9 @@
 #include <cvm/cvm.h>
 #include <string>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-void lu_srmatrix();
-void lu_scmatrix();
-
-void lu()
-{
-	lu_srmatrix();
-	lu_scmatrix();
-}
+namespace {
+namespace local {
 
 void lu_srmatrix()
 {
@@ -89,4 +80,13 @@ void lu_scmatrix()
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void lu()
+{
+	local::lu_srmatrix();
+	local::lu_scmatrix();
 }

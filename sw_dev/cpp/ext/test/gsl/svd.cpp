@@ -1,12 +1,14 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <gsl/gsl_linalg.h>
 #include <iostream>
 #include <cassert>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
 
 void svd()
 {

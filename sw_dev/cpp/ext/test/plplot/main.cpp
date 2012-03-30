@@ -1,8 +1,11 @@
-#include "stdafx.h"
+//#include "stdafx.h"
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <iostream>
 
 
-int main(const int argc, const char * argv[])
+int main(int argc, char *argv[])
 {
 	void example_x01(int argc, const char **argv);
 	void example_x21(int argc, const char **argv);
@@ -10,8 +13,8 @@ int main(const int argc, const char * argv[])
 	try
 	{
 		// examples
-		example_x01(argc, argv);
-		//example_x21(argc, argv);
+		example_x01(argc, (const char **)argv);
+		//example_x21(argc, (const char **)argv);
 	}
 	catch (const std::exception &e)
 	{

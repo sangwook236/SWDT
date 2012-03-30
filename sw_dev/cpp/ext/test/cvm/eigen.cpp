@@ -1,18 +1,9 @@
 #include <cvm/cvm.h>
 #include <string>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-void eigen_srmatirx();
-void eigen_srsmatirx();
-
-void eigen()
-{
-	eigen_srmatirx();
-	eigen_srsmatirx();
-}
+namespace {
+namespace local {
 
 void eigen_srmatirx()
 {
@@ -81,4 +72,13 @@ void eigen_srsmatirx()
 	{
 		std::cout << "Exception: " << e.what() << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void eigen()
+{
+	local::eigen_srmatirx();
+	local::eigen_srsmatirx();
 }

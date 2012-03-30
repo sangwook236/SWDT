@@ -32,26 +32,40 @@ void print_matrix(const matrix_t &mat)
 */
 }
 
-int wmain(int argc, wchar_t* argv[])
+int main(int argc, char *argv[])
 {
-	const int dim = 2;
-	matrix_t mat(dim, dim);
-	mat(0, 0) = 1;
-	mat(0, 1) = 4;
-	mat(1, 0) = 9;
-	mat(1, 1) = 1;
+	try
+	{
+		const int dim = 2;
+		matrix_t mat(dim, dim);
+		mat(0, 0) = 1;
+		mat(0, 1) = 4;
+		mat(1, 0) = 9;
+		mat(1, 1) = 1;
 
-	std::cout << "mat:" << std::endl;
-	print_matrix(mat);
+		std::cout << "mat:" << std::endl;
+		print_matrix(mat);
 
-	matrix_t eigvec_l(dim, dim), eigvec_r(dim, dim);
-	vector_t eigval(dim);
-	const int ret = mtl2lapack::geev(mtl2lapack::GEEV_CALC_BOTH, mat, eigval, eigvec_l, eigvec_r);
+		matrix_t eigvec_l(dim, dim), eigvec_r(dim, dim);
+		vector_t eigval(dim);
+		const int ret = mtl2lapack::geev(mtl2lapack::GEEV_CALC_BOTH, mat, eigval, eigvec_l, eigvec_r);
 
-	std::cout << "right eigenvector:" << std::endl;
-	print_matrix(eigvec_r);
-	std::cout << "left eigenvector:" << std::endl;
-	print_matrix(eigvec_l);
+		std::cout << "right eigenvector:" << std::endl;
+		print_matrix(eigvec_r);
+		std::cout << "left eigenvector:" << std::endl;
+		print_matrix(eigvec_l);
+	}
+	catch (const std::exception &e)
+	{
+		std::cout << "std::exception occurred: " << e.what() << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "unknown exception occurred: " << std::endl;
+	}
+
+	std::cout << "press any key to exit ..." << std::endl;
+	std::cin.get();
 
 	return 0;
 }

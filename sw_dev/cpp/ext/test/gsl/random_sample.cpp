@@ -1,26 +1,12 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
 #include <iostream>
 #include <cmath>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-
-void random_sample_uniform();
-void random_sample_gaussian();
-void random_sample_poisson();
-void random_sample_spherical();
-
-void random_sample()
-{
-	random_sample_uniform();
-	//random_sample_gaussian();
-	//random_sample_poisson();
-	//random_sample_spherical();
-}
+namespace {
+namespace local {
 
 void random_sample_uniform()
 {
@@ -135,4 +121,15 @@ void random_sample_spherical()
 	std::cout << std::endl;
 
 	gsl_rng_free(r);
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void random_sample()
+{
+	local::random_sample_uniform();
+	//local::random_sample_gaussian();
+	//local::random_sample_poisson();
+	//local::random_sample_spherical();
 }

@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+﻿//#include "stdafx.h"
 #include <iostream>
 #include <string>
 
@@ -15,6 +15,7 @@
 #ifdef __cplusplus
 #include <IL/devil_cpp_wrapper.hpp>
 #endif
+
 
 namespace {
 namespace local {

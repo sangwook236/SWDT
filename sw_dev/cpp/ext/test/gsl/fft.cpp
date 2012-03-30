@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_fft_complex.h>
 #include <gsl/gsl_fft_real.h>
@@ -6,24 +6,12 @@
 #include <stdio.h>
 #include <math.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+
+namespace {
+namespace local {
 
 #define REAL(z,i) ((z)[2*(i)])
 #define IMAG(z,i) ((z)[2*(i)+1])
-
-
-void fft_complex_radix2();
-void fft_complex();
-void fft_real();
-
-void fft()
-{
-	//fft_complex_radix2();
-	//fft_complex();
-	fft_real();
-}
 
 void fft_complex_radix2()
 {
@@ -136,4 +124,14 @@ void fft_real()
 
 	//
 	gsl_fft_real_workspace_free(work);
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void fft()
+{
+	//local::fft_complex_radix2();
+	//local::fft_complex();
+	local::fft_real();
 }

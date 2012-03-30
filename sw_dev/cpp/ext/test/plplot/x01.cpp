@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "plc++demos.h"
 #include <plevent.h>
 #include <boost/smart_ptr.hpp>

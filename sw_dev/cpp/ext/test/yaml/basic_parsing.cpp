@@ -1,7 +1,8 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <yaml-cpp/yaml.h>
 #include <fstream>
 #include <string>
+
 
 namespace {
 namespace local {

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "DOMTreeErrorReporter.hpp"
 #include "DOMPrintFilter.hpp"
 #include "DOMPrintErrorHandler.hpp"
@@ -20,7 +20,14 @@
 #include <iostream.h>
 #endif
 
+
 XERCES_CPP_NAMESPACE_USE
+
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
 
 int dom()
 {

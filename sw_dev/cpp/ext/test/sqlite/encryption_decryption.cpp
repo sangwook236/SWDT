@@ -1,6 +1,8 @@
-#include "stdafx.h"
+//#include "stdafx.h"
+#if defined(WIN32)
 #include <windows.h>
 //#include <wincrypt.h>
+#endif
 #include <sqlite/sqlite3.h>
 #include <string>
 #include <sstream>
@@ -8,6 +10,7 @@
 
 
 namespace {
+namespace local {
 
 #define ENCRYPT_ALGORITHM   CALG_RC4
 #define KEYLENGTH           0x00800000
@@ -239,6 +242,7 @@ void insert_data(sqlite3 *db, const std::string &user_id, const std::string &pas
 	}
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void encryption_decryption()
@@ -257,8 +261,8 @@ void encryption_decryption()
 	}
 
 	// create functions
-	if (SQLITE_OK != sqlite3_create_function(db, "encrypt", -1, SQLITE_UTF8, NULL, &encrypt, NULL, NULL) ||
-		SQLITE_OK != sqlite3_create_function(db, "decrypt", -1, SQLITE_UTF8, NULL, &decrypt, NULL, NULL))
+	if (SQLITE_OK != sqlite3_create_function(db, "encrypt", -1, SQLITE_UTF8, NULL, &local::encrypt, NULL, NULL) ||
+		SQLITE_OK != sqlite3_create_function(db, "decrypt", -1, SQLITE_UTF8, NULL, &local::decrypt, NULL, NULL))
 	{
 		std::cerr << "can't create function: " << sqlite3_errmsg(db) << std::endl;
 		sqlite3_close(db);
@@ -269,9 +273,9 @@ void encryption_decryption()
 	const std::string encryptionPassPhrase("12345!@#$%");
 
 	//
-	create_table(db);
-	insert_data(db, "honggildong", "gildong2", 3, encryptionPassPhrase);
-	insert_data(db, "sungchunhyang", "chunhyang2", 7, encryptionPassPhrase);
+	local::create_table(db);
+	local::insert_data(db, "honggildong", "gildong2", 3, encryptionPassPhrase);
+	local::insert_data(db, "sungchunhyang", "chunhyang2", 7, encryptionPassPhrase);
 
 	// encrypt
 	{

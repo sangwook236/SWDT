@@ -1,15 +1,6 @@
 #include "Complex.h"
 
 
-#if defined(_MSC_VER) && defined(_DEBUG)
-#define VC_EXTRALEAN  //  Exclude rarely-used stuff from Windows headers
-//#include <afx.h>
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 namespace constant {
 
 const double EPS = 1.0e-5;

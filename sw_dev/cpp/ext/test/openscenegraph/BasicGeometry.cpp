@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <osg/Node>
 #include <osg/Group>
 #include <osg/Geode>
@@ -9,6 +9,12 @@
 #include <osg/PositionAttitudeTransform>
 #include <osgGA/TrackballManipulator>
 
+
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
 
 void BasicGeometry()
 {

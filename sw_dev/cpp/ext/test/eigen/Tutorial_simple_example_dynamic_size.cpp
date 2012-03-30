@@ -1,15 +1,22 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <Eigen/Core>
+#include <iostream>
 
 
 // import most common Eigen types 
 USING_PART_OF_NAMESPACE_EIGEN
 
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
+
 int dynamic_size(int, char *[])
 {
 	for (int size = 1; size <= 4; ++size)
 	{
-		MatrixXi m(size, size+1);  // a (size)x(size+1)-matrix of int's
+		Eigen::MatrixXi m(size, size+1);  // a (size)x(size+1)-matrix of int's
 		for (int j = 0; j < m.cols(); ++j)   // loop over columns
 			for (int i = 0; i < m.rows(); ++i)  // loop over rows
 				m(i,j) = i + j * m.rows();  // to access matrix coefficients,
@@ -17,7 +24,7 @@ int dynamic_size(int, char *[])
 		std::cout << m << "\n\n";
 	}
 
-	VectorXf v(4);  // a vector of 4 float's to access vector coefficients, use either operator () or operator []
+	Eigen::VectorXf v(4);  // a vector of 4 float's to access vector coefficients, use either operator () or operator []
 	v[0] = 1; v[1] = 2; v(2) = 3; v(3) = 4;
 	std::cout << "\nv:\n" << v << std::endl;
 

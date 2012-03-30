@@ -1,3 +1,6 @@
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <log4cxx/Logger.h>
 #include <log4cxx/BasicConfigurator.h>
 #include <log4cxx/PropertyConfigurator.h>
@@ -7,15 +10,6 @@
 #include <boost/test/test_tools.hpp>
 #include <iostream>
 #include <limits>
-
-
-#if defined(_MSC_VER) && defined(_DEBUG)
-#define VC_EXTRALEAN  //  Exclude rarely-used stuff from Windows headers
-//#include <afx.h>
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 
 #if defined(max)
@@ -63,7 +57,7 @@ void thread_func()
 	LOG4CXX_DEBUG(tracer, L"Exiting gas station search.");
 }
 
-int main()
+int main(int argc, char *argv[])
 {
 	try
 	{
@@ -122,6 +116,7 @@ int main()
 	}
 
 	std::cout << "press any key to terminate ..." << std::endl;
-	std::wcin.get();
+	std::cin.get();
+
 	return 0;
 }

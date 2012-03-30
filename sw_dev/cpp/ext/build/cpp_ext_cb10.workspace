@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
-		<Project filename="../test/boost/boost_cb10.cbp" active="1" />
+		<Project filename="../test/boost/boost_cb10.cbp" />
+		<Project filename="../test/armadillo/armadillo_cb10.cbp" />
+		<Project filename="../test/cairo/cairo_cb10.cbp" />
+		<Project filename="../test/cgal/cgal_cb10.cbp" />
+		<Project filename="../test/cppunit/cppunit_cb10.cbp" />
+		<Project filename="../test/cvm/cvm_cb10.cbp" />
+		<Project filename="../test/devil/devil_cb10.cbp" />
+		<Project filename="../test/eigen/eigen_cb10.cbp" />
+		<Project filename="../test/gd/gd_cb10.cbp" />
+		<Project filename="../test/graphviz/graphviz_cb10.cbp" />
+		<Project filename="../test/gsl/gsl_cb10.cbp" />
+		<Project filename="../test/lapack/lapack_cb10.cbp" />
+		<Project filename="../test/log4cxx/log4cxx_cb10.cbp" />
+		<Project filename="../test/mysql/mysql_cb10.cbp" />
+		<Project filename="../test/openmesh/openmesh_cb10.cbp" />
+		<Project filename="../test/openscenegraph/openscenegraph_cb10.cbp" />
+		<Project filename="../test/plplot/plplot_cb10.cbp" />
+		<Project filename="../test/sqlite/sqlite_cb10.cbp" />
+		<Project filename="../test/xercesc/xercesc_cb10.cbp" />
+		<Project filename="../test/yaml/yaml_cb10.cbp" />
+		<Project filename="../test/zlib/zlib_cb10.cbp" />
+		<Project filename="../test/atlas/atlas_cb10.cbp" active="1" />
 	</Workspace>
 </CodeBlocks_workspace_file>

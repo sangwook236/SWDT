@@ -1,13 +1,12 @@
-#include "stdafx.h"
+//#include "stdafx.h"
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <yaml-cpp/yaml.h>
 #include <iostream>
 
 
-#if defined(_UNICODE) || defined(UNICODE)
-int wmain(int argc, wchar_t* argv[])
-#else
-int main(int argc, char* argv[])
-#endif
+int main(int argc, char *argv[])
 {
 	void basic_parsing();
 	void basic_emitting();
@@ -47,4 +46,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-

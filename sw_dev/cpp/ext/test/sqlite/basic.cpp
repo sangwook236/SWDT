@@ -1,10 +1,11 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <sqlite/sqlite3.h>
 #include <sstream>
 #include <iostream>
 
 
 namespace {
+namespace local {
 
 int callback(void *param, int argc, char **argv, char **colName)
 {
@@ -167,6 +168,7 @@ void select_data_2(sqlite3 *db)
 	sqlite3_finalize(selectedStmts);
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void basic()
@@ -185,21 +187,21 @@ void basic()
 	}
 	
 	// create table
-	create_table(db);
+	local::create_table(db);
 
 	// insert data
-	insert_data_1(db);
-	insert_data_2(db);
+	local::insert_data_1(db);
+	local::insert_data_2(db);
 
 	// select data
-	select_data_1(db);
-	select_data_2(db);
+	local::select_data_1(db);
+	local::select_data_2(db);
 
 	// delete data
-	delete_data_1(db);
-	delete_data_2(db);
+	local::delete_data_1(db);
+	local::delete_data_2(db);
 
-	select_data_2(db);
+	local::select_data_2(db);
 
 	// close database
 	sqlite3_close(db);

@@ -1,9 +1,9 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <gsl/gsl_multimin.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+
+namespace {
+namespace local {
 
 // Paraboloid centered on (dp[0], dp[1])
 static double my_f(const gsl_vector* v, void* params)
@@ -31,26 +31,29 @@ static void my_fdf(const gsl_vector* x, void* params, double* f, gsl_vector* df)
 	my_df(x, params, df);
 }
 
+}  // namespace local
+}  // unnamed namespace
+
 void multidim_minimization_simplex()
 {
 	// Position of the minimum (1,2)
 	double par[2] = { 1.0, 2.0 };
 
 	gsl_multimin_function my_func;
-	my_func.f = &my_f;
+	my_func.f = &local::my_f;
 	my_func.n = 2;  // the dimension of the system, i.e. the number of components of the vectors x
-	my_func.params = (void*)&par;
+	my_func.params = (void *)&par;
 
 	// Starting point, x = (5,7)
-	gsl_vector* x = gsl_vector_alloc(2);
+	gsl_vector *x = gsl_vector_alloc(2);
 	gsl_vector_set(x, 0, 5.0);
 	gsl_vector_set(x, 1, 7.0);
-	gsl_vector* step_size = gsl_vector_alloc(2);
+	gsl_vector *step_size = gsl_vector_alloc(2);
 	gsl_vector_set(step_size, 0, 0.01);
 	gsl_vector_set(step_size, 1, 0.01);
 
-	const gsl_multimin_fminimizer_type* T = gsl_multimin_fminimizer_nmsimplex;
-	gsl_multimin_fminimizer* s = gsl_multimin_fminimizer_alloc(T, 2);
+	const gsl_multimin_fminimizer_type *T = gsl_multimin_fminimizer_nmsimplex;
+	gsl_multimin_fminimizer *s = gsl_multimin_fminimizer_alloc(T, 2);
 	gsl_multimin_fminimizer_set(s, &my_func, x, step_size);
 
 	size_t iter = 0;
@@ -81,19 +84,19 @@ void multidim_minimization_steepest_descent()
 	double par[2] = { 1.0, 2.0 };
 
 	gsl_multimin_function_fdf my_func;
-	my_func.f = &my_f;
-	my_func.df = &my_df;
-	my_func.fdf = &my_fdf;
+	my_func.f = &local::my_f;
+	my_func.df = &local::my_df;
+	my_func.fdf = &local::my_fdf;
 	my_func.n = 2;  // the dimension of the system, i.e. the number of components of the vectors x
 	my_func.params = (void*)&par;
 
 	// Starting point, x = (5,7)
-	gsl_vector* x = gsl_vector_alloc(2);
+	gsl_vector *x = gsl_vector_alloc(2);
 	gsl_vector_set(x, 0, 5.0);
 	gsl_vector_set(x, 1, 7.0);
 
-	const gsl_multimin_fdfminimizer_type* T = gsl_multimin_fdfminimizer_steepest_descent;
-	gsl_multimin_fdfminimizer* s = gsl_multimin_fdfminimizer_alloc(T, 2);
+	const gsl_multimin_fdfminimizer_type *T = gsl_multimin_fdfminimizer_steepest_descent;
+	gsl_multimin_fdfminimizer *s = gsl_multimin_fdfminimizer_alloc(T, 2);
 	gsl_multimin_fdfminimizer_set(s, &my_func, x, 0.01, 1e-4);
 
 	size_t iter = 0;

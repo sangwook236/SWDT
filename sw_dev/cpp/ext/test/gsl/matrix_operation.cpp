@@ -1,31 +1,15 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <gsl/gsl_blas.h>
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-void matrix_basic();
-void matrix_transpose();
-void matrix_vector_mulitplication();
-void matrix_matrix_mulitplication();
+namespace {
+namespace local {
 
 void print_gsl_vector(gsl_vector* vec);
 void print_gsl_vector(gsl_vector* vec, const int dim);
 void print_gsl_matrix(gsl_matrix* mat);
 void print_gsl_matrix(gsl_matrix* mat, const int rdim, const int cdim);
-
-void matrix_operation()
-{
-	matrix_basic();
-	std::cout << std::endl;
-	matrix_transpose();
-	std::cout << std::endl;
-	matrix_vector_mulitplication();
-	std::cout << std::endl;
-	matrix_matrix_mulitplication();
-}
 
 void matrix_basic()
 {
@@ -340,4 +324,18 @@ void matrix_matrix_mulitplication()  // level 3
 		else
 			std::cout << ">>> error !!!" << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void matrix_operation()
+{
+	local::matrix_basic();
+	std::cout << std::endl;
+	local::matrix_transpose();
+	std::cout << std::endl;
+	local::matrix_vector_mulitplication();
+	std::cout << std::endl;
+	local::matrix_matrix_mulitplication();
 }

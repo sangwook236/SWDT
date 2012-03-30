@@ -1,25 +1,31 @@
-#include "stdafx.h"
+//#include "stdafx.h"
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-
-#if defined(_UNICODE) || defined(UNICODE)
-int wmain(int argc, wchar_t* argv[])
-#else
-int main(int argc, char* argv[])
-#endif
+int main(int argc, char *argv[])
 {
 	int sax();
 	int dom();
 
-	sax();
-	dom();
+	try
+	{
+		//sax();  // not yet implemented
+		dom();
+	}
+	catch (const std::exception &e)
+	{
+		std::cout << "std::exception occurred: " << e.what() << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "unknown exception occurred: " << std::endl;
+	}
 
-	std::cout << "press any key to terminate" << std::flush;
+	std::cout << "press any key to exit ..." << std::endl;
 	std::cin.get();
 
-    return 0;
+	return 0;
 }

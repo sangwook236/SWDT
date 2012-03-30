@@ -1,8 +1,15 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <Eigen/QR>
 #include <Eigen/Array>
 #include <Eigen/Core>
+#include <iostream>
 
+
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
 
 void qr()
 {

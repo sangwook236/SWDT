@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #if defined(__HUGE)
 #error error
 #endif
@@ -9,6 +9,10 @@
 #include <gsl/gsl_monte_vegas.h>
 #include <iostream>
 #include <cmath>
+
+
+namespace {
+namespace local {
 
 /*
 	Computation of the integral,
@@ -38,13 +42,16 @@ void display_results(char *title, double result, double error)
 	std::cout << "error = " << (result - exact) << " = " << (std::fabs(result - exact) / error) << " sigma" << std::endl;
 }
 
+}  // namespace local
+}  // unnamed namespace
+
 void monte_carlo_integration()
 {
 	double res, err;
 	double xl[3] = { 0, 0, 0 };
 	double xu[3] = { M_PI, M_PI, M_PI };
 
-	gsl_monte_function G = { &g, 3, 0 };
+	gsl_monte_function G = { &local::g, 3, 0 };
 	const size_t calls = 500000;
 
 	gsl_rng_env_setup();
@@ -56,7 +63,7 @@ void monte_carlo_integration()
 		gsl_monte_plain_state *s = gsl_monte_plain_alloc(3);
 		gsl_monte_plain_integrate(&G, xl, xu, 3, calls, r, s, &res, &err);
 		gsl_monte_plain_free(s);
-		display_results("plain", res, err);
+		local::display_results("plain", res, err);
 	}
 
 	//
@@ -64,23 +71,23 @@ void monte_carlo_integration()
 		gsl_monte_miser_state *s = gsl_monte_miser_alloc(3);
 		gsl_monte_miser_integrate(&G, xl, xu, 3, calls, r, s, &res, &err);
 		gsl_monte_miser_free(s);
-		display_results("miser", res, err);
+		local::display_results("miser", res, err);
 	}
 
 	//
 	{
 		gsl_monte_vegas_state *s = gsl_monte_vegas_alloc(3);
 		gsl_monte_vegas_integrate(&G, xl, xu, 3, 10000, r, s, &res, &err);
-		display_results("vegas warm-up", res, err);
+		local::display_results("vegas warm-up", res, err);
 
 		std::cout << "converging..." << std::endl;
 		do
 		{
 			gsl_monte_vegas_integrate(&G, xl, xu, 3, calls/5, r, s, &res, &err);
 			std::cout << "result = " << res << " sigma = " << err << " chisq/dof = " << s->chisq << std::endl;
-		} while(std::fabs(s->chisq - 1.0) > 0.5);
+		} while (std::fabs(s->chisq - 1.0) > 0.5);
 
-		display_results("vegas final", res, err);
+		local::display_results("vegas final", res, err);
 		gsl_monte_vegas_free(s);
 	}
 }

@@ -1,8 +1,16 @@
-#include "stdafx.h"
+//#include "stdafx.h"
+#define EIGEN2_SUPPORT 1
 #include <Eigen/SVD>
 #include <Eigen/Array>
 #include <Eigen/Core>
+#include <iostream>
 
+
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
 
 void svd()
 {

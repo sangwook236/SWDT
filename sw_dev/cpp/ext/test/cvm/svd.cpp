@@ -1,16 +1,9 @@
 #include <cvm/cvm.h>
 #include <string>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-void svd_rmatrix();
-
-void svd()
-{
-	svd_rmatrix();
-}
+namespace {
+namespace local {
 
 void svd_rmatrix()
 {
@@ -45,4 +38,12 @@ void svd_rmatrix()
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
+}
+	
+}  // namespace local
+}  // unnamed namespace
+
+void svd()
+{
+	local::svd_rmatrix();
 }

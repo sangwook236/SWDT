@@ -1,10 +1,13 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <Eigen/Cholesky>
 #include <Eigen/LU>
 #include <Eigen/Array>
 #include <Eigen/Core>
+#include <iostream>
+
 
 namespace {
+namespace local {
 
 void llt()
 {
@@ -69,11 +72,12 @@ void ldlt()
 		std::cout << "the matrix is not a positive definite" << std::endl;
 }
 
-}
+}  // namespace local
+}  // unnamed namespace
 
 void cholesky()
 {
-	llt();
+	local::llt();
 	std::cout << std::endl << std::endl;
-	ldlt();
+	local::ldlt();
 }

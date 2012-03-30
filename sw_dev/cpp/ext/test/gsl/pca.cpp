@@ -1,14 +1,13 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_eigen.h>
 #include <gsl/gsl_blas.h>
 #include <iostream>
 #include <cassert>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
+namespace {
+namespace local {
 
 void pca_by_svd(gsl_matrix* U, const int rdim, const int cdim)
 {
@@ -76,6 +75,9 @@ void pca_by_eigen(gsl_matrix* mat, const int rdim, const int cdim)
 	gsl_matrix_free(evec);
 }
 
+}  // namespace local
+}  // unnamed namespace
+
 void pca()
 {
 	void print_gsl_vector(gsl_vector* vec, const int dim);
@@ -100,8 +102,8 @@ void pca()
 	gsl_matrix* mat2 = gsl_matrix_alloc(rdim, cdim);
 	gsl_matrix_memcpy(mat2, &mat.matrix);
 
-	pca_by_svd(&mat.matrix, rdim, cdim);
-	pca_by_eigen(mat2, rdim, cdim);
+	local::pca_by_svd(&mat.matrix, rdim, cdim);
+	local::pca_by_eigen(mat2, rdim, cdim);
 
 	gsl_matrix_free(mat2);
 }

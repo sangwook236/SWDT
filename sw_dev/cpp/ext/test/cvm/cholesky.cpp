@@ -1,18 +1,9 @@
 #include <cvm/cvm.h>
 #include <string>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-void cholesky_srmatrix();
-void cholesky_scmatrix();
-
-void cholesky()
-{
-	cholesky_srmatrix();
-	cholesky_scmatrix();
-}
+namespace {
+namespace local {
 
 void cholesky_srmatrix()
 {
@@ -53,4 +44,13 @@ void cholesky_scmatrix()
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void cholesky()
+{
+	local::cholesky_srmatrix();
+	local::cholesky_scmatrix();
 }

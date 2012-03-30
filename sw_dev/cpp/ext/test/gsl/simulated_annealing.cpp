@@ -1,8 +1,11 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <gsl/gsl_siman.h>
 #include <iostream>
 #include <cmath>
 
+
+namespace {
+namespace local {
 
 // set up parameters for this simulated annealing run how many points do we try before stepping
 #define N_TRIES 200
@@ -17,7 +20,6 @@
 // damping factor for temperature
 #define MU_T 1.005
 #define T_MIN 2.0e-6
-
 
 gsl_siman_params_t params = { N_TRIES, ITERS_FIXED_T, STEP_SIZE, K, T_INITIAL, MU_T, T_MIN };
 
@@ -48,6 +50,9 @@ void P1(void *xp)
 	std::cout << *(double *)xp;
 }
 
+}  // namespace local
+}  // unnamed namespace
+
 void simulated_annealing()
 {
 	const double x_initial = 15.5;
@@ -57,7 +62,7 @@ void simulated_annealing()
 	const gsl_rng_type *T = gsl_rng_default;
 	gsl_rng *r = gsl_rng_alloc(T);
 
-	gsl_siman_solve(r, (void *)&x_initial, E1, S1, M1, P1, NULL, NULL, NULL, sizeof(double), params);
+	gsl_siman_solve(r, (void *)&x_initial, local::E1, local::S1, local::M1, local::P1, NULL, NULL, NULL, sizeof(double), local::params);
 
 	gsl_rng_free(r);
 }

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <cairo/cairo.h>
 #include <cairo/cairo-svg.h>
 #include <cmath>

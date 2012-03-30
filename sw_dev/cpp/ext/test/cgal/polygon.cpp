@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Polygon_2.h>
 #include <CGAL/Polygon_2_algorithms.h>
@@ -6,6 +6,7 @@
 
 
 namespace {
+namespace local {
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel kernel_type;
 typedef kernel_type::Point_2 point_type;
@@ -46,9 +47,10 @@ void polygon2()
 	check_inside(point_type(2.5, 0), points, points + 4, kernel_type());
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void polygon()
 {
-	polygon2();
+	local::polygon2();
 }

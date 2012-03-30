@@ -1,6 +1,7 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "plc++demos.h"
 #include <boost/smart_ptr.hpp>
+
 
 // Need for some Mac OSX systems with broken <cmath> header
 #ifdef PL_BROKEN_ISNAN_CXX

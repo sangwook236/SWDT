@@ -1,9 +1,12 @@
 #include <cvm/cvm.h>
 #include <string>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
 
 void matrix_function()
 {

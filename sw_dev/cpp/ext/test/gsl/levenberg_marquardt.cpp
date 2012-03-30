@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_vector.h>
@@ -7,23 +7,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+
+namespace {
+namespace local {
 
 #define _USE_SIGMA 1
 #define N 40
 
-void levenberg_marquardt_f_1();
-void levenberg_marquardt_fdf_1();
-void levenberg_marquardt_fdf_2();
-
-void levenberg_marquardt()
-{
-	//levenberg_marquardt_f_1();  // not implemented
-	//levenberg_marquardt_fdf_1();
-	levenberg_marquardt_fdf_2();
-}
 
 struct data
 {
@@ -461,4 +451,14 @@ void levenberg_marquardt_fdf_2()
 
 	//
 	gsl_multifit_fdfsolver_free(s);
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void levenberg_marquardt()
+{
+	//local::levenberg_marquardt_f_1();  // not implemented
+	//local::levenberg_marquardt_fdf_1();
+	local::levenberg_marquardt_fdf_2();
 }

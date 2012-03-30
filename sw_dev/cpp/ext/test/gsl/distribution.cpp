@@ -1,23 +1,13 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_cdf.h>
 #include <vector>
 #include <iostream>
 #include <cmath>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-
-void distribution_unit_gaussian();
-void distribution_gaussian();
-
-void distribution()
-{
-	distribution_unit_gaussian();
-	distribution_gaussian();
-}
+namespace {
+namespace local {
 
 void distribution_unit_gaussian()
 {
@@ -78,4 +68,13 @@ void distribution_gaussian()
 		const double xq = gsl_cdf_gaussian_Qinv(Q, sigma);
 		std::cout << "Qinv(" << Q << ") = " << xq << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void distribution()
+{
+	local::distribution_unit_gaussian();
+	local::distribution_gaussian();
 }

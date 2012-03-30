@@ -1,25 +1,31 @@
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 #include <iostream>
 
 
-#if defined(_MSC_VER) && defined(_DEBUG)
-#include <afx.h>
-#define VC_EXTRALEAN  //  Exclude rarely-used stuff from Windows headers
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
-int main()
+int main(int argc, char *argv[])
 {
-	CppUnit::TextUi::TestRunner runner;
-	runner.addTest(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
+	try
+	{
+		CppUnit::TextUi::TestRunner runner;
+		runner.addTest(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
 
-	runner.run();
+		runner.run();
+	}
+	catch (const std::exception &e)
+	{
+		std::cout << "std::exception occurred: " << e.what() << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "unknown exception occurred: " << std::endl;
+	}
 
-	std::cout.flush();
+	std::cout << "press any key to exit ..." << std::endl;
 	std::cin.get();
+
 	return 0;
 }

@@ -1,18 +1,9 @@
 #include <cvm/cvm.h>
 #include <string>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-void qr_rmatrix();
-void qr_cmatrix();
-
-void qr()
-{
-	qr_rmatrix();
-	qr_cmatrix();
-}
+namespace {
+namespace local {
 
 void qr_rmatrix()
 {
@@ -79,4 +70,13 @@ void qr_cmatrix()
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void qr()
+{
+	local::qr_rmatrix();
+	local::qr_cmatrix();
 }

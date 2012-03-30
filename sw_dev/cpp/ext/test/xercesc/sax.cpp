@@ -1,21 +1,24 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/util/PlatformUtils.hpp>
-
 
 #if defined(XERCES_NEW_IOSTREAMS)
 #include <iostream>
 #else
 #include <iostream.h>
 #endif
+#include <stdexcept>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 XERCES_CPP_NAMESPACE_USE
 
-int sax()
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
+
+void sax()
 {
-	return 0;
+	throw std::runtime_error("not yet implemented");
 }

@@ -1,4 +1,6 @@
+#if defined(WIN32)
 #include <vld/vld.h>
+#endif
 #include <iostream>
 
 
@@ -11,11 +13,7 @@
 // -. 정상적인 실행을 위해서 vld_x86.dll & dbghelp.dll 필요.
 
 
-#if defined(_UNICODE) || defined(UNICODE)
-int wmain(int argc, wchar_t* argv[])
-#else
-int main(int argc, char* argv[])
-#endif
+int main(int argc, char *argv[])
 {
 	void basic(const bool leakage);
 	void boost_thread(const bool leakage);

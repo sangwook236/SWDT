@@ -1,10 +1,13 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <gsl/gsl_poly.h>
+#include <cstdio>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
 
 void polynomial_roots()
 {
@@ -12,7 +15,7 @@ void polynomial_roots()
 	double a[6] = { -1, 0, 0, 0, 0, 1 };
 	double z[10];
 
-	gsl_poly_complex_workspace* w = gsl_poly_complex_workspace_alloc(6);
+	gsl_poly_complex_workspace *w = gsl_poly_complex_workspace_alloc(6);
 
 	gsl_poly_complex_solve(a, 6, w, z);
 

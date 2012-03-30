@@ -1,12 +1,12 @@
-#include "stdafx.h"
+//#include "stdafx.h"
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <gsl/gsl_matrix.h>
 #include <iostream>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-int wmain()
+int main(int argc, char *argv[])
 {
 	void vector_operation();
 	void matrix_operation();
@@ -27,29 +27,46 @@ int wmain()
 	void monte_carlo_integration();
 	void simulated_annealing();
 
-	vector_operation();
-	//matrix_operation();
-	//polynomial_roots();
-	//lu();
-	//qr();
-	//cholesky();
-	//eigensystem();
-	//svd();
-	//pca();
-	//levenberg_marquardt();
-	//conjugate_gradient();
-	//multidim_minimization_simplex();
-	//multidim_minimization_steepest_descent();
-	//fft();
-	//random_sample();
-	//distribution();
-	//monte_carlo_integration();
-	//simulated_annealing();
+	try
+	{
+		vector_operation();
+		//matrix_operation();
 
-	std::cout << "press any key to terminate" << std::flush;
+		//polynomial_roots();
+
+		//lu();
+		//qr();
+		//cholesky();
+		//eigensystem();
+		//svd();
+		
+		//pca();
+		
+		//levenberg_marquardt();
+		//conjugate_gradient();
+		//multidim_minimization_simplex();
+		//multidim_minimization_steepest_descent();
+		
+		//fft();
+		
+		//random_sample();
+		//distribution();
+		//monte_carlo_integration();
+		//simulated_annealing();
+	}
+	catch (const std::exception &e)
+	{
+		std::cout << "std::exception occurred: " << e.what() << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "unknown exception occurred: " << std::endl;
+	}
+
+	std::cout << "press any key to exit ..." << std::endl;
 	std::cin.get();
 
-    return 0;
+	return 0;
 }
 
 void print_gsl_vector(gsl_vector* vec, const int dim)
