@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#define EIGEN2_SUPPORT 1
+//#define EIGEN2_SUPPORT 1
 #include <Eigen/Dense>
 #include <iostream>
 
@@ -24,11 +24,11 @@ void lu_1()
 
 	std::cout << "L part:" << std::endl;
 	Matrix5x5 l = Matrix5x5::Identity();
-	l.block<5, 3>(0, 0).part<Eigen::LowerTriangular>() = lu.matrixLU();
+	l.block<5, 3>(0, 0).triangularView<Eigen::StrictlyLower>() = lu.matrixLU();
 	std::cout << l << std::endl;
 
 	std::cout << "U part:" << std::endl;
-	Matrix5x3 u = lu.matrixLU().part<Eigen::UpperTriangular>();
+	Matrix5x3 u = lu.matrixLU().triangularView<Eigen::Upper>();
 	std::cout << u << std::endl;
 
 	// FIXME [correct] >> compile-time error: not exactly working

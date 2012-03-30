@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#define EIGEN2_SUPPORT 1
+//#define EIGEN2_SUPPORT 1
 #include <Eigen/Dense>
 #include <iostream>
 
@@ -20,7 +20,7 @@ void svd()
 
 	// MxN matrix, K=min(M,N), M>=N
 	//const Eigen::SVD<MatrixType> svd(m);
-	const Eigen::SVD<MatrixType> svd = m.svd();
+	const Eigen::JacobiSVD<MatrixType> svd = m.jacobiSvd();
 	std::cout << "singular value decomposition:" << std::endl;
 
 	// K vector
@@ -34,15 +34,17 @@ void svd()
 
 	// MxK matrix
 	std::cout << "left singular vectors:" << std::endl;
-	const Eigen::Matrix<double, nrow, ncol> &U = svd.matrixU();
+	const Eigen::JacobiSVD<MatrixType>::MatrixUType &U = svd.matrixU();
 	std::cout << U << std::endl;
 
 	// KxN matrix
 	std::cout << "right singular vectors:" << std::endl;
-	const Eigen::Matrix<double, ncol, ncol> &V = svd.matrixV();
+	const Eigen::JacobiSVD<MatrixType>::MatrixVType &V = svd.matrixV();
 	std::cout << V << std::endl;
 
-	//
+	// FIXME [correct] >> compile-time error
+/*
 	std::cout << "reconstruct the original matrix m:" << std::endl;
 	std::cout << U * S * V.transpose() << std::endl;
+*/
 }
