@@ -9,8 +9,8 @@
 		<Project filename="../test/cppunit/cppunit_cb10.cbp" />
 		<Project filename="../test/cvm/cvm_cb10.cbp" />
 		<Project filename="../test/devil/devil_cb10.cbp" />
-		<Project filename="../test/eigen/eigen_cb10.cbp" />
-		<Project filename="../test/gd/gd_cb10.cbp" active="1" />
+		<Project filename="../test/eigen/eigen_cb10.cbp" active="1" />
+		<Project filename="../test/gd/gd_cb10.cbp" />
 		<Project filename="../test/graphviz/graphviz_cb10.cbp" />
 		<Project filename="../test/gsl/gsl_cb10.cbp" />
 		<Project filename="../test/lapack/lapack_cb10.cbp" />
