@@ -1,8 +1,12 @@
+#if defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
+#include <gd.h>
+#else
 #include <gd/gd.h>
+#endif
 #include <boost/math/constants/constants.hpp>
 #include <iostream>
-#include <stdio.h>
-#include <errno.h>
+#include <cstdio>
+#include <cerrno>
 
 
 #if defined(__cplusplus)

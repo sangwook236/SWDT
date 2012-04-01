@@ -1,7 +1,6 @@
 //#include "stdafx.h"
-#include <atlas_enum.h>
-#include <cblas.h>
-#include <clapack/clapack.h>
+//#include <atlas_enum.h>
+#include <atlas/cblas.h>
 #include <iostream>
 
 
@@ -28,7 +27,7 @@ void cblas()
 		std::cout << std::endl;
 	}
 
-#if 0
+#if 1
 	cblas_dgemv(CblasRowMajor, CblasNoTrans, 3, 3, 1.0, m, 3, x, 1, 0.0, y, 1);
 #else
 	long rdim = 3, cdim = 3;

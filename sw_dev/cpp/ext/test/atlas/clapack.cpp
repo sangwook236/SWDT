@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include <atlas_enum.h>
-#include <clapack.h>
+//#include "stdafx.h"
+//#include <atlas_enum.h>
+#include <atlas/clapack.h>
 #include <iostream>
 
 
@@ -27,7 +27,12 @@ void clapack()
 	}
 
 	int ipiv[3] = { 0, };
+#if 1
 	const int info = clapack_dgesv(CblasRowMajor, 3, 1, m, 3, ipiv, x, 3);
+#else
+    // FIXME [correct] >>
+	const int info = dgesv_(CblasRowMajor, 3, 1, m, 3, ipiv, x, 3);
+#endif
 	if (info != 0)
 		std::cerr << "failure with error: " << info << std::endl;;
 

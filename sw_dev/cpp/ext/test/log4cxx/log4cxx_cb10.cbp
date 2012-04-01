@@ -36,6 +36,11 @@
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
 		</Compiler>
+		<Linker>
+			<Add library="log4cxx" />
+			<Add library="boost_thread" />
+			<Add library="boost_unit_test_framework" />
+		</Linker>
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

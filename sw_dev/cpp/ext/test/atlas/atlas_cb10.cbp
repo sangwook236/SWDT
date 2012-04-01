@@ -36,6 +36,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Linker>
+			<Add library="atlas" />
+		</Linker>
 		<Unit filename="cblas.cpp" />
 		<Unit filename="clapack.cpp" />
 		<Unit filename="main.cpp" />

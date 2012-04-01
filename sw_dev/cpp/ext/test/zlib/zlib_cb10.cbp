@@ -35,7 +35,12 @@
 			<Add option="-fexceptions" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
+		<Linker>
+			<Add library="z" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

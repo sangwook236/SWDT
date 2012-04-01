@@ -36,6 +36,9 @@
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
 		</Compiler>
+		<Linker>
+			<Add library="gd" />
+		</Linker>
 		<Unit filename="basic_operation.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="two_link_arm.cpp" />

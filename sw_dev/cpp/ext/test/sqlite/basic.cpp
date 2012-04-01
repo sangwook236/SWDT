@@ -1,5 +1,9 @@
 //#include "stdafx.h"
+#if defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
+#include <sqlite3.h>
+#else
 #include <sqlite/sqlite3.h>
+#endif
 #include <sstream>
 #include <iostream>
 
@@ -185,7 +189,7 @@ void basic()
 		//sqlite3_close(db);
 		return;
 	}
-	
+
 	// create table
 	local::create_table(db);
 

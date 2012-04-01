@@ -5,12 +5,16 @@
 
 /* @(#) $Id$ */
 
-#include <stdio.h>
+#if defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
+#include <zlib.h>
+#else
 #include "zlib/zlib.h"
+#endif
 
+#include <cstdio>
 #ifdef STDC
-#  include <string.h>
-#  include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 #endif
 #include <string>
 #include <iostream>
@@ -44,20 +48,23 @@ uLong dictId; /* Adler32 value of the dictionary */
 void test_compress(Byte *compr, uLong comprLen, Byte *uncompr, uLong uncomprLen)
 {
     int err;
-    uLong len = (uLong)strlen(hello)+1;
+    uLong len = (uLong)strlen(hello) + 1;
 
-    err = compress(compr, &comprLen, (const Bytef*)hello, len);
+    err = compress((Bytef *)compr, (uLongf *)&comprLen, (const Bytef *)hello, len);
     CHECK_ERR(err, "compress");
 
-    strcpy((char*)uncompr, "garbage");
+    strcpy((char *)uncompr, "garbage");
 
-    err = uncompress(uncompr, &uncomprLen, compr, comprLen);
+    err = uncompress((Bytef *)uncompr, (uLongf *)&uncomprLen, (const Bytef *)compr, comprLen);
     CHECK_ERR(err, "uncompress");
 
-    if (strcmp((char*)uncompr, hello)) {
+    if (strcmp((char *)uncompr, hello))
+    {
         fprintf(stderr, "bad uncompress\n");
         exit(1);
-    } else {
+    }
+    else
+    {
         printf("uncompress(): %s\n", (char *)uncompr);
     }
 }
@@ -599,11 +606,7 @@ void my_test()
 	}
 }
 
-#if defined(_UNICODE) || defined(UNICODE)
-int wmain(int argc, wchar_t* argv[])
-#else
-int main(int argc, char* argv[])
-#endif
+int main(int argc, char *argv[])
 {
 	try
 	{

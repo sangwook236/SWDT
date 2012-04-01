@@ -10,8 +10,6 @@
 #include <stdexcept>
 
 
-XERCES_CPP_NAMESPACE_USE
-
 namespace {
 namespace local {
 

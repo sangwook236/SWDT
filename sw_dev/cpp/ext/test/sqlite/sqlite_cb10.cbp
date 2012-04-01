@@ -36,6 +36,9 @@
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
 		</Compiler>
+		<Linker>
+			<Add library="sqlite3" />
+		</Linker>
 		<Unit filename="basic.cpp" />
 		<Unit filename="encryption_decryption.cpp" />
 		<Unit filename="main.cpp" />

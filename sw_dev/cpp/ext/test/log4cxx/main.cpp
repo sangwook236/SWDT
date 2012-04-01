@@ -1,10 +1,10 @@
 #if defined(WIN32)
 #include <vld/vld.h>
 #endif
-#include <log4cxx/Logger.h>
-#include <log4cxx/BasicConfigurator.h>
-#include <log4cxx/PropertyConfigurator.h>
-#include <log4cxx/xml/DOMConfigurator.h>
+#include <log4cxx/logger.h>
+#include <log4cxx/basicconfigurator.h>
+#include <log4cxx/propertyconfigurator.h>
+#include <log4cxx/xml/domconfigurator.h>
 #include <boost/thread/thread.hpp>
 #include <boost/thread/xtime.hpp>
 #include <boost/test/test_tools.hpp>

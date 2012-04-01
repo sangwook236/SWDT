@@ -2,6 +2,7 @@
 #if defined(__HUGE)
 #error error
 #endif
+#include <cstddef>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_monte.h>
 #include <gsl/gsl_monte_plain.h>
@@ -51,7 +52,7 @@ void monte_carlo_integration()
 	double xl[3] = { 0, 0, 0 };
 	double xu[3] = { M_PI, M_PI, M_PI };
 
-	gsl_monte_function G = { &local::g, 3, 0 };
+	gsl_monte_function G = { &local::g, 3, NULL };
 	const size_t calls = 500000;
 
 	gsl_rng_env_setup();

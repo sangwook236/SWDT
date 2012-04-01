@@ -9,7 +9,7 @@
 		<Project filename="../test/cppunit/cppunit_cb10.cbp" />
 		<Project filename="../test/cvm/cvm_cb10.cbp" />
 		<Project filename="../test/devil/devil_cb10.cbp" />
-		<Project filename="../test/eigen/eigen_cb10.cbp" active="1" />
+		<Project filename="../test/eigen/eigen_cb10.cbp" />
 		<Project filename="../test/gd/gd_cb10.cbp" />
 		<Project filename="../test/graphviz/graphviz_cb10.cbp" />
 		<Project filename="../test/gsl/gsl_cb10.cbp" />
@@ -22,7 +22,7 @@
 		<Project filename="../test/sqlite/sqlite_cb10.cbp" />
 		<Project filename="../test/xercesc/xercesc_cb10.cbp" />
 		<Project filename="../test/yaml/yaml_cb10.cbp" />
-		<Project filename="../test/zlib/zlib_cb10.cbp" />
+		<Project filename="../test/zlib/zlib_cb10.cbp" active="1" />
 		<Project filename="../test/valgrind/valgrind_cb10.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

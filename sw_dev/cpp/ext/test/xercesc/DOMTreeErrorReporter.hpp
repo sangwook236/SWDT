@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2002,2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,17 +28,14 @@
 #endif
 
 
-XERCES_CPP_NAMESPACE_USE
-
-
-class DOMTreeErrorReporter : public ErrorHandler
+class DOMTreeErrorReporter : public XERCES_CPP_NAMESPACE::ErrorHandler
 {
 public:
     // -----------------------------------------------------------------------
     //  Constructors and Destructor
     // -----------------------------------------------------------------------
-    DOMTreeErrorReporter() :
-       fSawErrors(false)
+    DOMTreeErrorReporter()
+	: fSawErrors(false)
     {
     }
 
@@ -50,9 +47,9 @@ public:
     // -----------------------------------------------------------------------
     //  Implementation of the error handler interface
     // -----------------------------------------------------------------------
-    void warning(const SAXParseException& toCatch);
-    void error(const SAXParseException& toCatch);
-    void fatalError(const SAXParseException& toCatch);
+    void warning(const XERCES_CPP_NAMESPACE::SAXParseException &toCatch);
+    void error(const XERCES_CPP_NAMESPACE::SAXParseException &toCatch);
+    void fatalError(const XERCES_CPP_NAMESPACE::SAXParseException &toCatch);
     void resetErrors();
 
     // -----------------------------------------------------------------------
@@ -86,15 +83,15 @@ public :
     // -----------------------------------------------------------------------
     //  Constructors and Destructor
     // -----------------------------------------------------------------------
-    StrX(const XMLCh* const toTranscode)
+    StrX(const XMLCh * const toTranscode)
     {
         // Call the private transcoding method
-        fLocalForm = XMLString::transcode(toTranscode);
+        fLocalForm = XERCES_CPP_NAMESPACE::XMLString::transcode(toTranscode);
     }
 
     ~StrX()
     {
-        XMLString::release(&fLocalForm);
+        XERCES_CPP_NAMESPACE::XMLString::release(&fLocalForm);
     }
 
 
@@ -113,10 +110,10 @@ private :
     //  fLocalForm
     //      This is the local code page form of the string.
     // -----------------------------------------------------------------------
-    char*   fLocalForm;
+    char *fLocalForm;
 };
 
-inline std::ostream& operator<<(std::ostream& target, const StrX& toDump)
+inline std::ostream & operator<<(std::ostream &target, const StrX &toDump)
 {
     target << toDump.localForm();
     return target;

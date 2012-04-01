@@ -2,6 +2,7 @@
 #include <gsl/gsl_siman.h>
 #include <iostream>
 #include <cmath>
+#include <memory.h>
 
 
 namespace {

@@ -3,10 +3,15 @@
 #include <windows.h>
 //#include <wincrypt.h>
 #endif
+#if defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
+#include <sqlite3.h>
+#else
 #include <sqlite/sqlite3.h>
+#endif
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <stdexcept>
 
 
 namespace {
@@ -110,7 +115,7 @@ void encrypt(sqlite3_context *context, int argc, sqlite3_value **argv)
 		}
 	}
 #else
-#error unsupported function in this system
+    throw std::runtime_error("not yet implemented");
 #endif
 }
 
@@ -210,7 +215,7 @@ void decrypt(sqlite3_context *context, int argc, sqlite3_value **argv)
 		}
 	}
 #else
-#error unsupported function in this system
+    throw std::runtime_error("not yet implemented");
 #endif
 }
 

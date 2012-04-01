@@ -36,6 +36,25 @@
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
 		</Compiler>
+		<Linker>
+			<Add library="osg" />
+			<Add library="osgAnimation" />
+			<Add library="osgDB" />
+			<Add library="osgFX" />
+			<Add library="osgGA" />
+			<Add library="osgManipulator" />
+			<Add library="osgParticle" />
+			<Add library="osgQt" />
+			<Add library="osgShadow" />
+			<Add library="osgSim" />
+			<Add library="osgTerrain" />
+			<Add library="osgText" />
+			<Add library="osgUtil" />
+			<Add library="osgViewer" />
+			<Add library="osgVolume" />
+			<Add library="osgWidget" />
+			<Add library="OpenThreads" />
+		</Linker>
 		<Unit filename="BasicGeometry.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>

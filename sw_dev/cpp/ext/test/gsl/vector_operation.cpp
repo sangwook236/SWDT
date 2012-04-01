@@ -35,7 +35,7 @@ void vector_operation()
 		//double val = gsl_vector_get(v, i);
 		//double* pval = gsl_vector_ptr(v, i);
 		//const double* cpval = gsl_vector_const_ptr(v, i);
-		
+
 		for (int i = 0; i < dim; ++i)
 			std::cout << a[i] << ' ';
 		std::cout << std::endl;
@@ -50,7 +50,7 @@ void vector_operation()
 
 		gsl_vector_view v1 = gsl_vector_view_array(a, dim1);
 		gsl_vector_view v2 = gsl_vector_subvector(&v1.vector, 1, dim2);
-		
+
 		print_gsl_vector(&v2.vector);
 	}
 
@@ -66,7 +66,12 @@ void vector_operation()
 		gsl_vector_view v2 = gsl_vector_view_array(b, dim2);
 
 		//gsl_vector_memcpy(&v1.vector, &v2.vector);
+#if defined(__GNUC__)
+        gsl_vector_view v1_roi(gsl_vector_subvector(&v1.vector, 1, dim2));
+		gsl_vector_memcpy(&v1_roi.vector, &v2.vector);
+#else
 		gsl_vector_memcpy(&gsl_vector_subvector(&v1.vector, 1, dim2).vector, &v2.vector);
+#endif
 
 		//gsl_vector_swap(a, b);
 		//gsl_vector_swap_elements(a, i, j);
@@ -105,7 +110,7 @@ void vector_operation()
 
 		gsl_vector_scale(&v.vector, -1.0);
 		gsl_vector_add_constant(&v.vector, -10.0);
-		
+
 		print_gsl_vector(&v.vector);
 	}
 

@@ -44,34 +44,32 @@
 
 #include <xercesc/dom/DOMWriterFilter.hpp>
 
-XERCES_CPP_NAMESPACE_USE
 
-class DOMPrintFilter : public DOMWriterFilter {
+class DOMPrintFilter : public XERCES_CPP_NAMESPACE::DOMWriterFilter {
 public:
 
     /** @name Constructors */
-	DOMPrintFilter(unsigned long whatToShow = DOMNodeFilter::SHOW_ALL);
+	DOMPrintFilter(unsigned long whatToShow = XERCES_CPP_NAMESPACE::DOMNodeFilter::SHOW_ALL);
     //@{
 
     /** @name Destructors */
-	~DOMPrintFilter(){};
+	~DOMPrintFilter()  {}
     //@{
 
 	/** @ interface from DOMWriterFilter */
-	virtual short acceptNode(const DOMNode*) const;
+	virtual short acceptNode(const XERCES_CPP_NAMESPACE::DOMNode *) const;
     //@{
 
-	virtual unsigned long getWhatToShow() const {return fWhatToShow;};
+	virtual unsigned long getWhatToShow() const  {  return fWhatToShow;  }
 
-	virtual void          setWhatToShow(unsigned long toShow) {fWhatToShow = toShow;};
+	virtual void          setWhatToShow(unsigned long toShow)  {  fWhatToShow = toShow;  }
 
 private:
 	// unimplemented copy ctor and assignement operator
-	DOMPrintFilter(const DOMPrintFilter&);
-	DOMPrintFilter & operator = (const DOMPrintFilter&);
+	DOMPrintFilter(const DOMPrintFilter &);
+	DOMPrintFilter & operator = (const DOMPrintFilter &);
 
 	unsigned long fWhatToShow;
-
 };
 
 #endif

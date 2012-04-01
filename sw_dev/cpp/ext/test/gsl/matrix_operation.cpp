@@ -3,13 +3,13 @@
 #include <iostream>
 
 
+void print_gsl_vector(gsl_vector *vec);
+void print_gsl_vector(gsl_vector *vec, const int dim);
+void print_gsl_matrix(gsl_matrix *mat);
+void print_gsl_matrix(gsl_matrix *mat, const int rdim, const int cdim);
+
 namespace {
 namespace local {
-
-void print_gsl_vector(gsl_vector* vec);
-void print_gsl_vector(gsl_vector* vec, const int dim);
-void print_gsl_matrix(gsl_matrix* mat);
-void print_gsl_matrix(gsl_matrix* mat, const int rdim, const int cdim);
 
 void matrix_basic()
 {
@@ -90,7 +90,12 @@ void matrix_basic()
 		gsl_matrix_view B = gsl_matrix_view_array(b, rdim2, cdim2);
 
 		//gsl_matrix_memcpy(&A.matrix, &B.matrix);
+#if defined(__GNUC__)
+        gsl_matrix_view A_roi(gsl_matrix_submatrix(&A.matrix, 0, 0, rdim2, cdim2));
+		gsl_matrix_memcpy(&A_roi.matrix, &B.matrix);
+#else
 		gsl_matrix_memcpy(&gsl_matrix_submatrix(&A.matrix, 0, 0, rdim2, cdim2).matrix, &B.matrix);
+#endif
 
 		//gsl_matrix_swap(m1, m2);
 

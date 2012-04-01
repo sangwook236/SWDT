@@ -35,7 +35,13 @@
 			<Add option="-fexceptions" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
+			<Add directory="/usr/include/plplot" />
 		</Compiler>
+		<Linker>
+			<Add library="plplotd" />
+			<Add library="plplotcxxd" />
+			<Add library="plplotwxwidgetsd" />
+		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="x01.cpp" />
 		<Unit filename="x21.cpp" />

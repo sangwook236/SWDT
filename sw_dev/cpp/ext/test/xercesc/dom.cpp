@@ -21,8 +21,6 @@
 #endif
 
 
-XERCES_CPP_NAMESPACE_USE
-
 namespace {
 namespace local {
 
@@ -33,25 +31,25 @@ int dom()
 {
 	try
 	{
-		XMLPlatformUtils::Initialize();
+		XERCES_CPP_NAMESPACE::XMLPlatformUtils::Initialize();
 	}
-	catch (const XMLException& e)
+	catch (const XERCES_CPP_NAMESPACE::XMLException& e)
 	{
 #if defined(_UNICODE) || defined(UNICODE)
 		std::wcout << L"Error during initialization! :" << std::endl
 			<< e.getMessage() << std::endl;
 #else
-		char* message = XMLString::transcode(e.getMessage());
+		const char *message = XERCES_CPP_NAMESPACE::XMLString::transcode(e.getMessage());
 		std::cout << "Error during initialization! :" << std::endl
 			<< message << std::endl;
-		XMLString::release(&message);
+		XERCES_CPP_NAMESPACE::XMLString::release(&message);
 #endif
 		return 1;
-	} 
+	}
 
-	XercesDOMParser* parser = new XercesDOMParser();
+	XERCES_CPP_NAMESPACE::XercesDOMParser *parser = new XERCES_CPP_NAMESPACE::XercesDOMParser();
 	// Indicates what validation scheme to use. It defaults to 'auto', but can be set via the -v= command.
-	parser->setValidationScheme(XercesDOMParser::Val_Always);
+	parser->setValidationScheme(XERCES_CPP_NAMESPACE::XercesDOMParser::Val_Always);
 	// Indicates whether namespace processing should be done.
 	parser->setDoNamespaces(true);    // optional
 	// Indicates whether schema processing should be done.
@@ -68,16 +66,18 @@ int dom()
 	//getcwd(buf, 1000);
 
 #if defined(_UNICODE) || defined(UNICODE)
-	const wchar_t* xmlFile = L".\\xerces_data\\personal.xml";
+    // FIXME [check] >> is it correct? convert 'wchar_t *' to 'XMLCh *'
+	//const XMLCh *xmlFile = XMLStrL(".\\xerces_data\\personal.xml");
+	const XMLCh *xmlFile = (XMLCh *)L".\\xerces_data\\personal.xml";
 #else
-	const char* xmlFile = ".\\xerces_data\\personal.xml";
+	const char *xmlFile = ".\\xerces_data\\personal.xml";
 #endif
 
 	try
 	{
 		parser->parse(xmlFile);
 	}
-	catch (const OutOfMemoryException&)
+	catch (const XERCES_CPP_NAMESPACE::OutOfMemoryException &)
 	{
 #if defined(_UNICODE) || defined(UNICODE)
 		std::wcerr << L"OutOfMemoryException" << std::endl;
@@ -86,29 +86,29 @@ int dom()
 #endif
 		return -1;
 	}
-	catch (const XMLException& e)
+	catch (const XERCES_CPP_NAMESPACE::XMLException &e)
 	{
 #if defined(_UNICODE) || defined(UNICODE)
 		std::wcout << L"Exception message is: " << std::endl
 			<< e.getMessage() << std::endl;
 #else
-		char* message = XMLString::transcode(e.getMessage());
+		const char *message = XERCES_CPP_NAMESPACE::XMLString::transcode(e.getMessage());
 		std::cout << "Exception message is: " << std::endl
 			<< message << std::endl;
-		XMLString::release(&message);
+		XERCES_CPP_NAMESPACE::XMLString::release(&message);
 #endif
 		return -1;
 	}
-	catch (const DOMException& e)
+	catch (const XERCES_CPP_NAMESPACE::DOMException &e)
 	{
 #if defined(_UNICODE) || defined(UNICODE)
 		std::wcout << L"Exception message is: " << std::endl
 			<< e.getMessage() << std::endl;
 #else
-		char* message = XMLString::transcode(e.getMessage());
+		const char *message = XERCES_CPP_NAMESPACE::XMLString::transcode(e.getMessage());
 		std::cout << "Exception message is: " << std::endl
 			<< message << std::endl;
-		XMLString::release(&message);
+		XERCES_CPP_NAMESPACE::XMLString::release(&message);
 #endif
 		return -1;
 	}
@@ -131,14 +131,16 @@ int dom()
 	{
 		// get a serializer, an instance of DOMWriter
 #if defined(_UNICODE) || defined(UNICODE)
-		DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(L"LS");
+        // FIXME [check] >> is it correct? convert 'wchar_t *' to 'XMLCh *'
+		XERCES_CPP_NAMESPACE::DOMImplementation *impl = XERCES_CPP_NAMESPACE::DOMImplementationRegistry::getDOMImplementation((XMLCh *)L"LS");
 #else
-		DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation("LS");
+		XERCES_CPP_NAMESPACE::DOMImplementation *impl = XERCES_CPP_NAMESPACE::DOMImplementationRegistry::getDOMImplementation("LS");
 #endif
-		DOMWriter *theSerializer = ((DOMImplementationLS*)impl)->createDOMWriter();
+		XERCES_CPP_NAMESPACE::DOMWriter *theSerializer = ((XERCES_CPP_NAMESPACE::DOMImplementationLS *)impl)->createDOMWriter();
 
 		// set user specified output encoding
-		theSerializer->setEncoding(L"UTF-8");
+    // FIXME [check] >> is it correct? convert 'wchar *' to 'XMLCh *'
+		theSerializer->setEncoding((XMLCh *)L"UTF-8");
 
 		// plug in user's own filter
 		if (useFilter)
@@ -148,43 +150,45 @@ int dom()
 			//
 			// so DOMNodeFilter::SHOW_ATTRIBUTE has no effect.
 			// same DOMNodeFilter::SHOW_DOCUMENT_TYPE, no effect.
-			myFilter = new DOMPrintFilter(DOMNodeFilter::SHOW_ELEMENT |
-				DOMNodeFilter::SHOW_ATTRIBUTE |
-				DOMNodeFilter::SHOW_DOCUMENT_TYPE);
+			myFilter = new DOMPrintFilter(
+                XERCES_CPP_NAMESPACE::DOMNodeFilter::SHOW_ELEMENT |
+				XERCES_CPP_NAMESPACE::DOMNodeFilter::SHOW_ATTRIBUTE |
+				XERCES_CPP_NAMESPACE::DOMNodeFilter::SHOW_DOCUMENT_TYPE
+            );
 			theSerializer->setFilter(myFilter);
 		}
 
 		// plug in user's own error handler
-		DOMErrorHandler *myErrorHandler = new DOMPrintErrorHandler();
+		XERCES_CPP_NAMESPACE::DOMErrorHandler *myErrorHandler = new DOMPrintErrorHandler();
 		theSerializer->setErrorHandler(myErrorHandler);
 
 		// set feature if the serializer supports the feature/mode
 
 		// Indicates whether split-cdata-sections is to be enabled or not.
-		if (theSerializer->canSetFeature(XMLUni::fgDOMWRTSplitCdataSections, true))
-			theSerializer->setFeature(XMLUni::fgDOMWRTSplitCdataSections, true);
+		if (theSerializer->canSetFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTSplitCdataSections, true))
+			theSerializer->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTSplitCdataSections, true);
 
 		// Indicates whether default content is discarded or not.
-		if (theSerializer->canSetFeature(XMLUni::fgDOMWRTDiscardDefaultContent, true))
-			theSerializer->setFeature(XMLUni::fgDOMWRTDiscardDefaultContent, true);
+		if (theSerializer->canSetFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTDiscardDefaultContent, true))
+			theSerializer->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTDiscardDefaultContent, true);
 
-		if (theSerializer->canSetFeature(XMLUni::fgDOMWRTFormatPrettyPrint, false))
-			theSerializer->setFeature(XMLUni::fgDOMWRTFormatPrettyPrint, false);
+		if (theSerializer->canSetFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTFormatPrettyPrint, false))
+			theSerializer->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTFormatPrettyPrint, false);
 
-		if (theSerializer->canSetFeature(XMLUni::fgDOMWRTBOM, false))
-			theSerializer->setFeature(XMLUni::fgDOMWRTBOM, false);
+		if (theSerializer->canSetFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTBOM, false))
+			theSerializer->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTBOM, false);
 
 		// Plug in a format target to receive the resultant XML stream from the serializer.
 		// StdOutFormatTarget prints the resultant XML stream to stdout once it receives any thing from the serializer.
-		XMLFormatTarget *myFormTarget;
-		const char *outputFile = 0L;
+		XERCES_CPP_NAMESPACE::XMLFormatTarget *myFormTarget = NULL;
+		const char *outputFile = NULL;
 		if (outputFile)
-			myFormTarget = new LocalFileFormatTarget(outputFile);
+			myFormTarget = new XERCES_CPP_NAMESPACE::LocalFileFormatTarget(outputFile);
 		else
-			myFormTarget = new StdOutFormatTarget();
+			myFormTarget = new XERCES_CPP_NAMESPACE::StdOutFormatTarget();
 
 		// get the DOM representation
-		DOMNode *doc = parser->getDocument();
+		XERCES_CPP_NAMESPACE::DOMNode *doc = parser->getDocument();
 
 		// do the serialization through DOMWriter::writeNode();
 		theSerializer->writeNode(myFormTarget, *doc);
@@ -198,7 +202,7 @@ int dom()
 		if (useFilter)
 			delete myFilter;
 	}
-	catch (const OutOfMemoryException&)
+	catch (const XERCES_CPP_NAMESPACE::OutOfMemoryException &)
 	{
 #if defined(_UNICODE) || defined(UNICODE)
 		std::wcerr << L"OutOfMemoryException" << std::endl;
@@ -206,16 +210,16 @@ int dom()
 		std::cerr << "OutOfMemoryException" << std::endl;
 #endif
 	}
-	catch (XMLException& e)
+	catch (XERCES_CPP_NAMESPACE::XMLException &e)
 	{
 #if defined(_UNICODE) || defined(UNICODE)
 		std::wcerr << L"An error occurred during creation of output transcoder. Msg is: " << std::endl
 			<< e.getMessage() << std::endl;
 #else
-		char *message = XMLString::transcode(e.getMessage());
+		const char *message = XERCES_CPP_NAMESPACE::XMLString::transcode(e.getMessage());
 		std::cerr << "An error occurred during creation of output transcoder. Msg is: " << std::endl
 			<< message << std::endl;
-		XMLString::release(&message);
+		XERCES_CPP_NAMESPACE::XMLString::release(&message);
 #endif
 	}
 
@@ -224,18 +228,18 @@ int dom()
 
 	try
 	{
-		XMLPlatformUtils::Terminate();
+		XERCES_CPP_NAMESPACE::XMLPlatformUtils::Terminate();
 	}
-	catch (const XMLException& e)
+	catch (const XERCES_CPP_NAMESPACE::XMLException &e)
 	{
 #if defined(_UNICODE) || defined(UNICODE)
 		std::wcout << L"Error during Termination! :" << std::endl
 			<< e.getMessage() << std::endl;
 #else
-		char *message = XMLString::transcode(e.getMessage());
+		const char *message = XERCES_CPP_NAMESPACE::XMLString::transcode(e.getMessage());
 		std::cout << "Error during Termination! :" << std::endl
 			<< message << std::endl;
-		XMLString::release(&message);
+		XERCES_CPP_NAMESPACE::XMLString::release(&message);
 #endif
 		return 1;
 	}

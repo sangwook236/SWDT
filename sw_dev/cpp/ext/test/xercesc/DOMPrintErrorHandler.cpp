@@ -51,19 +51,19 @@
 
 #include "DOMPrintErrorHandler.hpp"
 
-bool DOMPrintErrorHandler::handleError(const DOMError &domError)
+bool DOMPrintErrorHandler::handleError(const XERCES_CPP_NAMESPACE::DOMError &domError)
 {
     // Display whatever error message passed from the serializer
-    if (domError.getSeverity() == DOMError::DOM_SEVERITY_WARNING)
+    if (domError.getSeverity() == XERCES_CPP_NAMESPACE::DOMError::DOM_SEVERITY_WARNING)
 		std::cerr << "\nWarning Message: ";
-    else if (domError.getSeverity() == DOMError::DOM_SEVERITY_ERROR)
+    else if (domError.getSeverity() == XERCES_CPP_NAMESPACE::DOMError::DOM_SEVERITY_ERROR)
 		std::cerr << "\nError Message: ";
     else
 		std::cerr << "\nFatal Message: ";
 
-    char *msg = XMLString::transcode(domError.getMessage());
+    char *msg = XERCES_CPP_NAMESPACE::XMLString::transcode(domError.getMessage());
 	std::cerr<< msg << std::endl;
-    XMLString::release(&msg);
+    XERCES_CPP_NAMESPACE::XMLString::release(&msg);
 
     // Instructs the serializer to continue serialization if possible.
     return true;

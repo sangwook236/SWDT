@@ -6,14 +6,14 @@
 #include <cassert>
 
 
+void print_gsl_vector(gsl_vector *vec, const int dim);
+void print_gsl_matrix(gsl_matrix *mat, const int rdim, const int cdim);
+
 namespace {
 namespace local {
 
 void pca_by_svd(gsl_matrix* U, const int rdim, const int cdim)
 {
-	void print_gsl_vector(gsl_vector* vec, const int dim);
-	void print_gsl_matrix(gsl_matrix* mat, const int rdim, const int cdim);
-
 	assert(rdim >= cdim);
 
 	const int min_dim = std::min(rdim, cdim);
@@ -40,9 +40,6 @@ void pca_by_svd(gsl_matrix* U, const int rdim, const int cdim)
 
 void pca_by_eigen(gsl_matrix* mat, const int rdim, const int cdim)
 {
-	void print_gsl_vector(gsl_vector* vec, const int dim);
-	void print_gsl_matrix(gsl_matrix* mat, const int rdim, const int cdim);
-
 	const int dim = rdim;
 
 	gsl_matrix* m = gsl_matrix_alloc(dim, dim);
@@ -80,9 +77,6 @@ void pca_by_eigen(gsl_matrix* mat, const int rdim, const int cdim)
 
 void pca()
 {
-	void print_gsl_vector(gsl_vector* vec, const int dim);
-	void print_gsl_matrix(gsl_matrix* mat, const int rdim, const int cdim);
-
 	const int rdim = 9, cdim = 4;
 	double data[] = {
 		53.50,		-161.50,	24.50,		83.50,

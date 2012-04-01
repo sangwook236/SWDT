@@ -4,7 +4,7 @@
 #include <osg/Geode>
 #include <osg/Geometry>
 #include <osg/Texture2D>
-#include <osgDB/ReadFile> 
+#include <osgDB/ReadFile>
 #include <osgViewer/Viewer>
 #include <osg/PositionAttitudeTransform>
 #include <osgGA/TrackballManipulator>
@@ -18,9 +18,9 @@ namespace local {
 
 void BasicGeometry()
 {
-	osg::Group* root = new osg::Group();
-	osg::Geode* pyramidGeode = new osg::Geode();
-	osg::Geometry* pyramidGeometry = new osg::Geometry();
+	osg::Group *root = new osg::Group();
+	osg::Geode *pyramidGeode = new osg::Geode();
+	osg::Geometry *pyramidGeometry = new osg::Geometry();
 
 	//Associate the pyramid geometry with the pyramid geode
 	//Add the pyramid geode to the root node of the scene graph.
@@ -39,7 +39,7 @@ void BasicGeometry()
 	//elements zero..four below represent the 5 points required to create
 	//a simple pyramid.
 
-	osg::Vec3Array* pyramidVertices = new osg::Vec3Array;
+	osg::Vec3Array *pyramidVertices = new osg::Vec3Array;
 	pyramidVertices->push_back(osg::Vec3( 0, 0, 0));  // front left
 	pyramidVertices->push_back(osg::Vec3(10, 0, 0));  // front right
 	pyramidVertices->push_back(osg::Vec3(10,10, 0));  // back right
@@ -61,8 +61,7 @@ void BasicGeometry()
 	//(same as the OpenGL primitive enumerated types), and the index in
 	//the vertex array to start from.
 
-	osg::DrawElementsUInt* pyramidBase =
-		new osg::DrawElementsUInt(osg::PrimitiveSet::QUADS, 0);
+	osg::DrawElementsUInt *pyramidBase = new osg::DrawElementsUInt(osg::PrimitiveSet::QUADS, 0);
 	pyramidBase->push_back(3);
 	pyramidBase->push_back(2);
 	pyramidBase->push_back(1);
@@ -72,29 +71,25 @@ void BasicGeometry()
 	//Repeat the same for each of the four sides. Again, vertices are
 	//specified in counter-clockwise order.
 
-	osg::DrawElementsUInt* pyramidFaceOne =
-		new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
+	osg::DrawElementsUInt *pyramidFaceOne = new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
 	pyramidFaceOne->push_back(0);
 	pyramidFaceOne->push_back(1);
 	pyramidFaceOne->push_back(4);
 	pyramidGeometry->addPrimitiveSet(pyramidFaceOne);
 
-	osg::DrawElementsUInt* pyramidFaceTwo =
-		new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
+	osg::DrawElementsUInt *pyramidFaceTwo = new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
 	pyramidFaceTwo->push_back(1);
 	pyramidFaceTwo->push_back(2);
 	pyramidFaceTwo->push_back(4);
 	pyramidGeometry->addPrimitiveSet(pyramidFaceTwo);
 
-	osg::DrawElementsUInt* pyramidFaceThree =
-		new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
+	osg::DrawElementsUInt *pyramidFaceThree = new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
 	pyramidFaceThree->push_back(2);
 	pyramidFaceThree->push_back(3);
 	pyramidFaceThree->push_back(4);
 	pyramidGeometry->addPrimitiveSet(pyramidFaceThree);
 
-	osg::DrawElementsUInt* pyramidFaceFour =
-		new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
+	osg::DrawElementsUInt *pyramidFaceFour = new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
 	pyramidFaceFour->push_back(3);
 	pyramidFaceFour->push_back(0);
 	pyramidFaceFour->push_back(4);
@@ -102,7 +97,7 @@ void BasicGeometry()
 
 	//Declare and load an array of Vec4 elements to store colors.
 
-	osg::Vec4Array* colors = new osg::Vec4Array;
+	osg::Vec4Array *colors = new osg::Vec4Array;
 	colors->push_back(osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f));  //index 0 red
 	colors->push_back(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f));  //index 1 green
 	colors->push_back(osg::Vec4(0.0f, 0.0f, 1.0f, 1.0f));  //index 2 blue

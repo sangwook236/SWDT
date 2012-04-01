@@ -36,6 +36,9 @@
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
 		</Compiler>
+		<Linker>
+			<Add library="xerces-c" />
+		</Linker>
 		<Unit filename="DOMPrintErrorHandler.cpp" />
 		<Unit filename="DOMPrintErrorHandler.hpp" />
 		<Unit filename="DOMPrintFilter.cpp" />
