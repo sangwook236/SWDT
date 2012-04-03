@@ -709,6 +709,141 @@ void learn_hmm_with_mixture_of_gaussians_observations(const boost::scoped_ptr<pn
 	// FIXME [implement] >>
 }
 
+pnl::CDBN * create_simple_factorial_hmm()
+{
+/*
+	graphicla model:
+
+		0 ------> 3
+		 \         \
+		  \         \
+		   |         |
+		1 ------> 4  |
+		|  |      |  |
+		| /       | /
+        |/        |/
+		v         v
+	    2         5
+
+	where
+		0, 3 - tabular node (bivariate)
+		1, 4 - tabular node (trivariate)
+ 		2, 5 - tabular node (bivariate)
+*/
+
+	const int numNodes = 6;
+	const int numNodeTypes = 2;
+
+	const int numNeighs[] = { 2, 2, 2, 2, 2, 2 };
+
+	const int neigh0[] = { 2, 3 };
+	const int neigh1[] = { 2, 4 };
+	const int neigh2[] = { 0, 1 };
+	const int neigh3[] = { 0, 5 };
+	const int neigh4[] = { 1, 5 };
+	const int neigh5[] = { 3, 4 };
+	const int *neighs[] = { neigh0, neigh1, neigh2, neigh3, neigh4, neigh5 };
+
+	const pnl::ENeighborType neighType0[] = { pnl::ntChild, pnl::ntChild };
+	const pnl::ENeighborType neighType1[] = { pnl::ntChild, pnl::ntChild };
+	const pnl::ENeighborType neighType2[] = { pnl::ntParent, pnl::ntParent };
+	const pnl::ENeighborType neighType3[] = { pnl::ntParent, pnl::ntChild };
+	const pnl::ENeighborType neighType4[] = { pnl::ntParent, pnl::ntChild };
+	const pnl::ENeighborType neighType5[] = { pnl::ntParent, pnl::ntParent };
+	const pnl::ENeighborType *neighTypes[] = { neighType0, neighType1, neighType2, neighType3, neighType4, neighType5 };
+
+	pnl::CGraph *graph = pnl::CGraph::Create(numNodes, numNeighs, neighs, neighTypes);
+
+	//
+	pnl::nodeTypeVector nodeTypes(numNodeTypes);
+	nodeTypes[0].SetType(true, 2);  // discrete & binary
+	nodeTypes[1].SetType(true, 3);  // discrete & trinary
+
+	pnl::intVector nodeAssociation(numNodes, 0);  // { 0, 1, 0, 0, 1, 0 }
+	nodeAssociation[1] = 1;
+	nodeAssociation[4] = 1;
+
+#if 1
+	pnl::CModelDomain *modelDomain = pnl::CModelDomain::Create(nodeTypes, nodeAssociation);
+
+	// to be learned
+	pnl::CBNet *bnet = pnl::CBNet::CreateWithRandomMatrices(graph, modelDomain);
+#else
+	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
+
+	// FIXME [add] >>
+#endif
+
+	//
+	return pnl::CDBN::Create(bnet);
+}
+
+void learn_simple_factorial_hmm(const boost::scoped_ptr<pnl::CDBN> &dbn, const int numTimeSeries)
+{
+	// define number of slices in the every time series
+#if 1
+	// [ref] learn_dbn_with_ar_gaussian_observations() in dbn_example.cpp
+	pnl::intVector numSlices(numTimeSeries);
+	pnl::pnlRand(numTimeSeries, &numSlices.front(), 3, 20);
+
+	//
+	const boost::scoped_ptr<const pnl::CBNet> unrolledBNet(static_cast<pnl::CBNet *>(dbn->UnrollDynamicModel(numTimeSeries)));
+#else
+	// [ref] learn_hmm_with_ar_gaussian_observations() in this file
+	const pnl::intVector numSlices(numTimeSeries, 2);
+#endif
+
+#if 1
+	// generate evidences in a random way
+	pnl::pEvidencesVecVector evidences;
+	dbn->GenerateSamples(&evidences, numSlices);
+
+	// create DBN for learning
+	// FIXME [check] >> this implementation isn't verified
+	const pnl::CBNet *bnetDBN = dynamic_cast<const pnl::CBNet *>(dbn->GetStaticModel());
+	const boost::scoped_ptr<pnl::CDBN> dbnToLearn(pnl::CDBN::Create(pnl::CBNet::Copy(bnetDBN)));
+
+	// create learning engine
+	const boost::scoped_ptr<pnl::CEMLearningEngineDBN> learnEngine(pnl::CEMLearningEngineDBN::Create(dbnToLearn.get()));
+#else
+	pnl::pEvidencesVecVector evidences;
+
+	// FIXME [add] >> evidences need to be filled
+
+	// create learning engine
+	const boost::scoped_ptr<pnl::CEMLearningEngineDBN> learnEngine(pnl::CEMLearningEngineDBN::Create(dbn.get()));
+#endif
+
+	// set data for learning
+	learnEngine->SetData(evidences);
+
+	// start learning
+	try
+	{
+		const float precision = 0.001f;
+		const int numMaxIteration = 30;
+
+		learnEngine->SetTerminationToleranceEM(precision);
+		learnEngine->SetMaxIterEM(numMaxIteration);
+
+		learnEngine->Learn();
+	}
+	catch (const pnl::CAlgorithmicException &e)
+	{
+		std::cout << "fail to learn HMM with mixture-of-Gaussians observations" << e.GetMessage() << std::endl;
+		return;
+	}
+
+	//
+	for (size_t i = 0; i < evidences.size(); ++i)
+	{
+		for (size_t j = 0; j < evidences[i].size(); ++j)
+			delete evidences[i][j];
+	}
+
+	// FIXME [implement] >>
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -742,7 +877,8 @@ void hmm()
 
 		local::infer_mpe_in_hmm(simpleHMM);
 	}
-
+*/
+/*
 	// HMM with autoregressive Gaussian observations
 	std::cout << "\n========== HMM with AR Gaussian observations" << std::endl;
 	{
@@ -762,6 +898,7 @@ void hmm()
 		local::learn_hmm_with_ar_gaussian_observations(arHMM);
 	}
 */
+/*
 	// HMM with mixture-of-Gaussians observations
 	std::cout << "\n========== HMM with mixture-of-Gaussians observations" << std::endl;
 	{
@@ -776,5 +913,21 @@ void hmm()
 		//
 		const int numTimeSeries = 500;
 		local::learn_hmm_with_mixture_of_gaussians_observations(hmm, numTimeSeries);
+	}
+*/
+	// simple factorial HMM
+	std::cout << "\n========== simple factorial HMM" << std::endl;
+	{
+		const boost::scoped_ptr<pnl::CDBN> fhmm(local::create_simple_factorial_hmm());
+
+		if (!fhmm)
+		{
+			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			return;
+		}
+
+		//
+		const int numTimeSeries = 500;
+		local::learn_simple_factorial_hmm(fhmm, numTimeSeries);
 	}
 }

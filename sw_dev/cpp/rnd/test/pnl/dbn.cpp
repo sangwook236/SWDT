@@ -334,6 +334,7 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	numDomains[7] = 3;
 #endif
 
+/*
 	pnl::pnlVector<pnl::pConstNodeTypeVector> nt(numNodes, pnl::pConstNodeTypeVector());
 	for (int i = 0; i < numNodes; ++i)
 	{
@@ -342,6 +343,7 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 		for (int j = 0; j < size; ++j)
 			nt[i].push_back(bnet->GetNodeType(domains[i][j]));
 	}
+*/
 
 	bnet->AllocFactors();
 
