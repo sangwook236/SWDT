@@ -3,7 +3,7 @@
 **      Date:   15 December 1997
 **      File:   baumwelch.c
 **      Purpose: Baum-Welch algorithm for estimating the parameters
-**              of a HMM model, given an observation sequence.
+**              of a CDHMM model, given an observation sequence.
 **      Organization: University of Maryland
 **
 **	Update:
@@ -16,7 +16,7 @@
 */
 
 #include "umdhmm_nrutil.h"
-#include "umdhmm_hmm.h"
+#include "umdhmm_cdhmm.h"
 #include <cmath>
 
 
@@ -24,7 +24,7 @@ namespace umdhmm {
 
 static char rcsid[] = "$Id: baumwelch.c,v 1.6 1999/04/24 15:58:43 kanungo Exp kanungo $";
 
-void BaumWelch(HMM *phmm, int T, int *O, const double tol, double **alpha, double **beta, double **gamma, int *pniter, double *plogprobinit, double *plogprobfinal)
+void BaumWelch(CDHMM *phmm, int T, double **O, const double tol, double **alpha, double **beta, double **gamma, int *pniter, double *plogprobinit, double *plogprobfinal)
 {
 	int	i, j, k;
 	int	t, l = 0;
@@ -100,7 +100,7 @@ void BaumWelch(HMM *phmm, int T, int *O, const double tol, double **alpha, doubl
 	free_dvector(scale, 1, T);
 }
 
-void ComputeGamma(HMM *phmm, int T, double **alpha, double **beta, double **gamma)
+void ComputeGamma(CDHMM *phmm, int T, double **alpha, double **beta, double **gamma)
 {
 	int i, j;
 	int	t;
@@ -120,7 +120,7 @@ void ComputeGamma(HMM *phmm, int T, double **alpha, double **beta, double **gamm
 	}
 }
 
-void ComputeXi(HMM* phmm, int T, int *O, double **alpha, double **beta, double ***xi)
+void ComputeXi(CDHMM* phmm, int T, double **O, double **alpha, double **beta, double ***xi)
 {
 	int i, j;
 	int t;

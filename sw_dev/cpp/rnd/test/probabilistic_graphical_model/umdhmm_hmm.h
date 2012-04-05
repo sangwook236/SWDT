@@ -47,7 +47,7 @@ void Forward(HMM *phmm, int T, int *O, double **alpha, double *pprob);
 void ForwardWithScale(HMM *phmm, int T, int *O, double **alpha, double *scale, double *pprob);
 void Backward(HMM *phmm, int T, int *O, double **beta, double *pprob);
 void BackwardWithScale(HMM *phmm, int T, int *O, double **beta, double *scale, double *pprob);
-void BaumWelch(HMM *phmm, int T, int *O, double **alpha, double **beta, double **gamma, int *niter, double *plogprobinit, double *plogprobfinal);
+void BaumWelch(HMM *phmm, int T, int *O, const double tol, double **alpha, double **beta, double **gamma, int *niter, double *plogprobinit, double *plogprobfinal);
 
 double *** AllocXi(int T, int N);
 void FreeXi(double ***xi, int T, int N);

@@ -10,7 +10,7 @@
 **      $Id: viterbi.c,v 1.1 1999/05/06 05:25:37 kanungo Exp kanungo $
 */
 
-#include "umdhmm_hmm.h"
+#include "umdhmm_cdhmm.h"
 #include "umdhmm_nrutil.h"
 #include <limits>
 #include <cmath>
@@ -20,7 +20,7 @@ namespace umdhmm {
 
 static char rcsid[] = "$Id: viterbi.c,v 1.1 1999/05/06 05:25:37 kanungo Exp kanungo $";
 
-void Viterbi(HMM *phmm, int T, int *O, double **delta, int **psi, int *q, double *pprob)
+void Viterbi(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *q, double *pprob)
 {
 	int 	i, j;	/* state indices */
 	int  	t;	/* time index */
@@ -32,7 +32,8 @@ void Viterbi(HMM *phmm, int T, int *O, double **delta, int **psi, int *q, double
 
 	for (i = 1; i <= phmm->N; ++i)
 	{
-		delta[1][i] = phmm->pi[i] * (phmm->B[i][O[1]]);
+		//delta[1][i] = phmm->pi[i] * (phmm->B[i][O[1]]);
+		delta[1][i] = phmm->pi[i] * (phmm->pdf(O[1], i, phmm->params));
 		psi[1][i] = 0;
 	}
 
@@ -54,7 +55,8 @@ void Viterbi(HMM *phmm, int T, int *O, double **delta, int **psi, int *q, double
 				}
 			}
 
-			delta[t][j] = maxval * (phmm->B[j][O[t]]);
+			//delta[t][j] = maxval * (phmm->B[j][O[t]]);
+			delta[t][j] = maxval * (phmm->pdf(O[t], j, phmm->params));
 			psi[t][j] = maxvalind;
 		}
 	}
@@ -78,7 +80,7 @@ void Viterbi(HMM *phmm, int T, int *O, double **delta, int **psi, int *q, double
 		q[t] = psi[t+1][q[t+1]];
 }
 
-void ViterbiLog(HMM *phmm, int T, int *O, double **delta, int **psi, int *q, double *pprob)
+void ViterbiLog(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *q, double *pprob)
 {
 	int     i, j;   /* state indices */
 	int     t;      /* time index */
@@ -101,7 +103,8 @@ void ViterbiLog(HMM *phmm, int T, int *O, double **delta, int **psi, int *q, dou
 	for (i = 1; i <= phmm->N; ++i)
 		for (t = 1; t <= T; ++t)
 		{
-			biot[i][t] = std::log(phmm->B[i][O[t]]);
+			//biot[i][t] = std::log(phmm->B[i][O[t]]);
+			biot[i][t] = std::log(phmm->pdf(O[t], i, phmm->params));
 		}
 
 	/* 1. Initialization  */

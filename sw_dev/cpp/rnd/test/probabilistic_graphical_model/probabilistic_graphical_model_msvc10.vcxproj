@@ -83,6 +83,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="umdhmm_hmm.h" />
+    <ClInclude Include="umdhmm_cdhmm.h" />
     <ClInclude Include="umdhmm_nrutil.h" />
     <ClInclude Include="viterbi.hpp" />
   </ItemGroup>
@@ -103,13 +104,18 @@
     <ClCompile Include="mrf.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="umdhmm_backward.cpp" />
+    <ClCompile Include="umdhmm_cdhmm_backward.cpp" />
     <ClCompile Include="umdhmm_baum.cpp" />
+    <ClCompile Include="umdhmm_cdhmm_baum.cpp" />
+    <ClCompile Include="umdhmm_cdhmm_utils.cpp" />
     <ClCompile Include="umdhmm_forward.cpp" />
+    <ClCompile Include="umdhmm_cdhmm_forward.cpp" />
     <ClCompile Include="umdhmm_hmmrand.cpp" />
     <ClCompile Include="umdhmm_hmmutils.cpp" />
     <ClCompile Include="umdhmm_nrutil.cpp" />
     <ClCompile Include="umdhmm_sequence.cpp" />
     <ClCompile Include="umdhmm_viterbi.cpp" />
+    <ClCompile Include="umdhmm_cdhmm_viterbi.cpp" />
     <ClCompile Include="viterbi.cpp" />
     <ClCompile Include="viterbi_algorithm.cpp" />
   </ItemGroup>

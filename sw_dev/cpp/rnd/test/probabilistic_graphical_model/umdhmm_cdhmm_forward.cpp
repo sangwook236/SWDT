@@ -3,19 +3,19 @@
 **      Date:   15 December 1997
 **      File:   forward.c
 **      Purpose: Foward algorithm for computing the probabilty
-**		of observing a sequence given a HMM model parameter.
+**		of observing a sequence given a CDHMM model parameter.
 **      Organization: University of Maryland
 **
 **      $Id: forward.c,v 1.2 1998/02/19 12:42:31 kanungo Exp kanungo $
 */
-#include "umdhmm_hmm.h"
+#include "umdhmm_cdhmm.h"
 
 
 namespace umdhmm {
 
 static char rcsid[] = "$Id: forward.c,v 1.2 1998/02/19 12:42:31 kanungo Exp kanungo $";
 
-void Forward(HMM *phmm, int T, int *O, double **alpha, double *pprob)
+void Forward(CDHMM *phmm, int T, double **O, double **alpha, double *pprob)
 {
 	int     i, j;   /* state indices */
 	int     t;      /* time index */
@@ -25,7 +25,8 @@ void Forward(HMM *phmm, int T, int *O, double **alpha, double *pprob)
 	/* 1. Initialization */
 
 	for (i = 1; i <= phmm->N; ++i)
-		alpha[1][i] = phmm->pi[i] * phmm->B[i][O[1]];
+		//alpha[1][i] = phmm->pi[i] * phmm->B[i][O[1]];
+		alpha[1][i] = phmm->pi[i] * (phmm->pdf(O[1], i, phmm->params));
 
 	/* 2. Induction */
 
@@ -37,7 +38,8 @@ void Forward(HMM *phmm, int T, int *O, double **alpha, double *pprob)
 			for (i = 1; i <= phmm->N; ++i)
 				sum += alpha[t][i] * (phmm->A[i][j]);
 
-			alpha[t+1][j] = sum * (phmm->B[j][O[t+1]]);
+			//alpha[t+1][j] = sum * (phmm->B[j][O[t+1]]);
+			alpha[t+1][j] = sum * (phmm->pdf(O[t+1], j, phmm->params));
 		}
 	}
 
@@ -47,7 +49,7 @@ void Forward(HMM *phmm, int T, int *O, double **alpha, double *pprob)
 		*pprob += alpha[T][i];
 }
 
-void ForwardWithScale(HMM *phmm, int T, int *O, double **alpha, double *scale, double *pprob)
+void ForwardWithScale(CDHMM *phmm, int T, double **O, double **alpha, double *scale, double *pprob)
 /*  pprob is the LOG probability */
 {
 	int	i, j; 	/* state indices */
@@ -60,7 +62,8 @@ void ForwardWithScale(HMM *phmm, int T, int *O, double **alpha, double *scale, d
 	scale[1] = 0.0;
 	for (i = 1; i <= phmm->N; ++i)
 	{
-		alpha[1][i] = phmm->pi[i] * (phmm->B[i][O[1]]);
+		//alpha[1][i] = phmm->pi[i] * (phmm->B[i][O[1]]);
+		alpha[1][i] = phmm->pi[i] * (phmm->pdf(O[1], i, phmm->params));
 		scale[1] += alpha[1][i];
 	}
 	for (i = 1; i <= phmm->N; ++i)
@@ -77,7 +80,8 @@ void ForwardWithScale(HMM *phmm, int T, int *O, double **alpha, double *scale, d
 			for (i = 1; i <= phmm->N; ++i)
 				sum += alpha[t][i] * (phmm->A[i][j]);
 
-			alpha[t+1][j] = sum * (phmm->B[j][O[t+1]]);
+			//alpha[t+1][j] = sum * (phmm->B[j][O[t+1]]);
+			alpha[t+1][j] = sum * (phmm->pdf(O[t+1], j, phmm->params));
 			scale[t+1] += alpha[t+1][j];
 		}
 		for (j = 1; j <= phmm->N; ++j)

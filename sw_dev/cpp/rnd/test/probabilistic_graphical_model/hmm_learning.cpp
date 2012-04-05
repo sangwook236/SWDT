@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include "umdhmm_nrutil.h"
 #include "umdhmm_hmm.h"
+#include "umdhmm_cdhmm.h"
 #include <iostream>
 #include <stdexcept>
 
@@ -13,9 +14,10 @@ namespace local {
 void hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm()
 {
 #if 0
-	const int T = 50; 
+	const int T = 50;  // length of observation sequence, T
 	int	*O = umdhmm::ivector(1, T);  // observation sequence O[1..T]
 	{
+		// use 1-based index
 		const int seq[] = {
 			2, 1, 2, 1, 2, 2, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 2, 1, 2, 1, 1, 2, 2, 2, 2, 1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 2, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1, 1,
 		};
@@ -24,9 +26,10 @@ void hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm()
 			O[i] = seq[i - 1];
 	}
 #elif 0
-	const int T = 100; 
+	const int T = 100;  // length of observation sequence, T
 	int	*O = umdhmm::ivector(1, T);  // observation sequence O[1..T]
 	{
+		// use 1-based index
 		const int seq[] = {
 			2, 2, 2, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 2, 1, 2, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 2, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 2, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 1, 2, 1, 2, 1, 1, 1, 2, 2, 1, 1, 
 		};
@@ -35,9 +38,10 @@ void hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm()
 			O[i] = seq[i - 1];
 	}
 #elif 1
-	const int T = 1500; 
+	const int T = 1500;  // length of observation sequence, T
 	int	*O = umdhmm::ivector(1, T);  // observation sequence O[1..T]
 	{
+		// use 1-based index
 		const int seq[] = {
 			2, 2, 2, 2, 2, 2, 1, 2, 1, 1, 2, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 1, 2, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 2, 1, 1, 1, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 2, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1, 1, 2, 1, 2, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 1, 1, 2, 2, 1, 2, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 2, 1, 2, 1, 1, 2, 2, 1, 2, 2, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 2, 2, 2, 1, 2, 1, 2, 1, 1, 1, 2, 1, 2, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 1, 2, 2, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 1, 1, 1, 2, 1, 1, 2, 1, 2, 1, 2, 2, 2, 2, 1, 1, 2, 2, 1, 2, 1, 1, 2, 2, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 1, 2, 1, 2, 1, 1, 2, 2, 2, 1, 2, 2, 1, 1, 1, 1, 2, 2, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 2, 2, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 1, 1, 1, 2, 2, 1, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 1, 1, 1, 2, 2, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 2, 1, 1, 2, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 1, 2, 2, 2, 2, 1, 2, 1, 2, 1, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 2, 1, 2, 1, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 1, 2, 2, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 2, 2, 2, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 2, 1, 2, 2, 2, 2, 1, 2, 2, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 2, 2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 1, 1, 2, 1, 2, 1, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 1, 2, 2, 1, 2, 2, 1, 2, 1, 1, 1, 2, 1, 1, 2, 2, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 2, 2, 1, 2, 1, 2, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 2, 1, 2, 1, 2, 2, 1, 1, 2, 1, 1, 1, 2, 2, 1, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 2, 1, 2, 1, 1, 2, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 2, 2, 1, 2, 2, 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 1, 2, 2, 2, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 1, 2, 2, 1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 2, 1, 2, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2, 1, 1, 1, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 1, 2, 1, 2, 2, 2, 1, 2, 1, 2, 1, 1, 1, 2, 2, 1, 2, 1, 1, 2, 2, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 2, 2, 1, 1, 2, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 2, 1, 1, 2, 2, 1, 1, 1, 2, 2, 1, 2, 2, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 2, 1, 2, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 2, 2, 2, 2, 1, 2, 1, 1, 2, 2, 2, 2, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 2, 1, 
 		};
@@ -63,7 +67,10 @@ void hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm()
 	{ 
 #if 1
 		hmm.N = 3;  // the number of hidden states
-		hmm.M = 2;  // the number of symbols(observations)
+		hmm.M = 2;  // the number of observation symbols
+		const double initPi[] = {
+			1.0/3.0, 1.0/3.0, 1.0/3.0
+		};
 		const double initA[] = {
 			0.9,  0.05, 0.05,
 			0.45, 0.1,  0.45,
@@ -74,12 +81,12 @@ void hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm()
 			0.75,  0.25,
 			0.25,  0.75
 		};
-		const double initPi[] = {
-			0.333, 0.333, 0.333
-		};
 #else
 		hmm.N = 3;  // the number of hidden states
-		hmm.M = 2;  // the number of symbols(observations)
+		hmm.M = 2;  // the number of observation symbols
+		const double initPi[] = {
+			1.0/3.0, 1.0/3.0, 1.0/3.0
+		};
 		const double initA[] = {
 			0.5, 0.2,  0.2,
 			0.2, 0.4,  0.4,
@@ -90,13 +97,15 @@ void hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm()
 			0.75,  0.25,
 			0.25,  0.75
 		};
-		const double initPi[] = {
-			0.333, 0.333, 0.333
-		};
 #endif
 
+		hmm.pi = (double *)umdhmm::dvector(1, hmm.N);
+		const double *ptr = initPi;
+		for (int i = 1; i <= hmm.N; ++i, ++ptr)
+			hmm.pi[i] = *ptr;
+
 		hmm.A = (double **)umdhmm::dmatrix(1, hmm.N, 1, hmm.N);
-		const double *ptr = initA;
+		ptr = initA;
 		for (int i = 1; i <= hmm.N; ++i)
 		{
 			for (int j = 1; j <= hmm.N; ++j, ++ptr)
@@ -110,16 +119,11 @@ void hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm()
 			for (int k = 1; k <= hmm.M; ++k, ++ptr)
 				hmm.B[j][k] = *ptr;
 		}
-
-		hmm.pi = (double *)umdhmm::dvector(1, hmm.N);
-		ptr = initPi;
-		for (int i = 1; i <= hmm.N; ++i, ++ptr)
-			hmm.pi[i] = *ptr;
 	}
 	else if (2 == initialization_mode)
 	{
 		const int N = 3;  // the number of hidden states
-		const int M = 2;  // the number of symbols(observations)
+		const int M = 2;  // the number of observation symbols
 		const int seed = umdhmm::hmmgetseed();
 		umdhmm::InitHMM(&hmm, N, M, seed);
 
@@ -136,15 +140,17 @@ void hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm()
 	// call Baum-Welch
 	int	numIterations = 0;
 	double logProbInit = 0.0, logProbFinal = 0.0;
-	umdhmm::BaumWelch(&hmm, T, O, alpha, beta, gamma, &numIterations, &logProbInit, &logProbFinal);
+	const double terminationTolerance = 0.001;
+	umdhmm::BaumWelch(&hmm, T, O, terminationTolerance, alpha, beta, gamma, &numIterations, &logProbInit, &logProbFinal);
 
 	// calcuate gamma & xi
 	{
+		// gamma can use the result from umdhmm::BaumWelch
+		//umdhmm::ComputeGamma(&hmm, T, alpha, beta, gamma);
+
+		//
 		double ***xi = umdhmm::AllocXi(T, hmm.N);
-
-		umdhmm::ComputeGamma(&hmm, T, alpha, beta, gamma);
 		umdhmm::ComputeXi(&hmm, T, O, alpha, beta, xi);
-
 		umdhmm::FreeXi(xi, T, hmm.N);
 	}
 
@@ -173,12 +179,50 @@ void hmm_with_discrete_multinomial_observations__em_for_map_using_sparse_learnin
 	throw std::runtime_error("not yet implemented");
 }
 
+void cdhmm_with_gaussian_observations__em_for_mle_umdhmm()
+{
+	throw std::runtime_error("not yet implemented");
+}
+
+void cdhmm_with_gaussian_observations__em_for_map()
+{
+	throw std::runtime_error("not yet implemented");
+}
+
+void cdhmm_with_gaussian_observations__em_for_map_using_sparse_learning()
+{
+	throw std::runtime_error("not yet implemented");
+}
+
+void cdhmm_with_gaussian_mixture_observations__em_for_mle_umdhmm()
+{
+	throw std::runtime_error("not yet implemented");
+}
+
+void cdhmm_with_gaussian_mixture_observations__em_for_map()
+{
+	throw std::runtime_error("not yet implemented");
+}
+
+void cdhmm_with_gaussian_mixture_observations__em_for_map_using_sparse_learning()
+{
+	throw std::runtime_error("not yet implemented");
+}
+
 }  // namespace local
 }  // unnamed namespace
 
 void hmm_learning()
 {
     local::hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm();
-    //local::hmm_with_discrete_multinomial_observations__em_for_map();
-    //local::hmm_with_discrete_multinomial_observations__em_for_map_using_sparse_learning();
+    //local::hmm_with_discrete_multinomial_observations__em_for_map();  // not yet implemented
+    //local::hmm_with_discrete_multinomial_observations__em_for_map_using_sparse_learning();  // not yet implemented
+
+    local::cdhmm_with_gaussian_observations__em_for_mle_umdhmm();  // not yet implemented
+    //local::cdhmm_with_gaussian_observations__em_for_map();  // not yet implemented
+    //local::cdhmm_with_gaussian_observations__em_for_map_using_sparse_learning();  // not yet implemented
+
+    local::cdhmm_with_gaussian_mixture_observations__em_for_mle_umdhmm();  // not yet implemented
+    //local::cdhmm_with_gaussian_mixture_observations__em_for_map();  // not yet implemented
+    //local::cdhmm_with_gaussian_mixture_observations__em_for_map_using_sparse_learning();  // not yet implemented
 }

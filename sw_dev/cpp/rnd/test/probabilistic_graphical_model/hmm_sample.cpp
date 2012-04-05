@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include "umdhmm_nrutil.h"
 #include "umdhmm_hmm.h"
+#include "umdhmm_cdhmm.h"
 #include <iostream>
 #include <stdexcept>
 
@@ -17,7 +18,10 @@ void hmm_with_discrete_multinomial_observations__sample_umdhmm()
 	{
 #if 1
 		hmm.N = 3;  // the number of hidden states
-		hmm.M = 2;  // the number of symbols(observations)
+		hmm.M = 2;  // the number of observation symbols
+		const double pi[] = {
+			1.0/3.0, 1.0/3.0, 1.0/3.0
+		};
 		const double A[] = {
 			0.9,  0.05, 0.05,
 			0.45, 0.1,  0.45,
@@ -28,12 +32,12 @@ void hmm_with_discrete_multinomial_observations__sample_umdhmm()
 			0.75,  0.25,
 			0.25,  0.75
 		};
-		const double pi[] = {
-			0.333, 0.333, 0.333
-		};
 #else
 		hmm.N = 3;  // the number of hidden states
-		hmm.M = 2;  // the number of symbols(observations)
+		hmm.M = 2;  // the number of observation symbols
+		const double pi[] = {
+			1.0/3.0, 1.0/3.0, 1.0/3.0
+		};
 		const double A[] = {
 			0.5, 0.2,  0.2,
 			0.2, 0.4,  0.4,
@@ -44,13 +48,15 @@ void hmm_with_discrete_multinomial_observations__sample_umdhmm()
 			0.75,  0.25,
 			0.25,  0.75
 		};
-		const double pi[] = {
-			0.333, 0.333, 0.333
-		};
 #endif
 
+		hmm.pi = (double *)umdhmm::dvector(1, hmm.N);
+		const double *ptr = pi;
+		for (int i = 1; i <= hmm.N; ++i, ++ptr)
+			hmm.pi[i] = *ptr;
+
 		hmm.A = (double **)umdhmm::dmatrix(1, hmm.N, 1, hmm.N);
-		const double *ptr = A;
+		ptr = A;
 		for (int i = 1; i <= hmm.N; ++i)
 		{
 			for (int j = 1; j <= hmm.N; ++j, ++ptr)
@@ -64,11 +70,6 @@ void hmm_with_discrete_multinomial_observations__sample_umdhmm()
 			for (int k = 1; k <= hmm.M; ++k, ++ptr)
 				hmm.B[j][k] = *ptr;
 		}
-
-		hmm.pi = (double *)umdhmm::dvector(1, hmm.N);
-		ptr = pi;
-		for (int i = 1; i <= hmm.N; ++i, ++ptr)
-			hmm.pi[i] = *ptr;
 	}
 
 	// set random number generator seed
@@ -93,10 +94,24 @@ void hmm_with_discrete_multinomial_observations__sample_umdhmm()
 	umdhmm::FreeHMM(&hmm);
 }
 
+void cdhmm_with_gaussian_observations__sample_umdhmm()
+{
+	umdhmm::CDHMM hmm;
+	throw std::runtime_error("not yet implemented");
+}
+
+void cdhmm_with_gaussian_mixture_observations__sample_umdhmm()
+{
+	umdhmm::CDHMM hmm;
+	throw std::runtime_error("not yet implemented");
+}
+
 }  // namespace local
 }  // unnamed namespace
 
 void hmm_sample()
 {
-    local::hmm_with_discrete_multinomial_observations__sample_umdhmm();
+	local::hmm_with_discrete_multinomial_observations__sample_umdhmm();
+	//local::cdhmm_with_gaussian_observations__sample_umdhmm();  // not yet implemented
+	//local::cdhmm_with_gaussian_mixture_observations__sample_umdhmm();  // not yet implemented
 }
