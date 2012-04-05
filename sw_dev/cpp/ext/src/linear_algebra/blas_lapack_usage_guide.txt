@@ -1,0 +1,29 @@
+[] Libraries
+	-. CBLAS
+		clapack-3.2.1-CMAKE version의 static library 사용
+		1. blas.a/lib
+			'cblas_'로 시작하지 않는 함수 제공
+		2. cblas.a/lib
+			'cblas_'로 시작하는 함수 제공
+			blas.a/lib 필요
+		3. cblaswrap.a/lib
+			cblas.a/lib 필요 (???)
+	-. CLAPCK
+		clapack-3.2.1-CMAKE version의 static library 사용
+		1. clapack.a/lib
+			'clapack_'로 시작하지 않는 함수 제공
+	-. ATLAS
+		atlas3.9.72 version의 static library 사용
+		1. 아래의 library 제공
+			f77blas.a
+			cblas.a
+			lapack.a
+			atlas.a
+			'cblas_'로 시작하는 함수 제공
+			'clapack_'로 시작하는 함수 제공
+	-. GSL
+		gsl-1.15 version의 static library 사용
+		1. 아래의 library 제공
+			cblas.a/lib
+			cblas.so/dll
+			'cblas_'로 시작하는 함수 제공
