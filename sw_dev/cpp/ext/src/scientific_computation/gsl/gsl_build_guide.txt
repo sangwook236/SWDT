@@ -1,0 +1,24 @@
+[] Building library using MSVC10
+	-. library building
+		1. getting source
+			gsl-1.15.tar.gz
+				http://www.gnu.org/software/gsl/
+			gsl-1.15-vc10.zip
+				http://gladman.plushost.co.uk/oldsite/computing/gnu_scientific_library.php
+		2. uncompressing source
+			gsl-1.15.tar.gz file을 ${GSL_ROOT} directory에 uncompress
+			gsl-1.15-vc10.zip file을 동일한 ${GSL_ROOT} directory에 uncompress
+		3. building library
+			아래의 MSVC solution를 열어 library building
+				${GSL_ROOT}/build.vc10/gsl.lib.sln
+				${GSL_ROOT}/build.vc10/gsl.dll.sln
+
+	-. trouble shooting
+		1. 처음 압축을 해제하면 ${GSL_ROOT}/gsl directory에 header file들이 존재하지 않음
+			하지만 MSVC solution file을 이용해 build를 수행하면, 해당 directory에 header file이 생성됨
+		2. ${GSL_ROOT}/gsl directory에 header file들이 생성되지 않는 경우
+			GSL header file을 포함하고 있는 다른 directory가 path에 설정되어 있는 경우에 발생 가능
+				e.g.) sw_dev/ext/inc/gsl
+		3. static library가 build 되지 않는 경우
+			gsllib project에 GSL_RANGE_CHECK macro가 정의되어 있어 error 발생
+			원인은 알지 못함

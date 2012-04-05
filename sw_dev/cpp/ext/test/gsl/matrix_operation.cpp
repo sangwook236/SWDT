@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include <gsl/gsl_blas.h>
 #include <iostream>
+#include <cmath>
 
 
 void print_gsl_vector(gsl_vector *vec);

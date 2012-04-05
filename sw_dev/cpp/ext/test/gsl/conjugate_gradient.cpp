@@ -1,18 +1,15 @@
 //#include "stdafx.h"
 #include <gsl/gsl_multimin.h>
+#include <cmath>
 
 
 namespace {
 namespace local {
 
-static double my_f(const gsl_vector* v, void* params);
-static void my_df(const gsl_vector* v, void* params, gsl_vector* df);
-static void my_fdf(const gsl_vector* x, void* params, double* f, gsl_vector* df);
-
-// Paraboloid centered on (dp[0],dp[1])
-double my_f(const gsl_vector* v, void* params)
+// paraboloid centered on (dp[0], dp[1])
+double my_f(const gsl_vector *v, void *params)
 {
-	const double* dp = (double*)params;
+	const double *dp = (double *)params;
 
 	const double x = gsl_vector_get(v, 0);
 	const double y = gsl_vector_get(v, 1);
@@ -20,9 +17,9 @@ double my_f(const gsl_vector* v, void* params)
 }
 
 // The gradient of f, df = (df/dx, df/dy)
-void my_df(const gsl_vector* v, void* params, gsl_vector* df)
+void my_df(const gsl_vector *v, void *params, gsl_vector *df)
 {
-	const double* dp = (double*)params;
+	const double *dp = (double *)params;
 
 	const double x = gsl_vector_get(v, 0);
 	const double y = gsl_vector_get(v, 1);
@@ -31,8 +28,8 @@ void my_df(const gsl_vector* v, void* params, gsl_vector* df)
 	gsl_vector_set(df, 1, 40.0 * (y - dp[1]));
 }
 
-// Compute both f and df together
-void my_fdf(const gsl_vector* x, void* params, double* f, gsl_vector* df)
+// compute both f and df together
+void my_fdf(const gsl_vector *x, void *params, double *f, gsl_vector *df)
 {
 	*f = my_f(x, params);
 	my_df(x, params, df);
@@ -43,7 +40,7 @@ void my_fdf(const gsl_vector* x, void* params, double* f, gsl_vector* df)
 
 void conjugate_gradient()
 {
-	// Position of the minimum (1,2)
+	// position of the minimum (1, 2)
 	double par[2] = { 1.0, 2.0 };
 
 	gsl_multimin_function_fdf my_func;
@@ -52,17 +49,17 @@ void conjugate_gradient()
 	my_func.df = &local::my_df;
 	my_func.fdf = &local::my_fdf;
 	my_func.n = 2;  // the dimension of the system, i.e. the number of components of the vectors x
-	my_func.params = (void*)&par;
+	my_func.params = (void *)&par;
 
-	// Starting point, x = (5,7)
-	gsl_vector* x = gsl_vector_alloc(2);
+	// Starting point, x = (5, 7)
+	gsl_vector *x = gsl_vector_alloc(2);
 	gsl_vector_set(x, 0, 5.0);
 	gsl_vector_set(x, 1, 7.0);
 
-	const gsl_multimin_fdfminimizer_type* T = gsl_multimin_fdfminimizer_conjugate_fr;
-	//const gsl_multimin_fdfminimizer_type* T = gsl_multimin_fdfminimizer_conjugate_pr;
-	//const gsl_multimin_fdfminimizer_type* T = gsl_multimin_fdfminimizer_vector_bfgs;
-	gsl_multimin_fdfminimizer* s = gsl_multimin_fdfminimizer_alloc(T, 2);
+	const gsl_multimin_fdfminimizer_type *T = gsl_multimin_fdfminimizer_conjugate_fr;
+	//const gsl_multimin_fdfminimizer_type *T = gsl_multimin_fdfminimizer_conjugate_pr;
+	//const gsl_multimin_fdfminimizer_type *T = gsl_multimin_fdfminimizer_vector_bfgs;
+	gsl_multimin_fdfminimizer *s = gsl_multimin_fdfminimizer_alloc(T, 2);
 
 	gsl_multimin_fdfminimizer_set(s, &my_func, x, 0.01, 1e-4);
 

@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include <gsl/gsl_linalg.h>
 #include <iostream>
+#include <cmath>
 
 
 namespace {
@@ -11,8 +12,8 @@ namespace local {
 
 void lu()
 {
-	void print_gsl_vector(gsl_vector* vec, const int dim);
-	void print_gsl_matrix(gsl_matrix* mat, const int rdim, const int cdim);
+	void print_gsl_vector(gsl_vector *vec, const int dim);
+	void print_gsl_matrix(gsl_matrix *mat, const int rdim, const int cdim);
 
 	const int dim = 4;
 	double a_data[] = {

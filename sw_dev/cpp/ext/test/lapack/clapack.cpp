@@ -2,8 +2,8 @@
 extern "C" {
 #endif
 
-//#include <clapack/blaswrap.h>
 #include <clapack/f2c.h>
+//#include <clapack/blaswrap.h>
 #include <clapack/clapack.h>
 #if defined(abs)
 #	undef abs
@@ -16,6 +16,9 @@ extern "C" {
 #include <iostream>
 #include <cassert>
 
+
+namespace {
+namespace local {
 
 void print_matrix(const char *msg, const real *mat, const integer row, const integer col)
 {
@@ -55,6 +58,9 @@ void transpose_matrix(const real *mat1, const integer row1, const integer col1, 
 			mat[j * row1 + i] = mat1[i * col1 + j];
 }
 
+}  // namespace local
+}  // unnamed namespace
+
 #define __CLAPACK_DRIVER_TYPE_FOR_EIGENPROBLEM 0
 void clapack_main()
 {
@@ -64,7 +70,7 @@ void clapack_main()
 		real *mat = new real [dim * dim];
 		mat[0] = 1.0; mat[1] = 4.0;
 		mat[2] = 4.0; mat[3] = 1.0;
-		print_matrix("mat:", mat, dim, dim);
+		local::print_matrix("mat:", mat, dim, dim);
 
 		real *eigval = new real [dim];
 		integer lwork = (3 * dim - 1) * 2;
@@ -73,8 +79,8 @@ void clapack_main()
 		real *work = new real [lwork];
 
 		ssyev_("V", "U", &dim, mat, &dim, eigval, work, &lwork, &info);
-		print_matrix("eigenvalue:", eigval, 1, dim);
-		print_matrix("eigenvector:", mat, dim, dim);
+		local::print_matrix("eigenvalue:", eigval, 1, dim);
+		local::print_matrix("eigenvector:", mat, dim, dim);
 
 		delete [] mat;
 		delete [] eigval;
@@ -87,15 +93,15 @@ void clapack_main()
 		real *mat = new real [row_dim * col_dim];
 		mat[0] = 1.0; mat[1] = 4.0; mat[2] = 2.0;
 		mat[3] = 9.0; mat[4] = 1.0; mat[5] = 1.0;
-		print_matrix("mat:", mat, row_dim, col_dim);
+		local::print_matrix("mat:", mat, row_dim, col_dim);
 
 		real *mat_T = new real [row_dim * col_dim];
-		transpose_matrix(mat, row_dim, col_dim, mat_T);
-		print_matrix("mat^T:", mat_T, col_dim, row_dim);
+		local::transpose_matrix(mat, row_dim, col_dim, mat_T);
+		local::print_matrix("mat^T:", mat_T, col_dim, row_dim);
 
 		real *mat2 = new real [row_dim * row_dim];
-		multiply_matrix(mat, row_dim, col_dim, mat_T, col_dim, row_dim, mat2);
-		print_matrix("mat^T:", mat2, row_dim, row_dim);
+		local::multiply_matrix(mat, row_dim, col_dim, mat_T, col_dim, row_dim, mat2);
+		local::print_matrix("mat^T:", mat2, row_dim, row_dim);
 
 		delete [] mat;
 		delete [] mat_T;
@@ -133,13 +139,13 @@ void clapack_main()
 #endif
 		assert(0 == info);
 
-		print_matrix("eigenvalue:", eigval, 1, row_dim);
+		local::print_matrix("eigenvalue:", eigval, 1, row_dim);
 #if defined(__CLAPACK_DRIVER_TYPE_FOR_EIGENPROBLEM) && __CLAPACK_DRIVER_TYPE_FOR_EIGENPROBLEM == 1
-		print_matrix("eigenvector:", mat2, row_dim, row_dim);
+		local::print_matrix("eigenvector:", mat2, row_dim, row_dim);
 #elif defined(__CLAPACK_DRIVER_TYPE_FOR_EIGENPROBLEM) && __CLAPACK_DRIVER_TYPE_FOR_EIGENPROBLEM == 2
-		print_matrix("eigenvector:", eigvec, row_dim, row_dim);
+		local::print_matrix("eigenvector:", eigvec, row_dim, row_dim);
 #else
-		print_matrix("eigenvector:", mat2, row_dim, row_dim);
+		local::print_matrix("eigenvector:", mat2, row_dim, row_dim);
 #endif
 
 		delete [] mat2;

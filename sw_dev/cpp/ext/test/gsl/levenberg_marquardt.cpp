@@ -4,8 +4,9 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_multifit_nlin.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cmath>
+#include <cstdlib>
+#include <cstdio>
 
 
 namespace {
@@ -18,17 +19,17 @@ namespace local {
 struct data
 {
 	size_t n;
-	double* y;
-	double* sigma;
+	double *y;
+	double *sigma;
 };
 
 struct data2
 {
 	size_t n;
-	double* y;
+	double *y;
 };
 
-static void print_state(size_t iter, gsl_multifit_fsolver* s)
+static void print_state(size_t iter, gsl_multifit_fsolver *s)
 {
 	printf(
 		"iter: %3u x = % 15.8f % 15.8f % 15.8f |f(x)| = %g\n",
@@ -40,7 +41,7 @@ static void print_state(size_t iter, gsl_multifit_fsolver* s)
 	);
 }
 
-static void print_state(size_t iter, gsl_multifit_fdfsolver* s)
+static void print_state(size_t iter, gsl_multifit_fdfsolver *s)
 {
 	printf(
 		"iter: %3u x = % 15.8f % 15.8f % 15.8f |f(x)| = %g\n",
@@ -52,11 +53,11 @@ static void print_state(size_t iter, gsl_multifit_fdfsolver* s)
 	);
 }
 
-static int expb_f(const gsl_vector* x, void* dataset, gsl_vector* f)
+static int expb_f(const gsl_vector *x, void *dataset, gsl_vector *f)
 {
-	const size_t n = ((struct data*)dataset)->n;
-	const double* y = ((struct data*)dataset)->y;
-	const double* sigma = ((struct data*)dataset)->sigma;
+	const size_t n = ((struct data *)dataset)->n;
+	const double *y = ((struct data *)dataset)->y;
+	const double *sigma = ((struct data *)dataset)->sigma;
 
 	const double A = gsl_vector_get(x, 0);
 	const double lambda = gsl_vector_get(x, 1);
@@ -66,9 +67,9 @@ static int expb_f(const gsl_vector* x, void* dataset, gsl_vector* f)
 	{
 		// unknowns: A, lambda, b
 		// model: fi = (Yi - yi) / sigma[i]
-		//        Yi = A * exp(-lambda * i) + b
+		//        Yi = A * std::exp(-lambda * i) + b
 		const double t = i;
-		const double Yi = A * exp(-lambda * t) + b;
+		const double Yi = A * std::exp(-lambda * t) + b;
 #if defined(_USE_SIGMA)
 		gsl_vector_set(f, i, (Yi - y[i]) / sigma[i]);
 #else
@@ -79,10 +80,10 @@ static int expb_f(const gsl_vector* x, void* dataset, gsl_vector* f)
 	return GSL_SUCCESS;
 }
 
-static int expb_df(const gsl_vector* x, void* dataset, gsl_matrix* J)
+static int expb_df(const gsl_vector *x, void *dataset, gsl_matrix *J)
 {
-	const size_t n = ((struct data*)dataset)->n;
-	const double* sigma = ((struct data*)dataset)->sigma;
+	const size_t n = ((struct data *)dataset)->n;
+	const double *sigma = ((struct data *)dataset)->sigma;
 
 	const double A = gsl_vector_get(x, 0);
 	const double lambda = gsl_vector_get(x, 1);
@@ -92,11 +93,11 @@ static int expb_df(const gsl_vector* x, void* dataset, gsl_matrix* J)
 		// unknowns: A, lambda, b
 		// Jacobian matrix J(i,j) = dfi / dxj
 		//   where fi = (Yi - yi) / sigma[i]
-		//         Yi = A * exp(-lambda * i) + b
+		//         Yi = A * std::exp(-lambda * i) + b
 		//         xj = the parameters (A, lambda, b)
 		const double t = i;
 		const double s = sigma[i];
-		const double e = exp(-lambda * t);
+		const double e = std::exp(-lambda * t);
 #if defined(_USE_SIGMA)
 		gsl_matrix_set(J, i, 0, e / s);
 		gsl_matrix_set(J, i, 1, -t * A * e / s);
@@ -111,7 +112,7 @@ static int expb_df(const gsl_vector* x, void* dataset, gsl_matrix* J)
 	return GSL_SUCCESS;
 }
 
-static int expb_fdf(const gsl_vector* x, void* dataset, gsl_vector* f, gsl_matrix* J)
+static int expb_fdf(const gsl_vector *x, void* dataset, gsl_vector *f, gsl_matrix *J)
 {
 	expb_f(x, dataset, f);
 	expb_df(x, dataset, J);
@@ -125,15 +126,15 @@ void levenberg_marquardt_f_1()
 	//
 	gsl_rng_env_setup();
 
-	const gsl_rng_type* type = gsl_rng_default;
-	gsl_rng* r = gsl_rng_alloc(type);
+	const gsl_rng_type *type = gsl_rng_default;
+	gsl_rng *r = gsl_rng_alloc(type);
 
 	// This is the data to be fitted
 	double y[N], sigma[N];
 	for (size_t i = 0; i < N; ++i)
 	{
 		double t = i;
-		y[i] = 1.0 + 5 * exp(-0.1 * t) + gsl_ran_gaussian(r, 0.1);
+		y[i] = 1.0 + 5 * std::exp(-0.1 * t) + gsl_ran_gaussian(r, 0.1);
 		sigma[i] = 0.1;
 		printf("data: %d %g %g\n", i, y[i], sigma[i]);
 	};
@@ -143,15 +144,15 @@ void levenberg_marquardt_f_1()
 	const size_t n = N;
 	const size_t p = 3;  // the number of independent variables, i.e. the number of components of the vector x.
 
-	const gsl_multifit_fsolver_type* T = 0L; // gsl_multifit_fsolver_lmsder;
-	gsl_multifit_fsolver* s = gsl_multifit_fsolver_alloc(T, n, p);
+	const gsl_multifit_fsolver_type *T = NULL; // gsl_multifit_fsolver_lmsder;
+	gsl_multifit_fsolver *s = gsl_multifit_fsolver_alloc(T, n, p);
 
 	gsl_multifit_function f;
 	f.f = &expb_f;
 	f.n = n;
 	f.p = p;
 	struct data d = { n, y, sigma };
-	f.params = (void*)&d;
+	f.params = (void *)&d;
 
 	double x_init[3] = { 1.0, 0.0, 0.0 };
 	gsl_vector_view x = gsl_vector_view_array(x_init, p);
@@ -175,7 +176,7 @@ void levenberg_marquardt_f_1()
 	} while (status == GSL_CONTINUE && iter < 500);
 
 	//
-	gsl_matrix* covar = gsl_matrix_alloc(p, p);
+	gsl_matrix *covar = gsl_matrix_alloc(p, p);
 	gsl_multifit_covar(s->J, 0.0, covar);
 
 #define FIT(i) gsl_vector_get(s->x, i)
@@ -184,8 +185,8 @@ void levenberg_marquardt_f_1()
 	{
 		const double chi = gsl_blas_dnrm2(s->f);
 		const double dof = n - p;
-		const double c = GSL_MAX_DBL(1, chi / sqrt(dof));
-		printf("chisq/dof = %g\n", pow(chi, 2.0) / dof);
+		const double c = GSL_MAX_DBL(1, chi / std::sqrt(dof));
+		printf("chisq/dof = %g\n", std::pow(chi, 2.0) / dof);
 		printf("A = %.5f +/- %.5f\n", FIT(0), c*ERR(0));
 		printf("lambda = %.5f +/- %.5f\n", FIT(1), c*ERR(1));
 		printf("b = %.5f +/- %.5f\n", FIT(2), c*ERR(2));
@@ -203,15 +204,15 @@ void levenberg_marquardt_fdf_1()
 	//
 	gsl_rng_env_setup();
 
-	const gsl_rng_type* type = gsl_rng_default;
-	gsl_rng* r = gsl_rng_alloc(type);
+	const gsl_rng_type *type = gsl_rng_default;
+	gsl_rng *r = gsl_rng_alloc(type);
 
 	// This is the data to be fitted
 	double y[N], sigma[N];
 	for (size_t i = 0; i < N; ++i)
 	{
 		const double t = i;
-		y[i] = 1.0 + 5 * exp(-0.1 * t) + gsl_ran_gaussian(r, 0.1);
+		y[i] = 1.0 + 5 * std::exp(-0.1 * t) + gsl_ran_gaussian(r, 0.1);
 		sigma[i] = 0.1;
 		printf("data: %d %g %g\n", i, y[i], sigma[i]);
 	};
@@ -221,20 +222,20 @@ void levenberg_marquardt_fdf_1()
 	const size_t n = N;
 	const size_t p = 3;  // the number of independent variables, i.e. the number of components of the vector x.
 
-	//const gsl_multifit_fdfsolver_type* T = gsl_multifit_fdfsolver_lmder;
-	const gsl_multifit_fdfsolver_type* T = gsl_multifit_fdfsolver_lmsder;
-	gsl_multifit_fdfsolver* s = gsl_multifit_fdfsolver_alloc(T, n, p);
+	//const gsl_multifit_fdfsolver_type *T = gsl_multifit_fdfsolver_lmder;
+	const gsl_multifit_fdfsolver_type *T = gsl_multifit_fdfsolver_lmsder;
+	gsl_multifit_fdfsolver *s = gsl_multifit_fdfsolver_alloc(T, n, p);
 
 	gsl_multifit_function_fdf f;
 	f.f = &expb_f;
 	f.df = &expb_df;
-	//f.df = 0L;
+	//f.df = NULL;
 	f.fdf = &expb_fdf;
-	//f.fdf = 0L;
+	//f.fdf = NULL;
 	f.n = n;
 	f.p = p;
 	struct data d = { n, y, sigma };
-	f.params = (void*)&d;
+	f.params = (void *)&d;
 
 	double x_init[3] = { 1.0, 0.0, 0.0 };
 	gsl_vector_view x = gsl_vector_view_array(x_init, p);
@@ -258,7 +259,7 @@ void levenberg_marquardt_fdf_1()
 	} while (status == GSL_CONTINUE && iter < 500);
 
 	//
-	gsl_matrix* covar = gsl_matrix_alloc(p, p);
+	gsl_matrix *covar = gsl_matrix_alloc(p, p);
 	gsl_multifit_covar(s->J, 0.0, covar);
 
 #define FIT(i) gsl_vector_get(s->x, i)
@@ -280,10 +281,10 @@ void levenberg_marquardt_fdf_1()
 	gsl_multifit_fdfsolver_free(s);
 }
 
-static int objective_f(const gsl_vector* x, void* dataset, gsl_vector* f)
+static int objective_f(const gsl_vector *x, void *dataset, gsl_vector *f)
 {
-	const size_t n = ((struct data2*)dataset)->n;
-	const double* y = ((struct data2*)dataset)->y;
+	const size_t n = ((struct data2 *)dataset)->n;
+	const double *y = ((struct data2 *)dataset)->y;
 
 	const double a0 = gsl_vector_get(x, 0);
 	const double a1 = gsl_vector_get(x, 1);
@@ -305,9 +306,9 @@ static int objective_f(const gsl_vector* x, void* dataset, gsl_vector* f)
 	return GSL_SUCCESS;
 }
 
-static int objective_df(const gsl_vector* x, void* dataset, gsl_matrix* J)
+static int objective_df(const gsl_vector *x, void* dataset, gsl_matrix* J)
 {
-	const size_t n = ((struct data2*)dataset)->n;
+	const size_t n = ((struct data2 *)dataset)->n;
 /*
 	const double a0 = gsl_vector_get(x, 0);
 	const double a1 = gsl_vector_get(x, 1);
@@ -335,7 +336,7 @@ static int objective_df(const gsl_vector* x, void* dataset, gsl_matrix* J)
 	return GSL_SUCCESS;
 }
 
-static int objective_fdf(const gsl_vector* x, void* dataset, gsl_vector* f, gsl_matrix* J)
+static int objective_fdf(const gsl_vector *x, void *dataset, gsl_vector *f, gsl_matrix *J)
 {
 	objective_f(x, dataset, f);
 	objective_df(x, dataset, J);
@@ -348,8 +349,8 @@ void levenberg_marquardt_fdf_2()
 	//
 	gsl_rng_env_setup();
 
-	const gsl_rng_type* type = gsl_rng_default;
-	gsl_rng* r = gsl_rng_alloc(type);
+	const gsl_rng_type *type = gsl_rng_default;
+	gsl_rng *r = gsl_rng_alloc(type);
 
 	// This is the data to be fitted
 	double y[N];
@@ -365,20 +366,20 @@ void levenberg_marquardt_fdf_2()
 	const size_t n = N;
 	const size_t p = 6;  // the number of independent variables, i.e. the number of components of the vector x.
 
-	//const gsl_multifit_fdfsolver_type* T = gsl_multifit_fdfsolver_lmder;
-	const gsl_multifit_fdfsolver_type* T = gsl_multifit_fdfsolver_lmsder;
-	gsl_multifit_fdfsolver* s = gsl_multifit_fdfsolver_alloc(T, n, p);
+	//const gsl_multifit_fdfsolver_type *T = gsl_multifit_fdfsolver_lmder;
+	const gsl_multifit_fdfsolver_type *T = gsl_multifit_fdfsolver_lmsder;
+	gsl_multifit_fdfsolver *s = gsl_multifit_fdfsolver_alloc(T, n, p);
 
 	gsl_multifit_function_fdf f;
 	f.f = &objective_f;
 	f.df = &objective_df;
-	//f.df = 0L;
+	//f.df = NULL;
 	f.fdf = &objective_fdf;
-	//f.fdf = 0L;
+	//f.fdf = NULL;
 	f.n = n;
 	f.p = p;
 	struct data2 d = { n, y };
-	f.params = (void*)&d;
+	f.params = (void *)&d;
 
 	double x_init[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 	gsl_vector_view x = gsl_vector_view_array(x_init, p);
@@ -402,7 +403,7 @@ void levenberg_marquardt_fdf_2()
 	} while (status == GSL_CONTINUE && iter < 500);
 
 	//
-	gsl_matrix* covar = gsl_matrix_alloc(p, p);
+	gsl_matrix *covar = gsl_matrix_alloc(p, p);
 	gsl_multifit_covar(s->J, 0.0, covar);
 
 #define FIT(i) gsl_vector_get(s->x, i)
@@ -435,8 +436,8 @@ void levenberg_marquardt_fdf_2()
 
 		const double chi = gsl_blas_dnrm2(s->f);
 		const double dof = n - p;
-		const double c = GSL_MAX_DBL(1, chi / sqrt(dof));
-		printf("chisq/dof = %g\n", pow(chi, 2.0) / dof);
+		const double c = GSL_MAX_DBL(1, chi / std::sqrt(dof));
+		printf("chisq/dof = %g\n", std::pow(chi, 2.0) / dof);
 
 		printf("\nsolution =\n");
 		printf("a0 = %.5f +/- %.5f\n", FIT(0), c*ERR(0));

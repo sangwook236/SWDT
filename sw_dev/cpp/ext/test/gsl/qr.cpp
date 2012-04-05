@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include <gsl/gsl_linalg.h>
 #include <iostream>
+#include <cmath>
 
 
 namespace {
@@ -11,8 +12,8 @@ namespace local {
 
 void qr()
 {
-	void print_gsl_vector(gsl_vector* vec, const int dim);
-	void print_gsl_matrix(gsl_matrix* mat, const int rdim, const int cdim);
+	void print_gsl_vector(gsl_vector *vec, const int dim);
+	void print_gsl_matrix(gsl_matrix *mat, const int rdim, const int cdim);
 
 	const int rdim = 4, cdim = 4;
 	double a_data[] = {
@@ -24,10 +25,10 @@ void qr()
 	double b_data[] = { 1.0, 2.0, 3.0, 4.0 };
 	gsl_matrix_view m = gsl_matrix_view_array(a_data, rdim, cdim);
 	gsl_vector_view b = gsl_vector_view_array(b_data, rdim);
-	gsl_permutation* p = gsl_permutation_alloc(cdim);
-	gsl_vector* tau = gsl_vector_alloc(std::min(rdim, cdim));
-	gsl_vector* norm = gsl_vector_alloc(cdim);
-	gsl_vector* x = gsl_vector_alloc(cdim);
+	gsl_permutation *p = gsl_permutation_alloc(cdim);
+	gsl_vector *tau = gsl_vector_alloc(std::min(rdim, cdim));
+	gsl_vector *norm = gsl_vector_alloc(cdim);
+	gsl_vector *x = gsl_vector_alloc(cdim);
 	int signum;
 
 	gsl_matrix* Q = gsl_matrix_alloc(rdim, rdim);

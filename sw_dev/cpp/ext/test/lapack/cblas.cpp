@@ -2,11 +2,13 @@
 extern "C" {
 #endif
 
+//#define NO_BLAS_WRAP
 #include <clapack/f2c.h>
 //#include <clapack/blaswrap.h>
 #include <clapack/clapack.h>
+
 #if defined(abs)
-#	undef abs
+#undef abs
 #endif
 
 #if defined(__cplusplus)
@@ -15,6 +17,12 @@ extern "C" {
 
 #include <iostream>
 
+
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
 
 void cblas_main()
 {
@@ -40,7 +48,7 @@ void cblas_main()
 	double alpha = 1.0, beta = 0.0;
 	long lda = rdim;
 	long incx = 1, incy = 1;
-	dgemv_("N", &rdim, &cdim, &alpha, (double *)m, &lda, (double *)x, &incx, &beta, y, &incy);
+	dgemv_("No transpose", &rdim, &cdim, &alpha, (double *)m, &lda, (double *)x, &incx, &beta, y, &incy);
 #endif
 
 	for (int i = 0; i < 3; ++i)

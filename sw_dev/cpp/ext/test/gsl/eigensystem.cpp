@@ -1,7 +1,7 @@
 //#include "stdafx.h"
-#include <gsl/gsl_math.h>
 #include <gsl/gsl_eigen.h>
 #include <iostream>
+#include <cmath>
 
 
 namespace {
@@ -12,8 +12,8 @@ namespace local {
 
 void eigensystem()
 {
-	void print_gsl_vector(gsl_vector* vec, const int dim);
-	void print_gsl_matrix(gsl_matrix* mat, const int rdim, const int cdim);
+	void print_gsl_vector(gsl_vector *vec, const int dim);
+	void print_gsl_matrix(gsl_matrix *mat, const int rdim, const int cdim);
 
 	const int dim = 4;
 	double data[] = {
@@ -23,9 +23,9 @@ void eigensystem()
 		1/4.0, 1/5.0, 1/6.0, 1/7.0
 	};
 	gsl_matrix_view m = gsl_matrix_view_array(data, dim, dim);
-	gsl_vector* eval = gsl_vector_alloc(dim);
-	gsl_matrix* evec = gsl_matrix_alloc(dim, dim);
-	gsl_eigen_symmv_workspace* w = gsl_eigen_symmv_alloc(dim);
+	gsl_vector *eval = gsl_vector_alloc(dim);
+	gsl_matrix *evec = gsl_matrix_alloc(dim, dim);
+	gsl_eigen_symmv_workspace *w = gsl_eigen_symmv_alloc(dim);
 
 	//
 	gsl_eigen_symmv(&m.matrix, eval, evec, w);

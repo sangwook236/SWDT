@@ -1,6 +1,11 @@
 //#include "stdafx.h"
-//#include <atlas_enum.h>
+#if defined(__cplusplus)
+extern "C" {
+#endif
 #include <atlas/clapack.h>
+#if defined(__cplusplus)
+}
+#endif
 #include <iostream>
 
 

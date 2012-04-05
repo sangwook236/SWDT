@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #ifdef __HP_aCC //for aCC B3910B A.01.27
 #include <iostream.h>
 #else //for gcc3
@@ -13,9 +13,6 @@
 #include<gslwrap/random_generator.h>
 #include<gslwrap/histogram.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 #ifndef __HP_aCC
 	using namespace std;

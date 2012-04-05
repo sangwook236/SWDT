@@ -83,12 +83,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="basic_operation.cpp" />
     <ClCompile Include="cholesky.cpp" />
-    <ClCompile Include="class_Block.cpp" />
-    <ClCompile Include="class_CwiseBinaryOp.cpp" />
-    <ClCompile Include="class_CwiseUnaryOp.cpp" />
-    <ClCompile Include="class_FixedBlock.cpp" />
     <ClCompile Include="evd.cpp" />
+    <ClCompile Include="linear_system.cpp" />
     <ClCompile Include="lu.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="qr.cpp" />
@@ -97,8 +95,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="svd.cpp" />
-    <ClCompile Include="Tutorial_simple_example_dynamic_size.cpp" />
-    <ClCompile Include="Tutorial_simple_example_fixed_size.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

@@ -5,6 +5,10 @@
 #include <iostream>
 
 
+//-----------------------------------------------------------------------
+// porting from Eigen2 to Eigen3
+//	[ref] http://eigen.tuxfamily.org/dox/Eigen2ToEigen3.html
+
 int main(int argc, char *argv[])
 {
 	void basic_operation();

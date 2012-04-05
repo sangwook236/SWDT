@@ -73,7 +73,7 @@
       <Culture>0x0412</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>log4cxx.lib;libboost_thread-vc90-mt.lib;libboost_test_exec_monitor-vc90-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>log4cxx.lib;libboost_thread-vc100-mt-1_48.lib;libboost_test_exec_monitor-vc100-mt-1_48.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>.\Release/log4cxx.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
@@ -109,7 +109,7 @@
       <Culture>0x0412</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>log4cxx.lib;libboost_thread-vc90-mt-gd.lib;libboost_test_exec_monitor-vc90-mt-gd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>log4cxx.lib;libboost_thread-vc100-mt-gd-1_48.lib;libboost_test_exec_monitor-vc100-mt-gd-1_48.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>

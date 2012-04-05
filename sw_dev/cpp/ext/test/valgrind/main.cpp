@@ -13,6 +13,10 @@
 //  valgrind --leak-check=yes myprog arg1 arg2
 //  The --leak-check option turns on the detailed memory leak detector
 
+//-----------------------------------------------------
+// Is there a good Valgrind substitute for Windows?
+//	[ref] http://stackoverflow.com/questions/413477/is-there-a-good-valgrind-substitute-for-windows
+
 void f()
 {
     int *x = (int *)malloc(10 * sizeof(int));

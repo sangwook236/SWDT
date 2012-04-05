@@ -1,23 +1,24 @@
 //#include "stdafx.h"
 #include <gsl/gsl_multimin.h>
+#include <cmath>
 
 
 namespace {
 namespace local {
 
 // Paraboloid centered on (dp[0], dp[1])
-static double my_f(const gsl_vector* v, void* params)
+static double my_f(const gsl_vector *v, void *params)
 {
-	const double* dp = (double*)params;
+	const double *dp = (double *)params;
 	const double x = gsl_vector_get(v, 0);
 	const double y = gsl_vector_get(v, 1);
 	return 10.0 * (x - dp[0]) * (x - dp[0]) + 20.0 * (y - dp[1]) * (y - dp[1]) + 30.0;
 }
 
 // The gradient of f, df = (df/dx, df/dy)
-static void my_df(const gsl_vector* v, void* params, gsl_vector* df)
+static void my_df(const gsl_vector *v, void *params, gsl_vector *df)
 {
-	const double* dp = (double*)params;
+	const double *dp = (double*)params;
 	const double x = gsl_vector_get(v, 0);
 	const double y = gsl_vector_get(v, 1);
 	gsl_vector_set(df, 0, 20.0 * (x - dp[0]));
@@ -25,7 +26,7 @@ static void my_df(const gsl_vector* v, void* params, gsl_vector* df)
 }
 
 // Compute both f and df together
-static void my_fdf(const gsl_vector* x, void* params, double* f, gsl_vector* df)
+static void my_fdf(const gsl_vector *x, void *params, double *f, gsl_vector *df)
 {
 	*f = my_f(x, params);
 	my_df(x, params, df);

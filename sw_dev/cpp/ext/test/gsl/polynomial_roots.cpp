@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include <gsl/gsl_poly.h>
 #include <cstdio>
+#include <cmath>
 
 
 namespace {

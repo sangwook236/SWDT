@@ -2,12 +2,8 @@
 //#define HAVE_INLINE 1
 #include <gsl/gsl_blas.h>
 #include <iostream>
+#include <cmath>
 
-
-void print_gsl_vector(gsl_vector* vec);
-void print_gsl_vector(gsl_vector* vec, const int dim);
-void print_gsl_matrix(gsl_matrix* mat);
-void print_gsl_matrix(gsl_matrix* mat, const int rdim, const int cdim);
 
 namespace {
 namespace local {
@@ -17,6 +13,11 @@ namespace local {
 
 void vector_operation()
 {
+	void print_gsl_vector(gsl_vector *vec);
+	void print_gsl_vector(gsl_vector *vec, const int dim);
+	void print_gsl_matrix(gsl_matrix *mat);
+	void print_gsl_matrix(gsl_matrix *mat, const int rdim, const int cdim);
+
 	// vector view
 	std::cout << ">>> vector view\n";
 	{

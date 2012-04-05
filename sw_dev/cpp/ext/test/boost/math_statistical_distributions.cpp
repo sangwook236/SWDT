@@ -1,10 +1,10 @@
-#include <boost/math/distributions/negative_binomial.hpp>  // for negative_binomial_distribution
-using boost::math::negative_binomial_distribution;  // default type is double.
-using boost::math::negative_binomial;  // typedef provides default type is double.
-#include <boost/math/distributions/binomial.hpp>  // for binomial_distribution.
-#include <boost/math/distributions/beta.hpp>  // for beta_distribution.
-#include <boost/math/distributions/gamma.hpp>  // for gamma_distribution.
-#include <boost/math/distributions/normal.hpp>  // for normal_distribution.
+#include <boost/math/distributions/negative_binomial.hpp>  // for negative binomial distribution
+using boost::math::negative_binomial_distribution;  // default type is double
+using boost::math::negative_binomial;  // typedef provides default type is double
+#include <boost/math/distributions/binomial.hpp>  // for binomial distribution
+#include <boost/math/distributions/beta.hpp>  // for beta distribution
+#include <boost/math/distributions/gamma.hpp>  // for gamma distribution
+#include <boost/math/distributions/normal.hpp>  // for normal distribution
 #include <iostream>
 
 
@@ -24,7 +24,7 @@ void math_statistical_distributions()
 
 		// construct a standard normal distribution s
 		boost::math::normal s;  // (default mean = zero, and standard deviation = unity)
-		//boost::math::normal s(mean, std);  // (default mean = zero, and standard deviation = unity)
+		//boost::math::normal s(mean, std);
 		std::cout << "standard normal distribution: mean = " << s.mean() << ", standard deviation = " << s.standard_deviation() << std::endl;
 		std::cout << "probability distribution function values" << std::endl;
 		std::cout << "  z " "      pdf " << std::endl;

@@ -1,8 +1,14 @@
 //#include "stdafx.h"
-//#include <atlas_enum.h>
-#include <atlas/cblas.h>
-#include <iostream>
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+#include <atlas/cblas.h>
+#if defined(__cplusplus)
+}
+#endif
+
+#include <iostream>
 
 namespace {
 namespace local {

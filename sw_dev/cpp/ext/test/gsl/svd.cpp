@@ -2,6 +2,7 @@
 #include <gsl/gsl_linalg.h>
 #include <iostream>
 #include <cassert>
+#include <cmath>
 
 
 namespace {
@@ -12,8 +13,8 @@ namespace local {
 
 void svd()
 {
-	void print_gsl_vector(gsl_vector* vec, const int dim);
-	void print_gsl_matrix(gsl_matrix* mat, const int rdim, const int cdim);
+	void print_gsl_vector(gsl_vector *vec, const int dim);
+	void print_gsl_matrix(gsl_matrix *mat, const int rdim, const int cdim);
 /*
 	const int rdim = 4, cdim = 4;
 	double a_data[] = {
@@ -39,13 +40,13 @@ void svd()
 
 	gsl_matrix_view A = gsl_matrix_view_array(a_data, rdim, cdim);
 	gsl_vector_view b = gsl_vector_view_array(b_data, rdim);
-	gsl_vector* x = gsl_vector_alloc(cdim);
+	gsl_vector *x = gsl_vector_alloc(cdim);
 
-	//gsl_matrix* U = gsl_matrix_alloc(rdim, rdim);
-	gsl_matrix* U = gsl_matrix_alloc(rdim, cdim);
-	gsl_matrix* V = gsl_matrix_alloc(cdim, cdim);
-	gsl_vector* S = gsl_vector_alloc(min_dim);
-	gsl_vector* work = gsl_vector_alloc(min_dim);
+	//gsl_matrix *U = gsl_matrix_alloc(rdim, rdim);
+	gsl_matrix *U = gsl_matrix_alloc(rdim, cdim);
+	gsl_matrix *V = gsl_matrix_alloc(cdim, cdim);
+	gsl_vector *S = gsl_vector_alloc(min_dim);
+	gsl_vector *work = gsl_vector_alloc(min_dim);
 
 	gsl_matrix_memcpy(U, &A.matrix);
 

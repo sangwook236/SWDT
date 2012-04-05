@@ -1,8 +1,4 @@
 //#include "stdafx.h"
-#if defined(__HUGE)
-#error error
-#endif
-#include <cstddef>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_monte.h>
 #include <gsl/gsl_monte_plain.h>
@@ -10,6 +6,7 @@
 #include <gsl/gsl_monte_vegas.h>
 #include <iostream>
 #include <cmath>
+#include <cstddef>
 
 
 namespace {

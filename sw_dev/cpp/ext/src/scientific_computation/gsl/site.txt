@@ -1,0 +1,4 @@
+http://www.gnu.org/software/gsl/
+
+http://gladman.plushost.co.uk/oldsite/computing/gnu_scientific_library.php
+http://david.geldreich.free.fr/dev.html

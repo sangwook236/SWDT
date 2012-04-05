@@ -4,6 +4,7 @@
 #include <gsl/gsl_blas.h>
 #include <iostream>
 #include <cassert>
+#include <cmath>
 
 
 void print_gsl_vector(gsl_vector *vec, const int dim);
@@ -12,16 +13,16 @@ void print_gsl_matrix(gsl_matrix *mat, const int rdim, const int cdim);
 namespace {
 namespace local {
 
-void pca_by_svd(gsl_matrix* U, const int rdim, const int cdim)
+void pca_by_svd(gsl_matrix *U, const int rdim, const int cdim)
 {
 	assert(rdim >= cdim);
 
 	const int min_dim = std::min(rdim, cdim);
 	//const int max_dim = std::max(rdim, cdim);
 
-	gsl_matrix* V = gsl_matrix_alloc(cdim, cdim);
-	gsl_vector* S = gsl_vector_alloc(min_dim);
-	gsl_vector* work = gsl_vector_alloc(min_dim);
+	gsl_matrix *V = gsl_matrix_alloc(cdim, cdim);
+	gsl_vector *S = gsl_vector_alloc(min_dim);
+	gsl_vector *work = gsl_vector_alloc(min_dim);
 
 	//
 	gsl_linalg_SV_decomp(U, V, S, work);
@@ -38,11 +39,11 @@ void pca_by_svd(gsl_matrix* U, const int rdim, const int cdim)
 	gsl_vector_free(S);
 }
 
-void pca_by_eigen(gsl_matrix* mat, const int rdim, const int cdim)
+void pca_by_eigen(gsl_matrix *mat, const int rdim, const int cdim)
 {
 	const int dim = rdim;
 
-	gsl_matrix* m = gsl_matrix_alloc(dim, dim);
+	gsl_matrix *m = gsl_matrix_alloc(dim, dim);
 	gsl_matrix_set_zero(m);
 	gsl_blas_dgemm(
 		CblasNoTrans, CblasTrans,
@@ -52,9 +53,9 @@ void pca_by_eigen(gsl_matrix* mat, const int rdim, const int cdim)
 	//print_gsl_matrix(m, dim, dim);
 
 	//
-	gsl_vector* eval = gsl_vector_alloc(dim);
-	gsl_matrix* evec = gsl_matrix_alloc(dim, dim);
-	gsl_eigen_symmv_workspace* w = gsl_eigen_symmv_alloc(dim);
+	gsl_vector *eval = gsl_vector_alloc(dim);
+	gsl_matrix *evec = gsl_matrix_alloc(dim, dim);
+	gsl_eigen_symmv_workspace *w = gsl_eigen_symmv_alloc(dim);
 
 	gsl_eigen_symmv(m, eval, evec, w);
 	gsl_matrix_free(m);
@@ -93,7 +94,7 @@ void pca()
 	gsl_matrix_view mat = gsl_matrix_view_array(data, rdim, cdim);
 	//print_gsl_matrix(&mat.matrix, rdim, cdim);
 
-	gsl_matrix* mat2 = gsl_matrix_alloc(rdim, cdim);
+	gsl_matrix *mat2 = gsl_matrix_alloc(rdim, cdim);
 	gsl_matrix_memcpy(mat2, &mat.matrix);
 
 	local::pca_by_svd(&mat.matrix, rdim, cdim);

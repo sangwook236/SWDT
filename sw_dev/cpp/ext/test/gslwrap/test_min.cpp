@@ -1,11 +1,8 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <gslwrap/min_fminimizer.h>
 #include <gslwrap/multimin_fdfminimizer.h>
-#include <math.h>
+#include <cmath>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 struct my_f: public gsl::min_f
 {
