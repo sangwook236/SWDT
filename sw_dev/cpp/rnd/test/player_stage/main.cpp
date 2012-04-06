@@ -2,7 +2,7 @@
 #if defined(WIN32)
 #include <vld/vld.h>
 #endif
-#include <libplayerc++/playerc++.h>
+#include <libplayerc++/playererror.h>
 #include <iostream>
 
 

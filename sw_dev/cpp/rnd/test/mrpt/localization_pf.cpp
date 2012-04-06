@@ -1,5 +1,6 @@
 //#include "stdafx.h"
-#include <mrpt/core.h>
+#include <mrpt/slam.h>
+#include <mrpt/system.h>
 
 
 namespace {
@@ -28,7 +29,10 @@ struct PfLocalizationOptions
 	int showProgress3DRealTimeDelayInMillisec;
 
 	mrpt::bayes::CParticleFilter::TParticleFilterOptions pfOptions;
+	//--S [] 2012/04/06: Sang-Wook Lee
+	//mrpt::poses::CPosePDFParticles::TPredictionParams pdfPredictionOptions;
 	mrpt::poses::CPosePDFParticles::TPredictionParams pdfPredictionOptions;
+	//--E [] 2012/04/06
 	mrpt::slam::TSetOfMetricMapInitializers metricMapsOptions;
 };
 

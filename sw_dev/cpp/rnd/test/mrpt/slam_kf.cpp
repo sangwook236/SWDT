@@ -288,7 +288,11 @@ void kf_slam_map_building(const KfSlamOptions &options, const bool useRawLogFile
 		// replace by absolute values:
 		H.Abs();
 		mrpt::math::CMatrix H2(H);
-		H2.adjustRange();
+		//--S [] 2012/04/06: Sang-Wook Lee
+		// TODO [check] >> are it changed correctly?
+		//H2.adjustRange();
+		H2.adjustRange(0.0f, 1.0f);
+		//--E 2012/04/06
 		mrpt::utils::CMRPTImageFloat imgF(H2);
 		imgF.saveToFile(options.logOutputDirectoryName + std::string("/information_matrix_final.png"));
 
