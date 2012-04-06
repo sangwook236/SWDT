@@ -1,19 +1,15 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <mrpt/core.h>
 #include <deque>
 #include <iostream>
 #include <fstream>
 
 
-#ifdef _DEBUG
-//#define new DEBUG_NEW
-#endif
-
-
 using mrpt::utils::DEG2RAD;
 using mrpt::utils::RAD2DEG;
 
 namespace {
+namespace local {
 
 struct KfSlamOptions
 {
@@ -203,7 +199,7 @@ void kf_slam_map_building(const KfSlamOptions &options, const bool useRawLogFile
 			if (!(step % options.logFrequency))
 			{
 				const mrpt::slam::CPose3D robPose3D(robotPose.mean);
-				const mrpt::math::CMatrix robotPose(robPose3D);
+				const mrpt::math::CMatrix robotPose((mrpt::math::TPose3D)robPose3D);
 				robotPose.saveToTextFile(options.logOutputDirectoryName + mrpt::utils::format("/robot_pose_%05u.txt", (unsigned int)step));
 			}
 
@@ -397,6 +393,7 @@ void kf_slam_map_building(const KfSlamOptions &options, const bool useRawLogFile
 	} // end if GT
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void slam_kf()
@@ -414,7 +411,7 @@ void slam_kf()
 
 	mrpt::utils::CConfigFile iniFile(INI_FILENAME);
 
-	KfSlamOptions options;
+	local::KfSlamOptions options;
 
 	// load config from file
 	options.configFileName = INI_FILENAME;
@@ -476,5 +473,5 @@ void slam_kf()
 	}
 
 	std::cout << "\nmap building ...." << std::endl;
-	kf_slam_map_building(options, useRawLogFile);
+	local::kf_slam_map_building(options, useRawLogFile);
 }

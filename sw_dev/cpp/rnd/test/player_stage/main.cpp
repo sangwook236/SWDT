@@ -1,4 +1,7 @@
-#include "stdafx.h"
+//#include "stdafx.h"
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <libplayerc++/playerc++.h>
 #include <iostream>
 
@@ -15,15 +18,17 @@ int main(int argc, char *argv[])
 	}
 	catch (const PlayerCc::PlayerError &e)
 	{
-		std::cout << e.GetErrorStr() << std::endl;
+		std::cout << "PlayerCc::PlayerError caught: " << e.GetErrorStr() << std::endl;
 	}
 	catch (const std::exception &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cout << "std::exception caught: " << e.what() << std::endl;
+		return -1;
 	}
 	catch (...)
 	{
 		std::cout << "unknown exception caught" << std::endl;
+		return -1;
 	}
 
 	std::cout << "press any key to exit ..." << std::endl;

@@ -1,14 +1,10 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <mrpt/core.h>
 #include <map>
 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
- 
-
 namespace {
+namespace local {
 
 // adds a new edge to the graph. The edge is annotated with the relative position of the two nodes
 void add_edge(const size_t from, const size_t to, const std::map<mrpt::math::CDijkstra<mrpt::poses::CPosePDFGaussian>::TNodeID, mrpt::poses::CPose2D> &real_poses, mrpt::poses::CNetworkOfPoses2D &graph_links, const mrpt::math::CMatrixDouble33 &cov)
@@ -23,6 +19,7 @@ double get_Dijkstra_weight(const mrpt::poses::CPosePDFGaussian &edge)
 	return edge.mean.norm();
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void dijkstra()
@@ -66,7 +63,7 @@ void dijkstra()
 		{
 			if (i == j) continue;
 			if (real_poses[i].distanceTo(real_poses[j]) < DIST_THRES)
-				add_edge(i, j, real_poses, graph_links, cov);
+				local::add_edge(i, j, real_poses, graph_links, cov);
 		}
 	}
  
@@ -77,7 +74,7 @@ void dijkstra()
 	mrpt::math::CDijkstra<mrpt::poses::CPosePDFGaussian> aDijkstra(
 		graph_links,
 		SOURCE_NODE,
-		get_Dijkstra_weight
+		local::get_Dijkstra_weight
 	);
  
 	std::cout << "Dijkstra took " << tictac.Tac()*1e3 << " ms for " << graph_links.edges.size() << " edges." << std::endl;

@@ -1,13 +1,11 @@
-#include "stdafx.h"
+//#include "stdafx.h"
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <iostream>
 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	void feature_extraction_and_matching();
 	void icp();
@@ -24,7 +22,6 @@ int main(int argc, char* argv[])
 	void dijkstra();
 	void path_planning();
 
-	//
 	try
 	{
 		//feature_extraction_and_matching();
@@ -44,7 +41,7 @@ int main(int argc, char* argv[])
 	}
 	catch (const std::exception &e)
 	{
-		std::cout << "MRPT exception caught: " << e.what() << std::endl;
+		std::cout << "std::exception caught: " << e.what() << std::endl;
 		return -1;
 	}
 	catch (...)
@@ -53,7 +50,8 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	std::cout << "MPRT termination !!!" << std::endl;
+	std::cout << "press any key to exit ..." << std::endl;
 	std::cin.get();
+
 	return 0;
 }

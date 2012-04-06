@@ -1,13 +1,9 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <mrpt/core.h>
 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
 namespace {
+namespace local {
 
 void extract_features(const mrpt::utils::CMRPTImage &img, const unsigned int mode, mrpt::vision::CFeatureList &features)
 {
@@ -305,6 +301,7 @@ void display_features(const mrpt::utils::CMRPTImage &image1, const mrpt::utils::
 	win1.waitForKey();
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void feature_extraction_and_matching()
@@ -326,7 +323,7 @@ void feature_extraction_and_matching()
 
 		const unsigned int mode = 0x08;
 		mrpt::vision::CFeatureList features;
-		extract_features(img, mode, features);
+		local::extract_features(img, mode, features);
 
 #if MRPT_HAS_WXWIDGETS
 		{
@@ -366,8 +363,8 @@ void feature_extraction_and_matching()
 
 		const unsigned int mode = 0x08;
 		mrpt::vision::CFeatureList features1, features2;
-		extract_features(img1, mode, features1);
-		extract_features(img2, mode, features2);
+		local::extract_features(img1, mode, features1);
+		local::extract_features(img2, mode, features2);
 
 		mrpt::vision::TDescriptorType descriptorType;
 		switch (mode)
@@ -395,7 +392,7 @@ void feature_extraction_and_matching()
 		}
 		std::vector<unsigned int> minDistanceFeatureIndexes;
 		minDistanceFeatureIndexes.reserve(features1.size());
-		match_features(features1, features2, descriptorType, minDistanceFeatureIndexes);
+		local::match_features(features1, features2, descriptorType, minDistanceFeatureIndexes);
 
 		//
 		const unsigned int featureIdx = 50;
@@ -404,6 +401,6 @@ void feature_extraction_and_matching()
 		//display_descriptors(features1, features2, descriptorType, featureIdx, minDistanceFeatureIndexes[featureIdx]);
 
 		// display features
-		display_features(img1, img2, features1, features2, featureIdx, minDistanceFeatureIndexes[featureIdx]);
+		local::display_features(img1, img2, features1, features2, featureIdx, minDistanceFeatureIndexes[featureIdx]);
 	}
 }

@@ -1,13 +1,14 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <mrpt/core.h>
 #include <iostream>
 #include <fstream>
 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+namespace {
+namespace local {
 
+}  // namespace local
+}  // unnamed namespace
 
 void icp()
 {

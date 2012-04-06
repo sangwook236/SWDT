@@ -1,14 +1,10 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <mrpt/core.h>
 #include <cassert>
 
 
-#ifdef _DEBUG
-//#define new DEBUG_NEW
-#endif
-
-
 namespace {
+namespace local {
 
 void ransac_3d_plane_fit(const mrpt::math::CMatrixDouble &allData, const mrpt::vector_size_t &useIndices, std::vector<mrpt::math::CMatrixDouble> &fitModels)
 {
@@ -335,12 +331,13 @@ void ransac_lines()
 	}
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void ransac()
 {
-	//ransac_3d_plane();
+	//local::ransac_3d_plane();
 
-	ransac_planes();
-	//ransac_lines();
+	local::ransac_planes();
+	//local::ransac_lines();
 }

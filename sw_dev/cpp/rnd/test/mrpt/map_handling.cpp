@@ -1,13 +1,9 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <mrpt/core.h>
 
 
-#ifdef _DEBUG
-//#define new DEBUG_NEW
-#endif
-
-
 namespace {
+namespace local {
 
 void map_handling_basic()
 {
@@ -217,10 +213,11 @@ void map_handling__bitmap2pointmap()
 	std::cout << " done." << std::endl;
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void map_handling()
 {
-	//map_handling_basic();
-	map_handling__bitmap2pointmap();
+	//local::map_handling_basic();
+	local::map_handling__bitmap2pointmap();
 }

@@ -1,5 +1,12 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <libplayerc++/playerc++.h>
+
+
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
 
 void simple_example()
 {

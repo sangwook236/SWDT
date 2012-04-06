@@ -9,6 +9,12 @@
 #include <boost/thread/thread.hpp>
 
 
+namespace {
+namespace local {
+	
+}  // namespace local
+}  // unnamed namespace
+
 void greedy_projection()
 {
 	// load input file into a PointCloud<T> with an appropriate type

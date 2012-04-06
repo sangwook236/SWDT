@@ -4,6 +4,12 @@
 #include <pcl/surface/mls.h>
 
 
+namespace {
+namespace local {
+	
+}  // namespace local
+}  // unnamed namespace
+
 void resampling()
 {
 	// load input file into a PointCloud<T> with an appropriate type

@@ -1,11 +1,10 @@
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <iostream>
 
 
-#if defined(_UNICODE) || defined(UNICODE)
-int wmain(int argc, wchar_t* argv[])
-#else
-int main(int argc, char* argv[])
-#endif
+int main(int argc, char *argv[])
 {
 	void resampling();
 	void greedy_projection();
@@ -21,16 +20,15 @@ int main(int argc, char* argv[])
 	}
 	catch (const std::exception &e)
 	{
-		std::wcout << L"exception occurred !!!: " << e.what() << std::endl;
+		std::cout << "exception occurred !!!: " << e.what() << std::endl;
 	}
 	catch (...)
 	{
-		std::wcout << L"unknown exception occurred !!!" << std::endl;
+		std::cout << "unknown exception occurred !!!" << std::endl;
 	}
 
-	std::wcout << L"press any key to exit ..." << std::endl;
-	std::wcout.flush();
-	std::wcin.get();
+	std::cout << "press any key to exit ..." << std::endl;
+	std::cin.get();
 
     return 0;
 }

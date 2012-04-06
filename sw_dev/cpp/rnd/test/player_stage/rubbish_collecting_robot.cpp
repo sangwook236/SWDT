@@ -1,13 +1,14 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <libplayerc++/playerc++.h>
+#include <iostream>
+#include <limits>
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
-#include <limits>
-#include <iostream>
 
 
 namespace {
+namespace local {
 
 struct item_t
 {
@@ -15,7 +16,6 @@ struct item_t
 	double x;
 	double y;
 };
-
 
 void wander(double &forwardSpeed, double &turnSpeed)
 {
@@ -173,6 +173,7 @@ void refreshItemList(item_t *itemList, PlayerCc::SimulationProxy &simProxy)
 	}
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 
@@ -186,7 +187,7 @@ void rubbish_collecting_robot(int argc, char *argv[])
 
 	double forwardSpeed, turnSpeed;
 	const size_t itemCount = 8;
-	item_t itemList[itemCount];
+	local::item_t itemList[itemCount];
 	const double laserMaxDetectionRange = 0.25;
 
 	//
@@ -217,7 +218,7 @@ void rubbish_collecting_robot(int argc, char *argv[])
 	PlayerCc::LaserProxy laserProxy2(&robot2, 0);
 #endif
 
-	refreshItemList(itemList, simProxy);
+	local::refreshItemList(itemList, simProxy);
 #if __SIMULATION_MODE == 2
 	refreshItemList(itemList, simProxy2);
 #endif
@@ -258,13 +259,13 @@ void rubbish_collecting_robot(int argc, char *argv[])
 		{
 			// wander
 			std::cout << "wandering" << std::endl;
-			wander(forwardSpeed, turnSpeed);
+			local::wander(forwardSpeed, turnSpeed);
 		}
 		else
 		{
 			// move towards the item
 			std::cout << "moving to item" << std::endl;
-			moveToItem(forwardSpeed, turnSpeed, blobProxy);
+			local::moveToItem(forwardSpeed, turnSpeed, blobProxy);
 
 			// FIXME [delete] >>
 			std::cout << "forwardSpeed: " << forwardSpeed << ", turnSpeed: " << turnSpeed << std::endl;
@@ -283,16 +284,16 @@ void rubbish_collecting_robot(int argc, char *argv[])
 
 		if (laserProxy[90] < laserMaxDetectionRange)
 		{
-			const int destroyThis = findItem(robotNames[0], itemList, itemCount, simProxy);
+			const int destroyThis = local::findItem(robotNames[0], itemList, itemCount, simProxy);
 
 			// move it out of the simulation
 			std::cout << "collecting item" << std::endl;
 			simProxy.SetPose2d(itemList[destroyThis].name, -10, -10, 0);
-			refreshItemList(itemList, simProxy);
+			local::refreshItemList(itemList, simProxy);
 		}
 
 		// avoid obstacles
-		avoidObstacles(forwardSpeed, turnSpeed, sonarProxy);
+		local::avoidObstacles(forwardSpeed, turnSpeed, sonarProxy);
 
 		// FIXME [delete] >>
 		std::cout << "forwardSpeed: " << forwardSpeed << ", turnSpeed: " << turnSpeed << std::endl;

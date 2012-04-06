@@ -1,13 +1,9 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <mrpt/core.h>
 
 
-#ifdef _DEBUG
-//#define new DEBUG_NEW
-#endif
-
-
 namespace {
+namespace local {
 
 struct PfLocalizationOptions
 {
@@ -180,6 +176,7 @@ void pf_localization(const PfLocalizationOptions &options)
 	}
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void localization_pf()
@@ -194,7 +191,7 @@ void localization_pf()
 	}
 
 	//
-	PfLocalizationOptions options;
+	local::PfLocalizationOptions options;
 
 	mrpt::utils::CConfigFile iniFile(iniFileName);
 
@@ -243,5 +240,5 @@ void localization_pf()
 
 	//
 	std::cout << std::endl << "PF localization ...." << std::endl;
-	pf_localization(options);
+	local::pf_localization(options);
 }

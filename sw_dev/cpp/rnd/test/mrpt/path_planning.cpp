@@ -1,13 +1,9 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <mrpt/core.h>
 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
 namespace {
+namespace local {
 
 void path_planning_1()
 {
@@ -204,10 +200,11 @@ void path_planning_2()
 #endif
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void path_planning()
 {
 	//path_planning_1();
-	path_planning_2();
+	local::path_planning_2();
 }

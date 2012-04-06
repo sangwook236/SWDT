@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="mrpt" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="..\..\bin\mrpt" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin\" />
+				<Option object_output=".\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="..\..\bin\mrpt" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin\" />
+				<Option object_output=".\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="dijkstra.cpp" />
+		<Unit filename="feature_extraction_and_matching.cpp" />
+		<Unit filename="icp.cpp" />
+		<Unit filename="localization_pf.cpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="map_handling.cpp" />
+		<Unit filename="path_planning.cpp" />
+		<Unit filename="ransac.cpp" />
+		<Unit filename="rawlog.cpp" />
+		<Unit filename="rawlog_grabber.cpp" />
+		<Unit filename="slam_icp.cpp" />
+		<Unit filename="slam_kf.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

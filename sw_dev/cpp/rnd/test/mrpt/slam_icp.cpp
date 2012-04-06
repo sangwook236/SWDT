@@ -1,18 +1,14 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <mrpt/core.h>
 #include <iostream>
 #include <fstream>
-
-
-#ifdef _DEBUG
-//#define new DEBUG_NEW
-#endif
 
 
 using mrpt::utils::DEG2RAD;
 using mrpt::utils::RAD2DEG;
 
 namespace {
+namespace local {
 
 struct IcpSlamOptions
 {
@@ -391,6 +387,7 @@ void icp_slam_map_building(const IcpSlamOptions &options, const bool useRawLogFi
 	//MRPT_TRY_END
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 
@@ -411,7 +408,7 @@ void slam_icp()
 
 	mrpt::utils::CConfigFile iniFile(INI_FILENAME);
 
-	IcpSlamOptions options;
+	local::IcpSlamOptions options;
 
 	// load config from file
 	//--S [] 2009/08/08: Sang-Wook Lee
@@ -485,5 +482,5 @@ void slam_icp()
 
 	//
 	std::cout << std::endl << "map building ...." << std::endl;
-	icp_slam_map_building(options, useRawLogFile);
+	local::icp_slam_map_building(options, useRawLogFile);
 }
