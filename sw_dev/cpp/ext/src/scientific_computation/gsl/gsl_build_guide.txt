@@ -1,4 +1,4 @@
-[ref] sw_dev/cpp/ext/src/linear_algebra/blas_lapack_usage_guide.txt
+[ref] sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
 [] Building library using MSVC10
 	-. library building
