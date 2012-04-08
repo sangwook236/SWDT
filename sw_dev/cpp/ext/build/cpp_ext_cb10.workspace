@@ -3,7 +3,7 @@
 	<Workspace title="Workspace">
 		<Project filename="../test/armadillo/armadillo_cb10.cbp" />
 		<Project filename="../test/atlas/atlas_cb10.cbp" />
-		<Project filename="../test/boost/boost_cb10.cbp" />
+		<Project filename="../test/boost/boost_cb10.cbp" active="1" />
 		<Project filename="../test/cairo/cairo_cb10.cbp" />
 		<Project filename="../test/cgal/cgal_cb10.cbp" />
 		<Project filename="../test/cppunit/cppunit_cb10.cbp" />
@@ -22,7 +22,7 @@
 		<Project filename="../test/sqlite/sqlite_cb10.cbp" />
 		<Project filename="../test/xercesc/xercesc_cb10.cbp" />
 		<Project filename="../test/yaml/yaml_cb10.cbp" />
-		<Project filename="../test/zlib/zlib_cb10.cbp" active="1" />
+		<Project filename="../test/zlib/zlib_cb10.cbp" />
 		<Project filename="../test/valgrind/valgrind_cb10.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
