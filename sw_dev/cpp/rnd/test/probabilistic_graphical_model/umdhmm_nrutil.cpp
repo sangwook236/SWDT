@@ -166,4 +166,4 @@ void free_convert_matrix(float **b, int nrl, int nrh, int ncl, int nch)
 	free((char *)(b + nrl));
 }
 
-}  // umdhmm
+}  // namespace umdhmm

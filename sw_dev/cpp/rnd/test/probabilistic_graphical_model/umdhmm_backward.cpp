@@ -72,4 +72,4 @@ void BackwardWithScale(HMM *phmm, int T, int *O, double **beta, double *scale, d
 	}
 }
 
-}  // umdhmm
+}  // namespace umdhmm

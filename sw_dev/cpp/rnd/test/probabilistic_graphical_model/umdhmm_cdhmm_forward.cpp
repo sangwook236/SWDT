@@ -17,19 +17,16 @@ static char rcsid[] = "$Id: forward.c,v 1.2 1998/02/19 12:42:31 kanungo Exp kanu
 
 void Forward(CDHMM *phmm, int T, double **O, double **alpha, double *pprob)
 {
-	int     i, j;   /* state indices */
-	int     t;      /* time index */
+	int i, j;  // state indices
+	int t;  // time index
 
-	double sum;     /* partial sum */
-
-	/* 1. Initialization */
-
+	// 1. Initialization
 	for (i = 1; i <= phmm->N; ++i)
 		//alpha[1][i] = phmm->pi[i] * phmm->B[i][O[1]];
-		alpha[1][i] = phmm->pi[i] * (phmm->pdf(O[1], i, phmm->params));
+		alpha[1][i] = phmm->pi[i] * (phmm->pdf(O[1], i, phmm->set_of_params));
 
-	/* 2. Induction */
-
+	// 2. Induction
+	double sum;  // partial sum
 	for (t = 1; t < T; ++t)
 	{
 		for (j = 1; j <= phmm->N; ++j)
@@ -39,38 +36,35 @@ void Forward(CDHMM *phmm, int T, double **O, double **alpha, double *pprob)
 				sum += alpha[t][i] * (phmm->A[i][j]);
 
 			//alpha[t+1][j] = sum * (phmm->B[j][O[t+1]]);
-			alpha[t+1][j] = sum * (phmm->pdf(O[t+1], j, phmm->params));
+			alpha[t+1][j] = sum * (phmm->pdf(O[t+1], j, phmm->set_of_params));
 		}
 	}
 
-	/* 3. Termination */
+	// 3. Termination
 	*pprob = 0.0;
 	for (i = 1; i <= phmm->N; ++i)
 		*pprob += alpha[T][i];
 }
 
 void ForwardWithScale(CDHMM *phmm, int T, double **O, double **alpha, double *scale, double *pprob)
-/*  pprob is the LOG probability */
+// pprob is the LOG probability
 {
-	int	i, j; 	/* state indices */
-	int	t;	/* time index */
+	int	i, j;  // state indices
+	int	t;	// time index
 
-	double sum;	/* partial sum */
-
-	/* 1. Initialization */
-
+	// 1. Initialization
 	scale[1] = 0.0;
 	for (i = 1; i <= phmm->N; ++i)
 	{
 		//alpha[1][i] = phmm->pi[i] * (phmm->B[i][O[1]]);
-		alpha[1][i] = phmm->pi[i] * (phmm->pdf(O[1], i, phmm->params));
+		alpha[1][i] = phmm->pi[i] * (phmm->pdf(O[1], i, phmm->set_of_params));
 		scale[1] += alpha[1][i];
 	}
 	for (i = 1; i <= phmm->N; ++i)
 		alpha[1][i] /= scale[1];
 
-	/* 2. Induction */
-
+	// 2. Induction
+	double sum;  // partial sum
 	for (t = 1; t <= T - 1; ++t)
 	{
 		scale[t+1] = 0.0;
@@ -81,18 +75,18 @@ void ForwardWithScale(CDHMM *phmm, int T, double **O, double **alpha, double *sc
 				sum += alpha[t][i] * (phmm->A[i][j]);
 
 			//alpha[t+1][j] = sum * (phmm->B[j][O[t+1]]);
-			alpha[t+1][j] = sum * (phmm->pdf(O[t+1], j, phmm->params));
+			alpha[t+1][j] = sum * (phmm->pdf(O[t+1], j, phmm->set_of_params));
 			scale[t+1] += alpha[t+1][j];
 		}
 		for (j = 1; j <= phmm->N; ++j)
 			alpha[t+1][j] /= scale[t+1];
 	}
 
-	/* 3. Termination */
+	// 3. Termination
 	*pprob = 0.0;
 
 	for (t = 1; t <= T; ++t)
 		*pprob += std::log(scale[t]);
 }
 
-}  // umdhmm
+}  // namespace umdhmm

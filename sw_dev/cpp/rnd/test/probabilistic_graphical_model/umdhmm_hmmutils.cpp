@@ -10,6 +10,7 @@
 
 #include "umdhmm_nrutil.h"
 #include "umdhmm_hmm.h"
+#include "umdhmm_cdhmm.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
@@ -75,7 +76,7 @@ void InitHMM(HMM *phmm, int N, int M, int seed)
 	phmm->M = M;
 	phmm->N = N;
 
-	phmm->A = (double **) dmatrix(1, phmm->N, 1, phmm->N);
+	phmm->A = (double **)dmatrix(1, phmm->N, 1, phmm->N);
 	for (i = 1; i <= phmm->N; ++i)
 	{
 		sum = 0.0;
@@ -88,7 +89,7 @@ void InitHMM(HMM *phmm, int N, int M, int seed)
 			phmm->A[i][j] /= sum;
 	}
 
-	phmm->B = (double **) dmatrix(1, phmm->N, 1, phmm->M);
+	phmm->B = (double **)dmatrix(1, phmm->N, 1, phmm->M);
 	for (j = 1; j <= phmm->N; ++j)
 	{
 		sum = 0.0;
@@ -163,4 +164,4 @@ void PrintHMM(FILE *fp, HMM *phmm)
 	fprintf(fp, "\n\n");
 }
 
-}  // umdhmm
+}  // namespace umdhmm

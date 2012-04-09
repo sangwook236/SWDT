@@ -28,7 +28,7 @@ struct CDHMM
 	int M;  // number of observation symbols; V={1,2,...,M}
 	double *pi;  // pi[1..N] pi[i] is the initial state distribution.
 	double **A;  // A[1..N][1..N]. a[i][j] is the transition prob. of going from state i at time t to state j at time t+1
-	void *params;  // parameters of the observation (emission) probability 
+	void *set_of_params;  // parameters of the observation (emission) probability 
 
 	// if state == 1, hidden state = [ 1 0 0 ... 0 0 ]
 	// if state == 2, hidden state = [ 0 1 0 ... 0 0 ]
@@ -37,28 +37,21 @@ struct CDHMM
 	double (*pdf)(const double *symbol, const int state, const void *params);  // the observation (emission) probability of observing symbol in state
 };
 
-/*
-void ReadHMM(FILE *fp, CDHMM *phmm);
-void PrintHMM(FILE *fp, CDHMM *phmm);
-void InitHMM(CDHMM *phmm, int N, int M, int seed);
-*/
-void CopyHMM(CDHMM *phmm1, CDHMM *phmm2);
-void FreeHMM(CDHMM *phmm);
+void ReadCDHMM_UnivariateNormal(FILE *fp, CDHMM *phmm);
+void PrintCDHMM_UnivariateNormal(FILE *fp, CDHMM *phmm);
+void InitCDHMM_UnivariateNormal(CDHMM *phmm, int N, int M, int seed);
+void CopyCDHMM_UnivariateNormal(CDHMM *phmm1, CDHMM *phmm2);
+void FreeCDHMM_UnivariateNormal(CDHMM *phmm);
 
-/*
-//void ReadSequence(FILE *fp, int *pT, int **pO);
-//void PrintSequence(FILE *fp, int T, double **O);
-void GenSequenceArray(CDHMM *phmm, int seed, int T, double **O, int *q);
-int GenInitalState(CDHMM *phmm);
-int GenNextState(CDHMM *phmm, int q_t);
-int GenSymbol(CDHMM *phmm, int q_t);
-*/
+void ReadSequence(FILE *fp, int *pT, int *pM, double ***pO);
+void PrintSequence(FILE *fp, int T, int M, double **O);
+void GenSequenceArray_UnivariateNormal(CDHMM *phmm, int seed, int T, double **O, int *q);
 
 void Forward(CDHMM *phmm, int T, double **O, double **alpha, double *pprob);
 void ForwardWithScale(CDHMM *phmm, int T, double **O, double **alpha, double *scale, double *pprob);
 void Backward(CDHMM *phmm, int T, double **O, double **beta, double *pprob);
 void BackwardWithScale(CDHMM *phmm, int T, double **O, double **beta, double *scale, double *pprob);
-void BaumWelch(CDHMM *phmm, int T, double **O, const double tol, double **alpha, double **beta, double **gamma, int *niter, double *plogprobinit, double *plogprobfinal);
+void BaumWelch_UnivariateNormal(CDHMM *phmm, int T, double **O, const double tol, double **alpha, double **beta, double **gamma, int *niter, double *plogprobinit, double *plogprobfinal);
 void Viterbi(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *q, double *pprob);
 void ViterbiLog(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *q, double *pprob);
 
@@ -74,7 +67,7 @@ struct UnivariateNormalParams
 
 struct MultivariateNormalParams
 {
-	size_t dim;  // the number of observation symbols
+	//size_t dim;  // the number of observation symbols
 	double *mean;
 	double *covar;
 };
@@ -87,17 +80,20 @@ struct vonMisesParams
 
 struct vonMisesFisherParams
 {
-	size_t dim;  // the number of observation symbols
+	//size_t dim;  // the number of observation symbols
 	double *mean;
 	double kappa;
 };
 
-double univariate_normal_distribution(const double *symbol, const int state, const void *parameters);
-double multivariate_normal_distribution(const double *symbol, const int state, const void *parameters);
-double von_mises_distribution(const double *symbol, const int state, const void *parameters);
-double von_mises_fisher_distribution(const double *symbol, const int state, const void *parameters);
+double univariate_normal_distribution(const double *symbol, const int state, const void *set_of_parameters);
+double multivariate_normal_distribution(const double *symbol, const int state, const void *set_of_parameters);
+double von_mises_distribution(const double *symbol, const int state, const void *set_of_parameters);
+double von_mises_fisher_distribution(const double *symbol, const int state, const void *set_of_parameters);
 
-}  // umdhmm
+UnivariateNormalParams * AllocSetOfParams_UnivariateNormal(int nl, int nh);
+void FreeSetOfParams_UnivariateNormal(void *s, int nl, int nh);
+
+}  // namespace umdhmm
 
 
 #endif  // __umdhmm_cdhmm_h__

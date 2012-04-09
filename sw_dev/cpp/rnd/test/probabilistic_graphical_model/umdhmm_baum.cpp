@@ -54,7 +54,7 @@ void BaumWelch(HMM *phmm, int T, int *O, const double tol, double **alpha, doubl
 		for (i = 1; i <= phmm->N; ++i)
 			phmm->pi[i] = .001 + .999 * gamma[1][i];
 
-		/* reestimate transition matrix  and symbol prob in each state */
+		/* reestimate transition matrix and symbol prob in each state */
 		for (i = 1; i <= phmm->N; ++i)
 		{
 			denominatorA = 0.0;
@@ -92,10 +92,10 @@ void BaumWelch(HMM *phmm, int T, int *O, const double tol, double **alpha, doubl
 		delta = logprobf - logprobprev;
 		logprobprev = logprobf;
 		++l;
-	} while (delta > tol); /* if log probability does not change much, exit */
+	} while (delta > tol);  /* if log probability does not change much, exit */
 
 	*pniter = l;
-	*plogprobfinal = logprobf; /* log P(O|estimated model) */
+	*plogprobfinal = logprobf;  /* log P(O | estimated model) */
 	FreeXi(xi, T, phmm->N);
 	free_dvector(scale, 1, T);
 }
@@ -120,7 +120,7 @@ void ComputeGamma(HMM *phmm, int T, double **alpha, double **beta, double **gamm
 	}
 }
 
-void ComputeXi(HMM* phmm, int T, int *O, double **alpha, double **beta, double ***xi)
+void ComputeXi(HMM *phmm, int T, int *O, double **alpha, double **beta, double ***xi)
 {
 	int i, j;
 	int t;
@@ -132,7 +132,7 @@ void ComputeXi(HMM* phmm, int T, int *O, double **alpha, double **beta, double *
 		for (i = 1; i <= phmm->N; ++i)
 			for (j = 1; j <= phmm->N; ++j)
 			{
-				xi[t][i][j] = alpha[t][i]*beta[t+1][j] * (phmm->A[i][j]) * (phmm->B[j][O[t+1]]);
+				xi[t][i][j] = alpha[t][i] * beta[t+1][j] * (phmm->A[i][j]) * (phmm->B[j][O[t+1]]);
 				sum += xi[t][i][j];
 			}
 
@@ -163,4 +163,4 @@ void FreeXi(double ***xi, int T, int N)
 	free(xi);
 }
 
-}  // umdhmm
+}  // namespace umdhmm

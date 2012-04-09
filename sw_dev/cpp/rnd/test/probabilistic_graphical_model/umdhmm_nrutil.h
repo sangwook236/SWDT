@@ -34,7 +34,14 @@ void free_submatrix(float **b, int nrl, int nrh, int ncl, int nch);
 float ** convert_matrix(float *a, int nrl, int nrh, int ncl, int nch);
 void free_convert_matrix(float **b, int nrl, int nrh, int ncl, int nch);
 
-}  // umdhmm
+/* random number generator related functions */
+
+int hmmgetseed(void);
+void hmmsetseed(int seed);
+double hmmgetrand(void);
+double hmmgetrand(double lb, double ub);
+
+}  // namespace umdhmm
 
 
 #endif  // __umdhmm_nrutil_h__

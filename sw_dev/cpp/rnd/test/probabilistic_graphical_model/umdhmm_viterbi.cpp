@@ -154,4 +154,4 @@ void ViterbiLog(HMM *phmm, int T, int *O, double **delta, int **psi, int *q, dou
 		q[t] = psi[t+1][q[t+1]];
 }
 
-}  // umdhmm
+}  // namespace umdhmm

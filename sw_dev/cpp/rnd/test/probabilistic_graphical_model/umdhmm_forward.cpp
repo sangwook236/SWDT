@@ -91,4 +91,4 @@ void ForwardWithScale(HMM *phmm, int T, int *O, double **alpha, double *scale, d
 		*pprob += std::log(scale[t]);
 }
 
-}  // umdhmm
+}  // namespace umdhmm

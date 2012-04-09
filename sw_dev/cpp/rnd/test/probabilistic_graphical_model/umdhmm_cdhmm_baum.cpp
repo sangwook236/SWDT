@@ -17,6 +17,7 @@
 
 #include "umdhmm_nrutil.h"
 #include "umdhmm_cdhmm.h"
+#include "umdhmm_hmm.h"
 #include <cmath>
 
 
@@ -24,39 +25,37 @@ namespace umdhmm {
 
 static char rcsid[] = "$Id: baumwelch.c,v 1.6 1999/04/24 15:58:43 kanungo Exp kanungo $";
 
-void BaumWelch(CDHMM *phmm, int T, double **O, const double tol, double **alpha, double **beta, double **gamma, int *pniter, double *plogprobinit, double *plogprobfinal)
+void BaumWelch_UnivariateNormal(CDHMM *phmm, int T, double **O, const double tol, double **alpha, double **beta, double **gamma, int *pniter, double *plogprobinit, double *plogprobfinal)
 {
-	int	i, j, k;
-	int	t, l = 0;
+	double ***xi = AllocXi(T, phmm->N);
+	double *scale = dvector(1, T);
 
-	double	logprobf, logprobb;
-	double	numeratorA, denominatorA;
-	double	numeratorB, denominatorB;
-
-	double ***xi, *scale;
-	double delta, deltaprev, logprobprev;
-
-	deltaprev = 10e-70;
-
-	xi = AllocXi(T, phmm->N);
-	scale = dvector(1, T);
-
+	double logprobf, logprobb;
 	ForwardWithScale(phmm, T, O, alpha, scale, &logprobf);
-	*plogprobinit = logprobf; /* log P(O | initial model) */
 	BackwardWithScale(phmm, T, O, beta, scale, &logprobb);
 	ComputeGamma(phmm, T, alpha, beta, gamma);
 	ComputeXi(phmm, T, O, alpha, beta, xi);
-	logprobprev = logprobf;
 
+	*plogprobinit = logprobf;  // log P(O | initial model)
+	double logprobprev = logprobf;
+
+	umdhmm::UnivariateNormalParams *set_of_params = (umdhmm::UnivariateNormalParams *)phmm->set_of_params;
+
+	double numeratorA, denominatorA;
+	double numeratorP, denominatorP;
+	double delta; //, deltaprev = 10e-70;
+
+	int l = 0;
+	int	i, j;
+	int	t;
 	do
 	{
-		/* reestimate frequency of state i in time t=1 */
-		for (i = 1; i <= phmm->N; ++i)
-			phmm->pi[i] = .001 + .999 * gamma[1][i];
-
-		/* reestimate transition matrix  and symbol prob in each state */
 		for (i = 1; i <= phmm->N; ++i)
 		{
+			// reestimate frequency of state i in time t=1
+			phmm->pi[i] = .001 + .999 * gamma[1][i];
+
+			// reestimate transition matrix 
 			denominatorA = 0.0;
 			for (t = 1; t <= T - 1; ++t)
 				denominatorA += gamma[t][i];
@@ -69,18 +68,49 @@ void BaumWelch(CDHMM *phmm, int T, double **O, const double tol, double **alpha,
 				phmm->A[i][j] = .001 + .999 * numeratorA / denominatorA;
 			}
 
-			denominatorB = denominatorA + gamma[T][i];
+			// reestimate symbol prob in each state
+			denominatorP = denominatorA + gamma[T][i];
+#if 0
+			// for multivariate normal distributions
 			for (k = 1; k <= phmm->M; ++k)
 			{
-				numeratorB = 0.0;
+				numeratorP = 0.0;
 				for (t = 1; t <= T; ++t)
 				{
-					if (O[t] == k)
-						numeratorB += gamma[t][i];
+					numeratorP += gamma[t][i] * O[t][k];
 				}
-
-				phmm->B[i][k] = .001 + .999 * numeratorB / denominatorB;
+				set_of_params[i].mean[k] = .001 + .999 * numeratorP / denominatorP;
 			}
+#else
+			// for univariate normal distributions
+			numeratorP = 0.0;
+			for (t = 1; t <= T; ++t)
+			{
+				numeratorP += gamma[t][i] * O[t][1];
+			}
+			set_of_params[i].mean = .001 + .999 * numeratorP / denominatorP;
+#endif
+
+#if 0
+			// for multivariate normal distributions
+			for (k = 1; k <= phmm->M; ++k)
+			{
+				numeratorP = 0.0;
+				for (t = 1; t <= T; ++t)
+				{
+					numeratorP += gamma[t][i] * (O[t][k] - set_of_params[i].mean[k]) * (O[t][k] - set_of_params[i].mean[k]);
+				}
+				set_of_params[i].stddev[k] = .001 + .999 * numeratorP / denominatorP;
+			}
+#else
+			// for univariate normal distributions
+			numeratorP = 0.0;
+			for (t = 1; t <= T; ++t)
+			{
+				numeratorP += gamma[t][i] * (O[t][1] - set_of_params[i].mean) * (O[t][1] - set_of_params[i].mean);
+			}
+			set_of_params[i].stddev = .001 + .999 * numeratorP / denominatorP;
+#endif
 		}
 
 		ForwardWithScale(phmm, T, O, alpha, scale, &logprobf);
@@ -88,14 +118,14 @@ void BaumWelch(CDHMM *phmm, int T, double **O, const double tol, double **alpha,
 		ComputeGamma(phmm, T, alpha, beta, gamma);
 		ComputeXi(phmm, T, O, alpha, beta, xi);
 
-		/* compute difference between log probability of two iterations */
+		// compute difference between log probability of two iterations
 		delta = logprobf - logprobprev;
 		logprobprev = logprobf;
 		++l;
-	} while (delta > tol); /* if log probability does not change much, exit */
+	} while (delta > tol);  // if log probability does not change much, exit
 
 	*pniter = l;
-	*plogprobfinal = logprobf; /* log P(O|estimated model) */
+	*plogprobfinal = logprobf;  // log P(O | estimated model)
 	FreeXi(xi, T, phmm->N);
 	free_dvector(scale, 1, T);
 }
@@ -132,7 +162,8 @@ void ComputeXi(CDHMM* phmm, int T, double **O, double **alpha, double **beta, do
 		for (i = 1; i <= phmm->N; ++i)
 			for (j = 1; j <= phmm->N; ++j)
 			{
-				xi[t][i][j] = alpha[t][i]*beta[t+1][j] * (phmm->A[i][j]) * (phmm->B[j][O[t+1]]);
+				//xi[t][i][j] = alpha[t][i] * beta[t+1][j] * (phmm->A[i][j]) * (phmm->B[j][O[t+1]]);
+				xi[t][i][j] = alpha[t][i] * beta[t+1][j] * (phmm->A[i][j]) * (phmm->pdf(O[t+1], j, phmm->set_of_params));
 				sum += xi[t][i][j];
 			}
 
@@ -142,25 +173,4 @@ void ComputeXi(CDHMM* phmm, int T, double **O, double **alpha, double **beta, do
 	}
 }
 
-double *** AllocXi(int T, int N)
-{
-	double ***xi = (double ***)malloc(T * sizeof(double **));
-
-	--xi;
-
-	for (int t = 1; t <= T; ++t)
-		xi[t] = dmatrix(1, N, 1, N);
-
-	return xi;
-}
-
-void FreeXi(double ***xi, int T, int N)
-{
-	for (int t = 1; t <= T; ++t)
-		free_dmatrix(xi[t], 1, N, 1, N);
-
-	++xi;
-	free(xi);
-}
-
-}  // umdhmm
+}  // namespace umdhmm

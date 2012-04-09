@@ -56,16 +56,10 @@ void ComputeXi(HMM* phmm, int T, int *O, double **alpha, double **beta, double *
 void Viterbi(HMM *phmm, int T, int *O, double **delta, int **psi, int *q, double *pprob);
 void ViterbiLog(HMM *phmm, int T, int *O, double **delta, int **psi, int *q, double *pprob);
 
-/* random number generator related functions */
-
-int hmmgetseed(void);
-void hmmsetseed(int seed);
-double hmmgetrand(void);
-
 #define MAX(x,y)        ((x) > (y) ? (x) : (y))
 #define MIN(x,y)        ((x) < (y) ? (x) : (y))
 
-}  // umdhmm
+}  // namespace umdhmm
 
 
 #endif  // __umdhmm_hmm_h__

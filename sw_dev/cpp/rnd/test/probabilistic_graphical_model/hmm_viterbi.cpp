@@ -7,6 +7,10 @@
 #include <stdexcept>
 #include <cstdio>
 
+
+//#define __TEST_HMM_MODEL 1
+#define __TEST_HMM_MODEL 2
+
 void viterbi_algorithm();
 
 namespace {
@@ -35,8 +39,9 @@ void viterbi_algorithm_2()
 void hmm_with_discrete_multinomial_observations__viterbi_umdhmm()
 {
 	umdhmm::HMM hmm;
+
 	{
-#if 1
+#if __TEST_HMM_MODEL == 1
 		hmm.N = 3;  // the number of hidden states
 		hmm.M = 2;  // the number of observation symbols
 		const double pi[] = {
@@ -52,7 +57,7 @@ void hmm_with_discrete_multinomial_observations__viterbi_umdhmm()
 			0.75,  0.25,
 			0.25,  0.75
 		};
-#else
+#elif __TEST_HMM_MODEL == 2
 		hmm.N = 3;  // the number of hidden states
 		hmm.M = 2;  // the number of observation symbols
 		const double pi[] = {
@@ -93,9 +98,9 @@ void hmm_with_discrete_multinomial_observations__viterbi_umdhmm()
 	}
 
 	//
-#if 0
+#if 1
 	const int T = 50;  // length of observation sequence, T
-	int	*O = umdhmm::ivector(1, T);  // observation sequence O[1..T]
+	int *O = umdhmm::ivector(1, T);  // observation sequence O[1..T]
 	{
 		// use 1-based index
 		const int seq[] = {
@@ -107,7 +112,7 @@ void hmm_with_discrete_multinomial_observations__viterbi_umdhmm()
 	}
 #elif 0
 	const int T = 100;  // length of observation sequence, T
-	int	*O = umdhmm::ivector(1, T);  // observation sequence O[1..T]
+	int *O = umdhmm::ivector(1, T);  // observation sequence O[1..T]
 	{
 		// use 1-based index
 		const int seq[] = {
@@ -117,9 +122,9 @@ void hmm_with_discrete_multinomial_observations__viterbi_umdhmm()
 		for (int i = 1; i <= T; ++i)
 			O[i] = seq[i - 1];
 	}
-#elif 1
+#elif 0
 	const int T = 1500;  // length of observation sequence, T
-	int	*O = umdhmm::ivector(1, T);  // observation sequence O[1..T]
+	int *O = umdhmm::ivector(1, T);  // observation sequence O[1..T]
 	{
 		// use 1-based index
 		const int seq[] = {
@@ -174,15 +179,138 @@ void hmm_with_discrete_multinomial_observations__viterbi_umdhmm()
 	umdhmm::FreeHMM(&hmm);
 }
 
-void cdhmm_with_gaussian_observations__viterbi_umdhmm()
+void cdhmm_with_univariate_gaussian_observations__viterbi_umdhmm()
 {
-	umdhmm::HMM hmm;
-	throw std::runtime_error("not yet implemented");
+	umdhmm::CDHMM cdhmm;
+
+	{
+#if __TEST_HMM_MODEL == 1
+		cdhmm.N = 3;  // the number of hidden states
+		cdhmm.M = 1;  // the number of observation symbols
+		const double pi[] = {
+			1.0/3.0, 1.0/3.0, 1.0/3.0
+		};
+		const double A[] = {
+			0.9,  0.05, 0.05,
+			0.45, 0.1,  0.45,
+			0.45, 0.45, 0.1
+		};
+#elif __TEST_HMM_MODEL == 2
+		cdhmm.N = 3;  // the number of hidden states
+		cdhmm.M = 2;  // the number of observation symbols
+		const double pi[] = {
+			1.0/3.0, 1.0/3.0, 1.0/3.0
+		};
+		const double A[] = {
+			0.5, 0.2,  0.2,
+			0.2, 0.4,  0.4,
+			0.1, 0.45, 0.45
+		};
+#endif
+
+		cdhmm.pi = (double *)umdhmm::dvector(1, cdhmm.N);
+		const double *ptr = pi;
+		for (int i = 1; i <= cdhmm.N; ++i, ++ptr)
+			cdhmm.pi[i] = *ptr;
+
+		cdhmm.A = (double **)umdhmm::dmatrix(1, cdhmm.N, 1, cdhmm.N);
+		ptr = A;
+		for (int i = 1; i <= cdhmm.N; ++i)
+		{
+			for (int j = 1; j <= cdhmm.N; ++j, ++ptr)
+				cdhmm.A[i][j] = *ptr;
+		}
+
+		umdhmm::UnivariateNormalParams *set_of_params = umdhmm::AllocSetOfParams_UnivariateNormal(1, cdhmm.N);
+		{
+#if __TEST_HMM_MODEL == 1
+			set_of_params[1].mean = 0.0;
+			set_of_params[1].stddev = 1.0;
+
+			set_of_params[2].mean = 30.0;
+			set_of_params[2].stddev = 2.0;
+
+			set_of_params[3].mean = -20.0;
+			set_of_params[3].stddev = 1.5;
+#elif __TEST_HMM_MODEL == 2
+			set_of_params[1].mean = 0.0;
+			set_of_params[1].stddev = 1.0;
+
+			set_of_params[2].mean = -30.0;
+			set_of_params[2].stddev = 2.0;
+
+			set_of_params[3].mean = 20.0;
+			set_of_params[3].stddev = 1.5;
+#endif
+		}
+		cdhmm.set_of_params = (void *)set_of_params;
+
+		cdhmm.pdf = &umdhmm::univariate_normal_distribution;
+	}
+
+	//
+	int T = 0;
+	int M = 0;
+	double **O = NULL;
+	{
+#if __TEST_HMM_MODEL == 1
+		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_50.seq", "r");
+		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_100.seq", "r");
+		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_1500.seq", "r");
+#elif __TEST_HMM_MODEL == 2
+		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_50.seq", "r");
+		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_100.seq", "r");
+		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_1500.seq", "r");
+#endif
+		umdhmm::ReadSequence(fp, &T, &M, &O);
+		fclose(fp);
+	}
+
+	//
+	int	*q = umdhmm::ivector(1, T);
+
+	double **delta = umdhmm::dmatrix(1, T, 1, cdhmm.N);
+	int	**psi = umdhmm::imatrix(1, T, 1, cdhmm.N);
+
+	//
+	std::cout << "------------------------------------" << std::endl;
+	std::cout << "Viterbi using direct probabilities" << std::endl;
+
+	double proba = 0.0; 
+	umdhmm::Viterbi(&cdhmm, T, O, delta, psi, q, &proba);
+
+	std::cout << "Viterbi MLE log prob = " << std::scientific << std::log(proba) << std::endl;
+	std::cout << "Optimal state sequence:" << std::endl;
+	umdhmm::PrintSequence(stdout, T, q);
+
+	//
+	std::cout << "------------------------------------" << std::endl;
+	std::cout << "Viterbi using log probabilities" << std::endl;
+
+	// note: ViterbiLog() returns back with log(A[i][j]) instead of leaving the A matrix alone.
+	//	If you need the original A, you can make a copy of hmm by calling CopyHMM
+
+	double logproba = 0.0; 
+	umdhmm::ViterbiLog(&cdhmm, T, O, delta, psi, q, &logproba); 
+
+	std::cout << "Viterbi MLE log prob = " << std::scientific << logproba << std::endl;
+	std::cout << "Optimal state sequence:" << std::endl;
+	umdhmm::PrintSequence(stdout, T, q);
+
+	std::cout << "------------------------------------" << std::endl;
+	std::cout << "The two log probabilites and optimal state sequences" << std::endl;
+	std::cout << "should identical (within numerical precision)." << std::endl;
+
+	//
+	umdhmm::free_ivector(q, 1, T);
+	umdhmm::free_dmatrix(O, 1, T, 1, cdhmm.M);
+	umdhmm::free_imatrix(psi, 1, T, 1, cdhmm.N);
+	umdhmm::free_dmatrix(delta, 1, T, 1, cdhmm.N);
+	umdhmm::FreeCDHMM_UnivariateNormal(&cdhmm);
 }
 
-void cdhmm_with_gaussian_mixture_observations__viterbi_umdhmm()
+void cdhmm_with_univariate_gaussian_mixture_observations__viterbi_umdhmm()
 {
-	umdhmm::HMM hmm;
 	throw std::runtime_error("not yet implemented");
 }
 
@@ -195,6 +323,6 @@ void hmm_viterbi()
 	//local::viterbi_algorithm_2();
 
 	local::hmm_with_discrete_multinomial_observations__viterbi_umdhmm();
-	//local::cdhmm_with_gaussian_observations__viterbi_umdhmm();  // not yet implemented
-	//local::cdhmm_with_gaussian_mixture_observations__viterbi_umdhmm();  // not yet implemented
+	local::cdhmm_with_univariate_gaussian_observations__viterbi_umdhmm();
+	//local::cdhmm_with_univariate_gaussian_mixture_observations__viterbi_umdhmm();  // not yet implemented
 }

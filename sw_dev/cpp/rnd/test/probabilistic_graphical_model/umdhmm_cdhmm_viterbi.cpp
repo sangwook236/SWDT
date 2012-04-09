@@ -22,23 +22,20 @@ static char rcsid[] = "$Id: viterbi.c,v 1.1 1999/05/06 05:25:37 kanungo Exp kanu
 
 void Viterbi(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *q, double *pprob)
 {
-	int 	i, j;	/* state indices */
-	int  	t;	/* time index */
+	int i, j;	// state indices
+	int t;	// time index
 
-	int	maxvalind;
-	double maxval, val;
-
-	/* 1. Initialization  */
-
+	// 1. Initialization
 	for (i = 1; i <= phmm->N; ++i)
 	{
 		//delta[1][i] = phmm->pi[i] * (phmm->B[i][O[1]]);
-		delta[1][i] = phmm->pi[i] * (phmm->pdf(O[1], i, phmm->params));
+		delta[1][i] = phmm->pi[i] * (phmm->pdf(O[1], i, phmm->set_of_params));
 		psi[1][i] = 0;
 	}
 
-	/* 2. Recursion */
-
+	// 2. Recursion
+	int	maxvalind;
+	double maxval, val;
 	for (t = 2; t <= T; ++t)
 	{
 		for (j = 1; j <= phmm->N; ++j)
@@ -56,13 +53,12 @@ void Viterbi(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *q, 
 			}
 
 			//delta[t][j] = maxval * (phmm->B[j][O[t]]);
-			delta[t][j] = maxval * (phmm->pdf(O[t], j, phmm->params));
+			delta[t][j] = maxval * (phmm->pdf(O[t], j, phmm->set_of_params));
 			psi[t][j] = maxvalind;
 		}
 	}
 
-	/* 3. Termination */
-
+	// 3. Termination
 	*pprob = 0.0;
 	q[T] = 1;
 	for (i = 1; i <= phmm->N; ++i)
@@ -74,49 +70,44 @@ void Viterbi(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *q, 
 		}
 	}
 
-	/* 4. Path (state sequence) backtracking */
-
+	// 4. Path (state sequence) backtracking
 	for (t = T - 1; t >= 1; --t)
 		q[t] = psi[t+1][q[t+1]];
 }
 
 void ViterbiLog(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *q, double *pprob)
 {
-	int     i, j;   /* state indices */
-	int     t;      /* time index */
+	int i, j;  // state indices
+	int t;  // time index
 
-	int     maxvalind;
-	double  maxval, val;
-	double  **biot;
-
-	/* 0. Preprocessing */
-
+	// 0. Preprocessing
+	double **biot = dmatrix(1, phmm->N, 1, T);
 	for (i = 1; i <= phmm->N; ++i)
+	{
 		phmm->pi[i] = std::log(phmm->pi[i]);
-	for (i = 1; i <= phmm->N; ++i)
+
 		for (j = 1; j <= phmm->N; ++j)
 		{
 			phmm->A[i][j] = std::log(phmm->A[i][j]);
 		}
 
-	biot = dmatrix(1, phmm->N, 1, T);
-	for (i = 1; i <= phmm->N; ++i)
 		for (t = 1; t <= T; ++t)
 		{
 			//biot[i][t] = std::log(phmm->B[i][O[t]]);
-			biot[i][t] = std::log(phmm->pdf(O[t], i, phmm->params));
+			biot[i][t] = std::log(phmm->pdf(O[t], i, phmm->set_of_params));
 		}
+	}
 
-	/* 1. Initialization  */
-
+	// 1. Initialization
 	for (i = 1; i <= phmm->N; ++i)
 	{
 		delta[1][i] = phmm->pi[i] + biot[i][1];
 		psi[1][i] = 0;
 	}
 
-	/* 2. Recursion */
-
+	// 2. Recursion
+	int maxvalind;
+	double maxval, val;
 	for (t = 2; t <= T; ++t)
 	{
 		for (j = 1; j <= phmm->N; ++j)
@@ -138,8 +129,7 @@ void ViterbiLog(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *
 		}
 	}
 
-	/* 3. Termination */
-
+	// 3. Termination
 	*pprob = -std::numeric_limits<double>::max();
 	q[T] = 1;
 	for (i = 1; i <= phmm->N; ++i)
@@ -151,10 +141,9 @@ void ViterbiLog(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *
 		}
 	}
 
-	/* 4. Path (state sequence) backtracking */
-
+	// 4. Path (state sequence) backtracking
 	for (t = T - 1; t >= 1; --t)
 		q[t] = psi[t+1][q[t+1]];
 }
 
-}  // umdhmm
+}  // namespace umdhmm

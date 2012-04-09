@@ -107,6 +107,7 @@
     <ClCompile Include="umdhmm_cdhmm_backward.cpp" />
     <ClCompile Include="umdhmm_baum.cpp" />
     <ClCompile Include="umdhmm_cdhmm_baum.cpp" />
+    <ClCompile Include="umdhmm_cdhmm_sequence.cpp" />
     <ClCompile Include="umdhmm_cdhmm_utils.cpp" />
     <ClCompile Include="umdhmm_forward.cpp" />
     <ClCompile Include="umdhmm_cdhmm_forward.cpp" />

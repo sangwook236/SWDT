@@ -7,6 +7,7 @@
 **		platform independent.
 */
 
+#include "umdhmm_nrutil.h"
 #include <sys/types.h>
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 #include <unistd.h>
@@ -48,4 +49,9 @@ double hmmgetrand(void)
 	return (double)std::rand() / RAND_MAX;
 }
 
-}  // umdhmm
+double hmmgetrand(double lb, double ub)
+{
+	return ((double)std::rand() / RAND_MAX) * (ub -lb) + lb;
+}
+
+}  // namespace umdhmm

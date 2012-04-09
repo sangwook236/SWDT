@@ -126,4 +126,4 @@ void PrintSequence(FILE *fp, int T, int *O)
 	fprintf(fp, "\n");
 }
 
-}  // umdhmm
+}  // namespace umdhmm
