@@ -121,7 +121,7 @@ void multi_array()
 	typedef boost::general_storage_order<3> storage_type;
 
 	// store last dimension, then first, then middle
-	array_type::size_type ordering[] = {2,0,1};
+	array_type::size_type ordering[] = { 2, 0, 1 };
 
 	// store the first dimension(dimension 0) in descending order
 	bool ascending[] = { false, true, true };
