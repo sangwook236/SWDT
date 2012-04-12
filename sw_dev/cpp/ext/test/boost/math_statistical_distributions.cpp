@@ -16,7 +16,7 @@ namespace local {
 
 void math_statistical_distributions()
 {
-	std::cout << "Example: Normal distribution, Miscellaneous Applications.";
+	std::cout << "Example: Normal distribution, Miscellaneous Applications." << std::endl;
 
 	{
 		// traditional tables and values.
@@ -39,7 +39,7 @@ void math_statistical_distributions()
 		std::cout.precision(6);  // default
 
 		// for a standard normal distribution
-		std::cout << "standard normal mean = "<< s.mean() << ", standard deviation = " << s.standard_deviation() << std::endl;
+		std::cout << "standard normal distribution: mean = "<< s.mean() << ", standard deviation = " << s.standard_deviation() << std::endl;
 		std::cout << "integral (area under the curve) from -infinity up to z " << std::endl;
 		std::cout << "  z " "      cdf " << std::endl;
 		for (double z = -range; z < range + step; z += step)

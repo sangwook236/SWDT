@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 			//multi_array();
 
 			//property_map();
-			property_tree();
+			//property_tree();
 		}
 
 		{
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
 			//math_constants();
 			//math_floating_point_utilities();
 			//math_special_functions();
-			//math_statistical_distributions();
+			math_statistical_distributions();
 			//random();
 			//ublas();
 			//math_bindings();
