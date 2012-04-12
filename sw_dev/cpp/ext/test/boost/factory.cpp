@@ -126,7 +126,7 @@ void factory_mapper()
 	factories["DerivedB"](2)->foo();
 }
 
-}  // local
+}  // namespace local
 }  // unnamed namespace
 
 void factory()

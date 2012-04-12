@@ -6,15 +6,8 @@
 #include <ctime>
 
 
-void statechart_stop_watch();
-
-
-void statechart()
-{
-	statechart_stop_watch();
-}
-
 namespace {
+namespace local {
 
 struct EvStartStop : boost::statechart::event<EvStartStop> {};
 struct EvReset : boost::statechart::event<EvReset> {};
@@ -80,8 +73,6 @@ struct Stopped : boost::statechart::simple_state<Stopped, Active>
 // breadth-first or depth-first way or employ a mixture of the
 // two.
 
-}  // namespace
-
 void statechart_stop_watch()
 {
 	StopWatch myWatch;
@@ -91,4 +82,12 @@ void statechart_stop_watch()
 	myWatch.process_event(EvStartStop());
 	myWatch.process_event(EvStartStop());
 	myWatch.process_event(EvReset());
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void statechart()
+{
+	local::statechart_stop_watch();
 }

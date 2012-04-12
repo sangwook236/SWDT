@@ -5,57 +5,60 @@
 #include <iostream>
 #include <string>
 
-namespace
+namespace {
+namespace local {
+
+struct Base
 {
-    struct Base
-    {
-		virtual ~Base()  {}
-        virtual char kind()  { return 'B'; }
-    };
+	virtual ~Base()  {}
+    virtual char kind()  { return 'B'; }
+};
 
-    struct Base2
-    {
-		virtual ~Base2()  {}
-        virtual char kind2()  { return '2'; }
-    };
+struct Base2
+{
+	virtual ~Base2()  {}
+    virtual char kind2()  { return '2'; }
+};
 
-    struct Derived : public Base, Base2
-    {
-        virtual char kind()  { return 'D'; }
-    };
-}  // namespace
+struct Derived : public Base, Base2
+{
+    virtual char kind()  { return 'D'; }
+};
+
+}  // namespace local
+}  // unnamed namespace
 
 void conversion()
 {
 	// polymorphic cast
 	{
-		Base* base = new Derived;
-		Base2* base2 = 0;
-		Derived* derived = 0;
-		derived = boost::polymorphic_downcast<Derived *>(base);  // downcast
+		local::Base *base = new local::Derived;
+		local::Base2 *base2 = 0;
+		local::Derived *derived = 0;
+		derived = boost::polymorphic_downcast<local::Derived *>(base);  // downcast
 		assert(derived->kind() == 'D');
 
 		derived = 0;
-		derived = boost::polymorphic_cast<Derived *>(base); // downcast, throw on error
+		derived = boost::polymorphic_cast<local::Derived *>(base); // downcast, throw on error
 		assert(derived->kind() == 'D');
 
-		base2 = boost::polymorphic_cast<Base2 *>(base); // crosscast
+		base2 = boost::polymorphic_cast<local::Base2 *>(base); // crosscast
 		assert(base2->kind2() == '2');
 		delete base2;
 
 		//  tests which should result in errors being detected
 		int err_count = 0;
-		base = new Base;
+		base = new local::Base;
 
 		//derived = boost::polymorphic_downcast<Derived *>(base);  // #1 assert failure
 
 		try
 		{
-			derived = boost::polymorphic_cast<Derived *>(base);
+			derived = boost::polymorphic_cast<local::Derived *>(base);
 		}
-		catch (const std::bad_cast&)
+		catch (const std::bad_cast &)
 		{
-			std::cout << "caught bad_cast\n";
+			std::cout << "caught bad_cast" << std::endl;
 		}
 
 		delete base;
@@ -85,11 +88,11 @@ void conversion()
 			const int i = 42;
 			const short s = boost::numeric_cast<short>(i);  // This conversion succeeds (is in range)
 		}
-		catch (const boost::numeric::negative_overflow& e)
+		catch (const boost::numeric::negative_overflow &e)
 		{
 			std::cout << "exception #1: " << e.what() << std::endl;
 		}
-		catch (const boost::numeric::positive_overflow& e)
+		catch (const boost::numeric::positive_overflow &e)
 		{
 			std::cout << "exception #2: " << e.what() << std::endl;
 		}
@@ -100,7 +103,7 @@ void conversion()
 			// This will cause a boost::numeric::negative_overflow exception to be thrown
 			const unsigned int i = boost::numeric_cast<unsigned int>(f);
 		}
-		catch (const boost::numeric::bad_numeric_cast& e)
+		catch (const boost::numeric::bad_numeric_cast &e)
 		{
 			std::cout << "exception #3: " << e.what() << std::endl;
 		}
@@ -117,7 +120,7 @@ void conversion()
 
 			const unsigned char c = boost::numeric_cast<unsigned char>(l);
 		}
-		catch (const boost::numeric::positive_overflow& e)
+		catch (const boost::numeric::positive_overflow &e)
 		{
 			std::cout << "exception #4: " << e.what() << std::endl;
 		}
@@ -136,7 +139,7 @@ void conversion()
 			const double m = boost::numeric::bounds<double>::highest();
 			const int z = boost::numeric::converter<int, double>::convert(m);  // By default throws positive_overflow()
 		}
-		catch (boost::numeric::positive_overflow const & e)
+		catch (const boost::numeric::positive_overflow const &e)
 		{
 			std::cout << "exception #1: " << e.what() << std::endl;
 		}

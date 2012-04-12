@@ -7,14 +7,8 @@
 #include <iostream>
 
 
-void asio_async_tcp_client();
-void asio_sync_tcp_client();
-
-void asio_tcp_client()
-{
-	//asio_async_tcp_client();
-	asio_sync_tcp_client();
-}
+namespace {
+namespace local {
 
 void asio_async_tcp_client()
 {
@@ -88,4 +82,13 @@ void asio_sync_tcp_client()
 	{
 		std::cerr << e.what() << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void asio_tcp_client()
+{
+	//local::asio_async_tcp_client();
+	local::asio_sync_tcp_client();
 }

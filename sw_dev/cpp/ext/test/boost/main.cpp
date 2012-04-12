@@ -9,11 +9,7 @@ int main(int argc, char *argv[])
 	void utility();
 	void utility_binary();
 
-#if defined(_UNICODE) || defined(UNICODE)
-	bool program_options(int argc, wchar_t* argv[]);
-#else
-	bool program_options(int argc, char* argv[]);
-#endif
+	bool program_options(int argc, char *argv[]);
 	void filesystem();
 	void conversion();
 	void type_traits();

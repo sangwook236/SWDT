@@ -4,18 +4,20 @@
 #include <vector>
 
 
+namespace {
+//namespace local {
+
 template<class T>
-std::ostream & operator<<(std::ostream& os, const std::vector<T>& v)
+std::ostream & operator<<(std::ostream &os, const std::vector<T> &v)
 {
 	std::copy(v.begin(), v.end(), std::ostream_iterator<T>(std::cout, " ")); 
 	return os;
 }
 
-#if defined(_UNICODE) || defined(UNICODE)
-bool program_options(int argc, wchar_t* argv[])
-#else
-bool program_options(int argc, char* argv[])
-#endif
+//}  // namespace local
+}  // unnamed namespace
+
+bool program_options(int argc, char *argv[])
 {
 	//---------------------------------------------------------------------------------------------
 	// step #1
@@ -81,7 +83,8 @@ bool program_options(int argc, char* argv[])
 	// --optimization=9 --input-file=/etc/passwd1 --input-file=/etc/passwd2 /etc/var/passwd3
 
 #if defined(_UNICODE) || defined(UNICODE)
-	boost::program_options::store(boost::program_options::wcommand_line_parser(argc, argv).options(cmdline_options).positional(p).run(), vm);
+	//boost::program_options::store(boost::program_options::wcommand_line_parser(argc, argv).options(cmdline_options).positional(p).run(), vm);
+	boost::program_options::store(boost::program_options::command_line_parser(argc, argv).options(cmdline_options).positional(p).run(), vm);
 #else
 	boost::program_options::store(boost::program_options::command_line_parser(argc, argv).options(cmdline_options).positional(p).run(), vm);
 #endif

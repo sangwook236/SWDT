@@ -5,7 +5,9 @@
 
 
 namespace {
+namespace local {
 
+}  // namespace local
 }  // unnamed namespace
 
 void math_bindings()

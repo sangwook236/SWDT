@@ -4,21 +4,8 @@
 #include <iostream>
 
 
-void bind_func();
-void bind_func_obj();
-void bind_mem_func_1();
-void bind_mem_func_2();
-
-void bind()
-{
-	bind_func();
-	bind_func_obj();
-	bind_mem_func_1();
-	bind_mem_func_2();
-}
-
-namespace
-{
+namespace {
+namespace local {
 
 int func_1(int a, int b)
 {
@@ -74,8 +61,6 @@ struct X
 		return true;
 	}
 };
-
-}  // unnamed namespace
 
 void bind_func()
 {
@@ -152,4 +137,15 @@ void bind_mem_func_2()
 	boost::bind(&X::func, &x, _1)(i);					// (&x)->func(i)
 	boost::bind(&X::func, x, _1)(i);					// (internal copy of x).func(i)
 	boost::bind(&X::func, p, _1)(i);					// (internal copy of p)->func(i)
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void bind()
+{
+	local::bind_func();
+	local::bind_func_obj();
+	local::bind_mem_func_1();
+	local::bind_mem_func_2();
 }

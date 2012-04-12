@@ -3,16 +3,16 @@
 #include <string>
 
 
-namespace
+namespace {
+namespace local {
+
+void	do_print_ch(char ch)  {  std::cout << ch << ' ' << std::endl;  }
+void	do_print_str(char const *start, char const *end)
 {
-	void	do_print_ch(char ch)  {  std::cout << ch << ' ' << std::endl;  }
-	void	do_print_str(char const *start, char const *end)
-	{
-		std::string str(start, end);
-		std::cout << std::string(start, end).c_str() <<  ' ' << std::endl;
-	}
-	void	do_print_int(unsigned int ui)  {  std::cout << ui <<  ' ' << std::endl;  }
+	std::string str(start, end);
+	std::cout << std::string(start, end).c_str() <<  ' ' << std::endl;
 }
+void	do_print_int(unsigned int ui)  {  std::cout << ui <<  ' ' << std::endl;  }
 
 ////////////////////////////////////////////////////////////////////////////
 struct CspRuleParser : public boost::spirit::classic::grammar<CspRuleParser>
@@ -71,6 +71,9 @@ struct CspRuleParser : public boost::spirit::classic::grammar<CspRuleParser>
 	};
 };
 
+}  // namespace local
+}  // unnamed namespace
+
 void spirit_classic()
 {
 	std::cout << "/////////////////////////////////////////////////////////\n\n";
@@ -78,7 +81,7 @@ void spirit_classic()
 	std::cout << "/////////////////////////////////////////////////////////\n\n";
 	std::cout << "Type an expression...or [q or Q] to quit\n\n";
 
-	CspRuleParser cspParser;    //  Our parser
+	local::CspRuleParser cspParser;    //  Our parser
 
 	std::string str;
 	while (std::getline(std::cin, str))
@@ -106,5 +109,3 @@ void spirit_classic()
 
 	std::cout << "Bye... :-) \n\n";
 }
-
-

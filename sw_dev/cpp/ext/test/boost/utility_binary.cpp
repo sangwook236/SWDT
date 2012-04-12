@@ -4,6 +4,7 @@
 
 
 namespace {
+namespace local {
 
 void func(const int &val)
 {
@@ -15,6 +16,7 @@ void func(const unsigned long &val)
 	std::cout << "void func(" << typeid(val).name() << ") is called: " << val << std::endl;
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void utility_binary()
@@ -31,6 +33,6 @@ void utility_binary()
 	std::cout << std::boolalpha << ((BOOST_BINARY(10010) & BOOST_BINARY(11000)) == BOOST_BINARY(10000)) << std::endl;
 
 	//
-	func(BOOST_BINARY(1010));
-	func(BOOST_BINARY_LU(1010));
+	local::func(BOOST_BINARY(1010));
+	local::func(BOOST_BINARY_LU(1010));
 }

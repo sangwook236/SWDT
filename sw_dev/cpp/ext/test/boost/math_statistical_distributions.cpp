@@ -9,7 +9,9 @@ using boost::math::negative_binomial;  // typedef provides default type is doubl
 
 
 namespace {
+namespace local {
 
+}  // namespace local
 }  // unnamed namespace
 
 void math_statistical_distributions()

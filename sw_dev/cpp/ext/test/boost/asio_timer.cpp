@@ -8,27 +8,18 @@
 #include <iostream>
 
 
-void asio_async_timer();
-void asio_sync_timer();
+namespace {
+namespace local {
 
-void asio_timer()
+void print(const boost::system::error_code & /*e*/, boost::asio::deadline_timer *t, int *count)
 {
-	asio_async_timer();
-	asio_sync_timer();
-}
-
-namespace
-{
-	void print(const boost::system::error_code& /*e*/, boost::asio::deadline_timer *t, int *count)
+	if (*count < 5)
 	{
-		if (*count < 5)
-		{
-			std::cout << *count << std::endl;
-			++(*count);
+		std::cout << *count << std::endl;
+		++(*count);
 
-			t->expires_at(t->expires_at() + boost::posix_time::seconds(1));
-			t->async_wait(boost::bind(print, boost::asio::placeholders::error, t, count));
-		}
+		t->expires_at(t->expires_at() + boost::posix_time::seconds(1));
+		t->async_wait(boost::bind(print, boost::asio::placeholders::error, t, count));
 	}
 }
 
@@ -55,4 +46,13 @@ void asio_sync_timer()
 	timer.wait();
 
 	std::cout << "3 secs are elapsed !!!" << std::endl;
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void asio_timer()
+{
+	local::asio_async_timer();
+	local::asio_sync_timer();
 }

@@ -2,14 +2,8 @@
 #include <iostream>
 
 
-void gregorian_basic();
-void posix_time_basic();
-
-void date_time()
-{
-	gregorian_basic();
-	posix_time_basic();
-}
+namespace {
+namespace local {
 
 void gregorian_basic()
 {
@@ -86,4 +80,13 @@ void posix_time_basic()
 	{
 		std::cout << (*titr) << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void date_time()
+{
+	local::gregorian_basic();
+	local::posix_time_basic();
 }

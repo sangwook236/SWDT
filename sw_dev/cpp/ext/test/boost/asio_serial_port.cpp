@@ -15,19 +15,9 @@
 #error Boost.Asio does not support serial port
 #endif
 
-void asio_async_serial_port_simple();
-void asio_async_serial_port_better();
-void asio_sync_serial_port();
 
-void asio_serial_port()
-{
-	//asio_async_serial_port_simple();
-	asio_async_serial_port_better();
-	//asio_sync_serial_port();
-}
-
-namespace
-{
+namespace {
+namespace local {
 
 class simple_serial_port_handler
 {
@@ -351,8 +341,6 @@ private:
 	boost::asio::io_service &ioService_;
 };
 
-}  // unnamed namespace
-
 void asio_async_serial_port_simple()
 {
 	try
@@ -513,4 +501,14 @@ void asio_sync_serial_port()
 	{
 		std::cerr << e.what() << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void asio_serial_port()
+{
+	//local::asio_async_serial_port_simple();
+	local::asio_async_serial_port_better();
+	//local::asio_sync_serial_port();
 }

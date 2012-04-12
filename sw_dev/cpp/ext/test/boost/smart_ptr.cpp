@@ -4,6 +4,9 @@
 #include <memory>
 
 
+namespace {
+namespace local {
+
 class Integer
 {
 public :
@@ -33,6 +36,8 @@ public :
 	double d;
 };
 
+}  // namespace local
+}  // unnamed namespace
 
 void smart_ptr()
 {
@@ -40,8 +45,8 @@ void smart_ptr()
 	//  test 1:
 	std::cout << "assign operator & use_count(), unique()" << std::endl;
 	{
-		boost::shared_ptr<Integer> a(new Integer(100));
-		boost::shared_ptr<Integer> b(new Integer(200));
+		boost::shared_ptr<local::Integer> a(new local::Integer(100));
+		boost::shared_ptr<local::Integer> b(new local::Integer(200));
 
 		a = b;
 		std::cout << a->get() << '\n';
@@ -58,10 +63,10 @@ void smart_ptr()
 	//  test 2:
 	std::cout << "with STL container" << std::endl;
 	{
-		std::list<boost::shared_ptr<Integer> > ctr;
+		std::list<boost::shared_ptr<local::Integer> > ctr;
 
 		{
-			boost::shared_ptr<Integer> a(new Integer(100));
+			boost::shared_ptr<local::Integer> a(new local::Integer(100));
 			ctr.push_back(a);
 			std::cout << a.use_count() << '\n';
 		}
@@ -69,18 +74,18 @@ void smart_ptr()
 
 		std::cout << "-------------------\n";
 
-		ctr.push_back(boost::shared_ptr<Integer>(new Integer(200)));
+		ctr.push_back(boost::shared_ptr<local::Integer>(new local::Integer(200)));
 		ctr.pop_back();
 
 		std::cout << "-------------------\n";
 
-		ctr.push_back(boost::shared_ptr<Integer>(new Integer(300)));
-		ctr.push_back(boost::shared_ptr<Integer>(new Integer(400)));
+		ctr.push_back(boost::shared_ptr<local::Integer>(new local::Integer(300)));
+		ctr.push_back(boost::shared_ptr<local::Integer>(new local::Integer(400)));
 		ctr.clear();
 
 		std::cout << "-------------------\n";
 
-		ctr.push_back(boost::shared_ptr<Integer>(new Integer(500)));
+		ctr.push_back(boost::shared_ptr<local::Integer>(new local::Integer(500)));
 	}
 
 	std::cout.flush();
@@ -90,8 +95,8 @@ void smart_ptr()
 	//  test 3: assignment operator & equality operator
 	std::cout << "assignment operator & equality operator" << std::endl;
 	{
-		boost::shared_ptr<Public> a(new Public(1, 2L, 3.0f, 4.0f));
-		boost::shared_ptr<Public> b(a);
+		boost::shared_ptr<local::Public> a(new local::Public(1, 2L, 3.0f, 4.0f));
+		boost::shared_ptr<local::Public> b(a);
 
 		std::cout << a->i << "  :  " << a->l << "  :  " << a->f << "  :  " << a->d << '\n';
 		std::cout << b->i << "  :  " << b->l << "  :  " << b->f << "  :  " << b->d << '\n';

@@ -4,21 +4,8 @@
 #include <iostream>
 
 
-void function_func();
-void function_func_obj();
-void function_mem_func();
-void function_compare();
-
-void function()
-{
-	function_func();
-	function_func_obj();
-	function_mem_func();
-	function_compare();
-}
-
-namespace
-{
+namespace {
+namespace local {
 
 int add_two_values(int a, int b)
 {
@@ -66,8 +53,6 @@ bool compute_with_X(X*, int)
 {
 	return true;
 }
-
-}  // unnamed namespace
 
 void function_func()
 {
@@ -205,4 +190,15 @@ void function_compare()
 		//std::cout << std::boolalpha << boost::function_equal(&func11, &func2) << std::endl;  // compile-time error
 		std::cout << std::boolalpha << boost::function_equal(&func11, &func3) << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void function()
+{
+	local::function_func();
+	local::function_func_obj();
+	local::function_mem_func();
+	local::function_compare();
 }

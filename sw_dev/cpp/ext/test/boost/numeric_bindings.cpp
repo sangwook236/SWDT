@@ -14,20 +14,8 @@
 #include <iostream>
 
 
-void numeric_bindings_lapack_ev();
-void numeric_bindings_lapack_svd();
-void numeric_bindings_atlas_lu();
-
-void numeric_bindings()
-{
-	numeric_bindings_lapack_ev();
-	numeric_bindings_lapack_svd();
-
-	numeric_bindings_atlas_lu();
-}
-
-namespace
-{
+namespace {
+namespace local {
 
 template <typename T>
 void Hessenberg(boost::numeric::ublas::matrix<T, boost::numeric::ublas::column_major>& H)
@@ -45,8 +33,6 @@ void Hessenberg(boost::numeric::ublas::matrix<T, boost::numeric::ublas::column_m
 		}
 	}
 }
-
-}  // unnamed namespace
 
 void numeric_bindings_lapack_ev()
 {
@@ -194,4 +180,15 @@ void numeric_bindings_atlas_lu()
 	//boost::numeric::bindings::atlas::lu_invert(A, ipiv);  // alias for getri()
 
 	std::cout << "inverse using LU: inv(A) = " << A << std::endl;
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void numeric_bindings()
+{
+	local::numeric_bindings_lapack_ev();
+	local::numeric_bindings_lapack_svd();
+
+	local::numeric_bindings_atlas_lu();
 }

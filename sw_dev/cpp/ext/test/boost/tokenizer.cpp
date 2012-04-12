@@ -3,6 +3,12 @@
 #include <iostream>
 
 
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
+
 void tokenizer()
 {
 #if defined(UNICODE) || defined(_UNICODE)

@@ -4,23 +4,7 @@
 
 
 namespace {
-
-void simple_thread_1();
-void simple_thread_2();
-void thread_group();
-
-}  // unnamed namespace
-
-void thread()
-{
-	simple_thread_1();
-	std::cout << "***" << std::endl;
-	simple_thread_2();
-	std::cout << "***" << std::endl;
-	thread_group();
-}
-
-namespace {
+namespace local {
 
 boost::mutex io_mutex; // The iostreams are not guaranteed to be thread-safe!
 
@@ -176,4 +160,14 @@ void thread_group()
     thrds.join_all();
 }
 
+}  // namespace local
 }  // unnamed namespace
+
+void thread()
+{
+	local::simple_thread_1();
+	std::cout << "***" << std::endl;
+	local::simple_thread_2();
+	std::cout << "***" << std::endl;
+	local::thread_group();
+}

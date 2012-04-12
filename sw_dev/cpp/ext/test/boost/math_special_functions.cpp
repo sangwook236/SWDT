@@ -18,6 +18,7 @@
 
 
 namespace {
+namespace local {
 
 void gamma_functions()
 {
@@ -71,24 +72,25 @@ void exponential_integrals()
 {
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void math_special_functions()
 {
-	gamma_functions();
-	factorial();
-	binomial_coefficients();
+	local::gamma_functions();
+	local::factorial();
+	local::binomial_coefficients();
 	
-	beta_functions();
-	error_functions();
+	local::beta_functions();
+	local::error_functions();
 	
-	legendre_polynomials();
-	laguerre_polynomials();
-	hermite_polynomials();
-	spheric_harmonic();
+	local::legendre_polynomials();
+	local::laguerre_polynomials();
+	local::hermite_polynomials();
+	local::spheric_harmonic();
 	
-	bessel_functions();
-	elliptic_integrals();
-	zeta_functions();
-	exponential_integrals();
+	local::bessel_functions();
+	local::elliptic_integrals();
+	local::zeta_functions();
+	local::exponential_integrals();
 }

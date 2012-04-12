@@ -8,6 +8,12 @@
 #include <ctime>
 
 
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
+
 void random_boost()
 {
 	typedef boost::minstd_rand base_generator_type;

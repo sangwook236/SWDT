@@ -8,6 +8,7 @@
 
 
 namespace {
+namespace local {
 
 void rounding_functions()
 {
@@ -33,14 +34,15 @@ void floating_point_representation()
 {
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void math_floating_point_utilities()
 {
-	rounding_functions();
-	truncation_functions();
-	integer_and_fractional_part_splitting_functions();
-	floating_point_classification_functions();
-	sign_manipulation_functions();
-	floating_point_representation();
+	local::rounding_functions();
+	local::truncation_functions();
+	local::integer_and_fractional_part_splitting_functions();
+	local::floating_point_classification_functions();
+	local::sign_manipulation_functions();
+	local::floating_point_representation();
 }

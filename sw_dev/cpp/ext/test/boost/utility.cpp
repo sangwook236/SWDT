@@ -3,13 +3,16 @@
 #include <iostream>
 
 
-namespace
+namespace {
+namespace local {
+
+struct useless_type {};
+class nonaddressable
 {
-	struct useless_type {};
-	class nonaddressable
-	{
-		useless_type operator&() const;
-	};
+	useless_type operator&() const;
+};
+
+}  // namespace local
 }  // unnamed namespace
 
 void utility()
@@ -61,9 +64,9 @@ void utility()
 
 	// boost::addressof
 	{
-		nonaddressable x;
-		nonaddressable *xp1 = boost::addressof(x);
-		//nonaddressable *xp2 = &x;  // compile-time error
+		local::nonaddressable x;
+		local::nonaddressable *xp1 = boost::addressof(x);
+		//local::nonaddressable *xp2 = &x;  // compile-time error
 	}
 
 	// boost::result_of

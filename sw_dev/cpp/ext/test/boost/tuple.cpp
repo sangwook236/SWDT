@@ -4,25 +4,13 @@
 #include <iostream>
 
 
-void tuple_basic();
-void tuple_tier();
-void tuple_streaming();
-
-void tuple()
-{
-	tuple_basic();
-	tuple_tier();
-	tuple_streaming();
-}
-
 namespace {
+namespace local {
 
 class A {};
 class B : public A {};
 struct C { C() {} C(const B&) {} };
 struct D { operator C() const { return C(); } };
-
-}  // unnamed namespace
 
 void tuple_basic()
 {
@@ -145,4 +133,14 @@ void tuple_streaming()
 		std::cout << i << std::endl;
 		std::cout << j << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void tuple()
+{
+	local::tuple_basic();
+	local::tuple_tier();
+	local::tuple_streaming();
 }

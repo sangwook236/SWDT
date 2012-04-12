@@ -7,14 +7,8 @@
 #include <iostream>
 
 
-void asio_async_udp_client();
-void asio_sync_udp_client();
-
-void asio_udp_client()
-{
-	//asio_async_udp_client();
-	asio_sync_udp_client();
-}
+namespace {
+namespace local {
 
 void asio_async_udp_client()
 {
@@ -46,4 +40,13 @@ void asio_sync_udp_client()
 	{
 		std::cerr << e.what() << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void asio_udp_client()
+{
+	//local::asio_async_udp_client();
+	local::asio_sync_udp_client();
 }

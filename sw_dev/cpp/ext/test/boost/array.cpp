@@ -5,6 +5,7 @@
 
 
 namespace {
+namespace local {
 
 template <class T>
 inline void print_elements(const T &coll, const char *optcstr = "")
@@ -15,6 +16,7 @@ inline void print_elements(const T &coll, const char *optcstr = "")
     std::cout << std::endl;
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void array_()
@@ -70,12 +72,12 @@ void array_()
 			std::swap(seasons.at(i), seasons.at((i+1) % seasons.size()));
 
 		std::cout << "one way:   ";
-		print_elements(seasons);
+		local::print_elements(seasons);
 
 		// try swap()
 		std::cout << "other way: ";
 		std::swap(seasons, seasons_orig);
-		print_elements(seasons);
+		local::print_elements(seasons);
 
 		// try reverse iterators
 		std::cout << "reverse:  ";
@@ -90,22 +92,22 @@ void array_()
 	{
 		// create and initialize array
 		boost::array<int, 10> a = { { 1, 2, 3, 4, 5 } };
-		print_elements(a);
+		local::print_elements(a);
 
 		// modify elements directly
 		for (unsigned i = 0; i < a.size(); ++i)
 			++a[i];
-		print_elements(a);
+		local::print_elements(a);
 
 		// change order using an STL algorithm
 		std::reverse(a.begin(), a.end());
-		print_elements(a);
+		local::print_elements(a);
 
 		// negate elements using STL framework
 		std::transform(a.begin(), a.end(),  // source
 			a.begin(),                      // destination
 			std::negate<int>()              // operation
 		);
-		print_elements(a);
+		local::print_elements(a);
 	}
 }

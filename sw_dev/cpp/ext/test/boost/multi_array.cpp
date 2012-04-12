@@ -3,6 +3,12 @@
 #include <cstring>
 
 
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
+
 void multi_array()
 {
 	typedef boost::multi_array<double, 3> array_type;
