@@ -161,7 +161,7 @@ void PrintCDHMM_UnivariateNormal(FILE *fp, CDHMM *phmm)
 	fprintf(fp, "univariate normal:\n");
 	UnivariateNormalParams *set_of_params = reinterpret_cast<UnivariateNormalParams *>(phmm->set_of_params);
 	for (j = 1; j <= phmm->N; ++j)
-		fprintf(fp, "%lf %lf\n", &set_of_params[j].mean, &set_of_params[j].stddev);
+		fprintf(fp, "%lf %lf\n", set_of_params[j].mean, set_of_params[j].stddev);
 
 	//phmm->pdf;
 }
@@ -184,7 +184,7 @@ double univariate_normal_distribution(const double *symbol, const int state, con
 	//boost::math::normal pdf;  // (default mean = zero, and standard deviation = unity)
 	boost::math::normal pdf(set_of_params[state].mean, set_of_params[state].stddev);
 
-	return boost::math::pdf(pdf, *symbol);
+	return boost::math::pdf(pdf, symbol[1]);
 }
 
 double multivariate_normal_distribution(const double *symbol, const int state, const void *set_of_parameters)

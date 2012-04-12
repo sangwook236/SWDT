@@ -194,8 +194,8 @@ void cdhmm_with_univariate_gaussian_observations__forward_umdhmm()
 				cdhmm.A[i][j] = *ptr;
 		}
 
-		umdhmm::UnivariateNormalParams *set_of_params = umdhmm::AllocSetOfParams_UnivariateNormal(1, cdhmm.N);
 		{
+			umdhmm::UnivariateNormalParams *set_of_params = umdhmm::AllocSetOfParams_UnivariateNormal(1, cdhmm.N);
 #if __TEST_HMM_MODEL == 1
 			set_of_params[1].mean = 0.0;
 			set_of_params[1].stddev = 1.0;
@@ -215,8 +215,8 @@ void cdhmm_with_univariate_gaussian_observations__forward_umdhmm()
 			set_of_params[3].mean = 20.0;
 			set_of_params[3].stddev = 1.5;
 #endif
+			cdhmm.set_of_params = (void *)set_of_params;
 		}
-		cdhmm.set_of_params = (void *)set_of_params;
 
 		cdhmm.pdf = &umdhmm::univariate_normal_distribution;
 	}
@@ -227,13 +227,13 @@ void cdhmm_with_univariate_gaussian_observations__forward_umdhmm()
 	double **O = NULL;
 	{
 #if __TEST_HMM_MODEL == 1
-		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_50.seq", "r");
+		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_50.seq", "r");
 		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_100.seq", "r");
-		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_1500.seq", "r");
+		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_1500.seq", "r");
 #elif __TEST_HMM_MODEL == 2
-		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_50.seq", "r");
+		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_50.seq", "r");
 		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_100.seq", "r");
-		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_1500.seq", "r");
+		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_1500.seq", "r");
 #endif
 		umdhmm::ReadSequence(fp, &T, &M, &O);
 		fclose(fp);

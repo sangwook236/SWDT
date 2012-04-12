@@ -9,6 +9,7 @@
 **      $Id: forward.c,v 1.2 1998/02/19 12:42:31 kanungo Exp kanungo $
 */
 #include "umdhmm_cdhmm.h"
+#include <iostream>
 
 
 namespace umdhmm {
@@ -84,7 +85,6 @@ void ForwardWithScale(CDHMM *phmm, int T, double **O, double **alpha, double *sc
 
 	// 3. Termination
 	*pprob = 0.0;
-
 	for (t = 1; t <= T; ++t)
 		*pprob += std::log(scale[t]);
 }

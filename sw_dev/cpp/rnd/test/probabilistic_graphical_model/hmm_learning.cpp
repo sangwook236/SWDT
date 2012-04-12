@@ -6,8 +6,8 @@
 #include <stdexcept>
 
 
-#define __TEST_HMM_MODEL 1
-//#define __TEST_HMM_MODEL 2
+//#define __TEST_HMM_MODEL 1
+#define __TEST_HMM_MODEL 2
 
 namespace {
 namespace local {
@@ -234,16 +234,28 @@ void cdhmm_with_univariate_gaussian_observations__em_for_mle_umdhmm()
 				cdhmm.A[i][j] = *ptr;
 		}
 
-		cdhmm.set_of_params = umdhmm::AllocSetOfParams_UnivariateNormal(1, cdhmm.N);
 		{
-			((umdhmm::UnivariateNormalParams *)cdhmm.set_of_params)->mean = 0.0;
-			((umdhmm::UnivariateNormalParams *)cdhmm.set_of_params)->stddev = 1.0;
+			umdhmm::UnivariateNormalParams *set_of_params = umdhmm::AllocSetOfParams_UnivariateNormal(1, cdhmm.N);
+#if __TEST_HMM_MODEL == 1
+			set_of_params[1].mean = 0.0;
+			set_of_params[1].stddev = 1.0;
 
-			((umdhmm::UnivariateNormalParams *)cdhmm.set_of_params + 1)->mean = 3.0;
-			((umdhmm::UnivariateNormalParams *)cdhmm.set_of_params + 1)->stddev = 2.0;
+			set_of_params[2].mean = 30.0;
+			set_of_params[2].stddev = 2.0;
 
-			((umdhmm::UnivariateNormalParams *)cdhmm.set_of_params + 2)->mean = -2.0;
-			((umdhmm::UnivariateNormalParams *)cdhmm.set_of_params + 2)->stddev = 1.5;
+			set_of_params[3].mean = -20.0;
+			set_of_params[3].stddev = 1.5;
+#elif __TEST_HMM_MODEL == 2
+			set_of_params[1].mean = 0.0;
+			set_of_params[1].stddev = 1.0;
+
+			set_of_params[2].mean = -30.0;
+			set_of_params[2].stddev = 2.0;
+
+			set_of_params[3].mean = 20.0;
+			set_of_params[3].stddev = 1.5;
+#endif
+			cdhmm.set_of_params = (void *)set_of_params;
 		}
 
 		cdhmm.pdf = &umdhmm::univariate_normal_distribution;
@@ -255,7 +267,7 @@ void cdhmm_with_univariate_gaussian_observations__em_for_mle_umdhmm()
 		const int seed = umdhmm::hmmgetseed();
 		umdhmm::InitCDHMM_UnivariateNormal(&cdhmm, N, M, seed);
 
-		std::cout << "Random seed = " << seed << std::endl;
+		std::cout << "random seed = " << seed << std::endl;
 	}
 	else
 		throw std::runtime_error("incorrect initialization mode");
@@ -266,13 +278,13 @@ void cdhmm_with_univariate_gaussian_observations__em_for_mle_umdhmm()
 	double **O = NULL;
 	{
 #if __TEST_HMM_MODEL == 1
-		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_50.seq", "r");
+		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_50.seq", "r");
 		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_100.seq", "r");
-		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_1500.seq", "r");
+		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_1500.seq", "r");
 #elif __TEST_HMM_MODEL == 2
-		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_50.seq", "r");
+		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_50.seq", "r");
 		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_100.seq", "r");
-		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_1500.seq", "r");
+		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_1500.seq", "r");
 #endif
 		umdhmm::ReadSequence(fp, &T, &M, &O);
 		fclose(fp);
@@ -301,9 +313,9 @@ void cdhmm_with_univariate_gaussian_observations__em_for_mle_umdhmm()
 	}
 
 	// print the output 
-	std::cout << "Number of iterations = " << numIterations << std::endl;
-	std::cout << "Log Prob(observation | init model) = " << std::scientific << logProbInit << std::endl;	
-	std::cout << "Log Prob(observation | estimated model) = " << std::scientific << logProbFinal << std::endl;	
+	std::cout << "number of iterations = " << numIterations << std::endl;
+	std::cout << "log prob(observation | init model) = " << std::scientific << logProbInit << std::endl;	
+	std::cout << "log prob(observation | estimated model) = " << std::scientific << logProbFinal << std::endl;	
 
 	umdhmm::PrintCDHMM_UnivariateNormal(stdout, &cdhmm);
 
@@ -353,7 +365,7 @@ void hmm_learning()
     //local::cdhmm_with_univariate_gaussian_observations__em_for_map();  // not yet implemented
     //local::cdhmm_with_univariate_gaussian_observations__em_for_map_using_sparse_learning();  // not yet implemented
 
-    local::cdhmm_with_univariate_gaussian_mixture_observations__em_for_mle_umdhmm();  // not yet implemented
+    //local::cdhmm_with_univariate_gaussian_mixture_observations__em_for_mle_umdhmm();  // not yet implemented
     //local::cdhmm_with_univariate_gaussian_mixture_observations__em_for_map();  // not yet implemented
     //local::cdhmm_with_univariate_gaussian_mixture_observations__em_for_map_using_sparse_learning();  // not yet implemented
 }
