@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 	void array_();
 	void tuple();
 	void multi_array();
+	void multi_index();
 	void property_map();
 	void property_tree();
 
@@ -84,6 +85,7 @@ int main(int argc, char *argv[])
 			//array_();
 			//tuple();
 			//multi_array();
+			multi_index();
 
 			//property_map();
 			//property_tree();
@@ -110,7 +112,7 @@ int main(int argc, char *argv[])
 			//math_constants();
 			//math_floating_point_utilities();
 			//math_special_functions();
-			math_statistical_distributions();
+			//math_statistical_distributions();
 			//random();
 			//ublas();
 			//math_bindings();

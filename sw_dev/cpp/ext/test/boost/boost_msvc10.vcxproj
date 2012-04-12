@@ -122,6 +122,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="multi_array.cpp" />
+    <ClCompile Include="multi_index.cpp" />
     <ClCompile Include="numeric_bindings.cpp" />
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="program_options.cpp" />
