@@ -5,11 +5,7 @@
 #include <iostream>
 
 
-#if defined(UNICODE) || defined(_UNICODE)
-int wmain(int argc, wchar_t **argv)
-#else
 int main(int argc, char **argv)
-#endif
 {
 	void mrf();
 	void hmm_forward_backward();
@@ -40,12 +36,11 @@ int main(int argc, char **argv)
 	}
 	catch (...)
 	{
-		std::wcout << L"unknown exception occurred !!!" << std::endl;
+		std::cout << "unknown exception occurred !!!" << std::endl;
 	}
 
-	std::wcout << L"press any key to exit ..." << std::endl;
-	std::wcout.flush();
-	std::wcin.get();
+	std::cout << "press any key to exit ..." << std::endl;
+	std::cin.get();
 
 	return 0;
 }

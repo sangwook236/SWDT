@@ -30,13 +30,13 @@ void extract_features(const IplImage *image, CvMemStorage *storage, CvSeq *&keyp
 		grayImage = cvCreateImage(cvGetSize(image), image->depth, 1);
 #if defined(__GNUC__)
 		if (strcasecmp(image->channelSeq, "RGB") == 0)
-#else
+#elif defined(_MSC_VER)
 		if (_stricmp(image->channelSeq, "RGB") == 0)
 #endif
 			cvCvtColor(image, grayImage, CV_RGB2GRAY);
 #if defined(__GNUC__)
 		else if (strcasecmp(image->channelSeq, "BGR") == 0)
-#else
+#elif defined(_MSC_VER)
 		else if (_stricmp(image->channelSeq, "BGR") == 0)
 #endif
 			cvCvtColor(image, grayImage, CV_BGR2GRAY);

@@ -81,13 +81,13 @@ void show_image()
 		grayImg = cvCreateImage(cvGetSize(img), img->depth, 1);
 #if defined(__GNUC__)
 		if (strcasecmp(img->channelSeq, "RGB") == 0)
-#else
+#elif defined(_MSC_VER)
 		if (_stricmp(img->channelSeq, "RGB") == 0)
 #endif
 			cvCvtColor(img, grayImg, CV_RGB2GRAY);
 #if defined(__GNUC__)
 		else if (strcasecmp(img->channelSeq, "BGR") == 0)
-#else
+#elif defined(_MSC_VER)
 		else if (_stricmp(img->channelSeq, "BGR") == 0)
 #endif
 			cvCvtColor(img, grayImg, CV_BGR2GRAY);

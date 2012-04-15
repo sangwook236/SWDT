@@ -59,13 +59,13 @@ public:
 
 #if defined(__GNUC__)
 		if (strcasecmp(image->channelSeq, "RGB") == 0)
-#else
+#elif defined(_MSC_VER)
 		if (_stricmp(image->channelSeq, "RGB") == 0)
 #endif
 			cvCvtColor(image, hsvImage_, CV_RGB2HSV);
 #if defined(__GNUC__)
 		else if (strcasecmp(image->channelSeq, "BGR") == 0)
-#else
+#elif defined(_MSC_VER)
 		else if (_stricmp(image->channelSeq, "BGR") == 0)
 #endif
 			cvCvtColor(image, hsvImage_, CV_BGR2HSV);
@@ -107,13 +107,13 @@ public:
 
 #if defined(__GNUC__)
 		if (strcasecmp(targetImage->channelSeq, "RGB") == 0)
-#else
+#elif defined(_MSC_VER)
 		if (_stricmp(targetImage->channelSeq, "RGB") == 0)
 #endif
 			cvCvtColor(targetImage, hsv, CV_RGB2HSV);
 #if defined(__GNUC__)
 		else if (strcasecmp(targetImage->channelSeq, "BGR") == 0)
-#else
+#elif defined(_MSC_VER)
 		else if (_stricmp(targetImage->channelSeq, "BGR") == 0)
 #endif
 			cvCvtColor(targetImage, hsv, CV_BGR2HSV);
@@ -148,13 +148,13 @@ public:
 
 #if defined(__GNUC__)
 		if (strcasecmp(image->channelSeq, "RGB") == 0)
-#else
+#elif defined(_MSC_VER)
 		if (_stricmp(image->channelSeq, "RGB") == 0)
 #endif
 			cvCvtColor(image, hsvImage_, CV_RGB2HSV);
 #if defined(__GNUC__)
 		else if (strcasecmp(image->channelSeq, "BGR") == 0)
-#else
+#elif defined(_MSC_VER)
 		else if (_stricmp(image->channelSeq, "BGR") == 0)
 #endif
 			cvCvtColor(image, hsvImage_, CV_BGR2HSV);

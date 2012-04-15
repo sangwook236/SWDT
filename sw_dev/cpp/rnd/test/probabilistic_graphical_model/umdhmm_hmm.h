@@ -39,7 +39,7 @@ void FreeHMM(HMM *phmm);
 void ReadSequence(FILE *fp, int *pT, int **pO);
 void PrintSequence(FILE *fp, int T, int *O);
 void GenSequenceArray(HMM *phmm, int seed, int T, int *O, int *q);
-int GenInitalState(HMM *phmm);
+int GenInitialState(HMM *phmm);
 int GenNextState(HMM *phmm, int q_t);
 int GenSymbol(HMM *phmm, int q_t);
 

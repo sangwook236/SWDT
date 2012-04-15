@@ -50,8 +50,8 @@ void Forward(CDHMM *phmm, int T, double **O, double **alpha, double *pprob)
 void ForwardWithScale(CDHMM *phmm, int T, double **O, double **alpha, double *scale, double *pprob)
 // pprob is the LOG probability
 {
-	int	i, j;  // state indices
-	int	t;	// time index
+	int i, j;  // state indices
+	int t;	// time index
 
 	// 1. Initialization
 	scale[1] = 0.0;

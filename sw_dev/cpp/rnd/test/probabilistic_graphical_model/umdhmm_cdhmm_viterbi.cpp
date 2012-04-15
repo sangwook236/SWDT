@@ -22,7 +22,7 @@ static char rcsid[] = "$Id: viterbi.c,v 1.1 1999/05/06 05:25:37 kanungo Exp kanu
 
 void Viterbi(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *q, double *pprob)
 {
-	int i, j;	// state indices
+	int i, j;  // state indices
 	int t;	// time index
 
 	// 1. Initialization
@@ -34,7 +34,7 @@ void Viterbi(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *q, 
 	}
 
 	// 2. Recursion
-	int	maxvalind;
+	int maxvalind;
 	double maxval, val;
 	for (t = 2; t <= T; ++t)
 	{
@@ -87,15 +87,11 @@ void ViterbiLog(CDHMM *phmm, int T, double **O, double **delta, int **psi, int *
 		phmm->pi[i] = std::log(phmm->pi[i]);
 
 		for (j = 1; j <= phmm->N; ++j)
-		{
 			phmm->A[i][j] = std::log(phmm->A[i][j]);
-		}
 
 		for (t = 1; t <= T; ++t)
-		{
 			//biot[i][t] = std::log(phmm->B[i][O[t]]);
 			biot[i][t] = std::log(phmm->pdf(O[t], i, phmm->set_of_params));
-		}
 	}
 
 	// 1. Initialization

@@ -52,7 +52,7 @@ void hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm()
 			1.0/3.0, 1.0/3.0, 1.0/3.0
 		};
 		const double initA[] = {
-			0.5, 0.2,  0.2,
+			0.5, 0.2,  0.3,
 			0.2, 0.4,  0.4,
 			0.1, 0.45, 0.45
 		};
@@ -146,7 +146,7 @@ void hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm()
 	const double terminationTolerance = 0.001;
 	umdhmm::BaumWelch(&hmm, T, O, terminationTolerance, alpha, beta, gamma, &numIterations, &logProbInit, &logProbFinal);
 
-	// calcuate gamma & xi
+	// compute gamma & xi
 	{
 		// gamma can use the result from umdhmm::BaumWelch
 		//umdhmm::ComputeGamma(&hmm, T, alpha, beta, gamma);
@@ -158,9 +158,9 @@ void hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm()
 	}
 
 	// print the output 
-	std::cout << "Number of iterations = " << numIterations << std::endl;
-	std::cout << "Log Prob(observation | init model) = " << std::scientific << logProbInit << std::endl;	
-	std::cout << "Log Prob(observation | estimated model) = " << std::scientific << logProbFinal << std::endl;	
+	std::cout << "number of iterations = " << numIterations << std::endl;
+	std::cout << "log prob(observation | init model) = " << std::scientific << logProbInit << std::endl;	
+	std::cout << "log prob(observation | estimated model) = " << std::scientific << logProbFinal << std::endl;	
 
 	umdhmm::PrintHMM(stdout, &hmm);
 
@@ -215,7 +215,7 @@ void cdhmm_with_univariate_gaussian_observations__em_for_mle_umdhmm()
 			1.0/3.0, 1.0/3.0, 1.0/3.0
 		};
 		const double initA[] = {
-			0.5, 0.2,  0.2,
+			0.5, 0.2,  0.3,
 			0.2, 0.4,  0.4,
 			0.1, 0.45, 0.45
 		};
@@ -301,7 +301,7 @@ void cdhmm_with_univariate_gaussian_observations__em_for_mle_umdhmm()
 	const double terminationTolerance = 0.001;
 	umdhmm::BaumWelch_UnivariateNormal(&cdhmm, T, O, terminationTolerance, alpha, beta, gamma, &numIterations, &logProbInit, &logProbFinal);
 
-	// calcuate gamma & xi
+	// compute gamma & xi
 	{
 		// gamma can use the result from umdhmm::BaumWelch
 		//umdhmm::ComputeGamma(&hmm, T, alpha, beta, gamma);

@@ -1,4 +1,7 @@
 //#include "stdafx.h"
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/core/core.hpp>
 #include <iostream>
@@ -8,11 +11,7 @@
 void print_opencv_matrix(const CvMat *mat);
 void print_opencv_matrix(const cv::Mat &mat);
 
-#if defined(UNICODE) || defined(_UNICODE)
-int wmain(int argc, wchar_t **argv)
-#else
 int main(int argc, char **argv)
-#endif
 {
 	void text_output();
 	void matrix_operation();
@@ -191,12 +190,11 @@ int main(int argc, char **argv)
 	}
 	catch (...)
 	{
-		std::wcout << L"unknown exception occurred !!!" << std::endl;
+		std::cout << "unknown exception occurred !!!" << std::endl;
 	}
 
-	std::wcout << L"press any key to exit ..." << std::endl;
-	std::wcout.flush();
-	std::wcin.get();
+	std::cout << "press any key to exit ..." << std::endl;
+	std::cin.get();
 
     return 0;
 }

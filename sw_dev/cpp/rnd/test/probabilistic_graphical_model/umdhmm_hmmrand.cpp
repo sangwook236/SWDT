@@ -51,7 +51,7 @@ double hmmgetrand(void)
 
 double hmmgetrand(double lb, double ub)
 {
-	return ((double)std::rand() / RAND_MAX) * (ub -lb) + lb;
+	return ((double)std::rand() / RAND_MAX) * (ub - lb) + lb;
 }
 
 }  // namespace umdhmm

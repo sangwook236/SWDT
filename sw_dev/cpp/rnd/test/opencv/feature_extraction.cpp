@@ -286,13 +286,13 @@ void feature_extraction()
 			grayImage = cvCreateImage(cvGetSize(srcImage), srcImage->depth, 1);
 #if defined(__GNUC__)
 			if (strcasecmp(srcImage->channelSeq, "RGB") == 0)
-#else
+#elif defined(_MSC_VER)
 			if (_stricmp(srcImage->channelSeq, "RGB") == 0)
 #endif
 				cvCvtColor(srcImage, grayImage, CV_RGB2GRAY);
 #if defined(__GNUC__)
 			else if (strcasecmp(srcImage->channelSeq, "BGR") == 0)
-#else
+#elif defined(_MSC_VER)
 			else if (_stricmp(srcImage->channelSeq, "BGR") == 0)
 #endif
 				cvCvtColor(srcImage, grayImage, CV_BGR2GRAY);

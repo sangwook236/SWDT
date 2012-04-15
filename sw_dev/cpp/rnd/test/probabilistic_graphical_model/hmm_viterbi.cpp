@@ -64,7 +64,7 @@ void hmm_with_discrete_multinomial_observations__viterbi_umdhmm()
 			1.0/3.0, 1.0/3.0, 1.0/3.0
 		};
 		const double A[] = {
-			0.5, 0.2,  0.2,
+			0.5, 0.2,  0.3,
 			0.2, 0.4,  0.4,
 			0.1, 0.45, 0.45
 		};
@@ -202,7 +202,7 @@ void cdhmm_with_univariate_gaussian_observations__viterbi_umdhmm()
 			1.0/3.0, 1.0/3.0, 1.0/3.0
 		};
 		const double A[] = {
-			0.5, 0.2,  0.2,
+			0.5, 0.2,  0.3,
 			0.2, 0.4,  0.4,
 			0.1, 0.45, 0.45
 		};

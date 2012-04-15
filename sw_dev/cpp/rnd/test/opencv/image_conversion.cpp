@@ -46,13 +46,13 @@ void convert_image_to_gray(const std::string &srcImageName, const std::string &d
 			grayImg = cvCreateImage(cvGetSize(srcImage), srcImage->depth, 1);
 #if defined(__GNUC__)
 			if (strcasecmp(srcImage->channelSeq, "RGB") == 0)
-#else
+#elif defined(_MSC_VER)
 			if (_stricmp(srcImage->channelSeq, "RGB") == 0)
 #endif
 				cvCvtColor(srcImage, grayImg, CV_RGB2GRAY);
 #if defined(__GNUC__)
 			else if (strcasecmp(srcImage->channelSeq, "BGR") == 0)
-#else
+#elif defined(_MSC_VER)
 			else if (_stricmp(srcImage->channelSeq, "BGR") == 0)
 #endif
 				cvCvtColor(srcImage, grayImg, CV_BGR2GRAY);
@@ -71,7 +71,7 @@ void convert_image(const std::string &imageName, const std::string &srcImageExt,
 
 #if defined(__GNUC__)
 	if (strcasecmp(imageName.substr(extPos + 1).c_str(), srcImageExt.c_str()) == 0)
-#else
+#elif defined(_MSC_VER)
 	if (_stricmp(imageName.substr(extPos + 1).c_str(), srcImageExt.c_str()) == 0)
 #endif
 	{

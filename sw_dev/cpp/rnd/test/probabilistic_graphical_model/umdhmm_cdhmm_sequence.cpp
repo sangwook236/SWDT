@@ -29,30 +29,27 @@ namespace umdhmm {
 
 static char rcsid[] = "$Id: sequence.c,v 1.2 1998/02/23 06:19:41 kanungo Exp kanungo $";
 
-int GenInitalState(CDHMM *phmm);
+int GenInitialState(CDHMM *phmm);
 int GenNextState(CDHMM *phmm, int q_t);
 void GenSymbol_UnivariateNormal(CDHMM *phmm, boost::minstd_rand &baseGenerator, int q_t, double *o_t);
 
 void GenSequenceArray_UnivariateNormal(CDHMM *phmm, int seed, int T, double **O, int *q)
 {
-	int t = 1;
-	//int q_t, o_t;
-
 	hmmsetseed(seed);
 
 	boost::minstd_rand baseGenerator(seed);
 
-	q[1] = GenInitalState(phmm);
+	q[1] = GenInitialState(phmm);
 	GenSymbol_UnivariateNormal(phmm, baseGenerator, q[1], O[1]);
 
-	for (t = 2; t <= T; ++t)
+	for (int t = 2; t <= T; ++t)
 	{
 		q[t] = GenNextState(phmm, q[t-1]);
 		GenSymbol_UnivariateNormal(phmm, baseGenerator, q[t], O[t]);
 	}
 }
 
-int GenInitalState(CDHMM *phmm)
+int GenInitialState(CDHMM *phmm)
 {
 	double val = hmmgetrand();
 	double accum = 0.0;

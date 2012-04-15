@@ -33,7 +33,7 @@ void GenSequenceArray(HMM *phmm, int seed, int T, int *O, int *q)
 
 	hmmsetseed(seed);
 
-	q[1] = GenInitalState(phmm);
+	q[1] = GenInitialState(phmm);
 	O[1] = GenSymbol(phmm, q[1]);
 
 	for (t = 2; t <= T; ++t)
@@ -43,7 +43,7 @@ void GenSequenceArray(HMM *phmm, int seed, int T, int *O, int *q)
 	}
 }
 
-int GenInitalState(HMM *phmm)
+int GenInitialState(HMM *phmm)
 {
 	double val, accum;
 	int q_t;

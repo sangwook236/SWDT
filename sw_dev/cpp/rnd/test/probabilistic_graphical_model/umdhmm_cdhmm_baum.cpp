@@ -46,8 +46,8 @@ void BaumWelch_UnivariateNormal(CDHMM *phmm, int T, double **O, const double tol
 	double delta; //, deltaprev = 10e-70;
 
 	int l = 0;
-	int	i, j;
-	int	t;
+	int i, j;
+	int t;
 	do
 	{
 		for (i = 1; i <= phmm->N; ++i)
