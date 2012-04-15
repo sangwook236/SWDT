@@ -84,8 +84,8 @@ int main(int argc, char *argv[])
 			//any();
 			//array_();
 			//tuple();
-			//multi_array();
-			multi_index();
+			multi_array();
+			//multi_index();
 
 			//property_map();
 			//property_tree();
@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
 		std::cout << "unknown exception occurred" << std::endl;
 	}
 
-	std::cout << "press any key to exit ..." << std::flush;
+	std::cout << "press any key to exit ..." << std::endl;
 	std::cin.get();
 
     return 0;

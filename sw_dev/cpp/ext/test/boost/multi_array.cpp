@@ -52,9 +52,15 @@ void multi_array()
 		data[3] = -4;
 		data[4] = -5;
 		for(index_type i = 0; i != size1; ++i)
+		{
 			for(index_type j = 0; j != size2; ++j)
+			{
 				for(index_type k = 0; k != size3; ++k)
 					std::cout << marrA[i][j][k] << ", ";
+				std::cout << std::endl;
+			}
+			std::cout << std::endl;
+		}
 		std::cout << std::endl;
 	}
 
@@ -137,14 +143,14 @@ void multi_array()
 	//-------------------------------------------------------------------------
 	// setting the array base
 
-	typedef boost::multi_array_types::extent_range extent_range_type;
+	//typedef boost::multi_array_types::extent_range extent_range_type;
 	typedef array_type::extent_range extent_range_type;
 
 	array_type::extent_gen extents;
 
 	// dimension 0: 0-based
 	// dimension 1: 1-based
-	// dimension 2: (-1)- based
+	// dimension 2: (-1)-based
 	array_type marrC1(extents[2][extent_range_type(1,4)][extent_range_type(-1,3)]);
 
 	// to set all bases to the same value
@@ -172,11 +178,12 @@ void multi_array()
 #if defined(NDEBUG) || defined(_STLPORT_VERSION)
 	marrE.resize(extents[2][3][4]);
 #else
-	// FIXME [modify] >>
-	// MSVC: compile-time error in debug build: i don't know why
+	// FIXME [modify] >> MSVC: compile-time error in debug build
+	//	I don't know why
 	//marrE.resize(extents[2][3][4]);
+	//marrE = array_type(extents[2][3][4]);
 #endif
 	std::cout << std::endl;
 	assert(marrE[0][0][0] == 4);
-	//marrE[2][2][2] is no longer valid
+	//marrE[2][2][1] is no longer valid
 }

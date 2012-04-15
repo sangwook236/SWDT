@@ -32,9 +32,7 @@ struct id {};
 struct name {};
 struct age {};
 
-/* see Compiler specifics: Use of member_offset for info on
- * BOOST_MULTI_INDEX_MEMBER
- */
+/* see Compiler specifics: Use of member_offset for info on BOOST_MULTI_INDEX_MEMBER */
 
 /* Define a multi_index_container of employees with following indices:
  *   - a unique index sorted by employee::id,
@@ -79,7 +77,6 @@ void basic()
 	es.insert(employee(4, "John", 57));
 
 	// list the employees sorted by ID, name and age
-
 	std::cout << "by ID" << std::endl;
 	print_out_by<id>(es);
 	std::cout << std::endl;
