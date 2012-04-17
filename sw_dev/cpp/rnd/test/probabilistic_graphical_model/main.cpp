@@ -8,10 +8,10 @@
 int main(int argc, char **argv)
 {
 	void mrf();
+	void hmm_sample();
 	void hmm_forward_backward();
 	void hmm_viterbi();
 	void hmm_learning();
-	void hmm_sample();
 	void mocapy_main();
 
 	try
@@ -20,10 +20,10 @@ int main(int argc, char **argv)
 		//mrf();  // not yet implemented
 
         // hidden Markov model (HMM)
+		//hmm_sample();
 		//hmm_forward_backward();
 		//hmm_viterbi();
 		hmm_learning();
-		//hmm_sample();
 
 		// dynamic Bayesian network (DBN)
 
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 	}
 	catch (const std::exception &e)
 	{
-		std::cout << "exception occurred !!!: " << e.what() << std::endl;
+		std::cout << "std::exception occurred !!!: " << e.what() << std::endl;
 	}
 	catch (...)
 	{

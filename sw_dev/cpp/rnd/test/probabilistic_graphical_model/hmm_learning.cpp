@@ -8,6 +8,8 @@
 
 //#define __TEST_HMM_MODEL 1
 #define __TEST_HMM_MODEL 2
+#define __USE_SPECIFIED_VALUE_FOR_RANDOM_SEED 1
+
 
 namespace {
 namespace local {
@@ -88,10 +90,14 @@ void hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm()
 	{
 		const int N = 3;  // the number of hidden states
 		const int M = 2;  // the number of observation symbols
+#if defined(__USE_SPECIFIED_VALUE_FOR_RANDOM_SEED)
+		const int seed = 34586u;
+#else
 		const int seed = umdhmm::hmmgetseed();
+#endif
 		umdhmm::InitHMM(&hmm, N, M, seed);
 
-		std::cout << "Random seed = " << seed << std::endl;
+		std::cout << "random seed = " << seed << std::endl;
 	}
 	else
 		throw std::runtime_error("incorrect initialization mode");
@@ -264,7 +270,11 @@ void cdhmm_with_univariate_gaussian_observations__em_for_mle_umdhmm()
 	{
 		const int N = 3;  // the number of hidden states
 		const int M = 1;  // the number of observation symbols
+#if defined(__USE_SPECIFIED_VALUE_FOR_RANDOM_SEED)
+		const int seed = 34586u;
+#else
 		const int seed = umdhmm::hmmgetseed();
+#endif
 		umdhmm::InitCDHMM_UnivariateNormal(&cdhmm, N, M, seed);
 
 		std::cout << "random seed = " << seed << std::endl;

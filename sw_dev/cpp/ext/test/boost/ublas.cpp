@@ -232,7 +232,6 @@ void ublas_basic()
 {
 	typedef boost::numeric::ublas::matrix<double, boost::numeric::ublas::column_major, boost::numeric::ublas::unbounded_array<double> > matrix_type;
 
-	try
 	{
 		matrix_type m(3, 3);
 		for (unsigned i = 0, k = 0; i < m.size1(); ++i)
@@ -285,17 +284,12 @@ void ublas_basic()
 		//		sau(i, j) = k;
 		std::cout << sau << std::endl;
 	}
-	catch (const std::exception &e)
-	{
-		std::cout << "exception occurred !!!: " << e.what() << std::endl;
-	}
 }
 
 void ublas_vector_operation()
 {
 	typedef boost::numeric::ublas::vector<double, boost::numeric::ublas::unbounded_array<double> > vector_type;
 
-	try
 	{
 		//
 		{
@@ -375,17 +369,12 @@ void ublas_vector_operation()
 			//boost::numeric::ublas::blas_1::rot(...);  // plane rotation
 		}
 	}
-	catch (const std::exception &e)
-	{
-		std::cout << "exception occurred !!!: " << e.what() << std::endl;
-	}
 }
 
 void ublas_matrix_operation()
 {
 	typedef boost::numeric::ublas::matrix<double, boost::numeric::ublas::column_major, boost::numeric::ublas::unbounded_array<double> > matrix_type;
 
-	try
 	{
 		{
 			matrix_type m1(3, 3);
@@ -432,10 +421,6 @@ void ublas_matrix_operation()
 			//boost::numeric::ublas_2::hr2(m, t, v1, v2);  // m = m + t * (v1 * v2^H) + (v2 * (t * v1)^H)
 		}
 	}
-	catch (const std::exception &e)
-	{
-		std::cout << "exception occurred !!!: " << e.what() << std::endl;
-	}
 }
 
 void ublas_matrix_vector_operation()
@@ -443,7 +428,6 @@ void ublas_matrix_vector_operation()
 	typedef boost::numeric::ublas::matrix<double, boost::numeric::ublas::column_major, boost::numeric::ublas::unbounded_array<double> > matrix_type;
 	typedef boost::numeric::ublas::vector<double, boost::numeric::ublas::unbounded_array<double> > vector_type;
 
-	try
 	{
 		{
 			matrix_type m(3, 3);
@@ -475,17 +459,12 @@ void ublas_matrix_vector_operation()
 			//std::cout << boost::numeric::ublas::solve(v, m, boost::numeric::ublas::lower_tag()) << std::endl;
 		}
 	}
-	catch (const std::exception &e)
-	{
-		std::cout << "exception occurred !!!: " << e.what() << std::endl;
-	}
 }
 
 void ublas_matrix_matrix_operation()
 {
 	typedef boost::numeric::ublas::matrix<double, boost::numeric::ublas::column_major, boost::numeric::ublas::unbounded_array<double> > matrix_type;
 
-	try
 	{
 		{
 			matrix_type m1(3, 3), m2(3, 3);
@@ -539,10 +518,6 @@ void ublas_matrix_matrix_operation()
 			//boost::numeric::ublas_3::hr2k(m1, t1, t2, m2, m3);  // m1 = t1 * m1 + (t2 * (m2 * m3^H)) + (m3 * (t2 * m2)^H);
 		}
 	}
-	catch (const std::exception &e)
-	{
-		std::cout << "exception occurred !!!: " << e.what() << std::endl;
-	}
 }
 
 void ublas_lu()
@@ -551,7 +526,6 @@ void ublas_lu()
 	typedef boost::numeric::ublas::vector<double, boost::numeric::ublas::unbounded_array<double> > vector_type;
 	typedef boost::numeric::ublas::permutation_matrix<std::size_t> pmatrix_type;
 
-	try
 	{
 		matrix_type m1(3, 3);
 		m1(0, 0) = 4.0;  m1(0, 1) = 2.0;  m1(0, 2) = 3.0;
@@ -571,10 +545,6 @@ void ublas_lu()
 	
 		//const matrix_type::size_type s2 = boost::numeric::ublas::axpy_lu_factorize(m2, pm2);
 		//boost::numeric::ublas::lu_substitute(m2, pm2, vs2);
-	}
-	catch (const std::exception &e)
-	{
-		std::cout << "exception occurred !!!: " << e.what() << std::endl;
 	}
 }
 

@@ -6,8 +6,9 @@
 #include <stdexcept>
 
 
-#define __TEST_HMM_MODEL 1
-//#define __TEST_HMM_MODEL 2
+//#define __TEST_HMM_MODEL 1
+#define __TEST_HMM_MODEL 2
+
 
 namespace {
 namespace local {
@@ -76,7 +77,7 @@ void hmm_with_discrete_multinomial_observations__forward_umdhmm()
 	}
 
 	//
-#if 0
+#if 1
 	const int T = 50;  // length of observation sequence, T
 	int *O = umdhmm::ivector(1, T);  // observation sequence O[1..T]
 	{
@@ -100,7 +101,7 @@ void hmm_with_discrete_multinomial_observations__forward_umdhmm()
 		for (int i = 1; i <= T; ++i)
 			O[i] = seq[i - 1];
 	}
-#elif 1
+#elif 0
 	const int T = 1500;  // length of observation sequence, T
 	int *O = umdhmm::ivector(1, T);  // observation sequence O[1..T]
 	{
@@ -227,13 +228,13 @@ void cdhmm_with_univariate_gaussian_observations__forward_umdhmm()
 	double **O = NULL;
 	{
 #if __TEST_HMM_MODEL == 1
-		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_50.seq", "r");
+		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_50.seq", "r");
 		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_100.seq", "r");
-		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_1500.seq", "r");
+		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_1500.seq", "r");
 #elif __TEST_HMM_MODEL == 2
-		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_50.seq", "r");
+		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_50.seq", "r");
 		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_100.seq", "r");
-		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_1500.seq", "r");
+		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_1500.seq", "r");
 #endif
 		umdhmm::ReadSequence(fp, &T, &M, &O);
 		fclose(fp);

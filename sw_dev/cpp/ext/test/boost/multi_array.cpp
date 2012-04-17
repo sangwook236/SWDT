@@ -6,10 +6,7 @@
 namespace {
 namespace local {
 
-}  // namespace local
-}  // unnamed namespace
-
-void multi_array()
+void basic_operation_1()
 {
 	typedef boost::multi_array<double, 3> array_type;
 	typedef array_type::index index_type;
@@ -103,6 +100,77 @@ void multi_array()
 	boost::array<index_type, 3> idx = {{ 0, 0, 0 }};
 	marrA(idx) = 3.14;
 #endif
+}
+
+void basic_operation_2()
+{
+	{
+		const size_t K = 3, D = 2;
+
+		double arrA[] = {
+			0.5, 0.2,  0.3,
+			0.2, 0.4,  0.4,
+			0.1, 0.45, 0.45
+		};
+		double arrB[] = {
+			0.5,   0.5,
+			0.75,  0.25,
+			0.25,  0.75
+		};
+
+		boost::multi_array_ref<double, 2> A(arrA, boost::extents[K][K]);
+		boost::multi_array_ref<double, 2> B(arrB, boost::extents[K][D]);
+		//boost::const_multi_array_ref<double, 2> A(arrA, boost::extents[K][K]);
+		//boost::const_multi_array_ref<double, 2> B(arrB, boost::extents[K][D]);
+
+		std::cout << "A =" << std::endl;
+		for (size_t i = 0; i < K; ++i)
+		{
+			for (size_t j = 0; j < K; ++j)
+				std::cout << A[i][j] << ' ';
+			std::cout << std::endl;
+		}
+
+		B[0][1] = -0.25;
+
+		std::cout << "B =" << std::endl;
+		for (size_t i = 0; i < K; ++i)
+		{
+			for (size_t j = 0; j < D; ++j)
+				std::cout << B[i][j] << ' ';
+			std::cout << std::endl;
+		}
+	}
+}
+
+void array_view()
+{
+	typedef boost::multi_array<double, 3> array_type;
+	typedef array_type::index index_type;
+	typedef array_type::index_range range_type;
+
+	// create a 3D array that is 2 x 3 x 4
+	const int size1 = 2;
+	const int size2 = 3;
+	const int size3 = 4;
+
+#if 1
+	array_type marrA(boost::extents[size1][size2][size3]);
+#else
+	boost::array<index_type, 3> shape = {{ size1, size2, size3 }};
+	array_type marrA(shape);
+#endif
+
+	//
+	//marrA[ boost::indices[range_type()][range_type()][range_type()] ] = 1.0;  // error !!!
+	memset(marrA.data(), 0, sizeof(double) * size1 * size2 * size3);
+
+	// assign values to the elements
+	int values = 0;
+	for(index_type i = 0; i != size1; ++i)
+		for(index_type j = 0; j != size2; ++j)
+			for(index_type k = 0; k != size3; ++k)
+				marrA[i][j][k] = ++values;
 
 	//-------------------------------------------------------------------------
 	// creating views
@@ -120,9 +188,19 @@ void multi_array()
 	array_type::array_view<2>::type myview2 = marrA[ indices[range_type(0,2)][1][range_type(0,4,2)] ];
 
 	array_type::array_view<3>::type myview3 = marrA[ boost::indices[range_type()][range_type() < 3 ][1 <= range_type().stride(2) <= 3] ];
+}
+
+void array_ordering_and_base()
+{
+	typedef boost::multi_array<double, 3> array_type;
 
 	//-------------------------------------------------------------------------
 	// storage ordering
+
+	// create a 3D array that is 2 x 3 x 4
+	const int size1 = 2;
+	const int size2 = 3;
+	const int size3 = 4;
 
 	array_type marrB1(boost::extents[size1][size2][size3], boost::c_storage_order());  // default
 	//call_c_function(marrB1.data());
@@ -162,17 +240,22 @@ void multi_array()
 	array_type marrC2(extents[2][3][4]);
 	boost::array<array_type::index, 3> bases = {{ 0, 1, -1 }};
 	marrC2.reindex(bases);
+}
+
+void array_size()
+{
+	typedef boost::multi_array<double, 3> array_type;
 
 	//-------------------------------------------------------------------------
 	// changing an array's shape
 
-	array_type marrD(extents[2][3][4]);
+	array_type marrD(boost::extents[2][3][4]);
 	boost::array<array_type::index, 3> dims = {{ 4, 3, 2 }};
 	marrD.reshape(dims);
 
 	//-------------------------------------------------------------------------
 	// resizing an array
-	array_type marrE(extents[3][4][2]);
+	array_type marrE(boost::extents[3][4][2]);
 	marrE[0][0][0] = 4;
 	marrE[2][2][1] = 5;
 #if defined(NDEBUG) || defined(_STLPORT_VERSION)
@@ -186,4 +269,16 @@ void multi_array()
 	std::cout << std::endl;
 	assert(marrE[0][0][0] == 4);
 	//marrE[2][2][1] is no longer valid
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void multi_array()
+{
+	local::basic_operation_1();
+	local::basic_operation_2();
+	local::array_view();
+	local::array_ordering_and_base();
+	local::array_size();
 }

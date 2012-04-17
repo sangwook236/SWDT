@@ -8,6 +8,8 @@
 
 //#define __TEST_HMM_MODEL 1
 #define __TEST_HMM_MODEL 2
+#define __USE_SPECIFIED_VALUE_FOR_RANDOM_SEED 1
+
 
 namespace {
 namespace local {
@@ -90,9 +92,13 @@ void hmm_with_discrete_multinomial_observations__sample_umdhmm()
 #endif
 
 	// set random number generator seed
+#if defined(__USE_SPECIFIED_VALUE_FOR_RANDOM_SEED)
+	const int seed = 34586u;
+#else
 	const int seed = umdhmm::hmmgetseed();
+#endif
 
-	std::cout << "Random seed = " << seed << std::endl;
+	std::cout << "random seed = " << seed << std::endl;
 
 	//
 	int	*O = umdhmm::ivector(1, T);  // alloc space for observation sequence O[1..T]
@@ -216,9 +222,13 @@ void cdhmm_with_univariate_gaussian_observations__sample_umdhmm()
 #endif
 
 	// set random number generator seed
+#if defined(__USE_SPECIFIED_VALUE_FOR_RANDOM_SEED)
+	const int seed = 34586u;
+#else
 	const int seed = umdhmm::hmmgetseed();
+#endif
 
-	std::cout << "Random seed = " << seed << std::endl;
+	std::cout << "random seed = " << seed << std::endl;
 
 	//
 	double **O = umdhmm::dmatrix(1, T, 1, cdhmm.M);  // alloc space for observation sequence O[1..T]
