@@ -141,6 +141,40 @@ void basic_operation_2()
 			std::cout << std::endl;
 		}
 	}
+
+	{
+		const int size1 = 3;
+		const int size2 = 4;
+
+		boost::multi_array<double, 2> marr(boost::extents[size1][size2]);
+		memset(marr.data(), 0, sizeof(double) * size1 * size2);
+		int values = 0;
+		for(boost::multi_array<double, 2>::index i = 0; i != size1; ++i)
+			for(boost::multi_array<double, 2>::index j = 0; j != size2; ++j)
+				marr[i][j] = ++values;
+
+		std::cout << "marr(before) =" << std::endl;
+		for(boost::multi_array<double, 2>::index i = 0; i != size1; ++i)
+		{
+			for(boost::multi_array<double, 2>::index j = 0; j != size2; ++j)
+				std::cout << marr[i][j] << ' ';
+			std::cout << std::endl;
+		}
+
+		//boost::multi_array<double, 2>::array_view<1>::type sub1(marr[boost::indices[0]]);  // compile-time error
+		boost::multi_array<double, 2>::array_view<1>::type sub(marr[boost::indices[0][boost::multi_array<double, 2>::index_range()]]);
+
+		for(boost::multi_array<double, 2>::index j = 0; j != size2; ++j)
+			sub[j] = -j - 1;
+
+		std::cout << "marr(after) =" << std::endl;
+		for(boost::multi_array<double, 2>::index i = 0; i != size1; ++i)
+		{
+			for(boost::multi_array<double, 2>::index j = 0; j != size2; ++j)
+				std::cout << marr[i][j] << ' ';
+			std::cout << std::endl;
+		}
+	}
 }
 
 void array_view()
