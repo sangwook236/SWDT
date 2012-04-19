@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "adisusbz", "../src/adisusbz/adisusbz_msvc9.vcproj", "{8787B8DF-9792-4D87-9DF0-0584AAE9FB42}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "adisusbz", "../test/adisusbz/adisusbz_msvc9.vcproj", "{8787B8DF-9792-4D87-9DF0-0584AAE9FB42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
