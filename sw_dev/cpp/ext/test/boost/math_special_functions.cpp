@@ -70,7 +70,7 @@ void bessel_functions()
 {
 	// the Bessel functions of the first and second kinds
 	{
-		double v = 1.0, x = 1.0;
+		const double v = 1.0, x = 1.0;
 
 		std::cout << "the Bessel function, J_v(x) of the first kind and order " << v << " = " << boost::math::cyl_bessel_j(v, x) << std::endl;
 		std::cout << "the Bessel function, Y_v(x) = N_v(x) of the second kind and order " << v << " = " << boost::math::cyl_neumann(v, x) << std::endl;
@@ -78,7 +78,7 @@ void bessel_functions()
 
 	// the modified Bessel functions of the first and second kinds
 	{
-		double v = 1.0, x = 1.0;
+		const double v = 1.0, x = 1.0;
 
 		std::cout << "the modified Bessel function, I_v(x) of the first kind and order " << v << " = " << boost::math::cyl_bessel_i(v, x) << std::endl;
 		std::cout << "the modified Bessel function, K_v(x) of the second kind and order " << v << " = " << boost::math::cyl_bessel_k(v, x) << std::endl;
@@ -86,7 +86,8 @@ void bessel_functions()
 
 	// the spherical Bessel functions of the first and second kinds
 	{
-		double v = 1.0, x = 1.0;
+		const unsigned int v = 1;
+		const double x = 1.0;
 
 		std::cout << "the spherical Bessel function, j_v(x) of the first kind and order " << v << " = " << boost::math::sph_bessel(v, x) << std::endl;
 		std::cout << "the spherical Bessel function, y_v(x) = n_v(x) of the second kind and order " << v << " = " << boost::math::sph_neumann(v, x) << std::endl;

@@ -1,6 +1,7 @@
 ﻿//#include "stdafx.h"
 #include <gsl/gsl_roots.h>
 #include <gsl/gsl_multiroots.h>
+#include <gsl/gsl_errno.h>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
@@ -23,7 +24,7 @@ double quadratic(double x, void *params)
 	return (a * x + b) * x + c;
 }
 
-double quadratic_deriv(double x, void *params)
+double quadratic_df(double x, void *params)
 {
 	struct quadratic_params *p = (struct quadratic_params *)params;
 	const double a = p->a;
@@ -46,9 +47,9 @@ void one_dim_root_finding_using_f()
 {
 	struct quadratic_params params = { 1.0, 0.0, -5.0 };
 
-	gsl_function F;
-	F.function = &quadratic;
-	F.params = &params;
+	gsl_function func;
+	func.function = &quadratic;
+	func.params = (void *)&params;
 
 	//const gsl_root_fsolver_type *T = gsl_root_fsolver_bisection;
 	//const gsl_root_fsolver_type *T = gsl_root_fsolver_falsepos;
@@ -56,7 +57,7 @@ void one_dim_root_finding_using_f()
 	gsl_root_fsolver *s = gsl_root_fsolver_alloc(T);
 
 	double x_lo = 0.0, x_hi = 5.0;
-	gsl_root_fsolver_set(s, &F, x_lo, x_hi);
+	gsl_root_fsolver_set(s, &func, x_lo, x_hi);
 
 	std::cout << "===== using " << gsl_root_fsolver_name(s) << " method =====" << std::endl;
 	std::cout << std::setw(5) << "iter" << " [" << std::setw(9) << "lower" << ", " << std::setw(9) << "upper" << "] " << std::setw(9) << "root" << std::setw(11) << "err" << std::setw(10) << "err(est)" << std::endl;
@@ -86,13 +87,13 @@ void one_dim_root_finding_using_f()
 
 void one_dim_root_finding_using_fdf()
 {
-	struct quadratic_params params = {1.0, 0.0, -5.0};
+	struct quadratic_params params = { 1.0, 0.0, -5.0 };
 
-	gsl_function_fdf FDF;
-	FDF.f = &quadratic;
-	FDF.df = &quadratic_deriv;
-	FDF.fdf = &quadratic_fdf;
-	FDF.params = &params;
+	gsl_function_fdf func;
+	func.f = &quadratic;
+	func.df = &quadratic_df;
+	func.fdf = &quadratic_fdf;
+	func.params = (void *)&params;
 
 	const gsl_root_fdfsolver_type *T = gsl_root_fdfsolver_newton;
 	//const gsl_root_fdfsolver_type *T = gsl_root_fdfsolver_secant;
@@ -100,14 +101,14 @@ void one_dim_root_finding_using_fdf()
 	gsl_root_fdfsolver *s = gsl_root_fdfsolver_alloc(T);
 
 	double x = 5.0;
-	gsl_root_fdfsolver_set(s, &FDF, x);
+	gsl_root_fdfsolver_set(s, &func, x);
 
 	std::cout << "===== using " << gsl_root_fdfsolver_name(s) << " method =====" << std::endl;
 	std::cout << std::setw(5) << "iter" << std::setw(11) << "root" << std::setw(11) << "err" << std::setw(11) << "err(est)" << std::endl;
 
 	int status;
 	int iter = 0, max_iter = 100;
-	double x0, r_expected = std::sqrt(5.0);
+	double x0, x_expected = std::sqrt(5.0);
 	do
 	{
 		++iter;
@@ -121,7 +122,7 @@ void one_dim_root_finding_using_fdf()
 		if (GSL_SUCCESS == status)
 			std::cout << "converged" << std::endl;
 
-		std::cout << std::setw(5) << iter << std::setw(11) << x << std::setw(11) << (x - r_expected) << std::setw(11) << (x - x0) << std::endl;
+		std::cout << std::setw(5) << iter << std::setw(11) << x << std::setw(11) << (x - x_expected) << std::setw(11) << (x - x0) << std::endl;
 	} while (GSL_CONTINUE == status && iter < max_iter);
 
 	if (GSL_SUCCESS != status)
@@ -184,12 +185,12 @@ void multidim_root_finding_using_f()
 	struct rparams p = { 1.0, 10.0 };
 
 #if 1
-	gsl_multiroot_function f = { &rosenbrock_f, n, &p };
+	gsl_multiroot_function func = { &rosenbrock_f, n, (void *)&p };
 #else
-	gsl_multiroot_function f;
-	f.f = &rosenbrock_f;
-	f.n = n;
-	f.params = &p;
+	gsl_multiroot_function func;
+	func.f = &rosenbrock_f;
+	func.n = n;
+	func.params = (void *)&p;
 #endif
 
 	const double x_init[2] = { -10.0, -5.0 };
@@ -202,7 +203,7 @@ void multidim_root_finding_using_f()
 	//const gsl_multiroot_fsolver_type *T = gsl_multiroot_fsolver_dnewton;
 	const gsl_multiroot_fsolver_type *T = gsl_multiroot_fsolver_broyden;
 	gsl_multiroot_fsolver *s = gsl_multiroot_fsolver_alloc(T, 2);
-	gsl_multiroot_fsolver_set(s, &f, x);
+	gsl_multiroot_fsolver_set(s, &func, x);
 
 	std::cout << "===== using " << gsl_multiroot_fsolver_name(s) << " method =====" << std::endl;
 	size_t iter = 0;
@@ -234,13 +235,13 @@ void multidim_root_finding_using_fdf()
 	struct rparams p = {1.0, 10.0 };
 
 #if 1
-	gsl_multiroot_function_fdf f = { &rosenbrock_f, &rosenbrock_df, &rosenbrock_fdf, n, &p };
+	gsl_multiroot_function_fdf func = { &rosenbrock_f, &rosenbrock_df, &rosenbrock_fdf, n, (void *)&p };
 #else
-	f.f = &rosenbrock_f;
-	f.df = &rosenbrock_df;
-	f.fdf = &rosenbrock_fdf;
-	f.n = n;
-	f.params = &p;
+	func.f = &rosenbrock_f;
+	func.df = &rosenbrock_df;
+	func.fdf = &rosenbrock_fdf;
+	func.n = n;
+	func.params = (void *)&p;
 #endif
 
 	double x_init[2] = { -10.0, -5.0 };
@@ -253,7 +254,7 @@ void multidim_root_finding_using_fdf()
 	//const gsl_multiroot_fdfsolver_type *T = gsl_multiroot_fdfsolver_newton;
 	const gsl_multiroot_fdfsolver_type *T = gsl_multiroot_fdfsolver_gnewton;
 	gsl_multiroot_fdfsolver *s = gsl_multiroot_fdfsolver_alloc(T, n);
-	gsl_multiroot_fdfsolver_set(s, &f, x);
+	gsl_multiroot_fdfsolver_set(s, &func, x);
 
 	std::cout << "===== using " << gsl_multiroot_fdfsolver_name(s) << " method =====" << std::endl;
 	size_t iter = 0;

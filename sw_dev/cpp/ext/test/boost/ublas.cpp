@@ -24,8 +24,8 @@ boost::numeric::ublas::matrix<T> ublas_inv_by_gj(const boost::numeric::ublas::ma
 	const T eps = (T)1.0e-15;
 
 	const int size = m.size1();
-	// Cannot invert if non-square matrix or 0x0 matrix.
-	// Report it as singular in these cases, and return a 0x0 matrix.
+	// cannot invert if non-square matrix or 0x0 matrix.
+	// report it as singular in these cases, and return a 0x0 matrix.
 	if (size != m.size2() || size == 0)
 	{
 		singular = true;
@@ -33,8 +33,7 @@ boost::numeric::ublas::matrix<T> ublas_inv_by_gj(const boost::numeric::ublas::ma
 		return A;
 	}
 
-	// Handle 1x1 matrix edge case as general purpose 
-	// inverter below requires 2x2 to function properly.
+	// handle 1x1 matrix edge case as general purpose inverter below requires 2x2 to function properly.
 	if (size == 1)
 	{
 		boost::numeric::ublas::matrix<T> A(1, 1);
@@ -49,16 +48,14 @@ boost::numeric::ublas::matrix<T> ublas_inv_by_gj(const boost::numeric::ublas::ma
 		return A;
 	}
 
-	// Create an augmented matrix A to invert. Assign the
-	// matrix to be inverted to the left hand side and an
-	// identity matrix to the right hand side.
+	// create an augmented matrix A to invert. assign the matrix to be inverted to the left hand side and an identity matrix to the right hand side.
 	boost::numeric::ublas::matrix<T> A(size, 2*size);
 	boost::numeric::ublas::matrix_range<boost::numeric::ublas::matrix<T> > Aleft(A, boost::numeric::ublas::range(0, size), boost::numeric::ublas::range(0, size));
 	Aleft = m;
 	boost::numeric::ublas::matrix_range<boost::numeric::ublas::matrix<T> > Aright(A, boost::numeric::ublas::range(0, size), boost::numeric::ublas::range(size, 2*size));
 	Aright = boost::numeric::ublas::identity_matrix<T>(size);
 
-	// Swap rows to eliminate zero diagonal elements.
+	// swap rows to eliminate zero diagonal elements.
 	for (int k = 0; k < size; ++k)
 	{
 		if (A(k,k) == 0) // XXX: test for "small" instead
@@ -74,7 +71,7 @@ boost::numeric::ublas::matrix<T> ublas_inv_by_gj(const boost::numeric::ublas::ma
 				}
 			}
 
-			// Swap the rows if found
+			// swap the rows if found
 			if (l < 0) 
 			{
 				//std::cerr << "Error:" << __FUNCTION__ << ": Input matrix is singular, because cannot find a row to swap while eliminating zero-diagonal.";
@@ -88,13 +85,13 @@ boost::numeric::ublas::matrix<T> ublas_inv_by_gj(const boost::numeric::ublas::ma
 				rowk.swap(rowl);
 
 //#if defined(DEBUG) || !defined(NDEBUG)
-//					std::cerr << __FUNCTION__ << ":" << "Swapped row " << k << " with row " << l << ":" << A << std::endl;
+//				std::cerr << __FUNCTION__ << ":" << "swapped row " << k << " with row " << l << ":" << A << std::endl;
 //#endif
 			}
 		}
 	}
 
-	// Doing partial pivot
+	// doing partial pivot
 	for (int k = 0; k < size; ++k)
 	{
 		// normalize the current row
@@ -125,28 +122,28 @@ boost::numeric::ublas::matrix<T> ublas_inv_by_gj(const boost::numeric::ublas::ma
 	return Aright;
 }
 
-// Matrix inversion routine. Uses lu_factorize and lu_substitute in uBLAS to invert a matrix
+// matrix inversion routine. uses lu_factorize and lu_substitute in uBLAS to invert a matrix
 template<class T>
 bool ublas_inv_by_lu(const boost::numeric::ublas::matrix<T> &input, boost::numeric::ublas::matrix<T> &inverse)
 {
-	typedef boost::numeric::ublas::permutation_matrix<std::size_t> pmatrix_t;
-
 	// create a working copy of the input
 	boost::numeric::ublas::matrix<T> A(input);
-	// create a permutation matrix for the LU-factorization
-	pmatrix_t pm(A.size1());
+	// create a permutation matrix for the LU factorization
+	boost::numeric::ublas::permutation_matrix<std::size_t> pm(A.size1());
 
-	// perform LU-factorization
-	const int res = boost::numeric::ublas::lu_factorize(A,pm);
-	if (0 != res) return false;
+	// perform LU factorization
+	if (boost::numeric::ublas::lu_factorize(A, pm))
+		return false;
+	else
+	{
+		// create identity matrix of inverse
+		inverse.assign(boost::numeric::ublas::identity_matrix<T>(A.size1()));
 
-	// create identity matrix of "inverse"
-	inverse.assign(boost::numeric::ublas::identity_matrix<T>(A.size1()));
+		// back-substitute to get the inverse
+		boost::numeric::ublas::lu_substitute(A, pm, inverse);
 
-	// backsubstitute to get the inverse
-	boost::numeric::ublas::lu_substitute(A, pm, inverse);
-
-	return true;
+		return true;
+	}
 }
 
 template<class T>
@@ -191,7 +188,7 @@ bool ublas_qr(const boost::numeric::ublas::matrix<T> &M, boost::numeric::ublas::
 
 	const size_t size = M.size1();
 
-	// init Matrices
+	// init matrices
 	boost::numeric::ublas::matrix<T> H, HTemp;
 	HTemp = boost::numeric::ublas::identity_matrix<T>(size);
 	Q = boost::numeric::ublas::identity_matrix<T>(size);
@@ -339,12 +336,13 @@ void ublas_vector_operation()
 		for (unsigned i = 0; i < v.size(); ++i)
 			v(i) = std::complex<double>(i, i);
 
-		std::cout << -v << std::endl;
-		std::cout << boost::numeric::ublas::conj(v) << std::endl;
-		std::cout << boost::numeric::ublas::real(v) << std::endl;
-		std::cout << boost::numeric::ublas::imag(v) << std::endl;
-		std::cout << boost::numeric::ublas::trans(v) << std::endl;
-		std::cout << boost::numeric::ublas::herm(v) << std::endl;
+		std::cout << "v = " << v << std::endl;
+		std::cout << "-v = " << -v << std::endl;
+		std::cout << "conj(v) = " << boost::numeric::ublas::conj(v) << std::endl;
+		std::cout << "real(v) = " << boost::numeric::ublas::real(v) << std::endl;
+		std::cout << "imag(v) = " << boost::numeric::ublas::imag(v) << std::endl;
+		std::cout << "v^T = " << boost::numeric::ublas::trans(v) << std::endl;
+		std::cout << "v^H = " << boost::numeric::ublas::herm(v) << std::endl;
 	}
 
 	//
@@ -353,11 +351,12 @@ void ublas_vector_operation()
 		for (unsigned i = 0; i < v.size(); ++i)
 			v(i) = i;
 
-		std::cout << boost::numeric::ublas::sum(v) << std::endl;
-		std::cout << boost::numeric::ublas::norm_1(v) << std::endl;
-		std::cout << boost::numeric::ublas::norm_2(v) << std::endl;
-		std::cout << boost::numeric::ublas::norm_inf(v) << std::endl;
-		std::cout << boost::numeric::ublas::index_norm_inf(v) << std::endl;
+		std::cout << "v = " << v << std::endl;
+		std::cout << "sum(v) = " << boost::numeric::ublas::sum(v) << std::endl;
+		std::cout << "norm_1(v) = " << boost::numeric::ublas::norm_1(v) << std::endl;
+		std::cout << "norm_2(v) = " << boost::numeric::ublas::norm_2(v) << std::endl;
+		std::cout << "norm_inf(v) = " << boost::numeric::ublas::norm_inf(v) << std::endl;
+		std::cout << "index_norm_inf(v) = " << boost::numeric::ublas::index_norm_inf(v) << std::endl;
 	}
 
 	//
@@ -366,8 +365,11 @@ void ublas_vector_operation()
 		for (unsigned i = 0; i < std::min(v1.size(), v2.size()); ++i)
 			v1(i) = v2(i) = i;
 
-		std::cout << boost::numeric::ublas::inner_prod(v1, v2) << std::endl;
-		std::cout << boost::numeric::ublas::outer_prod(v1, v2) << std::endl;  // caution: it's not vector product. (outer_prod(v1, v2))[i][j] = v1[i] * v2[j]
+		std::cout << "v1 = " << v1 << " ; v2 = " << v2 << std::endl;
+		// inner product. v1^T * v2 ==> scalar.
+		std::cout << "inner_prod(v1, v2) = " << boost::numeric::ublas::inner_prod(v1, v2) << std::endl;
+		// caution: it's not a vector product. v1 * v2^T ==> matrix.
+		std::cout << "outer_prod(v1, v2) = " << boost::numeric::ublas::outer_prod(v1, v2) << std::endl;
 	}
 
 	//
@@ -380,12 +382,13 @@ void ublas_vector_operation()
 		for (unsigned i = 0; i < v2.size(); ++i)
 			v2(i) = 10 - i;
 
-		std::cout << boost::numeric::ublas::blas_1::asum(v1) << std::endl;
-		std::cout << boost::numeric::ublas::blas_1::nrm2(v1) << std::endl;
-		std::cout << boost::numeric::ublas::blas_1::amax(v1) << std::endl;
+		std::cout << "v1 = " << v1 << " ; v2 = " << v2 << std::endl;
+		std::cout << "asum(v) = " << boost::numeric::ublas::blas_1::asum(v1) << std::endl;
+		std::cout << "nrm2(v) = " << boost::numeric::ublas::blas_1::nrm2(v1) << std::endl;
+		std::cout << "amax(v) = " << boost::numeric::ublas::blas_1::amax(v1) << std::endl;
 
-		std::cout << boost::numeric::ublas::blas_1::dot(v1, v2) << std::endl;
-		std::cout << boost::numeric::ublas::blas_1::axpy(v1, 2.0, v2) << std::endl;  // v1 = v1 + t * v2
+		std::cout << "dot(v) = " << boost::numeric::ublas::blas_1::dot(v1, v2) << std::endl;
+		std::cout << "axpy(v1, 2.0, v2) = " << boost::numeric::ublas::blas_1::axpy(v1, 2.0, v2) << std::endl;  // v1 += t * v2
 
 		vector_type v3(4);
 		boost::numeric::ublas::blas_1::copy(v3, v1);
@@ -574,7 +577,7 @@ void ublas_matrix_operation()
 
 		for (int i = 0; i < 2; ++i)
 			for (int j = 0; j < 3; ++j)
-				std::cout << "Mat[" << i << "][" << j << "] =\n" << marr[i][j] << std::endl;
+				std::cout << "mat[" << i << "][" << j << "] =\n" << marr[i][j] << std::endl;
 	}
 }
 
@@ -593,8 +596,9 @@ void ublas_matrix_vector_operation()
 			v(i) = i;
 		}
 
-		std::cout << boost::numeric::ublas::prod(m, v) << std::endl;
-		std::cout << boost::numeric::ublas::prod(v, m) << std::endl;
+		std::cout << m << " ; " << v << std::endl;
+		std::cout << "m * v = " << boost::numeric::ublas::prod(m, v) << std::endl;
+		std::cout << "v * m = " << boost::numeric::ublas::prod(v, m) << std::endl;
 	}
 
 	//
@@ -616,10 +620,10 @@ void ublas_matrix_vector_operation()
 	//
 	{
 		// FIXME [correct] >> variables have to be initialized
-
+/*
 		boost::numeric::ublas::vector<double> v, v1, v2;
 		boost::numeric::ublas::matrix<double> m;
-		double t, t1, t2;
+		const double t= 1.0, t1 = 2.0, t2 = 3.0;
 
 		boost::numeric::ublas::blas_2::tmv(v, m);  // m * v. m: triangular matrix
 		// TODO [check] >> check if using boost::numeric::ublas::lower_tag() is correct
@@ -630,6 +634,7 @@ void ublas_matrix_vector_operation()
 		boost::numeric::ublas::blas_2::hr(m, t, v);  // m += t * (v * v^H)
 		boost::numeric::ublas::blas_2::sr2(m, t, v1, v2);  // m += t * (v1 * v2^T + v2 * v1^T)
 		boost::numeric::ublas::blas_2::hr2(m, t, v1, v2);  // m += t * (v1 * v2^H) + (v2 * (t * v1)^H)
+*/
 	}
 }
 
@@ -681,9 +686,9 @@ void ublas_matrix_matrix_operation()
 	//
 	{
 		// FIXME [correct] >> variables have to be initialized
-
+/*
 		boost::numeric::ublas::matrix<double> m1, m2, m3;
-		double t, t1, t2;
+		const double t = 1.0, t1 = 2.0, t2 = 3.0;
 
 		boost::numeric::ublas::blas_3::tmm(m1, t, m2, m3);  // m1 = t * (m2 * m3). m2 & m3: triangular matrices
 		// TODO [check] >> check if using boost::numeric::ublas::lower_tag() is correct
@@ -693,6 +698,7 @@ void ublas_matrix_matrix_operation()
 		boost::numeric::ublas::blas_3::hrk(m1, t1, t2, m2);  // m1 = t1 * m1 + t2 * (m2 * m2^H);
 		boost::numeric::ublas::blas_3::sr2k(m1, t1, t2, m2, m3);  // m1 = t1 * m1 + t2 * (m2 * m3^T + m3 * m2^T);
 		boost::numeric::ublas::blas_3::hr2k(m1, t1, t2, m2, m3);  // m1 = t1 * m1 + (t2 * (m2 * m3^H)) + (m3 * (t2 * m2)^H);
+*/
 	}
 }
 
@@ -723,13 +729,50 @@ void ublas_lu()
 		//boost::numeric::ublas::lu_substitute(m2, pm2, vs2);
 	}
 }
+ 
+double ublas_det_by_lu(boost::numeric::ublas::matrix<double> &m)
+{
+    boost::numeric::ublas::permutation_matrix<std::size_t> pm(m.size1());
+    if (boost::numeric::ublas::lu_factorize(m, pm))
+        return 0.0;
+	else
+	{
+	    double det = 1.0;
+		for (std::size_t i = 0; i < pm.size(); ++i)
+			det *= (pm(i) == i) ? m(i, i) : -m(i, i);
+
+		return det;
+    }
+}
+
+void ublas_det()
+{
+	boost::numeric::ublas::matrix<double> m(3, 3);
+#if 1
+	m(0, 0) = 4.0;  m(0, 1) = 2.0;  m(0, 2) = 3.0;
+	m(1, 0) = 0.0;  m(1, 1) = -1.0;  m(1, 2) = 2.0;
+	m(2, 0) = 5.0;  m(2, 1) = -2.0;  m(2, 2) = 3.0;
+#else
+	m(0, 0) = 1;  m(0, 1) = 2;  m(0, 2) = 0;
+	m(1, 0) = 0;  m(1, 1) = 4;  m(1, 2) = 1;
+	m(2, 0) = -3;  m(2, 1) = 0;  m(2, 2) = 1; 
+#endif
+
+	std::cout << "det = " << ublas_det_by_lu(m) << std::endl;
+}
 
 void ublas_inv()
 {
-	boost::numeric::ublas::matrix<double> A(3,3);
-	A(0,0) = 1;  A(0,1) = 1;  A(0,2) = 0;
-	A(1,0) = 0;  A(1,1) = 1;  A(1,2) = 0;
-	A(2,0) = 1;  A(2,1) = 0;  A(2,2) = 1; 
+	boost::numeric::ublas::matrix<double> A(3, 3);
+#if 1
+	A(0, 0) = 4.0;  A(0, 1) = 2.0;  A(0, 2) = 3.0;
+	A(1, 0) = 0.0;  A(1, 1) = -1.0;  A(1, 2) = 2.0;
+	A(2, 0) = 5.0;  A(2, 1) = -2.0;  A(2, 2) = 3.0;
+#else
+	A(0, 0) = 1;  A(0, 1) = 2;  A(0, 2) = 0;
+	A(1, 0) = 0;  A(1, 1) = 4;  A(1, 2) = 1;
+	A(2, 0) = -3;  A(2, 1) = 0;  A(2, 2) = 1; 
+#endif
 
 	std::cout << "A = " << A << std::endl;
 
@@ -750,9 +793,15 @@ void ublas_inv()
 void ublas_qr()
 {
 	boost::numeric::ublas::matrix<double> A(3,3);
-	A(0,0) = 1;  A(0,1) = 1;  A(0,2) = 0;
-	A(1,0) = 0;  A(1,1) = 1;  A(1,2) = 0;
-	A(2,0) = 1;  A(2,1) = 0;  A(2,2) = 1; 
+#if 0
+	A(0, 0) = 4.0;  A(0, 1) = 2.0;  A(0, 2) = 3.0;
+	A(1, 0) = 0.0;  A(1, 1) = -1.0;  A(1, 2) = 2.0;
+	A(2, 0) = 5.0;  A(2, 1) = -2.0;  A(2, 2) = 3.0;
+#else
+	A(0, 0) = 1;  A(0, 1) = 2;  A(0, 2) = 0;
+	A(1, 0) = 0;  A(1, 1) = 4;  A(1, 2) = 1;
+	A(2, 0) = -3;  A(2, 1) = 0;  A(2, 2) = 1; 
+#endif
 
 	std::cout << "A = " << A << std::endl;
 	std::cout << "QR decomposition using Householder" << std::endl;
@@ -781,6 +830,7 @@ void ublas()
 	local::ublas_matrix_matrix_operation();
 	local::ublas_lu();
 
+	local::ublas_det();
 	local::ublas_inv();
 	local::ublas_qr();
 }
