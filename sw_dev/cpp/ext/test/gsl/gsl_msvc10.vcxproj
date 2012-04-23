@@ -99,8 +99,9 @@
     <ClCompile Include="matrix_operation.cpp" />
     <ClCompile Include="monte_carlo_integration.cpp" />
     <ClCompile Include="multidim_minimization.cpp" />
+    <ClCompile Include="polynomial_root_finding.cpp" />
+    <ClCompile Include="root_finding.cpp" />
     <ClCompile Include="pca.cpp" />
-    <ClCompile Include="polynomial_roots.cpp" />
     <ClCompile Include="qr.cpp" />
     <ClCompile Include="random_sample.cpp" />
     <ClCompile Include="simulated_annealing.cpp" />

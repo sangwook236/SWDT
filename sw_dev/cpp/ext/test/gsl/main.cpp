@@ -10,7 +10,6 @@ int main(int argc, char *argv[])
 {
 	void vector_operation();
 	void matrix_operation();
-	void polynomial_roots();
 	void lu();
 	void qr();
 	void cholesky();
@@ -21,6 +20,11 @@ int main(int argc, char *argv[])
 	void conjugate_gradient();
 	void multidim_minimization_simplex();
 	void multidim_minimization_steepest_descent();
+	void quadratic_equation_root_finding();
+	void cubic_equation_root_finding();
+	void polynomial_root_finding();
+	void one_dim_root_finding();
+	void multidim_root_finding();
 	void fft();
 	void random_sample();
 	void distribution();
@@ -29,10 +33,8 @@ int main(int argc, char *argv[])
 
 	try
 	{
-		vector_operation();
+		//vector_operation();
 		//matrix_operation();
-
-		//polynomial_roots();
 
 		//lu();
 		//qr();
@@ -46,6 +48,12 @@ int main(int argc, char *argv[])
 		//conjugate_gradient();
 		//multidim_minimization_simplex();
 		//multidim_minimization_steepest_descent();
+
+		//quadratic_equation_root_finding();
+		//cubic_equation_root_finding();
+		//polynomial_root_finding();
+		//one_dim_root_finding();
+		multidim_root_finding();
 		
 		//fft();
 		

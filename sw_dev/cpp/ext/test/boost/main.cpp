@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 			//any();
 			//array_();
 			//tuple();
-			multi_array();
+			//multi_array();
 			//multi_index();
 
 			//property_map();
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 			//math_special_functions();
 			//math_statistical_distributions();
 			//random();
-			//ublas();
+			ublas();
 			//math_bindings();
 			//numeric_bindings();
 			//mtl_matrix();

@@ -4,6 +4,7 @@
 #include <boost/numeric/ublas/lu.hpp>
 #include <boost/numeric/ublas/blas.hpp>
 #include <boost/numeric/ublas/io.hpp>
+#include <boost/multi_array.hpp>
 #include <iostream>
 
 
@@ -148,7 +149,6 @@ bool ublas_inv_by_lu(const boost::numeric::ublas::matrix<T> &input, boost::numer
 	return true;
 }
 
-
 template<class T>
 void TransposeMultiply(const boost::numeric::ublas::vector<T> &v, boost::numeric::ublas::matrix<T> &m)
 {
@@ -290,136 +290,291 @@ void ublas_vector_operation()
 {
 	typedef boost::numeric::ublas::vector<double, boost::numeric::ublas::unbounded_array<double> > vector_type;
 
+	//
 	{
-		//
+		boost::numeric::ublas::vector<double> v1(3), v2(3);
+		for (unsigned i = 0; i < std::min(v1.size(), v2.size()); ++i)
+			v1(i) = v2(i) = i;
+
+		std::cout << v1 + v2 << std::endl;
+		std::cout << v1 - v2 << std::endl;
+
+		std::cout << 2.0 * v1 << std::endl;
+		std::cout << v1 * 2.0 << std::endl;
+	}
+
+	//
+	{
+		for (int i = 0; i < 3; ++i)
 		{
-			boost::numeric::ublas::vector<double> v1(3), v2(3);
-			for (unsigned i = 0; i < std::min(v1.size(), v2.size()); ++i)
-				v1(i) = v2(i) = i;
-
-			std::cout << v1 + v2 << std::endl;
-			std::cout << v1 - v2 << std::endl;
-
-			std::cout << 2.0 * v1 << std::endl;
-			std::cout << v1 * 2.0 << std::endl;
+			boost::numeric::ublas::unit_vector<double> uv(3, i);
+			std::cout << "unit vector (3," << i << ") = " << uv << std::endl;
 		}
 
-		//
-		{
-			boost::numeric::ublas::vector<std::complex<double> > v(3);
-			for (unsigned i = 0; i < v.size(); ++i)
-				v(i) = std::complex<double>(i, i);
+		boost::numeric::ublas::zero_vector<double> zv(3);
+		std::cout << "zero vector(3) = " << zv << std::endl;
 
-			std::cout << -v << std::endl;
-			std::cout << boost::numeric::ublas::conj(v) << std::endl;
-			std::cout << boost::numeric::ublas::real(v) << std::endl;
-			std::cout << boost::numeric::ublas::imag(v) << std::endl;
-			std::cout << boost::numeric::ublas::trans(v) << std::endl;
-			std::cout << boost::numeric::ublas::herm(v) << std::endl;
-		}
+		boost::numeric::ublas::scalar_vector<double> sv1(3);
+		std::cout << "scalar vector(3) = " << sv1 << std::endl;
 
-		//
-		{
-			boost::numeric::ublas::vector<double> v(3);
-			for (unsigned i = 0; i < v.size(); ++i)
-				v(i) = i;
+		boost::numeric::ublas::scalar_vector<double> sv2(3, 2.0);
+		std::cout << "scalar vector(3, 2.0) = " << sv2 << std::endl;
+	}
 
-			std::cout << boost::numeric::ublas::sum(v) << std::endl;
-			std::cout << boost::numeric::ublas::norm_1(v) << std::endl;
-			std::cout << boost::numeric::ublas::norm_2(v) << std::endl;
-			std::cout << boost::numeric::ublas::norm_inf(v) << std::endl;
-			std::cout << boost::numeric::ublas::index_norm_inf(v) << std::endl;
-		}
+	//
+	{
+		const size_t dim = 3;
+		double data[] = { 1, 2, 3 };
 
-		//
-		{
-			boost::numeric::ublas::vector<double> v1(3), v2(3);
-			for (unsigned i = 0; i < std::min(v1.size(), v2.size()); ++i)
-				v1(i) = v2(i) = i;
+		boost::numeric::ublas::vector<double> vec(boost::numeric::ublas::vector<double, std::vector<double> >(dim, std::vector<double>(data, data + dim)));
+		std::cout << "vec = " << vec << std::endl;
 
-			std::cout << boost::numeric::ublas::inner_prod(v1, v2) << std::endl;
-			std::cout << boost::numeric::ublas::outer_prod(v1, v2) << std::endl;  // caution: it's not vector product. (outer_prod(v1, v2))[i][j] = v1[i] * v2[j]
-		}
+		data[0] = -1;
+		std::cout << "vec (after assignment) = " << vec << std::endl;
+	}
 
-		//
-		{
-			vector_type v1(4);
-			for (unsigned i = 0; i < v1.size(); ++i)
-				v1(i) = i + 1;
+	//
+	{
+		boost::numeric::ublas::vector<std::complex<double> > v(3);
+		for (unsigned i = 0; i < v.size(); ++i)
+			v(i) = std::complex<double>(i, i);
 
-			vector_type v2(4);
-			for (unsigned i = 0; i < v2.size(); ++i)
-				v2(i) = 10 - i;
+		std::cout << -v << std::endl;
+		std::cout << boost::numeric::ublas::conj(v) << std::endl;
+		std::cout << boost::numeric::ublas::real(v) << std::endl;
+		std::cout << boost::numeric::ublas::imag(v) << std::endl;
+		std::cout << boost::numeric::ublas::trans(v) << std::endl;
+		std::cout << boost::numeric::ublas::herm(v) << std::endl;
+	}
 
-			std::cout << boost::numeric::ublas::blas_1::asum(v1) << std::endl;
-			std::cout << boost::numeric::ublas::blas_1::nrm2(v1) << std::endl;
-			std::cout << boost::numeric::ublas::blas_1::amax(v1) << std::endl;
+	//
+	{
+		boost::numeric::ublas::vector<double> v(3);
+		for (unsigned i = 0; i < v.size(); ++i)
+			v(i) = i;
 
-			std::cout << boost::numeric::ublas::blas_1::dot(v1, v2) << std::endl;
-			std::cout << boost::numeric::ublas::blas_1::axpy(v1, 2.0, v2) << std::endl;  // v1 = v1 + t * v2
+		std::cout << boost::numeric::ublas::sum(v) << std::endl;
+		std::cout << boost::numeric::ublas::norm_1(v) << std::endl;
+		std::cout << boost::numeric::ublas::norm_2(v) << std::endl;
+		std::cout << boost::numeric::ublas::norm_inf(v) << std::endl;
+		std::cout << boost::numeric::ublas::index_norm_inf(v) << std::endl;
+	}
 
-			vector_type v3(4);
-			boost::numeric::ublas::blas_1::copy(v3, v1);
-			std::cout << v3 << std::endl;
-			boost::numeric::ublas::blas_1::swap(v1, v2);
-			std::cout << v1 << ", " << v2 << std::endl;
-			boost::numeric::ublas::blas_1::scal(v1, 3);
-			std::cout << v1 << std::endl;
+	//
+	{
+		boost::numeric::ublas::vector<double> v1(3), v2(3);
+		for (unsigned i = 0; i < std::min(v1.size(), v2.size()); ++i)
+			v1(i) = v2(i) = i;
 
-			//boost::numeric::ublas::blas_1::rot(...);  // plane rotation
-		}
+		std::cout << boost::numeric::ublas::inner_prod(v1, v2) << std::endl;
+		std::cout << boost::numeric::ublas::outer_prod(v1, v2) << std::endl;  // caution: it's not vector product. (outer_prod(v1, v2))[i][j] = v1[i] * v2[j]
+	}
+
+	//
+	{
+		vector_type v1(4);
+		for (unsigned i = 0; i < v1.size(); ++i)
+			v1(i) = i + 1;
+
+		vector_type v2(4);
+		for (unsigned i = 0; i < v2.size(); ++i)
+			v2(i) = 10 - i;
+
+		std::cout << boost::numeric::ublas::blas_1::asum(v1) << std::endl;
+		std::cout << boost::numeric::ublas::blas_1::nrm2(v1) << std::endl;
+		std::cout << boost::numeric::ublas::blas_1::amax(v1) << std::endl;
+
+		std::cout << boost::numeric::ublas::blas_1::dot(v1, v2) << std::endl;
+		std::cout << boost::numeric::ublas::blas_1::axpy(v1, 2.0, v2) << std::endl;  // v1 = v1 + t * v2
+
+		vector_type v3(4);
+		boost::numeric::ublas::blas_1::copy(v3, v1);
+		std::cout << v3 << std::endl;
+		boost::numeric::ublas::blas_1::swap(v1, v2);
+		std::cout << v1 << ", " << v2 << std::endl;
+		boost::numeric::ublas::blas_1::scal(v1, 3);  // v *= t
+		std::cout << v1 << std::endl;
+
+		//boost::numeric::ublas::blas_1::rot(...);  // plane rotation
 	}
 }
 
 void ublas_matrix_operation()
 {
+	// default: row-major matrix
 	typedef boost::numeric::ublas::matrix<double, boost::numeric::ublas::column_major, boost::numeric::ublas::unbounded_array<double> > matrix_type;
 
 	{
+		matrix_type m1(3, 3, 10.0);
+		std::cout << "m1 = " << m1 << std::endl;
+		m1.clear();
+		//m1.assign(boost::numeric::ublas::zero_matrix<double>(m1.size1(), m1.size2()));
+		std::cout << "m1 (after clear()) = " << m1 << std::endl;
+
+		for (unsigned i = 0, k = 0; i < m1.size1(); ++i)
+			for (unsigned j = 0; j < m1.size2(); ++j, ++k)
+				m1(i, j) = k;
+
+		matrix_type m2(3, 3);
+		for (unsigned i = 0, k = 0; i < m2.size1(); ++i)
+			for (unsigned j = 0; j < m2.size2(); ++j, ++k)
+				m2(i, j) = k;
+
+		std::cout << 2.0 * m1 << std::endl;
+		std::cout << m1 * 2.0 << std::endl;
+
+		std::cout << m1 + m2 << std::endl;
+		std::cout << m1 - m2 << std::endl;
+	}
+
+	//
+	{
+		boost::numeric::ublas::identity_matrix<double> im1(3);
+		std::cout << "identity matrix(3) = " << im1 << std::endl;
+
+		boost::numeric::ublas::identity_matrix<double> im2(2, 3);
+		std::cout << "identity matrix(2, 3) = " << im2 << std::endl;
+
+		boost::numeric::ublas::zero_matrix<double> zm1(3);
+		std::cout << "zero matrix(3) = " << zm1 << std::endl;
+
+		boost::numeric::ublas::zero_matrix<double> zm2(2, 3);
+		std::cout << "zero matrix(2, 3) = " << zm2 << std::endl;
+
+		boost::numeric::ublas::scalar_matrix<double> sm1(2, 3);
+		std::cout << "scalar matrix(2, 3) = " << sm1 << std::endl;
+
+		boost::numeric::ublas::scalar_matrix<double> sm2(2, 3, 2.0);
+		std::cout << "scalar matrix(2, 3, 2.0) = " << sm2 << std::endl;
+	}
+
+	//
+	{
+		boost::numeric::ublas::matrix<double> m(3, 3);
+		for (unsigned i = 0, k = 0; i < m.size1(); ++i)
+			for (unsigned j = 0; j < m.size2(); ++j, ++k)
+				m(i, j) = k;
+
+		boost::numeric::ublas::matrix_row<boost::numeric::ublas::matrix<double> > row(m, 1);
+		//boost::numeric::ublas::matrix_column<boost::numeric::ublas::matrix<double> > col(m, 1);
+		boost::numeric::ublas::vector<double> vec(row);
+		row[1] = -4;
+
+		// caution !!! : not changed by row[1] = -4
+		std::cout << vec << std::endl;
+		std::cout << m << std::endl;  // changed by row[1] = -4
+
+		boost::numeric::ublas::matrix_range<boost::numeric::ublas::matrix<double> > mr(m, boost::numeric::ublas::range(1, 3), boost::numeric::ublas::range(1, 3));
+		//for (unsigned i = 0; i < mr.size1(); ++i)
+		//	for (unsigned j = 0; j < mr.size2(); ++j)
+		//		mr(i, j) = 3 * i + j;
+		std::cout << mr << std::endl;
+
+		boost::numeric::ublas::matrix_vector_slice<boost::numeric::ublas::matrix<double> > mvs(m, boost::numeric::ublas::slice(0, 1, 3), boost::numeric::ublas::slice(0, 1, 3));
+		std::cout << mvs << std::endl;
+
+		boost::numeric::ublas::matrix_slice<boost::numeric::ublas::matrix<double> > ms(m, boost::numeric::ublas::slice(0, 2, 2), boost::numeric::ublas::slice(0, 1, 3));
+		//for (unsigned i = 0; i < ms.size1(); ++i)
+		//	for (unsigned j = 0; j < ms.size2(); ++j)
+		//		ms(i, j) = 3 * i + j;
+		std::cout << ms << std::endl;
+
+		//
+		boost::numeric::ublas::vector<double> v(4);
+		for (unsigned i = 0; i < 4; ++i)
+			v(i) = 10 - i;
+
+		boost::numeric::ublas::matrix<double> mv(4, 1, v.data());
+		std::cout << "mv = " << mv << std::endl;
+	}
+
+	//
+	{
+		const size_t row = 3, col = 4;
+		double data[] = {
+			1, 2, 3, 4,
+			5, 6, 7, 8,
+			9, 10, 11, 12
+		};
+
 		{
-			matrix_type m1(3, 3);
-			for (unsigned i = 0, k = 0; i < m1.size1(); ++i)
-				for (unsigned j = 0; j < m1.size2(); ++j, ++k)
-					m1(i, j) = k;
+			boost::numeric::ublas::matrix<double, boost::numeric::ublas::row_major, std::vector<double> > mat(row, col, std::vector<double>(data, data + row * col));
+			std::cout << "mat = " << mat << std::endl;
 
-			matrix_type m2(3, 3);
-			for (unsigned i = 0, k = 0; i < m2.size1(); ++i)
-				for (unsigned j = 0; j < m2.size2(); ++j, ++k)
-					m2(i, j) = k;
+			boost::numeric::ublas::matrix<double, boost::numeric::ublas::column_major> mat2(mat);
+			data[0] = -1;
+			std::cout << "mat2 (after assignment) = " << mat2 << std::endl;
+		}
 
-			std::cout << 2.0 * m1 << std::endl;
-			std::cout << m1 * 2.0 << std::endl;
+		// TODO [enhance] >> better approach using c-style arrays has to be searched for instead of std::copy()
 
-			std::cout << m1 + m2 << std::endl;
-			std::cout << m1 - m2 << std::endl;
+		//boost::numeric::ublas::matrix<double, boost::numeric::ublas::column_major, boost::numeric::ublas::unbounded_array<double> > m1(row, col, data);  // compile-time error
+		boost::numeric::ublas::matrix<double, boost::numeric::ublas::column_major, boost::numeric::ublas::unbounded_array<double> > m1(row, col, 0.0);
+		//std::copy(data, data + row * col, m1.begin1());  // run-time error
+		std::copy(data, data + row, m1.begin1());  // begin1() indicates row indices
+		//std::copy(data, data + row * col, m1.begin2());  // run-time error
+		//std::copy(data, data + col, m1.begin2());  // begin2() indicates col indices
+		std::cout << m1 << std::endl;
+
+		//boost::numeric::ublas::matrix<double, boost::numeric::ublas::column_major, boost::numeric::ublas::unbounded_array<double> >::array_type arr1 = m1.data();  // not correctly working
+		//boost::numeric::ublas::matrix<double, boost::numeric::ublas::column_major, boost::numeric::ublas::unbounded_array<double> >::array_type arr1(m1.data());  // not correctly working
+		boost::numeric::ublas::matrix<double, boost::numeric::ublas::column_major, boost::numeric::ublas::unbounded_array<double> >::array_type &arr1 = m1.data();
+		std::cout << arr1.size() << std::endl;
+		std::copy(data, data + row * col, arr1.begin());
+		std::cout << m1 << std::endl;
+
+		m1(1, 1) = -6;
+		std::cout << m1 << std::endl;
+		for (size_t i = 0; i < row; ++i)
+		{
+			for (size_t j = 0; j < col; ++j)
+				std::cout << data[i * col + j] << ' ';
+			std::cout << std::endl;
 		}
 
 		//
-		{
-			boost::numeric::ublas::matrix<std::complex<double> > m(3,3);
-			for (unsigned i = 0; i < m.size1(); ++i)
-				for (unsigned j = 0; j < m.size2(); ++j)
-					m(i, j) = std::complex<double>(3 * i + j, 3 * i + j);
+		//boost::numeric::ublas::matrix<double, boost::numeric::ublas::row_major, boost::numeric::ublas::unbounded_array<double> > m2(row, col, data);  // compile-time error
+		boost::numeric::ublas::matrix<double, boost::numeric::ublas::row_major, boost::numeric::ublas::unbounded_array<double> > m2(row, col, 0.0);
+		std::copy(data, data + row, m2.begin1());
+		//std::copy(data, data + col, m2.begin2());
+		std::cout << m2 << std::endl;
 
-			std::cout << -m << std::endl;
-			std::cout << boost::numeric::ublas::conj(m) << std::endl;
-			std::cout << boost::numeric::ublas::real(m) << std::endl;
-			std::cout << boost::numeric::ublas::imag(m) << std::endl;
-			std::cout << boost::numeric::ublas::trans(m) << std::endl;
-			std::cout << boost::numeric::ublas::herm(m) << std::endl;
-		}
+		boost::numeric::ublas::matrix<double, boost::numeric::ublas::row_major, boost::numeric::ublas::unbounded_array<double> >::array_type &arr2 = m2.data();
+		std::copy(data, data + row * col, arr2.begin());
+		std::cout << m2 << std::endl;
+	}
 
-		//
-		{
-			//boost::numeric::ublas_2::tmv(v, m);  // m * v. m: triangular matrix
-			//boost::numeric::ublas_2::tsv(v, m);  // m * x = v. m: triangular matrix
-			//boost::numeric::ublas_2::gmv(v1, t1, t2, m, v2);  // v1 = t1 * v1 + t2 * (m * v2)
-			//boost::numeric::ublas_2::gr(m, t, v1, v2);  // m = m + t * (v1 * v2^T)
-			//boost::numeric::ublas_2::sr(m, t, v);  // m = m + t * (v * v^T)
-			//boost::numeric::ublas_2::hr(m, t, v);  // m = m + t * (v * v^H)
-			//boost::numeric::ublas_2::sr2(m, t, v1, v2);  // m = m + t * (v1 * v2^T + v2 * v1^T)
-			//boost::numeric::ublas_2::hr2(m, t, v1, v2);  // m = m + t * (v1 * v2^H) + (v2 * (t * v1)^H)
-		}
+	//
+	{
+		boost::numeric::ublas::matrix<std::complex<double> > m(3, 3);
+		for (unsigned i = 0; i < m.size1(); ++i)
+			for (unsigned j = 0; j < m.size2(); ++j)
+				m(i, j) = std::complex<double>(3 * i + j, 3 * i + j);
+
+		std::cout << -m << std::endl;
+		std::cout << boost::numeric::ublas::conj(m) << std::endl;
+		std::cout << boost::numeric::ublas::real(m) << std::endl;
+		std::cout << boost::numeric::ublas::imag(m) << std::endl;
+		std::cout << boost::numeric::ublas::trans(m) << std::endl;
+		std::cout << boost::numeric::ublas::herm(m) << std::endl;
+	}
+
+	//
+	{
+		boost::multi_array<boost::numeric::ublas::matrix<double>, 2> marr(boost::extents[2][3]);
+
+		for (int i = 0; i < 2; ++i)
+			for (int j = 0; j < 3; ++j)
+			{
+				marr[i][j].resize(3, 3);
+				for (int ii = 0; ii < 3; ++ii)
+					for (int jj = 0; jj < 3; ++jj)
+						marr[i][j](ii,jj) = 10 * i * 3 + 10 * j + 3 * ii + jj;
+			}
+
+		for (int i = 0; i < 2; ++i)
+			for (int j = 0; j < 3; ++j)
+				std::cout << "Mat[" << i << "][" << j << "] =\n" << marr[i][j] << std::endl;
 	}
 }
 
@@ -429,35 +584,52 @@ void ublas_matrix_vector_operation()
 	typedef boost::numeric::ublas::vector<double, boost::numeric::ublas::unbounded_array<double> > vector_type;
 
 	{
+		matrix_type m(3, 3);
+		vector_type v(3);
+		for (unsigned i = 0; i < std::min(m.size1(), v.size()); ++i)
 		{
-			matrix_type m(3, 3);
-			vector_type v(3);
-			for (unsigned i = 0; i < std::min(m.size1(), v.size()); ++i)
-			{
-				for (unsigned j = 0; j < m.size2(); ++j)
-					m(i, j) = 3 * i + j;
-				v(i) = i;
-			}
-
-			std::cout << boost::numeric::ublas::prod(m, v) << std::endl;
-			std::cout << boost::numeric::ublas::prod(v, m) << std::endl;
+			for (unsigned j = 0; j < m.size2(); ++j)
+				m(i, j) = 3 * i + j;
+			v(i) = i;
 		}
 
-		//
-		{
-			matrix_type m(3, 3);
-			vector_type v(3);
-			for (unsigned i = 0; i < std::min(m.size1(), v.size()); ++i)
-			{
-				for (unsigned j = 0; j <= i; ++j)
-					m(i, j) = 3 * i + j + 1;
-				v(i) = i;
-			}
+		std::cout << boost::numeric::ublas::prod(m, v) << std::endl;
+		std::cout << boost::numeric::ublas::prod(v, m) << std::endl;
+	}
 
-			// m: lower triangular matrix
-			std::cout << boost::numeric::ublas::solve(m, v, boost::numeric::ublas::lower_tag()) << std::endl;
-			//std::cout << boost::numeric::ublas::solve(v, m, boost::numeric::ublas::lower_tag()) << std::endl;
+	//
+	{
+		matrix_type m(3, 3);
+		vector_type v(3);
+		for (unsigned i = 0; i < std::min(m.size1(), v.size()); ++i)
+		{
+			for (unsigned j = 0; j <= i; ++j)
+				m(i, j) = 3 * i + j + 1;
+			v(i) = i;
 		}
+
+		// m: lower triangular matrix
+		std::cout << boost::numeric::ublas::solve(m, v, boost::numeric::ublas::lower_tag()) << std::endl;
+		//std::cout << boost::numeric::ublas::solve(v, m, boost::numeric::ublas::lower_tag()) << std::endl;
+	}
+
+	//
+	{
+		// FIXME [correct] >> variables have to be initialized
+
+		boost::numeric::ublas::vector<double> v, v1, v2;
+		boost::numeric::ublas::matrix<double> m;
+		double t, t1, t2;
+
+		boost::numeric::ublas::blas_2::tmv(v, m);  // m * v. m: triangular matrix
+		// TODO [check] >> check if using boost::numeric::ublas::lower_tag() is correct
+		boost::numeric::ublas::blas_2::tsv(v, m, boost::numeric::ublas::lower_tag());  // m * x = v. m: (lower) triangular matrix
+		boost::numeric::ublas::blas_2::gmv(v1, t1, t2, m, v2);  // v1 = t1 * v1 + t2 * (m * v2)
+		boost::numeric::ublas::blas_2::gr(m, t, v1, v2);  // m += t * (v1 * v2^T)
+		boost::numeric::ublas::blas_2::sr(m, t, v);  // m += t * (v * v^T)
+		boost::numeric::ublas::blas_2::hr(m, t, v);  // m += t * (v * v^H)
+		boost::numeric::ublas::blas_2::sr2(m, t, v1, v2);  // m += t * (v1 * v2^T + v2 * v1^T)
+		boost::numeric::ublas::blas_2::hr2(m, t, v1, v2);  // m += t * (v1 * v2^H) + (v2 * (t * v1)^H)
 	}
 }
 
@@ -466,57 +638,61 @@ void ublas_matrix_matrix_operation()
 	typedef boost::numeric::ublas::matrix<double, boost::numeric::ublas::column_major, boost::numeric::ublas::unbounded_array<double> > matrix_type;
 
 	{
+		matrix_type m1(3, 3), m2(3, 3);
+		for (unsigned i = 0; i < std::min(m1.size1(), m2.size1()); ++i)
 		{
-			matrix_type m1(3, 3), m2(3, 3);
-			for (unsigned i = 0; i < std::min(m1.size1(), m2.size1()); ++i)
-			{
-				for (unsigned j = 0; j < std::min(m1.size2(), m2.size2()); ++j)
-					m1(i, j) = m2(i, j) = 3 * i + j;
-			}
-
-			std::cout << boost::numeric::ublas::prod(m1, m2) << std::endl;
+			for (unsigned j = 0; j < std::min(m1.size2(), m2.size2()); ++j)
+				m1(i, j) = m2(i, j) = 3 * i + j;
 		}
 
-		//
-		{
-			boost::numeric::ublas::matrix<double> m1(3, 3), m2(3, 3);
-			for (unsigned i = 0; i < std::min(m1.size1(), m2.size1()); ++i)
-				for (unsigned j = 0; j <= i; ++j)
-					m1(i, j) = m2(i, j) = 3 * i + j + 1;
+		std::cout << boost::numeric::ublas::prod(m1, m2) << std::endl;
+	}
 
-			// m1: lower triangular matrix
-			std::cout << boost::numeric::ublas::solve(m1, m2, boost::numeric::ublas::lower_tag()) << std::endl;
+	//
+	{
+		boost::numeric::ublas::matrix<double> m1(3, 3), m2(3, 3);
+		for (unsigned i = 0; i < std::min(m1.size1(), m2.size1()); ++i)
+			for (unsigned j = 0; j <= i; ++j)
+				m1(i, j) = m2(i, j) = 3 * i + j + 1;
+
+		// m1: lower triangular matrix
+		std::cout << boost::numeric::ublas::solve(m1, m2, boost::numeric::ublas::lower_tag()) << std::endl;
+	}
+
+	//
+	{
+		matrix_type m1(3, 3), m2(3, 3);
+		for (unsigned i = 0; i < std::min(m1.size1(), m2.size1()); ++i)
+		{
+			for (unsigned j = 0; j < std::min(m1.size2(), m2.size2()); ++j)
+				m1(i, j) = m2(i, j) = 3 * i + j;
 		}
 
-		//
-		{
-			matrix_type m1(3, 3), m2(3, 3);
-			for (unsigned i = 0; i < std::min(m1.size1(), m2.size1()); ++i)
-			{
-				for (unsigned j = 0; j < std::min(m1.size2(), m2.size2()); ++j)
-					m1(i, j) = m2(i, j) = 3 * i + j;
-			}
+		matrix_type m3(m1.size1(), m2.size2());
+		boost::numeric::ublas::axpy_prod(m1, m2, m3, true);  // m3 = m1 * m2 (if init = true). m3 += m1 * m2 (if init = false).
+		std::cout << m3 << std::endl;
 
-			matrix_type m3(m1.size1(), m2.size2());
-			boost::numeric::ublas::axpy_prod(m1, m2, m3, true);
-			std::cout << m3 << std::endl;
+		matrix_type m4(m1.size1(), m2.size2());
+		m4.clear();
+		boost::numeric::ublas::blas_3::gmm(m4, 0.0, 1.0, m1, m2);  // m1 = t1 * m1 + t2 * (m2 * m3)
+		std::cout << m4 << std::endl;
+	}
 
-			matrix_type m4(m1.size1(), m2.size2());
-			m4.clear();
-			boost::numeric::ublas::blas_3::gmm(m4, 0.0, 1.0, m1, m2);
-			std::cout << m4 << std::endl;
-		}
+	//
+	{
+		// FIXME [correct] >> variables have to be initialized
 
-		//
-		{
-			//boost::numeric::ublas_3::tmm(m1, t, m2, m3);  // m1 = t * (m2 * m3). triangular matrix multiplication
-			//boost::numeric::ublas_3::tsm(m1, t, m2);  // m2 * x = t * m1. m2: triangular matrix
-			//boost::numeric::ublas_3::gmm(m1, t, m2);  // m1 = t1 * m1 + t2 * (m2 * m3)
-			//boost::numeric::ublas_3::srk(m1, t1, t2, m2);  // m1 = t1 * m1 + t2 * (m2 * m2^T);
-			//boost::numeric::ublas_3::hrk(m1, t1, t2, m2);  // m1 = t1 * m1 + t2 * (m2 * m2^H);
-			//boost::numeric::ublas_3::sr2k(m1, t1, t2, m2, m3);  // m1 = t1 * m1 + t2 * (m2 * m3^T + m3 * m2^T);
-			//boost::numeric::ublas_3::hr2k(m1, t1, t2, m2, m3);  // m1 = t1 * m1 + (t2 * (m2 * m3^H)) + (m3 * (t2 * m2)^H);
-		}
+		boost::numeric::ublas::matrix<double> m1, m2, m3;
+		double t, t1, t2;
+
+		boost::numeric::ublas::blas_3::tmm(m1, t, m2, m3);  // m1 = t * (m2 * m3). m2 & m3: triangular matrices
+		// TODO [check] >> check if using boost::numeric::ublas::lower_tag() is correct
+		boost::numeric::ublas::blas_3::tsm(m1, t, m2, boost::numeric::ublas::lower_tag());  // m2 * x = t * m1. m2: (lower) triangular matrix
+		boost::numeric::ublas::blas_3::gmm(m1, t1, t2, m2, m3);  // m1 = t1 * m1 + t2 * (m2 * m3)
+		boost::numeric::ublas::blas_3::srk(m1, t1, t2, m2);  // m1 = t1 * m1 + t2 * (m2 * m2^T);
+		boost::numeric::ublas::blas_3::hrk(m1, t1, t2, m2);  // m1 = t1 * m1 + t2 * (m2 * m2^H);
+		boost::numeric::ublas::blas_3::sr2k(m1, t1, t2, m2, m3);  // m1 = t1 * m1 + t2 * (m2 * m3^T + m3 * m2^T);
+		boost::numeric::ublas::blas_3::hr2k(m1, t1, t2, m2, m3);  // m1 = t1 * m1 + (t2 * (m2 * m3^H)) + (m3 * (t2 * m2)^H);
 	}
 }
 
@@ -562,7 +738,7 @@ void ublas_inv()
 	if (is_singular)
 		std::cout << "A is singular" << std::endl;
 	else
-		std::cout << "inverse using G-J: inv(A) = " << invA1 << std::endl;
+		std::cout << "inverse using Gauss-Jordan: inv(A) = " << invA1 << std::endl;
 
 	boost::numeric::ublas::matrix<double> invA2(A.size1(), A.size2());
 	if (ublas_inv_by_lu(A, invA2))
@@ -587,7 +763,7 @@ void ublas_qr()
 		const double f = boost::numeric::ublas::norm_1(Z);
 		std::cout << "Q = " << Q << std::endl;
 		std::cout << "R = " << R << std::endl;
-		std::cout << "|Q*R - A| = " << f << std::endl;
+		std::cout << "| Q*R - A | = " << f << std::endl;
 	}
 	else
 		std::cout << "error: cann't compute inverse" << std::endl;
