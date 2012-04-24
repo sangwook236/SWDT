@@ -53,11 +53,11 @@ int main(int argc, char *argv[])
 		//cubic_equation_root_finding();
 		//polynomial_root_finding();
 		//one_dim_root_finding();
-		multidim_root_finding();
+		//multidim_root_finding();
 		
 		//fft();
 		
-		//random_sample();
+		random_sample();
 		//distribution();
 		//monte_carlo_integration();
 		//simulated_annealing();

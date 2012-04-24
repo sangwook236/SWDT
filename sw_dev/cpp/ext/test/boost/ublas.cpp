@@ -293,11 +293,14 @@ void ublas_vector_operation()
 		for (unsigned i = 0; i < std::min(v1.size(), v2.size()); ++i)
 			v1(i) = v2(i) = i;
 
-		std::cout << v1 + v2 << std::endl;
-		std::cout << v1 - v2 << std::endl;
+		std::cout << "v1 + v2 = " << v1 + v2 << std::endl;
+		std::cout << "v1 - v2 = " << v1 - v2 << std::endl;
 
-		std::cout << 2.0 * v1 << std::endl;
-		std::cout << v1 * 2.0 << std::endl;
+		std::cout << "2.0 * v1 = " << 2.0 * v1 << std::endl;
+		std::cout << "v1 * 2.0 = " << v1 * 2.0 << std::endl;
+
+		v1.clear();
+		std::cout << "v1 (after clear()) = " << v1 << std::endl;
 	}
 
 	//
@@ -423,11 +426,11 @@ void ublas_matrix_operation()
 			for (unsigned j = 0; j < m2.size2(); ++j, ++k)
 				m2(i, j) = k;
 
-		std::cout << 2.0 * m1 << std::endl;
-		std::cout << m1 * 2.0 << std::endl;
+		std::cout << "2.0 * m1 = " << 2.0 * m1 << std::endl;
+		std::cout << "m1 * 2.0 = " << m1 * 2.0 << std::endl;
 
-		std::cout << m1 + m2 << std::endl;
-		std::cout << m1 - m2 << std::endl;
+		std::cout << "m1 + m2 = " << m1 + m2 << std::endl;
+		std::cout << "m1 - m2 = " << m1 - m2 << std::endl;
 	}
 
 	//
@@ -596,7 +599,7 @@ void ublas_matrix_vector_operation()
 			v(i) = i;
 		}
 
-		std::cout << m << " ; " << v << std::endl;
+		std::cout << "m = " << m << " ; v = " << v << std::endl;
 		std::cout << "m * v = " << boost::numeric::ublas::prod(m, v) << std::endl;
 		std::cout << "v * m = " << boost::numeric::ublas::prod(v, m) << std::endl;
 	}
