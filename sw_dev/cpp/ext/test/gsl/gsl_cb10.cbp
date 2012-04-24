@@ -51,9 +51,10 @@
 		<Unit filename="monte_carlo_integration.cpp" />
 		<Unit filename="multidim_minimization.cpp" />
 		<Unit filename="pca.cpp" />
-		<Unit filename="polynomial_roots.cpp" />
+		<Unit filename="polynomial_root_finding.cpp" />
 		<Unit filename="qr.cpp" />
 		<Unit filename="random_sample.cpp" />
+		<Unit filename="root_finding.cpp" />
 		<Unit filename="simulated_annealing.cpp" />
 		<Unit filename="svd.cpp" />
 		<Unit filename="vector_operation.cpp" />
