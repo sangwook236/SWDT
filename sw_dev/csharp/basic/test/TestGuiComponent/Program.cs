@@ -12,9 +12,17 @@ namespace TestGuiComponent
         [STAThread]
         static void Main()
         {
+#if false
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
+#else
+            System.Windows.Application app = new System.Windows.Application();
+
+            MyWindow win = new MyWindow();
+
+            app.Run(win);
+#endif
         }
     }
 }
