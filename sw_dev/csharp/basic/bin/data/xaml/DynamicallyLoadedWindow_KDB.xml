@@ -1,0 +1,15 @@
+<DockPanel
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid x:Name="grid1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="189" />
+        </Grid.RowDefinitions>
+        <Button VerticalAlignment="Top" HorizontalAlignment="Center"
+			Margin="0,0,0,0" Width="275" Height="160" Name="ticketButton"
+			Grid.Row="1">
+			<Image Source="..\data\xaml\image\KDB_button.png"></Image>
+        </Button>
+    </Grid>
+</DockPanel>

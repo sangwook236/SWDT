@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Windows.Navigation;
 
 namespace TestGuiComponent
 {
@@ -16,12 +17,18 @@ namespace TestGuiComponent
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
-#else
+#elif false
             System.Windows.Application app = new System.Windows.Application();
-
-            MyWindow win = new MyWindow();
-
-            app.Run(win);
+            app.Run(new MyWindow());
+#elif false
+            System.Windows.Application app = new System.Windows.Application();
+            System.Windows.Navigation.NavigationWindow window = new System.Windows.Navigation.NavigationWindow();
+            MyPage page = new MyPage();
+            window.Navigate(page);
+            app.Run(window);
+#elif true
+            System.Windows.Application app = new System.Windows.Application();
+            app.Run(new DynamicallyLoadedWindow());
 #endif
         }
     }
