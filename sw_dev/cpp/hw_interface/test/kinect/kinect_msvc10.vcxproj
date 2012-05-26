@@ -86,14 +86,18 @@
     <None Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DrawDevice.h" />
     <ClInclude Include="kinect.h" />
+    <ClInclude Include="KinectApp.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="basic_io.cpp" />
+    <ClCompile Include="DrawDevice.cpp" />
     <ClCompile Include="kinect.cpp" />
+    <ClCompile Include="KinectApp.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

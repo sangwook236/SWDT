@@ -3,6 +3,9 @@
 
 #include "stdafx.h"
 #include "kinect.h"
+#include "KinectApp.h"
+
+#if 0
 
 #define MAX_LOADSTRING 100
 
@@ -188,3 +191,90 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	return (INT_PTR)FALSE;
 }
+
+#else
+
+// Global Variables:
+CKinectApp  g_kinectApp;  // Application class
+
+#define INSTANCE_MUTEX_NAME L"KinectInstanceCheck"
+
+//-------------------------------------------------------------------
+// _tWinMain
+//
+// Entry point for the application
+//-------------------------------------------------------------------
+int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
+{
+    MSG       msg;
+    WNDCLASS  wc;
+        
+    // unique mutex, if it already exists there is already an instance of this app running
+    // in that case we want to show the user an error dialog
+    HANDLE hMutex = CreateMutex( NULL, FALSE, INSTANCE_MUTEX_NAME);
+    if ((hMutex != NULL) && (GetLastError() == ERROR_ALREADY_EXISTS)) 
+    {
+        TCHAR szAppTitle[256] = { 0 };
+        TCHAR szRes[512] = { 0 };
+
+        //load the app title
+        LoadString(hInstance, IDS_APP_TITLE, szAppTitle, _countof(szAppTitle));
+
+        //load the error string
+        LoadString(hInstance, IDS_ERROR_APP_INSTANCE, szRes, _countof(szRes));
+
+        MessageBox(NULL, szRes, szAppTitle, MB_OK | MB_ICONHAND);
+
+        CloseHandle(hMutex);
+        return -1;
+    }
+
+    // Store the instance handle
+    g_kinectApp.m_hInstance = hInstance;
+
+    // Dialog custom window class
+    ZeroMemory(&wc, sizeof(wc));
+    wc.style = CS_HREDRAW | CS_VREDRAW;
+    wc.cbWndExtra = DLGWINDOWEXTRA;
+    wc.hInstance = hInstance;
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_KINECT));
+    wc.lpfnWndProc = DefDlgProc;
+    wc.lpszClassName = SZ_APPDLG_WINDOW_CLASS;
+    if (!RegisterClass(&wc))
+    {
+        return 0;
+    }
+
+    // Create main application window
+    HWND hWndApp = CreateDialogParam(
+        hInstance,
+        MAKEINTRESOURCE(IDD_SKELETAL_DLG),
+        NULL,
+        (DLGPROC)CKinectApp::MessageRouter, 
+        reinterpret_cast<LPARAM>(&g_kinectApp)
+	);
+
+    // Show window
+    ShowWindow(hWndApp,nCmdShow); 
+
+    // Main message loop:
+    while (GetMessage(&msg, NULL, 0, 0)) 
+    {
+        // If a dialog message will be taken care of by the dialog proc
+        if ((hWndApp != NULL) && IsDialogMessage(hWndApp, &msg))
+        {
+            continue;
+        }
+
+        // otherwise do our window processing
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    CloseHandle(hMutex);
+
+    return static_cast<int>(msg.wParam);
+}
+
+#endif
