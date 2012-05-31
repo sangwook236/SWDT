@@ -18,7 +18,7 @@
   </appender>
 
   <appender name="swlFileAppender1" type="log4net.Appender.RollingFileAppender">
-		<file value="../log4net_data/swl_logger_rlog.log"/>
+		<file value="../data/log4net_data/swl_logger_rlog.log"/>
 		<appendToFile value="true"/>
 
 		<maximumFileSize value="1MB"/>
@@ -30,7 +30,7 @@
 	</appender>
 
 	<appender name="swlFileAppender2" type="log4net.Appender.RollingFileAppender">
-		<file value="../log4net_data/swl_logger_log.log"/>
+		<file value="../data/log4net_data/swl_logger_log.log"/>
 		<appendToFile value="true"/>
 
 		<maximumFileSize value="1MB"/>
@@ -42,7 +42,7 @@
 	</appender>
 
 	<appender name="swlFileAppender3" type="log4net.Appender.RollingFileAppender">
-		<file value="../log4net_data/swl_logger_trace.log"/>
+		<file value="../data/log4net_data/swl_logger_trace.log"/>
 		<appendToFile value="true"/>
 
 		<maximumFileSize value="1MB"/>
