@@ -17,7 +17,7 @@ namespace sqlite_test
 
         static void runBasicOperation1()
         {
-            string connectionStr = @"Data Source=""..\data\sqlite_data\basic_test.db"";Version=3;";
+            string connectionStr = @"Data Source=""..\data\sqlite_data\sqlite3_test.db"";Version=3;";
             string sql = "select * from Colors";
             using (SQLiteConnection connection = new SQLiteConnection(connectionStr))
             {
