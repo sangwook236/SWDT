@@ -11,21 +11,31 @@ namespace log4net_test
     {
         static void Main(string[] args) 
         {
-		    const int config = 1;
-            switch (config)
+            try
             {
-                case 1:
-                    XmlConfigurator.Configure(new System.IO.FileInfo("..\\log4net_data\\swl_logger_conf.xml"));
-                    break;
-                default:
-                    BasicConfigurator.Configure();
-                    break;
+		        const int config = 1;
+                switch (config)
+                {
+                    case 1:
+                        XmlConfigurator.Configure(new System.IO.FileInfo("..\\data\\log4net_data\\swl_logger_conf.xml"));
+                        break;
+                    default:
+                        BasicConfigurator.Configure();
+                        break;
+                }
+
+                logger_.Info("Entering application.");
+                Bar bar = new Bar();
+                bar.run();
+                logger_.Info("Exiting application.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("System.Exception occurred: {0}", e);
             }
 
-            logger_.Info("Entering application.");
-            Bar bar = new Bar();
-            bar.run();
-            logger_.Info("Exiting application.");
+            Console.WriteLine("press any key to exit ...");
+            Console.ReadKey();
         }
 
         //private static readonly ILog logger_ = LogManager.GetLogger(typeof(Program));

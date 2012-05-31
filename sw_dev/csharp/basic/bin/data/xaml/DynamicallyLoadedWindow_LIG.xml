@@ -6,10 +6,12 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="186" />
         </Grid.RowDefinitions>
+        <Grid.Background>
+			<ImageBrush ImageSource="pack://siteoforigin:,,,/xaml/image/LIG_background.png" />
+        </Grid.Background>
         <Button VerticalAlignment="Top" HorizontalAlignment="Center"
-			Margin="0,0,0,0" Width="277" Height="159" Name="ticketButton"
-			Grid.Row="1">
-			<Image Source="..\data\xaml\image\LIG_button.png"></Image>
+			Name="ticketButton" Grid.Row="1">
+			<Image Source="pack://siteoforigin:,,,/xaml/image/LIG_button.png" />
         </Button>
     </Grid>
 </DockPanel>

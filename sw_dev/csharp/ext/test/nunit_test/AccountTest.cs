@@ -46,7 +46,7 @@ namespace nunit_test
             {
                 source_.TransferFunds(destination_, 300.00F);
             }
-            catch (InsufficientFundsException expected)
+            catch (InsufficientFundsException e)
             {
             }
 

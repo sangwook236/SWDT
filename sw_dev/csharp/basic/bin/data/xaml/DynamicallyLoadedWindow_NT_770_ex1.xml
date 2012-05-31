@@ -1,0 +1,27 @@
+<DockPanel
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid x:Name="grid1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="129" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.Background>
+			<ImageBrush ImageSource="pack://siteoforigin:,,,/xaml/image/NT_770_ex1_background.png" />
+        </Grid.Background>
+        <Button VerticalAlignment="Top" HorizontalAlignment="Center"
+			Margin="0,0,5,0" Name="ticketButton"
+			Grid.Row="1" Grid.Column="0">
+			<Image Source="pack://siteoforigin:,,,/xaml/image/NT_770_ex1_button1.png" />
+        </Button>
+        <Button VerticalAlignment="Top" HorizontalAlignment="Center"
+			Margin="5,0,0,0" Name="ticketButton2"
+			Grid.Row="1" Grid.Column="1">
+			<Image Source="pack://siteoforigin:,,,/xaml/image/NT_770_ex1_button2.png" />
+        </Button>
+    </Grid>
+</DockPanel>

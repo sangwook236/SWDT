@@ -15,6 +15,7 @@ namespace mathnet_test
 
         static void runBasicOperation()
         {
+            throw new Exception("not yet implemented");
         }
     }
 }
