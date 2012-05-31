@@ -5,6 +5,8 @@ using System.Text;
 
 namespace sqlite_test
 {
+    using System.Data.SQLite;
+
     class Program
     {
         static void Main(string[] args)
@@ -13,6 +15,10 @@ namespace sqlite_test
             {
                 Console.WriteLine("******************* basic operation");
                 BasicOperation.run();
+            }
+            catch (SQLiteException e)
+            {
+                Console.WriteLine("System.Data.SQLite.SQLiteException occurred: {0}", e);
             }
             catch (Exception e)
             {
