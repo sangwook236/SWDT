@@ -39,8 +39,8 @@ namespace log4net_test
         }
 
         //private static readonly ILog logger_ = LogManager.GetLogger(typeof(Program));
-        private static readonly ILog logger_ = LogManager.GetLogger("swlLogger.tracer");
-        //private static readonly ILog logger_ = LogManager.GetLogger("swlLogger.logger");
+        //private static readonly ILog logger_ = LogManager.GetLogger("swlLogger.tracer");
+        private static readonly ILog logger_ = LogManager.GetLogger("swlLogger.logger");
     }
 
     class Bar
