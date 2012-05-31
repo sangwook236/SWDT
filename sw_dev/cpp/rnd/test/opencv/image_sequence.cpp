@@ -432,22 +432,54 @@ void draw_cross(IplImage *img, const int x, const int y, const int len)
 
 	contours[0] = pts1;
 
-	cvFillPoly(img, (CvPoint**)contours, ptCounts, 1, CV_RGB(255, 255, 255), 8, 0);
+	cvFillPoly(img, (CvPoint **)contours, ptCounts, 1, CV_RGB(255, 255, 255), 8, 0);
+}
+
+void draw_cross(cv::Mat &img, const int x, const int y, const int len)
+{
+	const int CONTOUR_COUNT = 1;
+	const int POINT_COUNT = 12;
+	const int ptCounts[] = { POINT_COUNT };
+	cv::Point *contours[CONTOUR_COUNT];
+
+	cv::Point pts1[POINT_COUNT];
+	pts1[0].x = x + len;			pts1[0].y = y;
+	pts1[1].x = x + 2 * len;		pts1[1].y = y;
+	pts1[2].x = x + 2 * len;		pts1[2].y = y + len;
+	pts1[3].x = x + 3 * len;		pts1[3].y =  y + len;
+	pts1[4].x = x + 3 * len;		pts1[4].y = y + 2 * len;
+	pts1[5].x = x + 2 * len;		pts1[5].y = y + 2 * len;
+	pts1[6].x = x + 2 * len;		pts1[6].y = y + 3 * len;
+	pts1[7].x = x + len;			pts1[7].y = y + 3 * len;
+	pts1[8].x = x + len;			pts1[8].y = y + 2 * len;
+	pts1[9].x = x;					pts1[9].y = y + 2 * len;
+	pts1[10].x = x;					pts1[10].y = y + len;
+	pts1[11].x = x + len;			pts1[11].y = y + len;
+
+	contours[0] = pts1;
+
+	cv::fillPoly(img, (const cv::Point **)contours, ptCounts, 1, CV_RGB(255, 255, 255), 8, 0, cv::Point());
 }
 
 void capture_write_file_from_images()
 {
-	const std::string avi_filename = "opencv_data\\synthesized_cross.avi";
+	const std::string VIDEO_FILENAME = "opencv_data\\synthesized_cross_output.avi";
 
-	const int imgWidth = 320, imgHeight = 240;
-    CvSize imgSize = cvSize(imgWidth, imgHeight);
+	const int IMAGE_WIDTH = 320, IMAGE_HEIGHT = 240;
 
-	CvVideoWriter *avi_writer = cvCreateVideoWriter(
-        avi_filename.c_str(),
-        CV_FOURCC('x', 'v', 'i', 'd'),
-        25,
-        imgSize
+#if 0
+    const CvSize FRAME_SIZE = cvSize(IMAGE_WIDTH, IMAGE_HEIGHT);
+	const double FPS = 30;
+	const int isColor = 1;
+	CvVideoWriter *videoWriter = cvCreateVideoWriter(
+        VIDEO_FILENAME.c_str(),
+        CV_FOURCC('X', 'V', 'I', 'D'),
+        FPS,
+        FRAME_SIZE,
+		isColor
 	);
+
+	IplImage *img = cvCreateImage(FRAME_SIZE, IPL_DEPTH_8U, 3);
 
 	const int len = 50;
 	int x0 = 10, y0 = 10;
@@ -455,28 +487,58 @@ void capture_write_file_from_images()
 	{
 		for (int i = 0; i <= 70; ++i)
 		{
-			IplImage *img = cvCreateImage(imgSize, IPL_DEPTH_8U, 3);
 			cvSetZero(img);
-			draw_cross(img, x0 + i, y0 + i, len);
+			draw_cross(cv::Mat(img), x0 + i, y0 + i, len);
 
-			cvWriteFrame(avi_writer, img);
-
-			cvReleaseImage(&img);
+			cvWriteFrame(videoWriter, img);
 		}
 
 		for (int i = 70; i >= 0; --i)
 		{
-			IplImage *img = cvCreateImage(imgSize, IPL_DEPTH_8U, 3);
 			cvSetZero(img);
-			draw_cross(img, x0 + i, y0 + i, len);
+			draw_cross(cv::Mat(img), x0 + i, y0 + i, len);
 
-			cvWriteFrame(avi_writer, img);
-
-			cvReleaseImage(&img);
+			cvWriteFrame(videoWriter, img);
 		}
 	}
 
-	if (avi_writer) cvReleaseVideoWriter(&avi_writer);
+	cvReleaseImage(&img);
+
+	if (videoWriter) cvReleaseVideoWriter(&videoWriter);
+#else
+	const double FPS = 30;
+	const cv::Size FRAME_SIZE(IMAGE_WIDTH, IMAGE_HEIGHT);
+	const bool isColor = true;
+	cv::VideoWriter videoWriter(VIDEO_FILENAME, CV_FOURCC('D', 'I', 'V', 'X'), FPS, FRAME_SIZE, isColor);
+	if (!videoWriter.isOpened())
+	{
+		std::cout << "cv::VideoWriter failed to open" << std::endl;
+		return;
+	}
+
+	cv::Mat img(FRAME_SIZE, CV_8UC3, cv::Scalar::all(0));
+
+	const int len = 50;
+	int x0 = 10, y0 = 10;
+	for (int j = 0; j < 5; ++j)
+	{
+		for (int i = 0; i <= 70; ++i)
+		{
+			img = cv::Mat::zeros(FRAME_SIZE, CV_8UC3);
+			draw_cross(img, x0 + i, y0 + i, len);
+
+			videoWriter << img;
+		}
+
+		for (int i = 70; i >= 0; --i)
+		{
+			img = cv::Mat::zeros(FRAME_SIZE, CV_8UC3);
+			draw_cross(img, x0 + i, y0 + i, len);
+
+			videoWriter << img;
+		}
+	}
+#endif
 }
 
 }  // unnamed namespace
@@ -484,12 +546,12 @@ void capture_write_file_from_images()
 void image_sequence()
 {
 	//capture_image_from_file();
-	capture_image_from_cam();
+	//capture_image_from_cam();
 
 	//capture_image_by_callback();
 
 	// TODO [] : it's not working
 	//capture_image_by_thread();
 
-	//capture_write_file_from_images();
+	capture_write_file_from_images();
 }

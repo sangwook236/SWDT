@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 		//vector_operation();
 		//image_operation();
 		//image_conversion();
-		//image_sequence();
+		image_sequence();
 
 		//image_filtering();
 		//image_filtering_using_gpu();  // not yet implemented
@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 		//train_by_ann();
 
 		//object_detection();  // not yet implemented
-		face_detection();
+		//face_detection();
 		//face_detection_using_gpu();  // not yet implemented
 		//human_detection();
 		//human_detection_using_gpu();  // not yet implemented
