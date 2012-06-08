@@ -60,6 +60,7 @@ namespace TestGuiComponent
             this.Cursor = Cursors.Wait;
 
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
+            MessageBoxResult result = MessageBox.Show("button #1 is pressed", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Cursor = null;
         }
@@ -69,6 +70,7 @@ namespace TestGuiComponent
             this.Cursor = Cursors.Help;
 
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
+            MessageBoxResult result = MessageBox.Show("button #2 is pressed", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Cursor = null;
         }
