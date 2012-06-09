@@ -92,6 +92,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="array.cpp" />
+    <ClCompile Include="file_io.cpp" />
     <ClCompile Include="complex.cpp" />
     <ClCompile Include="date_time.cpp" />
     <ClCompile Include="main.cpp" />

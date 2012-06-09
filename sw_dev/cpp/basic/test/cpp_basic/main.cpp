@@ -1,3 +1,6 @@
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <iostream>
 #include <cmath>
 #include <fstream>
@@ -13,50 +16,65 @@ struct Test
 	double d;
 };
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
+	void virtual_function();
 	void test_predefined_macro();
 	void test_array();
 	void test_complex();
 	void test_date_time();
+	void file_io();
 	void stl_algorithm();
-	void virtual_function();
 
-	//test_predefined_macro();
-	//test_array();
-	//test_complex();
-	//test_date_time();
-	stl_algorithm();
-	//virtual_function();
-
-	// test
-#if 0
+	try
 	{
-		const float f11 = -3.45f;
-		const float f12 = 2.356324e34f;
+		//virtual_function();
 
-		std::cout << f11 << ", " << f12 << std::endl;
+		//test_predefined_macro();
+		//test_array();
+		//test_complex();
+		//test_date_time();
 
-		const unsigned int i11 = (unsigned int)f11;
-		const unsigned int i12 = (unsigned int)f12;
+		//file_io();  // not yet implemented
 
-		std::cout << i11 << ", " << i12 << std::endl;
+		stl_algorithm();
 
-		const unsigned int i21 = *(unsigned int *)&f11;
-		const unsigned int i22 = *(unsigned int *)&f12;
+		// test
+#if 0
+		{
+			const float f11 = -3.45f;
+			const float f12 = 2.356324e34f;
 
-		std::cout << i21 << ", " << i22 << std::endl;
+			std::cout << f11 << ", " << f12 << std::endl;
 
-		const float f21 = *(float *)&i21;
-		const float f22 = *(float *)&i22;
+			const unsigned int i11 = (unsigned int)f11;
+			const unsigned int i12 = (unsigned int)f12;
 
-		std::cout << f21 << ", " << f22 << std::endl;
-	}
+			std::cout << i11 << ", " << i12 << std::endl;
+
+			const unsigned int i21 = *(unsigned int *)&f11;
+			const unsigned int i22 = *(unsigned int *)&f12;
+
+			std::cout << i21 << ", " << i22 << std::endl;
+
+			const float f21 = *(float *)&i21;
+			const float f22 = *(float *)&i22;
+
+			std::cout << f21 << ", " << f22 << std::endl;
+		}
 #endif
+	}
+	catch (const std::exception &e)
+	{
+		std::cout << "std::exception occurred !!!: " << e.what() << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "unknown exception occurred !!!" << std::endl;
+	}
 
-	std::wcout << L"press any key to exit ..." << std::endl;
-	std::wcout.flush();
-	std::wcin.get();
+	std::cout << "press any key to exit ..." << std::endl;
+	std::cin.get();
 
-	return 0;
+    return 0;
 }
