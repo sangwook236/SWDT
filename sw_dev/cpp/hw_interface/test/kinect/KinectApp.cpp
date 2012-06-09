@@ -1,10 +1,14 @@
 #include "stdafx.h"
 #include "KinectApp.h"
 #include "resource.h"
+#include <CommDlg.h>
 #include <mmsystem.h>
 #include <strsafe.h>
 #include <cassert>
 
+
+//#define __USE_DEPTH_IMAGE_320x240 1
+#define __USE_DEPTH_IMAGE_640x480 1
 
 static const COLORREF g_JointColorTable[NUI_SKELETON_POSITION_COUNT] = 
 {
@@ -49,7 +53,8 @@ static const int g_IntensityShiftByPlayerB[] = { 1, 0, 2, 2, 0, 2, 0, 2 };
 // Constructor
 //-------------------------------------------------------------------
 CKinectApp::CKinectApp()
-: m_hInstance(NULL)
+: m_hInstance(NULL),
+  m_bAppTracking(false), m_bSaveFrames(false), FPS_(30), FRAME_SIZE_(640, 480), frame_(FRAME_SIZE_, CV_8UC3, cv::Scalar::all(0))  //-- [] 2012/06/09: Sang-Wook Lee
 {
     ZeroMemory(m_szAppTitle, sizeof(m_szAppTitle));
     LoadString(m_hInstance, IDS_APP_TITLE, m_szAppTitle, _countof(m_szAppTitle));
@@ -310,6 +315,65 @@ LRESULT CALLBACK CKinectApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
                         }
                     }
                     break;
+					//--S [] 2012/06/09: Sang-Wook Lee
+                    case IDC_SAVE_FRAMES:
+                    {
+						const bool checked = IsDlgButtonChecked(m_hWnd, IDC_SAVE_FRAMES) == BST_CHECKED;
+                        if (checked)
+                        {
+                            if (OnFileSave(m_hWnd, ID_FILE_SAVE, 0, 0) == TRUE)
+							{
+								char filepath[MAX_PATH];
+								const bool isColor = true;
+#if defined(UNICODE) || defined(_UNICODE)
+								WideCharToMultiByte(CP_ACP, 0, saveFilePath_, MAX_PATH, filepath, MAX_PATH, NULL, NULL);
+#else
+								path = saveFilePath_;
+#endif
+								const std::string video_filepath(filepath);
+								const std::string::size_type extPos = video_filepath.find_last_of('.');
+								const std::string depth_filepath(video_filepath.substr(0, extPos + 1) + std::string("depth"));;
+								const std::string skel_filepath(video_filepath.substr(0, extPos + 1) + std::string("skel"));;
+
+								videoWriter_.reset(new cv::VideoWriter(video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, FRAME_SIZE_, isColor));
+								depthstream_.open(depth_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
+								skelstream_.open(skel_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
+								// TODO [add] >>
+								if (videoWriter_->isOpened() && depthstream_ && skelstream_)
+									m_bSaveFrames = true;
+								else
+								{
+									MessageBox(NULL, TEXT("cv::VideoWriter failed to open"), TEXT("Creation Error"), MB_ICONSTOP);
+									m_bSaveFrames = false;
+									saveFilePath_[0] = _T('\0');
+									videoWriter_.reset();
+									depthstream_.close();
+									skelstream_.close();
+								}
+							}
+							else
+							{
+								m_bSaveFrames = false;
+								saveFilePath_[0] = _T('\0');
+								videoWriter_.reset();
+								depthstream_.close();
+								skelstream_.close();
+							}
+
+							if (checked != m_bSaveFrames)
+								CheckDlgButton(m_hWnd, IDC_SAVE_FRAMES, m_bSaveFrames ? BST_CHECKED : BST_UNCHECKED);
+                        }
+						else
+						{
+							m_bSaveFrames = false;
+							saveFilePath_[0] = _T('\0');
+							videoWriter_.reset();
+							depthstream_.close();
+							skelstream_.close();
+						}
+                    }
+                    break;
+					//--E [] 2012/06/09
                 }
             }
         }
@@ -492,12 +556,18 @@ HRESULT CKinectApp::Nui_Init()
     m_SkeletonBMP = CreateCompatibleBitmap(hdc, width, height);
     m_SkeletonDC = CreateCompatibleDC(hdc);
     
-    ReleaseDC(GetDlgItem(m_hWnd,IDC_SKELETALVIEW), hdc);
+    ReleaseDC(GetDlgItem(m_hWnd, IDC_SKELETALVIEW), hdc);
     m_SkeletonOldObj = SelectObject(m_SkeletonDC, m_SkeletonBMP);
 
     m_pDrawDepth = new DrawDevice();
-    result = m_pDrawDepth->Initialize(GetDlgItem(m_hWnd, IDC_DEPTHVIEWER), m_pD2DFactory, 320, 240, 320 * 4);
-    if (!result)
+#if __USE_DEPTH_IMAGE_320x240
+	result = m_pDrawDepth->Initialize(GetDlgItem(m_hWnd, IDC_DEPTHVIEWER), m_pD2DFactory, 320, 240, 320 * 4);
+#elif __USE_DEPTH_IMAGE_640x480
+    result = m_pDrawDepth->Initialize(GetDlgItem(m_hWnd, IDC_DEPTHVIEWER), m_pD2DFactory, 640, 480, 640 * 4);
+#else
+	result = false;
+#endif
+	if (!result)
     {
         MessageBoxResource(IDS_ERROR_DRAWDEVICE, MB_OK | MB_ICONHAND);
         return E_FAIL;
@@ -557,8 +627,12 @@ HRESULT CKinectApp::Nui_Init()
 
     hr = m_pNuiSensor->NuiImageStreamOpen(
         HasSkeletalEngine(m_pNuiSensor) ? NUI_IMAGE_TYPE_DEPTH_AND_PLAYER_INDEX : NUI_IMAGE_TYPE_DEPTH,
-        NUI_IMAGE_RESOLUTION_320x240,
-        0,
+#if __USE_DEPTH_IMAGE_320x240
+		NUI_IMAGE_RESOLUTION_320x240,
+#elif __USE_DEPTH_IMAGE_640x480
+        NUI_IMAGE_RESOLUTION_640x480,
+#endif
+		0,
         2,
         m_hNextDepthFrameEvent,
         &m_pDepthStreamHandle
@@ -750,6 +824,31 @@ void CKinectApp::Nui_GotColorAlert()
     if (0 != LockedRect.Pitch)
     {
         m_pDrawColor->Draw(static_cast<BYTE *>(LockedRect.pBits), LockedRect.size);
+
+		//--S [] 2012/06/09: Sang-Wook Lee
+		if (m_bSaveFrames && videoWriter_)
+		{
+#if 1
+			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(LockedRect.pBits));
+			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
+			*videoWriter_ << frame_;
+#else
+			IplImage *frameBGRA = cvCreateImage(cvSize(FRAME_SIZE_.width, FRAME_SIZE_.height), IPL_DEPTH_8U, 4);
+			//strcpy(frameBGRA->colorModel, "BGRA");
+			//strcpy(frameBGRA->channelSeq, "BGRA");
+			frameBGRA->widthStep = frameBGRA->width * 4;
+			frameBGRA->imageSize = frameBGRA->widthStep * frameBGRA->height;
+			frameBGRA->imageData = (char *)(LockedRect.pBits);
+			IplImage *frameBGR = cvCreateImage(cvSize(FRAME_SIZE_.width, FRAME_SIZE_.height), IPL_DEPTH_8U, 3);
+
+			cvCvtColor(frameBGRA, frameBGR, CV_BGRA2BGR);
+			*videoWriter_ << cv::Mat(frameBGR);
+			
+			cvReleaseImage(&frameBGR);
+			cvReleaseImage(&frameBGRA);
+#endif
+		}
+		//--E [] 2012/06/09
     }
     else
     {
@@ -784,14 +883,15 @@ void CKinectApp::Nui_GotDepthAlert()
         NuiImageResolutionToSize(imageFrame.eResolution, frameWidth, frameHeight);
         
         // draw the bits to the bitmap
-        RGBQUAD *rgbrun = m_rgbWk;
         USHORT *pBufferRun = (USHORT *)LockedRect.pBits;
-
         // end pixel is start + width * height - 1
         USHORT *pBufferEnd = pBufferRun + (frameWidth * frameHeight);
 
         assert(frameWidth * frameHeight <= ARRAYSIZE(m_rgbWk));
 
+		// for display
+        RGBQUAD *rgbrun = m_rgbWk;
+		DWORD widthIndex = 0;
         while (pBufferRun < pBufferEnd)
         {
             *rgbrun = Nui_ShortToQuad_Depth(*pBufferRun);
@@ -800,6 +900,13 @@ void CKinectApp::Nui_GotDepthAlert()
         }
 
         m_pDrawDepth->Draw((BYTE *)m_rgbWk, frameWidth * frameHeight * 4);
+
+		//--S [] 2012/06/09: Sang-Wook Lee
+		if (m_bSaveFrames && depthstream_)
+		{
+			depthstream_.write(reinterpret_cast<char *>(LockedRect.pBits), sizeof(USHORT) * frameWidth * frameHeight);
+		}
+		//--E [] 2012/06/09
     }
     else
     {
@@ -899,7 +1006,7 @@ void CKinectApp::Nui_DrawSkeletonSegment(NUI_SKELETON_DATA *pSkel, int numJoints
     va_end(vl);
 }
 
-void CKinectApp::Nui_DrawSkeleton(NUI_SKELETON_DATA * pSkel, HWND hWnd, int WhichSkeletonColor)
+void CKinectApp::Nui_DrawSkeleton(NUI_SKELETON_DATA *pSkel, HWND hWnd, int WhichSkeletonColor)
 {
     HGDIOBJ hOldObj = SelectObject(m_SkeletonDC, m_Pen[WhichSkeletonColor % m_PensTotal]);
     
@@ -922,6 +1029,7 @@ void CKinectApp::Nui_DrawSkeleton(NUI_SKELETON_DATA * pSkel, HWND hWnd, int Whic
     {
         NuiTransformSkeletonToDepthImage(pSkel->SkeletonPositions[i], &m_Points[i].x, &m_Points[i].y, &depth);
 
+		// the resolution of viewing region is 320 x 240
         m_Points[i].x = (m_Points[i].x * width) / 320;
         m_Points[i].y = (m_Points[i].y * height) / 240;
     }
@@ -1081,6 +1189,13 @@ void CKinectApp::Nui_GotSkeletonAlert()
         UpdateTrackingComboBoxes();
     }
 
+	//--S [] 2012/06/09: Sang-Wook Lee
+	if (m_bSaveFrames && skelstream_)
+	{
+		skelstream_.write(reinterpret_cast<char *>(&SkeletonFrame), sizeof(NUI_SKELETON_FRAME));
+	}
+	//--E [] 2012/06/09
+
     Nui_DoDoubleBuffer(GetDlgItem(m_hWnd, IDC_SKELETALVIEW), m_SkeletonDC);
 }
 
@@ -1091,7 +1206,9 @@ void CKinectApp::Nui_GotSkeletonAlert()
 //-------------------------------------------------------------------
 RGBQUAD CKinectApp::Nui_ShortToQuad_Depth(USHORT s)
 {
+	// actual depth info exists in 13-bit MSB
     USHORT RealDepth = NuiDepthPixelToDepth(s);
+	// player ID exists in 3-bit LSB
     USHORT Player    = NuiDepthPixelToPlayerIndex(s);
 
     // transform 13-bit depth information into an 8-bit intensity appropriate
@@ -1129,3 +1246,151 @@ void CKinectApp::Nui_SetTrackedSkeletons(int skel1, int skel2)
         MessageBoxResource(IDS_ERROR_SETTRACKED, MB_OK | MB_ICONHAND);
     }
 }
+
+//--S [] 2012/06/09: Sang-Wook Lee
+LPOFNHOOKPROC HookProcCenterDialog(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{	
+	switch (message)
+	{
+	case WM_INITDIALOG:
+		{
+			// center the dialog
+			HWND hWnd = GetParent(hDlg);
+			RECT r1, r2;
+			GetClientRect(hWnd, &r1);
+			GetWindowRect(hDlg, &r2);
+			POINT pt;
+			pt.x = (r1.right - r1.left)/2 - (r2.right - r2.left)/2;
+			pt.y = (r1.bottom - r1.top)/2 - (r2.bottom - r2.top)/2;
+			ClientToScreen(hWnd, &pt);
+			SetWindowPos(hDlg, HWND_TOP, pt.x, pt.y, 0, 0, SWP_NOSIZE);
+
+			return FALSE;
+		}
+	}
+
+	return 0;
+}
+
+LRESULT CALLBACK CKinectApp::OnFileOpen(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	// here we place the file path 
+	TCHAR szFile[MAX_PATH] = { 0 };
+
+	// file extensions filter
+	TCHAR *szFilter = TEXT("AVI Files (*.avi)\0*.avi\0All Files\0*.*\0\0");
+	//TCHAR *szFilter = TEXT("AVI Files (*.avi)\0*.avi\0MPEG Files (*.mpg)\0*.mpg\0All Files\0*.*\0\0");
+
+	// query the current folder
+	TCHAR szCurDir[MAX_PATH];
+	::GetCurrentDirectory(MAX_PATH - 1, szCurDir);
+
+	// structure used by the standard file dialog
+	OPENFILENAME ofn;
+	ZeroMemory(&ofn, sizeof(OPENFILENAME));
+
+	// dialog parameters
+	ofn.lStructSize	= sizeof(OPENFILENAME);
+
+	// window which owns the dialog
+	ofn.hwndOwner = GetParent(hWnd);
+
+	ofn.lpstrFilter	= szFilter;
+	// the filters string index (begins with 1)
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile);
+	ofn.lpstrDefExt = _T("avi");
+	// dialog caption
+	ofn.lpstrTitle	= _T("Open");
+	ofn.nMaxFileTitle = sizeof(ofn.lpstrTitle);
+
+	ofn.lpfnHook = HookProcCenterDialog((HWND)ofn.hwndOwner, ID_FILE_OPEN, 0, 0);
+
+	// dialog style 
+	ofn.Flags = OFN_ENABLEHOOK | OFN_EXPLORER;
+
+	// create and open the dialog (retuns 0 on failure)
+	if (GetOpenFileName(&ofn))
+	{
+		// try to open the file (which must exist)
+		HANDLE hFile = CreateFile(
+			ofn.lpstrFile, GENERIC_READ,
+			FILE_SHARE_READ, 0, OPEN_EXISTING,
+			FILE_ATTRIBUTE_NORMAL, 0
+		);
+
+		// on failure CreateFile returns -1
+		if (hFile == (HANDLE)-1)
+		{
+			MessageBox(NULL, TEXT("Could not open this file"), TEXT("File I/O Error"), MB_ICONSTOP);
+			return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
+LRESULT CALLBACK CKinectApp::OnFileSave(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	// here we place the file path 
+	TCHAR szFile[MAX_PATH] = { 0 };
+
+	// file extensions filter
+	TCHAR *szFilter = TEXT("AVI Files (*.avi)\0*.avi\0All Files\0*.*\0\0");
+	//TCHAR *szFilter = TEXT("AVI Files (*.avi)\0*.avi\0MPEG Files (*.mpg)\0*.mpg\0All Files\0*.*\0\0");
+
+	// query the current folder
+	TCHAR szCurDir[MAX_PATH];
+	::GetCurrentDirectory(MAX_PATH - 1, szCurDir);
+
+	// structure used by the standard file dialog
+	OPENFILENAME ofn;
+	ZeroMemory(&ofn, sizeof(OPENFILENAME));
+
+	// dialog parameters
+	ofn.lStructSize	= sizeof(OPENFILENAME);
+
+	// window which owns the dialog
+	ofn.hwndOwner = GetParent(hWnd);
+
+	ofn.lpstrFilter	= szFilter;
+	// the filters string index (begins with 1)
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile);
+	ofn.lpstrDefExt = _T("avi");
+	// dialog caption
+	ofn.lpstrTitle	= _T("Save");
+	ofn.nMaxFileTitle = sizeof(ofn.lpstrTitle);
+
+	ofn.lpfnHook = HookProcCenterDialog((HWND)ofn.hwndOwner, ID_FILE_SAVE, 0, 0);
+
+	// dialog style 
+	ofn.Flags = OFN_ENABLEHOOK | OFN_EXPLORER;
+
+	// create and open the dialog (retuns 0 on failure)
+	if (GetSaveFileName(&ofn))
+	{
+		if (_tcslen(ofn.lpstrFile) == 0) return FALSE;
+/*
+		// try to save the file (which must exist)
+		HANDLE hFile = CreateFile(
+			ofn.lpstrFile, GENERIC_WRITE,
+			FILE_SHARE_WRITE, 0, CREATE_NEW,
+			FILE_ATTRIBUTE_NORMAL, 0
+		);
+
+		// on failure CreateFile returns -1
+		if (hFile == (HANDLE)-1)
+		{
+			MessageBox(NULL, TEXT("Could not save this file"), TEXT("File I/O Error"), MB_ICONSTOP);
+			return FALSE;
+		}
+*/
+		_tcscpy(saveFilePath_, ofn.lpstrFile);
+		return TRUE;
+	}
+	else return FALSE;
+}
+//--E [] 2012/06/09

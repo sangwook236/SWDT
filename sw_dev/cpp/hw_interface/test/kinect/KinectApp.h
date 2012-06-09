@@ -11,6 +11,12 @@
 // DirectWrite
 #include <dwrite.h>
 
+//--S [] 2012/06/09: Sang-Wook Lee
+#include <opencv2/opencv.hpp>
+#include <boost/smart_ptr.hpp>
+#include <fstream>
+//--E [] 2012/06/09
+
 
 #define SZ_APPDLG_WINDOW_CLASS          _T("KinectAppDlgWndClass")
 #define WM_USER_UPDATE_FPS              WM_USER
@@ -43,7 +49,7 @@ public:
 
     void                    Nui_Zero();
     void                    Nui_BlankSkeletonScreen(HWND hWnd, bool getDC);
-    void                    Nui_DoDoubleBuffer(HWND hWnd,HDC hDC);
+    void                    Nui_DoDoubleBuffer(HWND hWnd, HDC hDC);
     void                    Nui_DrawSkeleton(NUI_SKELETON_DATA *pSkel, HWND hWnd, int WhichSkeletonColor);
     void                    Nui_DrawSkeletonId(NUI_SKELETON_DATA *pSkel, HWND hWnd, int WhichSkeletonColor);
 
@@ -71,10 +77,28 @@ private:
     void UpdateTrackingComboBoxes();
     void UpdateTrackingFromComboBoxes();
 
+	//--S [] 2012/06/09: Sang-Wook Lee
+	//static LPOFNHOOKPROC HookProcCenterDialog(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+	LRESULT CALLBACK OnFileOpen(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	LRESULT CALLBACK OnFileSave(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	//--E [] 2012/06/09
+
+private:
     bool                    m_fUpdatingUi;
     TCHAR                   m_szAppTitle[256];    // Application title
     static DWORD WINAPI     Nui_ProcessThread(LPVOID pParam);
     DWORD WINAPI            Nui_ProcessThread();
+
+	//--S [] 2012/06/09: Sang-Wook Lee
+    bool m_bSaveFrames;
+	const double FPS_;
+	const cv::Size FRAME_SIZE_;
+	TCHAR saveFilePath_[MAX_PATH];
+	boost::scoped_ptr<cv::VideoWriter> videoWriter_;
+	std::ofstream depthstream_;
+	std::ofstream skelstream_;
+	cv::Mat frame_;
+	//--E [] 2012/06/09
 
     // Current kinect
     INuiSensor *            m_pNuiSensor;
