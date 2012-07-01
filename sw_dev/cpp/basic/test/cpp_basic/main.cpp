@@ -8,6 +8,9 @@
 #include <typeinfo>
 
 
+namespace {
+namespace local {
+
 struct Test
 {
 	int i;
@@ -15,6 +18,10 @@ struct Test
 	float f;
 	double d;
 };
+
+}  // namespace local
+}  // unnamed namespace
+
 
 int main(int argc, char **argv)
 {

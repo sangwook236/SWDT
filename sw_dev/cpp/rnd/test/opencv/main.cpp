@@ -89,8 +89,8 @@ int main(int argc, char **argv)
 		//matrix_operation_using_gpu();  // not yet implemented
 		//vector_operation();
 		//image_operation();
-		//image_conversion();
-		image_sequence();
+		image_conversion();
+		//image_sequence();
 
 		//image_filtering();
 		//image_filtering_using_gpu();  // not yet implemented

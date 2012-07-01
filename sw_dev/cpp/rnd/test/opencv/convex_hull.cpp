@@ -9,6 +9,7 @@
 //#define __USE_ARRAY 1
 
 namespace {
+namespace local {
 
 void convex_hull_basic()
 {
@@ -225,10 +226,11 @@ void convexity_defect()
 	cvDestroyWindow(windowName);
 }
 
+}  // namespace local
 }  // unnamed namespace
 
 void convex_hull()
 {
-	//convex_hull_basic();
-	convexity_defect();
+	//local::convex_hull_basic();
+	local::convexity_defect();
 }

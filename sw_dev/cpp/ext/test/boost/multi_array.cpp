@@ -293,12 +293,12 @@ void array_size()
 	marrE[0][0][0] = 4;
 	marrE[2][2][1] = 5;
 #if defined(NDEBUG) || defined(_STLPORT_VERSION)
-	marrE.resize(extents[2][3][4]);
+	marrE.resize(boost::extents[2][3][4]);
 #else
 	// FIXME [modify] >> MSVC: compile-time error in debug build
 	//	I don't know why
-	//marrE.resize(extents[2][3][4]);
-	//marrE = array_type(extents[2][3][4]);
+	//marrE.resize(boost::extents[2][3][4]);
+	//marrE = array_type(boost::extents[2][3][4]);
 #endif
 	std::cout << std::endl;
 	assert(marrE[0][0][0] == 4);
