@@ -1,4 +1,4 @@
-@echo off
+rem @echo off
 rem setlocal
 
 if "%1%" == "--set" goto SET
@@ -14,7 +14,7 @@ rem -----------------------------------------------------------
 :SET
 
 if "%JAVA_HOME%" == "" (
-	set JAVA_HOME=c:\program files\java\jdk1.6.0_25
+	set JAVA_HOME=C:\Program Files\Java\jre7
 	set JAVA_HOME_IS_DEFINED=true
 )
 
