@@ -1,0 +1,4 @@
+http://opencv.org/
+http://sourceforge.net/projects/opencvlibrary/
+http://opencv.willowgarage.com/wiki/
+http://docs.opencv.org/
