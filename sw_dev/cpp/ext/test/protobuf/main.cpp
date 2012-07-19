@@ -1,4 +1,7 @@
 //#include "stdafx.h"
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <iostream>
 
 
