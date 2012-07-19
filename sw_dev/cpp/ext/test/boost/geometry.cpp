@@ -24,7 +24,7 @@
 #include <boost/geometry/geometries/adapted/boost_polygon/point.hpp>
 #include <boost/geometry/geometries/adapted/c_array.hpp>
 
-#include <boost/geometry/domains/gis/io/wkt/read_wkt.hpp>
+//#include <boost/geometry/domains/gis/io/wkt/read_wkt.hpp>
 
 //#define HAVE_SVG
 #if defined(HAVE_SVG)

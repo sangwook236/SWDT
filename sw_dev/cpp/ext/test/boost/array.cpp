@@ -51,7 +51,7 @@ void array_()
 		array_type b(a);
 		array_type c;
 		c = a;
-		if (a==b && a==c)
+		if (a == b && a == c)
 			std::cout << "copy construction and copy assignment are OK" << std::endl;
 		else
 			std::cout << "copy construction and copy assignment FAILED" << std::endl;
@@ -104,9 +104,10 @@ void array_()
 		local::print_elements(a);
 
 		// negate elements using STL framework
-		std::transform(a.begin(), a.end(),  // source
-			a.begin(),                      // destination
-			std::negate<int>()              // operation
+		std::transform(
+			a.begin(), a.end(),  // source
+			a.begin(),           // destination
+			std::negate<int>()   // operation
 		);
 		local::print_elements(a);
 	}

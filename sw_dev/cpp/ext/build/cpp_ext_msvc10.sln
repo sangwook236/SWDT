@@ -60,6 +60,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "armadillo", "..\test\armadi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tbb", "..\test\tbb\tbb_msvc10.vcxproj", "{4C47F7FB-525B-4F42-8A52-72B216369E57}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "protobuf", "..\test\protobuf\protobuf_msvc10.vcxproj", "{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -186,6 +188,10 @@ Global
 		{4C47F7FB-525B-4F42-8A52-72B216369E57}.Debug|Win32.Build.0 = Debug|Win32
 		{4C47F7FB-525B-4F42-8A52-72B216369E57}.Release|Win32.ActiveCfg = Release|Win32
 		{4C47F7FB-525B-4F42-8A52-72B216369E57}.Release|Win32.Build.0 = Release|Win32
+		{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}.Debug|Win32.Build.0 = Debug|Win32
+		{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}.Release|Win32.ActiveCfg = Release|Win32
+		{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

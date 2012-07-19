@@ -1,22 +1,14 @@
-#include <cuda_runtime.h>
+//#include "stdafx.h"
 #include <iostream>
 
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
-//__global__ void HelloWorld();
-__global__ void HelloWorld()
-{
-	std::cout << "Hello World!" << std::endl;
-}
-
 int main(int argc, char **argv)
 {
+	void simple_example();
+
 	try
 	{
-		HelloWorld();
+		simple_example();
 	}
 	catch (const std::exception &e)
 	{
@@ -32,7 +24,3 @@ int main(int argc, char **argv)
 
     return 0;
 }
-
-#if defined(__cplusplus)
-}  // extern "C"
-#endif

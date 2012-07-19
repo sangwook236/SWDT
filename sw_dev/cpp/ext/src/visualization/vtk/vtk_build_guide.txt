@@ -1,4 +1,4 @@
-<<  Building  >>
+<<  Building - MSVC6 >>
 
 [-] VTK site∑Œ ∫Œ≈Õ file download
 	-. related files

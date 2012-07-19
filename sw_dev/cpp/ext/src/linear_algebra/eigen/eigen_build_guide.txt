@@ -1,4 +1,14 @@
-[] Build Library
+[-] Build Library
+	-. Eigen library는 기본적으로 header file만 있으면 됨
+		따라서 source를 별도로 build하지 않아도 됨. (?)
 
-[] Porting from Eigen2 to Eigen3
+[-] Porting from Eigen2 to Eigen3
 	[ref] http://eigen.tuxfamily.org/dox/Eigen2ToEigen3.html
+
+[-] Trouble Shooting
+	-. Fortran compiler detection warning
+		아래와 같은 error를 출력하는 경우
+			No fortran compiler has been detected, the blas build will be incomplete.
+		fortran version의 BLAS library를 building하기 위해 fortran compiler를 요구함.
+		=> Warning이므로 project file generation까지 수행하고
+			Eigen library를 사용하는 곳에서 필요한 경우 BLAS or LAPACK library를 linking하면 될 듯함.

@@ -1,9 +1,22 @@
-[ref] http://doc.qt.nokia.com/4.7/install-win.html
+[-] Building
+	[ref] http://doc.qt.nokia.com/4.7/install-win.html
+	
+	0. execute "Visual Studio Command Prompt"
+	1. adding ${QT_ROOT_PATH}/bin to the PATH variable
+	    to locate qmake, moc and other Qt tools
+	2. change directory to ${QT_ROOT_PATH}
+	    cd /D ${QT_ROOT_PATH}
+	3. configure
+	    -. configure -platform win32-msvc2010
+	    -. configure -debug-and-release -opensource -shared -ltcg -no-fast -exceptions -accessibility -stl -qt-sql-sqlite -no-openvg -platform win32-msvc2010 -graphicssystem raster -qt-zlib -qt-gif -qt-libpng -qt-libmng -qt-libtiff -qt-libjpeg -no-dsp -vcproj -incredibuild-xge -plugin-manifests -qmake -process -rtti -mmx -3dnow -sse -sse2 -no-openssl -no-dbus -phonon -phonon-backend -multimedia -audio-backend -webkit -script -scripttools -declarative -arch windows -qt-style-windows -qt-style-windowsxp -qt-style-windowsvista -no-style-plastique -no-style-cleanlooks -no-style-motif -no-style-cde -no-style-windowsce -no-style-windowsmobile -no-style-s60 -native-gestures
+	    	[ref] http://qt-project.org/wiki/Building_Qt_Desktop_for_Windows_with_MSVC
+	4. nmake
 
-1. adding ${QT_ROOT_PATH}/bin to the PATH variable
-    to locate qmake, moc and other Qt tools
-2. change directory to ${QT_ROOT_PATH}
-    cd /D ${QT_ROOT_PATH}
-3. configure
-    configure -platform win32-msvc2010
-4. nmake
+[-] Trouble Shooting
+	-. Q_INTERFACES "Error: Undefined interface"
+		[ref] https://bugreports.qt-project.org/browse/QTBUG-16293
+	-. manifest file을 생성 error
+		MSVC를 이용해 building하는 경우 mt.exe를 이용해 manifest file을 생성하는 과정에서
+		manifest file을 생성하지 못하는 오류 발생.
+		=> 다시 building하면 됨.
+			원인을 알 수 없지만 Visual Studio IDE에서도 동일한 현상이 발생함.

@@ -1,0 +1,16 @@
+[-] Building - Cygwin GCC
+	-. set compiler & linker, etc
+		CC=i686-pc-mingw32-gcc
+		CXX=i686-pc-mingw32-g++
+		F77 = i686-pc-mingw32-gfortran
+		AR=i686-pc-mingw32-ar
+		RANLIB = i686-pc-mingw32-ranlib
+		LD=i686-pc-mingw32-ld
+	-. add -mno-cygwin to CFLAGS in ${SUITE_SPARSE_ROOT}/SuiteSparse_config/SuiteSparse_config.mk
+		CFLAGS = -mno-cygwin
+		=> use the flag -mno-cygwin, which forces gcc to use MinGW.
+	-. remove -lrt if you don't have it
+		LIB = -lm -lrt => LIB = -lm
+	-. rename built libraries
+		The Microsoft linker recognizes the libraries compiled by gcc under Cygwin.
+		What we need to do is to just rename them from *.a to *.lib.
