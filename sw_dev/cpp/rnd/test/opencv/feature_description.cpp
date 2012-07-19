@@ -1,14 +1,12 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/features2d/features2d.hpp>
-#include <opencv2/objdetect/objdetect.hpp>
-#include <opencv2/calib3d/calib3d.hpp>
+#include <opencv2/legacy/legacy.hpp>
+#include <opencv2/nonfree/features2d.hpp>
+#include <opencv2/opencv.hpp>
 #include <fstream>
 #include <iostream>
 #include <list>
+#include <vector>
 #include <cassert>
 
 
@@ -71,10 +69,11 @@ void sift(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &k
 	{
 		double t = (double)cv::getTickCount();
 
-		cv::SiftDescriptorExtractor extractor;
+		const std::string decriptorExtractorName("SIFT");
+		cv::Ptr<cv::DescriptorExtractor> extractor = cv::DescriptorExtractor::create(decriptorExtractorName);
 
-		extractor.compute(img1, keypoints1, descriptors1);
-		extractor.compute(img2, keypoints2, descriptors2);
+		extractor->compute(img1, keypoints1, descriptors1);
+		extractor->compute(img2, keypoints2, descriptors2);
 
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
 		std::cout << "\tdone computing descriptors... took " << t << " seconds" << std::endl;
@@ -85,8 +84,9 @@ void sift(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &k
 	{
 		double t = (double)cv::getTickCount();
 
-		//cv::BruteForceMatcher<cv::L1<float> > descriptorMatcher;
-		cv::BruteForceMatcher<cv::L2<float> > descriptorMatcher;
+		const int normType = cv::NORM_L1;  // cv::NORM_L1, cv::NORM_L2, cv::NORM_HAMMING, cv::NORM_HAMMING2;
+		const bool crossCheck = false;
+		cv::BFMatcher descriptorMatcher(normType, crossCheck);
 		//cv::FlannBasedMatcher descriptorMatcher;
 
 		simpleMatching(descriptorMatcher, descriptors1, descriptors2, matches);
@@ -103,10 +103,11 @@ void surf(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &k
 	{
 		double t = (double)cv::getTickCount();
 
-		cv::SurfDescriptorExtractor extractor;
+		const std::string decriptorExtractorName("SURF");
+		cv::Ptr<cv::DescriptorExtractor> extractor = cv::DescriptorExtractor::create(decriptorExtractorName);
 
-		extractor.compute(img1, keypoints1, descriptors1);
-		extractor.compute(img2, keypoints2, descriptors2);
+		extractor->compute(img1, keypoints1, descriptors1);
+		extractor->compute(img2, keypoints2, descriptors2);
 
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
 		std::cout << "\tdone computing descriptors... took " << t << " seconds" << std::endl;
@@ -117,8 +118,9 @@ void surf(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &k
 	{
 		double t = (double)cv::getTickCount();
 
-		//cv::BruteForceMatcher<cv::L1<float> > descriptorMatcher;
-		cv::BruteForceMatcher<cv::L2<float> > descriptorMatcher;
+		const int normType = cv::NORM_L1;  // cv::NORM_L1, cv::NORM_L2, cv::NORM_HAMMING, cv::NORM_HAMMING2;
+		const bool crossCheck = false;
+		cv::BFMatcher descriptorMatcher(normType, crossCheck);
 		//cv::FlannBasedMatcher descriptorMatcher;
 
 		simpleMatching(descriptorMatcher, descriptors1, descriptors2, matches);

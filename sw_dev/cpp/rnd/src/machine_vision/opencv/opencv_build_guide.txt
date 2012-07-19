@@ -1,0 +1,7 @@
+[-] Building
+
+[-] Trouble Shooting
+	-. highgui project에서 OpenEXR 관련 error
+		OpenEXR library를 shared library linking하기 위해서 OPENEXR_DLL macro가 정의되어야 함
+		=> CMake 환경에서 macro로 /DOPENEXR_DLL를 정의하거나
+			highgui project에 OPENEXR_DLL를 정의하여야 함.

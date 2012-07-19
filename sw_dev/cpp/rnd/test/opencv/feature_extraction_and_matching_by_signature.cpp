@@ -1,8 +1,8 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/features2d/features2d.hpp>
+#include <opencv2/legacy/compat.hpp>
 #include <opencv2/legacy/legacy.hpp>
+#include <opencv2/opencv.hpp>
 #include <iostream>
 #include <vector>
 
@@ -60,9 +60,9 @@ void feature_extraction_and_matching_by_signature_1()
 		CvSURFPoint *point = (CvSURFPoint *)cvGetSeqElem(objectKeypoints, i);
 #if defined(__GNUC__)
         IplImage img_tmp1 = (IplImage)img1;
-		base_set.push_back(cv::BaseKeypoint(point->pt.x, point->pt.y, &img_tmp1));
+		base_set.push_back(cv::BaseKeypoint((int)point->pt.x, (int)point->pt.y, &img_tmp1));
 #else
-		base_set.push_back(cv::BaseKeypoint(point->pt.x, point->pt.y, &(IplImage)img1));
+		base_set.push_back(cv::BaseKeypoint((int)point->pt.x, (int)point->pt.y, &(IplImage)img1));
 #endif
 	}
 

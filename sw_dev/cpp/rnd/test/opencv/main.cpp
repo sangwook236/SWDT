@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 		//matrix_operation_using_gpu();  // not yet implemented
 		//vector_operation();
 		//image_operation();
-		image_conversion();
+		//image_conversion();
 		//image_sequence();
 
 		//image_filtering();
@@ -172,7 +172,7 @@ int main(int argc, char **argv)
 		//hand_detection();
 
 		//motion_segmentation();
-		//gesture_recognition();
+		gesture_recognition();
 	}
 	catch (const cv::Exception &e)
 	{

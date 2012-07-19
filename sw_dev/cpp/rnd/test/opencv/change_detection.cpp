@@ -11,6 +11,7 @@
 namespace {
 namespace local {
 
+#if 0
 void background_segmentation()
 {
 #if 1
@@ -79,99 +80,6 @@ void background_segmentation()
     cvDestroyWindow("BG");
     cvDestroyWindow("FG");
 	cvReleaseCapture(&capture);
-}
-
-void refine_segments(const cv::Mat &img, cv::Mat &mask, cv::Mat &dst)
-{
-	const int num_iterations = 3;
-
-	cv::Mat temp;
-	cv::dilate(mask, temp, cv::Mat(), cv::Point(-1,-1), num_iterations);
-	cv::erode(temp, temp, cv::Mat(), cv::Point(-1,-1), num_iterations * 2);
-	cv::dilate(temp, temp, cv::Mat(), cv::Point(-1,-1), num_iterations);
-
-	std::vector<std::vector<cv::Point> > contours;
-	std::vector<cv::Vec4i> hierarchy;
-	cv::findContours(temp, contours, hierarchy, cv::RETR_CCOMP, cv::CHAIN_APPROX_SIMPLE);
-
-	dst = cv::Mat::zeros(img.size(), CV_8UC3);
-	if (contours.empty())
-		return;
-
-	// iterate through all the top-level contours, draw each connected component with its own random color
-	int largestComp = 0;
-	double maxArea = 0.0;
-	for (int idx = 0; idx >= 0; idx = hierarchy[idx][0])
-	{
-		const std::vector<cv::Point> &c = contours[idx];
-		const double &area = std::fabs(cv::contourArea(cv::Mat(c)));
-		if (area > maxArea)
-		{
-			maxArea = area;
-			largestComp = idx;
-		}
-	}
-
-	cv::drawContours(dst, contours, largestComp, CV_RGB(255, 0, 0), CV_FILLED, 8, hierarchy);
-}
-
-void background_segmentation_by_mog()
-{
-	const int imageWidth = 640, imageHeight = 480;
-
-	const int camId = -1;
-	cv::VideoCapture capture(camId);
-	if (!capture.isOpened())
-	{
-		std::cout << "fail to open vision sensor" << std::endl;
-		return;
-	}
-
-	const std::string windowName1("background subtraction - input");
-	const std::string windowName2("background subtraction - segmented");
-	cv::namedWindow(windowName1, cv::WINDOW_AUTOSIZE);
-	cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
-
-	cv::BackgroundSubtractorMOG bgSubtractor;
-	bgSubtractor.noiseSigma = 10;
-
-    bool update_bg_model = true;
-	cv::Mat frame, fgMask, segmented_img;
-	for (;;)
-	{
-#if 1
-		capture >> frame;
-#else
-		capture >> frame2;
-
-		if (frame2.cols != imageWidth || frame2.rows != imageHeight)
-		{
-			//cv::resize(frame2, frame, cv::Size(imageWidth, imageHeight), 0.0, 0.0, cv::INTER_LINEAR);
-			cv::pyrDown(frame2, frame);
-		}
-		else frame = frame2;
-#endif
-
-        bgSubtractor(frame, fgMask, update_bg_model ? -1 : 0);
-
-        //cvSegmentFGMask(&(IplImage)fgMask);
-		refine_segments(frame, fgMask, segmented_img);
-
-		cv::imshow(windowName1, frame);
-		cv::imshow(windowName2, segmented_img);
-
-		const int keycode = cv::waitKey(1);
-		if (27 == keycode)
-			break;
-		else if (' ' == keycode)
-		{
-			update_bg_model = !update_bg_model;
-			std::cout << "learn background is in state = " << update_bg_model << std::endl;
-		}
-	}
-
-	cv::destroyWindow(windowName1);
-	cv::destroyWindow(windowName2);
 }
 
 CvBGCodeBookModel *model = 0;
@@ -334,13 +242,117 @@ void change_detection_using_codebook()
 	cvDestroyWindow("ForegroundCodeBook");
 	cvDestroyWindow("CodeBook_ConnectComp");
 }
+#endif
+
+void refine_segments(const cv::Mat &img, cv::Mat &mask, cv::Mat &dst)
+{
+	const int num_iterations = 3;
+
+	cv::Mat temp;
+	cv::dilate(mask, temp, cv::Mat(), cv::Point(-1,-1), num_iterations);
+	cv::erode(temp, temp, cv::Mat(), cv::Point(-1,-1), num_iterations * 2);
+	cv::dilate(temp, temp, cv::Mat(), cv::Point(-1,-1), num_iterations);
+
+	std::vector<std::vector<cv::Point> > contours;
+	std::vector<cv::Vec4i> hierarchy;
+	cv::findContours(temp, contours, hierarchy, cv::RETR_CCOMP, cv::CHAIN_APPROX_SIMPLE);
+
+	dst = cv::Mat::zeros(img.size(), CV_8UC3);
+	if (contours.empty())
+		return;
+
+	// iterate through all the top-level contours, draw each connected component with its own random color
+	int largestComp = 0;
+	double maxArea = 0.0;
+	for (int idx = 0; idx >= 0; idx = hierarchy[idx][0])
+	{
+		const std::vector<cv::Point> &c = contours[idx];
+		const double &area = std::fabs(cv::contourArea(cv::Mat(c)));
+		if (area > maxArea)
+		{
+			maxArea = area;
+			largestComp = idx;
+		}
+	}
+
+	cv::drawContours(dst, contours, largestComp, CV_RGB(255, 0, 0), CV_FILLED, 8, hierarchy);
+}
+
+void background_segmentation_by_mog()
+{
+	const int imageWidth = 640, imageHeight = 480;
+
+	const int camId = -1;
+	cv::VideoCapture capture(camId);
+	if (!capture.isOpened())
+	{
+		std::cout << "fail to open vision sensor" << std::endl;
+		return;
+	}
+
+	const std::string windowName1("background subtraction - input");
+	const std::string windowName2("background subtraction - segmented");
+	cv::namedWindow(windowName1, cv::WINDOW_AUTOSIZE);
+	cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
+
+#if 1
+	cv::BackgroundSubtractorMOG bgSubtractor;
+#else
+	const int history = ;
+	const int numMixtures = ;
+	const double backgroundRatio = ;
+	const double noiseSigma = 10;
+	cv::BackgroundSubtractorMOG bgSubtractor(history, numMixtures, backgroundRatio, noiseSigma);
+#endif
+
+    bool update_bg_model = true;
+	cv::Mat frame, fgMask, segmented_img;
+	for (;;)
+	{
+#if 1
+		capture >> frame;
+#else
+		capture >> frame2;
+
+		if (frame2.cols != imageWidth || frame2.rows != imageHeight)
+		{
+			//cv::resize(frame2, frame, cv::Size(imageWidth, imageHeight), 0.0, 0.0, cv::INTER_LINEAR);
+			cv::pyrDown(frame2, frame);
+		}
+		else frame = frame2;
+#endif
+
+        bgSubtractor(frame, fgMask, update_bg_model ? -1 : 0);
+
+        //cvSegmentFGMask(&(IplImage)fgMask);
+		refine_segments(frame, fgMask, segmented_img);
+
+		cv::imshow(windowName1, frame);
+		cv::imshow(windowName2, segmented_img);
+
+		const int keycode = cv::waitKey(1);
+		if (27 == keycode)
+			break;
+		else if (' ' == keycode)
+		{
+			update_bg_model = !update_bg_model;
+			std::cout << "learn background is in state = " << update_bg_model << std::endl;
+		}
+	}
+
+	cv::destroyWindow(windowName1);
+	cv::destroyWindow(windowName2);
+}
 
 }  // namespace local
 }  // unnamed namespace
 
 void change_detection()
 {
-	//local::background_segmentation();
+#if 0
+	local::background_segmentation();
+	local::change_detection_using_codebook();
+#endif
+
 	local::background_segmentation_by_mog();
-	//local::change_detection_using_codebook();
 }

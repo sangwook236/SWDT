@@ -1,14 +1,17 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#if 0
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 //#include <opencv/cvcam.h>
+#else
+#include <opencv2/opencv.hpp>
+#endif
 #include <iostream>
+#include <string>
 #include <cassert>
 #include <cstdlib>
-
-//#define __USE_OPENCV_1_0 1
 
 
 namespace {
@@ -19,34 +22,60 @@ void capture_image_from_file()
 {
 	const int imageWidth = 640, imageHeight = 480;
 	//const int imageWidth = 176, imageHeight = 144;
-	const char *windowName = "capturing from file";
 
-	cvNamedWindow(windowName, CV_WINDOW_AUTOSIZE);
-	cvResizeWindow(windowName, imageWidth, imageHeight);
-
-	//
 	const std::string avi_filename("opencv_data\\flycap-0001.avi");
+	const std::string windowName("capturing from file");
+
+#if 0
+	//
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 
+	cvNamedWindow(windowName.c_str(), CV_WINDOW_AUTOSIZE);
+	cvResizeWindow(windowName.c_str(), imageWidth, imageHeight);
+
 	std::cout << "press any key if want to finish ... " << std::endl;
-	IplImage *image = NULL;
+	IplImage *frame = NULL;
 	while (cvWaitKey(1) < 0)
 	{
 		//cvGrabFrame(capture);
-		//image = cvRetrieveFrame(capture);
-		image = cvQueryFrame(capture);
+		//frame = cvRetrieveFrame(capture);
+		frame = cvQueryFrame(capture);
 
-		cvShowImage(windowName, image);
+		cvShowImage(windowName, frame);
 	}
 	std::cout << "end capturing ... " << std::endl;
 
 	//
 	cvReleaseCapture(&capture);
 	cvDestroyWindow(windowName);
+#else
+	cv::VideoCapture capture(avi_filename);
+	if (!capture.isOpened())
+	{
+		std::cout << "fail to open vision sensor" << std::endl;
+		return;
+	}
+
+	cv::namedWindow(windowName, CV_WINDOW_AUTOSIZE);
+	cv::resizeWindow(windowName, imageWidth, imageHeight);
+
+	std::cout << "press any key if want to finish ... " << std::endl;
+	cv::Mat frame;
+	while (cv::waitKey(1) < 0)
+	{
+		capture >> frame;
+		if (frame.empty()) break;
+
+		cv::imshow(windowName, frame);
+	}
+	std::cout << "end capturing ... " << std::endl;
+
+	cv::destroyWindow(windowName);
+#endif
 }
 
-#if __USE_OPENCV_1_0
+#if 0  // OpenCV 1.0
 void opencv_capture_callback(IplImage *image);
 DWORD WINAPI opencv_capture_thread_proc(LPVOID param);
 
@@ -304,7 +333,7 @@ void opencv_capture_callback(IplImage *image)
 
 	cvWaitKey(1);
 }
-#else
+#elif 0  // OpenCV 2.0 or below
 void capture_image_from_cam()
 {
 	const int imageWidth = 640, imageHeight = 480;
@@ -406,6 +435,109 @@ void capture_image_from_cam()
 void capture_image_by_callback()
 {
 	// TODO [check] >> maybe does not support
+	throw std::runtime_error("not yet implemented");
+}
+#else
+void capture_image_from_cam()
+{
+	const int imageWidth = 640, imageHeight = 480;
+	//const int imageWidth = 176, imageHeight = 144;
+
+	const int camId = -1;
+	cv::VideoCapture capture(camId);
+	if (!capture.isOpened())
+	{
+		std::cout << "fail to open vision sensor" << std::endl;
+		return;
+	}
+
+/*
+	const double &propPosMsec = capture.get(CV_CAP_PROP_POS_MSEC);
+	const double &propPosFrames = capture.get(CV_CAP_PROP_POS_FRAMES);
+	const double &propPosAviRatio = capture.get(CV_CAP_PROP_POS_AVI_RATIO);
+	const double &propFrameWidth = capture.get(CV_CAP_PROP_FRAME_WIDTH);
+	const double &propFrameHeight = capture.get(CV_CAP_PROP_FRAME_HEIGHT);
+	const double &propFps = capture.get(CV_CAP_PROP_FPS);
+	const double &propFourCC = capture.get(CV_CAP_PROP_FOURCC);
+	const double &propFrameCount = capture.get(CV_CAP_PROP_FRAME_COUNT);
+	const double &propFormat = capture.get(CV_CAP_PROP_FORMAT);
+	const double &propMode = capture.get(CV_CAP_PROP_MODE);
+	const double &propBrightness = capture.get(CV_CAP_PROP_BRIGHTNESS);
+	const double &propContrast = capture.get(CV_CAP_PROP_CONTRAST);
+	const double &propSaturation = capture.get(CV_CAP_PROP_SATURATION);
+	const double &propHue = capture.get(CV_CAP_PROP_HUE);
+	const double &propGain = capture.get(CV_CAP_PROP_GAIN);
+	const double &propExposure = capture.get(CV_CAP_PROP_EXPOSURE);
+	const double &propConvertRGB = capture.get(CV_CAP_PROP_CONVERT_RGB);
+	const double &propWhiteBalance = capture.get(CV_CAP_PROP_WHITE_BALANCE);
+	const double &propRectification = capture.get(CV_CAP_PROP_RECTIFICATION);
+	const double &propMonochrome = capture.get(CV_CAP_PROP_MONOCROME);
+
+	capture.set(CV_CAP_PROP_POS_MSEC, propPosMsec);
+	capture.set(CV_CAP_PROP_POS_FRAMES, propPosFrames);
+	capture.set(CV_CAP_PROP_POS_AVI_RATIO, propPosAviRatio);
+	capture.set(CV_CAP_PROP_FRAME_WIDTH, propFrameWidth);
+	capture.set(CV_CAP_PROP_FRAME_HEIGHT, propFrameHeight);
+	capture.set(CV_CAP_PROP_FPS, propFps);
+	capture.set(CV_CAP_PROP_FOURCC, propFourCC);
+	capture.set(CV_CAP_PROP_FRAME_COUNT, propFrameCount);
+	capture.set(CV_CAP_PROP_FORMAT, propFormat);
+	capture.set(CV_CAP_PROP_MODE, propMode);
+	capture.set(CV_CAP_PROP_BRIGHTNESS, propBrightness);
+	capture.set(CV_CAP_PROP_CONTRAST, propContrast);
+	capture.set(CV_CAP_PROP_SATURATION, propSaturation);
+	capture.set(CV_CAP_PROP_HUE, propHue);
+	capture.set(CV_CAP_PROP_GAIN, propGain);
+	capture.set(CV_CAP_PROP_EXPOSURE, propExposure);
+	capture.set(CV_CAP_PROP_CONVERT_RGB, propConvertRGB);
+	capture.set(CV_CAP_PROP_WHITE_BALANCE, propWhiteBalance);
+	capture.set(CV_CAP_PROP_RECTIFICATION, propRectification);
+	capture.set(CV_CAP_PROP_MONOCROME, propMonochrome);
+*/
+	capture.set(CV_CAP_PROP_FRAME_WIDTH, imageWidth);
+	capture.set(CV_CAP_PROP_FRAME_HEIGHT, imageHeight);
+
+	//
+	const std::string windowName("capturing from CAM");
+	cv::namedWindow(windowName);
+	//cv::resizeWindow(windowName, imageWidth, imageHeight);
+
+	std::cout << "press any key to exit ... " << std::endl;
+	cv::Mat frame, image;
+	while (cv::waitKey(1) < 0)
+	{
+		capture >> frame;
+
+		if (frame.empty()) continue;
+
+#if 1
+		if (image.empty()) image = frame.clone();
+		else frame.copyTo(image);
+#else
+		image = frame;
+#endif
+		if (image.empty()) continue;
+
+#if 0
+		cv::flip(image, image, 0);  // flip vertically (around x-axis)
+#elif 0
+		cv::flip(image, image, 1);  // flip horizontally (around y-axis)
+#elif 0
+		cv::flip(image, image, -1);  // flip vertically & horizontally (around both axes)
+#endif
+
+		cv::imshow(windowName, image);
+	}
+	std::cout << "end capturing ... " << std::endl;
+
+	//
+	cv::destroyWindow(windowName);
+}
+
+void capture_image_by_callback()
+{
+	// TODO [check] >> maybe does not support
+	throw std::runtime_error("not yet implemented");
 }
 #endif
 

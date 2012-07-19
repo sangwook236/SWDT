@@ -1,8 +1,8 @@
 //#include "stdafx.h"
-#define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv/cxcore.h>
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
+//#define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv2/legacy/legacy.hpp>
+#include <opencv2/legacy/compat.hpp>
+#include <opencv2/opencv.hpp>
 #include <iostream>
 #include <list>
 #include <cassert>
@@ -10,6 +10,7 @@
 
 
 namespace {
+namespace local {
 
 void harris_corner(IplImage *&srcImage, IplImage *grayImage)
 {
@@ -118,6 +119,7 @@ void star_keypoint(IplImage *srcImage, IplImage *grayImage)
 	cvClearMemStorage(storage);
 }
 
+#if 0
 void mser(IplImage *srcImage, IplImage *grayImage)
 {
 	const CvScalar colors[] =
@@ -151,7 +153,7 @@ void mser(IplImage *srcImage, IplImage *grayImage)
 	IplImage *hsv = cvCreateImage(cvGetSize(srcImage), IPL_DEPTH_8U, 3);
 	cvCvtColor(srcImage, hsv, CV_BGR2YCrCb);
 
-	CvMSERParams params = cvMSERParams();  //cvMSERParams(5, 60, cvRound(0.2 * grayImage->width * grayImage->height), 0.25, 0.2);
+	CvMSERParams params = cvMSERParams(); //cvMSERParams(5, 60, cvRound(0.2 * grayImage->width * grayImage->height), 0.25, 0.2);
 	CvMemStorage *storage= cvCreateMemStorage();
 	CvSeq *contours = NULL;
 	double t = (double)cvGetTickCount();
@@ -160,7 +162,7 @@ void mser(IplImage *srcImage, IplImage *grayImage)
 
 	cvReleaseImage(&hsv);
 
-	std::cout << "MSER extracted " << contours->total << " contours in " << (t/((double)cvGetTickFrequency()*1000.0)) << " ms" << std::endl;
+	std::cout << "MSER extracted " << contours->total << " contours in " << (t / ((double)cvGetTickFrequency() * 1000.0)) << " ms" << std::endl;
 
 	// draw MSER with different color
 	//unsigned char *imgptr = (unsigned char *)srcImage->imageData;
@@ -192,7 +194,80 @@ void mser(IplImage *srcImage, IplImage *grayImage)
 
 	cvClearMemStorage(storage);
 }
+#else
+// [ref] ${OPENCV_ROOT}/sample/c/mser_sample.cpp
+void mser(cv::Mat &srcImage, const cv::Mat &grayImage)
+{
+	const cv::Scalar colors[] =
+	{
+		cv::Scalar(0, 0, 255),
+		cv::Scalar(0, 128, 255),
+		cv::Scalar(0, 255, 255),
+		cv::Scalar(0, 255, 0),
+		cv::Scalar(255, 128, 0),
+		cv::Scalar(255, 255, 0),
+		cv::Scalar(255, 0, 0),
+		cv::Scalar(255, 0, 255),
+		cv::Scalar(255, 255, 255),
+		cv::Scalar(196, 255, 255),
+		cv::Scalar(255, 255, 196)
+	};
 
+	const cv::Vec3b bcolors[] =
+	{
+		cv::Vec3b(0, 0, 255),
+		cv::Vec3b(0, 128, 255),
+		cv::Vec3b(0, 255, 255),
+		cv::Vec3b(0, 255, 0),
+		cv::Vec3b(255, 128, 0),
+		cv::Vec3b(255, 255, 0),
+		cv::Vec3b(255, 0, 0),
+		cv::Vec3b(255, 0, 255),
+		cv::Vec3b(255, 255, 255)
+	};
+
+	cv::Mat yuv(srcImage.size(), CV_8UC3);
+	cv::cvtColor(srcImage, yuv, CV_BGR2YCrCb);
+
+	const int delta = 5;
+	const int min_area = 60;
+	const int max_area = 14400;
+	const float max_variation = 0.25f;
+	const float min_diversity = 0.2f;
+	const int max_evolution = 200;
+	const double area_threshold = 1.01;
+	const double min_margin = 0.003;
+	const int edge_blur_size = 5;
+	cv::MSER mser;
+
+	double t = (double)cv::getTickCount();
+	std::vector<std::vector<cv::Point> > contours;
+	cv::MSER()(yuv, contours);
+	t = cv::getTickCount() - t;
+
+	std::cout << "MSER extracted " << contours.size() << " contours in " << (t / ((double)cv::getTickFrequency() * 1000.0)) << " ms" << std::endl;
+
+	// find ellipse ( it seems cvFitEllipse2 have error or sth? )
+	// FIXME [check] >> there are some errors. have to compare original source (mser_sample.cpp)
+    for (int i = (int)contours.size() - 1; i >= 0; --i)
+	{
+        const std::vector<cv::Point> &r = contours[i];
+        for (int j = 0; j < (int)r.size(); ++j)
+        {
+            const cv::Point &pt = r[j];
+            srcImage.at<cv::Vec3b>(pt) = bcolors[i % 9];
+        }
+
+        // find ellipse (it seems cvfitellipse2 have error or sth?)
+        cv::RotatedRect box = cv::fitEllipse(r);
+
+        box.angle = (float)CV_PI / 2 - box.angle;
+        cv::ellipse(srcImage, box, colors[10], 2);
+	}
+}
+#endif
+
+}  // namespace local
 }  // unnamed namespace
 
 void feature_extraction()
@@ -302,11 +377,15 @@ void feature_extraction()
 		}
 
 		//
-		//harris_corner(srcImage, grayImage);
-		//strong_corner(srcImage, grayImage);
-		//surf(srcImage, grayImage);
-		//star_keypoint(srcImage, grayImage);
-		mser(srcImage, grayImage);
+		//local::harris_corner(srcImage, grayImage);
+		//local::strong_corner(srcImage, grayImage);
+		//local::surf(srcImage, grayImage);
+		//local::star_keypoint(srcImage, grayImage);
+#if 0
+		local::mser(srcImage, grayImage);
+#else
+		local::mser(cv::Mat(srcImage), cv::Mat(grayImage));
+#endif
 
 		//
 		cvShowImage(windowName, srcImage);

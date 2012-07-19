@@ -13,15 +13,12 @@ namespace local {
 void resampling()
 {
 	// load input file into a PointCloud<T> with an appropriate type
-	pcl::PointCloud<typename pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>());
-	sensor_msgs::PointCloud2 cloud_blob;
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>());
 	// load bun0.pcd -- should be available with the PCL archive in test 
-	pcl::io::loadPCDFile("./pcl_data/bun0.pcd", cloud_blob);
-	pcl::fromROSMsg(cloud_blob, *cloud);
+	pcl::io::loadPCDFile("./pcl_data/bun0.pcd", *cloud);
 
 	// create a KD-Tree
-	pcl::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::KdTreeFLANN<pcl::PointXYZ>);
-	tree->setInputCloud(cloud);
+	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
 
 	// output has the same type as the input one, it will be only smoothed
 	pcl::PointCloud<pcl::PointXYZ> mls_points;
@@ -47,5 +44,5 @@ void resampling()
 	pcl::concatenateFields(mls_points, *mls_normals, mls_cloud);
 
 	// save output
-	pcl::io::savePCDFile("./pcl_data/bun0_mls.pcd", mls_cloud);
+	pcl::io::savePCDFile("./pcl_data/bun0-mls.pcd", mls_cloud);
 }

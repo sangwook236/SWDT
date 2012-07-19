@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 {
 	void resampling();
 	void greedy_projection();
-	void pcl_visualizion(int argc, char **argv);
+	void pcl_visualization(int argc, char **argv);
 
 	try
 	{
@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 		//resampling();
 		greedy_projection();
 
-		//pcl_visualizion(argc, argv);
+		//pcl_visualization(argc, argv);
 	}
 	catch (const std::exception &e)
 	{

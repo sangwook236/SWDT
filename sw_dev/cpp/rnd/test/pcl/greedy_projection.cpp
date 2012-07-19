@@ -17,31 +17,30 @@ namespace local {
 
 void greedy_projection()
 {
-	// load input file into a PointCloud<T> with an appropriate type
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>());
 	sensor_msgs::PointCloud2 cloud_blob;
 	pcl::io::loadPCDFile("./pcl_data/bun0.pcd", cloud_blob);
 	pcl::fromROSMsg(cloud_blob, *cloud);
-	//* the data should be available in cloud
+	// the data should be available in cloud
 
-	// normal estimation*
+	// normal estimation
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> n;
-	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>);
-	pcl::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::KdTreeFLANN<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>());
+	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
 	tree->setInputCloud(cloud);
 	n.setInputCloud(cloud);
 	n.setSearchMethod(tree);
 	n.setKSearch(20);
 	n.compute(*normals);
-	//* normals should not contain the point normals + surface curvatures
+	// normals should not contain the point normals + surface curvatures
 
-	// concatenate the XYZ and normal fields*
-	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals(new pcl::PointCloud<pcl::PointNormal>);
+	// concatenate the XYZ and normal fields
+	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals(new pcl::PointCloud<pcl::PointNormal>());
 	pcl::concatenateFields(*cloud, *normals, *cloud_with_normals);
-	//* cloud_with_normals = cloud + normals
+	// cloud_with_normals = cloud + normals
 
-	// create search tree*
-	pcl::KdTree<pcl::PointNormal>::Ptr tree2(new pcl::KdTreeFLANN<pcl::PointNormal>);
+	// create search tree
+	pcl::search::KdTree<pcl::PointNormal>::Ptr tree2(new pcl::search::KdTree<pcl::PointNormal>());
 	tree2->setInputCloud(cloud_with_normals);
 
 	// initialize objects
@@ -54,7 +53,7 @@ void greedy_projection()
 	// set typical values for the parameters
 	gp3.setMu(2.5);
 	gp3.setMaximumNearestNeighbors(100);
-	gp3.setMaximumSurfaceAgle(M_PI / 4);  // 45 degrees
+	gp3.setMaximumSurfaceAngle(M_PI / 4);  // 45 degrees
 	gp3.setMinimumAngle(M_PI / 18);  // 10 degrees
 	gp3.setMaximumAngle(2 * M_PI / 3);  // 120 degrees
 	gp3.setNormalConsistency(false);

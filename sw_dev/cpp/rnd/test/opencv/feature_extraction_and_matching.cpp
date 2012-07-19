@@ -1,8 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/features2d/features2d.hpp>
-#include <opencv2/legacy/legacy.hpp>
+#include <opencv2/opencv.hpp>
 #include <iostream>
 #include <list>
 
@@ -66,11 +64,11 @@ void warpPerspectiveRand(const cv::Mat &src, cv::Mat &dst, cv::Mat &H, cv::RNG &
 
 void feature_extraction_and_matching()
 {
-	// "FAST", "STAR", "SIFT", "SURF", "MSER", "GFTT", "HARRIS"
+	// "FAST", "STAR", "SIFT", "SURF", "ORB", "MSER", "GFTT", "HARRIS", "DENSE", "SimpleBlob"
 	// also combined format is supported: feature detector adapter name ("Grid", "Pyramid") + feature detector name (see above), e.g. "GridFAST", "PyramidSTAR", etc.
 	const std::string featureDetectorName("MSER");
 
-	// "SIFT", "SURF", "BRIEF", "Calonder" (?)
+	// "SIFT", "SURF", "ORB", "BRIEF", "Calonder" (?)
 	// also combined format is supported: descriptor extractor adapter name ("Opponent") + descriptor extractor name (see above), e.g. "OpponentSIFT", etc.
 	const std::string decriptorExtractorName("SIFT");
 

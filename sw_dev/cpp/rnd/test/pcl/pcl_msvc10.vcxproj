@@ -52,13 +52,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pcl-1.1;D:/work_center/sw_dev/cpp/ext/inc/vtk-5.6;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/pcl-1.5;D:/work_center/sw_dev/cpp/ext/inc/eigen3;D:/work_center/sw_dev/cpp/ext/inc/vtk-5.10;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../lib;D:/work_center/sw_dev/cpp/ext/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>pcl_common-gd.lib;pcl_io-gd.lib;pcl_kdtree-gd.lib;pcl_surface-gd.lib;pcl_features-gd.lib;pcl_visualization-gd.lib;vtkCommon.lib;vtkFiltering.lib;vtkGraphics.lib;vtkRendering.lib;flann.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>pcl_common_debug.lib;pcl_io_debug.lib;pcl_kdtree_debug.lib;pcl_search_debug.lib;pcl_surface_debug.lib;pcl_features_debug.lib;pcl_visualization_debug.lib;vtkCommon.lib;vtkFiltering.lib;vtkGraphics.lib;vtkRendering.lib;flann.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -69,7 +69,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pcl-1.1;D:/work_center/sw_dev/cpp/ext/inc/vtk-5.6;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/pcl-1.5;D:/work_center/sw_dev/cpp/ext/inc/eigen3;D:/work_center/sw_dev/cpp/ext/inc/vtk-5.10;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -77,13 +77,13 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>../../lib;D:/work_center/sw_dev/cpp/ext/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>pcl_common.lib;pcl_io.lib;pcl_kdtree.lib;pcl_surface.lib;pcl_features.lib;pcl_visualization.lib;vtkCommon.lib;vtkFiltering.lib;vtkGraphics.lib;vtkRendering.lib;flann.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>pcl_common_release.lib;pcl_io_release.lib;pcl_kdtree_release.lib;pcl_search_release.lib;pcl_surface_release.lib;pcl_features_release.lib;pcl_visualization_release.lib;vtkCommon.lib;vtkFiltering.lib;vtkGraphics.lib;vtkRendering.lib;flann.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="greedy_projection.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="pcl_visualizion.cpp" />
+    <ClCompile Include="pcl_visualization.cpp" />
     <ClCompile Include="resampling.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

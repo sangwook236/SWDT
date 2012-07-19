@@ -14,7 +14,7 @@ namespace local {
 // help
 void printUsage(const char *progName)
 {
-	std::cout << "\n\nUsage: "<<progName<<" [options]\n\n"
+	std::cout << "\n\nUsage: "<< progName << " [options]\n\n"
 		<< "Options:\n"
 		<< "-------------------------------------------\n"
 		<< "-h           this help\n"
@@ -226,17 +226,17 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> meshesVis2(pcl::PointCloud<
 	//-----Add polygon meshes at cloud points-----
 	//------------------------------------
 	// concatenate the XYZ and normal fields*
-	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals(new pcl::PointCloud<pcl::PointNormal>);
+	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals(new pcl::PointCloud<pcl::PointNormal>());
 	pcl::concatenateFields(*cloud, *normals, *cloud_with_normals);
 	//* cloud_with_normals = cloud + normals
 
 	// create search tree*
-	pcl::KdTree<pcl::PointNormal>::Ptr tree(new pcl::KdTreeFLANN<pcl::PointNormal>);
+	pcl::search::KdTree<pcl::PointNormal>::Ptr tree(new pcl::search::KdTree<pcl::PointNormal>());
 	tree->setInputCloud(cloud_with_normals);
 
 	// initialize objects
 	pcl::GreedyProjectionTriangulation<pcl::PointNormal> gp3;
-	boost::shared_ptr<pcl::PolygonMesh> triangles(new pcl::PolygonMesh);
+	boost::shared_ptr<pcl::PolygonMesh> triangles(new pcl::PolygonMesh());
 
 	// set the maximum distance between connected points (maximum edge length)
 	gp3.setSearchRadius(0.025);
@@ -244,7 +244,7 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> meshesVis2(pcl::PointCloud<
 	// set typical values for the parameters
 	gp3.setMu(2.5);
 	gp3.setMaximumNearestNeighbors(100);
-	gp3.setMaximumSurfaceAgle(M_PI / 4);  // 45 degrees
+	gp3.setMaximumSurfaceAngle(M_PI / 4);  // 45 degrees
 	gp3.setMinimumAngle(M_PI / 18);  // 10 degrees
 	gp3.setMaximumAngle(2 * M_PI / 3);  // 120 degrees
 	gp3.setNormalConsistency(false);
@@ -262,7 +262,7 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> meshesVis2(pcl::PointCloud<
 }  // namespace local
 }  // unnamed namespace
 
-void pcl_visualizion(int argc, char **argv)
+void pcl_visualization(int argc, char **argv)
 {
 	// --------------------------------------
 	// -----Parse Command Line Arguments-----
@@ -318,8 +318,8 @@ void pcl_visualizion(int argc, char **argv)
 	// ------------------------------------
 	// -----Create example point cloud-----
 	// ------------------------------------
-	pcl::PointCloud<pcl::PointXYZ>::Ptr basic_cloud_ptr(new pcl::PointCloud<pcl::PointXYZ>);
-	pcl::PointCloud<pcl::PointXYZRGB>::Ptr point_cloud_ptr(new pcl::PointCloud<pcl::PointXYZRGB>);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr basic_cloud_ptr(new pcl::PointCloud<pcl::PointXYZ>());
+	pcl::PointCloud<pcl::PointXYZRGB>::Ptr point_cloud_ptr(new pcl::PointCloud<pcl::PointXYZRGB>());
 	std::cout << "Genarating example point clouds.\n\n";
 	// We're going to make an ellipse extruded along the z-axis. The colour for
 	// the XYZRGB cloud will gradually go from red to green to blue.
@@ -363,16 +363,16 @@ void pcl_visualizion(int argc, char **argv)
 	// ----------------------------------------------------------------
 	pcl::NormalEstimation<pcl::PointXYZRGB, pcl::Normal> ne;
 	ne.setInputCloud(point_cloud_ptr);
-	pcl::KdTreeFLANN<pcl::PointXYZRGB>::Ptr tree(new pcl::KdTreeFLANN<pcl::PointXYZRGB>());
+	pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZRGB>());
 	ne.setSearchMethod(tree);
-	pcl::PointCloud<pcl::Normal>::Ptr cloud_normals1(new pcl::PointCloud<pcl::Normal>);
+	pcl::PointCloud<pcl::Normal>::Ptr cloud_normals1(new pcl::PointCloud<pcl::Normal>());
 	ne.setRadiusSearch(0.05);
 	ne.compute(*cloud_normals1);
 
 	// ---------------------------------------------------------------
 	// -----Calculate surface normals with a search radius of 0.1-----
 	// ---------------------------------------------------------------
-	pcl::PointCloud<pcl::Normal>::Ptr cloud_normals2(new pcl::PointCloud<pcl::Normal>);
+	pcl::PointCloud<pcl::Normal>::Ptr cloud_normals2(new pcl::PointCloud<pcl::Normal>());
 	ne.setRadiusSearch(0.1);
 	ne.compute(*cloud_normals2);
 
