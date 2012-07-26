@@ -10,51 +10,48 @@
 //#define __USE_DEPTH_IMAGE_320x240 1
 #define __USE_DEPTH_IMAGE_640x480 1
 
-static const COLORREF g_JointColorTable[NUI_SKELETON_POSITION_COUNT] = 
-{
-    RGB(169, 176, 155),  // NUI_SKELETON_POSITION_HIP_CENTER
-    RGB(169, 176, 155),  // NUI_SKELETON_POSITION_SPINE
-    RGB(168, 230,  29),  // NUI_SKELETON_POSITION_SHOULDER_CENTER
-    RGB(200,   0,   0),  // NUI_SKELETON_POSITION_HEAD
-    RGB( 79,  84,  33),  // NUI_SKELETON_POSITION_SHOULDER_LEFT
-    RGB( 84,  33,  42),  // NUI_SKELETON_POSITION_ELBOW_LEFT
-    RGB(255, 126,   0),  // NUI_SKELETON_POSITION_WRIST_LEFT
-    RGB(215,  86,   0),  // NUI_SKELETON_POSITION_HAND_LEFT
-    RGB( 33,  79,  84),  // NUI_SKELETON_POSITION_SHOULDER_RIGHT
-    RGB( 33,  33,  84),  // NUI_SKELETON_POSITION_ELBOW_RIGHT
-    RGB( 77, 109, 243),  // NUI_SKELETON_POSITION_WRIST_RIGHT
-    RGB( 37,  69, 243),  // NUI_SKELETON_POSITION_HAND_RIGHT
-    RGB( 77, 109, 243),  // NUI_SKELETON_POSITION_HIP_LEFT
-    RGB( 69,  33,  84),  // NUI_SKELETON_POSITION_KNEE_LEFT
-    RGB(229, 170, 122),  // NUI_SKELETON_POSITION_ANKLE_LEFT
-    RGB(255, 126,   0),  // NUI_SKELETON_POSITION_FOOT_LEFT
-    RGB(181, 165, 213),  // NUI_SKELETON_POSITION_HIP_RIGHT
-    RGB( 71, 222,  76),  // NUI_SKELETON_POSITION_KNEE_RIGHT
-    RGB(245, 228, 156),  // NUI_SKELETON_POSITION_ANKLE_RIGHT
-    RGB( 77, 109, 243)   // NUI_SKELETON_POSITION_FOOT_RIGHT
-};
-
-static const COLORREF g_SkeletonColors[NUI_SKELETON_COUNT] =
-{
-    RGB(255,   0,   0),
-    RGB(  0, 255,   0),
-    RGB( 64, 255, 255),
-    RGB(255, 255,  64),
-    RGB(255,  64, 255),
-    RGB(128, 128, 255)
-};
-
 //lookups for color tinting based on player index
 static const int g_IntensityShiftByPlayerR[] = { 1, 2, 0, 2, 0, 0, 2, 0 };
 static const int g_IntensityShiftByPlayerG[] = { 1, 2, 2, 0, 2, 0, 0, 1 };
 static const int g_IntensityShiftByPlayerB[] = { 1, 0, 2, 2, 0, 2, 0, 2 };
+
+static const float g_JointThickness = 3.0f;
+static const float g_TrackedBoneThickness = 6.0f;
+static const float g_InferredBoneThickness = 1.0f;
+
+const int g_BytesPerPixel = 4;
+
+const int g_ScreenWidth = 320;
+const int g_ScreenHeight = 240;
+
+enum _SV_TRACKED_SKELETONS
+{
+    SV_TRACKED_SKELETONS_DEFAULT = 0,
+    SV_TRACKED_SKELETONS_NEAREST1,
+    SV_TRACKED_SKELETONS_NEAREST2,
+    SV_TRACKED_SKELETONS_STICKY1,
+    SV_TRACKED_SKELETONS_STICKY2
+} SV_TRACKED_SKELETONS;
+
+enum _SV_TRACKING_MODE
+{
+    SV_TRACKING_MODE_DEFAULT = 0,
+    SV_TRACKING_MODE_SEATED
+} SV_TRACKING_MODE;
+
+enum _SV_RANGE
+{
+    SV_RANGE_DEFAULT = 0,
+    SV_RANGE_NEAR,
+} SV_RANGE;
 
 //-------------------------------------------------------------------
 // Constructor
 //-------------------------------------------------------------------
 CKinectApp::CKinectApp()
 : m_hInstance(NULL),
-  m_bAppTracking(false), m_bSaveFrames(false), FPS_(30), FRAME_SIZE_(640, 480), frame_(FRAME_SIZE_, CV_8UC3, cv::Scalar::all(0))  //-- [] 2012/06/09: Sang-Wook Lee
+  m_bSaveFrames(true), FPS_(30), FRAME_SIZE_(640, 480), frame_(FRAME_SIZE_, CV_8UC3, cv::Scalar::all(0)),  //-- [] 2012/06/09: Sang-Wook Lee
+  recordType_(RECORD_COLOR_IMAGE)  //-- [] 2012/07/26: Sang-Wook Lee
 {
     ZeroMemory(m_szAppTitle, sizeof(m_szAppTitle));
     LoadString(m_hInstance, IDS_APP_TITLE, m_szAppTitle, _countof(m_szAppTitle));
@@ -64,6 +61,24 @@ CKinectApp::CKinectApp()
 
     // Init Direct2D
     D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pD2DFactory);
+
+	//--S [] 2012/07/26: Sang-Wook Lee
+	if (m_bSaveFrames)
+	{
+		TCHAR path[MAX_PATH] = { _T('\0'), };
+		GetCurrentDirectory(MAX_PATH, path);
+
+		char filepath[MAX_PATH];
+#if defined(UNICODE) || defined(_UNICODE)
+		WideCharToMultiByte(CP_ACP, 0, path, MAX_PATH, filepath, MAX_PATH, NULL, NULL);
+#else
+		filepath = path;
+#endif
+
+		const std::string recordFilePath(std::string(filepath) + "\\kinect_record.avi");
+		setUpRecording(recordFilePath);
+	}
+	//--E [] 2012/07/26
 }
 
 //-------------------------------------------------------------------
@@ -71,14 +86,18 @@ CKinectApp::CKinectApp()
 //-------------------------------------------------------------------
 CKinectApp::~CKinectApp()
 {
-    // Clean up Direct2D
+	//--S [] 2012/07/26: Sang-Wook Lee
+	cleanUpRecording();
+	//--E [] 2012/07/26
+
+	// Clean up Direct2D
     SafeRelease(m_pD2DFactory);
 
     Nui_Zero();
     SysFreeString(m_instanceId);
 }
 
-void CKinectApp::ClearComboBox()
+void CKinectApp::ClearKinectComboBox()
 {
     for (long i = 0; i < SendDlgItemMessage(m_hWnd, IDC_CAMERAS, CB_GETCOUNT, 0, 0); ++i)
     {
@@ -87,10 +106,10 @@ void CKinectApp::ClearComboBox()
     SendDlgItemMessage(m_hWnd, IDC_CAMERAS, CB_RESETCONTENT, 0, 0);
 }
 
-void CKinectApp::UpdateComboBox()
+void CKinectApp::UpdateKinectComboBox()
 {
     m_fUpdatingUi = true;
-    ClearComboBox();
+    ClearKinectComboBox();
 
     int numDevices = 0;
     HRESULT hr = NuiGetSensorCount(&numDevices);
@@ -99,8 +118,6 @@ void CKinectApp::UpdateComboBox()
     {
         return;
     }
-
-    EnableWindow(GetDlgItem(m_hWnd, IDC_APPTRACKING), numDevices > 0);
 
     long selectedIndex = 0;
     for (int i = 0; i < numDevices; ++i)
@@ -130,68 +147,6 @@ void CKinectApp::UpdateComboBox()
 
     SendDlgItemMessage(m_hWnd, IDC_CAMERAS, CB_SETCURSEL, selectedIndex, 0);
     m_fUpdatingUi = false;
-}
-
-void CKinectApp::UpdateTrackingComboBoxes()
-{
-    SendDlgItemMessage(m_hWnd, IDC_TRACK0, CB_RESETCONTENT, 0, 0);
-    SendDlgItemMessage(m_hWnd, IDC_TRACK1, CB_RESETCONTENT, 0, 0);
-
-    SendDlgItemMessage(m_hWnd, IDC_TRACK0, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"0"));
-    SendDlgItemMessage(m_hWnd, IDC_TRACK1, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"0"));
-    
-    SendDlgItemMessage(m_hWnd, IDC_TRACK0, CB_SETITEMDATA, 0, 0);
-    SendDlgItemMessage(m_hWnd, IDC_TRACK1, CB_SETITEMDATA, 0, 0);
-
-    bool setCombo0 = false;
-    bool setCombo1 = false;
-    
-    for (int i = 0; i < NUI_SKELETON_COUNT; ++i)
-    {
-        if (m_SkeletonIds[i] != 0)
-        {
-            WCHAR trackingId[MAX_PATH];
-            StringCchPrintfW(trackingId, _countof(trackingId), L"%d", m_SkeletonIds[i]);
-            LRESULT pos0 = SendDlgItemMessage(m_hWnd, IDC_TRACK0, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(trackingId));
-            LRESULT pos1 = SendDlgItemMessage(m_hWnd, IDC_TRACK1, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(trackingId));
-
-            SendDlgItemMessage(m_hWnd, IDC_TRACK0, CB_SETITEMDATA, pos0, m_SkeletonIds[i]);
-            SendDlgItemMessage(m_hWnd, IDC_TRACK1, CB_SETITEMDATA, pos1, m_SkeletonIds[i]);
-
-            if (m_TrackedSkeletonIds[0] == m_SkeletonIds[i])
-            {
-                SendDlgItemMessage(m_hWnd, IDC_TRACK0, CB_SETCURSEL, pos0, 0);
-                setCombo0 = true;
-            }
-
-            if (m_TrackedSkeletonIds[1] == m_SkeletonIds[i])
-            {
-                SendDlgItemMessage(m_hWnd, IDC_TRACK1, CB_SETCURSEL, pos1, 0);
-                setCombo1 = true;
-            }
-        }
-    }
-    
-    if (!setCombo0)
-    {
-        SendDlgItemMessage(m_hWnd, IDC_TRACK0, CB_SETCURSEL, 0, 0);
-    }
-
-    if (!setCombo1)
-    {
-        SendDlgItemMessage(m_hWnd, IDC_TRACK1, CB_SETCURSEL, 0, 0);
-    }
-}
-
-void CKinectApp::UpdateTrackingFromComboBoxes()
-{
-    LRESULT trackingIndex0 = SendDlgItemMessage(m_hWnd, IDC_TRACK0, CB_GETCURSEL, 0, 0);
-    LRESULT trackingIndex1 = SendDlgItemMessage(m_hWnd, IDC_TRACK1, CB_GETCURSEL, 0, 0);
-
-    LRESULT trackingId0 = SendDlgItemMessage(m_hWnd, IDC_TRACK0, CB_GETITEMDATA, trackingIndex0, 0);
-    LRESULT trackingId1 = SendDlgItemMessage(m_hWnd, IDC_TRACK0, CB_GETITEMDATA, trackingIndex1, 0);
-
-    Nui_SetTrackedSkeletons(static_cast<int>(trackingId0), static_cast<int>(trackingId1));
 }
 
 LRESULT CALLBACK CKinectApp::MessageRouter(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -228,8 +183,6 @@ LRESULT CALLBACK CKinectApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
     {
         case WM_INITDIALOG:
         {
-            LOGFONT lf;
-
             // Clean state the class
             Nui_Zero();
 
@@ -237,14 +190,58 @@ LRESULT CALLBACK CKinectApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
             m_hWnd = hWnd;
 
             // Set the font for Frames Per Second display
+            LOGFONT lf;
             GetObject((HFONT)GetStockObject(DEFAULT_GUI_FONT), sizeof(lf), &lf);
             lf.lfHeight *= 4;
             m_hFontFPS = CreateFontIndirect(&lf);
-            SendDlgItemMessage(hWnd, IDC_FPS, WM_SETFONT, (WPARAM)m_hFontFPS, 0);
+            SendDlgItemMessageW(hWnd, IDC_FPS, WM_SETFONT, (WPARAM)m_hFontFPS, 0);
 
-            UpdateComboBox();
-            SendDlgItemMessage(m_hWnd, IDC_CAMERAS, CB_SETCURSEL, 0, 0);
+            UpdateKinectComboBox();
+            SendDlgItemMessageW(m_hWnd, IDC_CAMERAS, CB_SETCURSEL, 0, 0);
 
+            TCHAR szComboText[512] = { 0 };
+
+            // Fill combo box options for tracked skeletons
+
+            LoadStringW(m_hInstance, IDS_TRACKEDSKELETONS_DEFAULT, szComboText, _countof(szComboText));
+            SendDlgItemMessageW(m_hWnd, IDC_TRACKEDSKELETONS, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(szComboText));
+
+            LoadStringW(m_hInstance, IDS_TRACKEDSKELETONS_NEAREST1, szComboText, _countof(szComboText));
+            SendDlgItemMessageW(m_hWnd, IDC_TRACKEDSKELETONS, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(szComboText));
+
+            LoadStringW(m_hInstance, IDS_TRACKEDSKELETONS_NEAREST2, szComboText, _countof(szComboText));
+            SendDlgItemMessageW(m_hWnd, IDC_TRACKEDSKELETONS, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(szComboText));
+
+            LoadStringW(m_hInstance, IDS_TRACKEDSKELETONS_STICKY1, szComboText, _countof(szComboText));
+            SendDlgItemMessageW(m_hWnd, IDC_TRACKEDSKELETONS, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(szComboText));
+
+            LoadStringW(m_hInstance, IDS_TRACKEDSKELETONS_STICKY2, szComboText, _countof(szComboText));
+            SendDlgItemMessageW(m_hWnd, IDC_TRACKEDSKELETONS, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(szComboText));
+
+            SendDlgItemMessageW(m_hWnd, IDC_TRACKEDSKELETONS, CB_SETCURSEL, 0, 0);
+            // Fill combo box options for tracking mode
+
+            LoadStringW(m_hInstance, IDS_TRACKINGMODE_DEFAULT, szComboText, _countof(szComboText));
+            SendDlgItemMessageW(m_hWnd, IDC_TRACKINGMODE, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(szComboText));
+
+            LoadStringW(m_hInstance, IDS_TRACKINGMODE_SEATED, szComboText, _countof(szComboText));
+            SendDlgItemMessageW(m_hWnd, IDC_TRACKINGMODE, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(szComboText));
+            SendDlgItemMessageW(m_hWnd, IDC_TRACKINGMODE, CB_SETCURSEL, 0, 0);
+
+            // Fill combo box options for range
+
+            LoadStringW(m_hInstance, IDS_RANGE_DEFAULT, szComboText, _countof(szComboText));
+            SendDlgItemMessageW(m_hWnd, IDC_RANGE, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(szComboText));
+
+            LoadStringW(m_hInstance, IDS_RANGE_NEAR, szComboText, _countof(szComboText));
+            SendDlgItemMessageW(m_hWnd, IDC_RANGE, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(szComboText));
+
+            SendDlgItemMessageW(m_hWnd, IDC_RANGE, CB_SETCURSEL, 0, 0);
+        }
+        break;
+
+        case WM_SHOWWINDOW:
+        {
             // Initialize and start NUI processing
             Nui_Init();
         }
@@ -258,7 +255,7 @@ LRESULT CALLBACK CKinectApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
 
         case WM_USER_UPDATE_COMBO:
         {
-            UpdateComboBox();
+            UpdateKinectComboBox();
         }
         break;
 
@@ -282,10 +279,24 @@ LRESULT CALLBACK CKinectApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
                     }
                     break;
 
-                    case IDC_TRACK0:
-                    case IDC_TRACK1:
+                    case IDC_TRACKEDSKELETONS:
                     {
-                        UpdateTrackingFromComboBoxes();
+                        LRESULT index = ::SendDlgItemMessageW(m_hWnd, IDC_TRACKEDSKELETONS, CB_GETCURSEL, 0, 0);
+                        UpdateTrackedSkeletonSelection(static_cast<int>(index));
+                    }
+                    break;
+
+                    case IDC_TRACKINGMODE:
+                    {
+                        LRESULT index = ::SendDlgItemMessageW(m_hWnd, IDC_TRACKINGMODE, CB_GETCURSEL, 0, 0);
+                        UpdateTrackingMode(static_cast<int>(index));
+                    }
+                    break;
+
+                    case IDC_RANGE:
+                    {
+                        LRESULT index = ::SendDlgItemMessageW(m_hWnd, IDC_RANGE, CB_GETCURSEL, 0, 0);
+                        UpdateRange(static_cast<int>(index));
                     }
                     break;
                 }
@@ -294,70 +305,36 @@ LRESULT CALLBACK CKinectApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
             {
                 switch (LOWORD(wParam))
                 {
-                    case IDC_APPTRACKING:
-                    {
-                        bool checked = IsDlgButtonChecked(m_hWnd, IDC_APPTRACKING) == BST_CHECKED;
-                        m_bAppTracking = checked;
-
-                        EnableWindow(GetDlgItem(m_hWnd, IDC_TRACK0), checked);
-                        EnableWindow(GetDlgItem(m_hWnd, IDC_TRACK1), checked);
-
-                        if (checked)
-                        {
-                            UpdateTrackingComboBoxes();
-                        }
-
-                        Nui_SetApplicationTracking(checked);
-
-                        if (checked)
-                        {
-                            UpdateTrackingFromComboBoxes();
-                        }
-                    }
-                    break;
 					//--S [] 2012/06/09: Sang-Wook Lee
                     case IDC_SAVE_FRAMES:
                     {
 						const bool checked = IsDlgButtonChecked(m_hWnd, IDC_SAVE_FRAMES) == BST_CHECKED;
                         if (checked)
                         {
+							saveFilePath_[0] = _T('\0');
                             if (OnFileSave(m_hWnd, ID_FILE_SAVE, 0, 0) == TRUE)
 							{
+								cleanUpRecording();
+
 								char filepath[MAX_PATH];
-								const bool isColor = true;
 #if defined(UNICODE) || defined(_UNICODE)
 								WideCharToMultiByte(CP_ACP, 0, saveFilePath_, MAX_PATH, filepath, MAX_PATH, NULL, NULL);
 #else
-								path = saveFilePath_;
+								filepath = saveFilePath_;
 #endif
-								const std::string video_filepath(filepath);
-								const std::string::size_type extPos = video_filepath.find_last_of('.');
-								const std::string depth_filepath(video_filepath.substr(0, extPos + 1) + std::string("depth"));;
-								const std::string skel_filepath(video_filepath.substr(0, extPos + 1) + std::string("skel"));;
-
-								videoWriter_.reset(new cv::VideoWriter(video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, FRAME_SIZE_, isColor));
-								depthstream_.open(depth_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
-								skelstream_.open(skel_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
-								// TODO [add] >>
-								if (videoWriter_->isOpened() && depthstream_ && skelstream_)
+								if (setUpRecording(filepath))
 									m_bSaveFrames = true;
 								else
 								{
-									MessageBox(NULL, TEXT("cv::VideoWriter failed to open"), TEXT("Creation Error"), MB_ICONSTOP);
+									MessageBox(NULL, TEXT("file I/O failed to open"), TEXT("Creation Error"), MB_ICONSTOP);
 									m_bSaveFrames = false;
-									saveFilePath_[0] = _T('\0');
-									videoWriter_.reset();
-									depthstream_.close();
-									skelstream_.close();
+									cleanUpRecording();
 								}
 							}
 							else
 							{
 								m_bSaveFrames = false;
-								saveFilePath_[0] = _T('\0');
-								videoWriter_.reset();
-								depthstream_.close();
-								skelstream_.close();
+								cleanUpRecording();
 							}
 
 							if (checked != m_bSaveFrames)
@@ -366,10 +343,7 @@ LRESULT CALLBACK CKinectApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
 						else
 						{
 							m_bSaveFrames = false;
-							saveFilePath_[0] = _T('\0');
-							videoWriter_.reset();
-							depthstream_.close();
-							skelstream_.close();
+							cleanUpRecording();
 						}
                     }
                     break;
@@ -389,7 +363,7 @@ LRESULT CALLBACK CKinectApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
             Nui_UnInit();
 
             // Other cleanup
-            ClearComboBox();
+            ClearKinectComboBox();
             DeleteObject(m_hFontFPS);
 
             // Quit the main message pump
@@ -398,6 +372,29 @@ LRESULT CALLBACK CKinectApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
     }
 
     return FALSE;
+}
+
+bool CKinectApp::setUpRecording(const std::string &filepath)
+{
+	const std::string video_filepath(filepath);
+	const std::string::size_type extPos = video_filepath.find_last_of('.');
+	const std::string depth_filepath(video_filepath.substr(0, extPos + 1) + std::string("depth"));;
+	const std::string skel_filepath(video_filepath.substr(0, extPos + 1) + std::string("skel"));;
+
+	const bool isColor = true;
+	videoWriter_.reset(new cv::VideoWriter(video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, FRAME_SIZE_, isColor));
+	depthstream_.open(depth_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
+	skelstream_.open(skel_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
+	// TODO [add] >>
+
+	return videoWriter_->isOpened() && depthstream_ && skelstream_;
+}
+
+void CKinectApp::cleanUpRecording()
+{
+	videoWriter_.reset();
+	depthstream_.close();
+	skelstream_.close();
 }
 
 //-------------------------------------------------------------------
@@ -420,11 +417,15 @@ int CKinectApp::MessageBoxResource(UINT nID, UINT nType)
 //-------------------------------------------------------------------
 void CKinectApp::Nui_Zero()
 {
-    if (m_pNuiSensor)
-    {
-        m_pNuiSensor->Release();
-        m_pNuiSensor = NULL;
-    }
+    SafeRelease(m_pNuiSensor);
+
+    m_pRenderTarget = NULL;
+    m_pBrushJointTracked = NULL;
+    m_pBrushJointInferred = NULL;
+    m_pBrushBoneTracked = NULL;
+    m_pBrushBoneInferred = NULL;
+    ZeroMemory(m_Points, sizeof(m_Points));
+
     m_hNextDepthFrameEvent = NULL;
     m_hNextColorFrameEvent = NULL;
     m_hNextSkeletonEvent = NULL;
@@ -432,12 +433,6 @@ void CKinectApp::Nui_Zero()
     m_pVideoStreamHandle = NULL;
     m_hThNuiProcess = NULL;
     m_hEvNuiProcessStop = NULL;
-    ZeroMemory(m_Pen, sizeof(m_Pen));
-    m_SkeletonDC = NULL;
-    m_SkeletonBMP = NULL;
-    m_SkeletonOldObj = NULL;
-    m_PensTotal = 6;
-    ZeroMemory(m_Points, sizeof(m_Points));
     m_LastSkeletonFoundTime = 0;
     m_bScreenBlanked = false;
     m_DepthFramesTotal = 0;
@@ -445,8 +440,10 @@ void CKinectApp::Nui_Zero()
     m_LastDepthFramesTotal = 0;
     m_pDrawDepth = NULL;
     m_pDrawColor = NULL;
-    ZeroMemory(m_SkeletonIds, sizeof(m_SkeletonIds));
-    ZeroMemory(m_TrackedSkeletonIds, sizeof(m_SkeletonIds));
+    m_TrackedSkeletons = 0;
+    m_SkeletonTrackingFlags = NUI_SKELETON_TRACKING_FLAG_ENABLE_IN_NEAR_RANGE;
+    m_DepthStreamFlags = 0;
+    ZeroMemory(m_StickySkeletonIds, sizeof(m_StickySkeletonIds));
 }
 
 void CALLBACK CKinectApp::Nui_StatusProcThunk(HRESULT hrStatus, const OLECHAR *instanceName, const OLECHAR *uniqueDeviceName, void *pUserData)
@@ -526,7 +523,6 @@ HRESULT CKinectApp::Nui_Init(OLECHAR *instanceName)
 HRESULT CKinectApp::Nui_Init()
 {
     HRESULT  hr;
-    RECT     rc;
     bool     result;
 
     if (!m_pNuiSensor)
@@ -547,17 +543,12 @@ HRESULT CKinectApp::Nui_Init()
     m_hNextColorFrameEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
     m_hNextSkeletonEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 
-    GetWindowRect(GetDlgItem(m_hWnd, IDC_SKELETALVIEW), &rc);  
-    HDC hdc = GetDC(GetDlgItem(m_hWnd, IDC_SKELETALVIEW));
-    
-    int width = rc.right - rc.left;
-    int height = rc.bottom - rc.top;
+    // reset the tracked skeletons, range, and tracking mode
+    SendDlgItemMessage(m_hWnd, IDC_TRACKEDSKELETONS, CB_SETCURSEL, 0, 0);
+    SendDlgItemMessage(m_hWnd, IDC_TRACKINGMODE, CB_SETCURSEL, 0, 0);
+    SendDlgItemMessage(m_hWnd, IDC_RANGE, CB_SETCURSEL, 0, 0);
 
-    m_SkeletonBMP = CreateCompatibleBitmap(hdc, width, height);
-    m_SkeletonDC = CreateCompatibleDC(hdc);
-    
-    ReleaseDC(GetDlgItem(m_hWnd, IDC_SKELETALVIEW), hdc);
-    m_SkeletonOldObj = SelectObject(m_SkeletonDC, m_SkeletonBMP);
+    EnsureDirect2DResources();
 
     m_pDrawDepth = new DrawDevice();
 #if __USE_DEPTH_IMAGE_320x240
@@ -657,25 +648,6 @@ HRESULT CKinectApp::Nui_Init()
 //-------------------------------------------------------------------
 void CKinectApp::Nui_UnInit()
 {
-    SelectObject(m_SkeletonDC, m_SkeletonOldObj);
-    DeleteDC(m_SkeletonDC);
-    DeleteObject(m_SkeletonBMP);
-
-    if (NULL != m_Pen[0])
-    {
-        for (int i = 0; i < NUI_SKELETON_COUNT; ++i)
-        {
-            DeleteObject(m_Pen[i]);
-        }
-        ZeroMemory(m_Pen, sizeof(m_Pen));
-    }
-
-    if (NULL != m_hFontSkeletonId)
-    {
-        DeleteObject(m_hFontSkeletonId);
-        m_hFontSkeletonId = NULL;
-    }
-
     // Stop the Nui processing thread
     if (NULL != m_hEvNuiProcessStop)
     {
@@ -711,11 +683,7 @@ void CKinectApp::Nui_UnInit()
         m_hNextColorFrameEvent = NULL;
     }
 
-    if (m_pNuiSensor)
-    {
-        m_pNuiSensor->Release();
-        m_pNuiSensor = NULL;
-    }
+    SafeRelease(m_pNuiSensor);
 
     // clean up graphics
     delete m_pDrawDepth;
@@ -723,6 +691,8 @@ void CKinectApp::Nui_UnInit()
 
     delete m_pDrawColor;
     m_pDrawColor = NULL;    
+
+    DiscardDirect2DResources();
 }
 
 DWORD WINAPI CKinectApp::Nui_ProcessThread(LPVOID pParam)
@@ -755,47 +725,50 @@ DWORD WINAPI CKinectApp::Nui_ProcessThread()
         // Wait for any of the events to be signalled
         nEventIdx = WaitForMultipleObjects(numEvents, hEvents, FALSE, 100);
 
-        // Process signal events
-        switch (nEventIdx)
+        // Timed out, continue
+        if (WAIT_TIMEOUT == nEventIdx)
+            continue;
+
+        // stop event was signalled 
+        if (WAIT_OBJECT_0 == nEventIdx)
         {
-            case WAIT_TIMEOUT:
-                continue;
-
-            // If the stop event, stop looping and exit
-            case WAIT_OBJECT_0:
-                continueProcessing = false;
-                continue;
-
-            case WAIT_OBJECT_0 + 1:
-                Nui_GotDepthAlert();
-                 ++m_DepthFramesTotal;
-                break;
-
-            case WAIT_OBJECT_0 + 2:
-                Nui_GotColorAlert();
-                break;
-
-            case WAIT_OBJECT_0 + 3:
-                Nui_GotSkeletonAlert();
-                break;
+            continueProcessing = false;
+            break;
         }
+
+        // Wait for each object individually with a 0 timeout to make sure to process all signalled objects if multiple objects were signalled this loop iteration
+
+        // In situations where perfect correspondance between color/depth/skeleton is essential, a priority queue should be used to service the item which has been updated the longest ago
+
+        if (WAIT_OBJECT_0 == WaitForSingleObject(m_hNextDepthFrameEvent, 0))
+        {
+            //only increment frame count if a frame was successfully drawn
+            if (Nui_GotDepthAlert())
+                ++m_DepthFramesTotal;
+        }
+
+        if (WAIT_OBJECT_0 == WaitForSingleObject(m_hNextColorFrameEvent, 0))
+            Nui_GotColorAlert();
+
+        if ( WAIT_OBJECT_0 == WaitForSingleObject(m_hNextSkeletonEvent, 0))
+            Nui_GotSkeletonAlert();
 
         // Once per second, display the depth FPS
         t = timeGetTime();
         if ((t - m_LastDepthFPStime) > 1000)
         {
-            int fps = ((m_DepthFramesTotal - m_LastDepthFramesTotal) * 1000 + 500) / (t - m_LastDepthFPStime);
+            const int fps = ((m_DepthFramesTotal - m_LastDepthFramesTotal) * 1000 + 500) / (t - m_LastDepthFPStime);
             PostMessageW(m_hWnd, WM_USER_UPDATE_FPS, IDC_FPS, fps);
             m_LastDepthFramesTotal = m_DepthFramesTotal;
             m_LastDepthFPStime = t;
         }
 
         // Blank the skeleton panel if we haven't found a skeleton recently
-        if ((t - m_LastSkeletonFoundTime) > 250)
+        if ((t - m_LastSkeletonFoundTime) > 300)
         {
             if (!m_bScreenBlanked)
             {
-                Nui_BlankSkeletonScreen(GetDlgItem(m_hWnd, IDC_SKELETALVIEW), true);
+                Nui_BlankSkeletonScreen();
                 m_bScreenBlanked = true;
             }
         }
@@ -809,15 +782,16 @@ DWORD WINAPI CKinectApp::Nui_ProcessThread()
 //
 // Handle new color data
 //-------------------------------------------------------------------
-void CKinectApp::Nui_GotColorAlert()
+bool CKinectApp::Nui_GotColorAlert()
 {
     NUI_IMAGE_FRAME imageFrame;
     HRESULT hr = m_pNuiSensor->NuiImageStreamGetNextFrame(m_pVideoStreamHandle, 0, &imageFrame);
     if (FAILED(hr))
     {
-        return;
+        return false;
     }
 
+    bool processedFrame = true;
     INuiFrameTexture *pTexture = imageFrame.pFrameTexture;
     NUI_LOCKED_RECT LockedRect;
     pTexture->LockRect(0, &LockedRect, NULL, 0);
@@ -826,12 +800,14 @@ void CKinectApp::Nui_GotColorAlert()
         m_pDrawColor->Draw(static_cast<BYTE *>(LockedRect.pBits), LockedRect.size);
 
 		//--S [] 2012/06/09: Sang-Wook Lee
-		if (m_bSaveFrames && videoWriter_)
+		if (m_bSaveFrames && videoWriter_ && RECORD_COLOR_IMAGE == (RECORD_COLOR_IMAGE & recordType_))
 		{
 #if 1
 			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(LockedRect.pBits));
 			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
 			*videoWriter_ << frame_;
+
+			OutputDebugString(_T("."));
 #else
 			IplImage *frameBGRA = cvCreateImage(cvSize(FRAME_SIZE_.width, FRAME_SIZE_.height), IPL_DEPTH_8U, 4);
 			//strcpy(frameBGRA->colorModel, "BGRA");
@@ -853,11 +829,14 @@ void CKinectApp::Nui_GotColorAlert()
     else
     {
         OutputDebugString(L"Buffer length of received texture is bogus\r\n");
+        processedFrame = false;
     }
 
     pTexture->UnlockRect(0);
 
     m_pNuiSensor->NuiImageStreamReleaseFrame(m_pVideoStreamHandle, &imageFrame);
+
+    return processedFrame;
 }
 
 //-------------------------------------------------------------------
@@ -865,15 +844,16 @@ void CKinectApp::Nui_GotColorAlert()
 //
 // Handle new depth data
 //-------------------------------------------------------------------
-void CKinectApp::Nui_GotDepthAlert()
+bool CKinectApp::Nui_GotDepthAlert()
 {
     NUI_IMAGE_FRAME imageFrame;
     HRESULT hr = m_pNuiSensor->NuiImageStreamGetNextFrame(m_pDepthStreamHandle, 0, &imageFrame);
     if (FAILED(hr))
     {
-        return;
+        return false;
     }
 
+    bool processedFrame = true;
     INuiFrameTexture *pTexture = imageFrame.pFrameTexture;
     NUI_LOCKED_RECT LockedRect;
     pTexture->LockRect(0, &LockedRect, NULL, 0);
@@ -883,26 +863,39 @@ void CKinectApp::Nui_GotDepthAlert()
         NuiImageResolutionToSize(imageFrame.eResolution, frameWidth, frameHeight);
         
         // draw the bits to the bitmap
-        USHORT *pBufferRun = (USHORT *)LockedRect.pBits;
+        BYTE *rgbrun = m_depthRGBX;
+        const USHORT *pBufferRun = (const USHORT *)LockedRect.pBits;
         // end pixel is start + width * height - 1
-        USHORT *pBufferEnd = pBufferRun + (frameWidth * frameHeight);
+        const USHORT *pBufferEnd = pBufferRun + (frameWidth * frameHeight);
 
-        assert(frameWidth * frameHeight <= ARRAYSIZE(m_rgbWk));
+        assert(frameWidth * frameHeight * g_BytesPerPixel <= ARRAYSIZE(m_depthRGBX));
 
 		// for display
-        RGBQUAD *rgbrun = m_rgbWk;
-		DWORD widthIndex = 0;
         while (pBufferRun < pBufferEnd)
         {
-            *rgbrun = Nui_ShortToQuad_Depth(*pBufferRun);
-            ++pBufferRun;
+            USHORT depth = *pBufferRun;
+            USHORT realDepth = NuiDepthPixelToDepth(depth);
+            USHORT player = NuiDepthPixelToPlayerIndex(depth);
+
+            // transform 13-bit depth information into an 8-bit intensity appropriate
+            // for display (we disregard information in most significant bit)
+            BYTE intensity = static_cast<BYTE>(~(realDepth >> 4));
+
+            // tint the intensity by dividing by per-player values
+            *(rgbrun++) = intensity >> g_IntensityShiftByPlayerB[player];
+            *(rgbrun++) = intensity >> g_IntensityShiftByPlayerG[player];
+            *(rgbrun++) = intensity >> g_IntensityShiftByPlayerR[player];
+
+            // no alpha information, skip the last byte
             ++rgbrun;
+
+            ++pBufferRun;
         }
 
-        m_pDrawDepth->Draw((BYTE *)m_rgbWk, frameWidth * frameHeight * 4);
+        m_pDrawDepth->Draw(m_depthRGBX, frameWidth * frameHeight * g_BytesPerPixel);
 
 		//--S [] 2012/06/09: Sang-Wook Lee
-		if (m_bSaveFrames && depthstream_)
+		if (m_bSaveFrames && depthstream_ && RECORD_DEPTH_IMAGE == (RECORD_DEPTH_IMAGE & recordType_))
 		{
 			depthstream_.write(reinterpret_cast<char *>(LockedRect.pBits), sizeof(USHORT) * frameWidth * frameHeight);
 		}
@@ -911,214 +904,195 @@ void CKinectApp::Nui_GotDepthAlert()
     else
     {
         OutputDebugString(L"Buffer length of received texture is bogus\r\n");
+        processedFrame = false;
     }
 
     pTexture->UnlockRect(0);
 
     m_pNuiSensor->NuiImageStreamReleaseFrame(m_pDepthStreamHandle, &imageFrame);
+
+    return processedFrame;
 }
 
-void CKinectApp::Nui_BlankSkeletonScreen(HWND hWnd, bool getDC)
+void CKinectApp::Nui_BlankSkeletonScreen()
 {
-    HDC hdc = getDC ? GetDC(hWnd) : m_SkeletonDC;
-
-    RECT rct;
-    GetClientRect(hWnd, &rct);
-    PatBlt(hdc, 0, 0, rct.right, rct.bottom, BLACKNESS);
-
-    if (getDC)
-    {
-        ReleaseDC(hWnd, hdc);
-    }
+    m_pRenderTarget->BeginDraw();
+    m_pRenderTarget->Clear();
+    m_pRenderTarget->EndDraw();
 }
 
-void CKinectApp::Nui_DrawSkeletonSegment(NUI_SKELETON_DATA *pSkel, int numJoints, ...)
+void CKinectApp::Nui_DrawBone(const NUI_SKELETON_DATA &skel, NUI_SKELETON_POSITION_INDEX bone0, NUI_SKELETON_POSITION_INDEX bone1)
 {
-    va_list vl;
-    va_start(vl, numJoints);
+    NUI_SKELETON_POSITION_TRACKING_STATE bone0State = skel.eSkeletonPositionTrackingState[bone0];
+    NUI_SKELETON_POSITION_TRACKING_STATE bone1State = skel.eSkeletonPositionTrackingState[bone1];
 
-    POINT segmentPositions[NUI_SKELETON_POSITION_COUNT];
-    int segmentPositionsCount = 0;
+    // If we can't find either of these joints, exit
+    if (NUI_SKELETON_POSITION_NOT_TRACKED == bone0State || NUI_SKELETON_POSITION_NOT_TRACKED == bone1State)
+        return;
+    
+    // Don't draw if both points are inferred
+    if (NUI_SKELETON_POSITION_INFERRED == bone0State && NUI_SKELETON_POSITION_INFERRED == bone1State)
+        return;
 
-    DWORD polylinePointCounts[NUI_SKELETON_POSITION_COUNT];
-    int numPolylines = 0;
-    int currentPointCount = 0;
-
-    // Note the loop condition: We intentionally run one iteration beyond the
-    // last element in the joint list, so we can properly end the final polyline.
-    for (int iJoint = 0; iJoint <= numJoints; ++iJoint)
-    {
-        if (iJoint < numJoints)
-        {
-            NUI_SKELETON_POSITION_INDEX jointIndex = va_arg(vl, NUI_SKELETON_POSITION_INDEX);
-
-            if (pSkel->eSkeletonPositionTrackingState[jointIndex] != NUI_SKELETON_POSITION_NOT_TRACKED)
-            {
-                // This joint is tracked: add it to the array of segment positions.            
-                segmentPositions[segmentPositionsCount] = m_Points[jointIndex];
-                ++segmentPositionsCount;
-                ++currentPointCount;
-
-                // Fully processed the current joint; move on to the next one
-                continue;
-            }
-        }
-
-        // If we fall through to here, we're either beyond the last joint, or
-        // the current joint is not tracked: end the current polyline here.
-        if (currentPointCount > 1)
-        {
-            // Current polyline already has at least two points: save the count.
-            polylinePointCounts[numPolylines++] = currentPointCount;
-        }
-        else if (currentPointCount == 1)
-        {
-            // Current polyline has only one point: ignore it.
-            segmentPositionsCount--;
-        }
-        currentPointCount = 0;
-    }
-
-#ifdef _DEBUG
-    // We should end up with no more points in segmentPositions than the
-    // original number of joints.
-    assert(segmentPositionsCount <= numJoints);
-
-    int totalPointCount = 0;
-    for (int i = 0; i < numPolylines; ++i)
-    {
-        // Each polyline should contain at least two points.
-        assert(polylinePointCounts[i] > 1);
-
-        totalPointCount += polylinePointCounts[i];
-    }
-
-    // Total number of points in all polylines should be the same as number
-    // of points in segmentPositions.
-    assert(totalPointCount == segmentPositionsCount);
-#endif
-
-    if (numPolylines > 0)
-    {
-        PolyPolyline(m_SkeletonDC, segmentPositions, polylinePointCounts, numPolylines);
-    }
-
-    va_end(vl);
+    // We assume all drawn bones are inferred unless BOTH joints are tracked
+    if (NUI_SKELETON_POSITION_TRACKED == bone0State && NUI_SKELETON_POSITION_TRACKED == bone1State)
+        m_pRenderTarget->DrawLine(m_Points[bone0], m_Points[bone1], m_pBrushBoneTracked, g_TrackedBoneThickness);
+    else
+        m_pRenderTarget->DrawLine(m_Points[bone0], m_Points[bone1], m_pBrushBoneInferred, g_InferredBoneThickness);
 }
 
-void CKinectApp::Nui_DrawSkeleton(NUI_SKELETON_DATA *pSkel, HWND hWnd, int WhichSkeletonColor)
+void CKinectApp::Nui_DrawSkeleton(const NUI_SKELETON_DATA &skel, int windowWidth, int windowHeight)
 {
-    HGDIOBJ hOldObj = SelectObject(m_SkeletonDC, m_Pen[WhichSkeletonColor % m_PensTotal]);
-    
-    RECT rct;
-    GetClientRect(hWnd, &rct);
-    int width = rct.right;
-    int height = rct.bottom;
-    
-    if (m_Pen[0] == NULL)
-    {
-        for (int i = 0; i < m_PensTotal; ++i)
-        {
-            m_Pen[i] = CreatePen(PS_SOLID, width / 80, g_SkeletonColors[i]);
-        }
-    }
+    for (int i = 0; i < NUI_SKELETON_POSITION_COUNT; ++i)
+        m_Points[i] = SkeletonToScreen(skel.SkeletonPositions[i], windowWidth, windowHeight);
 
-    int i;
-    USHORT depth;
-    for (i = 0; i < NUI_SKELETON_POSITION_COUNT; ++i)
-    {
-        NuiTransformSkeletonToDepthImage(pSkel->SkeletonPositions[i], &m_Points[i].x, &m_Points[i].y, &depth);
+    // Render Torso
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_HEAD, NUI_SKELETON_POSITION_SHOULDER_CENTER);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SHOULDER_LEFT);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SHOULDER_RIGHT);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SPINE);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_SPINE, NUI_SKELETON_POSITION_HIP_CENTER);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_HIP_CENTER, NUI_SKELETON_POSITION_HIP_LEFT);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_HIP_CENTER, NUI_SKELETON_POSITION_HIP_RIGHT);
 
-		// the resolution of viewing region is 320 x 240
-        m_Points[i].x = (m_Points[i].x * width) / 320;
-        m_Points[i].y = (m_Points[i].y * height) / 240;
-    }
+    // Left Arm
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_SHOULDER_LEFT, NUI_SKELETON_POSITION_ELBOW_LEFT);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_ELBOW_LEFT, NUI_SKELETON_POSITION_WRIST_LEFT);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_WRIST_LEFT, NUI_SKELETON_POSITION_HAND_LEFT);
 
-    SelectObject(m_SkeletonDC, m_Pen[WhichSkeletonColor % m_PensTotal]);
-    
-    Nui_DrawSkeletonSegment(pSkel, 4, NUI_SKELETON_POSITION_HIP_CENTER, NUI_SKELETON_POSITION_SPINE, NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_HEAD);
-    Nui_DrawSkeletonSegment(pSkel, 5, NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SHOULDER_LEFT, NUI_SKELETON_POSITION_ELBOW_LEFT, NUI_SKELETON_POSITION_WRIST_LEFT, NUI_SKELETON_POSITION_HAND_LEFT);
-    Nui_DrawSkeletonSegment(pSkel, 5, NUI_SKELETON_POSITION_SHOULDER_CENTER, NUI_SKELETON_POSITION_SHOULDER_RIGHT, NUI_SKELETON_POSITION_ELBOW_RIGHT, NUI_SKELETON_POSITION_WRIST_RIGHT, NUI_SKELETON_POSITION_HAND_RIGHT);
-    Nui_DrawSkeletonSegment(pSkel, 5, NUI_SKELETON_POSITION_HIP_CENTER, NUI_SKELETON_POSITION_HIP_LEFT, NUI_SKELETON_POSITION_KNEE_LEFT, NUI_SKELETON_POSITION_ANKLE_LEFT, NUI_SKELETON_POSITION_FOOT_LEFT);
-    Nui_DrawSkeletonSegment(pSkel, 5, NUI_SKELETON_POSITION_HIP_CENTER, NUI_SKELETON_POSITION_HIP_RIGHT, NUI_SKELETON_POSITION_KNEE_RIGHT, NUI_SKELETON_POSITION_ANKLE_RIGHT, NUI_SKELETON_POSITION_FOOT_RIGHT);
+    // Right Arm
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_SHOULDER_RIGHT, NUI_SKELETON_POSITION_ELBOW_RIGHT);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_ELBOW_RIGHT, NUI_SKELETON_POSITION_WRIST_RIGHT);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_WRIST_RIGHT, NUI_SKELETON_POSITION_HAND_RIGHT);
+
+    // Left Leg
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_HIP_LEFT, NUI_SKELETON_POSITION_KNEE_LEFT);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_KNEE_LEFT, NUI_SKELETON_POSITION_ANKLE_LEFT);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_ANKLE_LEFT, NUI_SKELETON_POSITION_FOOT_LEFT);
+
+    // Right Leg
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_HIP_RIGHT, NUI_SKELETON_POSITION_KNEE_RIGHT);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_KNEE_RIGHT, NUI_SKELETON_POSITION_ANKLE_RIGHT);
+    Nui_DrawBone(skel, NUI_SKELETON_POSITION_ANKLE_RIGHT, NUI_SKELETON_POSITION_FOOT_RIGHT);
     
     // Draw the joints in a different color
-    for (i = 0; i < NUI_SKELETON_POSITION_COUNT; ++i)
+    for (int i = 0; i < NUI_SKELETON_POSITION_COUNT; ++i)
     {
-        if (pSkel->eSkeletonPositionTrackingState[i] != NUI_SKELETON_POSITION_NOT_TRACKED)
+        const D2D1_ELLIPSE ellipse = D2D1::Ellipse(m_Points[i], g_JointThickness, g_JointThickness);
+
+        if (NUI_SKELETON_POSITION_INFERRED == skel.eSkeletonPositionTrackingState[i])
+            m_pRenderTarget->DrawEllipse(ellipse, m_pBrushJointInferred);
+        else if (NUI_SKELETON_POSITION_TRACKED == skel.eSkeletonPositionTrackingState[i])
+            m_pRenderTarget->DrawEllipse(ellipse, m_pBrushJointTracked);
+    }
+}
+
+void CKinectApp::UpdateTrackedSkeletons(const NUI_SKELETON_FRAME &skel)
+{
+    DWORD nearestIDs[2] = { 0, 0 };
+    USHORT nearestDepths[2] = { NUI_IMAGE_DEPTH_MAXIMUM, NUI_IMAGE_DEPTH_MAXIMUM };
+
+    // Purge old sticky skeleton IDs, if the user has left the frame, etc
+    bool stickyID0Found = false;
+    bool stickyID1Found = false;
+    for (int i = 0 ; i < NUI_SKELETON_COUNT; ++i)
+    {
+        NUI_SKELETON_TRACKING_STATE trackingState = skel.SkeletonData[i].eTrackingState;
+
+        if (NUI_SKELETON_TRACKED == trackingState || NUI_SKELETON_POSITION_ONLY == trackingState)
         {
-            HPEN hJointPen;
-        
-            hJointPen = CreatePen(PS_SOLID, 9, g_JointColorTable[i]);
-            hOldObj = SelectObject(m_SkeletonDC, hJointPen);
-
-            MoveToEx(m_SkeletonDC, m_Points[i].x, m_Points[i].y, NULL);
-            LineTo(m_SkeletonDC, m_Points[i].x, m_Points[i].y);
-
-            SelectObject(m_SkeletonDC, hOldObj);
-            DeleteObject(hJointPen);
+            if (skel.SkeletonData[i].dwTrackingID == m_StickySkeletonIds[0])
+                stickyID0Found = true;
+            else if (skel.SkeletonData[i].dwTrackingID == m_StickySkeletonIds[1])
+                stickyID1Found = true;
         }
     }
 
-    if (m_bAppTracking)
+    if (!stickyID0Found && stickyID1Found)
     {
-        Nui_DrawSkeletonId(pSkel, hWnd, WhichSkeletonColor);
+        m_StickySkeletonIds[0] = m_StickySkeletonIds[1];
+        m_StickySkeletonIds[1] = 0;
+    }
+    else if (!stickyID0Found)
+    {
+        m_StickySkeletonIds[0] = 0;
+    }
+    else if (!stickyID1Found)
+    {
+        m_StickySkeletonIds[1] = 0;
+    }
+
+    // Calculate nearest and sticky skeletons
+    for (int i = 0 ; i < NUI_SKELETON_COUNT; ++i)
+    {
+        NUI_SKELETON_TRACKING_STATE trackingState = skel.SkeletonData[i].eTrackingState;
+
+        if (NUI_SKELETON_TRACKED == trackingState || NUI_SKELETON_POSITION_ONLY == trackingState)
+        {
+            // Save SkeletonIds for sticky mode if there's none already saved
+            if (0 == m_StickySkeletonIds[0] && m_StickySkeletonIds[1] != skel.SkeletonData[i].dwTrackingID)
+                m_StickySkeletonIds[0] = skel.SkeletonData[i].dwTrackingID;
+            else if (0 == m_StickySkeletonIds[1] && m_StickySkeletonIds[0] != skel.SkeletonData[i].dwTrackingID)
+                m_StickySkeletonIds[1] = skel.SkeletonData[i].dwTrackingID;
+
+            LONG x, y;
+            USHORT depth;
+
+            // calculate the skeleton's position on the screen
+            NuiTransformSkeletonToDepthImage(skel.SkeletonData[i].Position, &x, &y, &depth);
+
+            if (depth < nearestDepths[0])
+            {
+                nearestDepths[1] = nearestDepths[0];
+                nearestIDs[1] = nearestIDs[0];
+
+                nearestDepths[0] = depth;
+                nearestIDs[0] = skel.SkeletonData[i].dwTrackingID;
+            }
+            else if (depth < nearestDepths[1])
+            {
+                nearestDepths[1] = depth;
+                nearestIDs[1] = skel.SkeletonData[i].dwTrackingID;
+            }
+        }
+    }
+
+    if (SV_TRACKED_SKELETONS_NEAREST1 == m_TrackedSkeletons || SV_TRACKED_SKELETONS_NEAREST2 == m_TrackedSkeletons)
+    {
+        // Only track the closest single skeleton in nearest 1 mode
+        if (SV_TRACKED_SKELETONS_NEAREST1 == m_TrackedSkeletons)
+        {
+            nearestIDs[1] = 0;
+        }
+        m_pNuiSensor->NuiSkeletonSetTrackedSkeletons(nearestIDs);
+    }
+
+    if (SV_TRACKED_SKELETONS_STICKY1 == m_TrackedSkeletons || SV_TRACKED_SKELETONS_STICKY2 == m_TrackedSkeletons)
+    {
+        DWORD stickyIDs[2] = { m_StickySkeletonIds[0], m_StickySkeletonIds[1] };
+
+        // Only track a single skeleton in sticky 1 mode
+        if (SV_TRACKED_SKELETONS_STICKY1 == m_TrackedSkeletons)
+        {
+            stickyIDs[1] = 0;
+        }
+        m_pNuiSensor->NuiSkeletonSetTrackedSkeletons(stickyIDs);
     }
 }
 
-void CKinectApp::Nui_DrawSkeletonId(NUI_SKELETON_DATA *pSkel, HWND hWnd, int WhichSkeletonColor)
+D2D1_POINT_2F CKinectApp::SkeletonToScreen(Vector4 skeletonPoint, int width, int height)
 {
-    RECT rct;
-    GetClientRect(hWnd, &rct);
+    LONG x, y;
+    USHORT depth;
 
-    float fx = 0, fy = 0;
+    // calculate the skeleton's position on the screen
+    // NuiTransformSkeletonToDepthImage returns coordinates in NUI_IMAGE_RESOLUTION_320x240 space
+    NuiTransformSkeletonToDepthImage(skeletonPoint, &x, &y, &depth);
 
-    NuiTransformSkeletonToDepthImage(pSkel->Position, &fx, &fy);
+    float screenPointX = static_cast<float>(x * width) / g_ScreenWidth;
+    float screenPointY = static_cast<float>(y * height) / g_ScreenHeight;
 
-    int skelPosX = (int)(fx * rct.right + 0.5f);
-    int skelPosY = (int)(fy * rct.bottom + 0.5f);
-
-    WCHAR number[20];
-    size_t length;
-
-    if (FAILED(StringCchPrintf(number, ARRAYSIZE(number), L"%d", pSkel->dwTrackingID)))
-    {
-        return;
-    }
-
-    if (FAILED(StringCchLength(number, ARRAYSIZE(number), &length)))
-    {
-        return;
-    }
-
-    if (m_hFontSkeletonId == NULL)
-    {
-        LOGFONT lf;
-        GetObject((HFONT)GetStockObject(DEFAULT_GUI_FONT), sizeof(lf), &lf);
-        lf.lfHeight *= 2;
-        m_hFontSkeletonId = CreateFontIndirect(&lf);
-    }
-
-    HGDIOBJ hLastFont = SelectObject(m_SkeletonDC, m_hFontSkeletonId);
-    SetTextAlign(m_SkeletonDC, TA_CENTER);
-    SetTextColor(m_SkeletonDC, g_SkeletonColors[WhichSkeletonColor]);
-    SetBkColor(m_SkeletonDC, RGB(0, 0, 0));
-
-    TextOut(m_SkeletonDC, skelPosX, skelPosY, number, (int)length);
-
-    SelectObject(m_SkeletonDC, hLastFont);
-}
-
-void CKinectApp::Nui_DoDoubleBuffer(HWND hWnd, HDC hDC)
-{
-    RECT rct;
-    GetClientRect(hWnd, &rct);
-
-    HDC hdc = GetDC(hWnd);
-
-    BitBlt(hdc, 0, 0, rct.right, rct.bottom, hDC, 0, 0, SRCCOPY);
-
-    ReleaseDC(hWnd, hdc);
+    return D2D1::Point2F(screenPointX, screenPointY);
 }
 
 //-------------------------------------------------------------------
@@ -1126,125 +1100,202 @@ void CKinectApp::Nui_DoDoubleBuffer(HWND hWnd, HDC hDC)
 //
 // Handle new skeleton data
 //-------------------------------------------------------------------
-void CKinectApp::Nui_GotSkeletonAlert()
+bool CKinectApp::Nui_GotSkeletonAlert()
 {
     NUI_SKELETON_FRAME SkeletonFrame = { 0 };
 	HRESULT hr = m_pNuiSensor->NuiSkeletonGetNextFrame(0, &SkeletonFrame);
 
-    bool bFoundSkeleton = false;
+    bool foundSkeleton = false;
     if (SUCCEEDED(hr))
     {
         for (int i = 0; i < NUI_SKELETON_COUNT; ++i)
         {
-            if (SkeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ||
-                (SkeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_POSITION_ONLY && m_bAppTracking))
-            {
-                bFoundSkeleton = true;
-            }
+            NUI_SKELETON_TRACKING_STATE trackingState = SkeletonFrame.SkeletonData[i].eTrackingState;
+            if (NUI_SKELETON_TRACKED == trackingState || NUI_SKELETON_POSITION_ONLY == trackingState)
+                foundSkeleton = true;
         }
     }
     // no skeletons!
-    if (!bFoundSkeleton)
-    {
-        return;
-    }
+    if (!foundSkeleton)
+        return true;
 
     // smooth out the skeleton data
     hr = m_pNuiSensor->NuiTransformSmooth(&SkeletonFrame, NULL);
     if (FAILED(hr))
-    {
-        return;
-    }
+        return false;
 
     // we found a skeleton, re-start the skeletal timer
     m_bScreenBlanked = false;
     m_LastSkeletonFoundTime = timeGetTime();
 
-    // draw each skeleton color according to the slot within they are found.
-    Nui_BlankSkeletonScreen(GetDlgItem(m_hWnd, IDC_SKELETALVIEW), false);
+    // Endure Direct2D is ready to draw
+    hr = EnsureDirect2DResources();
+    if (FAILED(hr))
+        return false;
 
-    bool bSkeletonIdsChanged = false;
-    for (int i = 0; i < NUI_SKELETON_COUNT; ++i)
+    m_pRenderTarget->BeginDraw();
+    m_pRenderTarget->Clear();
+    
+    RECT rct;
+    GetClientRect(GetDlgItem(m_hWnd, IDC_SKELETALVIEW), &rct);
+    int width = rct.right;
+    int height = rct.bottom;
+
+    for (int i = 0 ; i < NUI_SKELETON_COUNT; ++i)
     {
-        if (m_SkeletonIds[i] != SkeletonFrame.SkeletonData[i].dwTrackingID)
-        {
-            m_SkeletonIds[i] = SkeletonFrame.SkeletonData[i].dwTrackingID;
-            bSkeletonIdsChanged = true;
-        }
+        NUI_SKELETON_TRACKING_STATE trackingState = SkeletonFrame.SkeletonData[i].eTrackingState;
 
-        // Show skeleton only if it is tracked, and the center-shoulder joint is at least inferred.
-        if (SkeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED &&
-            SkeletonFrame.SkeletonData[i].eSkeletonPositionTrackingState[NUI_SKELETON_POSITION_SHOULDER_CENTER] != NUI_SKELETON_POSITION_NOT_TRACKED)
+        if (NUI_SKELETON_TRACKED == trackingState)
         {
-            Nui_DrawSkeleton(&SkeletonFrame.SkeletonData[i], GetDlgItem(m_hWnd, IDC_SKELETALVIEW), i);
+            // We're tracking the skeleton, draw it
+            Nui_DrawSkeleton( SkeletonFrame.SkeletonData[i], width, height );
         }
-        else if (m_bAppTracking && SkeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_POSITION_ONLY)
+        else if (NUI_SKELETON_POSITION_ONLY == trackingState)
         {
-            Nui_DrawSkeletonId(&SkeletonFrame.SkeletonData[i], GetDlgItem(m_hWnd, IDC_SKELETALVIEW), i);
+            // we've only received the center point of the skeleton, draw that
+            const D2D1_ELLIPSE ellipse = D2D1::Ellipse(
+                SkeletonToScreen(SkeletonFrame.SkeletonData[i].Position, width, height),
+                g_JointThickness,
+                g_JointThickness
+            );
+
+            m_pRenderTarget->DrawEllipse(ellipse, m_pBrushJointTracked);
         }
     }
 
-    if (bSkeletonIdsChanged)
+    hr = m_pRenderTarget->EndDraw();
+
+    UpdateTrackedSkeletons(SkeletonFrame);
+
+    // Device lost, need to recreate the render target
+    // We'll dispose it now and retry drawing
+    if (D2DERR_RECREATE_TARGET == hr)
     {
-        UpdateTrackingComboBoxes();
+        hr = S_OK;
+        DiscardDirect2DResources();
+        return false;
     }
 
-	//--S [] 2012/06/09: Sang-Wook Lee
-	if (m_bSaveFrames && skelstream_)
-	{
-		skelstream_.write(reinterpret_cast<char *>(&SkeletonFrame), sizeof(NUI_SKELETON_FRAME));
-	}
-	//--E [] 2012/06/09
-
-    Nui_DoDoubleBuffer(GetDlgItem(m_hWnd, IDC_SKELETALVIEW), m_SkeletonDC);
+    return true;
 }
 
-//-------------------------------------------------------------------
-// Nui_ShortToQuad_Depth
-//
-// Get the player colored depth value
-//-------------------------------------------------------------------
-RGBQUAD CKinectApp::Nui_ShortToQuad_Depth(USHORT s)
+void CKinectApp::UpdateTrackedSkeletonSelection(int mode)
 {
-	// actual depth info exists in 13-bit MSB
-    USHORT RealDepth = NuiDepthPixelToDepth(s);
-	// player ID exists in 3-bit LSB
-    USHORT Player    = NuiDepthPixelToPlayerIndex(s);
+    m_TrackedSkeletons = mode;
 
-    // transform 13-bit depth information into an 8-bit intensity appropriate
-    // for display (we disregard information in most significant bit)
-    BYTE intensity = (BYTE)~(RealDepth >> 4);
-
-    // tint the intensity by dividing by per-player values
-    RGBQUAD color;
-    color.rgbRed   = intensity >> g_IntensityShiftByPlayerR[Player];
-    color.rgbGreen = intensity >> g_IntensityShiftByPlayerG[Player];
-    color.rgbBlue  = intensity >> g_IntensityShiftByPlayerB[Player];
-
-    return color;
+    UpdateSkeletonTrackingFlag(
+        NUI_SKELETON_TRACKING_FLAG_TITLE_SETS_TRACKED_SKELETONS,
+        (SV_TRACKED_SKELETONS_DEFAULT != mode)
+	);
 }
 
-void CKinectApp::Nui_SetApplicationTracking(bool applicationTracks)
+void CKinectApp::UpdateTrackingMode(int mode)
 {
-    if (HasSkeletalEngine(m_pNuiSensor))
+    UpdateSkeletonTrackingFlag(
+        NUI_SKELETON_TRACKING_FLAG_ENABLE_SEATED_SUPPORT,
+        (SV_TRACKING_MODE_SEATED == mode)
+	);
+}
+
+void CKinectApp::UpdateRange(int mode)
+{
+    UpdateDepthStreamFlag(
+        NUI_IMAGE_STREAM_FLAG_ENABLE_NEAR_MODE,
+        (SV_RANGE_DEFAULT != mode)
+	);
+}
+
+void CKinectApp::UpdateSkeletonTrackingFlag(DWORD flag, bool value)
+{
+    DWORD newFlags = m_SkeletonTrackingFlags;
+
+    if (value)
+        newFlags |= flag;
+    else
+        newFlags &= ~flag;
+
+    if (NULL != m_pNuiSensor && newFlags != m_SkeletonTrackingFlags)
     {
-        HRESULT hr = m_pNuiSensor->NuiSkeletonTrackingEnable(m_hNextSkeletonEvent, applicationTracks ? NUI_SKELETON_TRACKING_FLAG_TITLE_SETS_TRACKED_SKELETONS : 0);
+        if (!HasSkeletalEngine(m_pNuiSensor))
+            MessageBoxResource(IDS_ERROR_SKELETONTRACKING, MB_OK | MB_ICONHAND);
+
+        m_SkeletonTrackingFlags = newFlags;
+
+        HRESULT hr = m_pNuiSensor->NuiSkeletonTrackingEnable(m_hNextSkeletonEvent, m_SkeletonTrackingFlags);
+
+        if (FAILED(hr))
+            MessageBoxResource(IDS_ERROR_SKELETONTRACKING, MB_OK | MB_ICONHAND);
+    }
+}
+
+void CKinectApp::UpdateDepthStreamFlag(DWORD flag, bool value)
+{
+    DWORD newFlags = m_DepthStreamFlags;
+
+    if (value)
+        newFlags |= flag;
+    else
+        newFlags &= ~flag;
+
+    if (NULL != m_pNuiSensor && newFlags != m_DepthStreamFlags)
+    {
+        m_DepthStreamFlags = newFlags;
+        m_pNuiSensor->NuiImageStreamSetImageFrameFlags(m_pDepthStreamHandle, m_DepthStreamFlags);
+    }
+}
+
+HRESULT CKinectApp::EnsureDirect2DResources()
+{
+    HRESULT hr = S_OK;
+
+    if (!m_pRenderTarget)
+    {
+        RECT rc;
+        GetWindowRect(GetDlgItem(m_hWnd, IDC_SKELETALVIEW), &rc);  
+    
+        int width = rc.right - rc.left;
+        int height = rc.bottom - rc.top;
+        D2D1_SIZE_U size = D2D1::SizeU(width, height);
+        D2D1_RENDER_TARGET_PROPERTIES rtProps = D2D1::RenderTargetProperties();
+        rtProps.pixelFormat = D2D1::PixelFormat( DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_IGNORE);
+        rtProps.usage = D2D1_RENDER_TARGET_USAGE_GDI_COMPATIBLE;
+
+        // Create a Hwnd render target, in order to render to the window set in initialize
+        hr = m_pD2DFactory->CreateHwndRenderTarget(
+            rtProps,
+            D2D1::HwndRenderTargetProperties(GetDlgItem( m_hWnd, IDC_SKELETALVIEW), size),
+            &m_pRenderTarget
+		);
         if (FAILED(hr))
         {
-            MessageBoxResource(IDS_ERROR_SKELETONTRACKING, MB_OK | MB_ICONHAND);
+            MessageBoxResource(IDS_ERROR_DRAWDEVICE, MB_OK | MB_ICONHAND);
+            return E_FAIL;
         }
+
+        //light green
+        m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(68, 192, 68), &m_pBrushJointTracked);
+
+        //yellow
+        m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(255, 255, 0), &m_pBrushJointInferred);
+
+        //green
+        m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 128, 0), &m_pBrushBoneTracked);
+
+        //gray
+        m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(128, 128, 128), &m_pBrushBoneInferred);
     }
+
+    return hr;
 }
 
-void CKinectApp::Nui_SetTrackedSkeletons(int skel1, int skel2)
+void CKinectApp::DiscardDirect2DResources()
 {
-    m_TrackedSkeletonIds[0] = skel1;
-    m_TrackedSkeletonIds[1] = skel2;
-    DWORD tracked[NUI_SKELETON_MAX_TRACKED_COUNT] = { skel1, skel2 };
-    if (FAILED(m_pNuiSensor->NuiSkeletonSetTrackedSkeletons(tracked)))
-    {
-        MessageBoxResource(IDS_ERROR_SETTRACKED, MB_OK | MB_ICONHAND);
-    }
+    SafeRelease(m_pRenderTarget);
+
+    SafeRelease(m_pBrushJointTracked);
+    SafeRelease(m_pBrushJointInferred);
+    SafeRelease(m_pBrushBoneTracked);
+    SafeRelease(m_pBrushBoneInferred);
 }
 
 //--S [] 2012/06/09: Sang-Wook Lee
