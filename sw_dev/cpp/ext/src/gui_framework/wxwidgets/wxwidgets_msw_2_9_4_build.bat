@@ -1,0 +1,4 @@
+nmake -f makefile.vc BUILD=release SHARED=1 UNICODE=1 USE_OPENGL=1 USE_HTML=1 USE_XRC=1
+nmake -f makefile.vc BUILD=debug SHARED=1 UNICODE=1 USE_OPENGL=1 USE_HTML=1 USE_XRC=1
+nmake -f makefile.vc BUILD=release SHARED=0 UNICODE=1 USE_OPENGL=1 USE_HTML=1 USE_XRC=1
+nmake -f makefile.vc BUILD=debug SHARED=0 UNICODE=1 USE_OPENGL=1 USE_HTML=1 USE_XRC=1

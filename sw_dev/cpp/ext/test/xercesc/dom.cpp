@@ -4,9 +4,6 @@
 #include "DOMPrintErrorHandler.hpp"
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/dom/DOM.hpp>
-#include <xercesc/dom/DOMImplementation.hpp>
-#include <xercesc/dom/DOMImplementationLS.hpp>
-#include <xercesc/dom/DOMWriter.hpp>
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
@@ -127,6 +124,7 @@ int dom()
 
 	// Indicates if user wants to plug in the DOMPrintFilter.
 	const bool useFilter = false;
+	const XMLCh *outputEncoding = (XMLCh *)L"UTF-8";
 	try
 	{
 		// get a serializer, an instance of DOMWriter
@@ -136,11 +134,12 @@ int dom()
 #else
 		XERCES_CPP_NAMESPACE::DOMImplementation *impl = XERCES_CPP_NAMESPACE::DOMImplementationRegistry::getDOMImplementation("LS");
 #endif
-		XERCES_CPP_NAMESPACE::DOMWriter *theSerializer = ((XERCES_CPP_NAMESPACE::DOMImplementationLS *)impl)->createDOMWriter();
+		XERCES_CPP_NAMESPACE::DOMLSSerializer *theSerializer = ((XERCES_CPP_NAMESPACE::DOMImplementationLS *)impl)->createLSSerializer();
+        XERCES_CPP_NAMESPACE::DOMLSOutput *theOutputDesc = ((XERCES_CPP_NAMESPACE::DOMImplementationLS *)impl)->createLSOutput();
 
 		// set user specified output encoding
-    // FIXME [check] >> is it correct? convert 'wchar *' to 'XMLCh *'
-		theSerializer->setEncoding((XMLCh *)L"UTF-8");
+		// FIXME [check] >> is it correct? convert 'wchar *' to 'XMLCh *'
+		theOutputDesc->setEncoding(outputEncoding);
 
 		// plug in user's own filter
 		if (useFilter)
@@ -160,23 +159,28 @@ int dom()
 
 		// plug in user's own error handler
 		XERCES_CPP_NAMESPACE::DOMErrorHandler *myErrorHandler = new DOMPrintErrorHandler();
-		theSerializer->setErrorHandler(myErrorHandler);
+        XERCES_CPP_NAMESPACE::DOMConfiguration *serializerConfig = theSerializer->getDomConfig();
+		serializerConfig->setParameter(XERCES_CPP_NAMESPACE::XMLUni::fgDOMErrorHandler, myErrorHandler);
 
 		// set feature if the serializer supports the feature/mode
 
 		// Indicates whether split-cdata-sections is to be enabled or not.
-		if (theSerializer->canSetFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTSplitCdataSections, true))
-			theSerializer->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTSplitCdataSections, true);
+		const bool splitCdataSections = true;
+		if (serializerConfig->canSetParameter(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTSplitCdataSections, splitCdataSections))
+			serializerConfig->setParameter(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTSplitCdataSections, splitCdataSections);
 
 		// Indicates whether default content is discarded or not.
-		if (theSerializer->canSetFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTDiscardDefaultContent, true))
-			theSerializer->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTDiscardDefaultContent, true);
+		const bool discardDefaultContent = true;
+		if (serializerConfig->canSetParameter(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTDiscardDefaultContent, discardDefaultContent))
+			serializerConfig->setParameter(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTDiscardDefaultContent, discardDefaultContent);
 
-		if (theSerializer->canSetFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTFormatPrettyPrint, false))
-			theSerializer->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTFormatPrettyPrint, false);
+		const bool formatPrettyPrint = false;
+		if (serializerConfig->canSetParameter(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTFormatPrettyPrint, formatPrettyPrint))
+			serializerConfig->setParameter(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTFormatPrettyPrint, formatPrettyPrint);
 
-		if (theSerializer->canSetFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTBOM, false))
-			theSerializer->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTBOM, false);
+		const bool writeBOM = false;
+		if (serializerConfig->canSetParameter(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTBOM, writeBOM))
+			serializerConfig->setParameter(XERCES_CPP_NAMESPACE::XMLUni::fgDOMWRTBOM, writeBOM);
 
 		// Plug in a format target to receive the resultant XML stream from the serializer.
 		// StdOutFormatTarget prints the resultant XML stream to stdout once it receives any thing from the serializer.
@@ -186,14 +190,69 @@ int dom()
 			myFormTarget = new XERCES_CPP_NAMESPACE::LocalFileFormatTarget(outputFile);
 		else
 			myFormTarget = new XERCES_CPP_NAMESPACE::StdOutFormatTarget();
+        theOutputDesc->setByteStream(myFormTarget);
 
 		// get the DOM representation
-		XERCES_CPP_NAMESPACE::DOMNode *doc = parser->getDocument();
+        XERCES_CPP_NAMESPACE::DOMDocument *doc = parser->getDocument();
 
-		// do the serialization through DOMWriter::writeNode();
-		theSerializer->writeNode(myFormTarget, *doc);
+        // do the serialization through DOMLSSerializer::write();
+		char *xPathExpression = NULL;
+        if (NULL != xPathExpression)
+        {
+            XMLCh *xpathStr = XERCES_CPP_NAMESPACE::XMLString::transcode(xPathExpression);
+            XERCES_CPP_NAMESPACE::DOMElement *root = doc->getDocumentElement();
+            try
+            {
+                XERCES_CPP_NAMESPACE::DOMXPathNSResolver *resolver = doc->createNSResolver(root);
+                XERCES_CPP_NAMESPACE::DOMXPathResult *result = doc->evaluate(
+                    xpathStr,
+                    root,
+                    resolver,
+                    XERCES_CPP_NAMESPACE::DOMXPathResult::ORDERED_NODE_SNAPSHOT_TYPE,
+                    NULL
+				);
 
-		delete theSerializer;
+                XMLSize_t nLength = result->getSnapshotLength();
+                for (XMLSize_t i = 0; i < nLength; ++i)
+                {
+                    result->snapshotItem(i);
+                    theSerializer->write(result->getNodeValue(), theOutputDesc);
+                }
+
+                result->release();
+                resolver->release ();
+            }
+            catch (const XERCES_CPP_NAMESPACE::DOMXPathException &e)
+            {
+#if defined(_UNICODE) || defined(UNICODE)
+				std::wcerr << L"An error occurred during processing of the XPath expression. Msg is:: " << std::endl
+					<< e.getMessage() << std::endl;
+#else
+				const char *message = XERCES_CPP_NAMESPACE::XMLString::transcode(e.getMessage());
+				std::cerr << "An error occurred during processing of the XPath expression. Msg is: " << std::endl
+					<< message << std::endl;
+				XERCES_CPP_NAMESPACE::XMLString::release(&message);
+#endif
+            }
+            catch(const XERCES_CPP_NAMESPACE::DOMException &e)
+            {
+#if defined(_UNICODE) || defined(UNICODE)
+				std::wcerr << L"An error occurred during processing of the XPath expression. Msg is:: " << std::endl
+					<< e.getMessage() << std::endl;
+#else
+				const char *message = XERCES_CPP_NAMESPACE::XMLString::transcode(e.getMessage());
+				std::cerr << "An error occurred during processing of the XPath expression. Msg is: " << std::endl
+					<< message << std::endl;
+				XERCES_CPP_NAMESPACE::XMLString::release(&message);
+#endif
+            }
+            XERCES_CPP_NAMESPACE::XMLString::release(&xpathStr);
+        }
+        else
+            theSerializer->write(doc, theOutputDesc);
+
+        theOutputDesc->release();
+        theSerializer->release();
 
 		// Filter, formatTarget and error handler are NOT owned by the serializer.
 		delete myFormTarget;
@@ -223,8 +282,10 @@ int dom()
 #endif
 	}
 
-	delete parser;
 	delete errReporter;
+	delete parser;
+
+    //XERCES_CPP_NAMESPACE::XMLString::release(&outputEncoding);
 
 	try
 	{

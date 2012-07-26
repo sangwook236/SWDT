@@ -1,8 +1,8 @@
-[ref] ${WXWIDGETS_ROOT_PATH}/docs/msw/install.txt
+[ref] ${WXWIDGETS_ROOT}/docs/msw/install.txt
 
 1. configure setup.h file
-	${WXWIDGETS_ROOT_PATH}/include/wx/msw/setup.h
-2. change directory to ${WXWIDGETS_ROOT_PATH}/build/msw
+	${WXWIDGETS_ROOT}/include/wx/msw/setup.h
+2. change directory to ${WXWIDGETS_ROOT}/build/msw
 3. build makefile
 	nmake -f makefile.vc
 	nmake -f makefile.vc BUILD=debug UNICODE=1
@@ -28,7 +28,7 @@
 		VENDOR=<your company name>
 		CFG=<configuration name>
 		COMPILER_PREFIX=<string>
-4. (optional) change directory to ${WXWIDGETS_ROOT_PATH}/utils/wxrc
+4. (optional) change directory to ${WXWIDGETS_ROOT}/utils/wxrc
 5. (optional) build makefile
 	nmake -f makefile.vc BUILD=debug UNICODE=1
 	nmake -f makefile.vc BUILD=release UNICODE=1

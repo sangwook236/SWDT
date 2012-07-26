@@ -42,14 +42,14 @@
 #ifndef DOMPrintFilter_HEADER_GUARD_
 #define DOMPrintFilter_HEADER_GUARD_
 
-#include <xercesc/dom/DOMWriterFilter.hpp>
+#include <xercesc/dom/DOMLSSerializerFilter.hpp>
 
 
-class DOMPrintFilter : public XERCES_CPP_NAMESPACE::DOMWriterFilter {
+class DOMPrintFilter : public XERCES_CPP_NAMESPACE::DOMLSSerializerFilter {
 public:
 
     /** @name Constructors */
-	DOMPrintFilter(unsigned long whatToShow = XERCES_CPP_NAMESPACE::DOMNodeFilter::SHOW_ALL);
+	DOMPrintFilter(ShowType whatToShow = XERCES_CPP_NAMESPACE::DOMNodeFilter::SHOW_ALL);
     //@{
 
     /** @name Destructors */
@@ -57,19 +57,17 @@ public:
     //@{
 
 	/** @ interface from DOMWriterFilter */
-	virtual short acceptNode(const XERCES_CPP_NAMESPACE::DOMNode *) const;
+	virtual FilterAction acceptNode(const XERCES_CPP_NAMESPACE::DOMNode *) const;
     //@{
 
-	virtual unsigned long getWhatToShow() const  {  return fWhatToShow;  }
-
-	virtual void          setWhatToShow(unsigned long toShow)  {  fWhatToShow = toShow;  }
+	virtual ShowType getWhatToShow() const  {  return fWhatToShow;  }
 
 private:
 	// unimplemented copy ctor and assignement operator
 	DOMPrintFilter(const DOMPrintFilter &);
 	DOMPrintFilter & operator = (const DOMPrintFilter &);
 
-	unsigned long fWhatToShow;
+	ShowType fWhatToShow;
 };
 
 #endif

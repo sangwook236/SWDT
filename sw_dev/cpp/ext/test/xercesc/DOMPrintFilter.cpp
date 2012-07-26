@@ -46,11 +46,11 @@ static const XMLCh element_link[]=
 	XERCES_CPP_NAMESPACE::chLatin_l, XERCES_CPP_NAMESPACE::chLatin_i, XERCES_CPP_NAMESPACE::chLatin_n, XERCES_CPP_NAMESPACE::chLatin_k, XERCES_CPP_NAMESPACE::chNull
 };
 
-DOMPrintFilter::DOMPrintFilter(unsigned long whatToShow)
+DOMPrintFilter::DOMPrintFilter(ShowType whatToShow)
 : fWhatToShow(whatToShow)
 {}
 
-short DOMPrintFilter::acceptNode(const XERCES_CPP_NAMESPACE::DOMNode *node) const
+XERCES_CPP_NAMESPACE::DOMNodeFilter::FilterAction DOMPrintFilter::acceptNode(const XERCES_CPP_NAMESPACE::DOMNode *node) const
 {
 	//
 	// The DOMWriter shall call getWhatToShow() before calling acceptNode(), to show nodes which are supposed to be shown to this filter.
@@ -71,10 +71,10 @@ short DOMPrintFilter::acceptNode(const XERCES_CPP_NAMESPACE::DOMNode *node) cons
 	case XERCES_CPP_NAMESPACE::DOMNode::ELEMENT_NODE:
 		{
 			// for element whose name is "person", skip it
-			if (XERCES_CPP_NAMESPACE::XMLString::compareString(node->getNodeName(), element_person)==0)
+			if (XERCES_CPP_NAMESPACE::XMLString::compareString(node->getNodeName(), element_person) == 0)
 				return XERCES_CPP_NAMESPACE::DOMNodeFilter::FILTER_SKIP;
 			// for element whose name is "line", reject it
-			if (XERCES_CPP_NAMESPACE::XMLString::compareString(node->getNodeName(), element_link)==0)
+			if (XERCES_CPP_NAMESPACE::XMLString::compareString(node->getNodeName(), element_link) == 0)
 				return XERCES_CPP_NAMESPACE::DOMNodeFilter::FILTER_REJECT;
 			// for rest, accept it
 			return XERCES_CPP_NAMESPACE::DOMNodeFilter::FILTER_ACCEPT;
