@@ -220,8 +220,20 @@ void array_view()
 	// [0,1,2), 1, [0,2,4)
 	array_type::index_gen indices;
 	array_type::array_view<2>::type myview2 = marrA[ indices[range_type(0,2)][1][range_type(0,4,2)] ];
+	std::cout << "type id of array view: " << typeid(myview2).name() << std::endl;
 
 	array_type::array_view<3>::type myview3 = marrA[ boost::indices[range_type()][range_type() < 3 ][1 <= range_type().stride(2) <= 3] ];
+
+	//-------------------------------------------------------------------------
+	// testing sub-array
+
+	// compile-time error
+	//	cannot convert from 'boost::detail::multi_array::sub_array<T,NumDims>' to 'boost::detail::multi_array::multi_array_impl_base<T,NumDims>::subarray<NDims>
+	//array_type::subarray<1> mysubarray = marrA[0][1];
+
+	array_type::subarray<1> subarr;
+	std::cout << "type id of sub-array: " << typeid(subarr).name() << std::endl;
+	std::cout << "type id of sub-array: " << typeid(marrA[0][1]).name() << std::endl;
 }
 
 void array_ordering_and_base()
@@ -303,6 +315,12 @@ void array_size()
 	std::cout << std::endl;
 	assert(marrE[0][0][0] == 4);
 	//marrE[2][2][1] is no longer valid
+
+	//-------------------------------------------------------------------------
+	// resizing an array
+	array_type marrF(boost::extents[3][4][5]);
+	marrF.resize((boost::extents[0][0][0]));
+	std::cout << "number of elements after resizing: " << marrF.num_elements() << std::endl;
 }
 
 }  // namespace local
