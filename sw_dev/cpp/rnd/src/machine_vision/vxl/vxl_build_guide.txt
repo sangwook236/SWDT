@@ -1,0 +1,14 @@
+[-] Building
+	-. Static library로 building해야 함.
+
+[-] Trouble Shooting (ver 1.4.0)
+	-. SSE2를 사용하는 경우 error 발생.
+		VNL_CONFIG_ENABLE_SSE2를 disable 시켜 SSE2를 사용하지 않는 것이 좋음.
+	-. Python 사용.
+		ver 3.0 이상은 지원하지 않음. (?)
+		ver. 2.7.3을 사용해야 함.
+	-. FFmpeg library 사용
+		FFmpeg library의 header directory가 sub-directory를 가지는 경우,
+		HAS_FFMPEG_SEVERAL & FFMPEG_FOUND_SEVERAL macro를 CMAKE_CXX_FLAGS & CMAKE_C_FLAGS에 정의해야 함.
+		VxL library에서는 FFmpeg library 관련 error가 많이 발생하므로
+		FFmpeg library를 사용하지 않는 것이 좋음.

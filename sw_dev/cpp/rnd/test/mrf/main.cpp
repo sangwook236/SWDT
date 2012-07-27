@@ -16,9 +16,9 @@ int main(int argc, char **argv)
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		middlebury_mrf();
+		//middlebury_mrf();
 
-		//bp_vision();
+		bp_vision();
 		//cuda_cut();
 	}
     catch (const std::bad_alloc &e)

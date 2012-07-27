@@ -19,7 +19,7 @@ enum HCRF_TEST_DATASET { TEST_ON_TEST_SET = 1, TEST_ON_TRAINING_SET = 2, TEST_ON
 
 void sample()
 {
-	const int mode = MODE_TRAIN; // int mode = 0;
+	const int mode = MODE_TRAIN | MODE_TEST; // int mode = 0;
 	const int toolboxType = TOOLBOX_LDCRF;
 	Toolbox *toolbox = NULL;
 
@@ -47,18 +47,18 @@ void sample()
 #endif
 	const std::string filenameDataTrain(data_home + "dataTrain.csv");
 	const std::string filenameDataTrainSparse;
-	const std::string filenameLabelsTrain(data_home + "labelsTrain.csv");
-	const std::string filenameSeqLabelsTrain(data_home + "seqLabelsTrain.csv");
+	const std::string filenameLabelsTrain(data_home + "labelsTrain.csv");  // for CRF & LDCRF
+	const std::string filenameSeqLabelsTrain(data_home + "seqLabelsTrain.csv");  // for HCRF & GHCRF
 
 	const std::string filenameDataTest(data_home + "dataTest.csv");
 	const std::string filenameDataTestSparse;
-	const std::string filenameLabelsTest(data_home + "labelsTest.csv");
-	const std::string filenameSeqLabelsTest(data_home + "seqLabelsTest.csv");
+	const std::string filenameLabelsTest(data_home + "labelsTest.csv");  // for CRF & LDCRF
+	const std::string filenameSeqLabelsTest(data_home + "seqLabelsTest.csv");  // for HCRF & GHCRF
 
 	const std::string filenameDataValidate(data_home + "dataValidate.csv");
 	const std::string filenameDataValidateSparse;
-	const std::string filenameLabelsValidate(data_home + "labelsValidate.csv");
-	const std::string filenameSeqLabelsValidate(data_home + "seqLabelsValidate.csv");
+	const std::string filenameLabelsValidate(data_home + "labelsValidate.csv");  // for CRF & LDCRF
+	const std::string filenameSeqLabelsValidate(data_home + "seqLabelsValidate.csv");  // for HCRF & GHCRF
 
 	const std::string filenameModel(data_home + "model.txt");
 	const std::string filenameFeatures(data_home + "features.txt");
@@ -242,7 +242,7 @@ void sample()
 		const char *fileDataSparse = filenameDataTrainSparse.empty() ? 0 : filenameDataTrainSparse.c_str();
 
 		DataSet data;
-		if (toolboxType == TOOLBOX_HCRF || toolboxType == TOOLBOX_GHCRF )
+		if (toolboxType == TOOLBOX_HCRF || toolboxType == TOOLBOX_GHCRF)
 			data.load(fileData, NULL, (char *)filenameSeqLabelsTrain.c_str(), NULL, NULL, fileDataSparse);
 		else
 			data.load(fileData, (char *)filenameLabelsTrain.c_str(), NULL, NULL, NULL, fileDataSparse);
@@ -259,7 +259,7 @@ void sample()
 		// Modified by Hugues Salamin 07-16-09.
 		// To compare CRF and LDCRF with one hidden state. Looking at value of gradient and function.
 		// Uncomment if you want same starting point.
-		// toolbox->setWeightInitType(INIT_ZERO);
+		//toolbox->setWeightInitType(INIT_ZERO);
 
 		std::cout << "starting training ..." << std::endl;
 		if (doesContinueTraining)
@@ -280,14 +280,14 @@ void sample()
 	{
 		std::cout << "reading training set..." << std::endl;
 		DataSet dataTrain;
-		if (toolboxType == TOOLBOX_HCRF || toolboxType == TOOLBOX_GHCRF )
+		if (toolboxType == TOOLBOX_HCRF || toolboxType == TOOLBOX_GHCRF)
 			dataTrain.load((char *)filenameDataTrain.c_str(), NULL, (char *)filenameSeqLabelsTrain.c_str());
 		else
 			dataTrain.load((char *)filenameDataTrain.c_str(), (char *)filenameLabelsTrain.c_str());
 
 		std::cout << "reading validation set..." << std::endl;
 		DataSet dataValidate;
-		if (toolboxType == TOOLBOX_HCRF || toolboxType == TOOLBOX_GHCRF )
+		if (toolboxType == TOOLBOX_HCRF || toolboxType == TOOLBOX_GHCRF)
 			dataValidate.load((char *)filenameDataValidate.c_str(), NULL, (char *)filenameSeqLabelsValidate.c_str());
 		else
 			dataValidate.load((char *)filenameDataValidate.c_str(), (char *)filenameLabelsValidate.c_str());
@@ -308,7 +308,7 @@ void sample()
 		else
 			data.load((char *)filenameDataTest.c_str(), (char *)filenameLabelsTest.c_str());
 
-		std::ofstream fileStats1 ((char *)filenameStats.c_str());
+		std::ofstream fileStats1((char *)filenameStats.c_str());
 		if (fileStats1.is_open())
 		{
 			fileStats1 << std::endl << std::endl << "TESTING DATA SET" << std::endl << std::endl;
@@ -340,6 +340,7 @@ void sample()
 
 			std::cout << "starting testing ..." << std::endl;
 			toolbox->test(dataTrain, NULL, (char *)filenameStats.c_str());
+			//toolbox->test(dataTrain, (char *)filenameOutput.c_str(), (char *)filenameStats.c_str());
 		}
 
 		if (testDataset & TEST_ON_VALIDATION_SET)
@@ -363,6 +364,7 @@ void sample()
 
 			std::cout << "starting testing ..." << std::endl;
 			toolbox->test(dataValidate, NULL, (char *)filenameStats.c_str());
+			//toolbox->test(dataValidate, (char *)filenameDataTrain.c_str(), (char *)filenameStats.c_str());
 		}
 	}
 
