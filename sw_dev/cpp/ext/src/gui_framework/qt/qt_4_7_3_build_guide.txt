@@ -1,9 +1,9 @@
 [ref] http://doc.qt.nokia.com/4.7/install-win.html
 
-1. adding ${QT_ROOT_PATH}/bin to the PATH variable
+1. adding ${QT_ROOT}/bin to the PATH variable
     to locate qmake, moc and other Qt tools
-2. change directory to ${QT_ROOT_PATH}
-    cd /D ${QT_ROOT_PATH}
+2. change directory to ${QT_ROOT}
+    cd /D ${QT_ROOT}
 3. configure
     configure -platform win32-msvc
 4. nmake
