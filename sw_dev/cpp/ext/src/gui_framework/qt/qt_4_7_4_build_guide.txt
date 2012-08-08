@@ -11,6 +11,7 @@
 	    -. configure -debug-and-release -opensource -shared -ltcg -no-fast -exceptions -accessibility -stl -qt-sql-sqlite -no-openvg -platform win32-msvc2010 -graphicssystem raster -qt-zlib -qt-gif -qt-libpng -qt-libmng -qt-libtiff -qt-libjpeg -no-dsp -vcproj -incredibuild-xge -plugin-manifests -qmake -process -rtti -mmx -3dnow -sse -sse2 -no-openssl -no-dbus -phonon -phonon-backend -multimedia -audio-backend -webkit -script -scripttools -declarative -arch windows -qt-style-windows -qt-style-windowsxp -qt-style-windowsvista -no-style-plastique -no-style-cleanlooks -no-style-motif -no-style-cde -no-style-windowsce -no-style-windowsmobile -no-style-s60 -native-gestures
 	    	[ref] http://qt-project.org/wiki/Building_Qt_Desktop_for_Windows_with_MSVC
 	4. nmake
+	5. nmake install
 
 [-] Trouble Shooting
 	-. Q_INTERFACES "Error: Undefined interface"
