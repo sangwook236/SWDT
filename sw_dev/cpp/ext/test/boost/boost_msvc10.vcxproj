@@ -108,6 +108,7 @@
     <ClCompile Include="geometry.cpp" />
     <ClCompile Include="graph.cpp" />
     <ClCompile Include="image.cpp" />
+    <ClCompile Include="interprocess.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math_bindings.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

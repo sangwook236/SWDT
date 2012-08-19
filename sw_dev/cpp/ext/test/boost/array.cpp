@@ -19,7 +19,7 @@ inline void print_elements(const T &coll, const char *optcstr = "")
 }  // namespace local
 }  // unnamed namespace
 
-void array_()
+void array_main()
 {
 	//-----------------------------------------------------------------------------------
 	//  test 1: basic operations 1

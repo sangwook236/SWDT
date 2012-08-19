@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	void factory();
 	void smart_ptr();
 	void any();
-	void array_();
+	void array_main();
 	void tuple();
 	void multi_array();
 	void multi_index();
@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
 	void spirit_classic();
 	void statechart();
 	void thread();
+	void interprocess();
 
 	void units();
 	void math_constants();
@@ -82,7 +83,7 @@ int main(int argc, char *argv[])
 
 			//smart_ptr();
 			//any();
-			//array_();
+			//array_main();
 			//tuple();
 			//multi_array();
 			//multi_index();
@@ -104,6 +105,7 @@ int main(int argc, char *argv[])
 			//spirit_classic();
 			//statechart();
 			//thread();
+			//interprocess();  // not yet implemented
 		}
 
 		{
