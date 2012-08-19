@@ -28,20 +28,60 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.openFileDialogButton = new System.Windows.Forms.Button();
+            this.saveFileDialogButton = new System.Windows.Forms.Button();
+            this.printDialogButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // openFileDialogButton
+            // 
+            this.openFileDialogButton.Location = new System.Drawing.Point(32, 15);
+            this.openFileDialogButton.Name = "openFileDialogButton";
+            this.openFileDialogButton.Size = new System.Drawing.Size(137, 24);
+            this.openFileDialogButton.TabIndex = 0;
+            this.openFileDialogButton.Text = "Open File Dialog...";
+            this.openFileDialogButton.UseVisualStyleBackColor = true;
+            this.openFileDialogButton.Click += new System.EventHandler(this.openFileDialogButton_Click);
+            // 
+            // saveFileDialogButton
+            // 
+            this.saveFileDialogButton.Location = new System.Drawing.Point(196, 15);
+            this.saveFileDialogButton.Name = "saveFileDialogButton";
+            this.saveFileDialogButton.Size = new System.Drawing.Size(137, 24);
+            this.saveFileDialogButton.TabIndex = 1;
+            this.saveFileDialogButton.Text = "Save File Dialog...";
+            this.saveFileDialogButton.UseVisualStyleBackColor = true;
+            this.saveFileDialogButton.Click += new System.EventHandler(this.saveFileDialogButton_Click);
+            // 
+            // printDialogButton
+            // 
+            this.printDialogButton.Location = new System.Drawing.Point(360, 15);
+            this.printDialogButton.Name = "printDialogButton";
+            this.printDialogButton.Size = new System.Drawing.Size(137, 24);
+            this.printDialogButton.TabIndex = 2;
+            this.printDialogButton.Text = "Print Dialog...";
+            this.printDialogButton.UseVisualStyleBackColor = true;
+            this.printDialogButton.Click += new System.EventHandler(this.printDialogButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(528, 311);
+            this.Controls.Add(this.printDialogButton);
+            this.Controls.Add(this.saveFileDialogButton);
+            this.Controls.Add(this.openFileDialogButton);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Windows Form";
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Button openFileDialogButton;
+        private System.Windows.Forms.Button saveFileDialogButton;
+        private System.Windows.Forms.Button printDialogButton;
 
     }
 }

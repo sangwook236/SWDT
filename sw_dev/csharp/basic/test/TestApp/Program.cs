@@ -16,6 +16,9 @@ namespace TestApp
             //IO.run();
 
             //Assembly.run();
+
+            Console.WriteLine("press any key to exit ...");
+            Console.ReadKey(true);
         }
     }
 }
