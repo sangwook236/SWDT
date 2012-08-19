@@ -42,6 +42,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "crf", "..\test\crf\crf_msvc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "change_detection", "..\test\change_detection\change_detection_msvc10.vcxproj", "{84111558-4AC7-4057-82F7-84548C6FC747}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "feature_analysis", "..\test\feature_analysis\feature_analysis_msvc10.vcxproj", "{90978A1C-F8B5-4DE8-BB4C-359A1756BE6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -132,6 +134,10 @@ Global
 		{84111558-4AC7-4057-82F7-84548C6FC747}.Debug|Win32.Build.0 = Debug|Win32
 		{84111558-4AC7-4057-82F7-84548C6FC747}.Release|Win32.ActiveCfg = Release|Win32
 		{84111558-4AC7-4057-82F7-84548C6FC747}.Release|Win32.Build.0 = Release|Win32
+		{90978A1C-F8B5-4DE8-BB4C-359A1756BE6C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{90978A1C-F8B5-4DE8-BB4C-359A1756BE6C}.Debug|Win32.Build.0 = Debug|Win32
+		{90978A1C-F8B5-4DE8-BB4C-359A1756BE6C}.Release|Win32.ActiveCfg = Release|Win32
+		{90978A1C-F8B5-4DE8-BB4C-359A1756BE6C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

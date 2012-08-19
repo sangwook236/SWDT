@@ -4,7 +4,7 @@
 
 int main(int argc, char **argv)
 {
-	void flood_library();  // flood library
+	void flood_library();
 
 	try
 	{

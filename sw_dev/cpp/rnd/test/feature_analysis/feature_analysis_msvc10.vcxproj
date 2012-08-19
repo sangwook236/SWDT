@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{90978A1C-F8B5-4DE8-BB4C-359A1756BE6C}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>feature_analysis</RootNamespace>
+    <ProjectName>feature_analysis</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>../../bin/</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>../../bin/</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../inc;../../inc/opencv-2.4.2;D:\work_center\sw_dev\cpp\rnd\src\feature_analysis\pictorial_structure\pictorial_structures_revisited\partapp-r2\src\libs;D:\work_center\sw_dev\cpp\rnd\test\feature_analysis\matlab_R2010a_32bit\extern\include;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\include;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../../lib;D:\work_center\sw_dev\cpp\rnd\test\feature_analysis\matlab_R2010a_32bit\extern\lib\win32\microsoft;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\lib;D:\work_center\sw_dev\cpp\ext\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_core242d.lib;opencv_imgproc242d.lib;opencv_highgui242d.lib;libprotobufd.lib;QtCored4.lib;QtGuid4.lib;libmat.lib;libmx.lib;libpng15_staticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../inc;../../inc/opencv-2.4.2;D:\work_center\sw_dev\cpp\rnd\src\feature_analysis\pictorial_structure\pictorial_structures_revisited\partapp-r2\src\libs;D:\work_center\sw_dev\cpp\rnd\test\feature_analysis\matlab_R2010a_32bit\extern\include;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\include;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>../../lib;D:\work_center\sw_dev\cpp\rnd\test\feature_analysis\matlab_R2010a_32bit\extern\lib\win32\microsoft;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\lib;D:\work_center\sw_dev\cpp\ext\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_core242.lib;opencv_imgproc242.lib;opencv_highgui242.lib;libprotobuf.lib;QtCore4.lib;QtGui4.lib;libmat.lib;libmx.lib;libpng15_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="pictorial_structure_revisited\libAdaBoost\featurevector.hh" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lsd\lsd.h" />
+    <ClInclude Include="parteval.h" />
+    <ClInclude Include="pictorial_structure_revisited\libAdaBoost\AdaBoost.h" />
+    <ClInclude Include="pictorial_structure_revisited\libAdaBoost\BoostingData.h" />
+    <ClInclude Include="pictorial_structure_revisited\libAnnotation\annorect.h" />
+    <ClInclude Include="pictorial_structure_revisited\libAnnotation\annotation.h" />
+    <ClInclude Include="pictorial_structure_revisited\libAnnotation\annotationlist.h" />
+    <ClInclude Include="pictorial_structure_revisited\libAnnotation\xmlhelpers.h" />
+    <ClInclude Include="pictorial_structure_revisited\libBoostMath\boost_math.h" />
+    <ClInclude Include="pictorial_structure_revisited\libBoostMath\boost_math.hpp" />
+    <ClInclude Include="pictorial_structure_revisited\libBoostMath\homogeneous_coord.h" />
+    <ClInclude Include="pictorial_structure_revisited\libFilesystemAux\filesystem_aux.h" />
+    <ClInclude Include="pictorial_structure_revisited\libKMA2\descriptor\feature.h" />
+    <ClInclude Include="pictorial_structure_revisited\libKMA2\gauss_iir\gauss_iir.h" />
+    <ClInclude Include="pictorial_structure_revisited\libKMA2\ImageContent\imageContent.h" />
+    <ClInclude Include="pictorial_structure_revisited\libKMA2\kmaimagecontent.h" />
+    <ClInclude Include="pictorial_structure_revisited\libKMA2\ShapeDescriptor.h" />
+    <ClInclude Include="pictorial_structure_revisited\libMatlabIO\matlab_cell_io.hpp" />
+    <ClInclude Include="pictorial_structure_revisited\libMatlabIO\matlab_io.h" />
+    <ClInclude Include="pictorial_structure_revisited\libMatlabIO\matlab_io.hpp" />
+    <ClInclude Include="pictorial_structure_revisited\libMisc\misc.hpp" />
+    <ClInclude Include="pictorial_structure_revisited\libMultiArray\multi_array_def.h" />
+    <ClInclude Include="pictorial_structure_revisited\libMultiArray\multi_array_filter.hpp" />
+    <ClInclude Include="pictorial_structure_revisited\libMultiArray\multi_array_op.hpp" />
+    <ClInclude Include="pictorial_structure_revisited\libMultiArray\multi_array_transform.hpp" />
+    <ClInclude Include="pictorial_structure_revisited\libPartApp\ExpParam.pb.h" />
+    <ClInclude Include="pictorial_structure_revisited\libPartApp\partapp.h" />
+    <ClInclude Include="pictorial_structure_revisited\libPartApp\partapp_aux.hpp" />
+    <ClInclude Include="pictorial_structure_revisited\libPartDetect\AbcDetectorParam.pb.h" />
+    <ClInclude Include="pictorial_structure_revisited\libPartDetect\FeatureGrid.h" />
+    <ClInclude Include="pictorial_structure_revisited\libPartDetect\PartConfig.pb.h" />
+    <ClInclude Include="pictorial_structure_revisited\libPartDetect\partdef.h" />
+    <ClInclude Include="pictorial_structure_revisited\libPartDetect\partdetect.h" />
+    <ClInclude Include="pictorial_structure_revisited\libPartDetect\PartWindowParam.pb.h" />
+    <ClInclude Include="pictorial_structure_revisited\libPictStruct\HypothesisList.pb.h" />
+    <ClInclude Include="pictorial_structure_revisited\libPictStruct\objectdetect.h" />
+    <ClInclude Include="pictorial_structure_revisited\libPictStruct\objectdetect_aux.hpp" />
+    <ClInclude Include="pictorial_structure_revisited\libProtoBuf\protobuf_aux.hpp" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="line_feature.cpp" />
+    <ClCompile Include="lsd\lsd.cpp" />
+    <ClCompile Include="lsd\lsd_call_example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="lsd\lsd_cmd.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="parteval.cpp" />
+    <ClCompile Include="pictorial_structure.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libAdaBoost\AdaBoost.cc" />
+    <ClCompile Include="pictorial_structure_revisited\libAdaBoost\BoostingData.cc" />
+    <ClCompile Include="pictorial_structure_revisited\libAdaBoost\featurevector.cc" />
+    <ClCompile Include="pictorial_structure_revisited\libAnnotation\annorect.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libAnnotation\annotation.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libAnnotation\annotationlist.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libAnnotation\xmlhelpers.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libBoostMath\boost_math.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libBoostMath\homogeneous_coord.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libFilesystemAux\filesystem_aux.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libKMA2\descriptor\EdgeDetector.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libKMA2\descriptor\FeatureDescriptor.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libKMA2\gauss_iir\gauss_iir.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libKMA2\ImageContent\ImageContent.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libKMA2\ShapeDescriptor.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libMatlabIO\matlab_io.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libPartApp\ExpParam.pb.cc" />
+    <ClCompile Include="pictorial_structure_revisited\libPartApp\partapp.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libPartDetect\AbcDetectorParam.pb.cc" />
+    <ClCompile Include="pictorial_structure_revisited\libPartDetect\FeatureGrid.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libPartDetect\PartConfig.pb.cc" />
+    <ClCompile Include="pictorial_structure_revisited\libPartDetect\partdef.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libPartDetect\partdetect_aux.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libPartDetect\partdetect_test.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libPartDetect\partdetect_train.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libPartDetect\PartWindowParam.pb.cc" />
+    <ClCompile Include="pictorial_structure_revisited\libPictStruct\HypothesisList.pb.cc" />
+    <ClCompile Include="pictorial_structure_revisited\libPictStruct\objectdetect_aux.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libPictStruct\objectdetect_findpos.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libPictStruct\objectdetect_findrot.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\libPictStruct\objectdetect_learnparam.cpp" />
+    <ClCompile Include="pictorial_structure_revisited_partapp.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

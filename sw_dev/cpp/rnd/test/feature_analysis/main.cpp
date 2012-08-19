@@ -3,30 +3,20 @@
 #include <vld/vld.h>
 #endif
 #include <iostream>
-#include <ctime>
 
 
 int main(int argc, char **argv)
 {
-	void middlebury_mrf();
-	void bp_vision();
-	void cuda_cut();
+	void line_feature();
+	void pictorial_structure(int argc, char **argv);
 
 	try
 	{
-		std::srand((unsigned int)std::time(NULL));
+		// line feature
+		//line_feature();
 
-		//middlebury_mrf();
-
-		// belief propagation algorithm
-		bp_vision();
-
-		// graph-cuts algorithm
-		//cuda_cut();
-	}
-    catch (const std::bad_alloc &e)
-	{
-		std::cout << "std::bad_alloc occurred !!!: " << e.what() << std::endl;
+		// pictorial structure
+		pictorial_structure(argc, argv);
 	}
 	catch (const std::exception &e)
 	{
