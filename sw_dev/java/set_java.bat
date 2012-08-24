@@ -1,4 +1,4 @@
-rem @echo off
+@echo off
 rem setlocal
 
 if "%1%" == "--set" goto SET
