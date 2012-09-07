@@ -430,7 +430,7 @@ namespace sqlite
             SQLiteCommand command = new SQLiteCommand(connection);
 
             //command.CommandText = string.Format("DELETE FROM {0} WHERE id > ?", colorsTable_);  // run-time error: DB concurrency error.
-            command.CommandText = string.Format("DELETE FROM {0} WHERE id == ?", colorsTable_);
+            command.CommandText = string.Format("DELETE FROM {0} WHERE id = ?", colorsTable_);
             //command.CommandText = string.Format("DELETE FROM {0}", colorsTable_);  // delete all the record in a ColorsTable
             command.Parameters.Add(new SQLiteParameter(DbType.Int64, "id"));
             //command.UpdatedRowSource = UpdateRowSource.OutputParameters;
