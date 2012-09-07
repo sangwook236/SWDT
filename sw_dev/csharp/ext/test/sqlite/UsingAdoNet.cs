@@ -172,9 +172,9 @@ namespace sqlite
                     SQLiteDataAdapter adapter = new SQLiteDataAdapter();
                     adapter.InsertCommand = generateInsertCommand(connection);
 
-                    //adapter.Update(colorDataSet, colorsTable_);
+                    adapter.Update(colorDataSet, colorsTable_);
                     //adapter.Update(colorDataSet.GetChanges());  // run-time error.
-                    adapter.Update(colorDataSet.GetChanges(), colorsTable_);
+                    //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there are no change.
                 }
 
                 //colorDataSet.Merge();
@@ -231,9 +231,9 @@ namespace sqlite
                     SQLiteDataAdapter adapter = new SQLiteDataAdapter();
                     adapter.InsertCommand = generateInsertCommand(connection);
 
-                    //adapter.Update(colorDataSet, colorsTable_);
+                    adapter.Update(colorDataSet, colorsTable_);
                     //adapter.Update(colorDataSet.GetChanges());  // run-time error.
-                    adapter.Update(colorDataSet.GetChanges(), colorsTable_);
+                    //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there are no change.
                 }
 
                 colorDataSet.AcceptChanges();
@@ -276,9 +276,9 @@ namespace sqlite
                     SQLiteDataAdapter adapter = new SQLiteDataAdapter();
                     adapter.UpdateCommand = generateUpdateCommand(connection);
 
-                    //adapter.Update(colorDataSet, colorsTable_);
+                    adapter.Update(colorDataSet, colorsTable_);
                     //adapter.Update(colorDataSet.GetChanges());  // run-time error.
-                    adapter.Update(colorDataSet.GetChanges(), colorsTable_);
+                    //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there are no change.
                 }
 
                 colorDataSet.AcceptChanges();
@@ -317,9 +317,9 @@ namespace sqlite
                         SQLiteDataAdapter adapter = new SQLiteDataAdapter();
                         adapter.UpdateCommand = generateUpdateCommand(connection);
 
-                        //adapter.Update(colorDataSet, colorsTable_);
+                        adapter.Update(colorDataSet, colorsTable_);
                         //adapter.Update(colorDataSet.GetChanges());  // run-time error.
-                        adapter.Update(colorDataSet.GetChanges(), colorsTable_);
+                        //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there are no change.
                     }
 
                     colorDataSet.AcceptChanges();
@@ -364,9 +364,9 @@ namespace sqlite
                     SQLiteDataAdapter adapter = new SQLiteDataAdapter();
                     adapter.DeleteCommand = generateDeleteCommand(connection);
 
-                    //adapter.Update(colorDataSet, colorsTable_);
+                    adapter.Update(colorDataSet, colorsTable_);
                     //adapter.Update(colorDataSet.GetChanges());  // run-time error.
-                    adapter.Update(colorDataSet.GetChanges(), colorsTable_);
+                    //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there are no change.
                 }
 
                 colorDataSet.AcceptChanges();
