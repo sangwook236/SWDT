@@ -174,7 +174,7 @@ namespace sqlite
 
                     adapter.Update(colorDataSet, colorsTable_);
                     //adapter.Update(colorDataSet.GetChanges());  // run-time error.
-                    //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there are no change.
+                    //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there is no change.
                 }
 
                 //colorDataSet.Merge();
@@ -233,7 +233,7 @@ namespace sqlite
 
                     adapter.Update(colorDataSet, colorsTable_);
                     //adapter.Update(colorDataSet.GetChanges());  // run-time error.
-                    //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there are no change.
+                    //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there is no change.
                 }
 
                 colorDataSet.AcceptChanges();
@@ -278,7 +278,7 @@ namespace sqlite
 
                     adapter.Update(colorDataSet, colorsTable_);
                     //adapter.Update(colorDataSet.GetChanges());  // run-time error.
-                    //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there are no change.
+                    //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there is no change.
                 }
 
                 colorDataSet.AcceptChanges();
@@ -319,7 +319,7 @@ namespace sqlite
 
                         adapter.Update(colorDataSet, colorsTable_);
                         //adapter.Update(colorDataSet.GetChanges());  // run-time error.
-                        //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there are no change.
+                        //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there is no change.
                     }
 
                     colorDataSet.AcceptChanges();
@@ -366,7 +366,7 @@ namespace sqlite
 
                     adapter.Update(colorDataSet, colorsTable_);
                     //adapter.Update(colorDataSet.GetChanges());  // run-time error.
-                    //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there are no change.
+                    //adapter.Update(colorDataSet.GetChanges(), colorsTable_);  // an exception occurred if there is no change.
                 }
 
                 colorDataSet.AcceptChanges();
