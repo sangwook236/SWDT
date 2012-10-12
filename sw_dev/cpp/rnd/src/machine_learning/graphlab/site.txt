@@ -1,2 +1,0 @@
-http://graphlab.org/
-http://graphlab.org/clustering.html
