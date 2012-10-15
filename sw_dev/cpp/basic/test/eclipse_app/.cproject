@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?fileVersion 4.0.0?>
-
-<cproject>
+<?fileVersion 4.0.0?><cproject>
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
 		<cconfiguration id="cdt.managedbuild.config.gnu.cygwin.exe.debug.112725347">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cygwin.exe.debug.112725347" moduleId="org.eclipse.cdt.core.settings" name="Debug">
@@ -20,7 +18,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.cygwin.exe.debug.112725347." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.mingw.base.721208893" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.base">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.PE" id="cdt.managedbuild.target.gnu.platform.mingw.base.724865941" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.mingw.base"/>
-							<builder autoBuildTarget="all" buildPath="${workspace_loc:/eclipse_app/Debug}" cleanBuildTarget="clean" command="mingw32-make" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="cdt.managedbuild.target.gnu.builder.base.1730719862" incrementalBuildTarget="all" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelizationNumber="1" superClass="cdt.managedbuild.target.gnu.builder.base"/>
+							<builder autoBuildTarget="all" buildPath="${workspace_loc:/eclipse_app/Debug}" cleanBuildTarget="clean" command="mingw32-make" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="cdt.managedbuild.target.gnu.builder.base.1730719862" incrementalBuildTarget="all" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
 							<tool command="as" id="cdt.managedbuild.tool.gnu.assembler.mingw.base.1666185926" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.base">
 								<option id="gnu.both.asm.option.include.paths.609669373" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths"/>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.382951313" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
@@ -30,7 +28,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.2082644587" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="../../../inc"/>
 									<listOptionValue builtIn="false" value="D:/MyProgramFiles/MinGW/include"/>
-									<listOptionValue builtIn="false" value="D:/MyProgramFiles/MinGW/lib/gcc/mingw32/4.5.2/include/c++"/>
+									<listOptionValue builtIn="false" value="D:/MyProgramFiles/MinGW/lib/gcc/mingw32/4.6.1/include/c++"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.415835160" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.970295017" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
@@ -40,7 +38,7 @@
 								<option id="gnu.c.compiler.option.include.paths.666381979" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="../../../inc"/>
 									<listOptionValue builtIn="false" value="D:/MyProgramFiles/MinGW/include"/>
-									<listOptionValue builtIn="false" value="D:/MyProgramFiles/MinGW/lib/gcc/mingw32/4.5.2/include"/>
+									<listOptionValue builtIn="false" value="D:/MyProgramFiles/MinGW/lib/gcc/mingw32/4.6.1/include"/>
 								</option>
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.1798515806" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.debugging.level.206115994" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
@@ -98,7 +96,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1416792963" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="../../../inc"/>
 									<listOptionValue builtIn="false" value="D:/MyProgramFiles/MinGW/include"/>
-									<listOptionValue builtIn="false" value="D:/MyProgramFiles/MinGW/lib/gcc/mingw32/4.5.2/include/c++"/>
+									<listOptionValue builtIn="false" value="D:/MyProgramFiles/MinGW/lib/gcc/mingw32/4.6.1/include/c++"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.925900645" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.795569133" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.none" valueType="enumerated"/>
@@ -108,7 +106,7 @@
 								<option id="gnu.c.compiler.option.include.paths.1301903550" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="../../../inc"/>
 									<listOptionValue builtIn="false" value="D:/MyProgramFiles/MinGW/include"/>
-									<listOptionValue builtIn="false" value="D:/MyProgramFiles/MinGW/lib/gcc/mingw32/4.5.2/include"/>
+									<listOptionValue builtIn="false" value="D:/MyProgramFiles/MinGW/lib/gcc/mingw32/4.6.1/include"/>
 								</option>
 								<option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.option.optimization.level.769347069" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.debugging.level.1667895976" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.none" valueType="enumerated"/>
@@ -530,4 +528,13 @@
 			</profile>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/eclipse_app"/>
+		</configuration>
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/eclipse_app"/>
+		</configuration>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 </cproject>
