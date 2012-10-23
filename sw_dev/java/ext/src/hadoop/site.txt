@@ -1,0 +1,4 @@
+http://hadoop.apache.org/
+http://www.cloudera.com/hadoop/
+
+http://hadoopbook.com/
