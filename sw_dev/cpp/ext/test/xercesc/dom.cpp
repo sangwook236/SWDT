@@ -65,9 +65,11 @@ int dom()
 #if defined(_UNICODE) || defined(UNICODE)
     // FIXME [check] >> is it correct? convert 'wchar_t *' to 'XMLCh *'
 	//const XMLCh *xmlFile = XMLStrL(".\\xerces_data\\personal.xml");
-	const XMLCh *xmlFile = (XMLCh *)L".\\xerces_data\\personal.xml";
+	//const XMLCh *xmlFile = (XMLCh *)L".\\xerces_data\\personal.xml";
+	const XMLCh *xmlFile = (XMLCh *)L".\\xerces_data\\books.xml";
 #else
-	const char *xmlFile = ".\\xerces_data\\personal.xml";
+	//const char *xmlFile = ".\\xerces_data\\personal.xml";
+	const char *xmlFile = ".\\xerces_data\\books.xml";
 #endif
 
 	try
@@ -124,7 +126,11 @@ int dom()
 
 	// Indicates if user wants to plug in the DOMPrintFilter.
 	const bool useFilter = false;
+#if defined(_UNICODE) || defined(UNICODE)
 	const XMLCh *outputEncoding = (XMLCh *)L"UTF-8";
+#else
+	const XMLCh *outputEncoding = "UTF-8";
+#endif
 	try
 	{
 		// get a serializer, an instance of DOMWriter
@@ -196,7 +202,17 @@ int dom()
         XERCES_CPP_NAMESPACE::DOMDocument *doc = parser->getDocument();
 
         // do the serialization through DOMLSSerializer::write();
-		char *xPathExpression = NULL;
+		//const char *xPathExpression = NULL;
+		//const char *xPathExpression = "//*";
+		//const char *xPathExpression = "//book";
+		//const char *xPathExpression = "//title";
+		const char *xPathExpression = "//author";
+		//const char *xPathExpression = "//@lang";
+		//const char *xPathExpression = "/bookstore/book/title";  // selects all the title nodes
+		//const char *xPathExpression = "/bookstore/book[1]/title";  // selects the title of the first book node under the bookstore element
+		//const char *xPathExpression = "/bookstore/book/price/text()";  // selects the text from all the price nodes
+		//const char *xPathExpression = "/bookstore/book[price>35]/price";  // selects all the price nodes with a price higher than 35
+		//const char *xPathExpression = "/bookstore/book[price>35]/title";  // selects all the title nodes with a price higher than 35
         if (NULL != xPathExpression)
         {
             XMLCh *xpathStr = XERCES_CPP_NAMESPACE::XMLString::transcode(xPathExpression);

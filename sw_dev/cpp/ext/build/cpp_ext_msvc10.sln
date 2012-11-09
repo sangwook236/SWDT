@@ -62,6 +62,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tbb", "..\test\tbb\tbb_msvc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "protobuf", "..\test\protobuf\protobuf_msvc10.vcxproj", "{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "poco", "..\test\poco\poco_msvc10.vcxproj", "{2BAA7170-259E-4A41-B87C-CCE654E8D191}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "thrust", "..\test\thrust\thrust_msvc10.vcxproj", "{04EF8421-9B4A-4997-B353-D610B8D847B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -192,6 +196,14 @@ Global
 		{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}.Debug|Win32.Build.0 = Debug|Win32
 		{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}.Release|Win32.ActiveCfg = Release|Win32
 		{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}.Release|Win32.Build.0 = Release|Win32
+		{2BAA7170-259E-4A41-B87C-CCE654E8D191}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2BAA7170-259E-4A41-B87C-CCE654E8D191}.Debug|Win32.Build.0 = Debug|Win32
+		{2BAA7170-259E-4A41-B87C-CCE654E8D191}.Release|Win32.ActiveCfg = Release|Win32
+		{2BAA7170-259E-4A41-B87C-CCE654E8D191}.Release|Win32.Build.0 = Release|Win32
+		{04EF8421-9B4A-4997-B353-D610B8D847B5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{04EF8421-9B4A-4997-B353-D610B8D847B5}.Debug|Win32.Build.0 = Debug|Win32
+		{04EF8421-9B4A-4997-B353-D610B8D847B5}.Release|Win32.ActiveCfg = Release|Win32
+		{04EF8421-9B4A-4997-B353-D610B8D847B5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
