@@ -1,0 +1,2 @@
+http://www.vsipl.org/
+http://gpu-vsipl.gtri.gatech.edu/
