@@ -13,6 +13,10 @@
 #	error unsupported os platform !!!
 #endif
 
+
+namespace {
+namespace local {
+
 void display_name(const std::string &function)
 {
 	const std::string::size_type pos = std::string(function).find_first_of(std::string("::"));
@@ -61,6 +65,9 @@ public:
 	}
 };
 
+}  // namespace local
+}  // unnamed namespace
+
 void test_predefined_macro()
 {
 	// ANSI-Compliant Predefined Macros
@@ -90,9 +97,9 @@ void test_predefined_macro()
 		int i = 1;
 		double d = 0.0;
 
-		func(b, &i, d);
+		local::func(b, &i, d);
 
-		MacroObj obj;
+		local::MacroObj obj;
 		obj.mem_func(b, &i, d);
 	}
 }

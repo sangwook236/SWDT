@@ -3,32 +3,9 @@
 #include <iostream>
 #include <iomanip>
 
-void date_time__clock();
-void date_time__UTC_time();
-void date_time__local_time();
-void date_time__time_diff();
-void date_time__date_order();
-void date_time__time();
-void date_time__date();
-void date_time__weekday();
-void date_time__month();
-void date_time__year();
 
-void test_date_time()
-{
-	date_time__clock();
-	date_time__UTC_time();
-	date_time__local_time();
-	date_time__time_diff();
-
-	//
-	date_time__date_order();
-	date_time__time();
-	date_time__date();
-	date_time__weekday();
-	date_time__month();
-	date_time__year();
-}
+namespace {
+namespace local {
 
 void wait(const int seconds)
 {
@@ -233,4 +210,23 @@ void date_time__year()
 	tmget.get_year(itbegin, itend, iss, state, &when);
 
 	std::cout << "tm_year: " << when.tm_year << std::endl;
+}
+	
+}  // namespace local
+}  // unnamed namespace
+
+void test_date_time()
+{
+	local::date_time__clock();
+	local::date_time__UTC_time();
+	local::date_time__local_time();
+	local::date_time__time_diff();
+
+	//
+	local::date_time__date_order();
+	local::date_time__time();
+	local::date_time__date();
+	local::date_time__weekday();
+	local::date_time__month();
+	local::date_time__year();
 }

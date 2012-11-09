@@ -30,8 +30,11 @@ int main(int argc, char **argv)
 	void test_array();
 	void test_complex();
 	void test_date_time();
+
 	void file_io();
 	void stl_algorithm();
+
+	void performance_analysis();
 
 	try
 	{
@@ -44,7 +47,7 @@ int main(int argc, char **argv)
 
 		//file_io();  // not yet implemented
 
-		stl_algorithm();
+		//stl_algorithm();
 
 		// test
 #if 0
@@ -70,6 +73,8 @@ int main(int argc, char **argv)
 			std::cout << f21 << ", " << f22 << std::endl;
 		}
 #endif
+
+		performance_analysis();
 	}
 	catch (const std::exception &e)
 	{

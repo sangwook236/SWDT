@@ -35,14 +35,26 @@ private:
 void parallel_directive();
 void do_directive();
 
-int wmain(int argc, wchar_t* argv[])
+int main(int argc, char **argv)
 {
-	//parallel_directive();
-	do_directive();
+	try
+	{
+		//parallel_directive();
+		do_directive();
+	}
+	catch (const std::exception &e)
+	{
+		std::cout << "std::exception occurred !!!: " << e.what() << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "unknown exception occurred !!!" << std::endl;
+	}
 
-	std::wcout.flush();
-	std::wcin.get();
-	return 0;
+	std::cout << "press any key to exit ..." << std::endl;
+	std::cin.get();
+
+    return 0;
 }
 
 void parallel_directive()

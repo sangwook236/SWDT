@@ -4,22 +4,8 @@
 #include <iterator>
 #include <iostream>
 
-void stl_algorithm_remove();
-void stl_algorithm_transform();
-void stl_algorithm_unique();
-void stl_algorithm_lower_bound_upper_bound();
-
-void stl_algorithm()
-{
-	std::cout << ">>> stl algorithm: remove" << std::endl;
-	stl_algorithm_remove();
-	std::cout << "\n>>> stl algorithm: transform" << std::endl;
-	stl_algorithm_transform();
-	std::cout << "\n>>> stl algorithm: unique" << std::endl;
-	stl_algorithm_unique();
-	std::cout << "\n>>> stl algorithm: lower_bound & upper_bound" << std::endl;
-	stl_algorithm_lower_bound_upper_bound();
-}
+namespace {
+namespace local {
 
 void stl_algorithm_remove()
 {
@@ -99,4 +85,19 @@ void stl_algorithm_lower_bound_upper_bound()
 		std::cout << "lower_bound at position: " << (size_t)std::distance(v.begin(), low) << std::endl;
 		std::cout << "upper_bound at position: " << (size_t)std::distance(v.begin(), up) << std::endl;
 	}
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+void stl_algorithm()
+{
+	std::cout << ">>> stl algorithm: remove" << std::endl;
+	local::stl_algorithm_remove();
+	std::cout << "\n>>> stl algorithm: transform" << std::endl;
+	local::stl_algorithm_transform();
+	std::cout << "\n>>> stl algorithm: unique" << std::endl;
+	local::stl_algorithm_unique();
+	std::cout << "\n>>> stl algorithm: lower_bound & upper_bound" << std::endl;
+	local::stl_algorithm_lower_bound_upper_bound();
 }

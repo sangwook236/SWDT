@@ -74,42 +74,55 @@ public:
 	char c_;
 };
 
-int main()
+int main(int argc, char **argv)
 {
-	X *pX = new X();
-//	pX->vf();  // runtime-error
+	try
+	{
+		X *pX = new X();
+		//pX->vf();  // runtime-error
 
-	Y *pY = new Y();
-	pY->vf();
+		Y *pY = new Y();
+		pY->vf();
 
-	Z *pZ = new Z();
-	pZ->nvf();
+		Z *pZ = new Z();
+		pZ->nvf();
 
-	V *pV = new V();
-	pV->nvf();
+		V *pV = new V();
+		pV->nvf();
 
-	W *pW = new W();
-	pW->vf();
+		W *pW = new W();
+		pW->vf();
 
-	char * const pp1 = (char *)pV;
-	char * const pp2 = (char *)(&pV->i_);
+		char * const pp1 = (char *)pV;
+		char * const pp2 = (char *)(&pV->i_);
 
-	char * const p1 = (char *)pW;
-	char * const p2 = (char *)(&pW->i_);
-	char * const p3 = (char *)(&pW->l_);
-	char * const p4 = (char *)(&pW->f_);
-	char * const p5 = (char *)(&pW->d_);
-	char * const p6 = (char *)(&pW->c_);
-	const size_t s1 = sizeof(pW);
-	const size_t s2 = sizeof(&pW->i_);
-	const size_t s3 = sizeof(&pW->d_);
+		char * const p1 = (char *)pW;
+		char * const p2 = (char *)(&pW->i_);
+		char * const p3 = (char *)(&pW->l_);
+		char * const p4 = (char *)(&pW->f_);
+		char * const p5 = (char *)(&pW->d_);
+		char * const p6 = (char *)(&pW->c_);
+		const size_t s1 = sizeof(pW);
+		const size_t s2 = sizeof(&pW->i_);
+		const size_t s3 = sizeof(&pW->d_);
 
-	delete pX;
-	delete pY;
-	delete pZ;
-	delete pV;
-	delete pW;
+		delete pX;
+		delete pY;
+		delete pZ;
+		delete pV;
+		delete pW;
+	}
+	catch (const std::exception &e)
+	{
+		std::cout << "std::exception occurred !!!: " << e.what() << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "unknown exception occurred !!!" << std::endl;
+	}
 
+	std::cout << "press any key to exit ..." << std::endl;
 	std::cin.get();
-	return 0;
+
+    return 0;
 }

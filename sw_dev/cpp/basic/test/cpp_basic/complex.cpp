@@ -2,6 +2,12 @@
 #include <complex>
 
 
+namespace {
+namespace local {
+	
+}  // namespace local
+}  // unnamed namespace
+
 void test_complex()
 {
 	std::complex<double> c1(1, 2), c2(-2, 3);

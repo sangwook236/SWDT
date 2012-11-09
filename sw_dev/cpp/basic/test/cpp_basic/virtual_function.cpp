@@ -1,5 +1,9 @@
 #include <iostream>
 
+
+namespace {
+namespace local {
+
 class Base
 {
 public:
@@ -41,12 +45,15 @@ public:
 		std::cout << "Derived::vf3() is called" << std::endl;
 	}
 };
+	
+}  // namespace local
+}  // unnamed namespace
 
 void virtual_function()
 {
-	Base *b1 = new Base();
-	Base *b2 = new Derived();
-	Derived *d = new Derived();
+	local::Base *b1 = new local::Base();
+	local::Base *b2 = new local::Derived();
+	local::Derived *d = new local::Derived();
 
 	b1->f1();
 	b1->f2();
