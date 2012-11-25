@@ -29,8 +29,8 @@ namespace TestGuiComponent
             {
                 try
                 {
-                    Stream myStream = null;
-                    if ((myStream = openFileDialog.OpenFile()) != null)
+                    Stream myStream = openFileDialog.OpenFile();
+                    if (null != myStream)
                     {
                         using (myStream)
                         {
@@ -57,8 +57,8 @@ namespace TestGuiComponent
             {
                 try
                 {
-                    Stream myStream = null;
-                    if ((myStream = saveFileDialog.OpenFile()) != null)
+                    Stream myStream = saveFileDialog.OpenFile();
+                    if (null != myStream)
                     {
                         using (myStream)
                         {
