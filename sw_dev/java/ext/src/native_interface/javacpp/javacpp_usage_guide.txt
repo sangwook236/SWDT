@@ -1,12 +1,18 @@
-[-] when using static libraries
-	-. in windows system
+[-] Building
+	-. legacy library or code를 사용하기 위해 JavaCPP가 JNI를 위한 file을 생성해야 함
+		java file에 JNI를 위한 shared library file (e.g. jni********.dll file)을 생성하기 위한 annotation을 추가해야 함
+			[ref] sw_dev/java/ext/test/javacpp/src/LegacyLibrary.java
+		java tool & javacpp.jar를 이용해 shared library file (e.g. jni********.dll file)을 생성
+			[ref] sw_dev/java/ext/src/native_interface/javacpp/build_javacpp.bat
+
+[-] Running
+	-. when using static libraries in windows system
 		legacy static library file (*.lib)은 실행시 필요하지 않음
 		JavaCPP가 생성한 jni********.dll file이 실행 directory에 존재해야 함
 			e.g.) LegacyLibrary.java인 경우 jniLegacyLibrary.dll이 생성
 
-[-] when using shared libraries
-	-. in windows system
+	-. when using shared libraries in windows system
 		legacy shared library file (*.dll)은 실행 directory에 존재해야 함
-		legacy import library file (*.lib)를 실행시 필요하지 않음
+		legacy import library file (*.lib)은 실행시 필요하지 않음
 		JavaCPP가 생성한 jni********.dll file이 실행 directory에 존재해야 함
 			e.g.) LegacyLibrary.java인 경우 jniLegacyLibrary.dll이 생성
