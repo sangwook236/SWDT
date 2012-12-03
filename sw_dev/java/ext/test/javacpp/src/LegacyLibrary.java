@@ -8,7 +8,6 @@ import com.googlecode.javacpp.annotation.*;
 	},
 	includepath={
 		"../LegacyLibrary_static/",
-		//"D:/work_center/sw_dev/java/ext/test/javacpp/LegacyLibrary_static/",
 		"D:/work_center/sw_dev/cpp/ext/inc",
 		"D:/work_center/sw_dev/cpp/rnd/inc",
 		"C:/Program Files (x86)/Microsoft SDKs/Windows/v7.0A/Include"
@@ -18,7 +17,6 @@ import com.googlecode.javacpp.annotation.*;
 	},
 	linkpath = {
 		"../LegacyLibrary_static/x64/Release/",
-		//"D:/work_center/sw_dev/java/ext/test/javacpp/src",
 		"D:/work_center/sw_dev/java/ext/test/javacpp/LegacyLibrary_static/x64/Release",
 		"D:/work_center/sw_dev/cpp/ext/lib",
 		"D:/work_center/sw_dev/cpp/rnd/lib"

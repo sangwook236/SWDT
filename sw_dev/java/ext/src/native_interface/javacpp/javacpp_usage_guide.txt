@@ -1,0 +1,12 @@
+[-] when using static libraries
+	-. in windows system
+		legacy static library file (*.lib)은 실행시 필요하지 않음
+		JavaCPP가 생성한 jni********.dll file이 실행 directory에 존재해야 함
+			e.g.) LegacyLibrary.java인 경우 jniLegacyLibrary.dll이 생성
+
+[-] when using shared libraries
+	-. in windows system
+		legacy shared library file (*.dll)은 실행 directory에 존재해야 함
+		legacy import library file (*.lib)를 실행시 필요하지 않음
+		JavaCPP가 생성한 jni********.dll file이 실행 directory에 존재해야 함
+			e.g.) LegacyLibrary.java인 경우 jniLegacyLibrary.dll이 생성
