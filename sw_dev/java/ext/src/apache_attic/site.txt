@@ -1,0 +1,3 @@
+http://attic.apache.org/
+
+http://jakarta.apache.org/
