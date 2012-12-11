@@ -14,7 +14,8 @@ rem -----------------------------------------------------------
 :SET
 
 if "%JAVA_HOME%" == "" (
-	set JAVA_HOME=C:\Program Files\Java\jre7
+	rem set JAVA_HOME=C:\Program Files\Java\jre7
+	set JAVA_HOME=C:\Program Files\Java\jdk1.7.0_04
 	set JAVA_HOME_IS_DEFINED=true
 )
 

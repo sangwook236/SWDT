@@ -3,6 +3,10 @@ setlocal
 
 rem [e.g.] run_pivot_script_example
 
+rem export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+rem set JAVA_HOME=C:\Program Files\Java\jre7
+set JAVA_HOME=C:\Program Files\Java\jdk1.7.0_04
+
 rem export LIB_PATH=lib
 set LIB_PATH=D:\work_center\sw_dev\java\ext\src\gui_framework\apache_pivot\apache-pivot-2.0.2-src\lib
 
