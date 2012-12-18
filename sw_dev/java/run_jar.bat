@@ -5,11 +5,11 @@ rem export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 rem set JAVA_HOME=C:\Program Files\Java\jre7
 set JAVA_HOME=C:\Program Files\Java\jdk1.7.0_04
 
-rem export LIB_PATH=lib
-set LIB_PATH=D:\work_center\sw_dev\java\ext\lib
+rem export LIB_PATH1=lib
+set LIB_PATH1=D:\work_center\sw_dev\java\ext\lib
 
-rem export CLASSPATH=.:$LIB_PATH/runnable_jar.jar:$CLASSPATH
-rem set CLASSPATH=.;%LIB_PATH%\runnable_jar.jar;%CLASSPATH%
+rem export CLASSPATH=.:$LIB_PATH1/runnable_jar.jar:$CLASSPATH
+rem set CLASSPATH=.;%LIB_PATH1%\runnable_jar.jar;%CLASSPATH%
 
 rem export HEAP_OPTION=-Xms4096m -Xmx8192m
 rem set HEAP_OPTION=-Xms4096m -Xmx8192m
