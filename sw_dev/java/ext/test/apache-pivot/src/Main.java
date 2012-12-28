@@ -13,9 +13,9 @@ public class Main {
 
 		//PushButtonTest.run(args);
 		//ToggleButtonTest.run(args);
-		//RadioButtonTest.run(args);
+		RadioButtonTest.run(args);
 		//CheckboxTest.run(args);
-		LinkButtonTest.run(args);
+		//LinkButtonTest.run(args);
 	}
 
 }

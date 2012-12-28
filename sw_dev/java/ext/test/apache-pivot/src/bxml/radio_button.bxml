@@ -12,7 +12,7 @@
             <RadioButton bxml:id="oneButton" buttonData="One" buttonGroup="$numbers" selected="true"/>
             <RadioButton bxml:id="twoButton" buttonData="Two" buttonGroup="$numbers"/>
             <RadioButton bxml:id="threeButton" buttonData="Three" buttonGroup="$numbers"/>
-            <PushButton bxml:id="selectButton" buttonData="Select"/>
+            <PushButton bxml:id="selectButton_" buttonData="Select"/>
         </BoxPane>
     </Border>
 </buttons:RadioButtonWindow>

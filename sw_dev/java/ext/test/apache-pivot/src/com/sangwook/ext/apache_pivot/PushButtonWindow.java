@@ -2,6 +2,7 @@ package com.sangwook.ext.apache_pivot;
 
 import java.net.URL;
  
+import org.apache.pivot.beans.BXML;
 import org.apache.pivot.beans.Bindable;
 import org.apache.pivot.collections.Map;
 import org.apache.pivot.util.Resources;
@@ -17,7 +18,7 @@ public class PushButtonWindow extends Window implements Bindable
     @Override
     public void initialize(Map<String, Object> namespace, URL location, Resources resources)
     {
-    	pushButton_ = (PushButton)namespace.get("pushButton");
+    	//pushButton_ = (PushButton)namespace.get("pushButton_");
 
     	pushButton_.getButtonPressListeners().add(new ButtonPressListener() {
             @Override
@@ -27,5 +28,6 @@ public class PushButtonWindow extends Window implements Bindable
         });
     }
 
-    private PushButton pushButton_;
+    //private PushButton pushButton_ = null;
+    @BXML private PushButton pushButton_ = null;
 }

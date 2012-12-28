@@ -2,6 +2,7 @@ package com.sangwook.ext.apache_pivot;
 
 import java.net.URL;
  
+import org.apache.pivot.beans.BXML;
 import org.apache.pivot.beans.Bindable;
 import org.apache.pivot.collections.Map;
 import org.apache.pivot.util.Resources;
@@ -18,7 +19,7 @@ public class RadioButtonWindow extends Window implements Bindable
     @Override
     public void initialize(Map<String, Object> namespace, URL location, Resources resources)
     {
-    	selectButton_ = (PushButton)namespace.get("selectButton");
+    	//selectButton_ = (PushButton)namespace.get("selectButton_");
         
         // Get a reference to the button group
         final ButtonGroup numbersGroup = (ButtonGroup)namespace.get("numbers");
@@ -35,5 +36,6 @@ public class RadioButtonWindow extends Window implements Bindable
         });
     }
 
-    private PushButton selectButton_ = null;
+    //private PushButton selectButton_ = null;
+    @BXML private PushButton selectButton_ = null;
 }
