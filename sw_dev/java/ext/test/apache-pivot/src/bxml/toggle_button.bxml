@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Window title="Toggle Buttons" maximized="true"
+    xmlns:bxml="http://pivot.apache.org/bxml"
+    xmlns:content="org.apache.pivot.wtk.content"
+    xmlns="org.apache.pivot.wtk">
+    <BoxPane styles="{padding:4, horizontalAlignment:'center',
+        verticalAlignment:'center'}">
+        <PushButton toggleButton="true">
+            <content:ButtonData text="Anchor" icon="@image/anchor.png"/>
+        </PushButton>
+        <PushButton toggleButton="true">
+            <content:ButtonData text="Cup" icon="@image/cup.png"/>
+        </PushButton>
+        <PushButton toggleButton="true">
+            <content:ButtonData text="Star" icon="@image/star.png"/>
+        </PushButton>
+    </BoxPane>
+</Window>

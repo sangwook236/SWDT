@@ -5,18 +5,18 @@ import org.apache.pivot.wtk.Display;
 import org.apache.pivot.wtk.Window;
 import org.apache.pivot.wtk.DesktopApplicationContext;
 
-public class HelloBXML implements Application
+public class CheckboxTest implements Application
 {
 	public static void run(String[] args)
 	{
-	    DesktopApplicationContext.main(HelloBXML.class, args);
+	    DesktopApplicationContext.main(CheckboxTest.class, args);
 	}
 	
 	@Override
     public void startup(Display display, Map<String, String> properties) throws Exception
     {
         BXMLSerializer bxmlSerializer = new BXMLSerializer();
-        window_ = (Window)bxmlSerializer.readObject(HelloBXML.class, "bxml/hello.bxml");
+        window_ = (Window)bxmlSerializer.readObject(CheckboxTest.class, "bxml/checkbox.bxml");
         window_.open(display);
     }
  

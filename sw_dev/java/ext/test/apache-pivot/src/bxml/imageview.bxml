@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Window title="SVG Images" maximized="true"
+    xmlns:bxml="http://pivot.apache.org/bxml"
+    xmlns="org.apache.pivot.wtk">
+    <Border>
+        <ScrollPane horizontalScrollBarPolicy="fill_to_capacity" verticalScrollBarPolicy="fill_to_capacity">
+            <BoxPane styles="{horizontalAlignment:'center', verticalAlignment:'center'}">
+                <BoxPane orientation="vertical" styles="{horizontalAlignment:'center', spacing:10}">
+                    <ImageView image="@image/logo.svg" preferredWidth="64" preferredHeight="64" styles="{fill:true}"/>
+                    <Label text="SVG"/>
+                </BoxPane>
+ 
+                <BoxPane orientation="vertical" styles="{horizontalAlignment:'center', spacing:10}">
+                    <ImageView image="@image/logo-64x64.png"/>
+                    <Label text="PNG"/>
+                </BoxPane>
+            </BoxPane>
+        </ScrollPane>
+    </Border>
+</Window>

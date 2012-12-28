@@ -2,11 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="D:/work_center/sw_dev/java/ext/lib/pivot-charts-2.0.2.jar"/>
-	<classpathentry kind="lib" path="D:/work_center/sw_dev/java/ext/lib/pivot-core-2.0.2.jar"/>
-	<classpathentry kind="lib" path="D:/work_center/sw_dev/java/ext/lib/pivot-web-2.0.2.jar"/>
-	<classpathentry kind="lib" path="D:/work_center/sw_dev/java/ext/lib/pivot-web-server-2.0.2.jar"/>
-	<classpathentry kind="lib" path="D:/work_center/sw_dev/java/ext/lib/pivot-wtk-2.0.2.jar"/>
-	<classpathentry kind="lib" path="D:/work_center/sw_dev/java/ext/lib/pivot-wtk-terra-2.0.2.jar"/>
+	<classpathentry kind="lib" path="G:/sangwook/work_center/sw_dev/java/ext/lib/pivot-charts-2.0.2.jar"/>
+	<classpathentry kind="lib" path="G:/sangwook/work_center/sw_dev/java/ext/lib/pivot-core-2.0.2.jar"/>
+	<classpathentry kind="lib" path="G:/sangwook/work_center/sw_dev/java/ext/lib/pivot-web-2.0.2.jar"/>
+	<classpathentry kind="lib" path="G:/sangwook/work_center/sw_dev/java/ext/lib/pivot-web-server-2.0.2.jar"/>
+	<classpathentry kind="lib" path="G:/sangwook/work_center/sw_dev/java/ext/lib/pivot-wtk-2.0.2.jar"/>
+	<classpathentry kind="lib" path="G:/sangwook/work_center/sw_dev/java/ext/lib/pivot-wtk-terra-2.0.2.jar"/>
+	<classpathentry kind="lib" path="G:/sangwook/work_center/sw_dev/java/ext/lib/svgSalamander-tiny.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,22 +1,22 @@
 import org.apache.pivot.beans.BXMLSerializer;
 import org.apache.pivot.collections.Map;
-import org.apache.pivot.wtk.Application;
 import org.apache.pivot.wtk.Display;
 import org.apache.pivot.wtk.Window;
+import org.apache.pivot.wtk.Application;
 import org.apache.pivot.wtk.DesktopApplicationContext;
 
-public class HelloBXML implements Application
+public class PushButtonTest implements Application
 {
 	public static void run(String[] args)
 	{
-	    DesktopApplicationContext.main(HelloBXML.class, args);
+	    DesktopApplicationContext.main(PushButtonTest.class, args);
 	}
 	
 	@Override
     public void startup(Display display, Map<String, String> properties) throws Exception
     {
         BXMLSerializer bxmlSerializer = new BXMLSerializer();
-        window_ = (Window)bxmlSerializer.readObject(HelloBXML.class, "bxml/hello.bxml");
+        window_ = (Window)bxmlSerializer.readObject(PushButtonTest.class, "bxml/push_button.bxml");
         window_.open(display);
     }
  

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<buttons:RadioButtonWindow title="Push Buttons" maximized="true"
+    xmlns:bxml="http://pivot.apache.org/bxml"
+    xmlns:buttons="com.sangwook.ext.apache_pivot"
+    xmlns="org.apache.pivot.wtk">
+    <Border>
+        <BoxPane orientation="vertical" styles="{padding:4}">
+            <bxml:define>
+                <ButtonGroup bxml:id="numbers"/>
+            </bxml:define>
+            <RadioButton bxml:id="oneButton" buttonData="One" buttonGroup="$numbers" selected="true"/>
+            <RadioButton bxml:id="twoButton" buttonData="Two" buttonGroup="$numbers"/>
+            <RadioButton bxml:id="threeButton" buttonData="Three" buttonGroup="$numbers"/>
+            <PushButton bxml:id="selectButton" buttonData="Select"/>
+        </BoxPane>
+    </Border>
+</buttons:RadioButtonWindow>
