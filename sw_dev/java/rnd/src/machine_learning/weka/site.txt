@@ -1,4 +1,5 @@
 http://www.cs.waikato.ac.nz/ml/weka/
 http://www.cs.waikato.ac.nz/ml/
 
+http://weka.sourceforge.net/doc/
 http://sourceforge.net/projects/weka/files/

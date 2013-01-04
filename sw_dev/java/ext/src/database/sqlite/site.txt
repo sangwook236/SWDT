@@ -1,0 +1,2 @@
+http://www.xerial.org/trac/Xerial/wiki/SQLiteJDBC
+http://code.google.com/p/sqlite-jdbc/
