@@ -18,8 +18,8 @@ rem export LIB_PATH1=/usr/local/lib
 set LIB_PATH1=D:\work_center\sw_dev\java\ext\lib
 set LIB_PATH2=D:\work_center\sw_dev\java\rnd\lib
 
-rem export CLASSPATH=.:$LIB_PATH1/j3dcore.jar:$LIB_PATH1/j3dutils.jar:$LIB_PATH1/sqlite-jdbc-3.7.2.jar:$CLASSPATH
-set CLASSPATH=.;%LIB_PATH1%\j3dcore.jar;%LIB_PATH1%\j3dutils.jar;%LIB_PATH1%\sqlite-jdbc-3.7.2.jar;%CLASSPATH%
+rem export CLASSPATH=.:$LIB_PATH1/sqlite-jdbc-3.7.2.jar:$LIB_PATH1/mysql-connector-java-5.1.22-bin.jar:$LIB_PATH1/j3dcore.jar:$LIB_PATH1/j3dutils.jar:$CLASSPATH
+set CLASSPATH=.;%LIB_PATH1%\sqlite-jdbc-3.7.2.jar;%LIB_PATH1%\mysql-connector-java-5.1.22-bin.jar;%LIB_PATH1%\j3dcore.jar;%LIB_PATH1%\j3dutils.jar;%CLASSPATH%
 
 rem export MAX_JAVA_MEMORY=800
 rem set MAX_JAVA_MEMORY=800

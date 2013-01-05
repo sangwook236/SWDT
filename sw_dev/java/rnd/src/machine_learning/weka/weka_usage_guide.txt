@@ -1,0 +1,9 @@
+[-] Database
+	-. copy a file, DatabaseUtils.props to $WEKA_HOME/props
+	-. edit DatabaseUtils.props
+	-. 참고할 DatabaseUtils.props file은 아래의 jar file에서 찾을 수 있음.
+		weka.jar의 weka/experiment/DatabaseUtils.props.*
+
+[-] Linking External Library
+	-. Massive Online Analysis (MOA)
+		copy a file, moa.jar to $WEKA_HOME/packages/massiveOnlineAnalysis
