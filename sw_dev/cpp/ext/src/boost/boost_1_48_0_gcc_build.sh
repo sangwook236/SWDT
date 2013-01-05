@@ -1,4 +1,3 @@
-#!/bin/sh
 
 # bjam {stage/install/clean} release debug --toolset=gcc optimization={off/full/space/speed} link=static,shared threading=single,multi runtime-link=single,shared --build-type=complete
 
