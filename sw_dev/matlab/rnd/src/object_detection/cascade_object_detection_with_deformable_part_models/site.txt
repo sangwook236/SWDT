@@ -1,0 +1,6 @@
+http://people.cs.uchicago.edu/~rbg/star-cascade/
+https://github.com/rbgirshick/star-cascade
+
+http://people.cs.uchicago.edu/~rbg/latent/
+
+http://people.cs.uchicago.edu/~rbg/
