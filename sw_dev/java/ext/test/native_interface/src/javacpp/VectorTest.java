@@ -1,3 +1,5 @@
+package javacpp;
+
 import com.googlecode.javacpp.*;
 import com.googlecode.javacpp.annotation.*;
 
@@ -30,7 +32,8 @@ public class VectorTest {
         public native void put(long i, long j, Pointer p); // (*this)[i][j] = p
     }
 
-    public static void main(String[] args) {
+    public static void run(String[] args)
+    {
         PointerVectorVector v = new PointerVectorVector(13);
         v.resize(0, 42); // v[0].resize(42)
         Pointer p = new Pointer() { { address = 0xDEADBEEFL; } };

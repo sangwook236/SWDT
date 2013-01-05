@@ -1,6 +1,6 @@
-package json;
+package graphchi;
 
-public class JSONMain {
+public class GraphChiMain {
 	public static void run(String[] args)
 	{
 		System.err.println("not yet implemented");

@@ -1,3 +1,5 @@
+package javacpp;
+
 import com.googlecode.javacpp.*;
 import com.googlecode.javacpp.annotation.*;
 
@@ -7,7 +9,8 @@ public class Processor {
 
     public static native void process(java.nio.Buffer buffer, int size);
 
-    public static void main(String[] args) {
+    public static void run(String[] args)
+    {
         process(null, 0);
     }
 }

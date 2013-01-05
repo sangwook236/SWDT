@@ -1,6 +1,6 @@
-package json;
+package jboost;
 
-public class JSONMain {
+public class JBoostMain {
 	public static void run(String[] args)
 	{
 		System.err.println("not yet implemented");
