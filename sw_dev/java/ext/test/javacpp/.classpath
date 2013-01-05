@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/work_center/sw_dev/java/ext/lib/javacpp.jar" sourcepath="D:/work_center/sw_dev/java/ext/src/native_interface/javacpp/javacpp-0.3-src/javacpp"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
