@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="serialization" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="..\..\bin\serialization" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin\" />
+				<Option object_output=".\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="..\..\bin\serialization" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin\" />
+				<Option object_output=".\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add option="-DUNICODE" />
+			<Add option="-D_UNICODE" />
+			<Add directory="\usr\local\include" />
+		</Compiler>
+		<Linker>
+			<Add library="yaml-cpp" />
+			<Add directory="\usr\local\lib" />
+		</Linker>
+		<Unit filename="main.cpp" />
+		<Unit filename="protobuf\protobuf_main.cpp" />
+		<Unit filename="protobuf\protobuf_person.pb.cc" />
+		<Unit filename="protobuf\protobuf_person.pb.h" />
+		<Unit filename="protobuf\protobuf_simple_example.cpp" />
+		<Unit filename="yaml\yaml_basic_emitting.cpp" />
+		<Unit filename="yaml\yaml_basic_parsing.cpp" />
+		<Unit filename="yaml\yaml_main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

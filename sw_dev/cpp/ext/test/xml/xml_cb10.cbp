@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="xml" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="..\..\bin\xml" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin\" />
+				<Option object_output=".\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="..\..\bin\xml" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin\" />
+				<Option object_output=".\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add option="-DUNICODE" />
+			<Add option="-D_UNICODE" />
+		</Compiler>
+		<Linker>
+			<Add library="xerces-c" />
+		</Linker>
+		<Unit filename="main.cpp" />
+		<Unit filename="xercesc\DOMPrintErrorHandler.cpp" />
+		<Unit filename="xercesc\DOMPrintErrorHandler.hpp" />
+		<Unit filename="xercesc\DOMPrintFilter.cpp" />
+		<Unit filename="xercesc\DOMPrintFilter.hpp" />
+		<Unit filename="xercesc\DOMTreeErrorReporter.cpp" />
+		<Unit filename="xercesc\DOMTreeErrorReporter.hpp" />
+		<Unit filename="xercesc\xercesc_dom.cpp" />
+		<Unit filename="xercesc\xercesc_main.cpp" />
+		<Unit filename="xercesc\xercesc_sax.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

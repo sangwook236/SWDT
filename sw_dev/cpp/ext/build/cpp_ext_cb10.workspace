@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
-		<Project filename="../test/armadillo/armadillo_cb10.cbp" />
-		<Project filename="../test/atlas/atlas_cb10.cbp" />
 		<Project filename="../test/boost/boost_cb10.cbp" active="1" />
-		<Project filename="../test/cairo/cairo_cb10.cbp" />
-		<Project filename="../test/cgal/cgal_cb10.cbp" />
+		<Project filename="../test/compression/compression_cb10.cbp" />
+		<Project filename="../test/computational_geometry/computational_geometry_cb10.cbp" />
 		<Project filename="../test/cppunit/cppunit_cb10.cbp" />
-		<Project filename="../test/cvm/cvm_cb10.cbp" />
-		<Project filename="../test/devil/devil_cb10.cbp" />
-		<Project filename="../test/eigen/eigen_cb10.cbp" />
-		<Project filename="../test/gd/gd_cb10.cbp" />
-		<Project filename="../test/graphviz/graphviz_cb10.cbp" />
-		<Project filename="../test/gsl/gsl_cb10.cbp" />
-		<Project filename="../test/lapack/lapack_cb10.cbp" />
-		<Project filename="../test/log4cxx/log4cxx_cb10.cbp" />
-		<Project filename="../test/mysql/mysql_cb10.cbp" />
-		<Project filename="../test/openmesh/openmesh_cb10.cbp" />
-		<Project filename="../test/openscenegraph/openscenegraph_cb10.cbp" />
-		<Project filename="../test/plplot/plplot_cb10.cbp" />
-		<Project filename="../test/sqlite/sqlite_cb10.cbp" />
-		<Project filename="../test/xercesc/xercesc_cb10.cbp" />
-		<Project filename="../test/yaml/yaml_cb10.cbp" />
-		<Project filename="../test/zlib/zlib_cb10.cbp" />
-		<Project filename="../test/valgrind/valgrind_cb10.cbp" />
+		<Project filename="../test/database/database_cb10.cbp" />
+		<Project filename="../test/graphics_2d/graphics_2d_cb10.cbp" />
+		<Project filename="../test/graphics_3d/graphics_3d_cb10.cbp" />
+		<Project filename="../test/linear_algebra/linear_algebra_cb10.cbp" />
+		<Project filename="../test/logging/logging_cb10.cbp" />
+		<Project filename="../test/plotting/plotting_cb10.cbp" />
+		<Project filename="../test/resource_management/resource_management_cb10.cbp" />
+		<Project filename="../test/scientific_computation/scientific_computation_cb10.cbp" />
+		<Project filename="../test/serialization/serialization_cb10.cbp" />
+		<Project filename="../test/visualization/visualization_cb10.cbp" />
+		<Project filename="../test/xml/xml_cb10.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="scientific_computation" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="..\..\bin\scientific_computation" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin\" />
+				<Option object_output=".\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="..\..\bin\scientific_computation" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin\" />
+				<Option object_output=".\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add option="-DUNICODE" />
+			<Add option="-D_UNICODE" />
+		</Compiler>
+		<Linker>
+			<Add library="gsl" />
+		</Linker>
+		<Unit filename="gsl\gsl_cholesky.cpp" />
+		<Unit filename="gsl\gsl_conjugate_gradient.cpp" />
+		<Unit filename="gsl\gsl_distribution.cpp" />
+		<Unit filename="gsl\gsl_eigensystem.cpp" />
+		<Unit filename="gsl\gsl_fft.cpp" />
+		<Unit filename="gsl\gsl_levenberg_marquardt.cpp" />
+		<Unit filename="gsl\gsl_lu.cpp" />
+		<Unit filename="gsl\gsl_main.cpp" />
+		<Unit filename="gsl\gsl_matrix_operation.cpp" />
+		<Unit filename="gsl\gsl_monte_carlo_integration.cpp" />
+		<Unit filename="gsl\gsl_multidim_minimization.cpp" />
+		<Unit filename="gsl\gsl_pca.cpp" />
+		<Unit filename="gsl\gsl_polynomial_root_finding.cpp" />
+		<Unit filename="gsl\gsl_qr.cpp" />
+		<Unit filename="gsl\gsl_random_sample.cpp" />
+		<Unit filename="gsl\gsl_root_finding.cpp" />
+		<Unit filename="gsl\gsl_simulated_annealing.cpp" />
+		<Unit filename="gsl\gsl_svd.cpp" />
+		<Unit filename="gsl\gsl_vector_operation.cpp" />
+		<Unit filename="gslwrap\gslwrap_main.cpp" />
+		<Unit filename="gslwrap\gslwrap_test.cpp" />
+		<Unit filename="gslwrap\gslwrap_test_min.cpp" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

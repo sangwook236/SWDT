@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="graphics_3d" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="..\..\bin\graphics_3d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin\" />
+				<Option object_output=".\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="..\..\bin\graphics_3d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin\" />
+				<Option object_output=".\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add option="-DUNICODE" />
+			<Add option="-D_UNICODE" />
+		</Compiler>
+		<Linker>
+			<Add library="osg" />
+			<Add library="osgAnimation" />
+			<Add library="osgDB" />
+			<Add library="osgFX" />
+			<Add library="osgGA" />
+			<Add library="osgManipulator" />
+			<Add library="osgParticle" />
+			<Add library="osgQt" />
+			<Add library="osgShadow" />
+			<Add library="osgSim" />
+			<Add library="osgTerrain" />
+			<Add library="osgText" />
+			<Add library="osgUtil" />
+			<Add library="osgViewer" />
+			<Add library="osgVolume" />
+			<Add library="osgWidget" />
+			<Add library="OpenThreads" />
+		</Linker>
+		<Unit filename="main.cpp" />
+		<Unit filename="openscenegraph\osg_basic_geometry.cpp" />
+		<Unit filename="openscenegraph\osg_main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
