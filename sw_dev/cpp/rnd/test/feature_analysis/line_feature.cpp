@@ -97,9 +97,11 @@ void lsd_image_test()
 }  // namespace local
 }  // unnamed namespace
 
-void line_feature()
+int line_feature_main(int argc, char *argv[])
 {
 	// line segment detector (LSD)
 	//local::lsd_example();
 	local::lsd_image_test();
+
+	return 0;
 }
