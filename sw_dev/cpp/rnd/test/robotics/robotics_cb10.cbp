@@ -34,18 +34,22 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="dijkstra.cpp" />
-		<Unit filename="feature_extraction_and_matching.cpp" />
-		<Unit filename="icp.cpp" />
-		<Unit filename="localization_pf.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="map_handling.cpp" />
-		<Unit filename="path_planning.cpp" />
-		<Unit filename="ransac.cpp" />
-		<Unit filename="rawlog.cpp" />
-		<Unit filename="rawlog_grabber.cpp" />
-		<Unit filename="slam_icp.cpp" />
-		<Unit filename="slam_kf.cpp" />
+		<Unit filename="mrpt\mrpt_dijkstra.cpp" />
+		<Unit filename="mrpt\mrpt_feature_extraction_and_matching.cpp" />
+		<Unit filename="mrpt\mrpt_icp.cpp" />
+		<Unit filename="mrpt\mrpt_localization_pf.cpp" />
+		<Unit filename="mrpt\mrpt_main.cpp" />
+		<Unit filename="mrpt\mrpt_map_handling.cpp" />
+		<Unit filename="mrpt\mrpt_path_planning.cpp" />
+		<Unit filename="mrpt\mrpt_ransac.cpp" />
+		<Unit filename="mrpt\mrpt_rawlog.cpp" />
+		<Unit filename="mrpt\mrpt_rawlog_grabber.cpp" />
+		<Unit filename="mrpt\mrpt_slam_icp.cpp" />
+		<Unit filename="mrpt\mrpt_slam_kf.cpp" />
+		<Unit filename="player_stage\player_stage_main.cpp" />
+		<Unit filename="player_stage\player_stage_rubbish_collecting_robot.cpp" />
+		<Unit filename="player_stage\player_stage_simple_example.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

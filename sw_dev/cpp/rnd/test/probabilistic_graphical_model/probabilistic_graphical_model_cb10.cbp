@@ -7,9 +7,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/probabilistic_graphical_model" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="../../bin/" />
-				<Option object_output="./Debug/" />
+				<Option output="..\..\bin\probabilistic_graphical_model" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\bin\" />
+				<Option object_output=".\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -17,8 +17,8 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="../../bin/probabilistic_graphical_model" prefix_auto="1" extension_auto="1" />
-				<Option object_output="./Release/" />
+				<Option output="..\..\bin\probabilistic_graphical_model" prefix_auto="1" extension_auto="1" />
+				<Option object_output=".\Release\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -32,33 +32,90 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="/usr/local/include/mocapy" />
+			<Add directory="\usr\local\include\mocapy" />
 		</Compiler>
 		<Linker>
 			<Add library="Mocapy" />
 			<Add library="lapack" />
 			<Add library="boost_serialization" />
 		</Linker>
-		<Unit filename="hmm_forward_backward.cpp" />
-		<Unit filename="hmm_learning.cpp" />
-		<Unit filename="hmm_sample.cpp" />
-		<Unit filename="hmm_viterbi.cpp" />
+		<Unit filename="bp_vision\bp_vision_main.cpp" />
+		<Unit filename="bp_vision_lib\convolve.h" />
+		<Unit filename="bp_vision_lib\filter.h" />
+		<Unit filename="bp_vision_lib\image.h" />
+		<Unit filename="bp_vision_lib\imconv.h" />
+		<Unit filename="bp_vision_lib\imutil.h" />
+		<Unit filename="bp_vision_lib\misc.h" />
+		<Unit filename="bp_vision_lib\noise.cpp" />
+		<Unit filename="bp_vision_lib\pnmfile.h" />
+		<Unit filename="bp_vision_lib\restore.cpp" />
+		<Unit filename="bp_vision_lib\stereo.cpp" />
+		<Unit filename="crfpp\crfpp_main.cpp" />
+		<Unit filename="cuda_cut\cuda_cut_main.cpp" />
+		<Unit filename="hcrf\hcrf_main.cpp" />
+		<Unit filename="hmm\hmm_forward_backward.cpp" />
+		<Unit filename="hmm\hmm_learning.cpp" />
+		<Unit filename="hmm\hmm_main.cpp" />
+		<Unit filename="hmm\hmm_sample.cpp" />
+		<Unit filename="hmm\hmm_viterbi.cpp" />
+		<Unit filename="hmm\viterbi.cpp" />
+		<Unit filename="hmm\viterbi.hpp" />
+		<Unit filename="hmm\viterbi_algorithm.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="mocapy_discrete_hmm.cpp" />
-		<Unit filename="mocapy_main.cpp" />
-		<Unit filename="umdhmm_backward.cpp" />
-		<Unit filename="umdhmm_baum.cpp" />
-		<Unit filename="umdhmm_forward.cpp" />
-		<Unit filename="umdhmm_hmm.h" />
-		<Unit filename="umdhmm_hmmrand.cpp" />
-		<Unit filename="umdhmm_hmmutils.cpp" />
-		<Unit filename="umdhmm_nrutil.cpp" />
-		<Unit filename="umdhmm_nrutil.h" />
-		<Unit filename="umdhmm_sequence.cpp" />
-		<Unit filename="umdhmm_viterbi.cpp" />
-		<Unit filename="viterbi.cpp" />
-		<Unit filename="viterbi.hpp" />
-		<Unit filename="viterbi_algorithm.cpp" />
+		<Unit filename="middlebury\middlebury_main.cpp" />
+		<Unit filename="middlebury_lib\BP-S.cpp" />
+		<Unit filename="middlebury_lib\BP-S.h" />
+		<Unit filename="middlebury_lib\GCoptimization.cpp" />
+		<Unit filename="middlebury_lib\GCoptimization.h" />
+		<Unit filename="middlebury_lib\ICM.cpp" />
+		<Unit filename="middlebury_lib\ICM.h" />
+		<Unit filename="middlebury_lib\LinkedBlockList.cpp" />
+		<Unit filename="middlebury_lib\LinkedBlockList.h" />
+		<Unit filename="middlebury_lib\MaxProdBP.cpp" />
+		<Unit filename="middlebury_lib\MaxProdBP.h" />
+		<Unit filename="middlebury_lib\TRW-S.cpp" />
+		<Unit filename="middlebury_lib\TRW-S.h" />
+		<Unit filename="middlebury_lib\block.h" />
+		<Unit filename="middlebury_lib\energy.h" />
+		<Unit filename="middlebury_lib\example.cpp" />
+		<Unit filename="middlebury_lib\graph.cpp" />
+		<Unit filename="middlebury_lib\graph.h" />
+		<Unit filename="middlebury_lib\maxflow.cpp" />
+		<Unit filename="middlebury_lib\mrf.cpp" />
+		<Unit filename="middlebury_lib\mrf.h" />
+		<Unit filename="middlebury_lib\regions-maxprod.cpp" />
+		<Unit filename="middlebury_lib\regions-new.h" />
+		<Unit filename="middlebury_lib\typeTruncatedQuadratic2D.h" />
+		<Unit filename="mocapy\mocapy_discrete_hmm.cpp" />
+		<Unit filename="mocapy\mocapy_main.cpp" />
+		<Unit filename="pnl\pnl_bayesian_network.cpp" />
+		<Unit filename="pnl\pnl_bayesian_network_example.cpp" />
+		<Unit filename="pnl\pnl_dbn.cpp" />
+		<Unit filename="pnl\pnl_dbn_example.cpp" />
+		<Unit filename="pnl\pnl_hmm.cpp" />
+		<Unit filename="pnl\pnl_main.cpp" />
+		<Unit filename="pnl\pnl_mnet_example.cpp" />
+		<Unit filename="pnl\pnl_mrf2.cpp" />
+		<Unit filename="pnl\pnl_mrf_example.cpp" />
+		<Unit filename="pnl\pnl_super_resolution.cpp" />
+		<Unit filename="pnl\pnl_viterbi_segmentation.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_backward.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_baum.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_cdhmm.h" />
+		<Unit filename="umdhmm_lib\umdhmm_cdhmm_backward.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_cdhmm_baum.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_cdhmm_forward.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_cdhmm_sequence.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_cdhmm_utils.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_cdhmm_viterbi.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_forward.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_hmm.h" />
+		<Unit filename="umdhmm_lib\umdhmm_hmmrand.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_hmmutils.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_nrutil.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_nrutil.h" />
+		<Unit filename="umdhmm_lib\umdhmm_sequence.cpp" />
+		<Unit filename="umdhmm_lib\umdhmm_viterbi.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
