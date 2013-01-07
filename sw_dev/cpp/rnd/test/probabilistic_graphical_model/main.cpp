@@ -3,32 +3,76 @@
 #include <vld/vld.h>
 #endif
 #include <iostream>
+#include <ctime>
 
 
-int main(int argc, char **argv)
+namespace {
+namespace local {
+
+void inference_using_graphcut()
 {
-	void mrf();
-	void hmm_sample();
-	void hmm_forward_backward();
-	void hmm_viterbi();
-	void hmm_learning();
-	void mocapy_main();
+	throw std::runtime_error("not yet implemented");
+}
+
+void inference_using_belief_propagation()
+{
+	throw std::runtime_error("not yet implemented");
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+int main(int argc, char *argv[])
+{
+	int bp_vision_main(int argc, char *argv[]);
+	int cuda_cut_main(int argc, char *argv[]);
+
+	int hmm_main(int argc, char *argv[]);
+
+	int middlebury_main(int argc, char *argv[]);
+
+	int crfpp_main(int argc, char *argv[]);
+	int hcrf_main(int argc, char *argv[]);
+
+	int pnl_main(int argc, char *argv[]);
+	int mocapy_main(int argc, char *argv[]);
 
 	try
 	{
-		// Markov network
-		//mrf();  // not yet implemented
+		std::srand((unsigned int)std::time(NULL));
+
+		{
+			//local::inference_using_graphcut();  // not yet implemented
+			//local::inference_using_belief_propagation();  // not yet implemented
+
+			// belief propagation (BP) algorithm
+			//bp_vision_main(argc, argv);
+
+			// graph-cuts algorithm
+			//cuda_cut_main(argc, argv);  // not yet implemented
+		}
 
         // hidden Markov model (HMM)
-		//hmm_sample();
-		//hmm_forward_backward();
-		//hmm_viterbi();
-		hmm_learning();
+		//hmm_main(argc, argv);
+
+		// Markov random field (MRF)
+		//middlebury_main(argc, argv);
+
+		// conditional random field (CRF)
+		//crfpp_main(argc, argv);
+		hcrf_main(argc, argv);
 
 		// dynamic Bayesian network (DBN)
 
+		// PNL library
+		//pnl_main(argc, argv);
+
 		// Mocapy++ library
-		//mocapy_main();
+		//mocapy_main(argc, argv);
+	}
+    catch (const std::bad_alloc &e)
+	{
+		std::cout << "std::bad_alloc occurred !!!: " << e.what() << std::endl;
 	}
 	catch (const std::exception &e)
 	{

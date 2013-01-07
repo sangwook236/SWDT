@@ -26,7 +26,7 @@
 * For further details, contact Andreas Ess (aess@vision.ee.ethz.ch).
 */
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -38,16 +38,16 @@
 #endif
 #include <surf/surflib.h>
 
-#include "imload.h"
-#include "os_mapping.h"
+#include "surf_imload.h"
+#include "surf_os_mapping.h"
 
 using namespace surf;
 
-// Length of the descriptor std::vector
-int VLength;
-
 namespace {
 namespace local {
+	
+// Length of the descriptor std::vector
+int VLength;
 
 // Save the interest points to a regular ASCII file
 void saveIpoints(std::string sFileName, const std::vector<Ipoint>& ipts, bool bVerbose, bool bLaplacian) 
@@ -275,7 +275,7 @@ int surf_main(int argc, char *argv[])
 	if (bLoadRegions)
 	{
 		// Load the interest points from disk
-		loadIpoints(sRegionFile, ipts, bVerbose);
+		local::loadIpoints(sRegionFile, ipts, bVerbose);
 	}
 	else
 	{
@@ -293,7 +293,7 @@ int surf_main(int argc, char *argv[])
 	);
 
 	// Get the length of the descriptor std::vector resulting from the parameters
-	VLength = des.getVectLength();
+	local::VLength = des.getVectLength();
 
 	// Compute the orientation and the descriptor for every interest point
 	for (unsigned n = 0; n < ipts.size(); ++n)
@@ -311,7 +311,7 @@ int surf_main(int argc, char *argv[])
 	osmapping::os_GetTime(&tim2);
 
 	// save the interest points in the output file
-	saveIpoints(fn, ipts, bVerbose, bLaplacian);
+	local::saveIpoints(fn, ipts, bVerbose, bLaplacian);
 
 	// print some nice information on the command prompt
 	if (bVerbose)

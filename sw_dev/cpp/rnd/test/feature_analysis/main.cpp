@@ -7,24 +7,28 @@
 
 int main(int argc, char *argv[])
 {
-	int line_feature_main(int argc, char *argv[]);
-	int surf_main(int argc, char *argv[]);
-	int siftgpu_main(int argc, char *argv[]);
+	int lsd_main(int argc, char *argv[]);
 	int sift_main(int argc, char *argv[]);
-	int pictorial_structure_main(int argc, char *argv[]);
+	int siftgpu_main(int argc, char *argv[]);
+	int surf_main(int argc, char *argv[]);
+	int pictorial_structure_revisited_main(int argc, char *argv[]);
+	int vlfeat_main(int argc, char *argv[]);
 
 	try
 	{
 		// line feature
-		//line_feature_main(argc, argv);
+		lsd_main(argc, argv);
 
-		//
-		surf_main(argc, argv);
-		siftgpu_main(argc, argv);
-		sift_main(argc, argv);
+		// local descriptor
+		//sift_main(argc, argv);
+		//siftgpu_main(argc, argv);  // run-time error
+		//surf_main(argc, argv);  // run-time error
 		
 		// pictorial structure
-		pictorial_structure_main(argc, argv);
+		//pictorial_structure_revisited_main(argc, argv);  // run-time error
+
+		//
+		//vlfeat_main(argc, argv);  // not yet implemented
 	}
 	catch (const std::exception &e)
 	{

@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>machine_vision</ProjectName>
+    <ProjectGuid>{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}</ProjectGuid>
+    <RootNamespace>machine_vision</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../bin/</OutDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../bin/</OutDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../inc/opencv-2.4.2;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opencv_core242d.lib;opencv_imgproc242d.lib;opencv_highgui242d.lib;opencv_ml242d.lib;opencv_features2d242d.lib;opencv_objdetect242d.lib;opencv_flann242d.lib;opencv_video242d.lib;opencv_videostab242d.lib;opencv_calib3d242d.lib;opencv_photo242d.lib;opencv_stitching242d.lib;opencv_legacy242d.lib;opencv_contrib242d.lib;opencv_gpu242d.lib;opencv_ts242d.lib;opencv_nonfree242d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>../../inc/opencv-2.4.2;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opencv_core242.lib;opencv_imgproc242.lib;opencv_highgui242.lib;opencv_ml242.lib;opencv_features2d242.lib;opencv_objdetect242.lib;opencv_flann242.lib;opencv_video242.lib;opencv_videostab242.lib;opencv_calib3d242.lib;opencv_photo242.lib;opencv_stitching242.lib;opencv_legacy242.lib;opencv_contrib242.lib;opencv_gpu242.lib;opencv_ts242.lib;opencv_nonfree242.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="opencv\opencv_bag_of_words.cpp" />
+    <ClCompile Include="opencv\opencv_camera_geometry.cpp" />
+    <ClCompile Include="opencv\opencv_chamfer_matching.cpp" />
+    <ClCompile Include="opencv\opencv_change_detection.cpp" />
+    <ClCompile Include="opencv\opencv_clustering.cpp" />
+    <ClCompile Include="opencv\opencv_color_correction.cpp" />
+    <ClCompile Include="opencv\opencv_color_filtering.cpp" />
+    <ClCompile Include="opencv\opencv_convex_hull.cpp" />
+    <ClCompile Include="opencv\opencv_convolution_correlation.cpp" />
+    <ClCompile Include="opencv\opencv_distance_transform.cpp" />
+    <ClCompile Include="opencv\opencv_edge_detection.cpp" />
+    <ClCompile Include="opencv\opencv_face_detection.cpp" />
+    <ClCompile Include="opencv\opencv_face_detection_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_feature_description.cpp" />
+    <ClCompile Include="opencv\opencv_feature_extraction.cpp" />
+    <ClCompile Include="opencv\opencv_feature_extraction_and_matching.cpp" />
+    <ClCompile Include="opencv\opencv_feature_extraction_and_matching_by_signature.cpp" />
+    <ClCompile Include="opencv\opencv_feature_extraction_and_matching_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_feature_matching.cpp" />
+    <ClCompile Include="opencv\opencv_fourier_transform.cpp" />
+    <ClCompile Include="opencv\opencv_generic_description_and_matching.cpp" />
+    <ClCompile Include="opencv\opencv_gesture_recognition.cpp" />
+    <ClCompile Include="opencv\opencv_hand_detection.cpp" />
+    <ClCompile Include="opencv\opencv_hand_pose_estimation.cpp" />
+    <ClCompile Include="opencv\opencv_histogram.cpp" />
+    <ClCompile Include="opencv\opencv_histogram_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_homography.cpp" />
+    <ClCompile Include="opencv\opencv_hough_transform.cpp" />
+    <ClCompile Include="opencv\opencv_human_detection.cpp" />
+    <ClCompile Include="opencv\opencv_human_detection_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_image_conversion.cpp" />
+    <ClCompile Include="opencv\opencv_image_filtering.cpp" />
+    <ClCompile Include="opencv\opencv_image_filtering_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_image_gradient.cpp" />
+    <ClCompile Include="opencv\opencv_image_labeling_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_image_operation.cpp" />
+    <ClCompile Include="opencv\opencv_image_processing_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_image_pyramid.cpp" />
+    <ClCompile Include="opencv\opencv_image_sequence.cpp" />
+    <ClCompile Include="opencv\opencv_iterative_closest_point.cpp" />
+    <ClCompile Include="opencv\opencv_kalman_filtering.cpp" />
+    <ClCompile Include="opencv\opencv_learning.cpp" />
+    <ClCompile Include="opencv\opencv_main.cpp" />
+    <ClCompile Include="opencv\opencv_matrix_operation.cpp" />
+    <ClCompile Include="opencv\opencv_matrix_operation_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_morphological_operation.cpp" />
+    <ClCompile Include="opencv\opencv_motion_history_image.cpp" />
+    <ClCompile Include="opencv\opencv_motion_segmentation.cpp" />
+    <ClCompile Include="opencv\opencv_object_detection.cpp" />
+    <ClCompile Include="opencv\opencv_object_tracking.cpp" />
+    <ClCompile Include="opencv\opencv_optical_flow.cpp" />
+    <ClCompile Include="opencv\opencv_outlier_removal.cpp" />
+    <ClCompile Include="opencv\opencv_pca.cpp" />
+    <ClCompile Include="opencv\opencv_segmentation.cpp" />
+    <ClCompile Include="opencv\opencv_shape_finding.cpp" />
+    <ClCompile Include="opencv\opencv_shape_matching.cpp" />
+    <ClCompile Include="opencv\opencv_skin_color_filtering.cpp" />
+    <ClCompile Include="opencv\opencv_snake.cpp" />
+    <ClCompile Include="opencv\opencv_stereo_matching.cpp" />
+    <ClCompile Include="opencv\opencv_stereo_matching_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_template_matching.cpp" />
+    <ClCompile Include="opencv\opencv_text_output.cpp" />
+    <ClCompile Include="opencv\opencv_vector_operation.cpp" />
+    <ClCompile Include="opencv\PascalVocDataset.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="opencv\PascalVocDataset.h" />
+    <ClInclude Include="opencv\vehicle_classification.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

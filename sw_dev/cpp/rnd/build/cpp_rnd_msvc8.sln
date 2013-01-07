@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
+﻿Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "levmar", "..\test\levmar\levmar_msvc8.vcproj", "{8E270D67-5EF0-44D5-8348-4A0452BA76FB}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -7,13 +6,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "levmar", "..\test\levmar\le
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mrpt", "..\test\mrpt\mrpt_msvc8.vcproj", "{93592987-4FB9-4DAE-A0C5-0873910D131C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "robotics", "..\test\robotics\robotics_msvc8.vcproj", "{93592987-4FB9-4DAE-A0C5-0873910D131C}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opencv", "..\test\opencv\opencv_msvc8.vcproj", "{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_vision", "..\test\machine_vision\machine_vision_msvc8.vcproj", "{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
@@ -31,7 +30,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgal", "..\test\cgal\cgal_m
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "galib", "..\test\galib\galib_msvc8.vcproj", "{F47404DC-D671-4C97-8477-9447118B238A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "optimization", "..\test\optimization\optimization_msvc8.vcproj", "{F47404DC-D671-4C97-8477-9447118B238A}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
@@ -55,7 +54,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pnl", "..\test\pnl\pnl_msvc
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ann", "..\test\ann\ann_msvc8.vcproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "search_algorithm", "..\test\search_algorithm\search_algorithm_msvc8.vcproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"

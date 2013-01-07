@@ -26,11 +26,11 @@
  * For further details, contact Andreas Ess (aess@vision.ee.ethz.ch).
  */
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <iostream>
 #include <fstream>
 
-#include "imload.h"
+#include "surf_imload.h"
 #include "surf/image.h"
 
 namespace surf {

@@ -1,14 +1,17 @@
-#include "stdafx.h"
+//#include "stdafx.h"
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include <iostream>
 
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
-	void flood_library();
+	int flood_main(int argc, char *argv[]);
 
 	try
 	{
-		flood_library();  // not yet implemented
+		flood_main(argc, argv);  // not yet implemented
 	}
 	catch (const std::exception &e)
 	{

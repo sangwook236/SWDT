@@ -2,13 +2,13 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "levmar", "..\test\levmar\levmar_msvc9.vcproj", "{8E270D67-5EF0-44D5-8348-4A0452BA76FB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opencv", "..\test\opencv\opencv_msvc9.vcproj", "{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_vision", "..\test\machine_vision\machine_vision_msvc9.vcproj", "{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opencv_win", "..\test\opencv_win\opencv_win_msvc9.vcproj", "{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgal", "..\test\cgal\cgal_msvc9.vcproj", "{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "galib", "..\test\galib\galib_msvc9.vcproj", "{F47404DC-D671-4C97-8477-9447118B238A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "optimization", "..\test\optimization\optimization_msvc9.vcproj", "{F47404DC-D671-4C97-8477-9447118B238A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ode", "..\test\ode\ode_msvc9.vcproj", "{86A474F8-4ABB-46B3-A034-26496D316349}"
 EndProject
@@ -16,7 +16,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "player_stage", "..\test\pla
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pnl", "..\test\pnl\pnl_msvc9.vcproj", "{BC06A474-FED2-48CF-8A39-C48BF645C698}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ann", "..\test\ann\ann_msvc9.vcproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "search_algorithm", "..\test\search_algorithm\search_algorithm_msvc9.vcproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "surf", "..\test\surf\surf_msvc9.vcproj", "{59C66559-8C98-4B6C-8ECF-7E0E4DC8A5CC}"
 EndProject
@@ -26,11 +26,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "neural_network", "..\test\n
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sift", "..\test\sift\sift_msvc9.vcproj", "{C36EAD8E-3383-48A0-A730-21ACE8626233}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mrpt", "..\test\mrpt\mrpt_msvc9.vcproj", "{99406811-DAE3-4378-8EEA-0D50E18D8564}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "robotics", "..\test\robotics\robotics_msvc9.vcproj", "{99406811-DAE3-4378-8EEA-0D50E18D8564}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "siftgpu", "..\test\siftgpu\siftgpu_msvc9.vcproj", "{93BFF29F-9E6F-497F-AFFB-0E38BC633C90}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ransac", "..\test\ransac\ransac_msvc9.vcproj", "{16BFFB33-CD13-4344-A2D8-6DCFC73E4A78}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "robust_estimation", "..\test\robust_estimation\robust_estimation_msvc9.vcproj", "{16BFFB33-CD13-4344-A2D8-6DCFC73E4A78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

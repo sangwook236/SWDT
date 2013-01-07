@@ -86,16 +86,16 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bgscollection\bskde.h" />
-    <ClInclude Include="bgscollection\sobs.h" />
+    <ClInclude Include="bgscollection_lib\bskde.h" />
+    <ClInclude Include="bgscollection_lib\sobs.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bgscollection.cpp" />
-    <ClCompile Include="bgscollection\bskde.cpp" />
-    <ClCompile Include="bgscollection\sobs.cpp" />
-    <ClCompile Include="bgslibrary.cpp" />
+    <ClCompile Include="bgscollection\bgscollection_main.cpp" />
+    <ClCompile Include="bgscollection_lib\bskde.cpp" />
+    <ClCompile Include="bgscollection_lib\sobs.cpp" />
+    <ClCompile Include="bgslibrary\bgslibrary_main.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>

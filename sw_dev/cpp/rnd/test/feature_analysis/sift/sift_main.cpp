@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <opencv2/core/core.hpp>
 #include <iostream>
 
@@ -11,9 +11,9 @@ namespace local {
 
 namespace sift {
 
-void extract_sift_feature();
-void display_sift_feature();
-void match_sift_feature();
+void extract_feature();
+void display_feature();
+void match_feature();
 
 }  // namespace sift
 
@@ -21,9 +21,9 @@ int sift_main(int argc, char *argv[])
 {
 	try
 	{
-		//sift::extract_sift_feature();
-		//sift::display_sift_feature();
-		sift::match_sift_feature();
+		//sift::extract_feature();
+		//sift::display_feature();
+		sift::match_feature();
 	}
 	catch (const cv::Exception &e)
 	{

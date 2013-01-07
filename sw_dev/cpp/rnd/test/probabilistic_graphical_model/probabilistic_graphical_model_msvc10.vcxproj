@@ -51,12 +51,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/mocapy;../../inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../lib/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>pnld.lib;pnl_cxcored.lib;crfpp.lib;hcrf_ompd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -66,7 +67,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/mocapy;../../inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -74,51 +75,110 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>../../lib/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>pnl.lib;pnl_cxcore.lib;crfpp.lib;hcrf_omp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bp_vision_lib\convolve.h" />
+    <ClInclude Include="bp_vision_lib\filter.h" />
+    <ClInclude Include="bp_vision_lib\image.h" />
+    <ClInclude Include="bp_vision_lib\imconv.h" />
+    <ClInclude Include="bp_vision_lib\imutil.h" />
+    <ClInclude Include="bp_vision_lib\misc.h" />
+    <ClInclude Include="bp_vision_lib\pnmfile.h" />
+    <ClInclude Include="hmm\viterbi.hpp" />
+    <ClInclude Include="middlebury_lib\block.h" />
+    <ClInclude Include="middlebury_lib\BP-S.h" />
+    <ClInclude Include="middlebury_lib\energy.h" />
+    <ClInclude Include="middlebury_lib\GCoptimization.h" />
+    <ClInclude Include="middlebury_lib\graph.h" />
+    <ClInclude Include="middlebury_lib\ICM.h" />
+    <ClInclude Include="middlebury_lib\LinkedBlockList.h" />
+    <ClInclude Include="middlebury_lib\MaxProdBP.h" />
+    <ClInclude Include="middlebury_lib\mrf.h" />
+    <ClInclude Include="middlebury_lib\regions-new.h" />
+    <ClInclude Include="middlebury_lib\TRW-S.h" />
+    <ClInclude Include="middlebury_lib\typeTruncatedQuadratic2D.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="umdhmm_hmm.h" />
-    <ClInclude Include="umdhmm_cdhmm.h" />
-    <ClInclude Include="umdhmm_nrutil.h" />
-    <ClInclude Include="viterbi.hpp" />
+    <ClInclude Include="umdhmm_lib\umdhmm_cdhmm.h" />
+    <ClInclude Include="umdhmm_lib\umdhmm_hmm.h" />
+    <ClInclude Include="umdhmm_lib\umdhmm_nrutil.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="hmm_forward_backward.cpp" />
-    <ClCompile Include="hmm_learning.cpp" />
-    <ClCompile Include="hmm_sample.cpp" />
-    <ClCompile Include="hmm_viterbi.cpp" />
+    <ClCompile Include="bp_vision\bp_vision_main.cpp" />
+    <ClCompile Include="bp_vision_lib\noise.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="bp_vision_lib\restore.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="bp_vision_lib\stereo.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="crfpp\crfpp_main.cpp" />
+    <ClCompile Include="cuda_cut\cuda_cut_main.cpp" />
+    <ClCompile Include="hcrf\hcrf_main.cpp" />
+    <ClCompile Include="hmm\hmm_forward_backward.cpp" />
+    <ClCompile Include="hmm\hmm_learning.cpp" />
+    <ClCompile Include="hmm\hmm_main.cpp" />
+    <ClCompile Include="hmm\hmm_sample.cpp" />
+    <ClCompile Include="hmm\hmm_viterbi.cpp" />
+    <ClCompile Include="hmm\viterbi.cpp" />
+    <ClCompile Include="hmm\viterbi_algorithm.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mocapy_discrete_hmm.cpp">
+    <ClCompile Include="middlebury\middlebury_main.cpp" />
+    <ClCompile Include="middlebury_lib\BP-S.cpp" />
+    <ClCompile Include="middlebury_lib\example.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="mocapy_main.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    <ClCompile Include="middlebury_lib\GCoptimization.cpp" />
+    <ClCompile Include="middlebury_lib\graph.cpp" />
+    <ClCompile Include="middlebury_lib\ICM.cpp" />
+    <ClCompile Include="middlebury_lib\LinkedBlockList.cpp" />
+    <ClCompile Include="middlebury_lib\maxflow.cpp" />
+    <ClCompile Include="middlebury_lib\MaxProdBP.cpp" />
+    <ClCompile Include="middlebury_lib\mrf.cpp" />
+    <ClCompile Include="middlebury_lib\regions-maxprod.cpp" />
+    <ClCompile Include="middlebury_lib\TRW-S.cpp" />
+    <ClCompile Include="mocapy\mocapy_discrete_hmm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="mrf.cpp" />
+    <ClCompile Include="mocapy\mocapy_main.cpp" />
+    <ClCompile Include="pnl\pnl_bayesian_network.cpp" />
+    <ClCompile Include="pnl\pnl_bayesian_network_example.cpp" />
+    <ClCompile Include="pnl\pnl_dbn.cpp" />
+    <ClCompile Include="pnl\pnl_dbn_example.cpp" />
+    <ClCompile Include="pnl\pnl_hmm.cpp" />
+    <ClCompile Include="pnl\pnl_main.cpp" />
+    <ClCompile Include="pnl\pnl_mnet_example.cpp" />
+    <ClCompile Include="pnl\pnl_mrf2.cpp" />
+    <ClCompile Include="pnl\pnl_mrf_example.cpp" />
+    <ClCompile Include="pnl\pnl_super_resolution.cpp" />
+    <ClCompile Include="pnl\pnl_viterbi_segmentation.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="umdhmm_backward.cpp" />
-    <ClCompile Include="umdhmm_cdhmm_backward.cpp" />
-    <ClCompile Include="umdhmm_baum.cpp" />
-    <ClCompile Include="umdhmm_cdhmm_baum.cpp" />
-    <ClCompile Include="umdhmm_cdhmm_sequence.cpp" />
-    <ClCompile Include="umdhmm_cdhmm_utils.cpp" />
-    <ClCompile Include="umdhmm_forward.cpp" />
-    <ClCompile Include="umdhmm_cdhmm_forward.cpp" />
-    <ClCompile Include="umdhmm_hmmrand.cpp" />
-    <ClCompile Include="umdhmm_hmmutils.cpp" />
-    <ClCompile Include="umdhmm_nrutil.cpp" />
-    <ClCompile Include="umdhmm_sequence.cpp" />
-    <ClCompile Include="umdhmm_viterbi.cpp" />
-    <ClCompile Include="umdhmm_cdhmm_viterbi.cpp" />
-    <ClCompile Include="viterbi.cpp" />
-    <ClCompile Include="viterbi_algorithm.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_backward.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_baum.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_backward.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_baum.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_forward.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_sequence.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_utils.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_viterbi.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_forward.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_hmmrand.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_hmmutils.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_nrutil.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_sequence.cpp" />
+    <ClCompile Include="umdhmm_lib\umdhmm_viterbi.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

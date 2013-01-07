@@ -26,7 +26,7 @@
  * For further details, contact Andreas Ess (aess@vision.ee.ethz.ch).
  */
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #ifdef WIN32
 #include <windows.h>
 #include <process.h>
@@ -34,7 +34,7 @@
 #include <pthread.h>
 #endif
 
-#include "os_mapping.h"
+#include "surf_os_mapping.h"
 
 namespace osmapping {
 

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="machine_vision" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../bin/machine_vision" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../bin/machine_vision" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Linker>
+			<Add library="opencv_core" />
+			<Add library="opencv_highgui" />
+			<Add library="opencv_ml" />
+			<Add library="opencv_imgproc" />
+			<Add library="opencv_features2d" />
+			<Add library="opencv_objdetect" />
+			<Add library="opencv_flann" />
+			<Add library="opencv_video" />
+			<Add library="opencv_calib3d" />
+			<Add library="opencv_legacy" />
+			<Add library="opencv_contrib" />
+			<Add library="opencv_gpu" />
+			<Add library="opencv_ts" />
+		</Linker>
+		<Unit filename="PascalVocDataset.cpp" />
+		<Unit filename="PascalVocDataset.h" />
+		<Unit filename="bag_of_words.cpp" />
+		<Unit filename="camera_geometry.cpp" />
+		<Unit filename="chamfer_matching.cpp" />
+		<Unit filename="change_detection.cpp" />
+		<Unit filename="clustering.cpp" />
+		<Unit filename="color_correction.cpp" />
+		<Unit filename="color_filtering.cpp" />
+		<Unit filename="convex_hull.cpp" />
+		<Unit filename="convolution_correlation.cpp" />
+		<Unit filename="distance_transform.cpp" />
+		<Unit filename="edge_detection.cpp" />
+		<Unit filename="face_detection.cpp" />
+		<Unit filename="face_detection_using_gpu.cpp" />
+		<Unit filename="feature_description.cpp" />
+		<Unit filename="feature_extraction.cpp" />
+		<Unit filename="feature_extraction_and_matching.cpp" />
+		<Unit filename="feature_extraction_and_matching_by_signature.cpp" />
+		<Unit filename="feature_extraction_and_matching_using_gpu.cpp" />
+		<Unit filename="feature_matching.cpp" />
+		<Unit filename="fourier_transform.cpp" />
+		<Unit filename="generic_description_and_matching.cpp" />
+		<Unit filename="gesture_recognition.cpp" />
+		<Unit filename="hand_detection.cpp" />
+		<Unit filename="hand_pose_estimation.cpp" />
+		<Unit filename="histogram.cpp" />
+		<Unit filename="histogram_using_gpu.cpp" />
+		<Unit filename="homography.cpp" />
+		<Unit filename="hough_transform.cpp" />
+		<Unit filename="human_detection.cpp" />
+		<Unit filename="human_detection_using_gpu.cpp" />
+		<Unit filename="image_conversion.cpp" />
+		<Unit filename="image_filtering.cpp" />
+		<Unit filename="image_filtering_using_gpu.cpp" />
+		<Unit filename="image_gradient.cpp" />
+		<Unit filename="image_labeling_using_gpu.cpp" />
+		<Unit filename="image_operation.cpp" />
+		<Unit filename="image_processing_using_gpu.cpp" />
+		<Unit filename="image_pyramid.cpp" />
+		<Unit filename="image_sequence.cpp" />
+		<Unit filename="iterative_closest_point.cpp" />
+		<Unit filename="kalman_filtering.cpp" />
+		<Unit filename="learning.cpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="matrix_operation.cpp" />
+		<Unit filename="matrix_operation_using_gpu.cpp" />
+		<Unit filename="morphological_operation.cpp" />
+		<Unit filename="motion_history_image.cpp" />
+		<Unit filename="motion_segmentation.cpp" />
+		<Unit filename="object_detection.cpp" />
+		<Unit filename="object_tracking.cpp" />
+		<Unit filename="optical_flow.cpp" />
+		<Unit filename="outlier_removal.cpp" />
+		<Unit filename="pca.cpp" />
+		<Unit filename="segmentation.cpp" />
+		<Unit filename="shape_finding.cpp" />
+		<Unit filename="shape_matching.cpp" />
+		<Unit filename="skin_color_filtering.cpp" />
+		<Unit filename="snake.cpp" />
+		<Unit filename="stereo_matching.cpp" />
+		<Unit filename="stereo_matching_using_gpu.cpp" />
+		<Unit filename="template_matching.cpp" />
+		<Unit filename="text_output.cpp" />
+		<Unit filename="vector_operation.cpp" />
+		<Unit filename="vehicle_classification.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

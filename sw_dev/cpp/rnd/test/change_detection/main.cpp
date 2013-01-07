@@ -5,15 +5,15 @@
 #include <iostream>
 
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
-	void bgslibrary();
-	void bgscollection();
+	int bgslibrary_main(int argc, char *argv[]);
+	int bgscollection_main(int argc, char *argv[]);
 
 	try
 	{
-		bgslibrary();
-		//bgscollection();
+		bgslibrary_main(argc, argv);
+		//bgscollection_main(argc, argv);
 	}
 	catch (const std::exception &e)
 	{
@@ -29,4 +29,3 @@ int main(int argc, char **argv)
 
     return 0;
 }
-

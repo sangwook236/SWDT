@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <cstdlib>
 #include <siftgpu/SiftGPU.h>
 #include <vector>
@@ -20,11 +20,11 @@ int siftgpu_main(int argc, char *argv[])
 	// processing parameters first
 	//	-fo -1, starting from -1 octave
 	//	-v 1, only print out # feature and overall time
-	const char * argv[] ={ "-fo", "-1", "-v", "1" };
+	const char * my_argv[] ={ "-fo", "-1", "-v", "1" };
 
 	// create a SiftGPU instance
 	SiftGPU sift;
-	//sift.ParseParam(4, const_cast<char **>(argv));
+	//sift.ParseParam(4, const_cast<char **>(my_argv));
 
 	// create an OpenGL context for computation
 	const int support = sift.CreateContextGL();
@@ -36,11 +36,11 @@ int siftgpu_main(int argc, char *argv[])
 	//
 	{
 		// process an image, and save ASCII format SIFT files
-		if (sift.RunSIFT("..\\siftgpu_data\\640-1.jpg"))
-			sift.SaveSIFT("..\\siftgpu_data\\640-1.sift");
+		if (sift.RunSIFT("..\\feature_analysis_data\\siftgpu\\640-1.jpg"))
+			sift.SaveSIFT("..\\feature_analysis_data\\siftgpu\\640-1.sift");
 
 		// you can get the feature vector and store it yourself
-		sift.RunSIFT("..\\siftgpu_data\\640-2.jpg");
+		sift.RunSIFT("..\\feature_analysis_data\\siftgpu\\640-2.jpg");
 
 		const int num = sift.GetFeatureNum();  // get feature count
 		// allocate memory for read back
@@ -60,7 +60,7 @@ int siftgpu_main(int argc, char *argv[])
 	}
 
 	{
-		const char * files[4] = { "..\\siftgpu_data\\640-1.jpg", "..\\siftgpu_data\\640-2.jpg", "..\\siftgpu_data\\640-3.jpg", "..\\siftgpu_data\\640-4.jpg" };
+		const char * files[4] = { "..\\feature_analysis_data\\siftgpu\\640-1.jpg", "..\\feature_analysis_data\\siftgpu\\640-2.jpg", "..\\feature_analysis_data\\siftgpu\\640-3.jpg", "..\\feature_analysis_data\\siftgpu\\640-4.jpg" };
 		sift.SetImageList(4, files);
 
 		// now you can process an image with its index
@@ -68,7 +68,5 @@ int siftgpu_main(int argc, char *argv[])
 		sift.RunSIFT(0);
 	}
 
-	std::wcout << L"press any key to exit ..." << std::endl;
-	std::wcin.get();
 	return 0;
 }
