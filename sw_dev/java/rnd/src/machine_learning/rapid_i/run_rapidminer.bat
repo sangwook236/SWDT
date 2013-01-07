@@ -1,6 +1,10 @@
 @echo off
 setlocal
 
+rem usage -------------------------------------------------
+
+rem -------------------------------------------------------
+
 rem set JAVA_HOME=C:\Program Files\Java\jre7
 set JAVA_HOME=C:\Program Files\Java\jdk1.7.0_04
 rem set RAPIDMINER_HOME=D:\MyProgramFiles\Rapid-I\RapidMiner5

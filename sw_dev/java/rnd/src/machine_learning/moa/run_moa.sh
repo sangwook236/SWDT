@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# usage ---------------------------------------------------
+
+# ---------------------------------------------------------
+
 export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 export MOA_HOME=/usr/local/lib/moa
 

@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# usage ---------------------------------------------------
+
+# ---------------------------------------------------------
+
 export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 export WEKA_HOME=/home/sangwook/work_center/sw_dev/java/rnd/src/machine_learning/weka/weka-3-7-7
 export R_HOME=/usr/local/lib/R

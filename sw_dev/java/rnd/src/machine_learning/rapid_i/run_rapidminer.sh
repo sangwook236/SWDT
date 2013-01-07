@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# usage ---------------------------------------------------
+
+# ---------------------------------------------------------
+
 export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 #export RAPIDMINER_HOME=/usr/lib/Rapid-I/RapidMiner5
 export RAPIDMINER_HOME=/home/sangwook/work_center/sw_dev/java/rnd/src/machine_learning/rapid_i/rapidminer-5.2.008/rapidminer

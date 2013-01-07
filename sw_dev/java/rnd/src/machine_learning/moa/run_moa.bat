@@ -1,6 +1,10 @@
 @echo off
 setlocal
 
+rem usage -------------------------------------------------
+
+rem -------------------------------------------------------
+
 rem set JAVA_HOME=C:\Program Files\Java\jre7
 set JAVA_HOME=C:\Program Files\Java\jdk1.7.0_04
 set MOA_HOME=D:\work_center\sw_dev\java\rnd\src\machine_learning\moa\moa-release-2012.08.31
