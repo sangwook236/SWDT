@@ -5,7 +5,14 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		graphchi.GraphChiMain.run(args);  // not yet implemented
+		try
+		{
+			graphchi.GraphChiMain.run(args);  // not yet implemented
+		}
+		catch (Exception e)
+		{
+			System.err.println("Exception occurred: " + e.ToString());
+		}
 	}
 
 }

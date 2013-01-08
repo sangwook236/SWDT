@@ -13,5 +13,4 @@ class ArffLoader {
 
 		System.err.println("not yet implemented");
 	}
-
 }
