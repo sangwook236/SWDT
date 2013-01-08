@@ -1,14 +1,15 @@
-package ext;
+package log4j;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 
-public final class Main {
+public final class Log4jMain {
 
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void run(String[] args)
+	{
 		// Set up a simple configuration that logs on the console.
 		BasicConfigurator.configure();
 
@@ -18,7 +19,7 @@ public final class Main {
 		logger.info("Exiting application.");
 	}
 
-	static Logger logger = Logger.getLogger(Main.class);
+	static Logger logger = Logger.getLogger(Log4jMain.class);
 }
 
 class Bar {

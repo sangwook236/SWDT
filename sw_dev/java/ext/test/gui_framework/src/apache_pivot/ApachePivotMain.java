@@ -7,7 +7,7 @@ public final class ApachePivotMain {
 	 */
 	public static void run(String[] args)
 	{
-		//HelloBXML.run(args);
+		HelloBXML.run(args);
 
 		//LabelTest.run(args);
 		//ext.LabelTest.run(args);  // run-time error
@@ -17,7 +17,7 @@ public final class ApachePivotMain {
 		//ToggleButtonTest.run(args);
 		//RadioButtonTest.run(args);
 		//CheckboxTest.run(args);
-		LinkButtonTest.run(args);
+		//LinkButtonTest.run(args);
 	}
 
 }

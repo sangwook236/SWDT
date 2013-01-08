@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			//json.JSONMain.run(args);  // not yet implemented
+			log4j.Log4jMain.run(args);
 		}
 		catch (Exception e)
 		{
