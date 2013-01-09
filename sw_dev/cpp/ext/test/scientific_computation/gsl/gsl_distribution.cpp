@@ -73,7 +73,7 @@ void distribution_gaussian()
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void distribution()
 {
@@ -81,4 +81,4 @@ void distribution()
 	local::distribution_gaussian();
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

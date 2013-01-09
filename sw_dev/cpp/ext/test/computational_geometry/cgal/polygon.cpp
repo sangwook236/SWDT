@@ -61,11 +61,11 @@ void polygon2()
 }  // namespace local
 }  // unnamed namespace
 
-namespace cgal {
+namespace my_cgal {
 
 void polygon()
 {
 	local::polygon2();
 }
 
-}  // namespace cgal
+}  // namespace my_cgal

@@ -194,7 +194,7 @@ void emit_existing_nodes()
 }  // local
 }  // unnamed namespace
 
-namespace yaml {
+namespace my_yaml {
 
 void basic_emitting()
 {
@@ -218,4 +218,4 @@ void basic_emitting()
 	local::emit_existing_nodes();
 }
 
-}  // namespace yaml
+}  // namespace my_yaml

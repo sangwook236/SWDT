@@ -10,7 +10,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void quadratic_equation_root_finding()
 {
@@ -76,4 +76,4 @@ void polynomial_root_finding()
 		std::cout << "solution #" << i << " = " << z[2*i] << " + i * " << z[2*i+1] << std::endl;
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

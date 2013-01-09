@@ -457,7 +457,7 @@ void levenberg_marquardt_fdf_2()
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void levenberg_marquardt()
 {
@@ -466,4 +466,4 @@ void levenberg_marquardt()
 	local::levenberg_marquardt_fdf_2();
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

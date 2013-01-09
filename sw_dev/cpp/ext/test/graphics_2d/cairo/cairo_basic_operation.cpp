@@ -66,11 +66,11 @@ void draw_ellipse()
 }  // namespace local
 }  // unnamed namespace
 
-namespace cairo {
+namespace my_cairo {
 
 void basic_drawing()
 {
 	local::draw_ellipse();
 }
 
-}  // namespace cairo
+}  // namespace my_cairo

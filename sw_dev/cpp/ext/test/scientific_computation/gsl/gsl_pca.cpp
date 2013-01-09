@@ -7,12 +7,12 @@
 #include <cmath>
 
 
-namespace gsl {
+namespace my_gsl {
 
 void print_gsl_vector(gsl_vector *vec, const int dim);
 void print_gsl_matrix(gsl_matrix *mat, const int rdim, const int cdim);
 
-}  // namespace gsl
+}  // namespace my_gsl
 
 namespace {
 namespace local {
@@ -33,11 +33,11 @@ void pca_by_svd(gsl_matrix *U, const int rdim, const int cdim)
 	gsl_vector_free(work);
 
 	std::cout << "U = \n";
-	gsl::print_gsl_matrix(U, rdim, cdim);
+	my_gsl::print_gsl_matrix(U, rdim, cdim);
 	//std::cout << "V = \n";
-	//gsl::print_gsl_matrix(V, cdim, cdim);
+	//my_gsl::print_gsl_matrix(V, cdim, cdim);
 	std::cout << "S = \n";
-	gsl::print_gsl_vector(S, min_dim);
+	my_gsl::print_gsl_vector(S, min_dim);
 
 	gsl_matrix_free(V);
 	gsl_vector_free(S);
@@ -69,9 +69,9 @@ void pca_by_eigen(gsl_matrix *mat, const int rdim, const int cdim)
 	gsl_eigen_symmv_sort(eval, evec, GSL_EIGEN_SORT_ABS_DESC);
 
 	std::cout << "eigenvalues = \n";
-	gsl::print_gsl_vector(eval, dim);
+	my_gsl::print_gsl_vector(eval, dim);
 	std::cout << "eigenvectors = \n";
-	gsl::print_gsl_matrix(evec, dim, dim);
+	my_gsl::print_gsl_matrix(evec, dim, dim);
 
 	gsl_vector_free(eval);
 	gsl_matrix_free(evec);
@@ -80,7 +80,7 @@ void pca_by_eigen(gsl_matrix *mat, const int rdim, const int cdim)
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void pca()
 {
@@ -109,4 +109,4 @@ void pca()
 	gsl_matrix_free(mat2);
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

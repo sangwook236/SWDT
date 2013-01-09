@@ -49,7 +49,7 @@ void cholesky_scmatrix()
 }  // namespace local
 }  // unnamed namespace
 
-namespace cvm {
+namespace my_cvm {
 
 void cholesky()
 {
@@ -57,4 +57,4 @@ void cholesky()
 	local::cholesky_scmatrix();
 }
 
-}  // namespace cvm
+}  // namespace my_cvm

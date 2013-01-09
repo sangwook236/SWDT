@@ -35,7 +35,7 @@ static void my_fdf(const gsl_vector *x, void *params, double *f, gsl_vector *df)
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void multidim_minimization_simplex()
 {
@@ -124,4 +124,4 @@ void multidim_minimization_steepest_descent()
 	gsl_vector_free(x);
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

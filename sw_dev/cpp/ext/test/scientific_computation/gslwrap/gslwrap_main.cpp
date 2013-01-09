@@ -7,7 +7,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace gslwrap {
+namespace my_gslwrap {
 
 void Histogram();
 void Vector();
@@ -25,22 +25,22 @@ void Histogram();
 void OneDimMinimiserTest();
 void MultDimMinimiserTest();
 
-}  // namespace gslwrap
+}  // namespace my_gslwrap
 
 int gslwrap_main(int argc, char *argv[])
 {
-	//gslwrap::Histogram();
-	//gslwrap::Vector();
-	//gslwrap::VectorFloat();
-	gslwrap::VectorView();
-	//gslwrap::();
-	//gslwrap::VectorView2();
-	//gslwrap::VectorView3();
-	//gslwrap::GSLFunctionCall();
-	//gslwrap::RandomNumberGenerator();
-	//gslwrap::LUInvertAndDecomp();
-	//gslwrap::OneDimMinimiserTest();
-	//gslwrap::MultDimMinimiserTest();
+	//my_gslwrap::Histogram();
+	//my_gslwrap::Vector();
+	//my_gslwrap::VectorFloat();
+	my_gslwrap::VectorView();
+	//my_gslwrap::();
+	//my_gslwrap::VectorView2();
+	//my_gslwrap::VectorView3();
+	//my_gslwrap::GSLFunctionCall();
+	//my_gslwrap::RandomNumberGenerator();
+	//my_gslwrap::LUInvertAndDecomp();
+	//my_gslwrap::OneDimMinimiserTest();
+	//my_gslwrap::MultDimMinimiserTest();
 
     return 0;
 }

@@ -1,5 +1,6 @@
 [-] Building
-	[ref] http://doc.qt.nokia.com/4.7/install-win.html
+	[ref] http://qt-project.org/doc/qt-5.0/install-win.html
+	[ref] ${QT_ROOT}/qtbase/INSTALL
 	
 	0. execute "Visual Studio Command Prompt"
 	1. add ${QT_ROOT}/bin to the PATH variable

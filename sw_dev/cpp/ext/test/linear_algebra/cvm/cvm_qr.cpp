@@ -75,7 +75,7 @@ void qr_cmatrix()
 }  // namespace local
 }  // unnamed namespace
 
-namespace cvm {
+namespace my_cvm {
 
 void qr()
 {
@@ -83,4 +83,4 @@ void qr()
 	local::qr_cmatrix();
 }
 
-}  // namespace cvm
+}  // namespace my_cvm

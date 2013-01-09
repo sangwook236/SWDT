@@ -3,7 +3,9 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
+
 #include <atlas/cblas.h>
+
 #if defined(__cplusplus)
 }
 #endif
@@ -16,7 +18,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace atlas {
+namespace my_atlas {
 
 void cblas()
 {
@@ -49,4 +51,4 @@ void cblas()
 		std::cout << y[i] << std::endl;
 }
 
-}  // namespace atlas
+}  // namespace my_atlas

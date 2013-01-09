@@ -126,7 +126,7 @@ void load_and_save_in_cpp()
 }  // namespace local
 }  // unnamed namespace
 
-namespace devil {
+namespace my_devil {
 
 void basic_operation()
 {
@@ -134,4 +134,4 @@ void basic_operation()
 	local::load_and_save_in_cpp();
 }
 
-}  // namespace devil
+}  // namespace my_devil

@@ -106,7 +106,10 @@
     <ClCompile Include="filesystem.cpp" />
     <ClCompile Include="function.cpp" />
     <ClCompile Include="geometry.cpp" />
-    <ClCompile Include="graph.cpp" />
+    <ClCompile Include="graph.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="image.cpp" />
     <ClCompile Include="interprocess.cpp" />
     <ClCompile Include="main.cpp" />

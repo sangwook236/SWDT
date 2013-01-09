@@ -8,15 +8,15 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace protobuf {
+namespace my_protobuf {
 
 void simple_example();
 
-}  // namespace protobuf
+}  // namespace my_protobuf
 
 int protobuf_main(int argc, char *argv[])
 {
-	protobuf::simple_example();
+	my_protobuf::simple_example();
 
     return 0;
 }

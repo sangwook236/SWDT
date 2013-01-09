@@ -4,14 +4,14 @@
 #include <cmath>
 
 
-namespace gsl {
+namespace my_gsl {
 
 void print_gsl_vector(gsl_vector *vec);
 void print_gsl_vector(gsl_vector *vec, const int dim);
 void print_gsl_matrix(gsl_matrix *mat);
 void print_gsl_matrix(gsl_matrix *mat, const int rdim, const int cdim);
 
-}  // namespace gsl
+}  // namespace my_gsl
 
 namespace {
 namespace local {
@@ -24,7 +24,7 @@ void matrix_basic()
 		const int rdim = 2, cdim = 3;
 		double a[] = { 1., 2., 3., 4., 5., 6. };
 		gsl_matrix_view A = gsl_matrix_view_array(a, rdim, cdim);  // caution !!!: row-major matrix
-		gsl::print_gsl_matrix(&A.matrix);
+		my_gsl::print_gsl_matrix(&A.matrix);
 
 		gsl_matrix_set(&A.matrix, 0, 0, -13.0);
 		gsl_matrix_set(&A.matrix, 1, 2, -10.0);
@@ -51,7 +51,7 @@ void matrix_basic()
 		gsl_matrix_view A = gsl_matrix_view_array(a, rdim, cdim);
 		gsl_matrix_view B = gsl_matrix_submatrix(&A.matrix, 0, 0, rdim2, cdim2);
 
-		gsl::print_gsl_matrix(&B.matrix);
+		my_gsl::print_gsl_matrix(&B.matrix);
 	}
 
 	// row, column & diagnal of matrix
@@ -76,9 +76,9 @@ void matrix_basic()
 		//gsl_matrix_set_row(m, i, v);
 		//gsl_matrix_get_col(v, m, j);
 
-		gsl::print_gsl_vector(&row.vector);
-		gsl::print_gsl_vector(&col.vector);
-		gsl::print_gsl_vector(&diag.vector);
+		my_gsl::print_gsl_vector(&row.vector);
+		my_gsl::print_gsl_vector(&col.vector);
+		my_gsl::print_gsl_vector(&diag.vector);
 
 		gsl_matrix_free(mat);
 	}
@@ -108,7 +108,7 @@ void matrix_basic()
 		//gsl_matrix_swap_columns(m, i, j)
 		//gsl_matrix_swap_rowcol(m, i, j)
 
-		gsl::print_gsl_matrix(&A.matrix);
+		my_gsl::print_gsl_matrix(&A.matrix);
 	}
 
 	// set value, zero, identity
@@ -138,7 +138,7 @@ void matrix_basic()
 		gsl_matrix_scale(&A.matrix, -1.0);
 		gsl_matrix_add_constant(&A.matrix, 2.0);
 
-		gsl::print_gsl_matrix(&A.matrix);
+		my_gsl::print_gsl_matrix(&A.matrix);
 	}
 
 	// min, max of matrix
@@ -188,7 +188,7 @@ void matrix_transpose()
 	gsl_matrix_transpose_memcpy(AT, &A.matrix);  // square matrix (?)
 
 	std::cout << ">>> A^T = " << std::endl;
-	gsl::print_gsl_matrix(AT);
+	my_gsl::print_gsl_matrix(AT);
 
 	gsl_matrix_free(AT);
 }
@@ -225,7 +225,7 @@ void matrix_vector_mulitplication()  // level 2
 		if (result1)
 		{
 			std::cout << ">>> v = A v + 0 v =>" << std::endl;
-			gsl::print_gsl_vector(v);
+			my_gsl::print_gsl_vector(v);
 		}
 		else
 			std::cout << ">>> error !!!" << std::endl;
@@ -243,7 +243,7 @@ void matrix_vector_mulitplication()  // level 2
 		if (result2)
 		{
 			std::cout << ">>> v = A v + 1 v =>" << std::endl;
-			gsl::print_gsl_vector(v);
+			my_gsl::print_gsl_vector(v);
 		}
 		else
 			std::cout << ">>> error !!!" << std::endl;
@@ -270,7 +270,7 @@ void matrix_vector_mulitplication()  // level 2
 		if (result)
 		{
 			std::cout << ">>> y = A x =>" << std::endl;
-			gsl::print_gsl_vector(&y.vector);
+			my_gsl::print_gsl_vector(&y.vector);
 		}
 		else
 			std::cout << ">>> error !!!" << std::endl;
@@ -301,7 +301,7 @@ void matrix_matrix_mulitplication()  // level 3
 		if (result)
 		{
 			std::cout << ">>> C = A B =>" << std::endl;
-			gsl::print_gsl_matrix(&C.matrix);
+			my_gsl::print_gsl_matrix(&C.matrix);
 		}
 		else
 			std::cout << ">>> error !!!" << std::endl;
@@ -329,7 +329,7 @@ void matrix_matrix_mulitplication()  // level 3
 		{
 			std::cout << ">>> A = A B =>" << std::endl;
 			std::cout << ">>> Oops !!!" << std::endl;
-			gsl::print_gsl_matrix(&AA.matrix);
+			my_gsl::print_gsl_matrix(&AA.matrix);
 		}
 		else
 			std::cout << ">>> error !!!" << std::endl;
@@ -339,7 +339,7 @@ void matrix_matrix_mulitplication()  // level 3
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void matrix_operation()
 {
@@ -352,4 +352,4 @@ void matrix_operation()
 	local::matrix_matrix_mulitplication();
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

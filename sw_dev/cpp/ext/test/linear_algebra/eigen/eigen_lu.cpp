@@ -71,11 +71,11 @@ void lu_3()
 
 namespace eigen {
 
-void lu()
+void my_lu()
 {
     local::lu_1();
     local::lu_2();
     local::lu_3();
 }
 
-}  // namespace eigen
+}  // namespace my_eigen

@@ -11,7 +11,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void print_gsl_vector(gsl_vector *vec);
 void print_gsl_vector(gsl_vector *vec, const int dim);
@@ -181,4 +181,4 @@ void vector_operation()
 	}
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

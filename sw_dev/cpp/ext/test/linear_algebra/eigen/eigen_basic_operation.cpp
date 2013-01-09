@@ -229,7 +229,7 @@ void matrix_arithmetic_2()
 }  // namespace local
 }  // unnamed namespace
 
-namespace eigen {
+namespace my_eigen {
 
 void basic_operation()
 {
@@ -246,4 +246,4 @@ void basic_operation()
     local::matrix_arithmetic_2();
 }
 
-}  // namespace eigen
+}  // namespace my_eigen

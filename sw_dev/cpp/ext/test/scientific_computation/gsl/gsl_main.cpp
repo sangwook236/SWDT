@@ -8,7 +8,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void print_gsl_vector(gsl_vector *vec, const int dim)
 {
@@ -63,38 +63,38 @@ void distribution();
 void monte_carlo_integration();
 void simulated_annealing();
 
-}  // namespace gsl
+}  // namespace my_gsl
 
 int gsl_main(int argc, char *argv[])
 {
-	//gsl::vector_operation();
-	//gsl::matrix_operation();
+	//my_gsl::vector_operation();
+	//my_gsl::matrix_operation();
 
-	gsl::lu();
-	//gsl::qr();
-	//gsl::cholesky();
-	//gsl::eigensystem();
-	//gsl::svd();
+	my_gsl::lu();
+	//my_gsl::qr();
+	//my_gsl::cholesky();
+	//my_gsl::eigensystem();
+	//my_gsl::svd();
 		
-	//gsl::pca();
+	//my_gsl::pca();
 		
-	//gsl::levenberg_marquardt();
-	//gsl::conjugate_gradient();
-	//gsl::multidim_minimization_simplex();
-	//gsl::multidim_minimization_steepest_descent();
+	//my_gsl::levenberg_marquardt();
+	//my_gsl::conjugate_gradient();
+	//my_gsl::multidim_minimization_simplex();
+	//my_gsl::multidim_minimization_steepest_descent();
 
-	//gsl::quadratic_equation_root_finding();
-	//gsl::cubic_equation_root_finding();
-	//gsl::polynomial_root_finding();
-	//gsl::one_dim_root_finding();
-	//gsl::multidim_root_finding();
+	//my_gsl::quadratic_equation_root_finding();
+	//my_gsl::cubic_equation_root_finding();
+	//my_gsl::polynomial_root_finding();
+	//my_gsl::one_dim_root_finding();
+	//my_gsl::multidim_root_finding();
 		
-	//gsl::fft();
+	//my_gsl::fft();
 		
-	//gsl::random_sample();
-	//gsl::distribution();
-	//gsl::monte_carlo_integration();
-	//gsl::simulated_annealing();
+	//my_gsl::random_sample();
+	//my_gsl::distribution();
+	//my_gsl::monte_carlo_integration();
+	//my_gsl::simulated_annealing();
 
 	return 0;
 }

@@ -152,9 +152,9 @@ int parse_ini_file(char * ini_name)
 }  // namespace local
 }  // unnamed namespace
 
-namespace iniparser {
+namespace my_iniparser {
 
-}  // namespace iniparser
+}  // namespace my_iniparser
 
 int iniparser_main(int argc, char *argv[])
 {

@@ -7,15 +7,15 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace cgal {
+namespace my_cgal {
 
 void polygon();
 
-}  // namespace cgal
+}  // namespace my_cgal
 
 int cgal_main(int argc, char *argv[])
 {
-	cgal::polygon();
+	my_cgal::polygon();
 
 	return 0;
 }

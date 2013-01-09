@@ -613,9 +613,9 @@ void my_test()
 }  // namespace local
 }  // unnamed namespace
 
-namespace zlib {
+namespace my_zlib {
 
-}  // namespace zlib
+}  // namespace my_zlib
 
 int zlib_main(int argc, char *argv[])
 {

@@ -38,16 +38,15 @@ void handleDevILErrors()
 }  // namespace local
 }  // unnamed namespace
 
-namespace devil {
+namespace my_devil {
 
 void basic_operation();
 
-}  // namespace devil
+}  // namespace my_devil
 
 int devil_main(int argc, char *argv[])
 {
-
-	devil::basic_operation();
+	my_devil::basic_operation();
 
 	local::handleDevILErrors();
 

@@ -10,7 +10,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace eigen {
+namespace my_eigen {
 
 void qr()
 {
@@ -37,4 +37,4 @@ void qr()
 	std::cout << QR << std::endl;
 }
 
-}  // namespace eigen
+}  // namespace my_eigen

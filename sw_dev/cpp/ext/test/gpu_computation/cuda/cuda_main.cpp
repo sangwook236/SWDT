@@ -8,9 +8,9 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace cuda {
+namespace my_cuda {
 
-}  // namespace cuda
+}  // namespace my_cuda
 
 #if defined(__cplusplus)
 extern "C" {

@@ -9,19 +9,19 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace yaml {
+namespace my_yaml {
 
 void basic_parsing();
 void basic_emitting();
 
-}  // namespace yaml
+}  // namespace my_yaml
 
 int yaml_main(int argc, char *argv[])
 {
 	try
 	{
-		//yaml::basic_parsing();
-		yaml::basic_emitting();
+		//my_yaml::basic_parsing();
+		my_yaml::basic_emitting();
 	}
 	catch (const YAML::RepresentationException &e)
 	{

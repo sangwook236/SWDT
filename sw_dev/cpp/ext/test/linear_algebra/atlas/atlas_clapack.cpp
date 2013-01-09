@@ -2,7 +2,9 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
+
 #include <atlas/clapack.h>
+
 #if defined(__cplusplus)
 }
 #endif
@@ -15,7 +17,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace atlas {
+namespace my_atlas {
 
 void clapack()
 {
@@ -47,4 +49,4 @@ void clapack()
 		std::cout << x[i] << ", " << ipiv[i] << std::endl;
 }
 
-}  // namespace atlas
+}  // namespace my_atlas

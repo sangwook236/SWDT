@@ -52,7 +52,7 @@ void matrix_arithmetic_2()
 }  // namespace local
 }  // unnamed namespace
 
-namespace armadillo {
+namespace my_armadillo {
 
 void matrix_arithmetic()
 {
@@ -60,4 +60,4 @@ void matrix_arithmetic()
 	local::matrix_arithmetic_2();
 }
 
-}  // namespace armadillo
+}  // namespace my_armadillo

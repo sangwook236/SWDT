@@ -65,7 +65,7 @@ void draw_arm(const double L1, const double W1, const double L2, const double W2
 }  // namespace local
 }  // unnamed namespace
 
-namespace cairo {
+namespace my_cairo {
 
 void two_link_arm()
 {
@@ -80,4 +80,4 @@ void two_link_arm()
 			local::draw_arm(L1, W1, L2, W2, theta1 * (i - 2), theta2 * (j - 2), i * 5 + j + 1);
 }
 
-}  // namespace cairo
+}  // namespace my_cairo

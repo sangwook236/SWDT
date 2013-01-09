@@ -40,7 +40,7 @@ private:
 }  // namespace local
 }  // unnamed namespace
 
-namespace vld {
+namespace my_vld {
 
 void boost_thread(const bool leakage)
 {
@@ -68,4 +68,4 @@ void boost_thread(const bool leakage)
 	thrd->join();
 }
 
-}  // namespace vld
+}  // namespace my_vld

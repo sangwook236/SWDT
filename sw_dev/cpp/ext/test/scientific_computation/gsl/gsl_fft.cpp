@@ -129,7 +129,7 @@ void fft_real()
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void fft()
 {
@@ -138,4 +138,4 @@ void fft()
 	local::fft_real();
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

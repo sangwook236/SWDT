@@ -38,7 +38,7 @@ void my_fdf(const gsl_vector *x, void *params, double *f, gsl_vector *df)
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void conjugate_gradient()
 {
@@ -93,4 +93,4 @@ void conjugate_gradient()
 	gsl_vector_free(x);
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

@@ -369,7 +369,7 @@ void draw_textextents (cairo_t *cr)
 }  // namespace local
 }  // unnamed namespace
 
-namespace cairo {
+namespace my_cairo {
 
 void drawing_illustration()
 {
@@ -383,4 +383,4 @@ void drawing_illustration()
 	local::diagram("textextents");
 }
 
-}  // namespace cairo
+}  // namespace my_cairo

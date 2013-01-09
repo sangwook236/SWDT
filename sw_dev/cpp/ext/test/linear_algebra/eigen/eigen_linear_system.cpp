@@ -84,7 +84,7 @@ void linear_system_5()
 }  // namespace local
 }  // unnamed namespace
 
-namespace eigen {
+namespace my_eigen {
 
 void linear_system()
 {
@@ -95,4 +95,4 @@ void linear_system()
     local::linear_system_5();
 }
 
-}  // namespace eigen
+}  // namespace my_eigen

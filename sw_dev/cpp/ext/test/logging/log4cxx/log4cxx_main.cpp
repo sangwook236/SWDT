@@ -60,9 +60,9 @@ void thread_func()
 }  // namespace local
 }  // unnamed namespace
 
-namespace log4cxx {
+namespace my_log4cxx {
 
-}  // namespace log4cxx
+}  // namespace my_log4cxx
 
 int log4cxx_main(int argc, char *argv[])
 {

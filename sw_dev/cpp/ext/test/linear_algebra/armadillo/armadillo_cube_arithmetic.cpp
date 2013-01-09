@@ -45,7 +45,7 @@ void cube_arithmetic_2()
 }  // namespace local
 }  // unnamed namespace
 
-namespace armadillo {
+namespace my_armadillo {
 
 void cube_arithmetic()
 {
@@ -53,4 +53,4 @@ void cube_arithmetic()
 	local::cube_arithmetic_2();
 }
 
-}  // namespace armadillo
+}  // namespace my_armadillo

@@ -7,19 +7,19 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace gd {
+namespace my_gd {
 
 void basic_operation();
 void two_link_arm();
 
-}  // namespace gd
+}  // namespace my_gd
 
 int gd_main(int argc, char* argv[])
 {
-	//gd::basic_operation();
+	//my_gd::basic_operation();
 
 	//
-	gd::two_link_arm();
+	my_gd::two_link_arm();
 
 	return 0;
 }

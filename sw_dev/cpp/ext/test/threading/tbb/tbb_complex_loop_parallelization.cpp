@@ -12,11 +12,11 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace tbb {
+namespace my_tbb {
 
 void complex_loop_parallelization()
 {
 	throw std::runtime_error("not yet implemented");
 }
 
-}  // namespace tbb
+}  // namespace my_tbb

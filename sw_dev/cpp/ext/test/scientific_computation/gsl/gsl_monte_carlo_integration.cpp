@@ -43,7 +43,7 @@ void display_results(char *title, double result, double error)
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void monte_carlo_integration()
 {
@@ -92,4 +92,4 @@ void monte_carlo_integration()
 	}
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

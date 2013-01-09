@@ -11,7 +11,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void print_gsl_vector(gsl_vector *vec, const int dim);
 void print_gsl_matrix(gsl_matrix *mat, const int rdim, const int cdim);
@@ -83,4 +83,4 @@ void svd()
 	gsl_vector_free(x);
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

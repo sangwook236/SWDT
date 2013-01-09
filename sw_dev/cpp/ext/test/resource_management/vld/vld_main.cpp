@@ -19,19 +19,19 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace vld {
+namespace my_vld {
 
 void basic(const bool leakage);
 void boost_thread(const bool leakage);
 
-}  // namespace vld
+}  // namespace my_vld
 
 int vld_main(int argc, char *argv[])
 {
 	const bool leakage = true;
 
-	vld::basic(leakage);
-	vld::boost_thread(leakage);
+	my_vld::basic(leakage);
+	my_vld::boost_thread(leakage);
 
     return 0;
 }

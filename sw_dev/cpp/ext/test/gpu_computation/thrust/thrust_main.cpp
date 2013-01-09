@@ -7,9 +7,9 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace thrust {
+namespace my_thrust {
 
-}  // namespace thrust
+}  // namespace my_thrust
 
 int thrust_main(int argc, char *argv[])
 {

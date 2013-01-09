@@ -1,8 +1,7 @@
-1.
-	vsvars32.bat 실행
-2.
-	configure.bat 실행
-3.
-	set OSTYPE=win32 설정
-4.
-	nmake -f build/OSTYPE/makefile
+[-] Building (MSVC)
+	-.
+		DOS 창에서 vsvars32.bat 실행
+		${TAUCS_HOME}/configure.bat 실행
+			.lastconf를 찾을 수 없다는 에러가 발생하지만 make를 실행시킬 수 있음.
+		set OSTYPE=win32 설정
+		nmake -f ${TAUCS_HOME}/build/${OSTYPE}/makefile

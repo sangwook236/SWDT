@@ -374,7 +374,7 @@ void random_sample_spherical_nd()
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void random_sample()
 {
@@ -390,4 +390,4 @@ void random_sample()
 	//local::random_sample_spherical_nd();
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

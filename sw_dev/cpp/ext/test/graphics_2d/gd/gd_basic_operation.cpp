@@ -79,11 +79,11 @@ void load_and_save()
 }
 #endif
 
-namespace gd {
+namespace my_gd {
 
 void basic_operation()
 {
 	local::load_and_save();
 }
 
-}  // namespace gd
+}  // namespace my_gd

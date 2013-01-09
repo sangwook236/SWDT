@@ -8,15 +8,15 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace openscenegraph {
+namespace my_osg {
 
 void basic_geometry();
 
-}  // namespace openscenegraph
+}  // namespace my_osg
 
 int osg_main(int argc, char *argv[])
 {
-	openscenegraph::basic_geometry();
+	my_osg::basic_geometry();
 
 	return 0;
 }

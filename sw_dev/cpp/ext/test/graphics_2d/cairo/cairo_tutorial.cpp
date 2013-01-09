@@ -227,7 +227,7 @@ void tutorial_3()
 }  // namespace local
 }  // unnamed namespace
 
-namespace cairo {
+namespace my_cairo {
 
 void tutorial()
 {
@@ -236,4 +236,4 @@ void tutorial()
 	local::tutorial_3();
 }
 
-}  // namespace cairo
+}  // namespace my_cairo

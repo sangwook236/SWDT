@@ -10,7 +10,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace eigen {
+namespace my_eigen {
 
 void svd()
 {
@@ -51,4 +51,4 @@ void svd()
 */
 }
 
-}  // namespace eigen
+}  // namespace my_eigen

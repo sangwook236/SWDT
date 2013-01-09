@@ -43,11 +43,11 @@ void svd_rmatrix()
 }  // namespace local
 }  // unnamed namespace
 
-namespace cvm {
+namespace my_cvm {
 
 void svd()
 {
 	local::svd_rmatrix();
 }
 
-}  // namespace cvm
+}  // namespace my_cvm

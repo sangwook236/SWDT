@@ -73,7 +73,7 @@ void ldlt()
 }  // namespace local
 }  // unnamed namespace
 
-namespace eigen {
+namespace my_eigen {
 
 void cholesky()
 {
@@ -82,4 +82,4 @@ void cholesky()
 	local::ldlt();
 }
 
-}  // namespace eigen
+}  // namespace my_eigen

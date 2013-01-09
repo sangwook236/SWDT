@@ -77,7 +77,7 @@ void eigen_srsmatirx()
 }  // namespace local
 }  // unnamed namespace
 
-namespace cvm {
+namespace my_cvm {
 
 void eigen()
 {
@@ -85,4 +85,4 @@ void eigen()
 	local::eigen_srsmatirx();
 }
 
-}  // namespace cvm
+}  // namespace my_cvm

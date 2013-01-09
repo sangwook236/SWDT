@@ -8,7 +8,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace cvm {
+namespace my_cvm {
 
 void vector_function()
 {
@@ -133,4 +133,4 @@ void vector_function()
 	}
 }
 
-}  // namespace cvm
+}  // namespace my_cvm

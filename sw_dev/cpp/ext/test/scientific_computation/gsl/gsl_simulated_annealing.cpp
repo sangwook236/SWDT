@@ -54,7 +54,7 @@ void P1(void *xp)
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void simulated_annealing()
 {
@@ -70,4 +70,4 @@ void simulated_annealing()
 	gsl_rng_free(r);
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

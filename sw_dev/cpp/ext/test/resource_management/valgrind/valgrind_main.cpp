@@ -33,9 +33,9 @@ void f()
 }  // namespace local
 }  // unnamed namespace
 
-namespace valgrind {
+namespace my_valgrind {
 
-}  // namespace valgrind
+}  // namespace my_valgrind
 
 int valgrind_main(int argc, char* argv[])
 {

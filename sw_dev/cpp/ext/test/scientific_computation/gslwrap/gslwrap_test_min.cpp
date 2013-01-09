@@ -48,7 +48,7 @@ struct my_function: public gsl::multimin_fdf<my_function>
 }  // namespace local
 }  // unnamed namespace
 
-namespace gslwrap {
+namespace my_gslwrap {
 
 void OneDimMinimiserTest()
 {
@@ -136,4 +136,4 @@ void MultDimMinimiserTest()
 	} while (status == GSL_CONTINUE && iter < 100);
 }
 
-}  // namespace gslwrap
+}  // namespace my_gslwrap

@@ -8,9 +8,9 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace poco {
+namespace my_poco {
 
-}  // namespace poco
+}  // namespace my_poco
 
 int poco_main(int argc, char *argv[])
 {

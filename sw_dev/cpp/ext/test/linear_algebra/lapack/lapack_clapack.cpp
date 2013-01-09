@@ -61,10 +61,10 @@ void transpose_matrix(const real *mat1, const integer row1, const integer col1, 
 }  // namespace local
 }  // unnamed namespace
 
-namespace lapack {
+namespace my_lapack {
 
 #define __CLAPACK_DRIVER_TYPE_FOR_EIGENPROBLEM 0
-void clapack_main()
+void clapack()
 {
 	{
 		integer dim = 2;
@@ -163,4 +163,4 @@ void clapack_main()
 	}
 }
 
-}  // namespace lapack
+}  // namespace my_lapack

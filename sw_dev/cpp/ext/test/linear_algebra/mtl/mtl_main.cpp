@@ -38,9 +38,9 @@ void print_matrix(const matrix_t &mat)
 }  // namespace local
 }  // unnamed namespace
 
-namespace mtl {
+namespace my_mtl {
 
-}  // namespace mtl
+}  // namespace my_mtl
 
 int mtl_main(int argc, char *argv[])
 {

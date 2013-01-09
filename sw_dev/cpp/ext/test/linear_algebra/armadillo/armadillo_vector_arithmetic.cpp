@@ -30,11 +30,11 @@ void vector_arithmetic_1()
 }  // namespace local
 }  // unnamed namespace
 
-namespace armadillo {
+namespace my_armadillo {
 
 void vector_arithmetic()
 {
 	local::vector_arithmetic_1();
 }
 
-}  // namespace armadillo
+}  // namespace my_armadillo

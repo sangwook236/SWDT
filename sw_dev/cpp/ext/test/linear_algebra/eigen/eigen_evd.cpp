@@ -67,7 +67,7 @@ void evd_2()
 }  // namespace local
 }  // unnamed namespace
 
-namespace eigen {
+namespace my_eigen {
 
 void evd()
 {
@@ -75,4 +75,4 @@ void evd()
     local::evd_2();
 }
 
-}  // namespace eigen
+}  // namespace my_eigen

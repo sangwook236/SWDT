@@ -283,7 +283,7 @@ void multidim_root_finding_using_fdf()
 }  // namespace local
 }  // unnamed namespace
 
-namespace gsl {
+namespace my_gsl {
 
 void one_dim_root_finding()
 {
@@ -299,4 +299,4 @@ void multidim_root_finding()
 	local::multidim_root_finding_using_fdf();
 }
 
-}  // namespace gsl
+}  // namespace my_gsl

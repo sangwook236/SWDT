@@ -9,9 +9,9 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace mysql {
+namespace my_mysql {
 
-}  // namespace mysql
+}  // namespace my_mysql
 
 int mysql_main(int argc, char *argv[])
 {

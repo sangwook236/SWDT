@@ -1,0 +1,3 @@
+http://qt-project.org/
+http://qt.digia.com/
+http://qt.gitorious.org/qt

@@ -85,7 +85,7 @@ void lu_scmatrix()
 }  // namespace local
 }  // unnamed namespace
 
-namespace cvm {
+namespace my_cvm {
 
 void lu()
 {
@@ -93,4 +93,4 @@ void lu()
 	local::lu_scmatrix();
 }
 
-}  // namespace cvm
+}  // namespace my_cvm

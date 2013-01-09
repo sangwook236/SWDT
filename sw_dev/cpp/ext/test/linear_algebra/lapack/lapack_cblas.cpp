@@ -24,9 +24,9 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace lapack {
+namespace my_lapack {
 
-void cblas_main()
+void cblas()
 {
 	const double m[] = {
 		3, 1, 3,
@@ -57,4 +57,4 @@ void cblas_main()
 		std::cout << y[i] << std::endl;
 }
 
-}  // namespace lapack
+}  // namespace my_lapack

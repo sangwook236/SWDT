@@ -37,7 +37,7 @@ void input_person()
 }  // namespace local
 }  // unnamed namespace
 
-namespace protobuf {
+namespace my_protobuf {
 
 void simple_example()
 {
@@ -45,4 +45,4 @@ void simple_example()
 	local::input_person();
 }
 
-}  // namespace protobuf
+}  // namespace my_protobuf

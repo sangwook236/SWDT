@@ -14,7 +14,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace cairo {
+namespace my_cairo {
 
 void text_extents()
 {
@@ -100,4 +100,4 @@ void text_extents()
 	cairo_surface_destroy (surface);
 }
 
-}  // namespace cairo
+}  // namespace my_cairo

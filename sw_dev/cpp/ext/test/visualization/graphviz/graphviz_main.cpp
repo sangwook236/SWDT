@@ -9,9 +9,9 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace graphviz {
+namespace my_graphviz {
 
-}  // namespace graphviz
+}  // namespace my_graphviz
 
 int graphviz_main(int argc, char* argv[])
 {

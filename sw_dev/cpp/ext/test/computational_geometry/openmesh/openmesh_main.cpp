@@ -7,16 +7,16 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace openmesh {
+namespace my_openmesh {
 
 void simple_object();
 
-}  // namespace openmesh
+}  // namespace my_openmesh
 
 int openmesh_main(int argc, char *argv[])
 {
 	// tutorials
-	openmesh::simple_object();
+	my_openmesh::simple_object();
 
 	return 0;
 }

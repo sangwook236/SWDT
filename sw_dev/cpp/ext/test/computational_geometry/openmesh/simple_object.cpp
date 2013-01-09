@@ -80,11 +80,11 @@ void cube()
 }  // namespace local
 }  // unnamed namespace
 
-namespace openmesh {
+namespace my_openmesh {
 
 void simple_object()
 {
 	local::cube();
 }
 
-}  // namespace openmesh
+}  // namespace my_openmesh

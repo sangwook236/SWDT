@@ -7,17 +7,17 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace lapack {
+namespace my_lapack {
 
-void cblas_main();
-void clapack_main();
+void cblas();
+void clapack();
 
-}  // namespace lapack
+}  // namespace my_lapack
 
 int lapack_main(int argc, char* argv[])
 {
-	lapack::cblas_main();
-	lapack::clapack_main();
+	my_lapack::cblas();
+	my_lapack::clapack();
 
 	return 0;
 }

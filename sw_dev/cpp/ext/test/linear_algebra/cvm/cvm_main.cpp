@@ -7,7 +7,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace cvm {
+namespace my_cvm {
 
 void matrix_operation();
 void matrix_function();
@@ -19,20 +19,20 @@ void qr();
 void eigen();
 void svd();
 
-}  // namespace cvm
+}  // namespace my_cvm
 
 int cvm_main(int argc, char *argv[])
 {
-	//cvm::matrix_operation();
-	//cvm::matrix_function();
-	//cvm::vector_operation();
-	cvm::vector_function();
+	//my_cvm::matrix_operation();
+	//my_cvm::matrix_function();
+	//my_cvm::vector_operation();
+	my_cvm::vector_function();
 
-	//cvm::lu();
-	//cvm::cholesky();
-	//cvm::qr();
-	//cvm::eigen();
-	//cvm::svd();
+	//my_cvm::lu();
+	//my_cvm::cholesky();
+	//my_cvm::qr();
+	//my_cvm::eigen();
+	//my_cvm::svd();
 
 	return 0;
 }

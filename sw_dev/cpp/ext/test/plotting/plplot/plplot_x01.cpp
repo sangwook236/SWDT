@@ -367,11 +367,11 @@ void x01::plot3()
 }  // local
 }  // unnamed namespace
 
-namespace plplot {
+namespace my_plplot {
 
 void example_x01(const int argc, const char **argv)
 {
     boost::scoped_ptr<local::x01> x(new local::x01(argc, argv));
 }
 
-}  // namespace plplot
+}  // namespace my_plplot

@@ -72,11 +72,11 @@ void simple_loop_parallelization_1()
 }  // namespace local
 }  // unnamed namespace
 
-namespace tbb {
+namespace my_tbb {
 
 void simple_loop_parallelization()
 {
 	local::simple_loop_parallelization_1();
 }
 
-}  // namespace tbb
+}  // namespace my_tbb

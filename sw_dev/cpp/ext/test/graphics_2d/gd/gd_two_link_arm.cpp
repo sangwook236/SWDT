@@ -102,7 +102,7 @@ void draw_arm(const double theta1, const double theta2, const int index)
 }
 #endif
 
-namespace gd {
+namespace my_gd {
 
 void two_link_arm()
 {
@@ -114,4 +114,4 @@ void two_link_arm()
 			local::draw_arm(theta1 * (i - 2), theta2 * (j - 2), i * 5 + j + 1);
 }
 
-}  // namespace gd
+}  // namespace my_gd

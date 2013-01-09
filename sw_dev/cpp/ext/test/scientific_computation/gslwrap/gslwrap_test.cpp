@@ -14,7 +14,7 @@
 #include<gslwrap/histogram.h>
 
 
-namespace gslwrap {
+namespace my_gslwrap {
 
 #ifndef __HP_aCC
 	using namespace std;
@@ -245,4 +245,4 @@ void LUInvertAndDecomp()
 	cout << "a.LU_invert() * a:" << endl << a.LU_invert() * a << endl;
 } 
 
-}  // namespace gslwrap
+}  // namespace my_gslwrap

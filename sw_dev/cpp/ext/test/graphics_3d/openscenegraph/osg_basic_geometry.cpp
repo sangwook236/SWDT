@@ -16,7 +16,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace openscenegraph {
+namespace my_osg {
 
 void basic_geometry()
 {
@@ -152,4 +152,4 @@ void basic_geometry()
 	}
 }
 
-}  // namespace openscenegraph
+}  // namespace my_osg

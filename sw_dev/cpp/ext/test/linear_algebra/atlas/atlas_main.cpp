@@ -8,17 +8,17 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace atlas {
+namespace my_atlas {
 
 void cblas();
 void clapack();
 
-}  // namespace atlas
+}  // namespace my_atlas
 
 int atlas_main(int argc, char* argv[])
 {
-	atlas::cblas();
-	atlas::clapack();
+	my_atlas::cblas();
+	my_atlas::clapack();
 
 	return 0;
 }

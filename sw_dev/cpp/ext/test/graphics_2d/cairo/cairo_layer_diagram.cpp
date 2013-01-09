@@ -437,7 +437,7 @@ void mask_draw_dest (cairo_t *cr)
 }  // namespace local
 }  // unnamed namespace
 
-namespace cairo {
+namespace my_cairo {
 
 void layer_diagram()
 {
@@ -468,4 +468,4 @@ void layer_diagram()
 	local::diagram("mask", alpha);
 }
 
-}  // namespace cairo
+}  // namespace my_cairo

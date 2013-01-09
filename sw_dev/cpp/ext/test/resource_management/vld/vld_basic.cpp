@@ -50,7 +50,7 @@ void new_delete(const bool leakage)
 }  // namespace local
 }  // unnamed namespace
 
-namespace vld {
+namespace my_vld {
 
 void basic(const bool leakage)
 {
@@ -58,4 +58,4 @@ void basic(const bool leakage)
 	local::new_delete(leakage);
 }
 
-}  // namespace vld
+}  // namespace my_vld

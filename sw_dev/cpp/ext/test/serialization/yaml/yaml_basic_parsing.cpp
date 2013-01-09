@@ -159,11 +159,11 @@ void parse_monsters()
 }  // local
 }  // unnamed namespace
 
-namespace yaml {
+namespace my_yaml {
 
 void basic_parsing()
 {
 	local::parse_monsters();
 }
 
-}  // namespace yaml
+}  // namespace my_yaml
