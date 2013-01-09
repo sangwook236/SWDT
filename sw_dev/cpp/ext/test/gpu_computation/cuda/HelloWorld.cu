@@ -5,8 +5,8 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
-
-__global__ void HelloWorld()
+	
+void HelloWorld()
 {
 	std::cout << "Hello World!" << std::endl;
 }

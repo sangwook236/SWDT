@@ -16,19 +16,15 @@ namespace my_cuda {
 extern "C" {
 #endif
 
-//__global__ void HelloWorld2();
-__global__ void HelloWorld2()
-{
-	std::cout << "Hello World!" << std::endl;
-}
-
-int cuda_main(int argc, char **argv)
-{
-	HelloWorld2();
-
-    return 0;
-}
+void HelloWorld();
 
 #if defined(__cplusplus)
 }  // extern "C"
 #endif
+
+int cuda_main(int argc, char *argv[])
+{
+	HelloWorld();
+
+    return 0;
+}

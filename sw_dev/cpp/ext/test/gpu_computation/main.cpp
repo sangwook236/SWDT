@@ -5,16 +5,16 @@
 #include <iostream>
 
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
-	int cuda_main(int argc, char **argv);
-	int thrust_main(int argc, char **argv);
+	int cuda_main(int argc, char *argv[]);
+	int thrust_main(int argc, char *argv[]);
 
 	try
 	{
 		cuda_main(argc, argv);
 
-		thrust_main(argc, argv);
+		//thrust_main(argc, argv);  // not yet implemented
 	}
 	catch (const std::exception &e)
 	{
