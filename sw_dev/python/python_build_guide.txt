@@ -1,17 +1,0 @@
-[-] python interpreter가 실행되지 않거나 extending/embedding이 정상적으로 수행되지 않는 경우
-	-. "unresolved external symbol" error
-		unresolved external symbol __imp__Py_Initialize
-		==>	64-bit Python library를 32-bit application에서 linking하는 경우 발생
-	-. Py_Initialize와 관련된 error
-		Fatal Python error: Py_Initialize: unable to load the file system codec
-		LookupError: no codec search functions registered: can't find encoding
-		==>	${PYTHON_ROOT}/Lib directory를 현재 실행되는 python interpreter의 하위 directory에 복사.]
-			${PYTHON_INTERPRETER_ROOT}/Lib로 복사.
-	-. manifest 생성 관련 error
-		general error c1010070: Failed to load and parse the manifest. @ |D >D  F5Hd.
-		error: command 'mt.exe' failed with exit status 31
-		==> 무시해도 됨
-
-[-] building extention module
-	[ref] sw_dev/python/basic/test/extending/extention_module_build_guide.txt
-	[ref] http://en.wikibooks.org/wiki/Python_Programming/Extending_with_C%2B%2B
