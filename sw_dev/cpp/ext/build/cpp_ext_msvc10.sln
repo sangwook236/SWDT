@@ -42,6 +42,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "serialization", "..\test\se
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "networking", "..\test\networking\networking_msvc10.vcxproj", "{2BAA7170-259E-4A41-B87C-CCE654E8D191}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stl", "..\test\stl\stl_mvsc10.vcxproj", "{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -132,6 +134,10 @@ Global
 		{2BAA7170-259E-4A41-B87C-CCE654E8D191}.Debug|Win32.Build.0 = Debug|Win32
 		{2BAA7170-259E-4A41-B87C-CCE654E8D191}.Release|Win32.ActiveCfg = Release|Win32
 		{2BAA7170-259E-4A41-B87C-CCE654E8D191}.Release|Win32.Build.0 = Release|Win32
+		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Debug|Win32.Build.0 = Debug|Win32
+		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Release|Win32.ActiveCfg = Release|Win32
+		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
