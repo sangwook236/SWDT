@@ -9,21 +9,21 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace mocapy {
+namespace my_mocapy {
 
-}  // namespace mocapy
+void mocapy_discrete_hmm();
+
+}  // namespace my_mocapy
 
 int mocapy_main(int argc, char *argv[])
 {
-	void mocapy_discrete_hmm();
-
 	try
 	{
-		//mocapy_discrete_hmm();  // run-time error
+		//my_mocapy::mocapy_discrete_hmm();  // compile-time error
 	}
 	catch (const mocapy::MocapyExceptions &e)
 	{
-		std::cout << "mocapy::MocapyExceptions occurred !!!: " << e.what() << std::endl;
+		std::cout << "mocapy::MocapyExceptions occurred: " << e.what() << std::endl;
 		return -1;
 	}
 

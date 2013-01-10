@@ -18,7 +18,7 @@ void sobel(const cv::Mat &gray, cv::Mat &xgradient, cv::Mat &ygradient, const in
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void image_gradient()
 {
@@ -147,4 +147,4 @@ void image_gradient()
 	cv::destroyWindow(windowName2);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

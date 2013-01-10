@@ -12,11 +12,11 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace clustering {
+namespace my_clustering {
 
 void k_medoids()
 {
 	throw std::runtime_error("not yet implemented");
 }
 
-}  // namespace clustering
+}  // namespace my_clustering

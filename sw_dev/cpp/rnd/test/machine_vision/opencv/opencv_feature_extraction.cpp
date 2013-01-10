@@ -270,7 +270,7 @@ void mser(cv::Mat &srcImage, const cv::Mat &grayImage)
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void feature_extraction()
 {
@@ -401,4 +401,4 @@ void feature_extraction()
 	cvDestroyWindow(windowName);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

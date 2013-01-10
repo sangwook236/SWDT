@@ -289,7 +289,7 @@ void cdhmm_with_univariate_gaussian_mixture_observations__backward_umdhmm()
 }  // namespace local
 }  // unnamed namespace
 
-namespace hmm {
+namespace my_hmm {
 
 void hmm_forward_backward()
 {
@@ -303,4 +303,4 @@ void hmm_forward_backward()
     //local::cdhmm_with_univariate_gaussian_mixture_observations__backward_umdhmm();  // not yet implemented
 }
 
-}  // namespace hmm
+}  // namespace my_hmm

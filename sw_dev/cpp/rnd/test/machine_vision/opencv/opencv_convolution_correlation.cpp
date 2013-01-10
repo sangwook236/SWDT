@@ -12,12 +12,12 @@
 
 #define __KERNEL_SIZE 4
 
-namespace opencv {
+namespace my_opencv {
 
 void print_opencv_matrix(const CvMat *mat);
 void print_opencv_matrix(const cv::Mat &mat);
 
-}  // namespace opencv
+}  // namespace my_opencv
 
 namespace {
 namespace local {
@@ -93,7 +93,7 @@ void correlation(const CvMat *src, CvMat *dst, const CvMat *kernel, const CvPoin
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void convolution_correlation()
 {
@@ -255,4 +255,4 @@ void convolution_correlation()
 	}
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

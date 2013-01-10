@@ -262,6 +262,8 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> meshesVis2(pcl::PointCloud<
 }  // namespace local
 }  // unnamed namespace
 
+namespace my_pcl {
+
 void pcl_visualization(int argc, char **argv)
 {
 	// --------------------------------------
@@ -417,3 +419,5 @@ void pcl_visualization(int argc, char **argv)
 		boost::this_thread::sleep(boost::posix_time::microseconds(100000));
 	}
 }
+
+}  // namespace my_pcl

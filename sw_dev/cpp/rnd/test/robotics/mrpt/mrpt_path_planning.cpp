@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include <mrpt/core.h>
+#include <mrpt/slam.h>
 
 
 namespace {
@@ -203,7 +203,7 @@ void path_planning_2()
 }  // namespace local
 }  // unnamed namespace
 
-namespace mrpt {
+namespace my_mrpt {
 
 void path_planning()
 {
@@ -211,4 +211,4 @@ void path_planning()
 	local::path_planning_2();
 }
 
-}  // namespace mrpt
+}  // namespace my_mrpt

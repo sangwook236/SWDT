@@ -234,7 +234,7 @@ void rectangle(IplImage *srcImg)
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void shape_finding()
 {
@@ -312,4 +312,4 @@ void shape_finding()
 	cvDestroyWindow(windowName);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

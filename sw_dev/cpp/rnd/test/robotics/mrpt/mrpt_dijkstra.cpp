@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include <mrpt/core.h>
+#include <mrpt/gui.h>
 #include <map>
 
 
@@ -22,7 +22,7 @@ double get_Dijkstra_weight(const mrpt::poses::CPosePDFGaussian &edge)
 }  // namespace local
 }  // unnamed namespace
 
-namespace mrpt {
+namespace my_mrpt {
 
 void dijkstra()
 {
@@ -133,4 +133,4 @@ void dijkstra()
 	win.waitForKey();
 }
 
-}  // namespace mrpt
+}  // namespace my_mrpt

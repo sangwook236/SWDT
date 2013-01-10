@@ -167,9 +167,9 @@ void getArgs(int argc, char *argv[])
 }  // namespace local
 }  // unnamed namespace
 
-namespace ann {
+namespace my_ann {
 
-}  // namespace ann
+}  // namespace my_ann
 
 int ann_main(int argc, char *argv[])
 {

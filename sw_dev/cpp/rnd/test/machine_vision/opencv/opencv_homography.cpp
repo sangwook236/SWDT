@@ -149,7 +149,7 @@ bool calc_homography(const CvSeq *keypoints1, const CvSeq *keypoints2, const std
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void homography()
 {
@@ -435,4 +435,4 @@ void homography()
 	cvDestroyWindow(resultantWindowName);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

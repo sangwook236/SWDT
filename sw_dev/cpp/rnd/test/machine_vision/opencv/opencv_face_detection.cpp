@@ -45,7 +45,7 @@ void detect_faces_and_eyes(cv::Mat &frame, cv::CascadeClassifier &face_detector,
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void face_detection()
 {
@@ -102,4 +102,4 @@ void face_detection()
 	}
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

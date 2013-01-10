@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include <mrpt/core.h>
+#include <mrpt/slam.h>
 #include <deque>
 #include <iostream>
 #include <fstream>
@@ -400,7 +400,7 @@ void kf_slam_map_building(const KfSlamOptions &options, const bool useRawLogFile
 }  // namespace local
 }  // unnamed namespace
 
-namespace mrpt {
+namespace my_mrpt {
 
 void slam_kf()
 {
@@ -482,4 +482,4 @@ void slam_kf()
 	local::kf_slam_map_building(options, useRawLogFile);
 }
 
-}  // namespace mrpt
+}  // namespace my_mrpt

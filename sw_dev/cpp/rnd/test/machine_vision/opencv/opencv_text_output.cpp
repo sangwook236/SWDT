@@ -79,7 +79,7 @@ void text_output_2()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void text_output()
 {
@@ -87,4 +87,4 @@ void text_output()
 	local::text_output_2();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

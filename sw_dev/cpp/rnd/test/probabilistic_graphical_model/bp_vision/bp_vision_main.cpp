@@ -418,9 +418,9 @@ void stereo()
 }  // namespace local
 }  // unnamed namespace
 
-namespace bp_vision {
+namespace my_bp_vision {
 
-}  // namespace bp_vision
+}  // namespace my_bp_vision
 
 int bp_vision_main(int argc, char *argv[])
 {

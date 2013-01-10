@@ -64,7 +64,7 @@ void warpPerspectiveRand(const cv::Mat &src, cv::Mat &dst, cv::Mat &H, cv::RNG &
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void feature_extraction_and_matching()
 {
@@ -257,4 +257,4 @@ void feature_extraction_and_matching()
 	cv::destroyWindow(windowName);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

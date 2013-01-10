@@ -55,7 +55,7 @@ int pnl_main(int argc, char *argv[])
 	}
 	catch (const pnl::CException &e)
 	{
-		std::cout << "OpenPNL exception occurred !!!: " << e.GetMessage() << std::endl;
+		std::cout << "OpenPNL exception occurred: " << e.GetMessage() << std::endl;
 		return -1;
 	}
 

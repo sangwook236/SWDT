@@ -173,9 +173,9 @@ void demo()
 }  // namespace local
 }  // unnamed namespace
 
-namespace bgslibrary {
+namespace my_bgslibrary {
 
-}  // namespace bgslibrary
+}  // namespace my_bgslibrary
 
 int bgslibrary_main(int argc, char *argv[])
 {

@@ -187,11 +187,11 @@ void kmeans()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void clustering()
 {
 	local::kmeans();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

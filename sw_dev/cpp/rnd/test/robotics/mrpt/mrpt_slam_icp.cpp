@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include <mrpt/core.h>
+#include <mrpt/slam.h>
 #include <iostream>
 #include <fstream>
 
@@ -390,7 +390,7 @@ void icp_slam_map_building(const IcpSlamOptions &options, const bool useRawLogFi
 }  // namespace local
 }  // unnamed namespace
 
-namespace mrpt {
+namespace my_mrpt {
 
 void slam_icp()
 {
@@ -486,4 +486,4 @@ void slam_icp()
 	local::icp_slam_map_building(options, useRawLogFile);
 }
 
-}  // namespace mrpt
+}  // namespace my_mrpt

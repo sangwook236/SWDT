@@ -7,9 +7,9 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace cuda_cut {
+namespace my_cuda_cut {
 
-}  // namespace cuda_cut
+}  // namespace my_cuda_cut
 
 int cuda_cut_main(int argc, char *argv[])
 {

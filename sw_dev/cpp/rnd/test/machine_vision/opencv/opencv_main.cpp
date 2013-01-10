@@ -10,7 +10,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void print_opencv_matrix(const CvMat *mat)
 {
@@ -112,7 +112,7 @@ void hand_detection();
 void motion_segmentation();
 void gesture_recognition();
 
-}  // namespace opencv
+}  // namespace my_opencv
 
 int opencv_main(int argc, char *argv[])
 {
@@ -120,100 +120,100 @@ int opencv_main(int argc, char *argv[])
 	{
 		//opencv::text_output();
 
-		//opencv::matrix_operation();
-		//opencv::matrix_operation_using_gpu();  // not yet implemented
-		//opencv::vector_operation();
-		//opencv::image_operation();
-		//opencv::image_conversion();
-		//opencv::image_sequence();
+		//my_opencv::matrix_operation();
+		//my_opencv::matrix_operation_using_gpu();  // not yet implemented
+		//my_opencv::vector_operation();
+		//my_opencv::image_operation();
+		//my_opencv::image_conversion();
+		//my_opencv::image_sequence();
 
-		//opencv::image_filtering();
-		//opencv::image_filtering_using_gpu();  // not yet implemented
-		//opencv::image_processing_using_gpu();  // not yet implemented
-		//opencv::color_filtering();
-		//opencv::color_correction();
-		//opencv::skin_color_filtering();
-		//opencv::histogram();
-		//opencv::histogram()_using_gpu();  // not yet implemented
+		//my_opencv::image_filtering();
+		//my_opencv::image_filtering_using_gpu();  // not yet implemented
+		//my_opencv::image_processing_using_gpu();  // not yet implemented
+		//my_opencv::color_filtering();
+		//my_opencv::color_correction();
+		//my_opencv::skin_color_filtering();
+		//my_opencv::histogram();
+		//my_opencv::histogram()_using_gpu();  // not yet implemented
 
-		//opencv::convolution_correlation();
-		//opencv::fourier_transform();
-		//opencv::morphological_operation();
-		//opencv::image_pyramid();
+		//my_opencv::convolution_correlation();
+		//my_opencv::fourier_transform();
+		//my_opencv::morphological_operation();
+		//my_opencv::image_pyramid();
 
-		//opencv::image_gradient();
-		//opencv::edge_detection();
+		//my_opencv::image_gradient();
+		//my_opencv::edge_detection();
 
-		//opencv::distance_transform();
-		//opencv::convex_hull();
-		//opencv::hough_transform();
+		//my_opencv::distance_transform();
+		//my_opencv::convex_hull();
+		//my_opencv::hough_transform();
 
-		//opencv::template_matching();
-		//opencv::chamfer_matching();
-		//opencv::shape_finding();
-		//opencv::shape_matching();
+		//my_opencv::template_matching();
+		//my_opencv::chamfer_matching();
+		//my_opencv::shape_finding();
+		//my_opencv::shape_matching();
 
-		//opencv::snake();
-		//opencv::segmentation();
+		//my_opencv::snake();
+		//my_opencv::segmentation();
 
-		//opencv::outlier_removal();
+		//my_opencv::outlier_removal();
 
-		//opencv::feature_extraction();
-		//opencv::feature_description();
-		//opencv::feature_matching();
-		//opencv::feature_extraction_and_matching();
-		//opencv::feature_extraction_and_matching_by_signature();
-		//opencv::feature_extraction_and_matching_using_gpu();  // not yet implemented
-		//opencv::generic_description_and_matching();
+		//my_opencv::feature_extraction();
+		//my_opencv::feature_description();
+		//my_opencv::feature_matching();
+		//my_opencv::feature_extraction_and_matching();
+		//my_opencv::feature_extraction_and_matching_by_signature();
+		//my_opencv::feature_extraction_and_matching_using_gpu();  // not yet implemented
+		//my_opencv::generic_description_and_matching();
 
-		//opencv::bag_of_words();
+		//my_opencv::bag_of_words();
 
-		//opencv::pca();
+		//my_opencv::pca();
 
-		//opencv::clustering();
-		//opencv::train_by_svm();
-		//opencv::train_by_ann();
+		//my_opencv::clustering();
+		//my_opencv::train_by_svm();
+		//my_opencv::train_by_ann();
 
-		//opencv::object_detection();  // not yet implemented
-		//opencv::face_detection();
-		//opencv::face_detection_using_gpu();  // not yet implemented
-		//opencv::human_detection();
-		//opencv::human_detection_using_gpu();  // not yet implemented
+		//my_opencv::object_detection();  // not yet implemented
+		//my_opencv::face_detection();
+		//my_opencv::face_detection_using_gpu();  // not yet implemented
+		//my_opencv::human_detection();
+		//my_opencv::human_detection_using_gpu();  // not yet implemented
 
-		//opencv::camera_geometry();
-		//opencv::homography();
+		//my_opencv::camera_geometry();
+		//my_opencv::homography();
 
-		//opencv::image_labeling_using_gpu();  // not yet implemented
-		//opencv::stereo_matching();
-		//opencv::stereo_matching_using_gpu();  // not yet implemented
+		//my_opencv::image_labeling_using_gpu();  // not yet implemented
+		//my_opencv::stereo_matching();
+		//my_opencv::stereo_matching_using_gpu();  // not yet implemented
 
-		//opencv::change_detection();
+		//my_opencv::change_detection();
 
-		//opencv::object_tracking();
-		//opencv::kalman_filtering();
+		//my_opencv::object_tracking();
+		//my_opencv::kalman_filtering();
 
-		//opencv::optical_flow();
-		//opencv::motion_history_image();
+		//my_opencv::optical_flow();
+		//my_opencv::motion_history_image();
 
 		//----------------------------------------------
 		// extension
 
-		//opencv::iterative_closest_point();
+		//my_opencv::iterative_closest_point();
 
 		//----------------------------------------------
 		// application
 
-		//opencv::hand_pose_estimation();
-		//opencv::hand_detection();
+		//my_opencv::hand_pose_estimation();
+		//my_opencv::hand_detection();
 
-		//opencv::motion_segmentation();
-		opencv::gesture_recognition();
+		//my_opencv::motion_segmentation();
+		my_opencv::gesture_recognition();
 	}
 	catch (const cv::Exception &e)
 	{
-		//std::cout << "OpenCV exception occurred !!!: " << e.what() << std::endl;
-		//std::cout << "OpenCV exception occurred !!!: " << cvErrorStr(e.code) << std::endl;
-		std::cout << "OpenCV exception occurred !!!:" << std::endl
+		//std::cout << "OpenCV exception occurred: " << e.what() << std::endl;
+		//std::cout << "OpenCV exception occurred: " << cvErrorStr(e.code) << std::endl;
+		std::cout << "OpenCV exception occurred:" << std::endl
 			<< "\tdescription: " << e.err << std::endl
 			<< "\tline:        " << e.line << std::endl
 			<< "\tfunction:    " << e.func << std::endl

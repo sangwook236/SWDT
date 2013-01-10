@@ -130,9 +130,9 @@ void sobs_example()
 }  // namespace local
 }  // unnamed namespace
 
-namespace bgscollection {
+namespace my_bgscollection {
 
-}  // namespace bgscollection
+}  // namespace my_bgscollection
 
 int bgscollection_main (int argc, char *argv[])
 {

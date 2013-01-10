@@ -5,11 +5,11 @@
 #include <iostream>
 #include <cassert>
 
-namespace opencv {
+namespace my_opencv {
 
 void print_opencv_matrix(const CvMat* mat);
 
-}  // namespace opencv
+}  // namespace my_opencv
 
 namespace {
 namespace local {
@@ -129,13 +129,13 @@ void intrinsic_camera_params(const bool isPlanarCalibrationRigs)
 	cvCalibrateCamera2(objPts, imgPts, ptCounts, cvSize(imgWidth, imgHeight), intrinsicParams, distortionCoeffs, rotation, translation, flags);
 
 	std::cout << ">>> intrinsic params =" << std::endl;
-	opencv::print_opencv_matrix(intrinsicParams);
+	my_opencv::print_opencv_matrix(intrinsicParams);
 	std::cout << ">>> distortion coeffs =" << std::endl;
-	opencv::print_opencv_matrix(distortionCoeffs);
+	my_opencv::print_opencv_matrix(distortionCoeffs);
 	std::cout << ">>> rotation vectors =" << std::endl;
-	opencv::print_opencv_matrix(rotation);
+	my_opencv::print_opencv_matrix(rotation);
 	std::cout << ">>> translation vectors =" << std::endl;
-	opencv::print_opencv_matrix(translation);
+	my_opencv::print_opencv_matrix(translation);
 
 	cvReleaseMat(&objPts);
 	cvReleaseMat(&imgPts);
@@ -199,9 +199,9 @@ void extrinsic_camera_params()
 		cvFindExtrinsicCameraParams2(objPts, imgPts, &intrinsicParams, distortionCoeffs, rotation, translation);
 
 		std::cout << ">>> rotation vector =" << std::endl;
-		opencv::print_opencv_matrix(rotation);
+		my_opencv::print_opencv_matrix(rotation);
 		std::cout << ">>> translation vector =" << std::endl;
-		opencv::print_opencv_matrix(translation);
+		my_opencv::print_opencv_matrix(translation);
 
 		//
 		CvMat* essentialMat = cvCreateMat(3, 3, CV_64FC1);
@@ -209,7 +209,7 @@ void extrinsic_camera_params()
 		essential_matrix(rotation, translation, essentialMat);
 
 		std::cout << ">>> essential matrix =" << std::endl;
-		opencv::print_opencv_matrix(essentialMat);
+		my_opencv::print_opencv_matrix(essentialMat);
 
 		cvReleaseMat(&essentialMat);
 		cvReleaseMat(&objPts);
@@ -255,9 +255,9 @@ void extrinsic_camera_params()
             cvTranspose(&imgPts_arr, imgPts);
 		}
 
-		//opencv::print_opencv_matrix(objPts);
-		//opencv::print_opencv_matrix(imgPts);
-		//opencv::print_opencv_matrix(&intrinsicParams);
+		//my_opencv::print_opencv_matrix(objPts);
+		//my_opencv::print_opencv_matrix(imgPts);
+		//my_opencv::print_opencv_matrix(&intrinsicParams);
 
 		CvMat* distortionCoeffs = cvCreateMat(4, 1, CV_64FC1);
 		cvSetZero(distortionCoeffs);
@@ -268,9 +268,9 @@ void extrinsic_camera_params()
 		cvFindExtrinsicCameraParams2(objPts, imgPts, &intrinsicParams, distortionCoeffs, rotation, translation);
 
 		std::cout << ">>> rotation vector =" << std::endl;
-		opencv::print_opencv_matrix(rotation);
+		my_opencv::print_opencv_matrix(rotation);
 		std::cout << ">>> translation vector =" << std::endl;
-		opencv::print_opencv_matrix(translation);
+		my_opencv::print_opencv_matrix(translation);
 
 		//
 		CvMat* essentialMat = cvCreateMat(3, 3, CV_64FC1);
@@ -278,7 +278,7 @@ void extrinsic_camera_params()
 		essential_matrix(rotation, translation, essentialMat);
 
 		std::cout << ">>> essential matrix =" << std::endl;
-		opencv::print_opencv_matrix(essentialMat);
+		my_opencv::print_opencv_matrix(essentialMat);
 
 		cvReleaseMat(&essentialMat);
 		cvReleaseMat(&objPts);
@@ -420,7 +420,7 @@ void fundamental_matrix()
 	cvReleaseMat(&imgPts2);
 */
 	std::cout << ">>> fundamental matrix =" << std::endl;
-	opencv::print_opencv_matrix(fundamentalMat);
+	my_opencv::print_opencv_matrix(fundamentalMat);
 
 	// camera matrix
 	CvMat* P = cvCreateMat(3, 4, CV_64FC1);
@@ -429,9 +429,9 @@ void fundamental_matrix()
 	camera_matrix(fundamentalMat, P, Pp);
 
 	std::cout << ">>> camera matrix, P =" << std::endl;
-	opencv::print_opencv_matrix(P);
+	my_opencv::print_opencv_matrix(P);
 	std::cout << ">>> camera matrix, P' =" << std::endl;
-	opencv::print_opencv_matrix(Pp);
+	my_opencv::print_opencv_matrix(Pp);
 
 	{
 /*
@@ -472,9 +472,9 @@ void fundamental_matrix()
 				cvmSet(xp, j, i, cvmGet(xp, j, i) / cvmGet(xp, 2, i));
 			}
 		std::cout << ">>> image point, x =" << std::endl;
-		opencv::print_opencv_matrix(x);
+		my_opencv::print_opencv_matrix(x);
 		std::cout << ">>> image point, x' =" << std::endl;
-		opencv::print_opencv_matrix(xp);
+		my_opencv::print_opencv_matrix(xp);
 
 		cvReleaseMat(&x);
 		cvReleaseMat(&xp);
@@ -484,7 +484,7 @@ void fundamental_matrix()
 		CvMat* F2 = cvCreateMat(3, 3, CV_64FC1);
 		fundamental_matrix(P, Pp, F2);
 		std::cout << ">>> recalculated fundamental matrix, F =" << std::endl;
-		opencv::print_opencv_matrix(F2);
+		my_opencv::print_opencv_matrix(F2);
 		cvReleaseMat(&F2);
 	}
 
@@ -505,7 +505,7 @@ void triangulation()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void camera_geometry()
 {
@@ -516,4 +516,4 @@ void camera_geometry()
 	local::fundamental_matrix();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

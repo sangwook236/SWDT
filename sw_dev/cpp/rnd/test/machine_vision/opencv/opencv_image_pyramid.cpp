@@ -74,7 +74,7 @@ void laplacian_image_pyramid(const cv::Mat &img, const int depth, std::list<cv::
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void image_pyramid()
 {
@@ -127,4 +127,4 @@ void image_pyramid()
 	cv::destroyWindow(windowName);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

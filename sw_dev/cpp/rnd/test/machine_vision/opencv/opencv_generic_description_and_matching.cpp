@@ -42,7 +42,7 @@ void drawCorrespondences(const cv::Mat &img1, const std::vector<cv::KeyPoint> &f
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void generic_description_and_matching()
 {
@@ -104,4 +104,4 @@ void generic_description_and_matching()
 	cv::destroyWindow(windowName);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

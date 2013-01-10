@@ -17,11 +17,11 @@ void human_detection_using_gpu_hog()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void human_detection_using_gpu()
 {
 	local::human_detection_using_gpu_hog();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

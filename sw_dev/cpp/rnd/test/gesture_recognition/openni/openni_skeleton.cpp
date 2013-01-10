@@ -172,11 +172,11 @@ int skeleton()
 }  // namespace local
 }  // unnamed namespace
 
-namespace openni {
+namespace my_openni {
 
 void skeleton()
 {
 	local::skeleton();
 }
 
-}  // namespace openni
+}  // namespace my_openni

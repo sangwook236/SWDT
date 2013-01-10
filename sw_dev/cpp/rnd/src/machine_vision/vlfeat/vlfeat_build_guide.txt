@@ -1,0 +1,13 @@
+[-] Building in MSVC
+	-. Makefile을 이용해 building을 할 수 있음.
+		nmake -f Makefile.mak
+		대상 makefile: $VLFEAT_HOME/Makefile.mak
+
+		기본적으로 제공되는  Makefile를 그대로 사용해 building을 하면 오류가 발생
+			Makefile 내에 설정을 변경해야 함.
+				ARCH
+				MSVSVER
+				MSVCROOT
+				WINSDKROOT
+				MATLABROOT
+	-. Visual Studio IDE에서의 building은 오류가 발생함.

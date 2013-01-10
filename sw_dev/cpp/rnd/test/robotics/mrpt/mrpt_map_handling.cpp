@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include <mrpt/core.h>
+#include <mrpt/slam.h>
 
 
 namespace {
@@ -216,7 +216,7 @@ void map_handling__bitmap2pointmap()
 }  // namespace local
 }  // unnamed namespace
 
-namespace mrpt {
+namespace my_mrpt {
 
 void map_handling()
 {
@@ -224,4 +224,4 @@ void map_handling()
 	local::map_handling__bitmap2pointmap();
 }
 
-}  // namespace mrpt
+}  // namespace my_mrpt

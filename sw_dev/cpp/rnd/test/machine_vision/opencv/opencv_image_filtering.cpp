@@ -20,7 +20,7 @@ void bilateral_filtering(const cv::Mat &image, cv::Mat &filtered)
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void image_filtering()
 {
@@ -125,4 +125,4 @@ void image_filtering()
 	cv::destroyWindow(windowName2);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

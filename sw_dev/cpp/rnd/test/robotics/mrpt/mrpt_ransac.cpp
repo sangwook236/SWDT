@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include <mrpt/core.h>
+#include <mrpt/gui.h>
 #include <cassert>
 
 
@@ -334,7 +334,7 @@ void ransac_lines()
 }  // namespace local
 }  // unnamed namespace
 
-namespace mrpt {
+namespace my_mrpt {
 
 void ransac()
 {
@@ -344,4 +344,4 @@ void ransac()
 	//local::ransac_lines();
 }
 
-}  // namespace mrpt
+}  // namespace my_mrpt

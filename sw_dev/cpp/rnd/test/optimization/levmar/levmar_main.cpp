@@ -259,9 +259,9 @@ bool levenberg_marquardt__nonlinear_least_square__unconstrained_optimization__2(
 }  // namespace local
 }  // unnamed namespace
 
-namespace levmar {
+namespace my_levmar {
 
-}  // namespace levmar
+}  // namespace my_levmar
 
 int levmar_main(int argc, char *argv[])
 {

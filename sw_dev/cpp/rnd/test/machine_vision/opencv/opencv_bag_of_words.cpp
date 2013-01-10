@@ -606,7 +606,7 @@ void computeGnuPlotOutput( const std::string& resPath, const std::string& objCla
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void bag_of_words()
 {
@@ -707,4 +707,4 @@ void bag_of_words()
 	}
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

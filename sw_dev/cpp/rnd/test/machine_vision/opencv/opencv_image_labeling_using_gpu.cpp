@@ -27,7 +27,7 @@ void belief_propagation()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void image_labeling_using_gpu()
 {
@@ -35,4 +35,4 @@ void image_labeling_using_gpu()
 	local::belief_propagation();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

@@ -294,7 +294,7 @@ void ICP(cv::Mat &X, cv::Mat &destination)
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void iterative_closest_point()
 {
@@ -467,4 +467,4 @@ void iterative_closest_point()
 #endif
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

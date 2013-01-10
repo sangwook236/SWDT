@@ -286,7 +286,7 @@ void color_based_tracking()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void color_filtering()
 {
@@ -294,4 +294,4 @@ void color_filtering()
 	local::color_based_tracking();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

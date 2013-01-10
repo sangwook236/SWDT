@@ -99,11 +99,11 @@ void normalized_cross_correlation()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void template_matching()
 {
 	local::normalized_cross_correlation();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

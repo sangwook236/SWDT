@@ -16,6 +16,8 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
+namespace my_mocapy {
+
 // [ref] ${MOCAPY_ROOT}/examples/examples.cpp
 void mocapy_discrete_hmm()
 {
@@ -171,3 +173,5 @@ void mocapy_discrete_hmm()
 	delete mh1;
 	delete mo0;
 }
+
+}  // namespace my_mocapy

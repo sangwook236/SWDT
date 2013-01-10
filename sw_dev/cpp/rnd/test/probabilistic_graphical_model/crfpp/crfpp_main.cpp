@@ -88,9 +88,9 @@ bool example()
 }  // namespace local
 }  // unnamed namespace
 
-namespace crfpp {
+namespace my_crfpp {
 
-}  // namespace crfpp
+}  // namespace my_crfpp
 
 int crfpp_main(int argc, char *argv[])
 {

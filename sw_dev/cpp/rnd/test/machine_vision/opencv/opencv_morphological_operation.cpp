@@ -58,7 +58,7 @@ void bottom_hat(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void morphological_operation()
 {
@@ -128,4 +128,4 @@ void morphological_operation()
 	cv::destroyWindow(windowName2);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

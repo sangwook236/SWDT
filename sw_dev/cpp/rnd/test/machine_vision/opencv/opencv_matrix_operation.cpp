@@ -5,11 +5,11 @@
 #include <cassert>
 
 
-namespace opencv {
+namespace my_opencv {
 
 void print_opencv_matrix(const CvMat* mat);
 
-}  // namespace opencv
+}  // namespace my_opencv
 
 namespace {
 namespace local {
@@ -42,7 +42,7 @@ void matrix_operation_1()
 		for (int i = 0; i < rdim; ++i)
 			for (int j = 0; j < cdim; ++j)
 				cvmSet(&A, i, j, i + j);
-		opencv::print_opencv_matrix(&A);
+		my_opencv::print_opencv_matrix(&A);
 
 		for (int i = 0; i < rdim * cdim; ++i)
 			std::cout << arr[i] << ' ';
@@ -58,7 +58,7 @@ void matrix_operation_1()
 		CvMat A = cvMat(rdim, cdim, CV_64FC1, (void*)arr);  // caution !!!: row-major matrix
 		CvMat *B = cvCloneMat(&A);
 
-		opencv::print_opencv_matrix(B);
+		my_opencv::print_opencv_matrix(B);
 
 		cvReleaseMat(&B);
 	}
@@ -75,12 +75,12 @@ void matrix_operation_1()
 		cvGetSubRect(&A, B, cvRect(1, 1, rdim2, cdim2));
 		cvmSet(B, 0, 0, -100.0);
 		std::cout << "submatrix =>" << std::endl;
-		opencv::print_opencv_matrix(B);
+		my_opencv::print_opencv_matrix(B);
 
 		cvReleaseMat(&B);
 
 		std::cout << "original matrix =>" << std::endl;
-		opencv::print_opencv_matrix(&A);
+		my_opencv::print_opencv_matrix(&A);
 /*
 		cvGetRow(&A, submat, rowIdx);
 		cvGetRows(&A, submat, startRowIdx, endRowIdx, deltaRow);
@@ -112,7 +112,7 @@ void matrix_operation_1()
 		cvMatMul(A, &B, C);
 
 		std::cout << "C = A * B =>" << std::endl;
-		opencv::print_opencv_matrix(C);
+		my_opencv::print_opencv_matrix(C);
 
 		cvReleaseMat(&A);
 		cvReleaseMat(&C);
@@ -134,9 +134,9 @@ void matrix_operation_1()
 		//cvFlip(A, B, -1 or 0 or 1):
 
 		std::cout << "A =" << std::endl;
-		opencv::print_opencv_matrix(A);
+		my_opencv::print_opencv_matrix(A);
 		std::cout << "A^T =" << std::endl;
-		opencv::print_opencv_matrix(B);
+		my_opencv::print_opencv_matrix(B);
 
 		cvReleaseMat(&A);
 		cvReleaseMat(&B);
@@ -167,9 +167,9 @@ void matrix_operation_1()
 		std::cout << "det(A) = " << det << std::endl;
 		std::cout << "tr(A) = " << tr.val[0] << std::endl;
 		std::cout << "A^-1 =" << std::endl;
-		opencv::print_opencv_matrix(Ainv);
+		my_opencv::print_opencv_matrix(Ainv);
 		std::cout << "A * X = B =>" << std::endl;
-		opencv::print_opencv_matrix(X);
+		my_opencv::print_opencv_matrix(X);
 
 		cvReleaseMat(&A);
 		cvReleaseMat(&Ainv);
@@ -199,13 +199,13 @@ void matrix_operation_1()
 		cvSVBkSb(W, U, V, B, X, 0);  // 0 or CV_SVD_MODIFY_A or CV_SVD_U_T or CV_SVD_V_T
 
 		std::cout << "U =" << std::endl;
-		opencv::print_opencv_matrix(U);
+		my_opencv::print_opencv_matrix(U);
 		std::cout << "V =" << std::endl;
-		opencv::print_opencv_matrix(V);
+		my_opencv::print_opencv_matrix(V);
 		std::cout << "W =" << std::endl;
-		opencv::print_opencv_matrix(W);
+		my_opencv::print_opencv_matrix(W);
 		std::cout << "A * X = B =>" << std::endl;
-		opencv::print_opencv_matrix(X);
+		my_opencv::print_opencv_matrix(X);
 
 		cvReleaseMat(&A);
 		cvReleaseMat(&U);
@@ -236,9 +236,9 @@ void matrix_operation_1()
 		cvEigenVV(A, V, D, eps);
 
 		std::cout << "eigenvectors =" << std::endl;
-		opencv::print_opencv_matrix(V);
+		my_opencv::print_opencv_matrix(V);
 		std::cout << "eigenvalues =" << std::endl;
-		opencv::print_opencv_matrix(D);
+		my_opencv::print_opencv_matrix(D);
 
 		cvReleaseMat(&A);
 		cvReleaseMat(&V);
@@ -330,7 +330,7 @@ void matrix_operation_2()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void matrix_operation()
 {
@@ -338,4 +338,4 @@ void matrix_operation()
 	local::matrix_operation_2();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

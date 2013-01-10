@@ -7,15 +7,15 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace ransac {
+namespace my_ransac {
 
 void plane_estimation();
 
-}  // namespace ransac
+}  // namespace my_ransac
 
 int ransac_main(int argc, char *argv[])
 {
-	ransac::plane_estimation();
+	my_ransac::plane_estimation();
 
 	return 0;
 }

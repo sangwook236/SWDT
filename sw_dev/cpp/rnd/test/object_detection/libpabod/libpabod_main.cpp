@@ -9,9 +9,9 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace libpabod {
+namespace my_libpabod {
 
-}  // namespace libpabod
+}  // namespace my_libpabod
 
 int libpabod_main(int argc, char *argv[])
 {

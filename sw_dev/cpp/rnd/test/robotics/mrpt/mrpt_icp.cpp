@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include <mrpt/core.h>
+#include <mrpt/slam.h>
 #include <iostream>
 #include <fstream>
 
@@ -10,7 +10,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace mrpt {
+namespace my_mrpt {
 
 void icp()
 {
@@ -144,4 +144,4 @@ void icp()
 #endif
 }
 
-}  // namespace mrpt
+}  // namespace my_mrpt

@@ -365,7 +365,7 @@ void cdhmm_with_univariate_gaussian_mixture_observations__em_for_map_using_spars
 }  // namespace local
 }  // unnamed namespace
 
-namespace hmm {
+namespace my_hmm {
 
 void hmm_learning()
 {
@@ -382,4 +382,4 @@ void hmm_learning()
     //local::cdhmm_with_univariate_gaussian_mixture_observations__em_for_map_using_sparse_learning();  // not yet implemented
 }
 
-}  // namespace hmm
+}  // namespace my_hmm

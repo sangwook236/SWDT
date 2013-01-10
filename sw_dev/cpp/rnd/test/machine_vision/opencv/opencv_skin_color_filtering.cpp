@@ -545,7 +545,7 @@ void adaptive_skin_color_filtering()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void skin_color_filtering()
 {
@@ -553,4 +553,4 @@ void skin_color_filtering()
 	//local::adaptive_skin_color_filtering();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

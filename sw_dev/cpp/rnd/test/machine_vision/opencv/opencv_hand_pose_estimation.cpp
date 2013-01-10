@@ -1365,7 +1365,7 @@ bool estimateHandPose(const cv::Mat &img, const cv::Mat &gray, cv::Point &palmCe
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void hand_pose_estimation()
 {
@@ -1782,4 +1782,4 @@ void hand_pose_estimation()
 #endif
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

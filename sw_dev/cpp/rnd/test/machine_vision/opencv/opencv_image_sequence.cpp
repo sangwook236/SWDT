@@ -677,7 +677,7 @@ void capture_write_file_from_images()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void image_sequence()
 {
@@ -692,4 +692,4 @@ void image_sequence()
 	local::capture_write_file_from_images();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

@@ -8,9 +8,9 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace flood {
+namespace my_flood {
 
-}  // namespace flood
+}  // namespace my_flood
 
 int flood_main(int argc, char *argv[])
 {

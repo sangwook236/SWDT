@@ -8,17 +8,17 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace clustering {
+namespace my_clustering {
 
 void k_means();
 void k_medoids();
 
-}  // namespace clustering
+}  // namespace my_clustering
 
 int clustering_main(int argc, char *argv[])
 {
-	clustering::k_means();  // not yet implemented
-	clustering::k_medoids();  // not yet implemented
+	my_clustering::k_means();  // not yet implemented
+	my_clustering::k_medoids();  // not yet implemented
 
 	return 0;
 }

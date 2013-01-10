@@ -147,11 +147,11 @@ void feature_extraction_and_matching_by_signature_1()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void feature_extraction_and_matching_by_signature()
 {
 	local::feature_extraction_and_matching_by_signature_1();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

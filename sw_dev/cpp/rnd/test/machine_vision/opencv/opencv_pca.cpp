@@ -8,7 +8,7 @@
 #define __COLUMN_MAJOR 1
 
 
-namespace opencv {
+namespace my_opencv {
 
 void pca()
 {
@@ -220,4 +220,4 @@ void pca()
 	cvReleaseMat(&sampleMat_tilde);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

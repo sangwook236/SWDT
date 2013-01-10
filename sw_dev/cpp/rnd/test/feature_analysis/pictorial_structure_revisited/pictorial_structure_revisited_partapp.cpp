@@ -128,7 +128,7 @@ void init_firstidx_lastidx(const AnnotationList &annolist, po::variables_map cmd
 }  // namespace local
 }  // unnamed namespace
 
-namespace pictorial_structure_revisited {
+namespace my_pictorial_structure_revisited {
 
 int pictorial_structure_revisited_partapp_main(int argc, char *argv[])
 {
@@ -439,4 +439,4 @@ int pictorial_structure_revisited_partapp_main(int argc, char *argv[])
 	return 0;
 }
 
-}  // namespace pictorial_structure_revisited
+}  // namespace my_pictorial_structure_revisited

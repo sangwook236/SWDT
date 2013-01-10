@@ -229,7 +229,7 @@ void convexity_defect()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void convex_hull()
 {
@@ -237,4 +237,4 @@ void convex_hull()
 	local::convexity_defect();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

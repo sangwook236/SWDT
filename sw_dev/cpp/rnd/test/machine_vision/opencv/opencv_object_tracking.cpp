@@ -287,7 +287,7 @@ void onMouseHandler(int event, int x, int y, int flags, void *param)
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void object_tracking()
 {
@@ -445,4 +445,4 @@ void object_tracking()
 	cvDestroyWindow(histoWindowName);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

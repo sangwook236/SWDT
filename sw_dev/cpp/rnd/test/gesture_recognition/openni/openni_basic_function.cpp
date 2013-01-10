@@ -311,7 +311,7 @@ int play_data()
 }  // namespace local
 }  // unnamed namespace
 
-namespace openni {
+namespace my_openni {
 
 void basic_function()
 {
@@ -321,4 +321,4 @@ void basic_function()
 	//local::play_data();
 }
 
-}  // namespace openni
+}  // namespace my_openni

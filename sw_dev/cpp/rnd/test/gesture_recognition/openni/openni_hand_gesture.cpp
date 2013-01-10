@@ -143,11 +143,11 @@ int hand_gesture()
 }  // namespace local
 }  // unnamed namespace
 
-namespace openni {
+namespace my_openni {
 
 void hand_gesture()
 {
 	local::hand_gesture();
 }
 
-}  // namespace openni
+}  // namespace my_openni

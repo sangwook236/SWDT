@@ -175,7 +175,7 @@ void refreshItemList(item_t *itemList, PlayerCc::SimulationProxy &simProxy)
 }  // namespace local
 }  // unnamed namespace
 
-namespace player_stage {
+namespace my_player_stage {
 
 #define __SIMULATION_MODE 0
 
@@ -307,4 +307,4 @@ void rubbish_collecting_robot(int argc, char *argv[])
 	}
 }
 
-}  // namespace player_stage
+}  // namespace my_player_stage

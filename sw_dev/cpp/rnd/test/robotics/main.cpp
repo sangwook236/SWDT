@@ -3,6 +3,7 @@
 #include <vld/vld.h>
 #endif
 #include <iostream>
+#include <ctime>
 
 
 int main(int argc, char *argv[])
@@ -12,6 +13,8 @@ int main(int argc, char *argv[])
 
 	try
 	{
+		std::srand((unsigned int)std::time(NULL));
+
 		//mrpt_main(argc, argv);  // compile-time error
 		player_stage_main(argc, argv);
 	}

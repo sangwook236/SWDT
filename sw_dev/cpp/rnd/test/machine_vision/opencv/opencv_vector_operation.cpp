@@ -5,7 +5,7 @@
 #include <cassert>
 
 
-namespace opencv {
+namespace my_opencv {
 
 void print_opencv_matrix(const CvMat *mat);
 
@@ -34,4 +34,4 @@ void vector_operation()
 	}
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

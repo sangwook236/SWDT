@@ -8,9 +8,9 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace galib {
+namespace my_galib {
 
-}  // namespace galib
+}  // namespace my_galib
 
 int galib_main(int argc, char* argv[])
 {

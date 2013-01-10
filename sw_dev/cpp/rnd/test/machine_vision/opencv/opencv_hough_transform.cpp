@@ -113,7 +113,7 @@ void hough_circle(IplImage *srcImage, IplImage *grayImage)
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void hough_transform()
 {
@@ -164,4 +164,4 @@ void hough_transform()
 	cvDestroyWindow(windowName);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

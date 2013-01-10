@@ -1,0 +1,25 @@
+[-] Building (MSVC)
+	-. MEX extension 생성 관련 오류 발생
+		{FLANN_HOME}/build_msvc10/src/matlab/nearest_neighbors.mexw32를 생성할 수 없음.
+		==> MSVC로 32-bit building을 하면서 64-bit Matlab을 사용하거나 그 역인 경우 발생.
+			1. 32-bit Matlab을 설치.
+			2. system path에서 64-bit Matlab path를 32-bit Matlab path로 변경.
+				mex.bat file이 동일한 이름의 다른 실행 file에 의해 제대로 실행되지 않는 경우가 있으므로,
+				Matlab path를 가장 앞에 위치시키는 것이 유리.
+			3. mexopts.bat file 수정.
+				$USERPROFILE/AppData/Roaming/MathWorks/MATLAB/R2012b 하에 있음.
+				64-bit에 대한 설정을 32-bit를 위한 설정으로 바꿔야 함.
+	-. mex_nearest_neighbors project를 build할 때 아래의 오류 메시지 발생.
+		Command line warning D9024: unrecognized source file type '$/c', object file assumed
+		==> CMake가 생성하는 fule file에 오류가 있음
+			nearest_neighbors.mexw32.rule
+
+			nearest_neighbors.mexw32.rule를 build하기 위한 custom build command에 오류가 있음
+				(Visual Studio IDE에서) mex_nearest_neighbors project하에 있는 nearest_neighbors.mexw32.rule file 위에서 mouse 오른쪽 버튼을 눌러
+				"Properties" 창을 열고 "Configuration Properties -> Custom Build Tool -> General -> Command Line" 항목을 열고
+				아래와 같이 수정.
+				
+				<수정전>
+				COMPFLAGS="$$COMPFLAGS /openmp" LINKFLAGS="$$LINKFLAGS /openmp "
+				<수정후>
+				COMPFLAGS="$COMPFLAGS /openmp" LINKFLAGS="$LINKFLAGS /openmp "

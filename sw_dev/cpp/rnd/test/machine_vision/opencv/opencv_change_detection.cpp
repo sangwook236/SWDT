@@ -347,7 +347,7 @@ void background_segmentation_by_mog()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void change_detection()
 {
@@ -359,4 +359,4 @@ void change_detection()
 	local::background_segmentation_by_mog();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

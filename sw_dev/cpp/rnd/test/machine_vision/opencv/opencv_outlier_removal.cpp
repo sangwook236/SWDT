@@ -292,11 +292,11 @@ void match_features_using_ransac()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void outlier_removal()
 {
 	local::match_features_using_ransac();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

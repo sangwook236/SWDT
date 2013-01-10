@@ -386,7 +386,7 @@ void fern(const std::string &modelFilename, const cv::Mat &img1, const cv::Mat &
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void feature_description()
 {
@@ -469,4 +469,4 @@ void feature_description()
 	}
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

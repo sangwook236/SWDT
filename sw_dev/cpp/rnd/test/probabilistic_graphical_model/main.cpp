@@ -72,15 +72,15 @@ int main(int argc, char *argv[])
 	}
     catch (const std::bad_alloc &e)
 	{
-		std::cout << "std::bad_alloc occurred !!!: " << e.what() << std::endl;
+		std::cout << "std::bad_alloc occurred: " << e.what() << std::endl;
 	}
 	catch (const std::exception &e)
 	{
-		std::cout << "std::exception occurred !!!: " << e.what() << std::endl;
+		std::cout << "std::exception occurred: " << e.what() << std::endl;
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception occurred !!!" << std::endl;
+		std::cout << "unknown exception occurred" << std::endl;
 	}
 
 	std::cout << "press any key to exit ..." << std::endl;

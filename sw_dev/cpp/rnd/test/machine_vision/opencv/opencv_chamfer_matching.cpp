@@ -86,11 +86,11 @@ void chamfer_matching()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void chamfer_matching()
 {
 	local::chamfer_matching();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

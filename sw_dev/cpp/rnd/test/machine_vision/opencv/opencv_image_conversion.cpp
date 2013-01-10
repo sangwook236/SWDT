@@ -176,7 +176,7 @@ void convert_jpg_to_ppm()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void image_conversion()
 {
@@ -186,4 +186,4 @@ void image_conversion()
 	local::convert_jpg_to_ppm();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

@@ -106,11 +106,11 @@ void kalman_filtering()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void kalman_filtering()
 {
 	local::kalman_filtering();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

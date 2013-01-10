@@ -198,7 +198,7 @@ int enumeration_error()
 }  // namespace local
 }  // unnamed namespace
 
-namespace openni {
+namespace my_openni {
 
 void enumeration_process()
 {
@@ -206,4 +206,4 @@ void enumeration_process()
 	local::enumeration_error();
 }
 
-}  // namespace openni
+}  // namespace my_openni

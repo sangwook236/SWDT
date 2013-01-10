@@ -256,7 +256,7 @@ void viterbi_algorithm()
 }  // namespace local_2
 }  // unnamed namespace
 
-namespace hmm {
+namespace my_hmm {
 
 void viterbi_algorithm()
 {
@@ -264,4 +264,4 @@ void viterbi_algorithm()
 	local_2::viterbi_algorithm();
 }
 
-}  // namespace hmm
+}  // namespace my_hmm

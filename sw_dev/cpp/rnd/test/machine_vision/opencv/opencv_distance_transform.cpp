@@ -6,7 +6,7 @@
 #include <list>
 
 
-namespace opencv {
+namespace my_opencv {
 
 void distance_transform()
 {
@@ -158,4 +158,4 @@ void distance_transform()
 	cv::destroyWindow(windowName2);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

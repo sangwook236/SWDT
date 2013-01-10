@@ -1422,7 +1422,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void gesture_recognition()
 {
@@ -1497,4 +1497,4 @@ void gesture_recognition()
 	local::gesture_recognition_by_histogram(capture);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

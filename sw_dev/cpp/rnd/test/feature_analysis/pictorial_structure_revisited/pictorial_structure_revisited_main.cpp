@@ -7,15 +7,15 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace pictorial_structure_revisited {
+namespace my_pictorial_structure_revisited {
 
 int pictorial_structure_revisited_partapp_main(int argc, char *argv[]);
 
-}  // namespace pictorial_structure_revisited
+}  // my_namespace pictorial_structure_revisited
 
 int pictorial_structure_revisited_main(int argc, char *argv[])
 {
-	pictorial_structure_revisited::pictorial_structure_revisited_partapp_main(argc, argv);
+	my_pictorial_structure_revisited::pictorial_structure_revisited_partapp_main(argc, argv);
 
 	return 0;
 }

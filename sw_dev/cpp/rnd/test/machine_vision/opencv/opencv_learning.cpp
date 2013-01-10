@@ -15,7 +15,7 @@ const size_t trainingFeatureNum = 8;  // # of cols
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void train_by_svm()
 {
@@ -221,4 +221,4 @@ void train_by_ann()
 	cvReleaseMat(&trainOutput);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

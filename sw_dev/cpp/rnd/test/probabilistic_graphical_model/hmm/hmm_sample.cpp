@@ -256,7 +256,7 @@ void cdhmm_with_univariate_gaussian_mixture_observations__sample_umdhmm()
 }  // namespace local
 }  // unnamed namespace
 
-namespace hmm {
+namespace my_hmm {
 
 void hmm_sample()
 {
@@ -265,4 +265,4 @@ void hmm_sample()
 	//local::cdhmm_with_univariate_gaussian_mixture_observations__sample_umdhmm();  // not yet implemented
 }
 
-}  // namespace hmm
+}  // namespace my_hmm

@@ -160,7 +160,7 @@ void  update_mhi(IplImage* img, IplImage* dst, int diff_threshold)
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void motion_history_image()
 {
@@ -276,4 +276,4 @@ void motion_history_image()
 	}
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

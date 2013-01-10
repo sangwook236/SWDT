@@ -8,13 +8,10 @@
 int main(int argc, char *argv[])
 {
 	int libpabod_main(int argc, char *argv[]);
-	int ccv_main(int argc, char *argv[]);
 
 	try
 	{
 		libpabod_main(argc, argv);  // not yet implemented
-
-		ccv_main(argc, argv);  // not yet implemented
 	}
 	catch (const std::exception &e)
 	{

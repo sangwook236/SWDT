@@ -467,7 +467,7 @@ exit_main:
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void segmentation()
 {
@@ -545,4 +545,4 @@ void segmentation()
 	//cv::destroyWindow(windowName);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

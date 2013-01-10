@@ -11,11 +11,11 @@
 //#define __TEST_HMM_MODEL 1
 #define __TEST_HMM_MODEL 2
 
-namespace hmm {
+namespace my_hmm {
 
 void viterbi_algorithm();
 
-}  // namespace hmm
+}  // namespace my_hmm
 
 namespace {
 namespace local {
@@ -24,7 +24,7 @@ void viterbi_algorithm_1()
 {
 	//
 	std::cout << "********** method 1" << std::endl;
-	hmm::viterbi_algorithm();
+	my_hmm::viterbi_algorithm();
 }
 
 void viterbi_algorithm_2()
@@ -321,7 +321,7 @@ void cdhmm_with_univariate_gaussian_mixture_observations__viterbi_umdhmm()
 }  // namespace local
 }  // unnamed namespace
 
-namespace hmm {
+namespace my_hmm {
 
 void hmm_viterbi()
 {
@@ -333,4 +333,4 @@ void hmm_viterbi()
 	//local::cdhmm_with_univariate_gaussian_mixture_observations__viterbi_umdhmm();  // not yet implemented
 }
 
-}  // namespace hmm
+}  // namespace my_hmm

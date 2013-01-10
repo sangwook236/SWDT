@@ -8,7 +8,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace player_stage {
+namespace my_player_stage {
 
 void simple_example()
 {
@@ -43,4 +43,4 @@ void simple_example()
 	}
 }
 
-}  // namespace player_stage
+}  // namespace my_player_stage

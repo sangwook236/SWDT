@@ -31,7 +31,7 @@ void canny(const cv::Mat &gray, cv::Mat &edge)
 }  // unnamed namespace
 
 
-namespace opencv {
+namespace my_opencv {
 
 void edge_detection()
 {
@@ -146,4 +146,4 @@ void edge_detection()
 	cv::destroyWindow(windowName2);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

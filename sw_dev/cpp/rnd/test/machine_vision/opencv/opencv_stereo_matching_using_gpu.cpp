@@ -27,7 +27,7 @@ void constant_space_belief_propagation()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void stereo_matching_using_gpu()
 {
@@ -36,4 +36,4 @@ void stereo_matching_using_gpu()
 	local::constant_space_belief_propagation();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

@@ -1,6 +1,5 @@
 //#include "stdafx.h"
 #include <iostream>
-#include <stdexcept>
 
 
 namespace {
@@ -9,11 +8,11 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace vlfeat {
+namespace my_matio {
 
-}  // namespace vlfeat
+}  // namespace my_matio
 
-int vlfeat_main(int argc, char *argv[])
+int matio_main(int argc, char *argv[])
 {
 	throw std::runtime_error("not yet implemented");
 

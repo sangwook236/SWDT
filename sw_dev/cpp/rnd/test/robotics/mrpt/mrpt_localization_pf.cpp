@@ -180,7 +180,7 @@ void pf_localization(const PfLocalizationOptions &options)
 }  // namespace local
 }  // unnamed namespace
 
-namespace mrpt {
+namespace my_mrpt {
 
 void localization_pf()
 {
@@ -246,4 +246,4 @@ void localization_pf()
 	local::pf_localization(options);
 }
 
-}  // namespace mrpt
+}  // namespace my_mrpt

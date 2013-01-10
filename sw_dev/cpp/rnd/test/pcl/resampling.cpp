@@ -10,6 +10,8 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
+namespace my_pcl {
+
 void resampling()
 {
 	// load input file into a PointCloud<T> with an appropriate type
@@ -46,3 +48,5 @@ void resampling()
 	// save output
 	pcl::io::savePCDFile("./pcl_data/bun0-mls.pcd", mls_cloud);
 }
+
+}  // namespace my_pcl

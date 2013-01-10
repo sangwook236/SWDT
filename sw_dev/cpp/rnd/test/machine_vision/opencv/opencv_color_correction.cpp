@@ -562,7 +562,7 @@ void color_correction_test_2()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void color_correction()
 {
@@ -571,4 +571,4 @@ void color_correction()
 	local::color_correction_test_2();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

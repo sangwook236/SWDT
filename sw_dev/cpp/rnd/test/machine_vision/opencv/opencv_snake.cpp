@@ -104,7 +104,7 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void snake()
 {
@@ -179,4 +179,4 @@ void snake()
 	cvDestroyWindow(windowName);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

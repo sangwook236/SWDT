@@ -90,11 +90,11 @@ void human_detection_using_hog()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void human_detection()
 {
 	local::human_detection_using_hog();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

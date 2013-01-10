@@ -15,6 +15,8 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
+namespace my_pcl {
+
 void greedy_projection()
 {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>());
@@ -87,3 +89,5 @@ void greedy_projection()
 		boost::this_thread::sleep(boost::posix_time::microseconds(100000));
 	}
 }
+
+}  // namespace my_pcl

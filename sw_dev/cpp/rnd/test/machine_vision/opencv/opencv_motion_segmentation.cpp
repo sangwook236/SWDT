@@ -246,7 +246,7 @@ void segment_motion_using_Farneback_motion_estimation(const cv::Mat &prev_gray_i
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void motion_segmentation()
 {
@@ -351,4 +351,4 @@ void motion_segmentation()
 	cv::destroyWindow(windowName);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

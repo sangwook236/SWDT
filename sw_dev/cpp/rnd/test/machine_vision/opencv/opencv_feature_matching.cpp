@@ -110,7 +110,7 @@ void match_using_k_nearest_neighbor(const CvSeq *targetKeypoints, const CvSeq *t
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void feature_matching()
 {
@@ -191,4 +191,4 @@ void feature_matching()
 	cvDestroyWindow(inputWindowName);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

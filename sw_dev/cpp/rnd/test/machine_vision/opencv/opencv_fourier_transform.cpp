@@ -203,7 +203,7 @@ void sinusoidal_function()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void fourier_transform()
 {
@@ -212,4 +212,4 @@ void fourier_transform()
 	local::sinusoidal_function();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

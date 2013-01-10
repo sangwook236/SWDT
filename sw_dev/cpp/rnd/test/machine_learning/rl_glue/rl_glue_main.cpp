@@ -9,9 +9,9 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace rl_glue {
+namespace my_rl_glue {
 
-}  // namespace rl_glue
+}  // namespace my_rl_glue
 
 int rl_glue_main(int argc, char *argv[])
 {

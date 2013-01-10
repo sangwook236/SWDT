@@ -235,7 +235,7 @@ void histogram_2D()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void histogram()
 {
@@ -243,4 +243,4 @@ void histogram()
 	local::histogram_2D();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

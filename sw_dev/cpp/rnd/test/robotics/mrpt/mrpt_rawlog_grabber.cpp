@@ -1,5 +1,4 @@
 //#include "stdafx.h"
-#include <mrpt/core.h>
 #include <mrpt/hwdrivers.h>
 #include <stdexcept>
 
@@ -10,11 +9,11 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace mrpt {
+namespace my_mrpt {
 
 void rawlog_grabber()
 {
 	throw std::runtime_error("not yet implemented");
 }
 
-}  // namespace mrpt
+}  // namespace my_mrpt

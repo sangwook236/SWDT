@@ -259,9 +259,9 @@ void BP_S_algorithm(const int sizeX, const int sizeY, const int numLabels, Energ
 }  // namespace local
 }  // unnamed namespace
 
-namespace middlebury {
+namespace my_middlebury {
 
-}  // namespace middlebury
+}  // namespace my_middlebury
 
 int middlebury_main(int argc, char *argv[])
 {

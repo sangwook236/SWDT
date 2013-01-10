@@ -375,9 +375,9 @@ void sample()
 }  // namespace local
 }  // unnamed namespace
 
-namespace hcrf {
+namespace my_hcrf {
 
-}  // namespace hcrf
+}  // namespace my_hcrf
 
 int hcrf_main(int argc, char *argv[])
 {

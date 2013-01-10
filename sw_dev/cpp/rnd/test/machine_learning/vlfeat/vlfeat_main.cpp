@@ -9,9 +9,9 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace vlfeat {
+namespace my_vlfeat {
 
-}  // namespace vlfeat
+}  // namespace my_vlfeat
 
 int vlfeat_main(int argc, char *argv[])
 {

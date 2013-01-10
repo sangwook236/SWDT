@@ -1099,7 +1099,7 @@ void Farneback_motion_estimation_algorithm()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void optical_flow()
 {
@@ -1111,4 +1111,4 @@ void optical_flow()
 	local::Farneback_motion_estimation_algorithm();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

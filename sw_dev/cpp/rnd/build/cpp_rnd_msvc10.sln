@@ -30,6 +30,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_learning", "..\test
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_detection", "..\test\object_detection\object_detection_msvc10.vcxproj", "{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "matlab_msvc10", "..\test\matlab\matlab_msvc10.vcxproj", "{A35C8053-9826-464E-8479-4CAE9F495BC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -96,6 +98,10 @@ Global
 		{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}.Debug|Win32.Build.0 = Debug|Win32
 		{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}.Release|Win32.ActiveCfg = Release|Win32
 		{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}.Release|Win32.Build.0 = Release|Win32
+		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Debug|Win32.Build.0 = Debug|Win32
+		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Release|Win32.ActiveCfg = Release|Win32
+		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

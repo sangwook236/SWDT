@@ -89,7 +89,10 @@
     <ClCompile Include="mrpt\mrpt_dijkstra.cpp" />
     <ClCompile Include="mrpt\mrpt_feature_extraction_and_matching.cpp" />
     <ClCompile Include="mrpt\mrpt_icp.cpp" />
-    <ClCompile Include="mrpt\mrpt_localization_pf.cpp" />
+    <ClCompile Include="mrpt\mrpt_localization_pf.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="mrpt\mrpt_main.cpp" />
     <ClCompile Include="mrpt\mrpt_map_handling.cpp" />
     <ClCompile Include="mrpt\mrpt_path_planning.cpp" />

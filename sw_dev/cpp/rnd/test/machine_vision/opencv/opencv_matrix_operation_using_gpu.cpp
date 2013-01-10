@@ -12,11 +12,11 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void matrix_operation_using_gpu()
 {
 	throw std::runtime_error("not yet implemented");
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

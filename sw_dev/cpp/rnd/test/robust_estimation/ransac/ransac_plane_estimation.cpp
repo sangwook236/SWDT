@@ -418,7 +418,7 @@ size_t Plane3RansacEstimator::lookForInliers(std::vector<bool> &inliers, const s
 }  // namespace local
 }  // unnamed namespace
 
-namespace ransac {
+namespace my_ransac {
 
 void plane_estimation()
 {
@@ -494,4 +494,4 @@ void plane_estimation()
 	}
 }
 
-}  // namespace ransac
+}  // namespace my_ransac

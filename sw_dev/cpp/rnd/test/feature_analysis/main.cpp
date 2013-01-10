@@ -12,7 +12,6 @@ int main(int argc, char *argv[])
 	int siftgpu_main(int argc, char *argv[]);
 	int surf_main(int argc, char *argv[]);
 	int pictorial_structure_revisited_main(int argc, char *argv[]);
-	int vlfeat_main(int argc, char *argv[]);
 
 	try
 	{
@@ -26,17 +25,14 @@ int main(int argc, char *argv[])
 		
 		// pictorial structure
 		//pictorial_structure_revisited_main(argc, argv);  // run-time error
-
-		//
-		//vlfeat_main(argc, argv);  // not yet implemented
 	}
 	catch (const std::exception &e)
 	{
-		std::cout << "std::exception occurred !!!: " << e.what() << std::endl;
+		std::cout << "std::exception occurred: " << e.what() << std::endl;
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception occurred !!!" << std::endl;
+		std::cout << "unknown exception occurred" << std::endl;
 	}
 
 	std::cout << "press any key to exit ..." << std::endl;

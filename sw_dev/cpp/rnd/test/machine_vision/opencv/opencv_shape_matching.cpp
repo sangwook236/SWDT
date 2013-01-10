@@ -272,7 +272,7 @@ void pair_wise_geometrical_histogram()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void shape_matching()
 {
@@ -281,4 +281,4 @@ void shape_matching()
 	//local::pair_wise_geometrical_histogram();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

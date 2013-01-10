@@ -541,7 +541,7 @@ void detect_hand_by_motion()
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void hand_detection()
 {
@@ -549,4 +549,4 @@ void hand_detection()
 	local::detect_hand_by_motion();
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

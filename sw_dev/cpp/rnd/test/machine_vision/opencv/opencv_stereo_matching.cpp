@@ -307,7 +307,7 @@ void stereo_correspondence_using_similarity_measure(const cv::Mat &leftImage, co
 }  // namespace local
 }  // unnamed namespace
 
-namespace opencv {
+namespace my_opencv {
 
 void stereo_matching()
 {
@@ -407,4 +407,4 @@ void stereo_matching()
 	cv::destroyWindow(windowName3);
 }
 
-}  // namespace opencv
+}  // namespace my_opencv

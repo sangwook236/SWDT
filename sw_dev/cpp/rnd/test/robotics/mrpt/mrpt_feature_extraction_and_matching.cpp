@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include <mrpt/core.h>
+#include <mrpt/vision.h>
 
 
 namespace {
@@ -304,7 +304,7 @@ void display_features(const mrpt::utils::CMRPTImage &image1, const mrpt::utils::
 }  // namespace local
 }  // unnamed namespace
 
-namespace mrpt {
+namespace my_mrpt {
 
 void feature_extraction_and_matching()
 {
@@ -407,4 +407,4 @@ void feature_extraction_and_matching()
 	}
 }
 
-}  // namespace mrpt
+}  // namespace my_mrpt
