@@ -23,7 +23,6 @@
 
 #include <libPartApp/partapp_aux.hpp>
 
-#define CHAR16_T  //-- [] 2012/08/08: Sang-Wook Lee
 #include <libMatlabIO/matlab_io.hpp>
 #include <libMisc/misc.hpp>
 

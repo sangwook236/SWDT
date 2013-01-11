@@ -30,7 +30,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_learning", "..\test
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_detection", "..\test\object_detection\object_detection_msvc10.vcxproj", "{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "matlab_msvc10", "..\test\matlab\matlab_msvc10.vcxproj", "{A35C8053-9826-464E-8479-4CAE9F495BC3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "matlab", "..\test\matlab\matlab_msvc10.vcxproj", "{A35C8053-9826-464E-8479-4CAE9F495BC3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pose_estimation", "..\test\pose_estimation\pose_estimation_msvc10.vcxproj", "{97291D39-1AC2-4130-BE2C-39A442EBCC6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,8 +44,8 @@ Global
 		{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}.Debug|Win32.Build.0 = Debug|Win32
 		{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}.Release|Win32.ActiveCfg = Release|Win32
 		{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}.Release|Win32.Build.0 = Release|Win32
-		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Debug|Win32.ActiveCfg = Debug|Win32
-		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Debug|Win32.Build.0 = Debug|Win32
+		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Debug|Win32.ActiveCfg = Template|Win32
+		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Debug|Win32.Build.0 = Template|Win32
 		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Release|Win32.ActiveCfg = Release|Win32
 		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Release|Win32.Build.0 = Release|Win32
 		{F47404DC-D671-4C97-8477-9447118B238A}.Debug|Win32.ActiveCfg = Debug|Win32
@@ -102,6 +104,10 @@ Global
 		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Debug|Win32.Build.0 = Debug|Win32
 		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Release|Win32.ActiveCfg = Release|Win32
 		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Release|Win32.Build.0 = Release|Win32
+		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Debug|Win32.Build.0 = Debug|Win32
+		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Release|Win32.ActiveCfg = Release|Win32
+		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

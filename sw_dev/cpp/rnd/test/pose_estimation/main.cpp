@@ -7,11 +7,11 @@
 
 int main(int argc, char *argv[])
 {
-	int matio_main(int argc, char *argv[]);
+	int parts_based_detector_main(int argc, char *argv[]);
 
 	try
 	{
-		matio_main(argc, argv);  // not yet implemented
+		parts_based_detector_main(argc, argv);  // not yet implemented
 	}
 	catch (const std::exception &e)
 	{
@@ -27,3 +27,4 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
+

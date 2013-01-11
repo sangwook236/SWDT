@@ -52,13 +52,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;../../inc/opencv-2.4.3;D:\work_center\sw_dev\cpp\rnd\src\feature_analysis\pictorial_structure\pictorial_structures_revisited\partapp-r2\src\libs;D:\work_center\sw_dev\cpp\rnd\test\feature_analysis\matlab_R2011a_64bit\extern\include;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\include;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pictorial_structure_revisited_lib;../../inc;../../inc/opencv-2.4.3;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib;D:\work_center\sw_dev\cpp\rnd\test\feature_analysis\matlab_R2011a_64bit\extern\lib\win64\microsoft;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\lib;D:\work_center\sw_dev\cpp\ext\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_core243d.lib;opencv_imgproc243d.lib;opencv_highgui243d.lib;libprotobufd.lib;QtCored4.lib;QtGuid4.lib;libmat.lib;libmx.lib;libut.lib;libpng15_staticd.lib;sift_libd.lib;siftgpu_d.lib;surfWinDLL_d.lib;cblas.lib;gsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../lib;D:\work_center\sw_dev\cpp\ext\lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_core243d.lib;opencv_imgproc243d.lib;opencv_highgui243d.lib;sift_libd.lib;siftgpu_d.lib;surfWinDLL_d.lib;libmat.lib;libmx.lib;Qt5Cored.lib;Qt5Guid.lib;gsl.lib;cblas.lib;libprotobufd.lib;libpng15_staticd.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -69,15 +69,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;../../inc/opencv-2.4.3;D:\work_center\sw_dev\cpp\rnd\src\feature_analysis\pictorial_structure\pictorial_structures_revisited\partapp-r2\src\libs;D:\work_center\sw_dev\cpp\rnd\test\feature_analysis\matlab_R2011a_64bit\extern\include;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\include;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtCore;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\include\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pictorial_structure_revisited_lib;../../inc;../../inc/opencv-2.4.3;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../lib;D:\work_center\sw_dev\cpp\rnd\test\feature_analysis\matlab_R2011a_64bit\extern\lib\win64\microsoft;D:\MyProgramFiles\QtSDK\Desktop\Qt\4.7.3\msvc2008\lib;D:\work_center\sw_dev\cpp\ext\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_core243.lib;opencv_imgproc243.lib;opencv_highgui243.lib;libprotobuf.lib;QtCore4.lib;QtGui4.lib;libmat.lib;libmx.lib;libpng15_static.lib;sift_lib.lib;siftgpu.lib;cblas.lib;gsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../lib;D:\work_center\sw_dev\cpp\ext\lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_core243.lib;opencv_imgproc243.lib;opencv_highgui243.lib;sift_lib.lib;siftgpu.lib;libmat.lib;libmx.lib;Qt5Core.lib;Qt5Gui.lib;gsl.lib;cblas.lib;libprotobuf.lib;libpng15_static.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -140,18 +140,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="pictorial_structure_revisited\parteval.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="pictorial_structure_revisited\pictorial_structure_revisited_main.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="pictorial_structure_revisited\pictorial_structure_revisited_partapp.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="pictorial_structure_revisited\parteval.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\pictorial_structure_revisited_main.cpp" />
+    <ClCompile Include="pictorial_structure_revisited\pictorial_structure_revisited_partapp.cpp" />
     <ClCompile Include="pictorial_structure_revisited_lib\libAdaBoost\AdaBoost.cc" />
     <ClCompile Include="pictorial_structure_revisited_lib\libAdaBoost\BoostingData.cc" />
     <ClCompile Include="pictorial_structure_revisited_lib\libAdaBoost\featurevector.cc" />

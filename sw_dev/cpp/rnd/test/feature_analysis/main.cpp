@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	try
 	{
 		// line feature
-		lsd_main(argc, argv);
+		//lsd_main(argc, argv);
 
 		// local descriptor
 		//sift_main(argc, argv);
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 		//surf_main(argc, argv);  // run-time error
 		
 		// pictorial structure
-		//pictorial_structure_revisited_main(argc, argv);  // run-time error
+		pictorial_structure_revisited_main(argc, argv);
 	}
 	catch (const std::exception &e)
 	{

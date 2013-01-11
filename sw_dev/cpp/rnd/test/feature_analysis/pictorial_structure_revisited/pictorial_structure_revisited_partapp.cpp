@@ -40,7 +40,6 @@
 // this is only needed for szOption_EvalGt
 #include <libPartDetect/partdetect.h>
 
-#define CHAR16_T  //-- [] 2012/08/08: Sang-Wook Lee
 #include <libMatlabIO/matlab_io.h>
 #include <libMatlabIO/matlab_io.hpp>
 

@@ -1,0 +1,23 @@
+[-] Building (Cygwin)
+	- build static library
+		cd ${CCV_HOME}/lib
+		./configure --prefix=${CCV_INSTALL}
+		make
+		(optional) make check
+		make install
+
+		==> ${CCV_HOME}/lib/libccv.a file이 생성.
+
+	- build shared library
+		cd ${CCV_HOME}/lib
+		./configure --prefix=${CCV_INSTALL}
+		${CCV_HOME}/makefile.shared => ${CCV_HOME}/lib/makefile로 복사
+		make
+		(optional) make check
+		make install
+
+		==> ${CCV_HOME}/lib에 아래의 file 생성.
+			libccv.dll, libccv.lib, libccv.def
+
+	-. 아래의 library가 필요.
+		libjpeg, libpng, gsl, fftw3, liblinear, cblas, openmp, avcodec, avformat, swscale.
