@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="bgscollection_lib">
+      <UniqueIdentifier>{34549313-a99a-4161-b023-cf73cf0aa357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bgscollection">
+      <UniqueIdentifier>{5f926f00-c83c-4183-abf0-068e980f543c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bgslibrary">
+      <UniqueIdentifier>{019af61f-5035-4c4e-854c-1168270eaba4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bgscollection_lib\bskde.h">
+      <Filter>bgscollection_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="bgscollection_lib\sobs.h">
+      <Filter>bgscollection_lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bgscollection_lib\bskde.cpp">
+      <Filter>bgscollection_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="bgscollection_lib\sobs.cpp">
+      <Filter>bgscollection_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary\bgslibrary_main.cpp">
+      <Filter>Source Files\bgslibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="bgscollection\bgscollection_main.cpp">
+      <Filter>Source Files\bgscollection</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
