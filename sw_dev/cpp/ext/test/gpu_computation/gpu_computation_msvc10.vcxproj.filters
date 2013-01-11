@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{fd720a91-9beb-4c54-8b41-0748605d3b22}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd;cuh</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{50df24f5-7824-4e1a-9eba-bf20ef6912dc}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx;cu</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{7f6904c0-1c55-4240-b425-d81cbc605a66}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\cuda">
+      <UniqueIdentifier>{110123d6-1ef1-4af2-98ad-6f6fa882e127}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\thrust">
+      <UniqueIdentifier>{aafc36b9-fabc-44a0-b501-3050676dfd5b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cuda\cuda_main.cpp">
+      <Filter>Source Files\cuda</Filter>
+    </ClCompile>
+    <ClCompile Include="thrust\thrust_main.cpp">
+      <Filter>Source Files\thrust</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="cuda\HelloWorld.cu">
+      <Filter>Source Files\cuda</Filter>
+    </CudaCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{5cb9f954-446a-4ed7-8871-94d54c22a81b}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{afd4564e-68a8-40c4-9226-b8db2a395320}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{98233228-9f86-493e-9bf9-6e9bed8a3eae}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\tbb">
+      <UniqueIdentifier>{e64a86fb-8803-4c6e-9dc2-e1344dbbe9d1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tbb\tbb_complex_loop_parallelization.cpp">
+      <Filter>Source Files\tbb</Filter>
+    </ClCompile>
+    <ClCompile Include="tbb\tbb_main.cpp">
+      <Filter>Source Files\tbb</Filter>
+    </ClCompile>
+    <ClCompile Include="tbb\tbb_simple_loop_parallelization.cpp">
+      <Filter>Source Files\tbb</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

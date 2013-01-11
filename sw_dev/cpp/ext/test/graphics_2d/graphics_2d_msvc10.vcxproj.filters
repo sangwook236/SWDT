@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cairo\cairo_basic_operation.cpp">
+      <Filter>Source Files\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="cairo\cairo_drawing_illustration.cpp">
+      <Filter>Source Files\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="cairo\cairo_layer_diagram.cpp">
+      <Filter>Source Files\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="cairo\cairo_main.cpp">
+      <Filter>Source Files\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="cairo\cairo_text_extents.cpp">
+      <Filter>Source Files\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="cairo\cairo_tutorial.cpp">
+      <Filter>Source Files\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="cairo\cairo_two_link_arm.cpp">
+      <Filter>Source Files\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="devil\devil_basic_operation.cpp">
+      <Filter>Source Files\devil</Filter>
+    </ClCompile>
+    <ClCompile Include="devil\devil_main.cpp">
+      <Filter>Source Files\devil</Filter>
+    </ClCompile>
+    <ClCompile Include="gd\gd_basic_operation.cpp">
+      <Filter>Source Files\gd</Filter>
+    </ClCompile>
+    <ClCompile Include="gd\gd_main.cpp">
+      <Filter>Source Files\gd</Filter>
+    </ClCompile>
+    <ClCompile Include="gd\gd_two_link_arm.cpp">
+      <Filter>Source Files\gd</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{bba85f84-a2ce-4117-90b1-f4216d2c1777}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4f42ea85-dc2a-45eb-b155-90bd26a7c9c4}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{cc5d9528-de5e-45b4-97f9-dfffe0746d1d}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\cairo">
+      <UniqueIdentifier>{476cdddc-4b7c-4b2e-97fd-8185f61e25a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gd">
+      <UniqueIdentifier>{7b855fb6-9382-4cd3-b38d-cff17eeca73c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\devil">
+      <UniqueIdentifier>{cf9f083f-fb09-4377-b4e7-7828e0cac432}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cgal\cgal_main.cpp">
+      <Filter>Source Files\cgal</Filter>
+    </ClCompile>
+    <ClCompile Include="cgal\polygon.cpp">
+      <Filter>Source Files\cgal</Filter>
+    </ClCompile>
+    <ClCompile Include="openmesh\openmesh_main.cpp">
+      <Filter>Source Files\openmesh</Filter>
+    </ClCompile>
+    <ClCompile Include="openmesh\simple_object.cpp">
+      <Filter>Source Files\openmesh</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{466edaac-25d6-4adb-b114-a73a0f207aa7}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{9d6f1d52-4eb4-4dae-9825-918aafa7b579}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{c48c5581-da63-4cef-8ae3-e586cdd2330c}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\cgal">
+      <UniqueIdentifier>{56a4cd19-762d-4f05-875a-bda286ea27de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\openmesh">
+      <UniqueIdentifier>{9db476cb-a711-4986-a803-a5b7e2d6b7f2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
