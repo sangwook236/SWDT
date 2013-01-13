@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
 		// local descriptor
 		//sift_main(argc, argv);
-		//siftgpu_main(argc, argv);  // run-time error
+		//siftgpu_main(argc, argv);  // TODO [check] >> either of CUDA or GLSL has to be supported
 		//surf_main(argc, argv);  // run-time error
 		
 		// pictorial structure

@@ -22,6 +22,9 @@
     <ClCompile Include="openni\openni_skeleton.cpp">
       <Filter>Source Files\openni</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

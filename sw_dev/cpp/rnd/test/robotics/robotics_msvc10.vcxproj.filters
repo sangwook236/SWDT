@@ -72,6 +72,9 @@
     <ClCompile Include="player_stage\player_stage_simple_example.cpp">
       <Filter>Source Files\player_stage</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

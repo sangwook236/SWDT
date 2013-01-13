@@ -13,6 +13,9 @@
     <ClCompile Include="pcl_visualization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

@@ -1,0 +1,12 @@
+[-] Building (MSVC)
+	-. Linking하는 external library를 변경해야 할 필요가 있음.
+		OpenGL 
+		GLut (only by the viewer)
+		GLEW 1.51
+		DevIL 1.77 (can be disabled)
+		CUDA (optional)
+		==> 사용하는 external library에 대한 일관성을 유지하기 위해서
+			SiftGPU library가 가지고 있는 external library를 사용하지 않고
+			공통적으로 사용하는 external library를 사용해야 할 수 있음.
+		==> external library (e.g.: GLEW)의 하위 호환성 문제로 정상적으로 실행되지 않음.
+			제공되는 SiftGPU setting 그대로 building해야 함.

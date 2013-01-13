@@ -1,0 +1,11 @@
+http://www.cs.ubc.ca/~lowe/keypoints/
+http://robwhess.github.com/opensift/
+http://www.nowozin.net/sebastian/tu-berlin-2006/libsift/
+
+http://www.cs.unc.edu/~ccwu/siftgpu/
+
+http://www.vision.ee.ethz.ch/~surf/
+http://www.chrisevansdev.com/computer-vision-opensurf.html
+
+http://code.google.com/p/opensurf1/
+http://homes.esat.kuleuven.be/~ncorneli/gpusurf/

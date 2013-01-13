@@ -30,6 +30,9 @@
     <ClCompile Include="ransac\ransac_plane_estimation.cpp">
       <Filter>Source Files\ransac</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

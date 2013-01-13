@@ -27,6 +27,9 @@
     <ClCompile Include="flood\flood_main.cpp">
       <Filter>Source Files\flood</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

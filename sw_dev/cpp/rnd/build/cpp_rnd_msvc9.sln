@@ -10,7 +10,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgal", "..\test\cgal\cgal_m
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "optimization", "..\test\optimization\optimization_msvc9.vcproj", "{F47404DC-D671-4C97-8477-9447118B238A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ode", "..\test\ode\ode_msvc9.vcproj", "{86A474F8-4ABB-46B3-A034-26496D316349}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simulation", "..\test\simulation\simulation_msvc9.vcproj", "{86A474F8-4ABB-46B3-A034-26496D316349}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "player_stage", "..\test\player_stage\player_stage_msvc9.vcproj", "{C255A005-327C-44ED-9ACD-0BDEE5F9F5FF}"
 EndProject

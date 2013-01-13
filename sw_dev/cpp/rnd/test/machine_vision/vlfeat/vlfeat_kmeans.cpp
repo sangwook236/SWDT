@@ -13,7 +13,7 @@ namespace local {
 
 namespace my_vlfeat {
 
-void keams()
+void kmeans()
 {
 	const vl_size data_dim = 2;
 	const vl_size num_data = 1000;

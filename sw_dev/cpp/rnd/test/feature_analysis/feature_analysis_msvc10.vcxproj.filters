@@ -365,5 +365,8 @@
     <ClCompile Include="pictorial_structure_revisited_lib\libPictStruct\objectdetect_learnparam.cpp">
       <Filter>pictorial_structure_revisited_lib\libPictStruct</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

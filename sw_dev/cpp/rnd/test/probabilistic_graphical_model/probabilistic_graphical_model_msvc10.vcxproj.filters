@@ -166,6 +166,9 @@
     <ClCompile Include="pnl\pnl_viterbi_segmentation.cpp">
       <Filter>Source Files\pnl</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

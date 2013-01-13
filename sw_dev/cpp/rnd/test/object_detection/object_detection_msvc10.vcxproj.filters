@@ -38,5 +38,8 @@
     <ClCompile Include="libpabod\libpabod_main.cpp">
       <Filter>Source Files\libpabod</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

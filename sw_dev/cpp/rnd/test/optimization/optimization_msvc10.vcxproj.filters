@@ -33,6 +33,9 @@
     <ClCompile Include="levmar\levmar_main.cpp">
       <Filter>Source Files\levmar</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

@@ -6,7 +6,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opencv_win", "..\test\openc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "optimization", "..\test\optimization\optimization_msvc10.vcxproj", "{F47404DC-D671-4C97-8477-9447118B238A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ode", "..\test\ode\ode_msvc10.vcxproj", "{86A474F8-4ABB-46B3-A034-26496D316349}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simulation", "..\test\simulation\simulation_msvc10.vcxproj", "{86A474F8-4ABB-46B3-A034-26496D316349}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "search_algorithm", "..\test\search_algorithm\search_algorithm_msvc10.vcxproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
 EndProject
@@ -33,6 +33,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "matlab", "..\test\matlab\matlab_msvc10.vcxproj", "{A35C8053-9826-464E-8479-4CAE9F495BC3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pose_estimation", "..\test\pose_estimation\pose_estimation_msvc10.vcxproj", "{97291D39-1AC2-4130-BE2C-39A442EBCC6D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shape_analysis", "..\test\shape_analysis\shape_analysis_msvc10.vcxproj", "{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,6 +110,10 @@ Global
 		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Debug|Win32.Build.0 = Debug|Win32
 		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Release|Win32.ActiveCfg = Release|Win32
 		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Release|Win32.Build.0 = Release|Win32
+		{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}.Debug|Win32.Build.0 = Debug|Win32
+		{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}.Release|Win32.ActiveCfg = Release|Win32
+		{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

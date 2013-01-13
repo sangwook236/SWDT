@@ -8,9 +8,11 @@
 
 int main(int argc, char *argv[])
 {
+	int demolib_main(int argc, char *argv[]);
+	
 	try
 	{
-		throw std::runtime_error("not yet implemented");
+		demolib_main(argc, argv);  // not yet implemented
 	}
 	catch (const std::exception &e)
 	{

@@ -246,6 +246,9 @@
     <ClCompile Include="vlfeat\vlfeat_slic.cpp">
       <Filter>Source Files\vlfeat</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

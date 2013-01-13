@@ -56,5 +56,8 @@
     <ClCompile Include="vlfeat\vlfeat_main.cpp">
       <Filter>Source Files\vlfeat</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

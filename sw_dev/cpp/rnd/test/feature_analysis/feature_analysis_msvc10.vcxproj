@@ -18,12 +18,10 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
@@ -41,6 +39,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../../bin/</OutDir>
+    <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -58,7 +57,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../lib;D:\work_center\sw_dev\cpp\ext\lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_core243d.lib;opencv_imgproc243d.lib;opencv_highgui243d.lib;sift_libd.lib;siftgpu_d.lib;surfWinDLL_d.lib;libmat.lib;libmx.lib;Qt5Cored.lib;Qt5Guid.lib;gsl.lib;cblas.lib;libprotobufd.lib;libpng15_staticd.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -129,6 +128,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="lsd\lsd_main.cpp" />
     <ClCompile Include="lsd_lib\lsd.cpp" />
     <ClCompile Include="lsd_lib\lsd_call_example.cpp">
@@ -174,10 +174,7 @@
     <ClCompile Include="pictorial_structure_revisited_lib\libPictStruct\objectdetect_findpos.cpp" />
     <ClCompile Include="pictorial_structure_revisited_lib\libPictStruct\objectdetect_findrot.cpp" />
     <ClCompile Include="pictorial_structure_revisited_lib\libPictStruct\objectdetect_learnparam.cpp" />
-    <ClCompile Include="siftgpu\siftgpu_main.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="siftgpu\siftgpu_main.cpp" />
     <ClCompile Include="sift\sift_display_feature.cpp" />
     <ClCompile Include="sift\sift_extract_feature.cpp" />
     <ClCompile Include="sift\sift_main.cpp" />

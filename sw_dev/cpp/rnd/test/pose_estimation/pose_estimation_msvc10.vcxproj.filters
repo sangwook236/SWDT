@@ -38,5 +38,8 @@
     <ClCompile Include="parts_based_detector\parts_based_detector_main.cpp">
       <Filter>Source Files\parts_based_detector</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

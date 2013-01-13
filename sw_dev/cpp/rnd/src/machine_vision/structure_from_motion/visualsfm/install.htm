@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+<meta name="keywords" content="SiftGPU, PBA ,VisualSFM, Structure from Motion" />
+<meta content="NO-CACHE" http-equiv="CACHE-CONTROL" />
+<meta content="en-us" http-equiv="Content-Language" />
+<meta name="GENERATOR" content="MSHTML 8.00.6001.18939" />
+<style type="text/css">
+<!--
+BODY {
+	font-family: Courier New;
+}
+.style2 {
+				background-color: #E6E6E6;
+}
+.style4 {
+				text-decoration: none;
+}
+.style5 {
+				color: #008000;
+}
+-->
+</style>
+<title>VisualSFM : A Visual Structure from Motion System</title>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28347088-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+
+<body>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p align="center">
+<table style="WIDTH: 1040px; HEIGHT: 151px" border="0" cellspacing="0" cellpadding="3" align="center">
+	<tr>
+		<td style="width: 1008px">
+		<p align="center"><strong><font size="5"><a href="index.html">VisualSFM</a> 
+		: A Visual Structure from Motion System</font></strong></p>
+		<p align="center"><a href="http://www.cs.washington.edu/homes/ccwu">
+		<font size="4">Changchang Wu</font></a><a href="http://www.cs.washington.edu/homes/ccwu" class="style4"> </a></p>
+		<p align="center">University of Washington at Seattle</p>
+		<p align="center">&nbsp;</p>
+		</td>
+	</tr>
+	<tr>
+		<td class="style2" style="width: 1008px">
+		<strong>Install instruction</strong></td>
+	</tr>
+	<tr>
+		<td style="width: 1008px">
+		Below is the instruction for installing VisualSFM and its <a href="doc.html#dep">
+		depending libraries</a>. The GPU-acceleration requires certain 
+		<a href="http://www.cs.washington.edu/homes/ccwu/vsfm/doc.html#hardware">
+		hardware</a>, and please refer to <a href="doc.html#faq">FAQ</a> if some 
+		GPU steps do not work for you. <br>
+		<br>
+		<strong>Windows</strong>:<a name="win"></a><br>
+		1. Try launch VisualSFM.exe, <br>
+&nbsp;&nbsp; If it does not launch, you need to install MSVC2010 
+		runtime (<a href="http://www.microsoft.com/download/en/details.aspx?id=13523">64bit</a>,
+		<a href="http://www.microsoft.com/download/en/details.aspx?id=8328">
+		32bit</a>)<br>
+		<br>
+		2. (optional) if you want to use Yasutaka Furukawa's patch-based dense 
+		reconstruction.<br>
+&nbsp;&nbsp; Obtain the <a href="http://grail.cs.washington.edu/software/cmvs/">CMVS/PMVS</a> 
+		binaries distributed
+		<a href="https://github.com/TheFrenchLeaf/CMVS-PMVS/tree/master/binariesWin-Linux">
+		by Pierre Moulon</a>, or <a href="http://nghiaho.com/?page_id=253">by 
+		Nghia Ho</a>,
+		or <a href="http://www.visual-experiments.com/demos/sfmtoolkit/">by 
+		Henri Astre</a><br>
+&nbsp;&nbsp; Place cmvs/pmvs/genOption and their depending dlls in the same 
+		folder as VisualSFM.exe<br>
+		<br>
+		<br>
+		<strong>Linux</strong>:<a name="linux"></a> (check out
+		<a href="http://www.10flow.com/2012/08/15/building-visualsfm-on-ubuntu-12-04-precise-pangolin-desktop-64-bit/">
+		Scott Sawyer's install tutorial</a> for Ubuntu)<br>
+		1. Make sure you have <strong>libgtk2.0-dev / gtk2-devel</strong> (2.18 or higher)<br>
+		<br>
+		2. make (Do not lose your previous makefile modifications when updating)<br>
+		<br>
+		3. Download <a href="http://www.cs.unc.edu/~ccwu/siftgpu/">SiftGPU</a> 
+		code, and compile libsiftgpu.so, <br>
+&nbsp;&nbsp; You may <span class="style5">#define SIFTGPU_NO_DEVIL</span> and 
+		remove -lIL from makefile to drop the dependency on DevIL <br>
+&nbsp;&nbsp; Copy libsiftgpu.so to the <em><strong>vsfm/bin</strong></em> 
+		folder<br>
+&nbsp;&nbsp; The CUDA-enabled SiftGPU is needed for running programs remotely 
+		through terminal<br>
+		<br>
+		4. Do <strong>one</strong> of the following for PBA (Multicore Bundle 
+		Adjustment)<br>
+&nbsp;&nbsp; Option 1 Install
+		<a href="http://developer.nvidia.com/cuda-toolkit-40">CUDA toolkit</a>, if you have nVidia cards<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Download and 
+		compile <a href="http://grail.cs.washington.edu/projects/mcba/">PBA</a>, 
+		place libpba.so in the <em><strong>vsfm/bin</strong></em> folder<br>
+&nbsp;&nbsp; Option 2 Download
+		<a href="http://grail.cs.washington.edu/projects/mcba/">PBA</a>, compile 
+		it by using makefile_no_gpu<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Copy 
+		libpba_no_gpu.so to <strong><em>vsfm/bin/libpba.so<br>
+		</em></strong><br>
+		5. (optional) if you want to use Yasutaka Furukawa's patch-based dense 
+		reconstruction.<br>
+&nbsp;&nbsp;&nbsp; Obtain CMVS/PMVS (<a href="http://grail.cs.washington.edu/software/cmvs/">original 
+		code</a>,
+		<a href="https://github.com/TheFrenchLeaf/CMVS-PMVS/tree/master/binariesWin-Linux">
+		Pierre Moulon's binaries</a>, or 
+		<a href="http://nghiaho.com/?page_id=253">Nghia Ho's version</a>)<br>
+&nbsp;&nbsp;&nbsp; Place the binaries of cmvs/pmvs/genOption in the same folder 
+		as VisualSFM(or PATH)<br>
+		<br>
+		6. Make sure LD_LIBRARY_PATH/PATH are set correctly<br>
+&nbsp;&nbsp; Check dependency with <em>ldd</em> for libsiftgpu.so, libpba.so, 
+		...<br>
+&nbsp;&nbsp; VisualSFM will call dlopen(&quot;libsiftgpu.so&quot;), dlopen(&quot;libpba.so&quot;), 
+		system(&quot;pmvs..&quot;), etc.<br>
+		<br>
+		<br>
+		<strong>Mac OSX </strong>(beta):<a name="mac"></a><br>
+		1. Install gtk+ through fink, homebrew, or mac-ports if you haven't<br>
+&nbsp;&nbsp; <span class="style5">Modify makefile to specify the location of 
+		your pkg-config for gtk+2.0<br>
+		</span><br>
+		2. Make sure you have X11+GLX+OpenGL support (not OpenGL framework)<br>
+&nbsp;&nbsp; libGL.1.dylib, libGLU.1.dylib libX11.6.dylib<br>
+&nbsp;&nbsp; Mesa3D might be an alternative if something is not working. <br>
+		<br>
+		3. make (Do not lose your previous makefile modifications when updating)<br>
+		&nbsp;&nbsp; * In case the GUI closes without any symptoms, try XQuartz 
+		2.6.3.<br>
+		<br>
+		4. Do the same steps as the steps 3-6 for Linux<br>
+&nbsp;&nbsp; The SiftGPU and PBA code may not support Mac so well (for now).<br>
+&nbsp;&nbsp; You probably need to make small modifications to the code, or 
+		search for their Mac OSX ports.<br>
+		<br>
+		* The installation on Mac OSX requires more work. <br>
+		* Checkout the related discussions at the <a href="http://groups.google.com/group/vsfm">
+		Google Group</a> and the
+		<a href="http://www.pgrammetry.com/forum/viewtopic.php?f=53&amp;t=443">
+		package</a> contributed by Iv&aacute;n!<br>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 1008px">
+		&nbsp;</td>
+	</tr>
+	</table>
+</p>
+<p align="center">&nbsp;</p>
+<p align="center"><font size="4">&nbsp; </font></p>
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+<p>&nbsp;</p>
+<p align="center">&nbsp;</p>
+
+<!-- Start of StatCounter Code -->
+<script type="text/javascript">
+var sc_project=7204000; 
+var sc_invisible=1; 
+var sc_security="f0198f85"; 
+</script>
+
+<script type="text/javascript"
+src="http://www.statcounter.com/counter/counter.js"></script><noscript><div
+class="statcounter"><a title="tumblr visitor"
+href="http://statcounter.com/tumblr/" target="_blank"><img
+class="statcounter"
+src="http://c.statcounter.com/7204000/0/f0198f85/1/"
+alt="tumblr visitor" ></a></div></noscript>
+<!-- End of StatCounter Code -->
+
+</body>
+
+</html>

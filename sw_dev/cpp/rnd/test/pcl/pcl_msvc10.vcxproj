@@ -18,12 +18,10 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
@@ -41,6 +39,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../../bin/</OutDir>
+    <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -58,7 +57,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../lib;D:/work_center/sw_dev/cpp/ext/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>pcl_common_debug.lib;pcl_io_debug.lib;pcl_kdtree_debug.lib;pcl_search_debug.lib;pcl_surface_debug.lib;pcl_features_debug.lib;pcl_visualization_debug.lib;vtkCommon.lib;vtkFiltering.lib;vtkGraphics.lib;vtkRendering.lib;flann.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -77,11 +76,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>../../lib;D:/work_center/sw_dev/cpp/ext/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>pcl_common_release.lib;pcl_io_release.lib;pcl_kdtree_release.lib;pcl_search_release.lib;pcl_surface_release.lib;pcl_features_release.lib;pcl_visualization_release.lib;vtkCommon.lib;vtkFiltering.lib;vtkGraphics.lib;vtkRendering.lib;flann.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="greedy_projection.cpp" />
+    <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pcl_visualization.cpp" />
     <ClCompile Include="resampling.cpp" />
