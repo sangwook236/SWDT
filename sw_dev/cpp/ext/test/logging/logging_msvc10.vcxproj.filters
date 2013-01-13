@@ -24,5 +24,8 @@
     <ClCompile Include="log4cxx\log4cxx_main.cpp">
       <Filter>Source Files\log4cxx</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

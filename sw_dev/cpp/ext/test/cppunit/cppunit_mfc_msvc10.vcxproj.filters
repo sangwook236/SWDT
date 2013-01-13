@@ -36,6 +36,9 @@
     <ClCompile Include="TestCppUnitMfcUiView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TestCppUnitMfcUi.rc">

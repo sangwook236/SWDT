@@ -45,6 +45,9 @@
     <ClCompile Include="xercesc\xercesc_sax.cpp">
       <Filter>Source Files\xercesc</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DOMPrintErrorHandler.hpp">

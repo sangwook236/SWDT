@@ -19,6 +19,9 @@
     <ClCompile Include="openmesh\simple_object.cpp">
       <Filter>Source Files\openmesh</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

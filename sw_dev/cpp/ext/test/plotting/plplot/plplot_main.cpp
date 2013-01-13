@@ -16,9 +16,11 @@ void example_x21(int argc, const char **argv);
 
 int plplot_main(int argc, char *argv[])
 {
+	// caution: for execution, driver files have to be loaded.
+
 	// examples
-	my_plplot::example_x01(argc, (const char **)argv);  // run-time error
-	my_plplot::example_x21(argc, (const char **)argv);  // run-time error
+	//my_plplot::example_x01(argc, (const char **)argv);
+	my_plplot::example_x21(argc, (const char **)argv);
 
 	return 0;
 }

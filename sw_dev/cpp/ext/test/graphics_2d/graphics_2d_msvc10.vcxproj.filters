@@ -40,6 +40,9 @@
     <ClCompile Include="gd\gd_two_link_arm.cpp">
       <Filter>Source Files\gd</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

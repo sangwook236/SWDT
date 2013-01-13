@@ -1,0 +1,4 @@
+GTK+ All-in-one bundles에 포함된 binary library 사용
+
+http://www.gtk.org
+http://www.gtk.org/download-windows.html

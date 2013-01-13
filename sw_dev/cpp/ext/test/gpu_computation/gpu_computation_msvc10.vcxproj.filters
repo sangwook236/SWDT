@@ -30,6 +30,9 @@
     <ClCompile Include="thrust\thrust_main.cpp">
       <Filter>Source Files\thrust</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="cuda\HelloWorld.cu">

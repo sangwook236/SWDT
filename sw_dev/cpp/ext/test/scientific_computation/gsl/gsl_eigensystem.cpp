@@ -1,7 +1,7 @@
 //#include "stdafx.h"
+#include <math.h>
 #include <gsl/gsl_eigen.h>
 #include <iostream>
-#include <cmath>
 
 
 namespace {

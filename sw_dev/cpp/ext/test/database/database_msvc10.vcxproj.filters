@@ -48,6 +48,9 @@
     <ClCompile Include="sqlite_lib\sqlite3.c">
       <Filter>sqlite_lib</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

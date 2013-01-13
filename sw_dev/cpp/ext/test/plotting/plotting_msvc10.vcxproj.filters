@@ -16,6 +16,9 @@
     <ClCompile Include="plplot\plplot_x21.cpp">
       <Filter>Source Files\plplot</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

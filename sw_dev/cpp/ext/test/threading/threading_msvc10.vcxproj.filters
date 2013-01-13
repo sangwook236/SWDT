@@ -30,5 +30,8 @@
     <ClCompile Include="tbb\tbb_simple_loop_parallelization.cpp">
       <Filter>Source Files\tbb</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

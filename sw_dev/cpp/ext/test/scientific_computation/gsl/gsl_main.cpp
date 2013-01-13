@@ -1,5 +1,6 @@
 #include <gsl/gsl_matrix.h>
 #include <iostream>
+#include <cmath>
 
 
 namespace {
@@ -70,7 +71,7 @@ int gsl_main(int argc, char *argv[])
 	//my_gsl::vector_operation();
 	//my_gsl::matrix_operation();
 
-	my_gsl::lu();
+	//my_gsl::lu();
 	//my_gsl::qr();
 	//my_gsl::cholesky();
 	//my_gsl::eigensystem();
@@ -78,7 +79,7 @@ int gsl_main(int argc, char *argv[])
 		
 	//my_gsl::pca();
 		
-	//my_gsl::levenberg_marquardt();
+	my_gsl::levenberg_marquardt();
 	//my_gsl::conjugate_gradient();
 	//my_gsl::multidim_minimization_simplex();
 	//my_gsl::multidim_minimization_steepest_descent();

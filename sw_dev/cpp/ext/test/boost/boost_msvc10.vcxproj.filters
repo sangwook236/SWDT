@@ -162,6 +162,9 @@
     <ClCompile Include="interprocess.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

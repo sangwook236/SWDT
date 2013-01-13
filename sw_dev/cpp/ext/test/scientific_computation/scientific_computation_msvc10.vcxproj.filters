@@ -93,6 +93,9 @@
     <ClCompile Include="gslwrap\gslwrap_test_min.cpp">
       <Filter>Source Files\gslwrap</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

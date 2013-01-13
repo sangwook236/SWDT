@@ -24,5 +24,8 @@
     <ClCompile Include="poco\poco_main.cpp">
       <Filter>Source Files\poco</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

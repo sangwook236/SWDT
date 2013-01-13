@@ -1,10 +1,12 @@
-<<  Building & Installation  >>
+[-] Building & Installation
 
+[-] Execution
+	-. Windows에서 아래와 같은 device driver를 로드할 수 없다는 에러 메시지를 출력하면서 실행되지 않는 경우.
+		error message: "unable to load driver"
+		==> executable file의 실행 폴더로 복사.
+			${PLPLOT_ROOT}/${BUILD_DIR}/dll/Release/*.dll
+			${PLPLOT_ROOT}/${BUILD_DIR}/dll/Debug/*.dll
+			or
+			${PLPLOT_INSTALL}/lib/plplot5.9.9/driversd/*.dll
 
-<< Execution >>
-
-[-] Windows에서 아래와 같은 device driver를 로드할 수 없다는 에러 메시지를 출력하면서 실행되지 않는 경우.
-	-. error message: "unable to load driver"
-		${PLPLOT_ROOT}/${BUILD_DIR}/dll/Release/*.dll or ${PLPLOT_ROOT}/${BUILD_DIR}/dll/Debug/*.dll 을 executable file의 실행 폴더로 복사.
-
-<<  Trouble Shooting  >>
+[-] Trouble Shooting

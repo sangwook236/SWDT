@@ -94,6 +94,9 @@
     <ClCompile Include="mtl\mtl_main.cpp">
       <Filter>Source Files\mtl</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

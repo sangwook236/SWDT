@@ -36,5 +36,8 @@
     <ClCompile Include="vld\vld_boost_thread.cpp">
       <Filter>Source Files\vld</Filter>
     </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
