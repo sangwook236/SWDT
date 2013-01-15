@@ -102,7 +102,9 @@
     <ClCompile Include="asio_udp_client.cpp" />
     <ClCompile Include="asio_udp_server.cpp" />
     <ClCompile Include="bind.cpp" />
+    <ClCompile Include="chrono.cpp" />
     <ClCompile Include="conversion.cpp" />
+    <ClCompile Include="cpu_timer.cpp" />
     <ClCompile Include="date_time.cpp" />
     <ClCompile Include="factory.cpp" />
     <ClCompile Include="filesystem.cpp" />
@@ -133,6 +135,7 @@
     <ClCompile Include="numeric_bindings.cpp" />
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="program_options.cpp" />
+    <ClCompile Include="progress_timer.cpp" />
     <ClCompile Include="property_map.cpp" />
     <ClCompile Include="property_tree.cpp" />
     <ClCompile Include="random.cpp" />

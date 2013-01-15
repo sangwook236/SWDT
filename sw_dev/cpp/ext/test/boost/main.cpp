@@ -13,7 +13,11 @@ int main(int argc, char *argv[])
 	void filesystem();
 	void conversion();
 	void type_traits();
+
 	void date_time();
+	void chrono();
+	void progress_timer();
+	void cpu_timer();
 
 	void factory();
 	void smart_ptr();
@@ -75,7 +79,11 @@ int main(int argc, char *argv[])
 			//filesystem();
 			//conversion();
 			//type_traits();
+
 			//date_time();
+			//chrono();  // not yet implemented
+			//progress_timer();  // deprecated
+			//cpu_timer();
 		}
 
 		{
