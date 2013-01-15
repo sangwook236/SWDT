@@ -30,7 +30,7 @@ int vlfeat_main(int argc, char *argv[])
 {
 	// feature analysis -----------------------------------
 	{
-		my_vlfeat::sift();
+		//my_vlfeat::sift();
 		//my_vlfeat::dense_sift();  // not yet implemented
 		//my_vlfeat::mser();
 		//my_vlfeat::hog();  // not yet implemented
@@ -42,7 +42,7 @@ int vlfeat_main(int argc, char *argv[])
 		//my_vlfeat::kmeans();
 		//my_vlfeat::ikm();
 		//my_vlfeat::hikm();
-		//my_vlfeat::aib();
+		my_vlfeat::aib();
 	}
 
 	// segmentation ---------------------------------------

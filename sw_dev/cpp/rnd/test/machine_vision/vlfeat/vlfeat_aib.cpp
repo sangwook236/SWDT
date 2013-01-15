@@ -36,6 +36,7 @@ void aib()
 	}
 	std::cout << "];" << std::endl;
 
+	//
 	std::cout << "AIB starting" << std::endl;
 	{
 		VlAIB *aib = vl_aib_new(Pic, nrows, ncols);
@@ -49,7 +50,7 @@ void aib()
 		vl_aib_delete(aib);
 	}
 
-	std::cout << "IB done" << std::endl;
+	std::cout << "AIB done" << std::endl;
 }
 
 }  // namespace my_vlfeat

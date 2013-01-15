@@ -90,7 +90,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ccv\ccv_daisy.cpp" />
+    <ClCompile Include="ccv\ccv_dpm.cpp" />
+    <ClCompile Include="ccv\ccv_hog.cpp" />
     <ClCompile Include="ccv\ccv_main.cpp" />
+    <ClCompile Include="ccv\ccv_sift.cpp" />
+    <ClCompile Include="ccv\ccv_tld.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="opencv\opencv_bag_of_words.cpp" />

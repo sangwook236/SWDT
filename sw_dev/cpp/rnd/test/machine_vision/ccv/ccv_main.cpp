@@ -34,7 +34,7 @@ int ccv_main(int argc, char *argv[])
 		//my_ccv::sift();  // not yet implemented
 		//my_ccv::mser();  // not yet implemented
 		//my_ccv::hog();  // not yet implemented
-		//my_ccv::daisy();  // not yet implemented
+		my_ccv::daisy();
 		//my_ccv::ferns();  // not yet implemented
 		//my_ccv::swt();  // not yet implemented
 		//my_ccv::bbf();  // not yet implemented

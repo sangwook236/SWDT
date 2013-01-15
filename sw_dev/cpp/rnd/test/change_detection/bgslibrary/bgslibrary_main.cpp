@@ -51,7 +51,7 @@ void demo()
 		return;
 	}
 
-	const int whichAlgorithm = 22;
+	const int whichAlgorithm = 6;
 	bool useGrayImage = true;
 	IBGS *bgs = NULL;
 

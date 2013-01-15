@@ -249,6 +249,21 @@
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ccv\ccv_daisy.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_dpm.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_hog.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_sift.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_tld.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

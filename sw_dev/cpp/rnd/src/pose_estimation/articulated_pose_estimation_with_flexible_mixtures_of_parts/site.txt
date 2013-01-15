@@ -1,1 +1,3 @@
 https://github.com/wg-perception/PartsBasedDetector
+
+https://github.com/wg-perception/PartsBasedDetectorModels

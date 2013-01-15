@@ -1,28 +1,72 @@
 [-] Building (MSVC)
 	-. EigenConfig.cmake를 찾을 수 없다는 오류 발생.
 		$EIGEN_HOME/cmake/FindEigen3.cmake를 ${PartsBasedDetector_HOME}/EigenConfig.cmake로 복사.
-		CMake에 아래의 항목 설정 및 추가.
+		==> CMake에 아래의 항목 설정 및 추가.
 			EIGEN_INCLUDE_DIRS => D:/work_center/sw_dev/cpp/ext/inc/eigen3
 			EIGEN3_INCLUDE_DIRS => D:/work_center/sw_dev/cpp/ext/inc/eigen3
 			Eigen_DIR => ${PartsBasedDetector_HOME}
-	-. ${{PartsBasedDetector_HOME}/src/CMakeLists.txt에서 아래의 오류 발생.
+	-. ${PartsBasedDetector_HOME}/src/CMakeLists.txt에서 아래의 오류 발생.
 		"install Library TARGETS given no DESTINATION!"
-		
-		아래와 같이 수정.
-		수정전:
-			install(TARGETS ${PROJECT_NAME}_lib 
-			        LIBRARY DESTINATION ${PROJECT_SOURCE_DIR}/lib
-			)
-		수정후:
-			install(TARGETS ${PROJECT_NAME}_lib 
-			        LIBRARY DESTINATION ${PROJECT_SOURCE_DIR}/lib
-			        ARCHIVE DESTINATION ${PROJECT_SOURCE_DIR}/lib
-			        RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/lib
-			)
+		==> 아래와 같이 수정.
+			수정전:
+				install(TARGETS ${PROJECT_NAME}_lib 
+				        LIBRARY DESTINATION ${PROJECT_SOURCE_DIR}/lib
+				)
+			수정후:
+				install(TARGETS ${PROJECT_NAME}_lib 
+				        LIBRARY DESTINATION ${PROJECT_SOURCE_DIR}/lib
+				        ARCHIVE DESTINATION ${PROJECT_SOURCE_DIR}/lib
+				        RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/lib
+				)
 	-. symbol을 export하기 위해 __declspec(dllexport)을 export하고자 하는 대상에 추가되어야 함.
-		${PartsBasedDetector_HOME}/inlcude/Export.h를 복사.
-		class template도 일반 class와 동일하게 설정되어야 함. (?)
-		class template이 header & source file로 나뉘어 있어도 됨. (?)
-	-. cmake-gui에 설정한 CMAKE_INSTALL_PREFIX가 정상적으로 작동하지 않음.
+		PartsBasedDetector_lib_EXPORTS macro는 DLL library project에 정의되어 있음.
+		==> ${PartsBasedDetector_HOME}/inlcude/Export.h를 복사.
+	-. class template 관련한 linking error 발생.
+		1. class template의 header file & source file을 분리해 놓아 발생하는 문제.
+			PartsBasedDetector => ${PartsBasedDetector_HOME}/include/PartsBasedDetector.hpp
+			DynamicProgram => ${PartsBasedDetector_HOME}/include/DynamicProgram.hpp
+			HOGFeatures => ${PartsBasedDetector_HOME}/include/HOGFeatures.hpp
+			==> class template의 경우 PartsBasedDetector_lib_EXPORTS macro & Export.h file은 사용하지 않고
+				source file의 내용을 header file에 삽입.
+				a. header file에 아래와 같이 추가.
+					#include "PartsBasedDetector.cpp"
+					#include "DynamicProgram.cpp"
+					#include "HOGFeatures.cpp"
+				b. source file을 building 대상에서 제외.
+		2. ctor & dtor의 정의를 header file에 포함하는 경우 linking 오류 발생.
+			FileStorageModel => ${PartsBasedDetector_HOME}/include/FileStorageModel.hpp & ${PartsBasedDetector_HOME}/src/FileStorageModel.cpp
+			MatlabIOModel => ${PartsBasedDetector_HOME}/include/MatlabIOModel.hpp & ${PartsBasedDetector_HOME}/src/MatlabIOModel.cpp
+			==> header file에서는 ctor & dtor의 선언만 남기고 정의는 source file로 이동.
+	-. header file을 찾을 수 없다는 오류 발생.
+		CMake-GUI에 header file directory를 지정할 수 없어서 발생.
+			MatlabIO.hpp
+			zlib.h
+		==> 해당 library의 header file directory를 include path에 추가.
+			D:/work_center/sw_dev/cpp/rnd/inc/cvmatio/
+			D:/work_center/sw_dev/cpp/ext/inc/zlib/
+	-. Boost.Filesystem 관련 오류 발생
+		binary '=' : no operator found which takes a right-hand operand of type 'const boost::filesystem::path::value_type *'
+		==> wchar_t & char 사이의 변환 문제.
+			${PartsBasedDetector_HOME}/src/MatlabIOModel.cpp에서 아래의 항목을 수정
+			<수정전>
+			name_ = boost::filesystem::path(filename).stem().c_str();
+			<수정후>
+# ifdef BOOST_WINDOWS_API
+			const std::wstring tmp_name = boost::filesystem::path(filename).stem().c_str();
+			std::copy(tmp_name.begin(), tmp_name.end(), name_.begin());
+#else
+			name_ = boost::filesystem::path(filename).stem().c_str();
+#endif
+	-. CMake에 의해 생성된 project 모두 multi-byte character set을 사용.
+		==> unicode character set을 변경하는 것이 좋을 듯함.
+	-. CMake-GUI에 설정한 CMAKE_INSTALL_PREFIX가 정상적으로 작동하지 않음.
 		CMAKE_INSTALL_PREFIX에 지정된 directory에 install되는 것이 아니라
 		${PartsBasedDetector_HOME}/lib directory하에 존재함.
+		ModelTransfer project에서 발생하는 linking 오류는 무시함.
+		==> 생성된 file 위치:
+			${PartsBasedDetector_HOME}/lib/PartsBasedDetector.dll
+			${PartsBasedDetector_HOME}/lib/PartsBasedDetector.lib
+			${PartsBasedDetector_HOME}/build_msvc10/src/Release/PartsBasedDetector.dll
+			${PartsBasedDetector_HOME}/build_msvc10/src/Release/PartsBasedDetector.lib
+			${PartsBasedDetector_HOME}/build_msvc10/src/Debug/PartsBasedDetector.dll
+			${PartsBasedDetector_HOME}/build_msvc10/src/Debug/PartsBasedDetector.lib

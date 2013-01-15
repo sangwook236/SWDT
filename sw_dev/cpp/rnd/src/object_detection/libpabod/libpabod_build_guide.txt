@@ -1,6 +1,10 @@
 [-] Building v0.2.2 (MSVC)
 	-. static library로 building 해야 함.
 		shared library로 build하는 경우 import library file (*.lib)이 생성되지 않음.
+	-. CMake GUI에서 _ITERATOR_DEBUG_LEVEL macro를 추가해야 함.
+		MSVS10에서 기본적으로 iterator debug level = 2.
+		CMAKE_CXX_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
+		CMAKE_C_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
 	-. MATIO library를 찾을 수 없다는 오류가 발생하는 경우
 		pkg-config를 사용하여 library를 찾을 수 없어서 발생하는 오류임.
 			1. ${LibPoBOD_HOME}/CMakeLists.txt 내에서 발생. (53번째 행)
@@ -63,6 +67,6 @@
 			<수정후>
 			#include <Winsock2.h>
 			#include "gettimeofday.h"
-	-. cmake-gui에 설정한 CMAKE_INSTALL_PREFIX가 정상적으로 작동하지 않음.
+	-. CMake-GUI에 설정한 CMAKE_INSTALL_PREFIX가 정상적으로 작동하지 않음.
 		CMAKE_INSTALL_PREFIX에 지정된 directory에 install되는 것이 아니라
-		${LibPoBOD_HOME}/build_msvc10/bin directory하에 존재함.
+		${LibPoBOD_HOME}/build_msvc10/bin directory하에 설치.

@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		//opencv_main(argc, argv);
-		vlfeat_main(argc, argv);
-		//ccv_main(argc, argv);
+		//vlfeat_main(argc, argv);
+		ccv_main(argc, argv); // run-time error: not correctly working
 	}
 	catch (const std::exception &e)
 	{

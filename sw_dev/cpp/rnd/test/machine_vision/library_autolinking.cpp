@@ -21,7 +21,7 @@
 #pragma comment(lib, "opencv_ts243d.lib")
 #pragma comment(lib, "opencv_video243d.lib")
 #pragma comment(lib, "opencv_videostab243d.lib")
-#pragma comment(lib, "vl.lib")
+#pragma comment(lib, "vl_d.lib")
 #pragma comment(lib, "libccv.lib")
 
 #		else

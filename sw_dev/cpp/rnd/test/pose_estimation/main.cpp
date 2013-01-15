@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
 	try
 	{
-		parts_based_detector_main(argc, argv);  // not yet implemented
+		parts_based_detector_main(argc, argv);
 	}
 	catch (const std::exception &e)
 	{
