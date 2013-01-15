@@ -2,3 +2,5 @@ http://jquery.com/
 http://jquery.com/download/
 https://developers.google.com/speed/libraries/devguide
 http://www.asp.net/ajaxlibrary/cdn.ashx
+
+http://oscarotero.com/jquery/
