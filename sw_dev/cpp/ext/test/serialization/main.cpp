@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		protobuf_main(argc, argv);
-		yaml_main(argc, argv);
+		retval = protobuf_main(argc, argv);
+		retval = yaml_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

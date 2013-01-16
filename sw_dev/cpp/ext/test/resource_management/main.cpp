@@ -11,8 +11,8 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		vld_main(argc, argv);
-		valgrind_main(argc, argv);
+		retval = vld_main(argc, argv);
+		retval = valgrind_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

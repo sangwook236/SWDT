@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		gsl_main(argc, argv);
-		//gslwrap_main(argc, argv);
+		retval = gsl_main(argc, argv);
+		//retval = gslwrap_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

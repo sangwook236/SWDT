@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		sqlite_main(argc, argv);
-		//mysql_main(argc, argv);
+		retval = sqlite_main(argc, argv);
+		//retval = mysql_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

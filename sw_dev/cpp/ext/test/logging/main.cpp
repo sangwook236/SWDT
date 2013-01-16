@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		log4cxx_main(argc, argv);
+		retval = log4cxx_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

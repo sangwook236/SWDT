@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		graphviz_main(argc, argv);
+		retval = graphviz_main(argc, argv);  // not yet implemented
 	}
     catch (const std::bad_alloc &e)
 	{

@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		cgal_main(argc, argv);
+		retval = cgal_main(argc, argv);
 
-		openmesh_main(argc, argv);
+		retval = openmesh_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

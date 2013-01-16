@@ -16,10 +16,10 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		cairo_main(argc, argv);
-		//gd_main(argc, argv);
+		retval = cairo_main(argc, argv);
+		//retval = gd_main(argc, argv);
 		
-		//devil_main(argc, argv);
+		//retval = devil_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

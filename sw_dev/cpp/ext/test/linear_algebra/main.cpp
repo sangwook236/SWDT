@@ -18,15 +18,15 @@ int main(int argc, char* argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		lapack_main(argc, argv);
+		retval = lapack_main(argc, argv);
 		
-		atlas_main(argc, argv);
-		eigen_main(argc, argv);
-		armadillo_main(argc, argv);
+		retval = atlas_main(argc, argv);
+		retval = eigen_main(argc, argv);
+		retval = armadillo_main(argc, argv);
 		
-		cvm_main(argc, argv);
+		retval = cvm_main(argc, argv);
 
-		//mtl_main(argc, argv);  // not yet implemented
+		//retval = mtl_main(argc, argv);  // not yet implemented
 	}
     catch (const std::bad_alloc &e)
 	{
