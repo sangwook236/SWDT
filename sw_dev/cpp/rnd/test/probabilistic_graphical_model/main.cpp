@@ -3,6 +3,8 @@
 #include <vld/vld.h>
 #endif
 #include <iostream>
+#include <stdexcept>
+#include <cstdlib>
 #include <ctime>
 
 
@@ -37,6 +39,7 @@ int main(int argc, char *argv[])
 	int pnl_main(int argc, char *argv[]);
 	int mocapy_main(int argc, char *argv[]);
 
+	int retval = EXIT_SUCCESS;
 	try
 	{
 		std::srand((unsigned int)std::time(NULL));
@@ -73,19 +76,21 @@ int main(int argc, char *argv[])
     catch (const std::bad_alloc &e)
 	{
 		std::cout << "std::bad_alloc occurred: " << e.what() << std::endl;
+		retval = EXIT_FAILURE;
 	}
 	catch (const std::exception &e)
 	{
-		std::cout << "std::exception occurred: " << e.what() << std::endl;
+		std::cout << "std::exception caught: " << e.what() << std::endl;
+		retval = EXIT_FAILURE;
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception occurred" << std::endl;
+		std::cout << "unknown exception caught" << std::endl;
+		retval = EXIT_FAILURE;
 	}
 
 	std::cout << "press any key to exit ..." << std::endl;
 	std::cin.get();
 
-	return 0;
+	return retval;
 }
-

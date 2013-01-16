@@ -127,9 +127,9 @@ void init_firstidx_lastidx(const AnnotationList &annolist, po::variables_map cmd
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_pictorial_structure_revisited {
+namespace my_pictorial_structures_revisited {
 
-int pictorial_structure_revisited_partapp_main(int argc, char *argv[])
+int pictorial_structures_revisited_partapp_main(int argc, char *argv[])
 {
 	/* parse command line options */
 	po::options_description cmd_options_desc("command line options:");
@@ -438,4 +438,4 @@ int pictorial_structure_revisited_partapp_main(int argc, char *argv[])
 	return 0;
 }
 
-}  // namespace my_pictorial_structure_revisited
+}  // namespace my_pictorial_structures_revisited

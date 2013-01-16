@@ -70,3 +70,10 @@
 			${PartsBasedDetector_HOME}/build_msvc10/src/Release/PartsBasedDetector.lib
 			${PartsBasedDetector_HOME}/build_msvc10/src/Debug/PartsBasedDetector.dll
 			${PartsBasedDetector_HOME}/build_msvc10/src/Debug/PartsBasedDetector.lib
+	-. Application에서 debug version의 PartsBasedDetector library를 사용하는 경우
+		run-time에 vector에 대한 out-of-range 오루 발생.
+		==> the past-the-end element를 가르키고자 하는 의도가 out-of-range 오류를 발생.
+			<수정전>
+			return vectorf(&((*biasw_)[offset]), &((*biasw_)[offset+nmixtures()]));
+			<수정후>
+			return vectorf(&((*biasw_)[offset]), &((*biasw_)[offset])+nmixtures());

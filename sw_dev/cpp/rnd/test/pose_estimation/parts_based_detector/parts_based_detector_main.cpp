@@ -40,11 +40,14 @@ void demo()
 	//const std::string model_filename("pose_estimation_data\\PartsBasedDetector\\model\\PersonINRIA_9parts.xml");
 	//const std::string model_filename("pose_estimation_data\\PartsBasedDetector\\model\\Willowcoffee_5parts.xml");
 
-	const std::string input_filename("pose_estimation_data\\PartsBasedDetector\\2007_000027.jpg");
+	//const std::string input_filename("pose_estimation_data\\PartsBasedDetector\\2007_000027.jpg");  // person(8)
+	//const std::string input_filename("pose_estimation_data\\PartsBasedDetector\\2007_000531.jpg");  // frontal face
+	const std::string input_filename("pose_estimation_data\\PartsBasedDetector\\2007_000847.jpg");  // small face, person(8)
+	//const std::string input_filename("pose_estimation_data\\PartsBasedDetector\\2007_003996.jpg");  // frontal face
+	//const std::string input_filename("pose_estimation_data\\PartsBasedDetector\\2007_004830.jpg");  // car
 
 	const bool has_depth_file = false;
-	// FIXME [correct] >>
-	const std::string depth_filename("pose_estimation_data\\PartsBasedDetector\\2007_003022.jpg");
+	const std::string depth_filename(".");
 
 	// determine the type of model to read
 	boost::scoped_ptr<Model> model;
@@ -65,6 +68,7 @@ void demo()
 		return;
 	}
 	
+	std::cout << "loading a model file ..." << std::endl;
 	const bool ok = model->deserialize(model_filename);
 	if (!ok)
 	{
@@ -77,6 +81,7 @@ void demo()
 	pbd.distributeModel(*model);
 
 	// load the image from file
+	std::cout << "loading an input file ..." << std::endl;
 	cv::Mat im = cv::imread(input_filename);
 	if (im.empty())
 	{
@@ -87,6 +92,7 @@ void demo()
 	cv::Mat_<float> depth;
 	if (has_depth_file)
 	{
+		std::cout << "loading a depth file ..." << std::endl;
 		depth = cv::imread(depth_filename, CV_LOAD_IMAGE_ANYDEPTH);
 
 		// convert the depth image from mm to m
@@ -94,6 +100,7 @@ void demo()
 	}
 
 	// detect potential candidates in the image
+	std::cout << "start detecting ..." << std::endl;
 	double t = (double)cv::getTickCount();
 
 	cv::vector<Candidate> candidates;
@@ -101,17 +108,34 @@ void demo()
 
 	std::cout << "detection time: " << ((double)cv::getTickCount() - t) / cv::getTickFrequency() << std::endl;
 	std::cout << "number of candidates: " << candidates.size() << std::endl;
+	std::cout << "end detecting ..." << std::endl;
 
 	// display the best candidates
-	Visualize visualize(model->name());
-	SearchSpacePruning<float> ssp;
-	cv::Mat canvas;
-	if (candidates.size() > 0)
+	if (candidates.empty())
 	{
+		std::cout << "fail to detect objects ..." << std::endl;
+	}
+	else
+	{
+		std::cout << "# of candidates: " << candidates.size() << std::endl;
+
+		//SearchSpacePruning<float> ssp;
+		//const float zfactor = ...;
+		//ssp.filterCandidatesByDepth(parts, candidates, depth, zfactor);
+
 		Candidate::sort(candidates);
-		//Candidate::nonMaximaSuppression(im, candidates, 0.2);
+		const float overlap = 0.2;
+		Candidate::nonMaximaSuppression(im, candidates, overlap);
+
+		std::cout << "# of selected candidates: " << candidates.size() << std::endl;
+
+		//
+		std::cout << "displaying results ..." << std::endl;
+		Visualize visualize(model->name());
+		cv::Mat canvas;
 		visualize.candidates(im, candidates, canvas, true);
 		visualize.image(canvas);
+
 		cv::waitKey(0);
 	}
 }

@@ -51,7 +51,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./pictorial_structure_revisited_lib;../../inc;../../inc/opencv-2.4.3;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;../../inc/opencv-2.4.3;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -68,7 +68,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./pictorial_structure_revisited_lib;../../inc;../../inc/opencv-2.4.3;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;../../inc/opencv-2.4.3;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -80,48 +80,68 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="pictorial_structure_revisited_lib\libAdaBoost\featurevector.hh" />
+    <None Include="pictorial_structures_revisited_lib\libAdaBoost\featurevector.hh" />
+    <None Include="pictorial_structures_revisited_lib\libPartApp\ExpParam.proto">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="pictorial_structures_revisited_lib\libPartDetect\AbcDetectorParam.proto">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="pictorial_structures_revisited_lib\libPartDetect\PartConfig.proto">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="pictorial_structures_revisited_lib\libPartDetect\PartWindowParam.proto">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="pictorial_structures_revisited_lib\libPictStruct\HypothesisList.proto">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lsd_lib\lsd.h" />
-    <ClInclude Include="pictorial_structure_revisited\parteval.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libAdaBoost\AdaBoost.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libAdaBoost\BoostingData.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libAnnotation\annorect.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libAnnotation\annotation.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libAnnotation\annotationlist.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libAnnotation\xmlhelpers.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libBoostMath\boost_math.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libBoostMath\boost_math.hpp" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libBoostMath\homogeneous_coord.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libFilesystemAux\filesystem_aux.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libKMA2\descriptor\feature.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libKMA2\gauss_iir\gauss_iir.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libKMA2\ImageContent\imageContent.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libKMA2\kmaimagecontent.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libKMA2\ShapeDescriptor.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libMatlabIO\matlab_cell_io.hpp" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libMatlabIO\matlab_io.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libMatlabIO\matlab_io.hpp" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libMisc\misc.hpp" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libMultiArray\multi_array_def.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libMultiArray\multi_array_filter.hpp" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libMultiArray\multi_array_op.hpp" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libMultiArray\multi_array_transform.hpp" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libPartApp\ExpParam.pb.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libPartApp\partapp.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libPartApp\partapp_aux.hpp" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libPartDetect\AbcDetectorParam.pb.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libPartDetect\FeatureGrid.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libPartDetect\PartConfig.pb.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libPartDetect\partdef.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libPartDetect\partdetect.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libPartDetect\PartWindowParam.pb.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libPictStruct\HypothesisList.pb.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libPictStruct\objectdetect.h" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libPictStruct\objectdetect_aux.hpp" />
-    <ClInclude Include="pictorial_structure_revisited_lib\libProtoBuf\protobuf_aux.hpp" />
+    <ClInclude Include="pictorial_structures_revisited\parteval.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libAdaBoost\AdaBoost.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libAdaBoost\BoostingData.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libAnnotation\annorect.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libAnnotation\annotation.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libAnnotation\annotationlist.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libAnnotation\xmlhelpers.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libBoostMath\boost_math.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libBoostMath\boost_math.hpp" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libBoostMath\homogeneous_coord.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libFilesystemAux\filesystem_aux.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libKMA2\descriptor\feature.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libKMA2\gauss_iir\gauss_iir.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libKMA2\ImageContent\imageContent.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libKMA2\kmaimagecontent.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libKMA2\ShapeDescriptor.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libMatlabIO\matlab_cell_io.hpp" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libMatlabIO\matlab_io.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libMatlabIO\matlab_io.hpp" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libMisc\misc.hpp" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libMultiArray\multi_array_def.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libMultiArray\multi_array_filter.hpp" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libMultiArray\multi_array_op.hpp" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libMultiArray\multi_array_transform.hpp" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libPartApp\ExpParam.pb.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libPartApp\partapp.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libPartApp\partapp_aux.hpp" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libPartDetect\AbcDetectorParam.pb.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libPartDetect\FeatureGrid.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libPartDetect\PartConfig.pb.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libPartDetect\partdef.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libPartDetect\partdetect.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libPartDetect\PartWindowParam.pb.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libPictStruct\HypothesisList.pb.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect.h" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect_aux.hpp" />
+    <ClInclude Include="pictorial_structures_revisited_lib\libProtoBuf\protobuf_aux.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="surf\surf_imload.h" />
     <ClInclude Include="surf\surf_os_mapping.h" />
@@ -140,40 +160,40 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="pictorial_structure_revisited\parteval.cpp" />
-    <ClCompile Include="pictorial_structure_revisited\pictorial_structure_revisited_main.cpp" />
-    <ClCompile Include="pictorial_structure_revisited\pictorial_structure_revisited_partapp.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libAdaBoost\AdaBoost.cc" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libAdaBoost\BoostingData.cc" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libAdaBoost\featurevector.cc" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libAnnotation\annorect.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libAnnotation\annotation.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libAnnotation\annotationlist.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libAnnotation\xmlhelpers.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libBoostMath\boost_math.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libBoostMath\homogeneous_coord.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libFilesystemAux\filesystem_aux.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libKMA2\descriptor\EdgeDetector.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libKMA2\descriptor\FeatureDescriptor.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libKMA2\gauss_iir\gauss_iir.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libKMA2\ImageContent\ImageContent.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libKMA2\ShapeDescriptor.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libMatlabIO\matlab_io.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPartApp\ExpParam.pb.cc" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPartApp\partapp.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPartDetect\AbcDetectorParam.pb.cc" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPartDetect\FeatureGrid.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPartDetect\PartConfig.pb.cc" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPartDetect\partdef.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPartDetect\partdetect_aux.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPartDetect\partdetect_test.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPartDetect\partdetect_train.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPartDetect\PartWindowParam.pb.cc" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPictStruct\HypothesisList.pb.cc" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPictStruct\objectdetect_aux.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPictStruct\objectdetect_findpos.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPictStruct\objectdetect_findrot.cpp" />
-    <ClCompile Include="pictorial_structure_revisited_lib\libPictStruct\objectdetect_learnparam.cpp" />
+    <ClCompile Include="pictorial_structures_revisited\parteval.cpp" />
+    <ClCompile Include="pictorial_structures_revisited\pictorial_structures_revisited_main.cpp" />
+    <ClCompile Include="pictorial_structures_revisited\pictorial_structures_revisited_partapp.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libAdaBoost\AdaBoost.cc" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libAdaBoost\BoostingData.cc" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libAdaBoost\featurevector.cc" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libAnnotation\annorect.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libAnnotation\annotation.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libAnnotation\annotationlist.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libAnnotation\xmlhelpers.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libBoostMath\boost_math.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libBoostMath\homogeneous_coord.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libFilesystemAux\filesystem_aux.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libKMA2\descriptor\EdgeDetector.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libKMA2\descriptor\FeatureDescriptor.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libKMA2\gauss_iir\gauss_iir.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libKMA2\ImageContent\ImageContent.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libKMA2\ShapeDescriptor.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libMatlabIO\matlab_io.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPartApp\ExpParam.pb.cc" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPartApp\partapp.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\AbcDetectorParam.pb.cc" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\FeatureGrid.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\PartConfig.pb.cc" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\partdef.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\partdetect_aux.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\partdetect_test.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\partdetect_train.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\PartWindowParam.pb.cc" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPictStruct\HypothesisList.pb.cc" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect_aux.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect_findpos.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect_findrot.cpp" />
+    <ClCompile Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect_learnparam.cpp" />
     <ClCompile Include="siftgpu\siftgpu_main.cpp" />
     <ClCompile Include="sift\sift_display_feature.cpp" />
     <ClCompile Include="sift\sift_extract_feature.cpp" />
