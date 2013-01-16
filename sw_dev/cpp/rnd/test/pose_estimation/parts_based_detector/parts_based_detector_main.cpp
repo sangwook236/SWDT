@@ -31,7 +31,7 @@ void demo()
 	//const std::string model_filename("pose_estimation_data\\PartsBasedDetector\\model\\Bird_9parts.xml");
 	//const std::string model_filename("pose_estimation_data\\PartsBasedDetector\\model\\Car_9parts.xml");
 	//const std::string model_filename("pose_estimation_data\\PartsBasedDetector\\model\\Dog_9parts.xml");
-	//const std::string model_filename("pose_estimation_data\\PartsBasedDetector\\model\\Face_1050filters.xml");  // incorrect model file
+	//const std::string model_filename("pose_estimation_data\\PartsBasedDetector\\model\\Face_1050filters.xml");
 	//const std::string model_filename("pose_estimation_data\\PartsBasedDetector\\model\\Face_frontal_sparse.xml");
 	//const std::string model_filename("pose_estimation_data\\PartsBasedDetector\\model\\Face_small_146filters.xml");
 	//const std::string model_filename("pose_estimation_data\\PartsBasedDetector\\model\\Motorbike_9parts.xml");
