@@ -2,27 +2,37 @@
 #include <vld/vld.h>
 #endif
 #include <iostream>
+#include <stdexcept>
+#include <cstdlib>
 
 
 int main(int argc, char *argv[])
 {
 	int stlport_main(int argc, char *argv[]);
 	
+	int retval = EXIT_SUCCESS;
 	try
 	{
 		stlport_main(argc, argv);  // not yet implemented
 	}
+    catch (const std::bad_alloc &e)
+	{
+		std::cout << "std::bad_alloc occurred: " << e.what() << std::endl;
+		retval = EXIT_FAILURE;
+	}
 	catch (const std::exception &e)
 	{
-		std::cout << "std::exception occurred: " << e.what() << std::endl;
+		std::cout << "std::exception caught: " << e.what() << std::endl;
+		retval = EXIT_FAILURE;
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception occurred" << std::endl;
+		std::cout << "unknown exception caught" << std::endl;
+		retval = EXIT_FAILURE;
 	}
 
 	std::cout << "press any key to exit ..." << std::endl;
 	std::cin.get();
 
-    return 0;
+	return retval;
 }
