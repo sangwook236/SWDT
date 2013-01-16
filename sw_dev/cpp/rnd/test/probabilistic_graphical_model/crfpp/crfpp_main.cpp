@@ -1,6 +1,8 @@
 #include <crfpp/crfpp.h>
 #include <iostream>
 #include <string>
+#include <cstdlib>
+
 
 namespace {
 namespace local {
@@ -99,6 +101,8 @@ int crfpp_main(int argc, char *argv[])
 	//const std::string base_directory("./probabilistic_graphical_model_data/crfpp/JapaneseNE/");
 	//const std::string base_directory("./probabilistic_graphical_model_data/crfpp/seg/");
 
+	int retval = EXIT_SUCCESS;
+
 	// training (encoding) -----------------------------------
 	std::cout << "training (encoding) ..." << std::endl;
 	{
@@ -132,7 +136,7 @@ int crfpp_main(int argc, char *argv[])
 		};
 #endif
 
-		crfpp_learn(my_argc, (char **)my_argv);
+		retval = crfpp_learn(my_argc, (char **)my_argv);
 	}
 
 	// testing (decoding) ------------------------------------
@@ -148,14 +152,14 @@ int crfpp_main(int argc, char *argv[])
 			"-m", model_filename.c_str(), testing_data_filename.c_str()
 		};
 
-		crfpp_test(my_argc, (char **)my_argv);
+		retval = crfpp_test(my_argc, (char **)my_argv);
 	}
 
 	// running example ---------------------------------------
 	std::cout << "running example ..." << std::endl;
 	{
-		local::example();
+		retval = local::example() ? EXIT_SUCCESS : EXIT_FAILURE;
 	}
 
-	return 0;
+	return retval;
 }
