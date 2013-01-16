@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)time(NULL));
 
-		ransac_main(argc, argv);
+		retval = ransac_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

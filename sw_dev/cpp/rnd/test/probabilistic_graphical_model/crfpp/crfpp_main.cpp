@@ -1,6 +1,6 @@
 #include <crfpp/crfpp.h>
 #include <iostream>
-
+#include <string>
 
 namespace {
 namespace local {
@@ -9,7 +9,7 @@ bool example()
 {
 	// -v 3: access deep information like alpha, beta, prob
 	// -nN: enable nbest output. N should be >= 2
-	CRFPP::Tagger *tagger = CRFPP::createTagger("-m ./probabilistic_graphical_model_data/crf/model -v 3 -n2");
+	CRFPP::Tagger *tagger = CRFPP::createTagger("-m ./probabilistic_graphical_model_data/crfpp/model -v 3 -n2");
 
 	if (!tagger)
 	{
@@ -94,10 +94,68 @@ namespace my_crfpp {
 
 int crfpp_main(int argc, char *argv[])
 {
-	crfpp_learn(argc, argv);
-	crfpp_test(argc, argv);
+	const std::string base_directory("./probabilistic_graphical_model_data/crfpp/basenp/");
+	//const std::string base_directory("./probabilistic_graphical_model_data/crfpp/chunking/");
+	//const std::string base_directory("./probabilistic_graphical_model_data/crfpp/JapaneseNE/");
+	//const std::string base_directory("./probabilistic_graphical_model_data/crfpp/seg/");
 
-	local::example();
+	// training (encoding) -----------------------------------
+	std::cout << "training (encoding) ..." << std::endl;
+	{
+		const std::string template_filename(base_directory + "template");
+		const std::string training_data_filename(base_directory + "train.data");
+		const std::string model_filename(base_directory + "model");
+
+#if 1
+		// crf_learn -a CRF-L1 -f 3 -c 4.0 -p 4 template train.data model
+		const int my_argc = 12;
+		const char *my_argv[my_argc] = {
+			argv[0],
+			"-a", "CRF-L1", "-f", "3", "-c", "4.0", "-p", "4",
+			template_filename.c_str(), training_data_filename.c_str(), model_filename.c_str()
+		};
+#elif 0
+		// crf_learn -a CRF-L2 -f 3 -c 4.0 -p 4 template train.data model
+		const int my_argc = 12;
+		const char *my_argv[my_argc] = {
+			argv[0],
+			"-a", "CRF-L2", "-f", "3", "-c", "4.0", "-p", "4",
+			template_filename.c_str(), training_data_filename.c_str(), model_filename.c_str()
+		};
+#elif 0
+		// crf_learn -a MIRA -f 3 -p 4 template train.data model
+		const int my_argc = 10;
+		const char *my_argv[my_argc] = {
+			argv[0],
+			"-a", "MIRA", "-f", "3", "-p", "4",
+			template_filename.c_str(), training_data_filename.c_str(), model_filename.c_str()
+		};
+#endif
+
+		crfpp_learn(my_argc, (char **)my_argv);
+	}
+
+	// testing (decoding) ------------------------------------
+	std::cout << "testing (decoding) ..." << std::endl;
+	{
+		const std::string model_filename(base_directory + "model");
+		const std::string testing_data_filename(base_directory + "test.data");
+
+		// crf_test -m model test.data
+		const int my_argc = 4;
+		const char *my_argv[my_argc] = {
+			argv[0],
+			"-m", model_filename.c_str(), testing_data_filename.c_str()
+		};
+
+		crfpp_test(my_argc, (char **)my_argv);
+	}
+
+	// running example ---------------------------------------
+	std::cout << "running example ..." << std::endl;
+	{
+		local::example();
+	}
 
 	return 0;
 }

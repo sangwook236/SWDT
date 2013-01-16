@@ -18,16 +18,16 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		// line feature
-		//lsd_main(argc, argv);
+		// line feature -----------------------------------------
+		//retval = lsd_main(argc, argv);
 
-		// local descriptor
-		//sift_main(argc, argv);
-		//siftgpu_main(argc, argv);  // TODO [check] >> either of CUDA or GLSL has to be supported
-		//surf_main(argc, argv);  // run-time error
+		// local descriptor -------------------------------------
+		//retval = sift_main(argc, argv);
+		//retval = siftgpu_main(argc, argv);  // TODO [check] >> either of CUDA or GLSL has to be supported
+		//retval = surf_main(argc, argv);  // run-time error
 		
-		// pictorial structures
-		pictorial_structures_revisited_main(argc, argv);
+		// pictorial structures ---------------------------------
+		retval = pictorial_structures_revisited_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

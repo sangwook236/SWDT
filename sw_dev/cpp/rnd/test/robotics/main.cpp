@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		//mrpt_main(argc, argv);  // compile-time error
-		player_stage_main(argc, argv);
+		//retval = mrpt_main(argc, argv);  // compile-time error
+		retval = player_stage_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

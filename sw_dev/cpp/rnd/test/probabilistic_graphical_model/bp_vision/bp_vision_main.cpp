@@ -342,8 +342,8 @@ image<uchar> * multiscale_belief_propagation(const label_data_type &data0, const
 
 void image_restoration()
 {
-	const std::string input_filename("./probabilistic_graphical_model_data/mrf/noisy_penguin.pgm");
-	const std::string output_filename("./probabilistic_graphical_model_data/mrf/penguin_result.pgm");
+	const std::string input_filename("./probabilistic_graphical_model_data/bp_vision/noisy_penguin.pgm");
+	const std::string output_filename("./probabilistic_graphical_model_data/bp_vision/penguin_result.pgm");
 
 	const int MAX_ITER = 5;  // number of BP iterations at each scale
 	const int LEVEL_NUM = 5;  // number of scales
@@ -372,9 +372,9 @@ void image_restoration()
 
 void stereo()
 {
-	const std::string input_filename1("./probabilistic_graphical_model_data/mrf/tsukuba1.pgm");
-	const std::string input_filename2("./probabilistic_graphical_model_data/mrf/tsukuba2.pgm");
-	const std::string output_filename("./probabilistic_graphical_model_data/mrf/stereo_result.pgm");
+	const std::string input_filename1("./probabilistic_graphical_model_data/bp_vision/tsukuba1.pgm");
+	const std::string input_filename2("./probabilistic_graphical_model_data/bp_vision/tsukuba2.pgm");
+	const std::string output_filename("./probabilistic_graphical_model_data/bp_vision/stereo_result.pgm");
 
 	const int MAX_ITER = 5;  // number of BP iterations at each scale
 	const int LEVEL_NUM = 5;  // number of scales

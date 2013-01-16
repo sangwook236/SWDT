@@ -19,12 +19,12 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)time(NULL));
 
-		// clustering
-		clustering_main(argc, argv);
-		vlfeat_main(argc, argv);
+		// clustering -------------------------------------------
+		retval = clustering_main(argc, argv);
+		retval = vlfeat_main(argc, argv);
 
-		// reinforcement learning
-		rl_glue_main(argc, argv);
+		// reinforcement learning -------------------------------
+		retval = rl_glue_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

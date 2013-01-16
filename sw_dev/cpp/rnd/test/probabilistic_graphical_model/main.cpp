@@ -45,33 +45,33 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		{
-			//local::inference_using_graphcut();  // not yet implemented
-			//local::inference_using_belief_propagation();  // not yet implemented
+			//retval = local::inference_using_graphcut();  // not yet implemented
+			//retval = local::inference_using_belief_propagation();  // not yet implemented
 
-			// belief propagation (BP) algorithm
-			//bp_vision_main(argc, argv);
+			// belief propagation (BP) algorithm -----------------------
+			//retval = bp_vision_main(argc, argv);
 
-			// graph-cuts algorithm
-			//cuda_cut_main(argc, argv);  // not yet implemented
+			// graph-cuts algorithm ------------------------------------
+			//retval = cuda_cut_main(argc, argv);  // not yet implemented
 		}
 
-        // hidden Markov model (HMM)
-		//hmm_main(argc, argv);
+        // hidden Markov model (HMM) ----------------------
+		//retval = hmm_main(argc, argv);
 
-		// Markov random field (MRF)
-		//middlebury_main(argc, argv);
+		// Markov random field (MRF) ----------------------
+		//retval = middlebury_main(argc, argv);
 
-		// conditional random field (CRF)
-		//crfpp_main(argc, argv);
-		hcrf_main(argc, argv);
+		// conditional random field (CRF) -----------------
+		retval = crfpp_main(argc, argv);
+		//retval = hcrf_main(argc, argv);
 
-		// dynamic Bayesian network (DBN)
+		// dynamic Bayesian network (DBN) -----------------
 
-		// PNL library
-		//pnl_main(argc, argv);
+		// PNL library ------------------------------------
+		//retval = pnl_main(argc, argv);
 
-		// Mocapy++ library
-		//mocapy_main(argc, argv);
+		// Mocapy++ library -------------------------------
+		//retval = mocapy_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

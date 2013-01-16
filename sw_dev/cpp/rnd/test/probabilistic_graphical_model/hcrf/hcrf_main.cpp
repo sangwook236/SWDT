@@ -41,9 +41,9 @@ void sample()
 	double regFactorL1 = 0.0;  // L1 regularization factor
 
 #ifdef UNIX
-	const std::string data_home = "./probabilistic_graphical_model_data/crf/";
+	const std::string data_home = "./probabilistic_graphical_model_data/hcrf/";
 #else
-	const std::string data_home = ".\\probabilistic_graphical_model_data\\crf\\";
+	const std::string data_home = ".\\probabilistic_graphical_model_data\\hcrf\\";
 #endif
 	const std::string filenameDataTrain(data_home + "dataTrain.csv");
 	const std::string filenameDataTrainSparse;

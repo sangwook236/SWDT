@@ -19,10 +19,10 @@ int main(int argc, char* argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		// ------------------------------------------------
-		levmar_main(argc, argv);
+		retval = levmar_main(argc, argv);
 
 		// genetic algorithm ------------------------------
-		//galib_main(argc, argv);  // not yet implemented
+		//retval = galib_main(argc, argv);  // not yet implemented
 	}
     catch (const std::bad_alloc &e)
 	{

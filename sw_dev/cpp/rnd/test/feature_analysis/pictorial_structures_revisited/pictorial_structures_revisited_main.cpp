@@ -1,5 +1,7 @@
 #include <windows.h>
 #include <iostream>
+#include <sstream>
+#include <string>
 
 
 namespace {
@@ -41,86 +43,63 @@ int pictorial_structures_revisited_partapp_main(int argc, char *argv[]);
 //	-. at runtime the following directories will be created:				      
 //		./log_dir/<EXP_NAME>/test_scoregrid - location where part detections will be stored 
 //		./log_dir/<EXP_NAME>/part_marginals - location where part marginals will be stored
+//		./log_dir/<EXP_NAME>/part_marginals/seg_eval_images
 
 int pictorial_structures_revisited_main(int argc, char *argv[])
 {
+#if 0
+	// testing
+	const std::string curr_directory("./feature_analysis_data/pictorial_structures_revisited/code_test");
+	const std::string exp_filename("./expopt/exp_code_test.txt");
+#else
+	// experiment
+	const std::string curr_directory("./feature_analysis_data/pictorial_structures_revisited/code_test");
+	const std::string exp_filename("./expopt/exp_buffy_hog_detections.txt");
+	//const std::string exp_filename("./expopt/exp_ramanan_075.txt");
+	//const std::string exp_filename("./expopt/exp_tud_upright_people.txt");
+#endif
+
+	const int first_image_idx = 0;
+	const int num_images = 1;
+
+	std::ostringstream sstream1, sstream2;
+	sstream1 << first_image_idx;
+	sstream2 << num_images;
+
+	//
+	const BOOL retval = SetCurrentDirectoryA(curr_directory.c_str());
+
 #if 1
-	const char currDir[MAX_PATH] = "./feature_analysis_data/pictorial_structures_revisited/code_test";
-	const BOOL retval = SetCurrentDirectoryA(currDir);
-
-	// testing
 	const int my_argc = 5;
-	const char *my_argv[5] = {
+	const char *my_argv[my_argc] = {
 		argv[0],
-		"--expopt", "./expopt/exp_code_test.txt",
+		"--expopt", exp_filename.c_str(),
 		"--part_detect", "--find_obj"
 	};
 #elif 0
-	const char currDir[MAX_PATH] = "feature_analysis_data/pictorial_structures_revisited/code_test";
-	const BOOL retval = SetCurrentDirectoryA(currDir);
-
-	// testing
-	const int my_argc = 4;
-	const char *my_argv[4] = {
-		argv[0],
-		"--expopt", "./expopt/exp_code_test.txt",
-		"--eval_segments"
-	};
-#elif 0
-	const char currDir[MAX_PATH] = "feature_analysis_data/pictorial_structures_revisited/partapp-experiments-r2";
-	const BOOL retval = SetCurrentDirectoryA(currDir);
-
-	// experiment
 	const int my_argc = 9;
-	const char *my_argv[9] = {
+	const char *my_argv[my_argc] = {
 		argv[0],
-		"--expopt", "./expopt/exp_buffy_hog_detections.txt",
-		//"--expopt", "./expopt/exp_ramanan_075.txt",
-		//"--expopt", "./expopt/exp_tud_upright_people.txt",
+		"--expopt", exp_filename.c_str(),
 		"--part_detect", "--find_obj",
-		"--first", "<IMGIDX>",
-		"--numimgs", "1"
+		"--first", sstream1.str().c_str(),
+		"--numimgs", sstream2.str().c_str()
 	};
 #elif 0
-	const char currDir[MAX_PATH] = "feature_analysis_data/pictorial_structures_revisited/partapp-experiments-r2";
-	const BOOL retval = SetCurrentDirectoryA(currDir);
-
-	// experiment
-	const int my_argc = 5;
-	const char *my_argv[5] = {
-		argv[0],
-		"--expopt", "./expopt/exp_buffy_hog_detections.txt",
-		//"--expopt", "./expopt/exp_ramanan_075.txt",
-		//"--expopt", "./expopt/exp_tud_upright_people.txt",
-		"--part_detect", "--find_obj"
-	};
-#elif 0
-	const char currDir[MAX_PATH] = "feature_analysis_data/pictorial_structures_revisited/partapp-experiments-r2";
-	const BOOL retval = SetCurrentDirectoryA(currDir);
-
-	// experiment
-	const int my_argc = 8;
-	const char *my_argv[8] = {
-		argv[0],
-		"--expopt", "./expopt/exp_buffy_hog_detections.txt",
-		//"--expopt", "./expopt/exp_ramanan_075.txt",
-		//"--expopt", "./expopt/exp_tud_upright_people.txt",
-		"--eval_segments",
-		"--first", "<IMGIDX>",
-		"--numimgs", "1"
-	};
-#elif 0
-	const char currDir[MAX_PATH] = "feature_analysis_data/pictorial_structures_revisited/partapp-experiments-r2";
-	const BOOL retval = SetCurrentDirectoryA(currDir);
-
-	// experiment
 	const int my_argc = 4;
-	const char *my_argv[4] = {
+	const char *my_argv[] = {
 		argv[0],
-		"--expopt", "./expopt/exp_buffy_hog_detections.txt",
-		//"--expopt", "./expopt/exp_ramanan_075.txt",
-		//"--expopt", "./expopt/exp_tud_upright_people.txt",
+		"--expopt", exp_filename.c_str(),
 		"--eval_segments"
+	};
+#elif 0
+	const int my_argc = 8;
+	const char *my_argv[my_argc] = {
+		argv[0],
+		"--expopt", exp_filename.c_str(),
+		"--eval_segments",
+		"--first", sstream1.str().c_str(),
+		"--numimgs", sstream2.str().c_str()
 	};
 #endif
 
