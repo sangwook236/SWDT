@@ -62,8 +62,8 @@ int main(int argc, char *argv[])
 		//retval = middlebury_main(argc, argv);
 
 		// conditional random field (CRF) -----------------
-		retval = crfpp_main(argc, argv);
-		//retval = hcrf_main(argc, argv);
+		//retval = crfpp_main(argc, argv);
+		retval = hcrf_main(argc, argv);
 
 		// dynamic Bayesian network (DBN) -----------------
 

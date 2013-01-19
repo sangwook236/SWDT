@@ -34,6 +34,8 @@ int sift_main(int argc, char *argv[])
 			<< "\tline:        " << e.line << std::endl
 			<< "\tfunction:    " << e.func << std::endl
 			<< "\tfile:        " << e.file << std::endl;
+
+		return 1;
 	}
 
 	return 0;

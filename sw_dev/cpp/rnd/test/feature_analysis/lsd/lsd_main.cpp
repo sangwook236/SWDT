@@ -1,5 +1,6 @@
 #include "../lsd_lib/lsd.h"
 #include <opencv2/opencv.hpp>
+#include <boost/timer/timer.hpp>
 #include <iostream>
 
 
@@ -10,6 +11,7 @@ void lsd_example()
 {
 	const int X = 128;  // x image size
 	const int Y = 128;  // y image size
+
 	// create a simple image: left half black, right half gray
 	double *image = new double [X * Y];
 	if (NULL == image)
@@ -20,9 +22,16 @@ void lsd_example()
 	for (int x = 0; x < X; ++x)
 		for (int y = 0; y < Y; ++y)
 			image[x + y * X] = (x < X / 2) ? 0.0 : 64.0;  // image(x, y)
+	
 	// LSD call
+	boost::timer::cpu_timer timer;
+
 	int n;
 	double *out = lsd(&n, image, X, Y);
+
+	boost::timer::cpu_times const elapsed_times(timer.elapsed());
+	std::cout << "elpased time : " << (elapsed_times.system + elapsed_times.user) << std::endl;
+
 	// A double array of size 7 x n_out, containing the list of line segments detected.
 	// The seven values:
 	//	x1, y1, x2, y2, width, p, -log10(NFA).
@@ -35,6 +44,7 @@ void lsd_example()
 			std::cout << out[7 * i + j] << ' ';
 		std::cout << std::endl;
 	}
+
 	// free memory
 	free((void *)out);
 	delete [] image;
@@ -71,8 +81,13 @@ void lsd_image_test()
 		gray_img.convertTo(gray_img_dbl, CV_64FC1, 1.0, 0.0);  // TODO [check] >>
 
 		// LSD call
+		boost::timer::cpu_timer timer;
+
 		int numLines = 0;
 		const double *lines = lsd(&numLines, (double *)gray_img_dbl.data, gray_img_dbl.cols, gray_img_dbl.rows);
+
+		boost::timer::cpu_times const elapsed_times(timer.elapsed());
+		std::cout << "elpased time : " << (elapsed_times.system + elapsed_times.user) << std::endl;
 
 		// print output
 		std::cout << numLines << " line segments found:" << std::endl;
@@ -103,9 +118,24 @@ namespace my_lsd {
 
 int lsd_main(int argc, char *argv[])
 {
-	// line segment detector (LSD)
-	//local::lsd_example();
-	local::lsd_image_test();
+	try
+	{
+		// line segment detector (LSD) --------------------
+		//local::lsd_example();
+		local::lsd_image_test();
+	}
+	catch (const cv::Exception &e)
+	{
+		//std::cout << "OpenCV exception occurred: " << e.what() << std::endl;
+		//std::cout << "OpenCV exception occurred: " << cvErrorStr(e.code) << std::endl;
+		std::cout << "OpenCV exception occurred:" << std::endl
+			<< "\tdescription: " << e.err << std::endl
+			<< "\tline:        " << e.line << std::endl
+			<< "\tfunction:    " << e.func << std::endl
+			<< "\tfile:        " << e.file << std::endl;
+
+		return 1;
+	}
 
 	return 0;
 }

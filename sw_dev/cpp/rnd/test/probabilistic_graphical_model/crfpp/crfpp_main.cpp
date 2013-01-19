@@ -96,10 +96,10 @@ namespace my_crfpp {
 
 int crfpp_main(int argc, char *argv[])
 {
-	const std::string base_directory("./probabilistic_graphical_model_data/crfpp/basenp/");
+	//const std::string base_directory("./probabilistic_graphical_model_data/crfpp/basenp/");
 	//const std::string base_directory("./probabilistic_graphical_model_data/crfpp/chunking/");
 	//const std::string base_directory("./probabilistic_graphical_model_data/crfpp/JapaneseNE/");
-	//const std::string base_directory("./probabilistic_graphical_model_data/crfpp/seg/");
+	const std::string base_directory("./probabilistic_graphical_model_data/crfpp/seg/");
 
 	int retval = EXIT_SUCCESS;
 

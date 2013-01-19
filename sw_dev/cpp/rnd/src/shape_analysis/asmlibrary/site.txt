@@ -1,0 +1,3 @@
+http://yaohan.sinaapp.com/topic/3/asmlibrary
+https://github.com/trimpsyw/asmlibrary
+http://code.google.com/p/asmlibrary/

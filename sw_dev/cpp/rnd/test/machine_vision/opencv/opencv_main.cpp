@@ -219,7 +219,7 @@ int opencv_main(int argc, char *argv[])
 			<< "\tfunction:    " << e.func << std::endl
 			<< "\tfile:        " << e.file << std::endl;
 
-		return -1;
+		return 1;
 	}
 
     return 0;
