@@ -895,7 +895,7 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_2()
 	cv::VideoCapture capture(camId);
 	if (!capture.isOpened())
 	{
-		std::cout << "fail to open vision sensor" << std::endl;
+		std::cout << "a vision sensor not found" << std::endl;
 		return;
 	}
 
@@ -1002,7 +1002,7 @@ void Farneback_motion_estimation_algorithm()
 	cv::VideoCapture capture(camId);
 	if (!capture.isOpened())
 	{
-		std::cout << "fail to open vision sensor" << std::endl;
+		std::cout << "a vision sensor not found" << std::endl;
 		return;
 	}
 

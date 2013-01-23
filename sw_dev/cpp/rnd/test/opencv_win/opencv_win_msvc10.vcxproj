@@ -14,6 +14,35 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BumbleBeeVisionSensor.cpp" />
+    <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="OpenCvVisionSensor.cpp" />
+    <ClCompile Include="opencv_win.cpp" />
+    <ClCompile Include="opencv_winDoc.cpp" />
+    <ClCompile Include="opencv_winView.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="VisionSensor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BumbleBeeVisionSensor.h" />
+    <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="OpenCvVisionSensor.h" />
+    <ClInclude Include="opencv_win.h" />
+    <ClInclude Include="opencv_winDoc.h" />
+    <ClInclude Include="opencv_winView.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="VisionSensor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="opencv_win.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>opencv_win</ProjectName>
     <ProjectGuid>{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}</ProjectGuid>
@@ -115,40 +144,6 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="ChildFrm.cpp" />
-    <ClCompile Include="MainFrm.cpp" />
-    <ClCompile Include="opencv_win.cpp" />
-    <ClCompile Include="opencv_winDoc.cpp" />
-    <ClCompile Include="opencv_winView.cpp" />
-    <ClCompile Include="OpenCvVisionSensor.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="VisionSensor.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ChildFrm.h" />
-    <ClInclude Include="MainFrm.h" />
-    <ClInclude Include="opencv_win.h" />
-    <ClInclude Include="opencv_winDoc.h" />
-    <ClInclude Include="opencv_winView.h" />
-    <ClInclude Include="OpenCvVisionSensor.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="VisionSensor.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\opencv_win.ico" />
-    <None Include="res\opencv_win.rc2" />
-    <None Include="res\opencv_winDoc.ico" />
-    <None Include="res\Toolbar.bmp" />
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="opencv_win.rc" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

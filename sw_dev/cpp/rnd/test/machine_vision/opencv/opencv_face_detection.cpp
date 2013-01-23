@@ -97,7 +97,7 @@ void face_detection()
 	}
 	else
 	{
-		std::cout << "fail to open vision sensor" << std::endl;
+		std::cout << "a vision sensor not found" << std::endl;
 		return;
 	}
 }

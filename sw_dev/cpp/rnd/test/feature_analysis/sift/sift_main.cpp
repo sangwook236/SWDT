@@ -27,9 +27,9 @@ int sift_main(int argc, char *argv[])
 	}
 	catch (const cv::Exception &e)
 	{
-		//std::cout << "OpenCV exception occurred: " << e.what() << std::endl;
-		//std::cout << "OpenCV exception occurred: " << cvErrorStr(e.code) << std::endl;
-		std::cout << "OpenCV exception occurred:" << std::endl
+		//std::cout << "OpenCV exception caught: " << e.what() << std::endl;
+		//std::cout << "OpenCV exception caught: " << cvErrorStr(e.code) << std::endl;
+		std::cout << "OpenCV exception caught:" << std::endl
 			<< "\tdescription: " << e.err << std::endl
 			<< "\tline:        " << e.line << std::endl
 			<< "\tfunction:    " << e.func << std::endl

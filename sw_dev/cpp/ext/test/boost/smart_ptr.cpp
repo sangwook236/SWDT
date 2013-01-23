@@ -12,9 +12,9 @@ class Integer
 public :
 	Integer(int i)
 	: i_(i)
-	{  std::cout << "ctor is called\n";  }
+	{  std::cout << "ctor is called" << std::endl;  }
 	~Integer()
-	{  std::cout << "dtor is called\n";  }
+	{  std::cout << "dtor is called" << std::endl;  }
 
 	int get()  {  return i_;  }
 
@@ -49,11 +49,11 @@ void smart_ptr()
 		boost::shared_ptr<local::Integer> b(new local::Integer(200));
 
 		a = b;
-		std::cout << a->get() << '\n';
-		std::cout << b->get() << '\n';
+		std::cout << a->get() << std::endl;
+		std::cout << b->get() << std::endl;
 
-		std::cout << b.use_count() << '\n';
-		std::cout << b.unique() << '\n';
+		std::cout << b.use_count() << std::endl;
+		std::cout << b.unique() << std::endl;
 	}
 
 	std::cout.flush();
@@ -68,22 +68,22 @@ void smart_ptr()
 		{
 			boost::shared_ptr<local::Integer> a(new local::Integer(100));
 			ctr.push_back(a);
-			std::cout << a.use_count() << '\n';
+			std::cout << a.use_count() << std::endl;
 		}
-		std::cout << ctr.front().use_count() << '\n';
+		std::cout << ctr.front().use_count() << std::endl;
 
-		std::cout << "-------------------\n";
+		std::cout << "-------------------" << std::endl;
 
 		ctr.push_back(boost::shared_ptr<local::Integer>(new local::Integer(200)));
 		ctr.pop_back();
 
-		std::cout << "-------------------\n";
+		std::cout << "-------------------" << std::endl;
 
 		ctr.push_back(boost::shared_ptr<local::Integer>(new local::Integer(300)));
 		ctr.push_back(boost::shared_ptr<local::Integer>(new local::Integer(400)));
 		ctr.clear();
 
-		std::cout << "-------------------\n";
+		std::cout << "-------------------" << std::endl;
 
 		ctr.push_back(boost::shared_ptr<local::Integer>(new local::Integer(500)));
 	}
@@ -98,18 +98,18 @@ void smart_ptr()
 		boost::shared_ptr<local::Public> a(new local::Public(1, 2L, 3.0f, 4.0f));
 		boost::shared_ptr<local::Public> b(a);
 
-		std::cout << a->i << "  :  " << a->l << "  :  " << a->f << "  :  " << a->d << '\n';
-		std::cout << b->i << "  :  " << b->l << "  :  " << b->f << "  :  " << b->d << '\n';
+		std::cout << a->i << "  :  " << a->l << "  :  " << a->f << "  :  " << a->d << std::endl;
+		std::cout << b->i << "  :  " << b->l << "  :  " << b->f << "  :  " << b->d << std::endl;
 
-		std::cout << (a == b) << '\n';
+		std::cout << (a == b) << std::endl;
 
 		//
 		b->i = -1;
 
-		std::cout << a->i << "  :  " << a->l << "  :  " << a->f << "  :  " << a->d << '\n';
-		std::cout << b->i << "  :  " << b->l << "  :  " << b->f << "  :  " << b->d << '\n';
+		std::cout << a->i << "  :  " << a->l << "  :  " << a->f << "  :  " << a->d << std::endl;
+		std::cout << b->i << "  :  " << b->l << "  :  " << b->f << "  :  " << b->d << std::endl;
 
-		std::cout << (a == b) << '\n';
+		std::cout << (a == b) << std::endl;
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -122,12 +122,12 @@ void smart_ptr()
 
 		if (ap1.get()) std::cout << *ap1 << "  :  ";
 		else std::cout << "null  :  ";
-		if (sp1.get()) std::cout << *sp1 << '\n';
-		else std::cout << "null\n";
+		if (sp1.get()) std::cout << *sp1 << std::endl;
+		else std::cout << "null" << std::endl;
 
 		if (ap2.get()) std::cout << *ap2 << "  :  ";
 		else std::cout << "null  :  ";
-		if (sp2.get()) std::cout << *sp2 << '\n';
-		else std::cout << "null\n";
+		if (sp2.get()) std::cout << *sp2 << std::endl;
+		else std::cout << "null" << std::endl;
 	}
 }

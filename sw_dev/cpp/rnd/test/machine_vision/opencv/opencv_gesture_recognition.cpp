@@ -1426,14 +1426,14 @@ namespace my_opencv {
 
 void gesture_recognition()
 {
-#if 1
+#if 0
 	const int imageWidth = 640, imageHeight = 480;
 
 	const int camId = -1;
 	cv::VideoCapture capture(camId);
 	if (!capture.isOpened())
 	{
-		std::cout << "fail to open vision sensor" << std::endl;
+		std::cout << "a vision sensor not found" << std::endl;
 		return;
 	}
 
@@ -1484,11 +1484,15 @@ void gesture_recognition()
 	capture.set(CV_CAP_PROP_FRAME_HEIGHT, imageHeight);
 #else
 	//const std::string avi_filename("machine_vision_data\\opencv\\flycap-0001.avi");
-	const std::string avi_filename("machine_vision_data\\opencv\\tree.avi");
-	cv::VideoCapture capture(avi_filename)
+	//const std::string avi_filename("machine_vision_data\\opencv\\tree.avi");
+	const std::string avi_filename("machine_vision_data\\opencv\\s01_g01_1_ccw_normal.avi");
+	
+	//const int imageWidth = 640, imageHeight = 480;
+
+	cv::VideoCapture capture(avi_filename);
 	if (!capture.isOpened())
 	{
-		std::cout << "fail to open video file" << std::endl;
+		std::cout << "a video file not found" << std::endl;
 		return;
 	}
 #endif

@@ -54,7 +54,7 @@ void capture_image_from_file()
 	cv::VideoCapture capture(avi_filename);
 	if (!capture.isOpened())
 	{
-		std::cout << "fail to open vision sensor" << std::endl;
+		std::cout << "a vision sensor not found" << std::endl;
 		return;
 	}
 
@@ -448,7 +448,7 @@ void capture_image_from_cam()
 	cv::VideoCapture capture(camId);
 	if (!capture.isOpened())
 	{
-		std::cout << "fail to open vision sensor" << std::endl;
+		std::cout << "a vision sensor not found" << std::endl;
 		return;
 	}
 

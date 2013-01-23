@@ -25,19 +25,23 @@ int yaml_main(int argc, char *argv[])
 	}
 	catch (const YAML::RepresentationException &e)
 	{
-		std::cout << "YAML::RepresentationException occurred: " << e.what() << std::endl;
+		std::cout << "YAML::RepresentationException caught: " << e.what() << std::endl;
+		return 1;
 	}
 	catch (const YAML::ParserException &e)
 	{
-		std::cout << "YAML::ParserException occurred: " << e.what() << std::endl;
+		std::cout << "YAML::ParserException caught: " << e.what() << std::endl;
+		return 1;
 	}
 	catch (const YAML::EmitterException &e)
 	{
-		std::cout << "YAML::EmitterException occurred: " << e.what() << std::endl;
+		std::cout << "YAML::EmitterException caught: " << e.what() << std::endl;
+		return 1;
 	}
 	catch (const YAML::Exception &e)
 	{
-		std::cout << "YAML::Exception occurred: " << e.what() << std::endl;
+		std::cout << "YAML::Exception caught: " << e.what() << std::endl;
+		return 1;
 	}
 
 	return 0;

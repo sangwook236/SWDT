@@ -23,7 +23,7 @@ int mocapy_main(int argc, char *argv[])
 	}
 	catch (const mocapy::MocapyExceptions &e)
 	{
-		std::cout << "mocapy::MocapyExceptions occurred: " << e.what() << std::endl;
+		std::cout << "mocapy::MocapyExceptions caught: " << e.what() << std::endl;
 		return -1;
 	}
 

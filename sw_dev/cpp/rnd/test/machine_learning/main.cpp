@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 	}
     catch (const std::bad_alloc &e)
 	{
-		std::cout << "std::bad_alloc occurred: " << e.what() << std::endl;
+		std::cout << "std::bad_alloc caught: " << e.what() << std::endl;
 		retval = EXIT_FAILURE;
 	}
 	catch (const std::exception &e)

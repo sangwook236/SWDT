@@ -480,7 +480,7 @@ void adaptive_skin_color_filtering()
 	cv::VideoCapture capture(camId);
 	if (!capture.isOpened())
 	{
-		std::cout << "fail to open vision sensor" << std::endl;
+		std::cout << "a vision sensor not found" << std::endl;
 		return;
 	}
 

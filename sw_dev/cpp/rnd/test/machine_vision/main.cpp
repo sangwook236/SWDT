@@ -19,13 +19,13 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		//retval = opencv_main(argc, argv);
+		retval = opencv_main(argc, argv);
 		//retval = vlfeat_main(argc, argv);
-		retval = ccv_main(argc, argv); // run-time error: not correctly working
+		//retval = ccv_main(argc, argv); // run-time error: not correctly working
 	}
     catch (const std::bad_alloc &e)
 	{
-		std::cout << "std::bad_alloc occurred: " << e.what() << std::endl;
+		std::cout << "std::bad_alloc caught: " << e.what() << std::endl;
 		retval = EXIT_FAILURE;
 	}
 	catch (const std::exception &e)
