@@ -916,6 +916,12 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_2()
 	for (;;)
 	{
 		capture >> frame;
+		if (frame.empty())
+		{
+			std::cout << "a frame not found ..." << std::endl;
+			break;
+			//continue;
+		}
 
 		cv::cvtColor(frame, tmp_gray, CV_BGR2GRAY);
 
@@ -1018,6 +1024,12 @@ void Farneback_motion_estimation_algorithm()
 	for (;;)
 	{
 		capture >> frame;
+		if (frame.empty())
+		{
+			std::cout << "a frame not found ..." << std::endl;
+			break;
+			//continue;
+		}
 
 		cv::cvtColor(frame, tmp_gray, CV_BGR2GRAY);
 

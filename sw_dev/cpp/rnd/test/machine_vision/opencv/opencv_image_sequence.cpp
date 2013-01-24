@@ -66,7 +66,12 @@ void capture_image_from_file()
 	while (cv::waitKey(1) < 0)
 	{
 		capture >> frame;
-		if (frame.empty()) break;
+		if (frame.empty())
+		{
+			std::cout << "a frame not found ..." << std::endl;
+			break;
+			//continue;
+		}
 
 		cv::imshow(windowName, frame);
 	}
@@ -508,8 +513,12 @@ void capture_image_from_cam()
 	while (cv::waitKey(1) < 0)
 	{
 		capture >> frame;
-
-		if (frame.empty()) continue;
+		if (frame.empty())
+		{
+			std::cout << "a frame not found ..." << std::endl;
+			//break;
+			continue;
+		}
 
 #if 1
 		if (image.empty()) image = frame.clone();

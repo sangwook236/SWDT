@@ -209,8 +209,20 @@ void gesture_recognition_by_frequency(cv::VideoCapture &capture)
 
 #if 1
 		capture >> frame;
+		if (frame.empty())
+		{
+			std::cout << "a frame not found ..." << std::endl;
+			break;
+			//continue;
+		}
 #else
 		capture >> frame2;
+		if (frame2.empty())
+		{
+			std::cout << "a frame not found ..." << std::endl;
+			break;
+			//continue;
+		}
 
 		if (frame2.cols != imageWidth || frame2.rows != imageHeight)
 		{
@@ -1144,8 +1156,20 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 
 #if 1
 		capture >> frame;
+		if (frame.empty())
+		{
+			std::cout << "a frame not found ..." << std::endl;
+			break;
+			//continue;
+		}
 #else
 		capture >> frame2;
+		if (frame2.empty())
+		{
+			std::cout << "a frame not found ..." << std::endl;
+			break;
+			//continue;
+		}
 
 		if (frame2.cols != imageWidth || frame2.rows != imageHeight)
 		{

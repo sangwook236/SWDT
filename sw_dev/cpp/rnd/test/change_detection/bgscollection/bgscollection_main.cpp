@@ -43,7 +43,12 @@ void bskde_example()
 	while ('q' != cv::waitKey(1))
 	{
 		capture >> frame;
-		if (frame.empty()) break;
+		if (frame.empty())
+		{
+			std::cout << "a frame not found ..." << std::endl;
+			break;
+			//continue;
+		}
 
 		if (input_image.empty())
 			input_image = frame.clone();
@@ -98,7 +103,12 @@ void sobs_example()
 	while ('q' != cv::waitKey(1))
 	{
 		capture >> frame;
-		if (frame.empty()) break;
+		if (frame.empty())
+		{
+			std::cout << "a frame not found ..." << std::endl;
+			break;
+			//continue;
+		}
 
 		if (input_image.empty())
 			input_image = frame.clone();

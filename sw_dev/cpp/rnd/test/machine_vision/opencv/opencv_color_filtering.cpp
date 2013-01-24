@@ -197,12 +197,13 @@ void color_based_tracking()
 	cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
 
 	cv::Mat frame, img;
-	for ( ; ; )
+	for (;;)
 	{
 		capture >> frame;
 		if (frame.empty())
 		{
-			std::cout << "cannot acquire an image !!!" << std::endl;
+			std::cout << "a frame not found ..." << std::endl;
+			//break;
 			continue;
 		}
 
