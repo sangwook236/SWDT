@@ -10,7 +10,7 @@ export PATH=/home/sangwook/work_center/sw_dev/java/ext/bin:$PATH
 
 # ---------------------------------------------------------
 
-#export LIB_PATH1=/usr/local/lib
+export LIB_PATH1=/usr/local/lib
 
 #export CLASSPATH=.:$LIB_PATH1/runnable_jar.jar:$CLASSPATH
 
