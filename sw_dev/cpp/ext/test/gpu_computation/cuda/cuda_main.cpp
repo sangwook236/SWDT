@@ -1,4 +1,3 @@
-#include <cuda_runtime.h>
 #include <iostream>
 
 
@@ -10,21 +9,16 @@ namespace local {
 
 namespace my_cuda {
 
+void hello_world();
+void basic_operation();
+
 }  // namespace my_cuda
-
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
-void HelloWorld();
-
-#if defined(__cplusplus)
-}  // extern "C"
-#endif
 
 int cuda_main(int argc, char *argv[])
 {
-	HelloWorld();
+	//my_cuda::hello_world();
+
+	my_cuda::basic_operation();
 
     return 0;
 }

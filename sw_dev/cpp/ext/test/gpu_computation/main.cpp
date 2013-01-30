@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		retval = cuda_main(argc, argv);
+		//retval = cuda_main(argc, argv);
 
-		//retval = thrust_main(argc, argv);  // not yet implemented
+		retval = thrust_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

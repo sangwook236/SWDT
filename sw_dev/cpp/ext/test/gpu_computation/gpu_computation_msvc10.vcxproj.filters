@@ -21,22 +21,34 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cuda\cuda_main.cpp">
       <Filter>Source Files\cuda</Filter>
-    </ClCompile>
-    <ClCompile Include="thrust\thrust_main.cpp">
-      <Filter>Source Files\thrust</Filter>
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thrust\thrust_main.cpp">
+      <Filter>Source Files\thrust</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="cuda\HelloWorld.cu">
+    <CudaCompile Include="thrust\thrust_algorithm.cu">
+      <Filter>Source Files\thrust</Filter>
+    </CudaCompile>
+    <CudaCompile Include="thrust\thrust_basic_operation.cu">
+      <Filter>Source Files\thrust</Filter>
+    </CudaCompile>
+    <CudaCompile Include="cuda\cuda_basic_operation.cu">
       <Filter>Source Files\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="thrust\thrust_iterator.cu">
+      <Filter>Source Files\thrust</Filter>
+    </CudaCompile>
+    <CudaCompile Include="thrust\thrust_dot_product.cu">
+      <Filter>Source Files\thrust</Filter>
     </CudaCompile>
   </ItemGroup>
 </Project>
