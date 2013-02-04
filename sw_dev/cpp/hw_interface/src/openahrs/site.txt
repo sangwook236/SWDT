@@ -1,0 +1,2 @@
+http://code.google.com/p/openahrs/
+https://github.com/cbecker/openahrs
