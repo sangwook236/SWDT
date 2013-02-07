@@ -2,7 +2,7 @@
 	-. Matlab header file 중 하나인 matrix.h에서 CHAR16_T 정의와 관계된 오류 발생.
 		"missing type specifier - int assumed. note c++ does not support default-int"
 
-		==> ${PictorialStructureRevisited_HOME}/src/libs/libMatlabIO/matlab_io.h file에 mex.h 추가.
+		==> ${PictorialStructuresRevisited_HOME}/src/libs/libMatlabIO/matlab_io.h file에 mex.h 추가.
 			<수정전>
 			#include <mat.h>
 			<수정후>
