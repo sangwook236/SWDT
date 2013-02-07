@@ -4,7 +4,14 @@ http://gladman.plushost.co.uk/oldsite/computing/gmp4win.php
 
 ---------------------------------------------------------------------
 
-[1] build static library in Cygwin & MinGW
+[-] MPIR library를 대신 사용할 수 있음.
+	MPIR library안에 GMP를 포함하고 있음.
+	Windows 환경에서도 building 가능.
+	[ref] sw_dev/cpp/ext/src/multi_precision_computation/mpir
+
+---------------------------------------------------------------------
+
+[-] build static library in Cygwin & MinGW
 	run "Cygwin Bash" or "MSYS"
 	cd ${GMP_HOME}
 	./configure --prefix=${GMP_INSTALL}
@@ -14,7 +21,7 @@ http://gladman.plushost.co.uk/oldsite/computing/gmp4win.php
 
 	=> .a file이 생성.
 
-[2] build shared library in Cygwin & MinGW
+[-] build shared library in Cygwin & MinGW
 	1. build shared library
 		run "Cygwin Bash" or "MSYS"
 		cd ${GMP_HOME}
@@ -62,7 +69,7 @@ http://gladman.plushost.co.uk/oldsite/computing/gmp4win.php
 
 ---------------------------------------------------------------------
 
-[1] Cygwin & MinGW (Building static GMP library)
+[-] Cygwin & MinGW (Building static GMP library)
 Cygwin
 	Download latest GMP from GNU MP to ${GMP_DOWNLOAD}. 
 	Run "Cygwin Bash", unzip and untar GMP into ${GMP_HOME} using following command: 
@@ -115,7 +122,7 @@ For those who would like to use the Cygwin environment for development MinGW, yo
 	Install GMP header files and lib files: 
 		make install
 
-[2] Cygwin & MinGW (Building dynamic GMP library)
+[-] Cygwin & MinGW (Building dynamic GMP library)
 	GMP cannot build static and shared libraries at the same time and it will only build static library by default.
 	To use dynamic library, i.e DLL under windows platform, you need to add the options "--disable-static --enable-shared" when you configure GMP, i.e. run this command: 
 		./configure --prefix=${GMP_INSTALL} --disable-static --enable-shared
