@@ -100,6 +100,7 @@ void image_labeling_using_gpu();
 void stereo_matching();
 void stereo_matching_using_gpu();
 void change_detection();
+void change_detection_using_gpu();
 void object_tracking();
 void kalman_filtering();
 void optical_flow();
@@ -188,11 +189,13 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::stereo_matching_using_gpu();  // not yet implemented
 
 		//my_opencv::change_detection();
+		//my_opencv::change_detection_using_gpu();  // not yet implemented
 
 		//my_opencv::object_tracking();
 		//my_opencv::kalman_filtering();
 
 		//my_opencv::optical_flow();
+		//my_opencv::optical_flow_using_gpu();  // not yet implemented
 		//my_opencv::motion_history_image();
 
 		//----------------------------------------------

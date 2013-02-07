@@ -21,7 +21,6 @@ void sample()
 {
 	const int mode = MODE_TRAIN | MODE_TEST; // int mode = 0;
 	const int toolboxType = TOOLBOX_LDCRF;
-	Toolbox *toolbox = NULL;
 
 	const int opt = OPTIMIZER_BFGS;
 	const int InitMode = INIT_RANDOM;
@@ -217,6 +216,7 @@ void sample()
 		usage(argv);
 */
 
+	Toolbox *toolbox = NULL;
 	if (mode & MODE_TRAIN || mode & MODE_TEST || mode & MODE_VALIDATE)
 	{
 		if (TOOLBOX_HCRF == toolboxType)
@@ -238,8 +238,8 @@ void sample()
 	if (MODE_TRAIN & mode)
 	{
 		std::cout << "reading training set..." << std::endl;
-		const char *fileData = filenameDataTrain.empty() ? 0 : filenameDataTrain.c_str();
-		const char *fileDataSparse = filenameDataTrainSparse.empty() ? 0 : filenameDataTrainSparse.c_str();
+		const char *fileData = filenameDataTrain.empty() ? NULL : filenameDataTrain.c_str();
+		const char *fileDataSparse = filenameDataTrainSparse.empty() ? NULL : filenameDataTrainSparse.c_str();
 
 		DataSet data;
 		if (toolboxType == TOOLBOX_HCRF || toolboxType == TOOLBOX_GHCRF)

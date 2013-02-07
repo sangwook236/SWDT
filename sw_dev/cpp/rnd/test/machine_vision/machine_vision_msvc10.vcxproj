@@ -117,6 +117,7 @@
     <ClCompile Include="opencv\opencv_camera_geometry.cpp" />
     <ClCompile Include="opencv\opencv_chamfer_matching.cpp" />
     <ClCompile Include="opencv\opencv_change_detection.cpp" />
+    <ClCompile Include="opencv\opencv_change_detection_using_gpu.cpp" />
     <ClCompile Include="opencv\opencv_clustering.cpp" />
     <ClCompile Include="opencv\opencv_color_correction.cpp" />
     <ClCompile Include="opencv\opencv_color_filtering.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="opencv\opencv_object_detection.cpp" />
     <ClCompile Include="opencv\opencv_object_tracking.cpp" />
     <ClCompile Include="opencv\opencv_optical_flow.cpp" />
+    <ClCompile Include="opencv\opencv_optical_flow_using_gpu.cpp" />
     <ClCompile Include="opencv\opencv_outlier_removal.cpp" />
     <ClCompile Include="opencv\opencv_pca.cpp" />
     <ClCompile Include="opencv\opencv_segmentation.cpp" />

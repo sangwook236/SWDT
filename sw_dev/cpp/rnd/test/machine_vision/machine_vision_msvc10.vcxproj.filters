@@ -264,6 +264,12 @@
     <ClCompile Include="ccv\ccv_tld.cpp">
       <Filter>Source Files\ccv</Filter>
     </ClCompile>
+    <ClCompile Include="opencv\opencv_optical_flow_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_change_detection_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

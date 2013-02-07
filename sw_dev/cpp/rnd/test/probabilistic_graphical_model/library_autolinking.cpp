@@ -6,6 +6,14 @@
 
 #pragma comment(lib, "pnld.lib")
 #pragma comment(lib, "pnl_cxcored.lib")
+#pragma comment(lib, "libdai_d.lib")
+#pragma comment(lib, "opengm_min_sum.lib")
+#pragma comment(lib, "opengm_min_sum_small.lib")
+#pragma comment(lib, "external-library-mrf.lib")
+#pragma comment(lib, "external-library-maxflow.lib")
+#pragma comment(lib, "external-library-maxflow-ibfs.lib")
+#pragma comment(lib, "external-library-qpbo.lib")
+#pragma comment(lib, "external-library-trws.lib")
 
 #pragma comment(lib, "crfpp.lib")
 #pragma comment(lib, "hcrf_ompd.lib")
@@ -14,6 +22,12 @@
 
 #pragma comment(lib, "pnl.lib")
 #pragma comment(lib, "pnl_cxcore.lib")
+#pragma comment(lib, "libdai.lib")
+#pragma comment(lib, "external-library-mrf.lib")
+#pragma comment(lib, "external-library-maxflow.lib")
+#pragma comment(lib, "external-library-maxflow-ibfs.lib")
+#pragma comment(lib, "external-library-qpbo.lib")
+#pragma comment(lib, "external-library-trws.lib")
 
 #pragma comment(lib, "crfpp.lib")
 #pragma comment(lib, "hcrf_omp.lib")

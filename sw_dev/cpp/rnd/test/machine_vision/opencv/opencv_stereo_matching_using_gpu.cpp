@@ -31,6 +31,10 @@ namespace my_opencv {
 
 void stereo_matching_using_gpu()
 {
+	// [ref] {OPENCV_HOME}/samples/gpu/stereo_match.cpp
+	//cv::gpu::StereoBeliefPropagation
+	//cv::gpu::StereoConstantSpaceBP
+
 	local::bm();
 	local::belief_propagation();
 	local::constant_space_belief_propagation();

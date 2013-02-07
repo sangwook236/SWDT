@@ -28,6 +28,8 @@ int main(int argc, char *argv[])
 {
 	int bp_vision_main(int argc, char *argv[]);
 	int cuda_cut_main(int argc, char *argv[]);
+	int trws_main(int argc, char *argv[]);
+	int qpbo_main(int argc, char *argv[]);
 
 	int hmm_main(int argc, char *argv[]);
 
@@ -38,6 +40,8 @@ int main(int argc, char *argv[])
 
 	int pnl_main(int argc, char *argv[]);
 	int mocapy_main(int argc, char *argv[]);
+	int libdai_main(int argc, char *argv[]);
+	int opengm_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -45,33 +49,45 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		{
-			//retval = local::inference_using_graphcut();  // not yet implemented
-			//retval = local::inference_using_belief_propagation();  // not yet implemented
 
-			// belief propagation (BP) algorithm -----------------------
+			// belief propagation (BP) algorithm --------------------------------
+			//retval = local::inference_using_belief_propagation();  // not yet implemented
 			//retval = bp_vision_main(argc, argv);
 
-			// graph-cuts algorithm ------------------------------------
+			// graph-cuts algorithm ---------------------------------------------
+			//retval = local::inference_using_graphcut();  // not yet implemented
 			//retval = cuda_cut_main(argc, argv);  // not yet implemented
+
+			// Tree-Reweighted (TRW-S) message passing algorithm ----------------
+			//retval = trws_main(argc, argv);  // not yet implemented
+
+			// quadratic pseudo-boolean optimization (QPBO) algorithm -----------
+			//retval = qpbo_main(argc, argv);  // not yet implemented
 		}
 
-        // hidden Markov model (HMM) ----------------------
+        // hidden Markov model (HMM) -------------------------------
 		//retval = hmm_main(argc, argv);
 
-		// Markov random field (MRF) ----------------------
+		// Markov random field (MRF) -------------------------------
 		//retval = middlebury_main(argc, argv);
 
-		// conditional random field (CRF) -----------------
+		// conditional random field (CRF) --------------------------
 		//retval = crfpp_main(argc, argv);
-		retval = hcrf_main(argc, argv);
+		//retval = hcrf_main(argc, argv);
 
-		// dynamic Bayesian network (DBN) -----------------
+		// dynamic Bayesian network (DBN) --------------------------
 
-		// PNL library ------------------------------------
+		// PNL library ---------------------------------------------
 		//retval = pnl_main(argc, argv);
 
-		// Mocapy++ library -------------------------------
+		// Mocapy++ library ----------------------------------------
 		//retval = mocapy_main(argc, argv);
+
+		// libDAI library ------------------------------------------
+		//retval = libdai_main(argc, argv);  // not yet implemented
+
+		// OpenGM library ------------------------------------------
+		retval = opengm_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

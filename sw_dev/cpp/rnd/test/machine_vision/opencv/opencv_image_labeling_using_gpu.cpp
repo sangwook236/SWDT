@@ -17,6 +17,8 @@ namespace local {
 void graph_cut()
 {
 	throw std::runtime_error("not yet implemented");
+
+	//cv::gpu::graphcut();
 }
 
 void belief_propagation()

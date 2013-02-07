@@ -49,8 +49,8 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;D:\work_center\sw_dev\cpp\ext\inc\gmp</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -65,8 +65,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;D:\work_center\sw_dev\cpp\ext\inc\gmp</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,7 +78,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="qpbo_lib\instances.inc" />
     <None Include="ReadMe.txt" />
+    <None Include="trws_lib\instances.inc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bp_vision_lib\convolve.h" />
@@ -101,8 +103,20 @@
     <ClInclude Include="middlebury_lib\regions-new.h" />
     <ClInclude Include="middlebury_lib\TRW-S.h" />
     <ClInclude Include="middlebury_lib\typeTruncatedQuadratic2D.h" />
+    <ClInclude Include="qpbo_lib\block.h" />
+    <ClInclude Include="qpbo_lib\QPBO.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="trws_lib\instances.h" />
+    <ClInclude Include="trws_lib\MRFEnergy.h" />
+    <ClInclude Include="trws_lib\typeBinary.h" />
+    <ClInclude Include="trws_lib\typeBinaryFast.h" />
+    <ClInclude Include="trws_lib\typeGeneral.h" />
+    <ClInclude Include="trws_lib\typePotts.h" />
+    <ClInclude Include="trws_lib\typeTruncatedLinear.h" />
+    <ClInclude Include="trws_lib\typeTruncatedLinear2D.h" />
+    <ClInclude Include="trws_lib\typeTruncatedQuadratic.h" />
+    <ClInclude Include="trws_lib\typeTruncatedQuadratic2D.h" />
     <ClInclude Include="umdhmm_lib\umdhmm_cdhmm.h" />
     <ClInclude Include="umdhmm_lib\umdhmm_hmm.h" />
     <ClInclude Include="umdhmm_lib\umdhmm_nrutil.h" />
@@ -131,6 +145,7 @@
     <ClCompile Include="hmm\hmm_viterbi.cpp" />
     <ClCompile Include="hmm\viterbi.cpp" />
     <ClCompile Include="hmm\viterbi_algorithm.cpp" />
+    <ClCompile Include="libdai\libdai_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="middlebury\middlebury_main.cpp" />
@@ -153,6 +168,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="mocapy\mocapy_main.cpp" />
+    <ClCompile Include="opengm\opengm_main.cpp" />
+    <ClCompile Include="opengm\opengm_markov_chain_example.cpp" />
     <ClCompile Include="pnl\pnl_bayesian_network.cpp" />
     <ClCompile Include="pnl\pnl_bayesian_network_example.cpp" />
     <ClCompile Include="pnl\pnl_dbn.cpp" />
@@ -164,7 +181,21 @@
     <ClCompile Include="pnl\pnl_mrf_example.cpp" />
     <ClCompile Include="pnl\pnl_super_resolution.cpp" />
     <ClCompile Include="pnl\pnl_viterbi_segmentation.cpp" />
+    <ClCompile Include="qpbo\qpbo_main.cpp" />
+    <ClCompile Include="qpbo_lib\QPBO.cpp" />
+    <ClCompile Include="qpbo_lib\QPBO_extra.cpp" />
+    <ClCompile Include="qpbo_lib\QPBO_maxflow.cpp" />
+    <ClCompile Include="qpbo_lib\QPBO_postprocessing.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="trws\trws_main.cpp" />
+    <ClCompile Include="trws_lib\example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="trws_lib\minimize.cpp" />
+    <ClCompile Include="trws_lib\MRFEnergy.cpp" />
+    <ClCompile Include="trws_lib\ordering.cpp" />
+    <ClCompile Include="trws_lib\treeProbabilities.cpp" />
     <ClCompile Include="umdhmm_lib\umdhmm_backward.cpp" />
     <ClCompile Include="umdhmm_lib\umdhmm_baum.cpp" />
     <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_backward.cpp" />

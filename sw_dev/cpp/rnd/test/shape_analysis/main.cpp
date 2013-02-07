@@ -10,11 +10,13 @@
 int main(int argc, char *argv[])
 {
 	int demolib_main(int argc, char *argv[]);
+	int stasm_main(int argc, char *argv[]);
 	
 	int retval = EXIT_SUCCESS;
 	try
 	{
 		retval = demolib_main(argc, argv);  // not yet implemented
+		retval = stasm_main(argc, argv);  // not yet implemented
 	}
     catch (const std::bad_alloc &e)
 	{
