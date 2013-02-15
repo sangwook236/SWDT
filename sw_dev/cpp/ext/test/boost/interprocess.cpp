@@ -9,7 +9,6 @@
 namespace {
 namespace local {
 
-
 }  // namespace local
 }  // unnamed namespace
 

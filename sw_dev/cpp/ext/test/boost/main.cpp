@@ -53,11 +53,13 @@ int main(int argc, char *argv[])
 	void math_bindings();
 	void numeric_bindings();
 	void mtl_matrix();
+	void multiprecision();
 
 	void polygon();
 	void geometry();
-
 	void graph();
+	void graph_parallel();
+	void ordinary_differential_equation();
 
 	void asio_timer();
 	void asio_synchronizing_handler();
@@ -127,15 +129,20 @@ int main(int argc, char *argv[])
 			//math_special_functions();
 			//math_statistical_distributions();
 			//random();
-			ublas();
+			//ublas();
 			//math_bindings();
 			//numeric_bindings();
 			//mtl_matrix();
 
+			//multiprecision();  // not yet implemented
+
 			//polygon();
 			//geometry();
 
-			//graph();
+			graph();
+			//graph_parallel();  // not yet implemented
+
+			//ordinary_differential_equation();  // not yet implemented
 		}
 
 		{

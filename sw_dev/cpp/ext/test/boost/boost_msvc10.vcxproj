@@ -55,7 +55,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libboost_graph-vc100-mt-gd-1_52.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -76,7 +76,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libboost_graph-vc100-mt-1_52.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -110,10 +110,8 @@
     <ClCompile Include="filesystem.cpp" />
     <ClCompile Include="function.cpp" />
     <ClCompile Include="geometry.cpp" />
-    <ClCompile Include="graph.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="graph.cpp" />
+    <ClCompile Include="graph_parallel.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="interprocess.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
@@ -130,9 +128,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="multiprecision.cpp" />
     <ClCompile Include="multi_array.cpp" />
     <ClCompile Include="multi_index.cpp" />
     <ClCompile Include="numeric_bindings.cpp" />
+    <ClCompile Include="ordinary_differential_equation.cpp" />
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="program_options.cpp" />
     <ClCompile Include="progress_timer.cpp" />
