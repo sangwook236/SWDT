@@ -211,6 +211,27 @@
     <ClCompile Include="opengm\opengm_markov_chain_example.cpp">
       <Filter>Source Files\opengm</Filter>
     </ClCompile>
+    <ClCompile Include="opengm\opengm_mrflib_interface.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_libdai_interface.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_quick_start_example.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_gibbs_example.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_swendsenwang_example.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_bipartite_matching_example.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_interpixel_boundary_segmentation_example.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

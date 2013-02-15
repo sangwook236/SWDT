@@ -14,6 +14,7 @@
 #pragma comment(lib, "external-library-maxflow-ibfs.lib")
 #pragma comment(lib, "external-library-qpbo.lib")
 #pragma comment(lib, "external-library-trws.lib")
+#pragma comment(lib, "mpir.lib")
 
 #pragma comment(lib, "crfpp.lib")
 #pragma comment(lib, "hcrf_ompd.lib")
@@ -28,6 +29,7 @@
 #pragma comment(lib, "external-library-maxflow-ibfs.lib")
 #pragma comment(lib, "external-library-qpbo.lib")
 #pragma comment(lib, "external-library-trws.lib")
+#pragma comment(lib, "mpir.lib")
 
 #pragma comment(lib, "crfpp.lib")
 #pragma comment(lib, "hcrf_omp.lib")

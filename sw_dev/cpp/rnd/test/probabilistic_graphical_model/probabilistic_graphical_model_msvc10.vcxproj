@@ -50,7 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;D:\work_center\sw_dev\cpp\ext\inc\gmp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./opengm/mrf;../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;D:\work_center\sw_dev\cpp\ext\inc\gmp</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -66,7 +66,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;D:\work_center\sw_dev\cpp\ext\inc\gmp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./opengm/mrf;../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;D:\work_center\sw_dev\cpp\ext\inc\gmp</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -168,8 +168,15 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="mocapy\mocapy_main.cpp" />
+    <ClCompile Include="opengm\opengm_bipartite_matching_example.cpp" />
+    <ClCompile Include="opengm\opengm_interpixel_boundary_segmentation_example.cpp" />
+    <ClCompile Include="opengm\opengm_gibbs_example.cpp" />
+    <ClCompile Include="opengm\opengm_libdai_interface.cpp" />
     <ClCompile Include="opengm\opengm_main.cpp" />
     <ClCompile Include="opengm\opengm_markov_chain_example.cpp" />
+    <ClCompile Include="opengm\opengm_mrflib_interface.cpp" />
+    <ClCompile Include="opengm\opengm_quick_start_example.cpp" />
+    <ClCompile Include="opengm\opengm_swendsenwang_example.cpp" />
     <ClCompile Include="pnl\pnl_bayesian_network.cpp" />
     <ClCompile Include="pnl\pnl_bayesian_network_example.cpp" />
     <ClCompile Include="pnl\pnl_dbn.cpp" />

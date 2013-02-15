@@ -16,65 +16,71 @@ namespace my_opengm {
 // [ref] ${OPENGM_HOME}/src/examples/unsorted-examples/markov-chain.cxx
 void markov_chain_example()
 {
-	// construct a label space with numberOfVariables many variables,
-	// each having numberOfLabels many labels
-	const size_t numberOfVariables = 40; 
-	const size_t numberOfLabels = 5;
+	// construct a label space with numOfVariables many variables, each having numOfLabels many labels
+	const std::size_t numOfVariables = 40; 
+	const std::size_t numOfLabels = 5;
 
-	typedef opengm::SimpleDiscreteSpace<size_t, size_t> Space;
+	typedef opengm::SimpleDiscreteSpace<std::size_t, std::size_t> Space;
 
-	Space space(numberOfVariables, numberOfLabels);
+	Space space(numOfVariables, numOfLabels);
 
 	// construct a graphical model with 
 	// - addition as the operation (template parameter Adder)
 	// - support for Potts functions (template parameter PottsFunction<double>)
 	typedef OPENGM_TYPELIST_2(opengm::ExplicitFunction<double>, opengm::PottsFunction<double>) FunctionTypelist;
 	typedef opengm::GraphicalModel<double, opengm::Adder, FunctionTypelist, Space> Model;
+
 	Model gm(space);
 
 	// for each variable, add one 1st order functions and one 1st order factor
-	for (size_t v = 0; v < numberOfVariables; ++v)
+	for (std::size_t v = 0; v < numOfVariables; ++v)
 	{
-		const size_t shape[] = {numberOfLabels};
+		const std::size_t shape[] = { numOfLabels };
 		opengm::ExplicitFunction<double> f(shape, shape + 1);
-		for (size_t s = 0; s < numberOfLabels; ++s)
-		{
-			f(s) = static_cast<double>(rand()) / RAND_MAX;
-		}
-		Model::FunctionIdentifier fid = gm.addFunction(f);
+		for (std::size_t s = 0; s < numOfLabels; ++s)
+			f(s) = static_cast<double>(std::rand()) / RAND_MAX;
 
-		size_t variableIndices[] = {v};
-		gm.addFactor(fid, variableIndices, variableIndices + 1);
+		const Model::FunctionIdentifier fid1 = gm.addFunction(f);
+
+		const std::size_t variableIndices[] = { v };
+		gm.addFactor(fid1, variableIndices, variableIndices + 1);
 	}
 
-	// add one (!) 2nd order Potts function
-	opengm::PottsFunction<double> f(numberOfLabels, numberOfLabels, 0.0, 0.3);
-	Model::FunctionIdentifier fid = gm.addFunction(f);
-
-	// for each pair of consecutive variables,
-	// add one factor that refers to the Potts function 
-	for (size_t v = 0; v < numberOfVariables - 1; ++v)
 	{
-		size_t variableIndices[] = {v, v + 1};
-		gm.addFactor(fid, variableIndices, variableIndices + 2);
-	}    
+		// add one (!) 2nd order Potts function
+		opengm::PottsFunction<double> f(numOfLabels, numOfLabels, 0.0, 0.3);
+		const Model::FunctionIdentifier fid2 = gm.addFunction(f);
+
+		// for each pair of consecutive variables, add one factor that refers to the Potts function
+		for (std::size_t v = 0; v < numOfVariables - 1; ++v)
+		{
+			const std::size_t variableIndices[] = { v, v + 1 };
+			gm.addFactor(fid2, variableIndices, variableIndices + 2);
+		}
+	}
 
 	// set up the optimizer (loopy belief propagation)
 	typedef opengm::BeliefPropagationUpdateRules<Model, opengm::Minimizer> UpdateRules;
 	typedef opengm::MessagePassing<Model, opengm::Minimizer, UpdateRules, opengm::MaxDistance> BeliefPropagation;
-	const size_t maxNumberOfIterations = numberOfVariables * 2;
+
+	const std::size_t maxNumberOfIterations = numOfVariables * 2;
 	const double convergenceBound = 1e-7;
 	const double damping = 0.0;
-	BeliefPropagation::Parameter parameter(maxNumberOfIterations, convergenceBound, damping);
+	const BeliefPropagation::Parameter parameter(maxNumberOfIterations, convergenceBound, damping);
 	BeliefPropagation bp(gm, parameter);
 
 	// optimize (approximately)
 	BeliefPropagation::VerboseVisitorType visitor;
+
+	std::cout << "on inferring ..." << std::endl;
 	bp.infer(visitor);
 
 	// obtain the (approximate) argmin
-	std::vector<std::size_t> labeling(numberOfVariables);
+	std::vector<std::size_t> labeling(numOfVariables);
 	bp.arg(labeling);
+
+	for (std::size_t var = 0; var < gm.numberOfVariables(); ++var)
+		std::cout << "var" << var << "=" << labeling[var] << std::endl;
 }
 
 }  // namespace my_opengm
