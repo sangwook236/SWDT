@@ -232,6 +232,15 @@
     <ClCompile Include="opengm\opengm_interpixel_boundary_segmentation_example.cpp">
       <Filter>Source Files\opengm</Filter>
     </ClCompile>
+    <ClCompile Include="opengm\opengm_potts_model_on_2d_grid.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_qpbo_algorithm.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_inference_algorithms.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

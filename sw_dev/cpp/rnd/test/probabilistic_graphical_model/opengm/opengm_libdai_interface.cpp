@@ -38,11 +38,11 @@ void buildGraphicalModel(GraphicalModel &gm)
 	for (std::size_t v = 0; v < numOfVariables; ++v)
 	{
 		const std::size_t shape[] = { numOfLabels };
-		opengm::ExplicitFunction<double> f(shape, shape + 1);
-		for (std::size_t s = 0; s < numOfLabels; ++s)
-			f(s) = static_cast<double>(std::rand()) / RAND_MAX;
+		opengm::ExplicitFunction<double> func1(shape, shape + 1);
+		for (std::size_t state = 0; state < numOfLabels; ++state)
+			func1(state) = static_cast<double>(std::rand()) / RAND_MAX;
 
-		const GraphicalModel::FunctionIdentifier fid1 = gm.addFunction(f);
+		const GraphicalModel::FunctionIdentifier fid1 = gm.addFunction(func1);
 
 		const std::size_t variableIndices[] = { v };
 		gm.addFactor(fid1, variableIndices, variableIndices + 1);
@@ -50,8 +50,8 @@ void buildGraphicalModel(GraphicalModel &gm)
 
 	{
 		// add one (!) 2nd order Potts function
-		opengm::PottsFunction<double> f(numOfLabels, numOfLabels, 0.0, 0.3);
-		const GraphicalModel::FunctionIdentifier fid2 = gm.addFunction(f);
+		opengm::PottsFunction<double> func2(numOfLabels, numOfLabels, 0.0, 0.3);
+		const GraphicalModel::FunctionIdentifier fid2 = gm.addFunction(func2);
 
 		// for each pair of consecutive variables, add one factor that refers to the Potts function
 		for (std::size_t v = 0; v < numOfVariables - 1; ++v)

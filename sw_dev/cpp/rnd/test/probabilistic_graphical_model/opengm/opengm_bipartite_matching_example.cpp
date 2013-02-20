@@ -48,6 +48,7 @@ void printSolution(const std::vector<std::size_t> &solution)
 namespace my_opengm {
 
 // [ref] ${OPENGM_HOME}/src/examples/unsorted-examples/one_to_one_matching.cxx
+// [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
 void bipartite_matching_example()
 {
 	// model parameters
@@ -79,13 +80,13 @@ void bipartite_matching_example()
 	// add 1st order functions and factors
 	{
 		const std::size_t shape[] = { numOfLabels };
-		ExplicitFunction f(shape, shape + 1);
+		ExplicitFunction func1(shape, shape + 1);
 		for (std::size_t v = 0; v < numOfVariables; ++v)
 		{
 			for (std::size_t s = 0; s < numOfLabels; ++s)
-				f(s) = 1.0f - data(v, s);
+				func1(s) = 1.0f - data(v, s);
+			const FunctionIdentifier fid1 = gm.addFunction(func1);
 
-			const FunctionIdentifier fid1 = gm.addFunction(f);
 			const std::size_t vi[] = { v };
 			gm.addFactor(fid1, vi, vi + 1);
 		}
@@ -96,8 +97,8 @@ void bipartite_matching_example()
 		const float high = 20;
 
 		// add one (!) 2nd order Potts function
-		PottsFunction f(numOfLabels, numOfLabels, high, 0);
-		const FunctionIdentifier fid2 = gm.addFunction(f);
+		PottsFunction func2(numOfLabels, numOfLabels, high, 0);
+		const FunctionIdentifier fid2 = gm.addFunction(func2);
 
 		// add pair potentials for all variables
 		for (std::size_t v1 = 0; v1 < numOfVariables; ++v1)

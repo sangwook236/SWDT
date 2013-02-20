@@ -15,9 +15,28 @@
 #pragma comment(lib, "external-library-qpbo.lib")
 #pragma comment(lib, "external-library-trws.lib")
 #pragma comment(lib, "mpir.lib")
+#pragma comment(lib, "hdf5d.lib")
 
 #pragma comment(lib, "crfpp.lib")
 #pragma comment(lib, "hcrf_ompd.lib")
+
+#pragma comment(lib, "opencv_calib3d243d.lib")
+#pragma comment(lib, "opencv_contrib243d.lib")
+#pragma comment(lib, "opencv_core243d.lib")
+#pragma comment(lib, "opencv_features2d243d.lib")
+#pragma comment(lib, "opencv_flann243d.lib")
+#pragma comment(lib, "opencv_gpu243d.lib")
+#pragma comment(lib, "opencv_highgui243d.lib")
+#pragma comment(lib, "opencv_imgproc243d.lib")
+#pragma comment(lib, "opencv_legacy243d.lib")
+#pragma comment(lib, "opencv_ml243d.lib")
+#pragma comment(lib, "opencv_nonfree243d.lib")
+#pragma comment(lib, "opencv_objdetect243d.lib")
+#pragma comment(lib, "opencv_photo243d.lib")
+#pragma comment(lib, "opencv_stitching243d.lib")
+#pragma comment(lib, "opencv_ts243d.lib")
+#pragma comment(lib, "opencv_video243d.lib")
+#pragma comment(lib, "opencv_videostab243d.lib")
 
 #		else
 
@@ -30,9 +49,28 @@
 #pragma comment(lib, "external-library-qpbo.lib")
 #pragma comment(lib, "external-library-trws.lib")
 #pragma comment(lib, "mpir.lib")
+#pragma comment(lib, "hdf5.lib")
 
 #pragma comment(lib, "crfpp.lib")
 #pragma comment(lib, "hcrf_omp.lib")
+
+#pragma comment(lib, "opencv_calib3d243.lib")
+#pragma comment(lib, "opencv_contrib243.lib")
+#pragma comment(lib, "opencv_core243.lib")
+#pragma comment(lib, "opencv_features2d243.lib")
+#pragma comment(lib, "opencv_flann243.lib")
+#pragma comment(lib, "opencv_gpu243.lib")
+#pragma comment(lib, "opencv_highgui243.lib")
+#pragma comment(lib, "opencv_imgproc243.lib")
+#pragma comment(lib, "opencv_legacy243.lib")
+#pragma comment(lib, "opencv_ml243.lib")
+#pragma comment(lib, "opencv_nonfree243.lib")
+#pragma comment(lib, "opencv_objdetect243.lib")
+#pragma comment(lib, "opencv_photo243.lib")
+#pragma comment(lib, "opencv_stitching243.lib")
+#pragma comment(lib, "opencv_ts243.lib")
+#pragma comment(lib, "opencv_video243.lib")
+#pragma comment(lib, "opencv_videostab243.lib")
 
 #		endif
 

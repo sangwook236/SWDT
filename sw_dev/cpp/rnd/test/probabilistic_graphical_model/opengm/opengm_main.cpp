@@ -1,17 +1,15 @@
 #include <opengm/graphicalmodel/graphicalmodel.hxx>
-#include <opengm/graphicalmodel/space/discretespace.hxx>
+#include <opengm/graphicalmodel/graphicalmodel_hdf5.hxx>
 #include <opengm/graphicalmodel/space/simplediscretespace.hxx>
-#include <opengm/graphicalmodel/space/grid_space.hxx>
-#include <opengm/functions/potts.hxx>
+#include <opengm/graphicalmodel/space/discretespace.hxx>
+#include <opengm/functions/explicit_function.hxx>
 #include <opengm/operations/adder.hxx>
 #include <opengm/operations/minimizer.hxx>
 #include <opengm/operations/maximizer.hxx>
-#include <opengm/inference/gibbs.hxx>
 #include <opengm/inference/icm.hxx>
-#include <opengm/inference/loc.hxx>
-#include <opengm/inference/astar.hxx>
-#include <vector>
+#include <opengm/inference/gibbs.hxx>
 #include <iostream>
+#include <vector>
 
 
 namespace {
@@ -82,11 +80,11 @@ void basic_operation()
 			for (std::size_t v = 0; v < numberOfVariables; ++v)
 			{
 				const std::size_t shape[] = { numberOfLabels };
-				opengm::ExplicitFunction<double> f(shape, shape + 1);
-				for (std::size_t s = 0; s < numberOfLabels; ++s)
-					f(s) = static_cast<double>(std::rand()) / RAND_MAX;
+				opengm::ExplicitFunction<double> func1(shape, shape + 1);
+				for (std::size_t state = 0; state < numberOfLabels; ++state)
+					func1(state) = static_cast<double>(std::rand()) / RAND_MAX;
 
-				const Model::FunctionIdentifier fid1 = gm.addFunction(f);
+				const Model::FunctionIdentifier fid1 = gm.addFunction(func1);
 
 				const std::size_t variableIndices[] = { v };
 				gm.addFactor(fid1, variableIndices, variableIndices + 1);
@@ -94,8 +92,8 @@ void basic_operation()
 
 			{
 				// add one (!) 2nd order Potts function
-				opengm::PottsFunction<double> f(numberOfLabels, numberOfLabels, 0.0, 0.3);
-				const Model::FunctionIdentifier fid2 = gm.addFunction(f);
+				opengm::PottsFunction<double> func2(numberOfLabels, numberOfLabels, 0.0, 0.3);
+				const Model::FunctionIdentifier fid2 = gm.addFunction(func2);
 
 				// for each pair of consecutive variables, add one factor that refers to the Potts function
 				for (std::size_t v = 0; v < numberOfVariables - 1; ++v)
@@ -182,6 +180,36 @@ void basic_operation()
 	}
 }
 
+// [ref] ${OPENGM_HOME}/src/examples/io-examples/io_graphical_model.cxx
+void input_output_example()
+{
+	typedef opengm::GraphicalModel<float, opengm::Multiplier> GraphicalModel;
+
+	// build a graphical model (other examples have more details)
+	const std::size_t numsOfLabels[] = { 3, 3, 3, 3 };
+	GraphicalModel gmA(opengm::DiscreteSpace<>(numsOfLabels, numsOfLabels + 4)); 
+
+	const std::size_t shape[] = { 3 };
+	opengm::ExplicitFunction<float> func(shape, shape + 1); 
+	for (std::size_t i = 0; i < gmA.numberOfVariables(); ++i)
+	{
+		const std::size_t vi[] = { i };
+		func(0) = float(i);
+		func(1) = float(i + 1);
+		func(2) = float(i - 2);
+		
+		const GraphicalModel::FunctionIdentifier fid = gmA.addFunction(func);
+		gmA.addFactor(fid, vi, vi + 1);
+	}
+
+	// save graphical model into an hdf5 dataset named "toy-gm"
+	opengm::hdf5::save(gmA, "./probabilistic_graphical_model_data/opengm/gm.h5", "toy-gm");
+
+	// load the graphical model from the hdf5 dataset
+	GraphicalModel gmB;
+	opengm::hdf5::load(gmB, "./probabilistic_graphical_model_data/opengm/gm.h5","toy-gm");
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -192,7 +220,10 @@ void markov_chain_example();
 void gibbs_example();
 void swendsenwang_example();
 void bipartite_matching_example();
+void potts_model_on_2d_grid_example();
 void interpixel_boundary_segmentation_example();
+
+void inference_algorithms();
 
 void libdai_interface();
 void mrflib_interface();
@@ -204,29 +235,47 @@ int opengm_main(int argc, char *argv[])
 	std::cout << "basic operation -----------------------------------------------------" << std::endl;
 	//local::basic_operation();
 
-	std::cout << "\nquick start example -------------------------------------------------" << std::endl;
-	//my_opengm::quick_start_example();
+	// examples
+	{
+		std::cout << "\ninput & output example ----------------------------------------------" << std::endl;
+		//local::input_output_example();
 
-	std::cout << "\nMarkov chain example ------------------------------------------------" << std::endl;
-	//my_opengm::markov_chain_example();
+		std::cout << "\nquick start example -------------------------------------------------" << std::endl;
+		//my_opengm::quick_start_example();
 
-	std::cout << "\nGibbs example -------------------------------------------------------" << std::endl;
-	//my_opengm::gibbs_example();
+		std::cout << "\nMarkov chain example ------------------------------------------------" << std::endl;
+		//my_opengm::markov_chain_example();
 
-	std::cout << "\nSwendsen-Wang example -----------------------------------------------" << std::endl;
-	//my_opengm::swendsenwang_example();
+		std::cout << "\nGibbs sampling example ----------------------------------------------" << std::endl;
+		//my_opengm::gibbs_example();
 
-	std::cout << "\nbipartite matching example ------------------------------------------" << std::endl;
-	//my_opengm::bipartite_matching_example();
+		std::cout << "\nSwendsen-Wang sampling example --------------------------------------" << std::endl;
+		//my_opengm::swendsenwang_example();
 
-	std::cout << "\ninterpixel boundary segmentation example ----------------------------" << std::endl;
-	//my_opengm::interpixel_boundary_segmentation_example();
+		std::cout << "\nbipartite matching example ------------------------------------------" << std::endl;
+		//my_opengm::bipartite_matching_example();
 
-	std::cout << "\nlibDAI interface ----------------------------------------------------" << std::endl;
-	//my_opengm::libdai_interface();
+		std::cout << "\nPotts model on a 2-dim grid example ---------------------------------" << std::endl;
+		//my_opengm::potts_model_on_2d_grid_example();
 
-	std::cout << "\nMRFLib interface ----------------------------------------------------" << std::endl;
-	my_opengm::mrflib_interface();
+		std::cout << "\ninterpixel boundary segmentation example ----------------------------" << std::endl;
+		//my_opengm::interpixel_boundary_segmentation_example();
+	}
+
+	// inference algorithm
+	{
+		std::cout << "\ninference algorithms ------------------------------------------------" << std::endl;
+		my_opengm::inference_algorithms();
+	}
+
+	// external library interfacing
+	{
+		std::cout << "\nlibDAI interface ----------------------------------------------------" << std::endl;
+		//my_opengm::libdai_interface();
+
+		std::cout << "\nMRFLib interface ----------------------------------------------------" << std::endl;
+		//my_opengm::mrflib_interface();  // compile-time error
+	}
 
 	return 0;
 }

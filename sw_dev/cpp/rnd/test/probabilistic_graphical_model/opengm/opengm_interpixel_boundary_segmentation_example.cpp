@@ -105,15 +105,15 @@ void printSolution(const marray::Marray<T> &data, const std::vector<std::size_t>
 		}
 		std::cout << "|" << std::endl;
 	}
-	for (std::size_t x = 0; x < data.shape(0) * 2 - 1; ++x) {
+	for (std::size_t x = 0; x < data.shape(0) * 2 - 1; ++x)
 		std::cout << std::left << std::setw(3) << std::setprecision(1) << "___";
-	}
 	std::cout << std::endl;
 }
 
 // user defined Function Type
 template<class T>
-struct ClosednessFunctor {
+struct ClosednessFunctor
+{
 public:
 	typedef T value_type;
 
@@ -186,37 +186,32 @@ void interpixel_boundary_segmentation_example()
 	// for each boundary in the grid, i.e. for each variable of the model, add one 1st order functions and one 1st order factor
 	{
 		const std::size_t shape[] = { 2 };
-		opengm::ExplicitFunction<float> f(shape, shape + 1);
+		opengm::ExplicitFunction<float> func1(shape, shape + 1);
 		for (std::size_t yT = 0; yT < dimT[1]; ++yT)
-		{
 			for (std::size_t xT = 0; xT < dimT[0]; ++xT)
-			{
 				if ((xT % 2 + yT % 2) == 1)
 				{
 					const float gradient = std::fabs(data(xT / 2, yT / 2) - data(xT / 2 + xT % 2, yT / 2 + yT % 2));              
-					f(0) = beta * gradient;  // value for inactive boundary               
-					f(1) = (1.0 - beta) * (1.0 - gradient);  // value for active boundary;
-					const FunctionIdentifier fid = gm.addFunction(f);
+					func1(0) = beta * gradient;  // value for inactive boundary               
+					func1(1) = (1.0 - beta) * (1.0 - gradient);  // value for active boundary
+					const FunctionIdentifier fid1 = gm.addFunction(func1);
 
 					const std::size_t vi[] = { cTHelper(xT, yT) };
-					gm.addFactor(fid, vi, vi + 1);
+					gm.addFactor(fid1, vi, vi + 1);
 				}
-			}
-		}
 	}
 
 	// for each junction of four inter-pixel edges on the grid, 
 	// one factor is added that connects the corresponding variable indices and refers to the ClosednessFunctor function
 	{
 		// add one (!) 4th order ClosednessFunctor function
-		local::ClosednessFunctor<float> f;
-		f.high = high;
-		const FunctionIdentifier fid = gm.addFunction(f);
+		local::ClosednessFunctor<float> func2;
+		func2.high = high;
+		const FunctionIdentifier fid2 = gm.addFunction(func2);
 
 		// add factors
 		for (std::size_t y = 0; y < dimT[1]; ++y)
 			for (std::size_t x = 0; x < dimT[0]; ++x)
-			{
 				if (x % 2 + y % 2 == 2)
 				{
 					std::size_t vi[] = {
@@ -226,9 +221,8 @@ void interpixel_boundary_segmentation_example()
 						cTHelper(x, y - 1)
 					};
 					std::sort(vi, vi + 4);
-					gm.addFactor(fid, vi, vi + 4);
+					gm.addFactor(fid2, vi, vi + 4);
 				}
-			}
 	}
 
 	// set up the optimizer (lazy flipper)

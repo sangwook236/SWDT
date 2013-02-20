@@ -28,10 +28,10 @@ void buildGraphicalModel(GraphicalModel &gm)
 
 	{
 		// add 1st order function
-		ExplicitFunction f(&numberOfLabels, &numberOfLabels + 1);
-		f(0) = 0.2;
-		f(1) = 0.8;
-		const GraphicalModel::FunctionIdentifier fid1 = gm.addFunction(f);
+		ExplicitFunction func1(&numberOfLabels, &numberOfLabels + 1);
+		func1(0) = 0.2;
+		func1(1) = 0.8;
+		const GraphicalModel::FunctionIdentifier fid1 = gm.addFunction(func1);
 
 		// add 1st order factor (at first variable)
 		const std::size_t variableIndices[] = { 0 };
@@ -42,8 +42,8 @@ void buildGraphicalModel(GraphicalModel &gm)
 		// add 2nd order function
 		const double probEqual = 0.7;
 		const double probUnequal = 0.3;
-		const PottsFunction f(numberOfLabels, numberOfLabels, probEqual, probUnequal);
-		const GraphicalModel::FunctionIdentifier fid2 = gm.addFunction(f);
+		const PottsFunction func2(numberOfLabels, numberOfLabels, probEqual, probUnequal);
+		const GraphicalModel::FunctionIdentifier fid2 = gm.addFunction(func2);
 
 		// add 2nd order factors
 		for (std::size_t j = 0; j < numberOfVariables - 1; ++j)

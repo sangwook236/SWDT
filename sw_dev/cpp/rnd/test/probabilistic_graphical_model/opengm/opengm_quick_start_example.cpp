@@ -32,12 +32,12 @@ void quick_start_example()
 	{
 		// construct 1st order function
 		const std::size_t shape[] = { gm.numberOfLabels(variable) };
-		ExplicitFunction f(shape, shape + 1);
+		ExplicitFunction func1(shape, shape + 1);
 		for (std::size_t state = 0; state < gm.numberOfLabels(variable); ++state)
-			f(state) = float(std::rand()) / RAND_MAX;  // random toy data
+			func1(state) = float(std::rand()) / RAND_MAX;  // random toy data
 
 		// add function
-		const FunctionIdentifier fid1 = gm.addFunction(f);
+		const FunctionIdentifier fid1 = gm.addFunction(func1);
 
 		// add factor
 		const std::size_t variableIndex[] = { variable };
@@ -56,13 +56,13 @@ void quick_start_example()
 				};
 
 				// construct 3rd order function
-				ExplicitFunction f(shape, shape + 3);
-				for(std::size_t state1 = 0; state1 < gm.numberOfLabels(variable1); ++state1)
-					for(std::size_t state2 = 0; state2 < gm.numberOfLabels(variable2); ++state2)
-						for(std::size_t state3 = 0; state3 < gm.numberOfLabels(variable3); ++state3)      
-							f(state1, state2, state3) = float(std::rand()) / RAND_MAX;  // random toy data
+				ExplicitFunction func2(shape, shape + 3);
+				for (std::size_t state1 = 0; state1 < gm.numberOfLabels(variable1); ++state1)
+					for (std::size_t state2 = 0; state2 < gm.numberOfLabels(variable2); ++state2)
+						for (std::size_t state3 = 0; state3 < gm.numberOfLabels(variable3); ++state3)      
+							func2(state1, state2, state3) = float(std::rand()) / RAND_MAX;  // random toy data
 
-				const FunctionIdentifier fid2 = gm.addFunction(f);
+				const FunctionIdentifier fid2 = gm.addFunction(func2);
 
 				// sequences of variable indices need to be (and in this case are) sorted
 				const std::size_t variableIndexSequence[] = { variable1, variable2, variable3 };

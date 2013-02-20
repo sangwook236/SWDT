@@ -6,7 +6,6 @@
 #include <opencv2/legacy/legacy.hpp>
 #include <iostream>
 #include <string>
-#include <iostream>
 
 
 namespace my_opencv {
