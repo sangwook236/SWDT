@@ -108,8 +108,8 @@ void motion_history_image();
 
 void iterative_closest_point();
 
-void hand_pose_estimation();
 void hand_detection();
+void hand_pose_estimation();
 void motion_segmentation();
 void gesture_recognition();
 
@@ -206,11 +206,11 @@ int opencv_main(int argc, char *argv[])
 		//----------------------------------------------
 		// application
 
+		my_opencv::hand_detection();
 		//my_opencv::hand_pose_estimation();
-		//my_opencv::hand_detection();
 
 		//my_opencv::motion_segmentation();
-		my_opencv::gesture_recognition();
+		//my_opencv::gesture_recognition();
 	}
 	catch (const cv::Exception &e)
 	{

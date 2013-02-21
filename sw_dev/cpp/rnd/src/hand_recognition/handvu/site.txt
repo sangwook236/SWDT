@@ -1,0 +1,6 @@
+http://www.movesinstitute.org/~kolsch/HandVu/HandVu.html
+http://ilab.cs.ucsb.edu/projects/mathias/handvu_ilab.html
+
+http://www.magnusmax.com/studio/?p=1258
+http://www.movesinstitute.org/~kolsch/HandVu/doc/InstallationWindows.html
+http://www.movesinstitute.org/~kolsch/HandVu/doc/InstallationLinux.html

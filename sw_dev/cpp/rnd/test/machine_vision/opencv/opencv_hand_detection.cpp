@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/video/tracking.hpp>
@@ -110,10 +111,10 @@ void save_ref_hand_image()
 
 void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv::Mat &img, cv::Mat &processed_img)
 {
-	// oriented bounding box
+	// oriented bounding box (OBB)
 	const cv::RotatedRect obb(cv::minAreaRect(pts_mat));
 
-	// axis-aligned bounding box
+	// axis-aligned bounding box (AABB)
 	const cv::Rect aabb(cv::boundingRect(pts_mat));
 
 	// bounding sphere
@@ -550,6 +551,122 @@ void detect_hand_by_motion()
 	cv::destroyWindow(windowName3);
 }
 
+// [ref] http://www.andol.info/hci/830.htm
+void static_hand_detection_1()
+{
+	const int camId = -1;
+	cv::VideoCapture capture(camId);
+	if (!capture.isOpened())
+	{
+		std::cout << "a vision sensor not found" << std::endl;
+		return;
+	}
+
+	// skin color
+	const cv::Scalar hsv_min(0, 30, 80, 0);
+	const cv::Scalar hsv_max(20, 150, 255, 0);
+    //const cv::Scalar hsv_min(0, 45, 0, 0); 
+    //const cv::Scalar hsv_max(20, 255, 255, 0);            
+    //const cv::Scalar YCrCb_min(0, 131, 80, 0);
+    //const cv::Scalar YCrCb_max(255, 185, 135, 0);
+
+	cv::namedWindow("src");
+	cv::namedWindow("hsv-img");
+	cv::namedWindow("hsv-mask");
+
+	cv::Mat frame, src_img, hsv_img, hsv_mask;
+	while (true)
+	{
+		capture >> frame;
+		if (frame.empty())
+		{
+			std::cout << "a frame not found ..." << std::endl;
+			break;
+			//continue;
+		}
+
+		src_img = frame;
+		cv::imshow("src", src_img);
+
+		cv::cvtColor(src_img, hsv_img, CV_BGR2HSV);
+		cv::imshow("hsv-img", hsv_img);
+
+		cv::inRange(hsv_img, hsv_min, hsv_max, hsv_mask);
+		cv::imshow("hsv-mask", hsv_mask);
+
+		if (cv::waitKey(1) >= 0)
+			break;
+	}
+
+	cv::destroyAllWindows();
+}
+
+void detect_and_draw(cv::CascadeClassifier &hand_detector, cv::Mat &img)
+{
+	// detect hands
+	std::vector<cv::Rect> hands;
+	const double scaleFactor = 1.1;
+	const int minNeighbors = 2;
+	hand_detector.detectMultiScale(img, hands, scaleFactor, minNeighbors, CV_HAAR_DO_CANNY_PRUNING, cv::Size(24, 24));
+
+	for (std::size_t i = 0; i < hands.size(); ++i)
+	{
+		const cv::Point center(cvRound(hands[i].x + hands[i].width * 0.5), cvRound(hands[i].y + hands[i].height * 0.5));
+		cv::ellipse(img, center, cv::Size(cvRound(hands[i].width * 0.5), cvRound(hands[i].height * 0.5)), 0, 0, 360, cv::Scalar(255, 0, 255), 4, 8, 0);
+	}
+
+	cv::imshow("result", img);
+}
+
+// [ref] http://www.andol.info/hci/2020.htm
+void static_hand_detection_2()
+{
+	//const std::string hand_cascade_filename = "./machine_vision_data/opencv/gsthanddetect/palm.xml";
+	const std::string hand_cascade_filename = "./machine_vision_data/opencv/gsthanddetect/fist.xml";
+
+	// load the cascades
+	cv::CascadeClassifier hand_detector;
+	if (!hand_detector.load(hand_cascade_filename))
+	{
+		std::cout << "a file not found: " << hand_cascade_filename << std::endl;
+		return;
+	}
+
+	const int camId = -1;
+	cv::VideoCapture capture(camId);
+	if (!capture.isOpened())
+	{
+		std::cout << "a vision sensor not found" << std::endl;
+		return;
+	}
+
+	cv::namedWindow("input");
+	cv::namedWindow("result");
+
+	cv::Mat frame, gray_img;
+	while (true)
+	{
+		capture >> frame;
+		if (frame.empty())
+		{
+			std::cout << "a frame not found ..." << std::endl;
+			break;
+			//continue;
+		}
+
+		cv::cvtColor(frame, gray_img, CV_BGR2GRAY);
+
+		cv::imshow("input", frame);
+
+		detect_and_draw(hand_detector, gray_img);
+
+		if (cv::waitKey(1) >= 0)
+			break;
+	}
+
+	cv::destroyAllWindows();
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -558,7 +675,10 @@ namespace my_opencv {
 void hand_detection()
 {
 	//local::save_ref_hand_image();
-	local::detect_hand_by_motion();
+	//local::detect_hand_by_motion();
+
+	//local::static_hand_detection_1();
+	local::static_hand_detection_2();
 }
 
 }  // namespace my_opencv

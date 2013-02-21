@@ -24,7 +24,7 @@ void detect_faces_and_eyes(cv::Mat &frame, cv::CascadeClassifier &face_detector,
 		const cv::Point center(cvRound(faces[i].x + faces[i].width * 0.5), cvRound(faces[i].y + faces[i].height * 0.5));
 		cv::ellipse(frame, center, cv::Size(cvRound(faces[i].width * 0.5), cvRound(faces[i].height * 0.5)), 0, 0, 360, cv::Scalar(255, 0, 255), 4, 8, 0);
 
-		//-- In each face, detect eyes
+		// in each face, detect eyes
 		const cv::Mat faceROI = frame_gray(faces[i]);
 		std::vector<cv::Rect> eyes;
 		eye_detector.detectMultiScale(faceROI, eyes, 1.1, 2, 0 | CV_HAAR_SCALE_IMAGE, cv::Size(30, 30));
@@ -49,9 +49,9 @@ namespace my_opencv {
 
 void face_detection()
 {
-	const std::string face_cascade_filename = "machine_vision_data\\opencv/haarcascades/haarcascade_frontalface_alt.xml";  // Haar-like feature
-	//const std::string face_cascade_filename = "machine_vision_data\\opencv/lbpcascades/lbpcascade_frontalface.xml";  // LBP feature
-	const std::string eyes_cascade_filename = "machine_vision_data\\opencv/haarcascades/haarcascade_eye_tree_eyeglasses.xml";
+	const std::string face_cascade_filename = "./machine_vision_data/opencv/haarcascades/haarcascade_frontalface_alt.xml";  // Haar-like feature
+	//const std::string face_cascade_filename = "./machine_vision_data/opencv/lbpcascades/lbpcascade_frontalface.xml";  // LBP feature
+	const std::string eyes_cascade_filename = "./machine_vision_data/opencv/haarcascades/haarcascade_eye_tree_eyeglasses.xml";
 
 	cv::RNG rng(12345);
 
