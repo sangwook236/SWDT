@@ -552,7 +552,7 @@ void detect_hand_by_motion()
 }
 
 // [ref] http://www.andol.info/hci/830.htm
-void static_hand_detection_1()
+void hand_detection_by_skin_color()
 {
 	const int camId = -1;
 	cv::VideoCapture capture(camId);
@@ -619,8 +619,10 @@ void detect_and_draw(cv::CascadeClassifier &hand_detector, cv::Mat &img)
 }
 
 // [ref] http://www.andol.info/hci/2020.htm
-void static_hand_detection_2()
+// [ref] http://www.andol.info/
+void hand_detection_by_haar_cascades_detector()
 {
+	// [ref] https://github.com/yandol/GstHanddetect
 	//const std::string hand_cascade_filename = "./machine_vision_data/opencv/gsthanddetect/palm.xml";
 	const std::string hand_cascade_filename = "./machine_vision_data/opencv/gsthanddetect/fist.xml";
 
@@ -677,8 +679,8 @@ void hand_detection()
 	//local::save_ref_hand_image();
 	//local::detect_hand_by_motion();
 
-	//local::static_hand_detection_1();
-	local::static_hand_detection_2();
+	//local::hand_detection_by_skin_color();
+	local::hand_detection_by_haar_cascades_detector();
 }
 
 }  // namespace my_opencv
