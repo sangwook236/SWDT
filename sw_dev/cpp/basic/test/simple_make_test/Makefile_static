@@ -1,0 +1,28 @@
+SOURCES=add.cpp sub.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+LIB_BASE_NAME=arithmetic
+
+CC=
+CXX=g++
+LD=ld
+AR=ar
+RANLIB=ranlib
+RM=rm -f
+
+#-- Linux & Cygwin & MinGW
+CFLAGS=
+CXXFLAGS=-c -Wall
+LDFLAGS=
+
+LIB_NAME=lib$(LIB_BASE_NAME).a
+
+all: $(SOURCES) $(LIB_NAME)
+	
+$(LIB_NAME): $(OBJECTS)
+	$(AR) rs $@ $^
+
+.cpp.o:
+	$(CXX) -o $@ $< $(CXXFLAGS)
+
+clean:
+	$(RM) $(LIB_NAME) *.o *~ core

@@ -1,0 +1,26 @@
+SOURCES=main.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+EXE_NAME=arith_test
+
+CC=
+CXX=g++
+LD=ld
+AR=ar
+RANLIB=ranlib
+RM=rm -f
+
+#-- Linux & Cygwin & MinGW
+CFLAGS=
+CXXFLAGS=-c -Wall
+LDFLAGS=-L. -larithmetic
+
+all: $(SOURCES) $(EXE_NAME)
+	
+$(EXE_NAME): $(OBJECTS) 
+	$(CXX) -o $@ $^ $(LDFLAGS)
+
+.cpp.o:
+	$(CXX) -o $@ $< $(CXXFLAGS)
+
+clean:
+	$(RM) $(EXE_NAME) $(EXE_NAME).exe *.o *~ core
