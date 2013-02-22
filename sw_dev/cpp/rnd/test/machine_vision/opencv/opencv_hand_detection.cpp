@@ -623,8 +623,8 @@ void detect_and_draw(cv::CascadeClassifier &hand_detector, cv::Mat &img)
 void hand_detection_by_haar_cascades_detector()
 {
 	// [ref] https://github.com/yandol/GstHanddetect
-	//const std::string hand_cascade_filename = "./machine_vision_data/opencv/gsthanddetect/palm.xml";
-	const std::string hand_cascade_filename = "./machine_vision_data/opencv/gsthanddetect/fist.xml";
+	//const std::string hand_cascade_filename("./machine_vision_data/opencv/gsthanddetect/palm.xml");
+	const std::string hand_cascade_filename("./machine_vision_data/opencv/gsthanddetect/fist.xml");
 
 	// load the cascades
 	cv::CascadeClassifier hand_detector;

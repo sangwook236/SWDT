@@ -17,6 +17,10 @@
 				${OGRE_INSTALL_HOME}/include/OGRE/OgreConfig.h
 	-. Unix library로 인해 MSVC에서 building이 되지 않음.
 
-[-] Setting CMake (MSVC)
-	-. 설정은 대부분의 위의 MSVC와 동일하게 설정하면 됨.
+[-] Setting CMake (MSYS)
+	-. 설정은 대부분 위의 MSVC와 동일하게 설정하면 됨.
+	-. mktemp() 함수 관련 오류로 Building이 되지 않음.
 
+[-] Setting CMake (MinGW)
+	-. 설정은 대부분 위의 MSVC와 동일하게 설정하면 됨.
+	-. mktemp() 함수 관련 오류로 Building이 되지 않음.

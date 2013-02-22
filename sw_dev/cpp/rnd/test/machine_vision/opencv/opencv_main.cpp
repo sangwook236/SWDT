@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/core/core.hpp>
+#include <opencv2/gpu/gpu.hpp>
 #include <iostream>
 
 
@@ -117,25 +118,35 @@ void gesture_recognition();
 
 int opencv_main(int argc, char *argv[])
 {
+	bool canUseGPU = false;
 	try
 	{
+		if (cv::gpu::getCudaEnabledDeviceCount() > 0)
+		{
+			canUseGPU = true;
+			std::cout << "GPU info:" << std::endl;
+			cv::gpu::printShortCudaDeviceInfo(cv::gpu::getDevice());
+		}
+		else
+			std::cout << "GPU not found ..." << std::endl;
+
 		//opencv::text_output();
 
 		//my_opencv::matrix_operation();
-		//my_opencv::matrix_operation_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::matrix_operation_using_gpu();  // not yet implemented
 		//my_opencv::vector_operation();
 		//my_opencv::image_operation();
 		//my_opencv::image_conversion();
 		//my_opencv::image_sequence();
 
 		//my_opencv::image_filtering();
-		//my_opencv::image_filtering_using_gpu();  // not yet implemented
-		//my_opencv::image_processing_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::image_filtering_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::image_processing_using_gpu();  // not yet implemented
 		//my_opencv::color_filtering();
 		//my_opencv::color_correction();
 		//my_opencv::skin_color_filtering();
 		//my_opencv::histogram();
-		//my_opencv::histogram()_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::histogram()_using_gpu();  // not yet implemented
 
 		//my_opencv::convolution_correlation();
 		//my_opencv::fourier_transform();
@@ -164,7 +175,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::feature_matching();
 		//my_opencv::feature_extraction_and_matching();
 		//my_opencv::feature_extraction_and_matching_by_signature();
-		//my_opencv::feature_extraction_and_matching_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::feature_extraction_and_matching_using_gpu();  // not yet implemented
 		//my_opencv::generic_description_and_matching();
 
 		//my_opencv::bag_of_words();
@@ -177,25 +188,27 @@ int opencv_main(int argc, char *argv[])
 
 		//my_opencv::object_detection();  // not yet implemented
 		//my_opencv::face_detection();
-		//my_opencv::face_detection_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // not yet implemented
 		//my_opencv::human_detection();
-		//my_opencv::human_detection_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::human_detection_using_gpu();  // not yet implemented
 
 		//my_opencv::camera_geometry();
 		//my_opencv::homography();
 
-		//my_opencv::image_labeling_using_gpu();  // not yet implemented
 		//my_opencv::stereo_matching();
-		//my_opencv::stereo_matching_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::stereo_matching_using_gpu();
+
+		// graph-cuts & belief propagation (BP)
+		if (canUseGPU) my_opencv::image_labeling_using_gpu();
 
 		//my_opencv::change_detection();
-		//my_opencv::change_detection_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::change_detection_using_gpu();  // not yet implemented
 
 		//my_opencv::object_tracking();
 		//my_opencv::kalman_filtering();
 
 		//my_opencv::optical_flow();
-		//my_opencv::optical_flow_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::optical_flow_using_gpu();  // not yet implemented
 		//my_opencv::motion_history_image();
 
 		//----------------------------------------------
@@ -206,7 +219,7 @@ int opencv_main(int argc, char *argv[])
 		//----------------------------------------------
 		// application
 
-		my_opencv::hand_detection();
+		//my_opencv::hand_detection();
 		//my_opencv::hand_pose_estimation();
 
 		//my_opencv::motion_segmentation();
