@@ -1,0 +1,5 @@
+[-] Building using Makefile
+	[ref] sw_dev/cpp/basic/test/simple_make_test
+
+	[ref] D:\dev_center\software_development\doc\implementation_technique\building_software_in_linux.txt
+	[ref] D:\dev_center\software_development\doc\implementation_technique\building_software_using_gcc.txt
