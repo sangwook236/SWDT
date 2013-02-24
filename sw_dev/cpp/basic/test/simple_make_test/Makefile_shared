@@ -25,7 +25,7 @@ LDFLAGS=-shared -Wl,-soname,$(LIB_NAME)
 #-- Cygwin & MinGW
 LIB_NAME=lib$(LIB_BASE_NAME).dll
 IMP_LIB_NAME=lib$(LIB_BASE_NAME)_dll.lib
-DEF_LIB_NAME=lib$(LIB_BASE_NAME)_dll.def
+LIB_DEF_NAME=lib$(LIB_BASE_NAME)_dll.def
 
 all: $(SOURCES) $(LIB_NAME)
 	
@@ -33,16 +33,16 @@ $(LIB_NAME): $(OBJECTS)
 #-- Linux
 #	$(CXX) -o $@ $^ $(LDFLAGS)
 #-- Cygwin
-#	dlltool --kill-at --export-all --output-def=$(DEF_LIB_NAME) $^
-#	dlltool --input-def $(DEF_LIB_NAME) --dllname $@ --output-lib $(IMP_LIB_NAME)
-#	dllwrap --mno-cygwin --def $(DEF_LIB_NAME) --dllname=$@ $^
+#	dlltool --kill-at --export-all --output-def=$(LIB_DEF_NAME) $^
+#	dlltool --input-def $(LIB_DEF_NAME) --dllname $@ --output-lib $(IMP_LIB_NAME)
+#	dllwrap --mno-cygwin --def $(LIB_DEF_NAME) --dllname=$@ $^
 #-- MinGW
-	dlltool --kill-at --export-all --output-def=$(DEF_LIB_NAME) $^
-	dlltool --input-def $(DEF_LIB_NAME) --dllname $@ --output-lib $(IMP_LIB_NAME)
-	dllwrap --def $(DEF_LIB_NAME) --dllname=$@ $^
+	dlltool --kill-at --export-all --output-def=$(LIB_DEF_NAME) $^
+	dlltool --input-def $(LIB_DEF_NAME) --dllname $@ --output-lib $(IMP_LIB_NAME)
+	dllwrap --def $(LIB_DEF_NAME) --dllname=$@ $^
 
 .cpp.o:
 	$(CXX) -o $@ $< $(CXXFLAGS)
 
 clean:
-	$(RM) $(LIB_NAME) $(IMP_LIB_NAME) $(DEF_LIB_NAME) *.o *~ core
+	$(RM) $(LIB_NAME) $(IMP_LIB_NAME) $(LIB_DEF_NAME) *.o *~ core
