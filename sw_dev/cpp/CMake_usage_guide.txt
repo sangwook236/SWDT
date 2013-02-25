@@ -1,0 +1,36 @@
+[-] Building using CMake
+	[ref] D:\work_center\sw_dev\cpp\rnd\src\probabilistic_graphical_model\mocapy\Mocapy++-1.07\src\CMakeLists.txt
+	[ref] D:\work_center\sw_dev\cpp\rnd\src\hand_analysis\libhand\libhand-0.9\hand_cpp\source\CMakeLists.txt
+
+	-. BUILD_STATIC_LIBS를 on으로 설정. (?)
+		SET(BUILD_STATIC_LIBS ON) or SET(BUILD_SHARED_LIBS OFF)
+	-. building static library을 생성하기 위해서는 아래와 같이 add_library 항목이 추가되어야 함.
+		e.g.)
+		SET(Library_src1
+		src1/file1.cpp
+		src1/file2.cpp
+		)
+		SET(Library_src2
+		src2/file1.cpp
+		src2/file2.cpp
+		)
+		add_library (Library_name STATIC
+			${Library_src1}
+		    ${Library_src2}
+		)
+	-. BUILD_SHARED_LIBS를 on으로 설정.
+		SET(BUILD_SHARED_LIBS ON)
+	-. building shared library을 생성하기 위해서는 아래와 같이 add_library 항목이 추가되어야 함.
+		e.g.)
+		SET(Library_src1
+		src1/file1.cpp
+		src1/file2.cpp
+		)
+		SET(Library_src2
+		src2/file1.cpp
+		src2/file2.cpp
+		)
+		add_library (Library_name SHARED
+			${Library_src1}
+		    ${Library_src2}
+		)
