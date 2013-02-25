@@ -24,8 +24,8 @@ LDFLAGS=-shared -Wl,-soname,$(LIB_NAME)
 #LIB_NAME=lib$(LIB_BASE_NAME).so
 #-- Cygwin & MinGW
 LIB_NAME=lib$(LIB_BASE_NAME).dll
-IMP_LIB_NAME=lib$(LIB_BASE_NAME)_dll.lib
-LIB_DEF_NAME=lib$(LIB_BASE_NAME)_dll.def
+IMP_LIB_NAME=$(LIB_NAME).a
+LIB_DEF_NAME=$(LIB_NAME).def
 
 all: $(SOURCES) $(LIB_NAME)
 	
