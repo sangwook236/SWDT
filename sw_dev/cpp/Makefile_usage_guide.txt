@@ -3,3 +3,9 @@
 
 	[ref] D:\dev_center\software_development\doc\implementation_technique\building_software_in_linux.txt
 	[ref] D:\dev_center\software_development\doc\implementation_technique\building_software_using_gcc.txt
+
+	-.
+		make -j4
+			The "-j4" is assuming that you have a 4-core CPU.
+		sudo make install
+		make clean

@@ -199,7 +199,7 @@ int opencv_main(int argc, char *argv[])
 		//if (canUseGPU) my_opencv::stereo_matching_using_gpu();
 
 		// graph-cuts & belief propagation (BP)
-		if (canUseGPU) my_opencv::image_labeling_using_gpu();
+		//if (canUseGPU) my_opencv::image_labeling_using_gpu();
 
 		//my_opencv::change_detection();
 		//if (canUseGPU) my_opencv::change_detection_using_gpu();  // not yet implemented
@@ -223,7 +223,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::hand_pose_estimation();
 
 		//my_opencv::motion_segmentation();
-		//my_opencv::gesture_recognition();
+		my_opencv::gesture_recognition();
 	}
 	catch (const cv::Exception &e)
 	{

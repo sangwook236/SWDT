@@ -1,4 +1,10 @@
-[-] Setting CMake (MSVC)
+[-] Setting CMake (Common)
+	-. shared library build 설정이 off되어 있음.
+		==> ${LIBHAND_HOME}/hand_cpp/source/CMakeLists.txt에 "BUILD_SHARED_LIBS" 설정을 on으로 변경.
+			<수정전>
+			SET(BUILD_SHARED_LIBS OFF)
+			<수정후>
+			SET(BUILD_SHARED_LIBS ON)
 	-. Ogre library의 directory or library path 설정할 경우,
 		Ogre library의 installation directory의 항목들을 이용.
 		==> ${OGRE_INSTALL_HOME}에 더 많은 항목들이 존재.
@@ -15,12 +21,44 @@
 			아래의 두 file 내에 "OGRE_STATIC_LIB" macro가 정의되어 있는지 확인 필요.
 				${OGRE_INSTALL_HOME}/include/OGRE/OgreBuildSettings.h
 				${OGRE_INSTALL_HOME}/include/OGRE/OgreConfig.h
+
+[-] Setting CMake (MSVC)
 	-. Unix library로 인해 MSVC에서 building이 되지 않음.
 
 [-] Setting CMake (MSYS)
-	-. 설정은 대부분 위의 MSVC와 동일하게 설정하면 됨.
+	-. MSYS shell을 이용해 building 가능.
+	-. building을 위해서 ${MSYS_ROOT}/bin 또는 ${MINGW_HOME}/bin 하위의 executable file을 사용.
+		"mingw32-"이 없는 executable file을 사용.
+			e.g.)
+				mingw32-gcc.exe (X) ==> gcc.exe (O)
+				mingw32-g++.exe (X) ==> g++.exe (O)
+		make의 경우도 동일.
+			${MSYS_ROOT}/bin/make.exe
+	-. Windows용 CMake GUI 실행.
 	-. mktemp() 함수 관련 오류로 Building이 되지 않음.
 
 [-] Setting CMake (MinGW)
-	-. 설정은 대부분 위의 MSVC와 동일하게 설정하면 됨.
+	-. MSYS or Cygwin을 사용하지 않고 Windows command prompt에서 building 가능.
+		==> CMake GUI에서 CMAKE_SH 항목을 cmd.exe로 설정 가능. (?)
+		==> Windows command prompt에서 ${MINGW_HOME}/bin을 path 설정
+			set path=${MINGW_HOME}/bin;%path%
+	-. building을 위해서 ${MINGW_HOME}/bin 하위의 executable file을 사용
+		"mingw32-"이 없는 executable file을 사용.
+			e.g.)
+				mingw32-gcc.exe (X) ==> gcc.exe (O)
+				mingw32-g++.exe (X) ==> g++.exe (O)
+		단, make의 경우 mingw32-make.exe를 사용.
+			make.exe (X) ==> mingw32-make.exe (O)
+	-. Windows command prompt에서 CMake GUI 실행. (?)
+		필요한 library or install prefix 등을 설정.
+			install prefix는 ${MINGW_HOME}로 설정하면 아래의 directory에 file이 설치
+				${MINGW_HOME}/include
+				${MINGW_HOME}/lib
+		makefile 생성.
+		building.
+			cd ${MINGW_HOME}/build_mingw
+			mingw32-make -j4
+				The "-j4" is assuming that you have a 4-core CPU.
+			mingw32-make install
+			mingw32-make clean
 	-. mktemp() 함수 관련 오류로 Building이 되지 않음.

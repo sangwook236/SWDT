@@ -15,5 +15,7 @@ namespace my_libdai {
 
 int libdai_main(int argc, char *argv[])
 {
+	// [ref] libDAI interfacing in OpenGM
+
 	throw std::runtime_error("not yet implemented");
 }

@@ -6,6 +6,7 @@
 
 #pragma comment(lib, "pnld.lib")
 #pragma comment(lib, "pnl_cxcored.lib")
+//#pragma comment(lib, "cygMocapy.dll.lib")  // not correctly working
 #pragma comment(lib, "libdai_d.lib")
 #pragma comment(lib, "opengm_min_sum.lib")
 #pragma comment(lib, "opengm_min_sum_small.lib")
@@ -42,6 +43,7 @@
 
 #pragma comment(lib, "pnl.lib")
 #pragma comment(lib, "pnl_cxcore.lib")
+//#pragma comment(lib, "cygMocapy.dll.lib")  // not correctly working
 #pragma comment(lib, "libdai.lib")
 #pragma comment(lib, "external-library-mrf.lib")
 #pragma comment(lib, "external-library-maxflow.lib")

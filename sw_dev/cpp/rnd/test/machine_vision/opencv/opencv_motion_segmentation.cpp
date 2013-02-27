@@ -125,8 +125,14 @@ void segment_motion_using_mhi(const cv::Mat &prev_gray_img, const cv::Mat &curr_
 		const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1));
 		const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));
 		const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
-		cv::erode(mhi, processed_mhi, selement5);
-		cv::dilate(processed_mhi, processed_mhi, selement5);
+		const int iterations = 1;
+#if 0
+		cv::erode(mhi, processed_mhi, selement5, cv::Point(-1, -1), iterations);
+		cv::dilate(processed_mhi, processed_mhi, selement5, cv::Point(-1, -1), iterations);
+#else
+		cv::morphologyEx(mhi, processed_mhi, cv::MORPH_OPEN, selement5, cv::Point(-1, -1), iterations);
+		cv::morphologyEx(processed_mhi, processed_mhi, cv::MORPH_CLOSE, selement5, cv::Point(-1, -1), iterations);
+#endif
 	}
 
 	// calculate motion gradient orientation and valid orientation mask

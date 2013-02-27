@@ -18,7 +18,7 @@ namespace local {
 
 namespace my_mocapy {
 
-// [ref] ${MOCAPY_ROOT}/examples/examples.cpp
+// [ref] ${MOCAPY_HOME}/examples/discrete_hmm_with_prior.cpp
 void mocapy_discrete_hmm()
 {
 #if 1

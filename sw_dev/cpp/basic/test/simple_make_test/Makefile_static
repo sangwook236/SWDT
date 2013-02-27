@@ -1,5 +1,5 @@
-SOURCES=add.cpp sub.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
+SRCS=add.cpp sub.cpp
+OBJS=$(SRCS:.cpp=.o)
 LIB_BASE_NAME=arithmetic
 
 CC=
@@ -9,16 +9,16 @@ AR=ar
 RANLIB=ranlib
 RM=rm -f
 
-#-- Linux & Cygwin & MinGW
+#-- Linux, Cygwin, & MinGW(MSYS)
 CFLAGS=
 CXXFLAGS=-c -Wall
 LDFLAGS=
 
 LIB_NAME=lib$(LIB_BASE_NAME).a
 
-all: $(SOURCES) $(LIB_NAME)
-	
-$(LIB_NAME): $(OBJECTS)
+all: $(SRCS) $(LIB_NAME)
+
+$(LIB_NAME): $(OBJS)
 	$(AR) rs $@ $^
 
 .cpp.o:

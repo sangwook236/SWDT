@@ -1,6 +1,13 @@
-SOURCES=add.cpp sub.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
+SRCS=add.cpp sub.cpp
+OBJS=$(SRCS:.cpp=.o)
 LIB_BASE_NAME=arithmetic
+
+#-- Linux
+#LIB_NAME=lib$(LIB_BASE_NAME).so
+#-- Cygwin & MinGW(MSYS)
+LIB_NAME=lib$(LIB_BASE_NAME).dll
+IMP_LIB_NAME=$(LIB_NAME).a
+LIB_DEF_NAME=$(LIB_NAME).def
 
 CC=
 CXX=g++
@@ -15,31 +22,24 @@ CFLAGS=
 #LDFLAGS=-shared -Wl,-soname,$(LIB_NAME)
 #-- Cygwin
 #CXXFLAGS=-c -Wall -mdll
-#LDFLAGS=-shared -Wl,-soname,$(LIB_NAME)
-#-- MinGW
+#LDFLAGS=-shared -Wl,-soname,$(LIB_NAME) -Wl,--out-implib,$(IMP_LIB_NAME) -Wl,--major-image-version,0,--minor-image-version,0
+#-- MinGW(MSYS)
 CXXFLAGS=-c -Wall -mdll -DBUILD_SHARED_LIB -DARITHMETIC_LIB_EXPORT
-LDFLAGS=-shared -Wl,-soname,$(LIB_NAME)
+LDFLAGS=-shared -Wl,-soname,$(LIB_NAME) -Wl,--out-implib,$(IMP_LIB_NAME) -Wl,--major-image-version,0,--minor-image-version,0
 
-#-- Linux
-#LIB_NAME=lib$(LIB_BASE_NAME).so
-#-- Cygwin & MinGW
-LIB_NAME=lib$(LIB_BASE_NAME).dll
-IMP_LIB_NAME=$(LIB_NAME).a
-LIB_DEF_NAME=$(LIB_NAME).def
+all: $(SRCS) $(LIB_NAME)
 
-all: $(SOURCES) $(LIB_NAME)
-	
-$(LIB_NAME): $(OBJECTS) 
-#-- Linux
-#	$(CXX) -o $@ $^ $(LDFLAGS)
+$(LIB_NAME): $(OBJS) 
+#-- Linux, Cygwin, & MinGW(MSYS)
+	$(CXX) -o $@ $^ $(LDFLAGS)
 #-- Cygwin
 #	dlltool --kill-at --export-all --output-def=$(LIB_DEF_NAME) $^
 #	dlltool --input-def $(LIB_DEF_NAME) --dllname $@ --output-lib $(IMP_LIB_NAME)
 #	dllwrap --mno-cygwin --def $(LIB_DEF_NAME) --dllname=$@ $^
-#-- MinGW
-	dlltool --kill-at --export-all --output-def=$(LIB_DEF_NAME) $^
-	dlltool --input-def $(LIB_DEF_NAME) --dllname $@ --output-lib $(IMP_LIB_NAME)
-	dllwrap --def $(LIB_DEF_NAME) --dllname=$@ $^
+#-- MinGW(MSYS)
+#	dlltool --kill-at --export-all --output-def=$(LIB_DEF_NAME) $^
+#	dlltool --input-def $(LIB_DEF_NAME) --dllname $@ --output-lib $(IMP_LIB_NAME)
+#	dllwrap --def $(LIB_DEF_NAME) --dllname=$@ $^
 
 .cpp.o:
 	$(CXX) -o $@ $< $(CXXFLAGS)

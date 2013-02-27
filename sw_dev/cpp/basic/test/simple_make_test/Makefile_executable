@@ -1,5 +1,5 @@
-SOURCES=main.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
+SRCS=main.cpp
+OBJS=$(SRCS:.cpp=.o)
 EXE_NAME=arith_test
 
 CC=
@@ -9,14 +9,14 @@ AR=ar
 RANLIB=ranlib
 RM=rm -f
 
-#-- Linux & Cygwin & MinGW
+#-- Linux, Cygwin, & MinGW(MSYS)
 CFLAGS=
 CXXFLAGS=-c -Wall
 LDFLAGS=-L. -larithmetic
 
-all: $(SOURCES) $(EXE_NAME)
-	
-$(EXE_NAME): $(OBJECTS) 
+all: $(SRCS) $(EXE_NAME)
+
+$(EXE_NAME): $(OBJS) 
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
 .cpp.o:

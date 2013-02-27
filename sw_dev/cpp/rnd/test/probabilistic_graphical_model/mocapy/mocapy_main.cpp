@@ -19,7 +19,7 @@ int mocapy_main(int argc, char *argv[])
 {
 	try
 	{
-		//my_mocapy::mocapy_discrete_hmm();  // compile-time error
+		//my_mocapy::mocapy_discrete_hmm();  // link-time error
 	}
 	catch (const mocapy::MocapyExceptions &e)
 	{
