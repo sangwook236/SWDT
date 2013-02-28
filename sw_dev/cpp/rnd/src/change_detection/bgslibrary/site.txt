@@ -1,0 +1,4 @@
+http://code.google.com/p/bgslibrary/
+http://www.computervisiononline.com/software/background-subtraction-library
+
+svn checkout http://bgslibrary.googlecode.com/svn/trunk/ bgslibrary-read-only
