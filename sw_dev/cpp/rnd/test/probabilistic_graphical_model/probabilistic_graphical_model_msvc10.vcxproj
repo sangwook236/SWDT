@@ -78,6 +78,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="opengm\maxflow\instances.inc" />
+    <None Include="opengm\qpbo\instances.inc" />
+    <None Include="opengm\trws\instances.inc" />
     <None Include="qpbo_lib\instances.inc" />
     <None Include="ReadMe.txt" />
     <None Include="trws_lib\instances.inc" />
@@ -103,6 +106,36 @@
     <ClInclude Include="middlebury_lib\regions-new.h" />
     <ClInclude Include="middlebury_lib\TRW-S.h" />
     <ClInclude Include="middlebury_lib\typeTruncatedQuadratic2D.h" />
+    <ClInclude Include="opengm\ibfs\ibfs.h" />
+    <ClInclude Include="opengm\maxflow\block.h" />
+    <ClInclude Include="opengm\maxflow\graph.h" />
+    <ClInclude Include="opengm\maxflow\maxflowlib.h" />
+    <ClInclude Include="opengm\mrf\block.h" />
+    <ClInclude Include="opengm\mrf\BP-S.h" />
+    <ClInclude Include="opengm\mrf\energy.h" />
+    <ClInclude Include="opengm\mrf\GCoptimization.h" />
+    <ClInclude Include="opengm\mrf\graph.h" />
+    <ClInclude Include="opengm\mrf\ICM.h" />
+    <ClInclude Include="opengm\mrf\LinkedBlockList.h" />
+    <ClInclude Include="opengm\mrf\MaxProdBP.h" />
+    <ClInclude Include="opengm\mrf\mrf.h" />
+    <ClInclude Include="opengm\mrf\mrflib.h" />
+    <ClInclude Include="opengm\mrf\regions-new.h" />
+    <ClInclude Include="opengm\mrf\TRW-S.h" />
+    <ClInclude Include="opengm\mrf\typeTruncatedQuadratic2D.h" />
+    <ClInclude Include="opengm\mrf\typeTruncatedQuadratic2D_old.h" />
+    <ClInclude Include="opengm\qpbo\block.h" />
+    <ClInclude Include="opengm\qpbo\QPBO.h" />
+    <ClInclude Include="opengm\trws\instances.h" />
+    <ClInclude Include="opengm\trws\MRFEnergy.h" />
+    <ClInclude Include="opengm\trws\typeBinary.h" />
+    <ClInclude Include="opengm\trws\typeBinaryFast.h" />
+    <ClInclude Include="opengm\trws\typeGeneral.h" />
+    <ClInclude Include="opengm\trws\typePotts.h" />
+    <ClInclude Include="opengm\trws\typeTruncatedLinear.h" />
+    <ClInclude Include="opengm\trws\typeTruncatedLinear2D.h" />
+    <ClInclude Include="opengm\trws\typeTruncatedQuadratic.h" />
+    <ClInclude Include="opengm\trws\typeTruncatedQuadratic2D.h" />
     <ClInclude Include="qpbo_lib\block.h" />
     <ClInclude Include="qpbo_lib\QPBO.h" />
     <ClInclude Include="stdafx.h" />
@@ -183,6 +216,10 @@
     <ClCompile Include="opengm\opengm_qpbo_algorithm.cpp" />
     <ClCompile Include="opengm\opengm_quick_start_example.cpp" />
     <ClCompile Include="opengm\opengm_swendsenwang_example.cpp" />
+    <ClCompile Include="opengm\trws\minimize.cpp" />
+    <ClCompile Include="opengm\trws\MRFEnergy.cpp" />
+    <ClCompile Include="opengm\trws\ordering.cpp" />
+    <ClCompile Include="opengm\trws\treeProbabilities.cpp" />
     <ClCompile Include="pnl\pnl_bayesian_network.cpp" />
     <ClCompile Include="pnl\pnl_bayesian_network_example.cpp" />
     <ClCompile Include="pnl\pnl_dbn.cpp" />

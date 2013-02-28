@@ -19,7 +19,7 @@
     <Filter Include="Source Files\mysql">
       <UniqueIdentifier>{9c93cb9a-41eb-4fbe-9689-2cb7ba2bc5d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sqlite_lib">
+    <Filter Include="Source Files\sqlite_lib">
       <UniqueIdentifier>{0510d023-025b-4fad-bc7f-c2683b855c1b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -43,10 +43,10 @@
       <Filter>Source Files\sqlite</Filter>
     </ClCompile>
     <ClCompile Include="sqlite_lib\shell.c">
-      <Filter>sqlite_lib</Filter>
+      <Filter>Source Files\sqlite_lib</Filter>
     </ClCompile>
     <ClCompile Include="sqlite_lib\sqlite3.c">
-      <Filter>sqlite_lib</Filter>
+      <Filter>Source Files\sqlite_lib</Filter>
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
@@ -57,10 +57,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sqlite_lib\sqlite3.h">
-      <Filter>sqlite_lib</Filter>
+      <Filter>Source Files\sqlite_lib</Filter>
     </ClInclude>
     <ClInclude Include="sqlite_lib\sqlite3ext.h">
-      <Filter>sqlite_lib</Filter>
+      <Filter>Source Files\sqlite_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
