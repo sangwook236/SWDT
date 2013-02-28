@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="logging" />
+		<Option title="object_detection" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -33,15 +33,8 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add option="-DUNICODE" />
-			<Add option="-D_UNICODE" />
 		</Compiler>
-		<Linker>
-			<Add library="log4cxx" />
-			<Add library="boost_thread" />
-			<Add library="boost_unit_test_framework" />
-		</Linker>
-		<Unit filename="log4cxx/log4cxx_main.cpp" />
+		<Unit filename="libpabod/libpabod_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

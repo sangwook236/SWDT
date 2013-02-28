@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="logging" />
+		<Option title="gpu_computation" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -33,16 +33,15 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add option="-DUNICODE" />
-			<Add option="-D_UNICODE" />
 		</Compiler>
-		<Linker>
-			<Add library="log4cxx" />
-			<Add library="boost_thread" />
-			<Add library="boost_unit_test_framework" />
-		</Linker>
-		<Unit filename="log4cxx/log4cxx_main.cpp" />
+		<Unit filename="cuda/cuda_basic_operation.cu" />
+		<Unit filename="cuda/cuda_main.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="thrust/thrust_algorithm.cu" />
+		<Unit filename="thrust/thrust_basic_operation.cu" />
+		<Unit filename="thrust/thrust_dot_product.cu" />
+		<Unit filename="thrust/thrust_iterator.cu" />
+		<Unit filename="thrust/thrust_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

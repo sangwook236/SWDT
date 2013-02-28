@@ -7,9 +7,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="..\..\bin\plotting" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin\" />
-				<Option object_output=".\Debug\" />
+				<Option output="../../bin/" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -17,9 +17,9 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="..\..\bin\plotting" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin\" />
-				<Option object_output=".\Release\" />
+				<Option output="../../bin/" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -35,7 +35,7 @@
 			<Add option="-fexceptions" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
-			<Add directory="\usr\include\plplot" />
+			<Add directory="/usr/include/plplot" />
 		</Compiler>
 		<Linker>
 			<Add library="plplotd" />
@@ -43,10 +43,10 @@
 			<Add library="plplotwxwidgetsd" />
 		</Linker>
 		<Unit filename="main.cpp" />
-		<Unit filename="plplot\plc++demos.h" />
-		<Unit filename="plplot\plplot_main.cpp" />
-		<Unit filename="plplot\plplot_x01.cpp" />
-		<Unit filename="plplot\plplot_x21.cpp" />
+		<Unit filename="plplot/plc++demos.h" />
+		<Unit filename="plplot/plplot_main.cpp" />
+		<Unit filename="plplot/plplot_x01.cpp" />
+		<Unit filename="plplot/plplot_x21.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

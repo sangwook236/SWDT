@@ -7,9 +7,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="..\..\bin\robotics" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin\" />
-				<Option object_output=".\Debug\" />
+				<Option output="../../bin/" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -17,9 +17,9 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="..\..\bin\robotics" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin\" />
-				<Option object_output=".\Release\" />
+				<Option output="../../bin/" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -35,21 +35,21 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="main.cpp" />
-		<Unit filename="mrpt\mrpt_dijkstra.cpp" />
-		<Unit filename="mrpt\mrpt_feature_extraction_and_matching.cpp" />
-		<Unit filename="mrpt\mrpt_icp.cpp" />
-		<Unit filename="mrpt\mrpt_localization_pf.cpp" />
-		<Unit filename="mrpt\mrpt_main.cpp" />
-		<Unit filename="mrpt\mrpt_map_handling.cpp" />
-		<Unit filename="mrpt\mrpt_path_planning.cpp" />
-		<Unit filename="mrpt\mrpt_ransac.cpp" />
-		<Unit filename="mrpt\mrpt_rawlog.cpp" />
-		<Unit filename="mrpt\mrpt_rawlog_grabber.cpp" />
-		<Unit filename="mrpt\mrpt_slam_icp.cpp" />
-		<Unit filename="mrpt\mrpt_slam_kf.cpp" />
-		<Unit filename="player_stage\player_stage_main.cpp" />
-		<Unit filename="player_stage\player_stage_rubbish_collecting_robot.cpp" />
-		<Unit filename="player_stage\player_stage_simple_example.cpp" />
+		<Unit filename="mrpt/mrpt_dijkstra.cpp" />
+		<Unit filename="mrpt/mrpt_feature_extraction_and_matching.cpp" />
+		<Unit filename="mrpt/mrpt_icp.cpp" />
+		<Unit filename="mrpt/mrpt_localization_pf.cpp" />
+		<Unit filename="mrpt/mrpt_main.cpp" />
+		<Unit filename="mrpt/mrpt_map_handling.cpp" />
+		<Unit filename="mrpt/mrpt_path_planning.cpp" />
+		<Unit filename="mrpt/mrpt_ransac.cpp" />
+		<Unit filename="mrpt/mrpt_rawlog.cpp" />
+		<Unit filename="mrpt/mrpt_rawlog_grabber.cpp" />
+		<Unit filename="mrpt/mrpt_slam_icp.cpp" />
+		<Unit filename="mrpt/mrpt_slam_kf.cpp" />
+		<Unit filename="player_stage/player_stage_main.cpp" />
+		<Unit filename="player_stage/player_stage_rubbish_collecting_robot.cpp" />
+		<Unit filename="player_stage/player_stage_simple_example.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

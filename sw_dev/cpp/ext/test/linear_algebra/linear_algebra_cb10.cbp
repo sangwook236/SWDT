@@ -7,9 +7,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="..\..\bin\linear_algebra" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin\" />
-				<Option object_output=".\Debug\" />
+				<Option output="../../bin/" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -17,9 +17,9 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="..\..\bin\linear_algebra" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin\" />
-				<Option object_output=".\Release\" />
+				<Option output="../../bin/" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -40,36 +40,36 @@
 			<Add library="lapack" />
 			<Add library="blas" />
 		</Linker>
-		<Unit filename="armadillo\armadillo_cube_arithmetic.cpp" />
-		<Unit filename="armadillo\armadillo_main.cpp" />
-		<Unit filename="armadillo\armadillo_matrix_arithmetic.cpp" />
-		<Unit filename="armadillo\armadillo_vector_arithmetic.cpp" />
-		<Unit filename="atlas\atlas_cblas.cpp" />
-		<Unit filename="atlas\atlas_clapack.cpp" />
-		<Unit filename="atlas\atlas_main.cpp" />
-		<Unit filename="cvm\cvm_cholesky.cpp" />
-		<Unit filename="cvm\cvm_eigen.cpp" />
-		<Unit filename="cvm\cvm_lu.cpp" />
-		<Unit filename="cvm\cvm_main.cpp" />
-		<Unit filename="cvm\cvm_matrix_function.cpp" />
-		<Unit filename="cvm\cvm_matrix_operation.cpp" />
-		<Unit filename="cvm\cvm_qr.cpp" />
-		<Unit filename="cvm\cvm_svd.cpp" />
-		<Unit filename="cvm\cvm_vector_function.cpp" />
-		<Unit filename="cvm\cvm_vector_operation.cpp" />
-		<Unit filename="eigen\eigen_basic_operation.cpp" />
-		<Unit filename="eigen\eigen_cholesky.cpp" />
-		<Unit filename="eigen\eigen_evd.cpp" />
-		<Unit filename="eigen\eigen_linear_system.cpp" />
-		<Unit filename="eigen\eigen_lu.cpp" />
-		<Unit filename="eigen\eigen_main.cpp" />
-		<Unit filename="eigen\eigen_qr.cpp" />
-		<Unit filename="eigen\eigen_svd.cpp" />
-		<Unit filename="lapack\lapack_cblas.cpp" />
-		<Unit filename="lapack\lapack_clapack.cpp" />
-		<Unit filename="lapack\lapack_main.cpp" />
+		<Unit filename="armadillo/armadillo_cube_arithmetic.cpp" />
+		<Unit filename="armadillo/armadillo_main.cpp" />
+		<Unit filename="armadillo/armadillo_matrix_arithmetic.cpp" />
+		<Unit filename="armadillo/armadillo_vector_arithmetic.cpp" />
+		<Unit filename="atlas/atlas_cblas.cpp" />
+		<Unit filename="atlas/atlas_clapack.cpp" />
+		<Unit filename="atlas/atlas_main.cpp" />
+		<Unit filename="cvm/cvm_cholesky.cpp" />
+		<Unit filename="cvm/cvm_eigen.cpp" />
+		<Unit filename="cvm/cvm_lu.cpp" />
+		<Unit filename="cvm/cvm_main.cpp" />
+		<Unit filename="cvm/cvm_matrix_function.cpp" />
+		<Unit filename="cvm/cvm_matrix_operation.cpp" />
+		<Unit filename="cvm/cvm_qr.cpp" />
+		<Unit filename="cvm/cvm_svd.cpp" />
+		<Unit filename="cvm/cvm_vector_function.cpp" />
+		<Unit filename="cvm/cvm_vector_operation.cpp" />
+		<Unit filename="eigen/eigen_basic_operation.cpp" />
+		<Unit filename="eigen/eigen_cholesky.cpp" />
+		<Unit filename="eigen/eigen_evd.cpp" />
+		<Unit filename="eigen/eigen_linear_system.cpp" />
+		<Unit filename="eigen/eigen_lu.cpp" />
+		<Unit filename="eigen/eigen_main.cpp" />
+		<Unit filename="eigen/eigen_qr.cpp" />
+		<Unit filename="eigen/eigen_svd.cpp" />
+		<Unit filename="lapack/lapack_cblas.cpp" />
+		<Unit filename="lapack/lapack_clapack.cpp" />
+		<Unit filename="lapack/lapack_main.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="mtl\mtl_main.cpp" />
+		<Unit filename="mtl/mtl_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

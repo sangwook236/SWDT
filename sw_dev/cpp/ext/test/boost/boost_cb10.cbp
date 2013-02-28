@@ -7,9 +7,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/boost" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="../../bin" />
-				<Option object_output="./Debug/" />
+				<Option output="../../bin/" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -19,7 +19,7 @@
 			<Target title="Release">
 				<Option output="../../bin/boost" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin" />
-				<Option object_output="./Release/" />
+				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -83,14 +83,18 @@
 		<Unit filename="asio_udp_client.cpp" />
 		<Unit filename="asio_udp_server.cpp" />
 		<Unit filename="bind.cpp" />
+		<Unit filename="chrono.cpp" />
 		<Unit filename="conversion.cpp" />
+		<Unit filename="cpu_timer.cpp" />
 		<Unit filename="date_time.cpp" />
 		<Unit filename="factory.cpp" />
 		<Unit filename="filesystem.cpp" />
 		<Unit filename="function.cpp" />
 		<Unit filename="geometry.cpp" />
 		<Unit filename="graph.cpp" />
+		<Unit filename="graph_parallel.cpp" />
 		<Unit filename="image.cpp" />
+		<Unit filename="interprocess.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="math_bindings.cpp">
 			<Option compile="0" />
@@ -105,9 +109,13 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="multi_array.cpp" />
+		<Unit filename="multi_index.cpp" />
+		<Unit filename="multiprecision.cpp" />
 		<Unit filename="numeric_bindings.cpp" />
+		<Unit filename="ordinary_differential_equation.cpp" />
 		<Unit filename="polygon.cpp" />
 		<Unit filename="program_options.cpp" />
+		<Unit filename="progress_timer.cpp" />
 		<Unit filename="property_map.cpp" />
 		<Unit filename="property_tree.cpp" />
 		<Unit filename="random.cpp" />

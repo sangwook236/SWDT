@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="logging" />
+		<Option title="graph_analysis" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -33,16 +33,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add option="-DUNICODE" />
-			<Add option="-D_UNICODE" />
 		</Compiler>
-		<Linker>
-			<Add library="log4cxx" />
-			<Add library="boost_thread" />
-			<Add library="boost_unit_test_framework" />
-		</Linker>
-		<Unit filename="log4cxx/log4cxx_main.cpp" />
+		<Unit filename="graphchi/graphchi_main.cpp" />
+		<Unit filename="ibfs/ibfs_main.cpp" />
+		<Unit filename="ibfs_lib/ibfs.cpp" />
+		<Unit filename="ibfs_lib/ibfs.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="maxflow/maxflow_main.cpp" />
+		<Unit filename="maxflow_lib/block.h" />
+		<Unit filename="maxflow_lib/graph.cpp" />
+		<Unit filename="maxflow_lib/graph.h" />
+		<Unit filename="maxflow_lib/instances.inc" />
+		<Unit filename="maxflow_lib/maxflow.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

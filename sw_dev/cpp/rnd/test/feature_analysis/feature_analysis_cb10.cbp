@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="logging" />
+		<Option title="feature_analysis" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -33,16 +33,27 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add option="-DUNICODE" />
-			<Add option="-D_UNICODE" />
 		</Compiler>
-		<Linker>
-			<Add library="log4cxx" />
-			<Add library="boost_thread" />
-			<Add library="boost_unit_test_framework" />
-		</Linker>
-		<Unit filename="log4cxx/log4cxx_main.cpp" />
+		<Unit filename="lsd/lsd_main.cpp" />
+		<Unit filename="lsd_lib/lsd.cpp" />
+		<Unit filename="lsd_lib/lsd.h" />
+		<Unit filename="lsd_lib/lsd_call_example.cpp" />
+		<Unit filename="lsd_lib/lsd_cmd.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="pictorial_structures_revisited/parteval.cpp" />
+		<Unit filename="pictorial_structures_revisited/parteval.h" />
+		<Unit filename="pictorial_structures_revisited/pictorial_structures_revisited_main.cpp" />
+		<Unit filename="pictorial_structures_revisited/pictorial_structures_revisited_partapp.cpp" />
+		<Unit filename="sift/sift_display_feature.cpp" />
+		<Unit filename="sift/sift_extract_feature.cpp" />
+		<Unit filename="sift/sift_main.cpp" />
+		<Unit filename="sift/sift_match_feature.cpp" />
+		<Unit filename="siftgpu/siftgpu_main.cpp" />
+		<Unit filename="surf/surf_imload.cpp" />
+		<Unit filename="surf/surf_imload.h" />
+		<Unit filename="surf/surf_main.cpp" />
+		<Unit filename="surf/surf_os_mapping.cpp" />
+		<Unit filename="surf/surf_os_mapping.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

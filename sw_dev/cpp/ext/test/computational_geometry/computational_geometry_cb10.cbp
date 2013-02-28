@@ -7,9 +7,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="..\..\bin\computational_geometry" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin\" />
-				<Option object_output=".\Debug\" />
+				<Option output="../../bin/" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -17,9 +17,9 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="..\..\bin\computational_geometry" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\bin\" />
-				<Option object_output=".\Release\" />
+				<Option output="../../bin/" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -45,11 +45,11 @@
 			<Add library="mpfr" />
 			<Add library="mpfi" />
 		</Linker>
-		<Unit filename="cgal\cgal_main.cpp" />
-		<Unit filename="cgal\polygon.cpp" />
+		<Unit filename="cgal/cgal_main.cpp" />
+		<Unit filename="cgal/polygon.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="openmesh\openmesh_main.cpp" />
-		<Unit filename="openmesh\simple_object.cpp" />
+		<Unit filename="openmesh/openmesh_main.cpp" />
+		<Unit filename="openmesh/simple_object.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
