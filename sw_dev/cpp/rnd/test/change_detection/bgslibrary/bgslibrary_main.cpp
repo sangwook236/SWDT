@@ -5,6 +5,7 @@
 #include "../bgslibrary_lib/package_bgs/MixtureOfGaussianV1BGS.h"
 #include "../bgslibrary_lib/package_bgs/MixtureOfGaussianV2BGS.h"
 #include "../bgslibrary_lib/package_bgs/AdaptiveBackgroundLearning.h"
+#include "../bgslibrary_lib/package_bgs/GMG.h"
 
 #include "../bgslibrary_lib/package_bgs/dp/DPAdaptiveMedianBGS.h"
 #include "../bgslibrary_lib/package_bgs/dp/DPGrimsonGMMBGS.h"
@@ -16,10 +17,14 @@
 
 #include "../bgslibrary_lib/package_bgs/tb/T2FGMM_UM.h"
 #include "../bgslibrary_lib/package_bgs/tb/T2FGMM_UV.h"
+#include "../bgslibrary_lib/package_bgs/tb/T2FMRF_UM.h"
+#include "../bgslibrary_lib/package_bgs/tb/T2FMRF_UV.h"
 #include "../bgslibrary_lib/package_bgs/tb/FuzzySugenoIntegral.h"
 #include "../bgslibrary_lib/package_bgs/tb/FuzzyChoquetIntegral.h"
 
 #include "../bgslibrary_lib/package_bgs/jmo/MultiLayerBGS.h"
+
+#include "../bgslibrary_lib/package_bgs/pt/PixelBasedAdaptiveSegmenter.h"
 
 #include "../bgslibrary_lib/package_bgs/lb/LBSimpleGaussian.h"
 #include "../bgslibrary_lib/package_bgs/lb/LBFuzzyGaussian.h"
@@ -51,7 +56,7 @@ void demo()
 		return;
 	}
 
-	const int whichAlgorithm = 6;
+	const int whichAlgorithm = 16;
 	bool useGrayImage = true;
 	IBGS *bgs = NULL;
 
@@ -63,63 +68,77 @@ void demo()
 	if (5 == whichAlgorithm) bgs = new MixtureOfGaussianV1BGS;
 	if (6 == whichAlgorithm) bgs = new MixtureOfGaussianV2BGS;
 	if (7 == whichAlgorithm) bgs = new AdaptiveBackgroundLearning;
+	if (8 == whichAlgorithm) bgs = new GMG;
 
 	// DP Package (adapted from Donovan Parks)
-	if (8 == whichAlgorithm) bgs = new DPAdaptiveMedianBGS;
-	if (9 == whichAlgorithm) bgs = new DPGrimsonGMMBGS;
-	if (10 == whichAlgorithm) bgs = new DPZivkovicAGMMBGS;
-	if (11 == whichAlgorithm) bgs = new DPMeanBGS;
-	if (12 == whichAlgorithm) bgs = new DPWrenGABGS;
-	if (13 == whichAlgorithm) bgs = new DPPratiMediodBGS;
-	if (14 == whichAlgorithm)
+	if (9 == whichAlgorithm) bgs = new DPAdaptiveMedianBGS;
+	if (10 == whichAlgorithm) bgs = new DPGrimsonGMMBGS;
+	if (11 == whichAlgorithm) bgs = new DPZivkovicAGMMBGS;
+	if (12 == whichAlgorithm) bgs = new DPMeanBGS;
+	if (13 == whichAlgorithm) bgs = new DPWrenGABGS;
+	if (14 == whichAlgorithm) bgs = new DPPratiMediodBGS;
+	if (15 == whichAlgorithm)
 	{
 		bgs = new DPEigenbackgroundBGS;
 		useGrayImage = false;
 	}
 
 	// TB Package (adapted from Thierry Bouwmans)
-	if (15 == whichAlgorithm) bgs = new T2FGMM_UM;
-	if (16 == whichAlgorithm) bgs = new T2FGMM_UV;
-	if (17 == whichAlgorithm)
+	if (16 == whichAlgorithm) bgs = new T2FGMM_UM;
+	if (17 == whichAlgorithm) bgs = new T2FGMM_UV;
+	if (18 == whichAlgorithm)
+	{
+		bgs = new T2FMRF_UM;
+		useGrayImage = false;
+	}
+	if (19 == whichAlgorithm)
+	{
+		bgs = new T2FMRF_UV;
+		useGrayImage = false;
+	}
+	if (20 == whichAlgorithm)
 	{
 		bgs = new FuzzySugenoIntegral;
 		useGrayImage = false;
 	}
-	if (18 == whichAlgorithm)
+	if (21 == whichAlgorithm)
 	{
 		bgs = new FuzzyChoquetIntegral;
 		useGrayImage = false;
 	}
 
 	// JMO Package (adapted from Jean-Marc Odobez)
-	if (19 == whichAlgorithm)
+	if (22 == whichAlgorithm)
 	{
 		bgs = new MultiLayerBGS;
 		useGrayImage = false;
 	}
 
+	// PT Package (adapted from Hofmann)
+	if (23 == whichAlgorithm) bgs = new PixelBasedAdaptiveSegmenter;
+
 	// LB Package (adapted from Laurence Bender)
-	if (20 == whichAlgorithm)
+	if (24 == whichAlgorithm)
 	{
 		bgs = new LBSimpleGaussian;
 		useGrayImage = false;
 	}
-	if (21 == whichAlgorithm)
+	if (25 == whichAlgorithm)
 	{
 		bgs = new LBFuzzyGaussian;
 		useGrayImage = false;
 	}
-	if (22 == whichAlgorithm)
+	if (26 == whichAlgorithm)
 	{
 		bgs = new LBMixtureOfGaussians;
 		useGrayImage = false;
 	}
-	if (23 == whichAlgorithm)
+	if (27 == whichAlgorithm)
 	{
 		bgs = new LBAdaptiveSOM;
 		useGrayImage = false;
 	}
-	if (24 == whichAlgorithm)
+	if (28 == whichAlgorithm)
 	{
 		bgs = new LBFuzzyAdaptiveSOM;
 		useGrayImage = false;
