@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/optimization" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -17,7 +17,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="../../bin/" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/optimization" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
@@ -33,7 +33,20 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="/usr/local/include/" />
 		</Compiler>
+		<Linker>
+			<Add library="ga" />
+			<Add library="levmar" />
+			<Add library="boost_timer" />
+			<Add library="boost_system" />
+			<Add library="lapack" />
+			<Add library="blas" />
+			<Add library="f2c" />
+		</Linker>
+		<Unit filename="galib/galib_ex1.cpp" />
+		<Unit filename="galib/galib_ex3.cpp" />
+		<Unit filename="galib/galib_ex7.cpp" />
 		<Unit filename="galib/galib_main.cpp" />
 		<Unit filename="levmar/levmar_main.cpp" />
 		<Unit filename="main.cpp" />

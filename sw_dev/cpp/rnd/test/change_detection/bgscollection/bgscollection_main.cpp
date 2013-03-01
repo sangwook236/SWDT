@@ -14,7 +14,7 @@ void bskde_example()
 {
 	const std::string mask_filename("./change_detection_data/mask.jpg");
 
-#if 0
+#if 1
 	const std::string avi_filename("./change_detection_data/video.avi");
 	cv::VideoCapture capture(avi_filename);
 #else
@@ -60,8 +60,13 @@ void bskde_example()
 
 		cv::imshow("bgscollection: BS_KDE - Input", input_image);
 
+#if defined(__GNUC__)
+        IplImage input_image_ipl = (IplImage)input_image, fg_mask_image_ipl = (IplImage)fg_mask_image;
+		const time_t elapsedTime = bs_kde->ProcessFrame(&input_image_ipl, &fg_mask_image_ipl, 0L);
+#else
 		//const time_t elapsedTime = bs_kde->ProcessFrame(&(IplImage)input_image, &(IplImage)fg_mask_image, &(IplImage)mask_image);
 		const time_t elapsedTime = bs_kde->ProcessFrame(&(IplImage)input_image, &(IplImage)fg_mask_image, 0L);
+#endif
 		if (elapsedTime)
 		{
 			cv::imshow("bgscollection: BS_KDE - Foreground", fg_mask_image);
@@ -118,8 +123,16 @@ void sobs_example()
 		if (fg_mask_image.empty())
 			cv::cvtColor(input_image, fg_mask_image, CV_BGR2GRAY);
 
+#if defined(__GNUC__)
+        {
+            IplImage input_image_ipl = (IplImage)input_image, fg_mask_image_ipl = (IplImage)fg_mask_image;
+            detectorSOBS.ProcessFrame(&input_image_ipl);
+            detectorSOBS.GetFgmaskImage(&fg_mask_image_ipl);
+        }
+#else
 		detectorSOBS.ProcessFrame(&(IplImage)input_image);
 		detectorSOBS.GetFgmaskImage(&(IplImage)fg_mask_image);
+#endif
 
 		sstrm << std::setfill('0') << std::setw(5) << fameIndex;
 
@@ -131,7 +144,7 @@ void sobs_example()
 		cv::imshow("bgscollection: SOBS - Input", input_image);
 		cv::imshow("bgscollection: SOBS - Result", fg_mask_image);
 
-		fameIndex = ++fameIndex % 100000; 
+		fameIndex = ++fameIndex % 100000;
 	}
 
 	cv::destroyAllWindows();

@@ -9,7 +9,7 @@
 #if defined WIN32 || defined _WIN32
 #include <Windows.h>
 #endif
-#if defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 #include <sys/stat.h>
 #endif
 

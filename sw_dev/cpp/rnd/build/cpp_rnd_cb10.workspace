@@ -10,7 +10,7 @@
 		<Project filename="../test/matlab/matlab_cb10.cbp" />
 		<Project filename="../test/neural_network/neural_network_cb10.cbp" />
 		<Project filename="../test/object_detection/object_detection_cb10.cbp" />
-		<Project filename="../test/optimization/optimization_cb10.cbp" />
+		<Project filename="../test/optimization/optimization_cb10.cbp" active="1" />
 		<Project filename="../test/pcl/pcl_cb10.cbp" />
 		<Project filename="../test/pose_estimation/pose_estimation_cb10.cbp" />
 		<Project filename="../test/robotics/robotics_cb10.cbp" />
@@ -18,6 +18,6 @@
 		<Project filename="../test/robust_estimation/robust_estimation_cb10.cbp" />
 		<Project filename="../test/search_algorithm/search_algorithm_cb10.cbp" />
 		<Project filename="../test/shape_analysis/shape_analysis_cb10.cbp" />
-		<Project filename="../test/simulation/simulation_cb10.cbp" active="1" />
+		<Project filename="../test/simulation/simulation_cb10.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

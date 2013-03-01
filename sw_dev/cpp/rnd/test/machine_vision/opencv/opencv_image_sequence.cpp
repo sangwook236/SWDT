@@ -12,6 +12,7 @@
 #include <string>
 #include <cassert>
 #include <cstdlib>
+#include <stdexcept>
 
 
 namespace {

@@ -43,7 +43,7 @@ namespace local {
 
 void demo()
 {
-#if 0
+#if 1
 	const std::string avi_filename("./change_detection_data/video.avi");
 	cv::VideoCapture capture(avi_filename);
 #else
@@ -56,7 +56,7 @@ void demo()
 		return;
 	}
 
-	const int whichAlgorithm = 16;
+	const int whichAlgorithm = 6;
 	bool useGrayImage = true;
 	IBGS *bgs = NULL;
 
@@ -168,7 +168,7 @@ void demo()
 
 		cv::GaussianBlur(input_image, input_image, cv::Size(7, 7), 1.5);
 		cv::imshow("bgslibrary: input", input_image);
-		
+
 		if (useGrayImage)
 		{
 			cv::cvtColor(input_image, gray_image, CV_BGR2GRAY);
@@ -204,6 +204,6 @@ namespace my_bgslibrary {
 int bgslibrary_main(int argc, char *argv[])
 {
 	local::demo();
-	
+
 	return 0;
 }

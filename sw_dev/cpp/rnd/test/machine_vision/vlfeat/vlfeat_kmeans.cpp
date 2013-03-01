@@ -2,6 +2,8 @@
 #include <vl/ikmeans.h>
 #include <vl/hikmeans.h>
 #include <iostream>
+#include <cstdlib>
+#include <cmath>
 #include <stdexcept>
 
 

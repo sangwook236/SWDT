@@ -84,7 +84,7 @@ bool levenberg_marquardt__nonlinear_least_square__unconstrained_optimization__1(
 	opts[1] = 1.0e-15;
 	opts[2] = 1.0e-15;
 	opts[3] = 1.0e-20;
-	opts[4] = LM_DIFF_DELTA;  // relevant only if the finite difference jacobian version is used 
+	opts[4] = LM_DIFF_DELTA;  // relevant only if the finite difference jacobian version is used
 
 	const int maxIteration = 1000;
 	const int ret = dlevmar_dif(meyer, params, measures, dimParams, dimMeasures, maxIteration, opts, info, work, covar, NULL); // no jacobian, caller allocates work memory, covariance estimated
@@ -192,7 +192,7 @@ bool levenberg_marquardt__nonlinear_least_square__unconstrained_optimization__2(
 		base_generator_type baseGenerator(static_cast<unsigned int>(std::time(NULL)));
 		generator_type generator(baseGenerator, boost::normal_distribution<>(0.0, 1.0));
 
-		for (size_t i = 0; i < measureCount; ++i)
+		for (int i = 0; i < measureCount; ++i)
 		{
 			const double t = i;
 			measures[i] = 2.0 + 4.5 * t - 2.3 * t*t - 11.7 * t*t*t + 0.3 * t*t*t*t - 8.4 * t*t*t*t*t + generator();
@@ -215,7 +215,7 @@ bool levenberg_marquardt__nonlinear_least_square__unconstrained_optimization__2(
 	opts[1] = 1.0e-15;
 	opts[2] = 1.0e-15;
 	opts[3] = 1.0e-20;
-	opts[4] = LM_DIFF_DELTA;  // relevant only if the finite difference jacobian version is used 
+	opts[4] = LM_DIFF_DELTA;  // relevant only if the finite difference jacobian version is used
 
 	const int maxIteration = 1000;
 	//const int ret = dlevmar_dif(objective_f, params, &measures[0], dimParams, dimMeasures, maxIteration, opts, info, work, covar, NULL); // no jacobian, caller allocates work memory, covariance estimated

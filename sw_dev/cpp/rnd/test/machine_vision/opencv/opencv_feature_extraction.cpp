@@ -383,10 +383,17 @@ void feature_extraction()
 		//local::strong_corner(srcImage, grayImage);
 		//local::surf(srcImage, grayImage);
 		//local::star_keypoint(srcImage, grayImage);
-#if 0
+#if defined(__GNUC__)
+        {
+            cv::Mat srcImage_mat(srcImage), grayImage_mat(grayImage);
+            local::mser(srcImage_mat, grayImage_mat);
+        }
+#elif defined(_MSC_VER)
+#   if 0
 		local::mser(srcImage, grayImage);
-#else
+#   else
 		local::mser(cv::Mat(srcImage), cv::Mat(grayImage));
+#   endif
 #endif
 
 		//
