@@ -22,6 +22,30 @@
     <Filter Include="Source Files\bgscollection_lib">
       <UniqueIdentifier>{34549313-a99a-4161-b023-cf73cf0aa357}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\bgslibrary_lib">
+      <UniqueIdentifier>{4f8a8e60-bbf6-425e-9468-b05c46e8a060}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bgslibrary_lib\package_analysis">
+      <UniqueIdentifier>{f5550ae3-7fd4-49a3-b755-723f0e8ec4ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bgslibrary_lib\package_bgs">
+      <UniqueIdentifier>{840260ac-c2e7-4f4b-a186-b606fdca7404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bgslibrary_lib\package_bgs\dp">
+      <UniqueIdentifier>{c97bb51b-cf17-4ae8-8d9b-0550c951bc58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bgslibrary_lib\package_bgs\jmo">
+      <UniqueIdentifier>{6a2751a8-f40b-470f-86a5-54699609667f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bgslibrary_lib\package_bgs\lb">
+      <UniqueIdentifier>{206e8b8f-3b3d-4885-931b-347bceddd319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bgslibrary_lib\package_bgs\pt">
+      <UniqueIdentifier>{4481c382-f364-4385-a56a-ed3b93cc3dee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bgslibrary_lib\package_bgs\tb">
+      <UniqueIdentifier>{2acca112-1275-4cb2-a236-c2437f6fd7bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -38,6 +62,195 @@
     </ClInclude>
     <ClInclude Include="bgscollection_lib\sobs.h">
       <Filter>Source Files\bgscollection_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\AdaptiveMedianBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\Bgs.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\BgsParams.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPAdaptiveMedianBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPEigenbackgroundBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPGrimsonGMMBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPMeanBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPPratiMediodBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPWrenGABGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPZivkovicAGMMBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\Eigenbackground.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\GrimsonGMM.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\Image.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\MeanBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\PratiMediodBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\WrenGA.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\ZivkovicAGMM.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\BackgroundSubtractionAPI.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\BGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\blob.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\BlobExtraction.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\BlobLibraryConfiguration.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\BlobResult.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\CMultiLayerBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\LocalBinaryPattern.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\MultiLayerBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\OpenCvDataConversion.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\BGModel.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\BGModelFuzzyGauss.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\BGModelFuzzySom.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\BGModelGauss.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\BGModelMog.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\BGModelSom.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\LBAdaptiveSOM.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\LBFuzzyAdaptiveSOM.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\LBFuzzyGaussian.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\LBMixtureOfGaussians.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\LBSimpleGaussian.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\Types.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\FuzzyChoquetIntegral.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\FuzzySugenoIntegral.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\FuzzyUtils.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\MRF.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\PerformanceUtils.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\PixelUtils.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\T2FGMM.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\T2FGMM_UM.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\T2FGMM_UV.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\T2FMRF.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\T2FMRF_UM.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\T2FMRF_UV.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\pt\PBAS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\pt</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\pt\PixelBasedAdaptiveSegmenter.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\pt</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\AdaptiveBackgroundLearning.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\FrameDifferenceBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\GMG.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\IBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\MixtureOfGaussianV1BGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\MixtureOfGaussianV2BGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\StaticFrameDifferenceBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\WeightedMovingMeanBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\WeightedMovingVarianceBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_analysis\ForegroundMaskAnalysis.h">
+      <Filter>Source Files\bgslibrary_lib\package_analysis</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +274,171 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\AdaptiveMedianBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPAdaptiveMedianBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPEigenbackgroundBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPGrimsonGMMBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPMeanBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPPratiMediodBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPWrenGABGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPZivkovicAGMMBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\Eigenbackground.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\GrimsonGMM.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\Image.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\MeanBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\PratiMediodBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\WrenGA.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\ZivkovicAGMM.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\jmo\blob.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\jmo\BlobExtraction.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\jmo\BlobResult.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\jmo\CMultiLayerBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\jmo\LocalBinaryPattern.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\jmo\MultiLayerBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\jmo</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\BGModel.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\BGModelFuzzyGauss.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\BGModelFuzzySom.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\BGModelGauss.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\BGModelMog.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\BGModelSom.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\LBAdaptiveSOM.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\LBFuzzyAdaptiveSOM.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\LBFuzzyGaussian.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\LBMixtureOfGaussians.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\LBSimpleGaussian.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\lb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\FuzzyChoquetIntegral.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\FuzzySugenoIntegral.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\FuzzyUtils.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\MRF.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\PerformanceUtils.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\PixelUtils.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\T2FGMM.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\T2FGMM_UM.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\T2FGMM_UV.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\T2FMRF.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\T2FMRF_UM.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\T2FMRF_UV.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\tb</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\pt\PBAS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\pt</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\pt\PixelBasedAdaptiveSegmenter.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\pt</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\AdaptiveBackgroundLearning.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\FrameDifferenceBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\GMG.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\MixtureOfGaussianV1BGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\MixtureOfGaussianV2BGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\StaticFrameDifferenceBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\WeightedMovingMeanBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\WeightedMovingVarianceBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_analysis\ForegroundMaskAnalysis.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_analysis</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

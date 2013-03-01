@@ -4,7 +4,7 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "bgslibraryd.lib")
+//#pragma comment(lib, "bgslibraryd.lib")
 #pragma comment(lib, "opencv_calib3d243d.lib")
 #pragma comment(lib, "opencv_contrib243d.lib")
 #pragma comment(lib, "opencv_core243d.lib")
@@ -25,7 +25,7 @@
 
 #		else
 
-#pragma comment(lib, "bgslibrary.lib")
+//#pragma comment(lib, "bgslibrary.lib")
 #pragma comment(lib, "opencv_calib3d243.lib")
 #pragma comment(lib, "opencv_contrib243.lib")
 #pragma comment(lib, "opencv_core243.lib")
