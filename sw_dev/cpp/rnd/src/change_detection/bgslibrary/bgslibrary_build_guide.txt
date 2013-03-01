@@ -1,11 +1,11 @@
 [-] Building (MSVC)
-	-. CMake에 의해 생성되는 bgslibrary project는 executable을 생성.
+	-. (중요) CMake에 의해 생성되는 bgslibrary project는 executable을 생성.
 	-. static library building을 위한 project를 만들어서 사용하여야 함.
 		project에 아래 directory에 있는 모든 source & header file을 추가해야 building
 		${BGSLIBRARY_ROOT}/package_bgs
 		${BGSLIBRARY_ROOT}/package_analysis
 
-[-] Trouble Shooting
+[-] Trouble Shooting (MSVC)
 	-. 아래와 같은 MFC DLL 관련 error
 		"Building MFC application with /MD[d] (CRT dll version) requires MFC shared dll version"
 		==> "Use MFC in a Shared DLL"을 설정하여 library building

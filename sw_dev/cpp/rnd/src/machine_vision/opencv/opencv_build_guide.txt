@@ -6,7 +6,13 @@
 			sudo ln -s /usr/lib/nvidia-current/libnvcuvid.so /usr/lib/libnvcuvid.so
 			sudo ln -s /usr/lib/nvidia-current/libnvcuvid.so.1 /usr/lib/libnvcuvid.so.1
 
-[-] Building
+[-] Building (Linux)
+	-. CUDA 관련 함수를 찾을 수 없다는 오류 발생
+		<오류메시지>
+			undefined reference to 'cuDeviceGetAttribute'
+		==> CUDA_CUDA_LIBRARY 항목이 올바르게 설정되어 있지 않다는 오류 발생.
+			sudo ln -s /usr/lib/nvidia-current/libcuda.so /usr/lib/libcuda.so
+			sudo ln -s /usr/lib/nvidia-current/libcuda.so.1 /usr/lib/libcuda.so.1
 
 [-] Trouble Shooting
 	-. highgui project에서 OpenEXR 관련 error
