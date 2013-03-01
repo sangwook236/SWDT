@@ -52,13 +52,14 @@ void daisy()
 	std::cout << "start processing ..." << std::endl;
 
 	ccv_dense_matrix_t *x = NULL;
+	{
+		boost::timer::cpu_timer timer;
 
-	boost::timer::cpu_timer timer;
+		ccv_daisy(a, &x, 0, param);
 
-	ccv_daisy(a, &x, 0, param);
-
-	boost::timer::cpu_times const elapsed_times(timer.elapsed());
-	std::cout << "elpased time : " << (elapsed_times.system + elapsed_times.user) << std::endl;
+		boost::timer::cpu_times const elapsed_times(timer.elapsed());
+		std::cout << "elpased time : " << (elapsed_times.system + elapsed_times.user) << std::endl;
+	}
 
 	std::cout << "end processing ..." << std::endl;
 

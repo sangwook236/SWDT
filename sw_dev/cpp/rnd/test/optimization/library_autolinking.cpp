@@ -5,10 +5,12 @@
 #		if defined(DEBUG) || defined(_DEBUG)
 
 #pragma comment(lib, "levmar_d.lib")
+#pragma comment(lib, "ga.lib")
 
 #		else
 
 #pragma comment(lib, "levmar.lib")
+#pragma comment(lib, "ga.lib")
 
 #		endif
 

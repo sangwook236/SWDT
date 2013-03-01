@@ -36,6 +36,15 @@
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="galib\galib_ex1.cpp">
+      <Filter>Source Files\galib</Filter>
+    </ClCompile>
+    <ClCompile Include="galib\galib_ex3.cpp">
+      <Filter>Source Files\galib</Filter>
+    </ClCompile>
+    <ClCompile Include="galib\galib_ex7.cpp">
+      <Filter>Source Files\galib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

@@ -85,9 +85,13 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcpmtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="galib\galib_ex1.cpp" />
+    <ClCompile Include="galib\galib_ex3.cpp" />
+    <ClCompile Include="galib\galib_ex7.cpp" />
     <ClCompile Include="galib\galib_main.cpp" />
     <ClCompile Include="levmar\levmar_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
