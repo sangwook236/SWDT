@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include <levmar/lm.h>
+#include <levmar/levmar.h>
 #include <boost/random/linear_congruential.hpp>
 #include <boost/random/normal_distribution.hpp>
 #include <boost/random/variate_generator.hpp>
