@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/visualization" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -38,6 +38,8 @@
 		</Compiler>
 		<Unit filename="graphviz/graphviz_main.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="mathgl/mathgl_main.cpp" />
+		<Unit filename="vtk/vtk_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

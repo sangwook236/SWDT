@@ -9,7 +9,7 @@
 ./bjam stage release --toolset=gcc --without-mpi link=static,shared
 ./bjam stage debug --toolset=gcc --without-mpi link=static,shared
 
-# sudo ./bjam install --prefix=/usr/local --toolset=gcc --without-mpi
+# sudo ./bjam install --prefix=/bin/local --toolset=gcc --without-mpi
 # ./bjam clean release debug
 
 # ${BOOST_ROOT}/tools/build/v2/user-config.jam
