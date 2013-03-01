@@ -1,4 +1,6 @@
 [-] Building (Cygwin)
+	-. (중요) C++가 아닌 C compiler를 사용해야 함.
+
 	-. build static library
 		cd ${CCV_HOME}/lib
 		./configure --prefix=${CCV_INSTALL}
