@@ -1,31 +1,31 @@
-#include "bgslibrary/FrameDifferenceBGS.h"
-#include "bgslibrary/StaticFrameDifferenceBGS.h"
-#include "bgslibrary/WeightedMovingMeanBGS.h"
-#include "bgslibrary/WeightedMovingVarianceBGS.h"
-#include "bgslibrary/MixtureOfGaussianV1BGS.h"
-#include "bgslibrary/MixtureOfGaussianV2BGS.h"
-#include <bgslibrary/AdaptiveBackgroundLearning.h>
+#include <bgslibrary/package_bgs/FrameDifferenceBGS.h>
+#include <bgslibrary/package_bgs/StaticFrameDifferenceBGS.h>
+#include <bgslibrary/package_bgs/WeightedMovingMeanBGS.h>
+#include <bgslibrary/package_bgs/WeightedMovingVarianceBGS.h>
+#include <bgslibrary/package_bgs/MixtureOfGaussianV1BGS.h>
+#include <bgslibrary/package_bgs/MixtureOfGaussianV2BGS.h>
+#include <bgslibrary/package_bgs/AdaptiveBackgroundLearning.h>
 
-#include <bgslibrary/dp/DPAdaptiveMedianBGS.h>
-#include <bgslibrary/dp/DPGrimsonGMMBGS.h>
-#include <bgslibrary/dp/DPZivkovicAGMMBGS.h>
-#include <bgslibrary/dp/DPMeanBGS.h>
-#include <bgslibrary/dp/DPWrenGABGS.h>
-#include <bgslibrary/dp/DPPratiMediodBGS.h>
-#include <bgslibrary/dp/DPEigenbackgroundBGS.h>
+#include <bgslibrary/package_bgs/dp/DPAdaptiveMedianBGS.h>
+#include <bgslibrary/package_bgs/dp/DPGrimsonGMMBGS.h>
+#include <bgslibrary/package_bgs/dp/DPZivkovicAGMMBGS.h>
+#include <bgslibrary/package_bgs/dp/DPMeanBGS.h>
+#include <bgslibrary/package_bgs/dp/DPWrenGABGS.h>
+#include <bgslibrary/package_bgs/dp/DPPratiMediodBGS.h>
+#include <bgslibrary/package_bgs/dp/DPEigenbackgroundBGS.h>
 
-#include <bgslibrary/tb/T2FGMM_UM.h>
-#include <bgslibrary/tb/T2FGMM_UV.h>
-#include <bgslibrary/tb/FuzzySugenoIntegral.h>
-#include <bgslibrary/tb/FuzzyChoquetIntegral.h>
+#include <bgslibrary/package_bgs/tb/T2FGMM_UM.h>
+#include <bgslibrary/package_bgs/tb/T2FGMM_UV.h>
+#include <bgslibrary/package_bgs/tb/FuzzySugenoIntegral.h>
+#include <bgslibrary/package_bgs/tb/FuzzyChoquetIntegral.h>
 
-#include <bgslibrary/jmo/MultiLayerBGS.h>
+#include <bgslibrary/package_bgs/jmo/MultiLayerBGS.h>
 
-#include <bgslibrary/lb/LBSimpleGaussian.h>
-#include <bgslibrary/lb/LBFuzzyGaussian.h>
-#include <bgslibrary/lb/LBMixtureOfGaussians.h>
-#include <bgslibrary/lb/LBAdaptiveSOM.h>
-#include <bgslibrary/lb/LBFuzzyAdaptiveSOM.h>
+#include <bgslibrary/package_bgs/lb/LBSimpleGaussian.h>
+#include <bgslibrary/package_bgs/lb/LBFuzzyGaussian.h>
+#include <bgslibrary/package_bgs/lb/LBMixtureOfGaussians.h>
+#include <bgslibrary/package_bgs/lb/LBAdaptiveSOM.h>
+#include <bgslibrary/package_bgs/lb/LBFuzzyAdaptiveSOM.h>
 
 #include <opencv2/opencv.hpp>
 #include <iostream>
