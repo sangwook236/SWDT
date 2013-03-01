@@ -1,5 +1,13 @@
 [-] Building (Cygwin)
 	-. (중요) C++가 아닌 C compiler를 사용해야 함.
+		CCV header를 include하는 경우 아래와 같이 'extern "C"'가 필요.
+		#ifdef __cplusplus
+		extern "C" {
+		#endif
+		#include <ccv/ccv.h>
+		#ifdef __cplusplus
+		}
+		#endif
 
 	-. build static library
 		cd ${CCV_HOME}/lib
