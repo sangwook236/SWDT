@@ -1,12 +1,17 @@
+//#define NO_BLAS_WRAP
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
+#if defined(_WINDOWS)
 #include <clapack/f2c.h>
 //#include <clapack/blaswrap.h>
 #include <clapack/clapack.h>
-#if defined(abs)
-#	undef abs
+#else
+#include <f2c.h>
+#include <clapack.h>
+#include <cblas.h>
 #endif
 
 #if defined(__cplusplus)
@@ -14,7 +19,12 @@ extern "C" {
 #endif
 
 #include <iostream>
+#include <cstring>
 #include <cassert>
+
+#if defined(abs)
+#	undef abs
+#endif
 
 
 namespace {

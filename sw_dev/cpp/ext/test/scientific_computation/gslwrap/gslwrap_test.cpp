@@ -5,19 +5,19 @@
 #include <iostream>
 #endif
 
-#include<gslwrap/matrix_float.h>
-#include<gslwrap/matrix_double.h>
-#include<gslwrap/vector_float.h>
-#include<gslwrap/vector_int.h>
-#include<gslwrap/vector_double.h>
-#include<gslwrap/random_generator.h>
-#include<gslwrap/histogram.h>
+#include <gslwrap/matrix_float.h>
+#include <gslwrap/matrix_double.h>
+#include <gslwrap/vector_float.h>
+#include <gslwrap/vector_int.h>
+#include <gslwrap/vector_double.h>
+#include <gslwrap/random_generator.h>
+#include <gslwrap/histogram.h>
 
 
 namespace my_gslwrap {
 
 #ifndef __HP_aCC
-	using namespace std;
+using namespace std;
 //using std::string;
 //using std::runtime_error;
 #endif
@@ -42,11 +42,11 @@ void Histogram()
 	cout << "Difference (maxval - minval)/nSamples: " <<  diff << endl;
 	if (diff > 0.01)
 		cout << "test_histogram did NOT pass!" << endl;
-	else 
+	else
 		cout << "test_histogram passed!" << endl;
 //  	double m = h.mean();
 //  	cout << "Mean=" << m << endl;
-	
+
 }
 
 void Vector()
@@ -57,7 +57,7 @@ void Vector()
 	vd.set_all(0.0);
 	if (!vd.isnull())
 		cout << "test_vector ERROR" << endl;
-	
+
 	vd.set_all(1.0);
 	double norm = vd.norm2();
 	cout << "norm=" << norm << endl;
@@ -74,10 +74,10 @@ void VectorFloat()
 	test = mal;
   	cout << "Test vector should be:" << endl << mal << endl;
   	cout << "Test vector is:" << endl << test << endl;
-	
+
 	if (mal != test)
 		cout << "vector_float ERROR Test did not pass !! --------------" << endl;
-	else 
+	else
 		cout << "vector_float Test passed !! --------------" << endl;
 }
 
@@ -107,15 +107,15 @@ void VectorView()
 	cout << "viewer (3.row after adding) =" << endl << viewer << endl;
 	cout << "col_viewer (3.col after adding)=" << endl << col_viewer << endl;
 	cout << "\"m+v\"" << endl << m << endl;
-	
+
 	col_viewer.change_view(viewer);
 	cout << "col_viewer after changing to viewer=" << endl << col_viewer << endl;
 
-	if (m != ver || m.column(0) != viewer || col_viewer != viewer) 
+	if (m != ver || m.column(0) != viewer || col_viewer != viewer)
 		cout << "VectorViewTest failed !! ----------------" << endl;
-	else 
+	else
 		cout << "VectorViewTest passed !! ----------------" << endl;
-	
+
 }
 
 void VectorDiagonalView()
@@ -131,9 +131,9 @@ void VectorDiagonalView()
 		if (m(i, i) != 1.0)
 			pass = false;
 	}
-	if (!pass) 
+	if (!pass)
 		cout << "VectorDiagonalViewTest failed !! ----------------" << endl;
-	else 
+	else
 		cout << "VectorDiagonalViewTest passed !! ----------------" << endl;
 }
 
@@ -161,7 +161,7 @@ void VectorView2()
 		cout << "VectorViewTest2 Failed !! (operator -= ?) " << endl;
 		exit(-1);
 	}
-	else 
+	else
 		cout << "VectorViewTest2 Passed !! -------------------------" << endl;
 }
 
@@ -193,7 +193,7 @@ void GSLFunctionCall()
 	gsl::vector tau(size);
 	gsl_linalg_QR_decomp(m.gslobj(), tau.gslobj());
 	gsl_linalg_QR_svx(m.gslobj(), tau.gslobj(), sol.gslobj());
-	
+
 	cout << "sol= " << sol << endl;
 }
 
@@ -211,7 +211,7 @@ void RandomNumberGenerator()
 	// should be close to 0.5
 	if (mean < 0.51 && mean > 0.49)
 		cout << "RandomNumberGeneratorTest Passed !! -------------" << endl;
-	else 
+	else
 	{
 		cout << "RandomNumberGeneratorTest Failed !! -------------" << endl;
 		exit(-1);
@@ -243,6 +243,6 @@ void LUInvertAndDecomp()
 	cout << "a.LU_decomp():" << endl << a.LU_decomp() << endl;
 	cout << "a.LU_invert():" << endl << a.LU_invert() << endl;
 	cout << "a.LU_invert() * a:" << endl << a.LU_invert() * a << endl;
-} 
+}
 
 }  // namespace my_gslwrap

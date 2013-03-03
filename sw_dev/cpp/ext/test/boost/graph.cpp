@@ -30,6 +30,7 @@
 #include <utility>
 #include <algorithm>
 #include <iostream>
+#include <string>
 #include <stdexcept>
 
 
@@ -182,13 +183,13 @@ void basic_operation()
 		graph_type::adjacency_iterator neighbourIt, neighbourEnd;  // iterate over the corresponding adjacent vertices
 
 		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
-		for (; vertexIt != vertexEnd; ++vertexIt) 
-		{ 
-			std::cout << *vertexIt << " is connected with "; 
-			boost::tie(neighbourIt, neighbourEnd) = boost::adjacent_vertices(*vertexIt, g); 
-			for (; neighbourIt != neighbourEnd; ++neighbourIt) 
-				std::cout << *neighbourIt << " "; 
-			std::cout << std::endl; 
+		for (; vertexIt != vertexEnd; ++vertexIt)
+		{
+			std::cout << *vertexIt << " is connected with ";
+			boost::tie(neighbourIt, neighbourEnd) = boost::adjacent_vertices(*vertexIt, g);
+			for (; neighbourIt != neighbourEnd; ++neighbourIt)
+				std::cout << *neighbourIt << " ";
+			std::cout << std::endl;
 		}
 	}
 
@@ -267,20 +268,20 @@ void basic_operation()
 
 		graph_type::vertex_iterator vertexIt, vertexEnd;
 		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
-		for (; vertexIt != vertexEnd; ++vertexIt) 
-		{ 
+		for (; vertexIt != vertexEnd; ++vertexIt)
+		{
 			std::cout << "in-degree for " << *vertexIt << ": " << boost::in_degree(*vertexIt, g) << std::endl;
 			std::cout << "out-degree for " << *vertexIt << ": " << boost::out_degree(*vertexIt, g) << std::endl;
-		} 
+		}
 
 		graph_type::edge_iterator edgeIt, edgeEnd;
 		boost::tie(edgeIt, edgeEnd) = boost::edges(g);
-		for (; edgeIt != edgeEnd; ++edgeIt) 
+		for (; edgeIt != edgeEnd; ++edgeIt)
 			std::cout << "edge " << boost::source(*edgeIt, g) << "-->" << boost::target(*edgeIt, g) << std::endl;
 	}
 }
 
-class custom_dfs_visitor : public boost::default_dfs_visitor 
+class custom_dfs_visitor : public boost::default_dfs_visitor
 {
 public:
 	// this is invoked when a vertex is encountered for the first time.
@@ -485,8 +486,8 @@ void dijkstra_example()
 	// VC++ has trouble with the named parameters mechanism
 	boost::property_map<graph_type, boost::vertex_index_t>::type indexmap = boost::get(boost::vertex_index, g);
 	boost::dijkstra_shortest_paths(
-		g, s, &p[0], &d[0], weightmap, indexmap, 
-		std::less<int>(), boost::closed_plus<int>(), 
+		g, s, &p[0], &d[0], weightmap, indexmap,
+		std::less<int>(), boost::closed_plus<int>(),
 		(std::numeric_limits<int>::max)(), 0,
 		boost::default_dijkstra_visitor()
 	);
@@ -660,8 +661,8 @@ void shortest_paths()
 			std::cout << "parent(" << *vi;
 			if (p[*vi] == vertex_descriptor_type() && *vi == s)
 			//if (p[*vi] == boost::graph_traits<graph_type>::null_vertex())  // not working
-				std::cout << ") = no parent" << std::endl; 
-			else 
+				std::cout << ") = no parent" << std::endl;
+			else
 				std::cout << ") = " << p[*vi] << std::endl;
 		}
 	}
@@ -811,7 +812,7 @@ void prim_minimum_spanning_tree_example()
 
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
 	graph_type g(num_nodes);
-	boost::property_map<graph_type, boost::edge_weight_t>::type weightmap = boost::get(boost::edge_weight, g); 
+	boost::property_map<graph_type, boost::edge_weight_t>::type weightmap = boost::get(boost::edge_weight, g);
 	for (std::size_t j = 0; j < sizeof(edges) / sizeof(edge_type); ++j)
 	{
 		boost::graph_traits<graph_type>::edge_descriptor e;
@@ -890,7 +891,7 @@ void prim_minimum_spanning_tree_telephone_example()
 	std::vector<vertex_descriptor_type> parent(boost::num_vertices(g));
 	boost::property_map<graph_type, boost::edge_weight_t>::type weight = boost::get(boost::edge_weight, g);
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
-	boost::property_map<graph_type, boost::vertex_index_t>::type indexmap = boost::get(boost::vertex_index, g);  
+	boost::property_map<graph_type, boost::vertex_index_t>::type indexmap = boost::get(boost::vertex_index, g);
 	std::vector<std::size_t> distance(boost::num_vertices(g));
 	boost::prim_minimum_spanning_tree(g, *boost::vertices(g).first, &parent[0], &distance[0], weight, indexmap, boost::default_dijkstra_visitor());
 #else
@@ -949,7 +950,7 @@ void connected_components_algorithm()
 		boost::add_edge(1, 4, g);
 		boost::add_edge(4, 0, g);
 		boost::add_edge(2, 5, g);
-    
+
 		std::vector<int> components(boost::num_vertices(g));
 		const int num = boost::connected_components(g, &components[0]);
 
@@ -1047,7 +1048,7 @@ void strong_components_algorithm()
 		std::vector<vertex_descriptor_type> root(boost::num_vertices(g));
 		const int num = boost::strong_components(
 			g,
-			boost::make_iterator_property_map(components.begin(), boost::get(boost::vertex_index, g)), 
+			boost::make_iterator_property_map(components.begin(), boost::get(boost::vertex_index, g)),
 			boost::root_map(boost::make_iterator_property_map(root.begin(), boost::get(boost::vertex_index, g))).
 				color_map(boost::make_iterator_property_map(color.begin(), boost::get(boost::vertex_index, g))).
 					discover_time_map(boost::make_iterator_property_map(discover_time.begin(), boost::get(boost::vertex_index, g)))
@@ -1248,7 +1249,7 @@ void max_flow_example(std::istream &stream)
 {
 	typedef boost::adjacency_list_traits<boost::vecS, boost::vecS, boost::directedS> traits_type;
 	typedef boost::adjacency_list<
-		boost::listS, boost::vecS, boost::directedS, 
+		boost::listS, boost::vecS, boost::directedS,
 		boost::property<boost::vertex_name_t, std::string>,
 		boost::property<boost::edge_capacity_t, long,
 		boost::property<boost::edge_residual_capacity_t, long,
@@ -1451,7 +1452,11 @@ void edmonds_maximum_cardinality_matching_example()
 void maximum_flow_and_matching()
 {
 	const std::string max_flow_dat_file("./boost_data/max_flow.dat");
+#if defined(__GNUC__)
+	std::ifstream stream(max_flow_dat_file.c_str());
+#else
 	std::ifstream stream(max_flow_dat_file);
+#endif
 
 	std::cout << "max-flow algorithm -------------------------------------------" << std::endl;
 	stream.clear();
@@ -1502,7 +1507,7 @@ void minimum_cut()
 	// define a property map, 'parities', that will store a boolean value for each vertex.
 	// vertices that have the same parity after 'stoer_wagner_min_cut' runs are on the same side of the min-cut.
 	BOOST_AUTO(parities, boost::make_one_bit_color_map(boost::num_vertices(g), boost::get(boost::vertex_index, g)));
-		
+
 	// run the Stoer-Wagner algorithm to obtain the min-cut weight. `parities` is also filled in.
 	const int w = boost::stoer_wagner_min_cut(g, boost::get(boost::edge_weight, g), boost::parity_map(parities));
 

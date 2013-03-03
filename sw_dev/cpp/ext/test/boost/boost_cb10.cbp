@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/boost" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/boost_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -33,6 +33,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-fpermissive" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
 			<Add option="-DBOOST_SYSTEM_NO_DEPRECATED" />
@@ -44,7 +45,6 @@
 			<Add library="boost_exception" />
 			<Add library="boost_filesystem" />
 			<Add library="boost_graph" />
-			<Add library="boost_iostreams" />
 			<Add library="boost_locale" />
 			<Add library="boost_math_c99" />
 			<Add library="boost_math_c99f" />
@@ -104,16 +104,16 @@
 		<Unit filename="math_floating_point_utilities.cpp" />
 		<Unit filename="math_special_functions.cpp" />
 		<Unit filename="math_statistical_distributions.cpp" />
-		<Unit filename="mtl.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
+		<Unit filename="mtl.cpp" />
 		<Unit filename="multi_array.cpp" />
 		<Unit filename="multi_index.cpp" />
 		<Unit filename="multiprecision.cpp" />
 		<Unit filename="numeric_bindings.cpp" />
 		<Unit filename="ordinary_differential_equation.cpp" />
-		<Unit filename="polygon.cpp" />
+		<Unit filename="polygon.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="program_options.cpp" />
 		<Unit filename="progress_timer.cpp" />
 		<Unit filename="property_map.cpp" />

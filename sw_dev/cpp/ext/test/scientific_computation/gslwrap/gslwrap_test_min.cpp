@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include <gslwrap/min_fminimizer.h>
 #include <gslwrap/multimin_fdfminimizer.h>
+#include <iostream>
 #include <cmath>
 
 
@@ -9,40 +10,41 @@ namespace local {
 
 struct my_f: public gsl::min_f
 {
+	virtual double operator()(const double &x)
+	{
+		return (a * x + b) * x + c;
+	}
+
 	double a;
 	double b;
 	double c;
-	virtual double operator()(const double& x)
-	{
-		return (a*x + b)*x + c;
-	}
 };
 
 struct fn1: public gsl::min_f
 {
-	virtual double operator()(const double& x)
+	virtual double operator()(const double &x)
 	{
-		return cos(x) + 1.0;
-	}	
+		return std::cos(x) + 1.0;
+	}
 };
 
 struct my_function: public gsl::multimin_fdf<my_function>
 {
 	my_function() : multimin_fdf(this)  {}
 
-	double a;
-	double b;
-	
-	virtual double operator()(const gsl::vector& x)
+	virtual double operator()(const gsl::vector &x)
 	{
-		return 10.0*(x[0]-a)*(x[0]-a) + 20.0*(x[1]-b)*(x[1]-b) + 30;
+		return 10.0 * (x[0] - a) * (x[0] - a) + 20.0 * (x[1] - b) * (x[1] - b) + 30.0;
 	}
 
-	virtual void derivative(const gsl::vector& x, gsl::vector& g)
+	virtual void derivative(const gsl::vector &x, gsl::vector &g)
 	{
 		g[0] = 20.0 * (x[0] - a);
 		g[1] = 40.0 * (x[1] - b);
 	}
+
+	double a;
+	double b;
 };
 
 }  // namespace local
@@ -53,7 +55,7 @@ namespace my_gslwrap {
 void OneDimMinimiserTest()
 {
 	local::fn1 f;
-//	gsl::min_fminimizer m(gsl_min_fminimizer_goldensection);
+	//gsl::min_fminimizer m(gsl_min_fminimizer_goldensection);
 	gsl::min_fminimizer m;
 	double mm = 2;
 	double a = 0;
@@ -66,17 +68,15 @@ void OneDimMinimiserTest()
 		mm = m.minimum();
 		a = m.x_lower();
 		b = m.x_upper();
-		
+
 		status = gsl_min_test_interval(a, b, 0.001, 0.0);
 
-		if (status == GSL_SUCCESS)
-			printf("Converged:\n");
+		if (GSL_SUCCESS == status)
+			std::cout << "converged:" << std::endl;
 
-		printf("%5d [%.7f, %.7f] "
-			   "%.7f %.7f %+.7f %.7f\n",
-			   m.GetNIterations(), a, b, mm, M_PI, mm-M_PI, b-a);
-		
-	} while (status != GSL_SUCCESS && !m.is_converged());
+		std::cout << m.GetNIterations() << " [" << a << ", " << b << "]  " << mm << ", " << M_PI << ", " << (mm - M_PI) << ", " << (b - a) << std::endl;
+
+	} while (GSL_SUCCESS != status && !m.is_converged());
 }
 
 /*
@@ -90,13 +90,13 @@ void MultDimMinimiserTest2()
 	gsl::vector x(2);
 	x[0] = 1;
 	x[1] = 2;
-	cout << "Value at f(x) x=" << x << endl;
-	cout << f(x) << endl;
+	std::cout << "value at f(x) x=" << x << std::endl;
+	std::cout << f(x) << endl;
 
-	cout << "Gradient at x=" << x << endl;
+	std::cout << "gradient at x=" << x << std::endl;
 	gsl::vector g(2);
 	f.derivative(x, g);
-	cout << g << endl;
+	std::cout << g << std::endl;
 }
 */
 
@@ -123,17 +123,14 @@ void MultDimMinimiserTest()
 
 		if (status)
 			break;
-		
+
 		status = gsl_multimin_test_gradient(mm.gradient().gslobj(), 1e-3);
 
-		if (status == GSL_SUCCESS)
-			printf("Minimum found at: \n");
+		if (GSL_SUCCESS == status)
+			std::cout << "minimum found at: " << std::endl;
 
-		printf("%5d %.5f %.5f %10.5f\n", iter, 
-			   mm.x_value()[0], 
-			   mm.x_value()[1], 
-			   mm.minimum());
-	} while (status == GSL_CONTINUE && iter < 100);
+		std::cout << iter << ", " << mm.x_value()[0] << ", " << mm.x_value()[1] << ", " << mm.minimum() << std::endl;
+	} while (GSL_CONTINUE == status && iter < 100);
 }
 
 }  // namespace my_gslwrap

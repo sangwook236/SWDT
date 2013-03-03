@@ -1,4 +1,8 @@
+#if defined(_WINDOWS)
 #include <cvm/cvm.h>
+#else
+#include <cvm.h>
+#endif
 #include <string>
 
 
@@ -39,7 +43,7 @@ void svd_rmatrix()
 		std::cout << "Exception " << e.what() << std::endl;
 	}
 }
-	
+
 }  // namespace local
 }  // unnamed namespace
 

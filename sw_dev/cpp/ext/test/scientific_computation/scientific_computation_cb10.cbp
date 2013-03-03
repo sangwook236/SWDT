@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/scientific_computation" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/scientific_computation_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -35,9 +35,13 @@
 			<Add option="-fexceptions" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
+			<Add directory="/usr/local/include/" />
 		</Compiler>
 		<Linker>
 			<Add library="gsl" />
+			<Add library="gslwrap" />
+			<Add library="cblas" />
+			<Add directory="/usr/local/lib/" />
 		</Linker>
 		<Unit filename="gsl/gsl_cholesky.cpp" />
 		<Unit filename="gsl/gsl_conjugate_gradient.cpp" />
@@ -60,7 +64,10 @@
 		<Unit filename="gsl/gsl_vector_operation.cpp" />
 		<Unit filename="gslwrap/gslwrap_main.cpp" />
 		<Unit filename="gslwrap/gslwrap_test.cpp" />
-		<Unit filename="gslwrap/gslwrap_test_min.cpp" />
+		<Unit filename="gslwrap/gslwrap_test_min.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

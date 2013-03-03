@@ -1,5 +1,6 @@
 #include <boost/progress.hpp>
 #include <iostream>
+#include <cmath>
 
 
 namespace {

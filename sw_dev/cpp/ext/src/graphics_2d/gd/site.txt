@@ -1,0 +1,4 @@
+http://www.libgd.org/
+https://bitbucket.org/pierrejoye/gd-libgd
+http://www.boutell.com/gd/
+

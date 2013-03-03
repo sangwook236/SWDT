@@ -1,7 +1,10 @@
 #include <boost/interprocess/interprocess_fwd.hpp>
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <boost/interprocess/managed_shared_memory.hpp>
+#if defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
+#elif defined(_WINDOWS)
 #include <boost/interprocess/managed_windows_shared_memory.hpp>
+#endif
 #include <iostream>
 #include <stdexcept>
 

@@ -1,4 +1,8 @@
+#if defined(_WINDOWS)
 #include <cvm/cvm.h>
+#else
+#include <cvm.h>
+#endif
 #include <string>
 
 

@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include <yaml-cpp/yaml.h>
 #include <fstream>
+#include <iostream>
 #include <cassert>
 
 
@@ -184,11 +185,13 @@ void emit_existing_nodes()
 	YAML::Emitter emitter;
 
 	YAML::Parser parser(fin);
+/*
 	YAML::Node doc;
 	while (parser.GetNextDocument(doc))
 	{
 		// TODO [implement] >>
 	}
+*/
 }
 
 }  // local

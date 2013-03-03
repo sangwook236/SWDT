@@ -57,11 +57,11 @@ struct point_mutable_traits<local::CPoint>
 			point.y = value;
 	}
 
-	static inline local::CPoint construct(int x_value, int y_value)
+	static inline local::CPoint construct(const int &x_value, const int &y_value)
 	{
 		local::CPoint retval;
 		retval.x = x_value;
-		retval.y = y_value; 
+		retval.y = y_value;
 		return retval;
 	}
 };
@@ -362,13 +362,13 @@ void polygon_set()
 	assert(gtl::equivalence((ps + ps2) - (ps * ps2), ps ^ ps2));
 
 	// hmm, subtracting the intersection from the union is equivalent to the xor, all this in one line of code,
-	// now we're programming in bullet time (by the way, xor is implemented as one pass, not composition)  
+	// now we're programming in bullet time (by the way, xor is implemented as one pass, not composition)
 
 	// just for fun
 	gtl::rectangle_data<int> rect;
 	assert(gtl::extents(rect, ps ^ ps2));
 	assert(gtl::area(rect) == 225);
-	assert(gtl::area(rect ^ (ps ^ ps2)) == gtl::area(rect) - gtl::area(ps ^ ps2)); 
+	assert(gtl::area(rect ^ (ps ^ ps2)) == gtl::area(rect) - gtl::area(ps ^ ps2));
 }
 
 template <typename PolygonSet>
@@ -379,7 +379,7 @@ void custom_polygon_set()
 	PolygonSet ps2;
 	ps2 += gtl::rectangle_data<int>(5, 5, 15, 15);
 	PolygonSet ps3;
-	gtl::assign(ps3, ps * ps2); 
+	gtl::assign(ps3, ps * ps2);
 	PolygonSet ps4;
 	ps4 += ps + ps2;
 
@@ -389,7 +389,7 @@ void custom_polygon_set()
 	gtl::rectangle_data<int> rect;
 	assert(gtl::extents(rect, ps ^ ps2));
 	assert(gtl::area(rect) == 225);
-	assert(gtl::area(rect ^ (ps ^ ps2)) == gtl::area(rect) - gtl::area(ps ^ ps2)); 
+	assert(gtl::area(rect ^ (ps ^ ps2)) == gtl::area(rect) - gtl::area(ps ^ ps2));
 }
 
 // this function works with both the 90 and 45 versions of connectivity extraction algorithm
@@ -445,7 +445,7 @@ struct lookup_polygon_set_type
 
 template <typename T, typename T2>
 struct lookup_polygon_set_type<gtl::property_merge_90<T, T2> >
-{ 
+{
 	typedef gtl::polygon_90_set_data<int> type;
 };
 

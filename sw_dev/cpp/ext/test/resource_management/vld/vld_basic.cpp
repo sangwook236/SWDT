@@ -1,5 +1,6 @@
 //#include <vld/vld.h>   // don't need to include here. the header file is included in main.cpp
 #include <iostream>
+#include <cstdlib>
 
 
 namespace {
@@ -24,7 +25,7 @@ void new_delete(const bool leakage)
 {
 	//
 	int *p1 = new int;
-	
+
 	*p1 = 100;
 
 	if (!leakage)

@@ -1,14 +1,17 @@
+//#define NO_BLAS_WRAP
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-//#define NO_BLAS_WRAP
+#if defined(_WINDOWS)
 #include <clapack/f2c.h>
 //#include <clapack/blaswrap.h>
 #include <clapack/clapack.h>
-
-#if defined(abs)
-#undef abs
+#else
+#include <f2c.h>
+#include <clapack.h>
+#include <cblas.h>
 #endif
 
 #if defined(__cplusplus)
@@ -16,6 +19,10 @@ extern "C" {
 #endif
 
 #include <iostream>
+
+#if defined(abs)
+#undef abs
+#endif
 
 
 namespace {
@@ -43,14 +50,14 @@ void cblas()
 		std::cout << std::endl;
 	}
 
-#if 0
-	cblas_dgemv(CblasRowMajor, CblasNoTrans, 3, 3, 1.0, m, 3, x, 1, 0.0, y, 1);
-#else
-	long rdim = 3, cdim = 3;
+#if 1
+	integer rdim = 3, cdim = 3;
 	double alpha = 1.0, beta = 0.0;
-	long lda = rdim;
-	long incx = 1, incy = 1;
-	dgemv_("No transpose", &rdim, &cdim, &alpha, (double *)m, &lda, (double *)x, &incx, &beta, y, &incy);
+	integer lda = rdim;
+	integer incx = 1, incy = 1;
+	dgemv_((char *)"No transpose", &rdim, &cdim, &alpha, (double *)m, &lda, (double *)x, &incx, &beta, y, &incy);
+#else
+	cblas_dgemv(CblasRowMajor, CblasNoTrans, 3, 3, 1.0, m, 3, x, 1, 0.0, y, 1);
 #endif
 
 	for (int i = 0; i < 3; ++i)

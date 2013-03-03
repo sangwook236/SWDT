@@ -1,3 +1,4 @@
+#include <typeinfo>
 #if 0
 #include <boost/gil/gil_all.hpp>
 #else
@@ -175,7 +176,7 @@ void convolution()
 
 	// use a resizable kernel
 	const boost::gil::kernel_1d<float> kernel2(gaussian_1, 9 ,4);
-	
+
 	boost::gil::convolve_rows<boost::gil::rgb32f_pixel_t>(boost::gil::const_view(img), kernel2, boost::gil::view(img));
 	boost::gil::convolve_cols<boost::gil::rgb32f_pixel_t>(boost::gil::const_view(img), kernel2, boost::gil::view(img));
 	boost::gil::jpeg_write_view("./boost_data/image/lena_rgb.convolution2_out.jpg", boost::gil::view(img));

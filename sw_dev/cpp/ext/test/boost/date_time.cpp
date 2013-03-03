@@ -17,14 +17,19 @@ void gregorian_basic()
 	//boost::gregorian::date::ymd_type today = boost::gregorian::day_clock::local_day_ymd();
 	//boost::gregorian::date today = boost::gregorian::day_clock::universal_day();
 	//boost::gregorian::date::ymd_type today = boost::gregorian::day_clock::universal_day_ymd();
-	if (d2 >= today) {}  // date comparison operators
+	if (d2 >= today)  // date comparison operators
+	{
+	}
 
 	boost::gregorian::date_period thisWeek(d1, d2);
-	if (thisWeek.contains(today)) {}  // do something
-	
+	if (thisWeek.contains(today))  // do something
+	{
+	}
+
 	// iterate and print the week
 	boost::gregorian::day_iterator itr(weekstart);
-	while (itr <= weekend) {
+	while (itr <= weekend)
+	{
 		std::cout << (*itr) << std::endl;
 		++itr;
 	}
@@ -56,7 +61,7 @@ void posix_time_basic()
 	boost::posix_time::ptime t2 = t1 - boost::posix_time::minutes(4) + boost::posix_time::seconds(2);
 	boost::posix_time::time_duration td = t2 - t1;
 
-	std::cout << boost::posix_time::to_simple_string(t2) << " - " 
+	std::cout << boost::posix_time::to_simple_string(t2) << " - "
 		<< boost::posix_time::to_simple_string(t1) << " = "
 		<< boost::posix_time::to_simple_string(td) << std::endl;
 

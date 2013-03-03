@@ -139,7 +139,7 @@ void conversion()
 			const double m = boost::numeric::bounds<double>::highest();
 			const int z = boost::numeric::converter<int, double>::convert(m);  // By default throws positive_overflow()
 		}
-		catch (const boost::numeric::positive_overflow const &e)
+		catch (const boost::numeric::positive_overflow &e)
 		{
 			std::cout << "exception #1: " << e.what() << std::endl;
 		}

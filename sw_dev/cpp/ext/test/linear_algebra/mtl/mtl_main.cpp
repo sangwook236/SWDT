@@ -5,29 +5,29 @@
 namespace {
 namespace local {
 
-typedef double value_t;
-typedef mtl::matrix<value_t, mtl::rectangle<>, mtl::dense<>, mtl::column_major>::type matrix_t;
-typedef mtl::dense1D<mtl::complex<value_t> > vector_t;
+typedef double value_type;
+typedef mtl::dense2D<value_type, mtl::rectangle<>, mtl::dense<>, mtl::column_major>::type matrix_type;
+typedef mtl::dense1D<mtl::complex<value_type> > vector_type;
 
-void print_matrix(const matrix_t &mat)
+void print_matrix(const matrix_type &mat)
 {
-	for (matrix_t::const_iterator i = mat.begin(); i != mat.end(); ++i)
+	for (matrix_type::const_iterator i = mat.begin(); i != mat.end(); ++i)
 	{
 		std::cout << '\t';
-		for (matrix_t::OneD::const_iterator j = (*i).begin(); j != (*i).end(); ++j)
+		for (matrix_type::OneD::const_iterator j = (*i).begin(); j != (*i).end(); ++j)
 			std::cout << *j << ", ";
 		std::cout << std::endl;
 	}
 /*
-	const matrix_t::size_type nrow = mat.nrows();
+	const matrix_type::size_type nrow = mat.nrows();
 	for (int i = 0; i < nrow; ++i)
 	{
 		std::cout << '\t';
-		const mtl::rows_type<matrix_t>::type row = rows(mat);
+		const mtl::rows_type<matrix_type>::type row = rows(mat);
 		double ab = rows(mat)[0];
-		//for (mtl::rows_type<matrix_t>::type::const_iterator it = row.begin(); it != row.end(); ++it)
+		//for (mtl::rows_type<matrix_type>::type::const_iterator it = row.begin(); it != row.end(); ++it)
 		//	std::cout << *it << ", ";
-		//mtl::rows_type<matrix_t>::type::size_type aa = mtl::max_index(row);
+		//mtl::rows_type<matrix_type>::type::size_type aa = mtl::max_index(row);
 		//for (int j = 0; j < mtl::max_index(row); ++j)
 		//	std::cout << row[j] << ", ";
 		std::cout << std::endl;
@@ -45,7 +45,7 @@ namespace my_mtl {
 int mtl_main(int argc, char *argv[])
 {
 	const int dim = 2;
-	local::matrix_t mat(dim, dim);
+	local::matrix_type mat(dim, dim);
 	mat(0, 0) = 1;
 	mat(0, 1) = 4;
 	mat(1, 0) = 9;
@@ -54,8 +54,8 @@ int mtl_main(int argc, char *argv[])
 	std::cout << "mat:" << std::endl;
 	local::print_matrix(mat);
 
-	matrix_t eigvec_l(dim, dim), eigvec_r(dim, dim);
-	vector_t eigval(dim);
+	local::matrix_type eigvec_l(dim, dim), eigvec_r(dim, dim);
+	local::vector_type eigval(dim);
 	const int ret = mtl2lapack::geev(mtl2lapack::GEEV_CALC_BOTH, mat, eigval, eigvec_l, eigvec_r);
 
 	std::cout << "right eigenvector:" << std::endl;

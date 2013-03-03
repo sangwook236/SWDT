@@ -1,4 +1,5 @@
 //#include "stdafx.h"
+#include <cstddef>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_monte.h>
 #include <gsl/gsl_monte_plain.h>
@@ -6,7 +7,6 @@
 #include <gsl/gsl_monte_vegas.h>
 #include <iostream>
 #include <cmath>
-#include <cstddef>
 
 
 namespace {
@@ -25,7 +25,7 @@ namespace local {
 
 const double exact = 1.3932039296856768591842462603255;
 
-double g(double *k, size_t dim, void *params)
+double g(double *k, std::size_t dim, void *params)
 {
 	double A = 1.0 / (M_PI * M_PI * M_PI);
 	return A / (1.0 - std::cos(k[0]) * std::cos(k[1]) * std::cos(k[2]));
@@ -52,7 +52,7 @@ void monte_carlo_integration()
 	double xu[3] = { M_PI, M_PI, M_PI };
 
 	gsl_monte_function G = { &local::g, 3, NULL };
-	const size_t calls = 500000;
+	const std::size_t calls = 500000;
 
 	gsl_rng_env_setup();
 	const gsl_rng_type *T = gsl_rng_default;

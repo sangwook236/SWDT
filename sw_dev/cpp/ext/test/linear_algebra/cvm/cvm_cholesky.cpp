@@ -1,4 +1,8 @@
+#if defined(_WINDOWS)
 #include <cvm/cvm.h>
+#else
+#include <cvm.h>
+#endif
 #include <string>
 
 
@@ -40,7 +44,7 @@ void cholesky_scmatrix()
 		std::cout << c << std::endl;
 		std::cout << ~c * c - m;
 	}
-	catch (const cvm::cvmexception& e) 
+	catch (const cvm::cvmexception& e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}

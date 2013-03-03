@@ -1,4 +1,5 @@
 #include <boost/multi_array.hpp>
+#include <typeinfo>
 #include <iostream>
 #include <cstring>
 
@@ -222,7 +223,7 @@ void array_view()
 	array_type::array_view<2>::type myview2 = marrA[ indices[range_type(0,2)][1][range_type(0,4,2)] ];
 	std::cout << "type id of array view: " << typeid(myview2).name() << std::endl;
 
-	array_type::array_view<3>::type myview3 = marrA[ boost::indices[range_type()][range_type() < 3 ][1 <= range_type().stride(2) <= 3] ];
+	array_type::array_view<3>::type myview3 = marrA[ boost::indices[range_type()][range_type() < 3L][1L <= range_type().stride(2) <= 3L] ];
 
 	//-------------------------------------------------------------------------
 	// testing sub-array

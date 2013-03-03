@@ -1,4 +1,5 @@
 //#include "stdafx.h"
+#include <string>
 #include <gsl/gsl_blas.h>
 #include <iostream>
 #include <cmath>

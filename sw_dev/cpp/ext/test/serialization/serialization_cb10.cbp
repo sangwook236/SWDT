@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/serialization" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/serialization_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -35,19 +35,30 @@
 			<Add option="-fexceptions" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
-			<Add directory="/usr/local/include" />
+			<Add directory="/usr/local/include/" />
 		</Compiler>
 		<Linker>
+			<Add library="protobuf" />
 			<Add library="yaml-cpp" />
-			<Add directory="/usr/local/lib" />
+			<Add library="boost_date_time" />
+			<Add directory="/usr/local/lib/" />
 		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="protobuf/protobuf_main.cpp" />
 		<Unit filename="protobuf/protobuf_person.pb.cc" />
 		<Unit filename="protobuf/protobuf_person.pb.h" />
 		<Unit filename="protobuf/protobuf_simple_example.cpp" />
-		<Unit filename="yaml/yaml_basic_emitting.cpp" />
-		<Unit filename="yaml/yaml_basic_parsing.cpp" />
+		<Unit filename="yaml/yaml_basic_emitting.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="yaml/yaml_basic_parsing.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="yaml/yaml_configuration_example.cpp" />
+		<Unit filename="yaml/yaml_example_0_5" />
+		<Unit filename="yaml/yaml_example_0_5.cpp" />
 		<Unit filename="yaml/yaml_main.cpp" />
 		<Extensions>
 			<code_completion />

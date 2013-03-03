@@ -9,6 +9,7 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 
 
 namespace {
@@ -181,7 +182,7 @@ void time_point()
 
 	{
 		// delay for at least 500 nanoseconds
-		auto go = boost::chrono::steady_clock::now() + boost::chrono::nanoseconds(500);
+		auto boost::chrono::steady_clock::time_point go = boost::chrono::steady_clock::now() + boost::chrono::nanoseconds(500);
 
 		std::cout << "waiting for 500 nano-seconds ..." << std::endl;
 		while (boost::chrono::steady_clock::now() < go)
@@ -238,7 +239,7 @@ void io()
 		in >> d;
 		assert(in.good());
 		std::cout << "d == seconds(4): " << std::boolalpha << (d == boost::chrono::seconds(4)) << std::endl;
-		
+
 		in >> d;
 		assert(in.fail());
 		std::cout << "d == seconds(4): " << std::boolalpha << (d == boost::chrono::seconds(4)) << std::endl;
@@ -249,7 +250,7 @@ void io()
 
 		std::stringstream io;
 		io << t0;
-		
+
 		boost::chrono::high_resolution_clock::time_point t1;
 		io >> t1;
 		assert(!io.fail());

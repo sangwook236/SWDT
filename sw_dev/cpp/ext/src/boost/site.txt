@@ -1,0 +1,4 @@
+http://www.boost.org/
+
+http://sourceforge.net/adobe/genimglib/
+http://mathema.tician.de/software/boost-bindings

@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/threading" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/threading_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -34,6 +34,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Linker>
+			<Add library="tbb" />
+		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="tbb/tbb_complex_loop_parallelization.cpp" />
 		<Unit filename="tbb/tbb_main.cpp" />

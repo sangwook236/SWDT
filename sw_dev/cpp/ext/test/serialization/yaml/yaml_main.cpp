@@ -14,14 +14,18 @@ namespace my_yaml {
 void basic_parsing();
 void basic_emitting();
 
+void configuration_example();
+
 }  // namespace my_yaml
 
 int yaml_main(int argc, char *argv[])
 {
 	try
 	{
-		//my_yaml::basic_parsing();
-		my_yaml::basic_emitting();
+		//my_yaml::basic_parsing();  // for the old API
+		//my_yaml::basic_emitting();  // for the old API
+
+		my_yaml::configuration_example();
 	}
 	catch (const YAML::RepresentationException &e)
 	{

@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/graphics_2d" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/graphics_2d_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -33,12 +33,16 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add option="-DUNICODE" />
-			<Add option="-D_UNICODE" />
+			<Add directory="/usr/local/include/" />
 		</Compiler>
 		<Linker>
 			<Add library="cairo" />
+			<Add library="IL" />
+			<Add library="ILU" />
+			<Add library="ILUT" />
+			<Add library="gd" />
 			<Add directory="/usr/lib/i386-linux-gcc" />
+			<Add directory="/usr/local/lib/" />
 		</Linker>
 		<Unit filename="cairo/cairo_basic_operation.cpp" />
 		<Unit filename="cairo/cairo_drawing_illustration.cpp" />

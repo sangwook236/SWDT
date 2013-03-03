@@ -1,5 +1,6 @@
 #include <boost/timer/timer.hpp>
 #include <iostream>
+#include <cmath>
 
 
 namespace {

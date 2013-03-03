@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/logging" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/logging_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -35,11 +35,14 @@
 			<Add option="-fexceptions" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
+			<Add directory="/usr/local/include/" />
 		</Compiler>
 		<Linker>
 			<Add library="log4cxx" />
 			<Add library="boost_thread" />
 			<Add library="boost_unit_test_framework" />
+			<Add library="boost_system" />
+			<Add directory="/usr/local/lib/" />
 		</Linker>
 		<Unit filename="log4cxx/log4cxx_main.cpp" />
 		<Unit filename="main.cpp" />

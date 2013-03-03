@@ -44,7 +44,7 @@ void fill_element(Matrix& m)
 	v2[0] = 4; v2[1] = 1; v2[2] = 3;
 
 	// Use element_matrix and separate vectors for row and column indices
-	ins << mtl::element_matrix(m2, v1, v2);
+	ins << mtl::matrix::element_matrix(m2, v1, v2);
 }
 
 void mtl_matrix_element()
@@ -58,9 +58,9 @@ void mtl_matrix_element()
 
 	// Fill the matrices generically
 	fill_element(A); fill_element(B); fill_element(C);
-	std::cout << "A is \n" << mtl::with_format(A, width, precision)
-		  << "\nB is \n" << mtl::with_format(B, width, precision)
-		  << "\nC is \n" << mtl::with_format(C, width, precision);
+	std::cout << "A is \n" << mtl::matrix::with_format(A, width, precision)
+		  << "\nB is \n" << mtl::matrix::with_format(B, width, precision)
+		  << "\nC is \n" << mtl::matrix::with_format(C, width, precision);
 }
 
 
@@ -155,7 +155,7 @@ void mtl_matrix_operation()
 		mtl::hessian_setup(C, 2.0);
 
 		// A = B * B;
-		mtl::mult(B, B, A);
+		mtl::matrix::mult(B, B, A);
 
 		A = B * B;  // use BLAS
 		A = B * C;  // use recursion + tiling from MTL4
@@ -194,11 +194,11 @@ void mtl_matrix_function()
 
 		// Fill imaginary part of the matrix
 		A *= complex_type(1, -1);
-		std::cout << "A is\n" << mtl::with_format(A, 7, 1) << "\n";
+		std::cout << "A is\n" << mtl::matrix::with_format(A, 7, 1) << "\n";
 
-		std::cout << "trace(A) is " << mtl::trace(A) << "\n";
-		std::cout << "conj(A) is\n" << mtl::with_format(mtl::conj(A), 7, 1) << "\n";
-		std::cout << "trans(A) is\n" << mtl::with_format(mtl::trans(A), 7, 1) << "\n";
+		std::cout << "trace(A) is " << mtl::matrix::trace(A) << "\n";
+		std::cout << "conj(A) is\n" << mtl::matrix::with_format(mtl::conj(A), 7, 1) << "\n";
+		std::cout << "trans(A) is\n" << mtl::matrix::with_format(mtl::matrix::trans(A), 7, 1) << "\n";
 	}
 
 	{
@@ -214,7 +214,7 @@ void mtl_matrix_function()
 
 		std::cout << "one_norm(B) is " << mtl::one_norm(B) << "\n";
 		std::cout << "infinity_norm(B) is " << mtl::infinity_norm(B) << "\n";
-		std::cout << "frobenius_norm(B) is " << mtl::frobenius_norm(B) << "\n";
+		std::cout << "frobenius_norm(B) is " << mtl::matrix::frobenius_norm(B) << "\n";
 	}
 }
 
