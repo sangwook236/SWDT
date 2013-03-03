@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/feature_analysis" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/feature_analysis_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -33,11 +33,19 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="/usr/local/include/" />
 		</Compiler>
+		<Linker>
+			<Add library="opencv_core" />
+			<Add directory="/usr/local/lib/" />
+		</Linker>
 		<Unit filename="lsd/lsd_main.cpp" />
 		<Unit filename="lsd_lib/lsd.cpp" />
 		<Unit filename="lsd_lib/lsd.h" />
-		<Unit filename="lsd_lib/lsd_call_example.cpp" />
+		<Unit filename="lsd_lib/lsd_call_example.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="lsd_lib/lsd_cmd.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="pictorial_structures_revisited/parteval.cpp" />

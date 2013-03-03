@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/machine_vision" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/machine_vision_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -37,7 +37,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="/usr/local/include" />
+			<Add directory="/usr/local/include/" />
 		</Compiler>
 		<Linker>
 			<Add library="opencv_core" />
@@ -53,9 +53,12 @@
 			<Add library="opencv_contrib" />
 			<Add library="opencv_gpu" />
 			<Add library="opencv_ts" />
+			<Add library="opencv_nonfree" />
 			<Add library="ccv" />
 			<Add library="vl" />
-			<Add directory="/usr/local/lib" />
+			<Add library="boost_timer" />
+			<Add library="boost_filesystem" />
+			<Add directory="/usr/local/lib/" />
 		</Linker>
 		<Unit filename="ccv/ccv_daisy.cpp" />
 		<Unit filename="ccv/ccv_dpm.cpp" />

@@ -22,7 +22,7 @@ void lsd_example()
 	for (int x = 0; x < X; ++x)
 		for (int y = 0; y < Y; ++y)
 			image[x + y * X] = (x < X / 2) ? 0.0 : 64.0;  // image(x, y)
-	
+
 	// LSD call
 	boost::timer::cpu_timer timer;
 
@@ -65,7 +65,7 @@ void lsd_image_test()
 	cv::namedWindow(windowName2);
 
 	{
-		cv::Mat &img = cv::imread(filename, CV_LOAD_IMAGE_COLOR);
+		cv::Mat img = cv::imread(filename, CV_LOAD_IMAGE_COLOR);
 		if (img.empty())
 		{
 			std::cout << "fail to load image file: " << filename << std::endl;

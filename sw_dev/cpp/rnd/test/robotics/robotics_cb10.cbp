@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/robotics" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/robotics_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -33,6 +33,23 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="/usr/include/mrpt/base/include/" />
+			<Add directory="/usr/include/mrpt/bayes/include/" />
+			<Add directory="/usr/include/mrpt/detectors/include/" />
+			<Add directory="/usr/include/mrpt/graphs/include/" />
+			<Add directory="/usr/include/mrpt/graphslam/include/" />
+			<Add directory="/usr/include/mrpt/gui/include/" />
+			<Add directory="/usr/include/mrpt/hmtslam/include/" />
+			<Add directory="/usr/include/mrpt/hwdrivers/include/" />
+			<Add directory="/usr/include/mrpt/maps/include/" />
+			<Add directory="/usr/include/mrpt/obs/include/" />
+			<Add directory="/usr/include/mrpt/opengl/include/" />
+			<Add directory="/usr/include/mrpt/reactivenav/include/" />
+			<Add directory="/usr/include/mrpt/scanmatching/include/" />
+			<Add directory="/usr/include/mrpt/slam/include/" />
+			<Add directory="/usr/include/mrpt/topography/include/" />
+			<Add directory="/usr/include/mrpt/vision/include/" />
+			<Add directory="/usr/include/mrpt/mrpt-config/" />
 		</Compiler>
 		<Unit filename="main.cpp" />
 		<Unit filename="mrpt/mrpt_dijkstra.cpp" />

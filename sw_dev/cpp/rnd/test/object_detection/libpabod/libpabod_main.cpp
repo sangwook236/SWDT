@@ -43,15 +43,18 @@ void simple_example()
 	Pabod detector(model_filename.c_str());
 
 	//
-	std::cout << "start detecting ..." << std::endl;
-	boost::timer::cpu_timer timer;
-
 	const float threshold = POSITIVE_INF;
 	CvMat *detection_result = NULL;
-	const float usedThreshold = detector.detect(img, threshold, &detection_result);
 
-	const boost::timer::cpu_times const elapsed_times(timer.elapsed());
-	std::cout << "elapsed times: " << std::fixed << ((elapsed_times.system + elapsed_times.user) * 1e-9) << " sec" << std::endl;
+	std::cout << "start detecting ..." << std::endl;
+	{
+        boost::timer::cpu_timer timer;
+
+        const float usedThreshold = detector.detect(img, threshold, &detection_result);
+
+        const boost::timer::cpu_times elapsed_times(timer.elapsed());
+        std::cout << "elapsed times: " << std::fixed << ((elapsed_times.system + elapsed_times.user) * 1e-9) << " sec" << std::endl;
+	}
 	std::cout << "end detecting ..." << std::endl;
 
 	//
