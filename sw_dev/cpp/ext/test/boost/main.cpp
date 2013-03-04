@@ -52,7 +52,6 @@ int main(int argc, char *argv[])
 	void ublas();
 	void math_bindings();
 	void numeric_bindings();
-	void mtl_matrix();
 	void multiprecision();
 
 	void polygon();
@@ -132,7 +131,6 @@ int main(int argc, char *argv[])
 			//ublas();
 			//math_bindings();
 			//numeric_bindings();
-			//mtl_matrix();
 
 			//multiprecision();  // not yet implemented
 

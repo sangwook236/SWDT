@@ -81,9 +81,6 @@
     <ClCompile Include="math_statistical_distributions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mtl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="multi_array.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

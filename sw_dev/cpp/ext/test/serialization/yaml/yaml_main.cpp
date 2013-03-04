@@ -11,10 +11,14 @@ namespace local {
 
 namespace my_yaml {
 
+#if 0
+// for the old APIs
 void basic_parsing();
 void basic_emitting();
-
+#else
 void configuration_example();
+void example_0_5();
+#endif
 
 }  // namespace my_yaml
 
@@ -22,10 +26,14 @@ int yaml_main(int argc, char *argv[])
 {
 	try
 	{
-		//my_yaml::basic_parsing();  // for the old API
-		//my_yaml::basic_emitting();  // for the old API
-
+#if 0
+		// for the old APIs
+		my_yaml::basic_parsing();
+		my_yaml::basic_emitting();
+#else
 		my_yaml::configuration_example();
+		my_yaml::example_0_5();
+#endif
 	}
 	catch (const YAML::RepresentationException &e)
 	{

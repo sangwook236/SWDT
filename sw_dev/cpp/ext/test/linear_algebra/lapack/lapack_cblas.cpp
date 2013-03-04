@@ -4,10 +4,15 @@
 extern "C" {
 #endif
 
-#if defined(_WINDOWS)
+#if defined(_WINDOWS) || defined(WIN32)
 #include <clapack/f2c.h>
 //#include <clapack/blaswrap.h>
 #include <clapack/clapack.h>
+
+#if defined(abs)
+#undef abs
+#endif
+
 #else
 #include <f2c.h>
 #include <clapack.h>
@@ -19,10 +24,6 @@ extern "C" {
 #endif
 
 #include <iostream>
-
-#if defined(abs)
-#undef abs
-#endif
 
 
 namespace {

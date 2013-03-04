@@ -65,5 +65,11 @@
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="yaml\yaml_configuration_example.cpp">
+      <Filter>Source Files\yaml</Filter>
+    </ClCompile>
+    <ClCompile Include="yaml\yaml_example_0_5.cpp">
+      <Filter>Source Files\yaml</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

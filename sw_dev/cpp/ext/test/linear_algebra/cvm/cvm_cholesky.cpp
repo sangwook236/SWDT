@@ -1,4 +1,4 @@
-#if defined(_WINDOWS)
+#if defined(_WINDOWS) || defined(WIN32)
 #include <cvm/cvm.h>
 #else
 #include <cvm.h>

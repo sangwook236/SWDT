@@ -223,7 +223,11 @@ void array_view()
 	array_type::array_view<2>::type myview2 = marrA[ indices[range_type(0,2)][1][range_type(0,4,2)] ];
 	std::cout << "type id of array view: " << typeid(myview2).name() << std::endl;
 
+#if defined(_MSC_VER)
+	array_type::array_view<3>::type myview3 = marrA[ boost::indices[range_type()][range_type() < 3][1 <= range_type().stride(2) <= 3] ];
+#else
 	array_type::array_view<3>::type myview3 = marrA[ boost::indices[range_type()][range_type() < 3L][1L <= range_type().stride(2) <= 3L] ];
+#endif
 
 	//-------------------------------------------------------------------------
 	// testing sub-array

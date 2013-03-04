@@ -97,6 +97,12 @@
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mtl\mtl_matrix_operation.cpp">
+      <Filter>Source Files\mtl</Filter>
+    </ClCompile>
+    <ClCompile Include="mtl\mtl_vector_operation.cpp">
+      <Filter>Source Files\mtl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

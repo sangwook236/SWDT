@@ -7,7 +7,7 @@ namespace {
 namespace local {
 
 template <typename Matrix>
-void fill_element(Matrix& m)
+void fill_element(Matrix &m)
 {
 	// Matrices are not initialized by default
 	m = 0.0;
@@ -47,7 +47,7 @@ void fill_element(Matrix& m)
 	ins << mtl::matrix::element_matrix(m2, v1, v2);
 }
 
-void mtl_matrix_element()
+void matrix_element()
 {
 	const int width = 5, precision = 2;
 
@@ -65,7 +65,7 @@ void mtl_matrix_element()
 
 
 template <typename Matrix>
-void fill_insert(Matrix& m)
+void fill_insert(Matrix &m)
 {
 	// Matrices are not initialized by default
 	m = 0.0;
@@ -82,7 +82,7 @@ void fill_insert(Matrix& m)
 }
 
 template <typename Matrix>
-void modify_insert(Matrix& m)
+void modify_insert(Matrix &m)
 {
 	// Type of m's elements
 	typedef typename mtl::Collection<Matrix>::value_type value_type;
@@ -106,7 +106,7 @@ void modify_insert(Matrix& m)
 	// Destructor of ins sets final state of m
 }
 
-void mtl_insert()
+void insert()
 {
 	// Matrices of different types
 	mtl::compressed2D<double> A(3, 3);
@@ -123,7 +123,7 @@ void mtl_insert()
 		  << "\nB is \n" << B << "\nC is \n" << C;
 }
 
-void mtl_matrix_operation()
+void matrix_operation()
 {
 	{
 		const unsigned n = 3;
@@ -183,7 +183,7 @@ void mtl_matrix_operation()
 	}
 }
 
-void mtl_matrix_function()
+void matrix_function()
 {
 	{
 		typedef std::complex<double> complex_type;
@@ -194,11 +194,11 @@ void mtl_matrix_function()
 
 		// Fill imaginary part of the matrix
 		A *= complex_type(1, -1);
-		std::cout << "A is\n" << mtl::matrix::with_format(A, 7, 1) << "\n";
+		std::cout << "A is\n" << mtl::matrix::with_format(A, 7, 1) << std::endl;
 
-		std::cout << "trace(A) is " << mtl::matrix::trace(A) << "\n";
-		std::cout << "conj(A) is\n" << mtl::matrix::with_format(mtl::conj(A), 7, 1) << "\n";
-		std::cout << "trans(A) is\n" << mtl::matrix::with_format(mtl::matrix::trans(A), 7, 1) << "\n";
+		std::cout << "trace(A) is " << mtl::matrix::trace(A) << std::endl;
+		std::cout << "conj(A) is\n" << mtl::matrix::with_format(mtl::conj(A), 7, 1) << std::endl;
+		std::cout << "trans(A) is\n" << mtl::matrix::with_format(mtl::matrix::trans(A), 7, 1) << std::endl;
 	}
 
 	{
@@ -212,125 +212,27 @@ void mtl_matrix_function()
 		mtl::matrix::hessian_setup(C, 2.0);
 		mtl::matrix::hessian_setup(D, 3.0);
 
-		std::cout << "one_norm(B) is " << mtl::one_norm(B) << "\n";
-		std::cout << "infinity_norm(B) is " << mtl::infinity_norm(B) << "\n";
-		std::cout << "frobenius_norm(B) is " << mtl::matrix::frobenius_norm(B) << "\n";
+		std::cout << "one_norm(B) is " << mtl::one_norm(B) << std::endl;
+		std::cout << "infinity_norm(B) is " << mtl::infinity_norm(B) << std::endl;
+		std::cout << "frobenius_norm(B) is " << mtl::matrix::frobenius_norm(B) << std::endl;
 	}
 }
 
-void mtl_vector_operation()
+}  // namespace local
+}  // unnamed namespace
+
+namespace my_mtl {
+
+void matrix_operation()
 {
-	using namespace mtl;
-
-	{
-		// Define dense vector of doubles with 10 elements all set to 0.0.
-		mtl::dense_vector<double> v(10, 0.0);
-
-		// Set element 7 to 3.0.
-		v[7] = 3.0;
-
-		std::cout << "v is " << v << "\n";
-	}
-
-	{
-		typedef std::complex<float> complex_type;
-		// Define dense vector of complex with 7 elements.
-		mtl::dense_vector<complex_type, mtl::vector::parameters<mtl::tag::row_major> > v(7);
-
-		// Set all elements to 3+2i
-		v = complex_type(3.0, 2.0);
-		std::cout << "v is " << v << "\n";
-
-		// Set all elements to 5+0i
-		v = complex_type(5.0); // 5.0;
-		std::cout << "v is " << v << "\n";
-
-		v = complex_type(6); // 6;
-		std::cout << "v is " << v << "\n";
-	}
-
-	{
-		typedef std::complex<double> complex_type;
-		mtl::dense_vector<complex_type> u(10), v(10);
-		mtl::dense_vector<double> w(10), x(10, 4.0);
-
-		for (size_t i = 0; i < mtl::vector::size(v); ++i)
-			v[i] = complex_type(i+1, 10-i), w[i] = 2 * i + 2;
-
-		u = v + w + x;
-		std::cout << "u is " << u << "\n";
-
-		u -= 3 * w;
-		std::cout << "u is " << u << "\n";
-
-		u += dot(v, w) * w + 4.0 * v + 2 * w;
-		std::cout << "u is " << u << "\n";
-
-		std::cout << "i * w is " << complex_type(0,1) * w << "\n";
-	}
+	local::matrix_element();
+	local::insert();
+	local::matrix_operation();
+	local::matrix_function();
 }
 
-void mtl_vector_function()
+void matrix_vector_operation()
 {
-	using namespace mtl;
-
-	{
-		typedef std::complex<double> complex_type;
-		mtl::dense_vector<complex_type> v(10000), x(10, complex_type(3, 2));
-		mtl::dense_vector<double> w(10000);
-
-		for (size_t i = 0; i < mtl::vector::size(v); ++i)
-			v[i] = complex_type(i+1, 10000-i), w[i] = 2 * i + 2;
-
-		std::cout << "dot(v, w) is " << mtl::dot(v, w) << "\n";
-		std::cout << "dot<6>(v, w) is " << mtl::dot<6>(v, w) << "\n";
-		std::cout << "conj(x) is " << mtl::conj(x) << "\n";
-	}
-
-	{
-		mtl::dense_vector<double> v(100);
-
-		for (size_t i = 0; i < mtl::vector::size(v); ++i)
-			v[i] = double(i+1) * std::pow(-1.0, (int)i);
-
-		std::cout << "max(v) is " << mtl::max(v) << "\n";
-		std::cout << "min(v) is " << mtl::min(v) << "\n";
-		std::cout << "max<6>(v) is " <<  mtl::max<6>(v) << "\n";
-	}
-
-	{
-		typedef std::complex<double> complex_type;
-		mtl::dense_vector<complex_type> v(100);
-
-		for (size_t i = 0; i < mtl::vector::size(v); ++i)
-			v[i] = complex_type(i+1, 100-i);
-
-		std::cout << "sum(v) is " << mtl::sum(v) << "\n";
-		std::cout << "product(v) is " << mtl::product(v) << "\n";
-		std::cout << "sum<6>(v) is " << mtl::sum<6>(v) << "\n";
-	}
-
-	{
-		typedef std::complex<double> complex_type;
-		mtl::dense_vector<complex_type> v(10000);
-
-		// Initialize vector
-		for (size_t i = 0; i < mtl::vector::size(v); ++i)
-			v[i] = complex_type(i+1, 10000-i);
-
-		std::cout << "one_norm(v) is " << mtl::one_norm(v) << "\n";
-		std::cout << "two_norm(v) is " << mtl::two_norm(v) << "\n";
-		std::cout << "infinity_norm(v) is " << mtl::infinity_norm(v) << "\n";
-
-		// Unroll computation of two-norm to 6 independent statements
-		std::cout << "two_norm<6>(v) is " << mtl::two_norm<6>(v) << "\n";
-	}
-}
-
-void mtl_matrix_vector_operation()
-{
-	using namespace mtl;
-
 	const unsigned xd = 2, yd = 5, n = xd * yd;
 	mtl::dense2D<double> A(n, n);
 	mtl::compressed2D<double> B(n, n);
@@ -346,22 +248,8 @@ void mtl_matrix_vector_operation()
 	v += A * w;
 	w = B * v;
 
-	std::cout << "v is " << v << "\n";
-	std::cout << "w is " << w << "\n";
+	std::cout << "v is " << v << std::endl;
+	std::cout << "w is " << w << std::endl;
 }
 
-}  // namespace local
-}  // unnamed namespace
-
-void mtl_matrix()
-{
-	//local::mtl_matrix_element();
-	//local::mtl_insert();
-	//local::mtl_matrix_operation();
-	//local::mtl_matrix_function();
-
-	//local::mtl_vector_operation();
-	//local::mtl_vector_function();
-
-	local::mtl_matrix_vector_operation();
-}
+}  // namespace my_mtl
