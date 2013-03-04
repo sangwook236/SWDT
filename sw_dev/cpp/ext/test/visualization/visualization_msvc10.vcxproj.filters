@@ -13,6 +13,12 @@
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mathgl\mathgl_main.cpp">
+      <Filter>Source Files\mathgl</Filter>
+    </ClCompile>
+    <ClCompile Include="vtk\vtk_main.cpp">
+      <Filter>Source Files\vtk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -40,6 +46,12 @@
     </Filter>
     <Filter Include="Source Files\graphviz">
       <UniqueIdentifier>{773c6429-c32c-4e1c-8eb1-4f9d4ced89b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vtk">
+      <UniqueIdentifier>{90902c45-923a-4f32-b72b-03dbb43a00c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mathgl">
+      <UniqueIdentifier>{0714ee07-d7b4-4f5a-9dd4-c4599b7e35c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
