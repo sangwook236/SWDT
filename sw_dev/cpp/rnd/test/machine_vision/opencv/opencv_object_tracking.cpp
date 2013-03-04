@@ -291,7 +291,7 @@ namespace my_opencv {
 
 void object_tracking()
 {
-	const std::string avi_filename("machine_vision_data\\opencv\\osp_test.wmv");
+	const std::string avi_filename("./machine_vision_data/opencv/osp_test.wmv");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 
@@ -352,7 +352,7 @@ void object_tracking()
 			objectTracker.initialize(frame->width, frame->height);
 
 #if defined(_INITIALIZE_HISTOGRAM_FROM_FILE)
-			const std::string targetImageFileName("machine_vision_data\\opencv\\target_osp_robot.png");
+			const std::string targetImageFileName("./machine_vision_data/opencv/target_osp_robot.png");
 			IplImage *targetImage = cvLoadImage(targetImageFileName.c_str());
 
 			objectTracker.updateHistogram(targetImage, minHue, maxHue, minSaturation, maxSaturation, MIN(minValue, maxValue), MAX(minValue, maxValue));

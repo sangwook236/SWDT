@@ -15,14 +15,14 @@ void human_detection_using_hog()
 {
 	std::list<std::string> filenames;
 
-	filenames.push_back("machine_vision_data\\opencv\\human_01.jpg");
-	filenames.push_back("machine_vision_data\\opencv\\human_02.jpg");
-	filenames.push_back("machine_vision_data\\opencv\\human_03.jpg");
-	filenames.push_back("machine_vision_data\\opencv\\human_04.jpg");
-	filenames.push_back("machine_vision_data\\opencv\\human_05.jpg");
-	filenames.push_back("machine_vision_data\\opencv\\human_06.jpg");
-	filenames.push_back("machine_vision_data\\opencv\\human_07.jpg");
-	filenames.push_back("machine_vision_data\\opencv\\human_08.jpg");
+	filenames.push_back("./machine_vision_data/opencv/human_01.jpg");
+	filenames.push_back("./machine_vision_data/opencv/human_02.jpg");
+	filenames.push_back("./machine_vision_data/opencv/human_03.jpg");
+	filenames.push_back("./machine_vision_data/opencv/human_04.jpg");
+	filenames.push_back("./machine_vision_data/opencv/human_05.jpg");
+	filenames.push_back("./machine_vision_data/opencv/human_06.jpg");
+	filenames.push_back("./machine_vision_data/opencv/human_07.jpg");
+	filenames.push_back("./machine_vision_data/opencv/human_08.jpg");
 
 	const std::string windowName("human detection");
 	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);

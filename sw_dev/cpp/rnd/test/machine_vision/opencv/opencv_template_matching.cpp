@@ -10,10 +10,10 @@ namespace local {
 
 void normalized_cross_correlation()
 {
-	const std::string filename1("machine_vision_data\\opencv\\melon_target.png");
-	const std::string filename2("machine_vision_data\\opencv\\melon_1.png");
-	//const std::string filename2("machine_vision_data\\opencv\\melon_2.png");
-	//const std::string filename2("machine_vision_data\\opencv\\melon_3.png");
+	const std::string filename1("./machine_vision_data/opencv/melon_target.png");
+	const std::string filename2("./machine_vision_data/opencv/melon_1.png");
+	//const std::string filename2("./machine_vision_data/opencv/melon_2.png");
+	//const std::string filename2("./machine_vision_data/opencv/melon_3.png");
 
 	const cv::Mat &templ0 = cv::imread(filename1, CV_LOAD_IMAGE_GRAYSCALE);
 	cv::Mat image(cv::imread(filename2, CV_LOAD_IMAGE_GRAYSCALE));

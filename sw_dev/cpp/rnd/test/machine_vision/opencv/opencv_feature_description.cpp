@@ -391,21 +391,21 @@ namespace my_opencv {
 void feature_description()
 {
 #if 1
-	const std::string img1_name("machine_vision_data\\opencv\\box.png");
-	const std::string img2_name("machine_vision_data\\opencv\\box_in_scene.png");
+	const std::string img1_name("./machine_vision_data/opencv/box.png");
+	const std::string img2_name("./machine_vision_data/opencv/box_in_scene.png");
 
-	const std::string modelFilename("machine_vision_data\\opencv\\fern_model.xml.gz");
-	const std::string trainImagesFilename("machine_vision_data\\opencv\\calonder_train_images_filename.txt");
-	const std::string classifierFilename("machine_vision_data\\opencv\\calonder_classfier.txt");
+	const std::string modelFilename("./machine_vision_data/opencv/fern_model.xml.gz");
+	const std::string trainImagesFilename("./machine_vision_data/opencv/calonder_train_images_filename.txt");
+	const std::string classifierFilename("./machine_vision_data/opencv/calonder_classfier.txt");
 #elif 0
-	const std::string img1_name("machine_vision_data\\opencv\\melon_target.png");
-	const std::string img2_name("machine_vision_data\\opencv\\melon_1.png");
-	//const std::string img2_name("machine_vision_data\\opencv\\melon_2.png");
-	//const std::string img2_name("machine_vision_data\\opencv\\melon_3.png");
+	const std::string img1_name("./machine_vision_data/opencv/melon_target.png");
+	const std::string img2_name("./machine_vision_data/opencv/melon_1.png");
+	//const std::string img2_name("./machine_vision_data/opencv/melon_2.png");
+	//const std::string img2_name("./machine_vision_data/opencv/melon_3.png");
 
-	const std::string modelFilename("machine_vision_data\\opencv\\fern_model.xml.gz");
-	const std::string trainImagesFilename("machine_vision_data\\opencv\\calonder_train_images_filename.txt");
-	const std::string classifierFilename("machine_vision_data\\opencv\\calonder_classfier.txt");
+	const std::string modelFilename("./machine_vision_data/opencv/fern_model.xml.gz");
+	const std::string trainImagesFilename("./machine_vision_data/opencv/calonder_train_images_filename.txt");
+	const std::string classifierFilename("./machine_vision_data/opencv/calonder_classfier.txt");
 #endif
 
 	//std::cout << "reading the images..." << std::endl;

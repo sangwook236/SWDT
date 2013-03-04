@@ -34,11 +34,13 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add directory="/usr/local/include/mocapy" />
+			<Add directory="/usr/local/include/" />
 		</Compiler>
 		<Linker>
 			<Add library="Mocapy" />
 			<Add library="lapack" />
 			<Add library="boost_serialization" />
+			<Add directory="/usr/local/lib/" />
 		</Linker>
 		<Unit filename="bp_vision/bp_vision_main.cpp" />
 		<Unit filename="bp_vision_lib/convolve.h" />

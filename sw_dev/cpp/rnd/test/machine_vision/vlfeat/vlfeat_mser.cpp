@@ -74,7 +74,7 @@ namespace my_vlfeat {
 
 void mser()
 {
-	const std::string input_filename = "machine_vision_data\\vlfeat\\box.pgm";
+	const std::string input_filename = "./machine_vision_data/vlfeat/box.pgm";
 
 	// algorithm parameters
 	double delta = -1;
@@ -110,7 +110,7 @@ void mser()
 		std::cout << "mser:    basename is " << basename << std::endl;
 	}
 
-	// open output files 
+	// open output files
 	err = vl_file_meta_open(&piv, basename, "w");  if (!local::werr(err, piv.name)) return;
 	err = vl_file_meta_open(&frm, basename, "w");  if (!local::werr(err, frm.name)) return;
 	err = vl_file_meta_open(&met, basename, "w");  if (!local::werr(err, met.name)) return;

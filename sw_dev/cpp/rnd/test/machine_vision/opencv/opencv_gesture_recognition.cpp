@@ -1513,10 +1513,10 @@ void gesture_recognition()
 	capture.set(CV_CAP_PROP_FRAME_WIDTH, imageWidth);
 	capture.set(CV_CAP_PROP_FRAME_HEIGHT, imageHeight);
 #else
-	//const std::string avi_filename("machine_vision_data\\opencv\\flycap-0001.avi");
-	//const std::string avi_filename("machine_vision_data\\opencv\\tree.avi");
-	const std::string avi_filename("machine_vision_data\\opencv\\s01_g01_1_ccw_normal.avi");
-	
+	//const std::string avi_filename("./machine_vision_data/opencv/flycap-0001.avi");
+	//const std::string avi_filename("./machine_vision_data/opencv/tree.avi");
+	const std::string avi_filename("./machine_vision_data/opencv/s01_g01_1_ccw_normal.avi");
+
 	//const int imageWidth = 640, imageHeight = 480;
 
 	cv::VideoCapture capture(avi_filename);

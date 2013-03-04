@@ -55,11 +55,11 @@ void sobel(const cv::Mat &gray, cv::Mat &edge)
 void save_ref_hand_image()
 {
 	std::list<std::string> img_filenames;
-	img_filenames.push_back("machine_vision_data\\opencv\\hand_detection_ref_01.jpg");
-	img_filenames.push_back("machine_vision_data\\opencv\\hand_detection_ref_02.jpg");
-	img_filenames.push_back("machine_vision_data\\opencv\\hand_detection_ref_03.jpg");
-	img_filenames.push_back("machine_vision_data\\opencv\\hand_detection_ref_04.jpg");
-	img_filenames.push_back("machine_vision_data\\opencv\\hand_detection_ref_05.jpg");
+	img_filenames.push_back("./machine_vision_data/opencv/hand_detection_ref_01.jpg");
+	img_filenames.push_back("./machine_vision_data/opencv/hand_detection_ref_02.jpg");
+	img_filenames.push_back("./machine_vision_data/opencv/hand_detection_ref_03.jpg");
+	img_filenames.push_back("./machine_vision_data/opencv/hand_detection_ref_04.jpg");
+	img_filenames.push_back("./machine_vision_data/opencv/hand_detection_ref_05.jpg");
 
 	const std::string windowName1("hand detection - input");
 	const std::string windowName2("hand detection - edge");
@@ -374,11 +374,11 @@ void detect_hand_by_motion()
 		return;
 	}
 
-	const std::string ref_imge_filename("machine_vision_data\\opencv\\hand_detection_ref_01_edge.jpg");
-	//const std::string ref_imge_filename("machine_vision_data\\opencv\\hand_detection_ref_02_edge.jpg");
-	//const std::string ref_imge_filename("machine_vision_data\\opencv\\hand_detection_ref_03_edge.jpg");
-	//const std::string ref_imge_filename("machine_vision_data\\opencv\\hand_detection_ref_04_edge.jpg");
-	//const std::string ref_imge_filename("machine_vision_data\\opencv\\hand_detection_ref_05_edge.jpg");
+	const std::string ref_imge_filename("./machine_vision_data/opencv/hand_detection_ref_01_edge.jpg");
+	//const std::string ref_imge_filename("./machine_vision_data/opencv/hand_detection_ref_02_edge.jpg");
+	//const std::string ref_imge_filename("./machine_vision_data/opencv/hand_detection_ref_03_edge.jpg");
+	//const std::string ref_imge_filename("./machine_vision_data/opencv/hand_detection_ref_04_edge.jpg");
+	//const std::string ref_imge_filename("./machine_vision_data/opencv/hand_detection_ref_05_edge.jpg");
 
 	const cv::Mat &ref_edge0 = cv::imread(ref_imge_filename, CV_LOAD_IMAGE_GRAYSCALE);
 	if (ref_edge0.empty())
@@ -571,8 +571,8 @@ void hand_detection_by_skin_color()
 	// skin color
 	const cv::Scalar hsv_min(0, 30, 80, 0);
 	const cv::Scalar hsv_max(20, 150, 255, 0);
-    //const cv::Scalar hsv_min(0, 45, 0, 0); 
-    //const cv::Scalar hsv_max(20, 255, 255, 0);            
+    //const cv::Scalar hsv_min(0, 45, 0, 0);
+    //const cv::Scalar hsv_max(20, 255, 255, 0);
     //const cv::Scalar YCrCb_min(0, 131, 80, 0);
     //const cv::Scalar YCrCb_max(255, 185, 135, 0);
 

@@ -12,16 +12,16 @@ namespace local {
 void chamfer_matching()
 {
 #if 0
-	const std::string filename1("machine_vision_data\\opencv\\logo.png");
-	const std::string filename2("machine_vision_data\\opencv\\logo_in_clutter.png");
+	const std::string filename1("./machine_vision_data/opencv/logo.png");
+	const std::string filename2("./machine_vision_data/opencv/logo_in_clutter.png");
 #elif 1
-	const std::string filename1("machine_vision_data\\opencv\\box.png");
-	const std::string filename2("machine_vision_data\\opencv\\box_in_scene.png");
+	const std::string filename1("./machine_vision_data/opencv/box.png");
+	const std::string filename2("./machine_vision_data/opencv/box_in_scene.png");
 #elif 0
-	const std::string filename1("machine_vision_data\\opencv\\melon_target.png");
-	//const std::string filename2("machine_vision_data\\opencv\\melon_1.png");
-	//const std::string filename2("machine_vision_data\\opencv\\melon_2.png");
-	const std::string filename2("machine_vision_data\\opencv\\melon_3.png");
+	const std::string filename1("./machine_vision_data/opencv/melon_target.png");
+	//const std::string filename2("./machine_vision_data/opencv/melon_1.png");
+	//const std::string filename2("./machine_vision_data/opencv/melon_2.png");
+	const std::string filename2("./machine_vision_data/opencv/melon_3.png");
 #endif
 
 	cv::Mat templ(cv::imread(filename1, CV_LOAD_IMAGE_GRAYSCALE));

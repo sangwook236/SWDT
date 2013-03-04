@@ -18,14 +18,14 @@
 namespace {
 namespace local {
 
-//const std::string img1_filename = "machine_vision_data\\opencv\\synthesized_training_image1.bmp";
-//const std::string img2_filename = "machine_vision_data\\opencv\\synthesized_training_image2.bmp";
-//const std::string img2_filename = "machine_vision_data\\opencv\\synthesized_training_image3.bmp";
-//const std::string img1_filename = "machine_vision_data\\opencv\\synthesized_testing_image1.bmp";
-//const std::string img2_filename = "machine_vision_data\\opencv\\synthesized_testing_image2.bmp";
-//const std::string img2_filename = "machine_vision_data\\opencv\\synthesized_testing_image3.bmp";
-const std::string img1_filename = "machine_vision_data\\opencv\\sample3_01.jpg";
-const std::string img2_filename = "machine_vision_data\\opencv\\sample3_02.jpg";
+//const std::string img1_filename = "./machine_vision_data/opencv/synthesized_training_image1.bmp";
+//const std::string img2_filename = "./machine_vision_data/opencv/synthesized_training_image2.bmp";
+//const std::string img2_filename = "./machine_vision_data/opencv/synthesized_training_image3.bmp";
+//const std::string img1_filename = "./machine_vision_data/opencv/synthesized_testing_image1.bmp";
+//const std::string img2_filename = "./machine_vision_data/opencv/synthesized_testing_image2.bmp";
+//const std::string img2_filename = "./machine_vision_data/opencv/synthesized_testing_image3.bmp";
+const std::string img1_filename = "./machine_vision_data/opencv/sample3_01.jpg";
+const std::string img2_filename = "./machine_vision_data/opencv/sample3_02.jpg";
 
 // copy from histogram.cpp
 void draw_histogram_1D(const cv::MatND &hist, const int binCount, const double maxVal, const int binWidth, const int maxHeight, cv::Mat &histImg)
@@ -125,7 +125,7 @@ void block_matching_optical_flow_algorithm()
 	//CvCapture *capture = cvCaptureFromCAM(camId);
 	CvCapture *capture = cvCreateCameraCapture(camId);
 #else
-	const std::string avi_filename("machine_vision_data\\opencv\\tree.avi");
+	const std::string avi_filename("./machine_vision_data/opencv/tree.avi");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 #endif
@@ -269,7 +269,7 @@ void Horn_Schunck_optical_flow_algorithm()
 	//CvCapture *capture = cvCaptureFromCAM(camId);
 	CvCapture *capture = cvCreateCameraCapture(camId);
 #else
-	const std::string avi_filename("machine_vision_data\\opencv\\tree.avi");
+	const std::string avi_filename("./machine_vision_data/opencv/tree.avi");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 #endif
@@ -411,7 +411,7 @@ void Lucas_Kanade_optical_flow_algorithm()
 	//CvCapture *capture = cvCaptureFromCAM(camId);
 	CvCapture *capture = cvCreateCameraCapture(camId);
 #else
-	const std::string avi_filename("machine_vision_data\\opencv\\tree.avi");
+	const std::string avi_filename("./machine_vision_data/opencv/tree.avi");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 #endif
@@ -579,7 +579,7 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_1()
 	//CvCapture *capture = cvCaptureFromCAM(camId);
 	CvCapture *capture = cvCreateCameraCapture(camId);
 #else
-	const std::string avi_filename("machine_vision_data\\opencv\\tree.avi");
+	const std::string avi_filename("./machine_vision_data/opencv/tree.avi");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 #endif

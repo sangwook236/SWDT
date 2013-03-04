@@ -59,6 +59,8 @@
 			<Add library="opencv_ts" />
 			<Add library="opencv_video" />
 			<Add library="opencv_videostab" />
+			<Add library="v4l2" />
+			<Add library="v4l1compat" />
 			<Add directory="/usr/local/lib/" />
 		</Linker>
 		<Unit filename="bgscollection/bgscollection_main.cpp" />

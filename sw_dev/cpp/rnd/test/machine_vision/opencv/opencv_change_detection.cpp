@@ -19,7 +19,7 @@ void background_segmentation()
 	//CvCapture *capture = cvCaptureFromCAM(camId);
 	CvCapture *capture = cvCreateCameraCapture(camId);
 #else
-	const std::string avi_filename("machine_vision_data\\opencv\\tree.avi");
+	const std::string avi_filename("./machine_vision_data/opencv/tree.avi");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 #endif
@@ -112,7 +112,7 @@ void change_detection_using_codebook()
 	//CvCapture *capture = cvCaptureFromCAM(camId);
 	CvCapture *capture = cvCreateCameraCapture(camId);
 #else
-	const std::string avi_filename("machine_vision_data\\opencv\\tree.avi");
+	const std::string avi_filename("./machine_vision_data/opencv/tree.avi");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 #endif

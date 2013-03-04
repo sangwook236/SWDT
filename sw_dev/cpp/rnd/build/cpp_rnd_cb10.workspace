@@ -6,14 +6,14 @@
 		<Project filename="../test/gesture_recognition/gesture_recognition_cb10.cbp" />
 		<Project filename="../test/graph_analysis/graph_analysis_cb10.cbp" />
 		<Project filename="../test/machine_learning/machine_learning_cb10.cbp" />
-		<Project filename="../test/machine_vision/machine_vision_cb10.cbp" />
+		<Project filename="../test/machine_vision/machine_vision_cb10.cbp" active="1" />
 		<Project filename="../test/matlab/matlab_cb10.cbp" />
 		<Project filename="../test/neural_network/neural_network_cb10.cbp" />
 		<Project filename="../test/object_detection/object_detection_cb10.cbp" />
 		<Project filename="../test/optimization/optimization_cb10.cbp" />
 		<Project filename="../test/pcl/pcl_cb10.cbp" />
 		<Project filename="../test/pose_estimation/pose_estimation_cb10.cbp" />
-		<Project filename="../test/robotics/robotics_cb10.cbp" active="1" />
+		<Project filename="../test/robotics/robotics_cb10.cbp" />
 		<Project filename="../test/probabilistic_graphical_model/probabilistic_graphical_model_cb10.cbp" />
 		<Project filename="../test/robust_estimation/robust_estimation_cb10.cbp" />
 		<Project filename="../test/search_algorithm/search_algorithm_cb10.cbp" />

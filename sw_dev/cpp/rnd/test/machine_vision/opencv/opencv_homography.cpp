@@ -153,10 +153,10 @@ namespace my_opencv {
 
 void homography()
 {
- 	const std::string targetImageFileName("machine_vision_data\\opencv\\melon_target.png");
-	const std::string inputImageFileName("machine_vision_data\\opencv\\melon_1.png");
-	//const std::string inputImageFileName("machine_vision_data\\opencv\\melon_2.png");
-	//const std::string inputImageFileName("machine_vision_data\\opencv\\melon_3.png");
+ 	const std::string targetImageFileName("./machine_vision_data/opencv/melon_target.png");
+	const std::string inputImageFileName("./machine_vision_data/opencv/melon_1.png");
+	//const std::string inputImageFileName("./machine_vision_data/opencv/melon_2.png");
+	//const std::string inputImageFileName("./machine_vision_data/opencv/melon_3.png");
 
 	const char *targetWindowName = "homography: target image";
 	const char *inputWindowName = "homography: input image";

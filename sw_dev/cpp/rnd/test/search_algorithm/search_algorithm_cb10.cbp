@@ -34,6 +34,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Linker>
+			<Add library="ann" />
+		</Linker>
 		<Unit filename="ann/ann_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>

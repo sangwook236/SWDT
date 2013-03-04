@@ -87,7 +87,7 @@ void normalize_histogram(cv::MatND &hist, const double factor)
 
 void histogram_1D()
 {
-	const std::string imgName("machine_vision_data\\opencv\\lena_gray.bmp");
+	const std::string imgName("./machine_vision_data/opencv/lena_gray.bmp");
 
 	//
 	const cv::Mat &src = cv::imread(imgName, CV_LOAD_IMAGE_GRAYSCALE);
@@ -156,7 +156,7 @@ void histogram_1D()
 
 void histogram_2D()
 {
-	const std::string imgName("machine_vision_data\\opencv\\lena_rgb.bmp");
+	const std::string imgName("./machine_vision_data/opencv/lena_rgb.bmp");
 
 	//
 	const cv::Mat &src = cv::imread(imgName, CV_LOAD_IMAGE_COLOR);

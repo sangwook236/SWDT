@@ -87,7 +87,7 @@ void color_correction()
 void color_correction_test_1()
 {
 #if 0
-	const std::string filename("machine_vision_data\\opencv\\color_correction_0.png");
+	const std::string filename("./machine_vision_data/opencv/color_correction_0.png");
 	const int PATCH_WIDTH = 200, PATCH_HEIGHT = 200;
 	const int WHITE_BALANCE_PATCH_NUM = 3;
 	const int COLOR_CORRECTION_PATCH_NUM = 3;
@@ -99,7 +99,7 @@ void color_correction_test_1()
 	const cv::Rect greenRect(360, 360, PATCH_WIDTH, PATCH_HEIGHT);
 	const cv::Rect blueRect(670, 360, PATCH_WIDTH, PATCH_HEIGHT);
 #elif 1
-	const std::string filename("machine_vision_data\\opencv\\color_correction_1.jpg");
+	const std::string filename("./machine_vision_data/opencv/color_correction_1.jpg");
 	const int PATCH_WIDTH = 450, PATCH_HEIGHT = 450;
 	const int WHITE_BALANCE_PATCH_NUM = 3;
 	const int COLOR_CORRECTION_PATCH_NUM = 3;
@@ -111,7 +111,7 @@ void color_correction_test_1()
 	const cv::Rect greenRect(1050, 1210, PATCH_WIDTH, PATCH_HEIGHT);
 	const cv::Rect blueRect(1870, 1210, PATCH_WIDTH, PATCH_HEIGHT);
 #elif 0
-	const std::string filename("machine_vision_data\\opencv\\color_correction_2.jpg");
+	const std::string filename("./machine_vision_data/opencv/color_correction_2.jpg");
 	const int PATCH_WIDTH = 450, PATCH_HEIGHT = 450;
 	const int WHITE_BALANCE_PATCH_NUM = 3;
 	const int COLOR_CORRECTION_PATCH_NUM = 3;
@@ -123,7 +123,7 @@ void color_correction_test_1()
 	const cv::Rect greenRect(1050, 1210, PATCH_WIDTH, PATCH_HEIGHT);
 	const cv::Rect blueRect(1870, 1210, PATCH_WIDTH, PATCH_HEIGHT);
 #elif 0
-	const std::string filename("machine_vision_data\\opencv\\color_correction_3.jpg");
+	const std::string filename("./machine_vision_data/opencv/color_correction_3.jpg");
 	const int PATCH_WIDTH = 450, PATCH_HEIGHT = 450;
 	const int WHITE_BALANCE_PATCH_NUM = 3;
 	const int COLOR_CORRECTION_PATCH_NUM = 3;
@@ -347,7 +347,7 @@ void color_correction_test_1()
 void color_correction_test_2()
 {
 #if 0
-	const std::string filename("machine_vision_data\\opencv\\color_correction_0.png");
+	const std::string filename("./machine_vision_data/opencv/color_correction_0.png");
 	const int PATCH_WIDTH = 200, PATCH_HEIGHT = 200;
 	const int WHITE_BALANCE_PATCH_NUM = 3;
 	const int COLOR_CORRECTION_PATCH_NUM = 3;
@@ -359,7 +359,7 @@ void color_correction_test_2()
 	const cv::Rect greenRect(360, 360, PATCH_WIDTH, PATCH_HEIGHT);
 	const cv::Rect blueRect(670, 360, PATCH_WIDTH, PATCH_HEIGHT);
 #elif 1
-	const std::string filename("machine_vision_data\\opencv\\color_correction_1.jpg");
+	const std::string filename("./machine_vision_data/opencv/color_correction_1.jpg");
 	const int PATCH_WIDTH = 450, PATCH_HEIGHT = 450;
 	const int WHITE_BALANCE_PATCH_NUM = 3;
 	const int COLOR_CORRECTION_PATCH_NUM = 3;
@@ -371,7 +371,7 @@ void color_correction_test_2()
 	const cv::Rect greenRect(1050, 1210, PATCH_WIDTH, PATCH_HEIGHT);
 	const cv::Rect blueRect(1870, 1210, PATCH_WIDTH, PATCH_HEIGHT);
 #elif 0
-	const std::string filename("machine_vision_data\\opencv\\color_correction_2.jpg");
+	const std::string filename("./machine_vision_data/opencv/color_correction_2.jpg");
 	const int PATCH_WIDTH = 450, PATCH_HEIGHT = 450;
 	const int WHITE_BALANCE_PATCH_NUM = 3;
 	const int COLOR_CORRECTION_PATCH_NUM = 3;
@@ -383,7 +383,7 @@ void color_correction_test_2()
 	const cv::Rect greenRect(1050, 1210, PATCH_WIDTH, PATCH_HEIGHT);
 	const cv::Rect blueRect(1870, 1210, PATCH_WIDTH, PATCH_HEIGHT);
 #elif 0
-	const std::string filename("machine_vision_data\\opencv\\color_correction_3.jpg");
+	const std::string filename("./machine_vision_data/opencv/color_correction_3.jpg");
 	const int PATCH_WIDTH = 450, PATCH_HEIGHT = 450;
 	const int WHITE_BALANCE_PATCH_NUM = 3;
 	const int COLOR_CORRECTION_PATCH_NUM = 3;

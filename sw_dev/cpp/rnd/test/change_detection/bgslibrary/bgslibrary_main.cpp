@@ -43,7 +43,7 @@ namespace local {
 
 void demo()
 {
-#if 1
+#if 0
 	const std::string avi_filename("./change_detection_data/video.avi");
 	cv::VideoCapture capture(avi_filename);
 #else

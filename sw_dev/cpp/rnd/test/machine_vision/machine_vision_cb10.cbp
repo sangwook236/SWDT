@@ -58,6 +58,8 @@
 			<Add library="vl" />
 			<Add library="boost_timer" />
 			<Add library="boost_filesystem" />
+			<Add library="v4l2" />
+			<Add library="v4l1compat" />
 			<Add directory="/usr/local/lib/" />
 		</Linker>
 		<Unit filename="ccv/ccv_daisy.cpp" />

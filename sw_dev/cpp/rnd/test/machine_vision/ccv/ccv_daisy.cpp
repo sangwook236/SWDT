@@ -21,9 +21,9 @@ namespace my_ccv {
 
 void daisy()
 {
-	const std::string image_filename("machine_vision_data\\ccv\\box.png");
-	//const std::string image_filename("machine_vision_data\\ccv\\book.png");
-	
+	const std::string image_filename("./machine_vision_data/ccv/box.png");
+	//const std::string image_filename("./machine_vision_data/ccv/book.png");
+
 	ccv_enable_default_cache();
 
 	ccv_dense_matrix_t *image = NULL;

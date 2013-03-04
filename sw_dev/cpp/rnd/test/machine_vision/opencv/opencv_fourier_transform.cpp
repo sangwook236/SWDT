@@ -50,20 +50,20 @@ void convolute_by_dft(const cv::Mat &A, const cv::Mat &B, cv::Mat &C)
 void dft_based_convolution()
 {
 	std::list<std::string> filenames;
-	filenames.push_back("machine_vision_data\\opencv\\pic1.png");
-	filenames.push_back("machine_vision_data\\opencv\\pic2.png");
-	filenames.push_back("machine_vision_data\\opencv\\pic3.png");
-	filenames.push_back("machine_vision_data\\opencv\\pic4.png");
-	filenames.push_back("machine_vision_data\\opencv\\pic5.png");
-	filenames.push_back("machine_vision_data\\opencv\\pic6.png");
-	filenames.push_back("machine_vision_data\\opencv\\stuff.jpg");
-	filenames.push_back("machine_vision_data\\opencv\\synthetic_face.png");
-	filenames.push_back("machine_vision_data\\opencv\\puzzle.png");
-	filenames.push_back("machine_vision_data\\opencv\\fruits.jpg");
-	filenames.push_back("machine_vision_data\\opencv\\lena_rgb.bmp");
-	filenames.push_back("machine_vision_data\\opencv\\hand_01.jpg");
-	filenames.push_back("machine_vision_data\\opencv\\hand_05.jpg");
-	filenames.push_back("machine_vision_data\\opencv\\hand_24.jpg");
+	filenames.push_back("./machine_vision_data/opencv/pic1.png");
+	filenames.push_back("./machine_vision_data/opencv/pic2.png");
+	filenames.push_back("./machine_vision_data/opencv/pic3.png");
+	filenames.push_back("./machine_vision_data/opencv/pic4.png");
+	filenames.push_back("./machine_vision_data/opencv/pic5.png");
+	filenames.push_back("./machine_vision_data/opencv/pic6.png");
+	filenames.push_back("./machine_vision_data/opencv/stuff.jpg");
+	filenames.push_back("./machine_vision_data/opencv/synthetic_face.png");
+	filenames.push_back("./machine_vision_data/opencv/puzzle.png");
+	filenames.push_back("./machine_vision_data/opencv/fruits.jpg");
+	filenames.push_back("./machine_vision_data/opencv/lena_rgb.bmp");
+	filenames.push_back("./machine_vision_data/opencv/hand_01.jpg");
+	filenames.push_back("./machine_vision_data/opencv/hand_05.jpg");
+	filenames.push_back("./machine_vision_data/opencv/hand_24.jpg");
 
 	const std::string windowName1("Fourier transform - #1");
 	const std::string windowName2("Fourier transform - #2");

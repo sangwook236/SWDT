@@ -6,12 +6,12 @@
 //----------------------------------------------------------------------
 // Copyright (c) 1997-2005 University of Maryland and Sunil Arya and
 // David Mount.  All Rights Reserved.
-// 
+//
 // This software and related documentation is part of the Approximate
 // Nearest Neighbor Library (ANN).  This software is provided under
 // the provisions of the Lesser GNU Public License (LGPL).  See the
 // file ../ReadMe.txt for further information.
-// 
+//
 // The University of Maryland (U.M.) and the authors make no
 // representations about the suitability or fitness of this software for
 // any purpose.  It is provided "as is" without express or implied
@@ -19,7 +19,11 @@
 //----------------------------------------------------------------------
 
 //#include "stdafx.h"
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+#include <ANN/ANN.h>					// ANN declarations
+#else
 #include <ann/ann.h>					// ANN declarations
+#endif
 #include <cstdlib>						// C standard library
 #include <cstdio>						// C I/O (for sscanf)
 #include <string>						// string manipulation
@@ -30,7 +34,7 @@
 //
 // This is a simple sample program for the ANN library.
 // After compiling, it can be run as follows.
-// 
+//
 // ann_sample [-d dim] [-max mpts] [-nn k] [-e eps] [-df data] [-qf query]
 //
 // where
@@ -220,7 +224,7 @@ int ann_main(int argc, char *argv[])
 	nPts = 0;									// read data points
 
 	std::cout << "Data Points:\n";
-	while (nPts < local::maxPts && local::readPt(*local::dataIn, dataPts[nPts])) 
+	while (nPts < local::maxPts && local::readPt(*local::dataIn, dataPts[nPts]))
 	{
 		local::printPt(std::cout, dataPts[nPts]);
 		nPts++;
