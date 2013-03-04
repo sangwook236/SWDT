@@ -2,7 +2,7 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
 		<Project filename="../test/application_configuration/application_configuration_cb10.cbp" />
-		<Project filename="../test/boost/boost_cb10.cbp" />
+		<Project filename="../test/boost/boost_cb10.cbp" active="1" />
 		<Project filename="../test/compression/compression_cb10.cbp" />
 		<Project filename="../test/computational_geometry/computational_geometry_cb10.cbp" />
 		<Project filename="../test/cppunit/cppunit_cb10.cbp" />
@@ -20,6 +20,6 @@
 		<Project filename="../test/stl/stl_cb10.cbp" />
 		<Project filename="../test/threading/threading_cb10.cbp" />
 		<Project filename="../test/visualization/visualization_cb10.cbp" />
-		<Project filename="../test/xml/xml_cb10.cbp" active="1" />
+		<Project filename="../test/xml/xml_cb10.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
