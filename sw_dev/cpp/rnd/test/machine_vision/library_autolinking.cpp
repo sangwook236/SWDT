@@ -82,7 +82,7 @@
 
 #	endif
 
-#elif defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
+#elif defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 
 #	if defined(__GUNC__)
 

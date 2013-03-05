@@ -1,0 +1,6 @@
+[-] Building (MSVC)
+	-. source file의 확장자를 cpp로 변경해야 함.
+	-. MSVC를 위한 project or make file을 제공하지 않음.
+		static library project를 만들어서 사용해야 함.
+		==> 많은 compile error가 발생하지만 대부분이 casting 관련 오류임.
+			GDK or GTK 관련 오류는 주석 처리함.

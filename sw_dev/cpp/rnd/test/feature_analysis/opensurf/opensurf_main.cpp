@@ -9,21 +9,17 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace sift {
+namespace my_opensurf {
 
-void extract_feature();
-void display_feature();
-void match_feature();
+void example();
 
-}  // namespace sift
+}  // namespace my_opensurf
 
-int sift_main(int argc, char *argv[])
+int opensurf_main(int argc, char *argv[])
 {
 	try
 	{
-		//sift::extract_feature();
-		//sift::display_feature();
-		sift::match_feature();
+		my_opensurf::example();
 	}
 	catch (const cv::Exception &e)
 	{

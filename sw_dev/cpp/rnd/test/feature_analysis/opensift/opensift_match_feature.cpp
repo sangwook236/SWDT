@@ -1,17 +1,9 @@
-/*
-Detects SIFT features in two images and finds matches between them.
-
-Copyright (C) 2006  Rob Hess <hess@eecs.oregonstate.edu>
-
-@version 1.1.1-20070913
-*/
-
 //#include "stdafx.h"
-#include <sift/sift.h>
-#include <sift/imgfeatures.h>
-#include <sift/kdtree.h>
-#include <sift/utils.h>
-#include <sift/xform.h>
+#include <opensift/sift.h>
+#include <opensift/imgfeatures.h>
+#include <opensift/kdtree.h>
+#include <opensift/utils.h>
+#include <opensift/xform.h>
 
 #include <opencv/cv.h>
 #include <opencv/cxcore.h>
@@ -32,22 +24,23 @@ namespace local {
 /******************************** Globals ************************************/
 
 #if 0
-char *img1_file = ".\\feature_analysis_data\\sift\\beaver.png";
-char *img2_file = ".\\feature_analysis_data\\sift\\beaver_xform.png";
+char *img1_file = "./feature_analysis_data/sift/beaver.png";
+char *img2_file = "./feature_analysis_data/sift/beaver_xform.png";
 #elif 0
-char *img1_file = ".\\feature_analysis_data\\sift\\marker_pen_3.bmp";
-char *img2_file = ".\\feature_analysis_data\\sift\\marker_pen_test_image.bmp";
+char *img1_file = "./feature_analysis_data/sift/marker_pen_3.bmp";
+char *img2_file = "./feature_analysis_data/sift/marker_pen_test_image.bmp";
 #else
-char *img1_file = ".\\feature_analysis_data\\sift\\melon_target.png";
-char *img2_file = ".\\feature_analysis_data\\sift\\melon_3.png";
+char *img1_file = "./feature_analysis_data/sift/melon_target.png";
+char *img2_file = "./feature_analysis_data/sift/melon_3.png";
 #endif
-//char *img_output_file = ".\\feature_analysis_data\\sift\\marker_pen_sift_match_result_3.bmp";
+//char *img_output_file = "./feature_analysis_data/sift/marker_pen_sift_match_result_3.bmp";
 
 }  // namespace local
 }  // unnamed namespace
 
-namespace sift {
+namespace my_opensift {
 
+// [ref] ${OPENSIFT_HOME}/src/match.c
 void match_feature()
 {
 	IplImage *img1, *img2, *stacked;
@@ -131,4 +124,4 @@ void match_feature()
 	free(feat2);
 }
 
-}  // namespace sift
+}  // namespace my_opensift

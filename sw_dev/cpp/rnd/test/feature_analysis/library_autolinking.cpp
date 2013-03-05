@@ -4,13 +4,14 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "sift_libd.lib")
+#pragma comment(lib, "opensift_d.lib")
 #pragma comment(lib, "SiftGPU_d.lib")
-#pragma comment(lib, "surfWinDLL_d.lib")
+//#pragma comment(lib, "surfWinDLL_d.lib")
 
 #pragma comment(lib, "opencv_core243d.lib")
 #pragma comment(lib, "opencv_imgproc243d.lib")
 #pragma comment(lib, "opencv_highgui243d.lib")
+#pragma comment(lib, "opencv_calib3d243d.lib")
 
 #pragma comment(lib, "libmat.lib")
 #pragma comment(lib, "libmx.lib")
@@ -23,16 +24,18 @@
 #pragma comment(lib, "libprotobufd.lib")
 #pragma comment(lib, "libpng15_staticd.lib")
 #pragma comment(lib, "zlib.lib")
+#pragma comment(lib, "DevIL.lib")
 
 #		else
 
-#pragma comment(lib, "sift_lib.lib")
+#pragma comment(lib, "opensift.lib")
 #pragma comment(lib, "SiftGPU.lib")
-#pragma comment(lib, "surfWinDLL.lib")
+//#pragma comment(lib, "surfWinDLL.lib")
 
 #pragma comment(lib, "opencv_core243.lib")
 #pragma comment(lib, "opencv_imgproc243.lib")
 #pragma comment(lib, "opencv_highgui243.lib")
+#pragma comment(lib, "opencv_calib3d243.lib")
 
 #pragma comment(lib, "libmat.lib")
 #pragma comment(lib, "libmx.lib")
@@ -82,7 +85,7 @@
 
 #	endif
 
-#elif defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
+#elif defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 
 #	if defined(__GUNC__)
 

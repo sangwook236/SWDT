@@ -1,14 +1,6 @@
-/*
-Displays image features from a file on an image
-
-Copyright (C) 2006  Rob Hess <hess@eecs.oregonstate.edu>
-
-@version 1.1.1-20070913
-*/
-
 //#include "stdafx.h"
-#include <sift/imgfeatures.h>
-#include <sift/utils.h>
+#include <opensift/imgfeatures.h>
+#include <opensift/utils.h>
 
 #include <opencv/cxcore.h>
 #include <opencv/highgui.h>
@@ -20,17 +12,18 @@ namespace local {
 
 /******************************** Globals ************************************/
 
-char *feat_file = ".\\feature_analysis_data\\sift\\beaver.sift";
-char *img_file = ".\\feature_analysis_data\\sift\\beaver.png";
-//char *feat_file = ".\\feature_analysis_data\\sift\\marker_pen_2.sift";
-//char *img_file = ".\\feature_analysis_data\\sift\\marker_pen_2.bmp";
+char *feat_file = "./feature_analysis_data/sift/beaver.sift";
+char *img_file = "./feature_analysis_data/sift/beaver.png";
+//char *feat_file = "./feature_analysis_data/sift/marker_pen_2.sift";
+//char *img_file = "./feature_analysis_data/sift/marker_pen_2.bmp";
 const int feat_type = FEATURE_LOWE;
 
 }  // namespace local
 }  // unnamed namespace
 
-namespace sift {
+namespace my_opensift {
 
+// [ref] ${OPENSIFT_HOME}/src/dspfeat.c
 void display_feature()
 {
 	IplImage *img;
@@ -52,4 +45,4 @@ void display_feature()
 	cvWaitKey(0);
 }
 
-}  // namespace sift
+}  // namespace my_opensift

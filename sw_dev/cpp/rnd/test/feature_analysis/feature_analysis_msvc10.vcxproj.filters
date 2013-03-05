@@ -28,12 +28,6 @@
     <Filter Include="Header Files\surf">
       <UniqueIdentifier>{6e1a203c-9251-406a-b82f-dded2310d4b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\surf">
-      <UniqueIdentifier>{e31f65d4-9f45-4d9b-80a9-50b4eb4eb4fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\sift">
-      <UniqueIdentifier>{cd401707-8dc3-44f7-81da-a9b752bf3459}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\lsd_lib">
       <UniqueIdentifier>{075352ce-72ee-4374-aadf-99a0eb638cf3}</UniqueIdentifier>
     </Filter>
@@ -84,6 +78,15 @@
     </Filter>
     <Filter Include="Source Files\pictorial_structures_revisited_lib\libProtoBuf">
       <UniqueIdentifier>{bb978156-5b6b-4303-b811-7229c92b0bc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opensift">
+      <UniqueIdentifier>{cd401707-8dc3-44f7-81da-a9b752bf3459}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opensurf">
+      <UniqueIdentifier>{99ad5d5e-247d-4ed2-88a0-29c85f069cbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opensurf_lib">
+      <UniqueIdentifier>{a222243f-9f48-45de-b8f8-4a9951e868ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +237,30 @@
     <ClInclude Include="pictorial_structures_revisited_lib\libProtoBuf\protobuf_aux.hpp">
       <Filter>Source Files\pictorial_structures_revisited_lib\libProtoBuf</Filter>
     </ClInclude>
+    <ClInclude Include="opensurf_lib\fasthessian.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\integral.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\ipoint.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\kmeans.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\responselayer.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\surf.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\surflib.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\utils.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lsd_lib\lsd.cpp">
@@ -253,27 +280,6 @@
     </ClCompile>
     <ClCompile Include="siftgpu\siftgpu_main.cpp">
       <Filter>Source Files\siftgpu</Filter>
-    </ClCompile>
-    <ClCompile Include="sift\sift_display_feature.cpp">
-      <Filter>Source Files\sift</Filter>
-    </ClCompile>
-    <ClCompile Include="sift\sift_extract_feature.cpp">
-      <Filter>Source Files\sift</Filter>
-    </ClCompile>
-    <ClCompile Include="sift\sift_main.cpp">
-      <Filter>Source Files\sift</Filter>
-    </ClCompile>
-    <ClCompile Include="sift\sift_match_feature.cpp">
-      <Filter>Source Files\sift</Filter>
-    </ClCompile>
-    <ClCompile Include="surf\surf_imload.cpp">
-      <Filter>Source Files\surf</Filter>
-    </ClCompile>
-    <ClCompile Include="surf\surf_main.cpp">
-      <Filter>Source Files\surf</Filter>
-    </ClCompile>
-    <ClCompile Include="surf\surf_os_mapping.cpp">
-      <Filter>Source Files\surf</Filter>
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
@@ -382,6 +388,45 @@
     </ClCompile>
     <ClCompile Include="pictorial_structures_revisited\pictorial_structures_revisited_partapp.cpp">
       <Filter>Source Files\pictorial_structures_revisited</Filter>
+    </ClCompile>
+    <ClCompile Include="opensift\opensift_display_feature.cpp">
+      <Filter>Source Files\opensift</Filter>
+    </ClCompile>
+    <ClCompile Include="opensift\opensift_extract_feature.cpp">
+      <Filter>Source Files\opensift</Filter>
+    </ClCompile>
+    <ClCompile Include="opensift\opensift_main.cpp">
+      <Filter>Source Files\opensift</Filter>
+    </ClCompile>
+    <ClCompile Include="opensift\opensift_match_feature.cpp">
+      <Filter>Source Files\opensift</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf\opensurf_main.cpp">
+      <Filter>Source Files\opensurf</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\fasthessian.cpp">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\integral.cpp">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\ipoint.cpp">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\main.cpp">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\surf.cpp">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\utils.cpp">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf\opensurf_example.cpp">
+      <Filter>Source Files\opensurf</Filter>
+    </ClCompile>
+    <ClCompile Include="siftgpu\siftgpu_simple_example.cpp">
+      <Filter>Source Files\siftgpu</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

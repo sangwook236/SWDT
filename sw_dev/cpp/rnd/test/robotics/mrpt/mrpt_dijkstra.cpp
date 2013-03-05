@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include <mrpt/graphs/include/mrpt/graphs.h>
+#include <mrpt/graphs.h>
 #include <mrpt/gui.h>
 #include <map>
 

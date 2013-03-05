@@ -10,9 +10,9 @@
 int main(int argc, char *argv[])
 {
 	int lsd_main(int argc, char *argv[]);
-	int sift_main(int argc, char *argv[]);
+	int opensift_main(int argc, char *argv[]);
 	int siftgpu_main(int argc, char *argv[]);
-	int surf_main(int argc, char *argv[]);
+	int opensurf_main(int argc, char *argv[]);
 	int pictorial_structures_revisited_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -22,12 +22,13 @@ int main(int argc, char *argv[])
 		//retval = lsd_main(argc, argv);
 
 		// local descriptor -------------------------------------
-		//retval = sift_main(argc, argv);
-		//retval = siftgpu_main(argc, argv);  // TODO [check] >> either of CUDA or GLSL has to be supported
-		//retval = surf_main(argc, argv);  // run-time error
+		//retval = opensift_main(argc, argv);
+		retval = siftgpu_main(argc, argv);
+
+		//retval = opensurf_main(argc, argv);
 		
 		// pictorial structures ---------------------------------
-		retval = pictorial_structures_revisited_main(argc, argv);
+		//retval = pictorial_structures_revisited_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

@@ -1,24 +1,7 @@
-/*
-This program detects image features using SIFT keypoints. For more info,
-refer to:
-
-Lowe, D. Distinctive image features from scale-invariant keypoints.
-International Journal of Computer Vision, 60, 2 (2004), pp.91--110.
-
-Copyright (C) 2006  Rob Hess <hess@eecs.oregonstate.edu>
-
-Note: The SIFT algorithm is patented in the United States and cannot be
-used in commercial products without a license from the University of
-British Columbia.  For more information, refer to the file LICENSE.ubc
-that accompanied this distribution.
-
-Version: 1.1.1-20070913
-*/
-
 //#include "stdafx.h"
-#include <sift/sift.h>
-#include <sift/imgfeatures.h>
-#include <sift/utils.h>
+#include <opensift/sift.h>
+#include <opensift/imgfeatures.h>
+#include <opensift/utils.h>
 
 #include <opencv/highgui.h>
 
@@ -29,10 +12,10 @@ namespace local {
 
 /******************************** Globals ************************************/
 
-char *img_file_name = ".\\feature_analysis_data\\sift\\beaver.png";
-char *out_file_name = ".\\feature_analysis_data\\sift\\beaver.sift";
-//char *img_file_name = ".\\feature_analysis_data\\sift\\marker_pen_2.bmp";
-//char *out_file_name = ".\\feature_analysis_data\\sift\\marker_pen_2.sift";
+char *img_file_name = "./feature_analysis_data/sift/beaver.png";
+char *out_file_name = "./feature_analysis_data/sift/beaver.sift";
+//char *img_file_name = "./feature_analysis_data/sift/marker_pen_2.bmp";
+//char *out_file_name = "./feature_analysis_data/sift/marker_pen_2.sift";
 char *out_img_name = NULL;
 const int display = 1;
 const int intvls = SIFT_INTVLS;
@@ -46,8 +29,9 @@ const int descr_hist_bins = SIFT_DESCR_HIST_BINS;
 }  // namespace local
 }  // unnamed namespace
 
-namespace sift {
+namespace my_opensift {
 
+// [ref] ${OPENSIFT_HOME}/src/siftfeat.c
 void extract_feature()
 {
 	IplImage *img;
@@ -79,4 +63,4 @@ void extract_feature()
 		cvSaveImage(local::out_img_name, img);
 }
 
-}  // namespace sift
+}  // namespace my_opensift

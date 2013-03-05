@@ -50,8 +50,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;../../inc/opencv-2.4.3;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -67,8 +67,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;../../inc/opencv-2.4.3;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;./;./libAdaBoost</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -76,7 +76,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>../../lib;D:\work_center\sw_dev\cpp\ext\lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_core243.lib;opencv_imgproc243.lib;opencv_highgui243.lib;sift_lib.lib;siftgpu.lib;libmat.lib;libmx.lib;Qt5Core.lib;Qt5Gui.lib;gsl.lib;cblas.lib;libprotobuf.lib;libpng15_static.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -105,6 +105,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lsd_lib\lsd.h" />
+    <ClInclude Include="opensurf_lib\fasthessian.h" />
+    <ClInclude Include="opensurf_lib\integral.h" />
+    <ClInclude Include="opensurf_lib\ipoint.h" />
+    <ClInclude Include="opensurf_lib\kmeans.h" />
+    <ClInclude Include="opensurf_lib\responselayer.h" />
+    <ClInclude Include="opensurf_lib\surf.h" />
+    <ClInclude Include="opensurf_lib\surflib.h" />
+    <ClInclude Include="opensurf_lib\utils.h" />
     <ClInclude Include="pictorial_structures_revisited\parteval.h" />
     <ClInclude Include="pictorial_structures_revisited_lib\libAdaBoost\AdaBoost.h" />
     <ClInclude Include="pictorial_structures_revisited_lib\libAdaBoost\BoostingData.h" />
@@ -160,6 +168,21 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="opensift\opensift_display_feature.cpp" />
+    <ClCompile Include="opensift\opensift_extract_feature.cpp" />
+    <ClCompile Include="opensift\opensift_main.cpp" />
+    <ClCompile Include="opensift\opensift_match_feature.cpp" />
+    <ClCompile Include="opensurf\opensurf_example.cpp" />
+    <ClCompile Include="opensurf\opensurf_main.cpp" />
+    <ClCompile Include="opensurf_lib\fasthessian.cpp" />
+    <ClCompile Include="opensurf_lib\integral.cpp" />
+    <ClCompile Include="opensurf_lib\ipoint.cpp" />
+    <ClCompile Include="opensurf_lib\main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\surf.cpp" />
+    <ClCompile Include="opensurf_lib\utils.cpp" />
     <ClCompile Include="pictorial_structures_revisited\parteval.cpp" />
     <ClCompile Include="pictorial_structures_revisited\pictorial_structures_revisited_main.cpp" />
     <ClCompile Include="pictorial_structures_revisited\pictorial_structures_revisited_partapp.cpp" />
@@ -195,23 +218,8 @@
     <ClCompile Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect_findrot.cpp" />
     <ClCompile Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect_learnparam.cpp" />
     <ClCompile Include="siftgpu\siftgpu_main.cpp" />
-    <ClCompile Include="sift\sift_display_feature.cpp" />
-    <ClCompile Include="sift\sift_extract_feature.cpp" />
-    <ClCompile Include="sift\sift_main.cpp" />
-    <ClCompile Include="sift\sift_match_feature.cpp" />
+    <ClCompile Include="siftgpu\siftgpu_simple_example.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="surf\surf_imload.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="surf\surf_main.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="surf\surf_os_mapping.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

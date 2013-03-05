@@ -1,0 +1,3 @@
+[-] Building (MSVC)
+	-. SURFGPU library는 executble file을 생성.
+	-. static or shared library를 생성하기 위해서는 직접 project를 만들어야 함.
