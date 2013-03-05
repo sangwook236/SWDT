@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-#if defined(_WINDOWS) || defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 #include <clapack/f2c.h>
 //#include <clapack/blaswrap.h>
 #include <clapack/clapack.h>
