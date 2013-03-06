@@ -10,9 +10,11 @@
 int main(int argc, char *argv[])
 {
 	int lsd_main(int argc, char *argv[]);
+	int elsd_main(int argc, char *argv[]);
 	int opensift_main(int argc, char *argv[]);
 	int siftgpu_main(int argc, char *argv[]);
 	int opensurf_main(int argc, char *argv[]);
+	int surfgpu_main(int argc, char *argv[]);
 	int pictorial_structures_revisited_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -21,11 +23,15 @@ int main(int argc, char *argv[])
 		// line feature -----------------------------------------
 		//retval = lsd_main(argc, argv);
 
+		// ellipse & line feature -----------------------------------------
+		//retval = elsd_main(argc, argv);
+
 		// local descriptor -------------------------------------
 		//retval = opensift_main(argc, argv);
-		retval = siftgpu_main(argc, argv);
+		//retval = siftgpu_main(argc, argv);
 
 		//retval = opensurf_main(argc, argv);
+		retval = surfgpu_main(argc, argv);
 		
 		// pictorial structures ---------------------------------
 		//retval = pictorial_structures_revisited_main(argc, argv);

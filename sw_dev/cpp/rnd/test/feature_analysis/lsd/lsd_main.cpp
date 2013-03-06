@@ -52,12 +52,12 @@ void lsd_example()
 
 void lsd_image_test()
 {
-	const std::string filename("feature_analysis_data\\chairs.pgm");
-	//const std::string filename("machine_vision_data\\opencv\\hand_01_1.jpg");
-	//const std::string filename("machine_vision_data\\opencv\\hand_34.jpg");
-	//const std::string filename("machine_vision_data\\opencv\\hand_35.jpg");
-	//const std::string filename("machine_vision_data\\opencv\\hand_detection_ref_04_original.jpg");
-	//const std::string filename("machine_vision_data\\opencv\\hand_detection_ref_05_original.jpg");
+	const std::string filename("./feature_analysis_data/chairs.pgm");
+	//const std::string filename("./machine_vision_data/opencv/hand_01_1.jpg");
+	//const std::string filename("./machine_vision_data/opencv/hand_34.jpg");
+	//const std::string filename("./machine_vision_data/opencv/hand_35.jpg");
+	//const std::string filename("./machine_vision_data/opencv/hand_detection_ref_04_original.jpg");
+	//const std::string filename("./machine_vision_data/opencv/hand_detection_ref_05_original.jpg");
 
 	const std::string windowName1("LSD - gray");
 	const std::string windowName2("LSD - detected");

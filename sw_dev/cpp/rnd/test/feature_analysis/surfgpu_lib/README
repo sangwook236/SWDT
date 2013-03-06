@@ -1,0 +1,45 @@
+*****************
+* SURFGPU 1.2.0 *
+*****************
+Dependencies:
+- CMake 2.6.4 or later
+- CUDA Toolkit 2.2 or later
+- OpenCV 2.0.0 or later
+- CUDPP 2.x
+
+SURFGPU has been tested on:
+- Gentoo Linux 64bit, gcc 4.4.5, CMake 2.8.7, CUDA 4.0, OpenCV 2.3.0
+
+SURFGPU, an implementation of SURF in CUDA, is licensed under the GPLv3.
+The SURF algorithm itself is patented.
+
+The CUDA implementation currently works on GPUs with a compute capability of
+1.1 or higher, due to usage of atomic operations in cuda/nonMaxCUDA.cu.
+
+The interface of the library, as defined in surflib.h, hasn't changed.
+All CUDA kernels reside in the subdirectory cuda/.
+
+The fasthessian_cudaIpoint and surf_cudaIpoint structs are simplified versions
+of an Ipoint specifically for the CUDA implementation. The prefixes refer to
+the respective class names/algorithm stages in which they're used.
+
+There are two matching kernels with a slightly different metric for matching.
+matchSURFKeypointsCUDA() uses simply the smallest distance between descriptors
+and matchSURFKeypoints2CUDA() uses the ratio between the smallest two distances.
+Which one of the two kernels is used is determined at compile-time by the CMake
+option SURF_MATCH_SIMPLE.
+
+Although matchSURFKeypointsGPU() has a desc_len parameter for passing the
+descriptor length, it is currently unused by matchSURFKeypoints{,2}CUDA() as
+the descriptor length is hardcoded to 64 elements in these kernels.
+
+See main.cpp for how to use our SURFGPU code.
+
+Darmstadt 2012/03/08
+Andre Schulz, Christian Wojek
+
+Copyright (C) 2009-2012 Andre Schulz, Florian Jung, Sebastian Hartte,
+						Daniel Trick, Christan Wojek, Konrad Schindler,
+						Jens Ackermann, Michael Goesele
+Copyright (C) 2008-2009 Christopher Evans <chris.evans@irisys.co.uk>, MSc University of Bristol
+

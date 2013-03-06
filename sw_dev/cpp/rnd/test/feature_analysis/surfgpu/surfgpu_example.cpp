@@ -1,6 +1,10 @@
 //#include "stdafx.h"
-#include "../opensurf_lib/surflib.h"
-#include "../opensurf_lib/kmeans.h"
+//#include "../surfgpu_lib/surflib.h"
+//#include "../surfgpu_lib/kmeans.h"
+//#include "../surfgpu_lib/utils.h"
+#include "../surfgpu_lib/surflibGPU.h"
+#include "../surfgpu_lib/kmeansGPU.h"
+#include "../surfgpu_lib/utilsGPU.h"
 #include <iostream>
 #include <ctime>
 
@@ -8,21 +12,23 @@
 namespace {
 namespace local {
 
+using namespace surfgpu;
+
 //-------------------------------------------------------
 
-int mainImage()
+int mainImage(void)
 {
 	// Declare Ipoints and other stuff
 	IpVec ipts;
-	IplImage *img = cvLoadImage("./feature_analysis_data/surf/sf.jpg");
+	IplImage *img = cvLoadImage("./feature_analysis_data/surf/img1.jpg");
 
 	// Detect and describe interest points in the image
-	clock_t start = clock();
-	surfDetDes(img, ipts, false, 5, 4, 2, 0.0004f); 
-	clock_t end = clock();
+	{
+		surfDetDes(img, ipts, false, 3, 4, 2, 0.0004f); 
+	}
 
 	std::cout<< "OpenSURF found: " << ipts.size() << " interest points" << std::endl;
-	std::cout<< "OpenSURF took: " << float(end - start) / CLOCKS_PER_SEC  << " seconds" << std::endl;
+	//std::cout<< "OpenSURF took: min/avg/max/stddev " << time_min << "/" << time_avg << "/" << time_max << "/" << stddev << std::endl;
 
 	// Draw the detected points
 	drawIpoints(img, ipts);
@@ -33,20 +39,18 @@ int mainImage()
 	return 0;
 }
 
+
 //-------------------------------------------------------
 
-int mainVideo()
+
+int mainVideo(void)
 {
 	// Initialise capture device
 	CvCapture *capture = cvCaptureFromCAM(CV_CAP_ANY);
 	if (!capture) error("No Capture");
 
-	// Initialise video writer
-	//cv::VideoWriter vw("./feature_analysis_data/surf/out.avi", CV_FOURCC('D','I','V','X'), 10, cvSize(320,240), 1);
-	//vw << img;
-
 	// Create a window 
-	cvNamedWindow("OpenSURF", CV_WINDOW_AUTOSIZE);
+	cvNamedWindow("OpenSURF", CV_WINDOW_AUTOSIZE );
 
 	// Declare Ipoints and other stuff
 	IpVec ipts;
@@ -59,7 +63,7 @@ int mainVideo()
 		img = cvQueryFrame(capture);
 
 		// Extract surf points
-		surfDetDes(img, ipts, false, 4, 4, 2, 0.004f);    
+		surfDetDes(img, ipts, true, 3, 4, 2, 0.004f);    
 
 		// Draw the detected points
 		drawIpoints(img, ipts);
@@ -158,7 +162,7 @@ int mainMatch()
 //-------------------------------------------------------
 
 
-int mainMotionPoints()
+int mainMotionPoints(void)
 {
 	// Initialise capture device
 	CvCapture *capture = cvCaptureFromCAM(CV_CAP_ANY);
@@ -183,7 +187,7 @@ int mainMotionPoints()
 		surfDetDes(img, ipts, true, 3, 4, 2, 0.0004f);
 
 		// Fill match vector
-		getMatches(ipts,old_ipts, matches);
+		getMatches(ipts, old_ipts, matches);
 		for (unsigned int i = 0; i < matches.size(); ++i) 
 		{
 			const float &dx = matches[i].first.dx;
@@ -232,7 +236,7 @@ int mainStaticMatch()
 		cvLine(img2, cvPoint(matches[i].first.x - w, matches[i].first.y), cvPoint(matches[i].second.x, matches[i].second.y), cvScalar(255, 255, 255), 1);
 	}
 
-	std::cout<< "Matches: " << matches.size() << std::endl;
+	std::cout << "Matches: " << matches.size() << std::endl;
 
 	cvNamedWindow("1", CV_WINDOW_AUTOSIZE);
 	cvNamedWindow("2", CV_WINDOW_AUTOSIZE);
@@ -245,14 +249,14 @@ int mainStaticMatch()
 
 //-------------------------------------------------------
 
-int mainKmeans()
+int mainKmeans(void)
 {
 	IplImage *img = cvLoadImage("./feature_analysis_data/surf/img1.jpg");
 	IpVec ipts;
 	Kmeans km;
 
 	// Get Ipoints
-	surfDetDes(img, ipts, true, 3, 4, 2, 0.0006f);
+	surfDetDes(img,ipts,true,3,4,2,0.0006f);
 
 	for (int repeat = 0; repeat < 10; ++repeat)
 	{
@@ -263,7 +267,7 @@ int mainKmeans()
 
 		for (unsigned int i = 0; i < ipts.size(); ++i)
 		{
-			cvLine(img, cvPoint(ipts[i].x, ipts[i].y), cvPoint(km.clusters[ipts[i].clusterIndex].x, km.clusters[ipts[i].clusterIndex].y), cvScalar(255, 255, 255));
+			cvLine(img, cvPoint(ipts[i].x,ipts[i].y), cvPoint(km.clusters[ipts[i].clusterIndex].x ,km.clusters[ipts[i].clusterIndex].y),cvScalar(255,255,255));
 		}
 
 		showImage(img);
@@ -275,9 +279,9 @@ int mainKmeans()
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_opensurf {
+namespace my_surfgpu {
 
-// [ref] ${OPENSURF_HOME}/src/main.cpp
+// [ref] ${SURFGPU_HOME}/main.cpp
 void example()
 {
 	//-------------------------------------------------------
@@ -299,4 +303,4 @@ void example()
 	if (6 == PROCEDURE) local::mainKmeans();
 }
 
-}  // namespace my_opensurf
+}  // namespace my_surfgpu

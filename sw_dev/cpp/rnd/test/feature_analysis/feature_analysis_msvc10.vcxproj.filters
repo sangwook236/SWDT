@@ -88,6 +88,21 @@
     <Filter Include="Source Files\opensurf_lib">
       <UniqueIdentifier>{a222243f-9f48-45de-b8f8-4a9951e868ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\elsd">
+      <UniqueIdentifier>{14085c0f-af5d-444c-ac8c-264e055fffa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\elsd_lib">
+      <UniqueIdentifier>{b6dfc4c3-8f72-4858-be67-f6da7945b567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\surfgpu">
+      <UniqueIdentifier>{60c957d5-1c4c-42f5-a308-6b701eb65827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\surfgpu_lib">
+      <UniqueIdentifier>{8ae2bed3-c815-4063-ac5d-eca9b1a45d75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\surfgpu_lib\cuda">
+      <UniqueIdentifier>{49ab7ddd-1d43-4e75-8935-878bdcc6bf4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -261,6 +276,93 @@
     <ClInclude Include="opensurf_lib\utils.h">
       <Filter>Source Files\opensurf_lib</Filter>
     </ClInclude>
+    <ClInclude Include="elsd_lib\elsd.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\process_curve.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\process_line.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\valid_curve.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\write_svg.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\cuda\common_kernel.h">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\cuda\cudpp_helper_funcs.h">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\cuda\helper_funcs.h">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\cuda\strerror_cudpp.h">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\buildDetGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\buildSURFDescriptorsGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\convertRGB2GrayFloatGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\convertRGBA2GrayFloatGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\cudaimage.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\defines.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\detectIpointOrientationsGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\fasthessian_cudaipoint.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\matchSURFKeypointsGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\nonMaxGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\normalizeSURFDescriptorsGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\surf_cudaipoint.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\transposeGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\fasthessianGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\integralGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\surfGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\ipointGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\kmeansGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\utilsGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\surflibGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lsd_lib\lsd.cpp">
@@ -428,5 +530,121 @@
     <ClCompile Include="siftgpu\siftgpu_simple_example.cpp">
       <Filter>Source Files\siftgpu</Filter>
     </ClCompile>
+    <ClCompile Include="elsd\elsd_main.cpp">
+      <Filter>Source Files\elsd</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\write_svg.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\valid_curve.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\process_line.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\process_curve.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\elsd.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\cuda\getMatchesGPU.cpp">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\cuda\helper_funcs.cpp">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\cuda\strerror_cudpp.cpp">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\getMatchesCPU.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\main.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu\surfgpu_main.cpp">
+      <Filter>Source Files\surfgpu</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu\surfgpu_example.cpp">
+      <Filter>Source Files\surfgpu</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\fasthessianGPU.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\integralGPU.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\surfGPU.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\ipointGPU.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\utilsGPU.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="surfgpu_lib\cuda\buildDetCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\transposeGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\transposeCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\reductionCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\normalizeSURFDescriptorsGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\normalizeSURFDescriptorsCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\nonMaxGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\nonMaxCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\matchSURFKeypointsGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\matchSURFKeypointsCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\haarXY.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\detectIpointOrientationsGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\detectIpointOrientationsCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\convertRGBA2GrayFloatGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\convertRGBA2GrayFloatCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\convertRGB2GrayFloatGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\convertRGB2GrayFloatCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\buildSURFDescriptorsGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\buildSURFDescriptorsCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\buildDetGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
   </ItemGroup>
 </Project>
