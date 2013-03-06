@@ -6,10 +6,10 @@
 
 #pragma comment(lib, "atlas_kml.lib")
 #pragma comment(lib, "cvm_ia32_debug.lib")
-#pragma comment(lib, "tmglib.lib")
-#pragma comment(lib, "lapack.lib")
-#pragma comment(lib, "blas.lib")
-#pragma comment(lib, "libf2c.lib")
+#pragma comment(lib, "tmglib_d.lib")
+#pragma comment(lib, "lapack_d.lib")
+#pragma comment(lib, "blas_d.lib")
+#pragma comment(lib, "libf2c_d.lib")
 
 #		else
 
