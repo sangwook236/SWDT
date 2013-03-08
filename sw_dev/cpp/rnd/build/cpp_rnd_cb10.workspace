@@ -2,9 +2,10 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
 		<Project filename="../test/change_detection/change_detection_cb10.cbp" />
-		<Project filename="../test/feature_analysis/feature_analysis_cb10.cbp" active="1" />
+		<Project filename="../test/feature_analysis/feature_analysis_cb10.cbp" />
 		<Project filename="../test/gesture_recognition/gesture_recognition_cb10.cbp" />
 		<Project filename="../test/graph_analysis/graph_analysis_cb10.cbp" />
+		<Project filename="../test/hand_analysis/hand_analysis_cb10.cbp" active="1" />
 		<Project filename="../test/machine_learning/machine_learning_cb10.cbp" />
 		<Project filename="../test/machine_vision/machine_vision_cb10.cbp" />
 		<Project filename="../test/matlab/matlab_cb10.cbp" />
