@@ -62,3 +62,18 @@
 			mingw32-make install
 			mingw32-make clean
 	-. mktemp() 함수 관련 오류로 Building이 되지 않음.
+
+[-] Setting CMake (Linux)
+	-. OGRE library와 관계된 CMake file을 찾을 수 없다는 오류 발생.
+		==> OGRE library에 있는 CMake 관련 file을 LibHand library directory로 복사.
+			/usr/share/OGRE/cmake/module/ -> ${LIBHAND_HOME}/hand_cpp/modules
+				FindOGRE.cmake
+				FindPkgMacros.cmake
+				PreprocessorUtils.cmake
+	-. OGRE library는 shared library를 사용해야 함.
+		==> 아래의 CMake file을 수정해야 함.
+			${LIBHAND_HOME}/hand_cpp/source/CMakeLists.txt
+			<수정전>
+			SET(OGRE_STATIC TRUE)
+			<수정후>
+			SET(OGRE_STATIC FALSE)
