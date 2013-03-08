@@ -36,7 +36,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pose_estimation", "..\test\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shape_analysis", "..\test\shape_analysis\shape_analysis_msvc10.vcxproj", "{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graph_analysis_msvc10", "..\test\graph_analysis\graph_analysis_msvc10.vcxproj", "{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graph_analysis", "..\test\graph_analysis\graph_analysis_msvc10.vcxproj", "{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hand_analysis", "..\test\hand_analysis\hand_analysis_msvc10.vcxproj", "{5764CA80-F4D8-4DA7-924F-E4ED8734C009}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -120,6 +122,10 @@ Global
 		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Debug|Win32.Build.0 = Debug|Win32
 		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Release|Win32.ActiveCfg = Release|Win32
 		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Release|Win32.Build.0 = Release|Win32
+		{5764CA80-F4D8-4DA7-924F-E4ED8734C009}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5764CA80-F4D8-4DA7-924F-E4ED8734C009}.Debug|Win32.Build.0 = Debug|Win32
+		{5764CA80-F4D8-4DA7-924F-E4ED8734C009}.Release|Win32.ActiveCfg = Release|Win32
+		{5764CA80-F4D8-4DA7-924F-E4ED8734C009}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
