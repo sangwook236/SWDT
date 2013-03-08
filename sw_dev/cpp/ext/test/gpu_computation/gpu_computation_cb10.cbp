@@ -4,7 +4,7 @@
 	<Project>
 		<Option title="gpu_computation" />
 		<Option pch_mode="2" />
-		<Option compiler="gcc" />
+		<Option compiler="nvidia_nvcc_cuda_compiler" />
 		<Build>
 			<Target title="Debug">
 				<Option output="../../bin/gpu_computation_d" prefix_auto="1" extension_auto="1" />
@@ -34,13 +34,32 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="cuda/cuda_basic_operation.cu" />
+		<Linker>
+			<Add library="cuda" />
+			<Add library="cudart" />
+		</Linker>
+		<Unit filename="cuda/cuda_basic_operation.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
 		<Unit filename="cuda/cuda_main.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="thrust/thrust_algorithm.cu" />
-		<Unit filename="thrust/thrust_basic_operation.cu" />
-		<Unit filename="thrust/thrust_dot_product.cu" />
-		<Unit filename="thrust/thrust_iterator.cu" />
+		<Unit filename="thrust/thrust_algorithm.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="thrust/thrust_basic_operation.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="thrust/thrust_dot_product.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="thrust/thrust_iterator.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
 		<Unit filename="thrust/thrust_main.cpp" />
 		<Extensions>
 			<code_completion />

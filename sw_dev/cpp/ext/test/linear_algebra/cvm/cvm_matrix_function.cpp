@@ -3,6 +3,7 @@
 #else
 #include <cvm.h>
 #endif
+#include <algorithm>
 #include <string>
 
 
@@ -30,7 +31,7 @@ void matrix_function()
 		std::cout << *std::max_element(m.begin(), m.end()) << std::endl;
 		std::cout << *std::min_element(m.begin(), m.end()) << std::endl;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -46,7 +47,7 @@ void matrix_function()
 		std::cout << m.indofmax() << std::endl;  // caution !!!: maximum absolute value
 		std::cout << m.indofmin() << std::endl;  // caution !!!: minimum absolute value
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -65,7 +66,7 @@ void matrix_function()
 		std::cout << m.colofmax() << std::endl;  // caution !!!: maximum absolute value
 		std::cout << m.colofmin() << std::endl;  // caution !!!: minimum absolute value
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -83,7 +84,7 @@ void matrix_function()
 		std::cout << m.norm1() << std::endl;
 		std::cout << m.norm2() << std::endl;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -97,7 +98,7 @@ void matrix_function()
 		cvm::srmatrix m(a, 3);
 		std::cout << m << std::endl << m.det() << std::endl;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -124,7 +125,7 @@ void matrix_function()
 		cvm::srmatrix mY = mB.inv();
 		std::cout << mY << (mB * mY * mB - mB).norm2() << std::endl;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -140,7 +141,7 @@ void matrix_function()
 		m(3,3) = 10.;
 		std::cout << m.cond() << std::endl << m.det() << std::endl;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -157,7 +158,7 @@ void matrix_function()
 		m(3, 4) = 13.;
 		std::cout << m.rank() << std::endl;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -172,7 +173,7 @@ void matrix_function()
 		m.normalize();
 		std::cout << m;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -190,7 +191,7 @@ void matrix_function()
 		std::cout << m.sum(m1, m2) << std::endl;
 		std::cout << m.sum(m, m2);
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -208,7 +209,7 @@ void matrix_function()
 		std::cout << m.diff(m1, m2) << std::endl;
 		std::cout << m.diff(m, m2);
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -222,7 +223,7 @@ void matrix_function()
 		m.randomize(2., 5.);
 		std::cout << m;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}

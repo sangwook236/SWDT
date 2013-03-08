@@ -23,7 +23,7 @@ void cholesky_srmatrix()
 		std::cout << h << std::endl;
 		std::cout << ~h * h - m;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -44,7 +44,7 @@ void cholesky_scmatrix()
 		std::cout << c << std::endl;
 		std::cout << ~c * c - m;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}

@@ -24,6 +24,13 @@ extern "C" {
 }
 #endif
 
+#if defined(max)
+#undef max
+#endif
+#if defined(min)
+#undef min
+#endif
+
 #include <iostream>
 #include <cstring>
 #include <cassert>

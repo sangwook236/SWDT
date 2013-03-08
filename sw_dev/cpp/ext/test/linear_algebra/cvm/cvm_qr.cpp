@@ -36,7 +36,7 @@ void qr_rmatrix()
 		std::cout << (cvm::eye_real(3) - ~s3 * s3).norm()
 			<< " " << (mv - s3 * v).norm() << std::endl;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -70,7 +70,7 @@ void qr_cmatrix()
 		std::cout << (cvm::eye_complex(3) - ~s3 * s3).norm()
 			<< " " << (mv - s3 * v).norm() << std::endl;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}

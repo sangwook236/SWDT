@@ -38,7 +38,7 @@ void svd_rmatrix()
 		std::cout << (mA * ~mVH - mU * mS).norm() << std::endl;
 		std::cout << (~mA * mU - ~(mS * mVH)).norm() << std::endl;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}

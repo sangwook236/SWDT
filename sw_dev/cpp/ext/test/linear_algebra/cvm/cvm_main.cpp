@@ -1,3 +1,8 @@
+#if defined(WIN32) || defined(_WIN32)
+#include <cvm/cvm.h>
+#else
+#include <cvm.h>
+#endif
 #include <iostream>
 
 
@@ -23,16 +28,23 @@ void svd();
 
 int cvm_main(int argc, char *argv[])
 {
-	//my_cvm::matrix_operation();
-	//my_cvm::matrix_function();
-	//my_cvm::vector_operation();
-	my_cvm::vector_function();
+    try
+    {
+        //my_cvm::matrix_operation();
+        //my_cvm::matrix_function();
+        //my_cvm::vector_operation();
+        my_cvm::vector_function();
 
-	//my_cvm::lu();
-	//my_cvm::cholesky();
-	//my_cvm::qr();
-	//my_cvm::eigen();
-	//my_cvm::svd();
+        //my_cvm::lu();
+        //my_cvm::cholesky();
+        //my_cvm::qr();
+        //my_cvm::eigen();
+        //my_cvm::svd();
+    }
+	catch (const cvm::cvmexception &e)
+	{
+ 		std::cout << "cvm::cvmexception caught: " << e.what() << std::endl;
+	}
 
 	return 0;
 }

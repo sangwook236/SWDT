@@ -2,12 +2,12 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
 		<Project filename="../test/application_configuration/application_configuration_cb10.cbp" />
-		<Project filename="../test/boost/boost_cb10.cbp" active="1" />
+		<Project filename="../test/boost/boost_cb10.cbp" />
 		<Project filename="../test/compression/compression_cb10.cbp" />
 		<Project filename="../test/computational_geometry/computational_geometry_cb10.cbp" />
 		<Project filename="../test/cppunit/cppunit_cb10.cbp" />
 		<Project filename="../test/database/database_cb10.cbp" />
-		<Project filename="../test/gpu_computation/gpu_computation_cb10.cbp" />
+		<Project filename="../test/gpu_computation/gpu_computation_cb10.cbp" active="1" />
 		<Project filename="../test/graphics_2d/graphics_2d_cb10.cbp" />
 		<Project filename="../test/graphics_3d/graphics_3d_cb10.cbp" />
 		<Project filename="../test/linear_algebra/linear_algebra_cb10.cbp" />

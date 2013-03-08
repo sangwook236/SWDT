@@ -47,7 +47,7 @@ void eigen_srmatirx()
 		eigvec2_r(2) /= eigvec2_r(2).norm();
 		std::cout << eigvec2_r;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception: " << e.what() << std::endl;
 	}
@@ -72,7 +72,7 @@ void eigen_srsmatirx()
 		std::cout << eigvec_r << std::endl;
 
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception: " << e.what() << std::endl;
 	}

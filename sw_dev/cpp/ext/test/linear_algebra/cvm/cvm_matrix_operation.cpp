@@ -32,7 +32,7 @@ void matrix_operation()
 			std::cout << a[i] << ' ';
 		std::cout << std::endl;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -46,7 +46,7 @@ void matrix_operation()
 		//m = -12.3;  std::cout << m;  // error !!!
 		std::cout << m.set(7.8);
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -61,7 +61,7 @@ void matrix_operation()
 		std::cout << m << std::endl;
 		std::cout << m.vanish();
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -78,7 +78,7 @@ void matrix_operation()
 		//std::cout << eye_real(m);
 		//std::cout << eye_complex(m);
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -99,7 +99,7 @@ void matrix_operation()
 		mt.transpose();
 		std::cout << mt;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -122,7 +122,7 @@ void matrix_operation()
 		std::cout << ms << std::endl;
 		std::cout << ms.diag(0) << ms.diag(1);
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -143,7 +143,7 @@ void matrix_operation()
 
 		std::cout << m << std::endl;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}

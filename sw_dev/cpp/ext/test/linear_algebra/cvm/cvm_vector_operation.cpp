@@ -31,7 +31,7 @@ void vector_operation()
 			std::cout << a[i] << ' ';
 		std::cout << std::endl;
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
@@ -45,7 +45,7 @@ void vector_operation()
 		//v = 2.0;  std::cout << v;  // error !!!
 		std::cout << v.set(3.0);
 	}
-	catch (const cvm::cvmexception& e)
+	catch (const cvm::cvmexception &e)
 	{
 		std::cout << "Exception " << e.what() << std::endl;
 	}
