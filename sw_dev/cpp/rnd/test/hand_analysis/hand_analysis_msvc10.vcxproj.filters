@@ -19,6 +19,9 @@
     <Filter Include="Source Files\openhpe">
       <UniqueIdentifier>{ae187d65-2d1f-4fe5-be0e-d1b8f77d0e26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\openhpe_lib">
+      <UniqueIdentifier>{4e97951e-e9e8-4e3b-bdcf-51c4115fe566}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -29,6 +32,15 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openhpe_lib\bg_fg_blobs.h">
+      <Filter>Source Files\openhpe_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="openhpe_lib\hand_data.h">
+      <Filter>Source Files\openhpe_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="openhpe_lib\tnc.h">
+      <Filter>Source Files\openhpe_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +58,24 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="openhpe_lib\bg_fg_blobs.cpp">
+      <Filter>Source Files\openhpe_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="openhpe_lib\freenect_ocv.cpp">
+      <Filter>Source Files\openhpe_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="openhpe_lib\main.cpp">
+      <Filter>Source Files\openhpe_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="openhpe_lib\simple_tnc.c">
+      <Filter>Source Files\openhpe_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="openhpe_lib\tnc.c">
+      <Filter>Source Files\openhpe_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="openhpe\openhpe_example.cpp">
+      <Filter>Source Files\openhpe</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

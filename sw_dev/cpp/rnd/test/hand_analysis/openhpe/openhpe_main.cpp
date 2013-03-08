@@ -10,11 +10,13 @@ namespace local {
 
 namespace my_openhpe {
 
+void example();
+
 }  // namespace my_openhpe
 
 int openhpe_main(int argc, char *argv[])
 {
-	throw std::runtime_error("not yet implemented");
+	my_openhpe::example();
 
 	return 0;
 }

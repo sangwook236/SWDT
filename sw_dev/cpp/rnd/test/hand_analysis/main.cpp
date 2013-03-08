@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		retval = libhand_main(argc, argv);  // not yet implemented
-		//retval = openhpe_main(argc, argv);  // not yet implemented
+		//retval = libhand_main(argc, argv);  // not yet implemented
+		retval = openhpe_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

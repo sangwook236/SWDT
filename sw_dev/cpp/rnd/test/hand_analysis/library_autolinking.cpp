@@ -6,11 +6,17 @@
 
 //#pragma comment(lib, "libhand.lib")
 //#pragma comment(lib, "openhpe.lib")
+#pragma comment(lib, "opencv_core243d.lib")
+#pragma comment(lib, "opencv_imgproc243d.lib")
+#pragma comment(lib, "opencv_highgui243d.lib")
 
 #		else
 
 //#pragma comment(lib, "libhand.lib")
 //#pragma comment(lib, "openhpe.lib")
+#pragma comment(lib, "opencv_core243.lib")
+#pragma comment(lib, "opencv_imgproc243.lib")
+#pragma comment(lib, "opencv_highgui243.lib")
 
 #		endif
 
