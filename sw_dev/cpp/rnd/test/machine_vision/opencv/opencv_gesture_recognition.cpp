@@ -1456,7 +1456,7 @@ namespace my_opencv {
 
 void gesture_recognition()
 {
-#if 0
+#if 1
 	const int imageWidth = 640, imageHeight = 480;
 
 	const int camId = -1;

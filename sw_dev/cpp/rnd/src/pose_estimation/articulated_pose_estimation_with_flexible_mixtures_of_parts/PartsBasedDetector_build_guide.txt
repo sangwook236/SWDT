@@ -1,12 +1,13 @@
 [-] Building (MSVC)
 	-. EigenConfig.cmake를 찾을 수 없다는 오류 발생.
-		$EIGEN_HOME/cmake/FindEigen3.cmake를 ${PartsBasedDetector_HOME}/EigenConfig.cmake로 복사.
+		$EIGEN_HOME/cmake/FindEigen3.cmake를 ${PartsBasedDetector_HOME}/cmake/EigenConfig.cmake로 복사.
 		==> CMake에 아래의 항목 설정 및 추가.
-			EIGEN_INCLUDE_DIRS => D:/work_center/sw_dev/cpp/ext/inc/eigen3
-			EIGEN3_INCLUDE_DIRS => D:/work_center/sw_dev/cpp/ext/inc/eigen3
-			Eigen_DIR => ${PartsBasedDetector_HOME}
+			Eigen_DIR -> ${PartsBasedDetector_HOME}/cmake
+			EIGEN_INCLUDE_DIRS -> D:/work_center/sw_dev/cpp/ext/inc/eigen3
+			EIGEN3_INCLUDE_DIRS -> D:/work_center/sw_dev/cpp/ext/inc/eigen3
 	-. ${PartsBasedDetector_HOME}/src/CMakeLists.txt에서 아래의 오류 발생.
-		"install Library TARGETS given no DESTINATION!"
+		<오류메시지>
+			"install Library TARGETS given no DESTINATION!"
 		==> 아래와 같이 수정.
 			수정전:
 				install(TARGETS ${PROJECT_NAME}_lib 
@@ -34,8 +35,8 @@
 					#include "HOGFeatures.cpp"
 				b. source file을 building 대상에서 제외.
 		2. ctor & dtor의 정의를 header file에 포함하는 경우 linking 오류 발생.
-			FileStorageModel => ${PartsBasedDetector_HOME}/include/FileStorageModel.hpp & ${PartsBasedDetector_HOME}/src/FileStorageModel.cpp
-			MatlabIOModel => ${PartsBasedDetector_HOME}/include/MatlabIOModel.hpp & ${PartsBasedDetector_HOME}/src/MatlabIOModel.cpp
+			FileStorageModel -> ${PartsBasedDetector_HOME}/include/FileStorageModel.hpp & ${PartsBasedDetector_HOME}/src/FileStorageModel.cpp
+			MatlabIOModel -> ${PartsBasedDetector_HOME}/include/MatlabIOModel.hpp & ${PartsBasedDetector_HOME}/src/MatlabIOModel.cpp
 			==> header file에서는 ctor & dtor의 선언만 남기고 정의는 source file로 이동.
 	-. header file을 찾을 수 없다는 오류 발생.
 		CMake-GUI에 header file directory를 지정할 수 없어서 발생.
@@ -44,14 +45,17 @@
 		==> 해당 library의 header file directory를 include path에 추가.
 			D:/work_center/sw_dev/cpp/rnd/inc/cvmatio/
 			D:/work_center/sw_dev/cpp/ext/inc/zlib/
-	-. Boost.Filesystem 관련 오류 발생
-		binary '=' : no operator found which takes a right-hand operand of type 'const boost::filesystem::path::value_type *'
+	-. Boost.Filesystem 관련 오류 발생.
+		<오류메시지>
+			binary '=' : no operator found which takes a right-hand operand of type 'const boost::filesystem::path::value_type *'
 		==> wchar_t & char 사이의 변환 문제.
 			${PartsBasedDetector_HOME}/src/MatlabIOModel.cpp에서 아래의 항목을 수정
 			<수정전>
 			name_ = boost::filesystem::path(filename).stem().c_str();
-			<수정후>
-# ifdef BOOST_WINDOWS_API
+			<수정후 (1번안)>
+			name_ = boost::filesystem::path(filename).stem().string();
+			<수정후 (2번안)>
+#ifdef BOOST_WINDOWS_API
 			const std::wstring tmp_name = boost::filesystem::path(filename).stem().c_str();
 			std::copy(tmp_name.begin(), tmp_name.end(), name_.begin());
 #else
@@ -77,3 +81,11 @@
 			return vectorf(&((*biasw_)[offset]), &((*biasw_)[offset+nmixtures()]));
 			<수정후>
 			return vectorf(&((*biasw_)[offset]), &((*biasw_)[offset])+nmixtures());
+
+[-] Building (Code::Blocks)
+	-. EigenConfig.cmake를 찾을 수 없다는 오류 발생.
+		$EIGEN_HOME/cmake/FindEigen3.cmake를 ${PartsBasedDetector_HOME}/cmake/EigenConfig.cmake로 복사.
+		==> CMake에 아래의 항목 설정 및 추가.
+			Eigen_DIR -> ${PartsBasedDetector_HOME}/cmake
+			EIGEN_INCLUDE_DIRS -> D:/work_center/sw_dev/cpp/ext/inc/eigen3
+			EIGEN3_INCLUDE_DIRS -> D:/work_center/sw_dev/cpp/ext/inc/eigen3

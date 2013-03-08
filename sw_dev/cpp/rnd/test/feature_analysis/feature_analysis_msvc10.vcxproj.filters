@@ -88,12 +88,6 @@
     <Filter Include="Source Files\opensurf_lib">
       <UniqueIdentifier>{a222243f-9f48-45de-b8f8-4a9951e868ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\elsd">
-      <UniqueIdentifier>{14085c0f-af5d-444c-ac8c-264e055fffa5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\elsd_lib">
-      <UniqueIdentifier>{b6dfc4c3-8f72-4858-be67-f6da7945b567}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\surfgpu">
       <UniqueIdentifier>{60c957d5-1c4c-42f5-a308-6b701eb65827}</UniqueIdentifier>
     </Filter>
@@ -102,6 +96,12 @@
     </Filter>
     <Filter Include="Source Files\surfgpu_lib\cuda">
       <UniqueIdentifier>{49ab7ddd-1d43-4e75-8935-878bdcc6bf4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\elsd">
+      <UniqueIdentifier>{14085c0f-af5d-444c-ac8c-264e055fffa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\elsd_lib">
+      <UniqueIdentifier>{b6dfc4c3-8f72-4858-be67-f6da7945b567}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

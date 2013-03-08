@@ -24,7 +24,8 @@
 				#include <afxwin.h>			//suport per a AfxMessageBox
 				#endif
 	-. bgslibrary를 linking해 사용하는 경우, file storage 관련 error
-		error message: "Invalid pointer to file storage"
+		<error message>
+			"Invalid pointer to file storage"
 		==> executable file이 실행되는 directory하에 아래의 config directory이 있어야 함. (?)
 				./config
 			해당 config directory에 file을 추가해 설정을 할 수 있음.
