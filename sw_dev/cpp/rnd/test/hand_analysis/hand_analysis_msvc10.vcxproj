@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="libhand\libhand_main.cpp" />
+    <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openhpe\openhpe_main.cpp" />
     <ClCompile Include="stdafx.cpp">
