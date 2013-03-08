@@ -1,7 +1,10 @@
+#if defined(WIN32) || defined(_WIN32)
 #include <windows.h>
+#endif
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cstdlib>
 
 
 namespace {
@@ -34,14 +37,14 @@ int pictorial_structures_revisited_partapp_main(int argc, char *argv[]);
 //		this command will also produce visualization of the max-marginal part estimates in the "part_marginals/seg_eval_images" directory
 //
 //	-. to extract object hypothesis
-//			pictorial_structures_revisited.exe --expopt ./expopt/<EXP_FILENAME> --save_res     
-//		this will produce annotation files in the same format as training and test data. 
+//			pictorial_structures_revisited.exe --expopt ./expopt/<EXP_FILENAME> --save_res
+//		this will produce annotation files in the same format as training and test data.
 //
 //	-. pretrained model (classifiers and joint parameters)
 //		./log_dir/<EXP_NAME>/class
 //
-//	-. at runtime the following directories will be created:				      
-//		./log_dir/<EXP_NAME>/test_scoregrid - location where part detections will be stored 
+//	-. at runtime the following directories will be created:
+//		./log_dir/<EXP_NAME>/test_scoregrid - location where part detections will be stored
 //		./log_dir/<EXP_NAME>/part_marginals - location where part marginals will be stored
 //		./log_dir/<EXP_NAME>/part_marginals/seg_eval_images
 
@@ -67,7 +70,9 @@ int pictorial_structures_revisited_main(int argc, char *argv[])
 	sstream2 << num_images;
 
 	//
+#if defined(WIN32) || defined(_WIN32)
 	const BOOL retval = SetCurrentDirectoryA(curr_directory.c_str());
+#endif
 
 #if 1
 	const int my_argc = 5;

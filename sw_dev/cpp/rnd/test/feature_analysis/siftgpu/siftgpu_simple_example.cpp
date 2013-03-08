@@ -76,7 +76,7 @@ void simple_example_1()
 		// specify NULL if you don't need keypionts or descriptors
 		sift.GetFeatureVector(&keys[0], &descriptors[0]);
 	}
-	
+
 	{
 		//const int width = ¡¦, height =¡¦;
 		//const unsigned char *data = ¡¦;  // your (intensity) image data
@@ -140,7 +140,7 @@ void simple_example_2()
 #endif
 
     std::vector<float> descriptors1(1), descriptors2(1);
-    std::vector<SiftGPU::SiftKeypoint> keys1(1), keys2(1);    
+    std::vector<SiftGPU::SiftKeypoint> keys1(1), keys2(1);
     int num1 = 0, num2 = 0;
 
 	if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION ||
@@ -165,11 +165,11 @@ void simple_example_2()
 		"-fo", "-1",
 		"-v", "1"
 	};
-    // -fo -1    staring from -1 octave 
+    // -fo -1    staring from -1 octave
     // -v 1      only print out # feature and overall time
     // -loweo    add a (.5, .5) offset
     // -tc <num> set a soft limit to number of detected features
-    
+
     // NEW:  parameters for GPU-selection
     // 1. CUDA.   Use parameter "-cuda", "[device_id]"
     // 2. OpenGL. Use "-Display", "display_name" to select monitor/GPU (XLIB/GLUT) on windows the display name would be something like \\.\DISPLAY4
@@ -183,9 +183,9 @@ void simple_example_2()
 
     //////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////Two Important Parameters///////////////////////////
-    // First, texture reallocation happens when image size increases, and too many 
-    // reallocation may lead to allocatoin failure.  You should be careful when using 
-    // siftgpu on a set of images with VARYING imag sizes. It is recommended that you 
+    // First, texture reallocation happens when image size increases, and too many
+    // reallocation may lead to allocatoin failure.  You should be careful when using
+    // siftgpu on a set of images with VARYING imag sizes. It is recommended that you
     // preset the allocation size to the largest width and largest height by using function
     // AllocationPyramid or prameter '-p' (e.g. "-p", "1024x768").
 
@@ -196,22 +196,22 @@ void simple_example_2()
     // it for your own GPU memory. You can also use this to keep/skip the small featuers.
     // To change this, call function SetMaxDimension or use parameter "-maxd".
 	//
-	// NEW: by default SiftGPU will try to fit the cap of GPU memory, and reduce the working 
+	// NEW: by default SiftGPU will try to fit the cap of GPU memory, and reduce the working
 	// dimension so as to not allocate too much. This feature can be disabled by -nomc
     //////////////////////////////////////////////////////////////////////////////////////
 
 
     const int my_argc = sizeof(my_argv) / sizeof(char*);
     sift->ParseParam(my_argc, (char **)my_argv);
-    
+
     ///////////////////////////////////////////////////////////////////////
-    // Only the following parameters can be changed after initialization (by calling ParseParam). 
+    // Only the following parameters can be changed after initialization (by calling ParseParam).
     // -dw, -ofix, -ofix-not, -fo, -unn, -maxd, -b
     // to change other parameters at runtime, you need to first unload the dynamically loaded libaray
     // reload the libarary, then create a new siftgpu instance
 
 
-    // Create a context for computation, and SiftGPU will be initialized automatically 
+    // Create a context for computation, and SiftGPU will be initialized automatically
     // The same context can be used by SiftMatchGPU
     if (sift->CreateContextGL() != SiftGPU::SIFTGPU_FULL_SUPPORTED)
 	{
@@ -234,11 +234,11 @@ void simple_example_2()
         // reading back feature vectors is faster than writing files
         // if you dont need keys or descriptors, just put NULLs here
         sift->GetFeatureVector(&keys1[0], &descriptors1[0]);
-        // this can be used to write your own sift file.            
+        // this can be used to write your own sift file.
     }
 
     // You can have at most one OpenGL-based SiftGPU (per process).
-    // Normally, you should just create one, and reuse on all images. 
+    // Normally, you should just create one, and reuse on all images.
     if (sift->RunSIFT("feature_analysis_data/sift/640-1.jpg"))
     {
         num2 = sift->GetFeatureNum();
@@ -260,13 +260,13 @@ void simple_example_2()
     //sift->RunSIFT("./feature_analysis_data/sift/256.jpg");
 	//sift->SaveSIFT("./feature_analysis_data/sift/256.sift.2");
     // two sets of features for 256.jpg may have different order due to implementation
- 
+
     //*************************************************************************
     /////compute descriptors for user-specified keypoints (with or without orientations)
 
     // Method1, set new keypoints for the image you've just processed with siftgpu
     //vector<SiftGPU::SiftKeypoint> mykeys;
-    //sift->RunSIFT(mykeys.size(), &mykeys[0]); 
+    //sift->RunSIFT(mykeys.size(), &mykeys[0]);
     //sift->RunSIFT(num2, &keys2[0], 1);
 	//sift->SaveSIFT("./feature_analysis_data/sift/640-1.sift.2");
     //sift->RunSIFT(num2, &keys2[0], 0);
@@ -285,8 +285,8 @@ void simple_example_2()
     //sift->SetKeypointList(100, mykeys, 0);
     //sift->RunSIFT("./feature_analysis_data/sift/800-1.jpg");
 	//sift->SaveSIFT("./feature_analysis_data/sift/800-1.sift.2");
-    //### for comparing with method1: 
-    //sift->RunSIFT("./feature_analysis_data/sift/800-1.jpg"); 
+    //### for comparing with method1:
+    //sift->RunSIFT("./feature_analysis_data/sift/800-1.jpg");
     //sift->RunSIFT(100, mykeys, 0);
 	//sift->SaveSIFT("./feature_analysis_data/sift/800-1.sift.3");
     //*********************************************************************************
@@ -295,7 +295,7 @@ void simple_example_2()
     //**********************GPU SIFT MATCHING*********************************
     //**************************select shader language*************************
     // SiftMatchGPU will use the same shader lanaguage as SiftGPU by default
-    // Before initialization, you can choose between glsl, and CUDA(if compiled). 
+    // Before initialization, you can choose between glsl, and CUDA(if compiled).
     //matcher->SetLanguage(SiftMatchGPU::SIFTMATCH_CUDA);  // +i for the (i+1)-th device
 
     // Verify current OpenGL Context and initialize the Matcher;
@@ -313,11 +313,11 @@ void simple_example_2()
     // use the default thresholds. Check the declaration in SiftGPU.h
     int num_match = matcher->GetSiftMatch(num1, match_buf);
     std::cout << num_match << " sift matches were found." << std::endl;
-    
+
     // enumerate all the feature matches
     for (int i  = 0; i < num_match; ++i)
     {
-        // How to get the feature matches: 
+        // How to get the feature matches:
         //SiftGPU::SiftKeypoint & key1 = keys1[match_buf[i][0]];
         //SiftGPU::SiftKeypoint & key2 = keys2[match_buf[i][1]];
         // key1 in the first image matches with key2 in the second image

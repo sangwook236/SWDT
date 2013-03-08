@@ -1,22 +1,13 @@
 //#include "stdafx.h"
 #include <opensift/imgfeatures.h>
 #include <opensift/utils.h>
-
 #include <opencv/cxcore.h>
 #include <opencv/highgui.h>
-
 #include <iostream>
+
 
 namespace {
 namespace local {
-
-/******************************** Globals ************************************/
-
-char *feat_file = "./feature_analysis_data/sift/beaver.sift";
-char *img_file = "./feature_analysis_data/sift/beaver.png";
-//char *feat_file = "./feature_analysis_data/sift/marker_pen_2.sift";
-//char *img_file = "./feature_analysis_data/sift/marker_pen_2.bmp";
-const int feat_type = FEATURE_LOWE;
 
 }  // namespace local
 }  // unnamed namespace
@@ -26,18 +17,25 @@ namespace my_opensift {
 // [ref] ${OPENSIFT_HOME}/src/dspfeat.c
 void display_feature()
 {
-	IplImage *img;
-	struct feature *feat;
-	char *name;
-	int n;
+#if 1
+    const std::string feat_file("./feature_analysis_data/sift/beaver.sift");
+    const std::string img_file("./feature_analysis_data/sift/beaver.png");
+#elif 0
+    const std::string feat_file("./feature_analysis_data/sift/marker_pen_2.sift");
+    const std::string img_file("./feature_analysis_data/sift/marker_pen_2.bmp");
+#endif
+    const int feat_type = FEATURE_LOWE;
 
-	img = cvLoadImage(local::img_file, 1);
+	IplImage *img = cvLoadImage(img_file.c_str(), 1);
 	if (!img)
-		fatal_error("unable to load image from %s", local::img_file);
-	n = import_features(local::feat_file, local::feat_type, &feat);
+		fatal_error((char *)"unable to load image from %s", img_file.c_str());
+
+	struct feature *feat;
+	const int n = import_features((char *)feat_file.c_str(), feat_type, &feat);
 	if (-1 == n)
-		fatal_error("unable to import features from %s", local::feat_file);
-	name = local::feat_file;
+		fatal_error((char *)"unable to import features from %s", feat_file.c_str());
+
+	const char *name = feat_file.c_str();
 
 	draw_features(img, feat, n);
 	cvNamedWindow(name, 1);

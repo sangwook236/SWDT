@@ -18,7 +18,7 @@ namespace local {
 // width x height x label
 typedef boost::multi_array<float, 3> label_data_type;
 typedef label_data_type::array_view<1>::type label_data_view_type;
-typedef void (*compute_message_pfn_type)(label_data_view_type &s1, label_data_view_type &s2, label_data_view_type &s3, label_data_view_type &s4, label_data_view_type &dst, const float DISC_K, const int LABEL_NUM);
+typedef void (*compute_message_pfn_type)(const label_data_view_type &s1, const label_data_view_type &s2, const label_data_view_type &s3, const label_data_view_type &s4, label_data_view_type &dst, const float DISC_K, const int LABEL_NUM);
 
 void clear_label_data(label_data_type &data)
 {
@@ -65,13 +65,13 @@ boost::shared_ptr<label_data_type> compute_data_costs(image<uchar> *img1, image<
 	{
 		sm1 = imageUCHARtoFLOAT(img1);
 		sm2 = imageUCHARtoFLOAT(img2);
-	} 
+	}
 
 	for (int y = 0; y < height; ++y)
 		for (int x = LABEL_NUM - 1; x < width; ++x)
 			for (int lbl = 0; lbl < LABEL_NUM; ++lbl)
 			{
-				const float val = std::abs(imRef(sm1, x, y) - imRef(sm2, x - lbl, y));	
+				const float val = std::abs(imRef(sm1, x, y) - imRef(sm2, x - lbl, y));
 				(*data)[x][y][lbl] = LAMBDA * std::min(val, DATA_K);
 			}
 
@@ -138,7 +138,7 @@ void dt_linear(label_data_view_type &f, const int LABEL_NUM)
 }
 
 // compute message (for image restoration)
-void compute_message_quadratic(label_data_view_type &s1, label_data_view_type &s2, label_data_view_type &s3, label_data_view_type &s4, label_data_view_type &dst, const float DISC_K, const int LABEL_NUM)
+void compute_message_quadratic(const label_data_view_type &s1, const label_data_view_type &s2, const label_data_view_type &s3, const label_data_view_type &s4, label_data_view_type &dst, const float DISC_K, const int LABEL_NUM)
 {
 	// aggregate and find min
 	float minimum = std::numeric_limits<float>::max();
@@ -159,18 +159,18 @@ void compute_message_quadratic(label_data_view_type &s1, label_data_view_type &s
 
 	// normalize
 	float val = 0;
-	for (int lbl = 0; lbl < LABEL_NUM; ++lbl) 
+	for (int lbl = 0; lbl < LABEL_NUM; ++lbl)
 		val += dst[lbl];
 
 	val /= LABEL_NUM;
-	for (int lbl = 0; lbl < LABEL_NUM; ++lbl) 
+	for (int lbl = 0; lbl < LABEL_NUM; ++lbl)
 		dst[lbl] -= val;
 
 	delete [] tmp;
 }
 
 // compute message (for stereo)
-void compute_message_linear(label_data_view_type &s1, label_data_view_type &s2, label_data_view_type &s3, label_data_view_type &s4, label_data_view_type &dst, const float DISC_K, const int LABEL_NUM)
+void compute_message_linear(const label_data_view_type &s1, const label_data_view_type &s2, const label_data_view_type &s3, const label_data_view_type &s4, label_data_view_type &dst, const float DISC_K, const int LABEL_NUM)
 {
 	// aggregate and find min
 	float minimum = std::numeric_limits<float>::max();
@@ -184,7 +184,7 @@ void compute_message_linear(label_data_view_type &s1, label_data_view_type &s2, 
 	// dt
 	dt_linear(dst, LABEL_NUM);
 
-	// truncate 
+	// truncate
 	minimum += DISC_K;
 	for (int lbl = 0; lbl < LABEL_NUM; ++lbl)
 		if (minimum < dst[lbl])
@@ -192,11 +192,11 @@ void compute_message_linear(label_data_view_type &s1, label_data_view_type &s2, 
 
 	// normalize
 	float val = 0;
-	for (int lbl = 0; lbl < LABEL_NUM; ++lbl) 
+	for (int lbl = 0; lbl < LABEL_NUM; ++lbl)
 		val += dst[lbl];
 
 	val /= LABEL_NUM;
-	for (int lbl = 0; lbl < LABEL_NUM; ++lbl) 
+	for (int lbl = 0; lbl < LABEL_NUM; ++lbl)
 		dst[lbl] -= val;
 }
 
@@ -234,7 +234,7 @@ image<uchar> * output(label_data_type &u, label_data_type &d, label_data_type &l
 // belief propagation using checkerboard update scheme
 void bp_cb(label_data_type &u, label_data_type &d, label_data_type &l, label_data_type &r, label_data_type &data, const float DISC_K, const int LABEL_NUM, const int MAX_ITER, compute_message_pfn_type compute_message)
 {
-	const int width = data.shape()[0];  
+	const int width = data.shape()[0];
 	const int height = data.shape()[1];
 
 	for (int iter = 0; iter < MAX_ITER; ++iter)
@@ -243,7 +243,10 @@ void bp_cb(label_data_type &u, label_data_type &d, label_data_type &l, label_dat
 		for (int y = 1; y < height - 1; ++y)
 			for (int x = ((y+iter) % 2) + 1; x < width - 1; x += 2)
 			{
-				(*compute_message)(u[boost::indices[x][y+1][label_data_type::index_range()]], l[boost::indices[x+1][y][label_data_type::index_range()]], r[boost::indices[x-1][y][label_data_type::index_range()]], data[boost::indices[x][y][label_data_type::index_range()]], u[boost::indices[x][y][label_data_type::index_range()]], DISC_K, LABEL_NUM);
+				//(*compute_message)(u[boost::indices[x][y+1][label_data_type::index_range()]], l[boost::indices[x+1][y][label_data_type::index_range()]], r[boost::indices[x-1][y][label_data_type::index_range()]], data[boost::indices[x][y][label_data_type::index_range()]], u[boost::indices[x][y][label_data_type::index_range()]], DISC_K, LABEL_NUM);
+				label_data_view_type a = u[boost::indices[x][y+1][label_data_type::index_range()]], b = l[boost::indices[x+1][y][label_data_type::index_range()]], c = r[boost::indices[x-1][y][label_data_type::index_range()]], d = data[boost::indices[x][y][label_data_type::index_range()]], e = u[boost::indices[x][y][label_data_type::index_range()]];
+				(*compute_message)(a, b, c, e, e, DISC_K, LABEL_NUM);
+
 				(*compute_message)(d[boost::indices[x][y-1][label_data_type::index_range()]], l[boost::indices[x+1][y][label_data_type::index_range()]], r[boost::indices[x-1][y][label_data_type::index_range()]], data[boost::indices[x][y][label_data_type::index_range()]], d[boost::indices[x][y][label_data_type::index_range()]], DISC_K, LABEL_NUM);
 				(*compute_message)(u[boost::indices[x][y+1][label_data_type::index_range()]], d[boost::indices[x][y-1][label_data_type::index_range()]], r[boost::indices[x-1][y][label_data_type::index_range()]], data[boost::indices[x][y][label_data_type::index_range()]], r[boost::indices[x][y][label_data_type::index_range()]], DISC_K, LABEL_NUM);
 				(*compute_message)(u[boost::indices[x][y+1][label_data_type::index_range()]], d[boost::indices[x][y-1][label_data_type::index_range()]], l[boost::indices[x+1][y][label_data_type::index_range()]], data[boost::indices[x][y][label_data_type::index_range()]], l[boost::indices[x][y][label_data_type::index_range()]], DISC_K, LABEL_NUM);
@@ -323,10 +326,10 @@ image<uchar> * multiscale_belief_propagation(const label_data_type &data0, const
 			l[lvl+1].resize(boost::extents[0][0][0]);
 			r[lvl+1].resize(boost::extents[0][0][0]);
 			data[lvl+1].resize(boost::extents[0][0][0]);
-		} 
+		}
 
 		// BP
-		bp_cb(u[lvl], d[lvl], l[lvl], r[lvl], data[lvl], DISC_K, LABEL_NUM, MAX_ITER, compute_message);    
+		bp_cb(u[lvl], d[lvl], l[lvl], r[lvl], data[lvl], DISC_K, LABEL_NUM, MAX_ITER, compute_message);
 	}
 
 	image<uchar> *out = output(u[0], d[0], l[0], r[0], data[0], LABEL_NUM);

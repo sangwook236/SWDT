@@ -10,15 +10,15 @@
 #include <cmath>
 
 
+void EllipseDetection(image_double image, double rho, double prec, double p, double eps, int smooth, int *ell_count, int *circ_count, int *line_count, char *fstr);
+image_double read_pgm_image_double(char * name);
+
 namespace {
 namespace local {
 
 // ${ELSD_HOME}/elsd.c
 void elsd_example()
 {
-	void EllipseDetection(image_double image, double rho, double prec, double p, double eps, int smooth, int *ell_count, int *circ_count, int *line_count, char *fstr);
-	image_double read_pgm_image_double(char * name);
-	
 	const std::string image_filename("./feature_analysis_data/stars.pgm");
 
 	const double quant = 2.0;  // Bound to the quantization error on the gradient norm

@@ -4,12 +4,10 @@
 #include <opensift/kdtree.h>
 #include <opensift/utils.h>
 #include <opensift/xform.h>
-
 #include <opencv/cv.h>
 #include <opencv/cxcore.h>
 #include <opencv/highgui.h>
-
-#include <stdio.h>
+#include <iostream>
 
 
 namespace {
@@ -21,20 +19,6 @@ namespace local {
 /* threshold on squared ratio of distances between NN and 2nd NN */
 #define NN_SQ_DIST_RATIO_THR 0.49
 
-/******************************** Globals ************************************/
-
-#if 0
-char *img1_file = "./feature_analysis_data/sift/beaver.png";
-char *img2_file = "./feature_analysis_data/sift/beaver_xform.png";
-#elif 0
-char *img1_file = "./feature_analysis_data/sift/marker_pen_3.bmp";
-char *img2_file = "./feature_analysis_data/sift/marker_pen_test_image.bmp";
-#else
-char *img1_file = "./feature_analysis_data/sift/melon_target.png";
-char *img2_file = "./feature_analysis_data/sift/melon_3.png";
-#endif
-//char *img_output_file = "./feature_analysis_data/sift/marker_pen_sift_match_result_3.bmp";
-
 }  // namespace local
 }  // unnamed namespace
 
@@ -43,27 +27,40 @@ namespace my_opensift {
 // [ref] ${OPENSIFT_HOME}/src/match.c
 void match_feature()
 {
-	IplImage *img1, *img2, *stacked;
-	struct feature *feat1, * feat2, *feat;
-	struct feature **nbrs;
-	struct kd_node *kd_root;
-	CvPoint pt1, pt2;
-	double d0, d1;
-	int n1, n2, k, i, m = 0;
+#if 1
+    const std::string img1_file("./feature_analysis_data/sift/beaver.png");
+    const std::string img2_file("./feature_analysis_data/sift/beaver_xform.png");
+#elif 0
+    const std::string img1_file("./feature_analysis_data/sift/marker_pen_3.bmp");
+    const std::string img2_file("./feature_analysis_data/sift/marker_pen_test_image.bmp");
+#elif 0
+    const std::string img1_file("./feature_analysis_data/sift/melon_target.png");
+    const std::string img2_file("./feature_analysis_data/sift/melon_3.png");
+#endif
+    //const std::string img_output_file("./feature_analysis_data/sift/marker_pen_sift_match_result_3.bmp");
 
-	img1 = cvLoadImage(local::img1_file, 1);
+	IplImage *img1 = cvLoadImage(img1_file.c_str(), 1);
 	if (!img1)
-		fatal_error("unable to load image from %s", local::img1_file);
-	img2 = cvLoadImage(local::img2_file, 1);
+		fatal_error((char *)"unable to load image from %s", (char *)img1_file.c_str());
+	IplImage *img2 = cvLoadImage(img2_file.c_str(), 1);
 	if (!img2)
-		fatal_error("unable to load image from %s", local::img2_file);
-	stacked = stack_imgs(img1, img2);
+		fatal_error((char *)"unable to load image from %s", (char *)img2_file.c_str());
+	IplImage *stacked = stack_imgs(img1, img2);
 
-	fprintf(stderr, "Finding features in %s...\n", local::img1_file);
-	n1 = sift_features(img1, &feat1);
-	fprintf(stderr, "Finding features in %s...\n", local::img2_file);
-	n2 = sift_features(img2, &feat2);
-	kd_root = kdtree_build(feat2, n2);
+    //
+	struct feature *feat1, *feat2, *feat;
+
+	std::cout << "finding features in " << img1_file << "..." << std::endl;
+	const int n1 = sift_features(img1, &feat1);
+
+	std::cout << "finding features in " << img2_file << "..." << std::endl;
+	const int n2 = sift_features(img2, &feat2);
+
+	struct kd_node *kd_root = kdtree_build(feat2, n2);
+	struct feature **nbrs;
+	double d0, d1;
+	CvPoint pt1, pt2;
+	int k, i, m = 0;
 	for (i = 0; i < n1; ++i)
 	{
 		feat = feat1 + i;
@@ -74,7 +71,7 @@ void match_feature()
 			d1 = descr_dist_sq(feat, nbrs[1]);
 			if (d0 < d1 * NN_SQ_DIST_RATIO_THR)
 			{
-				pt1 = cvPoint(cvRound(feat->x), cvRound(feat->y ));
+				pt1 = cvPoint(cvRound(feat->x), cvRound(feat->y));
 				pt2 = cvPoint(cvRound(nbrs[0]->x), cvRound(nbrs[0]->y));
 				pt2.y += img1->height;
 				cvLine(stacked, pt1, pt2, CV_RGB(255, 0, 255), 1, 8, 0);
@@ -82,17 +79,18 @@ void match_feature()
 				feat1[i].fwd_match = nbrs[0];
 			}
 		}
+
 		free(nbrs);
 	}
 
-	//cvSaveImage(img_output_file, stacked);
+	//cvSaveImage(img_output_file.c_str(), stacked);
 
-	fprintf(stderr, "Found %d total matches\n", m);
+	std::cout << "found " << m << " total matches" << std::endl;
 	cvNamedWindow("Matches", 1);
 	cvShowImage("Matches", stacked);
 	cvWaitKey(0);
 
-/* 
+/*
 	UNCOMMENT BELOW TO SEE HOW RANSAC FUNCTION WORKS
 
 	Note that this line above:
@@ -102,15 +100,17 @@ void match_feature()
 	is important for the RANSAC function to work.
 */
 	{
-		CvMat *H;
-		H = ransac_xform(feat1, n1, FEATURE_FWD_MATCH, lsq_homog, 4, 0.01, homog_xfer_err, 3.0, NULL, NULL);
+		CvMat *H = ransac_xform(feat1, n1, FEATURE_FWD_MATCH, lsq_homog, 4, 0.01, homog_xfer_err, 3.0, NULL, NULL);
 		if (H)
 		{
 			IplImage *xformed = cvCreateImage(cvGetSize(img2), IPL_DEPTH_8U, 3);
+
 			cvWarpPerspective(img1, xformed, H, CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS, cvScalarAll(0));
+
 			cvNamedWindow("Xformed", 1);
 			cvShowImage("Xformed", xformed);
 			cvWaitKey(0);
+
 			cvReleaseImage(&xformed);
 			cvReleaseMat(&H);
 		}

@@ -4,14 +4,14 @@
 	<Project>
 		<Option title="feature_analysis" />
 		<Option pch_mode="2" />
-		<Option compiler="gcc" />
+		<Option compiler="nvidia_nvcc_cuda_compiler" />
 		<Build>
 			<Target title="Debug">
 				<Option output="../../bin/feature_analysis_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
-				<Option compiler="gcc" />
+				<Option compiler="nvidia_nvcc_cuda_compiler" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -21,7 +21,7 @@
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
-				<Option compiler="gcc" />
+				<Option compiler="nvidia_nvcc_cuda_compiler" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -33,15 +33,73 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="/usr/local/include/" />
-			<Add directory="/usr/include/qt4/QtCore/" />
-			<Add directory="/usr/include/qt4/" />
-			<Add directory="./pictorial_structures_revisited_lib/" />
+			<Add directory="/usr/local/include" />
+			<Add directory="/usr/local/include/opencv" />
+			<Add directory="/usr/local/cuda-5.0/include" />
+			<Add directory="/usr/local/MATLAB/R2012b/extern/include" />
+			<Add directory="/usr/include/qt4/QtCore" />
+			<Add directory="/usr/include/qt4/QtGui" />
+			<Add directory="/usr/include/qt4" />
+			<Add directory="./pictorial_structures_revisited_lib" />
+			<Add directory="./pictorial_structures_revisited_lib/libAdaBoost" />
 		</Compiler>
 		<Linker>
+			<Add library="opensift" />
+			<Add library="siftgpu" />
 			<Add library="opencv_core" />
-			<Add directory="/usr/local/lib/" />
+			<Add library="opencv_highgui" />
+			<Add library="opencv_imgproc" />
+			<Add library="opencv_calib3d" />
+			<Add library="QtCore" />
+			<Add library="QtGui" />
+			<Add library="mwMATLAB_res" />
+			<Add library="mwresource_core" />
+			<Add library="mwcpp11compat" />
+			<Add library="mwi18n" />
+			<Add library="ut" />
+			<Add library="mat" />
+			<Add library="mx" />
+			<Add library="mwfl" />
+			<Add library="cudpp" />
+			<Add library="cudart" />
+			<Add library="IL" />
+			<Add library="ILU" />
+			<Add library="ILUT" />
+			<Add library="png" />
+			<Add library="boost_program_options" />
+			<Add library="boost_regex" />
+			<Add library="boost_timer" />
+			<Add library="boost_signals" />
+			<Add library="boost_date_time" />
+			<Add library="boost_thread" />
+			<Add library="boost_filesystem" />
+			<Add library="boost_system" />
+			<Add library="gsl" />
+			<Add library="lapack" />
+			<Add library="blas" />
+			<Add library="f2c" />
+			<Add library="protobuf" />
+			<Add library="z" />
+			<Add library="icudata" />
+			<Add library="icuuc" />
+			<Add library="icui18n" />
+			<Add library="icuio" />
+			<Add directory="/usr/local/lib" />
+			<Add directory="/usr/lib/x86_64-linux-gnu" />
+			<Add directory="/usr/local/MATLAB/R2012b/bin/glnxa64" />
+			<Add directory="/usr/local/cuda/lib64" />
 		</Linker>
+		<Unit filename="elsd/elsd_main.cpp" />
+		<Unit filename="elsd_lib/elsd.cpp" />
+		<Unit filename="elsd_lib/elsd.h" />
+		<Unit filename="elsd_lib/process_curve.cpp" />
+		<Unit filename="elsd_lib/process_curve.h" />
+		<Unit filename="elsd_lib/process_line.cpp" />
+		<Unit filename="elsd_lib/process_line.h" />
+		<Unit filename="elsd_lib/valid_curve.cpp" />
+		<Unit filename="elsd_lib/valid_curve.h" />
+		<Unit filename="elsd_lib/write_svg.cpp" />
+		<Unit filename="elsd_lib/write_svg.h" />
 		<Unit filename="lsd/lsd_main.cpp" />
 		<Unit filename="lsd_lib/lsd.cpp" />
 		<Unit filename="lsd_lib/lsd.h" />
@@ -49,8 +107,34 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="lsd_lib/lsd_cmd.cpp" />
+		<Unit filename="lsd_lib/lsd_cmd.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="main.cpp" />
+		<Unit filename="opensift/opensift_display_feature.cpp" />
+		<Unit filename="opensift/opensift_extract_feature.cpp" />
+		<Unit filename="opensift/opensift_main.cpp" />
+		<Unit filename="opensift/opensift_match_feature.cpp" />
+		<Unit filename="opensurf/opensurf_example.cpp" />
+		<Unit filename="opensurf/opensurf_main.cpp" />
+		<Unit filename="opensurf_lib/fasthessian.cpp" />
+		<Unit filename="opensurf_lib/fasthessian.h" />
+		<Unit filename="opensurf_lib/integral.cpp" />
+		<Unit filename="opensurf_lib/integral.h" />
+		<Unit filename="opensurf_lib/ipoint.cpp" />
+		<Unit filename="opensurf_lib/ipoint.h" />
+		<Unit filename="opensurf_lib/kmeans.h" />
+		<Unit filename="opensurf_lib/main.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="opensurf_lib/responselayer.h" />
+		<Unit filename="opensurf_lib/surf.cpp" />
+		<Unit filename="opensurf_lib/surf.h" />
+		<Unit filename="opensurf_lib/surflib.h" />
+		<Unit filename="opensurf_lib/utils.cpp" />
+		<Unit filename="opensurf_lib/utils.h" />
 		<Unit filename="pictorial_structures_revisited/parteval.cpp" />
 		<Unit filename="pictorial_structures_revisited/parteval.h" />
 		<Unit filename="pictorial_structures_revisited/pictorial_structures_revisited_main.cpp" />
@@ -123,16 +207,97 @@
 		<Unit filename="pictorial_structures_revisited_lib/libPictStruct/objectdetect_findrot.cpp" />
 		<Unit filename="pictorial_structures_revisited_lib/libPictStruct/objectdetect_learnparam.cpp" />
 		<Unit filename="pictorial_structures_revisited_lib/libProtoBuf/protobuf_aux.hpp" />
-		<Unit filename="sift/sift_display_feature.cpp" />
-		<Unit filename="sift/sift_extract_feature.cpp" />
-		<Unit filename="sift/sift_main.cpp" />
-		<Unit filename="sift/sift_match_feature.cpp" />
 		<Unit filename="siftgpu/siftgpu_main.cpp" />
-		<Unit filename="surf/surf_imload.cpp" />
-		<Unit filename="surf/surf_imload.h" />
-		<Unit filename="surf/surf_main.cpp" />
-		<Unit filename="surf/surf_os_mapping.cpp" />
-		<Unit filename="surf/surf_os_mapping.h" />
+		<Unit filename="siftgpu/siftgpu_simple_example.cpp" />
+		<Unit filename="surfgpu/surfgpu_example.cpp" />
+		<Unit filename="surfgpu/surfgpu_main.cpp" />
+		<Unit filename="surfgpu_lib/buildDetGPU.h" />
+		<Unit filename="surfgpu_lib/buildSURFDescriptorsGPU.h" />
+		<Unit filename="surfgpu_lib/convertRGB2GrayFloatGPU.h" />
+		<Unit filename="surfgpu_lib/convertRGBA2GrayFloatGPU.h" />
+		<Unit filename="surfgpu_lib/cuda/buildDetCUDA.cu" />
+		<Unit filename="surfgpu_lib/cuda/buildDetGPU.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="surfgpu_lib/cuda/buildSURFDescriptorsCUDA.cu" />
+		<Unit filename="surfgpu_lib/cuda/buildSURFDescriptorsGPU.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="surfgpu_lib/cuda/common_kernel.h" />
+		<Unit filename="surfgpu_lib/cuda/convertRGB2GrayFloatCUDA.cu" />
+		<Unit filename="surfgpu_lib/cuda/convertRGB2GrayFloatGPU.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="surfgpu_lib/cuda/convertRGBA2GrayFloatCUDA.cu" />
+		<Unit filename="surfgpu_lib/cuda/convertRGBA2GrayFloatGPU.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="surfgpu_lib/cuda/cudpp_helper_funcs.h" />
+		<Unit filename="surfgpu_lib/cuda/detectIpointOrientationsCUDA.cu" />
+		<Unit filename="surfgpu_lib/cuda/detectIpointOrientationsGPU.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="surfgpu_lib/cuda/getMatchesGPU.cpp" />
+		<Unit filename="surfgpu_lib/cuda/haarXY.cu" />
+		<Unit filename="surfgpu_lib/cuda/helper_funcs.cpp" />
+		<Unit filename="surfgpu_lib/cuda/helper_funcs.h" />
+		<Unit filename="surfgpu_lib/cuda/matchSURFKeypointsCUDA.cu" />
+		<Unit filename="surfgpu_lib/cuda/matchSURFKeypointsGPU.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="surfgpu_lib/cuda/nonMaxCUDA.cu" />
+		<Unit filename="surfgpu_lib/cuda/nonMaxGPU.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="surfgpu_lib/cuda/normalizeSURFDescriptorsCUDA.cu" />
+		<Unit filename="surfgpu_lib/cuda/normalizeSURFDescriptorsGPU.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="surfgpu_lib/cuda/reductionCUDA.cu" />
+		<Unit filename="surfgpu_lib/cuda/strerror_cudpp.cpp" />
+		<Unit filename="surfgpu_lib/cuda/strerror_cudpp.h" />
+		<Unit filename="surfgpu_lib/cuda/transposeCUDA.cu" />
+		<Unit filename="surfgpu_lib/cuda/transposeGPU.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
+		<Unit filename="surfgpu_lib/cudaimage.h" />
+		<Unit filename="surfgpu_lib/defines.h" />
+		<Unit filename="surfgpu_lib/detectIpointOrientationsGPU.h" />
+		<Unit filename="surfgpu_lib/fasthessianGPU.cpp" />
+		<Unit filename="surfgpu_lib/fasthessianGPU.h" />
+		<Unit filename="surfgpu_lib/fasthessian_cudaipoint.h" />
+		<Unit filename="surfgpu_lib/getMatchesCPU.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="surfgpu_lib/integralGPU.cpp" />
+		<Unit filename="surfgpu_lib/integralGPU.h" />
+		<Unit filename="surfgpu_lib/ipointGPU.cpp" />
+		<Unit filename="surfgpu_lib/ipointGPU.h" />
+		<Unit filename="surfgpu_lib/kmeansGPU.h" />
+		<Unit filename="surfgpu_lib/main.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="surfgpu_lib/matchSURFKeypointsGPU.h" />
+		<Unit filename="surfgpu_lib/nonMaxGPU.h" />
+		<Unit filename="surfgpu_lib/normalizeSURFDescriptorsGPU.h" />
+		<Unit filename="surfgpu_lib/surfGPU.cpp" />
+		<Unit filename="surfgpu_lib/surfGPU.h" />
+		<Unit filename="surfgpu_lib/surf_cudaipoint.h" />
+		<Unit filename="surfgpu_lib/surflibGPU.h" />
+		<Unit filename="surfgpu_lib/transposeGPU.h" />
+		<Unit filename="surfgpu_lib/utilsGPU.cpp" />
+		<Unit filename="surfgpu_lib/utilsGPU.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

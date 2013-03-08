@@ -27,12 +27,12 @@ int main(int argc, char *argv[])
 		//retval = elsd_main(argc, argv);
 
 		// local descriptor -------------------------------------
-		//retval = opensift_main(argc, argv);
+		retval = opensift_main(argc, argv);
 		//retval = siftgpu_main(argc, argv);
 
 		//retval = opensurf_main(argc, argv);
-		retval = surfgpu_main(argc, argv);
-		
+		//retval = surfgpu_main(argc, argv);
+
 		// pictorial structures ---------------------------------
 		//retval = pictorial_structures_revisited_main(argc, argv);
 	}

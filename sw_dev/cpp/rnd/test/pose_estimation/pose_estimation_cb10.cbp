@@ -33,7 +33,13 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="/usr/local/include/PartsBasedDetector" />
 		</Compiler>
+		<Linker>
+			<Add library="cvmatio" />
+			<Add library="PartsBasedDetector" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="parts_based_detector/parts_based_detector_main.cpp" />
 		<Extensions>

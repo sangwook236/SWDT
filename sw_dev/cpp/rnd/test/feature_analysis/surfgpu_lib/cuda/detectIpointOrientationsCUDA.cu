@@ -28,6 +28,7 @@
 #endif
 #include "../surf_cudaipoint.h"
 #include "common_kernel.h"
+#include <device_functions.h>
 #include <math.h>
 
 //--S [] 2013/03/06: Sang-Wook Lee
