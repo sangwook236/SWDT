@@ -17,7 +17,7 @@
 
 	MSVC6 project file을 MSVC9 & MSVC10 project file로 직접 변환하여도 정상 작동함.
 
-[-] Building in MSVC (original version)
+[-] Building (Visual Studio) (original version)
 	[ref] http://sourceforge.net/projects/openpnl/
 
 	[1] cxcore library 이름 변경
@@ -59,7 +59,7 @@
 				const int version = b[0];
 				const int features = b[3];
 
-[-] Building in MinGW32 (original version)
+[-] Building (MinGW32) (original version)
 	-. Windows command window에서 ${MINGW32_ROOT}/bin & ${MSYS_ROOT}/bin을 path 설정
 		${MSYS_ROOT}/bin를 path 설정하는 것은 sh를 사용하기 위함
 		set path=${MINGW32_ROOT}/bin;${MSYS_ROOT}/bin;%path%
@@ -83,11 +83,11 @@
 			RDTSC(addr) macro의 asm 처리 부분에서 error
 		PNL의 linux version에서도 동일한 error 발생
 
-[-] Building in MSYS (original version)
+[-] Building (MSYS) (original version)
 	-. compile-time error 발생
 		MinGW32에서와 동일한 이유로 MSYS에서도 compile-time error 발생
 
-[-] Building in Cygwin (original version)
+[-] Building (Cygwin) (original version)
 	[1] building
 		[ref] follow instructions in readme.txt
 
@@ -124,7 +124,7 @@
 				LDFLAGS = -L$(top_srcdir)/c_pgmtk/src/.libs -L$(top_srcdir)/cxcore/cxcore/src
 				LIBS = -ldl -lm -lpnl.dll -lcxcore
 
-[-] Building in MSVC (crishoj-OpenPNL version)
+[-] Building (Visual Studio) (crishoj-OpenPNL version)
 	[ref] https://github.com/crishoj/OpenPNL
 
 	(주의) build가 되지 않음
@@ -156,7 +156,7 @@
 				#include "pnlMatrix_impl.hpp"
 	[3] pnl high library (PNL wrapper)
 
-[-] Building in Cygwin (crishoj-OpenPNL version)
+[-] Building (Cygwin) (crishoj-OpenPNL version)
 	[1] building
 		[ref] follow instructions in readme.txt
 
@@ -184,3 +184,54 @@
 			"${PNL_ROOT}/high/source/Makefile"에 아래의 내용을 추가해야 함.
 				LDFLAGS = -L$(top_srcdir)/c_pgmtk/src/.libs -L$(top_srcdir)/cxcore/cxcore/src
 				LIBS = -ldl -lm -lpnl -lcxcore
+
+[-] Building (Linux)
+	-. PNL library building
+		[ref] ${PNL_HOME}/reamdme.txt
+		(sh) ./configure.gcc --prefix=${PNL_INSTALL_DIR}
+			(주의) PNL library의 installation directory로 user permission이 있는 local directory를 지정해야 함.
+					그렇지 않고, /usr/local 등을 지정한다면 설치 과정에서 permission 오류 발생.
+		make
+		make check
+		make install
+	-. -fpermissive 옵션이 필요하다는 오류 발생.
+		==> ${PNL_HOME}/cxcore/cxcore/src/Makefile 수정.
+				(line 94) CFLAGS = -g -O2 -> CFLAGS = -g -O2 -fpermissve
+				(line 96) CPPFLAGS = -> CPPFLAGS = -fpermissve
+				(line 100) CXXFLAGS = -g -O2 -> CXXFLAGS = -g -O2 -fpermissve
+			${PNL_HOME}/c_pgmtk/src/Makefile 수정.
+				(line 143) CFLAGS = -g -O2 -> CFLAGS = -g -O2 -fpermissve
+				(line 145) CPPFLAGS = -> CPPFLAGS = -fpermissve
+				(line 149) CXXFLAGS = -g -O2 -> CXXFLAGS = -g -O2 -fpermissve
+			${PNL_HOME}/c_pgmtk/src/include/Makefile 수정.
+				(line 67) CFLAGS = -g -O2 -> CFLAGS = -g -O2 -fpermissve
+				(line 69) CPPFLAGS = -> CPPFLAGS = -fpermissve
+				(line 73) CXXFLAGS = -g -O2 -> CXXFLAGS = -g -O2 -fpermissve
+	-. PNL library building 과정에서 identifier를 찾을 수 없다는 오류 발생.
+		header file이 include되지 않아 발생.
+		==> memcmp() 함수 관련 오류.
+				${PNL_HOME}/c_pgmtk/include/pnlString.hpp
+				#include <cstring> 추가.
+			INT_MAX 관련 오류.
+				${PNL_HOME}/c_pgmtk/include/pnlGraph.hpp
+				${PNL_HOME}/c_pgmtk/include/pnlAllocator.hpp
+				${PNL_HOME}/c_pgmtk/include/pnlStackMemProv.hpp
+				#include <climits> 추가.
+	-. header file에서 extra qualification 관련 오류.
+		destructor or member function에 영역 지정자가 있어 발생하는 문제.
+		==> 영역 지정자 삭제.
+			${PNL_HOME}/c_pgmtk/src/include/pnlCondSoftMaxDistribFun.hpp
+				(line 177) CCondSoftMaxDistribFun::~CCondSoftMaxDistribFun(); -> ~CCondSoftMaxDistribFun();
+			${PNL_HOME}/c_pgmtk/src/include/pnlTabularDistribFun.hpp
+				(line 153) CTabularDistribFun::~CTabularDistribFun(); -> ~CTabularDistribFun();
+			${PNL_HOME}/c_pgmtk/src/include/pnlGaussianDistribFun.hpp
+				(line 166) CGaussianDistribFun::~CGaussianDistribFun(); -> ~CGaussianDistribFun();
+			${PNL_HOME}/c_pgmtk/include/pnlBKInferenceEngine.hpp
+				(line 95) CBKInfEngine::GetOutgoingNds(); -> GetOutgoingNds();
+				(line 96) CBKInfEngine::GetIngoingNds(); -> GetIngoingNds();
+			${PNL_HOME}/c_pgmtk/include/pnlSamplingInferenceEngine.hpp
+				(line 102) CSamplingInfEngine::GetPotsToSampling(); -> GetPotsToSampling();
+			${PNL_HOME}/c_pgmtk/include/pnlSoftMaxCPD.hpp
+				(line 50) CSoftMaxCPD::CreateAllNecessaryMatrices(); -> CreateAllNecessaryMatrices();
+			${PNL_HOME}/c_pgmtk/include/pnlEmLearningEngineDBN.hpp
+				(line 54) CEmLearningEngineDBN::CreateEvIfDomainObserved(); -> CreateEvIfDomainObserved();

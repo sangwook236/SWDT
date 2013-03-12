@@ -1,0 +1,7 @@
+[-] Building (Linux)
+	-. Makefile을 이용해 build해야 함.
+		[ref] ${CRFPP_HOME}/doc/index.html
+
+		./configure
+		make
+		sudo make install

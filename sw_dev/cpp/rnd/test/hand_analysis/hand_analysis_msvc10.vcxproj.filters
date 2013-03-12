@@ -77,5 +77,14 @@
     <ClCompile Include="openhpe\openhpe_example.cpp">
       <Filter>Source Files\openhpe</Filter>
     </ClCompile>
+    <ClCompile Include="libhand\libhand_bend_one_finger.cpp">
+      <Filter>Source Files\libhand</Filter>
+    </ClCompile>
+    <ClCompile Include="libhand\libhand_file_dialog.cpp">
+      <Filter>Source Files\libhand</Filter>
+    </ClCompile>
+    <ClCompile Include="libhand\libhand_render_hog_descriptor.cpp">
+      <Filter>Source Files\libhand</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

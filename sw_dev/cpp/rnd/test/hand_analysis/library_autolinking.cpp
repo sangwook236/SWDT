@@ -4,16 +4,24 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-//#pragma comment(lib, "libhand.lib")
-//#pragma comment(lib, "openhpe.lib")
+/*
+#pragma comment(lib, "libhand_hog.lib")
+#pragma comment(lib, "libhand_renderer.lib")
+#pragma comment(lib, "libhand_utils.lib")
+#pragma comment(lib, "libdot_sceneloader.lib")
+*/
 #pragma comment(lib, "opencv_core243d.lib")
 #pragma comment(lib, "opencv_imgproc243d.lib")
 #pragma comment(lib, "opencv_highgui243d.lib")
 
 #		else
 
-//#pragma comment(lib, "libhand.lib")
-//#pragma comment(lib, "openhpe.lib")
+/*
+#pragma comment(lib, "libhand_hog.lib")
+#pragma comment(lib, "libhand_renderer.lib")
+#pragma comment(lib, "libhand_utils.lib")
+#pragma comment(lib, "libdot_sceneloader.lib")
+*/
 #pragma comment(lib, "opencv_core243.lib")
 #pragma comment(lib, "opencv_imgproc243.lib")
 #pragma comment(lib, "opencv_highgui243.lib")

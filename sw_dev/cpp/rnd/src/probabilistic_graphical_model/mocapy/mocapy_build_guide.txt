@@ -1,4 +1,4 @@
-<< Building (Common) >>
+<< Building (Windows) >>
 
 [-] Setting CMake
 	-. uint type를 찾을 수 없다는 오류 발생.
@@ -187,9 +187,19 @@
 		${CYGWIN_HOME}/lib/lapack/cygblas-0.dll
 		${CYGWIN_HOME}/lib/lapack/libpthread.a
 
-<< Trouble Shooting >>
+<< Trouble Shooting (Windows) >>
 
 [-] Cygwin/MinGW/MSYS 환경에서 생성된 import library (libMocapy.dll.a)는 Windows system에서 사용할 수 없음.
 	-. Cygwin/MinGW/MSYS 환경에서 생성된 shared library (cygMocapy.dll)로부터 Windows system을 위한 import library (cygMocapy.dll.lib)을 생성해야 함.
 		[ref] D:\dev_center\software_development\doc\implementation_technique\creating_import_library_from_shared_library.txt
 		==> Mocapy library가 정상적으로 linking되지 않음.
+
+<< Building (Linux) >>
+
+[-] example을 building하는 과정에 Boost.System library 관련 오류 발생
+	<오류메시지>
+		undefined reference to symbol 'boost::system::system_category()'
+	==> CMake의 linking 관련 설정 변경.
+		아래의 file에 Boost.System library linking 추가.
+			/usr/local/lib/libboost_system.so
+			${MOCAPY_HOME}/build_cb10/examples/CMakeFiles/mlr-uni.dir/link.txt

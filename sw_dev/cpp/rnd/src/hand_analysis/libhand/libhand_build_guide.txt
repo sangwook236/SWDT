@@ -64,16 +64,59 @@
 	-. mktemp() 함수 관련 오류로 Building이 되지 않음.
 
 [-] Setting CMake (Linux)
-	-. OGRE library와 관계된 CMake file을 찾을 수 없다는 오류 발생.
+	-. OGRE library는 static library를 사용해야 함.
+		==> (중요) 아래에 설명된 것과 같이 shell script를 이용하는 경우,
+			Linux용 library가 아닌 Mac OS X을 위한 library가 생성.
+			OGRE library source를 download 받아 building해 사용해야 함.
+		==> OGRE library를 building하기 위한 shell script를 LibHand library에서 제공.
+			${LIBHAND_HOME}/install_help/linux_ogre_static_installer directory에 존재.
+			[ref] ${LIBHAND_HOME}/install_help/linux_ogre_static_installer/README
+				./install_ogre_stastic.sh download
+				./install_ogre_stastic.sh build
+				sudo ./install_ogre_stastic.sh install
+		==> 설치된 OGRE library version은 아래의 directory에 설치.
+			/usr/local/include/OGRE
+			/usr/local/lib
+				libOgreMainStatic.a
+				libOgrePagingStatic.a
+				libOgrePropertyStatic.a
+				libOgreRTShaderSystemStatic.a
+				libOgreTerrainStatic.a
+			/usr/local/lib/OGRE
+				libPlugin_BSPSceneManagerStatic.a
+				libPlugin_OctreeSceneManagerStatic.a
+				libPlugin_OctreeZoneStatic.a
+				libPlugin_ParticleFXStatic.a
+				libPlugin_PCZSceneManagerStatic.a
+				libRenderSystem_GLStatic.a
+			/usr/local/lib/OGRE/cmake
+			/usr/local/share/OGRE
+			/usr/local/share/OGRE/media
+		==> ${LIBHAND_HOME}/hand_cpp/source/CMakeLists.txt file 안에 지정되어 있음.
+			SET(OGRE_STATIC TRUE)
+	-. LibHand library의 pose_designer를 building하는 과정에서 Boost.System & X library 관련 오류 발생.
+		<오류메시지>
+			undefined reference to symbol 'boost::system::system_category()'
+			undefined reference to symbol 'XtUnrealizeWidget'
+			undefined reference to symbol 'XtDestroyWidget'
+		==> 아래의 linking 관련 file에 Boost.System & X library 추가.
+			${LIBHAND_HOME}/hand_cpp/build_cb10/source/CMakeFiles/pose_designer.dir/link.txt
+			/usr/local/lib/libboost_system.so
+			-lXt -lXaw
+	-. CMake로부터 생성된 building system을 이용해 build 후 install을 수행하면 아래의 directory에 file들이 설치됨.
+		${LIBHAND_HOME}/hand_cpp/dist
+	-. LibHand library의 linking 순서 중요.
+		libhand_hog.a
+		libhand_renderer.a
+		libhand_utils.a
+		libdot_sceneloader.a
+	-. X library의 linking이 필요.
+		libX11.so
+		libXt.so
+		libXaw.so
+	-. OGRE library와 관계된 CMake file을 찾을 수 없다는 오류 발생. (?)
 		==> OGRE library에 있는 CMake 관련 file을 LibHand library directory로 복사.
-			/usr/share/OGRE/cmake/module/ -> ${LIBHAND_HOME}/hand_cpp/modules
+			/usr/local/lib/OGRE/cmake -> ${LIBHAND_HOME}/hand_cpp/modules
 				FindOGRE.cmake
 				FindPkgMacros.cmake
 				PreprocessorUtils.cmake
-	-. OGRE library는 shared library를 사용해야 함.
-		==> 아래의 CMake file을 수정해야 함.
-			${LIBHAND_HOME}/hand_cpp/source/CMakeLists.txt
-			<수정전>
-			SET(OGRE_STATIC TRUE)
-			<수정후>
-			SET(OGRE_STATIC FALSE)

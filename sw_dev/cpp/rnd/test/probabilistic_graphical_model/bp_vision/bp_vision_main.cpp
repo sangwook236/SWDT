@@ -243,13 +243,29 @@ void bp_cb(label_data_type &u, label_data_type &d, label_data_type &l, label_dat
 		for (int y = 1; y < height - 1; ++y)
 			for (int x = ((y+iter) % 2) + 1; x < width - 1; x += 2)
 			{
-				//(*compute_message)(u[boost::indices[x][y+1][label_data_type::index_range()]], l[boost::indices[x+1][y][label_data_type::index_range()]], r[boost::indices[x-1][y][label_data_type::index_range()]], data[boost::indices[x][y][label_data_type::index_range()]], u[boost::indices[x][y][label_data_type::index_range()]], DISC_K, LABEL_NUM);
-				label_data_view_type a = u[boost::indices[x][y+1][label_data_type::index_range()]], b = l[boost::indices[x+1][y][label_data_type::index_range()]], c = r[boost::indices[x-1][y][label_data_type::index_range()]], d = data[boost::indices[x][y][label_data_type::index_range()]], e = u[boost::indices[x][y][label_data_type::index_range()]];
-				(*compute_message)(a, b, c, e, e, DISC_K, LABEL_NUM);
-
+#if defined(WIN32) || defined(_WIN32)
+				{
+					label_data_view_type aa = u[boost::indices[x][y+1][label_data_type::index_range()]], bb = l[boost::indices[x+1][y][label_data_type::index_range()]], cc = r[boost::indices[x-1][y][label_data_type::index_range()]], dd = data[boost::indices[x][y][label_data_type::index_range()]], ee = u[boost::indices[x][y][label_data_type::index_range()]];
+					(*compute_message)(aa, bb, cc, dd, ee, DISC_K, LABEL_NUM);
+				}
+				{
+					label_data_view_type aa = d[boost::indices[x][y-1][label_data_type::index_range()]], bb = l[boost::indices[x+1][y][label_data_type::index_range()]], cc = r[boost::indices[x-1][y][label_data_type::index_range()]], dd = data[boost::indices[x][y][label_data_type::index_range()]], ee = d[boost::indices[x][y][label_data_type::index_range()]];
+					(*compute_message)(aa, bb, cc, dd, ee, DISC_K, LABEL_NUM);
+				}
+				{
+					label_data_view_type aa = u[boost::indices[x][y+1][label_data_type::index_range()]], bb = d[boost::indices[x][y-1][label_data_type::index_range()]], cc = r[boost::indices[x-1][y][label_data_type::index_range()]], dd = data[boost::indices[x][y][label_data_type::index_range()]], ee = r[boost::indices[x][y][label_data_type::index_range()]];
+					(*compute_message)(aa, bb, cc, dd, ee, DISC_K, LABEL_NUM);
+				}
+				{
+					label_data_view_type aa = u[boost::indices[x][y+1][label_data_type::index_range()]], bb = d[boost::indices[x][y-1][label_data_type::index_range()]], cc = l[boost::indices[x+1][y][label_data_type::index_range()]], dd = data[boost::indices[x][y][label_data_type::index_range()]], ee = l[boost::indices[x][y][label_data_type::index_range()]];
+					(*compute_message)(aa, bb, cc, dd, ee, DISC_K, LABEL_NUM);
+				}
+#else
+				(*compute_message)(u[boost::indices[x][y+1][label_data_type::index_range()]], l[boost::indices[x+1][y][label_data_type::index_range()]], r[boost::indices[x-1][y][label_data_type::index_range()]], data[boost::indices[x][y][label_data_type::index_range()]], u[boost::indices[x][y][label_data_type::index_range()]], DISC_K, LABEL_NUM);
 				(*compute_message)(d[boost::indices[x][y-1][label_data_type::index_range()]], l[boost::indices[x+1][y][label_data_type::index_range()]], r[boost::indices[x-1][y][label_data_type::index_range()]], data[boost::indices[x][y][label_data_type::index_range()]], d[boost::indices[x][y][label_data_type::index_range()]], DISC_K, LABEL_NUM);
 				(*compute_message)(u[boost::indices[x][y+1][label_data_type::index_range()]], d[boost::indices[x][y-1][label_data_type::index_range()]], r[boost::indices[x-1][y][label_data_type::index_range()]], data[boost::indices[x][y][label_data_type::index_range()]], r[boost::indices[x][y][label_data_type::index_range()]], DISC_K, LABEL_NUM);
 				(*compute_message)(u[boost::indices[x][y+1][label_data_type::index_range()]], d[boost::indices[x][y-1][label_data_type::index_range()]], l[boost::indices[x+1][y][label_data_type::index_range()]], data[boost::indices[x][y][label_data_type::index_range()]], l[boost::indices[x][y][label_data_type::index_range()]], DISC_K, LABEL_NUM);
+#endif
 			}
 	}
 }
