@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
 		// conditional random field (CRF) --------------------------
 		//retval = crfpp_main(argc, argv);
-		retval = hcrf_main(argc, argv);
+		//retval = hcrf_main(argc, argv);
 
 		// dynamic Bayesian network (DBN) --------------------------
 
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 		//retval = mocapy_main(argc, argv);
 
 		// libDAI library ------------------------------------------
-		//retval = libdai_main(argc, argv);  // not yet implemented
+		retval = libdai_main(argc, argv);
 
 		// OpenGM library ------------------------------------------
 		//retval = opengm_main(argc, argv);

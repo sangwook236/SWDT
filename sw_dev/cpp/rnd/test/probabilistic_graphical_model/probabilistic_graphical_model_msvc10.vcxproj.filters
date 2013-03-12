@@ -253,6 +253,18 @@
     <ClCompile Include="opengm\trws\treeProbabilities.cpp">
       <Filter>Source Files\opengm\trws</Filter>
     </ClCompile>
+    <ClCompile Include="libdai\libdai_sprinkler_example.cpp">
+      <Filter>Source Files\libdai</Filter>
+    </ClCompile>
+    <ClCompile Include="libdai\libdai_varset_examples.cpp">
+      <Filter>Source Files\libdai</Filter>
+    </ClCompile>
+    <ClCompile Include="libdai\libdai_sprinkler_em_examples.cpp">
+      <Filter>Source Files\libdai</Filter>
+    </ClCompile>
+    <ClCompile Include="libdai\libdai_sprinkler_gibbs_examples.cpp">
+      <Filter>Source Files\libdai</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

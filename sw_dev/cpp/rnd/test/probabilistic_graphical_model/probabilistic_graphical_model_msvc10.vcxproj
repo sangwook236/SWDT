@@ -179,6 +179,10 @@
     <ClCompile Include="hmm\viterbi.cpp" />
     <ClCompile Include="hmm\viterbi_algorithm.cpp" />
     <ClCompile Include="libdai\libdai_main.cpp" />
+    <ClCompile Include="libdai\libdai_sprinkler_em_examples.cpp" />
+    <ClCompile Include="libdai\libdai_sprinkler_example.cpp" />
+    <ClCompile Include="libdai\libdai_sprinkler_gibbs_examples.cpp" />
+    <ClCompile Include="libdai\libdai_varset_examples.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="middlebury\middlebury_main.cpp" />

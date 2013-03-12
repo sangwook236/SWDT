@@ -1,6 +1,4 @@
-#include <dai/alldai.h>
 #include <iostream>
-#include <stdexcept>
 
 
 namespace {
@@ -11,11 +9,19 @@ namespace local {
 
 namespace my_libdai {
 
+void varset_example();
+void sprinkler_example();
+void sprinkler_gibbs_example();
+void sprinkler_em_example();
+
 }  // namespace my_libdai
 
 int libdai_main(int argc, char *argv[])
 {
-	// [ref] libDAI interfacing in OpenGM
+	my_libdai::varset_example();
+	my_libdai::sprinkler_example();
+	my_libdai::sprinkler_gibbs_example();
+	my_libdai::sprinkler_em_example();
 
-	throw std::runtime_error("not yet implemented");
+	return 0;
 }

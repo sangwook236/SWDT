@@ -188,9 +188,13 @@
 [-] Building (Linux)
 	-. PNL library building
 		[ref] ${PNL_HOME}/reamdme.txt
-		(sh) ./configure.gcc --prefix=${PNL_INSTALL_DIR}
-			(주의) PNL library의 installation directory로 user permission이 있는 local directory를 지정해야 함.
-					그렇지 않고, /usr/local 등을 지정한다면 설치 과정에서 permission 오류 발생.
+		sh ./configure.gcc
+			(주의)
+			PNL library의 installation directory로 user permission이 있는 local directory를 지정해야 함.
+			그렇지 않고, /usr/local 등을 지정한다면 설치 과정에서 permission 오류 발생.
+			'sh ./configure.gcc --prefix=${PNL_INSTALL_DIR}' 명령이 정상적으로 동작하지 않음.
+			${PNL_HOME}/configure.gcc file을 수정해야 함.
+				(line 8) sh ${SRCROOT}/configure -> sh ${SRCROOT}/configure --prefix=${PNL_INSTALL_DIR}
 		make
 		make check
 		make install
