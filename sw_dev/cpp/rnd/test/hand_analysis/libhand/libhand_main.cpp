@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stdexcept>
 
 
 namespace {
@@ -10,11 +9,17 @@ namespace local {
 
 namespace my_libhand {
 
+void file_dialog_example();
+void render_hog_descriptor_example();
+void bend_one_finger_example();
+
 }  // namespace my_libhand
 
 int libhand_main(int argc, char *argv[])
 {
-	throw std::runtime_error("not yet implemented");
+	//my_libhand::file_dialog_example();
+	//my_libhand::render_hog_descriptor_example();
+	my_libhand::bend_one_finger_example();
 
 	return 0;
 }

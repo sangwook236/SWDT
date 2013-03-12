@@ -34,14 +34,45 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add directory="/usr/local/include/opencv" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
-			<Add library="opencv_core" />
+			<Add library="hand_hog" />
+			<Add library="hand_renderer" />
+			<Add library="hand_utils" />
+			<Add library="dot_sceneloader" />
+			<Add library="opencv_video" />
 			<Add library="opencv_imgproc" />
 			<Add library="opencv_highgui" />
+			<Add library="opencv_core" />
+			<Add library="Plugin_BSPSceneManagerStatic" />
+			<Add library="Plugin_OctreeSceneManagerStatic" />
+			<Add library="Plugin_PCZSceneManagerStatic" />
+			<Add library="RenderSystem_GLStatic" />
+			<Add library="OgreRTShaderSystemStatic" />
+			<Add library="OgreTerrainStatic" />
+			<Add library="OgrePagingStatic" />
+			<Add library="OgrePropertyStatic" />
+			<Add library="OgreMainStatic" />
+			<Add library="boost_thread" />
+			<Add library="boost_system" />
+			<Add library="GLU" />
+			<Add library="GL" />
+			<Add library="X11" />
+			<Add library="Xt" />
+			<Add library="Xaw" />
+			<Add library="tbb" />
+			<Add library="tinyxml" />
+			<Add library="freeimage" />
+			<Add library="zzip" />
+			<Add directory="/usr/local/lib/libhand" />
+			<Add directory="/usr/local/lib/OGRE" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="libhand/libhand_bend_one_finger.cpp" />
+		<Unit filename="libhand/libhand_file_dialog.cpp" />
 		<Unit filename="libhand/libhand_main.cpp" />
+		<Unit filename="libhand/libhand_render_hog_descriptor.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="openhpe/openhpe_example.cpp" />
 		<Unit filename="openhpe/openhpe_main.cpp" />

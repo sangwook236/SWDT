@@ -7,6 +7,12 @@
 #include <cstdlib>
 
 
+// for running SiftGPU & SURFGPU
+//  -. nvcc compiler가 path에 설정되어 있어야 함.
+//      e.g.) export PATH=$PATH:/usr/local/cuda/bin
+//  -. MATlAB library path가 LD library path가 설정되어 있어야 함. (for SURFGPU only)
+//      e.g.) export LD_LIBRARY_PATH+=/usr/local/MATLAB/R2012b/bin/glnxa64
+
 int main(int argc, char *argv[])
 {
 	int lsd_main(int argc, char *argv[]);
@@ -27,8 +33,8 @@ int main(int argc, char *argv[])
 		//retval = elsd_main(argc, argv);
 
 		// local descriptor -------------------------------------
-		retval = opensift_main(argc, argv);
-		//retval = siftgpu_main(argc, argv);
+		//retval = opensift_main(argc, argv);
+		retval = siftgpu_main(argc, argv);
 
 		//retval = opensurf_main(argc, argv);
 		//retval = surfgpu_main(argc, argv);
