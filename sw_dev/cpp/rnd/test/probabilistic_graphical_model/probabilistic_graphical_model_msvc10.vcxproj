@@ -212,10 +212,7 @@
     <ClCompile Include="opengm\opengm_libdai_interface.cpp" />
     <ClCompile Include="opengm\opengm_main.cpp" />
     <ClCompile Include="opengm\opengm_markov_chain_example.cpp" />
-    <ClCompile Include="opengm\opengm_mrflib_interface.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="opengm\opengm_mrflib_interface.cpp" />
     <ClCompile Include="opengm\opengm_potts_model_on_2d_grid.cpp" />
     <ClCompile Include="opengm\opengm_qpbo_algorithm.cpp" />
     <ClCompile Include="opengm\opengm_quick_start_example.cpp" />

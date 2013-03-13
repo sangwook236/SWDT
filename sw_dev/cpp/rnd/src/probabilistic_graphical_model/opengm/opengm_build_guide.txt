@@ -59,9 +59,16 @@
 			#if defined(WINDOWS)
 			<수정후>
 			#if defined(WINDOWS) || defined(_WINDOWS)
-	-. libDAI library와 관계된 project building 시에 _ITERATOR_DEBUG_LEVEL 관련 오류 발생.
-		==> OpenGM library가 linking하는 libDAI library의 build mode가 달라서 발생.
+	-. OpenGM library가 사용하는 external library와 관련하여 _ITERATOR_DEBUG_LEVEL 오류 발생.
+		<오류메시지>
+			mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '0' doesn't match value '2'
+		libDAI library
+		external MRF library
+		==> OpenGM library가 linking하는 external library의 build mode가 달라서 발생.
 			release build (libdai.lib) or debug build (libdai_d.lib)가 일치하도록 linking library을 설정해야 함.
+			release build (external-library-mrf.lib) or debug build (external-library-mrf.lib)가 일치하도록 linking library을 설정해야 함.
+				release build: ${OPENGM_HOME}/build_msvc10/src/external/Release
+				debug build: ${OPENGM_HOME}/build_msvc10/src/external/Debug
 	-. __mpz_struct와 관계된 ostream 오류 발생.
 		unresolved external symbol "__declspec(dllimport) class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl operator<<(class std::basic_ostream<char,struct std::char_traits<char> > &,struct __mpz_struct const *)"
 		==> GMP library와의 linking에서 문제가 있는 듯함.
@@ -73,3 +80,19 @@
 		==> opengmBuild.mexa64는 64bit Linux용 mex file인 듯함.
 			Matlab에서 OpenGM을 사용하지 않는다면 무시해도 됨.
 		==> 오류를 없애고자 한다면 C/C++ compiler option의 Command Line options에서 해당 설정을 삭제.
+	-. class template & function template에서 원인이 불분명한 오류 발생.
+		<오류메시지>
+			use of undefined type 'opengm::meta::GetIndexInTypeList<TL,TypeToFindx>'
+				at line 592 in opengm\utilities\metaprogramming.hxx
+			cannot convert parameter 1 from 'const ExplicitFunction' to 'opengm::ExplicitFunction<T> &&'
+				at line 597 in opengm\graphicalmodel\graphicalmodel.hxx
+		==> 사용하는 graphical model, space, function 등에 사용되는 type (e.g.: float, double, etc)이 상이해서 발생.
+
+[-] Building (GCC)
+	-. class template & function template에서 원인이 불분명한 오류 발생.
+		<오류메시지>
+			incomplete type 'opengm::meta::GetIndexInTypeList<opengm::meta::ListEnd, opengm::ExplicitFunction<float> >' used in nested name specifier
+				at line 591 in /usr/local/include/opengm/utilities/metaprogramming.hxx
+			no matching function for call to 'std::vector<opengm::ExplicitFunction<double, long unsigned int, long unsigned int>, std::allocator<opengm::ExplicitFunction<double, long unsigned int, long unsigned int> > >::push_back(const opengm::ExplicitFunction<float>&)'
+				at line 597 in /usr/local/include/opengm/graphicalmodel/graphicalmodel.hxx
+		==> 사용하는 graphical model, space, function 등에 사용되는 type (e.g.: float, double, etc)이 상이해서 발생.

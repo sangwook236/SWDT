@@ -4,7 +4,13 @@
 #include <stdio.h>
 #include "MaxProdBP.h"
 #include "assert.h"
+//--S [] 2013/03/13: Sang-Wook Lee
+namespace {
+//--E [] 2013/03/13: Sang-Wook Lee
 int numIterRun;
+//--S [] 2013/03/13: Sang-Wook Lee
+}
+//--E [] 2013/03/13: Sang-Wook Lee
 // Some of the GBP code has been disabled here
 
 #define mexPrintf printf

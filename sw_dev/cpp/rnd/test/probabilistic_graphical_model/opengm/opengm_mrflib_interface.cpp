@@ -14,7 +14,7 @@
 namespace {
 namespace local {
 
-typedef opengm::GraphicalModel<double, opengm::Adder> GraphicalModelType;
+typedef opengm::GraphicalModel<float, opengm::Adder> GraphicalModelType;
 typedef opengm::external::MRFLIB<GraphicalModelType> MRFLIB;
 
 // [ref] ${OPENGM_HOME}/src/examples/unsorted-examples/quick_start.cxx
@@ -59,9 +59,9 @@ void buildGraphicalModel(GraphicalModelType &gm)
 
 				// construct 3rd order function
 				ExplicitFunction func2(shape, shape + 3);
-				for(std::size_t state1 = 0; state1 < gm.numberOfLabels(variable1); ++state1)
-					for(std::size_t state2 = 0; state2 < gm.numberOfLabels(variable2); ++state2)
-						for(std::size_t state3 = 0; state3 < gm.numberOfLabels(variable3); ++state3)      
+				for (std::size_t state1 = 0; state1 < gm.numberOfLabels(variable1); ++state1)
+					for (std::size_t state2 = 0; state2 < gm.numberOfLabels(variable2); ++state2)
+						for (std::size_t state3 = 0; state3 < gm.numberOfLabels(variable3); ++state3)      
 							func2(state1, state2, state3) = float(std::rand()) / RAND_MAX;  // random toy data
 
 				const FunctionIdentifier fid2 = gm.addFunction(func2);
