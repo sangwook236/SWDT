@@ -195,9 +195,14 @@
 			'sh ./configure.gcc --prefix=${PNL_INSTALL_DIR}' 명령이 정상적으로 동작하지 않음.
 			${PNL_HOME}/configure.gcc file을 수정해야 함.
 				(line 8) sh ${SRCROOT}/configure -> sh ${SRCROOT}/configure --prefix=${PNL_INSTALL_DIR}
+			여전히 install-sh script (${PNL_HOME}/install-sh)를 실행하는 과정에서 permission 오류 발생.
 		make
 		make check
+		su
+			sudo 명령으로 make install 실행하면 permission 오류가 발생.
+			root 권한으로 수행을 하여도 permission 오류 발생.
 		make install
+			설치는 수동으로 수행하여야 함. (?)
 	-. -fpermissive 옵션이 필요하다는 오류 발생.
 		==> ${PNL_HOME}/cxcore/cxcore/src/Makefile 수정.
 				(line 94) CFLAGS = -g -O2 -> CFLAGS = -g -O2 -fpermissve
