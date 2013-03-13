@@ -1,5 +1,5 @@
 #define _PUBLIC 1
-#include <hcrf/hCRF.h>
+#include <hCRF/hCRF.h>
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -65,31 +65,31 @@ void sample()
 	const std::string filenameStats(data_home + "stats.txt");
 
 /*
-	// read command-line arguments 
+	// read command-line arguments
 	for (int k = 1; k < argc; ++k)
 	{
 		if (argv[k][0] != '-') break;
-		else if (argv[k][1] == 't') 
+		else if (argv[k][1] == 't')
 		{
 			mode |= MODE_TRAIN;
-			if(argv[k][2] == 'c') 
+			if(argv[k][2] == 'c')
 				doesContinueTraining = true;
 		}
-		else if (argv[k][1] == 'T') 
+		else if (argv[k][1] == 'T')
 		{
 			mode |= MODE_TEST;
-			if (argv[k][2] == 'T') 
+			if (argv[k][2] == 'T')
 				testDataset |= TEST_ON_TRAINING_SET;
-			if (argv[k][2] == 'V') 
+			if (argv[k][2] == 'V')
 				testDataset |= TEST_ON_VALIDATION_SET;
 		}
-		else if (argv[k][1] == 'v') 
+		else if (argv[k][1] == 'v')
 		{
 			mode |= MODE_VALIDATE;
 		}
-		else if (argv[k][1] == 'd') 
+		else if (argv[k][1] == 'd')
 		{
-			if (argv[k][2] == 's') 
+			if (argv[k][2] == 's')
 			{
 				filenameDataTrainSparse = argv[++k];
 				filenameDataTrain = "";
@@ -97,13 +97,13 @@ void sample()
 			else
 				filenameDataTrain = argv[++k];
 		}
-		else if (argv[k][1] == 'l') 
+		else if (argv[k][1] == 'l')
 		{
 			filenameLabelsTrain = argv[++k];
 		}
-		else if (argv[k][1] == 'D') 
+		else if (argv[k][1] == 'D')
 		{
-			if (argv[k][2] == 'S') 
+			if (argv[k][2] == 'S')
 			{
 				filenameDataTestSparse = argv[++k];
 				filenameDataTest = "";
@@ -111,27 +111,27 @@ void sample()
 			else
 				filenameDataTest = argv[++k];
 		}
-		else if (argv[k][1] == 'L') 
+		else if (argv[k][1] == 'L')
 		{
 			filenameLabelsTest = argv[++k];
 		}
-		else if (argv[k][1] == 'm') 
+		else if (argv[k][1] == 'm')
 		{
 			filenameModel = argv[++k];
 		}
-		else if (argv[k][1] == 'f') 
+		else if (argv[k][1] == 'f')
 		{
 			filenameFeatures = argv[++k];
 		}
-		else if (argv[k][1] == 'r') 
+		else if (argv[k][1] == 'r')
 		{
 			filenameOutput = argv[++k];
 		}
-		else if (argv[k][1] == 'c') 
+		else if (argv[k][1] == 'c')
 		{
 			filenameStats = argv[++k];
 		}
-		else if (argv[k][1] == 'I') 
+		else if (argv[k][1] == 'I')
 		{
 			if (!strcmp(argv[k+1], "random"))
 				InitMode = INIT_RANDOM;
@@ -141,7 +141,7 @@ void sample()
 				InitMode = INIT_ZERO;
 			++k;
 		}
-		else if (argv[k][1] == 'o') 
+		else if (argv[k][1] == 'o')
 		{
 			if (!strcmp(argv[k+1], "cg"))
 				opt = OPTIMIZER_CG;
@@ -155,7 +155,7 @@ void sample()
 				opt = OPTIMIZER_LBFGS;
 			++k;
 		}
-		else if (argv[k][1] == 'a') 
+		else if (argv[k][1] == 'a')
 		{
 			if (!strcmp(argv[k+1], "crf"))
 				toolboxType = TOOLBOX_CRF;

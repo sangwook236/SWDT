@@ -33,14 +33,44 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-fpermissive" />
 			<Add directory="/usr/local/include/mocapy" />
-			<Add directory="/usr/local/include/" />
+			<Add directory="/usr/local/include/pnl" />
+			<Add directory="/usr/local/include/opencx" />
+			<Add directory="/usr/local/include" />
+			<Add directory="./opengm/mrf" />
+			<Add directory="./opengm/maxflow" />
+			<Add directory="./opengm/ibfs" />
+			<Add directory="./opengm/trws" />
+			<Add directory="./opengm/qpbo" />
 		</Compiler>
 		<Linker>
+			<Add library="crfpp" />
+			<Add library="hCRF" />
+			<Add library="cgDescent" />
+			<Add library="lbfgs" />
+			<Add library="uncoptim" />
+			<Add library="dai" />
 			<Add library="Mocapy" />
+			<Add library="external-library-qpbo" />
+			<Add library="external-library-trws" />
+			<Add library="external-library-maxflow-ibfs" />
+			<Add library="external-library-maxflow" />
+			<Add library="external-library-mrf" />
+			<Add library="pnl" />
+			<Add library="trs" />
+			<Add library="high" />
+			<Add library="cxcore" />
+			<Add library="opencv_highgui" />
+			<Add library="opencv_core" />
+			<Add library="gmpxx" />
+			<Add library="gmp" />
 			<Add library="lapack" />
 			<Add library="boost_serialization" />
-			<Add directory="/usr/local/lib/" />
+			<Add library="boost_timer" />
+			<Add library="hdf5" />
+			<Add directory="/usr/local/lib/hCRF" />
+			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="bp_vision/bp_vision_main.cpp" />
 		<Unit filename="bp_vision_lib/convolve.h" />
@@ -73,6 +103,11 @@
 		<Unit filename="hmm/viterbi.cpp" />
 		<Unit filename="hmm/viterbi.hpp" />
 		<Unit filename="hmm/viterbi_algorithm.cpp" />
+		<Unit filename="libdai/libdai_main.cpp" />
+		<Unit filename="libdai/libdai_sprinkler_em_examples.cpp" />
+		<Unit filename="libdai/libdai_sprinkler_example.cpp" />
+		<Unit filename="libdai/libdai_sprinkler_gibbs_examples.cpp" />
+		<Unit filename="libdai/libdai_varset_examples.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="middlebury/middlebury_main.cpp" />
 		<Unit filename="middlebury_lib/BP-S.cpp" />

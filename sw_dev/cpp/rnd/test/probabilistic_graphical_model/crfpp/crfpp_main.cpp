@@ -1,4 +1,8 @@
+#if defined(WIN32) || defined(_WIN32)
 #include <crfpp/crfpp.h>
+#else
+#include <crfpp.h>
+#endif
 #include <iostream>
 #include <string>
 #include <cstdlib>

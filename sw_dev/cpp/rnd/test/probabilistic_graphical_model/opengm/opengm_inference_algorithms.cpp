@@ -60,7 +60,7 @@ typedef opengm::TruncatedAbsoluteDifferenceFunction<double> TruncatedAbsoluteDif
 typedef opengm::SquaredDifferenceFunction<double> SquaredDifferenceFunction;
 typedef opengm::TruncatedSquaredDifferenceFunction<double> TruncatedSquaredDifferenceFunction;
 
-// construct a graphical model with 
+// construct a graphical model with
 // - addition as the operation (template parameter Adder)
 // - support for Potts functions (template parameter PottsFunction<double>)
 typedef opengm::GraphicalModel<double, opengm::Adder, OPENGM_TYPELIST_2(ExplicitFunction, PottsFunction), Space> GraphicalModelForPottsModel;
@@ -108,7 +108,7 @@ bool createGraphicalModelForPottsModel(GraphicalModelForPottsModel &gm)
 #endif
 
 	// construct a label space with
-	// - Nx * Ny variables 
+	// - Nx * Ny variables
 	// - each having numOfLabels many labels
 #if defined(__USE_GRID_SPACE)
 	Space space(Nx, Ny, numOfLabels);
@@ -121,7 +121,7 @@ bool createGraphicalModelForPottsModel(GraphicalModelForPottsModel &gm)
 	{
 		// for each node (x, y) in the grid, i.e. for each variable variableIndex(Nx, x, y) of the model,
 		// add one 1st order functions and one 1st order factor
-		for (std::size_t y = 0; y < Ny; ++y) 
+		for (std::size_t y = 0; y < Ny; ++y)
 			for (std::size_t x = 0; x < Nx; ++x)
 			{
 				// function
@@ -146,7 +146,7 @@ bool createGraphicalModelForPottsModel(GraphicalModelForPottsModel &gm)
 
 		// for each pair of nodes (x1, y1), (x2, y2) which are adjacent on the grid,
 		// add one factor that connects the corresponding variable indices and refers to the Potts function
-		for (std::size_t y = 0; y < Ny; ++y) 
+		for (std::size_t y = 0; y < Ny; ++y)
 			for (std::size_t x = 0; x < Nx; ++x)
 			{
 				if (x + 1 < Nx)  // (x, y) -- (x + 1, y)
@@ -211,7 +211,7 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 #endif
 
 	// construct a label space with
-	// - Nx * Ny variables 
+	// - Nx * Ny variables
 	// - each having numOfLabels many labels
 #if defined(__USE_GRID_SPACE)
 	Space space(Nx, Ny, numOfLabels);
@@ -219,7 +219,7 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 	Space space(Nx * Ny, numOfLabels);
 #endif
 
-	// construct a graphical model with 
+	// construct a graphical model with
 	// - addition as the operation (template parameter Adder)
 	// - support for truncated absolute difference functions (template parameter TruncatedAbsoluteDifferenceFunction<double>)
 	gm = GraphicalModelForStereoMatching(space);
@@ -277,7 +277,7 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 
 		// add 2nd order functions and factors to the model
 		const GraphicalModelForStereoMatching::FunctionIdentifier fid2 = gm.addFunction(func2);
-		for (std::size_t y = 0; y < Ny; ++y) 
+		for (std::size_t y = 0; y < Ny; ++y)
 			for (std::size_t x = 0; x < Nx; ++x)
 			{
 				// add factor
@@ -350,7 +350,7 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 #endif
 
 	// construct a label space with
-	// - Nx * Ny variables 
+	// - Nx * Ny variables
 	// - each having numOfLabels many labels
 #if defined(__USE_GRID_SPACE)
 	Space space(Nx, Ny, numOfLabels);
@@ -358,7 +358,7 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 	Space space(Nx * Ny, numOfLabels);
 #endif
 
-	// construct a graphical model with 
+	// construct a graphical model with
 	// - addition as the operation (template parameter Adder)
 	// - support for sqaured difference & truncated sqaured difference functions (template parameter SquaredDifferenceFunction<double> & TruncatedSqauredDifferenceFunction)
 	gm = GraphicalModelForImageRestoration(space);
@@ -409,7 +409,7 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 
 		// add 2nd order functions and factors to the model
 		const GraphicalModelForStereoMatching::FunctionIdentifier fid2 = gm.addFunction(func2);
-		for (std::size_t y = 0; y < Ny; ++y) 
+		for (std::size_t y = 0; y < Ny; ++y)
 			for (std::size_t x = 0; x < Nx; ++x)
 			{
 				// add factor
@@ -630,7 +630,7 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 #endif
 
 	// construct a label space with
-	// - Nx * Ny variables 
+	// - Nx * Ny variables
 	// - each having numOfLabels many labels
 #if defined(__USE_GRID_SPACE)
 	Space space(Nx, Ny, numOfLabels);
@@ -638,7 +638,7 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 	Space space(Nx * Ny, numOfLabels);
 #endif
 
-	// construct a graphical model with 
+	// construct a graphical model with
 	// - addition as the operation (template parameter Adder)
 	// - support for truncated absolute difference functions (template parameter TruncatedAbsoluteDifferenceFunction<double>)
 	gm = GraphicalModelForStereoMatching(space);
@@ -670,7 +670,7 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 
 		// for each pair of nodes (x1, y1), (x2, y2) which are adjacent on the grid,
 		// add one factor that connects the corresponding variable indices
-		for (std::size_t y = 0; y < Ny; ++y) 
+		for (std::size_t y = 0; y < Ny; ++y)
 			for (std::size_t x = 0; x < Nx; ++x)
 			{
 				const std::size_t var = getVariableIndex(Nx, x, y);
@@ -742,7 +742,7 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 #endif
 
 	// construct a label space with
-	// - Nx * Ny variables 
+	// - Nx * Ny variables
 	// - each having numOfLabels many labels
 #if defined(__USE_GRID_SPACE)
 	Space space(Nx, Ny, numOfLabels);
@@ -750,7 +750,7 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 	Space space(Nx * Ny, numOfLabels);
 #endif
 
-	// construct a graphical model with 
+	// construct a graphical model with
 	// - addition as the operation (template parameter Adder)
 	// - support for sqaured difference & truncated sqaured difference functions (template parameter SquaredDifferenceFunction<double> & TruncatedSqauredDifferenceFunction)
 	gm = GraphicalModelForImageRestoration(space);
@@ -759,7 +759,7 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 		// for each node (x, y) in the grid, i.e. for each variable variableIndex(Nx, x, y) of the model,
 		// add one 1st order functions and one 1st order factor
 		const double weight = lambda;
-		for (std::size_t y = 0; y < Ny; ++y) 
+		for (std::size_t y = 0; y < Ny; ++y)
 			for (std::size_t x = 0; x < Nx; ++x)
 			{
 				const SquaredDifferenceFunctionForImageRestoration func1(img, x, y, numOfLabels, weight);
@@ -779,7 +779,7 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 
 		// for each pair of nodes (x1, y1), (x2, y2) which are adjacent on the grid,
 		// add one factor that connects the corresponding variable indices
-		for (std::size_t y = 0; y < Ny; ++y) 
+		for (std::size_t y = 0; y < Ny; ++y)
 			for (std::size_t x = 0; x < Nx; ++x)
 			{
 				const std::size_t var = getVariableIndex(Nx, x, y);
@@ -833,7 +833,7 @@ void run_inference_algorithm(const std::size_t numOfVariables, InferenceAlgorith
 	std::cout << "value: " << algorithm.value() << ", bound: " << algorithm.bound() << std::endl;
 
 	// obtain the (approximate) argmax
-	std::vector<typename GraphicalModel::LabelType> labeling(numOfVariables); 
+	std::vector<typename GraphicalModel::LabelType> labeling(numOfVariables);
 	algorithm.arg(labeling);
 
 	//
@@ -901,9 +901,9 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			const std::size_t maxNumberOfIterations = MAX_ITERATIONS;
 			const double convergenceBound = CONVERGENCE_BOUND;
 			const double damping = 0.0;
-			const BeliefPropagation::Parameter parameter(maxNumberOfIterations, convergenceBound, damping);
+			const typename BeliefPropagation::Parameter parameter(maxNumberOfIterations, convergenceBound, damping);
 			BeliefPropagation bp(gm, parameter);
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), bp, problem_name + inf_name);
 		}
 
@@ -919,9 +919,9 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			const std::size_t maxNumberOfIterations = MAX_ITERATIONS;
 			const double convergenceBound = CONVERGENCE_BOUND;
 			const double damping = 0.0;
-			const TRBP::Parameter parameter(maxNumberOfIterations, convergenceBound, damping);
+			const typename TRBP::Parameter parameter(maxNumberOfIterations, convergenceBound, damping);
 			TRBP trbp(gm, parameter);
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), trbp, problem_name + inf_name);
 		}
 
@@ -933,14 +933,14 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			// set up the optimizer (tree re-weighted belief propagation)
 			typedef opengm::external::TRWS<GraphicalModel> TRWS;
 
-			TRWS::Parameter parameter;
+			typename TRWS::Parameter parameter;
 			parameter.numberOfIterations_ = MAX_ITERATIONS;
 			parameter.useRandomStart_ = false;
 			parameter.doBPS_ = false;
 			parameter.energyType_ = TRWS::Parameter::TL1;
 			parameter.tolerance_ = CONVERGENCE_BOUND;
 			TRWS trws(gm, parameter);
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), trws, problem_name + inf_name);
 		}
 
@@ -959,7 +959,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			typedef opengm::DynamicProgramming<GraphicalModel, opengm::Minimizer> DP;
 
 			DP dp(gm);
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), dp, problem_name + inf_name);
 		}
 
@@ -969,8 +969,8 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			const std::string inf_name("_dd");
 
 			// set up the optimizer
-			typedef opengm::DDDualVariableBlock<marray::Marray<GraphicalModel::ValueType> > DualBlock;
-			typedef opengm::DualDecompositionBase<GraphicalModel, DualBlock>::SubGmType SubGraphicalModel;
+			typedef opengm::DDDualVariableBlock<marray::Marray<typename GraphicalModel::ValueType> > DualBlock;
+			typedef typename opengm::DualDecompositionBase<GraphicalModel, DualBlock>::SubGmType SubGraphicalModel;
 			typedef opengm::BeliefPropagationUpdateRules<SubGraphicalModel, opengm::Minimizer> UpdateRule;
 			typedef opengm::MessagePassing<SubGraphicalModel, opengm::Minimizer, UpdateRule, opengm::MaxDistance> InferenceEngine;
 #if 1
@@ -983,13 +983,13 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			const std::size_t maxNumberOfIterations = MAX_ITERATIONS;
 			const double convergenceBound = CONVERGENCE_BOUND;
 			const double damping = 0.0;
-			const InferenceEngine::Parameter InfParameter(maxNumberOfIterations, convergenceBound, damping);
-			DualDecomposition::Parameter parameter;
+			const typename InferenceEngine::Parameter InfParameter(maxNumberOfIterations, convergenceBound, damping);
+			typename DualDecomposition::Parameter parameter;
 			parameter.subPara_ = InfParameter;
 			parameter.useAdaptiveStepsize_ = false;
 			parameter.useProjectedAdaptiveStepsize_ = false;
 			DualDecomposition dd(gm, parameter);
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), dd, problem_name + inf_name);
 		}
 
@@ -1001,7 +1001,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			// set up the optimizer
 			typedef opengm::AStar<GraphicalModel, opengm::Minimizer> AStar;
 
-			AStar::Parameter parameter;
+			typename AStar::Parameter parameter;
 			parameter.maxHeapSize_ = 3000000;
 			parameter.numberOfOpt_ = 1;
 			parameter.objectiveBound_ = CONVERGENCE_BOUND;
@@ -1009,7 +1009,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			//parameter.nodeOrder_ = ...;
 			//parameter.treeFactorIds_ = ...;
 			AStar astar(gm, parameter);
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), astar, problem_name + inf_name);
 		}
 
@@ -1028,10 +1028,10 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 #endif
 			typedef opengm::GraphCut<GraphicalModel, opengm::Minimizer, MinStCut> MinGraphCut;
 
-			const MinGraphCut::ValueType scale = 1000000;
-			const MinGraphCut::Parameter parameter(scale);
+			const typename MinGraphCut::ValueType scale = 1000000;
+			const typename MinGraphCut::Parameter parameter(scale);
 			MinGraphCut mincut(gm, parameter);
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), mincut, problem_name + inf_name);
 		}
 
@@ -1045,13 +1045,13 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			// set up the optimizer
 			typedef opengm::external::QPBO<GraphicalModel> QPBO;
 
-			QPBO::Parameter parameter;
+			typename QPBO::Parameter parameter;
 			parameter.strongPersistency_ = true;  // forcing strong persistency
 			parameter.useImproveing_ = false;  // using improving technique
 			parameter.useProbeing_ = false;  // using probeing technique
 			//parameter.label_ = ...;  // initial configuration for improving
 			QPBO qpbo(gm, parameter);
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), qpbo, problem_name + inf_name);
 
 			std::vector<bool> optimalVariables;
@@ -1076,12 +1076,12 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			typedef opengm::GraphCut<GraphicalModel, opengm::Minimizer, MinStCut> InferenceEngine;
 			typedef opengm::AlphaExpansion<GraphicalModel, InferenceEngine> MinAlphaExpansion;
 
-			const InferenceEngine::ValueType scale = 1000000;
-			const InferenceEngine::Parameter infParameter(scale);
-			const size_t maxNumberOfSteps = MAX_ITERATIONS;
-			const MinAlphaExpansion::Parameter parameter(maxNumberOfSteps, infParameter);
+			const typename InferenceEngine::ValueType scale = 1000000;
+			const typename InferenceEngine::Parameter infParameter(scale);
+			const std::size_t maxNumberOfSteps = MAX_ITERATIONS;
+			const typename MinAlphaExpansion::Parameter parameter(maxNumberOfSteps, infParameter);
 			MinAlphaExpansion expansion(gm, parameter);
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), expansion, problem_name + inf_name);
 		}
 
@@ -1099,13 +1099,13 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			typedef opengm::GraphCut<GraphicalModel, opengm::Minimizer, MinStCut> InferenceEngine;
 			typedef opengm::AlphaBetaSwap<GraphicalModel, InferenceEngine> MinAlphaBetaSwap;
 
-			const InferenceEngine::ValueType scale = 1000000;
-			const InferenceEngine::Parameter infParameter(scale);
-			MinAlphaBetaSwap::Parameter parameter;
+			const typename InferenceEngine::ValueType scale = 1000000;
+			const typename InferenceEngine::Parameter infParameter(scale);
+			typename MinAlphaBetaSwap::Parameter parameter;
 			parameter.parameter_ = infParameter;
 			parameter.maxNumberOfIterations_ = MAX_ITERATIONS;
 			MinAlphaBetaSwap swap(gm, parameter);
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), swap, problem_name + inf_name);
 		}
 
@@ -1118,10 +1118,10 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			typedef opengm::ICM<GraphicalModel, opengm::Minimizer> ICM;
 
 			//const ICM::MoveType moveType = ICM::SINGLE_VARIABLE;
-			const std::vector<ICM::LabelType> startPoint;
-			const ICM::Parameter parameter(startPoint);
+			const std::vector<typename ICM::LabelType> startPoint;
+			const typename ICM::Parameter parameter(startPoint);
 			ICM icm(gm, parameter);
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), icm, problem_name + inf_name);
 		}
 
@@ -1134,11 +1134,11 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			typedef opengm::LazyFlipper<GraphicalModel, opengm::Minimizer> LazyFlipper;
 
 			const std::size_t maxSubgraphSize = 2;
-			const std::vector<LazyFlipper::LabelType> startPoint;
+			const std::vector<typename LazyFlipper::LabelType> startPoint;
 			const opengm::Tribool inferMultilabel = opengm::Tribool::Maybe;
-			const LazyFlipper::Parameter parameter(maxSubgraphSize, inferMultilabel);
+			const typename LazyFlipper::Parameter parameter(maxSubgraphSize, inferMultilabel);
 			LazyFlipper lf(gm, parameter);
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), lf, problem_name + inf_name);
 		}
 
@@ -1154,18 +1154,18 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			const std::size_t maxRadius = 10;
 			const std::size_t maxIterations = MAX_ITERATIONS;
 			const std::size_t aStarThreshold = 5;
-			const LOC::Parameter parameter(phi, maxRadius, maxIterations, aStarThreshold);
+			const typename LOC::Parameter parameter(phi, maxRadius, maxIterations, aStarThreshold);
 			LOC loc(gm, parameter);
 
 			// set starting point
-			std::vector<LOC::LabelType> startingPoint;
+			std::vector<typename LOC::LabelType> startingPoint;
 			// assuming startingPoint has been filled with meaningful labels
 			//loc.setStartingPoint(startingPoint.begin());
-			
+
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), loc, problem_name + inf_name);
 		}
 	}
-	
+
 	// sampling algorithms
 	{
 		std::cout << "\nGibbs sampling algorithm --------------------------------------------" << std::endl;
@@ -1190,7 +1190,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		typedef opengm::Bruteforce<GraphicalModel, opengm::Minimizer> Bruteforce;
 
 		Bruteforce bf(gm);
-			
+
 		run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), bf, problem_name + inf_name);
 	}
 }
