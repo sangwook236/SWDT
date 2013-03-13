@@ -1,4 +1,6 @@
 [-] Building (Common)
+    -. OpenGM library는 사용할 때 header file만 있으면 됨.
+        static or shared library file은 linking하지 않아도 됨.
 	-. external library를 사용하기 위해서 CMake GUI에서 option을 설정하면 아래의 오류 발생.
 		QPBO not installed, run make externalLibs first and configure again
 		TRWS not installed, run make externalLibs first and configure again
@@ -31,6 +33,19 @@
 				TRWS_PATCHEDSRCDIR
 		==> Windows에서는 ConicBundle의 building을 실패함.
 			Linux에서는 build됨.
+	-. OpenGM library를 사용하기 위해서는 external library를 linking해야 함.
+	    external library는 ${OPENGM_HOME}/build_cb10/src/external directory에 생성됨.
+	    libexternal-library-maxflow-ibfs.a
+	    libexternal-library-maxflow.a
+	    libexternal-library-mrf.a
+	    libexternal-library-qpbo.a
+	    libexternal-library-trws.a
+    -. 함수의 중복 정의에 대한 오류 발생.
+        header file에 function definition이 포함되어 있어 발생하는 문제.
+            ${OPENGM_HOME}/include/opengm/graphicalmodel/decomposition/graphicalmodeldecomposition.hxx
+        ==> 해당 function을 inline function으로 변경하면 됨.
+            void GraphicalModelDecomposition::complete() -> inline void GraphicalModelDecomposition::complete()
+            void GraphicalModelDecomposition::reorder() -> inline void GraphicalModelDecomposition::reorder()
 
 [-] Building (MSVC)
 	-. test를 building하면서 잦은 오류가 발생해서 test는 building에서 제외.
