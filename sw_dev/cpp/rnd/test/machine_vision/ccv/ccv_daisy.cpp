@@ -27,11 +27,16 @@ void daisy()
 	ccv_enable_default_cache();
 
 	ccv_dense_matrix_t *image = NULL;
-#if defined(_WIN32)
+#if defined(WIN32) || defined(_WIN32)
 	ccv_read_impl(image_filename.c_str(), &image, CCV_IO_GRAY | CCV_IO_ANY_FILE, 0, 0, 0);
 #else
 	ccv_read(image_filename.c_str(), &image, CCV_IO_GRAY | CCV_IO_ANY_FILE);
 #endif
+    if (NULL == image)
+    {
+        std::cout << "a image file, " << image_filename << "not found" << std::endl;
+        return;
+    }
 
 	ccv_dense_matrix_t *a = ccv_dense_matrix_new(image->rows, image->cols, CCV_8U | CCV_C1, NULL, 0);
 	for (int i = 0; i < image->rows; ++i)

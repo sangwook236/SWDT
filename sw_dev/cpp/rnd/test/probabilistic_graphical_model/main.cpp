@@ -81,13 +81,13 @@ int main(int argc, char *argv[])
 		//retval = pnl_main(argc, argv);
 
 		// Mocapy++ library ----------------------------------------
-		//retval = mocapy_main(argc, argv);
+		retval = mocapy_main(argc, argv);
 
 		// libDAI library ------------------------------------------
 		//retval = libdai_main(argc, argv);
 
 		// OpenGM library ------------------------------------------
-		retval = opengm_main(argc, argv);
+		//retval = opengm_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

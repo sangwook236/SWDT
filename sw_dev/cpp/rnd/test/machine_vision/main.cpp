@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
 		retval = opencv_main(argc, argv);
 		//retval = vlfeat_main(argc, argv);
-		//retval = ccv_main(argc, argv); // run-time error: not correctly working
+		//retval = ccv_main(argc, argv);  // run-time error (Windows): not correctly working
 	}
     catch (const std::bad_alloc &e)
 	{

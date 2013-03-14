@@ -2,6 +2,10 @@
 #include <iostream>
 
 
+// for building by NVCC
+//  export PATH=$PATH:/usr/local/cuda/bin
+//  export LD_LIBRARY_PATH+=/usr/local/MATLAB/R2012b/bin/glnxa64
+
 namespace {
 namespace local {
 

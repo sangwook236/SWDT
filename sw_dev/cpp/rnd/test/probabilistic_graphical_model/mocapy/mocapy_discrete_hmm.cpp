@@ -19,7 +19,7 @@ namespace local {
 namespace my_mocapy {
 
 // [ref] ${MOCAPY_HOME}/examples/discrete_hmm_with_prior.cpp
-void mocapy_discrete_hmm()
+void discrete_hmm()
 {
 #if 1
 	mocapy::mocapy_seed((uint)5556574);
@@ -137,7 +137,7 @@ void mocapy_discrete_hmm()
 		if (ll > bestLL)
 		{
 			std::cout << " * saving model *" << std::endl;
-			mdbn.save("discrete_hmm.dbn");
+			mdbn.save("./probabilistic_graphical_model_data/mocapy/discrete_hmm.dbn");
 			bestLL = ll;
 			it_no_improvement = 0;
 		}
@@ -153,7 +153,7 @@ void mocapy_discrete_hmm()
 
 	std::cout << "DONE" << std::endl;
 
-	mdbn.load("discrete_hmm.dbn");
+	mdbn.load("./probabilistic_graphical_model_data/mocapy/discrete_hmm.dbn");
 
 	std::cout << "*** TARGET ***" << std::endl;
 	std::cout << *th0 << std::endl;
