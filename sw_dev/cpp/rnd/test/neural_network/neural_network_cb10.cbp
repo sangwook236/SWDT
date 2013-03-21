@@ -12,6 +12,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -34,8 +35,18 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="flood/flood_main.cpp" />
+		<Linker>
+			<Add library="fann" />
+			<Add library="opennn" />
+			<Add library="tinyxml" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
+		<Unit filename="fann/fann_main.cpp" />
+		<Unit filename="fann/fann_xor_example.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="opennn/opennn_main.cpp" />
+		<Unit filename="opennn/opennn_simple_function_regression_example.cpp" />
+		<Unit filename="opennn/opennn_simple_pattern_recognition_example.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

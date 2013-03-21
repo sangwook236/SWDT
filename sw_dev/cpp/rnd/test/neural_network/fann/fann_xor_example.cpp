@@ -1,8 +1,16 @@
 //#include "stdafx.h"
+#if defined(WIN32) || defined(_WIN32)
 //#include <fann/doublefann.h>
 #include <fann/floatfann.h>
 //#include <fann/fixedfann.h>
 #include <fann/fann_cpp.h>
+#else
+//#include <doublefann.h>
+#include <floatfann.h>
+//#include <fixedfann.h>
+#include <fann_cpp.h>
+#endif
+
 #include <iostream>
 #include <iomanip>
 
@@ -36,6 +44,8 @@ void xor_sample()
 
 	FANN::neural_net net;
 	net.create_standard(num_layers, num_input, num_hidden, num_output);
+	unsigned int b = net.get_errno();
+	std::cout << "state = " << b << std::endl;
 
 	net.set_learning_rate(learning_rate);
 
@@ -84,7 +94,7 @@ void xor_sample()
 			// Run the network on the test data
 			fann_type *calc_out = net.run(data.get_input()[i]);
 
-			std::cout << "XOR test (" << std::showpos << data.get_input()[i][0] << ", " 
+			std::cout << "XOR test (" << std::showpos << data.get_input()[i][0] << ", "
 				<< data.get_input()[i][1] << ") -> " << *calc_out
 				<< ", should be " << data.get_output()[i][0] << ", "
 				<< "difference = " << std::noshowpos
