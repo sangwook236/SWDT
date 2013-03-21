@@ -22,25 +22,29 @@ int main(int argc, char *argv[])
 	int opensurf_main(int argc, char *argv[]);
 	int surfgpu_main(int argc, char *argv[]);
 	int pictorial_structures_revisited_main(int argc, char *argv[]);
+	int fst_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		// line feature -----------------------------------------
+		// line feature ---------------------------------------------------
 		//retval = lsd_main(argc, argv);
 
 		// ellipse & line feature -----------------------------------------
 		//retval = elsd_main(argc, argv);
 
-		// local descriptor -------------------------------------
+		// local descriptor -----------------------------------------------
 		//retval = opensift_main(argc, argv);
-		retval = siftgpu_main(argc, argv);
+		//retval = siftgpu_main(argc, argv);
 
 		//retval = opensurf_main(argc, argv);
 		//retval = surfgpu_main(argc, argv);
 
-		// pictorial structures ---------------------------------
+		// pictorial structures -------------------------------------------
 		//retval = pictorial_structures_revisited_main(argc, argv);
+
+		// Feature Selection Toolbox (FST) library ------------------------
+		retval = fst_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

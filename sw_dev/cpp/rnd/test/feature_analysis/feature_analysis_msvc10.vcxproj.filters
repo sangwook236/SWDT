@@ -103,6 +103,24 @@
     <Filter Include="Source Files\elsd_lib">
       <UniqueIdentifier>{b6dfc4c3-8f72-4858-be67-f6da7945b567}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\fst">
+      <UniqueIdentifier>{c1266a7e-53b7-4638-b597-3848fffe848a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fst_lib">
+      <UniqueIdentifier>{ca4bf0f6-37cb-4b5b-bca3-228c454bf92f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fst_lib\_src_criteria">
+      <UniqueIdentifier>{144bffe5-3bae-4840-8622-d9b9845b1839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fst_lib\_src_dataio">
+      <UniqueIdentifier>{1fa3863f-67c8-468a-a4f7-3c9e125f62f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fst_lib\_src_global">
+      <UniqueIdentifier>{fb2743c4-3b0a-4c3c-b05b-ac8b4c0389d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fst_lib\_src_search">
+      <UniqueIdentifier>{2b8bd113-1fea-474e-9640-cd35f340e6d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -363,6 +381,258 @@
     <ClInclude Include="surfgpu_lib\surflibGPU.h">
       <Filter>Source Files\surfgpu_lib</Filter>
     </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\classifier.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\classifier_knn.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\classifier_multinom_naivebayes.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\classifier_normal_bayes.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\classifier_svm.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_multinom.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_multinom_bhattacharyya.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_negative.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_normal.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_normal_bhattacharyya.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_normal_divergence.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_normal_gmahalanobis.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_subsetsize.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_sumofweights.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_wrapper.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_wrapper_bias_estimate.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\distance.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\distance_euclid.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\distance_L1.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\distance_Lp.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\indexed_matrix.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\indexed_vector.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\model.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\model_multinom.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\model_normal.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor_splitting.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor_splitting_mem.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor_splitting_memARFF.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor_splitting_memTRN.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_file_ARFF.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_file_TRN.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_intervaller.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_scaler.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_scaler_to01.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_scaler_void.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_scaler_white.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_5050.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_cv.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_holdout.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_leave1out.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_randfix.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_randrand.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_resub.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_global\clonable.hpp">
+      <Filter>Source Files\fst_lib\_src_global</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_global\error.hpp">
+      <Filter>Source Files\fst_lib\_src_global</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_global\global.hpp">
+      <Filter>Source Files\fst_lib\_src_global</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_global\subset.hpp">
+      <Filter>Source Files\fst_lib\_src_global</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_global\thread_pool.hpp">
+      <Filter>Source Files\fst_lib\_src_global</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\branch_and_bound_predictor.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\branch_and_bound_predictor_averaging.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\candidate_evaluator_threaded.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\result_tracker.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\result_tracker_dupless.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\result_tracker_feature_stats.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\result_tracker_regularizer.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\result_tracker_stabileval.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_bif.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_bif_threaded.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_basic.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_fast.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_improved.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_improved_threaded.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_partial_prediction.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_exhaustive.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_exhaustive_threaded.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_monte_carlo.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_monte_carlo_threaded.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_seq.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_seq_dos.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_seq_os.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_seq_sffs.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_seq_sfrs.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_seq_sfs.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\seq_step.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\seq_step_ensemble.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\seq_step_hybrid.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\seq_step_straight.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\seq_step_straight_threaded.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\stopwatch.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lsd_lib\lsd.cpp">
@@ -583,6 +853,15 @@
     </ClCompile>
     <ClCompile Include="surfgpu_lib\utilsGPU.cpp">
       <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="fst\fst_main.cpp">
+      <Filter>Source Files\fst</Filter>
+    </ClCompile>
+    <ClCompile Include="fst\fst_demo10.cpp">
+      <Filter>Source Files\fst</Filter>
+    </ClCompile>
+    <ClCompile Include="fst_lib\_src_global\global.cpp">
+      <Filter>Source Files\fst_lib\_src_global</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

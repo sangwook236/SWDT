@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;./;./libAdaBoost;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.0\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;D:\work_center\sw_dev\cpp\ext\inc\clapack;D:\work_center\sw_dev\cpp\ext\inc\cudpp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;../../inc;./;./libAdaBoost;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.0\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;D:\work_center\sw_dev\cpp\ext\inc\clapack;D:\work_center\sw_dev\cpp\ext\inc\cudpp</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,7 +78,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;./;./libAdaBoost;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.0\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;D:\work_center\sw_dev\cpp\ext\inc\clapack;D:\work_center\sw_dev\cpp\ext\inc\cudpp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;../../inc;./;./libAdaBoost;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.0\include;D:\work_center\sw_dev\cpp\ext\inc\qt;D:\work_center\sw_dev\cpp\ext\inc\qt\QtCore;D:\work_center\sw_dev\cpp\ext\inc\qt\QtGui;D:\work_center\sw_dev\cpp\ext\inc\libpng;D:\work_center\sw_dev\cpp\ext\inc\clapack;D:\work_center\sw_dev\cpp\ext\inc\cudpp</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -211,6 +211,90 @@
     <ClInclude Include="elsd_lib\process_line.h" />
     <ClInclude Include="elsd_lib\valid_curve.h" />
     <ClInclude Include="elsd_lib\write_svg.h" />
+    <ClInclude Include="fst_lib\_src_criteria\classifier.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\classifier_knn.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\classifier_multinom_naivebayes.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\classifier_normal_bayes.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\classifier_svm.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\criterion.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\criterion_multinom.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\criterion_multinom_bhattacharyya.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\criterion_negative.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\criterion_normal.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\criterion_normal_bhattacharyya.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\criterion_normal_divergence.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\criterion_normal_gmahalanobis.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\criterion_subsetsize.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\criterion_sumofweights.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\criterion_wrapper.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\criterion_wrapper_bias_estimate.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\distance.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\distance_euclid.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\distance_L1.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\distance_Lp.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\indexed_matrix.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\indexed_vector.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\model.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\model_multinom.hpp" />
+    <ClInclude Include="fst_lib\_src_criteria\model_normal.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor_splitting.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor_splitting_mem.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor_splitting_memARFF.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor_splitting_memTRN.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_file_ARFF.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_file_TRN.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_intervaller.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_scaler.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_scaler_to01.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_scaler_void.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_scaler_white.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_5050.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_cv.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_holdout.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_leave1out.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_randfix.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_randrand.hpp" />
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_resub.hpp" />
+    <ClInclude Include="fst_lib\_src_global\clonable.hpp" />
+    <ClInclude Include="fst_lib\_src_global\error.hpp" />
+    <ClInclude Include="fst_lib\_src_global\global.hpp" />
+    <ClInclude Include="fst_lib\_src_global\subset.hpp" />
+    <ClInclude Include="fst_lib\_src_global\thread_pool.hpp" />
+    <ClInclude Include="fst_lib\_src_search\branch_and_bound_predictor.hpp" />
+    <ClInclude Include="fst_lib\_src_search\branch_and_bound_predictor_averaging.hpp" />
+    <ClInclude Include="fst_lib\_src_search\candidate_evaluator_threaded.hpp" />
+    <ClInclude Include="fst_lib\_src_search\result_tracker.hpp" />
+    <ClInclude Include="fst_lib\_src_search\result_tracker_dupless.hpp" />
+    <ClInclude Include="fst_lib\_src_search\result_tracker_feature_stats.hpp" />
+    <ClInclude Include="fst_lib\_src_search\result_tracker_regularizer.hpp" />
+    <ClInclude Include="fst_lib\_src_search\result_tracker_stabileval.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_bif.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_bif_threaded.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_basic.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_fast.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_improved.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_improved_threaded.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_partial_prediction.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_exhaustive.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_exhaustive_threaded.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_monte_carlo.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_monte_carlo_threaded.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_seq.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_seq_dos.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_seq_os.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_seq_sffs.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_seq_sfrs.hpp" />
+    <ClInclude Include="fst_lib\_src_search\search_seq_sfs.hpp" />
+    <ClInclude Include="fst_lib\_src_search\seq_step.hpp" />
+    <ClInclude Include="fst_lib\_src_search\seq_step_ensemble.hpp" />
+    <ClInclude Include="fst_lib\_src_search\seq_step_hybrid.hpp" />
+    <ClInclude Include="fst_lib\_src_search\seq_step_straight.hpp" />
+    <ClInclude Include="fst_lib\_src_search\seq_step_straight_threaded.hpp" />
+    <ClInclude Include="fst_lib\_src_search\stopwatch.hpp" />
     <ClInclude Include="lsd_lib\lsd.h" />
     <ClInclude Include="opensurf_lib\fasthessian.h" />
     <ClInclude Include="opensurf_lib\integral.h" />
@@ -293,6 +377,9 @@
     <ClCompile Include="elsd_lib\process_line.cpp" />
     <ClCompile Include="elsd_lib\valid_curve.cpp" />
     <ClCompile Include="elsd_lib\write_svg.cpp" />
+    <ClCompile Include="fst\fst_demo10.cpp" />
+    <ClCompile Include="fst\fst_main.cpp" />
+    <ClCompile Include="fst_lib\_src_global\global.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="lsd\lsd_main.cpp" />
     <ClCompile Include="lsd_lib\lsd.cpp" />
