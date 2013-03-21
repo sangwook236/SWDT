@@ -104,7 +104,7 @@ class svm_c {
   virtual void reset_shrinked();
   virtual void project_to_constraint();
 
-  SVMFLOAT svm_c::avg_norm2(); // avg_examples(K(x,x))
+  SVMFLOAT avg_norm2(); // avg_examples(K(x,x))
   SVMFLOAT loss(SVMFLOAT prediction, SVMFLOAT value); // the actual loss-function
   SVMFLOAT loss(SVMINT i); // loss of example i
   SVMFLOAT predict(svm_example example); // calculate (regression-)prediction for one example
@@ -119,7 +119,7 @@ class svm_c {
    */
   virtual void init(kernel_c* new_kernel, parameters_c* new_parameters);
   /**
-   * Train the SVM 
+   * Train the SVM
    **/
   svm_result train(example_set_c* training_examples);
   /**

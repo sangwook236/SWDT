@@ -37,7 +37,46 @@
 		<Unit filename="clustering/clustering_main.cpp" />
 		<Unit filename="clustering/k_means.cpp" />
 		<Unit filename="clustering/k_medoids.cpp" />
+		<Unit filename="libsvm/libsvm_main.cpp" />
+		<Unit filename="libsvm_lib/svm-predict.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="libsvm_lib/svm-scale.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="libsvm_lib/svm-train.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="libsvm_lib/svm.cpp" />
+		<Unit filename="libsvm_lib/svm.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="mysvm/mysvm_main.cpp" />
+		<Unit filename="mysvm_lib/example_set.cpp" />
+		<Unit filename="mysvm_lib/example_set.h" />
+		<Unit filename="mysvm_lib/globals.cpp" />
+		<Unit filename="mysvm_lib/globals.h" />
+		<Unit filename="mysvm_lib/kernel.cpp" />
+		<Unit filename="mysvm_lib/kernel.h" />
+		<Unit filename="mysvm_lib/learn.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="mysvm_lib/parameters.cpp" />
+		<Unit filename="mysvm_lib/parameters.h" />
+		<Unit filename="mysvm_lib/predict.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="mysvm_lib/smo.cpp" />
+		<Unit filename="mysvm_lib/smo.h" />
+		<Unit filename="mysvm_lib/svm_c.cpp" />
+		<Unit filename="mysvm_lib/svm_c.h" />
+		<Unit filename="mysvm_lib/svm_nu.cpp" />
+		<Unit filename="mysvm_lib/svm_nu.h" />
+		<Unit filename="mysvm_lib/version.h" />
 		<Unit filename="rl_glue/rl_glue_main.cpp" />
 		<Unit filename="vlfeat/vlfeat_main.cpp" />
 		<Extensions>

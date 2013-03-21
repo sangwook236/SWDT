@@ -1,4 +1,5 @@
 #include "example_set.h"
+#include <stdio.h>
 
 example_set_c::example_set_c(){
   init(0,0);
@@ -37,7 +38,7 @@ void example_set_c::init(SVMINT new_total, SVMINT new_dim){
   my_format.where_y = 1;
   my_format.where_alpha = 0;
   my_format.delimiter = ' ';
-}; 
+};
 
 
 example_set_c::~example_set_c(){
@@ -56,7 +57,7 @@ void example_set_c::set_filename(char* new_filename){
   strcpy(filename,new_filename);
 };
 
- 
+
 void example_set_c::clear(){
   if(all_alphas){
     delete []all_alphas;
@@ -77,7 +78,7 @@ void example_set_c::clear(){
 	  (((the_set[i]).example)[c]).att = 4;
 	};
 
-	delete [](the_set[i].example); 
+	delete [](the_set[i].example);
 	the_set[i].example=0;
       };
     };
@@ -96,7 +97,7 @@ void example_set_c::clear(){
   has_y = 0;
   has_alphas = 0;
   has_scale = 0;
-};  
+};
 
 
 SVMINT example_set_c::size(){
@@ -131,7 +132,7 @@ SVMINT example_set_c::size_neg(){
 void example_set_c::set_dim(SVMINT new_dim){
   if(new_dim<dim){
     throw general_exception("ERROR: Trying to decrease dimension of examples");
-  };                                                                            
+  };
   dim = new_dim;
   if(Exp) delete []Exp;
   if(Var) delete []Var;
@@ -180,7 +181,7 @@ void example_set_c::resize(SVMINT new_total){
     // delete obsolete values
     for(i=new_total;i<capacity;i++){
       if(the_set[i].example != 0){
-	delete [](the_set[i].example); 
+	delete [](the_set[i].example);
 	the_set[i].example = 0;
 	examples_total--;
       };
@@ -436,7 +437,7 @@ void example_set_c::scale(int scale_y){
 
   SVMINT i;
 
-  // calculate Exp and Var 
+  // calculate Exp and Var
   for(i=0;i<=dim;i++){
     Exp[i] = 0;
     Var[i] = 0;
@@ -509,7 +510,7 @@ void example_set_c::do_scale(){
       };
       i++;
     };
-    
+
     //    length = nonzero;
     the_set[pos].length = nonzero;
     delete []the_set[pos].example;
@@ -653,16 +654,16 @@ void example_set_c::output_ys(std::ostream& data_stream) const{
   SVMINT i;
   for(i=0;i<examples_total;i++){
     data_stream<<(the_set[i].y)<<std::endl;
-  };  
+  };
 };
 
 
 void readnext(std::istream& i, char* s, const char delimiter){
   SVMINT pos=0;
   char next = i.peek();
-  if(next == EOF){ 
+  if(next == EOF){
     // set stream to eof
-    next = i.get(); 
+    next = i.get();
   };
   // skip whitespace
   while((! i.eof()) &&
@@ -673,9 +674,9 @@ void readnext(std::istream& i, char* s, const char delimiter){
 	 ('\f' == next))){
     i.get();
     next = i.peek();
-    if(next == EOF){ 
+    if(next == EOF){
       // set stream to eof
-      next = i.get(); 
+      next = i.get();
     };
   };
   // read next token
@@ -683,9 +684,9 @@ void readnext(std::istream& i, char* s, const char delimiter){
     s[pos] = '0';
     pos++;
     next = i.peek();
-    if(next == EOF){ 
+    if(next == EOF){
       // set stream to eof
-      next = i.get(); 
+      next = i.get();
     };
   }
   else{
@@ -700,9 +701,9 @@ void readnext(std::istream& i, char* s, const char delimiter){
       s[pos] = i.get();
       pos++;
       next = i.peek();
-      if(next == EOF){ 
+      if(next == EOF){
 	// set stream to eof
-	next = i.get(); 
+	next = i.get();
       };
     };
   };
@@ -734,9 +735,9 @@ std::istream& operator>> (std::istream& data_stream, example_set_c& examples){
   while((next != EOF) && ('@' != next) && (! data_stream.eof())){
     try{
       next = data_stream.peek();
-      if(next == EOF){ 
+      if(next == EOF){
 	// set stream to eof
-	next = data_stream.get(); 
+	next = data_stream.get();
       };
       if(('@' == next) || (data_stream.eof())){
 	// end of this section
@@ -753,7 +754,7 @@ std::istream& operator>> (std::istream& data_stream, example_set_c& examples){
 	// line contains commentary
 	data_stream.getline(s,MAXCHAR);
       }
-      else if(('+' == next) || ('-' == next) || 
+      else if(('+' == next) || ('-' == next) ||
 	      ('y' == next) || ('a' == next) ||
 	      ((next >= '0') && (next <= '9'))){
 	// read an example
@@ -805,13 +806,13 @@ std::istream& operator>> (std::istream& data_stream, example_set_c& examples){
 	      }
 	      else{
 		// input index runs from 1 to dim (svmlight-compatibility):
-		pos = atoi(s); 
+		pos = atoi(s);
 		if(pos <= 0){
 		  throw read_exception("Index number not positive.");
 		};
 		if(pos>dim){
 		  // raise dimension
-		  examples.set_dim(pos);  
+		  examples.set_dim(pos);
 		  SVMFLOAT* example_dummy = new SVMFLOAT[pos+2];
 		  example_dummy[pos] = new_example[dim];
 		  example_dummy[pos+1] = new_example[dim+1];
@@ -833,11 +834,11 @@ std::istream& operator>> (std::istream& data_stream, example_set_c& examples){
 		  strcpy(t,"Attribute is no number - could not read example: ");
 		  t = strcat(t,s);
 		  throw read_exception(t);
-		}; 
+		};
 	      };
 	    };
-	    while((! data_stream.eof()) && 
-		  ((' ' == data_stream.peek()) || 
+	    while((! data_stream.eof()) &&
+		  ((' ' == data_stream.peek()) ||
 		   ('\t' == data_stream.peek()))){
 	      data_stream.get();
 	    };
@@ -852,9 +853,9 @@ std::istream& operator>> (std::istream& data_stream, example_set_c& examples){
 	      if(dim <= 0) {
 		// read & get dim
 		char next_ws = data_stream.peek();
-		if(next_ws == EOF){ 
+		if(next_ws == EOF){
 		  // set stream to eof
-		  next_ws = data_stream.get(); 
+		  next_ws = data_stream.get();
 		};
 		dim=0;
 		pos = 0;
@@ -865,9 +866,9 @@ std::istream& operator>> (std::istream& data_stream, example_set_c& examples){
 			 ('\t' == next_ws))){
 		    data_stream.get();
 		    next_ws = data_stream.peek();
-		    if(next_ws == EOF){ 
+		    if(next_ws == EOF){
 		      // set stream to eof
-		      next_ws = data_stream.get(); 
+		      next_ws = data_stream.get();
 		    };
 		  };
 		  if(!(data_stream.eof() || ('\n' == next_ws))){
@@ -894,9 +895,9 @@ std::istream& operator>> (std::istream& data_stream, example_set_c& examples){
 		    };
 		    pos++;
 		    next_ws = data_stream.peek();
-		    if(next_ws == EOF){ 
+		    if(next_ws == EOF){
 		      // set stream to eof
-		      next_ws = data_stream.get(); 
+		      next_ws = data_stream.get();
 		    };
 		  };
 		};
@@ -954,7 +955,7 @@ std::istream& operator>> (std::istream& data_stream, example_set_c& examples){
 		    strcpy(t,"Attribute is no number - could not read example: ");
 		    t = strcat(t,s);
 		    throw read_exception(t);
-		  }; 
+		  };
 		};
 	      };
 	    }
@@ -997,7 +998,7 @@ std::istream& operator>> (std::istream& data_stream, example_set_c& examples){
       }
       else{
 	// line contains parameters
-	data_stream >> s;	
+	data_stream >> s;
 	if((0 == strcmp("dimension",s)) || (0==strcmp("dim",s))){
 	  // dimension already set => error
 	  SVMINT new_dim;
@@ -1118,7 +1119,7 @@ std::ostream& operator<< (std::ostream& data_stream, example_set_c& examples){
   if(delimiter != ' '){
     data_stream<<"delimiter '"<<delimiter<<"'"<<std::endl;
   };
-  SVMINT total = examples.examples_total; 
+  SVMINT total = examples.examples_total;
   SVMINT dim = examples.dim;
   SVMINT i;
   SVMINT pos;
@@ -1196,7 +1197,7 @@ std::ostream& operator<< (std::ostream& data_stream, example_set_c& examples){
     data_stream<<"format "<<examples.my_format<<std::endl;
     SVMINT pos;
     for(i=0;i<total;i++){
-      // output example i      
+      // output example i
       the_example = examples.get_example(i);
       for(int s=1;s<=5;s++){
 	if(where_x == s){
