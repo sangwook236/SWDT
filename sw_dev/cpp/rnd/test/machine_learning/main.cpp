@@ -26,11 +26,11 @@ int main(int argc, char *argv[])
 		//retval = mysvm_main(argc, argv);  // not yet implemented
 
 		// clustering -------------------------------------------
-		//retval = clustering_main(argc, argv);
-		//retval = vlfeat_main(argc, argv);
+		//retval = clustering_main(argc, argv);  // not yet implemented
+		//retval = vlfeat_main(argc, argv);  // not yet implemented
 
 		// reinforcement learning -------------------------------
-		//retval = rl_glue_main(argc, argv);
+		//retval = rl_glue_main(argc, argv);  // not yet implemented
 	}
     catch (const std::bad_alloc &e)
 	{
