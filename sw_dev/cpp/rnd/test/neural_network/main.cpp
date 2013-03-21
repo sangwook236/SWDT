@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		// Fast Artificial Neural Network (FANN) library ------------
-		//retval = fann_main(argc, argv);
+		retval = fann_main(argc, argv);
 
 		// Open Neural Networks (OpenNN) library --------------------
-		retval = opennn_main(argc, argv);
+		//retval = opennn_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

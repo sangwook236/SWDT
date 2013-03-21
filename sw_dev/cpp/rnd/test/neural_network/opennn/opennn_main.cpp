@@ -19,7 +19,7 @@ void simple_pattern_recognition_example();
 int opennn_main(int argc, char *argv[])
 {
 	my_opennn::simple_function_regression_example();
-	//my_opennn::simple_pattern_recognition_example();
+	my_opennn::simple_pattern_recognition_example();
 
 	return 0;
 }
