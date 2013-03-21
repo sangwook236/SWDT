@@ -2,7 +2,7 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
 		<Project filename="../test/change_detection/change_detection_cb10.cbp" />
-		<Project filename="../test/feature_analysis/feature_analysis_cb10.cbp" />
+		<Project filename="../test/feature_analysis/feature_analysis_cb10.cbp" active="1" />
 		<Project filename="../test/gesture_recognition/gesture_recognition_cb10.cbp" />
 		<Project filename="../test/graph_analysis/graph_analysis_cb10.cbp" />
 		<Project filename="../test/hand_analysis/hand_analysis_cb10.cbp" />
@@ -15,7 +15,7 @@
 		<Project filename="../test/pcl/pcl_cb10.cbp" />
 		<Project filename="../test/pose_estimation/pose_estimation_cb10.cbp" />
 		<Project filename="../test/robotics/robotics_cb10.cbp" />
-		<Project filename="../test/probabilistic_graphical_model/probabilistic_graphical_model_cb10.cbp" active="1" />
+		<Project filename="../test/probabilistic_graphical_model/probabilistic_graphical_model_cb10.cbp" />
 		<Project filename="../test/robust_estimation/robust_estimation_cb10.cbp" />
 		<Project filename="../test/search_algorithm/search_algorithm_cb10.cbp" />
 		<Project filename="../test/shape_analysis/shape_analysis_cb10.cbp" />
