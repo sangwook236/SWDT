@@ -81,6 +81,15 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="libsvm_lib\svm.h" />
+    <ClInclude Include="mysvm_lib\example_set.h" />
+    <ClInclude Include="mysvm_lib\globals.h" />
+    <ClInclude Include="mysvm_lib\kernel.h" />
+    <ClInclude Include="mysvm_lib\parameters.h" />
+    <ClInclude Include="mysvm_lib\smo.h" />
+    <ClInclude Include="mysvm_lib\svm_c.h" />
+    <ClInclude Include="mysvm_lib\svm_nu.h" />
+    <ClInclude Include="mysvm_lib\version.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -89,7 +98,37 @@
     <ClCompile Include="clustering\k_means.cpp" />
     <ClCompile Include="clustering\k_medoids.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
+    <ClCompile Include="libsvm\libsvm_main.cpp" />
+    <ClCompile Include="libsvm_lib\svm-predict.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="libsvm_lib\svm-scale.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="libsvm_lib\svm-train.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="libsvm_lib\svm.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mysvm\mysvm_main.cpp" />
+    <ClCompile Include="mysvm_lib\example_set.cpp" />
+    <ClCompile Include="mysvm_lib\globals.cpp" />
+    <ClCompile Include="mysvm_lib\kernel.cpp" />
+    <ClCompile Include="mysvm_lib\learn.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\parameters.cpp" />
+    <ClCompile Include="mysvm_lib\predict.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\smo.cpp" />
+    <ClCompile Include="mysvm_lib\svm_c.cpp" />
+    <ClCompile Include="mysvm_lib\svm_nu.cpp" />
     <ClCompile Include="rl_glue\rl_glue_main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

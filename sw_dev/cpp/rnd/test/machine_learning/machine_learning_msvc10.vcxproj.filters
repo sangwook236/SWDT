@@ -22,6 +22,18 @@
     <Filter Include="Source Files\vlfeat">
       <UniqueIdentifier>{1b81d201-6a15-44bd-8c0f-292bbf6a074b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\libsvm">
+      <UniqueIdentifier>{e5bf935c-d067-4ea7-b7fe-ae30d117b24d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\libsvm_lib">
+      <UniqueIdentifier>{ea05ff57-8aa1-4224-bd0b-263049b9c5e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mysvm">
+      <UniqueIdentifier>{261567e1-3359-4e56-a842-21c2642950e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mysvm_lib">
+      <UniqueIdentifier>{e30fb12b-b44a-4609-8567-bc76ff25d0c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -32,6 +44,33 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libsvm_lib\svm.h">
+      <Filter>Source Files\libsvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\example_set.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\globals.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\kernel.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\parameters.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\smo.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\svm_c.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\svm_nu.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\version.h">
+      <Filter>Source Files\mysvm_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +97,51 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm_lib\svm.cpp">
+      <Filter>Source Files\libsvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\example_set.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\globals.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\kernel.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\learn.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\parameters.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\predict.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\smo.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\svm_c.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\svm_nu.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm_lib\svm-predict.cpp">
+      <Filter>Source Files\libsvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm_lib\svm-scale.cpp">
+      <Filter>Source Files\libsvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm_lib\svm-train.cpp">
+      <Filter>Source Files\libsvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm\mysvm_main.cpp">
+      <Filter>Source Files\mysvm</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm\libsvm_main.cpp">
+      <Filter>Source Files\libsvm</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
