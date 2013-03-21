@@ -44,8 +44,6 @@ void xor_sample()
 
 	FANN::neural_net net;
 	net.create_standard(num_layers, num_input, num_hidden, num_output);
-	unsigned int b = net.get_errno();
-	std::cout << "state = " << b << std::endl;
 
 	net.set_learning_rate(learning_rate);
 
