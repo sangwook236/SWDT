@@ -4,11 +4,19 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-//#pragma comment(lib, "flood.lib")
+//#pragma comment(lib, "fanndoubled.lib")
+#pragma comment(lib, "fannfloatd.lib")
+//#pragma comment(lib, "fannfixedd.lib")
+#pragma comment(lib, "opennnd.lib")
+#pragma comment(lib, "tinyxmld.lib")
 
 #		else
 
-//#pragma comment(lib, "flood.lib")
+//#pragma comment(lib, "fanndouble.lib")
+#pragma comment(lib, "fannfloat.lib")
+//#pragma comment(lib, "fannfixed.lib")
+#pragma comment(lib, "opennn.lib")
+#pragma comment(lib, "tinyxml.lib")
 
 #		endif
 

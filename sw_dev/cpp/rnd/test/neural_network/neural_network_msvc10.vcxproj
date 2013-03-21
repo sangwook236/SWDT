@@ -86,9 +86,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="flood\flood_main.cpp" />
+    <ClCompile Include="fann\fann_main.cpp" />
+    <ClCompile Include="fann\fann_xor_example.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="opennn\opennn_main.cpp" />
+    <ClCompile Include="opennn\opennn_simple_function_regression_example.cpp" />
+    <ClCompile Include="opennn\opennn_simple_pattern_recognition_example.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

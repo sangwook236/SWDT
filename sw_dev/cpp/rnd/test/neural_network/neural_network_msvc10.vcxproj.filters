@@ -13,8 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="Source Files\flood">
+    <Filter Include="Source Files\opennn">
       <UniqueIdentifier>{f04e99c6-9719-4862-be1f-a0a7ed34d51f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fann">
+      <UniqueIdentifier>{d3cbbb43-b7fc-4698-925b-e3e47e041347}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,11 +27,23 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="flood\flood_main.cpp">
-      <Filter>Source Files\flood</Filter>
-    </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="opennn\opennn_main.cpp">
+      <Filter>Source Files\opennn</Filter>
+    </ClCompile>
+    <ClCompile Include="fann\fann_main.cpp">
+      <Filter>Source Files\fann</Filter>
+    </ClCompile>
+    <ClCompile Include="fann\fann_xor_example.cpp">
+      <Filter>Source Files\fann</Filter>
+    </ClCompile>
+    <ClCompile Include="opennn\opennn_simple_function_regression_example.cpp">
+      <Filter>Source Files\opennn</Filter>
+    </ClCompile>
+    <ClCompile Include="opennn\opennn_simple_pattern_recognition_example.cpp">
+      <Filter>Source Files\opennn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
