@@ -13,7 +13,6 @@ int main(int argc, char *argv[])
 	int libsvm_main(int argc, char *argv[]);
 	int mysvm_main(int argc, char *argv[]);
 	int clustering_main(int argc, char *argv[]);
-	int vlfeat_main(int argc, char *argv[]);
 	int rl_glue_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -22,12 +21,11 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)time(NULL));
 
 		// SVM --------------------------------------------------
-		//retval = libsvm_main(argc, argv);  // not yet implemented
+		retval = libsvm_main(argc, argv);
 		//retval = mysvm_main(argc, argv);  // not yet implemented
 
 		// clustering -------------------------------------------
 		//retval = clustering_main(argc, argv);  // not yet implemented
-		//retval = vlfeat_main(argc, argv);  // not yet implemented
 
 		// reinforcement learning -------------------------------
 		//retval = rl_glue_main(argc, argv);  // not yet implemented

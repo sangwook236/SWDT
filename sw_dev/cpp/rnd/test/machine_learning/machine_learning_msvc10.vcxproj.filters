@@ -19,9 +19,6 @@
     <Filter Include="Source Files\clustering">
       <UniqueIdentifier>{9bee79f2-8391-4e01-a6e1-cca7532b5f7e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\vlfeat">
-      <UniqueIdentifier>{1b81d201-6a15-44bd-8c0f-292bbf6a074b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\libsvm">
       <UniqueIdentifier>{e5bf935c-d067-4ea7-b7fe-ae30d117b24d}</UniqueIdentifier>
     </Filter>
@@ -92,9 +89,6 @@
     <ClCompile Include="clustering\k_medoids.cpp">
       <Filter>Source Files\clustering</Filter>
     </ClCompile>
-    <ClCompile Include="vlfeat\vlfeat_main.cpp">
-      <Filter>Source Files\vlfeat</Filter>
-    </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -142,6 +136,18 @@
     </ClCompile>
     <ClCompile Include="libsvm\libsvm_main.cpp">
       <Filter>Source Files\libsvm</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm\libsvm_predict_example.cpp">
+      <Filter>Source Files\libsvm</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm\libsvm_train_example.cpp">
+      <Filter>Source Files\libsvm</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm\mysvm_learn_example.cpp">
+      <Filter>Source Files\mysvm</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm\mysvm_predict_example.cpp">
+      <Filter>Source Files\mysvm</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

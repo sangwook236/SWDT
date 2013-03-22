@@ -11,11 +11,15 @@ namespace local {
 
 namespace my_libsvm {
 
+void train_example();
+void predict_example();
+
 }  // namespace my_libsvm
 
 int libsvm_main(int argc, char *argv[])
 {
-	throw std::runtime_error("not yet implemented");
+	my_libsvm::train_example();
+	my_libsvm::predict_example();
 
 	return 0;
 }

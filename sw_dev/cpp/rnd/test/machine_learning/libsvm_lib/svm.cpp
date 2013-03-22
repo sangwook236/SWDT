@@ -2747,6 +2747,9 @@ svm_model *svm_load_model(const char *model_file_name)
 	model->probB = NULL;
 	model->label = NULL;
 	model->nSV = NULL;
+	//--S [] 2013/03/22: Sang-Wook Lee
+	model->sv_indices = NULL;
+	//--E [] 2013/03/22: Sang-Wook Lee
 
 	char cmd[81];
 	while(1)

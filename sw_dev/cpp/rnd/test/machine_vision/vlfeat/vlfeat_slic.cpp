@@ -1,6 +1,7 @@
 #include <vl/slic.h>
 #include <iostream>
 
+
 namespace {
 namespace local {
 

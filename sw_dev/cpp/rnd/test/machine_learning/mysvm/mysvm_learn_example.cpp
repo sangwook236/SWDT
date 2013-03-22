@@ -1,4 +1,3 @@
-//#include "stdafx.h"
 #include <iostream>
 #include <stdexcept>
 
@@ -9,13 +8,12 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_vlfeat {
+namespace my_mysvm {
 
-}  // namespace my_vlfeat
-
-int vlfeat_main(int argc, char *argv[])
+// [ref] ${MYSVM_HOME}/learn.cpp
+void learn_example()
 {
 	throw std::runtime_error("not yet implemented");
-
-	return 0;
 }
+
+}  // namespace my_mysvm
