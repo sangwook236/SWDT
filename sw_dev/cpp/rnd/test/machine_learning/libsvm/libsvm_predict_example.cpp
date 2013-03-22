@@ -1,6 +1,10 @@
 #include "../libsvm_lib/svm.h"
 #include <iostream>
 #include <string>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
+#include <cerrno>
 
 
 namespace {
@@ -50,7 +54,7 @@ bool predict(FILE *input, FILE *output, const struct svm_model *model, const boo
 			int *labels = (int *)malloc(nr_class * sizeof(int));
 			svm_get_labels(model, labels);
 			prob_estimates = (double *)malloc(nr_class * sizeof(double));
-			fprintf(output, "labels");		
+			fprintf(output, "labels");
 			for (int j = 0; j < nr_class; ++j)
 				fprintf(output, " %d", labels[j]);
 			fprintf(output, "\n");

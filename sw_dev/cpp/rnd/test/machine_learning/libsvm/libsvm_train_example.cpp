@@ -1,6 +1,10 @@
 #include "../libsvm_lib/svm.h"
 #include <iostream>
 #include <string>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
+#include <cerrno>
 
 
 namespace {

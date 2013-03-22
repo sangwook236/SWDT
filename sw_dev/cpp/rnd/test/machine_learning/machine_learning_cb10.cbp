@@ -38,6 +38,8 @@
 		<Unit filename="clustering/k_means.cpp" />
 		<Unit filename="clustering/k_medoids.cpp" />
 		<Unit filename="libsvm/libsvm_main.cpp" />
+		<Unit filename="libsvm/libsvm_predict_example.cpp" />
+		<Unit filename="libsvm/libsvm_train_example.cpp" />
 		<Unit filename="libsvm_lib/svm-predict.cpp">
 			<Option compile="0" />
 			<Option link="0" />
@@ -53,7 +55,9 @@
 		<Unit filename="libsvm_lib/svm.cpp" />
 		<Unit filename="libsvm_lib/svm.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="mysvm/mysvm_learn_example.cpp" />
 		<Unit filename="mysvm/mysvm_main.cpp" />
+		<Unit filename="mysvm/mysvm_predict_example.cpp" />
 		<Unit filename="mysvm_lib/example_set.cpp" />
 		<Unit filename="mysvm_lib/example_set.h" />
 		<Unit filename="mysvm_lib/globals.cpp" />
