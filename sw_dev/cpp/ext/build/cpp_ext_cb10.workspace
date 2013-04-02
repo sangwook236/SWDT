@@ -7,11 +7,12 @@
 		<Project filename="../test/computational_geometry/computational_geometry_cb10.cbp" />
 		<Project filename="../test/cppunit/cppunit_cb10.cbp" />
 		<Project filename="../test/database/database_cb10.cbp" />
-		<Project filename="../test/gpu_computation/gpu_computation_cb10.cbp" active="1" />
+		<Project filename="../test/gpu_computation/gpu_computation_cb10.cbp" />
 		<Project filename="../test/graphics_2d/graphics_2d_cb10.cbp" />
 		<Project filename="../test/graphics_3d/graphics_3d_cb10.cbp" />
 		<Project filename="../test/linear_algebra/linear_algebra_cb10.cbp" />
 		<Project filename="../test/logging/logging_cb10.cbp" />
+		<Project filename="../test/multilinear_algebra/multilinear_algebra_cb10.cbp" active="1" />
 		<Project filename="../test/networking/networking_cb10.cbp" />
 		<Project filename="../test/plotting/plotting_cb10.cbp" />
 		<Project filename="../test/resource_management/resource_management_cb10.cbp" />
