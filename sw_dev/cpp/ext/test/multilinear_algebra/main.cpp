@@ -14,8 +14,8 @@ int main(int argc, char* argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		retval = ftensor_main(argc, argv);  // not yet implemented
-		retval = ltensor_main(argc, argv);  // not yet implemented
+		//retval = ftensor_main(argc, argv);  // not yet implemented
+		retval = ltensor_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{
