@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 	int maxflow_main(int argc, char *argv[]);
 	int ibfs_main(int argc, char *argv[]);
 
+	int graphlab_main(int argc, char *argv[]);
 	int graphchi_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -25,6 +26,9 @@ int main(int argc, char *argv[])
 		// min-cut/max-flow algorithms ------------------------------
 		retval = maxflow_main(argc, argv);  // not yet implemented
 		retval = ibfs_main(argc, argv);  // not yet implemented
+
+		// GraphLab library -----------------------------------------
+		retval = graphlab_main(argc, argv);  // not yet implemented
 
 		// GraphChi library -----------------------------------------
 		retval = graphchi_main(argc, argv);  // not yet implemented
