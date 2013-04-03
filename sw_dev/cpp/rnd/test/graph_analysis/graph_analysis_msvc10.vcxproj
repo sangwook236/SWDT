@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graphchi\graphchi_main.cpp" />
+    <ClCompile Include="graphlab\graphlab_main.cpp" />
     <ClCompile Include="ibfs\ibfs_main.cpp" />
     <ClCompile Include="ibfs_lib\ibfs.cpp" />
     <ClCompile Include="library_autolinking.cpp" />

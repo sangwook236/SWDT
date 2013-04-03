@@ -28,6 +28,9 @@
     <Filter Include="Source Files\maxflow_lib">
       <UniqueIdentifier>{a9a4fe98-1e9f-4d86-b062-98cc9aff4536}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphlab">
+      <UniqueIdentifier>{5a3b5d89-7530-47e9-99c2-4a524aa2495c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -79,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="ibfs\ibfs_main.cpp">
       <Filter>Source Files\ibfs</Filter>
+    </ClCompile>
+    <ClCompile Include="graphlab\graphlab_main.cpp">
+      <Filter>Source Files\graphlab</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
