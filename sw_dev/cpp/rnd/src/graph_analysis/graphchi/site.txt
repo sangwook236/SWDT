@@ -2,6 +2,9 @@ http://graphlab.org/graphchi/
 https://code.google.com/p/graphchi/
 http://code.google.com/p/graphchi-java
 
+https://code.google.com/p/graphchi/wiki/AdjacencyListFormat
+https://code.google.com/p/graphchi/wiki/EdgeListFormat
+
 https://code.google.com/p/graphlabapi/
 http://graphlab.org/
 http://docs.graphlab.org/
