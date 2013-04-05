@@ -379,6 +379,7 @@ namespace my_hcrf {
 
 }  // namespace my_hcrf
 
+// C++ & Matlab
 int hcrf_main(int argc, char *argv[])
 {
 	local::sample();
