@@ -1,4 +1,4 @@
-/*	movmf_base.cc 
+/*	movmf_base.cc
 
 Implementation of the movmf_base class
 */
@@ -6,7 +6,7 @@ Implementation of the movmf_base class
  * Additions specific to movmf clustering made by:
  * Arindam Banerjee and Suvrit Sra
  * Copyright lies with the authors
- * The University of Texas at Austin 
+ * The University of Texas at Austin
  */
 /* This program is free software; you can redistribute it and/or */
 /* modify it under the terms of the GNU General Public License */
@@ -31,6 +31,9 @@ Implementation of the movmf_base class
 #include <stdlib.h>
 #include <fstream>
 #include <string>
+//--S [] 2013/04/05: Sang-Wook Lee
+#include <cstring>
+//--E [] 2013/04/05: Sang-Wook Lee
 #include "mat_vec.h"
 #include "movmf_base.h"
 #include "newbessel.h"
@@ -42,8 +45,8 @@ using namespace std;
 
 //#define CV_Sim(i, j) CV_Sim[(i>=j)?(i*(i+1)/2+j):(j*(j+1)/2+i)]
 
-movmf_base::movmf_base(SparseMatrixDouble *p_Docs, 
-                       bool soft_assign, 
+movmf_base::movmf_base(SparseMatrixDouble *p_Docs,
+                       bool soft_assign,
                        int num_clusters,
                        int kappa, int init_method, char init_file[],
                        float epsilon, int kmax)
@@ -83,16 +86,16 @@ movmf_base::movmf_base(SparseMatrixDouble *p_Docs,
   Sim_Mat = new float *[n_Clusters];
   for (int j = 0; j < n_Clusters; j++)
     Sim_Mat[j] = new float[n_Docs];
-     
+
   if(soft_assign){
     Soft_Cluster = new float *[n_Docs];
     for (int j = 0; j < n_Docs; j++)
       Soft_Cluster[j] = new float[n_Clusters];
-	  
+
     Cluster = new int[n_Docs];
   }
-     
-     
+
+
   memory_consume+=(n_Docs+n_Clusters*n_Docs/2)*sizeof(float) + n_Clusters*sizeof(int);
 
   if (init_method != CONCEPT_VECTORS_INIT)
@@ -138,7 +141,7 @@ void movmf_base::Classify(SparseMatrixDouble *t_docs) {
   float** sval = new float*[ncol];
   for (i = 0; i < ncol; i++)
     sval[i] = new float[n_Clusters];
-  
+
 
   float* localSim = new float[ncol];
   // Perform classification
@@ -223,10 +226,10 @@ void movmf_base::InitIterate(SparseMatrixDouble *p_Docs){
   default:
     break;
   }
-	
-	
+
+
   // initial assignment, all documents are assigned to clusters randomly !
-	
+
   for (i = 0; i < n_Samples; i++)	   Cluster[Samples[i]] = 0;
   for (i = 0; i < n_Clusters; i++)   p_Docs->trans_mult(Concept_Vector[i], Sim_Mat[i]);
   for (i = 0; i < n_Clusters; i++)   diff[i] = 0.0;
@@ -240,11 +243,11 @@ void movmf_base::InitIterate(SparseMatrixDouble *p_Docs){
   do{
     assign_cluster(p_Docs);
     compute_cluster_size();
-	  
+
     temp_result = Result;
     n_Iters++;
-	  
-	  
+
+
     // save and rsest old concept vectors
     for (i = 0; i < n_Clusters; i++)
       ////////////////////////////////////////////////////////////
@@ -254,7 +257,7 @@ void movmf_base::InitIterate(SparseMatrixDouble *p_Docs){
           old_CV[i][j] = Concept_Vector[i][j];
           Concept_Vector[i][j] = 0.0;
         }
-	  
+
     // compute new concept vectors
     for (i = 0; i < n_Samples; i++){
       assert(Cluster[Samples[i]] >=0 && Cluster[Samples[i]] < n_Clusters);
@@ -262,7 +265,7 @@ void movmf_base::InitIterate(SparseMatrixDouble *p_Docs){
         Concept_Vector[Cluster[Samples[i]]][p_Docs->row_ind(j)] += p_Docs->val(j);
       }
     }
-	  
+
     if (Alg == SPHERICAL_K_MEANS)
       for (i = 0; i < n_Clusters; i++)
         normalize_vec(Concept_Vector[i], n_Words);
@@ -276,11 +279,11 @@ void movmf_base::InitIterate(SparseMatrixDouble *p_Docs){
           }
       }
     }
-	  
+
     for (i = 0; i < n_Clusters; i++){
       p_Docs->trans_mult(Concept_Vector[i], Sim_Mat[i]);
-    }	  
-	  
+    }
+
     // compute the difference between old and new concept vectors
     for (i = 0; i < n_Clusters; i++){
       diff[i] = 0.0;
@@ -288,14 +291,14 @@ void movmf_base::InitIterate(SparseMatrixDouble *p_Docs){
         diff[i] += (old_CV[i][j] - Concept_Vector[i][j]) * (old_CV[i][j] - Concept_Vector[i][j]);
       diff[i] = sqrt(diff[i]);
     }
-	  
+
     // compute new objective function
     Result = coherence(p_Docs);
 
     if (!silent)
       cout << Result << endl;
     //	  dump();
-	  
+
   } while ((fabs(temp_result - Result) > fabs(Epsilon*Result)));
   finish_clock = clock();
   //	cout<<"Core kmeans (routine) time: "<<(finish_clock - start_clock)/1e6<<endl;
@@ -336,12 +339,12 @@ void movmf_base::Iterate(SparseMatrixDouble *p_Docs, bool soft_assign)
     default:
     break;
     }
-  */	
+  */
 
   // initial assignment, all documents are assigned to clusters randomly !
-	
+
   if(!soft_assign){
-    for (i = 0; i < n_Samples; i++)	 
+    for (i = 0; i < n_Samples; i++)
       Cluster[Samples[i]] = 0;
   }
 
@@ -359,8 +362,8 @@ void movmf_base::Iterate(SparseMatrixDouble *p_Docs, bool soft_assign)
   // have to handle stuff here..........................
   while (KappaBar < KappaMax) {
 
-    for (i = 0; i < n_Clusters; i++)    Dispersion[i] = KappaBar;      
-	  
+    for (i = 0; i < n_Clusters; i++)    Dispersion[i] = KappaBar;
+
     do {
       if (soft_assign) {
         soft_assign_cluster(p_Docs);
@@ -370,31 +373,31 @@ void movmf_base::Iterate(SparseMatrixDouble *p_Docs, bool soft_assign)
         assign_cluster(p_Docs);
         compute_cluster_size();
       }
-	    
+
       temp_result = Result;
       n_Iters++;
-	    
-	    
+
+
       // save and rsest old concept vectors
-      for (i = 0; i < n_Clusters; i++)	    
-        if(ClusterSize[i] != 0.0)              //  a useful hack 
+      for (i = 0; i < n_Clusters; i++)
+        if(ClusterSize[i] != 0.0)              //  a useful hack
           for (j = 0; j < n_Words; j++){
             old_CV[i][j] = Concept_Vector[i][j];
             Concept_Vector[i][j] = 0.0;
           }
-	    
+
 
       //-----------------------------------------------------------------------
       // The main changes for the moVMF case are in the following lines
       //-----------------------------------------------------------------------
-	       
+
       // Compute NEW Concept Vectors
-	  
-	       
+
+
       if (soft_assign) {                // the SOFT assignment case /////////////
         for (i = 0; i < n_Samples; i++) {
           for (j = p_Docs->col_ptr(Samples[i]); j < p_Docs->col_ptr(Samples[i]+1); j++){
-            for (h = 0; h < n_Clusters; h++) {		    
+            for (h = 0; h < n_Clusters; h++) {
               Concept_Vector[h][p_Docs->row_ind(j)] += exp(Soft_Cluster[i][h])*p_Docs->val(j);
             }
           }
@@ -406,8 +409,8 @@ void movmf_base::Iterate(SparseMatrixDouble *p_Docs, bool soft_assign)
           }
         }
       }
-	  
-	  
+
+
       for (i = 0; i < n_Clusters; i++) {
         CVNormSqr[i] = 0;
         for (j = 0; j < n_Words; j++) {
@@ -423,16 +426,16 @@ void movmf_base::Iterate(SparseMatrixDouble *p_Docs, bool soft_assign)
         //	    Dispersion[i] = find_quotient_arg(order, R_Bar, 1.0);
         ////////////////////////////////////////////////////////////////////////////////////////
         if (!silent)
-          cout << " Cluster " << i << " :  Size = " << ClusterSize[i] 
+          cout << " Cluster " << i << " :  Size = " << ClusterSize[i]
                << ", R_Bar = "<< R_Bar << ", kappa = " << Dispersion[i] << endl;
         normalize_vec(Concept_Vector[i], n_Words);
       }
-	  
-	  
+
+
       for (i = 0; i < n_Clusters; i++) {
         p_Docs->trans_mult(Concept_Vector[i], Sim_Mat[i]);
-      }	  
-	  
+      }
+
       // compute the difference between old and new concept vectors
       for (i = 0; i < n_Clusters; i++){
         diff[i] = 0.0;
@@ -440,21 +443,21 @@ void movmf_base::Iterate(SparseMatrixDouble *p_Docs, bool soft_assign)
           diff[i] += (old_CV[i][j] - Concept_Vector[i][j]) * (old_CV[i][j] - Concept_Vector[i][j]);
         diff[i] = sqrt(diff[i]);
       }
-	  
+
       // compute new objective function
       if(soft_assign) {
         Result = soft_coherence(p_Docs);
         //dumpsoft();
-      } else { 
+      } else {
         Result = coherence(p_Docs);
       }
       if (!silent)
         cout << Result << endl;
 
     } while ((fabs(temp_result - Result) > fabs(Epsilon*Result)));
-    
+
     // dump();			// dump values
-    // cout << KappaBar << ": "; 
+    // cout << KappaBar << ": ";
     for (i = 0; i < n_Clusters; i++){
       // cout << Dispersion[i] << " ; ";
       if(Dispersion[i] == KappaBar){
@@ -462,14 +465,14 @@ void movmf_base::Iterate(SparseMatrixDouble *p_Docs, bool soft_assign)
       }
     }
     // cout << endl;
-	  
+
     if(BoundHit){
       KappaBar *= 1.412;
     }
     else{
       KappaBar = 10000;
     }
-	  
+
   }
 }
 
@@ -504,7 +507,7 @@ void movmf_base::soft_assign_cluster(SparseMatrixDouble *p_Docs){
       Temp = to_RR(Soft_Cluster[Samples[i]][j]);
       FullSum += exp(Temp);
     }
-    
+
     logSum = to_float(log(FullSum));
     for (j = 0; j < n_Clusters; j++){
       Soft_Cluster[Samples[i]][j] -= logSum;
@@ -523,9 +526,9 @@ void movmf_base::dumpsoft()
 
 }
 
-float movmf_base::GetMembership(int i, int j){ 
+float movmf_base::GetMembership(int i, int j){
   //  cout << "(" << i << " , " << j << ")" << Soft_Cluster[i][j] << endl;
-  return exp(Soft_Cluster[Samples[i]][j]); 
+  return exp(Soft_Cluster[Samples[i]][j]);
 }
 
 
@@ -552,7 +555,7 @@ void movmf_base::assign_cluster(SparseMatrixDouble *p_Docs){
       //      cout << "Sim value " << i << " with cluster " << j << " : " << Sim_Mat[j][Samples[i]] << endl;
       if (j != Cluster[Samples[i]]){
         if (  Dispersion[j]*Sim_Mat[j][Samples[i]] >
-              //+ (order-1)*log(Dispersion[j]) > 
+              //+ (order-1)*log(Dispersion[j]) >
               Dispersion[Cluster[Samples[i]]]*Sim_Mat[Cluster[Samples[i]]][Samples[i]] ){
           //	      + (order-1)*log(Dispersion[j])      ){
           Cluster[Samples[i]] = j;
@@ -584,11 +587,11 @@ movmf_base::~movmf_base()
           delete[] Concept_Vector[i];
           delete[] Sim_Mat[i];
         }
-      
+
       delete[] Concept_Vector;
       delete[] Sim_Mat;
     }
-  
+
   delete[] ClusterSize; // any problem? ...
   delete[] DocNormSqr;
   delete[] CVNormSqr;
@@ -636,13 +639,13 @@ float movmf_base::soft_coherence(SparseMatrixDouble *p_Docs){
     logBessel[j] = to_float(log(ri));
     std::cout << "LogBesselI = " << logBessel[j] << "\n";
   }
-  
+
   for (i = 0; i < n_Samples; i++){
-    for ( j = 0; j < n_Clusters; j++){ 
+    for ( j = 0; j < n_Clusters; j++){
       value += exp( Soft_Cluster[i][j] )*( Dispersion[j]*dot_mult(p_Docs, Samples[i],Concept_Vector[j]) + (order-1)*log(Dispersion[j]) - (order)*log(2*fPI) - logBessel[j] );
     }
   }
-  
+
   return value;
 }
 
@@ -650,7 +653,7 @@ float movmf_base::soft_coherence(SparseMatrixDouble *p_Docs){
 float movmf_base::coherence(SparseMatrixDouble *p_Docs){
   int i;
   float value = 0.0;
-  
+
   for (i = 0; i < n_Samples; i++)	{
     value += Dispersion[Cluster[Samples[i]]]*dot_mult(p_Docs, Samples[i],Concept_Vector[Cluster[Samples[i]]]) + (order-1)*log(Dispersion[Cluster[Samples[i]]]);
   }
@@ -701,7 +704,7 @@ int movmf_base::SortCluster(int *cluster_size )
   i=0;
   while(cluster_size [i++] ==0)
     emptyCluster++;
-	    
+
   WordCluster = new int[n_Words];
   int index;
   float max;
@@ -712,14 +715,14 @@ int movmf_base::SortCluster(int *cluster_size )
       index =0;
 
       for (i = 1; i < n_Clusters; i++)
-        if (Concept_Vector[i][j] > max) 
+        if (Concept_Vector[i][j] > max)
           {
             max = Concept_Vector[i][j];
             index =i;
           }
       WordCluster[j]=index;
     }
-	
+
   // modify Cluster array, also ugly
   for (i = 0; i < n_Clusters; i++)
     new_label[cluster_label[i]] = i;
@@ -736,20 +739,20 @@ int movmf_base::SortCluster(int *cluster_size )
 void movmf_base::wordCluster(char *output_matrix, int n_Clusters)
 {
   char browserfilepost[128];
-  //double max; 
+  //double max;
   int j;
 
   sprintf(browserfilepost, "_wordtoclus.%d", n_Clusters);
   strcat(output_matrix, browserfilepost);
   std::ofstream o_m(output_matrix);
-  
+
   o_m<< n_Words <<endl;
 
   for (j = 0; j < n_Words; j++)
     o_m<<WordCluster[j]<<endl;
- 
+
   o_m.close();
-    
+
 }
 
 
@@ -758,7 +761,7 @@ float movmf_base::full_coherence(SparseMatrixDouble *p_Docs)
 {
   int i;
   float value = 0.0;
-	
+
   value = coherence(p_Docs);
 
   if (Alg == SPHERICAL_K_MEANS){
@@ -771,7 +774,7 @@ float movmf_base::full_coherence(SparseMatrixDouble *p_Docs)
       value += dot_mult(p_Docs, Samples[i], Concept_Vector[Cluster[Samples[i]]]);
     }
   }
-	
+
   return value;
 }
 
@@ -785,7 +788,7 @@ void movmf_base::FullSelect(){
     Samples[i] = i;
   }
 }
-  
+
 // select n_Clusters document vectors as concept vectors
 void movmf_base::random_init(SparseMatrixDouble *p_Docs)
 {
@@ -833,13 +836,13 @@ void movmf_base::random_perturb_init(SparseMatrixDouble *p_Docs)
   for (i = 0; i < n_Samples; i++)
     for (j = p_Docs->col_ptr(Samples[i]); j < p_Docs->col_ptr(Samples[i]+1); j++)
       v[p_Docs->row_ind(j)] += p_Docs->val(j);
-	
+
   if (Alg == SPHERICAL_K_MEANS)
     normalize_vec(v, n_Words);
   else
     for (i = 0; i < n_Words; i++)
       v[i] /= n_Docs;
-	
+
   // perturb the centroid k times with randomly generated vectors
   for (i = 0; i < n_Clusters; i++)
     {
@@ -855,19 +858,19 @@ void movmf_base::random_perturb_init(SparseMatrixDouble *p_Docs)
         Concept_Vector[i][j] = v[j]*(1+ temp_v[j]);
       if (Alg == SPHERICAL_K_MEANS)
         normalize_vec(Concept_Vector[i], n_Words);
-	    
+
       // ...
       /* for (j = 0; j < n_Words; j++)
          Concept_Vector[i][j] = docs(j, i); */
     }
-	
+
 }
 
 
 void movmf_base::getInitFromFile(){
-  
+
   std::ifstream inputFile(initFile);
-  
+
   int i,j;
 
   for( i = 0 ; i < n_Clusters ; i++ ){
