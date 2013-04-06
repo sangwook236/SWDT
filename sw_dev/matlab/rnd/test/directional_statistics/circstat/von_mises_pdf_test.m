@@ -1,4 +1,4 @@
-%addpath D:\work_center\sw_dev\matlab\rnd\src\directional_statistics\CircStat2010b
+%addpath D:\work_center\sw_dev\matlab\rnd\src\directional_statistics\CircStat2012b
 
 mean_dir = 0.0;
 
