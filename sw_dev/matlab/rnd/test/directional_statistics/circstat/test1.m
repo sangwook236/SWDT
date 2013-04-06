@@ -1,4 +1,4 @@
-%addpath D:\work_center\sw_dev\matlab\rnd\src\directional_statistics\CircStat2010b
+%addpath('D:\work_center\sw_dev\matlab\rnd\src\directional_statistics\circstat\CircStat2012a');
 
 Ndata = 180 * 181;
 

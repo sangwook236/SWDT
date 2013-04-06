@@ -1,3 +1,5 @@
+%addpath('D:\work_center\sw_dev\matlab\rnd\src\directional_statistics\circstat\CircStat2012a');
+
 dir_data = [
 10	40
 30	22
