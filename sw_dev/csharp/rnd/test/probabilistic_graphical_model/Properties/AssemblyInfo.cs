@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("infer_net")]
+[assembly: AssemblyTitle("probabilistic_graphical_model")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("infer_net")]
-[assembly: AssemblyCopyright("Copyright ©  2011")]
+[assembly: AssemblyProduct("probabilistic_graphical_model")]
+[assembly: AssemblyCopyright("Copyright ⓒ  2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

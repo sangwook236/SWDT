@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "neural_network", "..\test\n
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aforge_net", "..\test\aforge_net\aforge_net_msvc10.csproj", "{A72FDB3C-F29E-4DF0-BDC2-90BC5BDF6F72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infer_net", "..\test\infer_net\infer_net_msvc10.csproj", "{E336D887-5BE2-464B-9B05-3C61A7544DE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "probabilistic_graphical_model", "..\test\probabilistic_graphical_model\probabilistic_graphical_model_msvc10.csproj", "{E336D887-5BE2-464B-9B05-3C61A7544DE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
