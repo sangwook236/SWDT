@@ -19,7 +19,7 @@ namespace local {
 namespace my_mocapy {
 
 // [ref] ${MOCAPY_HOME}/examples/hmm_discrete.cpp
-void discrete_hmm()
+void hmm_with_discrete()
 {
 #if 1
 	mocapy::mocapy_seed((uint)5556574);
@@ -38,8 +38,8 @@ void discrete_hmm()
 
 	//---------------------------------------------------------------
 	// HMM hidden and observed node sizes
-	const uint H_SIZE = 2;
-	const uint O_SIZE = 2;
+	const uint H_SIZE = 2;  // the number of different values the node can adopt, starting from 0.
+	const uint O_SIZE = 2;  // the number of different values the node can adopt, starting from 0.
 	const bool init_random = false;
 
 	mocapy::CPD th0_cpd;
@@ -108,17 +108,17 @@ void discrete_hmm()
 		seq_list.push_back(seq_ll.first);
 		mismask_list.push_back(mismask);
 	}
-	std::cout << "average LL: " << sum_LL/N << std::endl;
+	std::cout << "average LL: " << sum_LL / N << std::endl;
 
 	//---------------------------------------------------------------
-	mocapy::GibbsRandom mcmc = mocapy::GibbsRandom(&mdbn);
+	mocapy::GibbsRandom mcmc = mocapy::GibbsRandom(&mdbn);  // sampler
 
 	mocapy::InfEngineMCMC inf = mocapy::InfEngineMCMC(&mdbn, &mcmc, &(seq_list[0]), mismask_list[0]);
 	inf.initialize_viterbi_generator(5, 5, true);
 
 	for (uint i = 0; i < 3; ++i)
 	{
-		mocapy::Sample s = inf.viterbi_next();
+		const mocapy::Sample s = inf.viterbi_next();
 		std::cout << "Viterbi LL = " << s.ll << std::endl;
 	}
 	std::cout << "ending Viterbi" << std::endl;

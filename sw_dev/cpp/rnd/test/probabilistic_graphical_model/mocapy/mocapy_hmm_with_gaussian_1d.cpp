@@ -52,7 +52,7 @@ void hmm_with_gaussian_1d()
 
 	mocapy::MDArray<double> means;
 	means.set_shape(2, 1);
-	means.set_values(mocapy::vec(0.0,6.0));
+	means.set_values(mocapy::vec(0.0, 6.0));
 
 	mocapy::MDArray<double> covs;
 	covs.set_shape(2, 1, 1);

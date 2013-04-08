@@ -43,9 +43,9 @@ void simple_hmm()
 	mocapy::GibbsRandom mcmc = mocapy::GibbsRandom(&dbn);
 
 	mocapy::EMEngine em = mocapy::EMEngine(&dbn, &mcmc);
-	em.load_mismask("./probabilistic_graphical_model_data/mocapy/mismask.dat");
-	em.load_weights("./probabilistic_graphical_model_data/mocapy/weights.dat");
-	em.load_sequences("./probabilistic_graphical_model_data/mocapy/traindata.dat");
+	em.load_mismask("./probabilistic_graphical_model_data/mocapy/mismask.dat");  // [ref] Mocapy++ manual, pp. 18~19.
+	em.load_weights("./probabilistic_graphical_model_data/mocapy/weights.dat");  // [ref] Mocapy++ manual, pp. 23.
+	em.load_sequences("./probabilistic_graphical_model_data/mocapy/traindata.dat");  // [ref] Mocapy++ manual, pp. 19.
 
 	std::cout << "starting EM loop" << std::endl;
 	for (uint i = 0; i < 100; ++i)

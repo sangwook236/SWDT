@@ -137,10 +137,10 @@
 		<Unit filename="middlebury_lib/regions-maxprod.cpp" />
 		<Unit filename="middlebury_lib/regions-new.h" />
 		<Unit filename="middlebury_lib/typeTruncatedQuadratic2D.h" />
-		<Unit filename="mocapy/mocapy_discrete_hmm.cpp" />
-		<Unit filename="mocapy/mocapy_discrete_hmm_with_prior.cpp" />
 		<Unit filename="mocapy/mocapy_factorial_hmm.cpp" />
 		<Unit filename="mocapy/mocapy_hmm_inference.cpp" />
+		<Unit filename="mocapy/mocapy_hmm_with_discrete.cpp" />
+		<Unit filename="mocapy/mocapy_hmm_with_discrete_and_prior.cpp" />
 		<Unit filename="mocapy/mocapy_hmm_with_gaussian_1d.cpp" />
 		<Unit filename="mocapy/mocapy_hmm_with_gaussian_2d.cpp" />
 		<Unit filename="mocapy/mocapy_hmm_with_kent.cpp" />

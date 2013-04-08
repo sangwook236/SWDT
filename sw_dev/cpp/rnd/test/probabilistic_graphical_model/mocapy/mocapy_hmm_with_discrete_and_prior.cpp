@@ -19,8 +19,11 @@ namespace local {
 namespace my_mocapy {
 
 // [ref] ${MOCAPY_HOME}/examples/discrete_hmm_with_prior.cpp
-void discrete_hmm_with_prior()
+void hmm_with_discrete_and_prior()
 {
+    // in Mocapy++, so far only the discrete node supports the use of a prior.
+    //  [ref] Mocapy++ manual, pp. 15.
+
 #if 1
 	mocapy::mocapy_seed((uint)5556574);
 #else
@@ -73,6 +76,8 @@ void discrete_hmm_with_prior()
 	mocapy::Node *mh1 = mocapy::NodeFactory::new_discrete_node(H_SIZE, "mh1", init_random);
 	mocapy::Node *mo = mocapy::NodeFactory::new_discrete_node(O_SIZE, "mo", init_random);
 
+    // a pseudo count prior for the discrete nodes
+    //  [ref] Mocapy++ manual, pp. 24.
 	mocapy::MDArray<double> pcounts;
 	pcounts.set_shape(O_SIZE, H_SIZE);
 	pcounts.set(0, 1, 1000);

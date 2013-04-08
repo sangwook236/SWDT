@@ -39,6 +39,9 @@ namespace my_mocapy {
 // [ref] ${MOCAPY_HOME}/examples/infenginehmm_example.cpp
 void hmm_inference()
 {
+    // Mocapy++ provides exact methods for doing inference in hidden Markov models (HMMs).
+    //  [ref] Mocapy++ manual, pp. 25~27.
+
 	mocapy::mocapy_seed((uint)std::time(NULL));
 
 	//---------------------------------------------------------------
@@ -133,7 +136,8 @@ void hmm_inference()
 		0, 0, 1,
 		0, 0, 1,
 		0, 0, 1,
-		0, 0, 1};
+		0, 0, 1
+    };
 	local::copy_flat(data.flat_iterator(), seq_array);
 
 	mocapy::MDArray<mocapy::eMISMASK> mism;
@@ -188,7 +192,7 @@ void hmm_inference()
 	mocapy::LikelihoodInfEngineHMM infengine(&dbn, 1);
 
 	const double ll = infengine.calc_ll(data, mism);
-	std::cout << "ll of initail values = " << ll << std::endl;
+	std::cout << "ll of initial values = " << ll << std::endl;
 
 	//---------------------------------------------------------------
 	// clean up

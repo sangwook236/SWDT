@@ -39,6 +39,9 @@ namespace my_mocapy {
 // [ref] ${MOCAPY_HOME}/examples/infenginemm_example.cpp
 void mixture_model_inference()
 {
+    // Mocapy++ provides exact methods for doing inference in mixture models (MMs).
+    //  [ref] Mocapy++ manual, pp. 27~28.
+
 	mocapy::mocapy_seed((uint)std::time(NULL));
 
 	//---------------------------------------------------------------
