@@ -265,6 +265,36 @@
     <ClCompile Include="libdai\libdai_sprinkler_gibbs_examples.cpp">
       <Filter>Source Files\libdai</Filter>
     </ClCompile>
+    <ClCompile Include="mocapy\mocapy_factorial_hmm.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_discrete_hmm_with_prior.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_simple_hmm.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_kent.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_mixture_model_inference.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_inference.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_von_mises_1d.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_gaussian_2d.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_gaussian_1d.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_von_mises_2d.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

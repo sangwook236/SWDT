@@ -18,7 +18,7 @@ namespace local {
 
 namespace my_mocapy {
 
-// [ref] ${MOCAPY_HOME}/examples/discrete_hmm_with_prior.cpp
+// [ref] ${MOCAPY_HOME}/examples/hmm_discrete.cpp
 void discrete_hmm()
 {
 #if 1
@@ -43,23 +43,26 @@ void discrete_hmm()
 	const bool init_random = false;
 
 	mocapy::CPD th0_cpd;
-	th0_cpd.set_shape(2); th0_cpd.set_values(mocapy::vec(0.1, 0.9));
+	th0_cpd.set_shape(2);
+	th0_cpd.set_values(mocapy::vec(0.1, 0.9));
 
 	mocapy::CPD th1_cpd;
-	th1_cpd.set_shape(2, 2); th1_cpd.set_values(mocapy::vec(0.95, 0.05, 0.1, 0.9));
+	th1_cpd.set_shape(2, 2);
+	th1_cpd.set_values(mocapy::vec(0.95, 0.05, 0.1, 0.9));
 
-	mocapy::CPD to0_cpd;
-	to0_cpd.set_shape(2, 2); to0_cpd.set_values(mocapy::vec(0.1, 0.9, 0.8, 0.2));
+	mocapy::CPD to_cpd;
+	to_cpd.set_shape(2, 2);
+	to_cpd.set_values(mocapy::vec(0.1, 0.9, 0.8, 0.2));
 
 	// the target DBN (this DBN generates the data)
 	mocapy::Node *th0 = mocapy::NodeFactory::new_discrete_node(H_SIZE, "th0", init_random, th0_cpd);
 	mocapy::Node *th1 = mocapy::NodeFactory::new_discrete_node(H_SIZE, "th1", init_random, th1_cpd);
-	mocapy::Node *to0 = mocapy::NodeFactory::new_discrete_node(O_SIZE, "to0", init_random, to0_cpd);
+	mocapy::Node *to = mocapy::NodeFactory::new_discrete_node(O_SIZE, "to", init_random, to_cpd);
 
 	mocapy::DBN tdbn;
-	tdbn.set_slices(mocapy::vec(th0, to0), mocapy::vec(th1, to0));
+	tdbn.set_slices(mocapy::vec(th0, to), mocapy::vec(th1, to));
 
-	tdbn.add_intra("th0", "to0");
+	tdbn.add_intra("th0", "to");
 	tdbn.add_inter("th0", "th1");
 	tdbn.construct();
 
@@ -68,24 +71,24 @@ void discrete_hmm()
 	// for mh0, get the CPD from th0 and fix parameters
 	mocapy::Node *mh0 = mocapy::NodeFactory::new_discrete_node(H_SIZE, "mh0", init_random, mocapy::CPD(), th0, true);
 	mocapy::Node *mh1 = mocapy::NodeFactory::new_discrete_node(H_SIZE, "mh1", init_random);
-	mocapy::Node *mo0 = mocapy::NodeFactory::new_discrete_node(O_SIZE, "mo0", init_random);
+	mocapy::Node *mo = mocapy::NodeFactory::new_discrete_node(O_SIZE, "mo", init_random);
 
 	mocapy::DBN mdbn;
-	mdbn.set_slices(mocapy::vec(mh0, mo0), mocapy::vec(mh1, mo0));
+	mdbn.set_slices(mocapy::vec(mh0, mo), mocapy::vec(mh1, mo));
 
-	mdbn.add_intra("mh0", "mo0");
+	mdbn.add_intra("mh0", "mo");
 	mdbn.add_inter("mh0", "mh1");
 	mdbn.construct();
 
 	std::cout << "*** TARGET ***" << std::endl;
 	std::cout << *th0 << std::endl;
 	std::cout << *th1 << std::endl;
-	std::cout << *to0 << std::endl;
+	std::cout << *to << std::endl;
 
 	std::cout << "*** MODEL ***" << std::endl;
 	std::cout << *mh0 << std::endl;
 	std::cout << *mh1 << std::endl;
-	std::cout << *mo0 << std::endl;
+	std::cout << *mo << std::endl;
 
 	//---------------------------------------------------------------
 	std::vector<mocapy::Sequence> seq_list;
@@ -109,7 +112,6 @@ void discrete_hmm()
 
 	//---------------------------------------------------------------
 	mocapy::GibbsRandom mcmc = mocapy::GibbsRandom(&mdbn);
-	mocapy::EMEngine em = mocapy::EMEngine(&mdbn, &mcmc, &seq_list, &mismask_list);
 
 	mocapy::InfEngineMCMC inf = mocapy::InfEngineMCMC(&mdbn, &mcmc, &(seq_list[0]), mismask_list[0]);
 	inf.initialize_viterbi_generator(5, 5, true);
@@ -121,17 +123,20 @@ void discrete_hmm()
 	}
 	std::cout << "ending Viterbi" << std::endl;
 
+	//---------------------------------------------------------------
+	mocapy::EMEngine em = mocapy::EMEngine(&mdbn, &mcmc, &seq_list, &mismask_list);
+
 	std::cout << "starting EM loop" << std::endl;
 	double bestLL = -1000;
 	uint it_no_improvement(0);
 	uint i(0);
+
 	// start EM loop
 	while (it_no_improvement < 100)
 	{
 		em.do_E_step(1, MCMC_BURN_IN, true);
 
 		const double ll = em.get_loglik();
-
 		std::cout << "LL = " << ll;
 
 		if (ll > bestLL)
@@ -153,25 +158,27 @@ void discrete_hmm()
 
 	std::cout << "DONE" << std::endl;
 
+	//---------------------------------------------------------------
 	mdbn.load("./probabilistic_graphical_model_data/mocapy/discrete_hmm.dbn");
 
 	std::cout << "*** TARGET ***" << std::endl;
 	std::cout << *th0 << std::endl;
 	std::cout << *th1 << std::endl;
-	std::cout << *to0 << std::endl;
+	std::cout << *to << std::endl;
 
 	std::cout << "*** MODEL ***" << std::endl;
 	std::cout << *mh0 << std::endl;
 	std::cout << *mh1 << std::endl;
-	std::cout << *mo0 << std::endl;
+	std::cout << *mo << std::endl;
 
+	//---------------------------------------------------------------
 	delete th0;
 	delete th1;
-	delete to0;
+	delete to;
 
 	delete mh0;
 	delete mh1;
-	delete mo0;
+	delete mo;
 }
 
 }  // namespace my_mocapy
