@@ -138,7 +138,17 @@
 		<Unit filename="middlebury_lib/regions-new.h" />
 		<Unit filename="middlebury_lib/typeTruncatedQuadratic2D.h" />
 		<Unit filename="mocapy/mocapy_discrete_hmm.cpp" />
+		<Unit filename="mocapy/mocapy_discrete_hmm_with_prior.cpp" />
+		<Unit filename="mocapy/mocapy_factorial_hmm.cpp" />
+		<Unit filename="mocapy/mocapy_hmm_inference.cpp" />
+		<Unit filename="mocapy/mocapy_hmm_with_gaussian_1d.cpp" />
+		<Unit filename="mocapy/mocapy_hmm_with_gaussian_2d.cpp" />
+		<Unit filename="mocapy/mocapy_hmm_with_kent.cpp" />
+		<Unit filename="mocapy/mocapy_hmm_with_von_mises_1d.cpp" />
+		<Unit filename="mocapy/mocapy_hmm_with_von_mises_2d.cpp" />
 		<Unit filename="mocapy/mocapy_main.cpp" />
+		<Unit filename="mocapy/mocapy_mixture_model_inference.cpp" />
+		<Unit filename="mocapy/mocapy_simple_hmm.cpp" />
 		<Unit filename="opengm/ibfs/ibfs.h" />
 		<Unit filename="opengm/maxflow/block.h" />
 		<Unit filename="opengm/maxflow/graph.h" />

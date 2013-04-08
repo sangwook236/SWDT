@@ -19,7 +19,7 @@ namespace local {
 namespace my_mocapy {
 
 // [ref] ${MOCAPY_HOME}/examples/hmm_simple.cpp
-void factorial_hmm()
+void simple_hmm()
 {
 	// the dynamic Bayesian network
 	mocapy::DBN dbn;
@@ -39,7 +39,7 @@ void factorial_hmm()
 	dbn.construct();
 
 	//---------------------------------------------------------------
-	std::cout << "Loading traindata" << std::endl;
+	std::cout << "loading traindata" << std::endl;
 	mocapy::GibbsRandom mcmc = mocapy::GibbsRandom(&dbn);
 
 	mocapy::EMEngine em = mocapy::EMEngine(&dbn, &mcmc);
@@ -47,7 +47,7 @@ void factorial_hmm()
 	em.load_weights("./probabilistic_graphical_model_data/mocapy/weights.dat");
 	em.load_sequences("./probabilistic_graphical_model_data/mocapy/traindata.dat");
 
-	std::cout << "Starting EM loop" << std::endl;
+	std::cout << "starting EM loop" << std::endl;
 	for (uint i = 0; i < 100; ++i)
 	{
 		em.do_E_step(20, 10);

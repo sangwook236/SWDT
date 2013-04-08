@@ -23,7 +23,7 @@ std::vector<T> vect(T t1, T t2, T t3)
 	return v;
 }
 
-void local::copy_flat(const std::vector<double *> &flat_iterator, const double *array)
+void copy_flat(const std::vector<double *> &flat_iterator, const double *array)
 {
 	for (uint i = 0; i < flat_iterator.size(); ++i)
 	{

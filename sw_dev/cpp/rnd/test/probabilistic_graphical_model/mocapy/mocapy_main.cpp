@@ -14,7 +14,7 @@ namespace local {
 
 namespace my_mocapy {
 
-void discrete_hmm();
+void simple_hmm();
 void discrete_hmm();
 void discrete_hmm_with_prior();
 void hmm_with_gaussian_1d();
@@ -35,20 +35,20 @@ int mocapy_main(int argc, char *argv[])
 #if defined(WIN32) || defined(_WIN32)
         throw std::runtime_error("not yet supported in Windows");
 #else
-		my_mocapy::discrete_hmm();
-		my_mocapy::discrete_hmm();
-		my_mocapy::discrete_hmm_with_prior();
+		my_mocapy::simple_hmm();
+		//my_mocapy::discrete_hmm();
+		//my_mocapy::discrete_hmm_with_prior();
 
-		my_mocapy::hmm_with_gaussian_1d();
-		my_mocapy::hmm_with_gaussian_2d();
-		my_mocapy::hmm_with_von_mises_1d();
-		my_mocapy::hmm_with_von_mises_2d();
-		my_mocapy::hmm_with_kent();
+		//my_mocapy::hmm_with_gaussian_1d();
+		//my_mocapy::hmm_with_gaussian_2d();
+		//my_mocapy::hmm_with_von_mises_1d();
+		//my_mocapy::hmm_with_von_mises_2d();
+		//my_mocapy::hmm_with_kent();
 
-		my_mocapy::factorial_hmm();
+		//my_mocapy::factorial_hmm();
 
-		my_mocapy::mixture_model_inference();
-		my_mocapy::hmm_inference();
+		//my_mocapy::mixture_model_inference();
+		//my_mocapy::hmm_inference();
 #endif
 	}
 	catch (const mocapy::MocapyExceptions &e)
