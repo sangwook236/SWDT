@@ -22,9 +22,6 @@
     <ClCompile Include="hmm\hmm_viterbi.cpp">
       <Filter>Source Files\hmm</Filter>
     </ClCompile>
-    <ClCompile Include="mocapy\mocapy_discrete_hmm.cpp">
-      <Filter>Source Files\mocapy</Filter>
-    </ClCompile>
     <ClCompile Include="mocapy\mocapy_main.cpp">
       <Filter>Source Files\mocapy</Filter>
     </ClCompile>
@@ -268,9 +265,6 @@
     <ClCompile Include="mocapy\mocapy_factorial_hmm.cpp">
       <Filter>Source Files\mocapy</Filter>
     </ClCompile>
-    <ClCompile Include="mocapy\mocapy_discrete_hmm_with_prior.cpp">
-      <Filter>Source Files\mocapy</Filter>
-    </ClCompile>
     <ClCompile Include="mocapy\mocapy_simple_hmm.cpp">
       <Filter>Source Files\mocapy</Filter>
     </ClCompile>
@@ -293,6 +287,12 @@
       <Filter>Source Files\mocapy</Filter>
     </ClCompile>
     <ClCompile Include="mocapy\mocapy_hmm_with_von_mises_2d.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_discrete.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_discrete_and_prior.cpp">
       <Filter>Source Files\mocapy</Filter>
     </ClCompile>
   </ItemGroup>
