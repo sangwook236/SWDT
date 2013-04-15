@@ -1,0 +1,3 @@
+http://www.mrc-bsu.cam.ac.uk/bugs/
+http://www.mrc-bsu.cam.ac.uk/bugs/winbugs/contents.shtml
+http://www.openbugs.info/
