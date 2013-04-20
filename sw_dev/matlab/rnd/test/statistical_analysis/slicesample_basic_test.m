@@ -8,7 +8,7 @@ burn_in_period = 1000;
 thinning_period = 5;
 smpl0 = slicesample(1, num_samples, 'pdf', f, 'thin', thinning_period, 'burnin', burn_in_period);
 
-[binheight, bincenter] = hist(x, 100);
+[binheight, bincenter] = hist(smpl0, 100);
 h1 = bar(bincenter, binheight, 'hist');
 set(h1, 'facecolor', [0.8 0.8 1]);
 
@@ -84,17 +84,36 @@ if 0
 	%xxhat = cumsum(smpl4.^2) ./ (1:num_samples)';
 	%plot(1:num_samples, xxhat);
 	subplot(2,1,1), hist(smpl4, 100);
-	axis_val = axis;
-	subplot(2,1,2), ezplot(f, [axis_val(1) axis_val(2)]);
-else
-	hold on;
+	axis_rng = axis;
+	subplot(2,1,2), ezplot(f, [axis_rng(1) axis_rng(2)]);
+elseif 0
 	[binheight, bincenter] = hist(smpl4, 100);
+	binwidth = bincenter(2) - bincenter(1);
+
+	hold on;
 	h1 = bar(bincenter, binheight, 'hist');
 	set(h1, 'facecolor', [0.8 0.8 1]);
-	axis_val = axis;
-	area = quad(f, axis_val(1), axis_val(2));
+	axis_rng = axis;
+	area = quad(f, axis_rng(1), axis_rng(2));
+	h2 = ezplot(@(x) (num_samples * binwidth / area) * f(x), [axis_rng(1) axis_rng(2)]);
+	set(h2, 'color', [1 0 0], 'linewidth', 2);
+	hold off;
+else
+	[binheight, bincenter] = hist(smpl4, 100);
 	binwidth = bincenter(2) - bincenter(1);
-	h2 = ezplot(@(x) (num_samples * binwidth / area) * f(x), [axis_val(1) axis_val(2)]);
+	x_rng = [ floor(min(bincenter)) ceil(max(bincenter)) ];
+	%area1 = quad(f, x_rng(1), x_rng(2));
+	area2 = num_samples * binwidth;
+
+	% expectation of a function, g = E_f[g]
+	% E_f[g] = 1/N sum(i=1 to N, g(x_i)) where x_i ~ f(x)
+	%E =  mean(g(smpl4));
+
+	hold on;
+	h1 = bar(bincenter, binheight / area2, 'hist');
+	set(h1, 'facecolor', [0.8 0.8 1]);
+	axis_rng = axis;
+	h2 = ezplot(f, x_rng);
 	set(h2, 'color', [1 0 0], 'linewidth', 2);
 	hold off;
 end;
@@ -124,20 +143,41 @@ smpl5 = mod(smpl5, 2*pi);
 figure;
 if 0
 	subplot(2,1,1), hist(smpl5, 100)
-	axis_val = axis;
-	axis([0 2*pi axis_val(3) axis_val(4)]);
+	axis_rng = axis;
+	axis([0 2*pi axis_rng(3) axis_rng(4)]);
 	subplot(2,1,2), ezplot(f, [0 2*pi]);
-	%subplot(2,1,2), ezplot(f, [axis_val(1) axis_val(2)]);
-else
-	hold on;
+	%subplot(2,1,2), ezplot(f, [axis_rng(1) axis_rng(2)]);
+elseif 0
 	[binheight, bincenter] = hist(smpl5, 50);
+	binwidth = bincenter(2) - bincenter(1);
+	x_rng = [ 0 2*pi ];
+	area = quad(f, x_rng(1), x_rng(2));
+
+	hold on;
 	h1 = bar(bincenter, binheight, 'hist');
 	set(h1, 'facecolor', [0.8 0.8 1]);
-	axis_val = axis;
-	area = quad(f, 0, 2*pi);
-	binwidth = bincenter(2) - bincenter(1);
-	h2 = ezplot(@(x) (num_samples * binwidth / area) * f(x), [0 2*pi]);
+	axis_rng = axis;
+	h2 = ezplot(@(x) (num_samples * binwidth / area) * f(x), x_rng);
 	set(h2, 'color', [1 0 0], 'linewidth', 2);
-	axis([0 2*pi axis_val(3) axis_val(4)]);
+	axis([x_rng(1) x_rng(2) axis_rng(3) axis_rng(4)]);
+	hold off;
+else
+	[binheight, bincenter] = hist(smpl5, 50);
+	binwidth = bincenter(2) - bincenter(1);
+	x_rng = [ 0 2*pi ];
+	area1 = quad(f, x_rng(1), x_rng(2));
+	area2 = num_samples * binwidth;
+
+	% expectation of a function, g = E_f[g]
+	% E_f[g] = 1/N sum(i=1 to N, g(x_i)) where x_i ~ f(x)
+	%E =  mean(g(smpl5));
+
+	hold on;
+	h1 = bar(bincenter, binheight / area2, 'hist');
+	set(h1, 'facecolor', [0.8 0.8 1]);
+	axis_rng = axis;
+	h2 = ezplot(@(x) f(x) / area1, x_rng);
+	set(h2, 'color', [1 0 0], 'linewidth', 2);
+	axis([x_rng(1) x_rng(2) axis_rng(3) axis_rng(4)]);
 	hold off;
 end;
