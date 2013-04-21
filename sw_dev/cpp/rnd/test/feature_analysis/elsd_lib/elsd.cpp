@@ -34,6 +34,7 @@
 #include "valid_curve.h"
 #include "process_curve.h"
 #include "process_line.h"
+#include <string>
 
 /*----------------------------------------------------------------------------*/
 /* Init global temporary variables */
@@ -1067,6 +1068,11 @@ void EllipseDetection(image_double image,double rho,double prec,double p,
   double reg_angle;
   int pext[8];
   unsigned int xsz0,ysz0;
+
+  //--S [] 2013/04/21: Sang-Wook Lee
+  const std::string svg_file_path(fstr + std::string(".svg"));
+  const std::string ellipse_file_path(fstr + std::string(".ellipse"));
+  //--E [] 2013/04/21: Sang-Wook Lee
   
   xsz0 = image->xsize;
   ysz0 = image->ysize;
@@ -1086,7 +1092,7 @@ void EllipseDetection(image_double image,double rho,double prec,double p,
   ysize = angles->ysize;
 
   /* display detection result */
-  svg = init_svg(strcat(fstr,".svg"),xsz0,ysz0);
+  svg = init_svg((char *)svg_file_path.c_str(),xsz0,ysz0);
   
   /* number of tests for elliptical arcs */
   logNT[2] = 4.0 *(log10((double)xsize)+log10((double)ysize)) + log10(9.0) + log10(3.0); /* N^8 */
@@ -1101,7 +1107,7 @@ void EllipseDetection(image_double image,double rho,double prec,double p,
   min_size[0] =(int)((-logNT[0]+log10(eps))/log10(p));
 
   /* file to write coordinates of detected ellipses */
-  FILE *fe = fopen("./feature_analysis_data/ellipses.txt","wt");
+  FILE *fe = fopen(ellipse_file_path.c_str(),"wt");
 
   /* allocate memory for region lists */
   reg = (struct point *) calloc(xsize * ysize, sizeof(struct point));

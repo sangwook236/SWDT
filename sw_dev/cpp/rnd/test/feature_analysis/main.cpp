@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 		//retval = lsd_main(argc, argv);
 
 		// ellipse & line feature -----------------------------------
-		//retval = elsd_main(argc, argv);
+		retval = elsd_main(argc, argv);
 
 		// local descriptor -----------------------------------------
 		//retval = opensift_main(argc, argv);
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 		//retval = pictorial_structures_revisited_main(argc, argv);
 
 		// Feature Selection Toolbox (FST) library ------------------
-		retval = fst_main(argc, argv);
+		//retval = fst_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{
