@@ -94,8 +94,8 @@ else
 	%area1 = quad(pdf, x_rng(1), x_rng(2));
 	area2 = num_samples * binwidth;
 
-	% expectation of a function, g = E_f[g]
-	% E_f[g] = 1/N sum(i=1 to N, g(x_i)) where x_i ~ pdf(x)
+	% expectation of a function, g = E_pdf[g]
+	% E_pdf[g] = 1/N sum(i=1 to N, g(x_i)) where x_i ~ pdf(x)
 	%E =  mean(g(smpl4));
 
 	hold on;
@@ -165,8 +165,8 @@ else
 	area1 = quad(pdf, x_rng(1), x_rng(2));
 	area2 = num_samples * binwidth;
 
-	% expectation of a function, g = E_f[g]
-	% E_f[g] = 1/N sum(i=1 to N, g(x_i)) where x_i ~ pdf(x)
+	% expectation of a function, g = E_pdf[g]
+	% E_pdf[g] = 1/N sum(i=1 to N, g(x_i)) where x_i ~ pdf(x)
 	%E =  mean(g(smpl5));
 
 	hold on;
