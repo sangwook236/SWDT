@@ -98,7 +98,7 @@ elseif 0
 	h2 = ezplot(@(x) (num_samples * binwidth / area) * f(x), [axis_rng(1) axis_rng(2)]);
 	set(h2, 'color', [1 0 0], 'linewidth', 2);
 	hold off;
-else
+elseif 1
 	[binheight, bincenter] = hist(smpl4, 100);
 	binwidth = bincenter(2) - bincenter(1);
 	x_rng = [ floor(min(bincenter)) ceil(max(bincenter)) ];
@@ -119,7 +119,7 @@ else
 end;
 
 %----------------------------------------------------------
-% von Mises distribution
+% conjugate prior of von Mises distribution
 
 % [ref] "A Bayesian Analysis of Directional Data Using the von Mises-Fisher Distribution", G. Nunez-Antonio and E. Gutierrez-Pena, CSSC, 2005.
 % [ref] "Finding the Location of a Signal: A Bayesian Analysis", P. Guttorp and R. A. Lockhart, JASA, 1988.
@@ -127,17 +127,17 @@ end;
 %addpath('D:\working_copy\swl_https\matlab\src\directional_statistics');
 
 % target distribution
-R_n = 20;
-theta_n = pi;
+R_0 = 20;
+mu_0 = pi;
 c = 5;
-n = 100;
+f = @(m, k) exp(k * R_0 * cos(m - mu_0)) / besseli(0, k)^c;
+
 kappa0 = 1;
-f = @(theta) exp(kappa0 * R_n * cos(theta - theta_n)) / besseli(0, kappa0)^(c + n);
 
 num_samples = 10000;
 burn_in_period = 1000;
 thinning_period = 5;
-smpl5 = slicesample(1, num_samples, 'pdf', f, 'thin', thinning_period, 'burnin', burn_in_period);
+smpl5 = slicesample(1, num_samples, 'pdf', @(m) f(m, kappa0), 'thin', thinning_period, 'burnin', burn_in_period);
 smpl5 = mod(smpl5, 2*pi);
 
 figure;
@@ -145,38 +145,38 @@ if 0
 	subplot(2,1,1), hist(smpl5, 100)
 	axis_rng = axis;
 	axis([0 2*pi axis_rng(3) axis_rng(4)]);
-	subplot(2,1,2), ezplot(f, [0 2*pi]);
-	%subplot(2,1,2), ezplot(f, [axis_rng(1) axis_rng(2)]);
+	subplot(2,1,2), ezplot(@(m) f(m, kappa0), [0 2*pi]);
+	%subplot(2,1,2), ezplot(@(m) f(m, kappa0), [axis_rng(1) axis_rng(2)]);
 elseif 0
 	[binheight, bincenter] = hist(smpl5, 50);
 	binwidth = bincenter(2) - bincenter(1);
 	x_rng = [ 0 2*pi ];
-	area = quad(f, x_rng(1), x_rng(2));
+	area = quad(@(m) f(m, kappa0), x_rng(1), x_rng(2));
 
 	hold on;
 	h1 = bar(bincenter, binheight, 'hist');
 	set(h1, 'facecolor', [0.8 0.8 1]);
 	axis_rng = axis;
-	h2 = ezplot(@(x) (num_samples * binwidth / area) * f(x), x_rng);
+	h2 = ezplot(@(x) (num_samples * binwidth / area) * f(x, kappa0), x_rng);
 	set(h2, 'color', [1 0 0], 'linewidth', 2);
 	axis([x_rng(1) x_rng(2) axis_rng(3) axis_rng(4)]);
 	hold off;
-else
+elseif 1
 	[binheight, bincenter] = hist(smpl5, 50);
 	binwidth = bincenter(2) - bincenter(1);
 	x_rng = [ 0 2*pi ];
-	area1 = quad(f, x_rng(1), x_rng(2));
+	area1 = quad(@(m) f(m, kappa0), x_rng(1), x_rng(2));
 	area2 = num_samples * binwidth;
 
 	% expectation of a function, g = E_f[g]
-	% E_f[g] = 1/N sum(i=1 to N, g(x_i)) where x_i ~ f(x)
+	% E_f[g] = 1/N sum(i=1 to N, g(x_i)) where x_i ~ f(x, kappa0)
 	%E =  mean(g(smpl5));
 
 	hold on;
 	h1 = bar(bincenter, binheight / area2, 'hist');
 	set(h1, 'facecolor', [0.8 0.8 1]);
 	axis_rng = axis;
-	h2 = ezplot(@(x) f(x) / area1, x_rng);
+	h2 = ezplot(@(x) f(x, kappa0) / area1, x_rng);
 	set(h2, 'color', [1 0 0], 'linewidth', 2);
 	axis([x_rng(1) x_rng(2) axis_rng(3) axis_rng(4)]);
 	hold off;

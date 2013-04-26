@@ -87,7 +87,7 @@ elseif 0
 	h2 = ezplot(@(x) (num_samples * binwidth / area) * pdf(x), [axis_rng(1) axis_rng(2)]);
 	set(h2, 'color', [1 0 0], 'linewidth', 2);
 	hold off;
-else
+elseif 1
 	[binheight, bincenter] = hist(smpl3, 100);
 	binwidth = bincenter(2) - bincenter(1);
 	x_rng = [ floor(min(bincenter)) ceil(max(bincenter)) ];
@@ -108,7 +108,7 @@ else
 end;
 
 %----------------------------------------------------------
-% von Mises distribution
+% conjugate prior of von Mises distribution
 
 % [ref] "A Bayesian Analysis of Directional Data Using the von Mises-Fisher Distribution", G. Nunez-Antonio and E. Gutierrez-Pena, CSSC, 2005.
 % [ref] "Finding the Location of a Signal: A Bayesian Analysis", P. Guttorp and R. A. Lockhart, JASA, 1988.
@@ -116,18 +116,18 @@ end;
 %addpath('D:\working_copy\swl_https\matlab\src\directional_statistics');
 
 % target distribution
-R_n = 20;
-theta_n = pi;
+R_0 = 20;
+mu_0 = pi;
 c = 5;
-n = 100;
+pdf = @(m, k) exp(k * R_0 * cos(m - mu_0)) / besseli(0, k)^c;
+
 kappa0 = 1;
-pdf = @(theta) exp(kappa0 * R_n * cos(theta - theta_n)) / besseli(0, kappa0)^(c + n);
 
 % proposal distribution, q(x | y)
 delta = .5;
 %a_c = 1;
 %b_c = 1;
-%proppdf = @(theta, kappa) unifpdf(theta, 0, 2*pi) * gampdf(kappa0, a_c, b_c);
+%proppdf = @(m, k) unifpdf(m, 0, 2*pi) * gampdf(k, a_c, b_c);
 proppdf = @(x, y) unifpdf(y - x, -delta, delta);
 %proprnd = @(x) x + rand * 2 * pi;
 proprnd = @(x) x + rand * 2 * delta - delta;
@@ -135,7 +135,7 @@ proprnd = @(x) x + rand * 2 * delta - delta;
 num_samples = 10000;
 burn_in_period = 1000;
 thinning_period = 5;
-smpl4 = mhsample(0, num_samples, 'pdf', pdf, 'proprnd', proprnd, 'proppdf', proppdf, 'thin', thinning_period, 'burnin', burn_in_period);
+smpl4 = mhsample(0, num_samples, 'pdf', @(m) pdf(m, kappa0), 'proprnd', proprnd, 'proppdf', proppdf, 'thin', thinning_period, 'burnin', burn_in_period);
 smpl4 = mod(smpl4, 2*pi);
 
 figure;
@@ -143,37 +143,37 @@ if 0
 	subplot(2,1,1), hist(smpl4, 100)
 	axis_rng = axis;
 	axis([0 2*pi axis_rng(3) axis_rng(4)]);
-	subplot(2,1,2), ezplot(pdf, [0 2*pi]);
-	%subplot(2,1,2), ezplot(pdf, [axis_rng(1) axis_rng(2)]);
+	subplot(2,1,2), ezplot(@(m) pdf(m, kappa0), [0 2*pi]);
+	%subplot(2,1,2), ezplot(@(m) pdf(m, kappa0), [axis_rng(1) axis_rng(2)]);
 elseif 0
 	[binheight, bincenter] = hist(smpl4, 50);
 	binwidth = bincenter(2) - bincenter(1);
-	area = quad(pdf, 0, 2*pi);
+	area = quad(@(m) pdf(m, kappa0), 0, 2*pi);
 
 	hold on;
 	h1 = bar(bincenter, binheight, 'hist');
 	set(h1, 'facecolor', [0.8 0.8 1]);
 	axis_rng = axis;
-	h2 = ezplot(@(x) (num_samples * binwidth / area) * pdf(x), [0 2*pi]);
+	h2 = ezplot(@(x) (num_samples * binwidth / area) * pdf(x, kappa0), [0 2*pi]);
 	set(h2, 'color', [1 0 0], 'linewidth', 2);
 	axis([0 2*pi axis_rng(3) axis_rng(4)]);
 	hold off;
-else
+elseif 1
 	[binheight, bincenter] = hist(smpl4, 50);
 	binwidth = bincenter(2) - bincenter(1);
 	x_rng = [ 0 2*pi ];
-	area1 = quad(pdf, x_rng(1), x_rng(2));
+	area1 = quad(@(m) pdf(m, kappa0), x_rng(1), x_rng(2));
 	area2 = num_samples * binwidth;
 
 	% expectation of a function, g = E_pdf[g]
-	% E_pdf[g] = 1/N sum(i=1 to N, g(x_i)) where x_i ~ pdf(x)
+	% E_pdf[g] = 1/N sum(i=1 to N, g(x_i)) where x_i ~ pdf(x, kappa0)
 	%E =  mean(g(smpl5));
 
 	hold on;
 	h1 = bar(bincenter, binheight / area2, 'hist');
 	set(h1, 'facecolor', [0.8 0.8 1]);
 	axis_rng = axis;
-	h2 = ezplot(@(x) pdf(x) / area1, x_rng);
+	h2 = ezplot(@(x) pdf(x, kappa0) / area1, x_rng);
 	set(h2, 'color', [1 0 0], 'linewidth', 2);
 	axis([x_rng(1) x_rng(2) axis_rng(3) axis_rng(4)]);
 	hold off;

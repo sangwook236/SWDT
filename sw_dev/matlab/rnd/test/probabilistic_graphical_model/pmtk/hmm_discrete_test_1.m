@@ -1,4 +1,7 @@
 %----------------------------------------------------------
+%run('D:\work_center\sw_dev\matlab\rnd\src\probabilistic_graphical_model\pmtk\pmtk3-1nov12\genpathPMTK.m');
+
+%----------------------------------------------------------
 % create HMM model
 
 A = [
