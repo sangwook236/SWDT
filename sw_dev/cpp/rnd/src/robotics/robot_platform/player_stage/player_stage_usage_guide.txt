@@ -1,0 +1,38 @@
+[-]
+	-. Stage's Github URI
+		http://github.com/rtv/Stage
+
+[-] Installation (Ubuntu)
+	-. Player/Stage
+		installation path:
+			/home/playerstage/
+		
+		exection:
+			export LD_LIBRARY_PATH=/home/playerstage/lib
+			player test.cfg
+		
+		reference:
+			http://www.control.aau.dk/~tb/wiki/index.php/Installing_Player_and_Stage_in_Ubuntu
+			http://playerstage.sourceforge.net/wiki/Getting_help
+			http://playerstage.sourceforge.net/wiki/Download
+				in Ubuntu 9.04
+					sudo apt-get install python-gdal netcdfg-dev libpq-dev libhdf4g-dev libgeos-dev libatk1.0-0 lib3ds-dev freeglut3-dev
+			
+			http://playerstage.sourceforge.net/doc/Player-2.1.0/player/index.html
+			http://playerstage.sourceforge.net/doc/Player-2.1.0/player/group__interfaces.html
+
+[-] Installation (Cygwin)
+	-. Stage
+		export PATH=/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin
+		export CMAKE_INCLUDE_PATH=/usr/local/include:/usr/include
+		export CMAKE_LIBRARY_PATH=/usr/local/lib:/usr/lib:/lib
+		export PKG_CONFIG_PATH+=<Player installation prefix>/lib/pkgconfig
+			e.g.) export PKG_CONFIG_PATH+=/cygdrive/c/Progra~1/Player/lib/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/lib/pkgconfig
+		pkg-config --modversion playercore
+		cd <Stage source path prefix>/build/gcc_cyg
+			e.g.) cd /cygdrive/d/work_sw_platform/robot_platform/player/Stage-3.2.0-Source/build/gcc_cyg
+		cmake -DCMAKE_INSTALL_PREFIX=<prefix>
+			e.g.) cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local/playerstage ../../
+		ccmake ../../
+		make
+		make install
