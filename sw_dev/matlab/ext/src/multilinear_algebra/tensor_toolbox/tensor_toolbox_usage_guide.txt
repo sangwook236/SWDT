@@ -1,0 +1,2 @@
+[-] manual
+	[ref] ${TENSOR_TOOLBOX_HOME}/tensor_toolbox_product_page.hmtl
