@@ -1,4 +1,4 @@
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 #include <vld/vld.h>
 #endif
 #include <iostream>
@@ -9,11 +9,11 @@
 int main(int argc, char *argv[])
 {
 	int gtest_main(int argc, char *argv[]);
-	
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		retval = gtest_main(argc, argv);  // not yet implemented
+		retval = gtest_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

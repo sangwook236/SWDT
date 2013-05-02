@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="test_framework" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../bin/test_framework" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../bin/test_framework" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="/usr/local/include" />
+		</Compiler>
+		<Linker>
+			<Add library="gtest_main" />
+			<Add library="gtest" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
+		<Unit filename="gtest/gtest_main.cpp" />
+		<Unit filename="gtest/gtest_sample1.cpp" />
+		<Unit filename="gtest/gtest_sample1.h" />
+		<Unit filename="gtest/gtest_sample1_unittest.cpp" />
+		<Unit filename="gtest/gtest_sample2.cpp" />
+		<Unit filename="gtest/gtest_sample2.h" />
+		<Unit filename="gtest/gtest_sample2_unittest.cpp" />
+		<Unit filename="gtest/gtest_sample3_inl.h" />
+		<Unit filename="gtest/gtest_sample3_unittest.cpp" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
