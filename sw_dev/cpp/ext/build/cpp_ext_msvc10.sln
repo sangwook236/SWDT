@@ -44,7 +44,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "networking", "..\test\netwo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stl", "..\test\stl\stl_mvsc10.vcxproj", "{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multilinear_algebra_msvc10", "..\test\multilinear_algebra\multilinear_algebra_msvc10.vcxproj", "{20FF0783-824B-4E04-93D0-B210150DF80F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multilinear_algebra", "..\test\multilinear_algebra\multilinear_algebra_msvc10.vcxproj", "{20FF0783-824B-4E04-93D0-B210150DF80F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_framework", "..\test\test_framework\test_framework_msvc10.vcxproj", "{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,6 +146,10 @@ Global
 		{20FF0783-824B-4E04-93D0-B210150DF80F}.Debug|Win32.Build.0 = Debug|Win32
 		{20FF0783-824B-4E04-93D0-B210150DF80F}.Release|Win32.ActiveCfg = Release|Win32
 		{20FF0783-824B-4E04-93D0-B210150DF80F}.Release|Win32.Build.0 = Release|Win32
+		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Debug|Win32.Build.0 = Debug|Win32
+		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Release|Win32.ActiveCfg = Release|Win32
+		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

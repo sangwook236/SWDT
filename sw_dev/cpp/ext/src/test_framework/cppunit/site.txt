@@ -1,0 +1,2 @@
+http://sourceforge.net/apps/mediawiki/cppunit/
+https://launchpad.net/cppunit2
