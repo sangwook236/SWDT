@@ -24,6 +24,8 @@ fprintf(1, ', %f (testing)\n', toc)
 matLabels = cell2mat(R{1}.labels);
 matLikelihoods = cell2mat(R{1}.ll);
 [R{1}.d R{1}.f] = CreateROC(matLabels, matLikelihoods(2,:), R{1}.params.rocRange);
+%target_class_label = 1;
+%[R{1}.d R{1}.f] = CreateROC_sangwook(matLabels, matLikelihoods(2,:), R{1}.params.rocRange, target_class_label);
 %--E [] 2013/01/21: Sang-Wook Lee
 
 %----------------------------------------------------------
@@ -42,6 +44,8 @@ fprintf(1, ', %f (testing)\n', toc)
 matLabels = cell2mat(R{2}.labels);
 matLikelihoods = cell2mat(R{2}.ll);
 [R{2}.d R{2}.f] = CreateROC(matLabels, matLikelihoods(2,:), R{2}.params.rocRange);
+%target_class_label = 1;
+%[R{2}.d R{2}.f] = CreateROC_sangwook(matLabels, matLikelihoods(2,:), R{2}.params.rocRange, target_class_label);
 %--E [] 2013/01/21: Sang-Wook Lee
 
 %----------------------------------------------------------
@@ -60,6 +64,8 @@ fprintf(1, ', %f (testing)\n', toc)
 matLabels = cell2mat(R{3}.labels);
 matLikelihoods = cell2mat(R{3}.ll);
 [R{3}.d R{3}.f] = CreateROC(matLabels, matLikelihoods(2,:), R{3}.params.rocRange);
+%target_class_label = 1;
+%[R{3}.d R{3}.f] = CreateROC_sangwook(matLabels, matLikelihoods(2,:), R{3}.params.rocRange, target_class_label);
 %--E [] 2013/01/21: Sang-Wook Lee
 
 %----------------------------------------------------------

@@ -1,4 +1,4 @@
-function [detect falsePos threshValue rawResults] = CreateROC(labels, ll, rangeThresh)
+function [detect falsePos threshValue rawResults] = CreateROC(labels, ll, rangeThresh, target_class_label)
 
 if iscell(ll) && numel(ll)>0
     if iscell(labels) && numel(labels)
@@ -21,10 +21,6 @@ if numel(rangeThresh) == 1
     inc = (maxValue - minValue)/abs(rangeThresh);
     rangeThresh = minValue:inc:maxValue;
 end
-
-%--S [] 2013/01/25: Sang-Wook Lee
-target_class_label = 1;
-%--E [] 2013/01/25: Sang-Wook Lee
 
 rawResults = zeros(numel(rangeThresh),4);
 for i=1:size(rangeThresh,2)

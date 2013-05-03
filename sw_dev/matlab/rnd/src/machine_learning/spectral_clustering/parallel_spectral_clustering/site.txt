@@ -1,2 +1,1 @@
 http://alumni.cs.ucsb.edu/~wychen/sc.html
-http://code.google.com/p/pspectralclustering/
