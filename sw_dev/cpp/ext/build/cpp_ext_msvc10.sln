@@ -48,6 +48,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multilinear_algebra", "..\t
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_framework", "..\test\test_framework\test_framework_msvc10.vcxproj", "{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "file_format", "..\test\file_format\file_format_msvc10.vcxproj", "{A79E411D-EFBB-446D-AD68-A6BBE13E764B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -150,6 +152,10 @@ Global
 		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Debug|Win32.Build.0 = Debug|Win32
 		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Release|Win32.ActiveCfg = Release|Win32
 		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Release|Win32.Build.0 = Release|Win32
+		{A79E411D-EFBB-446D-AD68-A6BBE13E764B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A79E411D-EFBB-446D-AD68-A6BBE13E764B}.Debug|Win32.Build.0 = Debug|Win32
+		{A79E411D-EFBB-446D-AD68-A6BBE13E764B}.Release|Win32.ActiveCfg = Release|Win32
+		{A79E411D-EFBB-446D-AD68-A6BBE13E764B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

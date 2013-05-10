@@ -17,7 +17,6 @@ void encryption_decryption();
 
 int sqlite_main(int argc, char *argv[])
 {
-	
 	my_sqlite::basic();
 	//my_sqlite::encryption_decryption();
 
