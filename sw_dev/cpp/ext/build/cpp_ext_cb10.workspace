@@ -7,6 +7,7 @@
 		<Project filename="../test/computational_geometry/computational_geometry_cb10.cbp" />
 		<Project filename="../test/cppunit/cppunit_cb10.cbp" />
 		<Project filename="../test/database/database_cb10.cbp" />
+		<Project filename="../test/file_format/file_format_cb10.cbp" active="1" />
 		<Project filename="../test/gpu_computation/gpu_computation_cb10.cbp" />
 		<Project filename="../test/graphics_2d/graphics_2d_cb10.cbp" />
 		<Project filename="../test/graphics_3d/graphics_3d_cb10.cbp" />
@@ -19,7 +20,7 @@
 		<Project filename="../test/scientific_computation/scientific_computation_cb10.cbp" />
 		<Project filename="../test/serialization/serialization_cb10.cbp" />
 		<Project filename="../test/stl/stl_cb10.cbp" />
-		<Project filename="../test/test_framework/test_framework_cb10.cbp" active="1" />
+		<Project filename="../test/test_framework/test_framework_cb10.cbp" />
 		<Project filename="../test/threading/threading_cb10.cbp" />
 		<Project filename="../test/visualization/visualization_cb10.cbp" />
 		<Project filename="../test/xml/xml_cb10.cbp" />
