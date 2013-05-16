@@ -4,6 +4,8 @@
 #include <CommDlg.h>
 #include <mmsystem.h>
 #include <strsafe.h>
+#include <iomanip>
+#include <ctime>
 #include <cassert>
 
 
@@ -50,8 +52,13 @@ enum _SV_RANGE
 //-------------------------------------------------------------------
 CKinectApp::CKinectApp()
 : m_hInstance(NULL),
-  m_bSaveFrames(true), FPS_(30), FRAME_SIZE_(640, 480), frame_(FRAME_SIZE_, CV_8UC3, cv::Scalar::all(0)),  //-- [] 2012/06/09: Sang-Wook Lee
-  recordType_(RECORD_COLOR_IMAGE)  //-- [] 2012/07/26: Sang-Wook Lee
+  m_bSaveAVI(false), m_bCaptureColorImage(false), m_bCaptureDepthImage(false), FPS_(30), FRAME_SIZE_(640, 480), frame_(FRAME_SIZE_, CV_8UC3, cv::Scalar::all(0)),  //-- [] 2012/06/09: Sang-Wook Lee
+  //--S [] 2013/05/16: Sang-Wook Lee
+  //recordType_(RECORD_COLOR_AVI | RECORD_DEPTH_AVI | RECORD_DEPTH_ASCII),
+  recordType_(RECORD_COLOR_AVI | RECORD_DEPTH_AVI),
+  saved_base_path_name_("."), saved_base_file_name_("kinect_"), saved_timestamp_(""), saved_depth_frame_id_(1),
+  m_bUseIRImageButNotRGBImage(true), m_bTurnInfraredEmitterOff(true), m_pTempIRBuffer(NULL)
+  //--E [] 2013/05/16: Sang-Wook Lee
 {
     ZeroMemory(m_szAppTitle, sizeof(m_szAppTitle));
     LoadString(m_hInstance, IDS_APP_TITLE, m_szAppTitle, _countof(m_szAppTitle));
@@ -62,8 +69,7 @@ CKinectApp::CKinectApp()
     // Init Direct2D
     D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pD2DFactory);
 
-	//--S [] 2012/07/26: Sang-Wook Lee
-	if (m_bSaveFrames)
+	//--S [] 2013/05/16: Sang-Wook Lee
 	{
 		TCHAR path[MAX_PATH] = { _T('\0'), };
 		GetCurrentDirectory(MAX_PATH, path);
@@ -75,10 +81,20 @@ CKinectApp::CKinectApp()
 		filepath = path;
 #endif
 
-		const std::string recordFilePath(std::string(filepath) + "\\kinect_record.avi");
+		saved_base_path_name_ = filepath;
+	}
+	//--E [] 2013/05/16: Sang-Wook Lee
+
+	//--S [] 2012/07/26: Sang-Wook Lee
+	if (m_bSaveAVI)
+	{
+		saved_timestamp_ = generateTimestamp();
+
+		const std::string recordFilePath(saved_base_path_name_ + '/' + saved_base_file_name_ + saved_timestamp_ + std::string(".avi"));
 		setUpRecording(recordFilePath);
 	}
 	//--E [] 2012/07/26
+
 }
 
 //-------------------------------------------------------------------
@@ -89,6 +105,11 @@ CKinectApp::~CKinectApp()
 	//--S [] 2012/07/26: Sang-Wook Lee
 	cleanUpRecording();
 	//--E [] 2012/07/26
+
+	//--S [] 2013/05/16: Sang-Wook Lee
+    delete [] m_pTempIRBuffer;
+    m_pTempIRBuffer = NULL;
+	//--E [] 2013/05/16: Sang-Wook Lee
 
 	// Clean up Direct2D
     SafeRelease(m_pD2DFactory);
@@ -306,11 +327,14 @@ LRESULT CALLBACK CKinectApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
                 switch (LOWORD(wParam))
                 {
 					//--S [] 2012/06/09: Sang-Wook Lee
-                    case IDC_SAVE_FRAMES:
+                    case IDC_CHK_SAVE_AVI:
                     {
-						const bool checked = IsDlgButtonChecked(m_hWnd, IDC_SAVE_FRAMES) == BST_CHECKED;
+						const bool checked = IsDlgButtonChecked(m_hWnd, IDC_CHK_SAVE_AVI) == BST_CHECKED;
                         if (checked)
                         {
+//--S [] 2013/05/16: Sang-Wook Lee
+#if 0
+//--E [] 2013/05/16: Sang-Wook Lee
 							saveFilePath_[0] = _T('\0');
                             if (OnFileSave(m_hWnd, ID_FILE_SAVE, 0, 0) == TRUE)
 							{
@@ -323,32 +347,57 @@ LRESULT CALLBACK CKinectApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
 								filepath = saveFilePath_;
 #endif
 								if (setUpRecording(filepath))
-									m_bSaveFrames = true;
+									m_bSaveAVI = true;
 								else
 								{
 									MessageBox(NULL, TEXT("file I/O failed to open"), TEXT("Creation Error"), MB_ICONSTOP);
-									m_bSaveFrames = false;
+									m_bSaveAVI = false;
 									cleanUpRecording();
 								}
 							}
 							else
 							{
-								m_bSaveFrames = false;
+								m_bSaveAVI = false;
 								cleanUpRecording();
 							}
+//--S [] 2013/05/16: Sang-Wook Lee
+#else
+							saved_timestamp_ = generateTimestamp();
 
-							if (checked != m_bSaveFrames)
-								CheckDlgButton(m_hWnd, IDC_SAVE_FRAMES, m_bSaveFrames ? BST_CHECKED : BST_UNCHECKED);
+							const std::string recordFilePath(saved_base_path_name_ + '/' + saved_base_file_name_ + saved_timestamp_ + std::string(".avi"));
+							if (setUpRecording(recordFilePath))
+								m_bSaveAVI = true;
+							else
+							{
+								MessageBox(NULL, TEXT("file I/O failed to open"), TEXT("Creation Error"), MB_ICONSTOP);
+								m_bSaveAVI = false;
+								cleanUpRecording();
+							}
+#endif
+//--E [] 2013/05/16: Sang-Wook Lee
+
+							if (checked != m_bSaveAVI)
+								CheckDlgButton(m_hWnd, IDC_CHK_SAVE_AVI, m_bSaveAVI ? BST_CHECKED : BST_UNCHECKED);
                         }
 						else
 						{
-							m_bSaveFrames = false;
+							m_bSaveAVI = false;
 							cleanUpRecording();
 						}
                     }
                     break;
 					//--E [] 2012/06/09
-                }
+
+					//--S [] 2013/05/16: Sang-Wook Lee
+                    case IDC_BTN_CAPTURE_IMAGE:
+                    {
+						saved_timestamp_ = generateTimestamp();
+
+						m_bCaptureColorImage = true;
+						m_bCaptureDepthImage = true;
+					}
+					//--E [] 2013/05/16: Sang-Wook Lee
+				}
             }
         }
         break;
@@ -376,25 +425,37 @@ LRESULT CALLBACK CKinectApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPA
 
 bool CKinectApp::setUpRecording(const std::string &filepath)
 {
-	const std::string video_filepath(filepath);
-	const std::string::size_type extPos = video_filepath.find_last_of('.');
-	const std::string depth_filepath(video_filepath.substr(0, extPos + 1) + std::string("depth"));;
-	const std::string skel_filepath(video_filepath.substr(0, extPos + 1) + std::string("skel"));;
+	const std::string color_video_filepath(filepath);
+	const std::string::size_type extPos = color_video_filepath.find_last_of('.');
+	const std::string depth_video_filepath(color_video_filepath.substr(0, extPos + 1) + std::string("depth.avi"));;
+	const std::string depth_ascii_filepath(color_video_filepath.substr(0, extPos + 1) + std::string("depth.ascii"));;
+	const std::string depth_bin_filepath(color_video_filepath.substr(0, extPos + 1) + std::string("depth.binary"));;
+	const std::string skel_bin_filepath(color_video_filepath.substr(0, extPos + 1) + std::string("skel.binary"));;
 
 	const bool isColor = true;
-	videoWriter_.reset(new cv::VideoWriter(video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, FRAME_SIZE_, isColor));
-	depthstream_.open(depth_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
-	skelstream_.open(skel_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
+#if 1
+	colorVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, FRAME_SIZE_, isColor));
+	depthVideoWriter_.reset(new cv::VideoWriter(depth_video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, FRAME_SIZE_, !isColor));
+#elif defined(_WIN32) || defined(WIN32)
+	colorVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC_PROMPT, FPS_, FRAME_SIZE_, isColor));
+	depthVideoWriter_.reset(new cv::VideoWriter(depth_video_filepath, CV_FOURCC_PROMPT, FPS_, FRAME_SIZE_, !isColor));
+#elif defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+	colorVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC_DEFAULT, FPS_, FRAME_SIZE_, isColor));
+	depthVideoWriter_.reset(new cv::VideoWriter(depth_video_filepath, CV_FOURCC_DEFAULT, FPS_, FRAME_SIZE_, !isColor));
+#endif
+	depthBinStream_.open(depth_bin_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
+	skelBinStream_.open(skel_bin_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
 	// TODO [add] >>
 
-	return videoWriter_->isOpened() && depthstream_ && skelstream_;
+	return colorVideoWriter_->isOpened() && depthVideoWriter_->isOpened() && depthBinStream_ && skelBinStream_;
 }
 
 void CKinectApp::cleanUpRecording()
 {
-	videoWriter_.reset();
-	depthstream_.close();
-	skelstream_.close();
+	colorVideoWriter_.reset();
+	depthVideoWriter_.reset();
+	depthBinStream_.close();
+	skelBinStream_.close();
 }
 
 //-------------------------------------------------------------------
@@ -444,6 +505,12 @@ void CKinectApp::Nui_Zero()
     m_SkeletonTrackingFlags = NUI_SKELETON_TRACKING_FLAG_ENABLE_IN_NEAR_RANGE;
     m_DepthStreamFlags = 0;
     ZeroMemory(m_StickySkeletonIds, sizeof(m_StickySkeletonIds));
+
+	//--S [] 2013/05/16: Sang-Wook Lee
+	m_hNextIRFrameEvent = NULL;
+	m_pIRStreamHandle = NULL;
+    m_pDrawIR = NULL;
+	//--E [] 2013/05/16: Sang-Wook Lee
 }
 
 void CALLBACK CKinectApp::Nui_StatusProcThunk(HRESULT hrStatus, const OLECHAR *instanceName, const OLECHAR *uniqueDeviceName, void *pUserData)
@@ -541,6 +608,9 @@ HRESULT CKinectApp::Nui_Init()
 
     m_hNextDepthFrameEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
     m_hNextColorFrameEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+	//--S [] 2013/05/16: Sang-Wook Lee
+    m_hNextIRFrameEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+	//--E [] 2013/05/16: Sang-Wook Lee
     m_hNextSkeletonEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 
     // reset the tracked skeletons, range, and tracking mode
@@ -564,13 +634,41 @@ HRESULT CKinectApp::Nui_Init()
         return E_FAIL;
     }
 
-    m_pDrawColor = new DrawDevice();
-    result = m_pDrawColor->Initialize(GetDlgItem(m_hWnd, IDC_VIDEOVIEW), m_pD2DFactory, 640, 480, 640 * 4);
-    if (!result)
-    {
-        MessageBoxResource(IDS_ERROR_DRAWDEVICE, MB_OK | MB_ICONHAND);
-        return E_FAIL;
-    }
+	//--S [] 2013/05/16: Sang-Wook Lee
+	if (m_bUseIRImageButNotRGBImage)
+	{
+		m_pDrawIR = new DrawDevice();
+		result = m_pDrawIR->Initialize(GetDlgItem(m_hWnd, IDC_IRVIEW), m_pD2DFactory, 640, 480, 640 * 4);
+		if (!result)
+		{
+			MessageBoxResource(IDS_ERROR_DRAWDEVICE, MB_OK | MB_ICONHAND);
+			return E_FAIL;
+		}
+
+		// FIXME [check] >> not correctly working when turning IR emitter off
+		//BOOL b1 = m_pNuiSensor->NuiGetForceInfraredEmitterOff();
+		HRESULT hr = m_pNuiSensor->NuiSetForceInfraredEmitterOff(m_bTurnInfraredEmitterOff ? TRUE : FALSE);
+		//BOOL b2 = m_pNuiSensor->NuiGetForceInfraredEmitterOff();
+		if (FAILED(hr))
+		{
+			MessageBox(m_hWnd, TEXT("NuiSetForceInfraredEmitterOff() error"), m_szAppTitle, MB_OK | MB_ICONHAND);
+			//return E_FAIL;
+		}
+	}
+	else
+	{
+	//--E [] 2013/05/16: Sang-Wook Lee
+		m_pDrawColor = new DrawDevice();
+		result = m_pDrawColor->Initialize(GetDlgItem(m_hWnd, IDC_VIDEOVIEW), m_pD2DFactory, 640, 480, 640 * 4);
+		if (!result)
+		{
+			MessageBoxResource(IDS_ERROR_DRAWDEVICE, MB_OK | MB_ICONHAND);
+			return E_FAIL;
+		}
+	//--S [] 2013/05/16: Sang-Wook Lee
+	}
+	//--E [] 2013/05/16: Sang-Wook Lee
+
     
     DWORD nuiFlags = NUI_INITIALIZE_FLAG_USES_DEPTH_AND_PLAYER_INDEX | NUI_INITIALIZE_FLAG_USES_SKELETON | NUI_INITIALIZE_FLAG_USES_COLOR;
     hr = m_pNuiSensor->NuiInitialize(nuiFlags);
@@ -602,21 +700,40 @@ HRESULT CKinectApp::Nui_Init()
         }
     }
 
-    hr = m_pNuiSensor->NuiImageStreamOpen(
-        NUI_IMAGE_TYPE_COLOR,
-        NUI_IMAGE_RESOLUTION_640x480,
-        0,
-        2,
-        m_hNextColorFrameEvent,
-        &m_pVideoStreamHandle
-	);
-    if (FAILED(hr))
-    {
-        MessageBoxResource(IDS_ERROR_VIDEOSTREAM, MB_OK | MB_ICONHAND);
-        return hr;
-    }
+	//--S [] 2013/05/16: Sang-Wook Lee
+	if (m_bUseIRImageButNotRGBImage)
+	{
+		// Open a color image stream to receive color frames
+		hr = m_pNuiSensor->NuiImageStreamOpen(
+			NUI_IMAGE_TYPE_COLOR_INFRARED,
+			NUI_IMAGE_RESOLUTION_640x480,
+			0,
+			2,
+			m_hNextIRFrameEvent,
+			&m_pIRStreamHandle
+		);
+	}
+	else
+	{
+	//--E [] 2013/05/16: Sang-Wook Lee
+		hr = m_pNuiSensor->NuiImageStreamOpen(
+			NUI_IMAGE_TYPE_COLOR,
+			NUI_IMAGE_RESOLUTION_640x480,
+			0,
+			2,
+			m_hNextColorFrameEvent,
+			&m_pVideoStreamHandle
+		);
+		if (FAILED(hr))
+		{
+			MessageBoxResource(IDS_ERROR_VIDEOSTREAM, MB_OK | MB_ICONHAND);
+			return hr;
+		}
+	//--S [] 2013/05/16: Sang-Wook Lee
+	}
+	//--E [] 2013/05/16: Sang-Wook Lee
 
-    hr = m_pNuiSensor->NuiImageStreamOpen(
+	hr = m_pNuiSensor->NuiImageStreamOpen(
         HasSkeletalEngine(m_pNuiSensor) ? NUI_IMAGE_TYPE_DEPTH_AND_PLAYER_INDEX : NUI_IMAGE_TYPE_DEPTH,
 #if __USE_DEPTH_IMAGE_320x240
 		NUI_IMAGE_RESOLUTION_320x240,
@@ -692,6 +809,17 @@ void CKinectApp::Nui_UnInit()
     delete m_pDrawColor;
     m_pDrawColor = NULL;    
 
+	//--S [] 2013/05/16: Sang-Wook Lee
+    if (m_hNextIRFrameEvent && (m_hNextIRFrameEvent != INVALID_HANDLE_VALUE))
+    {
+        CloseHandle(m_hNextIRFrameEvent);
+        m_hNextIRFrameEvent = NULL;
+    }
+
+	delete m_pDrawIR;
+    m_pDrawIR = NULL;    
+	//--E [] 2013/05/16: Sang-Wook Lee
+
     DiscardDirect2DResources();
 }
 
@@ -708,8 +836,8 @@ DWORD WINAPI CKinectApp::Nui_ProcessThread(LPVOID pParam)
 //-------------------------------------------------------------------
 DWORD WINAPI CKinectApp::Nui_ProcessThread()
 {
-    const int numEvents = 4;
-    HANDLE hEvents[numEvents] = { m_hEvNuiProcessStop, m_hNextDepthFrameEvent, m_hNextColorFrameEvent, m_hNextSkeletonEvent };
+    const int numEvents = 5;
+    HANDLE hEvents[numEvents] = { m_hEvNuiProcessStop, m_hNextDepthFrameEvent, m_hNextColorFrameEvent, m_hNextIRFrameEvent, m_hNextSkeletonEvent };
     int nEventIdx;
     DWORD t;
 
@@ -750,6 +878,11 @@ DWORD WINAPI CKinectApp::Nui_ProcessThread()
         if (WAIT_OBJECT_0 == WaitForSingleObject(m_hNextColorFrameEvent, 0))
             Nui_GotColorAlert();
 
+		//--S [] 2013/05/16: Sang-Wook Lee
+        if (WAIT_OBJECT_0 == WaitForSingleObject(m_hNextIRFrameEvent, 0))
+            Nui_GotIRAlert();
+		//--E [] 2013/05/16: Sang-Wook Lee
+
         if ( WAIT_OBJECT_0 == WaitForSingleObject(m_hNextSkeletonEvent, 0))
             Nui_GotSkeletonAlert();
 
@@ -778,7 +911,7 @@ DWORD WINAPI CKinectApp::Nui_ProcessThread()
 }
 
 //-------------------------------------------------------------------
-// Nui_GotDepthAlert
+// Nui_GotColorAlert
 //
 // Handle new color data
 //-------------------------------------------------------------------
@@ -800,12 +933,12 @@ bool CKinectApp::Nui_GotColorAlert()
         m_pDrawColor->Draw(static_cast<BYTE *>(LockedRect.pBits), LockedRect.size);
 
 		//--S [] 2012/06/09: Sang-Wook Lee
-		if (m_bSaveFrames && videoWriter_ && RECORD_COLOR_IMAGE == (RECORD_COLOR_IMAGE & recordType_))
+		if (m_bSaveAVI && colorVideoWriter_ && RECORD_COLOR_AVI == (RECORD_COLOR_AVI & recordType_))
 		{
 #if 1
 			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(LockedRect.pBits));
 			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
-			*videoWriter_ << frame_;
+			*colorVideoWriter_ << frame_;
 
 			OutputDebugString(_T("."));
 #else
@@ -818,14 +951,26 @@ bool CKinectApp::Nui_GotColorAlert()
 			IplImage *frameBGR = cvCreateImage(cvSize(FRAME_SIZE_.width, FRAME_SIZE_.height), IPL_DEPTH_8U, 3);
 
 			cvCvtColor(frameBGRA, frameBGR, CV_BGRA2BGR);
-			*videoWriter_ << cv::Mat(frameBGR);
+			*colorVideoWriter_ << cv::Mat(frameBGR);
 			
 			cvReleaseImage(&frameBGR);
 			cvReleaseImage(&frameBGRA);
 #endif
 		}
 		//--E [] 2012/06/09
-    }
+
+		//--S [] 2013/05/16: Sang-Wook Lee
+		if (m_bCaptureColorImage)
+		{
+			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(LockedRect.pBits));
+			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
+			const std::string recordFilePath(saved_base_path_name_ + '/' + saved_base_file_name_ + std::string("color_") + saved_timestamp_ + std::string(".png"));
+			cv::imwrite(recordFilePath, frame_);
+
+			m_bCaptureColorImage = false;
+		}
+		//--E [] 2013/05/16: Sang-Wook Lee
+	}
     else
     {
         OutputDebugString(L"Buffer length of received texture is bogus\r\n");
@@ -838,6 +983,93 @@ bool CKinectApp::Nui_GotColorAlert()
 
     return processedFrame;
 }
+
+//--S [] 2013/05/16: Sang-Wook Lee
+//-------------------------------------------------------------------
+// Nui_GotIRAlert
+//
+// Handle new IR data
+//-------------------------------------------------------------------
+
+// [ref] ${KINECT_HOME}/developer toolkit v1.7.0/samples/c++/infraredbasics-d2d/infraredbasics.cpp
+bool CKinectApp::Nui_GotIRAlert()
+{
+	// Attempt to get the IR frame
+	NUI_IMAGE_FRAME imageFrame;
+	HRESULT hr = m_pNuiSensor->NuiImageStreamGetNextFrame(m_pIRStreamHandle, 0, &imageFrame);
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	INuiFrameTexture *pTexture = imageFrame.pFrameTexture;
+	NUI_LOCKED_RECT LockedRect;
+
+	// Lock the frame data so the Kinect knows not to modify it while we're reading it
+	pTexture->LockRect(0, &LockedRect, NULL, 0);
+
+	// Make sure we've received valid data
+    bool processedFrame = true;
+	if (0 != LockedRect.Pitch)
+	{
+        DWORD frameWidth, frameHeight;
+        NuiImageResolutionToSize(imageFrame.eResolution, frameWidth, frameHeight);
+        
+		if (NULL == m_pTempIRBuffer)
+		{
+			m_pTempIRBuffer = new RGBQUAD[frameWidth * frameHeight];
+		}
+
+		for (int i = 0; i < frameWidth * frameHeight; ++i)
+		{
+			BYTE intensity = reinterpret_cast<USHORT *>(LockedRect.pBits)[i] >> 8;
+
+			RGBQUAD *pQuad = &m_pTempIRBuffer[i];
+			pQuad->rgbBlue = intensity;
+			pQuad->rgbGreen = intensity;
+			pQuad->rgbRed = intensity;
+			pQuad->rgbReserved = 255;
+		}
+
+		// Draw the data with Direct2D
+		m_pDrawIR->Draw(reinterpret_cast<BYTE *>(m_pTempIRBuffer), frameWidth * frameHeight * sizeof(RGBQUAD));
+
+		//--S [] 2013/05/16: Sang-Wook Lee
+		if (m_bSaveAVI && colorVideoWriter_ && RECORD_COLOR_AVI == (RECORD_COLOR_AVI & recordType_))
+		{
+			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(m_pTempIRBuffer));
+			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
+			*colorVideoWriter_ << frame_;
+
+			OutputDebugString(_T("."));
+		}
+
+		if (m_bCaptureColorImage)
+		{
+			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(m_pTempIRBuffer));
+			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
+			const std::string recordFilePath(saved_base_path_name_ + '/' + saved_base_file_name_ + std::string("ir_") + saved_timestamp_ + std::string(".png"));
+			cv::imwrite(recordFilePath, frame_);
+
+			m_bCaptureColorImage = false;
+		}
+		//--E [] 2013/05/16: Sang-Wook Lee
+	}
+    else
+    {
+        OutputDebugString(L"Buffer length of received texture is bogus\r\n");
+        processedFrame = false;
+    }
+
+	// We're done with the texture so unlock it
+	pTexture->UnlockRect(0);
+
+	// Release the frame
+	m_pNuiSensor->NuiImageStreamReleaseFrame(m_pIRStreamHandle, &imageFrame);
+
+    return processedFrame;
+}
+//--E [] 2013/05/16: Sang-Wook Lee
 
 //-------------------------------------------------------------------
 // Nui_GotDepthAlert
@@ -861,7 +1093,7 @@ bool CKinectApp::Nui_GotDepthAlert()
     {
         DWORD frameWidth, frameHeight;
         NuiImageResolutionToSize(imageFrame.eResolution, frameWidth, frameHeight);
-        
+
         // draw the bits to the bitmap
         BYTE *rgbrun = m_depthRGBX;
         const USHORT *pBufferRun = (const USHORT *)LockedRect.pBits;
@@ -870,6 +1102,11 @@ bool CKinectApp::Nui_GotDepthAlert()
 
         assert(frameWidth * frameHeight * g_BytesPerPixel <= ARRAYSIZE(m_depthRGBX));
 
+		//--S [] 2013/05/14: Sang-Wook Lee
+		std::vector<unsigned short> depthFrame;
+		depthFrame.reserve(frameWidth * frameHeight);
+		//--E [] 2013/05/14: Sang-Wook Lee
+
 		// for display
         while (pBufferRun < pBufferEnd)
         {
@@ -877,7 +1114,11 @@ bool CKinectApp::Nui_GotDepthAlert()
             USHORT realDepth = NuiDepthPixelToDepth(depth);
             USHORT player = NuiDepthPixelToPlayerIndex(depth);
 
-            // transform 13-bit depth information into an 8-bit intensity appropriate
+			//--S [] 2013/05/14: Sang-Wook Lee
+			depthFrame.push_back(realDepth);
+			//--E [] 2013/05/14: Sang-Wook Lee
+
+			// transform 13-bit depth information into an 8-bit intensity appropriate
             // for display (we disregard information in most significant bit)
             BYTE intensity = static_cast<BYTE>(~(realDepth >> 4));
 
@@ -894,12 +1135,74 @@ bool CKinectApp::Nui_GotDepthAlert()
 
         m_pDrawDepth->Draw(m_depthRGBX, frameWidth * frameHeight * g_BytesPerPixel);
 
-		//--S [] 2012/06/09: Sang-Wook Lee
-		if (m_bSaveFrames && depthstream_ && RECORD_DEPTH_IMAGE == (RECORD_DEPTH_IMAGE & recordType_))
+		//--S [] 2013/05/14: Sang-Wook Lee
+		if (m_bSaveAVI && depthVideoWriter_ && RECORD_DEPTH_AVI == (RECORD_DEPTH_AVI & recordType_))
 		{
-			depthstream_.write(reinterpret_cast<char *>(LockedRect.pBits), sizeof(USHORT) * frameWidth * frameHeight);
+			try
+			{
+				// FIXME [modify] >> Caution !!!
+				//	depth data are lossy
+				//	depth data have to be converted: unsigned short -> unsigned char
+
+				//const cv::Mat frameD(FRAME_SIZE_, CV_16UC1, static_cast<void *>(&depthFrame[0]));
+				const cv::Mat frameD(FRAME_SIZE_, CV_8UC1, static_cast<void *>(&depthFrame[0]));
+				*depthVideoWriter_ << frameD;  // run-time error: depth must be 8
+			}
+			catch (const cv::Exception &e)
+			{
+				std::ostringstream sstrm;
+				//sstrm << "OpenCV exception caught: " << e.what() << std::endl;
+				//sstrm << "OpenCV exception caught: " << cvErrorStr(e.code) << std::endl;
+				sstrm << "OpenCV exception caught:" << std::endl
+					<< "\tdescription: " << e.err << std::endl
+					<< "\tline:        " << e.line << std::endl
+					<< "\tfunction:    " << e.func << std::endl
+					<< "\tfile:        " << e.file << std::endl;
+
+				OutputDebugStringA(sstrm.str().c_str());
+			}
+
+			OutputDebugString(_T("."));
+		}
+
+		if (m_bSaveAVI && RECORD_DEPTH_ASCII == (RECORD_DEPTH_ASCII & recordType_))
+		{
+			std::ostringstream sstrm;
+			sstrm << saved_base_path_name_ << '/' << saved_base_file_name_ << "depth_" << std::setfill('0') << std::setw(3) << saved_depth_frame_id_ << '_' << saved_timestamp_ << ".txt";
+
+			std::ofstream stream(sstrm.str().c_str(), std::ios::trunc | std::ios::out);
+			if (stream)
+			{
+				//const cv::Mat frameD(FRAME_SIZE_, CV_16UC1, static_cast<void *>(LockedRect.pBits));
+				const cv::Mat frameD(FRAME_SIZE_, CV_16UC1, static_cast<void *>(&depthFrame[0]));
+
+				stream << frameD << std::endl;
+
+				stream.close();
+
+				++saved_depth_frame_id_;
+			}
+		}
+		//--E [] 2013/05/14: Sang-Wook Lee
+
+		//--S [] 2012/06/09: Sang-Wook Lee
+		if (m_bSaveAVI && depthBinStream_ && RECORD_DEPTH_BINARY == (RECORD_DEPTH_BINARY & recordType_))
+		{
+			//depthBinStream_.write(reinterpret_cast<char *>(LockedRect.pBits), sizeof(USHORT) * frameWidth * frameHeight);
+			depthBinStream_.write(reinterpret_cast<char *>(&depthFrame[0]), sizeof(unsigned short) * frameWidth * frameHeight);
 		}
 		//--E [] 2012/06/09
+
+		//--S [] 2013/05/16: Sang-Wook Lee
+		if (m_bCaptureDepthImage)
+		{
+			const cv::Mat frameD(FRAME_SIZE_, CV_16UC1, static_cast<void *>(&depthFrame[0]));
+			const std::string recordFilePath(saved_base_path_name_ + '/' + saved_base_file_name_ + std::string("depth_") + saved_timestamp_ + std::string(".png"));
+			cv::imwrite(recordFilePath, frameD);
+
+			m_bCaptureDepthImage = false;
+		}
+		//--E [] 2013/05/16: Sang-Wook Lee
     }
     else
     {
@@ -1445,3 +1748,16 @@ LRESULT CALLBACK CKinectApp::OnFileSave(HWND hWnd, UINT message, WPARAM wParam, 
 	else return FALSE;
 }
 //--E [] 2012/06/09
+
+//--S [] 2013/05/16: Sang-Wook Lee
+std::string CKinectApp::generateTimestamp() const
+{
+	time_t rawtime;
+	std::time(&rawtime);
+	struct tm *timeinfo = std::localtime(&rawtime);
+	char buffer[80] = { '\0', };
+	std::strftime(buffer, 80, "%Y%m%dT%H%M%S", timeinfo);
+
+	return std::string(buffer);
+}
+//--E [] 2013/05/16: Sang-Wook Lee

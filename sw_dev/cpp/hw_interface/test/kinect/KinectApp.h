@@ -75,6 +75,13 @@ public:
     /// </summary>
     /// <returns>true if a frame was processed, false otherwise</returns>
     bool Nui_GotColorAlert();
+	//--S [] 2013/05/16: Sang-Wook Lee
+    /// <summary>
+    /// Handle new IR data
+    /// </summary>
+    /// <returns>true if a frame was processed, false otherwise</returns>
+    bool Nui_GotIRAlert();
+	//--E [] 2013/05/16: Sang-Wook Lee
     /// <summary>
     /// Handle new skeleton data
     /// </summary>
@@ -219,24 +226,33 @@ private:
     /// <returns>always 0</returns>
     DWORD WINAPI Nui_ProcessThread();
 
+	//--S [] 2013/05/16: Sang-Wook Lee
+	std::string generateTimestamp() const;
+	//--E [] 2013/05/16: Sang-Wook Lee
+
 private:
     bool m_fUpdatingUi;
     TCHAR m_szAppTitle[256];  // Application title
 
 	//--S [] 2012/06/09: Sang-Wook Lee
-    bool m_bSaveFrames;
+    bool m_bSaveAVI;
+    bool m_bCaptureColorImage, m_bCaptureDepthImage;
 	const double FPS_;
 	const cv::Size FRAME_SIZE_;
 	TCHAR saveFilePath_[MAX_PATH];
-	boost::scoped_ptr<cv::VideoWriter> videoWriter_;
-	std::ofstream depthstream_;
-	std::ofstream skelstream_;
+	boost::scoped_ptr<cv::VideoWriter> colorVideoWriter_;
+	boost::scoped_ptr<cv::VideoWriter> depthVideoWriter_;
+	std::ofstream depthBinStream_;
+	std::ofstream skelBinStream_;
 	cv::Mat frame_;
+	std::string saved_base_path_name_, saved_timestamp_;
+	const std::string saved_base_file_name_;
+	std::size_t saved_depth_frame_id_;
 	//--E [] 2012/06/09
 
 	//--S [] 2012/07/26: Sang-Wook Lee
 	enum {
-		RECORD_COLOR_IMAGE = 0x01, RECORD_DEPTH_IMAGE = 0x02, RECORD_SKELETON_INFO = 0x04
+		RECORD_COLOR_AVI = 0x01, RECORD_DEPTH_AVI = 0x02, RECORD_DEPTH_ASCII = 0x04, RECORD_DEPTH_BINARY = 0x08, RECORD_SKELETON_BINARY = 0x10
 	};
 	const int recordType_;
 
@@ -270,6 +286,16 @@ private:
     HANDLE m_hNextSkeletonEvent;
     HANDLE m_pDepthStreamHandle;
     HANDLE m_pVideoStreamHandle;
+
+	//--S [] 2013/05/16: Sang-Wook Lee
+    DrawDevice *m_pDrawIR;
+    HANDLE m_hNextIRFrameEvent;
+    HANDLE m_pIRStreamHandle;
+
+	const bool m_bUseIRImageButNotRGBImage;
+	const bool m_bTurnInfraredEmitterOff;
+    RGBQUAD *m_pTempIRBuffer;
+	//--E [] 2013/05/16: Sang-Wook Lee
 
     HFONT m_hFontFPS;
     BYTE m_depthRGBX[640*480*4];
