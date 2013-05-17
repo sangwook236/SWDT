@@ -71,10 +71,10 @@ public:
     /// <returns>true if a frame was processed, false otherwise</returns>
     bool Nui_GotDepthAlert();
     /// <summary>
-    /// Handle new color data
+    /// Handle new RGBA data
     /// </summary>
     /// <returns>true if a frame was processed, false otherwise</returns>
-    bool Nui_GotColorAlert();
+    bool Nui_GotRGBAAlert();
 	//--S [] 2013/05/16: Sang-Wook Lee
     /// <summary>
     /// Handle new IR data
@@ -240,7 +240,7 @@ private:
 	const double FPS_;
 	const cv::Size FRAME_SIZE_;
 	TCHAR saveFilePath_[MAX_PATH];
-	boost::scoped_ptr<cv::VideoWriter> colorVideoWriter_;
+	boost::scoped_ptr<cv::VideoWriter> rgbaVideoWriter_;
 	boost::scoped_ptr<cv::VideoWriter> depthVideoWriter_;
 	std::ofstream depthBinStream_;
 	std::ofstream skelBinStream_;
@@ -274,7 +274,7 @@ private:
 
     // Draw devices
     DrawDevice *m_pDrawDepth;
-    DrawDevice *m_pDrawColor;
+    DrawDevice *m_pDrawRGBA;
     ID2D1Factory *m_pD2DFactory;
 
     // thread handling
@@ -282,17 +282,18 @@ private:
     HANDLE m_hEvNuiProcessStop;
     
     HANDLE m_hNextDepthFrameEvent;
-    HANDLE m_hNextColorFrameEvent;
+    HANDLE m_hNextRGBAFrameEvent;
     HANDLE m_hNextSkeletonEvent;
-    HANDLE m_pDepthStreamHandle;
-    HANDLE m_pVideoStreamHandle;
+
+	HANDLE m_pDepthStreamHandle;
+    HANDLE m_pRGBAStreamHandle;
 
 	//--S [] 2013/05/16: Sang-Wook Lee
     DrawDevice *m_pDrawIR;
     HANDLE m_hNextIRFrameEvent;
     HANDLE m_pIRStreamHandle;
 
-	const bool m_bUseIRImageButNotRGBImage;
+	const bool m_bUseIRImageInsteadOfRGBAImage;
 	const bool m_bTurnInfraredEmitterOff;
     RGBQUAD *m_pTempIRBuffer;
 	//--E [] 2013/05/16: Sang-Wook Lee

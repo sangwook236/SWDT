@@ -57,7 +57,7 @@ CKinectApp::CKinectApp()
   //recordType_(RECORD_COLOR_AVI | RECORD_DEPTH_AVI | RECORD_DEPTH_ASCII),
   recordType_(RECORD_COLOR_AVI | RECORD_DEPTH_AVI),
   saved_base_path_name_("."), saved_base_file_name_("kinect_"), saved_timestamp_(""), saved_depth_frame_id_(1),
-  m_bUseIRImageButNotRGBImage(true), m_bTurnInfraredEmitterOff(true), m_pTempIRBuffer(NULL)
+  m_bUseIRImageInsteadOfRGBAImage(false), m_bTurnInfraredEmitterOff(false), m_pTempIRBuffer(NULL)
   //--E [] 2013/05/16: Sang-Wook Lee
 {
     ZeroMemory(m_szAppTitle, sizeof(m_szAppTitle));
@@ -434,25 +434,25 @@ bool CKinectApp::setUpRecording(const std::string &filepath)
 
 	const bool isColor = true;
 #if 1
-	colorVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, FRAME_SIZE_, isColor));
+	rgbaVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, FRAME_SIZE_, isColor));
 	depthVideoWriter_.reset(new cv::VideoWriter(depth_video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, FRAME_SIZE_, !isColor));
 #elif defined(_WIN32) || defined(WIN32)
-	colorVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC_PROMPT, FPS_, FRAME_SIZE_, isColor));
+	rgbaVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC_PROMPT, FPS_, FRAME_SIZE_, isColor));
 	depthVideoWriter_.reset(new cv::VideoWriter(depth_video_filepath, CV_FOURCC_PROMPT, FPS_, FRAME_SIZE_, !isColor));
 #elif defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-	colorVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC_DEFAULT, FPS_, FRAME_SIZE_, isColor));
+	rgbaVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC_DEFAULT, FPS_, FRAME_SIZE_, isColor));
 	depthVideoWriter_.reset(new cv::VideoWriter(depth_video_filepath, CV_FOURCC_DEFAULT, FPS_, FRAME_SIZE_, !isColor));
 #endif
 	depthBinStream_.open(depth_bin_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
 	skelBinStream_.open(skel_bin_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
 	// TODO [add] >>
 
-	return colorVideoWriter_->isOpened() && depthVideoWriter_->isOpened() && depthBinStream_ && skelBinStream_;
+	return rgbaVideoWriter_->isOpened() && depthVideoWriter_->isOpened() && depthBinStream_ && skelBinStream_;
 }
 
 void CKinectApp::cleanUpRecording()
 {
-	colorVideoWriter_.reset();
+	rgbaVideoWriter_.reset();
 	depthVideoWriter_.reset();
 	depthBinStream_.close();
 	skelBinStream_.close();
@@ -488,10 +488,10 @@ void CKinectApp::Nui_Zero()
     ZeroMemory(m_Points, sizeof(m_Points));
 
     m_hNextDepthFrameEvent = NULL;
-    m_hNextColorFrameEvent = NULL;
+    m_hNextRGBAFrameEvent = NULL;
     m_hNextSkeletonEvent = NULL;
     m_pDepthStreamHandle = NULL;
-    m_pVideoStreamHandle = NULL;
+    m_pRGBAStreamHandle = NULL;
     m_hThNuiProcess = NULL;
     m_hEvNuiProcessStop = NULL;
     m_LastSkeletonFoundTime = 0;
@@ -500,7 +500,7 @@ void CKinectApp::Nui_Zero()
     m_LastDepthFPStime = 0;
     m_LastDepthFramesTotal = 0;
     m_pDrawDepth = NULL;
-    m_pDrawColor = NULL;
+    m_pDrawRGBA = NULL;
     m_TrackedSkeletons = 0;
     m_SkeletonTrackingFlags = NUI_SKELETON_TRACKING_FLAG_ENABLE_IN_NEAR_RANGE;
     m_DepthStreamFlags = 0;
@@ -607,7 +607,7 @@ HRESULT CKinectApp::Nui_Init()
     }
 
     m_hNextDepthFrameEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-    m_hNextColorFrameEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+    m_hNextRGBAFrameEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 	//--S [] 2013/05/16: Sang-Wook Lee
     m_hNextIRFrameEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 	//--E [] 2013/05/16: Sang-Wook Lee
@@ -635,7 +635,7 @@ HRESULT CKinectApp::Nui_Init()
     }
 
 	//--S [] 2013/05/16: Sang-Wook Lee
-	if (m_bUseIRImageButNotRGBImage)
+	if (m_bUseIRImageInsteadOfRGBAImage)
 	{
 		m_pDrawIR = new DrawDevice();
 		result = m_pDrawIR->Initialize(GetDlgItem(m_hWnd, IDC_IRVIEW), m_pD2DFactory, 640, 480, 640 * 4);
@@ -658,8 +658,8 @@ HRESULT CKinectApp::Nui_Init()
 	else
 	{
 	//--E [] 2013/05/16: Sang-Wook Lee
-		m_pDrawColor = new DrawDevice();
-		result = m_pDrawColor->Initialize(GetDlgItem(m_hWnd, IDC_VIDEOVIEW), m_pD2DFactory, 640, 480, 640 * 4);
+		m_pDrawRGBA = new DrawDevice();
+		result = m_pDrawRGBA->Initialize(GetDlgItem(m_hWnd, IDC_RGBAVIEW), m_pD2DFactory, 640, 480, 640 * 4);
 		if (!result)
 		{
 			MessageBoxResource(IDS_ERROR_DRAWDEVICE, MB_OK | MB_ICONHAND);
@@ -701,7 +701,8 @@ HRESULT CKinectApp::Nui_Init()
     }
 
 	//--S [] 2013/05/16: Sang-Wook Lee
-	if (m_bUseIRImageButNotRGBImage)
+	// TODO [check] >> Currently, you cannot have both the RGB image and the IR image.
+	if (m_bUseIRImageInsteadOfRGBAImage)
 	{
 		// Open a color image stream to receive color frames
 		hr = m_pNuiSensor->NuiImageStreamOpen(
@@ -721,8 +722,8 @@ HRESULT CKinectApp::Nui_Init()
 			NUI_IMAGE_RESOLUTION_640x480,
 			0,
 			2,
-			m_hNextColorFrameEvent,
-			&m_pVideoStreamHandle
+			m_hNextRGBAFrameEvent,
+			&m_pRGBAStreamHandle
 		);
 		if (FAILED(hr))
 		{
@@ -784,20 +785,20 @@ void CKinectApp::Nui_UnInit()
     {
         m_pNuiSensor->NuiShutdown();
     }
-    if (m_hNextSkeletonEvent && (m_hNextSkeletonEvent != INVALID_HANDLE_VALUE))
+    if (m_hNextSkeletonEvent && (INVALID_HANDLE_VALUE != m_hNextSkeletonEvent))
     {
         CloseHandle(m_hNextSkeletonEvent);
         m_hNextSkeletonEvent = NULL;
     }
-    if (m_hNextDepthFrameEvent && (m_hNextDepthFrameEvent != INVALID_HANDLE_VALUE))
+    if (m_hNextDepthFrameEvent && (INVALID_HANDLE_VALUE != m_hNextDepthFrameEvent))
     {
         CloseHandle(m_hNextDepthFrameEvent);
         m_hNextDepthFrameEvent = NULL;
     }
-    if (m_hNextColorFrameEvent && (m_hNextColorFrameEvent != INVALID_HANDLE_VALUE))
+    if (m_hNextRGBAFrameEvent && (INVALID_HANDLE_VALUE != m_hNextRGBAFrameEvent))
     {
-        CloseHandle(m_hNextColorFrameEvent);
-        m_hNextColorFrameEvent = NULL;
+        CloseHandle(m_hNextRGBAFrameEvent);
+        m_hNextRGBAFrameEvent = NULL;
     }
 
     SafeRelease(m_pNuiSensor);
@@ -806,11 +807,11 @@ void CKinectApp::Nui_UnInit()
     delete m_pDrawDepth;
     m_pDrawDepth = NULL;
 
-    delete m_pDrawColor;
-    m_pDrawColor = NULL;    
+    delete m_pDrawRGBA;
+    m_pDrawRGBA = NULL;    
 
 	//--S [] 2013/05/16: Sang-Wook Lee
-    if (m_hNextIRFrameEvent && (m_hNextIRFrameEvent != INVALID_HANDLE_VALUE))
+    if (m_hNextIRFrameEvent && (INVALID_HANDLE_VALUE != m_hNextIRFrameEvent))
     {
         CloseHandle(m_hNextIRFrameEvent);
         m_hNextIRFrameEvent = NULL;
@@ -837,7 +838,7 @@ DWORD WINAPI CKinectApp::Nui_ProcessThread(LPVOID pParam)
 DWORD WINAPI CKinectApp::Nui_ProcessThread()
 {
     const int numEvents = 5;
-    HANDLE hEvents[numEvents] = { m_hEvNuiProcessStop, m_hNextDepthFrameEvent, m_hNextColorFrameEvent, m_hNextIRFrameEvent, m_hNextSkeletonEvent };
+    HANDLE hEvents[numEvents] = { m_hEvNuiProcessStop, m_hNextDepthFrameEvent, m_hNextRGBAFrameEvent, m_hNextIRFrameEvent, m_hNextSkeletonEvent };
     int nEventIdx;
     DWORD t;
 
@@ -875,8 +876,8 @@ DWORD WINAPI CKinectApp::Nui_ProcessThread()
                 ++m_DepthFramesTotal;
         }
 
-        if (WAIT_OBJECT_0 == WaitForSingleObject(m_hNextColorFrameEvent, 0))
-            Nui_GotColorAlert();
+        if (WAIT_OBJECT_0 == WaitForSingleObject(m_hNextRGBAFrameEvent, 0))
+            Nui_GotRGBAAlert();
 
 		//--S [] 2013/05/16: Sang-Wook Lee
         if (WAIT_OBJECT_0 == WaitForSingleObject(m_hNextIRFrameEvent, 0))
@@ -911,14 +912,14 @@ DWORD WINAPI CKinectApp::Nui_ProcessThread()
 }
 
 //-------------------------------------------------------------------
-// Nui_GotColorAlert
+// Nui_GotRGBAAlert
 //
 // Handle new color data
 //-------------------------------------------------------------------
-bool CKinectApp::Nui_GotColorAlert()
+bool CKinectApp::Nui_GotRGBAAlert()
 {
     NUI_IMAGE_FRAME imageFrame;
-    HRESULT hr = m_pNuiSensor->NuiImageStreamGetNextFrame(m_pVideoStreamHandle, 0, &imageFrame);
+    HRESULT hr = m_pNuiSensor->NuiImageStreamGetNextFrame(m_pRGBAStreamHandle, 0, &imageFrame);
     if (FAILED(hr))
     {
         return false;
@@ -930,15 +931,15 @@ bool CKinectApp::Nui_GotColorAlert()
     pTexture->LockRect(0, &LockedRect, NULL, 0);
     if (0 != LockedRect.Pitch)
     {
-        m_pDrawColor->Draw(static_cast<BYTE *>(LockedRect.pBits), LockedRect.size);
+        m_pDrawRGBA->Draw(static_cast<BYTE *>(LockedRect.pBits), LockedRect.size);
 
 		//--S [] 2012/06/09: Sang-Wook Lee
-		if (m_bSaveAVI && colorVideoWriter_ && RECORD_COLOR_AVI == (RECORD_COLOR_AVI & recordType_))
+		if (m_bSaveAVI && rgbaVideoWriter_ && RECORD_COLOR_AVI == (RECORD_COLOR_AVI & recordType_))
 		{
 #if 1
 			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(LockedRect.pBits));
 			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
-			*colorVideoWriter_ << frame_;
+			*rgbaVideoWriter_ << frame_;
 
 			OutputDebugString(_T("."));
 #else
@@ -951,7 +952,7 @@ bool CKinectApp::Nui_GotColorAlert()
 			IplImage *frameBGR = cvCreateImage(cvSize(FRAME_SIZE_.width, FRAME_SIZE_.height), IPL_DEPTH_8U, 3);
 
 			cvCvtColor(frameBGRA, frameBGR, CV_BGRA2BGR);
-			*colorVideoWriter_ << cv::Mat(frameBGR);
+			*rgbaVideoWriter_ << cv::Mat(frameBGR);
 			
 			cvReleaseImage(&frameBGR);
 			cvReleaseImage(&frameBGRA);
@@ -964,7 +965,7 @@ bool CKinectApp::Nui_GotColorAlert()
 		{
 			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(LockedRect.pBits));
 			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
-			const std::string recordFilePath(saved_base_path_name_ + '/' + saved_base_file_name_ + std::string("color_") + saved_timestamp_ + std::string(".png"));
+			const std::string recordFilePath(saved_base_path_name_ + '/' + saved_base_file_name_ + std::string("rgba_") + saved_timestamp_ + std::string(".png"));
 			cv::imwrite(recordFilePath, frame_);
 
 			m_bCaptureColorImage = false;
@@ -979,7 +980,7 @@ bool CKinectApp::Nui_GotColorAlert()
 
     pTexture->UnlockRect(0);
 
-    m_pNuiSensor->NuiImageStreamReleaseFrame(m_pVideoStreamHandle, &imageFrame);
+    m_pNuiSensor->NuiImageStreamReleaseFrame(m_pRGBAStreamHandle, &imageFrame);
 
     return processedFrame;
 }
@@ -1035,11 +1036,11 @@ bool CKinectApp::Nui_GotIRAlert()
 		m_pDrawIR->Draw(reinterpret_cast<BYTE *>(m_pTempIRBuffer), frameWidth * frameHeight * sizeof(RGBQUAD));
 
 		//--S [] 2013/05/16: Sang-Wook Lee
-		if (m_bSaveAVI && colorVideoWriter_ && RECORD_COLOR_AVI == (RECORD_COLOR_AVI & recordType_))
+		if (m_bSaveAVI && rgbaVideoWriter_ && RECORD_COLOR_AVI == (RECORD_COLOR_AVI & recordType_))
 		{
 			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(m_pTempIRBuffer));
 			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
-			*colorVideoWriter_ << frame_;
+			*rgbaVideoWriter_ << frame_;
 
 			OutputDebugString(_T("."));
 		}
