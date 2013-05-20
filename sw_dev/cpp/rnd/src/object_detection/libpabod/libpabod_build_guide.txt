@@ -2,7 +2,7 @@
 	-. static library로 building 해야 함.
 		shared library로 build하는 경우 import library file (*.lib)이 생성되지 않음.
 	-. CMake GUI에서 _ITERATOR_DEBUG_LEVEL macro를 추가해야 함.
-		MSVS10에서 기본적으로 iterator debug level = 2.
+		MSVC10에서 기본적으로 iterator debug level = 2.
 		CMAKE_CXX_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
 		CMAKE_C_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
 	-. MATIO library를 찾을 수 없다는 오류가 발생하는 경우
