@@ -1,0 +1,13 @@
+[-] Building
+	[ref] ${IMAGEMAGICK_ROOT}/Install-windows.txt file 참고.
+
+	- Downloading ImageMagick library source
+		Windows를 위한 ImageMagick library source를 downloading.
+	-. Building configure.exe
+		${IMAGEMAGICK_ROOT}/VisualMagick/configure/configure.sln solution file을 이용해 building.
+	-. Executing configure.exe
+		VisualMagick configuration tool 실행.
+		configure.exe file이 생성된 directory에서 실행.
+		${IMAGEMAGICK_ROOT}/VisualMagick/???.sln file이 생성됨.
+	-. Build ImageMagick library
+		생성된 ${IMAGEMAGICK_ROOT}/VisualMagick/???.sln file을 열어 library building.
