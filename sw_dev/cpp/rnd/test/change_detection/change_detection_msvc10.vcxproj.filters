@@ -25,9 +25,6 @@
     <Filter Include="Source Files\bgslibrary_lib">
       <UniqueIdentifier>{4f8a8e60-bbf6-425e-9468-b05c46e8a060}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\bgslibrary_lib\package_analysis">
-      <UniqueIdentifier>{f5550ae3-7fd4-49a3-b755-723f0e8ec4ce}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\bgslibrary_lib\package_bgs">
       <UniqueIdentifier>{840260ac-c2e7-4f4b-a186-b606fdca7404}</UniqueIdentifier>
     </Filter>
@@ -255,9 +252,6 @@
     <ClInclude Include="bgslibrary_lib\package_bgs\WeightedMovingVarianceBGS.h">
       <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
     </ClInclude>
-    <ClInclude Include="bgslibrary_lib\package_analysis\ForegroundMaskAnalysis.h">
-      <Filter>Source Files\bgslibrary_lib\package_analysis</Filter>
-    </ClInclude>
     <ClInclude Include="bgslibrary_lib\package_bgs\ae\KDE.h">
       <Filter>Source Files\bgslibrary_lib\package_bgs\ae</Filter>
     </ClInclude>
@@ -484,9 +478,6 @@
     </ClCompile>
     <ClCompile Include="bgslibrary_lib\package_bgs\WeightedMovingVarianceBGS.cpp">
       <Filter>Source Files\bgslibrary_lib\package_bgs</Filter>
-    </ClCompile>
-    <ClCompile Include="bgslibrary_lib\package_analysis\ForegroundMaskAnalysis.cpp">
-      <Filter>Source Files\bgslibrary_lib\package_analysis</Filter>
     </ClCompile>
     <ClCompile Include="bgslibrary_lib\package_bgs\ae\KDE.cpp">
       <Filter>Source Files\bgslibrary_lib\package_bgs\ae</Filter>

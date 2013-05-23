@@ -85,7 +85,6 @@
   <ItemGroup>
     <ClInclude Include="bgscollection_lib\bskde.h" />
     <ClInclude Include="bgscollection_lib\sobs.h" />
-    <ClInclude Include="bgslibrary_lib\package_analysis\ForegroundMaskAnalysis.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\AdaptiveBackgroundLearning.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\ae\KDE.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\ae\KernelTable.h" />
@@ -170,7 +169,6 @@
     <ClCompile Include="bgscollection_lib\bskde.cpp" />
     <ClCompile Include="bgscollection_lib\sobs.cpp" />
     <ClCompile Include="bgslibrary\bgslibrary_main.cpp" />
-    <ClCompile Include="bgslibrary_lib\package_analysis\ForegroundMaskAnalysis.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\AdaptiveBackgroundLearning.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\ae\KDE.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\ae\KernelTable.cpp" />
