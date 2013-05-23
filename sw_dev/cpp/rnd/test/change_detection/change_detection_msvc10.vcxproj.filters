@@ -46,6 +46,12 @@
     <Filter Include="Source Files\bgslibrary_lib\package_bgs\tb">
       <UniqueIdentifier>{2acca112-1275-4cb2-a236-c2437f6fd7bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\bgslibrary_lib\package_bgs\ae">
+      <UniqueIdentifier>{d1041d4c-4898-4feb-98d5-2cc591bc3171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bgslibrary_lib\package_bgs\av">
+      <UniqueIdentifier>{1d1af20d-6b4a-47a3-8a44-669ab4a42be5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -252,6 +258,48 @@
     <ClInclude Include="bgslibrary_lib\package_analysis\ForegroundMaskAnalysis.h">
       <Filter>Source Files\bgslibrary_lib\package_analysis</Filter>
     </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\ae\KDE.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\ae</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\ae\KernelTable.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\ae</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\ae\NPBGmodel.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\ae</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\ae\NPBGSubtractor.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\ae</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\av\TBackground.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\av</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\av\TBackgroundVuMeter.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\av</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\av\VuMeter.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\av</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\Blob.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\BlobExtraction.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\BlobResult.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\ConnectedComponents.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPTextureBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\Error.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\TextureBGS.h">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -439,6 +487,48 @@
     </ClCompile>
     <ClCompile Include="bgslibrary_lib\package_analysis\ForegroundMaskAnalysis.cpp">
       <Filter>Source Files\bgslibrary_lib\package_analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\ae\KDE.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\ae</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\ae\KernelTable.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\ae</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\ae\NPBGmodel.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\ae</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\ae\NPBGSubtractor.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\ae</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\av\TBackground.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\av</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\av\TBackgroundVuMeter.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\av</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\av\VuMeter.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\av</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\Blob.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\BlobExtraction.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\BlobResult.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\ConnectedComponents.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPTextureBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\Error.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
+    </ClCompile>
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\TextureBGS.cpp">
+      <Filter>Source Files\bgslibrary_lib\package_bgs\dp</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

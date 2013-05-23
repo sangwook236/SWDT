@@ -10,7 +10,7 @@ DPPratiMediodBGS::~DPPratiMediodBGS()
   std::cout << "~DPPratiMediodBGS()" << std::endl;
 }
 
-void DPPratiMediodBGS::process(const cv::Mat &img_input, cv::Mat &img_output)
+void DPPratiMediodBGS::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;

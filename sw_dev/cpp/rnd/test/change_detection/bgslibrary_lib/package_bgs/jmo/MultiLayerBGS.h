@@ -22,6 +22,7 @@ private:
   long long frameNumber;
   cv::Mat img_foreground;
   cv::Mat img_merged;
+  cv::Mat img_background;
   bool showOutput;
   bool saveModel;
   bool disableDetectMode;
@@ -75,10 +76,10 @@ public:
   ~MultiLayerBGS();
 
   void setStatus(Status status);
-  void process(const cv::Mat &img_input, cv::Mat &img_output);
-  void finish(void);
+  void process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel);
 
 private:
+  void finish(void);
   void saveConfig();
   void loadConfig();
 };

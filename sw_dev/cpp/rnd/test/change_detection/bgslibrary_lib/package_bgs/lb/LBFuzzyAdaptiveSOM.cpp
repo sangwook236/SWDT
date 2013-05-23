@@ -8,10 +8,11 @@ LBFuzzyAdaptiveSOM::LBFuzzyAdaptiveSOM() : firstTime(true), showOutput(true),
 
 LBFuzzyAdaptiveSOM::~LBFuzzyAdaptiveSOM()
 {
+  delete m_pBGModel;
   std::cout << "~LBFuzzyAdaptiveSOM()" << std::endl;
 }
 
-void LBFuzzyAdaptiveSOM::process(const cv::Mat &img_input, cv::Mat &img_output)
+void LBFuzzyAdaptiveSOM::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;
@@ -49,16 +50,17 @@ void LBFuzzyAdaptiveSOM::process(const cv::Mat &img_input, cv::Mat &img_output)
   }
 
   img_foreground.copyTo(img_output);
+  img_background.copyTo(img_bgmodel);
   
   delete frame;
   
   firstTime = false;
 }
 
-void LBFuzzyAdaptiveSOM::finish(void)
-{
-  delete m_pBGModel;
-}
+//void LBFuzzyAdaptiveSOM::finish(void)
+//{
+//  //delete m_pBGModel;
+//}
 
 void LBFuzzyAdaptiveSOM::saveConfig()
 {

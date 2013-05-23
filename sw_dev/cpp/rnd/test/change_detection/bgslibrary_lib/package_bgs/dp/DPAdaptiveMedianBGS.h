@@ -31,7 +31,7 @@ public:
   DPAdaptiveMedianBGS();
   ~DPAdaptiveMedianBGS();
 
-  void process(const cv::Mat &img_input, cv::Mat &img_output);
+  void process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel);
 
 private:
   void saveConfig();

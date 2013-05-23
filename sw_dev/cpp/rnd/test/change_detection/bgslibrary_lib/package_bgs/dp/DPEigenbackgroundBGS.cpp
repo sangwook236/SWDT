@@ -10,7 +10,7 @@ DPEigenbackgroundBGS::~DPEigenbackgroundBGS()
   std::cout << "~DPEigenbackgroundBGS()" << std::endl;
 }
 
-void DPEigenbackgroundBGS::process(const cv::Mat &img_input, cv::Mat &img_output)
+void DPEigenbackgroundBGS::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;

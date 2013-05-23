@@ -9,6 +9,7 @@ MultiLayerBGS::MultiLayerBGS() : firstTime(true), showOutput(true),
 
 MultiLayerBGS::~MultiLayerBGS()
 {
+  finish();
   std::cout << "~MultiLayerBGS()" << std::endl;
 }
 
@@ -37,9 +38,11 @@ void MultiLayerBGS::finish(void)
   cvReleaseImage(&fg_mask_img);
   cvReleaseImage(&fg_prob_img3);
   cvReleaseImage(&merged_img);
+
+  delete BGS;
 }
 
-void MultiLayerBGS::process(const cv::Mat &img_input, cv::Mat &img_output)
+void MultiLayerBGS::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;
@@ -212,6 +215,7 @@ void MultiLayerBGS::process(const cv::Mat &img_input, cv::Mat &img_output)
 
   img_merged = cv::Mat(merged_img);
   img_foreground = cv::Mat(fg_mask_img);
+  img_background = cv::Mat(bg_img);
 
   if(showOutput)
   {
@@ -220,6 +224,7 @@ void MultiLayerBGS::process(const cv::Mat &img_input, cv::Mat &img_output)
   }
 
   img_foreground.copyTo(img_output);
+  img_background.copyTo(img_bgmodel);
   
   delete img;
   //cvReleaseImage(&img);

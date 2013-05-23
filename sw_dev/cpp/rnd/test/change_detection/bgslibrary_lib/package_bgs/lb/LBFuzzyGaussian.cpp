@@ -7,10 +7,11 @@ LBFuzzyGaussian::LBFuzzyGaussian() : firstTime(true), showOutput(true), sensitiv
 
 LBFuzzyGaussian::~LBFuzzyGaussian()
 {
+  delete m_pBGModel;
   std::cout << "~LBFuzzyGaussian()" << std::endl;
 }
 
-void LBFuzzyGaussian::process(const cv::Mat &img_input, cv::Mat &img_output)
+void LBFuzzyGaussian::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;
@@ -47,16 +48,17 @@ void LBFuzzyGaussian::process(const cv::Mat &img_input, cv::Mat &img_output)
   }
 
   img_foreground.copyTo(img_output);
+  img_background.copyTo(img_bgmodel);
   
   delete frame;
   
   firstTime = false;
 }
 
-void LBFuzzyGaussian::finish(void)
-{
-  delete m_pBGModel;
-}
+//void LBFuzzyGaussian::finish(void)
+//{
+//  delete m_pBGModel;
+//}
 
 void LBFuzzyGaussian::saveConfig()
 {

@@ -10,7 +10,7 @@ MixtureOfGaussianV2BGS::~MixtureOfGaussianV2BGS()
   std::cout << "~MixtureOfGaussianV2BGS()" << std::endl;
 }
 
-void MixtureOfGaussianV2BGS::process(const cv::Mat &img_input, cv::Mat &img_output)
+void MixtureOfGaussianV2BGS::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;
@@ -38,14 +38,21 @@ void MixtureOfGaussianV2BGS::process(const cv::Mat &img_input, cv::Mat &img_outp
   //------------------------------------------------------------------
 
   mog(img_input, img_foreground, alpha);
+  
+  cv::Mat img_background;
+  mog.getBackgroundImage(img_background);
 
   if(enableThreshold)
     cv::threshold(img_foreground, img_foreground, threshold, 255, cv::THRESH_BINARY);
 
   if(showOutput)
-    cv::imshow("Gaussian Mixture Model (Zivkovic&Heijden)", img_foreground);
+  {
+    cv::imshow("GMM (Zivkovic&Heijden)", img_foreground);
+    cv::imshow("GMM BKG (Zivkovic&Heijden)", img_background);
+  }
 
   img_foreground.copyTo(img_output);
+  img_background.copyTo(img_bgmodel);
 
   firstTime = false;
 }

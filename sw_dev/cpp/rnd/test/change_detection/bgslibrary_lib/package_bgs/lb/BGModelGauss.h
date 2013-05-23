@@ -28,9 +28,9 @@ namespace lb_library
   namespace SimpleGaussian
   {
     // Parameters
-    const float THRESHGAUSS = 2.5;   // Threshold
-    const float ALPHAGAUSS = 0.0001; // Learning rate
-    const float NOISEGAUSS = 50.0;   // Minimum variance (noise)
+    const double THRESHGAUSS = 2.5;   // Threshold
+    const double ALPHAGAUSS = 0.0001; // Learning rate
+    const double NOISEGAUSS = 50.0;   // Minimum variance (noise)
 
     class BGModelGauss : public BGModel
     {

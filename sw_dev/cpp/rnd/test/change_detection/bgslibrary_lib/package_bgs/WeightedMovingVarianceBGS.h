@@ -24,7 +24,7 @@ public:
   cv::Mat computeWeightedMean(const std::vector<cv::Mat> &v_img_input_f, const std::vector<double> weights);
   cv::Mat computeWeightedVariance(const cv::Mat &img_input_f, const cv::Mat &img_mean_f, const double weight);
 
-  void process(const cv::Mat &img_input, cv::Mat &img_output);
+  void process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel);
 
 private:
   void saveConfig();

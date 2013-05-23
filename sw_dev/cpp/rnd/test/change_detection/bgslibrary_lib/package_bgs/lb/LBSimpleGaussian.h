@@ -29,8 +29,8 @@ public:
   LBSimpleGaussian();
   ~LBSimpleGaussian();
 
-  void process(const cv::Mat &img_input, cv::Mat &img_output);
-  void finish(void);
+  void process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel);
+  //void finish(void);
 
 private:
   void saveConfig();

@@ -10,7 +10,7 @@ DPZivkovicAGMMBGS::~DPZivkovicAGMMBGS()
   std::cout << "~DPZivkovicAGMMBGS()" << std::endl;
 }
 
-void DPZivkovicAGMMBGS::process(const cv::Mat &img_input, cv::Mat &img_output)
+void DPZivkovicAGMMBGS::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;

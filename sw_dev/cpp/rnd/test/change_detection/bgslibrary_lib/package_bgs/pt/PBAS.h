@@ -1,10 +1,10 @@
 //Implementation of the PBAS from:
 //
-//M. Hofmann, P. Tiefenbacher, G. Rigoll
-//"Background Segmentation with Feedback: The Pixel-Based Adaptive Segmenter",
+//M. Hofmann, P. Tiefenbacher, G. Rigoll 
+//"Background Segmentation with Feedback: The Pixel-Based Adaptive Segmenter", 
 //in proc of IEEE Workshop on Change Detection, 2012
 //
-//Note: some changes, to improve the speed and memory requirements, were achieved in comparison to the
+//Note: some changes, to improve the speed and memory requirements, were achieved in comparison to the 
 //described PBAS algorithm in the paper above.
 //
 //Example usage:
@@ -21,7 +21,7 @@
 //cv::Mat bluredImage;
 //cv::Mat pbastResult;
 //cv::GaussianBlur(singleFrame, bluredImage, cv::Size(5,5), 1.5);
-//
+// 
 // //process image and receive segmentation in pbasResult
 //pbas.process(&bluredImage, &pbasResult);
 //
@@ -62,7 +62,7 @@ public:
 	void setBeta(double);
 
 	bool isMovement();
-
+	
 
 private:
 	void calculateFeatures(std::vector<cv::Mat>* feature, cv::Mat* inputImage);
@@ -83,7 +83,7 @@ private:
 	//balance of feature pixel value to conture value
 	double alpha, beta;
 	//##################################################################################
-
+	
 	double formerMeanNorm;
 
 	//define value of foreground/background pixels
@@ -91,16 +91,16 @@ private:
 
 	//##################################################################################
 	//random number parameters
-
+	
 	//random number generator
 	cv::RNG randomGenerator;
-
+	
 	//length of random array initialization
 	long countOfRandomNumb;
 
 	//pre - initialize the randomNumbers for better performance
 	std::vector<int> randomN, randomMinDist, randomX, randomY, randomT, randomTN;
-
+	
 	//###################################################################################
 
 	//check if something is moving
@@ -113,13 +113,13 @@ private:
 	cv::Mat* resultMap;
 	std::vector<cv::Mat> currentFeatures;
 
-	std::vector<float*> currentFeaturesM_Pt;
-	std::vector<uchar*> currentFeaturesC_Pt;
+	std::vector<float*> currentFeaturesM_Pt; 
+	std::vector<uchar*> currentFeaturesC_Pt; 
 	uchar* resultMap_Pt;
-
-	std::vector<std::vector<float*> > B_Mag_Pts;
-	std::vector<std::vector<uchar*> > B_Col_Pts;
-
+	
+	std::vector<std::vector<float*>>B_Mag_Pts;
+	std::vector<std::vector<uchar*>>B_Col_Pts;
+	
 	double sumMagnitude;
 	double formerMeanMag;
 	float formerDistanceBack;
@@ -130,7 +130,7 @@ private:
 	//size of background history B(x_i)
 	int N;
 	// background model
-	std::vector<std::vector<cv::Mat> > backgroundModel;
+	std::vector<std::vector<cv::Mat>> backgroundModel;
 	//####################################################################################
 	//####################################################################################
 	//R-Threshhold - Variables
@@ -141,12 +141,12 @@ private:
 	//factor which defines new threshold of R(x_i) together with meanMinDist(x_i)
 	// scale for the sphere threshhold to define pixel-based Thresholds
 	double R_scale;
-
+	
 	//decreasing / increasing factor of R(x_i)
 	// increasing/decreasing factor for the r-Threshold based on the result of rTreshScale * meanMinDistBackground
 	double R_incdec;
-
-	cv::Mat actualR;
+	
+	cv::Mat actualR; 
 	float* actualR_Pt; //new pixel-based r-threshhold -> pointer to arrays
 	//#####################################################################################
 	//####################################################################################
@@ -157,32 +157,32 @@ private:
 	//#####################################################################################
 	//####################################################################################
 	//initial value of inverse update factor T(x_i)
-	// Initialize the background-model update rate
+	// Initialize the background-model update rate 
 	double T_init;
 
 	//increasing Factor of the update rate 1/T(x_i)
-	// scale that defines the increasing of the update rate of the background model, if the current pixel is background
+	// scale that defines the increasing of the update rate of the background model, if the current pixel is background 
 	//--> more frequently updates if pixel is background because, there shouln't be any change
 	double T_inc;
-
+	
 	//upper boundary of T(x_i)
-	// defining an upper value, that nrSubsampling can achieve, thus it doesn't reach to an infinite value, where actually no update is possible
+	// defining an upper value, that nrSubsampling can achieve, thus it doesn't reach to an infinite value, where actually no update is possible 
 	// at all
-	double T_upper;
-
+	double T_upper;	
+	
 	//lower boundary of T(x_i)
 	// defining a minimum value for nrSubsampling --> base value 2.0
 	double T_lower;
-
+	
 	//decreasing factor of the update rate 1/T(x_i)
 	// opposite scale to increasingRateScale, for decreasing the update rate of the background model, if the current pixel is foreground
 	//--> Thesis: Our Foreground is a real moving object -> thus the background-model is good, so don't update it
 	double T_dec;
 
 	//holds update rate of current pixel
-	cv::Mat actualT;
-	float* actualT_Pt;
-
+	cv::Mat actualT; 
+	float* actualT_Pt; 
+	
 	//#####################################################################################
 
 

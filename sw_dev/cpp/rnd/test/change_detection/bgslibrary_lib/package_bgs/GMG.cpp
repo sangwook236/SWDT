@@ -16,7 +16,7 @@ GMG::~GMG()
   std::cout << "~GMG()" << std::endl;
 }
 
-void GMG::process(const cv::Mat &img_input, cv::Mat &img_output)
+void GMG::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;
@@ -39,13 +39,20 @@ void GMG::process(const cv::Mat &img_input, cv::Mat &img_output)
 
   (*fgbg)(img_input, img_foreground);
 
+  cv::Mat img_background;
+  (*fgbg).getBackgroundImage(img_background);
+
   img_input.copyTo(img_segmentation);
   cv::add(img_input, cv::Scalar(100, 100, 0), img_segmentation, img_foreground);
 
   if(showOutput)
+  {
     cv::imshow("GMG (Godbehere-Matsukawa-Goldberg)", img_foreground);
+    cv::imshow("GMG BKG (Godbehere-Matsukawa-Goldberg)", img_background);
+  }
 
   img_foreground.copyTo(img_output);
+  img_background.copyTo(img_bgmodel);
 
   firstTime = false;
 }

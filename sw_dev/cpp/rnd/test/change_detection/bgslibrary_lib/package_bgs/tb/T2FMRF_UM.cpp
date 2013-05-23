@@ -11,7 +11,7 @@ T2FMRF_UM::~T2FMRF_UM()
   std::cout << "~T2FMRF_UM()" << std::endl;
 }
 
-void T2FMRF_UM::process(const cv::Mat &img_input, cv::Mat &img_output)
+void T2FMRF_UM::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;

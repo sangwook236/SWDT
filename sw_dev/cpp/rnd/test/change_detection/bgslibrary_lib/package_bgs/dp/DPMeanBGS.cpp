@@ -10,7 +10,7 @@ DPMeanBGS::~DPMeanBGS()
   std::cout << "~DPMeanBGS()" << std::endl;
 }
 
-void DPMeanBGS::process(const cv::Mat &img_input, cv::Mat &img_output)
+void DPMeanBGS::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;

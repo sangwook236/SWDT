@@ -7,10 +7,11 @@ LBSimpleGaussian::LBSimpleGaussian() : firstTime(true), showOutput(true), sensit
 
 LBSimpleGaussian::~LBSimpleGaussian()
 {
+  delete m_pBGModel;
   std::cout << "~LBSimpleGaussian()" << std::endl;
 }
 
-void LBSimpleGaussian::process(const cv::Mat &img_input, cv::Mat &img_output)
+void LBSimpleGaussian::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;
@@ -46,16 +47,17 @@ void LBSimpleGaussian::process(const cv::Mat &img_input, cv::Mat &img_output)
   }
 
   img_foreground.copyTo(img_output);
+  img_background.copyTo(img_bgmodel);
   
   delete frame;
   
   firstTime = false;
 }
 
-void LBSimpleGaussian::finish(void)
-{
-  delete m_pBGModel;
-}
+//void LBSimpleGaussian::finish(void)
+//{
+//  delete m_pBGModel;
+//}
 
 void LBSimpleGaussian::saveConfig()
 {

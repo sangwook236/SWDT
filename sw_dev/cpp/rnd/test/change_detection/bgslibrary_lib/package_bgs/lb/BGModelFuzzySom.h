@@ -36,13 +36,13 @@ namespace lb_library
     const bool SPAN_NEIGHBORS = false; // true if update neighborhood spans different pixels			// 
     const int TRAINING_STEPS = 100;			// number of training steps
 
-    const float EPS1 = 100.0; // model match distance during training
-    const float EPS2 = 20.0;  // model match distance
-    const float C1 = 1.0;     // learning rate during training
-    const float C2 = 0.05;    // learning rate
+    const double EPS1 = 100.0; // model match distance during training
+    const double EPS2 = 20.0;  // model match distance
+    const double C1 = 1.0;     // learning rate during training
+    const double C2 = 0.05;    // learning rate
 
-    const float FUZZYEXP = -5.0;
-    const float FUZZYTHRESH = 0.8;
+    const double FUZZYEXP = -5.0;
+    const double FUZZYTHRESH = 0.8;
 
     class BGModelFuzzySom : public BGModel
     {

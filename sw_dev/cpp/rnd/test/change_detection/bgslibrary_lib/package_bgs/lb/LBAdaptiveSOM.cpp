@@ -8,10 +8,11 @@ LBAdaptiveSOM::LBAdaptiveSOM() : firstTime(true), showOutput(true),
 
 LBAdaptiveSOM::~LBAdaptiveSOM()
 {
+  delete m_pBGModel;
   std::cout << "~LBAdaptiveSOM()" << std::endl;
 }
 
-void LBAdaptiveSOM::process(const cv::Mat &img_input, cv::Mat &img_output)
+void LBAdaptiveSOM::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;
@@ -49,16 +50,17 @@ void LBAdaptiveSOM::process(const cv::Mat &img_input, cv::Mat &img_output)
   }
 
   img_foreground.copyTo(img_output);
+  img_background.copyTo(img_bgmodel);
   
   delete frame;
   
   firstTime = false;
 }
 
-void LBAdaptiveSOM::finish(void)
-{
-  delete m_pBGModel;
-}
+//void LBAdaptiveSOM::finish(void)
+//{
+//  delete m_pBGModel;
+//}
 
 void LBAdaptiveSOM::saveConfig()
 {

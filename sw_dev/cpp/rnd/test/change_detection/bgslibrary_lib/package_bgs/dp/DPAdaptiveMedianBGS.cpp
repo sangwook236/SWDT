@@ -10,7 +10,7 @@ DPAdaptiveMedianBGS::~DPAdaptiveMedianBGS()
   std::cout << "~DPAdaptiveMedianBGS()" << std::endl;
 }
 
-void DPAdaptiveMedianBGS::process(const cv::Mat &img_input, cv::Mat &img_output)
+void DPAdaptiveMedianBGS::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;

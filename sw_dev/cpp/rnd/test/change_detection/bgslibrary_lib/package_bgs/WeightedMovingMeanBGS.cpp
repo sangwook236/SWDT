@@ -10,7 +10,7 @@ WeightedMovingMeanBGS::~WeightedMovingMeanBGS()
   std::cout << "~WeightedMovingMeanBGS()" << std::endl;
 }
 
-void WeightedMovingMeanBGS::process(const cv::Mat &img_input, cv::Mat &img_output)
+void WeightedMovingMeanBGS::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;
@@ -71,6 +71,7 @@ void WeightedMovingMeanBGS::process(const cv::Mat &img_input, cv::Mat &img_outpu
     cv::imshow("W Moving Mean FG Mask", img_foreground);
 
   img_foreground.copyTo(img_output);
+  img_background.copyTo(img_bgmodel);
 
   img_input_prev_1.copyTo(img_input_prev_2);
   img_input.copyTo(img_input_prev_1);

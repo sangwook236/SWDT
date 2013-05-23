@@ -11,7 +11,7 @@ AdaptiveBackgroundLearning::~AdaptiveBackgroundLearning()
   std::cout << "~AdaptiveBackgroundLearning()" << std::endl;
 }
 
-void AdaptiveBackgroundLearning::process(const cv::Mat &img_input, cv::Mat &img_output)
+void AdaptiveBackgroundLearning::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;
@@ -61,6 +61,7 @@ void AdaptiveBackgroundLearning::process(const cv::Mat &img_input, cv::Mat &img_
     cv::imshow("BG Learning BG Model", img_background);
 
   img_foreground.copyTo(img_output);
+  img_background.copyTo(img_bgmodel);
 
   firstTime = false;
 }

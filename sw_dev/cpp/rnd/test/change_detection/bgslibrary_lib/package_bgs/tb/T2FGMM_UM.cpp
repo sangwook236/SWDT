@@ -10,7 +10,7 @@ T2FGMM_UM::~T2FGMM_UM()
   std::cout << "~T2FGMM_UM()" << std::endl;
 }
 
-void T2FGMM_UM::process(const cv::Mat &img_input, cv::Mat &img_output)
+void T2FGMM_UM::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;

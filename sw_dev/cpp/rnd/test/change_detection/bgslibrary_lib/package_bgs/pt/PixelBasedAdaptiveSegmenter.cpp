@@ -12,7 +12,7 @@ PixelBasedAdaptiveSegmenter::~PixelBasedAdaptiveSegmenter()
   std::cout << "~PixelBasedAdaptiveSegmenter()" << std::endl;
 }
 
-void PixelBasedAdaptiveSegmenter::process(const cv::Mat &img_input, cv::Mat &img_output)
+void PixelBasedAdaptiveSegmenter::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;

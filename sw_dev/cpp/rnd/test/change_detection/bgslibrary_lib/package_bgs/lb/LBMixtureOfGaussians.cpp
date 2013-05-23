@@ -7,10 +7,11 @@ LBMixtureOfGaussians::LBMixtureOfGaussians() : firstTime(true), showOutput(true)
 
 LBMixtureOfGaussians::~LBMixtureOfGaussians()
 {
+  delete m_pBGModel;
   std::cout << "~LBMixtureOfGaussians()" << std::endl;
 }
 
-void LBMixtureOfGaussians::process(const cv::Mat &img_input, cv::Mat &img_output)
+void LBMixtureOfGaussians::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;
@@ -47,16 +48,17 @@ void LBMixtureOfGaussians::process(const cv::Mat &img_input, cv::Mat &img_output
   }
 
   img_foreground.copyTo(img_output);
+  img_background.copyTo(img_bgmodel);
   
   delete frame;
   
   firstTime = false;
 }
 
-void LBMixtureOfGaussians::finish(void)
-{
-  delete m_pBGModel;
-}
+//void LBMixtureOfGaussians::finish(void)
+//{
+//  delete m_pBGModel;
+//}
 
 void LBMixtureOfGaussians::saveConfig()
 {

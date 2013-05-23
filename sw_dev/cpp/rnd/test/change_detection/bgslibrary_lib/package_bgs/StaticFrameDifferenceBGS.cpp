@@ -10,7 +10,7 @@ StaticFrameDifferenceBGS::~StaticFrameDifferenceBGS()
   std::cout << "~StaticFrameDifferenceBGS()" << std::endl;
 }
 
-void StaticFrameDifferenceBGS::process(const cv::Mat &img_input, cv::Mat &img_output)
+void StaticFrameDifferenceBGS::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   if(img_input.empty())
     return;
@@ -35,6 +35,7 @@ void StaticFrameDifferenceBGS::process(const cv::Mat &img_input, cv::Mat &img_ou
     cv::imshow("Static Frame Difference", img_foreground);
 
   img_foreground.copyTo(img_output);
+  img_background.copyTo(img_bgmodel);
 
   firstTime = false;
 }
