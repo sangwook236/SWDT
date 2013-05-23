@@ -10,21 +10,21 @@
 * copyright notice must be included.  For any other uses of this software,
 * in original or  modified form, including but not limited to distribution
 * in whole or in  part, specific  prior permission  must be  obtained from
-* Author or UMIACS.  These programs shall not  be  used, rewritten, or  
-* adapted as  the basis  of  a commercial  software  or  hardware product 
-* without first obtaining appropriate licenses  from Author. 
+* Author or UMIACS.  These programs shall not  be  used, rewritten, or
+* adapted as  the basis  of  a commercial  software  or  hardware product
+* without first obtaining appropriate licenses  from Author.
 * Other than these cases, no part of this software may be used or
 * distributed without written permission of the author.
 *
-* Neither the author nor UMIACS make any representations about the 
-* suitability of this software for any purpose.  It is provided 
+* Neither the author nor UMIACS make any representations about the
+* suitability of this software for any purpose.  It is provided
 * "as is" without express or implied warranty.
 *
 * Ahmed Elgammal
-* 
+*
 * University of Maryland at College Park
 * UMIACS
-* A.V. Williams Bldg. 
+* A.V. Williams Bldg.
 * CollegePark, MD 20742
 * E-mail:  elgammal@umiacs.umd.edu
 *
@@ -71,7 +71,7 @@ typedef struct
   unsigned int *List;
 } ImageIndex;
 
-class NPBGSubtractor  
+class NPBGSubtractor
 {
 private:
   unsigned int rows;
@@ -98,7 +98,7 @@ private:
   double *Pimage2;
   //
   void NPBGSubtraction_Subset_Kernel(unsigned char * image, unsigned char * FGImage, unsigned char * FilteredFGImage);
-  void NPBGSubtractor::SequenceBGUpdate_Pairs(unsigned char * image, unsigned char * Mask);
+  void SequenceBGUpdate_Pairs(unsigned char * image, unsigned char * Mask);
 
 public:
   NPBGSubtractor();

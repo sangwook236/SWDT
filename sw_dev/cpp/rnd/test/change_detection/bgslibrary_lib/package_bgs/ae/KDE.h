@@ -5,7 +5,7 @@
 #include <highgui.h>
 
 #include "NPBGSubtractor.h"
-#include "..\IBGS.h"
+#include "../IBGS.h"
 
 class KDE : public IBGS
 {
@@ -35,7 +35,7 @@ public:
   ~KDE();
 
   void process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel);
-  
+
 private:
   void saveConfig();
   void loadConfig();
