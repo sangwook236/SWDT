@@ -42,13 +42,13 @@ int vlfeat_main(int argc, char *argv[])
 		//my_vlfeat::kmeans();
 		//my_vlfeat::ikm();
 		//my_vlfeat::hikm();
-		my_vlfeat::aib();
+		//my_vlfeat::aib();
 	}
 
 	// segmentation ---------------------------------------
 	{
-		// superpixel extraction (segmentation) method based on a local version of k-means
-		//my_vlfeat::slic();
+		// simple linear iterative clustering (SLIC)
+		my_vlfeat::slic();
 	}
 
 	return 0;

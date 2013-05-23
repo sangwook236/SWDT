@@ -44,7 +44,7 @@
 #pragma comment(lib, "opencv_video243.lib")
 #pragma comment(lib, "opencv_videostab243.lib")
 #pragma comment(lib, "vl.lib")
-#pragma comment(lib, "libccv.lib")
+//#pragma comment(lib, "libccv.lib")  // run-time error
 
 #		endif
 

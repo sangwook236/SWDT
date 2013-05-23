@@ -162,7 +162,8 @@ void image_moment()
 	cv::destroyWindow(windowName2);
 }
 
-void pair_wise_geometrical_histogram()
+// pairwize geometrical histogram (PGH)
+void pairwise_geometrical_histogram()
 {
 	cv::Mat image1, image2;
 	generate_images(image1, image2);
@@ -278,7 +279,7 @@ void shape_matching()
 {
 	// contour matching
 	local::image_moment();
-	//local::pair_wise_geometrical_histogram();
+	//local::pairwise_geometrical_histogram();
 }
 
 }  // namespace my_opencv

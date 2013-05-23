@@ -211,7 +211,7 @@ void sift()
     // get basenmae from filename
     char basename[1024];
 	{
-		const vl_size q = vl_string_basename (basename, sizeof(basename), input_filename.c_str(), 1);
+		const vl_size q = vl_string_basename(basename, sizeof(basename), input_filename.c_str(), 1);
 
 	    err = (q >= sizeof(basename));
 	    if (err)

@@ -20,10 +20,10 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		// OpenCV library -------------------------------------------------
-		retval = opencv_main(argc, argv);
+		//retval = opencv_main(argc, argv);
 
 		// VLFeat library -------------------------------------------------
-		//retval = vlfeat_main(argc, argv);
+		retval = vlfeat_main(argc, argv);
 
 		// CCV library ----------------------------------------------------
 		//retval = ccv_main(argc, argv);  // run-time error (Windows): not correctly working
