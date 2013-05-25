@@ -238,13 +238,15 @@ private:
     bool m_bSaveAVI;
     bool m_bCaptureColorImage, m_bCaptureDepthImage;
 	const double FPS_;
-	const cv::Size FRAME_SIZE_;
+	const cv::Size COLOR_FRAME_SIZE_;  // for RGBA or IR image
+	const cv::Size DEPTH_FRAME_SIZE_;
 	TCHAR saveFilePath_[MAX_PATH];
-	boost::scoped_ptr<cv::VideoWriter> rgbaVideoWriter_;
+	boost::scoped_ptr<cv::VideoWriter> rgbaVideoWriter_;  // for RGBA or IR image
 	boost::scoped_ptr<cv::VideoWriter> depthVideoWriter_;
 	std::ofstream depthBinStream_;
 	std::ofstream skelBinStream_;
-	cv::Mat frame_;
+	cv::Mat colorFrame_;  // for RGBA or IR image
+	cv::Mat depthFrame_;
 	std::string saved_base_path_name_, saved_timestamp_;
 	const std::string saved_base_file_name_;
 	std::size_t saved_depth_frame_id_;

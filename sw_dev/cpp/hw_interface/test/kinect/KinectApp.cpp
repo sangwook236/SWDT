@@ -52,10 +52,17 @@ enum _SV_RANGE
 //-------------------------------------------------------------------
 CKinectApp::CKinectApp()
 : m_hInstance(NULL),
-  m_bSaveAVI(false), m_bCaptureColorImage(false), m_bCaptureDepthImage(false), FPS_(30), FRAME_SIZE_(640, 480), frame_(FRAME_SIZE_, CV_8UC3, cv::Scalar::all(0)),  //-- [] 2012/06/09: Sang-Wook Lee
+  m_bSaveAVI(false), m_bCaptureColorImage(false), m_bCaptureDepthImage(false), FPS_(30), COLOR_FRAME_SIZE_(640, 480), colorFrame_(COLOR_FRAME_SIZE_, CV_8UC3, cv::Scalar::all(0)),  //-- [] 2012/06/09: Sang-Wook Lee
+  //--S [] 2013/05/24: Sang-Wook Lee
+#if __USE_DEPTH_IMAGE_320x240
+  DEPTH_FRAME_SIZE_(320, 240),
+#elif __USE_DEPTH_IMAGE_640x480
+  DEPTH_FRAME_SIZE_(640, 480),
+#endif
+  //--E [] 2013/05/24: Sang-Wook Lee
   //--S [] 2013/05/16: Sang-Wook Lee
-  //recordType_(RECORD_COLOR_AVI | RECORD_DEPTH_AVI | RECORD_DEPTH_ASCII),
-  recordType_(RECORD_COLOR_AVI | RECORD_DEPTH_AVI),
+  recordType_(RECORD_COLOR_AVI | RECORD_DEPTH_AVI | RECORD_DEPTH_ASCII),
+  //recordType_(RECORD_COLOR_AVI | RECORD_DEPTH_AVI),
   saved_base_path_name_("."), saved_base_file_name_("kinect_"), saved_timestamp_(""), saved_depth_frame_id_(1),
   m_bUseIRImageInsteadOfRGBAImage(false), m_bTurnInfraredEmitterOff(false), m_pTempIRBuffer(NULL)
   //--E [] 2013/05/16: Sang-Wook Lee
@@ -434,14 +441,14 @@ bool CKinectApp::setUpRecording(const std::string &filepath)
 
 	const bool isColor = true;
 #if 1
-	rgbaVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, FRAME_SIZE_, isColor));
-	depthVideoWriter_.reset(new cv::VideoWriter(depth_video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, FRAME_SIZE_, !isColor));
+	rgbaVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, COLOR_FRAME_SIZE_, isColor));
+	depthVideoWriter_.reset(new cv::VideoWriter(depth_video_filepath, CV_FOURCC('D', 'I', 'V', 'X'), FPS_, DEPTH_FRAME_SIZE_, !isColor));
 #elif defined(_WIN32) || defined(WIN32)
-	rgbaVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC_PROMPT, FPS_, FRAME_SIZE_, isColor));
-	depthVideoWriter_.reset(new cv::VideoWriter(depth_video_filepath, CV_FOURCC_PROMPT, FPS_, FRAME_SIZE_, !isColor));
+	rgbaVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC_PROMPT, FPS_, COLOR_FRAME_SIZE_, isColor));
+	depthVideoWriter_.reset(new cv::VideoWriter(depth_video_filepath, CV_FOURCC_PROMPT, FPS_, DEPTH_FRAME_SIZE_, !isColor));
 #elif defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-	rgbaVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC_DEFAULT, FPS_, FRAME_SIZE_, isColor));
-	depthVideoWriter_.reset(new cv::VideoWriter(depth_video_filepath, CV_FOURCC_DEFAULT, FPS_, FRAME_SIZE_, !isColor));
+	rgbaVideoWriter_.reset(new cv::VideoWriter(color_video_filepath, CV_FOURCC_DEFAULT, FPS_, COLOR_FRAME_SIZE_, isColor));
+	depthVideoWriter_.reset(new cv::VideoWriter(depth_video_filepath, CV_FOURCC_DEFAULT, FPS_, DEPTH_FRAME_SIZE_, !isColor));
 #endif
 	depthBinStream_.open(depth_bin_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
 	skelBinStream_.open(skel_bin_filepath.c_str(), std::ios::trunc | std::ios::out | std::ios::binary);
@@ -937,19 +944,19 @@ bool CKinectApp::Nui_GotRGBAAlert()
 		if (m_bSaveAVI && rgbaVideoWriter_ && RECORD_COLOR_AVI == (RECORD_COLOR_AVI & recordType_))
 		{
 #if 1
-			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(LockedRect.pBits));
-			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
-			*rgbaVideoWriter_ << frame_;
+			const cv::Mat frameBGRA(COLOR_FRAME_SIZE_, CV_8UC4, static_cast<void *>(LockedRect.pBits));
+			cv::cvtColor(frameBGRA, colorFrame_, CV_BGRA2BGR, 3);
+			*rgbaVideoWriter_ << colorFrame_;
 
 			OutputDebugString(_T("."));
 #else
-			IplImage *frameBGRA = cvCreateImage(cvSize(FRAME_SIZE_.width, FRAME_SIZE_.height), IPL_DEPTH_8U, 4);
+			IplImage *frameBGRA = cvCreateImage(cvSize(COLOR_FRAME_SIZE_.width, COLOR_FRAME_SIZE_.height), IPL_DEPTH_8U, 4);
 			//strcpy(frameBGRA->colorModel, "BGRA");
 			//strcpy(frameBGRA->channelSeq, "BGRA");
 			frameBGRA->widthStep = frameBGRA->width * 4;
 			frameBGRA->imageSize = frameBGRA->widthStep * frameBGRA->height;
 			frameBGRA->imageData = (char *)(LockedRect.pBits);
-			IplImage *frameBGR = cvCreateImage(cvSize(FRAME_SIZE_.width, FRAME_SIZE_.height), IPL_DEPTH_8U, 3);
+			IplImage *frameBGR = cvCreateImage(cvSize(COLOR_FRAME_SIZE_.width, COLOR_FRAME_SIZE_.height), IPL_DEPTH_8U, 3);
 
 			cvCvtColor(frameBGRA, frameBGR, CV_BGRA2BGR);
 			*rgbaVideoWriter_ << cv::Mat(frameBGR);
@@ -963,10 +970,10 @@ bool CKinectApp::Nui_GotRGBAAlert()
 		//--S [] 2013/05/16: Sang-Wook Lee
 		if (m_bCaptureColorImage)
 		{
-			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(LockedRect.pBits));
-			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
+			const cv::Mat frameBGRA(COLOR_FRAME_SIZE_, CV_8UC4, static_cast<void *>(LockedRect.pBits));
+			cv::cvtColor(frameBGRA, colorFrame_, CV_BGRA2BGR, 3);
 			const std::string recordFilePath(saved_base_path_name_ + '/' + saved_base_file_name_ + std::string("rgba_") + saved_timestamp_ + std::string(".png"));
-			cv::imwrite(recordFilePath, frame_);
+			cv::imwrite(recordFilePath, colorFrame_);
 
 			m_bCaptureColorImage = false;
 		}
@@ -1038,19 +1045,19 @@ bool CKinectApp::Nui_GotIRAlert()
 		//--S [] 2013/05/16: Sang-Wook Lee
 		if (m_bSaveAVI && rgbaVideoWriter_ && RECORD_COLOR_AVI == (RECORD_COLOR_AVI & recordType_))
 		{
-			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(m_pTempIRBuffer));
-			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
-			*rgbaVideoWriter_ << frame_;
+			const cv::Mat frameBGRA(COLOR_FRAME_SIZE_, CV_8UC4, static_cast<void *>(m_pTempIRBuffer));
+			cv::cvtColor(frameBGRA, colorFrame_, CV_BGRA2BGR, 3);
+			*rgbaVideoWriter_ << colorFrame_;
 
 			OutputDebugString(_T("."));
 		}
 
 		if (m_bCaptureColorImage)
 		{
-			const cv::Mat frameBGRA(FRAME_SIZE_, CV_8UC4, static_cast<void *>(m_pTempIRBuffer));
-			cv::cvtColor(frameBGRA, frame_, CV_BGRA2BGR, 3);
+			const cv::Mat frameBGRA(COLOR_FRAME_SIZE_, CV_8UC4, static_cast<void *>(m_pTempIRBuffer));
+			cv::cvtColor(frameBGRA, colorFrame_, CV_BGRA2BGR, 3);
 			const std::string recordFilePath(saved_base_path_name_ + '/' + saved_base_file_name_ + std::string("ir_") + saved_timestamp_ + std::string(".png"));
-			cv::imwrite(recordFilePath, frame_);
+			cv::imwrite(recordFilePath, colorFrame_);
 
 			m_bCaptureColorImage = false;
 		}
@@ -1145,8 +1152,8 @@ bool CKinectApp::Nui_GotDepthAlert()
 				//	depth data are lossy
 				//	depth data have to be converted: unsigned short -> unsigned char
 
-				//const cv::Mat frameD(FRAME_SIZE_, CV_16UC1, static_cast<void *>(&depthFrame[0]));
-				const cv::Mat frameD(FRAME_SIZE_, CV_8UC1, static_cast<void *>(&depthFrame[0]));
+				//const cv::Mat frameD(DEPTH_FRAME_SIZE_, CV_16UC1, static_cast<void *>(&depthFrame[0]));
+				const cv::Mat frameD(DEPTH_FRAME_SIZE_, CV_8UC1, static_cast<void *>(&depthFrame[0]));
 				*depthVideoWriter_ << frameD;  // run-time error: depth must be 8
 			}
 			catch (const cv::Exception &e)
@@ -1174,8 +1181,8 @@ bool CKinectApp::Nui_GotDepthAlert()
 			std::ofstream stream(sstrm.str().c_str(), std::ios::trunc | std::ios::out);
 			if (stream)
 			{
-				//const cv::Mat frameD(FRAME_SIZE_, CV_16UC1, static_cast<void *>(LockedRect.pBits));
-				const cv::Mat frameD(FRAME_SIZE_, CV_16UC1, static_cast<void *>(&depthFrame[0]));
+				//const cv::Mat frameD(DEPTH_FRAME_SIZE_, CV_16UC1, static_cast<void *>(LockedRect.pBits));
+				const cv::Mat frameD(DEPTH_FRAME_SIZE_, CV_16UC1, static_cast<void *>(&depthFrame[0]));
 
 				stream << frameD << std::endl;
 
@@ -1197,9 +1204,41 @@ bool CKinectApp::Nui_GotDepthAlert()
 		//--S [] 2013/05/16: Sang-Wook Lee
 		if (m_bCaptureDepthImage)
 		{
-			const cv::Mat frameD(FRAME_SIZE_, CV_16UC1, static_cast<void *>(&depthFrame[0]));
+			const cv::Mat frameD(DEPTH_FRAME_SIZE_, CV_16UC1, static_cast<void *>(&depthFrame[0]));
 			const std::string recordFilePath(saved_base_path_name_ + '/' + saved_base_file_name_ + std::string("depth_") + saved_timestamp_ + std::string(".png"));
 			cv::imwrite(recordFilePath, frameD);
+
+			//--S [] 2013/05/24: Sang-Wook Lee
+			const NUI_IMAGE_RESOLUTION colorResolution = NUI_IMAGE_RESOLUTION_640x480;
+#if __USE_DEPTH_IMAGE_320x240
+			const NUI_IMAGE_RESOLUTION depthResolution = NUI_IMAGE_RESOLUTION_320x240;
+#elif __USE_DEPTH_IMAGE_640x480
+			const NUI_IMAGE_RESOLUTION depthResolution = NUI_IMAGE_RESOLUTION_640x480;
+#endif
+
+			std::vector<unsigned short> transformedDepthFrame(COLOR_FRAME_SIZE_.width * COLOR_FRAME_SIZE_.height, 0u);
+			long xc, yc;
+			for (long yd = 0; yd < (long)frameHeight; ++yd)
+			{
+				for (long xd = 0; xd < (long)frameWidth; ++xd)
+				{
+					const unsigned short depth = depthFrame[yd*frameWidth + xd];
+					HRESULT hr = NuiImageGetColorPixelCoordinatesFromDepthPixelAtResolution(colorResolution, depthResolution, NULL, xd, yd, depth, &xc, &yc);
+					if (SUCCEEDED(hr))
+					{
+						transformedDepthFrame[yc*COLOR_FRAME_SIZE_.width + xc] = depth;
+					}
+					else
+					{
+						transformedDepthFrame[yc*COLOR_FRAME_SIZE_.width + xc] = 0u;
+					}
+				}
+			}
+
+			const cv::Mat frameD2(COLOR_FRAME_SIZE_, CV_16UC1, static_cast<void *>(&transformedDepthFrame[0]));
+			const std::string recordFilePath2(saved_base_path_name_ + '/' + saved_base_file_name_ + std::string("depth_transformed_") + saved_timestamp_ + std::string(".png"));
+			cv::imwrite(recordFilePath2, frameD2);
+			//--E [] 2013/05/24: Sang-Wook Lee
 
 			m_bCaptureDepthImage = false;
 		}
