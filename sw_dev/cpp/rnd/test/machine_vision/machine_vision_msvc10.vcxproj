@@ -115,6 +115,7 @@
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="opencv\opencv_bag_of_words.cpp" />
+    <ClCompile Include="opencv\opencv_camera_calibration.cpp" />
     <ClCompile Include="opencv\opencv_camera_geometry.cpp" />
     <ClCompile Include="opencv\opencv_chamfer_matching.cpp" />
     <ClCompile Include="opencv\opencv_change_detection.cpp" />
