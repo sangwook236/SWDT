@@ -252,6 +252,11 @@ private:
 	std::size_t saved_depth_frame_id_;
 	//--E [] 2012/06/09
 
+	//--S [] 2013/05/30: Sang-Wook Lee
+	cv::Mat frameDepth16_;
+	cv::Mat frameTransformedDepth16_;
+	//--E [] 2013/05/30: Sang-Wook Lee
+
 	//--S [] 2012/07/26: Sang-Wook Lee
 	enum {
 		RECORD_COLOR_AVI = 0x01, RECORD_DEPTH_AVI = 0x02, RECORD_DEPTH_ASCII = 0x04, RECORD_DEPTH_BINARY = 0x08, RECORD_SKELETON_BINARY = 0x10

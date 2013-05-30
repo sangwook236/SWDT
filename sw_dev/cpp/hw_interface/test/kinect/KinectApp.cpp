@@ -64,8 +64,12 @@ CKinectApp::CKinectApp()
   recordType_(RECORD_COLOR_AVI | RECORD_DEPTH_AVI | RECORD_DEPTH_ASCII),
   //recordType_(RECORD_COLOR_AVI | RECORD_DEPTH_AVI),
   saved_base_path_name_("."), saved_base_file_name_("kinect_"), saved_timestamp_(""), saved_depth_frame_id_(1),
-  m_bUseIRImageInsteadOfRGBAImage(false), m_bTurnInfraredEmitterOff(false), m_pTempIRBuffer(NULL)
+  m_bUseIRImageInsteadOfRGBAImage(false), m_bTurnInfraredEmitterOff(false), m_pTempIRBuffer(NULL),
   //--E [] 2013/05/16: Sang-Wook Lee
+  //--S [] 2013/05/30: Sang-Wook Lee
+  frameDepth16_(DEPTH_FRAME_SIZE_, CV_16UC1, cv::Scalar::all(0)),
+  frameTransformedDepth16_(COLOR_FRAME_SIZE_, CV_16UC1, cv::Scalar::all(0))
+  //--E [] 2013/05/30: Sang-Wook Lee
 {
     ZeroMemory(m_szAppTitle, sizeof(m_szAppTitle));
     LoadString(m_hInstance, IDS_APP_TITLE, m_szAppTitle, _countof(m_szAppTitle));
@@ -1028,9 +1032,9 @@ bool CKinectApp::Nui_GotIRAlert()
 			m_pTempIRBuffer = new RGBQUAD[frameWidth * frameHeight];
 		}
 
-		for (int i = 0; i < frameWidth * frameHeight; ++i)
+		for (unsigned long i = 0; i < frameWidth * frameHeight; ++i)
 		{
-			BYTE intensity = reinterpret_cast<USHORT *>(LockedRect.pBits)[i] >> 8;
+			const BYTE intensity = reinterpret_cast<USHORT *>(LockedRect.pBits)[i] >> 8;
 
 			RGBQUAD *pQuad = &m_pTempIRBuffer[i];
 			pQuad->rgbBlue = intensity;
@@ -1110,25 +1114,64 @@ bool CKinectApp::Nui_GotDepthAlert()
 
         assert(frameWidth * frameHeight * g_BytesPerPixel <= ARRAYSIZE(m_depthRGBX));
 
-		//--S [] 2013/05/14: Sang-Wook Lee
-		std::vector<unsigned short> depthFrame;
-		depthFrame.reserve(frameWidth * frameHeight);
-		//--E [] 2013/05/14: Sang-Wook Lee
+		//--S [] 2013/05/30: Sang-Wook Lee
+		unsigned short *ptrDepth16 = (unsigned short *)frameDepth16_.data;
+		unsigned short *ptrTransformedDepth16 = NULL;
+		if (m_bCaptureDepthImage)
+		{
+			frameTransformedDepth16_ = cv::Mat::zeros(frameTransformedDepth16_.size(), frameTransformedDepth16_.type());
+			ptrTransformedDepth16 = (unsigned short *)frameTransformedDepth16_.data;
+		}
 
-		// for display
+		const NUI_IMAGE_RESOLUTION colorResolution = NUI_IMAGE_RESOLUTION_640x480;
+#if __USE_DEPTH_IMAGE_320x240
+		const NUI_IMAGE_RESOLUTION depthResolution = NUI_IMAGE_RESOLUTION_320x240;
+#elif __USE_DEPTH_IMAGE_640x480
+		const NUI_IMAGE_RESOLUTION depthResolution = NUI_IMAGE_RESOLUTION_640x480;
+#endif
+		//--E [] 2013/05/30: Sang-Wook Lee
+
+		long xd = 0, yd = 0, xc, yc;
         while (pBufferRun < pBufferEnd)
         {
-            USHORT depth = *pBufferRun;
-            USHORT realDepth = NuiDepthPixelToDepth(depth);
-            USHORT player = NuiDepthPixelToPlayerIndex(depth);
+			// The depth data from Kinect is 16-bit unsigned value, of which the lower 3-bits provide information about the player.
+            const USHORT &packedDepth = *pBufferRun;
 
-			//--S [] 2013/05/14: Sang-Wook Lee
-			depthFrame.push_back(realDepth);
-			//--E [] 2013/05/14: Sang-Wook Lee
+			// note the use of NuiDepthPixelToDepth to get the depth in millimeters.
+            const USHORT &realDepth = NuiDepthPixelToDepth(packedDepth);  // [mm]
+			// Ideally Kinect can recognize 6 players which is indicated in the lower 3 bits of each depth pixel.
+            const USHORT &player = NuiDepthPixelToPlayerIndex(packedDepth);
 
-			// transform 13-bit depth information into an 8-bit intensity appropriate
-            // for display (we disregard information in most significant bit)
-            BYTE intensity = static_cast<BYTE>(~(realDepth >> 4));
+			//--S [] 2013/05/30: Sang-Wook Lee
+			if (m_bSaveAVI || m_bCaptureDepthImage)
+				*(ptrDepth16++) = realDepth;
+
+			if (m_bCaptureDepthImage)
+			{
+				HRESULT hr = NuiImageGetColorPixelCoordinatesFromDepthPixelAtResolution(colorResolution, depthResolution, NULL, xd, yd, packedDepth, &xc, &yc);
+				if (SUCCEEDED(hr))
+				{
+					if (0 <= xc && xc < COLOR_FRAME_SIZE_.width && 0 <= yc && yc < COLOR_FRAME_SIZE_.height &&
+						(0 == ptrTransformedDepth16[yc*COLOR_FRAME_SIZE_.width + xc] || realDepth < ptrTransformedDepth16[yc*COLOR_FRAME_SIZE_.width + xc]))
+						ptrTransformedDepth16[yc*COLOR_FRAME_SIZE_.width + xc] = realDepth;
+				}
+				//else
+				//{
+				//	ptrTransformedDepth16[yc*COLOR_FRAME_SIZE_.width + xc] = 0u;
+				//}
+
+				++xd;
+				if (DEPTH_FRAME_SIZE_.width == xd)
+				{
+					xd = 0;
+					++yd;
+				}
+			}
+			//--E [] 2013/05/30: Sang-Wook Lee
+
+			// transform 13-bit depth information into an 8-bit intensity appropriate for display
+			// (we disregard information in most significant bit)
+            const BYTE intensity = static_cast<BYTE>(~(realDepth >> 4));
 
             // tint the intensity by dividing by per-player values
             *(rgbrun++) = intensity >> g_IntensityShiftByPlayerB[player];
@@ -1144,6 +1187,7 @@ bool CKinectApp::Nui_GotDepthAlert()
         m_pDrawDepth->Draw(m_depthRGBX, frameWidth * frameHeight * g_BytesPerPixel);
 
 		//--S [] 2013/05/14: Sang-Wook Lee
+
 		if (m_bSaveAVI && depthVideoWriter_ && RECORD_DEPTH_AVI == (RECORD_DEPTH_AVI & recordType_))
 		{
 			try
@@ -1152,9 +1196,13 @@ bool CKinectApp::Nui_GotDepthAlert()
 				//	depth data are lossy
 				//	depth data have to be converted: unsigned short -> unsigned char
 
-				//const cv::Mat frameD(DEPTH_FRAME_SIZE_, CV_16UC1, static_cast<void *>(&depthFrame[0]));
-				const cv::Mat frameD(DEPTH_FRAME_SIZE_, CV_8UC1, static_cast<void *>(&depthFrame[0]));
-				*depthVideoWriter_ << frameD;  // run-time error: depth must be 8
+#if 0
+				*depthVideoWriter_ << frameDepth16_;  // run-time error: depth must be 8.
+#else
+				const cv::Mat frameD8(DEPTH_FRAME_SIZE_, CV_8UC1);
+				frameDepth16_.convertTo(frameD8, CV_8UC1, 1, 0);
+				*depthVideoWriter_ << frameD8;
+#endif
 			}
 			catch (const cv::Exception &e)
 			{
@@ -1181,10 +1229,7 @@ bool CKinectApp::Nui_GotDepthAlert()
 			std::ofstream stream(sstrm.str().c_str(), std::ios::trunc | std::ios::out);
 			if (stream)
 			{
-				//const cv::Mat frameD(DEPTH_FRAME_SIZE_, CV_16UC1, static_cast<void *>(LockedRect.pBits));
-				const cv::Mat frameD(DEPTH_FRAME_SIZE_, CV_16UC1, static_cast<void *>(&depthFrame[0]));
-
-				stream << frameD << std::endl;
+				stream << frameDepth16_ << std::endl;
 
 				stream.close();
 
@@ -1197,47 +1242,19 @@ bool CKinectApp::Nui_GotDepthAlert()
 		if (m_bSaveAVI && depthBinStream_ && RECORD_DEPTH_BINARY == (RECORD_DEPTH_BINARY & recordType_))
 		{
 			//depthBinStream_.write(reinterpret_cast<char *>(LockedRect.pBits), sizeof(USHORT) * frameWidth * frameHeight);
-			depthBinStream_.write(reinterpret_cast<char *>(&depthFrame[0]), sizeof(unsigned short) * frameWidth * frameHeight);
+			depthBinStream_.write(reinterpret_cast<char *>(frameDepth16_.data), sizeof(unsigned short) * DEPTH_FRAME_SIZE_.width * DEPTH_FRAME_SIZE_.height);
 		}
 		//--E [] 2012/06/09
 
 		//--S [] 2013/05/16: Sang-Wook Lee
 		if (m_bCaptureDepthImage)
 		{
-			const cv::Mat frameD(DEPTH_FRAME_SIZE_, CV_16UC1, static_cast<void *>(&depthFrame[0]));
 			const std::string recordFilePath(saved_base_path_name_ + '/' + saved_base_file_name_ + std::string("depth_") + saved_timestamp_ + std::string(".png"));
-			cv::imwrite(recordFilePath, frameD);
+			cv::imwrite(recordFilePath, frameDepth16_);
 
 			//--S [] 2013/05/24: Sang-Wook Lee
-			const NUI_IMAGE_RESOLUTION colorResolution = NUI_IMAGE_RESOLUTION_640x480;
-#if __USE_DEPTH_IMAGE_320x240
-			const NUI_IMAGE_RESOLUTION depthResolution = NUI_IMAGE_RESOLUTION_320x240;
-#elif __USE_DEPTH_IMAGE_640x480
-			const NUI_IMAGE_RESOLUTION depthResolution = NUI_IMAGE_RESOLUTION_640x480;
-#endif
-
-			std::vector<unsigned short> transformedDepthFrame(COLOR_FRAME_SIZE_.width * COLOR_FRAME_SIZE_.height, 0u);
-			long xc, yc;
-			for (long yd = 0; yd < (long)frameHeight; ++yd)
-			{
-				for (long xd = 0; xd < (long)frameWidth; ++xd)
-				{
-					const unsigned short depth = depthFrame[yd*frameWidth + xd];
-					HRESULT hr = NuiImageGetColorPixelCoordinatesFromDepthPixelAtResolution(colorResolution, depthResolution, NULL, xd, yd, depth, &xc, &yc);
-					if (SUCCEEDED(hr))
-					{
-						transformedDepthFrame[yc*COLOR_FRAME_SIZE_.width + xc] = depth;
-					}
-					else
-					{
-						transformedDepthFrame[yc*COLOR_FRAME_SIZE_.width + xc] = 0u;
-					}
-				}
-			}
-
-			const cv::Mat frameD2(COLOR_FRAME_SIZE_, CV_16UC1, static_cast<void *>(&transformedDepthFrame[0]));
 			const std::string recordFilePath2(saved_base_path_name_ + '/' + saved_base_file_name_ + std::string("depth_transformed_") + saved_timestamp_ + std::string(".png"));
-			cv::imwrite(recordFilePath2, frameD2);
+			cv::imwrite(recordFilePath2, frameTransformedDepth16_);
 			//--E [] 2013/05/24: Sang-Wook Lee
 
 			m_bCaptureDepthImage = false;
