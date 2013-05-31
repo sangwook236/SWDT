@@ -114,6 +114,7 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="opencv\opencv_image_undistortion.cpp" />
     <ClCompile Include="opencv\opencv_bag_of_words.cpp" />
     <ClCompile Include="opencv\opencv_camera_calibration.cpp" />
     <ClCompile Include="opencv\opencv_camera_geometry.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="opencv\opencv_shape_matching.cpp" />
     <ClCompile Include="opencv\opencv_skin_color_filtering.cpp" />
     <ClCompile Include="opencv\opencv_snake.cpp" />
+    <ClCompile Include="opencv\opencv_stereo_camera_calibration.cpp" />
     <ClCompile Include="opencv\opencv_stereo_matching.cpp" />
     <ClCompile Include="opencv\opencv_stereo_matching_using_gpu.cpp" />
     <ClCompile Include="opencv\opencv_template_matching.cpp" />

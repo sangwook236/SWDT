@@ -98,7 +98,8 @@ void human_detection();
 void human_detection_using_gpu();
 void camera_geometry();
 void camera_calibration();
-void camera_stereo_calibration();
+void stereo_camera_calibration();
+void image_undistortion();
 void homography();
 void image_labeling_using_gpu();
 void stereo_matching();
@@ -197,8 +198,9 @@ int opencv_main(int argc, char *argv[])
 		//if (canUseGPU) my_opencv::human_detection_using_gpu();  // not yet implemented
 
 		//my_opencv::camera_geometry();
-		//my_opencv::camera_calibration();  // not yet implemented
-		my_opencv::camera_stereo_calibration();
+		//my_opencv::camera_calibration();
+		//my_opencv::stereo_camera_calibration();
+		my_opencv::image_undistortion();
 		//my_opencv::homography();
 
 		//my_opencv::stereo_matching();
