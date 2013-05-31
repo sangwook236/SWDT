@@ -52,8 +52,9 @@ void matrix_operation();
 void matrix_operation_using_gpu();
 void vector_operation();
 void image_operation();
-void image_sequence();
 void image_conversion();
+void image_sequence();
+void openni_interface();
 void image_filtering();
 void image_filtering_using_gpu();
 void image_processing_using_gpu();
@@ -140,6 +141,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::image_operation();
 		//my_opencv::image_conversion();
 		//my_opencv::image_sequence();
+		//my_opencv::openni_interface();
 
 		//my_opencv::image_filtering();
 		//if (canUseGPU) my_opencv::image_filtering_using_gpu();  // not yet implemented

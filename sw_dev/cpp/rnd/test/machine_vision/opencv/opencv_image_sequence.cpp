@@ -36,7 +36,7 @@ void capture_image_from_file()
 	cvNamedWindow(windowName.c_str(), CV_WINDOW_AUTOSIZE);
 	cvResizeWindow(windowName.c_str(), imageWidth, imageHeight);
 
-	std::cout << "press any key if want to finish ... " << std::endl;
+	std::cout << "press any key if want to finish ..." << std::endl;
 	IplImage *frame = NULL;
 	while (cvWaitKey(1) < 0)
 	{
@@ -46,7 +46,7 @@ void capture_image_from_file()
 
 		cvShowImage(windowName, frame);
 	}
-	std::cout << "end capturing ... " << std::endl;
+	std::cout << "end capturing ..." << std::endl;
 
 	//
 	cvReleaseCapture(&capture);
@@ -62,7 +62,7 @@ void capture_image_from_file()
 	cv::namedWindow(windowName, CV_WINDOW_AUTOSIZE);
 	cv::resizeWindow(windowName, imageWidth, imageHeight);
 
-	std::cout << "press any key if want to finish ... " << std::endl;
+	std::cout << "press any key if want to finish ..." << std::endl;
 	cv::Mat frame;
 	while (cv::waitKey(1) < 0)
 	{
@@ -76,7 +76,7 @@ void capture_image_from_file()
 
 		cv::imshow(windowName, frame);
 	}
-	std::cout << "end capturing ... " << std::endl;
+	std::cout << "end capturing ..." << std::endl;
 
 	cv::destroyWindow(windowName);
 #endif

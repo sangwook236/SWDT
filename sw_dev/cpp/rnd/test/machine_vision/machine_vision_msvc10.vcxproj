@@ -166,6 +166,7 @@
     <ClCompile Include="opencv\opencv_motion_segmentation.cpp" />
     <ClCompile Include="opencv\opencv_object_detection.cpp" />
     <ClCompile Include="opencv\opencv_object_tracking.cpp" />
+    <ClCompile Include="opencv\opencv_openni.cpp" />
     <ClCompile Include="opencv\opencv_optical_flow.cpp" />
     <ClCompile Include="opencv\opencv_optical_flow_using_gpu.cpp" />
     <ClCompile Include="opencv\opencv_outlier_removal.cpp" />
