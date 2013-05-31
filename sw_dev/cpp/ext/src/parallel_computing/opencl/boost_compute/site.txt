@@ -1,1 +1,2 @@
 http://kylelutz.github.io/compute/
+https://github.com/kylelutz/compute
