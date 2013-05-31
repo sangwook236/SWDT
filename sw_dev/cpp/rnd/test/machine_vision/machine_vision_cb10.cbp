@@ -73,6 +73,7 @@
 		<Unit filename="opencv/PascalVocDataset.cpp" />
 		<Unit filename="opencv/PascalVocDataset.h" />
 		<Unit filename="opencv/opencv_bag_of_words.cpp" />
+		<Unit filename="opencv/opencv_camera_calibration.cpp" />
 		<Unit filename="opencv/opencv_camera_geometry.cpp" />
 		<Unit filename="opencv/opencv_chamfer_matching.cpp" />
 		<Unit filename="opencv/opencv_change_detection.cpp" />
@@ -112,6 +113,7 @@
 		<Unit filename="opencv/opencv_image_processing_using_gpu.cpp" />
 		<Unit filename="opencv/opencv_image_pyramid.cpp" />
 		<Unit filename="opencv/opencv_image_sequence.cpp" />
+		<Unit filename="opencv/opencv_image_undistortion.cpp" />
 		<Unit filename="opencv/opencv_iterative_closest_point.cpp" />
 		<Unit filename="opencv/opencv_kalman_filtering.cpp" />
 		<Unit filename="opencv/opencv_learning.cpp" />
@@ -123,6 +125,7 @@
 		<Unit filename="opencv/opencv_motion_segmentation.cpp" />
 		<Unit filename="opencv/opencv_object_detection.cpp" />
 		<Unit filename="opencv/opencv_object_tracking.cpp" />
+		<Unit filename="opencv/opencv_openni.cpp" />
 		<Unit filename="opencv/opencv_optical_flow.cpp" />
 		<Unit filename="opencv/opencv_optical_flow_using_gpu.cpp" />
 		<Unit filename="opencv/opencv_outlier_removal.cpp" />
@@ -132,6 +135,7 @@
 		<Unit filename="opencv/opencv_shape_matching.cpp" />
 		<Unit filename="opencv/opencv_skin_color_filtering.cpp" />
 		<Unit filename="opencv/opencv_snake.cpp" />
+		<Unit filename="opencv/opencv_stereo_camera_calibration.cpp" />
 		<Unit filename="opencv/opencv_stereo_matching.cpp" />
 		<Unit filename="opencv/opencv_stereo_matching_using_gpu.cpp" />
 		<Unit filename="opencv/opencv_template_matching.cpp" />
