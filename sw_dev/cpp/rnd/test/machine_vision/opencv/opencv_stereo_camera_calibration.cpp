@@ -67,7 +67,7 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 				if (1 == scale)
 					timg = img;
 				else
-					resize(img, timg, cv::Size(), scale, scale);
+					cv::resize(img, timg, cv::Size(), scale, scale);
 				found = cv::findChessboardCorners(timg, boardSize, corners, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE);
 				if (found)
 				{
@@ -262,7 +262,7 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 			cv::remap(img, rimg, rmap[k][0], rmap[k][1], CV_INTER_LINEAR);
 			cv::cvtColor(rimg, cimg, CV_GRAY2BGR);
 			cv::Mat canvasPart = !isVerticalStereo ? canvas(cv::Rect(w*k, 0, w, h)) : canvas(cv::Rect(0, h*k, w, h));
-			resize(cimg, canvasPart, canvasPart.size(), 0, 0, CV_INTER_AREA);
+			cv::resize(cimg, canvasPart, canvasPart.size(), 0, 0, CV_INTER_AREA);
 			if (useCalibrated)
 			{
 				cv::Rect vroi(cvRound(validRoi[k].x*sf), cvRound(validRoi[k].y*sf), cvRound(validRoi[k].width*sf), cvRound(validRoi[k].height*sf));
@@ -363,7 +363,7 @@ void stereo_camera_calibration()
 
 	const cv::Size boardSize(9, 6);
 	const float squareSize = 2.5f;  // Set this to your actual square size, [cm]
-#elif 1
+#elif 0
 	// Kinect IR & RGB images
 	//const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib_3.xml");
 	const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib_4.xml");

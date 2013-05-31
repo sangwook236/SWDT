@@ -6,6 +6,8 @@
 #include <iostream>
 
 
+#define __USE_REMAP 1
+
 namespace {
 namespace local {
 
@@ -29,13 +31,17 @@ void image_undistortion()
 	right_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
 
 	const std::size_t num_images = 4;
+	const cv::Size imageSize_left(640, 480), imageSize_right(640, 480);
 
 	// [ref]
 	//	Camera Calibration Toolbox for Matlab: http://www.vision.caltech.edu/bouguetj/calib_doc/
 	//	http://docs.opencv.org/doc/tutorials/calib3d/camera_calibration/camera_calibration.html
 
+	//	In order to use the calibration results from Camera Calibration Toolbox for Matlab,
+	//	a parameter for radial distrtortion, kc(5) has to be active, est_dist(5) = 1.
+
 	// IR (left) to RGB (right)
-#if 0
+#if 1
 	const double fc_left[] = { 5.865259629841016e+02, 5.869119946890888e+02 };  // [pixel]
 	const double cc_left[] = { 3.374030882445484e+02, 2.486851671279394e+02 };  // [pixel]
 	const double alpha_c_left = 0.0;
@@ -70,8 +76,8 @@ void image_undistortion()
 	const cv::Mat rvec(3, 1, CV_64FC1, (void *)rotVec);
 	cv::Mat R;
     cv::Rodrigues(rvec, R);
-    //const cv::Mat t = (cv::Mat_<double>(3,1) << transVec[0], transVec[1], transVec[2]);
-    const cv::Mat t(3, 1, CV_64FC1, (void *)transVec);
+    //const cv::Mat T = (cv::Mat_<double>(3,1) << transVec[0], transVec[1], transVec[2]);
+    const cv::Mat T(3, 1, CV_64FC1, (void *)transVec);
 #else
 	const float fc_left[] = { 5.865259629841016e+02f, 5.869119946890888e+02f };  // [pixel]
 	const float cc_left[] = { 3.374030882445484e+02f, 2.486851671279394e+02f };  // [pixel]
@@ -111,50 +117,104 @@ void image_undistortion()
 	const cv::Mat rvec(3, 1, CV_32FC1, (void *)rotVec);
 	cv::Mat R;
     cv::Rodrigues(rvec, R);
-    //const cv::Mat t = (cv::Mat_<float>(3,1) << transVec[0], transVec[1], transVec[2]);
-    const cv::Mat t(3, 1, CV_32FC1, (void *)transVec);
+    //const cv::Mat T = (cv::Mat_<float>(3,1) << transVec[0], transVec[1], transVec[2]);
+    const cv::Mat T(3, 1, CV_32FC1, (void *)transVec);
 #endif
 
-	//
-	for (std::size_t k = 0; k < num_images; ++k)
+	// undistort images
+	if (false)
 	{
-		const cv::Mat img_left_before(cv::imread(left_image_filenames[k], CV_LOAD_IMAGE_UNCHANGED));
-		const cv::Mat img_right_before(cv::imread(right_image_filenames[k], CV_LOAD_IMAGE_COLOR));
-
-		//
-		cv::Mat img_left_after, img_right_after;
-#if 0
-		cv::undistort(img_left_before, img_left_after, K_left, distCoeffs_left, K_left);
-		cv::undistort(img_right_before, img_right_after, K_right, distCoeffs_right, K_right);
-#else
-		const cv::Size imageSize_left = img_left_before.size(), imageSize_right = img_right_before.size();
-		cv::Mat map1_left, map2_left, map1_right, map2_right;
+#if __USE_REMAP
+		cv::Mat rmap_left[2], rmap_right[2];
 		cv::initUndistortRectifyMap(
 			K_left, distCoeffs_left, cv::Mat(),
 			cv::getOptimalNewCameraMatrix(K_left, distCoeffs_left, imageSize_left, 1, imageSize_left, 0),
-			imageSize_left, CV_16SC2, map1_left, map2_left
+			imageSize_left, CV_16SC2, rmap_left[0], rmap_left[1]
 		);
 		cv::initUndistortRectifyMap(
 			K_right, distCoeffs_right, cv::Mat(),
 			cv::getOptimalNewCameraMatrix(K_right, distCoeffs_right, imageSize_right, 1, imageSize_right, 0),
-			imageSize_right, CV_16SC2, map1_right, map2_right
+			imageSize_right, CV_16SC2, rmap_right[0], rmap_right[1]
 		);
-
-		cv::remap(img_left_before, img_left_after, map1_left, map2_left, cv::INTER_LINEAR);
-		cv::remap(img_right_before, img_right_after, map1_right, map2_right, cv::INTER_LINEAR);
 #endif
 
-		//
-		double minVal = 0.0, maxVal = 0.0;
-		cv::minMaxLoc(img_left_after, &minVal, &maxVal);
-
+		cv::Mat img_left_after, img_right_after;
 		cv::Mat img_left_after2;
-		img_left_after.convertTo(img_left_after2, CV_32FC1, 1.0f / (float)maxVal, 0.0f);
+		double minVal = 0.0, maxVal = 0.0;
+		for (std::size_t k = 0; k < num_images; ++k)
+		{
+			const cv::Mat img_left_before(cv::imread(left_image_filenames[k], CV_LOAD_IMAGE_UNCHANGED));
+			const cv::Mat img_right_before(cv::imread(right_image_filenames[k], CV_LOAD_IMAGE_COLOR));
 
-		cv::imshow("undistorted left image", img_left_after2);
-		cv::imshow("undistorted right image", img_right_after);
+#if __USE_REMAP
+			cv::remap(img_left_before, img_left_after, rmap_left[0], rmap_left[1], cv::INTER_LINEAR);
+			cv::remap(img_right_before, img_right_after, rmap_right[0], rmap_right[1], cv::INTER_LINEAR);
+#else
+			cv::undistort(img_left_before, img_left_after, K_left, distCoeffs_left, K_left);
+			cv::undistort(img_right_before, img_right_after, K_right, distCoeffs_right, K_right);
+#endif
 
-		cv::waitKey(0);
+			//
+			cv::minMaxLoc(img_left_after, &minVal, &maxVal);
+
+			img_left_after.convertTo(img_left_after2, CV_32FC1, 1.0f / (float)maxVal, 0.0f);
+
+			cv::imshow("undistorted left image", img_left_after2);
+			cv::imshow("undistorted right image", img_right_after);
+
+			cv::waitKey(0);
+		}
+	}
+
+	// rectify images
+	if (true)
+	{
+		cv::Mat R_left, R_right, P_left, P_right, Q;
+		cv::Rect validRoi_left, validRoi_right;
+
+		cv::stereoRectify(
+			K_left, distCoeffs_left,
+			K_right, distCoeffs_right,
+			imageSize_left, R, T, R_left, R_right, P_left, P_right, Q,
+			cv::CALIB_ZERO_DISPARITY, 1, imageSize_left, &validRoi_left, &validRoi_right
+		);
+
+		// OpenCV can handle left-right or up-down camera arrangements
+		const bool isVerticalStereo = std::fabs(P_right.at<double>(1, 3)) > std::fabs(P_right.at<double>(0, 3));
+
+		cv::Mat rmap_left[2], rmap_right[2];
+		cv::initUndistortRectifyMap(K_left, distCoeffs_left, R_left, P_left, imageSize_left, CV_16SC2, rmap_left[0], rmap_left[1]);
+		cv::initUndistortRectifyMap(K_right, distCoeffs_right, R_right, P_right, imageSize_right, CV_16SC2, rmap_right[0], rmap_right[1]);
+
+		cv::Mat img_left_after, img_right_after;
+		cv::Mat cimg_left_after, cimg_right_after, img_left_after2;
+		double minVal = 0.0, maxVal = 0.0;
+		for (std::size_t k = 0; k < num_images; ++k)
+		{
+			const cv::Mat img_left_before(cv::imread(left_image_filenames[k], CV_LOAD_IMAGE_UNCHANGED));
+			const cv::Mat img_right_before(cv::imread(right_image_filenames[k], CV_LOAD_IMAGE_COLOR));
+
+			cv::remap(img_left_before, img_left_after, rmap_left[0], rmap_left[1], CV_INTER_LINEAR);
+			cv::remap(img_right_before, img_right_after, rmap_right[0], rmap_right[1], CV_INTER_LINEAR);
+
+#if 0
+			std::ostringstream strm1, strm2;
+			strm1 << "./machine_vision_data/opencv/image_undistortion/rectified_image_left_" << k << ".png";
+			cv::imwrite(strm1.str(), img_left_after);
+			strm2 << "./machine_vision_data/opencv/image_undistortion/rectified_image_right_" << k << ".png";
+			cv::imwrite(strm2.str(), img_right_after);
+#endif
+
+			//
+			cv::minMaxLoc(img_left_after, &minVal, &maxVal);
+
+			img_left_after.convertTo(img_left_after2, CV_32FC1, 1.0f / (float)maxVal, 0.0f);
+
+			cv::imshow("rectified left image", img_left_after2);
+			cv::imshow("rectified right image", img_right_after);
+
+			cv::waitKey(0);
+		}
 	}
 
 	cv::destroyAllWindows();
