@@ -100,6 +100,7 @@ void camera_geometry();
 void camera_calibration();
 void stereo_camera_calibration();
 void image_undistortion();
+void image_rectification();
 void homography();
 void image_labeling_using_gpu();
 void stereo_matching();
@@ -201,6 +202,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::camera_calibration();
 		//my_opencv::stereo_camera_calibration();
 		my_opencv::image_undistortion();
+		//my_opencv::image_rectification();
 		//my_opencv::homography();
 
 		//my_opencv::stereo_matching();
