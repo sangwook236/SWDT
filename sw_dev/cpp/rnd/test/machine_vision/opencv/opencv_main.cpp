@@ -201,8 +201,8 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::camera_geometry();
 		//my_opencv::camera_calibration();
 		//my_opencv::stereo_camera_calibration();
-		my_opencv::image_undistortion();
-		//my_opencv::image_rectification();
+		//my_opencv::image_undistortion();
+		my_opencv::image_rectification();
 		//my_opencv::homography();
 
 		//my_opencv::stereo_matching();

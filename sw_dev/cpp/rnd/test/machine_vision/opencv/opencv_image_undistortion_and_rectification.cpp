@@ -1,7 +1,7 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
-#include <deque>
+#include <vector>
 #include <string>
 #include <iostream>
 
@@ -68,12 +68,12 @@ void rectify_images(const std::vector<cv::Mat> &input_images_left, const std::ve
 	cv::initUndistortRectifyMap(K_left, distCoeffs_left, R_left, P_left, imageSize_left, CV_16SC2, rmap_left[0], rmap_left[1]);
 	cv::initUndistortRectifyMap(K_right, distCoeffs_right, R_right, P_right, imageSize_right, CV_16SC2, rmap_right[0], rmap_right[1]);
 
-	cv::Mat img_left_after, img_right_after;
 	for (std::size_t k = 0; k < num_images; ++k)
 	{
 		const cv::Mat &img_left_before = input_images_left[k];
 		const cv::Mat &img_right_before = input_images_right[k];
 
+		cv::Mat img_left_after, img_right_after;
 		cv::remap(img_left_before, img_left_after, rmap_left[0], rmap_left[1], CV_INTER_LINEAR);
 		cv::remap(img_right_before, img_right_after, rmap_right[0], rmap_right[1], CV_INTER_LINEAR);
 
@@ -117,14 +117,14 @@ void load_kinect_sensor_parameters(
 	const double transVec[] = { 2.509097936007354e+01, 4.114956573893061e+00, -6.430074873604823e+00 };  // [mm]
 
 	//
-	K_ir = cv::Mat::zeros(3, 3, CV_64FC1);
+	cv::Mat(3, 3, CV_64FC1, cv::Scalar::all(0)).copyTo(K_ir);
 	K_ir.at<double>(0, 0) = fc_ir[0];
 	K_ir.at<double>(0, 1) = alpha_c_ir * fc_ir[0];
 	K_ir.at<double>(0, 2) = cc_ir[0];
 	K_ir.at<double>(1, 1) = fc_ir[1];
 	K_ir.at<double>(1, 2) = cc_ir[1];
 	K_ir.at<double>(2, 2) = 1.0;
-	K_rgb = cv::Mat::zeros(3, 3, CV_64FC1);
+	cv::Mat(3, 3, CV_64FC1, cv::Scalar::all(0)).copyTo(K_rgb);
 	K_rgb.at<double>(0, 0) = fc_rgb[0];
 	K_rgb.at<double>(0, 1) = alpha_c_rgb * fc_rgb[0];
 	K_rgb.at<double>(0, 2) = cc_rgb[0];
@@ -132,11 +132,11 @@ void load_kinect_sensor_parameters(
 	K_rgb.at<double>(1, 2) = cc_rgb[1];
 	K_rgb.at<double>(2, 2) = 1.0;
 
-	distCoeffs_ir = cv::Mat(1, 5, CV_64FC1, (void *)kc_ir);
-	distCoeffs_rgb = cv::Mat(1, 5, CV_64FC1, (void *)kc_rgb);
+	cv::Mat(1, 5, CV_64FC1, (void *)kc_ir).copyTo(distCoeffs_ir);
+	cv::Mat(1, 5, CV_64FC1, (void *)kc_rgb).copyTo(distCoeffs_rgb);
 
     cv::Rodrigues(cv::Mat(3, 1, CV_64FC1, (void *)rotVec), R_ir_to_rgb);
-    T_ir_to_rgb = cv::Mat(3, 1, CV_64FC1, (void *)transVec);
+	cv::Mat(3, 1, CV_64FC1, (void *)transVec).copyTo(T_ir_to_rgb);
 #else
 	const float fc_ir[] = { 5.865259629841016e+02f, 5.869119946890888e+02f };  // [pixel]
 	const float cc_ir[] = { 3.374030882445484e+02f, 2.486851671279394e+02f };  // [pixel]
@@ -171,40 +171,44 @@ void load_kinect_sensor_parameters(
 	K_rgb.at<float>(1, 2) = cc_rgb[1];
 	K_rgb.at<float>(2, 2) = 1.0f;
 
-	distCoeffs_ir = cv::Mat(1, 5, CV_32FC1, (void *)kc_ir);
-	distCoeffs_rgb = cv::Mat(1, 5, CV_32FC1, (void *)kc_rgb);
+	cv::Mat(1, 5, CV_32FC1, (void *)kc_ir).copyTo(distCoeffs_ir);
+	cv::Mat(1, 5, CV_32FC1, (void *)kc_rgb).copyTo(distCoeffs_rgb);
 
     cv::Rodrigues(cv::Mat(3, 1, CV_32FC1, (void *)rotVec), R_ir_to_rgb);
-    T_ir_to_rgb = cv::Mat(3, 1, CV_32FC1, (void *)transVec);
+    cv::Mat(3, 1, CV_32FC1, (void *)transVec).copyTo(T_ir_to_rgb);
 #endif
 }
 
 void kinect_image_undistortion()
 {
 	// prepare input images
-	std::deque<std::string> left_image_filenames;
+	const std::size_t num_images = 4;
+	const cv::Size imageSize_left(640, 480), imageSize_right(640, 480);
+
+	std::vector<std::string> left_image_filenames;
+	left_image_filenames.reserve(num_images);
 	left_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130530T103805.png");
 	left_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023152.png");
 	left_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023346.png");
 	left_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023359.png");
 
-	std::deque<std::string> right_image_filenames;
+	std::vector<std::string> right_image_filenames;
+	right_image_filenames.reserve(num_images);
 	right_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
 	right_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
 	right_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
 	right_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
 
-	const std::size_t num_images = 4;
-	const cv::Size imageSize_left(640, 480), imageSize_right(640, 480);
-
 	std::vector<cv::Mat> input_images_left, input_images_right;
+	input_images_left.reserve(num_images);
+	input_images_right.reserve(num_images);
 	for (std::size_t k = 0; k < num_images; ++k)
 	{
 		input_images_left.push_back(cv::imread(left_image_filenames[k], CV_LOAD_IMAGE_UNCHANGED));
 		input_images_right.push_back(cv::imread(right_image_filenames[k], CV_LOAD_IMAGE_COLOR));
 	}
 
-	// get the camera parameters of a Kinect sensor.
+	// load the camera parameters of a Kinect sensor.
 	cv::Mat K_left, K_right;
 	cv::Mat distCoeffs_left, distCoeffs_right;
 	cv::Mat R, T;
@@ -213,6 +217,7 @@ void kinect_image_undistortion()
 	// undistort images (left)
 	{
 		std::vector<cv::Mat> output_images;
+		output_images.reserve(num_images);
 		undistort_images(input_images_left, output_images, imageSize_left, K_left, distCoeffs_left);
 
 		// show results
@@ -232,6 +237,7 @@ void kinect_image_undistortion()
 	// undistort images (right)
 	{
 		std::vector<cv::Mat> output_images;
+		output_images.reserve(num_images);
 		undistort_images(input_images_right, output_images, imageSize_right, K_right, distCoeffs_right);
 
 		// show results
@@ -249,36 +255,50 @@ void kinect_image_undistortion()
 void kinect_image_rectification()
 {
 	// prepare input images
-	std::deque<std::string> left_image_filenames;
+	const std::size_t num_images = 4;
+	const cv::Size imageSize_left(640, 480), imageSize_right(640, 480);
+
+	std::vector<std::string> left_image_filenames;
+	left_image_filenames.reserve(num_images);
 	left_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130530T103805.png");
 	left_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023152.png");
 	left_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023346.png");
 	left_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023359.png");
 
-	std::deque<std::string> right_image_filenames;
+	std::vector<std::string> right_image_filenames;
+	right_image_filenames.reserve(num_images);
 	right_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
 	right_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
 	right_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
 	right_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
 
-	const std::size_t num_images = 4;
-	const cv::Size imageSize_left(640, 480), imageSize_right(640, 480);
-
 	std::vector<cv::Mat> input_images_left, input_images_right;
+	input_images_left.reserve(num_images);
+	input_images_right.reserve(num_images);
 	for (std::size_t k = 0; k < num_images; ++k)
 	{
 		input_images_left.push_back(cv::imread(left_image_filenames[k], CV_LOAD_IMAGE_UNCHANGED));
 		input_images_right.push_back(cv::imread(right_image_filenames[k], CV_LOAD_IMAGE_COLOR));
 	}
 
-	// get the camera parameters of a Kinect sensor.
+	// load the camera parameters of a Kinect sensor.
 	cv::Mat K_left, K_right;
 	cv::Mat distCoeffs_left, distCoeffs_right;
 	cv::Mat R, T;
 	load_kinect_sensor_parameters(K_left, distCoeffs_left, K_right, distCoeffs_right, R, T);
 
+	// FIXME [delete] >>
+	std::cout << K_left << std::endl;
+	std::cout << K_right << std::endl;
+	std::cout << distCoeffs_left << std::endl;
+	std::cout << distCoeffs_right << std::endl;
+	std::cout << R << std::endl;
+	std::cout << T << std::endl;
+
 	// rectify images
 	std::vector<cv::Mat> output_images_left, output_images_right;
+	output_images_left.reserve(num_images);
+	output_images_right.reserve(num_images);
 	rectify_images(
 		input_images_left, input_images_right, output_images_left, output_images_right,
 		imageSize_left, imageSize_right,
