@@ -243,7 +243,7 @@ void saveCameraParams(const std::string &filename,
 	}
 }
 
-static bool readStringList(const std::string &filename, std::vector<std::string> &l)
+bool readStringList(const std::string &filename, std::vector<std::string> &l)
 {
 	l.resize(0);
 	cv::FileStorage fs(filename, cv::FileStorage::READ);
@@ -261,8 +261,7 @@ static bool readStringList(const std::string &filename, std::vector<std::string>
 	return true;
 }
 
-
-static bool runAndSave(const std::string &outputFilename,
+bool runAndSave(const std::string &outputFilename,
 	const std::vector<std::vector<cv::Point2f> > &imagePoints,
 	cv::Size imageSize, cv::Size boardSize, Pattern patternType, float squareSize,
 	float aspectRatio, int flags, cv::Mat& cameraMatrix,

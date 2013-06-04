@@ -114,7 +114,6 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="opencv\opencv_image_undistortion_and_rectification.cpp" />
     <ClCompile Include="opencv\opencv_bag_of_words.cpp" />
     <ClCompile Include="opencv\opencv_camera_calibration.cpp" />
     <ClCompile Include="opencv\opencv_camera_geometry.cpp" />
@@ -155,7 +154,9 @@
     <ClCompile Include="opencv\opencv_image_operation.cpp" />
     <ClCompile Include="opencv\opencv_image_processing_using_gpu.cpp" />
     <ClCompile Include="opencv\opencv_image_pyramid.cpp" />
+    <ClCompile Include="opencv\opencv_image_rectification.cpp" />
     <ClCompile Include="opencv\opencv_image_sequence.cpp" />
+    <ClCompile Include="opencv\opencv_image_undistortion.cpp" />
     <ClCompile Include="opencv\opencv_iterative_closest_point.cpp" />
     <ClCompile Include="opencv\opencv_kalman_filtering.cpp" />
     <ClCompile Include="opencv\opencv_learning.cpp" />

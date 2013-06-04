@@ -279,7 +279,10 @@
     <ClCompile Include="opencv\opencv_stereo_camera_calibration.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
-    <ClCompile Include="opencv\opencv_image_undistortion_and_rectification.cpp">
+    <ClCompile Include="opencv\opencv_image_rectification.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_undistortion.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
   </ItemGroup>

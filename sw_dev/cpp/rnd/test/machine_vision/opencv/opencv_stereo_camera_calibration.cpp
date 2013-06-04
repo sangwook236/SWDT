@@ -198,7 +198,7 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 		std::cout << "Error: can not save the intrinsic parameters" << std::endl;
 
 	// OpenCV can handle left-right or up-down camera arrangements
-	bool isVerticalStereo = std::fabs(P2.at<double>(1, 3)) > std::fabs(P2.at<double>(0, 3));
+	const bool isVerticalStereo = std::fabs(P2.at<double>(1, 3)) > std::fabs(P2.at<double>(0, 3));
 
 	// COMPUTE AND DISPLAY RECTIFICATION
 	if (!showRectified)
@@ -232,7 +232,7 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 		P2 = cameraMatrix[1];
 	}
 
-	//Precompute maps for cv::remap()
+	// Precompute maps for cv::remap()
 	cv::initUndistortRectifyMap(cameraMatrix[0], distCoeffs[0], R1, P1, imageSize, CV_16SC2, rmap[0][0], rmap[0][1]);
 	cv::initUndistortRectifyMap(cameraMatrix[1], distCoeffs[1], R2, P2, imageSize, CV_16SC2, rmap[1][0], rmap[1][1]);
 
@@ -379,7 +379,7 @@ void stereo_camera_calibration()
 #endif
 
 	std::vector<std::string> imagelist;
-	bool ok = local::readStringList(imagelistfn, imagelist);
+	const bool ok = local::readStringList(imagelistfn, imagelist);
 	if (!ok || imagelist.empty())
 	{
 		std::cout << "can not open " << imagelistfn << " or the std::string list is empty" << std::endl;
