@@ -62,6 +62,136 @@ void undistort_images_using_opencv(
 	}
 }
 
+// [ref] undistort_images_using_formula() in opencv_image_undistortion.cop
+template <typename T>
+void undistort_images_using_formula(
+	const std::vector<cv::Mat> &input_images, std::vector<cv::Mat> &output_images,
+	const cv::Size &imageSize, const cv::Mat &K, const cv::Mat &distCoeffs
+)
+{
+	// [ref] "Joint Depth and Color Camera Calibration with Distortion Correction", D. Herrera C., J. Kannala, & J. Heikkila, TPAMI, 2012
+
+	// homogeneous image coordinates: zero-based coordinates
+	cv::Mat IC_homo(3, imageSize.height * imageSize.width, CV_64FC1, cv::Scalar::all(1));
+	{
+#if 0
+		// 0 0 0 ...   0 1 1 1 ...   1 ... 639 639 639 ... 639
+		// 0 1 2 ... 479 0 1 2 ... 479 ...   0   1   2 ... 479
+
+		cv::Mat arr(1, imageSize.height, CV_64FC1);
+		for (int i = 0; i < imageSize.height; ++i)
+			arr.at<double>(0, i) = (double)i;
+
+		for (int i = 0; i < imageSize.width; ++i)
+		{
+			IC_homo(cv::Range(0, 1), cv::Range(i * imageSize.height, (i + 1) * imageSize.height)).setTo(cv::Scalar::all(i));
+			arr.copyTo(IC_homo(cv::Range(1, 2), cv::Range(i * imageSize.height, (i + 1) * imageSize.height)));
+		}
+#else
+		// 0 1 2 ... 639 0 1 2 ... 639 ...   0   1   2 ... 639
+		// 0 0 0 ...   0 1 1 1 ...   1 ... 479 479 479 ... 479
+
+		cv::Mat arr(1, imageSize.width, CV_64FC1);
+		for (int i = 0; i < imageSize.width; ++i)
+			arr.at<double>(0, i) = (double)i;
+
+		for (int i = 0; i < imageSize.height; ++i)
+		{
+			arr.copyTo(IC_homo(cv::Range(0, 1), cv::Range(i * imageSize.width, (i + 1) * imageSize.width)));
+			IC_homo(cv::Range(1, 2), cv::Range(i * imageSize.width, (i + 1) * imageSize.width)).setTo(cv::Scalar::all(i));
+		}
+#endif
+	}
+
+	// homogeneous normalized camera coordinates
+	const cv::Mat CC_norm(K.inv() * IC_homo);
+
+	// apply distortion
+	cv::Mat IC_homo_undist;
+	{
+		//const cv::Mat xn(CC_norm(cv::Range(0,1), cv::Range::all()));
+		const cv::Mat xn(CC_norm(cv::Range(0,1), cv::Range::all()) / CC_norm(cv::Range(2,3), cv::Range::all()));
+		//const cv::Mat yn(CC_norm(cv::Range(1,2), cv::Range::all()));
+		const cv::Mat yn(CC_norm(cv::Range(1,2), cv::Range::all()) / CC_norm(cv::Range(2,3), cv::Range::all()));
+
+		const cv::Mat xn2(xn.mul(xn));
+		const cv::Mat yn2(yn.mul(yn));
+		const cv::Mat xnyn(xn.mul(yn));
+		const cv::Mat r2(xn2 + yn2);
+		const cv::Mat r4(r2.mul(r2));
+		const cv::Mat r6(r4.mul(r2));
+
+		const double &k1 = distCoeffs.at<double>(0);
+		const double &k2 = distCoeffs.at<double>(1);
+		const double &k3 = distCoeffs.at<double>(2);
+		const double &k4 = distCoeffs.at<double>(3);
+		const double &k5 = distCoeffs.at<double>(4);
+
+		const cv::Mat xg(2.0 * k3 * xnyn + k4 * (r2 + 2.0 * xn2));
+		const cv::Mat yg(k3 * (r2 + 2.0 * yn2) + 2.0 * k4 * xnyn);
+
+		const cv::Mat coeff(1.0 + k1 * r2 + k2 * r4 + k5 * r6);
+		cv::Mat xk(3, imageSize.height * imageSize.width, CV_64FC1, cv::Scalar::all(1));
+		cv::Mat(coeff.mul(xn) + xg).copyTo(xk(cv::Range(0,1), cv::Range::all()));
+		cv::Mat(coeff.mul(yn) + yg).copyTo(xk(cv::Range(1,2), cv::Range::all()));
+
+		IC_homo_undist = K * xk;
+	}
+
+	for (std::vector<cv::Mat>::const_iterator cit = input_images.begin(); cit != input_images.end(); ++cit)
+	{
+		const cv::Mat &img_before = *cit;
+
+		cv::Mat img_after(img_before.size(), img_before.type(), cv::Scalar::all(0));
+		for (int idx = 0; idx < imageSize.height*imageSize.width; ++idx)
+		{
+#if 0
+			// don't apply interpolation.
+			const int &cc_new = cvRound(IC_homo.at<double>(0,idx));
+			const int &rr_new = cvRound(IC_homo.at<double>(1,idx));
+			const int &cc = cvRound(IC_homo_undist.at<double>(0,idx));
+			const int &rr = cvRound(IC_homo_undist.at<double>(1,idx));
+			if (0 <= cc && cc < imageSize.width && 0 <= rr && rr < imageSize.height)
+			{
+				// TODO [check] >> why is the code below correctly working?
+				//img_after.at<T>(rr, cc) = img_before.at<T>(rr_new, cc_new);
+				img_after.at<T>(rr_new, cc_new) = img_before.at<T>(rr, cc);
+			}
+#else
+			// apply interpolation.
+
+			// TODO [enhance] >> speed up.
+
+			const int &cc_new = cvRound(IC_homo.at<double>(0,idx));
+			const int &rr_new = cvRound(IC_homo.at<double>(1,idx));
+
+			const double &cc = IC_homo_undist.at<double>(0,idx);
+			const double &rr = IC_homo_undist.at<double>(1,idx);
+			const int cc_0 = cvFloor(cc), cc_1 = cc_0 + 1;
+			const int rr_0 = cvFloor(rr), rr_1 = rr_0 + 1;
+			const double alpha_cc = cc - cc_0, alpha_rr = rr - rr_0;
+			if (0 <= cc_0 && cc_0 < imageSize.width - 1 && 0 <= rr_0 && rr_0 < imageSize.height - 1)
+			{
+				img_after.at<T>(rr_new, cc_new) =
+					(1.0 - alpha_rr) * (1.0 - alpha_cc) * img_before.at<T>(rr_0, cc_0) +
+					(1.0 - alpha_rr) * alpha_cc * img_before.at<T>(rr_0, cc_1) +
+					alpha_rr * (1.0 - alpha_cc) * img_before.at<T>(rr_1, cc_0) +
+					alpha_rr * alpha_cc * img_before.at<T>(rr_1, cc_1);
+			}
+#endif
+		}
+
+#if 0
+		static int k = 0;
+		std::ostringstream strm;
+		strm << "./machine_vision_data/opencv/image_undistortion/undistorted_image_" << k++ << ".png";
+		cv::imwrite(strm.str(), img_after);
+#endif
+
+		output_images.push_back(img_after);
+	}
+}
+
 void rectify_images_using_opencv(
 	const std::vector<cv::Mat> &input_images_left, const std::vector<cv::Mat> &input_images_right, std::vector<cv::Mat> &output_images_left, std::vector<cv::Mat> &output_images_right,
 	const cv::Size &imageSize_left, const cv::Size &imageSize_right,
@@ -119,8 +249,7 @@ void rectify_images_using_opencv(
 void rectify_kinect_images_from_IR_to_RGB_using_depth(
 	const std::vector<cv::Mat> &input_images_left, const std::vector<cv::Mat> &input_images_right, std::vector<cv::Mat> &output_images_left, std::vector<cv::Mat> &output_images_right,
 	const cv::Size &imageSize_left, const cv::Size &imageSize_right,
-	const cv::Mat &K_left, const cv::Mat &K_right, const cv::Mat &distCoeffs_left, const cv::Mat &distCoeffs_right,
-	const cv::Mat &R, const cv::Mat &T
+	const cv::Mat &K_left, const cv::Mat &K_right, const cv::Mat &R, const cv::Mat &T
 )
 {
 	const std::size_t num_images = input_images_left.size();
@@ -189,7 +318,7 @@ void rectify_kinect_images_from_IR_to_RGB_using_depth(
 				img_left_mapped.at<unsigned short>(rr, cc) = (unsigned short)cvRound(CC_left.at<double>(2, idx));
 		}
 
-#if 0
+#if 1
 		std::ostringstream strm1, strm2;
 		strm1 << "./machine_vision_data/opencv/image_undistortion/rectified_image_left_" << k << ".png";
 		cv::imwrite(strm1.str(), img_left_mapped);
@@ -206,8 +335,7 @@ void rectify_kinect_images_from_IR_to_RGB_using_depth(
 void rectify_kinect_images_from_RGB_to_IR_using_depth(
 	const std::vector<cv::Mat> &input_images_left, const std::vector<cv::Mat> &input_images_right, std::vector<cv::Mat> &output_images_left, std::vector<cv::Mat> &output_images_right,
 	const cv::Size &imageSize_left, const cv::Size &imageSize_right,
-	const cv::Mat &K_left, const cv::Mat &K_right, const cv::Mat &distCoeffs_left, const cv::Mat &distCoeffs_right,
-	const cv::Mat &R, const cv::Mat &T
+	const cv::Mat &K_left, const cv::Mat &K_right, const cv::Mat &R, const cv::Mat &T
 )
 {
 	throw std::runtime_error("not yet implemented");
@@ -239,8 +367,8 @@ void load_kinect_sensor_parameters_from_IR_to_RGB(
 	const double fc_rgb[] = { 5.248648751941851e+02, 5.268281060449414e+02 };  // [pixel]
 	const double cc_rgb[] = { 3.267484107269922e+02, 2.618261807606497e+02 };  // [pixel]
 	const double alpha_c_rgb = 0.0;
-	const double kc_rgb[] = { 2.796770514235670e-01, -1.112507253647945e+00, 9.265501548915561e-04, 2.428229310663184e-03, 1.744019737212440e+00 };  // 5x1 vector
-	//const double kc_rgb[] = { 2.796770514235670e-01, -1.112507253647945e+00, 9.265501548915561e-04, 2.428229310663184e-03, 1.744019737212440e+00, 0.0, 0.0, 0.0 };  // 8x1 vector
+	//const double kc_rgb[] = { 2.796770514235670e-01, -1.112507253647945e+00, 9.265501548915561e-04, 2.428229310663184e-03, 1.744019737212440e+00 };  // 5x1 vector
+	const double kc_rgb[] = { 2.796770514235670e-01, -1.112507253647945e+00, 9.265501548915561e-04, 2.428229310663184e-03, 1.744019737212440e+00, 0.0, 0.0, 0.0 };  // 8x1 vector
 
 	const double rotVec[] = { -1.936270295074452e-03, 1.331596538715070e-02, 3.404073398703758e-03 };
 	const double transVec[] = { 2.515260082139980e+01, 4.059127243511693e+00, -5.588303932036697e+00 };  // [mm]
@@ -256,8 +384,8 @@ void load_kinect_sensor_parameters_from_IR_to_RGB(
 	const double fc_rgb[] = { 5.256215953836251e+02, 5.278165866956751e+02 };  // [pixel]
 	const double cc_rgb[] = { 3.260532981578608e+02, 2.630788286947369e+02 };  // [pixel]
 	const double alpha_c_rgb = 0.0;
-	const double kc_rgb[] = { 2.394862387380747e-01, -5.840355691714197e-01, 2.567740590187774e-03, 2.044179978023951e-03, 0.0 };  // 5x1 vector
-	//const double kc_rgb[] = { 2.394862387380747e-01, -5.840355691714197e-01, 2.567740590187774e-03, 2.044179978023951e-03, 0.0, 0.0, 0.0, 0.0 };  // 8x1 vector
+	//const double kc_rgb[] = { 2.394862387380747e-01, -5.840355691714197e-01, 2.567740590187774e-03, 2.044179978023951e-03, 0.0 };  // 5x1 vector
+	const double kc_rgb[] = { 2.394862387380747e-01, -5.840355691714197e-01, 2.567740590187774e-03, 2.044179978023951e-03, 0.0, 0.0, 0.0, 0.0 };  // 8x1 vector
 
 	const double rotVec[] = { 1.121432126402549e-03, 1.535221550916760e-02, 3.701648572107407e-03 };
 	const double transVec[] = { 2.512732389978993e+01, 3.724869927389498e+00, -4.534758982979088e+00 };  // [mm]
@@ -279,8 +407,8 @@ void load_kinect_sensor_parameters_from_IR_to_RGB(
 	K_rgb.at<double>(1, 2) = cc_rgb[1];
 	K_rgb.at<double>(2, 2) = 1.0;
 
-	cv::Mat(5, 1, CV_64FC1, (void *)kc_ir).copyTo(distCoeffs_ir);
-	cv::Mat(5, 1, CV_64FC1, (void *)kc_rgb).copyTo(distCoeffs_rgb);
+	cv::Mat(8, 1, CV_64FC1, (void *)kc_ir).copyTo(distCoeffs_ir);
+	cv::Mat(8, 1, CV_64FC1, (void *)kc_rgb).copyTo(distCoeffs_rgb);
 
     cv::Rodrigues(cv::Mat(3, 1, CV_64FC1, (void *)rotVec), R_ir_to_rgb);
 	cv::Mat(3, 1, CV_64FC1, (void *)transVec).copyTo(T_ir_to_rgb);
@@ -306,14 +434,14 @@ void load_kinect_sensor_parameters_from_RGB_to_IR(
 	const double fc_rgb[] = { 5.248648079874888e+02, 5.268280486062615e+02 };  // [pixel]
 	const double cc_rgb[] = { 3.267487100838014e+02, 2.618261169946102e+02 };  // [pixel]
 	const double alpha_c_rgb = 0.0;
-	const double kc_rgb[] = { 2.796764337988712e-01, -1.112497355183840e+00, 9.264749543097661e-04, 2.428507887293728e-03, 1.743975665436613e+00 };  // 5x1 vector
-	//const double kc_rgb[] = { 2.796764337988712e-01, -1.112497355183840e+00, 9.264749543097661e-04, 2.428507887293728e-03, 1.743975665436613e+00, 0.0, 0.0, 0.0 };  // 8x1 vector
+	//const double kc_rgb[] = { 2.796764337988712e-01, -1.112497355183840e+00, 9.264749543097661e-04, 2.428507887293728e-03, 1.743975665436613e+00 };  // 5x1 vector
+	const double kc_rgb[] = { 2.796764337988712e-01, -1.112497355183840e+00, 9.264749543097661e-04, 2.428507887293728e-03, 1.743975665436613e+00, 0.0, 0.0, 0.0 };  // 8x1 vector
 
 	const double fc_ir[] = { 5.865282023957649e+02, 5.866624209441105e+02 };  // [pixel]
 	const double cc_ir[] = { 3.371875014947813e+02, 2.485295493095561e+02 };  // [pixel]
 	const double alpha_c_ir = 0.0;
-	const double kc_ir[] = { -1.227176734054719e-01, 5.028746725848668e-01, -2.563029340202278e-03, 6.916996280663117e-03, -5.512162545452755e-01 };  // 5x1 vector
-	//const double kc_ir[] = { -1.227176734054719e-01, 5.028746725848668e-01, -2.563029340202278e-03, 6.916996280663117e-03, -5.512162545452755e-01, 0.0, 0.0, 0.0 };  // 8x1 vector
+	//const double kc_ir[] = { -1.227176734054719e-01, 5.028746725848668e-01, -2.563029340202278e-03, 6.916996280663117e-03, -5.512162545452755e-01 };  // 5x1 vector
+	const double kc_ir[] = { -1.227176734054719e-01, 5.028746725848668e-01, -2.563029340202278e-03, 6.916996280663117e-03, -5.512162545452755e-01, 0.0, 0.0, 0.0 };  // 8x1 vector
 
 	const double rotVec[] = { 1.935939237060295e-03, -1.331788958930441e-02, -3.404128236480992e-03 };
 	const double transVec[] = { -2.515262012891160e+01, -4.059118899373607e+00, 5.588237589014362e+00 };  // [mm]
@@ -323,14 +451,14 @@ void load_kinect_sensor_parameters_from_RGB_to_IR(
 	const double fc_rgb[] = { 5.256217798767822e+02, 5.278167798992870e+02 };  // [pixel]
 	const double cc_rgb[] = { 3.260534767468189e+02, 2.630800669346188e+02 };  // [pixel]
 	const double alpha_c_rgb = 0.0;
-	const double kc_rgb[] = { 2.394861400525463e-01, -5.840298777969020e-01, 2.568959896208732e-03, 2.044336479083819e-03, 0.0 };  // 5x1 vector
-	//const double kc_rgb[] = { 2.394861400525463e-01, -5.840298777969020e-01, 2.568959896208732e-03, 2.044336479083819e-03, 0.0, 0.0, 0.0, 0.0 };  // 8x1 vector
+	//const double kc_rgb[] = { 2.394861400525463e-01, -5.840298777969020e-01, 2.568959896208732e-03, 2.044336479083819e-03, 0.0 };  // 5x1 vector
+	const double kc_rgb[] = { 2.394861400525463e-01, -5.840298777969020e-01, 2.568959896208732e-03, 2.044336479083819e-03, 0.0, 0.0, 0.0, 0.0 };  // 8x1 vector
 
 	const double fc_ir[] = { 5.864904832545356e+02, 5.867308191567271e+02 };  // [pixel]
 	const double cc_ir[] = { 3.376079004969836e+02, 2.480098376453992e+02 };  // [pixel]
 	const double alpha_c_ir = 0.0;
-	const double kc_ir[] = { -1.123902857373373e-01, 3.552211727724343e-01, -2.823183218548772e-03, 7.246270574438420e-03, 0.0 };  // 5x1 vector
-	//const double kc_ir[] = { -1.123902857373373e-01, 3.552211727724343e-01, -2.823183218548772e-03, 7.246270574438420e-03, 0.0, 0.0, 0.0, 0.0 };  // 8x1 vector
+	//const double kc_ir[] = { -1.123902857373373e-01, 3.552211727724343e-01, -2.823183218548772e-03, 7.246270574438420e-03, 0.0 };  // 5x1 vector
+	const double kc_ir[] = { -1.123902857373373e-01, 3.552211727724343e-01, -2.823183218548772e-03, 7.246270574438420e-03, 0.0, 0.0, 0.0, 0.0 };  // 8x1 vector
 
 	const double rotVec[] = { -1.121214964017936e-03, -1.535031632771925e-02, -3.701579055761772e-03 };
 	const double transVec[] = { -2.512730902761022e+01, -3.724884753207001e+00, 4.534776794502955e+00 };  // [mm]
@@ -352,14 +480,14 @@ void load_kinect_sensor_parameters_from_RGB_to_IR(
 	K_ir.at<double>(1, 2) = cc_ir[1];
 	K_ir.at<double>(2, 2) = 1.0;
 
-	cv::Mat(5, 1, CV_64FC1, (void *)kc_rgb).copyTo(distCoeffs_rgb);
-	cv::Mat(5, 1, CV_64FC1, (void *)kc_ir).copyTo(distCoeffs_ir);
+	cv::Mat(8, 1, CV_64FC1, (void *)kc_rgb).copyTo(distCoeffs_rgb);
+	cv::Mat(8, 1, CV_64FC1, (void *)kc_ir).copyTo(distCoeffs_ir);
 
     cv::Rodrigues(cv::Mat(3, 1, CV_64FC1, (void *)rotVec), R_rgb_to_ir);
 	cv::Mat(3, 1, CV_64FC1, (void *)transVec).copyTo(T_rgb_to_ir);
 }
 
-void kinect_image_rectification_using_opencv(const bool use_IR_to_RGB)
+void kinect_image_rectification_using_opencv(const bool use_IR_to_RGB, const cv::Mat &K_ir, const cv::Mat &K_rgb, const cv::Mat &distCoeffs_ir, const cv::Mat &distCoeffs_rgb, const cv::Mat &R, const cv::Mat &T)
 {
 	// prepare input images
 	const std::size_t num_images = 4;
@@ -387,15 +515,6 @@ void kinect_image_rectification_using_opencv(const bool use_IR_to_RGB)
 		ir_input_images.push_back(cv::imread(ir_image_filenames[k], CV_LOAD_IMAGE_UNCHANGED));
 		rgb_input_images.push_back(cv::imread(rgb_image_filenames[k], CV_LOAD_IMAGE_COLOR));
 	}
-
-	// load the camera parameters of a Kinect sensor
-	cv::Mat K_ir, K_rgb;
-	cv::Mat distCoeffs_ir, distCoeffs_rgb;
-	cv::Mat R, T;
-	if (use_IR_to_RGB)
-		load_kinect_sensor_parameters_from_IR_to_RGB(K_ir, distCoeffs_ir, K_rgb, distCoeffs_rgb, R, T);
-	else
-		load_kinect_sensor_parameters_from_RGB_to_IR(K_rgb, distCoeffs_rgb, K_ir, distCoeffs_ir, R, T);
 
 	// rectify images
 	std::vector<cv::Mat> ir_output_images, rgb_output_images;
@@ -445,7 +564,7 @@ void kinect_image_rectification_using_opencv(const bool use_IR_to_RGB)
 	cv::destroyAllWindows();
 }
 
-void kinect_image_rectification_using_depth(const bool use_IR_to_RGB)
+void kinect_image_rectification_using_depth(const bool use_IR_to_RGB, const cv::Mat &K_ir, const cv::Mat &K_rgb, const cv::Mat &distCoeffs_ir, const cv::Mat &distCoeffs_rgb, const cv::Mat &R, const cv::Mat &T)
 {
 	// prepare input images
 	const std::size_t num_images = 4;
@@ -474,27 +593,33 @@ void kinect_image_rectification_using_depth(const bool use_IR_to_RGB)
 		rgb_input_images.push_back(cv::imread(rgb_image_filenames[k], CV_LOAD_IMAGE_COLOR));
 	}
 
-	// load the camera parameters of a Kinect sensor
-	cv::Mat K_ir, K_rgb;
-	cv::Mat distCoeffs_ir, distCoeffs_rgb;
-	cv::Mat R, T;
-	if (use_IR_to_RGB)
-		load_kinect_sensor_parameters_from_IR_to_RGB(K_ir, distCoeffs_ir, K_rgb, distCoeffs_rgb, R, T);
-	else
-		load_kinect_sensor_parameters_from_RGB_to_IR(K_rgb, distCoeffs_rgb, K_ir, distCoeffs_ir, R, T);
-
 	// undistort images
 	// TODO [check] >> is undistortion required before rectification?
-	//	I think undistortion process don't be required before rectification.
-	//	During rectification process, image undistortion is applied. (?)
-	if (false)
+	//	Undistortion process is required before rectification,
+	//	since currently image undistortion is not applied during rectification process in rectify_kinect_images_from_IR_to_RGB_using_depth() & rectify_kinect_images_from_RGB_to_IR_using_depth().
+	if (true)
 	{
 		std::vector<cv::Mat> ir_input_images2, rgb_input_images2;
 		ir_input_images2.reserve(num_images);
 		rgb_input_images2.reserve(num_images);
 
+#if 0
 		undistort_images_using_opencv(ir_input_images, ir_input_images2, imageSize_ir, K_ir, distCoeffs_ir);
 		undistort_images_using_opencv(rgb_input_images, rgb_input_images2, imageSize_rgb, K_rgb, distCoeffs_rgb);
+#else
+		local::undistort_images_using_formula<unsigned short>(ir_input_images, ir_input_images2, imageSize_ir, K_ir, distCoeffs_ir);
+
+		std::vector<cv::Mat> rgb_input_gray_images;
+		rgb_input_gray_images.reserve(num_images);
+		for (std::vector<cv::Mat>::const_iterator cit = rgb_input_images.begin(); cit != rgb_input_images.end(); ++cit)
+		{
+			cv::Mat gray;
+			cv::cvtColor(*cit, gray, CV_BGR2GRAY);
+			rgb_input_gray_images.push_back(gray);
+		}
+
+		local::undistort_images_using_formula<unsigned char>(rgb_input_gray_images, rgb_input_images2, imageSize_rgb, K_rgb, distCoeffs_rgb);
+#endif
 
 		ir_input_images.assign(ir_input_images2.begin(), ir_input_images2.end());
 		rgb_input_images.assign(rgb_input_images2.begin(), rgb_input_images2.end());
@@ -511,13 +636,13 @@ void kinect_image_rectification_using_depth(const bool use_IR_to_RGB)
 			rectify_kinect_images_from_IR_to_RGB_using_depth(
 				ir_input_images, rgb_input_images, ir_output_images, rgb_output_images,
 				imageSize_ir, imageSize_rgb,
-				K_ir, K_rgb, distCoeffs_ir, distCoeffs_rgb, R, T
+				K_ir, K_rgb, R, T
 			);
 		else
 			rectify_kinect_images_from_RGB_to_IR_using_depth(
 				rgb_input_images, ir_input_images, rgb_output_images, ir_output_images,
 				imageSize_rgb, imageSize_ir,
-				K_rgb, K_ir, distCoeffs_rgb, distCoeffs_ir, R, T
+				K_rgb, K_ir, R, T
 			);  // not yet implemented
 
 		const int64 elapsed = cv::getTickCount() - start;
@@ -804,9 +929,18 @@ void kinect_image_rectification()
 {
 	const bool use_IR_to_RGB = true;
 
-	//local::kinect_image_rectification_using_opencv(use_IR_to_RGB);  // using OpenCV
+	// load the camera parameters of a Kinect sensor
+	cv::Mat K_ir, K_rgb;
+	cv::Mat distCoeffs_ir, distCoeffs_rgb;
+	cv::Mat R, T;
+	if (use_IR_to_RGB)
+		local::load_kinect_sensor_parameters_from_IR_to_RGB(K_ir, distCoeffs_ir, K_rgb, distCoeffs_rgb, R, T);
+	else
+		local::load_kinect_sensor_parameters_from_RGB_to_IR(K_rgb, distCoeffs_rgb, K_ir, distCoeffs_ir, R, T);
 
-	local::kinect_image_rectification_using_depth(use_IR_to_RGB);  // using Kinect's depth information
+	//local::kinect_image_rectification_using_opencv(use_IR_to_RGB, K_ir, K_rgb, distCoeffs_ir, distCoeffs_rgb, R, T);  // using OpenCV
+
+	local::kinect_image_rectification_using_depth(use_IR_to_RGB, K_ir, K_rgb, distCoeffs_ir, distCoeffs_rgb, R, T);  // using Kinect's depth information
 }
 
 }  // namespace my_opencv

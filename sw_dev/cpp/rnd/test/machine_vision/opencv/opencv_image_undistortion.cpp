@@ -157,6 +157,9 @@ void undistort_images_using_formula(
 			}
 #else
 			// apply interpolation.
+
+			// TODO [enhance] >> speed up.
+
 			const int &cc_new = cvRound(IC_homo.at<double>(0,idx));
 			const int &rr_new = cvRound(IC_homo.at<double>(1,idx));
 
@@ -443,11 +446,19 @@ void kinect_image_undistortion()
 		{
 			const int64 start = cv::getTickCount();
 
-#if 1
+#if 0
 			local::undistort_images_using_opencv(input_images, output_images, imageSize, K_rgb, distCoeffs_rgb);
 #else
-			// not working
-			local::undistort_images_using_formula<>(input_images, output_images, imageSize, K_rgb, distCoeffs_rgb);
+			std::vector<cv::Mat> input_gray_images;
+			input_gray_images.reserve(num_images);
+			for (std::vector<cv::Mat>::const_iterator cit = input_images.begin(); cit != input_images.end(); ++cit)
+			{
+				cv::Mat gray;
+				cv::cvtColor(*cit, gray, CV_BGR2GRAY);
+				input_gray_images.push_back(gray);
+			}
+
+			local::undistort_images_using_formula<unsigned char>(input_gray_images, output_images, imageSize, K_rgb, distCoeffs_rgb);
 #endif
 
 			const int64 elapsed = cv::getTickCount() - start;
