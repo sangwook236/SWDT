@@ -11,7 +11,7 @@
 
 % at desire.kaist.ac.kr
 %addpath('D:\work_center\sw_dev\matlab\rnd\src\directional_statistics\circstat\CircStat2012a');
-%addpath('D:\working_copy\swl_https\matlab\src\probabilistic_graphical_model\pmtk_extension');
+%addpath('D:\working_copy\swl_https\matlab\src\probabilistic_graphical_model\pmtk');
 %addpath('D:\working_copy\swl_https\matlab\src\em');
 %addpath('D:\working_copy\swl_https\matlab\src\directional_statistics');
 %run('D:\work_center\sw_dev\matlab\rnd\src\probabilistic_graphical_model\pmtk\pmtk3-1nov12\initPmtk3.m');
