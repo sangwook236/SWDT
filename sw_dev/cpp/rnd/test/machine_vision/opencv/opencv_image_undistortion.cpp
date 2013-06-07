@@ -448,6 +448,8 @@ void kinect_image_undistortion()
 
 #if 0
 			local::undistort_images_using_opencv(input_images, output_images, imageSize, K_rgb, distCoeffs_rgb);
+#elif 1
+			local::undistort_images_using_formula<cv::Vec3b>(input_images, output_images, imageSize, K_rgb, distCoeffs_rgb);
 #else
 			std::vector<cv::Mat> input_gray_images;
 			input_gray_images.reserve(num_images);

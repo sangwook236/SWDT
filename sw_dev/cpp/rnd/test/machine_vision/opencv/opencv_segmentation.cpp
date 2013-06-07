@@ -534,8 +534,8 @@ void segmentation()
 		return;
 	}
 
-	local::watershed_algorithm(img);
-	//local::grabcut_algorithm(img);
+	//local::watershed_algorithm(img);
+	local::grabcut_algorithm(img);
 
 	//
 	//cv::imshow(windowName, img);
