@@ -8,7 +8,7 @@
 		<Project filename="../test/graph_analysis/graph_analysis_cb10.cbp" />
 		<Project filename="../test/hand_analysis/hand_analysis_cb10.cbp" />
 		<Project filename="../test/machine_learning/machine_learning_cb10.cbp" />
-		<Project filename="../test/machine_vision/machine_vision_cb10.cbp" active="1" />
+		<Project filename="../test/machine_vision/machine_vision_cb10.cbp" />
 		<Project filename="../test/matlab/matlab_cb10.cbp" />
 		<Project filename="../test/neural_network/neural_network_cb10.cbp" />
 		<Project filename="../test/object_detection/object_detection_cb10.cbp" />
@@ -19,6 +19,7 @@
 		<Project filename="../test/probabilistic_graphical_model/probabilistic_graphical_model_cb10.cbp" />
 		<Project filename="../test/robust_estimation/robust_estimation_cb10.cbp" />
 		<Project filename="../test/search_algorithm/search_algorithm_cb10.cbp" />
+		<Project filename="../test/segmentation/segmentation_cb10.cbp" active="1" />
 		<Project filename="../test/shape_analysis/shape_analysis_cb10.cbp" />
 		<Project filename="../test/simulation/simulation_cb10.cbp" />
 	</Workspace>

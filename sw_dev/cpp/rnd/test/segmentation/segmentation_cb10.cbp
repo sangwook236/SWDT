@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="segmentation" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../bin/segmentation_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../bin/segmentation" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="/usr/local/include/" />
+			<Add directory="/usr/local/cuda/include/" />
+		</Compiler>
+		<Linker>
+			<Add library="opencv_core" />
+			<Add library="opencv_highgui" />
+			<Add library="opencv_imgproc" />
+			<Add library="cudart" />
+			<Add directory="/usr/local/lib/" />
+			<Add directory="/usr/local/cuda/lib64/" />
+		</Linker>
+		<Unit filename="gslic/gslic_main.cpp" />
+		<Unit filename="gslic_lib/FastImgSeg.cpp" />
+		<Unit filename="gslic_lib/FastImgSeg.h" />
+		<Unit filename="gslic_lib/cudaDefines.h" />
+		<Unit filename="gslic_lib/cudaImgTrans.cu" />
+		<Unit filename="gslic_lib/cudaImgTrans.h" />
+		<Unit filename="gslic_lib/cudaSegEngine.cu" />
+		<Unit filename="gslic_lib/cudaSegEngine.h" />
+		<Unit filename="gslic_lib/cudaSegSLIC.cu" />
+		<Unit filename="gslic_lib/cudaSegSLIC.h" />
+		<Unit filename="gslic_lib/cudaUtil.cu" />
+		<Unit filename="gslic_lib/cudaUtil.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

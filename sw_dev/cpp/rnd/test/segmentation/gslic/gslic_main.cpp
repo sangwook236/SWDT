@@ -30,18 +30,17 @@ void gslic_sample()
 	const double seg_weight = 0.3;
 
 	//
-	double minVal = 0.0, maxVal = 0.0;
 	cv::Mat mask;
 	for (std::list<std::string>::iterator it = rgb_filenames.begin(); it != rgb_filenames.end(); ++it)
     {
-		cv::Mat &img = cv::imread(*it, CV_LOAD_IMAGE_COLOR);
+		cv::Mat img(cv::imread(*it, CV_LOAD_IMAGE_COLOR));
 		if (img.empty())
 		{
 			std::cout << "fail to load image file: " << *it << std::endl;
 			continue;
 		}
 
-		// gSLIC currently only support 4-dimensional image 
+		// gSLIC currently only support 4-dimensional image
 		unsigned char *imgBuffer = new unsigned char [img.cols * img.rows * 4];
 		memset(imgBuffer, 0, sizeof(unsigned char) * img.cols * img.rows * 4);
 
@@ -89,6 +88,7 @@ void gslic_sample()
 #if 0
 		// segment indexes are stored in FastImgSeg::segMask
 		cv::Mat mask_tmp(img.size(), CV_32SC1, (void *)gslic.segMask);
+        double minVal = 0.0, maxVal = 0.0;
 		cv::minMaxLoc(mask_tmp, &minVal, &maxVal);
 		mask_tmp.convertTo(mask, CV_32FC1, 1.0 / maxVal, 0.0);
 
