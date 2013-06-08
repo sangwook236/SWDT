@@ -188,6 +188,12 @@ int gslic_main (int argc, char *argv[])
 			input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
 #endif
 
+			//
+			const int num_segments = 1200;
+			const SEGMETHOD seg_method = XYZ_SLIC;  // SLIC, RGB_SLIC, XYZ_SLIC
+			const double seg_weight = 0.3;
+
+#if 0
 			std::vector<cv::Mat> input_images;
 			input_images.reserve(input_file_list.size());
 			for (std::list<std::string>::iterator it = input_file_list.begin(); it != input_file_list.end(); ++it)
@@ -196,30 +202,27 @@ int gslic_main (int argc, char *argv[])
 				if (img.empty())
 				{
 					std::cout << "fail to load image file: " << *it << std::endl;
-					//continue;
-
-					// TODO [check] >> is it good?
-					input_images.push_back(cv::Mat());
+					continue;
 				}
-				else input_images.push_back(img);
 			}
 
-			//
-			const int num_segments = 1200;
-			const SEGMETHOD seg_method = XYZ_SLIC;  // SLIC, RGB_SLIC, XYZ_SLIC
-			const double seg_weight = 0.3;
-
-#if 0
 			local::gslic_sample(input_images, seg_method, seg_weight, num_segments);
 #else
 			cv::Mat superpixel_mask, superpixel_boundary;
-			for (std::vector<cv::Mat>::const_iterator cit = input_images.begin(); cit != input_images.end(); ++cit)
+			for (std::list<std::string>::iterator it = input_file_list.begin(); it != input_file_list.end(); ++it)
 			{
+				cv::Mat input_image(cv::imread(*it, CV_LOAD_IMAGE_COLOR));
+				if (input_image.empty())
+				{
+					std::cout << "fail to load image file: " << *it << std::endl;
+					continue;
+				}
+
 				{
 					const int64 start = cv::getTickCount();
 
 					// superpixel mask consists of segment indexes.
-					my_gslic::create_superpixel_by_gSLIC(*cit, superpixel_mask, seg_method, seg_weight, num_segments);
+					my_gslic::create_superpixel_by_gSLIC(input_image, superpixel_mask, seg_method, seg_weight, num_segments);
 					my_gslic::create_superpixel_boundary(superpixel_mask, superpixel_boundary);
 
 					const int64 elapsed = cv::getTickCount() - start;
@@ -229,28 +232,26 @@ int gslic_main (int argc, char *argv[])
 					std::cout << std::setprecision(4) << "elapsed time: " << etime <<  ", FPS: " << fps << std::endl;
 				}
 
+#if 0
 				// show superpixel mask
-				if (false)
-				{
-					cv::Mat mask;
-					double minVal = 0.0, maxVal = 0.0;
-					cv::minMaxLoc(superpixel_mask, &minVal, &maxVal);
-					superpixel_mask.convertTo(mask, CV_32FC1, 1.0 / maxVal, 0.0);
+				cv::Mat mask;
+				double minVal = 0.0, maxVal = 0.0;
+				cv::minMaxLoc(superpixel_mask, &minVal, &maxVal);
+				superpixel_mask.convertTo(mask, CV_32FC1, 1.0 / maxVal, 0.0);
 
-					cv::imshow("superpixels by gSLIC - mask", mask);
-				}
+				cv::imshow("superpixels by gSLIC - mask", mask);
+#endif
 
+#if 1
 				// show superpixel boundary
-				if (true)
-				{
-					//cv::Mat superpixel_boundary;
-					//my_gslic::create_superpixel_boundary(superpixel_mask, superpixel_boundary);
+				//cv::Mat superpixel_boundary;
+				//my_gslic::create_superpixel_boundary(superpixel_mask, superpixel_boundary);
 
-					cv::Mat img(cit->clone());
-					img.setTo(cv::Scalar(0, 0, 255), superpixel_boundary);
+				cv::Mat img(input_image.clone());
+				img.setTo(cv::Scalar(0, 0, 255), superpixel_boundary);
 
-					cv::imshow("superpixels by gSLIC - boundary", img);
-				}
+				cv::imshow("superpixels by gSLIC - boundary", img);
+#endif
 
 				const unsigned char key = cv::waitKey(0);
 				if (27 == key)
