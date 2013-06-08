@@ -13,7 +13,7 @@
 namespace {
 namespace local {
 
-// [ref] readStringList() in opencv_camera_calibration.cop
+// [ref] readStringList() in opencv_camera_calibration.cpp
 bool readStringList(const std::string &filename, std::vector<std::string> &l)
 {
 	l.resize(0);
@@ -32,7 +32,7 @@ bool readStringList(const std::string &filename, std::vector<std::string> &l)
 	return true;
 }
 
-// [ref] undistort_images_using_opencv() in opencv_image_undistortion.cop
+// [ref] undistort_images_using_opencv() in opencv_image_undistortion.cpp
 void undistort_images_using_opencv(
 	const std::vector<cv::Mat> &input_images, std::vector<cv::Mat> &output_images,
 	const cv::Size &imageSize, const cv::Mat &K, const cv::Mat &distCoeffs
@@ -62,7 +62,7 @@ void undistort_images_using_opencv(
 	}
 }
 
-// [ref] undistort_images_using_formula() in opencv_image_undistortion.cop
+// [ref] undistort_images_using_formula() in opencv_image_undistortion.cpp
 template <typename T>
 void undistort_images_using_formula(
 	const std::vector<cv::Mat> &input_images, std::vector<cv::Mat> &output_images,
@@ -487,127 +487,50 @@ void load_kinect_sensor_parameters_from_RGB_to_IR(
 	cv::Mat(3, 1, CV_64FC1, (void *)transVec).copyTo(T_rgb_to_ir);
 }
 
-void kinect_image_rectification_using_opencv(const bool use_IR_to_RGB, const cv::Mat &K_ir, const cv::Mat &K_rgb, const cv::Mat &distCoeffs_ir, const cv::Mat &distCoeffs_rgb, const cv::Mat &R, const cv::Mat &T)
+void rectify_kinect_images_using_opencv(
+	const bool use_IR_to_RGB, const std::size_t &num_images, const cv::Size &imageSize_ir, const cv::Size &imageSize_rgb,
+	const std::vector<cv::Mat> &ir_input_images, const std::vector<cv::Mat> &rgb_input_images, std::vector<cv::Mat> &ir_output_images, std::vector<cv::Mat> &rgb_output_images,
+	const cv::Mat &K_ir, const cv::Mat &K_rgb, const cv::Mat &distCoeffs_ir, const cv::Mat &distCoeffs_rgb, const cv::Mat &R, const cv::Mat &T
+)
 {
-	// prepare input images
-	const std::size_t num_images = 4;
-	const cv::Size imageSize_ir(640, 480), imageSize_rgb(640, 480);
-
-	std::vector<std::string> ir_image_filenames;
-	ir_image_filenames.reserve(num_images);
-	ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130530T103805.png");
-	ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023152.png");
-	ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023346.png");
-	ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023359.png");
-
-	std::vector<std::string> rgb_image_filenames;
-	rgb_image_filenames.reserve(num_images);
-	rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
-	rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
-	rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
-	rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
-
-	std::vector<cv::Mat> ir_input_images, rgb_input_images;
-	ir_input_images.reserve(num_images);
-	rgb_input_images.reserve(num_images);
-	for (std::size_t k = 0; k < num_images; ++k)
-	{
-		ir_input_images.push_back(cv::imread(ir_image_filenames[k], CV_LOAD_IMAGE_UNCHANGED));
-		rgb_input_images.push_back(cv::imread(rgb_image_filenames[k], CV_LOAD_IMAGE_COLOR));
-	}
-
-	// rectify images
-	std::vector<cv::Mat> ir_output_images, rgb_output_images;
-	ir_output_images.reserve(num_images);
-	rgb_output_images.reserve(num_images);
-	{
-		const int64 start = cv::getTickCount();
-
-		if (use_IR_to_RGB)
-			rectify_images_using_opencv(
-				ir_input_images, rgb_input_images, ir_output_images, rgb_output_images,
-				imageSize_ir, imageSize_rgb,
-				K_ir, K_rgb, distCoeffs_ir, distCoeffs_rgb, R, T
-			);
-		else
-			rectify_images_using_opencv(
-				rgb_input_images, ir_input_images, rgb_output_images, ir_output_images,
-				imageSize_rgb, imageSize_ir,
-				K_rgb, K_ir, distCoeffs_rgb, distCoeffs_ir, R, T
-			);
-
-		const int64 elapsed = cv::getTickCount() - start;
-		const double freq = cv::getTickFrequency();
-		const double etime = elapsed * 1000.0 / freq;
-		const double fps = freq / elapsed;
-		std::cout << std::setprecision(4) << "elapsed time: " << etime <<  ", FPS: " << fps << std::endl;
-	}
-
-	// show results
-	cv::Mat ir_img_after2;
-	double minVal = 0.0, maxVal = 0.0;
-	for (std::size_t k = 0; k < num_images; ++k)
-	{
-		const cv::Mat &ir_img_after = ir_output_images[k];
-		const cv::Mat &rgb_img_after = rgb_output_images[k];
-
-		//
-		cv::minMaxLoc(ir_img_after, &minVal, &maxVal);
-		ir_img_after.convertTo(ir_img_after2, CV_32FC1, 1.0 / maxVal, 0.0);
-
-		cv::imshow(use_IR_to_RGB ? "rectified IR (left) image" : "rectified IR (right) image", ir_img_after2);
-		cv::imshow(use_IR_to_RGB ? "rectified RGB (right) image" : "rectified RGB (left) image", rgb_img_after);
-
-		cv::waitKey(0);
-	}
-
-	cv::destroyAllWindows();
+	if (use_IR_to_RGB)
+		rectify_images_using_opencv(
+			ir_input_images, rgb_input_images, ir_output_images, rgb_output_images,
+			imageSize_ir, imageSize_rgb,
+			K_ir, K_rgb, distCoeffs_ir, distCoeffs_rgb, R, T
+		);
+	else
+		rectify_images_using_opencv(
+			rgb_input_images, ir_input_images, rgb_output_images, ir_output_images,
+			imageSize_rgb, imageSize_ir,
+			K_rgb, K_ir, distCoeffs_rgb, distCoeffs_ir, R, T
+		);
 }
 
-void kinect_image_rectification_using_depth(const bool use_IR_to_RGB, const cv::Mat &K_ir, const cv::Mat &K_rgb, const cv::Mat &distCoeffs_ir, const cv::Mat &distCoeffs_rgb, const cv::Mat &R, const cv::Mat &T)
+void rectify_kinect_images_using_depth(
+	const bool use_IR_to_RGB, const std::size_t &num_images, const cv::Size &imageSize_ir, const cv::Size &imageSize_rgb,
+	const std::vector<cv::Mat> &ir_input_images, const std::vector<cv::Mat> &rgb_input_images, std::vector<cv::Mat> &ir_output_images, std::vector<cv::Mat> &rgb_output_images,
+	const cv::Mat &K_ir, const cv::Mat &K_rgb, const cv::Mat &distCoeffs_ir, const cv::Mat &distCoeffs_rgb, const cv::Mat &R, const cv::Mat &T
+)
 {
-	// prepare input images
-	const std::size_t num_images = 4;
-	const cv::Size imageSize_ir(640, 480), imageSize_rgb(640, 480);
-
-	std::vector<std::string> ir_image_filenames;
-	ir_image_filenames.reserve(num_images);
-	ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130530T103805.png");
-	ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023152.png");
-	ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023346.png");
-	ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023359.png");
-
-	std::vector<std::string> rgb_image_filenames;
-	rgb_image_filenames.reserve(num_images);
-	rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
-	rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
-	rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
-	rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
-
-	std::vector<cv::Mat> ir_input_images, rgb_input_images;
-	ir_input_images.reserve(num_images);
-	rgb_input_images.reserve(num_images);
-	for (std::size_t k = 0; k < num_images; ++k)
-	{
-		ir_input_images.push_back(cv::imread(ir_image_filenames[k], CV_LOAD_IMAGE_UNCHANGED));
-		rgb_input_images.push_back(cv::imread(rgb_image_filenames[k], CV_LOAD_IMAGE_COLOR));
-	}
-
 	// undistort images
 	// TODO [check] >> is undistortion required before rectification?
 	//	Undistortion process is required before rectification,
 	//	since currently image undistortion is not applied during rectification process in rectify_kinect_images_from_IR_to_RGB_using_depth() & rectify_kinect_images_from_RGB_to_IR_using_depth().
-	if (true)
+#if 1
+	std::vector<cv::Mat> ir_input_images2, rgb_input_images2;
 	{
-		std::vector<cv::Mat> ir_input_images2, rgb_input_images2;
 		ir_input_images2.reserve(num_images);
 		rgb_input_images2.reserve(num_images);
 
 #if 0
 		undistort_images_using_opencv(ir_input_images, ir_input_images2, imageSize_ir, K_ir, distCoeffs_ir);
 		undistort_images_using_opencv(rgb_input_images, rgb_input_images2, imageSize_rgb, K_rgb, distCoeffs_rgb);
+#elif 1
+		undistort_images_using_formula<unsigned short>(ir_input_images, ir_input_images2, imageSize_ir, K_ir, distCoeffs_ir);
+		undistort_images_using_formula<cv::Vec3b>(rgb_input_images, rgb_input_images2, imageSize_rgb, K_rgb, distCoeffs_rgb);
 #else
-		local::undistort_images_using_formula<unsigned short>(ir_input_images, ir_input_images2, imageSize_ir, K_ir, distCoeffs_ir);
+		undistort_images_using_formula<unsigned short>(ir_input_images, ir_input_images2, imageSize_ir, K_ir, distCoeffs_ir);
 
 		std::vector<cv::Mat> rgb_input_gray_images;
 		rgb_input_gray_images.reserve(num_images);
@@ -618,59 +541,26 @@ void kinect_image_rectification_using_depth(const bool use_IR_to_RGB, const cv::
 			rgb_input_gray_images.push_back(gray);
 		}
 
-		local::undistort_images_using_formula<unsigned char>(rgb_input_gray_images, rgb_input_images2, imageSize_rgb, K_rgb, distCoeffs_rgb);
+		undistort_images_using_formula<unsigned char>(rgb_input_gray_images, rgb_input_images2, imageSize_rgb, K_rgb, distCoeffs_rgb);
+#endif
+	}
+#else
+	const std::vector<cv::Mat> ir_input_images2(ir_input_images.begin(), ir_input_images.end()), rgb_input_images2(rgb_input_images.begin(), rgb_input_images.end());
 #endif
 
-		ir_input_images.assign(ir_input_images2.begin(), ir_input_images2.end());
-		rgb_input_images.assign(rgb_input_images2.begin(), rgb_input_images2.end());
-	}
-
 	// rectify images
-	std::vector<cv::Mat> ir_output_images, rgb_output_images;
-	ir_output_images.reserve(num_images);
-	rgb_output_images.reserve(num_images);
-	{
-		const int64 start = cv::getTickCount();
-
-		if (use_IR_to_RGB)
-			rectify_kinect_images_from_IR_to_RGB_using_depth(
-				ir_input_images, rgb_input_images, ir_output_images, rgb_output_images,
-				imageSize_ir, imageSize_rgb,
-				K_ir, K_rgb, R, T
-			);
-		else
-			rectify_kinect_images_from_RGB_to_IR_using_depth(
-				rgb_input_images, ir_input_images, rgb_output_images, ir_output_images,
-				imageSize_rgb, imageSize_ir,
-				K_rgb, K_ir, R, T
-			);  // not yet implemented
-
-		const int64 elapsed = cv::getTickCount() - start;
-		const double freq = cv::getTickFrequency();
-		const double etime = elapsed * 1000.0 / freq;
-		const double fps = freq / elapsed;
-		std::cout << std::setprecision(4) << "elapsed time: " << etime <<  ", FPS: " << fps << std::endl;
-	}
-
-	// show results
-	cv::Mat ir_img_after2;
-	double minVal = 0.0, maxVal = 0.0;
-	for (std::size_t k = 0; k < num_images; ++k)
-	{
-		const cv::Mat &ir_img_after = ir_output_images[k];
-		const cv::Mat &rgb_img_after = rgb_output_images[k];
-
-		//
-		cv::minMaxLoc(ir_img_after, &minVal, &maxVal);
-		ir_img_after.convertTo(ir_img_after2, CV_32FC1, 1.0 / maxVal, 0.0);
-
-		cv::imshow(use_IR_to_RGB ? "rectified IR (left) image" : "rectified IR (right) image", ir_img_after2);
-		cv::imshow(use_IR_to_RGB ? "rectified RGB (right) image" : "rectified RGB (left) image", rgb_img_after);
-
-		cv::waitKey(0);
-	}
-
-	cv::destroyAllWindows();
+	if (use_IR_to_RGB)
+		rectify_kinect_images_from_IR_to_RGB_using_depth(
+			ir_input_images2, rgb_input_images2, ir_output_images, rgb_output_images,
+			imageSize_ir, imageSize_rgb,
+			K_ir, K_rgb, R, T
+		);
+	else
+		rectify_kinect_images_from_RGB_to_IR_using_depth(
+			rgb_input_images2, ir_input_images2, rgb_output_images, ir_output_images,
+			imageSize_rgb, imageSize_ir,
+			K_rgb, K_ir, R, T
+		);  // not yet implemented
 }
 
 }  // namespace local
@@ -680,7 +570,7 @@ namespace my_opencv {
 
 void image_rectification()
 {
-	// [ref] stereo_camera_calibration() in opencv_stereo_camera_calibration.cop
+	// [ref] stereo_camera_calibration() in opencv_stereo_camera_calibration.cpp
 #if 0
 	// [ref] http://blog.martinperis.com/2011/01/opencv-stereo-camera-calibration.html
 	const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib_2.xml");
@@ -938,9 +828,76 @@ void kinect_image_rectification()
 	else
 		local::load_kinect_sensor_parameters_from_RGB_to_IR(K_rgb, distCoeffs_rgb, K_ir, distCoeffs_ir, R, T);
 
-	//local::kinect_image_rectification_using_opencv(use_IR_to_RGB, K_ir, K_rgb, distCoeffs_ir, distCoeffs_rgb, R, T);  // using OpenCV
+	// image rectification
+	{
+		// prepare input images
+		const std::size_t num_images = 4;
+		const cv::Size imageSize_ir(640, 480), imageSize_rgb(640, 480);
 
-	local::kinect_image_rectification_using_depth(use_IR_to_RGB, K_ir, K_rgb, distCoeffs_ir, distCoeffs_rgb, R, T);  // using Kinect's depth information
+		std::vector<std::string> ir_image_filenames;
+		ir_image_filenames.reserve(num_images);
+		ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130530T103805.png");
+		ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023152.png");
+		ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023346.png");
+		ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023359.png");
+
+		std::vector<std::string> rgb_image_filenames;
+		rgb_image_filenames.reserve(num_images);
+		rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
+		rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
+		rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
+		rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
+
+		std::vector<cv::Mat> ir_input_images, rgb_input_images;
+		ir_input_images.reserve(num_images);
+		rgb_input_images.reserve(num_images);
+		for (std::size_t k = 0; k < num_images; ++k)
+		{
+			ir_input_images.push_back(cv::imread(ir_image_filenames[k], CV_LOAD_IMAGE_UNCHANGED));
+			rgb_input_images.push_back(cv::imread(rgb_image_filenames[k], CV_LOAD_IMAGE_COLOR));
+		}
+
+		// rectify images
+		std::vector<cv::Mat> ir_output_images, rgb_output_images;
+		ir_output_images.reserve(num_images);
+		rgb_output_images.reserve(num_images);
+
+		{
+			const int64 start = cv::getTickCount();
+
+#if 0
+			local::rectify_kinect_images_using_opencv(use_IR_to_RGB, num_images, imageSize_ir, imageSize_rgb, ir_input_images, rgb_input_images, ir_output_images, rgb_output_images, K_ir, K_rgb, distCoeffs_ir, distCoeffs_rgb, R, T);  // using OpenCV
+#else
+			local::rectify_kinect_images_using_depth(use_IR_to_RGB, num_images, imageSize_ir, imageSize_rgb, ir_input_images, rgb_input_images, ir_output_images, rgb_output_images, K_ir, K_rgb, distCoeffs_ir, distCoeffs_rgb, R, T);  // using Kinect's depth information
+#endif
+
+			const int64 elapsed = cv::getTickCount() - start;
+			const double freq = cv::getTickFrequency();
+			const double etime = elapsed * 1000.0 / freq;
+			const double fps = freq / elapsed;
+			std::cout << std::setprecision(4) << "elapsed time: " << etime <<  ", FPS: " << fps << std::endl;
+		}
+
+		// show results
+		cv::Mat ir_img_after2;
+		double minVal = 0.0, maxVal = 0.0;
+		for (std::size_t k = 0; k < num_images; ++k)
+		{
+			const cv::Mat &ir_img_after = ir_output_images[k];
+			const cv::Mat &rgb_img_after = rgb_output_images[k];
+
+			//
+			cv::minMaxLoc(ir_img_after, &minVal, &maxVal);
+			ir_img_after.convertTo(ir_img_after2, CV_32FC1, 1.0 / maxVal, 0.0);
+
+			cv::imshow(use_IR_to_RGB ? "rectified IR (left) image" : "rectified IR (right) image", ir_img_after2);
+			cv::imshow(use_IR_to_RGB ? "rectified RGB (right) image" : "rectified RGB (left) image", rgb_img_after);
+
+			cv::waitKey(0);
+		}
+
+		cv::destroyAllWindows();
+	}
 }
 
 }  // namespace my_opencv

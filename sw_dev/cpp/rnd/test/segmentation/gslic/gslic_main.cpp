@@ -1,6 +1,7 @@
 #include "../gslic_lib/FastImgSeg.h"
 #include <opencv2/opencv.hpp>
 #include <opencv2/gpu/gpu.hpp>
+#include <list>
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -13,25 +14,38 @@ namespace local {
 // [ref] ${GSLIC_HOME}/testCV/main.cpp
 void gslic_sample()
 {
-	std::list<std::string> rgb_filenames, depth_filenames;
-	rgb_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
-	rgb_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
-	rgb_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
-	rgb_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
-	depth_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130530T103805.png");
-	depth_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023152.png");
-	depth_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023346.png");
-	depth_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023359.png");
+	std::list<std::string> input_file_list;
+#if 1
+	input_file_list.push_back("./machine_vision_data/opencv/pic1.png");
+	input_file_list.push_back("./machine_vision_data/opencv/pic2.png");
+	input_file_list.push_back("./machine_vision_data/opencv/pic3.png");
+	input_file_list.push_back("./machine_vision_data/opencv/pic4.png");
+	input_file_list.push_back("./machine_vision_data/opencv/pic5.png");
+	input_file_list.push_back("./machine_vision_data/opencv/pic6.png");
+	input_file_list.push_back("./machine_vision_data/opencv/stuff.jpg");
+	input_file_list.push_back("./machine_vision_data/opencv/synthetic_face.png");
+	input_file_list.push_back("./machine_vision_data/opencv/puzzle.png");
+	input_file_list.push_back("./machine_vision_data/opencv/fruits.jpg");
+	input_file_list.push_back("./machine_vision_data/opencv/lena_rgb.bmp");
+	input_file_list.push_back("./machine_vision_data/opencv/hand_01.jpg");
+	input_file_list.push_back("./machine_vision_data/opencv/hand_05.jpg");
+	input_file_list.push_back("./machine_vision_data/opencv/hand_24.jpg");
+#elif 0
+	input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
+	input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
+	input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
+	input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
+	input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
+#endif
 
 	//
-	FastImgSeg gslic;
 	const int num_segments = 1200;
 	const SEGMETHOD seg_method = XYZ_SLIC;  // SLIC, RGB_SLIC, XYZ_SLIC
 	const double seg_weight = 0.3;
 
 	//
 	cv::Mat mask;
-	for (std::list<std::string>::iterator it = rgb_filenames.begin(); it != rgb_filenames.end(); ++it)
+	for (std::list<std::string>::iterator it = input_file_list.begin(); it != input_file_list.end(); ++it)
     {
 		cv::Mat img(cv::imread(*it, CV_LOAD_IMAGE_COLOR));
 		if (img.empty())
@@ -57,6 +71,7 @@ void gslic_sample()
 			}
 
 		//
+		FastImgSeg gslic;
 		gslic.initializeFastSeg(img.cols, img.rows, num_segments);
 
 		gslic.LoadImg(imgBuffer);
@@ -94,6 +109,8 @@ void gslic_sample()
 
 		cv::imshow("segmentation by gSLIC - mas", mask);
 #endif
+
+		//gslic.clearFastSeg();
 
 		const unsigned char key = cv::waitKey(0);
 		if (27 == key)
