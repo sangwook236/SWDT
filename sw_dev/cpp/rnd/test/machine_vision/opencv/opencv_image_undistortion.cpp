@@ -179,13 +179,6 @@ void undistort_images_using_formula(
 #endif
 		}
 
-#if 0
-		static int k = 0;
-		std::ostringstream strm;
-		strm << "./machine_vision_data/opencv/image_undistortion/undistorted_image_" << k++ << ".png";
-		cv::imwrite(strm.str(), img_after);
-#endif
-
 		output_images.push_back(img_after);
 	}
 }
@@ -360,7 +353,9 @@ void image_undistortion()
 
 		cv::imshow("undistorted left image", img_after);
 
-		cv::waitKey(0);
+		const unsigned char key = cv::waitKey(0);
+		if (27 == key)
+			break;
 	}
 
 	cv::destroyAllWindows();
@@ -419,8 +414,20 @@ void kinect_image_undistortion()
 
 			cv::imshow("undistorted IR image", img_after);
 
-			cv::waitKey(0);
+			const unsigned char key = cv::waitKey(0);
+			if (27 == key)
+				break;
 		}
+
+#if 0
+		// save results
+		for (std::size_t k = 0; k < num_images; ++k)
+		{
+			std::ostringstream strm;
+			strm << "./machine_vision_data/opencv/image_undistortion/undistorted_image_" << k++ << ".png";
+			cv::imwrite(strm.str(), output_images[k]);
+		}
+	#endif
 	}
 
 	// undistort RGB images
@@ -475,7 +482,9 @@ void kinect_image_undistortion()
 		{
 			cv::imshow("undistorted RGB image", *cit);
 
-			cv::waitKey(0);
+			const unsigned char key = cv::waitKey(0);
+			if (27 == key)
+				break;
 		}
 	}
 

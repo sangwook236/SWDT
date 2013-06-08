@@ -173,20 +173,13 @@ void undistort_images_using_formula(
 			if (0 <= cc_0 && cc_0 < imageSize.width - 1 && 0 <= rr_0 && rr_0 < imageSize.height - 1)
 			{
 				img_after.at<T>(rr_new, cc_new) =
-					(1.0 - alpha_rr) * (1.0 - alpha_cc) * img_before.at<T>(rr_0, cc_0) +
+					(T)((1.0 - alpha_rr) * (1.0 - alpha_cc) * img_before.at<T>(rr_0, cc_0) +
 					(1.0 - alpha_rr) * alpha_cc * img_before.at<T>(rr_0, cc_1) +
 					alpha_rr * (1.0 - alpha_cc) * img_before.at<T>(rr_1, cc_0) +
-					alpha_rr * alpha_cc * img_before.at<T>(rr_1, cc_1);
+					alpha_rr * alpha_cc * img_before.at<T>(rr_1, cc_1));
 			}
 #endif
 		}
-
-#if 0
-		static int k = 0;
-		std::ostringstream strm;
-		strm << "./machine_vision_data/opencv/image_undistortion/undistorted_image_" << k++ << ".png";
-		cv::imwrite(strm.str(), img_after);
-#endif
 
 		output_images.push_back(img_after);
 	}
@@ -232,14 +225,6 @@ void rectify_images_using_opencv(
 		cv::remap(img_left_before, img_left_after, rmap_left[0], rmap_left[1], CV_INTER_LINEAR);
 		cv::remap(img_right_before, img_right_after, rmap_right[0], rmap_right[1], CV_INTER_LINEAR);
 
-#if 0
-		std::ostringstream strm1, strm2;
-		strm1 << "./machine_vision_data/opencv/image_undistortion/rectified_image_left_" << k << ".png";
-		cv::imwrite(strm1.str(), img_left_after);
-		strm2 << "./machine_vision_data/opencv/image_undistortion/rectified_image_right_" << k << ".png";
-		cv::imwrite(strm2.str(), img_right_after);
-#endif
-
 		output_images_left.push_back(img_left_after);
 		output_images_right.push_back(img_right_after);
 	}
@@ -262,6 +247,10 @@ void rectify_kinect_images_from_IR_to_RGB_using_depth(
 	// homogeneous image coordinates (left): zero-based coordinates
 	cv::Mat IC_homo_left(3, imageSize_left.height * imageSize_left.width, CV_64FC1, cv::Scalar::all(1));
 	{
+#if 0
+		// 0 0 0 ...   0 1 1 1 ...   1 ... 639 639 639 ... 639
+		// 0 1 2 ... 479 0 1 2 ... 479 ...   0   1   2 ... 479
+
 		cv::Mat arr(1, imageSize_left.height, CV_64FC1);
 		for (int i = 0; i < imageSize_left.height; ++i)
 			arr.at<double>(0, i) = (double)i;
@@ -271,6 +260,20 @@ void rectify_kinect_images_from_IR_to_RGB_using_depth(
 			IC_homo_left(cv::Range(0, 1), cv::Range(i * imageSize_left.height, (i + 1) * imageSize_left.height)).setTo(cv::Scalar::all(i));
 			arr.copyTo(IC_homo_left(cv::Range(1, 2), cv::Range(i * imageSize_left.height, (i + 1) * imageSize_left.height)));
 		}
+#else
+		// 0 1 2 ... 639 0 1 2 ... 639 ...   0   1   2 ... 639
+		// 0 0 0 ...   0 1 1 1 ...   1 ... 479 479 479 ... 479
+
+		cv::Mat arr(1, imageSize_left.width, CV_64FC1);
+		for (int i = 0; i < imageSize_left.width; ++i)
+			arr.at<double>(0, i) = (double)i;
+
+		for (int i = 0; i < imageSize_left.height; ++i)
+		{
+			arr.copyTo(IC_homo_left(cv::Range(0, 1), cv::Range(i * imageSize_left.width, (i + 1) * imageSize_left.width)));
+			IC_homo_left(cv::Range(1, 2), cv::Range(i * imageSize_left.width, (i + 1) * imageSize_left.width)).setTo(cv::Scalar::all(i));
+		}
+#endif
 	}
 
 	// homogeneous normalized camera coordinates (left)
@@ -285,7 +288,17 @@ void rectify_kinect_images_from_IR_to_RGB_using_depth(
 		cv::Mat CC_left;
 		{
 			cv::Mat tmp;
+#if 0
+			// 0 0 0 ...   0 1 1 1 ...   1 ... 639 639 639 ... 639
+			// 0 1 2 ... 479 0 1 2 ... 479 ...   0   1   2 ... 479
+
 			((cv::Mat)img_left_before.t()).convertTo(tmp, CV_64FC1, 1.0, 0.0);
+#else
+			// 0 1 2 ... 639 0 1 2 ... 639 ...   0   1   2 ... 639
+			// 0 0 0 ...   0 1 1 1 ...   1 ... 479 479 479 ... 479
+
+			img_left_before.convertTo(tmp, CV_64FC1, 1.0, 0.0);
+#endif
 			cv::repeat(tmp.reshape(1, 1), 3, 1, CC_left);
 			CC_left = CC_left.mul(CC_norm_left);
 		}
@@ -317,14 +330,6 @@ void rectify_kinect_images_from_IR_to_RGB_using_depth(
 			if (0 <= cc && cc < imageSize_right.width && 0 <= rr && rr < imageSize_right.height)
 				img_left_mapped.at<unsigned short>(rr, cc) = (unsigned short)cvRound(CC_left.at<double>(2, idx));
 		}
-
-#if 1
-		std::ostringstream strm1, strm2;
-		strm1 << "./machine_vision_data/opencv/image_undistortion/rectified_image_left_" << k << ".png";
-		cv::imwrite(strm1.str(), img_left_mapped);
-		strm2 << "./machine_vision_data/opencv/image_undistortion/rectified_image_right_" << k << ".png";
-		cv::imwrite(strm2.str(), img_right_before);
-#endif
 
 		output_images_left.push_back(img_left_mapped);
 		output_images_right.push_back(img_right_before);
@@ -809,7 +814,9 @@ void image_rectification()
 		cv::imshow("rectified left image", img_left_after);
 		cv::imshow("rectified right image", img_right_after);
 
-		cv::waitKey(0);
+		const unsigned char key = cv::waitKey(0);
+		if (27 == key)
+			break;
 	}
 
 	cv::destroyAllWindows();
@@ -817,6 +824,9 @@ void image_rectification()
 
 void kinect_image_rectification()
 {
+	// more integrated implementation
+	//	[ref] ${SWL_CPP_HOME}/app/swl_kinect_segmentation_app/KinectSensor.h & cpp
+
 	const bool use_IR_to_RGB = true;
 
 	// load the camera parameters of a Kinect sensor
@@ -890,11 +900,25 @@ void kinect_image_rectification()
 			cv::minMaxLoc(ir_img_after, &minVal, &maxVal);
 			ir_img_after.convertTo(ir_img_after2, CV_32FC1, 1.0 / maxVal, 0.0);
 
-			cv::imshow(use_IR_to_RGB ? "rectified IR (left) image" : "rectified IR (right) image", ir_img_after2);
+			cv::imshow(use_IR_to_RGB ? "rectified depth (left) image" : "rectified depth (right) image", ir_img_after2);
 			cv::imshow(use_IR_to_RGB ? "rectified RGB (right) image" : "rectified RGB (left) image", rgb_img_after);
 
-			cv::waitKey(0);
+			const unsigned char key = cv::waitKey(0);
+			if (27 == key)
+				break;
 		}
+
+#if 0
+		// save results
+		for (std::size_t k = 0; k < num_images; ++k)
+		{
+			std::ostringstream strm1, strm2;
+			strm1 << "./machine_vision_data/opencv/image_undistortion/rectified_image_depth_" << k << ".png";
+			cv::imwrite(strm1.str(), ir_output_images[k]);
+			strm2 << "./machine_vision_data/opencv/image_undistortion/rectified_image_rgb_" << k << ".png";
+			cv::imwrite(strm2.str(), rgb_output_images[k]);
+		}
+#endif
 
 		cv::destroyAllWindows();
 	}
