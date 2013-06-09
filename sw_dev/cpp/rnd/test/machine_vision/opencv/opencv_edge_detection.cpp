@@ -9,7 +9,6 @@
 namespace {
 namespace local {
 
-
 void canny(const cv::Mat &gray, cv::Mat &edge)
 {
 #if 0

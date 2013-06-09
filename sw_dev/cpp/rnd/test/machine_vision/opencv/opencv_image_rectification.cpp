@@ -8,7 +8,7 @@
 #include <stdexcept>
 
 
-#define __USE_REMAP 1
+#define __USE_OPENCV_REMAP 1
 
 namespace {
 namespace local {
@@ -38,7 +38,7 @@ void undistort_images_using_opencv(
 	const cv::Size &imageSize, const cv::Mat &K, const cv::Mat &distCoeffs
 )
 {
-#if __USE_REMAP
+#if __USE_OPENCV_REMAP
 	cv::Mat rmap[2];
 	cv::initUndistortRectifyMap(
 		K, distCoeffs, cv::Mat(),
@@ -52,7 +52,7 @@ void undistort_images_using_opencv(
 		const cv::Mat &img_before = *cit;
 
 		cv::Mat img_after;
-#if __USE_REMAP
+#if __USE_OPENCV_REMAP
 		cv::remap(img_before, img_after, rmap[0], rmap[1], cv::INTER_LINEAR);
 #else
 		cv::undistort(img_before, img_after, K, distCoeffs, K);
@@ -576,7 +576,7 @@ namespace my_opencv {
 void image_rectification()
 {
 	// [ref] stereo_camera_calibration() in opencv_stereo_camera_calibration.cpp
-#if 0
+#if 1
 	// [ref] http://blog.martinperis.com/2011/01/opencv-stereo-camera-calibration.html
 	const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib_2.xml");
 

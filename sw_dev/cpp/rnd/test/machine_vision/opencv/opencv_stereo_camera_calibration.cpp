@@ -369,7 +369,7 @@ void stereo_camera_calibration()
 	const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib_4.xml");
 
 	const cv::Size boardSize(7, 5);
-	const float squareSize = 10.0f;  // Set this to your actual square size, [cm]
+	const float squareSize = 100.0f;  // Set this to your actual square size, [mm]
 #else
 	// [ref] ${OPENCV_HOME}/samples/cpp/stereo_calib.xml
 	const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib.xml");

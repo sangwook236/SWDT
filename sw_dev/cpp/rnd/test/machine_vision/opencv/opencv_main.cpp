@@ -174,7 +174,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::shape_matching();
 
 		//my_opencv::snake();
-		//my_opencv::segmentation();
+		my_opencv::segmentation();
 
 		//my_opencv::outlier_removal();
 
@@ -206,7 +206,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::image_undistortion();
 		//my_opencv::kinect_image_undistortion();
 		//my_opencv::image_rectification();
-		my_opencv::kinect_image_rectification();
+		//my_opencv::kinect_image_rectification();
 		//my_opencv::homography();
 
 		//my_opencv::stereo_matching();
