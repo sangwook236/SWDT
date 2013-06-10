@@ -1,2 +1,0 @@
-http://people.cs.uchicago.edu/~rbg/star-cascade/
-https://github.com/rbgirshick/star-cascade

@@ -1,7 +1,0 @@
-http://www.cs.berkeley.edu/~rbg/latent/
-https://github.com/rbgirshick/voc-dpm
-
-http://cs.brown.edu/~pff/latent-release1/
-http://cs.brown.edu/~pff/latent-release2/
-http://cs.brown.edu/~pff/latent-release3/
-http://cs.brown.edu/~pff/latent-release4/
