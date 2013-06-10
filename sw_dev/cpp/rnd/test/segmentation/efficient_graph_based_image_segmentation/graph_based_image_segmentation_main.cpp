@@ -1,7 +1,7 @@
-#include "../graph_based_image_segmentation_lib/segment-image.h"
-#include "../graph_based_image_segmentation_lib/image.h"
-#include "../graph_based_image_segmentation_lib/misc.h"
-#include "../graph_based_image_segmentation_lib/pnmfile.h"
+#include "../efficient_graph_based_image_segmentation_lib/segment-image.h"
+#include "../efficient_graph_based_image_segmentation_lib/image.h"
+#include "../efficient_graph_based_image_segmentation_lib/misc.h"
+#include "../efficient_graph_based_image_segmentation_lib/pnmfile.h"
 #include <opencv2/opencv.hpp>
 #include <boost/timer/timer.hpp>
 #include <iostream>
@@ -86,9 +86,9 @@ void sample()
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_graph_based_image_segmentation {
+namespace my_efficient_graph_based_image_segmentation {
 
-}  // namespace my_graph_based_image_segmentation
+}  // namespace my_efficient_graph_based_image_segmentation
 
 /*
 [ref]
@@ -96,7 +96,7 @@ namespace my_graph_based_image_segmentation {
 	http://cs.brown.edu/~pff/segment/
 */
 
-int graph_based_image_segmentation_main(int argc, char *argv[])
+int efficient_graph_based_image_segmentation_main(int argc, char *argv[])
 {
 	local::sample();
 
