@@ -78,6 +78,7 @@ void shape_finding();
 void shape_matching();
 void snake();
 void segmentation();
+void meanshift_segmentation_using_gpu();
 void outlier_removal();
 void feature_extraction();
 void feature_description();
@@ -175,6 +176,7 @@ int opencv_main(int argc, char *argv[])
 
 		//my_opencv::snake();
 		my_opencv::segmentation();
+		//if (canUseGPU) my_opencv::meanshift_segmentation_using_gpu();  // not yet implemented
 
 		//my_opencv::outlier_removal();
 

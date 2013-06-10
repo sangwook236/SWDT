@@ -2,7 +2,9 @@
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <boost/timer/timer.hpp>
 #include <iostream>
+#include <stdexcept>
 #include <list>
 #include <cstdio>
 
@@ -44,14 +46,15 @@ void watershed_onMouse( int event, int x, int y, int flags, void* )
         line( watershed_markerMask, watershed_prevPt, pt, cv::Scalar::all(255), 5, 8, 0 );
         line( watershed_img, watershed_prevPt, pt, cv::Scalar::all(255), 5, 8, 0 );
         watershed_prevPt = pt;
-        cv::imshow("image", watershed_img);
+        cv::imshow("Watershed segmentation", watershed_img);
     }
 }
 
+// [ref] ${OPENCV_HOME}/samples/cpp/watershed.cpp
 void watershed_algorithm(const cv::Mat &img0)
 {
     watershed_help();
-	cv::namedWindow( "image", 1 );
+	cv::namedWindow( "Watershed segmentation", 1 );
 
 	cv::Mat imgGray;
 
@@ -81,8 +84,8 @@ void watershed_algorithm(const cv::Mat &img0)
     cv::cvtColor(watershed_img, watershed_markerMask, CV_BGR2GRAY);
     cv::cvtColor(watershed_markerMask, imgGray, CV_GRAY2BGR);
     watershed_markerMask = cv::Scalar::all(0);
-    cv::imshow( "image", watershed_img );
-	cv::setMouseCallback( "image", watershed_onMouse, 0 );
+    cv::imshow( "Watershed segmentation", watershed_img );
+	cv::setMouseCallback( "Watershed segmentation", watershed_onMouse, 0 );
 
     for(;;)
     {
@@ -95,7 +98,7 @@ void watershed_algorithm(const cv::Mat &img0)
         {
             watershed_markerMask = cv::Scalar::all(0);
             img0.copyTo(watershed_img);
-            cv::imshow( "image", watershed_img );
+            cv::imshow( "Watershed segmentation", watershed_img );
         }
 
         if( (char)c == 'w' || (char)c == ' ' )
@@ -420,11 +423,12 @@ void grabcut_on_mouse( int event, int x, int y, int flags, void* param )
     gcapp.mouseClick( event, x, y, flags, param );
 }
 
+// [ref] ${OPENCV_HOME}/samples/cpp/grabcut.cpp
 void grabcut_algorithm(const cv::Mat &image)
 {
     grabcut_help();
 
-    const std::string winName = "image";
+    const std::string winName = "GrabCut segmentation";
     cvNamedWindow( winName.c_str(), CV_WINDOW_AUTOSIZE );
     cvSetMouseCallback( winName.c_str(), grabcut_on_mouse, 0 );
 
@@ -462,6 +466,94 @@ void grabcut_algorithm(const cv::Mat &image)
 exit_main:
     cvDestroyWindow( winName.c_str() );
     return;
+}
+
+static void meanshift_segmentation_help(char** argv)
+{
+	std::cout << "\nDemonstrate mean-shift based color segmentation in spatial pyramid.\n"
+		<< "Call:\n   " << argv[0] << " image\n"
+		<< "This program allows you to set the spatial and color radius\n"
+		<< "of the mean shift window as well as the number of pyramid reduction levels explored\n"
+		<< std::endl;
+}
+
+//This colors the segmentations
+static void floodFillPostprocess(cv::Mat &img, const cv::Scalar &colorDiff = cv::Scalar::all(1))
+{
+	CV_Assert(!img.empty());
+	cv::RNG rng = cv::theRNG();
+	cv::Mat mask(img.rows + 2, img.cols + 2, CV_8UC1, cv::Scalar::all(0));
+	for (int y = 0; y < img.rows; ++y)
+	{
+		for (int x = 0; x < img.cols; ++x)
+		{
+			if (mask.at<uchar>(y+1, x+1) == 0)
+			{
+				cv::Scalar newVal(rng(256), rng(256), rng(256));
+				cv::floodFill(img, mask, cv::Point(x, y), newVal, 0, colorDiff, colorDiff);
+			}
+		}
+	}
+}
+
+/*
+static void meanShiftSegmentation(int, void *)
+{
+	std::cout << "spatialRad = " << spatialRad << "; "
+		<< "colorRad = " << colorRad << "; "
+		<< "maxPyrLevel = " << maxPyrLevel << std::endl;
+
+	cv::pyrMeanShiftFiltering(img, res, spatialRad, colorRad, maxPyrLevel);
+	floodFillPostprocess(res, cv::Scalar::all(2));
+	cv::imshow(winName, res);
+}
+*/
+
+// [ref] ${OPENCV_HOME}/samples/cpp/meanshift_segmentation.cpp
+void meanshift_segmentation_algorithm(const cv::Mat &img)
+{
+/*
+	if (argc != 2)
+	{
+		meanshift_segmentation_help(argv);
+		return -1;
+	}
+
+	img = cv::imread(argv[1]);
+	if (img.empty())
+		return -1;
+
+	spatialRad = 10;
+	colorRad = 10;
+	maxPyrLevel = 1;
+
+	cv::namedWindow(winName, CV_WINDOW_AUTOSIZE);
+
+	cv::createTrackbar("spatialRad", winName, &spatialRad, 80, meanShiftSegmentation);
+	cv::createTrackbar("colorRad", winName, &colorRad, 60, meanShiftSegmentation);
+	cv::createTrackbar("maxPyrLevel", winName, &maxPyrLevel, 5, meanShiftSegmentation);
+
+	meanShiftSegmentation(0, 0);
+	cv::waitKey();
+	return 0;
+*/
+	const int spatialRad = 10;
+	const int colorRad = 10;
+	const int maxPyrLevel = 1;
+
+	const cv::string winName("mean-shift segmentation");
+	cv::namedWindow(winName, CV_WINDOW_AUTOSIZE);
+
+	cv::Mat res;
+	{
+		boost::timer::auto_cpu_timer timer;
+
+		cv::pyrMeanShiftFiltering(img, res, spatialRad, colorRad, maxPyrLevel);
+	}
+
+	floodFillPostprocess(res, cv::Scalar::all(2));
+
+	cv::imshow(winName, res);
 }
 
 }  // namespace local
@@ -523,7 +615,7 @@ void segmentation()
 	//const std::string filename("./machine_vision_data/opencv/hand_35.jpg");
 	//const std::string filename("./machine_vision_data/opencv/hand_36.jpg");
 
-	const std::string windowName("segmentation");
+	//const std::string windowName("segmentation");
 	//cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
 
 	//
@@ -535,14 +627,25 @@ void segmentation()
 	}
 
 	//local::watershed_algorithm(img);
-	local::grabcut_algorithm(img);
+	//local::grabcut_algorithm(img);
+
+	local::meanshift_segmentation_algorithm(img);
 
 	//
 	//cv::imshow(windowName, img);
 
 	cv::waitKey(0);
 
-	//cv::destroyWindow(windowName);
+	cv::destroyAllWindows();
+}
+
+void meanshift_segmentation_using_gpu()
+{
+	throw std::runtime_error("not yet implemented");
+
+	//cv::gpu::meanShiftFiltering();
+	//cv::gpu::meanShiftProc();
+	//cv::gpu::meanShiftSegmentation;
 }
 
 }  // namespace my_opencv

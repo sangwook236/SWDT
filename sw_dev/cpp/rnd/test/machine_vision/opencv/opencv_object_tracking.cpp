@@ -3,6 +3,7 @@
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
+#include <stdexcept>
 #include <iostream>
 #include <cassert>
 
@@ -284,12 +285,8 @@ void onMouseHandler(int event, int x, int y, int flags, void *param)
 	}
 }
 
-}  // namespace local
-}  // unnamed namespace
-
-namespace my_opencv {
-
-void object_tracking()
+// [ref] ${OPENCV_HOME}/samples/cpp/camshift_tracking_demo.cpp
+void camshift_tracking_demo()
 {
 	const std::string avi_filename("./machine_vision_data/opencv/osp_test.wmv");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
@@ -312,7 +309,7 @@ void object_tracking()
 	std::cout << usage << std::endl;
 
 	//
-	local::ObjectTracker objectTracker;
+	ObjectTracker objectTracker;
 
 	//
 	const char *windowName = "object tracking by camshift";
@@ -320,9 +317,9 @@ void object_tracking()
 	cvNamedWindow(windowName, CV_WINDOW_AUTOSIZE);
 	cvNamedWindow(histoWindowName, CV_WINDOW_AUTOSIZE);
 
-	cvSetMouseCallback(windowName, local::onMouseHandler, NULL);
+	cvSetMouseCallback(windowName, onMouseHandler, NULL);
 
-	int minHue = local::MIN_HUE, maxHue = local::MAX_HUE, minSaturation = 30, maxSaturation = 256, minValue = 10, maxValue = 256;
+	int minHue = MIN_HUE, maxHue = MAX_HUE, minSaturation = 30, maxSaturation = 256, minValue = 10, maxValue = 256;
 	cvCreateTrackbar("Min Saturation in HSV", windowName, &minSaturation, 256, NULL);
 	cvCreateTrackbar("Mix Value in HSV", windowName, &minValue, 256, NULL);
 	cvCreateTrackbar("Max Value in HSV", windowName, &maxValue, 256, NULL);
@@ -346,8 +343,8 @@ void object_tracking()
 
 		if (!isInitialized)
 		{
-			local::image = cvCreateImage(cvGetSize(frame), IPL_DEPTH_8U, 3);
-			local::image->origin = frame->origin;  // if 0, top-left origin. if 1, bottom-left origin.
+			image = cvCreateImage(cvGetSize(frame), IPL_DEPTH_8U, 3);
+			image->origin = frame->origin;  // if 0, top-left origin. if 1, bottom-left origin.
 
 			objectTracker.initialize(frame->width, frame->height);
 
@@ -356,11 +353,11 @@ void object_tracking()
 			IplImage *targetImage = cvLoadImage(targetImageFileName.c_str());
 
 			objectTracker.updateHistogram(targetImage, minHue, maxHue, minSaturation, maxSaturation, MIN(minValue, maxValue), MAX(minValue, maxValue));
-			local::drawHistogram(objectTracker.getHistogram(), histoImage);
+			drawHistogram(objectTracker.getHistogram(), histoImage);
 
 			cvReleaseImage(&targetImage);
 
-			local::isTrackingObject = true;
+			isTrackingObject = true;
 			// TODO [modify] >>
 			searchWindow = cvRect(0, 0, frame->width, frame->height);
 			//searchWindow = cvRect(335, 200, 70, 30);
@@ -369,45 +366,45 @@ void object_tracking()
 			isInitialized = true;
 		}
 
-		cvCopy(frame, local::image, NULL);
+		cvCopy(frame, image, NULL);
 
-		if (local::isTrackingObject)
+		if (isTrackingObject)
 		{
 #if defined(_INITIALIZE_HISTOGRAM_FROM_FILE)
 #else
 			if (isHistogramUpdated)
 			{
 				searchWindow = selection;
-				objectTracker.updateHistogram(local::image, searchWindow, minHue, maxHue, minSaturation, maxSaturation, MIN(minValue, maxValue), MAX(minValue, maxValue));
+				objectTracker.updateHistogram(image, searchWindow, minHue, maxHue, minSaturation, maxSaturation, MIN(minValue, maxValue), MAX(minValue, maxValue));
 				drawHistogram(objectTracker.getHistogram(), histoImage);
 			}
 #endif
 
-			objectTracker.track(local::image, searchWindow, trackingBox, minHue, maxHue, minSaturation, maxSaturation, MIN(minValue, maxValue), MAX(minValue, maxValue));
+			objectTracker.track(image, searchWindow, trackingBox, minHue, maxHue, minSaturation, maxSaturation, MIN(minValue, maxValue), MAX(minValue, maxValue));
 
 #if !defined(_INITIALIZE_HISTOGRAM_FROM_FILE)
 			if (isHistogramUpdated) isHistogramUpdated = false;
 #endif
 			//
 			if (isBackProjectionMode)
-				cvCvtColor(objectTracker.getBackProjectionImage(), local::image, CV_GRAY2BGR);
+				cvCvtColor(objectTracker.getBackProjectionImage(), image, CV_GRAY2BGR);
 
-			if (!local::image->origin)  // top-left origin
+			if (!image->origin)  // top-left origin
 				trackingBox.angle = -trackingBox.angle;
 
-			cvEllipseBox(local::image, trackingBox, CV_RGB(255,0,0), 3, CV_AA, 0);
+			cvEllipseBox(image, trackingBox, CV_RGB(255,0,0), 3, CV_AA, 0);
 		}
 
 #if !defined(_INITIALIZE_HISTOGRAM_FROM_FILE)
 		if (isSelectingTargetObject && selection.width > 0 && selection.height > 0)
 		{
-			cvSetImageROI(local::image, selection);
-			cvXorS(local::image, cvScalarAll(255), local::image, 0);
-			cvResetImageROI(local::image);
+			cvSetImageROI(image, selection);
+			cvXorS(image, cvScalarAll(255), image, 0);
+			cvResetImageROI(image);
 		}
 #endif
 
-		cvShowImage(windowName, local::image);
+		cvShowImage(windowName, image);
 		if (isHistrogramShown) cvShowImage(histoWindowName, histoImage);
 
 		//
@@ -420,7 +417,7 @@ void object_tracking()
 			isBackProjectionMode = !isBackProjectionMode;
 			break;
 		case 'c':
-			local::isTrackingObject = false;
+			isTrackingObject = false;
 			cvZero(histoImage);
 			break;
 		case 'h':
@@ -443,6 +440,31 @@ void object_tracking()
 	cvReleaseCapture(&capture);
 	cvDestroyWindow(windowName);
 	cvDestroyWindow(histoWindowName);
+}
+
+void meanshift_tracking()
+{
+	throw std::runtime_error("not yet implemented");
+
+	//cv::meanShift();
+}
+
+// [ref] ${OPENCV_HOME}/samples/cpp/hybridtrackingsample.cpp
+void hybrid_tracking_sample()
+{
+	throw std::runtime_error("not yet implemented");
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+namespace my_opencv {
+
+void object_tracking()
+{
+	//local::meanshift_tracking();  // not yet implemented
+	local::camshift_tracking_demo();
+	//local::hybrid_tracking_sample();  // not yet implemented
 }
 
 }  // namespace my_opencv

@@ -104,7 +104,7 @@
     <ClCompile Include="efficient_graph_based_image_segmentation_lib\segment.cpp">
       <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
     </ClCompile>
-    <ClCompile Include="efficient_graph_based_image_segmentation\graph_based_image_segmentation_main.cpp">
+    <ClCompile Include="efficient_graph_based_image_segmentation\efficient_graph_based_image_segmentation_main.cpp">
       <Filter>Source Files\efficient_graph_based_image_segmentation</Filter>
     </ClCompile>
   </ItemGroup>

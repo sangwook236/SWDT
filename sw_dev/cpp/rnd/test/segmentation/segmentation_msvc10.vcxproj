@@ -105,7 +105,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="efficient_graph_based_image_segmentation\graph_based_image_segmentation_main.cpp" />
+    <ClCompile Include="efficient_graph_based_image_segmentation\efficient_graph_based_image_segmentation_main.cpp" />
     <ClCompile Include="efficient_graph_based_image_segmentation_lib\segment.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
