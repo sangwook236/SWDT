@@ -5,16 +5,24 @@
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
+#include <ctime>
 
 
 int main(int argc, char *argv[])
 {
+	int graph_based_image_segmentation_main(int argc, char *argv[]);
 	int gslic_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		retval = gslic_main(argc, argv);
+		std::srand((unsigned int)std::time(NULL));
+
+		// Efficient Graph-Based Image Segmentation
+		retval = graph_based_image_segmentation_main(argc, argv);
+
+		// simple linear iterative clustering (SLIC)
+		//retval = gslic_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

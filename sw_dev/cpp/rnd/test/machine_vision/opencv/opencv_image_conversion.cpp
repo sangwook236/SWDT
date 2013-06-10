@@ -22,9 +22,14 @@ void convert_image(const std::string &srcImageName, const std::string &dstImageN
 		cvReleaseImage(&srcImage);
 	}
 #else
-	cv::Mat src = cv::imread(srcImageName.c_str());
+	cv::Mat src = cv::imread(srcImageName);
 	if (!src.empty())
-		cv::imwrite(dstImageName.c_str(), src);
+	{
+		cv::imwrite(dstImageName, src);
+		std::cout << "succeed in converting an image file, " << srcImageName << " to another image file, " << dstImageName << std::endl;
+	}
+	else
+		std::cerr << "fail to read an image file, " << srcImageName << std::endl;
 #endif
 }
 
@@ -64,11 +69,11 @@ void convert_image_to_gray(const std::string &srcImageName, const std::string &d
 		cvReleaseImage(&srcImage);
 	}
 #else
-	cv::Mat srcImage = cv::imread(srcImageName.c_str());
+	cv::Mat srcImage = cv::imread(srcImageName);
 	if (!srcImage.empty())
 	{
 		if (1 == srcImage.channels())
-			cv::imwrite(dstImageName.c_str(), srcImage);
+			cv::imwrite(dstImageName, srcImage);
 		else
 		{
 			cv::Mat grayImg;
@@ -77,13 +82,17 @@ void convert_image_to_gray(const std::string &srcImageName, const std::string &d
 			cv::cvtColor(srcImage, grayImg, CV_BGR2GRAY);
 
 			if (!grayImg.empty())
-				cv::imwrite(dstImageName.c_str(), grayImg);
+				cv::imwrite(dstImageName, grayImg);
 		}
+
+		std::cout << "succeed in converting an image file, " << srcImageName << " to a gray image file, " << dstImageName << std::endl;
 	}
+	else
+		std::cerr << "fail to read an image file, " << srcImageName << std::endl;
 #endif
 }
 
-void convert_image(const std::string &imageName, const std::string &srcImageExt, const std::string &dstImageExt)
+void convert_image(const std::string &imageName, const std::string &srcImageExt, const std::string &dstImageExt, const bool isGray)
 {
 	const std::string::size_type extPos = imageName.find_last_of('.');
 
@@ -94,19 +103,22 @@ void convert_image(const std::string &imageName, const std::string &srcImageExt,
 #endif
 	{
 		const std::string repstr = std::string(imageName).replace(extPos + 1, imageName.length() - extPos -1, dstImageExt);
-		//convert_image(imageName, repstr);
-		convert_image_to_gray(imageName, repstr);
+
+		if (isGray)
+			convert_image_to_gray(imageName, repstr);
+		else
+			convert_image(imageName, repstr);
 	}
 }
 
-void convert_images(const std::string &dirName, const std::string &srcImageExt, const std::string &dstImageExt)
+void convert_images(const std::string &dirName, const std::string &srcImageExt, const std::string &dstImageExt, const bool isGray)
 {
 #if defined(WIN32) && 0
 	WIN32_FIND_DATAA FindFileData;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
 	DWORD dwError;
 
-	hFind = FindFirstFileA((dirName + std::string("\\*")).c_str(), &FindFileData);
+	hFind = FindFirstFileA((dirName + std::string("/*")).c_str(), &FindFileData);
 	if (INVALID_HANDLE_VALUE == hFind)
 	{
 		std::cout << "Invalid file handle. Error is " << GetLastError() << std::endl;
@@ -116,7 +128,7 @@ void convert_images(const std::string &dirName, const std::string &srcImageExt, 
 	{
 		do
 		{
-			convert_image(dirName + std::string("\\") + std::string(FindFileData.cFileName), srcImageExt, dstImageExt);
+			convert_image(dirName + '/' + std::string(FindFileData.cFileName), srcImageExt, dstImageExt);
 		} while (FindNextFileA(hFind, &FindFileData) != 0);
 
 		dwError = GetLastError();
@@ -141,36 +153,9 @@ void convert_images(const std::string &dirName, const std::string &srcImageExt, 
 	boost::filesystem::directory_iterator end_itr;  // default construction yields past-the-end
 	for (boost::filesystem::directory_iterator itr(dir_path); itr != end_itr; ++itr)
 	{
-		convert_image(dirName + std::string("\\") + itr->path().filename().string(), srcImageExt, dstImageExt);
+		convert_image(dirName + '/' + itr->path().filename().string(), srcImageExt, dstImageExt, isGray);
 	}
 #endif
-}
-
-void convert_bmp_to_pgm()
-{
-	const std::string dirName(".");
-	convert_images(dirName, "bmp", "pgm");
-}
-
-void convert_pgm_to_png()
-{
-	const std::string dirName(".");
-	convert_images(dirName, "pgm", "png");
-}
-
-void convert_ppm_to_png()
-{
-	const std::string dirName(".");
-	convert_images(dirName, "ppm", "png");
-}
-
-void convert_jpg_to_ppm()
-{
-	//const std::string dirName(".");
-	//const std::string dirName("E:\\archive_dataset\\change_detection\\canoe\\input");
-	//const std::string dirName("E:\\archive_dataset\\change_detection\\highway\\input");
-	const std::string dirName("E:\\archive_dataset\\change_detection\\boats\\input");
-	convert_images(dirName, "jpg", "ppm");
 }
 
 }  // namespace local
@@ -180,10 +165,31 @@ namespace my_opencv {
 
 void image_conversion()
 {
-	//local::convert_bmp_to_pgm();
-	//local::convert_pgm_to_png();
-	//local::convert_ppm_to_png();
-	local::convert_jpg_to_ppm();
+	//const std::string dir_name(".");
+	//const std::string dir_name("E:/archive_dataset/change_detection/canoe/input");
+	//const std::string dir_name("E:/archive_dataset/change_detection/highway/input");
+	//const std::string dir_name("E:/archive_dataset/change_detection/boats/input");
+	const std::string dir_name("D:/work_center/sw_dev/cpp/rnd/bin/segmentation_data");
+
+#if 0
+	const std::string src_ext("bmp");
+	const std::string dst_ext("pgm");
+#elif 0
+	const std::string src_ext("pgm");
+	const std::string dst_ext("png");
+#elif 0
+	const std::string src_ext("ppm");
+	const std::string dst_ext("png");
+#elif 0
+	const std::string src_ext("jpg");
+	const std::string dst_ext("ppm");
+#elif 1
+	const std::string src_ext("png");
+	const std::string dst_ext("ppm");
+#endif
+
+	const bool is_gray = false;
+	local::convert_images(dir_name, src_ext, dst_ext, is_gray);
 }
 
 }  // namespace my_opencv

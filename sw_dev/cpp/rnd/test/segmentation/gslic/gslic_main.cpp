@@ -150,7 +150,7 @@ void create_superpixel_boundary(const cv::Mat &superpixel_mask, cv::Mat &superpi
 
 }  // namespace my_gslic
 
-int gslic_main (int argc, char *argv[])
+int gslic_main(int argc, char *argv[])
 {
 	bool canUseGPU = false;
 	try
