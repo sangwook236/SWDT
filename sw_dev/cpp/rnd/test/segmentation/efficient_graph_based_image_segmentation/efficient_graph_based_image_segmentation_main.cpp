@@ -35,12 +35,21 @@ void sample()
 	const float sigma = 0.5f;
 	const float k = 500.0f;
 	const int min_size = 50;
-#elif 
+#elif 0
 	const std::string input_filename("./segmentation_data/grain.ppm");
 	const std::string output_filename("./segmentation_data/grain_segmented.ppm");
 	const float sigma = 0.5f;
 	const float k = 1000.0f;
 	const int min_size = 100;
+#elif 0
+	const std::string input_filename("./segmentation_data/kinect_rgba_20130530T103805.ppm");
+	//const std::string input_filename("./segmentation_data/kinect_rgba_20130531T023152.ppm");
+	//const std::string input_filename("./segmentation_data/kinect_rgba_20130531T023346.ppm");
+	//const std::string input_filename("./segmentation_data/kinect_rgba_20130531T023359.ppm");
+	const std::string output_filename("./segmentation_data/kinect_segmented.ppm");
+	const float sigma = 0.5f;
+	const float k = 500.0f;
+	const int min_size = 50;
 #endif
 
 	std::cout << "loading input image." << std::endl;
