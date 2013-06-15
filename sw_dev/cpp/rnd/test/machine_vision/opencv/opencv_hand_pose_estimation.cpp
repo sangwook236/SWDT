@@ -10,431 +10,22 @@
 #include <ctime>
 
 
+namespace my_opencv {
+
+void contour(IplImage *srcImg, IplImage *grayImg);
+void make_contour(const cv::Mat &img, const cv::Rect &roi, const int segmentId, std::vector<std::vector<cv::Point> > &contours, std::vector<cv::Vec4i> &hierarchy);
+void make_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int segmentId, std::vector<cv::Point> &convexHull);
+void find_convexity_defect(CvMemStorage *storage, const std::vector<cv::Point> &contour, const std::vector<cv::Point> &convexHull, const double distanceThreshold, const double depthThreshold, std::vector<std::vector<CvConvexityDefect> > &convexityDefects, std::vector<cv::Point> &convexityDefectPoints);
+void compute_distance_transform(const cv::Mat &gray, cv::Mat &distanceTransform);
+
+void snake(IplImage *srcImage, IplImage *grayImage);
+
+void segment_motion_using_mhi(const bool useConvexHull, const cv::Mat &prev_gray_img, const cv::Mat &curr_gray_img, cv::Mat &mhi, cv::Mat &segmentMask, std::vector<std::vector<cv::Point> > &pointSets, std::vector<cv::Vec4i> &hierarchy);
+
+}  // namespace my_opencv
+
 namespace {
 namespace local {
-
-void contour(IplImage *srcImg, IplImage *grayImg)
-{
-	const int levels = 5;
-	CvSeq *contours = NULL;
-    CvMemStorage *storage = cvCreateMemStorage(0);
-
-    cvFindContours(grayImg, storage, &contours, sizeof(CvContour), CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cvPoint(0, 0));
-
-    // comment this out if you do not want approximation
-    contours = cvApproxPoly(contours, sizeof(CvContour), storage, CV_POLY_APPROX_DP, 3, 1);
-
-#if 0
-	const int _levels = levels - 3;
-	CvSeq *_contours = contours;
-    if (_levels <= 0)  // get to the nearest face to make it look more funny
-        _contours = _contours->h_next->h_next->h_next;
-
-	cvDrawContours(srcImg, _contours, CV_RGB(255, 0, 0), CV_RGB(0, 255, 0), _levels, 3, CV_AA, cvPoint(0, 0));
-#else
-	cvDrawContours(srcImg, contours, CV_RGB(255, 0, 0), CV_RGB(0, 255, 0), levels, 2, CV_AA, cvPoint(0, 0));
-#endif
-
-    cvReleaseMemStorage(&storage);
-}
-
-void snake(IplImage *srcImage, IplImage *grayImage)
-{
-	const int NUMBER_OF_SNAKE_POINTS = 50;
-	const int threshold = 90;
-
-	float alpha = 3;
-	float beta = 5;
-	float gamma = 2;
-	const int use_gradient = 1;
-	const CvSize win = cvSize(21, 21);
-	const CvTermCriteria term_criteria = cvTermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 100, 1.0);
-
-	IplImage *tmp_img = cvCloneImage(grayImage);
-	IplImage *img = cvCloneImage(grayImage);
-
-	// make a average filtering
-	cvSmooth(tmp_img, img, CV_BLUR, 31, 15);
-	//iplBlur(tmp_img, img, 31, 31, 15, 15);  // don't use IPL
-
-	// thresholding
-	cvThreshold(img, tmp_img, threshold, 255, CV_THRESH_BINARY);
-	//iplThreshold(img, tmp_img, threshold);  // distImg is thresholded image (tmp_img)  // don't use IPL
-
-	// expand the thressholded image of ones -smoothing the edge.
-	// and move start position of snake out since there are no ballon force
-	cvDilate(tmp_img, img, NULL, 3);
-
-	cvReleaseImage(&tmp_img);
-
-	// find the contours
-	CvSeq *contour = NULL;
-	CvMemStorage *storage = cvCreateMemStorage(0);
-	cvFindContours(img, storage, &contour, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
-
-	// run through the found coutours
-	CvPoint *points = new CvPoint [NUMBER_OF_SNAKE_POINTS];
-	while (contour)
-	{
-		if (contour->total >= NUMBER_OF_SNAKE_POINTS)
-		{
-			//memset(points, 0, NUMBER_OF_SNAKE_POINTS * sizeof(CvPoint));
-
-			cvSmooth(grayImage, img, CV_BLUR, 7, 3);
-			//iplBlur(grayImage, img, 7, 7, 3, 3);  // put blured image in TempImg  // don't use IPL
-
-#if 0
-			CvPoint *pts = new CvPoint [contour->total];
-			cvCvtSeqToArray(contour, pts, CV_WHOLE_SEQ);  // copy the contour to a array
-
-			// number of jumps between the desired points (downsample only!)
-			const int stride = int(contour->total / NUMBER_OF_SNAKE_POINTS);
-			for (int i = 0; i < NUMBER_OF_SNAKE_POINTS; ++i)
-			{
-				points[i].x = pts[int(i * stride)].x;
-				points[i].y = pts[int(i * stride)].y;
-			}
-
-			delete [] pts;
-			pts = NULL;
-#else
-			const int stride = int(contour->total / NUMBER_OF_SNAKE_POINTS);
-			for (int i = 0; i < NUMBER_OF_SNAKE_POINTS; ++i)
-			{
-				CvPoint *pt = CV_GET_SEQ_ELEM(CvPoint, contour, i * stride);
-				points[i].x = pt->x;
-				points[i].y = pt->y;
-			}
-#endif
-
-			// snake
-			cvSnakeImage(img, points, NUMBER_OF_SNAKE_POINTS, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
-
-			// draw snake on image
-			cvPolyLine(srcImage, (CvPoint **)&points, &NUMBER_OF_SNAKE_POINTS, 1, 1, CV_RGB(255, 0, 0), 3, 8, 0);
-		}
-
-		// get next contours
-		contour = contour->h_next;
-	}
-
-	//
-	//free(contour);
-	delete [] points;
-
-	cvReleaseMemStorage(&storage);
-	cvReleaseImage(&img);
-}
-
-#if 0
-void mser(IplImage *srcImage, IplImage *grayImage)
-{
-	IplImage *hsv = cvCreateImage(cvGetSize(srcImage), IPL_DEPTH_8U, 3);
-	cvCvtColor(srcImage, hsv, CV_BGR2YCrCb);
-
-	CvMSERParams params = cvMSERParams();  //cvMSERParams(5, 60, cvRound(0.2 * grayImage->width * grayImage->height), 0.25, 0.2);
-	CvMemStorage *storage= cvCreateMemStorage();
-	CvSeq *contours = NULL;
-	double t = (double)cvGetTickCount();
-	cvExtractMSER(hsv, NULL, &contours, storage, params);
-	t = cvGetTickCount() - t;
-
-	cvReleaseImage(&hsv);
-
-	std::cout << "MSER extracted " << contours->total << " contours in " << (t / ((double)cvGetTickFrequency() * 1000.0)) << " ms" << std::endl;
-
-	// draw MSER with different color
-	//unsigned char *imgptr = (unsigned char *)srcImage->imageData;
-	//for (int i = contours->total - 1; i >= 0; --i)
-	//{
-	//	CvSeq *seq = *(CvSeq **)cvGetSeqElem(contours, i);
-	//	for (int j = 0; j < seq->total; ++j)
-	//	{
-	//		CvPoint *pt = CV_GET_SEQ_ELEM(CvPoint, seq, j);
-	//		imgptr[pt->x*3+pt->y*srcImage->widthStep] = bcolors[i%9][2];
-	//		imgptr[pt->x*3+1+pt->y*srcImage->widthStep] = bcolors[i%9][1];
-	//		imgptr[pt->x*3+2+pt->y*srcImage->widthStep] = bcolors[i%9][0];
-	//	}
-	//}
-
-	// find ellipse ( it seems cvFitEllipse2 have error or sth? )
-	// FIXME [check] >> there are some errors. have to compare original source (mser_sample.cpp)
-	for (int i = 0; i < contours->total; ++i)
-	{
-		const CvContour *contour = *(CvContour **)cvGetSeqElem(contours, i);
-		const CvBox2D box = cvFitEllipse2(contour);
-		//box.angle = (float)CV_PI / 2.0f - box.angle;
-
-		cvEllipseBox(srcImage, box, CV_RGB(255, 0, 0), 2, 8, 0);
-	}
-
-	cvClearMemStorage(storage);
-}
-#else
-// [ref] ${OPENCV_ROOT}/sample/c/mser_sample.cpp
-void mser(cv::Mat &srcImage, const cv::Mat &grayImage)
-{
-	const cv::Scalar colors[] =
-	{
-		cv::Scalar(0, 0, 255),
-		cv::Scalar(0, 128, 255),
-		cv::Scalar(0, 255, 255),
-		cv::Scalar(0, 255, 0),
-		cv::Scalar(255, 128, 0),
-		cv::Scalar(255, 255, 0),
-		cv::Scalar(255, 0, 0),
-		cv::Scalar(255, 0, 255),
-		cv::Scalar(255, 255, 255),
-		cv::Scalar(196, 255, 255),
-		cv::Scalar(255, 255, 196)
-	};
-
-	const cv::Vec3b bcolors[] =
-	{
-		cv::Vec3b(0, 0, 255),
-		cv::Vec3b(0, 128, 255),
-		cv::Vec3b(0, 255, 255),
-		cv::Vec3b(0, 255, 0),
-		cv::Vec3b(255, 128, 0),
-		cv::Vec3b(255, 255, 0),
-		cv::Vec3b(255, 0, 0),
-		cv::Vec3b(255, 0, 255),
-		cv::Vec3b(255, 255, 255)
-	};
-
-	cv::Mat yuv(srcImage.size(), CV_8UC3);
-	cv::cvtColor(srcImage, yuv, CV_BGR2YCrCb);
-
-	const int delta = 5;
-	const int min_area = 60;
-	const int max_area = 14400;
-	const float max_variation = 0.25f;
-	const float min_diversity = 0.2f;
-	const int max_evolution = 200;
-	const double area_threshold = 1.01;
-	const double min_margin = 0.003;
-	const int edge_blur_size = 5;
-	cv::MSER mser;
-
-	double t = (double)cv::getTickCount();
-	std::vector<std::vector<cv::Point> > contours;
-	cv::MSER()(yuv, contours);
-	t = cv::getTickCount() - t;
-
-	std::cout << "MSER extracted " << contours.size() << " contours in " << (t / ((double)cv::getTickFrequency() * 1000.0)) << " ms" << std::endl;
-
-	// find ellipse ( it seems cvFitEllipse2 have error or sth? )
-	// FIXME [check] >> there are some errors. have to compare original source (mser_sample.cpp)
-    for (int i = (int)contours.size() - 1; i >= 0; --i)
-	{
-        const std::vector<cv::Point> &r = contours[i];
-        for (int j = 0; j < (int)r.size(); ++j)
-        {
-            const cv::Point &pt = r[j];
-            srcImage.at<cv::Vec3b>(pt) = bcolors[i % 9];
-        }
-
-        // find ellipse (it seems cvfitellipse2 have error or sth?)
-        cv::RotatedRect box = cv::fitEllipse(r);
-
-        box.angle = (float)CV_PI / 2 - box.angle;
-        cv::ellipse(srcImage, box, colors[10], 2);
-	}
-}
-#endif
-
-void make_contour(const cv::Mat &segmentMask, const cv::Rect &roi, const int segmentId, std::vector<std::vector<cv::Point> > &contours, std::vector<cv::Vec4i> &hierarchy)
-{
-	std::vector<std::vector<cv::Point> > contours2;
-#if defined(__GNUC__)
-    {
-        cv::Mat segmentMask_tmp(roi.width == 0 || roi.height == 0 ? segmentMask : segmentMask(roi));
-        cv::findContours(segmentMask_tmp, contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
-    }
-#else
-	cv::findContours(roi.width == 0 || roi.height == 0 ? segmentMask : segmentMask(roi), contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
-#endif
-	if (roi.width == 0 || roi.height == 0)
-	{
-		cv::findContours((cv::Mat &)segmentMask, contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-		//cv::findContours((cv::Mat &)segmentMask, contours2, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-	}
-	else
-	{
-#if defined(__GNUC__)
-        {
-            cv::Mat segmentMask_roi(segmentMask, roi);
-            cv::findContours(segmentMask_roi, contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
-            //cv::findContours(segmentMask_roi, contours2, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
-        }
-#else
-		cv::findContours(segmentMask(roi), contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
-		//cv::findContours(segmentMask(roi), contours2, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
-#endif
-	}
-
-	if (contours2.empty()) return;
-
-#if 1
-    // comment this out if you do not want approximation
-	for (std::vector<std::vector<cv::Point> >::iterator it = contours2.begin(); it != contours2.end(); ++it)
-	{
-		//if (it->empty()) continue;
-
-		std::vector<cv::Point> approxCurve;
-		cv::approxPolyDP(cv::Mat(*it), approxCurve, 3.0, true);
-		contours.push_back(approxCurve);
-	}
-#else
-	std::copy(contours2.begin(), contours2.end(), std::back_inserter(contours));
-#endif
-}
-
-void make_convex_hull(const cv::Mat &segmentMask, const cv::Rect &roi, const int segmentId, std::vector<cv::Point> &convexHull)
-{
-	const cv::Mat &roi_img = roi.width == 0 || roi.height == 0 ? segmentMask : segmentMask(roi);
-
-	std::vector<cv::Point> points;
-	points.reserve(roi_img.rows * roi_img.cols);
-	for (int r = 0; r < roi_img.rows; ++r)
-		for (int c = 0; c < roi_img.cols; ++c)
-		{
-			if (roi_img.at<unsigned char>(r, c) == segmentId)
-				points.push_back(cv::Point(roi.x + c, roi.y + r));
-		}
-
-	if (points.empty()) return;
-
-	std::vector<int> hull;
-	cv::convexHull(cv::Mat(points), hull, false);
-
-	if (hull.empty()) return;
-	convexHull.reserve(hull.size());
-
-#if 1
-	for (std::vector<int>::iterator it = hull.begin(); it != hull.end(); ++it)
-		convexHull.push_back(points[*it]);
-#else
-    // comment this out if you do not want approximation
-	std::vector<cv::Point> tmp_points;
-	tmp_points.reserve(hull.size());
-	for (std::vector<int>::iterator it = hull.begin(); it != hull.end(); ++it)
-		tmp_points.push_back(points[*it]);
-	cv::approxPolyDP(cv::Mat(tmp_points), convexHull, 3.0, true);
-#endif
-}
-
-struct IncreaseHierarchyOp
-{
-    IncreaseHierarchyOp(const int offset)
-    : offset_(offset)
-    {}
-
-    cv::Vec4i operator()(const cv::Vec4i &rhs) const
-    {
-        return cv::Vec4i(rhs[0] == -1 ? -1 : (rhs[0] + offset_), rhs[1] == -1 ? -1 : (rhs[1] + offset_), rhs[2] == -1 ? -1 : (rhs[2] + offset_), rhs[3] == -1 ? -1 : (rhs[3] + offset_));
-    }
-
-private:
-    const int offset_;
-};
-
-void segment_motion_using_mhi(const bool useConvexHull, const cv::Mat &prev_gray_img, const cv::Mat &curr_gray_img, cv::Mat &mhi, cv::Mat &segmentMask, std::vector<std::vector<cv::Point> > &pointSets, std::vector<cv::Vec4i> &hierarchy)
-{
-	const double timestamp = (double)clock() / CLOCKS_PER_SEC;  // get current time in seconds
-
-	const double MHI_DURATION = 1.0;
-	const double MAX_TIME_DELTA = 0.5;
-	const double MIN_TIME_DELTA = 0.05;
-
-	const int diff_threshold = 8;
-	const int motion_gradient_aperture_size = 3;
-	const double motion_segment_threshold = MAX_TIME_DELTA;
-
-	pointSets.clear();
-	hierarchy.clear();
-
-	cv::Mat silh;
-	cv::absdiff(prev_gray_img, curr_gray_img, silh);  // get difference between frames
-
-	cv::threshold(silh, silh, diff_threshold, 1.0, cv::THRESH_BINARY);  // threshold it
-	cv::updateMotionHistory(silh, mhi, timestamp, MHI_DURATION);  // update MHI
-
-	//
-	cv::Mat processed_mhi;  // processed MHI
-	{
-		const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1));
-		const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));
-		const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
-		const int iterations = 1;
-#if 0
-		cv::erode(mhi, processed_mhi, selement5, cv::Point(-1, -1), iterations);
-		cv::dilate(processed_mhi, processed_mhi, selement5, cv::Point(-1, -1), iterations);
-#else
-		cv::morphologyEx(mhi, processed_mhi, cv::MORPH_OPEN, selement5, cv::Point(-1, -1), iterations);
-		cv::morphologyEx(processed_mhi, processed_mhi, cv::MORPH_CLOSE, selement5, cv::Point(-1, -1), iterations);
-#endif
-	}
-
-	// calculate motion gradient orientation and valid orientation mask
-	cv::Mat mask;  // valid orientation mask
-	cv::Mat orient;  // orientation
-	cv::calcMotionGradient(processed_mhi, mask, orient, MAX_TIME_DELTA, MIN_TIME_DELTA, motion_gradient_aperture_size);
-
-	CvMemStorage *storage = cvCreateMemStorage(0);  // temporary storage
-
-	// segment motion: get sequence of motion components
-	// segmask is marked motion components map. it is not used further
-	IplImage *segmask = cvCreateImage(cvSize(curr_gray_img.cols, curr_gray_img.rows), IPL_DEPTH_32F, 1);  // motion segmentation map
-#if defined(__GNUC__)
-    IplImage processed_mhi_ipl = (IplImage)processed_mhi;
-	CvSeq *seq = cvSegmentMotion(&processed_mhi_ipl, segmask, storage, timestamp, motion_segment_threshold);
-#else
-	CvSeq *seq = cvSegmentMotion(&(IplImage)processed_mhi, segmask, storage, timestamp, motion_segment_threshold);
-#endif
-
-	//
-	//cv::Mat(segmask, false).convertTo(segmentMask, CV_8SC1, 1.0, 0.0);  // Oops !!! error
-	cv::Mat(segmask, false).convertTo(segmentMask, CV_8UC1, 1.0, 0.0);
-
-	//
-	double minVal = 0.0, maxVal = 0.0;
-	//cv::minMaxLoc(segmask, &minVal, &maxVal);
-	cv::minMaxLoc(segmentMask, &minVal, &maxVal);
-	if (maxVal < 1.0e-5) return;
-
-	// iterate through the motion components
-	pointSets.reserve(seq->total);
-	for (int i = 0; i < seq->total; ++i)
-	{
-		const CvConnectedComp *comp = (CvConnectedComp *)cvGetSeqElem(seq, i);
-		const cv::Rect roi(comp->rect);
-		if (comp->area < 100 || roi.width + roi.height < 100)  // reject very small components
-			continue;
-
-		if (useConvexHull)
-		{
-			std::vector<cv::Point> convexHull;
-			make_convex_hull(segmentMask, roi, i, convexHull);
-			if (!convexHull.empty()) pointSets.push_back(convexHull);
-		}
-		else
-		{
-			std::vector<std::vector<cv::Point> > contours;
-			std::vector<cv::Vec4i> hier;
-			make_contour(segmentMask, roi, i, contours, hier);
-
-			if (!hier.empty())
-				std::transform(hier.begin(), hier.end(), std::back_inserter(hierarchy), IncreaseHierarchyOp(pointSets.size()));
-			std::copy(contours.begin(), contours.end(), std::back_inserter(pointSets));
-		}
-	}
-
-	cvReleaseImage(&segmask);
-
-	cvClearMemStorage(storage);
-	cvReleaseMemStorage(&storage);
-}
 
 void segment_motion_using_Farneback_motion_estimation(const bool useConvexHull, const cv::Mat &prev_gray_img, const cv::Mat &curr_gray_img, cv::Mat &segmentMask, std::vector<std::vector<cv::Point> > &pointSets, std::vector<cv::Vec4i> &hierarchy)
 {
@@ -474,102 +65,13 @@ void segment_motion_using_Farneback_motion_estimation(const bool useConvexHull, 
 	if (useConvexHull)
 	{
 		std::vector<cv::Point> convexHull;
-		make_convex_hull(segmentMask, cv::Rect(), 1, convexHull);
+		my_opencv::make_convex_hull(segmentMask, cv::Rect(), 1, convexHull);
 		if (!convexHull.empty()) pointSets.push_back(convexHull);
 	}
 	else
 	{
-		make_contour(segmentMask, cv::Rect(), 1, pointSets, hierarchy);
+		my_opencv::make_contour(segmentMask, cv::Rect(), 1, pointSets, hierarchy);
 	}
-}
-
-void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> &contour, const size_t numSnakePoints, std::vector<cv::Point> &snake_contour)
-{
-	snake_contour.clear();
-	if (contour.empty()) return;
-
-/*
-	std::vector<std::vector<cv::Point> > contours;
-	std::vector<cv::Point> hierarchy;
-	{
-		const int threshold = 90;
-
-		cv::Mat binary_img;
-
-		// make a average filtering
-		cv::blur(gray_img, binary_img, cv::Size(31, 15));
-
-		// thresholding
-		cv::threshold(binary_img, binary_img, threshold, 255, cv::THRESH_BINARY);
-
-		// expand the thressholded image of ones -smoothing the edge.
-		// and move start position of snake out since there are no ballon force
-		{
-			const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
-			cv::dilate(binary_img, binary_img, selement, cv::Point(-1, -1), 3);
-		}
-
-		cv::findContours(binary_img, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-	}
-*/
-
-	float alpha = 3;
-	float beta = 5;
-	float gamma = 2;
-	const int use_gradient = 1;
-	const CvSize win = cvSize(21, 21);
-	const CvTermCriteria term_criteria = cvTermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 100, 1.0);
-
-	// run through the found coutours
-	const size_t &numPts = contour.size();
-	const size_t numSnakePts = 0 == numSnakePoints ? numPts : numSnakePoints;
-	if (numPts >= numSnakePts)
-	{
-		CvPoint *points = new CvPoint [numSnakePts];
-
-		cv::Mat blurred_img;
-		cv::blur(gray_img, blurred_img, cv::Size(7, 3));
-
-		const int stride = int(numPts / numSnakePts);
-		for (size_t i = 0; i < numSnakePts; ++i)
-		{
-			const cv::Point &pt = contour[i * stride];
-			points[i] = cvPoint(pt.x, pt.y);
-		}
-
-		// snake
-#if defined(__GNUC__)
-        IplImage blurred_img_ipl = (IplImage)blurred_img;
-		cvSnakeImage(&blurred_img_ipl, points, numSnakePts, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
-#else
-		cvSnakeImage(&(IplImage)blurred_img, points, numSnakePts, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
-#endif
-
-		snake_contour.assign(points, points + numSnakePts);
-		delete [] points;
-	}
-}
-
-void calculateDistanceTransform(const cv::Mat &gray, cv::Mat &distanceTransform)
-{
-	const int distanceType = CV_DIST_C;  // C/Inf metric
-	//const int distanceType = CV_DIST_L1;  // L1 metric
-	//const int distanceType = CV_DIST_L2;  // L2 metric
-	//const int maskSize = CV_DIST_MASK_3;
-	//const int maskSize = CV_DIST_MASK_5;
-	const int maskSize = CV_DIST_MASK_PRECISE;
-
-#if 0
-	cv::Mat dist32f1, dist32f2;
-	// distance transform of original image
-	cv::distanceTransform(gray, dist32f1, distanceType, maskSize);
-	// distance transform of inverted image
-	cv::distanceTransform(cv::Scalar::all(255) - gray, dist32f2, distanceType, maskSize);
-	cv::max(dist32f1, dist32f2, distanceTransform);
-#else
-	// distance transform of inverted image
-	cv::distanceTransform(gray, distanceTransform, distanceType, maskSize);
-#endif
 }
 
 void findHandContour(const cv::Mat &edgeImg, std::vector<std::vector<cv::Point> > &contours)
@@ -637,7 +139,7 @@ void findHandSilhouette(const cv::Size &imgSize, const std::vector<std::vector<c
 	cv::drawContours(gray, contours, contourId, CV_RGB(0, 0, 0), 1, 8);
 
 	cv::Mat distanceTransform;  // CV_32FC1
-	calculateDistanceTransform(gray, distanceTransform);
+	my_opencv::compute_distance_transform(gray, distanceTransform);
 
 	cv::Mat mask(imgSize, CV_8UC1, cv::Scalar::all(0));
 	{
@@ -653,107 +155,6 @@ void findHandSilhouette(const cv::Size &imgSize, const std::vector<std::vector<c
 
 	//
 	findBetterHandContour(imgSize, contours, convexHull, contourId, palmCenterPoint, silhouetteContours);
-}
-
-void findConvexityDefect(CvMemStorage *storage, const std::vector<cv::Point> &contour, const std::vector<cv::Point> &convexHull, const double distanceThreshold, const double depthThreshold, std::vector<std::vector<CvConvexityDefect> > &convexityDefects, std::vector<cv::Point> &convexityDefectPoints)
-{
-	CvSeq *contourSeq = cvCreateSeq(CV_SEQ_KIND_GENERIC | CV_32SC2, sizeof(CvContour), sizeof(CvPoint), storage);
-	CvPoint pt;
-	for (std::vector<cv::Point>::const_iterator it = contour.begin(); it != contour.end(); ++it)
-	{
-		pt.x = it->x;
-		pt.y = it->y;
-		cvSeqPush(contourSeq, &pt);
-	}
-
-	// FIXME [modify] >> Oops !!! too stupid
-	// convex hull is already calculated by cv::convexHull()
-	CvSeq *hullSeq = cvConvexHull2(contourSeq, NULL, CV_CLOCKWISE, 0);
-
-	CvSeq *convexityDefectSeq = cvConvexityDefects(contourSeq, hullSeq, storage);
-	while (convexityDefectSeq)
-	{
-		CvConvexityDefect *defects = new CvConvexityDefect [convexityDefectSeq->total];
-		cvCvtSeqToArray(convexityDefectSeq, defects, CV_WHOLE_SEQ);  // copy the contour to a array
-
-#if 0
-		convexityDefects.push_back(std::vector<CvConvexityDefect>(defects, defects + convexityDefectSeq->total));
-#else
-		// eliminate interior convexity defect
-		// FIXME [modify] >> Oops !!! stupid implementation
-		std::vector<CvConvexityDefect> dfts;
-		dfts.reserve(convexityDefectSeq->total);
-		for (int i = 0; i < convexityDefectSeq->total; ++i)
-		{
-			bool pass = true;
-
-#if 0
-			cv::Point pt1, pt2;
-
-			std::vector<cv::Point>::const_iterator it = contour.begin();
-			pt1 = *it;
-			++it;
-			for (; it != contour.end(); ++it)
-			{
-				pt2 = *it;
-
-				if ((cv::norm(pt1 - cv::Point(defects[i].start->x, defects[i].start->y)) <= distanceThreshold &&
-					cv::norm(pt2 - cv::Point(defects[i].end->x, defects[i].end->y)) <= distanceThreshold) ||
-					(cv::norm(pt1 - cv::Point(defects[i].end->x, defects[i].end->y)) <= distanceThreshold &&
-					cv::norm(pt2 - cv::Point(defects[i].start->x, defects[i].start->y)) <= distanceThreshold) ||
-					defects[i].depth <= depthThreshold)
-				{
-					pass = false;
-					break;
-				}
-
-				pt1 = pt2;
-			}
-#else
-			// FIXME [check] >> is it really correct?
-			cv::Point pt1, pt2;
-
-			std::vector<cv::Point>::const_iterator it = convexHull.begin();
-			pt1 = *it;
-			++it;
-			for (; it != convexHull.end(); ++it)
-			{
-				pt2 = *it;
-
-				const double a = pt2.x == pt1.x ? 0 : (pt2.y - pt1.y) / (pt2.x - pt1.x);
-				const double b = -a * pt1.x + pt1.y;
-				const double d = std::fabs(a * defects[i].depth_point->x - defects[i].depth_point->y + b) / std::sqrt(a*a + 1);
-				if (d <= distanceThreshold || defects[i].depth <= depthThreshold)
-				{
-					pass = false;
-					break;
-				}
-
-				pt1 = pt2;
-			}
-#endif
-
-			if (pass) dfts.push_back(defects[i]);
-		}
-		convexityDefects.push_back(dfts);
-#endif
-
-		delete [] defects;
-
-		// get next contour
-		convexityDefectSeq = convexityDefectSeq->h_next;
-	}
-
-	// calculate a point on palm
-	std::vector<cv::Point> defectPts;
-	for (std::vector<std::vector<CvConvexityDefect> >::const_iterator it = convexityDefects.begin(); it != convexityDefects.end(); ++it)
-		for (std::vector<CvConvexityDefect>::const_iterator itDefect = it->begin(); itDefect != it->end(); ++itDefect)
-			defectPts.push_back(cv::Point(itDefect->depth_point->x, itDefect->depth_point->y));
-
-	// FIXME [restore] >>
-	// sort convexity defect contour
-	//cv::convexHull(cv::Mat(defectPts), convexityDefectPoints, false);
-	convexityDefectPoints.swap(defectPts);
 }
 
 bool segmentFinger(cv::Mat &img, const cv::Point &startPt, const cv::Point &endPt, const std::vector<cv::Point> &handContour, const double distanceThreshold, std::vector<std::vector<cv::Point> > &fingerContours)
@@ -1207,7 +608,7 @@ bool estimateHandPose(const cv::Mat &img, const cv::Mat &gray, cv::Point &palmCe
 
 	const double distanceThreshold = 2.0;
 	const double depthThreshold = 5.0;
-	findConvexityDefect(storage, maxAreaSilhouetteContour, convexHull, distanceThreshold, depthThreshold, convexityDefects, convexityDefectPoints);
+	my_opencv::find_convexity_defect(storage, maxAreaSilhouetteContour, convexHull, distanceThreshold, depthThreshold, convexityDefects, convexityDefectPoints);
 
 	const cv::Scalar &defectMeanPt = cv::mean(cv::Mat(convexityDefectPoints));
 
@@ -1460,8 +861,8 @@ void hand_pose_estimation()
 		}
 
 		//
-		//local::contour(srcImage, grayImage);
-		//local::snake(srcImage, grayImage);
+		//my_opencv::contour(srcImage, grayImage);
+		//my_opencv::snake(srcImage, grayImage);
 #if 0
 		local::mser(srcImage, grayImage);
 #else
@@ -1674,7 +1075,7 @@ void hand_pose_estimation()
 					mhi.create(gray.rows, gray.cols, CV_32F);
 
 				const bool useConvexHull = false;
-				local::segment_motion_using_mhi(useConvexHull, prevgray, gray, mhi, segmentMask, pointSets, hierarchy);
+				my_opencv::segment_motion_using_mhi(useConvexHull, prevgray, gray, mhi, segmentMask, pointSets, hierarchy);
 				//local::segment_motion_using_Farneback_motion_estimation(useConvexHull, prevgray, gray, segmentMask, pointSets, hierarchy);
 
 				double maxArea = 0.0;
@@ -1769,7 +1170,7 @@ void hand_pose_estimation()
 				break;
 		} while (++numAcquisitionFrames < MAX_ACQUISITION_FRAMES);
 
-		//
+		// FIXME [check] >> 0 ???
 		const size_t NUMBER_OF_SNAKE_POINTS = 0;
 		if (!pointSets.empty() && -1 != maxAreaIdx)
 		{

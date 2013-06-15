@@ -11,6 +11,15 @@
 #include <ctime>
 
 
+namespace my_opencv {
+
+void canny(const cv::Mat &gray, cv::Mat &edge);
+void sobel(const cv::Mat &gray, cv::Mat &edge);
+
+void segment_motion_using_mhi(const double timestamp, const double mhiTimeDuration, const cv::Mat &prev_gray_img, const cv::Mat &curr_gray_img, cv::Mat &mhi, cv::Mat &processed_mhi, cv::Mat &component_label_map, std::vector<cv::Rect> &component_rects);
+
+}  // namespace my_opencv
+
 namespace {
 namespace local {
 
@@ -20,37 +29,6 @@ namespace local {
 
 //#define __USE_CANNY 1
 #define __USE_SOBEL 1
-
-// copy from image_operation.cpp
-void canny(const cv::Mat &gray, cv::Mat &edge)
-{
-#if 0
-	// down-scale and up-scale the image to filter out the noise
-	cv::Mat blurred;
-	cv::pyrDown(gray, blurred);
-	cv::pyrUp(blurred, edge);
-#else
-	cv::blur(gray, edge, cv::Size(3, 3));
-#endif
-
-	// run the edge detector on grayscale
-	const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
-	const bool useL2 = true;
-	cv::Canny(edge, edge, lowerEdgeThreshold, upperEdgeThreshold, 3, useL2);
-}
-
-// copy from image_operation.cpp
-void sobel(const cv::Mat &gray, cv::Mat &edge)
-{
-	//const int ksize = 5;
-	const int ksize = CV_SCHARR;
-	cv::Mat xgradient, ygradient;
-
-	cv::Sobel(gray, xgradient, CV_32FC1, 1, 0, ksize, 1.0, 0.0);
-	cv::Sobel(gray, ygradient, CV_32FC1, 0, 1, ksize, 1.0, 0.0);
-
-	cv::magnitude(xgradient, ygradient, edge);
-}
 
 void save_ref_hand_image()
 {
@@ -78,9 +56,9 @@ void save_ref_hand_image()
 
 		cv::Mat edge, edge_img;
 #if defined(__USE_CANNY)
-		canny(gray, edge);
+		my_opencv::canny(gray, edge);
 #elif defined(__USE_SOBEL)
-		sobel(gray, edge);
+		my_opencv::sobel(gray, edge);
 #endif
 
 		if (!edge.empty())
@@ -147,7 +125,7 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		img.copyTo(mask_img, mask);
 		cv::cvtColor(mask_img, gray, CV_BGR2GRAY);
 
-		canny(gray, edge);
+		my_opencv::canny(gray, edge);
 
 		const double thresholdRatio = 0.30;
 		double minVal = 0.0, maxVal = 0.0;
@@ -161,7 +139,7 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		img.copyTo(mask_img, mask);
 		cv::cvtColor(mask_img, gray, CV_BGR2GRAY);
 
-		sobel(gray, edge);
+		my_opencv::sobel(gray, edge);
 
 		const double thresholdRatio = 0.05;
 		double minVal = 0.0, maxVal = 0.0;
@@ -176,7 +154,7 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		cv::Mat gray, edge, edge_img;
 		cv::cvtColor(mask_img, gray, CV_BGR2GRAY);
 
-		canny(gray, edge);
+		my_opencv::canny(gray, edge);
 
 		const double thresholdRatio = 0.30;
 		double minVal = 0.0, maxVal = 0.0;
@@ -199,7 +177,7 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		cv::Mat gray, edge, edge_img;
 		cv::cvtColor(img(aabb), gray, CV_BGR2GRAY);
 
-		sobel(gray, edge);
+		my_opencv::sobel(gray, edge);
 
 		const double thresholdRatio = 0.05;
 		double minVal = 0.0, maxVal = 0.0;
@@ -277,89 +255,6 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 				img.at<cv::Vec3b>(*it) = cv::Vec3b(255, 0, 255);
 		}
 	}
-}
-
-// copy from gesture_recognition.cpp
-void segment_motion_using_mhi(const double timestamp, const double mhiTimeDuration, const cv::Mat &prev_gray_img, const cv::Mat &curr_gray_img, cv::Mat &mhi, cv::Mat &processed_mhi, cv::Mat &component_label_map, std::vector<cv::Rect> &component_rects)
-{
-	cv::Mat silh;
-	cv::absdiff(prev_gray_img, curr_gray_img, silh);  // get difference between frames
-
-	const int diff_threshold = 8;
-	cv::threshold(silh, silh, diff_threshold, 1.0, cv::THRESH_BINARY);  // threshold
-	cv::updateMotionHistory(silh, mhi, timestamp, mhiTimeDuration);  // update MHI
-
-	//
-	{
-		const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1));
-		const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));
-		const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
-		const int iterations = 1;
-#if 0
-		cv::erode(mhi, processed_mhi, selement5, cv::Point(-1, -1), iterations);
-		cv::dilate(processed_mhi, processed_mhi, selement5, cv::Point(-1, -1), iterations);
-#else
-		cv::morphologyEx(mhi, processed_mhi, cv::MORPH_OPEN, selement5, cv::Point(-1, -1), iterations);
-		cv::morphologyEx(processed_mhi, processed_mhi, cv::MORPH_CLOSE, selement5, cv::Point(-1, -1), iterations);
-#endif
-
-		mhi.copyTo(processed_mhi, processed_mhi);
-	}
-
-	// calculate motion gradient orientation and valid orientation mask
-/*
-	const int motion_gradient_aperture_size = 3;
-	cv::Mat motion_orientation_mask;  // valid orientation mask
-	cv::Mat motion_orientation;  // orientation
-	cv::calcMotionGradient(processed_mhi, motion_orientation_mask, motion_orientation, MAX_TIME_DELTA, MIN_TIME_DELTA, motion_gradient_aperture_size);
-*/
-
-	const double MAX_TIME_DELTA = 0.5;
-	const double MIN_TIME_DELTA = 0.05;
-	const double motion_segment_threshold = MAX_TIME_DELTA;
-
-#if 1
-	CvMemStorage *storage = cvCreateMemStorage(0);  // temporary storage
-
-	// segment motion: get sequence of motion components
-	// segmask is marked motion components map. it is not used further
-	IplImage *segmask = cvCreateImage(cvSize(curr_gray_img.cols, curr_gray_img.rows), IPL_DEPTH_32F, 1);  // motion segmentation map
-#if defined(__GNUC__)
-    IplImage processed_mhi_ipl = (IplImage)processed_mhi;
-	CvSeq *seq = cvSegmentMotion(&processed_mhi_ipl, segmask, storage, timestamp, motion_segment_threshold);
-#else
-	CvSeq *seq = cvSegmentMotion(&(IplImage)processed_mhi, segmask, storage, timestamp, motion_segment_threshold);
-#endif
-
-	//cv::Mat(segmask, false).convertTo(component_label_map, CV_8SC1, 1.0, 0.0);  // Oops !!! error
-	cv::Mat(segmask, false).convertTo(component_label_map, CV_8UC1, 1.0, 0.0);
-
-	// iterate through the motion components
-	component_rects.reserve(seq->total);
-	for (int i = 0; i < seq->total; ++i)
-	{
-		const CvConnectedComp *comp = (CvConnectedComp *)cvGetSeqElem(seq, i);
-		component_rects.push_back(cv::Rect(comp->rect));
-	}
-
-	cvReleaseImage(&segmask);
-
-	//cvClearMemStorage(storage);
-	cvReleaseMemStorage(&storage);
-#else
-	std::vector<std::vector<cv::Point> > contours;
-	std::vector<cv::Vec4i> hierarchy;
-	const cv::Mat &tm = processed_mhi > 0;
-	cv::findContours((cv::Mat &)tm, contours, hierarchy, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE, cv::Point());
-
-	// iterate through the motion components
-	component_rects.reserve(contours.size());
-	for (std::vector<std::vector<cv::Point> >::const_iterator it = contours.begin(); it != contours.end(); ++it)
-		component_rects.push_back(getBoundingBox(*it));
-
-	// FIXME [modify] >>
-	component_label_map = processed_mhi > 0;
-#endif
 }
 
 void detect_hand_by_motion()
@@ -459,7 +354,7 @@ void detect_hand_by_motion()
 
 			cv::Mat processed_mhi, component_label_map;
 			std::vector<cv::Rect> component_rects;
-			segment_motion_using_mhi(timestamp, MHI_TIME_DURATION, prevgray, gray, mhi, processed_mhi, component_label_map, component_rects);
+			my_opencv::segment_motion_using_mhi(timestamp, MHI_TIME_DURATION, prevgray, gray, mhi, processed_mhi, component_label_map, component_rects);
 
 			//
 			{

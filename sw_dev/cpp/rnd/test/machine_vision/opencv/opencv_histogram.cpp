@@ -6,84 +6,16 @@
 #include <iostream>
 
 
+namespace my_opencv {
+
+void draw_histogram_1D(const cv::MatND &hist, const int binCount, const double maxVal, const int binWidth, const int maxHeight, cv::Mat &histImg);
+void draw_histogram_2D(const cv::MatND &hist, const int horzBinCount, const int vertBinCount, const double maxVal, const int horzBinSize, const int vertBinSize, cv::Mat &histImg);
+void normalize_histogram(cv::MatND &hist, const double factor);
+
+}  // namespace my_opencv
+
 namespace {
 namespace local {
-
-void draw_histogram_1D(const cv::MatND &hist, const int binCount, const double maxVal, const int binWidth, const int maxHeight, cv::Mat &histImg)
-{
-#if 0
-	for (int i = 0; i < binCount; ++i)
-	{
-		const float binVal(hist.at<float>(i));
-		const int binHeight(cvRound(binVal * maxHeight / maxVal));
-		cv::rectangle(
-			histImg,
-			cv::Point(i*binWidth, maxHeight), cv::Point((i+1)*binWidth - 1, maxHeight - binHeight),
-			binVal > maxVal ? CV_RGB(255, 0, 0) : CV_RGB(255, 255, 255),
-			CV_FILLED
-		);
-	}
-#else
-	const float *binPtr = (const float *)hist.data;
-	for (int i = 0; i < binCount; ++i, ++binPtr)
-	{
-		const int binHeight(cvRound(*binPtr * maxHeight / maxVal));
-		cv::rectangle(
-			histImg,
-			cv::Point(i*binWidth, maxHeight), cv::Point((i+1)*binWidth - 1, maxHeight - binHeight),
-			*binPtr > maxVal ? CV_RGB(255, 0, 0) : CV_RGB(255, 255, 255),
-			CV_FILLED
-		);
-	}
-#endif
-}
-
-void draw_histogram_2D(const cv::MatND &hist, const int horzBinCount, const int vertBinCount, const double maxVal, const int horzBinSize, const int vertBinSize, cv::Mat &histImg)
-{
-#if 0
-	for (int v = 0; v < vertBinCount; ++v)
-		for (int h = 0; h < horzBinCount; ++h)
-		{
-			const float binVal(hist.at<float>(v, h));
-			cv::rectangle(
-				histImg,
-				cv::Point(h*horzBinSize, v*vertBinSize), cv::Point((h+1)*horzBinSize - 1, (v+1)*vertBinSize - 1),
-				binVal > maxVal ? CV_RGB(255, 0, 0) : cv::Scalar::all(cvRound(binVal * 255.0 / maxVal)),
-				CV_FILLED
-			);
-		}
-#else
-	const float *binPtr = (const float *)hist.data;
-	for (int v = 0; v < vertBinCount; ++v)
-		for (int h = 0; h < horzBinCount; ++h, ++binPtr)
-		{
-			const int intensity();
-			cv::rectangle(
-				histImg,
-				cv::Point(h*horzBinSize, v*vertBinSize), cv::Point((h+1)*horzBinSize - 1, (v+1)*vertBinSize - 1),
-				*binPtr > maxVal ? cv::Scalar(CV_RGB(255, 0, 0)) : cv::Scalar::all(cvRound(*binPtr * 255.0 / maxVal)),
-				CV_FILLED
-			);
-		}
-#endif
-}
-
-// the function normalizes the histogram bins by scaling them, such that the sum of the bins becomes equal to factor
-void normalize_histogram(cv::MatND &hist, const double factor)
-{
-#if 0
-	// FIXME [modify] >>
-	cvNormalizeHist(&(CvHistogram)hist, factor);
-#else
-	const cv::Scalar sums(cv::sum(hist));
-
-	const double eps = 1.0e-20;
-	if (std::fabs(sums[0]) < eps) return;
-
-	cv::Mat tmp(hist);
-	tmp.convertTo(hist, -1, factor / sums[0], 0.0);
-#endif
-}
 
 void histogram_1D()
 {
@@ -129,7 +61,7 @@ void histogram_1D()
 
 	// normalize histogram
 	const double factor = 1000.0;
-	normalize_histogram(hist, factor);
+	my_opencv::normalize_histogram(hist, factor);
 
 	//
 #if 1
@@ -142,7 +74,7 @@ void histogram_1D()
 	// draw 1-D histogram
 	const int bin_width = 1, max_height = 100;
 	cv::Mat histImg(cv::Mat::zeros(max_height, bins*bin_width, CV_8UC3));
-	draw_histogram_1D(hist, bins, maxVal, bin_width, max_height, histImg);
+	my_opencv::draw_histogram_1D(hist, bins, maxVal, bin_width, max_height, histImg);
 
 	//
 	const std::string windowName("histogram 1D");
@@ -207,7 +139,7 @@ void histogram_2D()
 
 	// normalize histogram
 	const double factor = 1000.0;
-	normalize_histogram(hist, factor);
+	my_opencv::normalize_histogram(hist, factor);
 
 	//
 #if 0
@@ -220,7 +152,7 @@ void histogram_2D()
 	// draw 2-D histogram
 	const int hscale = 10, sscale = 10;
 	cv::Mat histImg(cv::Mat::zeros(bins2*sscale, bins1*hscale, CV_8UC3));
-	draw_histogram_2D(hist, bins1, bins2, maxVal, hscale, sscale, histImg);
+	my_opencv::draw_histogram_2D(hist, bins1, bins2, maxVal, hscale, sscale, histImg);
 
 	//
 	const std::string windowName("histogram 2D");

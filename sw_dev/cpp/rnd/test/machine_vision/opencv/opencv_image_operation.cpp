@@ -117,35 +117,6 @@ void show_image()
     cvReleaseImage(&edgeImg);
 }
 
-void canny(const cv::Mat &gray, cv::Mat &edge)
-{
-#if 0
-	// down-scale and up-scale the image to filter out the noise
-	cv::Mat blurred;
-	cv::pyrDown(gray, blurred);
-	cv::pyrUp(blurred, edge);
-#else
-	cv::blur(gray, edge, cv::Size(3, 3));
-#endif
-
-	// run the edge detector on grayscale
-	const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
-	const bool useL2 = true;
-	cv::Canny(edge, edge, lowerEdgeThreshold, upperEdgeThreshold, 3, useL2);
-}
-
-void sobel(const cv::Mat &gray, cv::Mat &edge)
-{
-	//const int ksize = 5;
-	const int ksize = CV_SCHARR;
-	cv::Mat xgradient, ygradient;
-
-	cv::Sobel(gray, xgradient, CV_32FC1, 1, 0, ksize, 1.0, 0.0);
-	cv::Sobel(gray, ygradient, CV_32FC1, 0, 1, ksize, 1.0, 0.0);
-
-	cv::magnitude(xgradient, ygradient, edge);
-}
-
 void matches2points(const std::vector<cv::DMatch> &matches, const std::vector<cv::KeyPoint> &keypoints1, const std::vector<cv::KeyPoint> &keypoints2, std::vector<cv::Point2f> &matchPoints1, std::vector<cv::Point2f> &matchPoints2)
 {
 	const size_t &count = matches.size();
@@ -182,11 +153,11 @@ void image_subtraction()
 
 	cv::Mat processed_img1, processed_img2;
 #if 0
-	canny(img1, processed_img1);
-	canny(img2, processed_img2);
+	my_opencv::canny(img1, processed_img1);
+	my_opencv::canny(img2, processed_img2);
 #elif 0
-	sobel(img1, processed_img1);
-	sobel(img2, processed_img2);
+	my_opencv::sobel(img1, processed_img1);
+	my_opencv::sobel(img2, processed_img2);
 #else
 	processed_img1 = img1;
 	processed_img2 = img2;
@@ -331,11 +302,11 @@ void image_subtraction_with_trackbar()
 
 	cv::Mat processed_img1, processed_img2;
 #if 0
-	canny(img1, processed_img1);
-	canny(img2, processed_img2);
+	my_opencv::canny(img1, processed_img1);
+	my_opencv::canny(img2, processed_img2);
 #elif 0
-	sobel(img1, processed_img1);
-	sobel(img2, processed_img2);
+	my_opencv::sobel(img1, processed_img1);
+	my_opencv::sobel(img2, processed_img2);
 #else
 	processed_img1 = img1;
 	processed_img2 = img2;

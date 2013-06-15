@@ -6,54 +6,22 @@
 #include <list>
 #include <stdexcept>
 
+	
+namespace my_opencv {
+
+void dilation(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations);
+void erosion(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations);
+void opening(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations);
+void closing(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations);
+void gradient(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations);
+void hit_and_miss();  // not yet implemented
+void top_hat(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations);
+void bottom_hat(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations);
+
+}
 
 namespace {
 namespace local {
-
-void dilation(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations)
-{
-	cv::dilate(src, dst, selement, cv::Point(-1, -1), iterations);
-}
-
-void erosion(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations)
-{
-	cv::erode(src, dst, selement, cv::Point(-1, -1), iterations);
-}
-
-void opening(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations)
-{
-	// opening = dilation -> erosion
-	cv::morphologyEx(src, dst, cv::MORPH_OPEN, selement, cv::Point(-1, -1), iterations);
-}
-
-void closing(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations)
-{
-	// closing = erosion -> dilation
-	cv::morphologyEx(src, dst, cv::MORPH_CLOSE, selement, cv::Point(-1, -1), iterations);
-}
-
-void gradient(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations)
-{
-	// gradient = dilation - erosion
-	cv::morphologyEx(src, dst, cv::MORPH_GRADIENT, selement, cv::Point(-1, -1), iterations);
-}
-
-void hit_and_miss()
-{
-	throw std::runtime_error("not yet implemented");
-}
-
-void top_hat(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations)
-{
-	// top_hat = src - opening
-	cv::morphologyEx(src, dst, cv::MORPH_TOPHAT, selement, cv::Point(-1, -1), iterations);
-}
-
-void bottom_hat(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations)
-{
-	// bottom_hat = closing - src
-	cv::morphologyEx(src, dst, cv::MORPH_BLACKHAT, selement, cv::Point(-1, -1), iterations);
-}
 
 }  // namespace local
 }  // unnamed namespace
@@ -106,14 +74,14 @@ void morphological_operation()
 
 		const int iterations = 1;
 		cv::Mat result;
-		//local::dilation(gray, result, selement, iterations);
-		local::erosion(gray, result, selement, iterations);
-		//local::opening(gray, result, selement, iterations);
-		//local::closing(gray, result, selement, iterations);
-		//local::gradient(gray, result, selement, iterations);
-		//local::hit_and_miss();
-		//local::top_hat(gray, result, selement, iterations);
-		//local::bottom_hat(gray, result, selement, iterations);
+		//my_opencv::dilation(gray, result, selement, iterations);
+		my_opencv::erosion(gray, result, selement, iterations);
+		//my_opencv::opening(gray, result, selement, iterations);
+		//my_opencv::closing(gray, result, selement, iterations);
+		//my_opencv::gradient(gray, result, selement, iterations);
+		//my_opencv::hit_and_miss();
+		//my_opencv::top_hat(gray, result, selement, iterations);
+		//my_opencv::bottom_hat(gray, result, selement, iterations);
 
 		//
 		cv::imshow(windowName1, img);

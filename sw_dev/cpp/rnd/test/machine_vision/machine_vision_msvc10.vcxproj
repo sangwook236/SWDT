@@ -183,6 +183,7 @@
     <ClCompile Include="opencv\opencv_stereo_matching_using_gpu.cpp" />
     <ClCompile Include="opencv\opencv_template_matching.cpp" />
     <ClCompile Include="opencv\opencv_text_output.cpp" />
+    <ClCompile Include="opencv\opencv_util.cpp" />
     <ClCompile Include="opencv\opencv_vector_operation.cpp" />
     <ClCompile Include="opencv\PascalVocDataset.cpp" />
     <ClCompile Include="stdafx.cpp" />

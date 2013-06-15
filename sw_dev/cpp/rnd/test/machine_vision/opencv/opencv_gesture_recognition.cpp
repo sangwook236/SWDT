@@ -3,7 +3,6 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/video/tracking.hpp>
-#include <boost/polygon/polygon.hpp>
 #include <boost/math/distributions/normal.hpp>
 #include <boost/circular_buffer.hpp>
 #include <fstream>
@@ -12,120 +11,17 @@
 #include <ctime>
 
 
+namespace my_opencv {
+
+void draw_histogram_1D(const cv::MatND &hist, const int binCount, const double maxVal, const int binWidth, const int maxHeight, cv::Mat &histImg);
+void normalize_histogram(cv::MatND &hist, const double factor);
+
+void segment_motion_using_mhi(const double timestamp, const double mhiTimeDuration, const cv::Mat &prev_gray_img, const cv::Mat &curr_gray_img, cv::Mat &mhi, cv::Mat &processed_mhi, cv::Mat &component_label_map, std::vector<cv::Rect> &component_rects);
+
+}  // namespace my_opencv
+
 namespace {
 namespace local {
-
-cv::Rect getBoundingBox(const std::vector<cv::Point> &points)
-{
-	typedef boost::polygon::polygon_data<int> Polygon;
-	typedef boost::polygon::polygon_traits<Polygon>::point_type Point;
-
-	std::vector<Point> pts;
-	pts.reserve(points.size());
-	for (std::vector<cv::Point>::const_iterator it = points.begin(); it != points.end(); ++it)
-		pts.push_back(Point(it->x, it->y));
-
-	Polygon poly;
-	boost::polygon::set_points(poly, pts.begin(), pts.end());
-
-	boost::polygon::rectangle_data<int> rect;
-	boost::polygon::extents(rect, poly);
-
-	//const int xl = boost::polygon::xl(rect);
-	//const int xh = boost::polygon::xh(rect);
-	//const int yl = boost::polygon::yl(rect);
-	//const int yh = boost::polygon::yh(rect);
-	//const boost::polygon::rectangle_data<int>::interval_type h = boost::polygon::horizontal(rect);
-	//const boost::polygon::rectangle_data<int>::interval_type v = boost::polygon::vertical(rect);
-
-	return cv::Rect(boost::polygon::xl(rect), boost::polygon::yl(rect), boost::polygon::xh(rect) - boost::polygon::xl(rect), boost::polygon::yh(rect) - boost::polygon::yl(rect));
-}
-
-void segment_motion_using_mhi(const double timestamp, const double mhiTimeDuration, const cv::Mat &prev_gray_img, const cv::Mat &curr_gray_img, cv::Mat &mhi, cv::Mat &processed_mhi, cv::Mat &component_label_map, std::vector<cv::Rect> &component_rects)
-{
-	cv::Mat silh;
-	cv::absdiff(prev_gray_img, curr_gray_img, silh);  // get difference between frames
-
-	const int diff_threshold = 8;
-	cv::threshold(silh, silh, diff_threshold, 1.0, cv::THRESH_BINARY);  // threshold
-	cv::updateMotionHistory(silh, mhi, timestamp, mhiTimeDuration);  // update MHI
-
-	//
-	{
-		const cv::Mat &selement7 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(7, 7), cv::Point(-1, -1));
-		const cv::Mat &selement5 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));
-		const cv::Mat &selement3 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
-		const int iterations = 1;
-#if 0
-		cv::erode(mhi, processed_mhi, selement5, cv::Point(-1, -1), iterations);
-		cv::dilate(processed_mhi, processed_mhi, selement5, cv::Point(-1, -1), iterations);
-#else
-		cv::morphologyEx(mhi, processed_mhi, cv::MORPH_OPEN, selement5, cv::Point(-1, -1), iterations);
-		cv::morphologyEx(processed_mhi, processed_mhi, cv::MORPH_CLOSE, selement5, cv::Point(-1, -1), iterations);
-#endif
-
-#if 0
-		mhi.copyTo(processed_mhi, processed_mhi);
-#else
-		mhi.copyTo(processed_mhi, processed_mhi > 0);
-#endif
-	}
-
-	// calculate motion gradient orientation and valid orientation mask
-/*
-	const int motion_gradient_aperture_size = 3;
-	cv::Mat motion_orientation_mask;  // valid orientation mask
-	cv::Mat motion_orientation;  // orientation
-	cv::calcMotionGradient(processed_mhi, motion_orientation_mask, motion_orientation, MAX_TIME_DELTA, MIN_TIME_DELTA, motion_gradient_aperture_size);
-*/
-
-	const double MAX_TIME_DELTA = 0.5;
-	const double MIN_TIME_DELTA = 0.05;
-	const double motion_segment_threshold = MAX_TIME_DELTA;
-
-#if 1
-	CvMemStorage *storage = cvCreateMemStorage(0);  // temporary storage
-
-	// segment motion: get sequence of motion components
-	// segmask is marked motion components map. it is not used further
-	IplImage *segmask = cvCreateImage(cvSize(curr_gray_img.cols, curr_gray_img.rows), IPL_DEPTH_32F, 1);  // motion segmentation map
-#if defined(__GNUC__)
-    IplImage processed_mhi_ipl = (IplImage)processed_mhi;
-	CvSeq *seq = cvSegmentMotion(&processed_mhi_ipl, segmask, storage, timestamp, motion_segment_threshold);
-#else
-	CvSeq *seq = cvSegmentMotion(&(IplImage)processed_mhi, segmask, storage, timestamp, motion_segment_threshold);
-#endif
-
-	//cv::Mat(segmask, false).convertTo(component_label_map, CV_8SC1, 1.0, 0.0);  // Oops !!! error
-	cv::Mat(segmask, false).convertTo(component_label_map, CV_8UC1, 1.0, 0.0);
-
-	// iterate through the motion components
-	component_rects.reserve(seq->total);
-	for (int i = 0; i < seq->total; ++i)
-	{
-		const CvConnectedComp *comp = (CvConnectedComp *)cvGetSeqElem(seq, i);
-		component_rects.push_back(cv::Rect(comp->rect));
-	}
-
-	cvReleaseImage(&segmask);
-
-	//cvClearMemStorage(storage);
-	cvReleaseMemStorage(&storage);
-#else
-	std::vector<std::vector<cv::Point> > contours;
-	std::vector<cv::Vec4i> hierarchy;
-	const cv::Mat &tm = processed_mhi > 0;
-	cv::findContours((cv::Mat &)tm, contours, hierarchy, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE, cv::Point());
-
-	// iterate through the motion components
-	component_rects.reserve(contours.size());
-	for (std::vector<std::vector<cv::Point> >::const_iterator it = contours.begin(); it != contours.end(); ++it)
-		component_rects.push_back(getBoundingBox(*it));
-
-	// FIXME [modify] >>
-	component_label_map = processed_mhi > 0;
-#endif
-}
 
 bool apply_frequency_analysis(const boost::circular_buffer<double> &data_buf, const double &Fs, const double &mag_threshold, const std::pair<double, double> &freq_range)
 {
@@ -264,7 +160,7 @@ void gesture_recognition_by_frequency(cv::VideoCapture &capture)
 
 			cv::Mat processed_mhi, component_label_map;
 			std::vector<cv::Rect> component_rects;
-			segment_motion_using_mhi(timestamp, MHI_TIME_DURATION, prevgray, gray, mhi, processed_mhi, component_label_map, component_rects);
+			my_opencv::segment_motion_using_mhi(timestamp, MHI_TIME_DURATION, prevgray, gray, mhi, processed_mhi, component_label_map, component_rects);
 
 			//const double flow_mag_threshold = 1.0;
 			//for (std::vector<cv::Rect>::const_iterator it = component_rects.begin(); it != component_rects.end(); ++it)
@@ -415,53 +311,6 @@ void gesture_recognition_by_frequency(cv::VideoCapture &capture)
 	cv::destroyWindow(windowName);
 }
 
-// copy from histogram.cpp
-void draw_histogram_1D(const cv::MatND &hist, const int binCount, const double maxVal, const int binWidth, const int maxHeight, cv::Mat &histImg)
-{
-#if 0
-	for (int i = 0; i < binCount; ++i)
-	{
-		const float &binVal = hist.at<float>(i);
-		const int &binHeight = cvRound(binVal * maxHeight / maxVal);
-		cv::rectangle(
-			histImg,
-			cv::Point(i*binWidth, maxHeight), cv::Point((i+1)*binWidth - 1, maxHeight - binHeight),
-			binVal > maxVal ? CV_RGB(255, 0, 0) : CV_RGB(255, 255, 255),
-			CV_FILLED
-		);
-	}
-#else
-	const float *binPtr = (const float *)hist.data;
-	for (int i = 0; i < binCount; ++i, ++binPtr)
-	{
-		const int &binHeight = cvRound(*binPtr * maxHeight / maxVal);
-		cv::rectangle(
-			histImg,
-			cv::Point(i*binWidth, maxHeight), cv::Point((i+1)*binWidth - 1, maxHeight - binHeight),
-			*binPtr > maxVal ? CV_RGB(255, 0, 0) : CV_RGB(255, 255, 255),
-			CV_FILLED
-		);
-	}
-#endif
-}
-
-// copy from histogram.cpp
-void normalize_histogram(cv::MatND &hist, const double factor)
-{
-#if 0
-	// FIXME [modify] >>
-	cvNormalizeHist(&(CvHistogram)hist, factor);
-#else
-	const cv::Scalar sums(cv::sum(hist));
-
-	const double eps = 1.0e-20;
-	if (std::fabs(sums[0]) < eps) return;
-
-	cv::Mat tmp(hist);
-	tmp.convertTo(hist, -1, factor / sums[0], 0.0);
-#endif
-}
-
 //-----------------------------------------------------------------------------
 //
 
@@ -535,7 +384,7 @@ private:
 			createNormalHistogram(ref_unimodal_histogram_bin_width * i, sigma_, tmp_hist);
 
 			// normalize histogram
-			normalize_histogram(tmp_hist, histogramNormalizationFactor);
+			my_opencv::normalize_histogram(tmp_hist, histogramNormalizationFactor);
 
 			histograms_.push_back(tmp_hist);
 		}
@@ -552,7 +401,7 @@ private:
 			createNormalHistogram(ref_bimodal_histogram_bin_width * i + 180, sigma_, tmp_hist);
 
 			// normalize histogram
-			normalize_histogram(tmp_hist, histogramNormalizationFactor);
+			my_opencv::normalize_histogram(tmp_hist, histogramNormalizationFactor);
 
 			histograms_.push_back(tmp_hist);
 		}
@@ -564,7 +413,7 @@ private:
 		createUniformHistogram(tmp_hist);
 
 		// normalize histogram
-		normalize_histogram(tmp_hist, histogramNormalizationFactor);
+		my_opencv::normalize_histogram(tmp_hist, histogramNormalizationFactor);
 
 		histograms_.push_back(tmp_hist);
 	}
@@ -640,7 +489,7 @@ private:
 		createUniformHistogram(tmp_hist);
 
 		// normalize histogram
-		normalize_histogram(tmp_hist, histogramNormalizationFactor);
+		my_opencv::normalize_histogram(tmp_hist, histogramNormalizationFactor);
 
 		histograms_.push_back(tmp_hist);
 	}
@@ -650,7 +499,7 @@ private:
 		createNormalHistogram(18, sigma_, tmp_hist);
 
 		// normalize histogram
-		normalize_histogram(tmp_hist, histogramNormalizationFactor);
+		my_opencv::normalize_histogram(tmp_hist, histogramNormalizationFactor);
 
 		histograms_.push_back(tmp_hist);
 	}
@@ -660,7 +509,7 @@ private:
 		createNormalHistogram(0, sigma_, tmp_hist);
 
 		// normalize histogram
-		normalize_histogram(tmp_hist, histogramNormalizationFactor);
+		my_opencv::normalize_histogram(tmp_hist, histogramNormalizationFactor);
 
 		histograms_.push_back(tmp_hist);
 	}
@@ -670,7 +519,7 @@ private:
 		createNormalHistogram(27, sigma_, tmp_hist);
 
 		// normalize histogram
-		normalize_histogram(tmp_hist, histogramNormalizationFactor);
+		my_opencv::normalize_histogram(tmp_hist, histogramNormalizationFactor);
 
 		histograms_.push_back(tmp_hist);
 	}
@@ -680,7 +529,7 @@ private:
 		createNormalHistogram(9, sigma_, tmp_hist);
 
 		// normalize histogram
-		normalize_histogram(tmp_hist, histogramNormalizationFactor);
+		my_opencv::normalize_histogram(tmp_hist, histogramNormalizationFactor);
 
 		histograms_.push_back(tmp_hist);
 	}
@@ -691,7 +540,7 @@ private:
 		createNormalHistogram(18, sigma_, tmp_hist);
 
 		// normalize histogram
-		normalize_histogram(tmp_hist, histogramNormalizationFactor);
+		my_opencv::normalize_histogram(tmp_hist, histogramNormalizationFactor);
 
 		histograms_.push_back(tmp_hist);
 	}
@@ -702,7 +551,7 @@ private:
 		createNormalHistogram(27, sigma_, tmp_hist);
 
 		// normalize histogram
-		normalize_histogram(tmp_hist, histogramNormalizationFactor);
+		my_opencv::normalize_histogram(tmp_hist, histogramNormalizationFactor);
 
 		histograms_.push_back(tmp_hist);
 	}
@@ -1040,7 +889,7 @@ void GestureClassifier::createGesturePatternHistograms()
 
 		// draw 1-D histogram
 		cv::Mat histImg(cv::Mat::zeros(indexHistMaxHeight, binNum_*indexHistBinWidth, CV_8UC3));
-		draw_histogram_1D(*it, binNum_, maxVal, indexHistBinWidth, indexHistMaxHeight, histImg);
+		my_opencv::draw_histogram_1D(*it, binNum_, maxVal, indexHistBinWidth, indexHistMaxHeight, histImg);
 
 		cv::imshow(windowName4, histImg);
 		cv::waitKey(0);
@@ -1142,7 +991,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 
 		// draw 1-D histogram
 		cv::Mat histImg(cv::Mat::zeros(phaseHistMaxHeight, phaseHistBins*phaseHistBinWidth, CV_8UC3));
-		draw_histogram_1D(*it, phaseHistBins, maxVal, phaseHistBinWidth, phaseHistMaxHeight, histImg);
+		my_opencv::draw_histogram_1D(*it, phaseHistBins, maxVal, phaseHistBinWidth, phaseHistMaxHeight, histImg);
 
 		cv::imshow(windowName3, histImg);
 		cv::waitKey(0);
@@ -1208,7 +1057,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 
 			cv::Mat processed_mhi, component_label_map;
 			std::vector<cv::Rect> component_rects;
-			segment_motion_using_mhi(timestamp, MHI_TIME_DURATION, prevgray, gray, mhi, processed_mhi, component_label_map, component_rects);
+			my_opencv::segment_motion_using_mhi(timestamp, MHI_TIME_DURATION, prevgray, gray, mhi, processed_mhi, component_label_map, component_rects);
 
 			//
 			{
@@ -1309,12 +1158,12 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 					// calculate magnitude histogram
 					cv::calcHist(&flow_mag, 1, magHistChannels, cv::Mat(), hist, histDims, magHistSize, magHistRanges, true, false);
 					// normalize histogram
-					normalize_histogram(hist, HISTOGRAM_NORMALIZATION_FACTOR);
+					my_opencv::normalize_histogram(hist, HISTOGRAM_NORMALIZATION_FACTOR);
 
 					// draw magnitude histogram
 					cv::Mat histImg(cv::Mat::zeros(magHistMaxHeight, magHistBins*magHistBinWidth, CV_8UC3));
 					const double maxVal = HISTOGRAM_NORMALIZATION_FACTOR;
-					draw_histogram_1D(hist, magHistBins, maxVal, magHistBinWidth, magHistMaxHeight, histImg);
+					my_opencv::draw_histogram_1D(hist, magHistBins, maxVal, magHistBinWidth, magHistMaxHeight, histImg);
 
 					const int &fast_motion_threshold_pos = cvRound(fast_motion_threshold);
 					cv::line(
@@ -1343,7 +1192,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 
 				// normalize histogram
 				cv::MatND &accumulated_hist = histogramAccumulator.getAccumulatedHistogram();
-				normalize_histogram(accumulated_hist, HISTOGRAM_NORMALIZATION_FACTOR);
+				my_opencv::normalize_histogram(accumulated_hist, HISTOGRAM_NORMALIZATION_FACTOR);
 
 				//
 #if 0
@@ -1356,7 +1205,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 				// draw accumulated phase histogram
 				{
 					cv::Mat histImg(cv::Mat::zeros(phaseHistMaxHeight, phaseHistBins*phaseHistBinWidth, CV_8UC3));
-					draw_histogram_1D(accumulated_hist, phaseHistBins, maxVal, phaseHistBinWidth, phaseHistMaxHeight, histImg);
+					my_opencv::draw_histogram_1D(accumulated_hist, phaseHistBins, maxVal, phaseHistBinWidth, phaseHistMaxHeight, histImg);
 
 					cv::imshow(windowName2, histImg);
 				}
@@ -1393,11 +1242,11 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 #endif
 
 						// normalize histogram
-						//normalize_histogram(hist2, MAX_MATCHED_HISTOGRAM_NUM);
+						//my_opencv::normalize_histogram(hist2, MAX_MATCHED_HISTOGRAM_NUM);
 
 						// draw matched index histogram
 						cv::Mat histImg2(cv::Mat::zeros(indexHistMaxHeight, indexHistBins*indexHistBinWidth, CV_8UC3));
-						draw_histogram_1D(hist2, indexHistBins, MAX_MATCHED_HISTOGRAM_NUM, indexHistBinWidth, indexHistMaxHeight, histImg2);
+						my_opencv::draw_histogram_1D(hist2, indexHistBins, MAX_MATCHED_HISTOGRAM_NUM, indexHistBinWidth, indexHistMaxHeight, histImg2);
 
 						std::ostringstream sstream;
 						sstream << "count: " << matched_histogram_indexes.size();;
@@ -1412,7 +1261,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 					// draw matched reference histogram
 					{
 						cv::Mat refHistImg(cv::Mat::zeros(phaseHistMaxHeight, phaseHistBins*phaseHistBinWidth, CV_8UC3));
-						draw_histogram_1D(refHistograms[matched_idx], phaseHistBins, maxVal, phaseHistBinWidth, phaseHistMaxHeight, refHistImg);
+						my_opencv::draw_histogram_1D(refHistograms[matched_idx], phaseHistBins, maxVal, phaseHistBinWidth, phaseHistMaxHeight, refHistImg);
 
 						std::ostringstream sstream;
 						sstream << "idx: " << matched_idx;
