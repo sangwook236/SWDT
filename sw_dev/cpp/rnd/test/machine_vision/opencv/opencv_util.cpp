@@ -241,6 +241,60 @@ void make_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int segment
 #endif
 }
 
+bool calculate_curvature(const cv::Point2d &v1, const cv::Point2d &v2, double &curvature)
+{
+	const double norm1(cv::norm(v1)), norm2(cv::norm(v2));
+	const double eps = 1.0e-15;
+
+	if (norm1 <= eps || norm2 <= eps) return false;
+	else
+	{
+		// 0.0 <= curvature <= 1.0. when 1.0, max curvature(the same direction). when 0.0, min curvature(opposite direction)
+		curvature = 0.5 * (1.0 + (v1.x*v2.x + v1.y*v2.y) / (norm1 * norm2));
+		//curvature = 0.5 * (1.0 + cv::Mat(v1).dot(cv::Mat(v2)) / (norm1 * norm2));
+
+		// CW or CCW
+		if (v2.x*v1.y - v1.x*v2.y < 0.0)  // v2 x v1
+			curvature = -curvature;
+
+		return true;
+	}
+}
+
+bool find_curvature_points(const std::vector<cv::Point> &fingerContour, const size_t displaceIndex, size_t &minIdx, size_t &maxIdx)
+{
+	minIdx = maxIdx = -1;
+
+	const size_t &num = fingerContour.size();
+	if (num < 2 * displaceIndex + 1) return false;
+
+	const size_t endIdx = num - 2 * displaceIndex;
+
+	double minCurvature = std::numeric_limits<double>::max();
+	double maxCurvature = -std::numeric_limits<double>::max();
+	double curvature;
+	for (size_t i = 0; i < endIdx; ++i)
+	{
+	    const cv::Point &pt1 = fingerContour[i] - fingerContour[displaceIndex + i];
+	    const cv::Point &pt2 = fingerContour[2 * displaceIndex + i] - fingerContour[displaceIndex + i];
+		if (calculate_curvature(cv::Point2d(pt1.x, pt1.y), cv::Point2d(pt2.x, pt2.y), curvature))
+		{
+			if (curvature < minCurvature)
+			{
+				minCurvature = curvature;
+				minIdx = displaceIndex + i;
+			}
+			if (curvature > maxCurvature)
+			{
+				maxCurvature = curvature;
+				maxIdx = displaceIndex + i;
+			}
+		}
+	}
+
+	return true;
+}
+
 void find_convexity_defect(CvMemStorage *storage, const std::vector<cv::Point> &contour, const std::vector<cv::Point> &convexHull, const double distanceThreshold, const double depthThreshold, std::vector<std::vector<CvConvexityDefect> > &convexityDefects, std::vector<cv::Point> &convexityDefectPoints)
 {
 	CvSeq *contourSeq = cvCreateSeq(CV_SEQ_KIND_GENERIC | CV_32SC2, sizeof(CvContour), sizeof(CvPoint), storage);

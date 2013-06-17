@@ -16,6 +16,8 @@ void contour(IplImage *srcImg, IplImage *grayImg);
 void make_contour(const cv::Mat &img, const cv::Rect &roi, const int segmentId, std::vector<std::vector<cv::Point> > &contours, std::vector<cv::Vec4i> &hierarchy);
 void make_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int segmentId, std::vector<cv::Point> &convexHull);
 void find_convexity_defect(CvMemStorage *storage, const std::vector<cv::Point> &contour, const std::vector<cv::Point> &convexHull, const double distanceThreshold, const double depthThreshold, std::vector<std::vector<CvConvexityDefect> > &convexityDefects, std::vector<cv::Point> &convexityDefectPoints);
+bool calculate_curvature(const cv::Point2d &v1, const cv::Point2d &v2, double &curvature);
+bool find_curvature_points(const std::vector<cv::Point> &fingerContour, const size_t displaceIndex, size_t &minIdx, size_t &maxIdx);
 void compute_distance_transform(const cv::Mat &gray, cv::Mat &distanceTransform);
 
 void snake(IplImage *srcImage, IplImage *grayImage);
@@ -234,60 +236,6 @@ bool segmentFinger(cv::Mat &img, const cv::Point &startPt, const cv::Point &endP
 	return true;
 }
 
-bool calculateCurvature(const cv::Point2d &v1, const cv::Point2d &v2, double &curvature)
-{
-	const double norm1(cv::norm(v1)), norm2(cv::norm(v2));
-	const double eps = 1.0e-15;
-
-	if (norm1 <= eps || norm2 <= eps) return false;
-	else
-	{
-		// 0.0 <= curvature <= 1.0. when 1.0, max curvature(the same direction). when 0.0, min curvature(opposite direction)
-		curvature = 0.5 * (1.0 + (v1.x*v2.x + v1.y*v2.y) / (norm1 * norm2));
-		//curvature = 0.5 * (1.0 + cv::Mat(v1).dot(cv::Mat(v2)) / (norm1 * norm2));
-
-		// CW or CCW
-		if (v2.x*v1.y - v1.x*v2.y < 0.0)  // v2 x v1
-			curvature = -curvature;
-
-		return true;
-	}
-}
-
-bool findCurvaturePoints(const std::vector<cv::Point> &fingerContour, const size_t displaceIndex, size_t &minIdx, size_t &maxIdx)
-{
-	minIdx = maxIdx = -1;
-
-	const size_t &num = fingerContour.size();
-	if (num < 2 * displaceIndex + 1) return false;
-
-	const size_t endIdx = num - 2 * displaceIndex;
-
-	double minCurvature = std::numeric_limits<double>::max();
-	double maxCurvature = -std::numeric_limits<double>::max();
-	double curvature;
-	for (size_t i = 0; i < endIdx; ++i)
-	{
-	    const cv::Point &pt1 = fingerContour[i] - fingerContour[displaceIndex + i];
-	    const cv::Point &pt2 = fingerContour[2 * displaceIndex + i] - fingerContour[displaceIndex + i];
-		if (calculateCurvature(cv::Point2d(pt1.x, pt1.y), cv::Point2d(pt2.x, pt2.y), curvature))
-		{
-			if (curvature < minCurvature)
-			{
-				minCurvature = curvature;
-				minIdx = displaceIndex + i;
-			}
-			if (curvature > maxCurvature)
-			{
-				maxCurvature = curvature;
-				maxIdx = displaceIndex + i;
-			}
-		}
-	}
-
-	return true;
-}
-
 void findFingertips(const std::vector<std::vector<cv::Point> > &fingerContours, const size_t displaceIndex, const cv::Point &palmCenterPoint, const cv::Point &hullCenterPoint, std::vector<cv::Point> &fingertips)
 {
 #if 1
@@ -298,7 +246,7 @@ void findFingertips(const std::vector<std::vector<cv::Point> > &fingerContours, 
 	for (std::vector<std::vector<cv::Point> >::const_iterator it = fingerContours.begin(); it != fingerContours.end(); ++it)
 	{
 		size_t minIdx = -1, maxIdx = -1;
-		if (findCurvaturePoints(*it, displaceIndex, minIdx, maxIdx))
+		if (my_opencv::find_curvature_points(*it, displaceIndex, minIdx, maxIdx))
 		{
 			if ((size_t)-1 != minIdx) minFingerTipPoints.push_back((*it)[minIdx]);
 			if ((size_t)-1 != maxIdx) maxFingerTipPoints.push_back((*it)[maxIdx]);
@@ -312,7 +260,7 @@ void findFingertips(const std::vector<std::vector<cv::Point> > &fingerContours, 
 	for (std::vector<std::vector<cv::Point> >::const_iterator it = fingerContours.begin(); it != fingerContours.end(); ++it)
 	{
 		size_t minIdx = -1, maxIdx = -1;
-		if (findCurvaturePoints(*it, displaceIndex, minIdx, maxIdx))
+		if (find_curvature_points(*it, displaceIndex, minIdx, maxIdx))
 		{
 			if (-1 != minIdx && -1 != maxIdx)
 			{
