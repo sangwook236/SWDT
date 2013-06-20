@@ -33,17 +33,34 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="/usr/local/include/" />
-			<Add directory="/usr/local/cuda/include/" />
+			<Add directory="./efficient_graph_based_image_segmentation_lib" />
+			<Add directory="/usr/local/cuda/include" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="opencv_core" />
 			<Add library="opencv_highgui" />
 			<Add library="opencv_imgproc" />
 			<Add library="cudart" />
-			<Add directory="/usr/local/lib/" />
-			<Add directory="/usr/local/cuda/lib64/" />
+			<Add library="boost_timer" />
+			<Add directory="/usr/local/lib" />
+			<Add directory="/usr/local/cuda/lib64" />
 		</Linker>
+		<Unit filename="efficient_graph_based_image_segmentation/efficient_graph_based_image_segmentation_main.cpp" />
+		<Unit filename="efficient_graph_based_image_segmentation_lib/convolve.h" />
+		<Unit filename="efficient_graph_based_image_segmentation_lib/disjoint-set.h" />
+		<Unit filename="efficient_graph_based_image_segmentation_lib/filter.h" />
+		<Unit filename="efficient_graph_based_image_segmentation_lib/image.h" />
+		<Unit filename="efficient_graph_based_image_segmentation_lib/imconv.h" />
+		<Unit filename="efficient_graph_based_image_segmentation_lib/imutil.h" />
+		<Unit filename="efficient_graph_based_image_segmentation_lib/misc.h" />
+		<Unit filename="efficient_graph_based_image_segmentation_lib/pnmfile.h" />
+		<Unit filename="efficient_graph_based_image_segmentation_lib/segment-graph.h" />
+		<Unit filename="efficient_graph_based_image_segmentation_lib/segment-image.h" />
+		<Unit filename="efficient_graph_based_image_segmentation_lib/segment.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="gslic/gslic_main.cpp" />
 		<Unit filename="gslic_lib/FastImgSeg.cpp" />
 		<Unit filename="gslic_lib/FastImgSeg.h" />
@@ -57,6 +74,7 @@
 		<Unit filename="gslic_lib/cudaUtil.cu" />
 		<Unit filename="gslic_lib/cudaUtil.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="../../../../../../../../usr/local/include/boost/timer/timer.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

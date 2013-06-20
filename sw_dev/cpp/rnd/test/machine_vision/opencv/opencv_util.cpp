@@ -5,6 +5,7 @@
 #include <opencv2/opencv.hpp>
 #include <boost/polygon/polygon.hpp>
 #include <iterator>
+#include <stdexcept>
 #include <ctime>
 
 
@@ -76,7 +77,7 @@ void sobel(const cv::Mat &gray, cv::Mat &edge)
 
 	cv::magnitude(xgradient, ygradient, edge);
 }
-	
+
 void dilation(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations)
 {
 	cv::dilate(src, dst, selement, cv::Point(-1, -1), iterations);

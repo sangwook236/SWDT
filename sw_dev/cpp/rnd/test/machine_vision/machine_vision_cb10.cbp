@@ -141,6 +141,7 @@
 		<Unit filename="opencv/opencv_stereo_matching_using_gpu.cpp" />
 		<Unit filename="opencv/opencv_template_matching.cpp" />
 		<Unit filename="opencv/opencv_text_output.cpp" />
+		<Unit filename="opencv/opencv_util.cpp" />
 		<Unit filename="opencv/opencv_vector_operation.cpp" />
 		<Unit filename="opencv/vehicle_classification.h" />
 		<Unit filename="vlfeat/generic-driver.h" />

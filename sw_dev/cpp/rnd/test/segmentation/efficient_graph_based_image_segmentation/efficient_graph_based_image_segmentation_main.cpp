@@ -18,8 +18,8 @@ class universe_using_map
 public:
 	universe_using_map(const std::set<int> &elements);
 	~universe_using_map();
-	int find(int x);  
-	bool contain(int x) const;  
+	int find(int x);
+	bool contain(int x) const;
 	void join(int x, int y);
 	int size(int x) const;
 	int num_sets() const { return num; }
@@ -149,7 +149,7 @@ void universe_using_map::join(int x, int y)
 }
 
 universe_using_map *segment_graph_using_map(const std::set<int> &vertex_set, int num_edges, edge *edges, float k)
-{ 
+{
 	// sort edges by weight
 	std::sort(edges, edges + num_edges);
 
@@ -204,7 +204,7 @@ image<rgb> *segment_image_using_map_container(image<rgb> *im, float sigma, float
 	image<float> *g = new image<float>(width, height);
 	image<float> *b = new image<float>(width, height);
 
-	// smooth each color channel  
+	// smooth each color channel
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
@@ -313,9 +313,9 @@ image<rgb> *segment_image_using_map_container(image<rgb> *im, float sigma, float
 				imRef(output, x, y) = black;
 			}
 		}
-	}  
+	}
 
-	delete [] colors;  
+	delete [] colors;
 	delete u;
 
 	return output;
@@ -330,7 +330,7 @@ image<rgb> *segment_image_using_depth_guided_map_plus_map_container(image<rgb> *
 	image<float> *g = new image<float>(width, height);
 	image<float> *b = new image<float>(width, height);
 
-	// smooth each color channel  
+	// smooth each color channel
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
@@ -458,9 +458,9 @@ image<rgb> *segment_image_using_depth_guided_map_plus_map_container(image<rgb> *
 				imRef(output, x, y) = black;
 			}
 		}
-	}  
+	}
 
-	delete [] colors;  
+	delete [] colors;
 	delete u;
 
 	return output;
@@ -475,7 +475,7 @@ image<rgb> * segment_image_using_depth_guided_map(image<rgb> *im, image<rgb> *de
 	image<float> *g = new image<float>(width, height);
 	image<float> *b = new image<float>(width, height);
 
-	// smooth each color channel  
+	// smooth each color channel
 	for (int y = 0; y < height; ++y)
 	{
 		for (int x = 0; x < width; ++x)
@@ -594,9 +594,9 @@ image<rgb> * segment_image_using_depth_guided_map(image<rgb> *im, image<rgb> *de
 			int comp = u->find(y * width + x);
 			imRef(output, x, y) = colors[comp];
 		}
-	}  
+	}
 
-	delete [] colors;  
+	delete [] colors;
 	delete u;
 
 	return output;
@@ -659,7 +659,7 @@ void sample(const bool use_map_container)
 		else  // original implementation.
 			seg = segment_image(input, sigma, k, min_size, &num_ccs);
 	}
-	
+
 	savePPM(seg, output_filename.c_str());
 
 	std::cout << "got " << num_ccs << " components" << std::endl;
@@ -725,7 +725,7 @@ void sample_using_depth_guided_map(const bool use_map_container)
 		else  // original implementation.
 			seg = segment_image_using_depth_guided_map(input, depth, sigma, k, min_size, &num_ccs);
 	}
-	
+
 	savePPM(seg, output_filename.c_str());
 
 	std::cout << "got " << num_ccs << " components" << std::endl;

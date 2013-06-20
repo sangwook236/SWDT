@@ -107,7 +107,7 @@ void FastImgSeg::Tool_GetMarkedImg()
 		for (int j=1;j<width-1;j++)
 		{
 			int mskIndex=i*width+j;
-			if (segMask[mskIndex]!=segMask[mskIndex+1] 
+			if (segMask[mskIndex]!=segMask[mskIndex+1]
 			|| segMask[mskIndex]!=segMask[(i-1)*width+j]
 			|| segMask[mskIndex]!=segMask[mskIndex-1]
 			|| segMask[mskIndex]!=segMask[(i+1)*width+j])
@@ -128,7 +128,7 @@ void FastImgSeg::Tool_WriteMask2File(char* outFileName, bool writeBinary)
 	{
 		return;
 	}
-	
+
 	if (writeBinary)
 	{
 		ofstream outf;
