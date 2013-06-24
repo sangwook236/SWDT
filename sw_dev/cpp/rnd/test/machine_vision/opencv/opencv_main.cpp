@@ -90,8 +90,8 @@ void generic_description_and_matching();
 void bag_of_words();
 void pca();
 void clustering();
-void train_by_svm();
-void train_by_ann();
+void machine_learning_by_svm();
+void machine_learning_by_ann();
 void object_detection();
 void face_detection();
 void face_detection_using_gpu();
@@ -193,8 +193,8 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::pca();
 
 		//my_opencv::clustering();
-		//my_opencv::train_by_svm();
-		//my_opencv::train_by_ann();
+		//my_opencv::machine_learning_by_svm();
+		//my_opencv::machine_learning_by_ann();
 
 		//my_opencv::object_detection();  // not yet implemented
 		//my_opencv::face_detection();

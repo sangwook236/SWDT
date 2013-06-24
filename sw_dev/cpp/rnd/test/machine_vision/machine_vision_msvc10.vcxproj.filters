@@ -156,9 +156,6 @@
     <ClCompile Include="opencv\opencv_kalman_filtering.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
-    <ClCompile Include="opencv\opencv_learning.cpp">
-      <Filter>Source Files\opencv</Filter>
-    </ClCompile>
     <ClCompile Include="opencv\opencv_main.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
@@ -286,6 +283,9 @@
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
     <ClCompile Include="opencv\opencv_util.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_machine_learning.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
   </ItemGroup>

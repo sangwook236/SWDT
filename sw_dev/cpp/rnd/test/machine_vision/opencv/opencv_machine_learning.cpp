@@ -12,11 +12,6 @@ namespace local {
 const size_t trainingSampleNum = 8;  // # of rows
 const size_t trainingFeatureNum = 8;  // # of cols
 
-}  // namespace local
-}  // unnamed namespace
-
-namespace my_opencv {
-
 void train_by_svm()
 {
 	const int whichSvmType = 0;
@@ -219,6 +214,21 @@ void train_by_ann()
 	cvReleaseMat(&predictOutput);
 	cvReleaseMat(&trainInput);
 	cvReleaseMat(&trainOutput);
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+namespace my_opencv {
+
+void machine_learning_by_svm()
+{
+	local::train_by_svm();
+}
+
+void machine_learning_by_ann()
+{
+	local::train_by_ann();
 }
 
 }  // namespace my_opencv

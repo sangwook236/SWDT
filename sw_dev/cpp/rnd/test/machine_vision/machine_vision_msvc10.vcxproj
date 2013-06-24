@@ -159,7 +159,7 @@
     <ClCompile Include="opencv\opencv_image_undistortion.cpp" />
     <ClCompile Include="opencv\opencv_iterative_closest_point.cpp" />
     <ClCompile Include="opencv\opencv_kalman_filtering.cpp" />
-    <ClCompile Include="opencv\opencv_learning.cpp" />
+    <ClCompile Include="opencv\opencv_machine_learning.cpp" />
     <ClCompile Include="opencv\opencv_main.cpp" />
     <ClCompile Include="opencv\opencv_matrix_operation.cpp" />
     <ClCompile Include="opencv\opencv_matrix_operation_using_gpu.cpp" />
