@@ -11,6 +11,7 @@
 int main(int argc, char *argv[])
 {
 	int efficient_graph_based_image_segmentation_main(int argc, char *argv[]);
+	int interactive_graph_cuts_main(int argc, char *argv[]);
 	int gslic_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -19,7 +20,10 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		// Efficient Graph-Based Image Segmentation
-		retval = efficient_graph_based_image_segmentation_main(argc, argv);
+		//retval = efficient_graph_based_image_segmentation_main(argc, argv);
+
+		// Interactive Graph Cuts for Optimal Boundary & Region Segmentation of Objects in N-D Images
+		retval = interactive_graph_cuts_main(argc, argv);
 
 		// simple linear iterative clustering (SLIC)
 		//retval = gslic_main(argc, argv);

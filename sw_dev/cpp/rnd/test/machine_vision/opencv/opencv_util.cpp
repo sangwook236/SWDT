@@ -468,8 +468,9 @@ void normalize_histogram(cv::MatND &hist, const double factor)
 	const double eps = 1.0e-20;
 	if (std::fabs(sums[0]) < eps) return;
 
-	cv::Mat tmp(hist);
-	tmp.convertTo(hist, -1, factor / sums[0], 0.0);
+	//cv::Mat tmp(hist);
+	//tmp.convertTo(hist, -1, factor / sums[0], 0.0);
+	hist *= factor / sums[0];
 #endif
 }
 

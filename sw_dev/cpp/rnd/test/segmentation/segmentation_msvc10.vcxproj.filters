@@ -25,6 +25,9 @@
     <Filter Include="Source Files\efficient_graph_based_image_segmentation_lib">
       <UniqueIdentifier>{5dc2c186-09ad-4f2f-a560-0e34e7fe49fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\interactive_graph_cuts">
+      <UniqueIdentifier>{6efb5b53-5dc3-4984-a27c-363c655df342}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -106,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="efficient_graph_based_image_segmentation\efficient_graph_based_image_segmentation_main.cpp">
       <Filter>Source Files\efficient_graph_based_image_segmentation</Filter>
+    </ClCompile>
+    <ClCompile Include="interactive_graph_cuts\interactive_graph_cuts_main.cpp">
+      <Filter>Source Files\interactive_graph_cuts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

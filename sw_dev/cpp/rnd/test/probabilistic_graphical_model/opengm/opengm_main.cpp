@@ -264,6 +264,9 @@ int opengm_main(int argc, char *argv[])
 
 	// inference algorithm
 	{
+		// an example for segmentation
+		//	[ref] ${CPP_RND_HOME}/test/segmentation/interactive_graph_cuts/interactive_graph_cuts_main.cpp
+
 		std::cout << "\ninference algorithms ------------------------------------------------" << std::endl;
 		my_opengm::inference_algorithms();
 	}

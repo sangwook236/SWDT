@@ -1,5 +1,4 @@
 #include <opengm/opengm.hxx>
-#include <opengm/datastructures/marray/marray.hxx>
 #include <opengm/graphicalmodel/graphicalmodel.hxx>
 #include <opengm/graphicalmodel/space/simplediscretespace.hxx>
 #include <opengm/graphicalmodel/space/grid_space.hxx>
@@ -32,13 +31,14 @@
 #include <opengm/inference/auxiliary/minstcutkolmogorov.hxx>
 #include <opengm/inference/auxiliary/minstcutboost.hxx>
 #include <opengm/inference/external/trws.hxx>
-#include "opengm/functions/function_registration.hxx"
+#include <opengm/functions/function_registration.hxx>
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
 #include <boost/timer/timer.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stdexcept>
 #include <cmath>
 
 
@@ -126,7 +126,7 @@ bool createGraphicalModelForPottsModel(GraphicalModelForPottsModel &gm)
 			{
 				// function
 				const std::size_t shape[] = { numOfLabels };
-				opengm::ExplicitFunction<double> func1(shape, shape + 1);
+				ExplicitFunction func1(shape, shape + 1);
 				for (std::size_t state = 0; state < numOfLabels; ++state)
 					// FIXME [check] >> is it correct?
 					func1(state) = (1.0 - lambda) * state / (numOfLabels - 1);
@@ -872,7 +872,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 	const bool runBP = true;
 	const bool runTRBP = true;
 	const bool runTRWS = true;
-	const bool runLP = false;
+	const bool runLP = false;  // not yet implemented
 	const bool runDP = false;
 	const bool runDualDecomposition = true;
 	const bool runAStar = false;
@@ -883,8 +883,8 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 	const bool runICM = true;
 	const bool runLazyFlipper = true;
 	const bool runLOC = true;
-	const bool runnGibbs = false;
-	const bool runSwendsenWang = false;
+	const bool runnGibbs = false;  // not yet implemented
+	const bool runSwendsenWang = false;  // not yet implemented
 	const bool runBruteforce = false;
 
 	// inference algorithms
@@ -947,7 +947,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		std::cout << "\n(integer) linear programming (ILP) ----------------------------------" << std::endl;
 		if (runLP)
 		{
-			// not yet implemented
+			throw std::runtime_error("not yet implemented");
 		}
 
 		std::cout << "\ndynamic programming (DP) --------------------------------------------" << std::endl;
@@ -1171,13 +1171,13 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		std::cout << "\nGibbs sampling algorithm --------------------------------------------" << std::endl;
 		if (runnGibbs)
 		{
-			// not yet implemented
+			throw std::runtime_error("not yet implemented");
 		}
 
 		std::cout << "\nSwendsen-Wang sampling algorithm ------------------------------------" << std::endl;
 		if (runSwendsenWang)
 		{
-			// not yet implemented
+			throw std::runtime_error("not yet implemented");
 		}
 	}
 
@@ -1204,7 +1204,7 @@ void inference_algorithms()
 {
 	if (false)
 	{
-		std::cout << "\nPotts model ---------------------------------------------------------" << std::endl;
+		std::cout << "\nimage segmentation (Potts model) ------------------------------------" << std::endl;
 
 		// build the model
 		std::cout << "creating a graphical model... ---------------------------------------" << std::endl;
