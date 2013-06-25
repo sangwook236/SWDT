@@ -31,6 +31,9 @@
     <Filter Include="Source Files\mysvm_lib">
       <UniqueIdentifier>{e30fb12b-b44a-4609-8567-bc76ff25d0c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\shogun">
+      <UniqueIdentifier>{65e53b1d-7282-4edf-bd78-098819fd7a44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -148,6 +151,15 @@
     </ClCompile>
     <ClCompile Include="mysvm\mysvm_predict_example.cpp">
       <Filter>Source Files\mysvm</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_main.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classification_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_example.cpp">
+      <Filter>Source Files\shogun</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,12 +5,14 @@
 #		if defined(DEBUG) || defined(_DEBUG)
 
 #pragma comment(lib, "vl.lib")
+//#pragma comment(lib, "libshogun-13.0.dll.lib")
 //#pragma comment(lib, "librlglue.lib")
 //#pragma comment(lib, "librlutils.lib")
 
 #		else
 
 #pragma comment(lib, "vl.lib")
+//#pragma comment(lib, "libshogun-13.0.dll.lib")
 //#pragma comment(lib, "librlglue.lib")
 //#pragma comment(lib, "librlutils.lib")
 

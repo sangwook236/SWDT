@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include <stdexcept>
 
+
 #if defined(max)
 #undef max
 #endif
