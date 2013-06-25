@@ -155,10 +155,10 @@
     <ClCompile Include="shogun\shogun_main.cpp">
       <Filter>Source Files\shogun</Filter>
     </ClCompile>
-    <ClCompile Include="shogun\shogun_classification_example.cpp">
+    <ClCompile Include="shogun\shogun_ci_classification_example.cpp">
       <Filter>Source Files\shogun</Filter>
     </ClCompile>
-    <ClCompile Include="shogun\shogun_regression_example.cpp">
+    <ClCompile Include="shogun\shogun_gp_regression_example.cpp">
       <Filter>Source Files\shogun</Filter>
     </ClCompile>
   </ItemGroup>
