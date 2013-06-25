@@ -14,6 +14,7 @@
 #include <shogun/modelselection/ModelSelectionParameters.h>
 #include <shogun/modelselection/ParameterCombination.h>
 #include <shogun/evaluation/GradientCriterion.h>
+#include <cmath>
 
 
 namespace {
@@ -36,7 +37,7 @@ void build_matrices(const int32_t num_vectors, const int32_t dim_vectors, shogun
 	train[11] = 1;
 
 	for (int32_t i = 0; i < num_vectors * dim_vectors; ++i)
-		test[i] = i * std::sin(i) *.96; 
+		test[i] = i * std::sin(i) *.96;
 
 	// create labels, two classes
 	for (index_t i = 0; i < num_vectors; ++i)
@@ -58,18 +59,18 @@ shogun::CModelSelectionParameters * build_tree(shogun::CInferenceMethod *inf, sh
 
 	shogun::CModelSelectionParameters *c3 = new shogun::CModelSelectionParameters("sigma");
 	c2->append_child(c3);
-	c3->build_values(1.0, 4.0, R_LINEAR);
+	c3->build_values(1.0, 4.0, shogun::R_LINEAR);
 
 	shogun::CModelSelectionParameters *c4 = new shogun::CModelSelectionParameters("scale");
 	c1->append_child(c4);
-	c4->build_values(1.0, 1.0, R_LINEAR);
+	c4->build_values(1.0, 1.0, shogun::R_LINEAR);
 
 	shogun::CModelSelectionParameters *c5 = new shogun::CModelSelectionParameters("kernel", kernel);
 	c1->append_child(c5);
 
 	shogun::CModelSelectionParameters *c6 = new shogun::CModelSelectionParameters("weights");
 	c5->append_child(c6);
-	c6->build_values_sgvector(0.001, 4.0, R_LINEAR, &weights);
+	c6->build_values_sgvector(0.001, 4.0, shogun::R_LINEAR, &weights);
 
 	return root;
 }
@@ -79,8 +80,10 @@ shogun::CModelSelectionParameters * build_tree(shogun::CInferenceMethod *inf, sh
 
 namespace my_shogun {
 
+using namespace shogun;
+
 // [ref] ${SHOGUN_HOME}/examples/documented/libshogun/regression_gaussian_process_ard.cpp
-void regression_example()
+void gp_regression_example()
 {
 	const int32_t num_vectors = 4;
 	const int32_t dim_vectors = 3;

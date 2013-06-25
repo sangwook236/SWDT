@@ -1,5 +1,5 @@
 [-] Building in Win32/Cygwin
-	-. build
+	-. build library
 		cd ${SHOGUN}/src
 		./configure --python=/usr/bin/python
 		./configure --destdir= --prefix=/usr/local --python=/usr/bin/python --interfaces=python_static,python_modular,cmdline_static
@@ -21,3 +21,14 @@
 		dlltool --def libshogun-13.0.dll.def --dllname libshogun-13.0.dll --output-lib libshogun-13.0.dll.lib
 		strip libshogun-13.0.dll.lib (X)
 			strip을 수행하면 VC++에서 linking error 발생.
+
+[-] Building in Linux
+	-. build library
+		cd ${SHOGUN}/src
+		./configure --python=/usr/bin/python
+		./configure --destdir= --prefix=/usr/local --python=/usr/bin/python --interfaces=python_static,python_modular,cmdline_static --disable-readline
+			use Python 2.x.x, not 3.x.x.
+			make distclean
+		make
+		make install
+

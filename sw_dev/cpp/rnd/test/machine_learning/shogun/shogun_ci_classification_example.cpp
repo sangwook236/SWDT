@@ -14,15 +14,17 @@ namespace local {
 
 namespace my_shogun {
 
+using namespace shogun;
+
 // [ref] ${SHOGUN_HOME}/examples/documented/libshogun/classifier_conjugateindex.cpp
-void classification_example()
+void ci_classification_example()
 {
 	// create some data
 	shogun::SGMatrix<float64_t> matrix(2, 3);
 	for (int32_t i = 0; i < 6; ++i)
 		matrix.matrix[i] = i;
 
-	// create three 2-dimensional vectors 
+	// create three 2-dimensional vectors
 	// shogun will now own the matrix created
 	shogun::CDenseFeatures<float64_t> *features = new shogun::CDenseFeatures<float64_t>(matrix);
 

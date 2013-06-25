@@ -11,8 +11,8 @@ namespace local {
 
 namespace my_shogun {
 
-void classification_example();
-void regression_example();
+void ci_classification_example();
+void gp_regression_example();
 
 }  // namespace my_shogun
 
@@ -20,8 +20,11 @@ int shogun_main(int argc, char *argv[])
 {
 	shogun::init_shogun_with_defaults();
 
-	my_shogun::classification_example();
-	my_shogun::regression_example();
+	std::cout << "shogun library: conjugate index classification example ----------" << std::endl;
+	my_shogun::ci_classification_example();
+
+	std::cout << "\nshogun library: Gaussian process (GP) regression example --------" << std::endl;
+	my_shogun::gp_regression_example();
 
 	shogun::exit_shogun();
 

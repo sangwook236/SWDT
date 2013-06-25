@@ -33,7 +33,12 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
+		<Linker>
+			<Add library="shogun" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
 		<Unit filename="clustering/clustering_main.cpp" />
 		<Unit filename="clustering/k_means.cpp" />
 		<Unit filename="clustering/k_medoids.cpp" />
@@ -82,6 +87,9 @@
 		<Unit filename="mysvm_lib/svm_nu.h" />
 		<Unit filename="mysvm_lib/version.h" />
 		<Unit filename="rl_glue/rl_glue_main.cpp" />
+		<Unit filename="shogun/shogun_ci_classification_example.cpp" />
+		<Unit filename="shogun/shogun_gp_regression_example.cpp" />
+		<Unit filename="shogun/shogun_main.cpp" />
 		<Unit filename="vlfeat/vlfeat_main.cpp" />
 		<Extensions>
 			<code_completion />
