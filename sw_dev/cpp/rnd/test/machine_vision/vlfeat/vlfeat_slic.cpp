@@ -64,7 +64,10 @@ void slic()
 	vl_uint8 *data = NULL;
 	VlPgmImage pim;
 	if (!local::read_pgm(input_filename, data, pim, verbose))
+	{
+		std::cerr << "file not found: " << input_filename << std::endl;
 		return;
+	}
 
 	//
 	const vl_size img_width = pim.width;
@@ -73,7 +76,7 @@ void slic()
 
 	float *image = new float [img_width * img_height];
 	for (vl_size i = 0; i < img_width * img_height; ++i)
-		image[i] = data[i];
+		image[i] = data[i] / 255.0;
 
 	if (data)
 	{
@@ -81,71 +84,140 @@ void slic()
 		data = NULL;
 	}
 #elif 1
-	const std::string input_filename = "./machine_vision_data/opencv/fruits.jpg";
+	const std::string input_filename = "./machine_vision_data/vlfeat/slic_image.jpg";
+	//const std::string input_filename = "./machine_vision_data/opencv/fruits.jpg";
 
-	const cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_GRAYSCALE);
-
-	//
-	const vl_size img_width = input_img.cols;
-	const vl_size img_height = input_img.rows;
-	const vl_size img_numChannels = 1;
-
-	float *image = new float [img_width * img_height * img_numChannels];
+	const cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_COLOR);
+	//const cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_GRAYSCALE);
+	if (input_img.empty())
 	{
-		for (size_t i = 0; i < img_width * img_height * img_numChannels; ++i)
-			image[i] = input_img.data[i];
+		std::cerr << "file not found: " << input_filename << std::endl;
+		return;
 	}
-#else
-	const std::string input_filename = "./machine_vision_data/opencv/fruits.jpg";
-
-	const cv::Mat input_img = cv::imread(input_filename);
 
 	//
 	const vl_size img_width = input_img.cols;
 	const vl_size img_height = input_img.rows;
-	const vl_size img_numChannels = 3;
+	const vl_size img_numChannels = input_img.channels();
 
-	float *image = new float [img_width * img_height * img_numChannels];
+	// channels * width * height + width * row + col
+	std::vector<float> image(img_width * img_height * img_numChannels, 0.0);
 	{
-		for (size_t i = 0; i < img_width * img_height * img_numChannels; ++i)
-			image[i] = input_img.data[i];
+		if (1 == img_numChannels)
+		{
+			for (vl_size r = 0; r < img_height; ++r)
+				for (vl_size c = 0; c < img_width; ++c)
+					image[img_width * r + c] = (float)input_img.at<unsigned char>(r, c);
+		}
+		else if (3 == img_numChannels)
+		{
+			for (vl_size r = 0; r < img_height; ++r)
+				for (vl_size c = 0; c < img_width; ++c)
+				{
+					const cv::Vec3b &pix = input_img.at<cv::Vec3b>(r, c);
+					for (vl_size ch = 0; ch < img_numChannels; ++ch)
+						image[ch * img_width * img_height + img_width * r + c] = (float)pix[ch];
+				}
+		}
+		else
+		{
+			std::cerr << "the number of image's channels is improper ..." << std::endl;
+			return;
+		}
 	}
 #endif
 
 	//
-	vl_uint32 *segmentation = new vl_uint32 [img_width * img_height];
-	const vl_size regionSize = 100;
-	const float regularization = 1.0f;
-	const vl_size minRegionSize = 10;
-	vl_slic_segment(segmentation, image, img_width, img_height, img_numChannels, regionSize, regularization, minRegionSize);
+	const vl_size regionSize = 30;  // nominal size of the regions.
+	const float regularization = 10.0f;  // trade-off between appearance and spatial terms.
+	const vl_size minRegionSize = (vl_size)cvRound((regionSize / 6.0) * (regionSize / 6.0));  // minimum size of a segment.
 
-	//
-	const vl_uint32 maxLabel = *std::max_element(segmentation, segmentation + img_width * img_height);
+	std::vector<vl_uint32> segmentation(img_width * img_height, 0);
+	vl_slic_segment(&segmentation[0], &image[0], img_width, img_height, img_numChannels, regionSize, regularization, minRegionSize);
 
 	// visualize
-	cv::Mat result_img(img_height, img_width, CV_32FC1);
+	cv::Mat result_img(input_img.size(), input_img.type());
 	{
-		vl_size idx = 0;
-		for (int r = 0; r < result_img.rows; ++r)
+#if 0
+		const vl_uint32 maxLabel = *std::max_element(segmentation.begin(), segmentation.end());
+
+		if (1 == result_img.channels())
+		{
+			vl_size idx = 0;
+			for (int r = 0; r < result_img.rows; ++r)
 				for (int c = 0; c < result_img.cols; ++c, ++idx)
-					result_img.at<float>(r, c) = segmentation[idx] / (float)maxLabel;
+					result_img.at<unsigned char>(r, c) = (unsigned char)cvRound(segmentation[idx] * 255 / float(maxLabel));
+		}
+		else if (3 == result_img.channels())
+		{
+			vl_size idx = 0;
+			for (int r = 0; r < result_img.rows; ++r)
+				for (int c = 0; c < result_img.cols; ++c, ++idx)
+				{
+					const unsigned char val = (unsigned char)cvRound(segmentation[idx] * 255 / float(maxLabel));
+					result_img.at<cv::Vec3b>(r, c) = cv::Vec3b(val, val, val);
+				}
+		}
+		else
+		{
+			std::cerr << "the number of image's channels is improper ..." << std::endl;
+			return;
+		}
+#else
+		// draw boundary.
+		if (1 == result_img.channels())
+		{
+			vl_size idx = 0;
+			for (int r = 0; r < result_img.rows; ++r)
+				for (int c = 0; c < result_img.cols; ++c, ++idx)
+				{
+					const int lbl = segmentation[idx];
+					if (r - 1 >= 0 && lbl != segmentation[(r - 1) * result_img.cols + c])
+						result_img.at<unsigned char>(r, c) = 255;
+					else if (c - 1 >= 0 && lbl != segmentation[r * result_img.cols + (c - 1)])
+						result_img.at<unsigned char>(r, c) = 255;
+/*
+					else if (r + 1 < result_img.rows && lbl != segmentation[(r + 1) * result_img.cols + c])
+						result_img.at<unsigned char>(r, c) = 255;
+					else if (c + 1 < result_img.cols && lbl != segmentation[r * result_img.cols + (c + 1)])
+						result_img.at<unsigned char>(r, c) = 255;
+*/
+					else
+						result_img.at<unsigned char>(r, c) = 0;
+				}
+		}
+		else if (3 == result_img.channels())
+		{
+			vl_size idx = 0;
+			for (int r = 0; r < result_img.rows; ++r)
+				for (int c = 0; c < result_img.cols; ++c, ++idx)
+				{
+					const int lbl = segmentation[idx];
+					if (r - 1 >= 0 && lbl != segmentation[(r - 1) * result_img.cols + c])
+						result_img.at<cv::Vec3b>(r, c) = cv::Vec3b(255, 255, 255);
+					else if (c - 1 >= 0 && lbl != segmentation[r * result_img.cols + (c - 1)])
+						result_img.at<cv::Vec3b>(r, c) = cv::Vec3b(255, 255, 255);
+/*
+					else if (r + 1 < result_img.rows && lbl != segmentation[(r + 1) * result_img.cols + c])
+						result_img.at<cv::Vec3b>(r, c) = cv::Vec3b(255, 255, 255);
+					else if (c + 1 < result_img.cols && lbl != segmentation[r * result_img.cols + (c + 1)])
+						result_img.at<cv::Vec3b>(r, c) = cv::Vec3b(255, 255, 255);
+*/
+					else
+						result_img.at<cv::Vec3b>(r, c) = cv::Vec3b(0, 0, 0);
+				}
+		}
+		else
+		{
+			std::cerr << "the number of image's channels is improper ..." << std::endl;
+			return;
+		}
+#endif
 	}
 
 	cv::imshow("SLIC result", result_img);
 	cv::waitKey(0);
 	cv::destroyAllWindows();
-
-	// clean-up
-	if (segmentation)
-	{
-		delete [] segmentation;
-		segmentation = NULL;
-	}
-	if (image)
-	{
-		delete [] image;
-		image = NULL;
-	}
 }
 
 }  // namespace my_vlfeat

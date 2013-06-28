@@ -129,6 +129,8 @@ int opencv_main(int argc, char *argv[])
 	bool canUseGPU = false;
 	try
 	{
+		cv::theRNG();
+
 		if (cv::gpu::getCudaEnabledDeviceCount() > 0)
 		{
 			canUseGPU = true;

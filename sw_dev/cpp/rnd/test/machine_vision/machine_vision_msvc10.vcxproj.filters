@@ -288,6 +288,9 @@
     <ClCompile Include="opencv\opencv_machine_learning.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_quick_shift.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

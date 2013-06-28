@@ -1,6 +1,7 @@
 //#include "stdafx.h"
+#define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv2/core/core.hpp>
 #include <iostream>
-#include <stdexcept>
 
 
 namespace {
@@ -23,32 +24,52 @@ void hikm();  // hierarchical Integer K-means (HIKM)
 void aib();  // agglomerative information bottleneck (AIB)
 
 void slic();  // simple linear iterative clustering (SLIC)
+void quick_shift();
 
 }  // namespace my_vlfeat
 
 int vlfeat_main(int argc, char *argv[])
 {
-	// feature analysis -----------------------------------
+	try
 	{
-		//my_vlfeat::sift();
-		//my_vlfeat::dense_sift();  // not yet implemented
-		//my_vlfeat::mser();
-		//my_vlfeat::hog();  // not yet implemented
-		//my_vlfeat::covariant_feature_detectors();  // not yet implemented
-	}
+		cv::theRNG();
 
-	// clustering -----------------------------------------
-	{
-		//my_vlfeat::kmeans();
-		//my_vlfeat::ikm();
-		//my_vlfeat::hikm();
-		//my_vlfeat::aib();
-	}
+		// feature analysis -----------------------------------
+		{
+			//my_vlfeat::sift();
+			//my_vlfeat::dense_sift();  // not yet implemented
+			//my_vlfeat::mser();
+			//my_vlfeat::hog();  // not yet implemented
+			//my_vlfeat::covariant_feature_detectors();  // not yet implemented
+		}
 
-	// segmentation ---------------------------------------
+		// clustering -----------------------------------------
+		{
+			//my_vlfeat::kmeans();
+			//my_vlfeat::ikm();
+			//my_vlfeat::hikm();
+			//my_vlfeat::aib();
+		}
+
+		// segmentation ---------------------------------------
+		{
+			// simple linear iterative clustering (SLIC)
+			//my_vlfeat::slic();
+
+			my_vlfeat::quick_shift();
+		}
+	}
+	catch (const cv::Exception &e)
 	{
-		// simple linear iterative clustering (SLIC)
-		my_vlfeat::slic();
+		//std::cout << "OpenCV exception caught: " << e.what() << std::endl;
+		//std::cout << "OpenCV exception caught: " << cvErrorStr(e.code) << std::endl;
+		std::cout << "OpenCV exception caught:" << std::endl
+			<< "\tdescription: " << e.err << std::endl
+			<< "\tline:        " << e.line << std::endl
+			<< "\tfunction:    " << e.func << std::endl
+			<< "\tfile:        " << e.file << std::endl;
+
+		return 1;
 	}
 
 	return 0;

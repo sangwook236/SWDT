@@ -191,6 +191,7 @@
     <ClCompile Include="vlfeat\vlfeat_kmeans.cpp" />
     <ClCompile Include="vlfeat\vlfeat_main.cpp" />
     <ClCompile Include="vlfeat\vlfeat_mser.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_quick_shift.cpp" />
     <ClCompile Include="vlfeat\vlfeat_sift.cpp" />
     <ClCompile Include="vlfeat\vlfeat_slic.cpp" />
   </ItemGroup>

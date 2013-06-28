@@ -10,9 +10,11 @@
 
 int main(int argc, char *argv[])
 {
+	int clustering_main(int argc, char *argv[]);
+	int spectral_clustering_main(int argc, char *argv[]);
+
 	int libsvm_main(int argc, char *argv[]);
 	int mysvm_main(int argc, char *argv[]);
-	int clustering_main(int argc, char *argv[]);
 
 	int shogun_main(int argc, char *argv[]);
 
@@ -23,19 +25,24 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)time(NULL));
 
-		// SVM --------------------------------------------------
-		//retval = libsvm_main(argc, argv);
-		//retval = mysvm_main(argc, argv);  // not yet implemented
-
 		// clustering -------------------------------------------
 		//retval = clustering_main(argc, argv);  // not yet implemented
 
+		// spectral clustering ----------------------------------
+		retval = spectral_clustering_main(argc, argv);
+
+		// support vector machine (SVM) -------------------------
+		//retval = libsvm_main(argc, argv);
+		//retval = mysvm_main(argc, argv);  // not yet implemented
+
 		// shogun library ---------------------------------------
+		//	-. multiple kernel learning (MKL)
+		//	-. Gaussian process (GP) regression
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		retval = shogun_main(argc, argv);
 #endif
 
-		// reinforcement learning -------------------------------
+		// reinforcement learning (RL) --------------------------
 		//retval = rl_glue_main(argc, argv);  // not yet implemented
 	}
     catch (const std::bad_alloc &e)
