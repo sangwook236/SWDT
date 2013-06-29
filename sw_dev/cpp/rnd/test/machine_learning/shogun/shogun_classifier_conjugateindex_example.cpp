@@ -16,8 +16,8 @@ namespace my_shogun {
 
 using namespace shogun;
 
-// [ref] ${SHOGUN_HOME}/examples/documented/libshogun/classifier_conjugateindex.cpp
-void ci_classification_example()
+// [ref] ${SHOGUN_HOME}/examples/undocumented/libshogun/classifier_conjugateindex.cpp
+void classifier_conjugateindex_example()
 {
 	// create some data
 	shogun::SGMatrix<float64_t> matrix(2, 3);

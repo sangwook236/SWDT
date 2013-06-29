@@ -82,8 +82,8 @@ namespace my_shogun {
 
 using namespace shogun;
 
-// [ref] ${SHOGUN_HOME}/examples/documented/libshogun/regression_gaussian_process_ard.cpp
-void gp_regression_example()
+// [ref] ${SHOGUN_HOME}/examples/undocumented/libshogun/regression_gaussian_process_ard.cpp
+void regression_gaussian_process_ard_example()
 {
 	const int32_t num_vectors = 4;
 	const int32_t dim_vectors = 3;
