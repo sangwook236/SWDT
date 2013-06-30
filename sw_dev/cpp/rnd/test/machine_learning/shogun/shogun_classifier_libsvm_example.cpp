@@ -79,7 +79,7 @@ void classifier_libsvm_example()
 	svm->set_epsilon(svm_eps);
 	svm->train();
 
-	SG_SPRINT("num_sv:%d b:%f\n", svm->get_num_support_vectors(), svm->get_bias());
+	SG_SPRINT("num_sv: %d, b: %f\n", svm->get_num_support_vectors(), svm->get_bias());
 
 	// classify + display output
 	shogun::CBinaryLabels *out_labels = shogun::CBinaryLabels::obtain_from_generic(svm->apply());

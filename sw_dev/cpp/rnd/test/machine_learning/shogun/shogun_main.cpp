@@ -81,28 +81,28 @@ int shogun_main(int argc, char *argv[])
 		//shogun::sg_io->set_loglevel(MSG_INFO);
 
 		std::cout << "shogun library: clustering example ------------------------------" << std::endl;
-		if (true)
+		if (false)
 		{
             my_shogun::clustering_kmeans_example();
 		}
 
 		std::cout << "\nshogun library: classification example --------------------------" << std::endl;
- 		if (false)
+ 		if (true)
 		{
-           my_shogun::classifier_conjugateindex_example();
+            //my_shogun::classifier_conjugateindex_example();
 
-            my_shogun::classifier_minimal_svm_example();
-            my_shogun::classifier_latent_svm_example();  // not yet implemented
-            my_shogun::classifier_libsvm_example();
+            //my_shogun::classifier_minimal_svm_example();
+            //my_shogun::classifier_latent_svm_example();  // not yet implemented
+            //my_shogun::classifier_libsvm_example();
 
-            my_shogun::classifier_multiclasslibsvm_example();
-            my_shogun::classifier_multiclasslinearmachine_example();
+            //my_shogun::classifier_multiclasslibsvm_example();
+            //my_shogun::classifier_multiclasslinearmachine_example();
 
-            my_shogun::classifier_multiclass_ecoc_example();
-            my_shogun::classifier_multiclass_ecoc_discriminant_example();
-            my_shogun::classifier_multiclass_ecoc_random_example();
+            //my_shogun::classifier_multiclass_ecoc_example();
+            //my_shogun::classifier_multiclass_ecoc_discriminant_example();
+            //my_shogun::classifier_multiclass_ecoc_random_example();
 
-            my_shogun::classifier_multiclass_shareboost_example();
+            //my_shogun::classifier_multiclass_shareboost_example();
 
             my_shogun::classifier_mklmulticlass_example();
 		}
@@ -110,7 +110,7 @@ int shogun_main(int argc, char *argv[])
 		std::cout << "\nshogun library: Gaussian process (GP) regression example --------" << std::endl;
   		if (false)
 		{
-           my_shogun::regression_gaussian_process_ard_example();
+            my_shogun::regression_gaussian_process_ard_example();
 		}
 
 		std::cout << "\nshogun library: linear dimensionality reduction example ---------" << std::endl;
@@ -123,7 +123,7 @@ int shogun_main(int argc, char *argv[])
 		std::cout << "\nshogun library: nonlinear dimensionality reduction example ------" << std::endl;
   		if (false)
 		{
-           my_shogun::converter_isomap_example();
+            my_shogun::converter_isomap_example();
             my_shogun::converter_locallylinearembedding_example();
             my_shogun::converter_kernellocallylinearembedding_example();
             my_shogun::converter_diffusionmaps_example();

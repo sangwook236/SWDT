@@ -27,7 +27,7 @@ using namespace shogun;
 void clustering_kmeans_example()
 {
 	const int32_t num_clusters = 4;
-	const int32_t num_features = 11;
+	const int32_t num_features = 11;  // the number of labels (?)
 	const int32_t dim_features = 3;
 	const int32_t num_vectors_per_cluster = 5;
 	const float64_t cluster_std_dev = 2.0;
@@ -48,7 +48,7 @@ void clustering_kmeans_example()
 				index_t idx = i * dim_features * num_vectors_per_cluster;
 				idx += j;
 				idx += k * dim_features;
-				float64_t entry = cluster_centers.matrix[i * dim_features+j];
+				const float64_t entry = cluster_centers.matrix[i * dim_features + j];
 				data.matrix[idx] = shogun::CMath::normal_random(entry, cluster_std_dev);
 			}
 		}
