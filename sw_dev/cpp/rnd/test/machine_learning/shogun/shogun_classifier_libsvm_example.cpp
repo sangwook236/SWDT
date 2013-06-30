@@ -8,7 +8,7 @@
 namespace {
 namespace local {
 
-void gen_rand_data(SGVector<float64_t> lab, SGMatrix<float64_t> feat, float64_t dist)
+void gen_rand_data(shogun::SGVector<float64_t> lab, shogun::SGMatrix<float64_t> feat, float64_t dist)
 {
 	const index_t dims = feat.num_rows;
 	const index_t num = lab.vlen;
@@ -30,7 +30,7 @@ void gen_rand_data(SGVector<float64_t> lab, SGMatrix<float64_t> feat, float64_t 
 				feat(j, i) = shogun::CMath::random(0.0, 1.0) - dist;
 		}
 	}
-	
+
 	lab.display_vector("lab");
 	feat.display_matrix("feat");
 }

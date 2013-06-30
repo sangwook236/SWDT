@@ -33,6 +33,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-fpermissive" />
+			<Add directory="./spectral_clustering_lib" />
+			<Add directory="/usr/include/eigen3" />
 			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
@@ -87,10 +90,56 @@
 		<Unit filename="mysvm_lib/svm_nu.h" />
 		<Unit filename="mysvm_lib/version.h" />
 		<Unit filename="rl_glue/rl_glue_main.cpp" />
-		<Unit filename="shogun/shogun_ci_classification_example.cpp" />
-		<Unit filename="shogun/shogun_gp_regression_example.cpp" />
+		<Unit filename="shogun/shogun_classifier_conjugateindex_example.cpp" />
+		<Unit filename="shogun/shogun_classifier_latent_svm_example.cpp" />
+		<Unit filename="shogun/shogun_classifier_libsvm_example.cpp" />
+		<Unit filename="shogun/shogun_classifier_minimal_svm_example.cpp" />
+		<Unit filename="shogun/shogun_classifier_mklmulticlass_example.cpp" />
+		<Unit filename="shogun/shogun_classifier_multiclass_ecoc_discriminant_example.cpp" />
+		<Unit filename="shogun/shogun_classifier_multiclass_ecoc_example.cpp" />
+		<Unit filename="shogun/shogun_classifier_multiclass_ecoc_random_example.cpp" />
+		<Unit filename="shogun/shogun_classifier_multiclass_shareboost_example.cpp" />
+		<Unit filename="shogun/shogun_classifier_multiclasslibsvm_example.cpp" />
+		<Unit filename="shogun/shogun_classifier_multiclasslinearmachine_example.cpp" />
+		<Unit filename="shogun/shogun_clustering_kmeans_example.cpp" />
+		<Unit filename="shogun/shogun_converter_diffusionmaps_example.cpp" />
+		<Unit filename="shogun/shogun_converter_factoranalysis_example.cpp" />
+		<Unit filename="shogun/shogun_converter_hessianlocallylinearembedding_example.cpp" />
+		<Unit filename="shogun/shogun_converter_isomap_example.cpp" />
+		<Unit filename="shogun/shogun_converter_kernellocallylinearembedding_example.cpp" />
+		<Unit filename="shogun/shogun_converter_laplacianeigenmaps_example.cpp" />
+		<Unit filename="shogun/shogun_converter_linearlocaltangentspacealignment_example.cpp" />
+		<Unit filename="shogun/shogun_converter_localitypreservingprojections_example.cpp" />
+		<Unit filename="shogun/shogun_converter_locallylinearembedding_example.cpp" />
+		<Unit filename="shogun/shogun_converter_localtangentspacealignment_example.cpp" />
+		<Unit filename="shogun/shogun_converter_multidimensionalscaling_example.cpp" />
+		<Unit filename="shogun/shogun_converter_neighborhoodpreservingembedding_example.cpp" />
+		<Unit filename="shogun/shogun_converter_stochasticproximityembedding_example.cpp" />
+		<Unit filename="shogun/shogun_evaluation_cross_validation_classification_example.cpp" />
+		<Unit filename="shogun/shogun_evaluation_cross_validation_mkl_weight_storage_example.cpp" />
+		<Unit filename="shogun/shogun_evaluation_cross_validation_multiclass_example.cpp" />
+		<Unit filename="shogun/shogun_evaluation_cross_validation_multiclass_mkl_example.cpp" />
+		<Unit filename="shogun/shogun_evaluation_cross_validation_regression_example.cpp" />
 		<Unit filename="shogun/shogun_main.cpp" />
-		<Unit filename="vlfeat/vlfeat_main.cpp" />
+		<Unit filename="shogun/shogun_regression_gaussian_process_ard_example.cpp" />
+		<Unit filename="spectral_clustering/spectral_clustering_main.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="spectral_clustering_lib/SpectralClustering.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="spectral_clustering_lib/k_means.hpp" />
+		<Unit filename="spectral_clustering_lib/spectral.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="spectral_clustering_lib/spectral.h" />
+		<Unit filename="spectral_clustering_lib/visualization.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />

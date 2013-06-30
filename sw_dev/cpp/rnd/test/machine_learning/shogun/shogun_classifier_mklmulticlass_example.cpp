@@ -8,10 +8,13 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <cstdlib>
 
 
 namespace {
 namespace local {
+
+using namespace shogun;
 
 void getgauss(float64_t &y1, float64_t &y2)
 {
@@ -29,7 +32,7 @@ void getgauss(float64_t &y1, float64_t &y2)
 	y2 = x2 * w;
 }
 
-void gendata(std::vector<float64_t> &x, std::vector<float64_t> &y, CMulticlassLabels *&lab)
+void gendata(std::vector<float64_t> &x, std::vector<float64_t> &y, shogun::CMulticlassLabels *&lab)
 {
 	const int32_t totalsize = 240;
 	const int32_t class1size = 80;
@@ -185,7 +188,7 @@ void classifier_mklmulticlass_example()
 	float64_t *ker1 = NULL;
 	float64_t *ker2 = NULL;
 	float64_t *ker3 = NULL;
-	const float64_t autosigma = 1;
+	float64_t autosigma = 1;
 	float64_t n1 = 0;
 	float64_t n2 = 0;
 	float64_t n3 = 0;

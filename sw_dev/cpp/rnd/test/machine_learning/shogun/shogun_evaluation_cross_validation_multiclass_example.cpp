@@ -9,6 +9,7 @@
 #include <shogun/evaluation/CrossValidation.h>
 #include <shogun/evaluation/StratifiedCrossValidationSplitting.h>
 #include <shogun/evaluation/MulticlassAccuracy.h>
+#include <string>
 
 
 namespace {
@@ -25,10 +26,10 @@ using namespace shogun;
 void evaluation_cross_validation_multiclass_example()
 {
 	// Prepare to read a file for the training data
-	const char fname_feats[] = "../data/fm_train_real.dat";
-	const char fname_labels[] = "../data/label_train_multiclass.dat";
-	shogun::CStreamingAsciiFile *ffeats_train = new shogun::CStreamingAsciiFile(fname_feats);
-	shogun::CStreamingAsciiFile *flabels_train = new shogun::CStreamingAsciiFile(fname_labels);
+	const std::string fname_feats("./machine_learning_data/shogun/fm_train_real.dat");
+	const std::string fname_labels("./machine_learning_data/shogun/label_train_multiclass.dat");
+	shogun::CStreamingAsciiFile *ffeats_train = new shogun::CStreamingAsciiFile(fname_feats.c_str());
+	shogun::CStreamingAsciiFile *flabels_train = new shogun::CStreamingAsciiFile(fname_labels.c_str());
 	SG_REF(ffeats_train);
 	SG_REF(flabels_train);
 

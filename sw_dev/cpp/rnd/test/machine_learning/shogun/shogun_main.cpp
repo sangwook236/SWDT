@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #include <shogun/base/init.h>
+#include <shogun/lib/ShogunException.h>
 #include <iostream>
 
 
@@ -79,47 +80,74 @@ int shogun_main(int argc, char *argv[])
 		//shogun::sg_version->print_version();
 		//shogun::sg_io->set_loglevel(MSG_INFO);
 
-		my_shogun::clustering_kmeans_example();
+		std::cout << "shogun library: clustering example ------------------------------" << std::endl;
+		if (true)
+		{
+            my_shogun::clustering_kmeans_example();
+		}
 
-		std::cout << "shogun library: conjugate index classification example ----------" << std::endl;
-		my_shogun::classifier_conjugateindex_example();
+		std::cout << "\nshogun library: classification example --------------------------" << std::endl;
+ 		if (false)
+		{
+           my_shogun::classifier_conjugateindex_example();
 
-		my_shogun::classifier_minimal_svm_example();
-		my_shogun::classifier_latent_svm_example();  // not yet implemented
-		my_shogun::classifier_libsvm_example();
-		my_shogun::classifier_multiclass_ecoc_example();
-		my_shogun::classifier_multiclass_ecoc_discriminant_example();
-		my_shogun::classifier_multiclass_ecoc_random_example();
-		my_shogun::classifier_multiclass_shareboost_example();
-		my_shogun::classifier_multiclasslibsvm_example();
-		my_shogun::classifier_multiclasslinearmachine_example();
-		my_shogun::classifier_mklmulticlass_example();
+            my_shogun::classifier_minimal_svm_example();
+            my_shogun::classifier_latent_svm_example();  // not yet implemented
+            my_shogun::classifier_libsvm_example();
+
+            my_shogun::classifier_multiclasslibsvm_example();
+            my_shogun::classifier_multiclasslinearmachine_example();
+
+            my_shogun::classifier_multiclass_ecoc_example();
+            my_shogun::classifier_multiclass_ecoc_discriminant_example();
+            my_shogun::classifier_multiclass_ecoc_random_example();
+
+            my_shogun::classifier_multiclass_shareboost_example();
+
+            my_shogun::classifier_mklmulticlass_example();
+		}
 
 		std::cout << "\nshogun library: Gaussian process (GP) regression example --------" << std::endl;
-		my_shogun::regression_gaussian_process_ard_example();
-		
-		my_shogun::converter_factoranalysis_example();
-		my_shogun::converter_multidimensionalscaling_example();
+  		if (false)
+		{
+           my_shogun::regression_gaussian_process_ard_example();
+		}
 
-		my_shogun::converter_isomap_example();
-		my_shogun::converter_locallylinearembedding_example();
-		my_shogun::converter_kernellocallylinearembedding_example();
-		my_shogun::converter_diffusionmaps_example();
-		my_shogun::converter_laplacianeigenmaps_example();
-		my_shogun::converter_hessianlocallylinearembedding_example();
-		my_shogun::converter_localtangentspacealignment_example();
-		my_shogun::converter_linearlocaltangentspacealignment();
-		my_shogun::converter_localitypreservingprojections_example();
-		my_shogun::converter_neighborhoodpreservingembedding_example();
-		my_shogun::converter_stochasticproximityembedding_example();
-		
-		my_shogun::evaluation_cross_validation_classification_example();
-		my_shogun::evaluation_cross_validation_regression_example();
-		my_shogun::evaluation_cross_validation_multiclass_example();
-		my_shogun::evaluation_cross_validation_multiclass_mkl_example();
-		my_shogun::evaluation_cross_validation_mkl_weight_storage_example();
+		std::cout << "\nshogun library: linear dimensionality reduction example ---------" << std::endl;
+ 		if (false)
+		{
+            my_shogun::converter_factoranalysis_example();
+            my_shogun::converter_multidimensionalscaling_example();
+		}
+
+		std::cout << "\nshogun library: nonlinear dimensionality reduction example ------" << std::endl;
+  		if (false)
+		{
+           my_shogun::converter_isomap_example();
+            my_shogun::converter_locallylinearembedding_example();
+            my_shogun::converter_kernellocallylinearembedding_example();
+            my_shogun::converter_diffusionmaps_example();
+            my_shogun::converter_laplacianeigenmaps_example();
+            my_shogun::converter_hessianlocallylinearembedding_example();
+            my_shogun::converter_localtangentspacealignment_example();
+            my_shogun::converter_linearlocaltangentspacealignment();
+
+            my_shogun::converter_localitypreservingprojections_example();
+            my_shogun::converter_neighborhoodpreservingembedding_example();
+            my_shogun::converter_stochasticproximityembedding_example();
+		}
+
+ 		std::cout << "\nshogun library: cross validation example ------------------------" << std::endl;
+   		if (false)
+		{
+            my_shogun::evaluation_cross_validation_classification_example();
+            my_shogun::evaluation_cross_validation_regression_example();
+            my_shogun::evaluation_cross_validation_multiclass_example();
+            my_shogun::evaluation_cross_validation_multiclass_mkl_example();
+            my_shogun::evaluation_cross_validation_mkl_weight_storage_example();
+		}
 	}
-	catch(shogun::ShogunException &e)
+	catch (const shogun::ShogunException &e)
 	{
 		std::cout << "shogun::ShogunException caught: " << e.get_exception_string() << std::endl;
 		retval = 1;

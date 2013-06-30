@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 		//retval = clustering_main(argc, argv);  // not yet implemented
 
 		// spectral clustering ----------------------------------
-		retval = spectral_clustering_main(argc, argv);
+		//retval = spectral_clustering_main(argc, argv);
 
 		// support vector machine (SVM) -------------------------
 		//retval = libsvm_main(argc, argv);

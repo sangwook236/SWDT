@@ -1,13 +1,14 @@
 //#include "stdafx.h"
 #include <shogun/labels/MulticlassLabels.h>
-#include <shogun/io/StreamingAsciiFile.h>
+#include <shogun/io/streaming/StreamingAsciiFile.h>
 #include <shogun/io/SGIO.h>
-#include <shogun/features/StreamingDenseFeatures.h>
+#include <shogun/features/streaming/StreamingDenseFeatures.h>
 #include <shogun/features/DenseFeatures.h>
 #include <shogun/features/DenseSubsetFeatures.h>
 #include <shogun/base/init.h>
 #include <shogun/multiclass/ShareBoost.h>
 #include <algorithm>
+#include <string>
 
 
 #define  EPSILON  1e-5
@@ -28,8 +29,8 @@ void classifier_multiclass_shareboost_example()
 	int32_t num_vectors = 0;
 	int32_t num_feats = 0;
 
-	const char *fname_train = "../data/7class_example4_train.dense";
-	shogun::CStreamingAsciiFile *train_file = new shogun::CStreamingAsciiFile(fname_train);
+	const std::string fname_train("./machine_learning_data/shogun/7class_example4_train.dense");
+	shogun::CStreamingAsciiFile *train_file = new shogun::CStreamingAsciiFile((char *)fname_train.c_str());
 	SG_REF(train_file);
 
 	shogun::CStreamingDenseFeatures<float64_t> *stream_features = new shogun::CStreamingDenseFeatures<float64_t>(train_file, true, 1024);
@@ -46,17 +47,17 @@ void classifier_multiclass_shareboost_example()
 		if (0 == num_feats)
 		{
 			num_feats = vec.vlen;
-			mat = SGMatrix<float64_t>(num_feats, 1000);
+			mat = shogun::SGMatrix<float64_t>(num_feats, 1000);
 		}
-		std::copy(vec.vector, vec.vector+vec.vlen, mat.get_column_vector(num_vectors));
+		std::copy(vec.vector, vec.vector + vec.vlen, mat.get_column_vector(num_vectors));
 		labvec[num_vectors] = stream_features->get_label();
-		++num_vector;
+		++num_vectors;
 		stream_features->release_example();
 	}
 	stream_features->end_parser();
 	mat.num_cols = num_vectors;
 	labvec.vlen = num_vectors;
-	
+
 	shogun::CMulticlassLabels *labels = new shogun::CMulticlassLabels(labvec);
 	SG_REF(labels);
 

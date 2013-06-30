@@ -33,7 +33,7 @@ void simple_example(int argc, char *argv[])
 
 	boost::program_options::variables_map vm;
 	boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
-	boost::program_options::notify(vm);    
+	boost::program_options::notify(vm);
 
 	if (vm.count("help") || (method != "spectral" && method != "kmeans"))
 	{
@@ -55,7 +55,11 @@ void simple_example(int argc, char *argv[])
 	//const std::string input_filename("./machine_learning_data/spectral_clustering/circles.txt");
 	const std::string input_filename("./machine_learning_data/spectral_clustering/data.txt");
 	//const std::string input_filename("./machine_learning_data/spectral_clustering/processed_input.txt");
+#if defined(__GNUC__)
+	std::ifstream stream(input_filename.c_str(), std::ios::in);
+#else
 	std::ifstream stream(input_filename, std::ios::in);
+#endif
 	if (!stream.is_open())
 	{
 		std::cerr << "file not found: " << input_filename << std::endl;
@@ -91,10 +95,10 @@ void simple_example(int argc, char *argv[])
 	std::cout << "number of points = " << num_points << std::endl;
 	std::cout << "number of clusters to attempt = " << num_clusters << std::endl;
 	std::cout << "clusters = " << std::endl;
-	BOOST_FOREACH(auto x, clusters) { std::cout << x << " "; }
+	BOOST_FOREACH(int x, clusters) { std::cout << x << " "; }
 	std::cout << std::endl;
 	//std::cout << "points = " << std::endl;
-	//BOOST_FOREACH(auto x, points) { std::cout << x.first << " " << x.second << std::endl; }
+	//BOOST_FOREACH(int x, points) { std::cout << x.first << " " << x.second << std::endl; }
 }
 
 }  // namespace local

@@ -26,9 +26,9 @@ void converter_stochasticproximityembedding_example()
 	for (int i =0 ; i < N * dim; ++i)
 		matrix[i] = shogun::CMath::sin((i / float64_t(N * dim)) * 3.14);
 
-	Cshogun::DenseFeatures<float64_t> *features = new shogun::CDenseFeatures<float64_t>(matrix);
+	shogun::CDenseFeatures<float64_t> *features = new shogun::CDenseFeatures<float64_t>(matrix);
 	SG_REF(features);
-	
+
 	// Create embedding and set parameters for global strategy
 	shogun::CStochasticProximityEmbedding *spe = new shogun::CStochasticProximityEmbedding();
 	spe->set_target_dim(2);

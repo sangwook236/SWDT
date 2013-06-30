@@ -38,7 +38,7 @@ void gen_rand_data(shogun::SGVector<float64_t> lab, shogun::SGMatrix<float64_t> 
 				feat(j, i) = shogun::CMath::random(0.0, 1.0) - dist;
 		}
 	}
-	
+
 	lab.display_vector("lab");
 	feat.display_matrix("feat");
 }
@@ -94,7 +94,7 @@ void evaluation_cross_validation_mkl_weight_storage_example()
 	const index_t num_folds = 3;
 	shogun::CSplittingStrategy *split = new shogun::CStratifiedCrossValidationSplitting(labels, num_folds);
 	shogun::CEvaluation *eval = new shogun::CContingencyTableEvaluation(ACCURACY);
-	shogun::CrossValidation *cross = new shogun::CCrossValidation(svm, comb_features, labels, split, eval, false);
+	shogun::CCrossValidation *cross = new shogun::CCrossValidation(svm, comb_features, labels, split, eval, false);
 
 	// add print output listener and mkl storage listener
 	cross->add_cross_validation_output(new shogun::CCrossValidationPrintOutput());
