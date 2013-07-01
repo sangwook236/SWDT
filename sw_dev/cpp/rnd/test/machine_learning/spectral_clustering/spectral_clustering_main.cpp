@@ -47,8 +47,8 @@ void simple_example(int argc, char *argv[])
 #else
 	const unsigned int num_clusters = 3;  // number of clusters to attempt
 	const unsigned int num_neighbors = 4;  // number of neighbors to consider in the graph
-	const double sigma2 = 10000;  // fallout speed of Gaussian metric
-	const double threshold = 0.01;  // k-means clustering threshold
+	const double sigma2 = 10;  // fallout speed of Gaussian metric
+	const double threshold = 0.0001;  // k-means clustering threshold
 	const unsigned int retries = 50000;  // number of k-means attempts at making k clusters before giving up
 	const std::string method = "kmeans";  // method, either spectral or kmeans
 
@@ -68,7 +68,7 @@ void simple_example(int argc, char *argv[])
 
 	vpoint points;
 	{
-		unsigned int x, y;
+		int x, y;
 		while (!stream.eof())
 		{
 			stream >> x >> y;

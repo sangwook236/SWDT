@@ -34,11 +34,8 @@
     <Filter Include="Source Files\shogun">
       <UniqueIdentifier>{65e53b1d-7282-4edf-bd78-098819fd7a44}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\spectral_clustering_lib">
-      <UniqueIdentifier>{579ecf66-a09d-4f82-9ac7-88253a465ada}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\spectral_clustering">
-      <UniqueIdentifier>{d8b8f716-0c1d-468f-81d9-e1e659909af5}</UniqueIdentifier>
+    <Filter Include="Source Files\kmeanspp_lib">
+      <UniqueIdentifier>{d32056e8-0dbc-4b97-ad95-f8db3a969561}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,11 +75,14 @@
     <ClInclude Include="mysvm_lib\version.h">
       <Filter>Source Files\mysvm_lib</Filter>
     </ClInclude>
-    <ClInclude Include="spectral_clustering_lib\k_means.hpp">
-      <Filter>Source Files\spectral_clustering_lib</Filter>
+    <ClInclude Include="kmeanspp_lib\KMeans.h">
+      <Filter>Source Files\kmeanspp_lib</Filter>
     </ClInclude>
-    <ClInclude Include="spectral_clustering_lib\spectral.h">
-      <Filter>Source Files\spectral_clustering_lib</Filter>
+    <ClInclude Include="kmeanspp_lib\KmTree.h">
+      <Filter>Source Files\kmeanspp_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="kmeanspp_lib\KmUtils.h">
+      <Filter>Source Files\kmeanspp_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -96,9 +96,6 @@
       <Filter>Source Files\rl_glue</Filter>
     </ClCompile>
     <ClCompile Include="clustering\clustering_main.cpp">
-      <Filter>Source Files\clustering</Filter>
-    </ClCompile>
-    <ClCompile Include="clustering\k_means.cpp">
       <Filter>Source Files\clustering</Filter>
     </ClCompile>
     <ClCompile Include="clustering\k_medoids.cpp">
@@ -167,23 +164,110 @@
     <ClCompile Include="shogun\shogun_main.cpp">
       <Filter>Source Files\shogun</Filter>
     </ClCompile>
-    <ClCompile Include="shogun\shogun_ci_classification_example.cpp">
+    <ClCompile Include="shogun\shogun_classifier_conjugateindex_example.cpp">
       <Filter>Source Files\shogun</Filter>
     </ClCompile>
-    <ClCompile Include="shogun\shogun_gp_regression_example.cpp">
+    <ClCompile Include="shogun\shogun_classifier_latent_svm_example.cpp">
       <Filter>Source Files\shogun</Filter>
     </ClCompile>
-    <ClCompile Include="spectral_clustering\spectral_clustering_main.cpp">
-      <Filter>Source Files\spectral_clustering</Filter>
+    <ClCompile Include="shogun\shogun_classifier_libsvm_example.cpp">
+      <Filter>Source Files\shogun</Filter>
     </ClCompile>
-    <ClCompile Include="spectral_clustering_lib\spectral.cpp">
-      <Filter>Source Files\spectral_clustering_lib</Filter>
+    <ClCompile Include="shogun\shogun_classifier_minimal_svm_example.cpp">
+      <Filter>Source Files\shogun</Filter>
     </ClCompile>
-    <ClCompile Include="spectral_clustering_lib\SpectralClustering.cpp">
-      <Filter>Source Files\spectral_clustering_lib</Filter>
+    <ClCompile Include="shogun\shogun_classifier_mklmulticlass_example.cpp">
+      <Filter>Source Files\shogun</Filter>
     </ClCompile>
-    <ClCompile Include="spectral_clustering_lib\visualization.cpp">
-      <Filter>Source Files\spectral_clustering_lib</Filter>
+    <ClCompile Include="shogun\shogun_classifier_multiclass_ecoc_discriminant_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_multiclass_ecoc_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_multiclass_ecoc_random_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_multiclass_shareboost_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_multiclasslibsvm_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_multiclasslinearmachine_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_clustering_kmeans_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_diffusionmaps_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_factoranalysis_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_hessianlocallylinearembedding_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_isomap_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_kernellocallylinearembedding_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_laplacianeigenmaps_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_linearlocaltangentspacealignment_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_localitypreservingprojections_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_locallylinearembedding_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_localtangentspacealignment_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_multidimensionalscaling_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_neighborhoodpreservingembedding_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_stochasticproximityembedding_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_evaluation_cross_validation_classification_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_evaluation_cross_validation_mkl_weight_storage_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_evaluation_cross_validation_multiclass_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_evaluation_cross_validation_multiclass_mkl_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_evaluation_cross_validation_regression_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_ard_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="clustering\kmeanspp.cpp">
+      <Filter>Source Files\clustering</Filter>
+    </ClCompile>
+    <ClCompile Include="kmeanspp_lib\KMeans.cpp">
+      <Filter>Source Files\kmeanspp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="kmeanspp_lib\KmTree.cpp">
+      <Filter>Source Files\kmeanspp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="kmeanspp_lib\KmUtils.cpp">
+      <Filter>Source Files\kmeanspp_lib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
