@@ -1,0 +1,13 @@
+[-] Building in Win32/Cygwin
+	-. set path
+		export HOME=/home/sangwook
+			이렇게 설정하면 ${HOME}/ARPACK directory를 ARPACK library's root directory로 사용.
+			[ref] ${ARPACK_HOME}/ARmake.inc
+	-. set platform
+		${ARPACK_HOME}/ARmake.inc file 안에 있는 platform 설정 변경.
+			PLAT = cygwin
+		${ARPACK_HOME}/ARmake.inc file에 PARPACK library's directory setting 추가.
+			PUTILdir = $(home)/PARPACK/UTIL/MPI
+			PSRCdir = $(home)/PARPACK/SRC/MPI
+	-. make
+		make all
