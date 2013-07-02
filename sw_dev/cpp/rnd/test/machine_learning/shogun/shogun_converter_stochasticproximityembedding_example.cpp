@@ -40,14 +40,21 @@ void converter_stochasticproximityembedding_example()
 	shogun::CDenseFeatures<float64_t> *embedding = spe->embed(features);
 	SG_REF(embedding);
 
+    // show result.
+	embedding->get_feature_matrix().display_matrix("stochastic proximity embedding (SPE) - result");
+
+	SG_UNREF(embedding);
+
 	// Set parameters for local strategy
 	spe->set_strategy(SPE_LOCAL);
 	spe->set_k(12);
 
 	// Apply embedding with local strategy
-	SG_UNREF(embedding);
 	embedding = spe->embed(features);
 	SG_REF(embedding);
+
+    // show result.
+	embedding->get_feature_matrix().display_matrix("stochastic proximity embedding (SPE) - result");
 
 	// Free memory
 	SG_UNREF(embedding);

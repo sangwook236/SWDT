@@ -91,7 +91,11 @@ void kmeanspp_sample_2()
 	const int num_attempts = 1000;
 
 	const std::string input_filename("./machine_learning_data/clustering/spam_input.txt");
+#if defined(__GNUC__)
+	std::ifstream stream(input_filename.c_str());
+#else
 	std::ifstream stream(input_filename);
+#endif
 	if (!stream.is_open())
 	{
 		std::cerr << "file not found: " << input_filename << std::endl;
@@ -145,7 +149,7 @@ void kmeanspp_sample_2()
 		Scalar cost;
 		{
 			boost::timer::auto_cpu_timer timer;
-	
+
 			// run k-means++ on the given set of points. Set RunKMeans for info on the parameters.
 			cost = RunKMeansPlusPlus(num_points, num_clusters, dim_features, &points[0], num_attempts, &centers[0], &assignments[0]);
 		}

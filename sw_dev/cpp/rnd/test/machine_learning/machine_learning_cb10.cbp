@@ -34,17 +34,25 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-fpermissive" />
-			<Add directory="./spectral_clustering_lib" />
-			<Add directory="/usr/include/eigen3" />
+			<Add directory="./kmeanspp_lib" />
+			<Add directory="/usr/local/include/eigen3" />
 			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="shogun" />
+			<Add library="boost_timer" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="clustering/clustering_k_medoids.cpp" />
+		<Unit filename="clustering/clustering_kmeanspp.cpp" />
 		<Unit filename="clustering/clustering_main.cpp" />
-		<Unit filename="clustering/k_means.cpp" />
-		<Unit filename="clustering/k_medoids.cpp" />
+		<Unit filename="clustering/clustering_spectral_clustering.cpp" />
+		<Unit filename="kmeanspp_lib/KMeans.cpp" />
+		<Unit filename="kmeanspp_lib/KMeans.h" />
+		<Unit filename="kmeanspp_lib/KmTree.cpp" />
+		<Unit filename="kmeanspp_lib/KmTree.h" />
+		<Unit filename="kmeanspp_lib/KmUtils.cpp" />
+		<Unit filename="kmeanspp_lib/KmUtils.h" />
 		<Unit filename="libsvm/libsvm_main.cpp" />
 		<Unit filename="libsvm/libsvm_predict_example.cpp" />
 		<Unit filename="libsvm/libsvm_train_example.cpp" />
@@ -122,24 +130,6 @@
 		<Unit filename="shogun/shogun_evaluation_cross_validation_regression_example.cpp" />
 		<Unit filename="shogun/shogun_main.cpp" />
 		<Unit filename="shogun/shogun_regression_gaussian_process_ard_example.cpp" />
-		<Unit filename="spectral_clustering/spectral_clustering_main.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="spectral_clustering_lib/SpectralClustering.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="spectral_clustering_lib/k_means.hpp" />
-		<Unit filename="spectral_clustering_lib/spectral.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="spectral_clustering_lib/spectral.h" />
-		<Unit filename="spectral_clustering_lib/visualization.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />

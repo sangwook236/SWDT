@@ -20,20 +20,23 @@ void converter_hessianlocallylinearembedding_example()
 {
 	const int N = 100;
 	const int dim = 3;
-	
+
 	float64_t *matrix = new double [N * dim];
 	for (int i = 0; i < N * dim; ++i)
 		matrix[i] = shogun::CMath::sin((i / float64_t(N * dim)) * 3.14);
 
 	shogun::CDenseFeatures<double> *features = new shogun::CDenseFeatures<double>(SGMatrix<double>(matrix, dim, N));
 	SG_REF(features);
-	
+
 	shogun::CHessianLocallyLinearEmbedding *hlle = new shogun::CHessianLocallyLinearEmbedding();
 	hlle->set_target_dim(2);
 	hlle->set_k(8);
 	hlle->parallel->set_num_threads(4);
 	shogun::CDenseFeatures<double> *embedding = hlle->embed(features);
-	
+
+    // show result.
+	embedding->get_feature_matrix().display_matrix("Hessian locally linear embedding (HLLE) - result");
+
 	SG_UNREF(embedding);
 	SG_UNREF(hlle);
 	SG_UNREF(features);

@@ -7,6 +7,7 @@
 #include <shogun/features/DenseSubsetFeatures.h>
 #include <shogun/base/init.h>
 #include <shogun/multiclass/ShareBoost.h>
+#include <iostream>
 #include <algorithm>
 #include <string>
 
@@ -26,11 +27,8 @@ using namespace shogun;
 // [ref] ${SHOGUN_HOME}/examples/undocumented/libshogun/classifier_multiclass_shareboost.cpp
 void classifier_multiclass_shareboost_example()
 {
-	int32_t num_vectors = 0;
-	int32_t num_feats = 0;
-
 	const std::string fname_train("./machine_learning_data/shogun/7class_example4_train.dense");
-	shogun::CStreamingAsciiFile *train_file = new shogun::CStreamingAsciiFile((char *)fname_train.c_str());
+	shogun::CStreamingAsciiFile *train_file = new shogun::CStreamingAsciiFile(fname_train.c_str());
 	SG_REF(train_file);
 
 	shogun::CStreamingDenseFeatures<float64_t> *stream_features = new shogun::CStreamingDenseFeatures<float64_t>(train_file, true, 1024);
@@ -41,6 +39,8 @@ void classifier_multiclass_shareboost_example()
 
 	stream_features->start_parser();
 	shogun::SGVector<float64_t> vec;
+	int32_t num_vectors = 0;
+	int32_t num_feats = 0;
 	while (stream_features->get_next_example())
 	{
 		vec = stream_features->get_vector();
@@ -95,7 +95,7 @@ void classifier_multiclass_shareboost_example()
 	SG_UNREF(features);
 	SG_UNREF(labels);
 	SG_UNREF(train_file);
-	SG_UNREF(stream_features);
+	//SG_UNREF(stream_features);  // run-time error
 }
 
 }  // namespace my_shogun

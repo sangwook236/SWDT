@@ -20,7 +20,7 @@ void converter_multidimensionalscaling_example()
 {
 	const int N = 100;
 	const int dim = 3;
-	
+
 	float64_t *matrix = new double [N * dim];
 	for (int i = 0; i < N * dim; ++i)
 		matrix[i] = shogun::CMath::sin((i / float64_t(N * dim)) * 3.14);
@@ -32,7 +32,10 @@ void converter_multidimensionalscaling_example()
 	mds->set_landmark(true);
 	mds->parallel->set_num_threads(4);
 	shogun::CDenseFeatures<double> *embedding = mds->embed(features);
-	
+
+    // show result.
+	embedding->get_feature_matrix().display_matrix("multi-dimensional scaling (MDS) - result");
+
 	SG_UNREF(embedding);
 	SG_UNREF(mds);
 	SG_UNREF(features);

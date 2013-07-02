@@ -207,7 +207,7 @@ void classifier_mklmulticlass_example()
 	SG_FREE(ker3);
 
 	shogun::CCombinedKernel *ker = new shogun::CCombinedKernel();
-	//.SG_REF(ker);
+	//SG_REF(ker);
 	ker->append_kernel(kernel1);
 	ker->append_kernel(kernel2);
 	ker->append_kernel(kernel3);
@@ -238,8 +238,8 @@ void classifier_mklmulticlass_example()
 			err += 1;
 	}
 	err /= (float64_t)res->get_num_labels();
-	SG_SPRINT("prediction error on training data (3 classes): %f ", err);
-	SG_SPRINT("random guess error would be: %f\n", 2 / 3.0);
+	SG_SPRINT("prediction error on training data (3 classes): %f, ", err);
+	SG_SPRINT("random guess error would be: %f\n", 2.0 / 3.0);
 
 	// generate test data
 	shogun::CMulticlassLabels *tlab = NULL;
@@ -297,8 +297,8 @@ void classifier_mklmulticlass_example()
 			terr += 1;
 	}
 	terr /= (float64_t)tres->get_num_labels();
-	SG_SPRINT("prediction error on test data (3 classes): %f ", terr);
-	SG_SPRINT("random guess error would be: %f\n", 2 / 3.0);
+	SG_SPRINT("prediction error on test data (3 classes): %f, ", terr);
+	SG_SPRINT("random guess error would be: %f\n", 2.0 / 3.0);
 
 	SG_UNREF(tsvm);
 	SG_UNREF(res);
@@ -306,8 +306,6 @@ void classifier_mklmulticlass_example()
 	SG_UNREF(lab);
 	SG_UNREF(tlab);
 	SG_UNREF(tker);
-
-	SG_SPRINT("finished \n");
 }
 
 }  // namespace my_shogun

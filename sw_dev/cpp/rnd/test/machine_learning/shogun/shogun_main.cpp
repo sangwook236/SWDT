@@ -53,7 +53,7 @@ void converter_diffusionmaps_example();
 void converter_laplacianeigenmaps_example();
 void converter_hessianlocallylinearembedding_example();
 void converter_localtangentspacealignment_example();
-void converter_linearlocaltangentspacealignment();
+void converter_linearlocaltangentspacealignment_example();
 void converter_localitypreservingprojections_example();
 void converter_neighborhoodpreservingembedding_example();
 void converter_stochasticproximityembedding_example();
@@ -86,7 +86,7 @@ int shogun_main(int argc, char *argv[])
             my_shogun::clustering_kmeans_example();
 		}
 
-		std::cout << "\nshogun library: classification example --------------------------" << std::endl;
+		std::cout << "\nshogun library: classification example (kernel machine) ---------" << std::endl;
  		if (true)
 		{
             //my_shogun::classifier_conjugateindex_example();
@@ -102,9 +102,13 @@ int shogun_main(int argc, char *argv[])
             //my_shogun::classifier_multiclass_ecoc_discriminant_example();
             //my_shogun::classifier_multiclass_ecoc_random_example();
 
-            //my_shogun::classifier_multiclass_shareboost_example();
-
             my_shogun::classifier_mklmulticlass_example();
+		}
+
+		std::cout << "\nshogun library: classification example (boosting) ---------------" << std::endl;
+ 		if (false)
+		{
+            my_shogun::classifier_multiclass_shareboost_example();
 		}
 
 		std::cout << "\nshogun library: Gaussian process (GP) regression example --------" << std::endl;
@@ -130,7 +134,7 @@ int shogun_main(int argc, char *argv[])
             my_shogun::converter_laplacianeigenmaps_example();
             my_shogun::converter_hessianlocallylinearembedding_example();
             my_shogun::converter_localtangentspacealignment_example();
-            my_shogun::converter_linearlocaltangentspacealignment();
+            my_shogun::converter_linearlocaltangentspacealignment_example();
 
             my_shogun::converter_localitypreservingprojections_example();
             my_shogun::converter_neighborhoodpreservingembedding_example();

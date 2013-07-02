@@ -18,14 +18,14 @@ typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> matrix_type;
 struct square_Euclidean_distance_function
 {
 public:
-	square_Euclidean_distance_function(const int dim_features)
-	: dim_features_(dim_features)
+	square_Euclidean_distance_function(const std::vector<double> &points, const int dim_features)
+	: points_(points), dim_features_(dim_features)
 	{}
 
 public:
-	double operator()(const std::vector<double> &points, const int i, const int j) const
+	double operator()(const int i, const int j) const
 	{
-		const double *pt1 = &points[i * dim_features_], *pt2 = &points[j * dim_features_];
+		const double *pt1 = &points_[i * dim_features_], *pt2 = &points_[j * dim_features_];
 		double dist2 = 0.0;
 		for (int d = 0; d < dim_features_; ++d, ++pt1, ++pt2)
 			dist2 += (*pt1 - *pt2) * (*pt1 - *pt2);
@@ -34,6 +34,7 @@ public:
 	}
 
 private:
+    const std::vector<double> &points_;
 	const int dim_features_;
 };
 
@@ -49,7 +50,7 @@ void construct_epsilon_neighborhood_graph(const double epsilon, const int num_po
 		{
 			if (i == j) continue;
 
-			dist2_ij = distance_func(points, i, j);
+			dist2_ij = distance_func(i, j);
 			if (dist2_ij <= epsilon2)
 				// TODO [choose] >>
 				weighted_adjacent_matrix(i, j) = std::sqrt(dist2_ij);
@@ -57,7 +58,7 @@ void construct_epsilon_neighborhood_graph(const double epsilon, const int num_po
 		}
 }
 
-bool is_k_nearest_neighbor(const matrix_type& S, const int num_points, const int i, const int j, const int k)
+bool is_k_nearest_neighbor(const matrix_type &S, const int num_points, const int i, const int j, const int k)
 {
     const double s_ij = S(i, j);
 	int count = 0;
@@ -75,7 +76,7 @@ bool is_k_nearest_neighbor(const matrix_type& S, const int num_points, const int
 }
 
 template<class DistanceFunction>
-void construct_k_neighbor_graph(const int k, const int num_points, const int dim_features, const std::vector<double> &points, DistanceFunction func, matrix_type &weighted_adjacent_matrix)
+void construct_k_neighbor_graph(const int k, const int num_points, const int dim_features, const std::vector<double> &points, DistanceFunction distance_func, matrix_type &weighted_adjacent_matrix)
 {
 	matrix_type similarity_matrix = matrix_type::Zero(num_points, num_points);
 	for (int i = 0; i < num_points; ++i)
@@ -84,8 +85,8 @@ void construct_k_neighbor_graph(const int k, const int num_points, const int dim
 			if (i == j) continue;
 
 			// TODO [choose] >>
-			similarity_matrix(i, j) = distance_func(points, i, j);
-			//similarity_matrix(i, j) = std::sqrt(distance_func(points, i, j));
+			similarity_matrix(i, j) = distance_func(i, j);
+			//similarity_matrix(i, j) = std::sqrt(distance_func(i, j));
 		}
 
 	weighted_adjacent_matrix = matrix_type::Zero(num_points, num_points);
@@ -115,8 +116,8 @@ void construct_fully_connected_graph(const double sigma, const int num_points, c
 			if (i == j) continue;
 
 			// TODO [choose] >>
-			dist_ij = std::exp(-distance_func(points, i, j) / _2sigma2);
-			//const double dij = distance_func(points, i, j);
+			dist_ij = std::exp(-distance_func(i, j) / _2sigma2);
+			//const double dij = distance_func(i, j);
 			//dist_ij = std::exp(-dij * dij / _2sigma2);
 
 			weighted_adjacent_matrix(i, j) = dist_ij;
@@ -143,13 +144,13 @@ double run_spectral_clustering(const int method, const int num_points, const int
 	matrix_type weighted_adjacent_matrix;
 #if 0
 	const double epsilon = 10.0;
-	construct_epsilon_neighborhood_graph(epsilon, num_points, dim_features, points, square_Euclidean_distance_function(dim_features), weighted_adjacent_matrix);
+	construct_epsilon_neighborhood_graph(epsilon, num_points, dim_features, points, square_Euclidean_distance_function(points, dim_features), weighted_adjacent_matrix);
 #elif 0
 	const int k = 10;  // k-nearest neighbors
-	construct_k_neighbor_graph(k, num_points, dim_features, points, square_Euclidean_distance_function(dim_features), weighted_adjacent_matrix);
+	construct_k_neighbor_graph(k, num_points, dim_features, points, square_Euclidean_distance_function(points, dim_features), weighted_adjacent_matrix);
 #else
 	const double sigma = 1.0;
-	construct_fully_connected_graph(sigma, num_points, dim_features, points, square_Euclidean_distance_function(dim_features), weighted_adjacent_matrix);
+	construct_fully_connected_graph(sigma, num_points, dim_features, points, square_Euclidean_distance_function(points, dim_features), weighted_adjacent_matrix);
 #endif
 
 	// construct diagonal matrix, D.
@@ -185,6 +186,7 @@ double run_spectral_clustering(const int method, const int num_points, const int
 		// eigen value decomposition, Lsym * u = lambda * u
 		matrix_type Dsqrt;
 		diagonal_matrix.sqrt().evalTo(Dsqrt);
+		//Eigen::MatrixSquareRoot<matrix_type>(diagonal_matrix).compute(Dsqrt);
 		const matrix_type invDsqrt = Dsqrt.inverse();
 		Eigen::SelfAdjointEigenSolver<matrix_type> evd(invDsqrt * (diagonal_matrix - weighted_adjacent_matrix) * invDsqrt);
 
