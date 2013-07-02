@@ -98,9 +98,6 @@
     <ClCompile Include="clustering\clustering_main.cpp">
       <Filter>Source Files\clustering</Filter>
     </ClCompile>
-    <ClCompile Include="clustering\k_medoids.cpp">
-      <Filter>Source Files\clustering</Filter>
-    </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -257,9 +254,6 @@
     <ClCompile Include="shogun\shogun_regression_gaussian_process_ard_example.cpp">
       <Filter>Source Files\shogun</Filter>
     </ClCompile>
-    <ClCompile Include="clustering\kmeanspp.cpp">
-      <Filter>Source Files\clustering</Filter>
-    </ClCompile>
     <ClCompile Include="kmeanspp_lib\KMeans.cpp">
       <Filter>Source Files\kmeanspp_lib</Filter>
     </ClCompile>
@@ -268,6 +262,15 @@
     </ClCompile>
     <ClCompile Include="kmeanspp_lib\KmUtils.cpp">
       <Filter>Source Files\kmeanspp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="clustering\clustering_spectral_clustering.cpp">
+      <Filter>Source Files\clustering</Filter>
+    </ClCompile>
+    <ClCompile Include="clustering\clustering_k_medoids.cpp">
+      <Filter>Source Files\clustering</Filter>
+    </ClCompile>
+    <ClCompile Include="clustering\clustering_kmeanspp.cpp">
+      <Filter>Source Files\clustering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

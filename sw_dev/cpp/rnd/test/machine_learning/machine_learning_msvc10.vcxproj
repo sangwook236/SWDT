@@ -97,9 +97,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="clustering\clustering_kmeanspp.cpp" />
+    <ClCompile Include="clustering\clustering_k_medoids.cpp" />
     <ClCompile Include="clustering\clustering_main.cpp" />
-    <ClCompile Include="clustering\kmeanspp.cpp" />
-    <ClCompile Include="clustering\k_medoids.cpp" />
+    <ClCompile Include="clustering\clustering_spectral_clustering.cpp" />
     <ClCompile Include="kmeanspp_lib\KMeans.cpp" />
     <ClCompile Include="kmeanspp_lib\KmTree.cpp" />
     <ClCompile Include="kmeanspp_lib\KmUtils.cpp" />
