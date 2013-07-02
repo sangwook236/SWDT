@@ -25,7 +25,7 @@ void getgauss(float64_t &y1, float64_t &y2)
 		x1 = 2.0 * std::rand() / (float64_t)RAND_MAX - 1.0;
 		x2 = 2.0 * std::rand() / (float64_t)RAND_MAX - 1.0;
 		w = x1 * x1 + x2 * x2;
-	} while ((w >= 1.0)|| (w < 1e-9));
+	} while ((w < 1e-9) || (w >= 1.0));
 
 	w = std::sqrt((-2.0 * std::log(w)) / w);
 	y1 = x1 * w;
@@ -69,7 +69,7 @@ void gendata(std::vector<float64_t> &x, std::vector<float64_t> &y, shogun::CMult
 	{
 		if ((int32_t)i < class1size)
 			lab->set_int_label(i, 0);
-		else if ((int32_t)i< class1size + class2size)
+		else if ((int32_t)i < class1size + class2size)
 			lab->set_int_label(i, 1);
 		else
 			lab->set_int_label(i, 2);
@@ -89,13 +89,11 @@ void gentrainkernel(float64_t *&ker1, float64_t *&ker2, float64_t *&ker3, float6
 		}
 	}
 
-	float64_t fm1 = 0, mean1 = 0, fm2 = 0, mean2 = 0, fm3 = 0, mean3 = 0;
-
 	ker1 = SG_MALLOC(float64_t, x.size() * x.size());
 	ker2 = SG_MALLOC(float64_t, x.size() * x.size());
 	ker3 = SG_MALLOC(float64_t, x.size() * x.size());
 
-
+	float64_t fm1 = 0, mean1 = 0, fm2 = 0, mean2 = 0, fm3 = 0, mean3 = 0;
 	for (size_t l = 0; l < x.size(); ++l)
 	{
 		for (size_t r = 0; r < x.size(); ++r)
@@ -103,10 +101,9 @@ void gentrainkernel(float64_t *&ker1, float64_t *&ker2, float64_t *&ker3, float6
 			const float64_t dist = ((x[l] - x[r]) * (x[l] - x[r]) + (y[l] - y[r]) * (y[l] - y[r]));
 
 			ker1[l + r * x.size()] = std::exp(-dist / autosigma / autosigma);
-			//ker2[l + r * x.size()] = std::exp(-dist/ sigma2 / sigma2);
-			ker2[l + r * x.size()]= x[l] * x[r] + y[l] * y[r];
-
-			ker3[l + r * x.size()]= (x[l] * x[r] + y[l] * y[r] + 1) * (x[l] * x[r] + y[l] * y[r] + 1);
+			//ker2[l + r * x.size()] = std::exp(-dist / sigma2 / sigma2);
+			ker2[l + r * x.size()] = x[l] * x[r] + y[l] * y[r];
+			ker3[l + r * x.size()] = (x[l] * x[r] + y[l] * y[r] + 1) * (x[l] * x[r] + y[l] * y[r] + 1);
 
 			fm1 += ker1[l + r * x.size()] / (float64_t)x.size() / ((float64_t)x.size());
 			fm2 += ker2[l + r * x.size()] / (float64_t)x.size() / ((float64_t)x.size());
@@ -136,10 +133,11 @@ void gentrainkernel(float64_t *&ker1, float64_t *&ker2, float64_t *&ker3, float6
 	}
 }
 
-void gentestkernel(float64_t *&ker1, float64_t *&ker2, float64_t *&ker3,
+void gentestkernel(
+	float64_t *&ker1, float64_t *&ker2, float64_t *&ker3,
 	const float64_t autosigma, const float64_t n1, const float64_t n2, const float64_t n3,
-	const std::vector<float64_t> &x,const std::vector<float64_t> &y,
-	const std::vector<float64_t> &tx,const std::vector<float64_t> &ty
+	const std::vector<float64_t> &x, const std::vector<float64_t> &y,
+	const std::vector<float64_t> &tx, const std::vector<float64_t> &ty
 )
 {
 	ker1 = SG_MALLOC(float64_t, x.size() * tx.size());
@@ -193,11 +191,8 @@ void classifier_mklmulticlass_example()
 	float64_t n2 = 0;
 	float64_t n3 = 0;
 
-	int32_t numdata = 0;
 	local::gentrainkernel(ker1, ker2, ker3, autosigma, n1, n2, n3, x, y);
-	numdata = x.size();
-
-	shogun::CCombinedKernel *ker = new shogun::CCombinedKernel();
+	const int32_t numdata = x.size();
 
 	shogun::CCustomKernel *kernel1 = new shogun::CCustomKernel();
 	shogun::CCustomKernel *kernel2 = new shogun::CCustomKernel();
@@ -211,13 +206,14 @@ void classifier_mklmulticlass_example()
 	SG_FREE(ker2);
 	SG_FREE(ker3);
 
+	shogun::CCombinedKernel *ker = new shogun::CCombinedKernel();
+	//.SG_REF(ker);
 	ker->append_kernel(kernel1);
 	ker->append_kernel(kernel2);
 	ker->append_kernel(kernel3);
 
-	//here comes the core stuff
-	float64_t regconst = 1.0;
-
+	// here comes the core stuff
+	const float64_t regconst = 1.0;
 	shogun::CMKLMulticlass *tsvm = new shogun::CMKLMulticlass(regconst, ker, lab);
 
 	tsvm->set_epsilon(0.0001);  // SVM epsilon
@@ -243,11 +239,10 @@ void classifier_mklmulticlass_example()
 	}
 	err /= (float64_t)res->get_num_labels();
 	SG_SPRINT("prediction error on training data (3 classes): %f ", err);
-	SG_SPRINT("random guess error would be: %f \n", 2/3.0);
+	SG_SPRINT("random guess error would be: %f\n", 2 / 3.0);
 
 	// generate test data
 	shogun::CMulticlassLabels *tlab = NULL;
-
 	std::vector<float64_t> tx, ty;
 
 	local::gendata(tx, ty, tlab);
@@ -258,10 +253,8 @@ void classifier_mklmulticlass_example()
 	float64_t *tker3 = NULL;
 
 	local::gentestkernel(tker1, tker2, tker3, autosigma, n1, n2, n3, x, y, tx, ty);
-	int32_t numdatatest = tx.size();
+	const int32_t numdatatest = tx.size();
 
-	shogun::CCombinedKernel *tker = new shogun::CCombinedKernel();
-	SG_REF(tker);
 	shogun::CCustomKernel *tkernel1 = new shogun::CCustomKernel();
 	shogun::CCustomKernel *tkernel2 = new shogun::CCustomKernel();
 	shogun::CCustomKernel *tkernel3 = new shogun::CCustomKernel();
@@ -274,6 +267,8 @@ void classifier_mklmulticlass_example()
 	SG_FREE(tker2);
 	SG_FREE(tker3);
 
+	shogun::CCombinedKernel *tker = new shogun::CCombinedKernel();
+	SG_REF(tker);
 	tker->append_kernel(tkernel1);
 	tker->append_kernel(tkernel2);
 	tker->append_kernel(tkernel3);
@@ -303,7 +298,7 @@ void classifier_mklmulticlass_example()
 	}
 	terr /= (float64_t)tres->get_num_labels();
 	SG_SPRINT("prediction error on test data (3 classes): %f ", terr);
-	SG_SPRINT("random guess error would be: %f \n", 2 / 3.0);
+	SG_SPRINT("random guess error would be: %f\n", 2 / 3.0);
 
 	SG_UNREF(tsvm);
 	SG_UNREF(res);
