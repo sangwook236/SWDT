@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 //#define EIGEN2_SUPPORT 1
+#include <unsupported/Eigen/MatrixFunctions>
 #include <Eigen/Dense>
 #include <iostream>
 
@@ -187,43 +188,77 @@ void matrix_arithmetic_2()
     }
 
 	//
-    {
-        Eigen::MatrixXf mat(2, 4);
-        Eigen::VectorXf v1(2);
-        Eigen::VectorXf v2(4);
+	{
+		Eigen::MatrixXf mat(2, 4);
+		Eigen::VectorXf v1(2);
+		Eigen::VectorXf v2(4);
 
-        mat << 1, 2, 6, 9,
-               3, 1, 7, 2;
-        v1 << 0,
-              1;
-        v2 << 0, 1, 2, 3;
+		mat << 1, 2, 6, 9,
+			3, 1, 7, 2;
+		v1 << 0,
+			1;
+		v2 << 0, 1, 2, 3;
 
-        //add v to each column of m
-        mat.colwise() += v1;
-        std::cout << "Broadcasting result: " << std::endl << mat << std::endl;
+		//add v to each column of m
+		mat.colwise() += v1;
+		std::cout << "Broadcasting result: " << std::endl << mat << std::endl;
 
-        //add v to each row of m
-        //mat.rowwise() += v2;  // compile-time error
-        std::cout << "Broadcasting result: " << std::endl << mat << std::endl;
-    }
+		//add v to each row of m
+		//mat.rowwise() += v2;  // compile-time error
+		std::cout << "Broadcasting result: " << std::endl << mat << std::endl;
+	}
 
-    //
-    {
-        Eigen::MatrixXf m(2, 4);
-        Eigen::VectorXf v(2);
+	//
+	{
+		Eigen::MatrixXf m(2, 4);
+		Eigen::VectorXf v(2);
 
-        m << 1, 23, 6, 9,
-             3, 11, 7, 2;
-        v << 2,
-             3;
+		m << 1, 23, 6, 9,
+			3, 11, 7, 2;
+		v << 2,
+			3;
 
-        Eigen::MatrixXf::Index index;
-        // find nearest neighbour
-        (m.colwise() - v).colwise().squaredNorm().minCoeff(&index);
+		Eigen::MatrixXf::Index index;
+		// find nearest neighbour
+		(m.colwise() - v).colwise().squaredNorm().minCoeff(&index);
 
-        std::cout << "Nearest neighbour is column " << index << ":" << std::endl;
-        std::cout << m.col(index) << std::endl;
-    }
+		std::cout << "Nearest neighbour is column " << index << ":" << std::endl;
+		std::cout << m.col(index) << std::endl;
+	}
+}
+
+void matrix_function_operation()
+{
+	// sqrt
+	{
+		Eigen::MatrixXd m(3, 3);
+
+		m << 101, 13, 4,
+			 13, 11, 5,
+			 4, 5, 37;
+
+		//
+#if 0
+		const Eigen::MatrixSquareRootReturnValue<Eigen::MatrixXd> msrrv = m.sqrt();
+		Eigen::MatrixXd m1;
+		msrrv.evalTo(m1);
+#else
+		Eigen::MatrixXd m1;
+		m.sqrt().evalTo(m1);
+#endif
+		std::cout << "matrix sqrt result: " << std::endl << m1 << std::endl;
+
+		//
+#if 0
+		Eigen::MatrixSquareRoot<Eigen::MatrixXd> msr(m);
+		Eigen::MatrixXd m2;
+		msr.compute(m2);
+#else
+		Eigen::MatrixXd m2;
+		Eigen::MatrixSquareRoot<Eigen::MatrixXd>(m).compute(m2);
+#endif
+		std::cout << "matrix sqrt result: " << std::endl << m2 << std::endl;
+	}
 }
 
 }  // namespace local
@@ -242,8 +277,10 @@ void basic_operation()
     //local::coefficient_wise_unary_operation();
     //local::coefficient_wise_binary_operation();
 
-    local::matrix_arithmetic_1();
-    local::matrix_arithmetic_2();
+    //local::matrix_arithmetic_1();
+    //local::matrix_arithmetic_2();
+
+    local::matrix_function_operation();
 }
 
 }  // namespace my_eigen

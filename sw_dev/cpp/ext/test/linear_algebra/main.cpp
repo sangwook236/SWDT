@@ -21,12 +21,12 @@ int main(int argc, char* argv[])
 		//retval = lapack_main(argc, argv);
 		
 		//retval = atlas_main(argc, argv);
-		//retval = eigen_main(argc, argv);
+		retval = eigen_main(argc, argv);
 		//retval = armadillo_main(argc, argv);
 		
 		//retval = cvm_main(argc, argv);
 
-		retval = mtl_main(argc, argv);
+		//retval = mtl_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

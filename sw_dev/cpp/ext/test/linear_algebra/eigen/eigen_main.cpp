@@ -27,13 +27,13 @@ void cholesky();
 
 int eigen_main(int argc, char *argv[])
 {
-	//my_eigen::basic_operation();
+	my_eigen::basic_operation();
 	//my_eigen::linear_system();
 
 	//my_eigen::lu();
 	//my_eigen::evd();
 	//my_eigen::svd();
-	my_eigen::qr();
+	//my_eigen::qr();
 	//my_eigen::cholesky();
 
 	return 0;
