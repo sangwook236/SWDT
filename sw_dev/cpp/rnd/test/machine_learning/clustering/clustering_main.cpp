@@ -10,8 +10,8 @@ namespace local {
 
 namespace my_clustering {
 
-void k_medoids();
 void kmeanspp();
+void k_medoids();
 
 void spectral_clustering();
 

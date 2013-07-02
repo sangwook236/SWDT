@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)time(NULL));
 
 		// clustering -------------------------------------------
-		retval = clustering_main(argc, argv);
+		//retval = clustering_main(argc, argv);
 
 		// support vector machine (SVM) -------------------------
 		//retval = libsvm_main(argc, argv);
