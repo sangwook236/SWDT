@@ -4,7 +4,6 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <list>
 #include <vector>
 #include <cassert>
 
@@ -15,9 +14,23 @@ namespace local {
 // [ref] ${CPP_RND_HOME}/test/machine_learning/clustering/clustering_spectral_clustering.cpp
 void kmeanspp_sample_1()
 {
-	//const std::string input_filename("./machine_learning_data/clustering/circles.txt");
+#if 1
 	const std::string input_filename("./machine_learning_data/clustering/data.txt");
-	//const std::string input_filename("./machine_learning_data/clustering/processed_input.txt");
+	const int num_points = 317;
+	const int dim_features = 2;
+	const int num_clusters = 3;
+#elif 0
+	const std::string input_filename("./machine_learning_data/clustering/circles.txt");
+	const int num_points = 139;
+	const int dim_features = 2;
+	const int num_clusters = 3;
+#elif 0
+	const std::string input_filename("./machine_learning_data/clustering/processed_input.txt");
+	const int num_points = 78;
+	const int dim_features = 2;
+	const int num_clusters = 3;
+#endif
+	const int num_attempts = 1000;
 
 #if defined(__GNUC__)
 	std::ifstream stream(input_filename.c_str(), std::ios::in);
@@ -30,25 +43,19 @@ void kmeanspp_sample_1()
 		return;
 	}
 
-	std::list<Scalar> point_list;
+	std::vector<Scalar> points;
+	points.reserve(num_points * dim_features);
 	{
 		int x, y;
 		while (!stream.eof())
 		{
 			stream >> x >> y;
 			if (!stream.good()) break;
-			point_list.push_back(x);
-			point_list.push_back(y);
+			points.push_back(x);
+			points.push_back(y);
 		}
 	}
-
-	std::vector<Scalar> points(point_list.begin(), point_list.end());
-	point_list.clear();
-
-	const int dim_features = 2;
-	const int num_clusters = 3;
-	const int num_attempts = 1000;
-	const int num_points = points.size() / dim_features;
+	assert(num_points == points.size() / dim_features);
 
 	//
 	{
@@ -56,7 +63,6 @@ void kmeanspp_sample_1()
 		std::vector<int> assignments(num_points, -1);
 
 		std::cout << "start clustering ..." << std::endl;
-		const int method = 2;  // 1 <= method <= 4. method 2 is recommended.
 		Scalar cost;
 		{
 			boost::timer::auto_cpu_timer timer;

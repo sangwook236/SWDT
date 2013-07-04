@@ -42,6 +42,12 @@ void classifier_multiclasslinearmachine_example();
 void classifier_mklmulticlass_example();
 
 void regression_gaussian_process_ard_example();
+void regression_gaussian_process_fitc_example();
+void regression_gaussian_process_gaussian_example();
+void regression_gaussian_process_laplace_example();
+void regression_gaussian_process_product_example();
+void regression_gaussian_process_simple_exact_example();
+void regression_gaussian_process_sum_example();
 
 void converter_factoranalysis_example();
 void converter_multidimensionalscaling_example();
@@ -63,6 +69,13 @@ void evaluation_cross_validation_regression_example();
 void evaluation_cross_validation_multiclass_example();
 void evaluation_cross_validation_multiclass_mkl_example();
 void evaluation_cross_validation_mkl_weight_storage_example();
+
+void modelselection_apply_parameter_tree_example();
+void modelselection_grid_search_kernel_example();
+void modelselection_grid_search_krr_example();
+void modelselection_grid_search_linear_example();
+void modelselection_grid_search_mkl_example();
+void modelselection_grid_search_multiclass_svm_example();
 
 }  // namespace my_shogun
 
@@ -114,7 +127,14 @@ int shogun_main(int argc, char *argv[])
 		std::cout << "\nshogun library: Gaussian process (GP) regression example --------" << std::endl;
   		if (false)
 		{
-            my_shogun::regression_gaussian_process_ard_example();
+            my_shogun::regression_gaussian_process_simple_exact_example();
+            my_shogun::regression_gaussian_process_sum_example();
+            my_shogun::regression_gaussian_process_product_example();
+
+			my_shogun::regression_gaussian_process_ard_example();
+            my_shogun::regression_gaussian_process_fitc_example();
+            my_shogun::regression_gaussian_process_gaussian_example();
+            my_shogun::regression_gaussian_process_laplace_example();
 		}
 
 		std::cout << "\nshogun library: linear dimensionality reduction example ---------" << std::endl;
@@ -149,6 +169,18 @@ int shogun_main(int argc, char *argv[])
             my_shogun::evaluation_cross_validation_multiclass_example();
             my_shogun::evaluation_cross_validation_multiclass_mkl_example();
             my_shogun::evaluation_cross_validation_mkl_weight_storage_example();
+		}
+
+ 		std::cout << "\nshogun library: model selection example -------------------------" << std::endl;
+   		if (false)
+		{
+			 my_shogun::modelselection_grid_search_linear_example();
+			 my_shogun::modelselection_grid_search_kernel_example();
+
+			 my_shogun::modelselection_grid_search_multiclass_svm_example();
+			 my_shogun::modelselection_grid_search_mkl_example();
+			 my_shogun::modelselection_apply_parameter_tree_example();
+			 my_shogun::modelselection_grid_search_krr_example();
 		}
 	}
 	catch (const shogun::ShogunException &e)

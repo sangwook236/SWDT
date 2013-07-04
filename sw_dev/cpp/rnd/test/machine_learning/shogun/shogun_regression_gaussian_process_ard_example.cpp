@@ -109,7 +109,6 @@ void regression_gaussian_process_ard_example()
 
 	SG_REF(features);
 	SG_REF(features2);
-
 	SG_REF(labels);
 
 	// Allocate our Kerne
@@ -125,12 +124,10 @@ void regression_gaussian_process_ard_example()
 
 	// Allocate our inference method
 	shogun::CExactInferenceMethod *inf = new shogun::CExactInferenceMethod(test_kernel, features, mean, labels, lik);
-
 	SG_REF(inf);
 
 	// Finally use these to allocate the Gaussian Process Object
 	shogun::CGaussianProcessRegression *gp = new shogun::CGaussianProcessRegression(inf, features, labels);
-
 	SG_REF(gp);
 
 	// Build the parameter tree for model selection
@@ -145,7 +142,6 @@ void regression_gaussian_process_ard_example()
 	grad->set_function(inf);
 
 	gp->print_modsel_params();
-
 	root->print_tree();
 
 	// handles all of the above structures in memory
@@ -157,7 +153,7 @@ void regression_gaussian_process_ard_example()
 	// Search for best parameters
 	shogun::CParameterCombination *best_combination = grad_search->select_model(true);
 
-	/*Output all the results and information*/
+	// Output all the results and information
 	if (best_combination)
 	{
 		SG_SPRINT("best parameter(s):\n");
@@ -177,8 +173,8 @@ void regression_gaussian_process_ard_example()
 	shogun::SGVector<float64_t> labe = labels->get_labels();
 	shogun::SGVector<float64_t> diagonal = inf->get_diagonal_vector();
 	shogun::SGMatrix<float64_t> cholesky = inf->get_cholesky();
-	gp->set_return_type(shogun::CGaussianProcessRegression::GP_RETURN_COV);
 
+	gp->set_return_type(shogun::CGaussianProcessRegression::GP_RETURN_COV);
 	shogun::CRegressionLabels *covariance = gp->apply_regression(features);
 
 	gp->set_return_type(shogun::CGaussianProcessRegression::GP_RETURN_MEANS);

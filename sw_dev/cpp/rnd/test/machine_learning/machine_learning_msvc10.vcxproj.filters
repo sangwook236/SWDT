@@ -272,5 +272,41 @@
     <ClCompile Include="clustering\clustering_kmeanspp.cpp">
       <Filter>Source Files\clustering</Filter>
     </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_fitc_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_gaussian_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_laplace_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_product_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_simple_exact_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_sum_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_modelselection_apply_parameter_tree_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_modelselection_grid_search_kernel_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_modelselection_grid_search_krr_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_modelselection_grid_search_linear_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_modelselection_grid_search_mkl_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_modelselection_grid_search_multiclass_svm_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
