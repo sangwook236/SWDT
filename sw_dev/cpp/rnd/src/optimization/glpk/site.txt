@@ -1,0 +1,2 @@
+http://www.gnu.org/software/glpk/
+http://winglpk.sourceforge.net/
