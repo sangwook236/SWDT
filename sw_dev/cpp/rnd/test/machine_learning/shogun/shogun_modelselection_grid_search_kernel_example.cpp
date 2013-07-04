@@ -52,7 +52,7 @@ shogun::CModelSelectionParameters * create_param_tree()
 	root->append_child(param_power_kernel);
 
 	shogun::CModelSelectionParameters *param_power_kernel_degree = new shogun::CModelSelectionParameters("degree");
-	param_power_kernel_degree->build_values(1.0, 2.0, R_LINEAR);
+	param_power_kernel_degree->build_values(1.0, 2.0, shogun::R_LINEAR);
 	param_power_kernel->append_child(param_power_kernel_degree);
 
 	shogun::CMinkowskiMetric *m_metric = new shogun::CMinkowskiMetric(10);
@@ -65,7 +65,7 @@ shogun::CModelSelectionParameters * create_param_tree()
 	param_power_kernel->append_child(param_power_kernel_metric1);
 
 	shogun::CModelSelectionParameters *param_power_kernel_metric1_k = new shogun::CModelSelectionParameters("k");
-	param_power_kernel_metric1_k->build_values(1.0, 2.0, R_LINEAR);
+	param_power_kernel_metric1_k->build_values(1.0, 2.0, shogun::R_LINEAR);
 	param_power_kernel_metric1->append_child(param_power_kernel_metric1_k);
 
 	return root;

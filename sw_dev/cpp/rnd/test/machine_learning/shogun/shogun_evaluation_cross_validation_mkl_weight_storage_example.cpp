@@ -93,7 +93,7 @@ void evaluation_cross_validation_mkl_weight_storage_example()
 	// create cross-validation instance
 	const index_t num_folds = 3;
 	shogun::CSplittingStrategy *split = new shogun::CStratifiedCrossValidationSplitting(labels, num_folds);
-	shogun::CEvaluation *eval = new shogun::CContingencyTableEvaluation(ACCURACY);
+	shogun::CEvaluation *eval = new shogun::CContingencyTableEvaluation(shogun::ACCURACY);
 	shogun::CCrossValidation *cross = new shogun::CCrossValidation(svm, comb_features, labels, split, eval, false);
 
 	// add print output listener and mkl storage listener

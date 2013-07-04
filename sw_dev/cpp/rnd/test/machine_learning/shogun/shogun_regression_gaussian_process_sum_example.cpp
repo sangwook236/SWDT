@@ -43,7 +43,7 @@ void build_matrices(const int32_t num_vectors, const int32_t dim_vectors, shogun
 	train[11] = 1;
 
 	for (int32_t i = 0; i < num_vectors * dim_vectors; ++i)
-		test[i] = i * std::sin(i) * 0.96; 
+		test[i] = i * std::sin(i) * 0.96;
 
 	// create labels, two classes
 	for (index_t i = 0; i < num_vectors; ++i)
@@ -54,7 +54,7 @@ void build_matrices(const int32_t num_vectors, const int32_t dim_vectors, shogun
 }
 
 shogun::CModelSelectionParameters * build_tree(shogun::CInferenceMethod *inf, shogun::CLikelihoodModel *lik, shogun::CCombinedKernel *kernel)
-{		
+{
 	shogun::CModelSelectionParameters *root = new shogun::CModelSelectionParameters();
 
 	shogun::CModelSelectionParameters *c1 = new shogun::CModelSelectionParameters("inference_method", inf);
@@ -62,14 +62,14 @@ shogun::CModelSelectionParameters * build_tree(shogun::CInferenceMethod *inf, sh
 
 	shogun::CModelSelectionParameters *c2 = new shogun::CModelSelectionParameters("scale");
 	c1->append_child(c2);
-	c2->build_values(0.99, 1.01, R_LINEAR);
+	c2->build_values(0.99, 1.01, shogun::R_LINEAR);
 
 	shogun::CModelSelectionParameters *c3 = new shogun::CModelSelectionParameters("likelihood_model", lik);
-	c1->append_child(c3); 
+	c1->append_child(c3);
 
 	shogun::CModelSelectionParameters *c4 = new shogun::CModelSelectionParameters("sigma");
 	c3->append_child(c4);
-	c4->build_values(0.001, 1.0, R_LINEAR);
+	c4->build_values(0.001, 1.0, shogun::R_LINEAR);
 
 	shogun::CModelSelectionParameters *c5 = new shogun::CModelSelectionParameters("kernel", kernel);
 	c1->append_child(c5);
@@ -119,27 +119,27 @@ shogun::CModelSelectionParameters * build_tree(shogun::CInferenceMethod *inf, sh
 
 	shogun::CModelSelectionParameters *c6 = new shogun::CModelSelectionParameters("width");
 	cc3->append_child(c6);
-	c6->build_values(1.0, 4.0, R_LINEAR);
+	c6->build_values(1.0, 4.0, shogun::R_LINEAR);
 
 	shogun::CModelSelectionParameters *c66 = new shogun::CModelSelectionParameters("combined_kernel_weight");
 	cc3->append_child(c66);
-	c66->build_values(0.001, 1.0, R_LINEAR);
+	c66->build_values(0.001, 1.0, shogun::R_LINEAR);
 
 	shogun::CModelSelectionParameters *c7 = new shogun::CModelSelectionParameters("width");
 	cc5->append_child(c7);
-	c7->build_values(1.0, 4.0, R_LINEAR);
+	c7->build_values(1.0, 4.0, shogun::R_LINEAR);
 
 	shogun::CModelSelectionParameters *c77 = new shogun::CModelSelectionParameters("combined_kernel_weight");
 	cc5->append_child(c77);
-	c77->build_values(0.001, 1.0, R_LINEAR);
+	c77->build_values(0.001, 1.0, shogun::R_LINEAR);
 
 	shogun::CModelSelectionParameters *c8 = new shogun::CModelSelectionParameters("width");
 	cc7->append_child(c8);
-	c8->build_values(1.0, 4.0, R_LINEAR);
+	c8->build_values(1.0, 4.0, shogun::R_LINEAR);
 
 	shogun::CModelSelectionParameters *c88 = new shogun::CModelSelectionParameters("combined_kernel_weight");
 	cc7->append_child(c88);
-	c88->build_values(0.001, 1.0, R_LINEAR);
+	c88->build_values(0.001, 1.0, shogun::R_LINEAR);
 
 	SG_UNREF(list);
 

@@ -70,12 +70,12 @@ void evaluation_cross_validation_multiclass_example();
 void evaluation_cross_validation_multiclass_mkl_example();
 void evaluation_cross_validation_mkl_weight_storage_example();
 
-void modelselection_apply_parameter_tree_example();
-void modelselection_grid_search_kernel_example();
-void modelselection_grid_search_krr_example();
 void modelselection_grid_search_linear_example();
-void modelselection_grid_search_mkl_example();
+void modelselection_grid_search_kernel_example();
 void modelselection_grid_search_multiclass_svm_example();
+void modelselection_grid_search_mkl_example();
+void modelselection_apply_parameter_tree_example();
+void modelselection_grid_search_krr_example();
 
 }  // namespace my_shogun
 

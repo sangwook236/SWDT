@@ -77,7 +77,7 @@ void evaluation_cross_validation_classification_example()
 		SG_SPRINT("i = %d, class = %f,\n", i, output->get_label(i));
 
 	// evaluation criterion
-	shogun::CContingencyTableEvaluation *eval_crit = new shogun::CContingencyTableEvaluation(ACCURACY);
+	shogun::CContingencyTableEvaluation *eval_crit = new shogun::CContingencyTableEvaluation(shogun::ACCURACY);
 
 	// evaluate training error
 	float64_t eval_result = eval_crit->evaluate(output, labels);

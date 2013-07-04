@@ -12,6 +12,8 @@
 #include <shogun/classifier/svm/LibSVM.h>
 #include <shogun/kernel/GaussianKernel.h>
 #include <shogun/kernel/CombinedKernel.h>
+#include <shogun/labels/BinaryLabels.h>
+#include <shogun/io/SGIO.h>
 
 
 namespace {
@@ -23,11 +25,11 @@ shogun::CModelSelectionParameters * create_param_tree()
 
 	shogun::CModelSelectionParameters *c1 = new shogun::CModelSelectionParameters("C1");
 	root->append_child(c1);
-	c1->build_values(-1.0, 1.0, R_EXP);
+	c1->build_values(-1.0, 1.0, shogun::R_EXP);
 
 	shogun::CModelSelectionParameters *c2 = new shogun::CModelSelectionParameters("C2");
 	root->append_child(c2);
-	c2->build_values(-1.0, 1.0, R_EXP);
+	c2->build_values(-1.0, 1.0, shogun::R_EXP);
 
 	shogun::CCombinedKernel *kernel1 = new shogun::CCombinedKernel();
 	kernel1->append_kernel(new shogun::CGaussianKernel(10, 2));
@@ -64,13 +66,19 @@ void modelselection_grid_search_mkl_example()
 
 	// create some data and labels
 	float64_t *matrix = SG_MALLOC(float64_t, num_vectors * dim_vectors);
-	shogun::CLabels *labels = new shogun::CLabels(num_vectors);
+	//--S [] 2013/07/04: Sang-Wook Lee
+	//shogun::CLabels *labels = new shogun::CLabels(num_vectors);
+	shogun::CBinaryLabels *labels = new shogun::CBinaryLabels(num_vectors);
+	//--E [] 2013/07/04: Sang-Wook Lee
 	for (int32_t i = 0; i < num_vectors * dim_vectors; ++i)
 		matrix[i] = shogun::CMath::randn_double();
 
 	// create num_feautres 2-dimensional vectors
 	shogun::CDenseFeatures<float64_t> *features = new shogun::CDenseFeatures<float64_t>();
-	features->set_feature_matrix(matrix, dim_vectors, num_vectors);
+	//--S [] 2013/07/04: Sang-Wook Lee
+	//features->set_feature_matrix(matrix, dim_vectors, num_vectors);
+	features->set_feature_matrix(matrix);
+	//--E [] 2013/07/04: Sang-Wook Lee
 
 	// create combined features
 	shogun::CCombinedFeatures *comb_features = new shogun::CCombinedFeatures();
@@ -98,7 +106,7 @@ void modelselection_grid_search_mkl_example()
 	shogun::CStratifiedCrossValidationSplitting *splitting_strategy = new shogun::CStratifiedCrossValidationSplitting(labels, num_subsets);
 
 	// accuracy evaluation
-	shogun::CContingencyTableEvaluation *evaluation_criterium = new shogun::CContingencyTableEvaluation(ACCURACY);
+	shogun::CContingencyTableEvaluation *evaluation_criterium = new shogun::CContingencyTableEvaluation(shogun::ACCURACY);
 
 	// cross validation class for evaluation in model selection
 	shogun::CCrossValidation *cross = new shogun::CCrossValidation(classifier, comb_features, labels, splitting_strategy, evaluation_criterium);
@@ -128,10 +136,13 @@ void modelselection_grid_search_mkl_example()
 	shogun::CCrossValidationResult *result = (shogun::CCrossValidationResult *)cross->evaluate();
 
 	if (result->get_result_type() != CROSSVALIDATION_RESULT)
-		SG_ERROR("Evaluation result is not of type CCrossValidationResult!");
+        //--S [] 2013/07/04: Sang-Wook Lee
+		//SG_ERROR("Evaluation result is not of type CCrossValidationResult!");
+		SG_SERROR("Evaluation result is not of type CCrossValidationResult!");
+        //--E [] 2013/07/04: Sang-Wook Lee
 
 	SG_SPRINT("result: ");
-	result.print_result();
+	result->print_result();
 
 	// clean up destroy result parameter
 	SG_UNREF(best_combination);

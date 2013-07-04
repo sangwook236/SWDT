@@ -21,11 +21,11 @@ shogun::CModelSelectionParameters * create_param_tree()
 
 	shogun::CModelSelectionParameters *c1 = new shogun::CModelSelectionParameters("C1");
 	root->append_child(c1);
-	c1->build_values(-2.0, 2.0, R_EXP);
+	c1->build_values(-2.0, 2.0, shogun::R_EXP);
 
 	shogun::CModelSelectionParameters *c2 = new shogun::CModelSelectionParameters("C2");
 	root->append_child(c2);
-	c2->build_values(-2.0, 2.0, R_EXP);
+	c2->build_values(-2.0, 2.0, shogun::R_EXP);
 
 	return root;
 }
@@ -64,7 +64,7 @@ void modelselection_grid_search_linear_example()
 	shogun::CStratifiedCrossValidationSplitting *splitting_strategy = new shogun::CStratifiedCrossValidationSplitting(labels, num_subsets);
 
 	// accuracy evaluation
-	shogun::CContingencyTableEvaluation *evaluation_criterium = new shogun::CContingencyTableEvaluation(ACCURACY);
+	shogun::CContingencyTableEvaluation *evaluation_criterium = new shogun::CContingencyTableEvaluation(shogun::ACCURACY);
 
 	// cross validation class for evaluation in model selection
 	shogun::CCrossValidation *cross = new shogun::CCrossValidation(classifier, features, labels, splitting_strategy, evaluation_criterium);

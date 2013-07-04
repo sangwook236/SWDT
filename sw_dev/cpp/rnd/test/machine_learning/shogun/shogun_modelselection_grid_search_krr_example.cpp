@@ -71,7 +71,7 @@ void modelselection_grid_search_krr_example()
 
 	// fill data matrix and labels
 	shogun::SGMatrix<float64_t> train_dat(num_features, num_vectors);
-	shogun::CMath::range_fill_vector(train_dat.matrix, num_vectors);
+	shogun::SGVector<float64_t>::range_fill_vector(train_dat.matrix, num_vectors);
 	for (index_t i = 0; i < num_vectors; ++i)
 	{
 		// labels are linear plus noise
@@ -83,7 +83,11 @@ void modelselection_grid_search_krr_example()
 	SG_REF(features);
 
 	// training labels
-	shogun::CLabels *labels = new shogun::CLabels(lab);
+	// FIXME [check] >> is it correct?
+	//--S [] 2013/07/04: Sang-Wook Lee
+	//shogun::CLabels *labels = new shogun::CLabels(lab);
+	shogun::CLabels *labels = new shogun::CBinaryLabels(lab);
+	//--E [] 2013/07/04: Sang-Wook Lee
 
 	// kernel ridge regression, only set labels for now, rest does not matter
 	shogun::CKernelRidgeRegression *krr = new shogun::CKernelRidgeRegression(0, NULL, labels);

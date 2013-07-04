@@ -40,6 +40,7 @@
 		</Compiler>
 		<Linker>
 			<Add library="shogun" />
+			<Add library="nlopt" />
 			<Add library="boost_timer" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
@@ -129,7 +130,19 @@
 		<Unit filename="shogun/shogun_evaluation_cross_validation_multiclass_mkl_example.cpp" />
 		<Unit filename="shogun/shogun_evaluation_cross_validation_regression_example.cpp" />
 		<Unit filename="shogun/shogun_main.cpp" />
+		<Unit filename="shogun/shogun_modelselection_apply_parameter_tree_example.cpp" />
+		<Unit filename="shogun/shogun_modelselection_grid_search_kernel_example.cpp" />
+		<Unit filename="shogun/shogun_modelselection_grid_search_krr_example.cpp" />
+		<Unit filename="shogun/shogun_modelselection_grid_search_linear_example.cpp" />
+		<Unit filename="shogun/shogun_modelselection_grid_search_mkl_example.cpp" />
+		<Unit filename="shogun/shogun_modelselection_grid_search_multiclass_svm_example.cpp" />
 		<Unit filename="shogun/shogun_regression_gaussian_process_ard_example.cpp" />
+		<Unit filename="shogun/shogun_regression_gaussian_process_fitc_example.cpp" />
+		<Unit filename="shogun/shogun_regression_gaussian_process_gaussian_example.cpp" />
+		<Unit filename="shogun/shogun_regression_gaussian_process_laplace_example.cpp" />
+		<Unit filename="shogun/shogun_regression_gaussian_process_product_example.cpp" />
+		<Unit filename="shogun/shogun_regression_gaussian_process_simple_exact_example.cpp" />
+		<Unit filename="shogun/shogun_regression_gaussian_process_sum_example.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

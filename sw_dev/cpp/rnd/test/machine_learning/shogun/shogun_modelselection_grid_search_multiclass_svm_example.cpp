@@ -22,12 +22,12 @@ shogun::CModelSelectionParameters * build_param_tree(shogun::CKernel *kernel)
 	shogun::CModelSelectionParameters *root = new shogun::CModelSelectionParameters();
 	shogun::CModelSelectionParameters *c = new shogun::CModelSelectionParameters("C");
 	root->append_child(c);
-	c->build_values(-1.0, 1.0, R_EXP);
+	c->build_values(-1.0, 1.0, shogun::R_EXP);
 
 	shogun::CModelSelectionParameters *params_kernel = new shogun::CModelSelectionParameters("kernel", kernel);
 	root->append_child(params_kernel);
 	shogun::CModelSelectionParameters *params_kernel_width = new shogun::CModelSelectionParameters("width");
-	params_kernel_width->build_values(-1.0, 1.0, R_EXP);
+	params_kernel_width->build_values(-1.0, 1.0, shogun::R_EXP);
 	params_kernel->append_child(params_kernel_width);
 
 	return root;
@@ -45,7 +45,7 @@ void modelselection_grid_search_multiclass_svm_example()
 {
 	// number of classes is dimension of data here to have some easy multiclass structure
 	const unsigned int num_vectors = 50;
-	const unsigned int dim_vectors = 3; 
+	const unsigned int dim_vectors = 3;
 	// Heiko: increase number of classes and things will fail :(
 	// Sergey: the special buggy case of 3 classes was hopefully fixed
 
