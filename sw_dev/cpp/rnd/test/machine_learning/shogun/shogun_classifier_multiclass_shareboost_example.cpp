@@ -12,8 +12,6 @@
 #include <string>
 
 
-#define  EPSILON  1e-5
-
 namespace {
 namespace local {
 

@@ -14,8 +14,6 @@
 #include <string>
 
 
-#define  EPSILON  1e-5
-
 namespace {
 namespace local {
 
@@ -64,10 +62,11 @@ void classifier_multiclass_ecoc_random_example()
 	stream_labels->end_parser();
 
 	// Create liblinear svm classifier with L2-regularized L2-loss
-	shogun::CLibLinear *svm = new shogun::CLibLinear(L2R_L2LOSS_SVC);
+	shogun::CLibLinear *svm = new shogun::CLibLinear(shogun::L2R_L2LOSS_SVC);
 	SG_REF(svm);
 
 	// Add some configuration to the svm
+	const float64_t EPSILON = 1e-5;
 	svm->set_epsilon(EPSILON);
 	svm->set_bias_enabled(true);
 

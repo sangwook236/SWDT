@@ -13,8 +13,6 @@
 #include <string>
 
 
-#define  EPSILON  1e-5
-
 namespace {
 namespace local {
 
@@ -67,6 +65,7 @@ void classifier_multiclass_ecoc_discriminant_example()
 	SG_REF(svm);
 
 	// Add some configuration to the svm
+	const float64_t EPSILON = 1e-5;
 	svm->set_epsilon(EPSILON);
 	svm->set_bias_enabled(true);
 

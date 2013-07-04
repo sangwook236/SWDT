@@ -100,7 +100,7 @@ int shogun_main(int argc, char *argv[])
 		}
 
 		std::cout << "\nshogun library: classification example (kernel machine) ---------" << std::endl;
- 		if (true)
+ 		if (false)
 		{
             //my_shogun::classifier_conjugateindex_example();
 
@@ -162,25 +162,27 @@ int shogun_main(int argc, char *argv[])
 		}
 
  		std::cout << "\nshogun library: cross validation example ------------------------" << std::endl;
-   		if (false)
+   		if (true)
 		{
             my_shogun::evaluation_cross_validation_classification_example();
-            my_shogun::evaluation_cross_validation_regression_example();
-            my_shogun::evaluation_cross_validation_multiclass_example();
-            my_shogun::evaluation_cross_validation_multiclass_mkl_example();
-            my_shogun::evaluation_cross_validation_mkl_weight_storage_example();
+            //my_shogun::evaluation_cross_validation_regression_example();
+
+            //my_shogun::evaluation_cross_validation_multiclass_example();
+            //my_shogun::evaluation_cross_validation_multiclass_mkl_example();
+            //my_shogun::evaluation_cross_validation_mkl_weight_storage_example();
 		}
 
  		std::cout << "\nshogun library: model selection example -------------------------" << std::endl;
    		if (false)
 		{
 			 my_shogun::modelselection_grid_search_linear_example();
-			 my_shogun::modelselection_grid_search_kernel_example();
+			 //my_shogun::modelselection_grid_search_kernel_example();
 
-			 my_shogun::modelselection_grid_search_multiclass_svm_example();
-			 my_shogun::modelselection_grid_search_mkl_example();
-			 my_shogun::modelselection_apply_parameter_tree_example();
-			 my_shogun::modelselection_grid_search_krr_example();
+			 //my_shogun::modelselection_grid_search_multiclass_svm_example();
+			 //my_shogun::modelselection_grid_search_mkl_example();
+
+			 //my_shogun::modelselection_apply_parameter_tree_example();
+			 //my_shogun::modelselection_grid_search_krr_example();
 		}
 	}
 	catch (const shogun::ShogunException &e)

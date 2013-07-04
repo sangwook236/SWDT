@@ -12,6 +12,10 @@
 #include <shogun/classifier/svm/LibLinear.h>
 
 
+#if !defined(HAVE_LAPACK)
+#error this example requires LAPACK library
+#endif
+
 namespace {
 namespace local {
 
@@ -40,7 +44,6 @@ using namespace shogun;
 // [ref] ${SHOGUN_HOME}/examples/undocumented/libshogun/modelselection_grid_search_linear.cpp
 void modelselection_grid_search_linear_example()
 {
-#ifdef HAVE_LAPACK
 	const int32_t num_subsets = 5;
 	const int32_t num_vectors = 11;
 
@@ -58,7 +61,7 @@ void modelselection_grid_search_linear_example()
 		labels->set_label(i, i % 2 == 0 ? 1 : -1);
 
 	// create linear classifier (use -s 2 option to avoid warnings)
-	shogun::CLibLinear *classifier = new shogun::CLibLinear(L2R_L2LOSS_SVC);
+	shogun::CLibLinear *classifier = new shogun::CLibLinear(shogun::L2R_L2LOSS_SVC);
 
 	// splitting strategy
 	shogun::CStratifiedCrossValidationSplitting *splitting_strategy = new shogun::CStratifiedCrossValidationSplitting(labels, num_subsets);
@@ -99,7 +102,6 @@ void modelselection_grid_search_linear_example()
 	SG_UNREF(result);
 	SG_UNREF(best_combination);
 	SG_UNREF(grid_search);
-#endif // HAVE_LAPACK
 }
 
 }  // namespace my_shogun
