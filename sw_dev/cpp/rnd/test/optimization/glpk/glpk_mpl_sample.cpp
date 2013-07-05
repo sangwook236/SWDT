@@ -30,7 +30,7 @@ void mpl_sample_1()
 	glp_mpl_build_prob(tran, lp);
 	ret = glp_write_mps(lp, GLP_MPS_FILE, NULL, "./optimization_data/glpk/egypt.mps");
 	if (0 != ret)
-		fprintf(stderr, "Error on writing MPS file\n");
+		std::cerr << "Error on writing MPS file" << std::endl;
 
 skip:
 	glp_mpl_free_wksp(tran);

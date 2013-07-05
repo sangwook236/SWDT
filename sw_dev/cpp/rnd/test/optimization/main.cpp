@@ -21,17 +21,18 @@ int main(int argc, char* argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		// ------------------------------------------------
+        std::cout << "Levenberg-Marquardt (LM) algorithm ----------------------------------" << std::endl;
 		//retval = levmar_main(argc, argv);
 
-		// genetic algorithm ------------------------------
+        std::cout << "\nGAlib library -------------------------------------------------------" << std::endl;
 		//retval = galib_main(argc, argv);
 
+        std::cout << "\nGNU Linear Programming Kit (GLPK) library ---------------------------" << std::endl;
 		// GNU Linear Programming Kit (GLPK) --------------
 		retval = glpk_main(argc, argv);
 
-		// NLopt library ----------------------------------
-		//retval = nlopt_main(argc, argv);
+        std::cout << "\nNLopt library -------------------------------------------------------" << std::endl;
+		retval = nlopt_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

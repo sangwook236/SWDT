@@ -33,23 +33,33 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="/usr/local/include/" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="ga" />
 			<Add library="levmar" />
+			<Add library="glpk" />
+			<Add library="nlopt" />
 			<Add library="boost_timer" />
 			<Add library="boost_system" />
 			<Add library="lapack" />
 			<Add library="blas" />
 			<Add library="f2c" />
+			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="galib/galib_ex1.cpp" />
 		<Unit filename="galib/galib_ex3.cpp" />
 		<Unit filename="galib/galib_ex7.cpp" />
 		<Unit filename="galib/galib_main.cpp" />
+		<Unit filename="glpk/glpk_interior_point_sample.cpp" />
+		<Unit filename="glpk/glpk_main.cpp" />
+		<Unit filename="glpk/glpk_mip_sample.cpp" />
+		<Unit filename="glpk/glpk_mpl_sample.cpp" />
+		<Unit filename="glpk/glpk_netgen_sample.cpp" />
+		<Unit filename="glpk/glpk_simplex_sample.cpp" />
 		<Unit filename="levmar/levmar_main.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="nlopt/nlopt_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
