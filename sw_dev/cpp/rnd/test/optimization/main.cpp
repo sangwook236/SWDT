@@ -28,7 +28,6 @@ int main(int argc, char* argv[])
 		//retval = galib_main(argc, argv);
 
         std::cout << "\nGNU Linear Programming Kit (GLPK) library ---------------------------" << std::endl;
-		// GNU Linear Programming Kit (GLPK) --------------
 		retval = glpk_main(argc, argv);
 
         std::cout << "\nNLopt library -------------------------------------------------------" << std::endl;
