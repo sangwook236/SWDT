@@ -13,6 +13,9 @@ int main(int argc, char* argv[])
 	int levmar_main(int argc, char *argv[]);
 	int galib_main(int argc, char *argv[]);
 
+	int glpk_main(int argc, char *argv[]);
+	int nlopt_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
@@ -22,7 +25,13 @@ int main(int argc, char* argv[])
 		//retval = levmar_main(argc, argv);
 
 		// genetic algorithm ------------------------------
-		retval = galib_main(argc, argv);
+		//retval = galib_main(argc, argv);
+
+		// GNU Linear Programming Kit (GLPK) --------------
+		retval = glpk_main(argc, argv);
+
+		// NLopt library ----------------------------------
+		//retval = nlopt_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

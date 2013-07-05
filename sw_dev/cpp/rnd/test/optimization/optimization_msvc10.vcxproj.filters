@@ -19,6 +19,12 @@
     <Filter Include="Source Files\levmar">
       <UniqueIdentifier>{c41e0578-78b1-41b5-9a8e-6169bb4e554a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\glpk">
+      <UniqueIdentifier>{b8a3451d-5a89-467a-8a28-8e00d1e33cc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nlopt">
+      <UniqueIdentifier>{11f1c22d-79c9-432f-b548-463b68aad57b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -44,6 +50,27 @@
     </ClCompile>
     <ClCompile Include="galib\galib_ex7.cpp">
       <Filter>Source Files\galib</Filter>
+    </ClCompile>
+    <ClCompile Include="glpk\glpk_main.cpp">
+      <Filter>Source Files\glpk</Filter>
+    </ClCompile>
+    <ClCompile Include="nlopt\nlopt_main.cpp">
+      <Filter>Source Files\nlopt</Filter>
+    </ClCompile>
+    <ClCompile Include="glpk\glpk_interior_point_sample.cpp">
+      <Filter>Source Files\glpk</Filter>
+    </ClCompile>
+    <ClCompile Include="glpk\glpk_mip_sample.cpp">
+      <Filter>Source Files\glpk</Filter>
+    </ClCompile>
+    <ClCompile Include="glpk\glpk_mpl_sample.cpp">
+      <Filter>Source Files\glpk</Filter>
+    </ClCompile>
+    <ClCompile Include="glpk\glpk_simplex_sample.cpp">
+      <Filter>Source Files\glpk</Filter>
+    </ClCompile>
+    <ClCompile Include="glpk\glpk_netgen_sample.cpp">
+      <Filter>Source Files\glpk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

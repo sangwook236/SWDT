@@ -6,11 +6,15 @@
 
 #pragma comment(lib, "levmar_d.lib")
 #pragma comment(lib, "ga.lib")
+#pragma comment(lib, "glpk_4_51.lib")
+#pragma comment(lib, "nlopt.lib")
 
 #		else
 
 #pragma comment(lib, "levmar.lib")
 #pragma comment(lib, "ga.lib")
+#pragma comment(lib, "glpk_4_51.lib")
+#pragma comment(lib, "nlopt.lib")
 
 #		endif
 
