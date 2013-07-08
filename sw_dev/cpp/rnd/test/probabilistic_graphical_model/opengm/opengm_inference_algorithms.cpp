@@ -1202,10 +1202,9 @@ namespace my_opengm {
 
 void inference_algorithms()
 {
+	std::cout << "image segmentation (Potts model) ------------------------------------" << std::endl;
 	if (false)
 	{
-		std::cout << "\nimage segmentation (Potts model) ------------------------------------" << std::endl;
-
 		// build the model
 		std::cout << "creating a graphical model... ---------------------------------------" << std::endl;
 		local::GraphicalModelForPottsModel gmForPottsModel;
@@ -1213,10 +1212,9 @@ void inference_algorithms()
 			local::inference_algorithms<local::GraphicalModelForPottsModel>(gmForPottsModel, "segmentation");
 	}
 
+	std::cout << "\nstereo matching -----------------------------------------------------" << std::endl;
 	if (false)
 	{
-		std::cout << "\nstereo matching -----------------------------------------------------" << std::endl;
-
 		// build the model
 		std::cout << "creating a graphical model... ---------------------------------------" << std::endl;
 		local::GraphicalModelForStereoMatching gmForStereoMatching;
@@ -1224,10 +1222,9 @@ void inference_algorithms()
 			local::inference_algorithms<local::GraphicalModelForStereoMatching>(gmForStereoMatching, "stereo");
 	}
 
+	std::cout << "\nimage restoration ---------------------------------------------------" << std::endl;
 	if (true)
 	{
-		std::cout << "\nimage restoration ---------------------------------------------------" << std::endl;
-
 		// build the model
 		std::cout << "creating a graphical model... ---------------------------------------" << std::endl;
 		local::GraphicalModelForImageRestoration gmForImageRestoration;

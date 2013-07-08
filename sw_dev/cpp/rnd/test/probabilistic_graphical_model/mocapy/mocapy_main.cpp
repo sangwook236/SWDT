@@ -32,9 +32,6 @@ int mocapy_main(int argc, char *argv[])
 {
 	try
 	{
-#if defined(WIN32) || defined(_WIN32)
-        throw std::runtime_error("not yet supported in Windows");
-#else
 		//my_mocapy::simple_hmm();
 
 		my_mocapy::hmm_with_discrete();
@@ -49,7 +46,6 @@ int mocapy_main(int argc, char *argv[])
 
 		//my_mocapy::mixture_model_inference();
 		//my_mocapy::hmm_inference();
-#endif
 	}
 	catch (const mocapy::MocapyExceptions &e)
 	{

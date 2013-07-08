@@ -17,10 +17,9 @@ namespace local {
 void generateEnergyFunction_DataCostArray_FixedSmoothnessCostArray(const int sizeX, const int sizeY, const int numLabels, std::vector<MRF::CostVal> &D, std::vector<MRF::CostVal> &V, std::vector<MRF::CostVal> &horzWeight, std::vector<MRF::CostVal> &vertWeight, boost::shared_ptr<DataCost> &dataCost, boost::shared_ptr<SmoothnessCost> &smoothnessCost)
 {
 	// generate function
-	int i, j;
-	for (i = 0; i < numLabels; ++i)
-		for (j = i; j < numLabels; ++j)
-			V[i*numLabels+j] = V[j*numLabels+i] = (MRF::CostVal)((i == j) ? 0 : 2.3);
+	for (int i = 0; i < numLabels; ++i)
+		for (int j = i; j < numLabels; ++j)
+			V[i * numLabels + j] = V[j * numLabels + i] = (MRF::CostVal)((i == j) ? 0 : 2.3);
 
 	for (std::vector<MRF::CostVal>::iterator it = D.begin(); it != D.end(); ++it) *it = ((MRF::CostVal)(std::rand() % 100)) / 10 + 1;
 	for (std::vector<MRF::CostVal>::iterator it = horzWeight.begin(); it != horzWeight.end(); ++it) *it = std::rand() % 3 + 1;
@@ -292,10 +291,10 @@ int middlebury_main(int argc, char *argv[])
 	std::cout << "****** iterated conditional modes (ICM) algorithm" << std::endl;
 	local::ICM_algorithm(sizeX, sizeY, numLabels, energyFunc.get());
 
-	std::cout << "****** graph cuts with expansion algorithm" << std::endl;
+	std::cout << "****** graph-cuts with expansion algorithm" << std::endl;
 	local::graph_cuts_with_expansion_algorithm(sizeX, sizeY, numLabels, energyFunc.get());
 
-	std::cout << "****** graph cuts with swap algorithm" << std::endl;
+	std::cout << "****** graph-cuts with swap algorithm" << std::endl;
 	local::graph_cuts_with_swap_algorithm(sizeX, sizeY, numLabels, energyFunc.get());
 
 	std::cout << "****** max-product (loopy) belief propagation (BP) algorithm" << std::endl;

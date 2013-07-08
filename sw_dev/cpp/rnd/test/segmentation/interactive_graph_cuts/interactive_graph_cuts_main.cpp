@@ -49,8 +49,8 @@ bool create_graphical_model(const cv::Mat &img, const std::size_t numOfLabels, c
 	const std::size_t Ny = img.rows;  // height of the grid
 
 	// construct a label space with
-	// - Nx * Ny variables
-	// - each having numOfLabels many labels
+	//	- Nx * Ny variables
+	//	- each having numOfLabels many labels
 #if defined(__USE_GRID_SPACE)
 	Space space(Nx, Ny, numOfLabels);
 #else
@@ -182,8 +182,7 @@ bool create_graphical_model(const cv::Mat &img, const std::size_t numOfLabels, c
 	return true;
 }
 
-// [ref]
-//	run_inference_algorithm() in ${CPP_RND_HOME}/test/probabilistic_graphical_model/opengm/opengm_inference_algorithms.cpp
+// [ref] run_inference_algorithm() in ${CPP_RND_HOME}/test/probabilistic_graphical_model/opengm/opengm_inference_algorithms.cpp
 template<typename GraphicalModel, typename InferenceAlgorithm>
 void run_inference_algorithm(InferenceAlgorithm &algorithm, std::vector<typename GraphicalModel::LabelType> &labelings)
 {
@@ -203,8 +202,7 @@ void run_inference_algorithm(InferenceAlgorithm &algorithm, std::vector<typename
 	algorithm.arg(labelings);
 }
 
-// [ref]
-//	normalize_histogram() in ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp
+// [ref] normalize_histogram() in ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp
 void normalize_histogram(cv::MatND &hist, const double factor)
 {
 #if 0
@@ -229,11 +227,7 @@ namespace my_interactive_graph_cuts {
 
 }  // namespace my_interactive_graph_cuts
 
-/*
-[ref]
-	"Interactive Graph Cuts for Optimal Boundary & Region Segmentation of Objects in N-D Images", Yuri Y. Boykov and Marie-Pierre Jolly, ICCV, 2001.
-*/
-
+// [ref] "Interactive Graph Cuts for Optimal Boundary & Region Segmentation of Objects in N-D Images", Yuri Y. Boykov and Marie-Pierre Jolly, ICCV, 2001.
 int interactive_graph_cuts_main(int argc, char *argv[])
 {
 	try

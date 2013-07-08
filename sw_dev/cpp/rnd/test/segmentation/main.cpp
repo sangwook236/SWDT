@@ -19,14 +19,14 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "Efficient Graph-Based Image Segmentation ----------------------------" << std::endl;
+		std::cout << "efficient graph-based image segmentation algorithm ------------------" << std::endl;
 		//retval = efficient_graph_based_image_segmentation_main(argc, argv);
 
-		std::cout << "\nInteractive Graph Cuts ----------------------------------------------" << std::endl;
-		// Interactive Graph Cuts for Optimal Boundary & Region Segmentation of Objects in N-D Images
+		std::cout << "\ninteractive graph-cuts algorithm ------------------------------------" << std::endl;
+		// Interactive Graph Cuts for Optimal Boundary & Region Segmentation of Objects in N-D Images.
 		retval = interactive_graph_cuts_main(argc, argv);
 
-		std::cout << "\nsimple linear iterative clustering (SLIC) ---------------------------" << std::endl;
+		std::cout << "\nsimple linear iterative clustering (SLIC) algorithm -----------------" << std::endl;
 		//retval = gslic_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
