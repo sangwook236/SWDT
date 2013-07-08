@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
 		retval = vlfeat_main(argc, argv);
 
 		std::cout << "\nCCV library ---------------------------------------------------------" << std::endl;
-		//  ----------------------------------------------------
 		//retval = ccv_main(argc, argv);  // run-time error (Windows): not correctly working
 	}
     catch (const std::bad_alloc &e)

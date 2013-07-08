@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "MoVMF library  ------------------------------------------------------" << std::endl;
+		std::cout << "MoVMF library -------------------------------------------------------" << std::endl;
 		retval = movmf_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

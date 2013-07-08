@@ -84,11 +84,10 @@ int main(int argc, char *argv[])
 		//retval = mocapy_main(argc, argv);
 #endif
 
-		std::cout << "\nlibDAI library ---------------------------------" << std::endl;
+		std::cout << "\nlibDAI library ------------------------------------------------------" << std::endl;
 		//retval = libdai_main(argc, argv);
 
 		std::cout << "\nOpenGM library ------------------------------------------------------" << std::endl;
-		// OpenGM library ------------------------------------------
 		retval = opengm_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
