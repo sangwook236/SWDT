@@ -16,7 +16,7 @@
 #include <cassert>
 
 
-#define __USE_GRID_SPACE 1
+//#define __USE_GRID_SPACE 1
 
 namespace {
 namespace local {
