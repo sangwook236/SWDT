@@ -17,10 +17,10 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		// Fast Artificial Neural Network (FANN) library ------------
+		std::cout << "Fast Artificial Neural Network (FANN) library -----------------------" << std::endl;
 		retval = fann_main(argc, argv);
 
-		// Open Neural Networks (OpenNN) library --------------------
+		std::cout << "\nOpen Neural Networks (OpenNN) library -------------------------------" << std::endl;
 		//retval = opennn_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

@@ -157,7 +157,7 @@ namespace my_bgscollection {
 
 }  // namespace my_bgscollection
 
-int bgscollection_main (int argc, char *argv[])
+int bgscollection_main(int argc, char *argv[])
 {
 	//local::bskde_example();
 	local::sobs_example();

@@ -24,21 +24,21 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)time(NULL));
 
-		// clustering -------------------------------------------
+		std::cout << "clustering algorithm ------------------------------------------------" << std::endl;
 		//retval = clustering_main(argc, argv);
 
-		// support vector machine (SVM) -------------------------
+		std::cout << "\nsupport vector machine (SVM) ----------------------------------------" << std::endl;
 		//retval = libsvm_main(argc, argv);
 		//retval = mysvm_main(argc, argv);  // not yet implemented
 
-		// shogun library ---------------------------------------
+		std::cout << "\nshogun library ------------------------------------------------------" << std::endl;
 		//	-. multiple kernel learning (MKL)
 		//	-. Gaussian process (GP) regression
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		retval = shogun_main(argc, argv);
 #endif
 
-		// reinforcement learning (RL) --------------------------
+		std::cout << "\nreinforcement learning (RL) -----------------------------------------" << std::endl;
 		//retval = rl_glue_main(argc, argv);  // not yet implemented
 	}
     catch (const std::bad_alloc &e)

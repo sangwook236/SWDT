@@ -36,7 +36,7 @@
 		</Compiler>
 		<Unit filename="greedy_projection.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="pcl_visualizion.cpp" />
+		<Unit filename="pcl_visualization.cpp" />
 		<Unit filename="resampling.cpp" />
 		<Extensions>
 			<code_completion />

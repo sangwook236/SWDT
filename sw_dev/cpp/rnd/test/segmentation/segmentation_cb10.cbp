@@ -80,7 +80,6 @@
 		<Unit filename="opengm/maxflow/block.h" />
 		<Unit filename="opengm/maxflow/graph.h" />
 		<Unit filename="opengm/maxflow/maxflowlib.h" />
-		<Unit filename="../../../../../../../../usr/local/include/boost/timer/timer.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

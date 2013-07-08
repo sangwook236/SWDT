@@ -19,13 +19,14 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		// OpenCV library -------------------------------------------------
+		std::cout << "OpenCV library ------------------------------------------------------" << std::endl;
 		//retval = opencv_main(argc, argv);
 
-		// VLFeat library -------------------------------------------------
+		std::cout << "\nVLFeat library ------------------------------------------------------" << std::endl;
 		retval = vlfeat_main(argc, argv);
 
-		// CCV library ----------------------------------------------------
+		std::cout << "\nCCV library ---------------------------------------------------------" << std::endl;
+		//  ----------------------------------------------------
 		//retval = ccv_main(argc, argv);  // run-time error (Windows): not correctly working
 	}
     catch (const std::bad_alloc &e)

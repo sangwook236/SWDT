@@ -15,7 +15,10 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "LibHand library -----------------------------------------------------" << std::endl;
 		retval = libhand_main(argc, argv);
+
+		std::cout << "\nOpenHPE library -----------------------------------------------------" << std::endl;
 		//retval = openhpe_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

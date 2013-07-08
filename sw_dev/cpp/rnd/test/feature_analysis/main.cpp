@@ -30,23 +30,23 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		// line feature ---------------------------------------------
+		std::cout << "line feature --------------------------------------------------------" << std::endl;
 		//retval = lsd_main(argc, argv);
 
-		// ellipse & line feature -----------------------------------
+		std::cout << "\nellipse & line feature ----------------------------------------------" << std::endl;
 		retval = elsd_main(argc, argv);
 
-		// local descriptor -----------------------------------------
+		std::cout << "\nlocal descriptors ---------------------------------------------------" << std::endl;
 		//retval = opensift_main(argc, argv);
 		//retval = siftgpu_main(argc, argv);
 
 		//retval = opensurf_main(argc, argv);
 		//retval = surfgpu_main(argc, argv);
 
-		// pictorial structures -------------------------------------
+		std::cout << "\npictorial structures ------------------------------------------------" << std::endl;
 		//retval = pictorial_structures_revisited_main(argc, argv);
 
-		// Feature Selection Toolbox (FST) library ------------------
+		std::cout << "\nFeature Selection Toolbox (FST) library -----------------------------" << std::endl;
 		//retval = fst_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

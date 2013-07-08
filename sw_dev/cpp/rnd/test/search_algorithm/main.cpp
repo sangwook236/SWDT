@@ -10,10 +10,11 @@
 int main(int argc, char *argv[])
 {
 	int ann_main(int argc, char *argv[]);
-	
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "A Library for Approximate Nearest Neighbor Searching (ANN) ----------" << std::endl;
 		retval = ann_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

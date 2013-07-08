@@ -15,7 +15,10 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "BGSLibrary ---------------------------------------------------------" << std::endl;
 		retval = bgslibrary_main(argc, argv);
+
+		std::cout << "\nbgscollection library -----------------------------------------------" << std::endl;
 		//retval = bgscollection_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

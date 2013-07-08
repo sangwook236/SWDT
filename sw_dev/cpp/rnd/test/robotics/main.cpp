@@ -18,7 +18,10 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
+		std::cout << "MRPT library --------------------------------------------------------" << std::endl;
 		//retval = mrpt_main(argc, argv);  // compile-time error
+
+		std::cout << "\nPlayer/Stage library ------------------------------------------------" << std::endl;
 		retval = player_stage_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

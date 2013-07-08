@@ -49,45 +49,47 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		{
-
-			// belief propagation (BP) algorithm --------------------------------
+            std::cout << "belief propagation (BP) algorithm -----------------------------------" << std::endl;
 			//retval = local::inference_using_belief_propagation();  // not yet implemented
 			//retval = bp_vision_main(argc, argv);
 
-			// graph-cuts algorithm ---------------------------------------------
+            std::cout << "\ngraph-cuts algorithm ------------------------------------------------" << std::endl;
 			//retval = local::inference_using_graphcut();  // not yet implemented
 			//retval = cuda_cut_main(argc, argv);  // not yet implemented
 
-			// Tree-Reweighted (TRW-S) message passing algorithm ----------------
+            std::cout << "\nTree-Reweighted (TRW-S) message passing algorithm -------------------" << std::endl;
 			//retval = trws_main(argc, argv);  // not yet implemented
 
-			// quadratic pseudo-boolean optimization (QPBO) algorithm -----------
+            std::cout << "\nquadratic pseudo-boolean optimization (QPBO) algorithm --------------" << std::endl;
 			//retval = qpbo_main(argc, argv);  // not yet implemented
 		}
 
-        // hidden Markov model (HMM) -------------------------------
+		std::cout << "\nhidden Markov model (HMM) -------------------------------------------" << std::endl;
 		//retval = hmm_main(argc, argv);
 
-		// Markov random field (MRF) -------------------------------
+		std::cout << "\nMarkov random field (MRF) -------------------------------------------" << std::endl;
 		//retval = middlebury_main(argc, argv);
 
-		// conditional random field (CRF) --------------------------
+		std::cout << "\nconditional random field (CRF) --------------------------------------" << std::endl;
 		//retval = crfpp_main(argc, argv);
 		//retval = hcrf_main(argc, argv);
 
-		// dynamic Bayesian network (DBN) --------------------------
+		std::cout << "\ndynamic Bayesian network (DBN) --------------------------------------" << std::endl;
 
-		// PNL library ---------------------------------------------
+		std::cout << "\nProbabilistic Networks Library (PNL) --------------------------------" << std::endl;
 		//retval = pnl_main(argc, argv);
 
-		// Mocapy++ library ----------------------------------------
-		retval = mocapy_main(argc, argv);
+		std::cout << "\nMocapy++ library ----------------------------------------------------" << std::endl;
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+		//retval = mocapy_main(argc, argv);
+#endif
 
-		// libDAI library ------------------------------------------
+		std::cout << "\nlibDAI library ---------------------------------" << std::endl;
 		//retval = libdai_main(argc, argv);
 
+		std::cout << "\nOpenGM library ------------------------------------------------------" << std::endl;
 		// OpenGM library ------------------------------------------
-		//retval = opengm_main(argc, argv);
+		retval = opengm_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

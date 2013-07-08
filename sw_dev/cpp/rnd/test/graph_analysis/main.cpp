@@ -23,14 +23,14 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		// min-cut/max-flow algorithms ------------------------------
+		std::cout << "min-cut/max-flow algorithms -----------------------------------------" << std::endl;
 		retval = maxflow_main(argc, argv);  // not yet implemented
 		retval = ibfs_main(argc, argv);  // not yet implemented
 
-		// GraphLab library -----------------------------------------
+		std::cout << "\nGraphLab library ----------------------------------------------------" << std::endl;
 		retval = graphlab_main(argc, argv);  // not yet implemented
 
-		// GraphChi library -----------------------------------------
+		std::cout << "\nGraphChi library ----------------------------------------------------" << std::endl;
 		retval = graphchi_main(argc, argv);  // not yet implemented
 	}
     catch (const std::bad_alloc &e)
