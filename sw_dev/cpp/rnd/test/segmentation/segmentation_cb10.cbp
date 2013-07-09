@@ -34,7 +34,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add directory="./efficient_graph_based_image_segmentation_lib" />
-			<Add directory="./opengm/maxflow" />
+			<Add directory="/usr/local/include/opengm_external/MaxFlow" />
 			<Add directory="/usr/local/cuda/include" />
 			<Add directory="/usr/local/include" />
 		</Compiler>
@@ -77,9 +77,6 @@
 		<Unit filename="gslic_lib/cudaUtil.h" />
 		<Unit filename="interactive_graph_cuts/interactive_graph_cuts_main.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="opengm/maxflow/block.h" />
-		<Unit filename="opengm/maxflow/graph.h" />
-		<Unit filename="opengm/maxflow/maxflowlib.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
