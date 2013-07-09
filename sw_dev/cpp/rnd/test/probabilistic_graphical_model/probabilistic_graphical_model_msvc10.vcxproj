@@ -50,7 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;../../inc/opencv-2.4.3;./opengm/mrf;./opengm/trws;./opengm/maxflow;./opengm/ibfs;./opengm/qpbo;D:\work_center\sw_dev\cpp\ext\inc\gmp;D:\work_center\sw_dev\cpp\ext\inc\hdf5</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;../../inc/opencv-2.4.3;../../inc/opengm_external/MRF;../../inc/opengm_external/TRWS;../../inc/opengm_external/MaxFlow;../../inc/opengm_external/ibfs;../../inc/opengm_external/QPBO;D:\work_center\sw_dev\cpp\ext\inc\gmp;D:\work_center\sw_dev\cpp\ext\inc\hdf5</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -66,7 +66,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;../../inc/opencv-2.4.3;./opengm/mrf;./opengm/trws;./opengm/maxflow;./opengm/ibfs;./opengm/qpbo;D:\work_center\sw_dev\cpp\ext\inc\gmp;D:\work_center\sw_dev\cpp\ext\inc\hdf5</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;../../inc/opencv-2.4.3;../../inc/opengm_external/MRF;../../inc/opengm_external/TRWS;../../inc/opengm_external/MaxFlow;../../inc/opengm_external/ibfs;../../inc/opengm_external/QPBO;D:\work_center\sw_dev\cpp\ext\inc\gmp;D:\work_center\sw_dev\cpp\ext\inc\hdf5</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,9 +78,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="opengm\maxflow\instances.inc" />
-    <None Include="opengm\qpbo\instances.inc" />
-    <None Include="opengm\trws\instances.inc" />
     <None Include="qpbo_lib\instances.inc" />
     <None Include="ReadMe.txt" />
     <None Include="trws_lib\instances.inc" />
@@ -106,36 +103,6 @@
     <ClInclude Include="middlebury_lib\regions-new.h" />
     <ClInclude Include="middlebury_lib\TRW-S.h" />
     <ClInclude Include="middlebury_lib\typeTruncatedQuadratic2D.h" />
-    <ClInclude Include="opengm\ibfs\ibfs.h" />
-    <ClInclude Include="opengm\maxflow\block.h" />
-    <ClInclude Include="opengm\maxflow\graph.h" />
-    <ClInclude Include="opengm\maxflow\maxflowlib.h" />
-    <ClInclude Include="opengm\mrf\block.h" />
-    <ClInclude Include="opengm\mrf\BP-S.h" />
-    <ClInclude Include="opengm\mrf\energy.h" />
-    <ClInclude Include="opengm\mrf\GCoptimization.h" />
-    <ClInclude Include="opengm\mrf\graph.h" />
-    <ClInclude Include="opengm\mrf\ICM.h" />
-    <ClInclude Include="opengm\mrf\LinkedBlockList.h" />
-    <ClInclude Include="opengm\mrf\MaxProdBP.h" />
-    <ClInclude Include="opengm\mrf\mrf.h" />
-    <ClInclude Include="opengm\mrf\mrflib.h" />
-    <ClInclude Include="opengm\mrf\regions-new.h" />
-    <ClInclude Include="opengm\mrf\TRW-S.h" />
-    <ClInclude Include="opengm\mrf\typeTruncatedQuadratic2D.h" />
-    <ClInclude Include="opengm\mrf\typeTruncatedQuadratic2D_old.h" />
-    <ClInclude Include="opengm\qpbo\block.h" />
-    <ClInclude Include="opengm\qpbo\QPBO.h" />
-    <ClInclude Include="opengm\trws\instances.h" />
-    <ClInclude Include="opengm\trws\MRFEnergy.h" />
-    <ClInclude Include="opengm\trws\typeBinary.h" />
-    <ClInclude Include="opengm\trws\typeBinaryFast.h" />
-    <ClInclude Include="opengm\trws\typeGeneral.h" />
-    <ClInclude Include="opengm\trws\typePotts.h" />
-    <ClInclude Include="opengm\trws\typeTruncatedLinear.h" />
-    <ClInclude Include="opengm\trws\typeTruncatedLinear2D.h" />
-    <ClInclude Include="opengm\trws\typeTruncatedQuadratic.h" />
-    <ClInclude Include="opengm\trws\typeTruncatedQuadratic2D.h" />
     <ClInclude Include="qpbo_lib\block.h" />
     <ClInclude Include="qpbo_lib\QPBO.h" />
     <ClInclude Include="stdafx.h" />
@@ -236,7 +203,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="mocapy\mocapy_main.cpp" />
+    <ClCompile Include="mocapy\mocapy_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="mocapy\mocapy_mixture_model_inference.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -257,10 +227,6 @@
     <ClCompile Include="opengm\opengm_qpbo_algorithm.cpp" />
     <ClCompile Include="opengm\opengm_quick_start_example.cpp" />
     <ClCompile Include="opengm\opengm_swendsenwang_example.cpp" />
-    <ClCompile Include="opengm\trws\minimize.cpp" />
-    <ClCompile Include="opengm\trws\MRFEnergy.cpp" />
-    <ClCompile Include="opengm\trws\ordering.cpp" />
-    <ClCompile Include="opengm\trws\treeProbabilities.cpp" />
     <ClCompile Include="pnl\pnl_bayesian_network.cpp" />
     <ClCompile Include="pnl\pnl_bayesian_network_example.cpp" />
     <ClCompile Include="pnl\pnl_dbn.cpp" />

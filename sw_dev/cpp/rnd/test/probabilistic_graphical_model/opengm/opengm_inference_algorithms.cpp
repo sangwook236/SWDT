@@ -6,6 +6,7 @@
 #include <opengm/functions/truncated_absolute_difference.hxx>
 #include <opengm/functions/squared_difference.hxx>
 #include <opengm/functions/truncated_squared_difference.hxx>
+#include <opengm/functions/function_registration.hxx>
 #include <opengm/operations/adder.hxx>
 #include <opengm/operations/multiplier.hxx>
 #include <opengm/operations/maximizer.hxx>
@@ -16,7 +17,6 @@
 #include <opengm/inference/dualdecomposition/dualdecomposition_subgradient.hxx>
 #include <opengm/inference/dualdecomposition/dualdecomposition_bundle.hxx>
 #include <opengm/inference/graphcut.hxx>
-#include <opengm/inference/external/qpbo.hxx>
 #include <opengm/inference/icm.hxx>
 #include <opengm/inference/loc.hxx>
 #include <opengm/inference/gibbs.hxx>
@@ -31,7 +31,7 @@
 #include <opengm/inference/auxiliary/minstcutkolmogorov.hxx>
 #include <opengm/inference/auxiliary/minstcutboost.hxx>
 #include <opengm/inference/external/trws.hxx>
-#include <opengm/functions/function_registration.hxx>
+#include <opengm/inference/external/qpbo.hxx>
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
 #include <boost/timer/timer.hpp>

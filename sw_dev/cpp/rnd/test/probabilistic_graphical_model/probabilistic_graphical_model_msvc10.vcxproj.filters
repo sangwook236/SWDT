@@ -238,18 +238,6 @@
     <ClCompile Include="opengm\opengm_inference_algorithms.cpp">
       <Filter>Source Files\opengm</Filter>
     </ClCompile>
-    <ClCompile Include="opengm\trws\minimize.cpp">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClCompile>
-    <ClCompile Include="opengm\trws\MRFEnergy.cpp">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClCompile>
-    <ClCompile Include="opengm\trws\ordering.cpp">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClCompile>
-    <ClCompile Include="opengm\trws\treeProbabilities.cpp">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClCompile>
     <ClCompile Include="libdai\libdai_sprinkler_example.cpp">
       <Filter>Source Files\libdai</Filter>
     </ClCompile>
@@ -408,96 +396,6 @@
     <ClInclude Include="qpbo_lib\QPBO.h">
       <Filter>Source Files\qpbo_lib</Filter>
     </ClInclude>
-    <ClInclude Include="opengm\ibfs\ibfs.h">
-      <Filter>Source Files\opengm\ibfs</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\maxflow\block.h">
-      <Filter>Source Files\opengm\maxflow</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\maxflow\graph.h">
-      <Filter>Source Files\opengm\maxflow</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\maxflow\maxflowlib.h">
-      <Filter>Source Files\opengm\maxflow</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\block.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\BP-S.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\energy.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\GCoptimization.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\graph.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\ICM.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\LinkedBlockList.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\MaxProdBP.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\mrf.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\mrflib.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\regions-new.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\TRW-S.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\typeTruncatedQuadratic2D.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\mrf\typeTruncatedQuadratic2D_old.h">
-      <Filter>Source Files\opengm\mrf</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\trws\instances.h">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\trws\MRFEnergy.h">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\trws\typeBinary.h">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\trws\typeBinaryFast.h">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\trws\typeGeneral.h">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\trws\typePotts.h">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\trws\typeTruncatedLinear.h">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\trws\typeTruncatedLinear2D.h">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\trws\typeTruncatedQuadratic.h">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\trws\typeTruncatedQuadratic2D.h">
-      <Filter>Source Files\opengm\trws</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\qpbo\block.h">
-      <Filter>Source Files\opengm\qpbo</Filter>
-    </ClInclude>
-    <ClInclude Include="opengm\qpbo\QPBO.h">
-      <Filter>Source Files\opengm\qpbo</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -506,15 +404,6 @@
     </None>
     <None Include="qpbo_lib\instances.inc">
       <Filter>Source Files\qpbo_lib</Filter>
-    </None>
-    <None Include="opengm\maxflow\instances.inc">
-      <Filter>Source Files\opengm\maxflow</Filter>
-    </None>
-    <None Include="opengm\trws\instances.inc">
-      <Filter>Source Files\opengm\trws</Filter>
-    </None>
-    <None Include="opengm\qpbo\instances.inc">
-      <Filter>Source Files\opengm\qpbo</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -583,21 +472,6 @@
     </Filter>
     <Filter Include="Source Files\umdhmm_lib">
       <UniqueIdentifier>{05d2e339-b329-4f2a-a266-5b7477f78615}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\opengm\ibfs">
-      <UniqueIdentifier>{0f9cd2ff-c74d-46fa-981e-bb6eda9c48e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\opengm\maxflow">
-      <UniqueIdentifier>{78c12f90-5a38-4e10-8cda-c0a5b441daf4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\opengm\mrf">
-      <UniqueIdentifier>{de92f8f2-657b-4a13-831d-42d7a35509df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\opengm\qpbo">
-      <UniqueIdentifier>{4562e443-8f43-4163-86dd-37998ffccb2e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\opengm\trws">
-      <UniqueIdentifier>{1edef386-29fd-4cf4-afd8-8d4c217738e6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
