@@ -291,6 +291,9 @@
     <ClCompile Include="vlfeat\vlfeat_quick_shift.cpp">
       <Filter>Source Files\vlfeat</Filter>
     </ClCompile>
+    <ClCompile Include="opencv\opencv_basic_operation.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

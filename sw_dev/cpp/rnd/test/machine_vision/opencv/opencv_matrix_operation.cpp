@@ -1,4 +1,5 @@
 //#include "stdafx.h"
+//#define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
 #include <iostream>

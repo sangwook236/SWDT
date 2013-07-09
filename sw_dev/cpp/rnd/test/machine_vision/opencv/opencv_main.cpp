@@ -48,6 +48,7 @@ void print_opencv_matrix(const cv::Mat &mat)
 }
 
 void text_output();
+void basic_operation();
 void matrix_operation();
 void matrix_operation_using_gpu();
 void vector_operation();
@@ -142,6 +143,7 @@ int opencv_main(int argc, char *argv[])
 
 		//opencv::text_output();
 
+		//my_opencv::basic_operation();
 		//my_opencv::matrix_operation();
 		//if (canUseGPU) my_opencv::matrix_operation_using_gpu();  // not yet implemented
 		//my_opencv::vector_operation();
@@ -198,7 +200,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::machine_learning_by_svm();
 		//my_opencv::machine_learning_by_ann();
 
-		//my_opencv::object_detection();  // not yet implemented
+		//my_opencv::object_detection();
 		//my_opencv::face_detection();
 		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // not yet implemented
 		//my_opencv::human_detection();
