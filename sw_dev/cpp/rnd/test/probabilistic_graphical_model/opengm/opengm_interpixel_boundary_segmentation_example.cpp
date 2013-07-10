@@ -156,9 +156,9 @@ namespace my_opengm {
 void interpixel_boundary_segmentation_example()
 {
 	// model parameters
-	const std::size_t gridSizeX = 5, gridSizeY = 5; //size of grid
-	const float beta = 0.9; // bias to choose between under- and over-segmentation
-	const float high = 10; // closedness-enforcing soft-constraint
+	const std::size_t gridSizeX = 5, gridSizeY = 5;  // size of grid
+	const float beta = 0.9;  // bias to choose between under- and over-segmentation
+	const float high = 10;  // closedness-enforcing soft-constraint
 
 	// size of the topological grid
 	const std::size_t tGridSizeX = 2 * gridSizeX - 1, tGridSizeY = 2 * gridSizeY - 1;
@@ -205,9 +205,9 @@ void interpixel_boundary_segmentation_example()
 	// one factor is added that connects the corresponding variable indices and refers to the ClosednessFunctor function
 	{
 		// add one (!) 4th order ClosednessFunctor function
-		local::ClosednessFunctor<float> func2;
-		func2.high = high;
-		const FunctionIdentifier fid2 = gm.addFunction(func2);
+		local::ClosednessFunctor<float> func4;
+		func4.high = high;
+		const FunctionIdentifier fid4 = gm.addFunction(func4);
 
 		// add factors
 		for (std::size_t y = 0; y < dimT[1]; ++y)
@@ -221,7 +221,7 @@ void interpixel_boundary_segmentation_example()
 						cTHelper(x, y - 1)
 					};
 					std::sort(vi, vi + 4);
-					gm.addFactor(fid2, vi, vi + 4);
+					gm.addFactor(fid4, vi, vi + 4);
 				}
 	}
 
@@ -229,15 +229,15 @@ void interpixel_boundary_segmentation_example()
 	typedef opengm::LazyFlipper<Model, opengm::Minimizer> LazyFlipperType;
 	LazyFlipperType::VerboseVisitorType verboseVisitor;
 	const std::size_t maxSubgraphSize = 5;
-	LazyFlipperType lazyflipper(gm, maxSubgraphSize);
+	LazyFlipperType lazyFlipper(gm, maxSubgraphSize);
 
 	// obtain the (approximate) argmin
 	std::cout << "start inference:" << std::endl;
-	lazyflipper.infer(verboseVisitor);
+	lazyFlipper.infer(verboseVisitor);
 
 	// output the (approximate) argmin
 	std::vector<std::size_t> solution;
-	lazyflipper.arg(solution);
+	lazyFlipper.arg(solution);
 	local::printSolution(data, solution);
 }
 

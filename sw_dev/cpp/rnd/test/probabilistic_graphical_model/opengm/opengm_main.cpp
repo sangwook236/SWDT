@@ -238,28 +238,28 @@ int opengm_main(int argc, char *argv[])
 	// examples
 	{
 		std::cout << "\ninput & output example ----------------------------------------------" << std::endl;
-		//local::input_output_example();
+		//local::input_output_example();  // HDF5
 
 		std::cout << "\nquick start example -------------------------------------------------" << std::endl;
-		//my_opengm::quick_start_example();
+		//my_opengm::quick_start_example();  // 3rd order explicit function + ICM
 
 		std::cout << "\nMarkov chain example ------------------------------------------------" << std::endl;
-		//my_opengm::markov_chain_example();
+		//my_opengm::markov_chain_example();  // Potts model + BP
 
 		std::cout << "\nGibbs sampling example ----------------------------------------------" << std::endl;
-		//my_opengm::gibbs_example();
+		//my_opengm::gibbs_example();  // Potts model + Gibbs sampling
 
 		std::cout << "\nSwendsen-Wang sampling example --------------------------------------" << std::endl;
-		//my_opengm::swendsenwang_example();
+		//my_opengm::swendsenwang_example();  // Potts model + Swendsen-Wang sampling
 
 		std::cout << "\nbipartite matching example ------------------------------------------" << std::endl;
-		//my_opengm::bipartite_matching_example();
+		//my_opengm::bipartite_matching_example();  // Potts model + A-star search
 
 		std::cout << "\nPotts model on a 2-dim grid example ---------------------------------" << std::endl;
-		//my_opengm::potts_model_on_2d_grid_example();
+		//my_opengm::potts_model_on_2d_grid_example();  // Potts model + BP
 
 		std::cout << "\ninterpixel boundary segmentation example ----------------------------" << std::endl;
-		//my_opengm::interpixel_boundary_segmentation_example();
+		my_opengm::interpixel_boundary_segmentation_example();  // 4th order closedness (user-defined) function + lazy flipper
 	}
 
 	// inference algorithm
@@ -268,7 +268,8 @@ int opengm_main(int argc, char *argv[])
 		//	[ref] ${CPP_RND_HOME}/test/segmentation/interactive_graph_cuts/interactive_graph_cuts_main.cpp
 
 		std::cout << "\ninference algorithms ------------------------------------------------" << std::endl;
-		my_opengm::inference_algorithms();
+		// image segmentation, stereo matching, & image restoration
+		//my_opengm::inference_algorithms();
 	}
 
 	// external library interfacing

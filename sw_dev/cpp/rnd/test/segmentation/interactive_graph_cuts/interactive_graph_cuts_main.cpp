@@ -17,6 +17,7 @@
 
 
 //#define __USE_GRID_SPACE 1
+#define __USE_8_NEIGHBORHOOD_SYSTEM 1
 
 namespace {
 namespace local {
@@ -60,6 +61,11 @@ bool create_graphical_model(const cv::Mat &img, const std::size_t numOfLabels, c
 	gm = GraphicalModel(space);
 
 	const double sigma2 = 2.0 * sigma * sigma;
+	const double tol = 1.0e-50;
+	//const double minVal = std::numeric_limits<double>::min();
+	const double minVal = tol;
+	const std::size_t shape1[] = { numOfLabels };
+	const std::size_t shape2[] = { numOfLabels, numOfLabels };
 	for (std::size_t y = 0; y < Ny; ++y)
 	{
 		for (std::size_t x = 0; x < Nx; ++x)
@@ -75,11 +81,7 @@ bool create_graphical_model(const cv::Mat &img, const std::size_t numOfLabels, c
 				assert(0.0 <= probBackground && probBackground <= 1.0);
 
 				// function
-				const double tol = 1.0e-50;
-				//const double minVal = std::numeric_limits<double>::min();
-				const double minVal = tol;
-				const std::size_t shape[] = { numOfLabels };
-				ExplicitFunction func1(shape, shape + 1);
+				ExplicitFunction func1(shape1, shape1 + 1);
 				func1(0) = -lambda * std::log(std::fabs(probBackground) > tol ? probBackground : minVal);  // background (state = 1)
 				func1(1) = -lambda * std::log(std::fabs(probForeground) > tol ? probForeground : minVal);  // foreground (state = 0)
 
@@ -93,7 +95,7 @@ bool create_graphical_model(const cv::Mat &img, const std::size_t numOfLabels, c
 			// Add 2nd order functions and factors.
 			// For each pair of nodes (x1, y1), (x2, y2) which are adjacent on the grid,
 			// add one factor that connects the corresponding variable indices.
-			// An 8-neighborhood system in 2D (8-connectivity).
+			// An 4-neighborhood or 8-neighborhood system in 2D (4-connectivity or 8-connectivity).
 			{
 				// factor
 				const unsigned char pix1 = img.at<unsigned char>(y, x);
@@ -104,8 +106,7 @@ bool create_graphical_model(const cv::Mat &img, const std::size_t numOfLabels, c
 					const double B = std::exp(-double(pix2 - pix1) * double(pix2 - pix1) / sigma2) / dist;
 
 					// function
-					const std::size_t shape[] = { numOfLabels, numOfLabels };
-					ExplicitFunction func2(shape, shape + 2);
+					ExplicitFunction func2(shape2, shape2 + 2);
 					func2(0, 0) = 0.0;
 					func2(0, 1) = B;
 					func2(1, 0) = B;
@@ -123,8 +124,7 @@ bool create_graphical_model(const cv::Mat &img, const std::size_t numOfLabels, c
 					const double B = std::exp(-double(pix2 - pix1) * double(pix2 - pix1) / sigma2) / dist;
 
 					// function
-					const std::size_t shape[] = { numOfLabels, numOfLabels };
-					ExplicitFunction func2(shape, shape + 2);
+					ExplicitFunction func2(shape2, shape2 + 2);
 					func2(0, 0) = 0.0;
 					func2(0, 1) = B;
 					func2(1, 0) = B;
@@ -135,6 +135,7 @@ bool create_graphical_model(const cv::Mat &img, const std::size_t numOfLabels, c
 					std::sort(variableIndices, variableIndices + 2);
 					gm.addFactor(fid2, variableIndices, variableIndices + 2);
 				}
+#if defined(__USE_8_NEIGHBORHOOD_SYSTEM)
 				if (x + 1 < Nx && y + 1 < Ny)  // (x, y) -- (x + 1, y + 1)
 				{
 					const unsigned char pix2 = img.at<unsigned char>(y + 1, x + 1);
@@ -143,8 +144,7 @@ bool create_graphical_model(const cv::Mat &img, const std::size_t numOfLabels, c
 					const double B = std::exp(-double(pix2 - pix1) * double(pix2 - pix1) / sigma2) / dist;
 
 					// function
-					const std::size_t shape[] = { numOfLabels, numOfLabels };
-					ExplicitFunction func2(shape, shape + 2);
+					ExplicitFunction func2(shape2, shape2 + 2);
 					func2(0, 0) = 0.0;
 					func2(0, 1) = B;
 					func2(1, 0) = B;
@@ -163,8 +163,7 @@ bool create_graphical_model(const cv::Mat &img, const std::size_t numOfLabels, c
 					const double B = std::exp(-double(pix2 - pix1) * double(pix2 - pix1) / sigma2) / dist;
 
 					// function
-					const std::size_t shape[] = { numOfLabels, numOfLabels };
-					ExplicitFunction func2(shape, shape + 2);
+					ExplicitFunction func2(shape2, shape2 + 2);
 					func2(0, 0) = 0.0;
 					func2(0, 1) = B;
 					func2(1, 0) = B;
@@ -175,6 +174,7 @@ bool create_graphical_model(const cv::Mat &img, const std::size_t numOfLabels, c
 					std::sort(variableIndices, variableIndices + 2);
 					gm.addFactor(fid2, variableIndices, variableIndices + 2);
 				}
+#endif  // __USE_8_NEIGHBORHOOD_SYSTEM
 			}
 		}
 	}
@@ -348,7 +348,7 @@ int interactive_graph_cuts_main(int argc, char *argv[])
 			cv::imshow("interactive graph cuts - labeling", label_img);
 #else
 			std::cout << algorithm.name() << " has found the labeling ";
-			for (typename GraphicalModel::LabelType i = 0; i < labeling.size(); ++i)
+			for (typename local::GraphicalModel::LabelType i = 0; i < labeling.size(); ++i)
 				std::cout << labeling[i] << ' ';
 			std::cout << std::endl;
 #endif
