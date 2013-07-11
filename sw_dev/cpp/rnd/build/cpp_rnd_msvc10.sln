@@ -2,8 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_vision", "..\test\machine_vision\machine_vision_msvc10.vcxproj", "{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opencv_win", "..\test\opencv_win\opencv_win_msvc10.vcxproj", "{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "optimization", "..\test\optimization\optimization_msvc10.vcxproj", "{F47404DC-D671-4C97-8477-9447118B238A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simulation", "..\test\simulation\simulation_msvc10.vcxproj", "{86A474F8-4ABB-46B3-A034-26496D316349}"
@@ -54,10 +52,6 @@ Global
 		{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}.Debug|Win32.Build.0 = Debug|Win32
 		{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}.Release|Win32.ActiveCfg = Release|Win32
 		{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}.Release|Win32.Build.0 = Release|Win32
-		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Debug|Win32.ActiveCfg = Template|Win32
-		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Debug|Win32.Build.0 = Template|Win32
-		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Release|Win32.ActiveCfg = Release|Win32
-		{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}.Release|Win32.Build.0 = Release|Win32
 		{F47404DC-D671-4C97-8477-9447118B238A}.Debug|Win32.ActiveCfg = Debug|Win32
 		{F47404DC-D671-4C97-8477-9447118B238A}.Debug|Win32.Build.0 = Debug|Win32
 		{F47404DC-D671-4C97-8477-9447118B238A}.Release|Win32.ActiveCfg = Release|Win32

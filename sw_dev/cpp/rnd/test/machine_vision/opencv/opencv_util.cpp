@@ -208,7 +208,7 @@ void make_contour(const cv::Mat &img, const cv::Rect &roi, const int segmentId, 
 #endif
 }
 
-void make_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int segmentId, std::vector<cv::Point> &convexHull)
+void make_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int pixVal, std::vector<cv::Point> &convexHull)
 {
 	const cv::Mat &roi_img = roi.width == 0 || roi.height == 0 ? img : img(roi);
 
@@ -217,7 +217,7 @@ void make_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int segment
 	for (int r = 0; r < roi_img.rows; ++r)
 		for (int c = 0; c < roi_img.cols; ++c)
 		{
-			if (roi_img.at<unsigned char>(r, c) == segmentId)
+			if (roi_img.at<unsigned char>(r, c) == pixVal)
 				points.push_back(cv::Point(roi.x + c, roi.y + r));
 		}
 
@@ -240,6 +240,31 @@ void make_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int segment
 		tmp_points.push_back(points[*it]);
 	cv::approxPolyDP(cv::Mat(tmp_points), convexHull, 3.0, true);
 #endif
+}
+
+bool simple_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int pixVal, std::vector<cv::Point> &convexHull)
+{
+	const cv::Mat &roi_img = roi.width == 0 || roi.height == 0 ? img : img(roi);
+
+	std::vector<cv::Point> points;
+	points.reserve(roi_img.rows * roi_img.cols);
+	for (int r = 0; r < roi_img.rows; ++r)
+		for (int c = 0; c < roi_img.cols; ++c)
+		{
+			if (roi_img.at<unsigned char>(r, c) == pixVal)
+				points.push_back(cv::Point(roi.x + c, roi.y + r));
+		}
+	if (points.empty()) return false;
+
+	cv::convexHull(cv::Mat(points), convexHull, false);
+	if (convexHull.empty()) return false;
+
+#if 1
+    // comment this out if you do not want approximation
+	cv::approxPolyDP(convexHull, convexHull, 3.0, true);
+#endif
+
+	return true;
 }
 
 bool calculate_curvature(const cv::Point2d &v1, const cv::Point2d &v2, double &curvature)

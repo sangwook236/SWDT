@@ -55,7 +55,6 @@ void vector_operation();
 void image_operation();
 void image_conversion();
 void image_sequence();
-void openni_interface();
 void image_filtering();
 void image_filtering_using_gpu();
 void image_processing_using_gpu();
@@ -70,6 +69,7 @@ void morphological_operation();
 void image_pyramid();
 void image_gradient();
 void edge_detection();
+void skeletonization_and_thinning();
 void distance_transform();
 void convex_hull();
 void hough_transform();
@@ -116,6 +116,8 @@ void kalman_filtering();
 void optical_flow();
 void motion_history_image();
 
+void openni_interface();
+
 void iterative_closest_point();
 
 void hand_detection();
@@ -150,7 +152,6 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::image_operation();
 		//my_opencv::image_conversion();
 		//my_opencv::image_sequence();
-		//my_opencv::openni_interface();
 
 		//my_opencv::image_filtering();
 		//if (canUseGPU) my_opencv::image_filtering_using_gpu();  // not yet implemented
@@ -169,6 +170,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::image_gradient();
 		//my_opencv::edge_detection();
 
+		//my_opencv::skeletonization_and_thinning();
 		//my_opencv::distance_transform();
 		//my_opencv::convex_hull();
 		//my_opencv::hough_transform();
@@ -230,6 +232,11 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::optical_flow();
 		//if (canUseGPU) my_opencv::optical_flow_using_gpu();  // not yet implemented
 		//my_opencv::motion_history_image();
+
+		//----------------------------------------------
+		// interfacing
+
+		//my_opencv::openni_interface();
 
 		//----------------------------------------------
 		// extension

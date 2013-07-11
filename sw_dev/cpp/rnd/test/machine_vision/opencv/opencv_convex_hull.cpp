@@ -8,6 +8,13 @@
 
 //#define __USE_ARRAY 1
 
+namespace my_opencv {
+
+void make_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int segmentId, std::vector<cv::Point> &convexHull);
+bool simple_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int segmentId, std::vector<cv::Point> &convexHull);
+
+}  // namespace my_opencv
+
 namespace {
 namespace local {
 
@@ -108,6 +115,36 @@ void convex_hull_basic()
 
 	cvReleaseImage(&img);
 	cvDestroyWindow(windowName);
+}
+
+void convex_hull_2()
+{
+	//const std::string input_filename("./machine_vision_data/opencv/thinning_img_1.png");
+	const std::string input_filename("./machine_vision_data/opencv/thinning_img_2.jpg");
+	cv::Mat &src = cv::imread(input_filename);
+	if (src.empty())
+	{
+		std::cerr << "file not found: " << input_filename << std::endl;
+		return;
+	}
+
+	cv::Mat bw;
+	cv::cvtColor(src, bw, CV_BGR2GRAY);
+	cv::threshold(bw, bw, 10, 255, CV_THRESH_BINARY);
+
+	std::vector<cv::Point> convexHull;
+	my_opencv::simple_convex_hull(bw, cv::Rect(), 255, convexHull);
+
+	// display result.
+	std::vector<std::vector<cv::Point> > contours;
+	contours.push_back(convexHull);
+	cv::drawContours(src, contours, 0, CV_RGB(255, 0, 0), 2, 8);
+
+	cv::imshow("convex hull - result", src);
+
+	cv::waitKey();
+
+	cv::destroyAllWindows();
 }
 
 void convexity_defect()
@@ -234,7 +271,9 @@ namespace my_opencv {
 void convex_hull()
 {
 	//local::convex_hull_basic();
-	local::convexity_defect();
+	local::convex_hull_2();
+
+	//local::convexity_defect();
 }
 
 }  // namespace my_opencv

@@ -294,6 +294,9 @@
     <ClCompile Include="opencv\opencv_basic_operation.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
+    <ClCompile Include="opencv\opencv_skeletonization_and_thinning.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
