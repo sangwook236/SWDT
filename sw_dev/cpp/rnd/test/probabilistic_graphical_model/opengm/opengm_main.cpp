@@ -259,7 +259,7 @@ int opengm_main(int argc, char *argv[])
 		//my_opengm::potts_model_on_2d_grid_example();  // Potts model + BP
 
 		std::cout << "\ninterpixel boundary segmentation example ----------------------------" << std::endl;
-		my_opengm::interpixel_boundary_segmentation_example();  // 4th order closedness (user-defined) function + lazy flipper
+		my_opengm::interpixel_boundary_segmentation_example();  // "user-defined" 4th order closedness function + lazy flipper
 	}
 
 	// inference algorithm
