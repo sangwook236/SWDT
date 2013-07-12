@@ -187,7 +187,7 @@ int shogun_main(int argc, char *argv[])
 	}
 	catch (const shogun::ShogunException &e)
 	{
-		std::cout << "shogun::ShogunException caught: " << e.get_exception_string() << std::endl;
+		std::cout << "shogun::ShogunException caught: " << const_cast<shogun::ShogunException &>(e).get_exception_string() << std::endl;
 		retval = 1;
 	}
 

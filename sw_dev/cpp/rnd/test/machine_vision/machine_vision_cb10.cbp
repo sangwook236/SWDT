@@ -73,6 +73,7 @@
 		<Unit filename="opencv/PascalVocDataset.cpp" />
 		<Unit filename="opencv/PascalVocDataset.h" />
 		<Unit filename="opencv/opencv_bag_of_words.cpp" />
+		<Unit filename="opencv/opencv_basic_operation.cpp" />
 		<Unit filename="opencv/opencv_camera_calibration.cpp" />
 		<Unit filename="opencv/opencv_camera_geometry.cpp" />
 		<Unit filename="opencv/opencv_chamfer_matching.cpp" />
@@ -118,6 +119,7 @@
 		<Unit filename="opencv/opencv_iterative_closest_point.cpp" />
 		<Unit filename="opencv/opencv_kalman_filtering.cpp" />
 		<Unit filename="opencv/opencv_learning.cpp" />
+		<Unit filename="opencv/opencv_machine_learning.cpp" />
 		<Unit filename="opencv/opencv_main.cpp" />
 		<Unit filename="opencv/opencv_matrix_operation.cpp" />
 		<Unit filename="opencv/opencv_matrix_operation_using_gpu.cpp" />
@@ -134,6 +136,7 @@
 		<Unit filename="opencv/opencv_segmentation.cpp" />
 		<Unit filename="opencv/opencv_shape_finding.cpp" />
 		<Unit filename="opencv/opencv_shape_matching.cpp" />
+		<Unit filename="opencv/opencv_skeletonization_and_thinning.cpp" />
 		<Unit filename="opencv/opencv_skin_color_filtering.cpp" />
 		<Unit filename="opencv/opencv_snake.cpp" />
 		<Unit filename="opencv/opencv_stereo_camera_calibration.cpp" />
@@ -149,6 +152,7 @@
 		<Unit filename="vlfeat/vlfeat_kmeans.cpp" />
 		<Unit filename="vlfeat/vlfeat_main.cpp" />
 		<Unit filename="vlfeat/vlfeat_mser.cpp" />
+		<Unit filename="vlfeat/vlfeat_quick_shift.cpp" />
 		<Unit filename="vlfeat/vlfeat_sift.cpp" />
 		<Unit filename="vlfeat/vlfeat_slic.cpp" />
 		<Extensions>

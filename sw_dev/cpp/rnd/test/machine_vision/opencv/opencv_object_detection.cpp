@@ -47,7 +47,7 @@ void detect_and_draw_objects(IplImage *image, CvLatentSvmDetector *detector, con
 	const int64 startint64 = cvGetTickCount();
 	CvSeq *detections = cvLatentSvmDetectObjects(image, detector, storage, 0.5f, numThreads);
 	const int64 finishint64 = cvGetTickCount();
-	printf("detection time = %.3f\n", (float)(finishint64 - startint64) / (float)(cvGetTickFrequency() * 1000000.0));
+	std::cout << "detection time = " << (float(finishint64 - startint64) / float(cvGetTickFrequency() * 1000000.0)) << std::endl;
 
 #ifdef HAVE_TBB
 	init.terminate();
