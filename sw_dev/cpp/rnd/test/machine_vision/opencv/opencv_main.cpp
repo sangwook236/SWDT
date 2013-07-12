@@ -118,6 +118,7 @@ void motion_history_image();
 
 void openni_interface();
 
+void structure_tensor();
 void iterative_closest_point();
 
 void hand_detection();
@@ -181,7 +182,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::shape_matching();
 
 		//my_opencv::snake();
-		my_opencv::segmentation();
+		//my_opencv::segmentation();
 		//if (canUseGPU) my_opencv::meanshift_segmentation_using_gpu();  // not yet implemented
 
 		//my_opencv::outlier_removal();
@@ -240,6 +241,8 @@ int opencv_main(int argc, char *argv[])
 
 		//----------------------------------------------
 		// extension
+
+		my_opencv::structure_tensor();
 
 		//my_opencv::iterative_closest_point();
 
