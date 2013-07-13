@@ -135,6 +135,7 @@ int opencv_main(int argc, char *argv[])
 	{
 		cv::theRNG();
 
+#if 0
 		if (cv::gpu::getCudaEnabledDeviceCount() > 0)
 		{
 			canUseGPU = true;
@@ -143,6 +144,7 @@ int opencv_main(int argc, char *argv[])
 		}
 		else
 			std::cout << "GPU not found ..." << std::endl;
+#endif
 
 		//opencv::text_output();
 

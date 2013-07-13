@@ -326,6 +326,21 @@ void matrix_operation_2()
 		const cv::Mat &inv = mat.inv(cv::DECOMP_SVD);  // pseudo-inverse
 		std::cout << "pinv(mat) = " << inv << std::endl;
 	}
+
+	// element-wise operation
+	{
+		const float arrA[] = { 1, 2, 3, 4, 5, 6 };
+		const cv::Mat A(2, 3, CV_32FC1, (void *)arrA);  // row-major matrix
+		const float arrB[] = { 2, 2, 2, 2, 2, 2 };
+		const cv::Mat B(2, 3, CV_32FC1, (void *)arrB);  // row-major matrix
+
+		std::cout << "A.mul(B) = " << A.mul(B) << std::endl;
+		std::cout << "A / B = " << (A / B) << std::endl;
+
+		const cv::Mat sqrtA(A.size(), CV_32FC1);
+		cv::sqrt(A, sqrtA);
+		std::cout << "sqrt(A) = " << sqrtA << std::endl;
+	}
 }
 
 }  // namespace local
