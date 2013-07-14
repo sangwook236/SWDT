@@ -142,6 +142,7 @@
 		<Unit filename="opencv/opencv_stereo_camera_calibration.cpp" />
 		<Unit filename="opencv/opencv_stereo_matching.cpp" />
 		<Unit filename="opencv/opencv_stereo_matching_using_gpu.cpp" />
+		<Unit filename="opencv/opencv_structure_tensor.cpp" />
 		<Unit filename="opencv/opencv_template_matching.cpp" />
 		<Unit filename="opencv/opencv_text_output.cpp" />
 		<Unit filename="opencv/opencv_util.cpp" />
