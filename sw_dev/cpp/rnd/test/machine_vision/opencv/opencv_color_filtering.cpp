@@ -7,42 +7,16 @@
 #include <list>
 
 
+namespace my_opencv {
+
+// [ref] ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp
+void canny(const cv::Mat &gray, const int lowerEdgeThreshold, const int upperEdgeThreshold, const bool useL2, cv::Mat &edge);
+void sobel(const cv::Mat &gray, const double thresholdRatio, cv::Mat &gradient);
+
+}  // namespace my_opencv
+
 namespace {
 namespace local {
-
-void sobel(const cv::Mat &gray, cv::Mat &gradient)
-{
-	//const int ksize = 5;
-	const int ksize = CV_SCHARR;
-	cv::Mat xgradient, ygradient;
-
-	cv::Sobel(gray, xgradient, CV_32FC1, 1, 0, ksize, 1.0, 0.0);
-	cv::Sobel(gray, ygradient, CV_32FC1, 0, 1, ksize, 1.0, 0.0);
-
-	cv::magnitude(xgradient, ygradient, gradient);
-
-	const double thresholdRatio = 0.15;
-	double minVal = 0.0, maxVal = 0.0;
-	cv::minMaxLoc(gradient, &minVal, &maxVal);
-	gradient = gradient > (minVal + (maxVal - minVal) * thresholdRatio);
-}
-
-void canny(const cv::Mat &gray, cv::Mat &edge)
-{
-#if 0
-	// down-scale and up-scale the image to filter out the noise
-	cv::Mat blurred;
-	cv::pyrDown(gray, blurred);
-	cv::pyrUp(blurred, edge);
-#else
-	cv::blur(gray, edge, cv::Size(3, 3));
-#endif
-
-	// run the edge detector on grayscale
-	const int lowerEdgeThreshold = 20, upperEdgeThreshold = 50;
-	const bool useL2 = true;
-	cv::Canny(edge, edge, lowerEdgeThreshold, upperEdgeThreshold, 3, useL2);
-}
 
 void color_channel_extraction()
 {
@@ -153,13 +127,16 @@ void color_channel_extraction()
 
 		std::vector<cv::Mat> filtered_imgs3(3);
 #if 0
-		sobel(filtered_imgs2[0], filtered_imgs3[0]);
-		sobel(filtered_imgs2[1], filtered_imgs3[1]);
-		sobel(filtered_imgs2[2], filtered_imgs3[2]);
+		const double thresholdRatio = 0.15;
+		my_opencv::sobel(filtered_imgs2[0], thresholdRatio, filtered_imgs3[0]);
+		my_opencv::sobel(filtered_imgs2[1], thresholdRatio, filtered_imgs3[1]);
+		my_opencv::sobel(filtered_imgs2[2], thresholdRatio, filtered_imgs3[2]);
 #else
-		canny(filtered_imgs2[0], filtered_imgs3[0]);
-		canny(filtered_imgs2[1], filtered_imgs3[1]);
-		canny(filtered_imgs2[2], filtered_imgs3[2]);
+		const int lowerEdgeThreshold = 20, upperEdgeThreshold = 50;
+		const bool useL2 = true;
+		my_opencv::canny(filtered_imgs2[0], lowerEdgeThreshold, upperEdgeThreshold, useL2, filtered_imgs3[0]);
+		my_opencv::canny(filtered_imgs2[1], lowerEdgeThreshold, upperEdgeThreshold, useL2, filtered_imgs3[1]);
+		my_opencv::canny(filtered_imgs2[2], lowerEdgeThreshold, upperEdgeThreshold, useL2, filtered_imgs3[2]);
 #endif
 
 		cv::imshow(windowName1, filtered_imgs3[0]);

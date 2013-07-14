@@ -153,11 +153,13 @@ void image_subtraction()
 
 	cv::Mat processed_img1, processed_img2;
 #if 0
-	my_opencv::canny(img1, processed_img1);
-	my_opencv::canny(img2, processed_img2);
+	const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
+	const bool useL2 = true;
+	my_opencv::canny(img1, lowerEdgeThreshold, upperEdgeThreshold, useL2, processed_img1);
+	my_opencv::canny(img2, lowerEdgeThreshold, upperEdgeThreshold, useL2, processed_img2);
 #elif 0
-	my_opencv::sobel(img1, processed_img1);
-	my_opencv::sobel(img2, processed_img2);
+	my_opencv::sobel(img1, -1.0, processed_img1);
+	my_opencv::sobel(img2, -1.0, processed_img2);
 #else
 	processed_img1 = img1;
 	processed_img2 = img2;
@@ -302,11 +304,13 @@ void image_subtraction_with_trackbar()
 
 	cv::Mat processed_img1, processed_img2;
 #if 0
-	my_opencv::canny(img1, processed_img1);
-	my_opencv::canny(img2, processed_img2);
+	const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
+	const bool useL2 = true;
+	my_opencv::canny(img1, lowerEdgeThreshold, upperEdgeThreshold, useL2, processed_img1);
+	my_opencv::canny(img2, lowerEdgeThreshold, upperEdgeThreshold, useL2, processed_img2);
 #elif 0
-	my_opencv::sobel(img1, processed_img1);
-	my_opencv::sobel(img2, processed_img2);
+	my_opencv::sobel(img1, -1.0, processed_img1);
+	my_opencv::sobel(img2, -1.0, processed_img2);
 #else
 	processed_img1 = img1;
 	processed_img2 = img2;

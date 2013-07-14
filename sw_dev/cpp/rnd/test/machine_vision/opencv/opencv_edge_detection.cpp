@@ -9,28 +9,14 @@
 namespace {
 namespace local {
 
-void canny(const cv::Mat &gray, cv::Mat &edge)
-{
-#if 0
-	// down-scale and up-scale the image to filter out the noise
-	cv::Mat blurred;
-	cv::pyrDown(gray, blurred);
-	cv::pyrUp(blurred, edge);
-#else
-	cv::blur(gray, edge, cv::Size(3, 3));
-#endif
-
-	// run the edge detector on grayscale
-	const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
-	const bool useL2 = true;
-	cv::Canny(edge, edge, lowerEdgeThreshold, upperEdgeThreshold, 3, useL2);
-}
-
 }  // namespace local
 }  // unnamed namespace
 
 
 namespace my_opencv {
+
+// [ref] ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp
+void canny(const cv::Mat &gray, const int lowerEdgeThreshold, const int upperEdgeThreshold, const bool useL2, cv::Mat &edge);
 
 void edge_detection()
 {
@@ -125,8 +111,10 @@ void edge_detection()
 			cv::cvtColor(img, gray, CV_BGR2GRAY);
 			//cv::cvtColor(img, gray, CV_RGB2GRAY);
 
+		const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
+		const bool useL2 = true;
 		cv::Mat edge;
-		local::canny(gray, edge);
+		canny(gray, lowerEdgeThreshold, upperEdgeThreshold, useL2, edge);
 
 		cv::Mat cedge;
 		img.copyTo(cedge, edge);

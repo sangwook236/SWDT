@@ -11,27 +11,30 @@
 namespace {
 namespace local {
 
-void structure_tensor_2d(const cv::Mat &img, const double sigma, const double rho, cv::Mat &eval1, cv::Mat &eval2, cv::Mat &evec1, cv::Mat &evec2)
+void structure_tensor_2d(const cv::Mat &img, const double deriv_sigma, const double blur_sigma, cv::Mat &eval1, cv::Mat &eval2, cv::Mat &evec1, cv::Mat &evec2)
 {
-	const double sigma2 = sigma * sigma;
+	const double sigma2 = deriv_sigma * deriv_sigma;
 	const double _2sigma2 = 2.0 * sigma2;
-	const double sigma3 = sigma2 * sigma;
+	const double sigma3 = sigma2 * deriv_sigma;
 	const double den = std::sqrt(2.0 * boost::math::constants::pi<double>()) * sigma3;
 
-	const int kernel_size = 2 * (int)std::ceil(sigma) + 1;
-	cv::Mat kernelX(1, kernel_size, CV_64FC1), kernelY(kernel_size, 1, CV_64FC1);
+	const int deriv_kernel_size = 2 * (int)std::ceil(deriv_sigma) + 1;
+	cv::Mat kernelX(1, deriv_kernel_size, CV_64FC1), kernelY(deriv_kernel_size, 1, CV_64FC1);
 
-	// TODO [check] >> are Ix & Iy correct?
-	for (int i = 0, k = -kernel_size/2; k <= kernel_size/2; ++i, ++k)
+	// construct derivative kernels.
+	for (int i = 0, k = -deriv_kernel_size/2; k <= deriv_kernel_size/2; ++i, ++k)
 	{
 		const double val = k * std::exp(-k*k / _2sigma2) / den;
 		kernelX.at<double>(0, i) = val;
 		kernelY.at<double>(i, 0) = val;
 	}
 
+	// compute x- & y-gradients.
 	cv::Mat Ix, Iy;
 	cv::filter2D(img, Ix, -1, kernelX, cv::Point(-1, -1), 0.0, cv::BORDER_DEFAULT);
 	cv::filter2D(img, Iy, -1, kernelY, cv::Point(-1, -1), 0.0, cv::BORDER_DEFAULT);
+
+	// solve eigensystem.
 
 	const cv::Mat Ix2 = Ix.mul(Ix);  // Ix^2 = Ix * Ix
 	const cv::Mat Iy2 = Iy.mul(Iy);  // Iy^2 = Iy * Iy
@@ -39,10 +42,10 @@ void structure_tensor_2d(const cv::Mat &img, const double sigma, const double rh
 
 #if 1
 	// TODO [add] >> if Gaussian blur is required, blurring is applied to Ix2, Iy2, & IxIy.
-	const int kernel_size2 = 2 * (int)std::ceil(rho) + 1;
-	cv::GaussianBlur(Ix2, Ix2, cv::Size(kernel_size2, kernel_size2), rho, rho, cv::BORDER_DEFAULT);
-	cv::GaussianBlur(Iy2, Iy2, cv::Size(kernel_size2, kernel_size2), rho, rho, cv::BORDER_DEFAULT);
-	cv::GaussianBlur(IxIy, IxIy, cv::Size(kernel_size2, kernel_size2), rho, rho, cv::BORDER_DEFAULT);
+	const int blur_kernel_size = 2 * (int)std::ceil(blur_sigma) + 1;
+	cv::GaussianBlur(Ix2, Ix2, cv::Size(blur_kernel_size, blur_kernel_size), blur_sigma, blur_sigma, cv::BORDER_DEFAULT);
+	cv::GaussianBlur(Iy2, Iy2, cv::Size(blur_kernel_size, blur_kernel_size), blur_sigma, blur_sigma, cv::BORDER_DEFAULT);
+	cv::GaussianBlur(IxIy, IxIy, cv::Size(blur_kernel_size, blur_kernel_size), blur_sigma, blur_sigma, cv::BORDER_DEFAULT);
 #endif
 
 	// structure tensor at point (i, j), S = [ Ix2(i, j) IxIy(i, j) ; IxIy(i, j) Iy2(i, j) ];
@@ -153,11 +156,14 @@ namespace my_opencv {
 
 void structure_tensor()
 {
-#if 0
-	const std::string input_filename("./machine_vision_data/opencv/thinning_img_1.png");
+#if 1
+	const std::string input_filename("./machine_vision_data/opencv/synthesized_training_image1.bmp");
+	//const std::string input_filename("./machine_vision_data/opencv/thinning_img_1.png");
 	//const std::string input_filename("./machine_vision_data/opencv/thinning_img_2.jpg");
 	const cv::Mat &src = cv::imread(input_filename);
-#elif 1
+
+	const bool useGray = true;
+#elif 0
 	//const std::string input_filename("D:/working_copy/swl_https/cpp/bin/data/kinect_segmentation/kinect_depth_rectified_valid_20130614T162309.png");
 	//const std::string input_filename("D:/working_copy/swl_https/cpp/bin/data/kinect_segmentation/kinect_depth_rectified_valid_20130614T162314.png");
 	//const std::string input_filename("D:/working_copy/swl_https/cpp/bin/data/kinect_segmentation/kinect_depth_rectified_valid_20130614T162348.png");
@@ -165,6 +171,8 @@ void structure_tensor()
 	//const std::string input_filename("D:/working_copy/swl_https/cpp/bin/data/kinect_segmentation/kinect_depth_rectified_valid_20130614T162525.png");
 	//const std::string input_filename("D:/working_copy/swl_https/cpp/bin/data/kinect_segmentation/kinect_depth_rectified_valid_20130614T162552.png");
 	const cv::Mat &src = cv::imread(input_filename, cv::IMREAD_UNCHANGED);
+
+	const bool useGray = false;
 #endif
 	if (src.empty())
 	{
@@ -172,27 +180,35 @@ void structure_tensor()
 		return;
 	}
 
-	//cv::imshow("src image", src);
-
 	{
 		cv::Mat img_double;
-#if 0
-		cv::Mat gray;
-		cv::cvtColor(src, gray, CV_BGR2GRAY);
-
-		gray.convertTo(img_double, CV_64FC1, 1.0 / 255.0, 0.0);
-#elif 1
 		double minVal, maxVal;
-		cv::minMaxLoc(src, &minVal, &maxVal);
-		src.convertTo(img_double, CV_64FC1, 1.0 / (maxVal - minVal), -minVal / (maxVal - minVal));
-#endif
 
-		const double sigma = 3.0;
-		const double rho = 2.0;
+		if (useGray)
+		{
+			cv::Mat gray;
+			cv::cvtColor(src, gray, CV_BGR2GRAY);
+
+			gray.convertTo(img_double, CV_64FC1, 1.0 / 255.0, 0.0);
+		}
+		else
+		{
+			cv::minMaxLoc(src, &minVal, &maxVal);
+			src.convertTo(img_double, CV_64FC1, 1.0 / (maxVal - minVal), -minVal / (maxVal - minVal));
+		}
+
+		{
+			cv::Mat tmp;
+			img_double.convertTo(tmp, CV_32FC1, 1.0, 0.0);
+			cv::imshow("src image", tmp);
+		}
+
+		const double deriv_sigma = 3.0;
+		const double blur_sigma = 2.0;
 		cv::Mat eval1, eval2, evec1, evec2;
 		{
 			boost::timer::auto_cpu_timer timer;
-			local::structure_tensor_2d(img_double, sigma, rho, eval1, eval2, evec1, evec2);
+			local::structure_tensor_2d(img_double, deriv_sigma, blur_sigma, eval1, eval2, evec1, evec2);
 		}
 
 		// post-processing.
@@ -217,8 +233,8 @@ void structure_tensor()
 				local::compute_valid_region_using_coherence(eval1, eval2, valid_eval_region_mask, constant_region_mask, valid_region);
 			}
 
-			//cv::imshow("structure tensor - coherence", valid_region);
-			cv::imwrite("./machine_vision_data/opencv/structure_tensor_coherence.png", valid_region);
+			cv::imshow("structure tensor - coherence", valid_region);
+			//cv::imwrite("./machine_vision_data/opencv/structure_tensor_coherence.png", valid_region);
 		}
 
 		// METHOD #2: using the ratio of eigenvales.
@@ -229,8 +245,8 @@ void structure_tensor()
 				local::compute_valid_region_using_ev_ratio(eval1, eval2, valid_eval_region_mask, constant_region_mask, valid_region);
 			}
 
-			//cv::imshow("structure tensor - ratio of eigenvalues", valid_region);
-			cv::imwrite("./machine_vision_data/opencv/structure_tensor_ev_ratio.png", valid_region);
+			cv::imshow("structure tensor - ratio of eigenvalues", valid_region);
+			//cv::imwrite("./machine_vision_data/opencv/structure_tensor_ev_ratio.png", valid_region);
 		}
 	}
 

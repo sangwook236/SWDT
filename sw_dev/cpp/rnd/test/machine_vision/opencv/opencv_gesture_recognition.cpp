@@ -141,12 +141,41 @@ void gesture_recognition_by_frequency(cv::VideoCapture &capture)
 
 		// smoothing
 #if 0
-		// down-scale and up-scale the image to filter out the noise
+		// METHOD #1: down-scale and up-scale the image to filter out the noise.
+
 		cv::pyrDown(gray, blurred);
 		cv::pyrUp(blurred, gray);
 #elif 0
-		blurred = gray;
-		cv::boxFilter(blurred, gray, blurred.type(), cv::Size(5, 5));
+		// METHOD #2: Gaussian filtering.
+
+		{
+			// FIXME [adjust] >> adjust parameters.
+			const int kernelSize = 3;
+			const double sigma = 0;
+			cv::GaussianBlur(rgb_input_image, rgb_input_image, cv::Size(kernelSize, kernelSize), sigma, sigma);
+		}
+#elif 0
+		// METHOD #3: box filtering.
+
+		{
+			tmp_image = rgb_input_image;
+			// FIXME [adjust] >> adjust parameters.
+			const int d = -1;
+			const int kernelSize = 5;
+			const bool normalize = true;
+			cv::boxFilter(tmp_image, rgb_input_image, d, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+		}
+#elif 0
+		// METHOD #4: bilateral filtering.
+
+		{
+			tmp_image = rgb_input_image;
+			// FIXME [adjust] >> adjust parameters.
+			const int d = -1;
+			const double sigmaColor = 3.0;
+			const double sigmaSpace = 50.0;
+			cv::bilateralFilter(tmp_image, rgb_input_image, d, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+		}
 #endif
 
 		// FIXME [delete] >>
@@ -1040,12 +1069,41 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 
 		// smoothing
 #if 0
-		// down-scale and up-scale the image to filter out the noise
+		// METHOD #1: down-scale and up-scale the image to filter out the noise.
+
 		cv::pyrDown(gray, blurred);
 		cv::pyrUp(blurred, gray);
 #elif 0
-		blurred = gray;
-		cv::boxFilter(blurred, gray, blurred.type(), cv::Size(5, 5));
+		// METHOD #2: Gaussian filtering.
+
+		{
+			// FIXME [adjust] >> adjust parameters.
+			const int kernelSize = 3;
+			const double sigma = 0;
+			cv::GaussianBlur(gray, gray, cv::Size(kernelSize, kernelSize), sigma, sigma);
+		}
+#elif 0
+		// METHOD #3: box filtering.
+
+		{
+			blurred = gray;
+			// FIXME [adjust] >> adjust parameters.
+			const int d = -1;
+			const int kernelSize = 5;
+			const bool normalize = true;
+			cv::boxFilter(blurred, gray, d, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+		}
+#elif 0
+		// METHOD #4: bilateral filtering.
+
+		{
+			blurred = gray;
+			// FIXME [adjust] >> adjust parameters.
+			const int d = -1;
+			const double sigmaColor = 3.0;
+			const double sigmaSpace = 50.0;
+			cv::bilateralFilter(blurred, gray, d, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+		}
 #endif
 
 		cv::cvtColor(gray, img, CV_GRAY2BGR);

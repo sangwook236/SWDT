@@ -249,9 +249,9 @@ void refine_segments(const cv::Mat &img, cv::Mat &mask, cv::Mat &dst)
 	const int num_iterations = 3;
 
 	cv::Mat temp;
-	cv::dilate(mask, temp, cv::Mat(), cv::Point(-1,-1), num_iterations);
-	cv::erode(temp, temp, cv::Mat(), cv::Point(-1,-1), num_iterations * 2);
-	cv::dilate(temp, temp, cv::Mat(), cv::Point(-1,-1), num_iterations);
+	cv::dilate(mask, temp, cv::Mat(), cv::Point(-1, -1), num_iterations);
+	cv::erode(temp, temp, cv::Mat(), cv::Point(-1, -1), num_iterations * 2);
+	cv::dilate(temp, temp, cv::Mat(), cv::Point(-1, -1), num_iterations);
 
 	std::vector<std::vector<cv::Point> > contours;
 	std::vector<cv::Vec4i> hierarchy;

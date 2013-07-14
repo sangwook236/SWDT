@@ -13,8 +13,9 @@
 
 namespace my_opencv {
 
-void canny(const cv::Mat &gray, cv::Mat &edge);
-void sobel(const cv::Mat &gray, cv::Mat &edge);
+// [ref] ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp
+void canny(const cv::Mat &gray, const int lowerEdgeThreshold, const int upperEdgeThreshold, const bool useL2, cv::Mat &edge);
+void sobel(const cv::Mat &gray, const double thresholdRatio, cv::Mat &gradient);
 
 void segment_motion_using_mhi(const double timestamp, const double mhiTimeDuration, const cv::Mat &prev_gray_img, const cv::Mat &curr_gray_img, cv::Mat &mhi, cv::Mat &processed_mhi, cv::Mat &component_label_map, std::vector<cv::Rect> &component_rects);
 
@@ -56,9 +57,11 @@ void save_ref_hand_image()
 
 		cv::Mat edge, edge_img;
 #if defined(__USE_CANNY)
-		my_opencv::canny(gray, edge);
+		const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
+		const bool useL2 = true;
+		my_opencv::canny(gray, lowerEdgeThreshold, upperEdgeThreshold, useL2, edge);
 #elif defined(__USE_SOBEL)
-		my_opencv::sobel(gray, edge);
+		my_opencv::sobel(gray, -1.0, edge);
 #endif
 
 		if (!edge.empty())
@@ -125,7 +128,9 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		img.copyTo(mask_img, mask);
 		cv::cvtColor(mask_img, gray, CV_BGR2GRAY);
 
-		my_opencv::canny(gray, edge);
+		const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
+		const bool useL2 = true;
+		my_opencv::canny(gray, lowerEdgeThreshold, upperEdgeThreshold, useL2, edge);
 
 		const double thresholdRatio = 0.30;
 		double minVal = 0.0, maxVal = 0.0;
@@ -139,7 +144,7 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		img.copyTo(mask_img, mask);
 		cv::cvtColor(mask_img, gray, CV_BGR2GRAY);
 
-		my_opencv::sobel(gray, edge);
+		my_opencv::sobel(gray, -1.0, edge);
 
 		const double thresholdRatio = 0.05;
 		double minVal = 0.0, maxVal = 0.0;
@@ -154,7 +159,9 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		cv::Mat gray, edge, edge_img;
 		cv::cvtColor(mask_img, gray, CV_BGR2GRAY);
 
-		my_opencv::canny(gray, edge);
+		const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
+		const bool useL2 = true;
+		my_opencv::canny(gray, lowerEdgeThreshold, upperEdgeThreshold, useL2, edge);
 
 		const double thresholdRatio = 0.30;
 		double minVal = 0.0, maxVal = 0.0;
@@ -177,7 +184,7 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		cv::Mat gray, edge, edge_img;
 		cv::cvtColor(img(aabb), gray, CV_BGR2GRAY);
 
-		my_opencv::sobel(gray, edge);
+		my_opencv::sobel(gray, -1.0, edge);
 
 		const double thresholdRatio = 0.05;
 		double minVal = 0.0, maxVal = 0.0;
@@ -337,12 +344,41 @@ void detect_hand_by_motion()
 
 		// smoothing
 #if 0
-		// down-scale and up-scale the image to filter out the noise
+		// METHOD #1: down-scale and up-scale the image to filter out the noise.
+
 		cv::pyrDown(gray, blurred);
 		cv::pyrUp(blurred, gray);
 #elif 0
-		blurred = gray;
-		cv::boxFilter(blurred, gray, blurred.type(), cv::Size(5, 5));
+		// METHOD #2: Gaussian filtering.
+
+		{
+			// FIXME [adjust] >> adjust parameters.
+			const int kernelSize = 3;
+			const double sigma = 0;
+			cv::GaussianBlur(gray, gray, cv::Size(kernelSize, kernelSize), sigma, sigma);
+		}
+#elif 0
+		// METHOD #3: box filtering.
+
+		{
+			blurred = gray;
+			// FIXME [adjust] >> adjust parameters.
+			const int d = -1;
+			const int kernelSize = 5;
+			const bool normalize = true;
+			cv::boxFilter(blurred, gray, d, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+		}
+#elif 0
+		// METHOD #4: bilateral filtering.
+
+		{
+			blurred = gray;
+			// FIXME [adjust] >> adjust parameters.
+			const int d = -1;
+			const double sigmaColor = 3.0;
+			const double sigmaSpace = 50.0;
+			cv::bilateralFilter(blurred, gray, d, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+		}
 #endif
 
 		cv::cvtColor(gray, mhi_img, CV_GRAY2BGR);

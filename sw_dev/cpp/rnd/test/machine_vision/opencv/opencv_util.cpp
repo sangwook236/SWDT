@@ -49,7 +49,7 @@ cv::Rect get_bounding_box(const std::vector<cv::Point> &points)
 	return cv::Rect(boost::polygon::xl(rect), boost::polygon::yl(rect), boost::polygon::xh(rect) - boost::polygon::xl(rect), boost::polygon::yh(rect) - boost::polygon::yl(rect));
 }
 
-void canny(const cv::Mat &gray, cv::Mat &edge)
+void canny(const cv::Mat &gray, const int lowerEdgeThreshold, const int upperEdgeThreshold, const bool useL2, cv::Mat &edge)
 {
 #if 0
 	// down-scale and up-scale the image to filter out the noise
@@ -57,25 +57,33 @@ void canny(const cv::Mat &gray, cv::Mat &edge)
 	cv::pyrDown(gray, blurred);
 	cv::pyrUp(blurred, edge);
 #else
-	cv::blur(gray, edge, cv::Size(3, 3));
+	const int ksize = 3;
+	cv::blur(gray, edge, cv::Size(ksize, ksize));
 #endif
 
 	// run the edge detector on grayscale
-	const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
-	const bool useL2 = true;
-	cv::Canny(edge, edge, lowerEdgeThreshold, upperEdgeThreshold, 3, useL2);
+	const int apertureSize = 3;
+	cv::Canny(edge, edge, lowerEdgeThreshold, upperEdgeThreshold, apertureSize, useL2);
 }
 
-void sobel(const cv::Mat &gray, cv::Mat &edge)
+void sobel(const cv::Mat &gray, const double thresholdRatio, cv::Mat &gradient)
 {
 	//const int ksize = 5;
 	const int ksize = CV_SCHARR;
 	cv::Mat xgradient, ygradient;
 
-	cv::Sobel(gray, xgradient, CV_32FC1, 1, 0, ksize, 1.0, 0.0);
-	cv::Sobel(gray, ygradient, CV_32FC1, 0, 1, ksize, 1.0, 0.0);
+	cv::Sobel(gray, xgradient, CV_32FC1, 1, 0, ksize, 1.0, 0.0, cv::BORDER_DEFAULT);
+	cv::Sobel(gray, ygradient, CV_32FC1, 0, 1, ksize, 1.0, 0.0, cv::BORDER_DEFAULT);
 
-	cv::magnitude(xgradient, ygradient, edge);
+	cv::magnitude(xgradient, ygradient, gradient);
+
+	if (0.0 < thresholdRatio && thresholdRatio <= 1.0)
+	{
+		double minVal = 0.0, maxVal = 0.0;
+		cv::minMaxLoc(gradient, &minVal, &maxVal);
+		gradient = gradient >= (minVal + (maxVal - minVal) * thresholdRatio);
+		//cv::compare(gradient, minVal + (maxVal - minVal) * thresholdRatio, gradient, cv::CMP_GT);
+	}
 }
 
 void dilation(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations)

@@ -182,8 +182,8 @@ void stereo_correspondence_using_similarity_measure(const cv::Mat &leftImage, co
 	// mean filter
 	cv::Mat meanMat_ref(cv::Mat::zeros(rows, cols, CV_32FC1)), meanMat_target(cv::Mat::zeros(rows, cols, CV_32FC1));
 	{
-		cv::boxFilter(img_ref_f, meanMat_ref, -1, cv::Size(windowSize, windowSize), cv::Point(-1,-1), true, cv::BORDER_REPLICATE);
-		cv::boxFilter(img_target_f, meanMat_target, -1, cv::Size(windowSize, windowSize), cv::Point(-1,-1), true, cv::BORDER_REPLICATE);
+		cv::boxFilter(img_ref_f, meanMat_ref, -1, cv::Size(windowSize, windowSize), cv::Point(-1, -1), true, cv::BORDER_REPLICATE);
+		cv::boxFilter(img_target_f, meanMat_target, -1, cv::Size(windowSize, windowSize), cv::Point(-1, -1), true, cv::BORDER_REPLICATE);
 	}
 #endif
 

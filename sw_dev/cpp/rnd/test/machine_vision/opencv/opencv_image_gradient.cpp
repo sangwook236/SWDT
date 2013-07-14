@@ -1,19 +1,13 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/opencv.hpp>
+#include <boost/math/constants/constants.hpp>
 #include <iostream>
 #include <list>
 
 
 namespace {
 namespace local {
-
-void sobel(const cv::Mat &gray, cv::Mat &xgradient, cv::Mat &ygradient, const int ksize)
-{
-	cv::Sobel(gray, xgradient, CV_32FC1, 1, 0, ksize, 1.0, 0.0);
-	cv::Sobel(gray, ygradient, CV_32FC1, 0, 1, ksize, 1.0, 0.0);
-}
 
 }  // namespace local
 }  // unnamed namespace
@@ -100,11 +94,70 @@ void image_gradient()
 			cv::cvtColor(img, gray, CV_BGR2GRAY);
 			//cv::cvtColor(img, gray, CV_RGB2GRAY);
 
-		//
-		const int ksize = 5;
+		// compute x- & y-gradients.
 		cv::Mat xgradient, ygradient;
-		//local::sobel(gray, xgradient, ygradient, ksize);
-		local::sobel(gray, xgradient, ygradient, CV_SCHARR);  // use Scharr operator
+#if 0
+		// METHOD #1: using Sobel operator.
+
+		//const int ksize = 5;
+		const int ksize = CV_SCHARR;  // use Scharr operator
+		cv::Sobel(gray, xgradient, CV_32FC1, 1, 0, ksize, 1.0, 0.0, cv::BORDER_DEFAULT);
+		cv::Sobel(gray, ygradient, CV_32FC1, 0, 1, ksize, 1.0, 0.0, cv::BORDER_DEFAULT);
+#elif 1
+		// METHOD #2: using derivative of Gaussian distribution.
+
+		{
+			cv::Mat img_double;
+			double minVal, maxVal;
+			cv::minMaxLoc(gray, &minVal, &maxVal);
+			gray.convertTo(img_double, CV_64FC1, 1.0 / (maxVal - minVal), -minVal / (maxVal - minVal));
+
+			const double deriv_sigma = 3.0;
+			const double blur_sigma = 2.0;
+
+			const double sigma2 = deriv_sigma * deriv_sigma;
+			const double _2sigma2 = 2.0 * sigma2;
+			const double sigma3 = sigma2 * deriv_sigma;
+			const double den = std::sqrt(2.0 * boost::math::constants::pi<double>()) * sigma3;
+
+			const int deriv_kernel_size = 2 * (int)std::ceil(deriv_sigma) + 1;
+			cv::Mat kernelX(1, deriv_kernel_size, CV_64FC1), kernelY(deriv_kernel_size, 1, CV_64FC1);
+
+			// construct derivative kernels.
+			for (int i = 0, k = -deriv_kernel_size/2; k <= deriv_kernel_size/2; ++i, ++k)
+			{
+				const double val = k * std::exp(-k*k / _2sigma2) / den;
+				kernelX.at<double>(0, i) = val;
+				kernelY.at<double>(i, 0) = val;
+			}
+
+			// compute x- & y-gradients.
+			cv::filter2D(img_double, xgradient, -1, kernelX, cv::Point(-1, -1), 0.0, cv::BORDER_DEFAULT);
+			cv::filter2D(img_double, ygradient, -1, kernelY, cv::Point(-1, -1), 0.0, cv::BORDER_DEFAULT);
+		}
+#endif
+
+#if 1
+		// display gradients.
+		{
+			double minVal, maxVal;
+			cv::minMaxLoc(xgradient, &minVal, &maxVal);
+			std::cout << "x-gradient: min = " << minVal << ", max = " << maxVal << std::endl;
+			cv::minMaxLoc(ygradient, &minVal, &maxVal);
+			std::cout << "y-gradient: min = " << minVal << ", max = " << maxVal << std::endl;
+
+			cv::Mat Ix = cv::abs(xgradient);
+			cv::Mat Iy = cv::abs(ygradient);
+
+			cv::Mat tmp;
+			cv::minMaxLoc(Ix, &minVal, &maxVal);
+			Ix.convertTo(tmp, CV_32FC1, 1.0 / maxVal, 0.0);
+			cv::imshow("x-directional gradient - Sobel", tmp);
+			cv::minMaxLoc(Iy, &minVal, &maxVal);
+			Iy.convertTo(tmp, CV_32FC1, 1.0 / maxVal, 0.0);
+			cv::imshow("y-directional gradient - Sobel", tmp);
+		}
+#endif
 
 		cv::Mat gradient, gradient_mask;
 		cv::magnitude(xgradient, ygradient, gradient);
@@ -112,12 +165,13 @@ void image_gradient()
 		const double thresholdRatio = 0.1;
 		double minVal = 0.0, maxVal = 0.0;
 		cv::minMaxLoc(gradient, &minVal, &maxVal);
-		cv::compare(gradient, minVal + (maxVal - minVal) * thresholdRatio, gradient_mask, cv::CMP_GT);
+		gradient_mask = gradient >= (minVal + (maxVal - minVal) * thresholdRatio);
+		//cv::compare(gradient, minVal + (maxVal - minVal) * thresholdRatio, gradient_mask, cv::CMP_GT);
 
 		cv::cvtColor(gradient_mask, gradient, CV_GRAY2BGR);
 
-		// draw gradient
 #if 0
+		// draw gradients.
 		const float maxGradientLen = 20.0f;
 		for (int r = 0; r < gradient_mask.rows; ++r)
 			for (int c = 0; c < gradient_mask.cols; ++c)
@@ -143,8 +197,7 @@ void image_gradient()
 			break;
 	}
 
-	cv::destroyWindow(windowName1);
-	cv::destroyWindow(windowName2);
+	cv::destroyAllWindows();
 }
 
 }  // namespace my_opencv

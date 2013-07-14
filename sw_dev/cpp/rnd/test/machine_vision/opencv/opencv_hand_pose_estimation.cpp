@@ -1009,12 +1009,41 @@ void hand_pose_estimation()
 
 			// smoothing
 #if 0
-			// down-scale and up-scale the image to filter out the noise
-			cv::pyrDown(gray, blurred);
-			cv::pyrUp(blurred, gray);
+			// METHOD #1: down-scale and up-scale the image to filter out the noise.
+
+				cv::pyrDown(gray, blurred);
+				cv::pyrUp(blurred, gray);
 #elif 0
-			blurred = gray;
-			cv::boxFilter(blurred, gray, blurred.type(), cv::Size(5, 5));
+			// METHOD #2: Gaussian filtering.
+
+			{
+				// FIXME [adjust] >> adjust parameters.
+				const int kernelSize = 3;
+				const double sigma = 0;
+				cv::GaussianBlur(gray, gray, cv::Size(kernelSize, kernelSize), sigma, sigma);
+			}
+#elif 0
+			// METHOD #3: box filtering.
+
+			{
+				blurred = gray;
+				// FIXME [adjust] >> adjust parameters.
+				const int d = -1;
+				const int kernelSize = 5;
+				const bool normalize = true;
+				cv::boxFilter(blurred, gray, d, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+			}
+#elif 0
+			// METHOD #4: bilateral filtering.
+
+			{
+				blurred = gray;
+				// FIXME [adjust] >> adjust parameters.
+				const int d = -1;
+				const double sigmaColor = 3.0;
+				const double sigmaSpace = 50.0;
+				cv::bilateralFilter(blurred, gray, d, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+			}
 #endif
 
 			if  (!prevgray.empty())

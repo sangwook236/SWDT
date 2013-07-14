@@ -1,7 +1,7 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/opencv.hpp>
+#include <boost/timer/timer.hpp>
 #include <iostream>
 #include <list>
 
@@ -9,12 +9,33 @@
 namespace {
 namespace local {
 
+void mean_filtering(const cv::Mat &image, cv::Mat &filtered)
+{
+	// mean filter.
+	const int d = -1;
+	const int kernelSize = 5;
+	const bool normalize = true;
+	cv::boxFilter(image, filtered, d, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_REPLICATE);
+
+	// Unnormalized box filter is useful for computing various integral characteristics over each pixel neighborhood,
+	// such as covariance matrices of image derivatives (used in dense optical flow algorithms, and so on).
+	// If you need to compute pixel sums over variable-size windows, use cv::integral() .
+}
+
 void bilateral_filtering(const cv::Mat &image, cv::Mat &filtered)
 {
 	const int d = -1;
 	const double sigmaColor = 3.0;
 	const double sigmaSpace = 50.0;
 	cv::bilateralFilter(image, filtered, d, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+}
+
+void integral_image(const cv::Mat &image, cv::Mat &sum)
+{
+	// integral image.
+	cv::Mat sqsum, tilted;
+	const int sdepth = -1;
+	cv::integral(image, sum, sqsum, tilted, sdepth);
 }
 
 }  // namespace local
@@ -96,11 +117,7 @@ void image_filtering()
 	filenames.push_back("./machine_vision_data/opencv/simple_hand_13.jpg");
 #endif
 
-	const std::string windowName1("image filtering - original");
-	const std::string windowName2("image filtering - filtered");
-	cv::namedWindow(windowName1, cv::WINDOW_AUTOSIZE);
-	cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
-
+	cv::Mat resultant;
 	for (std::list<std::string>::iterator it = filenames.begin(); it != filenames.end(); ++it)
     {
 		const cv::Mat img = cv::imread(*it, CV_LOAD_IMAGE_COLOR);
@@ -110,19 +127,50 @@ void image_filtering()
 			continue;
 		}
 
-		cv::Mat filtered;
-		local::bilateral_filtering(img, filtered);
+		cv::imshow("image filtering - src", img);
 
-		cv::imshow(windowName1, img);
-		cv::imshow(windowName2, filtered);
+		// mean filtering.
+		{
+			{
+				boost::timer::auto_cpu_timer timer;
+				local::mean_filtering(img, resultant);
+			}
+
+			cv::imshow("image filtering - mean filtering", resultant);
+		}
+
+		// bilateral filtering.
+		{
+			{
+				boost::timer::auto_cpu_timer timer;
+				local::bilateral_filtering(img, resultant);
+			}
+
+			cv::imshow("image filtering - bilateral filtering", resultant);
+		}
+
+		// integral image.
+		{
+			{
+				boost::timer::auto_cpu_timer timer;
+				local::integral_image(img, resultant);  // resultant: CV_32SC3.
+			}
+
+			{
+				cv::Mat img_double;
+				img.convertTo(img_double, CV_64FC3, 1.0, 0.0);
+
+				boost::timer::auto_cpu_timer timer;
+				local::integral_image(img_double, resultant);  // resultant: CV_64SC3.
+			}
+		}
 
 		const unsigned char key = cv::waitKey(0);
 		if (27 == key)
 			break;
 	}
 
-	cv::destroyWindow(windowName1);
-	cv::destroyWindow(windowName2);
+	cv::destroyAllWindows();
 }
 
 }  // namespace my_opencv
