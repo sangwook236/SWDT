@@ -3,6 +3,7 @@
 #include <boost/random/uniform_real.hpp>
 #include <boost/random/normal_distribution.hpp>
 #include <boost/random/variate_generator.hpp>
+#include <boost/random.hpp>
 #include <iostream>
 #include <fstream>
 #include <ctime>
@@ -17,6 +18,7 @@ namespace local {
 void random_boost()
 {
 	typedef boost::minstd_rand base_generator_type;
+	//typedef boost::mt19937 base_generator_type;
 	base_generator_type baseGenerator(static_cast<unsigned int>(std::time(NULL)));
 
 	// uniform (integer)

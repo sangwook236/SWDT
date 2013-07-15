@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\particleplusplus">
+      <UniqueIdentifier>{6cab98c7-0915-4e6d-840e-143ec5ef65c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\smctc">
+      <UniqueIdentifier>{bc64333b-21e3-4425-902f-e229cacea6be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\condensation">
+      <UniqueIdentifier>{25d7b7c8-42ca-4015-bda3-f680fa18648b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\condensation_lib">
+      <UniqueIdentifier>{8d36b931-0769-45a7-b7f1-12c02b298560}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="smctc\pffuncs.h">
+      <Filter>Source Files\smctc</Filter>
+    </None>
+    <None Include="smctc\simfunctions.h">
+      <Filter>Source Files\smctc</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="smctc\markovchain.h">
+      <Filter>Source Files\smctc</Filter>
+    </ClInclude>
+    <ClInclude Include="condensation_lib\condensation.h">
+      <Filter>Source Files\condensation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="condensation_lib\data_types.h">
+      <Filter>Source Files\condensation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="condensation_lib\model_parameters.h">
+      <Filter>Source Files\condensation_lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="particleplusplus\particleplusplus_main.cpp">
+      <Filter>Source Files\particleplusplus</Filter>
+    </ClCompile>
+    <ClCompile Include="smctc\smctc_main.cpp">
+      <Filter>Source Files\smctc</Filter>
+    </ClCompile>
+    <ClCompile Include="smctc\smctc_pf_example.cpp">
+      <Filter>Source Files\smctc</Filter>
+    </ClCompile>
+    <ClCompile Include="smctc\smctc_rare_event_example.cpp">
+      <Filter>Source Files\smctc</Filter>
+    </ClCompile>
+    <ClCompile Include="smctc\pffuncs.cpp">
+      <Filter>Source Files\smctc</Filter>
+    </ClCompile>
+    <ClCompile Include="smctc\simfunctions.cpp">
+      <Filter>Source Files\smctc</Filter>
+    </ClCompile>
+    <ClCompile Include="condensation_lib\utility.cpp">
+      <Filter>Source Files\condensation_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="condensation_lib\model_specific.cpp">
+      <Filter>Source Files\condensation_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="condensation_lib\condensation.cpp">
+      <Filter>Source Files\condensation_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="condensation\condensation_main.cpp">
+      <Filter>Source Files\condensation</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
