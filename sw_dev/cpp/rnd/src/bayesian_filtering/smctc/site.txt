@@ -1,0 +1,3 @@
+http://www.jstatsoft.org/v30/i06/
+
+[ref] "SMCTC: Sequential Monte Carlo in C++"
