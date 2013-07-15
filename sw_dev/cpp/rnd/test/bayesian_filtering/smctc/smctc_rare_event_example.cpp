@@ -1,7 +1,7 @@
 #include "simfunctions.h"
 #include <smctc/smctc.hh>
 #include <iostream>
-#include <cstdio> 
+#include <cstdio>
 #include <cstdlib>
 #include <cmath>
 
@@ -21,21 +21,21 @@ void rare_events_example()
 	const long lNumber = 1000;
 
 	// An array of move function pointers
-	void (*pfMoves[])(long, smc::particle<mChain<double> > &, smc::rng *) = { fMove1, fMove2 };
+	void (*pfMoves[])(long, smc::particle<mChain<double> > &, smc::rng *) = { simfunctions::fMove1, simfunctions::fMove2 };
 
-	smc::moveset<mChain<double> > Moveset(fInitialise, fSelect, sizeof(pfMoves) / sizeof(pfMoves[0]), pfMoves, fMCMC);
+	smc::moveset<mChain<double> > Moveset(simfunctions::fInitialise, simfunctions::fSelect, sizeof(pfMoves) / sizeof(pfMoves[0]), pfMoves, simfunctions::fMCMC);
 	smc::sampler<mChain<double> > Sampler(lNumber, SMC_HISTORY_RAM);
 
 	Sampler.SetResampleParams(SMC_RESAMPLE_STRATIFIED, 0.5);
 	Sampler.SetMoveSet(Moveset);
 
 	Sampler.Initialise();
-	Sampler.IterateUntil(lIterates);
+	Sampler.IterateUntil(simfunctions::lIterates);
 
 	// Estimate the normalising constant of the terminal distribution
-	const double zEstimate = Sampler.IntegratePathSampling(pIntegrandPS, pWidthPS, NULL) - std::log(2.0);
+	const double zEstimate = Sampler.IntegratePathSampling(simfunctions::pIntegrandPS, simfunctions::pWidthPS, NULL) - std::log(2.0);
 	// Estimate the weighting factor for the terminal distribution
-	const double wEstimate = Sampler.Integrate(pIntegrandFS, NULL);
+	const double wEstimate = Sampler.Integrate(simfunctions::pIntegrandFS, NULL);
 
 	std::cout << zEstimate << " " << std::log(wEstimate) << " " << zEstimate + std::log(wEstimate) << endl;
 }

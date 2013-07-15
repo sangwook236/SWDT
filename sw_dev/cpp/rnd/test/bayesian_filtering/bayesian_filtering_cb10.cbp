@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="bayesian_filtering" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../bin/bayesian_filtering_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../bin/bayesian_filtering" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++0x" />
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="/usr/local/include" />
+		</Compiler>
+		<Linker>
+			<Add library="smctc" />
+			<Add library="gsl" />
+			<Add library="gslcblas" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
+		<Unit filename="condensation/condensation_main.cpp" />
+		<Unit filename="condensation_lib/condensation.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="condensation_lib/condensation.h" />
+		<Unit filename="condensation_lib/data_types.h" />
+		<Unit filename="condensation_lib/model_parameters.h" />
+		<Unit filename="condensation_lib/model_specific.cpp" />
+		<Unit filename="condensation_lib/utility.cpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="particleplusplus/particleplusplus_main.cpp" />
+		<Unit filename="smctc/markovchain.h" />
+		<Unit filename="smctc/pffuncs.cpp" />
+		<Unit filename="smctc/pffuncs.h" />
+		<Unit filename="smctc/simfunctions.cpp" />
+		<Unit filename="smctc/simfunctions.h" />
+		<Unit filename="smctc/smctc_main.cpp" />
+		<Unit filename="smctc/smctc_pf_example.cpp" />
+		<Unit filename="smctc/smctc_rare_event_example.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

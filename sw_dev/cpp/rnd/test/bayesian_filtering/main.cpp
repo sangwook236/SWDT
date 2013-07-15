@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "condensation (CONditional DENsity propagATION) algorithm -----------" << std::endl;
-		condensation_main(argc, argv);
+		retval = condensation_main(argc, argv);
 
 		std::cout << "\nParticle++ library -------------------------------------------------" << std::endl;
 		//retval = particleplusplus_main(argc, argv);

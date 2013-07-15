@@ -5,6 +5,8 @@
 #include <cmath>
 
 
+namespace pffuncs {
+
 double var_s0 = 4;
 double var_u0 = 1;
 double var_s  = 0.02;
@@ -19,7 +21,7 @@ cv_obs *y = NULL;
 ///The function corresponding to the std::log likelihood at specified time and position (up to normalisation)
 
 ///  \param lTime The current time (i.e. the index of the current distribution)
-///  \param X     The state to consider 
+///  \param X     The state to consider
 double logLikelihood(long lTime, const cv_state &X)
 {
   return - 0.5 * (nu_y + 1.0) * (std::log(1 + std::pow((X.x_pos - y[lTime].x_pos)/scale_y,2) / nu_y) + std::log(1 + std::pow((X.y_pos - y[lTime].y_pos)/scale_y,2) / nu_y));
@@ -31,7 +33,7 @@ double logLikelihood(long lTime, const cv_state &X)
 smc::particle<cv_state> fInitialise(smc::rng *pRng)
 {
   cv_state value;
-  
+
   value.x_pos = pRng->Normal(0,std::sqrt(var_s0));
   value.y_pos = pRng->Normal(0,std::sqrt(var_s0));
   value.x_vel = pRng->Normal(0,std::sqrt(var_u0));
@@ -56,3 +58,5 @@ void fMove(long lTime, smc::particle<cv_state > & pFrom, smc::rng *pRng)
 
   pFrom.AddToLogWeight(logLikelihood(lTime, *cv_to));
 }
+
+}  // namespace pffuncs

@@ -1,6 +1,10 @@
 #include <particleplusplus/setting.h>
 #include <particleplusplus/pfilter.h>
+#if defined(WIN32) || defined(_WIN32)
 #include <boost/chrono.hpp>
+#else
+#include <chrono>
+#endif
 #include <boost/math/constants/constants.hpp>
 #include <fstream>
 #include <iostream>
@@ -19,7 +23,11 @@ typedef long double state_type;
 typedef long double obsv_type;
 
 // initialize the random seed.
+#if defined(WIN32) || defined(_WIN32)
 const unsigned long seed = boost::chrono::system_clock::now().time_since_epoch().count();
+#else
+const unsigned long seed = std::chrono::system_clock::now().time_since_epoch().count();
+#endif
 std::default_random_engine generator(seed);
 
 std::normal_distribution<state_type> distribution(0.0, 1.0);
@@ -72,11 +80,23 @@ void basic_sample()
 
 	particleFilter.initialize(2000);  // initialize with the number of particles we want to use.
 
+#if defined(WIN32) || defined(_WIN32)
 	const boost::chrono::high_resolution_clock::time_point t1 = boost::chrono::high_resolution_clock::now();
+#else
+	const std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+#endif
 	particleFilter.iterate();  // run
+#if defined(WIN32) || defined(_WIN32)
 	const boost::chrono::high_resolution_clock::time_point t2 = boost::chrono::high_resolution_clock::now();
+#else
+	const std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+#endif
 
+#if defined(WIN32) || defined(_WIN32)
 	const boost::chrono::duration<double> time_span = boost::chrono::duration_cast<boost::chrono::duration<double> >(t2 - t1);
+#else
+	const std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double> >(t2 - t1);
+#endif
 	std::cout << "it took " << time_span.count() << " seconds." << std::endl;
 
 	//

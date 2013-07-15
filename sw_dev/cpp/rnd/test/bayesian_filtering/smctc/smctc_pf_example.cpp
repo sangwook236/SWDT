@@ -1,7 +1,8 @@
 #include "pffuncs.h"
 #include <smctc/smctc.hh>
 #include <iostream>
-#include <cstdio> 
+#include <cstring>
+#include <cstdio>
 #include <cstdlib>
 #include <cmath>
 
@@ -9,7 +10,7 @@
 namespace {
 namespace local {
 
-long load_data(char const *szName, cv_obs **yp)
+long load_data(char const *szName, pffuncs::cv_obs **yp)
 {
 	FILE *fObs = fopen(szName, "rt");
 	if (!fObs)
@@ -19,7 +20,7 @@ long load_data(char const *szName, cv_obs **yp)
 	fgets(szBuffer, 1024, fObs);
 	long lIterates = strtol(szBuffer, NULL, 10);
 
-	*yp = new cv_obs[lIterates];
+	*yp = new pffuncs::cv_obs [lIterates];
 
 	for (long i = 0; i < lIterates; ++i)
 	{
@@ -34,24 +35,24 @@ long load_data(char const *szName, cv_obs **yp)
 	return lIterates;
 }
 
-double integrand_mean_x(const cv_state &s, void *)
+double integrand_mean_x(const pffuncs::cv_state &s, void *)
 {
 	return s.x_pos;
 }
 
-double integrand_var_x(const cv_state &s, void *vmx)
+double integrand_var_x(const pffuncs::cv_state &s, void *vmx)
 {
 	double *dmx = (double *)vmx;
 	double d = (s.x_pos - (*dmx));
 	return d * d;
 }
 
-double integrand_mean_y(const cv_state &s, void *)
+double integrand_mean_y(const pffuncs::cv_state &s, void *)
 {
 	return s.y_pos;
 }
 
-double integrand_var_y(const cv_state &s, void *vmy)
+double integrand_var_y(const pffuncs::cv_state &s, void *vmy)
 {
 	double *dmy = (double *)vmy;
 	double d = (s.y_pos - (*dmy));
@@ -70,11 +71,11 @@ void pf_example()
 	const long lNumber = 1000;
 
 	// Load observations
-	const long lIterates = local::load_data("./bayesian_filtering/data.csv", &y);
+	const long lIterates = local::load_data("./bayesian_filtering/data.csv", &pffuncs::y);
 
 	// Initialise and run the sampler
-	smc::sampler<cv_state> Sampler(lNumber, SMC_HISTORY_NONE);  
-	smc::moveset<cv_state> Moveset(fInitialise, fMove, NULL);
+	smc::sampler<pffuncs::cv_state> Sampler(lNumber, SMC_HISTORY_NONE);
+	smc::moveset<pffuncs::cv_state> Moveset(pffuncs::fInitialise, pffuncs::fMove, NULL);
 
 	Sampler.SetResampleParams(SMC_RESAMPLE_RESIDUAL, 0.5);
 	Sampler.SetMoveSet(Moveset);

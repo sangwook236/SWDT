@@ -2,6 +2,8 @@
 #include <smctc/smctc.hh>
 
 
+namespace simfunctions {
+
 extern long lIterates;
 extern long lNumber;
 extern long lChainLength;
@@ -30,3 +32,5 @@ double pIntegrandFS(const mChain<double>& dPos, void* pVoid);
 #define THRESHOLD dThreshold
 ///The number of steps in the Markov chain
 #define PATHLENGTH lChainLength
+
+}  // namespace simfunctions

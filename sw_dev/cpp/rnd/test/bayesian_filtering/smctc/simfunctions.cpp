@@ -5,6 +5,8 @@
 #include <gsl/gsl_randist.h>
 
 
+namespace simfunctions {
+
 // Length of Markov Chain
 long lChainLength = 15;
 // Number of distributions used
@@ -13,8 +15,6 @@ long lIterates;
 double dSchedule = 30.0;
 // Rare event threshold
 double dThreshold = 5.0;
-
-using namespace std;
 
 ///The function corresponding to the log posterior density at specified time and position
 
@@ -27,16 +27,16 @@ double logDensity(long lTime, const mChain<double> & X)
   mElement<double> *x = X.GetElement(0);
   mElement<double> *y = x->pNext;
   //Begin with the density exluding the effect of the potential
-  lp = log(gsl_ran_ugaussian_pdf(x->value));
+  lp = std::log(gsl_ran_ugaussian_pdf(x->value));
 
   while(y) {
-    lp += log(gsl_ran_ugaussian_pdf(y->value - x->value));
+    lp += std::log(gsl_ran_ugaussian_pdf(y->value - x->value));
     x = y;
     y = x->pNext;
   }
 
   //Now include the effect of the multiplicative potential function
-  lp -= log(1.0 + exp(-(ALPHA(lTime) * (x->value - THRESHOLD) )));
+  lp -= std::log(1.0 + std::exp(-(ALPHA(lTime) * (x->value - THRESHOLD) )));
   return lp;
 }
 
@@ -78,7 +78,7 @@ void fMove1(long lTime, smc::particle<mChain<double> > & pFrom, smc::rng *pRng)
   gridws = 0;
   for(int i = 0; i < 2*GRIDSIZE+1; i++) {
     NewPos[i] = pFrom.GetValue() + ((double)(i - GRIDSIZE))*delta;
-    gridweight[i] = exp(logDensity(lTime,NewPos[i]));
+    gridweight[i] = std::exp(logDensity(lTime,NewPos[i]));
     gridws        = gridws + gridweight[i];
   }
 
@@ -89,23 +89,23 @@ void fMove1(long lTime, smc::particle<mChain<double> > & pFrom, smc::rng *pRng)
     j++;
     dRUnif -= gridweight[j];
   }
-  
+
   pFrom.SetValue(NewPos[j]);
 
   // Now calculate the weight change which the particle suffers as a result
-  double logInc = log(gridweight[j]), Inc = 0; 
+  double logInc = std::log(gridweight[j]), Inc = 0;
 
   for(int i = 0; i < 2*GRIDSIZE+1; i++) {
     OldPos[i] = pFrom.GetValue() - ((double)(i - GRIDSIZE))*delta;
     gridws = 0;
     for(int k = 0; k < 2*GRIDSIZE+1; k++) {
       NewPos[k] = OldPos[i] + ((double)(k-GRIDSIZE))*delta;
-      gridweight[k] = exp(logDensity(lTime, NewPos[k]));
+      gridweight[k] = std::exp(logDensity(lTime, NewPos[k]));
       gridws += gridweight[k];
     }
-    Inc += exp(logDensity(lTime-1, OldPos[i])) * exp(logDensity(lTime, pFrom.GetValue())) / gridws;
+    Inc += std::exp(logDensity(lTime-1, OldPos[i])) * std::exp(logDensity(lTime, pFrom.GetValue())) / gridws;
   }
-    logInc -= log(Inc);
+    logInc -= std::log(Inc);
 
   pFrom.SetLogWeight(pFrom.GetLogWeight() + logInc);
 
@@ -117,6 +117,7 @@ void fMove1(long lTime, smc::particle<mChain<double> > & pFrom, smc::rng *pRng)
 
   return;
 }
+
 ///Another move function
 void fMove2(long lTime, smc::particle<mChain<double> > & pFrom, smc::rng *pRng)
 {
@@ -127,17 +128,17 @@ void fMove2(long lTime, smc::particle<mChain<double> > & pFrom, smc::rng *pRng)
 int fMCMC(long lTime, smc::particle<mChain<double> > & pFrom, smc::rng *pRng)
 {
   static smc::particle<mChain<double> > pTo;
-  
+
   mChain<double> * pMC = new mChain<double>;
 
-  for(int i = 0; i < pFrom.GetValue().GetLength(); i++) 
+  for(int i = 0; i < pFrom.GetValue().GetLength(); i++)
     pMC->AppendElement(pFrom.GetValue().GetElement(i)->value + pRng->Normal(0, 0.5));
   pTo.SetValue(*pMC);
   pTo.SetLogWeight(pFrom.GetLogWeight());
 
   delete pMC;
 
-  double alpha = exp(logDensity(lTime,pTo.GetValue()) - logDensity(lTime,pFrom.GetValue()));
+  double alpha = std::exp(logDensity(lTime,pTo.GetValue()) - logDensity(lTime,pFrom.GetValue()));
   if(alpha < 1)
     if (pRng->UniformS() > alpha) {
       return false;
@@ -151,7 +152,7 @@ int fMCMC(long lTime, smc::particle<mChain<double> > & pFrom, smc::rng *pRng)
 double pIntegrandPS(long lTime, const smc::particle<mChain<double> >& pPos, void* pVoid)
 {
   double dPos = pPos.GetValue().GetTerminal()->value;
-  return (dPos - THRESHOLD) / (1.0 + exp(ALPHA(lTime) * (dPos - THRESHOLD)));
+  return (dPos - THRESHOLD) / (1.0 + std::exp(ALPHA(lTime) * (dPos - THRESHOLD)));
 }
 
 ///A function which gives the width distribution for the path sampling step.
@@ -159,7 +160,7 @@ double pWidthPS(long lTime, void* pVoid)
 {
   if(lTime > 1 && lTime < lIterates)
     return ((0.5)*double(ALPHA(lTime+1.0)-ALPHA(lTime-1.0)));
-  else 
+  else
     return((0.5)*double(ALPHA(lTime+1.0)-ALPHA(lTime)) +(ALPHA(1)-0.0));
 }
 
@@ -167,9 +168,10 @@ double pWidthPS(long lTime, void* pVoid)
 double pIntegrandFS(const mChain<double>& dPos, void* pVoid)
 {
   if(dPos.GetTerminal()->value > THRESHOLD) {
-    return (1.0 + exp(-FTIME*(dPos.GetTerminal()->value-THRESHOLD)));
+    return (1.0 + std::exp(-FTIME*(dPos.GetTerminal()->value-THRESHOLD)));
   }
   else
     return 0;
 }
 
+}  // namespace simfunctions
