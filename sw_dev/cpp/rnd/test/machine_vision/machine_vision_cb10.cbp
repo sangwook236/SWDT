@@ -37,7 +37,8 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="/usr/local/include/" />
+			<Add directory="/usr/local/include/ivt" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="opencv_core" />
@@ -54,6 +55,10 @@
 			<Add library="opencv_gpu" />
 			<Add library="opencv_ts" />
 			<Add library="opencv_nonfree" />
+			<Add library="ivtvideocapture" />
+			<Add library="ivtopencv" />
+			<Add library="ivtgui" />
+			<Add library="ivt" />
 			<Add library="ccv" />
 			<Add library="vl" />
 			<Add library="boost_timer" />
@@ -61,6 +66,7 @@
 			<Add library="v4l2" />
 			<Add library="v4l1compat" />
 			<Add library="png" />
+			<Add library="GL" />
 			<Add directory="/usr/local/lib/" />
 		</Linker>
 		<Unit filename="ccv/ccv_daisy.cpp" />
@@ -69,6 +75,15 @@
 		<Unit filename="ccv/ccv_main.cpp" />
 		<Unit filename="ccv/ccv_sift.cpp" />
 		<Unit filename="ccv/ccv_tld.cpp" />
+		<Unit filename="ivt/ParticleFilter2D.cpp" />
+		<Unit filename="ivt/ParticleFilter2D.h" />
+		<Unit filename="ivt/ParticleFilter3D.cpp" />
+		<Unit filename="ivt/ParticleFilter3D.h" />
+		<Unit filename="ivt/ivt_hough_circle_example.cpp" />
+		<Unit filename="ivt/ivt_hough_line_example.cpp" />
+		<Unit filename="ivt/ivt_klt_tracker_example.cpp" />
+		<Unit filename="ivt/ivt_main.cpp" />
+		<Unit filename="ivt/ivt_particle_filter_example.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="opencv/PascalVocDataset.cpp" />
 		<Unit filename="opencv/PascalVocDataset.h" />
@@ -156,6 +171,7 @@
 		<Unit filename="vlfeat/vlfeat_quick_shift.cpp" />
 		<Unit filename="vlfeat/vlfeat_sift.cpp" />
 		<Unit filename="vlfeat/vlfeat_slic.cpp" />
+		<Unit filename="vxl/vxl_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

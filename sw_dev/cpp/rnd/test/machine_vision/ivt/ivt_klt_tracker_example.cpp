@@ -1,11 +1,12 @@
 //include "stdafx.h"
-#if defined WIN32
+#if defined(WIN32) || defined(_WIN32)
 #include <VideoCapture/VFWCapture.h>
-#elif defined __APPLE__
+#elif defined(__APPLE__)
 #include <VideoCapture/QuicktimeCapture.h>
 #else
 #include <VideoCapture/Linux1394Capture2.h>
 #endif
+#include <VideoCapture/V4LCapture.h>
 #include <Interfaces/ApplicationHandlerInterface.h>
 #include <Interfaces/MainWindowInterface.h>
 #include <Interfaces/MainWindowEventInterface.h>
@@ -50,109 +51,106 @@ public:
 	int Run()
 	{
 		// create capture object
-#if defined WIN32
+#if defined(WIN32) || defined(_WIN32)
 		CVFWCapture capture(0);
-#elif defined __APPLE__
+#elif defined(__APPLE__)
 		CQuicktimeCapture capture(CVideoCaptureInterface::e640x480);
 #else
-		CLinux1394Capture2 capture(-1, CVideoCaptureInterface::e640x480, CVideoCaptureInterface::eRGB24)
+		//CLinux1394Capture2 capture(-1, CVideoCaptureInterface::e640x480, CVideoCaptureInterface::eRGB24);
+		CV4LCapture capture("/dev/video0", 0, CVideoCaptureInterface::e640x480);
 #endif
 
-			// open camera
-			if (!capture.OpenCamera())
-			{
-				printf("error: could not open camera\n");
-				printf("press return to quit\n");
-				char szTemp[1024];
-				scanf("%c", szTemp);
-				return false;
-			}
+        // open camera
+        if (!capture.OpenCamera())
+        {
+            std::cerr << "error: could not open camera" << std::endl;
+            std::cerr << "press return to quit" << std::endl;
+            return false;
+        }
 
-			const int width = capture.GetWidth();
-			const int height = capture.GetHeight();
+        const int width = capture.GetWidth();
+        const int height = capture.GetHeight();
 
-			CByteImage image(width, height, capture.GetType());
-			CByteImage grayImage(width, height, CByteImage::eGrayScale);
-			CByteImage *pImage = &image;
+        CByteImage image(width, height, capture.GetType());
+        CByteImage grayImage(width, height, CByteImage::eGrayScale);
+        CByteImage *pImage = &image;
 
-			// create an application handler
-			CApplicationHandlerInterface *pApplicationHandler = CreateApplicationHandler();
-			pApplicationHandler->Reset();
+        // create an application handler
+        CApplicationHandlerInterface *pApplicationHandler = CreateApplicationHandler();
+        pApplicationHandler->Reset();
 
-			// create a main window
-			CMainWindowInterface *pMainWindow = CreateMainWindow(0, 0, width, height + 100, "KLT Tracker Demo");
+        // create a main window
+        CMainWindowInterface *pMainWindow = CreateMainWindow(0, 0, width, height + 100, "KLT Tracker Demo");
 
-			// events are sent to this class, hence this class needs to have the CMainWindowEventInterface
-			pMainWindow->SetEventCallback(this);
+        // events are sent to this class, hence this class needs to have the CMainWindowEventInterface
+        pMainWindow->SetEventCallback(this);
 
-			// create an image widget to display a window
-			WIDGET_HANDLE pImageWidget = pMainWindow->AddImage(0, 100, width, height);
+        // create an image widget to display a window
+        WIDGET_HANDLE pImageWidget = pMainWindow->AddImage(0, 100, width, height);
 
-			// add a label and a slider for the quality
-			WIDGET_HANDLE pLabel1 = pMainWindow->AddLabel(10, 10, 150, 30, "Quality");
-			m_pSlider1 = pMainWindow->AddSlider(10, 50, 150, 40, 0, 100, 10, int(m_fQualityThreshold * 10000.0f + 0.5f));
+        // add a label and a slider for the quality
+        WIDGET_HANDLE pLabel1 = pMainWindow->AddLabel(10, 10, 150, 30, "Quality");
+        m_pSlider1 = pMainWindow->AddSlider(10, 50, 150, 40, 0, 100, 10, int(m_fQualityThreshold * 10000.0f + 0.5f));
 
-			// add a label and a slider for the number of interest points
-			WIDGET_HANDLE pLabel2 = pMainWindow->AddLabel(200, 10, 200, 30, "Number of points");
-			m_pSlider2 = pMainWindow->AddSlider(200, 30, 150, 40, 0, 1000, 50, m_nMaxPoints);
+        // add a label and a slider for the number of interest points
+        WIDGET_HANDLE pLabel2 = pMainWindow->AddLabel(200, 10, 200, 30, "Number of points");
+        m_pSlider2 = pMainWindow->AddSlider(200, 30, 150, 40, 0, 1000, 50, m_nMaxPoints);
 
-			// add a button for re-initializing the features to be tracker
-			m_pButtonReInit = pMainWindow->AddButton(400, 50, 100, 40, "Re-Init");
+        // add a button for re-initializing the features to be tracker
+        m_pButtonReInit = pMainWindow->AddButton(400, 50, 100, 40, "Re-Init");
 
-			// add a labels to display processing stats
-			WIDGET_HANDLE pLabel3 = pMainWindow->AddLabel(520, 10, 120, 20, "666 ms");
-			WIDGET_HANDLE pLabel4 = pMainWindow->AddLabel(520, 40, 120, 20, "666 fps");
-			WIDGET_HANDLE pLabel5 = pMainWindow->AddLabel(520, 70, 120, 20, "666 points");
+        // add a labels to display processing stats
+        WIDGET_HANDLE pLabel3 = pMainWindow->AddLabel(520, 10, 120, 20, "666 ms");
+        WIDGET_HANDLE pLabel4 = pMainWindow->AddLabel(520, 40, 120, 20, "666 fps");
+        WIDGET_HANDLE pLabel5 = pMainWindow->AddLabel(520, 70, 120, 20, "666 points");
 
-			// make the window visible
-			pMainWindow->Show();
+        // make the window visible
+        pMainWindow->Show();
 
-			CKLTTracker tracker(width, height, 3, 10);
-			Vec2d points[1000];
+        CKLTTracker tracker(width, height, 3, 10);
+        Vec2d points[1000];
+        char buffer[1024];
+        while (!pApplicationHandler->ProcessEventsAndGetExit())
+        {
+            if (!capture.CaptureImage(&pImage))
+                break;
 
-			char buffer[1024];
+            ImageProcessor::ConvertImage(pImage, &grayImage, true);
 
-			while (!pApplicationHandler->ProcessEventsAndGetExit())
-			{
-				if (!capture.CaptureImage(&pImage))
-					break;
+            if (0 == m_nPoints)
+                m_nPoints = ImageProcessor::CalculateHarrisInterestPoints(&grayImage, points, m_nMaxPoints, m_fQualityThreshold, 10.0f);
 
-				ImageProcessor::ConvertImage(pImage, &grayImage, true);
+            get_timer_value(true);
+            tracker.Track(&grayImage, points, m_nPoints, points);
+            const unsigned int t = get_timer_value();
 
-				if (m_nPoints == 0)
-					m_nPoints = ImageProcessor::CalculateHarrisInterestPoints(&grayImage, points, m_nMaxPoints, m_fQualityThreshold, 10.0f);
+            for (int i = 0; i < m_nPoints; ++i)
+            {
+                if (points[i].x > 0.0f && points[i].y > 0.0f) // points for that track has got lost are marked with x = y = -1.0f
+                    PrimitivesDrawer::DrawCircle(pImage, points[i], 3, 0, 255, 0, -1);
+            }
 
-				get_timer_value(true);
-				tracker.Track(&grayImage, points, m_nPoints, points);
-				const unsigned int t = get_timer_value();
+            pMainWindow->SetImage(pImageWidget, pImage);
 
-				for (int i = 0; i < m_nPoints; i++)
-				{
-					if (points[i].x > 0.0f && points[i].y > 0.0f) // points for that track has got lost are marked with x = y = -1.0f
-						PrimitivesDrawer::DrawCircle(pImage, points[i], 3, 0, 255, 0, -1);
-				}
+            // display some information
+            sprintf(buffer, "Quality = %.4f", m_fQualityThreshold);
+            pMainWindow->SetText(pLabel1, buffer);
+            sprintf(buffer, "Max number of points = %d", m_nMaxPoints);
+            pMainWindow->SetText(pLabel2, buffer);
 
-				pMainWindow->SetImage(pImageWidget, pImage);
+            // display the speed stats
+            sprintf(buffer, "%.2f ms", t / 1000.0f);
+            pMainWindow->SetText(pLabel3, buffer);
+            sprintf(buffer, "%.2f fps", 1000000.0f / t);
+            pMainWindow->SetText(pLabel4, buffer);
+            sprintf(buffer, "%d points", m_nPoints);
+            pMainWindow->SetText(pLabel5, buffer);
+        }
 
-				// display some information
-				sprintf(buffer, "Quality = %.4f", m_fQualityThreshold);
-				pMainWindow->SetText(pLabel1, buffer);
-				sprintf(buffer, "Max number of points = %d", m_nMaxPoints);
-				pMainWindow->SetText(pLabel2, buffer);
+        delete pMainWindow;
+        delete pApplicationHandler;
 
-				// display the speed stats
-				sprintf(buffer, "%.2f ms", t / 1000.0f);
-				pMainWindow->SetText(pLabel3, buffer);
-				sprintf(buffer, "%.2f fps", 1000000.0f / t);
-				pMainWindow->SetText(pLabel4, buffer);
-				sprintf(buffer, "%d points", m_nPoints);
-				pMainWindow->SetText(pLabel5, buffer);
-			}
-
-			delete pMainWindow;
-			delete pApplicationHandler;
-
-			return 0;
+        return 0;
 	}
 
 
