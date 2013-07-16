@@ -71,7 +71,7 @@ void pf_example()
 	const long lNumber = 1000;
 
 	// Load observations
-	const long lIterates = local::load_data("./bayesian_filtering/data.csv", &pffuncs::y);
+	const long lIterates = local::load_data("./bayesian_filtering_data/data.csv", &pffuncs::y);
 
 	// Initialise and run the sampler
 	smc::sampler<pffuncs::cv_state> Sampler(lNumber, SMC_HISTORY_NONE);

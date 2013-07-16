@@ -88,7 +88,7 @@ void usage( char* name )
 
 /*
   arg_parse() parses the command line arguments, setting appropriate globals.
-  
+
   argc and argv should be passed directly from the command line
 */
 void arg_parse( int argc, char** argv )
@@ -112,29 +112,29 @@ void arg_parse( int argc, char** argv )
 	  usage( pname );
 	  exit(0);
 	  break;
-	  
+
 	  /* catch invalid arguments */
 	default:
 	  fatal_error( "-%c: invalid option\nTry '%s -h' for help.",
 		       optopt, pname );
 	}
     }
-  
+
   /* make sure input and output files are specified */
   if( argc - optind < 1 )
     fatal_error( "no input image specified.\nTry '%s -h' for help.", pname );
   if( argc - optind < 2 )
     fatal_error( "no reference images specified.\nTry '%s -h' for help.",
 		 pname );
- 
+
   /* import input image */
   in_img = cvLoadImage( argv[optind], 1 );
   if( ! in_img )
     fatal_error("error importing image from %s", argv[optind]);
-  
+
   /* import reference images */
   num_ref_imgs = argc - ++optind;
-  ref_imgs = malloc( num_ref_imgs * sizeof( IplImage*) );
+  ref_imgs = (IplImage **)malloc( num_ref_imgs * sizeof( IplImage*) );
   while( optind < argc )
     {
       ref_imgs[i] = cvLoadImage( argv[optind], 1 );

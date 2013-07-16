@@ -38,6 +38,9 @@
 		</Compiler>
 		<Linker>
 			<Add library="smctc" />
+			<Add library="opencv_highgui" />
+			<Add library="opencv_imgproc" />
+			<Add library="opencv_core" />
 			<Add library="gsl" />
 			<Add library="gslcblas" />
 			<Add directory="/usr/local/lib" />
@@ -53,6 +56,24 @@
 		<Unit filename="condensation_lib/model_specific.cpp" />
 		<Unit filename="condensation_lib/utility.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="particle_filter_object_tracking/particle_filter_object_tracking_main.cpp" />
+		<Unit filename="particle_filter_object_tracking/particle_filter_object_tracking_observe_example.cpp" />
+		<Unit filename="particle_filter_object_tracking/particle_filter_object_tracking_track_example.cpp" />
+		<Unit filename="particle_filter_object_tracking_lib/defs.h" />
+		<Unit filename="particle_filter_object_tracking_lib/observation.cpp" />
+		<Unit filename="particle_filter_object_tracking_lib/observation.h" />
+		<Unit filename="particle_filter_object_tracking_lib/observe.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="particle_filter_object_tracking_lib/particles.cpp" />
+		<Unit filename="particle_filter_object_tracking_lib/particles.h" />
+		<Unit filename="particle_filter_object_tracking_lib/track1.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="particle_filter_object_tracking_lib/utils.cpp" />
+		<Unit filename="particle_filter_object_tracking_lib/utils.h" />
 		<Unit filename="particleplusplus/particleplusplus_main.cpp" />
 		<Unit filename="smctc/markovchain.h" />
 		<Unit filename="smctc/pffuncs.cpp" />
