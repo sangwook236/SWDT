@@ -21,8 +21,15 @@
 #pragma comment(lib, "opencv_ts243d.lib")
 #pragma comment(lib, "opencv_video243d.lib")
 #pragma comment(lib, "opencv_videostab243d.lib")
+#pragma comment(lib, "ivtd.lib")
+//#pragma comment(lib, "ivtopencvd.lib")
+#pragma comment(lib, "ivtwin32guid.lib")
 #pragma comment(lib, "vl_d.lib")
 #pragma comment(lib, "libccv.lib")
+
+#pragma comment(lib, "opengl32.lib")
+#pragma comment(lib, "Comctl32.lib")
+#pragma comment(lib, "Vfw32.lib")
 
 #		else
 
@@ -43,8 +50,15 @@
 #pragma comment(lib, "opencv_ts243.lib")
 #pragma comment(lib, "opencv_video243.lib")
 #pragma comment(lib, "opencv_videostab243.lib")
+#pragma comment(lib, "ivt.lib")
+//#pragma comment(lib, "ivtopencv.lib")
+#pragma comment(lib, "ivtwin32gui.lib")
 #pragma comment(lib, "vl.lib")
 //#pragma comment(lib, "libccv.lib")  // run-time error
+
+#pragma comment(lib, "opengl32.lib")
+#pragma comment(lib, "Comctl32.lib")
+#pragma comment(lib, "Vfw32.lib")
 
 #		endif
 

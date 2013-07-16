@@ -45,7 +45,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/ivt;../../inc/opencv-2.4.3;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -64,11 +64,13 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/ivt;../../inc/opencv-2.4.3;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -87,6 +89,8 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -112,6 +116,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="ivt\ivt_hough_circle_example.cpp" />
+    <ClCompile Include="ivt\ivt_hough_line_example.cpp" />
+    <ClCompile Include="ivt\ivt_klt_tracker_example.cpp" />
+    <ClCompile Include="ivt\ivt_main.cpp" />
+    <ClCompile Include="ivt\ivt_particle_filter_example.cpp" />
+    <ClCompile Include="ivt\ParticleFilter2D.cpp" />
+    <ClCompile Include="ivt\ParticleFilter3D.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="opencv\opencv_basic_operation.cpp" />
@@ -197,8 +208,11 @@
     <ClCompile Include="vlfeat\vlfeat_quick_shift.cpp" />
     <ClCompile Include="vlfeat\vlfeat_sift.cpp" />
     <ClCompile Include="vlfeat\vlfeat_slic.cpp" />
+    <ClCompile Include="vxl\vxl_main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ivt\ParticleFilter2D.h" />
+    <ClInclude Include="ivt\ParticleFilter3D.h" />
     <ClInclude Include="opencv\PascalVocDataset.h" />
     <ClInclude Include="opencv\vehicle_classification.h" />
     <ClInclude Include="stdafx.h" />

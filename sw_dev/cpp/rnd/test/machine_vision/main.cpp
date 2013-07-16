@@ -11,6 +11,8 @@
 int main(int argc, char *argv[])
 {
 	int opencv_main(int argc, char *argv[]);
+	int vxl_main(int argc, char *argv[]);
+	int ivt_main(int argc, char *argv[]);
 	int vlfeat_main(int argc, char *argv[]);
 	int ccv_main(int argc, char *argv[]);
 
@@ -20,7 +22,13 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "OpenCV library ------------------------------------------------------" << std::endl;
-		retval = opencv_main(argc, argv);
+		//retval = opencv_main(argc, argv);
+
+		std::cout << "\nVXL (the Vision-something-Libraries) library ------------------------" << std::endl;
+		//retval = vxl_main(argc, argv);  // not yet implemented
+
+		std::cout << "\nIntegrating Vision Toolkit (IVT) library ----------------------------" << std::endl;
+		retval = ivt_main(argc, argv);
 
 		std::cout << "\nVLFeat library ------------------------------------------------------" << std::endl;
 		//retval = vlfeat_main(argc, argv);

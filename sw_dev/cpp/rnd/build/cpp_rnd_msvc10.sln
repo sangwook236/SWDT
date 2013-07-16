@@ -44,6 +44,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "segmentation", "..\test\seg
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bayesian_filtering", "..\test\bayesian_filtering\bayesian_filtering_msvc10.vcxproj", "{77406A1F-AD0B-4229-9DD0-8C8793166FFD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "face_analysis", "..\test\face_analysis\face_analysis_msvc10.vcxproj", "{2EF2C691-DB54-4793-9FDB-3B8748B064E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -138,6 +140,10 @@ Global
 		{77406A1F-AD0B-4229-9DD0-8C8793166FFD}.Debug|Win32.Build.0 = Debug|Win32
 		{77406A1F-AD0B-4229-9DD0-8C8793166FFD}.Release|Win32.ActiveCfg = Release|Win32
 		{77406A1F-AD0B-4229-9DD0-8C8793166FFD}.Release|Win32.Build.0 = Release|Win32
+		{2EF2C691-DB54-4793-9FDB-3B8748B064E4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2EF2C691-DB54-4793-9FDB-3B8748B064E4}.Debug|Win32.Build.0 = Debug|Win32
+		{2EF2C691-DB54-4793-9FDB-3B8748B064E4}.Release|Win32.ActiveCfg = Release|Win32
+		{2EF2C691-DB54-4793-9FDB-3B8748B064E4}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
