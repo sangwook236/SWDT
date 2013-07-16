@@ -25,6 +25,12 @@
     <Filter Include="Source Files\condensation_lib">
       <UniqueIdentifier>{8d36b931-0769-45a7-b7f1-12c02b298560}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\particle_filter_object_tracking">
+      <UniqueIdentifier>{ed29f12c-fabf-4128-9297-bbb460dd221c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\particle_filter_object_tracking_lib">
+      <UniqueIdentifier>{e01baef1-3a01-4491-919b-3c07019ac0ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -53,6 +59,18 @@
     </ClInclude>
     <ClInclude Include="condensation_lib\model_parameters.h">
       <Filter>Source Files\condensation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_filter_object_tracking_lib\defs.h">
+      <Filter>Source Files\particle_filter_object_tracking_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_filter_object_tracking_lib\observation.h">
+      <Filter>Source Files\particle_filter_object_tracking_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_filter_object_tracking_lib\particles.h">
+      <Filter>Source Files\particle_filter_object_tracking_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_filter_object_tracking_lib\utils.h">
+      <Filter>Source Files\particle_filter_object_tracking_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +112,30 @@
     </ClCompile>
     <ClCompile Include="condensation\condensation_main.cpp">
       <Filter>Source Files\condensation</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_filter_object_tracking_lib\observation.cpp">
+      <Filter>Source Files\particle_filter_object_tracking_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_filter_object_tracking_lib\observe.cpp">
+      <Filter>Source Files\particle_filter_object_tracking_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_filter_object_tracking_lib\particles.cpp">
+      <Filter>Source Files\particle_filter_object_tracking_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_filter_object_tracking_lib\track1.cpp">
+      <Filter>Source Files\particle_filter_object_tracking_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_filter_object_tracking_lib\utils.cpp">
+      <Filter>Source Files\particle_filter_object_tracking_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_filter_object_tracking\particle_filter_object_tracking_main.cpp">
+      <Filter>Source Files\particle_filter_object_tracking</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_filter_object_tracking\particle_filter_object_tracking_observe_example.cpp">
+      <Filter>Source Files\particle_filter_object_tracking</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_filter_object_tracking\particle_filter_object_tracking_track_example.cpp">
+      <Filter>Source Files\particle_filter_object_tracking</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

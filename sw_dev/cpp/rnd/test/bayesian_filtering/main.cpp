@@ -10,6 +10,8 @@
 int main(int argc, char *argv[])
 {
 	int condensation_main(int argc, char *argv[]);
+	int particle_filter_object_tracking_main(int argc, char *argv[]);
+
 	int particleplusplus_main(int argc, char *argv[]);
 	int smctc_main(int argc, char *argv[]);
 
@@ -17,7 +19,10 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "condensation (CONditional DENsity propagATION) algorithm -----------" << std::endl;
-		retval = condensation_main(argc, argv);
+		//retval = condensation_main(argc, argv);
+
+		std::cout << "\nparticle filter object tracking algorithm --------------------------" << std::endl;
+		retval = particle_filter_object_tracking_main(argc, argv);
 
 		std::cout << "\nParticle++ library -------------------------------------------------" << std::endl;
 		//retval = particleplusplus_main(argc, argv);
