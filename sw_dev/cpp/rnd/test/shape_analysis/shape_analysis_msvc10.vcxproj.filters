@@ -16,7 +16,7 @@
     <Filter Include="Source Files\demolib">
       <UniqueIdentifier>{24154090-000d-4021-b310-d70603631670}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\stasm">
+    <Filter Include="Source Files\statismo">
       <UniqueIdentifier>{3f88c0a0-f8e7-4d16-9a6e-4d9c113f5dd8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -44,8 +44,8 @@
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stasm\stasm_main.cpp">
-      <Filter>Source Files\stasm</Filter>
+    <ClCompile Include="statismo\statismo_main.cpp">
+      <Filter>Source Files\statismo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

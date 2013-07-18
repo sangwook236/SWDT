@@ -46,4 +46,10 @@
 				debug build: ${VxL_HOME}/build_msvc10/src/external/Debug
 		==> MSVC10에서 기본적으로 iterator debug level = 2.   
 			CMAKE_CXX_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
-			CMAKE_C_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2  
+			CMAKE_C_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
+
+[-] Linking 1.17.0 (MSVC)
+	-. VxL library를 사용하는 경우 build mode를 정확히 구분해 linking해야 함.
+		release build: ${VxL_HOME}/build_msvc10/lib/Release
+		debug build: ${VxL_HOME}/build_msvc10/lib/Debug
+	-. 실제 사용되는 library를 적절히 linking해야 함.

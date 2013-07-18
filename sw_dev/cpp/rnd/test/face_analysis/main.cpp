@@ -10,6 +10,7 @@
 
 int main(int argc, char *argv[])
 {
+	int stasm_main(int argc, char *argv[]);
 	int facetracker_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -17,7 +18,10 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "FaceTracker library -------------------------------------------------" << std::endl;
+		std::cout << "Stasm Library -------------------------------------------------------" << std::endl;
+		//retval = stasm_main(argc, argv);  // not yet implemented
+
+		std::cout << "\nFaceTracker library -------------------------------------------------" << std::endl;
 		retval = facetracker_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

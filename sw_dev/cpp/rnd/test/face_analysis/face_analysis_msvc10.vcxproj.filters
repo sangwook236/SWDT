@@ -19,6 +19,9 @@
     <Filter Include="Source Files\facetracker_lib">
       <UniqueIdentifier>{7c2da94b-e07b-4ece-88bc-bd03bb60c9a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\stasm">
+      <UniqueIdentifier>{08b9bc50-0198-4262-b11c-d6dda25f85dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -67,6 +70,9 @@
     </ClCompile>
     <ClCompile Include="facetracker_lib\Tracker.cc">
       <Filter>Source Files\facetracker_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="stasm\stasm_main.cpp">
+      <Filter>Source Files\stasm</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

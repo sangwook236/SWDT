@@ -10,7 +10,7 @@
 int main(int argc, char *argv[])
 {
 	int demolib_main(int argc, char *argv[]);
-	int stasm_main(int argc, char *argv[]);
+	int statismo_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
 		std::cout << "Deformable Model Library (DeMoLib) ----------------------------------" << std::endl;
 		retval = demolib_main(argc, argv);  // not yet implemented
 
-		std::cout << "\nStasm Library -------------------------------------------------------" << std::endl;
-		retval = stasm_main(argc, argv);  // not yet implemented
+		std::cout << "\nStatistical Image and Shape Models (StatISMo) Library ---------------" << std::endl;
+		retval = statismo_main(argc, argv);  // not yet implemented
 	}
     catch (const std::bad_alloc &e)
 	{

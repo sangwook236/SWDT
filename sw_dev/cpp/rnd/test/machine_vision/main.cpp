@@ -25,10 +25,10 @@ int main(int argc, char *argv[])
 		//retval = opencv_main(argc, argv);
 
 		std::cout << "\nVXL (the Vision-something-Libraries) library ------------------------" << std::endl;
-		//retval = vxl_main(argc, argv);  // not yet implemented
+		retval = vxl_main(argc, argv);  // not yet implemented
 
 		std::cout << "\nIntegrating Vision Toolkit (IVT) library ----------------------------" << std::endl;
-		retval = ivt_main(argc, argv);
+		//retval = ivt_main(argc, argv);
 
 		std::cout << "\nVLFeat library ------------------------------------------------------" << std::endl;
 		//retval = vlfeat_main(argc, argv);

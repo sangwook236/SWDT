@@ -13,7 +13,6 @@ extern "C" {
 namespace {
 namespace local {
 
-
 }  // namespace local
 }  // unnamed namespace
 
@@ -34,7 +33,7 @@ void daisy()
 #endif
     if (NULL == image)
     {
-        std::cout << "a image file, " << image_filename << "not found" << std::endl;
+        std::cout << "an image file not found: " << image_filename << std::endl;
         return;
     }
 

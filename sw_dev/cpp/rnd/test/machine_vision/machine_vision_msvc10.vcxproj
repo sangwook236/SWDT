@@ -45,7 +45,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../inc/ivt;../../inc/opencv-2.4.3;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/vxl-1.17.0/contrib/mul;../../inc/vxl-1.17.0/contrib;../../inc/vxl-1.17.0/vcl;../../inc/vxl-1.17.0/core;../../inc/ivt;../../inc/opencv-2.4.3;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -57,20 +57,19 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib/vxl_debug;../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../inc/ivt;../../inc/opencv-2.4.3;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/vxl-1.17.0/contrib/mul;../../inc/vxl-1.17.0/contrib;../../inc/vxl-1.17.0/vcl;../../inc/vxl-1.17.0/core;../../inc/ivt;../../inc/opencv-2.4.3;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -80,7 +79,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib/vxl_release;../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -89,13 +88,13 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ccv\ccv_daisy.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="ccv\ccv_dpm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -107,6 +106,7 @@
     </ClCompile>
     <ClCompile Include="ccv\ccv_main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="ccv\ccv_sift.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -208,7 +208,16 @@
     <ClCompile Include="vlfeat\vlfeat_quick_shift.cpp" />
     <ClCompile Include="vlfeat\vlfeat_sift.cpp" />
     <ClCompile Include="vlfeat\vlfeat_slic.cpp" />
+    <ClCompile Include="vxl\vxl_fhs_find_matches.cpp" />
+    <ClCompile Include="vxl\vxl_fhs_match_tree_model_example.cpp" />
+    <ClCompile Include="vxl\vxl_fhs_mr_find_matches.cpp" />
     <ClCompile Include="vxl\vxl_main.cpp" />
+    <ClCompile Include="vxl\vxl_msm_apply_tps_warp_example.cpp" />
+    <ClCompile Include="vxl\vxl_msm_build_shape_model_example.cpp" />
+    <ClCompile Include="vxl\vxl_msm_draw_points_on_image_example.cpp" />
+    <ClCompile Include="vxl\vxl_msm_draw_shape_modes_example.cpp" />
+    <ClCompile Include="vxl\vxl_msm_get_shape_params_example.cpp" />
+    <ClCompile Include="vxl\vxl_msm_plot_aligned_shapes_example.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ivt\ParticleFilter2D.h" />

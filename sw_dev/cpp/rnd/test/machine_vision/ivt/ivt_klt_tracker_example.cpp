@@ -5,8 +5,8 @@
 #include <VideoCapture/QuicktimeCapture.h>
 #else
 #include <VideoCapture/Linux1394Capture2.h>
-#endif
 #include <VideoCapture/V4LCapture.h>
+#endif
 #include <Interfaces/ApplicationHandlerInterface.h>
 #include <Interfaces/MainWindowInterface.h>
 #include <Interfaces/MainWindowEventInterface.h>

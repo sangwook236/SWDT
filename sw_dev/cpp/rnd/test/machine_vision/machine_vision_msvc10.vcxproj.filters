@@ -330,6 +330,33 @@
     <ClCompile Include="ivt\ParticleFilter3D.cpp">
       <Filter>Source Files\ivt</Filter>
     </ClCompile>
+    <ClCompile Include="vxl\vxl_fhs_match_tree_model_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_fhs_find_matches.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_fhs_mr_find_matches.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_msm_build_shape_model_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_msm_apply_tps_warp_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_msm_draw_points_on_image_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_msm_draw_shape_modes_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_msm_get_shape_params_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_msm_plot_aligned_shapes_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
