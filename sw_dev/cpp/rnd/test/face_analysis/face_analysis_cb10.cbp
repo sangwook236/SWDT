@@ -64,6 +64,7 @@
 		<Unit filename="facetracker_lib/Patch.cc" />
 		<Unit filename="facetracker_lib/Tracker.cc" />
 		<Unit filename="main.cpp" />
+		<Unit filename="stasm/stasm_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

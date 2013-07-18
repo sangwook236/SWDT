@@ -36,7 +36,7 @@
 		</Compiler>
 		<Unit filename="demolib/demolib_main.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="stasm/stasm_main.cpp" />
+		<Unit filename="statismo/statismo_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

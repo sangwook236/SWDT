@@ -39,6 +39,10 @@
 			<Add option="-fexceptions" />
 			<Add directory="/usr/local/include/ivt" />
 			<Add directory="/usr/local/include" />
+			<Add directory="/usr/local/include/vxl/contrib/mul" />
+			<Add directory="/usr/local/include/vxl/contrib" />
+			<Add directory="/usr/local/include/vxl/core" />
+			<Add directory="/usr/local/include/vxl/vcl" />
 		</Compiler>
 		<Linker>
 			<Add library="opencv_core" />
@@ -67,7 +71,41 @@
 			<Add library="v4l1compat" />
 			<Add library="png" />
 			<Add library="GL" />
-			<Add directory="/usr/local/lib/" />
+			<Add library="msm_utils" />
+			<Add library="msm" />
+			<Add library="fhs" />
+			<Add library="mcal" />
+			<Add library="mbl" />
+			<Add library="vimt" />
+			<Add library="vul_io" />
+			<Add library="vul" />
+			<Add library="vgl_xio" />
+			<Add library="vgl_io" />
+			<Add library="vgl_algo" />
+			<Add library="vgl" />
+			<Add library="vil3d_io" />
+			<Add library="vil3d_algo" />
+			<Add library="vil3d" />
+			<Add library="vil1_io" />
+			<Add library="vil1" />
+			<Add library="vil_pro" />
+			<Add library="vil_io" />
+			<Add library="vil_algo" />
+			<Add library="vil" />
+			<Add library="vnl_xio" />
+			<Add library="vnl_io" />
+			<Add library="vnl_algo" />
+			<Add library="vnl" />
+			<Add library="vsl" />
+			<Add library="vcl" />
+			<Add library="vbl_io" />
+			<Add library="vbl" />
+			<Add library="v3p_netlib" />
+			<Add library="netlib" />
+			<Add library="openjpeg2" />
+			<Add library="geotiff" />
+			<Add directory="/usr/local/lib/vxl" />
+			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="ccv/ccv_daisy.cpp" />
 		<Unit filename="ccv/ccv_dpm.cpp" />
@@ -133,7 +171,6 @@
 		<Unit filename="opencv/opencv_image_undistortion.cpp" />
 		<Unit filename="opencv/opencv_iterative_closest_point.cpp" />
 		<Unit filename="opencv/opencv_kalman_filtering.cpp" />
-		<Unit filename="opencv/opencv_learning.cpp" />
 		<Unit filename="opencv/opencv_machine_learning.cpp" />
 		<Unit filename="opencv/opencv_main.cpp" />
 		<Unit filename="opencv/opencv_matrix_operation.cpp" />
@@ -171,7 +208,16 @@
 		<Unit filename="vlfeat/vlfeat_quick_shift.cpp" />
 		<Unit filename="vlfeat/vlfeat_sift.cpp" />
 		<Unit filename="vlfeat/vlfeat_slic.cpp" />
+		<Unit filename="vxl/vxl_fhs_find_matches.cpp" />
+		<Unit filename="vxl/vxl_fhs_match_tree_model_example.cpp" />
+		<Unit filename="vxl/vxl_fhs_mr_find_matches.cpp" />
 		<Unit filename="vxl/vxl_main.cpp" />
+		<Unit filename="vxl/vxl_msm_apply_tps_warp_example.cpp" />
+		<Unit filename="vxl/vxl_msm_build_shape_model_example.cpp" />
+		<Unit filename="vxl/vxl_msm_draw_points_on_image_example.cpp" />
+		<Unit filename="vxl/vxl_msm_draw_shape_modes_example.cpp" />
+		<Unit filename="vxl/vxl_msm_get_shape_params_example.cpp" />
+		<Unit filename="vxl/vxl_msm_plot_aligned_shapes_example.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

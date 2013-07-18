@@ -9,11 +9,11 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_stasm {
+namespace my_statismo{
 
-}  // namespace my_stasm
+}  // namespace my_statismo
 
-int stasm_main(int argc, char *argv[])
+int statismo_main(int argc, char *argv[])
 {
 	throw std::runtime_error("not yet implemented");
 
