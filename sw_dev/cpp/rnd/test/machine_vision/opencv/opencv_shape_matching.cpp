@@ -162,7 +162,7 @@ void image_moment()
 	cv::destroyWindow(windowName2);
 }
 
-// pairwize geometrical histogram (PGH)
+// pairwise geometrical histogram (PGH)
 void pairwise_geometrical_histogram()
 {
 	cv::Mat image1, image2;

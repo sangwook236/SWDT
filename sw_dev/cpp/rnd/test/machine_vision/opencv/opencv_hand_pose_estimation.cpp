@@ -1147,8 +1147,6 @@ void hand_pose_estimation()
 				break;
 		} while (++numAcquisitionFrames < MAX_ACQUISITION_FRAMES);
 
-		// FIXME [check] >> 0 ???
-		const size_t NUMBER_OF_SNAKE_POINTS = 0;
 		if (!pointSets.empty() && -1 != maxAreaIdx)
 		{
 			{
@@ -1172,8 +1170,15 @@ void hand_pose_estimation()
 			cv::Mat semgented_img;
 			img.copyTo(semgented_img, segmentMask);
 
+			//const size_t NUMBER_OF_SNAKE_POINTS = 50;
+			const size_t NUMBER_OF_SNAKE_POINTS = 0;
+			const float alpha = 3.0f;  // weight(s) of continuity energy, single float or array of length floats, one for each contour point.
+			const float beta = 5.0f;  // weight(s) of curvature energy, single float or array of length floats, one for each contour point.
+			const float gamma = 2.0f;  // weight(s) of image energy, single float or array of length floats, one for each contour point.
+			const bool use_gradient = true;  // gradient flag; if true, the function calculates the gradient magnitude for every image pixel and consideres it as the energy field, otherwise the input image itself is considered.
+			const CvSize win = cvSize(21, 21);  // size of neighborhood of every point used to search the minimum, both win.width and win.height must be odd.
 			std::vector<cv::Point> snake_contour;
-			local::fit_contour_by_snake(semgented_gray, pointSets[maxAreaIdx], NUMBER_OF_SNAKE_POINTS, snake_contour);
+			local::fit_contour_by_snake(semgented_gray, pointSets[maxAreaIdx], NUMBER_OF_SNAKE_POINTS, alpha, beta, gamma, use_gradient, win, snake_contour);
 
 			if (!snake_contour.empty())
 			{

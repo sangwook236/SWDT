@@ -22,10 +22,10 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "OpenCV library ------------------------------------------------------" << std::endl;
-		//retval = opencv_main(argc, argv);
+		retval = opencv_main(argc, argv);
 
 		std::cout << "\nVXL (the Vision-something-Libraries) library ------------------------" << std::endl;
-		retval = vxl_main(argc, argv);  // not yet implemented
+		//retval = vxl_main(argc, argv);
 
 		std::cout << "\nIntegrating Vision Toolkit (IVT) library ----------------------------" << std::endl;
 		//retval = ivt_main(argc, argv);
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 		//retval = vlfeat_main(argc, argv);
 
 		std::cout << "\nCCV library ---------------------------------------------------------" << std::endl;
-		//retval = ccv_main(argc, argv);  // run-time error (Windows): not correctly working
+		//retval = ccv_main(argc, argv);  // run-time error in Windows: not correctly working.
 	}
     catch (const std::bad_alloc &e)
 	{

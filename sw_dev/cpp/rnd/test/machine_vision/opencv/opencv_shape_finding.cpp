@@ -295,7 +295,6 @@ void shape_finding()
 		local::contour(srcImage, grayImage);
 		//local::ellipse(srcImage, grayImage);
 		//local::rectangle(srcImage);
-		//local::snake(srcImage, grayImage);
 
 		//
 		cvShowImage(windowName, srcImage);

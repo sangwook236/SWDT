@@ -61,7 +61,7 @@
 #pragma comment(lib, "ivtopencvd.lib")
 #pragma comment(lib, "ivtwin32guid.lib")
 #pragma comment(lib, "vl_d.lib")
-//#pragma comment(lib, "libccv.lib")
+//#pragma comment(lib, "libccv.lib")  // run-time error
 
 #pragma comment(lib, "libjpeg.lib")
 #pragma comment(lib, "libpng15.lib")

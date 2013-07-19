@@ -629,60 +629,60 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 	const int NUMBER_OF_SNAKE_POINTS = 50;
 	const int threshold = 90;
 
-	float alpha = 3;
-	float beta = 5;
-	float gamma = 2;
+	float alpha = 3.0f;
+	float beta = 5.0f;
+	float gamma = 2.0f;
 	const int use_gradient = 1;
 	const CvSize win = cvSize(21, 21);
 	const CvTermCriteria term_criteria = cvTermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 100, 1.0);
 
-	IplImage *tmp_img = cvCloneImage(grayImage);
 	IplImage *img = cvCloneImage(grayImage);
 
-	// make a average filtering
-	cvSmooth(tmp_img, img, CV_BLUR, 31, 15);
-	//iplBlur(tmp_img, img, 31, 31, 15, 15);  // don't use IPL
+	{
+		IplImage *tmp_img = cvCloneImage(grayImage);
 
-	// thresholding
-	cvThreshold(img, tmp_img, threshold, 255, CV_THRESH_BINARY);
-	//iplThreshold(img, tmp_img, threshold);  // distImg is thresholded image (tmp_img)  // don't use IPL
+		// make a average filtering.
+		cvSmooth(tmp_img, img, CV_BLUR, 31, 15);
+		//iplBlur(tmp_img, img, 31, 31, 15, 15);  // don't use IPL.
 
-	// expand the thressholded image of ones -smoothing the edge.
-	// and move start position of snake out since there are no ballon force
-	cvDilate(tmp_img, img, NULL, 3);
+		// do a threshold.
+		cvThreshold(img, tmp_img, threshold, 255, CV_THRESH_BINARY);
+		//iplThreshold(img, tmp_img, threshold);  // don't use IPL.
 
-	cvReleaseImage(&tmp_img);
+		// expand the thresholded image of ones - smoothing the edge.
+		// move start position of snake out since there are no balloon force.
+		cvDilate(tmp_img, img, NULL, 3);
 
-	// find the contours
-	CvSeq *contour = NULL;
+		cvReleaseImage(&tmp_img);
+	}
+
+	// find the contours.
 	CvMemStorage *storage = cvCreateMemStorage(0);
+	CvSeq *contour = NULL;
 	cvFindContours(img, storage, &contour, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
 
-	// run through the found coutours
-	CvPoint *points = new CvPoint [NUMBER_OF_SNAKE_POINTS];
+	// run through the found coutours.
+	std::vector<CvPoint> points(NUMBER_OF_SNAKE_POINTS, cvPoint(0, 0));
 	while (contour)
 	{
-		if (contour->total >= NUMBER_OF_SNAKE_POINTS)
+		if (NUMBER_OF_SNAKE_POINTS <= contour->total)
 		{
 			//memset(points, 0, NUMBER_OF_SNAKE_POINTS * sizeof(CvPoint));
 
 			cvSmooth(grayImage, img, CV_BLUR, 7, 3);
-			//iplBlur(grayImage, img, 7, 7, 3, 3);  // put blured image in TempImg  // don't use IPL
+			//iplBlur(grayImage, img, 7, 7, 3, 3);  // don't use IPL.
 
 #if 0
-			CvPoint *pts = new CvPoint [contour->total];
-			cvCvtSeqToArray(contour, pts, CV_WHOLE_SEQ);  // copy the contour to a array
+			std::vecto<CvPoint> pts(contour->total);
+			cvCvtSeqToArray(contour, &pts[0], CV_WHOLE_SEQ);  // copy the contour to an array.
 
-			// number of jumps between the desired points (downsample only!)
+			// number of jumps between the desired points (downsample only!).
 			const int stride = int(contour->total / NUMBER_OF_SNAKE_POINTS);
 			for (int i = 0; i < NUMBER_OF_SNAKE_POINTS; ++i)
 			{
 				points[i].x = pts[int(i * stride)].x;
 				points[i].y = pts[int(i * stride)].y;
 			}
-
-			delete [] pts;
-			pts = NULL;
 #else
 			const int stride = int(contour->total / NUMBER_OF_SNAKE_POINTS);
 			for (int i = 0; i < NUMBER_OF_SNAKE_POINTS; ++i)
@@ -693,26 +693,23 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 			}
 #endif
 
-			// snake
-			cvSnakeImage(img, points, NUMBER_OF_SNAKE_POINTS, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
+			// iterate snake.
+			cvSnakeImage(img, &points[0], NUMBER_OF_SNAKE_POINTS, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
 
-			// draw snake on image
-			cvPolyLine(srcImage, (CvPoint **)&points, &NUMBER_OF_SNAKE_POINTS, 1, 1, CV_RGB(255, 0, 0), 3, 8, 0);
+			// draw snake on image.
+			CvPoint *points_ptr = (CvPoint *)&points[0];
+			cvPolyLine(srcImage, (CvPoint **)points_ptr, &NUMBER_OF_SNAKE_POINTS, 1, 1, CV_RGB(255, 0, 0), 3, 8, 0);
 		}
 
-		// get next contours
+		// get next contours.
 		contour = contour->h_next;
 	}
-
-	//
-	//free(contour);
-	delete [] points;
 
 	cvReleaseMemStorage(&storage);
 	cvReleaseImage(&img);
 }
 
-void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> &contour, const size_t numSnakePoints, std::vector<cv::Point> &snake_contour)
+void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> &contour, const size_t numSnakePoints, const float alpha, const float beta, const float gamma, const bool use_gradient, const CvSize &win, std::vector<cv::Point> &snake_contour)
 {
 	snake_contour.clear();
 	if (contour.empty()) return;
@@ -725,14 +722,14 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
 
 		cv::Mat binary_img;
 
-		// make a average filtering
+		// make a average filtering.
 		cv::blur(gray_img, binary_img, cv::Size(31, 15));
 
 		// thresholding
 		cv::threshold(binary_img, binary_img, threshold, 255, cv::THRESH_BINARY);
 
-		// expand the thressholded image of ones -smoothing the edge.
-		// and move start position of snake out since there are no ballon force
+		// expand the thressholded image of ones - smoothing the edge.
+		// move start position of snake out since there are no ballon force.
 		{
 			const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
 			cv::dilate(binary_img, binary_img, selement, cv::Point(-1, -1), 3);
@@ -742,19 +739,14 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
 	}
 */
 
-	float alpha = 3;
-	float beta = 5;
-	float gamma = 2;
-	const int use_gradient = 1;
-	const CvSize win = cvSize(21, 21);
 	const CvTermCriteria term_criteria = cvTermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 100, 1.0);
 
-	// run through the found coutours
+	// run through the found coutours.
 	const size_t &numPts = contour.size();
 	const size_t numSnakePts = 0 == numSnakePoints ? numPts : numSnakePoints;
 	if (numPts >= numSnakePts)
 	{
-		CvPoint *points = new CvPoint [numSnakePts];
+		std::vector<CvPoint> points(numSnakePts, cvPoint(0, 0));
 
 		cv::Mat blurred_img;
 		cv::blur(gray_img, blurred_img, cv::Size(7, 3));
@@ -766,16 +758,15 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
 			points[i] = cvPoint(pt.x, pt.y);
 		}
 
-		// snake
+		// iterate snake.
 #if defined(__GNUC__)
         IplImage blurred_img_ipl = (IplImage)blurred_img;
-		cvSnakeImage(&blurred_img_ipl, points, numSnakePts, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
+		cvSnakeImage(&blurred_img_ipl, &points[0], numSnakePts, (float *)&alpha, (float *)&beta, (float *)&gamma, CV_VALUE, win, term_criteria, use_gradient ? 1 : 0);
 #else
-		cvSnakeImage(&(IplImage)blurred_img, points, numSnakePts, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
+		cvSnakeImage(&(IplImage)blurred_img, &points[0], numSnakePts, (float *)&alpha, (float *)&beta, (float *)&gamma, CV_VALUE, win, term_criteria, use_gradient ? 1 : 0);
 #endif
 
-		snake_contour.assign(points, points + numSnakePts);
-		delete [] points;
+		snake_contour.assign(points.begin(), points.end());
 	}
 }
 
