@@ -266,8 +266,7 @@ void pairwise_geometrical_histogram()
 
 	cvReleaseMemStorage(&storage);
 
-	cv::destroyWindow(windowName1);
-	cv::destroyWindow(windowName2);
+	cv::destroyAllWindows();
 }
 
 }  // namespace local

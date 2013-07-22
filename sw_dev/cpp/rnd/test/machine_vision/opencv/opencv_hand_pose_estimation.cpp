@@ -789,7 +789,7 @@ void hand_pose_estimation()
 		IplImage *srcImage = cvLoadImage(it->c_str());
 		if (NULL == srcImage)
 		{
-			std::cout << "fail to load image file: " << *it << std::endl;
+			std::cout << "image file not found: " << *it << std::endl;
 			continue;
 		}
 
@@ -799,18 +799,29 @@ void hand_pose_estimation()
 		else
 		{
 			grayImage = cvCreateImage(cvGetSize(srcImage), srcImage->depth, 1);
+#if defined(__GNUC__)
+			if (strcasecmp(image->channelSeq, "RGB") == 0)
+#elif defined(_MSC_VER)
 			if (_stricmp(srcImage->channelSeq, "RGB") == 0)
+#endif
 				cvCvtColor(srcImage, grayImage, CV_RGB2GRAY);
+#if defined(__GNUC__)
+			if (strcasecmp(image->channelSeq, "BGR") == 0)
+#elif defined(_MSC_VER)
 			else if (_stricmp(srcImage->channelSeq, "BGR") == 0)
+#endif
 				cvCvtColor(srcImage, grayImage, CV_BGR2GRAY);
 			else
 				assert(false);
 			grayImage->origin = srcImage->origin;
 		}
 
+		// smoothing.
+		// TODO [check] >> smoothing is needed?
+
 		//
-		//my_opencv::contour(srcImage, grayImage);
-		//my_opencv::snake(srcImage, grayImage);
+		//contour(srcImage, grayImage);
+		//snake(srcImage, grayImage);
 #if 0
 		local::mser(srcImage, grayImage);
 #else
@@ -1052,7 +1063,7 @@ void hand_pose_estimation()
 					mhi.create(gray.rows, gray.cols, CV_32F);
 
 				const bool useConvexHull = false;
-				my_opencv::segment_motion_using_mhi(useConvexHull, prevgray, gray, mhi, segmentMask, pointSets, hierarchy);
+				segment_motion_using_mhi(useConvexHull, prevgray, gray, mhi, segmentMask, pointSets, hierarchy);
 				//local::segment_motion_using_Farneback_motion_estimation(useConvexHull, prevgray, gray, segmentMask, pointSets, hierarchy);
 
 				double maxArea = 0.0;
@@ -1077,12 +1088,16 @@ void hand_pose_estimation()
 				{
 					if (cv::contourArea(cv::Mat(pointSets[k])) < 100.0) continue;
 					const int r = rand() % 256, g = rand() % 256, b = rand() % 256;
-					if (!pointSets[k].empty()) cv::drawContours(img, pointSets, k, CV_RGB(r, g, b), 1, 8, hierarchy, maxLevel, cv::Point());
+					if (!pointSets[k].empty())
+						cv::drawContours(img, pointSets, k, CV_RGB(r, g, b), 1, 8, hierarchy, maxLevel, cv::Point());
 				}
 #else
 				if (-1 != maxAreaIdx)
-					if (!pointSets[maxAreaIdx].empty()) cv::drawContours(img, pointSets, maxAreaIdx, CV_RGB(0, 0, 255), 1, 8, hierarchy, 0, cv::Point());
-					//if (!pointSets[maxAreaIdx].empty()) cv::drawContours(img, pointSets, maxAreaIdx, CV_RGB(0, 0, 255), 1, 8, hierarchy, maxLevel, cv::Point());
+					if (!pointSets[maxAreaIdx].empty())
+					{
+						cv::drawContours(img, pointSets, maxAreaIdx, CV_RGB(0, 0, 255), 1, 8, hierarchy, 0, cv::Point());
+						//cv::drawContours(img, pointSets, maxAreaIdx, CV_RGB(0, 0, 255), 1, 8, hierarchy, maxLevel, cv::Point());
+					}
 #endif
 
 				std::ostringstream sstream;

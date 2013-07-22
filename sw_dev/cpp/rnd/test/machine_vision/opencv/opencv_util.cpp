@@ -725,7 +725,7 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
 		// make a average filtering.
 		cv::blur(gray_img, binary_img, cv::Size(31, 15));
 
-		// thresholding
+		// do a threshold.
 		cv::threshold(binary_img, binary_img, threshold, 255, cv::THRESH_BINARY);
 
 		// expand the thressholded image of ones - smoothing the edge.
