@@ -1,0 +1,9 @@
+http://www.mathworks.com/matlabcentral/fileexchange/28149
+http://www.mathworks.com/matlabcentral/fileexchange/28109-snakes-active-contour-models
+http://www.slaney.org/malcolm/pubs.html
+
+http://www.shawnlankton.com/2007/05/active-contours/
+http://www.shawnlankton.com/2009/04/sfm-and-active-contours/
+http://www.mathworks.com/matlabcentral/fileexchange/19567-active-contour-segmentation
+
+https://sites.google.com/site/rexstribeofimageprocessing/chan-vese-active-contours

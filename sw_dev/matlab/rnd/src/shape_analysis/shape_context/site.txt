@@ -1,0 +1,1 @@
+http://www.eecs.berkeley.edu/Research/Projects/CS/vision/shape/sc_digits.html
