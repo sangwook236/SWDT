@@ -44,7 +44,7 @@
 			release build (external-library-mrf.lib) or debug build (external-library-mrf.lib)가 일치하도록 linking library을 설정해야 함.
 				release build: ${VxL_HOME}/build_msvc10/src/external/Release
 				debug build: ${VxL_HOME}/build_msvc10/src/external/Debug
-		==> MSVC10에서 기본적으로 iterator debug level = 2.   
+		==> MSVC10의 경우 기본적으로 iterator debug level = 2.
 			CMAKE_CXX_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
 			CMAKE_C_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
 

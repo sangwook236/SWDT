@@ -16,6 +16,8 @@ int main(int argc, char *argv[])
 	int mysvm_main(int argc, char *argv[]);
 
 	int shogun_main(int argc, char *argv[]);
+	int torch_main(int argc, char *argv[]);
+	int liblearning_main(int argc, char *argv[]);
 
 	int rl_glue_main(int argc, char *argv[]);
 
@@ -37,6 +39,14 @@ int main(int argc, char *argv[])
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		retval = shogun_main(argc, argv);
 #endif
+
+		std::cout << "\ntorch library -------------------------------------------------------" << std::endl;
+		//	-. deep learning
+		retval = torch_main(argc, argv);
+
+		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
+		//	-. deep learning
+		retval = liblearning_main(argc, argv);
 
 		std::cout << "\nreinforcement learning (RL) -----------------------------------------" << std::endl;
 		//retval = rl_glue_main(argc, argv);  // not yet implemented

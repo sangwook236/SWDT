@@ -37,6 +37,12 @@
     <Filter Include="Source Files\kmeanspp_lib">
       <UniqueIdentifier>{d32056e8-0dbc-4b97-ad95-f8db3a969561}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\liblearning">
+      <UniqueIdentifier>{2b650e0a-3f4e-4a8d-a119-ddd21dc96b0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\torch">
+      <UniqueIdentifier>{b56c5cbf-9828-4412-b520-7c6010e3efa3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -307,6 +313,18 @@
     </ClCompile>
     <ClCompile Include="shogun\shogun_modelselection_grid_search_multiclass_svm_example.cpp">
       <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="liblearning\liblearning_main.cpp">
+      <Filter>Source Files\liblearning</Filter>
+    </ClCompile>
+    <ClCompile Include="liblearning\liblearning_deep_learning_example.cpp">
+      <Filter>Source Files\liblearning</Filter>
+    </ClCompile>
+    <ClCompile Include="torch\torch_main.cpp">
+      <Filter>Source Files\torch</Filter>
+    </ClCompile>
+    <ClCompile Include="torch\torch_deep_learning_example.cpp">
+      <Filter>Source Files\torch</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

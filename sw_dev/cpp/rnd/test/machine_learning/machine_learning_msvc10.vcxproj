@@ -104,6 +104,8 @@
     <ClCompile Include="kmeanspp_lib\KMeans.cpp" />
     <ClCompile Include="kmeanspp_lib\KmTree.cpp" />
     <ClCompile Include="kmeanspp_lib\KmUtils.cpp" />
+    <ClCompile Include="liblearning\liblearning_deep_learning_example.cpp" />
+    <ClCompile Include="liblearning\liblearning_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="libsvm\libsvm_main.cpp" />
     <ClCompile Include="libsvm\libsvm_predict_example.cpp" />
@@ -321,6 +323,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="torch\torch_deep_learning_example.cpp" />
+    <ClCompile Include="torch\torch_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
