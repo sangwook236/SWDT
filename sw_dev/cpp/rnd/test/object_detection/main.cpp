@@ -11,11 +11,16 @@ int main(int argc, char *argv[])
 {
 	int libpabod_main(int argc, char *argv[]);
 
+	int c4_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
 		std::cout << "a LIBrary for PArt-Based Object Detection in C++ (LibPaBOD) ---------" << std::endl;
-		retval = libpabod_main(argc, argv);
+		//retval = libpabod_main(argc, argv);
+
+		std::cout << "\nC4 detector ---------------------------------------------------------" << std::endl;
+		retval = c4_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

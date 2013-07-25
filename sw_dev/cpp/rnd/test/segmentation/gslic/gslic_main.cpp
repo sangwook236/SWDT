@@ -201,7 +201,7 @@ int gslic_main(int argc, char *argv[])
 				cv::Mat img(cv::imread(*it, CV_LOAD_IMAGE_COLOR));
 				if (img.empty())
 				{
-					std::cout << "fail to load image file: " << *it << std::endl;
+					std::cout << "image file not found: " << *it << std::endl;
 					continue;
 				}
 			}
@@ -214,7 +214,7 @@ int gslic_main(int argc, char *argv[])
 				cv::Mat input_image(cv::imread(*it, CV_LOAD_IMAGE_COLOR));
 				if (input_image.empty())
 				{
-					std::cout << "fail to load image file: " << *it << std::endl;
+					std::cout << "image file not found: " << *it << std::endl;
 					continue;
 				}
 

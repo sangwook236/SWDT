@@ -21,20 +21,20 @@ void simple_example()
 	//const std::string model_filename("./object_detection_data/libpabod/models/horse_v6.mat");
 	const std::string model_filename("./object_detection_data/libpabod/models/person_v6.mat");
 
-	//const std::string input_filename("./object_detection_datalibpabod/models/2007_000572.jpg");  // bicycle
-	//const std::string input_filename("./object_detection_datalibpabod/models/2007_000584.jpg");  // bicycle
-	//const std::string input_filename("./object_detection_datalibpabod/models/2007_000793.jpg");  // bicycle, person
-	//const std::string input_filename("./object_detection_datalibpabod/models/2007_001311.jpg");  // bicycle, person
-	const std::string input_filename("./object_detection_datalibpabod/models/2007_003022.jpg");  // horse, person
-	//const std::string input_filename("./object_detection_datalibpabod/models/2007_004830.jpg");  // car
-	//const std::string input_filename("./object_detection_datalibpabod/models/2008_006317.jpg");  // horse, person
-	//const std::string input_filename("./object_detection_datalibpabod/models/2008_007537.jpg");  // person
-	//const std::string input_filename("./object_detection_datalibpabod/models/2009_004664.jpg");  // bicycle, person
-	//const std::string input_filename("./object_detection_datalibpabod/models/2009_004848.jpg");  // bicycle, person
-	//const std::string input_filename("./object_detection_datalibpabod/models/ucobikes.jpg");  // bicycle
+	//const std::string input_filename("./object_detection_data/2007_000572.jpg");  // bicycle
+	//const std::string input_filename("./object_detection_data/2007_000584.jpg");  // bicycle
+	//const std::string input_filename("./object_detection_data/2007_000793.jpg");  // bicycle, person
+	//const std::string input_filename("./object_detection_data/2007_001311.jpg");  // bicycle, person
+	const std::string input_filename("./object_detection_data/2007_003022.jpg");  // horse, person
+	//const std::string input_filename("./object_detection_data/2007_004830.jpg");  // car
+	//const std::string input_filename("./object_detection_data/2008_006317.jpg");  // horse, person
+	//const std::string input_filename("./object_detection_data/2008_007537.jpg");  // person
+	//const std::string input_filename("./object_detection_data/2009_004664.jpg");  // bicycle, person
+	//const std::string input_filename("./object_detection_data/2009_004848.jpg");  // bicycle, person
+	//const std::string input_filename("./object_detection_data/ucobikes.jpg");  // bicycle
 
 	//
-	const std::string output_filename("./object_detection_datalibpabod/models/detection_output.jpg");
+	const std::string output_filename("./object_detection_data/libpabod/detection_output.jpg");
 
 	std::cout << "loading an input file ..." << std::endl;
 	IplImage *img = cvLoadImage(input_filename.c_str(), CV_LOAD_IMAGE_COLOR);

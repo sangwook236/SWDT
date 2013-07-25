@@ -16,6 +16,12 @@
     <Filter Include="Source Files\libpabod">
       <UniqueIdentifier>{257d2848-5568-4521-9aeb-d157cb975ffb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\c4_lib">
+      <UniqueIdentifier>{729b825c-cbd3-4b81-b740-46747d589877}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\c4">
+      <UniqueIdentifier>{21e0a5a8-6ad5-4e8f-a42c-5f6d665dda3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -26,6 +32,15 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c4_lib\IntImage.h">
+      <Filter>Source Files\c4_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="c4_lib\mdarray.h">
+      <Filter>Source Files\c4_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="c4_lib\Pedestrian.h">
+      <Filter>Source Files\c4_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +55,15 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c4_lib\main.cpp">
+      <Filter>Source Files\c4_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="c4_lib\Pedestrian_ICRA.cpp">
+      <Filter>Source Files\c4_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="c4\c4_main.cpp">
+      <Filter>Source Files\c4</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

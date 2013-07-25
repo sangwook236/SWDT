@@ -83,10 +83,19 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="c4_lib\IntImage.h" />
+    <ClInclude Include="c4_lib\mdarray.h" />
+    <ClInclude Include="c4_lib\Pedestrian.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="c4\c4_main.cpp" />
+    <ClCompile Include="c4_lib\main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="c4_lib\Pedestrian_ICRA.cpp" />
     <ClCompile Include="libpabod\libpabod_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />

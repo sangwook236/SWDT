@@ -23,11 +23,11 @@ int main(int argc, char *argv[])
 		//retval = efficient_graph_based_image_segmentation_main(argc, argv);
 
 		std::cout << "\ninteractive graph-cuts algorithm ------------------------------------" << std::endl;
-		// Interactive Graph Cuts for Optimal Boundary & Region Segmentation of Objects in N-D Images.
-		retval = interactive_graph_cuts_main(argc, argv);
+		// [ref] "Interactive Graph Cuts for Optimal Boundary & Region Segmentation of Objects in N-D Images".
+		//retval = interactive_graph_cuts_main(argc, argv);
 
 		std::cout << "\nsimple linear iterative clustering (SLIC) algorithm -----------------" << std::endl;
-		//retval = gslic_main(argc, argv);
+		retval = gslic_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{
