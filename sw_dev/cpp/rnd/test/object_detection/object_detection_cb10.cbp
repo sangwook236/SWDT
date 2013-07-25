@@ -42,6 +42,15 @@
 			<Add library="boost_timer" />
 			<Add directory="/usr/local/lib/" />
 		</Linker>
+		<Unit filename="c4/c4_main.cpp" />
+		<Unit filename="c4_lib/IntImage.h" />
+		<Unit filename="c4_lib/Pedestrian.h" />
+		<Unit filename="c4_lib/Pedestrian_ICRA.cpp" />
+		<Unit filename="c4_lib/main.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="c4_lib/mdarray.h" />
 		<Unit filename="libpabod/libpabod_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>

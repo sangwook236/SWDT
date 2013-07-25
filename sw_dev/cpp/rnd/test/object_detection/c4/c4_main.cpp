@@ -2,10 +2,13 @@
 #include "../c4_lib/Pedestrian.h"
 #include <boost/timer/timer.hpp>
 #include <sstream>
+#include <fstream>
 #include <iostream>
 #include <string>
 
 
+void LoadCascade(DetectionScanner &ds);
+int DetectHuman(const char *filename, const char *outname, DetectionScanner &ds, std::ofstream &out);
 extern DetectionScanner scanner;
 extern int totaltime;
 
@@ -15,9 +18,6 @@ namespace local {
 // [ref] RunFiles() in ${C$_HOME}/Pedestrian_ICRA.cpp
 void simple_example()
 {
-	void LoadCascade(DetectionScanner &ds);
-	int DetectHuman(const char *filename, const char *outname, DetectionScanner &ds, std::ofstream &out);
-
 	// Run detection on a set of files, assuming
 	// 1) file listed in "in_base_dir"/"input_file_list", one file name per line
 	// 2) output detection results to "out_base_dir" -- create this directory before running the detector
@@ -26,8 +26,8 @@ void simple_example()
 	const std::string input_file_list("./object_detection_data/input_file_list.txt");
 	const std::string out_filename("./object_detection_data/c4/result_HIK.txt");
 
-	std::ifstream in(input_file_list);
-	std::ofstream out(out_filename);
+	std::ifstream in(input_file_list.c_str());
+	std::ofstream out(out_filename.c_str());
 	if (!in.is_open() || !out.is_open())
 	{
 		std::cerr << "input and/or output files cannot be loaded." << std::endl;
