@@ -54,6 +54,8 @@
 		<Unit filename="kmeanspp_lib/KmTree.h" />
 		<Unit filename="kmeanspp_lib/KmUtils.cpp" />
 		<Unit filename="kmeanspp_lib/KmUtils.h" />
+		<Unit filename="liblearning/liblearning_deep_learning_example.cpp" />
+		<Unit filename="liblearning/liblearning_main.cpp" />
 		<Unit filename="libsvm/libsvm_main.cpp" />
 		<Unit filename="libsvm/libsvm_predict_example.cpp" />
 		<Unit filename="libsvm/libsvm_train_example.cpp" />
@@ -143,6 +145,8 @@
 		<Unit filename="shogun/shogun_regression_gaussian_process_product_example.cpp" />
 		<Unit filename="shogun/shogun_regression_gaussian_process_simple_exact_example.cpp" />
 		<Unit filename="shogun/shogun_regression_gaussian_process_sum_example.cpp" />
+		<Unit filename="torch/torch_deep_learning_example.cpp" />
+		<Unit filename="torch/torch_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
