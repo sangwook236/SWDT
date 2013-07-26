@@ -27,6 +27,8 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)time(NULL));
 
 		std::cout << "clustering algorithm ------------------------------------------------" << std::endl;
+		//	-. k-means & k-means++ algorithms
+		//	-. spectral clustering
 		//retval = clustering_main(argc, argv);
 
 		std::cout << "\nsupport vector machine (SVM) ----------------------------------------" << std::endl;
@@ -42,7 +44,9 @@ int main(int argc, char *argv[])
 
 		std::cout << "\ntorch library -------------------------------------------------------" << std::endl;
 		//	-. deep learning
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		retval = torch_main(argc, argv);
+#endif
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
 		//	-. deep learning
