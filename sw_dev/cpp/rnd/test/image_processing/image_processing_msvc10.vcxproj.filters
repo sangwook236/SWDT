@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\itk">
+      <UniqueIdentifier>{f5563fc4-f928-4686-acfa-de2297bb68db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ritk">
+      <UniqueIdentifier>{6915823f-4065-427f-967d-9083b588a716}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -34,6 +40,12 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="itk\itk_main.cpp">
+      <Filter>Source Files\itk</Filter>
+    </ClCompile>
+    <ClCompile Include="ritk\ritk_main.cpp">
+      <Filter>Source Files\ritk</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

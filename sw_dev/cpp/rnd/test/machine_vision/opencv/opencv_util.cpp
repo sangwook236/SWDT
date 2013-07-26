@@ -51,18 +51,47 @@ cv::Rect get_bounding_box(const std::vector<cv::Point> &points)
 
 void canny(const cv::Mat &gray, const int lowerEdgeThreshold, const int upperEdgeThreshold, const bool useL2, cv::Mat &edge)
 {
+	// smoothing
 #if 0
-	// down-scale and up-scale the image to filter out the noise
+	// METHOD #1: down-scale and up-scale the image to filter out the noise.
+
 	cv::Mat blurred;
 	cv::pyrDown(gray, blurred);
 	cv::pyrUp(blurred, edge);
-#else
-	const int ksize = 3;
-	cv::blur(gray, edge, cv::Size(ksize, ksize));
+#elif 0
+	// METHOD #2: Gaussian filtering.
+
+	{
+		// FIXME [adjust] >> adjust parameters.
+		const int kernelSize = 3;
+		const double sigma = 0;
+		cv::GaussianBlur(gray, edge, cv::Size(kernelSize, kernelSize), sigma, sigma);
+	}
+#elif 1
+	// METHOD #3: box filtering.
+
+	{
+		// FIXME [adjust] >> adjust parameters.
+		const int d = -1;
+		const int kernelSize = 3;
+		const bool normalize = true;
+		cv::boxFilter(gray, edge, d, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+		//cv::blur(gray, edge, cv::Size(kernelSize, kernelSize));  // use the normalized box filter.
+	}
+#elif 0
+	// METHOD #4: bilateral filtering.
+
+	{
+		// FIXME [adjust] >> adjust parameters.
+		const int d = -1;
+		const double sigmaColor = 3.0;
+		const double sigmaSpace = 50.0;
+		cv::bilateralFilter(gray, edge, d, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+	}
 #endif
 
 	// run the edge detector on grayscale
-	const int apertureSize = 3;
+	const int apertureSize = 3;  // aperture size for the Sobel() operator.
 	cv::Canny(edge, edge, lowerEdgeThreshold, upperEdgeThreshold, apertureSize, useL2);
 }
 

@@ -6,17 +6,23 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <ctime>
-#include <stdexcept>
 
 
 int main(int argc, char *argv[])
 {
+	int itk_main(int argc, char *argv[]);
+	int ritk_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		throw std::runtime_error("not yet implemented");
+		std::cout << "Insight Segmentation and Registration Toolkit (ITK) -----------------" << std::endl;
+		retval = itk_main(argc, argv);  // not yet implemented
+
+		std::cout << "\nThe Range Imaging Toolkit (RITK) ------------------------------------" << std::endl;
+		retval = ritk_main(argc, argv);  // not yet implemented
 	}
     catch (const std::bad_alloc &e)
 	{

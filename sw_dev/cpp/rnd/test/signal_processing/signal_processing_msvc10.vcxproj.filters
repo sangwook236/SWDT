@@ -16,6 +16,12 @@
     <Filter Include="Source Files\fast_bilateral_filter">
       <UniqueIdentifier>{f8ee411c-47bb-41f9-904c-d374f3c1c655}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\fast_bilateral_filter_lib">
+      <UniqueIdentifier>{cdaa99d7-5b39-47e7-bc24-550fa452ab21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fast_bilateral_filter_lib\fft_3D">
+      <UniqueIdentifier>{78a29013-e39c-488b-b197-380db8a32d4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -26,6 +32,45 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\array.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\array_n.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\chrono.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\fast_lbf.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\fft_3D.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\geom.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\linear_bf.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\math_tools.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\mixed_vector.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\msg_stream.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\fft_3D\convolution_3D.h">
+      <Filter>Source Files\fast_bilateral_filter_lib\fft_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\fft_3D\fill_3D.h">
+      <Filter>Source Files\fast_bilateral_filter_lib\fft_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\fft_3D\support_3D.h">
+      <Filter>Source Files\fast_bilateral_filter_lib\fft_3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +85,21 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_bilateral_filter\cross_bilateral_filter_example.cpp">
+      <Filter>Source Files\fast_bilateral_filter</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_bilateral_filter\fast_bilateral_filter_example.cpp">
+      <Filter>Source Files\fast_bilateral_filter</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_bilateral_filter_lib\fft_3D\support_3D.cpp">
+      <Filter>Source Files\fast_bilateral_filter_lib\fft_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_bilateral_filter\color_bilateral_filter_example.cpp">
+      <Filter>Source Files\fast_bilateral_filter</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_bilateral_filter\truncated_kernel_bilateral_filter_example.cpp">
+      <Filter>Source Files\fast_bilateral_filter</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

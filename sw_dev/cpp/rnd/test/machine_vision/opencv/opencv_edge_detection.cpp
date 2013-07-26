@@ -112,7 +112,7 @@ void edge_detection()
 			//cv::cvtColor(img, gray, CV_RGB2GRAY);
 
 		const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
-		const bool useL2 = true;
+		const bool useL2 = true;  // if true, use L2 norm. otherwise, use L1 norm (faster).
 		cv::Mat edge;
 		canny(gray, lowerEdgeThreshold, upperEdgeThreshold, useL2, edge);
 

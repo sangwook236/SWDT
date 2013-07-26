@@ -52,8 +52,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NO_XML;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;../../inc/fftw;../../inc/opencv-2.4.3;../../inc/;D:\work_center\sw_dev\cpp\ext\bin</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -68,8 +68,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NO_XML;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;../../inc/fftw;../../inc/opencv-2.4.3;../../inc/;D:\work_center\sw_dev\cpp\ext\bin</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -83,11 +83,29 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fast_bilateral_filter_lib\array.h" />
+    <ClInclude Include="fast_bilateral_filter_lib\array_n.h" />
+    <ClInclude Include="fast_bilateral_filter_lib\chrono.h" />
+    <ClInclude Include="fast_bilateral_filter_lib\fast_lbf.h" />
+    <ClInclude Include="fast_bilateral_filter_lib\fft_3D.h" />
+    <ClInclude Include="fast_bilateral_filter_lib\fft_3D\convolution_3D.h" />
+    <ClInclude Include="fast_bilateral_filter_lib\fft_3D\fill_3D.h" />
+    <ClInclude Include="fast_bilateral_filter_lib\fft_3D\support_3D.h" />
+    <ClInclude Include="fast_bilateral_filter_lib\geom.h" />
+    <ClInclude Include="fast_bilateral_filter_lib\linear_bf.h" />
+    <ClInclude Include="fast_bilateral_filter_lib\math_tools.h" />
+    <ClInclude Include="fast_bilateral_filter_lib\mixed_vector.h" />
+    <ClInclude Include="fast_bilateral_filter_lib\msg_stream.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="fast_bilateral_filter\color_bilateral_filter_example.cpp" />
+    <ClCompile Include="fast_bilateral_filter\cross_bilateral_filter_example.cpp" />
+    <ClCompile Include="fast_bilateral_filter\fast_bilateral_filter_example.cpp" />
     <ClCompile Include="fast_bilateral_filter\fast_bilateral_filter_main.cpp" />
+    <ClCompile Include="fast_bilateral_filter\truncated_kernel_bilateral_filter_example.cpp" />
+    <ClCompile Include="fast_bilateral_filter_lib\fft_3D\support_3D.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">

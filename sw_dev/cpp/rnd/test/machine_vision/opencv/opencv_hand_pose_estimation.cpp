@@ -1043,6 +1043,7 @@ void hand_pose_estimation()
 				const int kernelSize = 5;
 				const bool normalize = true;
 				cv::boxFilter(blurred, gray, d, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+				//cv::blur(blurred, gray, cv::Size(kernelSize, kernelSize));  // use the normalized box filter.
 			}
 #elif 0
 			// METHOD #4: bilateral filtering.
