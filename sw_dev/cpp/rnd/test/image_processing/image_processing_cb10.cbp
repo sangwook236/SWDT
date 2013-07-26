@@ -34,7 +34,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="itk/itk_main.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="ritk/ritk_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

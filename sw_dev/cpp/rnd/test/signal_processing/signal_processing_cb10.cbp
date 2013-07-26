@@ -33,8 +33,38 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-DNO_XML" />
+			<Add directory="./fast_bilateral_filter_lib" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
+		<Linker>
+			<Add library="opencv_imgproc" />
+			<Add library="opencv_highgui" />
+			<Add library="opencv_core" />
+			<Add library="fftw3f" />
+			<Add library="fftw3" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
+		<Unit filename="fast_bilateral_filter/color_bilateral_filter_example.cpp" />
+		<Unit filename="fast_bilateral_filter/cross_bilateral_filter_example.cpp" />
+		<Unit filename="fast_bilateral_filter/fast_bilateral_filter_example.cpp" />
 		<Unit filename="fast_bilateral_filter/fast_bilateral_filter_main.cpp" />
+		<Unit filename="fast_bilateral_filter/truncated_kernel_bilateral_filter_example.cpp" />
+		<Unit filename="fast_bilateral_filter_lib/array.h" />
+		<Unit filename="fast_bilateral_filter_lib/array_n.h" />
+		<Unit filename="fast_bilateral_filter_lib/chrono.h" />
+		<Unit filename="fast_bilateral_filter_lib/fast_color_bf.h" />
+		<Unit filename="fast_bilateral_filter_lib/fast_lbf.h" />
+		<Unit filename="fast_bilateral_filter_lib/fft_3D.h" />
+		<Unit filename="fast_bilateral_filter_lib/fft_3D/convolution_3D.h" />
+		<Unit filename="fast_bilateral_filter_lib/fft_3D/fill_3D.h" />
+		<Unit filename="fast_bilateral_filter_lib/fft_3D/support_3D.cpp" />
+		<Unit filename="fast_bilateral_filter_lib/fft_3D/support_3D.h" />
+		<Unit filename="fast_bilateral_filter_lib/geom.h" />
+		<Unit filename="fast_bilateral_filter_lib/linear_bf.h" />
+		<Unit filename="fast_bilateral_filter_lib/math_tools.h" />
+		<Unit filename="fast_bilateral_filter_lib/mixed_vector.h" />
+		<Unit filename="fast_bilateral_filter_lib/msg_stream.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

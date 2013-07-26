@@ -23,7 +23,7 @@
      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
      DEALINGS IN THE SOFTWARE.
 
-   \endverbatim  
+   \endverbatim
 */
 
 
@@ -43,6 +43,10 @@
 
 #include "msg_stream.h"
 
+//--S [] 2013/07/26: Sang-Wook Lee
+#include <cstring>
+//--E [] 2013/07/26: Sang-Wook Lee
+
 
 namespace FFT{
 
@@ -53,22 +57,22 @@ namespace FFT{
   */
 
 
-  
+
   //! Type for support of FFT calculation in 3D.
   class Support_3D {
-    
+
   public:
 
     typedef unsigned int  size_type;
 
     typedef double        real_type;
     typedef fftw_complex  complex_type;
-    
+
     typedef real_type*    space_data_type;
     typedef complex_type* frequency_data_type;
     typedef void*         buffer_type;
-    
-    
+
+
     //! Needs the \e width, \e height and \e depth in the space domain of the real
     //! function with which it will deal.
     inline Support_3D(const size_type w,
@@ -91,16 +95,16 @@ namespace FFT{
     inline size_type y_frequency_size() const;
     inline size_type z_frequency_size() const;
     //@}
-   
+
     //! Create a buffer to store data.
     inline buffer_type create_buffer() const;
 
-    //! Destroy the buffer.    
+    //! Destroy the buffer.
     inline void destroy_buffer(buffer_type buffer) const;
 
 
 
-    
+
     //! Put space data into a 3D array.
     template <typename Real_data_3D_array>
     void save_space_data(Real_data_3D_array* const array) const;
@@ -110,8 +114,8 @@ namespace FFT{
     void load_space_data(const Real_data_3D_array& array);
 
 
-    
-    
+
+
     //! Put frequency data into a 3D array.
     template <typename Complex_data_3D_array>
     void save_frequency_data(Complex_data_3D_array* const array) const;
@@ -121,14 +125,14 @@ namespace FFT{
     void load_frequency_data(const Complex_data_3D_array& array);
 
 
-    
-    
+
+
     //! Put the space data into a buffer.
     inline void save_space_data_into_buffer(buffer_type buffer) const;
 
     //! Get the space data from a buffer.
     inline void load_space_data_from_buffer(buffer_type buffer);
-    
+
 
 
 
@@ -139,7 +143,7 @@ namespace FFT{
     inline void load_frequency_data_from_buffer(buffer_type buffer);
 
 
-    
+
 
     //! Compute the FFT.
     inline void space_to_frequency();
@@ -175,7 +179,7 @@ namespace FFT{
     template<typename Real_data_3D_array>
     void buffer_to_frequency_data(const buffer_type& buffer,
 				  Real_data_3D_array* const array) const;
-   
+
 
     // ####################
     // # Static functions #
@@ -184,16 +188,16 @@ namespace FFT{
 
     //! Set the flags for FFTW.
     static inline void set_fftw_flags(const unsigned flags);
-    
+
     //! Set the file name of the wisdom file. "" not to use a file.
     static inline void set_wisdom_file(const std::string file_name);
 
     //! Set 'autosave' mode.
     static inline void set_auto_save(const bool auto_save);
-    
+
     //! Save the wisdom file; nothing fancy.
     static inline void save_wisdom();
-    
+
   private:
 
     //@{
@@ -209,7 +213,7 @@ namespace FFT{
 
     //@{
     //! Size of the real data.
-    
+
     const size_type width;
     const size_type height;
     const size_type depth;
@@ -217,20 +221,20 @@ namespace FFT{
 
     //@{
     //! Size of the complex data.
-    
+
     const size_type support_w;
     const size_type support_h;
     const size_type support_d;
     const size_type mem_size;
     //@}
-    
+
     static inline size_type index(const size_type x,
 				  const size_type y,
 				  const size_type z,
 				  const size_type w,
 				  const size_type h,
 				  const size_type d);
-   
+
 
     // ####################
     // # Static functions #
@@ -242,7 +246,7 @@ namespace FFT{
 
     //! Flag to indicate whether a wisdom file has been set or not
     static bool wisdom_file_set;
-    
+
     //! See set_wisdom_file()
     static std::string wisdom_file;
 
@@ -255,7 +259,7 @@ namespace FFT{
 
     //! Indicates if the wisdom has been loaded. Avoid reading it several times.
     static bool wisdom_loaded;
-    
+
 
     //! Must be called in a support constructor.
     static inline void new_support();
@@ -280,11 +284,11 @@ namespace FFT{
 */
 
 
-  
 
 
-  
-  
+
+
+
 
   void Support_3D::set_fftw_flags(const unsigned flags){
     fftw_flags = flags;
@@ -314,7 +318,7 @@ namespace FFT{
 		      <<"no file saved"<<Message::done;
     }
   }
-  
+
 
   void Support_3D::new_support(){
     support_number++;
@@ -325,22 +329,22 @@ namespace FFT{
       wisdom_file = (proxy == NULL) ? std::string() : std::string(proxy);
       wisdom_file_set = true;
     }
-     
- 
+
+
     // Job is done if not the first support or if not file support required.
     if ((wisdom_loaded)||(support_number > 1)||(wisdom_file.size() == 0)){
       return;
     }
 
-    
+
     // If it is the first support, try to load the wisdom data.
 
     wisdom_loaded = true;
 
-    
+
     // Opening the wisdom file.
     FILE* f = fopen(wisdom_file.c_str(),"r");
-    
+
     if (f != NULL){ // System says "ok"
       if(fftw_import_wisdom_from_file(f) == 0){ // But FFTW says "error".
 	Message::warning<<"error while reading FFTW wisdom file \""
@@ -357,7 +361,7 @@ namespace FFT{
   }
 
 
-  
+
   void Support_3D::delete_support(){
     support_number--;
 
@@ -372,7 +376,7 @@ namespace FFT{
   }
 
 
-  
+
   // ######################
   // # Non-static section #
   // ######################
@@ -393,26 +397,26 @@ namespace FFT{
     width(w),
     height(h),
     depth(d),
-    
+
     support_w(w),
     support_h(h),
     support_d(d/2+1),
     mem_size(w*h*(d/2+1)*sizeof(complex_type)) {
 
     new_support();
-    
+
     // Pointer to the space data.
     space_data = reinterpret_cast<space_data_type>(fftw_malloc(mem_size));
 
     // Same pointer to perform "in place" computation.
     frequency_data = reinterpret_cast<frequency_data_type>(space_data);
 
-    
+
     // We make the best measurement possible because we use the wisdom system.
     forward  = fftw_plan_dft_r2c_3d(width,height,depth,
 				    space_data,frequency_data,
 				    fftw_flags);
-    
+
     backward = fftw_plan_dft_c2r_3d(width,height,depth,
 				    frequency_data,space_data,
 				    fftw_flags);
@@ -422,11 +426,11 @@ namespace FFT{
 
 
 
-  
+
   Support_3D::~Support_3D(){
 
     delete_support();
-    
+
     // Free memory.
     fftw_destroy_plan(forward);
     fftw_destroy_plan(backward);
@@ -436,13 +440,13 @@ namespace FFT{
 
 
 
-  
+
   Support_3D::size_type Support_3D::x_space_size() const{
     return width;
   }
 
 
-  
+
   Support_3D::size_type Support_3D::y_space_size() const{
     return height;
   }
@@ -468,8 +472,8 @@ namespace FFT{
   }
 
 
-  
-  
+
+
   Support_3D::size_type Support_3D::index(const size_type x,
 					  const size_type y,
 					  const size_type z,
@@ -480,21 +484,21 @@ namespace FFT{
   }
 
 
-  
-  
+
+
   Support_3D::buffer_type Support_3D::create_buffer() const{
 
     return fftw_malloc(mem_size);
   }
 
   void Support_3D::destroy_buffer(buffer_type buffer) const{
-    
+
     fftw_free(buffer);
   }
 
-  
 
-  
+
+
   /*!
     \e Real_data_3D_array must provide the following functions: resize(),
     and a (x,y,z) access operator.
@@ -507,7 +511,7 @@ namespace FFT{
     for(size_type x=0;x<width;x++){
       for(size_type y=0;y<height;y++){
 	for(size_type z=0;z<depth;z++){
-	  
+
 	  const size_type i = index(x,y,z,support_w,support_h,2*support_d);
 
 	  (*array)(x,y,z) = space_data[i];
@@ -544,7 +548,7 @@ namespace FFT{
 
 
 
-  
+
   /*!
     \e Complex_data_3D_array must provide the following functions: resize(),
     and a (x,y,z) access operator. Complex_data_3D_array::value_type is assumed
@@ -554,14 +558,14 @@ namespace FFT{
   void Support_3D::save_frequency_data(Complex_data_3D_array* const array) const{
 
     typedef typename Complex_data_3D_array::value_type cplx_type;
-    
+
     array->resize(support_w,support_h,support_d);
 
     for(size_type x=0;x<support_w;x++){
       for(size_type y=0;y<support_h;y++){
 	for(size_type z=0;z<support_d;z++){
 	  const size_type i = index(x,y,z,support_w,support_h,support_d);
-	  
+
 	  (*array)(x,y,z) = cplx_type(frequency_data[i][0],frequency_data[i][1]);
 	}
       }
@@ -586,7 +590,7 @@ namespace FFT{
     for(size_type x=0;x<support_w;x++){
       for(size_type y=0;y<support_h;y++){
 	for(size_type z=0;z<support_d;z++){
-	  
+
 	  const size_type i = index(x,y,z,support_w,support_h,support_d);
 
 	  frequency_data[i][0] = array(x,y,z).real();
@@ -599,8 +603,8 @@ namespace FFT{
 
 
 
-  
-  
+
+
   void Support_3D::save_space_data_into_buffer(buffer_type buffer) const{
     memcpy(buffer,space_data,mem_size);
   }
@@ -609,9 +613,9 @@ namespace FFT{
     memcpy(space_data,buffer,mem_size);
   }
 
-  
 
-  
+
+
   void Support_3D::save_frequency_data_into_buffer(buffer_type buffer) const{
     memcpy(buffer,frequency_data,mem_size);
   }
@@ -636,21 +640,21 @@ namespace FFT{
 
   template<typename Iterator>
   void Support_3D::half_normalize(Iterator begin,Iterator end) const{
-    
+
     const real_type scale = 1.0 / std::sqrt(static_cast<real_type>(width*height*depth));
-    
+
     for(Iterator i=begin;i!=end;i++){
       *i *= scale;
     }
   }
-  
-  
+
+
 
   template<typename Iterator>
   void Support_3D::full_normalize(Iterator begin,Iterator end) const{
-    
+
     const real_type scale = 1.0 / static_cast<real_type>(width*height*depth);
-    
+
     for(Iterator i=begin;i!=end;i++){
       *i *= scale;
     }
@@ -659,38 +663,38 @@ namespace FFT{
 
   void Support_3D::multiply_frequency_data_by_buffer(buffer_type buffer,
 						     const bool  scale){
-    
+
     const size_type size = support_w*support_h*support_d;
     const frequency_data_type freq_buffer =
       reinterpret_cast<frequency_data_type>(buffer);
 
     const real_type s = scale ? 1.0/(width*height*depth) : 1.0;
-    
+
     for(size_type i=0;i<size;i++){
 
       const double a_re = frequency_data[i][0];
       const double a_im = frequency_data[i][1];
-      
+
       const double b_re = freq_buffer[i][0];
       const double b_im = freq_buffer[i][1];
-      
+
       frequency_data[i][0] = (a_re*b_re - a_im*b_im)*s;
       frequency_data[i][1] = (a_re*b_im + a_im*b_re)*s;
-      
+
     }
-    
+
   }
 
 
-  
+
   template<typename Real_data_3D_array>
   void Support_3D::buffer_to_space_data(const buffer_type& buffer,
 					Real_data_3D_array* const array) const{
-    
+
     space_data_type space_buffer = reinterpret_cast<space_data_type>(buffer);
 
     array->resize(width,height);
-    
+
     for(size_type x=0;x<width;x++){
       for(size_type y=0;y<height;y++){
 	for(size_type z=0;z<depth;z++){
@@ -703,13 +707,13 @@ namespace FFT{
 
   }
 
-  
+
 
 
   template<typename Complex_data_3D_array>
   void Support_3D::buffer_to_frequency_data(const buffer_type& buffer,
 					 Complex_data_3D_array* const array) const{
-    
+
     typedef typename Complex_data_3D_array::value_type cplx_type;
 
     frequency_data_type frequency_buffer = reinterpret_cast<frequency_data_type>(buffer);
@@ -725,7 +729,7 @@ namespace FFT{
 	}
       }
     }
-      
+
   }
 
 }

@@ -11,7 +11,7 @@ met:
 
     * Redistributions of source code must retain the above copyright
     notice, this list of conditions and the following disclaimer.
-    
+
     * Redistributions in binary form must reproduce the above
     copyright notice, this list of conditions and the following
     disclaimer in the documentation and/or other materials provided
@@ -56,7 +56,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   \code
   int i = 1;
   Message::error<<"i has a wrong value  ("<<i<<")"<<Message::done;
-  \endcode 
+  \endcode
  */
 
 
@@ -66,11 +66,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <iostream>
 #include <string>
+//--S [] 2013/07/26: Sang-Wook Lee
+#include <cstdlib>
+//--E [] 2013/07/26: Sang-Wook Lee
 
 namespace Message{
 
 
-  
+
 class Warning_stream;
 
 //! Fonction to notify the end of a message.
@@ -79,7 +82,7 @@ inline Warning_stream& done(Warning_stream& w);
 
 //! Class defining an ouput for warnings and errors.
 class Warning_stream{
-    
+
 public:
   //! Classical constructor.
   inline Warning_stream(const char* head,
@@ -102,7 +105,7 @@ public:
 
   friend Warning_stream& done(Warning_stream& w);
 
-  
+
 private:
   //! If true, done() exits.
   bool is_fatal;
@@ -120,7 +123,7 @@ private:
 
 
 /*
-  
+
   ########################
   # Predefined variables #
   ########################
@@ -133,8 +136,8 @@ namespace {
 }
 
 
-  
-  
+
+
 /*
 
   ##########
@@ -152,7 +155,7 @@ namespace {
 
 
 /*
-  
+
   #############################################
   #############################################
   #############################################
@@ -188,7 +191,7 @@ Warning_stream::operator<<(Warning_stream& (*f)(Warning_stream&)){
 
 Warning_stream&
 Warning_stream::operator<<(std::ostream& (*f)(std::ostream&)){
-  
+
   f(*out);
   return *this;
 }
@@ -201,7 +204,7 @@ Warning_stream::operator<<(const T& to_print){
     (*out)<<"\n"<<header;
     output_header = false;
   }
-  
+
   (*out)<<to_print;
 
   return *this;
@@ -217,7 +220,7 @@ Warning_stream::operator<<(const T& to_print){
 Warning_stream& done(Warning_stream& w){
   *(w.out)<<"\n";
   w.out->flush();
-  
+
   if (w.is_fatal){
     exit(1);
   }

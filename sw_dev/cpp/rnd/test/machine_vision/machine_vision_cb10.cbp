@@ -38,11 +38,11 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add directory="/usr/local/include/ivt" />
-			<Add directory="/usr/local/include" />
 			<Add directory="/usr/local/include/vxl/contrib/mul" />
 			<Add directory="/usr/local/include/vxl/contrib" />
 			<Add directory="/usr/local/include/vxl/core" />
 			<Add directory="/usr/local/include/vxl/vcl" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="opencv_core" />
