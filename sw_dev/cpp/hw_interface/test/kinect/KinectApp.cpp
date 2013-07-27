@@ -63,7 +63,7 @@ CKinectApp::CKinectApp()
   //--S [] 2013/05/16: Sang-Wook Lee
   recordType_(RECORD_COLOR_AVI | RECORD_DEPTH_AVI | RECORD_DEPTH_ASCII),
   //recordType_(RECORD_COLOR_AVI | RECORD_DEPTH_AVI),
-  saved_base_path_name_("."), saved_base_file_name_("kinect_"), saved_timestamp_(""), saved_depth_frame_id_(1),
+  saved_base_path_name_("./data/kinect"), saved_base_file_name_("kinect_"), saved_timestamp_(""), saved_depth_frame_id_(1),
   m_bUseIRImageInsteadOfRGBAImage(false), m_bTurnInfraredEmitterOff(false), m_pTempIRBuffer(NULL),
   //--E [] 2013/05/16: Sang-Wook Lee
   //--S [] 2013/05/30: Sang-Wook Lee
