@@ -81,6 +81,9 @@
     <ClInclude Include="nyu_depth_toolbox_v2_lib\cbf_windows.h">
       <Filter>Source Files\nyu_depth_toolbox_v2_lib</Filter>
     </ClInclude>
+    <ClInclude Include="nyu_depth_toolbox_v2_lib\cbf.h">
+      <Filter>Source Files\nyu_depth_toolbox_v2_lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -121,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="nyu_depth_toolbox_v2\depth_filling_cross_bilateral_filter_example.cpp">
       <Filter>Source Files\nyu_depth_toolbox_v2</Filter>
+    </ClCompile>
+    <ClCompile Include="nyu_depth_toolbox_v2_lib\cbf.cpp">
+      <Filter>Source Files\nyu_depth_toolbox_v2_lib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

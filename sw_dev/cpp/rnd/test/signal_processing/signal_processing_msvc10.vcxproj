@@ -96,6 +96,10 @@
     <ClInclude Include="fast_bilateral_filter_lib\math_tools.h" />
     <ClInclude Include="fast_bilateral_filter_lib\mixed_vector.h" />
     <ClInclude Include="fast_bilateral_filter_lib\msg_stream.h" />
+    <ClInclude Include="nyu_depth_toolbox_v2_lib\cbf.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="nyu_depth_toolbox_v2_lib\cbf_windows.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -112,6 +116,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="nyu_depth_toolbox_v2\depth_filling_cross_bilateral_filter_example.cpp" />
     <ClCompile Include="nyu_depth_toolbox_v2\nyu_depth_toolbox_v2_main.cpp" />
+    <ClCompile Include="nyu_depth_toolbox_v2_lib\cbf.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="nyu_depth_toolbox_v2_lib\cbf_windows.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
