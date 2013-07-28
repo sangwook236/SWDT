@@ -55,39 +55,45 @@ void canny(const cv::Mat &gray, const int lowerEdgeThreshold, const int upperEdg
 #if 0
 	// METHOD #1: down-scale and up-scale the image to filter out the noise.
 
-	cv::Mat blurred;
-	cv::pyrDown(gray, blurred);
-	cv::pyrUp(blurred, edge);
+	{
+		cv::Mat tmp;
+		cv::pyrDown(gray, tmp);
+		cv::pyrUp(tmp, edge);
+	}
 #elif 0
 	// METHOD #2: Gaussian filtering.
 
 	{
 		// FIXME [adjust] >> adjust parameters.
 		const int kernelSize = 3;
-		const double sigma = 0;
-		cv::GaussianBlur(gray, edge, cv::Size(kernelSize, kernelSize), sigma, sigma);
+		const double sigma = 2.0;
+		cv::GaussianBlur(gray, edge, cv::Size(kernelSize, kernelSize), sigma, sigma, cv::BORDER_DEFAULT);
 	}
 #elif 1
 	// METHOD #3: box filtering.
 
 	{
 		// FIXME [adjust] >> adjust parameters.
-		const int d = -1;
+		const int ddepth = -1;  // the output image depth. -1 to use src.depth().
 		const int kernelSize = 3;
 		const bool normalize = true;
-		cv::boxFilter(gray, edge, d, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
-		//cv::blur(gray, edge, cv::Size(kernelSize, kernelSize));  // use the normalized box filter.
+		cv::boxFilter(gray, edge, ddepth, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+		//cv::blur(gray, edge, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), cv::BORDER_DEFAULT);  // use the normalized box filter.
 	}
 #elif 0
 	// METHOD #4: bilateral filtering.
 
 	{
 		// FIXME [adjust] >> adjust parameters.
-		const int d = -1;
-		const double sigmaColor = 3.0;
-		const double sigmaSpace = 50.0;
-		cv::bilateralFilter(gray, edge, d, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+		const int diameter = -1;  // diameter of each pixel neighborhood that is used during filtering. if it is non-positive, it is computed from sigmaSpace.
+		const double sigmaColor = 3.0;  // for range filter.
+		const double sigmaSpace = 50.0;  // for space filter.
+		cv::bilateralFilter(gray, edge, diameter, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
 	}
+#else
+	// METHOD #5: no filtering.
+
+	edge = gray;
 #endif
 
 	// run the edge detector on grayscale

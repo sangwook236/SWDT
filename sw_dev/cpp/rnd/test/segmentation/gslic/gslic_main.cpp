@@ -93,6 +93,53 @@ void gslic_sample(std::vector<cv::Mat> &input_images, const SEGMETHOD seg_method
 	}
 }
 
+void smooth_image(const cv::Mat &in, cv::Mat &out)
+{
+#if 0
+	// METHOD #1: down-scale and up-scale the image to filter out the noise.
+
+	{
+		cv::Mat tmp;
+		cv::pyrDown(in, tmp);
+		cv::pyrUp(tmp, out);
+	}
+#elif 0
+	// METHOD #2: Gaussian filtering.
+
+	{
+		// FIXME [adjust] >> adjust parameters.
+		const int kernelSize = 3;
+		const double sigma = 2.0;
+		cv::GaussianBlur(in, out, cv::Size(kernelSize, kernelSize), sigma, sigma, cv::BORDER_DEFAULT);
+	}
+#elif 0
+	// METHOD #3: box filtering.
+
+	{
+		// FIXME [adjust] >> adjust parameters.
+		const int ddepth = -1;  // the output image depth. -1 to use src.depth().
+		const int kernelSize = 3;
+		const bool normalize = true;
+		cv::boxFilter(in, out, ddepth, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+		//cv::blur(gray, edge, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), cv::BORDER_DEFAULT);  // use the normalized box filter.
+	}
+#elif 1
+	// METHOD #4: bilateral filtering.
+
+	{
+		// FIXME [adjust] >> adjust parameters.
+		const int diameter = -1;  // diameter of each pixel neighborhood that is used during filtering. if it is non-positive, it is computed from sigmaSpace.
+		const double sigmaColor = 3.0;  // for range filter.
+		const double sigmaSpace = 50.0;  // for space filter.
+		cv::bilateralFilter(in, out, diameter, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+	}
+#else
+	// METHOD #5: no filtering.
+
+	out = in.clone();
+#endif
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -155,6 +202,9 @@ int gslic_main(int argc, char *argv[])
 	bool canUseGPU = false;
 	try
 	{
+		cv::theRNG();
+
+#if 1
 		if (cv::gpu::getCudaEnabledDeviceCount() > 0)
 		{
 			canUseGPU = true;
@@ -163,6 +213,7 @@ int gslic_main(int argc, char *argv[])
 		}
 		else
 			std::cout << "GPU not found ..." << std::endl;
+#endif
 
 		{
 			std::list<std::string> input_file_list;
@@ -181,11 +232,17 @@ int gslic_main(int argc, char *argv[])
 			input_file_list.push_back("./machine_vision_data/opencv/hand_01.jpg");
 			input_file_list.push_back("./machine_vision_data/opencv/hand_05.jpg");
 			input_file_list.push_back("./machine_vision_data/opencv/hand_24.jpg");
-#elif 1
+#elif 0
 			input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
 			input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
 			input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
 			input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
+#elif 1
+			input_file_list.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211659.png");
+			input_file_list.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211705.png");
+			input_file_list.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211713.png");
+			input_file_list.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211839.png");
+			input_file_list.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211842.png");
 #endif
 
 			//
@@ -218,6 +275,10 @@ int gslic_main(int argc, char *argv[])
 					continue;
 				}
 
+				// smoothing.
+				local::smooth_image(input_image.clone(), input_image);
+
+				// superpixel.
 				{
 					const int64 start = cv::getTickCount();
 
@@ -233,7 +294,7 @@ int gslic_main(int argc, char *argv[])
 				}
 
 #if 0
-				// show superpixel mask
+				// show superpixel mask.
 				cv::Mat mask;
 				double minVal = 0.0, maxVal = 0.0;
 				cv::minMaxLoc(superpixel_mask, &minVal, &maxVal);
@@ -243,7 +304,7 @@ int gslic_main(int argc, char *argv[])
 #endif
 
 #if 1
-				// show superpixel boundary
+				// show superpixel boundary.
 				//cv::Mat superpixel_boundary;
 				//my_gslic::create_superpixel_boundary(superpixel_mask, superpixel_boundary);
 

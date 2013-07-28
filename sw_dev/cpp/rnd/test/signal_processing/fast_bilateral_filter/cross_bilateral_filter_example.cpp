@@ -15,6 +15,141 @@
 namespace {
 namespace local {
 
+void smooth_image(const cv::Mat &in, cv::Mat &out)
+{
+#if 0
+	// METHOD #1: down-scale and up-scale the image to filter out the noise.
+
+	{
+		cv::Mat tmp;
+		cv::pyrDown(in, tmp);
+		cv::pyrUp(tmp, out);
+	}
+#elif 0
+	// METHOD #2: Gaussian filtering.
+
+	{
+		// FIXME [adjust] >> adjust parameters.
+		const int kernelSize = 3;
+		const double sigma = 0;
+		cv::GaussianBlur(in, out, cv::Size(kernelSize, kernelSize), sigma, sigma, cv::BORDER_DEFAULT);
+	}
+#elif 1
+	// METHOD #3: box filtering.
+
+	{
+		// FIXME [adjust] >> adjust parameters.
+		const int ddepth = -1;  // the output image depth. -1 to use src.depth().
+		const int kernelSize = 5;
+		const bool normalize = true;
+		cv::boxFilter(in, out, ddepth, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+		//cv::blur(in, out, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), cv::BORDER_DEFAULT);  // use the normalized box filter.
+	}
+#elif 0
+	// METHOD #4: bilateral filtering.
+
+	{
+		// FIXME [adjust] >> adjust parameters.
+		const int diameter = -1;  // diameter of each pixel neighborhood that is used during filtering. if it is non-positive, it is computed from sigmaSpace.
+		const double sigmaColor = 3.0;  // for range filter.
+		const double sigmaSpace = 50.0;  // for space filter.
+		cv::bilateralFilter(in, out, diameter, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+	}
+#else
+	// METHOD #5: no filtering.
+
+	out = in;
+#endif
+}
+
+void detect_edge(const cv::Mat &in, cv::Mat &out)
+{
+#if 0
+	// METHOD #1: using Sobel operator.
+
+	{
+		// compute x- & y-gradients.
+		cv::Mat xgradient, ygradient;
+
+		//const int ksize = 5;
+		const int ksize = CV_SCHARR;  // use Scharr operator
+		cv::Sobel(in, xgradient, CV_32FC1, 1, 0, ksize, 1.0, 0.0, cv::BORDER_DEFAULT);
+		cv::Sobel(in, ygradient, CV_32FC1, 0, 1, ksize, 1.0, 0.0, cv::BORDER_DEFAULT);
+
+		cv::Mat gradient;
+		cv::magnitude(xgradient, ygradient, gradient);
+
+		double minVal, maxVal;
+		cv::minMaxLoc(gradient, &minVal, &maxVal);
+
+		const double truncation_ratio = 0.1;
+#if 1
+		gradient.setTo(cv::Scalar::all(0), gradient < truncation_ratio * maxVal);
+		gradient.convertTo(out, CV_8UC1, 255.0 / maxVal, 0.0);
+#else
+		gradient.setTo(cv::Scalar::all(0), gradient < minVal + truncation_ratio * (maxVal - minVal));
+		gradient.convertTo(out, CV_8UC1, 255.0 / (maxVal - minVal), -255.0 * minVal / (maxVal - minVal));
+#endif
+	}
+#elif 0
+	// METHOD #2: using derivative of Gaussian distribution.
+
+	{
+		cv::Mat img_double;
+		double minVal, maxVal;
+		cv::minMaxLoc(in, &minVal, &maxVal);
+		in.convertTo(img_double, CV_64FC1, 1.0 / (maxVal - minVal), -minVal / (maxVal - minVal));
+
+		const double deriv_sigma = 3.0;
+		const double blur_sigma = 2.0;
+
+		const double sigma2 = deriv_sigma * deriv_sigma;
+		const double _2sigma2 = 2.0 * sigma2;
+		const double sigma3 = sigma2 * deriv_sigma;
+		const double den = std::sqrt(2.0 * boost::math::constants::pi<double>()) * sigma3;
+
+		const int deriv_kernel_size = 2 * (int)std::ceil(deriv_sigma) + 1;
+		cv::Mat kernelX(1, deriv_kernel_size, CV_64FC1), kernelY(deriv_kernel_size, 1, CV_64FC1);
+
+		// construct derivative kernels.
+		for (int i = 0, k = -deriv_kernel_size/2; k <= deriv_kernel_size/2; ++i, ++k)
+		{
+			const double val = k * std::exp(-k*k / _2sigma2) / den;
+			kernelX.at<double>(0, i) = val;
+			kernelY.at<double>(i, 0) = val;
+		}
+
+		// compute x- & y-gradients.
+		cv::Mat xgradient, ygradient;
+		cv::filter2D(img_double, xgradient, -1, kernelX, cv::Point(-1, -1), 0.0, cv::BORDER_DEFAULT);
+		cv::filter2D(img_double, ygradient, -1, kernelY, cv::Point(-1, -1), 0.0, cv::BORDER_DEFAULT);
+
+		cv::Mat gradient;
+		cv::magnitude(xgradient, ygradient, gradient);
+
+		cv::minMaxLoc(gradient, &minVal, &maxVal);
+
+		const double truncation_ratio = 0.0;
+#if 1
+		gradient.setTo(cv::Scalar::all(0), gradient < truncation_ratio * maxVal);
+		gradient.convertTo(out, CV_8UC1, 255.0 / maxVal, 0.0);
+#else
+		gradient.setTo(cv::Scalar::all(0), gradient < minVal + truncation_ratio * (maxVal - minVal));
+		gradient.convertTo(out, CV_8UC1, 255.0 / (maxVal - minVal), -255.0 * minVal / (maxVal - minVal));
+#endif
+	}
+#elif 1
+	// METHOD #3: using Canny edge detector.
+
+	{
+		const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
+		const int apertureSize = 3;  // aperture size for the Sobel() operator.
+		const bool useL2 = true;  // if true, use L2 norm. otherwise, use L1 norm (faster).
+		cv::Canny(in, out, lowerEdgeThreshold, upperEdgeThreshold, apertureSize, useL2);
+	}
+#endif
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -186,28 +321,19 @@ void cross_bilateral_filter_example()
 			}
 		}
 
-		// edge detection.
-#if 0
-		// down-scale and up-scale the image to filter out the noise
-		cv::Mat blurred_img;
-		cv::pyrDown(gray_img, blurred_img);
-		cv::pyrUp(blurred_img, edge_img);
-#elif 1
-		const int ksize = 3;
-		cv::blur(gray_img, edge_img, cv::Size(ksize, ksize));
-#else
-		edge_img = gray_img.clone();
-#endif
+		{
+			cv::Mat tmp;
 
-		// run the edge detector on grayscale
-		const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
-		const int apertureSize = 3;  // aperture size for the Sobel() operator.
-		const bool useL2 = true;  // if true, use L2 norm. otherwise, use L1 norm (faster).
-		cv::Canny(edge_img, edge_img, lowerEdgeThreshold, upperEdgeThreshold, apertureSize, useL2);
+			// smoothing.
+			local::smooth_image(gray_img, tmp);
 
-		for (unsigned y = 0; y < height; ++y)
-			for (unsigned x = 0; x < width; ++x)
-				edge(x, y) = edge_img.at<unsigned char>(y, x) / 255.0;
+			// detect edge.
+			local::detect_edge(tmp, edge_img);
+
+			for (unsigned y = 0; y < height; ++y)
+				for (unsigned x = 0; x < width; ++x)
+					edge(x, y) = edge_img.at<unsigned char>(y, x) / 255.0;
+		}
 	}
 
 	std::cout << "Done" << std::endl;

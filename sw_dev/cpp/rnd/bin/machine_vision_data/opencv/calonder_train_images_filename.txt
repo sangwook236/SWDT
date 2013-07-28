@@ -1,0 +1,5 @@
+opencv_data\fruits.jpg
+opencv_data\lena_rgb.bmp
+opencv_data\melon_target.png
+opencv_data\beaver_target.png
+opencv_data\box.png

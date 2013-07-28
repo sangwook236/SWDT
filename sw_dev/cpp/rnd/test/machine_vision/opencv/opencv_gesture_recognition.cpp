@@ -102,7 +102,7 @@ void gesture_recognition_by_frequency(cv::VideoCapture &capture)
 	const double MHI_TIME_DURATION = 1.0;
 
 	cv::Mat prevgray, gray, frame, frame2;
-	cv::Mat mhi, img, blurred;
+	cv::Mat mhi, img;
 	size_t frame_count = 0;
 	const double startTime = (double)cv::getTickCount();
 	for (;;)
@@ -137,46 +137,49 @@ void gesture_recognition_by_frequency(cv::VideoCapture &capture)
 		cv::cvtColor(frame, gray, CV_BGR2GRAY);
 		cv::cvtColor(gray, img, CV_GRAY2BGR);
 
-		//if (blurred.empty()) blurred = gray.clone();
-
 		// smoothing
 #if 0
 		// METHOD #1: down-scale and up-scale the image to filter out the noise.
 
-		cv::pyrDown(gray, blurred);
-		cv::pyrUp(blurred, gray);
+		{
+			cv::Mat tmp;
+			cv::pyrDown(gray, tmp);
+			cv::pyrUp(tmp, gray);
+		}
 #elif 0
 		// METHOD #2: Gaussian filtering.
 
 		{
 			// FIXME [adjust] >> adjust parameters.
 			const int kernelSize = 3;
-			const double sigma = 0;
-			cv::GaussianBlur(rgb_input_image, rgb_input_image, cv::Size(kernelSize, kernelSize), sigma, sigma);
+			const double sigma = 2.0;
+			cv::GaussianBlur(gray, gray, cv::Size(kernelSize, kernelSize), sigma, sigma, cv::BORDER_DEFAULT);
 		}
 #elif 0
 		// METHOD #3: box filtering.
 
 		{
-			tmp_image = rgb_input_image;
 			// FIXME [adjust] >> adjust parameters.
-			const int d = -1;
+			const int ddepth = -1;  // the output image depth. -1 to use src.depth().
 			const int kernelSize = 5;
 			const bool normalize = true;
-			cv::boxFilter(tmp_image, rgb_input_image, d, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
-			//cv::blur(tmp_image, rgb_input_image, cv::Size(kernelSize, kernelSize));  // use the normalized box filter.
+			cv::boxFilter(gray.clone(), gray, ddepth, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+			//cv::blur(gray.clone(), gray, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), cv::BORDER_DEFAULT);  // use the normalized box filter.
 		}
 #elif 0
 		// METHOD #4: bilateral filtering.
 
 		{
-			tmp_image = rgb_input_image;
 			// FIXME [adjust] >> adjust parameters.
-			const int d = -1;
-			const double sigmaColor = 3.0;
-			const double sigmaSpace = 50.0;
-			cv::bilateralFilter(tmp_image, rgb_input_image, d, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+			const int diameter = -1;  // diameter of each pixel neighborhood that is used during filtering. if it is non-positive, it is computed from sigmaSpace.
+			const double sigmaColor = 3.0;  // for range filter.
+			const double sigmaSpace = 50.0;  // for space filter.
+			cv::bilateralFilter(gray.clone(), gray, diameter, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
 		}
+#else
+		// METHOD #5: no filtering.
+
+		//gray = gray;
 #endif
 
 		// FIXME [delete] >>
@@ -1034,7 +1037,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 	const double MHI_TIME_DURATION = 1.0;
 
 	cv::Mat prevgray, gray, frame, frame2;
-	cv::Mat mhi, img, tmp_img, blurred;
+	cv::Mat mhi, img, tmp_img;
 	for (;;)
 	{
 		const double timestamp = (double)std::clock() / CLOCKS_PER_SEC;  // get current time in seconds
@@ -1066,46 +1069,49 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 
 		cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
-		//if (blurred.empty()) blurred = gray.clone();
-
 		// smoothing
 #if 0
 		// METHOD #1: down-scale and up-scale the image to filter out the noise.
 
-		cv::pyrDown(gray, blurred);
-		cv::pyrUp(blurred, gray);
+		{
+			cv::Mat tmp;
+			cv::pyrDown(gray, tmp);
+			cv::pyrUp(tmp, gray);
+		}
 #elif 0
 		// METHOD #2: Gaussian filtering.
 
 		{
 			// FIXME [adjust] >> adjust parameters.
 			const int kernelSize = 3;
-			const double sigma = 0;
-			cv::GaussianBlur(gray, gray, cv::Size(kernelSize, kernelSize), sigma, sigma);
+			const double sigma = 2.0;
+			cv::GaussianBlur(gray, gray, cv::Size(kernelSize, kernelSize), sigma, sigma, cv::BORDER_DEFAULT);
 		}
 #elif 0
 		// METHOD #3: box filtering.
 
 		{
-			blurred = gray;
 			// FIXME [adjust] >> adjust parameters.
-			const int d = -1;
+			const int ddepth = -1;  // the output image depth. -1 to use src.depth().
 			const int kernelSize = 5;
 			const bool normalize = true;
-			cv::boxFilter(blurred, gray, d, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
-			//cv::blur(blurred, gray, cv::Size(kernelSize, kernelSize));  // use the normalized box filter.
+			cv::boxFilter(gray.clone(), gray, ddepth, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+			//cv::blur(gray.clone(), gray, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), cv::BORDER_DEFAULT);  // use the normalized box filter.
 		}
 #elif 0
 		// METHOD #4: bilateral filtering.
 
 		{
-			blurred = gray;
 			// FIXME [adjust] >> adjust parameters.
-			const int d = -1;
-			const double sigmaColor = 3.0;
-			const double sigmaSpace = 50.0;
-			cv::bilateralFilter(blurred, gray, d, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+			const int diameter = -1;  // diameter of each pixel neighborhood that is used during filtering. if it is non-positive, it is computed from sigmaSpace.
+			const double sigmaColor = 3.0;  // for range filter.
+			const double sigmaSpace = 50.0;  // for space filter.
+			cv::bilateralFilter(gray.clone(), gray, diameter, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
 		}
+#else
+		// METHOD #5: no filtering.
+
+		//gray = gray;
 #endif
 
 		cv::cvtColor(gray, img, CV_GRAY2BGR);

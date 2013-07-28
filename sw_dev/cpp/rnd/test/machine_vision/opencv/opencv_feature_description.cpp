@@ -282,10 +282,11 @@ void fern(const std::string &modelFilename, const cv::Mat &img1, const cv::Mat &
 	ldetector.setVerbose(true);
 
 	cv::Mat object(img1.clone()), image(img2.clone());
+	// FIXME [adjust] >> adjust parameters.
 	const int blurKSize = 3;
-	const double sigma = 0;
-	cv::GaussianBlur(object, object, cv::Size(blurKSize, blurKSize), sigma, sigma);
-	cv::GaussianBlur(image, image, cv::Size(blurKSize, blurKSize), sigma, sigma);
+	const double sigma = 2.0;
+	cv::GaussianBlur(object, object, cv::Size(blurKSize, blurKSize), sigma, sigma, cv::BORDER_DEFAULT);
+	cv::GaussianBlur(image, image, cv::Size(blurKSize, blurKSize), sigma, sigma, cv::BORDER_DEFAULT);
 
 	std::vector<cv::Mat> objpyr, imgpyr;
 	cv::buildPyramid(object, objpyr, ldetector.nOctaves - 1);

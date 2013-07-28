@@ -12,10 +12,10 @@ namespace local {
 void mean_filtering(const cv::Mat &image, cv::Mat &filtered)
 {
 	// mean filter.
-	const int d = -1;
+	const int ddepth = -1;  // the output image depth. -1 to use src.depth().
 	const int kernelSize = 5;
 	const bool normalize = true;
-	cv::boxFilter(image, filtered, d, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_REPLICATE);
+	cv::boxFilter(image, filtered, ddepth, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_REPLICATE);
 
 	// Unnormalized box filter is useful for computing various integral characteristics over each pixel neighborhood,
 	// such as covariance matrices of image derivatives (used in dense optical flow algorithms, and so on).
@@ -24,10 +24,10 @@ void mean_filtering(const cv::Mat &image, cv::Mat &filtered)
 
 void bilateral_filtering(const cv::Mat &image, cv::Mat &filtered)
 {
-	const int d = -1;
-	const double sigmaColor = 3.0;
-	const double sigmaSpace = 50.0;
-	cv::bilateralFilter(image, filtered, d, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+	const int diameter = -1;  // diameter of each pixel neighborhood that is used during filtering. if it is non-positive, it is computed from sigmaSpace.
+	const double sigmaColor = 3.0;  // for range filter.
+	const double sigmaSpace = 50.0;  // for space filter.
+	cv::bilateralFilter(image, filtered, diameter, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
 }
 
 void integral_image(const cv::Mat &image, cv::Mat &sum)
