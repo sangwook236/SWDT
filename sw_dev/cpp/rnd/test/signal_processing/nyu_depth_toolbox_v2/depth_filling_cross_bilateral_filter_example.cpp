@@ -1,5 +1,9 @@
 //#include "stdafx.h"
+#if defined(WIN32) || defined(_WIN32)
 #include "../nyu_depth_toolbox_v2_lib/cbf_windows.h"
+#else
+#include "../nyu_depth_toolbox_v2_lib/cbf.h"
+#endif
 //#define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
 #include <boost/timer/timer.hpp>
@@ -35,7 +39,7 @@ void depth_filling_cross_bilateral_filter_example()
 	//const std::string depth_input_filename("../../hw_interface/bin/data/kinect/kinect2_depth_transformed_20130725T211842.png");
 
 	const std::string output_filename("./signal_processing_data/nyu_depth_toolbox/depth_filling_cross_bf_output.png");
-	
+
 	const double sigma_s[] = { 12.0, 5.0, 8.0 };  // space sigma.
 	const double sigma_r[] = { 0.2, 0.08, 0.02 };  // range sigma.
 
@@ -99,8 +103,16 @@ void depth_filling_cross_bilateral_filter_example()
 		boost::timer::auto_cpu_timer timer;
 
 		// cross bilateral filtering.
+#if defined(WIN32) || defined(_WIN32)
 		//cbf::cbf(depth_img.data, gray_img.data, (bool *)&depth_noise_mask[0], output_gray_img.data, (double *)sigma_s, (double *)sigma_r);
 		cbf::cbf((unsigned char *)&depth_img_vec[0], (unsigned char *)&gray_img_vec[0], (bool *)&depth_noise_mask[0], (unsigned char *)&output_gray_img_vec[0], (double *)sigma_s, (double *)sigma_r);
+#else
+        const int height = depth_img.rows;
+        const int width = depth_img.cols;
+        const unsigned num_scales = 3;  // the number of scales at which to perform the filtering.
+		//cbf::cbf(height, width, depth_img.data, gray_img.data, (bool *)&depth_noise_mask[0], output_gray_img.data, num_scales, (double *)sigma_s, (double *)sigma_r);
+		cbf::cbf(height, width, (unsigned char *)&depth_img_vec[0], (unsigned char *)&gray_img_vec[0], (bool *)&depth_noise_mask[0], (unsigned char *)&output_gray_img_vec[0], num_scales, (double *)sigma_s, (double *)sigma_r);
+#endif
 	}
 
 	std::cout << "end filtering ..." << std::endl;

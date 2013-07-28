@@ -33,6 +33,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-fpermissive" />
 			<Add option="-DNO_XML" />
 			<Add directory="./fast_bilateral_filter_lib" />
 			<Add directory="/usr/local/include" />
@@ -43,10 +44,12 @@
 			<Add library="opencv_core" />
 			<Add library="fftw3f" />
 			<Add library="fftw3" />
+			<Add library="boost_timer" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="fast_bilateral_filter/color_bilateral_filter_example.cpp" />
 		<Unit filename="fast_bilateral_filter/cross_bilateral_filter_example.cpp" />
+		<Unit filename="fast_bilateral_filter/depth_filling_cross_bilateral_filter.cpp" />
 		<Unit filename="fast_bilateral_filter/fast_bilateral_filter_example.cpp" />
 		<Unit filename="fast_bilateral_filter/fast_bilateral_filter_main.cpp" />
 		<Unit filename="fast_bilateral_filter/truncated_kernel_bilateral_filter_example.cpp" />
@@ -66,6 +69,15 @@
 		<Unit filename="fast_bilateral_filter_lib/mixed_vector.h" />
 		<Unit filename="fast_bilateral_filter_lib/msg_stream.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="nyu_depth_toolbox_v2/depth_filling_cross_bilateral_filter_example.cpp" />
+		<Unit filename="nyu_depth_toolbox_v2/nyu_depth_toolbox_v2_main.cpp" />
+		<Unit filename="nyu_depth_toolbox_v2_lib/cbf.cpp" />
+		<Unit filename="nyu_depth_toolbox_v2_lib/cbf.h" />
+		<Unit filename="nyu_depth_toolbox_v2_lib/cbf_windows.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="nyu_depth_toolbox_v2_lib/cbf_windows.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

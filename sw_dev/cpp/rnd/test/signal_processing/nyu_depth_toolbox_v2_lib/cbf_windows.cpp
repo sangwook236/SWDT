@@ -18,13 +18,13 @@
 #define FILTER_LEN 11
 #define FILTER_SIZE 121
 
-// Doesn't exist in window's math.h... 
+// Doesn't exist in window's math.h...
 static bool isnan(float val) {
-  return val != val;  
+  return val != val;
 }
 
 void toc(const char* message, clock_t start) {
-    
+
 #ifdef DEBUG
   double d = clock() - start;
   d = 1000 * d / CLOCKS_PER_SEC;
@@ -34,7 +34,7 @@ void toc(const char* message, clock_t start) {
 
 // Args:
 //   filter_size - the number of pixels in the filter.
-void create_offset_array(int* offsets_h, int img_height) {	
+void create_offset_array(int* offsets_h, int img_height) {
   int kk = 0;
   for (int yy = -FILTER_RAD; yy <= FILTER_RAD; ++yy) {
     for (int xx = -FILTER_RAD; xx <= FILTER_RAD; ++xx, ++kk) {
@@ -47,16 +47,16 @@ void calc_pyr_sizes(int* heights, int* widths, int* pyr_offsets) {
   int offset = 0;
   for (int scale = 0; scale < NUM_SCALES; ++scale) {
     pyr_offsets[scale] = offset;
-		
+
     // Calculate the size of the downsampled images.
     heights[scale] = static_cast<int>(IMG_HEIGHT / pow((float)2, scale));
-    widths[scale] = static_cast<int>(IMG_WIDTH / pow((float)2, scale));	
+    widths[scale] = static_cast<int>(IMG_WIDTH / pow((float)2, scale));
     offset += heights[scale] * widths[scale];
   }
-	
+
 #ifdef DEBUG
   for (int ii = 0; ii < NUM_SCALES; ++ii) {
-    printf("Scale %d: [%d x %d], offset=%d\n", ii, heights[ii], widths[ii], pyr_offsets[ii]); 
+    printf("Scale %d: [%d x %d], offset=%d\n", ii, heights[ii], widths[ii], pyr_offsets[ii]);
   }
 #endif
 }
@@ -71,17 +71,17 @@ int get_pyr_size(int* heights, int* widths) {
 
 // We're upsampling from the result matrix (which is small) to the depth matrix,
 // which is larger.
-// 
+//
 // For example, dst could be 480x640 and src may be 240x320.
 //
 // Args:
 //   depth_dst - H1xW1 matrix where H1 and W1 are equal to height_dst and
 //               width_dst.
-void upsample_cpu(float* depth_dst, 
+void upsample_cpu(float* depth_dst,
 									bool* mask_dst,
 									bool* valid_dst,
                   float* depth_src,
-									float* result_src, 
+									float* result_src,
 									bool* mask_src,
 									bool* valid_src,
                   int height_src,
@@ -89,23 +89,23 @@ void upsample_cpu(float* depth_dst,
 								  int height_dst,
 									int width_dst,
 									int dst_img_ind) {
-  
+
 	int num_threads = height_dst * width_dst;
-  
+
   // Dont bother if the upsampled one isnt missing.
   if (!mask_dst[dst_img_ind]) {
     return;
   }
-	
+
   int x_dst = static_cast<int>(floorf((float) dst_img_ind / height_dst));
   //--S [] 2013/07/28: Sang-Wook Lee
   //int y_dst = static_cast<int>(fmodf(dst_img_ind, height_dst));
   int y_dst = static_cast<int>(fmodf((float)dst_img_ind, (float)height_dst));
   //--E [] 2013/07/28: Sang-Wook Lee
-  
+
   int y_src = static_cast<int>((float) y_dst * height_src / height_dst);
   int x_src = static_cast<int>((float) x_dst * width_src / width_dst);
-  
+
   // Finally, convert to absolute coords.
   int src_img_ind = y_src + height_src * x_src;
 
@@ -145,33 +145,33 @@ void cbf_cpu(const float* depth, const float* intensity, bool* is_missing,
              float sigma_r,
              int numThreads,
              int idx) {
-	
+
   int abs_ind = abs_inds[idx];
-  
+
   int src_Y = abs_ind % height;
   int src_X = abs_ind / height;
 
   float weight_sum = 0;
   float value_sum = 0;
-	
+
   float weight_intensity_sum = 0;
-  
+
   float gaussian_range[FILTER_SIZE];
   float gaussian_range_sum = 0;
-  
+
   for (int ii = 0; ii < FILTER_SIZE; ++ii) {
     // Unfortunately we need to double check that the radii are correct
     // unless we add better processing of borders.
-    
+
     int abs_offset = abs_ind + offsets[ii]; // THESE ARE CALC TWICE.
-    
+
     int dst_Y = abs_offset % height;
     int dst_X = abs_offset / height;
-    
+
 	if (abs_offset < 0 || abs_offset >= (height * width)
         || abs(src_Y-dst_Y) > FILTER_RAD || abs(src_X-dst_X) > FILTER_RAD) {
 	  continue;
-      
+
     // The offsets are into ANY part of the image. So they MAY be accessing
     // a pixel that was originally missing. However, if that pixel has been
     // filled in, then we can still use it.
@@ -184,9 +184,9 @@ void cbf_cpu(const float* depth, const float* intensity, bool* is_missing,
     gaussian_range[ii] = exp(-(vv * vv) / (2*sigma_r * sigma_r));
     gaussian_range_sum += gaussian_range[ii];
   }
-  
+
   int count = 0;
-  
+
   for (int ii = 0; ii < FILTER_SIZE; ++ii) {
     // Get the Absolute offset into the image (1..N where N=H*W)
 	int abs_offset = abs_ind + offsets[ii];
@@ -198,17 +198,17 @@ void cbf_cpu(const float* depth, const float* intensity, bool* is_missing,
     } else if (is_missing[abs_offset] && !valid_in[abs_offset]) {
 	  continue;
     }
-    
+
     ++count;
-    
+
     weight_sum += gaussian_space[ii] * gaussian_range[ii];
     value_sum += depth[abs_offset] * gaussian_space[ii] * gaussian_range[ii];
   }
-  
+
   if (weight_sum == 0) {
     return;
   }
-  
+
   if (isnan(weight_sum)) {
     printf("*******************\n");
     printf(" Weight sum is NaN\n");
@@ -239,7 +239,7 @@ void create_spatial_gaussian(float sigma_s, float* gaussian_h) {
 
 // Counts the number of missing pixels in the given mask. Note that the mask
 // MUST already be in the appropriate offset location.
-// 
+//
 // Args:
 //   height - the heigh of the image at the current scale.
 //   width - the width of the image at the current scale.
@@ -248,7 +248,7 @@ void create_spatial_gaussian(float sigma_s, float* gaussian_h) {
 //   abs_inds_h - pre-allocated GPU memory location.
 int get_missing_pixel_coords(int height, int width, bool* mask, int* abs_inds_to_filter_h) {
   int num_pixels = height * width;
-	
+
   int num_missing_pixels = 0;
   for (int nn = 0; nn < num_pixels; ++nn) {
     if (mask[nn]) {
@@ -262,39 +262,39 @@ int get_missing_pixel_coords(int height, int width, bool* mask, int* abs_inds_to
 
 static void savePGM(bool* imf, const char *name, int height, int width) {
   uint8_t im[IMG_HEIGHT * IMG_WIDTH];
-	
+
   for (int nn = 0; nn < IMG_HEIGHT * IMG_HEIGHT; ++nn) {
     // First convert to X,Y
     int y = nn % height;
     int x = static_cast<int>(floor(nn / static_cast<double>(height)));
-    
+
     // Then back to Abs Inds
-    int mm = y * width + x;  
+    int mm = y * width + x;
     im[mm] = uint8_t(255*imf[nn]);
   }
-	
+
   std::ofstream file(name, std::ios::out | std::ios::binary);
-	
+
   file << "P5\n" << width << " " << height << "\n" << MAX_UCHAR << "\n";
   file.write((char *)&im, width * height * sizeof(uint8_t));
 }
 
 static void savePGM(float* imf, const char *name, int height, int width) {
 	uint8_t im[IMG_HEIGHT * IMG_WIDTH];
-	
+
 	for (int nn = 0; nn < IMG_HEIGHT * IMG_WIDTH; ++nn) {
     // First convert to X,Y
     int y = nn % height;
     int x = static_cast<int>(floor(nn / static_cast<double>(height)));
-    
+
     // Then back to Abs Inds
     int mm = y * width + x;
-    
+
 		im[mm] = uint8_t(255*imf[nn]);
 	}
-	
+
   std::ofstream file(name, std::ios::out | std::ios::binary);
-	
+
   file << "P5\n" << width << " " << height << "\n" << MAX_UCHAR << "\n";
   file.write((char *)&im, width * height * sizeof(uint8_t));
 }
@@ -304,37 +304,37 @@ void filter_at_scale(float* depth_h,
                      bool* mask_h,
                      bool* valid_h,
                      float* result_h,
-                     int* abs_inds_to_filter_h, 
+                     int* abs_inds_to_filter_h,
                      int height,
                      int width,
                      float sigma_s,
                      float sigma_r) {
-	
+
   // Create the offset array.
   int* offsets_h = (int*) malloc(FILTER_SIZE * sizeof(int));
   create_offset_array(offsets_h, height);
-	
+
   // Create the gaussian.
   float* gaussian_h = (float*) malloc(FILTER_SIZE * sizeof(float));
   create_spatial_gaussian(sigma_s, gaussian_h);
-	
+
   // ************************************************
   // We need to be smart about how we do this, so rather
   // than execute the filter for EVERY point in the image,
   // we will only do it for the points missing depth information.
   // ************************************************
-  
+
   int num_missing_pixels = get_missing_pixel_coords(height, width, mask_h, abs_inds_to_filter_h);
   printf("Num Missing Pixels: %d\n", num_missing_pixels);
-  
-  clock_t start_filter = clock();	
+
+  clock_t start_filter = clock();
 
   // We should not be writing into the same value for 'valid' that we're passing in.
   bool* valid_in = (bool*) malloc(height * width * sizeof(bool));
   for (int i = 0; i < height * width; ++i) {
     valid_in[i] = valid_h[i];
   }
-  
+
   for (int i = 0; i < num_missing_pixels; ++i) {
     cbf_cpu(depth_h,
 	        intensity_h,
@@ -352,9 +352,9 @@ void filter_at_scale(float* depth_h,
             num_missing_pixels,
             i);
 	}
-  
+
 	toc("FILTER OP", start_filter);
-	
+
   free(valid_in);
 	free(offsets_h);
 	free(gaussian_h);
@@ -363,20 +363,20 @@ void filter_at_scale(float* depth_h,
 void cbf::cbf(uint8_t* depth, uint8_t* intensity,
               bool* mask_h, uint8_t* result,
               double* sigma_s, double* sigma_r) {
-	
+
   clock_t start_func = clock();
-	
+
   int pyr_heights[NUM_SCALES];
   int pyr_widths[NUM_SCALES];
   int pyr_offsets[NUM_SCALES];
   calc_pyr_sizes(&pyr_heights[0], &pyr_widths[0], &pyr_offsets[0]);
-	
+
   // Allocate the memory needed for the absolute missing pixel indices. We'll
   // allocate the number of bytes required for the largest image, since the
   // smaller ones obviously fit inside of it.
   int N = IMG_HEIGHT * IMG_WIDTH;
   int* abs_inds_to_filter_h = (int*) malloc(N * sizeof(int));
-	
+
   int pyr_size = get_pyr_size(&pyr_heights[0], &pyr_widths[0]);
 
 	// ************************
@@ -398,13 +398,13 @@ void cbf::cbf(uint8_t* depth, uint8_t* intensity,
       valid_ms_h[nn] = !mask_h[nn];
       result_ms_h[nn] = 0;
 	}
-	
+
 	float* depth_ms_h_p = depth_ms_h + pyr_offsets[1];
 	float* intensity_ms_h_p	= intensity_ms_h + pyr_offsets[1];
 	bool* mask_ms_h_p	= mask_ms_h + pyr_offsets[1];
 	bool* valid_ms_h_p = valid_ms_h + pyr_offsets[1];
 	float* result_ms_h_p = result_ms_h + pyr_offsets[1];
-  
+
 	for (unsigned int scale = 1; scale < NUM_SCALES; ++scale) {
       for (int xx = 0; xx < pyr_widths[scale]; ++xx) {
 	    for (int yy = 0; yy < pyr_heights[scale]; ++yy, ++depth_ms_h_p, ++intensity_ms_h_p, ++mask_ms_h_p, ++result_ms_h_p, ++valid_ms_h_p) {
@@ -423,30 +423,30 @@ void cbf::cbf(uint8_t* depth, uint8_t* intensity,
 	// *********************************
 	//   RUN THE ACTUAL FILTERING CODE
 	// *********************************
-  
+
 	for (int scale = NUM_SCALES - 1; scale >= 0; --scale) {
 	  printf("Filtering at scale %d, [%dx%d]\n", scale, pyr_heights[scale], pyr_widths[scale]);
-    
+
 #ifdef DEBUG
     char filename1[50];
     sprintf(filename1, "missing_pixels_before_filtering_scale%d.pgm", scale);
     // Now that we've performed the filtering, save the intermediate image.
     savePGM(mask_ms_h + pyr_offsets[scale], filename1, pyr_heights[scale], pyr_widths[scale]);
-    
+
     char filename2[50];
     sprintf(filename2, "valid_pixels_before_filtering_scale%d.pgm", scale);
     // Now that we've performed the filtering, save the intermediate image.
     savePGM(valid_ms_h + pyr_offsets[scale], filename2, pyr_heights[scale], pyr_widths[scale]);
-    
+
     sprintf(filename2, "valid_intensity_before_filtering_scale%d.pgm", scale);
     // Now that we've performed the filtering, save the intermediate image.
     savePGM(intensity_ms_h + pyr_offsets[scale], filename2, pyr_heights[scale], pyr_widths[scale]);
-    
+
     sprintf(filename2, "depth_before_filtering_scale%d.pgm", scale);
     // Now that we've performed the filtering, save the intermediate image.
     savePGM(depth_ms_h + pyr_offsets[scale], filename2, pyr_heights[scale], pyr_widths[scale]);
 #endif
-    
+
     filter_at_scale(depth_ms_h + pyr_offsets[scale],
                     intensity_ms_h + pyr_offsets[scale],
                     mask_ms_h + pyr_offsets[scale],
@@ -461,21 +461,21 @@ void cbf::cbf(uint8_t* depth, uint8_t* intensity,
                     (float)sigma_s[scale],
                     (float)sigma_r[scale]);
 					//--E [] 2013/07/28: Sang-Wook Lee
-    
-    
+
+
 #ifdef DEBUG
     sprintf(filename2, "valid_pixels_after_filtering_scale%d.pgm", scale);
     // Now that we've performed the filtering, save the intermediate image.
     savePGM(valid_ms_h + pyr_offsets[scale], filename2, pyr_heights[scale], pyr_widths[scale]);
 #endif
-    
+
 #ifdef DEBUG
     char filename[50];
     sprintf(filename, "depth_after_filtering_scale%d.pgm", scale);
     // Now that we've performed the filtering, save the intermediate image.
     savePGM(result_ms_h + pyr_offsets[scale], filename, pyr_heights[scale], pyr_widths[scale]);
 #endif
-    
+
 		if (scale == 0) {
 		  continue;
 		}
@@ -483,7 +483,7 @@ void cbf::cbf(uint8_t* depth, uint8_t* intensity,
 		// Now, we need to upsample the resulting depth and store it in the next
 		// highest location.
 		int num_missing_pixels = pyr_heights[scale-1] * pyr_widths[scale-1];
-		
+
 		printf("Upsampling %d\n", num_missing_pixels);
 		for (int i = 0; i < num_missing_pixels; ++i) {
 			upsample_cpu(depth_ms_h + pyr_offsets[scale-1],
@@ -499,19 +499,19 @@ void cbf::cbf(uint8_t* depth, uint8_t* intensity,
 									 pyr_widths[scale-1],
 									 i);
 		}
-    
-    
+
+
 #ifdef DEBUG
     sprintf(filename, "up_depth_after_filtering_scale%d.pgm", scale);
     // Now that we've performed the filtering, save the intermediate image.
     savePGM(depth_ms_h + pyr_offsets[scale-1], filename, pyr_heights[scale-1], pyr_widths[scale-1]);
-    
+
     sprintf(filename, "up_valid_after_filtering_scale%d.pgm", scale);
     // Now that we've performed the filtering, save the intermediate image.
     savePGM(valid_ms_h + pyr_offsets[scale-1], filename, pyr_heights[scale-1], pyr_widths[scale-1]);
 #endif
 	}
-	
+
 	// Copy the final result from the device.
 	for (int nn = 0; nn < N; ++nn) {
 		if (mask_ms_h[nn]) {
@@ -520,14 +520,14 @@ void cbf::cbf(uint8_t* depth, uint8_t* intensity,
 			result[nn] = depth[nn];
 		}
 	}
-	
+
 	free(depth_ms_h);
 	free(intensity_ms_h);
 	free(mask_ms_h);
 	free(result_ms_h);
 	free(valid_ms_h);
 	free(abs_inds_to_filter_h);
-											
+
 	toc("Entire Function", start_func);
 }
 
