@@ -104,12 +104,19 @@ void depth_filling_cross_bilateral_filter_example()
 
 		// cross bilateral filtering.
 #if defined(WIN32) || defined(_WIN32)
+		// TODO [check] >>
+		//	-. in order to change IMG_HEIGHT, IMG_WIDTH, and/or NUM_SCALES, macros have to be changed in ${CPP_RND_HOME}/test/signal_processing/nyu_depth_toolbox_v2_lib/cbf_windows.h.
+		//		#define NUM_SCALES 3
+		//		#define IMG_HEIGHT 640
+		//		#define IMG_WIDTH 480
+
 		//cbf::cbf(depth_img.data, gray_img.data, (bool *)&depth_noise_mask[0], output_gray_img.data, (double *)sigma_s, (double *)sigma_r);
 		cbf::cbf((unsigned char *)&depth_img_vec[0], (unsigned char *)&gray_img_vec[0], (bool *)&depth_noise_mask[0], (unsigned char *)&output_gray_img_vec[0], (double *)sigma_s, (double *)sigma_r);
 #else
         const int height = depth_img.rows;
         const int width = depth_img.cols;
         const unsigned num_scales = 3;  // the number of scales at which to perform the filtering.
+
 		//cbf::cbf(height, width, depth_img.data, gray_img.data, (bool *)&depth_noise_mask[0], output_gray_img.data, num_scales, (double *)sigma_s, (double *)sigma_r);
 		cbf::cbf(height, width, (unsigned char *)&depth_img_vec[0], (unsigned char *)&gray_img_vec[0], (bool *)&depth_noise_mask[0], (unsigned char *)&output_gray_img_vec[0], num_scales, (double *)sigma_s, (double *)sigma_r);
 #endif

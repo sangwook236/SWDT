@@ -70,14 +70,14 @@ void image_gradient()
 	filenames.push_back("./machine_vision_data/opencv/hand_34.jpg");
 	filenames.push_back("./machine_vision_data/opencv/hand_35.jpg");
 	filenames.push_back("./machine_vision_data/opencv/hand_36.jpg");
+#elif 0
+	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211659.png");
+	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211705.png");
+	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211713.png");
+	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211839.png");
+	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211842.png");
 #endif
 
-	const std::string windowName1("image gradient - original");
-	const std::string windowName2("image gradient - processed");
-	cv::namedWindow(windowName1, cv::WINDOW_AUTOSIZE);
-	cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
-
-	//
 	for (std::list<std::string>::iterator it = filenames.begin(); it != filenames.end(); ++it)
     {
 		const cv::Mat img = cv::imread(*it, CV_LOAD_IMAGE_COLOR);
@@ -94,15 +94,62 @@ void image_gradient()
 			cv::cvtColor(img, gray, CV_BGR2GRAY);
 			//cv::cvtColor(img, gray, CV_RGB2GRAY);
 
+		// smoothing
+#if 0
+		// METHOD #1: down-scale and up-scale the image to filter out the noise.
+
+		{
+			cv::Mat tmp;
+			cv::pyrDown(gray, tmp);
+			cv::pyrUp(tmp, gray);
+		}
+#elif 0
+		// METHOD #2: Gaussian filtering.
+
+		{
+			// FIXME [adjust] >> adjust parameters.
+			const int kernelSize = 3;
+			const double sigma = 2.0;
+			cv::GaussianBlur(gray, gray, cv::Size(kernelSize, kernelSize), sigma, sigma, cv::BORDER_DEFAULT);
+		}
+#elif 1
+		// METHOD #3: box filtering.
+
+		{
+			// FIXME [adjust] >> adjust parameters.
+			const int ddepth = -1;  // the output image depth. -1 to use src.depth().
+			const int kernelSize = 3;
+			const bool normalize = true;
+			cv::boxFilter(gray.clone(), gray, ddepth, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+			//cv::blur(gray.clone(), gray, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), cv::BORDER_DEFAULT);  // use the normalized box filter.
+		}
+#elif 0
+		// METHOD #4: bilateral filtering.
+
+		{
+			// FIXME [adjust] >> adjust parameters.
+			const int diameter = -1;  // diameter of each pixel neighborhood that is used during filtering. if it is non-positive, it is computed from sigmaSpace.
+			const double sigmaColor = 3.0;  // for range filter.
+			const double sigmaSpace = 50.0;  // for space filter.
+			cv::bilateralFilter(gray.clone(), gray, diameter, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+		}
+#else
+		// METHOD #5: no filtering.
+
+		//gray = gray;
+#endif
+
 		// compute x- & y-gradients.
 		cv::Mat xgradient, ygradient;
 #if 0
 		// METHOD #1: using Sobel operator.
 
-		//const int ksize = 5;
-		const int ksize = CV_SCHARR;  // use Scharr operator
-		cv::Sobel(gray, xgradient, CV_32FC1, 1, 0, ksize, 1.0, 0.0, cv::BORDER_DEFAULT);
-		cv::Sobel(gray, ygradient, CV_32FC1, 0, 1, ksize, 1.0, 0.0, cv::BORDER_DEFAULT);
+		{
+			//const int ksize = 5;
+			const int ksize = CV_SCHARR;  // use Scharr operator
+			cv::Sobel(gray, xgradient, CV_64FC1, 1, 0, ksize, 1.0, 0.0, cv::BORDER_DEFAULT);
+			cv::Sobel(gray, ygradient, CV_64FC1, 0, 1, ksize, 1.0, 0.0, cv::BORDER_DEFAULT);
+		}
 #elif 1
 		// METHOD #2: using derivative of Gaussian distribution.
 
@@ -113,8 +160,6 @@ void image_gradient()
 			gray.convertTo(img_double, CV_64FC1, 1.0 / (maxVal - minVal), -minVal / (maxVal - minVal));
 
 			const double deriv_sigma = 3.0;
-			const double blur_sigma = 2.0;
-
 			const double sigma2 = deriv_sigma * deriv_sigma;
 			const double _2sigma2 = 2.0 * sigma2;
 			const double sigma3 = sigma2 * deriv_sigma;
@@ -137,7 +182,7 @@ void image_gradient()
 		}
 #endif
 
-#if 1
+#if 0
 		// display gradients.
 		{
 			double minVal, maxVal;
@@ -152,45 +197,62 @@ void image_gradient()
 			cv::Mat tmp;
 			cv::minMaxLoc(Ix, &minVal, &maxVal);
 			Ix.convertTo(tmp, CV_32FC1, 1.0 / maxVal, 0.0);
-			cv::imshow("x-directional gradient - Sobel", tmp);
+			cv::imshow("image gradient - x-gradient", tmp);
 			cv::minMaxLoc(Iy, &minVal, &maxVal);
 			Iy.convertTo(tmp, CV_32FC1, 1.0 / maxVal, 0.0);
-			cv::imshow("y-directional gradient - Sobel", tmp);
+			cv::imshow("image gradient - y-gradient", tmp);
 		}
 #endif
 
-		cv::Mat gradient, gradient_mask;
-		cv::magnitude(xgradient, ygradient, gradient);
+		// magnitude & phase of gradient.
+		cv::Mat gradient_mag, gradient_phase;
+		cv::magnitude(xgradient, ygradient, gradient_mag);  // CV_64FC1.
+		cv::phase(xgradient, ygradient, gradient_phase);  // CV_64FC1. [0, 2*pi].
 
-		const double thresholdRatio = 0.1;
-		double minVal = 0.0, maxVal = 0.0;
-		cv::minMaxLoc(gradient, &minVal, &maxVal);
-		gradient_mask = gradient >= (minVal + (maxVal - minVal) * thresholdRatio);
-		//cv::compare(gradient, minVal + (maxVal - minVal) * thresholdRatio, gradient_mask, cv::CMP_GT);
+		double minMag = 0.0, maxMag = 0.0;
+		cv::minMaxLoc(gradient_mag, &minMag, &maxMag);
+		double minPhase = 0.0, maxPhase = 0.0;
+		cv::minMaxLoc(gradient_phase, &minPhase, &maxPhase);
 
-		cv::cvtColor(gradient_mask, gradient, CV_GRAY2BGR);
+		const double thresholdRatio = 0.05;
+		const cv::Mat gradient_mask = gradient_mag >= (minMag + (maxMag - minMag) * thresholdRatio);
+		//cv::Mat gradient_mask;
+		//cv::compare(gradient_mag, minMag + (maxVal - minMag) * thresholdRatio, gradient_mask, cv::CMP_GT);
 
-#if 0
+		gradient_mag.setTo(cv::Scalar::all(0), 0 == gradient_mask);
+		gradient_phase.setTo(cv::Scalar::all(0), 0 == gradient_mask);
+
+		cv::Mat gradient_mag_img, gradient_phase_img;
+		gradient_mag.convertTo(gradient_mag_img, CV_32FC1, 1.0 / (maxMag - minMag), -minMag / (maxMag - minMag));
+		gradient_phase.convertTo(gradient_phase_img, CV_32FC1, 1.0 / (maxPhase - minPhase), -minPhase / (maxPhase - minPhase));
+
+		cv::imshow("image gradient - input", img);
+		cv::imshow("image gradient - magnitude of gradient", gradient_mag_img);
+		cv::imshow("image gradient - phase of gradient", gradient_phase_img);
+		cv::imshow("image gradient - gradient mask", gradient_mask);
+
+#if 1
 		// draw gradients.
-		const float maxGradientLen = 20.0f;
+		//cv::Mat gradient_rgb;
+		//cv::cvtColor(gradient_mask, gradient_rgb, CV_GRAY2BGR);
+		cv::Mat gradient_rgb = img.clone();
+		const double maxGradientLen = 20.0 / maxMag;
 		for (int r = 0; r < gradient_mask.rows; ++r)
 			for (int c = 0; c < gradient_mask.cols; ++c)
 			{
 				const unsigned char &pix = gradient_mask.at<unsigned char>(r, c);
 				if (pix)
 				{
-					const float &dx = xgradient.at<float>(r, c) * maxGradientLen / (float)maxVal;
-					const float &dy = ygradient.at<float>(r, c) * maxGradientLen / (float)maxVal;
+					const double &dx = xgradient.at<double>(r, c) * maxGradientLen;
+					const double &dy = ygradient.at<double>(r, c) * maxGradientLen;
 
-					cv::line(gradient, cv::Point(c, r), cv::Point(cvRound(c + dx), cvRound(r + dy)), CV_RGB(255, 0, 0), 1, 8, 0);
-					//cv::circle(gradient, cv::Point(c, r), 1, CV_RGB(0, 0, 255), CV_FILLED, 8, 0);
+					cv::line(gradient_rgb, cv::Point(c, r), cv::Point(cvRound(c + dx), cvRound(r + dy)), CV_RGB(255, 0, 0), 1, 8, 0);
+					//cv::circle(gradient_rgb, cv::Point(c, r), 1, CV_RGB(0, 0, 255), CV_FILLED, 8, 0);
 				}
 			}
-#endif
 
-		//
-		cv::imshow(windowName1, img);
-		cv::imshow(windowName2, gradient);
+		cv::imshow("image gradient - gradient", gradient_rgb);
+#endif
 
 		const unsigned char key = cv::waitKey(0);
 		if (27 == key)

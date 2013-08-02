@@ -15,7 +15,7 @@ extern int totaltime;
 namespace {
 namespace local {
 
-// [ref] RunFiles() in ${C$_HOME}/Pedestrian_ICRA.cpp
+// [ref] RunFiles() in ${C4_HOME}/Pedestrian_ICRA.cpp
 void simple_example()
 {
 	// Run detection on a set of files, assuming

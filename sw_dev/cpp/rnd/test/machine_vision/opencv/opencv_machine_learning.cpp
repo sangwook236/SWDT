@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
+#include <stdexcept>
 
 
 namespace {
@@ -216,18 +217,29 @@ void train_by_ann()
 	cvReleaseMat(&trainOutput);
 }
 
+// ${OPENCV_HOME}/sample/cpp/tutorial_code/ml/introduction_to_svm/introduction_to_svm.cpp
+void svm_example()
+{
+	throw std::runtime_error("not yet implemented");
+}
+
+// ${OPENCV_HOME}/sample/cpp/tutorial_code/ml/non_linear_svms/non_linear_svms.cpp
+void non_linear_svms_example()
+{
+	throw std::runtime_error("not yet implemented");
+}
+
 }  // namespace local
 }  // unnamed namespace
 
 namespace my_opencv {
 
-void machine_learning_by_svm()
+void machine_learning()
 {
-	local::train_by_svm();
-}
+	local::svm_example();
+	local::non_linear_svms_example();
 
-void machine_learning_by_ann()
-{
+	local::train_by_svm();
 	local::train_by_ann();
 }
 

@@ -101,8 +101,6 @@ void detect_edge(const cv::Mat &in, cv::Mat &out)
 		in.convertTo(img_double, CV_64FC1, 1.0 / (maxVal - minVal), -minVal / (maxVal - minVal));
 
 		const double deriv_sigma = 3.0;
-		const double blur_sigma = 2.0;
-
 		const double sigma2 = deriv_sigma * deriv_sigma;
 		const double _2sigma2 = 2.0 * sigma2;
 		const double sigma3 = sigma2 * deriv_sigma;

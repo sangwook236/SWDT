@@ -357,6 +357,15 @@
     <ClCompile Include="vxl\vxl_msm_plot_aligned_shapes_example.cpp">
       <Filter>Source Files\vxl</Filter>
     </ClCompile>
+    <ClCompile Include="opencv\opencv_face_recognition.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_slam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_retina_model.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

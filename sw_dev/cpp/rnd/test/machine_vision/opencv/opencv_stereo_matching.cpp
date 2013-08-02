@@ -9,7 +9,7 @@
 namespace {
 namespace local {
 
-void stereo_correspondence_using_block_matching_algorithm1(const cv::Mat &leftImage, const cv::Mat &rightImage, const int numberOfDisparities, cv::Mat &disparity)
+void stereo_correspondence_using_block_matching_algorithm__c_version(const cv::Mat &leftImage, const cv::Mat &rightImage, const int numberOfDisparities, cv::Mat &disparity)
 {
 	const int preset = CV_STEREO_BM_BASIC;
 	const int SADWindowSize = 9;
@@ -37,7 +37,7 @@ void stereo_correspondence_using_block_matching_algorithm1(const cv::Mat &leftIm
 	cvReleaseStereoBMState(&state);
 }
 
-void stereo_correspondence_using_graph_cut_based_algorithm(const cv::Mat &leftImage, const cv::Mat &rightImage, const int numberOfDisparities, cv::Mat &leftDisparity, cv::Mat &rightDisparity)
+void stereo_correspondence_using_graph_cut_based_algorithm__c_version(const cv::Mat &leftImage, const cv::Mat &rightImage, const int numberOfDisparities, cv::Mat &leftDisparity, cv::Mat &rightDisparity)
 {
 	const int maxIters = 100;  // ???
 	CvStereoGCState *state = cvCreateStereoGCState(numberOfDisparities, maxIters);
@@ -59,54 +59,6 @@ void stereo_correspondence_using_graph_cut_based_algorithm(const cv::Mat &leftIm
 #endif
 
 	cvReleaseStereoGCState(&state);
-}
-
-void stereo_correspondence_using_block_matching_algorithm2(const cv::Mat &leftImage, const cv::Mat &rightImage, const int numberOfDisparities, cv::Mat &disparity)
-{
-	const int SADWindowSize = 9;
-	const int speckleWindowSize = 100;
-	const int speckleRange = 32;
-
-	// computing stereo correspondence using block matching algorithm
-	cv::StereoBM bm;
-	bm.state->roi1 = cvRect(0, 0, leftImage.cols, leftImage.rows);
-	bm.state->roi2 = cvRect(0, 0, rightImage.cols, rightImage.rows);
-	bm.state->preFilterCap = 31;
-	bm.state->SADWindowSize = SADWindowSize;
-	bm.state->minDisparity = 0;
-	bm.state->numberOfDisparities = numberOfDisparities;  // maximum disparity - minimum disparity (> 0)
-	bm.state->textureThreshold = 10;
-	bm.state->uniquenessRatio = 15;
-	bm.state->speckleWindowSize = speckleWindowSize;
-	bm.state->speckleRange = speckleRange;
-	bm.state->disp12MaxDiff = 1;
-
-	bm(leftImage, rightImage, disparity, CV_16S);  // disparity: 16-bit signed single-channel image
-}
-
-void stereo_correspondence_using_semi_global_block_matching_algorithm(const cv::Mat &leftImage, const cv::Mat &rightImage, const int numberOfDisparities, cv::Mat &disparity)
-{
-	const int SADWindowSize = 3;
-	const int speckleWindowSize = 100;
-	const int speckleRange = 32;
-
-	const int channels = leftImage.channels();
-
-	// computing stereo correspondence using semi-global block matching algorithm
-	cv::StereoSGBM sgbm;
-	sgbm.preFilterCap = 63;
-	sgbm.SADWindowSize = SADWindowSize;
-	sgbm.P1 = 8 * channels * SADWindowSize * SADWindowSize;
-	sgbm.P2 = 32 * channels * SADWindowSize * SADWindowSize;
-	sgbm.minDisparity = 0;
-	sgbm.numberOfDisparities = numberOfDisparities;  // maximum disparity - minimum disparity (> 0)
-	sgbm.uniquenessRatio = 10;
-	sgbm.speckleWindowSize = speckleWindowSize;
-	sgbm.speckleRange = speckleRange;
-	sgbm.disp12MaxDiff = 1;
-	sgbm.fullDP = true;
-
-	sgbm(leftImage, rightImage, disparity);  // disparity: 16-bit signed single-channel image
 }
 
 enum SimilarityComparisonMethod
@@ -309,6 +261,8 @@ void stereo_correspondence_using_similarity_measure(const cv::Mat &leftImage, co
 
 namespace my_opencv {
 
+// [ref] ${OPENCV_HOME}/samples/cpp/stereo_match.cpp
+
 void stereo_matching()
 {
 	const std::string filename1("./machine_vision_data/opencv/scene_l.bmp");
@@ -322,45 +276,30 @@ void stereo_matching()
 
 	const double t = (double)cv::getTickCount();
 	{
+		// rectify stereo image pair.
+
+		// stereo matching.
 #if 0
+		// METHOD #1: using block matching algorithm (C version).
+
 		cv::Mat disparity;
 
-		//const int numberOfDisparities = left_image.cols / 8;
-		const int numberOfDisparities = 16;
-		local::stereo_correspondence_using_block_matching_algorithm1(left_image, right_image, numberOfDisparities, disparity);
+		//const int num_disparities = left_image.cols / 8;
+		const int num_disparities = 16;
+		local::stereo_correspondence_using_block_matching_algorithm__c_version(left_image, right_image, num_disparities, disparity);
 
 		double minVal = 0.0, maxVal = 0.0;
 		cv::minMaxLoc(disparity, &minVal, &maxVal);
 		const double alpha = 255.0 / (maxVal - minVal), beta = -alpha * minVal;
 		disparity.convertTo(disparity8, CV_8U, alpha, beta);
 #elif 0
-		cv::Mat disparity;
+		// METHOD #2: using graph cut-based algorithm (C version).
 
-		//const int numberOfDisparities = left_image.cols / 8;
-		const int numberOfDisparities = 16;
-		local::stereo_correspondence_using_block_matching_algorithm2(left_image, right_image, numberOfDisparities, disparity);
-
-		double minVal = 0.0, maxVal = 0.0;
-		cv::minMaxLoc(disparity, &minVal, &maxVal);
-		const double alpha = 255.0 / (maxVal - minVal), beta = -alpha * minVal;
-		disparity.convertTo(disparity8, CV_8U, alpha, beta);
-#elif 0
-		cv::Mat disparity;
-
-		//const int numberOfDisparities = left_image.cols / 8;
-		const int numberOfDisparities = 16;
-		local::stereo_correspondence_using_semi_global_block_matching_algorithm(left_image, right_image, numberOfDisparities, disparity);
-
-		double minVal = 0.0, maxVal = 0.0;
-		cv::minMaxLoc(disparity, &minVal, &maxVal);
-		const double alpha = 255.0 / (maxVal - minVal), beta = -alpha * minVal;
-		disparity.convertTo(disparity8, CV_8U, alpha, beta);
-#elif 0
 		cv::Mat left_disparity, right_disparity;
 
-		//const int numberOfDisparities = 20;
-		const int numberOfDisparities = 16;
-		local::stereo_correspondence_using_graph_cut_based_algorithm(left_image, right_image, numberOfDisparities, left_disparity, right_disparity);
+		//const int num_disparities = 20;
+		const int num_disparities = 16;
+		local::stereo_correspondence_using_graph_cut_based_algorithm__c_version(left_image, right_image, num_disparities, left_disparity, right_disparity);
 
 		double minVal = 0.0, maxVal = 0.0;
 		cv::minMaxLoc(left_disparity, &minVal, &maxVal);
@@ -368,7 +307,106 @@ void stereo_matching()
 		const double alpha = 255.0 / (maxVal - minVal), beta = -alpha * minVal;
 		left_disparity.convertTo(disparity8, CV_8U, alpha, beta);
 		//right_disparity.convertTo(disparity8, CV_8U, alpha, beta);
-#else
+#elif 0
+		// METHOD #3: using block matching algorithm (C++ version).
+
+		cv::Mat disparity;
+
+		//const int num_disparities = (left_image.cols / 8 + 15) & -16;
+		const int num_disparities = 16;
+
+		const int SADWindowSize = 9;
+		const int speckleWindowSize = 100;
+		const int speckleRange = 32;
+
+		// computing stereo correspondence using block matching algorithm.
+		cv::StereoBM bm;
+		bm.state->roi1 = cvRect(0, 0, left_image.cols, left_image.rows);
+		bm.state->roi2 = cvRect(0, 0, right_image.cols, right_image.rows);
+		bm.state->preFilterCap = 31;
+		bm.state->SADWindowSize = SADWindowSize;
+		bm.state->minDisparity = 0;
+		bm.state->numberOfDisparities = num_disparities;  // maximum disparity - minimum disparity (> 0).
+		bm.state->textureThreshold = 10;
+		bm.state->uniquenessRatio = 15;
+		bm.state->speckleWindowSize = speckleWindowSize;
+		bm.state->speckleRange = speckleRange;
+		bm.state->disp12MaxDiff = 1;
+
+		bm(left_image, right_image, disparity);  // disparity: 16SC1.
+
+		double minVal = 0.0, maxVal = 0.0;
+		cv::minMaxLoc(disparity, &minVal, &maxVal);
+		const double alpha = 255.0 / (maxVal - minVal), beta = -alpha * minVal;
+		disparity.convertTo(disparity8, CV_8U, alpha, beta);
+#elif 0
+		// METHOD #4: using semi-global block matching algorithm (C++ version).
+
+		cv::Mat disparity;
+
+		//const int num_disparities = (left_image.cols / 8 + 15) & -16;
+		const int num_disparities = 16;
+
+		const int SADWindowSize = 3;
+		const int speckleWindowSize = 100;
+		const int speckleRange = 32;
+
+		const int channels = left_image.channels();
+
+		// computing stereo correspondence using semi-global block matching algorithm.
+		cv::StereoSGBM sgbm;
+		sgbm.preFilterCap = 63;
+		sgbm.SADWindowSize = SADWindowSize;
+		sgbm.P1 = 8 * channels * sgbm.SADWindowSize * sgbm.SADWindowSize;
+		sgbm.P2 = 32 * channels * sgbm.SADWindowSize * sgbm.SADWindowSize;
+		sgbm.minDisparity = 0;
+		sgbm.numberOfDisparities = num_disparities;  // maximum disparity - minimum disparity (> 0).
+		sgbm.uniquenessRatio = 10;
+		sgbm.speckleWindowSize = speckleWindowSize;
+		sgbm.speckleRange = speckleRange;
+		sgbm.disp12MaxDiff = 1;
+		// if false, a single-pass, which means that you consider only 5 directions instead of 8.
+		// if true, the full-scale two-pass dynamic programming algorithm.
+		sgbm.fullDP = true;
+
+		sgbm(left_image, right_image, disparity);  // disparity: 16SC1.
+
+		double minVal = 0.0, maxVal = 0.0;
+		cv::minMaxLoc(disparity, &minVal, &maxVal);
+		const double alpha = 255.0 / (maxVal - minVal), beta = -alpha * minVal;
+		disparity.convertTo(disparity8, CV_8U, alpha, beta);
+#elif 0
+		// METHOD #5: using the variational matching algorithm (C++ version).
+
+		cv::Mat disparity;
+
+		//const int num_disparities = (left_image.cols / 8 + 15) & -16;
+		const int num_disparities = 16;
+
+		// computing stereo correspondence using the variational matching algorithm.
+		cv::StereoVar var;
+		var.levels = 3;  // ignored if flag USE_AUTO_PARAMS is set.
+		var.pyrScale = 0.5;  // ignored if flag USE_AUTO_PARAMS is set.
+		var.nIt = 25;
+		var.minDisp = -num_disparities;
+		var.maxDisp = 0;
+		var.poly_n = 3;
+		var.poly_sigma = 0.0;
+		var.fi = 15.0f;
+		var.lambda = 0.03f;
+		var.penalization = var.PENALIZATION_TICHONOV;  // ignored if flag USE_AUTO_PARAMS is set.
+		var.cycle = var.CYCLE_V;  // ignored if flag USE_AUTO_PARAMS is set.
+		var.flags = var.USE_SMART_ID | var.USE_AUTO_PARAMS | var.USE_INITIAL_DISPARITY | var.USE_MEDIAN_FILTERING ;
+
+		var(left_image, right_image, disparity);
+
+		double minVal = 0.0, maxVal = 0.0;
+		cv::minMaxLoc(disparity, &minVal, &maxVal);
+		const double alpha = 255.0 / (maxVal - minVal), beta = -alpha * minVal;
+		disparity.convertTo(disparity8, CV_8U, alpha, beta);
+#elif 1
+		// METHOD #6: using similarity measure-based matching algorithm (C++ version).
+
 		cv::Mat disparity;
 
 		const int window_size = 9;
@@ -389,22 +427,13 @@ void stereo_matching()
 	std::cout << "time elapsed: " << et << "ms" << std::endl;
 
 	//
-	const std::string windowName1("stereo matching - left image");
-	const std::string windowName2("stereo matching - right image");
-	const std::string windowName3("stereo matching - disparity");
-	cv::namedWindow(windowName1, cv::WINDOW_AUTOSIZE);
-	cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
-	cv::namedWindow(windowName3, cv::WINDOW_AUTOSIZE);
-
-	cv::imshow(windowName1, left_image);
-	cv::imshow(windowName2, right_image);
-	cv::imshow(windowName3, disparity8);
+	cv::imshow("stereo matching - left image", left_image);
+	cv::imshow("stereo matching - right image", right_image);
+	cv::imshow("stereo matching - disparity", disparity8);
 
 	cv::waitKey(0);
 
-	cv::destroyWindow(windowName1);
-	cv::destroyWindow(windowName2);
-	cv::destroyWindow(windowName3);
+	cv::destroyAllWindows();
 }
 
 }  // namespace my_opencv

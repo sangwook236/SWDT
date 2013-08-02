@@ -71,6 +71,7 @@ void image_gradient();
 void edge_detection();
 void skeletonization_and_thinning();
 void distance_transform();
+void distance_transform_using_edge_info();
 void convex_hull();
 void hough_transform();
 void template_matching();
@@ -88,16 +89,17 @@ void feature_extraction_and_matching();
 void feature_extraction_and_matching_by_signature();
 void feature_extraction_and_matching_using_gpu();
 void generic_description_and_matching();
+void retina_model();
 void bag_of_words();
 void pca();
 void clustering();
-void machine_learning_by_svm();
-void machine_learning_by_ann();
+void machine_learning();
 void object_detection();
 void face_detection();
 void face_detection_using_gpu();
 void human_detection();
 void human_detection_using_gpu();
+void face_recognition();
 void camera_geometry();
 void camera_calibration();
 void stereo_camera_calibration();
@@ -115,6 +117,7 @@ void object_tracking();
 void kalman_filtering();
 void optical_flow();
 void motion_history_image();
+void slam();
 
 void openni_interface();
 
@@ -175,6 +178,7 @@ int opencv_main(int argc, char *argv[])
 
 		//my_opencv::skeletonization_and_thinning();
 		//my_opencv::distance_transform();
+		//my_opencv::distance_transform_using_edge_info();
 		//my_opencv::convex_hull();
 		//my_opencv::hough_transform();
 
@@ -182,7 +186,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::chamfer_matching();
 		//my_opencv::shape_finding();
 		//my_opencv::shape_matching();
-		my_opencv::snake();
+		//my_opencv::snake();
 
 		//my_opencv::segmentation();
 		//if (canUseGPU) my_opencv::meanshift_segmentation_using_gpu();  // not yet implemented
@@ -197,19 +201,22 @@ int opencv_main(int argc, char *argv[])
 		//if (canUseGPU) my_opencv::feature_extraction_and_matching_using_gpu();  // not yet implemented
 		//my_opencv::generic_description_and_matching();
 
+		//my_opencv::retina_model();
+
 		//my_opencv::bag_of_words();
 
 		//my_opencv::pca();
 
 		//my_opencv::clustering();
-		//my_opencv::machine_learning_by_svm();
-		//my_opencv::machine_learning_by_ann();
+		//my_opencv::machine_learning();
 
-		//my_opencv::object_detection();
+		my_opencv::object_detection();
 		//my_opencv::face_detection();
 		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // not yet implemented
 		//my_opencv::human_detection();
 		//if (canUseGPU) my_opencv::human_detection_using_gpu();  // not yet implemented
+
+		//my_opencv::face_recognition();
 
 		//my_opencv::camera_geometry();
 		//my_opencv::camera_calibration();
@@ -235,6 +242,8 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::optical_flow();
 		//if (canUseGPU) my_opencv::optical_flow_using_gpu();  // not yet implemented
 		//my_opencv::motion_history_image();
+
+		//my_opencv::slam();  // not yet implemented
 
 		//-----------------------------------------------------------------
 		// interfacing

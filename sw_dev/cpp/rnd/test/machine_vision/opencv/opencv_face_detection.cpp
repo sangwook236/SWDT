@@ -47,6 +47,8 @@ void detect_faces_and_eyes(cv::Mat &frame, cv::CascadeClassifier &face_detector,
 
 namespace my_opencv {
 
+// ${OPENCV_HOME}/sample/cpp/tutorial_code/objectDetection/objectDetection.cpp
+// ${OPENCV_HOME}/sample/cpp/tutorial_code/objectDetection/objectDetection2.cpp
 void face_detection()
 {
 	const std::string face_cascade_filename = "./machine_vision_data/opencv/haarcascades/haarcascade_frontalface_alt.xml";  // Haar-like feature

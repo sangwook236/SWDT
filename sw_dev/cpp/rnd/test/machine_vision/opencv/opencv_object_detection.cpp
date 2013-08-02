@@ -191,7 +191,7 @@ void read_directory(const std::string &directoryName, std::vector<std::string> &
 void latentsvm_multidetect_sample()
 {
 	const std::string images_directory("./machine_vision_data/opencv/object_detection");
-	// [ref] ${OPENCV_EXTRA_HOME}/testdata/cv/latentsvmdetector/models_VOC2007
+	// [ref] ${OPENCV_EXTRA_HOME}/testdata/cv/latentsvmdetector/models_VOC2007.
 	const std::string models_directory("./machine_vision_data/opencv/object_detection/models_VOC2007");
 	const float overlapThreshold = 0.2f;  // [0, 1]
 	const int numThreads = 4;

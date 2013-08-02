@@ -1,7 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/opencv.hpp>
 #include <iostream>
 #include <list>
 
@@ -14,9 +13,6 @@ namespace local {
 
 
 namespace my_opencv {
-
-// [ref] ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp
-void canny(const cv::Mat &gray, const int lowerEdgeThreshold, const int upperEdgeThreshold, const bool useL2, cv::Mat &edge);
 
 void edge_detection()
 {
@@ -87,20 +83,20 @@ void edge_detection()
 	filenames.push_back("./machine_vision_data/opencv/simple_hand_11.jpg");
 	filenames.push_back("./machine_vision_data/opencv/simple_hand_12.jpg");
 	filenames.push_back("./machine_vision_data/opencv/simple_hand_13.jpg");
+#elif 0
+	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211659.png");
+	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211705.png");
+	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211713.png");
+	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211839.png");
+	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211842.png");
 #endif
 
-	const std::string windowName1("edge detection - original");
-	const std::string windowName2("edge detection - processed");
-	cv::namedWindow(windowName1, cv::WINDOW_AUTOSIZE);
-	cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
-
-	//
 	for (std::list<std::string>::iterator it = filenames.begin(); it != filenames.end(); ++it)
     {
 		const cv::Mat img = cv::imread(*it, CV_LOAD_IMAGE_COLOR);
 		if (img.empty())
 		{
-			std::cout << "fail to load image file: " << *it << std::endl;
+			std::cout << "image file not found: " << *it << std::endl;
 			continue;
 		}
 
@@ -111,26 +107,84 @@ void edge_detection()
 			cv::cvtColor(img, gray, CV_BGR2GRAY);
 			//cv::cvtColor(img, gray, CV_RGB2GRAY);
 
+		// smoothing
+#if 0
+		// METHOD #1: down-scale and up-scale the image to filter out the noise.
+
+		{
+			cv::Mat tmp;
+			cv::pyrDown(gray, tmp);
+			cv::pyrUp(tmp, gray);
+		}
+#elif 0
+		// METHOD #2: Gaussian filtering.
+
+		{
+			// FIXME [adjust] >> adjust parameters.
+			const int kernelSize = 3;
+			const double sigma = 2.0;
+			cv::GaussianBlur(gray, gray, cv::Size(kernelSize, kernelSize), sigma, sigma, cv::BORDER_DEFAULT);
+		}
+#elif 0
+		// METHOD #3: box filtering.
+
+		{
+			// FIXME [adjust] >> adjust parameters.
+			const int ddepth = -1;  // the output image depth. -1 to use src.depth().
+			const int kernelSize = 3;
+			const bool normalize = true;
+			cv::boxFilter(gray.clone(), gray, ddepth, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
+			//cv::blur(gray.clone(), gray, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), cv::BORDER_DEFAULT);  // use the normalized box filter.
+		}
+#elif 1
+		// METHOD #4: bilateral filtering.
+
+		{
+			// FIXME [adjust] >> adjust parameters.
+			const int diameter = -1;  // diameter of each pixel neighborhood that is used during filtering. if it is non-positive, it is computed from sigmaSpace.
+			const double sigmaColor = 3.0;  // for range filter.
+			const double sigmaSpace = 50.0;  // for space filter.
+			cv::bilateralFilter(gray.clone(), gray, diameter, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
+		}
+#else
+		// METHOD #5: no filtering.
+
+		//gray = gray;
+#endif
+
+		// run the edge detector on grayscale.
 		const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
 		const bool useL2 = true;  // if true, use L2 norm. otherwise, use L1 norm (faster).
+		const int apertureSize = 3;  // aperture size for the Sobel() operator.
 		cv::Mat edge;
-		canny(gray, lowerEdgeThreshold, upperEdgeThreshold, useL2, edge);
+		cv::Canny(gray, edge, lowerEdgeThreshold, upperEdgeThreshold, apertureSize, useL2);
 
+#if 0
+		// don't need.
+
+		// thresholding.
+		double minVal, maxVal;
+		cv::minMaxLoc(edge, &minVal, &maxVal);
+
+		const double threshold_ratio = 0.8;
+		const double edgeThreshold = minVal + threshold_ratio * (maxVal - minVal);
+		edge = edge >= edgeThreshold;
+#endif
+
+		//
 		cv::Mat cedge;
 		img.copyTo(cedge, edge);
 		//cedge = cedge > 0;
 
-		//
-		cv::imshow(windowName1, img);
-		cv::imshow(windowName2, cedge);
+		cv::imshow("edge detection - input", img);
+		cv::imshow("edge detection - result", cedge);
 
 		const unsigned char key = cv::waitKey(0);
 		if (27 == key)
 			break;
 	}
 
-	cv::destroyWindow(windowName1);
-	cv::destroyWindow(windowName2);
+	cv::destroyAllWindows();
 }
 
 }  // namespace my_opencv

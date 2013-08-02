@@ -150,7 +150,7 @@ namespace my_parts_based_detector {
 int parts_based_detector_main(int argc, char *argv[])
 {
 	// [ref] "Articulated pose estimation with flexible mixtures-of-parts", Y. Yang & D. Ramanan, CVPR, 2011
-	//	it is related to pictorial structure
+	//	it is related to pictorial structures.
 
 	local::demo();
 
