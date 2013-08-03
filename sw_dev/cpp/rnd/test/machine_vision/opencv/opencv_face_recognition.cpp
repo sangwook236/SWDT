@@ -97,7 +97,7 @@ void simple_example()
 // ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_demo.cpp
 void facerec_demo()
 {
-    const std::string csv_filename("./machine_vision_data/opencv/???.csv");
+    const std::string csv_filename("./data/machine_vision/opencv/???.csv");
 
     //
     std::vector<cv::Mat> images;
@@ -195,8 +195,8 @@ void facerec_demo()
 // ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_eigenfaces.cpp
 void eigenfaces_example()
 {
-	const std::string csv_filename("./machine_vision_data/opencv/???.csv");
-	const std::string output_folder("./machine_vision_data/opencv");
+	const std::string csv_filename("./data/machine_vision/opencv/???.csv");
+	const std::string output_folder("./data/machine_vision/opencv");
 
 	//
 	std::vector<cv::Mat> images;
@@ -307,8 +307,8 @@ void eigenfaces_example()
 // ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_fisherfaces.cpp
 void fisherfaces_example()
 {
-	const std::string csv_filename("./machine_vision_data/opencv/???.csv");
-	const std::string output_folder("./machine_vision_data/opencv");
+	const std::string csv_filename("./data/machine_vision/opencv/???.csv");
+	const std::string output_folder("./data/machine_vision/opencv");
 
 	//
 	std::vector<cv::Mat> images;
@@ -420,8 +420,8 @@ void fisherfaces_example()
 // ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_lbph.cpp
 void lbph_example()
 {
-	const std::string csv_filename("./machine_vision_data/opencv/???.csv");
-	const std::string output_folder("./machine_vision_data/opencv");
+	const std::string csv_filename("./data/machine_vision/opencv/???.csv");
+	const std::string output_folder("./data/machine_vision/opencv");
 
 	//
 	std::vector<cv::Mat> images;

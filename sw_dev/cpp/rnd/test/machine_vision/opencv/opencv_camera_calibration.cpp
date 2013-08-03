@@ -301,7 +301,7 @@ namespace my_opencv {
 void camera_calibration()
 {
 #if 0
-	const std::string outputFilename("./machine_vision_data/opencv/camera_calibration/camera_calib_data.yml");
+	const std::string outputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib_data.yml");
 	std::string inputFilename;
 
 	cv::Size boardSize;
@@ -435,11 +435,11 @@ void camera_calibration()
 		}
 	}
 #else
-	const std::string outputFilename("./machine_vision_data/opencv/camera_calibration/camera_calib_data.yml");
+	const std::string outputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib_data.yml");
 
 #if 0
 	// [ref] ${OPENCV_HOME}/samples/cpp/stereo_calib.xml
-	const std::string inputFilename("./machine_vision_data/opencv/camera_calibration/camera_calib.xml");
+	const std::string inputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib.xml");
 	const bool videofile = false;
 
 	const cv::Size boardSize(9, 6);
@@ -447,7 +447,7 @@ void camera_calibration()
 	const float aspectRatio = 1.0f;
 #elif 0
 	// [ref] http://blog.martinperis.com/2011/01/opencv-stereo-camera-calibration.html
-	const std::string inputFilename("./machine_vision_data/opencv/camera_calibration/camera_calib_2.xml");
+	const std::string inputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib_2.xml");
 	const bool videofile = false;
 
 	const cv::Size boardSize(9, 6);
@@ -455,7 +455,7 @@ void camera_calibration()
 	const float aspectRatio = 1.0f;
 #elif 1
 	// Kinect RGB images
-	const std::string inputFilename("./machine_vision_data/opencv/camera_calibration/camera_calib_3.xml");
+	const std::string inputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib_3.xml");
 	const bool videofile = false;
 
 	const cv::Size boardSize(7, 5);

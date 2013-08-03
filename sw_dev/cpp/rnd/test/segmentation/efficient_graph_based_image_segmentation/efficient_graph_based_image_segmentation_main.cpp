@@ -621,24 +621,24 @@ image<rgb> * segment_image_using_depth_guided_map(image<rgb> *im, image<rgb> *de
 void sample(const bool use_map_container)
 {
 #if 0
-	const std::string input_filename("./segmentation_data/beach.ppm");
-	const std::string output_filename("./segmentation_data/beach_segmented.ppm");
+	const std::string input_filename("./data/search_algorithm/beach.ppm");
+	const std::string output_filename("./data/search_algorithm/beach_segmented.ppm");
 	const float sigma = 0.5f;
 	const float k = 500.0f;
 	const int min_size = 50;
 #elif 0
-	const std::string input_filename("./segmentation_data/grain.ppm");
-	const std::string output_filename("./segmentation_data/grain_segmented.ppm");
+	const std::string input_filename("./data/search_algorithm/grain.ppm");
+	const std::string output_filename("./data/search_algorithm/grain_segmented.ppm");
 	const float sigma = 0.5f;
 	const float k = 1000.0f;
 	const int min_size = 100;
 #elif 1
-	//const std::string input_filename("./segmentation_data/kinect_rgba_20130530T103805.ppm");
-	//const std::string input_filename("./segmentation_data/kinect_rgba_20130531T023152.ppm");
-	//const std::string input_filename("./segmentation_data/kinect_rgba_20130531T023346.ppm");
-	//const std::string input_filename("./segmentation_data/kinect_rgba_20130531T023359.ppm");
-	const std::string input_filename("./segmentation_data/rectified_image_rgb_0.ppm");
-	const std::string output_filename("./segmentation_data/kinect_segmented.ppm");
+	//const std::string input_filename("./data/search_algorithm/kinect_rgba_20130530T103805.ppm");
+	//const std::string input_filename("./data/search_algorithm/kinect_rgba_20130531T023152.ppm");
+	//const std::string input_filename("./data/search_algorithm/kinect_rgba_20130531T023346.ppm");
+	//const std::string input_filename("./data/search_algorithm/kinect_rgba_20130531T023359.ppm");
+	const std::string input_filename("./data/search_algorithm/rectified_image_rgb_0.ppm");
+	const std::string output_filename("./data/search_algorithm/kinect_segmented.ppm");
 	const float sigma = 0.5f;
 	const float k = 500.0f;
 	const int min_size = 50;
@@ -689,21 +689,21 @@ void sample(const bool use_map_container)
 void sample_using_depth_guided_map(const bool use_map_container)
 {
 #if 1
-	const std::string input_filename("./segmentation_data/rectified_image_rgb_0.ppm");
-	const std::string depth_filename("./segmentation_data/depth_guided_mask_0.ppm");
-	const std::string output_filename("./segmentation_data/segmented_image_rgb_0.ppm");
+	const std::string input_filename("./data/search_algorithm/rectified_image_rgb_0.ppm");
+	const std::string depth_filename("./data/search_algorithm/depth_guided_mask_0.ppm");
+	const std::string output_filename("./data/search_algorithm/segmented_image_rgb_0.ppm");
 #elif 0
-	const std::string input_filename("./segmentation_data/rectified_image_rgb_1.ppm");
-	const std::string depth_filename("./segmentation_data/depth_guided_mask_1.ppm");
-	const std::string output_filename("./segmentation_data/segmented_image_rgb_1.ppm");
+	const std::string input_filename("./data/search_algorithm/rectified_image_rgb_1.ppm");
+	const std::string depth_filename("./data/search_algorithm/depth_guided_mask_1.ppm");
+	const std::string output_filename("./data/search_algorithm/segmented_image_rgb_1.ppm");
 #elif 0
-	const std::string input_filename("./segmentation_data/rectified_image_rgb_2.ppm");
-	const std::string depth_filename("./segmentation_data/depth_guided_mask_2.ppm");
-	const std::string output_filename("./segmentation_data/segmented_image_rgb_2.ppm");
+	const std::string input_filename("./data/search_algorithm/rectified_image_rgb_2.ppm");
+	const std::string depth_filename("./data/search_algorithm/depth_guided_mask_2.ppm");
+	const std::string output_filename("./data/search_algorithm/segmented_image_rgb_2.ppm");
 #elif 0
-	const std::string input_filename("./segmentation_data/rectified_image_rgb_3.ppm");
-	const std::string depth_filename("./segmentation_data/depth_guided_mask_3.ppm");
-	const std::string output_filename("./segmentation_data/segmented_image_rgb_3.ppm");
+	const std::string input_filename("./data/search_algorithm/rectified_image_rgb_3.ppm");
+	const std::string depth_filename("./data/search_algorithm/depth_guided_mask_3.ppm");
+	const std::string output_filename("./data/search_algorithm/segmented_image_rgb_3.ppm");
 #endif
 	const float sigma = 0.5f;
 	const float k = 500.0f;

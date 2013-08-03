@@ -25,7 +25,7 @@ void capture_image_from_file()
 	const int imageWidth = 640, imageHeight = 480;
 	//const int imageWidth = 176, imageHeight = 144;
 
-	const std::string avi_filename("./machine_vision_data/opencv/flycap-0001.avi");
+	const std::string avi_filename("./data/machine_vision/opencv/flycap-0001.avi");
 	const std::string windowName("capturing from file");
 
 #if 0
@@ -606,7 +606,7 @@ void draw_cross(cv::Mat &img, const int x, const int y, const int len)
 
 void capture_write_file_from_images()
 {
-	const std::string VIDEO_FILENAME = "./machine_vision_data/opencv/synthesized_cross_output.avi";
+	const std::string VIDEO_FILENAME = "./data/machine_vision/opencv/synthesized_cross_output.avi";
 
 	const int IMAGE_WIDTH = 320, IMAGE_HEIGHT = 240;
 

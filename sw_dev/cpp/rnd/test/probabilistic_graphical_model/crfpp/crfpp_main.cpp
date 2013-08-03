@@ -15,7 +15,7 @@ bool example()
 {
 	// -v 3: access deep information like alpha, beta, prob
 	// -nN: enable nbest output. N should be >= 2
-	CRFPP::Tagger *tagger = CRFPP::createTagger("-m ./probabilistic_graphical_model_data/crfpp/model -v 3 -n2");
+	CRFPP::Tagger *tagger = CRFPP::createTagger("-m ./data/probabilistic_graphical_model/crfpp/model -v 3 -n2");
 
 	if (!tagger)
 	{
@@ -100,10 +100,10 @@ namespace my_crfpp {
 
 int crfpp_main(int argc, char *argv[])
 {
-	//const std::string base_directory("./probabilistic_graphical_model_data/crfpp/basenp/");
-	//const std::string base_directory("./probabilistic_graphical_model_data/crfpp/chunking/");
-	//const std::string base_directory("./probabilistic_graphical_model_data/crfpp/JapaneseNE/");
-	const std::string base_directory("./probabilistic_graphical_model_data/crfpp/seg/");
+	//const std::string base_directory("./data/probabilistic_graphical_model/crfpp/basenp/");
+	//const std::string base_directory("./data/probabilistic_graphical_model/crfpp/chunking/");
+	//const std::string base_directory("./data/probabilistic_graphical_model/crfpp/JapaneseNE/");
+	const std::string base_directory("./data/probabilistic_graphical_model/crfpp/seg/");
 
 	int retval = EXIT_SUCCESS;
 

@@ -203,11 +203,11 @@ void input_output_example()
 	}
 
 	// save graphical model into an hdf5 dataset named "toy-gm"
-	opengm::hdf5::save(gmA, "./probabilistic_graphical_model_data/opengm/gm.h5", "toy-gm");
+	opengm::hdf5::save(gmA, "./data/probabilistic_graphical_model/opengm/gm.h5", "toy-gm");
 
 	// load the graphical model from the hdf5 dataset
 	GraphicalModel gmB;
-	opengm::hdf5::load(gmB, "./probabilistic_graphical_model_data/opengm/gm.h5","toy-gm");
+	opengm::hdf5::load(gmB, "./data/probabilistic_graphical_model/opengm/gm.h5","toy-gm");
 }
 
 }  // namespace local

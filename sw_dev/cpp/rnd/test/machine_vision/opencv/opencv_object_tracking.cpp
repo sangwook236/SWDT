@@ -288,7 +288,7 @@ void onMouseHandler(int event, int x, int y, int flags, void *param)
 // [ref] ${OPENCV_HOME}/samples/cpp/camshift_tracking_demo.cpp
 void camshift_tracking_demo()
 {
-	const std::string avi_filename("./machine_vision_data/opencv/osp_test.wmv");
+	const std::string avi_filename("./data/machine_vision/opencv/osp_test.wmv");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 
@@ -349,7 +349,7 @@ void camshift_tracking_demo()
 			objectTracker.initialize(frame->width, frame->height);
 
 #if defined(_INITIALIZE_HISTOGRAM_FROM_FILE)
-			const std::string targetImageFileName("./machine_vision_data/opencv/target_osp_robot.png");
+			const std::string targetImageFileName("./data/machine_vision/opencv/target_osp_robot.png");
 			IplImage *targetImage = cvLoadImage(targetImageFileName.c_str());
 
 			objectTracker.updateHistogram(targetImage, minHue, maxHue, minSaturation, maxSaturation, MIN(minValue, maxValue), MAX(minValue, maxValue));

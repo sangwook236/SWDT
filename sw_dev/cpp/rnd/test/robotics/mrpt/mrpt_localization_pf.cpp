@@ -184,7 +184,7 @@ namespace my_mrpt {
 
 void localization_pf()
 {
-	const std::string iniFileName(".\\robotics_data\\mrpt\\localization_pf\\config_localization.ini");
+	const std::string iniFileName("./data/robotics/mrpt/localization_pf/config_localization.ini");
 	const std::string iniSectionName("LocalizationExperiment");
 
 	if (!mrpt::utils::fileExists(iniFileName))

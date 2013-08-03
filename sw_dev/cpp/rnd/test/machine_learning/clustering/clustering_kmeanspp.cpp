@@ -15,17 +15,17 @@ namespace local {
 void kmeanspp_sample_1()
 {
 #if 1
-	const std::string input_filename("./machine_learning_data/clustering/data.txt");
+	const std::string input_filename("./data/machine_learning/clustering/data.txt");
 	const int num_points = 317;
 	const int dim_features = 2;
 	const int num_clusters = 3;
 #elif 0
-	const std::string input_filename("./machine_learning_data/clustering/circles.txt");
+	const std::string input_filename("./data/machine_learning/clustering/circles.txt");
 	const int num_points = 139;
 	const int dim_features = 2;
 	const int num_clusters = 3;
 #elif 0
-	const std::string input_filename("./machine_learning_data/clustering/processed_input.txt");
+	const std::string input_filename("./data/machine_learning/clustering/processed_input.txt");
 	const int num_points = 78;
 	const int dim_features = 2;
 	const int num_clusters = 3;
@@ -96,7 +96,7 @@ void kmeanspp_sample_2()
 	const int num_clusters = 10;
 	const int num_attempts = 1000;
 
-	const std::string input_filename("./machine_learning_data/clustering/spam_input.txt");
+	const std::string input_filename("./data/machine_learning/clustering/spam_input.txt");
 #if defined(__GNUC__)
 	std::ifstream stream(input_filename.c_str());
 #else

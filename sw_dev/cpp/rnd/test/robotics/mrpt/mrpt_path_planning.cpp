@@ -7,8 +7,8 @@ namespace local {
 
 void path_planning_1()
 {
-	const std::string GRID_MAP_FILE(".\\robotics_data\\mrpt\\2006-MalagaCampus.gridmap.gz");
-	const std::string IMAGE_DEST_FILE(".\\robotics_data\\mrpt\\path_planning.png");
+	const std::string GRID_MAP_FILE("./data/robotics/mrpt/2006-MalagaCampus.gridmap.gz");
+	const std::string IMAGE_DEST_FILE("./data/robotics/mrpt/path_planning.png");
 
 	// load the gridmap:
 	if (!mrpt::system::fileExists(GRID_MAP_FILE))
@@ -93,8 +93,8 @@ void path_planning_2()
 {
 	const bool isRightward = true, isUpward = true;
 
-	//const std::string mapImageFileName(".\\robotics_data\\mrpt\\KAIST-EECS-2ND-INTERSECTION.jpg");
-	const std::string mapImageFileName(".\\robotics_data\\mrpt\\KAIST_DemoFile.bmp");
+	//const std::string mapImageFileName("./data/robotics/mrpt/KAIST-EECS-2ND-INTERSECTION.jpg");
+	const std::string mapImageFileName("./data/robotics/mrpt/KAIST_DemoFile.bmp");
 
 	//
 	const float resolution = 0.01f;  // the size of a pixel (cell), [meters]

@@ -30,7 +30,7 @@ void load_and_save()
 	gdImageLine(im, 0, 0, 63, 63, white);
 
 	// open a file for writing. "wb" means "write binary", important under MSDOS, harmless under Unix
-	std::FILE *pngout = std::fopen(".\\graphics_2d_data\\gd\\test.png", "wb");
+	std::FILE *pngout = std::fopen("./data/graphics_2d/gd/test.png", "wb");
 	if (NULL == pngout)
 	{
 		if (EACCES == errno)
@@ -44,7 +44,7 @@ void load_and_save()
 	}
 
 	// do the same for a JPEG-format file
-	std::FILE *jpegout = std::fopen(".\\graphics_2d_data\\gd\\test.jpg", "wb");
+	std::FILE *jpegout = std::fopen("./data/graphics_2d/gd/test.jpg", "wb");
 	if (NULL == jpegout)
 
 	{

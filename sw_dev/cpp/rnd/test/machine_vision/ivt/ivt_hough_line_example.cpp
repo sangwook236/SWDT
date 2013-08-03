@@ -187,7 +187,7 @@ namespace my_ivt {
 // [ref] ${IVT_HOME}/examples/HoughLinesDemo/main.cpp
 void hough_line_example()
 {
-	const std::string input_filename("./machine_vision_data/ivt/geometric_scene.bmp");
+	const std::string input_filename("./data/machine_vision/ivt/geometric_scene.bmp");
 
 	local::CHoughLinesDemo demo;
 	const int retval = demo.Run(input_filename);

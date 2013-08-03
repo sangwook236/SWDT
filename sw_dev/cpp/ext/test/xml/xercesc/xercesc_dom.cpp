@@ -66,12 +66,12 @@ int dom()
 
 #if defined(_UNICODE) || defined(UNICODE)
     // FIXME [check] >> is it correct? convert 'wchar_t *' to 'XMLCh *'
-	//const XMLCh *xmlFile = XMLStrL(".\\xml_data\\xerces\\personal.xml");
-	//const XMLCh *xmlFile = (XMLCh *)L".\\xml_data\\xerces\\personal.xml";
-	const XMLCh *xmlFile = (XMLCh *)L".\\xml_data\\xerces\\books.xml";
+	//const XMLCh *xmlFile = XMLStrL("./data/xml/xerces/personal.xml");
+	//const XMLCh *xmlFile = (XMLCh *)L"./data/xml/xerces/personal.xml";
+	const XMLCh *xmlFile = (XMLCh *)L"./data/xml/xerces/books.xml";
 #else
-	//const char *xmlFile = ".\\xml_data\\xerces\\personal.xml";
-	const char *xmlFile = ".\\xml_data\\xerces\\books.xml";
+	//const char *xmlFile = "./data/xml/xerces/personal.xml";
+	const char *xmlFile = "./data/xml/xerces/books.xml";
 #endif
 
 	try

@@ -74,7 +74,7 @@ namespace my_vlfeat {
 
 void mser()
 {
-	const std::string input_filename = "./machine_vision_data/vlfeat/box.pgm";
+	const std::string input_filename = "./data/machine_vision/vlfeat/box.pgm";
 
 	// algorithm parameters
 	double delta = -1;

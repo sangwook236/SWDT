@@ -214,7 +214,7 @@ export_extension, defined above.
 */
 int export_frame(IplImage *frame, int i)
 {
-	const std::string export_base("./bayesian_filtering_data/frame_");
+	const std::string export_base("./data/bayesian_filtering/frame_");
 	const std::string export_extension(".png");
 
 	std::ostringstream num;
@@ -233,8 +233,8 @@ namespace my_particle_filter_object_tracking {
 // ${PARTICLE_FILTER_OBJECT_TRACKING_HOME}/src/track1.c
 void track_example()
 {
-	const std::string input_vided_file("./bayesian_filtering_data/hockey.avi");  // input video file name.
-	//const std::string input_vided_file("./bayesian_filtering_data/soccer.avi");  // input video file name.
+	const std::string input_vided_file("./data/bayesian_filtering/hockey.avi");  // input video file name.
+	//const std::string input_vided_file("./data/bayesian_filtering/soccer.avi");  // input video file name.
 
 	const int num_particles = 1000;  // number of particles.
 	const bool show_all = false;  // true to display all particles.

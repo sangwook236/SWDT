@@ -25,7 +25,7 @@ void sprinkler_gibbs_example()
 
     // Read the factorgraph from the file
     dai::FactorGraph SprinklerNetwork;
-    SprinklerNetwork.ReadFromFile("./probabilistic_graphical_model_data/libdai/sprinkler.fg");
+    SprinklerNetwork.ReadFromFile("./data/probabilistic_graphical_model/libdai/sprinkler.fg");
     std::cout << "Sprinkler network read from sprinkler.fg" << std::endl;
 
     // Output some information about the factorgraph
@@ -41,7 +41,7 @@ void sprinkler_gibbs_example()
 
     // Open a .tab file for writing
     std::ofstream outfile;
-    outfile.open("./probabilistic_graphical_model_data/libdai/sprinkler.tab");
+    outfile.open("./data/probabilistic_graphical_model/libdai/sprinkler.tab");
     if (!outfile.is_open())
 		throw std::runtime_error("Cannot write to file!");
 

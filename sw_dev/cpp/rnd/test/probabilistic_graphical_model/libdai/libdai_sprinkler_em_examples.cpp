@@ -23,7 +23,7 @@ void sprinkler_em_example()
 
 	// Read the factorgraph from the file
 	dai::FactorGraph SprinklerNetwork;
-	SprinklerNetwork.ReadFromFile("./probabilistic_graphical_model_data/libdai/sprinkler.fg");
+	SprinklerNetwork.ReadFromFile("./data/probabilistic_graphical_model/libdai/sprinkler.fg");
 
 	// Prepare junction-tree object for doing exact inference for E-step
 	dai::PropertySet infprops;
@@ -34,12 +34,12 @@ void sprinkler_em_example()
 
 	// Read sample from file
 	dai::Evidence e;
-	std::ifstream estream("./probabilistic_graphical_model_data/libdai/sprinkler.tab");
+	std::ifstream estream("./data/probabilistic_graphical_model/libdai/sprinkler.tab");
 	e.addEvidenceTabFile(estream, SprinklerNetwork);
 	std::cout << "Number of samples: " << e.nrSamples() << std::endl;
 
 	// Read EM specification
-	std::ifstream emstream("./probabilistic_graphical_model_data/libdai/sprinkler.em");
+	std::ifstream emstream("./data/probabilistic_graphical_model/libdai/sprinkler.em");
 	dai::EMAlg em(e, *inf, emstream);
 
 	// Iterate EM until convergence

@@ -118,7 +118,7 @@ void operator>>(const YAML::Node &node, Monster &monster)
 
 void parse_monsters()
 {
-	std::ifstream fin("serialization_data/yaml/monsters.yaml");
+	std::ifstream fin("data/serialization/yaml/monsters.yaml");
 	if (!fin)
 	{
 		std::cout << "yaml data file not found !!!" << std::endl;

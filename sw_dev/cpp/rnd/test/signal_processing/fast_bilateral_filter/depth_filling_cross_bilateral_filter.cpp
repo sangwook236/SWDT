@@ -39,7 +39,7 @@ void depth_filling_cross_bilateral_filter()
 	//const std::string depth_input_filename("../../hw_interface/bin/data/kinect/kinect2_depth_transformed_20130725T211839.png");
 	//const std::string depth_input_filename("../../hw_interface/bin/data/kinect/kinect2_depth_transformed_20130725T211842.png");
 
-	const std::string output_filename("./signal_processing_data/fast_bilateral_filter/depth_filling_cross_bf_output.png");
+	const std::string output_filename("./data/signal_processing/fast_bilateral_filter/depth_filling_cross_bf_output.png");
 	
 	const double sigma_s = 16;  // space sigma.
 	const double sigma_r = 0.2;  // range sigma.

@@ -172,10 +172,10 @@ void remove_outlier_using_ransac(const CvSeq *targetKeypoints, const CvSeq *targ
 
 void match_features_using_ransac()
 {
- 	const std::string targetImageFileName("./machine_vision_data/opencv/melon_target.png");
-	//const std::string inputImageFileName("./machine_vision_data/opencv/melon_1.png");
-	const std::string inputImageFileName("./machine_vision_data/opencv/melon_2.png");
-	//const std::string inputImageFileName("./machine_vision_data/opencv/melon_3.png");
+ 	const std::string targetImageFileName("./data/machine_vision/opencv/melon_target.png");
+	//const std::string inputImageFileName("./data/machine_vision/opencv/melon_1.png");
+	const std::string inputImageFileName("./data/machine_vision/opencv/melon_2.png");
+	//const std::string inputImageFileName("./data/machine_vision/opencv/melon_3.png");
 
 	const char *targetWindowName = "outlier removal: target image";
 	const char *inputWindowName = "outlier removal: input image";

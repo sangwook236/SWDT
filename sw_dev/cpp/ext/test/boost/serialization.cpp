@@ -489,9 +489,9 @@ public:
 void serialization_intrusive()
 {
 #if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
-	const std::string filename("boost_data/gps_intrusive_archive.txt");
+	const std::string filename("data/boost/gps_intrusive_archive.txt");
 #else
-	const std::string filename("boost_data/gps_intrusive_archive.xml");
+	const std::string filename("data/boost/gps_intrusive_archive.xml");
 #endif
 
 	// save data to archive
@@ -567,9 +567,9 @@ void serialize(Archive &ar, gps_position_nonintrusive &g, const unsigned int ver
 void serialization_nonintrusive()
 {
 #if !defined(__MACRO_USE_NVP_FOR_XML_SERIALIZATION_)
-	const std::string filename("boost_data/gps_nonintrusive_archive.txt");
+	const std::string filename("data/boost/gps_nonintrusive_archive.txt");
 #else
-	const std::string filename("boost_data/gps_nonintrusive_archive.xml");
+	const std::string filename("data/boost/gps_nonintrusive_archive.xml");
 #endif
 
 	// save data to archive

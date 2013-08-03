@@ -19,7 +19,7 @@ void simple_function_regression_example()
 
 	// Data set object
 	OpenNN::DataSet data_set;
-	data_set.load_data("./neural_network_data/opennn/simple_function_regression.dat");
+	data_set.load_data("./data/neural_network/opennn/simple_function_regression.dat");
 
 	OpenNN::VariablesInformation* variables_information_pointer = data_set.get_variables_information_pointer();
 
@@ -56,16 +56,16 @@ void simple_function_regression_example()
 		<< "Slope: " << linear_regression_analysis_results.linear_regression_parameters[0][1] << std::endl;
 
 	// Save results
-	data_set.save("./neural_network_data/opennn/simple_function_regression/data_set.xml");
+	data_set.save("./data/neural_network/opennn/simple_function_regression/data_set.xml");
 
-	neural_network.save("./neural_network_data/opennn/simple_function_regression/neural_network.xml");
-	neural_network.save_expression("./neural_network_data/opennn/simple_function_regression/expression.txt");
+	neural_network.save("./data/neural_network/opennn/simple_function_regression/neural_network.xml");
+	neural_network.save_expression("./data/neural_network/opennn/simple_function_regression/expression.txt");
 
-	performance_functional.save("./neural_network_data/opennn/simple_function_regression/performance_functional.xml");
+	performance_functional.save("./data/neural_network/opennn/simple_function_regression/performance_functional.xml");
 
-	training_strategy.save("./neural_network_data/opennn/simple_function_regression/training_strategy.xml");
+	training_strategy.save("./data/neural_network/opennn/simple_function_regression/training_strategy.xml");
 
-	linear_regression_analysis_results.save("./neural_network_data/opennn/simple_function_regression/linear_regression_analysis_results.dat");
+	linear_regression_analysis_results.save("./data/neural_network/opennn/simple_function_regression/linear_regression_analysis_results.dat");
 }
 
 }  // namespace my_opennn

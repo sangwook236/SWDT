@@ -25,7 +25,7 @@ using namespace shogun;
 // [ref] ${SHOGUN_HOME}/examples/undocumented/libshogun/classifier_multiclass_shareboost.cpp
 void classifier_multiclass_shareboost_example()
 {
-	const std::string fname_train("./machine_learning_data/shogun/7class_example4_train.dense");
+	const std::string fname_train("./data/machine_learning/shogun/7class_example4_train.dense");
 	shogun::CStreamingAsciiFile *train_file = new shogun::CStreamingAsciiFile(fname_train.c_str());
 	SG_REF(train_file);
 

@@ -287,10 +287,10 @@ void LoadCascade(DetectionScanner& ds)
 
 	types.push_back(NodeDetector::CD_LIN); // first node
 	upper_bounds.push_back(100);
-	filenames.push_back("./object_detection_data/c4/combined.txt.model");
+	filenames.push_back("./data/object_detection/c4/combined.txt.model");
 	types.push_back(NodeDetector::CD_HIK); // second node
 	upper_bounds.push_back(353);
-	filenames.push_back("./object_detection_data/c4/combined2.txt.model");
+	filenames.push_back("./data/object_detection/c4/combined2.txt.model");
 	
 	ds.LoadDetector(types,upper_bounds,filenames);
 	// You can adjust these parameters for different speed, accuracy etc

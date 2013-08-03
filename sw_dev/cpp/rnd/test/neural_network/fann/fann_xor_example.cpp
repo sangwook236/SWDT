@@ -75,7 +75,7 @@ void xor_sample()
 	std::cout << std::endl << "Training network." << std::endl;
 
 	FANN::training_data data;
-	if (data.read_train_from_file("./neural_network_data/fann/xor.data"))
+	if (data.read_train_from_file("./data/neural_network/fann/xor.data"))
 	{
 		// Initialize and train the network with the data
 		net.init_weights(data);
@@ -103,9 +103,9 @@ void xor_sample()
 		std::cout << std::endl << "Saving network." << std::endl;
 
 		// Save the network in floating point and fixed point
-		net.save("./neural_network_data/fann/xor_float.net");
-		unsigned int decimal_point = net.save_to_fixed("./neural_network_data/fann/xor_fixed.net");
-		data.save_train_to_fixed("./neural_network_data/fann/xor_fixed.data", decimal_point);
+		net.save("./data/neural_network/fann/xor_float.net");
+		unsigned int decimal_point = net.save_to_fixed("./data/neural_network/fann/xor_fixed.net");
+		data.save_train_to_fixed("./data/neural_network/fann/xor_fixed.data", decimal_point);
 
 		std::cout << std::endl << "XOR test completed." << std::endl;
 	}
@@ -131,7 +131,7 @@ void xor_train()
 	std::cout << "Creating network." << std::endl;
 	struct fann *ann = fann_create_standard(num_layers, num_input, num_neurons_hidden, num_output);
 
-	struct fann_train_data *data = fann_read_train_from_file("./neural_network_data/fann/xor.data");
+	struct fann_train_data *data = fann_read_train_from_file("./data/neural_network/fann/xor.data");
 
 	fann_set_activation_steepness_hidden(ann, 1);
 	fann_set_activation_steepness_output(ann, 1);
@@ -159,10 +159,10 @@ void xor_train()
 
 	std::cout << "Saving network." << std::endl;
 
-	fann_save(ann, "./neural_network_data/fann/xor_float.net");
+	fann_save(ann, "./data/neural_network/fann/xor_float.net");
 
-	const unsigned int decimal_point = fann_save_to_fixed(ann, "./neural_network_data/fann/xor_fixed.net");
-	fann_save_train_to_fixed(data, "./neural_network_data/fann/xor_fixed.data", decimal_point);
+	const unsigned int decimal_point = fann_save_to_fixed(ann, "./data/neural_network/fann/xor_fixed.net");
+	fann_save_train_to_fixed(data, "./data/neural_network/fann/xor_fixed.data", decimal_point);
 
 	std::cout << "Cleaning up." << std::endl;
 	fann_destroy_train(data);
@@ -175,9 +175,9 @@ void xor_test()
 	std::cout << "Creating network." << std::endl;
 
 #ifdef FIXEDFANN
-	struct fann *ann = fann_create_from_file("./neural_network_data/fann/xor_fixed.net");
+	struct fann *ann = fann_create_from_file("./data/neural_network/fann/xor_fixed.net");
 #else
-	struct fann *ann = fann_create_from_file("./neural_network_data/fann/xor_float.net");
+	struct fann *ann = fann_create_from_file("./data/neural_network/fann/xor_float.net");
 #endif
 
 	if (!ann)
@@ -192,9 +192,9 @@ void xor_test()
 	std::cout << "Testing network." << std::endl;
 
 #ifdef FIXEDFANN
-	struct fann_train_data *data = fann_read_train_from_file("./neural_network_data/fann/xor_fixed.data");
+	struct fann_train_data *data = fann_read_train_from_file("./data/neural_network/fann/xor_fixed.data");
 #else
-	struct fann_train_data *data = fann_read_train_from_file("./neural_network_data/fann/xor.data");
+	struct fann_train_data *data = fann_read_train_from_file("./data/neural_network/fann/xor.data");
 #endif
 
 	for (unsigned int i = 0; i < fann_length_train_data(data); ++i)

@@ -176,22 +176,22 @@ void cross_bilateral_filter_example()
 		return;
 	}
 #else
-	const std::string input_filename("./signal_processing_data/fast_bilateral_filter/building.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/dome.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/dragon_hires.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/dragon_lores.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/flower.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/housecorner_hires.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/housecorner_lores.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/rock.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/swamp.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/synthetic.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/temple.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/turtle.ppm");
+	const std::string input_filename("./data/signal_processing/fast_bilateral_filter/building.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/dome.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/dragon_hires.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/dragon_lores.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/flower.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/housecorner_hires.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/housecorner_lores.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/rock.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/swamp.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/synthetic.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/temple.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/turtle.ppm");
 	
-	const std::string output_filename("./signal_processing_data/fast_bilateral_filter/cross_bf_output.ppm");
+	const std::string output_filename("./data/signal_processing/fast_bilateral_filter/cross_bf_output.ppm");
 	
-	//const std::string edge_filename("./signal_processing_data/fast_bilateral_filter/edge.ppm");
+	//const std::string edge_filename("./data/signal_processing/fast_bilateral_filter/edge.ppm");
 	const std::string edge_filename;
 	
 	const double sigma_s = 16;  // space sigma.

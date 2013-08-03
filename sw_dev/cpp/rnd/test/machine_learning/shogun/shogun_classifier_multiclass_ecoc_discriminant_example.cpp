@@ -27,8 +27,8 @@ using namespace shogun;
 void classifier_multiclass_ecoc_discriminant_example()
 {
 	// Prepare to read a file for the training data
-	const std::string fname_feats("./machine_learning_data/shogun/fm_train_real.dat");
-	const std::string fname_labels("./machine_learning_data/shogun/label_train_multiclass.dat");
+	const std::string fname_feats("./data/machine_learning/shogun/fm_train_real.dat");
+	const std::string fname_labels("./data/machine_learning/shogun/label_train_multiclass.dat");
 	shogun::CStreamingAsciiFile *ffeats_train = new shogun::CStreamingAsciiFile(fname_feats.c_str());
 	shogun::CStreamingAsciiFile *flabels_train = new shogun::CStreamingAsciiFile(fname_labels.c_str());
 	SG_REF(ffeats_train);

@@ -52,11 +52,11 @@ int pictorial_structures_revisited_main(int argc, char *argv[])
 {
 #if 0
 	// testing
-	const std::string curr_directory("./feature_analysis_data/pictorial_structures_revisited/code_test");
+	const std::string curr_directory("./data/face_analysis/pictorial_structures_revisited/code_test");
 	const std::string exp_filename("./expopt/exp_code_test.txt");
 #else
 	// experiment
-	const std::string curr_directory("./feature_analysis_data/pictorial_structures_revisited/code_test");
+	const std::string curr_directory("./data/face_analysis/pictorial_structures_revisited/code_test");
 	const std::string exp_filename("./expopt/exp_buffy_hog_detections.txt");
 	//const std::string exp_filename("./expopt/exp_ramanan_075.txt");
 	//const std::string exp_filename("./expopt/exp_tud_upright_people.txt");

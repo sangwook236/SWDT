@@ -71,9 +71,9 @@ void image_handling()
 
 void show_image()
 {
-	const char *winName = "./machine_vision_data/opencv/Image:";
-	const char *imgName = "./machine_vision_data/opencv/lena_gray.bmp";
-	const char *savedImgName = "./machine_vision_data/opencv/lena_gray_edge.png";
+	const char *winName = "./data/machine_vision/opencv/Image:";
+	const char *imgName = "./data/machine_vision/opencv/lena_gray.bmp";
+	const char *savedImgName = "./data/machine_vision/opencv/lena_gray_edge.png";
 
 	IplImage *img = cvLoadImage(imgName);
 	IplImage *grayImg = 0L;
@@ -136,12 +136,12 @@ void matches2points(const std::vector<cv::DMatch> &matches, const std::vector<cv
 
 void image_subtraction()
 {
-	const std::string img1_name("./machine_vision_data/opencv/table_only.jpg");
-	const std::string img2_name("./machine_vision_data/opencv/table_hand_01.jpg");
-	//const std::string img2_name("./machine_vision_data/opencv/table_hand_02.jpg");
-	//const std::string img2_name("./machine_vision_data/opencv/table_hand_03.jpg");
-	//const std::string img2_name("./machine_vision_data/opencv/table_hand_04.jpg");
-	//const std::string img2_name("./machine_vision_data/opencv/table_hand_05.jpg");
+	const std::string img1_name("./data/machine_vision/opencv/table_only.jpg");
+	const std::string img2_name("./data/machine_vision/opencv/table_hand_01.jpg");
+	//const std::string img2_name("./data/machine_vision/opencv/table_hand_02.jpg");
+	//const std::string img2_name("./data/machine_vision/opencv/table_hand_03.jpg");
+	//const std::string img2_name("./data/machine_vision/opencv/table_hand_04.jpg");
+	//const std::string img2_name("./data/machine_vision/opencv/table_hand_05.jpg");
 
 	const cv::Mat &img1 = cv::imread(img1_name, CV_LOAD_IMAGE_GRAYSCALE);
 	const cv::Mat &img2 = cv::imread(img2_name, CV_LOAD_IMAGE_GRAYSCALE);
@@ -280,12 +280,12 @@ void on_trackbar(int pos, void *userData)
 
 void image_subtraction_with_trackbar()
 {
-	const std::string img1_name("./machine_vision_data/opencv/table_only.jpg");
-	const std::string img2_name("./machine_vision_data/opencv/table_hand_01.jpg");
-	//const std::string img2_name("./machine_vision_data/opencv/table_hand_02.jpg");
-	//const std::string img2_name("./machine_vision_data/opencv/table_hand_03.jpg");
-	//const std::string img2_name("./machine_vision_data/opencv/table_hand_04.jpg");
-	//const std::string img2_name("./machine_vision_data/opencv/table_hand_05.jpg");
+	const std::string img1_name("./data/machine_vision/opencv/table_only.jpg");
+	const std::string img2_name("./data/machine_vision/opencv/table_hand_01.jpg");
+	//const std::string img2_name("./data/machine_vision/opencv/table_hand_02.jpg");
+	//const std::string img2_name("./data/machine_vision/opencv/table_hand_03.jpg");
+	//const std::string img2_name("./data/machine_vision/opencv/table_hand_04.jpg");
+	//const std::string img2_name("./data/machine_vision/opencv/table_hand_05.jpg");
 
 	const cv::Mat &img1 = cv::imread(img1_name, CV_LOAD_IMAGE_GRAYSCALE);
 	const cv::Mat &img2 = cv::imread(img2_name, CV_LOAD_IMAGE_GRAYSCALE);

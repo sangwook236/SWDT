@@ -18,7 +18,7 @@ namespace my_particle_filter_object_tracking {
 // ${PARTICLE_FILTER_OBJECT_TRACKING_HOME}/src/observe.c
 void observe_example()
 {
-	const std::string input_filename("./bayesian_filtering_data/");
+	const std::string input_filename("./data/bayesian_filtering/");
 	IplImage *in_img = cvLoadImage(input_filename.c_str(), 1);  // input image.
 	if (!in_img)
 	{
@@ -27,7 +27,7 @@ void observe_example()
 	}
 
 	std::vector<std::string> ref_filenames;
-	ref_filenames.push_back("./bayesian_filtering_data/");
+	ref_filenames.push_back("./data/bayesian_filtering/");
 	const int num_ref_imgs = (int)ref_filenames.size();  // count of player reference images.
 	IplImage **ref_imgs = (IplImage **)malloc(num_ref_imgs * sizeof(IplImage *));  // array of player reference images.
 	for (int i = 0; i < num_ref_imgs; ++i)

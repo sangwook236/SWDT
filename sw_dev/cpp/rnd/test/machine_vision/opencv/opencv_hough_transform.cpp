@@ -117,7 +117,7 @@ namespace my_opencv {
 
 void hough_transform()
 {
-	const std::string imageFileName("./machine_vision_data/opencv/hough_line.png");
+	const std::string imageFileName("./data/machine_vision/opencv/hough_line.png");
 
 	const char *windowName = "hough transform";
 	cvNamedWindow(windowName, CV_WINDOW_AUTOSIZE);

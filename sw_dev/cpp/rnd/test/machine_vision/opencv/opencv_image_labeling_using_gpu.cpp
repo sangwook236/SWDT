@@ -43,14 +43,14 @@ void background_subtraction_by_graph_cut()
 	// [ref] http://ameblo.jp/sehr-lieber-querkopf/entry-11151368773.html
 	//	background subtraction with considering color continuity with neighbor pixels
 
-	const std::string src_filename("./machine_vision_data/opencv/bgsub_src.png");
-	const std::string bg_filename("./machine_vision_data/opencv/bgsub_bg.png");
-	const std::string diff_filename("./machine_vision_data/opencv/bgsub_diff.png");
-	const std::string rightTransp_filename("./machine_vision_data/opencv/bgsub_rightTransp.png");
-	const std::string bottom_filename("./machine_vision_data/opencv/bgsub_bottom.png");
-	const std::string result_filename("./machine_vision_data/opencv/bgsub_result.png");
-	const std::string diff_visualized_filename("./machine_vision_data/opencv/bgsub_diff_visualized.png");
-	const std::string result_visualized_filename("./machine_vision_data/opencv/bgsub_result_visualized.png");
+	const std::string src_filename("./data/machine_vision/opencv/bgsub_src.png");
+	const std::string bg_filename("./data/machine_vision/opencv/bgsub_bg.png");
+	const std::string diff_filename("./data/machine_vision/opencv/bgsub_diff.png");
+	const std::string rightTransp_filename("./data/machine_vision/opencv/bgsub_rightTransp.png");
+	const std::string bottom_filename("./data/machine_vision/opencv/bgsub_bottom.png");
+	const std::string result_filename("./data/machine_vision/opencv/bgsub_result.png");
+	const std::string diff_visualized_filename("./data/machine_vision/opencv/bgsub_diff_visualized.png");
+	const std::string result_visualized_filename("./data/machine_vision/opencv/bgsub_result_visualized.png");
 
 	const double threshold1 = 64.0;
 	const double threshold2 = 32.0;

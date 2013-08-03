@@ -14,7 +14,7 @@ int mainImage()
 {
 	// Declare Ipoints and other stuff
 	IpVec ipts;
-	IplImage *img = cvLoadImage("./feature_analysis_data/surf/sf.jpg");
+	IplImage *img = cvLoadImage("./data/face_analysis/surf/sf.jpg");
 
 	// Detect and describe interest points in the image
 	clock_t start = clock();
@@ -42,7 +42,7 @@ int mainVideo()
 	if (!capture) error("No Capture");
 
 	// Initialise video writer
-	//cv::VideoWriter vw("./feature_analysis_data/surf/out.avi", CV_FOURCC('D','I','V','X'), 10, cvSize(320,240), 1);
+	//cv::VideoWriter vw("./data/face_analysis/surf/out.avi", CV_FOURCC('D','I','V','X'), 10, cvSize(320,240), 1);
 	//vw << img;
 
 	// Create a window 
@@ -95,9 +95,9 @@ int mainMatch()
 	IpVec ipts, ref_ipts;
 
 	// This is the reference object we wish to find in video frame
-	// Replace the line below with IplImage *img = cvLoadImage("./feature_analysis_data/surf/object.jpg"); 
+	// Replace the line below with IplImage *img = cvLoadImage("./data/face_analysis/surf/object.jpg"); 
 	// where object.jpg is the planar object to be located in the video
-	IplImage *img = cvLoadImage("./feature_analysis_data/surf/object.jpg"); 
+	IplImage *img = cvLoadImage("./data/face_analysis/surf/object.jpg"); 
 	if (img == NULL) error("Need to load reference image in order to run matching procedure");
 	CvPoint src_corners[4] = { {0, 0}, {img->width, 0}, {img->width, img->height}, {0, img->height} };
 	CvPoint dst_corners[4];
@@ -212,8 +212,8 @@ int mainMotionPoints()
 
 int mainStaticMatch()
 {
-	IplImage *img1 = cvLoadImage("./feature_analysis_data/surf/img1.jpg");
-	IplImage *img2 = cvLoadImage("./feature_analysis_data/surf/img2.jpg");
+	IplImage *img1 = cvLoadImage("./data/face_analysis/surf/img1.jpg");
+	IplImage *img2 = cvLoadImage("./data/face_analysis/surf/img2.jpg");
 
 	IpVec ipts1, ipts2;
 	surfDetDes(img1, ipts1, false, 4, 4, 2, 0.0001f);
@@ -247,7 +247,7 @@ int mainStaticMatch()
 
 int mainKmeans()
 {
-	IplImage *img = cvLoadImage("./feature_analysis_data/surf/img1.jpg");
+	IplImage *img = cvLoadImage("./data/face_analysis/surf/img1.jpg");
 	IpVec ipts;
 	Kmeans km;
 
@@ -257,7 +257,7 @@ int mainKmeans()
 	for (int repeat = 0; repeat < 10; ++repeat)
 	{
 
-		IplImage *img = cvLoadImage("./feature_analysis_data/surf/img1.jpg");
+		IplImage *img = cvLoadImage("./data/face_analysis/surf/img1.jpg");
 		km.Run(&ipts, 5, true);
 		drawPoints(img, km.clusters);
 

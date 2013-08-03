@@ -65,8 +65,8 @@ state_type q_sam(state_type x, obsv_type y)
 // [ref] ${PARTICLEPLUSPLUS_HOME}/main.cpp
 void basic_sample()
 {
-	const std::string input_filename("./bayesian_filtering_data/data_y.dat");
-	const std::string output_filename("./bayesian_filtering_data/data_xhat.dat");
+	const std::string input_filename("./data/bayesian_filtering/data_y.dat");
+	const std::string output_filename("./data/bayesian_filtering/data_xhat.dat");
 
 	std::ifstream in_stream(input_filename);
 	if (!in_stream.is_open())

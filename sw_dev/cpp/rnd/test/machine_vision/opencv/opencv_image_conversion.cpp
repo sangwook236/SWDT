@@ -169,7 +169,7 @@ void image_conversion()
 	//const std::string dir_name("E:/archive_dataset/change_detection/canoe/input");
 	//const std::string dir_name("E:/archive_dataset/change_detection/highway/input");
 	//const std::string dir_name("E:/archive_dataset/change_detection/boats/input");
-	const std::string dir_name("D:/work_center/sw_dev/cpp/rnd/bin/segmentation_data");
+	const std::string dir_name("./data/segmentation");
 
 #if 0
 	const std::string src_ext("bmp");

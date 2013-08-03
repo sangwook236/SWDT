@@ -239,20 +239,20 @@ namespace my_opencv {
 void shape_finding()
 {
 	std::list<std::string> filenames;
-	filenames.push_back("./machine_vision_data/opencv/pic1.png");
-	filenames.push_back("./machine_vision_data/opencv/pic2.png");
-	filenames.push_back("./machine_vision_data/opencv/pic3.png");
-	filenames.push_back("./machine_vision_data/opencv/pic4.png");
-	filenames.push_back("./machine_vision_data/opencv/pic5.png");
-	filenames.push_back("./machine_vision_data/opencv/pic6.png");
-	filenames.push_back("./machine_vision_data/opencv/stuff.jpg");
-	filenames.push_back("./machine_vision_data/opencv/synthetic_face.png");
-	filenames.push_back("./machine_vision_data/opencv/puzzle.png");
-	filenames.push_back("./machine_vision_data/opencv/fruits.jpg");
-	filenames.push_back("./machine_vision_data/opencv/lena_rgb.bmp");
-	filenames.push_back("./machine_vision_data/opencv/hand_01.jpg");
-	filenames.push_back("./machine_vision_data/opencv/hand_05.jpg");
-	filenames.push_back("./machine_vision_data/opencv/hand_24.jpg");
+	filenames.push_back("./data/machine_vision/opencv/pic1.png");
+	filenames.push_back("./data/machine_vision/opencv/pic2.png");
+	filenames.push_back("./data/machine_vision/opencv/pic3.png");
+	filenames.push_back("./data/machine_vision/opencv/pic4.png");
+	filenames.push_back("./data/machine_vision/opencv/pic5.png");
+	filenames.push_back("./data/machine_vision/opencv/pic6.png");
+	filenames.push_back("./data/machine_vision/opencv/stuff.jpg");
+	filenames.push_back("./data/machine_vision/opencv/synthetic_face.png");
+	filenames.push_back("./data/machine_vision/opencv/puzzle.png");
+	filenames.push_back("./data/machine_vision/opencv/fruits.jpg");
+	filenames.push_back("./data/machine_vision/opencv/lena_rgb.bmp");
+	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
+	filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
+	filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
 
 	const char *windowName = "shape finding";
 	cvNamedWindow(windowName, CV_WINDOW_AUTOSIZE);

@@ -13,7 +13,7 @@ void mpl_sample_1()
 	glp_prob *lp = glp_create_prob();
 	glp_tran *tran = glp_mpl_alloc_wksp();
 
-	int ret = glp_mpl_read_model(tran, "./optimization_data/glpk/egypt.mod", 0);
+	int ret = glp_mpl_read_model(tran, "./data/optimization/glpk/egypt.mod", 0);
 	if (0 != ret)
 	{
 		std::cerr << "Error on translating model" << std::endl;
@@ -28,7 +28,7 @@ void mpl_sample_1()
 	}
 
 	glp_mpl_build_prob(tran, lp);
-	ret = glp_write_mps(lp, GLP_MPS_FILE, NULL, "./optimization_data/glpk/egypt.mps");
+	ret = glp_write_mps(lp, GLP_MPS_FILE, NULL, "./data/optimization/glpk/egypt.mps");
 	if (0 != ret)
 		std::cerr << "Error on writing MPS file" << std::endl;
 
@@ -43,14 +43,14 @@ void mpl_sample_2()
 	glp_prob *mip = glp_create_prob();
 	glp_tran *tran = glp_mpl_alloc_wksp();
 
-	int ret = glp_mpl_read_model(tran, "./optimization_data/glpk/sudoku.mod", 1);
+	int ret = glp_mpl_read_model(tran, "./data/optimization/glpk/sudoku.mod", 1);
 	if (0 != ret)
 	{
 		std::cerr << "Error on translating model" << std::endl;
 		goto skip;
 	}
 
-	ret = glp_mpl_read_data(tran, "./optimization_data/glpk/sudoku.dat");
+	ret = glp_mpl_read_data(tran, "./data/optimization/glpk/sudoku.dat");
 	if (0 != ret)
 	{
 		std::cerr << "Error on translating data" << std::endl;

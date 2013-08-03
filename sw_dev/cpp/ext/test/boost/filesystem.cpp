@@ -9,17 +9,17 @@ namespace local {
 
 void path_info_1()
 {
-	boost::filesystem::path my_path("boost_data/filesystem_test.txt");
+	boost::filesystem::path my_path("data/boost/filesystem_test.txt");
 
-	boost::filesystem::remove_all("boost_data/foobar");
-	boost::filesystem::create_directory("boost_data/foobar");
+	boost::filesystem::remove_all("data/boost/foobar");
+	boost::filesystem::create_directory("data/boost/foobar");
 
 	// create file
-	boost::filesystem::ofstream file("boost_data/foobar/cheeze.wine");
+	boost::filesystem::ofstream file("data/boost/foobar/cheeze.wine");
 	file << "tastes good!\n";
 	file.close();
 
-	if (!boost::filesystem::exists("boost_data/foobar/cheeze.wine"))
+	if (!boost::filesystem::exists("data/boost/foobar/cheeze.wine"))
 		std::cout << "Something is rotten in foobar" << std::endl;
 
 	std::cout << "[ 1] " << my_path.string() << std::endl;
@@ -265,8 +265,8 @@ bool rename_files_in_directory(const boost::filesystem::path &dir_path)
 void filesystem()
 {
 	//local::path_info_1();
-	//local::path_info_2(".\\boost_data\\foobar");
-	//local::path_info_2(".\\boost_data\\foobar\\cheeze.wine");
+	//local::path_info_2("./data/boost/foobar");
+	//local::path_info_2("./data/boost/foobar/cheeze.wine");
 	
 	boost::filesystem::path path_found(boost::filesystem::initial_path<boost::filesystem::path>());
 	if (local::find_file(".", "cheeze.wine", path_found))
@@ -274,8 +274,8 @@ void filesystem()
 	else
 		std::cout << "File Not Found" << std::endl;
 
-	//local::file_size("boost_data/foobar/cheeze.wine");
-	//local::ls("boost_data/foobar/");
+	//local::file_size("data/boost/foobar/cheeze.wine");
+	//local::ls("data/boost/foobar/");
 
 	//local::rename_files_in_directory("E:/archive_dataset/change_detection/canoe_ppm");
 	//local::rename_files_in_directory("E:/archive_dataset/change_detection/highway_ppm");

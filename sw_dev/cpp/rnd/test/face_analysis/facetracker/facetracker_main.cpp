@@ -58,9 +58,9 @@ void Draw(cv::Mat &image,cv::Mat &shape,cv::Mat &con,cv::Mat &tri,cv::Mat &visi)
 void basic_example()
 {
 	// parse command line arguments.
-	const std::string ftFile("./face_analysis_data/facetracker/model/face2.tracker");
-	const std::string conFile("./face_analysis_data/facetracker/model/face.con");
-	const std::string triFile("./face_analysis_data/facetracker/model/face.tri");
+	const std::string ftFile("./data/face_analysis/facetracker/model/face2.tracker");
+	const std::string conFile("./data/face_analysis/facetracker/model/face.con");
+	const std::string triFile("./data/face_analysis/facetracker/model/face.tri");
 	const bool fcheck = false;  // check for failure
 	const double scale = 1.0;  // image scaling
 	const int fpd = -1;  // frames/detections

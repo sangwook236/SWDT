@@ -17,7 +17,7 @@ void resampling()
 	// load input file into a PointCloud<T> with an appropriate type
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>());
 	// load bun0.pcd -- should be available with the PCL archive in test 
-	pcl::io::loadPCDFile("./pcl_data/bun0.pcd", *cloud);
+	pcl::io::loadPCDFile("./data/pcl/bun0.pcd", *cloud);
 
 	// create a KD-Tree
 	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
@@ -46,7 +46,7 @@ void resampling()
 	pcl::concatenateFields(mls_points, *mls_normals, mls_cloud);
 
 	// save output
-	pcl::io::savePCDFile("./pcl_data/bun0-mls.pcd", mls_cloud);
+	pcl::io::savePCDFile("./data/pcl/bun0-mls.pcd", mls_cloud);
 }
 
 }  // namespace my_pcl

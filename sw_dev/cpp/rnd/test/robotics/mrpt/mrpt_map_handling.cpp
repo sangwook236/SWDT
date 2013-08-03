@@ -7,12 +7,12 @@ namespace local {
 
 void map_handling_basic()
 {
-	const std::string simpleMapInputFileName(".\\robotics_data\\mrpt\\localization_pf\\localization_demo.simplemap.gz");
-	const std::string simpleMapOutputFileName(".\\robotics_data\\mrpt\\map_handling.simplemap.gz");
-	const std::string gridMapInputFileName(".\\robotics_data\\mrpt\\2006-MalagaCampus.gridmap.gz");
-	const std::string mapImageFileName(".\\robotics_data\\mrpt\\KAIST-EECS-2ND-INTERSECTION.jpg");
-	const std::string metricMapOutputPrefix(".\\robotics_data\\mrpt\\metric_maps");
-	const std::string metricMapConfigFileName(".\\robotics_data\\mrpt\\metric_maps_config.ini");
+	const std::string simpleMapInputFileName("./data/robotics/mrpt/localization_pf/localization_demo.simplemap.gz");
+	const std::string simpleMapOutputFileName("./data/robotics/mrpt/map_handling.simplemap.gz");
+	const std::string gridMapInputFileName("./data/robotics/mrpt/2006-MalagaCampus.gridmap.gz");
+	const std::string mapImageFileName("./data/robotics/mrpt/KAIST-EECS-2ND-INTERSECTION.jpg");
+	const std::string metricMapOutputPrefix("./data/robotics/mrpt/metric_maps");
+	const std::string metricMapConfigFileName("./data/robotics/mrpt/metric_maps_config.ini");
 	const std::string metricMapConfigSectionName("MULTI_METRIC_MAP_CONFIGURATION");
 
 	// simple map
@@ -188,7 +188,7 @@ void map_handling_basic()
 
 void map_handling__bitmap2pointmap()
 {
-	const std::string mapImageFileName(".\\robotics_data\\mrpt\\PIRO_1st_floor_map_GC2009_final.bmp");
+	const std::string mapImageFileName("./data/robotics/mrpt/PIRO_1st_floor_map_GC2009_final.bmp");
 	const std::string metricMapOutputPrefix(mapImageFileName + ".metric_maps");
 
 	//

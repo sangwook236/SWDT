@@ -46,7 +46,7 @@ namespace local {
 void demo()
 {
 #if 1
-	const std::string avi_filename("./change_detection_data/video.avi");
+	const std::string avi_filename("./data/change_detection/video.avi");
 	cv::VideoCapture capture(avi_filename);
 #else
 	const int camId = -1;

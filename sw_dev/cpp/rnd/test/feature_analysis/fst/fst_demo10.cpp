@@ -110,7 +110,7 @@ void demo_10()
 	// set-up data access
 	boost::shared_ptr<std::vector<PSPLITTER> > splitters(new std::vector<PSPLITTER>); 
 	splitters->push_back(dsp);
-	boost::shared_ptr<DATAACCESSOR> da(new DATAACCESSOR("./feature_analysis_data/fst/speech_15.trn", splitters, dsc));
+	boost::shared_ptr<DATAACCESSOR> da(new DATAACCESSOR("./data/face_analysis/fst/speech_15.trn", splitters, dsc));
 	da->initialize();
 
 	// initiate access to split data parts

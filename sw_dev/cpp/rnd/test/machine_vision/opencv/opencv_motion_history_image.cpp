@@ -216,8 +216,8 @@ void motion_history_image()
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, imageWidth);
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, imageHeight);
 #else
-	//const std::string avi_filename("./machine_vision_data/opencv/flycap-0001.avi");
-	const std::string avi_filename("./machine_vision_data/opencv/tree.avi");
+	//const std::string avi_filename("./data/machine_vision/opencv/flycap-0001.avi");
+	const std::string avi_filename("./data/machine_vision/opencv/tree.avi");
 	//CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 	CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 #endif

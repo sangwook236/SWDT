@@ -119,8 +119,8 @@ void convex_hull_basic()
 
 void convex_hull_2()
 {
-	//const std::string input_filename("./machine_vision_data/opencv/thinning_img_1.png");
-	const std::string input_filename("./machine_vision_data/opencv/thinning_img_2.jpg");
+	//const std::string input_filename("./data/machine_vision/opencv/thinning_img_1.png");
+	const std::string input_filename("./data/machine_vision/opencv/thinning_img_2.jpg");
 	cv::Mat src(cv::imread(input_filename));
 	if (src.empty())
 	{

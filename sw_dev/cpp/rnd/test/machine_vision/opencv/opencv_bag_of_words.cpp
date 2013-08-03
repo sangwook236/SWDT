@@ -616,7 +616,7 @@ void bag_of_words()
     //	bowImageDescriptors - to store image descriptors.
     //	svms - to store trained svms.
     //	plots - to store files for plots creating.
-	const std::string resPath("./machine_vision_data/opencv/bow");
+	const std::string resPath("./data/machine_vision/opencv/bow");
 
 	// Read or set default parameters
 	std::string vocName;

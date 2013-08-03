@@ -25,10 +25,10 @@ namespace local {
 void load_and_save_in_c()
 {
 #if defined(UNICODE) || defined(_UNICODE)
-	const std::wstring input_image_filename(L"./graphics_2d_data/devil/640-5.jpg");
+	const std::wstring input_image_filename(L"./data/graphics_2d/devil/640-5.jpg");
 	const std::wstring output_image_filename(input_image_filename + L"_c.png");
 #else
-	const std::string input_image_filename("./graphics_2d_data/devil/640-5.jpg");
+	const std::string input_image_filename("./data/graphics_2d/devil/640-5.jpg");
 	const std::string output_image_filename(input_image_filename + "_c.png");
 #endif
 
@@ -85,10 +85,10 @@ void load_and_save_in_c()
 void load_and_save_in_cpp()
 {
 #if defined(UNICODE) || defined(_UNICODE)
-	const std::wstring input_image_filename(L"./graphics_2d_data/devil/640-5.jpg");
+	const std::wstring input_image_filename(L"./data/graphics_2d/devil/640-5.jpg");
 	const std::wstring output_image_filename(input_image_filename + L"_cpp.png");
 #else
-	const std::string input_image_filename("./graphics_2d_data/devil/640-5.jpg");
+	const std::string input_image_filename("./data/graphics_2d/devil/640-5.jpg");
 	const std::string output_image_filename(input_image_filename + "_cpp.png");
 #endif
 

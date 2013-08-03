@@ -130,7 +130,7 @@ void hmm_with_gaussian_2d()
 		if (ll > bestLL)
 		{
 			std::cout << " * saving model *" << std::endl;
-			mdbn.save("./probabilistic_graphical_model_data/mocapy/hmm_with_gaussian_2d.dbn");
+			mdbn.save("./data/probabilistic_graphical_model/mocapy/hmm_with_gaussian_2d.dbn");
 			bestLL = ll;
 			it_no_improvement = 0;
 		}
@@ -147,7 +147,7 @@ void hmm_with_gaussian_2d()
 	std::cout << "DONE" << std::endl;
 
 	//---------------------------------------------------------------
-	mdbn.load("./probabilistic_graphical_model_data/mocapy/hmm_with_gaussian_2d.dbn");
+	mdbn.load("./data/probabilistic_graphical_model/mocapy/hmm_with_gaussian_2d.dbn");
 
 	std::cout << "*** TARGET ***" << std::endl;
 	std::cout << *th0 << std::endl;

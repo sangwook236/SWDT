@@ -51,9 +51,9 @@ namespace my_opencv {
 // ${OPENCV_HOME}/sample/cpp/tutorial_code/objectDetection/objectDetection2.cpp
 void face_detection()
 {
-	const std::string face_cascade_filename = "./machine_vision_data/opencv/haarcascades/haarcascade_frontalface_alt.xml";  // Haar-like feature
-	//const std::string face_cascade_filename = "./machine_vision_data/opencv/lbpcascades/lbpcascade_frontalface.xml";  // LBP feature
-	const std::string eyes_cascade_filename = "./machine_vision_data/opencv/haarcascades/haarcascade_eye_tree_eyeglasses.xml";
+	const std::string face_cascade_filename = "./data/machine_vision/opencv/haarcascades/haarcascade_frontalface_alt.xml";  // Haar-like feature
+	//const std::string face_cascade_filename = "./data/machine_vision/opencv/lbpcascades/lbpcascade_frontalface.xml";  // LBP feature
+	const std::string eyes_cascade_filename = "./data/machine_vision/opencv/haarcascades/haarcascade_eye_tree_eyeglasses.xml";
 
 	cv::RNG rng(12345);
 

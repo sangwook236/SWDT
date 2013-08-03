@@ -78,13 +78,13 @@ void hmm_with_discrete_multinomial_observations__sample_umdhmm()
 	}
 
 #if 0
-	FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_mutinomial_50.seq", "w");
+	FILE *fp = fopen("./data/probabilistic_graphical_model/t1_mutinomial_50.seq", "w");
 	const int T = 50;  // length of observation sequence, T
 #elif 0
-	FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_mutinomial_100.seq", "w");
+	FILE *fp = fopen("./data/probabilistic_graphical_model/t1_mutinomial_100.seq", "w");
 	const int T = 100;  // length of observation sequence, T
 #elif 0
-	FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_mutinomial_1500.seq", "w");
+	FILE *fp = fopen("./data/probabilistic_graphical_model/t1_mutinomial_1500.seq", "w");
 	const int T = 1500;  // length of observation sequence, T
 #else
 	FILE *fp = stdout;
@@ -190,13 +190,13 @@ void cdhmm_with_univariate_gaussian_observations__sample_umdhmm()
 #if __TEST_HMM_MODEL == 1
 
 #if 0
-	FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_50.seq", "w");
+	FILE *fp = fopen("./data/probabilistic_graphical_model/t1_uni_normal_50.seq", "w");
 	const int T = 50;  // length of observation sequence, T
 #elif 0
-	FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_100.seq", "w");
+	FILE *fp = fopen("./data/probabilistic_graphical_model/t1_uni_normal_100.seq", "w");
 	const int T = 100;  // length of observation sequence, T
 #elif 0
-	FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_1500.seq", "w");
+	FILE *fp = fopen("./data/probabilistic_graphical_model/t1_uni_normal_1500.seq", "w");
 	const int T = 1500;  // length of observation sequence, T
 #else
 	FILE *fp = stdout;
@@ -206,13 +206,13 @@ void cdhmm_with_univariate_gaussian_observations__sample_umdhmm()
 #elif __TEST_HMM_MODEL == 2
 
 #if 0
-	FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_50.seq", "w");
+	FILE *fp = fopen("./data/probabilistic_graphical_model/t2_uni_normal_50.seq", "w");
 	const int T = 50;  // length of observation sequence, T
 #elif 0
-	FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_100.seq", "w");
+	FILE *fp = fopen("./data/probabilistic_graphical_model/t2_uni_normal_100.seq", "w");
 	const int T = 100;  // length of observation sequence, T
 #elif 0
-	FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_1500.seq", "w");
+	FILE *fp = fopen("./data/probabilistic_graphical_model/t2_uni_normal_1500.seq", "w");
 	const int T = 1500;  // length of observation sequence, T
 #else
 	FILE *fp = stdout;

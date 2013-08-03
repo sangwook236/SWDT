@@ -13,7 +13,7 @@ void output_person()
 	person.set_name("Bob");
 	person.set_email("bob@example.com");
 
-	std::fstream out("./serialization_data/protobuf/person.pb", std::ios::out | std::ios::binary | std::ios::trunc);
+	std::fstream out("./data/serialization/protobuf/person.pb", std::ios::out | std::ios::binary | std::ios::trunc);
 	person.SerializeToOstream(&out);
 	out.close();
 }
@@ -21,7 +21,7 @@ void output_person()
 void input_person()
 {
 	Person person;
-	std::fstream in("./serialization_data/protobuf/person.pb", std::ios::in | std::ios::binary);
+	std::fstream in("./data/serialization/protobuf/person.pb", std::ios::in | std::ios::binary);
 	if (!person.ParseFromIstream(&in))
 	{
 		std::cerr << "failed to parse person.pb." << std::endl;

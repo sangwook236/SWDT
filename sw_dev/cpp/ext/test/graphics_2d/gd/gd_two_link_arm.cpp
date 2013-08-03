@@ -71,7 +71,7 @@ void draw_arm(const double theta1, const double theta2, const int index)
 
 	// open a file for writing. "wb" means "write binary", important under MSDOS, harmless under Unix
 	std::ostringstream sstream;
-	sstream << ".\\graphics_2d_data\\gd\\two_link_arm_" << index << ".png";
+	sstream << "./data/graphics_2d/gd/two_link_arm_" << index << ".png";
 	std::FILE *pngout = std::fopen(sstream.str().c_str(), "wb");
 	if (NULL == pngout)
 	{

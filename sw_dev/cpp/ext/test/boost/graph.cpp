@@ -505,7 +505,7 @@ void dijkstra_example()
 	std::cout << std::endl;
 
 	//
-	std::ofstream dot_file("boost_data/dijkstra-eg.dot");
+	std::ofstream dot_file("data/boost/dijkstra-eg.dot");
 	if (dot_file.is_open())
 	{
 		dot_file << "digraph D {\n"
@@ -707,7 +707,7 @@ void kruskal_minimum_spanning_tree_example()
 	}
 
 	//
-	std::ofstream fout("./boost_data/kruskal-eg.dot");
+	std::ofstream fout("./data/boost/kruskal-eg.dot");
 	fout << "graph A {\n"
 		<< " rankdir=LR\n"
 		<< " size=\"3,3\"\n"
@@ -756,7 +756,7 @@ void kruskal_minimum_spanning_tree_telephone_example()
 	{
 		// compile-time error
 
-		std::ifstream stream("./boost_data/telephone-network.dot");
+		std::ifstream stream("./data/boost/telephone-network.dot");
 		const bool status = boost::read_graphviz(stream, g_dot);
 	}
 
@@ -790,7 +790,7 @@ void kruskal_minimum_spanning_tree_telephone_example()
 	}
 
 	//
-	std::ofstream out("./boost_data/telephone-mst-kruskal.dot");
+	std::ofstream out("./data/boost/telephone-mst-kruskal.dot");
 
 	boost::graph_property<graphviz_graph_type, boost::graph_edge_attribute_t>::type &graph_edge_attr_map = boost::get_property(g_dot, graph_edge_attribute);
 	graph_edge_attr_map["color"] = "gray";
@@ -873,7 +873,7 @@ void prim_minimum_spanning_tree_telephone_example()
 	{
 		// compile-time error
 
-		std::ifstream stream("./boost_data/telephone-network.dot");
+		std::ifstream stream("./data/boost/telephone-network.dot");
 		const bool status = boost::read_graphviz(stream, g_dot);
 	}
 
@@ -910,7 +910,7 @@ void prim_minimum_spanning_tree_telephone_example()
 			edge_attr_map[boost::edge(parent[u], u, g_dot).first]["color"] = "black";
 
 	//
-	std::ofstream out("./boost_data/telephone-mst-prim.dot");
+	std::ofstream out("./data/boost/telephone-mst-prim.dot");
 	boost::graph_property<graphviz_graph_type, boost::graph_edge_attribute_t>::type &graph_edge_attr_map = boost::get_property(g_dot, boost::graph_edge_attribute);
 	graph_edge_attr_map["color"] = "gray";
 	boost::write_graphviz(out, g_dot);
@@ -1030,7 +1030,7 @@ void strong_components_algorithm()
 			//boost::ref_property_map<graph_type *, std::string> graph_attr(boost::get_property(g, boost::graph_graph_attribute));
 			dp.property("ratio", graph_attr);
 
-			std::ifstream stream("./boost_data/scc.dot");
+			std::ifstream stream("./data/boost/scc.dot");
 			const bool status = boost::read_graphviz(stream, g, dp, "shape");
 		}
 
@@ -1451,7 +1451,7 @@ void edmonds_maximum_cardinality_matching_example()
 
 void maximum_flow_and_matching()
 {
-	const std::string max_flow_dat_file("./boost_data/max_flow.dat");
+	const std::string max_flow_dat_file("./data/boost/max_flow.dat");
 #if defined(__GNUC__)
 	std::ifstream stream(max_flow_dat_file.c_str());
 #else

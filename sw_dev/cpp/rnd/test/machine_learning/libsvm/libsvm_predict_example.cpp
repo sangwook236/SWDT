@@ -173,9 +173,9 @@ void predict_example()
 {
 	const bool predict_probability = false;
 
-	const std::string test_file_name("./machine_learning_data/svm/heart_scale");
-	const std::string output_file_name("./machine_learning_data/svm/heart_scale.output");
-	const std::string model_file_name("./machine_learning_data/svm/heart_scale.model");
+	const std::string test_file_name("./data/machine_learning/svm/heart_scale");
+	const std::string output_file_name("./data/machine_learning/svm/heart_scale.output");
+	const std::string model_file_name("./data/machine_learning/svm/heart_scale.model");
 
 	FILE *input = fopen(test_file_name.c_str(), "r");
 	if(input == NULL)

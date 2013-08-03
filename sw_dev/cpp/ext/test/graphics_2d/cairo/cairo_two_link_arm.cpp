@@ -33,7 +33,7 @@ void draw_arm(const double L1, const double W1, const double L2, const double W2
 {
 	const int WIDTH = 96, HEIGHT = 128;
 
-	cairo_surface_t *surface = cairo_svg_surface_create(".\\graphics_2d_data\\cairo\\two_link_arm.svg", (double)WIDTH, (double)HEIGHT);
+	cairo_surface_t *surface = cairo_svg_surface_create("./data/graphics_2d/cairo/two_link_arm.svg", (double)WIDTH, (double)HEIGHT);
     cairo_t *cr = cairo_create(surface);
 
 	//---------------------------------------------------------------
@@ -54,7 +54,7 @@ void draw_arm(const double L1, const double W1, const double L2, const double W2
 
 	// save to a png file
 	std::ostringstream sstream;
-	sstream << ".\\graphics_2d_data\\cairo\\two_link_arm_" << std::setfill('0') << std::setw(2) << index << ".png";
+	sstream << "./data/graphics_2d/cairo/two_link_arm_" << std::setfill('0') << std::setw(2) << index << ".png";
 	cairo_surface_write_to_png(surface, sstream.str().c_str());
 
 	//

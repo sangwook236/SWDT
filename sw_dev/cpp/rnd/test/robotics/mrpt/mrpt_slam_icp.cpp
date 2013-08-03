@@ -395,10 +395,10 @@ namespace my_mrpt {
 void slam_icp()
 {
 	const bool useRawLogFile = true;
-	const std::string rawSensorFileName("robotics_data\\mrpt\\slam_icp\\dataset_edmonton.rawlog_LASER.txt");
-	const std::string rawOdometryFileName("robotics_data\\mrpt\\slam_icp\\dataset_edmonton.rawlog_ODO.txt");
+	const std::string rawSensorFileName("data/robotics/mrpt/slam_icp/dataset_edmonton.rawlog_LASER.txt");
+	const std::string rawOdometryFileName("data/robotics/mrpt/slam_icp/dataset_edmonton.rawlog_ODO.txt");
 
-	const std::string INI_FILENAME("robotics_data\\mrpt\\slam_icp\\config_slam.ini");
+	const std::string INI_FILENAME("data/robotics/mrpt/slam_icp/config_slam.ini");
 	const std::string INI_SECTION_NAME("MappingApplication");
 
 	if (!mrpt::system::fileExists(INI_FILENAME))

@@ -220,7 +220,7 @@ double run_spectral_clustering(const int clustering_method, const matrix_type &W
 void spectral_clustering_sample_1()
 {
 #if 1
-	const std::string input_filename("./machine_learning_data/clustering/data.txt");
+	const std::string input_filename("./data/machine_learning/clustering/data.txt");
 	const int num_points = 317;
 	const int dim_features = 2;
 	const int num_clusters = 3;
@@ -233,7 +233,7 @@ void spectral_clustering_sample_1()
 	// clustering_method 1 ~ 3: good when sigma = 1.0.
 	// clustering_method 4: not so good.
 #elif 0
-	const std::string input_filename("./machine_learning_data/clustering/circles.txt");
+	const std::string input_filename("./data/machine_learning/clustering/circles.txt");
 	const int num_points = 139;
 	const int dim_features = 2;
 	const int num_clusters = 3;
@@ -246,7 +246,7 @@ void spectral_clustering_sample_1()
 	// clustering_method 1 ~ 3: good when sigma = 2.0.
 	// clustering_method 4: good when sigma = 1.0.
 #elif 0
-	const std::string input_filename("./machine_learning_data/clustering/processed_input.txt");
+	const std::string input_filename("./data/machine_learning/clustering/processed_input.txt");
 	const int num_points = 78;
 	const int dim_features = 2;
 	const int num_clusters = 3;

@@ -21,10 +21,10 @@ void simple_example()
 	// Run detection on a set of files, assuming
 	// 1) file listed in "in_base_dir"/"input_file_list", one file name per line
 	// 2) output detection results to "out_base_dir" -- create this directory before running the detector
-	const std::string in_base_dir("./object_detection_data/");
-	const std::string out_base_dir("./object_detection_data/c4/");
-	const std::string input_file_list("./object_detection_data/input_file_list.txt");
-	const std::string out_filename("./object_detection_data/c4/result_HIK.txt");
+	const std::string in_base_dir("./data/object_detection/");
+	const std::string out_base_dir("./data/object_detection/c4/");
+	const std::string input_file_list("./data/object_detection/input_file_list.txt");
+	const std::string out_filename("./data/object_detection/c4/result_HIK.txt");
 
 	std::ifstream in(input_file_list.c_str());
 	std::ofstream out(out_filename.c_str());

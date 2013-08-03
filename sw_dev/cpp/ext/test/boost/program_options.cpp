@@ -93,7 +93,7 @@ bool program_options(int argc, char *argv[])
 	//---------------------------------------------------------------------------------------------
 	// from file
 
-	std::ifstream ifs("boost_data\\boost_multiple_sources.cfg");
+	std::ifstream ifs("data/boost/boost_multiple_sources.cfg");
 	if (ifs.is_open())
 	{
 		boost::program_options::store(boost::program_options::parse_config_file(ifs, config_file_options), vm);

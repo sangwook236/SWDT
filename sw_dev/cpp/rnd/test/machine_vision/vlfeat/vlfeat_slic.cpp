@@ -58,7 +58,7 @@ void slic()
 {
     // read image data
 #if 0
-	const std::string input_filename = "./machine_vision_data/vlfeat/box.pgm";
+	const std::string input_filename = "./data/machine_vision/vlfeat/box.pgm";
 	const bool verbose = true;
 
 	vl_uint8 *data = NULL;
@@ -84,8 +84,8 @@ void slic()
 		data = NULL;
 	}
 #elif 1
-	const std::string input_filename = "./machine_vision_data/vlfeat/slic_image.jpg";
-	//const std::string input_filename = "./machine_vision_data/opencv/fruits.jpg";
+	const std::string input_filename = "./data/machine_vision/vlfeat/slic_image.jpg";
+	//const std::string input_filename = "./data/machine_vision/opencv/fruits.jpg";
 
 	const cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_COLOR);
 	//const cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_GRAYSCALE);

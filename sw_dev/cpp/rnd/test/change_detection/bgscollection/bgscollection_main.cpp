@@ -12,10 +12,10 @@ namespace local {
 
 void bskde_example()
 {
-	const std::string mask_filename("./change_detection_data/mask.jpg");
+	const std::string mask_filename("./data/change_detection/mask.jpg");
 
 #if 1
-	const std::string avi_filename("./change_detection_data/video.avi");
+	const std::string avi_filename("./data/change_detection/video.avi");
 	cv::VideoCapture capture(avi_filename);
 #else
 	const int camId = -1;
@@ -82,7 +82,7 @@ void bskde_example()
 void sobs_example()
 {
 #if 0
-	const std::string avi_filename("./change_detection_data/video.avi");
+	const std::string avi_filename("./data/change_detection/video.avi");
 	cv::VideoCapture capture(avi_filename);
 #else
 	const int camId = -1;
@@ -136,9 +136,9 @@ void sobs_example()
 
 		sstrm << std::setfill('0') << std::setw(5) << fameIndex;
 
-		//filename = "./change_detection_data/input" + sstrm.str() + ".bmp";
+		//filename = "./data/change_detection/input" + sstrm.str() + ".bmp";
 		//cv::imwrite(filename, input_image);
-		//filename = "./change_detection_data/fg" + sstrm.str() + ".bmp";
+		//filename = "./data/change_detection/fg" + sstrm.str() + ".bmp";
 		//cv::imwrite(filename, fg_mask_image);
 
 		cv::imshow("bgscollection: SOBS - Input", input_image);

@@ -578,7 +578,7 @@ void image_rectification()
 	// [ref] stereo_camera_calibration() in opencv_stereo_camera_calibration.cpp
 #if 1
 	// [ref] http://blog.martinperis.com/2011/01/opencv-stereo-camera-calibration.html
-	const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib_2.xml");
+	const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib_2.xml");
 
 	const cv::Size imageSize_left(640, 480), imageSize_right(640, 480);
 	const cv::Size boardSize(9, 6);
@@ -658,8 +658,8 @@ void image_rectification()
 	// Caution: not correctly working
 
 	// Kinect IR & RGB images
-	//const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib_3.xml");
-	const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib_4.xml");
+	//const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib_3.xml");
+	const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib_4.xml");
 
 	const cv::Size imageSize_left(640, 480), imageSize_right(640, 480);
 	const cv::Size boardSize(7, 5);
@@ -679,7 +679,7 @@ void image_rectification()
 	const double matQ[] = {};  // row-major
 #else
 	// [ref] ${OPENCV_HOME}/samples/cpp/stereo_calib.xml
-	const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib.xml");
+	const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib.xml");
 
 	const cv::Size imageSize_left(640, 480), imageSize_right(640, 480);
 	const cv::Size boardSize(9, 6);
@@ -846,17 +846,17 @@ void kinect_image_rectification()
 
 		std::vector<std::string> ir_image_filenames;
 		ir_image_filenames.reserve(num_images);
-		ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130530T103805.png");
-		ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023152.png");
-		ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023346.png");
-		ir_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_depth_20130531T023359.png");
+		ir_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_depth_20130530T103805.png");
+		ir_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023152.png");
+		ir_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023346.png");
+		ir_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023359.png");
 
 		std::vector<std::string> rgb_image_filenames;
 		rgb_image_filenames.reserve(num_images);
-		rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
-		rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
-		rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
-		rgb_image_filenames.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
+		rgb_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
+		rgb_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
+		rgb_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
+		rgb_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
 
 		std::vector<cv::Mat> ir_input_images, rgb_input_images;
 		ir_input_images.reserve(num_images);
@@ -913,9 +913,9 @@ void kinect_image_rectification()
 		for (std::size_t k = 0; k < num_images; ++k)
 		{
 			std::ostringstream strm1, strm2;
-			strm1 << "./machine_vision_data/opencv/image_undistortion/rectified_image_depth_" << k << ".png";
+			strm1 << "./data/machine_vision/opencv/image_undistortion/rectified_image_depth_" << k << ".png";
 			cv::imwrite(strm1.str(), ir_output_images[k]);
-			strm2 << "./machine_vision_data/opencv/image_undistortion/rectified_image_rgb_" << k << ".png";
+			strm2 << "./data/machine_vision/opencv/image_undistortion/rectified_image_rgb_" << k << ".png";
 			cv::imwrite(strm2.str(), rgb_output_images[k]);
 		}
 #endif

@@ -44,14 +44,14 @@ void color_bilateral_filter_example()
 		return;
 	}
 #else
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/dragon.ppm");  // run-time error: bad allocation.
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/greekdome.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/housecorner.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/polin.ppm");
-	//const std::string input_filename("./signal_processing_data/fast_bilateral_filter/swamp_color.ppm");
-	const std::string input_filename("./signal_processing_data/fast_bilateral_filter/tulip.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/dragon.ppm");  // run-time error: bad allocation.
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/greekdome.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/housecorner.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/polin.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/swamp_color.ppm");
+	const std::string input_filename("./data/signal_processing/fast_bilateral_filter/tulip.ppm");
 	
-	const std::string output_filename("./signal_processing_data/fast_bilateral_filter/color_bf_output.ppm");
+	const std::string output_filename("./data/signal_processing/fast_bilateral_filter/color_bf_output.ppm");
 	
 	const double sigma_s = 16;  // space sigma.
 	const double sigma_r = 0.1;  // range sigma.

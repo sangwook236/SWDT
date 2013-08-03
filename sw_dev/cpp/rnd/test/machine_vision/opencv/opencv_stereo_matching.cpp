@@ -265,8 +265,8 @@ namespace my_opencv {
 
 void stereo_matching()
 {
-	const std::string filename1("./machine_vision_data/opencv/scene_l.bmp");
-	const std::string filename2("./machine_vision_data/opencv/scene_r.bmp");
+	const std::string filename1("./data/machine_vision/opencv/scene_l.bmp");
+	const std::string filename2("./data/machine_vision/opencv/scene_r.bmp");
 
 	const cv::Mat &left_image = cv::imread(filename1, CV_LOAD_IMAGE_GRAYSCALE);
 	const cv::Mat &right_image = cv::imread(filename2, CV_LOAD_IMAGE_GRAYSCALE);

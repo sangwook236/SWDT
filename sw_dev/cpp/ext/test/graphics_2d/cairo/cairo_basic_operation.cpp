@@ -16,11 +16,11 @@ void draw_ellipse()
 	const int width = 500, height = 500;
 
 #if defined(CAIRO_HAS_SVG_SURFACE)
-	cairo_surface_t *surface = cairo_svg_surface_create(".\\graphics_2d_data\\cairo\\basic_drawing_1.svg", (double)width, (double)height);
+	cairo_surface_t *surface = cairo_svg_surface_create("./data/graphics_2d/cairo/basic_drawing_1.svg", (double)width, (double)height);
 #elif defined(CAIRO_HAS_IMAGE_SURFACE)
 	cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
 #elif defined(CAIRO_HAS_PDF_SURFACE)
-	cairo_surface_t *surface = cairo_pdf_surface_create(".\\graphics_2d_data\\cairo\\basic_drawing_1.pdf", (double)width, (double)height);
+	cairo_surface_t *surface = cairo_pdf_surface_create("./data/graphics_2d/cairo/basic_drawing_1.pdf", (double)width, (double)height);
 #elif defined(CAIRO_HAS_WIN32_SURFACE)
 	cairo_surface_t *surface = cairo_win32_surface_create(hdc);
 	//cairo_surface_t *surface = cairo_win32_surface_create_with_dib(CAIRO_FORMAT_ARGB32, width, height);
@@ -56,7 +56,7 @@ void draw_ellipse()
 	}
 
 	// save to a png file
-	cairo_surface_write_to_png(surface, ".\\graphics_2d_data\\cairo\\basic_drawing_1_out.png");
+	cairo_surface_write_to_png(surface, "./data/graphics_2d/cairo/basic_drawing_1_out.png");
 
 	//
     cairo_destroy(cr);

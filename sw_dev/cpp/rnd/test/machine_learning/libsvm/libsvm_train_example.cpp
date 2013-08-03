@@ -220,8 +220,8 @@ void train_example()
 
 	svm_set_print_string_function(local::print_null);
 
-	const std::string input_file_name("./machine_learning_data/svm/heart_scale");
-	const std::string model_file_name("./machine_learning_data/svm/heart_scale.model");
+	const std::string input_file_name("./data/machine_learning/svm/heart_scale");
+	const std::string model_file_name("./data/machine_learning/svm/heart_scale.model");
 
 	struct svm_problem prob;
 	struct svm_node *x_space = NULL;

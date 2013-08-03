@@ -218,25 +218,25 @@ int gslic_main(int argc, char *argv[])
 		{
 			std::list<std::string> input_file_list;
 #if 0
-			input_file_list.push_back("./machine_vision_data/opencv/pic1.png");
-			input_file_list.push_back("./machine_vision_data/opencv/pic2.png");
-			input_file_list.push_back("./machine_vision_data/opencv/pic3.png");
-			input_file_list.push_back("./machine_vision_data/opencv/pic4.png");
-			input_file_list.push_back("./machine_vision_data/opencv/pic5.png");
-			input_file_list.push_back("./machine_vision_data/opencv/pic6.png");
-			input_file_list.push_back("./machine_vision_data/opencv/stuff.jpg");
-			input_file_list.push_back("./machine_vision_data/opencv/synthetic_face.png");
-			input_file_list.push_back("./machine_vision_data/opencv/puzzle.png");
-			input_file_list.push_back("./machine_vision_data/opencv/fruits.jpg");
-			input_file_list.push_back("./machine_vision_data/opencv/lena_rgb.bmp");
-			input_file_list.push_back("./machine_vision_data/opencv/hand_01.jpg");
-			input_file_list.push_back("./machine_vision_data/opencv/hand_05.jpg");
-			input_file_list.push_back("./machine_vision_data/opencv/hand_24.jpg");
+			input_file_list.push_back("./data/machine_vision/opencv/pic1.png");
+			input_file_list.push_back("./data/machine_vision/opencv/pic2.png");
+			input_file_list.push_back("./data/machine_vision/opencv/pic3.png");
+			input_file_list.push_back("./data/machine_vision/opencv/pic4.png");
+			input_file_list.push_back("./data/machine_vision/opencv/pic5.png");
+			input_file_list.push_back("./data/machine_vision/opencv/pic6.png");
+			input_file_list.push_back("./data/machine_vision/opencv/stuff.jpg");
+			input_file_list.push_back("./data/machine_vision/opencv/synthetic_face.png");
+			input_file_list.push_back("./data/machine_vision/opencv/puzzle.png");
+			input_file_list.push_back("./data/machine_vision/opencv/fruits.jpg");
+			input_file_list.push_back("./data/machine_vision/opencv/lena_rgb.bmp");
+			input_file_list.push_back("./data/machine_vision/opencv/hand_01.jpg");
+			input_file_list.push_back("./data/machine_vision/opencv/hand_05.jpg");
+			input_file_list.push_back("./data/machine_vision/opencv/hand_24.jpg");
 #elif 0
-			input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
-			input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
-			input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
-			input_file_list.push_back("./machine_vision_data/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
+			input_file_list.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
+			input_file_list.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
+			input_file_list.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
+			input_file_list.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
 #elif 1
 			input_file_list.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211659.png");
 			input_file_list.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211705.png");

@@ -21,7 +21,7 @@ void greedy_projection()
 {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>());
 	sensor_msgs::PointCloud2 cloud_blob;
-	pcl::io::loadPCDFile("./pcl_data/bun0.pcd", cloud_blob);
+	pcl::io::loadPCDFile("./data/pcl/bun0.pcd", cloud_blob);
 	pcl::fromROSMsg(cloud_blob, *cloud);
 	// the data should be available in cloud
 
@@ -70,7 +70,7 @@ void greedy_projection()
 	std::vector<int> states = gp3.getPointStates();
 
 	// save output
-	pcl::io::saveVTKFile("./pcl_data/bun0_mesh.vtk", triangles);
+	pcl::io::saveVTKFile("./data/pcl/bun0_mesh.vtk", triangles);
 
 	//
 	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));

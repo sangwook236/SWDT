@@ -157,9 +157,9 @@ namespace my_opencv {
 void structure_tensor()
 {
 #if 1
-	const std::string input_filename("./machine_vision_data/opencv/synthesized_training_image1.bmp");
-	//const std::string input_filename("./machine_vision_data/opencv/thinning_img_1.png");
-	//const std::string input_filename("./machine_vision_data/opencv/thinning_img_2.jpg");
+	const std::string input_filename("./data/machine_vision/opencv/synthesized_training_image1.bmp");
+	//const std::string input_filename("./data/machine_vision/opencv/thinning_img_1.png");
+	//const std::string input_filename("./data/machine_vision/opencv/thinning_img_2.jpg");
 	const cv::Mat &src = cv::imread(input_filename);
 
 	const bool useGray = true;
@@ -234,7 +234,7 @@ void structure_tensor()
 			}
 
 			cv::imshow("structure tensor - coherence", valid_region);
-			//cv::imwrite("./machine_vision_data/opencv/structure_tensor_coherence.png", valid_region);
+			//cv::imwrite("./data/machine_vision/opencv/structure_tensor_coherence.png", valid_region);
 		}
 
 		// METHOD #2: using the ratio of eigenvales.
@@ -246,7 +246,7 @@ void structure_tensor()
 			}
 
 			cv::imshow("structure tensor - ratio of eigenvalues", valid_region);
-			//cv::imwrite("./machine_vision_data/opencv/structure_tensor_ev_ratio.png", valid_region);
+			//cv::imwrite("./data/machine_vision/opencv/structure_tensor_ev_ratio.png", valid_region);
 		}
 	}
 

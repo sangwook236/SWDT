@@ -19,7 +19,7 @@ void simple_pattern_recognition_example()
 
 	// Data set object
 	OpenNN::DataSet data_set;
-	data_set.load_data("./neural_network_data/opennn/simple_pattern_recognition.dat");
+	data_set.load_data("./data/neural_network/opennn/simple_pattern_recognition.dat");
 
 	OpenNN::VariablesInformation *variables_information_pointer = data_set.get_variables_information_pointer();
 
@@ -59,24 +59,24 @@ void simple_pattern_recognition_example()
 	OpenNN::PatternRecognitionTesting *pattern_recognition_testing_pointer = testing_analysis.get_pattern_recognition_testing_pointer();
 
 	// Save results
-	data_set.save("./neural_network_data/opennn/simple_pattern_recognition/data_set.xml");
-	data_set.load("./neural_network_data/opennn/simple_pattern_recognition/data_set.xml");
+	data_set.save("./data/neural_network/opennn/simple_pattern_recognition/data_set.xml");
+	data_set.load("./data/neural_network/opennn/simple_pattern_recognition/data_set.xml");
 
-	neural_network.save("./neural_network_data/opennn/simple_pattern_recognition/neural_network.xml");
-	neural_network.load("./neural_network_data/opennn/simple_pattern_recognition/neural_network.xml");
+	neural_network.save("./data/neural_network/opennn/simple_pattern_recognition/neural_network.xml");
+	neural_network.load("./data/neural_network/opennn/simple_pattern_recognition/neural_network.xml");
 
-	neural_network.save_expression("./neural_network_data/opennn/simple_pattern_recognition/expression.txt");
+	neural_network.save_expression("./data/neural_network/opennn/simple_pattern_recognition/expression.txt");
 
-	performance_functional.save("./neural_network_data/opennn/simple_pattern_recognition/performance_functional.xml");
-	performance_functional.load("./neural_network_data/opennn/simple_pattern_recognition/performance_functional.xml");
+	performance_functional.save("./data/neural_network/opennn/simple_pattern_recognition/performance_functional.xml");
+	performance_functional.load("./data/neural_network/opennn/simple_pattern_recognition/performance_functional.xml");
 
-	training_strategy.save("./neural_network_data/opennn/simple_pattern_recognition/training_strategy.xml");
-	training_strategy.load("./neural_network_data/opennn/simple_pattern_recognition/training_strategy.xml");
+	training_strategy.save("./data/neural_network/opennn/simple_pattern_recognition/training_strategy.xml");
+	training_strategy.load("./data/neural_network/opennn/simple_pattern_recognition/training_strategy.xml");
 
-	training_stategy_results.save("./neural_network_data/opennn/simple_pattern_recognition/training_strategy_results.dat");
+	training_stategy_results.save("./data/neural_network/opennn/simple_pattern_recognition/training_strategy_results.dat");
 
-	pattern_recognition_testing_pointer->save_binary_classification_test("./neural_network_data/opennn/simple_pattern_recognition/binary_classification_test.dat");
-	pattern_recognition_testing_pointer->save_confusion("./neural_network_data/opennn/simple_pattern_recognition/confusion.dat");
+	pattern_recognition_testing_pointer->save_binary_classification_test("./data/neural_network/opennn/simple_pattern_recognition/binary_classification_test.dat");
+	pattern_recognition_testing_pointer->save_confusion("./data/neural_network/opennn/simple_pattern_recognition/confusion.dat");
 }
 
 }  // namespace my_opennn

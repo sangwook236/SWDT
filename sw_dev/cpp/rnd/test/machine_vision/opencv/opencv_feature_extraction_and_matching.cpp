@@ -105,10 +105,10 @@ void feature_extraction_and_matching()
 	}
 
 	//
-	const std::string filename1("./machine_vision_data/opencv/melon_target.png");
-	const std::string filename2("./machine_vision_data/opencv/melon_1.png");
-	//const std::string filename2("./machine_vision_data/opencv/melon_2.png");
-	//const std::string filename2("./machine_vision_data/opencv/melon_3.png");
+	const std::string filename1("./data/machine_vision/opencv/melon_target.png");
+	const std::string filename2("./data/machine_vision/opencv/melon_1.png");
+	//const std::string filename2("./data/machine_vision/opencv/melon_2.png");
+	//const std::string filename2("./data/machine_vision/opencv/melon_3.png");
 
 	const std::string windowName("feature extraction 2");
 	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);

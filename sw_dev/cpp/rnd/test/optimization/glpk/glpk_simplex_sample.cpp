@@ -67,7 +67,7 @@ void simplex_sample_1()
 {
 	glp_prob *P = glp_create_prob();
 
-	glp_read_mps(P, GLP_MPS_DECK, NULL, "./optimization_data/glpk/25fv47.mps");
+	glp_read_mps(P, GLP_MPS_DECK, NULL, "./data/optimization/glpk/25fv47.mps");
 	glp_adv_basis(P, 0);
 
 	{
@@ -75,7 +75,7 @@ void simplex_sample_1()
 		const int retval = glp_simplex(P, NULL);
 	}
 
-	glp_print_sol(P, "./optimization_data/glpk/25fv47_simplex_1.txt");
+	glp_print_sol(P, "./data/optimization/glpk/25fv47_simplex_1.txt");
 
 	glp_delete_prob(P);
 	P = NULL;
@@ -86,7 +86,7 @@ void simplex_sample_2()
 {
 	glp_prob *P = glp_create_prob();
 
-	glp_read_mps(P, GLP_MPS_DECK, NULL, "./optimization_data/glpk/25fv47.mps");
+	glp_read_mps(P, GLP_MPS_DECK, NULL, "./data/optimization/glpk/25fv47.mps");
 	glp_smcp parm;
 	glp_init_smcp(&parm);
 	parm.meth = GLP_DUAL;
@@ -96,7 +96,7 @@ void simplex_sample_2()
 		const int retval = glp_simplex(P, &parm);
 	}
 
-	glp_print_sol(P, "./optimization_data/glpk/25fv47_simplex_2.txt");
+	glp_print_sol(P, "./data/optimization/glpk/25fv47_simplex_2.txt");
 
 	glp_delete_prob(P);
 	P = NULL;

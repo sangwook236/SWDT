@@ -14,7 +14,7 @@ void create_example_ini_file(void)
 {
 	FILE	*	ini ;
 
-	ini = fopen("application_configuration_data\\iniparser\\example.ini", "w");
+	ini = fopen("data/application_configuration/iniparser/example.ini", "w");
 	fprintf(ini, "\n\
 #\n\
 # This is an example of ini file\n\
@@ -100,7 +100,7 @@ int parse_ini_file(char * ini_name)
 
 	//
 	{
-		FILE *fp = fopen("application_configuration_data\\iniparser\\result1.ini", "w");
+		FILE *fp = fopen("data/application_configuration/iniparser/result1.ini", "w");
 		iniparser_dump(ini, fp);
 		fclose(fp);
 	}
@@ -131,14 +131,14 @@ int parse_ini_file(char * ini_name)
 
 	//
 	{
-		FILE *fp = fopen("application_configuration_data\\iniparser\\result2.ini", "w");
+		FILE *fp = fopen("data/application_configuration/iniparser/result2.ini", "w");
 		iniparser_dump(ini, fp);
 		fclose(fp);
 	}
 
 	//
 	{
-		FILE *fp = fopen("application_configuration_data\\iniparser\\result3.ini", "w");
+		FILE *fp = fopen("data/application_configuration/iniparser/result3.ini", "w");
 		iniparser_dump_ini(ini, fp);
 		fclose(fp);
 	}
@@ -163,7 +163,7 @@ int iniparser_main(int argc, char *argv[])
 	if (argc < 2)
 	{
 		local::create_example_ini_file();
-		status = local::parse_ini_file("application_configuration_data\\iniparser\\example.ini");
+		status = local::parse_ini_file("data/application_configuration/iniparser/example.ini");
 	}
 	else
 	{

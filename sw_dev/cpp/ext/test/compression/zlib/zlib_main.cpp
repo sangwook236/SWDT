@@ -26,9 +26,9 @@ namespace {
 namespace local {
 
 #if defined(VMS) || defined(RISCOS)
-#  define TESTFILE "compression_data\\zlib\\foo-gz"
+#  define TESTFILE "data/compression/zlib/foo-gz"
 #else
-#  define TESTFILE "compression_data\\zlib\\foo.gz"
+#  define TESTFILE "data/compression/zlib/foo.gz"
 #endif
 
 #define CHECK_ERR(err, msg) { \
@@ -537,7 +537,7 @@ void zlib_example(int argc, char *argv[])
 void my_test()
 {
 	//
-	std::ifstream stream("compression_data\\zlib\\healthcare_questionnaire.xml", std::ios::in);
+	std::ifstream stream("data/compression/zlib/healthcare_questionnaire.xml", std::ios::in);
 	if (!stream.is_open())
 	{
 		std::wcout << L"file not opened !!!" << std::endl;
@@ -560,7 +560,7 @@ void my_test()
 
 	// compression
 	{
-		const std::string fname("compression_data\\zlib\\healthcare_questionnaire.format");
+		const std::string fname("data/compression/zlib/healthcare_questionnaire.format");
 
 		gzFile file = gzopen(fname.c_str(), "wb");
 		if (file == NULL)
@@ -579,7 +579,7 @@ void my_test()
 
 	// uncompression
 	{
-		const std::string fname("compression_data\\zlib\\healthcare_questionnaire.format");
+		const std::string fname("data/compression/zlib/healthcare_questionnaire.format");
 		const uLong uncomprLen = 1024;;
 		Byte uncompr[uncomprLen];
 

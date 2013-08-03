@@ -80,7 +80,7 @@ void netgen_sample()
 		const int retval1 = glp_netgen(G, offsetof(local::v_data, rhs), offsetof(local::a_data, cap), offsetof(local::a_data, cost), &local::parm[k-1][-1]);
 
 		std::ostringstream stream;
-		stream << "./optimization_data/glpk/netgen" << std::setfill('0') << std::setw(3) << local::parm[k-1][1] << ".min";
+		stream << "./data/optimization/glpk/netgen" << std::setfill('0') << std::setw(3) << local::parm[k-1][1] << ".min";
 		const int retval2 = glp_write_mincost(G, offsetof(local::v_data, rhs), -1, offsetof(local::a_data, cap), offsetof(local::a_data, cost), stream.str().c_str());
 	}
 

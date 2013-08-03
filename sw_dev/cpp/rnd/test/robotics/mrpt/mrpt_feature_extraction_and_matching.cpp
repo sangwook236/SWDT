@@ -29,7 +29,7 @@ void extract_features(const mrpt::utils::CMRPTImage &img, const unsigned int mod
 		const double elapsedTime = tictac.Tac() * 1000;
 		std::cout << "detected " << features.size() << " features in " << elapsedTime << std::endl;
 
-		features.saveToTextFile(".\\robotics_data\\mrpt\\feature\\feature_harris.txt");
+		features.saveToTextFile("./data/robotics/mrpt/feature/feature_harris.txt");
 	}
 
 	if ((0x02 & mode) == 0x02)
@@ -48,7 +48,7 @@ void extract_features(const mrpt::utils::CMRPTImage &img, const unsigned int mod
 		const double elapsedTime = tictac.Tac() * 1000;
 		std::cout << "detected " << features.size() << " features in " << elapsedTime << std::endl;
 
-		features.saveToTextFile(".\\robotics_data\\mrpt\\feature\\feature_harris+sift.txt");
+		features.saveToTextFile("./data/robotics/mrpt/feature/feature_harris+sift.txt");
 	}
 
 	if ((0x04 & mode) == 0x04)
@@ -68,7 +68,7 @@ void extract_features(const mrpt::utils::CMRPTImage &img, const unsigned int mod
 		const double elapsedTime = tictac.Tac() * 1000;
 		std::cout << "detected " << features.size() << " features in " << elapsedTime << std::endl;
 
-		features.saveToTextFile(".\\robotics_data\\mrpt\\feature\\feature_klt.txt");
+		features.saveToTextFile("./data/robotics/mrpt/feature/feature_klt.txt");
 	}
 
 	if ((0x08 & mode) == 0x08)
@@ -86,7 +86,7 @@ void extract_features(const mrpt::utils::CMRPTImage &img, const unsigned int mod
 		const double elapsedTime = tictac.Tac() * 1000;
 		std::cout << "detected " << features.size() << " features in " << elapsedTime << std::endl;
 
-		features.saveToTextFile(".\\robotics_data\\mrpt\\feature\\feature_sift_hess.txt");
+		features.saveToTextFile("./data/robotics/mrpt/feature/feature_sift_hess.txt");
 	}
 
 	if ((0x10 & mode) == 0x10)
@@ -104,7 +104,7 @@ void extract_features(const mrpt::utils::CMRPTImage &img, const unsigned int mod
 		const double elapsedTime = tictac.Tac() * 1000;
 		std::cout << "detected " << features.size() << " features in " << elapsedTime << std::endl;
 
-		features.saveToTextFile(".\\robotics_data\\mrpt\\feature\\feature_surf.txt");
+		features.saveToTextFile("./data/robotics/mrpt/feature/feature_surf.txt");
 	}
 
 	if ((0x20 & mode) == 0x20)
@@ -124,7 +124,7 @@ void extract_features(const mrpt::utils::CMRPTImage &img, const unsigned int mod
 
 		std::cout << mrpt::format("  %.03fms", tictac.Tac() * 1000) << std::endl;
 
-		features.saveToTextFile(".\\robotics_data\\mrpt\\feature\\feature_harris+spinimgs.txt");
+		features.saveToTextFile("./data/robotics/mrpt/feature/feature_harris+spinimgs.txt");
 	}
 
 	if ((0x40 & mode) == 0x40)
@@ -145,7 +145,7 @@ void extract_features(const mrpt::utils::CMRPTImage &img, const unsigned int mod
 
 		std::cout << mrpt::format("  %.03fms", tictac.Tac() * 1000) << std::endl;
 
-		features.saveToTextFile(".\\robotics_data\\mrpt\\feature\\feature_harris+sift+spinimgs.txt");
+		features.saveToTextFile("./data/robotics/mrpt/feature/feature_harris+sift+spinimgs.txt");
 	}
 }
 
@@ -311,9 +311,9 @@ void feature_extraction_and_matching()
 	// extract features
 	if (false)
 	{
-		//const std::string imageFileName(".\\robotics_data\\mrpt\\feature\\test_image.jpg");
-		const std::string imageFileName(".\\robotics_data\\mrpt\\feature\\feature_matching_test_1.jpg");
-		//const std::string imageFileName(".\\robotics_data\\mrpt\\feature\\feature_matching_test_2.jpg");
+		//const std::string imageFileName("./data/robotics/mrpt/feature/test_image.jpg");
+		const std::string imageFileName("./data/robotics/mrpt/feature/feature_matching_test_1.jpg");
+		//const std::string imageFileName("./data/robotics/mrpt/feature/feature_matching_test_2.jpg");
 
 		mrpt::utils::CMRPTImage img;
 		if (!img.loadFromFile(imageFileName))
@@ -340,8 +340,8 @@ void feature_extraction_and_matching()
 	// match features
 	if (true)
 	{
-		const std::string imageFileName1(".\\robotics_data\\mrpt\\feature\\feature_matching_test_1.jpg");
-		const std::string imageFileName2(".\\robotics_data\\mrpt\\feature\\feature_matching_test_2.jpg");
+		const std::string imageFileName1("./data/robotics/mrpt/feature/feature_matching_test_1.jpg");
+		const std::string imageFileName2("./data/robotics/mrpt/feature/feature_matching_test_2.jpg");
 /*
 		{
 			mrpt::utils::CMRPTImage img1, img2;

@@ -28,23 +28,23 @@ namespace local {
 // [ref] ${PartsBasedDetector_HOME}/src/demo.cpp
 void demo()
 {
-	//const std::string model_filename("./pose_estimation_data/PartsBasedDetector/model/Bird_9parts.xml");
-	//const std::string model_filename("./pose_estimation_data/PartsBasedDetector/model/Car_9parts.xml");
-	//const std::string model_filename("./pose_estimation_data/PartsBasedDetector/model/Dog_9parts.xml");
-	//const std::string model_filename("./pose_estimation_data/PartsBasedDetector/model/Face_1050filters.xml");
-	//const std::string model_filename("./pose_estimation_data/PartsBasedDetector/model/Face_frontal_sparse.xml");
-	//const std::string model_filename("./pose_estimation_data/PartsBasedDetector/model/Face_small_146filters.xml");
-	//const std::string model_filename("./pose_estimation_data/PartsBasedDetector/model/Motorbike_9parts.xml");
-	const std::string model_filename("./pose_estimation_data/PartsBasedDetector/model/Person_8parts.xml");
-	//const std::string model_filename("./pose_estimation_data/PartsBasedDetector/model/Person_26parts.xml");
-	//const std::string model_filename("./pose_estimation_data/PartsBasedDetector/model/PersonINRIA_9parts.xml");
-	//const std::string model_filename("./pose_estimation_data/PartsBasedDetector/model/Willowcoffee_5parts.xml");
+	//const std::string model_filename("./data/pose_estimation/PartsBasedDetector/model/Bird_9parts.xml");
+	//const std::string model_filename("./data/pose_estimation/PartsBasedDetector/model/Car_9parts.xml");
+	//const std::string model_filename("./data/pose_estimation/PartsBasedDetector/model/Dog_9parts.xml");
+	//const std::string model_filename("./data/pose_estimation/PartsBasedDetector/model/Face_1050filters.xml");
+	//const std::string model_filename("./data/pose_estimation/PartsBasedDetector/model/Face_frontal_sparse.xml");
+	//const std::string model_filename("./data/pose_estimation/PartsBasedDetector/model/Face_small_146filters.xml");
+	//const std::string model_filename("./data/pose_estimation/PartsBasedDetector/model/Motorbike_9parts.xml");
+	const std::string model_filename("./data/pose_estimation/PartsBasedDetector/model/Person_8parts.xml");
+	//const std::string model_filename("./data/pose_estimation/PartsBasedDetector/model/Person_26parts.xml");
+	//const std::string model_filename("./data/pose_estimation/PartsBasedDetector/model/PersonINRIA_9parts.xml");
+	//const std::string model_filename("./data/pose_estimation/PartsBasedDetector/model/Willowcoffee_5parts.xml");
 
-	//const std::string input_filename("./pose_estimation_data/PartsBasedDetector/2007_000027.jpg");  // person(8)
-	//const std::string input_filename("./pose_estimation_data/PartsBasedDetector/2007_000531.jpg");  // frontal face
-	const std::string input_filename("./pose_estimation_data/PartsBasedDetector/2007_000847.jpg");  // small face, person(8)
-	//const std::string input_filename("./pose_estimation_data/PartsBasedDetector/2007_003996.jpg");  // frontal face
-	//const std::string input_filename("./pose_estimation_data/PartsBasedDetector/2007_004830.jpg");  // car
+	//const std::string input_filename("./data/pose_estimation/PartsBasedDetector/2007_000027.jpg");  // person(8)
+	//const std::string input_filename("./data/pose_estimation/PartsBasedDetector/2007_000531.jpg");  // frontal face
+	const std::string input_filename("./data/pose_estimation/PartsBasedDetector/2007_000847.jpg");  // small face, person(8)
+	//const std::string input_filename("./data/pose_estimation/PartsBasedDetector/2007_003996.jpg");  // frontal face
+	//const std::string input_filename("./data/pose_estimation/PartsBasedDetector/2007_004830.jpg");  // car
 
 	const bool has_depth_file = false;
 	const std::string depth_filename(".");

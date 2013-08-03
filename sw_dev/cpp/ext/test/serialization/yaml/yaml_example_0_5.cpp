@@ -141,7 +141,7 @@ void example_2()
 #endif
 
         //
-        std::ofstream stream("serialization_data/yaml/test.yaml");
+        std::ofstream stream("data/serialization/yaml/test.yaml");
         stream << node;
     }
 }

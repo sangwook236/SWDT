@@ -114,12 +114,12 @@ namespace my_opencv {
 
 void feature_matching()
 {
-	//const std::string targetImageFileName("./machine_vision_data/opencv/beaver_target.png");
-	//const std::string inputImageFileName("./machine_vision_data/opencv/beaver_input.png");
- 	const std::string targetImageFileName("./machine_vision_data/opencv/melon_target.png");
-	const std::string inputImageFileName("./machine_vision_data/opencv/melon_1.png");
-	//const std::string inputImageFileName("./machine_vision_data/opencv/melon_2.png");
-	//const std::string inputImageFileName("./machine_vision_data/opencv/melon_3.png");
+	//const std::string targetImageFileName("./data/machine_vision/opencv/beaver_target.png");
+	//const std::string inputImageFileName("./data/machine_vision/opencv/beaver_input.png");
+ 	const std::string targetImageFileName("./data/machine_vision/opencv/melon_target.png");
+	const std::string inputImageFileName("./data/machine_vision/opencv/melon_1.png");
+	//const std::string inputImageFileName("./data/machine_vision/opencv/melon_2.png");
+	//const std::string inputImageFileName("./data/machine_vision/opencv/melon_3.png");
 
 	const char *targetWindowName = "feature matching: target image";
 	const char *inputWindowName = "feature matching: input image";

@@ -52,10 +52,10 @@ void ex7(int argc, char *argv[])
 	params.set(gaNnGenerations, 200);  // number of generations
 	params.set(gaNscoreFrequency, 20);  // how often to record scores
 	params.set(gaNflushFrequency, 50);  // how often to flush scores to file
-	params.set(gaNscoreFilename, "optimization_data/galib/bog7.dat");
+	params.set(gaNscoreFilename, "data/optimization/galib/bog7.dat");
 	params.parse(argc, argv, gaFalse);
 
-	char datafile[128] = "optimization_data/galib/smiley.txt";
+	char datafile[128] = "data/optimization/galib/smiley.txt";
 	char parmfile[128] = "";
 	int i, j;
 

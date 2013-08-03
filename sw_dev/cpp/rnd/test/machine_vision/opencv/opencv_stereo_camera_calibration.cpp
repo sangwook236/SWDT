@@ -169,7 +169,7 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 	std::cout << "average reprojection err = " <<  (err / npoints) << std::endl;
 
 	// save intrinsic parameters
-	cv::FileStorage fs("./machine_vision_data/opencv/camera_calibration/stereo_calib_intrinsics.yml", CV_STORAGE_WRITE);
+	cv::FileStorage fs("./data/machine_vision/opencv/camera_calibration/stereo_calib_intrinsics.yml", CV_STORAGE_WRITE);
 	if (fs.isOpened())
 	{
 		fs << "M1" << cameraMatrix[0] << "D1" << distCoeffs[0] << "M2" << cameraMatrix[1] << "D2" << distCoeffs[1];
@@ -188,7 +188,7 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 		cv::CALIB_ZERO_DISPARITY, 1, imageSize, &validRoi[0], &validRoi[1]
 	);
 
-	fs.open("./machine_vision_data/opencv/camera_calibration/stereo_calib_extrinsics.yml", CV_STORAGE_WRITE);
+	fs.open("./data/machine_vision/opencv/camera_calibration/stereo_calib_extrinsics.yml", CV_STORAGE_WRITE);
 	if (fs.isOpened())
 	{
 		fs << "R" << R << "T" << T << "R1" << R1 << "R2" << R2 << "P1" << P1 << "P2" << P2 << "Q" << Q;
@@ -349,7 +349,7 @@ void stereo_camera_calibration()
 
 	if (imagelistfn == "")
 	{
-		imagelistfn = "./machine_vision_data/opencv/camera_calibration/stereo_calib.xml";
+		imagelistfn = "./data/machine_vision/opencv/camera_calibration/stereo_calib.xml";
 		boardSize = cv::Size(9, 6);
 	}
 	else if (boardSize.width <= 0 || boardSize.height <= 0)
@@ -359,20 +359,20 @@ void stereo_camera_calibration()
 	}
 #elif 0
 	// [ref] http://blog.martinperis.com/2011/01/opencv-stereo-camera-calibration.html
-	const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib_2.xml");
+	const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib_2.xml");
 
 	const cv::Size boardSize(9, 6);
 	const float squareSize = 2.5f;  // Set this to your actual square size, [cm]
 #elif 0
 	// Kinect IR & RGB images
-	//const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib_3.xml");
-	const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib_4.xml");
+	//const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib_3.xml");
+	const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib_4.xml");
 
 	const cv::Size boardSize(7, 5);
 	const float squareSize = 100.0f;  // Set this to your actual square size, [mm]
 #else
 	// [ref] ${OPENCV_HOME}/samples/cpp/stereo_calib.xml
-	const std::string imagelistfn("./machine_vision_data/opencv/camera_calibration/stereo_calib.xml");
+	const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib.xml");
 
 	const cv::Size boardSize(9, 6);
 	const float squareSize = 1.f;  // Set this to your actual square size, [cm]

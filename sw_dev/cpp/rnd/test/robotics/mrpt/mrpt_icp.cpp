@@ -102,15 +102,15 @@ void icp()
 	//std::cout << "covariance of estimation (MATLAB format): " << std::endl << gPdf.cov.inMatlabFormat()  << std::endl;
 
 	std::cout << "-> saving reference map as scan1.txt" << std::endl;
-	m1.save2D_to_text_file("robotics_data\\mrpt\\scan1.txt");
+	m1.save2D_to_text_file("data/robotics/mrpt/scan1.txt");
 
 	std::cout << "-> saving map to align as scan2.txt" << std::endl;
-	m2.save2D_to_text_file("robotics_data\\mrpt\\scan2.txt");
+	m2.save2D_to_text_file("data/robotics/mrpt/scan2.txt");
 
 	std::cout << "-> saving transformed map to align as scan2_trans.txt" << std::endl;
 	mrpt::slam::CSimplePointsMap m2_trans = m2;
 	m2_trans.changeCoordinatesReference(gPdf.mean);
-	m2_trans.save2D_to_text_file("robotics_data\\mrpt\\scan2_trans.txt");
+	m2_trans.save2D_to_text_file("data/robotics/mrpt/scan2_trans.txt");
 
 	std::cout << "-> saving MATLAB script for drawing 2D ellipsoid as view_ellip.m" << std::endl;
 	mrpt::math::CMatrixFloat COV22 =  mrpt::math::CMatrixFloat(mrpt::math::CMatrixDouble(gPdf.cov));
@@ -118,7 +118,7 @@ void icp()
 	mrpt::math::CVectorFloat MEAN2D(2);
 	MEAN2D[0] = gPdf.mean.x();
 	MEAN2D[1] = gPdf.mean.y();
-	std::ofstream f("robotics_data\\mrpt\\view_ellip.m");
+	std::ofstream f("data/robotics/mrpt/view_ellip.m");
 	f << mrpt::math::MATLAB_plotCovariance2D(COV22, MEAN2D, 3.0f);
 
 #if MRPT_HAS_WXWIDGETS

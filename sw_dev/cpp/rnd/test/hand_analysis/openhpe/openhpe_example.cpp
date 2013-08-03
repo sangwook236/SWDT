@@ -358,7 +358,7 @@ void initialize_hand_data(DATA_FOR_TNC &d, const cv::Mat &mymask)
 {
 /*
 	{
-		cv::FileStorage fs("./hand_analysis_data/fist_handpoints.yaml", cv::FileStorage::READ);
+		cv::FileStorage fs("./data/hand_analysis/fist_handpoints.yaml", cv::FileStorage::READ);
 		cv::Mat hand_points;
 		cv::Scalar hand_points_midp;
 		fs["points"] >> hand_points;
@@ -534,14 +534,14 @@ void example()
 	local::showstate(local::d, 0);
 	//	return 1;
 
-	cv::VideoCapture capture("./hand_analysis_data/output.avi");
+	cv::VideoCapture capture("./data/hand_analysis/output.avi");
 	if (capture.isOpened() == false)
 	{
 		std::cout << "a vision sensor not found" << std::endl;
 		return;
 	}
 
-	local::writer.open("./hand_analysis_data/estimator.avi", CV_FOURCC('x', 'v', 'i', 'd'), 15.0, cv::Size(640, 480));
+	local::writer.open("./data/hand_analysis/estimator.avi", CV_FOURCC('x', 'v', 'i', 'd'), 15.0, cv::Size(640, 480));
 
 	cv::Mat img;
 

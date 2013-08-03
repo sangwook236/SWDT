@@ -255,7 +255,7 @@ namespace my_sqlite {
 void encryption_decryption()
 {
 	// open database
-	//const std::string databaseName = "database_data\\sqlite\\test.db";  // file db
+	//const std::string databaseName = "data/database/sqlite/test.db";  // file db
 	const std::string databaseName = ":memory:";  // memory db
 
 	sqlite3 *db = NULL;

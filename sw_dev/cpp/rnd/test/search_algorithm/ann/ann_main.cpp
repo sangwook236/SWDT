@@ -83,10 +83,10 @@ void printPt(std::ostream &out, ANNpoint p)			// print point
 	out << ")" << std::endl;
 }
 
-const std::string data1_file = ".\\search_algorithm_data\\ann\\test1-data.pts";
-const std::string query1_file = ".\\search_algorithm_data\\ann\\test1-query.pts";
-const std::string data2_file = ".\\search_algorithm_data\\ann\\test2-data.pts";
-const std::string query2_file = ".\\search_algorithm_data\\ann\\test2-query.pts";
+const std::string data1_file = "./data/search_algorithm/ann/test1-data.pts";
+const std::string query1_file = "./data/search_algorithm/ann/test1-query.pts";
+const std::string data2_file = "./data/search_algorithm/ann/test2-data.pts";
+const std::string query2_file = "./data/search_algorithm/ann/test2-query.pts";
 
 std::ifstream dataStream;				// data file stream
 std::ifstream queryStream;				// query file stream

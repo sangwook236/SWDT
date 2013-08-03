@@ -81,7 +81,7 @@ inline std::size_t getVariableIndex(const std::size_t Nx, const std::size_t x, c
 // [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
 bool createGraphicalModelForPottsModel(GraphicalModelForPottsModel &gm)
 {
-	const std::string img_filename("./probabilistic_graphical_model_data/teddy-imL.png");
+	const std::string img_filename("./data/probabilistic_graphical_model/teddy-imL.png");
 
 	const cv::Mat &img = cv::imread(img_filename, CV_LOAD_IMAGE_GRAYSCALE);
 	if (img.empty())
@@ -175,9 +175,9 @@ typedef opengm::GraphicalModel<double, opengm::Adder, ExplicitFunction, Space> G
 // [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
 bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 {
-	const std::string imgL_filename("./probabilistic_graphical_model_data/tsukuba-imL.png");
-	const std::string imgR_filename("./probabilistic_graphical_model_data/tsukuba-imR.png");
-	const std::string imgT_filename("./probabilistic_graphical_model_data/tsukuba-truedispLR.png");
+	const std::string imgL_filename("./data/probabilistic_graphical_model/tsukuba-imL.png");
+	const std::string imgR_filename("./data/probabilistic_graphical_model/tsukuba-imR.png");
+	const std::string imgT_filename("./data/probabilistic_graphical_model/tsukuba-truedispLR.png");
 
 	const cv::Mat &imgL = cv::imread(imgL_filename, CV_LOAD_IMAGE_GRAYSCALE);
 	const cv::Mat &imgR = cv::imread(imgR_filename, CV_LOAD_IMAGE_GRAYSCALE);
@@ -317,8 +317,8 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 // [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
 bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &gm)
 {
-	const std::string img_filename("./probabilistic_graphical_model_data/penguin-input.png");
-	const std::string imgT_filename("./probabilistic_graphical_model_data/penguin-mask.png");
+	const std::string img_filename("./data/probabilistic_graphical_model/penguin-input.png");
+	const std::string imgT_filename("./data/probabilistic_graphical_model/penguin-mask.png");
 
 	const cv::Mat &img = cv::imread(img_filename, CV_LOAD_IMAGE_GRAYSCALE);
 	//const cv::Mat &imgT = cv::imread(imgT_filename, CV_LOAD_IMAGE_GRAYSCALE);
@@ -594,9 +594,9 @@ typedef opengm::GraphicalModel<double, opengm::Adder, FunctionTypelistForImageRe
 // [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
 bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 {
-	const std::string imgL_filename("./probabilistic_graphical_model_data/tsukuba-imL.png");
-	const std::string imgR_filename("./probabilistic_graphical_model_data/tsukuba-imR.png");
-	const std::string imgT_filename("./probabilistic_graphical_model_data/tsukuba-truedispLR.png");
+	const std::string imgL_filename("./data/probabilistic_graphical_model/tsukuba-imL.png");
+	const std::string imgR_filename("./data/probabilistic_graphical_model/tsukuba-imR.png");
+	const std::string imgT_filename("./data/probabilistic_graphical_model/tsukuba-truedispLR.png");
 
 	cv::Mat &imgL = cv::imread(imgL_filename, CV_LOAD_IMAGE_GRAYSCALE);
 	cv::Mat &imgR = cv::imread(imgR_filename, CV_LOAD_IMAGE_GRAYSCALE);
@@ -709,8 +709,8 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 // [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
 bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &gm)
 {
-	const std::string img_filename("./probabilistic_graphical_model_data/penguin-input.png.png");
-	const std::string imgT_filename("./probabilistic_graphical_model_data/penguin-mask.png");
+	const std::string img_filename("./data/probabilistic_graphical_model/penguin-input.png.png");
+	const std::string imgT_filename("./data/probabilistic_graphical_model/penguin-mask.png");
 
 	cv::Mat &img = cv::imread(img_filename, CV_LOAD_IMAGE_GRAYSCALE);
 	//const cv::Mat &imgT = cv::imread(imgT_filename, CV_LOAD_IMAGE_GRAYSCALE);
@@ -850,7 +850,7 @@ void run_inference_algorithm(const std::size_t numOfVariables, InferenceAlgorith
 			for (typename GraphicalModel::IndexType col = 0; col < NUM_COLS; ++col)
 				img.at<unsigned char>(row, col) = (unsigned char)(255 * labeling[getVariableIndex(NUM_COLS, col, row)] / (NUM_LABELS - 1));
 
-		cv::imwrite("./probabilistic_graphical_model_data/opengm/" + output_filename + "_result.png", img);
+		cv::imwrite("./data/probabilistic_graphical_model/opengm/" + output_filename + "_result.png", img);
 	}
 	else
 		std::cout << "error: file name is empty" << std::endl;

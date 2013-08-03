@@ -405,10 +405,10 @@ namespace my_mrpt {
 void slam_kf()
 {
 	const bool useRawLogFile = true;
-	const std::string rawSensorFileName("robotics_data\\mrpt\\slam_kf\\kf-slam_demo.rawlog_LASER.txt");
-	const std::string rawOdometryFileName("robotics_data\\mrpt\\slam_kf\\kf-slam_demo.rawlog_ODO.txt");
+	const std::string rawSensorFileName("data/robotics/mrpt/slam_kf/kf-slam_demo.rawlog_LASER.txt");
+	const std::string rawOdometryFileName("data/robotics/mrpt/slam_kf/kf-slam_demo.rawlog_ODO.txt");
 
-	const std::string INI_FILENAME("robotics_data\\mrpt\\slam_kf\\config_slam.ini");
+	const std::string INI_FILENAME("data/robotics/mrpt/slam_kf/config_slam.ini");
 	if (!mrpt::system::fileExists(INI_FILENAME))
 	{
 		std::cout << "ini file not found !!!" << std::endl;

@@ -52,13 +52,13 @@ void ex3(int argc, char *argv[])
 
 	GAParameterList params;
 	GASimpleGA::registerDefaultParameters(params);
-	params.set(gaNscoreFilename, "optimization_data/galib/bog3.dat");
+	params.set(gaNscoreFilename, "data/optimization/galib/bog3.dat");
 	params.set(gaNflushFrequency, 50);
 	params.set(gaNpMutation, 0.001);
 	params.set(gaNpCrossover, 0.8);
 	params.parse(argc, argv, gaFalse);
 
-	char filename[128] = "optimization_data/galib/smiley.txt";
+	char filename[128] = "data/optimization/galib/smiley.txt";
 	int i, j;
 
 	// Parse the command line for arguments.

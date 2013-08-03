@@ -84,10 +84,10 @@ int log4cxx_main(int argc, char *argv[])
 	switch (config)
 	{
 	case 1:
-		log4cxx::PropertyConfigurator::configure(L"logging_data\\log4cxx\\swl_logger_conf.properties");
+		log4cxx::PropertyConfigurator::configure(L"data/logging/log4cxx/swl_logger_conf.properties");
 		break;
 	case 2:
-		log4cxx::xml::DOMConfigurator::configure(L"logging_data\\log4cxx\\swl_logger_conf.xml");  // run-time error
+		log4cxx::xml::DOMConfigurator::configure(L"data/logging/log4cxx/swl_logger_conf.xml");  // run-time error
 		break;
 	case 0:
 	default:

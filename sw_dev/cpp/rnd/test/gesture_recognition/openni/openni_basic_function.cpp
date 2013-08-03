@@ -21,7 +21,7 @@ int basic_function()
 	}
 #else
 	xn::EnumerationErrors errors;
-	rc = context.InitFromXmlFile("./gesture_recognition_data/openni/data/SamplesConfig.xml", &errors);
+	rc = context.InitFromXmlFile("./data/gesture_recognition/openni/data/SamplesConfig.xml", &errors);
 	if (XN_STATUS_NO_NODE_PRESENT == rc)
 	{
 		XnChar errStr[1024];
@@ -149,7 +149,7 @@ int record_data()
 	}
 #else
 	xn::EnumerationErrors errors;
-	rc = context.InitFromXmlFile("./gesture_recognition_data/openni/data/SamplesConfig.xml", &errors);
+	rc = context.InitFromXmlFile("./data/gesture_recognition/openni/data/SamplesConfig.xml", &errors);
 	if (XN_STATUS_NO_NODE_PRESENT == rc)
 	{
 		XnChar errStr[1024];
@@ -186,7 +186,7 @@ int record_data()
 	}
 
 	// initialize it
-	rc = recorder.SetDestination(XN_RECORD_MEDIUM_FILE, "./gesture_recognition_data/openni/tmp_recorder.oni");
+	rc = recorder.SetDestination(XN_RECORD_MEDIUM_FILE, "./data/gesture_recognition/openni/tmp_recorder.oni");
 	if (XN_STATUS_OK != rc)
 	{
 		std::cout << "fail to set destination: " << xnGetStatusString(rc) << std::endl;
@@ -242,7 +242,7 @@ int play_data()
 	}
 #else
 	xn::EnumerationErrors errors;
-	rc = context.InitFromXmlFile("./gesture_recognition_data/openni/data/SamplesConfig.xml", &errors);
+	rc = context.InitFromXmlFile("./data/gesture_recognition/openni/data/SamplesConfig.xml", &errors);
 	if (XN_STATUS_NO_NODE_PRESENT == rc)
 	{
 		XnChar errStr[1024];
@@ -258,7 +258,7 @@ int play_data()
 #endif
 
 	// open recording
-	rc = context.OpenFileRecording("./gesture_recognition_data/openni/tmp_recorder.oni");
+	rc = context.OpenFileRecording("./data/gesture_recognition/openni/tmp_recorder.oni");
 	if (XN_STATUS_OK != rc)
 	{
 		std::cout << "fail to open recording: " << xnGetStatusString(rc) << std::endl;

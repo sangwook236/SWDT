@@ -258,13 +258,13 @@ void cdhmm_with_univariate_gaussian_observations__viterbi_umdhmm()
 	double **O = NULL;
 	{
 #if __TEST_HMM_MODEL == 1
-		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_50.seq", "r");
-		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_100.seq", "r");
-		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t1_uni_normal_1500.seq", "r");
+		FILE *fp = fopen("./data/probabilistic_graphical_model/t1_uni_normal_50.seq", "r");
+		//FILE *fp = fopen("./data/probabilistic_graphical_model/t1_uni_normal_100.seq", "r");
+		//FILE *fp = fopen("./data/probabilistic_graphical_model/t1_uni_normal_1500.seq", "r");
 #elif __TEST_HMM_MODEL == 2
-		FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_50.seq", "r");
-		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_100.seq", "r");
-		//FILE *fp = fopen(".\\probabilistic_graphical_model_data\\t2_uni_normal_1500.seq", "r");
+		FILE *fp = fopen("./data/probabilistic_graphical_model/t2_uni_normal_50.seq", "r");
+		//FILE *fp = fopen("./data/probabilistic_graphical_model/t2_uni_normal_100.seq", "r");
+		//FILE *fp = fopen("./data/probabilistic_graphical_model/t2_uni_normal_1500.seq", "r");
 #endif
 		umdhmm::ReadSequence(fp, &T, &M, &O);
 		fclose(fp);

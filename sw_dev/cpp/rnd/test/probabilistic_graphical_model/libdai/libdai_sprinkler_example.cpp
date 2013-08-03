@@ -63,7 +63,7 @@ void sprinkler_example()
 	dai::FactorGraph SprinklerNetwork(SprinklerFactors);
 
 	// Write factorgraph to a file
-	SprinklerNetwork.WriteToFile("./probabilistic_graphical_model_data/libdai/sprinkler.fg");
+	SprinklerNetwork.WriteToFile("./data/probabilistic_graphical_model/libdai/sprinkler.fg");
 	std::cout << "Sprinkler network written to sprinkler.fg" << std::endl;
 
 	// Output some information about the factorgraph

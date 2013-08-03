@@ -16,11 +16,11 @@ void tutorial_1()
 	const int width = 100, height = 100;
 
 #if defined(CAIRO_HAS_SVG_SURFACE)
-	cairo_surface_t *surface = cairo_svg_surface_create(".\\graphics_2d_data\\cairo\\tutorial_1.svg", (double)width, (double)height);
+	cairo_surface_t *surface = cairo_svg_surface_create("./data/graphics_2d/cairo/tutorial_1.svg", (double)width, (double)height);
 #elif defined(CAIRO_HAS_IMAGE_SURFACE)
 	cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
 #elif defined(CAIRO_HAS_PDF_SURFACE)
-	cairo_surface_t *surface = cairo_pdf_surface_create(".\\graphics_2d_data\\cairo\\tutorial_1.pdf", (double)width, (double)height);
+	cairo_surface_t *surface = cairo_pdf_surface_create("./data/graphics_2d/cairo/tutorial_1.pdf", (double)width, (double)height);
 #elif defined(CAIRO_HAS_WIN32_SURFACE)
 	cairo_surface_t *surface = cairo_win32_surface_create(hdc);
 	//cairo_surface_t *surface = cairo_win32_surface_create_with_dib(CAIRO_FORMAT_ARGB32, width, height);
@@ -56,7 +56,7 @@ void tutorial_1()
 	}
 
 	// save to a png file
-	cairo_surface_write_to_png(surface, ".\\graphics_2d_data\\cairo\\tutorial_1_out.png");
+	cairo_surface_write_to_png(surface, "./data/graphics_2d/cairo/tutorial_1_out.png");
 
 	//
     cairo_destroy(cr);
@@ -68,11 +68,11 @@ void tutorial_2()
 	const int width = 100, height = 100;
 
 #if defined(CAIRO_HAS_SVG_SURFACE)
-	cairo_surface_t *surface = cairo_svg_surface_create(".\\graphics_2d_data\\cairo\\tutorial_2.svg", (double)width, (double)height);
+	cairo_surface_t *surface = cairo_svg_surface_create("./data/graphics_2d/cairo/tutorial_2.svg", (double)width, (double)height);
 #elif defined(CAIRO_HAS_IMAGE_SURFACE)
 	cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
 #elif defined(CAIRO_HAS_PDF_SURFACE)
-	cairo_surface_t *surface = cairo_pdf_surface_create(".\\graphics_2d_data\\cairo\\tutorial_2.pdf", (double)width, (double)height);
+	cairo_surface_t *surface = cairo_pdf_surface_create("./data/graphics_2d/cairo/tutorial_2.pdf", (double)width, (double)height);
 #elif defined(CAIRO_HAS_WIN32_SURFACE)
 	cairo_surface_t *surface = cairo_win32_surface_create(hdc);
 	//cairo_surface_t *surface = cairo_win32_surface_create_with_dib(CAIRO_FORMAT_ARGB32, width, height);
@@ -88,7 +88,7 @@ void tutorial_2()
 	cairo_save(cr);
 	{
 		// read from a png file
-		cairo_surface_t *img = cairo_image_surface_create_from_png(".\\graphics_2d_data\\cairo\\pattern_1.png");
+		cairo_surface_t *img = cairo_image_surface_create_from_png("./data/graphics_2d/cairo/pattern_1.png");
 
 		const int w = cairo_image_surface_get_width(img);
 		const int h = cairo_image_surface_get_height(img);
@@ -147,7 +147,7 @@ void tutorial_2()
 	}
 
 	// save to a png file
-	cairo_surface_write_to_png(surface, ".\\graphics_2d_data\\cairo\\tutorial_2_out.png");
+	cairo_surface_write_to_png(surface, "./data/graphics_2d/cairo/tutorial_2_out.png");
 
 	//
     cairo_destroy(cr);
@@ -159,11 +159,11 @@ void tutorial_3()
 	const int width = 100, height = 100;
 
 #if defined(CAIRO_HAS_SVG_SURFACE)
-	cairo_surface_t *surface = cairo_svg_surface_create(".\\graphics_2d_data\\cairo\\tutorial_3.svg", (double)width, (double)height);
+	cairo_surface_t *surface = cairo_svg_surface_create("./data/graphics_2d/cairo/tutorial_3.svg", (double)width, (double)height);
 #elif defined(CAIRO_HAS_IMAGE_SURFACE)
 	cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
 #elif defined(CAIRO_HAS_PDF_SURFACE)
-	cairo_surface_t *surface = cairo_pdf_surface_create(".\\graphics_2d_data\\cairo\\tutorial_3.pdf", (double)width, (double)height);
+	cairo_surface_t *surface = cairo_pdf_surface_create("./data/graphics_2d/cairo/tutorial_3.pdf", (double)width, (double)height);
 #elif defined(CAIRO_HAS_WIN32_SURFACE)
 	cairo_surface_t *surface = cairo_win32_surface_create(hdc);
 	//cairo_surface_t *surface = cairo_win32_surface_create_with_dib(CAIRO_FORMAT_ARGB32, width, height);
@@ -217,7 +217,7 @@ void tutorial_3()
 	}
 
 	// save to a png file
-	cairo_surface_write_to_png(surface, ".\\graphics_2d_data\\cairo\\tutorial_3_out.png");
+	cairo_surface_write_to_png(surface, "./data/graphics_2d/cairo/tutorial_3_out.png");
 
 	//
     cairo_destroy(cr);

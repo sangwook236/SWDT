@@ -13,7 +13,7 @@ void basic_operation_1()
 {
 	// mean & standard deviation
 	{
-		const std::string input_filename("./machine_vision_data/opencv/lena_rgb.bmp");
+		const std::string input_filename("./data/machine_vision/opencv/lena_rgb.bmp");
 
 		const cv::Mat &img = cv::imread(input_filename, CV_LOAD_IMAGE_COLOR);
 		if (img.empty())

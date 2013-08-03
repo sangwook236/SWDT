@@ -55,8 +55,8 @@ void diagram (char *name)
 	double width=120, height=120;
 	double ux=2, uy=2;
 
-	const std::string svg_filename(std::string("./graphics_2d_data/cairo/") + std::string(name) + std::string(".svg"));
-	const std::string png_filename(std::string("./graphics_2d_data/cairo/") + std::string(name) + std::string(".png"));
+	const std::string svg_filename(std::string("./data/graphics_2d/cairo/") + std::string(name) + std::string(".svg"));
+	const std::string png_filename(std::string("./data/graphics_2d/cairo/") + std::string(name) + std::string(".png"));
 
 	surf = cairo_svg_surface_create (svg_filename.c_str(), width, height);
 	cr = cairo_create (surf);

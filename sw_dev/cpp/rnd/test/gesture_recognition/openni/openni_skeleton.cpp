@@ -65,7 +65,7 @@ int skeleton()
 	}
 #else
 	xn::EnumerationErrors errors;
-	rc = context.InitFromXmlFile("./gesture_recognition_data/openni/data/SamplesConfig.xml", &errors);
+	rc = context.InitFromXmlFile("./data/gesture_recognition/openni/data/SamplesConfig.xml", &errors);
 	if (XN_STATUS_NO_NODE_PRESENT == rc)
 	{
 		XnChar errStr[1024];

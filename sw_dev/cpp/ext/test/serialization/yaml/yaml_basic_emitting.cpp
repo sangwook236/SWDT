@@ -175,7 +175,7 @@ void emit_user_defined_type()
 
 void emit_existing_nodes()
 {
-	std::ifstream fin("serialization_data/yaml/monsters.yaml");
+	std::ifstream fin("data/serialization/yaml/monsters.yaml");
 	if (!fin)
 	{
 		std::cout << "yaml data file not found !!!" << std::endl;

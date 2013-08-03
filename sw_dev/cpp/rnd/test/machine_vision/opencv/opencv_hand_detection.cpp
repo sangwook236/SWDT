@@ -34,11 +34,11 @@ namespace local {
 void save_ref_hand_image()
 {
 	std::list<std::string> img_filenames;
-	img_filenames.push_back("./machine_vision_data/opencv/hand_detection_ref_01.jpg");
-	img_filenames.push_back("./machine_vision_data/opencv/hand_detection_ref_02.jpg");
-	img_filenames.push_back("./machine_vision_data/opencv/hand_detection_ref_03.jpg");
-	img_filenames.push_back("./machine_vision_data/opencv/hand_detection_ref_04.jpg");
-	img_filenames.push_back("./machine_vision_data/opencv/hand_detection_ref_05.jpg");
+	img_filenames.push_back("./data/machine_vision/opencv/hand_detection_ref_01.jpg");
+	img_filenames.push_back("./data/machine_vision/opencv/hand_detection_ref_02.jpg");
+	img_filenames.push_back("./data/machine_vision/opencv/hand_detection_ref_03.jpg");
+	img_filenames.push_back("./data/machine_vision/opencv/hand_detection_ref_04.jpg");
+	img_filenames.push_back("./data/machine_vision/opencv/hand_detection_ref_05.jpg");
 
 	const std::string windowName1("hand detection - input");
 	const std::string windowName2("hand detection - edge");
@@ -276,11 +276,11 @@ void detect_hand_by_motion()
 		return;
 	}
 
-	const std::string ref_imge_filename("./machine_vision_data/opencv/hand_detection_ref_01_edge.jpg");
-	//const std::string ref_imge_filename("./machine_vision_data/opencv/hand_detection_ref_02_edge.jpg");
-	//const std::string ref_imge_filename("./machine_vision_data/opencv/hand_detection_ref_03_edge.jpg");
-	//const std::string ref_imge_filename("./machine_vision_data/opencv/hand_detection_ref_04_edge.jpg");
-	//const std::string ref_imge_filename("./machine_vision_data/opencv/hand_detection_ref_05_edge.jpg");
+	const std::string ref_imge_filename("./data/machine_vision/opencv/hand_detection_ref_01_edge.jpg");
+	//const std::string ref_imge_filename("./data/machine_vision/opencv/hand_detection_ref_02_edge.jpg");
+	//const std::string ref_imge_filename("./data/machine_vision/opencv/hand_detection_ref_03_edge.jpg");
+	//const std::string ref_imge_filename("./data/machine_vision/opencv/hand_detection_ref_04_edge.jpg");
+	//const std::string ref_imge_filename("./data/machine_vision/opencv/hand_detection_ref_05_edge.jpg");
 
 	const cv::Mat &ref_edge0 = cv::imread(ref_imge_filename, CV_LOAD_IMAGE_GRAYSCALE);
 	if (ref_edge0.empty())
@@ -564,8 +564,8 @@ void detect_and_draw(cv::CascadeClassifier &hand_detector, cv::Mat &img)
 void detect_hand_by_haar_cascades_detector()
 {
 	// [ref] https://github.com/yandol/GstHanddetect
-	//const std::string hand_cascade_filename("./machine_vision_data/opencv/gsthanddetect/palm.xml");
-	const std::string hand_cascade_filename("./machine_vision_data/opencv/gsthanddetect/fist.xml");
+	//const std::string hand_cascade_filename("./data/machine_vision/opencv/gsthanddetect/palm.xml");
+	const std::string hand_cascade_filename("./data/machine_vision/opencv/gsthanddetect/fist.xml");
 
 	// load the cascades
 	cv::CascadeClassifier hand_detector;
