@@ -4,6 +4,10 @@ http://www.slaney.org/malcolm/pubs.html
 
 http://www.shawnlankton.com/2007/05/active-contours/
 http://www.shawnlankton.com/2009/04/sfm-and-active-contours/
+http://www.shawnlankton.com/tag/segmentation/
 http://www.mathworks.com/matlabcentral/fileexchange/19567-active-contour-segmentation
+
+http://www.shawnlankton.com/2007/02/cool-hybrid-segmentation/
+http://www.shawnlankton.com/tag/segmentation/
 
 https://sites.google.com/site/rexstribeofimageprocessing/chan-vese-active-contours
