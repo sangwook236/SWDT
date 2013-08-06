@@ -27,7 +27,7 @@ void bend_one_finger_example()
     libhand::HandRenderer hand_renderer;
     hand_renderer.Setup();
 
-    // Ask the user to show the location of the scene spec file
+    // Ask the user to show the rlocation of the scene spec file
     libhand::FileDialog dialog;
     dialog.SetTitle("Please select a scene spec file");
     std::string file_name = dialog.Open();

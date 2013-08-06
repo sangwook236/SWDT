@@ -16,7 +16,6 @@ void deep_learning_example();
 
 int liblearning_main(int argc, char *argv[])
 {
-	// deep learning
 	std::cout << "liblearning library: deep learning example ----------------------" << std::endl;
 	my_liblearning::deep_learning_example();  // not yet implemented
 

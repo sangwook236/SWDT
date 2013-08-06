@@ -141,6 +141,7 @@
 		<Unit filename="opencv/opencv_edge_detection.cpp" />
 		<Unit filename="opencv/opencv_face_detection.cpp" />
 		<Unit filename="opencv/opencv_face_detection_using_gpu.cpp" />
+		<Unit filename="opencv/opencv_face_recognition.cpp" />
 		<Unit filename="opencv/opencv_feature_description.cpp" />
 		<Unit filename="opencv/opencv_feature_extraction.cpp" />
 		<Unit filename="opencv/opencv_feature_extraction_and_matching.cpp" />
@@ -185,11 +186,13 @@
 		<Unit filename="opencv/opencv_optical_flow_using_gpu.cpp" />
 		<Unit filename="opencv/opencv_outlier_removal.cpp" />
 		<Unit filename="opencv/opencv_pca.cpp" />
+		<Unit filename="opencv/opencv_retina_model.cpp" />
 		<Unit filename="opencv/opencv_segmentation.cpp" />
 		<Unit filename="opencv/opencv_shape_finding.cpp" />
 		<Unit filename="opencv/opencv_shape_matching.cpp" />
 		<Unit filename="opencv/opencv_skeletonization_and_thinning.cpp" />
 		<Unit filename="opencv/opencv_skin_color_filtering.cpp" />
+		<Unit filename="opencv/opencv_slam.cpp" />
 		<Unit filename="opencv/opencv_snake.cpp" />
 		<Unit filename="opencv/opencv_stereo_camera_calibration.cpp" />
 		<Unit filename="opencv/opencv_stereo_matching.cpp" />

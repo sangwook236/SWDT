@@ -16,7 +16,6 @@ void deep_learning_example();
 
 int torch_main(int argc, char *argv[])
 {
-	// deep learning
 	std::cout << "torch library: deep learning example ----------------------------" << std::endl;
 	my_torch::deep_learning_example();  // not yet implemented
 
