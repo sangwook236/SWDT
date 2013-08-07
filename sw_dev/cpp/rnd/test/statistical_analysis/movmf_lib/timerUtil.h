@@ -12,10 +12,10 @@
 #ifndef _TIMERUTIL_H
 #define _TIMERUTIL_H
 
-#include <unistd.h>
+//#include <unistd.h>
 #include <sys/types.h>
-#include <sys/time.h>
-#include <sys/resource.h>
+//#include <sys/time.h>
+//#include <sys/resource.h>
 
 #include <iostream>
 

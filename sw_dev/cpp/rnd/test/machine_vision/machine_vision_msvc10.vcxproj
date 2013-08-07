@@ -125,6 +125,7 @@
     <ClCompile Include="ivt\ParticleFilter3D.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="opencv\opencv_active_contour_model.cpp" />
     <ClCompile Include="opencv\opencv_basic_operation.cpp" />
     <ClCompile Include="opencv\opencv_bag_of_words.cpp" />
     <ClCompile Include="opencv\opencv_camera_calibration.cpp" />
@@ -192,7 +193,6 @@
     <ClCompile Include="opencv\opencv_shape_matching.cpp" />
     <ClCompile Include="opencv\opencv_skin_color_filtering.cpp" />
     <ClCompile Include="opencv\opencv_slam.cpp" />
-    <ClCompile Include="opencv\opencv_snake.cpp" />
     <ClCompile Include="opencv\opencv_stereo_camera_calibration.cpp" />
     <ClCompile Include="opencv\opencv_stereo_matching.cpp" />
     <ClCompile Include="opencv\opencv_stereo_matching_using_gpu.cpp" />

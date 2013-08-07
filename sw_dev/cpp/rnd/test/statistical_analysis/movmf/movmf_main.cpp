@@ -1,16 +1,10 @@
-#if defined(WIN32) || defined(_WIN32)
-#include <stdexcept>
-#else
 #include "../movmf_lib/movmf.h"
-#endif
 #include <iostream>
 
 
 namespace {
 namespace local {
 
-#if defined(WIN32) || defined(_WIN32)
-#else
 // ${MoVMF_HOME}/main.cc
 void basic_example()
 {
@@ -60,7 +54,6 @@ void basic_example()
 	movmf *movmf_engine = new movmf(my_argc, (char **)my_argv);
 	const int retval = movmf_engine->run();
 }
-#endif
 
 }  // namespace local
 }  // unnamed namespace
@@ -74,11 +67,7 @@ namespace my_movmf {
 
 int movmf_main(int argc, char *argv[])
 {
-#if defined(WIN32) || defined(_WIN32)
-	throw std::runtime_error("not yet implemented in Windows");
-#else
 	local::basic_example();
-#endif
 
 	return 0;
 }

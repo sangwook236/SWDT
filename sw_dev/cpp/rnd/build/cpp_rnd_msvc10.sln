@@ -12,8 +12,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "neural_network", "..\test\n
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "robotics", "..\test\robotics\robotics_msvc10.vcxproj", "{99406811-DAE3-4378-8EEA-0D50E18D8564}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "robust_estimation", "..\test\robust_estimation\robust_estimation_msvc10.vcxproj", "{16BFFB33-CD13-4344-A2D8-6DCFC73E4A78}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gesture_recognition", "..\test\gesture_recognition\gesture_recognition_msvc10.vcxproj", "{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "probabilistic_graphical_model", "..\test\probabilistic_graphical_model\probabilistic_graphical_model_msvc10.vcxproj", "{326CF11F-0264-4D95-930B-0D6DAD809C96}"
@@ -38,7 +36,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graph_analysis", "..\test\g
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hand_analysis", "..\test\hand_analysis\hand_analysis_msvc10.vcxproj", "{5764CA80-F4D8-4DA7-924F-E4ED8734C009}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "directional_statistics", "..\test\directional_statistics\directional_statistics_msvc10.vcxproj", "{0E6076D4-05F3-4EBB-B706-DD8E198E397B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "statistical_analysis", "..\test\statistical_analysis\statistical_analysis_msvc10.vcxproj", "{0E6076D4-05F3-4EBB-B706-DD8E198E397B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "segmentation", "..\test\segmentation\segmentation_msvc10.vcxproj", "{832EE4AF-D179-4D91-B598-402567ADD387}"
 EndProject
@@ -80,10 +78,6 @@ Global
 		{99406811-DAE3-4378-8EEA-0D50E18D8564}.Debug|Win32.Build.0 = Debug|Win32
 		{99406811-DAE3-4378-8EEA-0D50E18D8564}.Release|Win32.ActiveCfg = Release|Win32
 		{99406811-DAE3-4378-8EEA-0D50E18D8564}.Release|Win32.Build.0 = Release|Win32
-		{16BFFB33-CD13-4344-A2D8-6DCFC73E4A78}.Debug|Win32.ActiveCfg = Debug|Win32
-		{16BFFB33-CD13-4344-A2D8-6DCFC73E4A78}.Debug|Win32.Build.0 = Debug|Win32
-		{16BFFB33-CD13-4344-A2D8-6DCFC73E4A78}.Release|Win32.ActiveCfg = Release|Win32
-		{16BFFB33-CD13-4344-A2D8-6DCFC73E4A78}.Release|Win32.Build.0 = Release|Win32
 		{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}.Debug|Win32.ActiveCfg = Debug|Win32
 		{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}.Debug|Win32.Build.0 = Debug|Win32
 		{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}.Release|Win32.ActiveCfg = Release|Win32

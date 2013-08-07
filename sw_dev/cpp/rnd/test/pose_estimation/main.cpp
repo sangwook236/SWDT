@@ -15,6 +15,9 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "parts-based detector algorithm --------------------------------------" << std::endl;
+		// "Articulated pose estimation with flexible mixtures-of-parts".
+		//	-. pictorial structures.
+		//	-. star-based pictorial structures.
 		retval = parts_based_detector_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

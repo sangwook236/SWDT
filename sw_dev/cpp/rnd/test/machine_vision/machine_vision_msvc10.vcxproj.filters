@@ -207,9 +207,6 @@
     <ClCompile Include="opencv\opencv_skin_color_filtering.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
-    <ClCompile Include="opencv\opencv_snake.cpp">
-      <Filter>Source Files\opencv</Filter>
-    </ClCompile>
     <ClCompile Include="opencv\opencv_stereo_matching.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
@@ -360,10 +357,13 @@
     <ClCompile Include="opencv\opencv_face_recognition.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
-    <ClCompile Include="opencv\opencv_slam.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="opencv\opencv_retina_model.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_slam.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_active_contour_model.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
   </ItemGroup>

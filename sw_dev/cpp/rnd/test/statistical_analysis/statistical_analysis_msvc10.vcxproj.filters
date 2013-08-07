@@ -19,6 +19,9 @@
     <Filter Include="Source Files\movmf_lib">
       <UniqueIdentifier>{688478b8-6a2e-4a5c-b99c-6384c51ba4fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ransac">
+      <UniqueIdentifier>{b67f21a7-e401-4a30-8bf5-8b91e1dc0a5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -94,6 +97,12 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ransac\ransac_main.cpp">
+      <Filter>Source Files\ransac</Filter>
+    </ClCompile>
+    <ClCompile Include="ransac\ransac_plane_estimation.cpp">
+      <Filter>Source Files\ransac</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

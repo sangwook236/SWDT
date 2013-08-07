@@ -16,7 +16,9 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "LibHand library -----------------------------------------------------" << std::endl;
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		retval = libhand_main(argc, argv);
+#endif
 
 		std::cout << "\nOpenHPE library -----------------------------------------------------" << std::endl;
 		//retval = openhpe_main(argc, argv);

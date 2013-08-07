@@ -5,17 +5,28 @@
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
+#include <ctime>
 
 
 int main(int argc, char *argv[])
 {
+	int ransac_main(int argc, char *argv[]);
 	int movmf_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "MoVMF library -------------------------------------------------------" << std::endl;
+		std::srand((unsigned int)time(NULL));
+
+		std::cout << "RANSAC algorithm ----------------------------------------------------" << std::endl;
+		//	-. robust estimation.
+		retval = ransac_main(argc, argv);
+
+		std::cout << "\nMoVMF library -------------------------------------------------------" << std::endl;
+		//	-. directional statistics.
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		retval = movmf_main(argc, argv);
+#endif
 	}
     catch (const std::bad_alloc &e)
 	{

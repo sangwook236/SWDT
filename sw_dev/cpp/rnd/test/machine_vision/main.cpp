@@ -25,16 +25,30 @@ int main(int argc, char *argv[])
 		retval = opencv_main(argc, argv);
 
 		std::cout << "\nVXL (the Vision-something-Libraries) library ------------------------" << std::endl;
+		//	-. pictorial structures matching.
+		//	-. shape model library.
 		//retval = vxl_main(argc, argv);
 
 		std::cout << "\nIntegrating Vision Toolkit (IVT) library ----------------------------" << std::endl;
+		//	-. Hough transform.
+		//	-. KLT tracker.
+		//	-. particle filtering.
 		//retval = ivt_main(argc, argv);
 
 		std::cout << "\nVLFeat library ------------------------------------------------------" << std::endl;
+		//	-. feature analysis.
+		//	-. clustering.
+		//	-. segmentation.
 		//retval = vlfeat_main(argc, argv);
 
 		std::cout << "\nCCV library ---------------------------------------------------------" << std::endl;
-		//retval = ccv_main(argc, argv);  // run-time error in Windows: not correctly working.
+		//	-. feature analysis.
+		//	-. object detection & tracking.
+		//	-. sparse coding & compressive sensing.
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+		// TODO [check] >> run-time error in Windows. not correctly working.
+		//retval = ccv_main(argc, argv);
+#endif
 	}
     catch (const std::bad_alloc &e)
 	{

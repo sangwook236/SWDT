@@ -78,7 +78,7 @@ void template_matching();
 void chamfer_matching();
 void shape_finding();
 void shape_matching();
-void snake();
+void active_contour_model();
 void segmentation();
 void meanshift_segmentation_using_gpu();
 void outlier_removal();
@@ -178,7 +178,7 @@ int opencv_main(int argc, char *argv[])
 
 		//my_opencv::skeletonization_and_thinning();
 		//my_opencv::distance_transform();
-		//my_opencv::distance_transform_using_edge_info();
+		my_opencv::distance_transform_using_edge_info();
 		//my_opencv::convex_hull();
 		//my_opencv::hough_transform();
 
@@ -186,7 +186,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::chamfer_matching();
 		//my_opencv::shape_finding();
 		//my_opencv::shape_matching();
-		//my_opencv::snake();
+		//my_opencv::active_contour_model();  // snake.
 
 		//my_opencv::segmentation();
 		//if (canUseGPU) my_opencv::meanshift_segmentation_using_gpu();  // not yet implemented
@@ -210,7 +210,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::clustering();
 		//my_opencv::machine_learning();
 
-		my_opencv::object_detection();
+		//my_opencv::object_detection();
 		//my_opencv::face_detection();
 		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // not yet implemented
 		//my_opencv::human_detection();

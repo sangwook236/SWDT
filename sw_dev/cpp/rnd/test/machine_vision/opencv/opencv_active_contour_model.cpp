@@ -18,7 +18,7 @@ namespace my_opencv {
 // [ref] ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp
 void snake(IplImage *srcImage, IplImage *grayImage);
 
-void snake()
+void active_contour_model()
 {
 	std::list<std::string> filenames;
 	filenames.push_back("./data/machine_vision/opencv/pic1.png");
@@ -35,9 +35,6 @@ void snake()
 	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
 	filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
 	filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
-
-	const char *windowName = "snake";
-	cvNamedWindow(windowName, CV_WINDOW_AUTOSIZE);
 
 	//
 	for (std::list<std::string>::iterator it = filenames.begin(); it != filenames.end(); ++it)
@@ -77,7 +74,7 @@ void snake()
 		snake(srcImage, grayImage);
 
 		//
-		cvShowImage(windowName, srcImage);
+		cvShowImage("active contour model", srcImage);
 
 		const unsigned char key = cvWaitKey(0);
 		if (27 == key)
@@ -88,7 +85,7 @@ void snake()
 		cvReleaseImage(&srcImage);
 	}
 
-	cvDestroyWindow(windowName);
+	cvDestroyAllWindows();
 }
 
 }  // namespace my_opencv

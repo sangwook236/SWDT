@@ -32,7 +32,7 @@ void image_gradient()
 	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
 	filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
 	filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
-#elif 1
+#elif 0
 	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
 	//filenames.push_back("./data/machine_vision/opencv/hand_02.jpg");
 	//filenames.push_back("./data/machine_vision/opencv/hand_03.jpg");
@@ -70,7 +70,7 @@ void image_gradient()
 	filenames.push_back("./data/machine_vision/opencv/hand_34.jpg");
 	filenames.push_back("./data/machine_vision/opencv/hand_35.jpg");
 	filenames.push_back("./data/machine_vision/opencv/hand_36.jpg");
-#elif 0
+#elif 1
 	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211659.png");
 	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211705.png");
 	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211713.png");
@@ -219,6 +219,7 @@ void image_gradient()
 		//cv::Mat gradient_mask;
 		//cv::compare(gradient_mag, minMag + (maxVal - minMag) * thresholdRatio, gradient_mask, cv::CMP_GT);
 
+		// filtering.
 		gradient_mag.setTo(cv::Scalar::all(0), 0 == gradient_mask);
 		gradient_phase.setTo(cv::Scalar::all(0), 0 == gradient_mask);
 

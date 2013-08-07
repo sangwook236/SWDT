@@ -28,14 +28,14 @@ int vxl_main(int argc, char *argv[])
 {
 	int retval = 0;
 
-	// fhs: Feature matching using Felzenszwalb and Huttenlocher's method
+	// fhs: Feature matching using Felzenszwalb and Huttenlocher's method.
 	// [ref] http://paine.wiau.man.ac.uk/pub/doc_vxl/contrib/mul/fhs/html/index.html
-	//	Efficient Pictoral Structure Matching
+	//	"Efficient Matching of Pictorial Structures", CVPR, 2000.
 	retval = my_vxl::fhs_find_matches_example(argc, argv);
 	retval = my_vxl::fhs_mr_find_matches_example(argc, argv);
 	retval = my_vxl::fhs_match_tree_model_example(argc, argv);
 
-	// msm: Manchester Shape Model library
+	// msm: Manchester Shape Model library.
 	// [ref] http://public.kitware.com/vxl/doc/release/contrib/mul/msm/html/index.html
 	retval = my_vxl::msm_apply_tps_warp_example(argc, argv);
 	retval = my_vxl::msm_build_shape_model_example(argc, argv);
