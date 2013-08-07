@@ -1,0 +1,3 @@
+http://www.shawnlankton.com/2008/03/growcut-segmentation-in-matlab/
+http://www.shawnlankton.com/tag/segmentation/
+http://www.mathworks.com/matlabcentral/fileexchange/19091-growcut-image-segmentation

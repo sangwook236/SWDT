@@ -1,0 +1,3 @@
+http://phoenix.ics.uci.edu/software/pose/
+
+${SW_DEV_HOME}/matlab/rnd/src/object_detection/upper_body_detector
