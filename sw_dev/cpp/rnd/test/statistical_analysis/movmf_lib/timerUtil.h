@@ -5,17 +5,17 @@
 // Final Project
 //
 //
-// Defines the TimerUtil class.  Used in the main code to determine the  
+// Defines the TimerUtil class.  Used in the main code to determine the
 // runtime of the parser.
 //
 
 #ifndef _TIMERUTIL_H
 #define _TIMERUTIL_H
 
-//#include <unistd.h>
+#include <unistd.h>
 #include <sys/types.h>
-//#include <sys/time.h>
-//#include <sys/resource.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 
 #include <iostream>
 
@@ -23,7 +23,7 @@ using namespace std;
 
 class TimerUtil {
  private:
-  timeval startTime;  
+  timeval startTime;
   timeval stopTime;
 
   long sec;
@@ -47,24 +47,24 @@ class TimerUtil {
     sysStartTime.tv_sec = r_usage.ru_stime.tv_sec;
     sysStartTime.tv_usec = r_usage.ru_stime.tv_usec;
   }
-  
+
   // Call this at the time you wish to end timing.
   void setStopTime() {
     gettimeofday(&stopTime, NULL);
-    
+
     sec = stopTime.tv_sec - startTime.tv_sec;
     microsec = stopTime.tv_usec - startTime.tv_usec;
-    
+
     if (microsec < 0) {
       microsec+=1000000;
       sec--;
     }
-  }  
-  
+  }
+
   void setStopTime(ostream& os, const char* notes) {
     struct rusage r_usage;
     getrusage(RUSAGE_SELF, &r_usage);
-    
+
     long usec = r_usage.ru_utime.tv_sec - usrStartTime.tv_sec;
     long umsec = r_usage.ru_utime.tv_usec - usrStartTime.tv_usec;
     if (umsec < 0) {
@@ -81,7 +81,7 @@ class TimerUtil {
     setStopTime();
     os << notes << endl;
     os << "CPU Usage: user = " << usec
-       << " seconds " << umsec << " ms, system = " << ssec 
+       << " seconds " << umsec << " ms, system = " << ssec
        << " seconds " << smsec << "ms" << endl;
     os << "ELAPSED Time: " << sec << " seconds "
        << microsec << " ms" << endl;
@@ -90,7 +90,7 @@ class TimerUtil {
 void setStopTime(ostream& os, const char* notes, const int iter) {
     struct rusage r_usage;
     getrusage(RUSAGE_SELF, &r_usage);
-    
+
     long usec = r_usage.ru_utime.tv_sec - usrStartTime.tv_sec;
     long umsec = r_usage.ru_utime.tv_usec - usrStartTime.tv_usec;
     if (umsec < 0) {
@@ -107,7 +107,7 @@ void setStopTime(ostream& os, const char* notes, const int iter) {
     setStopTime();
     os << notes << endl;
     os << "CPU Usage: user = " << usec
-       << " seconds " << umsec << " ms, system = " << ssec 
+       << " seconds " << umsec << " ms, system = " << ssec
        << " seconds " << smsec << "ms" << endl;
     os << "Time per iteration = "<<(usec+umsec/1e6)/iter<<endl;
     os << "ELAPSED Time: " << sec << " seconds "
@@ -124,11 +124,11 @@ void setStopTime(ostream& os, const char* notes, const int iter) {
   }
   // Returns the seconds between calls to setStartTime and setEndTime
   long getElapsedSec() {return sec;}
-  
-  // Returns any extra microseconds after taking to account elapsed 
+
+  // Returns any extra microseconds after taking to account elapsed
   // seconds
   long getElapsedMicrosec() {return microsec;}
-   
+
 };
 
 

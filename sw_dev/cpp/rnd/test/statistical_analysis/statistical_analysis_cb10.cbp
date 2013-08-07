@@ -59,6 +59,8 @@
 		<Unit filename="movmf_lib/newbessel.cc" />
 		<Unit filename="movmf_lib/newbessel.h" />
 		<Unit filename="movmf_lib/timerUtil.h" />
+		<Unit filename="ransac/ransac_main.cpp" />
+		<Unit filename="ransac/ransac_plane_estimation.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
