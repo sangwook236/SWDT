@@ -28,7 +28,7 @@ void compressive_sensing();
 
 int ccv_main(int argc, char *argv[])
 {
-	// feature analysis -----------------------------------
+	// feature analysis ---------------------------------------------
 	{
 		//my_ccv::sift();  // not yet implemented
 		//my_ccv::mser();  // not yet implemented
@@ -39,13 +39,13 @@ int ccv_main(int argc, char *argv[])
 		//my_ccv::bbf();  // not yet implemented
 	}
 
-	// object detection & tracking-------------------------
+	// object detection & tracking-----------------------------------
 	{
 		//my_ccv::dpm();  // not yet implemented
 		//my_ccv::tld();  // not yet implemented
 	}
 
-	// sparse coding & compressive sensing ----------------
+	// sparse coding & compressive sensing --------------------------
 	{
 		//my_ccv::sparse_coding();  // not yet implemented
 		//my_ccv::compressive_sensing();  // not yet implemented

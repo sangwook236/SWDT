@@ -22,6 +22,9 @@
     <Filter Include="Source Files\c4">
       <UniqueIdentifier>{21e0a5a8-6ad5-4e8f-a42c-5f6d665dda3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\object_detection_toolbox">
+      <UniqueIdentifier>{1ce626df-4908-400d-912b-46d3f7643778}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -64,6 +67,9 @@
     </ClCompile>
     <ClCompile Include="c4\c4_main.cpp">
       <Filter>Source Files\c4</Filter>
+    </ClCompile>
+    <ClCompile Include="object_detection_toolbox\object_detection_toolbox_main.cpp">
+      <Filter>Source Files\object_detection_toolbox</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

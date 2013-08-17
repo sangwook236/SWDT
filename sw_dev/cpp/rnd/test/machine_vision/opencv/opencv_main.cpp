@@ -121,6 +121,8 @@ void slam();
 
 void openni_interface();
 
+void util();
+
 void structure_tensor();
 void iterative_closest_point();
 
@@ -178,7 +180,7 @@ int opencv_main(int argc, char *argv[])
 
 		//my_opencv::skeletonization_and_thinning();
 		//my_opencv::distance_transform();
-		my_opencv::distance_transform_using_edge_info();
+		//my_opencv::distance_transform_using_edge_info();
 		//my_opencv::convex_hull();
 		//my_opencv::hough_transform();
 
@@ -252,6 +254,8 @@ int opencv_main(int argc, char *argv[])
 
 		//-----------------------------------------------------------------
 		// extension
+
+		my_opencv::util();  // for utility test.
 
 		//my_opencv::structure_tensor();
 

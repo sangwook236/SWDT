@@ -46,7 +46,7 @@ int fast_bilateral_filter_main(int argc, char *argv[])
 
 	// depth-filling joint/cross bilateral filter.
 	// FIXME [fix] >> not correctly working.
-	//	additional implementation is require.
+	//	additional implementation is required.
 	//my_fast_bilateral_filter::depth_filling_cross_bilateral_filter();
 
 	return 0;

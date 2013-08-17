@@ -15,6 +15,8 @@ int main(int argc, char *argv[])
 	int ivt_main(int argc, char *argv[]);
 	int vlfeat_main(int argc, char *argv[]);
 	int ccv_main(int argc, char *argv[]);
+	int vigra_main(int argc, char *argv[]);
+	int darwin_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -37,18 +39,38 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nVLFeat library ------------------------------------------------------" << std::endl;
 		//	-. feature analysis.
+		//		Covariant detectors, HOG, SIFT, DSIFT, MSER.
 		//	-. clustering.
+		//		k-means, IKM, HIKM, AIB.
 		//	-. segmentation.
+		//		Quick shift, SLIC.
 		//retval = vlfeat_main(argc, argv);
 
 		std::cout << "\nCCV library ---------------------------------------------------------" << std::endl;
 		//	-. feature analysis.
+		//		scale invariant feature transform (SIFT).
+		//		DAISY.
+		//		histogram of oriented gradients (HOG).
+		//		brightness binary feature (BBF).
 		//	-. object detection & tracking.
+		//		deformable parts model (DPM) - discriminatively trained part-based models.
+		//		stroke width transform (SWT).
+		//		tracking-learning-detection (TLD).
 		//	-. sparse coding & compressive sensing.
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		// TODO [check] >> run-time error in Windows. not correctly working.
 		//retval = ccv_main(argc, argv);
 #endif
+
+		std::cout << "\nVigra library -------------------------------------------------------" << std::endl;
+		//	-. segmentation.
+		//		seeded region growing (SRG).
+		//retval = vigra_main(argc, argv);
+
+		std::cout << "\nDarwin library ------------------------------------------------------" << std::endl;
+		//	-. machine learning.
+		//	-. probabilistic graphical model.
+		//retval = darwin_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

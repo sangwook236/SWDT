@@ -86,6 +86,9 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="andres_seeded_region_growing_lib\connected-components.hxx" />
+    <ClInclude Include="andres_seeded_region_growing_lib\marray.hxx" />
+    <ClInclude Include="andres_seeded_region_growing_lib\seeded-region-growing.hxx" />
     <ClInclude Include="efficient_graph_based_image_segmentation_lib\convolve.h" />
     <ClInclude Include="efficient_graph_based_image_segmentation_lib\disjoint-set.h" />
     <ClInclude Include="efficient_graph_based_image_segmentation_lib\filter.h" />
@@ -116,6 +119,9 @@
     <ClCompile Include="interactive_graph_cuts\interactive_graph_cuts_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="region_growing\region_growing_by_contrast.cpp" />
+    <ClCompile Include="region_growing\region_growing_main.cpp" />
+    <ClCompile Include="region_growing\region_growing_andres_seeded_region_growing.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

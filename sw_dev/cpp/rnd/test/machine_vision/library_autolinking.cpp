@@ -4,6 +4,12 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "drwnVisiond.lib")
+#pragma comment(lib, "drwnPGMd.lib")
+#pragma comment(lib, "drwnMLd.lib")
+#pragma comment(lib, "drwnIOd.lib")
+#pragma comment(lib, "drwnBased.lib")
+
 #pragma comment(lib, "opencv_calib3d243d.lib")
 #pragma comment(lib, "opencv_contrib243d.lib")
 #pragma comment(lib, "opencv_core243d.lib")
@@ -73,6 +79,12 @@
 #pragma comment(lib, "ws2_32.lib")
 
 #		else
+
+#pragma comment(lib, "drwnVision.lib")
+#pragma comment(lib, "drwnPGM.lib")
+#pragma comment(lib, "drwnML.lib")
+#pragma comment(lib, "drwnIO.lib")
+#pragma comment(lib, "drwnBase.lib")
 
 #pragma comment(lib, "opencv_calib3d243.lib")
 #pragma comment(lib, "opencv_contrib243.lib")

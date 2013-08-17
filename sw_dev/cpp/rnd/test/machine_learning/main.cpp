@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
 
 	int libsvm_main(int argc, char *argv[]);
 	int mysvm_main(int argc, char *argv[]);
+	int svm_light_main(int argc, char *argv[]);
 
 	int shogun_main(int argc, char *argv[]);
 	int torch_main(int argc, char *argv[]);
@@ -31,9 +32,18 @@ int main(int argc, char *argv[])
 		//	-. spectral clustering.
 		//retval = clustering_main(argc, argv);
 
-		std::cout << "\nsupport vector machine (SVM) ----------------------------------------" << std::endl;
+		std::cout << "\nlibsvm library ------------------------------------------------------" << std::endl;
 		//retval = libsvm_main(argc, argv);
-		//retval = mysvm_main(argc, argv);  // not yet implemented
+
+		std::cout << "\nmysvm library -------------------------------------------------------" << std::endl;
+		//retval = mysvm_main(argc, argv);  // not yet implemented.
+
+		std::cout << "\nSVM-Light library ---------------------------------------------------" << std::endl;
+		//	-. SVM struct: structured SVM.
+		//	-. SVM multiclass: multi-class SVM.
+		//	-. SVM hmm: structured SVMs for sequence tagging.
+		//	-. latent SVM struct: latent structured SVM.
+		//retval = svm_light_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nshogun library ------------------------------------------------------" << std::endl;
 		//	-. multiple kernel learning (MKL).
@@ -54,7 +64,7 @@ int main(int argc, char *argv[])
 		retval = liblearning_main(argc, argv);
 
 		std::cout << "\nreinforcement learning (RL) -----------------------------------------" << std::endl;
-		//retval = rl_glue_main(argc, argv);  // not yet implemented
+		//retval = rl_glue_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

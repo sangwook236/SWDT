@@ -116,6 +116,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="darwin\darwin_main.cpp" />
     <ClCompile Include="ivt\ivt_hough_circle_example.cpp" />
     <ClCompile Include="ivt\ivt_hough_line_example.cpp" />
     <ClCompile Include="ivt\ivt_klt_tracker_example.cpp" />
@@ -204,6 +205,11 @@
     <ClCompile Include="opencv\opencv_vector_operation.cpp" />
     <ClCompile Include="opencv\PascalVocDataset.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="vigra\vigra_main.cpp" />
+    <ClCompile Include="vigra\vigra_seeded_region_growing.cpp" />
+    <ClCompile Include="vigra\vigra_slic.cpp" />
+    <ClCompile Include="vigra\vigra_watershed.cpp" />
+    <ClCompile Include="vigra\vigra_watershed_region_growing.cpp" />
     <ClCompile Include="vlfeat\vlfeat_aib.cpp" />
     <ClCompile Include="vlfeat\vlfeat_kmeans.cpp" />
     <ClCompile Include="vlfeat\vlfeat_main.cpp" />

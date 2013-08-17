@@ -1,0 +1,4 @@
+http://svmlight.joachims.org/
+http://svmlight.joachims.org/svm_struct.html
+http://svmlight.joachims.org/svm_multiclass.html
+http://svmlight.joachims.org/svm_hmm.html

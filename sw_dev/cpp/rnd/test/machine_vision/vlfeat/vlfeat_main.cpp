@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/core/core.hpp>
+#include <opencv2/gpu/gpu.hpp>
 #include <iostream>
 
 
@@ -34,7 +35,17 @@ int vlfeat_main(int argc, char *argv[])
 	{
 		cv::theRNG();
 
-		// feature analysis -----------------------------------
+#if 0
+		if (cv::gpu::getCudaEnabledDeviceCount() > 0)
+		{
+			std::cout << "GPU info:" << std::endl;
+			cv::gpu::printShortCudaDeviceInfo(cv::gpu::getDevice());
+		}
+		else
+			std::cout << "GPU not found ..." << std::endl;
+#endif
+
+		// feature analysis -----------------------------------------
 		{
 			//my_vlfeat::sift();
 			//my_vlfeat::dense_sift();  // not yet implemented
@@ -43,7 +54,7 @@ int vlfeat_main(int argc, char *argv[])
 			//my_vlfeat::covariant_feature_detectors();  // not yet implemented
 		}
 
-		// clustering -----------------------------------------
+		// clustering -----------------------------------------------
 		{
 			//my_vlfeat::kmeans();
 			//my_vlfeat::ikm();
@@ -51,9 +62,9 @@ int vlfeat_main(int argc, char *argv[])
 			//my_vlfeat::aib();
 		}
 
-		// segmentation ---------------------------------------
+		// segmentation ---------------------------------------------
 		{
-			// simple linear iterative clustering (SLIC)
+			// simple linear iterative clustering (SLIC).
 			//my_vlfeat::slic();
 
 			my_vlfeat::quick_shift();

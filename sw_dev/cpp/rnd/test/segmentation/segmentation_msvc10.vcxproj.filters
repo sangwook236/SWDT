@@ -28,6 +28,12 @@
     <Filter Include="Source Files\interactive_graph_cuts">
       <UniqueIdentifier>{6efb5b53-5dc3-4984-a27c-363c655df342}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\region_growing">
+      <UniqueIdentifier>{d0caa876-e2a1-46da-98ce-cdbeff9f37bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\andres_seeded_region_growing_lib">
+      <UniqueIdentifier>{bf06856a-dc6e-4cdb-8f2e-d5389a2641f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -87,6 +93,15 @@
     <ClInclude Include="efficient_graph_based_image_segmentation_lib\segment-image.h">
       <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
     </ClInclude>
+    <ClInclude Include="andres_seeded_region_growing_lib\connected-components.hxx">
+      <Filter>Source Files\andres_seeded_region_growing_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="andres_seeded_region_growing_lib\marray.hxx">
+      <Filter>Source Files\andres_seeded_region_growing_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="andres_seeded_region_growing_lib\seeded-region-growing.hxx">
+      <Filter>Source Files\andres_seeded_region_growing_lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -112,6 +127,15 @@
     </ClCompile>
     <ClCompile Include="interactive_graph_cuts\interactive_graph_cuts_main.cpp">
       <Filter>Source Files\interactive_graph_cuts</Filter>
+    </ClCompile>
+    <ClCompile Include="region_growing\region_growing_main.cpp">
+      <Filter>Source Files\region_growing</Filter>
+    </ClCompile>
+    <ClCompile Include="region_growing\region_growing_andres_seeded_region_growing.cpp">
+      <Filter>Source Files\region_growing</Filter>
+    </ClCompile>
+    <ClCompile Include="region_growing\region_growing_by_contrast.cpp">
+      <Filter>Source Files\region_growing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

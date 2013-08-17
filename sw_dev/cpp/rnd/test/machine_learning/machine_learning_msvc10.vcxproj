@@ -323,6 +323,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="svm_light\svm_light_main.cpp" />
     <ClCompile Include="torch\torch_deep_learning_example.cpp" />
     <ClCompile Include="torch\torch_main.cpp" />
   </ItemGroup>

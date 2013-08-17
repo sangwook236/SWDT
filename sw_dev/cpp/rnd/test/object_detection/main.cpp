@@ -10,6 +10,7 @@
 int main(int argc, char *argv[])
 {
 	int libpabod_main(int argc, char *argv[]);
+	int object_detection_toolbox_main(int argc, char *argv[]);
 
 	int c4_main(int argc, char *argv[]);
 
@@ -17,7 +18,12 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "a LIBrary for PArt-Based Object Detection in C++ (LibPaBOD) ---------" << std::endl;
+		//	-. discriminatively trained part-based model.
 		//retval = libpabod_main(argc, argv);
+
+		std::cout << "\nObject Detection Toolbox --------------------------------------------" << std::endl;
+		//	-. structured SVM.
+		retval = object_detection_toolbox_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nC4 detector ---------------------------------------------------------" << std::endl;
 		retval = c4_main(argc, argv);

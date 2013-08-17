@@ -5,6 +5,8 @@
 #		if defined(DEBUG) || defined(_DEBUG)
 
 #pragma comment(lib, "pabod021_d.lib")
+#pragma comment(lib, "online_structured_svmd.lib")
+#pragma comment(lib, "visipediad.lib")
 #pragma comment(lib, "opencv_calib3d243d.lib")
 #pragma comment(lib, "opencv_contrib243d.lib")
 #pragma comment(lib, "opencv_core243d.lib")
@@ -28,6 +30,8 @@
 #		else
 
 #pragma comment(lib, "pabod021.lib")
+#pragma comment(lib, "online_structured_svm.lib")
+#pragma comment(lib, "visipedia.lib")
 #pragma comment(lib, "opencv_calib3d243.lib")
 #pragma comment(lib, "opencv_contrib243.lib")
 #pragma comment(lib, "opencv_core243.lib")

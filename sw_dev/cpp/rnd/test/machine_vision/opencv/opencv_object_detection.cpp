@@ -69,7 +69,7 @@ void detect_and_draw_objects(IplImage *image, CvLatentSvmDetector *detector, con
 
 // [ref]
 //	${OPENCV_HOME}/samples/c/latentsvmdetect.cpp
-//	"Object Detection with Discriminatively Trained Part Based Models", P. Felzenszwalb, R. Girshick, D. McAllester, & D. Ramanan, TPAMI, 2010.
+//	"Object Detection with Discriminatively Trained Part-Based Models", P. Felzenszwalb, R. Girshick, D. McAllester, & D. Ramanan, TPAMI, 2010.
 void latentsvmdetect_sample()
 {
 	const std::string model_filename("./data/machine_vision/opencv/object_detection/models_VOC2007/cat.xml");
@@ -91,8 +91,8 @@ void latentsvmdetect_sample()
 	}
 
 	detect_and_draw_objects(image, detector, tbbNumThreads);
-	cvNamedWindow("test", 0);
-	cvShowImage("test", image);
+	cvNamedWindow("object detection - test", 0);
+	cvShowImage("object detection - test", image);
 	cvWaitKey(0);
 
 	cvDestroyAllWindows();
@@ -187,7 +187,7 @@ void read_directory(const std::string &directoryName, std::vector<std::string> &
 
 // [ref]
 //	${OPENCV_HOME}/samples/cpp/latentsvm_multidetect.cpp
-//	"Object Detection with Discriminatively Trained Part Based Models", P. Felzenszwalb, R. Girshick, D. McAllester, & D. Ramanan, TPAMI, 2010.
+//	"Object Detection with Discriminatively Trained Part-Based Models", P. Felzenszwalb, R. Girshick, D. McAllester, & D. Ramanan, TPAMI, 2010.
 void latentsvm_multidetect_sample()
 {
 	const std::string images_directory("./data/machine_vision/opencv/object_detection");
@@ -226,7 +226,7 @@ void latentsvm_multidetect_sample()
 		std::cout << "Process image " << images_filenames[i] << std::endl;
 		detect_and_draw_objects(image, detector, colors, overlapThreshold, numThreads);
 
-		cv::imshow("result", image);
+		cv::imshow("object detection - result", image);
 
 		const int c = cv::waitKey(0);
 		if ((char)c == 'n')  // go to the next image
@@ -243,6 +243,8 @@ namespace my_opencv {
 
 void object_detection()
 {
+	//	-. discriminatively trained part-based model.
+
 	local::latentsvmdetect_sample();
 	local::latentsvm_multidetect_sample();
 }

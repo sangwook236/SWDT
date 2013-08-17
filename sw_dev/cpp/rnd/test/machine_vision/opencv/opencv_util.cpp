@@ -1123,4 +1123,111 @@ void segment_motion_using_mhi(const double timestamp, const double mhiTimeDurati
 #endif
 }
 
+void detect_boundary(const cv::Mat &bk_image, const bool use_8_connectivity, const bool use_zero_padding, cv::Mat &boundary_mask)
+{
+	cv::Mat input(bk_image.size(), bk_image.type(), cv::Scalar::all(0));
+	input.setTo(cv::Scalar::all(1), bk_image > 0);
+
+	// sum filter.
+	const int ddepth = -1;  // the output image depth. -1 to use src.depth().
+	const int kernel_size = 3;
+	const bool normalize = false;
+	cv::Mat output;
+
+	const int sum_value = use_8_connectivity ? 9 : 5;
+	if (use_8_connectivity)  // use 8-connectivity.
+	{
+		if (use_zero_padding)
+			cv::boxFilter(input, output, ddepth, cv::Size(kernel_size, kernel_size), cv::Point(-1, -1), normalize, cv::BORDER_CONSTANT);
+		else
+			cv::boxFilter(input, output, ddepth, cv::Size(kernel_size, kernel_size), cv::Point(-1, -1), normalize, cv::BORDER_REPLICATE);
+	}
+	else  // use 4-connectivity.
+	{
+		cv::Mat kernel(kernel_size, kernel_size, CV_8UC1, cv::Scalar::all(1));
+		kernel.at<unsigned char>(0, 0) = 0; kernel.at<unsigned char>(0, 2) = 0;
+		kernel.at<unsigned char>(2, 0) = 0; kernel.at<unsigned char>(2, 2) = 0;
+
+		if (use_zero_padding)
+			cv::filter2D(input, output, ddepth, kernel, cv::Point(-1, -1), normalize, cv::BORDER_CONSTANT);
+		else
+			cv::filter2D(input, output, ddepth, kernel, cv::Point(-1, -1), normalize, cv::BORDER_REPLICATE);
+	}
+
+	// 0 if a pixel is in outer region.
+	// 1 if a pixel is on outer boundary.
+	// 2 if a pixel is on inner boundary.
+	// 3 if a pixel is in inner region.
+
+	boundary_mask.setTo(cv::Scalar::all(0));
+	boundary_mask.setTo(cv::Scalar::all(1), 0 < output & output < sum_value & 0 == input);
+	boundary_mask.setTo(cv::Scalar::all(2), 0 < output & output < sum_value & 1 == input);
+	boundary_mask.setTo(cv::Scalar::all(3), sum_value == output & 1 == input);
+}
+
+void util()
+{
+	if (true)
+	{
+#if 0
+		cv::Mat bk_img(100, 100, CV_8UC1, cv::Scalar::all(0));
+		cv::rectangle(bk_img, cv::Point(10, 10), cv::Point(49, 29), CV_RGB(255, 255, 255), CV_FILLED, 8, 0);
+		cv::rectangle(bk_img, cv::Point(60, 70), cv::Point(99, 99), CV_RGB(255, 255, 255), CV_FILLED, 8, 0);
+
+		// the number of pixels on outer boundary:
+		//  8 connectivity	zero padding        rectangle 1					rectangle 2					total
+		//	O				O					2 * (42 + 22) - 4 = 124		(41 + 31) - 1 = 71			195
+		//	O				X					2 * (42 + 22) - 4 = 124		(41 + 31) - 1 = 71			195
+		//	X				O					2 * (40 + 20) = 120			(40 + 30) = 70				190
+		//	X				X					2 * (40 + 20) = 120			(40 + 30) = 70				190
+
+		// the number of pixels on inner boundary:
+		//  8 connectivity	zero padding        rectangle 1					rectangle 2					total
+		//	O				O					2 * (40 + 20) - 4 = 116		2 * (40 + 30) - 4 = 136		252
+		//	O				X					2 * (40 + 20) - 4 = 116		(40 + 30) - 1 = 69			185
+		//	X				O					2 * (40 + 20) - 4 = 116		2 * (40 + 30) - 4 = 136		252
+		//	X				X					2 * (40 + 20) - 4 = 116		(40 + 30) - 1 = 69			185
+
+		const bool use_8_connectivity = true;
+		const bool use_zero_padding = false;
+		cv::Mat boundary_mask(bk_img.size(), CV_8UC1);
+		detect_boundary(bk_img, use_8_connectivity, use_zero_padding, boundary_mask);
+
+		const int outer_boundary_count = cv::countNonZero(1 == boundary_mask);
+		const int inner_boundary_count = cv::countNonZero(2 == boundary_mask);
+
+		std::cout << "the number of pixels on outer boundary = " << outer_boundary_count << std::endl;
+		std::cout << "the number of pixels on inner boundary = " << inner_boundary_count << std::endl;
+
+#else
+		cv::Mat bk_img(100, 100, CV_8UC1, cv::Scalar::all(0));
+		cv::rectangle(bk_img, cv::Point(10, 10), cv::Point(30, 30), CV_RGB(255, 255, 255), CV_FILLED, 8, 0);
+		cv::rectangle(bk_img, cv::Point(50, 50), cv::Point(80, 80), CV_RGB(255, 255, 255), CV_FILLED, 8, 0);
+		cv::rectangle(bk_img, cv::Point(60, 70), cv::Point(100, 100), CV_RGB(255, 255, 255), CV_FILLED, 8, 0);
+		cv::circle(bk_img, cv::Point(70, 20), 20, CV_RGB(255, 255, 255), CV_FILLED, 8, 0);
+
+		const bool use_8_connectivity = true;
+		const bool use_zero_padding = false;
+		cv::Mat boundary_mask(bk_img.size(), CV_8UC1);
+		detect_boundary(bk_img, use_8_connectivity, use_zero_padding, boundary_mask);
+
+		// display.
+		cv::Mat output(bk_img.size(), CV_8UC3, cv::Scalar::all(0));
+		output.setTo(cv::Scalar(0, 0, 255), 1 == boundary_mask);
+		output.setTo(cv::Scalar(0, 255, 0), 2 == boundary_mask);
+		output.setTo(cv::Scalar(255, 255, 255), 3 == boundary_mask);
+
+		cv::imshow("boundary detection - input", bk_img);
+		cv::imshow("boundary detection - outer", output);
+		cv::imshow("boundary detection - outer boundary", 1 == boundary_mask & 0 == bk_img);
+		cv::imshow("boundary detection - inner boundary", 2 == boundary_mask & bk_img > 0);
+		cv::imshow("boundary detection - inner & outer boundary", (1 == boundary_mask & 0 == bk_img) | (2 == boundary_mask & bk_img > 0));
+#endif
+	}
+
+	cv::waitKey(0);
+
+	cv::destroyAllWindows();
+}
+
 }  // namespace my_opencv

@@ -233,29 +233,29 @@ int interactive_graph_cuts_main(int argc, char *argv[])
 	try
 	{
 #if 0
-		const std::string input_image_filename("./data/search_algorithm/lattice_1.png");
-		//const std::string input_image_filename("./data/search_algorithm/lattice_2.png");
-		const std::string foreground_mask_filename("./data/search_algorithm/lattice_foreground.png");
-		const std::string background_mask_filename("./data/search_algorithm/lattice_background_1.png");
-		//const std::string background_mask_filename("./data/search_algorithm/lattice_background_2.png");
+		const std::string input_image_filename("./data/segmentation/lattice_1.png");
+		//const std::string input_image_filename("./data/segmentation/lattice_2.png");
+		const std::string foreground_mask_filename("./data/segmentation/lattice_foreground.png");
+		const std::string background_mask_filename("./data/segmentation/lattice_background_1.png");
+		//const std::string background_mask_filename("./data/segmentation/lattice_background_2.png");
 #elif 0
-		const std::string input_image_filename("./data/search_algorithm/lattice_small_1.png");
-		//const std::string input_image_filename("./data/search_algorithm/lattice_small_2.png");
-		const std::string foreground_mask_filename("./data/search_algorithm/lattice_small_foreground.png");
-		const std::string background_mask_filename("./data/search_algorithm/lattice_small_background_1.png");
-		//const std::string background_mask_filename("./data/search_algorithm/lattice_small_background_2.png");
+		const std::string input_image_filename("./data/segmentation/lattice_small_1.png");
+		//const std::string input_image_filename("./data/segmentation/lattice_small_2.png");
+		const std::string foreground_mask_filename("./data/segmentation/lattice_small_foreground.png");
+		const std::string background_mask_filename("./data/segmentation/lattice_small_background_1.png");
+		//const std::string background_mask_filename("./data/segmentation/lattice_small_background_2.png");
 #elif 0
-		const std::string input_image_filename("./data/search_algorithm/brain.png");
-		//const std::string foreground_mask_filename("./data/search_algorithm/brain_foreground_1.png");
-		const std::string foreground_mask_filename("./data/search_algorithm/brain_foreground_2.png");
-		//const std::string background_mask_filename("./data/search_algorithm/brain_background_1.png");
-		const std::string background_mask_filename("./data/search_algorithm/brain_background_2.png");
+		const std::string input_image_filename("./data/segmentation/brain.png");
+		//const std::string foreground_mask_filename("./data/segmentation/brain_foreground_1.png");
+		const std::string foreground_mask_filename("./data/segmentation/brain_foreground_2.png");
+		//const std::string background_mask_filename("./data/segmentation/brain_background_1.png");
+		const std::string background_mask_filename("./data/segmentation/brain_background_2.png");
 #elif 1
-		const std::string input_image_filename("./data/search_algorithm/brain_small.png");
-		//const std::string foreground_mask_filename("./data/search_algorithm/brain_small_foreground_1.png");
-		const std::string foreground_mask_filename("./data/search_algorithm/brain_small_foreground_2.png");
-		//const std::string background_mask_filename("./data/search_algorithm/brain_small_background_1.png");
-		const std::string background_mask_filename("./data/search_algorithm/brain_small_background_2.png");
+		const std::string input_image_filename("./data/segmentation/brain_small.png");
+		//const std::string foreground_mask_filename("./data/segmentation/brain_small_foreground_1.png");
+		const std::string foreground_mask_filename("./data/segmentation/brain_small_foreground_2.png");
+		//const std::string background_mask_filename("./data/segmentation/brain_small_background_1.png");
+		const std::string background_mask_filename("./data/segmentation/brain_small_background_2.png");
 #endif
 
 		const cv::Mat input_img(cv::imread(input_image_filename, CV_LOAD_IMAGE_GRAYSCALE));

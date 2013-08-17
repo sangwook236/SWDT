@@ -31,6 +31,12 @@
     <Filter Include="Source Files\vxl">
       <UniqueIdentifier>{828ad0ca-8e01-4985-97f1-5f7cf7ae93c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\darwin">
+      <UniqueIdentifier>{02c7ed46-fb30-4a65-affa-6752d82b97d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vigra">
+      <UniqueIdentifier>{71565af5-7e93-40d8-aef5-4737ddb215e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -365,6 +371,24 @@
     </ClCompile>
     <ClCompile Include="opencv\opencv_active_contour_model.cpp">
       <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="darwin\darwin_main.cpp">
+      <Filter>Source Files\darwin</Filter>
+    </ClCompile>
+    <ClCompile Include="vigra\vigra_main.cpp">
+      <Filter>Source Files\vigra</Filter>
+    </ClCompile>
+    <ClCompile Include="vigra\vigra_seeded_region_growing.cpp">
+      <Filter>Source Files\vigra</Filter>
+    </ClCompile>
+    <ClCompile Include="vigra\vigra_slic.cpp">
+      <Filter>Source Files\vigra</Filter>
+    </ClCompile>
+    <ClCompile Include="vigra\vigra_watershed.cpp">
+      <Filter>Source Files\vigra</Filter>
+    </ClCompile>
+    <ClCompile Include="vigra\vigra_watershed_region_growing.cpp">
+      <Filter>Source Files\vigra</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

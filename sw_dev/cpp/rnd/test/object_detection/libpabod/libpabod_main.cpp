@@ -75,7 +75,7 @@ namespace my_libpabod {
 
 int libpabod_main(int argc, char *argv[])
 {
-	// [ref] "Object Detection with Discriminatively Trained Part Based Models", P. Felzenszwalb, R. Girshick, D. McAllester, & D. Ramanan, TPAMI, 2010.
+	// [ref] "Object Detection with Discriminatively Trained Part-Based Models", P. Felzenszwalb, R. Girshick, D. McAllester, & D. Ramanan, TPAMI, 2010.
 
 	local::simple_example();
 
