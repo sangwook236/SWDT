@@ -42,6 +42,7 @@
 			<Add library="shogun" />
 			<Add library="nlopt" />
 			<Add library="boost_timer" />
+			<Add library="lapack" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="clustering/clustering_k_medoids.cpp" />
@@ -145,6 +146,7 @@
 		<Unit filename="shogun/shogun_regression_gaussian_process_product_example.cpp" />
 		<Unit filename="shogun/shogun_regression_gaussian_process_simple_exact_example.cpp" />
 		<Unit filename="shogun/shogun_regression_gaussian_process_sum_example.cpp" />
+		<Unit filename="svm_light/svm_light_main.cpp" />
 		<Unit filename="torch/torch_deep_learning_example.cpp" />
 		<Unit filename="torch/torch_main.cpp" />
 		<Extensions>

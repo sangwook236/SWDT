@@ -34,10 +34,11 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="greedy_projection.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="pcl_visualization.cpp" />
-		<Unit filename="resampling.cpp" />
+		<Unit filename="pcl/pcl_greedy_projection.cpp" />
+		<Unit filename="pcl/pcl_main.cpp" />
+		<Unit filename="pcl/pcl_resampling.cpp" />
+		<Unit filename="pcl/pcl_visualization.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

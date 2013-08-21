@@ -48,6 +48,9 @@
 			<Add directory="/usr/local/lib" />
 			<Add directory="/usr/local/cuda/lib64" />
 		</Linker>
+		<Unit filename="andres_seeded_region_growing_lib/connected-components.hxx" />
+		<Unit filename="andres_seeded_region_growing_lib/marray.hxx" />
+		<Unit filename="andres_seeded_region_growing_lib/seeded-region-growing.hxx" />
 		<Unit filename="efficient_graph_based_image_segmentation/efficient_graph_based_image_segmentation_main.cpp" />
 		<Unit filename="efficient_graph_based_image_segmentation_lib/convolve.h" />
 		<Unit filename="efficient_graph_based_image_segmentation_lib/disjoint-set.h" />
@@ -77,6 +80,9 @@
 		<Unit filename="gslic_lib/cudaUtil.h" />
 		<Unit filename="interactive_graph_cuts/interactive_graph_cuts_main.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="region_growing/region_growing_andres_seeded_region_growing.cpp" />
+		<Unit filename="region_growing/region_growing_by_contrast.cpp" />
+		<Unit filename="region_growing/region_growing_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

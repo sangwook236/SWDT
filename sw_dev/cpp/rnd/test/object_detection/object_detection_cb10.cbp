@@ -53,6 +53,7 @@
 		<Unit filename="c4_lib/mdarray.h" />
 		<Unit filename="libpabod/libpabod_main.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="object_detection_toolbox/object_detection_toolbox_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

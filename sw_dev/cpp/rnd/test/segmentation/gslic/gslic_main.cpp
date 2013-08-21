@@ -200,7 +200,6 @@ void create_superpixel_boundary(const cv::Mat &superpixel_mask, cv::Mat &superpi
 
 int gslic_main(int argc, char *argv[])
 {
-	bool canUseGPU = false;
 	try
 	{
 		cv::theRNG();
@@ -208,7 +207,6 @@ int gslic_main(int argc, char *argv[])
 #if 1
 		if (cv::gpu::getCudaEnabledDeviceCount() > 0)
 		{
-			canUseGPU = true;
 			std::cout << "GPU info:" << std::endl;
 			cv::gpu::printShortCudaDeviceInfo(cv::gpu::getDevice());
 		}

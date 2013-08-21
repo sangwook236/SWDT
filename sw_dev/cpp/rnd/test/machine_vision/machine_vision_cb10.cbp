@@ -113,6 +113,7 @@
 		<Unit filename="ccv/ccv_main.cpp" />
 		<Unit filename="ccv/ccv_sift.cpp" />
 		<Unit filename="ccv/ccv_tld.cpp" />
+		<Unit filename="darwin/darwin_main.cpp" />
 		<Unit filename="ivt/ParticleFilter2D.cpp" />
 		<Unit filename="ivt/ParticleFilter2D.h" />
 		<Unit filename="ivt/ParticleFilter3D.cpp" />
@@ -203,6 +204,11 @@
 		<Unit filename="opencv/opencv_util.cpp" />
 		<Unit filename="opencv/opencv_vector_operation.cpp" />
 		<Unit filename="opencv/vehicle_classification.h" />
+		<Unit filename="vigra/vigra_main.cpp" />
+		<Unit filename="vigra/vigra_seeded_region_growing.cpp" />
+		<Unit filename="vigra/vigra_slic.cpp" />
+		<Unit filename="vigra/vigra_watershed.cpp" />
+		<Unit filename="vigra/vigra_watershed_region_growing.cpp" />
 		<Unit filename="vlfeat/generic-driver.h" />
 		<Unit filename="vlfeat/vlfeat_aib.cpp" />
 		<Unit filename="vlfeat/vlfeat_kmeans.cpp" />
