@@ -10,17 +10,17 @@
     <ClCompile Include="cgal\cgal_main.cpp">
       <Filter>Source Files\cgal</Filter>
     </ClCompile>
-    <ClCompile Include="cgal\polygon.cpp">
-      <Filter>Source Files\cgal</Filter>
-    </ClCompile>
     <ClCompile Include="openmesh\openmesh_main.cpp">
-      <Filter>Source Files\openmesh</Filter>
-    </ClCompile>
-    <ClCompile Include="openmesh\simple_object.cpp">
       <Filter>Source Files\openmesh</Filter>
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cgal\cgal_polygon.cpp">
+      <Filter>Source Files\cgal</Filter>
+    </ClCompile>
+    <ClCompile Include="openmesh\openmesh_simple_object.cpp">
+      <Filter>Source Files\openmesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

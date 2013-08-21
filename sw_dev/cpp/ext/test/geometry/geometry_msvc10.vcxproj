@@ -93,11 +93,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cgal\cgal_main.cpp" />
-    <ClCompile Include="cgal\polygon.cpp" />
+    <ClCompile Include="cgal\cgal_polygon.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openmesh\openmesh_main.cpp" />
-    <ClCompile Include="openmesh\simple_object.cpp" />
+    <ClCompile Include="openmesh\openmesh_simple_object.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
