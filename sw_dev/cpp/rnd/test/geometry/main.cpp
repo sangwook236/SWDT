@@ -4,26 +4,20 @@
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
+#include <ctime>
 
-
-namespace my_pcl {
-
-void resampling();
-void greedy_projection();
-void pcl_visualization(int argc, char **argv);
-
-}  // namespace my_pcl
 
 int main(int argc, char *argv[])
 {
+	int pcl_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		// tutorials
-		//my_pcl::resampling();
-		my_pcl::greedy_projection();
+		std::srand((unsigned int)std::time(NULL));
 
-		//my_pcl::pcl_visualization(argc, argv);
+		std::cout << "Point Cloud Library (PCL) -------------------------------------------" << std::endl;
+		pcl_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

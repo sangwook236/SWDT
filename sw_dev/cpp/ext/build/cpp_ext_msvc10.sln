@@ -32,7 +32,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plotting", "..\test\plottin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gpu_computation", "..\test\gpu_computation\gpu_computation_msvc10.vcxproj", "{05AC83E8-E05E-46BA-8C19-CED811F98BC9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "computational_geometry", "..\test\computational_geometry\computational_geometry_msvc10.vcxproj", "{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometry", "..\test\geometry\geometry_msvc10.vcxproj", "{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "linear_algebra", "..\test\linear_algebra\linear_algebra_msvc10.vcxproj", "{3579293C-0569-4053-B4D1-8C5668A92557}"
 EndProject

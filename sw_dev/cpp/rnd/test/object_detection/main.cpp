@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nObject Detection Toolbox --------------------------------------------" << std::endl;
 		//	-. structured SVM.
-		retval = object_detection_toolbox_main(argc, argv);  // not yet implemented.
+		//retval = object_detection_toolbox_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nC4 detector ---------------------------------------------------------" << std::endl;
 		retval = c4_main(argc, argv);

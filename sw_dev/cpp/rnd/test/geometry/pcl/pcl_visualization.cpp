@@ -264,7 +264,7 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> meshesVis2(pcl::PointCloud<
 
 namespace my_pcl {
 
-void pcl_visualization(int argc, char **argv)
+void visualization(int argc, char **argv)
 {
 	// --------------------------------------
 	// -----Parse Command Line Arguments-----

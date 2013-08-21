@@ -2,14 +2,14 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="computational_geometry" />
+		<Option title="geometry" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/computational_geometry_d" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/geometry_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
-				<Option object_output="obj/Debug/" />
+				<Option object_output="./Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -17,9 +17,9 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="../../bin/computational_geometry" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/geometry" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
-				<Option object_output="obj/Release/" />
+				<Option object_output="./Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -33,25 +33,11 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add option="-DUNICODE" />
-			<Add option="-D_UNICODE" />
 		</Compiler>
-		<Linker>
-			<Add library="CGAL" />
-			<Add library="CGAL_Core" />
-			<Add library="CGAL_ImageIO" />
-			<Add library="CGAL_Qt4" />
-			<Add library="gmp" />
-			<Add library="mpfr" />
-			<Add library="mpfi" />
-			<Add library="OpenMeshCore" />
-			<Add library="OpenMeshTools" />
-		</Linker>
-		<Unit filename="cgal/cgal_main.cpp" />
-		<Unit filename="cgal/polygon.cpp" />
+		<Unit filename="greedy_projection.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="openmesh/openmesh_main.cpp" />
-		<Unit filename="openmesh/simple_object.cpp" />
+		<Unit filename="pcl_visualization.cpp" />
+		<Unit filename="resampling.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
