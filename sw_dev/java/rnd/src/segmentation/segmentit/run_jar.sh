@@ -12,14 +12,11 @@ export PATH=/home/sangwook/work_center/sw_dev/java/ext/bin:$PATH
 
 export LOCAL_LIB_PATH=/usr/local/lib
 
-#export CLASSPATH=.:$LOCAL_LIB_PATH/<jar-file>:$CLASSPATH
+#export CLASSPATH=.:$LOCAL_LIB_PATH/SegmentIt_1.0.3.jar:$CLASSPATH
 
 #export MAX_JAVA_MEMORY=800
 #export HEAP_OPTION=-Xms4096m -Xmx8192m
 
 # ---------------------------------------------------------
 
-java $HEAP_OPTION -jar $LOCAL_LIB_PATH/<runnable-jar-file> <class-name>
-
-# error ---------------------------------------------------
-#java $HEAP_OPTION -jar $LIB_PATH/<non-runnable-jar-file>
+java $HEAP_OPTION -jar SegmentIt_1.0.3.jar
