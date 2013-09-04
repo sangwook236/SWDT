@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #define CHRONO
 #include "../fast_bilateral_filter_lib/linear_bf.h"
+#include "../fast_bilateral_filter_lib/fast_lbf.h"
 //#define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
 #include <algorithm>
@@ -45,8 +46,8 @@ void fast_bilateral_filter_example()
 		return;
 	}
 #else
-	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/building.ppm");
-	const std::string input_filename("./data/signal_processing/fast_bilateral_filter/dome.ppm");
+	const std::string input_filename("./data/signal_processing/fast_bilateral_filter/building.ppm");
+	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/dome.ppm");
 	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/dragon_hires.ppm");
 	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/dragon_lores.ppm");
 	//const std::string input_filename("./data/signal_processing/fast_bilateral_filter/flower.ppm");
@@ -127,6 +128,7 @@ void fast_bilateral_filter_example()
 	image_type filtered_image(width, height);
 	FFT::Support_3D::set_fftw_flags(FFTW_ESTIMATE);
 	Image_filter::linear_BF(image, sigma_s, sigma_r, sampling_s, sampling_r, &filtered_image);
+	//Image_filter::fast_LBF(image, sigma_s, sigma_r, &filtered_image);  // fast linear bilateral filter.
 
 	std::cout << "Filtering done" << std::endl;
 

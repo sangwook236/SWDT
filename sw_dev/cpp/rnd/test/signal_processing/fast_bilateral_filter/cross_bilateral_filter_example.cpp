@@ -2,6 +2,7 @@
 #define CHRONO
 #include "../fast_bilateral_filter_lib/geom.h"
 #include "../fast_bilateral_filter_lib/fast_lbf.h"
+#include "../fast_bilateral_filter_lib/linear_bf.h"
 //#define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
 #include <algorithm>
@@ -191,10 +192,10 @@ void cross_bilateral_filter_example()
 	
 	const std::string output_filename("./data/signal_processing/fast_bilateral_filter/cross_bf_output.ppm");
 	
-	//const std::string edge_filename("./data/signal_processing/fast_bilateral_filter/edge.ppm");
-	const std::string edge_filename;
+	//const std::string high_freq_filename("./data/signal_processing/fast_bilateral_filter/high_freq_image.ppm");
+	const std::string high_freq_filename;
 	
-	const double sigma_s = 16;  // space sigma.
+	const double sigma_s = 5;  // space sigma.
 	const double sigma_r = 0.1;  // range sigma.
 #endif
 
@@ -221,7 +222,7 @@ void cross_bilateral_filter_example()
 		return;
 	}
 
-	image_type image(width, height);
+	image_type input_image(width, height);
 
 	char ch;
 	ppm_in.get(ch);  // Trailing white space.
@@ -239,7 +240,7 @@ void cross_bilateral_filter_example()
 			const unsigned char G = static_cast<unsigned char>(g);
 			const unsigned char B = static_cast<unsigned char>(b);
 
-			image(x, y) = (20.0 * R + 40.0 * G + 1.0 * B) / (61.0 * 255.0); 
+			input_image(x, y) = (20.0 * R + 40.0 * G + 1.0 * B) / (61.0 * 255.0); 
 		}
 	}
 
@@ -249,20 +250,27 @@ void cross_bilateral_filter_example()
 
 	//---------------------------------------------------------------
 
-	image_type edge(width, height);
-	cv::Mat edge_img;
-	if (!edge_filename.empty())
-	{
-		std::cout << "Load the edge image '" << edge_filename << "'... " << std::flush;
+	// image with high-frequency components like edges.
+	image_type high_freq_image(width, height);
+	cv::Mat high_freq_img;
+#if 0
+	// CAUTION [] >>
+	//	an edge image is not sufficient to play a role in a high-frequency image, because it makes regions except for edges over-blurred.
 
-		std::ifstream ppm_in2(edge_filename.c_str(), std::ios::binary);
+	const bool use_high_freq_image = true;
+
+	if (!high_freq_filename.empty())
+	{
+		std::cout << "Load the high-frequency image '" << high_freq_filename << "'... " << std::flush;
+
+		std::ifstream ppm_in2(high_freq_filename.c_str(), std::ios::binary);
 
 		ppm_in2.get(magic_number[0]);
 		ppm_in2.get(magic_number[1]);
 
 		if (magic_number != std::string("P6"))
 		{
-			std::cerr << "error: unrecognized file format\n" << edge_filename << " is not a PPM file.\n" << std::endl;
+			std::cerr << "error: unrecognized file format\n" << high_freq_filename << " is not a PPM file.\n" << std::endl;
 			return;
 		}
 
@@ -277,13 +285,13 @@ void cross_bilateral_filter_example()
 		if ((width2 != width) || (height2 != height))
 		{
 			std::cerr << "error: image size don't match" << std::endl
-				<< "input: " << width << " x " << height << std::endl
-				<< "edge:  " << width2 << " x " << height2 << std::endl;
+				<< "input image: " << width << " x " << height << std::endl
+				<< "high-frequency image:  " << width2 << " x " << height2 << std::endl;
 			return;
 		}
 
 		ppm_in.get(ch);  // Trailing white space.
-		edge_img = cv::Mat::zeros(height, width, CV_8UC1);
+		high_freq_img = cv::Mat::zeros(height, width, CV_8UC1);
 		for (unsigned y = 0; y < height; ++y)
 		{
 			for (unsigned x = 0; x < width; ++x)
@@ -296,9 +304,9 @@ void cross_bilateral_filter_example()
 				const unsigned char G = static_cast<unsigned char>(g);
 				const unsigned char B = static_cast<unsigned char>(b);
 
-				edge(x, y) = (20.0 * R + 40.0 * G + 1.0 * B) / (61.0 * 255.0); 
+				high_freq_image(x, y) = (20.0 * R + 40.0 * G + 1.0 * B) / (61.0 * 255.0); 
 
-				edge_img.at<unsigned char>(y, x) = (unsigned char)cvRound(edge(x, y) * 255.0);
+				high_freq_img.at<unsigned char>(y, x) = (unsigned char)cvRound(high_freq_image(x, y) * 255.0);
 			}
 		}
 
@@ -308,7 +316,7 @@ void cross_bilateral_filter_example()
 	{
 		const cv::Mat input_img = cv::imread(input_filename);
 		cv::Mat gray_img(input_img.size(), CV_8UC1);
-		//edge_img = cv::Mat::zeros(input_img.size(), CV_8UC1);
+		//high_freq_img = cv::Mat::zeros(input_img.size(), CV_8UC1);
 
 		for (unsigned y = 0; y < height; ++y)
 		{
@@ -326,74 +334,91 @@ void cross_bilateral_filter_example()
 			local::smooth_image(gray_img, tmp);
 
 			// detect edge.
-			local::detect_edge(tmp, edge_img);
+			local::detect_edge(tmp, high_freq_img);
 
 			for (unsigned y = 0; y < height; ++y)
 				for (unsigned x = 0; x < width; ++x)
-					edge(x, y) = edge_img.at<unsigned char>(y, x) / 255.0;
+					high_freq_image(x, y) = high_freq_img.at<unsigned char>(y, x) / 255.0;
 		}
 	}
+#else
+	// FIXME [implement] >> use high-frequency image.
+
+	const bool use_high_freq_image = false;
+#endif
 
 	std::cout << "Done" << std::endl;
 
-	std::cout << "sigma_s    = " << sigma_s << std::endl;
-	std::cout << "sigma_r    = " << sigma_r << std::endl;
+	std::cout << "sigma_s = " << sigma_s << std::endl;
+	std::cout << "sigma_r = " << sigma_r << std::endl;
 
 	//---------------------------------------------------------------
 
 	std::cout << "Filter the image... " << std::endl;
 
 	image_type filtered_image(width, height);
-	Image_filter::fast_LBF(image, edge, sigma_s, sigma_r, false, &filtered_image, &filtered_image);
+	if (use_high_freq_image)
+	{
+		//Image_filter::linear_BF(input_image, high_freq_image, sigma_s, sigma_r, sigma_s, sigma_r, false, &filtered_image);  // compile-time error.
+		Image_filter::fast_LBF(input_image, high_freq_image, sigma_s, sigma_r, false, &filtered_image, &filtered_image);  // fast linear bilateral filter.
+	}
+	else
+	{
+		FFT::Support_3D::set_fftw_flags(FFTW_ESTIMATE);
+		//Image_filter::linear_BF(input_image, sigma_s, sigma_r, &filtered_image);
+		Image_filter::fast_LBF(input_image, sigma_s, sigma_r, &filtered_image);  // fast linear bilateral filter.
+	}
 
 	std::cout << "Filtering done" << std::endl;
 
 	//---------------------------------------------------------------
 
-	std::cout << "Write the output image '" << output_filename << "'... " << std::flush;
-
-	std::ofstream ppm_out(output_filename.c_str(), std::ios::binary);
-
-	ppm_out << "P6";
-	ppm_out << ' ';
-	ppm_out << width;
-	ppm_out << ' ';
-	ppm_out << height;
-	ppm_out << ' ';
-	ppm_out << "255";
-	ppm_out << std::endl;
-
-	for (unsigned y = 0; y < height; ++y)
 	{
-		for (unsigned x = 0; x < width; ++x)
+		std::cout << "Write the output image '" << output_filename << "'... " << std::flush;
+
+		std::ofstream ppm_out(output_filename.c_str(), std::ios::binary);
+
+		ppm_out << "P6";
+		ppm_out << ' ';
+		ppm_out << width;
+		ppm_out << ' ';
+		ppm_out << height;
+		ppm_out << ' ';
+		ppm_out << "255";
+		ppm_out << std::endl;
+
+		for (unsigned y = 0; y < height; ++y)
 		{
-			const double R = filtered_image(x, y) * 255.0;
-			const double G = filtered_image(x, y) * 255.0;
-			const double B = filtered_image(x, y) * 255.0;
+			for (unsigned x = 0; x < width; ++x)
+			{
+				const double R = filtered_image(x, y) * 255.0;
+				const double G = filtered_image(x, y) * 255.0;
+				const double B = filtered_image(x, y) * 255.0;
 
-			const char r = static_cast<unsigned char>(Math_tools::clamp(0.0, 255.0, R));
-			const char g = static_cast<unsigned char>(Math_tools::clamp(0.0, 255.0, G));
-			const char b = static_cast<unsigned char>(Math_tools::clamp(0.0, 255.0, B));
+				const char r = static_cast<unsigned char>(Math_tools::clamp(0.0, 255.0, R));
+				const char g = static_cast<unsigned char>(Math_tools::clamp(0.0, 255.0, G));
+				const char b = static_cast<unsigned char>(Math_tools::clamp(0.0, 255.0, B));
 
-			ppm_out << r << g << b;
+				ppm_out << r << g << b;
+			}
 		}
+
+		ppm_out.flush();
+		ppm_out.close();
+
+		std::cout << "Done" << std::endl;
 	}
-
-	ppm_out.flush();
-	ppm_out.close();
-
-	std::cout << "Done" << std::endl;
 
 	//---------------------------------------------------------------
 
 	{
-		const cv::Mat input_image = cv::imread(input_filename);
-		const cv::Mat output_image = cv::imread(output_filename);
+		const cv::Mat input_img = cv::imread(input_filename);
+		const cv::Mat output_img = cv::imread(output_filename);
 
-		cv::imshow("cross bilateral filter - input", input_image);
-		cv::imshow("cross bilateral filter - output", output_image);
-		if (!edge_img.empty())
-			cv::imshow("cross bilateral filter - edge", edge_img);
+		cv::imshow("cross bilateral filter - input", input_img);
+		cv::imshow("cross bilateral filter - output", output_img);
+		if (!high_freq_img.empty())
+			cv::imshow("cross bilateral filter - high-frequency", high_freq_img);
 
 		cv::waitKey(0);
 		cv::destroyAllWindows();

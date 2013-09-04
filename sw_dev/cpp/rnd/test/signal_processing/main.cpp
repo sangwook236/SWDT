@@ -19,10 +19,10 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "fast bilateral filter algorithm -------------------------------------" << std::endl;
-		//retval = fast_bilateral_filter_main(argc, argv);
+		retval = fast_bilateral_filter_main(argc, argv);
 
 		std::cout << "\nNYU Depth Toolbox V2 ------------------------------------------------" << std::endl;
-		retval = nyu_depth_toolbox_v2_main(argc, argv);
+		//retval = nyu_depth_toolbox_v2_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

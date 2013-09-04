@@ -2,10 +2,10 @@
 #define CBF_H_
 
 #define NUM_SCALES 3
-//#define IMG_HEIGHT 427
-//#define IMG_WIDTH 561
-#define IMG_HEIGHT 480
-#define IMG_WIDTH 640
+#define IMG_HEIGHT 427
+#define IMG_WIDTH 561
+//#define IMG_HEIGHT 480
+//#define IMG_WIDTH 640
 
 typedef unsigned char uint8_t;
 

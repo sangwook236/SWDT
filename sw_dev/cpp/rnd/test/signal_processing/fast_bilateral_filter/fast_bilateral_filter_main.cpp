@@ -28,7 +28,7 @@ void depth_filling_cross_bilateral_filter();
 int fast_bilateral_filter_main(int argc, char *argv[])
 {
 	// fast bilateral filter.
-	my_fast_bilateral_filter::fast_bilateral_filter_example();
+	//my_fast_bilateral_filter::fast_bilateral_filter_example();
 
 	// truncated kernel bilateral filter.
 	//my_fast_bilateral_filter::truncated_kernel_bilateral_filter_example();
@@ -38,15 +38,18 @@ int fast_bilateral_filter_main(int argc, char *argv[])
 
 	// joint/cross bilateral filter.
 	// FIXME [fix] >> not correctly working.
-	//	-. edge image may be improper. depth image is likely to be used.
-	//my_fast_bilateral_filter::cross_bilateral_filter_example();
+	//	-. parameters have to be adjusted.
+	//		filtering is sensitive to parameters.
+	//	-. edge image may be not proper.
+	my_fast_bilateral_filter::cross_bilateral_filter_example();
 
 	//------------------------------------------------------------------
 	// extension
 
 	// depth-filling joint/cross bilateral filter.
 	// FIXME [fix] >> not correctly working.
-	//	additional implementation is required.
+	//	-. additional implementation is required.
+	//		depth impainting logic.
 	//my_fast_bilateral_filter::depth_filling_cross_bilateral_filter();
 
 	return 0;

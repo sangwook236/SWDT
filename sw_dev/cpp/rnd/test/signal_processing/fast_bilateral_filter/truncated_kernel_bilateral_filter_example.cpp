@@ -120,7 +120,7 @@ void truncated_kernel_bilateral_filter_example()
 	std::cout << "Filter the image... " << std::endl;
 
 	image_type filtered_image(width, height);
-	Image_filter::fast_LBF(image, image, sigma_s, sigma_r, false, &filtered_image, &filtered_image);
+	Image_filter::fast_LBF(image, image, sigma_s, sigma_r, false, &filtered_image, &filtered_image);  // fast linear bilateral filter.
 
 	std::cout << "Filtering done" << std::endl;
 

@@ -30,10 +30,10 @@ void seeded_region_growing_example()
 	// calculate Euclidean distance transform.
 	vigra::distanceTransform(points, dist, 0, 2);
 
-	// init statistics functor
+	// init statistics functor.
 	vigra::ArrayOfRegionStatistics<vigra::SeedRgDirectValueFunctor<float> > stats(max_region_label);
 
-	// find voronoi region of each point (the point image is overwritten with the voronoi region labels).
+	// find Voronoi region of each point (the point image is overwritten with the Voronoi region labels).
 	{
 		boost::timer::auto_cpu_timer timer;
 #if 0

@@ -65,6 +65,8 @@ int main(int argc, char *argv[])
 		std::cout << "\nVigra library -------------------------------------------------------" << std::endl;
 		//	-. segmentation.
 		//		seeded region growing (SRG).
+		//		watershed region growing.
+		//		simple linear iterative clustering (SLIC).
 		//retval = vigra_main(argc, argv);
 
 		std::cout << "\nDarwin library ------------------------------------------------------" << std::endl;

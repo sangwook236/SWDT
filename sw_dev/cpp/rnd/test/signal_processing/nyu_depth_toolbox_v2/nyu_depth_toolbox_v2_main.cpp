@@ -22,7 +22,6 @@ void depth_filling_cross_bilateral_filter_example();
 int nyu_depth_toolbox_v2_main(int argc, char *argv[])
 {
 	// depth-filling cross bilateral filter.
-	// FIXME [fix] >> not correctly working.
 	my_nyu_depth_toolbox_v2::depth_filling_cross_bilateral_filter_example();
 
 	return 0;
