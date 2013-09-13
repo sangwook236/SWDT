@@ -55,13 +55,13 @@ void simple_example_1()
 	//
 	{
 		// process an image, and save ASCII format SIFT files
-		if (sift.RunSIFT("./data/face_analysis/sift/640-1.jpg"))
-			sift.SaveSIFT("./data/face_analysis/sift/640-1.sift");
+		if (sift.RunSIFT("./data/feature_analysis/sift/640-1.jpg"))
+			sift.SaveSIFT("./data/feature_analysis/sift/640-1.sift");
 		else
 			std::cout << "SIFT features not found" << std::endl;
 
 		// you can get the feature vector and store it yourself
-		if (!sift.RunSIFT("./data/face_analysis/sift/640-2.jpg"))
+		if (!sift.RunSIFT("./data/feature_analysis/sift/640-2.jpg"))
 		{
 			std::cout << "SIFT features not found" << std::endl;
 			return;
@@ -85,7 +85,7 @@ void simple_example_1()
 	}
 
 	{
-		const char * files[4] = { "./data/face_analysis/sift/640-1.jpg", "./data/face_analysis/sift/640-2.jpg", "./data/face_analysis/sift/640-3.jpg", "./data/face_analysis/sift/640-4.jpg" };
+		const char * files[4] = { "./data/feature_analysis/sift/640-1.jpg", "./data/feature_analysis/sift/640-2.jpg", "./data/feature_analysis/sift/640-3.jpg", "./data/feature_analysis/sift/640-4.jpg" };
 		sift.SetImageList(4, files);
 
 		// now you can process an image with its index
@@ -219,10 +219,10 @@ void simple_example_2()
 		return;
 	}
 
-    if (sift->RunSIFT("./data/face_analysis/sift/800-1.jpg"))
+    if (sift->RunSIFT("./data/feature_analysis/sift/800-1.jpg"))
     {
         // Call SaveSIFT to save result to file, the format is the same as Lowe's
-        sift->SaveSIFT("./data/face_analysis/sift/800-1.sift");  // Note that saving ASCII format is slow
+        sift->SaveSIFT("./data/feature_analysis/sift/800-1.sift");  // Note that saving ASCII format is slow
 
         // get feature count
         num1 = sift->GetFeatureNum();
@@ -239,7 +239,7 @@ void simple_example_2()
 
     // You can have at most one OpenGL-based SiftGPU (per process).
     // Normally, you should just create one, and reuse on all images.
-    if (sift->RunSIFT("data/face_analysis/sift/640-1.jpg"))
+    if (sift->RunSIFT("data/feature_analysis/sift/640-1.jpg"))
     {
         num2 = sift->GetFeatureNum();
         keys2.resize(num2);
@@ -254,11 +254,11 @@ void simple_example_2()
 	}
 
     // Testing code to check how it works when image size varies
-    //sift->RunSIFT("./data/face_analysis/sift/256.jpg");
-	//sift->SaveSIFT("./data/face_analysis/sift/256.sift.1");
-    //sift->RunSIFT("./data/face_analysis/sift/1024.jpg");  // this will result in pyramid reallocation
-    //sift->RunSIFT("./data/face_analysis/sift/256.jpg");
-	//sift->SaveSIFT("./data/face_analysis/sift/256.sift.2");
+    //sift->RunSIFT("./data/feature_analysis/sift/256.jpg");
+	//sift->SaveSIFT("./data/feature_analysis/sift/256.sift.1");
+    //sift->RunSIFT("./data/feature_analysis/sift/1024.jpg");  // this will result in pyramid reallocation
+    //sift->RunSIFT("./data/feature_analysis/sift/256.jpg");
+	//sift->SaveSIFT("./data/feature_analysis/sift/256.sift.2");
     // two sets of features for 256.jpg may have different order due to implementation
 
     //*************************************************************************
@@ -268,9 +268,9 @@ void simple_example_2()
     //vector<SiftGPU::SiftKeypoint> mykeys;
     //sift->RunSIFT(mykeys.size(), &mykeys[0]);
     //sift->RunSIFT(num2, &keys2[0], 1);
-	//sift->SaveSIFT("./data/face_analysis/sift/640-1.sift.2");
+	//sift->SaveSIFT("./data/feature_analysis/sift/640-1.sift.2");
     //sift->RunSIFT(num2, &keys2[0], 0);
-	//sift->SaveSIFT("./data/face_analysis/sift/640-1.sift.3");
+	//sift->SaveSIFT("./data/feature_analysis/sift/640-1.sift.3");
 
     // Method2, set keypoints for the next coming image
     // The difference of with method 1 is that method 1 skips gaussian filtering
@@ -283,12 +283,12 @@ void simple_example_2()
     //    mykeys[i].y = (i / 10) * 10.0f + 50.0f;
     //}
     //sift->SetKeypointList(100, mykeys, 0);
-    //sift->RunSIFT("./data/face_analysis/sift/800-1.jpg");
-	//sift->SaveSIFT("./data/face_analysis/sift/800-1.sift.2");
+    //sift->RunSIFT("./data/feature_analysis/sift/800-1.jpg");
+	//sift->SaveSIFT("./data/feature_analysis/sift/800-1.sift.2");
     //### for comparing with method1:
-    //sift->RunSIFT("./data/face_analysis/sift/800-1.jpg");
+    //sift->RunSIFT("./data/feature_analysis/sift/800-1.jpg");
     //sift->RunSIFT(100, mykeys, 0);
-	//sift->SaveSIFT("./data/face_analysis/sift/800-1.sift.3");
+	//sift->SaveSIFT("./data/feature_analysis/sift/800-1.sift.3");
     //*********************************************************************************
 
 

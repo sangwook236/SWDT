@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 		//  -. tensor.
 		//	-. deep learning.
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-		retval = torch_main(argc, argv);
+		retval = torch_main(argc, argv);  // not yet implemented.
 #endif
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;

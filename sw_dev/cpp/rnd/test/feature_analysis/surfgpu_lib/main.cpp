@@ -66,7 +66,7 @@ int mainImage(void)
 {
   // Declare Ipoints and other stuff
   IpVec ipts;
-  IplImage *img=cvLoadImage("./data/face_analysis/surf/img1.jpg");
+  IplImage *img=cvLoadImage("./data/feature_analysis/surf/img1.jpg");
 
   // Detect and describe interest points in the image
   {

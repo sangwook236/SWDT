@@ -19,65 +19,11 @@
     <Filter Include="Source Files\siftgpu">
       <UniqueIdentifier>{3f5ebc39-afa6-49a6-b345-65a0056b894b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited">
-      <UniqueIdentifier>{2044a094-aedc-4b7f-a6a5-4e1f7758d940}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\pictorial_structures_revisited">
-      <UniqueIdentifier>{42b1c698-e1c4-4240-b933-709ee8e75590}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\surf">
       <UniqueIdentifier>{6e1a203c-9251-406a-b82f-dded2310d4b2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\lsd_lib">
       <UniqueIdentifier>{075352ce-72ee-4374-aadf-99a0eb638cf3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib">
-      <UniqueIdentifier>{03f961ed-3a2c-4e0f-b801-bd097b0f5cf5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libAdaBoost">
-      <UniqueIdentifier>{cb91572a-9fb5-404e-9918-2502b85beebc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libAnnotation">
-      <UniqueIdentifier>{0c4cf8f9-d488-4fb4-ace3-1e80397c7549}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libBoostMath">
-      <UniqueIdentifier>{03f180ab-afd8-4af6-b9cd-576a51d98e70}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libFilesystemAux">
-      <UniqueIdentifier>{e8e6275c-22cb-4fd3-a459-60ec3101b08e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libKMA2">
-      <UniqueIdentifier>{eea7977b-b336-4e13-a54d-bf6f5f8c671d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libKMA2\descriptor">
-      <UniqueIdentifier>{13116bdd-3dab-4059-ac3c-d1050879932c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libKMA2\gauss_iir">
-      <UniqueIdentifier>{6edb14fe-78c6-40bd-8b89-61a2993ff4ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libKMA2\ImageContent">
-      <UniqueIdentifier>{256bea28-e3ad-4ab5-9fac-32fcd60cc7c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libMatlabIO">
-      <UniqueIdentifier>{f6cb2179-787a-48eb-b2d9-20763605c262}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libMisc">
-      <UniqueIdentifier>{d777d63f-96e8-47f9-91b2-d214c775cd7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libMultiArray">
-      <UniqueIdentifier>{79c4ff89-1ead-4e33-bdb2-758855ce4f7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libPartApp">
-      <UniqueIdentifier>{dd2b39ca-3c5c-4914-a2b2-47c8866fc817}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libPartDetect">
-      <UniqueIdentifier>{9039ca09-2be6-4df6-8343-56a045e1dbb1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libPictStruct">
-      <UniqueIdentifier>{842566c6-c479-4f36-822d-dc3cc0eea870}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\pictorial_structures_revisited_lib\libProtoBuf">
-      <UniqueIdentifier>{bb978156-5b6b-4303-b811-7229c92b0bc6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\opensift">
       <UniqueIdentifier>{cd401707-8dc3-44f7-81da-a9b752bf3459}</UniqueIdentifier>
@@ -124,31 +70,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-    <None Include="pictorial_structures_revisited_lib\libAdaBoost\featurevector.hh">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAdaBoost</Filter>
-    </None>
-    <None Include="pictorial_structures_revisited_lib\libPartApp\ExpParam.proto">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartApp</Filter>
-    </None>
-    <None Include="pictorial_structures_revisited_lib\libPartDetect\AbcDetectorParam.proto">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </None>
-    <None Include="pictorial_structures_revisited_lib\libPartDetect\PartConfig.proto">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </None>
-    <None Include="pictorial_structures_revisited_lib\libPartDetect\PartWindowParam.proto">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </None>
-    <None Include="pictorial_structures_revisited_lib\libPictStruct\HypothesisList.proto">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPictStruct</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lsd_lib\lsd.h">
       <Filter>Source Files\lsd_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited\parteval.h">
-      <Filter>Header Files\pictorial_structures_revisited</Filter>
     </ClInclude>
     <ClInclude Include="surf\surf_imload.h">
       <Filter>Header Files\surf</Filter>
@@ -161,114 +86,6 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libAnnotation\annorect.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAnnotation</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libAnnotation\annotation.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAnnotation</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libAnnotation\annotationlist.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAnnotation</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libAnnotation\xmlhelpers.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAnnotation</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libAdaBoost\AdaBoost.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAdaBoost</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libAdaBoost\BoostingData.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAdaBoost</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libBoostMath\boost_math.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libBoostMath</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libBoostMath\boost_math.hpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libBoostMath</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libBoostMath\homogeneous_coord.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libBoostMath</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libFilesystemAux\filesystem_aux.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libFilesystemAux</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libKMA2\kmaimagecontent.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libKMA2</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libKMA2\ShapeDescriptor.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libKMA2</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libKMA2\descriptor\feature.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libKMA2\descriptor</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libKMA2\gauss_iir\gauss_iir.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libKMA2\gauss_iir</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libKMA2\ImageContent\imageContent.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libKMA2\ImageContent</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libMatlabIO\matlab_cell_io.hpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libMatlabIO</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libMatlabIO\matlab_io.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libMatlabIO</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libMatlabIO\matlab_io.hpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libMatlabIO</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libMisc\misc.hpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libMisc</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libMultiArray\multi_array_def.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libMultiArray</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libMultiArray\multi_array_filter.hpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libMultiArray</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libMultiArray\multi_array_op.hpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libMultiArray</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libMultiArray\multi_array_transform.hpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libMultiArray</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libPartApp\ExpParam.pb.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartApp</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libPartApp\partapp.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartApp</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libPartApp\partapp_aux.hpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartApp</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libPartDetect\AbcDetectorParam.pb.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libPartDetect\FeatureGrid.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libPartDetect\PartConfig.pb.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libPartDetect\partdef.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libPartDetect\partdetect.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libPartDetect\PartWindowParam.pb.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libPictStruct\HypothesisList.pb.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPictStruct</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect.h">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPictStruct</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect_aux.hpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPictStruct</Filter>
-    </ClInclude>
-    <ClInclude Include="pictorial_structures_revisited_lib\libProtoBuf\protobuf_aux.hpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libProtoBuf</Filter>
     </ClInclude>
     <ClInclude Include="opensurf_lib\fasthessian.h">
       <Filter>Source Files\opensurf_lib</Filter>
@@ -644,9 +461,6 @@
     <ClCompile Include="lsd_lib\lsd_cmd.cpp">
       <Filter>Source Files\lsd_lib</Filter>
     </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited\parteval.cpp">
-      <Filter>Source Files\pictorial_structures_revisited</Filter>
-    </ClCompile>
     <ClCompile Include="lsd\lsd_main.cpp">
       <Filter>Source Files\lsd</Filter>
     </ClCompile>
@@ -661,105 +475,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libAnnotation\annorect.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAnnotation</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libAnnotation\annotation.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAnnotation</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libAnnotation\annotationlist.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAnnotation</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libAnnotation\xmlhelpers.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAnnotation</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libAdaBoost\AdaBoost.cc">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAdaBoost</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libAdaBoost\BoostingData.cc">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAdaBoost</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libAdaBoost\featurevector.cc">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libAdaBoost</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libBoostMath\boost_math.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libBoostMath</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libBoostMath\homogeneous_coord.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libBoostMath</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libFilesystemAux\filesystem_aux.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libFilesystemAux</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libKMA2\ShapeDescriptor.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libKMA2</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libKMA2\descriptor\EdgeDetector.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libKMA2\descriptor</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libKMA2\descriptor\FeatureDescriptor.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libKMA2\descriptor</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libKMA2\gauss_iir\gauss_iir.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libKMA2\gauss_iir</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libKMA2\ImageContent\ImageContent.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libKMA2\ImageContent</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libMatlabIO\matlab_io.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libMatlabIO</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPartApp\ExpParam.pb.cc">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartApp</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPartApp\partapp.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartApp</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\AbcDetectorParam.pb.cc">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\FeatureGrid.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\PartConfig.pb.cc">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\partdef.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\partdetect_aux.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\partdetect_test.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\partdetect_train.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPartDetect\PartWindowParam.pb.cc">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPartDetect</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPictStruct\HypothesisList.pb.cc">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPictStruct</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect_aux.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPictStruct</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect_findpos.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPictStruct</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect_findrot.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPictStruct</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited_lib\libPictStruct\objectdetect_learnparam.cpp">
-      <Filter>Source Files\pictorial_structures_revisited_lib\libPictStruct</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited\pictorial_structures_revisited_main.cpp">
-      <Filter>Source Files\pictorial_structures_revisited</Filter>
-    </ClCompile>
-    <ClCompile Include="pictorial_structures_revisited\pictorial_structures_revisited_partapp.cpp">
-      <Filter>Source Files\pictorial_structures_revisited</Filter>
     </ClCompile>
     <ClCompile Include="opensift\opensift_display_feature.cpp">
       <Filter>Source Files\opensift</Filter>

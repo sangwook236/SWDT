@@ -4,45 +4,49 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "opensift_d.lib")
-#pragma comment(lib, "SiftGPU_d.lib")
-//#pragma comment(lib, "surfWinDLL_d.lib")
-
 #pragma comment(lib, "opencv_core243d.lib")
 #pragma comment(lib, "opencv_imgproc243d.lib")
 #pragma comment(lib, "opencv_highgui243d.lib")
 #pragma comment(lib, "opencv_calib3d243d.lib")
 
-#pragma comment(lib, "cudart.lib")
-#pragma comment(lib, "cudpp32d.lib")
-
 #pragma comment(lib, "libmat.lib")
 #pragma comment(lib, "libmx.lib")
 
+#pragma comment(lib, "Qt5Cored.lib")
+#pragma comment(lib, "Qt5Guid.lib")
+
+#pragma comment(lib, "gsl_d.lib")
 #pragma comment(lib, "lapack_d.lib")
 #pragma comment(lib, "blas_d.lib")
 #pragma comment(lib, "libf2c_d.lib")
 
-#		else
+#pragma comment(lib, "libprotobufd.lib")
+#pragma comment(lib, "libpng15_staticd.lib")
+#pragma comment(lib, "zlibd.lib")
+#pragma comment(lib, "DevIL.lib")
 
-#pragma comment(lib, "opensift.lib")
-#pragma comment(lib, "SiftGPU.lib")
-//#pragma comment(lib, "surfWinDLL.lib")
+#		else
 
 #pragma comment(lib, "opencv_core243.lib")
 #pragma comment(lib, "opencv_imgproc243.lib")
 #pragma comment(lib, "opencv_highgui243.lib")
 #pragma comment(lib, "opencv_calib3d243.lib")
 
-#pragma comment(lib, "cudart.lib")
-#pragma comment(lib, "cudpp32.lib")
-
 #pragma comment(lib, "libmat.lib")
 #pragma comment(lib, "libmx.lib")
 
+#pragma comment(lib, "Qt5Core.lib")
+#pragma comment(lib, "Qt5Gui.lib")
+
+#pragma comment(lib, "gsl.lib")
 #pragma comment(lib, "lapack.lib")
 #pragma comment(lib, "blas.lib")
 #pragma comment(lib, "libf2c.lib")
+
+#pragma comment(lib, "libprotobuf.lib")
+#pragma comment(lib, "libpng15_static.lib")
+#pragma comment(lib, "zlib.lib")
+#pragma comment(lib, "DevIL.lib")
 
 #		endif
 

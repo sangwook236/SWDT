@@ -18,11 +18,11 @@ namespace my_opensift {
 void display_feature()
 {
 #if 1
-    const std::string feat_file("./data/face_analysis/sift/beaver.sift");
-    const std::string img_file("./data/face_analysis/sift/beaver.png");
+    const std::string feat_file("./data/feature_analysis/sift/beaver.sift");
+    const std::string img_file("./data/feature_analysis/sift/beaver.png");
 #elif 0
-    const std::string feat_file("./data/face_analysis/sift/marker_pen_2.sift");
-    const std::string img_file("./data/face_analysis/sift/marker_pen_2.bmp");
+    const std::string feat_file("./data/feature_analysis/sift/marker_pen_2.sift");
+    const std::string img_file("./data/feature_analysis/sift/marker_pen_2.bmp");
 #endif
     const int feat_type = FEATURE_LOWE;
 

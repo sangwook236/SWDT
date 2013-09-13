@@ -18,11 +18,11 @@ namespace my_opensift {
 void extract_feature()
 {
 #if 1
-    const std::string img_file_name("./data/face_analysis/sift/beaver.png");
-    const std::string out_file_name("./data/face_analysis/sift/beaver.sift");
+    const std::string img_file_name("./data/feature_analysis/sift/beaver.png");
+    const std::string out_file_name("./data/feature_analysis/sift/beaver.sift");
 #elif 0
-    const std::string img_file_name("./data/face_analysis/sift/marker_pen_2.bmp");
-    const std::string out_file_name("./data/face_analysis/sift/marker_pen_2.sift");
+    const std::string img_file_name("./data/feature_analysis/sift/marker_pen_2.bmp");
+    const std::string out_file_name("./data/feature_analysis/sift/marker_pen_2.sift");
 #endif
     const std::string out_img_name;
 

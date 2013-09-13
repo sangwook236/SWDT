@@ -1,20 +1,20 @@
 ========================================================================
-    CONSOLE APPLICATION : computational_geometry Project Overview
+    CONSOLE APPLICATION : geometry Project Overview
 ========================================================================
 
-AppWizard has created this computational_geometry application for you.  
+AppWizard has created this geometry application for you.  
 
 This file contains a summary of what you will find in each of the files that
-make up your computational_geometry application.
+make up your geometry application.
 
 
-computational_geometry.vcproj
+geometry.vcproj
     This is the main project file for VC++ projects generated using an Application Wizard. 
     It contains information about the version of Visual C++ that generated the file, and 
     information about the platforms, configurations, and project features selected with the
     Application Wizard.
 
-computational_geometry.cpp
+geometry.cpp
     This is the main application source file.
 
 /////////////////////////////////////////////////////////////////////////////
@@ -22,7 +22,7 @@ Other standard files:
 
 StdAfx.h, StdAfx.cpp
     These files are used to build a precompiled header (PCH) file
-    named computational_geometry.pch and a precompiled types file named StdAfx.obj.
+    named geometry.pch and a precompiled types file named StdAfx.obj.
 
 /////////////////////////////////////////////////////////////////////////////
 Other notes:

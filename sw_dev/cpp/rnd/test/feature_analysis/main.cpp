@@ -24,17 +24,16 @@ int main(int argc, char *argv[])
 	int siftgpu_main(int argc, char *argv[]);
 	int opensurf_main(int argc, char *argv[]);
 	int surfgpu_main(int argc, char *argv[]);
-	int pictorial_structures_revisited_main(int argc, char *argv[]);
 	int fst_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
 		std::cout << "line feature --------------------------------------------------------" << std::endl;
-		//retval = lsd_main(argc, argv);
+		retval = lsd_main(argc, argv);
 
 		std::cout << "\nellipse & line feature ----------------------------------------------" << std::endl;
-		retval = elsd_main(argc, argv);
+		//retval = elsd_main(argc, argv);
 
 		std::cout << "\nlocal descriptors ---------------------------------------------------" << std::endl;
 		//retval = opensift_main(argc, argv);
@@ -42,9 +41,6 @@ int main(int argc, char *argv[])
 
 		//retval = opensurf_main(argc, argv);
 		//retval = surfgpu_main(argc, argv);
-
-		std::cout << "\npictorial structures ------------------------------------------------" << std::endl;
-		//retval = pictorial_structures_revisited_main(argc, argv);
 
 		std::cout << "\nFeature Selection Toolbox (FST) library -----------------------------" << std::endl;
 		//retval = fst_main(argc, argv);

@@ -254,14 +254,16 @@ void cross_bilateral_filter_example()
 	image_type high_freq_image(width, height);
 	cv::Mat high_freq_img;
 #if 0
-	// CAUTION [] >>
-	//	an edge image is not sufficient to play a role in a high-frequency image, because it makes regions except for edges over-blurred.
+	// NOTICE [caution] >>
+	//	An edge image is not sufficient to play a role in a high-frequency image, because it makes regions except for edges over-blurred.
+	//	If a pure edge image is used, at regions near edges the joint/cross bilateral filer may under-blur the ambient(input) image, rather may sharpen the image.
+	//	Similarly, at regions except for edges the filter may over-blur the ambient(input) image.
 
 	const bool use_high_freq_image = true;
 
 	if (!high_freq_filename.empty())
 	{
-		std::cout << "Load the high-frequency image '" << high_freq_filename << "'... " << std::flush;
+		std::cout << "Load an image with high-frequency components '" << high_freq_filename << "'... " << std::flush;
 
 		std::ifstream ppm_in2(high_freq_filename.c_str(), std::ios::binary);
 

@@ -40,7 +40,7 @@ int fast_bilateral_filter_main(int argc, char *argv[])
 	// FIXME [fix] >> not correctly working.
 	//	-. parameters have to be adjusted.
 	//		filtering is sensitive to parameters.
-	//	-. edge image may be not proper.
+	//	-. a (pure) edge image may be not proper as a high-frequency image.
 	my_fast_bilateral_filter::cross_bilateral_filter_example();
 
 	//------------------------------------------------------------------

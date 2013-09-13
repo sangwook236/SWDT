@@ -54,7 +54,7 @@ void lsd_image_test()
 {
 	std::list<std::string> filenames;
 #if 1
-	filenames.push_back("./data/face_analysis/chairs.pgm");
+	filenames.push_back("./data/feature_analysis/chairs.pgm");
 	filenames.push_back("./data/machine_vision/opencv/hand_01_1.jpg");
 	filenames.push_back("./data/machine_vision/opencv/hand_34.jpg");
 	filenames.push_back("./data/machine_vision/opencv/hand_35.jpg");

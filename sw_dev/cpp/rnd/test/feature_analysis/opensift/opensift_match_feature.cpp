@@ -28,16 +28,16 @@ namespace my_opensift {
 void match_feature()
 {
 #if 1
-    const std::string img1_file("./data/face_analysis/sift/beaver.png");
-    const std::string img2_file("./data/face_analysis/sift/beaver_xform.png");
+    const std::string img1_file("./data/feature_analysis/sift/beaver.png");
+    const std::string img2_file("./data/feature_analysis/sift/beaver_xform.png");
 #elif 0
-    const std::string img1_file("./data/face_analysis/sift/marker_pen_3.bmp");
-    const std::string img2_file("./data/face_analysis/sift/marker_pen_test_image.bmp");
+    const std::string img1_file("./data/feature_analysis/sift/marker_pen_3.bmp");
+    const std::string img2_file("./data/feature_analysis/sift/marker_pen_test_image.bmp");
 #elif 0
-    const std::string img1_file("./data/face_analysis/sift/melon_target.png");
-    const std::string img2_file("./data/face_analysis/sift/melon_3.png");
+    const std::string img1_file("./data/feature_analysis/sift/melon_target.png");
+    const std::string img2_file("./data/feature_analysis/sift/melon_3.png");
 #endif
-    //const std::string img_output_file("./data/face_analysis/sift/marker_pen_sift_match_result_3.bmp");
+    //const std::string img_output_file("./data/feature_analysis/sift/marker_pen_sift_match_result_3.bmp");
 
 	IplImage *img1 = cvLoadImage(img1_file.c_str(), 1);
 	if (!img1)

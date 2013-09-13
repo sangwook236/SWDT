@@ -22,7 +22,7 @@ void elsd_example()
 {
 	std::list<std::string> filenames;
 #if 1
-	filenames.push_back("./data/face_analysis/stars.pgm");
+	filenames.push_back("./data/feature_analysis/stars.pgm");
 #elif 0
 	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
 	filenames.push_back("./data/machine_vision/opencv/hand_02.jpg");

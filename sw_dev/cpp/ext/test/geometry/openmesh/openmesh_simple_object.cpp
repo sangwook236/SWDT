@@ -73,7 +73,7 @@ void cube()
 
 
 	// write mesh to output.obj
-	if (!OpenMesh::IO::write_mesh(mesh, "./data/computational_geometry/openmesh/output.off") )
+	if (!OpenMesh::IO::write_mesh(mesh, "./data/geometry/openmesh/output.off") )
 		std::cerr << "Cannot write mesh to file 'output.off'" << std::endl;
 }
 
