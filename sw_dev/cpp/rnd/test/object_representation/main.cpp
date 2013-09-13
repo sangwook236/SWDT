@@ -7,6 +7,13 @@
 #include <cstdlib>
 
 
+// for using MATLAB library
+//  -. MATLAB library path가 LD library path가 설정되어 있어야 함. (for SURFGPU only)
+//      e.g.)
+//          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/MATLAB/R2012b/bin/glnxa64
+//          export LD_LIBRARY_PATH+=/usr/local/MATLAB/R2012b/bin/glnxa64
+//          export LD_LIBRARY_PATH+=:/usr/local/MATLAB/R2012b/bin/glnxa64
+
 int main(int argc, char *argv[])
 {
 	int pictorial_structures_revisited_main(int argc, char *argv[]);

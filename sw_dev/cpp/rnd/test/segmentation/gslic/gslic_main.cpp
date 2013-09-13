@@ -204,7 +204,7 @@ int gslic_main(int argc, char *argv[])
 	{
 		cv::theRNG();
 
-#if 1
+#if 0
 		if (cv::gpu::getCudaEnabledDeviceCount() > 0)
 		{
 			std::cout << "GPU info:" << std::endl;
@@ -216,7 +216,7 @@ int gslic_main(int argc, char *argv[])
 
 		{
 			std::list<std::string> input_file_list;
-#if 0
+#if 1
 			input_file_list.push_back("./data/machine_vision/opencv/pic1.png");
 			input_file_list.push_back("./data/machine_vision/opencv/pic2.png");
 			input_file_list.push_back("./data/machine_vision/opencv/pic3.png");

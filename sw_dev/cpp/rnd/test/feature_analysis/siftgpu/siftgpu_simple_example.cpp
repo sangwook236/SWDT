@@ -201,7 +201,7 @@ void simple_example_2()
     //////////////////////////////////////////////////////////////////////////////////////
 
 
-    const int my_argc = sizeof(my_argv) / sizeof(char*);
+    const int my_argc = sizeof(my_argv) / sizeof(char *);
     sift->ParseParam(my_argc, (char **)my_argv);
 
     ///////////////////////////////////////////////////////////////////////
@@ -236,20 +236,24 @@ void simple_example_2()
         sift->GetFeatureVector(&keys1[0], &descriptors1[0]);
         // this can be used to write your own sift file.
     }
+    else
+        std::cerr << "SIFT running error" << std::endl;
 
     // You can have at most one OpenGL-based SiftGPU (per process).
     // Normally, you should just create one, and reuse on all images.
-    if (sift->RunSIFT("data/feature_analysis/sift/640-1.jpg"))
+    if (sift->RunSIFT("./data/feature_analysis/sift/640-1.jpg"))
     {
         num2 = sift->GetFeatureNum();
         keys2.resize(num2);
 		descriptors2.resize(128 * num2);
         sift->GetFeatureVector(&keys2[0], &descriptors2[0]);
     }
+    else
+        std::cerr << "SIFT running error" << std::endl;
 
 	if (0 == num1 || 0 == num2)
 	{
-		std::cout << "SIFT features not found" << std::endl;
+		std::cerr << "SIFT features not found" << std::endl;
 		return;
 	}
 

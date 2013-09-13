@@ -4,14 +4,14 @@
 	<Project>
 		<Option title="segmentation" />
 		<Option pch_mode="2" />
-		<Option compiler="gcc" />
+		<Option compiler="nvidia_nvcc_cuda_compiler" />
 		<Build>
 			<Target title="Debug">
 				<Option output="../../bin/segmentation_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
-				<Option compiler="gcc" />
+				<Option compiler="nvidia_nvcc_cuda_compiler" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -21,13 +21,10 @@
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
-				<Option compiler="gcc" />
+				<Option compiler="nvidia_nvcc_cuda_compiler" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
-				<Linker>
-					<Add option="-s" />
-				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
@@ -43,6 +40,7 @@
 			<Add library="opencv_core" />
 			<Add library="opencv_highgui" />
 			<Add library="opencv_imgproc" />
+			<Add library="opencv_gpu" />
 			<Add library="cudart" />
 			<Add library="boost_timer" />
 			<Add directory="/usr/local/lib" />
@@ -70,13 +68,25 @@
 		<Unit filename="gslic_lib/FastImgSeg.cpp" />
 		<Unit filename="gslic_lib/FastImgSeg.h" />
 		<Unit filename="gslic_lib/cudaDefines.h" />
-		<Unit filename="gslic_lib/cudaImgTrans.cu" />
+		<Unit filename="gslic_lib/cudaImgTrans.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
 		<Unit filename="gslic_lib/cudaImgTrans.h" />
-		<Unit filename="gslic_lib/cudaSegEngine.cu" />
+		<Unit filename="gslic_lib/cudaSegEngine.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
 		<Unit filename="gslic_lib/cudaSegEngine.h" />
-		<Unit filename="gslic_lib/cudaSegSLIC.cu" />
+		<Unit filename="gslic_lib/cudaSegSLIC.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
 		<Unit filename="gslic_lib/cudaSegSLIC.h" />
-		<Unit filename="gslic_lib/cudaUtil.cu" />
+		<Unit filename="gslic_lib/cudaUtil.cu">
+			<Option compile="1" />
+			<Option link="1" />
+		</Unit>
 		<Unit filename="gslic_lib/cudaUtil.h" />
 		<Unit filename="interactive_graph_cuts/interactive_graph_cuts_main.cpp" />
 		<Unit filename="main.cpp" />

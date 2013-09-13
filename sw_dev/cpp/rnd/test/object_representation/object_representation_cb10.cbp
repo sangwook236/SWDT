@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="object_representation" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../bin/object_representation_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../bin/object_representation" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="./pictorial_structures_revisited_lib/libAdaBoost" />
+			<Add directory="./pictorial_structures_revisited_lib" />
+			<Add directory="/usr/local/MATLAB/R2012b/extern/include" />
+			<Add directory="/usr/include/qt4/QtCore" />
+			<Add directory="/usr/include/qt4/QtGui" />
+			<Add directory="/usr/include/qt4" />
+			<Add directory="/usr/local/include/" />
+		</Compiler>
+		<Linker>
+			<Add library="QtCore" />
+			<Add library="QtGui" />
+			<Add library="mwMATLAB_res" />
+			<Add library="mwresource_core" />
+			<Add library="mwcpp11compat" />
+			<Add library="mwi18n" />
+			<Add library="ut" />
+			<Add library="mat" />
+			<Add library="mx" />
+			<Add library="mwfl" />
+			<Add library="boost_regex" />
+			<Add library="boost_program_options" />
+			<Add library="boost_signals" />
+			<Add library="boost_thread" />
+			<Add library="boost_timer" />
+			<Add library="boost_date_time" />
+			<Add library="boost_filesystem" />
+			<Add library="boost_system" />
+			<Add library="protobuf" />
+			<Add library="icudata" />
+			<Add library="icuuc" />
+			<Add library="icui18n" />
+			<Add library="icuio" />
+			<Add library="z" />
+			<Add library="lapack" />
+			<Add library="blas" />
+			<Add library="f2c" />
+			<Add library="png" />
+			<Add directory="/usr/local/MATLAB/R2012b/bin/glnxa64" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
+		<Unit filename="main.cpp" />
+		<Unit filename="pictorial_structures_revisited/parteval.cpp" />
+		<Unit filename="pictorial_structures_revisited/parteval.h" />
+		<Unit filename="pictorial_structures_revisited/pictorial_structures_revisited_main.cpp" />
+		<Unit filename="pictorial_structures_revisited/pictorial_structures_revisited_partapp.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libAdaBoost/AdaBoost.cc" />
+		<Unit filename="pictorial_structures_revisited_lib/libAdaBoost/AdaBoost.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libAdaBoost/BoostingData.cc" />
+		<Unit filename="pictorial_structures_revisited_lib/libAdaBoost/BoostingData.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libAdaBoost/featurevector.cc" />
+		<Unit filename="pictorial_structures_revisited_lib/libAdaBoost/featurevector.hh" />
+		<Unit filename="pictorial_structures_revisited_lib/libAnnotation/annorect.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libAnnotation/annorect.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libAnnotation/annotation.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libAnnotation/annotation.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libAnnotation/annotationlist.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libAnnotation/annotationlist.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libAnnotation/xmlhelpers.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libAnnotation/xmlhelpers.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libBoostMath/boost_math.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libBoostMath/boost_math.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libBoostMath/boost_math.hpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libBoostMath/homogeneous_coord.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libBoostMath/homogeneous_coord.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libFilesystemAux/filesystem_aux.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libFilesystemAux/filesystem_aux.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libKMA2/ImageContent/ImageContent.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libKMA2/ImageContent/imageContent.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libKMA2/ShapeDescriptor.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libKMA2/ShapeDescriptor.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libKMA2/descriptor/EdgeDetector.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libKMA2/descriptor/FeatureDescriptor.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libKMA2/descriptor/feature.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libKMA2/gauss_iir/gauss_iir.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libKMA2/gauss_iir/gauss_iir.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libKMA2/kmaimagecontent.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libMatlabIO/matlab_cell_io.hpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libMatlabIO/matlab_io.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libMatlabIO/matlab_io.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libMatlabIO/matlab_io.hpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libMisc/misc.hpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libMultiArray/multi_array_def.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libMultiArray/multi_array_filter.hpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libMultiArray/multi_array_op.hpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libMultiArray/multi_array_transform.hpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartApp/ExpParam.pb.cc" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartApp/ExpParam.pb.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartApp/partapp.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartApp/partapp.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartApp/partapp_aux.hpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/AbcDetectorParam.pb.cc" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/AbcDetectorParam.pb.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/FeatureGrid.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/FeatureGrid.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/PartConfig.pb.cc" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/PartConfig.pb.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/PartWindowParam.pb.cc" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/PartWindowParam.pb.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/partdef.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/partdef.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/partdetect.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/partdetect_aux.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/partdetect_test.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libPartDetect/partdetect_train.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libPictStruct/HypothesisList.pb.cc" />
+		<Unit filename="pictorial_structures_revisited_lib/libPictStruct/HypothesisList.pb.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libPictStruct/objectdetect.h" />
+		<Unit filename="pictorial_structures_revisited_lib/libPictStruct/objectdetect_aux.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libPictStruct/objectdetect_aux.hpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libPictStruct/objectdetect_findpos.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libPictStruct/objectdetect_findrot.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libPictStruct/objectdetect_learnparam.cpp" />
+		<Unit filename="pictorial_structures_revisited_lib/libProtoBuf/protobuf_aux.hpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

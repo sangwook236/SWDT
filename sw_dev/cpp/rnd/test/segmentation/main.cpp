@@ -8,6 +8,9 @@
 #include <ctime>
 
 
+// for compiling using NVIDIA NVCC CUDA Compiler
+//  [ref] http://benbarsdell.blogspot.kr/2009/03/cuda-in-codeblocks-first-things-second.html
+
 int main(int argc, char *argv[])
 {
 	int region_growing_main(int argc, char *argv[]);

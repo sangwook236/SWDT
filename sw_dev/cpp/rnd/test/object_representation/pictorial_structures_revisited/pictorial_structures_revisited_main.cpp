@@ -5,6 +5,9 @@
 #include <sstream>
 #include <string>
 #include <cstdlib>
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+#include <unistd.h>
+#endif
 
 
 namespace {
@@ -72,6 +75,8 @@ int pictorial_structures_revisited_main(int argc, char *argv[])
 	//
 #if defined(WIN32) || defined(_WIN32)
 	const BOOL retval = SetCurrentDirectoryA(curr_directory.c_str());
+#elif defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+    const int retval = chdir(curr_directory.c_str());
 #endif
 
 #if 1

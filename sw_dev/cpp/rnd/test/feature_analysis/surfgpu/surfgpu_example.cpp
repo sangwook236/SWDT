@@ -24,7 +24,7 @@ int mainImage(void)
 
 	// Detect and describe interest points in the image
 	{
-		surfDetDes(img, ipts, false, 3, 4, 2, 0.0004f); 
+		surfDetDes(img, ipts, false, 3, 4, 2, 0.0004f);
 	}
 
 	std::cout<< "OpenSURF found: " << ipts.size() << " interest points" << std::endl;
@@ -49,7 +49,7 @@ int mainVideo(void)
 	CvCapture *capture = cvCaptureFromCAM(CV_CAP_ANY);
 	if (!capture) error("No Capture");
 
-	// Create a window 
+	// Create a window
 	cvNamedWindow("OpenSURF", CV_WINDOW_AUTOSIZE );
 
 	// Declare Ipoints and other stuff
@@ -57,13 +57,13 @@ int mainVideo(void)
 	IplImage *img = NULL;
 
 	// Main capture loop
-	while (true) 
+	while (true)
 	{
 		// Grab frame from the capture source
 		img = cvQueryFrame(capture);
 
 		// Extract surf points
-		surfDetDes(img, ipts, true, 3, 4, 2, 0.004f);    
+		surfDetDes(img, ipts, true, 3, 4, 2, 0.004f);
 
 		// Draw the detected points
 		drawIpoints(img, ipts);
@@ -99,9 +99,9 @@ int mainMatch()
 	IpVec ipts, ref_ipts;
 
 	// This is the reference object we wish to find in video frame
-	// Replace the line below with IplImage *img = cvLoadImage("./data/feature_analysis/surf/object.jpg"); 
+	// Replace the line below with IplImage *img = cvLoadImage("./data/feature_analysis/surf/object.jpg");
 	// where object.jpg is the planar object to be located in the video
-	IplImage *img = cvLoadImage("./data/feature_analysis/surf/object.jpg"); 
+	IplImage *img = cvLoadImage("./data/feature_analysis/surf/object.jpg");
 	if (img == NULL) error("Need to load reference image in order to run matching procedure");
 	CvPoint src_corners[4] = { {0, 0}, {img->width, 0}, {img->width, img->height}, {0, img->height} };
 	CvPoint dst_corners[4];
@@ -111,11 +111,11 @@ int mainMatch()
 	drawIpoints(img, ref_ipts);
 	showImage(img);
 
-	// Create a window 
+	// Create a window
 	cvNamedWindow("OpenSURF", CV_WINDOW_AUTOSIZE);
 
 	// Main capture loop
-	while (true) 
+	while (true)
 	{
 		// Grab frame from the capture source
 		img = cvQueryFrame(capture);
@@ -168,7 +168,7 @@ int mainMotionPoints(void)
 	CvCapture *capture = cvCaptureFromCAM(CV_CAP_ANY);
 	if (!capture) error("No Capture");
 
-	// Create a window 
+	// Create a window
 	cvNamedWindow("OpenSURF", CV_WINDOW_AUTOSIZE);
 
 	// Declare Ipoints and other stuff
@@ -177,7 +177,7 @@ int mainMotionPoints(void)
 	IplImage *img = NULL;
 
 	// Main capture loop
-	while (true) 
+	while (true)
 	{
 		// Grab frame from the capture source
 		img = cvQueryFrame(capture);
@@ -188,12 +188,12 @@ int mainMotionPoints(void)
 
 		// Fill match vector
 		getMatches(ipts, old_ipts, matches);
-		for (unsigned int i = 0; i < matches.size(); ++i) 
+		for (unsigned int i = 0; i < matches.size(); ++i)
 		{
 			const float &dx = matches[i].first.dx;
 			const float &dy = matches[i].first.dy;
 			float speed = std::sqrt(dx*dx + dy*dy);
-			if (speed > 5 && speed < 30) 
+			if (speed > 5 && speed < 30)
 				drawIpoint(img, matches[i].first, 3);
 		}
 
