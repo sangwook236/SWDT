@@ -1,84 +1,84 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "levmar", "..\test\levmar\levmar_msvc8.vcproj", "{8E270D67-5EF0-44D5-8348-4A0452BA76FB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "levmar", "..\test\levmar\levmar_vc8.vcproj", "{8E270D67-5EF0-44D5-8348-4A0452BA76FB}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "robotics", "..\test\robotics\robotics_msvc8.vcproj", "{93592987-4FB9-4DAE-A0C5-0873910D131C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "robotics", "..\test\robotics\robotics_vc8.vcproj", "{93592987-4FB9-4DAE-A0C5-0873910D131C}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_vision", "..\test\machine_vision\machine_vision_msvc8.vcproj", "{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_vision", "..\test\machine_vision\machine_vision_vc8.vcproj", "{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opencv_win", "..\test\opencv_win\opencv_win_msvc8.vcproj", "{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opencv_win", "..\test\opencv_win\opencv_win_vc8.vcproj", "{410A9A43-7B0E-4183-85B5-D4A3AE18DCF3}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgal", "..\test\cgal\cgal_msvc8.vcproj", "{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cgal", "..\test\cgal\cgal_vc8.vcproj", "{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "optimization", "..\test\optimization\optimization_msvc8.vcproj", "{F47404DC-D671-4C97-8477-9447118B238A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "optimization", "..\test\optimization\optimization_vc8.vcproj", "{F47404DC-D671-4C97-8477-9447118B238A}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simulation", "..\test\simulation\simulation_msvc8.vcproj", "{86A474F8-4ABB-46B3-A034-26496D316349}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simulation", "..\test\simulation\simulation_vc8.vcproj", "{86A474F8-4ABB-46B3-A034-26496D316349}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "player_stage", "..\test\player_stage\player_stage_msvc8.vcproj", "{C255A005-327C-44ED-9ACD-0BDEE5F9F5FF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "player_stage", "..\test\player_stage\player_stage_vc8.vcproj", "{C255A005-327C-44ED-9ACD-0BDEE5F9F5FF}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pnl", "..\test\pnl\pnl_msvc8.vcproj", "{BC06A474-FED2-48CF-8A39-C48BF645C698}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pnl", "..\test\pnl\pnl_vc8.vcproj", "{BC06A474-FED2-48CF-8A39-C48BF645C698}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "search_algorithm", "..\test\search_algorithm\search_algorithm_msvc8.vcproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "search_algorithm", "..\test\search_algorithm\search_algorithm_vc8.vcproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sift", "..\test\sift\sift_msvc8.vcproj", "{1F129925-DFA5-4981-AB4E-EAE2D608653A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sift", "..\test\sift\sift_vc8.vcproj", "{1F129925-DFA5-4981-AB4E-EAE2D608653A}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "surf", "..\test\surf\surf_msvc8.vcproj", "{59C66559-8C98-4B6C-8ECF-7E0E4DC8A5CC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "surf", "..\test\surf\surf_vc8.vcproj", "{59C66559-8C98-4B6C-8ECF-7E0E4DC8A5CC}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "flood", "..\test\flood\flood_msvc8.vcproj", "{D2041BA8-CC46-4A92-A31F-CDC8C09EBB92}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "flood", "..\test\flood\flood_vc8.vcproj", "{D2041BA8-CC46-4A92-A31F-CDC8C09EBB92}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "neural_network", "..\test\neural_network\neural_network_msvc8.vcproj", "{BCB54C82-1B63-4831-850B-DF57821F9003}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "neural_network", "..\test\neural_network\neural_network_vc8.vcproj", "{BCB54C82-1B63-4831-850B-DF57821F9003}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
