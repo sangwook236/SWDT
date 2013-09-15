@@ -35,31 +35,32 @@
 			<Add option="-fexceptions" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
-			<Add directory="/usr/local/include/" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="protobuf" />
 			<Add library="yaml-cpp" />
 			<Add library="boost_date_time" />
-			<Add directory="/usr/local/lib/" />
+			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="protobuf/protobuf_main.cpp" />
 		<Unit filename="protobuf/protobuf_person.pb.cc" />
 		<Unit filename="protobuf/protobuf_person.pb.h" />
 		<Unit filename="protobuf/protobuf_simple_example.cpp" />
-		<Unit filename="yaml/yaml_basic_emitting.cpp">
+		<Unit filename="rapidjson/rapidjson_examples.cpp" />
+		<Unit filename="rapidjson/rapidjson_main.cpp" />
+		<Unit filename="yaml_cpp/yaml_cpp_basic_emitting.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="yaml/yaml_basic_parsing.cpp">
+		<Unit filename="yaml_cpp/yaml_cpp_basic_parsing.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="yaml/yaml_configuration_example.cpp" />
-		<Unit filename="yaml/yaml_example_0_5" />
-		<Unit filename="yaml/yaml_example_0_5.cpp" />
-		<Unit filename="yaml/yaml_main.cpp" />
+		<Unit filename="yaml_cpp/yaml_cpp_configuration_example.cpp" />
+		<Unit filename="yaml_cpp/yaml_cpp_example_0_5.cpp" />
+		<Unit filename="yaml_cpp/yaml_cpp_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
