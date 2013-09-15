@@ -48,7 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetRemotingObjects\NetRemotingObjects_msvc10.csproj">
+    <ProjectReference Include="..\NetRemotingObjects\NetRemotingObjects_vc10.csproj">
       <Project>{E2E533DC-A88A-4CE2-B81B-6859751808D6}</Project>
       <Name>NetRemotingObjects_msvc10</Name>
     </ProjectReference>

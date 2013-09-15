@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>dll_func_msvc10</ProjectName>
+    <ProjectName>dll_func_vc10</ProjectName>
     <ProjectGuid>{97B2A599-18EB-4579-A5FC-3457EAEC1601}</ProjectGuid>
     <RootNamespace>dll_func</RootNamespace>
     <Keyword>Win32Proj</Keyword>

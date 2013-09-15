@@ -1,19 +1,19 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGuiComponent_msvc10", "..\test\TestGuiComponent\TestGuiComponent_msvc10.csproj", "{D3558F59-41A3-4773-9FBC-C3738F2E1A05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGuiComponent_vc10", "..\test\TestGuiComponent\TestGuiComponent_vc10.csproj", "{D3558F59-41A3-4773-9FBC-C3738F2E1A05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestClassLibrary_msvc10", "..\test\TestClassLibrary\TestClassLibrary_msvc10.csproj", "{9C241F47-F357-4C9D-81EF-117AFCBA5908}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestClassLibrary_vc10", "..\test\TestClassLibrary\TestClassLibrary_vc10.csproj", "{9C241F47-F357-4C9D-81EF-117AFCBA5908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp_msvc10", "..\test\TestApp\TestApp_msvc10.csproj", "{B52AB0D5-1911-4943-B274-40BD245D5AFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp_vc10", "..\test\TestApp\TestApp_vc10.csproj", "{B52AB0D5-1911-4943-B274-40BD245D5AFB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9C241F47-F357-4C9D-81EF-117AFCBA5908} = {9C241F47-F357-4C9D-81EF-117AFCBA5908}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetRemotingServer_msvc10", "..\test\NetRemotingServer\NetRemotingServer_msvc10.csproj", "{0A58F710-5126-473A-8DC3-51F80F6639A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetRemotingServer_vc10", "..\test\NetRemotingServer\NetRemotingServer_vc10.csproj", "{0A58F710-5126-473A-8DC3-51F80F6639A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetRemotingClient_msvc10", "..\test\NetRemotingClient\NetRemotingClient_msvc10.csproj", "{3B14292E-8F0D-4C88-B79D-D4711AF029D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetRemotingClient_vc10", "..\test\NetRemotingClient\NetRemotingClient_vc10.csproj", "{3B14292E-8F0D-4C88-B79D-D4711AF029D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetRemotingObjects_msvc10", "..\test\NetRemotingObjects\NetRemotingObjects_msvc10.csproj", "{E2E533DC-A88A-4CE2-B81B-6859751808D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetRemotingObjects_vc10", "..\test\NetRemotingObjects\NetRemotingObjects_vc10.csproj", "{E2E533DC-A88A-4CE2-B81B-6859751808D6}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebServiceClient", "..\test\WebServiceClient\", "{12B0E0E5-B1A9-4D2E-AFD8-939E442CB628}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -60,7 +60,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebServiceServer", "..\test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServiceClientForm", "..\test\WebServiceClientForm\WebServiceClientForm.csproj", "{B9F127DC-039A-48B7-966F-E69D221E9A1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpBasic_msvc10", "..\test\CSharpBasic\CSharpBasic_msvc10.csproj", "{FDDEAC23-41C3-4D4E-BE24-65B8979AD23E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpBasic_vc10", "..\test\CSharpBasic\CSharpBasic_vc10.csproj", "{FDDEAC23-41C3-4D4E-BE24-65B8979AD23E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

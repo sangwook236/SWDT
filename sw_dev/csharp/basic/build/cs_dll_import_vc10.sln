@@ -1,9 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_func_msvc9", "..\test\TestDllImport\dll_func_msvc9.vcproj", "{97B2A599-18EB-4579-A5FC-3457EAEC1601}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll_func_vc10", "..\test\TestDllImport\dll_func_vc10.vcxproj", "{97B2A599-18EB-4579-A5FC-3457EAEC1601}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dll_import_msvc9", "..\test\TestDllImport\dll_import_msvc9.csproj", "{D69155DA-7CC1-4076-AF6F-1F0078198460}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dll_import_vc10", "..\test\TestDllImport\dll_import_vc10.csproj", "{D69155DA-7CC1-4076-AF6F-1F0078198460}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
