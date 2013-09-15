@@ -9,14 +9,21 @@
 
 int main(int argc, char *argv[])
 {
+	int rapidjson_main(int argc, char *argv[]);
+	int yaml_cpp_main(int argc, char *argv[]);
 	int protobuf_main(int argc, char *argv[]);
-	int yaml_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		retval = protobuf_main(argc, argv);
-		retval = yaml_main(argc, argv);
+		std::cout << "Rapidjson  library --------------------------------------------------" << std::endl;
+		retval = rapidjson_main(argc, argv);
+
+		std::cout << "\nyaml-cpp library ----------------------------------------------------" << std::endl;
+		//retval = yaml_cpp_main(argc, argv);
+
+		std::cout << "\nProtocol Buffers library --------------------------------------------" << std::endl;
+		//retval = protobuf_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

@@ -175,7 +175,7 @@ void emit_user_defined_type()
 
 void emit_existing_nodes()
 {
-	std::ifstream fin("data/serialization/yaml/monsters.yaml");
+	std::ifstream fin("./data/serialization/yaml/monsters.yaml");
 	if (!fin)
 	{
 		std::cout << "yaml data file not found !!!" << std::endl;
@@ -197,7 +197,7 @@ void emit_existing_nodes()
 }  // local
 }  // unnamed namespace
 
-namespace my_yaml {
+namespace my_yaml_cpp {
 
 void basic_emitting()
 {
@@ -221,4 +221,4 @@ void basic_emitting()
 	local::emit_existing_nodes();
 }
 
-}  // namespace my_yaml
+}  // namespace my_yaml_cpp

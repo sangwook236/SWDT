@@ -16,11 +16,14 @@
     <Filter Include="Header Files\protobuf">
       <UniqueIdentifier>{30db4717-2127-42fc-ab40-ee6ae79abc66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\yaml">
-      <UniqueIdentifier>{3a591ebd-4a70-4f02-b0fe-1fdcae0a74ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\protobuf">
       <UniqueIdentifier>{8c04fe64-b9b7-41fb-b87f-1799f7830d61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rapidjson">
+      <UniqueIdentifier>{7e050869-d80d-4b08-b4ad-b974d22c3708}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\yaml_cpp">
+      <UniqueIdentifier>{3a591ebd-4a70-4f02-b0fe-1fdcae0a74ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -53,23 +56,29 @@
     <ClCompile Include="protobuf\protobuf_simple_example.cpp">
       <Filter>Source Files\protobuf</Filter>
     </ClCompile>
-    <ClCompile Include="yaml\yaml_basic_emitting.cpp">
-      <Filter>Source Files\yaml</Filter>
-    </ClCompile>
-    <ClCompile Include="yaml\yaml_basic_parsing.cpp">
-      <Filter>Source Files\yaml</Filter>
-    </ClCompile>
-    <ClCompile Include="yaml\yaml_main.cpp">
-      <Filter>Source Files\yaml</Filter>
-    </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="yaml\yaml_configuration_example.cpp">
-      <Filter>Source Files\yaml</Filter>
+    <ClCompile Include="rapidjson\rapidjson_examples.cpp">
+      <Filter>Source Files\rapidjson</Filter>
     </ClCompile>
-    <ClCompile Include="yaml\yaml_example_0_5.cpp">
-      <Filter>Source Files\yaml</Filter>
+    <ClCompile Include="rapidjson\rapidjson_main.cpp">
+      <Filter>Source Files\rapidjson</Filter>
+    </ClCompile>
+    <ClCompile Include="yaml_cpp\yaml_cpp_basic_emitting.cpp">
+      <Filter>Source Files\yaml_cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="yaml_cpp\yaml_cpp_basic_parsing.cpp">
+      <Filter>Source Files\yaml_cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="yaml_cpp\yaml_cpp_configuration_example.cpp">
+      <Filter>Source Files\yaml_cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="yaml_cpp\yaml_cpp_example_0_5.cpp">
+      <Filter>Source Files\yaml_cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="yaml_cpp\yaml_cpp_main.cpp">
+      <Filter>Source Files\yaml_cpp</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

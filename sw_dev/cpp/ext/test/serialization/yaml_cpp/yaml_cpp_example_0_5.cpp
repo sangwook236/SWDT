@@ -43,7 +43,7 @@ struct convert<local::Vec3>
 
     static bool decode(const Node &node, local::Vec3 &rhs)
     {
-        if (!node.IsSequence() || node.size() != 3)
+        if (!node.IsSequence() || 3 != node.size())
             return false;
 
         rhs.x = node[0].as<double>();
@@ -63,7 +63,7 @@ void example_1()
     {
         YAML::Node node = YAML::Load("[1, 2, 3]");
         assert(node.Type() == YAML::NodeType::Sequence);
-        assert(node.IsSequence());   // a shortcut!
+        assert(node.IsSequence());  // a shortcut!
     }
 
     // collection nodes (sequences and maps) act somewhat like STL vectors and maps
@@ -141,14 +141,14 @@ void example_2()
 #endif
 
         //
-        std::ofstream stream("data/serialization/yaml/test.yaml");
+        std::ofstream stream("./data/serialization/yaml/test.yaml");
         stream << node;
     }
 }
 
 void example_3()
 {
-    // how sequences turn into maps
+    // how sequences turn i	nto maps
     {
         YAML::Node node = YAML::Load("[1, 2, 3]");
         node[1] = 5;  // still a sequence, [1, 5, 3]
@@ -209,7 +209,7 @@ void example_4()
 }  // local
 }  // unnamed namespace
 
-namespace my_yaml {
+namespace my_yaml_cpp {
 
 void example_0_5()
 {
@@ -219,4 +219,4 @@ void example_0_5()
     local::example_4();
 }
 
-}  // namespace my_yaml
+}  // namespace my_yaml_cpp

@@ -95,18 +95,20 @@
     <ClCompile Include="protobuf\protobuf_main.cpp" />
     <ClCompile Include="protobuf\protobuf_person.pb.cc" />
     <ClCompile Include="protobuf\protobuf_simple_example.cpp" />
+    <ClCompile Include="rapidjson\rapidjson_examples.cpp" />
+    <ClCompile Include="rapidjson\rapidjson_main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="yaml\yaml_basic_emitting.cpp">
+    <ClCompile Include="yaml_cpp\yaml_cpp_basic_emitting.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="yaml\yaml_basic_parsing.cpp">
+    <ClCompile Include="yaml_cpp\yaml_cpp_basic_parsing.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="yaml\yaml_configuration_example.cpp" />
-    <ClCompile Include="yaml\yaml_example_0_5.cpp" />
-    <ClCompile Include="yaml\yaml_main.cpp" />
+    <ClCompile Include="yaml_cpp\yaml_cpp_configuration_example.cpp" />
+    <ClCompile Include="yaml_cpp\yaml_cpp_example_0_5.cpp" />
+    <ClCompile Include="yaml_cpp\yaml_cpp_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

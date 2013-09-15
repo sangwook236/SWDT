@@ -12,11 +12,11 @@ namespace local {
 }  // local
 }  // unnamed namespace
 
-namespace my_yaml {
+namespace my_yaml_cpp {
 
 void configuration_example()
 {
-    YAML::Node config = YAML::LoadFile("data/serialization/yaml/config.yaml");
+    YAML::Node config = YAML::LoadFile("./data/serialization/yaml/config.yaml");
 
 #if defined(_MSC_VER)
     if (config[std::string("lastLogin")])
@@ -38,8 +38,8 @@ void configuration_example()
     config["lastLogin"] = boost::posix_time::to_simple_string(now);
 #endif
 
-    std::ofstream stream("data/serialization/yaml/config.yaml");
+    std::ofstream stream("./data/serialization/yaml/config.yaml");
     stream << config;
 }
 
-}  // namespace my_yaml
+}  // namespace my_yaml_cpp
