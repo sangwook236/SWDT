@@ -173,11 +173,12 @@ void hog()
 	const float maxPix2 = *std::max_element(hogImage, hogImage + hogImageHeight * hogImageWidth);
 
 	// FIXME [fix] >>
+	//  -. This is working well in Linux, but not Windows.
 	//	-. maxPix2 is zero. why?
 
 	{
 		cv::Mat input_img((int)pim.height, (int)pim.width, CV_32FC1, data_float);
-#if 0
+#if 1
 		cv::Mat result_img((int)hogImageHeight, (int)hogImageWidth, CV_32FC1, hogImage);
 #else
 		cv::Mat result_img = cv::Mat::zeros((int)hogImageHeight, (int)hogImageWidth, CV_32FC1);
