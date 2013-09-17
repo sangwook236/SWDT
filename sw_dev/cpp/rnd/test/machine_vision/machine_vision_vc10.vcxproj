@@ -211,6 +211,7 @@
     <ClCompile Include="vigra\vigra_watershed.cpp" />
     <ClCompile Include="vigra\vigra_watershed_region_growing.cpp" />
     <ClCompile Include="vlfeat\vlfeat_aib.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_hog.cpp" />
     <ClCompile Include="vlfeat\vlfeat_kmeans.cpp" />
     <ClCompile Include="vlfeat\vlfeat_main.cpp" />
     <ClCompile Include="vlfeat\vlfeat_mser.cpp" />

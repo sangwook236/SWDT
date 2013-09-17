@@ -390,6 +390,9 @@
     <ClCompile Include="vigra\vigra_watershed_region_growing.cpp">
       <Filter>Source Files\vigra</Filter>
     </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_hog.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

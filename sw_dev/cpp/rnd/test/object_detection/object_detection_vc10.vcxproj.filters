@@ -25,6 +25,9 @@
     <Filter Include="Source Files\object_detection_toolbox">
       <UniqueIdentifier>{1ce626df-4908-400d-912b-46d3f7643778}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\object_detection_and_localization_toolkit">
+      <UniqueIdentifier>{5d7bf6be-d9f1-4866-999c-45caf2a6546e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -70,6 +73,9 @@
     </ClCompile>
     <ClCompile Include="object_detection_toolbox\object_detection_toolbox_main.cpp">
       <Filter>Source Files\object_detection_toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="object_detection_and_localization_toolkit\object_detection_and_localization_toolkit_main.cpp">
+      <Filter>Source Files\object_detection_and_localization_toolkit</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

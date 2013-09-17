@@ -15,7 +15,7 @@
 namespace {
 namespace local {
 
-bool read_pgm(const std::string &name, vl_sift_pix *& fdata, VlPgmImage &pim, const bool verbose)
+bool read_pgm(const std::string &name, vl_sift_pix *&fdata, VlPgmImage &pim, const bool verbose)
 {
 	// open input file
 	FILE *in = fopen(name.c_str(), "rb");
@@ -467,16 +467,16 @@ void sift()
     // release input keys buffer
     if (ikeys)
 	{
-      delete [] ikeys;
-      ikeys_size = nikeys = 0;
-      ikeys = NULL;
+		delete [] ikeys;
+		ikeys_size = nikeys = 0;
+		ikeys = NULL;
     }
 
     // release filter
     if (filt)
 	{
-      vl_sift_delete(filt);
-      filt = NULL;
+		vl_sift_delete(filt);
+		filt = NULL;
     }
 
 	// release image data

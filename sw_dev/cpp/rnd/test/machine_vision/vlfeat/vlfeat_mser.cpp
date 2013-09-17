@@ -29,7 +29,7 @@ bool werr(const vl_bool err, const std::string &name)
 	return true;
 }
 
-bool read_pgm(const std::string &name, vl_uint8 *& data, VlPgmImage &pim, const bool verbose)
+bool read_pgm(const std::string &name, vl_uint8 *&data, VlPgmImage &pim, const bool verbose)
 {
 	FILE *in = fopen(name.c_str(), "rb");
 	if (!in)

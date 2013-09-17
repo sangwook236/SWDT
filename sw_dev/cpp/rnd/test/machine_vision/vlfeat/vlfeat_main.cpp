@@ -13,18 +13,18 @@ namespace local {
 
 namespace my_vlfeat {
 
-void sift();  // scale invariant feature transform (SIFT)
+void sift();  // scale invariant feature transform (SIFT).
 void dense_sift();
-void mser();  // maximally stable extremal regions (MSER)
-void hog();  // histogram of oriented gradients (HOG) features
+void mser();  // maximally stable extremal regions (MSER).
+void hog();  // histogram of oriented gradients (HOG) features.
 void covariant_feature_detectors();
 
-void kmeans();  // k-means
-void ikm();  // integer K-means (IKM)
-void hikm();  // hierarchical Integer K-means (HIKM)
-void aib();  // agglomerative information bottleneck (AIB)
+void kmeans();  // k-means.
+void ikm();  // integer K-means (IKM).
+void hikm();  // hierarchical Integer K-means (HIKM).
+void aib();  // agglomerative information bottleneck (AIB).
 
-void slic();  // simple linear iterative clustering (SLIC)
+void slic();  // simple linear iterative clustering (SLIC).
 void quick_shift();
 
 }  // namespace my_vlfeat
@@ -50,7 +50,7 @@ int vlfeat_main(int argc, char *argv[])
 			//my_vlfeat::sift();
 			//my_vlfeat::dense_sift();  // not yet implemented
 			//my_vlfeat::mser();
-			//my_vlfeat::hog();  // not yet implemented
+			my_vlfeat::hog();
 			//my_vlfeat::covariant_feature_detectors();  // not yet implemented
 		}
 
@@ -67,7 +67,7 @@ int vlfeat_main(int argc, char *argv[])
 			// simple linear iterative clustering (SLIC).
 			//my_vlfeat::slic();
 
-			my_vlfeat::quick_shift();
+			//my_vlfeat::quick_shift();
 		}
 	}
 	catch (const cv::Exception &e)
