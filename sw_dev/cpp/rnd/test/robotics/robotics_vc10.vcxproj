@@ -102,6 +102,7 @@
     <ClCompile Include="mrpt\mrpt_rawlog_grabber.cpp" />
     <ClCompile Include="mrpt\mrpt_slam_icp.cpp" />
     <ClCompile Include="mrpt\mrpt_slam_kf.cpp" />
+    <ClCompile Include="ompl\ompl_main.cpp" />
     <ClCompile Include="player_stage\player_stage_main.cpp" />
     <ClCompile Include="player_stage\player_stage_rubbish_collecting_robot.cpp" />
     <ClCompile Include="player_stage\player_stage_simple_example.cpp" />

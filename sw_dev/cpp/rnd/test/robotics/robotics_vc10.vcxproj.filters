@@ -19,6 +19,9 @@
     <Filter Include="Source Files\player_stage">
       <UniqueIdentifier>{b69dceec-2a41-4b77-b0b4-2b2da4b68eb0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ompl">
+      <UniqueIdentifier>{6c4884ca-76c2-4f93-b1cf-b278fe392c9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -74,6 +77,9 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ompl\ompl_main.cpp">
+      <Filter>Source Files\ompl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

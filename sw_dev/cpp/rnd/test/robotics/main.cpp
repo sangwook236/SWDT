@@ -13,16 +13,20 @@ int main(int argc, char *argv[])
 	int mrpt_main(int argc, char *argv[]);
 	int player_stage_main(int argc, char *argv[]);
 
+	int ompl_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "MRPT library --------------------------------------------------------" << std::endl;
-		//retval = mrpt_main(argc, argv);  // compile-time error
-
+		std::cout << "Mobile Robot Programming Toolkit (MRPT) library ---------------------" << std::endl;
+		//retval = mrpt_main(argc, argv);  // compile-time error.
 		std::cout << "\nPlayer/Stage library ------------------------------------------------" << std::endl;
 		retval = player_stage_main(argc, argv);
+
+		std::cout << "\nOpen Motion Planning Library (OMPL) ---------------------------------" << std::endl;
+		retval = ompl_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{
