@@ -94,6 +94,7 @@ namespace my_opencv {
 
 void human_detection()
 {
+	// using histogram of oriented gradients (HOG).
 	local::human_detection_using_hog();
 }
 
