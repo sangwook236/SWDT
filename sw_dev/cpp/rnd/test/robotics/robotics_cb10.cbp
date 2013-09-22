@@ -64,6 +64,7 @@
 		<Unit filename="mrpt/mrpt_rawlog_grabber.cpp" />
 		<Unit filename="mrpt/mrpt_slam_icp.cpp" />
 		<Unit filename="mrpt/mrpt_slam_kf.cpp" />
+		<Unit filename="ompl/ompl_main.cpp" />
 		<Unit filename="player_stage/player_stage_main.cpp" />
 		<Unit filename="player_stage/player_stage_rubbish_collecting_robot.cpp" />
 		<Unit filename="player_stage/player_stage_simple_example.cpp" />
