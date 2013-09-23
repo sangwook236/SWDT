@@ -108,11 +108,16 @@
 			<Add directory="/usr/local/lib/vxl" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="ccv/ccv_bbf.cpp" />
 		<Unit filename="ccv/ccv_daisy.cpp" />
 		<Unit filename="ccv/ccv_dpm.cpp" />
+		<Unit filename="ccv/ccv_ferns.cpp" />
 		<Unit filename="ccv/ccv_hog.cpp" />
+		<Unit filename="ccv/ccv_icf.cpp" />
 		<Unit filename="ccv/ccv_main.cpp" />
+		<Unit filename="ccv/ccv_mser.cpp" />
 		<Unit filename="ccv/ccv_sift.cpp" />
+		<Unit filename="ccv/ccv_swt.cpp" />
 		<Unit filename="ccv/ccv_tld.cpp" />
 		<Unit filename="darwin/darwin_main.cpp" />
 		<Unit filename="ivt/ParticleFilter2D.cpp" />
