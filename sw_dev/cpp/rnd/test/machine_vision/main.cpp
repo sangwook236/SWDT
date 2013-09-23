@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 		//	-. particle filtering.
 		//retval = ivt_main(argc, argv);
 
-		std::cout << "\nVLFeat library ------------------------------------------------------" << std::endl;
+		std::cout << "\nVision Lab Features Library (VLFeat) --------------------------------" << std::endl;
 		//	-. feature analysis.
 		//		Covariant detectors, HOG, SIFT, DSIFT, MSER.
 		//	-. clustering.
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 		//		Quick shift, SLIC.
 		retval = vlfeat_main(argc, argv);
 
-		std::cout << "\nCCV library ---------------------------------------------------------" << std::endl;
+		std::cout << "\nC-based/Cached/Core Computer Vision (CCV) library -------------------" << std::endl;
 		//	-. feature analysis.
 		//		scale invariant feature transform (SIFT).
 		//		DAISY.

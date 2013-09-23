@@ -11,9 +11,7 @@ namespace local {
 
 namespace my_ccv {
 
-// discriminatively trained part-based model.
-// [ref] "Object Detection with Discriminatively Trained Part-Based Models", P. Felzenszwalb, R. Girshick, D. McAllester, & D. Ramanan, TPAMI, 2010.
-void dpm()
+void mser()
 {
 	throw std::runtime_error("not yet implemented");
 }

@@ -16,7 +16,7 @@ namespace my_vlfeat {
 void sift();  // scale invariant feature transform (SIFT).
 void dense_sift();
 void mser();  // maximally stable extremal regions (MSER).
-void hog();  // histogram of oriented gradients (HOG) features.
+void hog();  // histogram of oriented gradients (HOG).
 void covariant_feature_detectors();
 
 void kmeans();  // k-means.
@@ -46,15 +46,30 @@ int vlfeat_main(int argc, char *argv[])
 #endif
 
 		// feature analysis -----------------------------------------
+		//	scale Invariant feature transform (SIFT).
+		//	dense scale invariant feature transform (DSIFT).
+		//	maximally stable extremal regions (MSER).
+		//	covariant feature detectors.
+		//	Gaussian scale space (GSS).
+		//	histogram of oriented gradients (HOG).
+		//	Fisher vector encoding (FV).
+		//	vector of locally aggregated descriptors (VLAD) encoding.
+		//	local intensity order pattern (LIOP) descriptor.
 		{
 			//my_vlfeat::sift();
-			//my_vlfeat::dense_sift();  // not yet implemented
+			//my_vlfeat::dense_sift();  // not yet implemented.
 			//my_vlfeat::mser();
 			my_vlfeat::hog();
-			//my_vlfeat::covariant_feature_detectors();  // not yet implemented
+			//my_vlfeat::covariant_feature_detectors();  // not yet implemented.
 		}
 
 		// clustering -----------------------------------------------
+		//	k-means clustering.
+		//	integer k-means (IKM).
+		//	hierarchical integer k-means (HIKM).
+		//	Gaussian mixture models (GMM).
+		//	agglomerative information bottleneck (AIB).
+		//	kd-trees and forests.
 		{
 			//my_vlfeat::kmeans();
 			//my_vlfeat::ikm();
@@ -63,10 +78,10 @@ int vlfeat_main(int argc, char *argv[])
 		}
 
 		// segmentation ---------------------------------------------
+		//	simple linear iterative clustering (SLIC).
+		//	quick shift image segmentation.
 		{
-			// simple linear iterative clustering (SLIC).
 			//my_vlfeat::slic();
-
 			//my_vlfeat::quick_shift();
 		}
 	}

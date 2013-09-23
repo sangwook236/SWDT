@@ -393,6 +393,21 @@
     <ClCompile Include="vlfeat\vlfeat_hog.cpp">
       <Filter>Source Files\vlfeat</Filter>
     </ClCompile>
+    <ClCompile Include="ccv\ccv_bbf.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_ferns.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_icf.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_mser.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_swt.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

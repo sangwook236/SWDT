@@ -137,9 +137,16 @@ void hog()
 	const vl_size cellSize = 8;  // size of a HOG cell.
 	const vl_bool imageTransposed = VL_FALSE;  // wether images are transposed (column major).
 
-	VlHog *hog = vl_hog_new(VlHogVariantDalalTriggs, numOrientations, imageTransposed);  // the original one of Dalal-Triggs.
-	//VlHog *hog = vl_hog_new(VlHogVariantUoctti, numOrientations, imageTransposed);  // the one proposed in Felzenszwalb et al
-
+#if 1
+	// the original Dalal-Triggs variant (with 2¡¿2 square HOG blocks for normalization).
+	// Dalal-Triggs works with undirected gradients only and does not do any compression, for a total of 36 dimension.
+	VlHog *hog = vl_hog_new(VlHogVariantDalalTriggs, numOrientations, imageTransposed);
+#else
+	// the UoCTTI variant.
+	// the UoCTTI variant computes both directed and undirected gradients as well as a four dimensional texture-energy feature, but projects the result down to 31 dimensions.
+	// [ref] "Object Detection with Discriminatively Trained Part-Based Models", P. Felzenszwalb, R. Girshick, D. McAllester, & D. Ramanan, TPAMI, 2010.
+	VlHog *hog = vl_hog_new(VlHogVariantUoctti, numOrientations, imageTransposed);
+#endif
 
 #if 1
 	const vl_size numChannels = 1;

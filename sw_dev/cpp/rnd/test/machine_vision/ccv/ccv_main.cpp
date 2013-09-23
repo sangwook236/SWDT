@@ -17,6 +17,7 @@ void daisy();
 void ferns();
 void swt();  // stroke width transform (SWT).
 void bbf();  // brightness binary feature (BBF).
+void icf();  // integral channel features (ICF).
 
 void dpm();  // deformable parts model (DPM).
 void tld();  // track learn detect (TLD).
@@ -37,6 +38,7 @@ int ccv_main(int argc, char *argv[])
 		//my_ccv::ferns();  // not yet implemented.
 		//my_ccv::swt();  // not yet implemented.
 		//my_ccv::bbf();  // not yet implemented.
+		//my_ccv::icf();  // not yet implemented.
 	}
 
 	// object detection & tracking-----------------------------------
