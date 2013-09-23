@@ -132,6 +132,7 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="opencv/PascalVocDataset.cpp" />
 		<Unit filename="opencv/PascalVocDataset.h" />
+		<Unit filename="opencv/opencv_active_contour_model.cpp" />
 		<Unit filename="opencv/opencv_bag_of_words.cpp" />
 		<Unit filename="opencv/opencv_basic_operation.cpp" />
 		<Unit filename="opencv/opencv_camera_calibration.cpp" />
@@ -200,7 +201,6 @@
 		<Unit filename="opencv/opencv_skeletonization_and_thinning.cpp" />
 		<Unit filename="opencv/opencv_skin_color_filtering.cpp" />
 		<Unit filename="opencv/opencv_slam.cpp" />
-		<Unit filename="opencv/opencv_snake.cpp" />
 		<Unit filename="opencv/opencv_stereo_camera_calibration.cpp" />
 		<Unit filename="opencv/opencv_stereo_matching.cpp" />
 		<Unit filename="opencv/opencv_stereo_matching_using_gpu.cpp" />
