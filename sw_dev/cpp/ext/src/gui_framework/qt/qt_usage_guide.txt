@@ -1,0 +1,13 @@
+[-] Win32
+	-. qmake.exe or QMAKESPEC 관련 오류.
+		[ref] http://stackoverflow.com/questions/5303634/qmake-qmakespec-has-not-been-set
+
+		<오류메시지>
+			qmake.exe failed to create a makefile Make sure you have a working Qt qmake on your PATH.
+			QMAKESPEC has not been set, so configuration cannot be deduced.
+		==> QMAKESPEC 환경 변수가 설정되지 않아서 발생.
+			set QMAKESPEC=D:\usr\local\Qt-4.7.4\mkspecs\win32-msvc2010
+			qmake -spec D:\usr\local\Qt-4.7.4\mkspecs\win32-msvc2010
+		==> 아래의 명령으로 확인 가능.
+			qmake -query QMAKESPEC
+			qmake -query
