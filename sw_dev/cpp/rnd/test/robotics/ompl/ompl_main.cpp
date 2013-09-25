@@ -1,6 +1,6 @@
 //#include "stdafx.h"
+#include <ompl/config.h>
 #include <iostream>
-#include <stdexcept>
 
 
 namespace {
@@ -11,11 +11,15 @@ namespace local {
 
 namespace my_ompl {
 
+void rigid_body_planning_example();
+
 }  // namespace my_ompl
 
 int ompl_main(int argc, char *argv[])
 {
-	throw std::runtime_error("not yet implemented");
+	std::cout << "OMPL version: " << OMPL_VERSION << std::endl;
+
+	my_ompl::rigid_body_planning_example();
 
 	return 0;
 }

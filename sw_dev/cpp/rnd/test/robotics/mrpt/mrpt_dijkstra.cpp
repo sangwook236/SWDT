@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#include <mrpt/graphs.h>
+#include <mrpt/math/graphs.h>
 #include <mrpt/gui.h>
 #include <map>
 
@@ -8,7 +8,7 @@ namespace {
 namespace local {
 
 // adds a new edge to the graph. The edge is annotated with the relative position of the two nodes
-void add_edge(const size_t from, const size_t to, const std::map<mrpt::graphs::CDijkstra<mrpt::poses::CPosePDFGaussian>::TNodeID, mrpt::poses::CPose2D> &real_poses, mrpt::poses::CNetworkOfPoses2D &graph_links, const mrpt::math::CMatrixDouble33 &cov)
+void add_edge(const size_t from, const size_t to, const std::map<mrpt::math::CDijkstra<mrpt::poses::CPosePDFGaussian>::TNodeID, mrpt::poses::CPose2D> &real_poses, mrpt::poses::CNetworkOfPoses2D &graph_links, const mrpt::math::CMatrixDouble33 &cov)
 {
 	const mrpt::poses::CPose2D delta_p = real_poses.find(to)->second - real_poses.find(from)->second;
 	graph_links.insertEdge(from, to, mrpt::poses::CPosePDFGaussian(delta_p, cov));

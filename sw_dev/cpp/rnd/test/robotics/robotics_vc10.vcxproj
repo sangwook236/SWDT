@@ -88,7 +88,10 @@
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mrpt\mrpt_dijkstra.cpp" />
-    <ClCompile Include="mrpt\mrpt_feature_extraction_and_matching.cpp" />
+    <ClCompile Include="mrpt\mrpt_feature_extraction_and_matching.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="mrpt\mrpt_icp.cpp" />
     <ClCompile Include="mrpt\mrpt_localization_pf.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -98,11 +101,15 @@
     <ClCompile Include="mrpt\mrpt_map_handling.cpp" />
     <ClCompile Include="mrpt\mrpt_path_planning.cpp" />
     <ClCompile Include="mrpt\mrpt_ransac.cpp" />
-    <ClCompile Include="mrpt\mrpt_rawlog.cpp" />
+    <ClCompile Include="mrpt\mrpt_rawlog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="mrpt\mrpt_rawlog_grabber.cpp" />
     <ClCompile Include="mrpt\mrpt_slam_icp.cpp" />
     <ClCompile Include="mrpt\mrpt_slam_kf.cpp" />
     <ClCompile Include="ompl\ompl_main.cpp" />
+    <ClCompile Include="ompl\ompl_rigid_body_planning_example.cpp" />
     <ClCompile Include="player_stage\player_stage_main.cpp" />
     <ClCompile Include="player_stage\player_stage_rubbish_collecting_robot.cpp" />
     <ClCompile Include="player_stage\player_stage_simple_example.cpp" />

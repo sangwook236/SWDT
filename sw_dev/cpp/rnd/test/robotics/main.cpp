@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 		std::cout << "Mobile Robot Programming Toolkit (MRPT) library ---------------------" << std::endl;
 		//retval = mrpt_main(argc, argv);  // compile-time error.
 		std::cout << "\nPlayer/Stage library ------------------------------------------------" << std::endl;
-		retval = player_stage_main(argc, argv);
+		//retval = player_stage_main(argc, argv);
 
 		std::cout << "\nOpen Motion Planning Library (OMPL) ---------------------------------" << std::endl;
 		retval = ompl_main(argc, argv);  // not yet implemented.

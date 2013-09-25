@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #include <mrpt/vision.h>
+#include <string>
 
 
 namespace {

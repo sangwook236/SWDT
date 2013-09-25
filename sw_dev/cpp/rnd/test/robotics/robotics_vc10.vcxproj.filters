@@ -81,6 +81,9 @@
     <ClCompile Include="ompl\ompl_main.cpp">
       <Filter>Source Files\ompl</Filter>
     </ClCompile>
+    <ClCompile Include="ompl\ompl_rigid_body_planning_example.cpp">
+      <Filter>Source Files\ompl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
