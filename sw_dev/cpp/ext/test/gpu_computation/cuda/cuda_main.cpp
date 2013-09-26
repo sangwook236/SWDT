@@ -1,13 +1,16 @@
 #include <iostream>
 
 
-namespace {
-namespace local {
+namespace
+{
+namespace local
+{
 
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_cuda {
+namespace my_cuda
+{
 
 void hello_world();
 void basic_operation();
@@ -16,9 +19,9 @@ void basic_operation();
 
 int cuda_main(int argc, char *argv[])
 {
-	//my_cuda::hello_world();
+    //my_cuda::hello_world();
 
-	my_cuda::basic_operation();
+    my_cuda::basic_operation();
 
     return 0;
 }

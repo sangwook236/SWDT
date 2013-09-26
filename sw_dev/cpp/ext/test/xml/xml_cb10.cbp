@@ -40,12 +40,12 @@
 			<Add library="xerces-c" />
 		</Linker>
 		<Unit filename="main.cpp" />
-		<Unit filename="xercesc/DOMPrintErrorHandler.cpp" />
-		<Unit filename="xercesc/DOMPrintErrorHandler.hpp" />
-		<Unit filename="xercesc/DOMPrintFilter.cpp" />
-		<Unit filename="xercesc/DOMPrintFilter.hpp" />
-		<Unit filename="xercesc/DOMTreeErrorReporter.cpp" />
-		<Unit filename="xercesc/DOMTreeErrorReporter.hpp" />
+		<Unit filename="xercesc/xercesc_DOMPrintErrorHandler.cpp" />
+		<Unit filename="xercesc/xercesc_DOMPrintErrorHandler.hpp" />
+		<Unit filename="xercesc/xercesc_DOMPrintFilter.cpp" />
+		<Unit filename="xercesc/xercesc_DOMPrintFilter.hpp" />
+		<Unit filename="xercesc/xercesc_DOMTreeErrorReporter.cpp" />
+		<Unit filename="xercesc/xercesc_DOMTreeErrorReporter.hpp" />
 		<Unit filename="xercesc/xercesc_dom.cpp" />
 		<Unit filename="xercesc/xercesc_main.cpp" />
 		<Unit filename="xercesc/xercesc_sax.cpp" />

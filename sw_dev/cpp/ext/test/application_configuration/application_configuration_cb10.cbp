@@ -34,11 +34,11 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="iniparser/dictionary.cpp" />
-		<Unit filename="iniparser/dictionary.h" />
-		<Unit filename="iniparser/iniparser.cpp" />
-		<Unit filename="iniparser/iniparser.h" />
 		<Unit filename="iniparser/iniparser_main.cpp" />
+		<Unit filename="iniparser_lib/dictionary.cpp" />
+		<Unit filename="iniparser_lib/dictionary.h" />
+		<Unit filename="iniparser_lib/iniparser.cpp" />
+		<Unit filename="iniparser_lib/iniparser.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

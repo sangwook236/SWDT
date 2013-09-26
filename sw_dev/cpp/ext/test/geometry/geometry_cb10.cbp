@@ -33,8 +33,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-frounding-math" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="CGAL" />
@@ -46,6 +48,8 @@
 			<Add library="mpfi" />
 			<Add library="OpenMeshCore" />
 			<Add library="OpenMeshTools" />
+			<Add directory="/usr/local/lib/OpenMesh" />
+			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="cgal/cgal_main.cpp" />
 		<Unit filename="cgal/cgal_polygon.cpp" />

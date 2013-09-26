@@ -10,8 +10,8 @@ namespace local {
 
 namespace my_xercesc {
 
-int sax();
-int dom();
+void sax();
+void dom();
 
 }  // namespace my_xercesc
 

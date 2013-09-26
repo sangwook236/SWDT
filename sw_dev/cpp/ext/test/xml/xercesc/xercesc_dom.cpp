@@ -26,13 +26,13 @@ namespace local {
 
 namespace my_xercesc {
 
-int dom()
+void dom()
 {
 	try
 	{
 		XERCES_CPP_NAMESPACE::XMLPlatformUtils::Initialize();
 	}
-	catch (const XERCES_CPP_NAMESPACE::XMLException& e)
+	catch (const XERCES_CPP_NAMESPACE::XMLException &e)
 	{
 #if defined(_UNICODE) || defined(UNICODE)
 		std::wcout << L"Error during initialization! :" << std::endl
@@ -43,14 +43,14 @@ int dom()
 			<< message << std::endl;
 		XERCES_CPP_NAMESPACE::XMLString::release(&message);
 #endif
-		return 1;
+		return;
 	}
 
 	XERCES_CPP_NAMESPACE::XercesDOMParser *parser = new XERCES_CPP_NAMESPACE::XercesDOMParser();
 	// Indicates what validation scheme to use. It defaults to 'auto', but can be set via the -v= command.
 	parser->setValidationScheme(XERCES_CPP_NAMESPACE::XercesDOMParser::Val_Always);
 	// Indicates whether namespace processing should be done.
-	parser->setDoNamespaces(true);    // optional
+	parser->setDoNamespaces(true);  // optional.
 	// Indicates whether schema processing should be done.
 	parser->setDoSchema(true);
 	// Indicates whether full schema constraint checking should be done.
@@ -85,7 +85,7 @@ int dom()
 #else
 		std::cerr << "OutOfMemoryException" << std::endl;
 #endif
-		return -1;
+		return;
 	}
 	catch (const XERCES_CPP_NAMESPACE::XMLException &e)
 	{
@@ -98,7 +98,7 @@ int dom()
 			<< message << std::endl;
 		XERCES_CPP_NAMESPACE::XMLString::release(&message);
 #endif
-		return -1;
+		return;
 	}
 	catch (const XERCES_CPP_NAMESPACE::DOMException &e)
 	{
@@ -111,7 +111,7 @@ int dom()
 			<< message << std::endl;
 		XERCES_CPP_NAMESPACE::XMLString::release(&message);
 #endif
-		return -1;
+		return;
 	}
 	catch (...)
 	{
@@ -120,7 +120,7 @@ int dom()
 #else
 		std::cout << "Unexpected Exception" << std::endl;
 #endif
-		return -1;
+		return;
 	}
 
 	//
@@ -320,10 +320,8 @@ int dom()
 			<< message << std::endl;
 		XERCES_CPP_NAMESPACE::XMLString::release(&message);
 #endif
-		return 1;
+		return;
 	}
-
-	return 0;
 }
 
 }  // namespace my_xercesc
