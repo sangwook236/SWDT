@@ -1,3 +1,8 @@
 http://qt-project.org/
 http://qt.digia.com/
+
 http://qt.gitorious.org/qt
+https://qt.gitorious.org/
+
+http://qt-project.org/wiki/jom
+http://download.qt-project.org/official_releases/jom/

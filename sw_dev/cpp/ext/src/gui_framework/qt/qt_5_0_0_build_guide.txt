@@ -1,20 +1,38 @@
-[-] Building
-	[ref] http://qt-project.org/doc/qt-5.0/install-win.html
+[-] Building (Win32)
+	[ref] http://qt-project.org/doc/qt-5.0/qtdoc/installation.html
+	[ref] http://qt-project.org/doc/qt-5.0/qtdoc/install-win.html
 	[ref] ${QT_HOME}/README & ${QT_HOME}/qtbase/INSTALL
-	
+
 	0. execute "Visual Studio Command Prompt"
-	1. set PATH variable
+	1. set PATH
+		${QT_HOME}/qtbase/bin
+		${QT_HOME}/qtrepotools/bin (?)
+		${QT_HOME}/gnuwin32/bin
 		${PERL_HOME}/bin
 		${PYTHON_HOME}
-	2. configure
-	    configure -prefix ${QT_INSTALL} -opensource
-	3. nmake
-	4. nmake install
-		${QT_INSTALL}/bin/qtbase/qtbase에 설치됨
-		환경변수, ${INSTALL_ROOT}를 설정하는 경우 ${INSTALL_ROOT}/${QT_INSTALL}/bin/qtbase/qtbase에 설치됨.
+	2. set the environment variable, QMAKESPEC
+		set QMAKESPEC=win32-msvc2010
+	3. change directory to ${QT_ROOT}
+	    cd /D ${QT_ROOT}
+	4. configure
+	    configure -debug-and-release -opensource -prefix ${INSTALL_PREFIX}
+	    	INSTALL_PREFIX는 '\usr\local\Qt-5.0.0'과 같이 지정.
+	    ==> reconfigure
+	    	nmake confclean
+	    	configure ...
+	5. build
+		jom
+			http://qt-project.org/wiki/jom
+		nmake
+		mingw32-make
+	6. install
+		jom install
+		nmake install
+		mingw32-make install
+			${INSTALL_PREFIX}/include, lib, & bin, etc에 설치.
 
 [-] Trouble Shooting
-	-. manifest file을 생성 error
+	-. manifest file 생성 error
 		MSVC를 이용해 building하는 경우 mt.exe를 이용해 manifest file을 생성하는 과정에서
 		manifest file을 생성하지 못하는 오류 발생.
 		=> 다시 building하면 됨.
