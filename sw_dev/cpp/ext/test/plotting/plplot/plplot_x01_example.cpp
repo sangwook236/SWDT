@@ -369,7 +369,7 @@ void x01::plot3()
 
 namespace my_plplot {
 
-void example_x01(const int argc, const char **argv)
+void x01_example(const int argc, const char **argv)
 {
     boost::scoped_ptr<local::x01> x(new local::x01(argc, argv));
 }

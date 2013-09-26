@@ -17,7 +17,7 @@ int dom();
 
 int xercesc_main(int argc, char *argv[])
 {
-	//my_xercesc::sax();  // not yet implemented
+	//my_xercesc::sax();  // not yet implemented.
 	my_xercesc::dom();
 
 	return 0;

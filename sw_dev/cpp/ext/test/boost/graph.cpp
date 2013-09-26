@@ -1619,16 +1619,16 @@ void graph()
 	local::shortest_paths();
 
 	std::cout << "\nother core algorithms ----------------------------------------" << std::endl;
-	//local::other_core_algorithms();  // not yet implemented
+	//local::other_core_algorithms();  // not yet implemented.
 
 	std::cout << "\nminimum spanning tree algorithms -----------------------------" << std::endl;
 	local::minimum_spanning_tree();
 
 	std::cout << "\nrandom spanning tree algorithms ------------------------------" << std::endl;
-	//local::random_spanning_tree();  // not yet implemented
+	//local::random_spanning_tree();  // not yet implemented.
 
 	std::cout << "\nalgorithm for common spanning trees of two graphs ------------" << std::endl;
-	//local::common_spanning_tree();  // not yet implemented
+	//local::common_spanning_tree();  // not yet implemented.
 
 	std::cout << "\nconnected components algorithms ------------------------------" << std::endl;
 	local::connected_components();
@@ -1640,22 +1640,22 @@ void graph()
 	local::minimum_cut();
 
 	std::cout << "\nsparse matrix ordering algorithms ----------------------------" << std::endl;
-	//local::sparse_matrix_ordering();  // not yet implemented
+	//local::sparse_matrix_ordering();  // not yet implemented.
 
 	std::cout << "\nlayout algorithms --------------------------------------------" << std::endl;
-	//local::layout_algorithms();  // not yet implemented
+	//local::layout_algorithms();  // not yet implemented.
 
 	std::cout << "\nclustering algorithms ----------------------------------------" << std::endl;
-	//local::clustering();  // not yet implemented
+	//local::clustering();  // not yet implemented.
 
 	std::cout << "\nplanar graph algorithms --------------------------------------" << std::endl;
-	//local::planar_graph_algorithms();  // not yet implemented
+	//local::planar_graph_algorithms();  // not yet implemented.
 
 	std::cout << "\ngraph metrics ------------------------------------------------" << std::endl;
-	//local::graph_metrics();  // not yet implemented
+	//local::graph_metrics();  // not yet implemented.
 
 	std::cout << "\ngraph structure comparisons ----------------------------------" << std::endl;
-	//local::graph_structure_comparisons();  // not yet implemented
+	//local::graph_structure_comparisons();  // not yet implemented.
 
 	std::cout << "\ngraphviz -----------------------------------------------------" << std::endl;
 	local::graphviz();

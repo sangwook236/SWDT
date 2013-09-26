@@ -88,17 +88,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="iniparser\dictionary.cpp" />
-    <ClCompile Include="iniparser\iniparser.cpp" />
     <ClCompile Include="iniparser\iniparser_main.cpp" />
+    <ClCompile Include="iniparser_lib\dictionary.cpp" />
+    <ClCompile Include="iniparser_lib\iniparser.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dictionary.h" />
     <ClInclude Include="iniparser.h" />
-    <ClInclude Include="iniparser\dictionary.h" />
-    <ClInclude Include="iniparser\iniparser.h" />
+    <ClInclude Include="iniparser_lib\dictionary.h" />
+    <ClInclude Include="iniparser_lib\iniparser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -16,9 +16,9 @@ int main(int argc, char* argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		retval = graphviz_main(argc, argv);  // not yet implemented
-		retval = mathgl_main(argc, argv);  // not yet implemented
-		retval = vtk_main(argc, argv);  // not yet implemented
+		retval = graphviz_main(argc, argv);  // not yet implemented.
+		retval = mathgl_main(argc, argv);  // not yet implemented.
+		retval = vtk_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

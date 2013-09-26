@@ -16,9 +16,6 @@
     <Filter Include="Source Files\xercesc">
       <UniqueIdentifier>{e45d3d01-d335-4f41-9570-c4a9fd6a69da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\xercesc">
-      <UniqueIdentifier>{1341bd52-6c06-488b-bc6f-42ef1f4756f1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,15 +23,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="xercesc\DOMPrintErrorHandler.cpp">
-      <Filter>Source Files\xercesc</Filter>
-    </ClCompile>
-    <ClCompile Include="xercesc\DOMPrintFilter.cpp">
-      <Filter>Source Files\xercesc</Filter>
-    </ClCompile>
-    <ClCompile Include="xercesc\DOMTreeErrorReporter.cpp">
-      <Filter>Source Files\xercesc</Filter>
     </ClCompile>
     <ClCompile Include="xercesc\xercesc_dom.cpp">
       <Filter>Source Files\xercesc</Filter>
@@ -48,28 +36,28 @@
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="xercesc\xercesc_DOMPrintErrorHandler.cpp">
+      <Filter>Source Files\xercesc</Filter>
+    </ClCompile>
+    <ClCompile Include="xercesc\xercesc_DOMPrintFilter.cpp">
+      <Filter>Source Files\xercesc</Filter>
+    </ClCompile>
+    <ClCompile Include="xercesc\xercesc_DOMTreeErrorReporter.cpp">
+      <Filter>Source Files\xercesc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DOMPrintErrorHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DOMPrintFilter.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DOMTreeErrorReporter.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="xercesc\DOMPrintErrorHandler.hpp">
-      <Filter>Header Files\xercesc</Filter>
+    <ClInclude Include="xercesc\xercesc_DOMPrintErrorHandler.hpp">
+      <Filter>Source Files\xercesc</Filter>
     </ClInclude>
-    <ClInclude Include="xercesc\DOMPrintFilter.hpp">
-      <Filter>Header Files\xercesc</Filter>
+    <ClInclude Include="xercesc\xercesc_DOMPrintFilter.hpp">
+      <Filter>Source Files\xercesc</Filter>
     </ClInclude>
-    <ClInclude Include="xercesc\DOMTreeErrorReporter.hpp">
-      <Filter>Header Files\xercesc</Filter>
+    <ClInclude Include="xercesc\xercesc_DOMTreeErrorReporter.hpp">
+      <Filter>Source Files\xercesc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

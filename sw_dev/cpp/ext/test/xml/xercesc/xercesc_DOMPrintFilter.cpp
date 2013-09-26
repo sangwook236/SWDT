@@ -31,7 +31,7 @@
  *
  */
 
-#include "DOMPrintFilter.hpp"
+#include "xercesc_DOMPrintFilter.hpp"
 #include <xercesc/util/XMLUniDefs.hpp>
 #include <xercesc/util/XMLString.hpp>
 

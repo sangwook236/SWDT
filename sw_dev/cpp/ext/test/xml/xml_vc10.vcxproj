@@ -94,21 +94,18 @@
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="xercesc\DOMPrintErrorHandler.cpp" />
-    <ClCompile Include="xercesc\DOMPrintFilter.cpp" />
-    <ClCompile Include="xercesc\DOMTreeErrorReporter.cpp" />
     <ClCompile Include="xercesc\xercesc_dom.cpp" />
+    <ClCompile Include="xercesc\xercesc_DOMPrintErrorHandler.cpp" />
+    <ClCompile Include="xercesc\xercesc_DOMPrintFilter.cpp" />
+    <ClCompile Include="xercesc\xercesc_DOMTreeErrorReporter.cpp" />
     <ClCompile Include="xercesc\xercesc_main.cpp" />
     <ClCompile Include="xercesc\xercesc_sax.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DOMPrintErrorHandler.hpp" />
-    <ClInclude Include="DOMPrintFilter.hpp" />
-    <ClInclude Include="DOMTreeErrorReporter.hpp" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="xercesc\DOMPrintErrorHandler.hpp" />
-    <ClInclude Include="xercesc\DOMPrintFilter.hpp" />
-    <ClInclude Include="xercesc\DOMTreeErrorReporter.hpp" />
+    <ClInclude Include="xercesc\xercesc_DOMPrintErrorHandler.hpp" />
+    <ClInclude Include="xercesc\xercesc_DOMPrintFilter.hpp" />
+    <ClInclude Include="xercesc\xercesc_DOMTreeErrorReporter.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

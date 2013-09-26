@@ -1,7 +1,7 @@
 //#include "stdafx.h"
-#include "DOMTreeErrorReporter.hpp"
-#include "DOMPrintFilter.hpp"
-#include "DOMPrintErrorHandler.hpp"
+#include "xercesc_DOMTreeErrorReporter.hpp"
+#include "xercesc_DOMPrintFilter.hpp"
+#include "xercesc_DOMPrintErrorHandler.hpp"
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/framework/StdOutFormatTarget.hpp>

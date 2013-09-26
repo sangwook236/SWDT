@@ -49,7 +49,7 @@
 #include <iostream.h>
 #endif
 
-#include "DOMPrintErrorHandler.hpp"
+#include "xercesc_DOMPrintErrorHandler.hpp"
 
 bool DOMPrintErrorHandler::handleError(const XERCES_CPP_NAMESPACE::DOMError &domError)
 {

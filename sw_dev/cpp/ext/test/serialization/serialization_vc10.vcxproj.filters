@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\protobuf">
-      <UniqueIdentifier>{30db4717-2127-42fc-ab40-ee6ae79abc66}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\protobuf">
       <UniqueIdentifier>{8c04fe64-b9b7-41fb-b87f-1799f7830d61}</UniqueIdentifier>
     </Filter>
@@ -37,7 +34,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="protobuf\protobuf_person.pb.h">
-      <Filter>Header Files\protobuf</Filter>
+      <Filter>Source Files\protobuf</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -410,7 +410,7 @@ void x21::free_data( PLFLT *x, PLFLT *y, PLFLT *z )
 
 namespace my_plplot {
 
-void example_x21(const int argc, const char **argv)
+void x21_example(const int argc, const char **argv)
 {
     boost::scoped_ptr<local::x21> x(new local::x21(argc, argv));
 }

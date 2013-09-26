@@ -16,22 +16,25 @@
     <Filter Include="Source Files\iniparser">
       <UniqueIdentifier>{aa16b056-2125-4f2c-af9d-02bb0581728c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\iniparser_lib">
+      <UniqueIdentifier>{5acef171-5144-4075-a3a7-adf1959bc0d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="iniparser\dictionary.cpp">
-      <Filter>Source Files\iniparser</Filter>
-    </ClCompile>
-    <ClCompile Include="iniparser\iniparser.cpp">
-      <Filter>Source Files\iniparser</Filter>
     </ClCompile>
     <ClCompile Include="iniparser\iniparser_main.cpp">
       <Filter>Source Files\iniparser</Filter>
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="iniparser_lib\dictionary.cpp">
+      <Filter>Source Files\iniparser_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="iniparser_lib\iniparser.cpp">
+      <Filter>Source Files\iniparser_lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -41,11 +44,11 @@
     <ClInclude Include="iniparser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="iniparser\dictionary.h">
-      <Filter>Source Files\iniparser</Filter>
+    <ClInclude Include="iniparser_lib\dictionary.h">
+      <Filter>Source Files\iniparser_lib</Filter>
     </ClInclude>
-    <ClInclude Include="iniparser\iniparser.h">
-      <Filter>Source Files\iniparser</Filter>
+    <ClInclude Include="iniparser_lib\iniparser.h">
+      <Filter>Source Files\iniparser_lib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

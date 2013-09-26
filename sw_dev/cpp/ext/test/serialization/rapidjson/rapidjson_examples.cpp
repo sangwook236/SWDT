@@ -149,7 +149,7 @@ void serialize_example()
 	employees.push_back(local::Employee("Percy TSE", 30, false));
 
 	rapidjson::FileStream s(stdout);
-	rapidjson::PrettyWriter<rapidjson::FileStream> writer(s);  // Can also use Writer for condensed formatting
+	rapidjson::PrettyWriter<rapidjson::FileStream> writer(s);  // Can also use Writer for condensed formatting.
 
 	writer.StartArray();
 	for (std::vector<local::Employee>::const_iterator employeeItr = employees.begin(); employeeItr != employees.end(); ++employeeItr)
@@ -162,7 +162,7 @@ void serialize_example()
 void condense_and_pretty_example()
 {
 #if 0
-	//rapidjson::FileStream is(stdin);
+	rapidjson::FileStream is(stdin);
 #else
 	//FILE *fp = fopen("./data/serialization/json/glossary.json", "r+");
 	FILE *fp = fopen("./data/serialization/json/menu.json", "r+");
