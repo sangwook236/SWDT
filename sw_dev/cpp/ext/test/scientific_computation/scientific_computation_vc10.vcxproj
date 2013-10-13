@@ -110,6 +110,7 @@
     <ClCompile Include="gsl\gsl_random_sample.cpp" />
     <ClCompile Include="gsl\gsl_root_finding.cpp" />
     <ClCompile Include="gsl\gsl_simulated_annealing.cpp" />
+    <ClCompile Include="gsl\gsl_special_function.cpp" />
     <ClCompile Include="gsl\gsl_svd.cpp" />
     <ClCompile Include="gsl\gsl_vector_operation.cpp" />
     <ClCompile Include="library_autolinking.cpp" />

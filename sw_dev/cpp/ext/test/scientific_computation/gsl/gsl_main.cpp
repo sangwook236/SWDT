@@ -43,6 +43,7 @@ void print_gsl_matrix(gsl_matrix *mat)
 
 void vector_operation();
 void matrix_operation();
+void special_function();
 void lu();
 void qr();
 void cholesky();
@@ -71,6 +72,8 @@ int gsl_main(int argc, char *argv[])
 	//my_gsl::vector_operation();
 	//my_gsl::matrix_operation();
 
+	my_gsl::special_function();
+
 	//my_gsl::lu();
 	//my_gsl::qr();
 	//my_gsl::cholesky();
@@ -79,7 +82,7 @@ int gsl_main(int argc, char *argv[])
 		
 	//my_gsl::pca();
 		
-	my_gsl::levenberg_marquardt();
+	//my_gsl::levenberg_marquardt();
 	//my_gsl::conjugate_gradient();
 	//my_gsl::multidim_minimization_simplex();
 	//my_gsl::multidim_minimization_steepest_descent();
