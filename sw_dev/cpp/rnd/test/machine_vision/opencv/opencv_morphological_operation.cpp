@@ -14,7 +14,7 @@ void erosion(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const in
 void opening(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations);
 void closing(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations);
 void gradient(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations);
-void hit_and_miss();  // not yet implemented
+void hit_and_miss();  // not yet implemented.
 void top_hat(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations);
 void bottom_hat(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations);
 

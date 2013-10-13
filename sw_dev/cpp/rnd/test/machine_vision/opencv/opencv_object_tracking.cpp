@@ -462,9 +462,9 @@ namespace my_opencv {
 
 void object_tracking()
 {
-	//local::meanshift_tracking();  // not yet implemented
+	//local::meanshift_tracking();  // not yet implemented.
 	local::camshift_tracking_demo();
-	//local::hybrid_tracking_sample();  // not yet implemented
+	//local::hybrid_tracking_sample();  // not yet implemented.
 }
 
 }  // namespace my_opencv

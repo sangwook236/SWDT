@@ -141,7 +141,7 @@ pnl::CBNet * create_single_mixture_of_gaussians_bayesian_network()
 		nodes 0 & 1 together correspond to node Y.
 */
 
-	// first need to specify the graph structure of the model/
+	// first need to specify the graph structure of the model.
 	const int numNodes = 2;
 
 #if 0
@@ -153,8 +153,8 @@ pnl::CBNet * create_single_mixture_of_gaussians_bayesian_network()
 
 	// neighbors can be of either one of three following types:
 	// a parent, a child or just a neighbor - for undirected graphs.
-	// if a neighbor of a node is it's parent, then neighbor type is pnl::ntParent
-	// if it's a child, then pnl::ntChild and if it's a neighbor, then pnl::ntNeighbor
+	// if a neighbor of a node is it's parent, then neighbor type is pnl::ntParent.
+	// if it's a child, then pnl::ntChild and if it's a neighbor, then pnl::ntNeighbor.
 	const pnl::ENeighborType nbrsTypes0[] = { pnl::ntChild };
 	const pnl::ENeighborType nbrsTypes1[] = { pnl::ntParent };
 	const pnl::ENeighborType *nbrsTypes[] = { nbrsTypes0, nbrsTypes1 };
@@ -182,8 +182,8 @@ pnl::CBNet * create_single_mixture_of_gaussians_bayesian_network()
 	pnl::CGraph *graph = pnl::CGraph::Create(nbrs, nbrsTypes);
 #endif
 
-	// number of node types is 1, because all nodes are of the same type
-	// all four are discrete and binary
+	// number of node types is 1, because all nodes are of the same type.
+	// all four are discrete and binary.
 	const int numNodeTypes = 2;
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
 	nodeTypes[0].SetType(true, 2);  // discrete & binary
@@ -196,15 +196,15 @@ pnl::CBNet * create_single_mixture_of_gaussians_bayesian_network()
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
 	pnl::CModelDomain *md = bnet->GetModelDomain();
 
-	// set factors
+	// set factors.
 	bnet->AllocFactors();
 
-	// create arrays of data for factors
-	const float mixCoeffTable[] = { 0.7f, 0.3f };  // node 0
-	const float mean0 = -1.0f, cov0 = 0.02f;  // node 1 for node 0 = 0
-	const float mean1 =  5.0f, cov1 = 0.01f;  // node 1 for node 0 = 1
+	// create arrays of data for factors.
+	const float mixCoeffTable[] = { 0.7f, 0.3f };  // node 0.
+	const float mean0 = -1.0f, cov0 = 0.02f;  // node 1 for node 0 = 0.
+	const float mean1 =  5.0f, cov1 = 0.01f;  // node 1 for node 0 = 1.
 
-	// create domains
+	// create domains.
 	const int node0Size = 1;
 	const int node1Size = 2;
 	const int nodeSizes[] = { node0Size, node1Size };
@@ -216,7 +216,7 @@ pnl::CBNet * create_single_mixture_of_gaussians_bayesian_network()
 	pnl::CTabularCPD *cpd0 = pnl::CTabularCPD::Create(domains[0], nodeSizes[0], md, mixCoeffTable);
 	bnet->AttachFactor(cpd0);
 
-	// the last argument must be equal to table for node 0, because node 0 (mixture node) is used for storage summing coefficients for Gaussians
+	// the last argument must be equal to table for node 0, because node 0 (mixture node) is used for storage summing coefficients for Gaussians.
 	pnl::CMixtureGaussianCPD *cpd1 = pnl::CMixtureGaussianCPD::Create(domains[1], nodeSizes[1], md, mixCoeffTable);
 
 	int parentVal = 0;
@@ -229,18 +229,18 @@ pnl::CBNet * create_single_mixture_of_gaussians_bayesian_network()
 	return bnet;
 }
 
-// [ref] ${PNL_ROOT}/c_pgmtk/tests/src/AMixtureGaussainLearning.cpp
+// [ref] ${PNL_ROOT}/c_pgmtk/tests/src/AMixtureGaussainLearning.cpp.
 void learn_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<pnl::CBNet> &mogBNet)
 {
-	// FIXME [fix] >> run-time error
+	// FIXME [fix] >> run-time error.
 
-	// create data for learning
+	// create data for learning.
 	const int numEvidences = 100;
 
 	pnl::pEvidencesVector evidences;
 	mogBNet->GenerateSamples(&evidences, numEvidences);
 
-	// learn single mixture-of-Gaussians BNet
+	// learn single mixture-of-Gaussians BNet.
 	boost::scoped_ptr<pnl::CBNet> mogBNetToLearn(pnl::CBNet::Copy(mogBNet.get()));
 
 #if 0
@@ -285,11 +285,11 @@ void learn_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<
 
 void infer_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<pnl::CBNet> &mogBNet)
 {
-	// FIXME [fix] >> run-time error
+	// FIXME [fix] >> run-time error.
 
 	//const int numNodes = mogBNet->GetNumberOfNodes();
 
-	// create evidence on all Gaussian nodes for inference
+	// create evidence on all Gaussian nodes for inference.
 	const int numObsNodes = 1;
 	const int obsNodes[] = { 1 };
 
@@ -298,22 +298,22 @@ void infer_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<
 
 	boost::scoped_ptr<pnl::CEvidence> evidence(pnl::CEvidence::Create(mogBNet.get(), numObsNodes, obsNodes, obsVals));
 
-	// create inference engine
+	// create inference engine.
 	boost::scoped_ptr<pnl::CNaiveInfEngine> naiveInfEngine(pnl::CNaiveInfEngine::Create(mogBNet.get()));
 	boost::scoped_ptr<pnl::CJtreeInfEngine> juncTreeInfEngine(pnl::CJtreeInfEngine::Create(mogBNet.get()));
 
-	// start inference with maximization
+	// start inference with maximization.
 	{
 		const int maximizeFlag = 1;
 		const int queryNode = 0;
 
-		// naive inference
+		// naive inference.
 		naiveInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 		naiveInfEngine->MarginalNodes(&queryNode, 1);
 		const pnl::CEvidence *mpeEvidNaive = naiveInfEngine->GetMPE();
 		const int mpeValNaive = mpeEvidNaive->GetValue(queryNode)->GetInt();
 
-		// junction tree inference
+		// junction tree inference.
 		juncTreeInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 		juncTreeInfEngine->MarginalNodes(&queryNode, 1);
 		const pnl::CEvidence *mpeEvidJTree = juncTreeInfEngine->GetMPE();
@@ -325,18 +325,18 @@ void infer_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<
 		}
 	}
 
-	// start inference without maximization
+	// start inference without maximization.
 	{
 		const int maximizeFlag = 0;
 		const int queryNode = 0;
 
-		// naive inference
+		// naive inference.
 		naiveInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 		naiveInfEngine->MarginalNodes(&queryNode, 1);
 		const pnl::CPotential *marginalNaive = naiveInfEngine->GetQueryJPD();
 		//marginalNaive->Dump();
 
-		// junction tree inference
+		// junction tree inference.
 		juncTreeInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 		juncTreeInfEngine->MarginalNodes(&queryNode, 1);
 		const pnl::CPotential *marginalJTree = juncTreeInfEngine->GetQueryJPD();
@@ -353,7 +353,7 @@ void infer_single_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<
 
 pnl::CCPD * create_tabular_cpd_for_node_0(pnl::CModelDomain *md)
 {
-	// create tabular CPD for domain [0]
+	// create tabular CPD for domain [0].
 	const int numNodes = 1;
 	const int domain[] = { 0 };
 	const float table[] = { 0.7f, 0.3f };
@@ -363,7 +363,7 @@ pnl::CCPD * create_tabular_cpd_for_node_0(pnl::CModelDomain *md)
 
 pnl::CCPD * create_tabular_cpd_for_node_1(pnl::CModelDomain *md)
 {
-	// create tabular CPD for domain [1]
+	// create tabular CPD for domain [1].
 	const int numNodes = 1;
 	const int domain[] = { 1 };
 	const float table[] = { 0.4f, 0.6f };
@@ -373,7 +373,7 @@ pnl::CCPD * create_tabular_cpd_for_node_1(pnl::CModelDomain *md)
 
 pnl::CCPD * create_gaussian_cpd_for_node_2(pnl::CModelDomain *md)
 {
-	// create (univariate) Gaussian CPD for domain [2]
+	// create (univariate) Gaussian CPD for domain [2].
 	const int domain[] = { 2 };
 	const int numNodes = 1;
 	const float mean0 = 0.0f;
@@ -387,52 +387,52 @@ pnl::CCPD * create_gaussian_cpd_for_node_2(pnl::CModelDomain *md)
 
 pnl::CCPD * create_mixture_of_gaussians_cpd_for_node_3(pnl::CModelDomain *md)
 {
-	// create mixture Gaussian CPD for domain [0, 1, 2, 3] -> univariate Gaussian
-	// node 3 has the nodes 0, 1, 2 as parents
-	// last discrete node among all discrete nodes in domain is the special node - mixture node
-	// in this case node 1 is the mixture node
+	// create mixture Gaussian CPD for domain [0, 1, 2, 3] -> univariate Gaussian.
+	// node 3 has the nodes 0, 1, 2 as parents.
+	// last discrete node among all discrete nodes in domain is the special node - mixture node.
+	// in this case node 1 is the mixture node.
 	const int numNodes = 4;
 	const int domain[] = { 0, 1, 2, 3 };
-	// this table must be equal to table for node 1, because node 1 (mixture node) is used for storage summing coefficients for Gaussians
+	// this table must be equal to table for node 1, because node 1 (mixture node) is used for storage summing coefficients for Gaussians.
 	const float mixCoeffTable[] = { 0.4f, 0.6f };
 
 	pnl::CMixtureGaussianCPD *cpd = pnl::CMixtureGaussianCPD::Create(domain, numNodes, md, mixCoeffTable);
 
-	// data for probability distribution -> univariate Gaussian
+	// data for probability distribution -> univariate Gaussian.
 	// discrete nodes 0 & 1 have 2 possible values.
-	// if node 0 = 0 & node 1 = 0
+	// if node 0 = 0 & node 1 = 0.
 	const float mean00 = 1.0f;
 	const float cov00 = 0.005f;
 	const float weight00 = 0.02f;
 
-	// if node 0 = 1 & node 1 = 0
+	// if node 0 = 1 & node 1 = 0.
 	const float mean10 = -5.0f;
 	const float cov10 = 0.01f;
 	const float weight10 = 0.01f;
 
-	// if node 0 = 0 & node 1 = 1
+	// if node 0 = 0 & node 1 = 1.
 	const float mean01 = -3.0f;
 	const float cov01 = 0.01f;
 	const float weight01 = 0.01f;
 
-	// if node 0 = 1 & node 1 = 1
+	// if node 0 = 1 & node 1 = 1.
 	const float mean11 = 2.0f;
 	const float cov11 = 0.002f;
 	const float weight11 = 0.05f;
 
-	int parentVal[] = { 0, 0 };  // [ node 0 -> 0, node 1 -> 0 ]
+	int parentVal[] = { 0, 0 };  // [ node 0 -> 0, node 1 -> 0 ].
 	const float *dataWeight = &weight00;
 	cpd->AllocDistribution(&mean00, &cov00, 2.0f, &dataWeight, parentVal);
 
-	parentVal[1] = 1;  // [ node 0 -> 0, node 1 -> 1 ]
+	parentVal[1] = 1;  // [ node 0 -> 0, node 1 -> 1 ].
 	dataWeight = &weight01;
 	cpd->AllocDistribution(&mean01, &cov01, 1.0f, &dataWeight, parentVal);
 
-	parentVal[0] = 1;  // [ node 0 -> 1, node 1 -> 1 ]
+	parentVal[0] = 1;  // [ node 0 -> 1, node 1 -> 1 ].
 	dataWeight = &weight11;
 	cpd->AllocDistribution(&mean11, &cov11, 1.0f, &dataWeight, parentVal);
 
-	parentVal[1] = 0;  // [ node 0 -> 1, node 1 -> 0 ]
+	parentVal[1] = 0;  // [ node 0 -> 1, node 1 -> 0 ].
 	dataWeight = &weight10;
 	cpd->AllocDistribution(&mean10, &cov10, 1.0f, &dataWeight, parentVal);
 
@@ -441,12 +441,12 @@ pnl::CCPD * create_mixture_of_gaussians_cpd_for_node_3(pnl::CModelDomain *md)
 
 pnl::CCPD * create_gaussian_cpd_for_node_4(pnl::CModelDomain *md)
 {
-	// create (bivariate) Gaussian CPD for domain [3, 4]
-	// node 4 has the node 3 as parent
+	// create (bivariate) Gaussian CPD for domain [3, 4].
+	// node 4 has the node 3 as parent.
 	const int numNodes = 2;
 	const int domain[] = { 3, 4 };
 
-	// bivariate Gaussian
+	// bivariate Gaussian.
 	const float mean[] = { 8.0f, 1.0f };
 	const float cov[] = { 0.01f, 0.0f, 0.0f, 0.02f };
 	const float weight[] = { 0.01f, 0.03f };
@@ -460,7 +460,7 @@ pnl::CCPD * create_gaussian_cpd_for_node_4(pnl::CModelDomain *md)
 	}
 	else
 	{
-		// create factor using attach matrix
+		// create factor using attach matrix.
 
 		int range[] = { 2, 1 };
 		pnl::C2DNumericDenseMatrix<float> *meanMat = pnl::C2DNumericDenseMatrix<float>::Create(range, mean);
@@ -509,7 +509,7 @@ pnl::CBNet * create_mixture_of_gaussians_bayesian_network()
 		nodes 1 & 3 together correspond to node C.
 */
 
-	// 1) first need to specify the graph structure of the model;
+	// 1) first need to specify the graph structure of the model.
 
 	const int numNodes = 5;
 	const int numNeighbors[numNodes] = { 1, 1, 1, 4, 1 };
@@ -523,8 +523,8 @@ pnl::CBNet * create_mixture_of_gaussians_bayesian_network()
 
 	// neighbors can be of either one of three following types:
 	// a parent, a child or just a neighbor - for undirected graphs.
-	// if a neighbor of a node is it's parent, then neighbor type is pnl::ntParent
-	// if it's a child, then pnl::ntChild and if it's a neighbor, then pnl::ntNeighbor
+	// if a neighbor of a node is it's parent, then neighbor type is pnl::ntParent.
+	// if it's a child, then pnl::ntChild and if it's a neighbor, then pnl::ntNeighbor.
 	const pnl::ENeighborType nbrsTypes0[] = { pnl::ntChild };
 	const pnl::ENeighborType nbrsTypes1[] = { pnl::ntChild };
 	const pnl::ENeighborType nbrsTypes2[] = { pnl::ntChild };
@@ -541,9 +541,9 @@ pnl::CBNet * create_mixture_of_gaussians_bayesian_network()
 	//	3) multivariate Gaussian node 4 (consists of 2 values)
 	const int numNodeTypes = 3;
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes[0].SetType(true, 2);  // discrete & binary
-	nodeTypes[1].SetType(false, 1);  // continuous & univariate
-	nodeTypes[2].SetType(false, 2);  // continuous & bivariate
+	nodeTypes[0].SetType(true, 2);  // discrete & binary.
+	nodeTypes[1].SetType(false, 1);  // continuous & univariate.
+	nodeTypes[2].SetType(false, 2);  // continuous & bivariate.
 
 	const int nnodes = graph->GetNumberOfNodes();
 	pnl::intVector nodeAssociation(nnodes, 1);  // { 0, 0, 1, 1, 2 }
@@ -553,13 +553,13 @@ pnl::CBNet * create_mixture_of_gaussians_bayesian_network()
 
 	pnl::CModelDomain *md = pnl::CModelDomain::Create(nodeTypes, nodeAssociation);
 
-	// 2) creation base for BNet using Graph, and Model Domain
+	// 2) creation base for BNet using Graph, and Model Domain.
 	pnl::CBNet *bnet = pnl::CBNet::Create(graph, md);
 
-	// 3) allocation space for all factors of the model
+	// 3) allocation space for all factors of the model.
 	bnet->AllocFactors();
 
-	// 4) creation factors and attach their to model
+	// 4) creation factors and attach their to model.
 	pnl::CCPD *cpd = create_tabular_cpd_for_node_0(md);
 	bnet->AttachFactor(cpd);
 
@@ -584,14 +584,14 @@ void learn_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<pnl::CB
 	throw std::runtime_error("not yet implemented");
 }
 
-// [ref] ${PNL_ROOT}/c_pgmtk/tests/src/AMixtureGaussainModel.cpp
+// [ref] ${PNL_ROOT}/c_pgmtk/tests/src/AMixtureGaussainModel.cpp.
 void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::CBNet> &mogBNet)
 {
-	// create evidence on all Gaussian nodes
+	// create evidence on all Gaussian nodes.
 
 	//const int numNodes = mogBNet->GetNumberOfNodes();
 
-	// create evidence for inference
+	// create evidence for inference.
 	const int numObsNodes = 3;
 	const int obsNodes[] = { 2, 3, 4 };
 
@@ -602,17 +602,17 @@ void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::
 
 	boost::scoped_ptr<pnl::CEvidence> evidence(pnl::CEvidence::Create(mogBNet.get(), numObsNodes, obsNodes, obsVals));
 
-	// create inference engine
+	// create inference engine.
 	boost::scoped_ptr<pnl::CNaiveInfEngine> naiveInfEngine(pnl::CNaiveInfEngine::Create(mogBNet.get()));
 	boost::scoped_ptr<pnl::CJtreeInfEngine> juncTreeInfEngine(pnl::CJtreeInfEngine::Create(mogBNet.get()));
 
-	// start inference with maximization
+	// start inference with maximization.
 	{
 		const int maximizeFlag = 1;
 		const int queryNode = 0;
 		const int queryNodes[] = { 0, 1 };
 
-		// naive inference
+		// naive inference.
 		naiveInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 #if 1
 		naiveInfEngine->MarginalNodes(&queryNode, 1);
@@ -625,7 +625,7 @@ void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::
 		const int mpeValNaive1 = mpeEvidNaive->GetValue(queryNodes[1])->GetInt();
 #endif
 
-		// junction tree inference
+		// junction tree inference.
 		juncTreeInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 #if 1
 		juncTreeInfEngine->MarginalNodes(&queryNode, 1);
@@ -644,13 +644,13 @@ void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::
 #endif
 	}
 
-	// start inference without maximization
+	// start inference without maximization.
 	{
 		const int maximizeFlag = 0;
 		const int queryNode = 0;
 		const int queryNodes[] = { 0, 1 };
 
-		// naive inference
+		// naive inference.
 		naiveInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 #if 1
 		naiveInfEngine->MarginalNodes(&queryNode, 1);
@@ -661,7 +661,7 @@ void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::
 #endif
 		//marginalNaive->Dump();
 
-		// junction tree inference
+		// junction tree inference.
 		juncTreeInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 #if 1
 		juncTreeInfEngine->MarginalNodes(&queryNode, 1);
@@ -683,10 +683,10 @@ void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::
 
 void infer_mixture_of_gaussians_bayesian_network_2(const boost::scoped_ptr<pnl::CBNet> &mogBNet)
 {
-	// create simple evidence for nodes 2, 3, 4 from BNet
+	// create simple evidence for nodes 2, 3, 4 from BNet.
 	const pnl::CModelDomain *modelDomain = mogBNet->GetModelDomain();
 
-	// let nodes 2, 3, & 4 be observed
+	// let nodes 2, 3, & 4 be observed.
 	const int numObsNodes = 3;
 	const int obsNodes[] = { 2, 3, 4 };
 
@@ -696,10 +696,10 @@ void infer_mixture_of_gaussians_bayesian_network_2(const boost::scoped_ptr<pnl::
 	{
 		numObsValues += modelDomain->GetNumVlsForNode(obsNodes[i]);
 	}
-	// evidence for node 2 consists of 1 value
-	// evidence for node 3 consists of 1 value
-	// evidence for node 4 consists of 2 values
-	// so, numObsValues = 4
+	// evidence for node 2 consists of 1 value.
+	// evidence for node 3 consists of 1 value.
+	// evidence for node 4 consists of 2 values.
+	// so, numObsValues = 4.
 
 	pnl::valueVector obsValues(numObsValues);
 	for (int i = 0; i < numObsValues; ++i)
@@ -710,18 +710,18 @@ void infer_mixture_of_gaussians_bayesian_network_2(const boost::scoped_ptr<pnl::
 
 	boost::scoped_ptr<pnl::CEvidence> evidence(pnl::CEvidence::Create(modelDomain, numObsNodes, obsNodes, obsValues));
 
-	// create junction tree inference engine
+	// create junction tree inference engine.
 	boost::scoped_ptr<pnl::CJtreeInfEngine> juncTreeInfEngine(pnl::CJtreeInfEngine::Create(mogBNet.get()));
 
-	// enter evidence created before and started inference procedure
+	// enter evidence created before and started inference procedure.
 	juncTreeInfEngine->EnterEvidence(evidence.get());
 
-	// get a marginal for query
+	// get a marginal for query.
 	const int numQueryNodes = 1;
 	const int queryNodes[] = { 0 };
 	juncTreeInfEngine->MarginalNodes(queryNodes, numQueryNodes);
 	const pnl::CPotential *queryPot = juncTreeInfEngine->GetQueryJPD();
-	// node 0 is discrete, then query potential is tabular
+	// node 0 is discrete, then query potential is tabular.
 
 	const pnl::CDistribFun *distribFun = queryPot->GetDistribFun();
 	const pnl::CMatrix<float> *queryPotMat = distribFun->GetMatrix(pnl::matTable);
@@ -736,7 +736,7 @@ void infer_mixture_of_gaussians_bayesian_network_2(const boost::scoped_ptr<pnl::
 		std::cout << val << std::endl;
 	}
 
-	// distribution of the query hase dense matrix
+	// distribution of the query hase dense matrix.
 	// the row data is
 	int numElem;
 	const float *data;
@@ -760,7 +760,7 @@ namespace my_pnl {
 
 void bayesian_network()
 {
-	// discrete Bayesian network
+	// discrete Bayesian network.
 	std::cout << "========== discrete Bayesian network" << std::endl;
 	{
 		const boost::scoped_ptr<pnl::CBNet> discreteBNet(local::create_discrete_bayesian_network());
@@ -771,13 +771,13 @@ void bayesian_network()
 			return;
 		}
 
-		//boost::scoped_ptr<pnl::CJtreeInfEngine> juncTreeInfEngine(pnl::CJtreeInfEngine::Create(discreteBNet.get()));  // runtime-error
+		//boost::scoped_ptr<pnl::CJtreeInfEngine> juncTreeInfEngine(pnl::CJtreeInfEngine::Create(discreteBNet.get()));  // runtime-error.
 	}
 
 	std::cout << "\n========== single mixture-of-Gaussians Bayesian network" << std::endl;
-	// single mixture-of-Gaussians Bayesian network
+	// single mixture-of-Gaussians Bayesian network.
 	{
-		// create single mixture-of-Gaussians BNet
+		// create single mixture-of-Gaussians BNet.
 		//const boost::scoped_ptr<pnl::CBNet> mogBNet(local::create_single_mixture_of_gaussians_bayesian_network());
 		const boost::scoped_ptr<pnl::CBNet> mogBNet(pnl::pnlExCreateSingleGauMix());
 
@@ -787,14 +787,14 @@ void bayesian_network()
 			return;
 		}
 
-		local::learn_single_mixture_of_gaussians_bayesian_network(mogBNet);  // run-time error: to be verified
-		local::infer_single_mixture_of_gaussians_bayesian_network(mogBNet);  // run-time error: to be verified
+		local::learn_single_mixture_of_gaussians_bayesian_network(mogBNet);  // run-time error: to be verified.
+		local::infer_single_mixture_of_gaussians_bayesian_network(mogBNet);  // run-time error: to be verified.
 	}
 
 	std::cout << "\n========== mixture-of-Gaussians Bayesian network" << std::endl;
-	// mixture-of-Gaussians Bayesian network
+	// mixture-of-Gaussians Bayesian network.
 	{
-		// create mixture-of-Gaussians BNet
+		// create mixture-of-Gaussians BNet.
 		const boost::scoped_ptr<pnl::CBNet> mogBNet(local::create_mixture_of_gaussians_bayesian_network());
 		//const boost::scoped_ptr<pnl::CBNet> discreteBNet(pnl::pnlExCreateVerySimpleGauMix());
 		//const boost::scoped_ptr<pnl::CBNet> discreteBNet(pnl::pnlExCreateSimpleGauMix());
@@ -810,7 +810,7 @@ void bayesian_network()
 			mogBNet->GetGraph()->Dump();
 		}
 
-		//local::learn_mixture_of_gaussians_bayesian_network(mogBNet);  // not yet implemented
+		//local::learn_mixture_of_gaussians_bayesian_network(mogBNet);  // not yet implemented.
 #if 0
 		local::infer_mixture_of_gaussians_bayesian_network_1(mogBNet);
 #else

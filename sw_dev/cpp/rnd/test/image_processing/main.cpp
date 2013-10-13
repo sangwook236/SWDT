@@ -19,10 +19,10 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "Insight Segmentation and Registration Toolkit (ITK) -----------------" << std::endl;
-		retval = itk_main(argc, argv);  // not yet implemented
+		retval = itk_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nThe Range Imaging Toolkit (RITK) ------------------------------------" << std::endl;
-		retval = ritk_main(argc, argv);  // not yet implemented
+		retval = ritk_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

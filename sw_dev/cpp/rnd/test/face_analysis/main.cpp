@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "Stasm Library -------------------------------------------------------" << std::endl;
-		//retval = stasm_main(argc, argv);  // not yet implemented
+		//retval = stasm_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nFaceTracker library -------------------------------------------------" << std::endl;
 		retval = facetracker_main(argc, argv);

@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "MAT File I/O Library (matio) ----------------------------------------" << std::endl;
-		retval = matio_main(argc, argv);  // not yet implemented
+		retval = matio_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

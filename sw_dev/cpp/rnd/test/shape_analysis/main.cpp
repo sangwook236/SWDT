@@ -16,10 +16,10 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "Deformable Model Library (DeMoLib) ----------------------------------" << std::endl;
-		retval = demolib_main(argc, argv);  // not yet implemented
+		retval = demolib_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nStatistical Image and Shape Models (StatISMo) Library ---------------" << std::endl;
-		retval = statismo_main(argc, argv);  // not yet implemented
+		retval = statismo_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

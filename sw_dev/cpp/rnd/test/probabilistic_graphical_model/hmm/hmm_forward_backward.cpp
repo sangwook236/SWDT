@@ -294,13 +294,13 @@ namespace my_hmm {
 void hmm_forward_backward()
 {
     local::hmm_with_discrete_multinomial_observations__forward_umdhmm();
-    //local::hmm_with_discrete_multinomial_observations__backward_umdhmm();  // not yet implemented
+    //local::hmm_with_discrete_multinomial_observations__backward_umdhmm();  // not yet implemented.
 
 	local::cdhmm_with_univariate_gaussian_observations__forward_umdhmm();
-    //local::cdhmm_with_univariate_gaussian_observations__backward_umdhmm();  // not yet implemented
+    //local::cdhmm_with_univariate_gaussian_observations__backward_umdhmm();  // not yet implemented.
 
-	//local::cdhmm_with_univariate_gaussian_mixture_observations__forward_umdhmm();  // not yet implemented
-    //local::cdhmm_with_univariate_gaussian_mixture_observations__backward_umdhmm();  // not yet implemented
+	//local::cdhmm_with_univariate_gaussian_mixture_observations__forward_umdhmm();  // not yet implemented.
+    //local::cdhmm_with_univariate_gaussian_mixture_observations__backward_umdhmm();  // not yet implemented.
 }
 
 }  // namespace my_hmm

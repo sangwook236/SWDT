@@ -140,7 +140,7 @@ namespace my_opencv {
 void image_labeling_using_gpu()
 {
 	local::background_subtraction_by_graph_cut();
-	//local::belief_propagation();  // not yet implemented
+	//local::belief_propagation();  // not yet implemented.
 }
 
 }  // namespace my_opencv

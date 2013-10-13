@@ -10,7 +10,7 @@ namespace local {
 
 // [ref]
 //	"dHugin: A computational system for dynamic time-sliced Bayesian networks", U. Kjaerulff, Intl. J. Forecasting 11:89-111, 1995.
-//	${PNL_ROOT}/c_pgmtk/tests/src/tCreateKjaerulffDBN.cpp
+//	${PNL_ROOT}/c_pgmtk/tests/src/tCreateKjaerulffDBN.cpp.
 pnl::CDBN * create_Kjaerulff_dbn()
 {
 /*
@@ -64,8 +64,8 @@ pnl::CDBN * create_Kjaerulff_dbn()
 	const int numNodeTypes = 1;
 
 	const int numNeighs[] = {
-		3, 2, 3, 4, 2, 2, 3, 2,  // 1st time-slice
-		3, 2, 3, 4, 2, 2, 3, 2  // 2nd time-slice
+		3, 2, 3, 4, 2, 2, 3, 2,  // 1st time-slice.
+		3, 2, 3, 4, 2, 2, 3, 2  // 2nd time-slice.
 	};
 
 	const int neigh0[] = { 1, 2, 8 };
@@ -158,11 +158,11 @@ pnl::CDBN * create_Kjaerulff_dbn()
 		dynamic_cast<pnl::CTabularCPD *>(factor)->NormalizeCPD();
 	}
 
-	// create DBN
+	// create DBN.
 	return pnl::CDBN::Create(bnet);
 }
 
-// [ref] ${PNL_ROOT}/c_pgmtk/tests/src/AJtreeInfMixtureDBN.cpp
+// [ref] ${PNL_ROOT}/c_pgmtk/tests/src/AJtreeInfMixtureDBN.cpp.
 pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 {
 	const int numNodes = 8;
@@ -259,8 +259,8 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	//
 /*
 	pnl::CNodeType *nodeTypes = new pnl::CNodeType [numNodeTypes];
-	nodeTypes[0] = pnl::CNodeType(true, 2);  // discrete & binary
-	nodeTypes[1] = pnl::CNodeType(false, 1);  // continuous & univariate
+	nodeTypes[0] = pnl::CNodeType(true, 2);  // discrete & binary.
+	nodeTypes[1] = pnl::CNodeType(false, 1);  // continuous & univariate.
 
 	int *nodeAssociation = new int [numNodes];
 	nodeAssociation[0] = 0;
@@ -280,18 +280,18 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	nodeAssociation = NULL;
 */
 	pnl::nodeTypeVector nodeTypes(numNodeTypes);
-	nodeTypes[0].SetType(true, 2);  // discrete & binary
-	nodeTypes[1].SetType(false, 1);  // continuous & univariate
+	nodeTypes[0].SetType(true, 2);  // discrete & binary.
+	nodeTypes[1].SetType(false, 1);  // continuous & univariate.
 
-	pnl::intVector nodeAssociation(numNodes, 0);  // { 0, 0, 0, 1, 0, 0, 0, 1 }
+	pnl::intVector nodeAssociation(numNodes, 0);  // { 0, 0, 0, 1, 0, 0, 0, 1 }.
 	nodeAssociation[3] = 1;
 	nodeAssociation[7] = 1;
 
 	pnl::CBNet *bnet = pnl::CBNet::Create(numNodes, nodeTypes, nodeAssociation, graph);
 
-	// create domains
+	// create domains.
 #if 0
-	// model #1
+	// model #1.
 	const int domain0[] = { 0 };
 	const int domain1[] = { 0, 1 };
 	const int domain2[] = { 1, 2 };
@@ -312,7 +312,7 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	numDomains[6] = 2;
 	numDomains[7] = 3;
 #else
-	// model #2
+	// model #2.
 	const int domain0[] = { 0 };
 	const int domain1[] = { 0, 1 };
 	const int domain2[] = { 2 };
@@ -348,16 +348,16 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 	bnet->AllocFactors();
 
 	//
-	const float table0[] = { 0.7f, 0.3f };  // node X
+	const float table0[] = { 0.7f, 0.3f };  // node X.
 	const float table1[] = { 0.79f, 0.21f, 0.65f, 0.35f };
 	const float table2[] = { 0.5f, 0.5f, 0.5f, 0.5f };
 	const float table3[] = { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
-	//const float table1[] = { 0.1f, 0.9f };  // node Y
+	//const float table1[] = { 0.1f, 0.9f };  // node Y.
 
-	const float mean100 = 1.0f, cov100 = 0.5f;  // node Z for X = 0, Y = 0
-	const float mean110 = -5.0f, cov110 = 4.0f;  // node Z for X = 1, Y = 0
-	const float mean101 = -3.0f, cov101 = 1.5f;  // node Z for X = 0, Y = 1
-	const float mean111 = 2.0f, cov111 = 1.0f;  // node Z for X = 1, Y = 1
+	const float mean100 = 1.0f, cov100 = 0.5f;  // node Z for X = 0, Y = 0.
+	const float mean110 = -5.0f, cov110 = 4.0f;  // node Z for X = 1, Y = 0.
+	const float mean101 = -3.0f, cov101 = 1.5f;  // node Z for X = 0, Y = 1.
+	const float mean111 = 2.0f, cov111 = 1.0f;  // node Z for X = 1, Y = 1.
 
 	pnl::CTabularCPD *cpd0 = pnl::CTabularCPD::Create(domains[0], numDomains[0], bnet->GetModelDomain(), table0);
 	bnet->AttachFactor(cpd0);
@@ -404,8 +404,8 @@ pnl::CDBN * create_dbn_with_mixture_of_gaussians_observations()
 }
 
 // [ref]
-//	${PNL_ROOT}/c_pgmtk/tests/src/AJtreeInfMixtureDBN.cpp
-//	${PNL_ROOT}/c_pgmtk/tests/src/A1_5JTreeInfDBNCondGauss.cpp
+//	${PNL_ROOT}/c_pgmtk/tests/src/AJtreeInfMixtureDBN.cpp.
+//	${PNL_ROOT}/c_pgmtk/tests/src/A1_5JTreeInfDBNCondGauss.cpp.
 void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_inference_algorithm(const boost::scoped_ptr<pnl::CDBN> &dbn)
 {
 	const int numTimeSlices = 4;
@@ -413,10 +413,10 @@ void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_in
 
 	const boost::scoped_ptr<const pnl::CBNet> unrolledBNet(static_cast<pnl::CBNet *>(dbn->UnrollDynamicModel(numTimeSlices)));
 
-	// create evidence for every slice
+	// create evidence for every slice.
 	pnl::pEvidencesVector evidences(numTimeSlices);
 
-	// node 3 is always observed
+	// node 3 is always observed.
 	const pnl::intVector obsNodeNums(1, 3);
 	pnl::valueVector obsVals(1);
 	pnl::intVector obsNodeNumsForUnrolled(numTimeSlices);
@@ -447,7 +447,7 @@ void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_in
 
 	//
 	{
-		// node 0 & 1 ==> hidden states (for the prior network)
+		// node 0 & 1 ==> hidden states (for the prior network).
 		pnl::intVector query(2, 0);
 		pnl::intVector queryForUnrolled(2, 0);
 		query[1] = 1;
@@ -463,7 +463,7 @@ void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_in
 		std::cout << " #-- unrolled model: time-slice 0" << std::endl;
 		infEngineForUnrolled->GetQueryJPD()->Dump();
 
-		// node 4 & 5 ==> hidden states (for the transition network)
+		// node 4 & 5 ==> hidden states (for the transition network).
 		query[0] = numNodes / 2;
 		query[1] = numNodes / 2 + 1;
 		for (int t = 1; t < numTimeSlices; ++t)
@@ -490,8 +490,8 @@ void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_in
 }
 
 // [ref]
-//	${PNL_ROOT}/c_pgmtk/tests/src/ABKInfDBN.cpp
-//	${PNL_ROOT}/c_pgmtk/tests/src/ABKInfUsingClusters.cpp
+//	${PNL_ROOT}/c_pgmtk/tests/src/ABKInfDBN.cpp.
+//	${PNL_ROOT}/c_pgmtk/tests/src/ABKInfUsingClusters.cpp.
 void infer_dbn_with_mixture_of_gaussians_observations_using_boyen_koller_inference_algorithm(const boost::scoped_ptr<pnl::CDBN> &hmm)
 {
 	throw std::runtime_error("not yet implemented");
@@ -510,7 +510,7 @@ namespace my_pnl {
 
 void dbn()
 {
-	// DBN with mixture-of-Gaussians observations
+	// DBN with mixture-of-Gaussians observations.
 	std::cout << "========== infer DBN with mixture-of-Gaussians observations" << std::endl;
 	{
 		const boost::scoped_ptr<pnl::CDBN> dbn(local::create_dbn_with_mixture_of_gaussians_observations());
@@ -522,12 +522,12 @@ void dbn()
 			return;
 		}
 
-		// 1.5 slice junction tree inference algorithm
+		// 1.5 slice junction tree inference algorithm.
 		local::infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_inference_algorithm(dbn);
-		// Boyen-Koller (BK) inference algorithm (approximate algorithm)
-		//local::infer_dbn_with_mixture_of_gaussians_observations_using_boyen_koller_inference_algorithm(dbn);  // not yet implemented
-		// 2T slice particle filtering inference algorithm (approximate algorithm)
-		//local::infer_dbn_with_mixture_of_gaussians_observations_using_2T_slice_particle_filtering_inference_algorithm(dbn);  // not yet implemented
+		// Boyen-Koller (BK) inference algorithm (approximate algorithm).
+		//local::infer_dbn_with_mixture_of_gaussians_observations_using_boyen_koller_inference_algorithm(dbn);  // not yet implemented.
+		// 2T slice particle filtering inference algorithm (approximate algorithm).
+		//local::infer_dbn_with_mixture_of_gaussians_observations_using_2T_slice_particle_filtering_inference_algorithm(dbn);  // not yet implemented.
 	}
 }
 

@@ -29,7 +29,7 @@ int glpk_main(int argc, char *argv[])
 	my_glpk::interior_point_sample();
 
 	std::cout << "\nmixed integer programming (MIP) -------------------------------------" << std::endl;
-	//my_glpk::mip_sample();  // not yet implemented
+	//my_glpk::mip_sample();  // not yet implemented.
 
 	std::cout << "\nmathematical programming languag (MPL)-------------------------------" << std::endl;
 	my_glpk::mpl_sample();

@@ -370,16 +370,16 @@ namespace my_hmm {
 void hmm_learning()
 {
     local::hmm_with_discrete_multinomial_observations__em_for_mle_umdhmm();
-    //local::hmm_with_discrete_multinomial_observations__em_for_map();  // not yet implemented
-    //local::hmm_with_discrete_multinomial_observations__em_for_map_using_sparse_learning();  // not yet implemented
+    //local::hmm_with_discrete_multinomial_observations__em_for_map();  // not yet implemented.
+    //local::hmm_with_discrete_multinomial_observations__em_for_map_using_sparse_learning();  // not yet implemented.
 
-    local::cdhmm_with_univariate_gaussian_observations__em_for_mle_umdhmm();  // not yet implemented
-    //local::cdhmm_with_univariate_gaussian_observations__em_for_map();  // not yet implemented
-    //local::cdhmm_with_univariate_gaussian_observations__em_for_map_using_sparse_learning();  // not yet implemented
+    local::cdhmm_with_univariate_gaussian_observations__em_for_mle_umdhmm();  // not yet implemented.
+    //local::cdhmm_with_univariate_gaussian_observations__em_for_map();  // not yet implemented.
+    //local::cdhmm_with_univariate_gaussian_observations__em_for_map_using_sparse_learning();  // not yet implemented.
 
-    //local::cdhmm_with_univariate_gaussian_mixture_observations__em_for_mle_umdhmm();  // not yet implemented
-    //local::cdhmm_with_univariate_gaussian_mixture_observations__em_for_map();  // not yet implemented
-    //local::cdhmm_with_univariate_gaussian_mixture_observations__em_for_map_using_sparse_learning();  // not yet implemented
+    //local::cdhmm_with_univariate_gaussian_mixture_observations__em_for_mle_umdhmm();  // not yet implemented.
+    //local::cdhmm_with_univariate_gaussian_mixture_observations__em_for_map();  // not yet implemented.
+    //local::cdhmm_with_univariate_gaussian_mixture_observations__em_for_map_using_sparse_learning();  // not yet implemented.
 }
 
 }  // namespace my_hmm

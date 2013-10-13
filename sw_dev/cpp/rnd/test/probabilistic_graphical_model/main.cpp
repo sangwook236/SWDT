@@ -50,18 +50,18 @@ int main(int argc, char *argv[])
 
 		{
             std::cout << "belief propagation (BP) algorithm -----------------------------------" << std::endl;
-			//retval = local::inference_using_belief_propagation();  // not yet implemented
+			//retval = local::inference_using_belief_propagation();  // not yet implemented.
 			//retval = bp_vision_main(argc, argv);
 
             std::cout << "\ngraph-cuts algorithm ------------------------------------------------" << std::endl;
-			//retval = local::inference_using_graphcut();  // not yet implemented
-			//retval = cuda_cut_main(argc, argv);  // not yet implemented
+			//retval = local::inference_using_graphcut();  // not yet implemented.
+			//retval = cuda_cut_main(argc, argv);  // not yet implemented.
 
             std::cout << "\nTree-Reweighted (TRW-S) message passing algorithm -------------------" << std::endl;
-			//retval = trws_main(argc, argv);  // not yet implemented
+			//retval = trws_main(argc, argv);  // not yet implemented.
 
             std::cout << "\nquadratic pseudo-boolean optimization (QPBO) algorithm --------------" << std::endl;
-			//retval = qpbo_main(argc, argv);  // not yet implemented
+			//retval = qpbo_main(argc, argv);  // not yet implemented.
 		}
 
 		std::cout << "\nhidden Markov model (HMM) -------------------------------------------" << std::endl;

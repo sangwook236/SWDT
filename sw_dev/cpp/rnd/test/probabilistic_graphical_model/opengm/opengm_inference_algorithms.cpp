@@ -872,19 +872,19 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 	const bool runBP = true;
 	const bool runTRBP = true;
 	const bool runTRWS = true;
-	const bool runLP = false;  // not yet implemented
+	const bool runLP = false;  // not yet implemented.
 	const bool runDP = false;
 	const bool runDualDecomposition = true;
 	const bool runAStar = false;
-	const bool runGraphCuts = isBinaryVariable;  // for binary variables only
-	const bool runQPBO = isBinaryVariable;  // for binary variables only
+	const bool runGraphCuts = isBinaryVariable;  // for binary variables only.
+	const bool runQPBO = isBinaryVariable;  // for binary variables only.
 	const bool runExpansionMove = true;
 	const bool runSwapMove = true;
 	const bool runICM = true;
 	const bool runLazyFlipper = true;
 	const bool runLOC = true;
-	const bool runnGibbs = false;  // not yet implemented
-	const bool runSwendsenWang = false;  // not yet implemented
+	const bool runnGibbs = false;  // not yet implemented.
+	const bool runSwendsenWang = false;  // not yet implemented.
 	const bool runBruteforce = false;
 
 	// inference algorithms

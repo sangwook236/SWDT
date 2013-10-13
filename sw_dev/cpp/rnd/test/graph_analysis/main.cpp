@@ -24,14 +24,14 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "min-cut/max-flow algorithms -----------------------------------------" << std::endl;
-		retval = maxflow_main(argc, argv);  // not yet implemented
-		retval = ibfs_main(argc, argv);  // not yet implemented
+		retval = maxflow_main(argc, argv);  // not yet implemented.
+		retval = ibfs_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nGraphLab library ----------------------------------------------------" << std::endl;
-		retval = graphlab_main(argc, argv);  // not yet implemented
+		retval = graphlab_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nGraphChi library ----------------------------------------------------" << std::endl;
-		retval = graphchi_main(argc, argv);  // not yet implemented
+		retval = graphchi_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

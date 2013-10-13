@@ -565,7 +565,7 @@ void rectify_kinect_images_using_depth(
 			rgb_input_images2, ir_input_images2, rgb_output_images, ir_output_images,
 			imageSize_rgb, imageSize_ir,
 			K_rgb, K_ir, R, T
-		);  // not yet implemented
+		);  // not yet implemented.
 }
 
 }  // namespace local

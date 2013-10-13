@@ -155,20 +155,20 @@ int opencv_main(int argc, char *argv[])
 
 		//my_opencv::basic_operation();
 		//my_opencv::matrix_operation();
-		//if (canUseGPU) my_opencv::matrix_operation_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::matrix_operation_using_gpu();  // not yet implemented.
 		//my_opencv::vector_operation();
 		//my_opencv::image_operation();
 		//my_opencv::image_conversion();
 		//my_opencv::image_sequence();
 
 		//my_opencv::image_filtering();
-		//if (canUseGPU) my_opencv::image_filtering_using_gpu();  // not yet implemented
-		//if (canUseGPU) my_opencv::image_processing_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::image_filtering_using_gpu();  // not yet implemented.
+		//if (canUseGPU) my_opencv::image_processing_using_gpu();  // not yet implemented.
 		//my_opencv::color_filtering();
 		//my_opencv::color_correction();
 		//my_opencv::skin_color_filtering();
 		//my_opencv::histogram();
-		//if (canUseGPU) my_opencv::histogram()_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::histogram()_using_gpu();  // not yet implemented.
 
 		//my_opencv::convolution_correlation();
 		//my_opencv::fourier_transform();
@@ -191,7 +191,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::active_contour_model();  // snake.
 
 		//my_opencv::segmentation();
-		//if (canUseGPU) my_opencv::meanshift_segmentation_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::meanshift_segmentation_using_gpu();  // not yet implemented.
 
 		//my_opencv::outlier_removal();
 
@@ -200,7 +200,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::feature_matching();
 		//my_opencv::feature_extraction_and_matching();
 		//my_opencv::feature_extraction_and_matching_by_signature();
-		//if (canUseGPU) my_opencv::feature_extraction_and_matching_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::feature_extraction_and_matching_using_gpu();  // not yet implemented.
 		//my_opencv::generic_description_and_matching();
 
 		//my_opencv::retina_model();
@@ -214,9 +214,9 @@ int opencv_main(int argc, char *argv[])
 
 		//my_opencv::object_detection();
 		//my_opencv::face_detection();
-		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // not yet implemented.
 		//my_opencv::human_detection();
-		//if (canUseGPU) my_opencv::human_detection_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::human_detection_using_gpu();  // not yet implemented.
 
 		//my_opencv::face_recognition();
 
@@ -236,16 +236,16 @@ int opencv_main(int argc, char *argv[])
 		//if (canUseGPU) my_opencv::image_labeling_using_gpu();
 
 		//my_opencv::change_detection();
-		//if (canUseGPU) my_opencv::change_detection_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::change_detection_using_gpu();  // not yet implemented.
 
 		//my_opencv::object_tracking();
 		//my_opencv::kalman_filtering();
 
 		//my_opencv::optical_flow();
-		//if (canUseGPU) my_opencv::optical_flow_using_gpu();  // not yet implemented
+		//if (canUseGPU) my_opencv::optical_flow_using_gpu();  // not yet implemented.
 		//my_opencv::motion_history_image();
 
-		//my_opencv::slam();  // not yet implemented
+		//my_opencv::slam();  // not yet implemented.
 
 		//-----------------------------------------------------------------
 		// interfacing
