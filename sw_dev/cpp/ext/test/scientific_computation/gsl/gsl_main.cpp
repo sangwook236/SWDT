@@ -1,5 +1,6 @@
 #include <gsl/gsl_matrix.h>
 #include <iostream>
+#include <sstream>
 #include <cmath>
 
 
@@ -41,6 +42,14 @@ void print_gsl_matrix(gsl_matrix *mat)
 	print_gsl_matrix(mat, (int)mat->size1, (int)mat->size2);
 }
 
+void error_handler(const char *reason, const char *file, int line, int gsl_errno)
+{
+	std::ostringstream stream;
+	stream << "GSL error: " << gsl_strerror(gsl_errno) << " at line " << line << " in file '" << file << "' - " << reason << std::endl;
+
+	throw std::runtime_error(stream.str());
+}
+
 void vector_operation();
 void matrix_operation();
 void special_function();
@@ -69,36 +78,51 @@ void simulated_annealing();
 
 int gsl_main(int argc, char *argv[])
 {
-	//my_gsl::vector_operation();
-	//my_gsl::matrix_operation();
+	// save original handler, install new handler.
+	gsl_error_handler_t *old_error_handler = gsl_set_error_handler(&my_gsl::error_handler);
 
-	my_gsl::special_function();
+	int retval = 0;
+	try
+	{
+		//my_gsl::vector_operation();
+		//my_gsl::matrix_operation();
 
-	//my_gsl::lu();
-	//my_gsl::qr();
-	//my_gsl::cholesky();
-	//my_gsl::eigensystem();
-	//my_gsl::svd();
-		
-	//my_gsl::pca();
-		
-	//my_gsl::levenberg_marquardt();
-	//my_gsl::conjugate_gradient();
-	//my_gsl::multidim_minimization_simplex();
-	//my_gsl::multidim_minimization_steepest_descent();
+		my_gsl::special_function();
 
-	//my_gsl::quadratic_equation_root_finding();
-	//my_gsl::cubic_equation_root_finding();
-	//my_gsl::polynomial_root_finding();
-	//my_gsl::one_dim_root_finding();
-	//my_gsl::multidim_root_finding();
+		//my_gsl::lu();
+		//my_gsl::qr();
+		//my_gsl::cholesky();
+		//my_gsl::eigensystem();
+		//my_gsl::svd();
 		
-	//my_gsl::fft();
+		//my_gsl::pca();
 		
-	//my_gsl::random_sample();
-	//my_gsl::distribution();
-	//my_gsl::monte_carlo_integration();
-	//my_gsl::simulated_annealing();
+		//my_gsl::levenberg_marquardt();
+		//my_gsl::conjugate_gradient();
+		//my_gsl::multidim_minimization_simplex();
+		//my_gsl::multidim_minimization_steepest_descent();
 
-	return 0;
+		//my_gsl::quadratic_equation_root_finding();
+		//my_gsl::cubic_equation_root_finding();
+		//my_gsl::polynomial_root_finding();
+		//my_gsl::one_dim_root_finding();
+		//my_gsl::multidim_root_finding();
+		
+		//my_gsl::fft();
+		
+		//my_gsl::random_sample();
+		//my_gsl::distribution();
+		//my_gsl::monte_carlo_integration();
+		//my_gsl::simulated_annealing();
+	}
+	catch (const std::runtime_error &e)
+	{
+		std::cout << "std::runtime_error caught: " << e.what() << std::endl;
+		retval = 1;
+	}
+
+	// restore original handler.
+	gsl_set_error_handler(old_error_handler);
+
+	return retval;
 }
