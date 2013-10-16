@@ -79,7 +79,7 @@ void simulated_annealing();
 int gsl_main(int argc, char *argv[])
 {
 #if 0
-	// save original handler, install new handler.
+	// save original error handler, install new error handler.
 	gsl_error_handler_t *old_error_handler = gsl_set_error_handler(&my_gsl::error_handler);
 #else
 	// turns off the error handler by defining an error handler which does nothing.
@@ -130,7 +130,7 @@ int gsl_main(int argc, char *argv[])
 		retval = 1;
 	}
 
-	// restore original handler.
+	// restore original error handler.
 	// To use the default behavior (abort on error) set the error handler to NULL.
 	gsl_set_error_handler(old_error_handler);
 
