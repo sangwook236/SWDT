@@ -19,42 +19,42 @@ enum HCRF_TEST_DATASET { TEST_ON_TEST_SET = 1, TEST_ON_TRAINING_SET = 2, TEST_ON
 
 void sample()
 {
-	const int mode = MODE_TRAIN | MODE_TEST; // int mode = 0;
+	const int mode = MODE_TRAIN | MODE_TEST; //int mode = 0;
 	const int toolboxType = TOOLBOX_LDCRF;
 
-	const int opt = OPTIMIZER_BFGS;
-	const int InitMode = INIT_RANDOM;
+	const int opt = OPTIMIZER_BFGS;  // OPTIMIZER_CG, OPTIMIZER_BFGS, OPTIMIZER_ASA, OPTIMIZER_OWLQN, OPTIMIZER_LBFGS.
+	const int InitMode = INIT_RANDOM;  // INIT_RANDOM, INIT_RANDOM_GAUSSIAN, INIT_ZERO.
 	const double initWeightRangeMin = -1.0;
 	const double initWeightRangeMax = 1.0;
 
 	const bool doesContinueTraining = false;
 	const int testDataset = TEST_ON_TRAINING_SET;
 
-	const int maxIterationCount = 300; // int max = -1;
+	const int maxIterationCount = 300; //int max = -1;
 
 	const int nbHiddenStates = 3;
 	const int windowSize = 0;
 	const int debugLevel = 1;
 
-	double regFactorL2 = 0.0;  // L2 regularization factor
-	double regFactorL1 = 0.0;  // L1 regularization factor
+	double regFactorL2 = 0.0;  // L2 regularization factor.
+	double regFactorL1 = 0.0;  // L1 regularization factor.
 
 	const std::string data_home = "./data/probabilistic_graphical_model/hcrf/";
 
 	const std::string filenameDataTrain(data_home + "dataTrain.csv");
 	const std::string filenameDataTrainSparse;
-	const std::string filenameLabelsTrain(data_home + "labelsTrain.csv");  // for CRF & LDCRF
-	const std::string filenameSeqLabelsTrain(data_home + "seqLabelsTrain.csv");  // for HCRF & GHCRF
+	const std::string filenameLabelsTrain(data_home + "labelsTrain.csv");  // for CRF & LDCRF.
+	const std::string filenameSeqLabelsTrain(data_home + "seqLabelsTrain.csv");  // for HCRF & GHCRF.
 
 	const std::string filenameDataTest(data_home + "dataTest.csv");
 	const std::string filenameDataTestSparse;
-	const std::string filenameLabelsTest(data_home + "labelsTest.csv");  // for CRF & LDCRF
-	const std::string filenameSeqLabelsTest(data_home + "seqLabelsTest.csv");  // for HCRF & GHCRF
+	const std::string filenameLabelsTest(data_home + "labelsTest.csv");  // for CRF & LDCRF.
+	const std::string filenameSeqLabelsTest(data_home + "seqLabelsTest.csv");  // for HCRF & GHCRF.
 
 	const std::string filenameDataValidate(data_home + "dataValidate.csv");
 	const std::string filenameDataValidateSparse;
-	const std::string filenameLabelsValidate(data_home + "labelsValidate.csv");  // for CRF & LDCRF
-	const std::string filenameSeqLabelsValidate(data_home + "seqLabelsValidate.csv");  // for HCRF & GHCRF
+	const std::string filenameLabelsValidate(data_home + "labelsValidate.csv");  // for CRF & LDCRF.
+	const std::string filenameSeqLabelsValidate(data_home + "seqLabelsValidate.csv");  // for HCRF & GHCRF.
 
 	const std::string filenameModel(data_home + "model.txt");
 	const std::string filenameFeatures(data_home + "features.txt");
@@ -62,7 +62,7 @@ void sample()
 	const std::string filenameStats(data_home + "stats.txt");
 
 /*
-	// read command-line arguments
+	// read command-line arguments.
 	for (int k = 1; k < argc; ++k)
 	{
 		if (argv[k][0] != '-') break;
@@ -186,11 +186,11 @@ void sample()
 		{
 			if (argv[k][2] == '1')
 			{
-				regFactorL1 = atof(argv[++k]);  // L1 regularization factor
+				regFactorL1 = atof(argv[++k]);  // L1 regularization factor.
 			}
 			else
 			{
-				regFactorL2 = atof(argv[++k]);  // L2 regularization factor
+				regFactorL2 = atof(argv[++k]);  // L2 regularization factor.
 			}
 		}
 		else if (argv[k][1] == 'R')
@@ -272,7 +272,7 @@ void sample()
 		toolbox->save((char *)filenameModel.c_str(), (char *)filenameFeatures.c_str());
 	}
 
-	// TODO: Implement the validate function in Toolbox
+	// TODO: Implement the validate function in Toolbox.
 	if (MODE_VALIDATE & mode)
 	{
 		std::cout << "reading training set..." << std::endl;
@@ -376,7 +376,7 @@ namespace my_hcrf {
 
 }  // namespace my_hcrf
 
-// C++ & Matlab
+// C++ & Matlab.
 int hcrf_main(int argc, char *argv[])
 {
 	local::sample();

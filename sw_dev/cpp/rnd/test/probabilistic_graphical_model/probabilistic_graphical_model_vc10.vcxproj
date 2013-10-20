@@ -50,7 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;../../inc/opencv-2.4.3;../../inc/opengm_external/MRF;../../inc/opengm_external/TRWS;../../inc/opengm_external/MaxFlow;../../inc/opengm_external/ibfs;../../inc/opengm_external/QPBO;D:\work_center\sw_dev\cpp\ext\inc\gmp;D:\work_center\sw_dev\cpp\ext\inc\hdf5</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;../../inc/opencv-2.4.3;../../inc/opengm_external/MRF;../../inc/opengm_external/TRWS;../../inc/opengm_external/MaxFlow;../../inc/opengm_external/ibfs;../../inc/opengm_external/QPBO;D:\work\sw_dev\cpp\ext\inc\gmp;D:\work\sw_dev\cpp\ext\inc\hdf5</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -66,7 +66,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;../../inc/opencv-2.4.3;../../inc/opengm_external/MRF;../../inc/opengm_external/TRWS;../../inc/opengm_external/MaxFlow;../../inc/opengm_external/ibfs;../../inc/opengm_external/QPBO;D:\work_center\sw_dev\cpp\ext\inc\gmp;D:\work_center\sw_dev\cpp\ext\inc\hdf5</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;../../inc/opencv-2.4.3;../../inc/opengm_external/MRF;../../inc/opengm_external/TRWS;../../inc/opengm_external/MaxFlow;../../inc/opengm_external/ibfs;../../inc/opengm_external/QPBO;D:\work\sw_dev\cpp\ext\inc\gmp;D:\work\sw_dev\cpp\ext\inc\hdf5</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -216,7 +216,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="opengm\opengm_bipartite_matching_example.cpp" />
-    <ClCompile Include="opengm\opengm_inference_algorithms.cpp" />
+    <ClCompile Include="opengm\opengm_inference_algorithms.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="opengm\opengm_interpixel_boundary_segmentation_example.cpp" />
     <ClCompile Include="opengm\opengm_gibbs_example.cpp" />
     <ClCompile Include="opengm\opengm_libdai_interface.cpp" />

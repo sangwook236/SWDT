@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
 
 	int shogun_main(int argc, char *argv[]);
 	int torch_main(int argc, char *argv[]);
+	int dlib_ml_main(int argc, char *argv[]);
 	int liblearning_main(int argc, char *argv[]);
 
 	int rl_glue_main(int argc, char *argv[]);
@@ -58,6 +59,26 @@ int main(int argc, char *argv[])
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		retval = torch_main(argc, argv);  // not yet implemented.
 #endif
+
+		std::cout << "\nDlib-ml library -----------------------------------------------------" << std::endl;
+		//	-. support vector machines (SVM).
+		//	-. relevance vector machines (RVM).
+		//	-. structured prediction.
+		//	-. multi-layer perceptrons (MLP).
+		//	-. radial basis function network (RBFN).
+		//	-. clustering.
+		//	-. unsupervised learning.
+		//		canonical correlation analysis (CCA).
+		//	-. semi-supervised learning.
+		//	-. feature selection.
+		//	-. optimization.
+		//	-. graphical model.
+		//		Bayesian network.
+		//		inference algorithms.
+		//	-. image processing.
+		//
+		// [ref] ${CPP_EXT_HOME}/src/general_purpose_library/dlib.
+		//retval = dlib_ml_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
 		//	-. deep learning.

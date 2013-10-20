@@ -46,6 +46,9 @@
     <Filter Include="Source Files\svm_light">
       <UniqueIdentifier>{03ed5322-1126-41e4-8328-b968050877a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\dlib_ml">
+      <UniqueIdentifier>{240a43ab-9675-43eb-ac48-9a940d64b1b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -331,6 +334,9 @@
     </ClCompile>
     <ClCompile Include="svm_light\svm_light_main.cpp">
       <Filter>Source Files\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="dlib_ml\dlib_ml_main.cpp">
+      <Filter>Source Files\dlib_ml</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

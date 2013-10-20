@@ -51,7 +51,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc/;D:\work_center\sw_dev\cpp\ext\inc\eigen3;D:\work_center\sw_dev\cpp\ext\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc/;D:\work\sw_dev\cpp\ext\inc\eigen3;D:\work\sw_dev\cpp\ext\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -67,7 +67,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc/;D:\work_center\sw_dev\cpp\ext\inc\eigen3;D:\work_center\sw_dev\cpp\ext\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc/;D:\work\sw_dev\cpp\ext\inc\eigen3;D:\work\sw_dev\cpp\ext\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -101,6 +101,7 @@
     <ClCompile Include="clustering\clustering_k_medoids.cpp" />
     <ClCompile Include="clustering\clustering_main.cpp" />
     <ClCompile Include="clustering\clustering_spectral_clustering.cpp" />
+    <ClCompile Include="dlib_ml\dlib_ml_main.cpp" />
     <ClCompile Include="kmeanspp_lib\KMeans.cpp" />
     <ClCompile Include="kmeanspp_lib\KmTree.cpp" />
     <ClCompile Include="kmeanspp_lib\KmUtils.cpp" />

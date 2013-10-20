@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nconditional random field (CRF) --------------------------------------" << std::endl;
 		//retval = crfpp_main(argc, argv);
-		//retval = hcrf_main(argc, argv);
+		retval = hcrf_main(argc, argv);
 
 		std::cout << "\ndynamic Bayesian network (DBN) --------------------------------------" << std::endl;
 
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 		//retval = libdai_main(argc, argv);
 
 		std::cout << "\nOpenGM library ------------------------------------------------------" << std::endl;
-		retval = opengm_main(argc, argv);
+		//retval = opengm_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{
