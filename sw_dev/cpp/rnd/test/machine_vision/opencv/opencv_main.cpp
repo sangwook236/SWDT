@@ -190,7 +190,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::shape_matching();
 		//my_opencv::active_contour_model();  // snake.
 
-		//my_opencv::segmentation();
+		my_opencv::segmentation();
 		//if (canUseGPU) my_opencv::meanshift_segmentation_using_gpu();  // not yet implemented.
 
 		//my_opencv::outlier_removal();
@@ -232,7 +232,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::stereo_matching();
 		//if (canUseGPU) my_opencv::stereo_matching_using_gpu();
 
-		// graph-cuts & belief propagation (BP)
+		// graph-cuts & belief propagation (BP).
 		//if (canUseGPU) my_opencv::image_labeling_using_gpu();
 
 		//my_opencv::change_detection();
@@ -255,7 +255,7 @@ int opencv_main(int argc, char *argv[])
 		//-----------------------------------------------------------------
 		// extension
 
-		my_opencv::util();  // for utility test.
+		//my_opencv::util();  // for utility test.
 
 		//my_opencv::structure_tensor();
 

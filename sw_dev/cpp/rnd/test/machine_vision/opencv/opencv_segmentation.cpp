@@ -50,7 +50,7 @@ void watershed_onMouse( int event, int x, int y, int flags, void* )
     }
 }
 
-// [ref] ${OPENCV_HOME}/samples/cpp/watershed.cpp
+// [ref] ${OPENCV_HOME}/samples/cpp/watershed.cpp.
 void watershed_algorithm(const cv::Mat &img0)
 {
     watershed_help();
@@ -323,10 +323,10 @@ void GCApplication::setLblsInMask( int flags, cv::Point p, bool isPr )
 
 void GCApplication::mouseClick( int event, int x, int y, int flags, void* )
 {
-    // TODO add bad args check
+    // TODO add bad args check.
     switch( event )
     {
-    case CV_EVENT_LBUTTONDOWN: // set rect or GC_BGD(GC_FGD) labels
+    case CV_EVENT_LBUTTONDOWN: // set rect or GC_BGD(GC_FGD) labels.
         {
             bool isb = (flags & BGD_KEY) != 0,
                  isf = (flags & FGD_KEY) != 0;
@@ -339,7 +339,7 @@ void GCApplication::mouseClick( int event, int x, int y, int flags, void* )
                 lblsState = IN_PROCESS;
         }
         break;
-    case CV_EVENT_RBUTTONDOWN: // set GC_PR_BGD(GC_PR_FGD) labels
+    case CV_EVENT_RBUTTONDOWN: // set GC_PR_BGD(GC_PR_FGD) labels.
         {
             bool isb = (flags & BGD_KEY) != 0,
                  isf = (flags & FGD_KEY) != 0;
@@ -418,27 +418,29 @@ int GCApplication::nextIter()
 
 GCApplication gcapp;
 
-void grabcut_on_mouse( int event, int x, int y, int flags, void* param )
+void grabcut_on_mouse(int event, int x, int y, int flags, void *param)
 {
-    gcapp.mouseClick( event, x, y, flags, param );
+    gcapp.mouseClick(event, x, y, flags, param);
 }
 
-// [ref] ${OPENCV_HOME}/samples/cpp/grabcut.cpp
+// [ref] ${OPENCV_HOME}/samples/cpp/grabcut.cpp.
 void grabcut_algorithm(const cv::Mat &image)
 {
+	// [ref] run_grabcut_using_depth_guided_mask() in ${SWL_CPP_HOME}/app/kinect_segmentation_app/SegmentationUsingGrabCut.cpp.
+
     grabcut_help();
 
-    const std::string winName = "GrabCut segmentation";
-    cvNamedWindow( winName.c_str(), CV_WINDOW_AUTOSIZE );
-    cvSetMouseCallback( winName.c_str(), grabcut_on_mouse, 0 );
+    const std::string winName("GrabCut segmentation");
+    cvNamedWindow(winName.c_str(), CV_WINDOW_AUTOSIZE);
+    cvSetMouseCallback(winName.c_str(), grabcut_on_mouse, 0);
 
-    gcapp.setImageAndWinName( image, winName );
+    gcapp.setImageAndWinName(image, winName);
     gcapp.showImage();
 
-    for(;;)
+    for (;;)
     {
         int c = cvWaitKey(0);
-        switch( (char) c )
+        switch ((char)c)
         {
         case '\x1b':
             std::cout << "Exiting ..." << std::endl;
@@ -452,7 +454,7 @@ void grabcut_algorithm(const cv::Mat &image)
             int iterCount = gcapp.getIterCount();
             std::cout << "<" << iterCount << "... ";
             int newIterCount = gcapp.nextIter();
-            if( newIterCount > iterCount )
+            if (newIterCount > iterCount)
             {
                 gcapp.showImage();
                 std::cout << iterCount << ">" << std::endl;
@@ -464,11 +466,11 @@ void grabcut_algorithm(const cv::Mat &image)
     }
 
 exit_main:
-    cvDestroyWindow( winName.c_str() );
+    cvDestroyWindow(winName.c_str());
     return;
 }
 
-static void meanshift_segmentation_help(char** argv)
+static void meanshift_segmentation_help(char **argv)
 {
 	std::cout << "\nDemonstrate mean-shift based color segmentation in spatial pyramid.\n"
 		<< "Call:\n   " << argv[0] << " image\n"
@@ -477,7 +479,7 @@ static void meanshift_segmentation_help(char** argv)
 		<< std::endl;
 }
 
-//This colors the segmentations
+// This colors the segmentations.
 static void floodFillPostprocess(cv::Mat &img, const cv::Scalar &colorDiff = cv::Scalar::all(1))
 {
 	CV_Assert(!img.empty());
@@ -509,7 +511,7 @@ static void meanShiftSegmentation(int, void *)
 }
 */
 
-// [ref] ${OPENCV_HOME}/samples/cpp/meanshift_segmentation.cpp
+// [ref] ${OPENCV_HOME}/samples/cpp/meanshift_segmentation.cpp.
 void meanshift_segmentation_algorithm(const cv::Mat &img)
 {
 /*
@@ -627,9 +629,9 @@ void segmentation()
 	}
 
 	//local::watershed_algorithm(img);
-	//local::grabcut_algorithm(img);
+	local::grabcut_algorithm(img);
 
-	local::meanshift_segmentation_algorithm(img);
+	//local::meanshift_segmentation_algorithm(img);
 
 	//
 	//cv::imshow(windowName, img);
@@ -645,7 +647,7 @@ void meanshift_segmentation_using_gpu()
 
 	//cv::gpu::meanShiftFiltering();
 	//cv::gpu::meanShiftProc();
-	//cv::gpu::meanShiftSegmentation;
+	//cv::gpu::meanShiftSegmentation();
 }
 
 }  // namespace my_opencv
