@@ -413,9 +413,6 @@ void ublas_matrix_operation()
 	{
 		matrix_type m1(3, 3, 10.0);
 		std::cout << "m1 = " << m1 << std::endl;
-		m1.clear();
-		//m1.assign(boost::numeric::ublas::zero_matrix<double>(m1.size1(), m1.size2()));
-		std::cout << "m1 (after clear()) = " << m1 << std::endl;
 
 		for (unsigned i = 0, k = 0; i < m1.size1(); ++i)
 			for (unsigned j = 0; j < m1.size2(); ++j, ++k)
@@ -431,6 +428,23 @@ void ublas_matrix_operation()
 
 		std::cout << "m1 + m2 = " << m1 + m2 << std::endl;
 		std::cout << "m1 - m2 = " << m1 - m2 << std::endl;
+
+		// set zero.
+		m1.clear();
+		//m1.assign(boost::numeric::ublas::zero_matrix<double>(m1.size1(), m1.size2()));
+		std::cout << "m1 (after clear()) = " << m1 << std::endl;
+
+		// assignment.
+		// NOTICE [caution] >> the matrix's size is NOT changed.
+		boost::numeric::ublas::matrix<double> m3(2, 3, 0.0);
+		//m3.assign(boost::numeric::ublas::scalar_matrix<double>(3, 4, -37));
+		m3.assign(boost::numeric::ublas::zero_matrix<double>(3, 4));
+		std::cout << "m3 = " << m3 << std::endl;
+
+		// NOTICE [caution] >> the matrix's size is changed.
+		m3 = boost::numeric::ublas::scalar_matrix<double>(3, 4, -37);
+		//m3 = boost::numeric::ublas::zero_matrix<double>(3, 4);
+		std::cout << "m3 = " << m3 << std::endl;
 	}
 
 	//
@@ -461,14 +475,24 @@ void ublas_matrix_operation()
 			for (unsigned j = 0; j < m.size2(); ++j, ++k)
 				m(i, j) = k;
 
+		const boost::numeric::ublas::vector<double> v1 = boost::numeric::ublas::matrix_row<boost::numeric::ublas::matrix<double> >(m, 0);
+		const boost::numeric::ublas::vector<double> v2 = boost::numeric::ublas::matrix_column<boost::numeric::ublas::matrix<double> >(m, 1);
+		std::cout << v1 << std::endl;
+		std::cout << v2 << std::endl;
+
 		boost::numeric::ublas::matrix_row<boost::numeric::ublas::matrix<double> > row(m, 1);
 		//boost::numeric::ublas::matrix_column<boost::numeric::ublas::matrix<double> > col(m, 1);
-		boost::numeric::ublas::vector<double> vec(row);
+		boost::numeric::ublas::vector<double> v3(row);
 		row[1] = -4;
 
 		// caution !!! : not changed by row[1] = -4
-		std::cout << vec << std::endl;
+		std::cout << v3 << std::endl;
 		std::cout << m << std::endl;  // changed by row[1] = -4
+
+		boost::numeric::ublas::matrix_row<boost::numeric::ublas::matrix<double> >(m, 0) = boost::numeric::ublas::vector<double>(3, 2);
+		boost::numeric::ublas::matrix_row<boost::numeric::ublas::matrix<double> > v4(m, 1);
+		v4 = boost::numeric::ublas::vector<double>(3, -2);
+		std::cout << m << std::endl;
 
 		boost::numeric::ublas::matrix_range<boost::numeric::ublas::matrix<double> > mr(m, boost::numeric::ublas::range(1, 3), boost::numeric::ublas::range(1, 3));
 		//for (unsigned i = 0; i < mr.size1(); ++i)

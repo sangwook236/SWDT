@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
 			//math_special_functions();
 			//math_statistical_distributions();
 			//random();
-			//ublas();
+			ublas();
 			//math_bindings();
 			//numeric_bindings();
 
@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
 			//polygon();
 			//geometry();
 
-			graph();
+			//graph();
 			//graph_parallel();  // not yet implemented.
 
 			//ordinary_differential_equation();  // not yet implemented.
