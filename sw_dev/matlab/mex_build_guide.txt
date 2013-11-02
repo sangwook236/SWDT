@@ -1,11 +1,14 @@
 [-] Building using MEX
-	-.
+	-. path
 		$MATLAB_HOME/bin/mex.bat
 		$MATLAB_HOME/bin/mexext.bat
 
+	-. command.
+		mex.bat foo.c/cpp
+
 	-. MEX extension 생성 관련 오류 발생
 		mexw32 or mexw64 file을 생성할 수 없음.
-		==> MSVC로 32-bit building을 하면서 64-bit Matlab을 사용하거나 그 역인 경우 발생.
+		==> VC로 32-bit building을 하면서 64-bit Matlab을 사용하거나 그 역인 경우 발생.
 			1. 32-bit Matlab을 설치.
 			2. system path에서 64-bit Matlab path를 32-bit Matlab path로 변경.
 				mex.bat file이 동일한 이름의 다른 실행 file에 의해 제대로 실행되지 않는 경우가 있으므로,
