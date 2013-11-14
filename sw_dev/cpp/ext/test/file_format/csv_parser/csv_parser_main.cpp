@@ -1,7 +1,10 @@
 //#include "stdafx.h"
 #include <csv_parser/csv_parser.hpp>
+#include <fstream>
+#include <sstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 
 namespace {
@@ -101,6 +104,37 @@ void driver_example()
 	}
 }
 
+void example_using_cpp_api()
+{
+	const std::string filename("./data/file_format/test1.csv");
+
+	std::vector<std::vector<std::string> > data;
+	std::ifstream strm(filename);
+
+	std::string str;
+	std::vector<std::string> record;
+	while (strm)
+	{
+		if (!std::getline(strm, str)) break;
+
+		record.clear();
+
+		std::istringstream sstrm(str);
+		while (sstrm)
+		{
+			if (!std::getline(sstrm, str, ',')) break;
+			record.push_back(str);
+		}
+
+		data.push_back(record);
+	}
+
+	if (!strm.eof())
+	{
+		std::cerr << "Fooey!\n";
+	}
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -110,6 +144,8 @@ namespace my_csv_parser {
 
 int csv_parser_main(int argc, char *argv[])
 {
+	//local::example_using_cpp_api();
+
 	local::driver_example();
 
 	return 0;
