@@ -11,12 +11,15 @@ int main(int argc, char *argv[])
 {
 	int assimp_main(int argc, char *argv[]);
 	int hdf_main(int argc, char *argv[]);
+	int csv_parser_main(int argc, char *argv[]);
 	
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		retval = assimp_main(argc, argv);  // not yet implemented.
-		retval = hdf_main(argc, argv);  // not yet implemented.
+		//retval = assimp_main(argc, argv);  // not yet implemented.
+		//retval = hdf_main(argc, argv);  // not yet implemented.
+
+		retval = csv_parser_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

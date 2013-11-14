@@ -19,6 +19,12 @@
     <Filter Include="Source Files\hdf">
       <UniqueIdentifier>{4279a05d-5041-414f-92d3-0d6568471e51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\csv_parser">
+      <UniqueIdentifier>{64d59aae-bbcd-41b0-aeb8-d1ef45bdb5a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\csv_parser_lib">
+      <UniqueIdentifier>{0aa4287f-9061-461d-95e5-b33da7e814c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -46,6 +52,12 @@
     </ClCompile>
     <ClCompile Include="hdf\hdf_main.cpp">
       <Filter>Source Files\hdf</Filter>
+    </ClCompile>
+    <ClCompile Include="csv_parser\csv_parser_main.cpp">
+      <Filter>Source Files\csv_parser</Filter>
+    </ClCompile>
+    <ClCompile Include="csv_parser_lib\csv_parser.cpp">
+      <Filter>Source Files\csv_parser_lib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

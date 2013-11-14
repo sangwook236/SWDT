@@ -88,6 +88,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="assimp\assimp_main.cpp" />
+    <ClCompile Include="csv_parser\csv_parser_main.cpp" />
+    <ClCompile Include="csv_parser_lib\csv_parser.cpp" />
     <ClCompile Include="hdf\hdf_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />

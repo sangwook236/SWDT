@@ -9,7 +9,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_assimpl {
+namespace my_assimp {
 
 }  // namespace my_assimp
 
