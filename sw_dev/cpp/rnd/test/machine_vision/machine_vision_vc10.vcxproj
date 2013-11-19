@@ -159,6 +159,7 @@
     <ClCompile Include="opencv\opencv_color_filtering.cpp" />
     <ClCompile Include="opencv\opencv_convex_hull.cpp" />
     <ClCompile Include="opencv\opencv_convolution_correlation.cpp" />
+    <ClCompile Include="opencv\opencv_distance_measure.cpp" />
     <ClCompile Include="opencv\opencv_distance_transform.cpp" />
     <ClCompile Include="opencv\opencv_edge_detection.cpp" />
     <ClCompile Include="opencv\opencv_face_detection.cpp" />

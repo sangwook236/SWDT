@@ -408,6 +408,9 @@
     <ClCompile Include="ccv\ccv_swt.cpp">
       <Filter>Source Files\ccv</Filter>
     </ClCompile>
+    <ClCompile Include="opencv\opencv_distance_measure.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

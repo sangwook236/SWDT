@@ -48,7 +48,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "signal_processing", "..\tes
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_processing", "..\test\image_processing\image_processing_vc10.vcxproj", "{556E0EE6-1F91-4EA5-AF5D-0EACF6E15BCA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_representation_vc10", "..\test\object_representation\object_representation_vc10.vcxproj", "{3E747F79-FAD1-43A9-AD15-276F40F642D2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_representation", "..\test\object_representation\object_representation_vc10.vcxproj", "{3E747F79-FAD1-43A9-AD15-276F40F642D2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "distance_measure", "..\test\distance_measure\distance_measure_vc10.vcxproj", "{86D56BB4-B86B-41F9-BFAF-DB6B5BBFE9C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -156,6 +158,10 @@ Global
 		{3E747F79-FAD1-43A9-AD15-276F40F642D2}.Debug|Win32.Build.0 = Debug|Win32
 		{3E747F79-FAD1-43A9-AD15-276F40F642D2}.Release|Win32.ActiveCfg = Release|Win32
 		{3E747F79-FAD1-43A9-AD15-276F40F642D2}.Release|Win32.Build.0 = Release|Win32
+		{86D56BB4-B86B-41F9-BFAF-DB6B5BBFE9C1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{86D56BB4-B86B-41F9-BFAF-DB6B5BBFE9C1}.Debug|Win32.Build.0 = Debug|Win32
+		{86D56BB4-B86B-41F9-BFAF-DB6B5BBFE9C1}.Release|Win32.ActiveCfg = Release|Win32
+		{86D56BB4-B86B-41F9-BFAF-DB6B5BBFE9C1}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
