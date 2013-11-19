@@ -198,7 +198,12 @@ void earth_movers_distance()
 	{
 		const int s_bin_start = kk, s_bin_end = kk + s_bin_size - 1;
 		// re-normalize histogram.
+#if defined(__GNUC__)
+        cv::Mat colMat = histo2.colRange(s_bin_start, s_bin_end + 1);
+		my_opencv::normalize_histogram(colMat, 1.0);
+#else
 		my_opencv::normalize_histogram(histo2.colRange(s_bin_start, s_bin_end + 1), 1.0);
+#endif
 
 		cv::Mat sig2(h_bins * s_bin_size, 3, CV_32FC1, cv::Scalar::all(0.0f));
 		for (int h = 0; h < h_bins; ++h)

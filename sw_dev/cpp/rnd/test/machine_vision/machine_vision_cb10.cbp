@@ -145,6 +145,7 @@
 		<Unit filename="opencv/opencv_color_filtering.cpp" />
 		<Unit filename="opencv/opencv_convex_hull.cpp" />
 		<Unit filename="opencv/opencv_convolution_correlation.cpp" />
+		<Unit filename="opencv/opencv_distance_measure.cpp" />
 		<Unit filename="opencv/opencv_distance_transform.cpp" />
 		<Unit filename="opencv/opencv_edge_detection.cpp" />
 		<Unit filename="opencv/opencv_face_detection.cpp" />

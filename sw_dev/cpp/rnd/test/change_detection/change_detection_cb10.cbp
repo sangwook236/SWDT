@@ -39,7 +39,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="/usr/local/include/" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="opencv_core" />
@@ -61,7 +61,7 @@
 			<Add library="opencv_videostab" />
 			<Add library="v4l2" />
 			<Add library="v4l1compat" />
-			<Add directory="/usr/local/lib/" />
+			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="bgscollection/bgscollection_main.cpp" />
 		<Unit filename="bgscollection_lib/bskde.cpp" />
