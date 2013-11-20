@@ -12,8 +12,9 @@
 		<Project filename="../test/hand_analysis/hand_analysis_cb10.cbp" />
 		<Project filename="../test/image_processing/image_processing_cb10.cbp" />
 		<Project filename="../test/machine_learning/machine_learning_cb10.cbp" />
-		<Project filename="../test/machine_vision/machine_vision_cb10.cbp" active="1" />
+		<Project filename="../test/machine_vision/machine_vision_cb10.cbp" />
 		<Project filename="../test/matlab/matlab_cb10.cbp" />
+		<Project filename="../test/motion_analysis/motion_analysis_cb10.cbp" active="1" />
 		<Project filename="../test/neural_network/neural_network_cb10.cbp" />
 		<Project filename="../test/object_detection/object_detection_cb10.cbp" />
 		<Project filename="../test/object_representation/object_representation_cb10.cbp" />
