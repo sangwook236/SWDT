@@ -131,7 +131,7 @@ void example_using_cpp_api()
 
 	if (!strm.eof())
 	{
-		std::cerr << "Fooey!\n";
+		std::cerr << "Fooey!" << std::endl;
 	}
 }
 
