@@ -235,6 +235,123 @@ void earth_movers_distance()
 #endif
 }
 
+void earth_movers_distance_applied_to_THoG()
+{
+	std::vector<std::string> filename_list;
+	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog2_1deg_segmented/M_1_1.HoG");
+	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog2_1deg_segmented/M_2_1.HoG");
+	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog2_1deg_segmented/M_4_1.HoG");
+	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog2_1deg_segmented/M_7_1.HoG");
+
+	std::vector<cv::Mat> THoG_list;
+	THoG_list.reserve(filename_list.size());
+	for (std::size_t i = 0; i < filename_list.size(); ++i)
+	{
+		// read HoG.
+		std::vector<std::vector<float> > data;
+		{
+			std::ifstream strm(filename_list[i]);
+
+			std::string str;
+			std::vector<float> record;
+			while (strm)
+			{
+				if (!std::getline(strm, str)) break;
+
+				record.clear();
+
+				std::istringstream sstrm(str);
+				while (sstrm)
+				{
+					if (!std::getline(sstrm, str, ',')) break;
+					record.push_back((float)strtod(str.c_str(), NULL));
+				}
+
+				data.push_back(record);
+			}
+
+			if (!strm.eof())
+			{
+				std::cerr << "Fooey!" << std::endl;
+			}
+		}
+
+		//
+		const std::size_t gesture_id = std::size_t(data[0][0]);
+		const std::size_t num_features = std::size_t(data[1][0]);
+		const std::size_t num_frames = std::size_t(data[1][1]);
+
+		cv::Mat THoG(num_features, num_frames, CV_32FC1);
+		for (std::size_t i = 2; i < data.size(); ++i)
+			for (std::size_t j = 0; j < data[i].size(); ++j)
+				THoG.at<float>(i - 2, j) = data[i][j];
+
+		THoG_list.push_back(THoG);
+	}
+
+	// create matrices to store signature in.
+	// (histogram's size) x (histogram's dim. + 1) floating-point matrix.
+	//	in case of 1D, (histogram's size) = (bin size), (histogram's dim. + 1) = 1 count(bin value) + 1 coords = 2.
+	//	in case of 2D, (histogram's size) = (row's bin size) x (col's bin size), (histogram's dim. + 1) = 1 count(bin value) + 2 coords = 3.
+	// fill signatures for the two histograms (partial matching).
+	cv::Mat sig1(h_bins * s_bins, 3, CV_32FC1, cv::Scalar::all(0.0f));
+	for (int h = 0; h < h_bins; ++h)
+		for (int s = 0; s < s_bins; ++s)
+		{
+			const float weight1 = histo1.at<float>(h, s);
+			if (weight1 > 0.0)
+			{
+				sig1.at<float>(h * s_bins + s, 0) = weight1;  // bin value (weight).
+				sig1.at<float>(h * s_bins + s, 1) = (float)h;  // coord 1.
+				sig1.at<float>(h * s_bins + s, 2) = (float)s;  // coord 2.
+
+#if 0
+				// for debugging.
+				std::cout << '(' << h << ", " << s << ") : " << weight1 << std::endl;
+#endif
+			}
+		}
+	const int s_bin_size = 15;
+	for (int kk = 0; kk <= s_bins - s_bin_size; ++kk)
+	{
+		const int s_bin_start = kk, s_bin_end = kk + s_bin_size - 1;
+		// re-normalize histogram.
+#if defined(__GNUC__)
+        cv::Mat colMat = histo2.colRange(s_bin_start, s_bin_end + 1);
+		my_opencv::normalize_histogram(colMat, 1.0);
+#else
+		my_opencv::normalize_histogram(histo2.colRange(s_bin_start, s_bin_end + 1), 1.0);
+#endif
+
+		cv::Mat sig2(h_bins * s_bin_size, 3, CV_32FC1, cv::Scalar::all(0.0f));
+		for (int h = 0; h < h_bins; ++h)
+			for (int s = s_bin_start; s <= s_bin_end && s < s_bins; ++s)
+			{
+				const float weight2 = histo2.at<float>(h, s);
+				if (weight2 > 0.0)
+				{
+					sig2.at<float>(h * s_bin_size + s - s_bin_start, 0) = weight2;  // bin value (weight).
+					sig2.at<float>(h * s_bin_size + s - s_bin_start, 1) = (float)h;  // coord 1.
+					sig2.at<float>(h * s_bin_size + s - s_bin_start, 2) = (float)s;  // coord 2.
+					//sig2.at<float>(h * s_bin_size + s - s_bin_start, 2) = (float)(s - s_bin_start);  // coord 2.
+
+#if 0
+					// for debugging.
+					std::cout << '(' << h << ", " << s << ") : " << weight2 << std::endl;
+#endif
+				}
+			}
+
+		float dist;
+		{
+			boost::timer::auto_cpu_timer timer;
+			// better match has lower score - perfect match = 0.0, total mismatch = 1.0(?).
+			dist = cv::EMD(sig1, sig2, CV_DIST_L2);
+		}
+		std::cout << "earth mover's distance between two histograms: " << dist << std::endl;
+	}
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -245,7 +362,8 @@ void distance_measure()
 	//local::histogram_comparison();
 
 	// earth mover's distance.
-	local::earth_movers_distance();
+	//local::earth_movers_distance();
+	local::earth_movers_distance_applied_to_THoG();
 }
 
 }  // namespace my_opencv
