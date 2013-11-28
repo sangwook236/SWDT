@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\dynamic_time_warping">
+      <UniqueIdentifier>{7a0f21f5-f724-4282-86d4-339503902e07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dynamic_time_warping_lib">
+      <UniqueIdentifier>{068a5fe4-2e47-4a5f-94ed-9b2743c85b27}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\fastemd">
       <UniqueIdentifier>{5172f17c-657c-4011-a267-5c15b2382a75}</UniqueIdentifier>
     </Filter>
@@ -27,6 +33,9 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="dynamic_time_warping_lib\DynamicTimeWarping.h">
+      <Filter>Source Files\dynamic_time_warping_lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -40,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="fastemd\fastemd_main.cpp">
       <Filter>Source Files\fastemd</Filter>
+    </ClCompile>
+    <ClCompile Include="dynamic_time_warping\dynamic_time_warping_main.cpp">
+      <Filter>Source Files\dynamic_time_warping</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@
 
 int main(int argc, char *argv[])
 {
+	int dynamic_time_warping_main(int argc, char *argv[]);
 	int fastemd_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -17,7 +18,10 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "FastEMD algorithm ---------------------------------------------------" << std::endl;
+		std::cout << "dynamic time warping (DTW) algorithm --------------------------------" << std::endl;
+		retval = dynamic_time_warping_main(argc, argv);
+
+		std::cout << "\nFastEMD algorithm ---------------------------------------------------" << std::endl;
 		//retval = fastemd_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
