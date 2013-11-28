@@ -5,6 +5,5 @@ public class WekaMain {
 	{
 		//ArffLoader.run(args);
 		Example1.run(args);
-		
 	}
 }

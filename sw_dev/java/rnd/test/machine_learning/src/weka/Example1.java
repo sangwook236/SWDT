@@ -14,7 +14,7 @@ class Example1 {
 	{
 		try
 		{
-			Instances dataset = DataSource.read("./machine_learning_data/weka/iris.arff");
+			Instances dataset = DataSource.read("./data/machine_learning/weka/iris.arff");
 			
 			if (dataset.classIndex() == -1)
 				dataset.setClassIndex(dataset.numAttributes() - 1);
@@ -36,12 +36,12 @@ class Example1 {
 
 			//
 			{
-				DataSink.write("./machine_learning_data/weka/example1.xrff", dataset);
-				//DataSink.write("./machine_learning_data/weka/example1.csv", dataset);
+				DataSink.write("./data/machine_learning/weka/example1.xrff", dataset);
+				//DataSink.write("./data/machine_learning/weka/example1.csv", dataset);
 	
 				CSVSaver saver = new CSVSaver();
 				saver.setInstances(dataset);
-				saver.setFile(new java.io.File("./machine_learning_data/weka/example1.csv"));
+				saver.setFile(new java.io.File("./data/machine_learning/weka/example1.csv"));
 				saver.writeBatch();
 			}
 			
@@ -50,7 +50,7 @@ class Example1 {
 			// use Java serialized object
 			try
 			{
-				String modelFileName = "machine_learning_data/weka/example1.model";
+				String modelFileName = "./data/machine_learning/weka/example1.model";
 				
 				//
 				java.io.ObjectOutputStream ostream = new java.io.ObjectOutputStream(new java.io.FileOutputStream(modelFileName));

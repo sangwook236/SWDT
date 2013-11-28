@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/devtool_center/eclipse/eclipse-java-helios-win32-x86_64/plugins/org.eclipse.swt.win32.win32.x86_64_3.6.2.v3659c.jar"/>
-	<classpathentry kind="lib" path="D:/devtool_center/eclipse/eclipse-java-helios-win32-x86_64/plugins/org.eclipse.jface_3.6.2.M20110210-1200.jar"/>
-	<classpathentry kind="lib" path="D:/devtool_center/eclipse/eclipse-java-helios-win32-x86_64/plugins/org.eclipse.jface.text_3.6.1.r361_v20100825-0800.jar"/>
-	<classpathentry kind="lib" path="D:/devtool_center/eclipse/eclipse-java-helios-win32-x86_64/plugins/org.eclipse.jface.databinding_1.4.0.I20100601-0800.jar"/>
+	<classpathentry kind="lib" path="D:/MyProgramFiles/eclipse-4.2.1/plugins/org.eclipse.swt.win32.win32.x86_64_3.100.1.v4236b.jar"/>
+	<classpathentry kind="lib" path="D:/MyProgramFiles/eclipse-4.2.1/plugins/org.eclipse.jface_3.8.102.v20130123-162658.jar"/>
+	<classpathentry kind="lib" path="D:/MyProgramFiles/eclipse-4.2.1/plugins/org.eclipse.jface.text_3.8.2.v20121126-164145.jar"/>
+	<classpathentry kind="lib" path="D:/MyProgramFiles/eclipse-4.2.1/plugins/org.eclipse.jface.databinding_1.6.0.v20120912-132807.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

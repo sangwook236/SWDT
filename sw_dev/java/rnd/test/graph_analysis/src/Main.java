@@ -11,7 +11,7 @@ public class Main {
 		}
 		catch (Exception e)
 		{
-			System.err.println("Exception occurred: " + e.ToString());
+			System.err.println("Exception occurred: " + e.toString());
 		}
 	}
 
