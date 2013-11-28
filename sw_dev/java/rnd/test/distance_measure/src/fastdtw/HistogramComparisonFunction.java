@@ -35,6 +35,7 @@ public class HistogramComparisonFunction implements DistanceFunction {
 		cvNormalizeHist(histo2, 1.0);
 
 		final double dist = cvCompareHist(histo1, histo2, CV_COMP_CHISQR);
+		//final double dist = cvCompareHist(histo1, histo2, CV_COMP_BHATTACHARYYA);
 
 		return dist;
 	}
