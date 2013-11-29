@@ -1,6 +1,6 @@
-package jboost;
+package mahout;
 
-public class JBoostMain {
+public class Mahout_Main {
 	
 	public static void run(String[] args)
 	{

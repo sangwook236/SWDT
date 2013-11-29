@@ -1,8 +1,10 @@
-package mahout;
+package graphchi;
 
-public class MahoutMain {
+public class GraphChi_Main {
+	
 	public static void run(String[] args)
 	{
 		System.err.println("not yet implemented");
 	}
+
 }

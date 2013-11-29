@@ -7,11 +7,11 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			//jboost.JBoostMain.run(args);  // not yet implemented
+			//jboost.JBoost_Main.run(args);  // not yet implemented.
 			
-			weka.WekaMain.run(args);
-			//rapidminer.RapidMinerMain.run(args);  // not yet implemented
-			//mahout.MahoutMain.run(args);  // not yet implemented
+			weka.Weka_Main.run(args);
+			//rapidminer.RapidMiner_Main.run(args);  // not yet implemented.
+			//mahout.Mahout_Main.run(args);  // not yet implemented.
 		}
 		catch (Exception e)
 		{

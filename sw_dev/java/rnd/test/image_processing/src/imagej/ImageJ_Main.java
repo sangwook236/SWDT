@@ -1,7 +1,7 @@
 package imagej;
 
 
-public class ImageJMain {
+public class ImageJ_Main {
 
 	public static void run(String[] args)
 	{

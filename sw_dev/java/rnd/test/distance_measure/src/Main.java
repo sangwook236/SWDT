@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			fastdtw.FastDTWMain.run(args);
+			fastdtw.FastDTW_Main.run(args);
 		}
 		catch (Exception e)
 		{

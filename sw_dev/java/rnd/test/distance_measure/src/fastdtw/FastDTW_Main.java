@@ -1,6 +1,6 @@
 package fastdtw;
 
-public class FastDTWMain {
+public class FastDTW_Main {
 	
 	public static void run(String[] args)
 	{

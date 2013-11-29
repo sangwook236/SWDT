@@ -1,6 +1,6 @@
 package rapidminer;
 
-public class RapidMinerMain {
+public class RapidMiner_Main {
 	
 	public static void run(String[] args)
 	{

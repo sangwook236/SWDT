@@ -11,9 +11,9 @@ public class DTWTestUsingTHoG {
 	public static void run(String[] args)
 	{
 		//compareFullTHoGs();
-		comparePartialTHoGs();
+		//comparePartialTHoGs();
 		//compareTHoGsUsingFullReferenceTHoG();
-		//compareTHoGsUsingPartialReferenceTHoG();
+		compareTHoGsUsingPartialReferenceTHoG();
 	}
 
 	private static void compareFullTHoGs()
@@ -174,12 +174,14 @@ public class DTWTestUsingTHoG {
         //final DistanceFunction distFunc = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");  // EuclideanDistance, ManhattanDistance, BinaryDistance.
         final DistanceFunction distFunc = new HistogramComparisonFunction();
         final int radius = 10;
-    	final int frameWinSize1 = 20;
+    	final int frameWinSize1 = 15;
     	final int frameWinSize2 = 15;
+    	final TimeSeries ts1_partial = new TimeSeries(0);
+    	final TimeSeries ts2_partial = new TimeSeries(0);
         for (int tt = 0; tt < timeSeriesList.length; ++tt)
 		{
         	final TimeSeries ts1 = timeSeriesList[tt];
-        	final int numFeatures1 = ts1.numOfDimensions();
+        	//final int numFeatures1 = ts1.numOfDimensions();
         	final int numFrames1 = ts1.numOfPts();
 
 	        for (int uu = 0; uu < timeSeriesList.length; ++uu)
@@ -187,15 +189,15 @@ public class DTWTestUsingTHoG {
 		        System.out.println("(" + tt + ", " + uu + ") is processing ...");
 
 		        final TimeSeries ts2 = timeSeriesList[uu];
-	        	final int numFeatures2 = ts2.numOfDimensions();
+	        	//final int numFeatures2 = ts2.numOfDimensions();
 	        	final int numFrames2 = ts2.numOfPts();
 	        
 	        	result[tt][uu] = new double [numFrames2 - frameWinSize2 + 1];
 		        for (int ff = 0; ff <= numFrames2 - frameWinSize2; ++ff)
 				{
 		        	final int frameStart2 = ff, frameEnd2 = ff + frameWinSize2 - 1;
-		        	
-		        	final TimeSeries ts2_partial = new TimeSeries(numFeatures2);
+
+		        	ts2_partial.clear();
 		        	ts2_partial.setLabels(ts2.getLabels());
 		        	for (int i = frameStart2; i <= frameEnd2 && i < numFrames2; ++i)
 		        		ts2_partial.addLast((double)(i - frameStart2), new TimeSeriesPoint(ts2.getMeasurementVector(i)));
@@ -207,7 +209,7 @@ public class DTWTestUsingTHoG {
 					{
 			        	final int frameStart1 = gg, frameEnd1 = gg + frameWinSize1 - 1;
 			        	
-			        	final TimeSeries ts1_partial = new TimeSeries(numFeatures1);
+			        	ts1_partial.clear();
 			        	ts1_partial.setLabels(ts1.getLabels());
 			        	for (int i = frameStart1; i <= frameEnd1 && i < numFrames1; ++i)
 			        		ts1_partial.addLast((double)(i - frameStart1), new TimeSeriesPoint(ts1.getMeasurementVector(i)));
@@ -225,6 +227,10 @@ public class DTWTestUsingTHoG {
 			        System.out.println("\tWarp path:     " + bestWarpInfo.getPath());
 			        
 			        result[tt][uu][ff] = bestWarpInfo.getDistance();
+			        
+			        //
+			        System.gc();
+			        Thread.yield();
 				}
 			}
 		}

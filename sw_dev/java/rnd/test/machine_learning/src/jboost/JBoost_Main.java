@@ -1,8 +1,10 @@
-package graphchi;
+package jboost;
 
-public class GraphChiMain {
+public class JBoost_Main {
+	
 	public static void run(String[] args)
 	{
 		System.err.println("not yet implemented");
 	}
+	
 }

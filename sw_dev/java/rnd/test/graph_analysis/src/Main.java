@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			graphchi.GraphChiMain.run(args);  // not yet implemented
+			graphchi.GraphChi_Main.run(args);  // not yet implemented.
 		}
 		catch (Exception e)
 		{

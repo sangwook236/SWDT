@@ -1,6 +1,6 @@
 package javacv;
 
-public class JavaCVMain {
+public class JavaCV_Main {
 
 	public static void run(String[] args)
 	{

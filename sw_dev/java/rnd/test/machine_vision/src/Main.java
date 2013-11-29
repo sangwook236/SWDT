@@ -4,7 +4,7 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			javacv.JavaCVMain.run(args);
+			javacv.JavaCV_Main.run(args);
 		}
 		catch (Exception e)
 		{
