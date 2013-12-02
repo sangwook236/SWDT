@@ -1,10 +1,8 @@
 package javacv;
 
-import static com.googlecode.javacv.cpp.opencv_core.IplImage;
-import static com.googlecode.javacv.cpp.opencv_core.cvFlip;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
-import static com.googlecode.javacv.cpp.opencv_imgproc.CV_BGR2RGB;
-import static com.googlecode.javacv.cpp.opencv_imgproc.cvCvtColor;
+import static com.googlecode.javacv.cpp.opencv_core.*;
+import static com.googlecode.javacv.cpp.opencv_highgui.*;
+import static com.googlecode.javacv.cpp.opencv_imgproc.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -42,6 +40,9 @@ public class JavaCV_BasicOperation {
         // Exit application when frame is closed.
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        
+        // Clean-up.
+        cvReleaseImage(img);
 	}
 
 }

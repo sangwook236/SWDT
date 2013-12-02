@@ -74,8 +74,8 @@ public class DTWTestUsingTHoG {
         final DistanceFunction distFunc = new HistogramComparisonFunction();
         final int radius = 10;
     	final double startTime = (double)System.nanoTime() * 1.0e-6;
-        final TimeWarpInfo info = com.dtw.DTW.getWarpInfoBetween(ts1_partial, ts2_partial, distFunc);
-        //final TimeWarpInfo info = com.dtw.FastDTW.getWarpInfoBetween(ts1_partial, ts2_partial, radius, distFunc);
+        //final TimeWarpInfo info = com.dtw.DTW.getWarpInfoBetween(ts1_partial, ts2_partial, distFunc);
+        final TimeWarpInfo info = com.dtw.FastDTW.getWarpInfoBetween(ts1_partial, ts2_partial, radius, distFunc);
     	final double endTime = (double)System.nanoTime() * 1.0e-6;
 		
     	System.out.println("Elapsed time:  " + (endTime - startTime));
@@ -204,7 +204,7 @@ public class DTWTestUsingTHoG {
 
 		        	//
 		        	TimeWarpInfo bestWarpInfo = null;
-		        	final double startTime = (double)System.nanoTime() * 1.0e-6;
+		        	final double startTime = (double)System.nanoTime() * 1.0e-6;  // [ms].
 			        for (int gg = 0; gg <= numFrames1 - frameWinSize1; ++gg)
 					{
 			        	final int frameStart1 = gg, frameEnd1 = gg + frameWinSize1 - 1;
@@ -219,7 +219,7 @@ public class DTWTestUsingTHoG {
 				        if (null == bestWarpInfo || bestWarpInfo.getDistance() > info.getDistance())
 				        	bestWarpInfo = info;
 					}
-		        	final double endTime = (double)System.nanoTime() * 1.0e-6;
+		        	final double endTime = (double)System.nanoTime() * 1.0e-6;  // [ms].
 
 		        	//
 		        	System.out.println("\tElapsed time:  " + (endTime - startTime));

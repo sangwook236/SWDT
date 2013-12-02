@@ -17,6 +17,9 @@ public class JavaCV_MatrixOperation {
             }
         
         System.out.println(mat);
+        
+        // Clean-up.
+        cvReleaseMat(mat);
 	}
 	
 }
