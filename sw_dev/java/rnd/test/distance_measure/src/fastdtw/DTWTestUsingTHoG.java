@@ -174,7 +174,7 @@ public class DTWTestUsingTHoG {
         //final DistanceFunction distFunc = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");  // EuclideanDistance, ManhattanDistance, BinaryDistance.
         final DistanceFunction distFunc = new HistogramComparisonFunction();
         final int radius = 10;
-    	final int frameWinSize1 = 15;
+    	final int frameWinSize1 = 20;
     	final int frameWinSize2 = 15;
     	final TimeSeries ts1_partial = new TimeSeries(0);
     	final TimeSeries ts2_partial = new TimeSeries(0);
