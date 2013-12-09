@@ -46,40 +46,62 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\work\sw_dev\cpp\rnd\inc\opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\work\sw_dev\cpp\rnd\inc\opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="klt_lib\base.h" />
+    <ClInclude Include="klt_lib\convolve.h" />
+    <ClInclude Include="klt_lib\error.h" />
+    <ClInclude Include="klt_lib\klt.h" />
+    <ClInclude Include="klt_lib\klt_util.h" />
+    <ClInclude Include="klt_lib\pnmio.h" />
+    <ClInclude Include="klt_lib\pyramid.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="klt\klt_main.cpp" />
+    <ClCompile Include="klt_lib\convolve.c" />
+    <ClCompile Include="klt_lib\error.c" />
+    <ClCompile Include="klt_lib\klt.c" />
+    <ClCompile Include="klt_lib\klt_util.c" />
+    <ClCompile Include="klt_lib\pnmio.c" />
+    <ClCompile Include="klt_lib\pyramid.c" />
+    <ClCompile Include="klt_lib\selectGoodFeatures.c" />
+    <ClCompile Include="klt_lib\storeFeatures.c" />
+    <ClCompile Include="klt_lib\trackFeatures.c" />
+    <ClCompile Include="klt_lib\writeFeatures.c" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="opentld\opentld_main.cpp" />

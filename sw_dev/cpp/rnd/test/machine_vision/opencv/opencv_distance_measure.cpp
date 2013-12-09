@@ -258,11 +258,13 @@ void earth_movers_distance()
 
 void earth_movers_distance_applied_to_THoG_using_full_reference_THoG()
 {
+	const double eps = 1.0e-20;
+
 	std::vector<std::string> filename_list;
-	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog2_1deg_segmented/M_1_1.HoG");
-	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog2_1deg_segmented/M_2_1.HoG");
-	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog2_1deg_segmented/M_4_1.HoG");
-	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog2_1deg_segmented/M_7_1.HoG");
+	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog3_1deg_segmented/M_1_1.HoG");
+	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog3_1deg_segmented/M_2_1.HoG");
+	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog3_1deg_segmented/M_4_1.HoG");
+	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog3_1deg_segmented/M_7_1.HoG");
 
 	std::vector<cv::Mat> THoG_list;
 	THoG_list.reserve(filename_list.size());
@@ -311,7 +313,6 @@ void earth_movers_distance_applied_to_THoG_using_full_reference_THoG()
 
 		// TODO [check] >> zero histogram is treated as an uniform distribution.
 		const cv::Scalar sums(cv::sum(THoG));
-		const double eps = 1.0e-20;
 		if (std::fabs(sums[0]) < eps) THoG = cv::Mat::ones(THoG.size(), THoG.type());
 
 		THoG_list.push_back(THoG);
@@ -373,7 +374,6 @@ void earth_movers_distance_applied_to_THoG_using_full_reference_THoG()
 
 				// TODO [check] >> zero histogram is treated as an uniform distribution.
 				const cv::Scalar sums(cv::sum(THoG2_partial));
-				const double eps = 1.0e-20;
 				if (std::fabs(sums[0]) < eps) THoG2_partial = cv::Mat::ones(THoG2_partial.size(), THoG2_partial.type());
 
 				// re-normalize histogram.
@@ -442,11 +442,13 @@ void earth_movers_distance_applied_to_THoG_using_full_reference_THoG()
 
 void earth_movers_distance_applied_to_THoG_using_partial_reference_THoG()
 {
+	const double eps = 1.0e-20;
+
 	std::vector<std::string> filename_list;
-	//filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog2_1deg_segmented/M_1_1.HoG");
-	//filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog2_1deg_segmented/M_2_1.HoG");
-	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog2_1deg_segmented/M_4_1.HoG");
-	//filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog2_1deg_segmented/M_7_1.HoG");
+	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog3_1deg_segmented/M_1_1.HoG");
+	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog3_1deg_segmented/M_2_1.HoG");
+	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog3_1deg_segmented/M_4_1.HoG");
+	filename_list.push_back("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/devel16_thog3_1deg_segmented/M_7_1.HoG");
 
 	std::vector<cv::Mat> THoG_list;
 	THoG_list.reserve(filename_list.size());
@@ -495,7 +497,6 @@ void earth_movers_distance_applied_to_THoG_using_partial_reference_THoG()
 
 		// TODO [check] >> zero histogram is treated as an uniform distribution.
 		const cv::Scalar sums(cv::sum(THoG));
-		const double eps = 1.0e-20;
 		if (std::fabs(sums[0]) < eps) THoG = cv::Mat::ones(THoG.size(), THoG.type());
 
 		THoG_list.push_back(THoG);
@@ -539,7 +540,6 @@ void earth_movers_distance_applied_to_THoG_using_partial_reference_THoG()
 
 				// TODO [check] >> zero histogram is treated as an uniform distribution.
 				const cv::Scalar sums(cv::sum(THoG2_partial));
-				const double eps = 1.0e-20;
 				if (std::fabs(sums[0]) < eps) THoG2_partial = cv::Mat::ones(THoG2_partial.size(), THoG2_partial.type());
 
 				// re-normalize histogram.
@@ -575,7 +575,6 @@ void earth_movers_distance_applied_to_THoG_using_partial_reference_THoG()
 
 					// TODO [check] >> zero histogram is treated as an uniform distribution.
 					const cv::Scalar sums(cv::sum(THoG1_partial));
-					const double eps = 1.0e-20;
 					if (std::fabs(sums[0]) < eps) THoG1_partial = cv::Mat::ones(THoG1_partial.size(), THoG1_partial.type());
 
 					// re-normalize histogram.
@@ -594,10 +593,10 @@ void earth_movers_distance_applied_to_THoG_using_partial_reference_THoG()
 								sig1.at<float>(ii * frame_win_size1 + jj - frame_start1, 2) = (float)jj;  // coord 2.
 								//sig1.at<float>(ii * frame_win_size1 + jj - frame_start1, 2) = (float)(jj - frame_start1);  // coord 2.
 
-	#if 0
+#if 0
 								// for debugging.
 								std::cout << '(' << ii << ", " << jj << ") : " << weight1 << std::endl;
-	#endif
+#endif
 							}
 						}
 
@@ -646,7 +645,7 @@ void distance_measure()
 	// earth mover's distance.
 	//local::earth_movers_distance();
 	//local::earth_movers_distance_applied_to_THoG_using_full_reference_THoG();
-	local::earth_movers_distance_applied_to_THoG_using_partial_reference_THoG();
+	local::earth_movers_distance_applied_to_THoG_using_partial_reference_THoG();  // NOTICE [caution] >> after operation is done, the blue screen appears.
 }
 
 }  // namespace my_opencv

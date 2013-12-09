@@ -16,6 +16,12 @@
     <Filter Include="Source Files\opentld">
       <UniqueIdentifier>{66c6b02a-30a7-46f4-b8ef-9cfc411c9c5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\klt">
+      <UniqueIdentifier>{d9428c79-d297-4ed6-ac39-377618ee6eb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\klt_lib">
+      <UniqueIdentifier>{e731ee39-f2ec-4977-abf9-220b179b6bb1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -26,6 +32,27 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="klt_lib\base.h">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="klt_lib\convolve.h">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="klt_lib\error.h">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="klt_lib\klt.h">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="klt_lib\klt_util.h">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="klt_lib\pnmio.h">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="klt_lib\pyramid.h">
+      <Filter>Source Files\klt_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +67,39 @@
     </ClCompile>
     <ClCompile Include="opentld\opentld_main.cpp">
       <Filter>Source Files\opentld</Filter>
+    </ClCompile>
+    <ClCompile Include="klt\klt_main.cpp">
+      <Filter>Source Files\klt</Filter>
+    </ClCompile>
+    <ClCompile Include="klt_lib\convolve.c">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="klt_lib\error.c">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="klt_lib\klt.c">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="klt_lib\klt_util.c">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="klt_lib\pnmio.c">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="klt_lib\pyramid.c">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="klt_lib\selectGoodFeatures.c">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="klt_lib\storeFeatures.c">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="klt_lib\trackFeatures.c">
+      <Filter>Source Files\klt_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="klt_lib\writeFeatures.c">
+      <Filter>Source Files\klt_lib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

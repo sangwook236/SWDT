@@ -10,6 +10,7 @@
 
 int main(int argc, char *argv[])
 {
+	int klt_main(int argc, char *argv[]);
 	int opentld_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -17,8 +18,11 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "OpenTLD algorithm ---------------------------------------------------" << std::endl;
-		//retval = opentld_main(argc, argv);  // not yet implemented.
+		std::cout << "Kanade-Lucas-Tomasi (KLT) Feature Tracker algorithm -----------------" << std::endl;
+		//retval = klt_main(argc, argv);
+
+		std::cout << "\nOpenTLD algorithm ---------------------------------------------------" << std::endl;
+		retval = opentld_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

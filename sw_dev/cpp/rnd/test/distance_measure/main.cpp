@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
 		retval = dynamic_time_warping_main(argc, argv);
 
 		std::cout << "\nFastEMD algorithm ---------------------------------------------------" << std::endl;
+		//	-. earth mover's distance (EMD).
 		//retval = fastemd_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)

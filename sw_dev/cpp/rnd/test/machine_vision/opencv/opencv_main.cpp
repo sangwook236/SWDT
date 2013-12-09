@@ -171,7 +171,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::histogram();
 		//if (canUseGPU) my_opencv::histogram()_using_gpu();  // not yet implemented.
 
-		my_opencv::distance_measure();
+		//my_opencv::distance_measure();
 		//my_opencv::distance_transform();
 		//my_opencv::distance_transform_using_edge_info();
 
@@ -218,7 +218,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::object_detection();
 		//my_opencv::face_detection();
 		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // not yet implemented.
-		//my_opencv::human_detection();
+		my_opencv::human_detection();
 		//if (canUseGPU) my_opencv::human_detection_using_gpu();  // not yet implemented.
 
 		//my_opencv::face_recognition();
