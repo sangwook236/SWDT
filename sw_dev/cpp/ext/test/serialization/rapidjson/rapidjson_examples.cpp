@@ -137,7 +137,7 @@ private:
 
 namespace my_rapidjson {
 
-// ${RAPIDJSON_HOME}/example/serialize/serialize.cpp
+// [ref] ${RAPIDJSON_HOME}/example/serialize/serialize.cpp.
 void serialize_example()
 {
 	std::vector<local::Employee> employees;
@@ -157,8 +157,8 @@ void serialize_example()
 	writer.EndArray();
 }
 
-// ${RAPIDJSON_HOME}/example/condense/condense.cpp
-// ${RAPIDJSON_HOME}/example/pretty/pretty.cpp
+// [ref] ${RAPIDJSON_HOME}/example/condense/condense.cpp.
+// [ref] ${RAPIDJSON_HOME}/example/pretty/pretty.cpp.
 void condense_and_pretty_example()
 {
 #if 0
