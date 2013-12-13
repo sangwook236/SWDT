@@ -4,11 +4,13 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-//#pragma comment(lib, "graphviz.lib")
+#pragma comment(lib, "mgl2-glut_d.lib")
+#pragma comment(lib, "mgl2_d.lib")
 
 #		else
 
-//#pragma comment(lib, "graphviz.lib")
+#pragma comment(lib, "mgl2-glut.lib")
+#pragma comment(lib, "mgl2.lib")
 
 #		endif
 

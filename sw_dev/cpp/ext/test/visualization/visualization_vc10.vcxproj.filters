@@ -19,6 +19,9 @@
     <ClCompile Include="vtk\vtk_main.cpp">
       <Filter>Source Files\vtk</Filter>
     </ClCompile>
+    <ClCompile Include="mathgl\mathgl_glut_example.cpp">
+      <Filter>Source Files\mathgl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

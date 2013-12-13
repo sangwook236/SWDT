@@ -16,9 +16,13 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "ASSIMP library-- ----------------------------------------------------" << std::endl;
 		//retval = assimp_main(argc, argv);  // not yet implemented.
+
+		std::cout << "\nHDF library ---------------------------------------------------------" << std::endl;
 		//retval = hdf_main(argc, argv);  // not yet implemented.
 
+		std::cout << "\nCSV Parser library --------------------------------------------------" << std::endl;
 		retval = csv_parser_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

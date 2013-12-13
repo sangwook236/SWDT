@@ -14,6 +14,9 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		// [ref] ${CPP_EXT_HOME}/test/visualization/mathgl.
+
+		std::cout << "PLplot library ------------------------------------------------------" << std::endl;
 		retval = plplot_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
