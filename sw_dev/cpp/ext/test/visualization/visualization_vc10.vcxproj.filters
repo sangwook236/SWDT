@@ -22,6 +22,15 @@
     <ClCompile Include="mathgl\mathgl_glut_example.cpp">
       <Filter>Source Files\mathgl</Filter>
     </ClCompile>
+    <ClCompile Include="plplot\plplot_main.cpp">
+      <Filter>Source Files\plplot</Filter>
+    </ClCompile>
+    <ClCompile Include="plplot\plplot_x01_example.cpp">
+      <Filter>Source Files\plplot</Filter>
+    </ClCompile>
+    <ClCompile Include="plplot\plplot_x21_example.cpp">
+      <Filter>Source Files\plplot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -29,6 +38,9 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plplot\plc++demos.h">
+      <Filter>Source Files\plplot</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +67,9 @@
     </Filter>
     <Filter Include="Source Files\mathgl">
       <UniqueIdentifier>{0714ee07-d7b4-4f5a-9dd4-c4599b7e35c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\plplot">
+      <UniqueIdentifier>{15b05e14-2a35-4e85-8d5b-c370b7bb8048}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

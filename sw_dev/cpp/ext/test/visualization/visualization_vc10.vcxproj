@@ -51,7 +51,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/plplot;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -67,7 +67,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/plplot;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -81,6 +81,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="plplot\plc++demos.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -90,6 +91,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mathgl\mathgl_glut_example.cpp" />
     <ClCompile Include="mathgl\mathgl_main.cpp" />
+    <ClCompile Include="plplot\plplot_main.cpp" />
+    <ClCompile Include="plplot\plplot_x01_example.cpp" />
+    <ClCompile Include="plplot\plplot_x21_example.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="vtk\vtk_main.cpp" />
   </ItemGroup>

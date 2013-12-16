@@ -11,6 +11,7 @@ int main(int argc, char* argv[])
 {
 	int graphviz_main(int argc, char* argv[]);
 	int mathgl_main(int argc, char* argv[]);
+	int plplot_main(int argc, char *argv[]);
 	int vtk_main(int argc, char* argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -22,6 +23,9 @@ int main(int argc, char* argv[])
 		std::cout << "\nMathGL library ------------------------------------------------------" << std::endl;
 		retval = mathgl_main(argc, argv);
 		
+		std::cout << "\nPLplot library ------------------------------------------------------" << std::endl;
+		//retval = plplot_main(argc, argv);
+
 		std::cout << "\nVTK library ---------------------------------------------------------" << std::endl;
 		//retval = vtk_main(argc, argv);  // not yet implemented.
 	}
