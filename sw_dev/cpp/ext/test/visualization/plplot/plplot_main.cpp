@@ -18,7 +18,7 @@ int plplot_main(int argc, char *argv[])
 {
 	// NOTICE [caution] >> for execution, driver files have to be loaded.
 	//	set PLPLOT_DRV_DIR=${PLPLOT_INSTALL}/lib/plplot5.9.9/driversd
-	//	set PLPLOT_LIB=${PLPLOT_INSTALL}\share\plplot5.9.9
+	//	set PLPLOT_LIB=${PLPLOT_INSTALL}/share/plplot5.9.9
 	//	[ref] ${PLPLOT_HOME}/plplot_build_guide.txt.
 
 	// examples
