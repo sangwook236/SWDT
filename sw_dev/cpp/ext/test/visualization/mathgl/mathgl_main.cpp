@@ -536,7 +536,8 @@ void simple_example_1()
 
 	// Ssave the result.
 	//mgl_write_frame(gr, "./data/visualization/mathgl/simple_example_1.png", "");  // run-time error.
-	mgl_write_jpg(gr, "./data/visualization/mathgl/simple_example_1.jpg", "");
+	mgl_write_frame(gr, "./data/visualization/mathgl/simple_example_1.jpg", "");
+	//mgl_write_jpg(gr, "./data/visualization/mathgl/simple_example_1.jpg", "");
 	//mgl_write_bmp(gr, "./data/visualization/mathgl/simple_example_1.bmp", "");
 
 	mgl_delete_graph(gr);
@@ -551,8 +552,9 @@ void simple_example_2()
 	
 	// Ssave the result.
 	//gr.WriteFrame("./data/visualization/mathgl/simple_example_2.png");  // run-time error.
+	gr.WriteFrame("./data/visualization/mathgl/simple_example_2.jpg");
 	//gr.WritePNG("./data/visualization/mathgl/simple_example_2.png");  // run-time error.
-	gr.WriteJPEG("./data/visualization/mathgl/simple_example_2.jpg");
+	//gr.WriteJPEG("./data/visualization/mathgl/simple_example_2.jpg");
 	//gr.WriteBMP("./data/visualization/mathgl/simple_example_2.bmp");
 }
 
@@ -582,9 +584,9 @@ void simple_example_3()
 
 int mathgl_main(int argc, char* argv[])
 {
-	//local::simple_example_1();
+	local::simple_example_1();
 	//local::simple_example_2();
-	local::simple_example_3();
+	//local::simple_example_3();
 
 	//my_mathgl::glut_example();
 

@@ -28,8 +28,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visualization", "..\test\vi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphics_2d", "..\test\graphics_2d\graphics_2d_vc10.vcxproj", "{046579FF-F6FF-4378-BA3E-61951BD731FB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plotting", "..\test\plotting\plotting_vc10.vcxproj", "{641DC327-36C6-4091-8BD4-A1029DF1018A}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gpu_computation", "..\test\gpu_computation\gpu_computation_vc10.vcxproj", "{05AC83E8-E05E-46BA-8C19-CED811F98BC9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometry", "..\test\geometry\geometry_vc10.vcxproj", "{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}"
@@ -112,10 +110,6 @@ Global
 		{046579FF-F6FF-4378-BA3E-61951BD731FB}.Debug|Win32.Build.0 = Debug|Win32
 		{046579FF-F6FF-4378-BA3E-61951BD731FB}.Release|Win32.ActiveCfg = Release|Win32
 		{046579FF-F6FF-4378-BA3E-61951BD731FB}.Release|Win32.Build.0 = Release|Win32
-		{641DC327-36C6-4091-8BD4-A1029DF1018A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{641DC327-36C6-4091-8BD4-A1029DF1018A}.Debug|Win32.Build.0 = Debug|Win32
-		{641DC327-36C6-4091-8BD4-A1029DF1018A}.Release|Win32.ActiveCfg = Release|Win32
-		{641DC327-36C6-4091-8BD4-A1029DF1018A}.Release|Win32.Build.0 = Release|Win32
 		{05AC83E8-E05E-46BA-8C19-CED811F98BC9}.Debug|Win32.ActiveCfg = Debug|Win32
 		{05AC83E8-E05E-46BA-8C19-CED811F98BC9}.Debug|Win32.Build.0 = Debug|Win32
 		{05AC83E8-E05E-46BA-8C19-CED811F98BC9}.Release|Win32.ActiveCfg = Release|Win32
