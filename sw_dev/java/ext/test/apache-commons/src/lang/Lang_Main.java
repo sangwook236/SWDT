@@ -1,6 +1,10 @@
-package jni;
+package lang;
 
-public class JNIMain {
+public final class Lang_Main {
+
+	/**
+	 * @param args
+	 */
 	public static void run(String[] args)
 	{
 		System.err.println("not yet implemented");

@@ -1,6 +1,6 @@
 package dbutils;
 
-public final class DbUtilsMain {
+public final class DbUtils_Main {
 
 	/**
 	 * @param args

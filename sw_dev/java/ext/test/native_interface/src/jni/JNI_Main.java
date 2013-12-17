@@ -1,6 +1,7 @@
-package swt;
+package jni;
 
-public class SWTMain {
+public class JNI_Main {
+	
 	public static void run(String[] args)
 	{
 		System.err.println("not yet implemented");

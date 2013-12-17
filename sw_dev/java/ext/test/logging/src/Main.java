@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			log4j.Log4jMain.run(args);
+			log4j.Log4j_Main.run(args);
 		}
 		catch (Exception e)
 		{

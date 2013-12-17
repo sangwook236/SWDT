@@ -7,6 +7,7 @@ import java.awt.Dimension;
 //import java.util.ArrayList;
 
 final class PropertiesConfigurationTest {
+	
 	public static void run(String[] args)
 	{
 		try
@@ -46,4 +47,5 @@ final class PropertiesConfigurationTest {
 		{
 		}
 	}
+	
 }

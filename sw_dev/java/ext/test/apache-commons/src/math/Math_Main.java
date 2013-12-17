@@ -1,6 +1,6 @@
 package math;
 
-public final class MathMain {
+public final class Math_Main {
 
 	/**
 	 * @param args

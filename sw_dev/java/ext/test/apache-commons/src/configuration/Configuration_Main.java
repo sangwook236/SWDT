@@ -1,6 +1,6 @@
 package configuration;
 
-public final class ConfigurationMain {
+public final class Configuration_Main {
 
 	/**
 	 * @param args

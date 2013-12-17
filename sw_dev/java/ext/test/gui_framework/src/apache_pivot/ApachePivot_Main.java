@@ -1,6 +1,6 @@
 package apache_pivot;
 
-public final class ApachePivotMain {
+public final class ApachePivot_Main {
 
 	/**
 	 * @param args

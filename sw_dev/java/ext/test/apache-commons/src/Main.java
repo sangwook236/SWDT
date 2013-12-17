@@ -11,7 +11,7 @@ public class Main {
 			//configuration.ConfigurationMain.run(args);
 			//dbutils.DbUtilsMain.run(args);  // not yet implemented
 			//lang.LangMain.run(args);  // not yet implemented
-			math.MathMain.run(args);
+			math.Math_Main.run(args);
 		}
 		catch (Exception e)
 		{

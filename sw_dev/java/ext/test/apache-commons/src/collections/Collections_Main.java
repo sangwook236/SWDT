@@ -1,6 +1,10 @@
-package swing;
+package collections;
 
-public class SwingMain {
+public final class Collections_Main {
+
+	/**
+	 * @param args
+	 */
 	public static void run(String[] args)
 	{
 		System.err.println("not yet implemented");

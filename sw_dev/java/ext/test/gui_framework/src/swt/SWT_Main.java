@@ -1,10 +1,7 @@
-package collections;
+package swt;
 
-public final class CollectionsMain {
-
-	/**
-	 * @param args
-	 */
+public class SWT_Main {
+	
 	public static void run(String[] args)
 	{
 		System.err.println("not yet implemented");

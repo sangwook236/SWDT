@@ -3,6 +3,7 @@ package configuration;
 import org.apache.commons.configuration.*;
 
 final class CompositeConfigurationTest {
+	
 	public static void run(String[] args)
 	{
 		try
@@ -20,4 +21,5 @@ final class CompositeConfigurationTest {
 		{
 		}
 	}
+	
 }

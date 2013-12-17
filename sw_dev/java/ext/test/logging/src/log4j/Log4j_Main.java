@@ -3,7 +3,7 @@ package log4j;
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 
-public final class Log4jMain {
+public final class Log4j_Main {
 
 	/**
 	 * @param args
@@ -19,7 +19,7 @@ public final class Log4jMain {
 		logger.info("Exiting application.");
 	}
 
-	static Logger logger = Logger.getLogger(Log4jMain.class);
+	static Logger logger = Logger.getLogger(Log4j_Main.class);
 }
 
 class Bar {

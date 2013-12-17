@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLiteMain {
+public class SQLite_Main {
+	
 	public static void run(String[] args) throws ClassNotFoundException
 	{
 	    // load the sqlite-JDBC driver using the current class loader
@@ -53,4 +54,5 @@ public class SQLiteMain {
 	    	}
 	    }
 	}
+	
 }

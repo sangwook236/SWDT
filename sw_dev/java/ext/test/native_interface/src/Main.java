@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			javacpp.JavaCPPMain.run(args);
+			javacpp.JavaCPP_Main.run(args);
 			//jni.JNIMain.run(args);  // not yet implemented
 		}
 		catch (Exception e)

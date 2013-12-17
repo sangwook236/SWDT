@@ -10,7 +10,7 @@ public class Main {
 			//swing.SwingMain.run(args);  // not yet implemented
 			//swt.SWTMain.run(args);  // not yet implemented
 	
-			apache_pivot.ApachePivotMain.run(args);
+			apache_pivot.ApachePivot_Main.run(args);
 		}
 		catch (Exception e)
 		{

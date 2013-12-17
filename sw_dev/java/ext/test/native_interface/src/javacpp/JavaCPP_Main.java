@@ -1,6 +1,7 @@
 package javacpp;
 
-public class JavaCPPMain {
+public class JavaCPP_Main {
+	
 	public static void run(String[] args)
 	{
 		LegacyLibrary.run(args);

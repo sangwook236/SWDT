@@ -7,12 +7,11 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			sqlite.SQLite_Main.run(args);
-			//mysql.MySQLMain.run(args);
+			System.err.println("not yet implemented");
 		}
-		catch (ClassNotFoundException e)
+		catch (Exception e)
 		{
-    		System.err.println(e);
+			System.err.println("Exception occurred: " + e.toString());
 		}
 	}
 

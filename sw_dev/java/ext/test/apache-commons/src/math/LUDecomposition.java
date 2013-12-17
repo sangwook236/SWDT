@@ -3,6 +3,7 @@ package math;
 import org.apache.commons.math.linear.*;
 
 class LUDecomposition {
+	
 	public static void run(String[] args)
 	{
 		final double [][] arrMat = { { 1, 2, 3 }, { 4, 6, -2 }, { 10, 3, 1 } }; 
@@ -22,4 +23,5 @@ class LUDecomposition {
 
 		System.out.printf("%1$s%n%2$s%n%3$s%n%4$s%n", det, matL, matU, sol);
 	}
+	
 }

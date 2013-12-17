@@ -5,6 +5,7 @@ import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 //import java.util.ArrayList;
 
 final class XmlConfigurationTest {
+	
 	public static void run(String[] args)
 	{
 		try
@@ -44,4 +45,5 @@ final class XmlConfigurationTest {
 		{
 		}
 	}
+	
 }
