@@ -43,8 +43,9 @@ int main(int argc, char *argv[])
 		//	-. SVM struct: structured SVM.
 		//	-. SVM multiclass: multi-class SVM.
 		//	-. SVM hmm: structured SVMs for sequence tagging.
+		//	-. SVM alignment: structured SVMs for sequence alignment.
 		//	-. latent SVM struct: latent structured SVM.
-		//retval = svm_light_main(argc, argv);  // not yet implemented.
+		retval = svm_light_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nshogun library ------------------------------------------------------" << std::endl;
 		//	-. multiple kernel learning (MKL).
@@ -77,12 +78,12 @@ int main(int argc, char *argv[])
 		//		inference algorithms.
 		//	-. image processing.
 		//
-		// [ref] ${CPP_EXT_HOME}/src/general_purpose_library/dlib.
+		// [ref] ${CPP_HOME}/ext/src/general_purpose_library/dlib.
 		//retval = dlib_ml_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
 		//	-. deep learning.
-		retval = liblearning_main(argc, argv);
+		//retval = liblearning_main(argc, argv);
 
 		std::cout << "\nreinforcement learning (RL) -----------------------------------------" << std::endl;
 		//retval = rl_glue_main(argc, argv);  // not yet implemented.

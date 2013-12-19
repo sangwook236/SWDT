@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 	int siftgpu_main(int argc, char *argv[]);
 	int opensurf_main(int argc, char *argv[]);
 	int surfgpu_main(int argc, char *argv[]);
+	int hog_main(int argc, char *argv[]);
 	int fst_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -36,8 +37,10 @@ int main(int argc, char *argv[])
 		//retval = opensift_main(argc, argv);
 		//retval = siftgpu_main(argc, argv);
 
-		retval = opensurf_main(argc, argv);
+		//retval = opensurf_main(argc, argv);
 		//retval = surfgpu_main(argc, argv);
+
+		retval = hog_main(argc, argv);
 
 		std::cout << "\nFeature Selection Toolbox (FST) library -----------------------------" << std::endl;
 		//retval = fst_main(argc, argv);

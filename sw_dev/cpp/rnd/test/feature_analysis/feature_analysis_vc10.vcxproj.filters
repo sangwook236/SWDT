@@ -67,6 +67,15 @@
     <Filter Include="Source Files\fst_lib\_src_search">
       <UniqueIdentifier>{2b8bd113-1fea-474e-9640-cd35f340e6d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\hog">
+      <UniqueIdentifier>{8369c0cb-b48f-4c67-acf1-e29887f827bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\svm_light_lib">
+      <UniqueIdentifier>{4abe44db-e3a0-46c8-b34a-6e4acf5c3eae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\svm_light_lib\svm_light">
+      <UniqueIdentifier>{897fa363-f0b0-4e42-abf0-b226cff27baf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -450,6 +459,15 @@
     <ClInclude Include="fst_lib\_src_search\stopwatch.hpp">
       <Filter>Source Files\fst_lib\_src_search</Filter>
     </ClInclude>
+    <ClInclude Include="svm_light_lib\svm_light\kernel.h">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClInclude>
+    <ClInclude Include="svm_light_lib\svm_light\svm_common.h">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClInclude>
+    <ClInclude Include="svm_light_lib\svm_light\svm_learn.h">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lsd_lib\lsd.cpp">
@@ -577,6 +595,30 @@
     </ClCompile>
     <ClCompile Include="fst_lib\_src_global\global.cpp">
       <Filter>Source Files\fst_lib\_src_global</Filter>
+    </ClCompile>
+    <ClCompile Include="hog\hog_main.cpp">
+      <Filter>Source Files\hog</Filter>
+    </ClCompile>
+    <ClCompile Include="hog\hog_training_HOG.cpp">
+      <Filter>Source Files\hog</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_classify.c">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_common.c">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_hideo.c">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_learn.c">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_learn_main.c">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_loqo.c">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
