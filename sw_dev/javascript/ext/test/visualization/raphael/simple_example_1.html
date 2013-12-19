@@ -1,0 +1,64 @@
+<html>
+
+<head>
+	<title>Raphael Simple Example #1</title>
+	<style type="text/css">
+		#canvas_container {
+			width: 500px;
+			border: 1px solid #aaa;
+		}
+	</style>
+
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="raphael.js"></script>
+    <script type="text/javascript">
+
+        // [ref] http://net.tutsplus.com/tutorials/javascript-ajax/an-introduction-to-the-raphael-js-library/.
+		window.onload = function() {
+        	var paper = new Raphael(document.getElementById('canvas_container'), 500, 500);
+ 
+        	var circle = paper.circle(100, 100, 80);
+        	for (var i = 0; i < 5; i += 1)
+             {
+        	    var multiplier = i * 5;
+        	    paper.circle(250 + (2 * multiplier), 100 + multiplier, 50 - multiplier)
+        	}
+        	var rectangle = paper.rect(200, 200, 250, 100);
+        	var ellipse = paper.ellipse(200, 400, 100, 50);
+
+        	var tetronimo = paper.path("M 220 275 l 0 -50 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 l 0 50 z");
+        	tetronimo.attr({
+        	    gradient: '90-#526c7a-#64a0c1',
+        	    stroke: '#3b4449',
+        	    'stroke-width': 10,
+        	    'stroke-linejoin': 'round',
+        	    'transform': 'r -90'
+        	});
+
+        	//tetronimo.animate({ 'transform': 'r 360' }, 2000, 'bounce');
+        	tetronimo.animate(
+                { 'transform': 'r 360', 'stroke-width': 1 }, 2000, 'bounce',
+                function () {
+                    // callback after original animation finishes.
+        	        this.animate({
+        	            'transform': 'r -90',
+                        stroke: '#3b4449',
+                        'stroke-width': 10
+                    }, 1000);
+                }
+            );
+
+            tetronimo.attr({ stroke: 'none', fill: 'blue' });
+            tetronimo.animate({ path: "M 250 250 l 0 -50 l -50 0 l 0 -50 l -100 0 l 0 50 l 50 0 l 0 50 z" }, 5000, 'elastic');
+        }
+
+    </script>
+</head>
+
+<body>
+    <!--Div that will hold the pie chart-->
+    <div id="canvas_container">
+    </div>
+</body>
+
+</html>

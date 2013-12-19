@@ -1,0 +1,50 @@
+<html>
+
+<head>
+	<title>Raphael Simple Example #2</title>
+	<style type="text/css">
+		#canvas_container {
+			width: 500px;
+			border: 1px solid #aaa;
+		}
+	</style>
+
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="raphael.js"></script>
+    <script type="text/javascript">
+
+        // [ref] http://net.tutsplus.com/tutorials/javascript-ajax/an-introduction-to-the-raphael-js-library/.
+        window.onload = function () {
+            var paper = new Raphael(document.getElementById('canvas_container'), 500, 500);
+
+            var circ = paper.circle(250, 250, 40);
+            circ.attr({ fill: '#000', stroke: 'none' });
+
+            var text = paper.text(250, 250, 'Bye Bye Circle!');
+            text.attr({ opacity: 0, 'font-size': 12 }).toBack();
+
+            circ.node.onmouseover = function () {
+                this.style.cursor = 'pointer';
+            }
+
+            circ.node.onclick = function () {
+                text.animate({ opacity: 1 }, 2000);
+                circ.animate(
+                    { opacity: 0 }, 2000,
+                    function () {
+                        this.remove();
+                    }
+                );
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <!--Div that will hold the pie chart-->
+    <div id="canvas_container">
+    </div>
+</body>
+
+</html>
