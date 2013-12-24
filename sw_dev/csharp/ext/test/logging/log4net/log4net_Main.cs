@@ -11,33 +11,23 @@ namespace logging
     {
         public static void run(string[] args) 
         {
-            try
+		    const int config = 1;
+            switch (config)
             {
-		        const int config = 1;
-                switch (config)
-                {
-                    case 1:
-                        XmlConfigurator.Configure(new System.IO.FileInfo("..\\data\\logging\\log4net\\swl_logger_conf.xml"));
-                        break;
-                    default:
-                        BasicConfigurator.Configure();
-                        break;
-                }
-
-                logger_.Info("Entering application.");
-                Logger.getDefaultLogger().Warn("Entering application.");
-                Bar bar = new Bar();
-                bar.run();
-                logger_.Info("Exiting application.");
-                Logger.getDefaultLogger().Warn("Exiting application.");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("System.Exception occurred: {0}", e);
+                case 1:
+                    XmlConfigurator.Configure(new System.IO.FileInfo("..\\data\\logging\\log4net\\swl_logger_conf.xml"));
+                    break;
+                default:
+                    BasicConfigurator.Configure();
+                    break;
             }
 
-            Console.WriteLine("press any key to exit ...");
-            Console.ReadKey();
+            logger_.Info("Entering application.");
+            Logger.getDefaultLogger().Warn("Entering application.");
+            Bar bar = new Bar();
+            bar.run();
+            logger_.Info("Exiting application.");
+            Logger.getDefaultLogger().Warn("Exiting application.");
         }
 
         //private static readonly ILog logger_ = LogManager.GetLogger(typeof(Program));
