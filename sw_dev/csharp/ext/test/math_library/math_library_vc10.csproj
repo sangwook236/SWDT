@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ilnumerics\ILNumerics_Main.cs" />
     <Compile Include="math_net\CholeskyDecomposition.cs" />
     <Compile Include="math_net\EigenDecomposition.cs" />
     <Compile Include="math_net\LuDecomposition.cs" />

@@ -12,6 +12,9 @@ namespace math_library
             {
                 Console.WriteLine("Math.NET library ----------------------------------------------------");
                 math_net.Math_NET_Main.run(args);
+
+                Console.WriteLine("\nILNumerics library --------------------------------------------------");
+                ilnumerics.ILNumerics_Main.run(args);  // not yet implemented.
             }
             catch (Exception e)
             {
