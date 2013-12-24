@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net_vc10", "..\test\log4net\log4net_vc10.csproj", "{911457B3-8762-4907-BC07-861F4DE5BD32}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "logging_vc10", "..\test\logging\logging_vc10.csproj", "{911457B3-8762-4907-BC07-861F4DE5BD32}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit_vc10", "..\test\nunit\nunit_vc10.csproj", "{383CE2C8-BA38-45EA-9888-15A4A31545AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mathnet_vc10", "..\test\mathnet\mathnet_vc10.csproj", "{FEB1CB04-A7AE-4B88-9C86-4433772881F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "math_library_vc10", "..\test\math_library\math_library_vc10.csproj", "{FEB1CB04-A7AE-4B88-9C86-4433772881F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sqlite_vc10", "..\test\sqlite\sqlite_vc10.csproj", "{12F41AD3-9585-4D4D-980B-721988AFB800}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "database_vc10", "..\test\database\database_vc10.csproj", "{12F41AD3-9585-4D4D-980B-721988AFB800}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "state_machine_vc10", "..\test\state_machine\state_machine_vc10.csproj", "{C3B4EBE2-B885-48A1-8C24-FBAEF86343D8}"
 EndProject

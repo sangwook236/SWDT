@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace neural_network
+namespace math_library
 {
     class Program
     {
@@ -10,7 +10,8 @@ namespace neural_network
         {
             try
             {
-                throw new NotImplementedException();
+                Console.WriteLine("Math.NET library ----------------------------------------------------");
+                Math_NET_Main.run(args);
             }
             catch (Exception e)
             {

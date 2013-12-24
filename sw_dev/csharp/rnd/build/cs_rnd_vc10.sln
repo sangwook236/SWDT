@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "neural_network_vc10", "..\test\neural_network\neural_network_vc10.csproj", "{F10C5F7A-0E2D-4F05-BC2F-CF2A6E140C15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aforge_net_vc10", "..\test\aforge_net\aforge_net_vc10.csproj", "{A72FDB3C-F29E-4DF0-BDC2-90BC5BDF6F72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI_vc10", "..\test\AI\AI_vc10.csproj", "{A72FDB3C-F29E-4DF0-BDC2-90BC5BDF6F72}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "probabilistic_graphical_model_vc10", "..\test\probabilistic_graphical_model\probabilistic_graphical_model_vc10.csproj", "{E336D887-5BE2-464B-9B05-3C61A7544DE5}"
 EndProject

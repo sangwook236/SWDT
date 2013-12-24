@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace neural_network
+namespace logging
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args) 
         {
             try
             {
-                throw new NotImplementedException();
+                Console.WriteLine("log4net library -----------------------------------------------------");
+                log4net_Main.run(args);
             }
             catch (Exception e)
             {

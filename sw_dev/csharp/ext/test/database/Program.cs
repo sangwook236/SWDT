@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace neural_network
+namespace database
 {
     class Program
     {
@@ -10,7 +10,8 @@ namespace neural_network
         {
             try
             {
-                throw new NotImplementedException();
+                Console.WriteLine("sqlite --------------------------------------------------------------");
+                sqlite_Main.run(args);
             }
             catch (Exception e)
             {

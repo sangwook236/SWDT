@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace neural_network
+namespace AI
 {
     class Program
     {
@@ -10,7 +10,8 @@ namespace neural_network
         {
             try
             {
-                throw new NotImplementedException();
+                Console.WriteLine("AForge.NET library --------------------------------------------------");
+                AForge_NET_Main.run(args);  // not yet implemented.
             }
             catch (Exception e)
             {
