@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace math_library
+namespace visualization
 {
     class Program
     {
@@ -10,8 +11,8 @@ namespace math_library
         {
             try
             {
-                Console.WriteLine("Math.NET library ----------------------------------------------------");
-                math_net.Math_NET_Main.run(args);
+                Console.WriteLine("QxyPlot library -----------------------------------------------------");
+                qxyplot.QxyPlot_Main.run(args);
             }
             catch (Exception e)
             {

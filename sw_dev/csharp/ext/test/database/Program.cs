@@ -11,7 +11,7 @@ namespace database
             try
             {
                 Console.WriteLine("sqlite --------------------------------------------------------------");
-                sqlite_Main.run(args);
+                sqlite.sqlite_Main.run(args);
             }
             catch (Exception e)
             {

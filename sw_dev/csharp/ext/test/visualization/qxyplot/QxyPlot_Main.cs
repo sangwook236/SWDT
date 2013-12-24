@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace AI.aforge_net
+namespace visualization.qxyplot
 {
-    class AForge_NET_Main
+    class QxyPlot_Main
     {
         public static void run(string[] args)
         {
-            throw new NotImplementedException();
+            LineSeriesExample.run(args);
+            PieSeriesExample.run(args);
         }
     }
 }

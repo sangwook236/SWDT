@@ -11,7 +11,7 @@ namespace AI
             try
             {
                 Console.WriteLine("AForge.NET library --------------------------------------------------");
-                AForge_NET_Main.run(args);  // not yet implemented.
+                aforge_net.AForge_NET_Main.run(args);  // not yet implemented.
             }
             catch (Exception e)
             {

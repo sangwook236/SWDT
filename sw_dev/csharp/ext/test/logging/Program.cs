@@ -11,7 +11,7 @@ namespace logging
             try
             {
                 Console.WriteLine("log4net library -----------------------------------------------------");
-                log4net_Main.run(args);
+                log4net.log4net_Main.run(args);
             }
             catch (Exception e)
             {

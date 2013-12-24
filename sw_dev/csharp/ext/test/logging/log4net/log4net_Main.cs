@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using log4net;
+using log4net.Config;
 
-namespace logging
+namespace logging.log4net
 {
-    using log4net;
-    using log4net.Config;
-
     class log4net_Main
     {
         public static void run(string[] args) 
@@ -55,11 +54,11 @@ namespace logging
         {
             try
             {
-                log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo("..\\data\\logging\\log4net\\swl_logger_conf.xml"));
+                XmlConfigurator.Configure(new System.IO.FileInfo("..\\data\\logging\\log4net\\swl_logger_conf.xml"));
             }
             catch (Exception e)
             {
-                log4net.Config.BasicConfigurator.Configure();
+                BasicConfigurator.Configure();
 
                 getDefaultLogger().Fatal("logger configuration error: " + e.Message);
             }
@@ -79,7 +78,7 @@ namespace logging
             if (appName.Substring(idx + 1).ToLower().CompareTo("vshost") == 0)
                 appName = appName.Substring(0, idx);
 
-            return string.IsNullOrEmpty(appName) ? log4net.LogManager.GetLogger(typeof(Logger)) : log4net.LogManager.GetLogger(appName + ".Logger");
+            return string.IsNullOrEmpty(appName) ? LogManager.GetLogger(typeof(Logger)) : LogManager.GetLogger(appName + ".Logger");
         }
     }
 }

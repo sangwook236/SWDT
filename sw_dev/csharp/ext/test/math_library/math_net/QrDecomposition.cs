@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace math_library
+namespace math_library.math_net
 {
     using MathNet.Numerics.LinearAlgebra;
 

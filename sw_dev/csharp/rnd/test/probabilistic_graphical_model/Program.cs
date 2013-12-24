@@ -11,7 +11,7 @@ namespace probabilistic_graphical_model
             try
             {
                 Console.WriteLine("Infer.NET library ---------------------------------------------------");
-                Infer_NET_Main.run(args);  // not yet implemented.
+                infer_net.Infer_NET_Main.run(args);  // not yet implemented.
             }
             catch (Exception e)
             {

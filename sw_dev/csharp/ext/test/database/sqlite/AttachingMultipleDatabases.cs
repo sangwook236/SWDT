@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace database
+namespace database.sqlite
 {
     using System.Data.SQLite;
     using System.Data;
