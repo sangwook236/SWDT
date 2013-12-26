@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "state_machine_vc10", "..\te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "visualization_vc10", "..\test\visualization\visualization_vc10.csproj", "{68074EB7-A6A3-4082-81B3-4DA1A8CEDF54}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "serialization_vc10", "..\test\serialization\serialization_vc10.csproj", "{4A257693-3F5B-4592-A815-17270CBC44F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,16 @@ Global
 		{68074EB7-A6A3-4082-81B3-4DA1A8CEDF54}.Release|Mixed Platforms.Build.0 = Release|x86
 		{68074EB7-A6A3-4082-81B3-4DA1A8CEDF54}.Release|x86.ActiveCfg = Release|x86
 		{68074EB7-A6A3-4082-81B3-4DA1A8CEDF54}.Release|x86.Build.0 = Release|x86
+		{4A257693-3F5B-4592-A815-17270CBC44F1}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{4A257693-3F5B-4592-A815-17270CBC44F1}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{4A257693-3F5B-4592-A815-17270CBC44F1}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{4A257693-3F5B-4592-A815-17270CBC44F1}.Debug|x86.ActiveCfg = Debug|x86
+		{4A257693-3F5B-4592-A815-17270CBC44F1}.Debug|x86.Build.0 = Debug|x86
+		{4A257693-3F5B-4592-A815-17270CBC44F1}.Release|Any CPU.ActiveCfg = Release|x86
+		{4A257693-3F5B-4592-A815-17270CBC44F1}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{4A257693-3F5B-4592-A815-17270CBC44F1}.Release|Mixed Platforms.Build.0 = Release|x86
+		{4A257693-3F5B-4592-A815-17270CBC44F1}.Release|x86.ActiveCfg = Release|x86
+		{4A257693-3F5B-4592-A815-17270CBC44F1}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
