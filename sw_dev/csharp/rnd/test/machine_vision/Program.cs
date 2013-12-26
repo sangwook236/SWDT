@@ -11,7 +11,8 @@ namespace machine_vision
         {
             try
             {
-                throw new NotImplementedException();
+                Console.WriteLine("EmguCV library ------------------------------------------------------");
+                emgucv.EmguCV_Main.run(args);  // not yet implemented.
             }
             catch (Exception e)
             {
