@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI_vc10", "..\test\AI\AI_vc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "probabilistic_graphical_model_vc10", "..\test\probabilistic_graphical_model\probabilistic_graphical_model_vc10.csproj", "{E336D887-5BE2-464B-9B05-3C61A7544DE5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "machine_learning_vc10", "..\test\machine_learning\machine_learning_vc10.csproj", "{98C581C7-3A10-412E-B7F9-5596626CA02E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "machine_vision_vc10", "..\test\machine_vision\machine_vision_vc10.csproj", "{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,26 @@ Global
 		{E336D887-5BE2-464B-9B05-3C61A7544DE5}.Release|Mixed Platforms.Build.0 = Release|x86
 		{E336D887-5BE2-464B-9B05-3C61A7544DE5}.Release|x86.ActiveCfg = Release|x86
 		{E336D887-5BE2-464B-9B05-3C61A7544DE5}.Release|x86.Build.0 = Release|x86
+		{98C581C7-3A10-412E-B7F9-5596626CA02E}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{98C581C7-3A10-412E-B7F9-5596626CA02E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{98C581C7-3A10-412E-B7F9-5596626CA02E}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{98C581C7-3A10-412E-B7F9-5596626CA02E}.Debug|x86.ActiveCfg = Debug|x86
+		{98C581C7-3A10-412E-B7F9-5596626CA02E}.Debug|x86.Build.0 = Debug|x86
+		{98C581C7-3A10-412E-B7F9-5596626CA02E}.Release|Any CPU.ActiveCfg = Release|x86
+		{98C581C7-3A10-412E-B7F9-5596626CA02E}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{98C581C7-3A10-412E-B7F9-5596626CA02E}.Release|Mixed Platforms.Build.0 = Release|x86
+		{98C581C7-3A10-412E-B7F9-5596626CA02E}.Release|x86.ActiveCfg = Release|x86
+		{98C581C7-3A10-412E-B7F9-5596626CA02E}.Release|x86.Build.0 = Release|x86
+		{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}.Debug|x86.ActiveCfg = Debug|x86
+		{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}.Debug|x86.Build.0 = Debug|x86
+		{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}.Release|Any CPU.ActiveCfg = Release|x86
+		{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}.Release|Mixed Platforms.Build.0 = Release|x86
+		{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}.Release|x86.ActiveCfg = Release|x86
+		{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
