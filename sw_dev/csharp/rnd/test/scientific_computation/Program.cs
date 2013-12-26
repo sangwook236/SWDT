@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace machine_learning
+namespace scientific_computation
 {
     class Program
     {
@@ -11,8 +11,8 @@ namespace machine_learning
         {
             try
             {
-                Console.WriteLine("numl library --------------------------------------------------------");
-                numl.numl_Main.run(args);  // not yet implemented.
+                Console.WriteLine("accord.NET library --------------------------------------------------");
+                accord_net.Accord_NET_Main.run(args);  // not yet implemented.
             }
             catch (Exception e)
             {
