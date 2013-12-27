@@ -7,7 +7,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
-namespace visualization.qxyplot
+namespace visualization.oxyplot
 {
     class LineSeriesExample
     {
@@ -143,7 +143,7 @@ namespace visualization.qxyplot
 
             //
 #if false
-            String output_filename = "../data/visualization/qxyplot/lineseries_marker_type.png";
+            String output_filename = "../data/visualization/oxyplot/lineseries_marker_type.png";
             using (var stream = File.Create(output_filename))
             {
                 System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(
@@ -157,7 +157,7 @@ namespace visualization.qxyplot
                 );
             }
 #elif true
-            String output_filename = "../data/visualization/qxyplot/lineseries_marker_type.pdf";
+            String output_filename = "../data/visualization/oxyplot/lineseries_marker_type.pdf";
             using (var stream = File.Create(output_filename))
             {
                 PdfExporter.Export(plotModel, stream, 600, 400);

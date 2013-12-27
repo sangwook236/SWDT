@@ -6,7 +6,7 @@ using System.IO;
 using OxyPlot;
 using OxyPlot.Series;
 
-namespace visualization.qxyplot
+namespace visualization.oxyplot
 {
     class PieSeriesExample
     {
@@ -32,7 +32,7 @@ namespace visualization.qxyplot
             plotModel.Series.Add(pieSeries1);
 
             //
-            String output_filename = "../data/visualization/qxyplot/pieseries_world_population.pdf";
+            String output_filename = "../data/visualization/oxyplot/pieseries_world_population.pdf";
             using (var stream = File.Create(output_filename))
             {
                 PdfExporter.Export(plotModel, stream, 600, 400);

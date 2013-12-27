@@ -11,8 +11,8 @@ namespace visualization
         {
             try
             {
-                Console.WriteLine("QxyPlot library -----------------------------------------------------");
-                qxyplot.QxyPlot_Main.run(args);
+                Console.WriteLine("OxyPlot library -----------------------------------------------------");
+                oxyplot.OxyPlot_Main.run(args);
             }
             catch (Exception e)
             {

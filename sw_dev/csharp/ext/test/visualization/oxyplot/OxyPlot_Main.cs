@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace visualization.qxyplot
+namespace visualization.oxyplot
 {
-    class QxyPlot_Main
+    class OxyPlot_Main
     {
         public static void run(string[] args)
         {
