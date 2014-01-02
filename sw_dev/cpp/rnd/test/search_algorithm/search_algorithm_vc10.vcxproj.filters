@@ -31,8 +31,14 @@
     <Filter Include="Source Files\libkdtreepp_lib\kdtree++">
       <UniqueIdentifier>{5e49274d-8e71-4974-b56a-5e880ca0374c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\e2lsh_lib">
-      <UniqueIdentifier>{f79084fb-e5ec-4231-aa60-f027eb8cc4f1}</UniqueIdentifier>
+    <Filter Include="Source Files\lshkit">
+      <UniqueIdentifier>{12f5adcf-d8d8-441c-a324-baf0f9b1f1fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\slash">
+      <UniqueIdentifier>{837edca8-f9af-4fb1-9893-2e539ac32917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\slash_lib">
+      <UniqueIdentifier>{25e281e4-b7af-4316-9ffa-25168277c2fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -57,50 +63,29 @@
     <ClCompile Include="libkdtreepp\libkdtreepp_main.cpp">
       <Filter>Source Files\libkdtreepp</Filter>
     </ClCompile>
-    <ClCompile Include="e2lsh_lib\BucketHashing.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClCompile Include="lshkit\lshkit_fitdata_example.cpp">
+      <Filter>Source Files\lshkit</Filter>
     </ClCompile>
-    <ClCompile Include="e2lsh_lib\compareOutputs.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClCompile Include="lshkit\lshkit_main.cpp">
+      <Filter>Source Files\lshkit</Filter>
     </ClCompile>
-    <ClCompile Include="e2lsh_lib\convertMNIST.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClCompile Include="lshkit\lshkit_scan_example.cpp">
+      <Filter>Source Files\lshkit</Filter>
     </ClCompile>
-    <ClCompile Include="e2lsh_lib\exactNNs.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClCompile Include="slash\slash_main.cpp">
+      <Filter>Source Files\slash</Filter>
     </ClCompile>
-    <ClCompile Include="e2lsh_lib\genDS.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClCompile Include="slash_lib\hash.cc">
+      <Filter>Source Files\slash_lib</Filter>
     </ClCompile>
-    <ClCompile Include="e2lsh_lib\genPlantedDS.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClCompile Include="slash_lib\lsh_test.cc">
+      <Filter>Source Files\slash_lib</Filter>
     </ClCompile>
-    <ClCompile Include="e2lsh_lib\Geometry.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClCompile Include="slash_lib\math.cc">
+      <Filter>Source Files\slash_lib</Filter>
     </ClCompile>
-    <ClCompile Include="e2lsh_lib\GlobalVars.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="e2lsh_lib\LocalitySensitiveHashing.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="e2lsh_lib\LSHMain.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="e2lsh_lib\NearNeighbors.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="e2lsh_lib\Random.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="e2lsh_lib\SelfTuning.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="e2lsh_lib\testFloat.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="e2lsh_lib\Util.cpp">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClCompile Include="slash_lib\util.cc">
+      <Filter>Source Files\slash_lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,35 +113,29 @@
     <ClInclude Include="libkdtreepp_lib\kdtree++\region.hpp">
       <Filter>Source Files\libkdtreepp_lib\kdtree++</Filter>
     </ClInclude>
-    <ClInclude Include="e2lsh_lib\BasicDefinitions.h">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClInclude Include="slash_lib\bitvector64.h">
+      <Filter>Source Files\slash_lib</Filter>
     </ClInclude>
-    <ClInclude Include="e2lsh_lib\BucketHashing.h">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClInclude Include="slash_lib\hash.h">
+      <Filter>Source Files\slash_lib</Filter>
     </ClInclude>
-    <ClInclude Include="e2lsh_lib\Geometry.h">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClInclude Include="slash_lib\lsh.h">
+      <Filter>Source Files\slash_lib</Filter>
     </ClInclude>
-    <ClInclude Include="e2lsh_lib\GlobalVars.h">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClInclude Include="slash_lib\math.h">
+      <Filter>Source Files\slash_lib</Filter>
     </ClInclude>
-    <ClInclude Include="e2lsh_lib\headers.h">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClInclude Include="slash_lib\querycontext.h">
+      <Filter>Source Files\slash_lib</Filter>
     </ClInclude>
-    <ClInclude Include="e2lsh_lib\LocalitySensitiveHashing.h">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClInclude Include="slash_lib\slsh.h">
+      <Filter>Source Files\slash_lib</Filter>
     </ClInclude>
-    <ClInclude Include="e2lsh_lib\NearNeighbors.h">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClInclude Include="slash_lib\types.h">
+      <Filter>Source Files\slash_lib</Filter>
     </ClInclude>
-    <ClInclude Include="e2lsh_lib\Random.h">
-      <Filter>Source Files\e2lsh_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="e2lsh_lib\SelfTuning.h">
-      <Filter>Source Files\e2lsh_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="e2lsh_lib\Util.h">
-      <Filter>Source Files\e2lsh_lib</Filter>
+    <ClInclude Include="slash_lib\util.h">
+      <Filter>Source Files\slash_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
