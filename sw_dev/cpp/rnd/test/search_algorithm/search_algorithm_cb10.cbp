@@ -33,12 +33,53 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-std=gnu++0x" />
+			<Add directory="./libkdtreepp_lib" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="ann" />
+			<Add library="lshkit" />
+			<Add library="gsl" />
+			<Add library="gslcblas" />
+			<Add library="boost_timer" />
+			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="ann/ann_main.cpp" />
+		<Unit filename="kdtree/kdtree_main.cpp" />
+		<Unit filename="kdtree_lib/kdtree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kdtree_lib/kdtree.h" />
+		<Unit filename="libkdtreepp/libkdtreepp_find_within_range_example.cpp" />
+		<Unit filename="libkdtreepp/libkdtreepp_hayne_example.cpp" />
+		<Unit filename="libkdtreepp/libkdtreepp_kdtree_example.cpp" />
+		<Unit filename="libkdtreepp/libkdtreepp_main.cpp" />
+		<Unit filename="libkdtreepp_lib/kdtree++/allocator.hpp" />
+		<Unit filename="libkdtreepp_lib/kdtree++/function.hpp" />
+		<Unit filename="libkdtreepp_lib/kdtree++/iterator.hpp" />
+		<Unit filename="libkdtreepp_lib/kdtree++/kdtree.hpp" />
+		<Unit filename="libkdtreepp_lib/kdtree++/node.hpp" />
+		<Unit filename="libkdtreepp_lib/kdtree++/region.hpp" />
+		<Unit filename="lshkit/lshkit_fitdata_example.cpp" />
+		<Unit filename="lshkit/lshkit_main.cpp" />
+		<Unit filename="lshkit/lshkit_scan_example.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="slash/slash_main.cpp" />
+		<Unit filename="slash_lib/bitvector64.h" />
+		<Unit filename="slash_lib/hash.cc" />
+		<Unit filename="slash_lib/hash.h" />
+		<Unit filename="slash_lib/lsh.h" />
+		<Unit filename="slash_lib/lsh_test.cc">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="slash_lib/math.cc" />
+		<Unit filename="slash_lib/math.h" />
+		<Unit filename="slash_lib/querycontext.h" />
+		<Unit filename="slash_lib/slsh.h" />
+		<Unit filename="slash_lib/types.h" />
+		<Unit filename="slash_lib/util.cc" />
+		<Unit filename="slash_lib/util.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

@@ -69,6 +69,7 @@
 		<Unit filename="player_stage/player_stage_main.cpp" />
 		<Unit filename="player_stage/player_stage_rubbish_collecting_robot.cpp" />
 		<Unit filename="player_stage/player_stage_simple_example.cpp" />
+		<Unit filename="ros/ros_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

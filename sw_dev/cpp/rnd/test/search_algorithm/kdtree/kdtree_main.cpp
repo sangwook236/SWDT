@@ -3,6 +3,7 @@
 #include <boost/timer/timer.hpp>
 #include <iostream>
 #include <ctime>
+#include <cmath>
 #include <cassert>
 
 
@@ -37,7 +38,7 @@ bool example1()
 		boost::timer::cpu_timer timer;
 
 		kdres *set = kd_nearest_range3(kd, 0.0, 0.0, 0.0, 40.0);
-		
+
 		std::cout << "range query returned " << kd_res_size(set) << " items" << std::endl;
 		//const boost::timer::cpu_times elapsed_times(timer.elapsed());
 		//std::cout << "elpased time : " << (elapsed_times.system + elapsed_times.user) << " sec" << std::endl;
@@ -112,7 +113,7 @@ bool example2()
 		dist = std::sqrt(dist_sq(pt, pos, 3));
 
 		// print out the retrieved data.
-		std::cout << "node at (" << pos[0] << ", " << pos[1] << ", " << pos[2] << ") is " << dist << " away and has data = " << *pch << std::endl; 
+		std::cout << "node at (" << pos[0] << ", " << pos[1] << ", " << pos[2] << ") is " << dist << " away and has data = " << *pch << std::endl;
 
 		// go to the next entry.
 		kd_res_next(presults);
