@@ -9,13 +9,21 @@
 
 int main(int argc, char *argv[])
 {
+	int kdtree_main(int argc, char *argv[]);
+	int libkdtreepp_main(int argc, char *argv[]);
 	int ann_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "A Library for Approximate Nearest Neighbor Searching (ANN) ----------" << std::endl;
-		retval = ann_main(argc, argv);
+		std::cout << "kdtree library ------------------------------------------------------" << std::endl;
+		//retval = kdtree_main(argc, argv);
+
+		std::cout << "\nlibkdtree++ library -------------------------------------------------" << std::endl;
+		retval = libkdtreepp_main(argc, argv);
+
+		std::cout << "\nA Library for Approximate Nearest Neighbor Searching (ANN) ----------" << std::endl;
+		//retval = ann_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

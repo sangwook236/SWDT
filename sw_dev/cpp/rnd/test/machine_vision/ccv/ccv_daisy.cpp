@@ -61,8 +61,8 @@ void daisy()
 
 		ccv_daisy(a, &x, 0, param);
 
-		boost::timer::cpu_times const elapsed_times(timer.elapsed());
-		std::cout << "elpased time : " << (elapsed_times.system + elapsed_times.user) << std::endl;
+		const boost::timer::cpu_times elapsed_times(timer.elapsed());
+		std::cout << "elpased time : " << (elapsed_times.system + elapsed_times.user) << " sec" << std::endl;
 	}
 
 	std::cout << "end processing ..." << std::endl;

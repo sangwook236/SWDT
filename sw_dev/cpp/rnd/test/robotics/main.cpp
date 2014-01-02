@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 {
 	int mrpt_main(int argc, char *argv[]);
 	int player_stage_main(int argc, char *argv[]);
+	int ros_main(int argc, char *argv[]);
 
 	int ompl_main(int argc, char *argv[]);
 
@@ -24,9 +25,14 @@ int main(int argc, char *argv[])
 		//retval = mrpt_main(argc, argv);  // compile-time error.
 		std::cout << "\nPlayer/Stage library ------------------------------------------------" << std::endl;
 		//retval = player_stage_main(argc, argv);
+		std::cout << "\nThe Robot Operating System (ROS) library ----------------------------" << std::endl;
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+		// [ref] http://wiki.ros.org/ko/cturtle/Installation/Windows
+		//retval = ros_main(argc, argv);  // not yet implemented.
+#endif
 
 		std::cout << "\nOpen Motion Planning Library (OMPL) ---------------------------------" << std::endl;
-		retval = ompl_main(argc, argv);  // not yet implemented.
+		retval = ompl_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

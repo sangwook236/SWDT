@@ -399,26 +399,38 @@ bool train_SVM(SVMlight *svm, const std::string &featuresFile, const std::string
 
 bool test_trained_SVM_model(cv::HOGDescriptor &hog)
 {
-	std::cout << "Testing custom detection using camera" << std::endl;
-
-	const double hitThreshold = 0.0;  // tolerance.
-	const cv::Size winStride(cv::Size(8, 8));
-	const cv::Size padding(cv::Size(32, 32));
-	const double scale = 1.05;
-	const int groupThreshold = 2;
-
-	cv::VideoCapture cap(0);  // open the default camera.
-	if (!cap.isOpened())  // check if we succeeded.
+#if 0
+	const int camId = -1;
+	cv::VideoCapture capture(camId);
+	if (!capture.isOpened())
 	{
-		std::cout << "Error opening camera!" << std::endl;
+		std::cout << "Vision sensor not found: " << camId << std::endl;
 		return false;
 	}
-
-	cv::Mat image;
-	while (27 != (cv::waitKey(10) & 255))
+#else
+	const std::string video_filename("./data/feature_analysis/hog/TownCentreXVID.avi");
+	cv::VideoCapture capture(video_filename);
+	if (!capture.isOpened())
 	{
-		cap >> image;  // get a new frame from camera.
-		//cv::cvtColor(image, image, CV_BGR2GRAY);  // If you want to work on grayscale images.
+		std::cout << "File not found: " << video_filename << std::endl;
+		return false;
+	}
+#endif
+
+	const double hitThreshold = 0.0;  // Threshold for the distance between features and SVM classifying plane.
+	const cv::Size winStride(cv::Size(16, 16));  // Window stride. It must be a multiple of block stride.
+	const cv::Size padding(cv::Size(0, 0));  // Mock parameter to keep the CPU interface compatibility. It must be (0,0).
+	const double scale = 1.03;  // Coefficient of the detection window increase.
+	const int groupThreshold = 2;  // Coefficient to regulate the similarity threshold. When detected, some objects can be covered by many rectangles. 0 means not to perform grouping.
+
+	const double resize_scale = 0.25;
+	cv::Mat frame, image;
+	while (27 != (cv::waitKey(0) & 255))
+	{
+		capture >> frame;
+
+		//cv::cvtColor(frame, image, CV_BGR2GRAY);  // If you want to work on grayscale images.
+		cv::resize(frame, image, cv::Size(), resize_scale, resize_scale, cv::INTER_LINEAR);
 
 		std::vector<cv::Rect> found;
 		hog.detectMultiScale(image, found, hitThreshold, winStride, padding, scale, groupThreshold);

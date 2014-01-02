@@ -22,6 +22,9 @@
     <Filter Include="Source Files\ompl">
       <UniqueIdentifier>{6c4884ca-76c2-4f93-b1cf-b278fe392c9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ros">
+      <UniqueIdentifier>{dc98f191-04c6-458e-89a8-568ac6bb9bcd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -83,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="ompl\ompl_rigid_body_planning_example.cpp">
       <Filter>Source Files\ompl</Filter>
+    </ClCompile>
+    <ClCompile Include="ros\ros_main.cpp">
+      <Filter>Source Files\ros</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
