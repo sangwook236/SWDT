@@ -37,11 +37,11 @@ void kmeans()
 
 	if (true)
 	{
-		// initialization
+		// initialization.
 #if 1
-		vl_kmeans_seed_centers_with_rand_data(kmeans, (void const *)data, data_dim, num_data, num_clusters);
+		vl_kmeans_init_centers_with_rand_data(kmeans, (void const *)data, data_dim, num_data, num_clusters);
 #elif 0
-		vl_kmeans_seed_centers_plus_plus(kmeans, (void const *)data, data_dim, num_data, num_clusters);
+		vl_kmeans_init_centers_plus_plus(kmeans, (void const *)data, data_dim, num_data, num_clusters);
 #else
 		{
 			float init_centers[data_dim * num_clusters] = { 0.0f, };
@@ -51,20 +51,20 @@ void kmeans()
 		}
 #endif
 
-		// clustering
+		// clustering.
 		const double energy = vl_kmeans_refine_centers(kmeans, data, num_data);
 	}
 	else
 	{
-		const VlKMeansAlgorithm algorithm = VlKMeansLloyd;  // VlKMeansLloyd, VlKMeansElkan, VlKMeansANN
-		const VlKMeansInitialization initialization = VlKMeansRandomSelection;  // VlKMeansRandomSelection, VlKMeansPlusPlus
+		const VlKMeansAlgorithm algorithm = VlKMeansLloyd;  // VlKMeansLloyd, VlKMeansElkan, VlKMeansANN.
+		const VlKMeansInitialization initialization = VlKMeansRandomSelection;  // VlKMeansRandomSelection, VlKMeansPlusPlus.
 		const vl_size num_repetitions = 100;
 
 		vl_kmeans_set_algorithm(kmeans, VlKMeansLloyd);
 		vl_kmeans_set_initialization(kmeans, VlKMeansRandomSelection);
 		vl_kmeans_set_num_repetitions(kmeans, num_repetitions);
 
-		// clustering
+		// clustering.
 		const double energy = vl_kmeans_cluster(kmeans, (void const *)data, data_dim, num_data, num_clusters);
 	}
 
@@ -128,14 +128,14 @@ void ikm()
 	std::cout << "start processing ..." << std::endl;
 
 	const vl_size num_clusters = 3;
-	const VlIKMAlgorithms algorithm = VL_IKM_LLOYD;  // VL_IKM_LLOYD, VL_IKM_ELKAN
+	const VlIKMAlgorithms algorithm = VL_IKM_LLOYD;  // VL_IKM_LLOYD, VL_IKM_ELKAN.
 	const vl_size num_max_iterations = 100;
 
 	VlIKMFilt *ikm = vl_ikm_new(algorithm);
 
 	vl_ikm_set_max_niters(ikm, num_max_iterations);
 
-	// initialization
+	// initialization.
 #if 1
 	vl_ikm_init_rand(ikm, data_dim, num_clusters);
 #elif 0
@@ -147,7 +147,7 @@ void ikm()
 	vl_ikm_init(ikm, init_centers, data_dim, num_clusters);
 #endif
 
-	// training
+	// training.
 	if (-1 != vl_ikm_train(ikm, data, num_data))
 	{
 		const vl_ikm_acc *centers = vl_ikm_get_centers(ikm);
@@ -178,7 +178,7 @@ void ikm()
 			}
 		}
 
-		// testing
+		// testing.
 		{
 			vl_uint8 test_sample[data_dim] = { 0, };
 			for (vl_size i = 0; i < data_dim; ++i)
@@ -214,7 +214,7 @@ void hikm()
 	std::cout << "start processing ..." << std::endl;
 
 	const VlIKMAlgorithms algorithm = VL_IKM_LLOYD;
-	const vl_size num_clusters = 3;  // number of clusters per node
+	const vl_size num_clusters = 3;  // number of clusters per node.
 	const vl_size tree_depth = 5;
 	const vl_size num_max_iterations = 100;
 
@@ -222,20 +222,20 @@ void hikm()
 
 	vl_hikm_set_max_niters(hikm, num_max_iterations);
 
-	// initilization
+	// initilization.
 	vl_hikm_init(hikm, data_dim, num_clusters, tree_depth);
 
-	// training
+	// training.
 	vl_hikm_train(hikm, data, num_data);
 	{
-		//const int ndims = vl_hikm_get_ndims(hikm);  // dim. of data
-		//const int K = vl_hikm_get_K(hikm);  // num. of clusters
-		//const int depth = vl_hikm_get_depth(hikm);  // tree depth
+		//const int ndims = vl_hikm_get_ndims(hikm);  // dim. of data.
+		//const int K = vl_hikm_get_K(hikm);  // num. of clusters.
+		//const int depth = vl_hikm_get_depth(hikm);  // tree depth.
 		//std::cout << "ndims: " << ndims << ", K: " << K << ", depth: " << depth << std::endl;
 
 		const VlHIKMNode *root = vl_hikm_get_root(hikm);
 
-		// TODO [implement] >> visualize the tree
+		// TODO [implement] >> visualize the tree.
 
 		//
 		{

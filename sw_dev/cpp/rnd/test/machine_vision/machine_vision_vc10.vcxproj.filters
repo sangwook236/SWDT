@@ -411,6 +411,21 @@
     <ClCompile Include="opencv\opencv_distance_measure.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_lbp.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_fisher_vector.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_vlad.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_liop.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_gmm.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

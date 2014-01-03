@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "OpenCV library ------------------------------------------------------" << std::endl;
-		retval = opencv_main(argc, argv);
+		//retval = opencv_main(argc, argv);
 
 		std::cout << "\nVXL (the Vision-something-Libraries) library ------------------------" << std::endl;
 		//	-. pictorial structures matching.
@@ -39,12 +39,18 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nVision Lab Features Library (VLFeat) --------------------------------" << std::endl;
 		//	-. feature analysis.
-		//		Covariant detectors, HOG, SIFT, DSIFT, MSER.
+		//		SIFT, DSIFT, MSER, HOG, LBP.
+		//		Covariant detectors.
+		//		Local Intensity Order Pattern (LIOP).
+		//		Bag of Visual Words (BoVW).
+		//		Vector of Locally Aggregated Descriptors (VLAD) encoding, Fisher Vector (FV) encoding.
 		//	-. clustering.
-		//		k-means, IKM, HIKM, AIB.
+		//		k-means, GMM, IKM, HIKM, AIB.
 		//	-. segmentation.
 		//		Quick shift, SLIC.
-		//retval = vlfeat_main(argc, argv);
+		//	-. learning algorithm.
+		//		SVM.
+		retval = vlfeat_main(argc, argv);
 
 		std::cout << "\nC-based/Cached/Core Computer Vision (CCV) library -------------------" << std::endl;
 		//	-. feature analysis.

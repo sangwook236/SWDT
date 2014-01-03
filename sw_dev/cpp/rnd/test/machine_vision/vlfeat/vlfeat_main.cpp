@@ -17,9 +17,14 @@ void sift();  // scale invariant feature transform (SIFT).
 void dense_sift();
 void mser();  // maximally stable extremal regions (MSER).
 void hog();  // histogram of oriented gradients (HOG).
+void lbp();  // local binary patterns (LBP).
 void covariant_feature_detectors();
+void fishre_vector();  // Fisher vector (FV) encoding.
+void vlad();  // vector of locally aggregated descriptors (VLAD) encoding.
+void liop();  // local intensity order pattern (LIOP) descriptor.
 
 void kmeans();  // k-means.
+void gmm();  // Gaussian mixture models (GMM).
 void ikm();  // integer K-means (IKM).
 void hikm();  // hierarchical Integer K-means (HIKM).
 void aib();  // agglomerative information bottleneck (AIB).
@@ -49,29 +54,35 @@ int vlfeat_main(int argc, char *argv[])
 		//	scale Invariant feature transform (SIFT).
 		//	dense scale invariant feature transform (DSIFT).
 		//	maximally stable extremal regions (MSER).
+		//	histogram of oriented gradients (HOG).
+		//	local binary patterns (LBP).
 		//	covariant feature detectors.
 		//	Gaussian scale space (GSS).
-		//	histogram of oriented gradients (HOG).
-		//	Fisher vector encoding (FV).
+		//	Fisher vector (FV) encoding.
 		//	vector of locally aggregated descriptors (VLAD) encoding.
 		//	local intensity order pattern (LIOP) descriptor.
 		{
 			//my_vlfeat::sift();
 			//my_vlfeat::dense_sift();  // not yet implemented.
 			//my_vlfeat::mser();
-			my_vlfeat::hog();
+			//my_vlfeat::hog();
+			//my_vlfeat::lbp();  // not yet implemented.
 			//my_vlfeat::covariant_feature_detectors();  // not yet implemented.
+			//my_vlfeat::fishre_vector();  // [ref] gmm().
+			//my_vlfeat::vlad();  // [ref] gmm().
+			//my_vlfeat::liop();
 		}
 
 		// clustering -----------------------------------------------
 		//	k-means clustering.
+		//	Gaussian mixture models (GMM).
 		//	integer k-means (IKM).
 		//	hierarchical integer k-means (HIKM).
-		//	Gaussian mixture models (GMM).
 		//	agglomerative information bottleneck (AIB).
 		//	kd-trees and forests.
 		{
 			//my_vlfeat::kmeans();
+			my_vlfeat::gmm();
 			//my_vlfeat::ikm();
 			//my_vlfeat::hikm();
 			//my_vlfeat::aib();
