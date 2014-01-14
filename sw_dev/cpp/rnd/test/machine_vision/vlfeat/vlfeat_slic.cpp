@@ -9,44 +9,6 @@
 
 namespace {
 namespace local {
-	
-bool read_pgm(const std::string &name, vl_uint8 *& data, VlPgmImage &pim, const bool verbose)
-{
-	FILE *in = fopen(name.c_str(), "rb");
-	if (!in)
-	{
-		std::cerr << "could not open '" << name.c_str() << "' for reading." << std::endl;
-		return false;
-	}
-	// read source image header
-	vl_bool err = vl_pgm_extract_head(in, &pim);
-	if (err)
-	{
-		std::cerr << "PGM header corrputed." << std::endl;
-		return false;
-	}
-
-	if (verbose)
-		std::cout << "SLIC:   image is " << pim. width << " by " << pim. height << " pixels" << std::endl;
-
-	// allocate buffer
-	data = new vl_uint8 [vl_pgm_get_npixels(&pim) * vl_pgm_get_bpp(&pim)];
-	if (!data)
-	{
-		std::cerr << "could not allocate enough memory." << std::endl;
-		return false;
-	}
-
-	// read PGM
-	err = vl_pgm_extract_data(in, &pim, data);
-	if (err)
-	{
-		std::cerr << "PGM body corrputed." << std::endl;
-		return false;
-	}
-
-	return true;
-}
 
 }  // namespace local
 }  // unnamed namespace
@@ -57,16 +19,16 @@ namespace my_vlfeat {
 // superpixel extraction (segmentation) method based on a local version of k-means
 void slic()
 {
-    // read image data
+    // read image img_uint8
 #if 0
-	const std::string input_filename = "./data/machine_vision/vlfeat/box.pgm";
+	const std::string input_filename = "./img_uint8/machine_vision/vlfeat/box.pgm";
 	const bool verbose = true;
 
-	vl_uint8 *data = NULL;
+	vl_uint8 *img_uint8 = NULL;
 	VlPgmImage pim;
-	if (!local::read_pgm(input_filename, data, pim, verbose))
+	if (vl_pgm_read_new(input_filename.c_str(), &pim, &img_uint8))
 	{
-		std::cerr << "file not found: " << input_filename << std::endl;
+		std::cerr << "fail to load image, " << input_filename << std::endl;
 		return;
 	}
 
@@ -77,16 +39,16 @@ void slic()
 
 	float *image = new float [img_width * img_height];
 	for (vl_size i = 0; i < img_width * img_height; ++i)
-		image[i] = data[i] / 255.0;
+		image[i] = img_uint8[i] / 255.0;
 
-	if (data)
+	if (img_uint8)
 	{
-		delete [] data;
-		data = NULL;
+		delete [] img_uint8;
+		img_uint8 = NULL;
 	}
 #elif 1
-	const std::string input_filename = "./data/machine_vision/vlfeat/slic_image.jpg";
-	//const std::string input_filename = "./data/machine_vision/opencv/fruits.jpg";
+	const std::string input_filename = "./img_uint8/machine_vision/vlfeat/slic_image.jpg";
+	//const std::string input_filename = "./img_uint8/machine_vision/opencv/fruits.jpg";
 
 	const cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_COLOR);
 	//const cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_GRAYSCALE);

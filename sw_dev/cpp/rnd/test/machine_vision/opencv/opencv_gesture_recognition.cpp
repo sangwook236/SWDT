@@ -13,6 +13,7 @@
 
 namespace my_opencv {
 
+// [ref] ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp.
 void draw_histogram_1D(const cv::MatND &hist, const int binCount, const double maxVal, const int binWidth, const int maxHeight, cv::Mat &histImg);
 void normalize_histogram(cv::MatND &hist, const double factor);
 

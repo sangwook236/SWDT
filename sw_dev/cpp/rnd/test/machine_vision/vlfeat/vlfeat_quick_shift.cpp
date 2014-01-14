@@ -11,44 +11,6 @@
 
 namespace {
 namespace local {
-	
-bool read_pgm(const std::string &name, vl_uint8 *& data, VlPgmImage &pim, const bool verbose)
-{
-	FILE *in = fopen(name.c_str(), "rb");
-	if (!in)
-	{
-		std::cerr << "could not open '" << name.c_str() << "' for reading." << std::endl;
-		return false;
-	}
-	// read source image header
-	vl_bool err = vl_pgm_extract_head(in, &pim);
-	if (err)
-	{
-		std::cerr << "PGM header corrputed." << std::endl;
-		return false;
-	}
-
-	if (verbose)
-		std::cout << "SLIC:   image is " << pim. width << " by " << pim. height << " pixels" << std::endl;
-
-	// allocate buffer
-	data = new vl_uint8 [vl_pgm_get_npixels(&pim) * vl_pgm_get_bpp(&pim)];
-	if (!data)
-	{
-		std::cerr << "could not allocate enough memory." << std::endl;
-		return false;
-	}
-
-	// read PGM
-	err = vl_pgm_extract_data(in, &pim, data);
-	if (err)
-	{
-		std::cerr << "PGM body corrputed." << std::endl;
-		return false;
-	}
-
-	return true;
-}
 
 }  // namespace local
 }  // unnamed namespace

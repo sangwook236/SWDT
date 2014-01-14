@@ -1,11 +1,10 @@
-#define VL_SIFT_DRIVER_VERSION 0.1
+//#define VL_SIFT_DRIVER_VERSION 0.1
 
 #include "generic-driver.h"
 
-#include <vl/generic.h>
+#include <vl/sift.h>
 #include <vl/stringop.h>
 #include <vl/pgm.h>
-#include <vl/sift.h>
 #include <vl/getopt_long.h>
 
 #include <iostream>
@@ -14,67 +13,6 @@
 
 namespace {
 namespace local {
-
-bool read_pgm(const std::string &name, vl_sift_pix *&fdata, VlPgmImage &pim, const bool verbose)
-{
-	// open input file
-	FILE *in = fopen(name.c_str(), "rb");
-	if (!in)
-	{
-		std::cerr << "file not found" << std::endl;
-		return false;
-	}
-
-	// read data
-
-	// read PGM header
-	vl_bool err = vl_pgm_extract_head(in, &pim);
-	if (err)
-	{
-		switch (vl_get_last_error())
-		{
-		case  VL_ERR_PGM_IO:
-			std::cerr << "cannot read from " << name << std::endl;
-			return false;
-		case VL_ERR_PGM_INV_HEAD:
-			std::cerr << name << " contains a malformed PGM header." << std::endl;
-			return false;
-		}
-	}
-
-	if (verbose)
-		std::cout << "sift: image is " << pim.width << " by " << pim.height << " pixels" << std::endl;
-
-	// allocate buffer
-	vl_uint8 *data  = new vl_uint8 [vl_pgm_get_npixels(&pim) * vl_pgm_get_bpp(&pim)];
-	fdata = new vl_sift_pix [vl_pgm_get_npixels(&pim) * vl_pgm_get_bpp(&pim)];
-	if (!data || !fdata)
-	{
-		std::cerr << "could not allocate enough memory." << std::endl;
-		return false;
-	}
-
-	// read PGM body
-	err = vl_pgm_extract_data(in, &pim, data) ;
-	if (err)
-	{
-		std::cerr << "PGM body malformed." << std::endl;
-		return false;
-	}
-
-	// convert data type
-	for (unsigned q = 0 ; q < unsigned(pim.width * pim.height) ; ++q)
-	{
-		fdata[q] = data[q];
-	}
-
-	fclose(in);
-
-	delete [] data;
-	data = NULL;
-
-	return true;
-}
 
 int save_gss(VlSiftFilt *filt, VlFileMeta *fm, const char *basename, bool verbose)
 {
@@ -221,10 +159,13 @@ void sift()
 		}
     }
 
-	vl_sift_pix *fdata = NULL;
+	vl_sift_pix *img_float = NULL;
 	VlPgmImage pim;
-	if (!local::read_pgm(input_filename, fdata, pim, verbose))
+	if (vl_pgm_read_new_f(input_filename.c_str(), &pim, &img_float))
+	{
+		std::cerr << "fail to load image, " << input_filename << std::endl;
 		return;
+	}
 
 	// optionally source keypoints
 	if (ifr.active)
@@ -327,7 +268,7 @@ void sift()
 		if (first)
 		{
 			first = 0;
-			err = vl_sift_process_first_octave(filt, fdata);
+			err = vl_sift_process_first_octave(filt, img_float);
 		}
 		else
 		{
@@ -480,10 +421,10 @@ void sift()
     }
 
 	// release image data
-    if (fdata)
+    if (img_float)
 	{
-		delete [] fdata;
-		fdata = NULL;
+		delete [] img_float;
+		img_float = NULL;
 	}
 
     vl_file_meta_close(&out);

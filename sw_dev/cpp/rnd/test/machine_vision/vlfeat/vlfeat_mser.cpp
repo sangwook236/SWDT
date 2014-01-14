@@ -1,9 +1,8 @@
 #include "generic-driver.h"
 
-#include <vl/generic.h>
+#include <vl/mser.h>
 #include <vl/stringop.h>
 #include <vl/pgm.h>
-#include <vl/mser.h>
 #include <vl/getopt_long.h>
 
 #include <string>
@@ -15,7 +14,7 @@ namespace local {
 
 bool werr(const vl_bool err, const std::string &name)
 {
-	if (err == VL_ERR_OVERFLOW)
+	if (VL_ERR_OVERFLOW == err)
 	{
 		std::cerr << "output file name too long." << std::endl;
 		return false;
@@ -29,44 +28,6 @@ bool werr(const vl_bool err, const std::string &name)
 	return true;
 }
 
-bool read_pgm(const std::string &name, vl_uint8 *&data, VlPgmImage &pim, const bool verbose)
-{
-	FILE *in = fopen(name.c_str(), "rb");
-	if (!in)
-	{
-		std::cerr << "could not open '" << name.c_str() << "' for reading." << std::endl;
-		return false;
-	}
-	// read source image header
-	vl_bool err = vl_pgm_extract_head(in, &pim);
-	if (err)
-	{
-		std::cerr << "PGM header corrputed." << std::endl;
-		return false;
-	}
-
-	if (verbose)
-		std::cout << "mser:   image is " << pim. width << " by " << pim. height << " pixels" << std::endl;
-
-	// allocate buffer
-	data = new vl_uint8 [vl_pgm_get_npixels(&pim) * vl_pgm_get_bpp(&pim)];
-	if (!data)
-	{
-		std::cerr << "could not allocate enough memory." << std::endl;
-		return false;
-	}
-
-	// read PGM
-	err = vl_pgm_extract_data(in, &pim, data);
-	if (err)
-	{
-		std::cerr << "PGM body corrputed." << std::endl;
-		return false;
-	}
-
-	return true;
-}
-
 }  // namespace local
 }  // unnamed namespace
 
@@ -74,9 +35,9 @@ namespace my_vlfeat {
 
 void mser()
 {
-	const std::string input_filename = "./data/machine_vision/vlfeat/box.pgm";
+	const std::string input_filename = "./img_uint8/machine_vision/vlfeat/box.pgm";
 
-	// algorithm parameters
+	// algorithm parameters.
 	double delta = -1;
 	double max_area = -1;
 	double min_area = -1;
@@ -93,7 +54,7 @@ void mser()
 	VlFileMeta piv = { 0, "%.mser",  VL_PROT_ASCII, "", 0 };
 	VlFileMeta met = { 0, "%.meta",  VL_PROT_ASCII, "", 0 };
 
-	// get basenmae from filename
+	// get basenmae from filename.
     char basename[1024];
 	vl_size q = vl_string_basename(basename, sizeof(basename), input_filename.c_str(), 1) ;
 	err = (q >= sizeof(basename));
@@ -110,7 +71,7 @@ void mser()
 		std::cout << "mser:    basename is " << basename << std::endl;
 	}
 
-	// open output files
+	// open output files.
 	err = vl_file_meta_open(&piv, basename, "w");  if (!local::werr(err, piv.name)) return;
 	err = vl_file_meta_open(&frm, basename, "w");  if (!local::werr(err, frm.name)) return;
 	err = vl_file_meta_open(&met, basename, "w");  if (!local::werr(err, met.name)) return;
@@ -122,13 +83,16 @@ void mser()
 		if (met.active) std::cout << "mser:  writing meta   to " << met.name << std::endl;
 	}
 
-    // read image data
-    vl_uint8 *data = NULL;
+    // read image img_uint8.
+    vl_uint8 *img_uint8 = NULL;
 	VlPgmImage pim;
-	if (!local::read_pgm(input_filename, data, pim, verbose))
+	if (vl_pgm_read_new(input_filename.c_str(), &pim, &img_uint8))
+	{
+		std::cerr << "fail to load image, " << input_filename << std::endl;
 		return;
+	}
 
-	// process data
+	// process img_uint8.
     enum { ndims = 2 };
 	int dims[ndims] = { pim.width, pim.height };
 
@@ -163,9 +127,9 @@ void mser()
 
 	if (dark_on_bright)
 	{
-		vl_mser_process(filt, (vl_mser_pix *)data);
+		vl_mser_process(filt, (vl_mser_pix *)img_uint8);
 
-		// save result
+		// save result.
 		int nregions = vl_mser_get_regions_num(filt);
 		vl_uint const *regions = vl_mser_get_regions(filt);
 
@@ -179,9 +143,9 @@ void mser()
 		{
 			vl_mser_ell_fit(filt) ;
 
-			int nframes = vl_mser_get_ell_num(filt);
-			int dof = vl_mser_get_ell_dof(filt);
-			float const *frames = vl_mser_get_ell(filt);
+			const int nframes = vl_mser_get_ell_num(filt);
+			const int dof = vl_mser_get_ell_dof(filt);
+			const float const *frames = vl_mser_get_ell(filt);
 			for (int i = 0; i < nframes; ++i)
 			{
 				for (int j = 0; j < dof; ++j)
@@ -193,7 +157,7 @@ void mser()
 
 	if (bright_on_dark)
 	{
-		// allocate buffer
+		// allocate buffer.
 		vl_uint8 *datainv = new vl_uint8 [vl_pgm_get_npixels(&pim) * vl_pgm_get_bpp(&pim)];
 		if (!datainv)
 		{
@@ -202,11 +166,11 @@ void mser()
 		}
 
 		for (signed i = 0; i < (signed)vl_pgm_get_npixels(&pim); ++i)
-			datainv[i] = ~data[i]; //255 - data[i]
+			datainv[i] = ~img_uint8[i]; //255 - img_uint8[i]
 
 		vl_mser_process(filtinv, (vl_mser_pix *)datainv);
 
-		// save result
+		// save result.
 		int nregionsinv = vl_mser_get_regions_num(filtinv);
 		vl_uint const *regionsinv = vl_mser_get_regions(filtinv);
 
@@ -220,9 +184,9 @@ void mser()
 		{
 			vl_mser_ell_fit(filtinv);
 
-			int nframesinv = vl_mser_get_ell_num(filtinv);
-			int dof = vl_mser_get_ell_dof(filtinv);
-			float const *framesinv = vl_mser_get_ell(filtinv);
+			const int nframesinv = vl_mser_get_ell_num(filtinv);
+			const int dof = vl_mser_get_ell_dof(filtinv);
+			const float const *framesinv = vl_mser_get_ell(filtinv);
 			for (int i = 0; i < nframesinv; ++i)
 			{
 				for (int j = 0; j < dof; ++j)
@@ -238,7 +202,7 @@ void mser()
 		}
 	}
 
-	// release filter
+	// release filter.
     if (filt)
 	{
       vl_mser_delete(filt);
@@ -251,11 +215,11 @@ void mser()
       filtinv = NULL;
     }
 
-	// release image data
-	if (data)
+	// release image img_uint8.
+	if (img_uint8)
 	{
-		delete [] data;
-		data = NULL;
+		delete [] img_uint8;
+		img_uint8 = NULL;
 	}
 
     vl_file_meta_close(&frm);

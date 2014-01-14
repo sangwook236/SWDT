@@ -50,9 +50,23 @@ int vlfeat_main(int argc, char *argv[])
 			std::cout << "GPU not found ..." << std::endl;
 #endif
 
+		// image operation ------------------------------------------
+		//	image convolution.
+		//	integral image.
+		//	distance transform (DT).
+		//	image smoothing.
+		//	image gradient.
+		//	affine warping.
+		//	thin-plate spline warping.
+		//	inverse thin-plate spline warping.
+
+		// machine learning -----------------------------------------
+		//	support vector machine (SVM).
+
 		// feature analysis -----------------------------------------
 		//	scale Invariant feature transform (SIFT).
 		//	dense scale invariant feature transform (DSIFT).
+		//	pyramid histogram of visual words (PHOW).
 		//	maximally stable extremal regions (MSER).
 		//	histogram of oriented gradients (HOG).
 		//	local binary patterns (LBP).
@@ -66,7 +80,7 @@ int vlfeat_main(int argc, char *argv[])
 			//my_vlfeat::dense_sift();  // not yet implemented.
 			//my_vlfeat::mser();
 			//my_vlfeat::hog();
-			//my_vlfeat::lbp();  // not yet implemented.
+			my_vlfeat::lbp();
 			//my_vlfeat::covariant_feature_detectors();  // not yet implemented.
 			//my_vlfeat::fishre_vector();  // [ref] gmm().
 			//my_vlfeat::vlad();  // [ref] gmm().
@@ -79,10 +93,10 @@ int vlfeat_main(int argc, char *argv[])
 		//	integer k-means (IKM).
 		//	hierarchical integer k-means (HIKM).
 		//	agglomerative information bottleneck (AIB).
-		//	kd-trees and forests.
+		//	forests of kd-trees.
 		{
 			//my_vlfeat::kmeans();
-			my_vlfeat::gmm();
+			//my_vlfeat::gmm();
 			//my_vlfeat::ikm();
 			//my_vlfeat::hikm();
 			//my_vlfeat::aib();

@@ -513,7 +513,6 @@ void draw_histogram_2D(const cv::MatND &hist, const int horzBinCount, const int 
 	for (int v = 0; v < vertBinCount; ++v)
 		for (int h = 0; h < horzBinCount; ++h, ++binPtr)
 		{
-			const int intensity();
 			cv::rectangle(
 				histImg,
 				cv::Point(h*horzBinSize, v*vertBinSize), cv::Point((h+1)*horzBinSize - 1, (v+1)*vertBinSize - 1),

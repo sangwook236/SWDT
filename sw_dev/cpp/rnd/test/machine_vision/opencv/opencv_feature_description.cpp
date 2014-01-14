@@ -13,7 +13,6 @@
 namespace {
 namespace local {
 
-
 void simpleMatching(const cv::DescriptorMatcher &descriptorMatcher, const cv::Mat &descriptors1, const cv::Mat &descriptors2, std::vector<cv::DMatch> &matches12)
 {
 	descriptorMatcher.match(descriptors1, descriptors2, matches12);

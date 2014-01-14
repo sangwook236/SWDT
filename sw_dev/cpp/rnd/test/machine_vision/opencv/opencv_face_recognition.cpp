@@ -94,7 +94,7 @@ void simple_example()
 	}
 }
 
-// ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_demo.cpp
+// ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_demo.cpp.
 void facerec_demo()
 {
     const std::string csv_filename("./data/machine_vision/opencv/???.csv");
@@ -192,7 +192,7 @@ void facerec_demo()
     }
 }
 
-// ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_eigenfaces.cpp
+// ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_eigenfaces.cpp.
 void eigenfaces_example()
 {
 	const std::string csv_filename("./data/machine_vision/opencv/???.csv");
@@ -304,7 +304,7 @@ void eigenfaces_example()
 	}
 }
 
-// ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_fisherfaces.cpp
+// ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_fisherfaces.cpp.
 void fisherfaces_example()
 {
 	const std::string csv_filename("./data/machine_vision/opencv/???.csv");
@@ -417,7 +417,7 @@ void fisherfaces_example()
 	}
 }
 
-// ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_lbph.cpp
+// ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_lbph.cpp.
 void lbph_example()
 {
 	const std::string csv_filename("./data/machine_vision/opencv/???.csv");
@@ -517,8 +517,11 @@ void face_recognition()
 	local::simple_example();  // to be tested/verified.
 
 	local::facerec_demo();  // to be tested/verified.
+	// Eigenface.
 	local::eigenfaces_example();  // to be tested/verified.
+	// Fisherface.
 	local::fisherfaces_example();  // to be tested/verified.
+	// Local binary patterns histograms (LBPH).
 	local::lbph_example();  // to be tested/verified.
 
     cv::waitKey(0);

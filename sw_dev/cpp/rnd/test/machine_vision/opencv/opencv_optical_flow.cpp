@@ -16,6 +16,14 @@
 #define __USE_ROI 1
 
 
+namespace my_opencv {
+
+// [ref] ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp.
+void draw_histogram_1D(const cv::MatND &hist, const int binCount, const double maxVal, const int binWidth, const int maxHeight, cv::Mat &histImg);
+void normalize_histogram(cv::MatND &hist, const double factor);
+
+}  // namespace my_opencv
+
 namespace {
 namespace local {
 
@@ -28,39 +36,6 @@ namespace local {
 const std::string img1_filename = "./data/machine_vision/opencv/sample3_01.jpg";
 const std::string img2_filename = "./data/machine_vision/opencv/sample3_02.jpg";
 
-// copy from histogram.cpp
-void draw_histogram_1D(const cv::MatND &hist, const int binCount, const double maxVal, const int binWidth, const int maxHeight, cv::Mat &histImg)
-{
-	for (int i = 0; i < binCount; ++i)
-	{
-		const float &binVal = hist.at<float>(i);
-		const int &binHeight = cvRound(binVal * maxHeight / maxVal);
-		cv::rectangle(
-			histImg,
-			cv::Point(i*binWidth, maxHeight), cv::Point((i+1)*binWidth - 1, maxHeight - binHeight),
-			binVal > maxVal ? CV_RGB(255, 0, 0) : CV_RGB(255, 255, 255),
-			CV_FILLED
-		);
-	}
-}
-
-// copy from histogram.cpp
-void normalize_histogram(cv::MatND &hist, const double factor)
-{
-#if 0
-	// FIXME [modify] >>
-	cvNormalizeHist(&(CvHistogram)hist, factor);
-#else
-	const cv::Scalar sums(cv::sum(hist));
-
-	const double eps = 1.0e-20;
-	if (std::fabs(sums[0]) < eps) return;
-
-	cv::Mat tmp(hist);
-	tmp.convertTo(hist, -1, factor / sums[0], 0.0);
-#endif
-}
-
 void draw_orientation_histogram(const cv::Mat &flow, const std::string &windowName, const double normalization_factor)
 {
 	const bool does_apply_magnitude_filtering = true;
@@ -71,13 +46,13 @@ void draw_orientation_histogram(const cv::Mat &flow, const std::string &windowNa
 	cv::split(flow, flows);
 
 	cv::Mat flow_phase;
-	cv::phase(flows[0], flows[1], flow_phase, true);  // return type: CV_32F
+	cv::phase(flows[0], flows[1], flow_phase, true);  // return type: CV_32F.
 
-	// filter by magnitude
+	// filter by magnitude.
 	if (does_apply_magnitude_filtering)
 	{
 		cv::Mat flow_mag;
-		cv::magnitude(flows[0], flows[1], flow_mag);  // return type: CV_32F
+		cv::magnitude(flows[0], flows[1], flow_mag);  // return type: CV_32F.
 		double minVal = 0.0, maxVal = 0.0;
 		cv::minMaxLoc(flow_mag, &minVal, &maxVal, NULL, NULL);
 		const double mag_threshold = minVal + (maxVal - minVal) * magnitude_filtering_threshold_ratio;
@@ -86,25 +61,25 @@ void draw_orientation_histogram(const cv::Mat &flow, const std::string &windowNa
 		flow_phase.setTo(cv::Scalar::all(1000), flow_mag < mag_threshold);
 	}
 
-	// histograms' parameters
+	// histograms' parameters.
 	const int dims = 1;
 	const int bins = 360;
 	const int histSize[] = { bins };
-	// angle varies from 0 to 359
+	// angle varies from 0 to 359.
 	const float ranges1[] = { 0, bins };
 	const float *ranges[] = { ranges1 };
-	// we compute the histogram from the 0-th channel
+	// we compute the histogram from the 0-th channel.
 	const int channels[] = { 0 };
 	const int bin_width = 1, bin_max_height = 100;
 
-	// calculate histogram
+	// calculate histogram.
 	cv::MatND hist;
 	cv::calcHist(&flow_phase, 1, channels, cv::Mat(), hist, dims, histSize, ranges, true, false);
 
-	// normalize histogram
-	normalize_histogram(hist, normalization_factor);
+	// normalize histogram.
+	my_opencv::normalize_histogram(hist, normalization_factor);
 
-	// draw 1-D histogram
+	// draw 1-D histogram.
 #if 0
 	double maxVal = 0.0;
 	cv::minMaxLoc(hist, NULL, &maxVal, NULL, NULL);
@@ -113,7 +88,7 @@ void draw_orientation_histogram(const cv::Mat &flow, const std::string &windowNa
 #endif
 
 	cv::Mat histImg(cv::Mat::zeros(bin_max_height, bins*bin_width, CV_8UC3));
-	draw_histogram_1D(hist, bins, maxVal, bin_width, bin_max_height, histImg);
+	my_opencv::draw_histogram_1D(hist, bins, maxVal, bin_width, bin_max_height, histImg);
 
 	cv::imshow(windowName, histImg);
 }
@@ -427,7 +402,7 @@ void Lucas_Kanade_optical_flow_algorithm()
 	cvNamedWindow("Lucas Kanade optical flow: Horizontal Flow", CV_WINDOW_AUTOSIZE);
 	cvNamedWindow("Lucas Kanade optical flow: Vertical Flow", CV_WINDOW_AUTOSIZE);
 
-	const int win_size = 5;  // odd number
+	const int win_size = 5;  // odd number.
 	IplImage *img = NULL;
 	IplImage *grey = NULL, *prev_grey = NULL, *swap_temp;
 	IplImage *vel_x = NULL, *vel_y = NULL;
@@ -500,7 +475,7 @@ void Lucas_Kanade_optical_flow_algorithm()
 	cvCvtColor(img1, grey1, CV_BGR2GRAY);
 	cvCvtColor(img2, grey2, CV_BGR2GRAY);
 
-	const int win_size = 5;  // odd number
+	const int win_size = 5;  // odd number.
 	cvCalcOpticalFlowLK(grey1, grey2, cvSize(win_size, win_size), vel_x, vel_y);
 
 	//
@@ -591,7 +566,7 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_1()
 		return;
 	}
 
-	// print a welcome message, and the OpenCV version
+	// print a welcome message, and the OpenCV version.
 	printf(
 		"Welcome to pyramid Lucas-Kanade, using OpenCV version %s (%d.%d.%d)\n",
 		CV_VERSION,
@@ -622,7 +597,7 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_1()
 
 		if (!image)
 		{
-			// allocate all the buffers
+			// allocate all the buffers.
 			image = cvCreateImage(cvGetSize(frame), 8, 3);
 			image->origin = frame->origin;
 			grey = cvCreateImage(cvGetSize(frame), 8, 1);
@@ -643,7 +618,7 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_1()
 
 		if (need_to_init)
 		{
-			// automatic initialization
+			// automatic initialization.
 			IplImage *eig = cvCreateImage(cvGetSize(grey), 32, 1);
 			IplImage *temp = cvCreateImage(cvGetSize(grey), 32, 1);
 			double quality = 0.01;
