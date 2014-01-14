@@ -19,7 +19,7 @@ void mser();  // maximally stable extremal regions (MSER).
 void hog();  // histogram of oriented gradients (HOG).
 void lbp();  // local binary patterns (LBP).
 void covariant_feature_detectors();
-void fishre_vector();  // Fisher vector (FV) encoding.
+void fisher_vector();  // Fisher vector (FV) encoding.
 void vlad();  // vector of locally aggregated descriptors (VLAD) encoding.
 void liop();  // local intensity order pattern (LIOP) descriptor.
 
@@ -82,7 +82,7 @@ int vlfeat_main(int argc, char *argv[])
 			//my_vlfeat::hog();
 			my_vlfeat::lbp();
 			//my_vlfeat::covariant_feature_detectors();  // not yet implemented.
-			//my_vlfeat::fishre_vector();  // [ref] gmm().
+			//my_vlfeat::fisher_vector();  // [ref] gmm().
 			//my_vlfeat::vlad();  // [ref] gmm().
 			//my_vlfeat::liop();
 		}
