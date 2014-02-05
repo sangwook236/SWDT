@@ -42,7 +42,7 @@ double my_constraint_func(const std::vector<double> &x, std::vector<double> &gra
 // [ref] http://ab-initio.mit.edu/wiki/index.php/NLopt_Tutorial
 void simple_cpp_sample_using_gradient_based_algorithm()
 {
-	// algorithm and dimensionality
+	// algorithm and dimensionality.
 	nlopt::opt opt(nlopt::LD_MMA, 2);
 
 	// Note that we do not need to set an upper bound (set_upper_bounds), since we are happy with the default upper bounds (+inf).
@@ -80,7 +80,7 @@ void simple_cpp_sample_using_gradient_based_algorithm()
 // [ref] http://ab-initio.mit.edu/wiki/index.php/NLopt_Tutorial
 void simple_cpp_sample_using_derivative_free_algorithm()
 {
-	// algorithm and dimensionality
+	// algorithm and dimensionality.
 	nlopt::opt opt(nlopt::LN_COBYLA, 2);
 
 	// Note that we do not need to set an upper bound (set_upper_bounds), since we are happy with the default upper bounds (+inf).

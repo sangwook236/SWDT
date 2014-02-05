@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 		//retval = ccv_main(argc, argv);
 #endif
 
-		std::cout << "\nVigra library -------------------------------------------------------" << std::endl;
+		std::cout << "\nVision with Generic Algorithms (VIGRA) library ----------------------" << std::endl;
 		//	-. segmentation.
 		//		seeded region growing (SRG).
 		//		watershed region growing.
