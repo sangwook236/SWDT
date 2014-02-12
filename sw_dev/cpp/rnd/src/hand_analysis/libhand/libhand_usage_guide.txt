@@ -1,3 +1,7 @@
+[-] General
+	-. Site
+		http://www.libhand.org/
+
 [-] Setting CMake (Common)
 	-. shared library build 설정이 off되어 있음.
 		==> ${LIBHAND_HOME}/hand_cpp/source/CMakeLists.txt에 "BUILD_SHARED_LIBS" 설정을 on으로 변경.
