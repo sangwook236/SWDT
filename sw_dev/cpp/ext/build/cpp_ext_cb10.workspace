@@ -6,6 +6,7 @@
 		<Project filename="../test/compression/compression_cb10.cbp" />
 		<Project filename="../test/cppunit/cppunit_cb10.cbp" />
 		<Project filename="../test/database/database_cb10.cbp" />
+		<Project filename="../test/dlib/dlib_cb10.cbp" active="1" />
 		<Project filename="../test/file_format/file_format_cb10.cbp" />
 		<Project filename="../test/geometry/geometry_cb10.cbp" />
 		<Project filename="../test/gpu_computation/gpu_computation_cb10.cbp" />
@@ -22,6 +23,6 @@
 		<Project filename="../test/test_framework/test_framework_cb10.cbp" />
 		<Project filename="../test/threading/threading_cb10.cbp" />
 		<Project filename="../test/visualization/visualization_cb10.cbp" />
-		<Project filename="../test/xml/xml_cb10.cbp" active="1" />
+		<Project filename="../test/xml/xml_cb10.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
