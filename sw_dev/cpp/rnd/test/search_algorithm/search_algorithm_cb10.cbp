@@ -46,6 +46,11 @@
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="ann/ann_main.cpp" />
+		<Unit filename="astar_algorithm_cpp/astar_algorithm_cpp_main.cpp" />
+		<Unit filename="astar_algorithm_cpp_lib/8puzzle.cpp" />
+		<Unit filename="astar_algorithm_cpp_lib/findpath.cpp" />
+		<Unit filename="astar_algorithm_cpp_lib/fsa.h" />
+		<Unit filename="astar_algorithm_cpp_lib/stlastar.h" />
 		<Unit filename="kdtree/kdtree_main.cpp" />
 		<Unit filename="kdtree_lib/kdtree.c">
 			<Option compilerVar="CC" />

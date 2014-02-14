@@ -36,6 +36,7 @@
 			<Add option="-fpermissive" />
 		</Compiler>
 		<Unit filename="graphchi/graphchi_main.cpp" />
+		<Unit filename="graphlab/graphlab_main.cpp" />
 		<Unit filename="ibfs/ibfs_main.cpp" />
 		<Unit filename="ibfs_lib/ibfs.cpp" />
 		<Unit filename="ibfs_lib/ibfs.h" />

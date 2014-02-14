@@ -38,6 +38,44 @@
 		<Linker>
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="klt/klt_main.cpp" />
+		<Unit filename="klt_lib/base.h" />
+		<Unit filename="klt_lib/convolve.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="klt_lib/convolve.h" />
+		<Unit filename="klt_lib/error.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="klt_lib/error.h" />
+		<Unit filename="klt_lib/klt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="klt_lib/klt.h" />
+		<Unit filename="klt_lib/klt_util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="klt_lib/klt_util.h" />
+		<Unit filename="klt_lib/pnmio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="klt_lib/pnmio.h" />
+		<Unit filename="klt_lib/pyramid.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="klt_lib/pyramid.h" />
+		<Unit filename="klt_lib/selectGoodFeatures.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="klt_lib/storeFeatures.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="klt_lib/trackFeatures.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="klt_lib/writeFeatures.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.cpp" />
 		<Unit filename="opentld/opentld_main.cpp" />
 		<Extensions>

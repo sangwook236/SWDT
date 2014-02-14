@@ -49,6 +49,7 @@
 		<Unit filename="clustering/clustering_kmeanspp.cpp" />
 		<Unit filename="clustering/clustering_main.cpp" />
 		<Unit filename="clustering/clustering_spectral_clustering.cpp" />
+		<Unit filename="dlib_ml/dlib_ml_main.cpp" />
 		<Unit filename="kmeanspp_lib/KMeans.cpp" />
 		<Unit filename="kmeanspp_lib/KMeans.h" />
 		<Unit filename="kmeanspp_lib/KmTree.cpp" />

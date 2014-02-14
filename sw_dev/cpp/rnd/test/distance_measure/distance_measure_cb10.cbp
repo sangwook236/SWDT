@@ -38,6 +38,8 @@
 		<Linker>
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="dynamic_time_warping/dynamic_time_warping_main.cpp" />
+		<Unit filename="dynamic_time_warping_lib/DynamicTimeWarping.h" />
 		<Unit filename="fastemd/fastemd_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
