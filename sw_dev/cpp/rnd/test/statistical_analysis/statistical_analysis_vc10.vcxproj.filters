@@ -22,6 +22,18 @@
     <Filter Include="Source Files\ransac">
       <UniqueIdentifier>{b67f21a7-e401-4a30-8bf5-8b91e1dc0a5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\mcmcpp">
+      <UniqueIdentifier>{ea633884-4646-43f4-81f4-40634e75763d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scythe">
+      <UniqueIdentifier>{9647df84-863a-4bc4-8cbd-c81d6094d2bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\boom">
+      <UniqueIdentifier>{8a35e584-3a06-428b-8feb-a95271ea042d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scythemcmc_lib">
+      <UniqueIdentifier>{738494cd-a1cc-4276-9c3c-e564a9e59fb9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -59,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="movmf_lib\timerUtil.h">
       <Filter>Source Files\movmf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="scythemcmc_lib\mcmc.h">
+      <Filter>Source Files\scythemcmc_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +118,42 @@
     </ClCompile>
     <ClCompile Include="ransac\ransac_plane_estimation.cpp">
       <Filter>Source Files\ransac</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp\mcmcpp_main.cpp">
+      <Filter>Source Files\mcmcpp</Filter>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_main.cpp">
+      <Filter>Source Files\scythe</Filter>
+    </ClCompile>
+    <ClCompile Include="boom\boom_main.cpp">
+      <Filter>Source Files\boom</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp\mcmcpp_normal_example.cpp">
+      <Filter>Source Files\mcmcpp</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp\mcmcpp_binomial_example.cpp">
+      <Filter>Source Files\mcmcpp</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp\mcmcpp_multinomial_example.cpp">
+      <Filter>Source Files\mcmcpp</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp\mcmcpp_normal_mixture_example.cpp">
+      <Filter>Source Files\mcmcpp</Filter>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_matrix_operation.cpp">
+      <Filter>Source Files\scythe</Filter>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_random.cpp">
+      <Filter>Source Files\scythe</Filter>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_optimization.cpp">
+      <Filter>Source Files\scythe</Filter>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_parametric_bootstrap_example.cpp">
+      <Filter>Source Files\scythe</Filter>
+    </ClCompile>
+    <ClCompile Include="scythe\scythemcmc_normal_example.cpp">
+      <Filter>Source Files\scythe</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

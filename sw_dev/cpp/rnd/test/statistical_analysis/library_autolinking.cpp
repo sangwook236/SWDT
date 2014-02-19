@@ -4,11 +4,11 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "NTLd.lib")
+#pragma comment(lib, "MCMC++_d.lib")
 
 #		else
 
-#pragma comment(lib, "NTL.lib")
+#pragma comment(lib, "MCMC++.lib")
 
 #		endif
 

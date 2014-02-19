@@ -12,6 +12,9 @@ int main(int argc, char *argv[])
 {
 	int ransac_main(int argc, char *argv[]);
 	int movmf_main(int argc, char *argv[]);
+	int mcmcpp_main(int argc, char *argv[]);
+	int scythe_main(int argc, char *argv[]);
+	int boom_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -20,13 +23,24 @@ int main(int argc, char *argv[])
 
 		std::cout << "RANSAC algorithm ----------------------------------------------------" << std::endl;
 		//	-. robust estimation.
-		retval = ransac_main(argc, argv);
+		//retval = ransac_main(argc, argv);
 
 		std::cout << "\nMoVMF library -------------------------------------------------------" << std::endl;
 		//	-. directional statistics.
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-		retval = movmf_main(argc, argv);
+		//retval = movmf_main(argc, argv);
 #endif
+
+		std::cout << "\nMCMC++ library ------------------------------------------------------" << std::endl;
+		//	-. Markov Chain Monte Carlo (MCMC) analysis.
+		//retval = mcmcpp_main(argc, argv);
+
+		std::cout << "\nScythe Statistical Library ------------------------------------------" << std::endl;
+		retval = scythe_main(argc, argv);
+
+		std::cout << "\nboom library --------------------------------------------------------" << std::endl;
+		// Bayesian computation in C++.
+		//retval = boom_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

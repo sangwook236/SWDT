@@ -53,7 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./scythemcmc_lib;../../inc/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -69,7 +69,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./scythemcmc_lib;../../inc/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,12 +119,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="scythemcmc_lib\mcmc.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="boom\boom_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mcmcpp\mcmcpp_binomial_example.cpp" />
+    <ClCompile Include="mcmcpp\mcmcpp_main.cpp" />
+    <ClCompile Include="mcmcpp\mcmcpp_multinomial_example.cpp" />
+    <ClCompile Include="mcmcpp\mcmcpp_normal_example.cpp" />
+    <ClCompile Include="mcmcpp\mcmcpp_normal_mixture_example.cpp" />
     <ClCompile Include="movmf\movmf_main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -163,6 +170,12 @@
     </ClCompile>
     <ClCompile Include="ransac\ransac_main.cpp" />
     <ClCompile Include="ransac\ransac_plane_estimation.cpp" />
+    <ClCompile Include="scythe\scythemcmc_normal_example.cpp" />
+    <ClCompile Include="scythe\scythe_main.cpp" />
+    <ClCompile Include="scythe\scythe_matrix_operation.cpp" />
+    <ClCompile Include="scythe\scythe_optimization.cpp" />
+    <ClCompile Include="scythe\scythe_parametric_bootstrap_example.cpp" />
+    <ClCompile Include="scythe\scythe_random.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
