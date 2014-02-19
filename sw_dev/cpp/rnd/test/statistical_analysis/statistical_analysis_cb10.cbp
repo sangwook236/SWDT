@@ -33,11 +33,21 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="./scythemcmc_lib" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
+			<Add library="mcmc++" />
 			<Add library="ntl" />
+			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="boom/boom_main.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="mcmcpp/mcmcpp_binomial_example.cpp" />
+		<Unit filename="mcmcpp/mcmcpp_main.cpp" />
+		<Unit filename="mcmcpp/mcmcpp_multinomial_example.cpp" />
+		<Unit filename="mcmcpp/mcmcpp_normal_example.cpp" />
+		<Unit filename="mcmcpp/mcmcpp_normal_mixture_example.cpp" />
 		<Unit filename="movmf/movmf_main.cpp" />
 		<Unit filename="movmf_lib/DenseMatrixDouble.cc" />
 		<Unit filename="movmf_lib/DenseMatrixDouble.h" />
@@ -61,6 +71,13 @@
 		<Unit filename="movmf_lib/timerUtil.h" />
 		<Unit filename="ransac/ransac_main.cpp" />
 		<Unit filename="ransac/ransac_plane_estimation.cpp" />
+		<Unit filename="scythe/scythe_main.cpp" />
+		<Unit filename="scythe/scythe_matrix_operation.cpp" />
+		<Unit filename="scythe/scythe_optimization.cpp" />
+		<Unit filename="scythe/scythe_parametric_bootstrap_example.cpp" />
+		<Unit filename="scythe/scythe_random.cpp" />
+		<Unit filename="scythe/scythemcmc_normal_example.cpp" />
+		<Unit filename="scythemcmc_lib/mcmc.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
