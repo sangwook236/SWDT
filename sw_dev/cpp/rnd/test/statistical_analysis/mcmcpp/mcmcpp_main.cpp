@@ -20,11 +20,11 @@ int mcmcpp_main(int argc, char *argv[])
 {
 	// example -------------------------------------------------------------
 	{
-		//my_mcmcpp::normal_example();
+		my_mcmcpp::normal_example();
 		//my_mcmcpp::binomial_example();
 		//my_mcmcpp::multinomial_example();
 
-		my_mcmcpp::normal_mixture_example();  // TODO [check] >> not working ???
+		//my_mcmcpp::normal_mixture_example();  // TODO [check] >> not working ???
 	}
 
 	// application ---------------------------------------------------------

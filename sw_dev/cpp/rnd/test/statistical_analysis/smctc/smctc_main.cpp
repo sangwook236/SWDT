@@ -1,6 +1,6 @@
 #include <smctc/smctc.hh>
 #include <iostream>
-#include <cstdio> 
+#include <cstdio>
 #include <cstdlib>
 #include <cmath>
 
@@ -22,8 +22,8 @@ int smctc_main(int argc, char *argv[])
 {
 	try
 	{
-		my_smctc::pf_example();  // run-time error.
-		//my_smctc::rare_events_example();  // run-time error.
+		my_smctc::pf_example();  // TODO [check] >> run-time error in Windows.
+		//my_smctc::rare_events_example();  // TODO [check] >> run-time error in Windows.
 	}
 	catch (const smc::exception &e)
 	{

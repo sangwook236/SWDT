@@ -4,13 +4,13 @@
  * @date:   Created on 2. Dezember 2012
  * @brief:  Example program on how to train your custom HOG detecting vector
  * for use with openCV <code>hog.setSVMDetector(_descriptor)</code>;
- * 
+ *
  * For the paper regarding Histograms of Oriented Gradients (HOG), @see http://lear.inrialpes.fr/pubs/2005/DT05/
  * You can populate the positive samples dir with files from the INRIA person detection dataset, @see http://pascal.inrialpes.fr/data/human/
  * This program uses SVMlight as machine learning algorithm (@see http://svmlight.joachims.org/), but is not restricted to it
  * Tested in Ubuntu Linux 64bit 12.04 "Precise Pangolin" with openCV 2.3.1, SVMlight 6.02, g++ 4.6.3
  * and standard HOG settings, training images of size 64x128px.
- * 
+ *
  * What this program basically does:
  * 1. Read positive and negative training sample image files from specified directories
  * 2. Calculate their HOG features and keep track of their classes (pos, neg)
@@ -18,18 +18,18 @@
  * 4. Read in and pass the features and their classes to a machine learning algorithm, e.g. SVMlight
  * 5. Train the machine learning algorithm using the specified parameters
  * 6. Use the calculated support vectors and SVM model to calculate a single detecting descriptor vector
- * 
+ *
  * Build by issuing:
  * g++ `pkg-config --cflags opencv` -c -g -MMD -MP -MF main.o.d -o main.o main.cpp
  * gcc -c -g `pkg-config --cflags opencv` -MMD -MP -MF svmlight/svm_learn.o.d -o svmlight/svm_learn.o svmlight/svm_learn.c
  * gcc -c -g `pkg-config --cflags opencv` -MMD -MP -MF svmlight/svm_hideo.o.d -o svmlight/svm_hideo.o svmlight/svm_hideo.c
  * gcc -c -g `pkg-config --cflags opencv` -MMD -MP -MF svmlight/svm_common.o.d -o svmlight/svm_common.o svmlight/svm_common.c
  * g++ `pkg-config --cflags opencv` -o trainhog main.o svmlight/svm_learn.o svmlight/svm_hideo.o svmlight/svm_common.o `pkg-config --libs opencv`
- * 
+ *
  * Warning:
  * Be aware that the program may consume a considerable amount of main memory, hard disk memory and time, dependent on the amount of training samples.
  * Also be aware that (esp. for 32bit systems), there are limitations for the maximum file size which may take effect when writing the features file.
- * 
+ *
  * Terms of use:
  * This program is to be used as an example and is provided on an "as-is" basis without any warranties of any kind, either express or implied.
  * Use at your own risk.
@@ -40,8 +40,8 @@
 #include <opencv2/opencv.hpp>
 #include <fstream>
 #include <iostream>
-#include <algorithm>
 #include <iomanip>
+#include <algorithm>
 #include <stdexcept>
 #include <dirent.h>
 
@@ -86,10 +86,10 @@ static void resetCursor(void)
 static void saveDescriptorVectorToFile(std::vector<float> &descriptorVector, std::vector<unsigned int> &_vectorIndices, std::string fileName)
 {
     std::cout << "Saving descriptor vector to file '" << fileName << "'" << std::endl;
-    std::string separator = " ";  // Use blank as default separator between single features
+    std::string separator = " ";  // Use blank as default separator between single features.
     std::fstream File;
     float percent;
-    File.open(fileName, std::ios::out);
+    File.open(fileName.c_str(), std::ios::out);
     if (File.good() && File.is_open())
 	{
         std::cout << "Saving descriptor vector features:\t";
@@ -117,7 +117,7 @@ static void saveDescriptorVectorToFile(std::vector<float> &descriptorVector, std
  * @param dirName
  * @param fileNames found file names in specified directory
  * @param validExtensions containing the valid file extensions for collection in lower case
- * @return 
+ * @return
  */
 static void getFilesInDirectory(const std::string &dirName, std::vector<std::string> &fileNames, const std::vector<std::string> &validExtensions)
 {
@@ -158,16 +158,16 @@ static void getFilesInDirectory(const std::string &dirName, std::vector<std::str
 /**
  * This is the actual calculation from the (input) image data to the HOG descriptor/feature vector using the hog.compute() function
  * @param imageFilename file path of the image file to read and calculate feature vector from
- * @param descriptorVector the returned calculated feature std::vector<float> , 
+ * @param descriptorVector the returned calculated feature std::vector<float> ,
  *      I can't comprehend why openCV implementation returns std::vector<float> instead of cv::MatExpr_<float> (e.g. cv::Mat<float>)
  * @param hog cv::HOGDescriptor containin HOG settings
  */
 static void calculateFeaturesFromInput(const std::string &imageFilename, std::vector<float> &featureVector, cv::HOGDescriptor &hog, const cv::Size &winStride, const cv::Size &trainingPadding)
 {
-    /** for imread flags from openCV documentation, 
+    /** for imread flags from openCV documentation,
      * @see http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html?highlight=imread#Mat cv::imread(const std::string& filename, int flags)
      * @note If you get a compile-time error complaining about following line (esp. cv::imread),
-     * you either do not have a current openCV version (>2.0) 
+     * you either do not have a current openCV version (>2.0)
      * or the linking order is incorrect, try g++ -o openCVHogTrainer main.cpp `pkg-config --cflags --libs opencv`
      */
     cv::Mat imageData = cv::imread(imageFilename, 0);
@@ -261,13 +261,13 @@ bool extract_HOG_features(cv::HOGDescriptor &hog, const std::string &posSamplesD
 	float percent;
 	/**
 	 * Save the calculated descriptor vectors to a file in a format that can be used by SVMlight for training
-	 * @NOTE: If you split these steps into separate steps: 
-	 * 1. calculating features into memory (e.g. into a cv::Mat or std::vector< std::vector<float> >), 
+	 * @NOTE: If you split these steps into separate steps:
+	 * 1. calculating features into memory (e.g. into a cv::Mat or std::vector< std::vector<float> >),
 	 * 2. saving features to file / directly inject from memory to machine learning algorithm,
 	 * the program may consume a considerable amount of main memory
-	 */ 
+	 */
 	std::fstream File;
-	File.open(featuresFile, std::ios::out);
+	File.open(featuresFile.c_str(), std::ios::out);
 	if (File.good() && File.is_open())
 	{
 		// Remove following line for libsvm which does not support comments
@@ -293,8 +293,8 @@ bool extract_HOG_features(cv::HOGDescriptor &hog, const std::string &posSamplesD
 			calculateFeaturesFromInput(currentImageFile, featureVector, hog, winStride, trainingPadding);
 			if (!featureVector.empty())
 			{
-				// Put positive or negative sample class to file, 
-				// true=positive, false=negative, 
+				// Put positive or negative sample class to file,
+				// true=positive, false=negative,
 				// and convert positive class to +1 and negative class to -1 for SVMlight
 				File << ((currentFile < positiveTrainingImages.size()) ? "+1" : "-1");
 				// Save feature vector components
@@ -317,8 +317,8 @@ bool extract_HOG_features(cv::HOGDescriptor &hog, const std::string &posSamplesD
 				calculateFeaturesFromInput2(imageData, featureVector, hog, winStride, trainingPadding);
 				if (!featureVector.empty())
 				{
-					// Put positive or negative sample class to file, 
-					// true=positive, false=negative, 
+					// Put positive or negative sample class to file,
+					// true=positive, false=negative,
 					// and convert positive class to +1 and negative class to -1 for SVMlight
 					File << ((currentFile < positiveTrainingImages.size()) ? "+1" : "-1");
 					// Save feature vector components
@@ -343,8 +343,8 @@ bool extract_HOG_features(cv::HOGDescriptor &hog, const std::string &posSamplesD
 					calculateFeaturesFromInput2(imageData(cv::Rect(start_x, start_y, hog.winSize.width, hog.winSize.height)), featureVector, hog, winStride, trainingPadding);
 					if (!featureVector.empty())
 					{
-						// Put positive or negative sample class to file, 
-						// true=positive, false=negative, 
+						// Put positive or negative sample class to file,
+						// true=positive, false=negative,
 						// and convert positive class to +1 and negative class to -1 for SVMlight
 						File << ((currentFile < positiveTrainingImages.size()) ? "+1" : "-1");
 						// Save feature vector components

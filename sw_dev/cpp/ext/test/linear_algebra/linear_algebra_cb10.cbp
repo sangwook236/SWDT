@@ -35,14 +35,14 @@
 			<Add option="-fexceptions" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
-			<Add directory="/usr/include/eigen3/" />
+			<Add directory="/usr/include/eigen3" />
 		</Compiler>
 		<Linker>
 			<Add library="armadillo" />
 			<Add library="cvm_em64t" />
 			<Add library="lapack" />
 			<Add library="blas" />
-			<Add directory="/usr/lib64/" />
+			<Add directory="/usr/lib64" />
 		</Linker>
 		<Unit filename="armadillo/armadillo_cube_arithmetic.cpp" />
 		<Unit filename="armadillo/armadillo_main.cpp" />

@@ -37,11 +37,11 @@ int main(int argc, char *argv[])
 		//	-. sequential importance resampling (SIR) algorithm.
 		//	-. particle filter.
 		//	-. SMC sampler.
-		retval = smctc_main(argc, argv);
+		//retval = smctc_main(argc, argv);
 
 		std::cout << "\nMCMC++ library ------------------------------------------------------" << std::endl;
 		//	-. Markov Chain Monte Carlo (MCMC) analysis.
-		//retval = mcmcpp_main(argc, argv);
+		retval = mcmcpp_main(argc, argv);
 
 		std::cout << "\nScythe Statistical Library ------------------------------------------" << std::endl;
 		//retval = scythe_main(argc, argv);

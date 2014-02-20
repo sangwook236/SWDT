@@ -30,27 +30,29 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add directory="/usr/local/include" />
+			<Add directory="./svm_light_lib" />
+			<Add directory="./pictorial_structures_revisited_lib/libAdaBoost" />
+			<Add directory="./pictorial_structures_revisited_lib" />
+			<Add directory="./fst_lib/_src_dataio" />
+			<Add directory="./fst_lib/_src_search" />
+			<Add directory="./fst_lib/_src_criteria" />
+			<Add directory="./fst_lib/_src_global" />
 			<Add directory="/usr/local/include/opencv" />
+			<Add directory="/usr/local/include" />
 			<Add directory="/usr/local/cuda/include" />
 			<Add directory="/usr/local/MATLAB/R2012b/extern/include" />
 			<Add directory="/usr/include/qt4/QtCore" />
 			<Add directory="/usr/include/qt4/QtGui" />
 			<Add directory="/usr/include/qt4" />
-			<Add directory="./pictorial_structures_revisited_lib" />
-			<Add directory="./pictorial_structures_revisited_lib/libAdaBoost" />
-			<Add directory="./fst_lib/_src_global" />
-			<Add directory="./fst_lib/_src_criteria" />
-			<Add directory="./fst_lib/_src_search" />
-			<Add directory="./fst_lib/_src_dataio" />
 		</Compiler>
 		<Linker>
 			<Add library="opensift" />
 			<Add library="siftgpu" />
-			<Add library="opencv_core" />
-			<Add library="opencv_highgui" />
-			<Add library="opencv_imgproc" />
 			<Add library="opencv_calib3d" />
+			<Add library="opencv_objdetect" />
+			<Add library="opencv_imgproc" />
+			<Add library="opencv_highgui" />
+			<Add library="opencv_core" />
 			<Add library="cudpp" />
 			<Add library="cudart" />
 			<Add library="boost_program_options" />
@@ -172,6 +174,9 @@
 		<Unit filename="fst_lib/_src_search/seq_step_straight.hpp" />
 		<Unit filename="fst_lib/_src_search/seq_step_straight_threaded.hpp" />
 		<Unit filename="fst_lib/_src_search/stopwatch.hpp" />
+		<Unit filename="hog/hog_main.cpp" />
+		<Unit filename="hog/hog_training_HOG.cpp" />
+		<Unit filename="hog/svmlight/svmlight.h" />
 		<Unit filename="lsd/lsd_main.cpp" />
 		<Unit filename="lsd_lib/lsd.cpp" />
 		<Unit filename="lsd_lib/lsd.h" />
@@ -298,6 +303,33 @@
 		<Unit filename="surfgpu_lib/transposeGPU.h" />
 		<Unit filename="surfgpu_lib/utilsGPU.cpp" />
 		<Unit filename="surfgpu_lib/utilsGPU.h" />
+		<Unit filename="svm_light_lib/svm_light/kernel.h" />
+		<Unit filename="svm_light_lib/svm_light/svm_classify.c">
+			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="svm_light_lib/svm_light/svm_common.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="svm_light_lib/svm_light/svm_common.h" />
+		<Unit filename="svm_light_lib/svm_light/svm_hideo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="svm_light_lib/svm_light/svm_learn.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="svm_light_lib/svm_light/svm_learn.h" />
+		<Unit filename="svm_light_lib/svm_light/svm_learn_main.c">
+			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="svm_light_lib/svm_light/svm_loqo.c">
+			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />

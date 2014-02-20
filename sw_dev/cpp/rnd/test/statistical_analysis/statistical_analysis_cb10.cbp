@@ -38,7 +38,10 @@
 		</Compiler>
 		<Linker>
 			<Add library="mcmc++" />
+			<Add library="smctc" />
 			<Add library="ntl" />
+			<Add library="gsl" />
+			<Add library="gslcblas" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="boom/boom_main.cpp" />
@@ -78,6 +81,14 @@
 		<Unit filename="scythe/scythe_random.cpp" />
 		<Unit filename="scythe/scythemcmc_normal_example.cpp" />
 		<Unit filename="scythemcmc_lib/mcmc.h" />
+		<Unit filename="smctc/markovchain.h" />
+		<Unit filename="smctc/pffuncs.cpp" />
+		<Unit filename="smctc/pffuncs.h" />
+		<Unit filename="smctc/simfunctions.cpp" />
+		<Unit filename="smctc/simfunctions.h" />
+		<Unit filename="smctc/smctc_main.cpp" />
+		<Unit filename="smctc/smctc_pf_example.cpp" />
+		<Unit filename="smctc/smctc_rare_event_example.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

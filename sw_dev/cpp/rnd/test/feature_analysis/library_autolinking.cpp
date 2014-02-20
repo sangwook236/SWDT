@@ -4,18 +4,18 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+//#pragma comment(lib, "surfWinDLL_d.lib")
 #pragma comment(lib, "opensift_d.lib")
 #pragma comment(lib, "SiftGPU_d.lib")
-//#pragma comment(lib, "surfWinDLL_d.lib")
 
-#pragma comment(lib, "opencv_core243d.lib")
+#pragma comment(lib, "opencv_calib3d243d.lib")
+#pragma comment(lib, "opencv_objdetect243d.lib")
 #pragma comment(lib, "opencv_imgproc243d.lib")
 #pragma comment(lib, "opencv_highgui243d.lib")
-#pragma comment(lib, "opencv_objdetect243d.lib")
-#pragma comment(lib, "opencv_calib3d243d.lib")
+#pragma comment(lib, "opencv_core243d.lib")
 
-#pragma comment(lib, "cudart.lib")
 #pragma comment(lib, "cudpp32d.lib")
+#pragma comment(lib, "cudart.lib")
 
 #pragma comment(lib, "libmat.lib")
 #pragma comment(lib, "libmx.lib")
@@ -26,18 +26,18 @@
 
 #		else
 
+//#pragma comment(lib, "surfWinDLL.lib")
 #pragma comment(lib, "opensift.lib")
 #pragma comment(lib, "SiftGPU.lib")
-//#pragma comment(lib, "surfWinDLL.lib")
 
-#pragma comment(lib, "opencv_core243.lib")
+#pragma comment(lib, "opencv_calib3d243.lib")
+#pragma comment(lib, "opencv_objdetect243.lib")
 #pragma comment(lib, "opencv_imgproc243.lib")
 #pragma comment(lib, "opencv_highgui243.lib")
-#pragma comment(lib, "opencv_objdetect243.lib")
-#pragma comment(lib, "opencv_calib3d243.lib")
+#pragma comment(lib, "opencv_core243.lib")
 
-#pragma comment(lib, "cudart.lib")
 #pragma comment(lib, "cudpp32.lib")
+#pragma comment(lib, "cudart.lib")
 
 #pragma comment(lib, "libmat.lib")
 #pragma comment(lib, "libmx.lib")

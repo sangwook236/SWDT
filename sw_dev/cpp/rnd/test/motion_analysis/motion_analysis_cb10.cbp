@@ -33,10 +33,24 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="/usr/local/include/opencv" />
 			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
+			<Add library="opentld" />
+			<Add library="cvblobs" />
+			<Add library="opencv_video" />
+			<Add library="opencv_imgproc" />
+			<Add library="opencv_highgui" />
+			<Add library="opencv_core" />
+			<Add library="gsl" />
+			<Add library="gslcblas" />
+			<Add library="cudart" />
+			<Add library="gomp" />
+			<Add directory="/usr/local/cuda/lib64" />
 			<Add directory="/usr/local/lib" />
+			<Add directory="/usr/lib/nvidia-current" />
+			<Add directory="/usr/x86_64-linux-gnu" />
 		</Linker>
 		<Unit filename="klt/klt_main.cpp" />
 		<Unit filename="klt_lib/base.h" />
@@ -78,6 +92,24 @@
 		</Unit>
 		<Unit filename="main.cpp" />
 		<Unit filename="opentld/opentld_main.cpp" />
+		<Unit filename="particle_filter_object_tracking/particle_filter_object_tracking_main.cpp" />
+		<Unit filename="particle_filter_object_tracking/particle_filter_object_tracking_observe_example.cpp" />
+		<Unit filename="particle_filter_object_tracking/particle_filter_object_tracking_track_example.cpp" />
+		<Unit filename="particle_filter_object_tracking_lib/defs.h" />
+		<Unit filename="particle_filter_object_tracking_lib/observation.cpp" />
+		<Unit filename="particle_filter_object_tracking_lib/observation.h" />
+		<Unit filename="particle_filter_object_tracking_lib/observe.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="particle_filter_object_tracking_lib/particles.cpp" />
+		<Unit filename="particle_filter_object_tracking_lib/particles.h" />
+		<Unit filename="particle_filter_object_tracking_lib/track1.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="particle_filter_object_tracking_lib/utils.cpp" />
+		<Unit filename="particle_filter_object_tracking_lib/utils.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

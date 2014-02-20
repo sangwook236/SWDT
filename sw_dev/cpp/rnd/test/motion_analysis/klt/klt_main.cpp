@@ -9,6 +9,7 @@ extern "C" {
 #endif
 #include <sstream>
 #include <iostream>
+#include <cstdlib>
 
 
 namespace {
