@@ -1,4 +1,0 @@
-http://www2.warwick.ac.uk/fac/sci/statistics/staff/academic-research/johansen/smctc/
-http://www.jstatsoft.org/v30/i06/
-
-[ref] "SMCTC: Sequential Monte Carlo in C++"

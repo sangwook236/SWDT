@@ -12,7 +12,9 @@ int main(int argc, char *argv[])
 {
 	int ransac_main(int argc, char *argv[]);
 	int movmf_main(int argc, char *argv[]);
+	int smctc_main(int argc, char *argv[]);
 	int mcmcpp_main(int argc, char *argv[]);
+
 	int scythe_main(int argc, char *argv[]);
 	int boom_main(int argc, char *argv[]);
 
@@ -31,9 +33,15 @@ int main(int argc, char *argv[])
 		//retval = movmf_main(argc, argv);
 #endif
 
+		std::cout << "\nSequential Monte Carlo Template Class (SMCTC) library --------------" << std::endl;
+		//	-. sequential importance resampling (SIR) algorithm.
+		//	-. particle filter.
+		//	-. SMC sampler.
+		retval = smctc_main(argc, argv);
+
 		std::cout << "\nMCMC++ library ------------------------------------------------------" << std::endl;
 		//	-. Markov Chain Monte Carlo (MCMC) analysis.
-		retval = mcmcpp_main(argc, argv);
+		//retval = mcmcpp_main(argc, argv);
 
 		std::cout << "\nScythe Statistical Library ------------------------------------------" << std::endl;
 		//retval = scythe_main(argc, argv);

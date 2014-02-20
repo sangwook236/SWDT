@@ -50,7 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\work\sw_dev\cpp\rnd\inc\opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -66,7 +66,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\work\sw_dev\cpp\rnd\inc\opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -87,6 +87,10 @@
     <ClInclude Include="klt_lib\klt_util.h" />
     <ClInclude Include="klt_lib\pnmio.h" />
     <ClInclude Include="klt_lib\pyramid.h" />
+    <ClInclude Include="particle_filter_object_tracking_lib\defs.h" />
+    <ClInclude Include="particle_filter_object_tracking_lib\observation.h" />
+    <ClInclude Include="particle_filter_object_tracking_lib\particles.h" />
+    <ClInclude Include="particle_filter_object_tracking_lib\utils.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -105,6 +109,20 @@
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="opentld\opentld_main.cpp" />
+    <ClCompile Include="particle_filter_object_tracking\particle_filter_object_tracking_main.cpp" />
+    <ClCompile Include="particle_filter_object_tracking\particle_filter_object_tracking_observe_example.cpp" />
+    <ClCompile Include="particle_filter_object_tracking\particle_filter_object_tracking_track_example.cpp" />
+    <ClCompile Include="particle_filter_object_tracking_lib\observation.cpp" />
+    <ClCompile Include="particle_filter_object_tracking_lib\observe.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="particle_filter_object_tracking_lib\particles.cpp" />
+    <ClCompile Include="particle_filter_object_tracking_lib\track1.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="particle_filter_object_tracking_lib\utils.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

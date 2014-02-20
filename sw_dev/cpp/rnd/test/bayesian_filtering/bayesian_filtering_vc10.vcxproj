@@ -53,7 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\work_center\sw_dev\cpp\rnd\inc\opencv-2.4.3;../../inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./bayespp_lib;../../inc/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -69,7 +69,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\work_center\sw_dev\cpp\rnd\inc\opencv-2.4.3;../../inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./bayespp_lib;../../inc/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -81,22 +81,58 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-    <None Include="smctc\pffuncs.h" />
-    <None Include="smctc\simfunctions.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bayespp_lib\BayesFilter\allFilters.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\bayesException.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\bayesFlt.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\CIFlt.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\covFlt.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\filters\average1.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\filters\indirect.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\infFlt.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\infRtFlt.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\itrFlt.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\matSup.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\matSupSub.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\models.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\schemeFlt.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\SIRFlt.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\uBLASmatrix.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\UDFlt.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\uLAPACK.hpp" />
+    <ClInclude Include="bayespp_lib\BayesFilter\unsFlt.hpp" />
+    <ClInclude Include="bayespp_lib\SLAM\fastSLAM.hpp" />
+    <ClInclude Include="bayespp_lib\SLAM\kalmanSLAM.hpp" />
+    <ClInclude Include="bayespp_lib\SLAM\SLAM.hpp" />
+    <ClInclude Include="bayespp_lib\Test\random.hpp" />
     <ClInclude Include="condensation_lib\condensation.h" />
     <ClInclude Include="condensation_lib\data_types.h" />
     <ClInclude Include="condensation_lib\model_parameters.h" />
-    <ClInclude Include="particle_filter_object_tracking_lib\defs.h" />
-    <ClInclude Include="particle_filter_object_tracking_lib\observation.h" />
-    <ClInclude Include="particle_filter_object_tracking_lib\particles.h" />
-    <ClInclude Include="particle_filter_object_tracking_lib\utils.h" />
-    <ClInclude Include="smctc\markovchain.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bayespp\bayespp_main.cpp" />
+    <ClCompile Include="bayespp\bayespp_position_and_velocity_filter_example.cpp" />
+    <ClCompile Include="bayespp\bayespp_position_and_velocity_SIR_filter_example.cpp" />
+    <ClCompile Include="bayespp\bayespp_simple_example.cpp" />
+    <ClCompile Include="bayespp\bayespp_simple_quadratic_observer_example.cpp" />
+    <ClCompile Include="bayespp\bayespp_SLAM_example.cpp" />
+    <ClCompile Include="bayespp_lib\BayesFilter\bayesFlt.cpp" />
+    <ClCompile Include="bayespp_lib\BayesFilter\bayesFltAlg.cpp" />
+    <ClCompile Include="bayespp_lib\BayesFilter\CIFlt.cpp" />
+    <ClCompile Include="bayespp_lib\BayesFilter\covFlt.cpp" />
+    <ClCompile Include="bayespp_lib\BayesFilter\infFlt.cpp" />
+    <ClCompile Include="bayespp_lib\BayesFilter\infRtFlt.cpp" />
+    <ClCompile Include="bayespp_lib\BayesFilter\itrFlt.cpp" />
+    <ClCompile Include="bayespp_lib\BayesFilter\matSup.cpp" />
+    <ClCompile Include="bayespp_lib\BayesFilter\SIRFlt.cpp" />
+    <ClCompile Include="bayespp_lib\BayesFilter\UDFlt.cpp" />
+    <ClCompile Include="bayespp_lib\BayesFilter\UdU.cpp" />
+    <ClCompile Include="bayespp_lib\BayesFilter\unsFlt.cpp" />
+    <ClCompile Include="bayespp_lib\SLAM\fastSLAM.cpp" />
+    <ClCompile Include="bayespp_lib\SLAM\kalmanSLAM.cpp" />
     <ClCompile Include="condensation\condensation_main.cpp" />
     <ClCompile Include="condensation_lib\condensation.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -107,25 +143,6 @@
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="particleplusplus\particleplusplus_main.cpp" />
-    <ClCompile Include="particle_filter_object_tracking\particle_filter_object_tracking_main.cpp" />
-    <ClCompile Include="particle_filter_object_tracking\particle_filter_object_tracking_observe_example.cpp" />
-    <ClCompile Include="particle_filter_object_tracking\particle_filter_object_tracking_track_example.cpp" />
-    <ClCompile Include="particle_filter_object_tracking_lib\observation.cpp" />
-    <ClCompile Include="particle_filter_object_tracking_lib\observe.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="particle_filter_object_tracking_lib\particles.cpp" />
-    <ClCompile Include="particle_filter_object_tracking_lib\track1.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="particle_filter_object_tracking_lib\utils.cpp" />
-    <ClCompile Include="smctc\pffuncs.cpp" />
-    <ClCompile Include="smctc\simfunctions.cpp" />
-    <ClCompile Include="smctc\smctc_main.cpp" />
-    <ClCompile Include="smctc\smctc_pf_example.cpp" />
-    <ClCompile Include="smctc\smctc_rare_event_example.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

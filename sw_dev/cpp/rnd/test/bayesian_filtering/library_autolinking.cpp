@@ -4,25 +4,17 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "smctcd.lib")
-#pragma comment(lib, "opencv_video243d.lib")
-#pragma comment(lib, "opencv_imgproc243d.lib")
-#pragma comment(lib, "opencv_highgui243d.lib")
-#pragma comment(lib, "opencv_core243d.lib")
-#pragma comment(lib, "gslwrap_d.lib")
-#pragma comment(lib, "gsl_d.lib")
-#pragma comment(lib, "cblas_d.lib")
+//#pragma comment(lib, "BayesFilter_UBLAS_MD7d.lib")
+#pragma comment(lib, "lapack_d.lib")
+#pragma comment(lib, "blas_d.lib")
+#pragma comment(lib, "libf2c_d.lib")
 
 #		else
 
-#pragma comment(lib, "smctc.lib")
-#pragma comment(lib, "opencv_video243.lib")
-#pragma comment(lib, "opencv_imgproc243.lib")
-#pragma comment(lib, "opencv_highgui243.lib")
-#pragma comment(lib, "opencv_core243.lib")
-#pragma comment(lib, "gslwrap.lib")
-#pragma comment(lib, "gsl.lib")
-#pragma comment(lib, "cblas.lib")
+//#pragma comment(lib, "BayesFilter_UBLAS_MD7.lib")
+#pragma comment(lib, "lapack.lib")
+#pragma comment(lib, "blas.lib")
+#pragma comment(lib, "libf2c.lib")
 
 #		endif
 

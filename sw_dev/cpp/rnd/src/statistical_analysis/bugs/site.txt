@@ -1,8 +1,0 @@
-http://www.mrc-bsu.cam.ac.uk/bugs/
-http://www.mrc-bsu.cam.ac.uk/bugs/winbugs/contents.shtml
-http://www.rni.helsinki.fi/openbugs/OpenBUGS/Docu/WinBugs%20Manual.html
-
-http://www.openbugs.info/
-http://www.rni.helsinki.fi/openbugs/
-http://www.openbugs.info/Manuals/Manual.html
-http://mathstat.helsinki.fi/openbugs/Manuals/Manual.html

@@ -9,26 +9,33 @@
 
 int main(int argc, char *argv[])
 {
-	int condensation_main(int argc, char *argv[]);
-	int particle_filter_object_tracking_main(int argc, char *argv[]);
-
+	int bayespp_main(int argc, char *argv[]);
 	int particleplusplus_main(int argc, char *argv[]);
-	int smctc_main(int argc, char *argv[]);
+	int condensation_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "condensation (CONditional DENsity propagATION) algorithm -----------" << std::endl;
-		//retval = condensation_main(argc, argv);
-
-		std::cout << "\nparticle filter object tracking algorithm --------------------------" << std::endl;
-		retval = particle_filter_object_tracking_main(argc, argv);
+		std::cout << "Bayes++ library ----------------------------------------------------" << std::endl;
+		//	-. Kalman filter.
+		//	-. extended Kalman filter (EKF).
+		//	-. unscented Kalman filter (UKF).
+		//	-. covariance intersection filter.
+		//	-. U*d*U' factorisation of covariance filter: a 'Square-root' linearised Kalman filter.
+		//	-. covariance filter.
+		//	-. information filter.
+		//	-. information root filter.
+		//	-. iterated covariance filter.
+		//	-. sampling importance resampling (SIR) filter.
+		retval = bayespp_main(argc, argv);
 
 		std::cout << "\nParticle++ library -------------------------------------------------" << std::endl;
+		//	-. particle filter.
+		//	-. sequential Monte Carlo (SMC) method.
 		//retval = particleplusplus_main(argc, argv);
 
-		std::cout << "\nSequential Monte Carlo Template Class (SMCTC) library --------------" << std::endl;
-		//retval = smctc_main(argc, argv);
+		std::cout << "\nCONDENATION (CONditional DENsity propagATION) algorithm -----------" << std::endl;
+		//retval = condensation_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

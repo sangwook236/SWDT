@@ -120,6 +120,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="scythemcmc_lib\mcmc.h" />
+    <ClInclude Include="smctc\markovchain.h" />
+    <ClInclude Include="smctc\pffuncs.h" />
+    <ClInclude Include="smctc\simfunctions.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -176,6 +179,11 @@
     <ClCompile Include="scythe\scythe_optimization.cpp" />
     <ClCompile Include="scythe\scythe_parametric_bootstrap_example.cpp" />
     <ClCompile Include="scythe\scythe_random.cpp" />
+    <ClCompile Include="smctc\pffuncs.cpp" />
+    <ClCompile Include="smctc\simfunctions.cpp" />
+    <ClCompile Include="smctc\smctc_main.cpp" />
+    <ClCompile Include="smctc\smctc_pf_example.cpp" />
+    <ClCompile Include="smctc\smctc_rare_event_example.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

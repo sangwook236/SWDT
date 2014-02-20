@@ -1,5 +1,0 @@
-http://www.cs.utexas.edu/users/dml/datamining/spkmeans.html
-http://www.cs.utexas.edu/users/dml/datamining/spmeans.html
-
-http://www.cs.utexas.edu/users/dml/datamining/
-http://www.cs.utexas.edu/users/dml/
