@@ -103,6 +103,9 @@
     <ClCompile Include="mtl\mtl_vector_operation.cpp">
       <Filter>Source Files\mtl</Filter>
     </ClCompile>
+    <ClCompile Include="newmat\newmat_main.cpp">
+      <Filter>Source Files\newmat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -145,6 +148,9 @@
     </Filter>
     <Filter Include="Source Files\atlas">
       <UniqueIdentifier>{d9b585e3-0ece-4056-bfc5-f5ad59d483d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\newmat">
+      <UniqueIdentifier>{a3fb438f-8171-4262-851e-91148dc1f948}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

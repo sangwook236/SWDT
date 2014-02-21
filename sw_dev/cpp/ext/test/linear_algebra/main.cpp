@@ -12,6 +12,7 @@ int main(int argc, char* argv[])
 	int atlas_main(int argc, char* argv[]);
 	int eigen_main(int argc, char* argv[]);
 	int armadillo_main(int argc, char* argv[]);
+	int newmat_main(int argc, char* argv[]);
 	int cvm_main(int argc, char* argv[]);
 	int mtl_main(int argc, char* argv[]);
 
@@ -24,6 +25,7 @@ int main(int argc, char* argv[])
 		retval = eigen_main(argc, argv);
 		//retval = armadillo_main(argc, argv);
 		
+		//retval = newmat_main(argc, argv);  // not yet implemented.
 		//retval = cvm_main(argc, argv);
 
 		//retval = mtl_main(argc, argv);
