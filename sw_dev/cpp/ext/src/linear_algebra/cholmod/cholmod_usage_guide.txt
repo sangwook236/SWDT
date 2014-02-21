@@ -1,5 +1,5 @@
-[-] Building
+[-] General
 	-. SuiteSparse에 포함되어 있음.
-	-. reference site
+	-. Site
 		http://www.cise.ufl.edu/research/sparse/cholmod/
 		http://www.cise.ufl.edu/research/sparse/UFconfig/

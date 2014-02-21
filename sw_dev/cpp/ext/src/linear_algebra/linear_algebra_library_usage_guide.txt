@@ -1,4 +1,4 @@
-[] Libraries
+[-] Libraries
 	-. CBLAS
 		clapack-3.2.1-CMAKE versionÀÇ static library »ç¿ë
 		1. blas.a/lib

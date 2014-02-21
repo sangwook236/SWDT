@@ -1,4 +1,13 @@
-<<  Building  >>
+[-] General
+	-. Site
+		http://osl.iu.edu/research/mtl/
+
+		http://www.mtl4.org/
+		http://www.simunova.com/en/node/24
+
+		http://osl.iu.edu/research/mtl/mtl2.php3
+
+<< Building >>
 
 [-] MTL site로부터 file download
 	-. http://www.osl.iu.edu/research/mtl/
@@ -7,20 +16,18 @@
 	-. resulting include files are installed into a subdirectory
 		%MTL_ROOT%/mtl
 
-
-<<  Usage  >>
+<< Usage >>
 
 [-] building 하지 않고 사용
 [-] LAPACK과의 interfacing을 위해서는 LAPACK 관련 library가 추가적으로 요구됨
 	-. CLAPACK 사용 가능
 
-
-<<  Trouble Shooting  >>
+<< Trouble Shooting >>
 
 [-] '_Ptrit': is no element of 'std'
 	-. platform
 		MSVC 7.1
-	-. [ref]
+	-. Reference
 		http://geocities.yahoo.com.br/guiparreira/
 		http://www.osl.iu.edu/MailArchives/mtl-devel/msg00635.php
 [-] 

@@ -1,6 +1,8 @@
-[ref] sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
+[-] General
+	-. Reference
+		sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[] Building library in Cygwin
+[-] Building library in Cygwin
 	[ref]
 		${ATLAS_ROOT}/INSTALL.txt
 		${ATLAS_ROOT}/doc/Windows.txt

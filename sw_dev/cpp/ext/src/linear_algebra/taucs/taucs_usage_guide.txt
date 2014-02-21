@@ -1,4 +1,8 @@
-[-] Building (MSVC)
+[-] General
+	-. Site
+		http://www.tau.ac.il/~stoledo/taucs/
+
+[-] Building (VC)
 	-.
 		DOS 창에서 vsvars32.bat 실행
 		${TAUCS_HOME}/configure.bat 실행

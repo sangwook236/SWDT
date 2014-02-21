@@ -1,6 +1,8 @@
-[ref] sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
+[-] General
+	-. Reference
+		sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-<<  Building  >>
+<< Building >>
 
 [-] CLAPACK site로부터 file download
 	-. http://www.netlib.org/clapack/
@@ -26,8 +28,7 @@
 		${CLAPACK_ROOT}/install/f2c.h
 		${CLAPACK_ROOT}/clapack.h
 
-
-<<  Linking  >>
+<< Linking >>
 
 [-] 외부에서 CLAPACK library를 interfacing하기 위해 사용하는 header file
 	-. f2c.h & clapack.h

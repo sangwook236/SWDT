@@ -1,0 +1,15 @@
+[-] General
+	-. Site
+		http://www.robertnz.net/nm_intro.htm
+		http://www.robertnz.net/download.html
+	-. Info
+		newmat10.tar.gz or newmat10.zip - newmat10D source files
+		newmat11.tar.gz or newmat11.zip - newmat11 beta source files
+		nrx.tar.gz or nrx.zip - interface for Numerical Recipes in C++
+
+[-] Building (VC)
+	-. newmat makefile
+		nm_m6.mak
+		nm_m8.mak
+	-. NRX makefile
+		NRX_m6.mak

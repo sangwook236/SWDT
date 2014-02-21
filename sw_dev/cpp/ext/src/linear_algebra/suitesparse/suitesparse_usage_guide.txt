@@ -1,3 +1,16 @@
+[-] General
+	-. Site
+		http://www.cise.ufl.edu/research/sparse/SuiteSparse/
+		http://www.cise.ufl.edu/research/sparse/
+		http://www.cise.ufl.edu/research/sparse/UFconfig/
+
+		http://www.cise.ufl.edu/research/sparse/cholmod/
+		http://www.cise.ufl.edu/research/sparse/umfpack/
+		http://www.cise.ufl.edu/research/sparse/ldl/
+		http://www.cise.ufl.edu/research/sparse/SPQR/
+
+		http://matrixprogramming.com/2008/03/umfpack
+
 [-] Building - Cygwin GCC
 	-. set compiler & linker, etc
 		CC=i686-pc-mingw32-gcc

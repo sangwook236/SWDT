@@ -1,3 +1,10 @@
+[-] General
+	-. Site
+		http://xianyi.github.io/OpenBLAS/
+		https://github.com/xianyi/OpenBLAS
+
+		https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
+
 [-] Building in Win32/Cgywin
 	[ref] https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
 

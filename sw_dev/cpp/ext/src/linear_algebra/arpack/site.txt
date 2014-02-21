@@ -1,3 +1,0 @@
-http://www.caam.rice.edu/software/ARPACK/
-http://www.caam.rice.edu/~kristyn/parpack_home.html
-http://www.ime.unicamp.br/~chico/arpack++/

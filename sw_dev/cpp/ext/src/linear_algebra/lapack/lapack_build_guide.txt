@@ -1,9 +1,0 @@
-[ref] sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
-
-<<  Building in Windows  >>
-
-[ref] http://icl.cs.utk.edu/lapack-for-windows/lapack/
-
-<<  Building in MinGW  >>
-
-[ref] http://icl.cs.utk.edu/lapack-for-windows/lapack/

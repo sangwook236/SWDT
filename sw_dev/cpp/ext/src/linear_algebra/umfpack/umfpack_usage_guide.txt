@@ -1,7 +1,7 @@
-[-] Building
+[-] General
 	-. SuiteSparse에 포함되어 있음.
-	-. reference site
-		[ref] http://matrixprogramming.com/2008/03/umfpack
+	-. Site
+		http://matrixprogramming.com/2008/03/umfpack
 
 		http://www.cise.ufl.edu/research/sparse/umfpack/
 		http://www.cise.ufl.edu/research/sparse/UFconfig/
