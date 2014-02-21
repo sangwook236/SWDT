@@ -19,6 +19,9 @@
     <ClCompile Include="pcl\pcl_visualization.cpp">
       <Filter>Source Files\pcl</Filter>
     </ClCompile>
+    <ClCompile Include="3dtk\3dtk_main.cpp">
+      <Filter>Source Files\3dtk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -35,6 +38,9 @@
     </Filter>
     <Filter Include="Source Files\pcl">
       <UniqueIdentifier>{61665291-7c9d-4c3a-9c2e-e36d60e03986}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3dtk">
+      <UniqueIdentifier>{5954e328-43e5-4c72-9d22-e88602f87834}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

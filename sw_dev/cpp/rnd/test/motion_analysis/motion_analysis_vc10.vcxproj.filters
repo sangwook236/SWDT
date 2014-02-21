@@ -28,6 +28,9 @@
     <Filter Include="Source Files\particle_filter_object_tracking">
       <UniqueIdentifier>{78d0fc2e-7298-4663-823d-98a89282c65b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\mht">
+      <UniqueIdentifier>{28bc85d9-9539-46f5-bbe1-678866fd977c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -142,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="particle_filter_object_tracking_lib\utils.cpp">
       <Filter>Source Files\particle_filter_object_tracking_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mht\mht_main.cpp">
+      <Filter>Source Files\mht</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

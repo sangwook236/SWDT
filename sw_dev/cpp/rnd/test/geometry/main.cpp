@@ -10,6 +10,7 @@
 int main(int argc, char *argv[])
 {
 	int pcl_main(int argc, char *argv[]);
+	int threedtk_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -18,6 +19,9 @@ int main(int argc, char *argv[])
 
 		std::cout << "Point Cloud Library (PCL) -------------------------------------------" << std::endl;
 		pcl_main(argc, argv);
+
+		std::cout << "\n3DTK - The 3D Toolkit ------------------------------------------------" << std::endl;
+		threedtk_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

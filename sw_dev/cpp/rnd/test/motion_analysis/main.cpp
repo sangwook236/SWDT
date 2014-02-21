@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 {
 	int particle_filter_object_tracking_main(int argc, char *argv[]);
 	int klt_main(int argc, char *argv[]);
+	int mht_main(int argc, char *argv[]);
 	int opentld_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -24,6 +25,9 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nKanade-Lucas-Tomasi (KLT) Feature Tracker algorithm -----------------" << std::endl;
 		//retval = klt_main(argc, argv);
+
+		std::cout << "\nMultiple Hypothesis Tracking (MHT) algorithm ------------------------" << std::endl;
+		//retval = mht_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nOpenTLD algorithm ---------------------------------------------------" << std::endl;
 		//retval = opentld_main(argc, argv);

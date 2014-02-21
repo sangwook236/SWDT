@@ -50,7 +50,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./mht_lib;../../inc/opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
+      <AdditionalOptions>/DINFINITY=std::numeric_limits&lt;double&gt;::infinity() %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -66,7 +67,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./mht_lib;../../inc/opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
+      <AdditionalOptions>/DINFINITY=std::numeric_limits&lt;double&gt;::infinity() /DNAN=std::numeric_limits&lt;double&gt;::quiet_NaN() %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,6 +110,7 @@
     <ClCompile Include="klt_lib\writeFeatures.c" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mht\mht_main.cpp" />
     <ClCompile Include="opentld\opentld_main.cpp" />
     <ClCompile Include="particle_filter_object_tracking\particle_filter_object_tracking_main.cpp" />
     <ClCompile Include="particle_filter_object_tracking\particle_filter_object_tracking_observe_example.cpp" />

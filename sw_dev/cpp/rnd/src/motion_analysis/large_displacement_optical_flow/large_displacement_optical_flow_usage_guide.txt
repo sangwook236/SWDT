@@ -1,0 +1,7 @@
+[-] General
+	-. Site
+		http://lmb.informatik.uni-freiburg.de/resources/software.php
+	-. Reference
+		T. Brox, J. Malik
+		Large displacement optical flow: descriptor matching in variational motion estimation,
+		IEEE Transactions on Pattern Analysis and Machine Intelligence, 33(3):500-513, March 2011.
