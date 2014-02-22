@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 		pcl_main(argc, argv);
 
 		std::cout << "\n3DTK - The 3D Toolkit ------------------------------------------------" << std::endl;
-		threedtk_main(argc, argv);  // not yet implemented.
+		//threedtk_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

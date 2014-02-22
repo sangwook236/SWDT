@@ -11,7 +11,7 @@
 
 namespace {
 namespace local {
-	
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -19,13 +19,20 @@ namespace my_pcl {
 
 void greedy_projection()
 {
+#if 0
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>());
 	sensor_msgs::PointCloud2 cloud_blob;
-	pcl::io::loadPCDFile("./data/pcl/bun0.pcd", cloud_blob);
+	pcl::io::loadPCDFile("./data/geometry/pcl/bun0.pcd", cloud_blob);
 	pcl::fromROSMsg(cloud_blob, *cloud);
-	// the data should be available in cloud
+#else
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>());
+	pcl::PCLPointCloud2 cloud_blob;
+	pcl::io::loadPCDFile("./data/geometry/pcl/bun0.pcd", cloud_blob);
+	pcl::fromPCLPointCloud2(cloud_blob, *cloud);  // convert from pcl/PCLPointCloud2 to pcl::PointCloud<T>.
+#endif
+	// the data should be available in cloud.
 
-	// normal estimation
+	// normal estimation.
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> n;
 	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>());
 	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
@@ -34,43 +41,43 @@ void greedy_projection()
 	n.setSearchMethod(tree);
 	n.setKSearch(20);
 	n.compute(*normals);
-	// normals should not contain the point normals + surface curvatures
+	// normals should not contain the point normals + surface curvatures.
 
-	// concatenate the XYZ and normal fields
+	// concatenate the XYZ and normal fields.
 	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals(new pcl::PointCloud<pcl::PointNormal>());
 	pcl::concatenateFields(*cloud, *normals, *cloud_with_normals);
-	// cloud_with_normals = cloud + normals
+	// cloud_with_normals = cloud + normals.
 
-	// create search tree
+	// create search tree.
 	pcl::search::KdTree<pcl::PointNormal>::Ptr tree2(new pcl::search::KdTree<pcl::PointNormal>());
 	tree2->setInputCloud(cloud_with_normals);
 
-	// initialize objects
+	// initialize objects.
 	pcl::GreedyProjectionTriangulation<pcl::PointNormal> gp3;
 	pcl::PolygonMesh triangles;
 
-	// set the maximum distance between connected points (maximum edge length)
+	// set the maximum distance between connected points (maximum edge length).
 	gp3.setSearchRadius(0.025);
 
-	// set typical values for the parameters
+	// set typical values for the parameters.
 	gp3.setMu(2.5);
 	gp3.setMaximumNearestNeighbors(100);
-	gp3.setMaximumSurfaceAngle(M_PI / 4);  // 45 degrees
-	gp3.setMinimumAngle(M_PI / 18);  // 10 degrees
-	gp3.setMaximumAngle(2 * M_PI / 3);  // 120 degrees
+	gp3.setMaximumSurfaceAngle(M_PI / 4);  // 45 degrees.
+	gp3.setMinimumAngle(M_PI / 18);  // 10 degrees.
+	gp3.setMaximumAngle(2 * M_PI / 3);  // 120 degrees.
 	gp3.setNormalConsistency(false);
 
-	// get result
+	// get result.
 	gp3.setInputCloud(cloud_with_normals);
 	gp3.setSearchMethod(tree2);
 	gp3.reconstruct(triangles);
 
-	// additional vertex information
+	// additional vertex information.
 	std::vector<int> parts = gp3.getPartIDs();
 	std::vector<int> states = gp3.getPointStates();
 
-	// save output
-	pcl::io::saveVTKFile("./data/pcl/bun0_mesh.vtk", triangles);
+	// save output.
+	pcl::io::saveVTKFile("./data/geometry/pcl/bun0_mesh.vtk", triangles);
 
 	//
 	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));

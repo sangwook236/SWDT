@@ -11,7 +11,7 @@
 namespace {
 namespace local {
 
-// help
+// help.
 void printUsage(const char *progName)
 {
 	std::cout << "\n\nUsage: "<< progName << " [options]\n\n"
@@ -225,31 +225,31 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> meshesVis2(pcl::PointCloud<
 	//------------------------------------
 	//-----Add polygon meshes at cloud points-----
 	//------------------------------------
-	// concatenate the XYZ and normal fields*
+	// concatenate the XYZ and normal fields*.
 	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals(new pcl::PointCloud<pcl::PointNormal>());
 	pcl::concatenateFields(*cloud, *normals, *cloud_with_normals);
 	//* cloud_with_normals = cloud + normals
 
-	// create search tree*
+	// create search tree*.
 	pcl::search::KdTree<pcl::PointNormal>::Ptr tree(new pcl::search::KdTree<pcl::PointNormal>());
 	tree->setInputCloud(cloud_with_normals);
 
-	// initialize objects
+	// initialize objects.
 	pcl::GreedyProjectionTriangulation<pcl::PointNormal> gp3;
 	boost::shared_ptr<pcl::PolygonMesh> triangles(new pcl::PolygonMesh());
 
-	// set the maximum distance between connected points (maximum edge length)
+	// set the maximum distance between connected points (maximum edge length).
 	gp3.setSearchRadius(0.025);
 
-	// set typical values for the parameters
+	// set typical values for the parameters.
 	gp3.setMu(2.5);
 	gp3.setMaximumNearestNeighbors(100);
-	gp3.setMaximumSurfaceAngle(M_PI / 4);  // 45 degrees
-	gp3.setMinimumAngle(M_PI / 18);  // 10 degrees
-	gp3.setMaximumAngle(2 * M_PI / 3);  // 120 degrees
+	gp3.setMaximumSurfaceAngle(M_PI / 4);  // 45 degrees.
+	gp3.setMinimumAngle(M_PI / 18);  // 10 degrees.
+	gp3.setMaximumAngle(2 * M_PI / 3);  // 120 degrees.
 	gp3.setNormalConsistency(false);
 
-	// get result
+	// get result.
 	gp3.setInputCloud(cloud_with_normals);
 	gp3.setSearchMethod(tree);
 	gp3.reconstruct(*triangles);
@@ -281,32 +281,32 @@ void visualization(int argc, char **argv)
 	if (pcl::console::find_argument(argc, argv, "-s") >= 0)
 	{
 		simple = true;
-		std::cout << "Simple visualisation example\n";
+		std::cout << "Simple visualisation example" << std::endl;
 	}
 	else if (pcl::console::find_argument(argc, argv, "-c") >= 0)
 	{
 		custom_c = true;
-		std::cout << "Custom colour visualisation example\n";
+		std::cout << "Custom colour visualisation example" << std::endl;
 	}
 	else if (pcl::console::find_argument(argc, argv, "-r") >= 0)
 	{
 		rgb = true;
-		std::cout << "RGB colour visualisation example\n";
+		std::cout << "RGB colour visualisation example" << std::endl;
 	}
 	else if (pcl::console::find_argument(argc, argv, "-n") >= 0)
 	{
 		normals = true;
-		std::cout << "Normals visualisation example\n";
+		std::cout << "Normals visualisation example" << std::endl;
 	}
 	else if (pcl::console::find_argument(argc, argv, "-a") >= 0)
 	{
 		shapes = true;
-		std::cout << "Shapes visualisation example\n";
+		std::cout << "Shapes visualisation example" << std::endl;
 	}
 	else if (pcl::console::find_argument(argc, argv, "-v") >= 0)
 	{
 		viewports = true;
-		std::cout << "Viewports example\n";
+		std::cout << "Viewports example" << std::endl;
 	}
 	else
 	{
@@ -322,7 +322,7 @@ void visualization(int argc, char **argv)
 	// ------------------------------------
 	pcl::PointCloud<pcl::PointXYZ>::Ptr basic_cloud_ptr(new pcl::PointCloud<pcl::PointXYZ>());
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr point_cloud_ptr(new pcl::PointCloud<pcl::PointXYZRGB>());
-	std::cout << "Genarating example point clouds.\n\n";
+	std::cout << "Genarating example point clouds." << std::endl << std::endl;
 	// We're going to make an ellipse extruded along the z-axis. The colour for
 	// the XYZRGB cloud will gradually go from red to green to blue.
 	uint8_t r(255), g(15), b(15);
@@ -331,8 +331,10 @@ void visualization(int argc, char **argv)
 		for (float angle(0.0); angle <= 360.0; angle += 5.0)
 		{
 			pcl::PointXYZ basic_point;
-			basic_point.x = 0.5 * std::cosf(pcl::deg2rad(angle));
-			basic_point.y = std::sinf(pcl::deg2rad(angle));
+			//basic_point.x = 0.5 * std::cosf(pcl::deg2rad(angle));
+			basic_point.x = 0.5 * std::cos(pcl::deg2rad(angle));
+			//basic_point.y = std::sinf(pcl::deg2rad(angle));
+			basic_point.y = std::sin(pcl::deg2rad(angle));
 			basic_point.z = z;
 			basic_cloud_ptr->points.push_back(basic_point);
 
@@ -341,7 +343,7 @@ void visualization(int argc, char **argv)
 			point.y = basic_point.y;
 			point.z = basic_point.z;
 			uint32_t rgb = (static_cast<uint32_t>(r) << 16 | static_cast<uint32_t>(g) << 8 | static_cast<uint32_t>(b));
-			point.rgb = *reinterpret_cast<float*>(&rgb);
+			point.rgb = *reinterpret_cast<float *>(&rgb);
 			point_cloud_ptr->points.push_back(point);
 		}
 		if (z < 0.0)
@@ -405,7 +407,7 @@ void visualization(int argc, char **argv)
 	}
 	else if (meshes)
 	{
-		// FIXME [modify] >> incomplete subroutines
+		// FIXME [modify] >> incomplete subroutines.
 		//viewer = local::meshesVis(point_cloud_ptr, cloud_normals1);
 		viewer = local::meshesVis2(basic_cloud_ptr, cloud_normals1);
 	}

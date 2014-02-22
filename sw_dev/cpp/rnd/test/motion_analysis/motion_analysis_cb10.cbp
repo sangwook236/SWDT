@@ -91,6 +91,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="main.cpp" />
+		<Unit filename="mht/mht_main.cpp" />
 		<Unit filename="opentld/opentld_main.cpp" />
 		<Unit filename="particle_filter_object_tracking/particle_filter_object_tracking_main.cpp" />
 		<Unit filename="particle_filter_object_tracking/particle_filter_object_tracking_observe_example.cpp" />

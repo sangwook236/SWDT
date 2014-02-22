@@ -17,8 +17,8 @@ void visualization(int argc, char **argv);
 
 int pcl_main(int argc, char *argv[])
 {
-	// tutorials
-	//my_pcl::resampling();
+	// tutorials -----------------------------------------------------------
+	//my_pcl::resampling();  // not correctly working.
 	my_pcl::greedy_projection();
 
 	//my_pcl::visualization(argc, argv);

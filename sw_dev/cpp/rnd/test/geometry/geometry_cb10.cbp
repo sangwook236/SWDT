@@ -33,7 +33,33 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="/usr/local/include/3dtk-release-1.2" />
+			<Add directory="/usr/local/include/pcl-1.7" />
+			<Add directory="/usr/include/vtk-5.8" />
+			<Add directory="/usr/include/eigen3" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
+		<Linker>
+			<Add library="vtkRendering" />
+			<Add library="vtkGraphics" />
+			<Add library="vtkFiltering" />
+			<Add library="vtkCommon" />
+			<Add library="pcl_visualization" />
+			<Add library="pcl_surface" />
+			<Add library="pcl_features" />
+			<Add library="pcl_search" />
+			<Add library="pcl_kdtree" />
+			<Add library="pcl_io" />
+			<Add library="pcl_common" />
+			<Add library="boost_thread" />
+			<Add library="boost_system" />
+			<Add library="lapack" />
+			<Add library="blas" />
+			<Add directory="/usr/local/lib/3dtk-release-1.2" />
+			<Add directory="/usr/lib/atlas-base/atlas" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
+		<Unit filename="3dtk/3dtk_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="pcl/pcl_greedy_projection.cpp" />
 		<Unit filename="pcl/pcl_main.cpp" />

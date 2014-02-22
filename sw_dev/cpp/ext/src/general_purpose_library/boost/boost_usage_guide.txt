@@ -1,4 +1,8 @@
-<<  Building & Installation  >>
+[-] General
+	-. Site
+		http://www.boost.org/
+
+<< Building & Installation >>
 
 [-] boost site로 부터 file download
 	-. related files
@@ -47,8 +51,7 @@
 		boost_build_1_32_0_vc71.bat stage > error.log
 		boost_build_1_32_0_vc71.bat install > error.log
 
-
-<<  Trouble Shooting  >>
+<< Trouble Shooting >>
 
 [-] configuration of boost library
 	-. boost library에는 user configuration을 위한 file을 제공
