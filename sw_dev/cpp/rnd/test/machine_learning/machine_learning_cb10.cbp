@@ -43,6 +43,8 @@
 			<Add library="nlopt" />
 			<Add library="boost_timer" />
 			<Add library="lapack" />
+			<Add library="blas" />
+			<Add directory="/usr/lib/atlas-base/atlas" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="clustering/clustering_k_medoids.cpp" />
@@ -76,6 +78,7 @@
 		<Unit filename="libsvm_lib/svm.cpp" />
 		<Unit filename="libsvm_lib/svm.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="multiboost/multiboost_main.cpp" />
 		<Unit filename="mysvm/mysvm_learn_example.cpp" />
 		<Unit filename="mysvm/mysvm_main.cpp" />
 		<Unit filename="mysvm/mysvm_predict_example.cpp" />
