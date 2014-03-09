@@ -14,6 +14,8 @@ void binomial_example();
 void multinomial_example();
 void normal_mixture_example();
 
+void multi_scan_mcmcda_algorithm();
+
 }  // namespace my_mcmcpp
 
 int mcmcpp_main(int argc, char *argv[])
@@ -29,6 +31,7 @@ int mcmcpp_main(int argc, char *argv[])
 
 	// application ---------------------------------------------------------
 	{
+		my_mcmcpp::multi_scan_mcmcda_algorithm();
 	}
 
 	return 0;

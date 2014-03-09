@@ -68,7 +68,7 @@ public:
 	BinomialModel(const int nBurnin, const int nSample, const int thin, const int n, const int k)
 	: Model(nBurnin, nSample, thin, true, false), n_(n), k_(k)
 	{
-		step_.push_back(new StepType(new p(this)));
+		step_.push_back(new StepType(new p(this)));  // p.
 
 		step_[0]->SetBounds(Util::dbl_min, 1.0 - Util::dbl_eps);
 	}
@@ -103,7 +103,7 @@ public:
 	// log likelihood.
 	/*virtual*/ double Llike(const SampleVector &p0) const
 	{
-		const double p = boost::any_cast<double>(p0[0]);  // p0[0] == p.
+		const double p = boost::any_cast<double>(p0[0]);  // p0[0] = p.
 		return Density::dbinom(k_, n_, p, true);
 	}
 

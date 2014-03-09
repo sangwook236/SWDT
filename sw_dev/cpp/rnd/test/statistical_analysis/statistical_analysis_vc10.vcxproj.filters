@@ -182,5 +182,8 @@
     <ClCompile Include="smctc\smctc_rare_event_example.cpp">
       <Filter>Source Files\smctc</Filter>
     </ClCompile>
+    <ClCompile Include="mcmcpp\mcmcpp_mcmcda.cpp">
+      <Filter>Source Files\mcmcpp</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

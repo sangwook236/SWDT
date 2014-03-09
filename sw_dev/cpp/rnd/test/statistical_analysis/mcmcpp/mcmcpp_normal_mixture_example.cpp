@@ -62,7 +62,7 @@ public:
 		Assign(x);
 
 		std::ostringstream ost;
-		ost << "mu[" << idx_ + 1 << "]";
+		ost << "mu[" << (idx_ + 1) << "]";
 		SetLabel(ost.str());
 	}
 
@@ -86,7 +86,7 @@ public:
 		Assign(variance);
 
 		std::ostringstream ost;
-		ost << "sigma^2[" << idx_ + 1 << "]";
+		ost << "sigma^2[" << (idx_ + 1) << "]";
 		SetLabel(ost.str());
 	}
 
@@ -318,7 +318,7 @@ protected:
 
 private:
 	// since Parameters() above returns only the parameters we're interested,
-	// we can simply iterate through the entire SampleVector
+	// we can simply iterate through the entire SampleVector.
 	void write(const SampleVector &p)
 	{
 		std::ofstream outf(logFile_.c_str(), std::ios::app);
@@ -368,7 +368,7 @@ double mean::llike(const double mu) const
 	{
 		const int idx = mix_->Idx(i);
 		// only components whose index matches the mean index being updated contribute to the likelihood.
-		if (idx_ == idx)
+		if (idx == idx_)
 		{
 			llike += Density::dnorm(mix_->X(i), mu, mix_->Sd(idx), true);
 		}

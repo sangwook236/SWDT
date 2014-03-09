@@ -78,14 +78,14 @@ class NormalModel : public Model
 {
 public:
 	NormalModel(
-		const int nBurnin, const int nSample, const int thin, 
+		const int nBurnin, const int nSample, const int thin, const bool calculateLikelihood,
 		const std::vector<double> &x, const bool usePrecision, const bool useMedian
 	)
-	: Model(nBurnin, nSample, thin, true, useMedian), x_(x), usePrecision_(usePrecision)
+	: Model(nBurnin, nSample, thin, calculateLikelihood, useMedian), x_(x), usePrecision_(usePrecision)
 	{
-		step_.push_back(new SliceStep(new mean(this)));
-		step_.push_back(new SliceStep(new variance(this)));
-		step_.push_back(new FunctionStep(new precision(this)));
+		step_.push_back(new SliceStep(new mean(this)));  // mean.
+		step_.push_back(new SliceStep(new variance(this)));  // variance.
+		step_.push_back(new FunctionStep(new precision(this)));  // precision.
 
 		// set lower bound on variance.
 		step_[1]->SetBounds(Util::dbl_min, Util::dbl_max);
@@ -110,7 +110,7 @@ public:
 	double llike(const double mu, const double sd) const
 	{
 		const unsigned nElem = x_.size();
-		double llike = 0;
+		double llike = 0.0;
 		for (unsigned i = 0; i < nElem; ++i)
 		{
 			llike += Density::dnorm(x_[i], mu, sd, true);
@@ -124,15 +124,15 @@ public:
 		double var = 0.0;
 		if (usePrecision_)
 		{
-			var = 1 / boost::any_cast<double>(p[2]);  // p[2] == precision.
+			var = 1.0 / boost::any_cast<double>(p[2]);  // p[2] = precision.
 		}
 		else
 		{
-			var = boost::any_cast<double>(p[1]);  // p[1] == variance.
+			var = boost::any_cast<double>(p[1]);  // p[1] = variance.
 		}
 		const double sd = std::sqrt(var);
 
-		const double mu = boost::any_cast<double>(p[0]);  // p[0] == mean.
+		const double mu = boost::any_cast<double>(p[0]);  // p[0] = mean.
 
 		return llike(mu, sd);
 	}
@@ -191,11 +191,12 @@ void normal_example()
 	const int nBurnin = 1000;
 	const int nSample = 10000;
 	const int thin = 5;
+	const bool calculateLikelihood = true;
 
 	const bool usePrecision = true;  // precision or variance.
 	const bool useMedian = false;  // median or mean.
 
-	local::NormalModel model(nBurnin, nSample, thin, x, usePrecision, useMedian);
+	local::NormalModel model(nBurnin, nSample, thin, calculateLikelihood, x, usePrecision, useMedian);
 	std::cout << "start simulation ..." << std::endl;
 	model.Simulation(std::cerr, true);
 	std::cout << "end simulation ..." << std::endl;

@@ -4,6 +4,7 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "MultiBoostLib_d.lib")
 #pragma comment(lib, "vl.lib")
 //#pragma comment(lib, "libshogun-13.0.dll.lib")
 //#pragma comment(lib, "librlglue.lib")
@@ -11,6 +12,7 @@
 
 #		else
 
+#pragma comment(lib, "MultiBoostLib.lib")
 #pragma comment(lib, "vl.lib")
 //#pragma comment(lib, "libshogun-13.0.dll.lib")
 //#pragma comment(lib, "librlglue.lib")

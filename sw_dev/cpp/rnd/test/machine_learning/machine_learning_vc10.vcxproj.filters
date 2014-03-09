@@ -49,6 +49,9 @@
     <Filter Include="Source Files\dlib_ml">
       <UniqueIdentifier>{240a43ab-9675-43eb-ac48-9a940d64b1b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\multiboost">
+      <UniqueIdentifier>{d79b9bbc-c738-4927-896f-8fb56e2e5512}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -337,6 +340,9 @@
     </ClCompile>
     <ClCompile Include="dlib_ml\dlib_ml_main.cpp">
       <Filter>Source Files\dlib_ml</Filter>
+    </ClCompile>
+    <ClCompile Include="multiboost\multiboost_main.cpp">
+      <Filter>Source Files\multiboost</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -21,13 +21,13 @@ void SLAM_example();
 
 int bayespp_main(int argc, char *argv[])
 {
+	// example -------------------------------------------------------------
 	my_bayespp::simple_example();
 	//my_bayespp::simple_quadratic_observer_example();
 
 	//my_bayespp::position_and_velocity_filter_example();
 	//my_bayespp::position_and_velocity_SIR_filter_example();
 
-	// application ---------------------------------------------------------
 	//my_bayespp::SLAM_example();
 
 	return 0;

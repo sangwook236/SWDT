@@ -77,7 +77,7 @@ public:
 		void update() {}
 	};
 
-	// generate and dispose of generic kalman filter type.
+	// generate and dispose of generic Kalman filter type.
 	template<class Filter>
 	struct Generic_kalman_generator : public SLAM_filter::Kalman_filter_generator
 	{
@@ -118,16 +118,15 @@ void SLAMDemo::OneDExperiment()
 	location_predict.G.clear();
 	location_predict.G(0, 0) = 1.0;
 
-	// relative bbservation with noise model.
+	// relative observation with noise model.
 	Simple_observe observe0(5.0), observe1(3.0);
 	Simple_observe_inverse observe_new0(5.0), observe_new1(3.0);
 
-	// setup the initial state and covariance.
-	// location with no uncertainty.
+	// setup the initial state and covariance location with no uncertainty.
 	Bayesian_filter_matrix::Vec x_init(nL);
 	Bayesian_filter_matrix::SymMatrix X_init(nL, nL);
 	x_init[0] = 20.0;
-	X_init(0,0) = 0.0;
+	X_init(0, 0) = 0.0;
 
 	// truth model : location plus one map feature.
 	Bayesian_filter_matrix::Vec true0(nL + 1), true1(nL + 1);
@@ -161,44 +160,44 @@ void SLAMDemo::OneDExperiment()
 	kalm.observe_new(1, observe_new1, z);
 	fast.observe_new(1, observe_new1, z);
 
-	fast.update(); fast.statistics_sparse(stat); display("Feature Fast", stat);
-	kalm.update(); kalm.statistics_sparse(stat); display("Feature Kalm", stat);
+	fast.update();  fast.statistics_sparse(stat);  display("Feature Fast", stat);
+	kalm.update();  kalm.statistics_sparse(stat);  display("Feature Kalm", stat);
 
 	// predict the location state forward.
 	fast_location.predict (location_predict);
 	kalm.predict (location_predict);
-	fast.update(); fast.statistics_sparse(stat); display("Predict Fast", stat);
-	kalm.update(); kalm.statistics_sparse(stat); display("Predict Kalm", stat);
+	fast.update();  fast.statistics_sparse(stat);  display("Predict Fast", stat);
+	kalm.update();  kalm.statistics_sparse(stat);  display("Predict Kalm", stat);
 
 	// observation feature 0.
 	z = observe0.h(true0);
 	z[0] += 0.5;  // observe a relative position between location and map landmark.
 	fast.observe(0, observe0, z);
 	kalm.observe(0, observe0, z);
-	fast.update(); fast.statistics_sparse(stat); display("ObserveA Fast", stat);
-	kalm.update(); kalm.statistics_sparse(stat); display("ObserveA Kalm", stat);
+	fast.update();  fast.statistics_sparse(stat);  display("ObserveA Fast", stat);
+	kalm.update();  kalm.statistics_sparse(stat);  display("ObserveA Kalm", stat);
 
 	// observation feature 1.
 	z = observe1.h(true1);
-	z[0] += 1.0;  // Observe a relative position between location and map landmark
+	z[0] += 1.0;  // observe a relative position between location and map landmark.
 	fast.observe(1, observe1, z);
 	kalm.observe(1, observe1, z);
-	fast.update(); fast.statistics_sparse(stat); display("ObserveB Fast", stat);
-	kalm.update(); kalm.statistics_sparse(stat); display("ObserveB Kalm", stat);
+	fast.update();  fast.statistics_sparse(stat);  display("ObserveB Fast", stat);
+	kalm.update();  kalm.statistics_sparse(stat);  display("ObserveB Kalm", stat);
 
 	// observation feature 0.
 	z = observe0.h(true0);
-	z[0] += 0.5;  // Observe a relative position between location and map landmark
+	z[0] += 0.5;  // observe a relative position between location and map landmark.
 	fast.observe(0, observe0, z);
 	kalm.observe(0, observe0, z);
-	fast.update(); fast.statistics_sparse(stat); display("ObserveC Fast", stat);
-	kalm.update(); kalm.statistics_sparse(stat); display("ObserveC Kalm", stat);
+	fast.update();  fast.statistics_sparse(stat);  display("ObserveC Fast", stat);
+	kalm.update();  kalm.statistics_sparse(stat);  display("ObserveC Kalm", stat);
 
 	// forget feature 0.
 	fast.forget(0);
 	kalm.forget(0);
-	fast.update(); fast.statistics_sparse(stat); display("Forget Fast", stat);
-	kalm.update(); kalm.statistics_sparse(stat); display("Forget Kalm", stat);
+	fast.update();  fast.statistics_sparse(stat);  display("Forget Fast", stat);
+	kalm.update();  kalm.statistics_sparse(stat);  display("Forget Kalm", stat);
 }
 
 // experiment with information loss due to resampling.
@@ -221,12 +220,11 @@ void SLAMDemo::InformationLossExperiment()
 	Simple_observe observe0(5.0), observe1(3.0);
 	Simple_observe_inverse observe_new0(5.0), observe_new1(3.0);
 
-	// setup the initial state and covariance.
-	// location with no uncertainty.
+	// setup the initial state and covariance location with no uncertainty.
 	Bayesian_filter_matrix::Vec x_init(nL);
 	Bayesian_filter_matrix::SymMatrix X_init(nL, nL);
 	x_init[0] = 20.0;
-	X_init(0,0) = 0.0;
+	X_init(0, 0) = 0.0;
 
 	// truth model : location plus one map feature.
 	Bayesian_filter_matrix::Vec true0(nL + 1), true1(nL + 1);
@@ -272,7 +270,7 @@ void SLAMDemo::InformationLossExperiment()
 			kalm.predict(location_predict);
 			fast_location.predict(location_predict);
 
-			// observation feature 0 with bias
+			// observation feature 0 with bias.
 			z = observe0.h(true0);  // observe a relative position between location and map landmark.
 			z[0] += 0.5;
 			kalm.observe(0, observe0, z);

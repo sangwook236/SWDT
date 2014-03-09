@@ -16,6 +16,8 @@ int main(int argc, char *argv[])
 	int mysvm_main(int argc, char *argv[]);
 	int svm_light_main(int argc, char *argv[]);
 
+	int multiboost_main(int argc, char *argv[]);
+
 	int shogun_main(int argc, char *argv[]);
 	int torch_main(int argc, char *argv[]);
 	int dlib_ml_main(int argc, char *argv[]);
@@ -46,6 +48,9 @@ int main(int argc, char *argv[])
 		//	-. SVM alignment: structured SVMs for sequence alignment.
 		//	-. latent SVM struct: latent structured SVM.
 		retval = svm_light_main(argc, argv);  // not yet implemented.
+
+		std::cout << "\nmultiboost library --------------------------------------------------" << std::endl;
+		//retval = multiboost_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nshogun library ------------------------------------------------------" << std::endl;
 		//	-. multiple kernel learning (MKL).

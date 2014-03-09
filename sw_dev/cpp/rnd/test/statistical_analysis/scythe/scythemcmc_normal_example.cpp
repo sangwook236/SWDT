@@ -117,7 +117,7 @@ void normal_example()
 		mcmc_options.chains = 1;  // number of chains.
 		mcmc_options.sample_size = 1000;  // retained sample size.
 		mcmc_options.burnin = 0;  // burn in period.
-		mcmc_options.thin = 1;  // thinning iterval (1 = no thinning).
+		mcmc_options.thin = 1;  // thinning interval (1 = no thinning).
 		// random number seed (0 uses current timestamp, 1 attempts to load from lecuyer.seed file).
 		//	[ref] ShowUsage() in mcmc.h.
 		mcmc_options.random_seed[0] = 0L;
