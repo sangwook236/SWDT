@@ -1,2 +1,0 @@
-http://www.cs.tau.ac.il/~sagihed/ibfs/
-http://vision.csd.uwo.ca/code/

@@ -1,3 +1,0 @@
-http://moa.cs.waikato.ac.nz/
-http://moa.cs.waikato.ac.nz/moa-extensions/
-http://www.cs.waikato.ac.nz/~abifet/MOA/API/index.html

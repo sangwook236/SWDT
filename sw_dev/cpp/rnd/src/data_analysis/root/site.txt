@@ -1,2 +1,0 @@
-http://root.cern.ch/drupal/
-http://root.cern.ch/

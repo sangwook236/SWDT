@@ -1,2 +1,0 @@
-http://sourceforge.net/projects/openpnl/
-https://github.com/crishoj/OpenPNL

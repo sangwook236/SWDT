@@ -1,0 +1,15 @@
+[-] General
+	-. Site
+		http://svmlight.joachims.org/
+		http://svmlight.joachims.org/svm_struct.html
+		http://svmlight.joachims.org/svm_multiclass.html
+		http://svmlight.joachims.org/svm_hmm.html
+		http://www.cs.cornell.edu/people/tj/svm_light/svm_cfg.html
+
+		http://www.robots.ox.ac.uk/~vedaldi/code/svm-struct-matlab.html
+		http://tfinley.net/software/svmpython2/
+
+		http://www.cs.cornell.edu/~cnyu/latentssvm/
+		http://www.cs.cornell.edu/~cnyu/svm_alignment/
+
+		http://pr.cs.cornell.edu/sceneunderstanding/data/data.php

@@ -1,2 +1,0 @@
-http://phonegap.com/
-http://cordova.apache.org/

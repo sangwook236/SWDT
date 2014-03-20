@@ -1,2 +1,0 @@
-http://www.r-project.org/
-http://cran.r-project.org/

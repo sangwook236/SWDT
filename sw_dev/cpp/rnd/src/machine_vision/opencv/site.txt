@@ -1,9 +1,0 @@
-http://opencv.org/
-http://sourceforge.net/projects/opencvlibrary/
-http://opencv.willowgarage.com/
-http://docs.opencv.org/
-http://answers.opencv.org/
-http://code.opencv.org/
-
-http://code.opencv.org/projects/opencv_extra
-git://code.opencv.org/opencv_extra.git

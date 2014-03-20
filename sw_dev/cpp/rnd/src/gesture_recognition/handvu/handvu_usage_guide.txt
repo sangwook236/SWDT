@@ -1,0 +1,50 @@
+[-] General
+	-. Site
+		http://www.movesinstitute.org/~kolsch/HandVu/HandVu.html
+		http://ilab.cs.ucsb.edu/projects/mathias/handvu_ilab.html
+
+		http://www.magnusmax.com/studio/?p=1258
+		http://www.movesinstitute.org/~kolsch/HandVu/doc/InstallationWindows.html
+		http://www.movesinstitute.org/~kolsch/HandVu/doc/InstallationLinux.html
+
+[-] Building (MSVC)
+	-. building cubicles library
+		${HANDVU_HOME}/cubicles directory에 위치.
+		HandVu library building을 위해서는 필요하지 않음.
+		다른 executable example 들의 building을 위해 필요.
+
+		1. macro가 정의되어 있어야 함.
+			II_TYPE_FLOAT
+			IMG_LIB_OPENCV
+		2. linking 시에 아래와 같은 오류 메시지 발생.
+			fatal error LNK1181: cannot open input file 'D:\work_center\sw_dev\cpp\rnd\src\hand_recognition\handvu\handvu-beta3\cubicles\\cubiclesd.lib'
+			==> cubicles library의 custom build에서 오류가 발생.
+				생성된 cubicles library file의 path가 정확하지 않아서 발생함.
+				custom build 설정을 모두 지워도 됨.
+			==> cubicles library file을 ${HANDVU_HOME}/cubicles directory로 복사해야 함.
+		3. cubicles library의 MFC version은 std::nothrow 관련 오류 발생.
+			MFC 아닌 version을 사용하면 됨.
+
+	-. setting environment
+		[ref] http://www.movesinstitute.org/~kolsch/HandVu/doc/InstallationWindows.html
+		OpenCV & DirectShow 관련 설정을 해야 함.
+		==> build_handvu_set.bat file 참고.
+			1. "Visual Studio Command Prompt (2010)" 실행
+			2. build_handvu_set.bat 실행
+			3. devenv.exe 실행
+
+	-. building hv_OpenCV or hv_CvCam libraries
+		구버전 OpenCV library file을 linking하려고 함.
+			CV/CVd.lib
+			cxcore/cxcored.lib
+			cvaux/cvauxd.lib
+			highgui/highguid.lib
+			==> 최신 버전 OpenCV library file로 변경.
+				opencv_core243/opencv_core243d.lib
+				opencv_imgproc243/opencv_imgproc243d.lib
+				opencv_features2d243/opencv_features2d243d.lib
+				opencv_highgui243/opencv_highgui243d.lib
+				opencv_legacy243/opencv_legacy243d.lib
+				opencv_video243/opencv_video243d.lib
+		실행 시에 argument로 configuration file을 넘겨야 함.
+			${HANDVU_HOME}/config directory에 configuration file들이 존재.

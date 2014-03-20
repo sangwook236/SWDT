@@ -1,0 +1,7 @@
+[-] General
+	-. Site
+		http://cvprlab.uniparthenope.it/
+		http://cvprlab.uniparthenope.it/index.php?view=article&catid=46%3Adownload&id=92%3Amodlab&option=com_content&Itemid=92
+
+		http://www.na.icar.cnr.it/~maddalena.l/Welcome_file/MODLab.html
+		http://www.na.icar.cnr.it/~maddalena.l/MODLab/SoftwareSC-SOBS.html

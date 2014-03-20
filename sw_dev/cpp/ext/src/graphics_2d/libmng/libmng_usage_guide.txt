@@ -1,0 +1,5 @@
+[-] General
+	-. Site
+		http://www.libmng.com/
+		http://libmng.sourceforge.net/
+		http://www.libpng.org/pub/mng/

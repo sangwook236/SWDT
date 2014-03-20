@@ -1,0 +1,4 @@
+[-] General
+	-. Site
+		http://lpsolve.sourceforge.net/
+		http://sourceforge.net/projects/lpsolve/

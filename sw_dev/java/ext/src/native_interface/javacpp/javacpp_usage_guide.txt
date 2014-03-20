@@ -1,3 +1,7 @@
+[-] General
+	-. Site
+		http://code.google.com/p/javacpp/
+
 [-] Building
 	-. legacy library or code를 사용하기 위해 JavaCPP가 JNI를 위한 file을 생성해야 함
 		java file에 JNI를 위한 shared library file (e.g. jni********.dll file)을 생성하기 위한 annotation을 추가해야 함

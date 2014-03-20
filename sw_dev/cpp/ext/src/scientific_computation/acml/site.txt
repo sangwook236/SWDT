@@ -1,1 +1,0 @@
-http://developer.amd.com/cpu/Libraries/acml

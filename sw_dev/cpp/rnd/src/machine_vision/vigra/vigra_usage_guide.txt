@@ -1,0 +1,4 @@
+[-] General
+	-. Site
+		https://github.com/ukoethe/vigra
+		http://hci.iwr.uni-heidelberg.de/vigra/

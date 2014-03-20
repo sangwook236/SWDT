@@ -1,2 +1,0 @@
-http://statismo.github.io/statismo/
-https://github.com/statismo/statismo

@@ -1,3 +1,7 @@
+[-] General
+	-. Site
+		http://www.microsoft.com/en-us/kinectforwindows/
+
 [-] Depth
 	-. unsigned short type으로 저장.
 		하위 3 bits => player ID

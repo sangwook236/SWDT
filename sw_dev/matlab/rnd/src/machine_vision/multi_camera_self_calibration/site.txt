@@ -1,2 +1,0 @@
-http://cmp.felk.cvut.cz/~svoboda/SelfCal/index.html
-https://github.com/strawlab/MultiCamSelfCal/

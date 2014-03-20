@@ -1,2 +1,0 @@
-http://lpsolve.sourceforge.net/
-http://sourceforge.net/projects/lpsolve/

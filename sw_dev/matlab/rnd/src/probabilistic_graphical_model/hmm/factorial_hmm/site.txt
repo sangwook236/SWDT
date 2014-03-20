@@ -1,3 +1,0 @@
-http://mlg.eng.cam.ac.uk/zoubin/software.html
-http://www.gatsby.ucl.ac.uk/~zoubin/software.html
-http://www.variational-bayes.org/

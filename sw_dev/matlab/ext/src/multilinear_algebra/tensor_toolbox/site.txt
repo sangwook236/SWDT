@@ -1,1 +1,0 @@
-http://csmr.ca.sandia.gov/~tgkolda/TensorToolbox/

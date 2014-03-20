@@ -1,0 +1,59 @@
+[-] General
+	-. Site
+		http://vxl.sourceforge.net/
+
+[-] Building 1.14.0 (MSVC)
+	-. Static library로 building해야 함.
+	-. SSE2를 사용하는 경우 error 발생.
+		VNL_CONFIG_ENABLE_SSE2를 disable 시켜 SSE2를 사용하지 않는 것이 좋음.
+	-. Python 사용.
+		ver 3.0 이상은 지원하지 않음. (?)
+		ver. 2.7.3을 사용해야 함.
+	-. FFmpeg library 사용.
+		FFmpeg library의 header directory가 sub-directory를 가지는 경우,
+		HAS_FFMPEG_SEVERAL & FFMPEG_FOUND_SEVERAL macro를 CMAKE_CXX_FLAGS & CMAKE_C_FLAGS에 정의해야 함.
+		==> VxL library에서는 FFmpeg library 관련 error가 많이 발생하므로
+			FFmpeg library를 사용하지 않는 것이 좋음.
+
+[-] Building 1.17.0 (MSVC)
+	-. Static library로 building해야 함.
+	-. FFmpeg library 사용.
+		FFmpeg library의 header directory가 sub-directory를 가지는 경우,
+		HAS_FFMPEG_SEVERAL & FFMPEG_FOUND_SEVERAL macro를 CMAKE_CXX_FLAGS & CMAKE_C_FLAGS에 정의해야 함.
+		==> VxL library에서는 FFmpeg library 관련 error가 많이 발생하므로
+			FFmpeg library를 사용하지 않는 것이 좋음.
+	-. Python 사용.
+		ver 3.0 이상은 지원하지 않음.
+		==> ver. 2.7.?을 사용해야 함.
+		==> Debug build 시에 python27_d.lib를 찾는다는 오류가 발생.
+			CMake에서 Python 관련 설정을 하지 않아야 할 듯함.
+	-. expat library 사용.
+		==> Build 시에 expat.lib를 찾는다는 오류가 발생.
+			CMake에서 expat library 관련 설정을 하지 않아야 할 듯함.
+	-. boxm_sample_algo project에서 파일을 열 수 없다는 오류 발생
+		boxm_aux_scene+short.boxm_sample+BOXM_APM_MOG_GREY-.boxm_opt3_sample+BOXM_APM_MOG_GREY--.cxx
+		boxm_aux_scene+short.boxm_sample+BOXM_APM_SIMPLE_GREY-.boxm_opt3_sample+BOXM_APM_MOG_GREY--.cxx
+		==> 파일 이름에 문제가 있는 것을 판단됨.
+			파일 이름은 아래와 같이 다른 이름으로 변경.
+				boxm_aux_scene1.cxx
+				boxm_aux_scene2.cxx
+	-. boxm2_multi_refine::swap_data_per_block() 함수에서 return value가 없다는 오류 발생.
+		<오류메시지>
+			boxm2_multi_refine::swap_data_per_block must return a value
+		==> 함수의 return type을 void로 변경.
+	-. CMake GUI에서 _ITERATOR_DEBUG_LEVEL macro를 추가해야 함.
+		<오류메시지>
+			mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '0' doesn't match value '2'
+		==> VxL library가 linking하는 external library의 build mode가 달라서 발생.
+			release build (external-library-mrf.lib) or debug build (external-library-mrf.lib)가 일치하도록 linking library을 설정해야 함.
+				release build: ${VxL_HOME}/build_msvc10/src/external/Release
+				debug build: ${VxL_HOME}/build_msvc10/src/external/Debug
+		==> MSVC10의 경우 기본적으로 iterator debug level = 2.
+			CMAKE_CXX_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
+			CMAKE_C_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
+
+[-] Linking 1.17.0 (MSVC)
+	-. VxL library를 사용하는 경우 build mode를 정확히 구분해 linking해야 함.
+		release build: ${VxL_HOME}/build_msvc10/lib/Release
+		debug build: ${VxL_HOME}/build_msvc10/lib/Debug
+	-. 실제 사용되는 library를 적절히 linking해야 함.

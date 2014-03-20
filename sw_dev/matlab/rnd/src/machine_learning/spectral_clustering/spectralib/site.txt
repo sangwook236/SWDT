@@ -1,2 +1,0 @@
-http://www.stat.washington.edu/spectral/
-http://www.stat.washington.edu/spectral/#code

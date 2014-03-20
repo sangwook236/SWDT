@@ -1,3 +1,0 @@
-http://hci.iwr.uni-heidelberg.de/opengm2/
-http://hci.iwr.uni-heidelberg.de/MIP/Software/
-https://github.com/opengm

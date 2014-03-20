@@ -1,2 +1,0 @@
-http://ddemidov.github.io/vexcl/
-https://github.com/ddemidov/vexcl

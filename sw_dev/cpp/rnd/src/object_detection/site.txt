@@ -1,2 +1,0 @@
-http://libccv.org/doc/doc-dpm/
-http://libccv.org/

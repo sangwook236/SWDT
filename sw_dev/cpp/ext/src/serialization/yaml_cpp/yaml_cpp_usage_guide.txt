@@ -1,0 +1,9 @@
+[-] General
+	-. Site
+		https://code.google.com/p/yaml-cpp/
+
+[-] Setting CMake
+	-. Windows system에서 사용하기 위해서는 static library로 building해야 함.
+		export되는 API에 __declspec(dllexport)이 선언되어 있지 않음.
+		==> 따라서 BUILD_SHARED_LIBS 항목을 off로 설정.
+			BUILD_SHARED_LIBS -> off

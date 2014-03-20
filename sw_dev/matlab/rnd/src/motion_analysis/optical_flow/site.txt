@@ -1,4 +1,0 @@
-http://perception.inrialpes.fr/people/Chari/myweb/Software/
-http://people.csail.mit.edu/celiu/OpticalFlow/
-http://www.cs.brown.edu/~black/code.html
-http://www.mathworks.com/matlabcentral/fileexchange/23142-iterative-pyramidal-lk-optical-flow

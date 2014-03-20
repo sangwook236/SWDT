@@ -1,4 +1,0 @@
-http://www.orocos.org/kdl
-http://www.ros.org/wiki/kdl
-
-http://git.mech.kuleuven.be/robotics/orocos_kinematics_dynamics.git

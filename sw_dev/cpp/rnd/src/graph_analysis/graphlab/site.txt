@@ -1,7 +1,0 @@
-https://code.google.com/p/graphlabapi/
-http://graphlab.org/
-http://docs.graphlab.org/
-
-http://select.cs.cmu.edu/code/
-http://select.cs.cmu.edu/code/graphlab/
-http://select.cs.cmu.edu/code/graphlab/pmf.html

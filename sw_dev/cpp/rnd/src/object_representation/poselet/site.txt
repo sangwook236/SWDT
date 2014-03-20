@@ -1,4 +1,0 @@
-http://www.cs.berkeley.edu/~lbourdev/poselets/
-http://ttic.uchicago.edu/~smaji/
-
-http://vision.cs.uiuc.edu/humanparse/

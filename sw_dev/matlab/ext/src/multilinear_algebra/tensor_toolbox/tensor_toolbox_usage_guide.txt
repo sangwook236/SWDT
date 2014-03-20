@@ -1,2 +1,5 @@
-[-] manual
-	[ref] ${TENSOR_TOOLBOX_HOME}/tensor_toolbox_product_page.hmtl
+[-] General
+	-. Site
+		http://csmr.ca.sandia.gov/~tgkolda/TensorToolbox/
+	-. Manual
+		${TENSOR_TOOLBOX_HOME}/tensor_toolbox_product_page.hmtl

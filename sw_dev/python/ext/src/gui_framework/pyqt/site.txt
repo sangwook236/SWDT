@@ -1,1 +1,0 @@
-http://www.riverbankcomputing.co.uk/software/pyqt

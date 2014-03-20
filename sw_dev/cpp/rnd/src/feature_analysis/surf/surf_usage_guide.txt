@@ -1,0 +1,12 @@
+[-] General
+	-. Site
+		http://www.vision.ee.ethz.ch/~surf/
+		http://www.chrisevansdev.com/computer-vision-opensurf.html
+		http://code.google.com/p/opensurf1/
+
+		http://www.d2.mpi-inf.mpg.de/surf
+		http://homes.esat.kuleuven.be/~ncorneli/gpusurf/
+
+[-] Building (MSVC)
+	-. SURF library는 source code가 없음.
+	-. binary 형태로 제공되는 static library는 MSVC10에서 linking할 경우 run-time error 발생.

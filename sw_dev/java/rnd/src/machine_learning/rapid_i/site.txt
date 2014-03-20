@@ -1,5 +1,0 @@
-http://www.rapid-i.com/
-http://www.rapidminerresources.com/
-http://www.radoop.eu/
-
-http://www.slideshare.net/cloudera/hadoop-world-2011-radoop-a-graphical-analytics-tool-for-big-data-gabor-makrai-radoop

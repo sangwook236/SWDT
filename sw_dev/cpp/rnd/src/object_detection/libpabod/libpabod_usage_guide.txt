@@ -1,0 +1,76 @@
+[-] General
+	-. Site
+		http://www.uco.es/~in1majim/proyectos/libpabod/
+
+[-] Building v0.2.2 (MSVC)
+	-. static library로 building 해야 함.
+		shared library로 build하는 경우 import library file (*.lib)이 생성되지 않음.
+	-. CMake GUI에서 _ITERATOR_DEBUG_LEVEL macro를 추가해야 함.
+		MSVC10에서 기본적으로 iterator debug level = 2.
+		CMAKE_CXX_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
+		CMAKE_C_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
+	-. MATIO library를 찾을 수 없다는 오류가 발생하는 경우
+		pkg-config를 사용하여 library를 찾을 수 없어서 발생하는 오류임.
+			1. ${LibPoBOD_HOME}/CMakeLists.txt 내에서 발생. (53번째 행)
+				해당 내용을 아래와 같이 수정.
+					FIND_PACKAGE(PkgConfig)	#Enable PKG-CONFIG suport
+					PKG_CHECK_MODULES(MATIO  matio>=1.3.3 REQUIRED)
+					
+					<수정전>
+					IF (MATIO_FOUND)
+					  INCLUDE_DIRECTORIES(${MATIO_INCLUDE_DIRS})
+					  LINK_DIRECTORIES(${MATIO_LIBRARY_DIRS})
+					  SET(REQUIRED_LIBRARIES ${REQUIRED_LIBRARIES} ${MATIO_LIBRARIES})
+					  MESSAGE(STATUS "MATIO lib=${MATIO_LIBRARIES}")
+					ELSE()
+					  MESSAGE(FATAL_ERROR "Could not find matio library")
+					ENDIF()
+	
+					<수정후>
+					find_package(MATIO REQUIRED)
+					include_directories(${MATIO_INCLUDE_DIRS})
+					set(REQUIRED_LIBRARIES ${REQUIRED_LIBRARIES} ${MATIO_LIBRARIES})
+			2. 인터넷에서 FindMatio.cmake를 찾아 아래의 directory에 복사
+				${CMAKE_INSTALL}\share\cmake-2.8\Modules
+			3. cmake-gui에서 Configure 실행 후 추가 설정 수행
+	-. pthread 관련 오류.
+		pthread를 사용하여야 함.
+		OpenMP와 동시에 사용할 수 없음.
+		cmake-gui에서 OpenMP를 사용한다고 설정하더라도 pthread를 찾음.
+		==> pthread를 사용하기 위해서 USE_PTHREADS macro를 정의해야 함.
+			${LibPoBOD_HOME}/include/custom.h에 아래와 같이 설정.
+				#undef USE_OPENMP
+				#define USE_PTHREADS 1
+			(optional) CMAKE_CXX_FLAGS & CMAKE_C_FLAGS에 /DUSE_PTHREADS를 설정.
+		==> pthread header & library directory를 설정하여야 함.
+			cmake-gui에서는 설정되지 않는 듯함.
+			cmake-gui에서 아래의 항목을 설정하는 것이 편리하나 생성된 project file에 정상적으로 반영되지 않음.
+				PTHREAD_INCLUDE_DIR=D:/work_center/sw_dev/cpp/ext/inc/pthread
+				PTHREAD_LIBRARY=D:/work_center/sw_dev/cpp/ext/lib/pthreadVC2.lib
+			Visual Studio IDE에서 직접 설정해야 함.
+				D:/work_center/sw_dev/cpp/ext/inc/pthread
+				D:/work_center/sw_dev/cpp/ext/lib/pthreadVC2.lib
+	-. BY_NAME가 정의되지 않았다는 오류.
+		MATIO library의 정의가 변경되어 발생하는 것으로 보임.
+		==> 아래와 같이 수정.
+			BY_NAME -> MAT_BY_NAME
+	-. "left operand must be l-value"라는 오류 발생.
+		==> 아래와 같이 수정.
+			<수정전>
+			offset getOffset() const {return _offset;}
+			<수정후>
+			offset getOffset() const {return _offset;}
+			offset & getOffset() {return _offset;}
+	-. sys/time.h header file을 include할 수 없다는 오류 발생.
+		struct timeval & gettimeofday()를 사용할 수 없게 됨.
+		==> struct timeval는 Winsock2.h header file을 include 시키면 됨.
+			gettimeofday() 함수는 인터넷에서 찾은 Windows용을 사용.
+				${LibPoBOD_HOME}/tests/gettimeofday.h로 복사해서 사용.
+			<수정전>
+			#include <sys/time.h>
+			<수정후>
+			#include <Winsock2.h>
+			#include "gettimeofday.h"
+	-. CMake-GUI에 설정한 CMAKE_INSTALL_PREFIX가 정상적으로 작동하지 않음.
+		CMAKE_INSTALL_PREFIX에 지정된 directory에 install되는 것이 아니라
+		${LibPoBOD_HOME}/build_msvc10/bin directory하에 설치.

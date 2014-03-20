@@ -1,8 +1,0 @@
-https://github.com/wg-perception/PartsBasedDetector
-
--. source file과 같이 download한 모델이나 아래의 사이트에서 file 자체를 download하면 정상적인 model file이 받을 수 없음.
-	==> 정상적인 model file을 download하려면:
-		1. Git를 이용해 source file을 download.
-		2. 아래의 사이트에서 개별 model file을 열고 copy-and-paste.
-
-https://github.com/wg-perception/PartsBasedDetectorModels

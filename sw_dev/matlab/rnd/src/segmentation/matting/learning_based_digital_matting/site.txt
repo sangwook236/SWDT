@@ -1,3 +1,0 @@
-http://www.mathworks.com/matlabcentral/fileexchange/31412
-https://sites.google.com/site/zhengvision/
-http://www.alphamatting.com/code.php

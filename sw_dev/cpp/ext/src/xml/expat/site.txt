@@ -1,3 +1,0 @@
-http://expat.sourceforge.net/
-http://www.libexpat.org/
-http://www.jclark.com/xml/expat.html

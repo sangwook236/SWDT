@@ -1,0 +1,4 @@
+[-] General
+	-. Site
+		http://people.cs.ubc.ca/~murphyk/Software/HMM/hmm.html
+		https://code.google.com/p/pmtk3/

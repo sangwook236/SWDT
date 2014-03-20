@@ -1,0 +1,64 @@
+[-] General
+	-. Site
+		https://gforge.inria.fr/projects/mpfi/
+	-. Reference
+		gmp_usage_guide.txt
+
+		<주의> static library로 build 됨.
+
+[-] build static library in Cygwin & MinGW
+	run "Cygwin Bash" or "MSYS"
+	cd ${MPFI_HOME}
+	./configure --prefix=${MPFI_INSTALL} --with-mpfr-include=${MPFR_INSTALL}/include --with-mpfr-lib=${MPFR_INSTALL}/lib --with-gmp-include=${GMP_INSTALL}/include --with-gmp-lib=${GMP_INSTALL}/lib
+	make
+	(optional) make check
+	(optional) make install
+
+	=> .a file이 생성.
+
+[-] build shared library in Cygwin & MinGW
+	1. build shared library
+		run "Cygwin Bash" or "MSYS"
+		cd ${MPFI_HOME}
+		./configure --prefix=${MPFI_INSTALL} --with-mpfr-include=${MPFR_INSTALL}/include --with-mpfr-lib=${MPFR_INSTALL}/lib --with-gmp-include=${GMP_INSTALL}/include --with-gmp-lib=${GMP_INSTALL}/lib --disable-static --enable-shared
+		make
+		(optional) make check
+		(optional) make install
+
+		a windows DLL "cygmpfi-1.dll" (Cygwin) or "libmpfi-1.dll" (MinGW) will be generated.
+		
+		=> shared library가 생성되지 않음.
+			MPFI library에서 shared library를 지원하지 않는 듯함.
+
+	2. to ensure that these DLLs can be called by a Microsoft Visual C++ program
+		you must generate an import library (.lib) for them.
+
+		if you have an existing DLL already, you need to build a Cygwin-compatible import library.
+
+		(1) if there is no def file in ${MPFI_HOME}/src/.libs, generate def file
+			cd ${MPFI_HOME}/src/.libs or ${MPFI_INSTALL}/bin
+			echo EXPORTS > ${MPFI_LIB_NAME}.dll.def
+			nm ${MPFI_LIB_NAME}.dll | grep ' T _' | sed 's/.* T _//' >> ${MPFI_LIB_NAME}.dll.def
+
+			where ${MPFI_LIB_NAME} means cygmpfi-1 (Cygwin) or libmpfi-1 (MinGW)
+
+			Note that this will only work if the DLL is not stripped.
+			Otherwise you will get an error message: "No symbols in ${MPFI_LIB_NAME}.dll".
+
+		(2) once you have the ${MPFI_LIB_NAME}.dll.def file, you can create an import library from it like this.
+
+			(주의) dll file과 def file의 이름이 다르다면 def file의 이름과 형식에 맞추어 dll file과 lib file의 이름을 정해야 한다. (확인 필요)
+				e.g.) libmpfi-10.dll & libmpfi-1.dll.def ==> libmpfi-1.dll.dll & libmpfi-1.dll.def
+
+			cd ${MPFI_HOME}/src/.libs
+			mv ${MPFI_LIB_NAME}.dll ${MPFI_LIB_NAME}.dll.dll
+			(a) using dlltool in Cygwin & MinGW
+				dlltool --def ${MPFI_LIB_NAME}.dll.def --dllname ${MPFI_LIB_NAME}.dll.dll --output-lib ${MPFI_LIB_NAME}.dll.lib
+			(b) using Microsoft LIB tool
+				lib /machine:i386 /def:${MPFI_LIB_NAME}.dll.def /out:${MPFI_LIB_NAME}.dll.lib
+
+		(3) (optional) in Cygwin & MinGW
+			removes unnecessary information from executable binary programs and object files,
+			thus potentially resulting in better performance and sometimes significantly less disk space usage.
+
+			strip ${MPFI_LIB_NAME}.dll.lib

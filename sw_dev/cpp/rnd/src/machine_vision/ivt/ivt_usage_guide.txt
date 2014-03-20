@@ -1,0 +1,25 @@
+[-] General
+	-. Site
+		http://ivt.sourceforge.net/
+
+[-] Building in Linux
+	-. makefile 수정.
+		OpenGL, OpenCV, Video Capture (V4L, 1394, QuickTime)을 사용하기 위해서는 makefile에서 아래의 option을 설정해야 함.
+		${IVT_HOME}/src/Makefile.base.
+			<수정전>
+			USE_OPENGL = 0
+			USE_OPENCV = 0
+			USE_OPENCV_HIGHGUI = 0
+			USE_QUICKTIME = 0
+			USE_LIBDC1394_V2 = 0
+			USE_V4L = 0
+			<수정후>
+			USE_OPENGL = 1
+			USE_OPENCV = 1
+			USE_OPENCV_HIGHGUI = 1
+			USE_QUICKTIME = 1
+			USE_LIBDC1394_V2 = 1
+			USE_V4L = 1
+		==> 생성되는 결과 library.
+			libivtopencv.a
+			libivtvideocapture.a

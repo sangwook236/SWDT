@@ -1,0 +1,36 @@
+[-] General
+	-. Site
+		https://code.google.com/p/liblearning/
+
+[-] Building in Win32/VC
+	-. camp::Class::construct() 함수 관련 오류 발생.
+		==> 확인이 필요한 사항임. (???)
+			<수정전>
+			shared_ptr<ST> obj(metaclass.construct<ST>());
+			<수정후>
+			shared_ptr<ST> obj((ST *)metaclass.construct().pointer());
+	-. shared library가 아닌 static library로 building해야 함.
+		기본 설정은 shared library build로 되어 있음
+		하지만, import library (learning.lib)가 생성되지 않음.
+		==> CMake 설정을 변경해야 함.
+			하지만 CMake GUI에서는 변경할 수 없음.
+		==> CMake 설정 file을 직접 수정해야 함.
+			${LIBLEARNING_HOME}/lib/CMakeLists.txt.
+			<수정전>
+			include_directories(${CMAKE_SOURCE_DIR}/include D:/Lib/include D:/Lib/include/hdf5 D:/Lib/include/camp D:/Lib/include/log4cpp)
+			link_directories(D:/Lib/lib/boost D:/Lib/lib/camp D:/Lib/lib/hdf5 D:/Lib/lib/log4cpp)
+			add_library(learning SHARED ${srcfiles})
+			<수정후>
+			include_directories(${CMAKE_SOURCE_DIR}/include D:/work_center/sw_dev/cpp/ext/inc D:/work_center/sw_dev/cpp/ext/inc/hdf5/cpp D:/work_center/sw_dev/cpp/ext/inc/hdf5 D:/work_center/sw_dev/cpp/ext/inc/camp D:/work_center/sw_dev/cpp/ext/inc/log4cpp D:/work_center/sw_dev/cpp/ext/inc/eigen3)
+			link_directories(D:/work_center/sw_dev/cpp/ext/lib D:/work_center/sw_dev/cpp/rnd/lib)
+			add_library(learning STATIC ${srcfiles}) 
+	-. _ITERATOR_DEBUG_LEVEL macro가 일치되지 않는다는 오류 발생.
+		<오류메시지>
+			mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '0' doesn't match value '2'
+		==> VC10의 경우 기본적으로 iterator debug level = 2.
+			CMAKE_CXX_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
+			CMAKE_C_FLAGS_DEBUG => /D_ITERATOR_DEBUG_LEVEL=2
+		==> liblearning library가 사용하는 external library는 debug mode로 build된 것을 사용해야 함.
+			hdf5d.lib
+			hdf5_cppd.lib
+			log4cppd.lib

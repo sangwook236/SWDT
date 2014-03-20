@@ -1,2 +1,0 @@
-http://www.robots.ox.ac.uk/~vgg/research/hands/
-http://www.robots.ox.ac.uk/~vgg/data/hands/index.html

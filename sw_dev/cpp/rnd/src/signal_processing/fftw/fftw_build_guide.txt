@@ -1,9 +1,0 @@
-[-] Building in Win32/VC10
-	-. platform toolset, 'Windows7.1SDK'와 관련된 오류 메시지 발생.
-		<오류메시지>
-		pecified platform toolset (Windows7.1SDK) is not installed or invalid. Please make sure that a supported PlatformToolset value is selected.
-		==> Project setting에서 platform toolset이 잘못 지정되어 있어서 발생.
-			1) 'Project Property Pages' dialog 실행.
-			2) 'Configuration Properties -> General' 항목 선택.
-			3) 'Platform Toolset' 항목에서 설정을 변경.
-				Windows7.1SDK -> v100

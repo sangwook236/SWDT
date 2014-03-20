@@ -1,0 +1,4 @@
+[-] General
+	-. Site
+		http://phonegap.com/
+		http://cordova.apache.org/

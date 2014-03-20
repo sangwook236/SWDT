@@ -1,2 +1,0 @@
-http://ivrg.epfl.ch/research/superpixels
-http://ivrg.epfl.ch/supplementary_material/RK_SLICSuperpixels/

@@ -1,3 +1,0 @@
-http://code.google.com/p/bgscollection/
-
-svn checkout http://bgscollection.googlecode.com/svn/trunk/ bgscollection-read-only

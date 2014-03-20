@@ -1,2 +1,0 @@
-http://www5.informatik.uni-erlangen.de/research/software/range-imaging-toolkit-ritk/
-http://www5.cs.fau.de/research/software/ritk/

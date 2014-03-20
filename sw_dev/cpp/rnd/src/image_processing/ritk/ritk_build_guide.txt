@@ -1,6 +1,0 @@
-[-] Building using VC (ver. 1.1)
-	-. 사용하는 ITK library는 version 3.20.xx이어야 함.
-		[ref] ${RITK_HOME}/Documentation/InstallGuide.pdf
-		==> ITK library version 4.xx.xx에서는 정상적으로 building되지 않음.
-	-. QVTK library 관련 오류 발생.
-		==> VTK library가 Qt library를 사용하지 않는 경우 발생.

@@ -1,0 +1,22 @@
+[-] General
+	-. Site
+		http://ab-initio.mit.edu/wiki/index.php/NLopt
+
+[-] Building in Linux
+	[ref] http://ab-initio.mit.edu/wiki/index.php/NLopt_Installation
+
+	-. static library
+		./configure
+		make
+		sudo make install
+	-. shared library
+		./configure --enable-shared
+		make
+		sudo make install
+
+[-] Building in Windows
+	[ref] http://ab-initio.mit.edu/wiki/index.php/NLopt_on_Windows
+
+	-. using CMake
+		download CMakeLists.txt and config.cmake.h.in files form referene site.
+

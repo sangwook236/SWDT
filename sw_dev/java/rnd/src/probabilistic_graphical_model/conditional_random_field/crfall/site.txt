@@ -1,2 +1,0 @@
-http://www.cs.ubc.ca/~murphyk/Software/CRFall.zip
-http://www.cs.ubc.ca/~murphyk/Software/CRF/crf.html

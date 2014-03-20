@@ -1,0 +1,7 @@
+[-] General
+	-. Site
+		http://www.cs.ubc.ca/~lowe/keypoints/
+		http://robwhess.github.com/opensift/
+		http://www.nowozin.net/sebastian/tu-berlin-2006/libsift/
+
+		http://www.cs.unc.edu/~ccwu/siftgpu/

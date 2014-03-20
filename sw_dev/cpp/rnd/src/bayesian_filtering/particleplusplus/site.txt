@@ -1,2 +1,0 @@
-http://www.ece.sunysb.edu/~zyweng/particle.html
-http://zweng.github.io/particleplusplus/

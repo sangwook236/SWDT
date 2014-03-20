@@ -1,2 +1,0 @@
-http://www.adp-gmbh.ch/csharp/call_dll.html
-http://www.adp-gmbh.ch/win/misc/mingw/dll.html

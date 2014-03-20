@@ -1,5 +1,0 @@
-[-] Building
-
-[-] Trouble Shooting (ver. 1.1.1)
-	-. CMake option에서 BUILD_DOCUMENTATION을 disable 시킴.
-		BUILD_DOCUMENTATION을 enable 시킬 경우 doxygen에서 error 발생.

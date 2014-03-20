@@ -2,6 +2,10 @@
 	-. Site
 		http://www.boost.org/
 
+		http://sourceforge.net/adobe/genimglib/
+		http://mathema.tician.de/software/boost-bindings
+
+
 << Building & Installation >>
 
 [-] boost site∑Œ ∫Œ≈Õ file download

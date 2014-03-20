@@ -1,5 +1,0 @@
-http://sourceforge.net/projects/libjson/
-
-http://jsoncpp.sourceforge.net/
-
-https://code.google.com/p/rapidjson/

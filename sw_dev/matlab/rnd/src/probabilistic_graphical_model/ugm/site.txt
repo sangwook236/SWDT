@@ -1,6 +1,0 @@
-http://www.di.ens.fr/~mschmidt/Software/UGM.html
-
-http://www.di.ens.fr/~mschmidt/Software/minFunc.html
-http://www.di.ens.fr/~mschmidt/Software/minConf.html
-http://www.mathworks.com/matlabcentral/fileexchange/21310-maxflow
-http://vision.csd.uwo.ca/code/

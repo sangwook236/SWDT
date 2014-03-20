@@ -1,2 +1,0 @@
-http://www.models.life.ku.dk/nwaytoolbox
-http://www.mathworks.com/matlabcentral/fileexchange/1088-the-n-way-toolbox

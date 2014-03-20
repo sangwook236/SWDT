@@ -1,2 +1,0 @@
-http://maxent.sourceforge.net/about.html
-http://opennlp.apache.org/

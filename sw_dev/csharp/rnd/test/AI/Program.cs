@@ -10,8 +10,7 @@ namespace AI
         {
             try
             {
-                Console.WriteLine("AForge.NET library --------------------------------------------------");
-                aforge_net.AForge_NET_Main.run(args);  // not yet implemented.
+                throw new NotImplementedException();
             }
             catch (Exception e)
             {

@@ -1,4 +1,0 @@
-http://people.kyb.tuebingen.mpg.de/suvrit/work/progs/movmf.html
-http://people.kyb.tuebingen.mpg.de/suvrit/work/progs/movmf/ (old)
-http://people.kyb.tuebingen.mpg.de/suvrit/work/progs/
-http://cran.r-project.org/web/packages/movMF/

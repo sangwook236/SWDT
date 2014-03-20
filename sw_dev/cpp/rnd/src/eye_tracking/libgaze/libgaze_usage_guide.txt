@@ -1,0 +1,4 @@
+[-] General
+	-. Site
+		http://libgaze.sourceforge.net/
+		http://sourceforge.net/projects/libgaze/

@@ -1,0 +1,4 @@
+[-] General
+	-. Site
+		http://www.sintef.no/Projectweb/Geometry-Toolkits/GoTools/
+		http://www.sintef.no/Projectweb/Geometry-Toolkits/

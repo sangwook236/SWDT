@@ -1,2 +1,0 @@
-http://www.wlandry.net/Projects/FTensor
-https://code.google.com/p/ftensor/

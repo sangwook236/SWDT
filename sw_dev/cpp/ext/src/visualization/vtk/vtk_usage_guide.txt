@@ -1,0 +1,61 @@
+[-] General
+	-. Site
+		http://www.vtk.org
+
+<<  Building - MSVC6 >>
+
+[-] VTK site로 부터 file download
+	-. related files
+		VTK source code and examples
+		data file for VTK
+	-. http://www.vtk.org
+[-] CMake site로 부터 file download
+	-. http://www.cmake.org/
+[-] 압축 해제
+[-] CMake에 의해 생성된 build 관련 file이 생성된 directory 생성
+[-] CMakeSetup 실행
+	-. MS Windows에서 실행시 Win32용 installation package를 사용하지 말고
+		압축되어 있는 것을 받아 압축해제 후 사용하는 것이 편함
+[-] CMakeSetup 환경에서 option을 적절히 설정
+	-. VTK_DATA_ROOT 설정
+		e.g.) ${VTK_ROOT}/VTKData-release-4-2
+	-. STLport를 사용하기 위해서는 "/D VTK_USE_ANSI_STDLIB"를 compile option에 추가
+		CMAKE_CXX_FLAGS
+		CMAKE_C_FLAGS
+[-] CMakeSetup에서 build 설정 file 생성
+	-. "OK" button을 눌러 최종적으로 build 설정 file 생성
+[-] Visual Studio IDE에서 "${VTK_BUILD_ROOT}/CMake/VTK_LOADED_COMMANDS.dsw"를 open & building
+	-. "ALL_BUILD" project로 building
+	-. (optinal) "INSTALL" project로 building
+		>< %VTK_BUILD_ROOT%가 있는 drive의 하위에 생성
+			Drive:/usr/local/lib/vtk/CMake
+		>< building 후 release or debug directory에 생성된 dll file들을
+			"${VTK_BUILD_ROOT}/CMake" directory로 옮겨야 하는 경우도 있음
+[-] Visual Studio IDE에서 "${VTK_ROOT}/VTK.dsw"를 open & building
+	-. "ALL_BUILD" project로 building
+	-. "RUN_TESTS" project로 building
+		>< building된 VTK library의 검증을 위해
+	-. "INSTALL" project로 building
+		>< %VTK_BUILD_ROOT%가 있는 drive의 하위에 생성
+			Drive:/usr/local/include/vtk
+			Drive:/usr/local/lib/vtk
+		>< debug & release build의 file name이 동일
+			따라서 install시 덮어쓰지 않도록 주의하여야 함
+
+<<  Linking  >>
+
+[-] Include Path
+[-] Library Path
+	${VTK_BUILD_ROOT}/bin/Release
+	${VTK_BUILD_ROOT}/bin/Debug
+[-] Linking Library
+
+---------------------------------------------------------------------
+
+[-] Building ver. 5.10.0 (VC10)
+	-. 여러 실행 project에서 Qt library 관련 오류 발생.
+		<오류메시지>
+			syntax error : identifier 'QCleanlooksStyle'
+		==> Qt library가 QCleanlooksStyle class를 포함하고 있지 않아서 발생.
+			해당 부분을 주석 처리.
+				QApplication::setStyle(new QCleanlooksStyle);

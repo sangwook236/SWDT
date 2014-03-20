@@ -1,0 +1,8 @@
+[-] General
+	-. Site
+		http://www.torch.ch/
+		https://github.com/andresy/torch
+
+[-] Building Torch7 in Win32/VC10
+	-. Torch7 is not yet Windows compatible, coming soon.
+		[ref] http://www.torch.ch/manual/install/index

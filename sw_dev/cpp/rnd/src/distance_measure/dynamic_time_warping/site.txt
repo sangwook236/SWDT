@@ -1,3 +1,0 @@
-https://code.google.com/p/lbimproved/
-
-[ref] Fast dynamic time warping algorithm is implemented in swl_rnd_util project of SWL CPP Library.
