@@ -6,7 +6,7 @@
 namespace {
 namespace local {
 
-// simple Prediction model.
+// simple prediction model.
 class Simple_predict : public Bayesian_filter::Linear_predict_model
 {
 public:
@@ -22,7 +22,7 @@ public:
 	}
 };
 
-// simple Observation model.
+// simple observation model.
 class Simple_observe : public Bayesian_filter::Linear_uncorrelated_observe_model
 {
 public:
