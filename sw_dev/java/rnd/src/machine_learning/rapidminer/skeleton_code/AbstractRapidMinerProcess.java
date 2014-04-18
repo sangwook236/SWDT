@@ -23,7 +23,6 @@ public abstract class AbstractRapidMinerProcess
 	
 	public static void init() {
 		if(initRapidminer) {
-			
 			RapidMiner.setExecutionMode(ExecutionMode.EMBEDDED_WITHOUT_UI);
 			System.setProperty("rapidminer.home", new File("res/rapidminer/home").getAbsolutePath());
 			
