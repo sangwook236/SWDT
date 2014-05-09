@@ -5,6 +5,7 @@
 # ---------------------------------------------------------
 
 export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+#export R_HOME=/usr/bin/R
 #export RAPIDMINER_HOME=/usr/lib/Rapid-I/RapidMiner5
 export RAPIDMINER_HOME=/home/sangwook/work/sw_dev/java/rnd/src/machine_learning/rapid_i/rapidminer-5.2.008/rapidminer
 

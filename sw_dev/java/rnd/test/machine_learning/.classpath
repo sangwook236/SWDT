@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="D:/work/sw_dev/java/rnd/lib/weka-src.jar"/>
 	<classpathentry kind="lib" path="D:/work/sw_dev/java/ext/lib/mysql-connector-java-5.1.22-bin.jar"/>
 	<classpathentry kind="lib" path="D:/work/sw_dev/java/ext/lib/sqlite-jdbc-3.7.2.jar"/>
+	<classpathentry kind="lib" path="D:/MyProgramFiles/Rapid-I/RapidMiner5/lib/rapidminer.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

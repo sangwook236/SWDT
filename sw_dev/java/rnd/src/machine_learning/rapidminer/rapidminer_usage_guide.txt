@@ -6,12 +6,19 @@
 
 		http://rapidminer.com/learning/getting-started/
 		http://www.slideshare.net/cloudera/hadoop-world-2011-radoop-a-graphical-analytics-tool-for-big-data-gabor-makrai-radoop
+	-. Documentation
+		http://www.rapidminer.com/documentation/
 
 [-] RapidMiner 사용
 	-. RapidMiner GUI 환경에서
-		1. RapidMiner GUI 환경에서 analysis process를 작성.
-		2. RapidMiner 환경의 입력 port (inp)를 입력 데이터를 받을 Operator와 연결.
-		3. analysis process를 XML file로 저장.
+		1. RapidMiner GUI 환경에서 (analysis) process를 작성.
+		2. RapidMiner 환경에서 Main Process의 입출력 port를 Operator의 입출력 port와 연결.
+			Main Process의 입력 port (inp)를 입력 데이터를 받을 Operator와 연결.
+			Main Process의 출력 port (res)를 출력 데이터를 받을 Operator와 연결.
+			Java Programming 시에 Main Process의 입출력 port 번호는 0번부터 시작.
+			Process or Operator에 breakpoint가 걸려 있으면 안됨.
+		3. (analysis) process를 XML file로 저장.
+			"Export Process..." menu 이용.
 
 	-. Java IDE 환경에서
 		1. AbstractRapidMinerProcess로부터 상속된 process(?) class 생성.

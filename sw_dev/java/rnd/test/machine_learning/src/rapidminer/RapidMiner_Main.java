@@ -4,7 +4,15 @@ public class RapidMiner_Main {
 	
 	public static void run(String[] args)
 	{
-		System.err.println("not yet implemented");
+		runPCASample();
 	}
 	
+	private static void runPCASample()
+	{
+		RapidMinerPCA proc = new RapidMinerPCA();
+		
+		proc.loadData();
+		proc.run();
+	}
+
 }
