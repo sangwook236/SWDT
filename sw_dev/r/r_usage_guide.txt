@@ -1,4 +1,6 @@
 [-] General
 	-. Site
 		http://www.r-project.org/
+		http://www.rstudio.com/
+
 		http://cran.r-project.org/
