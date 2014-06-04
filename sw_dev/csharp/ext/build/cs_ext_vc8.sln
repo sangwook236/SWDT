@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "logging_vc8", "..\test\logg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit_vc8", "..\test\nunit\nunit_vc8.csproj", "{383CE2C8-BA38-45EA-9888-15A4A31545AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "math_library_vc8", "..\test\math_library\math_library_vc8.csproj", "{FEB1CB04-A7AE-4B88-9C86-4433772881F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mathematics_vc8", "..\test\mathematics\mathematics_vc8.csproj", "{FEB1CB04-A7AE-4B88-9C86-4433772881F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

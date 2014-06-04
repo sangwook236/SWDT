@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "logging_vc10", "..\test\log
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit_vc10", "..\test\nunit\nunit_vc10.csproj", "{383CE2C8-BA38-45EA-9888-15A4A31545AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "math_library_vc10", "..\test\math_library\math_library_vc10.csproj", "{FEB1CB04-A7AE-4B88-9C86-4433772881F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mathematics_vc10", "..\test\mathematics\mathematics_vc10.csproj", "{FEB1CB04-A7AE-4B88-9C86-4433772881F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "database_vc10", "..\test\database\database_vc10.csproj", "{12F41AD3-9585-4D4D-980B-721988AFB800}"
 EndProject

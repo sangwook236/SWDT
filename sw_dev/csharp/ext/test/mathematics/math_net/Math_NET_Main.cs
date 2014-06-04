@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace math_library.math_net
+namespace mathematics.math_net
 {
     class Math_NET_Main
     {

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("math_library")]
+[assembly: AssemblyTitle("mathematics")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("KAIST AIM Lab")]
-[assembly: AssemblyProduct("math_library")]
+[assembly: AssemblyProduct("mathematics")]
 [assembly: AssemblyCopyright("Copyright ⓒ KAIST AIM Lab 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
