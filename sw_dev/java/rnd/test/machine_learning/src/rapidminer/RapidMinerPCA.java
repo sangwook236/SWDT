@@ -1,21 +1,21 @@
 package rapidminer;
 
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 import java.io.File;
 import java.io.IOException;
 
-import com.rapidminer.example.Attribute;
+//import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
-import com.rapidminer.example.table.AttributeFactory;
-import com.rapidminer.example.table.DoubleArrayDataRow;
-import com.rapidminer.example.table.MemoryExampleTable;
+//import com.rapidminer.example.table.AttributeFactory;
+//import com.rapidminer.example.table.DoubleArrayDataRow;
+//import com.rapidminer.example.table.MemoryExampleTable;
 import com.rapidminer.gui.renderer.models.EigenvectorModelEigenvalueRenderer.EigenvalueTableModel;
 import com.rapidminer.gui.renderer.models.EigenvectorModelEigenvectorRenderer.EigenvectorTableModel;
 import com.rapidminer.operator.IOContainer;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.features.transformation.PCAModel;
-import com.rapidminer.tools.Ontology;
+//import com.rapidminer.tools.Ontology;
 
 
 /**
