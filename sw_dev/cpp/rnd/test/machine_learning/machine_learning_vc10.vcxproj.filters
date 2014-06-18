@@ -52,6 +52,9 @@
     <Filter Include="Source Files\multiboost">
       <UniqueIdentifier>{d79b9bbc-c738-4927-896f-8fb56e2e5512}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\encog">
+      <UniqueIdentifier>{a1470d39-6641-47e5-a4ae-d1d2a96951b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -343,6 +346,9 @@
     </ClCompile>
     <ClCompile Include="multiboost\multiboost_main.cpp">
       <Filter>Source Files\multiboost</Filter>
+    </ClCompile>
+    <ClCompile Include="encog\encog_main.cpp">
+      <Filter>Source Files\encog</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

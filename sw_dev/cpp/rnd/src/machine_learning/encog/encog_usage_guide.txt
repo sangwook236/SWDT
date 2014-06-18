@@ -1,0 +1,5 @@
+[-] General
+	-. Site
+		http://www.heatonresearch.com/
+		http://www.heatonresearch.com/encog
+		https://github.com/encog

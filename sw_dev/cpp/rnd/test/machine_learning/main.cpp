@@ -1,4 +1,4 @@
-//include "stdafx.h"
+	//include "stdafx.h"
 #if defined(WIN32)
 #include <vld/vld.h>
 #endif
@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 	int multiboost_main(int argc, char *argv[]);
 
 	int shogun_main(int argc, char *argv[]);
+	int encog_main(int argc, char *argv[]);
 	int torch_main(int argc, char *argv[]);
 	int dlib_ml_main(int argc, char *argv[]);
 	int liblearning_main(int argc, char *argv[]);
@@ -58,6 +59,21 @@ int main(int argc, char *argv[])
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		retval = shogun_main(argc, argv);
 #endif
+
+		std::cout << "\nEncog Machine Learning Framework ------------------------------------" << std::endl;
+		//	-. Java, .NET and C/C++.
+		//	-. neural network.
+		//		ADALINE neural network.
+		//		adaptive resonance theory 1 (ART1).
+		//		bidirectional associative memory (BAM).
+		//		Boltzmann machine.
+		//		feedforward neural network.
+		//		recurrent neural network.
+		//		Hopfield neural network.
+		//		radial basis function network (RBFN).
+		//		neuroevolution of augmenting topologies (NEAT).
+		//		(recurrent) self organizing map (SOM).
+		retval = encog_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\ntorch library -------------------------------------------------------" << std::endl;
 		//  -. tensor.

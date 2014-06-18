@@ -102,6 +102,7 @@
     <ClCompile Include="clustering\clustering_main.cpp" />
     <ClCompile Include="clustering\clustering_spectral_clustering.cpp" />
     <ClCompile Include="dlib_ml\dlib_ml_main.cpp" />
+    <ClCompile Include="encog\encog_main.cpp" />
     <ClCompile Include="kmeanspp_lib\KMeans.cpp" />
     <ClCompile Include="kmeanspp_lib\KmTree.cpp" />
     <ClCompile Include="kmeanspp_lib\KmUtils.cpp" />
