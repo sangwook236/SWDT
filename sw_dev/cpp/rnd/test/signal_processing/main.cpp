@@ -12,6 +12,8 @@ int main(int argc, char *argv[])
 {
 	int fast_bilateral_filter_main(int argc, char *argv[]);
 	int nyu_depth_toolbox_v2_main(int argc, char *argv[]);
+	int itpp_main(int argc, char *argv[]);
+	int spuc_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -19,10 +21,20 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "fast bilateral filter algorithm -------------------------------------" << std::endl;
-		retval = fast_bilateral_filter_main(argc, argv);
+		//retval = fast_bilateral_filter_main(argc, argv);
 
 		std::cout << "\nNYU Depth Toolbox V2 ------------------------------------------------" << std::endl;
 		//retval = nyu_depth_toolbox_v2_main(argc, argv);
+
+		std::cout << "\nIT++ library --------------------------------------------------------" << std::endl;
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+		retval = itpp_main(argc, argv);
+#else
+        std::cout << "\nThis library can be used in unix-like systems" << std::endl;
+#endif
+
+		std::cout << "\nsignal processing using C++ (SPUC) library --------------------------" << std::endl;
+		//retval = spuc_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

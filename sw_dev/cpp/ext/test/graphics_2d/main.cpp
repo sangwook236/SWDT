@@ -16,9 +16,12 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "Cairo library -------------------------------------------------------" << std::endl;
 		retval = cairo_main(argc, argv);
+		std::cout << "\nGD Graphics Library -------------------------------------------------" << std::endl;
 		//retval = gd_main(argc, argv);
-		
+
+		std::cout << "\nDeveloper's Image Library (DevIL) -----------------------------------" << std::endl;
 		//retval = devil_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

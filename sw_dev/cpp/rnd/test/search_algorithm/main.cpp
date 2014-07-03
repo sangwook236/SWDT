@@ -28,6 +28,8 @@ int main(int argc, char *argv[])
 		std::cout << "\nlibkdtree++ library -------------------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		//retval = libkdtreepp_main(argc, argv);
+#else
+        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 
 		std::cout << "\nA Library for Approximate Nearest Neighbor Searching (ANN) ----------" << std::endl;
@@ -39,12 +41,16 @@ int main(int argc, char *argv[])
 		std::cout << "\nLSHKIT library ------------------------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		//retval = lshkit_main(argc, argv);
+#else
+        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 
 		std::cout << "\nslash library -------------------------------------------------------" << std::endl;
 		//  -. Spherical LSH (SLSH).
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		//retval = slash_main(argc, argv);
+#else
+        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 	}
     catch (const std::bad_alloc &e)

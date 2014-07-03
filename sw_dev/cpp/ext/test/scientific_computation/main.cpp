@@ -15,7 +15,9 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "GNU Scientific Library (GSL) ----------------------------------------" << std::endl;
 		retval = gsl_main(argc, argv);
+		std::cout << "\nGSLwrap library -----------------------------------------------------" << std::endl;
 		//retval = gslwrap_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

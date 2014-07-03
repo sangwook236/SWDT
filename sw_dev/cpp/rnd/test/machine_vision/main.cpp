@@ -66,6 +66,8 @@ int main(int argc, char *argv[])
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		// TODO [check] >> run-time error in Windows. not correctly working.
 		//retval = ccv_main(argc, argv);
+#else
+        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 
 		std::cout << "\nVision with Generic Algorithms (VIGRA) library ----------------------" << std::endl;

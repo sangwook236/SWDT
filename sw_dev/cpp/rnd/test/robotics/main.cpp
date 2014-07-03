@@ -29,6 +29,8 @@ int main(int argc, char *argv[])
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		// [ref] http://wiki.ros.org/ko/cturtle/Installation/Windows
 		//retval = ros_main(argc, argv);  // not yet implemented.
+#else
+        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 
 		std::cout << "\nOpen Motion Planning Library (OMPL) ---------------------------------" << std::endl;

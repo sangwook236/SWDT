@@ -15,8 +15,10 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "Computational Geometry Algorithms Library (CGAl) --------------------" << std::endl;
 		retval = cgal_main(argc, argv);
 
+		std::cout << "\nOpenMesh library ----------------------------------------------------" << std::endl;
 		retval = openmesh_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

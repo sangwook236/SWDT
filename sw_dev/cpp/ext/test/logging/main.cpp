@@ -9,10 +9,11 @@
 int main(int argc, char *argv[])
 {
 	int log4cxx_main(int argc, char *argv[]);
-	
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "log4cxx libary ------------------------------------------------------" << std::endl;
 		retval = log4cxx_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

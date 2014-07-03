@@ -9,10 +9,11 @@
 int main(int argc, char *argv[])
 {
 	int stlport_main(int argc, char *argv[]);
-	
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "STLport library -----------------------------------------------------" << std::endl;
 		retval = stlport_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)

@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "Threading Building Blocks (TBB) library -----------------------------" << std::endl;
 		retval = tbb_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

@@ -58,6 +58,8 @@ int main(int argc, char *argv[])
 		//	-. Gaussian process (GP) regression.
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		retval = shogun_main(argc, argv);
+#else
+        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 
 		std::cout << "\nEncog Machine Learning Framework ------------------------------------" << std::endl;
@@ -80,6 +82,8 @@ int main(int argc, char *argv[])
 		//	-. deep learning.
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		retval = torch_main(argc, argv);  // not yet implemented.
+#else
+        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 
 		std::cout << "\nDlib-ml library -----------------------------------------------------" << std::endl;

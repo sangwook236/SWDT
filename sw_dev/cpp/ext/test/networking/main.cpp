@@ -9,10 +9,11 @@
 int main(int argc, char *argv[])
 {
 	int poco_main(int argc, char *argv[]);
-	
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "POCO C++ Libraries --------------------------------------------------" << std::endl;
 		retval = poco_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)

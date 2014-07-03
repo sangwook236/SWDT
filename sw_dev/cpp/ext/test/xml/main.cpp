@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "Xerces-C++ library --------------------------------------------------" << std::endl;
 		retval = xercesc_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

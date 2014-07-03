@@ -15,8 +15,10 @@ int main(int argc, char *argv[])
     int retval = EXIT_SUCCESS;
     try
     {
+		std::cout << "Compute Unified Device Architecture (CUDA) --------------------------" << std::endl;
         retval = cuda_main(argc, argv);
 
+		std::cout << "\nThrust library ------------------------------------------------------" << std::endl;
         //retval = thrust_main(argc, argv);
     }
     catch (const std::bad_alloc &e)

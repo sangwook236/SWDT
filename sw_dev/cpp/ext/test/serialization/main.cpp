@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "Rapidjson  library --------------------------------------------------" << std::endl;
+		std::cout << "Rapidjson library ---------------------------------------------------" << std::endl;
 		retval = rapidjson_main(argc, argv);
 
 		std::cout << "\nyaml-cpp library ----------------------------------------------------" << std::endl;

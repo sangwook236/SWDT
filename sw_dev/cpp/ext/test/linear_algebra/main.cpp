@@ -19,15 +19,22 @@ int main(int argc, char* argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "Linear Algebra PACKage (LAPACK) -------------------------------------" << std::endl;
 		//retval = lapack_main(argc, argv);
-		
+
+		std::cout << "\nAutomatically Tuned Linear Algebra Software (ATLAS) -----------------" << std::endl;
 		//retval = atlas_main(argc, argv);
+		std::cout << "\nEigen library -------------------------------------------------------" << std::endl;
 		retval = eigen_main(argc, argv);
+		std::cout << "\nArmadillo library ---------------------------------------------------" << std::endl;
 		//retval = armadillo_main(argc, argv);
-		
+
+		std::cout << "\nNewmat C++ matrix library -------------------------------------------" << std::endl;
 		//retval = newmat_main(argc, argv);  // not yet implemented.
+		std::cout << "\nCVM Class Library ---------------------------------------------------" << std::endl;
 		//retval = cvm_main(argc, argv);
 
+		std::cout << "\nMatrix Template Library (MTL) ---------------------------------------" << std::endl;
 		//retval = mtl_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

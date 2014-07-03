@@ -14,7 +14,9 @@ int main(int argc, char* argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "FTensor library -----------------------------------------------------" << std::endl;
 		//retval = ftensor_main(argc, argv);  // not yet implemented.
+		std::cout << "\nltensor library -----------------------------------------------------" << std::endl;
 		retval = ltensor_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

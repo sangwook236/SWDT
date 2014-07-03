@@ -22,7 +22,7 @@ namespace umdhmm {
 /*
 ** hmmgetseed() generates an arbitary seed for the random number generator.
 */
-int  hmmgetseed(void) 
+int hmmgetseed(void)
 {
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 	return ((int)getpid());
@@ -31,11 +31,11 @@ int  hmmgetseed(void)
 #endif
 }
 
-/* 
+/*
 ** hmmsetseed() sets the seed of the random number generator to a
 ** specific value.
 */
-void hmmsetseed(int seed) 
+void hmmsetseed(int seed)
 {
 	std::srand(seed);
 }

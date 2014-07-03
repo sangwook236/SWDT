@@ -14,6 +14,7 @@ int main(int argc, char * argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "zlib library --------------------------------------------------------" << std::endl;
 		retval = zlib_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

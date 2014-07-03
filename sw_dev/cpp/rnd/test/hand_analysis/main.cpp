@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
 		std::cout << "LibHand library -----------------------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		retval = libhand_main(argc, argv);
+#else
+        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 
 		std::cout << "\nOpenHPE library -----------------------------------------------------" << std::endl;

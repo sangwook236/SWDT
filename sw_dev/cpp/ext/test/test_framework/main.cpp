@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
+		std::cout << "Google Test library -------------------------------------------------" << std::endl;
 		retval = gtest_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

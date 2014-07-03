@@ -37,15 +37,21 @@
 			<Add option="-DNO_XML" />
 			<Add directory="./fast_bilateral_filter_lib" />
 			<Add directory="/usr/local/include" />
+			<Add directory="/usr/include" />
 		</Compiler>
 		<Linker>
+			<Add library="itpp" />
 			<Add library="opencv_imgproc" />
 			<Add library="opencv_highgui" />
 			<Add library="opencv_core" />
 			<Add library="fftw3f" />
 			<Add library="fftw3" />
 			<Add library="boost_timer" />
+			<Add library="lapack_atlas" />
+			<Add library="atlas" />
 			<Add directory="/usr/local/lib" />
+			<Add directory="/usr/lib" />
+			<Add directory="/usr/lib/atlas-base" />
 		</Linker>
 		<Unit filename="fast_bilateral_filter/color_bilateral_filter_example.cpp" />
 		<Unit filename="fast_bilateral_filter/cross_bilateral_filter_example.cpp" />
@@ -68,6 +74,7 @@
 		<Unit filename="fast_bilateral_filter_lib/math_tools.h" />
 		<Unit filename="fast_bilateral_filter_lib/mixed_vector.h" />
 		<Unit filename="fast_bilateral_filter_lib/msg_stream.h" />
+		<Unit filename="itpp/itpp_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="nyu_depth_toolbox_v2/depth_filling_cross_bilateral_filter_example.cpp" />
 		<Unit filename="nyu_depth_toolbox_v2/nyu_depth_toolbox_v2_main.cpp" />
@@ -78,6 +85,7 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="nyu_depth_toolbox_v2_lib/cbf_windows.h" />
+		<Unit filename="spuc/spuc_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
