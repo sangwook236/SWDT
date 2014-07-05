@@ -40,6 +40,9 @@
 			<Add directory="/usr/include" />
 		</Compiler>
 		<Linker>
+			<Add library="spuc_filt" />
+			<Add library="spuc_types" />
+			<Add library="spuc" />
 			<Add library="itpp" />
 			<Add library="opencv_imgproc" />
 			<Add library="opencv_highgui" />
@@ -49,6 +52,8 @@
 			<Add library="boost_timer" />
 			<Add library="lapack_atlas" />
 			<Add library="atlas" />
+			<Add library="cblas" />
+			<Add library="f77blas" />
 			<Add directory="/usr/local/lib" />
 			<Add directory="/usr/lib" />
 			<Add directory="/usr/lib/atlas-base" />
@@ -85,6 +90,7 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="nyu_depth_toolbox_v2_lib/cbf_windows.h" />
+		<Unit filename="spuc/spuc_filter_example.cpp" />
 		<Unit filename="spuc/spuc_main.cpp" />
 		<Extensions>
 			<code_completion />

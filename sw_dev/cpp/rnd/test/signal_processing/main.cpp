@@ -28,13 +28,13 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nIT++ library --------------------------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-		retval = itpp_main(argc, argv);
+		//retval = itpp_main(argc, argv);
 #else
-        std::cout << "\nThis library can be used in unix-like systems" << std::endl;
+        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 
-		std::cout << "\nsignal processing using C++ (SPUC) library --------------------------" << std::endl;
-		//retval = spuc_main(argc, argv);  // not yet implemented.
+		std::cout << "\nSignal Processing using C++ (SPUC) library --------------------------" << std::endl;
+		retval = spuc_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{
