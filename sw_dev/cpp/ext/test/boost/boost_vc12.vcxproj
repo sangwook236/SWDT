@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>boost</ProjectName>
+    <ProjectGuid>{FE865C87-952D-4D24-9247-6ED2EB61067A}</ProjectGuid>
+    <RootNamespace>boost</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../bin/</OutDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../bin/</OutDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../inc;../../inc/libjpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libboost_graph-vc100-mt-gd-1_52.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;msvcrt.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>../../inc;../../inc/libjpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libboost_graph-vc100-mt-1_52.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="any.cpp" />
+    <ClCompile Include="array.cpp" />
+    <ClCompile Include="asio_line_based_operation.cpp" />
+    <ClCompile Include="asio_serial_port.cpp" />
+    <ClCompile Include="asio_synchronizing_handler.cpp" />
+    <ClCompile Include="asio_tcp_client.cpp" />
+    <ClCompile Include="asio_tcp_server.cpp" />
+    <ClCompile Include="asio_tcp_udp_server.cpp" />
+    <ClCompile Include="asio_timer.cpp" />
+    <ClCompile Include="asio_udp_client.cpp" />
+    <ClCompile Include="asio_udp_server.cpp" />
+    <ClCompile Include="bind.cpp" />
+    <ClCompile Include="chrono.cpp" />
+    <ClCompile Include="conversion.cpp" />
+    <ClCompile Include="cpu_timer.cpp" />
+    <ClCompile Include="date_time.cpp" />
+    <ClCompile Include="factory.cpp" />
+    <ClCompile Include="filesystem.cpp" />
+    <ClCompile Include="function.cpp" />
+    <ClCompile Include="geometry.cpp" />
+    <ClCompile Include="graph.cpp" />
+    <ClCompile Include="graph_parallel.cpp" />
+    <ClCompile Include="image.cpp" />
+    <ClCompile Include="interprocess.cpp" />
+    <ClCompile Include="library_autolinking.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="math_bindings.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="math_constants.cpp" />
+    <ClCompile Include="math_floating_point_utilities.cpp" />
+    <ClCompile Include="math_special_functions.cpp" />
+    <ClCompile Include="math_statistical_distributions.cpp" />
+    <ClCompile Include="multiprecision.cpp" />
+    <ClCompile Include="multi_array.cpp" />
+    <ClCompile Include="multi_index.cpp" />
+    <ClCompile Include="numeric_bindings.cpp" />
+    <ClCompile Include="ordinary_differential_equation.cpp" />
+    <ClCompile Include="polygon.cpp" />
+    <ClCompile Include="program_options.cpp" />
+    <ClCompile Include="progress_timer.cpp" />
+    <ClCompile Include="property_map.cpp" />
+    <ClCompile Include="property_tree.cpp" />
+    <ClCompile Include="random.cpp" />
+    <ClCompile Include="serialization.cpp" />
+    <ClCompile Include="signals_slots.cpp" />
+    <ClCompile Include="smart_ptr.cpp" />
+    <ClCompile Include="spirit_classic.cpp" />
+    <ClCompile Include="statechart.cpp" />
+    <ClCompile Include="thread.cpp" />
+    <ClCompile Include="tokenizer.cpp" />
+    <ClCompile Include="tuple.cpp" />
+    <ClCompile Include="type_traits.cpp" />
+    <ClCompile Include="ublas.cpp" />
+    <ClCompile Include="units.cpp" />
+    <ClCompile Include="utility.cpp" />
+    <ClCompile Include="utility_binary.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
