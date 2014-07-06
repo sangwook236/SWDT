@@ -3,11 +3,11 @@
 		IMU 6DOF Razor (SparkFun, LPR530AL & LY530ALH gyros : ST, ADXL335 : Analog Devices):
 		http://robottini.altervista.org/kalman-filter-vs-complementary-filter
 		https://www.sparkfun.com/products/retired/9431
-		
+
 		ADIS 16365 (Analog Devices):
 		http://blog.daum.net/pg365/78
 		http://www.analog.com/en/evaluation/ADISUSB/eb.html
-		
+
 		MPU6000, MPU6050 (InvenSense):
 		http://davidegironi.blogspot.kr/2013/02/avr-atmega-mpu6050-gyroscope-and.html
 		https://code.google.com/p/gentlenav/
@@ -15,3 +15,7 @@
 		http://bayesianadventures.wordpress.com/2013/10/20/gyroscopes-accelerometers-and-the-complementary-filter/
 		http://www.botched.co.uk/pic-tutorials/mpu6050-setup-data-aquisition/
 		https://github.com/big5824/Quadrocopter
+
+[-] Algorithm
+    -. Complementary filter
+        http://www.pieter-jan.com/node/11
