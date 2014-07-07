@@ -1,16 +1,23 @@
 [-] General
+	-. Site
+		http://math-atlas.sourceforge.net/atlas_install/
+		http://math-atlas.sourceforge.net/errata.htm
+
+		http://www.netlib.org/atlas/archives/
+		http://www.netlib.org/atlas/archives/windows/
+		http://www.netlib.org/atlas/archives/linux/
+
+		http://sourceforge.net/projects/math-atlas/forums/forum/1026734/topic/3434546
+		http://icl.cs.utk.edu/lapack-for-windows/clapack/index.html
+
 	-. Reference
 		sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Building library in Cygwin
+[-] Building in Cygwin
 	[ref]
-		${ATLAS_ROOT}/INSTALL.txt
-		${ATLAS_ROOT}/doc/Windows.txt
-		${ATLAS_ROOT}/doc/atlas_install.pdf
-		http://math-atlas.sourceforge.net/atlas_install/
-		http://math-atlas.sourceforge.net/errata.htm
-		http://sourceforge.net/projects/math-atlas/forums/forum/1026734/topic/3434546
-		http://icl.cs.utk.edu/lapack-for-windows/clapack/index.html
+		${ATLAS_HOME}/INSTALL.txt
+		${ATLAS_HOME}/doc/Windows.txt
+		${ATLAS_HOME}/doc/atlas_install.pdf
 
 	<tip>
 		-. Cygwin에서 building 시 error가 많이 발생하는데 출력되는 사항이 많이 error를 확인하는 것이 어려움
@@ -20,54 +27,104 @@
 
 	<trouble shooting>
 		-. Make.inc를 생성하지 못하는 경우 (1)
-			copy ${ATLAS_ROOT}/interfaces/lapack/Make.inc.Linux to Make.inc
+			copy ${ATLAS_HOME}/interfaces/lapack/Make.inc.Linux to Make.inc
 		-. Make.inc를 생성하지 못하는 경우 (2)
-			설정된 PATH에 '공백', '(', ')' 같은 문자가 있을 경우 error 발생
-			==> PATH를 변경해 줌
-				export PATH=/usr/local/bin:/usr/bin:/cygdrive/c/windows/system32
+			설정된 PATH에 '공백', '(', ')' 같은 문자가 있을 경우 error 발생.
+			==> PATH를 변경해 줌.
+				export PATH=/usr/local/bin:/usr/bin
 			Cygwin에 기본적으로 설정되는 path는 Windows에 설정된 path가 포함되는데 이들이 error를 발생시킴.
 		-. 아래의 "Trouble shooting when building library in Cygwin" section 내용 참고
 
-	1. make a build directory
+	1. set $PATH.
+		export PATH=/usr:/usr/local/bin:/usr/bin
+		==> 설정된 PATH에 '공백', '(', ')' 같은 문자가 있을 경우 error 발생.
+			Cygwin에 기본적으로 설정되는 path는 Windows에 설정된 path가 포함되는데 이들이 error를 발생시킴.
+			Make.inc를 생성하지 못하게 됨.
+	2. set $LD_LIBRARY_PATH.
+		export LD_LIBRARY_PATH=.:/usr:/usr/local/lib:/usr/lib:/usr/i686-pc-mingw32/sys-root/mingw/lib
+		export LD_LIBRARY_PATH=.:/usr:/usr/local/lib:/usr/lib:/usr/x86_64-w64-mingw32/sys-root/mingw/lib
+	3. make a build directory.
 		mkdir ${ATLAS_BUILD_DIR}
 		cd ${ATLAS_BUILD_DIR}
 			e.g.) ${ATLAS_BUILD_DIR} = build_cyg인 경우
 				mkdir build_cyg
 				cd build_cyg
-	2. cofigure library
+	4. (optional) specify the MinGW binutils to use.
+		${ATLAS_BUILD_DIR}/MinGW32.dat or ${ATLAS_BUILD_DIR}/MinGW64.dat
+			e.g.) MinGW32.dat
+				/usr/bin/i686-pc-mingw32-ar.exe
+				/usr/bin/i686-pc-mingw32-ranlib.exe
+				/usr/bin/i686-pc-mingw32-gcc-4.8.3.exe
+				/usr/bin/i686-pc-mingw32-gfortran.exe
+			e.g.) MinGW64.dat
+				/usr/bin/x86_64-w64-mingw32-ar.exe
+				/usr/bin/x86_64-w64-mingw32-ranlib.exe
+				/usr/bin/x86_64-w64-mingw32-gcc-4.8.3.exe
+				/usr/bin/x86_64-w64-mingw32-gfortran.exe
+		[ref]
+			http://math-atlas.sourceforge.net/atlas_install/node55.html
+			http://math-atlas.sourceforge.net/atlas_install/
+	5. copy LAPACK file to ${ATLAS_HOME}.
+		${ATLAS_HOME}/lapack-3.5.0.tgz
+	6. configure library.
 		-. static library
-			../configure -b 32 > config.log
-			../configure -Fa alg -b 32 -D c -DPentiumCPS=2400
+			../configure --prefix=./install --with-netlib-lapack-tarfile=/cygdrive/d/work/sw_dev/cpp/ext/src/linear_algebra/atlas/atlas3.10.1.tar/ATLAS/lapack-3.5.0.tgz
+				-b 32
+				-Si nocygwin 1
+				-D c -DPentiumCPS=2833
+				-Fa alg 
 			for problems with gcc 4.2 on Windows
-			../configure -b 32 -D c -DPentiumCPS=2400 -Fa alg -fno-common
+			../configure --prefix=./install --with-netlib-lapack-tarfile=../lapack-3.5.0.tgz -b 32 -D c -DPentiumCPS=2833 -Fa alg -fno-common
 		-. shared library
-			../configure -b 32 -Fa alg -fPIC --shared > config.log
-			../configure -b 32 -Fa alg '-DUsingDynamic -fPIC' --shared
-			../configure -b 32 -D c -DPentiumCPS=2400 -Fa alg -fPIC --shared
+			../configure --prefix=./install --shared --with-netlib-lapack-tarfile=/cygdrive/d/work/sw_dev/cpp/ext/src/linear_algebra/atlas/atlas3.10.1.tar/ATLAS/lapack-3.5.0.tgz
+				-b 32
+				-Si nocygwin 1
+				-D c -DPentiumCPS=2833
+				-Fa alg
+				-fPIC
 			for problems with gcc 4.2 on Windows
-			../configure -b 32 -D c -DPentiumCPS=2400 -Fa alg -fPIC -fno-common --shared
-		-. error각 발생하는 경우
+			../configure --prefix=./install --shared --with-netlib-lapack-tarfile=../lapack-3.5.0.tgz -b 32 -Si nocygwin 1 -D c -DPentiumCPS=2833 -Fa alg -fPIC -fno-common
+			==> Cygwin에서는 shared object가 생성되지 않는 듯함.
+		==> error가 발생하는 경우.
 			error가 발생하는 경우가 있는데 이럴 경우 다시 해볼 것.
-	3. build library
+		==> Make.inc가 생성되지 않음.
+	7. build library.
 		make > make.log
 		make check
 		make time
 		make install
-	4. (static library를 build 하였을 경우) convert static library files to a DLL file
+	8. (static library를 build 하였을 경우) convert static library files to a DLL file.
 		[ref] http://www.terborg.net/research/kml/installation.html
 
-		static library files (*.a)를 생성한 후 이로부터 shared object (DLL) file을 생성하는 경우
-		libatlas.a를 포함하는 directory에서 kml_win_dll.sh 실행
-		Cygwin에 MinGW module들이 설치되어 있어야 정상적으로 작동함
+	==> static library files (*.a)를 생성한 후 이로부터 shared object (DLL) file을 생성하는 경우
+		libatlas.a를 포함하는 directory에서 kml_win_dll.sh 실행.
+		Cygwin에 MinGW module들이 설치되어 있어야 정상적으로 작동함.
 			libg2c.a (GCC4.x.x에서는 필요없음)
 			libmoldname100.a
 			libmsvcrt.a
-		==> shared object (DLL)를 직접적으로 생성하는 것이 바람직
-			Cygwin에서는 shared object각 생성되지 않는 듯함
+		shared object (DLL)를 직접적으로 생성하는 것이 바람직.
 
-[] Trouble shooting when building library in Cygwin (ver. 3.9.72)
+[-] Building in MinGW
+	-. Reference
+		http://icl.cs.utk.edu/lapack-for-windows/lapack/
+			Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW
+	-. Using MSYS
+		1. (optional) put the GNU runtime directory in $PATH.
+			export PATH=/D/MyProgramFiles/MinGW/bin:$PATH
+		2. change a directory to $ATLAS_HOME.
+		3. make & change a build directory.
+			mkdir build_msys
+			cd build_msys
+		3. run configure.
+			../configure --prefix=./install --shared --with-netlib-lapack-tarfile=../lapack-3.5.0.tgz
+			==> xconfig error.
+		4. make.
+			mingw32-make
+			mingw32-make install
+
+[-] Trouble shooting when building library in Cygwin (ver. 3.9.72)
 	-. 아래의 file을 copy할 수 없다는 error가 발생하는 경우
-		${ATLAS_ROOT}/build_cyg/ARCHS/Core232SSE3/gemm/atlas_tcacheedge.h
+		${ATLAS_HOME}/build_cyg/ARCHS/Core232SSE3/gemm/atlas_tcacheedge.h
 		==> atlas_tcacheedge.h file을 다른 directory에서 찾아 해당 directory에 복사.
 	-. ${ATLAS_BUILD_DIR}/tune/threads/Makefile 에서 probe.out 부분을 찾아 주석 처리
 	#	- rm res/probe.out
@@ -85,7 +142,7 @@
 		$(CC) $(CCFLAGS) -o xtune_aff tune_aff.o \
 	              ATL_goparallel_aff.o ATL_log2tlaunch_noaff.o ATL_log2tlaunch.o \
 	              ATL_thread_start_noaff.o ATL_thread_start.o $(ATLASlib) $(LIBS)
-	-. ${ATLAS_ROOT}/src/threads/ATL_DecAtomicCount_amd64.S에서 register 이름을 변경
+	-. ${ATLAS_HOME}/src/threads/ATL_DecAtomicCount_amd64.S에서 register 이름을 변경
 	//   sub $-128, %rdi            /* skip false sharing guard zone */
 	   sub $-128, %edi            /* skip false sharing guard zone */
 	   ATOMIC_LOOP:
@@ -103,7 +160,7 @@
 	ZERO_RET:
 	//   xor %rax, %rax
 	   xor %eax, %eax
-	-. ${ATLAS_ROOT}/src/threads/ATL_ResetAtomicCount_amd64.S에서 register 이름을 변경
+	-. ${ATLAS_HOME}/src/threads/ATL_ResetAtomicCount_amd64.S에서 register 이름을 변경
 	//   sub $-128, %rdi            /* skip false sharing guard zone */
 	   sub $-128, %edi            /* skip false sharing guard zone */
 	   ATOMIC_LOOP:

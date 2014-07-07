@@ -2,10 +2,85 @@
 	-. Reference
 		sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Building in Windows
-	-. Reference
-		http://icl.cs.utk.edu/lapack-for-windows/lapack/
-
 [-] Building in MinGW
 	-. Reference
+		http://www.canerten.com/compile-lapack-and-blas-as-dll-on-windows/
 		http://icl.cs.utk.edu/lapack-for-windows/lapack/
+			Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW
+	-. Using CMake
+		1. run command prompt.
+		2. put the GNU runtime directory in $PATH.
+			set path=D:\MyProgramFiles\MinGW\bin;%path%
+		3. run CMake-gui in the command prompt.
+			refer to Reference about settings
+				choose MinGW Makefiles
+				set the 'BUILD_SHARED_LIBS' option to ON
+				set the 'CMAKE_GNUtoMS' option to ON
+		4. run make.
+			mingw32-make
+			mingw32-make install
+		==> 이유를 알 수 없지만 안되는 경우도 있음.
+	-. Using Command Prompt
+		1. put the GNU runtime directory in $PATH.
+			set path=D:\MyProgramFiles\MinGW\bin;%path%
+		2. change a directory to $LAPACK_HOME.
+		3. build BLAS.
+			mingw32-gfortran --shared -o blas.dll BLAS\SRC\*.f
+		4. set $LD_LIBRARY_PATH.
+			copy blas.dll to $LD_LIBRARY_PATH
+			put a directory in which blas.dll exists in $LD_LIBRARY_PATH
+				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
+		5. build LAPACK.
+			mingw32-gfortran --shared -o lapack.dll src\*.f blas.dll
+			==> error message.
+				mingw32-gfortran: error: CreateProcess: No such file or directory
+		6. set $LD_LIBRARY_PATH.
+			copy lapack.dll to $LD_LIBRARY_PATH
+			put a directory in which lapack.dll exists in $LD_LIBRARY_PATH
+				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
+		7. build LAPACKE.
+			mingw32-gfortran --shared -o lapacke.dll lapacke\src\*.f lapack.dll blas.dll
+	-. Using MSYS
+		1. (optional) put the GNU runtime directory in $PATH.
+			export PATH=/D/MyProgramFiles/MinGW/bin:$PATH
+		2. change a directory to $LAPACK_HOME.
+		3. build BLAS.
+			mingw32-gfortran --shared -o blas.dll BLAS/SRC/*.f -O
+			i686-w64-mingw32-gfortran --shared -o blas.dll BLAS/SRC/*.f -O
+		4. set $LD_LIBRARY_PATH.
+			copy blas.dll to $LD_LIBRARY_PATH
+			put a directory in which blas.dll exists in $LD_LIBRARY_PATH
+				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
+		5. build LAPACK.
+			mingw32-gfortran --shared -o lapack.dll src/*.f blas.dll -O
+			i686-w64-mingw32-gfortran --shared -o lapack.dll src/*.f blas.dll -O
+			==> error message.
+				mingw32-gfortran: error: CreateProcess: No such file or directory
+		6. set $LD_LIBRARY_PATH.
+			copy lapack.dll to $LD_LIBRARY_PATH
+			put a directory in which lapack.dll exists in $LD_LIBRARY_PATH
+				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
+		7. build LAPACKE.
+			mingw32-gfortran --shared -o lapacke.dll lapacke/src/*.f lapack.dll blas.dll -O
+			i686-w64-mingw32-gfortran --shared -o lapacke.dll lapacke/src/*.f lapack.dll blas.dll -O
+	-. Using Cygwin
+		1. change a directory to $LAPACK_HOME.
+		2. build BLAS.
+			i686-pc-mingw32-gfortran --shared -o blas.dll BLAS/SRC/*.f -O
+			i686-w64-mingw32-gfortran --shared -o blas.dll BLAS/SRC/*.f -O
+		3. set $LD_LIBRARY_PATH.
+			copy blas.dll to $LD_LIBRARY_PATH
+			put a directory in which blas.dll exists in $LD_LIBRARY_PATH
+				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
+		4. build LAPACK.
+			i686-pc-mingw32-gfortran --shared -o lapack.dll src/*.f blas.dll -O
+			i686-w64-mingw32-gfortran --shared -o lapack.dll src/*.f blas.dll -O
+			==> error message.
+				collect2: error: ld returned 1 exit status
+		5. set $LD_LIBRARY_PATH.
+			copy lapack.dll to $LD_LIBRARY_PATH
+			put a directory in which lapack.dll exists in $LD_LIBRARY_PATH
+				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
+		6. build LAPACKE.
+			i686-pc-mingw32-gfortran --shared -o lapacke.dll lapacke/src/*.f lapack.dll blas.dll -O
+			i686-w64-mingw32-gfortran --shared -o lapacke.dll lapacke/src/*.f lapack.dll blas.dll -O
