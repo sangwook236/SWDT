@@ -1,5 +1,7 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "boost", "..\test\boost\boost_vc12.vcxproj", "{FE865C87-952D-4D24-9247-6ED2EB61067A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scientific_computation", "..\test\scientific_computation\scientific_computation_vc12.vcxproj", "{28CA2D76-AE1C-464D-880D-A608DE72358D}"
@@ -7,8 +9,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xml", "..\test\xml\xml_vc12.vcxproj", "{23AC145E-3F83-4293-B0C5-8DE1EDE678D7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "application_configuration", "..\test\application_configuration\application_configuration_vc12.vcxproj", "{3DCE3550-9EFA-48AC-AE5F-2F8202CB0D80}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "boost_old", "..\test\boost_old\boost_old_vc12.vcxproj", "{4ECAE509-4946-4F2A-A091-1260FB98FE7B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "logging", "..\test\logging\logging_vc12.vcxproj", "{A7BF9C57-2769-4A07-987F-A444A04BFB04}"
 EndProject
@@ -50,6 +50,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "file_format", "..\test\file
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dlib", "..\test\dlib\dlib_vc12.vcxproj", "{237D12CB-5324-4722-8812-2D6CEEBBD677}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multimedia", "..\test\multimedia\multimedia_vc12.vcxproj", "{238EADCF-B178-4601-8EE4-2906FE010839}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -72,10 +74,6 @@ Global
 		{3DCE3550-9EFA-48AC-AE5F-2F8202CB0D80}.Debug|Win32.Build.0 = Debug|Win32
 		{3DCE3550-9EFA-48AC-AE5F-2F8202CB0D80}.Release|Win32.ActiveCfg = Release|Win32
 		{3DCE3550-9EFA-48AC-AE5F-2F8202CB0D80}.Release|Win32.Build.0 = Release|Win32
-		{4ECAE509-4946-4F2A-A091-1260FB98FE7B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{4ECAE509-4946-4F2A-A091-1260FB98FE7B}.Debug|Win32.Build.0 = Debug|Win32
-		{4ECAE509-4946-4F2A-A091-1260FB98FE7B}.Release|Win32.ActiveCfg = Release|Win32
-		{4ECAE509-4946-4F2A-A091-1260FB98FE7B}.Release|Win32.Build.0 = Release|Win32
 		{A7BF9C57-2769-4A07-987F-A444A04BFB04}.Debug|Win32.ActiveCfg = Debug|Win32
 		{A7BF9C57-2769-4A07-987F-A444A04BFB04}.Debug|Win32.Build.0 = Debug|Win32
 		{A7BF9C57-2769-4A07-987F-A444A04BFB04}.Release|Win32.ActiveCfg = Release|Win32
@@ -156,6 +154,10 @@ Global
 		{237D12CB-5324-4722-8812-2D6CEEBBD677}.Debug|Win32.Build.0 = Debug|Win32
 		{237D12CB-5324-4722-8812-2D6CEEBBD677}.Release|Win32.ActiveCfg = Release|Win32
 		{237D12CB-5324-4722-8812-2D6CEEBBD677}.Release|Win32.Build.0 = Release|Win32
+		{238EADCF-B178-4601-8EE4-2906FE010839}.Debug|Win32.ActiveCfg = Debug|Win32
+		{238EADCF-B178-4601-8EE4-2906FE010839}.Debug|Win32.Build.0 = Debug|Win32
+		{238EADCF-B178-4601-8EE4-2906FE010839}.Release|Win32.ActiveCfg = Release|Win32
+		{238EADCF-B178-4601-8EE4-2906FE010839}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
