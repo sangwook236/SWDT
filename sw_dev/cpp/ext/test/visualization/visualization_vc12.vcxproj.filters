@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="graphviz\graphviz_main.cpp">
+      <Filter>Source Files\graphviz</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mathgl\mathgl_main.cpp">
+      <Filter>Source Files\mathgl</Filter>
+    </ClCompile>
+    <ClCompile Include="vtk\vtk_main.cpp">
+      <Filter>Source Files\vtk</Filter>
+    </ClCompile>
+    <ClCompile Include="mathgl\mathgl_glut_example.cpp">
+      <Filter>Source Files\mathgl</Filter>
+    </ClCompile>
+    <ClCompile Include="plplot\plplot_main.cpp">
+      <Filter>Source Files\plplot</Filter>
+    </ClCompile>
+    <ClCompile Include="plplot\plplot_x01_example.cpp">
+      <Filter>Source Files\plplot</Filter>
+    </ClCompile>
+    <ClCompile Include="plplot\plplot_x21_example.cpp">
+      <Filter>Source Files\plplot</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plplot\plc++demos.h">
+      <Filter>Source Files\plplot</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{60eb5a47-f625-4592-8373-b96b8f1e03b9}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{3e3761ce-7c57-4ae4-a113-f046bf966673}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{c9cde218-344c-47d2-a4e9-add8f8ceb91e}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\graphviz">
+      <UniqueIdentifier>{773c6429-c32c-4e1c-8eb1-4f9d4ced89b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vtk">
+      <UniqueIdentifier>{90902c45-923a-4f32-b72b-03dbb43a00c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mathgl">
+      <UniqueIdentifier>{0714ee07-d7b4-4f5a-9dd4-c4599b7e35c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\plplot">
+      <UniqueIdentifier>{15b05e14-2a35-4e85-8d5b-c370b7bb8048}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

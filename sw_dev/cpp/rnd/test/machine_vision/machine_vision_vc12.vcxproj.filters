@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Header Files\opencv">
+      <UniqueIdentifier>{0ab15263-791c-4d93-9c2d-c7cb3b43b6d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opencv">
+      <UniqueIdentifier>{89b32f71-32eb-401c-af24-44bf7e4867b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vlfeat">
+      <UniqueIdentifier>{c54aea24-722f-4f99-b646-79b3ec571e06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ccv">
+      <UniqueIdentifier>{a565e67a-e3b1-44ff-b7b7-2360fb923d80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ivt">
+      <UniqueIdentifier>{0ce32ff9-6d96-40c0-986e-13635bc33642}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vxl">
+      <UniqueIdentifier>{828ad0ca-8e01-4985-97f1-5f7cf7ae93c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\darwin">
+      <UniqueIdentifier>{02c7ed46-fb30-4a65-affa-6752d82b97d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vigra">
+      <UniqueIdentifier>{71565af5-7e93-40d8-aef5-4737ddb215e6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_bag_of_words.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_camera_geometry.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_chamfer_matching.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_change_detection.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_clustering.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_color_correction.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_color_filtering.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_convex_hull.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_convolution_correlation.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_distance_transform.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_edge_detection.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_face_detection.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_face_detection_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_feature_description.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_feature_extraction.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_feature_extraction_and_matching.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_feature_extraction_and_matching_by_signature.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_feature_extraction_and_matching_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_feature_matching.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_fourier_transform.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_generic_description_and_matching.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_gesture_recognition.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_hand_detection.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_hand_pose_estimation.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_histogram.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_histogram_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_homography.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_hough_transform.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_human_detection.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_human_detection_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_conversion.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_filtering.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_filtering_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_gradient.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_labeling_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_operation.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_processing_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_pyramid.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_sequence.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_iterative_closest_point.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_kalman_filtering.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_main.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_matrix_operation.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_matrix_operation_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_morphological_operation.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_motion_history_image.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_motion_segmentation.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_object_detection.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_object_tracking.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_optical_flow.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_outlier_removal.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_pca.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_segmentation.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_shape_finding.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_shape_matching.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_skin_color_filtering.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_stereo_matching.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_stereo_matching_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_template_matching.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_text_output.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_vector_operation.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\PascalVocDataset.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_main.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_sift.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_aib.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_mser.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_kmeans.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_main.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_slic.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_daisy.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_dpm.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_hog.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_sift.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_tld.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_optical_flow_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_change_detection_using_gpu.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_camera_calibration.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_openni.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_stereo_camera_calibration.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_rectification.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_undistortion.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_util.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_machine_learning.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_quick_shift.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_basic_operation.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_skeletonization_and_thinning.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_structure_tensor.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="ivt\ivt_main.cpp">
+      <Filter>Source Files\ivt</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_main.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="ivt\ivt_hough_circle_example.cpp">
+      <Filter>Source Files\ivt</Filter>
+    </ClCompile>
+    <ClCompile Include="ivt\ivt_hough_line_example.cpp">
+      <Filter>Source Files\ivt</Filter>
+    </ClCompile>
+    <ClCompile Include="ivt\ivt_klt_tracker_example.cpp">
+      <Filter>Source Files\ivt</Filter>
+    </ClCompile>
+    <ClCompile Include="ivt\ivt_particle_filter_example.cpp">
+      <Filter>Source Files\ivt</Filter>
+    </ClCompile>
+    <ClCompile Include="ivt\ParticleFilter2D.cpp">
+      <Filter>Source Files\ivt</Filter>
+    </ClCompile>
+    <ClCompile Include="ivt\ParticleFilter3D.cpp">
+      <Filter>Source Files\ivt</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_fhs_match_tree_model_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_fhs_find_matches.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_fhs_mr_find_matches.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_msm_build_shape_model_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_msm_apply_tps_warp_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_msm_draw_points_on_image_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_msm_draw_shape_modes_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_msm_get_shape_params_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="vxl\vxl_msm_plot_aligned_shapes_example.cpp">
+      <Filter>Source Files\vxl</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_face_recognition.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_retina_model.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_slam.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_active_contour_model.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="darwin\darwin_main.cpp">
+      <Filter>Source Files\darwin</Filter>
+    </ClCompile>
+    <ClCompile Include="vigra\vigra_main.cpp">
+      <Filter>Source Files\vigra</Filter>
+    </ClCompile>
+    <ClCompile Include="vigra\vigra_seeded_region_growing.cpp">
+      <Filter>Source Files\vigra</Filter>
+    </ClCompile>
+    <ClCompile Include="vigra\vigra_slic.cpp">
+      <Filter>Source Files\vigra</Filter>
+    </ClCompile>
+    <ClCompile Include="vigra\vigra_watershed.cpp">
+      <Filter>Source Files\vigra</Filter>
+    </ClCompile>
+    <ClCompile Include="vigra\vigra_watershed_region_growing.cpp">
+      <Filter>Source Files\vigra</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_hog.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_bbf.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_ferns.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_icf.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_mser.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_swt.cpp">
+      <Filter>Source Files\ccv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_distance_measure.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_lbp.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_fisher_vector.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_vlad.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_liop.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+    <ClCompile Include="vlfeat\vlfeat_gmm.cpp">
+      <Filter>Source Files\vlfeat</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="opencv\PascalVocDataset.h">
+      <Filter>Header Files\opencv</Filter>
+    </ClInclude>
+    <ClInclude Include="opencv\vehicle_classification.h">
+      <Filter>Header Files\opencv</Filter>
+    </ClInclude>
+    <ClInclude Include="ivt\ParticleFilter2D.h">
+      <Filter>Source Files\ivt</Filter>
+    </ClInclude>
+    <ClInclude Include="ivt\ParticleFilter3D.h">
+      <Filter>Source Files\ivt</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

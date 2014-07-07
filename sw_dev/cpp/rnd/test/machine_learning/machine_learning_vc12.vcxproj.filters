@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\rl_glue">
+      <UniqueIdentifier>{a6538310-6daf-4126-ac68-82bd4f619304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\clustering">
+      <UniqueIdentifier>{9bee79f2-8391-4e01-a6e1-cca7532b5f7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\libsvm">
+      <UniqueIdentifier>{e5bf935c-d067-4ea7-b7fe-ae30d117b24d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\libsvm_lib">
+      <UniqueIdentifier>{ea05ff57-8aa1-4224-bd0b-263049b9c5e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mysvm">
+      <UniqueIdentifier>{261567e1-3359-4e56-a842-21c2642950e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mysvm_lib">
+      <UniqueIdentifier>{e30fb12b-b44a-4609-8567-bc76ff25d0c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shogun">
+      <UniqueIdentifier>{65e53b1d-7282-4edf-bd78-098819fd7a44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\kmeanspp_lib">
+      <UniqueIdentifier>{d32056e8-0dbc-4b97-ad95-f8db3a969561}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\liblearning">
+      <UniqueIdentifier>{2b650e0a-3f4e-4a8d-a119-ddd21dc96b0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\torch">
+      <UniqueIdentifier>{b56c5cbf-9828-4412-b520-7c6010e3efa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\svm_light">
+      <UniqueIdentifier>{03ed5322-1126-41e4-8328-b968050877a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dlib_ml">
+      <UniqueIdentifier>{240a43ab-9675-43eb-ac48-9a940d64b1b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\multiboost">
+      <UniqueIdentifier>{d79b9bbc-c738-4927-896f-8fb56e2e5512}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\encog">
+      <UniqueIdentifier>{a1470d39-6641-47e5-a4ae-d1d2a96951b7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libsvm_lib\svm.h">
+      <Filter>Source Files\libsvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\example_set.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\globals.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\kernel.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\parameters.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\smo.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\svm_c.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\svm_nu.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mysvm_lib\version.h">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="kmeanspp_lib\KMeans.h">
+      <Filter>Source Files\kmeanspp_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="kmeanspp_lib\KmTree.h">
+      <Filter>Source Files\kmeanspp_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="kmeanspp_lib\KmUtils.h">
+      <Filter>Source Files\kmeanspp_lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rl_glue\rl_glue_main.cpp">
+      <Filter>Source Files\rl_glue</Filter>
+    </ClCompile>
+    <ClCompile Include="clustering\clustering_main.cpp">
+      <Filter>Source Files\clustering</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm_lib\svm.cpp">
+      <Filter>Source Files\libsvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\example_set.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\globals.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\kernel.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\learn.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\parameters.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\predict.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\smo.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\svm_c.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm_lib\svm_nu.cpp">
+      <Filter>Source Files\mysvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm_lib\svm-predict.cpp">
+      <Filter>Source Files\libsvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm_lib\svm-scale.cpp">
+      <Filter>Source Files\libsvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm_lib\svm-train.cpp">
+      <Filter>Source Files\libsvm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm\mysvm_main.cpp">
+      <Filter>Source Files\mysvm</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm\libsvm_main.cpp">
+      <Filter>Source Files\libsvm</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm\libsvm_predict_example.cpp">
+      <Filter>Source Files\libsvm</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvm\libsvm_train_example.cpp">
+      <Filter>Source Files\libsvm</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm\mysvm_learn_example.cpp">
+      <Filter>Source Files\mysvm</Filter>
+    </ClCompile>
+    <ClCompile Include="mysvm\mysvm_predict_example.cpp">
+      <Filter>Source Files\mysvm</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_main.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_conjugateindex_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_latent_svm_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_libsvm_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_minimal_svm_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_mklmulticlass_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_multiclass_ecoc_discriminant_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_multiclass_ecoc_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_multiclass_ecoc_random_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_multiclass_shareboost_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_multiclasslibsvm_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_classifier_multiclasslinearmachine_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_clustering_kmeans_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_diffusionmaps_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_factoranalysis_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_hessianlocallylinearembedding_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_isomap_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_kernellocallylinearembedding_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_laplacianeigenmaps_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_linearlocaltangentspacealignment_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_localitypreservingprojections_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_locallylinearembedding_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_localtangentspacealignment_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_multidimensionalscaling_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_neighborhoodpreservingembedding_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_converter_stochasticproximityembedding_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_evaluation_cross_validation_classification_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_evaluation_cross_validation_mkl_weight_storage_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_evaluation_cross_validation_multiclass_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_evaluation_cross_validation_multiclass_mkl_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_evaluation_cross_validation_regression_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_ard_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="kmeanspp_lib\KMeans.cpp">
+      <Filter>Source Files\kmeanspp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="kmeanspp_lib\KmTree.cpp">
+      <Filter>Source Files\kmeanspp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="kmeanspp_lib\KmUtils.cpp">
+      <Filter>Source Files\kmeanspp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="clustering\clustering_spectral_clustering.cpp">
+      <Filter>Source Files\clustering</Filter>
+    </ClCompile>
+    <ClCompile Include="clustering\clustering_k_medoids.cpp">
+      <Filter>Source Files\clustering</Filter>
+    </ClCompile>
+    <ClCompile Include="clustering\clustering_kmeanspp.cpp">
+      <Filter>Source Files\clustering</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_fitc_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_gaussian_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_laplace_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_product_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_simple_exact_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_regression_gaussian_process_sum_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_modelselection_apply_parameter_tree_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_modelselection_grid_search_kernel_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_modelselection_grid_search_krr_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_modelselection_grid_search_linear_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_modelselection_grid_search_mkl_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="shogun\shogun_modelselection_grid_search_multiclass_svm_example.cpp">
+      <Filter>Source Files\shogun</Filter>
+    </ClCompile>
+    <ClCompile Include="liblearning\liblearning_main.cpp">
+      <Filter>Source Files\liblearning</Filter>
+    </ClCompile>
+    <ClCompile Include="liblearning\liblearning_deep_learning_example.cpp">
+      <Filter>Source Files\liblearning</Filter>
+    </ClCompile>
+    <ClCompile Include="torch\torch_main.cpp">
+      <Filter>Source Files\torch</Filter>
+    </ClCompile>
+    <ClCompile Include="torch\torch_deep_learning_example.cpp">
+      <Filter>Source Files\torch</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light\svm_light_main.cpp">
+      <Filter>Source Files\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="dlib_ml\dlib_ml_main.cpp">
+      <Filter>Source Files\dlib_ml</Filter>
+    </ClCompile>
+    <ClCompile Include="multiboost\multiboost_main.cpp">
+      <Filter>Source Files\multiboost</Filter>
+    </ClCompile>
+    <ClCompile Include="encog\encog_main.cpp">
+      <Filter>Source Files\encog</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

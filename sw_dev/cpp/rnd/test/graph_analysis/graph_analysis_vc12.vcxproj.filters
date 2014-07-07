@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\graphchi">
+      <UniqueIdentifier>{c2ac08e4-cdfe-4d9c-a517-f159bf5953ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\maxflow">
+      <UniqueIdentifier>{022bafa0-52b6-499f-ab8f-7513f3e5d1ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ibfs">
+      <UniqueIdentifier>{618c51bc-d153-4e04-ac0d-defa1ffc234f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ibfs_lib">
+      <UniqueIdentifier>{c0ab5cba-110f-4644-a826-81b3ba161496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\maxflow_lib">
+      <UniqueIdentifier>{a9a4fe98-1e9f-4d86-b062-98cc9aff4536}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphlab">
+      <UniqueIdentifier>{5a3b5d89-7530-47e9-99c2-4a524aa2495c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="maxflow_lib\instances.inc">
+      <Filter>Source Files\maxflow_lib</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ibfs_lib\ibfs.h">
+      <Filter>Source Files\ibfs_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="maxflow_lib\block.h">
+      <Filter>Source Files\maxflow_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="maxflow_lib\graph.h">
+      <Filter>Source Files\maxflow_lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ibfs_lib\ibfs.cpp">
+      <Filter>Source Files\ibfs_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="maxflow_lib\graph.cpp">
+      <Filter>Source Files\maxflow_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="maxflow_lib\maxflow.cpp">
+      <Filter>Source Files\maxflow_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="graphchi\graphchi_main.cpp">
+      <Filter>Source Files\graphchi</Filter>
+    </ClCompile>
+    <ClCompile Include="maxflow\maxflow_main.cpp">
+      <Filter>Source Files\maxflow</Filter>
+    </ClCompile>
+    <ClCompile Include="ibfs\ibfs_main.cpp">
+      <Filter>Source Files\ibfs</Filter>
+    </ClCompile>
+    <ClCompile Include="graphlab\graphlab_main.cpp">
+      <Filter>Source Files\graphlab</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

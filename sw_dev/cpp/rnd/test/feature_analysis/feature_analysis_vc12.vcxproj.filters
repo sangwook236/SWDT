@@ -1,0 +1,686 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\lsd">
+      <UniqueIdentifier>{d605096c-3501-415d-87fc-19e41e9cf560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\siftgpu">
+      <UniqueIdentifier>{3f5ebc39-afa6-49a6-b345-65a0056b894b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\surf">
+      <UniqueIdentifier>{6e1a203c-9251-406a-b82f-dded2310d4b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lsd_lib">
+      <UniqueIdentifier>{075352ce-72ee-4374-aadf-99a0eb638cf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opensift">
+      <UniqueIdentifier>{cd401707-8dc3-44f7-81da-a9b752bf3459}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opensurf">
+      <UniqueIdentifier>{99ad5d5e-247d-4ed2-88a0-29c85f069cbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opensurf_lib">
+      <UniqueIdentifier>{a222243f-9f48-45de-b8f8-4a9951e868ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\surfgpu">
+      <UniqueIdentifier>{60c957d5-1c4c-42f5-a308-6b701eb65827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\surfgpu_lib">
+      <UniqueIdentifier>{8ae2bed3-c815-4063-ac5d-eca9b1a45d75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\surfgpu_lib\cuda">
+      <UniqueIdentifier>{49ab7ddd-1d43-4e75-8935-878bdcc6bf4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\elsd">
+      <UniqueIdentifier>{14085c0f-af5d-444c-ac8c-264e055fffa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\elsd_lib">
+      <UniqueIdentifier>{b6dfc4c3-8f72-4858-be67-f6da7945b567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fst">
+      <UniqueIdentifier>{c1266a7e-53b7-4638-b597-3848fffe848a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fst_lib">
+      <UniqueIdentifier>{ca4bf0f6-37cb-4b5b-bca3-228c454bf92f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fst_lib\_src_criteria">
+      <UniqueIdentifier>{144bffe5-3bae-4840-8622-d9b9845b1839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fst_lib\_src_dataio">
+      <UniqueIdentifier>{1fa3863f-67c8-468a-a4f7-3c9e125f62f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fst_lib\_src_global">
+      <UniqueIdentifier>{fb2743c4-3b0a-4c3c-b05b-ac8b4c0389d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fst_lib\_src_search">
+      <UniqueIdentifier>{2b8bd113-1fea-474e-9640-cd35f340e6d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\hog">
+      <UniqueIdentifier>{8369c0cb-b48f-4c67-acf1-e29887f827bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\svm_light_lib">
+      <UniqueIdentifier>{4abe44db-e3a0-46c8-b34a-6e4acf5c3eae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\svm_light_lib\svm_light">
+      <UniqueIdentifier>{897fa363-f0b0-4e42-abf0-b226cff27baf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lsd_lib\lsd.h">
+      <Filter>Source Files\lsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surf\surf_imload.h">
+      <Filter>Header Files\surf</Filter>
+    </ClInclude>
+    <ClInclude Include="surf\surf_os_mapping.h">
+      <Filter>Header Files\surf</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\fasthessian.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\integral.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\ipoint.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\kmeans.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\responselayer.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\surf.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\surflib.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="opensurf_lib\utils.h">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\elsd.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\process_curve.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\process_line.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\valid_curve.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\write_svg.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\cuda\common_kernel.h">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\cuda\cudpp_helper_funcs.h">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\cuda\helper_funcs.h">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\cuda\strerror_cudpp.h">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\buildDetGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\buildSURFDescriptorsGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\convertRGB2GrayFloatGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\convertRGBA2GrayFloatGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\cudaimage.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\defines.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\detectIpointOrientationsGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\fasthessian_cudaipoint.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\matchSURFKeypointsGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\nonMaxGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\normalizeSURFDescriptorsGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\surf_cudaipoint.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\transposeGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\fasthessianGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\integralGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\surfGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\ipointGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\kmeansGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\utilsGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="surfgpu_lib\surflibGPU.h">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\classifier.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\classifier_knn.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\classifier_multinom_naivebayes.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\classifier_normal_bayes.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\classifier_svm.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_multinom.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_multinom_bhattacharyya.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_negative.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_normal.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_normal_bhattacharyya.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_normal_divergence.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_normal_gmahalanobis.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_subsetsize.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_sumofweights.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_wrapper.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\criterion_wrapper_bias_estimate.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\distance.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\distance_euclid.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\distance_L1.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\distance_Lp.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\indexed_matrix.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\indexed_vector.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\model.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\model_multinom.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_criteria\model_normal.hpp">
+      <Filter>Source Files\fst_lib\_src_criteria</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor_splitting.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor_splitting_mem.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor_splitting_memARFF.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_accessor_splitting_memTRN.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_file_ARFF.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_file_TRN.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_intervaller.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_scaler.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_scaler_to01.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_scaler_void.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_scaler_white.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_5050.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_cv.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_holdout.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_leave1out.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_randfix.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_randrand.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_dataio\data_splitter_resub.hpp">
+      <Filter>Source Files\fst_lib\_src_dataio</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_global\clonable.hpp">
+      <Filter>Source Files\fst_lib\_src_global</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_global\error.hpp">
+      <Filter>Source Files\fst_lib\_src_global</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_global\global.hpp">
+      <Filter>Source Files\fst_lib\_src_global</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_global\subset.hpp">
+      <Filter>Source Files\fst_lib\_src_global</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_global\thread_pool.hpp">
+      <Filter>Source Files\fst_lib\_src_global</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\branch_and_bound_predictor.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\branch_and_bound_predictor_averaging.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\candidate_evaluator_threaded.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\result_tracker.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\result_tracker_dupless.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\result_tracker_feature_stats.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\result_tracker_regularizer.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\result_tracker_stabileval.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_bif.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_bif_threaded.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_basic.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_fast.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_improved.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_improved_threaded.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_branch_and_bound_partial_prediction.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_exhaustive.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_exhaustive_threaded.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_monte_carlo.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_monte_carlo_threaded.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_seq.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_seq_dos.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_seq_os.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_seq_sffs.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_seq_sfrs.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\search_seq_sfs.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\seq_step.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\seq_step_ensemble.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\seq_step_hybrid.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\seq_step_straight.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\seq_step_straight_threaded.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="fst_lib\_src_search\stopwatch.hpp">
+      <Filter>Source Files\fst_lib\_src_search</Filter>
+    </ClInclude>
+    <ClInclude Include="svm_light_lib\svm_light\kernel.h">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClInclude>
+    <ClInclude Include="svm_light_lib\svm_light\svm_common.h">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClInclude>
+    <ClInclude Include="svm_light_lib\svm_light\svm_learn.h">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="lsd_lib\lsd.cpp">
+      <Filter>Source Files\lsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lsd_lib\lsd_call_example.cpp">
+      <Filter>Source Files\lsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lsd_lib\lsd_cmd.cpp">
+      <Filter>Source Files\lsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lsd\lsd_main.cpp">
+      <Filter>Source Files\lsd</Filter>
+    </ClCompile>
+    <ClCompile Include="siftgpu\siftgpu_main.cpp">
+      <Filter>Source Files\siftgpu</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="opensift\opensift_display_feature.cpp">
+      <Filter>Source Files\opensift</Filter>
+    </ClCompile>
+    <ClCompile Include="opensift\opensift_extract_feature.cpp">
+      <Filter>Source Files\opensift</Filter>
+    </ClCompile>
+    <ClCompile Include="opensift\opensift_main.cpp">
+      <Filter>Source Files\opensift</Filter>
+    </ClCompile>
+    <ClCompile Include="opensift\opensift_match_feature.cpp">
+      <Filter>Source Files\opensift</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf\opensurf_main.cpp">
+      <Filter>Source Files\opensurf</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\fasthessian.cpp">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\integral.cpp">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\ipoint.cpp">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\main.cpp">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\surf.cpp">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf_lib\utils.cpp">
+      <Filter>Source Files\opensurf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opensurf\opensurf_example.cpp">
+      <Filter>Source Files\opensurf</Filter>
+    </ClCompile>
+    <ClCompile Include="siftgpu\siftgpu_simple_example.cpp">
+      <Filter>Source Files\siftgpu</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd\elsd_main.cpp">
+      <Filter>Source Files\elsd</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\write_svg.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\valid_curve.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\process_line.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\process_curve.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\elsd.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\cuda\getMatchesGPU.cpp">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\cuda\helper_funcs.cpp">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\cuda\strerror_cudpp.cpp">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\getMatchesCPU.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\main.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu\surfgpu_main.cpp">
+      <Filter>Source Files\surfgpu</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu\surfgpu_example.cpp">
+      <Filter>Source Files\surfgpu</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\fasthessianGPU.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\integralGPU.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\surfGPU.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\ipointGPU.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="surfgpu_lib\utilsGPU.cpp">
+      <Filter>Source Files\surfgpu_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="fst\fst_main.cpp">
+      <Filter>Source Files\fst</Filter>
+    </ClCompile>
+    <ClCompile Include="fst\fst_demo10.cpp">
+      <Filter>Source Files\fst</Filter>
+    </ClCompile>
+    <ClCompile Include="fst_lib\_src_global\global.cpp">
+      <Filter>Source Files\fst_lib\_src_global</Filter>
+    </ClCompile>
+    <ClCompile Include="hog\hog_main.cpp">
+      <Filter>Source Files\hog</Filter>
+    </ClCompile>
+    <ClCompile Include="hog\hog_training_HOG.cpp">
+      <Filter>Source Files\hog</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_classify.c">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_common.c">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_hideo.c">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_learn.c">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_learn_main.c">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_loqo.c">
+      <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="surfgpu_lib\cuda\buildDetCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\transposeGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\transposeCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\reductionCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\normalizeSURFDescriptorsGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\normalizeSURFDescriptorsCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\nonMaxGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\nonMaxCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\matchSURFKeypointsGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\matchSURFKeypointsCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\haarXY.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\detectIpointOrientationsGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\detectIpointOrientationsCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\convertRGBA2GrayFloatGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\convertRGBA2GrayFloatCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\convertRGB2GrayFloatGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\convertRGB2GrayFloatCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\buildSURFDescriptorsGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\buildSURFDescriptorsCUDA.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="surfgpu_lib\cuda\buildDetGPU.cu">
+      <Filter>Source Files\surfgpu_lib\cuda</Filter>
+    </CudaCompile>
+  </ItemGroup>
+</Project>

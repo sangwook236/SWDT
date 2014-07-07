@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{667BCDB6-0996-44a1-8D38-D52BD30E6627}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{65F5D519-236C-4b57-ABD4-888B8000ABD1}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{B3548FCD-C4C3-461b-BCE0-C0BA5C206971}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\vld">
+      <UniqueIdentifier>{3aa8c5b7-70a6-4452-bf4c-92437325243f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\valgrind">
+      <UniqueIdentifier>{42e1589e-b7cd-4696-a7ff-98b84163a191}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vld\vld_main.cpp">
+      <Filter>Source Files\vld</Filter>
+    </ClCompile>
+    <ClCompile Include="valgrind\valgrind_main.cpp">
+      <Filter>Source Files\valgrind</Filter>
+    </ClCompile>
+    <ClCompile Include="vld\vld_basic.cpp">
+      <Filter>Source Files\vld</Filter>
+    </ClCompile>
+    <ClCompile Include="vld\vld_boost_thread.cpp">
+      <Filter>Source Files\vld</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

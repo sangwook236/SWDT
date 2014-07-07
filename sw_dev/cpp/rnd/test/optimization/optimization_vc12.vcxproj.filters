@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\galib">
+      <UniqueIdentifier>{61f7cc79-a74b-41ae-a573-c81764a673bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\levmar">
+      <UniqueIdentifier>{c41e0578-78b1-41b5-9a8e-6169bb4e554a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\glpk">
+      <UniqueIdentifier>{b8a3451d-5a89-467a-8a28-8e00d1e33cc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nlopt">
+      <UniqueIdentifier>{11f1c22d-79c9-432f-b548-463b68aad57b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="galib\galib_main.cpp">
+      <Filter>Source Files\galib</Filter>
+    </ClCompile>
+    <ClCompile Include="levmar\levmar_main.cpp">
+      <Filter>Source Files\levmar</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="galib\galib_ex1.cpp">
+      <Filter>Source Files\galib</Filter>
+    </ClCompile>
+    <ClCompile Include="galib\galib_ex3.cpp">
+      <Filter>Source Files\galib</Filter>
+    </ClCompile>
+    <ClCompile Include="galib\galib_ex7.cpp">
+      <Filter>Source Files\galib</Filter>
+    </ClCompile>
+    <ClCompile Include="glpk\glpk_main.cpp">
+      <Filter>Source Files\glpk</Filter>
+    </ClCompile>
+    <ClCompile Include="nlopt\nlopt_main.cpp">
+      <Filter>Source Files\nlopt</Filter>
+    </ClCompile>
+    <ClCompile Include="glpk\glpk_interior_point_sample.cpp">
+      <Filter>Source Files\glpk</Filter>
+    </ClCompile>
+    <ClCompile Include="glpk\glpk_mip_sample.cpp">
+      <Filter>Source Files\glpk</Filter>
+    </ClCompile>
+    <ClCompile Include="glpk\glpk_mpl_sample.cpp">
+      <Filter>Source Files\glpk</Filter>
+    </ClCompile>
+    <ClCompile Include="glpk\glpk_simplex_sample.cpp">
+      <Filter>Source Files\glpk</Filter>
+    </ClCompile>
+    <ClCompile Include="glpk\glpk_netgen_sample.cpp">
+      <Filter>Source Files\glpk</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

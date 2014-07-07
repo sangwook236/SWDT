@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\particleplusplus">
+      <UniqueIdentifier>{6cab98c7-0915-4e6d-840e-143ec5ef65c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\condensation">
+      <UniqueIdentifier>{25d7b7c8-42ca-4015-bda3-f680fa18648b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\condensation_lib">
+      <UniqueIdentifier>{8d36b931-0769-45a7-b7f1-12c02b298560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bayespp">
+      <UniqueIdentifier>{2df6faae-9f08-450c-8155-2faa12192d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bayespp_lib">
+      <UniqueIdentifier>{88872983-0843-4606-b3aa-5322d41a1707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bayespp_lib\BayesFilter">
+      <UniqueIdentifier>{f3937dff-c083-4088-bf0b-24cc5a3e6ca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bayespp_lib\SLAM">
+      <UniqueIdentifier>{26984b1c-c35f-4617-932e-ea4292187816}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bayespp_lib\Test">
+      <UniqueIdentifier>{38c29366-11fd-4efe-adfa-ea0cacbbb732}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bayespp_lib\BayesFilter\filters">
+      <UniqueIdentifier>{08d97239-ece2-432c-b647-747e663df711}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="condensation_lib\condensation.h">
+      <Filter>Source Files\condensation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="condensation_lib\data_types.h">
+      <Filter>Source Files\condensation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="condensation_lib\model_parameters.h">
+      <Filter>Source Files\condensation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\allFilters.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\bayesException.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\bayesFlt.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\CIFlt.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\covFlt.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\infFlt.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\infRtFlt.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\itrFlt.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\matSup.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\matSupSub.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\models.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\schemeFlt.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\SIRFlt.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\uBLASmatrix.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\UDFlt.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\uLAPACK.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\unsFlt.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\filters\average1.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\BayesFilter\filters\indirect.hpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\SLAM\fastSLAM.hpp">
+      <Filter>Source Files\bayespp_lib\SLAM</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\SLAM\kalmanSLAM.hpp">
+      <Filter>Source Files\bayespp_lib\SLAM</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\SLAM\SLAM.hpp">
+      <Filter>Source Files\bayespp_lib\SLAM</Filter>
+    </ClInclude>
+    <ClInclude Include="bayespp_lib\Test\random.hpp">
+      <Filter>Source Files\bayespp_lib\Test</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="particleplusplus\particleplusplus_main.cpp">
+      <Filter>Source Files\particleplusplus</Filter>
+    </ClCompile>
+    <ClCompile Include="condensation_lib\utility.cpp">
+      <Filter>Source Files\condensation_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="condensation_lib\model_specific.cpp">
+      <Filter>Source Files\condensation_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="condensation_lib\condensation.cpp">
+      <Filter>Source Files\condensation_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="condensation\condensation_main.cpp">
+      <Filter>Source Files\condensation</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp\bayespp_main.cpp">
+      <Filter>Source Files\bayespp</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp\bayespp_simple_example.cpp">
+      <Filter>Source Files\bayespp</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp\bayespp_position_and_velocity_filter_example.cpp">
+      <Filter>Source Files\bayespp</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\BayesFilter\bayesFlt.cpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\BayesFilter\bayesFltAlg.cpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\BayesFilter\CIFlt.cpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\BayesFilter\covFlt.cpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\BayesFilter\infFlt.cpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\BayesFilter\infRtFlt.cpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\BayesFilter\itrFlt.cpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\BayesFilter\matSup.cpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\BayesFilter\SIRFlt.cpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\BayesFilter\UDFlt.cpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\BayesFilter\UdU.cpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\BayesFilter\unsFlt.cpp">
+      <Filter>Source Files\bayespp_lib\BayesFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\SLAM\fastSLAM.cpp">
+      <Filter>Source Files\bayespp_lib\SLAM</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp_lib\SLAM\kalmanSLAM.cpp">
+      <Filter>Source Files\bayespp_lib\SLAM</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp\bayespp_position_and_velocity_SIR_filter_example.cpp">
+      <Filter>Source Files\bayespp</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp\bayespp_simple_quadratic_observer_example.cpp">
+      <Filter>Source Files\bayespp</Filter>
+    </ClCompile>
+    <ClCompile Include="bayespp\bayespp_SLAM_example.cpp">
+      <Filter>Source Files\bayespp</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

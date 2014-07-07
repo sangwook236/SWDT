@@ -1,0 +1,477 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hmm\hmm_forward_backward.cpp">
+      <Filter>Source Files\hmm</Filter>
+    </ClCompile>
+    <ClCompile Include="hmm\hmm_learning.cpp">
+      <Filter>Source Files\hmm</Filter>
+    </ClCompile>
+    <ClCompile Include="hmm\hmm_main.cpp">
+      <Filter>Source Files\hmm</Filter>
+    </ClCompile>
+    <ClCompile Include="hmm\hmm_sample.cpp">
+      <Filter>Source Files\hmm</Filter>
+    </ClCompile>
+    <ClCompile Include="hmm\hmm_viterbi.cpp">
+      <Filter>Source Files\hmm</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_main.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_backward.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_baum.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_backward.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_baum.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_forward.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_sequence.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_utils.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_cdhmm_viterbi.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_forward.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_hmmrand.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_hmmutils.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_nrutil.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_sequence.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="umdhmm_lib\umdhmm_viterbi.cpp">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="hmm\viterbi.cpp">
+      <Filter>Source Files\hmm</Filter>
+    </ClCompile>
+    <ClCompile Include="hmm\viterbi_algorithm.cpp">
+      <Filter>Source Files\hmm</Filter>
+    </ClCompile>
+    <ClCompile Include="bp_vision\bp_vision_main.cpp">
+      <Filter>Source Files\bp_vision</Filter>
+    </ClCompile>
+    <ClCompile Include="crfpp\crfpp_main.cpp">
+      <Filter>Source Files\crfpp</Filter>
+    </ClCompile>
+    <ClCompile Include="hcrf\hcrf_main.cpp">
+      <Filter>Source Files\hcrf</Filter>
+    </ClCompile>
+    <ClCompile Include="middlebury\middlebury_main.cpp">
+      <Filter>Source Files\middlebury</Filter>
+    </ClCompile>
+    <ClCompile Include="cuda_cut\cuda_cut_main.cpp">
+      <Filter>Source Files\cuda_cut</Filter>
+    </ClCompile>
+    <ClCompile Include="bp_vision_lib\noise.cpp">
+      <Filter>Source Files\bp_vision_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="bp_vision_lib\restore.cpp">
+      <Filter>Source Files\bp_vision_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="bp_vision_lib\stereo.cpp">
+      <Filter>Source Files\bp_vision_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="middlebury_lib\BP-S.cpp">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="middlebury_lib\example.cpp">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="middlebury_lib\GCoptimization.cpp">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="middlebury_lib\graph.cpp">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="middlebury_lib\ICM.cpp">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="middlebury_lib\LinkedBlockList.cpp">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="middlebury_lib\maxflow.cpp">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="middlebury_lib\MaxProdBP.cpp">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="middlebury_lib\mrf.cpp">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="middlebury_lib\regions-maxprod.cpp">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="middlebury_lib\TRW-S.cpp">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_bayesian_network.cpp">
+      <Filter>Source Files\pnl</Filter>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_bayesian_network_example.cpp">
+      <Filter>Source Files\pnl</Filter>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_dbn.cpp">
+      <Filter>Source Files\pnl</Filter>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_dbn_example.cpp">
+      <Filter>Source Files\pnl</Filter>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_hmm.cpp">
+      <Filter>Source Files\pnl</Filter>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_main.cpp">
+      <Filter>Source Files\pnl</Filter>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_mnet_example.cpp">
+      <Filter>Source Files\pnl</Filter>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_mrf_example.cpp">
+      <Filter>Source Files\pnl</Filter>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_mrf2.cpp">
+      <Filter>Source Files\pnl</Filter>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_super_resolution.cpp">
+      <Filter>Source Files\pnl</Filter>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_viterbi_segmentation.cpp">
+      <Filter>Source Files\pnl</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libdai\libdai_main.cpp">
+      <Filter>Source Files\libdai</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_main.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="trws\trws_main.cpp">
+      <Filter>Source Files\trws</Filter>
+    </ClCompile>
+    <ClCompile Include="qpbo\qpbo_main.cpp">
+      <Filter>Source Files\qpbo</Filter>
+    </ClCompile>
+    <ClCompile Include="trws_lib\example.cpp">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="trws_lib\minimize.cpp">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="trws_lib\MRFEnergy.cpp">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="trws_lib\ordering.cpp">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="trws_lib\treeProbabilities.cpp">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="qpbo_lib\QPBO.cpp">
+      <Filter>Source Files\qpbo_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="qpbo_lib\QPBO_extra.cpp">
+      <Filter>Source Files\qpbo_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="qpbo_lib\QPBO_maxflow.cpp">
+      <Filter>Source Files\qpbo_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="qpbo_lib\QPBO_postprocessing.cpp">
+      <Filter>Source Files\qpbo_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_markov_chain_example.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_mrflib_interface.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_libdai_interface.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_quick_start_example.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_gibbs_example.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_swendsenwang_example.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_bipartite_matching_example.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_interpixel_boundary_segmentation_example.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_potts_model_on_2d_grid.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_qpbo_algorithm.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="opengm\opengm_inference_algorithms.cpp">
+      <Filter>Source Files\opengm</Filter>
+    </ClCompile>
+    <ClCompile Include="libdai\libdai_sprinkler_example.cpp">
+      <Filter>Source Files\libdai</Filter>
+    </ClCompile>
+    <ClCompile Include="libdai\libdai_varset_examples.cpp">
+      <Filter>Source Files\libdai</Filter>
+    </ClCompile>
+    <ClCompile Include="libdai\libdai_sprinkler_em_examples.cpp">
+      <Filter>Source Files\libdai</Filter>
+    </ClCompile>
+    <ClCompile Include="libdai\libdai_sprinkler_gibbs_examples.cpp">
+      <Filter>Source Files\libdai</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_factorial_hmm.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_simple_hmm.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_kent.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_mixture_model_inference.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_inference.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_von_mises_1d.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_gaussian_2d.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_gaussian_1d.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_von_mises_2d.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_discrete.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+    <ClCompile Include="mocapy\mocapy_hmm_with_discrete_and_prior.cpp">
+      <Filter>Source Files\mocapy</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="umdhmm_lib\umdhmm_cdhmm.h">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="umdhmm_lib\umdhmm_hmm.h">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="umdhmm_lib\umdhmm_nrutil.h">
+      <Filter>Source Files\umdhmm_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="hmm\viterbi.hpp">
+      <Filter>Header Files\hmm</Filter>
+    </ClInclude>
+    <ClInclude Include="bp_vision_lib\convolve.h">
+      <Filter>Source Files\bp_vision_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="bp_vision_lib\filter.h">
+      <Filter>Source Files\bp_vision_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="bp_vision_lib\image.h">
+      <Filter>Source Files\bp_vision_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="bp_vision_lib\imconv.h">
+      <Filter>Source Files\bp_vision_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="bp_vision_lib\imutil.h">
+      <Filter>Source Files\bp_vision_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="bp_vision_lib\misc.h">
+      <Filter>Source Files\bp_vision_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="bp_vision_lib\pnmfile.h">
+      <Filter>Source Files\bp_vision_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="middlebury_lib\block.h">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="middlebury_lib\BP-S.h">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="middlebury_lib\energy.h">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="middlebury_lib\GCoptimization.h">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="middlebury_lib\graph.h">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="middlebury_lib\ICM.h">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="middlebury_lib\LinkedBlockList.h">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="middlebury_lib\MaxProdBP.h">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="middlebury_lib\mrf.h">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="middlebury_lib\regions-new.h">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="middlebury_lib\TRW-S.h">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="middlebury_lib\typeTruncatedQuadratic2D.h">
+      <Filter>Source Files\middlebury_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="trws_lib\instances.h">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="trws_lib\MRFEnergy.h">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="trws_lib\typeBinary.h">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="trws_lib\typeBinaryFast.h">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="trws_lib\typeGeneral.h">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="trws_lib\typePotts.h">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="trws_lib\typeTruncatedLinear.h">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="trws_lib\typeTruncatedLinear2D.h">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="trws_lib\typeTruncatedQuadratic.h">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="trws_lib\typeTruncatedQuadratic2D.h">
+      <Filter>Source Files\trws_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="qpbo_lib\block.h">
+      <Filter>Source Files\qpbo_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="qpbo_lib\QPBO.h">
+      <Filter>Source Files\qpbo_lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="trws_lib\instances.inc">
+      <Filter>Source Files\trws_lib</Filter>
+    </None>
+    <None Include="qpbo_lib\instances.inc">
+      <Filter>Source Files\qpbo_lib</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{512e9d1e-56c6-40f7-8db5-8751dca59ca7}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{dc200fc2-b8f6-4ff3-8098-ddf58bf80cab}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{a86d6fd3-7b9a-466c-9e10-92a47debf8fb}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\hmm">
+      <UniqueIdentifier>{df695b57-0beb-40b2-b74c-8728a6d18de9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mocapy">
+      <UniqueIdentifier>{25067835-6f00-440a-ab2c-ac3c644550c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\hmm">
+      <UniqueIdentifier>{7d320e83-7903-430b-8443-da707253027c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bp_vision">
+      <UniqueIdentifier>{ff2534a4-f4fb-49d6-8f00-26dcc9566334}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\hcrf">
+      <UniqueIdentifier>{e8c9be9d-81f5-466e-97c9-932a441d9813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\middlebury">
+      <UniqueIdentifier>{45efd85c-56b2-4df2-864e-e18fcb050c97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\pnl">
+      <UniqueIdentifier>{0532388f-f9fa-4329-b8c1-61c2ad54ff4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\crfpp">
+      <UniqueIdentifier>{8d8b8b6a-262b-4d8a-a141-11763046ffc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\cuda_cut">
+      <UniqueIdentifier>{c8ab2238-fb6c-4a89-a0d7-6a0176978a92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\qpbo">
+      <UniqueIdentifier>{66206674-6c77-4cff-bd67-27cc090eeab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\trws">
+      <UniqueIdentifier>{2f143d23-fc2d-4307-9f06-19a937a49b02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\libdai">
+      <UniqueIdentifier>{9e57c335-e6bd-4d91-a426-6cf71cad0897}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opengm">
+      <UniqueIdentifier>{b152c15d-1173-43e5-aa87-15a35f534b94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\qpbo_lib">
+      <UniqueIdentifier>{63c0fd3f-9bda-47c7-91b1-cbae2e736e33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\trws_lib">
+      <UniqueIdentifier>{622cb6f9-e0ec-48c8-aab7-47779992eced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bp_vision_lib">
+      <UniqueIdentifier>{dc4a3f03-2d3c-4623-a8cd-4a0e2edec5dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\middlebury_lib">
+      <UniqueIdentifier>{bdb6429f-68b8-4ce7-903d-1b3305160553}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\umdhmm_lib">
+      <UniqueIdentifier>{05d2e339-b329-4f2a-a266-5b7477f78615}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\libpabod">
+      <UniqueIdentifier>{257d2848-5568-4521-9aeb-d157cb975ffb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\c4_lib">
+      <UniqueIdentifier>{729b825c-cbd3-4b81-b740-46747d589877}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\c4">
+      <UniqueIdentifier>{21e0a5a8-6ad5-4e8f-a42c-5f6d665dda3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\object_detection_toolbox">
+      <UniqueIdentifier>{1ce626df-4908-400d-912b-46d3f7643778}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\object_detection_and_localization_toolkit">
+      <UniqueIdentifier>{5d7bf6be-d9f1-4866-999c-45caf2a6546e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c4_lib\IntImage.h">
+      <Filter>Source Files\c4_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="c4_lib\mdarray.h">
+      <Filter>Source Files\c4_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="c4_lib\Pedestrian.h">
+      <Filter>Source Files\c4_lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libpabod\libpabod_main.cpp">
+      <Filter>Source Files\libpabod</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c4_lib\main.cpp">
+      <Filter>Source Files\c4_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="c4_lib\Pedestrian_ICRA.cpp">
+      <Filter>Source Files\c4_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="c4\c4_main.cpp">
+      <Filter>Source Files\c4</Filter>
+    </ClCompile>
+    <ClCompile Include="object_detection_toolbox\object_detection_toolbox_main.cpp">
+      <Filter>Source Files\object_detection_toolbox</Filter>
+    </ClCompile>
+    <ClCompile Include="object_detection_and_localization_toolkit\object_detection_and_localization_toolkit_main.cpp">
+      <Filter>Source Files\object_detection_and_localization_toolkit</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

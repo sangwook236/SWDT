@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="armadillo\armadillo_cube_arithmetic.cpp">
+      <Filter>Source Files\armadillo</Filter>
+    </ClCompile>
+    <ClCompile Include="armadillo\armadillo_main.cpp">
+      <Filter>Source Files\armadillo</Filter>
+    </ClCompile>
+    <ClCompile Include="armadillo\armadillo_matrix_arithmetic.cpp">
+      <Filter>Source Files\armadillo</Filter>
+    </ClCompile>
+    <ClCompile Include="armadillo\armadillo_vector_arithmetic.cpp">
+      <Filter>Source Files\armadillo</Filter>
+    </ClCompile>
+    <ClCompile Include="atlas\atlas_cblas.cpp">
+      <Filter>Source Files\atlas</Filter>
+    </ClCompile>
+    <ClCompile Include="atlas\atlas_clapack.cpp">
+      <Filter>Source Files\atlas</Filter>
+    </ClCompile>
+    <ClCompile Include="atlas\atlas_main.cpp">
+      <Filter>Source Files\atlas</Filter>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_cholesky.cpp">
+      <Filter>Source Files\cvm</Filter>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_eigen.cpp">
+      <Filter>Source Files\cvm</Filter>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_lu.cpp">
+      <Filter>Source Files\cvm</Filter>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_main.cpp">
+      <Filter>Source Files\cvm</Filter>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_matrix_function.cpp">
+      <Filter>Source Files\cvm</Filter>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_matrix_operation.cpp">
+      <Filter>Source Files\cvm</Filter>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_qr.cpp">
+      <Filter>Source Files\cvm</Filter>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_svd.cpp">
+      <Filter>Source Files\cvm</Filter>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_vector_function.cpp">
+      <Filter>Source Files\cvm</Filter>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_vector_operation.cpp">
+      <Filter>Source Files\cvm</Filter>
+    </ClCompile>
+    <ClCompile Include="eigen\eigen_basic_operation.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
+    <ClCompile Include="eigen\eigen_cholesky.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
+    <ClCompile Include="eigen\eigen_evd.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
+    <ClCompile Include="eigen\eigen_linear_system.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
+    <ClCompile Include="eigen\eigen_lu.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
+    <ClCompile Include="eigen\eigen_main.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
+    <ClCompile Include="eigen\eigen_qr.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
+    <ClCompile Include="eigen\eigen_svd.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
+    <ClCompile Include="lapack\lapack_cblas.cpp">
+      <Filter>Source Files\lapack</Filter>
+    </ClCompile>
+    <ClCompile Include="lapack\lapack_clapack.cpp">
+      <Filter>Source Files\lapack</Filter>
+    </ClCompile>
+    <ClCompile Include="lapack\lapack_main.cpp">
+      <Filter>Source Files\lapack</Filter>
+    </ClCompile>
+    <ClCompile Include="mtl\mtl_main.cpp">
+      <Filter>Source Files\mtl</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mtl\mtl_matrix_operation.cpp">
+      <Filter>Source Files\mtl</Filter>
+    </ClCompile>
+    <ClCompile Include="mtl\mtl_vector_operation.cpp">
+      <Filter>Source Files\mtl</Filter>
+    </ClCompile>
+    <ClCompile Include="newmat\newmat_main.cpp">
+      <Filter>Source Files\newmat</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{e0ab6294-70ee-4894-8a94-9af592d5e297}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{0d06f4b8-9ded-4568-8232-dcdc9fab7e85}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{c8e33837-681a-4931-8f99-507b19e6e713}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\armadillo">
+      <UniqueIdentifier>{7a531ee9-1d25-4916-bd86-ff8f09d4878e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\eigen">
+      <UniqueIdentifier>{e03a7a60-88ad-4099-bf4a-a119a3307724}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\cvm">
+      <UniqueIdentifier>{1642aa89-57fd-4a73-93cf-3df5ed7ccbd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lapack">
+      <UniqueIdentifier>{7a56a589-d723-473e-93bb-8239f61a1165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mtl">
+      <UniqueIdentifier>{d9bc270d-cb23-490a-a6a7-40ec1e45e48a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\atlas">
+      <UniqueIdentifier>{d9b585e3-0ece-4056-bfc5-f5ad59d483d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\newmat">
+      <UniqueIdentifier>{a3fb438f-8171-4262-851e-91148dc1f948}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

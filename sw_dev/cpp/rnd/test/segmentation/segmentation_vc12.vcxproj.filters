@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\gslic">
+      <UniqueIdentifier>{7d67949b-630d-446d-96b4-e472ad53c36d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gslic_lib">
+      <UniqueIdentifier>{efa08533-ec07-4678-8f46-504c5357be64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\efficient_graph_based_image_segmentation">
+      <UniqueIdentifier>{69ec9e25-103e-4e38-8081-c1912268ee98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\efficient_graph_based_image_segmentation_lib">
+      <UniqueIdentifier>{5dc2c186-09ad-4f2f-a560-0e34e7fe49fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\interactive_graph_cuts">
+      <UniqueIdentifier>{6efb5b53-5dc3-4984-a27c-363c655df342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\region_growing">
+      <UniqueIdentifier>{d0caa876-e2a1-46da-98ce-cdbeff9f37bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\andres_seeded_region_growing_lib">
+      <UniqueIdentifier>{bf06856a-dc6e-4cdb-8f2e-d5389a2641f2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gslic_lib\cudaDefines.h">
+      <Filter>Source Files\gslic_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="gslic_lib\cudaImgTrans.h">
+      <Filter>Source Files\gslic_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="gslic_lib\cudaSegEngine.h">
+      <Filter>Source Files\gslic_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="gslic_lib\cudaSegSLIC.h">
+      <Filter>Source Files\gslic_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="gslic_lib\cudaUtil.h">
+      <Filter>Source Files\gslic_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="gslic_lib\FastImgSeg.h">
+      <Filter>Source Files\gslic_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="efficient_graph_based_image_segmentation_lib\convolve.h">
+      <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="efficient_graph_based_image_segmentation_lib\disjoint-set.h">
+      <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="efficient_graph_based_image_segmentation_lib\filter.h">
+      <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="efficient_graph_based_image_segmentation_lib\image.h">
+      <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="efficient_graph_based_image_segmentation_lib\imconv.h">
+      <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="efficient_graph_based_image_segmentation_lib\imutil.h">
+      <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="efficient_graph_based_image_segmentation_lib\misc.h">
+      <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="efficient_graph_based_image_segmentation_lib\pnmfile.h">
+      <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="efficient_graph_based_image_segmentation_lib\segment-graph.h">
+      <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="efficient_graph_based_image_segmentation_lib\segment-image.h">
+      <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="andres_seeded_region_growing_lib\connected-components.hxx">
+      <Filter>Source Files\andres_seeded_region_growing_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="andres_seeded_region_growing_lib\marray.hxx">
+      <Filter>Source Files\andres_seeded_region_growing_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="andres_seeded_region_growing_lib\seeded-region-growing.hxx">
+      <Filter>Source Files\andres_seeded_region_growing_lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gslic\gslic_main.cpp">
+      <Filter>Source Files\gslic</Filter>
+    </ClCompile>
+    <ClCompile Include="gslic_lib\FastImgSeg.cpp">
+      <Filter>Source Files\gslic_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="efficient_graph_based_image_segmentation_lib\segment.cpp">
+      <Filter>Source Files\efficient_graph_based_image_segmentation_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="efficient_graph_based_image_segmentation\efficient_graph_based_image_segmentation_main.cpp">
+      <Filter>Source Files\efficient_graph_based_image_segmentation</Filter>
+    </ClCompile>
+    <ClCompile Include="interactive_graph_cuts\interactive_graph_cuts_main.cpp">
+      <Filter>Source Files\interactive_graph_cuts</Filter>
+    </ClCompile>
+    <ClCompile Include="region_growing\region_growing_main.cpp">
+      <Filter>Source Files\region_growing</Filter>
+    </ClCompile>
+    <ClCompile Include="region_growing\region_growing_andres_seeded_region_growing.cpp">
+      <Filter>Source Files\region_growing</Filter>
+    </ClCompile>
+    <ClCompile Include="region_growing\region_growing_by_contrast.cpp">
+      <Filter>Source Files\region_growing</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="gslic_lib\cudaImgTrans.cu">
+      <Filter>Source Files\gslic_lib</Filter>
+    </CudaCompile>
+    <CudaCompile Include="gslic_lib\cudaSegEngine.cu">
+      <Filter>Source Files\gslic_lib</Filter>
+    </CudaCompile>
+    <CudaCompile Include="gslic_lib\cudaSegSLIC.cu">
+      <Filter>Source Files\gslic_lib</Filter>
+    </CudaCompile>
+    <CudaCompile Include="gslic_lib\cudaUtil.cu">
+      <Filter>Source Files\gslic_lib</Filter>
+    </CudaCompile>
+  </ItemGroup>
+</Project>

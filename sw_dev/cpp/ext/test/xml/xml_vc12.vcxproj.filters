@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\xercesc">
+      <UniqueIdentifier>{e45d3d01-d335-4f41-9570-c4a9fd6a69da}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xercesc\xercesc_dom.cpp">
+      <Filter>Source Files\xercesc</Filter>
+    </ClCompile>
+    <ClCompile Include="xercesc\xercesc_main.cpp">
+      <Filter>Source Files\xercesc</Filter>
+    </ClCompile>
+    <ClCompile Include="xercesc\xercesc_sax.cpp">
+      <Filter>Source Files\xercesc</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xercesc\xercesc_DOMPrintErrorHandler.cpp">
+      <Filter>Source Files\xercesc</Filter>
+    </ClCompile>
+    <ClCompile Include="xercesc\xercesc_DOMPrintFilter.cpp">
+      <Filter>Source Files\xercesc</Filter>
+    </ClCompile>
+    <ClCompile Include="xercesc\xercesc_DOMTreeErrorReporter.cpp">
+      <Filter>Source Files\xercesc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="xercesc\xercesc_DOMPrintErrorHandler.hpp">
+      <Filter>Source Files\xercesc</Filter>
+    </ClInclude>
+    <ClInclude Include="xercesc\xercesc_DOMPrintFilter.hpp">
+      <Filter>Source Files\xercesc</Filter>
+    </ClInclude>
+    <ClInclude Include="xercesc\xercesc_DOMTreeErrorReporter.hpp">
+      <Filter>Source Files\xercesc</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

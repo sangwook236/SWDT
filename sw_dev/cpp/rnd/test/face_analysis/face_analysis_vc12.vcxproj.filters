@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\facetracker">
+      <UniqueIdentifier>{5396c061-dcc6-4f93-8809-d1f02307c66a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\facetracker_lib">
+      <UniqueIdentifier>{7c2da94b-e07b-4ece-88bc-bd03bb60c9a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\stasm">
+      <UniqueIdentifier>{08b9bc50-0198-4262-b11c-d6dda25f85dd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="facetracker\facetracker_main.cpp">
+      <Filter>Source Files\facetracker</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="facetracker_lib\CLM.cc">
+      <Filter>Source Files\facetracker_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="facetracker_lib\FCheck.cc">
+      <Filter>Source Files\facetracker_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="facetracker_lib\FDet.cc">
+      <Filter>Source Files\facetracker_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="facetracker_lib\IO.cc">
+      <Filter>Source Files\facetracker_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="facetracker_lib\Patch.cc">
+      <Filter>Source Files\facetracker_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="facetracker_lib\PAW.cc">
+      <Filter>Source Files\facetracker_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="facetracker_lib\PDM.cc">
+      <Filter>Source Files\facetracker_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="facetracker_lib\Tracker.cc">
+      <Filter>Source Files\facetracker_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="stasm\stasm_main.cpp">
+      <Filter>Source Files\stasm</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

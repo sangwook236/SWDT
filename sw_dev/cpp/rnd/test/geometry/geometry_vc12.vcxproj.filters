@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl\pcl_greedy_projection.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl\pcl_main.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl\pcl_resampling.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
+    <ClCompile Include="pcl\pcl_visualization.cpp">
+      <Filter>Source Files\pcl</Filter>
+    </ClCompile>
+    <ClCompile Include="3dtk\3dtk_main.cpp">
+      <Filter>Source Files\3dtk</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9bd34a37-72a8-4860-86b5-95238386c848}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{381aa2d3-f85b-4960-8f3f-c4e5b5cea932}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{a1544716-f56d-4d04-9a56-815039e3b04e}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\pcl">
+      <UniqueIdentifier>{61665291-7c9d-4c3a-9c2e-e36d60e03986}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3dtk">
+      <UniqueIdentifier>{5954e328-43e5-4c72-9d22-e88602f87834}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="openni\openni_basic_function.cpp">
+      <Filter>Source Files\openni</Filter>
+    </ClCompile>
+    <ClCompile Include="openni\openni_enumeration_process.cpp">
+      <Filter>Source Files\openni</Filter>
+    </ClCompile>
+    <ClCompile Include="openni\openni_hand_gesture.cpp">
+      <Filter>Source Files\openni</Filter>
+    </ClCompile>
+    <ClCompile Include="openni\openni_main.cpp">
+      <Filter>Source Files\openni</Filter>
+    </ClCompile>
+    <ClCompile Include="openni\openni_skeleton.cpp">
+      <Filter>Source Files\openni</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{8f1ef67f-d76b-4a74-8e7e-ca5ab7a09324}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{821eb64f-8067-40af-9ee6-9ca248677845}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{022f45a6-8c3b-467d-86eb-03cf011fb4bc}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\openni">
+      <UniqueIdentifier>{95c89e52-8fdc-4c5d-bd17-e1b7f1ae5305}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\movmf">
+      <UniqueIdentifier>{22d9908a-d9a6-4493-8d36-8cbe0c2a307a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\movmf_lib">
+      <UniqueIdentifier>{688478b8-6a2e-4a5c-b99c-6384c51ba4fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ransac">
+      <UniqueIdentifier>{b67f21a7-e401-4a30-8bf5-8b91e1dc0a5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mcmcpp">
+      <UniqueIdentifier>{ea633884-4646-43f4-81f4-40634e75763d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scythe">
+      <UniqueIdentifier>{9647df84-863a-4bc4-8cbd-c81d6094d2bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\boom">
+      <UniqueIdentifier>{8a35e584-3a06-428b-8feb-a95271ea042d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scythemcmc_lib">
+      <UniqueIdentifier>{738494cd-a1cc-4276-9c3c-e564a9e59fb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\smctc">
+      <UniqueIdentifier>{d58f08d8-3c28-4c63-bdab-6c60c6aeaa71}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="movmf_lib\DenseMatrixDouble.h">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="movmf_lib\mat_vec.h">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="movmf_lib\matrix.h">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="movmf_lib\movmf.h">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="movmf_lib\movmf_base.h">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="movmf_lib\newbessel.h">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="movmf_lib\RandomGenerator.h">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="movmf_lib\SparseMatrixDouble.h">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="movmf_lib\timerUtil.h">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="scythemcmc_lib\mcmc.h">
+      <Filter>Source Files\scythemcmc_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="smctc\markovchain.h">
+      <Filter>Source Files\smctc</Filter>
+    </ClInclude>
+    <ClInclude Include="smctc\pffuncs.h">
+      <Filter>Source Files\smctc</Filter>
+    </ClInclude>
+    <ClInclude Include="smctc\simfunctions.h">
+      <Filter>Source Files\smctc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="movmf\movmf_main.cpp">
+      <Filter>Source Files\movmf</Filter>
+    </ClCompile>
+    <ClCompile Include="movmf_lib\DenseMatrixDouble.cc">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="movmf_lib\main.cc">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="movmf_lib\mat_vec.cc">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="movmf_lib\movmf.cc">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="movmf_lib\movmf_base.cc">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="movmf_lib\newbessel.cc">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="movmf_lib\RandomGenerator.cc">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="movmf_lib\SparseMatrixDouble.cc">
+      <Filter>Source Files\movmf_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ransac\ransac_main.cpp">
+      <Filter>Source Files\ransac</Filter>
+    </ClCompile>
+    <ClCompile Include="ransac\ransac_plane_estimation.cpp">
+      <Filter>Source Files\ransac</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp\mcmcpp_main.cpp">
+      <Filter>Source Files\mcmcpp</Filter>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_main.cpp">
+      <Filter>Source Files\scythe</Filter>
+    </ClCompile>
+    <ClCompile Include="boom\boom_main.cpp">
+      <Filter>Source Files\boom</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp\mcmcpp_normal_example.cpp">
+      <Filter>Source Files\mcmcpp</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp\mcmcpp_binomial_example.cpp">
+      <Filter>Source Files\mcmcpp</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp\mcmcpp_multinomial_example.cpp">
+      <Filter>Source Files\mcmcpp</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp\mcmcpp_normal_mixture_example.cpp">
+      <Filter>Source Files\mcmcpp</Filter>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_matrix_operation.cpp">
+      <Filter>Source Files\scythe</Filter>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_random.cpp">
+      <Filter>Source Files\scythe</Filter>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_optimization.cpp">
+      <Filter>Source Files\scythe</Filter>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_parametric_bootstrap_example.cpp">
+      <Filter>Source Files\scythe</Filter>
+    </ClCompile>
+    <ClCompile Include="scythe\scythemcmc_normal_example.cpp">
+      <Filter>Source Files\scythe</Filter>
+    </ClCompile>
+    <ClCompile Include="smctc\pffuncs.cpp">
+      <Filter>Source Files\smctc</Filter>
+    </ClCompile>
+    <ClCompile Include="smctc\simfunctions.cpp">
+      <Filter>Source Files\smctc</Filter>
+    </ClCompile>
+    <ClCompile Include="smctc\smctc_main.cpp">
+      <Filter>Source Files\smctc</Filter>
+    </ClCompile>
+    <ClCompile Include="smctc\smctc_pf_example.cpp">
+      <Filter>Source Files\smctc</Filter>
+    </ClCompile>
+    <ClCompile Include="smctc\smctc_rare_event_example.cpp">
+      <Filter>Source Files\smctc</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp\mcmcpp_mcmcda.cpp">
+      <Filter>Source Files\mcmcpp</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

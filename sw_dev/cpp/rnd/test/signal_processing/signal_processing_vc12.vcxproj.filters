@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\fast_bilateral_filter">
+      <UniqueIdentifier>{f8ee411c-47bb-41f9-904c-d374f3c1c655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fast_bilateral_filter_lib">
+      <UniqueIdentifier>{cdaa99d7-5b39-47e7-bc24-550fa452ab21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fast_bilateral_filter_lib\fft_3D">
+      <UniqueIdentifier>{78a29013-e39c-488b-b197-380db8a32d4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nyu_depth_toolbox_v2">
+      <UniqueIdentifier>{47dc07ac-0ae0-4abd-8806-9c880ee826f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nyu_depth_toolbox_v2_lib">
+      <UniqueIdentifier>{e5f2a676-b425-4772-b772-f3dc26ad93cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\itpp">
+      <UniqueIdentifier>{28bbe658-66e9-443f-8215-d541c42e6de1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\spuc">
+      <UniqueIdentifier>{96f7499f-c437-4269-ba9d-409004ff30eb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\array.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\array_n.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\chrono.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\fast_lbf.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\fft_3D.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\geom.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\linear_bf.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\math_tools.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\mixed_vector.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\msg_stream.h">
+      <Filter>Source Files\fast_bilateral_filter_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\fft_3D\convolution_3D.h">
+      <Filter>Source Files\fast_bilateral_filter_lib\fft_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\fft_3D\fill_3D.h">
+      <Filter>Source Files\fast_bilateral_filter_lib\fft_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_bilateral_filter_lib\fft_3D\support_3D.h">
+      <Filter>Source Files\fast_bilateral_filter_lib\fft_3D</Filter>
+    </ClInclude>
+    <ClInclude Include="nyu_depth_toolbox_v2_lib\cbf_windows.h">
+      <Filter>Source Files\nyu_depth_toolbox_v2_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="nyu_depth_toolbox_v2_lib\cbf.h">
+      <Filter>Source Files\nyu_depth_toolbox_v2_lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_bilateral_filter\fast_bilateral_filter_main.cpp">
+      <Filter>Source Files\fast_bilateral_filter</Filter>
+    </ClCompile>
+    <ClCompile Include="library_autolinking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_bilateral_filter\cross_bilateral_filter_example.cpp">
+      <Filter>Source Files\fast_bilateral_filter</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_bilateral_filter\fast_bilateral_filter_example.cpp">
+      <Filter>Source Files\fast_bilateral_filter</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_bilateral_filter_lib\fft_3D\support_3D.cpp">
+      <Filter>Source Files\fast_bilateral_filter_lib\fft_3D</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_bilateral_filter\color_bilateral_filter_example.cpp">
+      <Filter>Source Files\fast_bilateral_filter</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_bilateral_filter\truncated_kernel_bilateral_filter_example.cpp">
+      <Filter>Source Files\fast_bilateral_filter</Filter>
+    </ClCompile>
+    <ClCompile Include="fast_bilateral_filter\depth_filling_cross_bilateral_filter.cpp">
+      <Filter>Source Files\fast_bilateral_filter</Filter>
+    </ClCompile>
+    <ClCompile Include="nyu_depth_toolbox_v2\nyu_depth_toolbox_v2_main.cpp">
+      <Filter>Source Files\nyu_depth_toolbox_v2</Filter>
+    </ClCompile>
+    <ClCompile Include="nyu_depth_toolbox_v2_lib\cbf_windows.cpp">
+      <Filter>Source Files\nyu_depth_toolbox_v2_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="nyu_depth_toolbox_v2\depth_filling_cross_bilateral_filter_example.cpp">
+      <Filter>Source Files\nyu_depth_toolbox_v2</Filter>
+    </ClCompile>
+    <ClCompile Include="nyu_depth_toolbox_v2_lib\cbf.cpp">
+      <Filter>Source Files\nyu_depth_toolbox_v2_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="itpp\itpp_main.cpp">
+      <Filter>Source Files\itpp</Filter>
+    </ClCompile>
+    <ClCompile Include="spuc\spuc_auto_correlation.cpp">
+      <Filter>Source Files\spuc</Filter>
+    </ClCompile>
+    <ClCompile Include="spuc\spuc_filter_example.cpp">
+      <Filter>Source Files\spuc</Filter>
+    </ClCompile>
+    <ClCompile Include="spuc\spuc_main.cpp">
+      <Filter>Source Files\spuc</Filter>
+    </ClCompile>
+    <ClCompile Include="spuc\spuc_maximum_likelihood_sequence_estimation.cpp">
+      <Filter>Source Files\spuc</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
