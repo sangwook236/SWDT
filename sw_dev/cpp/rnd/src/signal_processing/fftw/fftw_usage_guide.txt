@@ -11,3 +11,17 @@
 			2) 'Configuration Properties -> General' 항목 선택.
 			3) 'Platform Toolset' 항목에서 설정을 변경.
 				Windows7.1SDK -> v100
+
+[-] Building in MinGW
+	-. Reference
+		http://icl.cs.utk.edu/lapack-for-windows/lapack/
+			Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW
+	-. Using MSYS
+		1. (optional) put the GNU runtime directory in $PATH.
+			export PATH=/D/MyProgramFiles/MinGW/bin:$PATH
+		2. change a directory to $FFTW_HOME.
+		3. run configure.
+			./configure --prefix=./install --enable-shared --enable-static
+		4. run make.
+			mingw32-make
+			mingw32-make install (?)
