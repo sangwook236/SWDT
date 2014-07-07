@@ -1,6 +1,7 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "logging_vc12", "..\test\logging\logging_vc12.csproj", "{911457B3-8762-4907-BC07-861F4DE5BD32}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit_vc12", "..\test\nunit\nunit_vc12.csproj", "{383CE2C8-BA38-45EA-9888-15A4A31545AD}"

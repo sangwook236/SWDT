@@ -1,6 +1,7 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "neural_network_vc12", "..\test\neural_network\neural_network_vc12.csproj", "{F10C5F7A-0E2D-4F05-BC2F-CF2A6E140C15}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI_vc12", "..\test\AI\AI_vc12.csproj", "{A72FDB3C-F29E-4DF0-BDC2-90BC5BDF6F72}"

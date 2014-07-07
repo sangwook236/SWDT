@@ -1,5 +1,7 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGuiComponent_vc12", "..\test\TestGuiComponent\TestGuiComponent_vc12.csproj", "{D3558F59-41A3-4773-9FBC-C3738F2E1A05}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestClassLibrary_vc12", "..\test\TestClassLibrary\TestClassLibrary_vc12.csproj", "{9C241F47-F357-4C9D-81EF-117AFCBA5908}"
