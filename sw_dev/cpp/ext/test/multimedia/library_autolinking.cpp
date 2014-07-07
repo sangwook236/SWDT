@@ -4,15 +4,15 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "log4cxx.lib")
-#pragma comment(lib, "libboost_thread-vc100-mt-gd-1_52.lib")
-#pragma comment(lib, "libboost_test_exec_monitor-vc100-mt-gd-1_52.lib")
+//#pragma comment(lib, "sfml-graphics.lib")
+//#pragma comment(lib, "sfml-window.lib")
+//#pragma comment(lib, "sfml-system.lib")
 
 #		else
 
-#pragma comment(lib, "log4cxx.lib")
-#pragma comment(lib, "libboost_thread-vc100-mt-1_52.lib")
-#pragma comment(lib, "libboost_test_exec_monitor-vc100-mt-1_52.lib")
+//#pragma comment(lib, "sfml-graphics.lib")
+//#pragma comment(lib, "sfml-window.lib")
+//#pragma comment(lib, "sfml-system.lib")
 
 #		endif
 
