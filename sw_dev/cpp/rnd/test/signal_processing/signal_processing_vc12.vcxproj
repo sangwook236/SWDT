@@ -114,6 +114,10 @@
     <ClCompile Include="fast_bilateral_filter\fast_bilateral_filter_main.cpp" />
     <ClCompile Include="fast_bilateral_filter\truncated_kernel_bilateral_filter_example.cpp" />
     <ClCompile Include="fast_bilateral_filter_lib\fft_3D\support_3D.cpp" />
+    <ClCompile Include="itpp\itpp_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="nyu_depth_toolbox_v2\depth_filling_cross_bilateral_filter_example.cpp" />
@@ -123,6 +127,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="nyu_depth_toolbox_v2_lib\cbf_windows.cpp" />
+    <ClCompile Include="spuc\spuc_auto_correlation.cpp" />
+    <ClCompile Include="spuc\spuc_filter_example.cpp" />
+    <ClCompile Include="spuc\spuc_main.cpp" />
+    <ClCompile Include="spuc\spuc_maximum_likelihood_sequence_estimation.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

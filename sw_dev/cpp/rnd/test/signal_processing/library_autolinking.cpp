@@ -4,6 +4,9 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "spuc_filt.lib")
+#pragma comment(lib, "spuc_types.lib")
+#pragma comment(lib, "spuc.lib")
 #pragma comment(lib, "opencv_highgui243d.lib")
 #pragma comment(lib, "opencv_imgproc243d.lib")
 #pragma comment(lib, "opencv_core243d.lib")
@@ -12,6 +15,9 @@
 
 #		else
 
+#pragma comment(lib, "spuc_filt.lib")
+#pragma comment(lib, "spuc_types.lib")
+#pragma comment(lib, "spuc.lib")
 #pragma comment(lib, "opencv_highgui243.lib")
 #pragma comment(lib, "opencv_imgproc243.lib")
 #pragma comment(lib, "opencv_core243.lib")

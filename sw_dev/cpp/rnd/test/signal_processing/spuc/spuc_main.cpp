@@ -1,6 +1,5 @@
 //#define GET_ROOTS 1
 
-#include <itpp/itbase.h>
 #include <spuc/vector.h>
 #include <spuc/matrix.h>
 #ifdef GET_ROOTS
@@ -9,6 +8,9 @@
 #include <spuc/find_roots.h>
 #include <spuc/complex.h>
 #include <spuc/spuc_typedefs.h>
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+#include <itpp/itbase.h>
+#endif
 #include <fstream>
 #include <iostream>
 
@@ -35,6 +37,7 @@ void matrix_operation_example()
 // [ref] ${SPUC_HOME}/examples/test_ls_solve.cpp
 void linear_system_example()
 {
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
     const double M_2PI = std::atan(1) * 4.0 * 2.0;
     std::ofstream rf("./data/signal_processing/spuc/r.dat");
 
@@ -74,6 +77,9 @@ void linear_system_example()
     for (int i = 1; i < M; ++i) rf << x(i) << "\n";
 
     rf.close();
+#else
+	std::cout << "\tThis example of SPUC library, linear_system_example is supported in unix-like systems" << std::endl;
+#endif
 }
 
 // [ref] ${SPUC_HOME}/examples/test_ls_solve.cpp

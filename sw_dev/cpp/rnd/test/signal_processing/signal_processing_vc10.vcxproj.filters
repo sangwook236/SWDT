@@ -28,6 +28,12 @@
     <Filter Include="Source Files\nyu_depth_toolbox_v2_lib">
       <UniqueIdentifier>{e5f2a676-b425-4772-b772-f3dc26ad93cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\itpp">
+      <UniqueIdentifier>{28bbe658-66e9-443f-8215-d541c42e6de1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\spuc">
+      <UniqueIdentifier>{96f7499f-c437-4269-ba9d-409004ff30eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -127,6 +133,21 @@
     </ClCompile>
     <ClCompile Include="nyu_depth_toolbox_v2_lib\cbf.cpp">
       <Filter>Source Files\nyu_depth_toolbox_v2_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="itpp\itpp_main.cpp">
+      <Filter>Source Files\itpp</Filter>
+    </ClCompile>
+    <ClCompile Include="spuc\spuc_auto_correlation.cpp">
+      <Filter>Source Files\spuc</Filter>
+    </ClCompile>
+    <ClCompile Include="spuc\spuc_filter_example.cpp">
+      <Filter>Source Files\spuc</Filter>
+    </ClCompile>
+    <ClCompile Include="spuc\spuc_main.cpp">
+      <Filter>Source Files\spuc</Filter>
+    </ClCompile>
+    <ClCompile Include="spuc\spuc_maximum_likelihood_sequence_estimation.cpp">
+      <Filter>Source Files\spuc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
