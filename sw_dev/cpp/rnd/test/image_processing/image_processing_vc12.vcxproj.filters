@@ -19,6 +19,12 @@
     <Filter Include="Source Files\ritk">
       <UniqueIdentifier>{6915823f-4065-427f-967d-9083b588a716}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphicsmagick">
+      <UniqueIdentifier>{48e8c74b-e7c3-406e-a8f7-5e16f5922d4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gegl">
+      <UniqueIdentifier>{944b421f-c182-4555-aa58-72992e606625}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -46,6 +52,12 @@
     </ClCompile>
     <ClCompile Include="ritk\ritk_main.cpp">
       <Filter>Source Files\ritk</Filter>
+    </ClCompile>
+    <ClCompile Include="gegl\gegl_main.cpp">
+      <Filter>Source Files\gegl</Filter>
+    </ClCompile>
+    <ClCompile Include="graphicsmagick\graphicsmagick_main.cpp">
+      <Filter>Source Files\graphicsmagick</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

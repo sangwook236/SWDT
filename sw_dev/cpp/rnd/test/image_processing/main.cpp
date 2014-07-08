@@ -12,6 +12,8 @@ int main(int argc, char *argv[])
 {
 	int itk_main(int argc, char *argv[]);
 	int ritk_main(int argc, char *argv[]);
+	int graphicsmagick_main(int argc, char *argv[]);
+	int gegl_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -23,6 +25,16 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nThe Range Imaging Toolkit (RITK) ------------------------------------" << std::endl;
 		retval = ritk_main(argc, argv);  // not yet implemented.
+
+		std::cout << "\nGraphicsMagick Image Processing System ------------------------------" << std::endl;
+		retval = graphicsmagick_main(argc, argv);  // not yet implemented.
+
+		std::cout << "\nGeneric Graphics Library (GEGL) -------------------------------------" << std::endl;
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+		retval = gegl_main(argc, argv);  // not yet implemented.
+#else
+        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
+#endif
 	}
     catch (const std::bad_alloc &e)
 	{
