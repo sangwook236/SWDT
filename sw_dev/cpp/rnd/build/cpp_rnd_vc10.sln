@@ -6,7 +6,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "optimization", "..\test\opt
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simulation", "..\test\simulation\simulation_vc10.vcxproj", "{86A474F8-4ABB-46B3-A034-26496D316349}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "search_algorithm", "..\test\search_algorithm\search_algorithm_vc10.vcxproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "searching", "..\test\searching\searching_vc10.vcxproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "neural_network", "..\test\neural_network\neural_network_vc10.vcxproj", "{BCB54C82-1B63-4831-850B-DF57821F9003}"
 EndProject

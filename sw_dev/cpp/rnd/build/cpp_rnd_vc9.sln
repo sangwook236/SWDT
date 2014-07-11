@@ -16,7 +16,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "player_stage", "..\test\pla
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pnl", "..\test\pnl\pnl_vc9.vcproj", "{BC06A474-FED2-48CF-8A39-C48BF645C698}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "search_algorithm", "..\test\search_algorithm\search_algorithm_vc9.vcproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "searching", "..\test\searching\searching_vc9.vcproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "surf", "..\test\surf\surf_vc9.vcproj", "{59C66559-8C98-4B6C-8ECF-7E0E4DC8A5CC}"
 EndProject

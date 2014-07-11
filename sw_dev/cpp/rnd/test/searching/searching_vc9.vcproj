@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="search_algorithm"
+	Name="searching"
 	ProjectGUID="{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
-	RootNamespace="search_algorithm"
+	RootNamespace="searching"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
