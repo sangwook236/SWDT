@@ -246,7 +246,10 @@ private:
 			// 1. push received data.
 			//read_msgs_.push_back(read_msg_);
 			for (size_t i = 0; i < bytes_transferred; ++i)
-				read_buf_.push_back(read_msg_[i]);
+				if (read_buf_.full())
+					std::cerr << "receive buffer is full" << std::endl;
+				else
+					read_buf_.push_back(read_msg_[i]);
 
 			// 2. process buffered data.
 
