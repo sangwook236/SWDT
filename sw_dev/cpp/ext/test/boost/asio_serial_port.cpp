@@ -6,6 +6,7 @@
 #include <boost/array.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
+#include <boost/circular_buffer.hpp>
 #include <boost/smart_ptr.hpp>
 #include <deque>
 #include <iostream>
@@ -131,7 +132,11 @@ private:
 	{
 		if (!error)
 		{
+#if 1
+			// for test.
 			std::cout << "sent: " << msg_.substr(0, len) << std::endl;
+#endif
+
 			msg_.erase(0, len);
 
 			if (!msg_.empty())
@@ -170,7 +175,8 @@ class better_serial_port_handler
 public:
 	better_serial_port_handler(boost::asio::io_service &io_service)
 	: io_service_(io_service), port_(io_service), is_active_(false),
-	  read_msgs_(), write_msgs_()
+	  //read_msgs_(), write_msgs_()
+	  read_buf_(8192), write_msgs_()
 	{}
 	~better_serial_port_handler()
 	{
@@ -237,12 +243,22 @@ private:
 	{
 		if (!error)
 		{
-			// TODO [check] >>
-			read_msgs_.push_back(read_msg_);
+			// 1. push received data.
+			//read_msgs_.push_back(read_msg_);
+			for (size_t i = 0; i < bytes_transferred; ++i)
+				read_buf_.push_back(read_msg_[i]);
 
+			// 2. process buffered data.
+
+			// 3. pop processed data.
+			//read_msgs_.pop_front();
+
+#if 1
+			// for test.
 			std::cout << "***** read: " << std::endl;
 			std::cout.write(read_msg_, (std::streamsize)bytes_transferred);
 			std::cout << std::endl;
+#endif
 
 			read_start();
 		}
@@ -271,8 +287,11 @@ private:
 	{
 		if (!error)
 		{
+#if 1
+			// for test.
 			std::cout << "***** write: " << std::endl;
 			std::cout << write_msgs_.front().c_str() << std::endl;
+#endif
 
 			write_msgs_.pop_front();
 			if (!write_msgs_.empty())
@@ -317,7 +336,8 @@ private:
 	bool is_active_;
 
 	char read_msg_[max_read_length];
-	std::deque<std::string> read_msgs_;
+	//std::deque<std::string> read_msgs_;
+	boost::circular_buffer<char> read_buf_;
 	std::deque<std::string> write_msgs_;
 };
 
@@ -354,8 +374,11 @@ void asio_async_serial_port_simple()
 			return;
 		}
 
+#if 1
+		// for test.
 		handler.write("serial port: test message 1");
 		//handler.write("serial port: test message 2");  // Oops!!! error
+#endif
 
 		ioService.run();
 
@@ -385,9 +408,12 @@ void asio_async_serial_port_better()
 				return;
 			}
 
+#if 1
+			// for test.
 			handler.write("serial port: test message 1");
 			handler.write("serial port: test message 2");
 			//handler.cancel();
+#endif
 
 			ioService.run();
 
@@ -411,10 +437,14 @@ void asio_async_serial_port_better()
 #else
             boost::this_thread::yield();
 #endif
+
+#if 1
+			// for test.
 			handler1.write("serial port 1: test message #1");
 			handler2.write("serial port 2: test message #1");
 			handler1.write("serial port 1: test message #2");
 			handler2.write("serial port 2: test message #2");
+#endif
 
 			std::cout << "wait for joining thread" << std::endl;
 			if (thrd.get()) thrd->join();
@@ -439,10 +469,13 @@ void asio_async_serial_port_better()
             boost::this_thread::yield();
 #endif
 
+#if 1
+			// for test.
 			handler1.write("serial port 1: test message #1");
 			handler2.write("serial port 2: test message #1");
 			handler1.write("serial port 1: test message #2");
 			handler2.write("serial port 2: test message #2");
+#endif
 
 			std::cout << "wait for joining thread" << std::endl;
 			if (thrd1.get()) thrd1->join();
@@ -487,9 +520,9 @@ void asio_sync_serial_port()
 
 				const std::size_t len = port.read_some(boost::asio::buffer(buf), error);
 				if (error == boost::asio::error::eof)
-					break; // Connection closed cleanly by peer.
+					break; // connection closed cleanly by peer.
 				else if (error)
-					throw boost::system::system_error(error); // Some other error.
+					throw boost::system::system_error(error); // some other error.
 
 				std::cout.write(buf.data(), (std::streamsize)len);
 			}
