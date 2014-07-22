@@ -1,0 +1,3 @@
+[-] General
+	-. Reference
+		${CPP_HW_INTERFACE_HOME}/src/imu
