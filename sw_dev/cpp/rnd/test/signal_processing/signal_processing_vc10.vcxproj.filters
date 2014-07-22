@@ -34,9 +34,21 @@
     <Filter Include="Source Files\spuc">
       <UniqueIdentifier>{96f7499f-c437-4269-ba9d-409004ff30eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\imu_filtering">
+      <UniqueIdentifier>{a28ec081-fc5c-4b67-9362-706b1e933692}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\imu_filtering\ARS">
+      <UniqueIdentifier>{9ea1649d-8762-4068-a868-0284bdc24835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\imu_filtering\ARS\matrix">
+      <UniqueIdentifier>{6fd1ede7-e81d-4ba2-80aa-5a6490a2cc3e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="imu_filtering\ARS\matrix\cmatrix">
+      <Filter>Source Files\imu_filtering\ARS\matrix</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -89,6 +101,33 @@
     </ClInclude>
     <ClInclude Include="nyu_depth_toolbox_v2_lib\cbf.h">
       <Filter>Source Files\nyu_depth_toolbox_v2_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="imu_filtering\ARS\ARS.h">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClInclude>
+    <ClInclude Include="imu_filtering\ARS\Quaternion.h">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClInclude>
+    <ClInclude Include="imu_filtering\ARS\MatrixAlgebra.h">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClInclude>
+    <ClInclude Include="imu_filtering\ARS\mm.h">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClInclude>
+    <ClInclude Include="imu_filtering\ARS\ARSByEKFAndQuaternion.h">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClInclude>
+    <ClInclude Include="imu_filtering\ARS\ARSByEKFAndRotationMatrix.h">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClInclude>
+    <ClInclude Include="imu_filtering\ARS\matrix\matrix2.hxx">
+      <Filter>Source Files\imu_filtering\ARS\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="imu_filtering\ARS\ARSByComplementaryFilterAndQuaternion.h">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClInclude>
+    <ClInclude Include="imu_filtering\ARS\ARSByComplementaryFilterAndRotationMatrix.h">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +187,30 @@
     </ClCompile>
     <ClCompile Include="spuc\spuc_maximum_likelihood_sequence_estimation.cpp">
       <Filter>Source Files\spuc</Filter>
+    </ClCompile>
+    <ClCompile Include="imu_filtering\imu_filtering_main.cpp">
+      <Filter>Source Files\imu_filtering</Filter>
+    </ClCompile>
+    <ClCompile Include="imu_filtering\ARS\Quaternion.cpp">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClCompile>
+    <ClCompile Include="imu_filtering\ARS\ARSByEKFAndQuaternion.cpp">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClCompile>
+    <ClCompile Include="imu_filtering\ARS\ARSByEKFAndRotationMatrix.cpp">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClCompile>
+    <ClCompile Include="imu_filtering\ARS\matrix\matrix.cc">
+      <Filter>Source Files\imu_filtering\ARS\matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="imu_filtering\ARS\ARS.cpp">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClCompile>
+    <ClCompile Include="imu_filtering\ARS\ARSByComplementaryFilterAndQuaternion.cpp">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClCompile>
+    <ClCompile Include="imu_filtering\ARS\ARSByComplementaryFilterAndRotationMatrix.cpp">
+      <Filter>Source Files\imu_filtering\ARS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

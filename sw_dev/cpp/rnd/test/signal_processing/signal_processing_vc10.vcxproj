@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="imu_filtering\ARS\matrix\cmatrix" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +97,15 @@
     <ClInclude Include="fast_bilateral_filter_lib\math_tools.h" />
     <ClInclude Include="fast_bilateral_filter_lib\mixed_vector.h" />
     <ClInclude Include="fast_bilateral_filter_lib\msg_stream.h" />
+    <ClInclude Include="imu_filtering\ARS\ARS.h" />
+    <ClInclude Include="imu_filtering\ARS\ARSByEKFAndQuaternion.h" />
+    <ClInclude Include="imu_filtering\ARS\ARSByEKFAndRotationMatrix.h" />
+    <ClInclude Include="imu_filtering\ARS\ARSByComplementaryFilterAndQuaternion.h" />
+    <ClInclude Include="imu_filtering\ARS\ARSByComplementaryFilterAndRotationMatrix.h" />
+    <ClInclude Include="imu_filtering\ARS\MatrixAlgebra.h" />
+    <ClInclude Include="imu_filtering\ARS\matrix\matrix2.hxx" />
+    <ClInclude Include="imu_filtering\ARS\mm.h" />
+    <ClInclude Include="imu_filtering\ARS\Quaternion.h" />
     <ClInclude Include="nyu_depth_toolbox_v2_lib\cbf.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -112,6 +122,17 @@
     <ClCompile Include="fast_bilateral_filter\fast_bilateral_filter_main.cpp" />
     <ClCompile Include="fast_bilateral_filter\truncated_kernel_bilateral_filter_example.cpp" />
     <ClCompile Include="fast_bilateral_filter_lib\fft_3D\support_3D.cpp" />
+    <ClCompile Include="imu_filtering\ARS\ARS.cpp" />
+    <ClCompile Include="imu_filtering\ARS\ARSByEKFAndQuaternion.cpp" />
+    <ClCompile Include="imu_filtering\ARS\ARSByEKFAndRotationMatrix.cpp" />
+    <ClCompile Include="imu_filtering\ARS\ARSByComplementaryFilterAndQuaternion.cpp" />
+    <ClCompile Include="imu_filtering\ARS\ARSByComplementaryFilterAndRotationMatrix.cpp" />
+    <ClCompile Include="imu_filtering\ARS\matrix\matrix.cc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="imu_filtering\ARS\Quaternion.cpp" />
+    <ClCompile Include="imu_filtering\imu_filtering_main.cpp" />
     <ClCompile Include="itpp\itpp_main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

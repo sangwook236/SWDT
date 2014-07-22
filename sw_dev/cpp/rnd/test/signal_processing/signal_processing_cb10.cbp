@@ -42,9 +42,9 @@
 		</Compiler>
 		<Linker>
 			<Add library="spuc_filt" />
-			<Add library="spuc_types" />
-			<Add library="spuc" />
-			<Add library="itpp" />
+      <Add library="spuc" />
+      <Add library="spuc_types" />
+      <Add library="itpp" />
 			<Add library="opencv_imgproc" />
 			<Add library="opencv_highgui" />
 			<Add library="opencv_core" />

@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
 		//	-. deep learning.
 		//retval = liblearning_main(argc, argv);
 
-		std::cout << "\nreinforcement learning (RL) -----------------------------------------" << std::endl;
+		std::cout << "\nRL-Glue (Reinforcement Learning Glue) library -----------------------" << std::endl;
 		//retval = rl_glue_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
