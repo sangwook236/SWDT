@@ -13,6 +13,7 @@
 #include <sstream>
 #include <iostream>
 #include <cmath>
+#include <cassert>
 
 
 namespace {
@@ -327,8 +328,8 @@ public:
 	: base_type(io_service),
 	  ars_()
 	{
-		ars_.reset(new ARSByEKFAndRotationMatrix());
-		//ars_.reset(new ARSByEKFAndQuaternion());
+		//ars_.reset(new ARSByEKFAndRotationMatrix());
+		ars_.reset(new ARSByEKFAndQuaternion());
 		//ars_.reset(new ARSByComplementaryFilterAndRotationMatrix());
 		//ars_.reset(new ARSByComplementaryFilterAndQuaternion());
 
