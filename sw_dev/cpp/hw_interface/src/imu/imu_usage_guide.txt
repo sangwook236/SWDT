@@ -17,5 +17,7 @@
 		https://github.com/big5824/Quadrocopter
 
 [-] Algorithm
+	-. ¾ç±¤¿õÀÇ Open Robotics
+		http://blog.daum.net/pg365
     -. Complementary filter
         http://www.pieter-jan.com/node/11
