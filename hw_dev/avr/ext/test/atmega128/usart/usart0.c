@@ -228,7 +228,7 @@ void usart0_init(const uint32_t baudrate)
 	UCSR0C &= ~(_BV(UPM00));  // no parity
 	UCSR0C &= ~(_BV(USBS0));  // 1 stop bit
 
-	 // data size: 8 bits
+	// data size: 8 bits
 	UCSR0B &= ~(_BV(UCSZ02));
 	UCSR0C |= _BV(UCSZ01);
 	UCSR0C |= _BV(UCSZ00);
