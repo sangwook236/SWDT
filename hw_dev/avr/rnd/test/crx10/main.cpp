@@ -252,7 +252,7 @@ int crx10_motor_control_main()
 	const int PULSES_PER_REV = 600;  // 60 [pulses/rev] (???).
 	const unsigned char TOP = 200;  // TOP value.
 	
-	unsigned char pwm_value = TOP / 2;
+	unsigned char ocr_value = TOP / 2;
 	double duty = 0.0;  // duty ratio, [0, 1].
 
 	const double ref_pos = M_PI_2;  // [rad].
@@ -260,7 +260,7 @@ int crx10_motor_control_main()
 	double curr_err = 0.0, prev_err = 0.0, derr, sum_err = 0.0;  // [rad].
 
 	const double Kp = 100.0, Kd = 25.0, Ki = 0.0;
-	double pid_value = 0.0;
+	double pid_output = 0.0;
 
 	// initialize PWM.
 	{
@@ -286,26 +286,29 @@ int crx10_motor_control_main()
 	
 	while (true)
 	{
+		// read encoder.
 		const s32 enc0 = encoderGetPosition(0);
 		//const s32 enc1 = encoderGetPosition(1);
-		
+
+		// pulses to radian.
 		curr_pos = ((double)enc0 / (double)PULSES_PER_REV) * 2.0 * M_PI;  // [rad].
+
 		curr_err = ref_pos - curr_pos;
 		derr = curr_err - prev_err;
 		sum_err = 0.0;  // no integral control.
 
-		// PID control
-		pid_value = Kp * curr_err + Kd * derr + Ki * sum_err;
+		// PID control.
+		pid_output = Kp * curr_err + Kd * derr + Ki * sum_err;
 		
-		// PWM's duty ratio.
-		duty = fabs(pid_value) / 100.0;
+		// PID output to PWM's duty ratio.
+		duty = fabs(pid_output) / 100.0;
 		// saturation.
 		if (duty < 0.0) duty = 0.0;
 		else if (duty > 1.0) duty =1.0;
 
 		// PWM's duty ratio = (1 + OCRnx) / (1 + TOP).
-		//pwm_value = round(duty * (1 + TOP) - 1);
-		pwm_value = round((duty + 1.0f) * TOP * 0.5f);  // 0 : duty : 1 = TOP/2 : OCRnx : TOP.
+		//ocr_value = round(duty * (1 + TOP) - 1);
+		ocr_value = round((duty + 1.0f) * TOP * 0.5f);  // 0 : duty : 1 = TOP/2 : OCRnx : TOP.
 		
 		// right wheel.
 		PORTE &= 0x3F;  // PORTE7 = 0, PORTE6 = 0.
@@ -314,8 +317,8 @@ int crx10_motor_control_main()
 		else
 			PORTE |= 0x40;  // PORTE6 = 1 (backward).
 		
-		OCR1A = pwm_value;  // right wheel.
-		//OCR1B = pwm_value;  // left wheel.
+		OCR1A = ocr_value;  // right wheel.
+		//OCR1B = ocr_value;  // left wheel.
 
 		prev_err = curr_err;
 		
