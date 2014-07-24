@@ -257,7 +257,7 @@ int crx10_motor_control_main()
 
 	const double ref_pos = M_PI_2;  // [rad].
 	double curr_pos;  // [rad].
-	double curr_err = 0.0, prev_err = 0.0, derr, sum_err = 0.0;  // [rad].
+	double curr_err = 0.0, prev_err = 0.0, del_err, sum_err = 0.0;  // [rad].
 
 	const double Kp = 100.0, Kd = 25.0, Ki = 0.0;
 	double pid_output = 0.0;
@@ -287,21 +287,21 @@ int crx10_motor_control_main()
 	while (true)
 	{
 		// read encoder.
-		const s32 enc0 = encoderGetPosition(0);
-		//const s32 enc1 = encoderGetPosition(1);
+		const s32 enc0 = encoderGetPosition(0);  // right wheel's encoder [pulses].
+		//const s32 enc1 = encoderGetPosition(1);  // left wheel's encoder [pulses].
 
 		// pulses to radian.
 		curr_pos = ((double)enc0 / (double)PULSES_PER_REV) * 2.0 * M_PI;  // [rad].
 
 		curr_err = ref_pos - curr_pos;
-		derr = curr_err - prev_err;
+		del_err = curr_err - prev_err;
 		sum_err = 0.0;  // no integral control.
 
 		// PID control.
-		pid_output = Kp * curr_err + Kd * derr + Ki * sum_err;
+		pid_output = Kp * curr_err + Kd * del_err + Ki * sum_err;
 		
 		// PID output to PWM's duty ratio.
-		duty = fabs(pid_output) / 100.0;
+		duty = fabs(pid_output) / 100.0;  // 100.0 : arbitrary.
 		// saturation.
 		if (duty < 0.0) duty = 0.0;
 		else if (duty > 1.0) duty =1.0;
@@ -320,6 +320,7 @@ int crx10_motor_control_main()
 		OCR1A = ocr_value;  // right wheel.
 		//OCR1B = ocr_value;  // left wheel.
 
+		// update previous error.
 		prev_err = curr_err;
 		
 		// control period : important !!!.
