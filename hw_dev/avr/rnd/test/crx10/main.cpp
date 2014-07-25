@@ -210,15 +210,15 @@ int crx10_encoder_interfacing_main()
 	s32 div1 = 100000000, div2 = div1 / 10;
 	while (true)
 	{
-		const s32 enc0 = encoderGetPosition(0);
-		const s32 enc1 = encoderGetPosition(1);
+		const s32 enc_right = encoderGetPosition(0);
+		const s32 enc_left = encoderGetPosition(1);
 
 		div1 = 100000000;
 		div2 = div1 / 10;
-		usart0_transmit_data(enc0 >= 0 ? '+' : '-');
+		usart0_transmit_data(enc_right >= 0 ? '+' : '-');
 		for (int i = 0; i < 8; ++i)
 		{
-			usart0_transmit_data((abs(enc0) % div1) / div2 + '0');
+			usart0_transmit_data((abs(enc_right) % div1) / div2 + '0');
 			div1 = div2;
 			div2 /= 10;
 		}
@@ -227,10 +227,10 @@ int crx10_encoder_interfacing_main()
 
 		div1 = 100000000;
 		div2 = div1 / 10;
-		usart0_transmit_data(enc1 >= 0 ? '+' : '-');
+		usart0_transmit_data(enc_left >= 0 ? '+' : '-');
 		for (int i = 0; i < 8; ++i)
 		{
-			usart0_transmit_data((abs(enc1) % div1) / div2 + '0');
+			usart0_transmit_data((abs(enc_left) % div1) / div2 + '0');
 			div1 = div2;
 			div2 /= 10;
 		}
@@ -287,11 +287,11 @@ int crx10_motor_control_main()
 	while (true)
 	{
 		// read encoder.
-		const s32 enc0 = encoderGetPosition(0);  // right wheel's encoder [pulses].
-		//const s32 enc1 = encoderGetPosition(1);  // left wheel's encoder [pulses].
+		const s32 enc_right = encoderGetPosition(0);  // right wheel's encoder [pulses].
+		//const s32 enc_left = encoderGetPosition(1);  // left wheel's encoder [pulses].
 
 		// pulses to radian.
-		curr_pos = ((double)enc0 / (double)PULSES_PER_REV) * 2.0 * M_PI;  // [rad].
+		curr_pos = ((double)enc_right / (double)PULSES_PER_REV) * 2.0 * M_PI;  // [rad].
 
 		curr_err = ref_pos - curr_pos;
 		del_err = curr_err - prev_err;
@@ -312,7 +312,8 @@ int crx10_motor_control_main()
 		
 		// right wheel.
 		PORTE &= 0x3F;  // PORTE7 = 0, PORTE6 = 0.
-		if (curr_err >= 0.0)
+		//if (curr_err >= 0.0)
+		if (pid_output >= 0.0)
 			PORTE |= 0x80;  // PORTE7 = 1 (forward).
 		else
 			PORTE |= 0x40;  // PORTE6 = 1 (backward).
