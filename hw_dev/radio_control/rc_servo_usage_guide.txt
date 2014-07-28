@@ -5,4 +5,6 @@
 		http://www.mitchr.me/SS/batteriesRequired/RCcontrolTheory/
 		http://www.pololu.com/blog/17/servo-control-interface-in-detail
 
-		http://hitecrcd.com/
+		http://www.hitecrcd.com/
+		http://www.futaba-rc.com/
+		http://www.airtronics.net/

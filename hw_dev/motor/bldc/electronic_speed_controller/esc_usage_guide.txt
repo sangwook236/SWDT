@@ -1,5 +1,5 @@
 [-] General
-	-. Electronic Speed Controller (ESC)
+	-. Site
 		http://en.wikipedia.org/wiki/Electronic_speed_control
 		http://en.wikipedia.org/wiki/Battery_eliminator_circuit
 
