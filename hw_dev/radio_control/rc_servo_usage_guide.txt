@@ -1,0 +1,8 @@
+[-] General
+	-. Site
+		http://en.wikipedia.org/wiki/Servo_(radio_control)
+		http://pcbheaven.com/wikipages/How_RC_Servos_Works/
+		http://www.mitchr.me/SS/batteriesRequired/RCcontrolTheory/
+		http://www.pololu.com/blog/17/servo-control-interface-in-detail
+
+		http://hitecrcd.com/
