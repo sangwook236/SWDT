@@ -9,7 +9,8 @@ namespace scientific_computation.accord_net
     {
         public static void run(string[] args)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Hidden Markov model (HMM) -------------------------------------------");
+            HiddenMarkovModel.run(args);
         }
     }
 }

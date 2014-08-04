@@ -12,7 +12,7 @@ namespace scientific_computation
             try
             {
                 Console.WriteLine("AForge.NET library --------------------------------------------------");
-                aforge_net.AForge_NET_Main.run(args);  // not yet implemented.
+                //aforge_net.AForge_NET_Main.run(args);  // not yet implemented.
 
                 Console.WriteLine("Accord.NET library --------------------------------------------------");
                 accord_net.Accord_NET_Main.run(args);  // not yet implemented.

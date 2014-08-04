@@ -34,6 +34,75 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accord">
+      <HintPath>..\..\build\packages\Accord.2.12.0.0\lib\Accord.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Audio">
+      <HintPath>..\..\build\packages\Accord.Audio.2.12.0.0\lib\Accord.Audio.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Audio.Formats">
+      <HintPath>..\..\build\packages\Accord.Audio.2.12.0.0\lib\Accord.Audio.Formats.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Controls">
+      <HintPath>..\..\build\packages\Accord.Controls.2.12.0.0\lib\Accord.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Controls.Audio">
+      <HintPath>..\..\build\packages\Accord.Controls.Audio.2.12.0.0\lib\Accord.Controls.Audio.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Controls.Imaging">
+      <HintPath>..\..\build\packages\Accord.Controls.Imaging.2.12.0.0\lib\Accord.Controls.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Controls.Vision">
+      <HintPath>..\..\build\packages\Accord.Controls.Vision.2.12.0.0\lib\Accord.Controls.Vision.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.DirectSound">
+      <HintPath>..\..\build\packages\Accord.DirectSound.2.12.0.0\lib\Accord.DirectSound.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Imaging">
+      <HintPath>..\..\build\packages\Accord.Imaging.2.12.0.0\lib\Accord.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.MachineLearning">
+      <HintPath>..\..\build\packages\Accord.MachineLearning.2.12.0.0\lib\Accord.MachineLearning.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math">
+      <HintPath>..\..\build\packages\Accord.Math.2.12.0.0\lib\Accord.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Neuro">
+      <HintPath>..\..\build\packages\Accord.Neuro.2.12.0.0\lib\Accord.Neuro.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Statistics">
+      <HintPath>..\..\build\packages\Accord.Statistics.2.12.0.0\lib\Accord.Statistics.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Vision">
+      <HintPath>..\..\build\packages\Accord.Vision.2.12.0.0\lib\Accord.Vision.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge">
+      <HintPath>..\..\build\packages\AForge.2.2.5\lib\AForge.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Controls">
+      <HintPath>..\..\build\packages\AForge.Controls.2.2.5\lib\AForge.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Genetic">
+      <HintPath>..\..\build\packages\AForge.Genetic.2.2.5\lib\AForge.Genetic.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Imaging">
+      <HintPath>..\..\build\packages\AForge.Imaging.2.2.5\lib\AForge.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Math">
+      <HintPath>..\..\build\packages\AForge.Math.2.2.5\lib\AForge.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Neuro">
+      <HintPath>..\..\build\packages\AForge.Neuro.2.2.5\lib\AForge.Neuro.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video">
+      <HintPath>..\..\build\packages\AForge.Video.2.2.5\lib\AForge.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video.DirectShow">
+      <HintPath>..\..\build\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Vision">
+      <HintPath>..\..\build\packages\AForge.Vision.2.2.5\lib\AForge.Vision.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,9 +113,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="accord_net\Accord_NET_Main.cs" />
+    <Compile Include="accord_net\HiddenMarkovModel.cs" />
     <Compile Include="aforge_net\AForge_NET_Main.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
