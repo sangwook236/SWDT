@@ -113,7 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="accord_net\Accord_NET_Main.cs" />
-    <Compile Include="accord_net\HiddenMarkovModel.cs" />
+    <Compile Include="accord_net\ConditionalRandomFieldExample.cs" />
+    <Compile Include="accord_net\HiddenConditionalRandomFieldExample.cs" />
+    <Compile Include="accord_net\HiddenMarkovModelExample.cs" />
     <Compile Include="aforge_net\AForge_NET_Main.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,8 +9,13 @@ namespace scientific_computation.accord_net
     {
         public static void run(string[] args)
         {
-            Console.WriteLine("Hidden Markov model (HMM) -------------------------------------------");
-            HiddenMarkovModel.run(args);
+            Console.WriteLine("Hidden Markov Model (HMM) -------------------------------------------");
+            HiddenMarkovModelExample.run(args);
+
+            Console.WriteLine("Conditional Random Field (CRF) --------------------------------------");
+            //ConditionalRandomFieldExample.run(args);
+            Console.WriteLine("Hidden Conditional Random Field (HCRF) ------------------------------");
+            HiddenConditionalRandomFieldExample.run(args);
         }
     }
 }
