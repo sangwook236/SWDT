@@ -14,7 +14,7 @@ namespace machine_learning
                 Console.WriteLine("numl library --------------------------------------------------------");
                 numl.numl_Main.run(args);  // not yet implemented.
 
-                Console.WriteLine("\nEncog Machine Learning Framework ------------------------------------");
+                Console.WriteLine("Encog Machine Learning Framework ------------------------------------");
                 //	-. Java, .NET and C/C++.
                 //	-. neural network.
 				//		ADALINE neural network.
