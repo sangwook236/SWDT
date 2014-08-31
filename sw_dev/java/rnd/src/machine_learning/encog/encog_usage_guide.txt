@@ -3,3 +3,6 @@
 		http://www.heatonresearch.com/
 		http://www.heatonresearch.com/encog
 		https://github.com/encog
+
+		http://www.heatonresearch.com/wiki/Documentation
+		http://www.heatonresearch.com/wiki/Getting_Started
