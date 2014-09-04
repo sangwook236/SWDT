@@ -54,7 +54,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;./;./libAdaBoost;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work\sw_dev\cpp\ext\inc\qt;D:\work\sw_dev\cpp\ext\inc\qt\QtCore;D:\work\sw_dev\cpp\ext\inc\qt\QtGui;D:\work\sw_dev\cpp\ext\inc\libpng;D:\work\sw_dev\cpp\ext\inc\clapack</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;./;./libAdaBoost;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work\dev_https\sw_dev\cpp\ext\inc\qt;D:\work\dev_https\sw_dev\cpp\ext\inc\qt\QtCore;D:\work\dev_https\sw_dev\cpp\ext\inc\qt\QtGui;D:\work\dev_https\sw_dev\cpp\ext\inc\libpng;D:\work\dev_https\sw_dev\cpp\ext\inc\clapack</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -70,7 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;./;./libAdaBoost;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work\sw_dev\cpp\ext\inc\qt;D:\work\sw_dev\cpp\ext\inc\qt\QtCore;D:\work\sw_dev\cpp\ext\inc\qt\QtGui;D:\work\sw_dev\cpp\ext\inc\libpng;D:\work\sw_dev\cpp\ext\inc\clapack</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;./;./libAdaBoost;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work\dev_https\sw_dev\cpp\ext\inc\qt;D:\work\dev_https\sw_dev\cpp\ext\inc\qt\QtCore;D:\work\dev_https\sw_dev\cpp\ext\inc\qt\QtGui;D:\work\dev_https\sw_dev\cpp\ext\inc\libpng;D:\work\dev_https\sw_dev\cpp\ext\inc\clapack</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

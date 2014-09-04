@@ -1,0 +1,4 @@
+[-] General
+	-. Site
+		http://www.leptonica.org/
+		https://code.google.com/p/leptonica/

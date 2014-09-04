@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
 	int imu_filtering_main(int argc, char *argv[]);
 	int itpp_main(int argc, char *argv[]);
 	int spuc_main(int argc, char *argv[]);
+	int tspl_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -39,6 +40,9 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nSignal Processing using C++ (SPUC) library --------------------------" << std::endl;
 		//retval = spuc_main(argc, argv);
+
+		std::cout << "\nSignal Processing Library in C++ (tspl) -----------------------------" << std::endl;
+		//retval = tspl_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

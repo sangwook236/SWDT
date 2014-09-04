@@ -9,8 +9,10 @@
 //#include <boost/thread.hpp>
 #include <boost/circular_buffer.hpp>
 #include <boost/smart_ptr.hpp>
+#include <numeric>
 #include <deque>
 #include <sstream>
+#include <fstream>
 #include <iostream>
 #include <cmath>
 #include <cassert>
@@ -326,7 +328,8 @@ public:
 public:
 	serial_port_handler_for_mpu6050(boost::asio::io_service &io_service)
 	: base_type(io_service),
-	  ars_()
+	  ars_(),
+	  accelx_(20), accely_(20), accelz_(20), gyrox_(20), gyroy_(20), gyroz_(20)
 	{
 		//ars_.reset(new ARSByEKFAndRotationMatrix());
 		ars_.reset(new ARSByEKFAndQuaternion());
@@ -335,9 +338,17 @@ public:
 
 		assert(ars_.get() != NULL);
 		ars_->initialize();
+
+		// FIXME [delete] >> for test.
+		outStream_.open("./data/mpu6050.dat");
+		if (!outStream_.is_open())
+			std::cerr << "output stream not opened" << std::endl;
 	}
 	virtual ~serial_port_handler_for_mpu6050()
-	{}
+	{
+		// FIXME [delete] >> for test.
+		outStream_.close();
+	}
 
 protected:
 	/*virtual*/ void process_buffered_data()
@@ -407,31 +418,61 @@ private:
 			std::cout << "roll: " << roll << ", pitch: " << pitch << std::endl;
 #elif 1
 			// Sensitivity = -2g to 2g at 16Bit : -2g = -32768 && 2g = 32768.
-			const double ACCELEROMETER_SENSITIVITY = 32768.0 / 2.0;
+			const double ACCELEROMETER_SENSITIVITY = 16384.0;  // (2^16 / 2) / 2 = 32768 / 2.
 			// Sensitivity = -500 [deg/sec] to 500 [deg/sec] at 16Bit : -500 [deg/sec] = -32768 && 500 [deg/sec] = 32767.
 			//const double GYROSCOPE_SENSITIVITY = 65.536;
 			// Sensitivity = -250 [deg/sec] to 250 [deg/sec] at 16Bit : -250 [deg/sec] = -32768 && 250 [deg/sec] = 32767.
-			const double GYROSCOPE_SENSITIVITY = 131.072;
+			const double GYROSCOPE_SENSITIVITY = 131.072;  // (2^16 / 2) / 250 = 32768 / 250.
  			const double dt = 0.01;  // sample rate: 10 [msec].
 
-			const double gyro[3] = { values[3] / GYROSCOPE_SENSITIVITY, values[4] / GYROSCOPE_SENSITIVITY, values[5] / GYROSCOPE_SENSITIVITY };
-			const double accel[3] = { values[0] / ACCELEROMETER_SENSITIVITY, values[1] / ACCELEROMETER_SENSITIVITY, values[2] / ACCELEROMETER_SENSITIVITY };
-			const double magn[3] = { 0., };
-			const double temp[3] = { 0., };
+#if 0
+			accelx_.push_back(values[0] / ACCELEROMETER_SENSITIVITY);
+			accely_.push_back(values[1] / ACCELEROMETER_SENSITIVITY);
+			accelz_.push_back(values[2] / ACCELEROMETER_SENSITIVITY);
+			gyrox_.push_back(values[3] / GYROSCOPE_SENSITIVITY);
+			gyroy_.push_back(values[4] / GYROSCOPE_SENSITIVITY);
+			gyroz_.push_back(values[5] / GYROSCOPE_SENSITIVITY);
+#else
+			accelx_.push_back(values[2] / ACCELEROMETER_SENSITIVITY);
+			accely_.push_back(values[1] / ACCELEROMETER_SENSITIVITY);
+			accelz_.push_back(values[0] / ACCELEROMETER_SENSITIVITY);
+			gyrox_.push_back(values[5] / GYROSCOPE_SENSITIVITY);
+			gyroy_.push_back(values[4] / GYROSCOPE_SENSITIVITY);
+			gyroz_.push_back(values[3] / GYROSCOPE_SENSITIVITY);
+#endif
 
-			const dMatrix &R = ars_->filter(gyro, accel, magn, dt);
-			//std::cout << R << std::endl;
+			double gyro[3] = { 0.0, };
+			double accel[3] = { 0.0, };
+			const double magn[3] = { 0.0, };
+			const double temp[3] = { 0.0, };
 
-			const double theta = std::acos((R(0,0) + R(1,1) + R(2,2) - 1.0) * 0.5);
-			std::cout << "theta = " << theta;
-			const double eps = 1.0e-3;
-		 	const double M_PI = std::atan(1.0) * 4.0;
-			if (eps < theta && theta < (M_PI - eps))
+			if (accelx_.full() && accely_.full() && accelz_.full() && gyrox_.full() && gyroy_.full() && gyroz_.full())
 			{
-				const double factor = 0.5 / std::sin(theta);
-				std::cout << ", k = (" << ((R(2,1) - R(1,2)) * factor) << ',' << ((R(0,2) - R(2,0)) * factor) << ',' << ((R(1,0) - R(0,1)) * factor) << std::endl;
+				accel[0] = std::accumulate(accelx_.begin(), accelx_.end(), 0.0) / (double)accelx_.size();
+				accel[1] = std::accumulate(accely_.begin(), accely_.end(), 0.0) / (double)accely_.size();
+				accel[2] = std::accumulate(accelz_.begin(), accelz_.end(), 0.0) / (double)accelz_.size();
+				gyro[0] = std::accumulate(gyrox_.begin(), gyrox_.end(), 0.0) / (double)gyrox_.size();
+				gyro[1] = std::accumulate(gyroy_.begin(), gyroy_.end(), 0.0) / (double)gyroy_.size();
+				gyro[2] = std::accumulate(gyroz_.begin(), gyroz_.end(), 0.0) / (double)gyroz_.size();
+
+				// FIXME [delete] >> for test.
+				outStream_ << accel[0] << ',' << accel[1] << ',' << accel[2] << ',' << gyro[0] << ',' << gyro[1] << ',' << gyro[2] << std::endl;
+
+				const dMatrix &R = ars_->filter(gyro, accel, magn, dt);
+				//std::cout << R << std::endl;
+
+				// Calculate equivalent angle-axis.
+				const double theta = std::acos((R(0,0) + R(1,1) + R(2,2) - 1.0) * 0.5);
+				std::cout << "theta = " << theta;
+				const double eps = 1.0e-3;
+		 		const double M_PI = std::atan(1.0) * 4.0;
+				if (eps < theta && theta < (M_PI - eps))
+				{
+					const double factor = 0.5 / std::sin(theta);
+					std::cout << ", k = (" << ((R(2,1) - R(1,2)) * factor) << ',' << ((R(0,2) - R(2,0)) * factor) << ',' << ((R(1,0) - R(0,1)) * factor) << ')' << std::endl;
+				}
+				else std::cout << std::endl;
 			}
-			else std::cout << std::endl;
 #endif
 		}
 	}
@@ -453,6 +494,12 @@ private:
 
 private:
 	boost::scoped_ptr<ARS> ars_;
+
+	boost::circular_buffer<double> accelx_, accely_, accelz_;
+	boost::circular_buffer<double> gyrox_, gyroy_, gyroz_;
+
+	// FIXME [delete] >> for test.
+	std::ofstream outStream_;
 };
 
 // [ref] asio_async_serial_port_better() in ${CPP_EXT_HOME}/test/boost/asio_serial_port.cpp.

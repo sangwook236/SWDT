@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "region growing algorithm --------------------------------------------" << std::endl;
-		retval = region_growing_main(argc, argv);
+		//retval = region_growing_main(argc, argv);
 
 		std::cout << "\nefficient graph-based image segmentation algorithm ------------------" << std::endl;
 		//retval = efficient_graph_based_image_segmentation_main(argc, argv);
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 		//retval = interactive_graph_cuts_main(argc, argv);
 
 		std::cout << "\nsimple linear iterative clustering (SLIC) algorithm -----------------" << std::endl;
-		//retval = gslic_main(argc, argv);
+		retval = gslic_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

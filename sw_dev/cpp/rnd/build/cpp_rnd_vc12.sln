@@ -56,6 +56,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "distance_measure", "..\test
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "motion_analysis", "..\test\motion_analysis\motion_analysis_vc12.vcxproj", "{C4B80E59-A395-44D7-8D4D-234C26924652}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "language_processing", "..\test\language_processing\language_processing_vc12.vcxproj", "{EC936BA5-EB28-44AF-A877-936A37E76815}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -170,6 +172,10 @@ Global
 		{C4B80E59-A395-44D7-8D4D-234C26924652}.Debug|Win32.Build.0 = Debug|Win32
 		{C4B80E59-A395-44D7-8D4D-234C26924652}.Release|Win32.ActiveCfg = Release|Win32
 		{C4B80E59-A395-44D7-8D4D-234C26924652}.Release|Win32.Build.0 = Release|Win32
+		{EC936BA5-EB28-44AF-A877-936A37E76815}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EC936BA5-EB28-44AF-A877-936A37E76815}.Debug|Win32.Build.0 = Debug|Win32
+		{EC936BA5-EB28-44AF-A877-936A37E76815}.Release|Win32.ActiveCfg = Release|Win32
+		{EC936BA5-EB28-44AF-A877-936A37E76815}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

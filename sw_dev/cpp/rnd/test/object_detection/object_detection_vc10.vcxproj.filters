@@ -28,6 +28,15 @@
     <Filter Include="Source Files\object_detection_and_localization_toolkit">
       <UniqueIdentifier>{5d7bf6be-d9f1-4866-999c-45caf2a6546e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\shadows_lib">
+      <UniqueIdentifier>{b5da7814-d84f-4937-87ac-c885a4395629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shadows">
+      <UniqueIdentifier>{62e158bc-e7bf-47c5-a54b-a5c516f020fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shadows_lib\utils">
+      <UniqueIdentifier>{89e3898c-b715-45b2-9cd6-183022305a91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -47,6 +56,48 @@
     </ClInclude>
     <ClInclude Include="c4_lib\Pedestrian.h">
       <Filter>Source Files\c4_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\ChromacityShadRem.h">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\ChromacityShadRemParams.h">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\GeometryShadRem.h">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\GeometryShadRemParams.h">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\LrTextureShadRem.h">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\LrTextureShadRemParams.h">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\PhysicalShadRem.h">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\PhysicalShadRemParams.h">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\SrTextureShadRem.h">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\SrTextureShadRemParams.h">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\utils\ConnComp.h">
+      <Filter>Source Files\shadows_lib\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\utils\ConnCompGroup.h">
+      <Filter>Source Files\shadows_lib\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\utils\GaborFilter.h">
+      <Filter>Source Files\shadows_lib\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="shadows_lib\utils\GaussianMixtureModel.h">
+      <Filter>Source Files\shadows_lib\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +127,54 @@
     </ClCompile>
     <ClCompile Include="object_detection_and_localization_toolkit\object_detection_and_localization_toolkit_main.cpp">
       <Filter>Source Files\object_detection_and_localization_toolkit</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows\shadows_main.cpp">
+      <Filter>Source Files\shadows</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\ChromacityShadRem.cpp">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\ChromacityShadRemParams.cpp">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\GeometryShadRem.cpp">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\GeometryShadRemParams.cpp">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\LrTextureShadRem.cpp">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\LrTextureShadRemParams.cpp">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\main.cpp">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\PhysicalShadRem.cpp">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\PhysicalShadRemParams.cpp">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\SrTextureShadRem.cpp">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\SrTextureShadRemParams.cpp">
+      <Filter>Source Files\shadows_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\utils\ConnComp.cpp">
+      <Filter>Source Files\shadows_lib\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\utils\ConnCompGroup.cpp">
+      <Filter>Source Files\shadows_lib\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\utils\GaborFilter.cpp">
+      <Filter>Source Files\shadows_lib\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\utils\GaussianMixtureModel.cpp">
+      <Filter>Source Files\shadows_lib\utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

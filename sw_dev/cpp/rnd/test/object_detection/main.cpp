@@ -15,6 +15,8 @@ int main(int argc, char *argv[])
 
 	int c4_main(int argc, char *argv[]);
 
+	int shadows_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
@@ -33,7 +35,10 @@ int main(int argc, char *argv[])
 		std::cout << "\nC4 detector ---------------------------------------------------------" << std::endl;
 		// C4: Real-time pedestrian detection.
 		//	-. CENTRIST descriptor.
-		retval = c4_main(argc, argv);
+		//retval = c4_main(argc, argv);
+
+		std::cout << "\nshadow detection and removal algorithm ------------------------------" << std::endl;
+		retval = shadows_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

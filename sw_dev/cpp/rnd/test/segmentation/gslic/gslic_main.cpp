@@ -236,7 +236,7 @@ int gslic_main(int argc, char *argv[])
 			input_file_list.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
 			input_file_list.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
 			input_file_list.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
-#elif 1
+#elif 0
 			input_file_list.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211659.png");
 			input_file_list.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211705.png");
 			input_file_list.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211713.png");

@@ -21,11 +21,11 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "Mobile Robot Programming Toolkit (MRPT) library ---------------------" << std::endl;
+		std::cout << "Mobile Robot Programming Toolkit (MRPT) -----------------------------" << std::endl;
 		//retval = mrpt_main(argc, argv);  // compile-time error.
 		std::cout << "\nPlayer/Stage library ------------------------------------------------" << std::endl;
 		//retval = player_stage_main(argc, argv);
-		std::cout << "\nThe Robot Operating System (ROS) library ----------------------------" << std::endl;
+		std::cout << "\nRobot Operating System (ROS) ----------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		// [ref] http://wiki.ros.org/ko/cturtle/Installation/Windows
 		//retval = ros_main(argc, argv);  // not yet implemented.

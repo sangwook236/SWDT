@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;../../inc/opencv-2.4.3;../../inc/opengm_external/MRF;../../inc/opengm_external/TRWS;../../inc/opengm_external/MaxFlow;../../inc/opengm_external/ibfs;../../inc/opengm_external/QPBO;D:\work\sw_dev\cpp\ext\inc\gmp;D:\work\sw_dev\cpp\ext\inc\hdf5</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;../../inc/opencv-2.4.3;../../inc/opengm_external/MRF;../../inc/opengm_external/TRWS;../../inc/opengm_external/MaxFlow;../../inc/opengm_external/ibfs;../../inc/opengm_external/QPBO;D:\work\dev_https\sw_dev\cpp\ext\inc\gmp;D:\work\dev_https\sw_dev\cpp\ext\inc\hdf5</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -68,7 +68,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;../../inc/opencv-2.4.3;../../inc/opengm_external/MRF;../../inc/opengm_external/TRWS;../../inc/opengm_external/MaxFlow;../../inc/opengm_external/ibfs;../../inc/opengm_external/QPBO;D:\work\sw_dev\cpp\ext\inc\gmp;D:\work\sw_dev\cpp\ext\inc\hdf5</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/pnl/pnl;../../inc/pnl/cxcore;../../inc/pnl/src/include;../../inc/mocapy;../../inc/;../../inc/opencv-2.4.3;../../inc/opengm_external/MRF;../../inc/opengm_external/TRWS;../../inc/opengm_external/MaxFlow;../../inc/opengm_external/ibfs;../../inc/opengm_external/QPBO;D:\work\dev_https\sw_dev\cpp\ext\inc\gmp;D:\work\dev_https\sw_dev\cpp\ext\inc\hdf5</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

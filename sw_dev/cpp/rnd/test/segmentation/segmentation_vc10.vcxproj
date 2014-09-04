@@ -54,7 +54,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./efficient_graph_based_image_segmentation_lib;../../inc/opengm_external/maxflow;../../inc/opencv-2.4.3;../../inc/;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./efficient_graph_based_image_segmentation_lib;../../inc/opengm_external/MaxFlow;../../inc/opencv-2.4.3;../../inc/;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.0\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

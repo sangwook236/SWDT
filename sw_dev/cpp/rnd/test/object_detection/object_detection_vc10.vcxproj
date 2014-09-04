@@ -51,7 +51,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3/;../../inc/opencv-2.4.3/opencv;../../inc/pabod/;../../inc/matio/;D:/work_center/sw_dev/cpp/ext/inc/pthread;../../inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3/;../../inc/opencv-2.4.3/opencv;../../inc/pabod/;../../inc/matio/;D:/work/dev_https/sw_dev/cpp/ext/inc/pthread;../../inc/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -68,7 +68,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3/;../../inc/opencv-2.4.3/opencv;../../inc/pabod/;../../inc/matio/;D:/work_center/sw_dev/cpp/ext/inc/pthread;../../inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3/;../../inc/opencv-2.4.3/opencv;../../inc/pabod/;../../inc/matio/;D:/work/dev_https/sw_dev/cpp/ext/inc/pthread;../../inc/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -86,6 +86,20 @@
     <ClInclude Include="c4_lib\IntImage.h" />
     <ClInclude Include="c4_lib\mdarray.h" />
     <ClInclude Include="c4_lib\Pedestrian.h" />
+    <ClInclude Include="shadows_lib\ChromacityShadRem.h" />
+    <ClInclude Include="shadows_lib\ChromacityShadRemParams.h" />
+    <ClInclude Include="shadows_lib\GeometryShadRem.h" />
+    <ClInclude Include="shadows_lib\GeometryShadRemParams.h" />
+    <ClInclude Include="shadows_lib\LrTextureShadRem.h" />
+    <ClInclude Include="shadows_lib\LrTextureShadRemParams.h" />
+    <ClInclude Include="shadows_lib\PhysicalShadRem.h" />
+    <ClInclude Include="shadows_lib\PhysicalShadRemParams.h" />
+    <ClInclude Include="shadows_lib\SrTextureShadRem.h" />
+    <ClInclude Include="shadows_lib\SrTextureShadRemParams.h" />
+    <ClInclude Include="shadows_lib\utils\ConnComp.h" />
+    <ClInclude Include="shadows_lib\utils\ConnCompGroup.h" />
+    <ClInclude Include="shadows_lib\utils\GaborFilter.h" />
+    <ClInclude Include="shadows_lib\utils\GaussianMixtureModel.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -101,6 +115,25 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object_detection_and_localization_toolkit\object_detection_and_localization_toolkit_main.cpp" />
     <ClCompile Include="object_detection_toolbox\object_detection_toolbox_main.cpp" />
+    <ClCompile Include="shadows\shadows_main.cpp" />
+    <ClCompile Include="shadows_lib\ChromacityShadRem.cpp" />
+    <ClCompile Include="shadows_lib\ChromacityShadRemParams.cpp" />
+    <ClCompile Include="shadows_lib\GeometryShadRem.cpp" />
+    <ClCompile Include="shadows_lib\GeometryShadRemParams.cpp" />
+    <ClCompile Include="shadows_lib\LrTextureShadRem.cpp" />
+    <ClCompile Include="shadows_lib\LrTextureShadRemParams.cpp" />
+    <ClCompile Include="shadows_lib\main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="shadows_lib\PhysicalShadRem.cpp" />
+    <ClCompile Include="shadows_lib\PhysicalShadRemParams.cpp" />
+    <ClCompile Include="shadows_lib\SrTextureShadRem.cpp" />
+    <ClCompile Include="shadows_lib\SrTextureShadRemParams.cpp" />
+    <ClCompile Include="shadows_lib\utils\ConnComp.cpp" />
+    <ClCompile Include="shadows_lib\utils\ConnCompGroup.cpp" />
+    <ClCompile Include="shadows_lib\utils\GaborFilter.cpp" />
+    <ClCompile Include="shadows_lib\utils\GaussianMixtureModel.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

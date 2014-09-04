@@ -43,6 +43,9 @@
     <Filter Include="Source Files\imu_filtering\ARS\matrix">
       <UniqueIdentifier>{6fd1ede7-e81d-4ba2-80aa-5a6490a2cc3e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\tspl">
+      <UniqueIdentifier>{2d5bf287-99a2-4ff2-91da-ecd6ac68123d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -211,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="imu_filtering\ARS\ARSByComplementaryFilterAndRotationMatrix.cpp">
       <Filter>Source Files\imu_filtering\ARS</Filter>
+    </ClCompile>
+    <ClCompile Include="tspl\tspl_main.cpp">
+      <Filter>Source Files\tspl</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

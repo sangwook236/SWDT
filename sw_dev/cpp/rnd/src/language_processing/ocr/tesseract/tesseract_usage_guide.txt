@@ -1,0 +1,4 @@
+[-] General
+	-. Site
+		https://code.google.com/p/tesseract-ocr/
+		http://capture2text.sourceforge.net/

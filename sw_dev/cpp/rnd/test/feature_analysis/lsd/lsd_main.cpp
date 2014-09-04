@@ -127,6 +127,14 @@ void lsd_image_test()
 			return;
 		}
 
+		/*
+		{
+			cv::Mat img2;
+			cv::resize(img, img2, cv::Size(), 0.25, 0.25, cv::INTER_LANCZOS4);
+			img = img2;
+		}
+		*/
+
 		cv::Mat gray_img_dbl;
 		{
 			cv::Mat gray_img;
@@ -168,6 +176,7 @@ void lsd_image_test()
 			//cv::line(img, cv::Point(lines[7 * i + 0], lines[7 * i + 1]), cv::Point(lines[7 * i + 2], lines[7 * i + 3]), CV_RGB(255, 0, 0), lines[7 * i + 4], 8, 0);
 			cv::line(img, cv::Point(lines[7 * i + 0], lines[7 * i + 1]), cv::Point(lines[7 * i + 2], lines[7 * i + 3]), CV_RGB(255, 0, 0), 2, 8, 0);
 		}
+
 		cv::imshow(windowName2, img);
 		cv::waitKey(0);
 	}
@@ -186,7 +195,7 @@ int lsd_main(int argc, char *argv[])
 {
 	try
 	{
-		// line segment detector (LSD) --------------------
+		// line segment detector (LSD) -----------------------------------------
 		//local::lsd_example();
 		local::lsd_image_test();
 	}

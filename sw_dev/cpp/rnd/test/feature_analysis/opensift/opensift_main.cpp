@@ -21,9 +21,9 @@ int opensift_main(int argc, char *argv[])
 {
 	try
 	{
-		//my_opensift::extract_feature();
+		my_opensift::extract_feature();
 		//my_opensift::display_feature();
-		my_opensift::match_feature();
+		//my_opensift::match_feature();
 	}
 	catch (const cv::Exception &e)
 	{
