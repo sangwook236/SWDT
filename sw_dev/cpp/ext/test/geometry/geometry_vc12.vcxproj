@@ -71,7 +71,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../inc;../../inc/gmp;../../inc/mpfr;../../inc/CGAL_auxiliary/gmp/include;../../inc/CGAL_auxiliary/taucs/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;../../inc/gmp;../../inc/mpfr;../../inc/CGAL_auxiliary/gmp;../../inc/CGAL_auxiliary/mpfr;../../inc/CGAL_auxiliary/taucs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;CGAL_NO_AUTOLINK_MPFR;CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
