@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/MyProgramFiles/eclipse-4.2.1/plugins/org.eclipse.swt.win32.win32.x86_64_3.100.1.v4236b.jar"/>
-	<classpathentry kind="lib" path="D:/MyProgramFiles/eclipse-4.2.1/plugins/org.eclipse.jface_3.8.102.v20130123-162658.jar"/>
-	<classpathentry kind="lib" path="D:/MyProgramFiles/eclipse-4.2.1/plugins/org.eclipse.jface.text_3.8.2.v20121126-164145.jar"/>
-	<classpathentry kind="lib" path="D:/MyProgramFiles/eclipse-4.2.1/plugins/org.eclipse.jface.databinding_1.6.0.v20120912-132807.jar"/>
+	<classpathentry kind="lib" path="D:/MyProgramFiles/eclipse-4.3.1/plugins/org.eclipse.jface.databinding.source_1.6.200.v20130515-1857.jar"/>
+	<classpathentry kind="lib" path="D:/MyProgramFiles/eclipse-4.3.1/plugins/org.eclipse.jface.text_3.8.2.v20121126-164145.jar"/>
+	<classpathentry kind="lib" path="D:/MyProgramFiles/eclipse-4.3.1/plugins/org.eclipse.jface_3.8.102.v20130123-162658.jar"/>
+	<classpathentry kind="lib" path="D:/MyProgramFiles/eclipse-4.3.1/plugins/org.eclipse.swt.win32.win32.x86_64_3.102.1.v20140206-1358.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
