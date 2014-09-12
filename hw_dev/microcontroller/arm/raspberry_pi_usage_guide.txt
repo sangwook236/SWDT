@@ -1,0 +1,9 @@
+[-] General
+	-. Site
+		http://www.raspberrypi.org/
+		http://www.raspberrypi.org/documentation/
+		http://www.raspberrypi.org/help/quick-start-guide/
+
+		http://www.raspbian.org/
+		http://www.raspbmc.com/
+		http://www.pidora.ca/
