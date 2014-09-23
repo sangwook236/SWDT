@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>logging_vc10</ProjectName>
+    <ProjectName>logging</ProjectName>
     <ProjectGuid>{A7BF9C57-2769-4A07-987F-A444A04BFB04}</ProjectGuid>
     <RootNamespace>logging</RootNamespace>
     <Keyword>MFCProj</Keyword>

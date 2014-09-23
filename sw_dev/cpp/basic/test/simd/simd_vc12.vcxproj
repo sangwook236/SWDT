@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>simd_vc12</ProjectName>
+    <ProjectName>simd</ProjectName>
     <ProjectGuid>{C9069975-991D-40C3-B269-12023BDE7495}</ProjectGuid>
     <RootNamespace>simd</RootNamespace>
     <Keyword>Win32Proj</Keyword>

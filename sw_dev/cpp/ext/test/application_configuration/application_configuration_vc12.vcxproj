@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>application_configuration_vc12</ProjectName>
+    <ProjectName>application_configuration</ProjectName>
     <ProjectGuid>{3DCE3550-9EFA-48AC-AE5F-2F8202CB0D80}</ProjectGuid>
     <RootNamespace>application_configuration</RootNamespace>
     <Keyword>Win32Proj</Keyword>

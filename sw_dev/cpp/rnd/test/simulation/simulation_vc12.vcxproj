@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>simulation_vc12</ProjectName>
+    <ProjectName>simulation</ProjectName>
     <ProjectGuid>{86A474F8-4ABB-46B3-A034-26496D316349}</ProjectGuid>
     <RootNamespace>simulation</RootNamespace>
     <Keyword>Win32Proj</Keyword>

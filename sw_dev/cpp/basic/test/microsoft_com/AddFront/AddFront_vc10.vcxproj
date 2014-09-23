@@ -15,7 +15,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>AddFront_vc10</ProjectName>
+    <ProjectName>AddFront</ProjectName>
     <ProjectGuid>{EA58AA86-7B03-42A7-9162-1B5563567737}</ProjectGuid>
     <RootNamespace>AddFront</RootNamespace>
     <Keyword>MFCProj</Keyword>

@@ -14,7 +14,7 @@
     <ProjectGuid>{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>stl</RootNamespace>
-    <ProjectName>stl_vc10</ProjectName>
+    <ProjectName>stl</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

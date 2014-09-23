@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>AddBack_byAttrib_vc12</ProjectName>
+    <ProjectName>AddBack_byAttrib</ProjectName>
     <ProjectGuid>{546BC67E-AE36-48F8-B702-A02075ED9F3D}</ProjectGuid>
     <RootNamespace>AddBack_byAttrib</RootNamespace>
     <Keyword>AtlProj</Keyword>

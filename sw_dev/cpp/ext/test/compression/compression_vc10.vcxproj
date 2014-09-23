@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>compression_vc10</ProjectName>
+    <ProjectName>compression</ProjectName>
     <ProjectGuid>{2D515B79-9875-4E64-BD69-37160C6EE99C}</ProjectGuid>
     <RootNamespace>compression</RootNamespace>
     <Keyword>Win32Proj</Keyword>

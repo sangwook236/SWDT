@@ -14,7 +14,7 @@
     <ProjectGuid>{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>graph_analysis</RootNamespace>
-    <ProjectName>graph_analysis_vc10</ProjectName>
+    <ProjectName>graph_analysis</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

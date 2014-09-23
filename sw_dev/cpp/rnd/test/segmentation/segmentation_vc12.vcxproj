@@ -14,7 +14,7 @@
     <ProjectGuid>{832EE4AF-D179-4D91-B598-402567ADD387}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>segmentation</RootNamespace>
-    <ProjectName>segmentation_vc12</ProjectName>
+    <ProjectName>segmentation</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

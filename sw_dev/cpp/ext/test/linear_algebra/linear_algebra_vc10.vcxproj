@@ -14,7 +14,7 @@
     <ProjectGuid>{3579293C-0569-4053-B4D1-8C5668A92557}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>linear_algebra</RootNamespace>
-    <ProjectName>linear_algebra_vc10</ProjectName>
+    <ProjectName>linear_algebra</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

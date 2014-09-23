@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>AddFront_byAttrib_vc10</ProjectName>
+    <ProjectName>AddFront_byAttrib</ProjectName>
     <ProjectGuid>{D2FB93DA-4E9F-4558-98D6-D474674DFBFA}</ProjectGuid>
     <RootNamespace>AddFront_byAttrib</RootNamespace>
     <Keyword>MFCProj</Keyword>

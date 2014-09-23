@@ -14,7 +14,7 @@
     <ProjectGuid>{046579FF-F6FF-4378-BA3E-61951BD731FB}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>graphics_2d</RootNamespace>
-    <ProjectName>graphics_2d_vc10</ProjectName>
+    <ProjectName>graphics_2d</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

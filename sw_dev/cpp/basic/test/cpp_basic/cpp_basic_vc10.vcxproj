@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>cpp_basic_vc10</ProjectName>
+    <ProjectName>cpp_basic</ProjectName>
     <ProjectGuid>{41AEE60E-3330-49FF-9F22-223C2B88B58C}</ProjectGuid>
     <RootNamespace>cpp_basic</RootNamespace>
     <Keyword>Win32Proj</Keyword>

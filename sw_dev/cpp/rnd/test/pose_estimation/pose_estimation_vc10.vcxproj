@@ -14,7 +14,7 @@
     <ProjectGuid>{97291D39-1AC2-4130-BE2C-39A442EBCC6D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>pose_estimation</RootNamespace>
-    <ProjectName>pose_estimation_vc10</ProjectName>
+    <ProjectName>pose_estimation</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

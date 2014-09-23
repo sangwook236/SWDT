@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>scientific_computation_vc10</ProjectName>
+    <ProjectName>scientific_computation</ProjectName>
     <ProjectGuid>{28CA2D76-AE1C-464D-880D-A608DE72358D}</ProjectGuid>
     <RootNamespace>scientific_computation</RootNamespace>
     <Keyword>Win32Proj</Keyword>

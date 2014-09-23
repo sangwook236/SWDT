@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>AddBackServer_vc12</ProjectName>
+    <ProjectName>AddBackServer</ProjectName>
     <ProjectGuid>{29131C0F-14EF-4F45-82EC-F6F9E90AEC72}</ProjectGuid>
     <RootNamespace>AddBackServer</RootNamespace>
     <Keyword>AtlProj</Keyword>

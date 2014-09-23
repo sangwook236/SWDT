@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>neural_network_vc12</ProjectName>
+    <ProjectName>neural_network</ProjectName>
     <ProjectGuid>{BCB54C82-1B63-4831-850B-DF57821F9003}</ProjectGuid>
     <RootNamespace>neural_network</RootNamespace>
     <Keyword>Win32Proj</Keyword>

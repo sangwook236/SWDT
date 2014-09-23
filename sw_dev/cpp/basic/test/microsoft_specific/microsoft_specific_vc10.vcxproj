@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>microsoft_specific_vc10</ProjectName>
+    <ProjectName>microsoft_specific</ProjectName>
     <ProjectGuid>{BB048AB5-7899-45C5-8191-A1A72DA1F5F4}</ProjectGuid>
     <RootNamespace>microsoft_specific</RootNamespace>
     <Keyword>Win32Proj</Keyword>

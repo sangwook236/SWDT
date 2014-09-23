@@ -14,7 +14,7 @@
     <ProjectGuid>{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>gesture_recognition</RootNamespace>
-    <ProjectName>gesture_recognition_vc12</ProjectName>
+    <ProjectName>gesture_recognition</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
