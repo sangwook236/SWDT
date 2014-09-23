@@ -1,9 +1,0 @@
-[-] General
-	-. Site
-		http://en.wikipedia.org/wiki/Electronic_speed_control
-		http://en.wikipedia.org/wiki/Battery_eliminator_circuit
-
-		http://techvalleyprojects.blogspot.kr/2012/06/arduino-control-escmotor-tutorial.html
-		http://media.hyperion.hk/dn/atesc/jp/AT-ESCman14ENG.pdf
-		http://forum.arduino.cc/index.php/topic,20594.0.html
-		http://www.pololu.com/blog/17/servo-control-interface-in-detail
