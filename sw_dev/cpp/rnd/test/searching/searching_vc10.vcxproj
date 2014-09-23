@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>searching</ProjectName>
+    <ProjectName>searching_vc10</ProjectName>
     <ProjectGuid>{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}</ProjectGuid>
     <RootNamespace>searching</RootNamespace>
     <Keyword>Win32Proj</Keyword>

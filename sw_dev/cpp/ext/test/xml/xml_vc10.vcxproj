@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>xml</ProjectName>
+    <ProjectName>xml_vc10</ProjectName>
     <ProjectGuid>{23AC145E-3F83-4293-B0C5-8DE1EDE678D7}</ProjectGuid>
     <RootNamespace>xml</RootNamespace>
     <Keyword>Win32Proj</Keyword>

@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>AddFrontConsole</ProjectName>
+    <ProjectName>AddFrontConsole_vc10</ProjectName>
     <ProjectGuid>{D716E799-B44F-4C43-9873-E309CC9BA56D}</ProjectGuid>
     <RootNamespace>AddFrontConsole</RootNamespace>
     <Keyword>Win32Proj</Keyword>

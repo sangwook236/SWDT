@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>geometry</ProjectName>
+    <ProjectName>geometry_vc10</ProjectName>
     <ProjectGuid>{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}</ProjectGuid>
     <RootNamespace>geometry</RootNamespace>
     <Keyword>Win32Proj</Keyword>

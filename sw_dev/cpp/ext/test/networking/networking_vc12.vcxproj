@@ -14,7 +14,7 @@
     <ProjectGuid>{2BAA7170-259E-4A41-B87C-CCE654E8D191}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>networking</RootNamespace>
-    <ProjectName>networking</ProjectName>
+    <ProjectName>networking_vc12</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>openmp</ProjectName>
+    <ProjectName>openmp_vc12</ProjectName>
     <ProjectGuid>{2956D88B-8DBF-4A5E-8717-0DF51C3E2353}</ProjectGuid>
     <RootNamespace>openmp</RootNamespace>
     <Keyword>Win32Proj</Keyword>

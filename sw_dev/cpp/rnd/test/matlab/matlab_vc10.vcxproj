@@ -14,7 +14,7 @@
     <ProjectGuid>{A35C8053-9826-464E-8479-4CAE9F495BC3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>matlab</RootNamespace>
-    <ProjectName>matlab</ProjectName>
+    <ProjectName>matlab_vc10</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

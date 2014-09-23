@@ -14,7 +14,7 @@
     <ProjectGuid>{84111558-4AC7-4057-82F7-84548C6FC747}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>change_detection</RootNamespace>
-    <ProjectName>change_detection</ProjectName>
+    <ProjectName>change_detection_vc10</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

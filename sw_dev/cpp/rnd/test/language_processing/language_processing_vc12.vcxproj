@@ -14,7 +14,7 @@
     <ProjectGuid>{EC936BA5-EB28-44AF-A877-936A37E76815}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>language_processing</RootNamespace>
-    <ProjectName>language_processing</ProjectName>
+    <ProjectName>language_processing_vc12</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

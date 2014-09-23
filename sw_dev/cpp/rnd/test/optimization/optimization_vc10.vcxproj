@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>optimization</ProjectName>
+    <ProjectName>optimization_vc10</ProjectName>
     <ProjectGuid>{F47404DC-D671-4C97-8477-9447118B238A}</ProjectGuid>
     <RootNamespace>optimization</RootNamespace>
     <Keyword>Win32Proj</Keyword>

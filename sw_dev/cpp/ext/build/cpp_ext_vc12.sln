@@ -2,55 +2,55 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "boost", "..\test\boost\boost_vc12.vcxproj", "{FE865C87-952D-4D24-9247-6ED2EB61067A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "boost_vc12", "..\test\boost\boost_vc12.vcxproj", "{FE865C87-952D-4D24-9247-6ED2EB61067A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scientific_computation", "..\test\scientific_computation\scientific_computation_vc12.vcxproj", "{28CA2D76-AE1C-464D-880D-A608DE72358D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scientific_computation_vc12", "..\test\scientific_computation\scientific_computation_vc12.vcxproj", "{28CA2D76-AE1C-464D-880D-A608DE72358D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xml", "..\test\xml\xml_vc12.vcxproj", "{23AC145E-3F83-4293-B0C5-8DE1EDE678D7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xml_vc12", "..\test\xml\xml_vc12.vcxproj", "{23AC145E-3F83-4293-B0C5-8DE1EDE678D7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "application_configuration", "..\test\application_configuration\application_configuration_vc12.vcxproj", "{3DCE3550-9EFA-48AC-AE5F-2F8202CB0D80}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "application_configuration_vc12", "..\test\application_configuration\application_configuration_vc12.vcxproj", "{3DCE3550-9EFA-48AC-AE5F-2F8202CB0D80}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "logging", "..\test\logging\logging_vc12.vcxproj", "{A7BF9C57-2769-4A07-987F-A444A04BFB04}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "logging_vc12", "..\test\logging\logging_vc12.vcxproj", "{A7BF9C57-2769-4A07-987F-A444A04BFB04}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppunit", "..\test\cppunit\cppunit_vc12.vcxproj", "{AE9ECE27-3FB6-46B2-AD6F-FB30391B0DFC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppunit_vc12", "..\test\cppunit\cppunit_vc12.vcxproj", "{AE9ECE27-3FB6-46B2-AD6F-FB30391B0DFC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppunit_mfc", "..\test\cppunit\cppunit_mfc_vc12.vcxproj", "{6790BC0F-951F-4A91-B6C9-47A23726E8B9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppunit_mfc_vc12", "..\test\cppunit\cppunit_mfc_vc12.vcxproj", "{6790BC0F-951F-4A91-B6C9-47A23726E8B9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "compression", "..\test\compression\compression_vc12.vcxproj", "{2D515B79-9875-4E64-BD69-37160C6EE99C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "compression_vc12", "..\test\compression\compression_vc12.vcxproj", "{2D515B79-9875-4E64-BD69-37160C6EE99C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "resource_management", "..\test\resource_management\resource_management_vc12.vcxproj", "{6C49B0B6-39FF-459B-9416-ED411CCB0FCC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "resource_management_vc12", "..\test\resource_management\resource_management_vc12.vcxproj", "{6C49B0B6-39FF-459B-9416-ED411CCB0FCC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphics_3d", "..\test\graphics_3d\graphics_3d_vc12.vcxproj", "{22144E48-933D-4887-9F20-E27D64A4FFB3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphics_3d_vc12", "..\test\graphics_3d\graphics_3d_vc12.vcxproj", "{22144E48-933D-4887-9F20-E27D64A4FFB3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "database", "..\test\database\database_vc12.vcxproj", "{0C9438D9-4A9A-40D7-9C68-4438C40C9703}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "database_vc12", "..\test\database\database_vc12.vcxproj", "{0C9438D9-4A9A-40D7-9C68-4438C40C9703}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visualization", "..\test\visualization\visualization_vc12.vcxproj", "{A1B6BE76-CDC7-4E13-8601-3973907748A7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visualization_vc12", "..\test\visualization\visualization_vc12.vcxproj", "{A1B6BE76-CDC7-4E13-8601-3973907748A7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphics_2d", "..\test\graphics_2d\graphics_2d_vc12.vcxproj", "{046579FF-F6FF-4378-BA3E-61951BD731FB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphics_2d_vc12", "..\test\graphics_2d\graphics_2d_vc12.vcxproj", "{046579FF-F6FF-4378-BA3E-61951BD731FB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gpu_computation", "..\test\gpu_computation\gpu_computation_vc12.vcxproj", "{05AC83E8-E05E-46BA-8C19-CED811F98BC9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gpu_computation_vc12", "..\test\gpu_computation\gpu_computation_vc12.vcxproj", "{05AC83E8-E05E-46BA-8C19-CED811F98BC9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometry", "..\test\geometry\geometry_vc12.vcxproj", "{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometry_vc12", "..\test\geometry\geometry_vc12.vcxproj", "{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "linear_algebra", "..\test\linear_algebra\linear_algebra_vc12.vcxproj", "{3579293C-0569-4053-B4D1-8C5668A92557}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "linear_algebra_vc12", "..\test\linear_algebra\linear_algebra_vc12.vcxproj", "{3579293C-0569-4053-B4D1-8C5668A92557}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "threading", "..\test\threading\threading_vc12.vcxproj", "{4C47F7FB-525B-4F42-8A52-72B216369E57}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "threading_vc12", "..\test\threading\threading_vc12.vcxproj", "{4C47F7FB-525B-4F42-8A52-72B216369E57}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "serialization", "..\test\serialization\serialization_vc12.vcxproj", "{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "serialization_vc12", "..\test\serialization\serialization_vc12.vcxproj", "{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "networking", "..\test\networking\networking_vc12.vcxproj", "{2BAA7170-259E-4A41-B87C-CCE654E8D191}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "networking_vc12", "..\test\networking\networking_vc12.vcxproj", "{2BAA7170-259E-4A41-B87C-CCE654E8D191}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stl", "..\test\stl\stl_vc12.vcxproj", "{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stl_vc12", "..\test\stl\stl_vc12.vcxproj", "{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multilinear_algebra", "..\test\multilinear_algebra\multilinear_algebra_vc12.vcxproj", "{20FF0783-824B-4E04-93D0-B210150DF80F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multilinear_algebra_vc12", "..\test\multilinear_algebra\multilinear_algebra_vc12.vcxproj", "{20FF0783-824B-4E04-93D0-B210150DF80F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_framework", "..\test\test_framework\test_framework_vc12.vcxproj", "{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_framework_vc12", "..\test\test_framework\test_framework_vc12.vcxproj", "{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "file_format", "..\test\file_format\file_format_vc12.vcxproj", "{A79E411D-EFBB-446D-AD68-A6BBE13E764B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "file_format_vc12", "..\test\file_format\file_format_vc12.vcxproj", "{A79E411D-EFBB-446D-AD68-A6BBE13E764B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dlib", "..\test\dlib\dlib_vc12.vcxproj", "{237D12CB-5324-4722-8812-2D6CEEBBD677}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dlib_vc12", "..\test\dlib\dlib_vc12.vcxproj", "{237D12CB-5324-4722-8812-2D6CEEBBD677}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multimedia", "..\test\multimedia\multimedia_vc12.vcxproj", "{238EADCF-B178-4601-8EE4-2906FE010839}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multimedia_vc12", "..\test\multimedia\multimedia_vc12.vcxproj", "{238EADCF-B178-4601-8EE4-2906FE010839}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

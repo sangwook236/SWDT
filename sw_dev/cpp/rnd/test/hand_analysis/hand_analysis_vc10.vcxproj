@@ -14,7 +14,7 @@
     <ProjectGuid>{5764CA80-F4D8-4DA7-924F-E4ED8734C009}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>hand_analysis</RootNamespace>
-    <ProjectName>hand_analysis</ProjectName>
+    <ProjectName>hand_analysis_vc10</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

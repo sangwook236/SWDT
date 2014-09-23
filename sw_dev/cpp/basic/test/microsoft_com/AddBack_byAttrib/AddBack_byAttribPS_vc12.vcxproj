@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>AddBack_byAttribPS</ProjectName>
+    <ProjectName>AddBack_byAttribPS_vc12</ProjectName>
     <ProjectGuid>{0D4232B6-16BF-4B5E-B1A1-C32B80D0D02C}</ProjectGuid>
     <RootNamespace>AddBack_byAttribPS</RootNamespace>
     <Keyword>AtlPSProj</Keyword>

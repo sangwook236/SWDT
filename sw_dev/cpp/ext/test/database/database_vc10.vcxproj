@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>database</ProjectName>
+    <ProjectName>database_vc10</ProjectName>
     <ProjectGuid>{0C9438D9-4A9A-40D7-9C68-4438C40C9703}</ProjectGuid>
     <RootNamespace>database</RootNamespace>
     <Keyword>Win32Proj</Keyword>

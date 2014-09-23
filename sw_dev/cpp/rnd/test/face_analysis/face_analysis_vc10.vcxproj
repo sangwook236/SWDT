@@ -14,7 +14,7 @@
     <ProjectGuid>{2EF2C691-DB54-4793-9FDB-3B8748B064E4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>face_analysis</RootNamespace>
-    <ProjectName>face_analysis</ProjectName>
+    <ProjectName>face_analysis_vc10</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

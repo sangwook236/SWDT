@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>boost</ProjectName>
+    <ProjectName>boost_vc12</ProjectName>
     <ProjectGuid>{FE865C87-952D-4D24-9247-6ED2EB61067A}</ProjectGuid>
     <RootNamespace>boost</RootNamespace>
     <Keyword>Win32Proj</Keyword>

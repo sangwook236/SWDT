@@ -14,7 +14,7 @@
     <ProjectGuid>{556E0EE6-1F91-4EA5-AF5D-0EACF6E15BCA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>image_processing</RootNamespace>
-    <ProjectName>image_processing</ProjectName>
+    <ProjectName>image_processing_vc12</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

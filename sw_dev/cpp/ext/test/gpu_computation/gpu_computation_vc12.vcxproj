@@ -14,7 +14,7 @@
     <ProjectGuid>{05AC83E8-E05E-46BA-8C19-CED811F98BC9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>gpu_computation</RootNamespace>
-    <ProjectName>gpu_computation</ProjectName>
+    <ProjectName>gpu_computation_vc12</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

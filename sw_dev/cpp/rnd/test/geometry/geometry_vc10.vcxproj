@@ -14,7 +14,7 @@
     <ProjectGuid>{68409235-BBDE-4F93-9264-DE2B7397D28D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>geometry</RootNamespace>
-    <ProjectName>geometry</ProjectName>
+    <ProjectName>geometry_vc10</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

@@ -14,7 +14,7 @@
     <ProjectGuid>{C4B80E59-A395-44D7-8D4D-234C26924652}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>motion_analysis</RootNamespace>
-    <ProjectName>motion_analysis</ProjectName>
+    <ProjectName>motion_analysis_vc12</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

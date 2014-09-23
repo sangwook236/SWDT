@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>robotics</ProjectName>
+    <ProjectName>robotics_vc12</ProjectName>
     <ProjectGuid>{99406811-DAE3-4378-8EEA-0D50E18D8564}</ProjectGuid>
     <RootNamespace>robotics</RootNamespace>
     <Keyword>Win32Proj</Keyword>

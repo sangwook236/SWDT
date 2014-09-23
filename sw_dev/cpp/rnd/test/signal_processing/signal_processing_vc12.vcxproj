@@ -14,7 +14,7 @@
     <ProjectGuid>{65D2ECB7-8045-48FD-BE4A-D4F5E6BE6CA7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>signal_processing</RootNamespace>
-    <ProjectName>signal_processing</ProjectName>
+    <ProjectName>signal_processing_vc12</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

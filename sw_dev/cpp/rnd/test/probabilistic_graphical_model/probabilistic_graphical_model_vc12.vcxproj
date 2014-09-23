@@ -14,7 +14,7 @@
     <ProjectGuid>{326CF11F-0264-4D95-930B-0D6DAD809C96}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>probabilistic_graphical_model</RootNamespace>
-    <ProjectName>probabilistic_graphical_model</ProjectName>
+    <ProjectName>probabilistic_graphical_model_vc12</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

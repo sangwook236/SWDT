@@ -14,7 +14,7 @@
     <ProjectGuid>{4C47F7FB-525B-4F42-8A52-72B216369E57}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>threading</RootNamespace>
-    <ProjectName>threading</ProjectName>
+    <ProjectName>threading_vc10</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

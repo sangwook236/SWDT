@@ -14,7 +14,7 @@
     <ProjectGuid>{20FF0783-824B-4E04-93D0-B210150DF80F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>multilinear_algebra</RootNamespace>
-    <ProjectName>multilinear_algebra</ProjectName>
+    <ProjectName>multilinear_algebra_vc12</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

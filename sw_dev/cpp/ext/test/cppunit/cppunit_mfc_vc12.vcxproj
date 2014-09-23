@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>cppunit_mfc</ProjectName>
+    <ProjectName>cppunit_mfc_vc12</ProjectName>
     <ProjectGuid>{6790BC0F-951F-4A91-B6C9-47A23726E8B9}</ProjectGuid>
     <RootNamespace>cppunit_mfc</RootNamespace>
     <Keyword>MFCProj</Keyword>

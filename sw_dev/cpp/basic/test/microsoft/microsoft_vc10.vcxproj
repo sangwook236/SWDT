@@ -15,7 +15,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>microsoft</ProjectName>
+    <ProjectName>microsoft_vc10</ProjectName>
     <ProjectGuid>{D8C77DA8-C070-4EB6-B356-115E6AA15249}</ProjectGuid>
     <RootNamespace>microsoft</RootNamespace>
     <Keyword>MFCProj</Keyword>

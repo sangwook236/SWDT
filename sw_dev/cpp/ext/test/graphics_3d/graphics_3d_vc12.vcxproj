@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>graphics_3d</ProjectName>
+    <ProjectName>graphics_3d_vc12</ProjectName>
     <ProjectGuid>{22144E48-933D-4887-9F20-E27D64A4FFB3}</ProjectGuid>
     <RootNamespace>graphics_3d</RootNamespace>
     <Keyword>Win32Proj</Keyword>

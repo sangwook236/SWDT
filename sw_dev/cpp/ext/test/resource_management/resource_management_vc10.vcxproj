@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>resource_management</ProjectName>
+    <ProjectName>resource_management_vc10</ProjectName>
     <ProjectGuid>{6C49B0B6-39FF-459B-9416-ED411CCB0FCC}</ProjectGuid>
     <RootNamespace>resource_management</RootNamespace>
     <Keyword>Win32Proj</Keyword>
