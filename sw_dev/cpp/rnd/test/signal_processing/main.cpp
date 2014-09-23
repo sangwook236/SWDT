@@ -12,7 +12,6 @@ int main(int argc, char *argv[])
 {
 	int fast_bilateral_filter_main(int argc, char *argv[]);
 	int nyu_depth_toolbox_v2_main(int argc, char *argv[]);
-	int imu_filtering_main(int argc, char *argv[]);
 	int itpp_main(int argc, char *argv[]);
 	int spuc_main(int argc, char *argv[]);
 	int tspl_main(int argc, char *argv[]);
@@ -27,9 +26,6 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nNYU Depth Toolbox V2 ------------------------------------------------" << std::endl;
 		//retval = nyu_depth_toolbox_v2_main(argc, argv);
-
-		std::cout << "\nInertial Measurement Unit (IMU) filtering ---------------------------" << std::endl;
-		retval = imu_filtering_main(argc, argv);
 
 		std::cout << "\nIT++ library --------------------------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
