@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>adisusbz_vc10</ProjectName>
+    <ProjectName>adisusbz</ProjectName>
     <ProjectGuid>{8787B8DF-9792-4D87-9DF0-0584AAE9FB42}</ProjectGuid>
     <RootNamespace>adisusbz</RootNamespace>
     <Keyword>Win32Proj</Keyword>

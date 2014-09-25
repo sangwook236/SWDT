@@ -9,14 +9,13 @@
 
 int main(int argc, char *argv[])
 {
-	int gps_main(int argc, char *argv[]);
+	int nmea_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "Global Positioning System (GPS) library ----------------------------" << std::endl;
-		//retval = gps_main(argc, argv);
-		throw std::runtime_error("not yet implemented");
+		std::cout << "National Marine Electronics Association (NMEA) library -------------" << std::endl;
+		retval = nmea_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

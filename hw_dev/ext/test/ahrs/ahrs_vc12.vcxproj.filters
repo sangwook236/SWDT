@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\openahrs">
+      <UniqueIdentifier>{c5eea131-5565-4928-b182-8ed8ec7f9b40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\open_source_ahrs">
+      <UniqueIdentifier>{77918433-2a40-4eaa-91b7-43e342c69b15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\open_source_ahrs_lib">
+      <UniqueIdentifier>{e2c65743-0412-470c-b53d-42aa58d1e412}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\open_robotics_ars">
+      <UniqueIdentifier>{a4dec929-4c96-45b8-a210-fc40303c7770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\open_robotics_ars_lib">
+      <UniqueIdentifier>{c7410af1-bcb3-4355-aefc-c60794a6b72a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\open_robotics_ars_lib\matrix">
+      <UniqueIdentifier>{d3656f0b-8d74-4aa1-9f2e-d4e30339f734}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp">
@@ -21,5 +39,81 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="openahrs\openahrs_main.cpp">
+      <Filter>Source Files\openahrs</Filter>
+    </ClCompile>
+    <ClCompile Include="open_source_ahrs_lib\MadgwickAHRS.cpp">
+      <Filter>Source Files\open_source_ahrs_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="open_source_ahrs_lib\MahonyAHRS.cpp">
+      <Filter>Source Files\open_source_ahrs_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="open_source_ahrs\open_source_ahrs_main.cpp">
+      <Filter>Source Files\open_source_ahrs</Filter>
+    </ClCompile>
+    <ClCompile Include="open_robotics_ars\open_robotics_ars_main.cpp">
+      <Filter>Source Files\open_robotics_ars</Filter>
+    </ClCompile>
+    <ClCompile Include="open_robotics_ars_lib\matrix\matrix.cc">
+      <Filter>Source Files\open_robotics_ars_lib\matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="open_robotics_ars_lib\ARS.cpp">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="open_robotics_ars_lib\ARSByComplementaryFilterAndQuaternion.cpp">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="open_robotics_ars_lib\ARSByComplementaryFilterAndRotationMatrix.cpp">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="open_robotics_ars_lib\ARSByEKFAndQuaternion.cpp">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="open_robotics_ars_lib\ARSByEKFAndRotationMatrix.cpp">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="open_robotics_ars_lib\Quaternion.cpp">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="open_source_ahrs_lib\MadgwickAHRS.h">
+      <Filter>Source Files\open_source_ahrs_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="open_source_ahrs_lib\MahonyAHRS.h">
+      <Filter>Source Files\open_source_ahrs_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="open_robotics_ars_lib\matrix\matrix2.hxx">
+      <Filter>Source Files\open_robotics_ars_lib\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="open_robotics_ars_lib\ARS.h">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="open_robotics_ars_lib\ARSByComplementaryFilterAndQuaternion.h">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="open_robotics_ars_lib\ARSByComplementaryFilterAndRotationMatrix.h">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="open_robotics_ars_lib\ARSByEKFAndQuaternion.h">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="open_robotics_ars_lib\ARSByEKFAndRotationMatrix.h">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="open_robotics_ars_lib\MatrixAlgebra.h">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="open_robotics_ars_lib\mm.h">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="open_robotics_ars_lib\Quaternion.h">
+      <Filter>Source Files\open_robotics_ars_lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="open_robotics_ars_lib\matrix\cmatrix">
+      <Filter>Source Files\open_robotics_ars_lib\matrix</Filter>
+    </None>
   </ItemGroup>
 </Project>

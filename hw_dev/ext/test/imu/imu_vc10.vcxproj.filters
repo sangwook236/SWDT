@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\sparkfun">
+      <UniqueIdentifier>{e7c759e1-a067-4525-89e6-3125cc48be5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\invensense">
+      <UniqueIdentifier>{2f4104d0-e797-40ba-a04e-e78a246084b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp">
@@ -20,6 +26,12 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="invensense\invensense_main.cpp">
+      <Filter>Source Files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="sparkfun\sparkfun_main.cpp">
+      <Filter>Source Files\sparkfun</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

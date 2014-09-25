@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>6.2</ProjectVersion>
+    <ToolchainName>com.Atmel.AVRGCC8.CPP</ToolchainName>
+    <ProjectGuid>{4d8d13a5-e5e7-463d-bfc7-2efe7ac4e45d}</ProjectGuid>
+    <avrdevice>ATmega128</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>Executable</OutputType>
+    <Language>CPP</Language>
+    <OutputFileName>$(MSBuildProjectName)</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AssemblyName>atmega128</AssemblyName>
+    <Name>atmega128</Name>
+    <RootNamespace>atmega128</RootNamespace>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress />
+    <UncachedRange />
+    <OverrideVtorValue />
+    <BootSegment>2</BootSegment>
+    <eraseonlaunchrule>1</eraseonlaunchrule>
+    <AsfFrameworkConfig>
+      <framework-data xmlns="">
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.18.1" />
+        </dependencies>
+      </framework-data>
+    </AsfFrameworkConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+        <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>F_CPU=16000000</Value>
+            <Value>NDEBUG</Value>
+          </ListValues>
+        </avrgcc.compiler.symbols.DefSymbols>
+        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcccpp.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>F_CPU=16000000</Value>
+            <Value>NDEBUG</Value>
+          </ListValues>
+        </avrgcccpp.compiler.symbols.DefSymbols>
+        <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+        <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+        <avrgcccpp.linker.libraries.Libraries>
+          <ListValues>
+            <Value>libm</Value>
+          </ListValues>
+        </avrgcccpp.linker.libraries.Libraries>
+        <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
+        <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
+      </AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+        <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>F_CPU=16000000</Value>
+            <Value>DEBUG</Value>
+          </ListValues>
+        </avrgcc.compiler.symbols.DefSymbols>
+        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcccpp.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>F_CPU=16000000</Value>
+            <Value>DEBUG</Value>
+          </ListValues>
+        </avrgcccpp.compiler.symbols.DefSymbols>
+        <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+        <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+        <avrgcccpp.linker.libraries.Libraries>
+          <ListValues>
+            <Value>libm</Value>
+          </ListValues>
+        </avrgcccpp.linker.libraries.Libraries>
+        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+        <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
+        <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
+        <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
+      </AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="7segment\seven_segment.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="7segment\seven_segment_main.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="adc\adc.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="adc\adc.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="adc\adc_main.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="adc\analog_comparator.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="adc\mma7260.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="eeprom\eeprom_main.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="flash\flash_main.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="i2c\i2c.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="i2c\i2c.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="i2c\i2c_eeprom.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="i2c\i2c_eeprom.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="i2c\i2c_hmc6352.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="i2c\i2c_hmc6352.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="i2c\i2c_main.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="i2c\i2c_rtc.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="i2c\i2c_rtc.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="interrupt\ext_int.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="interrupt\interrupt_main.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="interrupt\timer.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="main.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="motor\adc.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="motor\ext_int.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="motor\motor.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="motor\motor_main.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="motor\timer.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="pio\pio_main.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="pwm\pwm_main.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="pwm\timer.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="spi\spi.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="spi\spi.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="spi\spi_adis16350.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="spi\spi_adis16350.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="spi\spi_eeprom.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="spi\spi_eeprom.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="spi\spi_main.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="usart\usart.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="usart\usart0.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="usart\usart1.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="usart\usart_main.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="usart\usart_util.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="wdt\wdt_main.cpp">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="zigbee\zigbee_main.cpp">
+      <SubType>compile</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="7segment" />
+    <Folder Include="eeprom" />
+    <Folder Include="adc" />
+    <Folder Include="flash" />
+    <Folder Include="i2c" />
+    <Folder Include="interrupt" />
+    <Folder Include="motor" />
+    <Folder Include="zigbee" />
+    <Folder Include="wdt" />
+    <Folder Include="spi" />
+    <Folder Include="usart" />
+    <Folder Include="pwm" />
+    <Folder Include="pio" />
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
+</Project>

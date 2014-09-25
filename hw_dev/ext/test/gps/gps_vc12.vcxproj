@@ -14,7 +14,7 @@
     <ProjectGuid>{4479B6E6-1163-4FE2-977A-71B1756722F6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>gps</RootNamespace>
-    <ProjectName>gps_vc12</ProjectName>
+    <ProjectName>gps</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="nmea\nmea_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

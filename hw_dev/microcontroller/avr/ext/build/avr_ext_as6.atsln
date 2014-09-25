@@ -1,7 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "procyon_avrlib_test", "..\test\procyon_avrlib_test\procyon_avrlib_test.cppproj", "{87D3EF99-A1FE-43D9-9981-B6FE98FF8019}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "atmega128", "..\test\atmega128\atmega128.cppproj", "{4D8D13A5-E5E7-463D-BFC7-2EFE7AC4E45D}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{87D3EF99-A1FE-43D9-9981-B6FE98FF8019}.Debug|AVR.ActiveCfg = Debug|AVR
+		{87D3EF99-A1FE-43D9-9981-B6FE98FF8019}.Debug|AVR.Build.0 = Debug|AVR
+		{87D3EF99-A1FE-43D9-9981-B6FE98FF8019}.Release|AVR.ActiveCfg = Release|AVR
+		{87D3EF99-A1FE-43D9-9981-B6FE98FF8019}.Release|AVR.Build.0 = Release|AVR
+		{4D8D13A5-E5E7-463D-BFC7-2EFE7AC4E45D}.Debug|AVR.ActiveCfg = Debug|AVR
+		{4D8D13A5-E5E7-463D-BFC7-2EFE7AC4E45D}.Debug|AVR.Build.0 = Debug|AVR
+		{4D8D13A5-E5E7-463D-BFC7-2EFE7AC4E45D}.Release|AVR.ActiveCfg = Release|AVR
+		{4D8D13A5-E5E7-463D-BFC7-2EFE7AC4E45D}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

@@ -9,14 +9,17 @@
 
 int main(int argc, char *argv[])
 {
-	int imu_main(int argc, char *argv[]);
+	int invensense_main(int argc, char *argv[]);
+	int sparkfun_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "Inertial Measurement Unit (IMU) library ----------------------------" << std::endl;
-		//retval = imu_main(argc, argv);
-		throw std::runtime_error("not yet implemented");
+		std::cout << "InvenSense Inertial Measurement Unit (IMU) -------------------------" << std::endl;
+		retval = invensense_main(argc, argv);
+
+		std::cout << "\nSparkfun Inertial Measurement Unit (IMU) ---------------------------" << std::endl;
+		//retval = sparkfun_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

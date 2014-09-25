@@ -14,7 +14,7 @@
     <ProjectGuid>{5B1B8914-642C-4158-9DB8-537DD4B6A268}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ahrs</RootNamespace>
-    <ProjectName>ahrs_vc10</ProjectName>
+    <ProjectName>ahrs</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -59,7 +59,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib;D:\work\dev_https\sw_dev\cpp\ext\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -78,12 +78,46 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../lib;D:\work\dev_https\sw_dev\cpp\ext\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="openahrs\openahrs_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="open_robotics_ars\open_robotics_ars_main.cpp" />
+    <ClCompile Include="open_robotics_ars_lib\ARS.cpp" />
+    <ClCompile Include="open_robotics_ars_lib\ARSByComplementaryFilterAndQuaternion.cpp" />
+    <ClCompile Include="open_robotics_ars_lib\ARSByComplementaryFilterAndRotationMatrix.cpp" />
+    <ClCompile Include="open_robotics_ars_lib\ARSByEKFAndQuaternion.cpp" />
+    <ClCompile Include="open_robotics_ars_lib\ARSByEKFAndRotationMatrix.cpp" />
+    <ClCompile Include="open_robotics_ars_lib\matrix\matrix.cc">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="open_robotics_ars_lib\Quaternion.cpp" />
+    <ClCompile Include="open_source_ahrs\open_source_ahrs_main.cpp" />
+    <ClCompile Include="open_source_ahrs_lib\MadgwickAHRS.cpp" />
+    <ClCompile Include="open_source_ahrs_lib\MahonyAHRS.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="open_robotics_ars_lib\ARS.h" />
+    <ClInclude Include="open_robotics_ars_lib\ARSByComplementaryFilterAndQuaternion.h" />
+    <ClInclude Include="open_robotics_ars_lib\ARSByComplementaryFilterAndRotationMatrix.h" />
+    <ClInclude Include="open_robotics_ars_lib\ARSByEKFAndQuaternion.h" />
+    <ClInclude Include="open_robotics_ars_lib\ARSByEKFAndRotationMatrix.h" />
+    <ClInclude Include="open_robotics_ars_lib\MatrixAlgebra.h" />
+    <ClInclude Include="open_robotics_ars_lib\matrix\matrix2.hxx" />
+    <ClInclude Include="open_robotics_ars_lib\mm.h" />
+    <ClInclude Include="open_robotics_ars_lib\Quaternion.h" />
+    <ClInclude Include="open_source_ahrs_lib\MadgwickAHRS.h" />
+    <ClInclude Include="open_source_ahrs_lib\MahonyAHRS.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="open_robotics_ars_lib\matrix\cmatrix" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

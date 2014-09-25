@@ -9,14 +9,25 @@
 
 int main(int argc, char *argv[])
 {
-	int ahrs_main(int argc, char *argv[]);
+	int openahrs_main(int argc, char *argv[]);
+	int open_source_ahrs_main(int argc, char *argv[]);
+	int open_robotics_ars_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "Attitude and Heading Reference System (AHRS) library ---------------" << std::endl;
-		//retval = ahrs_main(argc, argv);
-		throw std::runtime_error("not yet implemented");
+		std::cout << "Open AHRS (Attitude and Heading Reference System) library ----------" << std::endl;
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+		retval = openahrs_main(argc, argv);  // not yet implemented.
+#else
+        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
+#endif
+
+		std::cout << "\nOpen source IMU and AHRS algorithms --------------------------------" << std::endl;
+		//retval = open_source_ahrs_main(argc, argv);
+
+		std::cout << "\nOpen Robotics ARS algorithms ---------------------------------------" << std::endl;
+		retval = open_robotics_ars_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

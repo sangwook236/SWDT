@@ -4,11 +4,11 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-//#pragma comment(lib, "BayesFilter_UBLAS_MD7d.lib")
+//#pragma comment(lib, "???.lib")
 
 #		else
 
-//#pragma comment(lib, "BayesFilter_UBLAS_MD7.lib")
+//#pragma comment(lib, "???.lib")
 
 #		endif
 
