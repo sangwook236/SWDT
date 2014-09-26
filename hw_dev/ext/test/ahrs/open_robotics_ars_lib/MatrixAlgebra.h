@@ -20,14 +20,14 @@ inline dMatrix RotationMatrix (double phi, double theta, double psi)
 	dMatrix A(3,3);
 /*
 	// 변환 순서: Rx(phi) x Ry(theta) x Rz(psi)
-	A(0,0) =  cos_tht*cos_psi;								A(0,1) = -cos_tht*sin_psi;								A(0,2) =  sin_tht;		
-	A(1,0) =  sin_phi*sin_tht*cos_psi + cos_phi*sin_psi;	A(1,1) = -sin_phi*sin_tht*sin_psi + cos_phi*cos_psi;	A(1,2) = -sin_phi*cos_tht;	
-	A(2,0) = -cos_phi*sin_tht*cos_psi + sin_phi*sin_psi;	A(2,1) =  cos_phi*sin_tht*sin_psi + sin_phi*cos_psi;	A(2,2) =  cos_phi*cos_tht;	
+	A(0,0) =  cos_tht*cos_psi;								A(0,1) = -cos_tht*sin_psi;								A(0,2) =  sin_tht;
+	A(1,0) =  sin_phi*sin_tht*cos_psi + cos_phi*sin_psi;	A(1,1) = -sin_phi*sin_tht*sin_psi + cos_phi*cos_psi;	A(1,2) = -sin_phi*cos_tht;
+	A(2,0) = -cos_phi*sin_tht*cos_psi + sin_phi*sin_psi;	A(2,1) =  cos_phi*sin_tht*sin_psi + sin_phi*cos_psi;	A(2,2) =  cos_phi*cos_tht;
 */
 	// 변환 순서: Rz(psi) x Ry(theta) x Rx(phi)
-	A(0,0) =  cos_psi*cos_tht;	A(0,1) = cos_psi*sin_phi*sin_tht - cos_phi*sin_psi;		A(0,2) =  sin_phi*sin_psi + cos_phi*cos_psi*sin_tht;		
-	A(1,0) =  cos_tht*sin_psi;	A(1,1) = cos_phi*cos_psi + sin_phi*sin_psi*sin_tht;		A(1,2) = cos_phi*sin_psi*sin_tht - cos_psi*sin_phi;	
-	A(2,0) = -sin_tht;			A(2,1) = cos_tht*sin_phi;								A(2,2) =  cos_phi*cos_tht;	
+	A(0,0) =  cos_psi*cos_tht;	A(0,1) = cos_psi*sin_phi*sin_tht - cos_phi*sin_psi;		A(0,2) =  sin_phi*sin_psi + cos_phi*cos_psi*sin_tht;
+	A(1,0) =  cos_tht*sin_psi;	A(1,1) = cos_phi*cos_psi + sin_phi*sin_psi*sin_tht;		A(1,2) = cos_phi*sin_psi*sin_tht - cos_psi*sin_phi;
+	A(2,0) = -sin_tht;			A(2,1) = cos_tht*sin_phi;								A(2,2) =  cos_phi*cos_tht;
 
 	return A;
 }
@@ -50,9 +50,9 @@ inline dVector GetOrientation2 (dMatrix &R)
 	dVector v(3);
 
 	//  - theta in the range (pi/2, 3pi/2)
-	v[0] = atan2(-R(2,1), -R(2,2)); 
-	v[1] = atan2(-R(2,0), -sqrt(R(2,1)*R(2,1) + R(2,2)*R(2,2)) ); 
-	v[2] = atan2(-R(1,0), -R(0,0)); 
+	v[0] = atan2(-R(2,1), -R(2,2));
+	v[1] = atan2(-R(2,0), -sqrt(R(2,1)*R(2,1) + R(2,2)*R(2,2)) );
+	v[2] = atan2(-R(1,0), -R(0,0));
 
 	return v;
 }
@@ -70,7 +70,7 @@ inline dVector dVector3 (double v0, double v1, double v2)
 
 inline double Dot (const dVector &v1, const dVector &v2)
 {
-	if(v1.size() != v2.size()) 
+	if(v1.size() != v2.size())
 		assert (0 && "ERROR: Dot(): Inconsistent vector size in Inner Product !");
 
 	double	v = 0.;
@@ -83,7 +83,7 @@ inline double Dot (const dVector &v1, const dVector &v2)
 // dVector의 외적(cross product)을 계산한다.
 inline dVector Cross (const dVector &v1, const dVector &v2)
 {
-	if(v1.size() != 3 || v2.size() != 3) 
+	if(v1.size() != 3 || v2.size() != 3)
 		assert (0 && "ERROR: Cross(): dVector dimension should be 3 in Cross Product !");
 
 	dVector v(3);
@@ -104,12 +104,12 @@ inline double Norm2 (const dVector &v)
 	return sqrt(s);
 }
 
-inline dMatrix MakeMatrix (const dVector &v) 
+inline dMatrix MakeMatrix (const dVector &v)
 {
 	dMatrix M(v.size (), 1);
-	
+
 	for(unsigned int i=0; i<v.size(); ++i) {
-		M[i][0] = v[i];
+		M[(int)i][0] = v[i];
 	}
 	return M;
 }

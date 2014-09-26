@@ -309,11 +309,13 @@ private:
 
 	void process_packet(const std::string &packet)
 	{
-		const double eps = 1.0e-3;
+#if defined(_MSC_VER)
 		const double M_PI = std::atan(1.0) * 4.0;
+#endif
+		const double eps = 1.0e-3;
 
 		//std::cout << packet << std::endl;
-		
+
 		// accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z.
 		std::vector<short> values;
 		values.reserve(6);
@@ -354,7 +356,7 @@ private:
 			imu_data_type imu_data_final;
 #if 1
 			// Use raw sensor data.
-			
+
 			imu_data_final = imu_data;
 #else
 			// Use the moving average of raw sensor data.

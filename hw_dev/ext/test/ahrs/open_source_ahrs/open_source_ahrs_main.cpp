@@ -307,11 +307,13 @@ private:
 
 	void process_packet(const std::string &packet)
 	{
+#if defined(_MSC_VER)
 	 	const double M_PI = std::atan(1.0) * 4.0;
+#endif
 	 	const double DEG2RAD = M_PI / 180.0;
 
 		//std::cout << packet << std::endl;
-		
+
 		// accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z.
 		std::vector<short> values;
 		values.reserve(6);

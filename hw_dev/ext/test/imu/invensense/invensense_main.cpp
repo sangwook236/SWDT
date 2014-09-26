@@ -23,13 +23,16 @@ void complementary_filter_for_mpu6050(const short accData[3], const short gyrDat
 {
 	// InvenSense MPU6050.
 
+#if defined(_MSC_VER)
+ 	const double M_PI = std::atan(1.0) * 4.0;
+#endif
+
 	// Sensitivity = -2g to 2g at 16Bit : 2g = 32768 && 0.5g = 8192.
 	const double ACCELEROMETER_SENSITIVITY = 8192.0;
 	// Sensitivity = -500 [deg/sec] to 500 [deg/sec] at 16Bit : -500 [deg/sec] = -32768 && 500 [deg/sec] = 32767.
 	//const double GYROSCOPE_SENSITIVITY = 65.536;
 	// Sensitivity = -250 [deg/sec] to 250 [deg/sec] at 16Bit : -250 [deg/sec] = -32768 && 250 [deg/sec] = 32767.
 	const double GYROSCOPE_SENSITIVITY = 131.072;
- 	const double M_PI = std::atan(1.0) * 4.0;
  	const double dt = 0.01;  // sample rate: 10 [msec].
 
 	// Integrate the gyroscope data -> int(angularSpeed) = angle
@@ -304,7 +307,7 @@ private:
 	void process_packet(const std::string &packet)
 	{
 		//std::cout << packet << std::endl;
-		
+
 		// accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z.
 		std::vector<short> values;
 		values.reserve(6);

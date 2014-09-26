@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="../test/ahrs/ahrs_cb13.cbp" />
+		<Project filename="../test/gps/gps_cb13.cbp" />
+		<Project filename="../test/imu/imu_cb13.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>
