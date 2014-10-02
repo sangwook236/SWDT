@@ -1,0 +1,107 @@
+[-] General
+	-. Site
+		http://www.raspberrypi.org/
+		http://www.raspberrypi.org/documentation/
+		http://www.raspberrypi.org/help/quick-start-guide/
+
+		https://github.com/raspberrypi
+
+		http://www.raspbian.org/
+		http://www.raspbmc.com/
+		http://www.pidora.ca/
+
+		http://www.arm.com/products/processors/classic/arm11/arm1176.php
+		http://www.arm.com/products/processors/classic/arm11/
+
+[-] Setting
+	-. Ethernet
+		http://elinux.org/Configuring_a_Static_IP_address_on_your_Raspberry_Pi
+		http://raspberrypi.stackexchange.com/questions/8851/setting-up-wifi-and-ethernet
+
+		1) set static IP.
+			/etc/network/interfaces
+			<example>
+				auto eth0
+				allow-hotplug eth0
+				iface eth0 inet static
+				address 192.168.0.10
+				netmask 255.255.255.0
+				broadcast 192.168.0.255
+				gateway 192.168.0.1
+		2) set DNS server.
+			/etc/resolv.conf
+			<example>
+				domain local
+				search local
+				nameserver 168.126.63.1 168.126.63.2 8.8.8.8
+		3) restart networking
+			sudo service networking restart
+			sudo /etc/init.d/networking restart
+	-. Wi-Fi Adapter
+		http://elinux.org/RPi_USB_Wi-Fi_Adapters
+		http://elinux.org/RPi_VerifiedPeripherals
+		http://omer.me/2012/04/setting-up-wireless-networks-under-debian-on-raspberry-pi/
+		http://www.element14.com/community/docs/DOC-44703/l/raspberry-pi-wifi-adapter-testing
+
+		Adapter
+			[ref] http://omer.me/2012/04/setting-up-wireless-networks-under-debian-on-raspberry-pi/
+			3COM 3CRUSB10075
+				Chipset: ZyDAS zd1211rw
+			ZIO WLB2154USB
+				Chipset: ZyDAS ZD1211
+
+		1) set DHCP.
+			/etc/network/interfaces
+			<example>
+				#auto eth0
+				allow-hotplug eth0
+				iface eth0 inet static
+				address 192.168.0.10
+				netmask 255.255.255.0
+				broadcast 192.168.0.255
+				gateway 192.168.0.1
+
+				auto wlan0
+				allow-hotplug wlan0
+				iface wlan0 inet dhcp
+				wpa-conf /etc/wpa.conf
+		2) set WPA.
+			/etc/wpa.conf
+			<example>
+				ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+				update_config=1
+
+				network={
+					ssid="AP-SSID"
+					psk="WPA-PASSWORD"
+					proto=WPA
+					key_mgmt=NONE
+					pairwise=CCMP TKIP
+					group=CCMP TKIP
+				}
+
+		3) restart networking.
+			sudo service networking restart
+			sudo /etc/init.d/networking restart
+			==> 2번 이상 실행할 것.
+		4) set AP using "WiFi Config"
+			WiFi Config S/W를 실행시켜 Wi-Fi AP를 scan & connect.
+		5) restart networking.
+			sudo service networking restart
+			sudo /etc/init.d/networking restart
+			==> 2번 이상 실행할 것.
+
+[-] Raspbian
+	-. Log-In
+		ID: pi
+		PW: raspberry
+	-. Config
+		raspi-config
+	-. X-System
+		Command
+			startx
+		Desktop
+			LXDE
+	-. Shutdown
+		sudo poweroff
+		sudo reboot
