@@ -52,7 +52,7 @@
 		</ExtraCommands>
 		<Unit filename="fuse.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="pio_main.cpp" />
+		<Unit filename="pio.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
