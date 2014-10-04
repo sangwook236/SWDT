@@ -314,9 +314,9 @@ private:
 		parse_imu_values(packet, values);
 		if (values.size() == 6)
 		{
-#if 0
+#if 1
 			std::cout << packet << " : " << values[0] << ',' << values[1] << ',' << values[2] << ',' << values[3] << ',' << values[4] << ',' << values[5] << std::endl;
-#elif 1
+#elif 0
 			double pitch, roll;
 			complementary_filter_for_mpu6050(&values[0], &values[3], pitch, roll);
 
@@ -353,7 +353,7 @@ void mpu6050_processing_main()
 {
 	try
 	{
-		const std::string port = "COM9";
+		const std::string port = "COM12";
 		const unsigned int baud_rate = 38400;
 		{
 			boost::asio::io_service ioService;

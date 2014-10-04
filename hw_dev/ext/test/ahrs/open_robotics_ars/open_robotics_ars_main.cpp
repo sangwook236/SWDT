@@ -446,7 +446,7 @@ void filter_by_ars_using_mpu6050()
 			return;
 		}
 
-		const std::string port = "COM9";
+		const std::string port = "COM12";
 		const unsigned int baud_rate = 38400;
 		{
 			boost::asio::io_service ioService;

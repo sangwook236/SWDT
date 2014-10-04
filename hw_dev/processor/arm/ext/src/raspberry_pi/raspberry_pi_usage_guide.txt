@@ -2,16 +2,26 @@
 	-. Site
 		http://www.raspberrypi.org/
 		http://www.raspberrypi.org/documentation/
+		http://www.raspberrypi.org/documentation/hardware
 		http://www.raspberrypi.org/help/quick-start-guide/
 
-		https://github.com/raspberrypi
+		https://github.com/raspberrypi/
+		https://github.com/raspberrypi/documentation/
+		https://github.com/raspberrypi/documentation/hardware/
 
-		http://www.raspbian.org/
-		http://www.raspbmc.com/
-		http://www.pidora.ca/
+		https://learn.adafruit.com/category/learn-raspberry-pi
 
 		http://www.arm.com/products/processors/classic/arm11/arm1176.php
 		http://www.arm.com/products/processors/classic/arm11/
+	-. Distribution
+		http://www.raspbian.org/
+		http://www.raspbmc.com/
+		http://www.pidora.ca/
+	-. Library
+		WiringPi - a GPIO access library written in C for the BCM2835 used in the Raspberry Pi
+			http://wiringpi.com/
+		bcm2835 - a C library for Raspberry Pi (RPi)
+			http://www.airspayce.com/mikem/bcm2835/
 
 [-] Setting
 	-. Ethernet
@@ -96,7 +106,7 @@
 		ID: pi
 		PW: raspberry
 	-. Config
-		raspi-config
+		sudo raspi-config
 	-. X-System
 		Command
 			startx

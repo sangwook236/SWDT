@@ -1,0 +1,8 @@
+[-] General
+	-. Site
+		http://www.arduino.cc/
+		http://arduino.cc/en/Tutorial/HomePage
+		http://playground.arduino.cc/
+
+		http://www.arduino.cc/en/Reference/
+		http://arduino.cc/en/Reference/Libraries

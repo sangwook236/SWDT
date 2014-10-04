@@ -1,4 +1,0 @@
-[-] General
-	-. Site
-		http://www.arduino.cc/
-		http://www.arduino.cc/en/Reference/
