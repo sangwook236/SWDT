@@ -1,15 +1,30 @@
+#include <bcm2835.h>
 #include <iostream>
 #include <stdexcept>
+#include <cstdlib>
 
 
-int main(void)
+int main(int argc, char **argv)
 {
-	int gpio_main();
+	int gpio_main(int argc, char **argv);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		retval = gpio_main();
+        // If you call this, it will not actually access the GPIO.
+        //bcm2835_set_debug(1);
+
+        // Initialize BCM2835.
+        if (!bcm2835_init())
+        {
+            std::cerr << "BCM2835 not initialized" << std::endl;
+            return 1;
+        }
+
+		retval = gpio_main(argc, argv);
+
+        // Close BCM2835.
+        bcm2835_close();
 	}
 	catch (const std::exception &e)
 	{

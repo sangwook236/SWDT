@@ -33,15 +33,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add option="-DUNICODE" />
-			<Add option="-D_UNICODE" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
-			<Add library="pthread" />
-			<Add library="dl" />
+			<Add library="bcm2835" />
+			<Add directory="/usr/local/lib" />
 		</Linker>
-		<Unit filename="main.cpp" />
 		<Unit filename="gpio.cpp" />
+		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
