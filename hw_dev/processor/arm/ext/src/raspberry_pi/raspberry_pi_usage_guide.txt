@@ -25,6 +25,7 @@
 			http://www.airspayce.com/mikem/bcm2835/
 		WiringPi - a GPIO access library written in C for the BCM2835 used in the Raspberry Pi
 			http://wiringpi.com/
+			http://wiringpi.com/reference
 
 [-] Setting
 	-. Ethernet

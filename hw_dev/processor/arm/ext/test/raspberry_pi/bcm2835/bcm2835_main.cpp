@@ -1,4 +1,5 @@
 #include <bcm2835.h>
+#include <iostream>
 
 
 namespace {
@@ -18,7 +19,7 @@ int bcm2835_main(int argc, char **argv)
     // If you call this, it will not actually access the GPIO.
     //bcm2835_set_debug(1);
 
-    // Initialize BCM2835.
+    // Initialize BCM2835 library.
     if (!bcm2835_init())
     {
         std::cerr << "BCM2835 library not initialized" << std::endl;
@@ -27,8 +28,8 @@ int bcm2835_main(int argc, char **argv)
 
 	my_bcm2835::gpio();
 
-    // Close BCM2835.
+    // Close BCM2835 library.
     bcm2835_close();
 
-	return retval;
+	return 0;
 }

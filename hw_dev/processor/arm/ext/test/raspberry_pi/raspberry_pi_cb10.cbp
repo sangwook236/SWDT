@@ -37,10 +37,15 @@
 		</Compiler>
 		<Linker>
 			<Add library="bcm2835" />
+			<Add library="wiringPi" />
+			<Add library="pthread" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
-		<Unit filename="gpio.cpp" />
+		<Unit filename="bcm2835/bcm2835_main.cpp" />
+		<Unit filename="bcm2835/gpio.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="wiringpi/gpio.cpp" />
+		<Unit filename="wiringpi/wiringpi_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

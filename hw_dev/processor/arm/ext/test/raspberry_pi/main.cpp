@@ -12,10 +12,10 @@ int main(int argc, char **argv)
 	try
 	{
 		std::cout << "bcm2835 library -----------------------------------------------------" << std::endl;
-        retval = bcm2835_main();
+        //retval = bcm2835_main(argc, argv);
 
 		std::cout << "\nwiringPi library ----------------------------------------------------" << std::endl;
-        retval = wiringpi_main();
+        retval = wiringpi_main(argc, argv);
 	}
 	catch (const std::exception &e)
 	{
