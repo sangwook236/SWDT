@@ -29,7 +29,16 @@
 			http://wiringpi.com/
 			http://wiringpi.com/reference
 
+[-] Kernel
+	-. Kernel Compilation
+		http://elinux.org/RPi_Kernel_Compilation
+	-. Update Firmwaire
+		https://github.com/Hexxeh/rpi-update
+
 [-] Setting
+	-. Auto Login & Auto Start
+		http://elinux.org/RPi_Debian_Auto_Login
+		http://www.opentechguides.com/how-to/article/raspberry-pi/5/raspberry-pi-auto-start.html
 	-. Ethernet
 		http://elinux.org/Configuring_a_Static_IP_address_on_your_Raspberry_Pi
 		http://raspberrypi.stackexchange.com/questions/8851/setting-up-wifi-and-ethernet
@@ -106,9 +115,6 @@
 			sudo service networking restart
 			sudo /etc/init.d/networking restart
 			==> 2번 이상 실행할 것.
-[-] Firmware
-	-. Update
-		https://github.com/Hexxeh/rpi-update
 
 [-] Raspbian
 	-. Log-In
