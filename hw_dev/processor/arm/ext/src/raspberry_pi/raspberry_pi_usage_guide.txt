@@ -10,6 +10,8 @@
 		https://github.com/raspberrypi/documentation/hardware/
 
 		http://elinux.org/RPi_Hub
+		http://elinux.org/RPi_Software
+		http://elinux.org/RPi_Programming
 		http://elinux.org/RPi_Hardware
 		http://elinux.org/RPi_Low-level_peripherals
 		https://learn.adafruit.com/category/learn-raspberry-pi
@@ -104,6 +106,9 @@
 			sudo service networking restart
 			sudo /etc/init.d/networking restart
 			==> 2번 이상 실행할 것.
+[-] Firmware
+	-. Update
+		https://github.com/Hexxeh/rpi-update
 
 [-] Raspbian
 	-. Log-In
