@@ -1,4 +1,3 @@
-#include <bcm2835.h>
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
@@ -6,25 +5,17 @@
 
 int main(int argc, char **argv)
 {
-	int gpio_main(int argc, char **argv);
+	int bcm2835_main(int argc, char **argv);
+	int wiringpi_main(int argc, char **argv);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-        // If you call this, it will not actually access the GPIO.
-        //bcm2835_set_debug(1);
+		std::cout << "bcm2835 library -----------------------------------------------------" << std::endl;
+        retval = bcm2835_main();
 
-        // Initialize BCM2835.
-        if (!bcm2835_init())
-        {
-            std::cerr << "BCM2835 not initialized" << std::endl;
-            return 1;
-        }
-
-		retval = gpio_main(argc, argv);
-
-        // Close BCM2835.
-        bcm2835_close();
+		std::cout << "\nwiringPi library ----------------------------------------------------" << std::endl;
+        retval = wiringpi_main();
 	}
 	catch (const std::exception &e)
 	{

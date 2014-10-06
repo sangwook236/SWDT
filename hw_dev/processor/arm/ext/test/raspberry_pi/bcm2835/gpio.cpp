@@ -3,7 +3,8 @@
 
 
 // Blinks on RPi Plug P1 pin 11 (which is GPIO pin 17).
-#define PIN RPI_GPIO_P1_11
+//#define LED_PIN RPI_GPIO_P1_11
+#define LED_PIN RPI_BPLUS_GPIO_J8_11
 
 namespace {
 namespace local {
@@ -12,19 +13,19 @@ namespace local {
 void blink_example()
 {
     // Set the pin to be an output.
-    bcm2835_gpio_fsel(PIN, BCM2835_GPIO_FSEL_OUTP);
-
+    bcm2835_gpio_fsel(LED_PIN, BCM2835_GPIO_FSEL_OUTP);
+    
     std::cout << "start blink ..." << std::endl;
     while (true)
     {
 		// Turn it on.
-		bcm2835_gpio_write(PIN, HIGH);
+		bcm2835_gpio_write(LED_PIN, HIGH);
 
 		// Wait a bit.
 		bcm2835_delay(500);  // [msec].
 
 		// Turn it off.
-		bcm2835_gpio_write(PIN, LOW);
+		bcm2835_gpio_write(LED_PIN, LOW);
 
 		// Wait a bit.
 		bcm2835_delay(500);  // [msec].
@@ -35,13 +36,11 @@ void blink_example()
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_gpio {
+namespace my_bcm2835 {
 
-}  // namespace my_gpio
-
-int gpio_main(int argc, char **argv)
+void gpio()
 {
     local::blink_example();
-
-    return 0;
 }
+
+}  // namespace my_bcm2835

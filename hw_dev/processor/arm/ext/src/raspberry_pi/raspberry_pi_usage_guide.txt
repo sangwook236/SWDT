@@ -9,6 +9,9 @@
 		https://github.com/raspberrypi/documentation/
 		https://github.com/raspberrypi/documentation/hardware/
 
+		http://elinux.org/RPi_Hub
+		http://elinux.org/RPi_Hardware
+		http://elinux.org/RPi_Low-level_peripherals
 		https://learn.adafruit.com/category/learn-raspberry-pi
 
 		http://www.arm.com/products/processors/classic/arm11/arm1176.php
@@ -18,10 +21,10 @@
 		http://www.raspbmc.com/
 		http://www.pidora.ca/
 	-. Library
-		WiringPi - a GPIO access library written in C for the BCM2835 used in the Raspberry Pi
-			http://wiringpi.com/
 		bcm2835 - a C library for Raspberry Pi (RPi)
 			http://www.airspayce.com/mikem/bcm2835/
+		WiringPi - a GPIO access library written in C for the BCM2835 used in the Raspberry Pi
+			http://wiringpi.com/
 
 [-] Setting
 	-. Ethernet
