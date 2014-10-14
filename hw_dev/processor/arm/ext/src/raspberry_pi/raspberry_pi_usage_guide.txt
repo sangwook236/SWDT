@@ -36,9 +36,11 @@
 		https://github.com/Hexxeh/rpi-update
 
 [-] Setting
-	-. Auto Login & Auto Start
+	-. Auto Login & Auto Start/Run
 		http://elinux.org/RPi_Debian_Auto_Login
 		http://www.opentechguides.com/how-to/article/raspberry-pi/5/raspberry-pi-auto-start.html
+		http://www.stuffaboutcode.com/2012/06/raspberry-pi-run-program-at-start-up.html
+		http://www.raspberry-projects.com/pi/pi-operating-systems/raspbian/auto-running-programs
 	-. Ethernet
 		http://elinux.org/Configuring_a_Static_IP_address_on_your_Raspberry_Pi
 		http://raspberrypi.stackexchange.com/questions/8851/setting-up-wifi-and-ethernet
