@@ -29,12 +29,12 @@ int main(void)
 		//retval = flash_main();
 		//retval = wdt_main();
 
-		//retval = pio_main();
+		retval = pio_main();
 		//retval = interrupt_main();
 		//retval = pwm_main();
 		//retval = adc_main();
 
-		retval = usart_main();
+		//retval = usart_main();
 		//retval = spi_main();
 		//retval = i2c_main();
 		//retval = zigbee_main();

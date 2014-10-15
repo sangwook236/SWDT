@@ -219,9 +219,9 @@
     <None Include="motor\timer.cpp">
       <SubType>compile</SubType>
     </None>
-    <None Include="pio\pio_main.cpp">
+    <Compile Include="pio\pio_main.cpp">
       <SubType>compile</SubType>
-    </None>
+    </Compile>
     <None Include="pwm\pwm_main.cpp">
       <SubType>compile</SubType>
     </None>
@@ -249,21 +249,21 @@
     <None Include="spi\spi_main.cpp">
       <SubType>compile</SubType>
     </None>
-    <Compile Include="usart\usart.h">
+    <None Include="usart\usart.h">
       <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="usart\usart0.cpp">
+    </None>
+    <None Include="usart\usart0.cpp">
       <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="usart\usart1.cpp">
+    </None>
+    <None Include="usart\usart1.cpp">
       <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="usart\usart_main.cpp">
+    </None>
+    <None Include="usart\usart_main.cpp">
       <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="usart\usart_util.cpp">
+    </None>
+    <None Include="usart\usart_util.cpp">
       <SubType>compile</SubType>
-    </Compile>
+    </None>
     <None Include="wdt\wdt_main.cpp">
       <SubType>compile</SubType>
     </None>
