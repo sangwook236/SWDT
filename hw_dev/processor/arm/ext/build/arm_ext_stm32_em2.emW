@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<emIDE_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="../test/stm32_emide/stm32_em2.emp" />
+	</Workspace>
+</emIDE_workspace_file>

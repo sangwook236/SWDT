@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "procyon_avrlib_test", "..\test\procyon_avrlib_test\procyon_avrlib_test.cppproj", "{87D3EF99-A1FE-43D9-9981-B6FE98FF8019}"
 EndProject
-Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "avr_as6", "..\test\avr_as\avr_as6.cppproj", "{4D8D13A5-E5E7-463D-BFC7-2EFE7AC4E45D}"
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "avr_as6", "..\test\avr\avr_as6.cppproj", "{4D8D13A5-E5E7-463D-BFC7-2EFE7AC4E45D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,95 @@
+[-] General
+	-. Site
+		http://www.st.com/stm32
+		http://www.st.com/web/catalog/mmc/FM141/SC1169
+		http://www.st.com/web/catalog/mmc/FM141/SC1169/SS1031
+			STM32F103RE
+		http://www.arm.com/products/processors/cortex-m/cortex-m3.php
+			ARM Cortex-M3
+
+		http://www.us-technology.co.kr/product/product_main.asp?mode=401&smode=2
+			UST-MPB-STM32F103 v1
+				CPU : STM32F103RET6 (64핀 TQFP 타입)
+				Clock : 72 MHz
+				형태 : 64pin DIP타입 (2.54mm 간격)
+				크기 : 26mm * 82mm
+
+	-. Virtual COM Port Driver
+		http://www.st.com/web/en/catalog/tools/PF257938
+			stsw-stm32102.zip
+
+[-] Programmer & Debugger
+	-. ST-LINK/V2 In-Circuit Debugger/Programmer for STM8 and STM32
+		http://www.st.com/web/catalog/tools/FM146/CL1984/SC724/SS1677/PF251168?sc=internet/evalboard/product/251168.jsp
+			STSW-LINK003 : ST-LINK/V2 USB driver for Windows 7, Vista and XP
+				st-link_v2_usbdriver.zip
+			STSW-LINK004 : STM32 ST-LINK utility
+				stsw-link004.zip
+			STSW-LINK005 : ST-LINK/V2 firmware upgrade
+				st-linkv2_upgrade.zip
+			STSW-LINK006 : ST-LINK/V2 USB driver for Windows 8
+				stsw-link006.zip
+
+[-] Kernel & OS
+	-. Real-time OS
+		http://www.coocox.org/CoOS.htm
+
+	-. Android
+		https://code.google.com/p/stm32-adk/
+		https://github.com/YuuichiAkagawa/STM32F4_ADK
+
+[-] Development Tool
+	-. Toolchain
+		http://www.yagarto.org/
+	-. Library
+		STM32F10x Standard Peripheral Library
+			http://www.st.com/web/en/catalog/tools/PF257890
+				stsw-stm32054.zip
+			http://www.mangoboard.com/sub.html?ptype=view&code=mstory3&idx=5647
+				mangoboard_libraries.zip
+				mangoboard_libraries.org.zip
+			Location of stm32f10x.h
+				${STM32F10x_Standard_Peripheral_Library_HOME}\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\
+			Manual
+				${STM32F10x_Standard_Peripheral_Library_HOME}\stm32f10x_stdperiph_lib_um.chm
+		STM32 USB FS Device Library
+			http://www.st.com/web/en/catalog/tools/PF258157
+				stsw-stm32121.zip
+		CooCox CoX
+			http://www.coocox.org/Cox.html
+
+	-. IDE
+		http://www.emblocks.org/
+		http://www.emide.org/
+		http://www.coocox.org/CooCox_CoIDE.htm
+
+	-. STM32 Embedded Software
+		http://www.st.com/web/catalog/tools/FM147/CL1794/SC961/SS1743?icmp=ss1743_pron_pr1_jun2014&sc=stm32cube-pr5
+		STM32Cube
+		STM32CubeMX : STM32Cube initialization code generator.
+			http://www.st.com/web/catalog/tools/FM147/CL1794/SC961/SS1533/PF259242
+				stm32cubemx.zip
+
+[-] Using Em::Blocks
+	-. General
+		basic library를 자체적으로 포함하고 있음.
+			STM32F10x Standard Peripheral Library (SPL).
+			CMSIS.
+	-. Download device description file (SVD)
+		"Debug" main menu -> "Plugins" sub-menu -> "SVD repository..." menu.
+			STM32F103xx.svd
+	-. Enable semihosting for serial wire debugging (SWD)
+		"Debug" main menu -> "Interfaces" sub-menu -> "GDB server" tab -> "Settings >>" button -> "Enable Semihosting" checkbox.
+	-. Debug mode is not working
+		???
+
+[-] Using emIDE
+	-. Generate HEX/MOT/BIN files
+		"Build options..." menu -> "Pre/post build steps" tab -> "Generate HEX/MOT/BIN file" checkbox.
+	-. GDB Server
+		"Properties..." menu -> "Debugger" tab -> "J-Link GDB server" tab
+
+[-] Trouble Shooting
+	-. SWD error
+		The contents of printf() are not shown at 'Printf via SWO viewer' of STM32 ST-Link Utility.
+		==> why ?

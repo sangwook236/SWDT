@@ -1,0 +1,8 @@
+[-] General
+	-. Site
+		https://www.segger.com/
+		https://www.segger.com/jlink-debug-probes.html
+
+		https://www.segger.com/IDE_Integration_emIDE.html
+		https://www.segger.com/IDE_Integration_Eclipse.html
+		https://www.segger.com/IDE_Integration_coocox.html

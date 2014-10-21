@@ -1,6 +1,11 @@
 [-] General
 	-. Site
 		http://www.raspberrypi.org/
+		https://www.broadcom.com/products/BCM2835
+			Broadcom BCM2835
+		http://www.arm.com/products/processors/classic/arm11/arm1176.php
+			ARM1176JZ-F
+
 		http://www.raspberrypi.org/documentation/
 		http://www.raspberrypi.org/documentation/hardware
 		http://www.raspberrypi.org/help/quick-start-guide/
@@ -18,22 +23,25 @@
 
 		http://www.arm.com/products/processors/classic/arm11/arm1176.php
 		http://www.arm.com/products/processors/classic/arm11/
+
+[-] Kernel & OS
+	-. Kernel Compilation
+		http://elinux.org/RPi_Kernel_Compilation
+	-. Update Firmwaire
+		https://github.com/Hexxeh/rpi-update
+
 	-. Distribution
 		http://www.raspbian.org/
 		http://www.raspbmc.com/
 		http://www.pidora.ca/
+
+[-] Development Tool
 	-. Library
 		bcm2835 - a C library for Raspberry Pi (RPi)
 			http://www.airspayce.com/mikem/bcm2835/
 		WiringPi - a GPIO access library written in C for the BCM2835 used in the Raspberry Pi
 			http://wiringpi.com/
 			http://wiringpi.com/reference
-
-[-] Kernel
-	-. Kernel Compilation
-		http://elinux.org/RPi_Kernel_Compilation
-	-. Update Firmwaire
-		https://github.com/Hexxeh/rpi-update
 
 [-] Setting
 	-. Auto Login & Auto Start/Run

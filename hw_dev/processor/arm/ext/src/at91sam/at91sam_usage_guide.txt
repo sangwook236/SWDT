@@ -2,8 +2,69 @@
 	-. Site
 		http://www.atmel.com/products/microcontrollers/arm/default.aspx
 		http://www.atmel.com/products/microcontrollers/arm/sam7s_se.aspx
+			AT91SAM7S256
+		http://www.arm.com/products/processors/classic/arm7/index.php
+			ARM7TDMI
 
-		http://www.yagarto.de/
-		http://www.zylin.com/embeddedcdt.html
+		http://www.at91.com/
 
 		http://newtc.co.kr/dpshop/shop/item.php?it_id=1314604893
+			SM-SAM7S256-A
+				CPU : AT91SAM7S256
+
+	-. Reference
+		at91sam7s_getting_started:
+			SAM-ICE CD
+		SAM7S256Test:
+			http://www.yagarto.de/howto/yagarto1/index.html
+			http://www.yagarto.de/howto/jlink/index.html
+		CppBootstrap:
+			http://www.aifrog.com/
+			http://www.aifrog.com/Files/CppBootstrap.zip
+
+[-] Programmer & Debugger
+	-. Atmel SAM-ICE - a JTAG emulator for Atmel ARM-based MCUs
+		http://www.atmel.com/tools/atmelsam-ice.aspx
+	-. SAM-ICE J-Link.
+		https://www.segger.com/at91.html
+
+	-. AT91-ISP
+		http://www.atmel.com/tools/SAM7S-EK.aspx
+	-. Atmel SAM-BA In-System Programmer.
+		http://www.atmel.com/tools/atmelsam-bain-systemprogrammer.aspx
+	-. SAM-PROG
+
+[-] Kernel & OS
+	-. Android
+		Android on ATMEL SAM9 and SAMA5 products
+			http://www.at91.com/android4sam/
+
+[-] Development Tool
+	-. Toolchain
+		http://www.yagarto.org/
+	-. Library
+		http://www.atmel.com/tools/SAM7S-EK.aspx
+
+	-. IDE
+		http://www.zylin.com/embeddedcdt.html
+		http://www.atmel.com/microsite/atmel_studio6/
+			Don't support AT91SAM7S. (?)
+		http://www.emide.org/
+		http://www.emblocks.org/
+			Don't support AT91SAM7S.
+				startup code : startup_sam7s.c.
+				device description file : AT91SAM7S256.svd.
+
+[-] Using emIDE
+	-. Generate HEX/MOT/BIN files
+		"Build options..." menu -> "Pre/post build steps" tab -> "Generate HEX/MOT/BIN file" checkbox.
+	-. GDB Server
+		"Properties..." menu -> "Debugger" tab -> "J-Link GDB server" tab
+
+[-] Using Em::Blocks
+	-. Download device description file (SVD)
+		"Debug" main menu -> "Plugins" sub-menu -> "SVD repository..." menu.
+			AT91SAM7S256.svd
+			==> cannot download because Em::Blocks doesn't support AT91SAM7S.
+	-. Enable semihosting for serial wire debugging (SWD)
+		"Debug" main menu -> "Interfaces" sub-menu -> "GDB server" tab -> "Settings >>" button -> "Semihosting" tab -> "Enable Semihosting" checkbox.
