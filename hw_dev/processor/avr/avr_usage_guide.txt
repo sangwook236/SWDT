@@ -1,3 +1,24 @@
+[-] General
+	-. Site
+		http://www.atmel.com/products/microcontrollers/avr/
+
+[-] Programmer & Debugger
+	- AVR JTAG
+	    AVR Studio4, IAR 
+		JTAG가 지원하는 디바이스는 아래와 같다.
+		Mega16(L), Mega162(L), Mega169(L), Mega32(L), Mega323(L), Mega64(L), Mega128(L)
+
+	- AVR ISP(STK500 ISP Type)
+		AVR Studio4, Codevision, Avrdude 지원
+	    모든 AVR 지원
+
+	- AVR ISP(AVR910 ISP Type)
+		AVR Studio4 AVRProg, AVROSP II
+
+[-] Development Tool
+	-. IDE
+		http://www.atmel.com/tools/ATMELSTUDIO.aspx
+
 [-] Tips
 	-. ADC & JTAG
 		ATmega128의 경우 ADC와 JTAG가 PortF pin을 공유한다.
@@ -7,16 +28,3 @@
 
 		또한 JTAG을 연결해 놓은 상태로
 		(ADC와 같은) device가 PortF를 사용하는 경우 입출력이 정상적으로 수행되지 않는다.
-
-[-] Programmer & ISP
-	- AVR JTAG
-	    AVR Studio4, IAR 
-		JTAG 가 지원하는 디바이스는 아래와 같다.
-		Mega16(L), Mega162(L), Mega169(L), Mega32(L), Mega323(L), Mega64(L), Mega128(L)
-
-	- AVR ISP(STK500 ISP Type)
-		AVR Studio4, Codevision, Avrdude 지원
-	    모든 AVR 지원
-
-	- AVR ISP(AVR910 ISP Type)
-		AVR Studio4 AVRProg, AVROSP II
