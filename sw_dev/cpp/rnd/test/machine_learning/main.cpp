@@ -1,4 +1,4 @@
-	//include "stdafx.h"
+//include "stdafx.h"
 #if defined(WIN32)
 #include <vld/vld.h>
 #endif
@@ -105,6 +105,10 @@ int main(int argc, char *argv[])
 		//
 		// [ref] ${CPP_HOME}/ext/src/general_purpose_library/dlib.
 		//retval = dlib_ml_main(argc, argv);  // not yet implemented.
+
+		std::cout << "\nCaffe framework -----------------------------------------------------" << std::endl;
+		//	-. deep learning.
+		//retval = caffe_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
 		//	-. deep learning.
