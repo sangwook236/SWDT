@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
 	int encog_main(int argc, char *argv[]);
 	int torch_main(int argc, char *argv[]);
 	int dlib_ml_main(int argc, char *argv[]);
+	int caffe_main(int argc, char *argv[]);
 	int liblearning_main(int argc, char *argv[]);
 
 	int rl_glue_main(int argc, char *argv[]);

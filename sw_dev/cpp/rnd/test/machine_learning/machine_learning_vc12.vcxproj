@@ -99,6 +99,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="caffe\caffe_main.cpp" />
     <ClCompile Include="clustering\clustering_kmeanspp.cpp" />
     <ClCompile Include="clustering\clustering_k_medoids.cpp" />
     <ClCompile Include="clustering\clustering_main.cpp" />

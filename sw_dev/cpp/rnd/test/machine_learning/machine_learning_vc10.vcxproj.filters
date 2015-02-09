@@ -55,6 +55,9 @@
     <Filter Include="Source Files\encog">
       <UniqueIdentifier>{a1470d39-6641-47e5-a4ae-d1d2a96951b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\caffe">
+      <UniqueIdentifier>{fe80dfea-dfbf-4ba0-bbe7-55ef811822ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -349,6 +352,9 @@
     </ClCompile>
     <ClCompile Include="encog\encog_main.cpp">
       <Filter>Source Files\encog</Filter>
+    </ClCompile>
+    <ClCompile Include="caffe\caffe_main.cpp">
+      <Filter>Source Files\caffe</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
