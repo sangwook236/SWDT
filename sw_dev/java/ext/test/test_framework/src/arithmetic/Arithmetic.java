@@ -1,4 +1,4 @@
-package ext;
+package arithmetic;
 
 public class Arithmetic {
 	public static double add(final double lhs, final double rhs)
