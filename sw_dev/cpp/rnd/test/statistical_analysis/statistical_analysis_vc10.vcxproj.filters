@@ -37,6 +37,33 @@
     <Filter Include="Source Files\smctc">
       <UniqueIdentifier>{d58f08d8-3c28-4c63-bdab-6c60c6aeaa71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\jlinkage">
+      <UniqueIdentifier>{ac23e94d-d9f5-4f80-aef4-52a94d206cd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\jlinkage_lib">
+      <UniqueIdentifier>{6738c1e0-2ea5-4c72-8fe5-6f8846050776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\jlinkage_lib\bm">
+      <UniqueIdentifier>{ce9488c1-c361-4c18-b1c5-4a91c11720eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\jlinkage_lib\kdtree++">
+      <UniqueIdentifier>{ad69eb4e-3cec-412a-92cb-61b59877d76f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mcmcpp_lib">
+      <UniqueIdentifier>{b1d68970-298d-4692-bcf5-68c7de0c2617}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mcmcpp_lib\mcmc++">
+      <UniqueIdentifier>{acfb30de-7902-49c4-8289-47ef56205b45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scythestat_lib">
+      <UniqueIdentifier>{8ac7f2d4-f4a6-41b0-ab10-8ec935960ddd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scythestat_lib\scythestat">
+      <UniqueIdentifier>{a8d1c2bf-8887-4712-9573-d994f5c49019}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scythestat_lib\scythestat\rng">
+      <UniqueIdentifier>{c58c4d8d-7517-45ab-9ce8-645b7fb51177}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -86,6 +113,174 @@
     </ClInclude>
     <ClInclude Include="smctc\simfunctions.h">
       <Filter>Source Files\smctc</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\rng\lecuyer.h">
+      <Filter>Source Files\scythestat_lib\scythestat\rng</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\rng\mersenne.h">
+      <Filter>Source Files\scythestat_lib\scythestat\rng</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\rng\rtmvnorm.h">
+      <Filter>Source Files\scythestat_lib\scythestat\rng</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\rng\wrapped_generator.h">
+      <Filter>Source Files\scythestat_lib\scythestat\rng</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\algorithm.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\datablock.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\defs.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\distributions.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\error.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\ide.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\la.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\lapack.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\matrix.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\matrix_bidirectional_iterator.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\matrix_forward_iterator.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\matrix_random_access_iterator.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\optimize.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\rng.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\smath.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\stat.h">
+      <Filter>Source Files\scythestat_lib\scythestat</Filter>
+    </ClInclude>
+    <ClInclude Include="mcmcpp_lib\mcmc++\DataTable.h">
+      <Filter>Source Files\mcmcpp_lib\mcmc++</Filter>
+    </ClInclude>
+    <ClInclude Include="mcmcpp_lib\mcmc++\Density.h">
+      <Filter>Source Files\mcmcpp_lib\mcmc++</Filter>
+    </ClInclude>
+    <ClInclude Include="mcmcpp_lib\mcmc++\intervals.h">
+      <Filter>Source Files\mcmcpp_lib\mcmc++</Filter>
+    </ClInclude>
+    <ClInclude Include="mcmcpp_lib\mcmc++\lot.h">
+      <Filter>Source Files\mcmcpp_lib\mcmc++</Filter>
+    </ClInclude>
+    <ClInclude Include="mcmcpp_lib\mcmc++\MCMC.h">
+      <Filter>Source Files\mcmcpp_lib\mcmc++</Filter>
+    </ClInclude>
+    <ClInclude Include="mcmcpp_lib\mcmc++\ratio.h">
+      <Filter>Source Files\mcmcpp_lib\mcmc++</Filter>
+    </ClInclude>
+    <ClInclude Include="mcmcpp_lib\mcmc++\statistics.h">
+      <Filter>Source Files\mcmcpp_lib\mcmc++</Filter>
+    </ClInclude>
+    <ClInclude Include="mcmcpp_lib\mcmc++\util.h">
+      <Filter>Source Files\mcmcpp_lib\mcmc++</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\kdtree++\accessor.hpp">
+      <Filter>Source Files\jlinkage_lib\kdtree++</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\kdtree++\allocator.hpp">
+      <Filter>Source Files\jlinkage_lib\kdtree++</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\kdtree++\iterator.hpp">
+      <Filter>Source Files\jlinkage_lib\kdtree++</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\kdtree++\kdtree.hpp">
+      <Filter>Source Files\jlinkage_lib\kdtree++</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\kdtree++\kdtree_copy.hpp">
+      <Filter>Source Files\jlinkage_lib\kdtree++</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\kdtree++\node.hpp">
+      <Filter>Source Files\jlinkage_lib\kdtree++</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\kdtree++\region.hpp">
+      <Filter>Source Files\jlinkage_lib\kdtree++</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\kdtree++\region_copy.hpp">
+      <Filter>Source Files\jlinkage_lib\kdtree++</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bm.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bmalgo.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bmalgo_impl.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bmalloc.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bmblocks.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bmconst.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bmdef.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bmfunc.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bmfwd.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bmserial.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bmsse2.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bmundef.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\bmvmin.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\bm\encoding.h">
+      <Filter>Source Files\jlinkage_lib\bm</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\JLinkage.h">
+      <Filter>Source Files\jlinkage_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\JlnkCluster.h">
+      <Filter>Source Files\jlinkage_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\JlnkSample.h">
+      <Filter>Source Files\jlinkage_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\PrimitiveFunctions.h">
+      <Filter>Source Files\jlinkage_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\Utilities.h">
+      <Filter>Source Files\jlinkage_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="jlinkage_lib\RandomSampler.h">
+      <Filter>Source Files\jlinkage_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -182,8 +377,47 @@
     <ClCompile Include="smctc\smctc_rare_event_example.cpp">
       <Filter>Source Files\smctc</Filter>
     </ClCompile>
-    <ClCompile Include="mcmcpp\mcmcpp_mcmcda.cpp">
-      <Filter>Source Files\mcmcpp</Filter>
+    <ClCompile Include="mcmcpp_lib\DataTable.cpp">
+      <Filter>Source Files\mcmcpp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp_lib\Density.cpp">
+      <Filter>Source Files\mcmcpp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp_lib\intervals.cpp">
+      <Filter>Source Files\mcmcpp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp_lib\lot.cpp">
+      <Filter>Source Files\mcmcpp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp_lib\MCMC.cpp">
+      <Filter>Source Files\mcmcpp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp_lib\ratio.cpp">
+      <Filter>Source Files\mcmcpp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp_lib\statistics.cpp">
+      <Filter>Source Files\mcmcpp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="mcmcpp_lib\util.cpp">
+      <Filter>Source Files\mcmcpp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="jlinkage_lib\JLinkage.cpp">
+      <Filter>Source Files\jlinkage_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="jlinkage_lib\JlnkCluster.cpp">
+      <Filter>Source Files\jlinkage_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="jlinkage_lib\JlnkSample.cpp">
+      <Filter>Source Files\jlinkage_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="jlinkage_lib\RandomSampler.cpp">
+      <Filter>Source Files\jlinkage_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="jlinkage_lib\Utilities.cpp">
+      <Filter>Source Files\jlinkage_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="jlinkage\jlinkage_main.cpp">
+      <Filter>Source Files\jlinkage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

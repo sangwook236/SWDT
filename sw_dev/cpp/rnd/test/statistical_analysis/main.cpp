@@ -11,12 +11,15 @@
 int main(int argc, char *argv[])
 {
 	int ransac_main(int argc, char *argv[]);
-	int movmf_main(int argc, char *argv[]);
+	int jlinkage_main(int argc, char *argv[]);
+
 	int smctc_main(int argc, char *argv[]);
 	int mcmcpp_main(int argc, char *argv[]);
 
 	int scythe_main(int argc, char *argv[]);
 	int boom_main(int argc, char *argv[]);
+
+	int movmf_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -27,13 +30,9 @@ int main(int argc, char *argv[])
 		//	-. robust estimation.
 		//retval = ransac_main(argc, argv);
 
-		std::cout << "\nMoVMF library -------------------------------------------------------" << std::endl;
-		//	-. directional statistics.
-#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-		//retval = movmf_main(argc, argv);
-#else
-        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
-#endif
+		std::cout << "J-Linkage algorithm ----------------------------------------------------" << std::endl;
+		//	-. robust multiple structures estimation.
+		retval = jlinkage_main(argc, argv);
 
 		std::cout << "\nSequential Monte Carlo Template Class (SMCTC) library --------------" << std::endl;
 		//	-. sequential importance resampling (SIR) algorithm.
@@ -43,14 +42,26 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nMCMC++ library ------------------------------------------------------" << std::endl;
 		//	-. Markov Chain Monte Carlo (MCMC) analysis.
-		retval = mcmcpp_main(argc, argv);
+		//retval = mcmcpp_main(argc, argv);
 
 		std::cout << "\nScythe Statistical Library ------------------------------------------" << std::endl;
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		//retval = scythe_main(argc, argv);
+#else
+		std::cout << "\tThis library can be used in unix-like systems" << std::endl;
+#endif
 
 		std::cout << "\nboom library --------------------------------------------------------" << std::endl;
 		// Bayesian computation in C++.
 		//retval = boom_main(argc, argv);  // not yet implemented.
+
+		std::cout << "\nMoVMF library -------------------------------------------------------" << std::endl;
+		//	-. directional statistics.
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+		//retval = movmf_main(argc, argv);
+#else
+		std::cout << "\tThis library can be used in unix-like systems" << std::endl;
+#endif
 	}
     catch (const std::bad_alloc &e)
 	{

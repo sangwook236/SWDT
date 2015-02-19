@@ -4,14 +4,14 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "MCMC++_d.lib")
+//#pragma comment(lib, "MCMC++_d.lib")
 #pragma comment(lib, "smctcd.lib")
 #pragma comment(lib, "gsl_d.lib")
 #pragma comment(lib, "cblas_d.lib")
 
 #		else
 
-#pragma comment(lib, "MCMC++.lib")
+//#pragma comment(lib, "MCMC++.lib")
 #pragma comment(lib, "smctc.lib")
 #pragma comment(lib, "gsl.lib")
 #pragma comment(lib, "cblas.lib")

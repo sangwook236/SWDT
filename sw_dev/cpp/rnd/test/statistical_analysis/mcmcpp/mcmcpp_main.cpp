@@ -31,7 +31,7 @@ int mcmcpp_main(int argc, char *argv[])
 
 	// application ---------------------------------------------------------
 	{
-		my_mcmcpp::multi_scan_mcmcda_algorithm();
+		//my_mcmcpp::multi_scan_mcmcda_algorithm();  // not yet implemented.
 	}
 
 	return 0;

@@ -53,7 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./scythemcmc_lib;../../inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./jlinkage_lib;./mcmcpp_lib;./scythemcmc_lib;./scythestat_lib;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -69,7 +69,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./scythemcmc_lib;../../inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./jlinkage_lib;./mcmcpp_lib;./scythemcmc_lib;./scythestat_lib;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -83,6 +83,42 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="jlinkage_lib\bm\bm.h" />
+    <ClInclude Include="jlinkage_lib\bm\bmalgo.h" />
+    <ClInclude Include="jlinkage_lib\bm\bmalgo_impl.h" />
+    <ClInclude Include="jlinkage_lib\bm\bmalloc.h" />
+    <ClInclude Include="jlinkage_lib\bm\bmblocks.h" />
+    <ClInclude Include="jlinkage_lib\bm\bmconst.h" />
+    <ClInclude Include="jlinkage_lib\bm\bmdef.h" />
+    <ClInclude Include="jlinkage_lib\bm\bmfunc.h" />
+    <ClInclude Include="jlinkage_lib\bm\bmfwd.h" />
+    <ClInclude Include="jlinkage_lib\bm\bmserial.h" />
+    <ClInclude Include="jlinkage_lib\bm\bmsse2.h" />
+    <ClInclude Include="jlinkage_lib\bm\bmundef.h" />
+    <ClInclude Include="jlinkage_lib\bm\bmvmin.h" />
+    <ClInclude Include="jlinkage_lib\bm\encoding.h" />
+    <ClInclude Include="jlinkage_lib\JLinkage.h" />
+    <ClInclude Include="jlinkage_lib\JlnkCluster.h" />
+    <ClInclude Include="jlinkage_lib\JlnkSample.h" />
+    <ClInclude Include="jlinkage_lib\kdtree++\accessor.hpp" />
+    <ClInclude Include="jlinkage_lib\kdtree++\allocator.hpp" />
+    <ClInclude Include="jlinkage_lib\kdtree++\iterator.hpp" />
+    <ClInclude Include="jlinkage_lib\kdtree++\kdtree.hpp" />
+    <ClInclude Include="jlinkage_lib\kdtree++\kdtree_copy.hpp" />
+    <ClInclude Include="jlinkage_lib\kdtree++\node.hpp" />
+    <ClInclude Include="jlinkage_lib\kdtree++\region.hpp" />
+    <ClInclude Include="jlinkage_lib\kdtree++\region_copy.hpp" />
+    <ClInclude Include="jlinkage_lib\PrimitiveFunctions.h" />
+    <ClInclude Include="jlinkage_lib\RandomSampler.h" />
+    <ClInclude Include="jlinkage_lib\Utilities.h" />
+    <ClInclude Include="mcmcpp_lib\mcmc++\DataTable.h" />
+    <ClInclude Include="mcmcpp_lib\mcmc++\Density.h" />
+    <ClInclude Include="mcmcpp_lib\mcmc++\intervals.h" />
+    <ClInclude Include="mcmcpp_lib\mcmc++\lot.h" />
+    <ClInclude Include="mcmcpp_lib\mcmc++\MCMC.h" />
+    <ClInclude Include="mcmcpp_lib\mcmc++\ratio.h" />
+    <ClInclude Include="mcmcpp_lib\mcmc++\statistics.h" />
+    <ClInclude Include="mcmcpp_lib\mcmc++\util.h" />
     <ClInclude Include="movmf_lib\DenseMatrixDouble.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -119,7 +155,70 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="scythemcmc_lib\mcmc.h" />
+    <ClInclude Include="scythemcmc_lib\mcmc.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\algorithm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\datablock.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\defs.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\distributions.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\error.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\ide.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\la.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\lapack.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\matrix.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\matrix_bidirectional_iterator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\matrix_forward_iterator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\matrix_random_access_iterator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\optimize.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\rng.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\rng\lecuyer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\rng\mersenne.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\rng\rtmvnorm.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\rng\wrapped_generator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\smath.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="scythestat_lib\scythestat\stat.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="smctc\markovchain.h" />
     <ClInclude Include="smctc\pffuncs.h" />
     <ClInclude Include="smctc\simfunctions.h" />
@@ -128,14 +227,27 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="boom\boom_main.cpp" />
+    <ClCompile Include="jlinkage\jlinkage_main.cpp" />
+    <ClCompile Include="jlinkage_lib\JLinkage.cpp" />
+    <ClCompile Include="jlinkage_lib\JlnkCluster.cpp" />
+    <ClCompile Include="jlinkage_lib\JlnkSample.cpp" />
+    <ClCompile Include="jlinkage_lib\RandomSampler.cpp" />
+    <ClCompile Include="jlinkage_lib\Utilities.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mcmcpp\mcmcpp_binomial_example.cpp" />
     <ClCompile Include="mcmcpp\mcmcpp_main.cpp" />
-    <ClCompile Include="mcmcpp\mcmcpp_mcmcda.cpp" />
     <ClCompile Include="mcmcpp\mcmcpp_multinomial_example.cpp" />
     <ClCompile Include="mcmcpp\mcmcpp_normal_example.cpp" />
     <ClCompile Include="mcmcpp\mcmcpp_normal_mixture_example.cpp" />
+    <ClCompile Include="mcmcpp_lib\DataTable.cpp" />
+    <ClCompile Include="mcmcpp_lib\Density.cpp" />
+    <ClCompile Include="mcmcpp_lib\intervals.cpp" />
+    <ClCompile Include="mcmcpp_lib\lot.cpp" />
+    <ClCompile Include="mcmcpp_lib\MCMC.cpp" />
+    <ClCompile Include="mcmcpp_lib\ratio.cpp" />
+    <ClCompile Include="mcmcpp_lib\statistics.cpp" />
+    <ClCompile Include="mcmcpp_lib\util.cpp" />
     <ClCompile Include="movmf\movmf_main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -174,12 +286,30 @@
     </ClCompile>
     <ClCompile Include="ransac\ransac_main.cpp" />
     <ClCompile Include="ransac\ransac_plane_estimation.cpp" />
-    <ClCompile Include="scythe\scythemcmc_normal_example.cpp" />
-    <ClCompile Include="scythe\scythe_main.cpp" />
-    <ClCompile Include="scythe\scythe_matrix_operation.cpp" />
-    <ClCompile Include="scythe\scythe_optimization.cpp" />
-    <ClCompile Include="scythe\scythe_parametric_bootstrap_example.cpp" />
-    <ClCompile Include="scythe\scythe_random.cpp" />
+    <ClCompile Include="scythe\scythemcmc_normal_example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_matrix_operation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_optimization.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_parametric_bootstrap_example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="scythe\scythe_random.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="smctc\pffuncs.cpp" />
     <ClCompile Include="smctc\simfunctions.cpp" />
     <ClCompile Include="smctc\smctc_main.cpp" />

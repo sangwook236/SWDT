@@ -1,7 +1,7 @@
 [-] General
 	-. Site
-		http://scythe.wustl.edu/
-		http://scythe.wustl.edu/api/
+		http://scythe.berkeley.edu/
+		http://scythe.berkeley.edu/api/
 		https://bitbucket.org/tristanz/scythemcmc/src
 		https://bytebucket.org/tristanz/scythemcmc/wiki/html/index.html
 	-. Reference
