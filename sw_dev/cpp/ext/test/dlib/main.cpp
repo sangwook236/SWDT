@@ -12,9 +12,13 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		// threading, networking.
+		// algorithm, threading, networking, parsing.
 		// graphical user interfaces (GUI).
-		// numerical algorithms, image processing, machine learning algorithms, graphical model inference algorithms.
+		// linear algebra, numerical algorithms.
+		// optimization.
+		// image processing.
+		// machine learning algorithms.
+		// graph tools, Bayesian networks, graphical model inference algorithms.
 		// data compression and integrity algorithms.
 		// testing, general utilities.
 
