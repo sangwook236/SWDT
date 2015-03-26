@@ -1,0 +1,8 @@
+[-] General
+	-. Site
+		http://scythe.berkeley.edu/
+		http://scythe.berkeley.edu/api/
+		https://bitbucket.org/tristanz/scythemcmc/src
+		https://bytebucket.org/tristanz/scythemcmc/wiki/html/index.html
+	-. Reference
+		"The Scythe Statistical Library: An Open Source C++ Library for Statistical Computation", Daniel Pemstein, Kevin M. Quinn, and Andrew D. Martin, JSS 2011.

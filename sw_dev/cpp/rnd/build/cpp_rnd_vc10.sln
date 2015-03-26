@@ -36,7 +36,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graph_analysis_vc10", "..\t
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hand_analysis_vc10", "..\test\hand_analysis\hand_analysis_vc10.vcxproj", "{5764CA80-F4D8-4DA7-924F-E4ED8734C009}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "statistical_analysis_vc10", "..\test\statistical_analysis\statistical_analysis_vc10.vcxproj", "{0E6076D4-05F3-4EBB-B706-DD8E198E397B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "statistics_vc10", "..\test\statistics\statistics_vc10.vcxproj", "{0E6076D4-05F3-4EBB-B706-DD8E198E397B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "segmentation_vc10", "..\test\segmentation\segmentation_vc10.vcxproj", "{832EE4AF-D179-4D91-B598-402567ADD387}"
 EndProject

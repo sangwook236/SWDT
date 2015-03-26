@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="statistics" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../bin/statistics_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../bin/statistics" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add option="-DHAVE_EXPM1" />
+			<Add directory="./jlinkage_lib" />
+			<Add directory="./mcmcpp_lib" />
+			<Add directory="./scythemcmc_lib" />
+			<Add directory="./scythestat_lib" />
+			<Add directory="/usr/local/include" />
+		</Compiler>
+		<Linker>
+			<Add library="smctc" />
+			<Add library="ntl" />
+			<Add library="gsl" />
+			<Add library="gslcblas" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
+		<Unit filename="boom/boom_main.cpp" />
+		<Unit filename="jlinkage/jlinkage_main.cpp" />
+		<Unit filename="jlinkage_lib/JLinkage.cpp" />
+		<Unit filename="jlinkage_lib/JLinkage.h" />
+		<Unit filename="jlinkage_lib/JlnkCluster.cpp" />
+		<Unit filename="jlinkage_lib/JlnkCluster.h" />
+		<Unit filename="jlinkage_lib/JlnkSample.cpp" />
+		<Unit filename="jlinkage_lib/JlnkSample.h" />
+		<Unit filename="jlinkage_lib/PrimitiveFunctions.h" />
+		<Unit filename="jlinkage_lib/RandomSampler.cpp" />
+		<Unit filename="jlinkage_lib/RandomSampler.h" />
+		<Unit filename="jlinkage_lib/Utilities.cpp" />
+		<Unit filename="jlinkage_lib/Utilities.h" />
+		<Unit filename="jlinkage_lib/bm/bm.h" />
+		<Unit filename="jlinkage_lib/bm/bmalgo.h" />
+		<Unit filename="jlinkage_lib/bm/bmalgo_impl.h" />
+		<Unit filename="jlinkage_lib/bm/bmalloc.h" />
+		<Unit filename="jlinkage_lib/bm/bmblocks.h" />
+		<Unit filename="jlinkage_lib/bm/bmconst.h" />
+		<Unit filename="jlinkage_lib/bm/bmdef.h" />
+		<Unit filename="jlinkage_lib/bm/bmfunc.h" />
+		<Unit filename="jlinkage_lib/bm/bmfwd.h" />
+		<Unit filename="jlinkage_lib/bm/bmserial.h" />
+		<Unit filename="jlinkage_lib/bm/bmsse2.h" />
+		<Unit filename="jlinkage_lib/bm/bmundef.h" />
+		<Unit filename="jlinkage_lib/bm/bmvmin.h" />
+		<Unit filename="jlinkage_lib/bm/encoding.h" />
+		<Unit filename="jlinkage_lib/kdtree++/accessor.hpp" />
+		<Unit filename="jlinkage_lib/kdtree++/allocator.hpp" />
+		<Unit filename="jlinkage_lib/kdtree++/iterator.hpp" />
+		<Unit filename="jlinkage_lib/kdtree++/kdtree.hpp" />
+		<Unit filename="jlinkage_lib/kdtree++/kdtree_copy.hpp" />
+		<Unit filename="jlinkage_lib/kdtree++/node.hpp" />
+		<Unit filename="jlinkage_lib/kdtree++/region.hpp" />
+		<Unit filename="jlinkage_lib/kdtree++/region_copy.hpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="mcmcpp/mcmcpp_binomial_example.cpp" />
+		<Unit filename="mcmcpp/mcmcpp_main.cpp" />
+		<Unit filename="mcmcpp/mcmcpp_multinomial_example.cpp" />
+		<Unit filename="mcmcpp/mcmcpp_normal_example.cpp" />
+		<Unit filename="mcmcpp/mcmcpp_normal_mixture_example.cpp" />
+		<Unit filename="mcmcpp_lib/DataTable.cpp" />
+		<Unit filename="mcmcpp_lib/Density.cpp" />
+		<Unit filename="mcmcpp_lib/MCMC.cpp" />
+		<Unit filename="mcmcpp_lib/intervals.cpp" />
+		<Unit filename="mcmcpp_lib/lot.cpp" />
+		<Unit filename="mcmcpp_lib/mcmc++/DataTable.h" />
+		<Unit filename="mcmcpp_lib/mcmc++/Density.h" />
+		<Unit filename="mcmcpp_lib/mcmc++/MCMC.h" />
+		<Unit filename="mcmcpp_lib/mcmc++/intervals.h" />
+		<Unit filename="mcmcpp_lib/mcmc++/lot.h" />
+		<Unit filename="mcmcpp_lib/mcmc++/ratio.h" />
+		<Unit filename="mcmcpp_lib/mcmc++/statistics.h" />
+		<Unit filename="mcmcpp_lib/mcmc++/util.h" />
+		<Unit filename="mcmcpp_lib/ratio.cpp" />
+		<Unit filename="mcmcpp_lib/statistics.cpp" />
+		<Unit filename="mcmcpp_lib/util.cpp" />
+		<Unit filename="movmf/movmf_main.cpp" />
+		<Unit filename="movmf_lib/DenseMatrixDouble.cc" />
+		<Unit filename="movmf_lib/DenseMatrixDouble.h" />
+		<Unit filename="movmf_lib/RandomGenerator.cc" />
+		<Unit filename="movmf_lib/RandomGenerator.h" />
+		<Unit filename="movmf_lib/SparseMatrixDouble.cc" />
+		<Unit filename="movmf_lib/SparseMatrixDouble.h" />
+		<Unit filename="movmf_lib/main.cc">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="movmf_lib/mat_vec.cc" />
+		<Unit filename="movmf_lib/mat_vec.h" />
+		<Unit filename="movmf_lib/matrix.h" />
+		<Unit filename="movmf_lib/movmf.cc" />
+		<Unit filename="movmf_lib/movmf.h" />
+		<Unit filename="movmf_lib/movmf_base.cc" />
+		<Unit filename="movmf_lib/movmf_base.h" />
+		<Unit filename="movmf_lib/newbessel.cc" />
+		<Unit filename="movmf_lib/newbessel.h" />
+		<Unit filename="movmf_lib/timerUtil.h" />
+		<Unit filename="ransac/ransac_main.cpp" />
+		<Unit filename="ransac/ransac_plane_estimation.cpp" />
+		<Unit filename="scythe/scythe_main.cpp" />
+		<Unit filename="scythe/scythe_matrix_operation.cpp" />
+		<Unit filename="scythe/scythe_optimization.cpp" />
+		<Unit filename="scythe/scythe_parametric_bootstrap_example.cpp" />
+		<Unit filename="scythe/scythe_random.cpp" />
+		<Unit filename="scythe/scythemcmc_normal_example.cpp" />
+		<Unit filename="scythemcmc_lib/mcmc.h" />
+		<Unit filename="scythestat_lib/scythestat/algorithm.h" />
+		<Unit filename="scythestat_lib/scythestat/datablock.h" />
+		<Unit filename="scythestat_lib/scythestat/defs.h" />
+		<Unit filename="scythestat_lib/scythestat/distributions.h" />
+		<Unit filename="scythestat_lib/scythestat/error.h" />
+		<Unit filename="scythestat_lib/scythestat/ide.h" />
+		<Unit filename="scythestat_lib/scythestat/la.h" />
+		<Unit filename="scythestat_lib/scythestat/lapack.h" />
+		<Unit filename="scythestat_lib/scythestat/matrix.h" />
+		<Unit filename="scythestat_lib/scythestat/matrix_bidirectional_iterator.h" />
+		<Unit filename="scythestat_lib/scythestat/matrix_forward_iterator.h" />
+		<Unit filename="scythestat_lib/scythestat/matrix_random_access_iterator.h" />
+		<Unit filename="scythestat_lib/scythestat/optimize.h" />
+		<Unit filename="scythestat_lib/scythestat/rng.h" />
+		<Unit filename="scythestat_lib/scythestat/rng/lecuyer.h" />
+		<Unit filename="scythestat_lib/scythestat/rng/mersenne.h" />
+		<Unit filename="scythestat_lib/scythestat/rng/rtmvnorm.h" />
+		<Unit filename="scythestat_lib/scythestat/rng/wrapped_generator.h" />
+		<Unit filename="scythestat_lib/scythestat/smath.h" />
+		<Unit filename="scythestat_lib/scythestat/stat.h" />
+		<Unit filename="smctc/markovchain.h" />
+		<Unit filename="smctc/pffuncs.cpp" />
+		<Unit filename="smctc/pffuncs.h" />
+		<Unit filename="smctc/simfunctions.cpp" />
+		<Unit filename="smctc/simfunctions.h" />
+		<Unit filename="smctc/smctc_main.cpp" />
+		<Unit filename="smctc/smctc_pf_example.cpp" />
+		<Unit filename="smctc/smctc_rare_event_example.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
