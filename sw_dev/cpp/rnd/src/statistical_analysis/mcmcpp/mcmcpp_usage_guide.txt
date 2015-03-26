@@ -1,3 +1,0 @@
-[-] General
-	-. Site
-		http://darwin.eeb.uconn.edu/mcmc++/mcmc++.html

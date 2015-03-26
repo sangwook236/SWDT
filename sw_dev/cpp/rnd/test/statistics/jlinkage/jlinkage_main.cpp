@@ -37,7 +37,7 @@ inline void Read_Line(std::istream &in, std::vector<std::vector<float> *> &pts)
 }
 
 // ${OPENSVR_HOME}/JLnkTest/main.cpp.
-void test_example()
+void vanishing_point_estimation_from_lines_example()
 {
 #if 0
 	const std::string input_filename("./data/statistics/jlinkage/vp_indoor_lines.in");
@@ -112,7 +112,7 @@ namespace my_jlinkage {
 
 int jlinkage_main(int argc, char *argv[])
 {
-	local::test_example();
+	local::vanishing_point_estimation_from_lines_example();
 
 	return 0;
 }
