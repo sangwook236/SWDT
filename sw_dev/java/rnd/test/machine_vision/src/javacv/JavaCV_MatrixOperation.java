@@ -1,6 +1,6 @@
 package javacv;
 
-import static com.googlecode.javacv.cpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_core.*;
 
 public class JavaCV_MatrixOperation {
 

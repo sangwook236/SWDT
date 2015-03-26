@@ -1,8 +1,8 @@
 package javacv;
 
-import static com.googlecode.javacv.cpp.opencv_core.*;
-import static com.googlecode.javacv.cpp.opencv_highgui.*;
-import static com.googlecode.javacv.cpp.opencv_imgproc.*;
+import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_highgui.*;
+import static org.bytedeco.javacpp.opencv_imgproc.*;
 import javax.swing.*;
 import java.awt.*;
 

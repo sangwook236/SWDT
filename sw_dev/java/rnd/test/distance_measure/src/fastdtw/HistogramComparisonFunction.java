@@ -1,8 +1,8 @@
 package fastdtw;
 
 import com.util.DistanceFunction;
-import static com.googlecode.javacv.cpp.opencv_core.*;
-import static com.googlecode.javacv.cpp.opencv_imgproc.*;
+import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_imgproc.*;
 
 public class HistogramComparisonFunction implements DistanceFunction {
 	
@@ -20,8 +20,8 @@ public class HistogramComparisonFunction implements DistanceFunction {
 	static {
 		histo1_ = cvCreateHist(dims_, dim_sizes_, CV_HIST_ARRAY, ranges_, uniform_);
 		histo2_ = cvCreateHist(dims_, dim_sizes_, CV_HIST_ARRAY, ranges_, uniform_);
-		val1_ = new CvScalar(0.0, 0.0, 0.0, 0.0);
-		val2_ = new CvScalar(0.0, 0.0, 0.0, 0.0);
+		val1_ = new CvScalar();
+		val2_ = new CvScalar();
 	}
 
 	public HistogramComparisonFunction()

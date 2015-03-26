@@ -37,10 +37,10 @@ inline void Read_Line(std::istream &in, std::vector<std::vector<float> *> &pts)
 }
 
 // ${OPENSVR_HOME}/JLnkTest/main.cpp.
-void test_example()
+void vanishing_point_estimation_from_lines_example()
 {
-	const std::string infilename("");
-	const std::string outfilename("");
+	const std::string infilename("./data/statistical_analysis/jlinkage/2.cp");
+	const std::string outfilename(infilename + ".result");
 	const int MT = 2;  // model type 0 for plane, 1 for line, 2 for vanishing point.
 	const int M = 2;  // number of minimal sample sets (MSS).
 	double *FirstSamplingVector = NULL;
@@ -48,18 +48,21 @@ void test_example()
 	const double I = 0.05;  // inlier threshold.
 	const double SigmaExp = 0.2;
 
+	// read line segments.
 	std::vector<std::vector<float> *> pts;
 	{
 		std::ifstream ifile(infilename);
 		Read_Line(ifile, pts);
 	}
 
+	// run J-Linkage.
 	std::vector<std::vector<float> *> *mModels = JlnkSample::run(&pts, M, MT, FirstSamplingVector, NFSamplingType/*, SigmaExp*/);
 
 	std::vector<unsigned int> labels;
 	std::vector<unsigned int> labelCount;
 	const unsigned int num = JlnkCluster::run(labels, labelCount, &pts, mModels, I, MT);
 
+	// output.
 	{
 		std::ofstream ofile(outfilename);
 		const unsigned int len = (unsigned int)labels.size();
@@ -70,6 +73,7 @@ void test_example()
 		ofile.close();
 	}
 
+	// clean-up.
 	for (unsigned int i = 0; i < pts.size(); ++i)
 		delete pts[i];
 
@@ -87,7 +91,7 @@ namespace my_jlinkage {
 
 int jlinkage_main(int argc, char *argv[])
 {
-	local::test_example();
+	local::vanishing_point_estimation_from_lines_example();
 
 	return 0;
 }

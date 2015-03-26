@@ -89,6 +89,7 @@
     <ClCompile Include="pcl\pcl_main.cpp" />
     <ClCompile Include="pcl\pcl_resampling.cpp" />
     <ClCompile Include="pcl\pcl_visualization.cpp" />
+    <ClCompile Include="sophus\sophus_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
