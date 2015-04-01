@@ -17,16 +17,19 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "Bayes++ library ----------------------------------------------------" << std::endl;
-		//	-. Kalman filter.
+		//	-. Kalman filter (KF).
 		//	-. extended Kalman filter (EKF).
 		//	-. unscented Kalman filter (UKF).
 		//	-. covariance intersection filter.
-		//	-. U*d*U' factorisation of covariance filter: a 'Square-root' linearised Kalman filter.
+		//	-. U*d*U' factorisation of covariance filter.
+        //      a 'Square-root' linearised Kalman filter.
 		//	-. covariance filter.
 		//	-. information filter.
 		//	-. information root filter.
 		//	-. iterated covariance filter.
 		//	-. sampling importance resampling (SIR) filter.
+		//      particle filter.
+		//  -. simultaneous localization and mapping (SLAM).
 		retval = bayespp_main(argc, argv);
 
 		std::cout << "\nParticle++ library -------------------------------------------------" << std::endl;
