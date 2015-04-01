@@ -65,6 +65,7 @@
 		<Unit filename="pcl/pcl_main.cpp" />
 		<Unit filename="pcl/pcl_resampling.cpp" />
 		<Unit filename="pcl/pcl_visualization.cpp" />
+		<Unit filename="sophus/sophus_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
