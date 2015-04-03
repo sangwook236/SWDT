@@ -60,6 +60,9 @@
 		<Unit filename="levmar/levmar_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="nlopt/nlopt_main.cpp" />
+		<Unit filename="optpp/optpp_example1.cpp" />
+		<Unit filename="optpp/optpp_example2.cpp" />
+		<Unit filename="optpp/optpp_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
