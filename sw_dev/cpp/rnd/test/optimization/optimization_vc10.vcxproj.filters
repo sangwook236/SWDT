@@ -25,6 +25,9 @@
     <Filter Include="Source Files\nlopt">
       <UniqueIdentifier>{11f1c22d-79c9-432f-b548-463b68aad57b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\optpp">
+      <UniqueIdentifier>{7b5c9ebb-201f-4e01-96e0-1ad6f7ad3391}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -71,6 +74,15 @@
     </ClCompile>
     <ClCompile Include="glpk\glpk_netgen_sample.cpp">
       <Filter>Source Files\glpk</Filter>
+    </ClCompile>
+    <ClCompile Include="optpp\optpp_example1.cpp">
+      <Filter>Source Files\optpp</Filter>
+    </ClCompile>
+    <ClCompile Include="optpp\optpp_example2.cpp">
+      <Filter>Source Files\optpp</Filter>
+    </ClCompile>
+    <ClCompile Include="optpp\optpp_main.cpp">
+      <Filter>Source Files\optpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

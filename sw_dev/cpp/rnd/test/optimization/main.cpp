@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
 
 	int glpk_main(int argc, char *argv[]);
 	int nlopt_main(int argc, char *argv[]);
+	int optpp_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -32,6 +33,13 @@ int main(int argc, char* argv[])
 
         std::cout << "\nNLopt library -------------------------------------------------------" << std::endl;
 		retval = nlopt_main(argc, argv);
+
+        std::cout << "\nOPT++ library -------------------------------------------------------" << std::endl;
+#if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
+		retval = optpp_main(argc, argv);
+#else
+		std::cout << "\tThis library can be used in unix-like systems" << std::endl;
+#endif
 	}
     catch (const std::bad_alloc &e)
 	{

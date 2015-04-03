@@ -2,3 +2,4 @@
 	-. Site
 		https://code.google.com/p/tesseract-ocr/
 		http://capture2text.sourceforge.net/
+		http://cult1.tistory.com/159
