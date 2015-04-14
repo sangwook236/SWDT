@@ -66,6 +66,7 @@
 			<Add library="boost_unit_test_framework" />
 			<Add library="boost_wave" />
 			<Add library="boost_wserialization" />
+			<Add library="python2.6" />
 			<Add library="lapack" />
 			<Add library="blas" />
 			<Add library="jpeg" />
@@ -109,10 +110,7 @@
 		<Unit filename="multiprecision.cpp" />
 		<Unit filename="numeric_bindings.cpp" />
 		<Unit filename="ordinary_differential_equation.cpp" />
-		<Unit filename="polygon.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
+		<Unit filename="polygon.cpp" />
 		<Unit filename="program_options.cpp" />
 		<Unit filename="progress_timer.cpp" />
 		<Unit filename="property_map.cpp" />

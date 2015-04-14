@@ -2,6 +2,7 @@
 #include <boost/random.hpp>
 #include <boost/bind.hpp>
 #include <boost/range.hpp>
+#include <boost/static_assert.hpp>
 
 #include <sstream>
 #include <fstream>
@@ -25,6 +26,11 @@
 #include <boost/geometry/geometries/adapted/c_array.hpp>
 
 //#include <boost/geometry/domains/gis/io/wkt/read_wkt.hpp>
+#include <boost/geometry/io/wkt/wkt.hpp>
+
+#include <boost/mpl/int.hpp>
+#include <boost/geometry/core/cs.hpp>
+#include <boost/geometry/geometries/point.hpp>
 
 //#define HAVE_SVG
 #if defined(HAVE_SVG)
@@ -40,6 +46,105 @@ BOOST_GEOMETRY_REGISTER_BOOST_TUPLE_CS(cs::cartesian)
 BOOST_GEOMETRY_REGISTER_LINESTRING_TEMPLATED(std::vector)
 BOOST_GEOMETRY_REGISTER_LINESTRING_TEMPLATED(std::deque)
 
+
+namespace boost { namespace geometry
+{
+
+namespace model { namespace d3
+{
+
+template<typename CoordinateType, typename CoordinateSystem = boost::geometry::cs::cartesian>
+class point_xyz : public boost::geometry::model::point<CoordinateType, 3, CoordinateSystem>
+{
+public:
+
+    /// Default constructor, does not initialize anything
+    inline point_xyz()
+        : boost::geometry::model::point<CoordinateType, 3, CoordinateSystem>()
+    {}
+
+    /// Constructor with x/y values
+    inline point_xyz(CoordinateType const &x, CoordinateType const &y)
+        : boost::geometry::model::point<CoordinateType, 3, CoordinateSystem>(x, y)
+    {}
+
+    /// Get x-value
+    inline CoordinateType const & x() const
+    { return this->template get<0>(); }
+
+    /// Get y-value
+    inline CoordinateType const & y() const
+    { return this->template get<1>(); }
+
+    /// Get z-value
+    inline CoordinateType const & z() const
+    { return this->template get<2>(); }
+
+    /// Set x-value
+    inline void x(CoordinateType const &v)
+    { this->template set<0>(v); }
+
+    /// Set y-value
+    inline void y(CoordinateType const &v)
+    { this->template set<1>(v); }
+
+    /// Set z-value
+    inline void z(CoordinateType const &v)
+    { this->template set<2>(v); }
+};
+
+}  // namespace d2
+}  // namespace model
+
+// Adapt the point_xyz to the concept
+#ifndef DOXYGEN_NO_TRAITS_SPECIALIZATIONS
+namespace traits
+{
+
+template <typename CoordinateType, typename CoordinateSystem>
+struct tag<boost::geometry::model::d3::point_xyz<CoordinateType, CoordinateSystem> >
+{
+    typedef point_tag type;
+};
+
+template<typename CoordinateType, typename CoordinateSystem>
+struct coordinate_type<boost::geometry::model::d3::point_xyz<CoordinateType, CoordinateSystem> >
+{
+    typedef CoordinateType type;
+};
+
+template<typename CoordinateType, typename CoordinateSystem>
+struct coordinate_system<boost::geometry::model::d3::point_xyz<CoordinateType, CoordinateSystem> >
+{
+    typedef CoordinateSystem type;
+};
+
+template<typename CoordinateType, typename CoordinateSystem>
+struct dimension<boost::geometry::model::d3::point_xyz<CoordinateType, CoordinateSystem> >
+    : boost::mpl::int_<3>
+{};
+
+template<typename CoordinateType, typename CoordinateSystem, std::size_t Dimension>
+struct access<model::d3::point_xyz<CoordinateType, CoordinateSystem>, Dimension>
+{
+    static inline CoordinateType get(
+        model::d3::point_xyz<CoordinateType, CoordinateSystem> const &p)
+    {
+        return p.template get<Dimension>();
+    }
+
+    static inline void set(model::d3::point_xyz<CoordinateType, CoordinateSystem> &p,
+        CoordinateType const &value)
+    {
+        p.template set<Dimension>(value);
+    }
+};
+
+}  // namespace traits
+#endif  // DOXYGEN_NO_TRAITS_SPECIALIZATIONS
+
+}  // namespace geometry
+}  // namespace boost
 
 namespace {
 namespace local {
@@ -245,7 +350,6 @@ void linestring_2d()
 	boost::geometry::simplify(ls, ls_simplified, 0.5);
 	std::cout << "simplified: " << boost::geometry::dsv(ls_simplified) << std::endl;
 
-
 	// for_each:
 	// 1) Lines can be visited with std::for_each
 	// 2) for_each_point is also defined for all geometries
@@ -443,6 +547,7 @@ void polygon_3d()
 	std::cout << "point in polygon:" << std::boolalpha << boost::geometry::within(boost::geometry::make<point_3d_t>(2, 4, 3), poly3) << std::endl;
 }
 
+// [ref] ${BOOST_HOME}/libs/geometry/example/06_a_transformation_example.cpp
 void transform_2d()
 {
 	typedef boost::geometry::model::d2::point_xy<double> point_2d_t;
@@ -451,16 +556,23 @@ void transform_2d()
 	point_2d_t p2;
 
 	// Example: translate a point over (5,5)
+#if 0
 	boost::geometry::strategy::transform::translate_transformer<point_2d_t, point_2d_t> translate(5, 5);
+#else
+	boost::geometry::strategy::transform::translate_transformer<double, 2, 2> translate(5, 5);
+#endif
 
 	boost::geometry::transform(p, p2, translate);
 	std::cout << "transformed point " << boost::geometry::dsv(p2) << std::endl;
 
 	// Transform a polygon
+#if 0
 	point_2d_t poly, poly2;
+#else
+    boost::geometry::model::polygon<point_2d_t> poly, poly2;
+#endif
 	const double coor[][2] = { {0, 0}, {0, 7}, {2, 2}, {2, 0}, {0, 0} };
-	// note that for this syntax you have to include the two
-	// include files above (c_array_cartesian.hpp, std_as_linestring.hpp)
+	// note that for this syntax you have to include the two include files above (c_array.hpp)
 	boost::geometry::assign_points(poly, coor);
 	//read_wkt("POLYGON((0 0,0 7,4 2,2 0,0 0))", poly);
 	boost::geometry::transform(poly, poly2, translate);
@@ -529,6 +641,7 @@ void overlay_polygon()
 	}
 }
 
+// [ref] ${BOOST_HOME}/libs/geometry/example/05_b_overlay_linestring_polygon_example.cpp
 void overlay_polygon_linestring()
 {
 	typedef boost::geometry::model::d2::point_xy<double> point_2d_t;
@@ -559,11 +672,13 @@ void overlay_polygon_linestring()
 #endif
 
 	// Calculate intersection points (turn points)
-	typedef boost::geometry::detail::overlay::turn_info<point_2d_t> turn_info_t;
+	typedef boost::geometry::segment_ratio_type<point_2d_t, boost::geometry::detail::no_rescale_policy>::type segment_ratio_t;
+	typedef boost::geometry::detail::overlay::turn_info<point_2d_t, segment_ratio_t> turn_info_t;
 
 	std::vector<turn_info_t> turns;
 	boost::geometry::detail::get_turns::no_interrupt_policy policy;
-	boost::geometry::get_turns<false, false, boost::geometry::detail::overlay::assign_null_policy>(ls, p, turns, policy);
+	boost::geometry::detail::no_rescale_policy rescale_policy;
+	boost::geometry::get_turns<false, false, boost::geometry::detail::overlay::assign_null_policy>(ls, p, rescale_policy, turns, policy);
 
 	std::cout << "Intersection of linestring/polygon" << std::endl;
 	BOOST_FOREACH(turn_info_t const &turn, turns)
@@ -587,6 +702,7 @@ void overlay_polygon_linestring()
 	}
 }
 
+// [ref] ${BOOST_HOME}/libs/geometry/example/06_b_transformation_example.cpp
 struct random_style
 {
 	random_style()
@@ -621,10 +737,11 @@ struct random_style
 	boost::variate_generator<boost::mt19937 &, boost::uniform_int<> > colour;
 };
 
+// [ref] ${BOOST_HOME}/libs/geometry/example/06_b_transformation_example.cpp
 template <typename OutputStream>
 struct svg_output
 {
-	svg_output(OutputStream& os, double opacity = 1) : os(os), opacity(opacity)
+	svg_output(OutputStream &os, double opacity = 1) : os(os), opacity(opacity)
 	{
 		os << "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 			<< "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"\n"
@@ -660,6 +777,7 @@ private:
 	random_style style;
 };
 
+// [ref] ${BOOST_HOME}/libs/geometry/example/06_b_transformation_example.cpp
 void affine_transform_2d()
 {
 	typedef boost::geometry::model::d2::point_xy<double> point_2d_t;
@@ -676,26 +794,43 @@ void affine_transform_2d()
 	svg.put(g1, "g1");
 
 	// G1 - Translate -> G2
+#if 0
 	boost::geometry::strategy::transform::translate_transformer<point_2d_t, point_2d_t> translate(0, 250);
+#else
+    boost::geometry::strategy::transform::translate_transformer<double, 2, 2> translate(0, 250);
+#endif
 	boost::geometry::model::polygon<point_2d_t> g2;
 	boost::geometry::transform(g1, g2, translate);
 	std::clog << "translated:\t" << boost::geometry::dsv(g2) << std::endl;
 	svg.put(g2, "g2=g1.translate(0,250)");
 
 	// G2 - Scale -> G3
+#if 0
 	boost::geometry::strategy::transform::scale_transformer<point_2d_t, point_2d_t> scale(0.5, 0.5);
+#else
+	boost::geometry::strategy::transform::scale_transformer<double, 2, 2> scale(0.5, 0.5);
+#endif
 	boost::geometry::model::polygon<point_2d_t> g3;
 	boost::geometry::transform(g2, g3, scale);
 	std::clog << "scaled:\t" << boost::geometry::dsv(g3) << std::endl;
 	svg.put(g3, "g3=g2.scale(0.5,0.5)");
 
 	// G3 - Combine rotate and translate -> G4
+#if 0
 	boost::geometry::strategy::transform::rotate_transformer<point_2d_t, point_2d_t, boost::geometry::degree> rotate(45);
+#else
+	boost::geometry::strategy::transform::rotate_transformer<boost::geometry::degree, double, 2, 2> rotate(45);
+#endif
 
 	// Compose matrix for the two transformation
 	// Create transformer attached to the transformation matrix
+#if 0
 	boost::geometry::strategy::transform::ublas_transformer<point_2d_t, point_2d_t, 2, 2> combined(boost::numeric::ublas::prod(rotate.matrix(), translate.matrix()));
 	//boost::geometry::strategy::transform::ublas_transformer<point_2d_t, point_2d_t, 2, 2> combined(rotate.matrix());
+#else
+	boost::geometry::strategy::transform::ublas_transformer<double, 2, 2> combined(boost::numeric::ublas::prod(rotate.matrix(), translate.matrix()));
+	//boost::geometry::strategy::transform::ublas_transformer<double, 2, 2> combined(rotate.matrix());
+#endif
 
 	// Apply transformation to subject geometry point-by-point
 	boost::geometry::model::polygon<point_2d_t> g4;
@@ -713,22 +848,107 @@ void graph_route()
 	throw std::runtime_error("not yet implemented");
 }
 
+// [ref] http://www.boost.org/doc/libs/1_53_0/libs/geometry/doc/html/geometry/reference/algorithms/intersection.html
+void intersection_2d()
+{
+	typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double> > polygon;
+
+    polygon green, blue;
+
+    boost::geometry::read_wkt(
+        "POLYGON((2 1.3, 2.4 1.7, 2.8 1.8, 3.4 1.2, 3.7 1.6, 3.4 2, 4.1 3, 5.3 2.6, 5.4 1.2, 4.9 0.8, 2.9 0.7, 2 1.3)"
+            "(4.0 2.0, 4.2 1.4, 4.8 1.9, 4.4 2.2, 4.0 2.0))",
+        green
+    );
+
+    boost::geometry::read_wkt(
+        "POLYGON((4.0 -0.5, 3.5 1.0, 2.0 1.5, 3.5 2.0, 4.0 3.5, 4.5 2.0, 6.0 1.5, 4.5 1.0, 4.0 -0.5))",
+        blue
+    );
+
+    std::deque<polygon> output;
+    boost::geometry::intersection(green, blue, output);
+
+    int i = 0;
+    std::cout << "green && blue:" << std::endl;
+    BOOST_FOREACH(polygon const &poly, output)
+    {
+        std::cout << i++ << ": " << boost::geometry::area(poly) << std::endl;
+    }
+}
+
+void intersection_3d()
+{
+#if 0
+	typedef boost::geometry::model::polygon<boost::geometry::model::d3::point_xyz<double> > polyhedron;
+
+    polyhedron cube, line;
+
+    boost::geometry::read_wkt(
+        "POLYHEDRALSURFACE Z ("
+            "((0 0 0, 0 1 0, 1 1 0, 1 0 0, 0 0 0)),"
+            "((0 0 0, 0 1 0, 0 1 1, 0 0 1, 0 0 0)),"
+            "((0 0 0, 1 0 0, 1 0 1, 0 0 1, 0 0 0)),"
+            "((1 1 1, 1 0 1, 0 0 1, 0 1 1, 1 1 1)),"
+            "((1 1 1, 1 0 1, 1 0 0, 1 1 0, 1 1 1)),"
+            "((1 1 1, 1 1 0, 0 1 0, 0 1 1, 1 1 1))"
+        ")",
+        cube
+    );
+
+    boost::geometry::read_wkt(
+        "LINESTRING(0.5 0.5 -1.0, 0.5 0.5 1.0)",
+        line
+    );
+
+    std::deque<polyhedron> output;
+    boost::geometry::intersection(cube, line, output);
+
+    int i = 0;
+    std::cout << "green && blue:" << std::endl;
+    BOOST_FOREACH(polyhedron const &poly, output)
+    {
+#if 0
+        std::cout << i++ << ": " << boost::geometry::area(poly) << std::endl;
+#else
+        //BOOST_FOREACH(point const &p, poly)
+        //{
+        //    std::cout << boost::geometry::dsv(p) << std::endl;
+        //}
+#endif
+    }
+#else
+    throw std::runtime_error("Boost.Geometry is not yet working in 3D");
+#endif
+}
+
 }  // namespace local
 }  // unnamed namespace
 
 void geometry()
 {
-	local::point_2d();
-	local::linestring_2d();
-	local::linestring_3d();
-	local::polygon_2d();
-	local::polygon_3d();
+    // examples.
+    if (true)
+    {
+        local::point_2d();
+        local::linestring_2d();
+        local::linestring_3d();
+        local::polygon_2d();
+        local::polygon_3d();
 
-	local::overlay_polygon();
-	local::overlay_polygon_linestring();
+        local::overlay_polygon();
+        local::overlay_polygon_linestring();
 
-	local::transform_2d();
-	local::affine_transform_2d();
+        local::transform_2d();
+        local::affine_transform_2d();
 
-	//local::graph_route();
+        local::graph_route();
+
+        local::intersection_2d();
+    }
+
+    // extensions.
+    {
+        //local::intersection_3d();  // not working.
+    }
 }

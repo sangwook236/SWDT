@@ -10,28 +10,44 @@
 namespace {
 namespace local {
 
+// [ref]
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_point.cpp
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon.cpp
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 struct CPoint
 {
     int x;
     int y;
 };
 
+// [ref]
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon.cpp
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 typedef std::list<CPoint> CPolygon;
 
+// [ref] ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 typedef std::deque<CPolygon> CPolygonSet;
 
-}  // local
+}  // namespace local
 }  // unnamed namespace
 
+namespace boost {
+namespace polygon {
 
-namespace boost { namespace polygon {
-
+// [ref]
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_point.cpp
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon.cpp
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 template <>
 struct geometry_concept<local::CPoint>
 {
 	typedef point_concept type;
 };
 
+// [ref]
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_point.cpp
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon.cpp
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 // Then we specialize the gtl point traits for our point type
 template <>
 struct point_traits<local::CPoint>
@@ -41,14 +57,20 @@ struct point_traits<local::CPoint>
 	static inline coordinate_type get(const local::CPoint &point, boost::polygon::orientation_2d orient)
 	{
 		if (orient == boost::polygon::HORIZONTAL)
-				return point.x;
-			return point.y;
+			return point.x;
+		return point.y;
 	}
 };
 
+// [ref]
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_point.cpp
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon.cpp
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 template <>
 struct point_mutable_traits<local::CPoint>
 {
+    typedef int coordinate_type;
+
 	static inline void set(local::CPoint &point, boost::polygon::orientation_2d orient, int value)
 	{
 		if (orient == boost::polygon::HORIZONTAL)
@@ -57,7 +79,7 @@ struct point_mutable_traits<local::CPoint>
 			point.y = value;
 	}
 
-	static inline local::CPoint construct(const int &x_value, const int &y_value)
+	static inline local::CPoint construct(const int x_value, const int y_value)
 	{
 		local::CPoint retval;
 		retval.x = x_value;
@@ -66,12 +88,18 @@ struct point_mutable_traits<local::CPoint>
 	}
 };
 
+// [ref]
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon.cpp
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 template <>
 struct geometry_concept<local::CPolygon>
 {
 	typedef polygon_concept type;
 };
 
+// [ref]
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon.cpp
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 template <>
 struct polygon_traits<local::CPolygon>
 {
@@ -104,6 +132,9 @@ struct polygon_traits<local::CPolygon>
 	}
 };
 
+// [ref]
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon.cpp
+//      ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 template <>
 struct polygon_mutable_traits<local::CPolygon>
 {
@@ -112,24 +143,31 @@ struct polygon_mutable_traits<local::CPolygon>
 	static inline local::CPolygon & set_points(local::CPolygon &t, iT input_begin, iT input_end)
 	{
 		t.clear();
-		//t.insert(t.end(), input_begin, input_end);
+#if defined(_MSC_VER)
+        // [ref] ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon.cpp
+		t.insert(t.end(), input_begin, input_end);
+#else
+        // [ref] ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 		while (input_begin != input_end)
 		{
 			t.push_back(local::CPoint());
 			boost::polygon::assign(t.back(), *input_begin);
 			++input_begin;
 		}
+#endif
 		return t;
 	}
 
 };
 
+// [ref] ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 template <>
 struct geometry_concept<local::CPolygonSet>
 {
 	typedef polygon_set_concept type;
 };
 
+// [ref] ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 //next we map to the concept through traits
 template <>
 struct polygon_set_traits<local::CPolygonSet>
@@ -158,6 +196,7 @@ struct polygon_set_traits<local::CPolygonSet>
 	}
 };
 
+// [ref] ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 template <>
 struct polygon_set_mutable_traits<local::CPolygonSet>
 {
@@ -173,7 +212,8 @@ struct polygon_set_mutable_traits<local::CPolygonSet>
 	}
 };
 
-} }
+}  // namespace polygon
+}  // namespace boost
 
 namespace {
 namespace local {
@@ -221,6 +261,7 @@ void point()
 	assert(gtl::manhattan_distance(pt, pt2) == 20);
 }
 
+// [ref] ${BOOST_HOME}/libs/polygon/example/gtl_custom_point.cpp
 template <typename Point>
 void custom_point()
 {
@@ -301,6 +342,7 @@ void polygon()
 	assert(gtl::equivalence(poly, rect));
 }
 
+// [ref] ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon.cpp
 template <typename Polygon>
 void custom_polygon()
 {
@@ -371,6 +413,7 @@ void polygon_set()
 	assert(gtl::area(rect ^ (ps ^ ps2)) == gtl::area(rect) - gtl::area(ps ^ ps2));
 }
 
+// [ref] ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon_set.cpp
 template <typename PolygonSet>
 void custom_polygon_set()
 {
@@ -518,23 +561,28 @@ void property_merge()
 	// given n input layers (8 = 2^3 in this example)
 }
 
-}  // local
+}  // namespace local
 }  // unnamed namespace
 
 void polygon()
 {
-	local::point();
-	local::custom_point<local::CPoint>();
-	local::polygon();
-	local::custom_polygon<local::CPolygon>();
-	local::custom_polygon<boost::polygon::polygon_data<int> >();
-	local::polygon_set();
-	local::custom_polygon_set<local::CPolygonSet>();
-	local::custom_polygon_set<boost::polygon::polygon_set_data<int> >();
+    // examples
+    {
+        //std::cout << "Boost.Polygon ..." << std::endl;
 
-	local::connectivity_extraction<boost::polygon::connectivity_extraction_90<int> >();
-	local::connectivity_extraction<boost::polygon::connectivity_extraction_45<int> >();
+        local::point();
+        local::custom_point<local::CPoint>();
+        local::polygon();
+        local::custom_polygon<local::CPolygon>();
+        local::custom_polygon<boost::polygon::polygon_data<int> >();
+        local::polygon_set();
+        local::custom_polygon_set<local::CPolygonSet>();
+        local::custom_polygon_set<boost::polygon::polygon_set_data<int> >();
 
-	local::property_merge<boost::polygon::property_merge_90<int, int> >();
-	local::property_merge<boost::polygon::property_merge<int, int> >();
+        local::connectivity_extraction<boost::polygon::connectivity_extraction_90<int> >();
+        local::connectivity_extraction<boost::polygon::connectivity_extraction_45<int> >();
+
+        local::property_merge<boost::polygon::property_merge_90<int, int> >();
+        local::property_merge<boost::polygon::property_merge<int, int> >();
+    }
 }

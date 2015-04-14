@@ -128,14 +128,14 @@ int main(int argc, char *argv[])
 			//math_special_functions();
 			//math_statistical_distributions();
 			//random();
-			ublas();
+			//ublas();
 			//math_bindings();
 			//numeric_bindings();
 
 			//multiprecision();  // not yet implemented.
 
 			//polygon();
-			//geometry();
+			geometry();
 
 			//graph();
 			//graph_parallel();  // not yet implemented.
