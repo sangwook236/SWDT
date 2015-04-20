@@ -2,61 +2,63 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_vision_vc12", "..\test\machine_vision\machine_vision_vc12.vcxproj", "{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_vision", "..\test\machine_vision\machine_vision_vc12.vcxproj", "{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "optimization_vc12", "..\test\optimization\optimization_vc12.vcxproj", "{F47404DC-D671-4C97-8477-9447118B238A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "optimization", "..\test\optimization\optimization_vc12.vcxproj", "{F47404DC-D671-4C97-8477-9447118B238A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simulation_vc12", "..\test\simulation\simulation_vc12.vcxproj", "{86A474F8-4ABB-46B3-A034-26496D316349}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simulation", "..\test\simulation\simulation_vc12.vcxproj", "{86A474F8-4ABB-46B3-A034-26496D316349}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "searching_vc12", "..\test\searching\searching_vc12.vcxproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "searching", "..\test\searching\searching_vc12.vcxproj", "{D450BA2E-17C2-4216-B04F-D37BBBB65DE7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "neural_network_vc12", "..\test\neural_network\neural_network_vc12.vcxproj", "{BCB54C82-1B63-4831-850B-DF57821F9003}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "neural_network", "..\test\neural_network\neural_network_vc12.vcxproj", "{BCB54C82-1B63-4831-850B-DF57821F9003}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "robotics_vc12", "..\test\robotics\robotics_vc12.vcxproj", "{99406811-DAE3-4378-8EEA-0D50E18D8564}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "robotics", "..\test\robotics\robotics_vc12.vcxproj", "{99406811-DAE3-4378-8EEA-0D50E18D8564}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gesture_recognition_vc12", "..\test\gesture_recognition\gesture_recognition_vc12.vcxproj", "{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gesture_recognition", "..\test\gesture_recognition\gesture_recognition_vc12.vcxproj", "{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "probabilistic_graphical_model_vc12", "..\test\probabilistic_graphical_model\probabilistic_graphical_model_vc12.vcxproj", "{326CF11F-0264-4D95-930B-0D6DAD809C96}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "probabilistic_graphical_model", "..\test\probabilistic_graphical_model\probabilistic_graphical_model_vc12.vcxproj", "{326CF11F-0264-4D95-930B-0D6DAD809C96}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometry_vc12", "..\test\geometry\geometry_vc12.vcxproj", "{68409235-BBDE-4F93-9264-DE2B7397D28D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometry", "..\test\geometry\geometry_vc12.vcxproj", "{68409235-BBDE-4F93-9264-DE2B7397D28D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "change_detection_vc12", "..\test\change_detection\change_detection_vc12.vcxproj", "{84111558-4AC7-4057-82F7-84548C6FC747}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "change_detection", "..\test\change_detection\change_detection_vc12.vcxproj", "{84111558-4AC7-4057-82F7-84548C6FC747}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "feature_analysis_vc12", "..\test\feature_analysis\feature_analysis_vc12.vcxproj", "{90978A1C-F8B5-4DE8-BB4C-359A1756BE6C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "feature_analysis", "..\test\feature_analysis\feature_analysis_vc12.vcxproj", "{90978A1C-F8B5-4DE8-BB4C-359A1756BE6C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_learning_vc12", "..\test\machine_learning\machine_learning_vc12.vcxproj", "{3CFD3B52-2108-44C4-8256-D316172F8D9C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_learning", "..\test\machine_learning\machine_learning_vc12.vcxproj", "{3CFD3B52-2108-44C4-8256-D316172F8D9C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_detection_vc12", "..\test\object_detection\object_detection_vc12.vcxproj", "{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_detection", "..\test\object_detection\object_detection_vc12.vcxproj", "{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "matlab_vc12", "..\test\matlab\matlab_vc12.vcxproj", "{A35C8053-9826-464E-8479-4CAE9F495BC3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "matlab", "..\test\matlab\matlab_vc12.vcxproj", "{A35C8053-9826-464E-8479-4CAE9F495BC3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pose_estimation_vc12", "..\test\pose_estimation\pose_estimation_vc12.vcxproj", "{97291D39-1AC2-4130-BE2C-39A442EBCC6D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pose_estimation", "..\test\pose_estimation\pose_estimation_vc12.vcxproj", "{97291D39-1AC2-4130-BE2C-39A442EBCC6D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shape_analysis_vc12", "..\test\shape_analysis\shape_analysis_vc12.vcxproj", "{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shape_analysis", "..\test\shape_analysis\shape_analysis_vc12.vcxproj", "{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graph_analysis_vc12", "..\test\graph_analysis\graph_analysis_vc12.vcxproj", "{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graph_analysis", "..\test\graph_analysis\graph_analysis_vc12.vcxproj", "{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hand_analysis_vc12", "..\test\hand_analysis\hand_analysis_vc12.vcxproj", "{5764CA80-F4D8-4DA7-924F-E4ED8734C009}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hand_analysis", "..\test\hand_analysis\hand_analysis_vc12.vcxproj", "{5764CA80-F4D8-4DA7-924F-E4ED8734C009}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "statistics_vc12", "..\test\statistics\statistics_vc12.vcxproj", "{0E6076D4-05F3-4EBB-B706-DD8E198E397B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "statistics", "..\test\statistics\statistics_vc12.vcxproj", "{0E6076D4-05F3-4EBB-B706-DD8E198E397B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "segmentation_vc12", "..\test\segmentation\segmentation_vc12.vcxproj", "{832EE4AF-D179-4D91-B598-402567ADD387}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "segmentation", "..\test\segmentation\segmentation_vc12.vcxproj", "{832EE4AF-D179-4D91-B598-402567ADD387}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bayesian_filtering_vc12", "..\test\bayesian_filtering\bayesian_filtering_vc12.vcxproj", "{77406A1F-AD0B-4229-9DD0-8C8793166FFD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bayesian_filtering", "..\test\bayesian_filtering\bayesian_filtering_vc12.vcxproj", "{77406A1F-AD0B-4229-9DD0-8C8793166FFD}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "face_analysis_vc12", "..\test\face_analysis\face_analysis_vc12.vcxproj", "{2EF2C691-DB54-4793-9FDB-3B8748B064E4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "face_analysis", "..\test\face_analysis\face_analysis_vc12.vcxproj", "{2EF2C691-DB54-4793-9FDB-3B8748B064E4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "signal_processing_vc12", "..\test\signal_processing\signal_processing_vc12.vcxproj", "{65D2ECB7-8045-48FD-BE4A-D4F5E6BE6CA7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "signal_processing", "..\test\signal_processing\signal_processing_vc12.vcxproj", "{65D2ECB7-8045-48FD-BE4A-D4F5E6BE6CA7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_processing_vc12", "..\test\image_processing\image_processing_vc12.vcxproj", "{556E0EE6-1F91-4EA5-AF5D-0EACF6E15BCA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_processing", "..\test\image_processing\image_processing_vc12.vcxproj", "{556E0EE6-1F91-4EA5-AF5D-0EACF6E15BCA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_representation_vc12", "..\test\object_representation\object_representation_vc12.vcxproj", "{3E747F79-FAD1-43A9-AD15-276F40F642D2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_representation", "..\test\object_representation\object_representation_vc12.vcxproj", "{3E747F79-FAD1-43A9-AD15-276F40F642D2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "distance_measure_vc12", "..\test\distance_measure\distance_measure_vc12.vcxproj", "{86D56BB4-B86B-41F9-BFAF-DB6B5BBFE9C1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "distance_measure", "..\test\distance_measure\distance_measure_vc12.vcxproj", "{86D56BB4-B86B-41F9-BFAF-DB6B5BBFE9C1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "motion_analysis_vc12", "..\test\motion_analysis\motion_analysis_vc12.vcxproj", "{C4B80E59-A395-44D7-8D4D-234C26924652}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "motion_analysis", "..\test\motion_analysis\motion_analysis_vc12.vcxproj", "{C4B80E59-A395-44D7-8D4D-234C26924652}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "language_processing_vc12", "..\test\language_processing\language_processing_vc12.vcxproj", "{EC936BA5-EB28-44AF-A877-936A37E76815}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "language_processing", "..\test\language_processing\language_processing_vc12.vcxproj", "{EC936BA5-EB28-44AF-A877-936A37E76815}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dimensionality_reduction", "..\test\dimensionality_reduction\dimensionality_reduction_vc12.vcxproj", "{F249ECED-8E6C-438D-B55F-580E74888E2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -176,6 +178,10 @@ Global
 		{EC936BA5-EB28-44AF-A877-936A37E76815}.Debug|Win32.Build.0 = Debug|Win32
 		{EC936BA5-EB28-44AF-A877-936A37E76815}.Release|Win32.ActiveCfg = Release|Win32
 		{EC936BA5-EB28-44AF-A877-936A37E76815}.Release|Win32.Build.0 = Release|Win32
+		{F249ECED-8E6C-438D-B55F-580E74888E2F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F249ECED-8E6C-438D-B55F-580E74888E2F}.Debug|Win32.Build.0 = Debug|Win32
+		{F249ECED-8E6C-438D-B55F-580E74888E2F}.Release|Win32.ActiveCfg = Release|Win32
+		{F249ECED-8E6C-438D-B55F-580E74888E2F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

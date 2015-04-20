@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;./;./libAdaBoost;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work\dev_https\sw_dev\cpp\ext\inc\qt;D:\work\dev_https\sw_dev\cpp\ext\inc\qt\QtCore;D:\work\dev_https\sw_dev\cpp\ext\inc\qt\QtGui;D:\work\dev_https\sw_dev\cpp\ext\inc\libpng;D:\work\dev_https\sw_dev\cpp\ext\inc\clapack</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;./libAdaBoost;../../inc/opencv-2.4.3/opencv;../../inc/opencv-2.4.3;../../../ext/inc/qt;../../../ext/inc/qt/QtCore;../../../ext/inc/qt/QtGui;../../../ext/inc/libpng;../../../ext/inc/clapack;./;../../inc;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -68,7 +68,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;../../inc;./;./libAdaBoost;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;D:\work\dev_https\sw_dev\cpp\ext\inc\qt;D:\work\dev_https\sw_dev\cpp\ext\inc\qt\QtCore;D:\work\dev_https\sw_dev\cpp\ext\inc\qt\QtGui;D:\work\dev_https\sw_dev\cpp\ext\inc\libpng;D:\work\dev_https\sw_dev\cpp\ext\inc\clapack</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;./libAdaBoost;../../inc/opencv-2.4.3/opencv;../../inc/opencv-2.4.3;../../../ext/inc/qt;../../../ext/inc/qt/QtCore;../../../ext/inc/qt/QtGui;../../../ext/inc/libpng;../../../ext/inc/clapack;./;../../inc;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

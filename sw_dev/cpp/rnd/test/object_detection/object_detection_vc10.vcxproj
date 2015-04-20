@@ -51,7 +51,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3/;../../inc/opencv-2.4.3/opencv;../../inc/pabod/;../../inc/matio/;D:/work/dev_https/sw_dev/cpp/ext/inc/pthread;../../inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3/;../../inc/opencv-2.4.3/opencv;../../inc/pabod/;../../inc/matio/;../../../ext/inc/pthread;../../inc/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -68,7 +68,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3/;../../inc/opencv-2.4.3/opencv;../../inc/pabod/;../../inc/matio/;D:/work/dev_https/sw_dev/cpp/ext/inc/pthread;../../inc/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3/;../../inc/opencv-2.4.3/opencv;../../inc/pabod/;../../inc/matio/;../../../ext/inc/pthread;../../inc/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
