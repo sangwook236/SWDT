@@ -3,6 +3,7 @@
 	<Workspace title="Workspace">
 		<Project filename="../../../../../../../../hosts/strangelove/export/home/slee78/work/dev_https/sw_dev/cpp/rnd/test/bayesian_filtering/bayesian_filtering_cb10.cbp" />
 		<Project filename="../../../../../../../../hosts/strangelove/export/home/slee78/work/dev_https/sw_dev/cpp/rnd/test/change_detection/change_detection_cb10.cbp" />
+		<Project filename="../../../../../../../../hosts/strangelove/export/home/slee78/work/dev_https/sw_dev/cpp/rnd/test/dimensionality_reduction/dimensionality_reduction_cb10.cbp" />
 		<Project filename="../../../../../../../../hosts/strangelove/export/home/slee78/work/dev_https/sw_dev/cpp/rnd/test/distance_measure/distance_measure_cb10.cbp" />
 		<Project filename="../../../../../../../../hosts/strangelove/export/home/slee78/work/dev_https/sw_dev/cpp/rnd/test/face_analysis/face_analysis_cb10.cbp" />
 		<Project filename="../../../../../../../../hosts/strangelove/export/home/slee78/work/dev_https/sw_dev/cpp/rnd/test/feature_analysis/feature_analysis_cb10.cbp" />
