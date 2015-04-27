@@ -524,12 +524,12 @@ void polygon_3d()
 	typedef boost::geometry::model::polygon<point_3d_t> polygon_3d_t;
 
 	polygon_3d_t poly3;
-#if 0
-	boost::geometry::ring_type<polygon_3d_t>::type &ring = exterior_ring(poly3);
-	append(ring, boost::geometry::make<point_3d_t>(2, 2, 3));
-	append(ring, boost::geometry::make<point_3d_t>(2, 5, 6));
-	append(ring, boost::geometry::make<point_3d_t>(2, 8, 1));
-	append(ring, boost::geometry::make<point_3d_t>(2, 2, 3));
+#if BOOST_VERSION <= 105200
+	boost::geometry::ring_type<polygon_3d_t>::type &ring = boost::geometry::exterior_ring(poly3);
+	boost::geometry::append(ring, boost::geometry::make<point_3d_t>(2, 2, 3));
+	boost::geometry::append(ring, boost::geometry::make<point_3d_t>(2, 5, 6));
+	boost::geometry::append(ring, boost::geometry::make<point_3d_t>(2, 8, 1));
+	boost::geometry::append(ring, boost::geometry::make<point_3d_t>(2, 2, 3));
 #else
 	const double coor[][3] = { {2, 2, 3}, {2, 5, 6}, {2, 8, 1}, {2, 2, 3} };
 	boost::geometry::assign_points(poly3, coor);
@@ -556,7 +556,7 @@ void transform_2d()
 	point_2d_t p2;
 
 	// Example: translate a point over (5,5)
-#if 0
+#if BOOST_VERSION <= 105200
 	boost::geometry::strategy::transform::translate_transformer<point_2d_t, point_2d_t> translate(5, 5);
 #else
 	boost::geometry::strategy::transform::translate_transformer<double, 2, 2> translate(5, 5);
@@ -566,7 +566,7 @@ void transform_2d()
 	std::cout << "transformed point " << boost::geometry::dsv(p2) << std::endl;
 
 	// Transform a polygon
-#if 0
+#if BOOST_VERSION <= 105200
 	point_2d_t poly, poly2;
 #else
     boost::geometry::model::polygon<point_2d_t> poly, poly2;
@@ -672,13 +672,21 @@ void overlay_polygon_linestring()
 #endif
 
 	// Calculate intersection points (turn points)
+#if BOOST_VERSION <= 105200
+	typedef boost::geometry::detail::overlay::turn_info<point_2d_t> turn_info_t;
+#else
 	typedef boost::geometry::segment_ratio_type<point_2d_t, boost::geometry::detail::no_rescale_policy>::type segment_ratio_t;
 	typedef boost::geometry::detail::overlay::turn_info<point_2d_t, segment_ratio_t> turn_info_t;
+#endif
 
 	std::vector<turn_info_t> turns;
 	boost::geometry::detail::get_turns::no_interrupt_policy policy;
+#if BOOST_VERSION <= 105200
+	boost::geometry::get_turns<false, false, boost::geometry::detail::overlay::assign_null_policy>(ls, p, turns, policy);
+#else
 	boost::geometry::detail::no_rescale_policy rescale_policy;
 	boost::geometry::get_turns<false, false, boost::geometry::detail::overlay::assign_null_policy>(ls, p, rescale_policy, turns, policy);
+#endif
 
 	std::cout << "Intersection of linestring/polygon" << std::endl;
 	BOOST_FOREACH(turn_info_t const &turn, turns)
@@ -794,7 +802,7 @@ void affine_transform_2d()
 	svg.put(g1, "g1");
 
 	// G1 - Translate -> G2
-#if 0
+#if BOOST_VERSION <= 105200
 	boost::geometry::strategy::transform::translate_transformer<point_2d_t, point_2d_t> translate(0, 250);
 #else
     boost::geometry::strategy::transform::translate_transformer<double, 2, 2> translate(0, 250);
@@ -805,7 +813,7 @@ void affine_transform_2d()
 	svg.put(g2, "g2=g1.translate(0,250)");
 
 	// G2 - Scale -> G3
-#if 0
+#if BOOST_VERSION <= 105200
 	boost::geometry::strategy::transform::scale_transformer<point_2d_t, point_2d_t> scale(0.5, 0.5);
 #else
 	boost::geometry::strategy::transform::scale_transformer<double, 2, 2> scale(0.5, 0.5);
@@ -816,7 +824,7 @@ void affine_transform_2d()
 	svg.put(g3, "g3=g2.scale(0.5,0.5)");
 
 	// G3 - Combine rotate and translate -> G4
-#if 0
+#if BOOST_VERSION <= 105200
 	boost::geometry::strategy::transform::rotate_transformer<point_2d_t, point_2d_t, boost::geometry::degree> rotate(45);
 #else
 	boost::geometry::strategy::transform::rotate_transformer<boost::geometry::degree, double, 2, 2> rotate(45);
@@ -824,7 +832,7 @@ void affine_transform_2d()
 
 	// Compose matrix for the two transformation
 	// Create transformer attached to the transformation matrix
-#if 0
+#if BOOST_VERSION <= 105200
 	boost::geometry::strategy::transform::ublas_transformer<point_2d_t, point_2d_t, 2, 2> combined(boost::numeric::ublas::prod(rotate.matrix(), translate.matrix()));
 	//boost::geometry::strategy::transform::ublas_transformer<point_2d_t, point_2d_t, 2, 2> combined(rotate.matrix());
 #else

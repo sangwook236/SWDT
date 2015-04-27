@@ -47,7 +47,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../inc;../../inc/gmp;../../inc/mpfr;../../inc/CGAL_auxiliary/gmp;../../inc/CGAL_auxiliary/mpfr;../../inc/CGAL_auxiliary/taucs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/CGAL_auxiliary/gmp;../../inc/CGAL_auxiliary/mpfr;../../inc/CGAL_auxiliary/taucs;../../inc/gmp;../../inc/mpfr;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;CGAL_NO_AUTOLINK_MPFR;CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -71,7 +71,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../inc;../../inc/gmp;../../inc/mpfr;../../inc/CGAL_auxiliary/gmp;../../inc/CGAL_auxiliary/mpfr;../../inc/CGAL_auxiliary/taucs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc/CGAL_auxiliary/gmp;../../inc/CGAL_auxiliary/mpfr;../../inc/CGAL_auxiliary/taucs;../../inc/gmp;../../inc/mpfr;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;CGAL_NO_AUTOLINK_MPFR;CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>

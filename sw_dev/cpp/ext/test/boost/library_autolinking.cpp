@@ -4,6 +4,9 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+//#pragma comment(lib, "gmpfrxx_d.lib")
+//#pragma comment(lib, "libmpfr-4.dll.lib")
+//#pragma comment(lib, "libgmp-3.dll.lib")
 #pragma comment(lib, "lapack.lib")
 #pragma comment(lib, "blas.lib")
 #pragma comment(lib, "libf2c.lib")
@@ -11,6 +14,9 @@
 
 #		else
 
+//#pragma comment(lib, "gmpfrxx.lib")
+//#pragma comment(lib, "libmpfr-4.dll.lib")
+//#pragma comment(lib, "libgmp-3.dll.lib")
 #pragma comment(lib, "lapack.lib")
 #pragma comment(lib, "blas.lib")
 #pragma comment(lib, "libf2c.lib")

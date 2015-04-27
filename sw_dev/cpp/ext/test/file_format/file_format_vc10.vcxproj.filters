@@ -25,6 +25,12 @@
     <Filter Include="Source Files\csv_parser_lib">
       <UniqueIdentifier>{0aa4287f-9061-461d-95e5-b33da7e814c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\csv_parser_lib\NewFilter1">
+      <UniqueIdentifier>{f0a81ca6-6ee4-4d64-9905-ae03ef36b8ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\csv_parser_lib\csv_parser">
+      <UniqueIdentifier>{a9f15e9f-e925-4eec-919c-ef72303c6b5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -35,6 +41,9 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="csv_parser_lib\csv_parser\csv_parser.hpp">
+      <Filter>Source Files\csv_parser_lib\csv_parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +67,9 @@
     </ClCompile>
     <ClCompile Include="csv_parser_lib\csv_parser.cpp">
       <Filter>Source Files\csv_parser_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="string_tokenization.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

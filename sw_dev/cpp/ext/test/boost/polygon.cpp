@@ -143,7 +143,7 @@ struct polygon_mutable_traits<local::CPolygon>
 	static inline local::CPolygon & set_points(local::CPolygon &t, iT input_begin, iT input_end)
 	{
 		t.clear();
-#if defined(_MSC_VER)
+#if 0
         // [ref] ${BOOST_HOME}/libs/polygon/example/gtl_custom_polygon.cpp
 		t.insert(t.end(), input_begin, input_end);
 #else
@@ -522,7 +522,7 @@ void property_merge()
 	// lets enumerate boolean combinations of inputs (hold onto your hats)
 	for (unsigned int i = 0; i < 8; ++i)
 	{
-		bool bits[3] = { i & 1, i & 2, i & 4 };  // break out bit array
+		bool bits[3] = { (bool)(i & 1), (bool)(i & 2), (bool)(i & 4) };  // break out bit array
 		polygon_set_type test_set;
 		std::set<int> key;
 		for (unsigned int j = 0; j < 3; ++j)

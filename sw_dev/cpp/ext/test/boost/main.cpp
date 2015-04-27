@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
 	void serialization();
 
 	void tokenizer();
+	void string_algorithms();
 	void spirit_classic();
 	void statechart();
 	void thread();
@@ -114,6 +115,7 @@ int main(int argc, char *argv[])
 
 		{
 			//tokenizer();
+			string_algorithms();
 			//spirit_classic();
 			//statechart();
 			//thread();
@@ -135,7 +137,7 @@ int main(int argc, char *argv[])
 			//multiprecision();  // not yet implemented.
 
 			//polygon();
-			geometry();
+			//geometry();
 
 			//graph();
 			//graph_parallel();  // not yet implemented.
