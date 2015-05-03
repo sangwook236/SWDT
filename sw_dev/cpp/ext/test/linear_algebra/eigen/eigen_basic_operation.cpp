@@ -316,6 +316,8 @@ void matrix_function_operation()
 			 13, 11, 5,
 			 4, 5, 37;
 
+		std::cout << m << std::endl;
+
 		//
 #if 0
 		const Eigen::MatrixSquareRootReturnValue<Eigen::MatrixXd> msrrv = m.sqrt();
@@ -356,10 +358,10 @@ void basic_operation()
     //local::coefficient_wise_unary_operation();
     //local::coefficient_wise_binary_operation();
 
-    local::matrix_arithmetic_1();
-    local::matrix_arithmetic_2();
+    //local::matrix_arithmetic_1();
+    //local::matrix_arithmetic_2();
 
-    //local::matrix_function_operation();
+    local::matrix_function_operation();
 }
 
 }  // namespace my_eigen
