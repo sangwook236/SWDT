@@ -105,7 +105,7 @@ void local_time_example()
 
 	// format time to string.
 	char buffer[80];
-	std::strftime(buffer, 80, "%I:%M%p.", timeinfo);
+	const std::size_t strLen = std::strftime(buffer, 80, "%I:%M%p.", timeinfo);
 	std::cout << '\t' << buffer << std::endl;
 
 	//
@@ -122,7 +122,7 @@ void local_time_example()
 	const time_t rawtime2 = std::mktime(timeinfo2);
 
 	const char *weekday[] = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-	std::cout << "that day is a " << weekday[timeinfo2->tm_wday] << std::endl;
+	std::cout << "that day was " << weekday[timeinfo2->tm_wday] << std::endl;
 }
 
 void time_diff_example()
@@ -139,7 +139,7 @@ void time_diff_example()
 	std::time(&finish);
 
 	const double elapsed_time = std::difftime(finish, start);
-	std::cout << "it takes " << elapsed_time << " seconds " << std::endl;
+	std::cout << "it takes " << elapsed_time << " seconds" << std::endl;
 }
 
 void date_order_example()
@@ -172,7 +172,7 @@ void time_example()
 	std::locale loc;  // "C" locale.
 
 	// get time_get facet.
-	const std::time_get<char>& tmget = std::use_facet<std::time_get<char> >(loc);
+	const std::time_get<char> &tmget = std::use_facet<std::time_get<char> >(loc);
 
 	std::ios::iostate state;
 	std::istringstream iss("07:30:00");
@@ -192,12 +192,12 @@ void date_example()
 	std::locale loc;  // "C" locale.
 
 	// get time_get facet.
-	const std::time_get<char>& tmget = std::use_facet<std::time_get<char> >(loc);
+	const std::time_get<char> &tmget = std::use_facet<std::time_get<char> >(loc);
 
 	std::ios::iostate state;
 	std::istringstream iss("01/02/03");
 	std::istreambuf_iterator<char> itbegin(iss);  // beginning of iss.
-	std::istreambuf_iterator<char> itend; // end-of-stream.
+	std::istreambuf_iterator<char> itend;  // end-of-stream.
 	struct tm when;
 
 	tmget.get_date(itbegin, itend, iss, state, &when);
@@ -212,7 +212,7 @@ void weekday_example()
 	std::locale loc;  // "C" locale.
 
 	// get time_get facet.
-	const std::time_get<char>& tmget = std::use_facet<std::time_get<char> >(loc);
+	const std::time_get<char> &tmget = std::use_facet<std::time_get<char> >(loc);
 
 	std::ios::iostate state;
 	std::istringstream iss("Friday");
@@ -230,7 +230,7 @@ void month_example()
 	std::locale loc;  // "C" locale.
 
 	// get time_get facet.
-	const std::time_get<char>& tmget = std::use_facet<std::time_get<char> >(loc);
+	const std::time_get<char> &tmget = std::use_facet<std::time_get<char> >(loc);
 
 	std::ios::iostate state;
 	std::istringstream iss("August");
@@ -248,7 +248,7 @@ void year_example()
 	std::locale loc;  // "C" locale.
 
 	// get time_get facet.
-	const std::time_get<char>& tmget = std::use_facet<std::time_get<char> >(loc);
+	const std::time_get<char> &tmget = std::use_facet<std::time_get<char> >(loc);
 
 	std::ios::iostate state;
 	std::istringstream iss("2009");
@@ -258,7 +258,7 @@ void year_example()
 
 	tmget.get_year(itbegin, itend, iss, state, &when);
 
-	std::cout << "year: " << when.tm_year << std::endl;
+	std::cout << "year: " << (when.tm_year + 1900) << std::endl;
 }
 	
 }  // namespace local
