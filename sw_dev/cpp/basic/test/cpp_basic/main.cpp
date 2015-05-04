@@ -26,10 +26,10 @@ struct Test
 int main(int argc, char **argv)
 {
 	void virtual_function();
-	void test_predefined_macro();
-	void test_array();
-	void test_complex();
-	void test_date_time();
+	void predefined_macro();
+	void array();
+	void complex();
+	void date_time();
 
 	void file_io();
 	void stl_algorithm();
@@ -40,14 +40,16 @@ int main(int argc, char **argv)
 	{
 		//virtual_function();
 
-		//test_predefined_macro();
-		//test_array();
-		//test_complex();
-		//test_date_time();
+		//predefined_macro();
+		//array();
+		//complex();
+		date_time();
 
 		//file_io();  // not yet implemented
 
 		//stl_algorithm();
+
+		//performance_analysis();
 
 		// test
 #if 0
@@ -73,8 +75,6 @@ int main(int argc, char **argv)
 			std::cout << f21 << ", " << f22 << std::endl;
 		}
 #endif
-
-		performance_analysis();
 	}
 	catch (const std::exception &e)
 	{

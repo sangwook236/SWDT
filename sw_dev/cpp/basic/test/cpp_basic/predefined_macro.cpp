@@ -68,7 +68,7 @@ public:
 }  // namespace local
 }  // unnamed namespace
 
-void test_predefined_macro()
+void predefined_macro()
 {
 	// ANSI-Compliant Predefined Macros
 	{

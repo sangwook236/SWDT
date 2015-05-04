@@ -8,7 +8,7 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-void test_complex()
+void complex()
 {
 	std::complex<double> c1(1, 2), c2(-2, 3);
 	std::cout << c1 << std::endl;

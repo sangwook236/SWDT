@@ -20,7 +20,7 @@ void wait(const long msec)
 	std::cout << " end waiting" << std::endl;
 }
 
-void test_pointer_arithmetic_1(const LARGE_INTEGER &freq)
+void pointer_arithmetic_1(const LARGE_INTEGER &freq)
 {
 	wait(5000);
 
@@ -55,7 +55,7 @@ void test_pointer_arithmetic_1(const LARGE_INTEGER &freq)
 	}
 }
 
-void test_pointer_arithmetic_2(const LARGE_INTEGER &freq)
+void pointer_arithmetic_2(const LARGE_INTEGER &freq)
 {
 	wait(5000);
 
@@ -76,7 +76,7 @@ void test_pointer_arithmetic_2(const LARGE_INTEGER &freq)
 	}
 }
 
-void test_looping_1(const LARGE_INTEGER &freq)
+void looping_1(const LARGE_INTEGER &freq)
 {
 	const std::size_t MAX_COUNT = 10000000;
 
@@ -96,7 +96,7 @@ void test_looping_1(const LARGE_INTEGER &freq)
 	}
 }
 
-void test_looping_2(const LARGE_INTEGER &freq)
+void looping_2(const LARGE_INTEGER &freq)
 {
 	const std::size_t MAX_COUNT = 10000000;
 
@@ -120,7 +120,7 @@ void test_looping_2(const LARGE_INTEGER &freq)
 	}
 }
 
-void test_pow(const LARGE_INTEGER &freq)
+void pow(const LARGE_INTEGER &freq)
 {
 	const std::size_t MAX_COUNT = 10000000;
 
@@ -155,7 +155,7 @@ void test_pow(const LARGE_INTEGER &freq)
 	}
 }
 
-void test_vector_size(const LARGE_INTEGER &freq)
+void vector_size(const LARGE_INTEGER &freq)
 {
 	const std::size_t MAX_COUNT = 10000000;
 
@@ -203,16 +203,16 @@ void performance_analysis()
 	QueryPerformanceFrequency(&freq);
 
 	std::cout << "pointer arithmetic -----------------------------------------------------------" << std::endl;
-	local::test_pointer_arithmetic_1(freq);
-	local::test_pointer_arithmetic_2(freq);
+	local::pointer_arithmetic_1(freq);
+	local::pointer_arithmetic_2(freq);
 	
 	std::cout << "\nlooping ----------------------------------------------------------------------" << std::endl;
-	local::test_looping_1(freq);
-	local::test_looping_2(freq);
+	local::looping_1(freq);
+	local::looping_2(freq);
 	
 	std::cout << "\npow() ------------------------------------------------------------------------" << std::endl;
-	local::test_pow(freq);
+	local::pow(freq);
 	
 	std::cout << "\nstd::vector::size() ----------------------------------------------------------" << std::endl;
-	local::test_vector_size(freq);
+	local::vector_size(freq);
 }
