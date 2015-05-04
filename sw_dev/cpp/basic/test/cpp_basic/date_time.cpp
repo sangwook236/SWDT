@@ -76,8 +76,7 @@ void UTC_time_example()
 	const int CCT = +8;
 
 	time_t rawtime;
-	// get current time.
-	std::time(&rawtime);
+	std::time(&rawtime);  // get current time, [sec].
 
 	// convert time_t to tm as UTC time.
 	const struct tm *timeinfo = std::gmtime(&rawtime);
@@ -91,8 +90,7 @@ void UTC_time_example()
 void local_time_example()
 {
 	time_t rawtime;
-	// get current time.
-	std::time(&rawtime);
+	std::time(&rawtime);  // get current time, [sec].
 
 	// convert time_t to tm as local time.
 	const struct tm *timeinfo = std::localtime(&rawtime);
