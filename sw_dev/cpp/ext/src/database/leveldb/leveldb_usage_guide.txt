@@ -1,0 +1,7 @@
+[-] General
+	-. Site
+		http://leveldb.org/
+        https://github.com/google/leveldb
+
+	-. Windows
+        https://code.google.com/r/kkowalczyk-leveldb/

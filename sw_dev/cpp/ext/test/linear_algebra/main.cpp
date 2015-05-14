@@ -23,9 +23,9 @@ int main(int argc, char* argv[])
 		//retval = lapack_main(argc, argv);
 
 		std::cout << "\nAutomatically Tuned Linear Algebra Software (ATLAS) -----------------" << std::endl;
-		//retval = atlas_main(argc, argv);
+		retval = atlas_main(argc, argv);
 		std::cout << "\nEigen library -------------------------------------------------------" << std::endl;
-		retval = eigen_main(argc, argv);
+		//retval = eigen_main(argc, argv);
 		std::cout << "\nArmadillo library ---------------------------------------------------" << std::endl;
 		//retval = armadillo_main(argc, argv);
 

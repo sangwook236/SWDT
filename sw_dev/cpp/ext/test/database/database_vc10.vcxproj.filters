@@ -22,6 +22,12 @@
     <Filter Include="Source Files\sqlite_lib">
       <UniqueIdentifier>{0510d023-025b-4fad-bc7f-c2683b855c1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\lmdbxx">
+      <UniqueIdentifier>{fca785bf-5017-4151-915e-d1867b42e88b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lmdbxx_lib">
+      <UniqueIdentifier>{439977bb-9c10-483d-8d99-f06045083764}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,6 +57,9 @@
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lmdbxx\lmdbxx_main.cpp">
+      <Filter>Source Files\lmdbxx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -61,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="sqlite_lib\sqlite3ext.h">
       <Filter>Source Files\sqlite_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lmdbxx_lib\lmdb++.h">
+      <Filter>Source Files\lmdbxx_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -47,7 +47,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./lmdbxx_lib;../../inc/lmdb;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -91,6 +91,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp" />
+    <ClCompile Include="lmdbxx\lmdbxx_main.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mysql\mysql_main.cpp" />
     <ClCompile Include="sqlite\sqlite_basic.cpp" />
@@ -107,6 +108,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lmdbxx_lib\lmdb++.h" />
     <ClInclude Include="sqlite_lib\sqlite3.h" />
     <ClInclude Include="sqlite_lib\sqlite3ext.h" />
     <ClInclude Include="stdafx.h" />

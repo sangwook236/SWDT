@@ -1,0 +1,8 @@
+[-] General
+	-. Site
+		https://code.google.com/p/snappy/
+		https://github.com/google/snappy
+
+	-. Windows
+		https://snappy.angeloflogic.com/
+		https://github.com/kmanley/snappy-msvc

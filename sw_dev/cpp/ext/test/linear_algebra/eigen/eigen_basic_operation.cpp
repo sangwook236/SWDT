@@ -19,6 +19,12 @@ void fixed_size_operation()
 	Eigen::Vector4i v4(1, 2, 3, 4);
 
 	std::cout << "m3\n" << m3 << "\nm4:\n" << m4 << "\nv4:\n" << v4 << std::endl;
+
+	//
+	int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, };
+	std::cout << "column-major:\n" << Eigen::Map<Eigen::Matrix<int,2,4> >(arr) << std::endl;
+	std::cout << "row-major:\n" << Eigen::Map<Eigen::Matrix<int,2,4,Eigen::RowMajor> >(arr) << std::endl;
+	std::cout << "row-major using stride:\n" << Eigen::Map<Eigen::Matrix<int,2,4>, Eigen::Unaligned, Eigen::Stride<1,4> >(arr) << std::endl;
 }
 
 void dynamic_size_operation()
@@ -349,7 +355,7 @@ namespace my_eigen {
 
 void basic_operation()
 {
-    //local::fixed_size_operation();
+    local::fixed_size_operation();
     //local::dynamic_size_operation();
 
     //local::fixed_size_block_operation();

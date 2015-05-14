@@ -1,0 +1,9 @@
+[-] General
+	-. Site
+		http://symas.com/mdb/
+		http://symas.com/mdb/doc/
+
+        https://github.com/LMDB/lmdb
+
+		https://github.com/bendiken/lmdbxx
+		http://lmdbxx.sourceforge.net/

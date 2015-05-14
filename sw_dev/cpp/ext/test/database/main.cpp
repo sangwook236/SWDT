@@ -11,15 +11,19 @@ int main(int argc, char *argv[])
 {
 	int sqlite_main(int argc, char *argv[]);
 	int mysql_main(int argc, char *argv[]);
+	int lmdbxx_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
 		std::cout << "SQLite --------------------------------------------------------------" << std::endl;
-		retval = sqlite_main(argc, argv);
+		//retval = sqlite_main(argc, argv);
 
 		std::cout << "\nMySQL ---------------------------------------------------------------" << std::endl;
 		//retval = mysql_main(argc, argv);
+
+		std::cout << "\nLMDB++ --------------------------------------------------------------" << std::endl;
+		retval = lmdbxx_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

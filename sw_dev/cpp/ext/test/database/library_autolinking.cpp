@@ -4,10 +4,12 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "liblmdb_d.lib")
 //#pragma comment(lib, "sqlite.lib")
 
 #		else
 
+#pragma comment(lib, "liblmdb.lib")
 //#pragma comment(lib, "sqlite.lib")
 
 #		endif
