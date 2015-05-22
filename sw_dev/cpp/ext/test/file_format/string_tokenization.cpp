@@ -25,22 +25,28 @@ void method1()
 	const std::vector<std::string> tokens(std::istream_iterator<std::string>(sstream), std::istream_iterator<std::string>());
 #endif
 
-	// output.
+	// display.
 	std::copy(tokens.begin(), tokens.end(), std::ostream_iterator<std::string>(std::cout, "."));
 	std::cout << std::endl;
+}
+
+void tokenize_string(const std::string &str, std::vector<std::string> &tokens, const char delimiter)
+{
+	std::istringstream sstream(str);
+
+	std::string tok;
+	while (std::getline(sstream, tok, delimiter))
+		tokens.push_back(tok);
 }
 
 void method2()
 {
 	const std::string str("Hello,How Are , You,Today");
-	std::istringstream sstream(str);
 
 	std::vector<std::string> tokens;
-	std::string tok;
-	while (std::getline(sstream, tok, ','))
-		tokens.push_back(tok);
+	tokenize_string(str, tokens, ',');
 
-	// output.
+	// display.
 	std::copy(tokens.begin(), tokens.end(), std::ostream_iterator<std::string>(std::cout, "."));
 	std::cout << std::endl;
 }
@@ -54,7 +60,7 @@ void method3()
     boost::char_separator<char> sep(", ");
     boost::tokenizer<boost::char_separator<char> > tokens(str, sep);
 
-	// output.
+	// display.
 	BOOST_FOREACH(const std::string &tok, tokens)
         std::cout << tok << '.';
 	std::cout << std::endl;
@@ -62,7 +68,7 @@ void method3()
 
 void method4()
 {
-	// use Boost String Algorithms.
+	// use Boost.StringAlgorithms.
 
 	const std::string str("abc,bcd, cde ,,efg,fgh,");
 
@@ -70,7 +76,7 @@ void method4()
 	//boost::split(tokens, str, boost::is_any_of(","));
 	boost::split(tokens, str, boost::is_any_of(", "));
 
-	// output.
+	// display.
 	BOOST_FOREACH(const std::string &tok, tokens)
 	//for (const auto &tok : tokens)
 		std::cout << tok << '.';

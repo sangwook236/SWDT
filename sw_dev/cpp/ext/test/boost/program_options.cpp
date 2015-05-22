@@ -10,7 +10,7 @@ namespace {
 template<class T>
 std::ostream & operator<<(std::ostream &os, const std::vector<T> &v)
 {
-	std::copy(v.begin(), v.end(), std::ostream_iterator<T>(std::cout, " ")); 
+	std::copy(v.begin(), v.end(), std::ostream_iterator<T>(std::cout, " "));
 	return os;
 }
 
@@ -117,6 +117,8 @@ bool program_options(int argc, char *argv[])
 		return true;
 	}
 
+    const std::size_t num = vm.count("include-path");
+    std::cout << "the number of include paths is " << num << std::endl;
 	if (vm.count("include-path"))
 		std::cout << "Include paths are: " << vm["include-path"].as<std::vector<std::string> >() << std::endl;
 
