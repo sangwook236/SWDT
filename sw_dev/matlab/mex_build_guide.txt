@@ -1,7 +1,7 @@
 [-] Building using MEX
 	-. path
-		$MATLAB_HOME/bin/mex.bat
-		$MATLAB_HOME/bin/mexext.bat
+		${MATLAB_HOME}/bin/mex.bat
+		${MATLAB_HOME}/bin/mexext.bat
 
 	-. command.
 		mex.bat foo.c/cpp
@@ -14,5 +14,5 @@
 				mex.bat file이 동일한 이름의 다른 실행 file에 의해 제대로 실행되지 않는 경우가 있으므로,
 				Matlab path를 가장 앞에 위치시키는 것이 유리.
 			3. mexopts.bat file 수정.
-				$USERPROFILE/AppData/Roaming/MathWorks/MATLAB/R2012b 하에 있음.
+				${USERPROFILE}/AppData/Roaming/MathWorks/MATLAB/R2012b 하에 있음.
 				64-bit에 대한 설정을 32-bit를 위한 설정으로 바꿔야 함.
