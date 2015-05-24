@@ -11,6 +11,196 @@
 namespace {
 namespace local {
 
+void initialization()
+{
+	{
+		std::cout << Eigen::Vector3d::Zero().transpose() << std::endl;
+		std::cout << Eigen::VectorXd::Zero(4).transpose() << std::endl;
+		std::cout << Eigen::Matrix3d::Zero() << std::endl;
+		std::cout << Eigen::MatrixXd::Zero(2, 4) << std::endl;
+		std::cout << Eigen::Matrix2d::Identity() << std::endl;
+		//std::cout << Eigen::MatrixXd::Identity(3) << std::endl;  // error.
+		std::cout << Eigen::MatrixXd::Identity(2, 4) << std::endl;
+
+		//
+		const int size = 6;
+		Eigen::MatrixXd mat1(size, size);
+		mat1.topLeftCorner(size/2, size/2)     = Eigen::MatrixXd::Zero(size/2, size/2);
+		mat1.topRightCorner(size/2, size/2)    = Eigen::MatrixXd::Identity(size/2, size/2);
+		mat1.bottomLeftCorner(size/2, size/2)  = Eigen::MatrixXd::Identity(size/2, size/2);
+		mat1.bottomRightCorner(size/2, size/2) = Eigen::MatrixXd::Zero(size/2, size/2);
+		std::cout << mat1 << std::endl << std::endl;
+
+		Eigen::MatrixXd mat2(size, size);
+		mat2.topLeftCorner(size/2, size/2).setZero();
+		mat2.topRightCorner(size/2, size/2).setIdentity();
+		mat2.bottomLeftCorner(size/2, size/2).setIdentity();
+		mat2.bottomRightCorner(size/2, size/2).setZero();
+		std::cout << mat2 << std::endl;
+
+		Eigen::MatrixXd mat3(size, size);
+		mat3 << Eigen::MatrixXd::Zero(size/2, size/2), Eigen::MatrixXd::Identity(size/2, size/2),
+				Eigen::MatrixXd::Identity(size/2, size/2), Eigen::MatrixXd::Zero(size/2, size/2);
+		std::cout << mat3 << std::endl;
+
+		//
+	    std::cout << Eigen::Matrix3d::Constant(-3.7) << std::endl;
+	    std::cout << Eigen::MatrixXd::Constant(3, 3, 1.2) << std::endl;
+	    std::cout << Eigen::Matrix3d::Random() << std::endl;
+		std::cout << Eigen::MatrixXd::Random(3, 4) << std::endl;
+		std::cout << Eigen::ArrayXd::LinSpaced(10, 0, 90).transpose() << std::endl;
+		//std::cout << Eigen::ArrayXXd::LinSpaced(10, 0, 90) << std::endl;
+	}
+
+	// comma initializer.
+	{
+		Eigen::Matrix3f m1;
+		m1 << 11, 12, 13,  14, 15, 16,  17, 18, 19;
+
+		std::cout << "comma initialized matrix = " << std::endl << m1 << std::endl;
+
+		Eigen::MatrixXf m2(2, 4);
+		m2 << 21, 22,  23, 24,  25, 26,  27, 28;
+
+		std::cout << "comma initialized matrix = " << std::endl << m2 << std::endl;
+
+		Eigen::MatrixXf m3(4, 2);
+		m3 << 31, 32, 33, 34,
+		      35, 36, 37, 38;
+
+		std::cout << "comma initialized matrix = " << std::endl << m3 << std::endl;
+	}
+
+	{
+		Eigen::Matrix3f m;
+		m.row(0) << 1, 2, 3;
+		m.block(1, 0, 2, 2) << 4, 5, 7, 8;
+		m.col(2).tail(2) << 6, 9;
+
+		std::cout << m << std::endl;
+	}
+
+	// use temporary objects.
+	{
+		Eigen::MatrixXf mat = Eigen::MatrixXf::Random(2, 3);
+		std::cout << mat << std::endl;
+
+		// The finished() method is necessary here to get the actual matrix object once the comma initialization of our temporary submatrix is done.
+		mat = (Eigen::MatrixXf(2, 2) << 0, 1, 1, 0).finished() * mat;
+		std::cout << mat << std::endl;
+	}
+}
+
+void concatenation()
+{
+	Eigen::MatrixXd A(2, 4);
+	Eigen::MatrixXd B(2, 4);
+
+	A << 19, 18, 17, 16,  15, 14, 13, 12;
+	B << 29, 28, 27, 26,  25, 24, 23, 22;
+
+	Eigen::MatrixXd C(A.rows(), A.cols() + B.cols());
+	C << A, B;  // horizontally concatenated.
+
+	C(0, 0) = 1; C(0, 1) = 2; C(0, 2) = 3; C(0, 3) = 4; C(0, 4) = 5; C(0, 5) = 6; C(0, 6) = 7; C(0, 7) = 8;
+
+	std::cout << "horizontally concatenated matrix = " << std::endl << C << std::endl;
+
+	Eigen::MatrixXd D(A.rows() + B.rows(), A.cols());
+	D << A, B;  // vertically concatenated.
+
+	std::cout << "vertically concatenated matrix = " << std::endl << D << std::endl;
+}
+
+void matrix_or_vector_expression_mapping()
+{
+	{
+		int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, };
+		std::cout << "column-major = " << std::endl << Eigen::Map<Eigen::Matrix<int,2,4> >(arr) << std::endl;
+		std::cout << "row-major = " << std::endl << Eigen::Map<Eigen::Matrix<int,2,4,Eigen::RowMajor> >(arr) << std::endl;
+		std::cout << "row-major using stride = " << std::endl << Eigen::Map<Eigen::Matrix<int,2,4>, Eigen::Unaligned, Eigen::Stride<1,4> >(arr) << std::endl;
+
+		//
+		int arr2[15];
+		for (int i = 0; i < 15; ++i) arr2[i] = i;
+
+		// use an inner stride, the pointer increment between two consecutive coefficients.
+		std::cout << "matrix using inner stride = " << std::endl << Eigen::Map<Eigen::VectorXi, 0, Eigen::InnerStride<2> >(arr2, 6) << std::endl;
+
+		// use an outer stride, the pointer increment between two consecutive columns.
+		std::cout << "matrix using outer stride = " << std::endl << Eigen::Map<Eigen::MatrixXi, 0, Eigen::OuterStride<> >(arr2, 3, 3, Eigen::OuterStride<>(5)) << std::endl;
+	}
+
+	//
+	{
+		double *p = new double [15];
+		for (int i = 0; i < 15; ++i) p[i] = i + 100;
+
+		Eigen::MatrixXd P = Eigen::Map<Eigen::MatrixXd>(p, 2, 6);
+
+		delete [] p;
+		p = NULL;
+
+		// NOTE [caution] >> the array, p and the matrix, P are totally different objects.
+		std::cout << "matrix after deletion = " << std::endl << P << std::endl;
+	}
+
+	//
+	{
+		double x[] = { 19, 18, 17, 16,  15, 14, 13, 12 };
+		Eigen::MatrixXd X(Eigen::Map<Eigen::MatrixXd>(x, 2, 4));  // column-major.
+
+		X(0, 0) = -10;
+		X(1, 0) = -20;
+
+		// NOTE [caution] >> changes in X don't affect x directly.
+		std::cout << "X = " << std::endl << X << std::endl;
+		std::cout << "x = ";
+		for (int i = 0; i < 8; ++i)
+			std::cout << x[i] << ", ";
+		std::cout << std::endl;
+
+		//
+		const double *pX = X.data();  // column-major.
+		std::cout << "X.data() = ";
+		for (int i = 0; i < 8; ++i)
+			std::cout << pX[i] << ", ";
+		std::cout << std::endl;
+	}
+
+	//
+	{
+		double a[] = { 29, 28, 27, 26,  25, 24, 23, 22 };
+		double b[] = { 39, 38, 37, 36,  35, 34, 33, 32 };
+
+		{
+			Eigen::MatrixXd A(Eigen::Map<Eigen::MatrixXd>(a, 2, 4));
+			Eigen::MatrixXd B(Eigen::Map<Eigen::MatrixXd>(b, 2, 4));
+
+			Eigen::MatrixXd C(A.rows(), A.cols() + B.cols());
+			C << A, B;  // horizontally concatenated.
+
+			C(0, 0) = 1; C(0, 1) = 2; C(0, 2) = 3; C(0, 3) = 4; C(0, 4) = 5; C(0, 5) = 6; C(0, 6) = 7; C(0, 7) = 8;
+
+			A = C.topLeftCorner(A.rows(), A.cols());
+			B = C.topRightCorner(B.rows(), B.cols());
+
+			std::cout << "A = " << std::endl << A << std::endl;
+			std::cout << "B = " << std::endl << B << std::endl;
+		}
+
+		// NOTE [caution] >> changes in A & B don't affect a & b directly.
+		std::cout << "a = ";
+		for (int i = 0; i < 8; ++i)
+			std::cout << a[i] << ", ";
+		std::cout << std::endl;
+		std::cout << "b = ";
+		for (int i = 0; i < 8; ++i)
+			std::cout << b[i] << ", ";
+		std::cout << std::endl;
+	}
+}
+
 void fixed_size_operation()
 {
 	Eigen::Matrix3f m3;
@@ -19,12 +209,6 @@ void fixed_size_operation()
 	Eigen::Vector4i v4(1, 2, 3, 4);
 
 	std::cout << "m3\n" << m3 << "\nm4:\n" << m4 << "\nv4:\n" << v4 << std::endl;
-
-	//
-	int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, };
-	std::cout << "column-major:\n" << Eigen::Map<Eigen::Matrix<int,2,4> >(arr) << std::endl;
-	std::cout << "row-major:\n" << Eigen::Map<Eigen::Matrix<int,2,4,Eigen::RowMajor> >(arr) << std::endl;
-	std::cout << "row-major using stride:\n" << Eigen::Map<Eigen::Matrix<int,2,4>, Eigen::Unaligned, Eigen::Stride<1,4> >(arr) << std::endl;
 }
 
 void dynamic_size_operation()
@@ -96,51 +280,41 @@ void coefficient_wise_binary_operation()
 	Eigen::Matrix4d m1 = Eigen::Matrix4d::Random(), m2 = Eigen::Matrix4d::Random();
 	std::cout << m1.binaryExpr(m2, MakeComplexOp<double>()) << std::endl;
 }
-
 void matrix_arithmetic_1()
 {
 	// sub-matrix
 	{
 		Eigen::Matrix4d m = Eigen::Matrix4d::Random();
 		std::cout << "Here is the matrix m:" << std::endl << m << std::endl;
-
 		// col(), row(), leftCols(), middleCols(), rightCols(), topRows(), middleRows(), bottomRows(), topLeftCorner(), topRightCorner(), bottomLeftCorner(), bottomRightCorner().
 		// block(), head(), tail(), segment().
 		// colwise(), rowwise().
-
 		std::cout << "Here is m.bottomRightCorner(2, 2):" << std::endl;
 		std::cout << m.bottomRightCorner(2, 2) << std::endl;
 		m.bottomRightCorner(2, 2).setZero();
 		std::cout << "Now the matrix m is:" << std::endl << m << std::endl;
 	}
-
     //
     {
         Eigen::Matrix3f A;
         A << 1, 2, 1,  2, 1, 0,  -1, 1, 2;
         std::cout << "Here is the matrix A:\n" << A << std::endl;
-
         std::cout << "The transpose of A is:\n" << A.transpose() << std::endl;
 		std::cout << "The conjugate of A is:\n" << A.conjugate() << std::endl;
 		std::cout << "The adjoint (conjugate transpose) of A is:\n" << A.adjoint() << std::endl;
-
         std::cout << "The determinant of A is " << A.determinant() << std::endl;
         std::cout << "The inverse of A is:\n" << A.inverse() << std::endl;
     }
-
     //
     {
         Eigen::VectorXf v(2);
         Eigen::MatrixXf m(2, 2), n(2, 2);
-
         v << -1,  2;
         m << 1, -2,  -3, 4;
-
         std::cout << "v.squaredNorm() = " << v.squaredNorm() << std::endl;
         std::cout << "v.norm() = " << v.norm() << std::endl;
         std::cout << "v.lpNorm<1>() = " << v.lpNorm<1>() << std::endl;
         std::cout << "v.lpNorm<Eigen::Infinity>() = " << v.lpNorm<Eigen::Infinity>() << std::endl;
-
         std::cout << std::endl;
         std::cout << "m.squaredNorm() = " << m.squaredNorm() << std::endl;
         std::cout << "m.norm() = " << m.norm() << std::endl;
@@ -148,72 +322,58 @@ void matrix_arithmetic_1()
         std::cout << "m.lpNorm<Eigen::Infinity>() = " << m.lpNorm<Eigen::Infinity>() << std::endl;
     }
 }
-
 void matrix_arithmetic_2()
 {
 	// coefficient-wise operation
 	{
 		Eigen::Matrix3f mat;
 		Eigen::Vector4f v1, v2;
-
 		mat << 1, 2, 6,
 			   -9, 3, -1,
 			   7, 2, -2;
 		v1 << 5, 2, 1, 7;
 		v2 << 3, 1, 2, 4;
-
 		std::cout << "mat.cwiseAbs()     =\n" << mat.cwiseAbs() << std::endl;
 		std::cout << "mat.cwiseAbs2()    =\n" << mat.cwiseAbs2() << std::endl;
 		std::cout << "mat.cwiseInverse() =\n" << mat.cwiseInverse() << std::endl;
 		std::cout << "mat.cwiseSqrt()    =\n" << mat.cwiseSqrt() << std::endl;
 		std::cout << "mat.cwiseAbs()     =\n" << mat.cwiseAbs() << std::endl;
-
 		const int count1 = mat.cwiseEqual(Eigen::Matrix3f::Identity()).count();
 		std::cout << "the number of mat.cwiseEqual(Eigen::Matrix3f::Identity())    = " << count1 << std::endl;
 		const int count2 = mat.cwiseNotEqual(Eigen::Matrix3f::Identity()).count();
 		std::cout << "the number of mat.cwiseNotEqual(Eigen::Matrix3f::Identity()) = " << count2 << std::endl;
-
 		std::cout << "v1.cwiseMax(3)  =\n" << v1.cwiseMax(3) << std::endl;
 		std::cout << "v1.cwiseMax(v2) =\n" << v1.cwiseMax(v2) << std::endl;
 		std::cout << "v1.cwiseMin(3)  =\n" << v1.cwiseMin(3) << std::endl;
 		std::cout << "v1.cwiseMin(v2) =\n" << v1.cwiseMin(v2) << std::endl;
-
 		std::cout << "v1.cwiseQuotient(v2) =\n" << v1.cwiseQuotient(v2) << std::endl;
-
 		std::cout << "v1.cwiseProduct(v2) =\n" << v1.cwiseProduct(v2) << std::endl;
 	}
-
 	//
 	{
 		Eigen::Vector3f v1;
 		Eigen::Vector3f v2;
-
 		v1 << 1, 2, 3;
 		v2 << 6, 5, 4;
-
 		std::cout << "dot(v1, v2) = " << v1.dot(v2) << std::endl;
 		std::cout << "cross(v1, v2) = " << v1.cross(v2) << std::endl;
 		std::cout << "outer(v1, v2) = " << v1 * v2.transpose() << std::endl;
 	}
-
     //
     {
         Eigen::Matrix2d mat;
         mat << 1, 2,  3, 4;
-
-        std::cout << "Here is mat.sum():       " << mat.sum()       << std::endl;
-        std::cout << "Here is mat.prod():      " << mat.prod()      << std::endl;
-        std::cout << "Here is mat.mean():      " << mat.mean()      << std::endl;
-        std::cout << "Here is mat.minCoeff():  " << mat.minCoeff()  << std::endl;
-        std::cout << "Here is mat.maxCoeff():  " << mat.maxCoeff()  << std::endl;
-        std::cout << "Here is mat.trace():     " << mat.trace()     << std::endl;
+        std::cout << "Here is mat.sum():       " << mat.sum() << std::endl;
+        std::cout << "Here is mat.prod():      " << mat.prod() << std::endl;
+        std::cout << "Here is mat.mean():      " << mat.mean() << std::endl;
+        std::cout << "Here is mat.minCoeff():  " << mat.minCoeff() << std::endl;
+        std::cout << "Here is mat.maxCoeff():  " << mat.maxCoeff() << std::endl;
+        std::cout << "Here is mat.trace():     " << mat.trace() << std::endl;
     }
-
     //
     {
         Eigen::ArrayXXf a(2, 2);
         a << 1, 2,  3, 4;
-
         std::cout << "(a > 0).all()   = " << (a > 0).all() << std::endl;
         std::cout << "(a > 0).any()   = " << (a > 0).any() << std::endl;
         std::cout << "(a > 0).count() = " << (a > 0).count() << std::endl;
@@ -222,91 +382,70 @@ void matrix_arithmetic_2()
         std::cout << "(a > 2).any()   = " << (a > 2).any() << std::endl;
         std::cout << "(a > 2).count() = " << (a > 2).count() << std::endl;
     }
-
     //
     {
         Eigen::MatrixXf m(2, 2);
         m << 1, 2,  3, 4;
-
         // get location of maximum
         Eigen::MatrixXf::Index maxRow, maxCol;
         const float max = m.maxCoeff(&maxRow, &maxCol);
-
         // get location of minimum
         Eigen::MatrixXf::Index minRow, minCol;
         const float min = m.minCoeff(&minRow, &minCol);
-
         std::cout << "Max: " << max << ", at: " << maxRow << "," << maxCol << std::endl;
         std::cout << "Min: " << min << ", at: " << minRow << "," << minCol << std::endl;
 	}
-
 	// column-wise, row-wise
     {
 		//
         Eigen::MatrixXf mat1(2, 4);
         mat1 << 1, 2, 6, 9,
                 3, 1, 7, 2;
-
         std::cout << "Column's maximum: " << std::endl << mat1.colwise().maxCoeff() << std::endl;
         std::cout << "Row's maximum: " << std::endl << mat1.rowwise().maxCoeff() << std::endl;
-
         Eigen::MatrixXf::Index maxIndex;
         const float maxNorm = mat1.colwise().sum().maxCoeff(&maxIndex);
-
         std::cout << "Maximum sum at position " << maxIndex << std::endl;
-
         std::cout << "The corresponding vector is: " << std::endl;
         std::cout << mat1.col(maxIndex) << std::endl;
         std::cout << "And its sum is: " << maxNorm << std::endl;
-
 		//
 		Eigen::MatrixXf mat2(2, 4);
 		Eigen::VectorXf v1(2);
 		Eigen::VectorXf v2(4);
-
 		mat2 << 1, 2, 6, 9,
 			    3, 1, 7, 2;
 		v1 << 2, 3;
 		v2 << 5, 4, 3, 2;
-
 		// add v to each column of m
 		mat2.colwise() += v1;
 		std::cout << "Broadcasting result: " << std::endl << mat2 << std::endl;
-
 		// add v to each row of m
 		//mat2.rowwise() += v2;  // compile-time error
 		mat2.rowwise() += v2.transpose();
 		std::cout << "Broadcasting result: " << std::endl << mat2 << std::endl;
-
 		//
 		Eigen::MatrixXf mat3(2, 4);
-
 		mat3 << 1, 2, 6, 9,
 			    3, 1, 7, 2;
-
 		//std::cout << "mat3.colwise() / v1 = \n" << mat3.colwise() / v1 << std::endl;  // compile-time error
 		//std::cout << "mat3.rowwise() / v2 = \n" << mat3.rowwise() / v2.transpose() << std::endl;  // compile-time error
-
 		const Eigen::VectorXf normvec = mat3.colwise().norm();
 		for (int c = 0; c < mat3.cols(); ++c)
 			mat3.col(c) /= normvec(c);
 		std::cout << "(normalized) mat3 =\n" << mat3 << std::endl;
 	}
-
 	//
 	{
 		Eigen::MatrixXf m(2, 4);
 		Eigen::VectorXf v(2);
-
 		m << 1, 23, 6, 9,
 			 3, 11, 7, 2;
 		v << 2,
 			 3;
-
 		Eigen::MatrixXf::Index index;
 		// find nearest neighbour
 		(m.colwise() - v).colwise().squaredNorm().minCoeff(&index);
-
 		std::cout << "Nearest neighbour is column " << index << ":" << std::endl;
 		std::cout << m.col(index) << std::endl;
 	}
@@ -321,7 +460,6 @@ void matrix_function_operation()
 		m << 101, 13, 4,
 			 13, 11, 5,
 			 4, 5, 37;
-
 		std::cout << m << std::endl;
 
 		//
@@ -340,9 +478,11 @@ void matrix_function_operation()
 		Eigen::MatrixSquareRoot<Eigen::MatrixXd> msr(m);
 		Eigen::MatrixXd m2;
 		msr.compute(m2);
-#else
+#elif 0
 		Eigen::MatrixXd m2;
 		Eigen::MatrixSquareRoot<Eigen::MatrixXd>(m).compute(m2);
+#else
+		const Eigen::MatrixXd m2(m.sqrt());
 #endif
 		std::cout << "matrix sqrt result: " << std::endl << m2 << std::endl;
 	}
@@ -355,19 +495,21 @@ namespace my_eigen {
 
 void basic_operation()
 {
-    local::fixed_size_operation();
-    //local::dynamic_size_operation();
+	//local::initialization();
+	//local::concatenation();
+	local::matrix_or_vector_expression_mapping();
 
-    //local::fixed_size_block_operation();
-    //local::dynamic_size_block_operation();
+	//local::fixed_size_operation();
+	//local::dynamic_size_operation();
+	//local::fixed_size_block_operation();
+	//local::dynamic_size_block_operation();
+    
+	//local::coefficient_wise_unary_operation();
+	//local::coefficient_wise_binary_operation();
 
-    //local::coefficient_wise_unary_operation();
-    //local::coefficient_wise_binary_operation();
-
-    //local::matrix_arithmetic_1();
-    //local::matrix_arithmetic_2();
-
-    local::matrix_function_operation();
+	//local::matrix_arithmetic_1();
+	//local::matrix_arithmetic_2();
+	//local::matrix_function_operation();
 }
 
 }  // namespace my_eigen

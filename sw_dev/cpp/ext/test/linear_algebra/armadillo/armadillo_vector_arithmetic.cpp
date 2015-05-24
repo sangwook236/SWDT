@@ -1,8 +1,4 @@
-#if defined(WIN32)
-#include <armadillo/armadillo>
-#else
 #include <armadillo>
-#endif
 #include <iostream>
 
 

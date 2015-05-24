@@ -2,6 +2,8 @@
 	-. Site
 		http://eigen.tuxfamily.org/
 
+		https://bitbucket.org/eigen/eigen
+
 [-] Build Library
 	-. Eigen library는 기본적으로 header file만 있으면 됨
 		따라서 source를 별도로 build하지 않아도 됨. (?)

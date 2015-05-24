@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
 	int newmat_main(int argc, char* argv[]);
 	int cvm_main(int argc, char* argv[]);
 	int mtl_main(int argc, char* argv[]);
+	int viennacl_main(int argc, char* argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -23,9 +24,9 @@ int main(int argc, char* argv[])
 		//retval = lapack_main(argc, argv);
 
 		std::cout << "\nAutomatically Tuned Linear Algebra Software (ATLAS) -----------------" << std::endl;
-		retval = atlas_main(argc, argv);
+		//retval = atlas_main(argc, argv);
 		std::cout << "\nEigen library -------------------------------------------------------" << std::endl;
-		//retval = eigen_main(argc, argv);
+		retval = eigen_main(argc, argv);
 		std::cout << "\nArmadillo library ---------------------------------------------------" << std::endl;
 		//retval = armadillo_main(argc, argv);
 
@@ -36,6 +37,17 @@ int main(int argc, char* argv[])
 
 		std::cout << "\nMatrix Template Library (MTL) ---------------------------------------" << std::endl;
 		//retval = mtl_main(argc, argv);
+
+		std::cout << "\nThe Vienna Computing Library (ViennaCL) -----------------------------" << std::endl;
+		//	-. incomplete LU factorization (ILU).
+		//	-. eigenproblem.
+		//		bisection.
+		//		iterative solver.
+		//			power iteration.
+		//			Lanczos algorithm.
+		//	-. nonnegative matrix factorization (NMF).
+		//	-. fast Fourier transform (FFT).
+		//retval = viennacl_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

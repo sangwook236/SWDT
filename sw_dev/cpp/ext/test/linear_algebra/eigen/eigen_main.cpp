@@ -12,7 +12,6 @@ namespace my_eigen {
 
 void basic_operation();
 void linear_system();
-
 void lu();
 void evd();
 void svd();
