@@ -57,7 +57,7 @@ end                                                 %   end if of Elm_Type
 %%%%%%%%%%% Calculate the output of testing input
 start_time_test=cputime;
 tempH_test=InputWeight*TV.P;
-clear TV.P;             %   Release input of testing data             
+clear TV.P;             %   Release input of testing data
 ind=ones(1,NumberofTestingData);
 BiasMatrix=BiasofHiddenNeurons(:,ind);              %   Extend the bias matrix BiasofHiddenNeurons to match the demention of H
 tempH_test=tempH_test + BiasMatrix;
@@ -67,18 +67,18 @@ switch lower(ActivationFunction)
         H_test = 1 ./ (1 + exp(-tempH_test));
     case {'sin','sine'}
         %%%%%%%% Sine
-        H_test = sin(tempH_test);        
+        H_test = sin(tempH_test);
     case {'hardlim'}
         %%%%%%%% Hard Limit
-        H_test = hardlim(tempH_test);        
-        %%%%%%%% More activation functions can be added here        
+        H_test = hardlim(tempH_test);
+        %%%%%%%% More activation functions can be added here
 end
 TY=(H_test' * OutputWeight)';                       %   TY: the actual output of the testing data
 end_time_test=cputime;
-TestingTime=end_time_test-start_time_test           %   Calculate CPU time (seconds) spent by ELM predicting the whole testing data
+TestingTime=end_time_test-start_time_test;          %   Calculate CPU time (seconds) spent by ELM predicting the whole testing data
 
 if Elm_Type == REGRESSION
-    TestingAccuracy=sqrt(mse(TV.T - TY))            %   Calculate testing accuracy (RMSE) for regression case
+    TestingAccuracy=sqrt(mse(TV.T - TY));           %   Calculate testing accuracy (RMSE) for regression case
     output=TY;
 end
 
@@ -89,12 +89,12 @@ if Elm_Type == CLASSIFIER
     for i = 1 : size(TV.T, 2)
         [x, label_index_expected]=max(TV.T(:,i));
         [x, label_index_actual]=max(TY(:,i));
-        output(i)=label(label_index_actual);        
-        if label_index_actual~=label_index_expected
+        output(i)=label(label_index_actual);
+        if label_index_actual~=label_index_expected;
             MissClassificationRate_Testing=MissClassificationRate_Testing+1;
         end
     end
-    TestingAccuracy=1-MissClassificationRate_Testing/NumberofTestingData  
+    TestingAccuracy=1-MissClassificationRate_Testing/NumberofTestingData;
 end
 
 save('elm_output','output');

@@ -101,17 +101,17 @@ clear tempH;                                        %   Release the temparary ar
 %%%%%%%%%%% Calculate output weights OutputWeight (beta_i)
 OutputWeight=pinv(H') * T';
 end_time_train=cputime;
-TrainingTime=end_time_train-start_time_train        %   Calculate CPU time (seconds) spent for training ELM
+TrainingTime=end_time_train-start_time_train;       %   Calculate CPU time (seconds) spent for training ELM
 
 %%%%%%%%%%% Calculate the training accuracy
 Y=(H' * OutputWeight)';                             %   Y: the actual output of the training data
 if Elm_Type == REGRESSION
-    TrainingAccuracy=sqrt(mse(T - Y))               %   Calculate training accuracy (RMSE) for regression case
+    TrainingAccuracy=sqrt(mse(T - Y));              %   Calculate training accuracy (RMSE) for regression case
     output=Y;    
 end
 clear H;
 
-if Elm_Type == CLASSIFIER
+if Elm_Type == CLASSIFIER;
 %%%%%%%%%% Calculate training & testing classification accuracy
     MissClassificationRate_Training=0;
 
@@ -123,11 +123,11 @@ if Elm_Type == CLASSIFIER
             MissClassificationRate_Training=MissClassificationRate_Training+1;
         end
     end
-    TrainingAccuracy=1-MissClassificationRate_Training/NumberofTrainingData
+    TrainingAccuracy=1-MissClassificationRate_Training/NumberofTrainingData;
 end
 
 if Elm_Type~=REGRESSION
     save('elm_model', 'NumberofInputNeurons', 'NumberofOutputNeurons', 'InputWeight', 'BiasofHiddenNeurons', 'OutputWeight', 'ActivationFunction', 'label', 'Elm_Type');
 else
-    save('elm_model', 'InputWeight', 'BiasofHiddenNeurons', 'OutputWeight', 'ActivationFunction', 'Elm_Type');    
+    save('elm_model', 'InputWeight', 'BiasofHiddenNeurons', 'OutputWeight', 'ActivationFunction', 'Elm_Type');
 end

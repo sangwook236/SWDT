@@ -142,19 +142,19 @@ OutputWeight=pinv(H') * T';                        % implementation without regu
 %Guang-Bin Huang, Hongming Zhou, Xiaojian Ding, and Rui Zhang, "Extreme Learning Machine for Regression and Multi-Class Classification," submitted to IEEE Transactions on Pattern Analysis and Machine Intelligence, October 2010. 
 
 end_time_train=cputime;
-TrainingTime=end_time_train-start_time_train        %   Calculate CPU time (seconds) spent for training ELM
+TrainingTime=end_time_train-start_time_train;       %   Calculate CPU time (seconds) spent for training ELM
 
 %%%%%%%%%%% Calculate the training accuracy
 Y=(H' * OutputWeight)';                             %   Y: the actual output of the training data
 if Elm_Type == REGRESSION
-    TrainingAccuracy=sqrt(mse(T - Y))               %   Calculate training accuracy (RMSE) for regression case
+    TrainingAccuracy=sqrt(mse(T - Y));              %   Calculate training accuracy (RMSE) for regression case
 end
 clear H;
 
 %%%%%%%%%%% Calculate the output of testing input
 start_time_test=cputime;
 tempH_test=InputWeight*TV.P;
-clear TV.P;             %   Release input of testing data             
+clear TV.P;             %   Release input of testing data
 ind=ones(1,NumberofTestingData);
 BiasMatrix=BiasofHiddenNeurons(:,ind);              %   Extend the bias matrix BiasofHiddenNeurons to match the demention of H
 tempH_test=tempH_test + BiasMatrix;
@@ -164,24 +164,24 @@ switch lower(ActivationFunction)
         H_test = 1 ./ (1 + exp(-tempH_test));
     case {'sin','sine'}
         %%%%%%%% Sine
-        H_test = sin(tempH_test);        
+        H_test = sin(tempH_test);
     case {'hardlim'}
         %%%%%%%% Hard Limit
-        H_test = hardlim(tempH_test);        
+        H_test = hardlim(tempH_test);
     case {'tribas'}
         %%%%%%%% Triangular basis function
-        H_test = tribas(tempH_test);        
+        H_test = tribas(tempH_test);
     case {'radbas'}
         %%%%%%%% Radial basis function
-        H_test = radbas(tempH_test);        
-        %%%%%%%% More activation functions can be added here        
+        H_test = radbas(tempH_test);
+        %%%%%%%% More activation functions can be added here
 end
 TY=(H_test' * OutputWeight)';                       %   TY: the actual output of the testing data
 end_time_test=cputime;
-TestingTime=end_time_test-start_time_test           %   Calculate CPU time (seconds) spent by ELM predicting the whole testing data
+TestingTime=end_time_test-start_time_test;          %   Calculate CPU time (seconds) spent by ELM predicting the whole testing data
 
 if Elm_Type == REGRESSION
-    TestingAccuracy=sqrt(mse(TV.T - TY))            %   Calculate testing accuracy (RMSE) for regression case
+    TestingAccuracy=sqrt(mse(TV.T - TY));           %   Calculate testing accuracy (RMSE) for regression case
 end
 
 if Elm_Type == CLASSIFIER
@@ -196,7 +196,7 @@ if Elm_Type == CLASSIFIER
             MissClassificationRate_Training=MissClassificationRate_Training+1;
         end
     end
-    TrainingAccuracy=1-MissClassificationRate_Training/size(T,2)
+    TrainingAccuracy=1-MissClassificationRate_Training/size(T,2);
     for i = 1 : size(TV.T, 2)
         [x, label_index_expected]=max(TV.T(:,i));
         [x, label_index_actual]=max(TY(:,i));
@@ -204,5 +204,5 @@ if Elm_Type == CLASSIFIER
             MissClassificationRate_Testing=MissClassificationRate_Testing+1;
         end
     end
-    TestingAccuracy=1-MissClassificationRate_Testing/size(TV.T,2)  
+    TestingAccuracy=1-MissClassificationRate_Testing/size(TV.T,2);
 end
