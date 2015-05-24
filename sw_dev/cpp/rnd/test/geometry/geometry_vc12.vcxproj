@@ -53,12 +53,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pcl-1.5;../../../ext/inc/eigen3;../../../ext/inc/vtk-5.10;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(USR_LOCAL_INCLUDE)/pcl-1.5;$(USR_LOCAL_INCLUDE)/eigen3;$(USR_LOCAL_INCLUDE)/vtk-5.10;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib;D:/work_center/sw_dev/cpp/ext/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -70,14 +70,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/pcl-1.5;../../../ext/inc/eigen3;../../../ext/inc/vtk-5.10;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(USR_LOCAL_INCLUDE)/pcl-1.5;$(USR_LOCAL_INCLUDE)/eigen3;$(USR_LOCAL_INCLUDE)/vtk-5.10;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../lib;D:/work_center/sw_dev/cpp/ext/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="distance_measure" />
+		<Option title="distance" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/distance_measure_d" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/distance_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -17,7 +17,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="../../bin/distance_measure" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/distance" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />

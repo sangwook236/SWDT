@@ -4,6 +4,18 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "hdf5_hld.lib")
+#pragma comment(lib, "hdf5d.lib")
+#pragma comment(lib, "lapack.lib")
+#pragma comment(lib, "cblas.lib")
+#pragma comment(lib, "blas.lib")
+#pragma comment(lib, "libprotobufd.lib")
+#pragma comment(lib, "gflags.lib")
+#pragma comment(lib, "libglog_d.lib")
+//#pragma comment(lib, "libglog_static_d.lib")
+#pragma comment(lib, "snappy32.lib")
+#pragma comment(lib, "libleveldb.lib")
+#pragma comment(lib, "liblmdb.lib")
 //#pragma comment(lib, "MultiBoostLib_d.lib")
 #pragma comment(lib, "vl.lib")
 //#pragma comment(lib, "libshogun-13.0.dll.lib")
@@ -12,6 +24,18 @@
 
 #		else
 
+#pragma comment(lib, "hdf5_hl.lib")
+#pragma comment(lib, "hdf5.lib")
+#pragma comment(lib, "lapack.lib")
+#pragma comment(lib, "cblas.lib")
+#pragma comment(lib, "blas.lib")
+#pragma comment(lib, "libprotobuf.lib")
+#pragma comment(lib, "gflags.lib")
+#pragma comment(lib, "libglog.lib")
+//#pragma comment(lib, "libglog_static.lib")
+#pragma comment(lib, "snappy32.lib")
+#pragma comment(lib, "libleveldb.lib")
+#pragma comment(lib, "liblmdb.lib")
 //#pragma comment(lib, "MultiBoostLib.lib")
 #pragma comment(lib, "vl.lib")
 //#pragma comment(lib, "libshogun-13.0.dll.lib")

@@ -53,12 +53,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;../../inc/pabod;../../inc/matio;../../../ext/inc/pthread;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(USR_LOCAL_INCLUDE)/opencv-2.4.3;$(USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(USR_LOCAL_INCLUDE)/pabod;$(USR_LOCAL_INCLUDE)/matio;$(USR_LOCAL_INCLUDE)/pthread;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib/</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -70,14 +70,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;../../inc/pabod;../../inc/matio;../../../ext/inc/pthread;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(USR_LOCAL_INCLUDE)/opencv-2.4.3;$(USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(USR_LOCAL_INCLUDE)/pabod;$(USR_LOCAL_INCLUDE)/matio;$(USR_LOCAL_INCLUDE)/pthread;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../lib/</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

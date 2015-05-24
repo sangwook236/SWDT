@@ -54,12 +54,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;./;./libAdaBoost;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;../../../ext/inc/qt;../../../ext/inc/qt/QtCore;../../../ext/inc/qt/QtGui;../../../ext/inc/libpng;../../../ext/inc/clapack;../../inc;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;./libAdaBoost;$(USR_LOCAL_INCLUDE)/opencv-2.4.3;$(USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(USR_LOCAL_INCLUDE)/qt;$(USR_LOCAL_INCLUDE)/qt/QtCore;$(USR_LOCAL_INCLUDE)/qt/QtGui;$(USR_LOCAL_INCLUDE)/libpng;$(USR_LOCAL_INCLUDE)/clapack;../../inc;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib;D:\work_center\sw_dev\cpp\ext\lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -70,14 +70,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;./;./libAdaBoost;../../inc/opencv-2.4.3;../../inc/opencv-2.4.3/opencv;../../../ext/inc/qt;../../../ext/inc/qt/QtCore;../../../ext/inc/qt/QtGui;../../../ext/inc/libpng;../../../ext/inc/clapack;../../inc;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pictorial_structures_revisited_lib;./libAdaBoost;$(USR_LOCAL_INCLUDE)/opencv-2.4.3;$(USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(USR_LOCAL_INCLUDE)/qt;$(USR_LOCAL_INCLUDE)/qt/QtCore;$(USR_LOCAL_INCLUDE)/qt/QtGui;$(USR_LOCAL_INCLUDE)/libpng;$(USR_LOCAL_INCLUDE)/clapack;../../inc;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../lib;D:\work_center\sw_dev\cpp\ext\lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -56,7 +56,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib/;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -75,7 +75,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../lib/;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

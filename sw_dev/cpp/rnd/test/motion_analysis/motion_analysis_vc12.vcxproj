@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./mht_lib;../../inc/opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./mht_lib;$(USR_LOCAL_INCLUDE)/opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
       <AdditionalOptions>/DINFINITY=std::numeric_limits&lt;double&gt;::infinity() %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -69,7 +69,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./mht_lib;../../inc/opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./mht_lib;$(USR_LOCAL_INCLUDE)/opencv-2.4.3;../../inc</AdditionalIncludeDirectories>
       <AdditionalOptions>/DINFINITY=std::numeric_limits&lt;double&gt;::infinity() /DNAN=std::numeric_limits&lt;double&gt;::quiet_NaN() %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>

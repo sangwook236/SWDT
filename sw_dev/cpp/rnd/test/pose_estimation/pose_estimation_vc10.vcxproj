@@ -51,12 +51,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/PartsBasedDetector;../../inc/opencv-2.4.3;../../inc/cvmatio;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(USR_LOCAL_INCLUDE)/PartsBasedDetector;$(USR_LOCAL_INCLUDE)/opencv-2.4.3;$(USR_LOCAL_INCLUDE)/cvmatio;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib/</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -68,14 +68,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc/PartsBasedDetector;../../inc/opencv-2.4.3;../../inc/cvmatio;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(USR_LOCAL_INCLUDE)/PartsBasedDetector;$(USR_LOCAL_INCLUDE)/opencv-2.4.3;$(USR_LOCAL_INCLUDE)/cvmatio;../../inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../lib/</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

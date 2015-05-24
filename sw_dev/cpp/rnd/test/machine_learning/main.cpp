@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 		//		radial basis function network (RBFN).
 		//		neuroevolution of augmenting topologies (NEAT).
 		//		(recurrent) self organizing map (SOM).
-		retval = encog_main(argc, argv);  // not yet implemented.
+		//retval = encog_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\ntorch library -------------------------------------------------------" << std::endl;
 		//  -. tensor.
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nCaffe framework -----------------------------------------------------" << std::endl;
 		//	-. deep learning.
-		//retval = caffe_main(argc, argv);  // not yet implemented.
+		retval = caffe_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
 		//	-. deep learning.

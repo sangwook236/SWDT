@@ -19,6 +19,12 @@
     <Filter Include="Source Files\fann">
       <UniqueIdentifier>{d3cbbb43-b7fc-4698-925b-e3e47e041347}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\elm">
+      <UniqueIdentifier>{9d5b4b84-28ed-4ddb-8f82-9739abc548c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\elm_linear_lib">
+      <UniqueIdentifier>{1b9a65b6-c9d7-4eaa-8b4c-a0fd540297d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,10 +51,19 @@
     <ClCompile Include="opennn\opennn_simple_pattern_recognition_example.cpp">
       <Filter>Source Files\opennn</Filter>
     </ClCompile>
+    <ClCompile Include="elm\elm_main.cpp">
+      <Filter>Source Files\elm</Filter>
+    </ClCompile>
+    <ClCompile Include="elm\elm_linear_test.cpp">
+      <Filter>Source Files\elm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="elm_linear_lib\elml.hpp">
+      <Filter>Source Files\elm_linear_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

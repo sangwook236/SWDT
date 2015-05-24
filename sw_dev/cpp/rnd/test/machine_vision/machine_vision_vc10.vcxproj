@@ -45,7 +45,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../inc/vxl-1.17.0/contrib/mul;../../inc/vxl-1.17.0/contrib;../../inc/vxl-1.17.0/vcl;../../inc/vxl-1.17.0/core;../../inc/ivt;../../inc/opencv-2.4.3;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib/mul;$(USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib;$(USR_LOCAL_INCLUDE)/vxl-1.17.0/vcl;$(USR_LOCAL_INCLUDE)/vxl-1.17.0/core;$(USR_LOCAL_INCLUDE)/ivt;$(USR_LOCAL_INCLUDE)/opencv-2.4.3;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -57,7 +57,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../../lib/vxl_debug;../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(USR_LOCAL_LIB)/vxl_debug;../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -69,7 +69,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../inc/vxl-1.17.0/contrib/mul;../../inc/vxl-1.17.0/contrib;../../inc/vxl-1.17.0/vcl;../../inc/vxl-1.17.0/core;../../inc/ivt;../../inc/opencv-2.4.3;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib/mul;$(USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib;$(USR_LOCAL_INCLUDE)/vxl-1.17.0/vcl;$(USR_LOCAL_INCLUDE)/vxl-1.17.0/core;$(USR_LOCAL_INCLUDE)/ivt;$(USR_LOCAL_INCLUDE)/opencv-2.4.3;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -79,7 +79,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../../lib/vxl_release;../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(USR_LOCAL_LIB)/vxl_release;../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>

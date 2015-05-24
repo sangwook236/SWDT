@@ -41,5 +41,14 @@
     <ClCompile Include="tapkee\tapkee_main.cpp">
       <Filter>Source Files\tapkee</Filter>
     </ClCompile>
+    <ClCompile Include="tapkee\tapkee_minimal_cpp_example.cpp">
+      <Filter>Source Files\tapkee</Filter>
+    </ClCompile>
+    <ClCompile Include="tapkee\tapkee_precomputed_distance_cpp_example.cpp">
+      <Filter>Source Files\tapkee</Filter>
+    </ClCompile>
+    <ClCompile Include="tapkee\tapkee_rna_cpp_example.cpp">
+      <Filter>Source Files\tapkee</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
