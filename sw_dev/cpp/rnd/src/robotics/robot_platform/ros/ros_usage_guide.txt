@@ -1,25 +1,35 @@
 [-] General
 	-. Site
 		http://www.ros.org/
+		http://wiki.ros.org/ROS
+		http://wiki.ros.org/ko
+
+		http://wiki.ros.org/ROS/Installation
+		http://wiki.ros.org/jade/Installation/Source
+
 		http://wiki.ros.org/
-		http://www.ros.org/wiki/ROS
-		http://www.ros.org/wiki/ko
+		http://wiki.ros.org/ROS/StartGuide
+		http://wiki.ros.org/ROS/Tutorials
 
-		http://www.ros.org/wiki/APIs
-
-		http://www.ros.org/wiki/cturtle/Installation/Windows
+		http://wiki.ros.org/APIs
+		http://wiki.ros.org/DevelopersGuide
 
 		http://mplab.ucsd.edu/~ting/notes/ros/ros-cygwin.html
 		http://www.servicerobotics.eu/index.php?id=37
 
-		http://www.ros.org/wiki/rgbdslam
+		http://wiki.ros.org/rgbdslam
 		http://www.ros.org/doc/api/rgbdslam/html/index.html
-		http://www.ros.org/wiki/openni/Contests/ROS%203D/RGBD-6D-SLAM
+		http://wiki.ros.org/openni/Contests/ROS%203D/RGBD-6D-SLAM
 		http://openslam.org/rgbdslam.html
 		http://www.openslam.org/hog-man.html
 
-[-]
+[-] Run in Linux
+	-.
+
+[-] Run in Windows
 	-. 
+		[ref] http://wiki.ros.org/cturtle/Installation/Windows
+
 		in server-side:
 			export ROS_HOSTNAME=utopia.kaist.ac.kr
 			export ROS_IP=143.248.139.17
