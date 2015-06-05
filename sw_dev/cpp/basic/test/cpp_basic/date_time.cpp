@@ -161,6 +161,10 @@ void mktime_example()
 	const struct tm *timeinfo = std::localtime(&rawtime);
 
 	{
+        const int year = 115 /*since 1900*/, mon = 5 /*June*/, day = 1;
+        const int yday = 31 + 28 + 31 + 30 + 31 + day - 1;  // 151.
+        const int hour = 14, minute = 20, sec = 15;
+
 		struct tm when = { 0, };
 		when.tm_sec = sec;  // seconds of minutes from 0 to 61.
 		when.tm_min = minute;  // minutes of hour from 0 to 59.
@@ -203,9 +207,10 @@ void mktime_example()
 		//when.tm_isdst = timeinfo->tm_isdst;  // hours of daylight savings time.
 		when.tm_isdst = -1;  // hours of daylight savings time.
 
+		//
 		const time_t seconds = std::mktime(&when);  // in the local time.
-		std::cout << "seconds obtained by mktime() = " << seconds << std::endl;
 
+		std::cout << "seconds obtained by mktime() = " << seconds << std::endl;
 		{
 		    const struct tm *lt = std::localtime(&seconds);
 		    std::cout << "\tlocaltime->tm_sec   = " << lt->tm_sec << std::endl;
@@ -216,7 +221,7 @@ void mktime_example()
 		    std::cout << "\tlocaltime->tm_year  = " << lt->tm_year << std::endl;
 		    std::cout << "\tlocaltime->tm_wday  = " << lt->tm_wday << std::endl;
 		    std::cout << "\tlocaltime->tm_yday  = " << lt->tm_yday << std::endl;
-		    std::cout << "\tlocaltime->tm_isdst = " << lt->tm_isdst << std::endl;  // 1. (?)
+		    std::cout << "\tlocaltime->tm_isdst = " << lt->tm_isdst << std::endl;  // 1. (*)
 
 		    const struct tm *utc = std::gmtime(&seconds);
 		    std::cout << "\tutc->tm_sec   = " << utc->tm_sec << std::endl;
@@ -230,29 +235,12 @@ void mktime_example()
 		    std::cout << "\tutc->tm_isdst = " << utc->tm_isdst << std::endl;  // 0.
 		}
 
+		//
         const time_t seconds_gmt_calculated = (time_t)(sec + minute*60 + hour*3600 + yday*86400 + (year-70)*31536000 + ((year-69)/4)*86400 - ((year-1)/100)*86400 + ((year+299)/400)*86400);  // in UTC.
-		std::cout << "seconds in UTC calculated by a equation = " << seconds_calculated << std::endl;
 
-        struct tm *seconds_ti_calculated = std::gmtime(&seconds_gmt_calculated);
-        seconds_ti_calculated->tm_isdst = -1;
-        const time_t seconds_localtime_calculated = std::mktime(seconds_ti_calculated);
-		std::cout << "seconds in UTC calculated by a equation = " << seconds_localtime_calculated << std::endl;
-
+		std::cout << "seconds in UTC calculated by a equation = " << seconds_gmt_calculated << std::endl;
 		{
-            std::cout << "seconds_ti_calculated->tm_sec   = " << seconds_ti_calculated->tm_sec << std::endl;
-            std::cout << "seconds_ti_calculated->tm_min   = " << seconds_ti_calculated->tm_min << std::endl;
-            std::cout << "seconds_ti_calculated->tm_hour  = " << seconds_ti_calculated->tm_hour << std::endl;  // 14. (O)
-            std::cout << "seconds_ti_calculated->tm_mday  = " << seconds_ti_calculated->tm_mday << std::endl;
-            std::cout << "seconds_ti_calculated->tm_mon   = " << seconds_ti_calculated->tm_mon << std::endl;
-            std::cout << "seconds_ti_calculated->tm_year  = " << seconds_ti_calculated->tm_year << std::endl;
-            std::cout << "seconds_ti_calculated->tm_wday  = " << seconds_ti_calculated->tm_wday << std::endl;
-            std::cout << "seconds_ti_calculated->tm_yday  = " << seconds_ti_calculated->tm_yday << std::endl;
-            std::cout << "seconds_ti_calculated->tm_isdst = " << seconds_ti_calculated->tm_isdst << std::endl;  // 1. (?)
-
-		}
-
-		{
-		    const struct tm *lt = std::localtime(&seconds_calculated);
+		    const struct tm *lt = std::localtime(&seconds_gmt_calculated);
 		    std::cout << "\tlocaltime->tm_sec   = " << lt->tm_sec << std::endl;
 		    std::cout << "\tlocaltime->tm_min   = " << lt->tm_min << std::endl;
 		    std::cout << "\tlocaltime->tm_hour  = " << lt->tm_hour << std::endl;  // 7. (X)
@@ -261,12 +249,55 @@ void mktime_example()
 		    std::cout << "\tlocaltime->tm_year  = " << lt->tm_year << std::endl;
 		    std::cout << "\tlocaltime->tm_wday  = " << lt->tm_wday << std::endl;
 		    std::cout << "\tlocaltime->tm_yday  = " << lt->tm_yday << std::endl;
-		    std::cout << "\tlocaltime->tm_isdst = " << lt->tm_isdst << std::endl;  // 1. (?)
+		    std::cout << "\tlocaltime->tm_isdst = " << lt->tm_isdst << std::endl;  // 1. (*)
 
-		    const struct tm *utc = std::gmtime(&seconds_calculated);
+		    const struct tm *utc = std::gmtime(&seconds_gmt_calculated);
 		    std::cout << "\tutc->tm_sec   = " << utc->tm_sec << std::endl;
 		    std::cout << "\tutc->tm_min   = " << utc->tm_min << std::endl;
 		    std::cout << "\tutc->tm_hour  = " << utc->tm_hour << std::endl;  // 14. (O)
+		    std::cout << "\tutc->tm_mday  = " << utc->tm_mday << std::endl;
+		    std::cout << "\tutc->tm_mon   = " << utc->tm_mon << std::endl;
+		    std::cout << "\tutc->tm_year  = " << utc->tm_year << std::endl;
+		    std::cout << "\tutc->tm_wday  = " << utc->tm_wday << std::endl;
+		    std::cout << "\tutc->tm_yday  = " << utc->tm_yday << std::endl;
+		    std::cout << "\tutc->tm_isdst = " << utc->tm_isdst << std::endl;  // 0.
+		}
+
+		//
+        struct tm *seconds_ti_calculated = std::gmtime(&seconds_gmt_calculated);
+        seconds_ti_calculated->tm_isdst = -1;
+        const time_t seconds_localtime_calculated = std::mktime(seconds_ti_calculated);
+
+		std::cout << "seconds in the local time calculated by a equation = " << seconds_localtime_calculated << std::endl;
+/*
+		{
+            std::cout << "\tseconds_ti_calculated->tm_sec   = " << seconds_ti_calculated->tm_sec << std::endl;
+            std::cout << "\tseconds_ti_calculated->tm_min   = " << seconds_ti_calculated->tm_min << std::endl;
+            std::cout << "\tseconds_ti_calculated->tm_hour  = " << seconds_ti_calculated->tm_hour << std::endl;  // 14. (O)
+            std::cout << "\tseconds_ti_calculated->tm_mday  = " << seconds_ti_calculated->tm_mday << std::endl;
+            std::cout << "\tseconds_ti_calculated->tm_mon   = " << seconds_ti_calculated->tm_mon << std::endl;
+            std::cout << "\tseconds_ti_calculated->tm_year  = " << seconds_ti_calculated->tm_year << std::endl;
+            std::cout << "\tseconds_ti_calculated->tm_wday  = " << seconds_ti_calculated->tm_wday << std::endl;
+            std::cout << "\tseconds_ti_calculated->tm_yday  = " << seconds_ti_calculated->tm_yday << std::endl;
+            std::cout << "\tseconds_ti_calculated->tm_isdst = " << seconds_ti_calculated->tm_isdst << std::endl;  // 1. (*)
+		}
+*/
+		{
+		    const struct tm *lt = std::localtime(&seconds_localtime_calculated);
+		    std::cout << "\tlocaltime->tm_sec   = " << lt->tm_sec << std::endl;
+		    std::cout << "\tlocaltime->tm_min   = " << lt->tm_min << std::endl;
+		    std::cout << "\tlocaltime->tm_hour  = " << lt->tm_hour << std::endl;  // 14. (O)
+		    std::cout << "\tlocaltime->tm_mday  = " << lt->tm_mday << std::endl;
+		    std::cout << "\tlocaltime->tm_mon   = " << lt->tm_mon << std::endl;
+		    std::cout << "\tlocaltime->tm_year  = " << lt->tm_year << std::endl;
+		    std::cout << "\tlocaltime->tm_wday  = " << lt->tm_wday << std::endl;
+		    std::cout << "\tlocaltime->tm_yday  = " << lt->tm_yday << std::endl;
+		    std::cout << "\tlocaltime->tm_isdst = " << lt->tm_isdst << std::endl;  // 1. (*)
+
+		    const struct tm *utc = std::gmtime(&seconds_localtime_calculated);
+		    std::cout << "\tutc->tm_sec   = " << utc->tm_sec << std::endl;
+		    std::cout << "\tutc->tm_min   = " << utc->tm_min << std::endl;
+		    std::cout << "\tutc->tm_hour  = " << utc->tm_hour << std::endl;  // 21. (X)
 		    std::cout << "\tutc->tm_mday  = " << utc->tm_mday << std::endl;
 		    std::cout << "\tutc->tm_mon   = " << utc->tm_mon << std::endl;
 		    std::cout << "\tutc->tm_year  = " << utc->tm_year << std::endl;
@@ -469,7 +500,17 @@ void datetime2seconds(const int year, const int mon, const int day, const int ho
 
 	seconds = std::mktime(&when);  // in the local time.
 }
-	
+
+void seconds2datetime_test()
+{
+	// FIXME [implement] >>
+}
+
+void datetime2seconds_test()
+{
+	// FIXME [implement] >>
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -492,6 +533,6 @@ void date_time()
 	local::year_example();
 
 	//
-	local::seconds2datetime_test();
-	local::datetime2seconds_test();
+	local::seconds2datetime_test();  // not yet implemented.
+	local::datetime2seconds_test();  // not yet implemented.
 }
