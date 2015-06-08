@@ -54,12 +54,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;$(USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv2;$(USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(USR_LOCAL_INCLUDE)/opencv-2.4.3;$(USR_LOCAL_INCLUDE)/cudpp;$(USR_LOCAL_INCLUDE)/clapack;../../inc;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CudaCompile>
@@ -80,14 +80,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;$(USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv2;$(USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(USR_LOCAL_INCLUDE)/opencv-2.4.3;$(USR_LOCAL_INCLUDE)/cudpp;$(USR_LOCAL_INCLUDE)/clapack;../../inc;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CudaCompile>

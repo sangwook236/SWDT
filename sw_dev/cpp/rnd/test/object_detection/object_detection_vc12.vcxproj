@@ -53,12 +53,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(USR_LOCAL_INCLUDE)/opencv-2.4.3;$(USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(USR_LOCAL_INCLUDE)/pabod;$(USR_LOCAL_INCLUDE)/matio;$(USR_LOCAL_INCLUDE)/pthread;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(MY_USR_LOCAL_INCLUDE)/pabod;$(MY_USR_LOCAL_INCLUDE)/matio;$(MY_USR_LOCAL_INCLUDE)/pthread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -70,14 +70,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(USR_LOCAL_INCLUDE)/opencv-2.4.3;$(USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(USR_LOCAL_INCLUDE)/pabod;$(USR_LOCAL_INCLUDE)/matio;$(USR_LOCAL_INCLUDE)/pthread;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(MY_USR_LOCAL_INCLUDE)/pabod;$(MY_USR_LOCAL_INCLUDE)/matio;$(MY_USR_LOCAL_INCLUDE)/pthread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

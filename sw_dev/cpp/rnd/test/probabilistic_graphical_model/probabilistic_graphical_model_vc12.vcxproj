@@ -52,12 +52,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(USR_LOCAL_INCLUDE)/pnl/pnl;$(USR_LOCAL_INCLUDE)/pnl/cxcore;$(USR_LOCAL_INCLUDE)/pnl/src/include;$(USR_LOCAL_INCLUDE)/mocapy;$(USR_LOCAL_INCLUDE)/opencv-2.4.3;$(USR_LOCAL_INCLUDE)/opengm_external/MRF;$(USR_LOCAL_INCLUDE)/opengm_external/TRWS;$(USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(USR_LOCAL_INCLUDE)/opengm_external/ibfs;$(USR_LOCAL_INCLUDE)/opengm_external/QPBO;$(USR_LOCAL_INCLUDE)/gmp;$(USR_LOCAL_INCLUDE)/hdf5;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pnl/pnl;$(MY_USR_LOCAL_INCLUDE)/pnl/cxcore;$(MY_USR_LOCAL_INCLUDE)/pnl/src/include;$(MY_USR_LOCAL_INCLUDE)/mocapy;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MRF;$(MY_USR_LOCAL_INCLUDE)/opengm_external/TRWS;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opengm_external/ibfs;$(MY_USR_LOCAL_INCLUDE)/opengm_external/QPBO;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/hdf5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -68,14 +68,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(USR_LOCAL_INCLUDE)/pnl/pnl;$(USR_LOCAL_INCLUDE)/pnl/cxcore;$(USR_LOCAL_INCLUDE)/pnl/src/include;$(USR_LOCAL_INCLUDE)/mocapy;$(USR_LOCAL_INCLUDE)/opencv-2.4.3;$(USR_LOCAL_INCLUDE)/opengm_external/MRF;$(USR_LOCAL_INCLUDE)/opengm_external/TRWS;$(USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(USR_LOCAL_INCLUDE)/opengm_external/ibfs;$(USR_LOCAL_INCLUDE)/opengm_external/QPBO;$(USR_LOCAL_INCLUDE)/gmp;$(USR_LOCAL_INCLUDE)/hdf5;../../inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pnl/pnl;$(MY_USR_LOCAL_INCLUDE)/pnl/cxcore;$(MY_USR_LOCAL_INCLUDE)/pnl/src/include;$(MY_USR_LOCAL_INCLUDE)/mocapy;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MRF;$(MY_USR_LOCAL_INCLUDE)/opengm_external/TRWS;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opengm_external/ibfs;$(MY_USR_LOCAL_INCLUDE)/opengm_external/QPBO;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/hdf5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

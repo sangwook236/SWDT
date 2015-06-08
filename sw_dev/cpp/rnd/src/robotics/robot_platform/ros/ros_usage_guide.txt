@@ -3,13 +3,14 @@
 		http://www.ros.org/
 		http://wiki.ros.org/ROS
 		http://wiki.ros.org/ko
-
 		http://wiki.ros.org/ROS/Installation
 		http://wiki.ros.org/jade/Installation/Source
 
 		http://wiki.ros.org/
 		http://wiki.ros.org/ROS/StartGuide
 		http://wiki.ros.org/ROS/Tutorials
+
+		https://github.com/robotpilot/rosbook_kr
 
 		http://wiki.ros.org/APIs
 		http://wiki.ros.org/DevelopersGuide
@@ -22,7 +23,6 @@
 		http://wiki.ros.org/openni/Contests/ROS%203D/RGBD-6D-SLAM
 		http://openslam.org/rgbdslam.html
 		http://www.openslam.org/hog-man.html
-
 [-] Run in Linux
 	-.
 
