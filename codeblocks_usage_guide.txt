@@ -1,0 +1,33 @@
+[-] Setting (C/C++)
+	-. Toolchain
+		"Settings" main menu item -> "Compiler..." menu item -> "Global compiler settings" icon -> "Toolchain executables" tab
+		"Settings" main menu item -> "Compiler..." menu item -> "Global compiler settings" icon -> "Compiler settings" and "Linker settings" tabs
+
+	-. Default include & library directories
+		"Settings" main menu item -> "Compiler..." menu item -> "Global compiler settings" icon -> "Toolchain executables" tab (?)
+			==> This is not a fundamental solution, but changes priorities of search directories.
+
+	-. Compiler
+		Additional include directories
+			"Project" main menu item -> "Build options..." menu item -> "Search directories" tab -> "Compiler" tab
+		Compiler options
+			"Project" main menu item -> "Build options..." menu item -> "Compiler settings" tab -> "Compiler Flags" & "Other options" tabs
+		Defines
+			"Project" main menu item -> "Build options..." menu item -> "Compiler settings" tab -> "#defines" tab
+
+	-. Linker
+		Additional library directories
+			"Project" main menu item -> "Build options..." menu item -> "Search directories" tab -> "Linker" tab
+		Link libraries
+			"Project" main menu item -> "Build options..." menu item -> "Linker settings" tab -> "Link libraries:" listbox
+		Link linker options
+			"Project" main menu item -> "Build options..." menu item -> "Linker settings" tab -> "Other linker options:" listbox
+
+	-. Output directory
+		"Project" main menu item -> "Properties..." menu item -> "Build targets" tab -> "Output filename:" item
+
+	-. Working directory
+		"Project" main menu item -> "Properties..." menu item -> "Build targets" tab -> "Execution working dir:" item
+
+	-. Project dependency
+		"Project" main menu item -> "Properties..." menu item -> "Project settings" tab -> "Project's dependencies..." button
