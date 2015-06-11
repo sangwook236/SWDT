@@ -17,18 +17,22 @@
 
 	-. Project dependency
 
+	-. Debugger
+
 [-] Setting (C/C++)
 	-. Toolchain
 		"Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Tool Chain Editor" tree item (?)
 			==> Cannot assign a tool chain which I want to use, but just choose one of existing ones.
-		[ref] http://www.codebuilder.me/2014/03/setting-up-eclipse-on-a-mac-for-gcc-4-8-toolchain/ (?)
-
-	-. Default include & library directories
+			[ref] http://www.codebuilder.me/2014/03/setting-up-eclipse-on-a-mac-for-gcc-4-8-toolchain/ (?)
 		"Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Compiler" tree item -> "Command:" item (?)
 			e.g.) g++ -> /my_usr/local/bin/g++
 		"Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Linker" tree item -> "Command:" item (?)
 			e.g.) g++ -> /mu_usr/local/bin/g++
 			==> These are not a fundamental solution, but change just executable compiler & linker.
+
+	-. Default include & library directories
+		Use 'Additional include directories' & 'Additional library directories'.
+			==> This is not a fundamental solution, but changes priorities of search directories.
 
 	-. Compiler
 		Additional include directories
@@ -45,7 +49,7 @@
 			"Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Compiler" tree item -> "Preprocessor" tree item -> "Defined symbols (-D)" listview
 
 	-. Linker
-		Library search directories
+		Additional library directories
 			"Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Code Analysis" tree item -> "Paths and Symbols" tree item -> "Library Paths" tab
 				==> set directory paths as usual.
 					e.g.) ../../lib
@@ -69,3 +73,9 @@
 	-. Project dependency
 		"Project" main menu item -> "Properties" menu item -> "Project References" tree item
 		"Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Code Analysis" tree item -> "Paths and Symbols" tree item -> "References" tab
+
+	-. Debugger
+		"Run" main menu item -> "Debug Configurations..." menu item -> "C/C++ Application" tree item -> 'project launch configuration' tree item -> "Debugger" tab
+		Main menu item -> "Preferences..." menu item -> "C/C++" tree item -> "Debug" tree item -> "GDB" tree item
+
+	-. Profiler

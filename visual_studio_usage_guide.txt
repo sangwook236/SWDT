@@ -28,3 +28,7 @@
 	-. Project dependency
 		"Project" main menu item -> "Project Dependencies..." menu item
 		"Project" main menu item -> "Project Build Order..." menu item
+
+	-. Debugger
+
+	-. Profiler

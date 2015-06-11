@@ -32,6 +32,12 @@
 	-. Project dependency
 		"Project" main menu item -> "Properties..." menu item -> "Project settings" tab -> "Project's dependencies..." button
 
+	-. Debugger
+		"Settings" main menu item -> "Debugger..." menu item -> "Common" & "GDB/CDB debugger" tree items
+		"Project" main menu item -> "Properties..." menu item -> "Debugger" tab
+
+	-. Profiler
+
 [-] Trouble Shooting
 	-. 공용 library가 아닌 library를 link하기
 		아래와 같이 library를 지정하여야 함.
