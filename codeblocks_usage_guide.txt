@@ -29,6 +29,21 @@
 	-. Working directory
 		"Project" main menu item -> "Properties..." menu item -> "Build targets" tab -> "Execution working dir:" item
 
+		Change working directory using cd command in script (in Mac).
+			"Settings" main menu item -> "Environment..." menu item -> "General settings" listview item -> "Terminal to launch console programs:" item
+				osascript -e 'tell app "Terminal"' -e 'activate' -e 'do script "exe=\'$SCRIPT\'; cd \\"${exe%/*/*/*}\\"; pwd; \\"${exe%}\\""' -e 'end tell'
+					Where is $SCRIPT defined?
+					'/*' means deletion of a word.
+				[ref] AppleScript
+			[ref] http://forums.codeblocks.org/index.php?topic=10328.0
+
+			For building & running.
+				osascript -e 'tell app "Terminal"' -e 'activate' -e 'do script "cd /path/to/working_directory; $SCRIPT"' -e 'end tell'
+			For debugging.
+				osascript -e 'tell app "Terminal"' -e 'activate' -e 'do script "cd /path/to/working_directory; ./executable_name"' -e 'end tell'
+
+			==> I don't know exactly yet how to use AppleScript. This is just a starting point. 
+
 	-. Project dependency
 		"Project" main menu item -> "Properties..." menu item -> "Project settings" tab -> "Project's dependencies..." button
 

@@ -30,6 +30,12 @@
 			e.g.) g++ -> /mu_usr/local/bin/g++
 			==> These are not a fundamental solution, but change just executable compiler & linker.
 
+		How to add custom tool chain to eclipse CDT.
+			http://stackoverflow.com/questions/3489607/how-to-add-custom-tool-chain-to-eclipse-cdt
+			http://sourceforge.net/projects/gnuarmeclipse/
+			http://gnuarmeclipse.livius.net/blog/toolchain-path/
+			==> These are not a solution but a guideline.
+
 	-. Default include & library directories
 		Use 'Additional include directories' & 'Additional library directories'.
 			==> This is not a fundamental solution, but changes priorities of search directories.
@@ -79,3 +85,5 @@
 		Main menu item -> "Preferences..." menu item -> "C/C++" tree item -> "Debug" tree item -> "GDB" tree item
 
 	-. Profiler
+
+[-] Trouble Shooting
