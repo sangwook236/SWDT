@@ -9,26 +9,30 @@
 
 int main(int argc, char *argv[])
 {
-	int assimp_main(int argc, char *argv[]);
-	int hdf_main(int argc, char *argv[]);
+	int string_tokenization_main(int argc, char *argv[]);
 	int csv_parser_main(int argc, char *argv[]);
 
-	int string_tokenization_main(int argc, char *argv[]);
-	
+	int assimp_main(int argc, char *argv[]);
+	int hdf_main(int argc, char *argv[]);
+	int arff_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "ASSIMP library ------------------------------------------------------" << std::endl;
+		std::cout << "string tokenizer ----------------------------------------------------" << std::endl;
+		retval = string_tokenization_main(argc, argv);
+
+		std::cout << "\nCSV Parser library --------------------------------------------------" << std::endl;
+		retval = csv_parser_main(argc, argv);
+
+		std::cout << "\nASSIMP library ------------------------------------------------------" << std::endl;
 		//retval = assimp_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nHDF library ---------------------------------------------------------" << std::endl;
 		//retval = hdf_main(argc, argv);  // not yet implemented.
 
-		std::cout << "\nCSV Parser library --------------------------------------------------" << std::endl;
-		retval = csv_parser_main(argc, argv);
-
-		std::cout << "\nstring tokenizer ----------------------------------------------------" << std::endl;
-		retval = string_tokenization_main(argc, argv);
+		std::cout << "\nARFF file reader ----------------------------------------------------" << std::endl;
+		//retval = arff_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

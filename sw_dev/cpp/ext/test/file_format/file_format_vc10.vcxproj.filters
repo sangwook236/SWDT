@@ -31,6 +31,12 @@
     <Filter Include="Source Files\csv_parser_lib\csv_parser">
       <UniqueIdentifier>{a9f15e9f-e925-4eec-919c-ef72303c6b5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\arff">
+      <UniqueIdentifier>{08e322ae-1700-40a8-aada-0cf7af9eeb0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\arff_lib">
+      <UniqueIdentifier>{2b92ddba-fe9e-43df-96ca-3c54b1e1f513}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -44,6 +50,33 @@
     </ClInclude>
     <ClInclude Include="csv_parser_lib\csv_parser\csv_parser.hpp">
       <Filter>Source Files\csv_parser_lib\csv_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="arff_lib\arff_attr.h">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="arff_lib\arff_data.h">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="arff_lib\arff_instance.h">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="arff_lib\arff_lexer.h">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="arff_lib\arff_parser.h">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="arff_lib\arff_scanner.h">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="arff_lib\arff_token.h">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="arff_lib\arff_utils.h">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="arff_lib\arff_value.h">
+      <Filter>Source Files\arff_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +103,36 @@
     </ClCompile>
     <ClCompile Include="string_tokenization.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="arff_lib\arff_attr.cpp">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="arff_lib\arff_data.cpp">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="arff_lib\arff_instance.cpp">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="arff_lib\arff_lexer.cpp">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="arff_lib\arff_parser.cpp">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="arff_lib\arff_scanner.cpp">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="arff_lib\arff_token.cpp">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="arff_lib\arff_utils.cpp">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="arff_lib\arff_value.cpp">
+      <Filter>Source Files\arff_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="arff\arff_main.cpp">
+      <Filter>Source Files\arff</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
