@@ -13,9 +13,6 @@ namespace visualization
             {
                 Console.WriteLine("OxyPlot library -----------------------------------------------------");
                 oxyplot.OxyPlot_Main.run(args);
-
-                Console.WriteLine("Dynamic Data Display (D3) library -----------------------------------");
-                oxyplot.D3_Main.run(args);
             }
             catch (Exception e)
             {

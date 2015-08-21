@@ -2,66 +2,66 @@
 
 [-] hierarachy
 
-	<<  ???  >>
 	[-]
+	[1]
 		<->
-		{-}
-			-.
-				->
-				+>
-				:>
-					>>
-					<>
-						1>
-						1.
-						i.
+		<1>
+			->
+			+>
+			:>
+			>>
+			<>
+			1>
+				-.
+				1.
+				i.
 
-[-] explanation or constraint의 표현
+[-] status, explanation or constraint
 	-. use brace: {...}
 	-. usage
-		[-] {current} 1 tab == 4 spaces
-		-. {need} tag structure의 변경
+		[-] {*} 1 tab == 4 spaces.
+		-. {/,need} change tag structure.
+		-. {progress,problem} our system malfunctions.
 	-. category
 		{current}: current status
-		{need}: need or requirement
-		{cause}: cause
-		{solution}: solution
-		{problem}: problem or trouble
-		{secondary-problem}: secondary/derived problem
+			completion, *
+			progress, - or ~
+			delay, !
+			cancel, /
 
-[-] status indicator
-	-. completion
-		<*>
-	-. progress
-		<-> or <~>
-	-. delay
-		<!>
-	-. cancel
-		</>
+		{need}: need or requirement.
+		{cause}: cause.
+		{solution}: solution.
+		{error}: error, bug, defect.
+		{problem}: problem or trouble.
+		{secondary-problem}: secondary/derived problem.
+
+		{error-msg}: error message.
+		{warning-msg}: warning message.
 
 
 << Revision (History) Tag >>
 
 [-] format
 	-. when multiple lines
-		//--S [tag_id] yyyy/mm/dd: modifier_id
-		//	-. {action_id}: <explanation>
-		//--E [tag_id] yyyy/mm/dd: modifier_id
+		//--S [tag-id] yyyy/mm/dd: modifier-id
+		//	-. {action-id}: <explanation>
+		//--E [tag-id] yyyy/mm/dd: modifier-id
 	-. when single line & no explanation
-		//-- [tag_id] yyyy/mm/dd: modifier_id
+		//-- [tag-id] yyyy/mm/dd: modifier-id
 
 [-] feature
-	<-> 중첩될 수 있다
-	<-> tag id
+	<-> can be nested
+	<-> tag-id
 		-. tag id는 동일 file 내에서 unique하여야 하며 생략될 수 있다.
 			그러나 bracket은 항상 존재하여야 한다.
 		-. revision history가 있을 경우 history id를 사용하는 것이 좋다.
 		-. bug 수정시에는 tag id를 error id로 하는 것이 좋을 듯하다.
-	<-> modifier id
+	<-> modifier-id
 		-. tagging을 한 사람의 name or identifier.
-	<-> action id
+	<-> action-id
 		-. start tag 후에 수행 동작과 설명을 추가할 수 있다.
-		-. identifer
+		-. identifier
 			{A}: add
 			{M}: modify
 			{R}: replace
@@ -101,28 +101,24 @@
 		//	-. <detailed explanation>
 
 	-. reference
-		// REF [site/file/doc/paper] >> <reference site or document, etc.>
+		// REF [site/file/doc/paper] >> <brief description>
+		//	-. <reference site or document, etc.>
 		//	-. <additional comment>
 
 	-. pseudocode programming process (PPP)
-		// PPP [] >> 
-		//	-. {step no.}: <brief description>
-		//		<detailed explanation>
+		// PPP [] {step:#} >> <brief description>
+		//	-. <detailed explanation>
 
 	-. design by contract (DbC)
-		// CONTRACT [precondition/postcondition/invariant] >> 
-		//	-. {required/optional}: <brief description>
-		//		<detailed explanation>
+		// CONTRACT [precondition/postcondition/invariant] {required/optional} >> <brief description>
+		//	-. <detailed explanation>
 		//	[ref] ContractViolation and its derived classes in ${VIGRA_LIBRARY_HOME}/include/vigra/error.hxx
 	-. precondition
-		// PRECONDITION [] >> 
-		//	-. {required/optional}: <brief description>
-		//		<detailed explanation>
+		// PRECONDITION [] {none/required/optional} >> <brief description>
+		//	-. <detailed explanation>
 	-. postcondition
-		// POSTCONDITION [] >> 
-		//	-. {required/optional}: <brief description>
-		//		<detailed explanation>
+		// POSTCONDITION [] {none/required/optional} >> <brief description>
+		//	-. <detailed explanation>
 	-. invariant
-		// INVARIANT [] >> 
-		//	-. {required/optional}: <brief description>
-		//		<detailed explanation>
+		// INVARIANT [] {none/required/optional} >> <brief description>
+		//	-. <detailed explanation>
