@@ -1,0 +1,4 @@
+[-] General
+	-. Site
+		http://dynamicdatadisplay.codeplex.com/
+		http://research.microsoft.com/en-us/um/cambridge/groups/science/tools/d3/dynamicdatadisplay.htm
