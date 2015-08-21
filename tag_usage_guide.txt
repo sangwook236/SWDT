@@ -53,14 +53,14 @@
 [-] feature
 	<-> can be nested
 	<-> tag-id
-		-. tag id´Â µ¿ÀÏ file ³»¿¡¼­ uniqueÇÏ¿©¾ß ÇÏ¸ç »ı·«µÉ ¼ö ÀÖ´Ù.
-			±×·¯³ª bracketÀº Ç×»ó Á¸ÀçÇÏ¿©¾ß ÇÑ´Ù.
-		-. revision history°¡ ÀÖÀ» °æ¿ì history id¸¦ »ç¿ëÇÏ´Â °ÍÀÌ ÁÁ´Ù.
-		-. bug ¼öÁ¤½Ã¿¡´Â tag id¸¦ error id·Î ÇÏ´Â °ÍÀÌ ÁÁÀ» µíÇÏ´Ù.
+		-. tag idëŠ” ë™ì¼ file ë‚´ì—ì„œ uniqueí•˜ì—¬ì•¼ í•˜ë©° ìƒëµë  ìˆ˜ ìˆë‹¤.
+			ê·¸ëŸ¬ë‚˜ bracketì€ í•­ìƒ ì¡´ì¬í•˜ì—¬ì•¼ í•œë‹¤.
+		-. revision historyê°€ ìˆì„ ê²½ìš° history idë¥¼ ì‚¬ìš©í•˜ëŠ” ê²ƒì´ ì¢‹ë‹¤.
+		-. bug ìˆ˜ì •ì‹œì—ëŠ” tag idë¥¼ error idë¡œ í•˜ëŠ” ê²ƒì´ ì¢‹ì„ ë“¯í•˜ë‹¤.
 	<-> modifier-id
-		-. taggingÀ» ÇÑ »ç¶÷ÀÇ name or identifier.
+		-. taggingì„ í•œ ì‚¬ëŒì˜ name or identifier.
 	<-> action-id
-		-. start tag ÈÄ¿¡ ¼öÇà µ¿ÀÛ°ú ¼³¸íÀ» Ãß°¡ÇÒ ¼ö ÀÖ´Ù.
+		-. start tag í›„ì— ìˆ˜í–‰ ë™ì‘ê³¼ ì„¤ëª…ì„ ì¶”ê°€í•  ìˆ˜ ìˆë‹¤.
 		-. identifier
 			{A}: add
 			{M}: modify
@@ -74,30 +74,30 @@
 	-. review
 		// TODO [review] >> <brief description>
 		//	-. <detailed explanation>
-			e.g.) Ãß°¡ÀûÀÎ °ËÅä°¡ ÇÊ¿äÇÑ °æ¿ì.
+			e.g.) ì¶”ê°€ì ì¸ ê²€í† ê°€ í•„ìš”í•œ ê²½ìš°.
 	-. check
 		// TODO [check] >> <brief description>
 		//	-. <detailed explanation>
-			e.g.) °ËÁõÀÌ³ª Å×½ºÆ®°¡ ÃæºĞÈ÷ µÇÁö ¾ÊÀº °æ¿ì.
+			e.g.) ê²€ì¦ì´ë‚˜ í…ŒìŠ¤íŠ¸ê°€ ì¶©ë¶„íˆ ë˜ì§€ ì•Šì€ ê²½ìš°.
 	-. add/implement
 		// TODO [add/implement] >> <brief description>
 		//	-. <detailed explanation>
-			¹Ì±¸Çö »çÇ×ÀÌ ÀÖ´Â ºÎºĞ¿¡ »ç¿ë.
+			ë¯¸êµ¬í˜„ ì‚¬í•­ì´ ìˆëŠ” ë¶€ë¶„ì— ì‚¬ìš©.
 	-. modify/enhance/update/upgrade/fix/correct
 		// FIXME [modify/enhance/update/upgrade/fix/correct] >> <brief description>
 		//	-. <detailed explanation>
-			±¸ÇöÀº µÇ¾î ÀÖÀ¸³ª (Àç»ç¿ë¼º µîÀÇ ÀÌÀ¯·Î) ¼öÁ¤ÀÌ ÇÊ¿äÇÑ ºÎºĞ¿¡ »ç¿ë.
+			êµ¬í˜„ì€ ë˜ì–´ ìˆìœ¼ë‚˜ (ì¬ì‚¬ìš©ì„± ë“±ì˜ ì´ìœ ë¡œ) ìˆ˜ì •ì´ í•„ìš”í•œ ë¶€ë¶„ì— ì‚¬ìš©.
 	-. delete
 		// FIXME [delete] >> <brief description>
 		//	-. <detailed explanation>
-			e.g.) test¸¦ À§ÇØ ÀÛ¼ºÇÑ °æ¿ì.
+			e.g.) testë¥¼ ìœ„í•´ ì‘ì„±í•œ ê²½ìš°.
 	-. restore
 		// FIXME [restore] >> <brief description>
 		//	-. <detailed explanation>
-			test µîÀ» À§ÇØ ´ëÃ¼Çß´ø ºÎºĞÀ» ¿ø»óÅÂ·Î º¹±Í.
+			test ë“±ì„ ìœ„í•´ ëŒ€ì²´í–ˆë˜ ë¶€ë¶„ì„ ì›ìƒíƒœë¡œ ë³µê·€.
 
 	-. note
-		// Note [caution] >> <brief description>
+		// NOTE [caution] >> <brief description>
 		//	-. <detailed explanation>
 
 	-. reference
