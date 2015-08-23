@@ -1,0 +1,5 @@
+[-] General
+	-. Site
+		http://ai.stanford.edu/~paskin/mfa/
+	-. Download
+		http://ai.stanford.edu/~paskin/mfa/mfa.zip/

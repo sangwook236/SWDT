@@ -16,6 +16,12 @@
     <Filter Include="Source Files\tapkee">
       <UniqueIdentifier>{ec3c72ea-d2a4-4857-9caf-3c1e9019bd47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\mfa">
+      <UniqueIdentifier>{920ecbbb-873e-4e93-9e17-930fce8b4db7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\mfa_lib">
+      <UniqueIdentifier>{616cf5de-4113-4bcf-9b3d-e896f7b488a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -26,6 +32,12 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mfa_lib\log.hpp">
+      <Filter>Source Files\mfa_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="mfa_lib\mfa.hpp">
+      <Filter>Source Files\mfa_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +61,12 @@
     </ClCompile>
     <ClCompile Include="tapkee\tapkee_rna_cpp_example.cpp">
       <Filter>Source Files\tapkee</Filter>
+    </ClCompile>
+    <ClCompile Include="mfa\mfa_main.cpp">
+      <Filter>Source Files\mfa</Filter>
+    </ClCompile>
+    <ClCompile Include="mfa_lib\mfa.cpp">
+      <Filter>Source Files\mfa_lib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

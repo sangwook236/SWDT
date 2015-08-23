@@ -9,9 +9,9 @@ namespace local {
 
 namespace my_tapkee {
 
-	void minimal_cpp_example();
-	void RNA_cpp_example();
-	void precomputed_distance_cpp_example();
+void minimal_cpp_example();
+void RNA_cpp_example();
+void precomputed_distance_cpp_example();
 
 }  // namespace my_tapkee
 

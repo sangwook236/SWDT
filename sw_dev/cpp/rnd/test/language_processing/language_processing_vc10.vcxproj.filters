@@ -22,6 +22,9 @@
     <Filter Include="Source Files\document_image_binarization">
       <UniqueIdentifier>{04129ad3-2969-4e5c-ac99-1b4ffdde0cbf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\kaldi">
+      <UniqueIdentifier>{8a6cec56-11c1-4f62-8f5c-9192ec56492d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -55,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="document_image_binarization\binarizewolfjolion.cpp">
       <Filter>Source Files\document_image_binarization</Filter>
+    </ClCompile>
+    <ClCompile Include="kaldi\kaldi_main.cpp">
+      <Filter>Source Files\kaldi</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

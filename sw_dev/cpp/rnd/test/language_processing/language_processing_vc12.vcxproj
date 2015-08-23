@@ -91,6 +91,7 @@
   <ItemGroup>
     <ClCompile Include="document_image_binarization\binarizewolfjolion.cpp" />
     <ClCompile Include="document_image_binarization\document_image_binarization_main.cpp" />
+    <ClCompile Include="kaldi\kaldi_main.cpp" />
     <ClCompile Include="leptonica\leptonica_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />

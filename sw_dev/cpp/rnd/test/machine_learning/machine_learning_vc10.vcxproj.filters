@@ -58,6 +58,9 @@
     <Filter Include="Source Files\caffe">
       <UniqueIdentifier>{fe80dfea-dfbf-4ba0-bbe7-55ef811822ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\waffles">
+      <UniqueIdentifier>{62063123-c607-4b40-9d52-f659c38e2998}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -355,6 +358,9 @@
     </ClCompile>
     <ClCompile Include="caffe\caffe_main.cpp">
       <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="waffles\waffles_main.cpp">
+      <Filter>Source Files\waffles</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

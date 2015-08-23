@@ -15,6 +15,8 @@ int main(int argc, char *argv[])
 
 	int document_image_binarization_main(int argc, char *argv[]);
 
+	int kaldi_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
@@ -28,6 +30,10 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nDocument Image Binarization algorithm -------------------------------" << std::endl;
 		retval = document_image_binarization_main(argc, argv);
+
+		std::cout << "\nKaldi Project -------------------------------------------------------" << std::endl;
+		//	-. a toolkit for speech recognition.
+		//retval = kaldi_main(argc, argv);  // not yet implemented
 	}
     catch (const std::bad_alloc &e)
 	{

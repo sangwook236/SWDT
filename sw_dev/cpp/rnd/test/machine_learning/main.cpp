@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
 	int dlib_ml_main(int argc, char *argv[]);
 	int caffe_main(int argc, char *argv[]);
 	int liblearning_main(int argc, char *argv[]);
+	int waffles_main(int argc, char *argv[]);
 
 	int rl_glue_main(int argc, char *argv[]);
 
@@ -114,6 +115,18 @@ int main(int argc, char *argv[])
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
 		//	-. deep learning.
 		//retval = liblearning_main(argc, argv);
+
+		std::cout << "\nWaffles library -----------------------------------------------------" << std::endl;
+		//	-. generation of various types of data
+		//	-. supervised and semi-supervised learning algorithms
+		//	-. transforming datasets
+		//	-. predicting missing values in incomplete data, or testing collaborative filtering recommendation systems.
+		//	-. learning from and operating on sparse data.
+		//	-. plotting and visualizing datasets.
+		//	-. audio processing.
+		//	-. clustering.
+		//	-. dimensionality reduction, manifold learning, attribute selection, and tools related to NLDR.
+		//retval = waffles_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nRL-Glue (Reinforcement Learning Glue) library -----------------------" << std::endl;
 		//retval = rl_glue_main(argc, argv);  // not yet implemented.

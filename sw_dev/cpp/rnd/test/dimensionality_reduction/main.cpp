@@ -9,13 +9,38 @@
 
 int main(int argc, char *argv[])
 {
+	int mfa_main(int argc, char *argv[]);
 	int tapkee_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "tapkee library ------------------------------------------------------" << std::endl;
-		//	-. A flexible and efficient ¬³++ template library for dimension reduction.
+		std::cout << "mixtures of factor analyzers (MFA) ----------------------------------" << std::endl;
+		//	-. EM algorithm for mixtures of factor analyzers (MFA).
+		//	-. Train three specializations of MFA:
+		//		A (single) factor analyzer (FA).
+		//		A (single) probabilistic PCA model (PPCA).
+		//		A mixture of probabilistic PCA models (MPPCA).
+		retval = mfa_main(argc, argv);
+
+		std::cout << "\ntapkee library ------------------------------------------------------" << std::endl;
+		//	-. Locally Linear Embedding (LLE) and Kernel Locally Linear Embedding (KLLE).
+		//	-. Neighborhood Preserving Embedding (NPE).
+		//	-. Local Tangent Space Alignment (LTSA).
+		//	-. Linear Local Tangent Space Alignment (LLTSA).
+		//	-. Hessian Locally Linear Embedding (HLLE).
+		//	-. Laplacian eigenmaps.
+		//	-. Locality Preserving Projections (LPP).
+		//	-. Diffusion map.
+		//	-. Isomap and landmark Isomap.
+		//	-. Multidimensional scaling (MDS) and landmark Multidimensional scaling (lMDS).
+		//	-. Stochastic Proximity Embedding (SPE).
+		//	-. PCA and randomized PCA.
+		//	-. Kernel PCA (kPCA).
+		//	-. Random projection (RP).
+		//	-. Factor analysis (FA).
+		//	-. t-Distributed Stochastic Neighbor Embedding (t-SNE).
+		//	-. Barnes-Hut-SNE.
 		retval = tapkee_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
