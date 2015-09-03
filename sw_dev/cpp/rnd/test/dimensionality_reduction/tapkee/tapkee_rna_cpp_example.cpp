@@ -29,7 +29,11 @@ void RNA_cpp_example()
 	const std::string input_filename("./data/dimensionality_reduction/tapkee/rna.dat");
 
 	std::ifstream input_stream;
+#if defined(__GNUC__)
+	input_stream.open(input_filename.c_str());
+#else
 	input_stream.open(input_filename);
+#endif
 
 	std::vector<std::string> rnas;
 	std::string line;

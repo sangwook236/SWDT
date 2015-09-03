@@ -35,12 +35,18 @@
 			<Add option="-fexceptions" />
 			<Add directory="../../inc" />
 			<Add directory="/usr/local/inlcude" />
+			<Add directory="/usr/include/eigen3" />
+			<Add directory="./mfa_lib" />
 		</Compiler>
 		<Linker>
 			<Add directory="../../lib" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="main.cpp" />
+		<Unit filename="mfa/mfa_main.cpp" />
+		<Unit filename="mfa_lib/log.hpp" />
+		<Unit filename="mfa_lib/mfa.cpp" />
+		<Unit filename="mfa_lib/mfa.hpp" />
 		<Unit filename="tapkee/tapkee_main.cpp" />
 		<Unit filename="tapkee/tapkee_minimal_cpp_example.cpp" />
 		<Unit filename="tapkee/tapkee_precomputed_distance_cpp_example.cpp" />
