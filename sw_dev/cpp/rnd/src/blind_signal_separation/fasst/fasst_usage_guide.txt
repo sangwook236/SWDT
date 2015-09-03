@@ -1,0 +1,12 @@
+[-] General
+	-. Site
+		http://bass-db.gforge.inria.fr/
+		http://bass-db.gforge.inria.fr/fasst/
+		http://bass-db.gforge.inria.fr/bss_locate/
+		http://bass-db.gforge.inria.fr/bss_eval/
+		http://bass-db.gforge.inria.fr/peass/
+		http://bass-db.gforge.inria.fr/bss_oracle/
+		http://bass-db.gforge.inria.fr/BASS-dB/
+
+	-. Download
+		http://fasst.gforge.inria.fr
