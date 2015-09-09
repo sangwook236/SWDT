@@ -17,9 +17,9 @@ void precomputed_distance_cpp_example();
 
 int tapkee_main(int argc, char *argv[])
 {
-	my_tapkee::minimal_cpp_example();
+	//my_tapkee::minimal_cpp_example();
 	//my_tapkee::RNA_cpp_example();
-	//my_tapkee::precomputed_distance_cpp_example();
+	my_tapkee::precomputed_distance_cpp_example();
 
 	return 0;
 }

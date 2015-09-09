@@ -2,3 +2,10 @@
 	-. Site
 		http://tapkee.lisitsyn.me/
 		https://github.com/lisitsyn/tapkee
+
+[-] Trouble Shooting
+	-. Multiple definition (GCC)
+		{error-msg} multiple definition of 'stichwort::stichwort_internal::PointerTypePolicyImpl<stichwort::stichwort_internal::EmptyType>::repr(void**) const'
+		==> {cause} include a header file, tapkee.hpp, more than one time.
+		==> {solution} include the header file only one time in a project.
+
