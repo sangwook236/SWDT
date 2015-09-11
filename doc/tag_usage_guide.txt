@@ -39,6 +39,9 @@
 		{error-msg}: error message.
 		{warning-msg}: warning message.
 
+		{cause}: cause.
+		{solution}: solution.
+
 
 << Revision (History) Tag >>
 
