@@ -84,7 +84,7 @@ void matrix_basic()
 		gsl_matrix_free(mat);
 	}
 
-	// matrix copy, swap elements
+	// copy matrix, swap elements
 	std::cout << std::endl << ">>> matrix copy, swap elements" << std::endl;
 	{
 		const int rdim = 3, cdim = 3;
@@ -183,7 +183,7 @@ void matrix_transpose()
 	const int dim = 3;
 	double a[] = { 11.0, 12.0, 13.0, 21.0, 22.0, 23.0, 31.0, 32.0, 33.0 };
 	gsl_matrix_view A = gsl_matrix_view_array(a, dim, dim);
-	gsl_matrix* AT = gsl_matrix_alloc(dim, dim);
+	gsl_matrix *AT = gsl_matrix_alloc(dim, dim);
 
 	//gsl_matrix_transpose(&A.matrix);  // square matrix
 	gsl_matrix_transpose_memcpy(AT, &A.matrix);  // square matrix (?)

@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 		retval = string_tokenization_main(argc, argv);
 
 		std::cout << "\nCSV Parser library --------------------------------------------------" << std::endl;
-		retval = csv_parser_main(argc, argv);
+		//retval = csv_parser_main(argc, argv);
 
 		std::cout << "\nASSIMP library ------------------------------------------------------" << std::endl;
 		//retval = assimp_main(argc, argv);  // not yet implemented.

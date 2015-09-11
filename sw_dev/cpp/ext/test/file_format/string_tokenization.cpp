@@ -41,10 +41,11 @@ void tokenize_string(const std::string &str, std::vector<std::string> &tokens, c
 
 void method2()
 {
-	const std::string str("Hello,How Are , You,Today");
+	const std::string str("Hello,How Are ,  You,Today");
 
 	std::vector<std::string> tokens;
-	tokenize_string(str, tokens, ',');
+	//tokenize_string(str, tokens, ',');
+	tokenize_string(str, tokens, ' ');
 
 	// display.
 	std::copy(tokens.begin(), tokens.end(), std::ostream_iterator<std::string>(std::cout, "."));
@@ -61,6 +62,7 @@ void method3()
     boost::tokenizer<boost::char_separator<char> > tokens(str, sep);
 
 	// display.
+    //for (boost::tokenizer<boost::char_separator<char> >::const_iterator cit = tokens.begin(); cit != tokens.end(); ++cit)
 	BOOST_FOREACH(const std::string &tok, tokens)
         std::cout << tok << '.';
 	std::cout << std::endl;

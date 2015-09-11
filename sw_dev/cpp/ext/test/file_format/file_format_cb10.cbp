@@ -33,10 +33,35 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="./arff_lib" />
+			<Add directory="./csv_parser_lib" />
 		</Compiler>
+		<Unit filename="arff/arff_main.cpp" />
+		<Unit filename="arff_lib/arff_attr.cpp" />
+		<Unit filename="arff_lib/arff_attr.h" />
+		<Unit filename="arff_lib/arff_data.cpp" />
+		<Unit filename="arff_lib/arff_data.h" />
+		<Unit filename="arff_lib/arff_instance.cpp" />
+		<Unit filename="arff_lib/arff_instance.h" />
+		<Unit filename="arff_lib/arff_lexer.cpp" />
+		<Unit filename="arff_lib/arff_lexer.h" />
+		<Unit filename="arff_lib/arff_parser.cpp" />
+		<Unit filename="arff_lib/arff_parser.h" />
+		<Unit filename="arff_lib/arff_scanner.cpp" />
+		<Unit filename="arff_lib/arff_scanner.h" />
+		<Unit filename="arff_lib/arff_token.cpp" />
+		<Unit filename="arff_lib/arff_token.h" />
+		<Unit filename="arff_lib/arff_utils.cpp" />
+		<Unit filename="arff_lib/arff_utils.h" />
+		<Unit filename="arff_lib/arff_value.cpp" />
+		<Unit filename="arff_lib/arff_value.h" />
 		<Unit filename="assimp/assimp_main.cpp" />
+		<Unit filename="csv_parser/csv_parser_main.cpp" />
+		<Unit filename="csv_parser_lib/csv_parser.cpp" />
+		<Unit filename="csv_parser_lib/csv_parser/csv_parser.hpp" />
 		<Unit filename="hdf/hdf_main.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="string_tokenization.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

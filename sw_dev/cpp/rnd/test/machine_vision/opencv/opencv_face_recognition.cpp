@@ -35,15 +35,19 @@ cv::Mat norm_0_255(cv::InputArray _src)
 
 void read_csv(const std::string &filename, std::vector<cv::Mat> &images, std::vector<int> &labels, const char separator = ';')
 {
-	std::ifstream file(filename.c_str(), std::ifstream::in);
-	if (!file)
+#if defined(__GNUC__)
+	std::ifstream stream(filename.c_str());
+#else
+	std::ifstream stream(filename);
+#endif
+	if (!stream)
 	{
 		const std::string error_message = "No valid input file was given, please check the given filename.";
 		CV_Error(CV_StsBadArg, error_message);
 	}
-	
+
 	std::string line, path, classlabel;
-	while (std::getline(file, line))
+	while (std::getline(stream, line))
 	{
 		std::stringstream liness(line);
 		std::getline(liness, path, separator);
@@ -74,7 +78,7 @@ void simple_example()
 		images.push_back(cv::imread("person1/0.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
 		images.push_back(cv::imread("person1/1.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
 		images.push_back(cv::imread("person1/2.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
-	
+
 		// train it on the given dataset (the face images and labels).
 		model->train(images, labels);
 	}
@@ -161,7 +165,7 @@ void facerec_demo()
 		// First we'll use it to set the threshold of the FaceRecognizer to 0.0 without retraining the model.
 		// This can be useful if you are evaluating the model:
 		model->set("threshold", 0.0);
-    
+
 		// Now the threshold of this model is set to 0.0.
 		// A prediction now returns -1, as it's impossible to have a distance below it.
 		const int predictedLabel = model->predict(testSample);
@@ -293,10 +297,10 @@ void eigenfaces_example()
 		cv::Mat evs = cv::Mat(W, cv::Range::all(), cv::Range(0, num_components));
 		cv::Mat projection = cv::subspaceProject(evs, mean, images[0].reshape(1, 1));
 		cv::Mat reconstruction = cv::subspaceReconstruct(evs, mean, projection);
-		
+
 		// Normalize the result.
 		reconstruction = norm_0_255(reconstruction.reshape(1, images[0].rows));
-		
+
 		// Display.
 		cv::imshow(cv::format("eigenface - reconstruction_%d", num_components), reconstruction);
 		// Save.
@@ -388,11 +392,11 @@ void fisherfaces_example()
 
 		// Reshape to original size & normalize to [0...255] for cv::imshow.
 		const cv::Mat &grayscale = norm_0_255(ev.reshape(1, height));
-		
+
 		// Show the image & apply a Bone colormap for better sensing.
 		cv::Mat cgrayscale;
 		applyColorMap(grayscale, cgrayscale, cv::COLORMAP_BONE);
-		
+
 		// Display.
 		cv::imshow(cv::format("Fisherface - fisherface_%d", i), cgrayscale);
 		// Save.

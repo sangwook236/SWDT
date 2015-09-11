@@ -109,7 +109,11 @@ void example_using_cpp_api()
 	const std::string filename("./data/file_format/test1.csv");
 
 	std::vector<std::vector<std::string> > data;
+#if defined(__GNUC__)
+	std::ifstream strm(filename.c_str());
+#else
 	std::ifstream strm(filename);
+#endif
 
 	std::string str;
 	std::vector<std::string> record;
