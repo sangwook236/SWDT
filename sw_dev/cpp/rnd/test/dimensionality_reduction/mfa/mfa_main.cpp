@@ -120,21 +120,21 @@ namespace my_mfa {
 int mfa_main(int argc, char *argv[])
 {
 #if 0
-    const std::string train_data_file("./data/dimensionality_reduction/mfa/swissroll_X_1.dat");  // #data = 20000.
+    const std::string train_data_file("./data/dimensionality_reduction/swissroll_X_1.dat");  // #data = 20000.
     std::size_t num_observed_data = 2000;  // the number of the observed data.
 
     std::size_t num_mixture_components = 5;  // the number of mixture components, the arity of the latent discrete variable.
     std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
     std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
 #elif 1
-    const std::string train_data_file("./data/dimensionality_reduction/mfa/swissroll_X_2.dat");  // #data = 2000.
+    const std::string train_data_file("./data/dimensionality_reduction/swissroll_X_2.dat");  // #data = 2000.
     std::size_t num_observed_data = 2000;  // the number of the observed data.
 
     std::size_t num_mixture_components = 1;  // the number of mixture components, the arity of the latent discrete variable.
     std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
     std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
 #elif 0
-    const std::string train_data_file("./data/dimensionality_reduction/mfa/scurve_X_2.dat");  // #data = 2000.
+    const std::string train_data_file("./data/dimensionality_reduction/scurve_X_2.dat");  // #data = 2000.
     std::size_t num_observed_data = 2000;  // the number of the observed data.
 
     std::size_t num_mixture_components = 5;  // the number of mixture components, the arity of the latent discrete variable.
@@ -176,7 +176,7 @@ int mfa_main(int argc, char *argv[])
         // compute likelihood.
         {
             gsl_vector *data = gsl_vector_alloc(dim_observed_variable);
-            // the first datum in ./data/dimensionality_reduction/mfa/swissroll_X_2.dat.
+            // the first datum in ./data/dimensionality_reduction/swissroll_X_2.dat.
             gsl_vector_set(data, 0, 3.6981235e+00);
             gsl_vector_set(data, 1, 5.4035790e+00);
             gsl_vector_set(data, 2, 1.3365016e+01);
@@ -192,7 +192,7 @@ int mfa_main(int argc, char *argv[])
 #if 0
         {
             gsl_vector *data = gsl_vector_alloc(dim_observed_variable);
-            // the first datum in ./data/dimensionality_reduction/mfa/swissroll_X_2.dat.
+            // the first datum in ./data/dimensionality_reduction/swissroll_X_2.dat.
             gsl_vector_set(data, 0, 3.6981235e+00);
             gsl_vector_set(data, 1, 5.4035790e+00);
             gsl_vector_set(data, 2, 1.3365016e+01);
@@ -262,7 +262,7 @@ int mfa_main(int argc, char *argv[])
         // compute likelihood.
         {
             gsl_vector *data = gsl_vector_alloc(dim_observed_variable);
-            // the first datum in ./data/dimensionality_reduction/mfa/swissroll_X_2.dat.
+            // the first datum in ./data/dimensionality_reduction/swissroll_X_2.dat.
             gsl_vector_set(data, 0, 3.6981235e+00);
             gsl_vector_set(data, 1, 5.4035790e+00);
             gsl_vector_set(data, 2, 1.3365016e+01);
