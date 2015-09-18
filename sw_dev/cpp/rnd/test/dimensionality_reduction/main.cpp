@@ -42,6 +42,9 @@ int main(int argc, char *argv[])
 		//	-. t-Distributed Stochastic Neighbor Embedding (t-SNE).
 		//	-. Barnes-Hut-SNE.
 		retval = tapkee_main(argc, argv);
+
+		// REF [file] >> Waffles library in machine learning project.
+		//	-. dimensionality reduction, manifold learning, attribute selection, and tools related to NLDR.
 	}
     catch (const std::bad_alloc &e)
 	{
