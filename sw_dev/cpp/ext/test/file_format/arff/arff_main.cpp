@@ -17,8 +17,8 @@ namespace my_arff {
 
 int arff_main(int argc, char *argv[])
 {
-	//ArffParser parser("./data/file_format/case1.arff");
-	//ArffParser parser("./data/file_format/case2.arff");
+	//ArffParser parser("./data/file_format/case1.arff");  // error occurred because of incorrect file format.
+	//ArffParser parser("./data/file_format/case2.arff");  // error occurred because of incorrect file format.
 	//ArffParser parser("./data/file_format/case3.arff");
 	ArffParser parser("./data/file_format/case4.arff");
 
