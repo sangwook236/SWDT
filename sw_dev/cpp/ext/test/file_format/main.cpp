@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "string tokenizer ----------------------------------------------------" << std::endl;
-		retval = string_tokenization_main(argc, argv);
+		//retval = string_tokenization_main(argc, argv);
 
 		std::cout << "\nCSV Parser library --------------------------------------------------" << std::endl;
 		//retval = csv_parser_main(argc, argv);
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 		//retval = hdf_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nARFF file reader ----------------------------------------------------" << std::endl;
-		//retval = arff_main(argc, argv);  // not yet implemented.
+		retval = arff_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{
