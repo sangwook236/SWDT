@@ -36,6 +36,9 @@
 			bjam executable을 생성하기 위해 아래의 script file을 실행.
 				${BOOST_ROOT}/tools/build/v2/engine/build.bat
 				${BOOST_ROOT}/tools/build/v2/engine/build.sh
+				or
+				${BOOST_ROOT}/tools/build/src/engine/build.bat
+				${BOOST_ROOT}/tools/build/src/engine/build.sh
 	-. bcp
 		building command.
 			${BOOST_ROOT}/bjam tools/bcp
