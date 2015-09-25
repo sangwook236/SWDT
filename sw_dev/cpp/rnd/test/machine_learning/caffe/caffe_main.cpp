@@ -1,4 +1,5 @@
 //#include "stdafx.h"
+//#include <caffe/caffe.hpp>
 #include <iostream>
 #include <stdexcept>
 

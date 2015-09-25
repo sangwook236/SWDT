@@ -2,3 +2,5 @@
 	-. Site
 		http://caffe.berkeleyvision.org/
 		https://github.com/BVLC/caffe
+
+		http://waffles.sourceforge.net/apidoc/html/index.html

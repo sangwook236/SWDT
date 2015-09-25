@@ -1,5 +1,7 @@
 //include "stdafx.h"
+//#include <GClasses/GLeaner.hpp>
 #include <iostream>
+#include <stdexcept>
 
 
 namespace {

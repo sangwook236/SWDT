@@ -39,6 +39,7 @@
 			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
+			<Add library="GClasses" />
 			<Add library="shogun" />
 			<Add library="nlopt" />
 			<Add library="boost_timer" />
