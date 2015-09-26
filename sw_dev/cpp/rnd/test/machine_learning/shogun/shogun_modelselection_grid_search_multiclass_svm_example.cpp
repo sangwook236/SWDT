@@ -88,7 +88,7 @@ void modelselection_grid_search_multiclass_svm_example()
 	// create peramters for model selection
 	shogun::CModelSelectionParameters *root = local::build_param_tree(kernel);
 
-	shogun::CGridSearchModelSelection *model_selection = new shogun::CGridSearchModelSelection(root, cross);
+	shogun::CGridSearchModelSelection *model_selection = new shogun::CGridSearchModelSelection(cross, root);
 	const bool print_state = true;
 	shogun::CParameterCombination *params = model_selection->select_model(print_state);
 	SG_SPRINT("best combination\n");

@@ -123,7 +123,7 @@ void modelselection_grid_search_kernel_example()
 	param_tree->print_tree();
 
 	// handles all of the above structures in memory
-	shogun::CGridSearchModelSelection *grid_search = new shogun::CGridSearchModelSelection(param_tree, cross);
+	shogun::CGridSearchModelSelection *grid_search = new shogun::CGridSearchModelSelection(cross, param_tree);
 
 	const bool print_state = true;
 	shogun::CParameterCombination *best_combination = grid_search->select_model(print_state);

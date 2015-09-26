@@ -1,7 +1,7 @@
 //#include "stdafx.h"
 #include <shogun/base/init.h>
 #include <shogun/features/DenseFeatures.h>
-#include <shogun/features/Labels.h>
+//#include <shogun/features/Labels.h>
 #include <shogun/kernel/GaussianKernel.h>
 #include <shogun/kernel/PolyKernel.h>
 #include <shogun/regression/KernelRidgeRegression.h>
@@ -113,7 +113,7 @@ void modelselection_grid_search_krr_example()
 	param_tree->print_tree();
 
 	// handles all of the above structures in memory
-	shogun::CGridSearchModelSelection *grid_search = new shogun::CGridSearchModelSelection(param_tree, cross);
+	shogun::CGridSearchModelSelection *grid_search = new shogun::CGridSearchModelSelection(cross, param_tree);
 
 	// print current combination
 	const bool print_state = true;

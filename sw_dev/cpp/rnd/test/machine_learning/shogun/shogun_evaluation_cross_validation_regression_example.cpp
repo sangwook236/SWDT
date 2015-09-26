@@ -59,6 +59,7 @@ void evaluation_cross_validation_regression_example()
 
 	// train and output
 	krr->train(features);
+/*
 	shogun::CRegressionLabels *output = shogun::CRegressionLabels::obtain_from_generic(krr->apply());
 	for (index_t i = 0; i < num_vectors; ++i)
 	{
@@ -73,6 +74,7 @@ void evaluation_cross_validation_regression_example()
 	// assert that regression "works".
 	// this is not guaranteed to always work but should be a really coarse check to see if everything is going approx. right
 	ASSERT(eval_result < 2);
+*/
 
 	// splitting strategy
 	const index_t n_folds = 5;

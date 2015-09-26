@@ -1,3 +1,14 @@
 [-] General
 	-. Site
 		http://waffles.sourceforge.net/
+		http://waffles.sourceforge.net/apidoc/html/index.html
+
+[-] Build
+	-. Library
+		cd src
+		make
+		make install
+	-. Demo
+		cd demos
+		make
+

@@ -45,6 +45,7 @@ void classifier_multiclasslibsvm_example()
 	svm->train();
 
 	// classify on training examples
+/*
 	shogun::CMulticlassLabels *output = shogun::CMulticlassLabels::obtain_from_generic(svm->apply());
 	shogun::SGVector<float64_t>::display_vector(output->get_labels().vector, output->get_num_labels(), "batch output");
 
@@ -56,6 +57,7 @@ void classifier_multiclasslibsvm_example()
 		ASSERT(output->get_label(i)==label);
 	}
 	SG_UNREF(output);
+*/
 
 	// free up memory
 	SG_UNREF(svm);

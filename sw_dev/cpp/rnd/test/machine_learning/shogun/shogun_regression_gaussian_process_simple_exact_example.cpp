@@ -3,9 +3,9 @@
 #include <shogun/features/DenseFeatures.h>
 #include <shogun/kernel/GaussianKernel.h>
 #include <shogun/regression/GaussianProcessRegression.h>
-#include <shogun/regression/gp/ExactInferenceMethod.h>
-#include <shogun/regression/gp/ZeroMean.h>
-#include <shogun/regression/gp/GaussianLikelihood.h>
+#include <shogun/machine/gp/ExactInferenceMethod.h>
+#include <shogun/machine/gp/ZeroMean.h>
+#include <shogun/machine/gp/GaussianLikelihood.h>
 #include <shogun/base/init.h>
 
 

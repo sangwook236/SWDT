@@ -67,14 +67,17 @@ void evaluation_cross_validation_multiclass_example()
 
 	// train and output
 	svm->train(features);
+/*
 	shogun::CMulticlassLabels *output = shogun::CMulticlassLabels::obtain_from_generic(svm->apply(features));
 	for (index_t i = 0; i < features->get_num_vectors(); ++i)
 		SG_SPRINT("i = %d, class = %f,\n", i, output->get_label(i));
+*/
 
 	// evaluation criterion
-	shogun::CMulticlassAccuracy *eval_crit = new shogun::CMulticlassAccuracy ();
+	shogun::CMulticlassAccuracy *eval_crit = new shogun::CMulticlassAccuracy();
 
 	// evaluate training error
+/*
 	const float64_t eval_result = eval_crit->evaluate(output, labels);
 	SG_SPRINT("training accuracy: %f\n", eval_result);
 	SG_UNREF(output);
@@ -82,6 +85,7 @@ void evaluation_cross_validation_multiclass_example()
 	// assert that regression "works".
 	// this is not guaranteed to always work but should be a really coarse check to see if everything is going approx. right
 	ASSERT(eval_result<2);
+*/
 
 	// splitting strategy
 	const index_t n_folds = 5;

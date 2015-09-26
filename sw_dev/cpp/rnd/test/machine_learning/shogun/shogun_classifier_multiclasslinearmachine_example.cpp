@@ -76,15 +76,17 @@ void classifier_multiclasslinearmachine_example()
 	mc_svm->train();
 
 	// Classify the training examples and show the results
+/*
 	shogun::CMulticlassLabels *output = shogun::CMulticlassLabels::obtain_from_generic(mc_svm->apply());
 
 	shogun::SGVector<int32_t> out_labels = output->get_int_labels();
 	shogun::SGVector<int32_t>::display_vector(out_labels.vector, out_labels.vlen);
+*/
 
 	//Free resources
 	SG_UNREF(mc_svm);
 	SG_UNREF(svm);
-	SG_UNREF(output);
+	//SG_UNREF(output);
 	SG_UNREF(features);
 	SG_UNREF(labels);
 	SG_UNREF(ffeats_train);

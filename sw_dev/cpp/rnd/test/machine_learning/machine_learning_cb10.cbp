@@ -34,17 +34,21 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-fpermissive" />
+			<Add option="-std=gnu++11" />
 			<Add directory="./kmeanspp_lib" />
-			<Add directory="/usr/local/include/eigen3" />
+			<Add directory="/usr/include/eigen3" />
 			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="GClasses" />
+			<Add library="caffe" />
 			<Add library="shogun" />
 			<Add library="nlopt" />
 			<Add library="boost_timer" />
+			<Add library="boost_system" />
 			<Add library="lapack" />
 			<Add library="blas" />
+			<Add library="pthread" />
 			<Add directory="/usr/lib/atlas-base/atlas" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
@@ -146,17 +150,40 @@
 		<Unit filename="shogun/shogun_modelselection_grid_search_linear_example.cpp" />
 		<Unit filename="shogun/shogun_modelselection_grid_search_mkl_example.cpp" />
 		<Unit filename="shogun/shogun_modelselection_grid_search_multiclass_svm_example.cpp" />
-		<Unit filename="shogun/shogun_regression_gaussian_process_ard_example.cpp" />
-		<Unit filename="shogun/shogun_regression_gaussian_process_fitc_example.cpp" />
-		<Unit filename="shogun/shogun_regression_gaussian_process_gaussian_example.cpp" />
-		<Unit filename="shogun/shogun_regression_gaussian_process_laplace_example.cpp" />
-		<Unit filename="shogun/shogun_regression_gaussian_process_product_example.cpp" />
-		<Unit filename="shogun/shogun_regression_gaussian_process_simple_exact_example.cpp" />
-		<Unit filename="shogun/shogun_regression_gaussian_process_sum_example.cpp" />
+		<Unit filename="shogun/shogun_regression_gaussian_process_ard_example.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="shogun/shogun_regression_gaussian_process_fitc_example.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="shogun/shogun_regression_gaussian_process_gaussian_example.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="shogun/shogun_regression_gaussian_process_laplace_example.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="shogun/shogun_regression_gaussian_process_product_example.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="shogun/shogun_regression_gaussian_process_simple_exact_example.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="shogun/shogun_regression_gaussian_process_sum_example.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="svm_light/svm_light_main.cpp" />
 		<Unit filename="torch/torch_deep_learning_example.cpp" />
 		<Unit filename="torch/torch_main.cpp" />
 		<Unit filename="waffles/waffles_main.cpp" />
+		<Unit filename="waffles/waffles_manifold_example.cpp" />
+		<Unit filename="waffles/waffles_ml_example.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

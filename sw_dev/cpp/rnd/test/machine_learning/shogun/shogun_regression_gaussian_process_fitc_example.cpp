@@ -5,9 +5,9 @@
 #include <shogun/features/DenseFeatures.h>
 #include <shogun/kernel/GaussianKernel.h>
 #include <shogun/mathematics/Math.h>
-#include <shogun/regression/gp/FITCInferenceMethod.h>
-#include <shogun/regression/gp/GaussianLikelihood.h>
-#include <shogun/regression/gp/ZeroMean.h>
+#include <shogun/machine/gp/FITCInferenceMethod.h>
+#include <shogun/machine/gp/GaussianLikelihood.h>
+#include <shogun/machine/gp/ZeroMean.h>
 #include <shogun/regression/GaussianProcessRegression.h>
 #include <shogun/evaluation/GradientEvaluation.h>
 #include <shogun/modelselection/GradientModelSelection.h>

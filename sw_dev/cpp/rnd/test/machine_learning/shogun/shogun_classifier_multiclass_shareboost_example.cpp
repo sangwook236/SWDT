@@ -78,6 +78,7 @@ void classifier_multiclass_shareboost_example()
 
 	shogun::CDenseSubsetFeatures<float64_t> *subset_fea = new shogun::CDenseSubsetFeatures<float64_t>(features, machine->get_activeset());
 	SG_REF(subset_fea);
+/*
 	shogun::CMulticlassLabels *output = CMulticlassLabels::obtain_from_generic(machine->apply(subset_fea));
 
 	int32_t correct = 0;
@@ -85,10 +86,11 @@ void classifier_multiclass_shareboost_example()
 		if (output->get_int_label(i) == labels->get_int_label(i))
 			++correct;
 	SG_SPRINT("Accuracy = %.4f\n", float64_t(correct) / labels->get_num_labels());
+*/
 
 	// Free resources
 	SG_UNREF(machine);
-	SG_UNREF(output);
+	//SG_UNREF(output);
 	SG_UNREF(subset_fea);
 	SG_UNREF(features);
 	SG_UNREF(labels);

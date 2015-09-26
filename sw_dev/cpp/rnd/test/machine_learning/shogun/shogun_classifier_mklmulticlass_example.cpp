@@ -227,6 +227,7 @@ void classifier_mklmulticlass_example()
 	SG_SPRINT("finished svm training\n");
 
 	// starting svm testing on training data
+/*
 	shogun::CMulticlassLabels *res = shogun::CMulticlassLabels::obtain_from_generic(tsvm->apply());
 	ASSERT(res);
 
@@ -240,6 +241,7 @@ void classifier_mklmulticlass_example()
 	err /= (float64_t)res->get_num_labels();
 	SG_SPRINT("prediction error on training data (3 classes): %f, ", err);
 	SG_SPRINT("random guess error would be: %f\n", 2.0 / 3.0);
+*/
 
 	// generate test data
 	shogun::CMulticlassLabels *tlab = NULL;
@@ -287,6 +289,7 @@ void classifier_mklmulticlass_example()
 	tsvm->set_kernel(tker);
 
 	// compute classification error, check mem
+/*
 	shogun::CMulticlassLabels *tres = shogun::CMulticlassLabels::obtain_from_generic(tsvm->apply());
 
 	float64_t terr = 0;
@@ -299,10 +302,11 @@ void classifier_mklmulticlass_example()
 	terr /= (float64_t)tres->get_num_labels();
 	SG_SPRINT("prediction error on test data (3 classes): %f, ", terr);
 	SG_SPRINT("random guess error would be: %f\n", 2.0 / 3.0);
+*/
 
 	SG_UNREF(tsvm);
-	SG_UNREF(res);
-	SG_UNREF(tres);
+	//SG_UNREF(res);
+	//SG_UNREF(tres);
 	SG_UNREF(lab);
 	SG_UNREF(tlab);
 	SG_UNREF(tker);

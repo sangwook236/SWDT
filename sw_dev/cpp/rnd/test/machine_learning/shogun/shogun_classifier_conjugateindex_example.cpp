@@ -1,7 +1,7 @@
 //#include "stdafx.h"
 #include <shogun/labels/MulticlassLabels.h>
 #include <shogun/features/DenseFeatures.h>
-#include <shogun/multiclass/ConjugateIndex.h>
+//#include <shogun/multiclass/ConjugateIndex.h>
 #include <shogun/lib/common.h>
 #include <shogun/io/SGIO.h>
 
@@ -34,6 +34,7 @@ void classifier_conjugateindex_example()
 	labels->set_label(1, +1);
 	labels->set_label(2, 0);
 
+/*
 	shogun::CConjugateIndex *ci = new shogun::CConjugateIndex(features, labels);
 	ci->train();
 
@@ -43,6 +44,7 @@ void classifier_conjugateindex_example()
 
 	// free up memory
 	SG_UNREF(ci);
+*/
 }
 
 }  // namespace my_shogun

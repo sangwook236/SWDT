@@ -72,9 +72,11 @@ void clustering_kmeans_example()
 	clustering->train(features);
 
 	// build clusters
+/*
 	shogun::CMulticlassLabels *result = shogun::CMulticlassLabels::obtain_from_generic(clustering->apply());
 	for (index_t i = 0; i < result->get_num_labels(); ++i)
 		SG_SPRINT("cluster index of vector %i: %f\n", i, result->get_label(i));
+*/
 
 	// print cluster centers
 	shogun::CDenseFeatures<float64_t> *centers = (shogun::CDenseFeatures<float64_t> *)distance->get_lhs();
@@ -85,7 +87,7 @@ void clustering_kmeans_example()
 	shogun::SGMatrix<float64_t>::display_matrix(cluster_centers.matrix, cluster_centers.num_rows, cluster_centers.num_cols, "real centers");
 
 	// clean up
-	SG_UNREF(result);
+	//SG_UNREF(result);
 	SG_UNREF(centers);
 	SG_UNREF(clustering);
 	SG_UNREF(labels);

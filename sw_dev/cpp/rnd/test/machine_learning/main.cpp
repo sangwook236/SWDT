@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 		//	-. SVM hmm: structured SVMs for sequence tagging.
 		//	-. SVM alignment: structured SVMs for sequence alignment.
 		//	-. latent SVM struct: latent structured SVM.
-		retval = svm_light_main(argc, argv);  // not yet implemented.
+		//retval = svm_light_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nmultiboost library --------------------------------------------------" << std::endl;
 		//retval = multiboost_main(argc, argv);  // not yet implemented.
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 		//	-. multiple kernel learning (MKL).
 		//	-. Gaussian process (GP) regression.
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-		retval = shogun_main(argc, argv);
+		//retval = shogun_main(argc, argv);
 #else
         std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 		//  -. tensor.
 		//	-. deep learning.
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-		retval = torch_main(argc, argv);  // not yet implemented.
+		//retval = torch_main(argc, argv);  // not yet implemented.
 #else
         std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nCaffe framework -----------------------------------------------------" << std::endl;
 		//	-. deep learning.
-		retval = caffe_main(argc, argv);  // not yet implemented.
+		//retval = caffe_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
 		//	-. deep learning.
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 		//	-. audio processing.
 		//	-. clustering.
 		//	-. dimensionality reduction, manifold learning, attribute selection, and tools related to NLDR.
-		//retval = waffles_main(argc, argv);  // not yet implemented.
+		retval = waffles_main(argc, argv);
 
 		std::cout << "\nRL-Glue (Reinforcement Learning Glue) library -----------------------" << std::endl;
 		//retval = rl_glue_main(argc, argv);  // not yet implemented.

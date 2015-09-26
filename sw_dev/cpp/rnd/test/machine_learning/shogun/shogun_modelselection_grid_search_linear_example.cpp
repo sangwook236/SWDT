@@ -81,7 +81,7 @@ void modelselection_grid_search_linear_example()
 	param_tree->print_tree();
 
 	// handles all of the above structures in memory
-	shogun::CGridSearchModelSelection *grid_search = new CGridSearchModelSelection(param_tree, cross);
+	shogun::CGridSearchModelSelection *grid_search = new CGridSearchModelSelection(cross, param_tree);
 
 	// set autolocking to false to get rid of warnings
 	cross->set_autolock(false);
