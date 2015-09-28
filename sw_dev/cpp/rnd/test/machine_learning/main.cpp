@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nCaffe framework -----------------------------------------------------" << std::endl;
 		//	-. deep learning.
-		//retval = caffe_main(argc, argv);  // not yet implemented.
+		retval = caffe_main(argc, argv);
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
 		//	-. deep learning.
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 		//	-. audio processing.
 		//	-. clustering.
 		//	-. dimensionality reduction, manifold learning, attribute selection, and tools related to NLDR.
-		retval = waffles_main(argc, argv);
+		//retval = waffles_main(argc, argv);
 
 		std::cout << "\nRL-Glue (Reinforcement Learning Glue) library -----------------------" << std::endl;
 		//retval = rl_glue_main(argc, argv);  // not yet implemented.

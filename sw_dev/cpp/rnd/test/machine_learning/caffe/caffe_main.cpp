@@ -1,7 +1,5 @@
 //#include "stdafx.h"
-//#include <caffe/caffe.hpp>
 #include <iostream>
-#include <stdexcept>
 
 
 namespace {
@@ -12,9 +10,11 @@ namespace local {
 
 namespace my_caffe {
 
+void classification_example();
+
 }  // namespace my_caffe
 
 int caffe_main(int argc, char *argv[])
 {
-	throw std::runtime_error("not yet implemented");
+	my_caffe::classification_example();
 }

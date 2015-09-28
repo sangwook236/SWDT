@@ -44,6 +44,10 @@
 			<Add library="caffe" />
 			<Add library="shogun" />
 			<Add library="nlopt" />
+			<Add library="opencv_imgproc" />
+			<Add library="opencv_highgui" />
+			<Add library="opencv_core" />
+			<Add library="glog" />
 			<Add library="boost_timer" />
 			<Add library="boost_system" />
 			<Add library="lapack" />
@@ -52,6 +56,7 @@
 			<Add directory="/usr/lib/atlas-base/atlas" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="caffe/caffe_classification_example.cpp" />
 		<Unit filename="caffe/caffe_main.cpp" />
 		<Unit filename="clustering/clustering_k_medoids.cpp" />
 		<Unit filename="clustering/clustering_kmeanspp.cpp" />
