@@ -1,190 +1,266 @@
+#define CPU_ONLY 1;
+
 //#include "stdafx.h"
-#include "../kmeanspp_lib/KMeans.h"
+#include <caffe/caffe.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include <boost/timer/timer.hpp>
-#include <fstream>
-#include <iostream>
+#include <algorithm>
+#include <iosfwd>
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
-#include <cassert>
 
 
 namespace {
 namespace local {
 
-// [ref] ${CPP_RND_HOME}/test/machine_learning/clustering/clustering_spectral_clustering.cpp
-void kmeanspp_sample_1()
+// Pair (label, confidence) representing a prediction.
+typedef std::pair<std::string, float> Prediction;
+
+class Classifier
 {
-#if 1
-	const std::string input_filename("./data/machine_learning/clustering/data.txt");
-	const int num_points = 317;
-	const int dim_features = 2;
-	const int num_clusters = 3;
-#elif 0
-	const std::string input_filename("./data/machine_learning/clustering/circles.txt");
-	const int num_points = 139;
-	const int dim_features = 2;
-	const int num_clusters = 3;
-#elif 0
-	const std::string input_filename("./data/machine_learning/clustering/processed_input.txt");
-	const int num_points = 78;
-	const int dim_features = 2;
-	const int num_clusters = 3;
-#endif
-	const int num_attempts = 1000;
+public:
+    Classifier(const std::string &model_file, const std::string &trained_file, const std::string &mean_file, const std::string &label_file);
 
-#if defined(__GNUC__)
-	std::ifstream stream(input_filename.c_str(), std::ios::in);
+    std::vector<Prediction> Classify(const cv::Mat &img, int N = 5) const;
+
+private:
+    void SetMean(const std::string &mean_file);
+
+    std::vector<float> Predict(const cv::Mat &img) const;
+
+    void WrapInputLayer(std::vector<cv::Mat> *input_channels) const;
+
+    void Preprocess(const cv::Mat &img, std::vector<cv::Mat> *input_channels) const;
+
+private:
+    std::shared_ptr<caffe::Net<float> > net_;
+    cv::Size input_geometry_;
+    int num_channels_;
+    cv::Mat mean_;
+    std::vector<std::string> labels_;
+};
+
+Classifier::Classifier(const std::string &model_file, const std::string &trained_file, const std::string &mean_file, const std::string &label_file)
+{
+#ifdef CPU_ONLY
+    caffe::Caffe::set_mode(caffe::Caffe::CPU);
 #else
-	std::ifstream stream(input_filename, std::ios::in);
+    caffe::Caffe::set_mode(caffe::Caffe::GPU);
 #endif
-	if (!stream.is_open())
-	{
-		std::cerr << "file not found: " << input_filename << std::endl;
-		return;
-	}
 
-	std::vector<Scalar> points;
-	points.reserve(num_points * dim_features);
-	{
-		int x, y;
-		while (!stream.eof())
-		{
-			stream >> x >> y;
-			if (!stream.good()) break;
-			points.push_back(x);
-			points.push_back(y);
-		}
-	}
-	assert(num_points == points.size() / dim_features);
+    // Load the network.
+    net_.reset(new caffe::Net<float>(model_file, caffe::TEST));
+    net_->CopyTrainedLayersFrom(trained_file);
 
-	//
-	{
-		std::vector<Scalar> cluster_centers(num_clusters * dim_features, 0);
-		std::vector<int> assignments(num_points, -1);
+    CHECK_EQ(net_->num_inputs(), 1) << "Network should have exactly one input.";
+    CHECK_EQ(net_->num_outputs(), 1) << "Network should have exactly one output.";
 
-		std::cout << "start clustering ..." << std::endl;
-		Scalar cost;
-		{
-			boost::timer::auto_cpu_timer timer;
+    caffe::Blob<float> *input_layer = net_->input_blobs()[0];
+    num_channels_ = input_layer->channels();
+    CHECK(num_channels_ == 3 || num_channels_ == 1) << "Input layer should have 1 or 3 channels.";
+    input_geometry_ = cv::Size(input_layer->width(), input_layer->height());
 
-			// run k-means or k-means++.
-			//cost = RunKMeans(num_points, num_clusters, dim_features, &points[0], num_attempts, &cluster_centers[0], &assignments[0]);
-			cost = RunKMeansPlusPlus(num_points, num_clusters, dim_features, &points[0], num_attempts, &cluster_centers[0], &assignments[0]);
-		}
-		std::cout << "end clustering ..." << std::endl;
+    // Load the binaryproto mean file.
+    SetMean(mean_file);
 
-		// show results
-		std::cout << "the final cost of the clustering = " << cost << std::endl;
-		std::cout << "the locations of all cluster centers:" << std::endl;
-		for (int k = 0; k < num_clusters; ++k)
-		{
-			for (int d = 0; d < dim_features; ++d)
-				std::cout << cluster_centers[k * dim_features + d] << ", ";
-			std::cout << std::endl;
-		}
-		std::cout << "the cluster that each point is assigned to:" << std::endl;
-		for (int n = 0; n < num_points; ++n)
-			std::cout << assignments[n] << ", ";
-		std::cout << std::endl;
-	}
+    // Load labels.
+    std::ifstream labels(label_file.c_str());
+    CHECK(labels) << "Unable to open labels file " << label_file;
+    std::string line;
+    while (std::getline(labels, line))
+    labels_.push_back(std::string(line));
+
+    caffe::Blob<float> *output_layer = net_->output_blobs()[0];
+    CHECK_EQ(labels_.size(), output_layer->channels()) << "Number of labels is different from the output layer dimension.";
 }
 
-void kmeanspp_sample_2()
+static bool PairCompare(const std::pair<float, int> &lhs, const std::pair<float, int> &rhs)
 {
-	const int num_points = 4601;
-	const int dim_features = 58;
-	const int num_clusters = 10;
-	const int num_attempts = 1000;
+    return lhs.first > rhs.first;
+}
 
-	const std::string input_filename("./data/machine_learning/clustering/spam_input.txt");
-#if defined(__GNUC__)
-	std::ifstream stream(input_filename.c_str());
-#else
-	std::ifstream stream(input_filename);
-#endif
-	if (!stream.is_open())
-	{
-		std::cerr << "file not found: " << input_filename << std::endl;
-		return;
-	}
+// Return the indices of the top N values of vector v.
+static std::vector<int> Argmax(const std::vector<float> &v, int N)
+{
+    std::vector<std::pair<float, int> > pairs;
+    for (std::size_t i = 0; i < v.size(); ++i)
+        pairs.push_back(std::make_pair(v[i], i));
+    std::partial_sort(pairs.begin(), pairs.begin() + N, pairs.end(), PairCompare);
 
-	std::vector<Scalar> points;
-	points.reserve(num_points * dim_features);
-	{
-		Scalar val;
-		while (!stream.eof())
-		{
-			stream >> val;
-			if (!stream.good()) break;
-			points.push_back(val);
-		}
-	}
-	assert(points.size() == num_points * dim_features);
+    std::vector<int> result;
+    for (int i = 0; i < N; ++i)
+        result.push_back(pairs[i].second);
+    return result;
+}
 
-	{
-		std::vector<Scalar> centers(num_clusters * dim_features, 0);
-		std::vector<int> assignments(num_points, -1);
+// Return the top N predictions.
+std::vector<Prediction> Classifier::Classify(const cv::Mat &img, int N) const
+{
+    std::vector<float> output = Predict(img);
 
-		Scalar cost;
-		{
-			boost::timer::auto_cpu_timer timer;
+    N = std::min<int>(labels_.size(), N);
+    std::vector<int> maxN = Argmax(output, N);
+    std::vector<Prediction> predictions;
+    for (int i = 0; i < N; ++i)
+    {
+        int idx = maxN[i];
+        predictions.push_back(std::make_pair(labels_[idx], output[idx]));
+    }
 
-			// run k-means
-			cost = RunKMeans(num_points, num_clusters, dim_features, &points[0], num_attempts, &centers[0], &assignments[0]);
-		}
+    return predictions;
+}
 
-		// show results
-		std::cout << "the final cost of the clustering = " << cost << std::endl;
-		std::cout << "the locations of all cluster centers:" << std::endl;
-		for (int k = 0; k < num_clusters; ++k)
-		{
-			for (int d = 0; d < dim_features; ++d)
-				std::cout << centers[k * dim_features + d] << ", ";
-			std::cout << std::endl;
-		}
-		std::cout << "the cluster that each point is assigned to:" << std::endl;
-		//for (int n = 0; n < num_points; ++n)
-		//	std::cout << assignments[n] << ", ";
-		//std::cout << std::endl;
-	}
+// Load the mean file in binaryproto format.
+void Classifier::SetMean(const std::string& mean_file)
+{
+    caffe::BlobProto blob_proto;
+    ReadProtoFromBinaryFileOrDie(mean_file.c_str(), &blob_proto);
 
-	{
-		std::vector<Scalar> centers(num_clusters * dim_features, 0);
-		std::vector<int> assignments(num_points, -1);
+    // Convert from BlobProto to Blob<float>
+    caffe::Blob<float> mean_blob;
+    mean_blob.FromProto(blob_proto);
+    CHECK_EQ(mean_blob.channels(), num_channels_) << "Number of channels of mean file doesn't match input layer.";
 
-		Scalar cost;
-		{
-			boost::timer::auto_cpu_timer timer;
+    // The format of the mean file is planar 32-bit float BGR or grayscale.
+    std::vector<cv::Mat> channels;
+    float *data = mean_blob.mutable_cpu_data();
+    for (int i = 0; i < num_channels_; ++i)
+    {
+        // Extract an individual channel.
+        cv::Mat channel(mean_blob.height(), mean_blob.width(), CV_32FC1, data);
+        channels.push_back(channel);
+        data += mean_blob.height() * mean_blob.width();
+    }
 
-			// run k-means++ on the given set of points. Set RunKMeans for info on the parameters.
-			cost = RunKMeansPlusPlus(num_points, num_clusters, dim_features, &points[0], num_attempts, &centers[0], &assignments[0]);
-		}
+    // Merge the separate channels into a single image.
+    cv::Mat mean;
+    cv::merge(channels, mean);
 
-		// show results
-		std::cout << "the final cost of the clustering = " << cost << std::endl;
-		std::cout << "the locations of all cluster centers:" << std::endl;
-		for (int k = 0; k < num_clusters; ++k)
-		{
-			for (int d = 0; d < dim_features; ++d)
-				std::cout << centers[k * dim_features + d] << ", ";
-			std::cout << std::endl;
-		}
-		std::cout << "the cluster that each point is assigned to:" << std::endl;
-		//for (int n = 0; n < num_points; ++n)
-		//	std::cout << assignments[n] << ", ";
-		//std::cout << std::endl;
-	}
+    // Compute the global mean pixel value and create a mean image filled with this value.
+    cv::Scalar channel_mean = cv::mean(mean);
+    mean_ = cv::Mat(input_geometry_, mean.type(), channel_mean);
+}
+
+std::vector<float> Classifier::Predict(const cv::Mat &img) const
+{
+    caffe::Blob<float> *input_layer = net_->input_blobs()[0];
+    input_layer->Reshape(1, num_channels_, input_geometry_.height, input_geometry_.width);
+    // Forward dimension change to all layers.
+    net_->Reshape();
+
+    std::vector<cv::Mat> input_channels;
+    WrapInputLayer(&input_channels);
+
+    Preprocess(img, &input_channels);
+
+    net_->ForwardPrefilled();
+
+    // Copy the output layer to a std::vector.
+    caffe::Blob<float> *output_layer = net_->output_blobs()[0];
+    const float *begin = output_layer->cpu_data();
+    const float *end = begin + output_layer->channels();
+    return std::vector<float>(begin, end);
+}
+
+/* Wrap the input layer of the network in separate cv::Mat objects
+ * (one per channel). This way we save one memcpy operation and we
+ * don't need to rely on cudaMemcpy2D. The last preprocessing
+ * operation will write the separate channels directly to the input
+ * layer. */
+void Classifier::WrapInputLayer(std::vector<cv::Mat> *input_channels) const
+{
+    caffe::Blob<float> *input_layer = net_->input_blobs()[0];
+
+    const int width = input_layer->width();
+    const int height = input_layer->height();
+    float *input_data = input_layer->mutable_cpu_data();
+    for (int i = 0; i < input_layer->channels(); ++i)
+    {
+        cv::Mat channel(height, width, CV_32FC1, input_data);
+        input_channels->push_back(channel);
+        input_data += width * height;
+    }
+}
+
+void Classifier::Preprocess(const cv::Mat &img, std::vector<cv::Mat> *input_channels) const
+{
+    // Convert the input image to the input image format of the network.
+    cv::Mat sample;
+    if (3 == img.channels() && 1 == num_channels_)
+        cv::cvtColor(img, sample, CV_BGR2GRAY);
+    else if (4 == img.channels() && 1 == num_channels_)
+        cv::cvtColor(img, sample, CV_BGRA2GRAY);
+    else if (4 == img.channels() && 3 == num_channels_)
+        cv::cvtColor(img, sample, CV_BGRA2BGR);
+    else if (1 == img.channels() && 3 == num_channels_)
+        cv::cvtColor(img, sample, CV_GRAY2BGR);
+    else
+        sample = img;
+
+    cv::Mat sample_resized;
+    if (sample.size() != input_geometry_)
+        cv::resize(sample, sample_resized, input_geometry_);
+    else
+        sample_resized = sample;
+
+    cv::Mat sample_float;
+    if (3 == num_channels_)
+        sample_resized.convertTo(sample_float, CV_32FC3);
+    else
+        sample_resized.convertTo(sample_float, CV_32FC1);
+
+    cv::Mat sample_normalized;
+    cv::subtract(sample_float, mean_, sample_normalized);
+
+    // This operation will write the separate BGR planes directly to the input layer of the network because it is wrapped by the cv::Mat objects in input_channels.
+    cv::split(sample_normalized, *input_channels);
+
+    CHECK(reinterpret_cast<float *>(input_channels->at(0).data) == net_->input_blobs()[0]->cpu_data()) << "Input channels are not wrapping the input layer of the network.";
 }
 
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_clustering {
+namespace my_caffe {
 
-void kmeanspp()
+// REF [file] >> ${CAFFE_HOME}/examples/cpp_classification/classification.cpp.
+void classification_example()
 {
-	local::kmeanspp_sample_1();
-	//local::kmeanspp_sample_2();
+    google::InitGoogleLogging("caffe_classification_example");
+
+    // REF [site] >> https://github.com/BVLC/caffe/tree/master/examples/cpp_classification.
+    const std::string caffe_root("/home/sangwook/git/caffe");
+    const std::string model_file(caffe_root + "/models/bvlc_reference_caffenet/deploy.prototxt");
+    const std::string trained_file(caffe_root + "/models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel");
+    const std::string mean_file(caffe_root + "/data/ilsvrc12/imagenet_mean.binaryproto");
+    const std::string label_file(caffe_root + "/data/ilsvrc12/synset_words.txt");
+    const std::string test_file(caffe_root + "/examples/images/cat.jpg");
+
+    cv::Mat img = cv::imread(test_file, -1);
+    CHECK(!img.empty()) << "Unable to decode image " << test_file;
+
+    // Load model.
+    std::cout << "start loading model ..." << std::endl;
+    const local::Classifier classifier(model_file, trained_file, mean_file, label_file);  // Oops! error. an unknown exception occurred.
+    std::cout << "end loading model ..." << std::endl;
+
+    // Predict.
+    std::cout << "start prediction for " << test_file << " ..." << std::endl;
+    std::vector<local::Prediction> predictions;
+    {
+        boost::timer::auto_cpu_timer timer;
+
+        predictions = classifier.Classify(img);
+    }
+    std::cout << "end prediction ..." << std::endl;
+
+    // Print the top N predictions.
+    for (std::vector<local::Prediction>::const_iterator cit = predictions.begin(); cit < predictions.end(); ++cit)
+        std::cout << std::fixed << std::setprecision(4) << cit->second << " - \"" << cit->first << "\"" << std::endl;
 }
 
-}  // namespace my_clustering
+}  // namespace my_caffe
