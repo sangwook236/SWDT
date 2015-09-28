@@ -3,6 +3,9 @@
 		http://caffe.berkeleyvision.org/
 		https://github.com/BVLC/caffe
 
-		http://caffe.berkeleyvision.org/doxygen/
+		http://caffe.berkeleyvision.org/tutorial/
 		https://github.com/BVLC/caffe/tree/master/docs/tutorial
+		http://caffe.berkeleyvision.org/tutorial/solver.html
+
+		http://caffe.berkeleyvision.org/doxygen/
 

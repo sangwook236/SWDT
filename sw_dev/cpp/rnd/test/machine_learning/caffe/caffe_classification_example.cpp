@@ -232,7 +232,7 @@ void classification_example()
 {
     google::InitGoogleLogging("caffe_classification_example");
 
-    // REF [site] >> https://github.com/BVLC/caffe/tree/master/examples/cpp_classification.
+    // REF [site] >> http://caffe.berkeleyvision.org/gathered/examples/cpp_classification.html.
     const std::string caffe_root("/home/sangwook/git/caffe");
     const std::string model_file(caffe_root + "/models/bvlc_reference_caffenet/deploy.prototxt");
     const std::string trained_file(caffe_root + "/models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel");
@@ -245,7 +245,7 @@ void classification_example()
 
     // Load model.
     std::cout << "start loading model ..." << std::endl;
-    const local::Classifier classifier(model_file, trained_file, mean_file, label_file);  // Oops! error. an unknown exception occurred.
+    const local::Classifier classifier(model_file, trained_file, mean_file, label_file);
     std::cout << "end loading model ..." << std::endl;
 
     // Predict.
