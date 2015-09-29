@@ -34,7 +34,7 @@ public:
         );
     }
 
-    void handle_receive_from(const boost::system::error_code &error, size_t bytes_recvd)
+    void handle_receive_from(const boost::system::error_code &error, std::size_t bytes_recvd)
     {
         if (!error)
         {
@@ -60,11 +60,11 @@ private:
 }  // unnamed namespace
 
 // REF [file] ${BOOST_HOME}/boost_1_59_0/libs/asio/example/cpp03/multicast/receiver.cpp.
-void asio_multicast_sender()
+void asio_multicast_receiver()
 {
     try
     {
-#if 0
+#if 1
         // For IPv4.
         const std::string listen_address("0.0.0.0");
         const std::string multicast_address("239.255.0.1");
@@ -77,6 +77,7 @@ void asio_multicast_sender()
 
         boost::asio::io_service io_service;
         local::receiver r(io_service, boost::asio::ip::address::from_string(listen_address), boost::asio::ip::address::from_string(multicast_address), multicast_port);
+
         io_service.run();
     }
     catch (const std::exception &e)

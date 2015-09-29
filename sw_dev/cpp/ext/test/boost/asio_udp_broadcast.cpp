@@ -4,7 +4,6 @@
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include <boost/array.hpp>
 #include <iostream>
 #include <ctime>
 
@@ -12,107 +11,109 @@
 namespace {
 namespace local {
 
-std::string make_daytime_string()
-{
-	std::time_t now = std::time(0);
-	return std::ctime(&now);
-}
-
-class udp_server
+class sender
 {
 public:
-	enum { port_num = 13 };
+    sender(boost::asio::io_service &io_service, const short broadcast_port, const std::string &message = std::string())
+    : endpoint_(boost::asio::ip::address_v4::broadcast(), broadcast_port), socket_(io_service), timer_(io_service)
+    {
+        boost::system::error_code error;
+        socket_.open(boost::asio::ip::udp::v4(), error);
+        //socket_.open(endpoint_.protocol(), error);
+        if (!error)
+        {
+            socket_.set_option(boost::asio::ip::udp::socket::reuse_address(true));
+            socket_.set_option(boost::asio::socket_base::broadcast(true));
+
+            if (!message.empty())
+                send_to(message);
+        }
+        else
+            std::cerr << "cannot open socket" << std::endl;
+    }
 
 public:
-	udp_server(boost::asio::io_service& io_service)
-	: socket_(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port_num))
-	{
-		start_receive();
-	}
+    void send_to(const std::string &message)
+    {
+        // TODO [delete] >> for display.
+        std::cout << "start sending message ..." << std::endl;
+
+#if 0
+        // Sync.
+        socket_.send_to(message, endpoint_);
+
+        // TODO [delete] >> for display.
+        std::cout << "end sending message ..." << std::endl;
+#else
+        // Async.
+        socket_.async_send_to(
+            boost::asio::buffer(message), endpoint_,
+            boost::bind(&sender::handle_send_to, this, boost::asio::placeholders::error)
+        );
+
+        // TODO [delete] >> for display.
+        std::cout << "keep async-sending message ..." << std::endl;
+#endif
+    }
 
 private:
-	void start_receive()
-	{
-		socket_.async_receive_from(
-			boost::asio::buffer(recv_buffer_),
-			remote_endpoint_,
-			boost::bind(&udp_server::handle_receive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
-		);
-	}
-	void handle_receive(const boost::system::error_code& error,	std::size_t /*bytes_transferred*/)
-	{
-		if (!error || error == boost::asio::error::message_size)
-		{
-			boost::shared_ptr<std::string> message(new std::string(make_daytime_string()));
-			socket_.async_send_to(
-				boost::asio::buffer(*message),
-				remote_endpoint_,
-				boost::bind(&udp_server::handle_send, this, message, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
-			);
+    void handle_send_to(const boost::system::error_code &error)
+    {
+        if (!error)
+        {
+            timer_.expires_from_now(boost::posix_time::seconds(1));
+            timer_.async_wait(boost::bind(&sender::handle_timeout, this, boost::asio::placeholders::error));
+        }
+    }
 
-			start_receive();
-		}
-	}
-	void handle_send(boost::shared_ptr<std::string> /*message*/, const boost::system::error_code& /*error*/, std::size_t /*bytes_transferred*/)
-	{
-	}
+    void handle_timeout(const boost::system::error_code &error)
+    {
+        if (!error)
+        {
+/*
+            socket_.async_send_to(
+                boost::asio::buffer(message),
+                endpoint_,
+                boost::bind(&sender::handle_send_to, this, boost::asio::placeholders::error)
+            );
+*/
+
+            // TODO [delete] >> for display.
+            std::cout << "end sending message ..." << std::endl;
+        }
+        else
+        {
+            std::cerr << "error value = " << error.value() << ", error message = " << error.message() << std::endl;
+        }
+    }
 
 private:
-	boost::asio::ip::udp::socket socket_;
-	boost::asio::ip::udp::endpoint remote_endpoint_;
-	boost::array<char, 1> recv_buffer_;
+    boost::asio::ip::udp::endpoint endpoint_;
+    boost::asio::ip::udp::socket socket_;
+    boost::asio::deadline_timer timer_;
 };
-
-void asio_async_udp_server()
-{
-	try
-	{
-		boost::asio::io_service ioService;
-		udp_server server(ioService);
-
-		ioService.run();
-	}
-	catch (std::exception &e)
-	{
-		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
-	}
-}
-
-void asio_sync_udp_server()
-{
-	try
-	{
-		const unsigned short port_num = 13;
-
-		boost::asio::io_service ioService;
-		boost::asio::ip::udp::socket socket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port_num));
-
-		for (;;)
-		{
-			boost::array<char, 1> recv_buf;
-			boost::asio::ip::udp::endpoint remote_endpoint;
-			boost::system::error_code error;
-			socket.receive_from(boost::asio::buffer(recv_buf), remote_endpoint, 0, error);
-			if (error && error != boost::asio::error::message_size)
-				throw boost::system::system_error(error);
-
-			const std::string message = make_daytime_string();
-
-			boost::system::error_code ignored_error;
-			socket.send_to(boost::asio::buffer(message), remote_endpoint, 0, ignored_error);
-		}
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
-	}
-}
 
 }  // namespace local
 }  // unnamed namespace
 
-void asio_udp_server()
+// REF [site] >> http://stackoverflow.com/questions/9310231/boostasio-udp-broadcasting.
+void asio_udp_broadcast()
 {
-	local::asio_async_udp_server();
-	//local::asio_sync_udp_server();
+    // NOTE [caution] >> Use asio_udp_server as a server.
+
+	try
+	{
+		const short broadcast_port = 30001;
+		const std::string message("!@#$% a UDP broadcast test message ^&*()");
+
+		boost::asio::io_service ioService;
+        local::sender s(ioService, broadcast_port, message);
+        //s.send_to(message);
+
+        ioService.run();
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << "Boost.Asio exception: " << e.what () << std::endl;
+	}
 }

@@ -82,6 +82,7 @@ void asio_multicast_sender()
 
         boost::asio::io_service io_service;
         local::sender s(io_service, boost::asio::ip::address::from_string(multicast_address), multicast_port);
+
         io_service.run();
     }
     catch (const std::exception &e)
