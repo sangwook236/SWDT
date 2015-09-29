@@ -69,6 +69,9 @@ int main(int argc, char *argv[])
 	void asio_udp_server();
 	void asio_udp_client();
 	void asio_tcp_udp_server();
+	void asio_multicast_sender();
+	void asio_multicast_receiver();
+	void asio_udp_broadcast();
 	void asio_serial_port();
 
 	void image();
@@ -116,6 +119,7 @@ int main(int argc, char *argv[])
 		{
 			//tokenizer();
 			string_algorithms();
+
 			//spirit_classic();
 			//statechart();
 			//thread();
@@ -158,6 +162,10 @@ int main(int argc, char *argv[])
 			//asio_udp_client();
 
 			//asio_serial_port();
+
+            //asio_multicast_sender();
+            //asio_multicast_receiver();
+            //asio_udp_broadcast();
 		}
 
 		{

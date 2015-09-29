@@ -389,7 +389,7 @@ void asio_async_serial_port_simple()
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
 	}
 }
 
@@ -487,7 +487,7 @@ void asio_async_serial_port_better()
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
 	}
 }
 
@@ -535,7 +535,7 @@ void asio_sync_serial_port()
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
 	}
 }
 

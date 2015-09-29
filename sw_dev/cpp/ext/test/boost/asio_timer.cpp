@@ -11,15 +11,16 @@
 namespace {
 namespace local {
 
-void print(const boost::system::error_code & /*e*/, boost::asio::deadline_timer *t, int *count)
+void print(const boost::system::error_code & /*e*/, boost::asio::deadline_timer *timer, int *count)
 {
 	if (*count < 5)
 	{
 		std::cout << *count << std::endl;
 		++(*count);
 
-		t->expires_at(t->expires_at() + boost::posix_time::seconds(1));
-		t->async_wait(boost::bind(print, boost::asio::placeholders::error, t, count));
+        //timer->expires_from_now(boost::posix_time::seconds(1));
+		timer->expires_at(timer->expires_at() + boost::posix_time::seconds(1));
+		timer->async_wait(boost::bind(print, boost::asio::placeholders::error, timer, count));
 	}
 }
 

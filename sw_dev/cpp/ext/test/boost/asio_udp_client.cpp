@@ -13,6 +13,8 @@ namespace local {
 void asio_async_udp_client()
 {
 	boost::asio::io_service ioService;
+
+	// what should I do for async UDP client?
 }
 
 void asio_sync_udp_client()
@@ -22,7 +24,7 @@ void asio_sync_udp_client()
 		boost::asio::io_service ioService;
 		boost::asio::ip::udp::resolver resolver(ioService);
 		boost::asio::ip::udp::resolver::query query(boost::asio::ip::udp::v4(), "localhost", "daytime");  // use a service name
-		//boost::asio::ip::udp::resolver::query query(boost::asio::ip::udp::v4(), "localhost", "13");  // use a port number
+		//boost::asio::ip::udp::resolver::query query(boost::asio::ip::udp::v4(), "localhost", "30001");  // use a port number
 		boost::asio::ip::udp::endpoint receiver_endpoint = *resolver.resolve(query);
 		boost::asio::ip::udp::socket socket(ioService);
 		socket.open(boost::asio::ip::udp::v4());
@@ -38,7 +40,7 @@ void asio_sync_udp_client()
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
 	}
 }
 

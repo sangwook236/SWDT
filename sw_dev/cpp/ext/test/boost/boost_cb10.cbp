@@ -66,21 +66,25 @@
 			<Add library="boost_unit_test_framework" />
 			<Add library="boost_wave" />
 			<Add library="boost_wserialization" />
-			<Add library="python2.6" />
+			<Add library="python2.7" />
 			<Add library="lapack" />
 			<Add library="blas" />
 			<Add library="jpeg" />
+			<Add library="pthread" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="any.cpp" />
 		<Unit filename="array.cpp" />
 		<Unit filename="asio_line_based_operation.cpp" />
+		<Unit filename="asio_multicast_receiver.cpp" />
+		<Unit filename="asio_multicast_sender.cpp" />
 		<Unit filename="asio_serial_port.cpp" />
 		<Unit filename="asio_synchronizing_handler.cpp" />
 		<Unit filename="asio_tcp_client.cpp" />
 		<Unit filename="asio_tcp_server.cpp" />
 		<Unit filename="asio_tcp_udp_server.cpp" />
 		<Unit filename="asio_timer.cpp" />
+		<Unit filename="asio_udp_broadcast.cpp" />
 		<Unit filename="asio_udp_client.cpp" />
 		<Unit filename="asio_udp_server.cpp" />
 		<Unit filename="bind.cpp" />
@@ -94,7 +98,10 @@
 		<Unit filename="geometry.cpp" />
 		<Unit filename="graph.cpp" />
 		<Unit filename="graph_parallel.cpp" />
-		<Unit filename="image.cpp" />
+		<Unit filename="image.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="interprocess.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="math_bindings.cpp">
@@ -108,7 +115,10 @@
 		<Unit filename="multi_array.cpp" />
 		<Unit filename="multi_index.cpp" />
 		<Unit filename="multiprecision.cpp" />
-		<Unit filename="numeric_bindings.cpp" />
+		<Unit filename="numeric_bindings.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="ordinary_differential_equation.cpp" />
 		<Unit filename="polygon.cpp" />
 		<Unit filename="program_options.cpp" />
@@ -121,6 +131,7 @@
 		<Unit filename="smart_ptr.cpp" />
 		<Unit filename="spirit_classic.cpp" />
 		<Unit filename="statechart.cpp" />
+		<Unit filename="string_algorithms.cpp" />
 		<Unit filename="thread.cpp" />
 		<Unit filename="tokenizer.cpp" />
 		<Unit filename="tuple.cpp" />

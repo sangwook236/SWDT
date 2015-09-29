@@ -1,4 +1,5 @@
-#include <boost/signal.hpp>
+#include <boost/signals2/signal.hpp>
+#include <boost/signals2/shared_connection_block.hpp>
 #include <boost/bind.hpp>
 #include <vector>
 #include <iostream>
@@ -108,7 +109,7 @@ void signals_slots__calling_and_passing_value()
 {
 	//
 	{
-		boost::signal<void (float, float)> sig1;
+		boost::signals2::signal<void (float, float)> sig1;
 
 		sig1.connect(&print_sum);
 		sig1.connect(&print_product);
@@ -116,10 +117,10 @@ void signals_slots__calling_and_passing_value()
 /*
 		typedef boost::function<void (float, float)> signature_type;
 		//typedef (void (float, float)) signature_type;  // Oops !!! compile-time error
-		boost::signal<signature_type> sig2;
+		boost::signals2::signal<signature_type> sig2;
 */
 
-		typedef boost::signal<void (float, float)> publisher_type;
+		typedef boost::signals2::signal<void (float, float)> publisher_type;
 		typedef publisher_type::slot_function_type subscriber_type;
 
 		publisher_type sig3;
@@ -135,7 +136,7 @@ void signals_slots__calling_and_passing_value()
 
 	// ordering slot call groups
 	{
-		boost::signal<void (float, float)> sig;
+		boost::signals2::signal<void (float, float)> sig;
 
 		sig.connect(1, &print_sum);
 		sig.connect(3, &print_product);
@@ -147,7 +148,7 @@ void signals_slots__calling_and_passing_value()
 
 	// signal return values #1
 	{
-		boost::signal<float (float, float)> sig;
+		boost::signals2::signal<float (float, float)> sig;
 
 		sig.connect(Adder());
 		sig.connect(Subtracter());
@@ -159,7 +160,7 @@ void signals_slots__calling_and_passing_value()
 
 	// signal return values #2
 	{
-		boost::signal<float (float, float), maximum_chooser<float> > sig;
+		boost::signals2::signal<float (float, float), maximum_chooser<float> > sig;
 
 		sig.connect(Adder());
 		sig.connect(Subtracter());
@@ -171,7 +172,7 @@ void signals_slots__calling_and_passing_value()
 
 	// signal return values #3
 	{
-		boost::signal<float (float, float), result_aggregater<std::vector<float> > > sig;
+		boost::signals2::signal<float (float, float), result_aggregater<std::vector<float> > > sig;
 
 		sig.connect(Adder());
 		sig.connect(Subtracter());
@@ -184,7 +185,7 @@ void signals_slots__calling_and_passing_value()
 	}
 }
 
-struct NewsMessageArea: public boost::signals::trackable
+struct NewsMessageArea: public boost::signals2::trackable
 {
     void displayNews(const std::string &news) const
     {
@@ -196,9 +197,9 @@ void signals_slots__connention_management()
 {
 	// disconnecting slots #1
 	{
-		boost::signal<void ()> sig;
+		boost::signals2::signal<void ()> sig;
 
-		boost::signals::connection c = sig.connect(HelloWorld());
+		boost::signals2::connection c(sig.connect(HelloWorld()));
 		if (c.connected())
 		{
 			sig();
@@ -210,7 +211,7 @@ void signals_slots__connention_management()
 
 	// disconnecting slots #2
 	{
-		boost::signal<void (float, float)> sig;
+		boost::signals2::signal<void (float, float)> sig;
 
 		sig.connect(&print_sum);
 		sig.connect(&print_difference);
@@ -218,7 +219,7 @@ void signals_slots__connention_management()
 
 		sig.disconnect(&print_difference);
 
-		//boost::signal<void (float, float)>::slot_function_type func = &print_difference;
+		//boost::signals2::signal<void (float, float)>::slot_function_type func = &print_difference;
 		boost::function<void (float, float)> func = &print_difference;
 		//sig.disconnect(func);  // compile-time error
 		sig(3, 2);
@@ -226,26 +227,26 @@ void signals_slots__connention_management()
 
 	// blocking slots
 	{
-		boost::signal<void ()> sig;
+		boost::signals2::signal<void ()> sig;
 
-		boost::signals::connection c1 = sig.connect(HelloWorld());
-		boost::signals::connection c2 = sig.connect(GoodMorning());
+		boost::signals2::connection c1(sig.connect(HelloWorld()));
+		boost::signals2::connection c2(sig.connect(GoodMorning()));
 
-		c1.block();
-		assert(c1.blocked());
-		sig();
-		c1.unblock();
+		{
+            boost::signals2::shared_connection_block blocker(c1);
+            sig();
+        }
 
 		sig();
 	}
 
 	// scoped connections
 	{
-		boost::signal<void ()> sig;
+		boost::signals2::signal<void ()> sig;
 
 		{
-			boost::signals::scoped_connection c1 = sig.connect(HelloWorld());
-			boost::signals::connection c2 = sig.connect(GoodMorning());
+			boost::signals2::scoped_connection c1(sig.connect(HelloWorld()));
+			boost::signals2::connection c2(sig.connect(GoodMorning()));
 
 			sig();
 		}
@@ -255,16 +256,16 @@ void signals_slots__connention_management()
 
 	// automatic connection management
 	{
-		boost::signal<void (const std::string &)> deliverNews;
+		boost::signals2::signal<void (const std::string &)> deliverNews;
 
 		NewsMessageArea *newsMessageArea = new NewsMessageArea();
 		deliverNews.connect(boost::bind(&NewsMessageArea::displayNews, newsMessageArea, _1));
 	}
 
-	//typedef boost::signal<void ()> signal_type;
-	//typedef boost::signal<void ()>::slot_type slot_type;
-	//typedef boost::signal<void ()>::slot_function_type slot_function_type;
-	//typedef boost::signals::connection connection_type;
+	//typedef boost::signals2::signal<void ()> signal_type;
+	//typedef boost::signals2::signal<void ()>::slot_type slot_type;
+	//typedef boost::signals2::signal<void ()>::slot_function_type slot_function_type;
+	//typedef boost::signals2::connection connection_type;
 }
 
 }  // namespace local

@@ -30,6 +30,7 @@ public:
 	tcp_session(boost::asio::ip::tcp::socket &socket)
 	: socket_(socket), state_(writing)
 	{
+        // TODO [delete] >> echo server.
 		const std::string message = make_daytime_string();
 		write_buffer_ = boost::asio::buffer(message.c_str(), message.length());
 
@@ -48,8 +49,12 @@ public:
 	// notify that third party library that it should perform its read operation.
 	void do_read(boost::system::error_code &ec)
 	{
-		if (std::size_t len = socket_.read_some(boost::asio::buffer(data_), ec))
+		if (const std::size_t len = socket_.read_some(boost::asio::buffer(data_), ec))
 		{
+            // TODO [delete] >> for display.
+            const std::string msg(data_.begin(), data_.end());
+            std::cout << "received data of length " << len << " : " << msg << std::endl;
+
 			write_buffer_ = boost::asio::buffer(data_, len);
 			state_ = boost::asio::buffer_size(write_buffer_) > 0 ? writing : reading;
 		}
@@ -186,7 +191,7 @@ private:
 class tcp_server
 {
 public:
-	static const unsigned short port_num = 13;
+	static const unsigned short port_num = 30001;
 
 public:
 	tcp_server(boost::asio::io_service &io_service)
@@ -219,7 +224,6 @@ private:
 	boost::asio::ip::tcp::acceptor acceptor_;
 };
 
-
 void asio_async_tcp_server()
 {
 	try
@@ -231,7 +235,7 @@ void asio_async_tcp_server()
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
 	}
 }
 
@@ -239,7 +243,7 @@ void asio_sync_tcp_server()
 {
 	try
 	{
-		const unsigned short port_num = 13;
+		const unsigned short port_num = 30001;
 
 		boost::asio::io_service ioService;
 		boost::asio::ip::tcp::acceptor acceptor(ioService, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port_num));
@@ -257,7 +261,7 @@ void asio_sync_tcp_server()
 	}
 	catch (std::exception &e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
 	}
 }
 

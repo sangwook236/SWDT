@@ -21,14 +21,14 @@ void asio_sync_tcp_client()
 	{
 		boost::asio::io_service ioService;
 		boost::asio::ip::tcp::resolver resolver(ioService);
-		boost::asio::ip::tcp::resolver::query query("127.0.0.1", "daytime");  // use a service name
-		//boost::asio::ip::tcp::resolver::query query("127.0.0.1", "13");  // use a port number
+		//boost::asio::ip::tcp::resolver::query query("127.0.0.1", "daytime");  // use a service name.
+		boost::asio::ip::tcp::resolver::query query("127.0.0.1", "30001");  // use a port number.
 		boost::asio::ip::tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
-		boost::asio::ip::tcp::resolver::iterator end;
+		boost::asio::ip::tcp::resolver::iterator itEnd;
 		boost::asio::ip::tcp::socket socket(ioService);
 
 		boost::system::error_code error = boost::asio::error::host_not_found;
-		while (error && endpoint_iterator != end)
+		while (error && endpoint_iterator != itEnd)
 		{
 			socket.close();
 			socket.connect(*endpoint_iterator++, error);
@@ -42,26 +42,26 @@ void asio_sync_tcp_client()
 			boost::system::error_code error;
 
 			{
-				const size_t len = socket.read_some(boost::asio::buffer(buf), error);
-				if (error == boost::asio::error::eof)
-					break; // Connection closed cleanly by peer.
+				const std::size_t len = socket.read_some(boost::asio::buffer(buf), error);
+				if (boost::asio::error::eof == error)
+					break;  // Connection closed cleanly by peer.
 				else if (error)
-					throw boost::system::system_error(error); // Some other error.
+					throw boost::system::system_error(error);  // Some other error.
 
 				std::cout.write(buf.data(), (std::streamsize)len);
 			}
 
 			{
-				const std::string msg("abcdef");
-	
+				const std::string msg("!@#$% a TCP test message ^&*()");
+
 				buf.assign('\0');
 				std::copy(msg.begin(), msg.end(), buf.begin());
 
-				const size_t len = socket.write_some(boost::asio::buffer(buf), error);
-				if (error == boost::asio::error::eof)
-					break; // Connection closed cleanly by peer.
+				const std::size_t len = socket.write_some(boost::asio::buffer(buf), error);
+				if (boost::asio::error::eof == error)
+					break;  // Connection closed cleanly by peer.
 				else if (error)
-					throw boost::system::system_error(error); // Some other error.
+					throw boost::system::system_error(error);  // Some other error.
 
 				//std::cout.write(buf.data(), (std::streamsize)len);
 			}
@@ -69,10 +69,10 @@ void asio_sync_tcp_client()
 			{
 				buf.assign('\0');
 				const size_t len = socket.read_some(boost::asio::buffer(buf), error);
-				if (error == boost::asio::error::eof)
-					break; // Connection closed cleanly by peer.
+				if (boost::asio::error::eof == error)
+					break;  // Connection closed cleanly by peer.
 				else if (error)
-					throw boost::system::system_error(error); // Some other error.
+					throw boost::system::system_error(error);  // Some other error.
 
 				std::cout.write(buf.data(), (std::streamsize)len);
 			}
@@ -80,7 +80,7 @@ void asio_sync_tcp_client()
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
 	}
 }
 

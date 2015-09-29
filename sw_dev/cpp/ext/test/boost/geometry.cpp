@@ -672,7 +672,7 @@ void overlay_polygon_linestring()
 #endif
 
 	// Calculate intersection points (turn points)
-#if BOOST_VERSION <= 105200
+#if BOOST_VERSION <= 105500
 	typedef boost::geometry::detail::overlay::turn_info<point_2d_t> turn_info_t;
 #else
 	typedef boost::geometry::segment_ratio_type<point_2d_t, boost::geometry::detail::no_rescale_policy>::type segment_ratio_t;
@@ -681,7 +681,7 @@ void overlay_polygon_linestring()
 
 	std::vector<turn_info_t> turns;
 	boost::geometry::detail::get_turns::no_interrupt_policy policy;
-#if BOOST_VERSION <= 105200
+#if BOOST_VERSION <= 105500
 	boost::geometry::get_turns<false, false, boost::geometry::detail::overlay::assign_null_policy>(ls, p, turns, policy);
 #else
 	boost::geometry::detail::no_rescale_policy rescale_policy;

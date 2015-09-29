@@ -65,7 +65,7 @@ private:
 class tcp_server
 {
 public:
-	static const unsigned short port_num = 13;
+	static const unsigned short port_num = 30001;
 
 public:
 	tcp_server(boost::asio::io_service& io_service)
@@ -101,7 +101,7 @@ private:
 class udp_server
 {
 public:
-	static const unsigned short port_num = 13;
+	static const unsigned short port_num = 30001;
 
 public:
 	udp_server(boost::asio::io_service& io_service)
@@ -155,7 +155,7 @@ void asio_async_tcp_udp_server()
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
 	}
 }
 

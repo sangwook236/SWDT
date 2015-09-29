@@ -21,10 +21,10 @@ std::string make_daytime_string()
 class udp_server
 {
 public:
-	enum { port_num = 30001 };
+	enum { port_num = 13 };
 
 public:
-	udp_server(boost::asio::io_service &io_service)
+	udp_server(boost::asio::io_service& io_service)
 	: socket_(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port_num))
 	{
 		start_receive();
@@ -39,19 +39,10 @@ private:
 			boost::bind(&udp_server::handle_receive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
 		);
 	}
-
-	void handle_receive(const boost::system::error_code &error, std::size_t bytes_transferred)
+	void handle_receive(const boost::system::error_code& error,	std::size_t /*bytes_transferred*/)
 	{
 		if (!error || error == boost::asio::error::message_size)
 		{
-            // TODO [delete] >> for display.
-            boost::array<char, 10>::iterator itEnd = recv_buffer_.begin();
-            std::advance(itEnd, bytes_transferred);
-            std::cout << std::string(recv_buffer_.begin(), itEnd) << std::endl;
-            //std::cout.write(recv_buffer_.data(), (std::streamsize)bytes_transferred);
-            //std::cout << std::endl;
-
-            // TODO [delete] >> echo server.
 			boost::shared_ptr<std::string> message(new std::string(make_daytime_string()));
 			socket_.async_send_to(
 				boost::asio::buffer(*message),
@@ -62,7 +53,6 @@ private:
 			start_receive();
 		}
 	}
-
 	void handle_send(boost::shared_ptr<std::string> /*message*/, const boost::system::error_code& /*error*/, std::size_t /*bytes_transferred*/)
 	{
 	}
@@ -70,7 +60,7 @@ private:
 private:
 	boost::asio::ip::udp::socket socket_;
 	boost::asio::ip::udp::endpoint remote_endpoint_;
-	boost::array<char, 10> recv_buffer_;
+	boost::array<char, 1> recv_buffer_;
 };
 
 void asio_async_udp_server()
@@ -92,7 +82,7 @@ void asio_sync_udp_server()
 {
 	try
 	{
-		const unsigned short port_num = 30001;
+		const unsigned short port_num = 13;
 
 		boost::asio::io_service ioService;
 		boost::asio::ip::udp::socket socket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port_num));
@@ -114,7 +104,7 @@ void asio_sync_udp_server()
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << "Boost.Asio exception: " << e.what () << std::endl;
+		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
 	}
 }
 
