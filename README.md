@@ -20,7 +20,7 @@ The GDT has included various programming languages and hardware components:
   * Extension
     * Sensor
       * AHRS
-      * GPU
+      * GPS
       * IMU
     * Vision Sensor
       * Kinect
@@ -29,5 +29,7 @@ The GDT has included various programming languages and hardware components:
   * Microprocessor and Microcontroller
     * ARM
       * Raspberry Pi
+      * STM32
     * AVR
+      * ATmega128
 
