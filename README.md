@@ -26,7 +26,6 @@ The GDT has included various programming languages and hardware components:
       * Kinect
   * Open Source Hardware
     * Arduino
-    * Beagle
   * Microprocessor and Microcontroller
     * ARM
       * Raspberry Pi
