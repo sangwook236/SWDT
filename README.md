@@ -13,7 +13,6 @@ The GDT has included various programming languages and hardware components:
   * Python
   * Objective-C
   * JavaScript
-  * Mobile
   * PHP
 * Hardware
   * Extension
