@@ -12,9 +12,9 @@ The GDT has included various programming languages and hardware components:
   * Matlab
   * R
   * Python
+  * Objective-C
   * JavaScript
   * Mobile
-  * Objective-C
   * PHP
 * Hardware
   * Extension
