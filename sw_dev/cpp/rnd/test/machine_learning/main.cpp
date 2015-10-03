@@ -117,9 +117,9 @@ int main(int argc, char *argv[])
 		//retval = liblearning_main(argc, argv);
 
 		std::cout << "\nWaffles library -----------------------------------------------------" << std::endl;
-		//	-. generation of various types of data
-		//	-. supervised and semi-supervised learning algorithms
-		//	-. transforming datasets
+		//	-. generation of various types of data.
+		//	-. supervised and semi-supervised learning algorithms.
+		//	-. transforming datasets.
 		//	-. predicting missing values in incomplete data, or testing collaborative filtering recommendation systems.
 		//	-. learning from and operating on sparse data.
 		//	-. plotting and visualizing datasets.

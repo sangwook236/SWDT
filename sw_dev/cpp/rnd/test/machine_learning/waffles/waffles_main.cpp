@@ -36,8 +36,9 @@ void matrix_operation()
 namespace my_waffles {
 
 void ml_example();
-void dimensionality_reduction();
 void manifold_sculpting_example();
+
+void dimensionality_reduction();
 
 }  // namespace my_waffles
 
@@ -60,8 +61,9 @@ int waffles_main(int argc, char *argv[])
     //  GDynamicSystemStateAligner.
     //  GUnsupervisedBackProp.
     //  GScalingUnfolder.
-    my_waffles::dimensionality_reduction();
     my_waffles::manifold_sculpting_example();
+
+    my_waffles::dimensionality_reduction();
 
 	return 0;
 }
