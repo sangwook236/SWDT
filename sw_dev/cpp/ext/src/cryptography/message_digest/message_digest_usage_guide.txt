@@ -1,4 +1,6 @@
 [-] General
 	-. Site
-		http://www.gnu.org/software/libiconv/
-		https://github.com/win-iconv/win-iconv
+		http://md5deep.sourceforge.net/
+		http://www.md5summer.org/
+
+		http://groups.csail.mit.edu/cis/md6/
