@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>machine_vision</ProjectName>
+    <ProjectGuid>{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}</ProjectGuid>
+    <RootNamespace>machine_vision</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../bin/</OutDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../bin/</OutDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../lib;$(MY_USR_LOCAL_LIB)/vxl_debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../lib;$(MY_USR_LOCAL_LIB)/vxl_release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="ccv\ccv_bbf.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_daisy.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_dpm.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_ferns.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_hog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_icf.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_mser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_sift.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_swt.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ccv\ccv_tld.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="darwin\darwin_main.cpp" />
+    <ClCompile Include="ivt\ivt_hough_circle_example.cpp" />
+    <ClCompile Include="ivt\ivt_hough_line_example.cpp" />
+    <ClCompile Include="ivt\ivt_klt_tracker_example.cpp" />
+    <ClCompile Include="ivt\ivt_main.cpp" />
+    <ClCompile Include="ivt\ivt_particle_filter_example.cpp" />
+    <ClCompile Include="ivt\ParticleFilter2D.cpp" />
+    <ClCompile Include="ivt\ParticleFilter3D.cpp" />
+    <ClCompile Include="library_autolinking.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="opencv\opencv_active_contour_model.cpp" />
+    <ClCompile Include="opencv\opencv_basic_operation.cpp" />
+    <ClCompile Include="opencv\opencv_bag_of_words.cpp" />
+    <ClCompile Include="opencv\opencv_camera_calibration.cpp" />
+    <ClCompile Include="opencv\opencv_camera_geometry.cpp" />
+    <ClCompile Include="opencv\opencv_chamfer_matching.cpp" />
+    <ClCompile Include="opencv\opencv_change_detection.cpp" />
+    <ClCompile Include="opencv\opencv_change_detection_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_clustering.cpp" />
+    <ClCompile Include="opencv\opencv_color_correction.cpp" />
+    <ClCompile Include="opencv\opencv_color_filtering.cpp" />
+    <ClCompile Include="opencv\opencv_convex_hull.cpp" />
+    <ClCompile Include="opencv\opencv_convolution_correlation.cpp" />
+    <ClCompile Include="opencv\opencv_distance_measure.cpp" />
+    <ClCompile Include="opencv\opencv_distance_transform.cpp" />
+    <ClCompile Include="opencv\opencv_edge_detection.cpp" />
+    <ClCompile Include="opencv\opencv_face_detection.cpp" />
+    <ClCompile Include="opencv\opencv_face_detection_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_face_recognition.cpp" />
+    <ClCompile Include="opencv\opencv_feature_description.cpp" />
+    <ClCompile Include="opencv\opencv_feature_extraction.cpp" />
+    <ClCompile Include="opencv\opencv_feature_extraction_and_matching.cpp" />
+    <ClCompile Include="opencv\opencv_feature_extraction_and_matching_by_signature.cpp" />
+    <ClCompile Include="opencv\opencv_feature_extraction_and_matching_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_feature_matching.cpp" />
+    <ClCompile Include="opencv\opencv_fourier_transform.cpp" />
+    <ClCompile Include="opencv\opencv_generic_description_and_matching.cpp" />
+    <ClCompile Include="opencv\opencv_gesture_recognition.cpp" />
+    <ClCompile Include="opencv\opencv_hand_detection.cpp" />
+    <ClCompile Include="opencv\opencv_hand_pose_estimation.cpp" />
+    <ClCompile Include="opencv\opencv_histogram.cpp" />
+    <ClCompile Include="opencv\opencv_histogram_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_homography.cpp" />
+    <ClCompile Include="opencv\opencv_hough_transform.cpp" />
+    <ClCompile Include="opencv\opencv_human_detection.cpp" />
+    <ClCompile Include="opencv\opencv_human_detection_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_image_conversion.cpp" />
+    <ClCompile Include="opencv\opencv_image_filtering.cpp" />
+    <ClCompile Include="opencv\opencv_image_filtering_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_image_gradient.cpp" />
+    <ClCompile Include="opencv\opencv_image_labeling_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_image_operation.cpp" />
+    <ClCompile Include="opencv\opencv_image_processing_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_image_pyramid.cpp" />
+    <ClCompile Include="opencv\opencv_image_rectification.cpp" />
+    <ClCompile Include="opencv\opencv_image_sequence.cpp" />
+    <ClCompile Include="opencv\opencv_image_undistortion.cpp" />
+    <ClCompile Include="opencv\opencv_iterative_closest_point.cpp" />
+    <ClCompile Include="opencv\opencv_kalman_filtering.cpp" />
+    <ClCompile Include="opencv\opencv_machine_learning.cpp" />
+    <ClCompile Include="opencv\opencv_main.cpp" />
+    <ClCompile Include="opencv\opencv_matrix_operation.cpp" />
+    <ClCompile Include="opencv\opencv_matrix_operation_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_morphological_operation.cpp" />
+    <ClCompile Include="opencv\opencv_motion_history_image.cpp" />
+    <ClCompile Include="opencv\opencv_motion_segmentation.cpp" />
+    <ClCompile Include="opencv\opencv_object_detection.cpp" />
+    <ClCompile Include="opencv\opencv_object_tracking.cpp" />
+    <ClCompile Include="opencv\opencv_openni.cpp" />
+    <ClCompile Include="opencv\opencv_optical_flow.cpp" />
+    <ClCompile Include="opencv\opencv_optical_flow_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_outlier_removal.cpp" />
+    <ClCompile Include="opencv\opencv_pca.cpp" />
+    <ClCompile Include="opencv\opencv_retina_model.cpp" />
+    <ClCompile Include="opencv\opencv_segmentation.cpp" />
+    <ClCompile Include="opencv\opencv_shape_finding.cpp" />
+    <ClCompile Include="opencv\opencv_shape_matching.cpp" />
+    <ClCompile Include="opencv\opencv_skin_color_filtering.cpp" />
+    <ClCompile Include="opencv\opencv_slam.cpp" />
+    <ClCompile Include="opencv\opencv_stereo_camera_calibration.cpp" />
+    <ClCompile Include="opencv\opencv_stereo_matching.cpp" />
+    <ClCompile Include="opencv\opencv_stereo_matching_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_structure_tensor.cpp" />
+    <ClCompile Include="opencv\opencv_template_matching.cpp" />
+    <ClCompile Include="opencv\opencv_text_output.cpp" />
+    <ClCompile Include="opencv\opencv_skeletonization_and_thinning.cpp" />
+    <ClCompile Include="opencv\opencv_util.cpp" />
+    <ClCompile Include="opencv\opencv_vector_operation.cpp" />
+    <ClCompile Include="opencv\PascalVocDataset.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="vigra\vigra_main.cpp" />
+    <ClCompile Include="vigra\vigra_seeded_region_growing.cpp" />
+    <ClCompile Include="vigra\vigra_slic.cpp" />
+    <ClCompile Include="vigra\vigra_watershed.cpp" />
+    <ClCompile Include="vigra\vigra_watershed_region_growing.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_aib.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_fisher_vector.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_gmm.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_hog.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_kmeans.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_lbp.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_liop.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_main.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_mser.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_quick_shift.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_sift.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_slic.cpp" />
+    <ClCompile Include="vlfeat\vlfeat_vlad.cpp" />
+    <ClCompile Include="vxl\vxl_fhs_find_matches.cpp" />
+    <ClCompile Include="vxl\vxl_fhs_match_tree_model_example.cpp" />
+    <ClCompile Include="vxl\vxl_fhs_mr_find_matches.cpp" />
+    <ClCompile Include="vxl\vxl_main.cpp" />
+    <ClCompile Include="vxl\vxl_msm_apply_tps_warp_example.cpp" />
+    <ClCompile Include="vxl\vxl_msm_build_shape_model_example.cpp" />
+    <ClCompile Include="vxl\vxl_msm_draw_points_on_image_example.cpp" />
+    <ClCompile Include="vxl\vxl_msm_draw_shape_modes_example.cpp" />
+    <ClCompile Include="vxl\vxl_msm_get_shape_params_example.cpp" />
+    <ClCompile Include="vxl\vxl_msm_plot_aligned_shapes_example.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ivt\ParticleFilter2D.h" />
+    <ClInclude Include="ivt\ParticleFilter3D.h" />
+    <ClInclude Include="opencv\PascalVocDataset.h" />
+    <ClInclude Include="opencv\vehicle_classification.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
