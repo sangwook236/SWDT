@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{84111558-4AC7-4057-82F7-84548C6FC747}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>change_detection</RootNamespace>
+    <ProjectName>change_detection</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>../../bin/</OutDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>../../bin/</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bgscollection_lib\bskde.h" />
+    <ClInclude Include="bgscollection_lib\sobs.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\AdaptiveBackgroundLearning.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\ae\KDE.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\ae\KernelTable.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\ae\NPBGmodel.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\ae\NPBGSubtractor.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\av\TBackground.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\av\TBackgroundVuMeter.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\av\VuMeter.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\AdaptiveMedianBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\Bgs.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\BgsParams.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\Blob.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\BlobExtraction.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\BlobResult.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\ConnectedComponents.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPAdaptiveMedianBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPEigenbackgroundBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPGrimsonGMMBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPMeanBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPPratiMediodBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPTextureBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPWrenGABGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPZivkovicAGMMBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\Eigenbackground.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\Error.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\GrimsonGMM.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\Image.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\MeanBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\PratiMediodBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\TextureBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\WrenGA.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\dp\ZivkovicAGMM.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\FrameDifferenceBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\GMG.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\IBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\BackgroundSubtractionAPI.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\BGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\blob.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\BlobExtraction.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\BlobLibraryConfiguration.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\BlobResult.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\CMultiLayerBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\LocalBinaryPattern.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\MultiLayerBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\jmo\OpenCvDataConversion.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\BGModel.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\BGModelFuzzyGauss.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\BGModelFuzzySom.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\BGModelGauss.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\BGModelMog.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\BGModelSom.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\LBAdaptiveSOM.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\LBFuzzyAdaptiveSOM.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\LBFuzzyGaussian.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\LBMixtureOfGaussians.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\LBSimpleGaussian.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\lb\Types.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\MixtureOfGaussianV1BGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\MixtureOfGaussianV2BGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\pt\PBAS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\pt\PixelBasedAdaptiveSegmenter.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\StaticFrameDifferenceBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\FuzzyChoquetIntegral.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\FuzzySugenoIntegral.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\FuzzyUtils.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\MRF.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\PerformanceUtils.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\PixelUtils.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\T2FGMM.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\T2FGMM_UM.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\T2FGMM_UV.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\T2FMRF.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\T2FMRF_UM.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\tb\T2FMRF_UV.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\WeightedMovingMeanBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\WeightedMovingVarianceBGS.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="bgscollection\bgscollection_main.cpp" />
+    <ClCompile Include="bgscollection_lib\bskde.cpp" />
+    <ClCompile Include="bgscollection_lib\sobs.cpp" />
+    <ClCompile Include="bgslibrary\bgslibrary_main.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\AdaptiveBackgroundLearning.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\ae\KDE.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\ae\KernelTable.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\ae\NPBGmodel.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\ae\NPBGSubtractor.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\av\TBackground.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\av\TBackgroundVuMeter.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\av\VuMeter.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\AdaptiveMedianBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\Blob.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\BlobExtraction.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\BlobResult.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\ConnectedComponents.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPAdaptiveMedianBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPEigenbackgroundBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPGrimsonGMMBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPMeanBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPPratiMediodBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPTextureBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPWrenGABGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPZivkovicAGMMBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\Eigenbackground.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\Error.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\GrimsonGMM.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\Image.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\MeanBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\PratiMediodBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\TextureBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\WrenGA.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\dp\ZivkovicAGMM.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\FrameDifferenceBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\GMG.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\jmo\blob.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\jmo\BlobExtraction.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\jmo\BlobResult.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\jmo\CMultiLayerBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\jmo\LocalBinaryPattern.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\jmo\MultiLayerBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\BGModel.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\BGModelFuzzyGauss.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\BGModelFuzzySom.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\BGModelGauss.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\BGModelMog.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\BGModelSom.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\LBAdaptiveSOM.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\LBFuzzyAdaptiveSOM.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\LBFuzzyGaussian.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\LBMixtureOfGaussians.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\lb\LBSimpleGaussian.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\MixtureOfGaussianV1BGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\MixtureOfGaussianV2BGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\pt\PBAS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\pt\PixelBasedAdaptiveSegmenter.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\StaticFrameDifferenceBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\FuzzyChoquetIntegral.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\FuzzySugenoIntegral.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\FuzzyUtils.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\MRF.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\PerformanceUtils.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\PixelUtils.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\T2FGMM.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\T2FGMM_UM.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\T2FGMM_UV.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\T2FMRF.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\T2FMRF_UM.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\tb\T2FMRF_UV.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\WeightedMovingMeanBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\WeightedMovingVarianceBGS.cpp" />
+    <ClCompile Include="library_autolinking.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
