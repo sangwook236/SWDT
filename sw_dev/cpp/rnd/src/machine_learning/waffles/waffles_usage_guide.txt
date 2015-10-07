@@ -12,3 +12,7 @@
 		cd demos
 		make
 
+	-. Build waffles_generate
+		cd ${WAFFLES_HOME}/src/depends/generate
+		make
+
