@@ -55,6 +55,7 @@ int waffles_main(int argc, char *argv[])
 
     my_waffles::ml_example();
 
+    // Dimensionality reduction & manifold learning.
     //  GManifoldSculpting.
     //  GIsomap.
     //  GLLE.
