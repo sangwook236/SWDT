@@ -64,9 +64,6 @@
     <Filter Include="Source Files\mfa_lib">
       <UniqueIdentifier>{c168b10e-7a32-4699-8bfa-caf14c7183cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\mfa">
-      <UniqueIdentifier>{7b8b9b56-5bf0-4cfb-87c6-143793aec9bb}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -373,9 +370,6 @@
     </ClCompile>
     <ClCompile Include="waffles\waffles_main.cpp">
       <Filter>Source Files\waffles</Filter>
-    </ClCompile>
-    <ClCompile Include="..\dimensionality_reduction\mfa\mfa_main.cpp">
-      <Filter>Source Files\mfa</Filter>
     </ClCompile>
     <ClCompile Include="..\dimensionality_reduction\mfa_lib\mfa.cpp">
       <Filter>Source Files\mfa_lib</Filter>

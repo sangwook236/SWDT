@@ -101,7 +101,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\dimensionality_reduction\mfa\mfa_main.cpp" />
     <ClCompile Include="..\dimensionality_reduction\mfa_lib\mfa.cpp" />
     <ClCompile Include="caffe\caffe_main.cpp" />
     <ClCompile Include="clustering\clustering_kmeanspp.cpp" />
