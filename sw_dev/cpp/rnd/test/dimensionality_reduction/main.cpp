@@ -9,21 +9,12 @@
 
 int main(int argc, char *argv[])
 {
-	int mfa_main(int argc, char *argv[]);
 	int tapkee_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "mixtures of factor analyzers (MFA) ----------------------------------" << std::endl;
-		//	-. EM algorithm for mixtures of factor analyzers (MFA).
-		//	-. Train three specializations of MFA:
-		//		A (single) factor analyzer (FA).
-		//		A (single) probabilistic PCA model (PPCA).
-		//		A mixture of probabilistic PCA models (MPPCA).
-		retval = mfa_main(argc, argv);
-
-		std::cout << "\ntapkee library ------------------------------------------------------" << std::endl;
+		std::cout << "tapkee library ------------------------------------------------------" << std::endl;
 		//	-. Locally Linear Embedding (LLE) and Kernel Locally Linear Embedding (KLLE).
 		//	-. Neighborhood Preserving Embedding (NPE).
 		//	-. Local Tangent Space Alignment (LTSA).

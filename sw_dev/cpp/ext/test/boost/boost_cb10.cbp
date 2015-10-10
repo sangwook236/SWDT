@@ -36,7 +36,6 @@
 			<Add option="-fpermissive" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
-			<Add option="-DBOOST_SYSTEM_NO_DEPRECATED" />
 			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>

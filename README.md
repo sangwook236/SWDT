@@ -3,7 +3,7 @@
 The goal of the GDT is to systematically accumulate source codes, knowledge, and experience acquired in the development and testing of software and hardware. <br />
 The GDT is a rich repository of knowledge for development and testing.
 
-The GDT has included various programming languages and hardware components:
+The GDT includes various programming languages and hardware components:
 * Software
   * C/C++
   * C#
@@ -12,8 +12,6 @@ The GDT has included various programming languages and hardware components:
   * R
   * Python
   * Objective-C
-  * JavaScript
-  * PHP
 * Hardware
   * Extension
     * Sensor

@@ -31,6 +31,24 @@ public:
             std::cerr << "cannot open socket" << std::endl;
     }
 
+    sender(boost::asio::io_service &io_service, const boost::asio::ip::address_v4 &broadcast_address, const short broadcast_port, const std::string &message = std::string())
+    : endpoint_(broadcast_address, broadcast_port), socket_(io_service), timer_(io_service)
+    {
+        boost::system::error_code error;
+        socket_.open(boost::asio::ip::udp::v4(), error);
+        //socket_.open(endpoint_.protocol(), error);
+        if (!error)
+        {
+            socket_.set_option(boost::asio::ip::udp::socket::reuse_address(true));
+            socket_.set_option(boost::asio::socket_base::broadcast(true));
+
+            if (!message.empty())
+                send_to(message);
+        }
+        else
+            std::cerr << "cannot open socket" << std::endl;
+    }
+
 public:
     void send_to(const std::string &message)
     {
@@ -106,7 +124,14 @@ void asio_udp_broadcast()
 		const std::string message("!@#$% a UDP broadcast test message ^&*()");
 
 		boost::asio::io_service ioService;
+#if 1
         local::sender s(ioService, broadcast_port, message);
+#else
+        boost::system::error_code ec;
+        boost::asio::ip::address_v4 broadcast_address;
+        broadcast_address.from_string("10.0.2.255", ec);
+        local::sender s(ioService, broadcast_address, broadcast_port, message);
+#endif
         //s.send_to(message);
 
         ioService.run();

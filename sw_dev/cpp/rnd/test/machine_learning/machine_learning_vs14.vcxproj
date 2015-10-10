@@ -83,6 +83,8 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\dimensionality_reduction\mfa_lib\log.hpp" />
+    <ClInclude Include="..\dimensionality_reduction\mfa_lib\mfa.hpp" />
     <ClInclude Include="kmeanspp_lib\KMeans.h" />
     <ClInclude Include="kmeanspp_lib\KmTree.h" />
     <ClInclude Include="kmeanspp_lib\KmUtils.h" />
@@ -99,6 +101,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\dimensionality_reduction\mfa\mfa_main.cpp" />
+    <ClCompile Include="..\dimensionality_reduction\mfa_lib\mfa.cpp" />
     <ClCompile Include="caffe\caffe_main.cpp" />
     <ClCompile Include="clustering\clustering_kmeanspp.cpp" />
     <ClCompile Include="clustering\clustering_k_medoids.cpp" />

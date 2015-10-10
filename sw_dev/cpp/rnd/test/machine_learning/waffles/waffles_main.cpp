@@ -3,6 +3,7 @@
 #include <GClasses/GVec.h>
 #include <GClasses/GManifold.h>
 #include <iostream>
+#include <stdexcept>
 
 
 namespace {
@@ -10,6 +11,7 @@ namespace local {
 
 void vector_operation()
 {
+    throw std::runtime_error("not yet implemented");
 }
 
 void matrix_operation()
@@ -44,7 +46,7 @@ void dimensionality_reduction();
 
 int waffles_main(int argc, char *argv[])
 {
-    //local::vector_operation();
+    //local::vector_operation();  // not yet implemented.
     local::matrix_operation();
 
     // REF [site] >>
@@ -53,6 +55,7 @@ int waffles_main(int argc, char *argv[])
 
     my_waffles::ml_example();
 
+    // Dimensionality reduction & manifold learning.
     //  GManifoldSculpting.
     //  GIsomap.
     //  GLLE.

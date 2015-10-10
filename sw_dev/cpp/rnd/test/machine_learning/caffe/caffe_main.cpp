@@ -24,4 +24,6 @@ int caffe_main(int argc, char *argv[])
 	my_caffe::classification_example();
 
 	// Feature extraction.
+
+	return 0;
 }

@@ -4,13 +4,11 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "gsl_d.lib")
-#pragma comment(lib, "cblas_d.lib")
+//#pragma comment(lib, "gsl_d.lib")
 
 #		else
 
-#pragma comment(lib, "gsl.lib")
-#pragma comment(lib, "cblas.lib")
+//#pragma comment(lib, "gsl.lib")
 
 #		endif
 
