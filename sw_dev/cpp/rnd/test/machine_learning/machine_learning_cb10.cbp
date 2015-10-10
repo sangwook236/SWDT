@@ -93,10 +93,9 @@
 		<Unit filename="libsvm_lib/svm.cpp" />
 		<Unit filename="libsvm_lib/svm.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="manifold_learning/automatic_alignment_of_local_representations.cpp" />
+		<Unit filename="manifold_learning/locally_linear_coordination.cpp" />
 		<Unit filename="manifold_learning/manifold_alignment_main.cpp" />
 		<Unit filename="manifold_learning/manifold_learning_main.cpp" />
-		<Unit filename="mfa/mfa_main.cpp" />
 		<Unit filename="mfa_lib/log.hpp" />
 		<Unit filename="mfa_lib/mfa.cpp" />
 		<Unit filename="mfa_lib/mfa.hpp" />

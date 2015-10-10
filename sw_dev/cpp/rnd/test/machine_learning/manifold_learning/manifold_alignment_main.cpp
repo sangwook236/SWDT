@@ -10,13 +10,14 @@ namespace local {
 
 namespace my_manifold_alignment {
 
+void locally_linear_coordination();
+
 }  // namespace my_manifold_alignment
 
 int manifold_alignment_main(int argc, char *argv[])
 {
     std::cout << "\nAutomatic Alignment of Local Representations ------------------------" << std::endl;
-    // REF [paper] >> "Automatic Alignment of Local Representations", NIPS 2002.
-    //retval = manifold alignment(argc, argv);
+    my_manifold_alignment::locally_linear_coordination();
 
 	return 0;
 }

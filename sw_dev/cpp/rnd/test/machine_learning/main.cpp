@@ -26,8 +26,6 @@ int main(int argc, char *argv[])
 	int liblearning_main(int argc, char *argv[]);
 	int waffles_main(int argc, char *argv[]);
 
-	int mfa_main(int argc, char *argv[]);
-
 	int manifold_learning_main(int argc, char *argv[]);
 	int manifold_alignment_main(int argc, char *argv[]);
 
@@ -132,14 +130,6 @@ int main(int argc, char *argv[])
 		//	-. clustering.
 		//	-. dimensionality reduction, manifold learning, attribute selection, and tools related to NLDR.
 		//retval = waffles_main(argc, argv);
-
-		std::cout << "mixtures of factor analyzers (MFA) ----------------------------------" << std::endl;
-		//	-. EM algorithm for mixtures of factor analyzers (MFA).
-		//	-. Train three specializations of MFA:
-		//		A (single) factor analyzer (FA).
-		//		A (single) probabilistic PCA model (PPCA).
-		//		A mixture of probabilistic PCA models (MPPCA).
-		//retval = mfa_main(argc, argv);
 
 		std::cout << "\nManifold learning & alignment ---------------------------------------" << std::endl;
 		//retval = manifold_learning_main(argc, argv);  // not yet implemented.

@@ -9,12 +9,21 @@
 
 int main(int argc, char *argv[])
 {
+	int mfa_main(int argc, char *argv[]);
 	int tapkee_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "tapkee library ------------------------------------------------------" << std::endl;
+		std::cout << "mixtures of factor analyzers (MFA) ----------------------------------" << std::endl;
+		//	-. EM algorithm for mixtures of factor analyzers (MFA).
+		//	-. Train three specializations of MFA:
+		//		A (single) factor analyzer (FA).
+		//		A (single) probabilistic PCA model (PPCA).
+		//		A mixture of probabilistic PCA models (MPPCA). (X)
+		retval = mfa_main(argc, argv);
+
+		std::cout << "\ntapkee library ------------------------------------------------------" << std::endl;
 		//	-. Locally Linear Embedding (LLE) and Kernel Locally Linear Embedding (KLLE).
 		//	-. Neighborhood Preserving Embedding (NPE).
 		//	-. Local Tangent Space Alignment (LTSA).
@@ -32,7 +41,7 @@ int main(int argc, char *argv[])
 		//	-. Factor analysis (FA).
 		//	-. t-Distributed Stochastic Neighbor Embedding (t-SNE).
 		//	-. Barnes-Hut-SNE.
-		retval = tapkee_main(argc, argv);
+		//retval = tapkee_main(argc, argv);
 
 		// REF [file] >> Waffles library in machine learning project.
 		//	-. dimensionality reduction, manifold learning, attribute selection, and tools related to NLDR.
