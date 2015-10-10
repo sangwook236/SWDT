@@ -1,5 +1,5 @@
 //include "stdafx.h"
-#include "mfa.hpp"
+#include "../mfa_lib/mfa.hpp"
 #include <gsl/gsl_blas.h>
 #include <boost/tokenizer.hpp>
 #include <fstream>
@@ -10,7 +10,7 @@
 namespace {
 namespace local {
 
-// REF [original] >> my_vector_data_set_t in mfa/mfa_main.cpp
+// REF [original] >> my_vector_data_set_t in {CPP_RND_HOME}/dimensionality_reduction/mfa/mfa_main.cpp
 class my_vector_data_set_t : public vector_data_set_t
 {
 public:
@@ -119,34 +119,34 @@ namespace my_manifold_alignment {
 //  REF [site] >> http://www.stats.ox.ac.uk/~teh/projects.html
 void locally_linear_coordination()
 {
-#if 1
+#if 0
     const std::string train_data_file("./data/machine_learning/swissroll_X_1.dat");  // #data = 20000.
     const bool is_column_major = true;  // a feature is a column vector.
     const std::size_t num_observed_data = 20000;  // the number of the observed data.
     const std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
-    const std::size_t num_mixture_components = 12;  // the number of mixture components, the arity of the latent discrete variable.
     const std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
-#elif 0
+    const std::size_t num_mixture_components = 12;  // the number of mixture components, the arity of the latent discrete variable.
+#elif 1
     const std::string train_data_file("./data/machine_learning/swissroll_X_2.dat");  // #data = 2000.
     const bool is_column_major = true;  // a feature is a column vector.
     const std::size_t num_observed_data = 2000;  // the number of the observed data.
     const std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
-    const std::size_t num_mixture_components = 12;  // the number of mixture components, the arity of the latent discrete variable.
     const std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
+    const std::size_t num_mixture_components = 12;  // the number of mixture components, the arity of the latent discrete variable.
 #elif 0
     const std::string train_data_file("./data/machine_learning/scurve_X_2.dat");  // #data = 2000.
     const bool is_column_major = true;  // a feature is a column vector.
     const std::size_t num_observed_data = 2000;  // the number of the observed data.
     const std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
-    const std::size_t num_mixture_components = 12;  // the number of mixture components, the arity of the latent discrete variable.
     const std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
+    const std::size_t num_mixture_components = 12;  // the number of mixture components, the arity of the latent discrete variable.
 #elif 0
     const std::string train_data_file("./data/machine_learning/scurve_X_3.dat");  // #data = 2000.
     const bool is_column_major = false;  // a feature is a row vector.
     const std::size_t num_observed_data = 2000;  // the number of the observed data.
     const std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
-    const std::size_t num_mixture_components = 12;  // the number of mixture components, the arity of the latent discrete variable.
     const std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
+    const std::size_t num_mixture_components = 12;  // the number of mixture components, the arity of the latent discrete variable.
 #endif
 
     {

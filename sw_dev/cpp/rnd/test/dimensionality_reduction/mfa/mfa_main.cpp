@@ -1,4 +1,4 @@
-#include "mfa.hpp"
+#include "../mfa_lib/mfa.hpp"
 #include <gsl/gsl_blas.h>
 #include <boost/tokenizer.hpp>
 #include <sstream>
@@ -22,10 +22,10 @@ public:
     /*virtual*/ void reset();
     /*virtual*/ bool get_next_vector(gsl_vector *vector_ptr);
 
-    bool load_data(const std::string &file_path);
+    bool load_data(const std::string &file_path, const bool is_colwise);
 
 private:
-    gsl_matrix *data_;
+    gsl_matrix *data_;  // column-major matrix.
     std::size_t index_;
 };
 
@@ -60,7 +60,7 @@ my_vector_data_set_t::~my_vector_data_set_t()
     return true;
 }
 
-bool my_vector_data_set_t::load_data(const std::string &file_path)
+bool my_vector_data_set_t::load_data(const std::string &file_path, const bool is_column_major)
 {
 #if defined(__GNUC__)
     std::ifstream stream(file_path.c_str());
@@ -73,10 +73,10 @@ bool my_vector_data_set_t::load_data(const std::string &file_path)
 		return false;
 	}
 
-    const boost::char_separator<char> delimiter(", ");
+    const boost::char_separator<char> delimiter(", \t");
 
-    gsl_vector *row = gsl_vector_alloc(data_->size2);
-    std::size_t row_idx = 0;
+    gsl_vector *vec = gsl_vector_alloc(is_column_major ? data_->size2 : data_->size1);
+    std::size_t line_idx = 0;
 	std::string line;
 	while (std::getline(stream, line))
 	{
@@ -86,22 +86,22 @@ bool my_vector_data_set_t::load_data(const std::string &file_path)
 
             std::size_t i = 0;
             for (boost::tokenizer<boost::char_separator<char> >::const_iterator cit = tokens.begin(); cit != tokens.end(); ++cit, ++i)
-            {
-                gsl_vector_set(row, i, atof(cit->c_str()));
-            }
-            if (i != data_->size2)
+                gsl_vector_set(vec, i, atof(cit->c_str()));
+
+            if (i != (is_column_major ? data_->size2 : data_->size1))
             {
                 std::cerr << "unmatched number of sample" << std::endl;
                 return false;
             }
 
-            gsl_matrix_set_row(data_, row_idx, row);
+            if (is_column_major) gsl_matrix_set_row(data_, line_idx, vec);
+            else gsl_matrix_set_col(data_, line_idx, vec);
         }
-        ++row_idx;
+        ++line_idx;
     }
-    gsl_vector_free(row);
+    gsl_vector_free(vec);
 
-    if (row_idx != data_->size1)
+    if (line_idx != (is_column_major ? data_->size1 : data_->size2))
     {
         std::cerr << "unmatched dimension of sample" << std::endl;
         return false;
@@ -120,26 +120,33 @@ namespace my_mfa {
 int mfa_main(int argc, char *argv[])
 {
 #if 0
-    const std::string train_data_file("./data/dimensionality_reduction/swissroll_X_1.dat");  // #data = 20000.
-    std::size_t num_observed_data = 2000;  // the number of the observed data.
-
-    std::size_t num_mixture_components = 5;  // the number of mixture components, the arity of the latent discrete variable.
-    std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
-    std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
+    const std::string train_data_file("./data/machine_learning/swissroll_X_1.dat");  // #data = 20000.
+    const bool is_column_major = true;  // a feature is a column vector.
+    const std::size_t num_observed_data = 20000;  // the number of the observed data.
+    const std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
+    const std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
+    const std::size_t num_mixture_components = 12;  // the number of mixture components, the arity of the latent discrete variable.
 #elif 1
-    const std::string train_data_file("./data/dimensionality_reduction/swissroll_X_2.dat");  // #data = 2000.
-    std::size_t num_observed_data = 2000;  // the number of the observed data.
-
-    std::size_t num_mixture_components = 1;  // the number of mixture components, the arity of the latent discrete variable.
-    std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
-    std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
+    const std::string train_data_file("./data/machine_learning/swissroll_X_2.dat");  // #data = 2000.
+    const bool is_column_major = true;  // a feature is a column vector.
+    const std::size_t num_observed_data = 2000;  // the number of the observed data.
+    const std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
+    const std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
+    const std::size_t num_mixture_components = 1; //12;  // the number of mixture components, the arity of the latent discrete variable.
 #elif 0
-    const std::string train_data_file("./data/dimensionality_reduction/scurve_X_2.dat");  // #data = 2000.
-    std::size_t num_observed_data = 2000;  // the number of the observed data.
-
-    std::size_t num_mixture_components = 5;  // the number of mixture components, the arity of the latent discrete variable.
-    std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
-    std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
+    const std::string train_data_file("./data/machine_learning/scurve_X_2.dat");  // #data = 2000.
+    const bool is_column_major = true;  // a feature is a column vector.
+    const std::size_t num_observed_data = 2000;  // the number of the observed data.
+    const std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
+    const std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
+    const std::size_t num_mixture_components = 12;  // the number of mixture components, the arity of the latent discrete variable.
+#elif 0
+    const std::string train_data_file("./data/machine_learning/scurve_X_3.dat");  // #data = 2000.
+    const bool is_column_major = false;  // a feature is a row vector.
+    const std::size_t num_observed_data = 2000;  // the number of the observed data.
+    const std::size_t dim_observed_variable = 3;  // the dimensionality of the observed continuous variable.
+    const std::size_t dim_latent_variable = 2;  // the dimensionality of the latent continuous variable.
+    const std::size_t num_mixture_components = 12;  // the number of mixture components, the arity of the latent discrete variable.
 #endif
 
     {
@@ -147,7 +154,7 @@ int mfa_main(int argc, char *argv[])
 
         // load training data.
         local::my_vector_data_set_t train_data(dim_observed_variable, num_observed_data);
-        if (!train_data.load_data(train_data_file))
+        if (!train_data.load_data(train_data_file, is_column_major))
         {
             std::cerr << "file load error : " << train_data_file << std::endl;
             return false;
@@ -176,7 +183,7 @@ int mfa_main(int argc, char *argv[])
         // compute likelihood.
         {
             gsl_vector *data = gsl_vector_alloc(dim_observed_variable);
-            // the first datum in ./data/dimensionality_reduction/swissroll_X_2.dat.
+            // the first datum in ./data/machine_learning/swissroll_X_2.dat.
             gsl_vector_set(data, 0, 3.6981235e+00);
             gsl_vector_set(data, 1, 5.4035790e+00);
             gsl_vector_set(data, 2, 1.3365016e+01);
@@ -192,7 +199,7 @@ int mfa_main(int argc, char *argv[])
 #if 0
         {
             gsl_vector *data = gsl_vector_alloc(dim_observed_variable);
-            // the first datum in ./data/dimensionality_reduction/swissroll_X_2.dat.
+            // the first datum in ./data/machine_learning/swissroll_X_2.dat.
             gsl_vector_set(data, 0, 3.6981235e+00);
             gsl_vector_set(data, 1, 5.4035790e+00);
             gsl_vector_set(data, 2, 1.3365016e+01);
@@ -211,7 +218,7 @@ int mfa_main(int argc, char *argv[])
 #endif
 
         // save MFA model.
-        const std::string model_path("./data/dimensionality_reduction/mfa/mfa_test.model");
+        const std::string model_path("./data/machine_learning/mfa/mfa_test.model");
         mfa.save(model_path);
 
 /*
@@ -232,7 +239,7 @@ int mfa_main(int argc, char *argv[])
 
         // load training data.
         local::my_vector_data_set_t train_data(dim_observed_variable, num_observed_data);
-        if (!train_data.load_data(train_data_file))
+        if (!train_data.load_data(train_data_file, is_column_major))
         {
             std::cerr << "file load error : " << train_data_file << std::endl;
             return false;
@@ -262,7 +269,7 @@ int mfa_main(int argc, char *argv[])
         // compute likelihood.
         {
             gsl_vector *data = gsl_vector_alloc(dim_observed_variable);
-            // the first datum in ./data/dimensionality_reduction/swissroll_X_2.dat.
+            // the first datum in ./data/machine_learning/swissroll_X_2.dat.
             gsl_vector_set(data, 0, 3.6981235e+00);
             gsl_vector_set(data, 1, 5.4035790e+00);
             gsl_vector_set(data, 2, 1.3365016e+01);
