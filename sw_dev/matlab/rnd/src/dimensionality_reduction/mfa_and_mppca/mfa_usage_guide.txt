@@ -8,3 +8,6 @@
 
 		MFA & MPPCA (Yee Whye Teh):
 		http://www.stats.ox.ac.uk/~teh/projects.html
+
+		DeepMFA:
+		http://www.cs.toronto.edu/~tang/

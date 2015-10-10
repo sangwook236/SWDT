@@ -1,3 +1,5 @@
 [-] General
 	-. Site
 		http://www.sciencemag.org/content/313/5786/504/suppl/DC1
+		http://www.cs.toronto.edu/~hinton/MatlabForSciencePaper.html
+		http://www.cs.utoronto.ca/~hinton/
