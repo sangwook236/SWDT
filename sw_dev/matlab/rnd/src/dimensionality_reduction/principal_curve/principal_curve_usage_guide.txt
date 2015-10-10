@@ -1,0 +1,7 @@
+[-] General
+	-. Site
+		MFA (Zoubin):
+		https://www.lri.fr/~kegl/researchUdeM/research/pcurves/
+
+		Principal Curves (Jakob Verbeek):
+		http://lear.inrialpes.fr/~verbeek/software.php

@@ -1,3 +1,0 @@
-[-] General
-	-. Site
-		http://lear.inrialpes.fr/~verbeek/software.php

@@ -1,3 +1,0 @@
-[-] General
-	-. Site
-		ftp://ftp.cs.utoronto.ca/pub/zoubin

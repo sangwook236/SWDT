@@ -1,0 +1,10 @@
+[-] General
+	-. Site
+		MFA (Zoubin):
+		ftp://ftp.cs.utoronto.ca/pub/zoubin
+
+		MFA & CFA (Jakob Verbeek):
+		http://lear.inrialpes.fr/~verbeek/software.php
+
+		MFA & MPPCA (Yee Whye Teh):
+		http://www.stats.ox.ac.uk/~teh/projects.html

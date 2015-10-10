@@ -1,0 +1,7 @@
+[-] General
+	-. Site
+		Locally linear coordination (LLC) alignment algorithm:
+		http://www.stats.ox.ac.uk/~teh/projects.html
+
+		Manifold Alignment:
+		https://sites.google.com/site/changwangnk/home/ma-html
