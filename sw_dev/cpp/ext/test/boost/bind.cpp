@@ -34,6 +34,9 @@ struct FuncObj
 class player
 {
 public:
+	typedef void result_type;
+
+public:
 	void play1(const int &i)
 	{
 		std::cout << "player::play1(" << i << ") is called" << std::endl;
@@ -83,9 +86,10 @@ void bind_func()
 
 	//
 	const int i = 5;
+	const int j = 42;
 	boost::bind(func_1, i, _1);					// a copy of the value of i is stored into the function object
 	boost::bind(func_1, boost::ref(i), _1);		// boost::ref and boost::cref can be used to make the function object store a reference to an object
-	boost::bind(func_1, boost::cref(42), _1);
+	boost::bind(func_1, boost::cref(j), _1);
 }
 
 void bind_func_obj()

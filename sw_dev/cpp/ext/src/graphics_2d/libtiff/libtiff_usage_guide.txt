@@ -1,3 +1,8 @@
+[-] General
+	-. Site
+		http://www.remotesensing.org/libtiff/
+		http://www.libtiff.org/
+
 <<  Building  >>
 
 [-] TIFF site∑Œ∫Œ≈Õ file download

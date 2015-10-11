@@ -90,6 +90,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gflags\gflags_main.cpp" />
     <ClCompile Include="iniparser\iniparser_main.cpp" />
     <ClCompile Include="iniparser_lib\dictionary.cpp" />
     <ClCompile Include="iniparser_lib\iniparser.cpp" />

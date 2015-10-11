@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 
 		{
 			//tokenizer();
-			string_algorithms();
+			//string_algorithms();
 
 			//spirit_classic();
 			//statechart();
@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
 			//polygon();
 			//geometry();
 
-			//graph();
+			graph();
 			//graph_parallel();  // not yet implemented.
 
 			//ordinary_differential_equation();  // not yet implemented.

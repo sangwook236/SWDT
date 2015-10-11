@@ -16,6 +16,9 @@
     <Filter Include="Source Files\log4cxx">
       <UniqueIdentifier>{e72356dc-92ac-4519-aa33-9b357abc0a52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\glog">
+      <UniqueIdentifier>{f27dc327-c242-4e68-a38a-6d74cac60894}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,6 +29,9 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glog\glog_main.cpp">
+      <Filter>Source Files\glog</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,0 +1,4 @@
+[-] General
+	-. Site
+		http://koshmaar.linuxpl.info/sdl_config/news.php
+		http://sdl-cfg.sourceforge.net/

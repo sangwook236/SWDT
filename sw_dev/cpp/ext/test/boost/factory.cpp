@@ -66,7 +66,7 @@ void value_factory_basic()
 	//DerivedA aA2(boost::value_factory<DerivedA>()());
 	//DerivedA aA3(A_factory1(1, 2.0));  // compile-time error
 
-	boost::function<DerivedA (const int)> A_factory2 = boost::value_factory<DerivedA>();
+	boost::function<DerivedA (const int &)> A_factory2 = boost::value_factory<DerivedA>();
 	DerivedA aA4(A_factory2(1));
 	//DerivedA aA5(boost::value_factory<DerivedA>()(2));
 }
@@ -79,7 +79,7 @@ void factory_basic()
 	//boost::scoped_ptr<DerivedA> aA2(boost::factory<DerivedA *>()());  // compile-time error
 	//boost::scoped_ptr<DerivedA> aA3(A_factory1(1, 2.0));  // compile-time error
 
-	boost::function<DerivedA * (const int)> A_factory2 = boost::factory<DerivedA *>();
+	boost::function<DerivedA * (const int &)> A_factory2 = boost::factory<DerivedA *>();
 	boost::scoped_ptr<DerivedA> aA4(A_factory2(2));
 	//boost::scoped_ptr<DerivedA> aA5(boost::factory<DerivedA *>()(2));  // compile-time error
 }
@@ -115,7 +115,7 @@ void factory_as_argument()
 
 void factory_mapper()
 {
-	typedef boost::function<Base * (const int)> factory_type;
+	typedef boost::function<Base * (const int &)> factory_type;
 
 	std::map<std::string, factory_type> factories;
 

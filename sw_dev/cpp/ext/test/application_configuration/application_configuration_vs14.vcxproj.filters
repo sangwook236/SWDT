@@ -19,6 +19,9 @@
     <Filter Include="Source Files\iniparser_lib">
       <UniqueIdentifier>{5acef171-5144-4075-a3a7-adf1959bc0d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\gflags">
+      <UniqueIdentifier>{4f846cb8-be1e-4f04-b15a-9761b5e5b638}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -35,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="iniparser_lib\iniparser.cpp">
       <Filter>Source Files\iniparser_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="gflags\gflags_main.cpp">
+      <Filter>Source Files\gflags</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

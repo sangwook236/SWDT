@@ -10,12 +10,16 @@
 int main(int argc, char *argv[])
 {
 	int iniparser_main(int argc, char *argv[]);
+	int gflags_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
 		std::cout << "iniparser library ---------------------------------------------------" << std::endl;
 		retval = iniparser_main(argc, argv);
+
+		std::cout << "\ngflags library ------------------------------------------------------" << std::endl;
+		//retval = gflags_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

@@ -5,14 +5,14 @@
 #		if defined(DEBUG) || defined(_DEBUG)
 
 #pragma comment(lib, "log4cxx.lib")
-#pragma comment(lib, "libboost_thread-vc100-mt-gd-1_52.lib")
-#pragma comment(lib, "libboost_test_exec_monitor-vc100-mt-gd-1_52.lib")
+#pragma comment(lib, "libboost_thread-vc140-mt-gd-1_59.lib")
+#pragma comment(lib, "libboost_test_exec_monitor-vc140-mt-gd-1_59.lib")
 
 #		else
 
 #pragma comment(lib, "log4cxx.lib")
-#pragma comment(lib, "libboost_thread-vc100-mt-1_52.lib")
-#pragma comment(lib, "libboost_test_exec_monitor-vc100-mt-1_52.lib")
+#pragma comment(lib, "libboost_thread-vc140-mt-1_59.lib")
+#pragma comment(lib, "libboost_test_exec_monitor-vc140-mt-1_59.lib")
 
 #		endif
 

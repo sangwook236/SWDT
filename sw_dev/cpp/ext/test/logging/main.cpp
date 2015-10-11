@@ -9,12 +9,16 @@
 int main(int argc, char *argv[])
 {
 	int log4cxx_main(int argc, char *argv[]);
+	int glog_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
 		std::cout << "log4cxx libary ------------------------------------------------------" << std::endl;
 		retval = log4cxx_main(argc, argv);
+
+		std::cout << "\nglog library --------------------------------------------------------" << std::endl;
+		//retval = glog_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

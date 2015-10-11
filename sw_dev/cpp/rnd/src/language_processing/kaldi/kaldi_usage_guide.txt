@@ -1,0 +1,7 @@
+[-] General
+	-. Site
+		http://kaldi-asr.org/
+		https://github.com/kaldi-asr/kaldi
+
+		http://kaldi-asr.org/doc/
+		http://kaldi.sourceforge.net/

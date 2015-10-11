@@ -88,7 +88,7 @@ private:
 	const char *name_;
 };
 
-// [ref] ${BOOST_HOME}/libs/graph/example/quick_tour.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/quick_tour.cpp
 void boost_quick_tour()
 {
 	// create a typedef for the graph_type type
@@ -165,7 +165,7 @@ void boost_quick_tour()
 	);
 }
 
-// [ref] http://www.ibm.com/developerworks/aix/library/au-aix-boost-graph/index.html
+// REF [site] >> http://www.ibm.com/developerworks/aix/library/au-aix-boost-graph/index.html
 void basic_operation()
 {
 	std::cout << "--------------------------------------------------------------" << std::endl;
@@ -406,7 +406,7 @@ class custom_bfs_visitor : public boost::default_bfs_visitor
 	}
 };
 
-// [ref] http://www.ibm.com/developerworks/aix/library/au-aix-boost-graph/index.html
+// REF [site] >> http://www.ibm.com/developerworks/aix/library/au-aix-boost-graph/index.html
 void traversal()
 {
 	std::cout << "depth-first search -------------------------------------------" << std::endl;
@@ -446,7 +446,7 @@ void other_core_algorithms()
 	}
 }
 
-// [ref] ${BOOST_HOME}/libs/graph/example/dijkstra-example.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/dijkstra-example.cpp
 void dijkstra_example()
 {
 	typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS, boost::no_property, boost::property<boost::edge_weight_t, int> > graph_type;
@@ -492,7 +492,8 @@ void dijkstra_example()
 		boost::default_dijkstra_visitor()
 	);
 #else
-	boost::dijkstra_shortest_paths(g, s, boost::predecessor_map(&p[0]).distance_map(&d[0]));
+	//boost::dijkstra_shortest_paths(g, s, boost::predecessor_map(&p[0]).distance_map(&d[0]));
+	boost::dijkstra_shortest_paths(g, s, boost::predecessor_map(boost::make_iterator_property_map(p.begin(), boost::get(boost::vertex_index, g))).distance_map(boost::make_iterator_property_map(d.begin(), boost::get(boost::vertex_index, g))));
 #endif
 
 	std::cout << "distances and parents: " << std::endl;
@@ -620,12 +621,13 @@ class custom_astar_visitor : public boost::default_astar_visitor
 	}
 };
 
-// [ref] http://library.developer.nokia.com/index.jsp?topic=/S60_5th_Edition_Cpp_Developers_Library/GUID-02F20077-73B5-4A63-85DB-D909E0ADE01C/html/con_graph_quick_tour.html
 void shortest_paths()
 {
 	// Dijkstra's algorithm -----------------------------------------
 	dijkstra_example();
 
+	// REF [site] >> http://www.boost.org/doc/libs/1_59_0/libs/graph/doc/quick_tour.html
+	// REF [site] >> http://library.developer.nokia.com/index.jsp?topic=/S60_5th_Edition_Cpp_Developers_Library/GUID-02F20077-73B5-4A63-85DB-D909E0ADE01C/html/con_graph_quick_tour.html
 	{
 		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS, boost::no_property, boost::property<boost::edge_weight_t, int> > graph_type;
 		typedef boost::graph_traits<graph_type>::vertex_descriptor vertex_descriptor_type;
@@ -643,7 +645,8 @@ void shortest_paths()
 		vertex_descriptor_type s = *(boost::vertices(g).first);
 
 		// invoke variant 2 of Dijkstra's algorithm
-		boost::dijkstra_shortest_paths(g, s, boost::distance_map(&d[0]));
+		//boost::dijkstra_shortest_paths(g, s, boost::distance_map(&d[0]));
+		boost::dijkstra_shortest_paths(g, s, boost::distance_map(boost::make_iterator_property_map(d.begin(), boost::get(boost::vertex_index, g))));
 
 		std::cout << "distances from start vertex:" << std::endl;
 		boost::graph_traits<graph_type>::vertex_iterator vi;
@@ -652,15 +655,16 @@ void shortest_paths()
 		std::cout << std::endl;
 
 		//
-		std::vector<vertex_descriptor_type> p(boost::num_vertices(g));  // the predecessor array
-		boost::dijkstra_shortest_paths(g, s, boost::distance_map(&d[0]).visitor(make_predecessor_recorder(&p[0])));
+		std::vector<vertex_descriptor_type> p(boost::num_vertices(g), boost::graph_traits<graph_type>::null_vertex());  // the predecessor array
+		//boost::dijkstra_shortest_paths(g, s, boost::distance_map(&d[0]).visitor(make_predecessor_recorder(&p[0])));
+		boost::dijkstra_shortest_paths(g, s, boost::distance_map(boost::make_iterator_property_map(d.begin(), boost::get(boost::vertex_index, g))).visitor(make_predecessor_recorder(&p[0])));
 
 		std::cout << "parents in the tree of shortest paths:" << std::endl;
 		for (vi = boost::vertices(g).first; vi != boost::vertices(g).second; ++vi)
 		{
 			std::cout << "parent(" << *vi;
-			if (p[*vi] == vertex_descriptor_type() && *vi == s)
-			//if (p[*vi] == boost::graph_traits<graph_type>::null_vertex())  // not working
+			//if (p[*vi] == vertex_descriptor_type() && *vi == s)
+			if (p[*vi] == boost::graph_traits<graph_type>::null_vertex())  // not working
 				std::cout << ") = no parent" << std::endl;
 			else
 				std::cout << ") = " << p[*vi] << std::endl;
@@ -668,7 +672,7 @@ void shortest_paths()
 	}
 }
 
-// [ref] ${BOOST_HOME}/libs/graph/example/kruskal-example.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/kruskal-example.cpp
 void kruskal_minimum_spanning_tree_example()
 {
 	typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, boost::property<boost::edge_weight_t, int> > graph_type;
@@ -726,14 +730,14 @@ void kruskal_minimum_spanning_tree_example()
 	fout << '}' << std::endl;
 }
 
-// [ref] ${BOOST_HOME}/libs/graph/example/kruskal-telephone.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/kruskal-telephone.cpp
 void kruskal_minimum_spanning_tree_telephone_example()
 {
 /*
 	typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property,boost::property<boost::edge_weight_t, int> > graph_type;
 
 #if 0
-	// [ref] GraphvizGraph was defined in boost/graph/graphviz.hpp, but cannot be used at present
+	// REF [file] >> GraphvizGraph was defined in boost/graph/graphviz.hpp, but cannot be used at present
 
 	typedef std::map<std::string, std::string> GraphvizAttrList;
 	typedef boost::property<boost::vertex_attribute_t, GraphvizAttrList> GraphvizVertexProperty;
@@ -800,7 +804,7 @@ void kruskal_minimum_spanning_tree_telephone_example()
 */
 }
 
-// [ref] ${BOOST_HOME}/libs/graph/example/prim-example.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/prim-example.cpp
 void prim_minimum_spanning_tree_example()
 {
 	typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::property<boost::vertex_distance_t, int>, boost::property<boost::edge_weight_t, int> > graph_type;
@@ -843,14 +847,14 @@ void prim_minimum_spanning_tree_example()
 			std::cout << "parent[" << i << "] = no parent" << std::endl;
 }
 
-// [ref] ${BOOST_HOME}/libs/graph/example/prim-telephone.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/prim-telephone.cpp
 void prim_minimum_spanning_tree_telephone_example()
 {
 /*
 	typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, boost::property<boost::edge_weight_t, int> > graph_type;
 
 #if 0
-	// [ref] GraphvizGraph was defined in boost/graph/graphviz.hpp, but cannot be used at present
+	// REF [file] >> GraphvizGraph was defined in boost/graph/graphviz.hpp, but cannot be used at present
 
 	typedef std::map<std::string, std::string> GraphvizAttrList;
 	typedef boost::property<boost::vertex_attribute_t, GraphvizAttrList> GraphvizVertexProperty;
@@ -938,8 +942,8 @@ void common_spanning_tree()
 	throw std::runtime_error("not yet implemented");
 }
 
-// [ref] ${BOOST_HOME}/libs/graph/example/connected_components.cpp
-// [ref] ${BOOST_HOME}/libs/graph/example/connected-components.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/connected_components.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/connected-components.cpp
 void connected_components_algorithm()
 {
 	{
@@ -980,8 +984,8 @@ void connected_components_algorithm()
 	}
 }
 
-// [ref] ${BOOST_HOME}/libs/graph/example/strong-components.cpp
-// [ref] ${BOOST_HOME}/libs/graph/example/strong_components.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/strong-components.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/strong_components.cpp
 void strong_components_algorithm()
 {
 	{
@@ -1067,7 +1071,7 @@ struct edge_component_t
 	typedef boost::edge_property_tag kind;
 } edge_component;
 
-// [ref] ${BOOST_HOME}/libs/graph/example/biconnected_components.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/biconnected_components.cpp
 void biconnected_components_algorithm()
 {
 	typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, boost::property<edge_component_t, std::size_t> > graph_type;
@@ -1107,8 +1111,8 @@ void biconnected_components_algorithm()
 	std::cout << '}' << std::endl;
 }
 
-// [ref] ${BOOST_HOME}/libs/graph/example/incremental-components-eg.cpp
-// [ref] ${BOOST_HOME}/libs/graph/example/incremental_components.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/incremental-components-eg.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/incremental_components.cpp
 void incremental_connected_components_algorithm()
 {
 /*
@@ -1244,7 +1248,7 @@ void connected_components()
 	incremental_connected_components_algorithm();
 }
 
-// [ref] ${BOOST_HOME}/libs/graph/example/max_flow.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/max_flow.cpp
 void max_flow_example(std::istream &stream)
 {
 	typedef boost::adjacency_list_traits<boost::vecS, boost::vecS, boost::directedS> traits_type;
@@ -1284,7 +1288,7 @@ void max_flow_example(std::istream &stream)
 				std::cout << "f " << *u_iter << " " << boost::target(*ei, g) << " " << (capacity[*ei] - residual_capacity[*ei]) << std::endl;
 }
 
-// [ref] ${BOOST_HOME}/libs/graph/example/push-relabel-eg.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/push-relabel-eg.cpp
 void push_relabel_example(std::istream &stream)
 {
 	typedef boost::adjacency_list_traits<boost::vecS, boost::vecS, boost::directedS> traits_type;
@@ -1322,7 +1326,7 @@ void push_relabel_example(std::istream &stream)
 				std::cout << "f " << *u_iter << " " << boost::target(*ei, g) << " " << (capacity[*ei] - residual_capacity[*ei]) << std::endl;
 }
 
-// [ref] ${BOOST_HOME}/libs/graph/example/boykov_kolmogorov-eg.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/boykov_kolmogorov-eg.cpp
 void boykov_kolmogorov_example(std::istream &stream)
 {
 	typedef boost::adjacency_list_traits<boost::vecS, boost::vecS, boost::directedS> traits_type;
@@ -1361,7 +1365,7 @@ void boykov_kolmogorov_example(std::istream &stream)
 				std::cout << "f " << *u_iter << " " << boost::target(*ei, g) << " " << (capacity[*ei] - residual_capacity[*ei]) << std::endl;
 }
 
-// [ref] ${BOOST_HOME}/libs/graph/example/matching_example.cpp
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/matching_example.cpp
 void edmonds_maximum_cardinality_matching_example()
 {
 	typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> graph_type;
@@ -1609,14 +1613,14 @@ void graphviz()
 void graph()
 {
 	std::cout << "basic operation ----------------------------------------------" << std::endl;
-	//local::boost_quick_tour();
+	local::boost_quick_tour();
 	local::basic_operation();
 
-	std::cout << "\ntraversal algorithms ----------------------------------------------------" << std::endl;
+	std::cout << "\ntraversal algorithms -----------------------------------------" << std::endl;
 	local::traversal();
 
 	std::cout << "\nshortest paths / cost minimization algorithms ----------------" << std::endl;
-	local::shortest_paths();
+	//local::shortest_paths();
 
 	std::cout << "\nother core algorithms ----------------------------------------" << std::endl;
 	//local::other_core_algorithms();  // not yet implemented.

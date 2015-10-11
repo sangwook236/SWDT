@@ -1,8 +1,9 @@
 #include <boost/signals2/signal.hpp>
 #include <boost/signals2/shared_connection_block.hpp>
+#include <boost/optional/optional_io.hpp>
 #include <boost/bind.hpp>
-#include <vector>
 #include <iostream>
+#include <vector>
 #include <cassert>
 
 
@@ -25,24 +26,29 @@ struct GoodMorning
 	}
 };
 
+void print_args(float x, float y)
+{
+	std::cout << "The arguments are " << x << " and " << y << std::endl;
+}
+
 void print_sum(float x, float y)
 {
-	std::cout << "The sum is " << x+y << std::endl;
+	std::cout << "The sum is " << (x + y) << std::endl;
 }
 
 void print_product(float x, float y)
 {
-	std::cout << "The product is " << x*y << std::endl;
+	std::cout << "The product is " << (x * y) << std::endl;
 }
 
 void print_difference(float x, float y)
 {
-	std::cout << "The difference is " << x-y << std::endl;
+	std::cout << "The difference is " << (x - y) << std::endl;
 }
 
 void print_quotient(float x, float y)
 {
-	std::cout << "The quotient is " << x/y << std::endl;
+	std::cout << "The quotient is " << (x / y) << std::endl;
 }
 
 struct Adder
@@ -81,31 +87,55 @@ struct Divisor
 	}
 };
 
+float product(float x, float y)  { return x * y; }
+float quotient(float x, float y)  { return x / y; }
+float sum(float x, float y)  { return x + y; }
+float difference(float x, float y)  { return x - y; }
+
+// combiner which returns the maximum value returned by all slots.
 template<typename T>
-struct maximum_chooser
+struct maximum
 {
 	typedef T result_type;
 
 	template<typename InputIterator>
 	T operator()(InputIterator first, InputIterator last) const
 	{
-		return *max_element(first, last);
+		// If there are no slots to call, just return the default-constructed value.
+		if (first == last) return T();
+		T max_value = *first++;
+		while (first != last)
+		{
+			if (max_value < *first)
+				max_value = *first;
+			++first;
+		}
+
+		return max_value;
 	}
 };
 
-template<typename T>
-struct result_aggregater
+// aggregate_values is a combiner which places all the values returned from slots into a container.
+template<typename Container>
+struct aggregate_values
 {
-	typedef T result_type;
+	typedef Container result_type;
 
 	template<typename InputIterator>
-	T operator()(InputIterator first, InputIterator last) const
+	Container operator()(InputIterator first, InputIterator last) const
 	{
-		return T(first, last);
+		Container values;
+
+		while (first != last)
+		{
+			values.push_back(*first);
+			++first;
+		}
+		return values;
 	}
 };
 
-void signals_slots__calling_and_passing_value()
+void calling_and_passing_value()
 {
 	//
 	{
@@ -116,7 +146,7 @@ void signals_slots__calling_and_passing_value()
 
 /*
 		typedef boost::function<void (float, float)> signature_type;
-		//typedef (void (float, float)) signature_type;  // Oops !!! compile-time error
+		//typedef (void (float, float)) signature_type;  // Oops !!! compile-time error.
 		boost::signals2::signal<signature_type> sig2;
 */
 
@@ -138,12 +168,13 @@ void signals_slots__calling_and_passing_value()
 	{
 		boost::signals2::signal<void (float, float)> sig;
 
-		sig.connect(1, &print_sum);
-		sig.connect(3, &print_product);
-		sig.connect(2, &print_difference);
-		sig.connect(4, &print_quotient);
+		sig.connect(1, &print_args);
+		sig.connect(2, &print_sum);
+		sig.connect(4, &print_product);
+		sig.connect(3, &print_difference);
+		sig.connect(5, &print_quotient);
 
-		sig(5, 3);
+		sig(5.f, 3.f);
 	}
 
 	// signal return values #1
@@ -160,26 +191,28 @@ void signals_slots__calling_and_passing_value()
 
 	// signal return values #2
 	{
-		boost::signals2::signal<float (float, float), maximum_chooser<float> > sig;
+		boost::signals2::signal<float (float, float), maximum<float> > sig;
 
-		sig.connect(Adder());
-		sig.connect(Subtracter());
-		sig.connect(Multiplier());
-		sig.connect(Divisor());
+		sig.connect(&product);
+		sig.connect(&quotient);
+		sig.connect(&sum);
+		sig.connect(&difference);
 
-		std::cout << sig(5, 3) << std::endl;
+		// Outputs the maximum value returned by the connected slots, in this case 15 from the product function.
+		std::cout << "maximum: " << sig(5, 3) << std::endl;
 	}
 
 	// signal return values #3
 	{
-		boost::signals2::signal<float (float, float), result_aggregater<std::vector<float> > > sig;
+		boost::signals2::signal<float (float, float), aggregate_values<std::vector<float> > > sig;
 
-		sig.connect(Adder());
-		sig.connect(Subtracter());
-		sig.connect(Multiplier());
-		sig.connect(Divisor());
+		sig.connect(&quotient);
+		sig.connect(&product);
+		sig.connect(&sum);
+		sig.connect(&difference);
 
 		const std::vector<float> results = sig(5, 3);
+		std::cout << "aggregate values: ";
 		std::copy(results.begin(), results.end(), std::ostream_iterator<float>(std::cout, " "));
 		std::cout << std::endl;
 	}
@@ -193,7 +226,7 @@ struct NewsMessageArea: public boost::signals2::trackable
     }
 };
 
-void signals_slots__connention_management()
+void connention_management()
 {
 	// disconnecting slots #1
 	{
@@ -273,6 +306,6 @@ void signals_slots__connention_management()
 
 void signals_slots()
 {
-	local::signals_slots__calling_and_passing_value();
-	local::signals_slots__connention_management();
+	local::calling_and_passing_value();
+	local::connention_management();
 }
