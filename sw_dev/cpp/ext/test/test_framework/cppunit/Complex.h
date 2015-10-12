@@ -1,5 +1,5 @@
-#if !defined(__TEST_CPPUNIT__COMPLEX_H_)
-#define __TEST_CPPUNIT__COMPLEX_H_ 1
+#if !defined(__TEST_FRAMEWORK__CPPUNIT__COMPLEX_H_)
+#define __TEST_FRAMEWORK__CPPUNIT__COMPLEX_H_ 1
 
 
 #include <iostream>
@@ -304,4 +304,4 @@ Complex<T> atanh(const Complex<T>& z)
 {  return ln((Complex<T>(T(1)) + z) / (Complex<T>(T(1)) - z)) / Complex<T>(T(2));  }
 
 
-#endif  //  __TEST_CPPUNIT__COMPLEX_H_
+#endif  //  __TEST_FRAMEWORK__CPPUNIT__COMPLEX_H_

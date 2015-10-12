@@ -61,6 +61,8 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -85,15 +87,16 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Complex.h" />
+    <ClInclude Include="cppunit\Complex.h" />
     <ClInclude Include="gtest\gtest_sample1.h" />
     <ClInclude Include="gtest\gtest_sample2.h" />
     <ClInclude Include="gtest\gtest_sample3_inl.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Complex.cpp" />
+    <ClCompile Include="cppunit\Complex.cpp" />
     <ClCompile Include="cppunit\ComplexTest.cpp" />
     <ClCompile Include="cppunit\cppunit_main.cpp" />
+    <ClCompile Include="gmock\gmock_main.cpp" />
     <ClCompile Include="gtest\gtest_main.cpp" />
     <ClCompile Include="gtest\gtest_sample1.cpp" />
     <ClCompile Include="gtest\gtest_sample1_unittest.cpp" />

@@ -13,62 +13,78 @@
       <UniqueIdentifier>{f1c2624c-5705-488a-8a07-65031dc15fb1}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="Source Files\cppunit">
+      <UniqueIdentifier>{c9d75848-d8c4-47a7-aa65-1849411f37b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Complex.cpp">
+    <ClCompile Include="CppUnitMfcUi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cppunit_mfc\CppUnitMfcUi.cpp">
+    <ClCompile Include="CppUnitMfcUiDoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cppunit_mfc\CppUnitMfcUiDoc.cpp">
+    <ClCompile Include="CppUnitMfcUiView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cppunit_mfc\CppUnitMfcUiView.cpp">
+    <ClCompile Include="MainFrm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cppunit_mfc\MainFrm.cpp">
+    <ClCompile Include="StdAfx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cppunit_mfc\StdAfx.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="cppunit\Complex.cpp">
+      <Filter>Source Files\cppunit</Filter>
     </ClCompile>
     <ClCompile Include="cppunit\ComplexTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="library_autolinking.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\cppunit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Complex.h">
+    <ClInclude Include="CppUnitMfcUi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cppunit_mfc\CppUnitMfcUi.h">
+    <ClInclude Include="CppUnitMfcUiDoc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cppunit_mfc\CppUnitMfcUiDoc.h">
+    <ClInclude Include="CppUnitMfcUiView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cppunit_mfc\CppUnitMfcUiView.h">
+    <ClInclude Include="MainFrm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cppunit_mfc\MainFrm.h">
+    <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cppunit_mfc\Resource.h">
+    <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cppunit_mfc\StdAfx.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="cppunit\Complex.h">
+      <Filter>Source Files\cppunit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="cppunit_mfc\CppUnitMfcUi.rc">
+    <ResourceCompile Include="CppUnitMfcUi.rc">
       <Filter>Source Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\CppUnitMfcUi.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\CppUnitMfcUiDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\CppUnitMfcUi.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

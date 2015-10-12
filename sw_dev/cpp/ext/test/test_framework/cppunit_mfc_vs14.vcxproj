@@ -10,6 +10,38 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CppUnitMfcUi.cpp" />
+    <ClCompile Include="CppUnitMfcUiDoc.cpp" />
+    <ClCompile Include="CppUnitMfcUiView.cpp" />
+    <ClCompile Include="cppunit\Complex.cpp" />
+    <ClCompile Include="cppunit\ComplexTest.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="StdAfx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CppUnitMfcUi.h" />
+    <ClInclude Include="CppUnitMfcUiDoc.h" />
+    <ClInclude Include="CppUnitMfcUiView.h" />
+    <ClInclude Include="cppunit\Complex.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="StdAfx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CppUnitMfcUi.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\CppUnitMfcUi.ico" />
+    <Image Include="res\CppUnitMfcUiDoc.ico" />
+    <Image Include="res\Toolbar.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\CppUnitMfcUi.rc2" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>cppunit_mfc</ProjectName>
     <ProjectGuid>{6790BC0F-951F-4A91-B6C9-47A23726E8B9}</ProjectGuid>
@@ -80,7 +112,7 @@
       <Culture>0x0412</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TestRunneru.lib;cppunit_dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ProgramDatabaseFile>.\Release/cppunit_mfc.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -122,7 +154,7 @@
       <Culture>0x0412</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TestRunnerud.lib;cppunitd_dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug/cppunit_mfc.pdb</ProgramDatabaseFile>
@@ -134,37 +166,6 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Complex.cpp">
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIN32;_DEBUG;_WINDOWS;_AFXDLL;_UNICODE</PreprocessorDefinitions>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">EnableFastChecks</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIN32;NDEBUG;_WINDOWS;_AFXDLL;_UNICODE</PreprocessorDefinitions>
-    </ClCompile>
-    <ClCompile Include="cppunit\ComplexTest.cpp" />
-    <ClCompile Include="cppunit_mfc\CppUnitMfcUi.cpp" />
-    <ClCompile Include="cppunit_mfc\CppUnitMfcUiDoc.cpp" />
-    <ClCompile Include="cppunit_mfc\CppUnitMfcUiView.cpp" />
-    <ClCompile Include="cppunit_mfc\MainFrm.cpp" />
-    <ClCompile Include="cppunit_mfc\StdAfx.cpp" />
-    <ClCompile Include="library_autolinking.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Complex.h" />
-    <ClInclude Include="cppunit_mfc\CppUnitMfcUi.h" />
-    <ClInclude Include="cppunit_mfc\CppUnitMfcUiDoc.h" />
-    <ClInclude Include="cppunit_mfc\CppUnitMfcUiView.h" />
-    <ClInclude Include="cppunit_mfc\MainFrm.h" />
-    <ClInclude Include="cppunit_mfc\Resource.h" />
-    <ClInclude Include="cppunit_mfc\StdAfx.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="cppunit_mfc\CppUnitMfcUi.rc" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

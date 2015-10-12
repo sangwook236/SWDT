@@ -10,15 +10,19 @@ int main(int argc, char *argv[])
 {
 	int cppunit_main(int argc, char *argv[]);
 	int gtest_main(int argc, char *argv[]);
+	int gmock_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
 		std::cout << "CppUnit library -----------------------------------------------------" << std::endl;
-		//retval = cppunit_main(argc, argv);
+		retval = cppunit_main(argc, argv);
 
 		std::cout << "\nGoogle Test library -------------------------------------------------" << std::endl;
-		//retval = gtest_main(argc, argv);
+		retval = gtest_main(argc, argv);
+
+		std::cout << "\nGoogle Mock library -------------------------------------------------" << std::endl;
+		//retval = gmock_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

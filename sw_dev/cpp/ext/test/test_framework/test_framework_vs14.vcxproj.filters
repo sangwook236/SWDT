@@ -19,6 +19,9 @@
     <Filter Include="Source Files\cppunit">
       <UniqueIdentifier>{9638a72a-29d7-4b4a-afda-6941be612c0f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\gmock">
+      <UniqueIdentifier>{4263b700-10d0-4909-99eb-a0ff3b772f75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -33,8 +36,8 @@
     <ClInclude Include="gtest\gtest_sample3_inl.h">
       <Filter>Source Files\gtest</Filter>
     </ClInclude>
-    <ClInclude Include="Complex.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="cppunit\Complex.h">
+      <Filter>Source Files\cppunit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -68,8 +71,11 @@
     <ClCompile Include="cppunit\cppunit_main.cpp">
       <Filter>Source Files\cppunit</Filter>
     </ClCompile>
-    <ClCompile Include="Complex.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="gmock\gmock_main.cpp">
+      <Filter>Source Files\gmock</Filter>
+    </ClCompile>
+    <ClCompile Include="cppunit\Complex.cpp">
+      <Filter>Source Files\cppunit</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
