@@ -44,7 +44,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_framework", "..\test\t
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "file_format", "..\test\file_format\file_format_vs14.vcxproj", "{A79E411D-EFBB-446D-AD68-A6BBE13E764B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dlib", "..\test\dlib\dlib_vs14.vcxproj", "{237D12CB-5324-4722-8812-2D6CEEBBD677}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "general_purpose_library", "..\test\general_purpose_library\general_purpose_library_vs14.vcxproj", "{237D12CB-5324-4722-8812-2D6CEEBBD677}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multimedia", "..\test\multimedia\multimedia_vs14.vcxproj", "{238EADCF-B178-4601-8EE4-2906FE010839}"
 EndProject

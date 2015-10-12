@@ -5,8 +5,8 @@
 		<Project filename="../test/boost/boost_cb10.cbp" />
 		<Project filename="../test/compression/compression_cb10.cbp" />
 		<Project filename="../test/database/database_cb10.cbp" />
-		<Project filename="../test/dlib/dlib_cb10.cbp" />
 		<Project filename="../test/file_format/file_format_cb10.cbp" />
+		<Project filename="../test/general_purpose_library/general_purpose_library_cb10.cbp" />
 		<Project filename="../test/geometry/geometry_cb10.cbp" />
 		<Project filename="../test/gpu_computation/gpu_computation_cb10.cbp" />
 		<Project filename="../test/graphics_2d/graphics_2d_cb10.cbp" />
