@@ -37,10 +37,10 @@ int main(int argc, char* argv[])
 		//retval = cvm_main(argc, argv);
 
 		std::cout << "\nMatrix Template Library (MTL) ---------------------------------------" << std::endl;
-		//retval = suitesparse_main(argc, argv);
+		//retval = suitesparse_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nSuiteSparse library -------------------------------------------------" << std::endl;
-		//retval = mtl_main(argc, argv);  // not yet implemented.
+		//retval = mtl_main(argc, argv);
 
 		std::cout << "\nThe Vienna Computing Library (ViennaCL) -----------------------------" << std::endl;
 		//	-. incomplete LU factorization (ILU).

@@ -76,6 +76,9 @@
 		<Unit filename="mtl/mtl_main.cpp" />
 		<Unit filename="mtl/mtl_matrix_operation.cpp" />
 		<Unit filename="mtl/mtl_vector_operation.cpp" />
+		<Unit filename="newmat/newmat_main.cpp" />
+		<Unit filename="suitesparse/suitesparse_main.cpp" />
+		<Unit filename="viennacl/viennacl_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
