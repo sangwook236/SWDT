@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\dlib">
+      <UniqueIdentifier>{57f1e6f8-84f0-4b52-9da2-85cf56c7ced0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\loki">
+      <UniqueIdentifier>{cf8ab717-8897-435f-874f-989ca0825cde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -34,6 +40,12 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dlib\dlib_main.cpp">
+      <Filter>Source Files\dlib</Filter>
+    </ClCompile>
+    <ClCompile Include="loki\loki_main.cpp">
+      <Filter>Source Files\loki</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
