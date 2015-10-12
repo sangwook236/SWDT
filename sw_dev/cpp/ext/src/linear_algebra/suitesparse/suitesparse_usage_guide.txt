@@ -1,5 +1,9 @@
 [-] General
 	-. Site
+		http://faculty.cse.tamu.edu/davis/suitesparse.html
+
+		https://github.com/PetterS/SuiteSparse
+
 		http://www.cise.ufl.edu/research/sparse/SuiteSparse/
 		http://www.cise.ufl.edu/research/sparse/
 		http://www.cise.ufl.edu/research/sparse/UFconfig/

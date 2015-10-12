@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #include <iostream>
+#include <stdexcept>
 
 
 namespace {
@@ -14,6 +15,7 @@ namespace my_viennacl {
 
 int viennacl_main(int argc, char *argv[])
 {
+	throw std::runtime_error("not yet implemented");
 
 	return 0;
 }

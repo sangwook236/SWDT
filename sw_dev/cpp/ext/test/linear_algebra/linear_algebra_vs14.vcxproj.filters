@@ -106,6 +106,12 @@
     <ClCompile Include="newmat\newmat_main.cpp">
       <Filter>Source Files\newmat</Filter>
     </ClCompile>
+    <ClCompile Include="viennacl\viennacl_main.cpp">
+      <Filter>Source Files\viennacl</Filter>
+    </ClCompile>
+    <ClCompile Include="suitesparse\suitesparse_main.cpp">
+      <Filter>Source Files\suitesparse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -151,6 +157,12 @@
     </Filter>
     <Filter Include="Source Files\newmat">
       <UniqueIdentifier>{a3fb438f-8171-4262-851e-91148dc1f948}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\suitesparse">
+      <UniqueIdentifier>{ad4f42b3-46f2-4b05-834a-cee3f7f1dc15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\viennacl">
+      <UniqueIdentifier>{5a200790-e7b1-43be-81f9-d1af6514adac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

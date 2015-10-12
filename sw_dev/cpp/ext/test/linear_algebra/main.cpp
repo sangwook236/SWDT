@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
 	int newmat_main(int argc, char* argv[]);
 	int cvm_main(int argc, char* argv[]);
 	int mtl_main(int argc, char* argv[]);
+	int suitesparse_main(int argc, char* argv[]);
 	int viennacl_main(int argc, char* argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -36,7 +37,10 @@ int main(int argc, char* argv[])
 		//retval = cvm_main(argc, argv);
 
 		std::cout << "\nMatrix Template Library (MTL) ---------------------------------------" << std::endl;
-		//retval = mtl_main(argc, argv);
+		//retval = suitesparse_main(argc, argv);
+
+		std::cout << "\nSuiteSparse library -------------------------------------------------" << std::endl;
+		//retval = mtl_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nThe Vienna Computing Library (ViennaCL) -----------------------------" << std::endl;
 		//	-. incomplete LU factorization (ILU).

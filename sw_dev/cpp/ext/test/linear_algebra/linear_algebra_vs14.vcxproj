@@ -125,6 +125,8 @@
     <ClCompile Include="mtl\mtl_vector_operation.cpp" />
     <ClCompile Include="newmat\newmat_main.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="suitesparse\suitesparse_main.cpp" />
+    <ClCompile Include="viennacl\viennacl_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
