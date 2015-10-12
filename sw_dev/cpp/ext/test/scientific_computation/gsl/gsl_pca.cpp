@@ -3,8 +3,9 @@
 #include <gsl/gsl_eigen.h>
 #include <gsl/gsl_blas.h>
 #include <iostream>
-#include <cassert>
+#include <algorithm>
 #include <cmath>
+#include <cassert>
 
 
 namespace my_gsl {

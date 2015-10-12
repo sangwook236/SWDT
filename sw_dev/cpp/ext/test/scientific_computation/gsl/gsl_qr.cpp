@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include <gsl/gsl_linalg.h>
 #include <iostream>
+#include <algorithm>
 #include <cmath>
 
 

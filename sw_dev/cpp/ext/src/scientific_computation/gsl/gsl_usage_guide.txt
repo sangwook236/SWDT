@@ -4,10 +4,16 @@
 
 		http://gladman.plushost.co.uk/oldsite/computing/gnu_scientific_library.php
 		http://david.geldreich.free.fr/dev.html
-	-. Reference
-		sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Building library using MSVC10
+		Windows:
+		https://github.com/ahmadyan/gnu-gsl-for-windows
+		http://gladman.plushost.co.uk/oldsite/computing/gnu_scientific_library.php
+		http://david.geldreich.free.fr/dev.html
+
+	-. Reference
+		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
+
+[-] Building (VC10)
 	[ref] ${GSL_HOME}/build.vc10/gsl.vc10.readme.txt
 
 	-. extract source files & project-related files
@@ -58,13 +64,13 @@
 			${GSL_HOME}/build.vc10/lib/Win32/Debug/gsl.lib
 
 [-] Trouble Shooting
-	1. GSLwrap library를 사용하는 경우
+	-. GSLwrap library를 사용하는 경우
 		GSLwrap library의 경우 shared library를 생성하기 어렵기 때문에
 		GSL library도 static library를 사용하는 것이 유리.
-	2. ${GSL_HOME}/gsl directory에 header file들이 생성되지 않는 경우.
+	-. ${GSL_HOME}/gsl directory에 header file들이 생성되지 않는 경우.
 		GSL header file을 포함하고 있는 다른 directory가 path에 설정되어 있는 경우에 발생 가능.
 			e.g.) sw_dev/ext/inc/gsl
-	3. static library가 build 되지 않는 경우.
+	-. static library가 build 되지 않는 경우.
 		아래와 같은 오류 발생:
 			..\..\ode-initval2\rk4imp.c(252): error C2097: illegal initialization
 		오류 원인은 파악하지 못함.
@@ -75,13 +81,13 @@
 		    double c[2];
 		    c[0] = (3. - sqrt (3.)) / 6.;
 			c[1] = (3. + sqrt (3.)) / 6.;
-	4. static library가 build 되지 않는 경우.
+	-. static library가 build 되지 않는 경우.
 		오류 원인은 파악하지 못함.
 		==> CBLAS & GSL library project에 아래 macro 정의를 삭제하면 됨.
 				GSL_RANGE_CHECK
 			GSL_RANGE_CHECK macro는 Debug build에만 정의되어 있고 Release build에는 정의되어 있지 않음.
 				오류 확인용 기능을 위한 macro로 보임.
-	5. static library를 linking해 사용하는 application에서 오류 발생
+	-. static library를 linking해 사용하는 application에서 오류 발생
 		linking 과정에서 _HUGE 변수의 정의를 찾을 수 없다는 오류가 발생.
 		GSL library, GSLwrap library, & application에서 사용하는 runtime library의 차이에 의해 발생.
 			Multi-threaded (/MT) or Multi-threaded Debug (/MTd)
@@ -89,7 +95,7 @@
 		==> 동일한 runtime library를 사용해야 함.
 			DLL version의 runtime library를 사용하는 것이 좋을 듯함.
 				Multi-threaded DLL (/MD) or Multi-threaded Debug DLL (/MDd)
-	6. shared library가 build 되지 않는 경우.
+	-. shared library가 build 되지 않는 경우.
 		cblas library의 import library file이 생성되지 않아 발생.
 		하지만, cblas library를 위한 def file이 생성됨.
 			${GSL_HOME}/gsldefs/cblas.def
@@ -111,3 +117,8 @@
 				lib /def:gsl.def 
 			Cygwin:
 				dlltool --def gsl.def --dllname gsl.dll --output-lib gsl.a
+	-. Error message : 'gsl_acosh' : redefinition; different linkage
+		==> To fix this, go into build.vc11/config.h and change
+			<before> #undef HAVE_DECL_ACOSH
+			<after> #define HAVE_DECL_ACOSH 1
+		[ref] http://qubitcal.blogspot.com/2013/08/gsl-on-windows.html
