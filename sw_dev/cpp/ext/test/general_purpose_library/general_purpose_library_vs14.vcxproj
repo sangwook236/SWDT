@@ -13,8 +13,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{237D12CB-5324-4722-8812-2D6CEEBBD677}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>dlib</RootNamespace>
-    <ProjectName>dlib</ProjectName>
+    <RootNamespace>general_purpose_library</RootNamespace>
+    <ProjectName>general_purpose_library</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

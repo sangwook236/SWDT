@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="dlib" />
+		<Option title="general_purpose_library" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/dlib_d" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/general_purpose_library_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -17,7 +17,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="../../bin/dlib" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/general_purpose_library" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
@@ -34,6 +34,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="dlib/dlib_main.cpp" />
+		<Unit filename="loki/loki_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
