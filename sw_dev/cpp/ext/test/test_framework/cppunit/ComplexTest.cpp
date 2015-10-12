@@ -1,5 +1,6 @@
 #include "Complex.h"
 #include <cppunit/extensions/HelperMacros.h>
+#include <stdexcept>
 
 
 class ComplexTest: public CppUnit::TestFixture

@@ -44,6 +44,7 @@
 			<Add library="boost_system" />
 			<Add directory="/usr/local/lib/" />
 		</Linker>
+		<Unit filename="glog/glog_main.cpp" />
 		<Unit filename="log4cxx/log4cxx_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>

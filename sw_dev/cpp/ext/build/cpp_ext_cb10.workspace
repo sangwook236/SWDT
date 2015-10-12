@@ -4,7 +4,6 @@
 		<Project filename="../test/application_configuration/application_configuration_cb10.cbp" />
 		<Project filename="../test/boost/boost_cb10.cbp" />
 		<Project filename="../test/compression/compression_cb10.cbp" />
-		<Project filename="../test/cppunit/cppunit_cb10.cbp" />
 		<Project filename="../test/database/database_cb10.cbp" />
 		<Project filename="../test/dlib/dlib_cb10.cbp" />
 		<Project filename="../test/file_format/file_format_cb10.cbp" />
@@ -16,7 +15,7 @@
 		<Project filename="../test/logging/logging_cb10.cbp" />
 		<Project filename="../test/multilinear_algebra/multilinear_algebra_cb10.cbp" />
 		<Project filename="../test/multimedia/multimedia_cb10.cbp" />
-		<Project filename="../test/networking/networking_cb10.cbp" active="1" />
+		<Project filename="../test/networking/networking_cb10.cbp" />
 		<Project filename="../test/resource_management/resource_management_cb10.cbp" />
 		<Project filename="../test/scientific_computation/scientific_computation_cb10.cbp" />
 		<Project filename="../test/serialization/serialization_cb10.cbp" />

@@ -36,10 +36,19 @@
 			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
+			<Add library="gmock_main" />
+			<Add library="gmock" />
 			<Add library="gtest_main" />
 			<Add library="gtest" />
+			<Add library="cppunit" />
+			<Add library="pthread" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="cppunit/Complex.cpp" />
+		<Unit filename="cppunit/Complex.h" />
+		<Unit filename="cppunit/ComplexTest.cpp" />
+		<Unit filename="cppunit/cppunit_main.cpp" />
+		<Unit filename="gmock/gmock_main.cpp" />
 		<Unit filename="gtest/gtest_main.cpp" />
 		<Unit filename="gtest/gtest_sample1.cpp" />
 		<Unit filename="gtest/gtest_sample1.h" />

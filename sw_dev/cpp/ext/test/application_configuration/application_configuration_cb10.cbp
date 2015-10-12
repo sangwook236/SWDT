@@ -34,6 +34,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="gflags/gflags_main.cpp" />
 		<Unit filename="iniparser/iniparser_main.cpp" />
 		<Unit filename="iniparser_lib/dictionary.cpp" />
 		<Unit filename="iniparser_lib/dictionary.h" />
