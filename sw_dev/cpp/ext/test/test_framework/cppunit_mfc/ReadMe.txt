@@ -1,46 +1,46 @@
 ========================================================================
-       MICROSOFT FOUNDATION CLASS LIBRARY : TestCppUnitMfcUi
+       MICROSOFT FOUNDATION CLASS LIBRARY : CppUnitMfcUi
 ========================================================================
 
 
-AppWizard has created this TestCppUnitMfcUi application for you.  This application
+AppWizard has created this CppUnitMfcUi application for you.  This application
 not only demonstrates the basics of using the Microsoft Foundation classes
 but is also a starting point for writing your application.
 
 This file contains a summary of what you will find in each of the files that
-make up your TestCppUnitMfcUi application.
+make up your CppUnitMfcUi application.
 
-TestCppUnitMfcUi.dsp
+CppUnitMfcUi.dsp
     This file (the project file) contains information at the project level and
     is used to build a single project or subproject. Other users can share the
     project (.dsp) file, but they should export the makefiles locally.
 
-TestCppUnitMfcUi.h
+CppUnitMfcUi.h
     This is the main header file for the application.  It includes other
     project specific headers (including Resource.h) and declares the
-    CTestCppUnitMfcUiApp application class.
+    CCppUnitMfcUiApp application class.
 
-TestCppUnitMfcUi.cpp
+CppUnitMfcUi.cpp
     This is the main application source file that contains the application
-    class CTestCppUnitMfcUiApp.
+    class CCppUnitMfcUiApp.
 
-TestCppUnitMfcUi.rc
+CppUnitMfcUi.rc
     This is a listing of all of the Microsoft Windows resources that the
     program uses.  It includes the icons, bitmaps, and cursors that are stored
     in the RES subdirectory.  This file can be directly edited in Microsoft
 	Visual C++.
 
-TestCppUnitMfcUi.clw
+CppUnitMfcUi.clw
     This file contains information used by ClassWizard to edit existing
     classes or add new classes.  ClassWizard also uses this file to store
     information needed to create and edit message maps and dialog data
     maps and to create prototype member functions.
 
-res\TestCppUnitMfcUi.ico
+res\CppUnitMfcUi.ico
     This is an icon file, which is used as the application's icon.  This
-    icon is included by the main resource file TestCppUnitMfcUi.rc.
+    icon is included by the main resource file CppUnitMfcUi.rc.
 
-res\TestCppUnitMfcUi.rc2
+res\CppUnitMfcUi.rc2
     This file contains resources that are not edited by Microsoft 
 	Visual C++.  You should place all resources not editable by
 	the resource editor in this file.
@@ -59,20 +59,20 @@ res\Toolbar.bmp
     This bitmap file is used to create tiled images for the toolbar.
     The initial toolbar and status bar are constructed in the CMainFrame
     class. Edit this toolbar bitmap using the resource editor, and
-    update the IDR_MAINFRAME TOOLBAR array in TestCppUnitMfcUi.rc to add
+    update the IDR_MAINFRAME TOOLBAR array in CppUnitMfcUi.rc to add
     toolbar buttons.
 /////////////////////////////////////////////////////////////////////////////
 
 AppWizard creates one document type and one view:
 
-TestCppUnitMfcUiDoc.h, TestCppUnitMfcUiDoc.cpp - the document
-    These files contain your CTestCppUnitMfcUiDoc class.  Edit these files to
+CppUnitMfcUiDoc.h, CppUnitMfcUiDoc.cpp - the document
+    These files contain your CCppUnitMfcUiDoc class.  Edit these files to
     add your special document data and to implement file saving and loading
-    (via CTestCppUnitMfcUiDoc::Serialize).
+    (via CCppUnitMfcUiDoc::Serialize).
 
-TestCppUnitMfcUiView.h, TestCppUnitMfcUiView.cpp - the view of the document
-    These files contain your CTestCppUnitMfcUiView class.
-    CTestCppUnitMfcUiView objects are used to view CTestCppUnitMfcUiDoc objects.
+CppUnitMfcUiView.h, CppUnitMfcUiView.cpp - the view of the document
+    These files contain your CCppUnitMfcUiView class.
+    CCppUnitMfcUiView objects are used to view CCppUnitMfcUiDoc objects.
 
 
 
@@ -81,7 +81,7 @@ Other standard files:
 
 StdAfx.h, StdAfx.cpp
     These files are used to build a precompiled header (PCH) file
-    named TestCppUnitMfcUi.pch and a precompiled types file named StdAfx.obj.
+    named CppUnitMfcUi.pch and a precompiled types file named StdAfx.obj.
 
 Resource.h
     This is the standard header file, which defines new resource IDs.

@@ -16,17 +16,14 @@
     <Filter Include="Source Files\gtest">
       <UniqueIdentifier>{bbe6a0ae-b445-474b-afce-95b43183e552}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\cppunit">
+      <UniqueIdentifier>{9638a72a-29d7-4b4a-afda-6941be612c0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="gtest\gtest_sample1.h">
       <Filter>Source Files\gtest</Filter>
     </ClInclude>
@@ -36,11 +33,11 @@
     <ClInclude Include="gtest\gtest_sample3_inl.h">
       <Filter>Source Files\gtest</Filter>
     </ClInclude>
+    <ClInclude Include="Complex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -64,6 +61,15 @@
     </ClCompile>
     <ClCompile Include="gtest\gtest_sample3_unittest.cpp">
       <Filter>Source Files\gtest</Filter>
+    </ClCompile>
+    <ClCompile Include="cppunit\ComplexTest.cpp">
+      <Filter>Source Files\cppunit</Filter>
+    </ClCompile>
+    <ClCompile Include="cppunit\cppunit_main.cpp">
+      <Filter>Source Files\cppunit</Filter>
+    </ClCompile>
+    <ClCompile Include="Complex.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

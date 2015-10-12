@@ -27,13 +27,13 @@
     <ClCompile Include="StdAfx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestCppUnitMfcUi.cpp">
+    <ClCompile Include="CppUnitMfcUi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestCppUnitMfcUiDoc.cpp">
+    <ClCompile Include="CppUnitMfcUiDoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestCppUnitMfcUiView.cpp">
+    <ClCompile Include="CppUnitMfcUiView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
@@ -41,7 +41,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="TestCppUnitMfcUi.rc">
+    <ResourceCompile Include="CppUnitMfcUi.rc">
       <Filter>Source Files</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -58,24 +58,24 @@
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TestCppUnitMfcUi.h">
+    <ClInclude Include="CppUnitMfcUi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TestCppUnitMfcUiDoc.h">
+    <ClInclude Include="CppUnitMfcUiDoc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TestCppUnitMfcUiView.h">
+    <ClInclude Include="CppUnitMfcUiView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\TestCppUnitMfcUi.ico">
+    <None Include="res\CppUnitMfcUi.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="res\TestCppUnitMfcUi.rc2">
+    <None Include="res\CppUnitMfcUi.rc2">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="res\TestCppUnitMfcUiDoc.ico">
+    <None Include="res\CppUnitMfcUiDoc.ico">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\Toolbar.bmp">

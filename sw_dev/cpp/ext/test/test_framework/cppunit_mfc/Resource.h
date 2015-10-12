@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by TESTCPPUNITMFCUI.RC
+// Used by CPPUNITMFCUI.RC
 //
 #define IDD_ABOUTBOX				100
 #define IDR_MAINFRAME				128

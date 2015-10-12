@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="ks_c_5601-1987"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="8.00"
 	Name="cppunit_mfc"
 	ProjectGUID="{6790BC0F-951F-4A91-B6C9-47A23726E8B9}"
 	RootNamespace="cppunit_mfc"
 	Keyword="MFCProj"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -19,7 +18,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory=".\Release"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
@@ -78,15 +77,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="cppunit_dll.lib testrunneru.lib"
-				OutputFile=".\Release/cppunit_mfc.exe"
+				OutputFile="$(OutDir)\$(ProjectName).exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="../../lib"
 				ProgramDatabaseFile=".\Release/cppunit_mfc.pdb"
 				SubSystem="2"
 				EntryPointSymbol="wWinMainCRTStartup"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -108,13 +105,16 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory=".\Debug"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
@@ -172,7 +172,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="cppunitd_dll.lib testrunnerud.lib"
-				OutputFile=".\Debug/cppunit_mfc.exe"
+				OutputFile="$(OutDir)\$(ProjectName)d.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="../../lib"
@@ -180,8 +180,6 @@
 				ProgramDatabaseFile=".\Debug/cppunit_mfc.pdb"
 				SubSystem="2"
 				EntryPointSymbol="wWinMainCRTStartup"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -201,6 +199,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -311,7 +312,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="TestCppUnitMfcUi.cpp"
+				RelativePath="CppUnitMfcUi.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -334,7 +335,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="TestCppUnitMfcUi.rc"
+				RelativePath="CppUnitMfcUi.rc"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -354,7 +355,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="TestCppUnitMfcUiDoc.cpp"
+				RelativePath="CppUnitMfcUiDoc.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -377,7 +378,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="TestCppUnitMfcUiView.cpp"
+				RelativePath="CppUnitMfcUiView.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -421,15 +422,15 @@
 				>
 			</File>
 			<File
-				RelativePath="TestCppUnitMfcUi.h"
+				RelativePath="CppUnitMfcUi.h"
 				>
 			</File>
 			<File
-				RelativePath="TestCppUnitMfcUiDoc.h"
+				RelativePath="CppUnitMfcUiDoc.h"
 				>
 			</File>
 			<File
-				RelativePath="TestCppUnitMfcUiView.h"
+				RelativePath="CppUnitMfcUiView.h"
 				>
 			</File>
 		</Filter>
@@ -438,15 +439,15 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
-				RelativePath="res\TestCppUnitMfcUi.ico"
+				RelativePath="res\CppUnitMfcUi.ico"
 				>
 			</File>
 			<File
-				RelativePath="res\TestCppUnitMfcUi.rc2"
+				RelativePath="res\CppUnitMfcUi.rc2"
 				>
 			</File>
 			<File
-				RelativePath="res\TestCppUnitMfcUiDoc.ico"
+				RelativePath="res\CppUnitMfcUiDoc.ico"
 				>
 			</File>
 			<File

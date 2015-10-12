@@ -43,7 +43,7 @@ BEGIN
 	"LANGUAGE 18, 1\r\n"
 	"#pragma code_page(949)\r\n"
 	"#endif //_WIN32\r\n"
-	"#include ""res\\TestCppUnitMfcUi.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+	"#include ""res\\CppUnitMfcUi.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
 	"#include ""l.kor\\afxres.rc""  	// Standard components\r\n"
 	"#include ""l.kor\\afxprint.rc""	// printing/print preview resources\r\n"
 	"#endif\r\n"
@@ -66,8 +66,8 @@ END
 LANGUAGE 18, 1
 #pragma code_page(949)
 #endif //_WIN32
-IDR_MAINFRAME           ICON    DISCARDABLE     "res\\TestCppUnitMfcUi.ico"
-IDR_TESTCPTYPE         ICON    DISCARDABLE     "res\\TestCppUnitMfcUiDoc.ico"
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\CppUnitMfcUi.ico"
+IDR_TESTCPTYPE         ICON    DISCARDABLE     "res\\CppUnitMfcUiDoc.ico"
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
@@ -142,7 +142,7 @@ BEGIN
 	END
 	POPUP "도움말(&H)"
 	BEGIN
-		MENUITEM "TestCppUnitMfcUi 정보(&A)...",          ID_APP_ABOUT
+		MENUITEM "CppUnitMfcUi 정보(&A)...",          ID_APP_ABOUT
 	END
 END
 
@@ -180,12 +180,12 @@ END
 //
 
 IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
-CAPTION "TestCppUnitMfcUi 정보"
+CAPTION "CppUnitMfcUi 정보"
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 FONT 9, "굴림"
 BEGIN
 	ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
-	LTEXT           "TestCppUnitMfcUi 버전 1.0",IDC_STATIC,40,10,119,8,
+	LTEXT           "CppUnitMfcUi 버전 1.0",IDC_STATIC,40,10,119,8,
                     SS_NOPREFIX
 	LTEXT           "Copyright (C) 2005",IDC_STATIC,40,25,119,8
 	DEFPUSHBUTTON   "확인",IDOK,178,7,50,14,WS_GROUP
@@ -216,13 +216,13 @@ BEGIN
         BLOCK "041204B0"
 		BEGIN 
 			VALUE "CompanyName",     "\0"
-			VALUE "FileDescription", "TestCppUnitMfcUi MFC 응용 프로그램\0"
+			VALUE "FileDescription", "CppUnitMfcUi MFC 응용 프로그램\0"
 			VALUE "FileVersion",     "1, 0, 0, 1\0"
-			VALUE "InternalName",    "TestCppUnitMfcUi\0"
+			VALUE "InternalName",    "CppUnitMfcUi\0"
 			VALUE "LegalCopyright",  "Copyright (C) 2005\0"
 			VALUE "LegalTrademarks", "\0"
-			VALUE "OriginalFilename","TestCppUnitMfcUi.EXE\0"
-			VALUE "ProductName",     "TestCppUnitMfcUi 응용 프로그램\0"
+			VALUE "OriginalFilename","CppUnitMfcUi.EXE\0"
+			VALUE "ProductName",     "CppUnitMfcUi 응용 프로그램\0"
 			VALUE "ProductVersion",  "1, 0, 0, 1\0"
 		END
 	END
@@ -257,12 +257,12 @@ END
 
 STRINGTABLE PRELOAD DISCARDABLE 
 BEGIN
-	IDR_MAINFRAME           "TestCppUnitMfcUi\n\nTestCp\n\n\nTestCppUnitMfcUi.Document\nTestCp Document"
+	IDR_MAINFRAME           "CppUnitMfcUi\n\nTestCp\n\n\nCppUnitMfcUi.Document\nTestCp Document"
 
 END
 STRINGTABLE PRELOAD DISCARDABLE 
 BEGIN
-	AFX_IDS_APP_TITLE       "TestCppUnitMfcUi"
+	AFX_IDS_APP_TITLE       "CppUnitMfcUi"
 	AFX_IDS_IDLEMESSAGE     "준비"
 END
 STRINGTABLE DISCARDABLE 
@@ -355,7 +355,7 @@ END
 LANGUAGE 18, 1
 #pragma code_page(949)
 #endif //_WIN32
-#include "res\\TestCppUnitMfcUi.rc2"  // non-Microsoft Visual C++ edited resources
+#include "res\\CppUnitMfcUi.rc2"  // non-Microsoft Visual C++ edited resources
 #include "l.kor\\afxres.rc"  	// Standard components
 #include "l.kor\\afxprint.rc"  // printing/print preview resources
 #endif

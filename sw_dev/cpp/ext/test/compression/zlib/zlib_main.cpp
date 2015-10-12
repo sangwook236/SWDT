@@ -5,12 +5,7 @@
 
 /* @(#) $Id$ */
 
-#if defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
 #include <zlib.h>
-#else
-#include "zlib/zlib.h"
-#endif
-
 #include <cstdio>
 #ifdef STDC
 #include <cstring>

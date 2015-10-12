@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "TestCppUnitMfcUi.h"
+#include "CppUnitMfcUi.h"
 
 #include "MainFrm.h"
 

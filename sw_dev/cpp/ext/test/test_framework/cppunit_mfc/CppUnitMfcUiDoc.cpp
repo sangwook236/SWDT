@@ -1,10 +1,10 @@
-// TestCppUnitMfcUiDoc.cpp : implementation of the CTestCppUnitMfcUiDoc class
+// CppUnitMfcUiDoc.cpp : implementation of the CCppUnitMfcUiDoc class
 //
 
 #include "stdafx.h"
-#include "TestCppUnitMfcUi.h"
+#include "CppUnitMfcUi.h"
 
-#include "TestCppUnitMfcUiDoc.h"
+#include "CppUnitMfcUiDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -13,31 +13,31 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiDoc
+// CCppUnitMfcUiDoc
 
-IMPLEMENT_DYNCREATE(CTestCppUnitMfcUiDoc, CDocument)
+IMPLEMENT_DYNCREATE(CCppUnitMfcUiDoc, CDocument)
 
-BEGIN_MESSAGE_MAP(CTestCppUnitMfcUiDoc, CDocument)
-	//{{AFX_MSG_MAP(CTestCppUnitMfcUiDoc)
+BEGIN_MESSAGE_MAP(CCppUnitMfcUiDoc, CDocument)
+	//{{AFX_MSG_MAP(CCppUnitMfcUiDoc)
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 		//    DO NOT EDIT what you see in these blocks of generated code!
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiDoc construction/destruction
+// CCppUnitMfcUiDoc construction/destruction
 
-CTestCppUnitMfcUiDoc::CTestCppUnitMfcUiDoc()
+CCppUnitMfcUiDoc::CCppUnitMfcUiDoc()
 {
 	// TODO: add one-time construction code here
 
 }
 
-CTestCppUnitMfcUiDoc::~CTestCppUnitMfcUiDoc()
+CCppUnitMfcUiDoc::~CCppUnitMfcUiDoc()
 {
 }
 
-BOOL CTestCppUnitMfcUiDoc::OnNewDocument()
+BOOL CCppUnitMfcUiDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
@@ -51,9 +51,9 @@ BOOL CTestCppUnitMfcUiDoc::OnNewDocument()
 
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiDoc serialization
+// CCppUnitMfcUiDoc serialization
 
-void CTestCppUnitMfcUiDoc::Serialize(CArchive& ar)
+void CCppUnitMfcUiDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
@@ -66,19 +66,19 @@ void CTestCppUnitMfcUiDoc::Serialize(CArchive& ar)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiDoc diagnostics
+// CCppUnitMfcUiDoc diagnostics
 
 #ifdef _DEBUG
-void CTestCppUnitMfcUiDoc::AssertValid() const
+void CCppUnitMfcUiDoc::AssertValid() const
 {
 	CDocument::AssertValid();
 }
 
-void CTestCppUnitMfcUiDoc::Dump(CDumpContext& dc) const
+void CCppUnitMfcUiDoc::Dump(CDumpContext& dc) const
 {
 	CDocument::Dump(dc);
 }
 #endif //_DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiDoc commands
+// CCppUnitMfcUiDoc commands

@@ -1,6 +1,4 @@
 #include <gtest/gtest.h>
-#include <iostream>
-#include <stdexcept>
 
 
 namespace {
@@ -15,6 +13,6 @@ namespace my_gtest {
 
 int gtest_main(int argc, char *argv[])
 {
-	::testing::InitGoogleTest(&argc, argv);
+	testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }

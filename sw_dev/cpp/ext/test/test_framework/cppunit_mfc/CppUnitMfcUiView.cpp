@@ -1,11 +1,11 @@
-// TestCppUnitMfcUiView.cpp : implementation of the CTestCppUnitMfcUiView class
+// CppUnitMfcUiView.cpp : implementation of the CCppUnitMfcUiView class
 //
 
 #include "stdafx.h"
-#include "TestCppUnitMfcUi.h"
+#include "CppUnitMfcUi.h"
 
-#include "TestCppUnitMfcUiDoc.h"
-#include "TestCppUnitMfcUiView.h"
+#include "CppUnitMfcUiDoc.h"
+#include "CppUnitMfcUiView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,12 +14,12 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiView
+// CCppUnitMfcUiView
 
-IMPLEMENT_DYNCREATE(CTestCppUnitMfcUiView, CView)
+IMPLEMENT_DYNCREATE(CCppUnitMfcUiView, CView)
 
-BEGIN_MESSAGE_MAP(CTestCppUnitMfcUiView, CView)
-	//{{AFX_MSG_MAP(CTestCppUnitMfcUiView)
+BEGIN_MESSAGE_MAP(CCppUnitMfcUiView, CView)
+	//{{AFX_MSG_MAP(CCppUnitMfcUiView)
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 		//    DO NOT EDIT what you see in these blocks of generated code!
 	//}}AFX_MSG_MAP
@@ -30,19 +30,19 @@ BEGIN_MESSAGE_MAP(CTestCppUnitMfcUiView, CView)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiView construction/destruction
+// CCppUnitMfcUiView construction/destruction
 
-CTestCppUnitMfcUiView::CTestCppUnitMfcUiView()
+CCppUnitMfcUiView::CCppUnitMfcUiView()
 {
 	// TODO: add construction code here
 
 }
 
-CTestCppUnitMfcUiView::~CTestCppUnitMfcUiView()
+CCppUnitMfcUiView::~CCppUnitMfcUiView()
 {
 }
 
-BOOL CTestCppUnitMfcUiView::PreCreateWindow(CREATESTRUCT& cs)
+BOOL CCppUnitMfcUiView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
@@ -51,54 +51,54 @@ BOOL CTestCppUnitMfcUiView::PreCreateWindow(CREATESTRUCT& cs)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiView drawing
+// CCppUnitMfcUiView drawing
 
-void CTestCppUnitMfcUiView::OnDraw(CDC* pDC)
+void CCppUnitMfcUiView::OnDraw(CDC* pDC)
 {
-	CTestCppUnitMfcUiDoc* pDoc = GetDocument();
+	CCppUnitMfcUiDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	// TODO: add draw code for native data here
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiView printing
+// CCppUnitMfcUiView printing
 
-BOOL CTestCppUnitMfcUiView::OnPreparePrinting(CPrintInfo* pInfo)
+BOOL CCppUnitMfcUiView::OnPreparePrinting(CPrintInfo* pInfo)
 {
 	// default preparation
 	return DoPreparePrinting(pInfo);
 }
 
-void CTestCppUnitMfcUiView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
+void CCppUnitMfcUiView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
 	// TODO: add extra initialization before printing
 }
 
-void CTestCppUnitMfcUiView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
+void CCppUnitMfcUiView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
 	// TODO: add cleanup after printing
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiView diagnostics
+// CCppUnitMfcUiView diagnostics
 
 #ifdef _DEBUG
-void CTestCppUnitMfcUiView::AssertValid() const
+void CCppUnitMfcUiView::AssertValid() const
 {
 	CView::AssertValid();
 }
 
-void CTestCppUnitMfcUiView::Dump(CDumpContext& dc) const
+void CCppUnitMfcUiView::Dump(CDumpContext& dc) const
 {
 	CView::Dump(dc);
 }
 
-CTestCppUnitMfcUiDoc* CTestCppUnitMfcUiView::GetDocument() // non-debug version is inline
+CCppUnitMfcUiDoc* CCppUnitMfcUiView::GetDocument() // non-debug version is inline
 {
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CTestCppUnitMfcUiDoc)));
-	return (CTestCppUnitMfcUiDoc*)m_pDocument;
+	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CCppUnitMfcUiDoc)));
+	return (CCppUnitMfcUiDoc*)m_pDocument;
 }
 #endif //_DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiView message handlers
+// CCppUnitMfcUiView message handlers

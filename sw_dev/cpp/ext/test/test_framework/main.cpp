@@ -8,13 +8,17 @@
 
 int main(int argc, char *argv[])
 {
+	int cppunit_main(int argc, char *argv[]);
 	int gtest_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "Google Test library -------------------------------------------------" << std::endl;
-		retval = gtest_main(argc, argv);
+		std::cout << "CppUnit library -----------------------------------------------------" << std::endl;
+		//retval = cppunit_main(argc, argv);
+
+		std::cout << "\nGoogle Test library -------------------------------------------------" << std::endl;
+		//retval = gtest_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

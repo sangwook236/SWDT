@@ -1,8 +1,8 @@
-// TestCppUnitMfcUi.h : main header file for the TESTCPPUNITMFCUI application
+// CppUnitMfcUi.h : main header file for the CPPUNITMFCUI application
 //
 
-#if !defined(AFX_TESTCPPUNITMFCUI_H__37F928CC_24F9_4D0D_B88A_112093DA15B8__INCLUDED_)
-#define AFX_TESTCPPUNITMFCUI_H__37F928CC_24F9_4D0D_B88A_112093DA15B8__INCLUDED_
+#if !defined(AFX_CPPUNITMFCUI_H__37F928CC_24F9_4D0D_B88A_112093DA15B8__INCLUDED_)
+#define AFX_CPPUNITMFCUI_H__37F928CC_24F9_4D0D_B88A_112093DA15B8__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -15,24 +15,24 @@
 #include "resource.h"       // main symbols
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiApp:
-// See TestCppUnitMfcUi.cpp for the implementation of this class
+// CCppUnitMfcUiApp:
+// See CppUnitMfcUi.cpp for the implementation of this class
 //
 
-class CTestCppUnitMfcUiApp : public CWinApp
+class CCppUnitMfcUiApp : public CWinApp
 {
 public:
-	CTestCppUnitMfcUiApp();
+	CCppUnitMfcUiApp();
 
 // Overrides
 	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CTestCppUnitMfcUiApp)
+	//{{AFX_VIRTUAL(CCppUnitMfcUiApp)
 	public:
 	virtual BOOL InitInstance();
 	//}}AFX_VIRTUAL
 
 // Implementation
-	//{{AFX_MSG(CTestCppUnitMfcUiApp)
+	//{{AFX_MSG(CCppUnitMfcUiApp)
 	afx_msg void OnAppAbout();
 		// NOTE - the ClassWizard will add and remove member functions here.
 		//    DO NOT EDIT what you see in these blocks of generated code !
@@ -46,4 +46,4 @@ public:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_TESTCPPUNITMFCUI_H__37F928CC_24F9_4D0D_B88A_112093DA15B8__INCLUDED_)
+#endif // !defined(AFX_CPPUNITMFCUI_H__37F928CC_24F9_4D0D_B88A_112093DA15B8__INCLUDED_)

@@ -1,12 +1,12 @@
-// TestCppUnitMfcUi.cpp : Defines the class behaviors for the application.
+// CppUnitMfcUi.cpp : Defines the class behaviors for the application.
 //
 
 #include "stdafx.h"
-#include "TestCppUnitMfcUi.h"
+#include "CppUnitMfcUi.h"
 
 #include "MainFrm.h"
-#include "TestCppUnitMfcUiDoc.h"
-#include "TestCppUnitMfcUiView.h"
+#include "CppUnitMfcUiDoc.h"
+#include "CppUnitMfcUiView.h"
 
 #include <cppunit/ui/mfc/TestRunner.h>
 #include <cppunit/extensions/TestFactoryRegistry.h>
@@ -18,10 +18,10 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiApp
+// CCppUnitMfcUiApp
 
-BEGIN_MESSAGE_MAP(CTestCppUnitMfcUiApp, CWinApp)
-	//{{AFX_MSG_MAP(CTestCppUnitMfcUiApp)
+BEGIN_MESSAGE_MAP(CCppUnitMfcUiApp, CWinApp)
+	//{{AFX_MSG_MAP(CCppUnitMfcUiApp)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 		//    DO NOT EDIT what you see in these blocks of generated code!
@@ -34,24 +34,24 @@ BEGIN_MESSAGE_MAP(CTestCppUnitMfcUiApp, CWinApp)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiApp construction
+// CCppUnitMfcUiApp construction
 
-CTestCppUnitMfcUiApp::CTestCppUnitMfcUiApp()
+CCppUnitMfcUiApp::CCppUnitMfcUiApp()
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// The one and only CTestCppUnitMfcUiApp object
+// The one and only CCppUnitMfcUiApp object
 
-CTestCppUnitMfcUiApp theApp;
+CCppUnitMfcUiApp theApp;
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiApp initialization
+// CCppUnitMfcUiApp initialization
 
 
-BOOL CTestCppUnitMfcUiApp::InitInstance()
+BOOL CCppUnitMfcUiApp::InitInstance()
 {
 	AfxEnableControlContainer();
 
@@ -79,9 +79,9 @@ BOOL CTestCppUnitMfcUiApp::InitInstance()
 	CSingleDocTemplate* pDocTemplate;
 	pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
-		RUNTIME_CLASS(CTestCppUnitMfcUiDoc),
+		RUNTIME_CLASS(CCppUnitMfcUiDoc),
 		RUNTIME_CLASS(CMainFrame),       // main SDI frame window
-		RUNTIME_CLASS(CTestCppUnitMfcUiView));
+		RUNTIME_CLASS(CCppUnitMfcUiView));
 	AddDocTemplate(pDocTemplate);
 
 	//--S  []  2005/01/13  :  Sang-Wook Lee
@@ -155,12 +155,12 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
 // App command to run the dialog
-void CTestCppUnitMfcUiApp::OnAppAbout()
+void CCppUnitMfcUiApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CTestCppUnitMfcUiApp message handlers
+// CCppUnitMfcUiApp message handlers
 

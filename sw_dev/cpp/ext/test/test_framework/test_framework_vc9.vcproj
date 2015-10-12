@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="ks_c_5601-1987"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
-	Name="cppunit"
+	Version="9.00"
+	Name="test_framework"
 	ProjectGUID="{AE9ECE27-3FB6-46B2-AD6F-FB30391B0DFC}"
-	RootNamespace="cppunit"
+	RootNamespace="test_framework"
 	Keyword="MFCProj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -18,7 +19,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory="$(ConfigurationName)"
+			IntermediateDirectory=".\Debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
@@ -39,7 +40,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\Debug/cppunit.tlb"
+				TypeLibraryName=".\Debug/test_framework.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -50,7 +51,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\Debug/cppunit.pch"
+				PrecompiledHeaderFile=".\Debug/test_framework.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -72,13 +73,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="cppunitd_dll.lib testrunnerud.lib"
-				OutputFile="$(OutDir)\$(ProjectName)d.exe"
+				OutputFile=".\Debug/test_framework.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/cppunit.pdb"
+				ProgramDatabaseFile=".\Debug/test_framework.pdb"
 				SubSystem="1"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -100,16 +103,13 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory="$(ConfigurationName)"
+			IntermediateDirectory=".\Release"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
@@ -130,7 +130,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\Release/cppunit.tlb"
+				TypeLibraryName=".\Release/test_framework.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -143,7 +143,7 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\Release/cppunit.pch"
+				PrecompiledHeaderFile=".\Release/test_framework.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -164,12 +164,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="cppunit_dll.lib testrunneru.lib"
-				OutputFile="$(OutDir)\$(ProjectName).exe"
+				OutputFile=".\Release/test_framework.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="../../lib"
-				ProgramDatabaseFile=".\Release/cppunit.pdb"
+				ProgramDatabaseFile=".\Release/test_framework.pdb"
 				SubSystem="1"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -189,9 +191,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -252,27 +251,8 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="main.cpp"
+				RelativePath=".\main.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -289,6 +269,10 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 		</Filter>
+		<File
+			RelativePath=".\ReadMe.txt"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
