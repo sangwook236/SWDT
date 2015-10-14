@@ -95,8 +95,9 @@
 		<Unit filename="filesystem.cpp" />
 		<Unit filename="function.cpp" />
 		<Unit filename="geometry.cpp" />
-		<Unit filename="graph.cpp" />
-		<Unit filename="graph_parallel.cpp" />
+		<Unit filename="graph/graph.cpp" />
+		<Unit filename="graph/graph_parallel.cpp" />
+		<Unit filename="graph/metric_tsp_approximation.cpp" />
 		<Unit filename="image.cpp">
 			<Option compile="0" />
 			<Option link="0" />
