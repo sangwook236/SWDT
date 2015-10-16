@@ -115,8 +115,9 @@
     <ClCompile Include="filesystem.cpp" />
     <ClCompile Include="function.cpp" />
     <ClCompile Include="geometry.cpp" />
-    <ClCompile Include="graph.cpp" />
-    <ClCompile Include="graph_parallel.cpp" />
+    <ClCompile Include="graph\graph.cpp" />
+    <ClCompile Include="graph\graph_parallel.cpp" />
+    <ClCompile Include="graph\metric_tsp_approximation.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="interprocess.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
