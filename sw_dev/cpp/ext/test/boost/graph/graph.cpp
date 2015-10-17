@@ -677,7 +677,7 @@ void kruskal_minimum_spanning_tree_example()
 {
 	typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, boost::property<boost::edge_weight_t, int> > graph_type;
 	typedef boost::graph_traits<graph_type>::edge_descriptor edge_descriptor_type;
-	typedef boost::graph_traits<graph_type>::vertex_descriptor vertex_descriptor_type;
+	//typedef boost::graph_traits<graph_type>::vertex_descriptor vertex_descriptor_type;
 	typedef std::pair<int, int> edge_type;
 
 	const int num_nodes = 5;
@@ -826,7 +826,7 @@ void prim_minimum_spanning_tree_example()
 	}
 #else
 	graph_type g(edges, edges + sizeof(edges) / sizeof(edge_type), weights, num_nodes);
-	boost::property_map<graph_type, boost::edge_weight_t>::type weightmap = boost::get(boost::edge_weight, g);
+	//boost::property_map<graph_type, boost::edge_weight_t>::type weightmap = boost::get(boost::edge_weight, g);
 #endif
 
 	std::vector<boost::graph_traits<graph_type>::vertex_descriptor> p(boost::num_vertices(g));
@@ -1490,7 +1490,7 @@ struct edge_t
 void minimum_cut()
 {
 	typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, boost::property<boost::edge_weight_t, int> > undirected_graph_type;
-	typedef boost::graph_traits<undirected_graph_type>::vertex_descriptor vertex_descriptor_type;
+	//typedef boost::graph_traits<undirected_graph_type>::vertex_descriptor vertex_descriptor_type;
 	typedef boost::property_map<undirected_graph_type, boost::edge_weight_t>::type weight_map_type;
 	typedef boost::property_traits<weight_map_type>::value_type weight_type;
 

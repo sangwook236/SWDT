@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\graph">
+      <UniqueIdentifier>{9cb7678a-2e51-42fb-bb18-c420f1632c3e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="any.cpp">
@@ -132,9 +135,6 @@
     <ClCompile Include="utility_binary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graph.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -177,11 +177,17 @@
     <ClCompile Include="multiprecision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graph_parallel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="string_algorithms.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="graph\graph.cpp">
+      <Filter>Source Files\graph</Filter>
+    </ClCompile>
+    <ClCompile Include="graph\graph_parallel.cpp">
+      <Filter>Source Files\graph</Filter>
+    </ClCompile>
+    <ClCompile Include="graph\metric_tsp_approximation.cpp">
+      <Filter>Source Files\graph</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
