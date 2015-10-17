@@ -4,10 +4,6 @@
 			http://robottini.altervista.org/kalman-filter-vs-complementary-filter
 			https://www.sparkfun.com/products/retired/9431
 
-		ADIS 16365 (Analog Devices):
-			http://blog.daum.net/pg365/78
-			http://www.analog.com/en/evaluation/ADISUSB/eb.html
-
 		MPU6000, MPU6050 (InvenSense):
 			http://davidegironi.blogspot.kr/2013/02/avr-atmega-mpu6050-gyroscope-and.html
 			https://code.google.com/p/gentlenav/
