@@ -9,6 +9,7 @@
 
 int main(int argc, char *argv[])
 {
+	int adis_main(int argc, char *argv[]);
 	int invensense_main(int argc, char *argv[]);
 	int sparkfun_main(int argc, char *argv[]);
 
@@ -16,7 +17,10 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "InvenSense Inertial Measurement Unit (IMU) -------------------------" << std::endl;
-		retval = invensense_main(argc, argv);
+		retval = adis_main(argc, argv);
+
+		std::cout << "\nInvenSense Inertial Measurement Unit (IMU) -------------------------" << std::endl;
+		//retval = invensense_main(argc, argv);
 
 		std::cout << "\nSparkfun Inertial Measurement Unit (IMU) ---------------------------" << std::endl;
 		//retval = sparkfun_main(argc, argv);  // not yet implemented.

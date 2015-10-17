@@ -1,4 +1,3 @@
-#include <iostream>
 #include <boost/spirit/include/classic_core.hpp>
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
@@ -6,11 +5,11 @@
 //#include <boost/thread.hpp>
 #include <boost/circular_buffer.hpp>
 #include <boost/smart_ptr.hpp>
-#include <numeric>
-#include <deque>
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include <numeric>
+#include <deque>
 #include <cmath>
 #include <cassert>
 

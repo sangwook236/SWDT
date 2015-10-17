@@ -19,6 +19,9 @@
     <Filter Include="Source Files\sparkfun">
       <UniqueIdentifier>{73dd1291-c05b-4ae0-92d5-e8521414b32c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\adis">
+      <UniqueIdentifier>{bdf82eca-5e66-4139-a889-d1c3e2df42e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp">
@@ -32,6 +35,9 @@
     </ClCompile>
     <ClCompile Include="invensense\invensense_main.cpp">
       <Filter>Source Files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="adis\adis_main.cpp">
+      <Filter>Source Files\adis</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
