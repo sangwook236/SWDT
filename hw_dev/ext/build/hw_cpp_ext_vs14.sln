@@ -13,7 +13,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gps_vs14", "..\test\gps\gps
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imu_vs14", "..\test\imu\imu_vs14.vcxproj", "{66D4581B-FBA0-4FD5-8AEF-C9EC9963D010}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "point_grey_vs14", "..\test\point_grey\point_grey_vs14.vcxproj", "{B57A65A0-CD1C-4153-8EC6-4FE913B754EC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vision_vs14", "..\test\vision\vision_vs14.vcxproj", "{B57A65A0-CD1C-4153-8EC6-4FE913B754EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,13 +9,13 @@
 
 int main(int argc, char *argv[])
 {
-	int flycapture2_main(int argc, char *argv[]);
+	int point_grey_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "FlyCapture2 --------------------------------------------------------" << std::endl;
-		retval = flycapture2_main(argc, argv);
+		std::cout << "Point Grey Vision Sensor -------------------------------------------" << std::endl;
+		retval = point_grey_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

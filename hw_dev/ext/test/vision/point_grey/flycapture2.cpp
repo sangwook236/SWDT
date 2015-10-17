@@ -10,9 +10,10 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
+namespace my_point_grey {
 
 // REF [site] >> http://www.ptgrey.com/KB/10861.
-int flycapture2_main(int argc, char *argv[])
+bool flycapture2()
 {
 	FlyCapture2::Error error;
 	FlyCapture2::Camera camera;
@@ -23,7 +24,7 @@ int flycapture2_main(int argc, char *argv[])
 	if (FlyCapture2::PGRERROR_OK != error.GetType())
 	{
 		std::cout << "Failed to connect to camera" << std::endl;
-		return 1;
+		return false;
 	}
 
 	// Get the camera info and print it out.
@@ -31,7 +32,7 @@ int flycapture2_main(int argc, char *argv[])
 	if (FlyCapture2::PGRERROR_OK != error.GetType())
 	{
 		std::cout << "Failed to get camera info from camera" << std::endl;
-		return 1;
+		return false;
 	}
 	std::cout << camInfo.vendorName << " "
 		<< camInfo.modelName << " "
@@ -41,12 +42,12 @@ int flycapture2_main(int argc, char *argv[])
 	if (FlyCapture2::PGRERROR_ISOCH_BANDWIDTH_EXCEEDED == error.GetType())
 	{
 		std::cout << "Bandwidth exceeded" << std::endl;
-		return 1;
+		return false;
 	}
 	else if (FlyCapture2::PGRERROR_OK != error.GetType())
 	{
 		std::cout << "Failed to start image capture" << std::endl;
-		return 1;
+		return false;
 	}
 
 	// capture loop.
@@ -82,5 +83,7 @@ int flycapture2_main(int argc, char *argv[])
 
 	camera.Disconnect();
 
-	return 0;
+	return true;
 }
+
+}  // namespace my_point_grey

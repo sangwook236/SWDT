@@ -13,16 +13,22 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\point_grey">
+      <UniqueIdentifier>{530d52a1-b34a-4580-83eb-38158275f337}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="flycapture2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="point_grey\flycapture2.cpp">
+      <Filter>Source Files\point_grey</Filter>
+    </ClCompile>
+    <ClCompile Include="point_grey\point_grey_main.cpp">
+      <Filter>Source Files\point_grey</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
