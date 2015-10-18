@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "InvenSense Inertial Measurement Unit (IMU) -------------------------" << std::endl;
+		std::cout << "Analog Devices MEMS Sensors (ADIS) ---------------------------------" << std::endl;
 		retval = adis_main(argc, argv);
 
 		std::cout << "\nInvenSense Inertial Measurement Unit (IMU) -------------------------" << std::endl;

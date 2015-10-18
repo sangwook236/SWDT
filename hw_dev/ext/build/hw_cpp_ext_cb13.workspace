@@ -4,5 +4,6 @@
 		<Project filename="../test/ahrs/ahrs_cb13.cbp" />
 		<Project filename="../test/gps/gps_cb13.cbp" />
 		<Project filename="../test/imu/imu_cb13.cbp" />
+		<Project filename="../test/vision/vision_cb13.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

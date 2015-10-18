@@ -2,21 +2,22 @@
 #include "../mfa_lib/mfa.hpp"
 #include <gsl/gsl_blas.h>
 #include <boost/tokenizer.hpp>
+#include <boost/timer/timer.hpp>
 #include <fstream>
 #include <iostream>
-#include <ctime>
 
 
 namespace {
 namespace local {
 
-// REF [original] >> my_vector_data_set_t in {CPP_RND_HOME}/dimensionality_reduction/mfa/mfa_main.cpp
+// REF [original] >> my_vector_data_set_t in {GDT_HOME}/sw_dev/cpp/rnd/test/dimensionality_reduction/mfa/mfa_main.cpp
 class my_vector_data_set_t : public vector_data_set_t
 {
 public:
     my_vector_data_set_t(const std::size_t dim_data, const std::size_t num_data);
     ~my_vector_data_set_t();
 
+public:
     /*virtual*/ std::size_t length() const;
     /*virtual*/ void reset();
     /*virtual*/ bool get_next_vector(gsl_vector *vector_ptr);
@@ -165,19 +166,13 @@ void locally_linear_coordination()
 
         // train MFA.
         {
-            // for elapsed time.
-            const std::time_t start_time = std::time(NULL);
+            boost::timer::auto_cpu_timer timer;
 
             const double tol = 1e-1;
             const std::size_t max_iter = std::numeric_limits<std::size_t>::max();
-            const bool result = mfa.em((vector_data_set_t &)train_data, tol, max_iter);
+            const bool converged = mfa.em((vector_data_set_t &)train_data, tol, max_iter);
 
-            std::cout << "the result of EM = " << result << std::endl;
-
-            // for elapsed time.
-            const std::time_t finish_time = std::time(NULL);
-            const double elapsed_time = std::difftime(finish_time, start_time);
-            std::cout << "elapsed time : " << elapsed_time << " seconds" << std::endl;
+            std::cout << "the convergence of EM = " << converged << std::endl;
         }
     }
 }

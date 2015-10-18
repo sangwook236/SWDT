@@ -107,8 +107,7 @@ int main(int argc, char *argv[])
 		//		Bayesian network.
 		//		inference algorithms.
 		//	-. image processing.
-		//
-		// [ref] ${CPP_HOME}/ext/src/general_purpose_library/dlib.
+		// REF [library] >> ${GDT_HOME}/sw_dev/cpp/ext/src/general_purpose_library/dlib.
 		//retval = dlib_ml_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nCaffe framework -----------------------------------------------------" << std::endl;

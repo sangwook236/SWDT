@@ -18,6 +18,7 @@ public:
     my_vector_data_set_t(const std::size_t dim_data, const std::size_t num_data);
     ~my_vector_data_set_t();
 
+public:
     /*virtual*/ std::size_t length() const;
     /*virtual*/ void reset();
     /*virtual*/ bool get_next_vector(gsl_vector *vector_ptr);
@@ -170,9 +171,9 @@ int mfa_main(int argc, char *argv[])
 
             const double tol = 1e-1;
             const std::size_t max_iter = std::numeric_limits<std::size_t>::max();
-            const bool result = mfa.em((vector_data_set_t &)train_data, tol, max_iter);
+            const bool converged = mfa.em((vector_data_set_t &)train_data, tol, max_iter);
 
-            std::cout << "the result of EM = " << result << std::endl;
+            std::cout << "the convergence of EM = " << converged << std::endl;
 
             // for elapsed time.
             const std::time_t finish_time = std::time(NULL);
