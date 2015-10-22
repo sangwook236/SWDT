@@ -23,6 +23,7 @@
 		http://wiki.ros.org/openni/Contests/ROS%203D/RGBD-6D-SLAM
 		http://openslam.org/rgbdslam.html
 		http://www.openslam.org/hog-man.html
+
 [-] Run in Linux
 	-.
 
@@ -56,3 +57,10 @@
 
 		roslaunch openni_camera openni_node.launch 
 		rosrun rgbdslam rgbdslam
+
+[-] Trouble Shooting in Ubuntu
+	-. <error message>
+		The following packages have unmet dependencies
+		Depends: ros-indigo-common-tutorials but it is not going to be installed
+		=> unmatched version of Boost library.
+			Currently, Boost version 1.54.0 is used. (2015/10/22).
