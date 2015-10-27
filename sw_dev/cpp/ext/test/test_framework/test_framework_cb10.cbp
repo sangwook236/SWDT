@@ -48,7 +48,10 @@
 		<Unit filename="cppunit/Complex.h" />
 		<Unit filename="cppunit/ComplexTest.cpp" />
 		<Unit filename="cppunit/cppunit_main.cpp" />
+		<Unit filename="gmock/Turtle.h" />
+		<Unit filename="gmock/TurtleMock.h" />
 		<Unit filename="gmock/gmock_main.cpp" />
+		<Unit filename="gmock/gmock_turtlemock_unittest.cpp" />
 		<Unit filename="gtest/gtest_main.cpp" />
 		<Unit filename="gtest/gtest_sample1.cpp" />
 		<Unit filename="gtest/gtest_sample1.h" />
