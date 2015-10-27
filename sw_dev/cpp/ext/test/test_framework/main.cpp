@@ -16,13 +16,13 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "CppUnit library -----------------------------------------------------" << std::endl;
-		retval = cppunit_main(argc, argv);
+		//retval = cppunit_main(argc, argv);
 
 		std::cout << "\nGoogle Test library -------------------------------------------------" << std::endl;
-		retval = gtest_main(argc, argv);
+		//retval = gtest_main(argc, argv);
 
 		std::cout << "\nGoogle Mock library -------------------------------------------------" << std::endl;
-		//retval = gmock_main(argc, argv);  // not yet implemented.
+		retval = gmock_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{
