@@ -50,19 +50,44 @@
 			<Add directory="/usr/include/mrpt/topography/include/" />
 			<Add directory="/usr/include/mrpt/vision/include/" />
 			<Add directory="/usr/include/mrpt/mrpt-config/" />
+			<Add directory="/usr/include/eigen3" />
+			<Add directory="/usr/local/include" />
+			<Add directory="/usr/include" />
 		</Compiler>
+		<Linker>
+			<Add directory="/usr/local/lib" />
+			<Add directory="/usr/lib" />
+		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="mrpt/mrpt_dijkstra.cpp" />
-		<Unit filename="mrpt/mrpt_feature_extraction_and_matching.cpp" />
+		<Unit filename="mrpt/mrpt_feature_extraction_and_matching.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="mrpt/mrpt_icp.cpp" />
-		<Unit filename="mrpt/mrpt_localization_pf.cpp" />
+		<Unit filename="mrpt/mrpt_localization_pf.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="mrpt/mrpt_main.cpp" />
-		<Unit filename="mrpt/mrpt_map_handling.cpp" />
-		<Unit filename="mrpt/mrpt_path_planning.cpp" />
-		<Unit filename="mrpt/mrpt_ransac.cpp" />
+		<Unit filename="mrpt/mrpt_map_handling.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="mrpt/mrpt_path_planning.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="mrpt/mrpt_ransac.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="mrpt/mrpt_rawlog.cpp" />
 		<Unit filename="mrpt/mrpt_rawlog_grabber.cpp" />
-		<Unit filename="mrpt/mrpt_slam_icp.cpp" />
+		<Unit filename="mrpt/mrpt_slam_icp.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="mrpt/mrpt_slam_kf.cpp" />
 		<Unit filename="ompl/ompl_main.cpp" />
 		<Unit filename="ompl/ompl_rigid_body_planning_example.cpp" />

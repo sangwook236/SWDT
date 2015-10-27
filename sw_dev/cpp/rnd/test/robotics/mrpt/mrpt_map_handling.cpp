@@ -1,5 +1,7 @@
 //#include "stdafx.h"
 #include <mrpt/slam.h>
+#include <iostream>
+#include <string>
 
 
 namespace {
@@ -98,7 +100,7 @@ void map_handling_basic()
 				std::cout << "reading grid map from image file...";
 				gridMap.loadFromBitmapFile(mapImageFileName, resolution, xCentralPixel, yCentralPixel);
 				//mrpt::utils::CMRPTImage img;
-				//img.loadFromFile(mapImageFileName), 
+				//img.loadFromFile(mapImageFileName),
 				//gridMap.loadFromBitmap(img, resolution, xCentralPixel, yCentralPixel);
 				std::cout << "done!: " << (gridMap.getXMax() - gridMap.getXMin()) << " x " << (gridMap.getYMax() - gridMap.getYMin()) << " m" << std::endl;
 

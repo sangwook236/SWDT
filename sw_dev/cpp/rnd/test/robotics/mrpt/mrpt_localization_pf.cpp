@@ -2,6 +2,9 @@
 #include <mrpt/slam.h>
 #include <mrpt/system.h>
 #include <mrpt/poses/CPosePDFParticles.h>
+#include <iostream>
+#include <string>
+
 
 namespace {
 namespace local {
@@ -149,7 +152,7 @@ void pf_localization(const PfLocalizationOptions &options)
 	for (mrpt::vector_int::const_iterator itNum = options.particlesList.begin(); itNum != options.particlesList.end(); ++itNum)
 	{
 		const int PARTICLE_COUNT = *itNum;
-	
+
 		std::cout << std::endl << "-------------------------------------------------------------" << std::endl;
 		std::cout << "           running for " << PARTICLE_COUNT << " initial particles" << std::endl;
 		std::cout << "-------------------------------------------------------------" << std::endl << std::endl;

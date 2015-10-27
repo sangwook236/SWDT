@@ -23,8 +23,10 @@ int main(int argc, char *argv[])
 
 		std::cout << "Mobile Robot Programming Toolkit (MRPT) -----------------------------" << std::endl;
 		//retval = mrpt_main(argc, argv);  // compile-time error.
+
 		std::cout << "\nPlayer/Stage library ------------------------------------------------" << std::endl;
 		//retval = player_stage_main(argc, argv);
+
 		std::cout << "\nRobot Operating System (ROS) ----------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		// [ref] http://wiki.ros.org/ko/cturtle/Installation/Windows

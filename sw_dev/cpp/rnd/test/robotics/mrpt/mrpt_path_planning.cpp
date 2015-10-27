@@ -1,5 +1,11 @@
 //#include "stdafx.h"
 #include <mrpt/slam.h>
+#include <mrpt/utils/TColor.h>
+#include <mrpt/utils/CFileGZInputStream.h>
+#include <mrpt/gui/CDisplayWindow.h>
+#include <mrpt/system/filesystem.h>
+#include <iostream>
+#include <string>
 
 
 namespace {
@@ -61,8 +67,8 @@ void path_planning_1()
 		for (std::deque<mrpt::poses::TPoint2D>::const_iterator it = thePath.begin(); it != thePath.end(); ++it)
 			img.drawCircle(gridmap.x2idx(it->x), gridmap.getSizeY() - 1 - gridmap.y2idx(it->y), radius, mrpt::utils::TColor(0, 0, 255));
 
-		img.cross(gridmap.x2idx(origin.x()), gridmap.getSizeY() - 1 - gridmap.y2idx(origin.y()), 0xFF0000, '+', 10);
-		img.cross(gridmap.x2idx(target.x()), gridmap.getSizeY() - 1 - gridmap.y2idx(target.y()), 0xFF0000, 'x', 10);
+		img.cross(gridmap.x2idx(origin.x()), gridmap.getSizeY() - 1 - gridmap.y2idx(origin.y()), mrpt::utils::TColor(0xFF0000), '+', 10);
+		img.cross(gridmap.x2idx(target.x()), gridmap.getSizeY() - 1 - gridmap.y2idx(target.y()), mrpt::utils::TColor(0xFF0000), 'x', 10);
 
 		std::cout << "saving output to: " << IMAGE_DEST_FILE << std::endl;
 		img.saveToFile(IMAGE_DEST_FILE);
@@ -106,7 +112,7 @@ void path_planning_2()
 	std::cout << "reading grid map from image file...";
 	gridMap.loadFromBitmapFile(mapImageFileName, resolution, xCentralPixel, yCentralPixel);
 	//mrpt::utils::CMRPTImage img;
-	//img.loadFromFile(mapImageFileName), 
+	//img.loadFromFile(mapImageFileName),
 	//gridMap.loadFromBitmap(img, resolution, xCentralPixel, yCentralPixel);
 	std::cout << "done!: " << (gridMap.getXMax() - gridMap.getXMin()) << " x " << (gridMap.getYMax() - gridMap.getYMin()) << " m" << std::endl;
 
@@ -158,11 +164,11 @@ void path_planning_2()
 	const int x1 = getXIndexInImage(gridMap.x2idx(1.0f), gridMap.getSizeX(), isRightward);
 	const int y0 = getYIndexInImage(gridMap.y2idx(0.0f), gridMap.getSizeY(), isUpward);
 	const int y1 = getYIndexInImage(gridMap.y2idx(1.0f), gridMap.getSizeY(), isUpward);
-	imgMap.cross(x0, y0, 0xFF0000, 'x', 5, 3);
-	imgMap.cross(x1, y0, 0x00FF00, 'x', 5, 3);
-	imgMap.cross(x0, y1, 0x0000FF, 'x', 5, 3);
-	imgMap.line(x0, y0, x1, y0, 0x00FF00, 5);
-	imgMap.line(x0, y0, x0, y1, 0x0000FF, 5);
+	imgMap.cross(x0, y0, mrpt::utils::TColor(0xFF0000), 'x', 5, 3);
+	imgMap.cross(x1, y0, mrpt::utils::TColor(0x00FF00), 'x', 5, 3);
+	imgMap.cross(x0, y1, mrpt::utils::TColor(0x0000FF), 'x', 5, 3);
+	imgMap.line(x0, y0, x1, y0, mrpt::utils::TColor(0x00FF00), 5);
+	imgMap.line(x0, y0, x0, y1, mrpt::utils::TColor(0x0000FF), 5);
 
 	// draw target points
 	std::size_t idx = 0;
@@ -182,7 +188,7 @@ void path_planning_2()
 			break;
 		}
 
-		imgMap.cross(getXIndexInImage(gridMap.x2idx(it->x()), gridMap.getSizeX(), isRightward), getYIndexInImage(gridMap.y2idx(it->y()), gridMap.getSizeY(), isUpward), color, '+', 10);
+		imgMap.cross(getXIndexInImage(gridMap.x2idx(it->x()), gridMap.getSizeX(), isRightward), getYIndexInImage(gridMap.y2idx(it->y()), gridMap.getSizeY(), isUpward), mrpt::utils::TColor(color), '+', 10);
 	}
 
 	const int radius = mrpt::utils::round(pathPlanning.robotRadius / gridMap.getResolution());

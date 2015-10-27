@@ -1,8 +1,13 @@
 //#include "stdafx.h"
 #include <mrpt/slam.h>
-#include <deque>
+#include <mrpt/utils/CFileGZInputStream.h>
+#include <mrpt/utils/CFileGZOutputStream.h>
+#include <mrpt/utils/CImage.h>
+#include <mrpt/utils/CConfigFile.h>
+#include <mrpt/system/filesystem.h>
 #include <iostream>
 #include <fstream>
+#include <deque>
 
 
 using mrpt::utils::DEG2RAD;
@@ -279,36 +284,30 @@ void kf_slam_map_building(const KfSlamOptions &options, const bool useRawLogFile
 		// PART I: comparison to fixed partitioning every K obs.
 
 		// compute the information matrix:
-		size_t i;
-		for (i = 0; i < 6; ++i) fullCov(i,i) = std::max(fullCov(i,i), 1e-6);
+		for (size_t i = 0; i < 6; ++i) fullCov(i,i) = std::max(fullCov(i,i), 1e-6);
 
 		mrpt::math::CMatrix H(fullCov.inv());
 		H.saveToTextFile(options.logOutputDirectoryName + std::string("/information_matrix_final.txt"));
 
 		// replace by absolute values:
-		H.Abs();
+		H = H.array().abs().matrix();
 		mrpt::math::CMatrix H2(H);
-		//--S [] 2012/04/06: Sang-Wook Lee
-		// TODO [check] >> are it changed correctly?
-		//H2.adjustRange();
-		H2.adjustRange(0.0f, 1.0f);
-		//--E 2012/04/06
-		mrpt::utils::CMRPTImageFloat imgF(H2);
+		H2.normalize(0.0f, 1.0f);
+        mrpt::utils::CImage imgF(H2, true);
 		imgF.saveToFile(options.logOutputDirectoryName + std::string("/information_matrix_final.png"));
-
 
 		// compute the "approximation error factor" E:
 		//  E = SUM() / SUM(ALL ELEMENTS IN MATRIX)
 		std::vector<mrpt::vector_uint> landmarksMembership, partsInObsSpace;
-		mrpt::math::CMatrix ERRS(50,3);
+		mrpt::math::CMatrix ERRS(50, 3);
 
-		for (i = 0; i < ERRS.getRowCount(); ++i)
+		for (size_t i = 0; i < ERRS.getRowCount(); ++i)
 		{
 			size_t K;
 
 			if (0 == i)
 			{
-				K=0;
+				K = 0;
 				mapping.getLastPartitionLandmarks(landmarksMembership);
 			}
 			else
@@ -332,7 +331,7 @@ void kf_slam_map_building(const KfSlamOptions &options, const bool useRawLogFile
 		mrpt::math::CVectorFloat ERRS_SWEEP(STEPS), ERRS_SWEEP_THRESHOLD(STEPS);
 
 		// compute the error for each partitioning-threshold
-		for (i = 0; i < STEPS; ++i)
+		for (size_t i = 0; i < STEPS; ++i)
 		{
 			const float th = (1.0f * i) / (STEPS - 1.0f);
 			ERRS_SWEEP_THRESHOLD[i] = th;
@@ -402,6 +401,7 @@ void kf_slam_map_building(const KfSlamOptions &options, const bool useRawLogFile
 
 namespace my_mrpt {
 
+// REF [file] >> /${MRPT_HOME}/apps/kf-slam/kf-slam_main.cpp
 void slam_kf()
 {
 	const bool useRawLogFile = true;

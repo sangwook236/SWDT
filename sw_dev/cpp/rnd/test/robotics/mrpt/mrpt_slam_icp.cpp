@@ -1,7 +1,15 @@
 //#include "stdafx.h"
 #include <mrpt/slam.h>
+#include <mrpt/slam/CSimpleMap.h>
+#include <mrpt/gui/CDisplayWindow3D.h>
+#include <mrpt/utils/CFileGZInputStream.h>
+#include <mrpt/utils/CFileGZOutputStream.h>
+#include <mrpt/utils/CConfigFile.h>
+#include <mrpt/system/threads.h>
+#include <mrpt/system/filesystem.h>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 
 using mrpt::utils::DEG2RAD;
@@ -71,7 +79,7 @@ void icp_slam_map_building(const IcpSlamOptions &options, const bool useRawLogFi
 	int step = 0;
 	float t_exec;
 	mrpt::utils::CTicTac tictac, tictacGlobal;
-	mrpt::slam::CSensFrameProbSequence finalMap;
+	mrpt::slam::CSimpleMap finalMap;
 	mrpt::slam::COccupancyGridMap2D::TEntropyInfo entropy;
 
 	// constructor
@@ -88,7 +96,9 @@ void icp_slam_map_building(const IcpSlamOptions &options, const bool useRawLogFi
 	mapBuilder.options.verbose = true;
 	mapBuilder.options.enableMapUpdating = true;
 	mapBuilder.options.debugForceInsertion = false;
-	mapBuilder.options.insertImagesAlways = false;
+	//--S [] 2015/10/26 : Sang-Wook Lee
+	//mapBuilder.options.insertImagesAlways = false;
+	//--E [] 2015/10/26 : Sang-Wook Lee
 
 	// prepare output directory:
 	mrpt::system::deleteFilesInDirectory(options.logOutputDirectoryName);
@@ -392,6 +402,7 @@ void icp_slam_map_building(const IcpSlamOptions &options, const bool useRawLogFi
 
 namespace my_mrpt {
 
+// REF [file] >> /${MRPT_HOME}/apps/icp-slam/icp-slam_main.cpp
 void slam_icp()
 {
 	const bool useRawLogFile = true;

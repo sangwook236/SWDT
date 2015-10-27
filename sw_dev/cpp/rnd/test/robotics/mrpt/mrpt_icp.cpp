@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #include <mrpt/slam.h>
+#include <mrpt/gui/CDisplayWindowPlots.h>
 #include <iostream>
 #include <fstream>
 

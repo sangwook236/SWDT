@@ -99,7 +99,7 @@ void extract_features(const mrpt::utils::CMRPTImage &img, const unsigned int mod
 		featureExtracter.options.featsType = mrpt::vision::featSURF;
 		//featureExtracter.options.patchSize = ;
 		//featureExtracter.options.SURFOptions.rotation_invariant = ;
-	
+
 		featureExtracter.detectFeatures(img, features);
 
 		const double elapsedTime = tictac.Tac() * 1000;
@@ -158,7 +158,7 @@ void match_features(const mrpt::vision::CFeatureList &features1, const mrpt::vis
 	for (unsigned int i = 0; i < features1.size(); ++i)
 	{
 		// compute featureDistance:
-		mrpt::vector_double featureDistance(features2.size());
+		std::vector<double> featureDistance(features2.size());
 
 		if (mrpt::vision::descAny == descriptorType)
 		{

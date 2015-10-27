@@ -1,5 +1,8 @@
 //#include "stdafx.h"
 #include <mrpt/gui.h>
+#include <mrpt/utils/CTicTac.h>
+#include <mrpt/math/ransac.h>
+#include <mrpt/random/RandomGenerators.h>
 #include <cassert>
 
 
@@ -80,16 +83,16 @@ void ransac_3d_plane()
 			const double xx = mrpt::random::randomGenerator.drawUniform(-3, 3);
 			const double yy = mrpt::random::randomGenerator.drawUniform(-3, 3);
 			const double zz = -(PLANE_EQ[3] + PLANE_EQ[0] * xx + PLANE_EQ[1] * yy) / PLANE_EQ[2];
-			data(0,i) = xx;
-			data(1,i) = yy;
-			data(2,i) = zz;
+			data(0, i) = xx;
+			data(1, i) = yy;
+			data(2, i) = zz;
 		}
 
 		for (std::size_t i = 0; i < N_noise; ++i)
 		{
-			data(0,i+N_plane) = mrpt::random::randomGenerator.drawUniform(-4, 4);
-			data(1,i+N_plane) = mrpt::random::randomGenerator.drawUniform(-4, 4);
-			data(2,i+N_plane) = mrpt::random::randomGenerator.drawUniform(-4, 4);
+			data(0, i+N_plane) = mrpt::random::randomGenerator.drawUniform(-4, 4);
+			data(1, i+N_plane) = mrpt::random::randomGenerator.drawUniform(-4, 4);
+			data(2, i+N_plane) = mrpt::random::randomGenerator.drawUniform(-4, 4);
 		}
 	}
 
@@ -131,18 +134,20 @@ void ransac_3d_plane()
 		scene->insert(mrpt::opengl::stock_objects::CornerXYZ());
 
 		mrpt::opengl::CPointCloudPtr points = mrpt::opengl::CPointCloud::Create();
-		points->getArrayX().resize(mrpt::math::size(data, 2));
-		points->getArrayY().resize(mrpt::math::size(data, 2));
-		points->getArrayZ().resize(mrpt::math::size(data, 2));
-		points->setColor(0,0,1);
+		points->setColor(0, 0, 1);
 		points->setPointSize(3);
 		points->enableColorFromZ();
 
-		data.extractRow(0, points->getArrayX());
-		data.extractRow(1, points->getArrayY());
-		data.extractRow(2, points->getArrayZ());
+        {
+            std::vector<float> xs, ys, zs;
 
-		scene->insert(points);
+            data.extractRow(0, xs);
+            data.extractRow(1, ys);
+            data.extractRow(2, zs);
+            points->setAllPointsFast(xs, ys, zs);
+        }
+
+        scene->insert(points);
 
 		mrpt::opengl::CTexturedPlanePtr glPlane = mrpt::opengl::CTexturedPlane::Create(-4, 4, -4, 4);
 
@@ -168,14 +173,14 @@ void ransac_planes()
 	mrpt::random::randomGenerator.randomize();
 
 	// generate random points:
-	mrpt::vector_double xs, ys, zs;
+	std::vector<double> xs, ys, zs;
 	{
 		const std::size_t N_PLANES = 3;
 
 		const std::size_t N_plane = 300;
 		const std::size_t N_noise = 300;
 
-		const double PLANE_EQ[N_PLANES][4] = { 
+		const double PLANE_EQ[N_PLANES][4] = {
 			{ 1, -1, 1, -2 },
 			{ 1, +1.5, 1, -1 },
 			{ 0, -1, 1, +2 }
@@ -269,7 +274,7 @@ void ransac_lines()
 		const std::size_t N_line = 30;
 		const std::size_t N_noise = 50;
 
-		const double LINE_EQ[N_LINES][3] = { 
+		const double LINE_EQ[N_LINES][3] = {
 			{ 1, -1, -2 },
 			{ 1, +1.5, -1 },
 			{ 0, -1, +2 },
@@ -338,6 +343,7 @@ namespace my_mrpt {
 
 void ransac()
 {
+    // REF [file] >> ${MRPT_HOME}/samples/ransac-demo-plane3D/test.cpp
 	//local::ransac_3d_plane();
 
 	local::ransac_planes();
