@@ -22,6 +22,9 @@
     <ClCompile Include="openmesh\openmesh_simple_object.cpp">
       <Filter>Source Files\openmesh</Filter>
     </ClCompile>
+    <ClCompile Include="sophus\sophus_main.cpp">
+      <Filter>Source Files\sophus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -44,6 +47,9 @@
     </Filter>
     <Filter Include="Source Files\openmesh">
       <UniqueIdentifier>{9db476cb-a711-4986-a803-a5b7e2d6b7f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sophus">
+      <UniqueIdentifier>{f5f6e8c4-db67-4a9b-83dd-bde6869a9d83}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

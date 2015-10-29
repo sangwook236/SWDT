@@ -22,9 +22,6 @@
     <ClCompile Include="3dtk\3dtk_main.cpp">
       <Filter>Source Files\3dtk</Filter>
     </ClCompile>
-    <ClCompile Include="sophus\sophus_main.cpp">
-      <Filter>Source Files\sophus</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -44,9 +41,6 @@
     </Filter>
     <Filter Include="Source Files\3dtk">
       <UniqueIdentifier>{5954e328-43e5-4c72-9d22-e88602f87834}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\sophus">
-      <UniqueIdentifier>{8d489e94-7bc6-4229-b5e7-58970ecd86e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
