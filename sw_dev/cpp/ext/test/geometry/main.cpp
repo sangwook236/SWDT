@@ -9,13 +9,19 @@
 
 int main(int argc, char *argv[])
 {
+	int sophus_main(int argc, char *argv[]);
+
 	int cgal_main(int argc, char *argv[]);
 	int openmesh_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "Computational Geometry Algorithms Library (CGAl) --------------------" << std::endl;
+		std::cout << "Sophus library -------------------------------------------------------" << std::endl;
+		//	-. Lie Groups.
+		//retval = sophus_main(argc, argv);  // not yet implemented.
+
+		std::cout << "\nComputational Geometry Algorithms Library (CGAl) --------------------" << std::endl;
 		retval = cgal_main(argc, argv);
 
 		std::cout << "\nOpenMesh library ----------------------------------------------------" << std::endl;

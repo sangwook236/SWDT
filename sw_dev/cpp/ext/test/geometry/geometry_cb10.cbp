@@ -56,6 +56,7 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="openmesh/openmesh_main.cpp" />
 		<Unit filename="openmesh/openmesh_simple_object.cpp" />
+		<Unit filename="sophus/sophus_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

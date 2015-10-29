@@ -9,8 +9,6 @@
 
 int main(int argc, char *argv[])
 {
-	int sophus_main(int argc, char *argv[]);
-
 	int pcl_main(int argc, char *argv[]);
 	int threedtk_main(int argc, char *argv[]);
 
@@ -19,16 +17,12 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "\nSophus library -------------------------------------------------------" << std::endl;
-		//	-. Lie Groups.
-		//sophus_main(argc, argv);  // not yet implemented.
-
 		std::cout << "Point Cloud Library (PCL) -------------------------------------------" << std::endl;
-		pcl_main(argc, argv);
-		
+		retval = pcl_main(argc, argv);
+
 		std::cout << "\n3DTK - The 3D Toolkit ------------------------------------------------" << std::endl;
 		//	-. 3D point clouds.
-		//threedtk_main(argc, argv);  // not yet implemented.
+		//retval = threedtk_main(argc, argv);  // not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{
