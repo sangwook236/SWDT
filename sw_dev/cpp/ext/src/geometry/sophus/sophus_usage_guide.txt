@@ -2,10 +2,10 @@
     -. Site
         https://github.com/strasdat/Sophus
 
-[-] Building in VC 10
+[-] Building (VC10)
     -. Building is not accomplished
 
-[-] Building in VC 12
+[-] Building (VC 12)
     -. math macro, M_PI_2, is not defined
         add a define, _USE_MATH_DEFINES
     -. EIGEN_DEPRECATED
