@@ -59,8 +59,30 @@
 		rosrun rgbdslam rgbdslam
 
 [-] Trouble Shooting in Ubuntu
-	-. <error message>
+	-. cannot install ros indigo
+		<error message>
 		The following packages have unmet dependencies
 		Depends: ros-indigo-common-tutorials but it is not going to be installed
 		=> unmatched version of Boost library.
 			Currently, Boost version 1.54.0 is used. (2015/10/22).
+
+[-] Touble Shooting in VirtualBox (Host: MacOS, Guest: Ubuntu)
+	-. cannot use FaceTime HD Camera
+		[ref] https://tskamath.wordpress.com/2014/10/29/macbook-camera-virtualbox/
+
+		<in MacOS>
+		VBoxManage list webcams
+			# alias "user friendly name"
+			# host path or identifier
+		VBoxManage list vms
+			# VM name
+		(optional) VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam list
+			# VBoxManage controlvm "VM name" webcam list
+
+		VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam attach .1
+			# VBoxManage controlvm "VM name" webcam attach [host_path|alias [settings]]
+		(optional) VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam list
+		VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam detach .1
+			# VBoxManage controlvm "VM name" webcam detach [host_path|alias]
+		(optional) VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam list
+
