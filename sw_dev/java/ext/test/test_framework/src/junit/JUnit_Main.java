@@ -1,3 +1,5 @@
+package junit;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -6,7 +8,7 @@ public final class JUnit_Main {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args)
+	public static void run(String[] args)
 	{
 		junit.textui.TestRunner.run(suite());
 	}
@@ -14,8 +16,8 @@ public final class JUnit_Main {
 	public static Test suite()
 	{
 		TestSuite suite = new TestSuite("All Arithmetic Tests");
-		suite.addTestSuite(arithmetic.ArithmeticSimpleTest.class);
-		suite.addTestSuite(arithmetic.ArithmeticTest.class);
+		suite.addTestSuite(junit.arithmetic.ArithmeticSimpleTest.class);
+		suite.addTestSuite(junit.arithmetic.ArithmeticTest.class);
 		return suite;
 	}
 }

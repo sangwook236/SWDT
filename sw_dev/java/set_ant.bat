@@ -19,7 +19,7 @@ if "%JAVA_HOME%" == "" (
 )
 
 if "%ANT_HOME%" == "" (
-	set ANT_HOME=E:\TestDir\Ant\apache-ant-1.6.2
+	set ANT_HOME=D:\util\software_build\ant\apache-ant-1.8.4-bin\apache-ant-1.8.4\bin
 	set ANT_HOME_IS_DEFINED=true
 )
 
