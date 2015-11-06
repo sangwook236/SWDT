@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			hadoop.Hadoop_Main.run(args);
+			//hadoop.Hadoop_Main.run(args);  // not yet implemented.
 			spark.Spark_Main.run(args);
 		}
 		catch (Exception e)

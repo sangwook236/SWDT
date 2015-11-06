@@ -7,14 +7,7 @@ public class Hadoop_Main {
 	 */
 	public static void run(String[] args)
 	{
-		try
-		{
-			System.err.println("not yet implemented");
-		}
-		catch (Exception e)
-		{
-			System.err.println("Exception occurred: " + e.toString());
-		}
+		System.err.println("not yet implemented");
 	}
 
 }
