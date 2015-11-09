@@ -37,8 +37,8 @@
 			<Add option="-std=gnu++11" />
 			<Add directory="./mfa_lib" />
 			<Add directory="./kmeanspp_lib" />
-			<Add directory="/usr/local/include" />
 			<Add directory="/usr/include/eigen3" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="GClasses" />

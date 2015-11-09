@@ -50,11 +50,28 @@
 			<Add directory="/usr/include/mrpt/topography/include/" />
 			<Add directory="/usr/include/mrpt/vision/include/" />
 			<Add directory="/usr/include/mrpt/mrpt-config/" />
+			<Add directory="/usr/include/player-3.0" />
 			<Add directory="/usr/include/eigen3" />
 			<Add directory="/usr/local/include" />
 			<Add directory="/usr/include" />
 		</Compiler>
 		<Linker>
+			<Add library="ompl" />
+			<Add library="mrpt-topography" />
+			<Add library="mrpt-reactivenav" />
+			<Add library="mrpt-hmtslam" />
+			<Add library="mrpt-slam" />
+			<Add library="mrpt-maps" />
+			<Add library="mrpt-vision" />
+			<Add library="mrpt-detectors" />
+			<Add library="mrpt-kinematics" />
+			<Add library="mrpt-opengl" />
+			<Add library="mrpt-obs" />
+			<Add library="mrpt-hwdrivers" />
+			<Add library="mrpt-gui" />
+			<Add library="mrpt-base" />
+			<Add library="playerc++" />
+			<Add library="boost_system" />
 			<Add directory="/usr/local/lib" />
 			<Add directory="/usr/lib" />
 		</Linker>
