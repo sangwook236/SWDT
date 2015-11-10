@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 		{
 			//function();
 			//bind();
-			//signals_slots();
+			signals_slots();
 
 			//serialization();
 		}
@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
 
 			//graph();
 			//graph_parallel();  // not yet implemented.
-			metric_tsp_approximation();
+			//metric_tsp_approximation();
 
 			//ordinary_differential_equation();  // not yet implemented.
 		}

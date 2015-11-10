@@ -1,6 +1,17 @@
+#if defined(WIN32)
+#define _WIN32_WINNT_NT4 0x0400  // Windows NT 4.0
+#define _WIN32_WINNT_WIN2K 0x0500  // Windows 2000
+#define _WIN32_WINNT_WINXP 0x0501  // Windows XP
+#define _WIN32_WINNT_WIN7 0x0601  // Windows 7
+#define _WIN32_WINNT_WIN10 0x0A00  // Windows 10
+#define _WIN32_WINNT _WIN32_WINNT_WIN7
+#endif
+
 #include <boost/signals2/signal.hpp>
 #include <boost/signals2/shared_connection_block.hpp>
 #include <boost/optional/optional_io.hpp>
+#include <boost/asio.hpp>
+#include <boost/thread.hpp>
 #include <boost/bind.hpp>
 #include <iostream>
 #include <vector>
@@ -87,10 +98,10 @@ struct Divisor
 	}
 };
 
-float product(float x, float y)  { return x * y; }
-float quotient(float x, float y)  { return x / y; }
-float sum(float x, float y)  { return x + y; }
-float difference(float x, float y)  { return x - y; }
+float product(float x, float y) { return x * y; }
+float quotient(float x, float y) { return x / y; }
+float sum(float x, float y) { return x + y; }
+float difference(float x, float y) { return x - y; }
 
 // combiner which returns the maximum value returned by all slots.
 template<typename T>
@@ -139,18 +150,18 @@ void calling_and_passing_value()
 {
 	//
 	{
-		boost::signals2::signal<void (float, float)> sig1;
+		boost::signals2::signal<void(float, float)> sig1;
 
 		sig1.connect(&print_sum);
 		sig1.connect(&print_product);
 
-/*
-		typedef boost::function<void (float, float)> signature_type;
-		//typedef (void (float, float)) signature_type;  // Oops !!! compile-time error.
-		boost::signals2::signal<signature_type> sig2;
-*/
+		/*
+				typedef boost::function<void (float, float)> signature_type;
+				//typedef (void (float, float)) signature_type;  // Oops !!! compile-time error.
+				boost::signals2::signal<signature_type> sig2;
+		*/
 
-		typedef boost::signals2::signal<void (float, float)> publisher_type;
+		typedef boost::signals2::signal<void(float, float)> publisher_type;
 		typedef publisher_type::slot_function_type subscriber_type;
 
 		publisher_type sig3;
@@ -166,7 +177,7 @@ void calling_and_passing_value()
 
 	// ordering slot call groups
 	{
-		boost::signals2::signal<void (float, float)> sig;
+		boost::signals2::signal<void(float, float)> sig;
 
 		sig.connect(1, &print_args);
 		sig.connect(2, &print_sum);
@@ -179,7 +190,7 @@ void calling_and_passing_value()
 
 	// signal return values #1
 	{
-		boost::signals2::signal<float (float, float)> sig;
+		boost::signals2::signal<float(float, float)> sig;
 
 		sig.connect(Adder());
 		sig.connect(Subtracter());
@@ -191,7 +202,7 @@ void calling_and_passing_value()
 
 	// signal return values #2
 	{
-		boost::signals2::signal<float (float, float), maximum<float> > sig;
+		boost::signals2::signal<float(float, float), maximum<float> > sig;
 
 		sig.connect(&product);
 		sig.connect(&quotient);
@@ -204,7 +215,7 @@ void calling_and_passing_value()
 
 	// signal return values #3
 	{
-		boost::signals2::signal<float (float, float), aggregate_values<std::vector<float> > > sig;
+		boost::signals2::signal<float(float, float), aggregate_values<std::vector<float> > > sig;
 
 		sig.connect(&quotient);
 		sig.connect(&product);
@@ -218,19 +229,19 @@ void calling_and_passing_value()
 	}
 }
 
-struct NewsMessageArea: public boost::signals2::trackable
+struct NewsMessageArea : public boost::signals2::trackable
 {
-    void displayNews(const std::string &news) const
-    {
-        // do something
-    }
+	void displayNews(const std::string &news) const
+	{
+		// do something
+	}
 };
 
 void connention_management()
 {
 	// disconnecting slots #1
 	{
-		boost::signals2::signal<void ()> sig;
+		boost::signals2::signal<void()> sig;
 
 		boost::signals2::connection c(sig.connect(HelloWorld()));
 		if (c.connected())
@@ -244,7 +255,7 @@ void connention_management()
 
 	// disconnecting slots #2
 	{
-		boost::signals2::signal<void (float, float)> sig;
+		boost::signals2::signal<void(float, float)> sig;
 
 		sig.connect(&print_sum);
 		sig.connect(&print_difference);
@@ -253,29 +264,29 @@ void connention_management()
 		sig.disconnect(&print_difference);
 
 		//boost::signals2::signal<void (float, float)>::slot_function_type func = &print_difference;
-		boost::function<void (float, float)> func = &print_difference;
+		boost::function<void(float, float)> func = &print_difference;
 		//sig.disconnect(func);  // compile-time error
 		sig(3, 2);
 	}
 
 	// blocking slots
 	{
-		boost::signals2::signal<void ()> sig;
+		boost::signals2::signal<void()> sig;
 
 		boost::signals2::connection c1(sig.connect(HelloWorld()));
 		boost::signals2::connection c2(sig.connect(GoodMorning()));
 
 		{
-            boost::signals2::shared_connection_block blocker(c1);
-            sig();
-        }
+			boost::signals2::shared_connection_block blocker(c1);
+			sig();
+		}
 
 		sig();
 	}
 
 	// scoped connections
 	{
-		boost::signals2::signal<void ()> sig;
+		boost::signals2::signal<void()> sig;
 
 		{
 			boost::signals2::scoped_connection c1(sig.connect(HelloWorld()));
@@ -289,7 +300,7 @@ void connention_management()
 
 	// automatic connection management
 	{
-		boost::signals2::signal<void (const std::string &)> deliverNews;
+		boost::signals2::signal<void(const std::string &)> deliverNews;
 
 		NewsMessageArea *newsMessageArea = new NewsMessageArea();
 		deliverNews.connect(boost::bind(&NewsMessageArea::displayNews, newsMessageArea, _1));
@@ -301,6 +312,47 @@ void connention_management()
 	//typedef boost::signals2::connection connection_type;
 }
 
+struct MyClass
+{
+public:
+	void doSomething()
+	{
+		service_.post(boost::bind(&MyClass::doSomethingOp, this));
+	}
+
+	void loop()
+	{
+		service_.run();
+	}
+
+private:
+	void doSomethingOp() const
+	{
+		std::cout << "do something ..." << std::endl;
+	}
+
+private:
+	boost::asio::io_service service_;
+};
+
+void signal_in_thread()
+{
+	boost::signals2::signal<void()> mySignal;
+
+	MyClass myClass;
+	mySignal.connect(boost::bind(&MyClass::doSomething, boost::ref(myClass)));
+
+	// launches a thread and executes myClass.loop() there.
+	std::cout << "start a thread ..." << std::endl;
+	boost::thread thrd(boost::bind(&MyClass::loop, boost::ref(myClass)));
+
+	// calls myClass.doSomething() in this thread, but loop() executes it in the other.
+	std::cout << "send a signal to the other threads ..." << std::endl;
+	mySignal();
+
+	thrd.join();
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -308,4 +360,7 @@ void signals_slots()
 {
 	local::calling_and_passing_value();
 	local::connention_management();
+
+	// Use signal in a thread.
+	local::signal_in_thread();
 }
