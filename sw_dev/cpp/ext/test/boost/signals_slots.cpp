@@ -322,7 +322,11 @@ public:
 
 	void loop()
 	{
+        std::cout << "start a thread ..." << std::endl;
+
 		service_.run();
+
+        std::cout << "end a thread ..." << std::endl;
 	}
 
 private:
@@ -343,8 +347,9 @@ void signal_in_thread()
 	mySignal.connect(boost::bind(&MyClass::doSomething, boost::ref(myClass)));
 
 	// launches a thread and executes myClass.loop() there.
-	std::cout << "start a thread ..." << std::endl;
 	boost::thread thrd(boost::bind(&MyClass::loop, boost::ref(myClass)));
+
+	//boost::this_thread::yield();
 
 	// calls myClass.doSomething() in this thread, but loop() executes it in the other.
 	std::cout << "send a signal to the other threads ..." << std::endl;
