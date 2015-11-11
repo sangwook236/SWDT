@@ -3,13 +3,19 @@
 		http://caffe.berkeleyvision.org/
 		https://github.com/BVLC/caffe
 
+		https://github.com/BVLC/caffe/wiki
+
 		http://caffe.berkeleyvision.org/tutorial/
-		https://github.com/BVLC/caffe/tree/master/docs/tutorial
 		http://caffe.berkeleyvision.org/tutorial/solver.html
+		https://github.com/BVLC/caffe/tree/master/docs/tutorial
 
 		http://caffe.berkeleyvision.org/doxygen/
+
+	-. Example
+		http://caffe.berkeleyvision.org/gathered/examples/mnist.html
+		http://caffe.berkeleyvision.org/gathered/examples/cifar10.html
+		http://caffe.berkeleyvision.org/gathered/examples/feature_extraction.html
 
 [-] Building (CMake)
 	-. The name of a build directory for CMake has to be "build"
 		The existing scripts in Caffe assume its build directory is "build".
-
