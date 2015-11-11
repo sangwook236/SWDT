@@ -1,18 +1,18 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddFront_vc10", "..\test\microsoft_com\AddFront\AddFront_vc10.vcxproj", "{EA58AA86-7B03-42A7-9162-1B5563567737}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddFront_vs10", "..\test\microsoft_com\AddFront\AddFront_vs10.vcxproj", "{EA58AA86-7B03-42A7-9162-1B5563567737}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddFrontConsole_vc10", "..\test\microsoft_com\AddFrontConsole\AddFrontConsole_vc10.vcxproj", "{D716E799-B44F-4C43-9873-E309CC9BA56D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddFrontConsole_vs10", "..\test\microsoft_com\AddFrontConsole\AddFrontConsole_vs10.vcxproj", "{D716E799-B44F-4C43-9873-E309CC9BA56D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBackServer_vc10", "..\test\microsoft_com\AddBackServer\AddBackServer_vc10.vcxproj", "{29131C0F-14EF-4F45-82EC-F6F9E90AEC72}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBackServer_vs10", "..\test\microsoft_com\AddBackServer\AddBackServer_vs10.vcxproj", "{29131C0F-14EF-4F45-82EC-F6F9E90AEC72}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBackServerPS_vc10", "..\test\microsoft_com\AddBackServer\AddBackServerPS_vc10.vcxproj", "{05D69D04-BBF4-4E25-B16A-32BEAD0F889A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBackServerPS_vs10", "..\test\microsoft_com\AddBackServer\AddBackServerPS_vs10.vcxproj", "{05D69D04-BBF4-4E25-B16A-32BEAD0F889A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddFront_byAttrib_vc10", "..\test\microsoft_com\AddFront_byAttrib\AddFront_byAttrib_vc10.vcxproj", "{D2FB93DA-4E9F-4558-98D6-D474674DFBFA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddFront_byAttrib_vs10", "..\test\microsoft_com\AddFront_byAttrib\AddFront_byAttrib_vs10.vcxproj", "{D2FB93DA-4E9F-4558-98D6-D474674DFBFA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBack_byAttrib_vc10", "..\test\microsoft_com\AddBack_byAttrib\AddBack_byAttrib_vc10.vcxproj", "{546BC67E-AE36-48F8-B702-A02075ED9F3D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBack_byAttrib_vs10", "..\test\microsoft_com\AddBack_byAttrib\AddBack_byAttrib_vs10.vcxproj", "{546BC67E-AE36-48F8-B702-A02075ED9F3D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBack_byAttribPS_vc10", "..\test\microsoft_com\AddBack_byAttrib\AddBack_byAttribPS_vc10.vcxproj", "{0D4232B6-16BF-4B5E-B1A1-C32B80D0D02C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddBack_byAttribPS_vs10", "..\test\microsoft_com\AddBack_byAttrib\AddBack_byAttribPS_vs10.vcxproj", "{0D4232B6-16BF-4B5E-B1A1-C32B80D0D02C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

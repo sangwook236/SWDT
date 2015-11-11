@@ -1,17 +1,16 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
+﻿Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "neural_network_vc10", "..\test\neural_network\neural_network_vc10.csproj", "{F10C5F7A-0E2D-4F05-BC2F-CF2A6E140C15}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "neural_network_vs10", "..\test\neural_network\neural_network_vs10.csproj", "{F10C5F7A-0E2D-4F05-BC2F-CF2A6E140C15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI_vc10", "..\test\AI\AI_vc10.csproj", "{A72FDB3C-F29E-4DF0-BDC2-90BC5BDF6F72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI_vs10", "..\test\AI\AI_vs10.csproj", "{A72FDB3C-F29E-4DF0-BDC2-90BC5BDF6F72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "probabilistic_graphical_model_vc10", "..\test\probabilistic_graphical_model\probabilistic_graphical_model_vc10.csproj", "{E336D887-5BE2-464B-9B05-3C61A7544DE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "probabilistic_graphical_model_vs10", "..\test\probabilistic_graphical_model\probabilistic_graphical_model_vs10.csproj", "{E336D887-5BE2-464B-9B05-3C61A7544DE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "machine_learning_vc10", "..\test\machine_learning\machine_learning_vc10.csproj", "{98C581C7-3A10-412E-B7F9-5596626CA02E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "machine_learning_vs10", "..\test\machine_learning\machine_learning_vs10.csproj", "{98C581C7-3A10-412E-B7F9-5596626CA02E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "machine_vision_vc10", "..\test\machine_vision\machine_vision_vc10.csproj", "{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "machine_vision_vs10", "..\test\machine_vision\machine_vision_vs10.csproj", "{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scientific_computation_vc10", "..\test\scientific_computation\scientific_computation_vc10.csproj", "{C655D163-BEF8-491C-87CB-2EE7C413F305}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scientific_computation_vs10", "..\test\scientific_computation\scientific_computation_vs10.csproj", "{C655D163-BEF8-491C-87CB-2EE7C413F305}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
