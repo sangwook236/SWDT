@@ -14,6 +14,7 @@
 	-. Example
 		http://caffe.berkeleyvision.org/gathered/examples/mnist.html
 		http://caffe.berkeleyvision.org/gathered/examples/cifar10.html
+		http://caffe.berkeleyvision.org/gathered/examples/finetune_flickr_style.html
 		http://caffe.berkeleyvision.org/gathered/examples/feature_extraction.html
 
 [-] Building (CMake)
