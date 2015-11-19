@@ -28,6 +28,9 @@
     <Filter Include="Source Files\optpp">
       <UniqueIdentifier>{5eb1ac94-42d6-4daf-bee2-6eaed3c4db88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\coin_or">
+      <UniqueIdentifier>{87f160cd-3f2b-4560-9a11-9006709ae4ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -83,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="optpp\optpp_main.cpp">
       <Filter>Source Files\optpp</Filter>
+    </ClCompile>
+    <ClCompile Include="coin_or\coin_or_main.cpp">
+      <Filter>Source Files\coin_or</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

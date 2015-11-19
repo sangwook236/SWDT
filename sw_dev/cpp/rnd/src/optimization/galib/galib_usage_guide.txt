@@ -27,14 +27,14 @@
 			LINKFLAGS = $(LINKFLAGS) /NODEFAULTLIB (at line 66)
 			ARFLAGS  = /nologo /NODEFAULTLIB (at line 74)
 	-. build 수행.
-		cd ${GALIB_HOME}
+		cd ${GALIB_HOME}/ga
 		for release build
-			make RELEASE_BUILD=1 -f makefile.vcpp
+			nmake RELEASE_BUILD=1 -f makefile.vcpp
 		for debug build
-			make -f makefile.vcpp
+			nmake -f makefile.vcpp
 		make -f makefile.vcpp install
 	-. shared library building은 정상적으로 수행되지 않음.
 		for shared library
-			make SHARED_BUILD=1 -f makefile.vcpp
+			nmake SHARED_BUILD=1 -f makefile.vcpp
 		for static library
-			make -f makefile.vcpp
+			nmake -f makefile.vcpp

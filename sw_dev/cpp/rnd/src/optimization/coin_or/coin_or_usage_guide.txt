@@ -1,0 +1,16 @@
+[-] General
+	-. Site
+		http://www.coin-or.org/
+		http://www.coin-or.org/projects/
+
+		https://projects.coin-or.org/CoinUtils
+		https://projects.coin-or.org/Osi
+		https://projects.coin-or.org/Cgl
+
+		https://projects.coin-or.org/Ipopt
+		https://projects.coin-or.org/Clp
+		https://projects.coin-or.org/Cbc
+		https://projects.coin-or.org/Bonmin
+
+		http://www.coin-or.org/download/binary/
+		http://www.coin-or.org/download/binary/CoinAll/

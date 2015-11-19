@@ -5,7 +5,7 @@
 #		if defined(DEBUG) || defined(_DEBUG)
 
 #pragma comment(lib, "levmar_d.lib")
-#pragma comment(lib, "ga.lib")
+#pragma comment(lib, "ga_d.lib")
 #pragma comment(lib, "glpk_4_51.lib")
 #pragma comment(lib, "nlopt.lib")
 

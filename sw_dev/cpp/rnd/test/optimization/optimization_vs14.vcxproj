@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="coin_or\coin_or_main.cpp" />
     <ClCompile Include="galib\galib_ex1.cpp" />
     <ClCompile Include="galib\galib_ex3.cpp" />
     <ClCompile Include="galib\galib_ex7.cpp" />

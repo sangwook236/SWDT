@@ -3,10 +3,10 @@
 		http://www.ics.forth.gr/~lourakis/levmar/
 
 [-] Building (MSVC)
-	-. LAPACK library path 설정.
+	-. set LAPACK library path
 		${LEVMAR_HOME}/Makefile.vc file 수정.
 			LAPACKLIBS_PATH 항목 설정.
 	-.
-	-. building 수행.
+	-. build
 		Visual Studio command prompt 실행.
 		nmake -f Makefile.vc

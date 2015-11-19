@@ -4,6 +4,7 @@
 #include <boost/random/normal_distribution.hpp>
 #include <boost/random/variate_generator.hpp>
 #include <vector>
+#include <algorithm>
 #include <iostream>
 #include <ctime>
 #include <cmath>
