@@ -1,4 +1,4 @@
-#define CPU_ONLY 1;
+#define CPU_ONLY 1
 
 //#include "stdafx.h"
 #include <caffe/caffe.hpp>

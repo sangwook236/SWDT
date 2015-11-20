@@ -36,6 +36,12 @@
 			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
+			<Add library="Cbc" />
+			<Add library="Clp" />
+			<Add library="Cgl" />
+			<Add library="OsiClp" />
+			<Add library="Osi" />
+			<Add library="CoinUtils" />
 			<Add library="ga" />
 			<Add library="levmar" />
 			<Add library="glpk" />
@@ -63,9 +69,18 @@
 		<Unit filename="levmar/levmar_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="nlopt/nlopt_main.cpp" />
-		<Unit filename="optpp/optpp_example1.cpp" />
-		<Unit filename="optpp/optpp_example2.cpp" />
-		<Unit filename="optpp/optpp_main.cpp" />
+		<Unit filename="optpp/optpp_example1.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="optpp/optpp_example2.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="optpp/optpp_main.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />
