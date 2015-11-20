@@ -29,14 +29,14 @@ int main(int argc, char *argv[])
 		//retval = levmar_main(argc, argv);
 
         std::cout << "\nGNU Linear Programming Kit (GLPK) library ---------------------------" << std::endl;
-		retval = glpk_main(argc, argv);
+		//retval = glpk_main(argc, argv);
 
         std::cout << "\nNLopt library -------------------------------------------------------" << std::endl;
-		retval = nlopt_main(argc, argv);
+		//retval = nlopt_main(argc, argv);
 
         std::cout << "\nOPT++ library -------------------------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-		retval = optpp_main(argc, argv);
+		//retval = optpp_main(argc, argv);
 #else
 		std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 		//retval = galib_main(argc, argv);
 
 		std::cout << "\nComputational Infrastructure for Operations Research (COIN-OR) ------" << std::endl;
-		retval = coin_or_main(argc, argv);  // not yet implemented.
+		retval = coin_or_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

@@ -7,10 +7,17 @@
 		https://projects.coin-or.org/Osi
 		https://projects.coin-or.org/Cgl
 
-		https://projects.coin-or.org/Ipopt
 		https://projects.coin-or.org/Clp
 		https://projects.coin-or.org/Cbc
 		https://projects.coin-or.org/Bonmin
+		https://projects.coin-or.org/Ipopt
 
+		http://www.coin-or.org/Clp/
+		http://www.coin-or.org/Clp/userguide/
+		http://www.coin-or.org/Cbc/
+		http://www.coin-or.org/Bonmin/
+
+		http://www.coin-or.org/download/
+		http://www.coin-or.org/download/source/
 		http://www.coin-or.org/download/binary/
 		http://www.coin-or.org/download/binary/CoinAll/

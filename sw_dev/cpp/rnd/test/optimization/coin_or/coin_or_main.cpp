@@ -1,6 +1,5 @@
 //#include "stdafx.h"
 #include <iostream>
-#include <stdexcept>
 
 
 namespace {
@@ -11,11 +10,15 @@ namespace local {
 
 namespace my_coin_or {
 
+void clp_simple_example();
+void cbc_simple_example();
+
 }  // namespace my_coin_or
 
 int coin_or_main(int argc, char *argv[])
 {
-	throw std::runtime_error("not yet implemented");
+	my_coin_or::clp_simple_example();
+	my_coin_or::cbc_simple_example();
 
     return 0;
 }

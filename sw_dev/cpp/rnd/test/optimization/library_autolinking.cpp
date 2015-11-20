@@ -4,6 +4,12 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "libCbc_d.lib")
+#pragma comment(lib, "libClp_d.lib")
+#pragma comment(lib, "libCgl_d.lib")
+#pragma comment(lib, "libOsiClp_d.lib")
+#pragma comment(lib, "libOsi_d.lib")
+#pragma comment(lib, "libCoinUtils_d.lib")
 #pragma comment(lib, "levmar_d.lib")
 #pragma comment(lib, "ga_d.lib")
 #pragma comment(lib, "glpk_4_51.lib")
@@ -11,6 +17,12 @@
 
 #		else
 
+#pragma comment(lib, "libCbc.lib")
+#pragma comment(lib, "libClp.lib")
+#pragma comment(lib, "libCgl.lib")
+#pragma comment(lib, "libOsiClp.lib")
+#pragma comment(lib, "libOsi.lib")
+#pragma comment(lib, "libCoinUtils.lib")
 #pragma comment(lib, "levmar.lib")
 #pragma comment(lib, "ga.lib")
 #pragma comment(lib, "glpk_4_51.lib")

@@ -90,6 +90,12 @@
     <ClCompile Include="coin_or\coin_or_main.cpp">
       <Filter>Source Files\coin_or</Filter>
     </ClCompile>
+    <ClCompile Include="coin_or\coin_or_cbc_simple_example.cpp">
+      <Filter>Source Files\coin_or</Filter>
+    </ClCompile>
+    <ClCompile Include="coin_or\coin_or_clp_simple_example.cpp">
+      <Filter>Source Files\coin_or</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
