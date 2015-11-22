@@ -65,6 +65,7 @@ void numeric_differentiation_example()
     ceres::Solver::Options options;
     //options.linear_solver_type = ceres::DENSE_QR;
     options.minimizer_progress_to_stdout = true;
+
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
 
@@ -117,6 +118,7 @@ void analytic_differentiation_example()
     ceres::Solver::Options options;
     //options.linear_solver_type = ceres::DENSE_QR;
     options.minimizer_progress_to_stdout = true;
+
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
 
@@ -219,6 +221,10 @@ void Powells_function_example()
 
 namespace my_ceres_solver {
 
+void curve_fitting_example();
+void robust_curve_fitting_example();
+void bundle_adjustment_example();
+
 }  // namespace my_ceres_solver
 
 int ceres_solver_main(int argc, char *argv[])
@@ -231,7 +237,17 @@ int ceres_solver_main(int argc, char *argv[])
 	//local::analytic_differentiation_example();
 
     // Powell's function.
-	local::Powells_function_example();
+	//local::Powells_function_example();
+
+    // Curve fitting.
+	//my_ceres_solver::curve_fitting_example();
+	//my_ceres_solver::robust_curve_fitting_example();
+
+    // Bundle adjustment.
+	my_ceres_solver::bundle_adjustment_example();
+
+	// Other examples.
+	// REF [site] >> http://ceres-solver.org/nnls_tutorial.html
 
     return 0;
 }

@@ -1,237 +1,201 @@
 //#include "stdafx.h"
 #include <ceres/ceres.h>
+#include <ceres/rotation.h>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
 #include <iostream>
+#include <string>
 #include <cmath>
+#include <cstdio>
 
 
 namespace {
 namespace local {
 
-struct CostFunctor
+// Read a Bundle Adjustment in the Large dataset.
+class BALProblem
 {
-    template <typename T>
-    bool operator()(const T * const x, T *residual) const
+public:
+    ~BALProblem()
     {
-        // f(x) = 10 − x.
-        residual[0] = T(10.0) - x[0];
-        return true;
+        delete[] point_index_;
+        delete[] camera_index_;
+        delete[] observations_;
+        delete[] parameters_;
     }
-};
-
-// REF [site] >> http://ceres-solver.org/nnls_tutorial.html
-void auto_differentiation_example()
-{
-    // The variable to solve for with its initial value.
-    const double initial_x = 0.5;
-    double x = initial_x;
-
-    // Build the problem.
-    ceres::Problem problem;
-
-    // Set up the only cost function (also known as residual).
-    // Use auto-differentiation to obtain the derivative (jacobian).
-    ceres::CostFunction *cost_function = new ceres::AutoDiffCostFunction<CostFunctor, 1, 1>(new CostFunctor);
-    problem.AddResidualBlock(cost_function, NULL, &x);
-
-    // Run the solver.
-    ceres::Solver::Options options;
-    //options.linear_solver_type = ceres::DENSE_QR;
-    options.minimizer_progress_to_stdout = true;
-    ceres::Solver::Summary summary;
-    ceres::Solve(options, &problem, &summary);
-
-    std::cout << summary.BriefReport() << std::endl;
-    std::cout << "x : " << initial_x << " -> " << x << std::endl;
-}
-
-// REF [site] >> http://ceres-solver.org/nnls_tutorial.html
-void numeric_differentiation_example()
-{
-    // The variable to solve for with its initial value.
-    const double initial_x = 0.5;
-    double x = initial_x;
-
-    // Build the problem.
-    ceres::Problem problem;
-
-    // Set up the only cost function (also known as residual).
-    // Use numeric differentiation to obtain the derivative (jacobian).
-    ceres::CostFunction *cost_function = new ceres::NumericDiffCostFunction<CostFunctor, ceres::CENTRAL, 1, 1> (new CostFunctor);
-    problem.AddResidualBlock(cost_function, NULL, &x);
-
-    // Run the solver.
-    ceres::Solver::Options options;
-    //options.linear_solver_type = ceres::DENSE_QR;
-    options.minimizer_progress_to_stdout = true;
-    ceres::Solver::Summary summary;
-    ceres::Solve(options, &problem, &summary);
-
-    std::cout << summary.BriefReport() << std::endl;
-    std::cout << "x : " << initial_x << " -> " << x << std::endl;
-}
-
-// A CostFunction implementing analytically derivatives for the
-// function f(x) = 10 - x.
-class QuadraticCostFunction : public ceres::SizedCostFunction<1 /* number of residuals */, 1 /* size of first parameter */>
-{
-public:
-    virtual ~QuadraticCostFunction()
-    {}
 
 public:
-    virtual bool Evaluate(double const * const *parameters, double *residuals, double **jacobians) const
+    int num_observations() const  { return num_observations_; }
+    const double * observations() const  { return observations_; }
+    double * mutable_cameras()  { return parameters_; }
+    double * mutable_points()  { return parameters_  + 9 * num_cameras_; }
+    double * mutable_camera_for_observation(int i)
     {
-        const double x = parameters[0][0];
+        return mutable_cameras() + camera_index_[i] * 9;
+    }
+    double * mutable_point_for_observation(int i)
+    {
+        return mutable_points() + point_index_[i] * 3;
+    }
 
-        // f(x) = 10 - x.
-        residuals[0] = 10 - x;
-
-        // f'(x) = -1.
-        // Since there's only 1 parameter and that parameter has 1 dimension, there is only 1 element to fill in the jacobians.
-        if (NULL != jacobians && NULL != jacobians[0])
+    bool LoadFile(const char *filename)
+    {
+        FILE *fptr = fopen(filename, "r");
+        if (NULL == fptr)
         {
-            jacobians[0][0] = -1;
+            return false;
+        };
+
+        FscanfOrDie(fptr, "%d", &num_cameras_);
+        FscanfOrDie(fptr, "%d", &num_points_);
+        FscanfOrDie(fptr, "%d", &num_observations_);
+
+        point_index_ = new int [num_observations_];
+        camera_index_ = new int [num_observations_];
+        observations_ = new double [2 * num_observations_];
+        num_parameters_ = 9 * num_cameras_ + 3 * num_points_;
+        parameters_ = new double [num_parameters_];
+
+        for (int i = 0; i < num_observations_; ++i)
+        {
+            FscanfOrDie(fptr, "%d", camera_index_ + i);
+            FscanfOrDie(fptr, "%d", point_index_ + i);
+            for (int j = 0; j < 2; ++j)
+            {
+                FscanfOrDie(fptr, "%lf", observations_ + 2*i + j);
+            }
+        }
+        for (int i = 0; i < num_parameters_; ++i)
+        {
+            FscanfOrDie(fptr, "%lf", parameters_ + i);
         }
 
         return true;
     }
+
+private:
+    template<typename T>
+    void FscanfOrDie(FILE *fptr, const char *format, T *value)
+    {
+        int num_scanned = fscanf(fptr, format, value);
+        if (1 != num_scanned)
+        {
+            LOG(FATAL) << "Invalid UW data file.";
+        }
+    }
+
+private:
+    int num_cameras_;
+    int num_points_;
+    int num_observations_;
+    int num_parameters_;
+    int *point_index_;
+    int *camera_index_;
+    double *observations_;
+    double *parameters_;
 };
 
-// REF [site] >> http://ceres-solver.org/nnls_tutorial.html
-void analytic_differentiation_example()
+struct SnavelyReprojectionError
 {
-    // The variable to solve for with its initial value.
-    const double initial_x = 0.5;
-    double x = initial_x;
+public:
+    SnavelyReprojectionError(double observed_x, double observed_y)
+    : observed_x(observed_x), observed_y(observed_y)
+    {}
 
-    // Build the problem.
-    ceres::Problem problem;
-
-    // Set up the only cost function (also known as residual).
-    ceres::CostFunction *cost_function = new QuadraticCostFunction;
-    problem.AddResidualBlock(cost_function, NULL, &x);
-
-    // Run the solver.
-    ceres::Solver::Options options;
-    //options.linear_solver_type = ceres::DENSE_QR;
-    options.minimizer_progress_to_stdout = true;
-    ceres::Solver::Summary summary;
-    ceres::Solve(options, &problem, &summary);
-
-    std::cout << summary.BriefReport() << std::endl;
-    std::cout << "x : " << initial_x << " -> " << x << std::endl;
-}
-
-struct Powell_F1
-{
+public:
     template <typename T>
-    bool operator()(const T * const x1, const T * const x2, T *residual) const
+    bool operator()(const T * const camera, const T * const point, T *residuals) const
     {
-        // f1 = x1 + 10 * x2;
-        residual[0] = x1[0] + T(10.0) * x2[0];
+        // camera[0,1,2] are the angle-axis rotation.
+        T p[3];
+        ceres::AngleAxisRotatePoint(camera, point, p);
+
+        // camera[3,4,5] are the translation.
+        p[0] += camera[3];
+        p[1] += camera[4];
+        p[2] += camera[5];
+
+        // Compute the center of distortion. The sign change comes from
+        // the camera model that Noah Snavely's Bundler assumes, whereby
+        // the camera coordinate system has a negative z axis.
+        T xp = -p[0] / p[2];
+        T yp = -p[1] / p[2];
+
+        // Apply second and fourth order radial distortion.
+        const T &l1 = camera[7];
+        const T &l2 = camera[8];
+        T r2 = xp * xp + yp * yp;
+        T distortion = T(1.0) + r2  * (l1 + l2  * r2);
+
+        // Compute final projected point position.
+        const T &focal = camera[6];
+        T predicted_x = focal * distortion * xp;
+        T predicted_y = focal * distortion * yp;
+
+        // The error is the difference between the predicted and observed position.
+        residuals[0] = predicted_x - T(observed_x);
+        residuals[1] = predicted_y - T(observed_y);
         return true;
     }
-};
 
-struct Powell_F2
-{
-    template <typename T>
-    bool operator()(const T * const x3, const T * const x4, T *residual) const
+    // Factory to hide the construction of the CostFunction object from
+    // the client code.
+    static ceres::CostFunction * Create(const double observed_x, const double observed_y)
     {
-        // f2 = sqrt(5) * (x3 - x4)
-        residual[0] = T(sqrt(5.0)) * (x3[0] - x4[0]);
-        return true;
+        return (new ceres::AutoDiffCostFunction<SnavelyReprojectionError, 2, 9, 3>(new SnavelyReprojectionError(observed_x, observed_y)));
     }
+
+private:
+    double observed_x;
+    double observed_y;
 };
-
-struct Powell_F3
-{
-    template <typename T>
-    bool operator()(const T * const x2, const T * const x4, T *residual) const
-    {
-        // f3 = (x2 - 2 *   x3)^2
-        residual[0] = (x2[0] - T(2.0) * x4[0]) * (x2[0] - T(2.0) * x4[0]);
-        return true;
-    }
-};
-
-struct Powell_F4
-{
-    template <typename T>
-    bool operator()(const T * const x1, const T * const x4, T *residual) const
-    {
-        // f4 = sqrt(10) * (x1 - x4)^2
-        residual[0] = T(sqrt(10.0)) * (x1[0] - x4[0]) * (x1[0] - x4[0]);
-        return true;
-    }
-};
-
-DEFINE_string(minimizer, "trust_region", "Minimizer type to use, choices are: line_search & trust_region");
-
-// REF [site] >> https://ceres-solver.googlesource.com/ceres-solver/+/master/examples/powell.cc
-/*
-    minimization of Powell's singular function.
-
-    F = 1/2 (f1^2 + f2^2 + f3^2 + f4^2)
-
-    f1 = x1 + 10 * x2;
-    f2 = sqrt(5) * (x3 - x4)
-    f3 = (x2 - 2 * x3)^2
-    f4 = sqrt(10) * (x1 - x4)^2
-
-    The starting values are x1 = 3, x2 = -1, x3 = 0, x4 = 1.
-    The minimum is 0 at (x1, x2, x3, x4) = 0.
-*/
-void Powells_function_example()
-{
-    // The variable to solve for with its initial value.
-    double x1 =  3.0; double x2 = -1.0; double x3 =  0.0; double x4 = 1.0;
-
-    // Build the problem.
-    ceres::Problem problem;
-
-    problem.AddResidualBlock(new ceres::AutoDiffCostFunction<Powell_F1, 1, 1, 1>(new Powell_F1), NULL, &x1, &x2);
-    problem.AddResidualBlock(new ceres::AutoDiffCostFunction<Powell_F2, 1, 1, 1>(new Powell_F2), NULL, &x3, &x4);
-    problem.AddResidualBlock(new ceres::AutoDiffCostFunction<Powell_F3, 1, 1, 1>(new Powell_F3), NULL, &x2, &x3);
-    problem.AddResidualBlock(new ceres::AutoDiffCostFunction<Powell_F4, 1, 1, 1>(new Powell_F4), NULL, &x1, &x4);
-
-    ceres::Solver::Options options;
-    LOG_IF(FATAL, !ceres::StringToMinimizerType(FLAGS_minimizer, &options.minimizer_type)) << "Invalid minimizer: " << FLAGS_minimizer << ", valid options are: trust_region and line_search.";
-
-    options.max_num_iterations = 100;
-    options.linear_solver_type = ceres::DENSE_QR;
-    options.minimizer_progress_to_stdout = true;
-
-    std::cout << "Initial x1 = " << x1  << ", x2 = " << x2 << ", x3 = " << x3 << ", x4 = " << x4 << std::endl;
-
-    // Run the solver.
-    ceres::Solver::Summary summary;
-    ceres::Solve(options, &problem, &summary);
-
-    std::cout << summary.FullReport() << std::endl;
-    std::cout << "Final x1 = " << x1 << ", x2 = " << x2 << ", x3 = " << x3 << ", x4 = " << x4 << std::endl;
-}
 
 }  // namespace local
 }  // unnamed namespace
 
 namespace my_ceres_solver {
 
-}  // namespace my_ceres_solver
-
-int ceres_solver_main(int argc, char *argv[])
+// REF [site] >> https://ceres-solver.googlesource.com/ceres-solver/+/master/examples/simple_bundle_adjuster.cc
+void bundle_adjustment_example()
 {
-    //google::InitGoogleLogging(argv[0]);
-    google::ParseCommandLineFlags(&argc, &argv, true);
+    //  BAL dataset : http://grail.cs.washington.edu/projects/bal/
+    const std::string filename("./data/machine_vision/bundle_adjustment/problem-49-7776-pre.txt");
 
-	//local::auto_differentiation_example();
-	//local::numeric_differentiation_example();
-	//local::analytic_differentiation_example();
+    local::BALProblem bal_problem;
+    if (!bal_problem.LoadFile(filename.c_str()))
+    {
+        std::cerr << "ERROR: unable to open file " << filename << std::endl;
+        return;
+    }
 
-    // Powell's function.
-	local::Powells_function_example();
+    const double *observations = bal_problem.observations();
 
-    return 0;
+    // Create residuals for each observation in the bundle adjustment problem.
+    // The parameters for cameras and points are added automatically.
+    ceres::Problem problem;
+    for (int i = 0; i < bal_problem.num_observations(); ++i)
+    {
+        // Each Residual block takes a point and a camera as input and outputs a 2 dimensional residual.
+        // Internally, the cost function stores the observed image location and compares the reprojection against the observation.
+        ceres::CostFunction *cost_function = local::SnavelyReprojectionError::Create(observations[2 * i + 0], observations[2 * i + 1]);
+        problem.AddResidualBlock(
+            cost_function,
+            NULL /* squared loss */,
+            bal_problem.mutable_camera_for_observation(i),
+            bal_problem.mutable_point_for_observation(i)
+        );
+    }
+
+    // Make Ceres automatically detect the bundle structure.
+    // Note that the standard solver, SPARSE_NORMAL_CHOLESKY, also works fine but it is slower for standard bundle adjustment problems.
+    ceres::Solver::Options options;
+    options.linear_solver_type = ceres::DENSE_SCHUR;
+    options.minimizer_progress_to_stdout = true;
+
+    ceres::Solver::Summary summary;
+    ceres::Solve(options, &problem, &summary);
+
+    std::cout << summary.FullReport() << std::endl;
 }
+
+}  // namespace my_ceres_solver
