@@ -2,6 +2,7 @@
 #if defined(WIN32)
 #include <vld/vld.h>
 #endif
+#include <glog/logging.h>
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
@@ -10,9 +11,11 @@
 
 int main(int argc, char *argv[])
 {
-	int levmar_main(int argc, char *argv[]);
-
 	int glpk_main(int argc, char *argv[]);
+
+	int levmar_main(int argc, char *argv[]);
+	int ceres_solver_main(int argc, char *argv[]);
+
 	int nlopt_main(int argc, char *argv[]);
 	int optpp_main(int argc, char *argv[]);
 
@@ -24,12 +27,21 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::srand((unsigned int)std::time(NULL));
+        google::InitGoogleLogging(argv[0]);
 
-        std::cout << "Levenberg-Marquardt (LM) algorithm ----------------------------------" << std::endl;
+        std::cout << "GNU Linear Programming Kit (GLPK) library ---------------------------" << std::endl;
+		//retval = glpk_main(argc, argv);
+
+        std::cout << "\nLevenberg-Marquardt (LM) algorithm ----------------------------------" << std::endl;
 		//retval = levmar_main(argc, argv);
 
-        std::cout << "\nGNU Linear Programming Kit (GLPK) library ---------------------------" << std::endl;
-		//retval = glpk_main(argc, argv);
+        std::cout << "\nCeres Solver --------------------------------------------------------" << std::endl;
+        //  -. Non-linear least squares.
+        //  -. General unconstrained minimization.
+        //      Curve fitting.
+        //      Robust curve fitting.
+        //      Bundle adjustment.
+		retval = ceres_solver_main(argc, argv);
 
         std::cout << "\nNLopt library -------------------------------------------------------" << std::endl;
 		//retval = nlopt_main(argc, argv);
@@ -42,10 +54,11 @@ int main(int argc, char *argv[])
 #endif
 
 		std::cout << "\nGAlib library -------------------------------------------------------" << std::endl;
+		//  -. Genetic algorithm.
 		//retval = galib_main(argc, argv);
 
 		std::cout << "\nComputational Infrastructure for Operations Research (COIN-OR) ------" << std::endl;
-		retval = coin_or_main(argc, argv);
+		//retval = coin_or_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

@@ -38,6 +38,7 @@
 			<Add directory="/usr/local/include/" />
 		</Compiler>
 		<Linker>
+			<Add library="glog" />
 			<Add library="log4cxx" />
 			<Add library="boost_thread" />
 			<Add library="boost_unit_test_framework" />

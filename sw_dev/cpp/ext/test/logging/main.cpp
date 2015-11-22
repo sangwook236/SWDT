@@ -15,10 +15,10 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "log4cxx libary ------------------------------------------------------" << std::endl;
-		retval = log4cxx_main(argc, argv);
+		//retval = log4cxx_main(argc, argv);
 
 		std::cout << "\nglog library --------------------------------------------------------" << std::endl;
-		//retval = glog_main(argc, argv);  // not yet implemented.
+		retval = glog_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

@@ -33,7 +33,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="/usr/include/eigen3" />
 			<Add directory="/usr/local/include" />
+			<Add directory="/usr/include" />
 		</Compiler>
 		<Linker>
 			<Add library="Cbc" />
@@ -44,15 +46,22 @@
 			<Add library="CoinUtils" />
 			<Add library="ga" />
 			<Add library="levmar" />
-			<Add library="glpk" />
+			<Add library="ceres" />
 			<Add library="nlopt" />
+			<Add library="glpk" />
+			<Add library="glog" />
+			<Add library="gflags" />
 			<Add library="boost_timer" />
 			<Add library="boost_system" />
 			<Add library="lapack" />
 			<Add library="blas" />
 			<Add library="f2c" />
 			<Add directory="/usr/local/lib" />
+			<Add directory="/usr/lib" />
 		</Linker>
+		<Unit filename="ceres_solver/ceres_solver_bundle_adjustment_example.cpp" />
+		<Unit filename="ceres_solver/ceres_solver_curve_fitting_example.cpp" />
+		<Unit filename="ceres_solver/ceres_solver_main.cpp" />
 		<Unit filename="coin_or/coin_or_cbc_simple_example.cpp" />
 		<Unit filename="coin_or/coin_or_clp_simple_example.cpp" />
 		<Unit filename="coin_or/coin_or_main.cpp" />
