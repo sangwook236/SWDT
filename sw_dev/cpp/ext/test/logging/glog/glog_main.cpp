@@ -1,3 +1,4 @@
+//#define GLOG_NO_ABBREVIATED_SEVERITIES 1
 #include <glog/logging.h>
 #include <string>
 #include <iostream>
