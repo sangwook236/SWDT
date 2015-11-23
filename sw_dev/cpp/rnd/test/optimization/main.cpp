@@ -2,6 +2,7 @@
 #if defined(WIN32)
 #include <vld/vld.h>
 #endif
+#define GLOG_NO_ABBREVIATED_SEVERITIES 1
 #include <glog/logging.h>
 #include <iostream>
 #include <stdexcept>
@@ -13,8 +14,8 @@ int main(int argc, char *argv[])
 {
 	int glpk_main(int argc, char *argv[]);
 
-	int levmar_main(int argc, char *argv[]);
 	int ceres_solver_main(int argc, char *argv[]);
+	int levmar_main(int argc, char *argv[]);
 
 	int nlopt_main(int argc, char *argv[]);
 	int optpp_main(int argc, char *argv[]);
@@ -32,9 +33,6 @@ int main(int argc, char *argv[])
         std::cout << "GNU Linear Programming Kit (GLPK) library ---------------------------" << std::endl;
 		//retval = glpk_main(argc, argv);
 
-        std::cout << "\nLevenberg-Marquardt (LM) algorithm ----------------------------------" << std::endl;
-		//retval = levmar_main(argc, argv);
-
         std::cout << "\nCeres Solver --------------------------------------------------------" << std::endl;
         //  -. Non-linear least squares.
         //  -. General unconstrained minimization.
@@ -42,6 +40,9 @@ int main(int argc, char *argv[])
         //      Robust curve fitting.
         //      Bundle adjustment.
 		retval = ceres_solver_main(argc, argv);
+
+		std::cout << "\nLevenberg-Marquardt (LM) algorithm ----------------------------------" << std::endl;
+		//retval = levmar_main(argc, argv);
 
         std::cout << "\nNLopt library -------------------------------------------------------" << std::endl;
 		//retval = nlopt_main(argc, argv);

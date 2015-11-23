@@ -31,6 +31,9 @@
     <Filter Include="Source Files\coin_or">
       <UniqueIdentifier>{87f160cd-3f2b-4560-9a11-9006709ae4ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ceres_solver">
+      <UniqueIdentifier>{3b71f887-9681-45e3-81da-4d8da85ed6c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -95,6 +98,15 @@
     </ClCompile>
     <ClCompile Include="coin_or\coin_or_clp_simple_example.cpp">
       <Filter>Source Files\coin_or</Filter>
+    </ClCompile>
+    <ClCompile Include="ceres_solver\ceres_solver_bundle_adjustment_example.cpp">
+      <Filter>Source Files\ceres_solver</Filter>
+    </ClCompile>
+    <ClCompile Include="ceres_solver\ceres_solver_curve_fitting_example.cpp">
+      <Filter>Source Files\ceres_solver</Filter>
+    </ClCompile>
+    <ClCompile Include="ceres_solver\ceres_solver_main.cpp">
+      <Filter>Source Files\ceres_solver</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

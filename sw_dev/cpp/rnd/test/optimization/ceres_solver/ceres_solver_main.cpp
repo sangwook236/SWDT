@@ -1,7 +1,7 @@
 //#include "stdafx.h"
 #include <ceres/ceres.h>
+#define GLOG_NO_ABBREVIATED_SEVERITIES 1
 #include <glog/logging.h>
-#include <gflags/gflags.h>
 #include <iostream>
 #include <cmath>
 

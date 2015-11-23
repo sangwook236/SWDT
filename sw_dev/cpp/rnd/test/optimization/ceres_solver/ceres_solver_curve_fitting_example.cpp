@@ -1,7 +1,5 @@
 //#include "stdafx.h"
 #include <ceres/ceres.h>
-#include <glog/logging.h>
-#include <gflags/gflags.h>
 #include <iostream>
 #include <cmath>
 

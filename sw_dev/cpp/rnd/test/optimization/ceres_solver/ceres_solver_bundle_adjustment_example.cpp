@@ -1,8 +1,6 @@
 //#include "stdafx.h"
 #include <ceres/ceres.h>
 #include <ceres/rotation.h>
-#include <glog/logging.h>
-#include <gflags/gflags.h>
 #include <iostream>
 #include <string>
 #include <cmath>
