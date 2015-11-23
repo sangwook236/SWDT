@@ -16,7 +16,7 @@
 #pragma comment(lib, "gflags_d.lib")
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "ga_d.lib")
-#pragma comment(lib, "glpk_4_51.lib")
+#pragma comment(lib, "glpk_4_57.lib")
 #pragma comment(lib, "nlopt.lib")
 
 #		else
@@ -33,7 +33,7 @@
 #pragma comment(lib, "gflags.lib")
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "ga.lib")
-#pragma comment(lib, "glpk_4_51.lib")
+#pragma comment(lib, "glpk_4_57.lib")
 #pragma comment(lib, "nlopt.lib")
 
 #		endif
