@@ -156,7 +156,8 @@ namespace my_ceres_solver {
 // REF [site] >> https://ceres-solver.googlesource.com/ceres-solver/+/master/examples/simple_bundle_adjuster.cc
 void bundle_adjustment_example()
 {
-    //  BAL dataset : http://grail.cs.washington.edu/projects/bal/
+    // BAL dataset
+    // REF [site] >> http://grail.cs.washington.edu/projects/bal/
     const std::string filename("./data/machine_vision/bundle_adjustment/problem-49-7776-pre.txt");
 
     local::BALProblem bal_problem;
