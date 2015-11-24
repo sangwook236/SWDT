@@ -33,7 +33,7 @@ void auto_differentiation_example()
     // Set up the only cost function (also known as residual).
     // Use auto-differentiation to obtain the derivative (jacobian).
     ceres::CostFunction *cost_function = new ceres::AutoDiffCostFunction<CostFunctor, 1, 1>(new CostFunctor);
-    problem.AddResidualBlock(cost_function, NULL, &x);
+    problem.AddResidualBlock(cost_function, NULL /* squared loss */, &x);
 
     // Run the solver.
     ceres::Solver::Options options;
@@ -59,7 +59,7 @@ void numeric_differentiation_example()
     // Set up the only cost function (also known as residual).
     // Use numeric differentiation to obtain the derivative (jacobian).
     ceres::CostFunction *cost_function = new ceres::NumericDiffCostFunction<CostFunctor, ceres::CENTRAL, 1, 1> (new CostFunctor);
-    problem.AddResidualBlock(cost_function, NULL, &x);
+    problem.AddResidualBlock(cost_function, NULL /* squared loss */, &x);
 
     // Run the solver.
     ceres::Solver::Options options;
@@ -112,7 +112,7 @@ void analytic_differentiation_example()
 
     // Set up the only cost function (also known as residual).
     ceres::CostFunction *cost_function = new QuadraticCostFunction;
-    problem.AddResidualBlock(cost_function, NULL, &x);
+    problem.AddResidualBlock(cost_function, NULL /* squared loss */, &x);
 
     // Run the solver.
     ceres::Solver::Options options;
