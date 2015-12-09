@@ -40,6 +40,7 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="predefined_macro.cpp" />
 		<Unit filename="stl_algorithm.cpp" />
+		<Unit filename="stl_data_structure.cpp" />
 		<Unit filename="virtual_function.cpp" />
 		<Extensions>
 			<code_completion />

@@ -32,6 +32,8 @@ int main(int argc, char **argv)
 	void date_time();
 
 	void file_io();
+
+	void stl_data_structure();
 	void stl_algorithm();
 
 	void performance_analysis();
@@ -43,10 +45,11 @@ int main(int argc, char **argv)
 		//predefined_macro();
 		//array();
 		//complex();
-		date_time();
+		//date_time();
 
 		//file_io();  // not yet implemented
 
+		stl_data_structure();
 		//stl_algorithm();
 
 		//performance_analysis();
