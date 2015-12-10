@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 
 			//program_options(argc, argv);
 			//filesystem();
-			//conversion();
+			conversion();
 			//type_traits();
 
 			//date_time();
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 		{
 			//function();
 			//bind();
-			signals_slots();
+			//signals_slots();
 
 			//serialization();
 		}

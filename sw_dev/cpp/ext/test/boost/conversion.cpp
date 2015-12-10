@@ -2,8 +2,10 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/numeric/conversion/converter.hpp>
+#include <sstream>
 #include <iostream>
 #include <string>
+
 
 namespace {
 namespace local {
@@ -56,9 +58,9 @@ void conversion()
 		{
 			derived = boost::polymorphic_cast<local::Derived *>(base);
 		}
-		catch (const std::bad_cast &)
+		catch (const std::bad_cast &e)
 		{
-			std::cout << "caught bad_cast" << std::endl;
+			std::cout << "caught bad_cast: " << e.what() << std::endl;
 		}
 
 		delete base;
@@ -71,13 +73,52 @@ void conversion()
 			// string -> number
 			const int i = boost::lexical_cast<int>("16");
 			std::cout << i << std::endl;
+			// string -> hexadecimal number
+#if 0
+			const unsigned long h = boost::lexical_cast<unsigned long>("0x12AF");
+			std::cout << h << std::endl;  // compile-time error.
+#elif 1
+            const unsigned long h = std::stoul("0x12AF", nullptr, 16);
+            std::cout << h << std::endl;
+#else
+            {
+                std::stringstream ss;
+                ss << std::hex << "12AF";
+                unsigned long h = 0;
+                ss >> h;
+                std::cout << h << std::endl;
+            }
+#endif
+			// string -> octal number
+#if 0
+			const unsigned long o = boost::lexical_cast<unsigned long>("036");
+			std::cout << o << std::endl;  // run-time error: 36.
+#elif 1
+            const unsigned long o = std::stoul("036", nullptr, 8);
+            std::cout << o << std::endl;
+#else
+            {
+                std::stringstream ss;
+                ss << std::oct << "36";
+                unsigned long o = 0;
+                ss >> o;
+                std::cout << o << std::endl;
+            }
+#endif
 
 			// number -> string
-			const std::string s = boost::lexical_cast<std::string>(321.5f);
-			std::cout << s << std::endl;
+			const std::string ds = boost::lexical_cast<std::string>(321.5f);
+			std::cout << ds << std::endl;
+			// hexadecimal number -> string
+			const std::string hs = boost::lexical_cast<std::string>(0x12AF);
+			std::cout << hs << std::endl;
+			// octal number -> string
+			const std::string os = boost::lexical_cast<std::string>(036);
+			std::cout << os << std::endl;
 		}
-		catch (const boost::bad_lexical_cast &)
+		catch (const boost::bad_lexical_cast &e)
 		{
+            std::cout << "caught bad_lexical_cast: " << e.what() << std::endl;
 		}
 	}
 
