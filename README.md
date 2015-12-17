@@ -13,14 +13,14 @@ The GDT includes various programming languages and hardware components:
   * Python
   * Objective-C
 * Hardware
-  * Extension
+  * Component
     * Sensor
+      * Image Sensor
+        * Kinect
       * AHRS
       * GPS
       * IMU
-    * Vision Sensor
-      * Kinect
-  * Open Source Hardware
+  * Open Source Hardware (OSHW)
     * Arduino
   * Microprocessor and Microcontroller
     * ARM
