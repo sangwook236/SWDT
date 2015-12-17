@@ -21,9 +21,9 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B57A65A0-CD1C-4153-8EC6-4FE913B754EC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>vision</RootNamespace>
+    <RootNamespace>image_sensor</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>vision</ProjectName>
+    <ProjectName>image_sensor</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
