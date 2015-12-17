@@ -34,6 +34,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-fpermissive" />
+			<Add option="-std=c++11" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
 			<Add directory="/usr/local/include" />

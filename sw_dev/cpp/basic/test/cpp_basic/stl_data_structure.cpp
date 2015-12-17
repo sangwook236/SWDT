@@ -98,6 +98,8 @@ void unordered_map()
 
 void stl_data_structure()
 {
+	// hash set.
 	//local::unordered_set();
+	// hash map.
 	local::unordered_map();
 }
