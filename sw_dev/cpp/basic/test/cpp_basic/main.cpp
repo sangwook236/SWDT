@@ -19,6 +19,18 @@ struct Test
 	double d;
 };
 
+void cpp_2011()
+{
+	const unsigned long long ull = 18'446'744'073'709'550'592ull;
+	std::cout << ull << std::endl;
+
+	std::cout << std::hexfloat << 0.01 << std::endl;
+}
+
+void cpp_2014()
+{
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -28,6 +40,7 @@ int main(int argc, char **argv)
 	void virtual_function();
 	void predefined_macro();
 	void array();
+	void string();
 	void complex();
 	void date_time();
 
@@ -40,16 +53,20 @@ int main(int argc, char **argv)
 
 	try
 	{
+		local::cpp_2011();
+		local::cpp_2014();
+		
 		//virtual_function();
 
 		//predefined_macro();
 		//array();
+		//string();
 		//complex();
 		//date_time();
 
 		//file_io();  // not yet implemented
 
-		stl_data_structure();
+		//stl_data_structure();
 		//stl_algorithm();
 
 		//performance_analysis();
