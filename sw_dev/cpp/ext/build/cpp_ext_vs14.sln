@@ -40,7 +40,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stl", "..\test\stl\stl_vs14
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multilinear_algebra", "..\test\multilinear_algebra\multilinear_algebra_vs14.vcxproj", "{20FF0783-824B-4E04-93D0-B210150DF80F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_framework", "..\test\test_framework\test_framework_vs14.vcxproj", "{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testing", "..\test\testing\testing_vs14.vcxproj", "{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "file_format", "..\test\file_format\file_format_vs14.vcxproj", "{A79E411D-EFBB-446D-AD68-A6BBE13E764B}"
 EndProject
@@ -48,7 +48,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "general_purpose_library", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multimedia", "..\test\multimedia\multimedia_vs14.vcxproj", "{238EADCF-B178-4601-8EE4-2906FE010839}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppunit_mfc", "..\test\test_framework\cppunit_mfc_vs14.vcxproj", "{6790BC0F-951F-4A91-B6C9-47A23726E8B9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppunit_mfc", "..\test\testing\cppunit_mfc_vs14.vcxproj", "{6790BC0F-951F-4A91-B6C9-47A23726E8B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

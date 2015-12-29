@@ -5,22 +5,7 @@
 
 << Building  >>
 
-[-] building 과정에서 일부 file이 copy가 되지 않는 경우
-	-. Output File에 지정된 file name과 Post-Build Event에 지정된 file name이 달라서 발생하는 문제임.
-
-[-] TestRunner & TestPlugInRunner projects can't be compiled
-	-. error message
-		MsDevCallerListCtrl.cpp(68): error C3505: cannot load type library '{80CC9F66-E7D8-4DDD-85B6-D9E6CD0E93E2}'
-	-. solution
-		아래의 import 문을 
-			#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
-		다음과 같이 변경
-			//The following #import imports EnvDTE based on its LIBID.
-			#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("10.0") lcid("0") raw_interfaces_only named_guids
-			//The following #import imports EnvDTE80 based on its LIBID.
-			#import "libid:1A31287A-4D7D-413e-8E32-3B374931BD89" version("10.0") lcid("0") raw_interfaces_only named_guids
-
-[-] building qttestrunner library
+[-] Building QtTestRunner library
 	[ref] ${CPPUNIT_ROOT}/src/qttestrunner/make_lib.bat
 
 	-. source file path
@@ -44,3 +29,20 @@
 		${CPPUNIT_ROOT}/src/qttestrunner/TestRunnerModel.h
 		 ==> 주석 처리
 		 ==> 그래도 compile-time error 발생
+
+<< Trouble Shooting>>
+
+[-] Building 과정에서 일부 file이 copy가 되지 않는 경우
+	-. Output File에 지정된 file name과 Post-Build Event에 지정된 file name이 달라서 발생하는 문제임.
+
+[-] TestRunner & TestPlugInRunner projects can't be compiled
+	-. error message
+		MsDevCallerListCtrl.cpp(68): error C3505: cannot load type library '{80CC9F66-E7D8-4DDD-85B6-D9E6CD0E93E2}'
+	-. solution
+		아래의 import 문을 
+			#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
+		다음과 같이 변경
+			//The following #import imports EnvDTE based on its LIBID.
+			#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("10.0") lcid("0") raw_interfaces_only named_guids
+			//The following #import imports EnvDTE80 based on its LIBID.
+			#import "libid:1A31287A-4D7D-413e-8E32-3B374931BD89" version("10.0") lcid("0") raw_interfaces_only named_guids

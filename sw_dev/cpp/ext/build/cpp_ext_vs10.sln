@@ -42,7 +42,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stl_vs10", "..\test\stl\stl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multilinear_algebra_vs10", "..\test\multilinear_algebra\multilinear_algebra_vs10.vcxproj", "{20FF0783-824B-4E04-93D0-B210150DF80F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_framework_vs10", "..\test\test_framework\test_framework_vs10.vcxproj", "{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testing_vs10", "..\test\testing\testing_vs10.vcxproj", "{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "file_format_vs10", "..\test\file_format\file_format_vs10.vcxproj", "{A79E411D-EFBB-446D-AD68-A6BBE13E764B}"
 EndProject
