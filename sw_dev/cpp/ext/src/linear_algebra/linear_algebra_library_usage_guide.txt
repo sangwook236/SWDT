@@ -1,4 +1,6 @@
 [-] Libraries
+	-. BLAS & LAPACK
+		CLAPACK 사용하는 것이 편리.
 	-. CBLAS
 		clapack-3.2.1-CMAKE version의 static library 사용.
 		1. blas.a/lib
@@ -11,6 +13,7 @@
 			'clapack_'로 시작하지 않는 함수 제공.
 			함수명 뒤에 _가 붙어있는 형태로 export.
 				e.g.) _dgbsv_
+	-. GotoBLAS
 	-. OpenBLAS
 		1. 아래의 library 제공
 			libopenblas.a

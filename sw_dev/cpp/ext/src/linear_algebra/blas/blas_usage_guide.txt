@@ -1,1 +1,8 @@
-[ref] sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
+[-] General
+	-. Site
+		http://www.netlib.org/blas/
+
+		http://icl.cs.utk.edu/lapack-for-windows/clapack/
+
+	-. Reference
+		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
