@@ -2,6 +2,10 @@
 	-. Site
 		http://www.opengl.org/
 
+		https://www.khronos.org/opengles/
+		https://www.khronos.org/registry/gles/
+		https://www.khronos.org/registry/egl/
+
 		http://www.opengl.org/resources/libraries/glut/
 		http://user.xmission.com/~nate/glut.html
 		http://openglut.sourceforge.net/

@@ -2,12 +2,14 @@
 	-. Site
 		http://sourceforge.net/apps/mediawiki/cppunit/
 		https://launchpad.net/cppunit2
+		http://cppunit.sourceforge.net/cppunit2/
 
 << Building  >>
 
 [-] Building QtTestRunner library
 	[ref] ${CPPUNIT_ROOT}/src/qttestrunner/make_lib.bat
 
+	-. Use Qt3 library
 	-. source file path
 		${CPPUNIT_ROOT}/src/qttestrunner
 	-. building 전에 QT 관련 directory를 path에 추가해야 함
@@ -30,7 +32,7 @@
 		 ==> 주석 처리
 		 ==> 그래도 compile-time error 발생
 
-<< Trouble Shooting>>
+<< Trouble Shooting >>
 
 [-] Building 과정에서 일부 file이 copy가 되지 않는 경우
 	-. Output File에 지정된 file name과 Post-Build Event에 지정된 file name이 달라서 발생하는 문제임.
