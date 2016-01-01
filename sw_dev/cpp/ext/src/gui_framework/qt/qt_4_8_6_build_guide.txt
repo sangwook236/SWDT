@@ -2,27 +2,32 @@
 	[ref] ${QT_HOME}/INSTALL
 
 	0. execute "Visual Studio Command Prompt"
-	1. (optional) copy Qt sources to Qt directory
-		Qt source를 directory 'd:\Qt\4.8.6'에 복사했다면
-		'nmake install'을 이용해 Qt를 설치할 때 아래와 같은 directory에 설치됨.
-			${INSTALL_ROOT}\Qt\4.8.6
-		==> 따라서, source directory를 'd:\Qt-4.8.6'과 같이 하는 것이 바람직함.
-			${INSTALL_ROOT}\Qt-4.8.6
+	1. uncompress Qt source files to a directory
+		source directory를 'D:/Qt-4.8.6'과 같이 하는 것이 바람직함.
+		==> 위의 예와 같이 간단한 이름을 사용해야 함.
+			그렇지 않을 경우 building이 제대로 되지 않을 수 있음.
+		==> 'make install'을 이용해 Qt를 설치할 때 아래와 같은 directory에 설치됨.
+			${INSTALL_ROOT}/Qt-4.8.6
+			e.g.) Qt source를 directory 'D:/Qt/4.8.6'에 복사했다면
+				${INSTALL_ROOT}/Qt/4.8.6
+			[ref] 10 & 11번 참고.
 		==> ${INSTALL_PREFIX}를 사용한다면, source directory를 고려하지 않아도 됨.
-			5.번 참고.
+			configure에서 '-prefix ${INSTALL_PREFIX}'을 지정하였다면, 해당 directory에 설치됨.
+			[ref] 7번 참고.
 	2. set PATH
 		${QT_HOME}/bin
 		    to locate qmake, moc and other Qt tools
 	3. (optional) set the environment variable, QMAKESPEC
 		set QMAKESPEC=win32-msvc2013
-	3-1. make a directory for win32-msvc15 (X)
+	4. make a directory for win32-msvc15 (==> not working)
 		copy ${QT_HOME}/mkspecs/win32-msvc2013 to ${QT_HOME}/mkspecs/win32-msvc2015
 		modify qmake.conf
-	3-2. modify ${QT_HOME}/qmake/Makefile.win32 (X)
+		==> MSVC2015는 지원하지 않음. (as of 2015/12/30)
+	5. modify ${QT_HOME}/qmake/Makefile.win32 (==> not working)
 		add win32-msvc2015 in a few places.
-	4. change directory to ${QT_HOME}
+	6. change directory to ${QT_HOME}
 	    cd /D ${QT_HOME}
-	5. configure
+	7. configure
 		configure -prefix ${INSTALL_PREFIX} -debug-and-release -platform win32-msvc2013 -opensource -opengl desktop
 		configure -prefix ${INSTALL_PREFIX} -debug-and-release -platform win32-msvc2013 -opensource -no-opengl -no-openvg -graphicssystem raster
 		configure -prefix ${INSTALL_PREFIX} -debug-and-release -platform win32-msvc2013 -opensource -no-opengl -no-openvg -graphicssystem raster -arch windows -shared -ltcg -no-fast -exceptions -accessibility -stl -qt-sql-sqlite -qt-zlib -qt-gif -qt-libpng -qt-libmng -qt-libtiff -qt-libjpeg -no-dsp -no-vcproj -incredibuild-xge -plugin-manifests -qmake -process -rtti -mmx -3dnow -sse -sse2 -no-openssl -no-dbus -phonon -phonon-backend -multimedia -audio-backend -webkit -script -scripttools -declarative -qt-style-windows -qt-style-windowsxp -qt-style-windowsvista -no-style-plastique -no-style-cleanlooks -no-style-motif -no-style-cde -no-style-windowsce -no-style-windowsmobile -no-style-s60 -native-gestures
@@ -31,29 +36,29 @@
 	    ==> to reconfigure:
 	    	nmake confclean
 	    	configure ...
-	5-1. check Makefiles
+	8. check Makefiles (==> not working)
 		change win32-msvc10 to win32-msvc13 in Makefiles.
 			${QT_HOME}/Makefile
 			${QT_HOME}/???/Makefile
-	6. build
+	9. build
 		nmake
-	7. (optional) set the environment variable, INSTALL_ROOT
-		만약 install root directory로 'd:\usr\local'을 설정하고 싶다면
+	10. (optional) set the environment variable, INSTALL_ROOT
+		만약 install root directory로 'D:/usr/local'을 설정하고 싶다면
 		drive에 대한 정보를 빼고 아래와 같이 설정.
 			set INSTALL_ROOT=\usr\local
 		설치되는 drive는 nmake가 실행되는 drive인 듯함.
 		==> ${INSTALL_ROOT} 사용 보다 ${INSTALL_PREFIX}의 사용이 더 바람직함.
-	7. install
+	11. install
 		nmake install
-			${INSTALL_PREFIX}/include, lib, & bin, etc에 설치.
+		==> ${INSTALL_PREFIX}/include, lib, & bin, etc에 설치.
 			${INSTALL_ROOT}를 설정하는 경우 ${INSTALL_ROOT}/${INSTALL_PREFIX}/include, lib, & bin, etc에 설치.
 
 [-] Trouble Shooting
-	-. PATH_MAX
+	-. PATH_MAX 관련 오류 발생
 		==> change PATH_MAX to MAX_PATH
-	-. cstdint (?)
+	-. cstdint 관련 오류 발생
 		<error message> 'int_least8_t': is not a member of '`global namespace''
-		==> MSVC2015에서 build하기 위해서 patch 필요.
+		==> MSVC2015에서 build하기 위해서 patch 필요. (==> not working)
 			copy the patch file, 02-fix_build_with_msvc2015-45e8f4ee.diff to ${QT_HOME}
 			cd ${QT_HOME}
 			patch -p1 < 02-fix_build_with_msvc2015-45e8f4ee.diff

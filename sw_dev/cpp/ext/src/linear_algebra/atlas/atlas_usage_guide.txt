@@ -21,7 +21,7 @@
 
 	<tip>
 		-. Cygwin에서 building 시 error가 많이 발생하는데 출력되는 사항이 많이 error를 확인하는 것이 어려움
-			==> config & make의 결과를 log file을 redirection해서 볼 것
+			==> config & make의 결과를 log file을 redirection해서 볼 것.
 		-. log file에서 error를 찾을 때 아래의 keyword 사용 가능
 			error, fail
 

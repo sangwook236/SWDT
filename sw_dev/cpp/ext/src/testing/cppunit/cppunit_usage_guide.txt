@@ -4,12 +4,14 @@
 		https://launchpad.net/cppunit2
 		http://cppunit.sourceforge.net/cppunit2/
 
-<< Building  >>
+<< Building >>
 
-[-] Building QtTestRunner library
+[-] Building QtTestRunner library (VC)
 	[ref] ${CPPUNIT_ROOT}/src/qttestrunner/make_lib.bat
 
 	-. Use Qt3 library
+		Qt4 사용이 가능한 듯 하나 해야 할 일이 많음.
+		Qt5는 Qt3에 대한 하위 호환이 좋지 않아 사용 불가능.
 	-. source file path
 		${CPPUNIT_ROOT}/src/qttestrunner
 	-. building 전에 QT 관련 directory를 path에 추가해야 함
@@ -25,12 +27,26 @@
 		"Could not find mkspecs for your QMAKESPEC(win32-msvc2010) after trying"
 			==> qmake -spec ${QT_ROOT}/mkspecs/win32-msvc2010 qttestrunnerlib.pro
 	-. nmake를 실행하는 경우 *.ui file을 uic.exe로 building하는 과정에 error가 발생
-		Makefile.Release & Makefile.Debug file 안에서 uic.exe file을 찾아서 uic3.exe로 변경
+		1. *.ui file이 Qt3 version이어서 error 발생.
+			1) convert version
+				{QT4_ROOT}/bin/uic3.exe를 이용해 ui file version을 upgrade.
+				uic3 -convert testbrowserdlg.ui -o testbrowserdlg_4.ui
+				uic3 -convert testrunnerdlg.ui -o testrunnerdlg_4.ui
+			2) rename files
+				testbrowserdlg_4.ui -> testbrowserdlg.ui
+				testrunnerdlg_4.ui -> testrunnerdlg.ui
+			3) modify qttestrunner.vcproj or qttestrunner.vcxproj
+				uic3.exe -> uic.exe
+			4-1) (Qt4) delete option flag in uic.exe
+				-i를 포함하는 부분 삭제.
+			4-2) (Qt5) modify option flag in uic.exe
+				-i -> --include
+		2) Makefile.Release & Makefile.Debug file 안에서 uic.exe file을 찾아서 uic3.exe로 변경
 	-. building 과정에서 qptrlist.h를 찾지 못한다는 error 발생
 		${CPPUNIT_ROOT}/src/qttestrunner/MostRecentTests.h
 		${CPPUNIT_ROOT}/src/qttestrunner/TestRunnerModel.h
-		 ==> 주석 처리
-		 ==> 그래도 compile-time error 발생
+		 ==> 주석 처리.
+		 ==> 그래도 compile-time error 발생.
 
 << Trouble Shooting >>
 

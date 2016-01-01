@@ -2,37 +2,53 @@
 	-. Site
 		http://www.netlib.org/lapack/
 
+		http://icl.cs.utk.edu/lapack-for-windows/
+		http://icl.cs.utk.edu/lapack-for-windows/lapack/
+		http://icl.cs.utk.edu/lapack-for-windows/clapack/
+		http://icl.cs.utk.edu/lapack-for-windows/scalapack/
+
 	-. Reference
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Building in MinGW
+[-] Building (Win32/MinGW)
 	-. Reference
-		http://www.canerten.com/compile-lapack-and-blas-as-dll-on-windows/
 		http://icl.cs.utk.edu/lapack-for-windows/lapack/
 			Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW
+		http://www.canerten.com/compile-lapack-and-blas-as-dll-on-windows/
 	-. Using CMake
-		1. run command prompt.
-		2. put the GNU runtime directory in $PATH.
-			set path=D:\MyProgramFiles\MinGW\bin;%path%
-		3. run CMake-gui in the command prompt.
-			refer to Reference about settings
-				choose MinGW Makefiles
-				set the 'BUILD_SHARED_LIBS' option to ON
-				set the 'CMAKE_GNUtoMS' option to ON
-		4. run make.
+		[ref] mingw32_usage_guide.txt
+		0. download and uncompress Lapack
+			http://icl.cs.utk.edu/lapack-for-windows/lapack/
+		1. run Visual Studio Command Prompt.
+		2. set the GNU runtime directory in PATH.
+			set path=${MINGW_ROOT}/bin;%path%
+		3. run cmake-gui in the command prompt.
+			[ref] Reference about settings
+			choose MinGW Makefiles
+		4. set options.
+			set the 'CMAKE_SH' option to ${MSYS_ROOT}/bin/sh.exe
+			set the 'CMAKE_Fortran_COMPILER' option to ${MINGW_ROOT}/bin/gfortran.exe
+			set the 'BUILD_SHARED_LIBS' option to ON
+				이 option을 지정하지 않으면 .a library file 생성.
+					libblas.a
+					liblapack.a
+					libtmglib.a
+			set the 'CMAKE_GNUtoMS' option to ON
+		5. configure and generate.
+		6. run make.
 			mingw32-make
 			mingw32-make install
 		==> 이유를 알 수 없지만 안되는 경우도 있음.
 	-. Using Command Prompt
-		1. put the GNU runtime directory in $PATH.
-			set path=D:\MyProgramFiles\MinGW\bin;%path%
+		1. set the GNU runtime directory in PATH.
+			set path=${MINGW_ROOT}/bin;%path%
 		2. change a directory to $LAPACK_HOME.
 		3. build BLAS.
 			mingw32-gfortran --shared -o blas.dll BLAS\SRC\*.f
 		4. set $LD_LIBRARY_PATH.
 			copy blas.dll to $LD_LIBRARY_PATH
 			put a directory in which blas.dll exists in $LD_LIBRARY_PATH
-				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
+				export LD_LIBRARY_PATH=.:${MINGW_ROOT}/bin:$LD_LIBRARY_PATH
 		5. build LAPACK.
 			mingw32-gfortran --shared -o lapack.dll src\*.f blas.dll
 			==> error message.
@@ -40,12 +56,12 @@
 		6. set $LD_LIBRARY_PATH.
 			copy lapack.dll to $LD_LIBRARY_PATH
 			put a directory in which lapack.dll exists in $LD_LIBRARY_PATH
-				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
+				export LD_LIBRARY_PATH=.:${MINGW_ROOT}/bin:$LD_LIBRARY_PATH
 		7. build LAPACKE.
 			mingw32-gfortran --shared -o lapacke.dll lapacke\src\*.f lapack.dll blas.dll
 	-. Using MSYS
-		1. (optional) put the GNU runtime directory in $PATH.
-			export PATH=/D/MyProgramFiles/MinGW/bin:$PATH
+		1. (optional) set the GNU runtime directory in PATH.
+			export PATH=${MINGW_ROOT}/bin:$PATH
 		2. change a directory to $LAPACK_HOME.
 		3. build BLAS.
 			mingw32-gfortran --shared -o blas.dll BLAS/SRC/*.f -O
@@ -53,7 +69,7 @@
 		4. set $LD_LIBRARY_PATH.
 			copy blas.dll to $LD_LIBRARY_PATH
 			put a directory in which blas.dll exists in $LD_LIBRARY_PATH
-				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
+				export LD_LIBRARY_PATH=.:${MINGW_ROOT}/bin:$LD_LIBRARY_PATH
 		5. build LAPACK.
 			mingw32-gfortran --shared -o lapack.dll src/*.f blas.dll -O
 			i686-w64-mingw32-gfortran --shared -o lapack.dll src/*.f blas.dll -O
@@ -62,7 +78,7 @@
 		6. set $LD_LIBRARY_PATH.
 			copy lapack.dll to $LD_LIBRARY_PATH
 			put a directory in which lapack.dll exists in $LD_LIBRARY_PATH
-				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
+				export LD_LIBRARY_PATH=.:${MINGW_ROOT}/bin:$LD_LIBRARY_PATH
 		7. build LAPACKE.
 			mingw32-gfortran --shared -o lapacke.dll lapacke/src/*.f lapack.dll blas.dll -O
 			i686-w64-mingw32-gfortran --shared -o lapacke.dll lapacke/src/*.f lapack.dll blas.dll -O
@@ -74,7 +90,7 @@
 		3. set $LD_LIBRARY_PATH.
 			copy blas.dll to $LD_LIBRARY_PATH
 			put a directory in which blas.dll exists in $LD_LIBRARY_PATH
-				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
+				export LD_LIBRARY_PATH=.:${MINGW_ROOT}/bin:$LD_LIBRARY_PATH
 		4. build LAPACK.
 			i686-pc-mingw32-gfortran --shared -o lapack.dll src/*.f blas.dll -O
 			i686-w64-mingw32-gfortran --shared -o lapack.dll src/*.f blas.dll -O
@@ -83,7 +99,7 @@
 		5. set $LD_LIBRARY_PATH.
 			copy lapack.dll to $LD_LIBRARY_PATH
 			put a directory in which lapack.dll exists in $LD_LIBRARY_PATH
-				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
+				export LD_LIBRARY_PATH=.:${MINGW_ROOT}/bin:$LD_LIBRARY_PATH
 		6. build LAPACKE.
 			i686-pc-mingw32-gfortran --shared -o lapacke.dll lapacke/src/*.f lapack.dll blas.dll -O
 			i686-w64-mingw32-gfortran --shared -o lapacke.dll lapacke/src/*.f lapack.dll blas.dll -O

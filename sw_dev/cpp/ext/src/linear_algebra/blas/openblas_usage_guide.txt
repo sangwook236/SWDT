@@ -1,0 +1,83 @@
+[-] General
+	-. Site
+		http://xianyi.github.io/OpenBLAS/
+		https://github.com/xianyi/OpenBLAS
+
+		https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
+
+	-. Reference
+		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
+
+[-] Building (Win32/MinGW)
+	-. In Visual Studio Command Prompt
+		[ref] mingw32_usage_guide.txt
+		1. set the GNU runtime directory in PATH.
+			set path=${MINGW_ROOT}/bin;%path%
+		2. run cmake-gui.
+		3. specify 'MinGW Makefiles' as the generator.
+		4. set options.
+			set the 'CMAKE_SH' option to ${MSYS_ROOT}/bin/sh.exe
+			set the 'CMAKE_Fortran_COMPILER' option to ${MINGW_ROOT}/bin/gfortran.exe
+			set the 'CMAKE_GNUtoMS' option to ON.
+				<warning message> Disabling CMAKE_GNUtoMS option because CMAKE_GNUtoMS_VCVARS is not set
+				==> set the 'CMAKE_GNUtoMS_VCVARS' option to 'C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/vcvars32.bat'
+		5. configure and generate.
+			fortran files을 찾을 수 없다는 error 발생.
+				<error message> Cannot find source file
+					sgegs.f, sgegv.f, etc.
+				==> 해당 files이 deprecated 되어 발생.
+					${OPENBLAS_HOME}/lapack-netlib/SRC -> ${OPENBLAS_HOME}/lapack-netlib/SRC/DEPRECATED.
+				==> ${OPENBLAS_HOME}/cmake/lapack.cmake 수정.
+					${OPENBLAS_HOME}/lapack-netlib/SRC directory의 file list로 아래의 변수들 설정.
+						SLASRC
+							cd ${OPENBLAS_HOME}/lapack-netlib/SRC
+							dir s*.f > list.txt + ilaslr.f ilaslc.f
+							copy file list to set(SLRSRC ...)
+						CLASRC
+							cd ${OPENBLAS_HOME}/lapack-netlib/SRC
+							dir c*.f > list.txt + ilaclr.f ilaclc.f
+							copy file list to set(SLRSRC ...)
+						DLASRC
+							cd ${OPENBLAS_HOME}/lapack-netlib/SRC
+							dir d*.f > list.txt + iladlr.f iladlc.f
+							copy file list to set(SLRSRC ...)
+						ZLASRC
+							cd ${OPENBLAS_HOME}/lapack-netlib/SRC
+							dir z*.f > list.txt + ilazlr.f ilazlc.f
+							copy file list to set(SLRSRC ...)
+		6. cd cmake-build directory.
+		7. run make.
+			mingw32-make
+			mingw32-make PREFIX=${INSTAL_PREFIX} install
+
+[-] Building (Win32/Cgywin)
+	[ref] https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
+
+	-. use quick build
+		${OPENBLAS_HOME}/quickbuild.win32
+		${OPENBLAS_HOME}/quickbuild.win64
+
+	-. build library
+		1. run cygwin.
+		2. run quick build script.
+			cd ${OPENBLAS_HOME}
+			./quickbuild.win32
+			./quickbuild.win64
+		3. run Visual Studio Command Prompt.
+		4. generate def file.
+			a) dumpbin.exe 이용.
+				dumpbin.exe /exports libopenblas.dll > libopenblas.def
+				==> 생성된 def file을 그대로 사용할 수 없음.
+					def file 형식에 맞게 수정해야 함.
+			b) OpenBLAS library에서 생성한 def file 이용.
+				${OPENBLAS_HOME}/exports/libopenblas.def
+				==> Windows 환경에서 사용할 수 있는지 검증 필요.
+		5. generate import library.
+			cd ${OPENBLAS_HOME}/exports
+			For 32-bit, lib.exe /machine:i386 /def:libopenblas.def
+			For 64-bit, lib.exe /machine:X64 /def:libopenblas.def
+			==> ${OPENBLAS_HOME}/exports directory에 OpenBLAS에서 생성한 def file & import file이 존재.
+				이들을 Windows 환경에서 사용할 수 있는지 검증 필요.
+
+	-. install library
+		make PREFIX=${INSTAL_PREFIX} install
