@@ -10,6 +10,9 @@
 		http://code.opencv.org/projects/opencv_extra
 		git://code.opencv.org/opencv_extra.git
 
+	-. Repository
+		https://github.com/itseez/opencv
+
 [-] Setting CMake (Linux)
 	-. CUDA_nvcuvid_LIBRARY 항목이 올바르게 설정되어 있지 않다는 오류 발생.
 		NVIDIA CUDA library 중에서 video decoder (NVCUVID) library를 사용하는데,
