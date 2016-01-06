@@ -10,7 +10,7 @@
 
 [-] Building (Win32/MinGW)
 	-. In Visual Studio Command Prompt
-		[ref] mingw32_usage_guide.txt
+		[ref] mingw_usage_guide.txt
 		1. set the GNU runtime directory in PATH.
 			set path=${MINGW_ROOT}/bin;%path%
 		2. run cmake-gui.

@@ -16,7 +16,7 @@
 			Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW
 		http://www.canerten.com/compile-lapack-and-blas-as-dll-on-windows/
 	-. Using CMake
-		[ref] mingw32_usage_guide.txt
+		[ref] mingw_usage_guide.txt
 		0. download and uncompress Lapack
 			http://icl.cs.utk.edu/lapack-for-windows/lapack/
 		1. run Visual Studio Command Prompt.
