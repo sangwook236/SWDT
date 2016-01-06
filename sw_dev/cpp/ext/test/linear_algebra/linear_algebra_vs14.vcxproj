@@ -83,13 +83,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="armadillo\armadillo_cube_arithmetic.cpp" />
     <ClCompile Include="armadillo\armadillo_main.cpp" />
     <ClCompile Include="armadillo\armadillo_matrix_arithmetic.cpp" />
@@ -124,7 +117,6 @@
     <ClCompile Include="mtl\mtl_matrix_operation.cpp" />
     <ClCompile Include="mtl\mtl_vector_operation.cpp" />
     <ClCompile Include="newmat\newmat_main.cpp" />
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="suitesparse\suitesparse_main.cpp" />
     <ClCompile Include="viennacl\viennacl_main.cpp" />
   </ItemGroup>

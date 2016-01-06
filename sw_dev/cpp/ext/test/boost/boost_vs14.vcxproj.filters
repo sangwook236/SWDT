@@ -190,7 +190,4 @@
       <Filter>Source Files\graph</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
 </Project>

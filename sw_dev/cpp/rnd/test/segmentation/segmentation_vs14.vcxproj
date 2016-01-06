@@ -85,9 +85,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="andres_seeded_region_growing_lib\connected-components.hxx" />
     <ClInclude Include="andres_seeded_region_growing_lib\marray.hxx" />
     <ClInclude Include="andres_seeded_region_growing_lib\seeded-region-growing.hxx" />
@@ -107,8 +104,6 @@
     <ClInclude Include="gslic_lib\cudaSegSLIC.h" />
     <ClInclude Include="gslic_lib\cudaUtil.h" />
     <ClInclude Include="gslic_lib\FastImgSeg.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="efficient_graph_based_image_segmentation\efficient_graph_based_image_segmentation_main.cpp" />
@@ -124,10 +119,6 @@
     <ClCompile Include="region_growing\region_growing_by_contrast.cpp" />
     <ClCompile Include="region_growing\region_growing_main.cpp" />
     <ClCompile Include="region_growing\region_growing_andres_seeded_region_growing.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="gslic_lib\cudaImgTrans.cu" />

@@ -84,9 +84,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="cppunit\Complex.h" />
     <ClInclude Include="gtest\gtest_sample1.h" />
     <ClInclude Include="gtest\gtest_sample2.h" />

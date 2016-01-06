@@ -80,9 +80,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="c4_lib\IntImage.h" />
     <ClInclude Include="c4_lib\mdarray.h" />
     <ClInclude Include="c4_lib\Pedestrian.h" />
@@ -100,8 +97,6 @@
     <ClInclude Include="shadows_lib\utils\ConnCompGroup.h" />
     <ClInclude Include="shadows_lib\utils\GaborFilter.h" />
     <ClInclude Include="shadows_lib\utils\GaussianMixtureModel.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="c4\c4_main.cpp" />
@@ -134,10 +129,6 @@
     <ClCompile Include="shadows_lib\utils\ConnCompGroup.cpp" />
     <ClCompile Include="shadows_lib\utils\GaborFilter.cpp" />
     <ClCompile Include="shadows_lib\utils\GaussianMixtureModel.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

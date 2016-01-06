@@ -92,7 +92,6 @@
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="xercesc\xercesc_dom.cpp" />
     <ClCompile Include="xercesc\xercesc_DOMPrintErrorHandler.cpp" />
     <ClCompile Include="xercesc\xercesc_DOMPrintFilter.cpp" />
@@ -101,7 +100,6 @@
     <ClCompile Include="xercesc\xercesc_sax.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="xercesc\xercesc_DOMPrintErrorHandler.hpp" />
     <ClInclude Include="xercesc\xercesc_DOMPrintFilter.hpp" />
     <ClInclude Include="xercesc\xercesc_DOMTreeErrorReporter.hpp" />

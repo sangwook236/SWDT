@@ -34,8 +34,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pose_estimation", "..\test\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shape_analysis", "..\test\shape_analysis\shape_analysis_vs14.vcxproj", "{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graph_analysis", "..\test\graph_analysis\graph_analysis_vs14.vcxproj", "{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hand_analysis", "..\test\hand_analysis\hand_analysis_vs14.vcxproj", "{5764CA80-F4D8-4DA7-924F-E4ED8734C009}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "statistics", "..\test\statistics\statistics_vs14.vcxproj", "{0E6076D4-05F3-4EBB-B706-DD8E198E397B}"

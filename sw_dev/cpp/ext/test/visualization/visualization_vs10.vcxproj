@@ -78,12 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="plplot\plc++demos.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graphviz\graphviz_main.cpp" />
@@ -94,7 +89,6 @@
     <ClCompile Include="plplot\plplot_main.cpp" />
     <ClCompile Include="plplot\plplot_x01_example.cpp" />
     <ClCompile Include="plplot\plplot_x21_example.cpp" />
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="vtk\vtk_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

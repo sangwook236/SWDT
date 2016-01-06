@@ -52,8 +52,7 @@
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
@@ -74,8 +73,7 @@
       <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
@@ -227,7 +225,6 @@
     <ClCompile Include="opencv\opencv_util.cpp" />
     <ClCompile Include="opencv\opencv_vector_operation.cpp" />
     <ClCompile Include="opencv\PascalVocDataset.cpp" />
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="vigra\vigra_main.cpp" />
     <ClCompile Include="vigra\vigra_seeded_region_growing.cpp" />
     <ClCompile Include="vigra\vigra_slic.cpp" />
@@ -262,10 +259,6 @@
     <ClInclude Include="ivt\ParticleFilter3D.h" />
     <ClInclude Include="opencv\PascalVocDataset.h" />
     <ClInclude Include="opencv\vehicle_classification.h" />
-    <ClInclude Include="stdafx.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

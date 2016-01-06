@@ -225,7 +225,6 @@
     <ClCompile Include="opencv\opencv_util.cpp" />
     <ClCompile Include="opencv\opencv_vector_operation.cpp" />
     <ClCompile Include="opencv\PascalVocDataset.cpp" />
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="vigra\vigra_main.cpp" />
     <ClCompile Include="vigra\vigra_seeded_region_growing.cpp" />
     <ClCompile Include="vigra\vigra_slic.cpp" />
@@ -260,10 +259,6 @@
     <ClInclude Include="ivt\ParticleFilter3D.h" />
     <ClInclude Include="opencv\PascalVocDataset.h" />
     <ClInclude Include="opencv\vehicle_classification.h" />
-    <ClInclude Include="stdafx.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

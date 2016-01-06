@@ -32,6 +32,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometry_vs10", "..\test\ge
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "linear_algebra_vs10", "..\test\linear_algebra\linear_algebra_vs10.vcxproj", "{3579293C-0569-4053-B4D1-8C5668A92557}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multilinear_algebra_vs10", "..\test\multilinear_algebra\multilinear_algebra_vs10.vcxproj", "{20FF0783-824B-4E04-93D0-B210150DF80F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graph_vs10", "..\test\graph\graph_vs10.vcxproj", "{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "threading_vs10", "..\test\threading\threading_vs10.vcxproj", "{4C47F7FB-525B-4F42-8A52-72B216369E57}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "serialization_vs10", "..\test\serialization\serialization_vs10.vcxproj", "{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}"
@@ -39,8 +43,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "networking_vs10", "..\test\networking\networking_vs10.vcxproj", "{2BAA7170-259E-4A41-B87C-CCE654E8D191}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stl_vs10", "..\test\stl\stl_vs10.vcxproj", "{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multilinear_algebra_vs10", "..\test\multilinear_algebra\multilinear_algebra_vs10.vcxproj", "{20FF0783-824B-4E04-93D0-B210150DF80F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testing_vs10", "..\test\testing\testing_vs10.vcxproj", "{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}"
 EndProject

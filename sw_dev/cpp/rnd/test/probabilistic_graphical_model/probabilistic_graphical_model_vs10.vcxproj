@@ -79,7 +79,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="qpbo_lib\instances.inc" />
-    <None Include="ReadMe.txt" />
     <None Include="trws_lib\instances.inc" />
   </ItemGroup>
   <ItemGroup>
@@ -105,8 +104,6 @@
     <ClInclude Include="middlebury_lib\typeTruncatedQuadratic2D.h" />
     <ClInclude Include="qpbo_lib\block.h" />
     <ClInclude Include="qpbo_lib\QPBO.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
     <ClInclude Include="trws_lib\instances.h" />
     <ClInclude Include="trws_lib\MRFEnergy.h" />
     <ClInclude Include="trws_lib\typeBinary.h" />
@@ -245,7 +242,6 @@
     <ClCompile Include="qpbo_lib\QPBO_extra.cpp" />
     <ClCompile Include="qpbo_lib\QPBO_maxflow.cpp" />
     <ClCompile Include="qpbo_lib\QPBO_postprocessing.cpp" />
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="trws\trws_main.cpp" />
     <ClCompile Include="trws_lib\example.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

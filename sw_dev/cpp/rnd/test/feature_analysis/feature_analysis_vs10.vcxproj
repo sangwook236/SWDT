@@ -97,7 +97,6 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
     <CudaCompile Include="surfgpu_lib\cuda\buildDetCUDA.cu">
       <FileType>Document</FileType>
       <CInterleavedPTX Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</CInterleavedPTX>
@@ -283,7 +282,6 @@
     <ClInclude Include="opensurf_lib\surf.h" />
     <ClInclude Include="opensurf_lib\surflib.h" />
     <ClInclude Include="opensurf_lib\utils.h" />
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="surfgpu_lib\buildDetGPU.h" />
     <ClInclude Include="surfgpu_lib\buildSURFDescriptorsGPU.h" />
     <ClInclude Include="surfgpu_lib\convertRGB2GrayFloatGPU.h" />
@@ -313,7 +311,6 @@
     <ClInclude Include="svm_light_lib\svm_light\kernel.h" />
     <ClInclude Include="svm_light_lib\svm_light\svm_common.h" />
     <ClInclude Include="svm_light_lib\svm_light\svm_learn.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="elsd\elsd_main.cpp" />
@@ -356,7 +353,6 @@
     <ClCompile Include="opensurf_lib\utils.cpp" />
     <ClCompile Include="siftgpu\siftgpu_main.cpp" />
     <ClCompile Include="siftgpu\siftgpu_simple_example.cpp" />
-    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="surfgpu\surfgpu_example.cpp" />
     <ClCompile Include="surfgpu\surfgpu_main.cpp" />
     <ClCompile Include="surfgpu_lib\cuda\getMatchesGPU.cpp" />

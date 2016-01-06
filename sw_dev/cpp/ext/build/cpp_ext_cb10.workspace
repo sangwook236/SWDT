@@ -9,6 +9,7 @@
 		<Project filename="../test/general_purpose_library/general_purpose_library_cb10.cbp" />
 		<Project filename="../test/geometry/geometry_cb10.cbp" />
 		<Project filename="../test/gpu_computation/gpu_computation_cb10.cbp" />
+		<Project filename="../test/graph/graph_cb10.cbp" />
 		<Project filename="../test/graphics_2d/graphics_2d_cb10.cbp" />
 		<Project filename="../test/graphics_3d/graphics_3d_cb10.cbp" />
 		<Project filename="../test/linear_algebra/linear_algebra_cb10.cbp" />

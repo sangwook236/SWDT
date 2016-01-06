@@ -4,9 +4,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cgal\cgal_main.cpp">
       <Filter>Source Files\cgal</Filter>
     </ClCompile>
@@ -25,9 +22,6 @@
     <ClCompile Include="sophus\sophus_main.cpp">
       <Filter>Source Files\sophus</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -51,10 +45,5 @@
     <Filter Include="Source Files\sophus">
       <UniqueIdentifier>{f5f6e8c4-db67-4a9b-83dd-bde6869a9d83}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

@@ -51,9 +51,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ann\ann_main.cpp">
       <Filter>Source Files\ann</Filter>
     </ClCompile>
@@ -104,9 +101,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="kdtree_lib\kdtree.h">
       <Filter>Source Files\kdtree_lib</Filter>
     </ClInclude>
@@ -158,8 +152,5 @@
     <ClInclude Include="astar_algorithm_cpp_lib\stlastar.h">
       <Filter>Source Files\astar_algorithm_cpp_lib</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
   </ItemGroup>
 </Project>

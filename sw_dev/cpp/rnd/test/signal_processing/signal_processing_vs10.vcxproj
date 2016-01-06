@@ -80,9 +80,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="fast_bilateral_filter_lib\array.h" />
     <ClInclude Include="fast_bilateral_filter_lib\array_n.h" />
     <ClInclude Include="fast_bilateral_filter_lib\chrono.h" />
@@ -101,8 +98,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="nyu_depth_toolbox_v2_lib\cbf_windows.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fast_bilateral_filter\color_bilateral_filter_example.cpp" />
@@ -129,10 +124,6 @@
     <ClCompile Include="spuc\spuc_filter_example.cpp" />
     <ClCompile Include="spuc\spuc_main.cpp" />
     <ClCompile Include="spuc\spuc_maximum_likelihood_sequence_estimation.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="tspl\tspl_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

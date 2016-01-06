@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "boost", "..\test\boost\boost_vs14.vcxproj", "{FE865C87-952D-4D24-9247-6ED2EB61067A}"
 EndProject
@@ -30,6 +30,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometry", "..\test\geometr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "linear_algebra", "..\test\linear_algebra\linear_algebra_vs14.vcxproj", "{3579293C-0569-4053-B4D1-8C5668A92557}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multilinear_algebra", "..\test\multilinear_algebra\multilinear_algebra_vs14.vcxproj", "{20FF0783-824B-4E04-93D0-B210150DF80F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graph", "..\test\graph\graph_vs14.vcxproj", "{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "threading", "..\test\threading\threading_vs14.vcxproj", "{4C47F7FB-525B-4F42-8A52-72B216369E57}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "serialization", "..\test\serialization\serialization_vs14.vcxproj", "{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}"
@@ -37,8 +41,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "networking", "..\test\networking\networking_vs14.vcxproj", "{2BAA7170-259E-4A41-B87C-CCE654E8D191}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stl", "..\test\stl\stl_vs14.vcxproj", "{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multilinear_algebra", "..\test\multilinear_algebra\multilinear_algebra_vs14.vcxproj", "{20FF0783-824B-4E04-93D0-B210150DF80F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testing", "..\test\testing\testing_vs14.vcxproj", "{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}"
 EndProject
@@ -112,6 +114,14 @@ Global
 		{3579293C-0569-4053-B4D1-8C5668A92557}.Debug|Win32.Build.0 = Debug|Win32
 		{3579293C-0569-4053-B4D1-8C5668A92557}.Release|Win32.ActiveCfg = Release|Win32
 		{3579293C-0569-4053-B4D1-8C5668A92557}.Release|Win32.Build.0 = Release|Win32
+		{20FF0783-824B-4E04-93D0-B210150DF80F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{20FF0783-824B-4E04-93D0-B210150DF80F}.Debug|Win32.Build.0 = Debug|Win32
+		{20FF0783-824B-4E04-93D0-B210150DF80F}.Release|Win32.ActiveCfg = Release|Win32
+		{20FF0783-824B-4E04-93D0-B210150DF80F}.Release|Win32.Build.0 = Release|Win32
+		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Debug|Win32.Build.0 = Debug|Win32
+		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Release|Win32.ActiveCfg = Release|Win32
+		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Release|Win32.Build.0 = Release|Win32
 		{4C47F7FB-525B-4F42-8A52-72B216369E57}.Debug|Win32.ActiveCfg = Debug|Win32
 		{4C47F7FB-525B-4F42-8A52-72B216369E57}.Debug|Win32.Build.0 = Debug|Win32
 		{4C47F7FB-525B-4F42-8A52-72B216369E57}.Release|Win32.ActiveCfg = Release|Win32
@@ -128,10 +138,6 @@ Global
 		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Debug|Win32.Build.0 = Debug|Win32
 		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Release|Win32.ActiveCfg = Release|Win32
 		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Release|Win32.Build.0 = Release|Win32
-		{20FF0783-824B-4E04-93D0-B210150DF80F}.Debug|Win32.ActiveCfg = Debug|Win32
-		{20FF0783-824B-4E04-93D0-B210150DF80F}.Debug|Win32.Build.0 = Debug|Win32
-		{20FF0783-824B-4E04-93D0-B210150DF80F}.Release|Win32.ActiveCfg = Release|Win32
-		{20FF0783-824B-4E04-93D0-B210150DF80F}.Release|Win32.Build.0 = Release|Win32
 		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Debug|Win32.ActiveCfg = Debug|Win32
 		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Debug|Win32.Build.0 = Debug|Win32
 		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Release|Win32.ActiveCfg = Release|Win32

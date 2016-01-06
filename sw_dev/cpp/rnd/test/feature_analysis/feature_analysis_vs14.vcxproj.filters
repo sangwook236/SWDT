@@ -78,9 +78,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="lsd_lib\lsd.h">
       <Filter>Source Files\lsd_lib</Filter>
     </ClInclude>
@@ -89,12 +86,6 @@
     </ClInclude>
     <ClInclude Include="surf\surf_os_mapping.h">
       <Filter>Header Files\surf</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="opensurf_lib\fasthessian.h">
       <Filter>Source Files\opensurf_lib</Filter>
@@ -489,9 +480,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="opensift\opensift_display_feature.cpp">

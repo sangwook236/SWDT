@@ -79,9 +79,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="klt_lib\base.h" />
     <ClInclude Include="klt_lib\convolve.h" />
     <ClInclude Include="klt_lib\error.h" />
@@ -93,8 +90,6 @@
     <ClInclude Include="particle_filter_object_tracking_lib\observation.h" />
     <ClInclude Include="particle_filter_object_tracking_lib\particles.h" />
     <ClInclude Include="particle_filter_object_tracking_lib\utils.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="klt\klt_main.cpp" />
@@ -126,10 +121,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="particle_filter_object_tracking_lib\utils.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

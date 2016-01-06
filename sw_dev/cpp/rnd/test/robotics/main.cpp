@@ -10,9 +10,10 @@
 
 int main(int argc, char *argv[])
 {
-	int mrpt_main(int argc, char *argv[]);
 	int player_stage_main(int argc, char *argv[]);
 	int ros_main(int argc, char *argv[]);
+
+	int mrpt_main(int argc, char *argv[]);
 
 	int ompl_main(int argc, char *argv[]);
 
@@ -20,9 +21,6 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::srand((unsigned int)std::time(NULL));
-
-		std::cout << "Mobile Robot Programming Toolkit (MRPT) -----------------------------" << std::endl;
-		//retval = mrpt_main(argc, argv);  // compile-time error.
 
 		std::cout << "\nPlayer/Stage library ------------------------------------------------" << std::endl;
 		//retval = player_stage_main(argc, argv);
@@ -34,6 +32,9 @@ int main(int argc, char *argv[])
 #else
         std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
+
+		std::cout << "Mobile Robot Programming Toolkit (MRPT) -----------------------------" << std::endl;
+		//retval = mrpt_main(argc, argv);  // compile-time error.
 
 		std::cout << "\nOpen Motion Planning Library (OMPL) ---------------------------------" << std::endl;
 		retval = ompl_main(argc, argv);

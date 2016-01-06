@@ -82,23 +82,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="mfa_lib\log.hpp" />
     <ClInclude Include="mfa_lib\mfa.hpp" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mfa\mfa_main.cpp" />
     <ClCompile Include="mfa_lib\mfa.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="tapkee\tapkee_main.cpp" />
     <ClCompile Include="tapkee\tapkee_minimal_cpp_example.cpp" />
     <ClCompile Include="tapkee\tapkee_precomputed_distance_cpp_example.cpp" />
