@@ -59,7 +59,6 @@ int main(int argc, char *argv[])
 	void geometry();
 	void graph();
 	void graph_parallel();
-	void metric_tsp_approximation();
 	void ordinary_differential_equation();
 
 	void asio_timer();
@@ -86,7 +85,7 @@ int main(int argc, char *argv[])
 
 			//program_options(argc, argv);
 			//filesystem();
-			conversion();
+			//conversion();
 			//type_traits();
 
 			//date_time();
@@ -144,9 +143,8 @@ int main(int argc, char *argv[])
 			//polygon();
 			//geometry();
 
-			//graph();
+			graph();
 			//graph_parallel();  // not yet implemented.
-			//metric_tsp_approximation();
 
 			//ordinary_differential_equation();  // not yet implemented.
 		}
