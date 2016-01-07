@@ -84,6 +84,7 @@
 		<Unit filename="asio/asio_tcp_server.cpp" />
 		<Unit filename="asio/asio_tcp_udp_server.cpp" />
 		<Unit filename="asio/asio_timer.cpp" />
+		<Unit filename="asio/asio_udp_broadcast.cpp" />
 		<Unit filename="asio/asio_udp_client.cpp" />
 		<Unit filename="asio/asio_udp_server.cpp" />
 		<Unit filename="bind.cpp" />

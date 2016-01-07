@@ -16,39 +16,15 @@
     <Filter Include="Source Files\graph">
       <UniqueIdentifier>{9cb7678a-2e51-42fb-bb18-c420f1632c3e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\asio">
+      <UniqueIdentifier>{d9f47a5e-99f8-4bf1-a5e1-82baf83bb825}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="any.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="array.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="asio_line_based_operation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="asio_serial_port.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="asio_synchronizing_handler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="asio_tcp_client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="asio_tcp_server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="asio_tcp_udp_server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="asio_timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="asio_udp_client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="asio_udp_server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bind.cpp">
@@ -180,13 +156,58 @@
     <ClCompile Include="string_algorithms.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="asio\asio_line_based_operation.cpp">
+      <Filter>Source Files\asio</Filter>
+    </ClCompile>
+    <ClCompile Include="asio\asio_multicast_receiver.cpp">
+      <Filter>Source Files\asio</Filter>
+    </ClCompile>
+    <ClCompile Include="asio\asio_multicast_sender.cpp">
+      <Filter>Source Files\asio</Filter>
+    </ClCompile>
+    <ClCompile Include="asio\asio_serial_port.cpp">
+      <Filter>Source Files\asio</Filter>
+    </ClCompile>
+    <ClCompile Include="asio\asio_synchronizing_handler.cpp">
+      <Filter>Source Files\asio</Filter>
+    </ClCompile>
+    <ClCompile Include="asio\asio_tcp_client.cpp">
+      <Filter>Source Files\asio</Filter>
+    </ClCompile>
+    <ClCompile Include="asio\asio_tcp_server.cpp">
+      <Filter>Source Files\asio</Filter>
+    </ClCompile>
+    <ClCompile Include="asio\asio_tcp_udp_server.cpp">
+      <Filter>Source Files\asio</Filter>
+    </ClCompile>
+    <ClCompile Include="asio\asio_timer.cpp">
+      <Filter>Source Files\asio</Filter>
+    </ClCompile>
+    <ClCompile Include="asio\asio_udp_client.cpp">
+      <Filter>Source Files\asio</Filter>
+    </ClCompile>
+    <ClCompile Include="asio\asio_udp_server.cpp">
+      <Filter>Source Files\asio</Filter>
+    </ClCompile>
     <ClCompile Include="graph\graph.cpp">
       <Filter>Source Files\graph</Filter>
     </ClCompile>
     <ClCompile Include="graph\graph_parallel.cpp">
       <Filter>Source Files\graph</Filter>
     </ClCompile>
-    <ClCompile Include="graph\metric_tsp_approximation.cpp">
+    <ClCompile Include="graph\graph_maximum_flow_minimun_cut_algorithm.cpp">
+      <Filter>Source Files\graph</Filter>
+    </ClCompile>
+    <ClCompile Include="graph\graph_metric_tsp_approximation.cpp">
+      <Filter>Source Files\graph</Filter>
+    </ClCompile>
+    <ClCompile Include="graph\graph_shortest_path_algorithm.cpp">
+      <Filter>Source Files\graph</Filter>
+    </ClCompile>
+    <ClCompile Include="graph\graph_spanning_tree_algorithm.cpp">
+      <Filter>Source Files\graph</Filter>
+    </ClCompile>
+    <ClCompile Include="graph\graph_traversal_algorithm.cpp">
       <Filter>Source Files\graph</Filter>
     </ClCompile>
   </ItemGroup>
