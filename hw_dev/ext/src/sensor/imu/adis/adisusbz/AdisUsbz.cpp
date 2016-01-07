@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "AdisUsbz.h"
 #include <assert.h>
 #include <windows.h>
