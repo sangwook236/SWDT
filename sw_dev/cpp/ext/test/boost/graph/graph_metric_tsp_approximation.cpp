@@ -45,8 +45,10 @@ void connectAllEuclidean(VertexListGraph &g, const PointContainer &points, Weigh
     }
 }
 
-}  // unnamed namespace
 }  // namespace local
+}  // unnamed namespace
+
+namespace boost_graph {
 
 // Travelling salesman problem (TSP).
 // Hamiltonian path/cycle problem.
@@ -152,3 +154,5 @@ void metric_tsp_approximation()
         std::cout << "Length of tour: " << len << std::endl;
     }
 }
+
+}  // namespace boost_graph
