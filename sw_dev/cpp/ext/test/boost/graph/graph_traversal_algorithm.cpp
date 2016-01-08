@@ -9,6 +9,8 @@
 #include <boost/graph/graph_utility.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/graph/random.hpp>
+#include <boost/pending/indirect_cmp.hpp>
+#include <boost/range/irange.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int.hpp>
 #include <boost/random/variate_generator.hpp>
@@ -32,12 +34,12 @@ class custom_dfs_visitor : public boost::default_dfs_visitor
 public:
 	// this is invoked when a vertex is encountered for the first time.
 	template<typename Vertex, typename Graph>
-	void discover_vertex(const Vertex &u, const Graph &g) const
+	void discover_vertex(const Vertex &u, const Graph &) const
 	{ std::cout << "at " << u << std::endl; }
 
 	// this is invoked on every outgoing edge_type from the vertex after the vertex is discovered.
 	template<typename Edge, typename Graph>
-	void examine_edge(const Edge &e, const Graph &g) const
+	void examine_edge(const Edge &e, const Graph &) const
 	{ std::cout << "examining edges " << e << std::endl; }
 
 /*
@@ -45,14 +47,14 @@ public:
 	template<typename Vertex, typename Graph>
 	void start_vertex(Vertex u, const Graph &g) const
 	{
-		// do something
+		// do something.
 	}
 
 	// this is invoked when a vertex is invoked for the first time
 	template<typename Vertex, typename Graph>
 	void discover_vertex(Vertex u, const Graph &g) const
 	{
-		// do something
+		// do something.
 	}
 
 	// if u is the root of a tree, finish_vertex is invoked after the same is invoked on all other elements of the tree.
@@ -60,97 +62,255 @@ public:
 	template<typename Vertex, typename Graph>
 	void finish_vertex(Vertex u, const Graph &g) const
 	{
-		// do something
+		// do something.
 	}
 
 	// this is nvoked on every outgoing edge_type of u after it is discovered
 	template<typename Edge, typename Graph>
 	void examine_edge(Edge e, const Graph &g) const
 	{
-		// do something
+		// do something.
 	}
 
 	// this is invoked on an edge_type after it becomes a member of the edges that form the search tree
 	template<typename Edge, typename Graph>
 	void tree_edge(Edge e, const Graph &g) const
 	{
-		// do something
+		// do something.
 	}
 
 	// this is invoked on the back edges of a graph; used for an undirected graph, and because (u, v) and (v, u) are the same edges, both tree_edge and back_edge are invoked
 	template<typename Edge, typename Graph>
 	void back_edge(Edge e, const Graph &g) const
 	{
-		// do something
+		// do something.
 	}
 */
 };
 
-class custom_bfs_visitor : public boost::default_bfs_visitor
+template<typename TimeMap>
+class bfs_time_visitor : public boost::default_bfs_visitor
 {
+private:
+    typedef typename boost::property_traits<TimeMap>::value_type T;
+
+public:
+    bfs_time_visitor(TimeMap tmap, T& t)
+    : m_timemap(tmap), m_time(t)
+    {}
+
+public:
+    template<typename Vertex, typename Graph>
+    void discover_vertex(Vertex u, const Graph&) const
+    {
+        boost::put(m_timemap, u, m_time++);
+    }
+
+/*
     template <class Vertex, class Graph>
     boost::graph::bfs_visitor_event_not_overridden initialize_vertex(Vertex u, Graph &g)
     {
-		// do something
+		// do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
 
 	template <class Vertex, class Graph>
 	boost::graph::bfs_visitor_event_not_overridden discover_vertex(Vertex u, Graph &g)
 	{
-		// do something
+		// do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
 
 	template <class Vertex, class Graph>
 	boost::graph::bfs_visitor_event_not_overridden examine_vertex(Vertex u, Graph &g)
 	{
-		// do something
+		// do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
 
 	template <class Edge, class Graph>
 	boost::graph::bfs_visitor_event_not_overridden examine_edge(Edge e, Graph &g)
 	{
-		// do something
+		// do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
 
 	template <class Edge, class Graph>
 	boost::graph::bfs_visitor_event_not_overridden tree_edge(Edge e, Graph &g)
 	{
-		// do something
+		// do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
 
 	template <class Edge, class Graph>
 	boost::graph::bfs_visitor_event_not_overridden non_tree_edge(Edge e, Graph &g)
 	{
-		// do something
+		// do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
 
 	template <class Edge, class Graph>
 	boost::graph::bfs_visitor_event_not_overridden gray_target(Edge e, Graph &g)
 	{
-		// do something
+		// do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
 
 	template <class Edge, class Graph>
 	boost::graph::bfs_visitor_event_not_overridden black_target(Edge e, Graph &g)
 	{
-		// do something
+		// do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
 
 	template <class Vertex, class Graph>
 	boost::graph::bfs_visitor_event_not_overridden finish_vertex(Vertex u, Graph &g)
 	{
-		// do something
+		// do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
+*/
+
+private:
+    TimeMap m_timemap;
+    T& m_time;
 };
+
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/bfs-example.cpp
+void bfs_example()
+{
+    // Select the graph type we wish to use.
+    typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> graph_type;
+
+    // Set up the vertex IDs and names.
+    enum { r, s, t, u, v, w, x, y, N };
+    const char *name = "rstuvwxy";
+    // Specify the edges in the graph.
+    typedef std::pair<int, int> edge_type;
+    edge_type edge_array[] = {
+        edge_type(r, s), edge_type(r, v), edge_type(s, w), edge_type(w, r), edge_type(w, t),
+        edge_type(w, x), edge_type(x, t), edge_type(t, u), edge_type(x, y), edge_type(u, y)
+    };
+
+    // Create the graph object.
+    const int n_edges = sizeof(edge_array) / sizeof(edge_type);
+#if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
+    // VC++ has trouble with the edge iterator constructor.
+    graph_type g(N);
+    for (std::size_t j = 0; j < n_edges; ++j)
+        boost::add_edge(edge_array[j].first, edge_array[j].second, g);
+#else
+    typedef boost::graph_traits<graph_type>::vertices_size_type v_size_type;
+    graph_type g(edge_array, edge_array + n_edges, v_size_type(N));
+#endif
+
+    // typedefs.
+    typedef boost::graph_traits<graph_type>::vertices_size_type size_type;
+
+    // a vector to hold the discover time property for each vertex.
+    std::vector<size_type> dtime(boost::num_vertices(g));
+    typedef boost::iterator_property_map<std::vector<size_type>::iterator, boost::property_map<graph_type, boost::vertex_index_t>::const_type> dtime_pm_type;
+    dtime_pm_type dtime_pm(dtime.begin(), get(boost::vertex_index, g));
+
+    size_type time = 0;
+    bfs_time_visitor<dtime_pm_type> vis(dtime_pm, time);
+    boost::breadth_first_search(g, boost::vertex(s, g), boost::visitor(vis));
+
+    // Use std::sort to order the vertices by their discover time.
+    std::vector<boost::graph_traits<graph_type>::vertices_size_type> discover_order(N);
+    boost::integer_range<int> range(0, N);
+    std::copy(range.begin(), range.end(), discover_order.begin());
+    std::sort(discover_order.begin(), discover_order.end(), boost::indirect_cmp<dtime_pm_type, std::less<size_type> >(dtime_pm));
+
+    std::cout << "order of discovery: ";
+    for (int i = 0; i < N; ++i)
+        std::cout << name[discover_order[i]] << " ";
+    std::cout << std::endl;
+}
+
+template<typename Graph, typename VertexNameMap, typename TransDelayMap>
+void build_router_network(Graph& g, VertexNameMap name_map, TransDelayMap delay_map)
+{
+    typename boost::graph_traits<Graph>::vertex_descriptor a, b, c, d, e;
+    a = boost::add_vertex(g);
+    name_map[a] = 'a';
+    b = boost::add_vertex(g);
+    name_map[b] = 'b';
+    c = boost::add_vertex(g);
+    name_map[c] = 'c';
+    d = boost::add_vertex(g);
+    name_map[d] = 'd';
+    e = boost::add_vertex(g);
+    name_map[e] = 'e';
+
+    typename boost::graph_traits<Graph>::edge_descriptor ed;
+    bool inserted;
+
+    boost::tie(ed, inserted) = boost::add_edge(a, b, g);
+    delay_map[ed] = 1.2;
+    boost::tie(ed, inserted) = boost::add_edge(a, d, g);
+    delay_map[ed] = 4.5;
+    boost::tie(ed, inserted) = boost::add_edge(b, d, g);
+    delay_map[ed] = 1.8;
+    boost::tie(ed, inserted) = boost::add_edge(c, a, g);
+    delay_map[ed] = 2.6;
+    boost::tie(ed, inserted) = boost::add_edge(c, e, g);
+    delay_map[ed] = 5.2;
+    boost::tie(ed, inserted) = boost::add_edge(d, c, g);
+    delay_map[ed] = 0.4;
+    boost::tie(ed, inserted) = boost::add_edge(d, e, g);
+    delay_map[ed] = 3.3;
+}
+
+template<typename VertexNameMap>
+class bfs_name_printer : public boost::default_bfs_visitor
+{
+// inherit default (empty) event point actions.
+public:
+    bfs_name_printer(VertexNameMap n_map)
+    : m_name_map(n_map)
+    {}
+
+public:
+    template<typename Vertex, typename Graph>
+    void discover_vertex(Vertex u, const Graph &) const
+    {
+        std::cout << boost::get(m_name_map, u) << ' ';
+    }
+
+private:
+    VertexNameMap m_name_map;
+};
+
+struct VP
+{
+    char name;
+};
+
+struct EP
+{
+    double weight;
+};
+
+// REF [file] >> ${BOOST_HOME}/libs/graph/example/bfs-name-printer.cpp
+void bfs_name_printer_example()
+{
+    typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS, VP, EP> graph_type;
+    graph_type g;
+
+    boost::property_map<graph_type, char VP::*>::type name_map = boost::get(&VP::name, g);
+    boost::property_map<graph_type, double EP::*>::type delay_map = boost::get(&EP::weight, g);
+
+    build_router_network(g, name_map, delay_map);
+
+    typedef boost::property_map<graph_type, char VP::*>::type VertexNameMap;
+    boost::graph_traits<graph_type>::vertex_descriptor a = *boost::vertices(g).first;
+    bfs_name_printer<VertexNameMap> vis(name_map);
+
+    std::cout << "BFS vertex discover order: ";
+    boost::breadth_first_search(g, a, boost::visitor(vis));
+    std::cout << std::endl;
+}
 
 // auxiliary types.
 struct location_type
@@ -666,7 +826,8 @@ void traversal()
 
 	std::cout << "\nbreadth-first search -----------------------------------------" << std::endl;
 	{
-        // REF [file] >> ${BOOST_HOME}/libs/graph/example/bfs.cpp
+        local::bfs_example();
+        local::bfs_name_printer_example();
 	}
 
 	std::cout << "\nA* search ----------------------------------------------------" << std::endl;
