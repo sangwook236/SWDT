@@ -109,12 +109,12 @@
 
 - pseudocode programming process (PPP)
 	- // PPP [] {step:#} >> `<brief description>`
-	- //  -. <detailed explanation>
+	- //  -. `<detailed explanation>`
 
 - design by contract (DbC)
 	- // CONTRACT [precondition/postcondition/invariant] {required/optional} >> `<brief description>`
 	- //  -. `<detailed explanation>`
-	- //  [ref] ContractViolation and its derived classes in ${VIGRA_LIBRARY_HOME}/include/vigra/error.hxx
+		- [ref] ContractViolation and its derived classes in ${VIGRA_LIBRARY_HOME}/include/vigra/error.hxx
 - precondition
 	- // PRECONDITION [] {none/required/optional} >> `<brief description>`
 	- //  -. `<detailed explanation>`

@@ -32,8 +32,8 @@
 	- Change working directory using cd command in script (in Mac).
 		- "Settings" main menu item -> "Environment..." menu item -> "General settings" listview item -> "Terminal to launch console programs:" item
 			- `osascript -e 'tell app "Terminal"' -e 'activate' -e 'do script "exe=\'$SCRIPT\'; cd \\"${exe%/*/*/*}\\"; pwd; \\"${exe%}\\""' -e 'end tell'`
-				Where is $SCRIPT defined?
-				'/*' means deletion of a word.
+				- where is $SCRIPT defined?
+				- '/*' means deletion of a word.
 			- [ref] AppleScript
 		- [ref] http://forums.codeblocks.org/index.php?topic=10328.0
 
