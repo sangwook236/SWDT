@@ -33,9 +33,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="mysql\mysql_main.cpp">
       <Filter>Source Files\mysql</Filter>
     </ClCompile>
@@ -62,9 +59,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="sqlite_lib\sqlite3.h">
       <Filter>Source Files\sqlite_lib</Filter>
     </ClInclude>
@@ -74,8 +68,5 @@
     <ClInclude Include="lmdbxx_lib\lmdb++.h">
       <Filter>Source Files\lmdbxx_lib</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
   </ItemGroup>
 </Project>

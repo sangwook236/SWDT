@@ -21,9 +21,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="xercesc\xercesc_dom.cpp">
       <Filter>Source Files\xercesc</Filter>
     </ClCompile>
@@ -47,9 +44,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="xercesc\xercesc_DOMPrintErrorHandler.hpp">
       <Filter>Source Files\xercesc</Filter>
     </ClInclude>

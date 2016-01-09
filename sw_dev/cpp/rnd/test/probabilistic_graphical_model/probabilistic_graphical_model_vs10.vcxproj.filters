@@ -4,9 +4,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="hmm\hmm_forward_backward.cpp">
       <Filter>Source Files\hmm</Filter>
     </ClCompile>
@@ -285,12 +282,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="umdhmm_lib\umdhmm_cdhmm.h">
       <Filter>Source Files\umdhmm_lib</Filter>
     </ClInclude>
@@ -398,7 +389,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
     <None Include="trws_lib\instances.inc">
       <Filter>Source Files\trws_lib</Filter>
     </None>

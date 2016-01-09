@@ -42,9 +42,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="opencv\opencv_bag_of_words.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
@@ -428,9 +425,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="opencv\PascalVocDataset.h">
       <Filter>Header Files\opencv</Filter>
     </ClInclude>
@@ -443,8 +437,5 @@
     <ClInclude Include="ivt\ParticleFilter3D.h">
       <Filter>Source Files\ivt</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
   </ItemGroup>
 </Project>

@@ -84,15 +84,8 @@
     <None Include="pictorial_structures_revisited_lib\libPictStruct\HypothesisList.proto">
       <Filter>Source Files\pictorial_structures_revisited_lib\libPictStruct</Filter>
     </None>
-    <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="pictorial_structures_revisited\parteval.h">
       <Filter>Source Files\pictorial_structures_revisited</Filter>
     </ClInclude>
@@ -219,9 +212,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pictorial_structures_revisited_lib\libAdaBoost\AdaBoost.cc">

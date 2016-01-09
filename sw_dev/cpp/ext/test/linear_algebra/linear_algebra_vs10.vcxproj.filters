@@ -4,9 +4,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="armadillo\armadillo_cube_arithmetic.cpp">
       <Filter>Source Files\armadillo</Filter>
     </ClCompile>
@@ -106,17 +103,6 @@
     <ClCompile Include="newmat\newmat_main.cpp">
       <Filter>Source Files\newmat</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

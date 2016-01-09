@@ -33,9 +33,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="galib\galib_main.cpp">
       <Filter>Source Files\galib</Filter>
     </ClCompile>
@@ -84,13 +81,5 @@
     <ClCompile Include="optpp\optpp_main.cpp">
       <Filter>Source Files\optpp</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
   </ItemGroup>
 </Project>
