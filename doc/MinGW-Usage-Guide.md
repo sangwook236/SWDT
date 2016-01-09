@@ -2,15 +2,15 @@
 
 ##### General
 - Site
-	* [MinGW32](http://www.mingw.org/)
-	* [MinGW64](http://mingw-w64.org/)
+	- [MinGW32](http://www.mingw.org/)
+	- [MinGW64](http://mingw-w64.org/)
 
-	+ http://sourceforge.net/projects/mingw/files/MinGW/Base/
-	+ http://sourceforge.net/projects/mingw/files/MinGW/Extension/
+	- http://sourceforge.net/projects/mingw/files/MinGW/Base/
+	- http://sourceforge.net/projects/mingw/files/MinGW/Extension/
 		- mingw-utils
 		- peexports
 		- reimp
-	+ http://sourceforge.net/projects/mingw/files/MinGW/Contributed/
+	- http://sourceforge.net/projects/mingw/files/MinGW/Contributed/
 
 	- http://sourceforge.net/projects/mingw/files/MSYS/Base/
 	- http://sourceforge.net/projects/mingw/files/MSYS/Extension/
