@@ -31,16 +31,16 @@
 
 	- Change working directory using cd command in script (in Mac).
 		- "Settings" main menu item -> "Environment..." menu item -> "General settings" listview item -> "Terminal to launch console programs:" item
-			- osascript -e 'tell app "Terminal"' -e 'activate' -e 'do script "exe=\'$SCRIPT\'; cd \\"${exe%/*/*/*}\\"; pwd; \\"${exe%}\\""' -e 'end tell'
+			- `osascript -e 'tell app "Terminal"' -e 'activate' -e 'do script "exe=\'$SCRIPT\'; cd \\"${exe%/*/*/*}\\"; pwd; \\"${exe%}\\""' -e 'end tell'`
 				Where is $SCRIPT defined?
 				'/*' means deletion of a word.
 			- [ref] AppleScript
 		- [ref] http://forums.codeblocks.org/index.php?topic=10328.0
 
 		- For building & running.
-			osascript -e 'tell app "Terminal"' -e 'activate' -e 'do script "cd /path/to/working_directory; $SCRIPT"' -e 'end tell'
+			- `osascript -e 'tell app "Terminal"' -e 'activate' -e 'do script "cd /path/to/working_directory; $SCRIPT"' -e 'end tell'`
 		- For debugging.
-			osascript -e 'tell app "Terminal"' -e 'activate' -e 'do script "cd /path/to/working_directory; ./executable_name"' -e 'end tell'
+			- `osascript -e 'tell app "Terminal"' -e 'activate' -e 'do script "cd /path/to/working_directory; ./executable_name"' -e 'end tell'`
 
 		- I don't know exactly yet how to use AppleScript. This is just a starting point. 
 
@@ -57,11 +57,11 @@
 - 공용 library가 아닌 library를 link하기
 	- 아래와 같이 library를 지정하여야 함.
 		- library 이름만 지정해서는 정상적으로 build되지 않음.
-		`../../bin/Debug/swl_base.so`
-		`../../bin/Release/swl_base.so`
+			- `../../bin/Debug/swl_base.so`
+			- `../../bin/Release/swl_base.so`
 		- 이 경우 Linker search directories에 아래의 directories를 추가할 필요가 없음.
-			`../../bin/Debug/`
-			`../../bin/Release/`
+			- `../../bin/Debug/`
+			- `../../bin/Release/`
 
 - static library & shared object의 경우
 	- "Build options..."에서 Link libraries & Linker search directories를 설정할 필요가 없음.
@@ -76,14 +76,10 @@
 
 - policy for target options
 	- Compiler settings & Linker settings
-		- 적절한 compiler options & linker options을 적용하기 위해
-		- "Compiler settings"과 "Linker settings"에서 target option을 추가하는 policy를
-		- "Prepend target options to project options"을 지정해야 함.
+		- 적절한 compiler options & linker options을 적용하기 위해 "Compiler settings"과 "Linker settings"에서 target option을 추가하는 policy를 "Prepend target options to project options"을 지정해야 함.
 		- 기본값은 "Append target options to project options"임.
 		- 특히, "Link libraries"의 경우 build 과정에 영향을 미칠 수 있음으로 중요.
 
 	- Compiler search directories & Linker search directories
-		- 적절한 include directories & library directories를 사용하기 위해
-		- "Search directories"에서 target option을 추가하는 policy를
-		- "Prepend target options to project options"을 지정해야 함.
+		- 적절한 include directories & library directories를 사용하기 위해 "Search directories"에서 target option을 추가하는 policy를 "Prepend target options to project options"을 지정해야 함.
 		- 기본값은 "Append target options to project options"임.

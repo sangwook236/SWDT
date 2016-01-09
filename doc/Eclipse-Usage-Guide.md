@@ -25,12 +25,12 @@
 		- Cannot assign a tool chain which I want to use, but just choose one of existing ones.
 		- [ref] http://www.codebuilder.me/2014/03/setting-up-eclipse-on-a-mac-for-gcc-4-8-toolchain/ (?)
 	- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Compiler" tree item -> "Command:" item (?)
-		- e.g.) g++ -> `/my_usr/local/bin/g++`
+		- e.g.) g++ : `/my_usr/local/bin/g++`
 	- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Linker" tree item -> "Command:" item (?)
-		- e.g.) g++ -> `/mu_usr/local/bin/g++`
+		- e.g.) g++ : `/mu_usr/local/bin/g++`
 		- These are not a fundamental solution, but change just executable compiler & linker.
 
-	How to add custom tool chain to eclipse CDT.
+	- How to add custom tool chain to eclipse CDT.
 		- http://stackoverflow.com/questions/3489607/how-to-add-custom-tool-chain-to-eclipse-cdt
 		- http://sourceforge.net/projects/gnuarmeclipse/
 		- http://gnuarmeclipse.livius.net/blog/toolchain-path/
@@ -49,7 +49,7 @@
 			- set directory paths with a deeper step than we think.
 				- e.g.) `../../../inc`
 	- Compiler options
-		"Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Compiler" tree item -> "Optimization", "Debugging", "Warnings", and "Miscellaneous" tree items
+		- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Compiler" tree item -> "Optimization", "Debugging", "Warnings", and "Miscellaneous" tree items
 	- Defines
 		- "Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Code Analysis" tree item -> "Paths and Symbols" tree item -> "Symbols" tabs
 		- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Compiler" tree item -> "Preprocessor" tree item -> "Defined symbols (-D)" listview

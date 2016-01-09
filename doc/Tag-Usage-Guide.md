@@ -1,6 +1,6 @@
 ## Documentation Tag
 
-##### hierarachy
+##### Hierarachy
 - [-]
 - [1]
 	- <->
@@ -15,9 +15,9 @@
 			- 1.
 			- i.
 
-##### status, explanation or constraint
-- use brace: {...}
-- usage
+##### Status, Explanation or Constraint
+- Use brace: {...}
+- Usage
 	- [-] {*} 1 tab == 4 spaces.
 	- -. {/,need} change tag structure.
 	- -. {progress,problem} our system malfunctions.
@@ -44,7 +44,7 @@
 
 ## Revision (History) Tag
 
-##### format
+##### Format
 - when multiple lines
 	- //--S [tag-id] yyyy/mm/dd: modifier-id
 	- //	-. {action-id}: <explanation>
@@ -52,7 +52,7 @@
 - when single line & no explanation
 	- //-- [tag-id] yyyy/mm/dd: modifier-id
 
-##### feature
+##### Feature
 - can be nested
 - tag-id
 	- tag id는 동일 file 내에서 unique하여야 하며 생략될 수 있다.
@@ -72,55 +72,55 @@
 
 ## Task Tag
 
-##### format
+##### Format
 - review
-	- // TODO [review] >> <brief description>
-	- //  -. <detailed explanation>
+	- // TODO [review] >> `<brief description>`
+	- //  -. `<detailed explanation>`
 		- e.g.) 추가적인 검토가 필요한 경우.
 - check
-	- // TODO [check] >> <brief description>
-	- //  -. <detailed explanation>
+	- // TODO [check] >> `<brief description>`
+	- //  -. `<detailed explanation>`
 		- e.g.) 검증이나 테스트가 충분히 되지 않은 경우.
 - add/implement
-	- // TODO [add/implement] >> <brief description>
-	- //  -. <detailed explanation>
+	- // TODO [add/implement] >> `<brief description>`
+	- //  -. `<detailed explanation>`
 		- 미구현 사항이 있는 부분에 사용.
 - modify/enhance/update/upgrade/fix/correct
-	- // FIXME [modify/enhance/update/upgrade/fix/correct] >> <brief description>
-	- //  -. <detailed explanation>
+	- // FIXME [modify/enhance/update/upgrade/fix/correct] >> `<brief description>`
+	- //  -. `<detailed explanation>`
 		- 구현은 되어 있으나 (재사용성 등의 이유로) 수정이 필요한 부분에 사용.
 - delete
-	- // FIXME [delete] >> <brief description>
-	- //  -. <detailed explanation>
+	- // FIXME [delete] >> `<brief description>`
+	- //  -. `<detailed explanation>`
 		- e.g.) test를 위해 작성한 경우.
 - restore
-	- // FIXME [restore] >> <brief description>
-	- //  -. <detailed explanation>
+	- // FIXME [restore] >> `<brief description>`
+	- //  -. `<detailed explanation>`
 		- test 등을 위해 대체했던 부분을 원상태로 복귀.
 
 - note
-	- // NOTE [caution] >> <brief description>
-	- //  -. <detailed explanation>
+	- // NOTE [caution] >> `<brief description>`
+	- //  -. `<detailed explanation>`
 
 - reference
-	- // REF [site/file/doc/paper] >> <brief description>
-	- //  -. <reference site or document, etc.>
-	- //  -. <additional comment>
+	- // REF [site/file/doc/paper] >> `<brief description>`
+	- //  -. `<reference site or document, etc.>`
+	- //  -. `<additional comment>`
 
 - pseudocode programming process (PPP)
-	- // PPP [] {step:#} >> <brief description>
+	- // PPP [] {step:#} >> `<brief description>`
 	- //  -. <detailed explanation>
 
 - design by contract (DbC)
-	- // CONTRACT [precondition/postcondition/invariant] {required/optional} >> <brief description>
-	- //  -. <detailed explanation>
+	- // CONTRACT [precondition/postcondition/invariant] {required/optional} >> `<brief description>`
+	- //  -. `<detailed explanation>`
 	- //  [ref] ContractViolation and its derived classes in ${VIGRA_LIBRARY_HOME}/include/vigra/error.hxx
 - precondition
-	- // PRECONDITION [] {none/required/optional} >> <brief description>
-	- //  -. <detailed explanation>
+	- // PRECONDITION [] {none/required/optional} >> `<brief description>`
+	- //  -. `<detailed explanation>`
 - postcondition
-	- // POSTCONDITION [] {none/required/optional} >> <brief description>
-	- //  -. <detailed explanation>
+	- // POSTCONDITION [] {none/required/optional} >> `<brief description>`
+	- //  -. `<detailed explanation>`
 - invariant
-	- // INVARIANT [] {none/required/optional} >> <brief description>
-	- //  -. <detailed explanation>
+	- // INVARIANT [] {none/required/optional} >> `<brief description>`
+	- //  -. `<detailed explanation>`
