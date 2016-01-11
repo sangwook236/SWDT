@@ -42,8 +42,8 @@
 			<Add library="playerc++" />
 			<Add library="boost_system" />
 			<Add directory="/usr/local/lib" />
-			<Add directory="/usr/lib" />
 		</Linker>
+		<Unit filename="main.cpp" />
 		<Unit filename="player_stage/player_stage_main.cpp" />
 		<Unit filename="player_stage/player_stage_rubbish_collecting_robot.cpp" />
 		<Unit filename="player_stage/player_stage_simple_example.cpp" />
