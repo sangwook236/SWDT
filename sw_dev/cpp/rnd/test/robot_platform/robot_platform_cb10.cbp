@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="robot_platform" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../bin/robot_platform_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../bin/robot_platform" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="/usr/include/player-3.0" />
+			<Add directory="/usr/include/eigen3" />
+			<Add directory="/usr/local/include" />
+			<Add directory="/usr/include" />
+		</Compiler>
+		<Linker>
+			<Add library="playerc++" />
+			<Add library="boost_system" />
+			<Add directory="/usr/local/lib" />
+			<Add directory="/usr/lib" />
+		</Linker>
+		<Unit filename="player_stage/player_stage_main.cpp" />
+		<Unit filename="player_stage/player_stage_rubbish_collecting_robot.cpp" />
+		<Unit filename="player_stage/player_stage_simple_example.cpp" />
+		<Unit filename="ros/ros_main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

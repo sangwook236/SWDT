@@ -24,6 +24,7 @@
 		<Project filename="../test/pose_estimation/pose_estimation_cb10.cbp" />
 		<Project filename="../test/probabilistic_graphical_model/probabilistic_graphical_model_cb10.cbp" />
 		<Project filename="../test/robotics/robotics_cb10.cbp" />
+		<Project filename="../test/robot_platform/robot_platform_cb10.cbp" />
 		<Project filename="../test/searching/searching_cb10.cbp" />
 		<Project filename="../test/segmentation/segmentation_cb10.cbp" />
 		<Project filename="../test/shape_analysis/shape_analysis_cb10.cbp" />

@@ -4,7 +4,6 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "playerc++.lib")
 #pragma comment(lib, "libmrpt-base090-dbg.lib")
 #pragma comment(lib, "libmrpt-gui090-dbg.lib")
 #pragma comment(lib, "libmrpt-hmtslam090-dbg.lib")
@@ -18,11 +17,10 @@
 #pragma comment(lib, "libmrpt-vision090-dbg.lib")
 
 #pragma comment(lib, "ompl_d.lib")
-#pragma comment(lib, "libboost_serialization-vc100-mt-gd-1_52.lib")
+#pragma comment(lib, "libboost_serialization-vc100-mt-gd-1_59.lib")
 
 #		else
 
-#pragma comment(lib, "playerc++.lib")
 #pragma comment(lib, "libmrpt-base090.lib")
 #pragma comment(lib, "libmrpt-gui090.lib")
 #pragma comment(lib, "libmrpt-hmtslam090.lib")
@@ -36,7 +34,7 @@
 #pragma comment(lib, "libmrpt-vision090.lib")
 
 #pragma comment(lib, "ompl.lib")
-#pragma comment(lib, "libboost_serialization-vc100-mt-1_52.lib")
+#pragma comment(lib, "libboost_serialization-vc100-mt-1_59.lib")
 
 #		endif
 

@@ -50,7 +50,6 @@
 			<Add directory="/usr/include/mrpt/topography/include/" />
 			<Add directory="/usr/include/mrpt/vision/include/" />
 			<Add directory="/usr/include/mrpt/mrpt-config/" />
-			<Add directory="/usr/include/player-3.0" />
 			<Add directory="/usr/include/eigen3" />
 			<Add directory="/usr/local/include" />
 			<Add directory="/usr/include" />
@@ -70,10 +69,8 @@
 			<Add library="mrpt-hwdrivers" />
 			<Add library="mrpt-gui" />
 			<Add library="mrpt-base" />
-			<Add library="playerc++" />
 			<Add library="boost_system" />
 			<Add directory="/usr/local/lib" />
-			<Add directory="/usr/lib" />
 		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="mrpt/mrpt_dijkstra.cpp" />
@@ -108,10 +105,6 @@
 		<Unit filename="mrpt/mrpt_slam_kf.cpp" />
 		<Unit filename="ompl/ompl_main.cpp" />
 		<Unit filename="ompl/ompl_rigid_body_planning_example.cpp" />
-		<Unit filename="player_stage/player_stage_main.cpp" />
-		<Unit filename="player_stage/player_stage_rubbish_collecting_robot.cpp" />
-		<Unit filename="player_stage/player_stage_simple_example.cpp" />
-		<Unit filename="ros/ros_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

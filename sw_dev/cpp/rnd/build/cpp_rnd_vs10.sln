@@ -12,6 +12,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "neural_network_vs10", "..\t
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "robotics_vs10", "..\test\robotics\robotics_vs10.vcxproj", "{99406811-DAE3-4378-8EEA-0D50E18D8564}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "robot_platform_vs10", "..\test\robot_platform\robot_platform_vs10.vcxproj", "{CE4E33A7-8AB3-4AD0-A1C7-51E73F449007}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gesture_recognition_vs10", "..\test\gesture_recognition\gesture_recognition_vs10.vcxproj", "{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "probabilistic_graphical_model_vs10", "..\test\probabilistic_graphical_model\probabilistic_graphical_model_vs10.vcxproj", "{326CF11F-0264-4D95-930B-0D6DAD809C96}"
@@ -86,6 +88,10 @@ Global
 		{99406811-DAE3-4378-8EEA-0D50E18D8564}.Debug|Win32.Build.0 = Debug|Win32
 		{99406811-DAE3-4378-8EEA-0D50E18D8564}.Release|Win32.ActiveCfg = Release|Win32
 		{99406811-DAE3-4378-8EEA-0D50E18D8564}.Release|Win32.Build.0 = Release|Win32
+		{CE4E33A7-8AB3-4AD0-A1C7-51E73F449007}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CE4E33A7-8AB3-4AD0-A1C7-51E73F449007}.Debug|Win32.Build.0 = Debug|Win32
+		{CE4E33A7-8AB3-4AD0-A1C7-51E73F449007}.Release|Win32.ActiveCfg = Release|Win32
+		{CE4E33A7-8AB3-4AD0-A1C7-51E73F449007}.Release|Win32.Build.0 = Release|Win32
 		{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}.Debug|Win32.ActiveCfg = Debug|Win32
 		{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}.Debug|Win32.Build.0 = Debug|Win32
 		{5BE3C083-AEB9-4ABC-897F-B34B2E212F14}.Release|Win32.ActiveCfg = Release|Win32
