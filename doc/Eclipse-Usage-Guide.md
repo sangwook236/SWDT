@@ -27,10 +27,10 @@
 	- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Compiler" tree item -> "Command:" item (?)
 		- e.g.) g++ : `/my_usr/local/bin/g++`
 	- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Linker" tree item -> "Command:" item (?)
-		- e.g.) g++ : `/mu_usr/local/bin/g++`
-		- These are not a fundamental solution, but change just executable compiler & linker.
+		- e.g.) g++ : `/my_usr/local/bin/g++`
+		- These are not a fundamental solution, but change only executable compiler and linker.
 
-	- How to add custom tool chain to eclipse CDT.
+	- How to add a custom tool chain to eclipse CDT.
 		- http://stackoverflow.com/questions/3489607/how-to-add-custom-tool-chain-to-eclipse-cdt
 		- http://sourceforge.net/projects/gnuarmeclipse/
 		- http://gnuarmeclipse.livius.net/blog/toolchain-path/
@@ -70,7 +70,7 @@
 
 - Output directory
 	- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Build Artifact" tab -> "Output prefix:" item (?)
-		- in case of library : `../../../lib/lib`
+		- in case of library : `../../../lib`
 
 - Working directory
 	- "Run" main menu item -> "Run/Debug/Profile Configurations..." menu item -> "C/C++ Application" tree item -> 'project launch configuration' tree item -> "(x)= Arguments" tab -> "Working directory:" item
