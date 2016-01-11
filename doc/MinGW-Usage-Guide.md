@@ -3,19 +3,18 @@
 ##### General
 - Site
 	- [MinGW32](http://www.mingw.org/)
+		- http://sourceforge.net/projects/mingw/files/MinGW/Base/
+		- http://sourceforge.net/projects/mingw/files/MinGW/Extension/
+			- mingw-utils
+			- peexports
+			- reimp
+		- http://sourceforge.net/projects/mingw/files/MinGW/Contributed/
+	
+		- http://sourceforge.net/projects/mingw/files/MSYS/Base/
+		- http://sourceforge.net/projects/mingw/files/MSYS/Extension/
+			- wget
+		- http://sourceforge.net/projects/mingw/files/MSYS/Contributed/
 	- [MinGW64](http://mingw-w64.org/)
-
-	- http://sourceforge.net/projects/mingw/files/MinGW/Base/
-	- http://sourceforge.net/projects/mingw/files/MinGW/Extension/
-		- mingw-utils
-		- peexports
-		- reimp
-	- http://sourceforge.net/projects/mingw/files/MinGW/Contributed/
-
-	- http://sourceforge.net/projects/mingw/files/MSYS/Base/
-	- http://sourceforge.net/projects/mingw/files/MSYS/Extension/
-		- wget
-	- http://sourceforge.net/projects/mingw/files/MSYS/Contributed/
 
 - Document
 	- http://www.mingw.org/wiki
@@ -26,91 +25,85 @@
 	- http://www.mingw.org/wiki/Interoperability_of_Libraries_Created_by_Different_Compiler_Brands
 	- http://www.mingw.org/wiki/JNI_MinGW_DLL
 
- - Usage
+- Usage
 	- Reference
-    	- ${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
+  	- ${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
 
 ##### Console
 - Use Windows Command Prompt or Visual Studio Command Prompt
-	- MSYS console¸¦ »ç¿ëÇÏ´Â °Íº¸´Ù À¯¸®.
-	- »ç¿ëÇÏ±â Àü¿¡ ${MINGW_ROOT}/bin & ${MSYS_ROOT}/binÀ» pathÀÇ Ã¹ Ç×¸ñÀ¸·Î ¼³Á¤ÇÏ¿©¾ß ÇÔ.
-
-		`set path=${MINGW_ROOT}/bin;%path%` <br />
-		`set path=${MINGW_ROOT}/bin;${MSYS_ROOT}/bin;%path%` <br />
-		`set path=${MINGW_ROOT}/bin;${CYGWIN_HOME}/bin;%path%` <br />
-		`set path=${MINGW_ROOT}/bin;${GNUWIN32_HOME}/bin;%path%`
+	- MSYS consoleë¥¼ ì‚¬ìš©í•˜ëŠ” ê²ƒë³´ë‹¤ ìœ ë¦¬.
+	- ì‚¬ìš©í•˜ê¸° ì „ì— ${MINGW_ROOT}/bin & ${MSYS_ROOT}/binì„ pathì˜ ì²« í•­ëª©ìœ¼ë¡œ ì„¤ì •í•˜ì—¬ì•¼ í•¨.
+		- `set path=${MINGW_ROOT}/bin;%path%`
+		- `set path=${MINGW_ROOT}/bin;${MSYS_ROOT}/bin;%path%`
+		- `set path=${MINGW_ROOT}/bin;${CYGWIN_HOME}/bin;%path%`
+		- `set path=${MINGW_ROOT}/bin;${GNUWIN32_HOME}/bin;%path%`
 - Use MSYS console
-	- »ç¿ëÇÏ±â Àü¿¡ ${MINGW_ROOT}/binÀ» pathÀÇ Ã¹ Ç×¸ñÀ¸·Î ¼³Á¤ÇÏ¿©¾ß ÇÔ.
+	- ì‚¬ìš©í•˜ê¸° ì „ì— ${MINGW_ROOT}/binì„ pathì˜ ì²« í•­ëª©ìœ¼ë¡œ ì„¤ì •í•˜ì—¬ì•¼ í•¨.
 		- `export PATH=${MINGW_ROOT}/bin:$PATH`
 			- e.g.) `export PATH=/d/MyProgramFiles2/MinGW/bin:$PATH`
 
 ##### Package Management
-- ¾Æ·¡ÀÇ executable fileÀ» ÀÌ¿ëÇØ¼­ package management¸¦ ¼öÇà
+- ì•„ë˜ì˜ executable fileì„ ì´ìš©í•´ì„œ package managementë¥¼ ìˆ˜í–‰
 	- `${MINGW_ROOT}/bin/mingw-get.exe`
 	- e.g.)
+		- `mingw-get install lib-package-name`
+		- `mingw-get update`
 
-		`mingw-get install lib-package-name` <br />
-		`mingw-get update`
-
-- mingw-get.exeÀ¸·Î ¼³Ä¡µÇÁö ¾Ê´Â packageÀÇ °æ¿ì ¾Æ·¡ÀÇ »çÀÌÆ®¿¡¼­ Ã£À» ¼ö ÀÖÀ½.
+- mingw-get.exeìœ¼ë¡œ ì„¤ì¹˜ë˜ì§€ ì•ŠëŠ” packageì˜ ê²½ìš° ì•„ë˜ì˜ ì‚¬ì´íŠ¸ì—ì„œ ì°¾ì„ ìˆ˜ ìˆìŒ
 	- http://sourceforge.net/projects/mingw/files/MSYS/Extension/
 	- http://sourceforge.net/projects/mingw/files/MSYS/Base/
-	- download ¹ŞÀº fileÀ» ${MSYS_HOME}¿¡ º¹»çÇÑ ÈÄ ¾ĞÃàÀ» Ç®¸é ${MSYS_HOME}/bin¿¡ º¹»çµÊ.
+	- download ë°›ì€ fileì„ ${MSYS_HOME}ì— ë³µì‚¬í•œ í›„ ì••ì¶•ì„ í’€ë©´ `${MSYS_HOME}/bin`ì— ë³µì‚¬ë¨.
 
 ## Software Building
 
-##### Software buildingÀ» À§ÇØ¼­ »ç¿ëÇÒ compiler & linker, etc
-- ${MINGW_ROOT}/bin ÇÏÀ§ÀÇ fileÀ» »ç¿ë
-- "mingw32-"ÀÌ ¾ø´Â executable fileÀ» »ç¿ë
+##### Software buildingì„ ìœ„í•´ì„œ ì‚¬ìš©í•  compiler & linker, etc
+- ${MINGW_ROOT}/bin í•˜ìœ„ì˜ fileì„ ì‚¬ìš©
+- "mingw32-"ì´ ì—†ëŠ” executable fileì„ ì‚¬ìš©
 	- e.g.)
 		- mingw32-gcc.exe (X) ==> gcc.exe (O)
 		- mingw32-g++.exe (X) ==> g++.exe (O)
-	- ´Ü, makeÀÇ °æ¿ì mingw32-make.exe¸¦ »ç¿ë
+	- ë‹¨, makeì˜ ê²½ìš° mingw32-make.exeë¥¼ ì‚¬ìš©
 		- make.exe (X) ==> mingw32-make.exe (O)
 
 ##### Use CMake
 - In Visual Studio Command Prompt or Windows Command Prompt
 	- [ref] http://icl.cs.utk.edu/lapack-for-windows/lapack/
 	1. set the GNU runtime directory in PATH.
-
-		`set path=${MINGW_ROOT}/bin;%path%`
-		`set path=${MINGW_ROOT}/bin;${CYGWIN_HOME}/bin;%path%`
+		- `set path=${MINGW_ROOT}/bin;%path%`
+		- `set path=${MINGW_ROOT}/bin;${CYGWIN_HOME}/bin;%path%`
 	2. run cmake-gui.
 	3. specify 'MinGW Makefiles' as the generator.
-		-  sh.exe °ü·Ã ¿À·ù°¡ ¹ß»ıÇÏ¸é 'Configure' Àç½ÇÇà.
+		-  sh.exe ê´€ë ¨ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ë©´ 'Configure' ì¬ì‹¤í–‰.
 			- <error message> sh.exe was found in your PATH
-			- 4¹ø Âü°í.
-		- Fortran compiler °ü·Ã ¿À·ù°¡ ¹ß»ıÇÏ¸é
-			- <error message> The Fortran compiler "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/ifc.exe" is not able to compile a simple test program.
-			- 4¹ø Âü°í.
+			- 4ë²ˆ ì°¸ê³ .
+		- Fortran compiler ê´€ë ¨ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ë©´
+			- <error message> The Fortran compiler `C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/ifc.exe` is not able to compile a simple test program.
+			- 4ë²ˆ ì°¸ê³ .
 	4. set options.
-		- set the 'CMAKE_SH' option to ${MSYS_ROOT}/bin/sh.exe
-		- set the 'CMAKE_Fortran_COMPILER' option to ${MINGW_ROOT}/bin/gfortran.exe
+		- set the 'CMAKE_SH' option to `${MSYS_ROOT}/bin/sh.exe`
+		- set the 'CMAKE_Fortran_COMPILER' option to `${MINGW_ROOT}/bin/gfortran.exe`
 		- set the 'BUILD_SHARED_LIBS' option to ON.
-			- ÀÌ optionÀ» ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é .a library file »ı¼º.
+			- ì´ optionì„ ì§€ì •í•˜ì§€ ì•Šìœ¼ë©´ .a library file ìƒì„±.
 		- set the 'CMAKE_GNUtoMS' option to ON.
 			- [ref] https://cmake.org/cmake/help/v3.0/prop_tgt/GNUtoMS.html
 			- <warning message> Disabling CMAKE_GNUtoMS option because CMAKE_GNUtoMS_VCVARS is not set
-			- set the 'CMAKE_GNUtoMS_VCVARS' option to 'C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/vcvars32.bat'
+			- set the 'CMAKE_GNUtoMS_VCVARS' option to `C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/vcvars32.bat`
 	5. configure and generate.
 	6. cd cmake-build directory.
 	7. run make.
-
-		`mingw32-make` <br />
-		`mingw32-make PREFIX=${INSTAL_PREFIX} install`
+		- `mingw32-make`
+		- `mingw32-make PREFIX=${INSTAL_PREFIX} install`
 - In MSYS console (==> not working)
 	1. set ${MINGW_ROOT}/bin path.
-
-		`export PATH=${MINGW_ROOT}/bin:$PATH`
+		- `export PATH=${MINGW_ROOT}/bin:$PATH`
 	2. run cmake-gui.
-		- Windows¿ë software »ç¿ë °¡´É.
+		- Windowsìš© software ì‚¬ìš© ê°€ëŠ¥.
 	3. specify 'MSYS Makefiles' as the generator.
 
 ##### Installation Prefix Setting
-- MinGW³ª MSYSÀÇ °æ¿ì /usr ÀÌ³ª /usr/local directory°¡ ¾øÀ½
-	- µû¶ó¼­, software installation prefix·Î ¾Æ·¡ÀÇ directory¸¦ »ç¿ëÇÏ¿©¾ß ÇÔ.
-
-		`--prefix=${MINGW_ROOT}`
-	- ±×·¯¸é ¾Æ·¡ÀÇ directory¿¡ installation fileÀÌ Ãß°¡.
-		- ${MINGW_ROOT}/include or ${MSYS_ROOT}/include
-		- ${MINGW_ROOT}/lib or ${MSYS_ROOT}/lib
+- MinGWë‚˜ MSYSì˜ ê²½ìš° `/usr` ì´ë‚˜ `/usr/local directory`ê°€ ì—†ìŒ
+	- ë”°ë¼ì„œ, software installation prefixë¡œ ì•„ë˜ì˜ directoryë¥¼ ì‚¬ìš©í•˜ì—¬ì•¼ í•¨.
+		- `--prefix=${MINGW_ROOT}` or `--prefix=${INSTALLED_DIR}`
+	- ê·¸ëŸ¬ë©´ ì•„ë˜ì˜ directoryì— installation fileì´ ì¶”ê°€.
+		- `${MINGW_ROOT}/include` or `${MSYS_ROOT}/include`
+		- `${MINGW_ROOT}/lib` or `${MSYS_ROOT}/lib`

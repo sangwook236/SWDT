@@ -13,7 +13,7 @@
 	- ${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
 
 - Setting
-	- CYGWIN environment variable ¼³Á¤.
+	- set environment variable for Cygwin
 		- http://cygwin.com/cygwin-ug-net/using-cygwinenv.html
 		- e.g.)
 			`set CYGWIN=nodosfilewarning`
