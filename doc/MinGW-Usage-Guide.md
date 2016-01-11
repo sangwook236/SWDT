@@ -3,19 +3,18 @@
 ##### General
 - Site
 	- [MinGW32](http://www.mingw.org/)
+		- http://sourceforge.net/projects/mingw/files/MinGW/Base/
+		- http://sourceforge.net/projects/mingw/files/MinGW/Extension/
+			- mingw-utils
+			- peexports
+			- reimp
+		- http://sourceforge.net/projects/mingw/files/MinGW/Contributed/
+	
+		- http://sourceforge.net/projects/mingw/files/MSYS/Base/
+		- http://sourceforge.net/projects/mingw/files/MSYS/Extension/
+			- wget
+		- http://sourceforge.net/projects/mingw/files/MSYS/Contributed/
 	- [MinGW64](http://mingw-w64.org/)
-
-	- http://sourceforge.net/projects/mingw/files/MinGW/Base/
-	- http://sourceforge.net/projects/mingw/files/MinGW/Extension/
-		- mingw-utils
-		- peexports
-		- reimp
-	- http://sourceforge.net/projects/mingw/files/MinGW/Contributed/
-
-	- http://sourceforge.net/projects/mingw/files/MSYS/Base/
-	- http://sourceforge.net/projects/mingw/files/MSYS/Extension/
-		- wget
-	- http://sourceforge.net/projects/mingw/files/MSYS/Contributed/
 
 - Document
 	- http://www.mingw.org/wiki
@@ -26,9 +25,9 @@
 	- http://www.mingw.org/wiki/Interoperability_of_Libraries_Created_by_Different_Compiler_Brands
 	- http://www.mingw.org/wiki/JNI_MinGW_DLL
 
- - Usage
+- Usage
 	- Reference
-    	- ${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
+  	- ${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
 
 ##### Console
 - Use Windows Command Prompt or Visual Studio Command Prompt
@@ -46,11 +45,11 @@
 ##### Package Management
 - 아래의 executable file을 이용해서 package management를 수행
 	- `${MINGW_ROOT}/bin/mingw-get.exe`
-	- e.g.) <br />
-		`mingw-get install lib-package-name` <br />
-		`mingw-get update`
+	- e.g.)
+		- `mingw-get install lib-package-name`
+		- `mingw-get update`
 
-- mingw-get.exe으로 설치되지 않는 package의 경우 아래의 사이트에서 찾을 수 있음.
+- mingw-get.exe으로 설치되지 않는 package의 경우 아래의 사이트에서 찾을 수 있음
 	- http://sourceforge.net/projects/mingw/files/MSYS/Extension/
 	- http://sourceforge.net/projects/mingw/files/MSYS/Base/
 	- download 받은 file을 ${MSYS_HOME}에 복사한 후 압축을 풀면 `${MSYS_HOME}/bin`에 복사됨.
@@ -106,5 +105,5 @@
 	- 따라서, software installation prefix로 아래의 directory를 사용하여야 함.
 		- `--prefix=${MINGW_ROOT}` or `--prefix=${INSTALLED_DIR}`
 	- 그러면 아래의 directory에 installation file이 추가.
-		- `${MINGW_ROOT}/include or ${MSYS_ROOT}/include`
-		- ${MINGW_ROOT}/lib or ${MSYS_ROOT}/lib
+		- `${MINGW_ROOT}/include` or `${MSYS_ROOT}/include`
+		- `${MINGW_ROOT}/lib` or `${MSYS_ROOT}/lib`
