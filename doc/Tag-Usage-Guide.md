@@ -33,9 +33,11 @@
 	- {solution}: solution.
 	- {error}: error, bug, defect.
 	- {problem}: problem or trouble.
-	- {secondary-problem}: secondary/derived problem.  
+	- {secondary-problem}: secondary/derived problem.
+
 	- {error-msg}: error message.
-	- {warning-msg}: warning message.  
+	- {warning-msg}: warning message.
+
 	- {cause}: cause.
 	- {solution}: solution.
 
