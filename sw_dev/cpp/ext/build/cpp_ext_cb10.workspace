@@ -24,6 +24,7 @@
 		<Project filename="../test/testing/testing_cb10.cbp" />
 		<Project filename="../test/threading/threading_cb10.cbp" />
 		<Project filename="../test/visualization/visualization_cb10.cbp" />
+		<Project filename="../test/gui/wxwidgets/wxwidgets_cb10.cbp" />
 		<Project filename="../test/xml/xml_cb10.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
