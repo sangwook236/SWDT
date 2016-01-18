@@ -7,8 +7,8 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			//swing.SwingMain.run(args);  // not yet implemented.
-			//swt.SWTMain.run(args);  // not yet implemented.
+			//swing.Swing_Main.run(args);  // not yet implemented.
+			//swt.SWT_Main.run(args);  // not yet implemented.
 	
 			apache_pivot.ApachePivot_Main.run(args);
 		}
