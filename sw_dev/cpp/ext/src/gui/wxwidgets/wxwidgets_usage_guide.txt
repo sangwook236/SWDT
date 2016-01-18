@@ -1,9 +1,12 @@
 [-] General
 	-. Site
 		http://www.wxwidgets.org/
+		http://trac.wxwidgets.org/
+
+		https://github.com/wxWidgets/wxWidgets
 
 [-] Building (MSVC & ver. 2.6)
-	:> IDE
+	+> IDE
 		-. Target project file
 			"${WXWIDGETS_ROOT}/build/msw/wx.dsw"
 			"${WXWIDGETS_ROOT}/build/msw/wx_dll.dsw"
@@ -14,7 +17,7 @@
 			3: wxbase_net.lib wxbase_odbc.lib wxbase_xml.lib
 			4: wxmsw_adv.lib wxmsw_gl.lib wxmsw_html.lib wxmsw_media.lib wxmsw_qa.lib wxmsw_xrc.lib
 			5: wxmsw_dbgrid.lib
-	:> Visual Studio Command Prompt
+	+> Visual Studio Command Prompt
 		-. Target project file
 			"${WXWIDGETS_ROOT}/build/msw/"
 		-. Command
@@ -58,30 +61,38 @@
 		nmake -f makefile.vc BUILD=release UNICODE=1
 
 [-] Using
-	:> Using wx-config
+	+> Using wx-config
 		[ref] ${WXWIDGETS_BIN_DIR}/wx-config
 		-. Set compiler and linker options
 			`wx-config --cflags`
 			`wx-config  --version=3.0 --static=no --unicode=yes --debug=no --cflags`
 			`wx-config --libs`
 			`wx-config  --version=3.0 --static=no --unicode=yes --debug=no --libs`
-	:> Using traditional approach
+	+> Using traditional approach
 		-. Set include & library paths
 			${INCLUDE_DIR}/wx-3.0
 			${LIBRARY_DIR}
 		-. Set defines
 			__WXGTK__ or __WXMSW__
+			__WXDEBUG__ (optional)
 			WXUSINGDLL (optional)
-			wxUSE_UNICODE (optinal)
+			wxUSE_UNICODE (optional)
+			wxUSE_GUI=1 (optional)
 		-. Set a path for setup.h (if necessary)
-			Linux
+			Linux:
 				${WXWIDGETS_LIB_DIR}/wx/include/gtk2-unicode-3.0
 				${WXWIDGETS_LIB_DIR}/wx/include/base-unicode-3.0 (?)
-			Windows
+			Windows:
 				${WXWIDGETS_LIB_DIR}/mswu
+				${WXWIDGETS_LIB_DIR}/mswud
+				${WXWIDGETS_INCLUDE_DIR}/msvc (?)
 
 [-] Using (MSVC)
-	+> Include path
+	+> Create a new project
+		Win32 Project
+			Windows application
+			Empty project
+	+> Set include path
 		-. Standard
 			${WXWIDGETS_ROOT}/include/wx
 			${WXWIDGETS_ROOT}/include/msvc/wx
@@ -104,10 +115,10 @@
 				${WXWIDGETS_ROOT}/lib/vc_dll/mswunivd
 				${WXWIDGETS_ROOT}/lib/vc_dll/mswunivu
 				${WXWIDGETS_ROOT}/lib/vc_dll/mswunivud
-	:> Library path
+	+> Set library path
 		${WXWIDGETS_ROOT}/lib/vc_lib
 		${WXWIDGETS_ROOT}/lib/vc_dll
-	:> Linking library
+	+> Set linking library
 		-. Windows Libraries
 			kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib
 			winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib
