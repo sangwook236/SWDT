@@ -74,8 +74,8 @@
 			${LIBRARY_DIR}
 		-. Set defines
 			__WXGTK__ or __WXMSW__
-			__WXDEBUG__ (optional)
-			WXUSINGDLL (optional)
+			__WXDEBUG__
+			WXUSINGDLL (required if shared libraries are used)
 			wxUSE_UNICODE (optional)
 			wxUSE_GUI=1 (optional)
 		-. Set a path for setup.h (if necessary)
