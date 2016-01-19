@@ -18,11 +18,10 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/statusbr.h>
-#include <wx/panel.h>
+#include <wx/textctrl.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/filepicker.h>
-#include <wx/textctrl.h>
 #include <wx/button.h>
 #include <wx/frame.h>
 
@@ -43,13 +42,14 @@ class GUIFrame : public wxFrame
 		wxMenu* fileMenu;
 		wxMenu* helpMenu;
 		wxStatusBar* statusBar;
-		wxPanel* m_panel1;
+		wxTextCtrl* m_textCtrl11;
 		wxStaticText* m_staticText1;
 		wxFilePickerCtrl* m_filePicker1;
 		wxStaticText* m_staticText2;
 		wxTextCtrl* m_textCtrlName;
-		wxButton* m_buttonOk;
-		wxButton* m_buttonCancel;
+		wxStdDialogButtonSizer* m_sdbSizer1;
+		wxButton* m_sdbSizer1OK;
+		wxButton* m_sdbSizer1Cancel;
 		
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
@@ -59,7 +59,7 @@ class GUIFrame : public wxFrame
 	
 	public:
 		
-		GUIFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("wxWidgets Application Template"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 481,466 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		GUIFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("wxWidgets Application Sample"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 481,466 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		~GUIFrame();
 	
 };
