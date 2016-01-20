@@ -54,6 +54,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppunit_mfc", "..\test\test
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wxwidgets", "..\test\gui\wxwidgets\wxwidgets_vs14.vcxproj", "{46F56682-D6C1-4A85-8FAA-5E044EFE6FC7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qt4", "..\test\gui\qt4\qt4_vs14.vcxproj", "{67252E23-26EC-44EE-ADBA-F403F00B21EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -220,6 +222,14 @@ Global
 		{46F56682-D6C1-4A85-8FAA-5E044EFE6FC7}.Release|Win32.Build.0 = Release|Win32
 		{46F56682-D6C1-4A85-8FAA-5E044EFE6FC7}.Release|x64.ActiveCfg = Release|x64
 		{46F56682-D6C1-4A85-8FAA-5E044EFE6FC7}.Release|x64.Build.0 = Release|x64
+		{67252E23-26EC-44EE-ADBA-F403F00B21EC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{67252E23-26EC-44EE-ADBA-F403F00B21EC}.Debug|Win32.Build.0 = Debug|Win32
+		{67252E23-26EC-44EE-ADBA-F403F00B21EC}.Debug|x64.ActiveCfg = Debug|x64
+		{67252E23-26EC-44EE-ADBA-F403F00B21EC}.Debug|x64.Build.0 = Debug|x64
+		{67252E23-26EC-44EE-ADBA-F403F00B21EC}.Release|Win32.ActiveCfg = Release|Win32
+		{67252E23-26EC-44EE-ADBA-F403F00B21EC}.Release|Win32.Build.0 = Release|Win32
+		{67252E23-26EC-44EE-ADBA-F403F00B21EC}.Release|x64.ActiveCfg = Release|x64
+		{67252E23-26EC-44EE-ADBA-F403F00B21EC}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

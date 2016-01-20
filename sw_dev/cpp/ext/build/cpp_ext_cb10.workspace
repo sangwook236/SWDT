@@ -17,6 +17,7 @@
 		<Project filename="../test/multilinear_algebra/multilinear_algebra_cb10.cbp" />
 		<Project filename="../test/multimedia/multimedia_cb10.cbp" />
 		<Project filename="../test/networking/networking_cb10.cbp" />
+		<Project filename="../test/gui/qt4/qt4_cb10.cbp" />
 		<Project filename="../test/resource_management/resource_management_cb10.cbp" />
 		<Project filename="../test/scientific_computation/scientific_computation_cb10.cbp" />
 		<Project filename="../test/serialization/serialization_cb10.cbp" />
