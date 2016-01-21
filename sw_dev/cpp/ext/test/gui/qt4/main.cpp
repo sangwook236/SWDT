@@ -31,7 +31,7 @@ int very_simple_example(int argc, char* argv[])
 }
 
 // Meta Object Compiler (moc).
-//  moc-qt4 MyWindow.h -o moc_MyWindows.cpp
+//  moc-qt4 MyWindow.h -o moc_MyWindow.cpp
 int simple_example(int argc, char* argv[])
 {
     QApplication app(argc, argv);

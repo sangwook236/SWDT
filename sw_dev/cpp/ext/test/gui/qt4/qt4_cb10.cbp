@@ -36,11 +36,14 @@
 			<Add directory="/usr/include/qt4" />
 		</Compiler>
 		<Linker>
-			<Add library="QtCore" />
 			<Add library="QtGui" />
+			<Add library="QtCore" />
 			<Add directory="/usr/lib/x86_64-linux-gnu" />
 		</Linker>
+		<Unit filename="MyWindow.cpp" />
+		<Unit filename="MyWindow.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="moc_MyWindow.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
