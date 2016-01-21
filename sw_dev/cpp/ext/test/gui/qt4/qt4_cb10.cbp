@@ -32,13 +32,13 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="/usr/local/Qt-4.7.4/include" />
-			<Add directory="/usr/local/Qt-4.7.4/include/QtGui" />
+			<Add directory="/usr/include/qt4/QtGui" />
+			<Add directory="/usr/include/qt4" />
 		</Compiler>
 		<Linker>
-			<Add library="QtCore4" />
-			<Add library="QtGui4" />
-			<Add directory="/usr/local/Qt-4.7.4/lib" />
+			<Add library="QtCore" />
+			<Add library="QtGui" />
+			<Add directory="/usr/lib/x86_64-linux-gnu" />
 		</Linker>
 		<Unit filename="main.cpp" />
 		<Extensions>

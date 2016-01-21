@@ -7,7 +7,6 @@
 class QPushButton;
 
 
-// moc-qt4 MyWindow.h -o moc_MyWindows.cpp
 class MyWindow : public QWidget
 {
     Q_OBJECT
