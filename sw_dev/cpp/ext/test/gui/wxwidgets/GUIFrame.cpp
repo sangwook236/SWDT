@@ -94,7 +94,7 @@ GUIFrame::GUIFrame( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_panel1->SetSizer( bSizer51 );
 	m_panel1->Layout();
 	bSizer51->Fit( m_panel1 );
-	bSizer1->Add( m_panel1, 1, wxEXPAND|wxALL, 5 );
+	bSizer1->Add( m_panel1, 1, wxEXPAND, 5 );
 	
 	this->SetSizer( bSizer1 );
 	this->Layout();
