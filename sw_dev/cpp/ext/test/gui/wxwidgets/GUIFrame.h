@@ -23,6 +23,7 @@
 #include <wx/stattext.h>
 #include <wx/filepicker.h>
 #include <wx/button.h>
+#include <wx/panel.h>
 #include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -42,6 +43,7 @@ class GUIFrame : public wxFrame
 		wxMenu* fileMenu;
 		wxMenu* helpMenu;
 		wxStatusBar* statusBar;
+		wxPanel* m_panel1;
 		wxTextCtrl* m_textCtrl11;
 		wxStaticText* m_staticText1;
 		wxFilePickerCtrl* m_filePicker1;
