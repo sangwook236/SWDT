@@ -1,13 +1,10 @@
 [-] General
 	-. Site
-		http://qt-project.org/
-		http://qt.digia.com/
+		http://www.qt.io/
+		http://www.qt.io/developers/
 
-		http://qt.gitorious.org/qt
-		https://qt.gitorious.org/
-
-		http://qt-project.org/wiki/jom
-		http://download.qt-project.org/official_releases/jom/
+		http://wiki.qt.io/Jom
+		http://download.qt.io/official_releases/jom/
 
 [-] Building (Win32)
 	-. qmake.exe or QMAKESPEC 관련 오류.
