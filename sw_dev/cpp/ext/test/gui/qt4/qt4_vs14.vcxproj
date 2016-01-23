@@ -150,10 +150,13 @@
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="moc_MyMainWindow.cpp" />
+    <ClCompile Include="MyMainWindow.cpp" />
     <ClCompile Include="MyWindow.cpp" />
     <ClCompile Include="moc_MyWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MyMainWindow.h" />
     <ClInclude Include="MyWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
