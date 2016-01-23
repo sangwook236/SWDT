@@ -1,4 +1,5 @@
 #include "MyWindow.h"
+#include "MyMainWindow.h"
 #include <QApplication>
 #include <QFont>
 #include <QPushButton>
@@ -16,7 +17,7 @@ int very_simple_example(int argc, char* argv[])
 
     QWidget window;
     window.setFixedSize(400, 300);
-    window.setWindowTitle("Qt4 Application");
+    window.setWindowTitle("Qt4 Application #1");
 
     QPushButton btnQuit("Quit", &window);
     btnQuit.setFont(QFont("Times", 18, QFont::Bold));
@@ -32,17 +33,31 @@ int very_simple_example(int argc, char* argv[])
 
 // Meta Object Compiler (moc).
 //  moc-qt4 MyWindow.h -o moc_MyWindow.cpp
-int simple_example(int argc, char* argv[])
+int simple_example_1(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
     MyWindow window;
-    QObject::connect(&window, SIGNAL(areaChanged()), &window, SLOT(handAreaChanged()));
-    QObject::connect(&window, SIGNAL(quitButtonClicked()), &app, SLOT(quit()));
+    //QObject::connect(&window, SIGNAL(areaChanged()), &window, SLOT(handAreaChanged()));
+    QObject::connect(&window, SIGNAL(applicationQuitSignaled()), &app, SLOT(quit()));
 
     window.show();
 
     window.setArea(100);
+
+    return app.exec();
+}
+
+// Meta Object Compiler (moc).
+//  moc-qt4 MyMainWindow.h -o moc_MyMainWindow.cpp
+int simple_example_2(int argc, char* argv[])
+{
+    QApplication app(argc, argv);
+
+    MyMainWindow window;
+    QObject::connect(&window, SIGNAL(applicationQuitSignaled()), &app, SLOT(quit()));
+
+    window.show();
 
     return app.exec();
 }
@@ -56,7 +71,8 @@ int main(int argc, char* argv[])
 	try
 	{
 	    //retval = local::very_simple_example(argc, argv);
-	    retval = local::simple_example(argc, argv);
+	    //retval = local::simple_example_1(argc, argv);
+	    retval = local::simple_example_2(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

@@ -23,8 +23,8 @@ static const uint qt_meta_data_MyWindow[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
-       1,   34, // properties
+       5,   14, // methods
+       1,   39, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
@@ -35,11 +35,12 @@ static const uint qt_meta_data_MyWindow[] = {
       24,    9,    9,    9, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      44,    9,    9,    9, 0x0a,
-      62,    9,    9,    9, 0x08,
+      50,    9,    9,    9, 0x0a,
+      68,    9,    9,    9, 0x08,
+      94,    9,    9,    9, 0x08,
 
  // properties: name, type, flags
-      94,   88, ((uint)QMetaType::QReal << 24) | 0x00495003,
+     124,  118, ((uint)QMetaType::QReal << 24) | 0x00495003,
 
  // properties: notify_signal_id
        0,
@@ -48,9 +49,10 @@ static const uint qt_meta_data_MyWindow[] = {
 };
 
 static const char qt_meta_stringdata_MyWindow[] = {
-    "MyWindow\0\0areaChanged()\0quitButtonClicked()\0"
-    "handAreaChanged()\0handleQuitButtonClicked()\0"
-    "qreal\0area_\0"
+    "MyWindow\0\0areaChanged()\0"
+    "applicationQuitSignaled()\0handAreaChanged()\0"
+    "handleQuitButtonClicked()\0"
+    "handleQuitMenuClicked()\0qreal\0area_\0"
 };
 
 void MyWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -60,9 +62,10 @@ void MyWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         MyWindow *_t = static_cast<MyWindow *>(_o);
         switch (_id) {
         case 0: _t->areaChanged(); break;
-        case 1: _t->quitButtonClicked(); break;
+        case 1: _t->applicationQuitSignaled(); break;
         case 2: _t->handAreaChanged(); break;
         case 3: _t->handleQuitButtonClicked(); break;
+        case 4: _t->handleQuitMenuClicked(); break;
         default: ;
         }
     }
@@ -101,9 +104,9 @@ int MyWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 5)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 5;
     }
 #ifndef QT_NO_PROPERTIES
       else if (_c == QMetaObject::ReadProperty) {
@@ -142,7 +145,7 @@ void MyWindow::areaChanged()
 }
 
 // SIGNAL 1
-void MyWindow::quitButtonClicked()
+void MyWindow::applicationQuitSignaled()
 {
     QMetaObject::activate(this, &staticMetaObject, 1, 0);
 }
