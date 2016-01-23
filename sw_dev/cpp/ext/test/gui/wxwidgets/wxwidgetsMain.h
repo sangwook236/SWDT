@@ -22,6 +22,8 @@ class wxwidgetsFrame: public GUIFrame
         virtual void OnClose(wxCloseEvent& event);
         virtual void OnQuit(wxCommandEvent& event);
         virtual void OnAbout(wxCommandEvent& event);
+		virtual void OnCancelButtonClick(wxCommandEvent& event);
+		virtual void OnOKButtonClick(wxCommandEvent& event);
 };
 
 #endif // WXWIDGETSMAIN_H

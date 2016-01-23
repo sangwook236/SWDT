@@ -29,7 +29,13 @@
 ///////////////////////////////////////////////////////////////////////////
 
 #define idMenuQuit 1000
-#define idMenuAbout 1001
+#define idMenuUndo 1001
+#define idMenuRedo 1002
+#define idMenuCopy 1003
+#define idMenuCut 1004
+#define idMenuPaste 1005
+#define idMenuDelete 1006
+#define idMenuAbout 1007
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class GUIFrame
@@ -41,6 +47,7 @@ class GUIFrame : public wxFrame
 	protected:
 		wxMenuBar* mbar;
 		wxMenu* fileMenu;
+		wxMenu* editMenu;
 		wxMenu* helpMenu;
 		wxStatusBar* statusBar;
 		wxPanel* m_panel1;
@@ -57,11 +64,13 @@ class GUIFrame : public wxFrame
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
 		virtual void OnQuit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCancelButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnOKButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		
 	
 	public:
 		
-		GUIFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("wxWidgets Application Sample"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 481,466 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		GUIFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Simple wxWidgets Application"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 481,466 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		~GUIFrame();
 	
 };

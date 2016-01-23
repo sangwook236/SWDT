@@ -31,6 +31,36 @@ GUIFrame::GUIFrame( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	
 	mbar->Append( fileMenu, wxT("&File") );
 	
+	editMenu = new wxMenu();
+	wxMenuItem* menuEditUndo;
+	menuEditUndo = new wxMenuItem( editMenu, idMenuUndo, wxString( wxT("&Undo") ) + wxT('\t') + wxT("Ctrl+Z"), wxEmptyString, wxITEM_NORMAL );
+	editMenu->Append( menuEditUndo );
+	
+	wxMenuItem* menuEditRedo;
+	menuEditRedo = new wxMenuItem( editMenu, idMenuRedo, wxString( wxT("&Redo") ) + wxT('\t') + wxT("Ctrl+Y"), wxEmptyString, wxITEM_NORMAL );
+	editMenu->Append( menuEditRedo );
+	
+	wxMenuItem* m_separator1;
+	m_separator1 = editMenu->AppendSeparator();
+	
+	wxMenuItem* menuEditCopy;
+	menuEditCopy = new wxMenuItem( editMenu, idMenuCopy, wxString( wxT("&Copy") ) + wxT('\t') + wxT("Ctrl+C"), wxEmptyString, wxITEM_NORMAL );
+	editMenu->Append( menuEditCopy );
+	
+	wxMenuItem* menuEditCut;
+	menuEditCut = new wxMenuItem( editMenu, idMenuCut, wxString( wxT("Cut") ) + wxT('\t') + wxT("Ctrl+X"), wxEmptyString, wxITEM_NORMAL );
+	editMenu->Append( menuEditCut );
+	
+	wxMenuItem* menuEditPaste;
+	menuEditPaste = new wxMenuItem( editMenu, idMenuPaste, wxString( wxT("&Paste") ) + wxT('\t') + wxT("Ctrl+V"), wxEmptyString, wxITEM_NORMAL );
+	editMenu->Append( menuEditPaste );
+	
+	wxMenuItem* menuEditDelete;
+	menuEditDelete = new wxMenuItem( editMenu, idMenuDelete, wxString( wxT("&Delete") ) + wxT('\t') + wxT("Ctrl+D"), wxEmptyString, wxITEM_NORMAL );
+	editMenu->Append( menuEditDelete );
+	
+	mbar->Append( editMenu, wxT("&Edit") );
+	
 	helpMenu = new wxMenu();
 	wxMenuItem* menuHelpAbout;
 	menuHelpAbout = new wxMenuItem( helpMenu, idMenuAbout, wxString( wxT("&About") ) + wxT('\t') + wxT("F1"), wxT("Show info about this application"), wxITEM_NORMAL );
@@ -103,6 +133,8 @@ GUIFrame::GUIFrame( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( GUIFrame::OnClose ) );
 	this->Connect( menuFileQuit->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( GUIFrame::OnQuit ) );
 	this->Connect( menuHelpAbout->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( GUIFrame::OnAbout ) );
+	m_sdbSizer1Cancel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( GUIFrame::OnCancelButtonClick ), NULL, this );
+	m_sdbSizer1OK->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( GUIFrame::OnOKButtonClick ), NULL, this );
 }
 
 GUIFrame::~GUIFrame()
@@ -111,4 +143,6 @@ GUIFrame::~GUIFrame()
 	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( GUIFrame::OnClose ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( GUIFrame::OnQuit ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( GUIFrame::OnAbout ) );
+	m_sdbSizer1Cancel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( GUIFrame::OnCancelButtonClick ), NULL, this );
+	m_sdbSizer1OK->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( GUIFrame::OnOKButtonClick ), NULL, this );
 }

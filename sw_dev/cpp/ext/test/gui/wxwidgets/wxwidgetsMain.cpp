@@ -44,5 +44,15 @@ void wxwidgetsFrame::OnQuit(wxCommandEvent &event)
 
 void wxwidgetsFrame::OnAbout(wxCommandEvent &event)
 {
-    wxMessageBox(_("Message in MsgBox"), _("Welcome to..."));
+    wxMessageBox(_("Message in MsgBox"), _("Welcome to..."), wxICON_EXCLAMATION);
+}
+
+void wxwidgetsFrame::OnCancelButtonClick(wxCommandEvent& event)
+{
+    wxMessageBox(_("Cancel is pressed"), _("Information"), wxICON_INFORMATION);
+}
+
+void wxwidgetsFrame::OnOKButtonClick(wxCommandEvent& event)
+{
+    wxMessageBox(_("OK is pressed"), _("Information"), wxICON_INFORMATION);
 }
