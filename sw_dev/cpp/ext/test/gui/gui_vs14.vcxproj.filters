@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\qt4">
+      <UniqueIdentifier>{9a017665-dddc-4ff6-be88-3f7a11ab891c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp">
@@ -21,25 +24,28 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyWindow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="qt4\moc_MyMainWindow.cpp">
+      <Filter>Source Files\qt4</Filter>
     </ClCompile>
-    <ClCompile Include="moc_MyWindow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="qt4\moc_MyWindow.cpp">
+      <Filter>Source Files\qt4</Filter>
     </ClCompile>
-    <ClCompile Include="moc_MyMainWindow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="qt4\MyMainWindow.cpp">
+      <Filter>Source Files\qt4</Filter>
     </ClCompile>
-    <ClCompile Include="MyMainWindow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="qt4\MyWindow.cpp">
+      <Filter>Source Files\qt4</Filter>
+    </ClCompile>
+    <ClCompile Include="qt4\qt4_main.cpp">
+      <Filter>Source Files\qt4</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MyWindow.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="qt4\MyMainWindow.h">
+      <Filter>Source Files\qt4</Filter>
     </ClInclude>
-    <ClInclude Include="MyMainWindow.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="qt4\MyWindow.h">
+      <Filter>Source Files\qt4</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

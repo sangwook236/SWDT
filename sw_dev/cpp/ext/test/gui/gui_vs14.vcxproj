@@ -21,9 +21,9 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{67252E23-26EC-44EE-ADBA-F403F00B21EC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>qt4</RootNamespace>
+    <RootNamespace>gui</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>qt4</ProjectName>
+    <ProjectName>gui</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../../../bin/</OutDir>
+    <OutDir>../../bin/</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -80,7 +80,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>../../../bin/</OutDir>
+    <OutDir>../../bin/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -91,12 +91,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../inc;$(MY_USR_LOCAL_INCLUDE)/../Qt-4.7.4/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../Qt-4.7.4/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/../Qt-4.7.4/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../Qt-4.7.4/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../../lib;$(MY_USR_LOCAL_LIB)/../Qt-4.7.4/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;$(MY_USR_LOCAL_LIB)/../Qt-4.7.4/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,14 +120,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../inc;$(MY_USR_LOCAL_INCLUDE)/../Qt-4.7.4/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../Qt-4.7.4/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/../Qt-4.7.4/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../Qt-4.7.4/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../../lib;$(MY_USR_LOCAL_LIB)/../Qt-4.7.4/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;$(MY_USR_LOCAL_LIB)/../Qt-4.7.4/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -150,14 +150,15 @@
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="moc_MyMainWindow.cpp" />
-    <ClCompile Include="MyMainWindow.cpp" />
-    <ClCompile Include="MyWindow.cpp" />
-    <ClCompile Include="moc_MyWindow.cpp" />
+    <ClCompile Include="qt4\moc_MyMainWindow.cpp" />
+    <ClCompile Include="qt4\moc_MyWindow.cpp" />
+    <ClCompile Include="qt4\MyMainWindow.cpp" />
+    <ClCompile Include="qt4\MyWindow.cpp" />
+    <ClCompile Include="qt4\qt4_main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MyMainWindow.h" />
-    <ClInclude Include="MyWindow.h" />
+    <ClInclude Include="qt4\MyMainWindow.h" />
+    <ClInclude Include="qt4\MyWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

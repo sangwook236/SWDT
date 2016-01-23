@@ -3,9 +3,6 @@
 #include <QApplication>
 #include <QFont>
 #include <QPushButton>
-#include <iostream>
-#include <stdexcept>
-#include <cstdlib>
 
 
 namespace {
@@ -65,33 +62,11 @@ int simple_example_2(int argc, char* argv[])
 }
 }
 
-int main(int argc, char* argv[])
+int qt4_main(int argc, char* argv[])
 {
-	int retval = EXIT_SUCCESS;
-	try
-	{
-	    //retval = local::very_simple_example(argc, argv);
-	    //retval = local::simple_example_1(argc, argv);
-	    retval = local::simple_example_2(argc, argv);
-	}
-    catch (const std::bad_alloc &e)
-	{
-		std::cout << "std::bad_alloc caught: " << e.what() << std::endl;
-		retval = EXIT_FAILURE;
-	}
-	catch (const std::exception &e)
-	{
-		std::cout << "std::exception caught: " << e.what() << std::endl;
-		retval = EXIT_FAILURE;
-	}
-	catch (...)
-	{
-		std::cout << "unknown exception caught" << std::endl;
-		retval = EXIT_FAILURE;
-	}
-
-	//std::cout << "press any key to exit ..." << std::endl;
-	//std::cin.get();
-
-	return retval;
+    //const int retval = local::very_simple_example(argc, argv);
+    //const int retval = local::simple_example_1(argc, argv);
+    const int retval = local::simple_example_2(argc, argv);
+    
+    return retval;
 }

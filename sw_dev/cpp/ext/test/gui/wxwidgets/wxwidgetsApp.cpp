@@ -1,12 +1,3 @@
-/***************************************************************
- * Name:      wxwidgetsApp.cpp
- * Purpose:   Code for Application Class
- * Author:     ()
- * Created:   2016-01-17
- * Copyright:  ()
- * License:
- **************************************************************/
-
 #ifdef WX_PRECOMP
 #include "wx_pch.h"
 #endif
@@ -15,6 +6,9 @@
 #pragma hdrstop
 #endif //__BORLANDC__
 
+#if defined(WIN32)
+#include <vld/vld.h>
+#endif
 #include "wxwidgetsApp.h"
 #include "wxwidgetsMain.h"
 
