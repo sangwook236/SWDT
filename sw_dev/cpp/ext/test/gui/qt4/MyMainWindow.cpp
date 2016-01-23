@@ -2,7 +2,6 @@
 #include <QVBoxLayout>
 #include <QListWidget>
 #include <QPushButton>
-#include <QTextEdit>
 #include <QStatusBar>
 #include <QToolBar>
 #include <QMenu>
@@ -12,21 +11,21 @@
 
 
 MyMainWindow::MyMainWindow(QWidget *parent /*= NULL*/)
-: QMainWindow(parent), button_(NULL), area_(0)
+: QMainWindow(parent)
 {
     // Set size of the window.
     {
 		//setFixedSize(400, 300);
 		resize(400,300);
-		setWindowTitle("Qt4 Application");
+		setWindowTitle("Qt4 Application #3");
     }
+
+	QPixmap newPix("./data/gui/image/new-file-icon.png");
+	QPixmap openPix("./data/gui/image/open-file-icon.png");
+	QPixmap quitPix("./data/gui/image/exit-icon.png");
 
     // Create menu.
 	{
-		QPixmap newPix("new.png");
-		QPixmap openPix("open.png");
-		QPixmap quitPix("quit.png");
-
 		QAction* newFile = new QAction(newPix, "&New...", this);
 		QAction* openFile = new QAction(openPix, "&Open...", this);
 		QAction* quit = new QAction(quitPix, "&Quit", this);
@@ -76,10 +75,6 @@ MyMainWindow::MyMainWindow(QWidget *parent /*= NULL*/)
 
 	// Create toolbar.
 	{
-		QPixmap newPix("new.png");
-		QPixmap openPix("open.png");
-		QPixmap quitPix("quit.png");
-
 		QToolBar* toolbar = addToolBar("main toolbar");
 		toolbar->addAction(QIcon(newPix), "New File");
 		toolbar->addAction(QIcon(openPix), "Open File");
@@ -96,8 +91,10 @@ MyMainWindow::MyMainWindow(QWidget *parent /*= NULL*/)
 
 	//
 	{
-		QVBoxLayout* vbox = new QVBoxLayout();
-		QHBoxLayout* hbox = new QHBoxLayout();
+		QWidget* window = new QWidget(this);
+
+		QVBoxLayout* vboxLayout = new QVBoxLayout();
+		QHBoxLayout* hboxLayout = new QHBoxLayout(window);
 
 		QListWidget* lw = new QListWidget(this);
 		lw->addItem("The Omen");
@@ -111,37 +108,22 @@ MyMainWindow::MyMainWindow(QWidget *parent /*= NULL*/)
 		QPushButton *remove = new QPushButton("Remove", this);
 		QPushButton *removeall = new QPushButton("Remove All", this);
 
-		vbox->setSpacing(3);
-		vbox->addStretch(1);
-		vbox->addWidget(add);
-		vbox->addWidget(rename);
-		vbox->addWidget(remove);
-		vbox->addWidget(removeall);
-		vbox->addStretch(1);
+		vboxLayout->setSpacing(3);
+		//vboxLayout->addStretch(1);
+		vboxLayout->addWidget(add);
+		vboxLayout->addWidget(rename);
+		vboxLayout->addWidget(remove);
+		vboxLayout->addWidget(removeall);
+		vboxLayout->addStretch(1);
 
-		hbox->addWidget(lw);
-		hbox->addSpacing(15);
-		hbox->addLayout(vbox);
+		hboxLayout->addWidget(lw);
+		hboxLayout->addSpacing(15);
+		hboxLayout->addLayout(vboxLayout);
 
-		setLayout(hbox);
+        window->setLayout(hboxLayout);
+
+		setCentralWidget(window);
 	}
-/*
-	{
-		QTextEdit* edit = new QTextEdit(this);
-
-		setCentralWidget(edit);
-	}
-
-    // Create and position a button.
-    {
-        button_ = new QPushButton("Quit", this);
-        button_->setFont(QFont("Times", 18, QFont::Bold));
-        button_->setGeometry(10, 10, 80, 30);
-        button_->resize(160, 30);
-
-        QObject::connect(button_, SIGNAL(clicked()), this, SLOT(handleQuitButtonClicked()));
-    }
-*/
 }
 
 /*virtual*/ MyMainWindow::~MyMainWindow()
