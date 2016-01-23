@@ -12,7 +12,7 @@
 		<Project filename="../test/graph/graph_cb10.cbp" />
 		<Project filename="../test/graphics_2d/graphics_2d_cb10.cbp" />
 		<Project filename="../test/graphics_3d/graphics_3d_cb10.cbp" />
-		<Project filename="../test/gui/qt4/qt4_cb10.cbp" />
+		<Project filename="../test/gui/gui_cb10.cbp" />
 		<Project filename="../test/linear_algebra/linear_algebra_cb10.cbp" />
 		<Project filename="../test/logging/logging_cb10.cbp" />
 		<Project filename="../test/multilinear_algebra/multilinear_algebra_cb10.cbp" />
