@@ -101,7 +101,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TestClassLibrary\TestClassLibrary_vc10.csproj">
       <Project>{9C241F47-F357-4C9D-81EF-117AFCBA5908}</Project>
-      <Name>TestClassLibrary_msvc10</Name>
+      <Name>TestClassLibrary_vc10</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

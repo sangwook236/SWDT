@@ -49,9 +49,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetRemotingObjects\NetRemotingObjects_vc10.csproj">
+    <ProjectReference Include="..\NetRemotingObjects\NetRemotingObjects_vs14.csproj">
       <Project>{E2E533DC-A88A-4CE2-B81B-6859751808D6}</Project>
-      <Name>NetRemotingObjects_msvc10</Name>
+      <Name>NetRemotingObjects_vs14</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
