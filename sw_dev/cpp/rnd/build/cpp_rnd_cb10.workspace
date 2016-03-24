@@ -10,7 +10,6 @@
 		<Project filename="../test/feature_analysis/feature_analysis_cb10.cbp" />
 		<Project filename="../test/geometry/geometry_cb10.cbp" />
 		<Project filename="../test/gesture_recognition/gesture_recognition_cb10.cbp" />
-		<Project filename="../test/hand_analysis/hand_analysis_cb10.cbp" />
 		<Project filename="../test/image_processing/image_processing_cb10.cbp" />
 		<Project filename="../test/language_processing/language_processing_cb10.cbp" />
 		<Project filename="../test/machine_learning/machine_learning_cb10.cbp" />
@@ -20,6 +19,7 @@
 		<Project filename="../test/neural_network/neural_network_cb10.cbp" />
 		<Project filename="../test/object_detection/object_detection_cb10.cbp" />
 		<Project filename="../test/object_representation/object_representation_cb10.cbp" />
+		<Project filename="../test/object_tracking/object_tracking_cb10.cbp" />
 		<Project filename="../test/optimization/optimization_cb10.cbp" />
 		<Project filename="../test/pose_estimation/pose_estimation_cb10.cbp" />
 		<Project filename="../test/probabilistic_graphical_model/probabilistic_graphical_model_cb10.cbp" />
