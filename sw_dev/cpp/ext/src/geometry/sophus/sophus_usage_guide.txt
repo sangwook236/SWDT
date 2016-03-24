@@ -1,6 +1,7 @@
 [-] General
     -. Site
-        https://github.com/strasdat/Sophus
+	https://github.com/strasdat/Sophus
+	http://wiki.ros.org/sophus
 
 [-] Building (VC10)
     -. Building is not accomplished
