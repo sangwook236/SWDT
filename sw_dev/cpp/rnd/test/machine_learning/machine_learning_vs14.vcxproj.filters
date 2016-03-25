@@ -64,6 +64,9 @@
     <Filter Include="Source Files\mfa_lib">
       <UniqueIdentifier>{c168b10e-7a32-4699-8bfa-caf14c7183cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\tiny_cnn">
+      <UniqueIdentifier>{a8e0d22a-e682-4f86-9b02-bba3869d7f6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libsvm_lib\svm.h">
@@ -361,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="..\dimensionality_reduction\mfa_lib\mfa.cpp">
       <Filter>Source Files\mfa_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="tiny_cnn\tiny_cnn_main.cpp">
+      <Filter>Source Files\tiny_cnn</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

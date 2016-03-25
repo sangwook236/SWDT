@@ -324,6 +324,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="svm_light\svm_light_main.cpp" />
+    <ClCompile Include="tiny_cnn\tiny_cnn_main.cpp" />
     <ClCompile Include="torch\torch_deep_learning_example.cpp" />
     <ClCompile Include="torch\torch_main.cpp" />
     <ClCompile Include="waffles\waffles_main.cpp" />
