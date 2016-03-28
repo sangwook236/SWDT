@@ -1,7 +1,10 @@
 [-] General
 	-. Site
+		http://uaf46365.ddns.uark.edu/waffles/
 		http://waffles.sourceforge.net/
 		http://waffles.sourceforge.net/apidoc/html/index.html
+
+		https://github.com/mikegashler/waffles
 
 [-] Build
 	-. Library

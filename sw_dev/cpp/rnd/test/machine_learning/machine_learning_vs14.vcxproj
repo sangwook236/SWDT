@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\dimensionality_reduction\mfa_lib\mfa.cpp" />
+    <ClCompile Include="caffe\caffe_classification_example.cpp" />
     <ClCompile Include="caffe\caffe_main.cpp" />
     <ClCompile Include="clustering\clustering_kmeanspp.cpp" />
     <ClCompile Include="clustering\clustering_k_medoids.cpp" />
@@ -324,10 +325,14 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="svm_light\svm_light_main.cpp" />
+    <ClCompile Include="tiny_cnn\tiny_cnn_cifar10_example.cpp" />
     <ClCompile Include="tiny_cnn\tiny_cnn_main.cpp" />
+    <ClCompile Include="tiny_cnn\tiny_cnn_mnist_example.cpp" />
     <ClCompile Include="torch\torch_deep_learning_example.cpp" />
     <ClCompile Include="torch\torch_main.cpp" />
     <ClCompile Include="waffles\waffles_main.cpp" />
+    <ClCompile Include="waffles\waffles_manifold_example.cpp" />
+    <ClCompile Include="waffles\waffles_ml_example.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

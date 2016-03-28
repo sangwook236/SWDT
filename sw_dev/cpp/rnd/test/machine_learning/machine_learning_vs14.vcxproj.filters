@@ -368,5 +368,20 @@
     <ClCompile Include="tiny_cnn\tiny_cnn_main.cpp">
       <Filter>Source Files\tiny_cnn</Filter>
     </ClCompile>
+    <ClCompile Include="tiny_cnn\tiny_cnn_mnist_example.cpp">
+      <Filter>Source Files\tiny_cnn</Filter>
+    </ClCompile>
+    <ClCompile Include="tiny_cnn\tiny_cnn_cifar10_example.cpp">
+      <Filter>Source Files\tiny_cnn</Filter>
+    </ClCompile>
+    <ClCompile Include="caffe\caffe_classification_example.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="waffles\waffles_manifold_example.cpp">
+      <Filter>Source Files\waffles</Filter>
+    </ClCompile>
+    <ClCompile Include="waffles\waffles_ml_example.cpp">
+      <Filter>Source Files\waffles</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

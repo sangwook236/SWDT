@@ -1,7 +1,5 @@
 //include "stdafx.h"
-#include <tiny_cnn/tiny_cnn.h>
 #include <iostream>
-#include <stdexcept>
 
 
 namespace {
@@ -12,11 +10,15 @@ namespace local {
 
 namespace my_tiny_cnn {
 
+void mnist_example();
+void cifar10_example();
+
 }  // namespace my_tiny_cnn
 
 int tiny_cnn_main(int argc, char *argv[])
 {
-	throw std::runtime_error("not yet implemented");
+	my_tiny_cnn::mnist_example();
+	my_tiny_cnn::cifar10_example();
 
 	return 0;
 }
