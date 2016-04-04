@@ -1,5 +1,6 @@
 //include "stdafx.h"
 #include <tiny_cnn/tiny_cnn.h>
+#include <opencv2/opencv.hpp>
 #include <iostream>
 #include <string>
 
@@ -42,6 +43,20 @@ int tiny_cnn_main(int argc, char *argv[])
 	catch (const tiny_cnn::nn_error& e)
 	{
 		std::cout << e.what() << std::endl;
+
+		return 1;
+	}
+	catch (const cv::Exception& e)
+	{
+		//std::cout << "OpenCV exception caught: " << e.what() << std::endl;
+		//std::cout << "OpenCV exception caught: " << cvErrorStr(e.code) << std::endl;
+		std::cout << "OpenCV exception caught:" << std::endl
+			<< "\tdescription: " << e.err << std::endl
+			<< "\tline:        " << e.line << std::endl
+			<< "\tfunction:    " << e.func << std::endl
+			<< "\tfile:        " << e.file << std::endl;
+
+		return 1;
 	}
 
 	return 0;
