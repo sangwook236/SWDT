@@ -1,6 +1,5 @@
 //include "stdafx.h"
 #include <tiny_cnn/tiny_cnn.h>
-#include <opencv2/opencv.hpp>
 #include <iostream>
 #include <string>
 
@@ -29,32 +28,29 @@ int tiny_cnn_main(int argc, char *argv[])
 	try
 	{
 		{
-			const std::string path_to_data("./data/machine_learning");
+			const std::string path_to_data("./data/machine_learning/mnist");
+
+			std::cout << "\tconvolutional neural networks (LeNet-5 like architecture) ---" << std::endl;
 			my_tiny_cnn::convnet_sample(path_to_data);
+			std::cout << "\t3-Layer Networks (MLP) --------------------------------------" << std::endl;
 			my_tiny_cnn::mlp_sample(path_to_data);
+			std::cout << "\tdenoising auto-encoder --------------------------------------" << std::endl;
 			my_tiny_cnn::denoising_auto_encoder_sample();
+			std::cout << "\tdropout -----------------------------------------------------" << std::endl;
 			my_tiny_cnn::dropout_sample(path_to_data);
 		}
 
+		std::cout << "\ttrain MNIST -------------------------------------------------" << std::endl;
 		my_tiny_cnn::mnist_train_example();
+		std::cout << "\ttest MNIST --------------------------------------------------" << std::endl;
 		my_tiny_cnn::mnist_test_example();
+
+		std::cout << "\ttrain CIFAR10 -----------------------------------------------" << std::endl;
 		my_tiny_cnn::cifar10_train_example();
 	}
 	catch (const tiny_cnn::nn_error& e)
 	{
 		std::cout << e.what() << std::endl;
-
-		return 1;
-	}
-	catch (const cv::Exception& e)
-	{
-		//std::cout << "OpenCV exception caught: " << e.what() << std::endl;
-		//std::cout << "OpenCV exception caught: " << cvErrorStr(e.code) << std::endl;
-		std::cout << "OpenCV exception caught:" << std::endl
-			<< "\tdescription: " << e.err << std::endl
-			<< "\tline:        " << e.line << std::endl
-			<< "\tfunction:    " << e.func << std::endl
-			<< "\tfile:        " << e.file << std::endl;
 
 		return 1;
 	}

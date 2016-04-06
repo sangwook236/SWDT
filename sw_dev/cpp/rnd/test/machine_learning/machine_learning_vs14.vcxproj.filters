@@ -383,5 +383,8 @@
     <ClCompile Include="waffles\waffles_ml_example.cpp">
       <Filter>Source Files\waffles</Filter>
     </ClCompile>
+    <ClCompile Include="tiny_cnn\tiny_cnn_basic_example.cpp">
+      <Filter>Source Files\tiny_cnn</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

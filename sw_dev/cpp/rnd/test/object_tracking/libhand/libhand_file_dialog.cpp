@@ -31,7 +31,7 @@ void file_dialog_example()
 
     // This shows off a save dialog. SetDefaultFile() can be used to suggest a particular file in a particular directory.
     f.SetTitle("Save a YAML file");
-    f.SetDefaultFile("./data/hand_analysis/libhand/my_new_spec.yml");
+    f.SetDefaultFile("./data/object_tracking/libhand/my_new_spec.yml");
 
     std::cout << "Save file name: " << f.Save() << std::endl;
 }

@@ -170,7 +170,8 @@ namespace my_tiny_cnn {
 // REF [file] >> ${TINY_CNN_HOME}/examples/mnist/train.cpp
 void mnist_train_example()
 {
-	const std::string path_to_data("./data/machine_learning");
+	// REF [site] >> http://yann.lecun.com/exdb/mnist/
+	const std::string path_to_data("./data/machine_learning/mnist");
 
 	local::train_lenet(path_to_data);
 }
@@ -178,9 +179,22 @@ void mnist_train_example()
 // REF [file] >> ${TINY_CNN_HOME}/examples/mnist/test.cpp
 void mnist_test_example()
 {
-	const std::string image_file("./data/machine_learning/???.???");
+	try
+	{
+		const std::string image_file("./data/machine_learning/mnist/???.???");
 
-	local::recognize("LeNet-weights", image_file);
+		local::recognize("LeNet-weights", image_file);
+	}
+	catch (const cv::Exception& e)
+	{
+		//std::cout << "OpenCV exception caught: " << e.what() << std::endl;
+		//std::cout << "OpenCV exception caught: " << cvErrorStr(e.code) << std::endl;
+		std::cout << "OpenCV exception caught:" << std::endl
+			<< "\tdescription: " << e.err << std::endl
+			<< "\tline:        " << e.line << std::endl
+			<< "\tfunction:    " << e.func << std::endl
+			<< "\tfile:        " << e.file << std::endl;
+	}
 }
 
 }  // namespace my_tiny_cnn

@@ -325,6 +325,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="svm_light\svm_light_main.cpp" />
+    <ClCompile Include="tiny_cnn\tiny_cnn_basic_example.cpp" />
     <ClCompile Include="tiny_cnn\tiny_cnn_cifar10_example.cpp" />
     <ClCompile Include="tiny_cnn\tiny_cnn_main.cpp" />
     <ClCompile Include="tiny_cnn\tiny_cnn_mnist_example.cpp" />

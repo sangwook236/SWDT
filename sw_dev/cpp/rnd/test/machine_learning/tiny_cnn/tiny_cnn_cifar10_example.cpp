@@ -94,7 +94,8 @@ namespace my_tiny_cnn {
 // REF [file] >> ${TINY_CNN_HOME}/examples/cifar10/train.cpp
 void cifar10_train_example()
 {
-	const std::string path_to_data("./data/machine_learning");
+	// REF [site] >> http://www.cs.toronto.edu/~kriz/cifar.html
+	const std::string path_to_data("./data/machine_learning/cifar10");
 	const double learning_rate = 0.01;
 
 	local::train_cifar10(path_to_data, learning_rate, std::cout);

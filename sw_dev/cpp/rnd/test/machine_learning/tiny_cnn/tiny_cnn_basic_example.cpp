@@ -47,9 +47,9 @@ void convnet_sample(const std::string& data_dir_path)
 	tiny_cnn::parse_mnist_labels(data_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
 	tiny_cnn::parse_mnist_images(data_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 2, 2);
 
-    std::cout << "start learning" << std::endl;
-
-    tiny_cnn::progress_display disp(train_images.size());
+	std::cout << "start training..." << std::endl;
+	
+	tiny_cnn::progress_display disp(train_images.size());
     tiny_cnn::timer t;
     int minibatch_size = 10;
 
@@ -75,12 +75,16 @@ void convnet_sample(const std::string& data_dir_path)
     };
     
     // training
-    nn.train(train_images, train_labels, minibatch_size, 20, on_enumerate_minibatch, on_enumerate_epoch);
+	nn.train(train_images, train_labels, minibatch_size, 20, on_enumerate_minibatch, on_enumerate_epoch);
 
-    std::cout << "end training." << std::endl;
+    std::cout << "end training..." << std::endl;
 
-    // test and show results
-    nn.test(test_images, test_labels).print_detail(std::cout);
+	std::cout << "start testing..." << std::endl;
+
+	// test and show results
+	nn.test(test_images, test_labels).print_detail(std::cout);
+
+	std::cout << "end testing..." << std::endl;
 
     // save networks
     std::ofstream ofs("LeNet-weights");
@@ -111,7 +115,9 @@ void mlp_sample(const std::string& data_dir_path)
 	tiny_cnn::parse_mnist_images(data_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 0, 0);
 
     nn.optimizer().alpha = 0.001;
-    
+
+	std::cout << "start training..." << std::endl;
+
     tiny_cnn::progress_display disp(train_images.size());
     tiny_cnn::timer t;
 
@@ -123,7 +129,7 @@ void mlp_sample(const std::string& data_dir_path)
 
         std::cout << nn.optimizer().alpha << "," << res.num_success << "/" << res.num_total << std::endl;
 
-        nn.optimizer().alpha *= 0.85; // decay learning rate
+        nn.optimizer().alpha *= 0.85;  // decay learning rate
         nn.optimizer().alpha = std::max((tiny_cnn::float_t)0.00001, nn.optimizer().alpha);
 
         disp.restart(train_images.size());
@@ -134,7 +140,9 @@ void mlp_sample(const std::string& data_dir_path)
         ++disp; 
     };  
 
-    nn.train(train_images, train_labels, 1, 20, on_enumerate_data, on_enumerate_epoch);
+	nn.train(train_images, train_labels, 1, 20, on_enumerate_data, on_enumerate_epoch);
+
+	std::cout << "end training..." << std::endl;
 }
 
 // REF [file] >> sample3_dae() in ${TINY_CNN_HOME}/examples/main.cpp
@@ -159,8 +167,12 @@ void denoising_auto_encoder_sample()
         d = tiny_cnn::corrupt(move(d), 0.1, 0.0);  // corrupt 10% data
     }
 
-    // learning 100-400-100 denoising auto-encoder
-    nn.train(train_data_corrupted, train_data_original);
+	std::cout << "start training..." << std::endl;
+
+	// learning 100-400-100 denoising auto-encoder
+	nn.train(train_data_corrupted, train_data_original);
+
+	std::cout << "end training..." << std::endl;
 }
 
 // REF [file] >> sample4_dropout() in ${TINY_CNN_HOME}/examples/main.cpp
@@ -190,6 +202,8 @@ void dropout_sample(const std::string& data_dir_path)
 	tiny_cnn::parse_mnist_labels(data_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
 	tiny_cnn::parse_mnist_images(data_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 0, 0);
 
+	std::cout << "start training..." << std::endl;
+
     // load train-data, label_data
     tiny_cnn::progress_display disp(train_images.size());
     tiny_cnn::timer t;
@@ -215,7 +229,9 @@ void dropout_sample(const std::string& data_dir_path)
         ++disp;
     };
 
-    nn.train(train_images, train_labels, 1, 100, on_enumerate_data, on_enumerate_epoch);
+	nn.train(train_images, train_labels, 1, 100, on_enumerate_data, on_enumerate_epoch);
+
+	std::cout << "end training..." << std::endl;
 
     // change context to enable all hidden-units
     //f1.set_context(dropout::test_phase);
