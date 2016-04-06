@@ -13,7 +13,6 @@ int main(int argc, char *argv[])
 	int kdtree_main(int argc, char *argv[]);
 	int libkdtreepp_main(int argc, char *argv[]);
 	int ann_main(int argc, char *argv[]);
-	int astar_algorithm_cpp_main(int argc, char *argv[]);
 	int lshkit_main(int argc, char *argv[]);
 	int slash_main(int argc, char *argv[]);
 
@@ -34,9 +33,6 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nA Library for Approximate Nearest Neighbor Searching (ANN) ----------" << std::endl;
 		retval = ann_main(argc, argv);
-
-		std::cout << "\nastar-algorithm-cpp algorithm ---------------------------------------" << std::endl;
-		//retval = astar_algorithm_cpp_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nLSHKIT library ------------------------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)

@@ -164,7 +164,7 @@ void denoising_auto_encoder_sample()
 
     for (auto& d : train_data_corrupted)
 	{
-        d = tiny_cnn::corrupt(move(d), 0.1, 0.0);  // corrupt 10% data
+        d = tiny_cnn::corrupt(std::move(d), 0.1, 0.0);  // corrupt 10% data
     }
 
 	std::cout << "start training..." << std::endl;

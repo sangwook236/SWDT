@@ -31,6 +31,12 @@
     <Filter Include="Source Files\graphlab">
       <UniqueIdentifier>{5a3b5d89-7530-47e9-99c2-4a524aa2495c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\astar_algorithm">
+      <UniqueIdentifier>{b7cc53e3-336a-4e4c-bc81-374814e17398}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\astar_algorithm_cpp">
+      <UniqueIdentifier>{21beae11-b8d9-44ec-aaa5-6a651c0ca3e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="maxflow_lib\instances.inc">
@@ -46,6 +52,12 @@
     </ClInclude>
     <ClInclude Include="maxflow_lib\graph.h">
       <Filter>Source Files\maxflow_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="astar_algorithm_cpp_lib\fsa.h">
+      <Filter>Source Files\astar_algorithm_cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="astar_algorithm_cpp_lib\stlastar.h">
+      <Filter>Source Files\astar_algorithm_cpp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +87,15 @@
     </ClCompile>
     <ClCompile Include="graphlab\graphlab_main.cpp">
       <Filter>Source Files\graphlab</Filter>
+    </ClCompile>
+    <ClCompile Include="astar_algorithm_cpp\astar_algorithm_cpp_main.cpp">
+      <Filter>Source Files\astar_algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="astar_algorithm_cpp_lib\8puzzle.cpp">
+      <Filter>Source Files\astar_algorithm_cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="astar_algorithm_cpp_lib\findpath.cpp">
+      <Filter>Source Files\astar_algorithm_cpp</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

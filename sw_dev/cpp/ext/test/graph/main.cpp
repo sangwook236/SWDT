@@ -14,6 +14,8 @@ namespace local {
 
 int main(int argc, char *argv[])
 {
+	int astar_algorithm_cpp_main(int argc, char *argv[]);
+
 	int maxflow_main(int argc, char *argv[]);
 	int ibfs_main(int argc, char *argv[]);
 
@@ -23,7 +25,10 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "min-cut/max-flow algorithms -----------------------------------------" << std::endl;
+		std::cout << "\nastar-algorithm-cpp algorithm ---------------------------------------" << std::endl;
+		//retval = astar_algorithm_cpp_main(argc, argv);  // not yet implemented.
+
+		std::cout << "\nmin-cut/max-flow algorithms -----------------------------------------" << std::endl;
 		retval = maxflow_main(argc, argv);  // not yet implemented.
 		retval = ibfs_main(argc, argv);  // not yet implemented.
 

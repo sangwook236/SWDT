@@ -40,12 +40,6 @@
     <Filter Include="Source Files\slash_lib">
       <UniqueIdentifier>{25e281e4-b7af-4316-9ffa-25168277c2fb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\astar_algorithm_cpp_lib">
-      <UniqueIdentifier>{20a8beb4-27c7-4512-b149-d50c72a0820f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\astar_algorithm_cpp">
-      <UniqueIdentifier>{b8079ed8-93ba-43db-ba47-aa0417bb7c9d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -89,15 +83,6 @@
     </ClCompile>
     <ClCompile Include="slash_lib\util.cc">
       <Filter>Source Files\slash_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="astar_algorithm_cpp_lib\8puzzle.cpp">
-      <Filter>Source Files\astar_algorithm_cpp_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="astar_algorithm_cpp_lib\findpath.cpp">
-      <Filter>Source Files\astar_algorithm_cpp_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="astar_algorithm_cpp\astar_algorithm_cpp_main.cpp">
-      <Filter>Source Files\astar_algorithm_cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,12 +130,6 @@
     </ClInclude>
     <ClInclude Include="slash_lib\util.h">
       <Filter>Source Files\slash_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="astar_algorithm_cpp_lib\fsa.h">
-      <Filter>Source Files\astar_algorithm_cpp_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="astar_algorithm_cpp_lib\stlastar.h">
-      <Filter>Source Files\astar_algorithm_cpp_lib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
