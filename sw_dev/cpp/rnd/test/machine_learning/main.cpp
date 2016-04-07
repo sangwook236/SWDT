@@ -31,6 +31,8 @@ int main(int argc, char *argv[])
 	int manifold_learning_main(int argc, char *argv[]);
 	int manifold_alignment_main(int argc, char *argv[]);
 
+	int libgp_main(int argc, char *argv[]);
+
 	int rl_glue_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -136,11 +138,14 @@ int main(int argc, char *argv[])
 
 		std::cout << "\ntiny-cnn library ----------------------------------------------------" << std::endl;
 		//	-. deep learning.
-		retval = tiny_cnn_main(argc, argv);  // not yet implemented.
+		retval = tiny_cnn_main(argc, argv);
 
 		std::cout << "\nManifold learning & alignment ---------------------------------------" << std::endl;
 		//retval = manifold_learning_main(argc, argv);  // not yet implemented.
 		//retval = manifold_alignment_main(argc, argv);
+
+		std::cout << "\nlibgp library ------------------------------------------------------" << std::endl;
+		retval = libgp_main(argc, argv);
 
 		std::cout << "\nRL-Glue (Reinforcement Learning Glue) library -----------------------" << std::endl;
 		//retval = rl_glue_main(argc, argv);  // not yet implemented.

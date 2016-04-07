@@ -4,6 +4,7 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "gp_d.lib")
 #pragma comment(lib, "GClasses.lib")
 #pragma comment(lib, "hdf5_hld.lib")
 #pragma comment(lib, "hdf5d.lib")
@@ -29,6 +30,7 @@
 
 #		else
 
+#pragma comment(lib, "gp.lib")
 #pragma comment(lib, "GClasses.lib")
 #pragma comment(lib, "hdf5_hl.lib")
 #pragma comment(lib, "hdf5.lib")

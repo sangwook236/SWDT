@@ -108,6 +108,7 @@
     <ClCompile Include="kmeanspp_lib\KMeans.cpp" />
     <ClCompile Include="kmeanspp_lib\KmTree.cpp" />
     <ClCompile Include="kmeanspp_lib\KmUtils.cpp" />
+    <ClCompile Include="libgp\libgp_main.cpp" />
     <ClCompile Include="liblearning\liblearning_deep_learning_example.cpp" />
     <ClCompile Include="liblearning\liblearning_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
