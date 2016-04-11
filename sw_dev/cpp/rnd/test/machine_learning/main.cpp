@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 		//		inference algorithms.
 		//	-. image processing.
 		//	-. reinforcement learning (RL).
-		//		Least-sqaures policy iteration.
+		//		least-sqaures policy iteration (LSPI).
 		// REF [library] >> ${GDT_HOME}/sw_dev/cpp/ext/src/general_purpose_library/dlib.
 		//retval = dlib_ml_main(argc, argv);  // not yet implemented.
 

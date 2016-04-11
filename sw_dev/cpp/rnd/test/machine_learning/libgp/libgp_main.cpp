@@ -12,7 +12,7 @@ namespace local {
 void dense_example()
 {
 	// initialize Gaussian process for 2-D input using the squared exponential covariance function with additive white noise.
-	libgp::GaussianProcess gp(2, "CovSum ( CovSEiso, CovNoise)");
+	libgp::GaussianProcess gp(2, "CovSum(CovSEiso, CovNoise)");
 
 	// initialize hyper parameter vector.
 	Eigen::VectorXd params(gp.covf().get_param_dim());
