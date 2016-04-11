@@ -1,4 +1,4 @@
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 #define _WIN32_WINNT_NT4 0x0400  // Windows NT 4.0
 #define _WIN32_WINNT_WIN2K 0x0500  // Windows 2000
 #define _WIN32_WINNT_WINXP 0x0501  // Windows XP

@@ -1,7 +1,7 @@
 #include "adisusbz/AdisUsbz.h"
 #include <iostream>
 #include <vector>
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 #define _USE_MATH_DEFINES
 #endif
 #include <math.h>

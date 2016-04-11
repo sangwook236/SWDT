@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-#ifdef WIN32
+#if defined(WIN32) || defined(_WIN32)
 #include <io.h>
 #else
 #include <dirent.h>
@@ -151,7 +151,8 @@ void read_directory(const std::string &directoryName, std::vector<std::string> &
                 filenames.push_back(itr->path().filename().string());
 		}
 	}
-#elif defined(WIN32)
+#elif defined(WIN32) || defined(_WIN32)
+
     struct _finddata_t s_file;
     std::string str = directoryName + "\\*.*";
 

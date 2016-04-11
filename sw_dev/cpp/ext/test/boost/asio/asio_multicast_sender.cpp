@@ -1,4 +1,4 @@
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 #define _WIN32_WINNT 0x0501
 #endif
 
