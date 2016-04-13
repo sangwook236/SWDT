@@ -278,7 +278,7 @@ image<rgb> *segment_image_using_map_container(image<rgb> *im, float sigma, float
 	universe_using_map *u = segment_graph_using_map(vertex_set, num, edges, c);
 
 	// post process small components
-	for (int i = 0; i < num; i++)
+	for (int i = 0; i < num; ++i)
 	{
 		const int a = u->find(edges[i].a);
 		const int b = u->find(edges[i].b);
@@ -296,7 +296,7 @@ image<rgb> *segment_image_using_map_container(image<rgb> *im, float sigma, float
 
 	// pick random colors for each component
 	rgb *colors = new rgb[width*height];
-	for (int i = 0; i < width*height; i++)
+	for (int i = 0; i < width*height; ++i)
 		colors[i] = random_rgb();
 
 	for (int y = 0; y < height; y++)
@@ -423,7 +423,7 @@ image<rgb> *segment_image_using_depth_guided_map_plus_map_container(image<rgb> *
 	universe_using_map *u = segment_graph_using_map(vertex_set, num, edges, c);
 
 	// post process small components
-	for (int i = 0; i < num; i++)
+	for (int i = 0; i < num; ++i)
 	{
 		const int a = u->find(edges[i].a);
 		const int b = u->find(edges[i].b);
@@ -441,7 +441,7 @@ image<rgb> *segment_image_using_depth_guided_map_plus_map_container(image<rgb> *
 
 	// pick random colors for each component
 	rgb *colors = new rgb[width*height];
-	for (int i = 0; i < width*height; i++)
+	for (int i = 0; i < width*height; ++i)
 		colors[i] = random_rgb();
 
 	for (int y = 0; y < height; y++)
@@ -603,8 +603,7 @@ image<rgb> * segment_image_using_depth_guided_map(image<rgb> *im, image<rgb> *de
 }
 
 /*
-	The program takes a color image (PPM format) and produces a segmentation
-	with a random color assigned to each region.
+	The program takes a color image (PPM format) and produces a segmentation with a random color assigned to each region.
 
 	run "segment sigma k min input output".
 
@@ -617,8 +616,8 @@ image<rgb> * segment_image_using_depth_guided_map(image<rgb> *im, image<rgb> *de
 	output: Output image.
 */
 
-// [ref] ${Efficient_Graph_Based_Image_Segmentation_HOME}/segment.cpp
-void sample(const bool use_map_container)
+// REF [file] >> ${Efficient_Graph_Based_Image_Segmentation_HOME}/segment.cpp
+void segment_sample(const bool use_map_container)
 {
 #if 0
 	const std::string input_filename("./data/segmentation/beach.ppm");
@@ -644,8 +643,20 @@ void sample(const bool use_map_container)
 	const int min_size = 50;
 #endif
 
+#if 1
 	std::cout << "loading input image." << std::endl;
 	image<rgb> *input = loadPPM(input_filename.c_str());  // color
+#else
+	const cv::Mat inImg(cv::imread(*cit, cv::IMREAD_COLOR));
+	if (inImg.empty())
+	{
+		std::cout << "fail to load image file: " << *cit << std::endl;
+		continue;
+	}
+
+	image<rgb>* input = new image<rgb>(inImg.cols, inImg.rows);
+	memcpy((char *)&(input->access[0][0]), inImg.data, inImg.rows * inImg.cols * sizeof(rgb));
+#endif
 
 	std::cout << "processing" << std::endl;
 
@@ -659,8 +670,6 @@ void sample(const bool use_map_container)
 		else  // original implementation.
 			seg = segment_image(input, sigma, k, min_size, &num_ccs);
 	}
-
-	savePPM(seg, output_filename.c_str());
 
 	std::cout << "got " << num_ccs << " components" << std::endl;
 
@@ -678,6 +687,14 @@ void sample(const bool use_map_container)
 	cv::imshow("segmented image", tmp);
 #endif
 
+	// save results.
+	std::cout << "saving output image..." << std::endl;
+#if 1
+	savePPM(seg, output_filename.c_str());
+#else
+	cv::imwrite(output_filename, img);
+#endif
+
 	cv::waitKey(0);
 
 	cv::destroyAllWindows();
@@ -686,7 +703,7 @@ void sample(const bool use_map_container)
 	seg = NULL;
 }
 
-void sample_using_depth_guided_map(const bool use_map_container)
+void segment_using_depth_guided_map_sample(const bool use_map_container)
 {
 #if 1
 	const std::string input_filename("./data/segmentation/rectified_image_rgb_0.ppm");
@@ -759,18 +776,15 @@ namespace my_efficient_graph_based_image_segmentation {
 
 }  // namespace my_efficient_graph_based_image_segmentation
 
-/*
-[ref]
-	"Efficient Graph-Based Image Segmentation", Pedro F. Felzenszwalb and Daniel P. Huttenlocher, IJCV, 2004.
-	http://cs.brown.edu/~pff/segment/
-*/
+// REF [paper] >> "Efficient Graph-Based Image Segmentation", Pedro F. Felzenszwalb and Daniel P. Huttenlocher, IJCV, 2004.
+//	http://cs.brown.edu/~pff/segment/
 
 int efficient_graph_based_image_segmentation_main(int argc, char *argv[])
 {
 	const bool use_map_container = false;
 
-	//local::sample(use_map_container);
-	local::sample_using_depth_guided_map(use_map_container);
+	//local::segment_sample(use_map_container);
+	local::segment_using_depth_guided_map_sample(use_map_container);
 
 	return 0;
 }
