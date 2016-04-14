@@ -451,6 +451,7 @@ void feature_description()
 		//const cv::Mat &H = cv::findHomography(cv::Mat(matchedPoints1), cv::Mat(matchedPoints2), outlier_mask, cv::LMEDS, ransacReprojThreshold);
 
 		cv::Mat img_correspondence;
+		//cv::drawKeypoints(img1, keypoints1, img_keypoints, cv::Scalar::all(-1), 0);
 		cv::drawMatches(img1, keypoints1, img2, keypoints2, matches, img_correspondence, cv::Scalar::all(-1), cv::Scalar::all(-1), reinterpret_cast<const std::vector<char> &>(outlier_mask));
 		cv::Mat img_warped;
 		cv::warpPerspective(img1, img_warped, H, img2.size());

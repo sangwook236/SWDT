@@ -1,3 +1,6 @@
 [-] General
 	-. Site
 		http://www.cs.brown.edu/~pff/segment/
+
+	-. Paper
+		"Efficient Graph-Based Image Segmentation", P. Felzenszwalb and D. Huttenlocher, IJCV 2004.
