@@ -14,7 +14,7 @@ namespace my_tiny_cnn {
 
 void convnet_sample(const std::string& data_dir_path);
 void mlp_sample(const std::string& data_dir_path);
-void denoising_auto_encoder_sample();
+void denoising_auto_encoder_sample(const std::string& data_dir_path);
 void dropout_sample(const std::string& data_dir_path);
 
 void mnist_train_example();
@@ -35,7 +35,7 @@ int tiny_cnn_main(int argc, char *argv[])
 			std::cout << "\t3-Layer Networks (MLP) --------------------------------------" << std::endl;
 			my_tiny_cnn::mlp_sample(path_to_data);
 			std::cout << "\tdenoising auto-encoder --------------------------------------" << std::endl;
-			my_tiny_cnn::denoising_auto_encoder_sample();
+			my_tiny_cnn::denoising_auto_encoder_sample(path_to_data);
 			std::cout << "\tdropout -----------------------------------------------------" << std::endl;
 			my_tiny_cnn::dropout_sample(path_to_data);
 		}

@@ -14,9 +14,9 @@ void construct_net(N& nn)
     typedef tiny_cnn::convolutional_layer<tiny_cnn::activation::identity> conv;
     typedef tiny_cnn::max_pooling_layer<tiny_cnn::activation::relu> pool;
 
-    const int n_fmaps = 32;  // number of feature maps for upper layer
-    const int n_fmaps2 = 64;  // number of feature maps for lower layer
-    const int n_fc = 64;  // number of hidden units in fully-connected layer
+    const int n_fmaps = 32;  // number of feature maps for upper layer.
+    const int n_fmaps2 = 64;  // number of feature maps for lower layer.
+    const int n_fc = 64;  // number of hidden units in fully-connected layer.
 
     nn << conv(32, 32, 5, 3, n_fmaps, tiny_cnn::padding::same)
         << pool(32, 32, n_fmaps, 2)
@@ -30,7 +30,7 @@ void construct_net(N& nn)
 
 void train_cifar10(const std::string& data_dir_path, const double learning_rate, std::ostream& log)
 {
-    // specify loss-function and learning strategy
+    // specify loss-function and learning strategy.
 	tiny_cnn::network<tiny_cnn::cross_entropy, tiny_cnn::adam> nn;
 
     construct_net(nn);
@@ -39,7 +39,7 @@ void train_cifar10(const std::string& data_dir_path, const double learning_rate,
 
     std::cout << "load models..." << std::endl;
 
-    // load cifar dataset
+    // load cifar dataset.
     std::vector<tiny_cnn::label_t> train_labels, test_labels;
     std::vector<tiny_cnn::vec_t> train_images, test_images;
 
@@ -54,12 +54,12 @@ void train_cifar10(const std::string& data_dir_path, const double learning_rate,
 
 	tiny_cnn::progress_display disp(train_images.size());
 	tiny_cnn::timer t;
-    const int n_minibatch = 10;  // minibatch size
-    const int n_train_epochs = 30;  // training duration
+    const int n_minibatch = 10;  // minibatch size.
+    const int n_train_epochs = 30;  // training duration.
 
     nn.optimizer().alpha *= std::sqrt(n_minibatch) * learning_rate;
 
-    // create callback
+    // create callback.
     auto on_enumerate_epoch = [&]() {
         std::cout << t.elapsed() << "s elapsed." << std::endl;
         tiny_cnn::result res = nn.test(test_images, test_labels);
@@ -73,15 +73,15 @@ void train_cifar10(const std::string& data_dir_path, const double learning_rate,
         disp += n_minibatch;
     };
 
-    // training
+    // training.
     nn.train(train_images, train_labels, n_minibatch, n_train_epochs, on_enumerate_minibatch, on_enumerate_epoch);
 
     std::cout << "end training." << std::endl;
 
-    // test and show results
+    // test and show results.
     nn.test(test_images, test_labels).print_detail(std::cout);
 
-    // save networks
+    // save networks.
     std::ofstream ofs("cifar-weights");
     ofs << nn;
 }
