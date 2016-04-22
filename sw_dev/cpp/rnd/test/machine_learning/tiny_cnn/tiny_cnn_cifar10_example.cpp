@@ -60,7 +60,8 @@ void train_cifar10(const std::string& data_dir_path, const double learning_rate,
     nn.optimizer().alpha *= std::sqrt(n_minibatch) * learning_rate;
 
     // create callback.
-    auto on_enumerate_epoch = [&]() {
+    auto on_enumerate_epoch = [&]()
+	{
         std::cout << t.elapsed() << "s elapsed." << std::endl;
         tiny_cnn::result res = nn.test(test_images, test_labels);
         log << res.num_success << "/" << res.num_total << std::endl;
@@ -69,7 +70,8 @@ void train_cifar10(const std::string& data_dir_path, const double learning_rate,
         t.restart();
     };
 
-    auto on_enumerate_minibatch = [&]() {
+    auto on_enumerate_minibatch = [&]()
+	{
         disp += n_minibatch;
     };
 

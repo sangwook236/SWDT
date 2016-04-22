@@ -96,7 +96,8 @@ void train_lenet(const std::string& data_dir_path)
     nn.optimizer().alpha *= std::sqrt(minibatch_size);
 
     // create callback.
-    auto on_enumerate_epoch = [&](){
+    auto on_enumerate_epoch = [&]()
+	{
         std::cout << t.elapsed() << "s elapsed." << std::endl;
         tiny_cnn::result res = nn.test(test_images, test_labels);
         std::cout << res.num_success << "/" << res.num_total << std::endl;
@@ -105,7 +106,8 @@ void train_lenet(const std::string& data_dir_path)
         t.restart();
     };
 
-    auto on_enumerate_minibatch = [&](){
+    auto on_enumerate_minibatch = [&]()
+	{
         disp += minibatch_size;
     };
 

@@ -56,7 +56,8 @@ void convnet_sample(const std::string& data_dir_path)
     nn.optimizer().alpha *= std::sqrt(minibatch_size);
 
     // create callback.
-    auto on_enumerate_epoch = [&](){
+    auto on_enumerate_epoch = [&]()
+	{
         std::cout << t.elapsed() << "s elapsed." << std::endl;
 
         tiny_cnn::result res = nn.test(test_images, test_labels);
@@ -70,7 +71,8 @@ void convnet_sample(const std::string& data_dir_path)
         t.restart();
     };
 
-    auto on_enumerate_minibatch = [&](){ 
+    auto on_enumerate_minibatch = [&]()
+	{ 
         disp += minibatch_size; 
     };
     
@@ -122,7 +124,8 @@ void mlp_sample(const std::string& data_dir_path)
     tiny_cnn::timer t;
 
     // create callback.
-    auto on_enumerate_epoch = [&](){
+    auto on_enumerate_epoch = [&]()
+	{
         std::cout << t.elapsed() << "s elapsed." << std::endl;
 
         tiny_cnn::result res = nn.test(test_images, test_labels);
@@ -136,7 +139,8 @@ void mlp_sample(const std::string& data_dir_path)
         t.restart();
     };
 
-    auto on_enumerate_data = [&](){ 
+    auto on_enumerate_data = [&]()
+	{ 
         ++disp; 
     };  
 
@@ -186,7 +190,8 @@ void denoising_auto_encoder_sample(const std::string& data_dir_path)
 	tiny_cnn::timer t;
 
 	// create callback.
-	auto on_enumerate_epoch = [&]() {
+	auto on_enumerate_epoch = [&]()
+	{
 		std::cout << t.elapsed() << "s elapsed." << std::endl;
 
 		tiny_cnn::result res = nn.test(test_images, test_labels);
@@ -200,7 +205,8 @@ void denoising_auto_encoder_sample(const std::string& data_dir_path)
 		t.restart();
 	};
 
-	auto on_enumerate_data = [&]() {
+	auto on_enumerate_data = [&]()
+	{
 		++disp;
 	};
 
@@ -248,7 +254,8 @@ void dropout_sample(const std::string& data_dir_path)
     tiny_cnn::timer t;
 
     // create callback.
-    auto on_enumerate_epoch = [&](){
+    auto on_enumerate_epoch = [&]()
+	{
         std::cout << t.elapsed() << "s elapsed." << std::endl;
   
         dropout.set_context(tiny_cnn::net_phase::test);
@@ -264,7 +271,8 @@ void dropout_sample(const std::string& data_dir_path)
         t.restart();
     };
 
-    auto on_enumerate_data = [&](){
+    auto on_enumerate_data = [&]()
+	{
         ++disp;
     };
 
