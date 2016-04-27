@@ -13,10 +13,10 @@ namespace local {
 
 namespace my_opengm {
 
-// [ref] ${OPENGM_HOME}/src/examples/unsorted-examples/markov-chain.cxx
+// REF [file] >> ${OPENGM_HOME}/src/examples/unsorted-examples/markov-chain.cxx
 void markov_chain_example()
 {
-	// construct a label space with numOfVariables many variables, each having numOfLabels many labels
+	// construct a label space with numOfVariables many variables, each having numOfLabels many labels.
 	const std::size_t numOfVariables = 40; 
 	const std::size_t numOfLabels = 5;
 
@@ -25,14 +25,15 @@ void markov_chain_example()
 	Space space(numOfVariables, numOfLabels);
 
 	// construct a graphical model with 
-	// - addition as the operation (template parameter Adder)
-	// - support for Potts functions (template parameter PottsFunction<double>)
+	// - addition as the operation (template parameter Adder).
+	// - support for Potts functions (template parameter PottsFunction<double>).
 	typedef OPENGM_TYPELIST_2(opengm::ExplicitFunction<double>, opengm::PottsFunction<double>) FunctionTypelist;
 	typedef opengm::GraphicalModel<double, opengm::Adder, FunctionTypelist, Space> Model;
 
 	Model gm(space);
 
-	// for each variable, add one 1st order functions and one 1st order factor
+	// Local model.
+	// for each variable, add one 1st order functions and one 1st order factor.
 	for (std::size_t v = 0; v < numOfVariables; ++v)
 	{
 		const std::size_t shape[] = { numOfLabels };
@@ -46,12 +47,13 @@ void markov_chain_example()
 		gm.addFactor(fid1, variableIndices, variableIndices + 1);
 	}
 
+	// Pairwise interaction.
 	{
-		// add one (!) 2nd order Potts function
+		// add one (!) 2nd order Potts function.
 		opengm::PottsFunction<double> func2(numOfLabels, numOfLabels, 0.0, 0.3);
 		const Model::FunctionIdentifier fid2 = gm.addFunction(func2);
 
-		// for each pair of consecutive variables, add one factor that refers to the Potts function
+		// for each pair of consecutive variables, add one factor that refers to the Potts function.
 		for (std::size_t v = 0; v < numOfVariables - 1; ++v)
 		{
 			const std::size_t variableIndices[] = { v, v + 1 };
@@ -59,7 +61,9 @@ void markov_chain_example()
 		}
 	}
 
-	// set up the optimizer (loopy belief propagation)
+	// FIXME [check] >> why is this a markov chain example?
+
+	// set up the optimizer (loopy belief propagation).
 	typedef opengm::BeliefPropagationUpdateRules<Model, opengm::Minimizer> UpdateRules;
 	typedef opengm::MessagePassing<Model, opengm::Minimizer, UpdateRules, opengm::MaxDistance> BeliefPropagation;
 
@@ -69,13 +73,13 @@ void markov_chain_example()
 	const BeliefPropagation::Parameter parameter(maxNumberOfIterations, convergenceBound, damping);
 	BeliefPropagation bp(gm, parameter);
 
-	// optimize (approximately)
+	// optimize (approximately).
 	BeliefPropagation::VerboseVisitorType visitor;
 
 	std::cout << "on inferring ..." << std::endl;
 	bp.infer(visitor);
 
-	// obtain the (approximate) argmin
+	// obtain the (approximate) argmin.
 	std::vector<std::size_t> labeling(numOfVariables);
 	bp.arg(labeling);
 
