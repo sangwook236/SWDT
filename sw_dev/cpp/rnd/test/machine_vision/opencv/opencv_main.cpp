@@ -81,6 +81,7 @@ void shape_finding();
 void shape_matching();
 void active_contour_model();
 void segmentation();
+void superpixel();
 void meanshift_segmentation_using_gpu();
 void outlier_removal();
 void feature_extraction();
@@ -194,6 +195,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::active_contour_model();  // snake.
 
 		//my_opencv::segmentation();
+		my_opencv::superpixel();
 		//if (canUseGPU) my_opencv::meanshift_segmentation_using_gpu();  // not yet implemented.
 
 		//my_opencv::outlier_removal();
@@ -218,7 +220,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::object_detection();
 		//my_opencv::face_detection();
 		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // not yet implemented.
-		my_opencv::human_detection();
+		//my_opencv::human_detection();
 		//if (canUseGPU) my_opencv::human_detection_using_gpu();  // not yet implemented.
 
 		//my_opencv::face_recognition();

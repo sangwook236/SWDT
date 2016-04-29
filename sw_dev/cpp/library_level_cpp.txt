@@ -1,0 +1,40 @@
+[-] General
+	-. Principle
+		다른 library에 의해 사용되지 않거나 주로 executable에 직접 사용되는 library는 사용하지 기록하지 말 것.
+
+[-] Library Level (General)
+	-. Level 0
+		zlib
+		OpenGL
+		icu, iconv(GnuWin32)
+
+	-. Level 1
+		Boost
+
+	-. Level 3
+		libjpeg, libpng, libtiff, libgif, libmng
+		GPU, OpenCL
+
+	-. Level 5
+		log4cxx, glog
+		gtest
+		gflags
+
+	-. Level 7
+		Qt, wxWidgets
+		HDF
+		gproto
+
+[-] Library Level (R&D)
+	-. Level 0
+		BLAS, LAPACK
+
+	-. Level 1
+		Eigen
+
+	-. Level 3
+		GSL
+
+	-. Level 7
+		OpenCV
+		GMP/MPIR
