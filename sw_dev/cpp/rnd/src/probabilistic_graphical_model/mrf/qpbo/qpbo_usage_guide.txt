@@ -1,3 +1,0 @@
-[-] General
-	-. Site
-		http://pub.ist.ac.at/~vnk/software.html

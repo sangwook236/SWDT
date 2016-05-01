@@ -1,0 +1,10 @@
+[-] General
+	-. Site
+		slash:
+		https://github.com/salviati/slash
+
+		LSHKIT:
+		http://lshkit.sourceforge.net/
+
+		e2lsh:
+		http://web.mit.edu/andoni/www/LSH/index.html

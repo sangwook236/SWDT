@@ -1,0 +1,22 @@
+[-] General
+	-. Site
+		http://www.freetype.org/
+
+[-] Build (VC)
+	-. Use VC solution file in FreeType
+		${FreeType_HOME}/builds/windows
+
+[-] Build (CMake + VC)
+	-. Configure & generate
+	-. Build
+
+[-] Trouble Shooting (VC)
+		<error mesasge>
+			error C2065: 'AF_SCRIPT_CYRL': undeclared identifier
+		<solution>
+			In ${FreeType_HOME}/src/autofit/afstyles.h
+			<before>
+				META_STYLE_LATIN( cyrl, CYRL, "Cyrillic" )
+			<after>
+				//META_STYLE_LATIN( cyrl, CYRL, "Cyrillic" )
+			==> 이에 대한 영향은 모름.
