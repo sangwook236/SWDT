@@ -16,4 +16,4 @@
 [-] Trouble Shooting (VC)
 	-. Error message : "win32.mak not found"
 		==> solution
-			C:/Program Files/Microsoft SDKs/Windows/v7.1A/Include/Win32.mak
+			copy C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Include/Win32.mak to ${LIBJPEG_HOME}.
