@@ -6,3 +6,11 @@
 		myAHRS+
 			http://www.withrobot.com/myahrs_plus/
 			https://github.com/withrobot/myAHRS_plus
+
+		Open-Source AHRS
+			http://www.x-io.co.uk/open-source-imu-and-ahrs-algorithms/
+			http://www.x-io.co.uk/
+			https://github.com/xioTechnologies
+			https://github.com/xioTechnologies/Open-Source-AHRS-With-x-IMU
+			https://github.com/xioTechnologies/x-IMU-Arduino-Example
+			https://code.google.com/p/imumargalgorithm30042010sohm/

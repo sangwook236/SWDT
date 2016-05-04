@@ -1,3 +1,0 @@
-[-] General
-	-. Site
-		http://www.csie.ntu.edu.tw/~cjlin/nmf/

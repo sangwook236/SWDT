@@ -1,3 +1,7 @@
 [-] General
 	-. Site
+		CJLIN:
+		http://www.csie.ntu.edu.tw/~cjlin/nmf/
+
+		MIT:
 		http://people.csail.mit.edu/brussell/courses/6.899/nmf/
