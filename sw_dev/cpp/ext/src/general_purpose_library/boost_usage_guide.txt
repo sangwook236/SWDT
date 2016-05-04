@@ -8,6 +8,30 @@
 		Boost Dependency Analyzer:
 		http://www.meetingcpp.com/index.php/br/items/boost-dependency-analyzer.html
 
+[-] 다른 library에서 Boost library를 사용할 때 (CMake)
+	-. Boost library를 찾지 못하는 오류
+		<error>
+			Could not find the following Boost libraries:
+				boost_thread
+		          boost_chrono
+		          boost_system
+		          boost_date_time
+			No Boost libraries were found. You may need to set BOOST_LIBRARYDIR to the directory containing Boost libraries or BOOST_ROOT to the location of Boost.
+		<cause>
+			Boost library directory를 찾지 못함.
+			최신 version의 Boost library 사용.
+			==> 정확한 원인은 아직 모름 (2016/05/03).
+		<solution>
+			Boost library directory를 올바르게 지정.
+				Set Boost_DIR to ${BOOST_HOME}.
+				Set BOOST_ROOT to ${BOOST_HOME}.
+				Set BOOST_LIBRARYDIR to ${BOOST_HOME}/stage/lib.
+			Boost library 설정을 올바르게 지정.
+				Set Boost_USE_MULTITHREADED to on/off.
+				Set Boost_USE_STATIC_LIBS to on/off.
+				Set Boost_ADDITIONAL_VERSIONS to 1.61.0.
+				Set Boost_DEBUG to true/false.
+
 << Building & Installation >>
 
 [-] boost site로 부터 file download

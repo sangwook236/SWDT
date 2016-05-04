@@ -7,3 +7,8 @@
 
 		https://code.google.com/p/googletest/wiki/Documentation
 		https://code.google.com/p/googletest/wiki/V1_6_Documentation
+
+[-] Building (CMake)
+	-. Set options
+		Set BUILD_SHARED_LIBS to true.
+		Set CMAKE_DEBUG_POSTFIX to d.

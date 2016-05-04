@@ -12,8 +12,12 @@
 
 	-. Repository
 		https://github.com/itseez/opencv
+		https://github.com/itseez/opencv_contrib
 
-[-] Setting CMake (Linux)
+		https://github.com/itseez/opencv_3rdparty
+		https://github.com/itseez/opencv_extra
+
+[-] Building (CMake + Linux)
 	-. CUDA_nvcuvid_LIBRARY 항목이 올바르게 설정되어 있지 않다는 오류 발생.
 		NVIDIA CUDA library 중에서 video decoder (NVCUVID) library를 사용하는데,
 		해당 library의 path가 다른 CUDA library와 다르게 설정되어 있어 발생.
@@ -29,8 +33,15 @@
 			sudo ln -s /usr/lib/nvidia-current/libcuda.so /usr/lib/libcuda.so
 			sudo ln -s /usr/lib/nvidia-current/libcuda.so.1 /usr/lib/libcuda.so.1
 
-[-] Trouble Shooting
+[-] Trouble Shooting (VC)
 	-. highgui project에서 OpenEXR 관련 error
 		OpenEXR library를 shared library linking하기 위해서 OPENEXR_DLL macro가 정의되어야 함
-		=> CMake 환경에서 macro로 /DOPENEXR_DLL를 정의하거나
+		==> CMake 환경에서 macro로 /DOPENEXR_DLL를 정의하거나
 			highgui project에 OPENEXR_DLL를 정의하여야 함.
+
+	-. protobuf library 관련 linking error
+		<cause>
+			protobuf shared library를 정상적으로 link하지 못함.
+		<solution>
+			Link with protobuf as a shared library.
+				define PROTOBUF_USE_DLLS.

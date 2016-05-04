@@ -1,3 +1,10 @@
 [-] General
 	-. Site
 		http://openthreads.sourceforge.net/
+
+[-] Building (VC)
+	-. Use its solution file
+		${OpenThreads_HOME}/win32_src/OpenThreads.dsw
+	-. Create Win64 platform
+		Win32 & Win64에 대해 output directory & output file이 섞이지 않게 해야 함.
+	-. Build

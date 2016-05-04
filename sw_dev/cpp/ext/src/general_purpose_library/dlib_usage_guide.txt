@@ -3,14 +3,27 @@
 		http://dlib.net/
 
 [-] Building (CMake)
-	[ref] http://dlib.net/compile.html
+	REF [site] >> http://dlib.net/compile.html
 
-	-. ${DLIB_HOME}/dlib/test/CMakeLists.txt file 이용.
-		Dlib library & test를 위한 building project 생성.
-	-. Dlib library를 위한 include 
+	-. CMakeLists.txt
+		${DLIB_HOME}/dlib
+		${DLIB_HOME}/dlib/test
+		${DLIB_HOME}/dlib/test/blas_bindings
+		${DLIB_HOME}/dlib/matlab
+		${DLIB_HOME}/examples
+			Use OpenCV.
+
+	-. Configure & generate
+		Set CMAKE_DEBUG_POSTFIX to d.
+		Delete all settings in external libraries below:
+			zlib, jpeg, png.
+		==> Errors rise if these external libraries are assigned explicitly.
+		==> Use external libraries that Dlib has.
+	-. Build
+	-. Install
 
 [-] Building
-	[ref] http://dlib.net/compile.html
+	REF [site] >> http://dlib.net/compile.html
 
-	-. static library 생성.
-		${DLIB_HOME}/all/source.cpp file 하나만을 포함하는 project를 생성한 후 building.
+	-. Create static library.
+		${DLIB_HOME}/dlib/all/source.cpp file 하나만을 포함하는 project를 생성한 후 building.

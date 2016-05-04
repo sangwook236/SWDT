@@ -1,3 +1,28 @@
 [-] General
 	-. Site
 		http://www.zlib.net/
+
+[-] Building (CMake)
+	-. Configure & generate
+		Set CMAKE_DEBUG_POSTFIX to d.
+	-. Build
+		Create shared & static libraries.
+			zlibstatic.lib
+			zlib.dll & zlib.lib
+			==> Copy zlib.lib to zdll.lib
+				기존 DLL을 위한 import library이 zdll.lib이었음.
+	-. Install
+
+[-] Building (VS)
+	-. Run Visual Studio Command Prompt
+	-. Change directory
+		cd ${ZLIB_HOME}
+	-. Copy zconf.h
+		cp zconf.h to ${ZLIB_HOME}
+		==> CMake를 이용해 configure & generate를 수행하면 zconf.h file 생성.
+	-. nmake
+		nmake -f win32\Makefile.msc
+		==> Create shared & static libraries.
+			zlib.lib
+			zlib1.dll & zdll.lib
+		==> Release build만 생성되는 듯함.

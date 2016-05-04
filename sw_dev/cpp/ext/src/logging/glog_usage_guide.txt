@@ -3,6 +3,7 @@
         https://github.com/google/glog
         https://code.google.com/p/google-glog/
 
-[-] Trouble Shooting (Windows)
-	-. Use shared library
+[-] Building (CMake)
+	-. Set options
 		Set BUILD_SHARED_LIBS to true.
+		Set CMAKE_DEBUG_POSTFIX to d.

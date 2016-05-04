@@ -1,0 +1,105 @@
+[-] General
+	-. Site
+		http://faculty.cse.tamu.edu/davis/suitesparse.html
+
+		https://github.com/PetterS/SuiteSparse
+
+		http://www.cise.ufl.edu/research/sparse/SuiteSparse/
+		http://www.cise.ufl.edu/research/sparse/
+		http://www.cise.ufl.edu/research/sparse/UFconfig/
+
+		http://www.cise.ufl.edu/research/sparse/cholmod/
+		http://www.cise.ufl.edu/research/sparse/umfpack/
+		http://www.cise.ufl.edu/research/sparse/ldl/
+		http://www.cise.ufl.edu/research/sparse/SPQR/
+
+		http://matrixprogramming.com/2008/03/umfpack
+
+[-] Building (Cygwin GCC)
+	REF [file] >> ${SUITESPARSE_HOME}/README.txt
+
+	-. Set compiler & linker, etc
+		CC=i686-pc-mingw32-gcc
+		CXX=i686-pc-mingw32-g++
+		F77 = i686-pc-mingw32-gfortran
+		AR=i686-pc-mingw32-ar
+		RANLIB = i686-pc-mingw32-ranlib
+		LD=i686-pc-mingw32-ld
+	-. Add -mno-cygwin to CFLAGS in ${SUITE_SPARSE_ROOT}/SuiteSparse_config/SuiteSparse_config.mk
+		CFLAGS = -mno-cygwin
+		==> Use the flag -mno-cygwin, which forces gcc to use MinGW.
+	-. Remove -lrt if you have it
+		LIB = -lm -lrt => LIB = -lm
+	-. Rename built libraries
+		The Microsoft linker recognizes the libraries compiled by gcc under Cygwin.
+		What we need to do is to just rename them from *.a to *.lib.
+
+[-] Building (VC)
+	-. Use ${SUITESPARSE_HOME}/Project/SuiteSparse.sln
+		SuiteSparse library의 일부만 build되는 것 같음.
+			UMFPACK & CSparse 등과 같은 library는 build되지 않음.
+		Win64 platform이 AMD project에만 존재.
+			AMD project를 제외한 뒤, 다른 모든 projects에 대해 x64 platform을 지운 후 다시 생성.
+		CHOLMOD project의 경우 DLL을 위한 project가 존재.
+			Static library로 변경 후 사용.
+		몇몇 project의 경우 output directory가 올바르지 않음.
+			아래와 같이 output directory를 변경 후 사용.
+				$(SolutionDir)$(Platform)\$(Configuration)\
+		CHOLMOD_demo & CHOLMOD_simple projects의 additional library dependency 수정.
+			Projects의 Win32 platform을 참고하여 수정.
+	-. Set additional include path
+		../../SuiteSparse_config
+		Project에 해당하는 header file path.
+			e.g.)
+				../../AMD/Include
+				../../CAMD/Include
+	-. Set additional library path
+		In projects AMD_demo, CCOLAMD_demo, CHOLMOD_demo, CHOLMOD_simple, & COLAMD_demo.
+			../$(Configuration) for Win32.
+			../$(Platform)/$(Configuration) for Win64.
+
+[-] Trouble Shooting (VC)
+	-. metis.h 관련 오류 발생
+		<error message>
+			Cannot open include file: 'metis.h': No such file or directory
+		<solution>
+			Set NPARTITION macro.
+			Reset USE_ACML macro.
+	-. WinMain 관련 오류 발생 in project CHOLMOD_demo
+		<error message>
+			unresolved external symbol WinMain referenced in function "int __cdecl invoke_main(void)"
+		<solution>
+			In Project Properties -> Linker -> System -> SubSystem:
+			Change from Windows (/SUBSYSTEM:WINDOWS) to Console (/SUBSYSTEM:CONSOLE).
+
+[-] Building GibHub (VC)
+	-. Download files
+		https://github.com/jlblancoc/suitesparse-metis-for-windows
+	-. CMake
+
+[-] Trouble Shooting GibHub (VC)
+	-. rint 함수 관련 오류 발생
+		<error message>
+			syntax error: '('
+		<solution>
+			Modify ${SUITESPARSE_HOME}/meis/GKlib/gk_arch.h
+			<before>
+				#ifdef __MSC__
+				/* MSC does not have rint() function */
+				#define rint(x) ((int)((x)+0.5))  
+				
+				/* MSC does not have INFINITY defined */
+				#ifndef INFINITY
+				#define INFINITY FLT_MAX
+				#endif
+				#endif
+			<after>
+				//#ifdef __MSC__
+				///* MSC does not have rint() function */
+				//#define rint(x) ((int)((x)+0.5))  
+				//s
+				///* MSC does not have INFINITY defined */
+				//#ifndef INFINITY
+				//#define INFINITY FLT_MAX
+				//#endif
+				//#endif

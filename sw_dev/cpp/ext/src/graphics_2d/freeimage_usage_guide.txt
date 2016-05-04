@@ -1,3 +1,19 @@
 [-] General
 	-. Site
 		http://freeimage.sourceforge.net/
+
+[-] Build (VC)
+	-. Use VC solution file in FreeImage
+
+[-] Trouble Shooting (VC)
+	-. snprintf
+		<error message>
+			warning C4005: 'snprintf': macro redefinition
+			fatal error C1189: #error:  Macro definition of snprintf conflicts with Standard Library function declaration
+		<solution>
+			in ${FREEIMAGE_HOME}/Source/LibTIFF4/tif_config.h
+			<before>
+				#define snprintf _snprintf
+			<after>
+				//#define snprintf _snprintf
+

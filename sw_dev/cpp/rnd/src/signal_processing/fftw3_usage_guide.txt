@@ -1,0 +1,66 @@
+[-] General
+	-. Site
+		http://www.fftw.org/
+
+[-] Building (VC)
+	-. Download a solution file
+		http://www.fftw.org/install/windows.html
+	-. Unzip the solution file to ${FFTW3_HOME}
+		${FFTW3_HOME}/fftw-3.3-libs
+		==> REF [file] >> ${FFTW3_HOME}/fftw-3.3-libs/Readme.txt
+	-. Open the solution file
+	-. Build
+
+[-] Building (MinGW)
+	-. Reference
+		http://icl.cs.utk.edu/lapack-for-windows/lapack/
+			Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW
+	-. Use MSYS
+		1. (optional) Put the GNU runtime directory in $PATH.
+			export PATH=/D/MyProgramFiles/MinGW/bin:$PATH
+		2. Change a directory to ${FFTW3_HOME}.
+		3. Configure.
+			./configure --prefix=./install --enable-shared --enable-static
+		4. Make.
+			mingw32-make
+			mingw32-make install (?)
+
+[-] Trouble Shooting GitHub (ALL)
+	-. Download한 source의 경우 일부 file이 없으며 정상적인 build도 안됨.
+		In ${FFTW3_HOME}/dft/scalar/codelets.
+		<solution>
+			다른 fftw 배포판의 file을 복사.
+	-. rc 변수 관련 오류
+		<error message>
+			'rc': undeclared identifier
+		<solution>
+			<before>
+				rc = 0;
+				rc = (ecxval > 0) ? -1 : 0;
+			<after>
+				int rc = 0;
+				int rc = (ecxval > 0) ? -1 : 0;
+	-. _fftw_mkprinter_str & _fftw_mkprinter_cnt 관련 오류 발생
+		<error message>
+			unresolved external symbol _fftw_mkprinter_str.
+			unresolved external symbol _fftw_mkprinter_cnt.
+		<solution>
+			${FFTW3_HOME}/api/mkprinter-str.c를 libfftw-3.3 & libfftwf-3.3 project에 추가.
+
+[-] Trouble Shooting 3.3.4 (VC)
+	-. platform toolset, 'Windows7.1SDK'와 관련된 오류 메시지 발생
+		<error message>
+			Specified platform toolset (Windows7.1SDK) is not installed or invalid. Please make sure that a supported PlatformToolset value is selected.
+		<cause>
+		    Project setting에서 platform toolset이 잘못 지정되어 있어서 발생.
+		<solution>
+			1) 'Project Property Pages' dialog 실행.
+			2) 'Configuration Properties -> General' 항목 선택.
+			3) 'Platform Toolset' 항목에서 설정을 변경.
+				Windows7.1SDK -> v100
+	-. _fftw_mkprinter_str & _fftw_mkprinter_cnt 관련 오류 발생
+		<error message>
+			unresolved external symbol _fftw_mkprinter_str.
+			unresolved external symbol _fftw_mkprinter_cnt.
+		<solution>
+			${FFTW3_HOME}/api/mkprinter-str.c를 libfftw-3.3 & libfftwf-3.3 project에 추가.

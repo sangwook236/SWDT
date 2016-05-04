@@ -4,30 +4,27 @@
 	-. Reference
 		gmp_usage_guide.txt
 
----------------------------------------------------------------------
-
-[1] build static library in Cygwin & MinGW
-	run "Cygwin Bash" or "MSYS"
-	cd ${MPFR_HOME}
-	./configure --prefix=${MPFR_INSTALL} --with-gmp-include=${GMP_INSTALL}/include --with-gmp-lib=${GMP_INSTALL}/lib
-	make
-	(optional) make check
-	(optional) make install
-
-	=> .a file이 생성.
-
-[2] build shared library in Cygwin & MinGW
-	1. build shared library
-		run "Cygwin Bash" or "MSYS"
+[-] Building (Cygwin or MinGW)
+	-. Run "Cygwin Bash" or "MSYS"
+	-. Configure
 		cd ${MPFR_HOME}
-		./configure --prefix=${MPFR_INSTALL} --with-gmp-include=${GMP_INSTALL}/include --with-gmp-lib=${GMP_INSTALL}/lib --disable-static --enable-shared
+		For static library:
+			./configure --prefix=${MPFR_INSTALL} --with-gmp-include=${GMP_INSTALL}/include --with-gmp-lib=${GMP_INSTALL}/lib
+				./configure --prefix=/cygdrive/d/usr/local --with-gmp-include=/cygdrive/d/usr/local/include/mpir --with-gmp-lib=/cygdrive/d/usr/local/lib
+		For shared library:
+			./configure --prefix=${MPFR_INSTALL} --with-gmp-include=${GMP_INSTALL}/include --with-gmp-lib=${GMP_INSTALL}/lib --disable-static --enable-shared
+				./configure --prefix=/cygdrive/d/usr/local --with-gmp-include=/cygdrive/d/usr/local/include/mpir --with-gmp-lib=/cygdrive/d/usr/local/lib --disable-static --enable-shared
+	-. Make
 		make
 		(optional) make check
 		(optional) make install
 
-		a windows DLL "cygmpfr-4.dll" (Cygwin) or "libmpfr-4.dll" (MinGW) will be generated.
+		For static library:
+			.a file이 생성.
+		For shared library:
+			A windows DLL "cygmpfr-4.dll" (Cygwin) or "libmpfr-4.dll" (MinGW) will be generated.
 
-	2. to ensure that these DLLs can be called by a Microsoft Visual C++ program
+	-. Ensure that these DLLs can be called by a Microsoft Visual C++ program
 		you must generate an import library (.lib) for them.
 
 		if you have an existing DLL already, you need to build a Cygwin-compatible import library.
@@ -60,4 +57,23 @@
 
 			strip ${MPFR_LIB_NAME}.dll.lib
 
-			=> strip을 수행하는 것이 좋은 듯함.
+			==> strip을 수행하는 것이 좋은 듯함.
+
+[-] Building Github (VC)
+	-. Source repository
+		https://github.com/BrianGladman/mpfr
+
+	-. Open a solution file
+		${MPFR_HOME}/build.vc14/lib_mpfr.sln
+	-. Set projects
+		Undefine HAVE_CONFIG_H.
+		Define HAVE_STDARG.
+		Add ${GMP_INCLUDE_DIR} to additional include path.
+		Add ${GMP_LIBRARY} to additional library dependency.
+	-. Build
+
+[-] Trouble Shooting Github (VC)
+	-. mparam.h를 찾을 수 없다는 오류 발생
+		<solution>
+			Use ${MPFR_HOME}/build.vc14/mparam.h
+			Add ${MPFR_HOME}/build.vc14 to additional include path.

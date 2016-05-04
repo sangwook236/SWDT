@@ -10,3 +10,21 @@
 	-. vld.h는 library or executable project의 하나의 file에서만 include 되면 됨. (?)
 	-. 실행이 정상 종료되는 경우에 결과가 생성됨.
 	-. 실행된 경로 상에 존재하는 memory leakage만을 detection
+
+[-] Trouble Shooting (VC)
+	-. exe project에서 많은 오류를 발생
+		<solution>
+			아래의 projects만 build하면 됨.
+				libformat & vld projects.
+	-. Windows.h, SDKDDKVer.h, kernel32.lib, and rc.exe를 찾을 수 없다는 오류 발생
+		<error>
+			cannot open include file: 'windows.h'
+			cannot open file 'kernel32.lib'
+			cannot run 'rc.exe'
+		<solution>
+			Project Property Pages에서 platform toolset을 올바르게 설정.
+				Project Property Pages -> Configuration Properties -> General -> Platform Toolset
+			아래와 같은 방법을 사용할 수도 있음.
+				Add "$(WindowsSDKDir)/Include" to additional include directories.
+				Add "$(WindowsSDKDir)/Lib" to additional library dependencies.
+				Add "$(WindowsSDKDir)/Bin" to PATH environment variable.

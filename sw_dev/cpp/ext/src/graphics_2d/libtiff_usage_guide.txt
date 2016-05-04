@@ -38,12 +38,12 @@
 				#include <windows.h>
 	-. snprintf
 		<error message>
-			fatal error C1189: #error:  Macro definition of snprintf conflicts with Standard Library function declaration
+			fatal error C1189: #error: Macro definition of snprintf conflicts with Standard Library function declaration
 		<solution>
 			in ${LIBTIFF_HOME}/libtiff/tiffiop.h
 			<before>
 				#define snprintf _TIFF_snprintf_f
 				extern int snprintf(char* str, size_t size, const char* format, ...);
 			<after>
-				#define snprintf _TIFF_snprintf_f
-				extern int snprintf(char* str, size_t size, const char* format, ...);
+				//#define snprintf _TIFF_snprintf_f
+				//extern int snprintf(char* str, size_t size, const char* format, ...);

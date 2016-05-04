@@ -1,3 +1,22 @@
 [-] General
 	-. Site
-		http://code.google.com/p/protobuf/
+		https://github.com/google/protobuf
+
+[-] Building (CMake)
+	-. Change directory
+		${PROTOBUF_HOME}/cmake/CMakeLists.txt
+	-. Configure & generate
+		Set protobuf_BUILD_SHARED_LIBS to true.
+		Set CMAKE_DEBUG_POSTFIX to d.
+		gmock 관련 오류:
+			<error>
+				Cannot find gmock directory.
+			<solution>
+				Unset protobuf_BUILD_TESTS.
+	-. Build
+	-. Install
+
+[-] Linking with protobuf (Windows)
+	-. Link with protobuf as a shared library
+		If you are linking with protobufs as a DLL then you will need to define PROTOBUF_USE_DLLS in your client application to get it to pull in the DLL import __declspec stuff properly.
+			define PROTOBUF_USE_DLLS.
