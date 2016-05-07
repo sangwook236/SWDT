@@ -1,6 +1,5 @@
 //#include "stdafx.h"
 #include <iostream>
-#include <stdexcept>
 
 
 namespace {
@@ -11,11 +10,17 @@ namespace local {
 
 namespace my_dlib {
 
+void graph_labeling_example();
+
 }  // namespace my_dlib
 
 int dlib_main(int argc, char *argv[])
 {
-	throw std::runtime_error("not yet implemented");
+	// matrix operation example.
+	// REF [file] >> ${DLIB_HOME}/examples/matrix_ex.cpp
+
+	// graph labeling example.
+	my_dlib::graph_labeling_example();
 
 	return 0;
 }

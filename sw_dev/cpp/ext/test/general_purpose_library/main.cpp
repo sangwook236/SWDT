@@ -9,11 +9,10 @@ int main(int argc, char *argv[])
 {
 	int dlib_main(int argc, char *argv[]);
 	int loki_main(int argc, char *argv[]);
-
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "Dlib library --------------------------------------------------------" << std::endl;
+		std::cout << "dlib library --------------------------------------------------------" << std::endl;
 		//  algorithm, threading, networking, parsing.
 		//  graphical user interfaces (GUI).
 		//  linear algebra, numerical algorithms.
@@ -23,7 +22,7 @@ int main(int argc, char *argv[])
 		//  graph tools, Bayesian networks, graphical model inference algorithms.
 		//  data compression and integrity algorithms.
 		//  testing, general utilities.
-		//retval = dlib_main(argc, argv);  // not yet implemented.
+		retval = dlib_main(argc, argv);
 
 		std::cout << "\nLoki library --------------------------------------------------------" << std::endl;
 		//retval = loki_main(argc, argv);  // not yet implemented.

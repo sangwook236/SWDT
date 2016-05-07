@@ -13,14 +13,14 @@
 namespace {
 namespace local {
 
-void decision_tree(GClasses::GMatrix &features, GClasses::GMatrix &labels, double *test_features, double *predicted_labels)
+void decision_tree(GClasses::GMatrix &features, GClasses::GMatrix &labels, const GClasses::GVec &test_features, GClasses::GVec &predicted_labels)
 {
 	GClasses::GDecisionTree model;
 	model.train(features, labels);
 	model.predict(test_features, predicted_labels);
 }
 
-void neural_network(GClasses::GMatrix &features, GClasses::GMatrix &labels, double *test_features, double *predicted_labels)
+void neural_network(GClasses::GMatrix &features, GClasses::GMatrix &labels, const GClasses::GVec &test_features, GClasses::GVec &predicted_labels)
 {
 	GClasses::GNeuralNet *pNN = new GClasses::GNeuralNet();
 	pNN->addLayer(new GClasses::GLayerClassic(FLEXIBLE_SIZE, 3));
@@ -32,7 +32,7 @@ void neural_network(GClasses::GMatrix &features, GClasses::GMatrix &labels, doub
 	af.predict(test_features, predicted_labels);
 }
 
-void knn(GClasses::GMatrix &features, GClasses::GMatrix &labels, double *test_features, double *predicted_labels)
+void knn(GClasses::GMatrix &features, GClasses::GMatrix &labels, const GClasses::GVec &test_features, GClasses::GVec &predicted_labels)
 {
 	GClasses::GKNN model;
 	model.setNeighborCount(3); // use the 3-nearest neighbors
@@ -41,14 +41,14 @@ void knn(GClasses::GMatrix &features, GClasses::GMatrix &labels, double *test_fe
 	model.predict(test_features, predicted_labels);
 }
 
-void naivebayes(GClasses::GMatrix &features, GClasses::GMatrix &labels, double *test_features, double *predicted_labels)
+void naivebayes(GClasses::GMatrix &features, GClasses::GMatrix &labels, const GClasses::GVec &test_features, GClasses::GVec &predicted_labels)
 {
 	GClasses::GAutoFilter model(new GClasses::GNaiveBayes());
 	model.train(features, labels);
 	model.predict(test_features, predicted_labels);
 }
 
-void ensemble(GClasses::GMatrix &features, GClasses::GMatrix &labels, double *test_features, double *predicted_labels)
+void ensemble(GClasses::GMatrix &features, GClasses::GMatrix &labels, const GClasses::GVec &test_features, GClasses::GVec &predicted_labels)
 {
 	GClasses::GBag ensemble;
 	for(size_t i = 0; i < 50; i++)
@@ -84,8 +84,8 @@ void ml_example()
 	// Make some contrived hard-coded training data
 	GClasses::GMatrix features(feature_values);
 	GClasses::GMatrix labels(label_values);
-	double *f;
-	double *l;
+	GClasses::GVec f;
+	GClasses::GVec l;
 	//                     diameter     crust     meatiness presentation                   taste     cost
 	f = features.newRow(); f[0] = 14.0; f[1] = 1; f[2] = 1; f[3] = 0; l = labels.newRow(); l[0] = 1; l[1] = 22.95;
 	f = features.newRow(); f[0] = 12.0; f[1] = 0; f[2] = 0; f[3] = 3; l = labels.newRow(); l[0] = 0; l[1] = 3.29;
@@ -101,8 +101,8 @@ void ml_example()
 	f = features.newRow(); f[0] = 14.0; f[1] = 1; f[2] = 1; f[3] = 1; l = labels.newRow(); l[0] = 1; l[1] = 15.01;
 
 	// Make a test std::vector
-	double test_features[4];
-	double predicted_labels[2];
+	GClasses::GVec test_features(4);
+	GClasses::GVec predicted_labels(2);
 	std::cout << "This demo trains and tests several supervised learning models using some contrived hard-coded training data to predict the tastiness and cost of a pizza.\n\n";
 	test_features[0] = 15.0; test_features[1] = 2; test_features[2] = 0; test_features[3] = 0;
 	std::cout << "Predicting labels for a 15 inch pizza with a Neapolitan-style crust, no meat, for dine-in.\n\n";

@@ -4,11 +4,11 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-//#pragma comment(lib, "dlib.lib")
+#pragma comment(lib, "dlibd.lib")
 
 #		else
 
-//#pragma comment(lib, "dlib.lib")
+#pragma comment(lib, "dlib.lib")
 
 #		endif
 

@@ -12,7 +12,7 @@
 
     -. opengm-externals repository는 필요없는 것으로 판단됨 (2016/04/29)
 
-[-] Building (CMake)
+[-] Building GitHub (CMake): 2016/05/04
 	-. Prepare to download external libraries (configure & generate)
 		external library를 사용하기 위해서 WITH_xxx options을 설정하고 configure하면 아래의 경고 발생
 		<error>
@@ -22,8 +22,8 @@
 			MAXFLOW_IBFS not installed, run make externalLibs first and configure again
 			MRF not installed, run make externalLibs first and configure again
 		<solution>
-			위의 경고가 나오더라도 CMake에서 Configure & Generate를 수행할 수 있음.
-			Configure & Generate를 완료하여 project 생성.
+			위의 경고가 나오더라도 CMake에서 configure & generate를 수행할 수 있음.
+			Configure & generate를 완료하여 project 생성.
 	-. Download external libraries
 		<method 1>
 			Unix-like system:
@@ -71,7 +71,8 @@
 		    libexternal-library-trws.a / external-library-trws.lib
 	-. Install
 		Install header files only.
-		==> Copy shared libraries of external libraries to ${INSTALL_DIR} individually.
+		Install external libraries to ${INSTALL_PREFIX}/lib/opengm/externals.
+		==> Check if external libraries are copied to ${INSTALL_PREFIX} individually.
 
 [-] Trouble Shooting (Common)
     -. 함수의 중복 정의에 대한 오류 발생.
@@ -93,8 +94,8 @@
 
 	-. Linking error with HDF in photomontage-merging & photomontage-stitching projects
 		Link HDF5 as static libraries.
-			${LIB_INSTALL_DIR}/hdf5.lib
-			${LIB_INSTALL_DIR}/hdf5_hl.lib
+			${INSTALL_PREFIX}/libhdf5.lib
+			${INSTALL_PREFIX}/libhdf5_hl.lib
 
 	-. test를 building하면서 잦은 오류가 발생해서 test는 building에서 제외.
 		CMake GUI에서 BUILD_TESTING 항목을 지정하지 않음.

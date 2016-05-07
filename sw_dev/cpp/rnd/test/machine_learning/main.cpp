@@ -21,7 +21,6 @@ int main(int argc, char *argv[])
 	int shogun_main(int argc, char *argv[]);
 	int encog_main(int argc, char *argv[]);
 	int torch_main(int argc, char *argv[]);
-	int dlib_ml_main(int argc, char *argv[]);
 	int liblearning_main(int argc, char *argv[]);
 	int waffles_main(int argc, char *argv[]);
 
@@ -95,7 +94,7 @@ int main(int argc, char *argv[])
         std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 
-		std::cout << "\nDlib-ml library -----------------------------------------------------" << std::endl;
+		std::cout << "\ndlib-ml library -----------------------------------------------------" << std::endl;
 		//	-. support vector machines (SVM).
 		//	-. relevance vector machines (RVM).
 		//	-. structured prediction.
@@ -112,9 +111,8 @@ int main(int argc, char *argv[])
 		//		inference algorithms.
 		//	-. image processing.
 		//	-. reinforcement learning (RL).
-		//		least-sqaures policy iteration (LSPI).
+		//		least-squares policy iteration (LSPI).
 		// REF [library] >> ${GDT_HOME}/sw_dev/cpp/ext/src/general_purpose_library/dlib.
-		//retval = dlib_ml_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
 		//	-. deep learning.

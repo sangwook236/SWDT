@@ -5,11 +5,11 @@
 
 		https://github.com/wxWidgets/wxWidgets
 
-[-] Building (MSVC & ver. 2.6)
+[-] Building ver. 2.6 (VC)
 	+> IDE
 		-. Target project file
-			"${WXWIDGETS_ROOT}/build/msw/wx.dsw"
-			"${WXWIDGETS_ROOT}/build/msw/wx_dll.dsw"
+			"${WXWIDGETS_HOME}/build/msw/wx.dsw"
+			"${WXWIDGETS_HOME}/build/msw/wx_dll.dsw"
 		-. There are project dependencies
 			0: wxexpat.lib wxjpeg.lib wxpng.lib wxregex.lib wxtiff.lib wxzlib.lib
 			1: wxbase.lib
@@ -19,17 +19,17 @@
 			5: wxmsw_dbgrid.lib
 	+> Visual Studio Command Prompt
 		-. Target project file
-			"${WXWIDGETS_ROOT}/build/msw/"
+			"${WXWIDGETS_HOME}/build/msw/"
 		-. Command
 			nmake -f makefile.vc
 			nmake -f makefile.vc clean
 
-[-] Building (MSVC & ver. 2.9.2)
-	[ref] ${WXWIDGETS_ROOT}/docs/msw/install.txt
+[-] Building ver. 2.9.2 (VC)
+	REF [file] >> ${WXWIDGETS_HOME}/docs/msw/install.txt
 
 	1. Configure setup.h file
-		${WXWIDGETS_ROOT}/include/wx/msw/setup.h
-	2. Change directory to ${WXWIDGETS_ROOT}/build/msw
+		${WXWIDGETS_HOME}/include/wx/msw/setup.h
+	2. Change directory to ${WXWIDGETS_HOME}/build/msw
 	3. Build makefile
 		nmake -f makefile.vc
 		nmake -f makefile.vc BUILD=debug UNICODE=1
@@ -51,79 +51,101 @@
 			MSLU=0/1 {0}
 			DEBUG_FLAG=0|1|2
 			DEBUG_INFO=0|1
-			TARGET_CPU=AMD64|IA64 {x86}
+			TARGET_CPU=X64|AMD64|IA64 {x86}
 			VENDOR=<your company name>
 			CFG=<configuration name>
 			COMPILER_PREFIX=<string>
-	4. (optional) Change directory to ${WXWIDGETS_ROOT}/utils/wxrc
+	4. (optional) Change directory to ${WXWIDGETS_HOME}/utils/wxrc
 	5. (optional) Build makefile
 		nmake -f makefile.vc BUILD=debug UNICODE=1
 		nmake -f makefile.vc BUILD=release UNICODE=1
 
-[-] Using
-	+> Using wx-config
-		[ref] ${WXWIDGETS_BIN_DIR}/wx-config
-		-. Set compiler and linker options
+[-] Building GitHub (VC): 2016/05/05
+	REF [file] >> ${WXWIDGETS_HOME}/BuildGit.txt
+	REF [file] >> ${WXWIDGETS_HOME}/docs/msw/install.txt
+
+	-. Copy setup.h
+		Copy include/wx/msw/setup0.h to include/wx/msw/setup.h.
+	-. Run Visual Studio Command Prompt if using nmake 	
+	-. Change a directory
+		${WXWIDGETS_HOME}/build/msw
+	-. Build
+		Use a solution file.
+			Open wx_vc14.sln
+				Can build all static & shared libraries of Win32 & Win64.
+		Use nmake.
+			nmake /f makefile.vc
+			nmake /f makefile.vc BUILD=release
+			nmake /f makefile.vc BUILD=release SHARED=1
+	-. Copy header files & libraries
+		${WXWIDGETS_HOME}/lib/vc_dll, vc_lib, vc_x64_dll, vc_x64_lib.
+
+[-] Using (Common)
+	-. Using wx-config
+		REF [file] >> ${WXWIDGETS_BIN_DIR}/wx-config
+
+		Set compiler and linker options.
 			`wx-config --cflags`
 			`wx-config  --version=3.0 --static=no --unicode=yes --debug=no --cflags`
 			`wx-config --libs`
 			`wx-config  --version=3.0 --static=no --unicode=yes --debug=no --libs`
-	+> Using traditional approach
-		-. Set include & library paths
-			${INCLUDE_DIR}/wx-3.0
-			${LIBRARY_DIR}
-		-. Set defines
+	-. Using traditional approach
+		Set include & library paths.
+			${INCLUDE_DIR}/wx-3.0, wxwidgets
+			${LIBRARY_DIR}/wxwidgets
+		Set defines.
 			__WXGTK__ or __WXMSW__
 			__WXDEBUG__
 			WXUSINGDLL (required if shared libraries are used)
 			wxUSE_UNICODE (optional)
 			wxUSE_GUI=1 (optional)
-		-. Set a path for setup.h (if necessary)
+		Set a path for setup.h (if necessary).
 			Linux:
-				${WXWIDGETS_LIB_DIR}/wx/include/gtk2-unicode-3.0
-				${WXWIDGETS_LIB_DIR}/wx/include/base-unicode-3.0 (?)
+				${LIBRARY_DIR}/wx/include/gtk2-unicode-3.0 (?
+				${LIBRARY_DIR}/wx/include/base-unicode-3.0 (?)
 			Windows:
-				${WXWIDGETS_LIB_DIR}/mswu
-				${WXWIDGETS_LIB_DIR}/mswud
-				${WXWIDGETS_INCLUDE_DIR}/msvc (?)
+				${LIBRARY_DIR}/wxwidgets/vc_lib/mswu, mswud
+				${LIBRARY_DIR}/wxwidgets/vc_dll/mswu, mswud
+				${LIBRARY_DIR}/wxwidgets/vc_x86_lib/mswu, mswud
+				${LIBRARY_DIR}/wxwidgets/vc_x86_dll/mswu, mswud
 
-[-] Using (MSVC)
-	+> Create a new project
-		Win32 Project
+[-] Using (VC)
+	-. Create a new project
+		Win32 Project:
 			Windows application
 			Empty project
-	+> Set include path
-		-. Standard
-			${WXWIDGETS_ROOT}/include/wx
-			${WXWIDGETS_ROOT}/include/msvc/wx
-		-. When there is a certain problem(?)
+	-. Set include path
+		Standard:
+			${INCLUDE_DIR}/wxwidgets/wx
+			${INCLUDE_DIR}/wxwidgets/msvc/wx
+		When there is a certain problem(?):
 			When static linking: depending on building modes.
-				${WXWIDGETS_ROOT}/lib/vc_lib/msw
-				${WXWIDGETS_ROOT}/lib/vc_lib/mswd
-				${WXWIDGETS_ROOT}/lib/vc_lib/mswu
-				${WXWIDGETS_ROOT}/lib/vc_lib/mswud
-				${WXWIDGETS_ROOT}/lib/vc_lib/mswuniv
-				${WXWIDGETS_ROOT}/lib/vc_lib/mswunivd
-				${WXWIDGETS_ROOT}/lib/vc_lib/mswunivu
-				${WXWIDGETS_ROOT}/lib/vc_lib/mswunivud
+				${LIBRARY_DIR}/wxwidget/vc_lib/msw
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswd
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswu
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswud
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswuniv
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswunivd
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswunivu
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswunivud
 			When dynamic linking: depending on building modes.
-				${WXWIDGETS_ROOT}/lib/vc_dll/msw
-				${WXWIDGETS_ROOT}/lib/vc_dll/mswd
-				${WXWIDGETS_ROOT}/lib/vc_dll/mswu
-				${WXWIDGETS_ROOT}/lib/vc_dll/mswud
-				${WXWIDGETS_ROOT}/lib/vc_dll/mswuniv
-				${WXWIDGETS_ROOT}/lib/vc_dll/mswunivd
-				${WXWIDGETS_ROOT}/lib/vc_dll/mswunivu
-				${WXWIDGETS_ROOT}/lib/vc_dll/mswunivud
-	+> Set library path
-		${WXWIDGETS_ROOT}/lib/vc_lib
-		${WXWIDGETS_ROOT}/lib/vc_dll
-	+> Set linking library
-		-. Windows Libraries
+				${LIBRARY_DIR}/wxwidget/vc_dll/msw
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswd
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswu
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswud
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswuniv
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswunivd
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswunivu
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswunivud
+	-. Set library path
+		${LIBRARY_DIR}/wxwidget/vc_lib
+		${LIBRARY_DIR}/wxwidget/vc_dll
+	-. Set linking library
+		Windows Libraries:
 			kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib
 			winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib
 			uuid.lib rpcrt4.lib advapi32.lib wsock32.lib oleacc.lib odbc32.lib 
-		-. ver. 2.6
+		ver. 2.6:
 			wxexpat.lib wxjpeg.lib wxpng.lib wxregex.lib wxtiff.lib wxzlib.lib
 			wxbase.lib
 			wxmsw_core.lib

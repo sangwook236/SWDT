@@ -52,7 +52,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -68,7 +68,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -103,7 +103,6 @@
     <ClCompile Include="clustering\clustering_k_medoids.cpp" />
     <ClCompile Include="clustering\clustering_main.cpp" />
     <ClCompile Include="clustering\clustering_spectral_clustering.cpp" />
-    <ClCompile Include="dlib_ml\dlib_ml_main.cpp" />
     <ClCompile Include="encog\encog_main.cpp" />
     <ClCompile Include="kmeanspp_lib\KMeans.cpp" />
     <ClCompile Include="kmeanspp_lib\KmTree.cpp" />
@@ -329,7 +328,10 @@
     <ClCompile Include="tiny_cnn\tiny_cnn_basic_example.cpp" />
     <ClCompile Include="tiny_cnn\tiny_cnn_cifar10_example.cpp" />
     <ClCompile Include="tiny_cnn\tiny_cnn_main.cpp" />
-    <ClCompile Include="tiny_cnn\tiny_cnn_mnist_example.cpp" />
+    <ClCompile Include="tiny_cnn\tiny_cnn_mnist_example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="torch\torch_deep_learning_example.cpp" />
     <ClCompile Include="torch\torch_main.cpp" />
     <ClCompile Include="waffles\waffles_main.cpp" />

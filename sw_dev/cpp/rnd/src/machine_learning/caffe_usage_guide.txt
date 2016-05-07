@@ -20,3 +20,8 @@
 [-] Building (CMake)
 	-. The name of a build directory for CMake has to be "build"
 		The existing scripts in Caffe assume its build directory is "build".
+
+	-. Configure & generate
+		Set CMAKE_DEBUG_POSTFIX to d.
+	-. Build
+	-. Install
