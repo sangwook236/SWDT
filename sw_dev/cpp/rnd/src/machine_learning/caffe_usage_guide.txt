@@ -18,10 +18,15 @@
 		http://caffe.berkeleyvision.org/gathered/examples/feature_extraction.html
 
 [-] Building (CMake)
-	-. The name of a build directory for CMake has to be "build"
+	-. The name of a build directory for CMake has to be "build" (?)
 		The existing scripts in Caffe assume its build directory is "build".
 
 	-. Configure & generate
 		Set CMAKE_DEBUG_POSTFIX to d.
+		Set USE_LEVELDB to false.
+		Set USE_LMDB to false.
+		Set BUILD_python to false.
+		Set BUILD_python_layer to false.
 	-. Build
+		Build errors occurred. Build cannot be succeeded in VC.
 	-. Install

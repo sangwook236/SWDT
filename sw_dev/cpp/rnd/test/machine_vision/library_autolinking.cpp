@@ -95,9 +95,9 @@
 #pragma comment(lib, "vl_d.lib")
 //#pragma comment(lib, "libccv.lib")  // run-time error
 
-#pragma comment(lib, "libjpeg.lib")
-#pragma comment(lib, "libpng15.lib")
-#pragma comment(lib, "libtiff.lib")
+#pragma comment(lib, "libjpegd.lib")
+#pragma comment(lib, "libpng16d.lib")
+#pragma comment(lib, "libtiffd.lib")
 
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "Comctl32.lib")
@@ -198,7 +198,7 @@
 //#pragma comment(lib, "libccv.lib")  // run-time error
 
 #pragma comment(lib, "libjpeg.lib")
-#pragma comment(lib, "libpng15.lib")
+#pragma comment(lib, "libpng16.lib")
 #pragma comment(lib, "libtiff.lib")
 
 #pragma comment(lib, "opengl32.lib")
