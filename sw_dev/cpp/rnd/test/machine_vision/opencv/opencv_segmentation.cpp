@@ -50,7 +50,7 @@ void watershed_onMouse( int event, int x, int y, int flags, void* )
     }
 }
 
-// [ref] ${OPENCV_HOME}/samples/cpp/watershed.cpp.
+// REF [file] >> ${OPENCV_HOME}/samples/cpp/watershed.cpp.
 void watershed_algorithm(const cv::Mat &img0)
 {
     watershed_help();
@@ -543,7 +543,7 @@ void meanshift_segmentation_algorithm(const cv::Mat &img)
 	const int colorRad = 10;
 	const int maxPyrLevel = 1;
 
-	const cv::string winName("mean-shift segmentation");
+	const std::string winName("mean-shift segmentation");
 	cv::namedWindow(winName, CV_WINDOW_AUTOSIZE);
 
 	cv::Mat res;

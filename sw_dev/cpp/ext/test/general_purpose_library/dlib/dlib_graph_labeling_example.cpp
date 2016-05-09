@@ -139,7 +139,6 @@ void graph_labeling_example()
 	std::vector<std::vector<bool> > labels;
 	local::make_training_examples(samples, labels);
 
-
 	// Create a structural SVM trainer for graph labeling problems.  The vector_type
 	// needs to be set to a type capable of holding node or edge vectors.
 	typedef dlib::matrix<double, 0, 1> vector_type;
