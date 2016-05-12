@@ -4,6 +4,7 @@
 #include <opencv2/legacy/legacy.hpp>
 #include <opencv2/opencv.hpp>
 #include <boost/polygon/polygon.hpp>
+#include <set>
 #include <iterator>
 #include <stdexcept>
 #include <ctime>
@@ -47,6 +48,33 @@ cv::Rect get_bounding_box(const std::vector<cv::Point> &points)
 	//const boost::polygon::rectangle_data<int>::interval_type v = boost::polygon::vertical(rect);
 
 	return cv::Rect(boost::polygon::xl(rect), boost::polygon::yl(rect), boost::polygon::xh(rect) - boost::polygon::xl(rect), boost::polygon::yh(rect) - boost::polygon::yl(rect));
+}
+
+std::set<int> unique(const cv::Mat& input)
+{
+	typedef int data_type;
+
+	if (input.channels() > 1 || input.type() != CV_32S)
+		//if (input.channels() > 1 || input.type() != CV_32F)
+	{
+		std::cerr << "unique !!! Only works with CV_32F 1-channel Mat" << std::endl;
+		return std::set<data_type>();
+	}
+
+	std::set<data_type> out;
+	for (int y = 0; y < input.rows; ++y)
+	{
+		const data_type* row_ptr = input.ptr<data_type>(y);
+		for (int x = 0; x < input.cols; ++x)
+		{
+			const data_type& value = row_ptr[x];
+
+			if (out.find(value) == out.end())
+				out.insert(value);
+		}
+	}
+
+	return out;
 }
 
 void canny(const cv::Mat &gray, const int lowerEdgeThreshold, const int upperEdgeThreshold, const bool useL2, cv::Mat &edge)

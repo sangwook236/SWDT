@@ -77,8 +77,8 @@ inline std::size_t getVariableIndex(const std::size_t Nx, const std::size_t x, c
 	return x + Nx * y;
 }
 
-// [ref] ${OPENGM_HOME}/src/examples/image-processing-examples/grid_potts.cxx
-// [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
+// REF [file] >> ${OPENGM_HOME}/src/examples/image-processing-examples/grid_potts.cxx.
+// REF [paper] >> "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006.
 bool createGraphicalModelForPottsModel(GraphicalModelForPottsModel &gm)
 {
 	const std::string img_filename("./data/probabilistic_graphical_model/teddy-imL.png");
@@ -172,7 +172,7 @@ bool createGraphicalModelForPottsModel(GraphicalModelForPottsModel &gm)
 typedef opengm::GraphicalModel<double, opengm::Adder, ExplicitFunction, Space> GraphicalModelForStereoMatching;
 typedef opengm::GraphicalModel<double, opengm::Adder, ExplicitFunction, Space> GraphicalModelForImageRestoration;
 
-// [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
+// REF [paper] >> "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006.
 bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 {
 	const std::string imgL_filename("./data/probabilistic_graphical_model/tsukuba-imL.png");
@@ -188,7 +188,7 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 		return false;
 	}
 
-	// [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
+	// REF [paper] >> "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006.
 	const std::size_t disparities = 20;
 	const double tau = 15.0;
 	const double lambda = 0.07;
@@ -314,7 +314,7 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 	return true;
 }
 
-// [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
+// REF [paper] >> "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006.
 bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &gm)
 {
 	const std::string img_filename("./data/probabilistic_graphical_model/penguin-input.png");
@@ -328,7 +328,7 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 		return false;
 	}
 
-	// [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
+	// REF [paper] >> "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006.
 	const std::size_t intensities = 256;  // [0 255]
 	const double lambda = 0.04;
 	const double d = 200;
@@ -448,7 +448,7 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 
 #else
 
-// [ref] ${OPENGM_HOME}/src/examples/image-processing-examples/interpixel_boundary_segmentation.cxx
+// REF [file] >> ${OPENGM_HOME}/src/examples/image-processing-examples/interpixel_boundary_segmentation.cxx.
 struct TruncatedAbsoluteDifferenceFunctionForStereoMatching : opengm::FunctionBase<TruncatedAbsoluteDifferenceFunctionForStereoMatching, double, std::size_t, std::size_t>
 {
 public:
@@ -522,7 +522,7 @@ private:
 	double threshold_, weight_;
 };
 
-// [ref] ${OPENGM_HOME}/src/examples/image-processing-examples/interpixel_boundary_segmentation.cxx
+// REF [file] >> ${OPENGM_HOME}/src/examples/image-processing-examples/interpixel_boundary_segmentation.cxx.
 struct SquaredDifferenceFunctionForImageRestoration : opengm::FunctionBase<SquaredDifferenceFunctionForImageRestoration, double, std::size_t, std::size_t>
 {
 public:
@@ -591,7 +591,7 @@ typedef opengm::GraphicalModel<double, opengm::Adder, FunctionTypelistForStereoM
 typedef opengm::meta::TypeListGenerator<SquaredDifferenceFunctionForImageRestoration, TruncatedSquaredDifferenceFunction>::type FunctionTypelistForImageRestoration;
 typedef opengm::GraphicalModel<double, opengm::Adder, FunctionTypelistForImageRestoration, Space> GraphicalModelForImageRestoration;
 
-// [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
+// REF [paper] >> "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006.
 bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 {
 	const std::string imgL_filename("./data/probabilistic_graphical_model/tsukuba-imL.png");
@@ -607,7 +607,7 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 		return false;
 	}
 
-	// [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
+	// REF [paper] >> "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006.
 	const std::size_t disparities = 20;
 	const double tau = 15.0;
 	const double lambda = 0.07;
@@ -706,7 +706,7 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 	return true;
 }
 
-// [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
+// REF [paper] >> "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006.
 bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &gm)
 {
 	const std::string img_filename("./data/probabilistic_graphical_model/penguin-input.png.png");
@@ -720,7 +720,7 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 		return false;
 	}
 
-	// [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
+	// REF [paper] >> "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006.
 	const std::size_t intensities = 256;  // [0 255]
 	const double lambda = 0.04;
 	const double d = 200;
@@ -820,7 +820,7 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 template<typename GraphicalModel, typename InferenceAlgorithm>
 void run_inference_algorithm(const std::size_t numOfVariables, InferenceAlgorithm &algorithm, const std::string &output_filename)
 {
-	// optimize (approximately)
+	// Optimize (approximately).
 	typename InferenceAlgorithm::VerboseVisitorType visitor;
 	//typename InferenceAlgorithm::TimingVisitorType visitor;
 	//typename InferenceAlgorithm::EmptyVisitorType visitor;
@@ -832,7 +832,7 @@ void run_inference_algorithm(const std::size_t numOfVariables, InferenceAlgorith
 	std::cout << "end inferring ..." << std::endl;
 	std::cout << "value: " << algorithm.value() << ", bound: " << algorithm.bound() << std::endl;
 
-	// obtain the (approximate) argmax
+	// Obtain the (approximate) argmin/argmax.
 	std::vector<typename GraphicalModel::LabelType> labeling(numOfVariables);
 	algorithm.arg(labeling);
 
@@ -887,14 +887,14 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 	const bool runSwendsenWang = false;  // not yet implemented.
 	const bool runBruteforce = false;
 
-	// inference algorithms
+	// inference algorithms.
 	{
 		std::cout << "\nbelief propagation (BP) algorithm -----------------------------------" << std::endl;
 		if (runBP)
 		{
 			const std::string inf_name("_bp");
 
-			// set up the optimizer (loopy belief propagation)
+			// Set up the optimizer (loopy belief propagation).
 			typedef opengm::BeliefPropagationUpdateRules<GraphicalModel, opengm::Minimizer> UpdateRules;
 			typedef opengm::MessagePassing<GraphicalModel, opengm::Minimizer, UpdateRules, opengm::MaxDistance> BeliefPropagation;
 
@@ -912,7 +912,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		{
 			const std::string inf_name("_trbp");
 
-			// set up the optimizer (tree re-weighted belief propagation)
+			// Set up the optimizer (tree re-weighted belief propagation).
 			typedef opengm::TrbpUpdateRules<GraphicalModel, opengm::Minimizer> UpdateRules;
 			typedef opengm::MessagePassing<GraphicalModel, opengm::Minimizer, UpdateRules, opengm::MaxDistance> TRBP;
 
@@ -930,7 +930,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		{
 			const std::string inf_name("_trws");
 
-			// set up the optimizer (tree re-weighted belief propagation)
+			// Set up the optimizer (tree re-weighted belief propagation).
 			typedef opengm::external::TRWS<GraphicalModel> TRWS;
 
 			typename TRWS::Parameter parameter;
@@ -955,7 +955,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		{
 			const std::string inf_name("_dp");
 
-			// set up the optimizer
+			// Set up the optimizer.
 			typedef opengm::DynamicProgramming<GraphicalModel, opengm::Minimizer> DP;
 
 			DP dp(gm);
@@ -968,7 +968,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		{
 			const std::string inf_name("_dd");
 
-			// set up the optimizer
+			// Set up the optimizer.
 			typedef opengm::DDDualVariableBlock<marray::Marray<typename GraphicalModel::ValueType> > DualBlock;
 			typedef typename opengm::DualDecompositionBase<GraphicalModel, DualBlock>::SubGmType SubGraphicalModel;
 			typedef opengm::BeliefPropagationUpdateRules<SubGraphicalModel, opengm::Minimizer> UpdateRule;
@@ -998,7 +998,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		{
 			const std::string inf_name("_astar");
 
-			// set up the optimizer
+			// Set up the optimizer.
 			typedef opengm::AStar<GraphicalModel, opengm::Minimizer> AStar;
 
 			typename AStar::Parameter parameter;
@@ -1016,11 +1016,11 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		std::cout << "\ngraph-cuts algorithm ------------------------------------------------" << std::endl;
 		if (runGraphCuts)
 		{
-			// caution: this implementation of the graph-cuts supports only binary variables.
+			// Caution: this implementation of the graph-cuts supports only binary variables.
 
 			const std::string inf_name("_graphcuts");
 
-			// set up the optimizer
+			// Set up the optimizer.
 #if 1
 			typedef opengm::external::MinSTCutKolmogorov<std::size_t, double> MinStCut;
 #else
@@ -1042,7 +1042,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 
 			const std::string inf_name("_qpbo");
 
-			// set up the optimizer
+			// Set up the optimizer.
 			typedef opengm::external::QPBO<GraphicalModel> QPBO;
 
 			typename QPBO::Parameter parameter;
@@ -1060,14 +1060,14 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		}
 	}
 
-	// move making algorithms
+	// move making algorithms.
 	{
 		std::cout << "\nexpansion-move algorithm --------------------------------------------" << std::endl;
 		if (runExpansionMove)
 		{
 			const std::string inf_name("_expansion");
 
-			// set up the optimizer
+			// Set up the optimizer.
 #if 1
 			typedef opengm::external::MinSTCutKolmogorov<std::size_t, double> MinStCut;
 #else
@@ -1090,7 +1090,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		{
 			const std::string inf_name("_swap");
 
-			// set up the optimizer
+			// Set up the optimizer.
 #if 1
 			typedef opengm::external::MinSTCutKolmogorov<std::size_t, double> MinStCut;
 #else
@@ -1114,7 +1114,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		{
 			const std::string inf_name("_icm");
 
-			// set up the optimizer
+			// Set up the optimizer.
 			typedef opengm::ICM<GraphicalModel, opengm::Minimizer> ICM;
 
 			//const ICM::MoveType moveType = ICM::SINGLE_VARIABLE;
@@ -1130,7 +1130,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		{
 			const std::string inf_name("_lf");
 
-			// set up the optimizer
+			// Set up the optimizer.
 			typedef opengm::LazyFlipper<GraphicalModel, opengm::Minimizer> LazyFlipper;
 
 			const std::size_t maxSubgraphSize = 2;
@@ -1147,7 +1147,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		{
 			const std::string inf_name("_loc");
 
-			// set up the optimizer
+			// Set up the optimizer.
 			typedef opengm::LOC<GraphicalModel, opengm::Minimizer> LOC;
 
 			const double phi = 0.5;
@@ -1157,16 +1157,16 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			const typename LOC::Parameter parameter(phi, maxRadius, maxIterations, aStarThreshold);
 			LOC loc(gm, parameter);
 
-			// set starting point
+			// Set starting point.
 			std::vector<typename LOC::LabelType> startingPoint;
-			// assuming startingPoint has been filled with meaningful labels
+			// Assume startingPoint has been filled with meaningful labels.
 			//loc.setStartingPoint(startingPoint.begin());
 
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), loc, problem_name + inf_name);
 		}
 	}
 
-	// sampling algorithms
+	// sampling algorithms.
 	{
 		std::cout << "\nGibbs sampling algorithm --------------------------------------------" << std::endl;
 		if (runnGibbs)
@@ -1186,7 +1186,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 	{
 		const std::string inf_name("_bf");
 
-		// set up the optimizer
+		// Set up the optimizer.
 		typedef opengm::Bruteforce<GraphicalModel, opengm::Minimizer> Bruteforce;
 
 		Bruteforce bf(gm);
@@ -1205,7 +1205,7 @@ void inference_algorithms()
 	std::cout << "image segmentation (Potts model) ------------------------------------" << std::endl;
 	if (false)
 	{
-		// build the model
+		// Build the model.
 		std::cout << "creating a graphical model... ---------------------------------------" << std::endl;
 		local::GraphicalModelForPottsModel gmForPottsModel;
 		if (local::createGraphicalModelForPottsModel(gmForPottsModel))
@@ -1215,7 +1215,7 @@ void inference_algorithms()
 	std::cout << "\nstereo matching -----------------------------------------------------" << std::endl;
 	if (false)
 	{
-		// build the model
+		// Build the model.
 		std::cout << "creating a graphical model... ---------------------------------------" << std::endl;
 		local::GraphicalModelForStereoMatching gmForStereoMatching;
 		if (local::createGraphicalModelForStereoMatching(gmForStereoMatching))
@@ -1225,7 +1225,7 @@ void inference_algorithms()
 	std::cout << "\nimage restoration ---------------------------------------------------" << std::endl;
 	if (true)
 	{
-		// build the model
+		// Build the model.
 		std::cout << "creating a graphical model... ---------------------------------------" << std::endl;
 		local::GraphicalModelForImageRestoration gmForImageRestoration;
 		if (local::createGraphicalModelForImageRestoration(gmForImageRestoration))
