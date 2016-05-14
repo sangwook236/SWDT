@@ -1,0 +1,15 @@
+[-] General
+	-. Site
+		http://www.balintmiklos.com/mesecina/
+		http://www.balintmiklos.com/mesecina/socg07.html
+		http://www.balintmiklos.com/scale-axis
+		http://www.balintmiklos.com/scale-axis/theory_socg_2009.html
+		http://www.balintmiklos.com/scale-axis/algorithm_siggraph_2010.html
+
+	-. Repository
+		http://code.google.com/p/mesecina
+		https://code.google.com/archive/p/mesecina/
+		https://code.google.com/archive/p/mesecina/source
+
+	-. Download
+		http://www.balintmiklos.com/mesecina/bin/mesecina-bin.zip
