@@ -1,3 +1,18 @@
 [-] General
 	-. Site
-		http://www.sourceware.org/pthreads-win32/
+		https://www.sourceware.org/pthreads-win32/
+
+		https://sourceforge.net/p/pthreads4w/wiki/Home/
+		https://sourceforge.net/projects/pthreads4w/
+
+[-] Trouble Shooting (Windows)
+	-. struct timespec이 중복 정의되었다는 오류 발생
+		<solution>
+			define a macro, _TIMESPEC_DEFINED.
+
+	-. PTW32_ARCH가 정의되어 있지 않다는 오류 발생
+		<solution>
+			version.rc 파일 내에 아래의 내용 추가.
+			//--S [] 2016/05/14: Sang-Wook Lee
+			#define PTW32_ARCHx86 1
+			//--E [] 2016/05/14: Sang-Wook Lee
