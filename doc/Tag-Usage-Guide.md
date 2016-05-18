@@ -14,10 +14,10 @@
 - Category
 	- {status}: current status
 		- important: *
-		- completion: O or #
+		- completion: # or O
 		- progress: ~ or -
 		- delay: !
-		- cancel: X or /
+		- cancel: / or X
 
 	- {need}: need or requirement.
 	- {cause}: cause.
