@@ -67,27 +67,27 @@
 - Review
 	- // TODO [review] >> `<brief description>`
 	- //  - `<detailed explanation>`
-		- e.g.) 추가적인 검토가 필요한 경우.
+		- e.g.) When an additional review is needed.
 - Check
 	- // TODO [check] >> `<brief description>`
 	- //  - `<detailed explanation>`
-		- e.g.) 검증이나 테스트가 충분히 되지 않은 경우.
+		- e.g.) When more verification or tests are needed.
 - Add / Implement
 	- // TODO [add/implement] >> `<brief description>`
 	- //  - `<detailed explanation>`
-		- 미구현 사항이 있는 부분에 사용.
+		- When there are unimplements parts.
 - Modify / Enhance / Update / Upgrade / Fix / Correct
 	- // FIXME [modify/enhance/update/upgrade/fix/correct] >> `<brief description>`
 	- //  - `<detailed explanation>`
-		- 구현은 되어 있으나 (재사용성 등의 이유로) 수정이 필요한 부분에 사용.
+		- When there are parts to be modified even though they are currently implemented.
 - Delete
 	- // FIXME [delete] >> `<brief description>`
 	- //  - `<detailed explanation>`
-		- e.g.) test를 위해 작성한 경우.
+		- e.g.) When some parts are written for other purposes like testing.
 - Restore
 	- // FIXME [restore] >> `<brief description>`
 	- //  - `<detailed explanation>`
-		- test 등을 위해 대체했던 부분을 원상태로 복귀.
+		- When restoring parts which are implemented temporarily for testing into the original state.
 
 - Note
 	- // NOTE [caution] >> `<brief description>`
@@ -119,8 +119,9 @@
 ## Note Taking
 - Use bullet
 	- REF [site] >> http://bulletjournal.com/
-	- .: task
-	- O: event
+
+	- .(dot): task
+	- O(circle): event
 	- -: note
 	- *: important
 	- X: complete
