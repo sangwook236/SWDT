@@ -1,5 +1,4 @@
-//#include "stdafx.h"
-#include <stdexcept>
+#include <iostream>
 
 
 namespace {

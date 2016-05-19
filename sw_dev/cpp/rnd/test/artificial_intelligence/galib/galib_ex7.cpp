@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 //#define GALIB_USE_STD_NAMESPACE 1
 #include <ga/ga.h>
 #include <ga/std_stream.h>

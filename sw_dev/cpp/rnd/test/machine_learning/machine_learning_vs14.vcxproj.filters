@@ -67,6 +67,9 @@
     <Filter Include="Source Files\libgp">
       <UniqueIdentifier>{14085248-2cea-4e18-b85c-bb9bf937cd51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\rllib">
+      <UniqueIdentifier>{9185df37-7bb8-4a3f-938d-1545e754e6d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libsvm_lib\svm.h">
@@ -385,6 +388,9 @@
     </ClCompile>
     <ClCompile Include="libgp\libgp_main.cpp">
       <Filter>Source Files\libgp</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_main.cpp">
+      <Filter>Source Files\rllib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

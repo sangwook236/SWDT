@@ -147,6 +147,7 @@
     <ClCompile Include="mysvm_lib\smo.cpp" />
     <ClCompile Include="mysvm_lib\svm_c.cpp" />
     <ClCompile Include="mysvm_lib\svm_nu.cpp" />
+    <ClCompile Include="rllib\rllib_main.cpp" />
     <ClCompile Include="rl_glue\rl_glue_main.cpp" />
     <ClCompile Include="shogun\shogun_classifier_conjugateindex_example.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 //#define GALIB_USE_STD_NAMESPACE 1
 #include <ga/GASimpleGA.h>	// the header for the GA we'll use
 #include <ga/GA2DBinStrGenome.h> // and the header for the genome we need
