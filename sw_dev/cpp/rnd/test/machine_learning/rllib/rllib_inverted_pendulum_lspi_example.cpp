@@ -82,9 +82,9 @@ void phi_rbf(gsl_vector* phi, const State& s, const Action& a)
 	std::array<double, 3> speed = { { -1, 0, 1 } };
 
 	if ((gsl_vector*)0 == phi)
-		throw rl::exception::NullVectorPtr("in Feature::operator()");
+		throw rl::exception::NullVectorPtr("in phi_rbf()");
 	else if (PHI_RBF_DIMENSION != (int)(phi->size))
-		throw rl::exception::BadVectorSize(phi->size, PHI_RBF_DIMENSION, "in Feature::operator()");
+		throw rl::exception::BadVectorSize(phi->size, PHI_RBF_DIMENSION, "in phi_rbf()");
 
 	int action_offset;
 	switch (a)
