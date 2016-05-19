@@ -350,8 +350,12 @@ void semi_supervised_manifold_sculpting_for_swiss_roll()
         for (int i = 0; i < nSupervisedPoints; ++i)
         {
             const std::size_t nPoint = (std::size_t)rng.next(nPoints);
-            GClasses::GVec::copy(pSculpter->data().row(nPoint), pPrevSculpter->data().row(nPoints), pSculpter->data().relation().size());
-            pSculpter->clampPoint(nPoint);
+			//--S [] 2016/05/19: Sang-Wook Lee
+			//	- {check}: not yet tested.
+            //GClasses::GVec::copy(pSculpter->data().row(nPoint), pPrevSculpter->data().row(nPoints), pSculpter->data().relation().size());
+			pSculpter->data().row(nPoint).copy(pPrevSculpter->data().row(nPoints));
+			//--E [] 2016/05/19: Sang-Wook Lee
+			pSculpter->clampPoint(nPoint);
         }
     }
 

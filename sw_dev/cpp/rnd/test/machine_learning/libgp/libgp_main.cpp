@@ -1,6 +1,6 @@
 //include "stdafx.h"
-#include <libgp/gp.h>
-#include <libgp/gp_utils.h>
+#include <gp/gp.h>
+#include <gp/gp_utils.h>
 #include <Eigen/Dense>
 #include <iostream>
 

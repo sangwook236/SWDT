@@ -392,5 +392,26 @@
     <ClCompile Include="rllib\rllib_main.cpp">
       <Filter>Source Files\rllib</Filter>
     </ClCompile>
+    <ClCompile Include="rllib\rllib_boyan_chain_lstd_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_cliff_walking_qlearning_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_cliff_walking_sarsa_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_inverted_pendulum_ktdq_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_inverted_pendulum_lspi_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_inverted_pendulum_mlp_ktdq_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_mountain_car_ktdsarsa_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

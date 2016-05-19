@@ -41,9 +41,9 @@ int tiny_cnn_main(int argc, char *argv[])
 		}
 
 		std::cout << "\ttrain MNIST -------------------------------------------------" << std::endl;
-		my_tiny_cnn::mnist_train_example();
+		//my_tiny_cnn::mnist_train_example();
 		std::cout << "\ttest MNIST --------------------------------------------------" << std::endl;
-		my_tiny_cnn::mnist_test_example();
+		//my_tiny_cnn::mnist_test_example();
 
 		std::cout << "\ttrain CIFAR10 -----------------------------------------------" << std::endl;
 		my_tiny_cnn::cifar10_train_example();

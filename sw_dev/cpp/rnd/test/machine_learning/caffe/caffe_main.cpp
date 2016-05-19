@@ -21,7 +21,7 @@ int caffe_main(int argc, char *argv[])
     //  use the executable, caffe.
 
     // Predict.
-	my_caffe::classification_example();
+	//my_caffe::classification_example();
 
 	// Feature extraction.
 
