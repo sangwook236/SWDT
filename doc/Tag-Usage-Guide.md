@@ -1,30 +1,23 @@
 ## Documentation Tag
 
 ##### Hierarachy
-- [-]
-- [1]
-	- :>
-	- >>
-	- <>
-	- ->
-	- +>
-	- 1>
-		- -.
-		- 1.
-		- i.
+- [-], [1]
+	- =, (1), {1}
+		- -, (i)
 
 ##### Status, Explanation or Constraint
 - Use brace: {...}
 - Usage
-	- [-] {*} 1 tab == 4 spaces.
-	- -. {/,need} change tag structure.
-	- -. {progress,problem} our system malfunctions.
-- category
-	- {current}: current status
-		- completion, *
-		- progress, - or ~
-		- delay, !
-		- cancel, /
+	- [-] {*~} 1 tab == 4 spaces.
+		- = {/;need} change tag structure.
+			- - {#;problem} our system malfunctions.
+- Category
+	- {status}: current status
+		- important: *
+		- completion: # or O
+		- progress: ~ or -
+		- delay: !
+		- cancel: / or X
 
 	- {need}: need or requirement.
 	- {cause}: cause.
@@ -39,28 +32,28 @@
 	- {cause}: cause.
 	- {solution}: solution.
 
+	- {note}: note.
 
 ## Revision (History) Tag
 
 ##### Format
-- when multiple lines
+- When multiple lines
 	- //--S [tag-id] yyyy/mm/dd: modifier-id
-	- //	-. {action-id}: <explanation>
+	- //	- {action-id}: <explanation>
 	- //--E [tag-id] yyyy/mm/dd: modifier-id
-- when single line & no explanation
+- When single line & no explanation
 	- //-- [tag-id] yyyy/mm/dd: modifier-id
 
 ##### Feature
-- can be nested
+- Can be nested
 - tag-id
-	- tag id는 동일 file 내에서 unique하여야 하며 생략될 수 있다.
-		- 그러나 bracket은 항상 존재하여야 한다.
-	- revision history가 있을 경우 history id를 사용하는 것이 좋다.
-	- bug 수정시에는 tag id를 error id로 하는 것이 좋을 듯하다.
+	- Tag-id need to be unique in the same file and can be omitted. But the bracket always has to exist.
+	- In case that revision history exists, it's good that history-id is used.
+	- When fixing bugs it seems good that error id is used as tag-id.
 - modifier-id
-	- tagging을 한 사람의 name or identifier.
+	- Name or identifier of a subject to tag.
 - action-id
-	- start tag 후에 수행 동작과 설명을 추가할 수 있다.
+	- Add some actions or explanation after the start tag.
 	- identifier
 		- {A}: add
 		- {M}: modify
@@ -71,54 +64,64 @@
 ## Task Tag
 
 ##### Format
-- review
+- Review
 	- // TODO [review] >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- e.g.) 추가적인 검토가 필요한 경우.
-- check
+	- //  - `<detailed explanation>`
+		- e.g.) When an additional review is needed.
+- Check
 	- // TODO [check] >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- e.g.) 검증이나 테스트가 충분히 되지 않은 경우.
-- add/implement
+	- //  - `<detailed explanation>`
+		- e.g.) When more verification or tests are needed.
+- Add / Implement
 	- // TODO [add/implement] >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- 미구현 사항이 있는 부분에 사용.
-- modify/enhance/update/upgrade/fix/correct
+	- //  - `<detailed explanation>`
+		- When there are unimplements parts.
+- Modify / Enhance / Update / Upgrade / Fix / Correct
 	- // FIXME [modify/enhance/update/upgrade/fix/correct] >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- 구현은 되어 있으나 (재사용성 등의 이유로) 수정이 필요한 부분에 사용.
-- delete
+	- //  - `<detailed explanation>`
+		- When there are parts to be modified even though they are currently implemented.
+- Delete
 	- // FIXME [delete] >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- e.g.) test를 위해 작성한 경우.
-- restore
+	- //  - `<detailed explanation>`
+		- e.g.) When some parts are written for other purposes like testing.
+- Restore
 	- // FIXME [restore] >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- test 등을 위해 대체했던 부분을 원상태로 복귀.
+	- //  - `<detailed explanation>`
+		- When restoring parts which are implemented temporarily for testing into the original state.
 
-- note
+- Note
 	- // NOTE [caution] >> `<brief description>`
-	- //  -. `<detailed explanation>`
+	- //  - `<detailed explanation>`
 
-- reference
+- Reference
 	- // REF [site/file/doc/paper] >> `<brief description>`
-	- //  -. `<reference site or document, etc.>`
-	- //  -. `<additional comment>`
+	- //  - `<reference site or document, etc.>`
+	- //  - `<additional comment>`
 
-- pseudocode programming process (PPP)
+- Pseudocode Programming Process (PPP)
 	- // PPP [] {step:#} >> `<brief description>`
-	- //  -. `<detailed explanation>`
+	- //  - `<detailed explanation>`
 
-- design by contract (DbC)
+- Design by Contract (DbC)
 	- // CONTRACT [precondition/postcondition/invariant] {required/optional} >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- [ref] ContractViolation and its derived classes in ${VIGRA_LIBRARY_HOME}/include/vigra/error.hxx
-- precondition
+	- //  - `<detailed explanation>`
+		- REF [file] >> ContractViolation and its derived classes in ${VIGRA_LIBRARY_HOME}/include/vigra/error.hxx
+- Precondition
 	- // PRECONDITION [] {none/required/optional} >> `<brief description>`
-	- //  -. `<detailed explanation>`
-- postcondition
+	- //  - `<detailed explanation>`
+- Postcondition
 	- // POSTCONDITION [] {none/required/optional} >> `<brief description>`
-	- //  -. `<detailed explanation>`
-- invariant
+	- //  - `<detailed explanation>`
+- Invariant
 	- // INVARIANT [] {none/required/optional} >> `<brief description>`
-	- //  -. `<detailed explanation>`
+	- //  - `<detailed explanation>`
+
+## Note Taking
+- Use bullet
+	- REF [site] >> http://bulletjournal.com/
+
+	- .(dot): task
+	- O(circle): event
+	- -: note
+	- *: important
+	- X: complete
