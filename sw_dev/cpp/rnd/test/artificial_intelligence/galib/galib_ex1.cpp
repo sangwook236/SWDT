@@ -12,7 +12,7 @@ namespace local {
 // This is the objective function.  All it does is check for alternating 0s and 1s.
 // If the gene is odd and contains a 1, the fitness is incremented by 1.
 // If the gene is even and contains a 0, the fitness is incremented by 1.
-// No penalties are assigned. 
+// No penalties are assigned.
 // We have to do the cast because a plain, generic GAGenome doesn't have the members that a GA2DBinaryStringGenome has.
 // And it's ok to cast it because we know that we will only get GA2DBinaryStringGenomes and nothing else.
 
@@ -22,7 +22,7 @@ float objective(GAGenome &g)
 
 	float score = 0.0f;
 	int count = 0;
-	
+
 	for (int i = 0; i < genome.width(); ++i)
 	{
 		for (int j = 0; j < genome.height(); ++j)
@@ -42,7 +42,7 @@ float objective(GAGenome &g)
 
 namespace my_galib {
 
-// [ref] ${GALIB_HOME}/examples/ex1.c
+// REF [file] >> ${GALIB_HOME}/examples/ex1.c
 void ex1(int argc, char *argv[])
 {
 	std::cout << "Example 1\n" << std::endl;

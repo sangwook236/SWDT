@@ -44,7 +44,6 @@
 			<Add library="OsiClp" />
 			<Add library="Osi" />
 			<Add library="CoinUtils" />
-			<Add library="ga" />
 			<Add library="levmar" />
 			<Add library="ceres" />
 			<Add library="nlopt" />
@@ -65,10 +64,6 @@
 		<Unit filename="coin_or/coin_or_cbc_simple_example.cpp" />
 		<Unit filename="coin_or/coin_or_clp_simple_example.cpp" />
 		<Unit filename="coin_or/coin_or_main.cpp" />
-		<Unit filename="galib/galib_ex1.cpp" />
-		<Unit filename="galib/galib_ex3.cpp" />
-		<Unit filename="galib/galib_ex7.cpp" />
-		<Unit filename="galib/galib_main.cpp" />
 		<Unit filename="glpk/glpk_interior_point_sample.cpp" />
 		<Unit filename="glpk/glpk_main.cpp" />
 		<Unit filename="glpk/glpk_mip_sample.cpp" />

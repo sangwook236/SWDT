@@ -27,7 +27,7 @@ float objective(GAGenome &c)
 
 namespace my_galib {
 
-// [ref] ${GALIB_HOME}/examples/ex7.c
+// REF [file] >> ${GALIB_HOME}/examples/ex7.c
 void ex7(int argc, char *argv[])
 {
 	std::cout << "Example 7" << std::endl << std::endl;

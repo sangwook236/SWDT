@@ -30,7 +30,7 @@ float objective(GAGenome &c)
 
 namespace my_galib {
 
-// [ref] ${GALIB_HOME}/examples/ex3.c
+// REF [file] >> ${GALIB_HOME}/examples/ex3.c
 void ex3(int argc, char *argv[])
 {
 	std::cout << "Example 3" << std::endl << std::endl;
@@ -48,7 +48,7 @@ void ex3(int argc, char *argv[])
 
 	// Set the default values of the parameters and declare the params variable.
 	// We use the genetic algorithm's configure member to set up the parameter list so that it will parse for the appropriate arguments.
-	// Notice that the params argument 'removes' from the argv list any arguments that it recognized (actually it just re-orders them and changes the value of argc). 
+	// Notice that the params argument 'removes' from the argv list any arguments that it recognized (actually it just re-orders them and changes the value of argc).
 	// Once the GA's parameters are registered, we set some values that we want that are different than the GAlib defaults.  Then we parse the command line.
 
 	GAParameterList params;
@@ -135,7 +135,7 @@ void ex3(int argc, char *argv[])
 
 	{
 		boost::timer::cpu_timer timer;
-	
+
 		ga.evolve();
 
 		boost::timer::cpu_times const elapsed_times(timer.elapsed());
