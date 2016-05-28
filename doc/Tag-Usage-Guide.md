@@ -68,18 +68,24 @@
 	- // TODO [task-id] >> `<brief description>`
 	- //  - `<detailed explanation>` (optional)
 - task-id
-	- review: when an additional review is needed.
-	- check: when more verification or tests are needed.
-	- add / implement: when there are unimplements parts.
+	- review
+		- When an additional review is needed.
+	- check
+		- When more verification or tests are needed.
+	- add / implement
+		- When there are unimplements parts.
 
 ##### Fix Task
 - Format
 	- // FIXME [task-id] >> `<brief description>`
 	- //  - `<detailed explanation>` (optional)
 - task-id
-	- modify / enhance / update / upgrade / fix / correct: when there are parts to be modified even though they are currently implemented.
-	- delete: when some parts are written for other purposes like testing.
-	- restore: when restoring parts which are implemented temporarily for testing into the original state.
+	- modify / enhance / update / upgrade / fix / correct
+		- When there are parts to be modified even though they are currently implemented.
+	- delete
+		- When some parts are written for other purposes like testing.
+	- restore
+		- When restoring parts which are implemented temporarily for testing into the original state.
 
 ##### Note Task
 - Format
