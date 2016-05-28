@@ -72,7 +72,7 @@
 		- When an additional review is needed.
 	- check
 		- When more verification or tests are needed.
-	- add / implement
+	- add, implement
 		- When there are unimplements parts.
 
 ##### Fix Task
@@ -80,7 +80,7 @@
 	- // FIXME [task-id] >> `<brief description>`
 	- //  - `<detailed explanation>` (optional)
 - task-id
-	- modify / enhance / update / upgrade / fix / correct
+	- modify, enhance, update, upgrade, fix, correct
 		- When there are parts to be modified even though they are currently implemented.
 	- delete
 		- When some parts are written for other purposes like testing.
@@ -93,8 +93,7 @@
 	- //  - `<detailed explanation>` (optional)
 - task-id
 	- caution
-	- error
-	- warn
+	- error, warn
 	- info
 
 ##### Reference Task
@@ -105,8 +104,7 @@
 	- site
 	- file
 	- paper
-	- doc
-	- presentation
+	- doc, presentation
 
 ##### Pseudocode Programming Process (PPP) Task
 - Format
