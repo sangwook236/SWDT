@@ -63,58 +63,65 @@
 
 ## Task Tag
 
-##### Format
-- Review
-	- // TODO [review] >> `<brief description>`
-	- //  - `<detailed explanation>`
-		- e.g.) When an additional review is needed.
-- Check
-	- // TODO [check] >> `<brief description>`
-	- //  - `<detailed explanation>`
-		- e.g.) When more verification or tests are needed.
-- Add / Implement
-	- // TODO [add/implement] >> `<brief description>`
-	- //  - `<detailed explanation>`
-		- When there are unimplements parts.
-- Modify / Enhance / Update / Upgrade / Fix / Correct
-	- // FIXME [modify/enhance/update/upgrade/fix/correct] >> `<brief description>`
-	- //  - `<detailed explanation>`
-		- When there are parts to be modified even though they are currently implemented.
-- Delete
-	- // FIXME [delete] >> `<brief description>`
-	- //  - `<detailed explanation>`
-		- e.g.) When some parts are written for other purposes like testing.
-- Restore
-	- // FIXME [restore] >> `<brief description>`
-	- //  - `<detailed explanation>`
-		- When restoring parts which are implemented temporarily for testing into the original state.
+##### To-Do Task
+- Format
+	- // TODO [task-id] >> `<brief description>`
+	- //  - `<detailed explanation>` (optional)
+- task-id
+	- review: when an additional review is needed.
+	- check: when more verification or tests are needed.
+	- add / implement: when there are unimplements parts.
 
-- Note
-	- // NOTE [caution] >> `<brief description>`
-	- //  - `<detailed explanation>`
+##### Fix Task
+- Format
+	- // FIXME [task-id] >> `<brief description>`
+	- //  - `<detailed explanation>` (optional)
+- task-id
+	- modify / enhance / update / upgrade / fix / correct: when there are parts to be modified even though they are currently implemented.
+	- delete: when some parts are written for other purposes like testing.
+	- restore: when restoring parts which are implemented temporarily for testing into the original state.
 
-- Reference
-	- // REF [site/file/doc/paper] >> `<brief description>`
-	- //  - `<reference site or document, etc.>`
-	- //  - `<additional comment>`
+##### Note Task
+- Format
+	- // NOTE [task-id] >> `<brief description>`
+	- //  - `<detailed explanation>` (optional)
+- task-id
+	- caution
+	- error
+	- warn
+	- info
 
-- Pseudocode Programming Process (PPP)
+##### Reference Task
+- Format
+	- // REF [task-id] >> `<information on reference>`
+	- //  - `<detailed explanation>` (optional)
+- task-id
+	- site
+	- file
+	- paper
+	- doc
+	- presentation
+
+##### Pseudocode Programming Process (PPP) Task
+- Format
 	- // PPP [] {step:#} >> `<brief description>`
-	- //  - `<detailed explanation>`
+	- //  - `<detailed explanation>` (optional)
 
-- Design by Contract (DbC)
-	- // CONTRACT [precondition/postcondition/invariant] {required/optional} >> `<brief description>`
-	- //  - `<detailed explanation>`
-		- REF [file] >> ContractViolation and its derived classes in ${VIGRA_LIBRARY_HOME}/include/vigra/error.hxx
-- Precondition
+##### Design by Contract (DbC) Task
+- Format
+	- // CONTRACT [task-id] {required/optional} >> `<brief description>`
+	- //  - `<detailed explanation>` (optional)
 	- // PRECONDITION [] {none/required/optional} >> `<brief description>`
-	- //  - `<detailed explanation>`
-- Postcondition
+	- //  - `<detailed explanation>` (optional)
 	- // POSTCONDITION [] {none/required/optional} >> `<brief description>`
-	- //  - `<detailed explanation>`
-- Invariant
+	- //  - `<detailed explanation>` (optional)
 	- // INVARIANT [] {none/required/optional} >> `<brief description>`
-	- //  - `<detailed explanation>`
+	- //  - `<detailed explanation>` (optional)
+- task-id
+	- precondition
+	- postcondition
+	- invariant
+- REF [file] >> ContractViolation and its derived classes in ${VIGRA_LIBRARY_HOME}/include/vigra/error.hxx
 
 ## Note Taking
 - Use bullet
