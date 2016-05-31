@@ -14,10 +14,10 @@
 #include <boost/pending/disjoint_sets.hpp>
 #include <boost/foreach.hpp>
 #include <fstream>
-#include <utility>
-#include <algorithm>
 #include <iostream>
+#include <algorithm>
 #include <string>
+#include <utility>
 #include <stdexcept>
 
 
