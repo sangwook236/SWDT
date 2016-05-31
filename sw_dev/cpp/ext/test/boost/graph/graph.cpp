@@ -400,9 +400,12 @@ void graph()
 {
     // Basic.
 	{
-		std::cout << "basic operation ----------------------------------------------" << std::endl;
+		std::cout << "quick tour ---------------------------------------------------" << std::endl;
 		// Access and iterate vertices, edges, and their properties.
-		boost_graph::boost_quick_tour();
+		//boost_graph::boost_quick_tour();
+
+		std::cout << "\nbasic operation ----------------------------------------------" << std::endl;
+		// Directed, undirected, and bidirectional graphs.
 		// Access adjacent vertices, incoming and outgoing edges of a vertex.
 		// Access the degree, in- & out-degree of a vertex and the source and target of an edge.
 		//boost_graph::basic_operation();

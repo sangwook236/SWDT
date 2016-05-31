@@ -179,6 +179,51 @@ void basic_operation()
 {
 	std::cout << "--------------------------------------------------------------" << std::endl;
 	{
+		// The Directed template parameter controls whether teh graph is directed, undirected, or directed with access to both the in-edges and out-edges (bidirectional).
+#if 0
+		// Use boost::listS as OutEdgeListS.
+		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS> undirected_graph_type;
+		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> directed_graph_type;
+		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS> bidirectional_graph_type;
+#else
+		// Use boost::setS as OutEdgeListS.
+		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::undirectedS> undirected_graph_type;
+		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::directedS> directed_graph_type;
+		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::bidirectionalS> bidirectional_graph_type;
+#endif
+
+		undirected_graph_type ungraph(3);
+		boost::add_edge(0, 1, ungraph);
+		boost::add_edge(1, 0, ungraph);
+		boost::add_edge(0, 2, ungraph);
+
+		directed_graph_type digraph(3);
+		boost::add_edge(0, 1, digraph);
+		boost::add_edge(1, 0, digraph);
+		boost::add_edge(0, 2, digraph);
+
+		bidirectional_graph_type bigraph(3);
+		boost::add_edge(0, 1, bigraph);
+		boost::add_edge(1, 0, bigraph);
+		boost::add_edge(0, 2, bigraph);
+
+		std::cout << "number of edges in the undirected graph = " << boost::num_edges(ungraph) << std::endl;
+		std::cout << "number of edges in the directed graph = " << boost::num_edges(digraph) << std::endl;
+		std::cout << "number of edges in the bidirectional graph = " << boost::num_edges(bigraph) << std::endl;
+
+		std::pair<undirected_graph_type::edge_iterator, undirected_graph_type::edge_iterator> es1 = boost::edges(ungraph);
+		std::copy(es1.first, es1.second, std::ostream_iterator<undirected_graph_type::edge_descriptor>(std::cout, ", "));
+		std::cout << std::endl;
+		std::pair<directed_graph_type::edge_iterator, directed_graph_type::edge_iterator> es2 = boost::edges(digraph);
+		std::copy(es2.first, es2.second, std::ostream_iterator<directed_graph_type::edge_descriptor>(std::cout, ", "));
+		std::cout << std::endl;
+		std::pair<bidirectional_graph_type::edge_iterator, bidirectional_graph_type::edge_iterator> es3 = boost::edges(bigraph);
+		std::copy(es3.first, es3.second, std::ostream_iterator<bidirectional_graph_type::edge_descriptor>(std::cout, ", "));
+		std::cout << std::endl;
+	}
+
+	std::cout << "\n--------------------------------------------------------------" << std::endl;
+	{
 		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS> graph_type;
 
 		// create a simple undirected graph
