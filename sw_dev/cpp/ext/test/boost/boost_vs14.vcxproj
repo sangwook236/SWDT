@@ -119,6 +119,7 @@
     <ClCompile Include="function.cpp" />
     <ClCompile Include="geometry.cpp" />
     <ClCompile Include="graph\graph.cpp" />
+    <ClCompile Include="graph\graph_basic_operation.cpp" />
     <ClCompile Include="graph\graph_maximum_flow_minimun_cut_algorithm.cpp" />
     <ClCompile Include="graph\graph_metric_tsp_approximation.cpp" />
     <ClCompile Include="graph\graph_parallel.cpp" />

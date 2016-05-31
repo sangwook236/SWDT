@@ -210,5 +210,11 @@
     <ClCompile Include="graph\graph_traversal_algorithm.cpp">
       <Filter>Source Files\graph</Filter>
     </ClCompile>
+    <ClCompile Include="asio\asio_udp_broadcast.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="graph\graph_basic_operation.cpp">
+      <Filter>Source Files\graph</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
