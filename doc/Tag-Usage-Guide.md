@@ -105,6 +105,7 @@
 	- file
 	- paper
 	- doc, presentation
+	- video, audio
 
 ##### Pseudocode Programming Process (PPP) Task
 - Format
