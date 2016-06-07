@@ -32,58 +32,85 @@ namespace local {
 class custom_dfs_visitor : public boost::default_dfs_visitor
 {
 public:
-	// this is invoked when a vertex is encountered for the first time.
+	// This is invoked when a vertex is encountered for the first time.
 	template<typename Vertex, typename Graph>
-	void discover_vertex(const Vertex &u, const Graph &) const
+	void discover_vertex(const Vertex& u, const Graph&) const
 	{ std::cout << "at " << u << std::endl; }
 
-	// this is invoked on every outgoing edge_type from the vertex after the vertex is discovered.
+	// This is invoked on every outgoing edge_type from the vertex after the vertex is discovered.
 	template<typename Edge, typename Graph>
-	void examine_edge(const Edge &e, const Graph &) const
+	void examine_edge(const Edge& e, const Graph&) const
 	{ std::cout << "examining edges " << e << std::endl; }
 
 /*
-	// this is invoked on the source vertex before traversal begins
+	// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/graph/doc/depth_first_search.html
+
+	// This is invoked on every vertex of the graph before the start of the graph search.
 	template<typename Vertex, typename Graph>
-	void start_vertex(Vertex u, const Graph &g) const
+	void initialize_vertex(Vertex u, Graph &g)
 	{
-		// do something.
+		// Do something.
 	}
 
-	// this is invoked when a vertex is invoked for the first time
+	// This is invoked on the source vertex before traversal begins.
+	// This invoked on the source vertex once before the start of the search..
 	template<typename Vertex, typename Graph>
-	void discover_vertex(Vertex u, const Graph &g) const
+	void start_vertex(Vertex u, Graph &g)
 	{
-		// do something.
+		// Do something.
 	}
 
-	// if u is the root of a tree, finish_vertex is invoked after the same is invoked on all other elements of the tree.
-	// if u is a leaf, then this method is invoked after all outgoing edges from u have been examined.
+	// This is invoked when a vertex is invoked for the first time.
+	// This is invoked when a vertex is encountered for the first time.
 	template<typename Vertex, typename Graph>
-	void finish_vertex(Vertex u, const Graph &g) const
+	void discover_vertex(Vertex u, Graph &g)
 	{
-		// do something.
+		// Do something.
 	}
 
-	// this is nvoked on every outgoing edge_type of u after it is discovered
-	template<typename Edge, typename Graph>
-	void examine_edge(Edge e, const Graph &g) const
+	// This is invoked on a vertex after all of its out edges have been added to the search tree and all of the adjacent vertices have been discovered (but before their out-edges have been examined).
+	// If u is the root of a tree, finish_vertex is invoked after the same is invoked on all other elements of the tree.
+	// If u is a leaf, then this method is invoked after all outgoing edges from u have been examined.
+	template<typename Vertex, typename Graph>
+	void finish_vertex(Vertex u, Graph &g)
 	{
-		// do something.
+		// Do something.
 	}
 
-	// this is invoked on an edge_type after it becomes a member of the edges that form the search tree
+	// This is invoked on every outgoing edge of each vertex after it is discovered.
 	template<typename Edge, typename Graph>
-	void tree_edge(Edge e, const Graph &g) const
+	void examine_edge(Edge e, Graph &g)
 	{
-		// do something.
+		// Do something.
 	}
 
-	// this is invoked on the back edges of a graph; used for an undirected graph, and because (u, v) and (v, u) are the same edges, both tree_edge and back_edge are invoked
+	// This is invoked on an edge after it becomes a member of the edges that form the search tree.
+	// This is invoked on each edge as it becomes a member of the edges that form the search tree. If you wish to record predecessors, do so at this event point.
 	template<typename Edge, typename Graph>
-	void back_edge(Edge e, const Graph &g) const
+	void tree_edge(Edge e, Graph &g)
 	{
-		// do something.
+		// Do something.
+	}
+
+	// This is invoked on the back edges of a graph; used for an undirected graph, and because (u, v) and (v, u) are the same edges, both tree_edge and back_edge are invoked.
+	template<typename Edge, typename Graph>
+	void back_edge(Edge e, Graph &g)
+	{
+		// Do something.
+	}
+
+	// This is invoked on forward or cross edges in the graph. In an undirected graph this method is never called.
+	template<typename Edge, typename Graph>
+	void forward_or_cross_edge(Edge e, Graph &g)
+	{
+		// Do something.
+	}
+
+	// This is invoked on the non-tree edges in the graph as well as on each tree edge after its target vertex is finished.
+	template<typename Edge, typename Graph>
+	void finish_edge(Edge e, Graph &g)
+	{
+		// Do something.
 	}
 */
 };
@@ -101,72 +128,83 @@ public:
 
 public:
     template<typename Vertex, typename Graph>
-    void discover_vertex(Vertex u, const Graph&) const
+    void discover_vertex(const Vertex& u, const Graph&) const
     {
         boost::put(m_timemap, u, m_time++);
     }
 
 /*
-    template <class Vertex, class Graph>
+	// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/graph/doc/breadth_first_search.html
+
+	// This is invoked on every vertex before the start of the search.
+    template<typename Vertex, typename Graph>
     boost::graph::bfs_visitor_event_not_overridden initialize_vertex(Vertex u, Graph &g)
     {
-		// do something.
+		// Do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
 
-	template <class Vertex, class Graph>
+	// This is invoked the first time the algorithm encounters vertex u. All vertices closer to the source vertex have been discovered, and vertices further from the source have not yet been discovered.
+	template<typename Vertex, typename Graph>
 	boost::graph::bfs_visitor_event_not_overridden discover_vertex(Vertex u, Graph &g)
 	{
-		// do something.
+		// Do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
 
-	template <class Vertex, class Graph>
+	// This is invoked in each vertex as it is removed from the queue.
+	template<typename Vertex, typename Graph>
 	boost::graph::bfs_visitor_event_not_overridden examine_vertex(Vertex u, Graph &g)
 	{
-		// do something.
+		// Do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
 
-	template <class Edge, class Graph>
-	boost::graph::bfs_visitor_event_not_overridden examine_edge(Edge e, Graph &g)
-	{
-		// do something.
-		return boost::graph::bfs_visitor_event_not_overridden();
-	}
-
-	template <class Edge, class Graph>
-	boost::graph::bfs_visitor_event_not_overridden tree_edge(Edge e, Graph &g)
-	{
-		// do something.
-		return boost::graph::bfs_visitor_event_not_overridden();
-	}
-
-	template <class Edge, class Graph>
-	boost::graph::bfs_visitor_event_not_overridden non_tree_edge(Edge e, Graph &g)
-	{
-		// do something.
-		return boost::graph::bfs_visitor_event_not_overridden();
-	}
-
-	template <class Edge, class Graph>
-	boost::graph::bfs_visitor_event_not_overridden gray_target(Edge e, Graph &g)
-	{
-		// do something.
-		return boost::graph::bfs_visitor_event_not_overridden();
-	}
-
-	template <class Edge, class Graph>
-	boost::graph::bfs_visitor_event_not_overridden black_target(Edge e, Graph &g)
-	{
-		// do something.
-		return boost::graph::bfs_visitor_event_not_overridden();
-	}
-
-	template <class Vertex, class Graph>
+	// This is invoked after all of the out edges of u have been examined and all of the adjacent vertices have been discovered.
+	template<typename Vertex, typename Graph>
 	boost::graph::bfs_visitor_event_not_overridden finish_vertex(Vertex u, Graph &g)
 	{
-		// do something.
+		// Do something.
+		return boost::graph::bfs_visitor_event_not_overridden();
+	}
+
+	// This is invoked on every out-edge of each vertex immediately after the vertex is removed from the queue.
+	template<typename Edge, typename Graph>
+	boost::graph::bfs_visitor_event_not_overridden examine_edge(Edge e, Graph &g)
+	{
+		// Do something.
+		return boost::graph::bfs_visitor_event_not_overridden();
+	}
+
+	// This is invoked (in addition to examine_edge()) if the edge is a tree edge. The target vertex of edge e is discovered at this time.
+	template<typename Edge, typename Graph>
+	boost::graph::bfs_visitor_event_not_overridden tree_edge(Edge e, Graph &g)
+	{
+		// Do something.
+		return boost::graph::bfs_visitor_event_not_overridden();
+	}
+
+	// This is invoked (in addition to examine_edge()) if the edge is not a tree edge.
+	template<typename Edge, typename Graph>
+	boost::graph::bfs_visitor_event_not_overridden non_tree_edge(Edge e, Graph &g)
+	{
+		// Do something.
+		return boost::graph::bfs_visitor_event_not_overridden();
+	}
+
+	// This is invoked (in addition to non_tree_edge()) if the target vertex is colored gray at the time of examination. The color gray indicates that the vertex is currently in the queue.
+	template<typename Edge, typename Graph>
+	boost::graph::bfs_visitor_event_not_overridden gray_target(Edge e, Graph &g)
+	{
+		// Do something.
+		return boost::graph::bfs_visitor_event_not_overridden();
+	}
+
+	// This is invoked (in addition to non_tree_edge()) if the target vertex is colored black at the time of examination. The color black indicates that the vertex is no longer in the queue.
+	template<typename Edge, typename Graph>
+	boost::graph::bfs_visitor_event_not_overridden black_target(Edge e, Graph &g)
+	{
+		// Do something.
 		return boost::graph::bfs_visitor_event_not_overridden();
 	}
 */
@@ -204,10 +242,10 @@ void bfs_example()
     graph_type g(edge_array, edge_array + n_edges, v_size_type(N));
 #endif
 
-    // typedefs.
+    // Typedefs.
     typedef boost::graph_traits<graph_type>::vertices_size_type size_type;
 
-    // a vector to hold the discover time property for each vertex.
+    // A vector to hold the discover time property for each vertex.
     std::vector<size_type> dtime(boost::num_vertices(g));
     typedef boost::iterator_property_map<std::vector<size_type>::iterator, boost::property_map<graph_type, boost::vertex_index_t>::const_type> dtime_pm_type;
     dtime_pm_type dtime_pm(dtime.begin(), get(boost::vertex_index, g));
@@ -265,7 +303,7 @@ void build_router_network(Graph& g, VertexNameMap name_map, TransDelayMap delay_
 template<typename VertexNameMap>
 class bfs_name_printer : public boost::default_bfs_visitor
 {
-// inherit default (empty) event point actions.
+// Inherit default (empty) event point actions.
 public:
     bfs_name_printer(VertexNameMap n_map)
     : m_name_map(n_map)
@@ -312,7 +350,7 @@ void bfs_name_printer_example()
     std::cout << std::endl;
 }
 
-// auxiliary types.
+// Auxiliary types.
 struct location_type
 {
     float y, x;  // lat, long.
@@ -365,7 +403,7 @@ private:
     WeightMap wm;
 };
 
-// euclidean distance heuristic.
+// Euclidean distance heuristic.
 template<class Graph, class CostType, class LocMap>
 class distance_heuristic : public boost::astar_heuristic<Graph, CostType>
 {
@@ -390,9 +428,9 @@ private:
     Vertex m_goal;
 };
 
-struct found_goal {};  // exception for termination.
+struct found_goal {};  // Exception for termination.
 
-// visitor that terminates when we find the goal.
+// Visitor that terminates when we find the goal.
 template<class Vertex>
 class astar_goal_visitor : public boost::default_astar_visitor
 {
@@ -416,14 +454,14 @@ private:
 // REF [file] >> ${BOOST_HOME}/libs/graph/example/astar-cities.cpp
 void astar_cities_example()
 {
-    // specify some types.
+    // Specify some types.
     typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, boost::no_property, boost::property<boost::edge_weight_t, cost_type> > graph_type;
     typedef boost::property_map<graph_type, boost::edge_weight_t>::type weight_map_type;
     typedef graph_type::vertex_descriptor vertex_type;
     typedef graph_type::edge_descriptor edge_descriptor_type;
     typedef std::pair<int, int> edge_type;
 
-    // specify data.
+    // Specify data.
     enum nodes {
         Troy, LakePlacid, Plattsburgh, Massena, Watertown, Utica,
         Syracuse, Rochester, Buffalo, Ithaca, Binghamton, Woodstock,
@@ -460,7 +498,7 @@ void astar_cities_example()
         84, 73, 69, 70, 116, 147, 173, 183, 74, 71, 124
     };
 
-    // create graph.
+    // Create graph.
     graph_type g(N);
     weight_map_type weightmap = boost::get(boost::edge_weight, g);
     for (std::size_t j = 0; j < num_edges; ++j)
@@ -471,7 +509,7 @@ void astar_cities_example()
         weightmap[e] = weights[j];
     }
 
-    // pick random start/goal.
+    // Pick random start/goal.
     boost::mt19937 gen(std::time(0));
     vertex_type start = boost::random_vertex(g, gen);
     vertex_type goal = boost::random_vertex(g, gen);
@@ -484,7 +522,7 @@ void astar_cities_example()
     boost::write_graphviz(
         dotfile,
         g,
-        city_writer<const char **, location_type*>(name, locations, 73.46, 78.86, 40.67, 44.93, 480, 400),
+        city_writer<const char**, location_type*>(name, locations, 73.46, 78.86, 40.67, 44.93, 480, 400),
         time_writer<weight_map_type>(weightmap)
     );
 
@@ -492,7 +530,7 @@ void astar_cities_example()
     std::vector<cost_type> d(boost::num_vertices(g));
     try
     {
-        // call astar named parameter interface.
+        // Call astar named parameter interface.
         boost::astar_search_tree(
             g,
             start,
@@ -502,7 +540,7 @@ void astar_cities_example()
                     visitor(astar_goal_visitor<vertex_type>(goal))
         );
     }
-    catch (const found_goal &)  // found a path to the goal.
+    catch (const found_goal &)  // Found a path to the goal.
     {
         std::list<vertex_type> shortest_path;
         for (vertex_type v = goal; ; v = p[v])
@@ -528,7 +566,7 @@ class Maze
 public:
     static const std::size_t GRID_RANK = 2;
 
-    // Distance traveled in the Maze
+    // Distance traveled in the Maze.
     typedef double distance_type;
 
     typedef boost::grid_graph<GRID_RANK> grid_type;
@@ -648,7 +686,8 @@ private:
     distance_type m_solution_length;
 };
 
-// Solve the Maze using A-star search.  Return true if a solution was found.
+// Solve the Maze using A-star search.
+// Return true if a solution was found.
 bool Maze::solve()
 {
     boost::static_property_map<distance_type> weight(1);
@@ -680,8 +719,7 @@ bool Maze::solve()
     }
     catch(const found_goal &)
     {
-        // Walk backwards from the goal through the predecessor chain adding
-        // vertices to the solution path.
+        // Walk backwards from the goal through the predecessor chain adding vertices to the solution path.
         for (vertex_type u = g; u != s; u = predecessor[u])
             m_solution.insert(u);
         m_solution.insert(s);
@@ -693,6 +731,7 @@ bool Maze::solve()
 }
 
 #define BARRIER "#"
+
 // Print the Maze as an ASCII map.
 std::ostream& operator<<(std::ostream& output, const Maze& maze)
 {
@@ -820,7 +859,15 @@ void traversal()
 		boost::add_edge(1, 3, 7, g);
 
 		local::custom_dfs_visitor vis;
+#if 0
+		boost::depth_first_search(g, boost::visitor(vis).root_vertex(boost::vertex(0, g)));
+#elif 0
+		// TODO [check] >> this implementation isn't tested yet.
+		std::vector<boost::default_color_type> vertex_colors(boost::num_vertices(g), boost::white_color);
+		boost::depth_first_search(g, boost::visitor(vis), boost::make_iterator_property_map(vertex_colors.begin(), boost::get(boost::vertex_index, g)), boost::vertex(0, g));
+#else
 		boost::depth_first_search(g, boost::visitor(vis));
+#endif
 	}
 
 

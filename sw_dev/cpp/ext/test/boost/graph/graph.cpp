@@ -383,6 +383,9 @@ void basic_operation();
 
 void bundled_properties_1();
 void bundled_properties_2();
+void graph_based_on_adjacency_matrix();
+void default_undirected_and_directed_graph();
+void grid_graph();
 void graphviz();
 
 void traversal();
@@ -405,18 +408,32 @@ void graph()
 		//boost_graph::boost_quick_tour();
 
 		std::cout << "\nbasic operation ----------------------------------------------" << std::endl;
-		// Directed, undirected, and bidirectional graphs.
+		// Undirected, directed, and bidirectional graphs based on boost::adjacency_list.
+		// boost::undirected_graph<> and boost::directed_graph<>.
 		// Access adjacent vertices, incoming and outgoing edges of a vertex.
 		// Access the degree, in- & out-degree of a vertex and the source and target of an edge.
 		//boost_graph::basic_operation();
 
-		// Use user-defined properties of vertex, edge, or graph.
 		std::cout << "\nbundled properties -------------------------------------------" << std::endl;
+		// Bundled(user-defined) properties of vertex, edge, or graph.
 		//boost_graph::bundled_properties_1();
 		//boost_graph::bundled_properties_2();
 
-		// Use graphviz.
+		std::cout << "\ngraph based on adjacency matrix ------------------------------" << std::endl;
+		// Undirected and directed graphs based on boost::adjacency_matrix.
+		// Use boost::print_vertices, boost::print_edges, and boost::print_graph.
+		//boost_graph::graph_based_on_adjacency_matrix();
+
+		std::cout << "\nboost::undirected_graph<> and boost::directed_graph<> --------" << std::endl;
+		// boost::undirected_graph<> and boost::directed_graph<>.
+		//boost_graph::default_undirected_and_directed_graph();
+
+		std::cout << "\ngrid graph ---------------------------------------------------" << std::endl;
+		// Grid graph.
+		//boost_graph::grid_graph();
+
 		std::cout << "\ngraphviz -----------------------------------------------------" << std::endl;
+		// Use graphviz.
 		boost_graph::graphviz();
 	}
 
@@ -429,16 +446,16 @@ void graph()
         //boost_graph::shortest_paths();
 
         std::cout << "\nother core algorithms ----------------------------------------" << std::endl;
-        //local::other_core_algorithms();  // not yet implemented.
+        //local::other_core_algorithms();  // Not yet implemented.
 
         std::cout << "\nminimum spanning tree algorithms -----------------------------" << std::endl;
         //boost_graph::minimum_spanning_tree();
 
         std::cout << "\nrandom spanning tree algorithms ------------------------------" << std::endl;
-        //boost_graph::random_spanning_tree();  // not yet implemented.
+        //boost_graph::random_spanning_tree();  // Not yet implemented.
 
         std::cout << "\nalgorithm for common spanning trees of two graphs ------------" << std::endl;
-        //boost_graph::common_spanning_tree();  // not yet implemented.
+        //boost_graph::common_spanning_tree();  // Not yet implemented.
 
         std::cout << "\nconnected components algorithms ------------------------------" << std::endl;
         //local::connected_components();
@@ -450,22 +467,22 @@ void graph()
         //boost_graph::minimum_cut();
 
         std::cout << "\nsparse matrix ordering algorithms ----------------------------" << std::endl;
-        //local::sparse_matrix_ordering();  // not yet implemented.
+        //local::sparse_matrix_ordering();  // Not yet implemented.
 
         std::cout << "\nlayout algorithms --------------------------------------------" << std::endl;
-        //local::layout_algorithms();  // not yet implemented.
+        //local::layout_algorithms();  // Not yet implemented.
 
         std::cout << "\nclustering algorithms ----------------------------------------" << std::endl;
-        //local::clustering();  // not yet implemented.
+        //local::clustering();  // Not yet implemented.
 
         std::cout << "\nplanar graph algorithms --------------------------------------" << std::endl;
-        //local::planar_graph_algorithms();  // not yet implemented.
+        //local::planar_graph_algorithms();  // Not yet implemented.
 
         std::cout << "\ngraph metrics ------------------------------------------------" << std::endl;
-        //local::graph_metrics();  // not yet implemented.
+        //local::graph_metrics();  // Not yet implemented.
 
         std::cout << "\ngraph structure comparisons ----------------------------------" << std::endl;
-        //local::graph_structure_comparisons();  // not yet implemented.
+        //local::graph_structure_comparisons();  // Not yet implemented.
     }
 
     // Application.

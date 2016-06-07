@@ -1,9 +1,13 @@
 ﻿#include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/adjacency_matrix.hpp>
 #include <boost/graph/undirected_graph.hpp>
+#include <boost/graph/directed_graph.hpp>
+#include <boost/graph/grid_graph.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/typeof/typeof.hpp>
+#include <boost/graph/graph_utility.hpp>
 #include <boost/utility.hpp>
 #include <boost/pending/disjoint_sets.hpp>
 #include <boost/foreach.hpp>
@@ -14,15 +18,15 @@
 #include <utility>
 
 
-#define __USE_BOOST_PROPERTY_KIND 1
+//#define __USE_BOOST_PROPERTY_KIND 1
 
 #if defined(__USE_BOOST_PROPERTY_KIND)
 namespace boost {
 
-enum my_population_type { my_population };
-enum my_zipcodes_type { my_zipcodes };
+enum my_vertex_population_type { my_vertex_population };
+enum my_vertex_zipcodes_type { my_vertex_zipcodes };
 template <>
-struct property_kind<my_population_type>
+struct property_kind<my_vertex_population_type>
 {
 	typedef vertex_property_tag type;
 };
@@ -55,9 +59,9 @@ struct exercise_vertex
 
 	void operator()(const vertex_descriptor_type &v) const
 	{
-		typename boost::property_map<Graph, boost::vertex_index_t>::type vertex_id = boost::get(boost::vertex_index, g_);
+		typename boost::property_map<Graph, boost::vertex_index_t>::type vertex_ids = boost::get(boost::vertex_index, g_);
 
-		std::cout << "vertex: " << name_[boost::get(vertex_id, v)] << std::endl;
+		std::cout << "vertex: " << name_[boost::get(vertex_ids, v)] << std::endl;
 
 		// Write out the outgoing edges.
 		std::cout << "\tout-edges: ";
@@ -67,18 +71,18 @@ struct exercise_vertex
 		{
 			e = *out_i;
 			vertex_descriptor_type src = boost::source(e, g_), targ = boost::target(e, g_);
-			std::cout << "(" << name_[boost::get(vertex_id, src)] << "," << name_[boost::get(vertex_id, targ)] << ") ";
+			std::cout << "(" << name_[boost::get(vertex_ids, src)] << "," << name_[boost::get(vertex_ids, targ)] << ") ";
 		}
 		std::cout << std::endl;
 
 		// Write out the incoming edges.
 		std::cout << "\tin-edges: ";
 		typename boost::graph_traits<Graph>::in_edge_iterator in_i, in_end;
-		for (boost::tie(in_i, in_end) = boost::in_edges(v, g_); in_i != in_end; ++in_i)
+		for (boost::tie(in_i, in_end) = boost::in_edges(v, g_); in_i != in_end; ++in_i)  // For boost::undirectedS and boost::bidirectionalS, but not boost::directedS.
 		{
 			e = *in_i;
 			vertex_descriptor_type src = boost::source(e, g_), targ = boost::target(e, g_);
-			std::cout << "(" << name_[boost::get(vertex_id, src)] << "," << name_[boost::get(vertex_id, targ)] << ") ";
+			std::cout << "(" << name_[boost::get(vertex_ids, src)] << "," << name_[boost::get(vertex_ids, targ)] << ") ";
 		}
 		std::cout << std::endl;
 
@@ -86,7 +90,7 @@ struct exercise_vertex
 		std::cout << "\tadjacent vertices: ";
 		typename boost::graph_traits<Graph>::adjacency_iterator ai, ai_end;
 		for (boost::tie(ai, ai_end) = boost::adjacent_vertices(v, g_); ai != ai_end; ++ai)
-			std::cout << name_[boost::get(vertex_id, *ai)] <<  " ";
+			std::cout << name_[boost::get(vertex_ids, *ai)] <<  " ";
 		std::cout << std::endl;
 	}
 
@@ -131,6 +135,7 @@ void boost_quick_tour()
 	graph_type g(edge_array, edge_array + num_edges, transmission_delay, num_vertices);
 #endif
 
+	// Can use boost::vertex_index_t even though we didn't define any property for vertices (boost::no_property).
 	boost::property_map<graph_type, boost::vertex_index_t>::type vertex_ids = boost::get(boost::vertex_index, g);
 	boost::property_map<graph_type, boost::edge_weight_t>::type trans_delays = boost::get(boost::edge_weight, g);
 
@@ -179,14 +184,16 @@ void basic_operation()
 {
 	std::cout << "--------------------------------------------------------------" << std::endl;
 	{
-		// The Directed template parameter controls whether teh graph is directed, undirected, or directed with access to both the in-edges and out-edges (bidirectional).
+		// The Directed template parameter controls whether the graph is directed, undirected, or directed with access to both the in-edges and out-edges (bidirectional).
 #if 0
 		// Use boost::listS as OutEdgeListS.
+		// Multiple edges between two vertices are possible.
 		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS> undirected_graph_type;
 		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> directed_graph_type;
 		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS> bidirectional_graph_type;
 #else
 		// Use boost::setS as OutEdgeListS.
+		// Only one edge between two vertices can exist.
 		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::undirectedS> undirected_graph_type;
 		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::directedS> directed_graph_type;
 		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::bidirectionalS> bidirectional_graph_type;
@@ -226,7 +233,7 @@ void basic_operation()
 	{
 		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS> graph_type;
 
-		// create a simple undirected graph
+		// Create a simple undirected graph.
 		graph_type g;
 		boost::add_edge(0, 1, g);
 		boost::add_edge(0, 3, g);
@@ -234,35 +241,29 @@ void basic_operation()
 		boost::add_edge(2, 3, g);
 
 		graph_type::vertex_iterator vertexIt, vertexEnd;  // Iterate over all the vertices of the graph.
-		graph_type::adjacency_iterator neighbourIt, neighbourEnd;  // Iterate over the corresponding adjacent vertices.
-
-		// Access adjacent vertices of each vertex.
+		graph_type::adjacency_iterator neighborIt, neighborEnd;  // Iterate over the corresponding adjacent vertices.
+		graph_type::out_edge_iterator edgeIt, edgeEnd;  // Iterate over all the incident edges of a vertex.
 		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
 		for (; vertexIt != vertexEnd; ++vertexIt)
 		{
+			// Access adjacent vertices of each vertex.
 			std::cout << *vertexIt << " is connected with ";
-			boost::tie(neighbourIt, neighbourEnd) = boost::adjacent_vertices(*vertexIt, g);
-			for (; neighbourIt != neighbourEnd; ++neighbourIt)
-				std::cout << *neighbourIt << " ";
+			boost::tie(neighborIt, neighborEnd) = boost::adjacent_vertices(*vertexIt, g);
+			for (; neighborIt != neighborEnd; ++neighborIt)
+				std::cout << *neighborIt << " ";
+			std::cout << std::endl;
+
+			// The number of adjacent vertices of a vertex.
+			// boost::degree(), boost::in_degree(), and boost::out_degree() can be used instead.
+
+			// Access incident edges of each vertex.
+			// REF [function] >> default_undirected_and_directed_graph().
+			std::cout << *vertexIt << " is incident to ";
+			boost::tie(edgeIt, edgeEnd) = boost::incident_edges(*vertexIt, g);
+			for (; edgeIt != edgeEnd; ++edgeIt)
+				std::cout << *edgeIt << " ";
 			std::cout << std::endl;
 		}
-	}
-
-	std::cout << "\n--------------------------------------------------------------" << std::endl;
-	{
-		// Instead of using the adjacency list-based version to create an undirected graph, you can use the BGL-provided undirected_graph class.
-		// However, this class internally uses an adjacency list, and using graphs based on adjacency lists always provides for greater flexibility.
-
-		boost::undirected_graph<> g;
-
-		boost::undirected_graph<>::vertex_descriptor u = g.add_vertex();
-		boost::undirected_graph<>::vertex_descriptor v = g.add_vertex();
-		boost::undirected_graph<>::vertex_descriptor w = g.add_vertex();
-		boost::undirected_graph<>::vertex_descriptor x = g.add_vertex();
-		boost::add_edge(u, v, g);
-		boost::add_edge(u, w, g);
-		boost::add_edge(u, x, g);
-		std::cout << "degree of u: " << boost::degree(u, g) << std::endl;
 	}
 
 	std::cout << "\n--------------------------------------------------------------" << std::endl;
@@ -279,30 +280,30 @@ void basic_operation()
 		boost::add_edge(2, 3, g);
 
 		graph_type::vertex_iterator vertexIt, vertexEnd;
-		graph_type::in_edge_iterator inedgeIt, inedgeEnd;
+		graph_type::in_edge_iterator inEdgeIt, inEdgeEnd;
 
 		// Access incoming edges of each vertex.
 		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
 		for (; vertexIt != vertexEnd; ++vertexIt)
 		{
-			std::cout << "incoming edges for " << *vertexIt << ": ";
-			boost::tie(inedgeIt, inedgeEnd) = boost::in_edges(*vertexIt, g);
-			for (; inedgeIt != inedgeEnd; ++inedgeIt)
-				std::cout << *inedgeIt << " ";
+			std::cout << "in-edges for " << *vertexIt << ": ";
+			boost::tie(inEdgeIt, inEdgeEnd) = boost::in_edges(*vertexIt, g);  // For boost::undirectedS and boost::bidirectionalS, but not boost::directedS.
+			for (; inEdgeIt != inEdgeEnd; ++inEdgeIt)
+				std::cout << *inEdgeIt << " ";
 			std::cout << std::endl;
 		}
 
 		//
-		graph_type::out_edge_iterator outedgeIt, outedgeEnd;
+		graph_type::out_edge_iterator outEdgeIt, outEdgeEnd;
 
 		// Access outgoing edges of each vertex.
 		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
 		for (; vertexIt != vertexEnd; ++vertexIt)
 		{
 			std::cout << "out-edges for " << *vertexIt << ": ";
-			boost::tie(outedgeIt, outedgeEnd) = boost::out_edges(*vertexIt, g);  // Similar to incoming edges.
-			for (; outedgeIt != outedgeEnd; ++outedgeIt)
-				std::cout << *outedgeIt << " ";
+			boost::tie(outEdgeIt, outEdgeEnd) = boost::out_edges(*vertexIt, g);  // Similar to incoming edges.
+			for (; outEdgeIt != outEdgeEnd; ++outEdgeIt)
+				std::cout << *outEdgeIt << " ";
 			std::cout << std::endl;
 		}
 	}
@@ -327,7 +328,7 @@ void basic_operation()
 		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
 		for (; vertexIt != vertexEnd; ++vertexIt)
 		{
-			std::cout << "in-degree for " << *vertexIt << ": " << boost::in_degree(*vertexIt, g) << std::endl;
+			std::cout << "in-degree for " << *vertexIt << ": " << boost::in_degree(*vertexIt, g) << std::endl;  // For boost::undirectedS and boost::bidirectionalS, but not boost::directedS.
 			std::cout << "out-degree for " << *vertexIt << ": " << boost::out_degree(*vertexIt, g) << std::endl;
 		}
 
@@ -425,24 +426,19 @@ void bundled_properties_1()
 			map[boost::graph_bundle].use_metric = false;
 		}
 
-		//
-		// NOTE [error] >> compile-time error.
-		//	- Haven't added any property using boost::vertex_name_t.
-		//typename boost::property_map<map_type, boost::vertex_name_t>::type vertex_names = boost::get(boost::vertex_name, map);
-		//typename boost::property_map<map_type, int>::type vertex_populations = boost::get(&City::population, map);  // NOTE [error] >> compile-time error.
-
-		auto vertex_names = boost::get(&City::name, map);
-		auto vertex_populations = boost::get(&City::population, map);
-
-		std::cout << "type name of names = " << typeid(vertex_names).name() << std::endl;
-		std::cout << "type name of populations = " << typeid(vertex_populations).name() << std::endl;
-
 		// Output.
+		// REF [function] >> bfs_name_printer_example() in graph_traversal_algorithm.cpp.
+		boost::property_map<map_type, std::string City::*>::type vertex_names = boost::get(&City::name, map);
+		boost::property_map<map_type, int City::*>::type vertex_populations = boost::get(&City::population, map);
+		boost::property_map<map_type, std::string Highway::*>::type edge_names = boost::get(&Highway::name, map);
+		boost::property_map<map_type, double Highway::*>::type edge_miles = boost::get(&Highway::miles, map);
+
 		boost::write_graphviz(
 			std::cout, map,
 			boost::make_label_writer(vertex_names),  // Vertex properties writer.
 			//boost::make_label_writer(vertex_populations),  // Vertex properties writer.
-			boost::make_label_writer(boost::get(&Highway::name, map))  // Edge properties writer.
+			boost::make_label_writer(edge_names)  // Edge properties writer.
+			//boost::make_label_writer(edge_miles)  // Edge properties writer.
 		);
 	}
 
@@ -453,8 +449,8 @@ void bundled_properties_1()
 			boost::listS, boost::vecS, boost::bidirectionalS,
 			// Vertex properties.
 			boost::property<boost::vertex_name_t, std::string,
-				boost::property<boost::my_population_type, int,
-					boost::property<boost::my_zipcodes_type, std::vector<int> >
+				boost::property<boost::my_vertex_population_type, int,
+					boost::property<boost::my_vertex_zipcodes_type, std::vector<int> >
 				>
 			>,
 			// Edge properties.
@@ -475,23 +471,49 @@ void bundled_properties_1()
 			>
 		> map_type;
 #else
-		typedef boost::vertex_color_t population_type;
-		const population_type population = boost::vertex_color;
-		typedef boost::vertex_index_t zipcodes_type;
-		typedef boost::edge_color_t edge_speed_limit_type;
-		const edge_speed_limit_type edge_speed_limit = boost::edge_color;
-		typedef boost::edge_capacity_t edge_lanes_type;
-		typedef boost::edge_flow_t edge_divided_type;
-		//typedef boost::graph_visitor_t graph_use_right_type;
-		enum graph_use_right_type { graph_use_right };
-		enum graph_use_metric_type { graph_use_metric };
+		// REF [struct] >> struct edge_component_t in graph.cpp.
+		struct vertex_population_type
+		{
+			enum { num = 601 };
+			typedef boost::vertex_property_tag kind;
+		} vertex_population;
+		struct vertex_zipcodes_type
+		{
+			enum { num = 602 };
+			typedef boost::vertex_property_tag kind;
+		} vertex_zipcodes;
+		struct edge_speed_limit_type
+		{
+			enum { num = 701 };
+			typedef boost::edge_property_tag kind;
+		} edge_speed_limit;
+		struct edge_lanes_type
+		{
+			enum { num = 702 };
+			typedef boost::edge_property_tag kind;
+		} edge_lanes;
+		struct edge_divided_type
+		{
+			enum { num = 703 };
+			typedef boost::edge_property_tag kind;
+		} edge_divided;
+		struct graph_use_right_type
+		{
+			enum { num = 801 };
+			typedef boost::graph_property_tag kind;
+		} graph_use_right;
+		struct graph_use_metric_type
+		{
+			enum { num = 802 };
+			typedef boost::graph_property_tag kind;
+		} graph_use_metric;
 
 		typedef boost::adjacency_list <
 			boost::listS, boost::vecS, boost::bidirectionalS,
 			// Vertex properties.
 			boost::property<boost::vertex_name_t, std::string,
-				boost::property<population_type, int,
-					boost::property<zipcodes_type, std::vector<int> >
+				boost::property<vertex_population_type, int,
+					boost::property<vertex_zipcodes_type, std::vector<int> >
 				>
 			>,
 			// Edge properties.
@@ -527,10 +549,11 @@ void bundled_properties_1()
 		map_type::vertex_descriptor v = *boost::vertices(map).first;
 #if defined(__USE_BOOST_PROPERTY_KIND)
 		typename boost::property_map<map_type, boost::vertex_name_t>::type vertex_names = boost::get(boost::vertex_name, map);
-		typename boost::property_map<map_type, boost::my_population_type>::type vertex_populations = boost::get(boost::my_population, map);
+		typename boost::property_map<map_type, boost::my_vertex_population_type>::type vertex_populations = boost::get(boost::my_vertex_population, map);
 #else
 		typename boost::property_map<map_type, boost::vertex_name_t>::type vertex_names = boost::get(boost::vertex_name, map);
-		typename boost::property_map<map_type, population_type>::type vertex_populations = boost::get(population, map);
+		typename boost::property_map<map_type, vertex_population_type>::type vertex_populations = boost::get(vertex_population, map);
+		//typename boost::property_map<map_type, vertex_population_type>::type vertex_populations = boost::get(vertex_population_type(), map);  // Don't need to define vertex_population.
 #endif
 		boost::get(vertex_names, v) = "Troy";
 		boost::get(vertex_populations, v) = 49170;
@@ -540,6 +563,7 @@ void bundled_properties_1()
 		typename boost::property_map<map_type, boost::my_edge_speed_limit_type>::type edge_speed_limits = boost::get(boost::my_edge_speed_limit, map);
 #else
 		typename boost::property_map<map_type, edge_speed_limit_type>::type edge_speed_limits = boost::get(edge_speed_limit, map);
+		//typename boost::property_map<map_type, edge_speed_limit_type>::type edge_speed_limits = boost::get(edge_speed_limit_type(), map);  // Don't need to define edge_speed_limit.
 #endif
 		boost::get(edge_speed_limits, e) = 70;
 
@@ -653,6 +677,179 @@ void bundled_properties_2()
 		make_my_edge_writer(boost::get(&EdgeProperty::weight, g), boost::get(&EdgeProperty::capacity, g))  // Edge properties writer.
 	);
 #endif
+}
+
+// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/graph/doc/adjacency_matrix.html
+void graph_based_on_adjacency_matrix()
+{
+	// Directed graph based on boost::adjacency_matrix.
+	{
+		enum { A, B, C, D, E, F, N };
+		const char* name = "ABCDEF";
+
+		typedef boost::adjacency_matrix<boost::directedS> Graph;
+		Graph g(N);
+		add_edge(B, C, g);
+		add_edge(B, F, g);
+		add_edge(C, A, g);
+		add_edge(C, C, g);
+		add_edge(D, E, g);
+		add_edge(E, D, g);
+		add_edge(F, A, g);
+
+		std::cout << "vertex set: ";
+		boost::print_vertices(g, name);
+		std::cout << std::endl;
+
+		std::cout << "edge set: ";
+		boost::print_edges(g, name);
+		std::cout << std::endl;
+
+		std::cout << "out-edges: " << std::endl;
+		boost::print_graph(g, name);
+		std::cout << std::endl;
+	}
+
+	// Undirected graph based on boost::adjacency_matrix.
+	{
+		enum { A, B, C, D, E, F, N };
+		const char* name = "ABCDEF";
+
+		typedef boost::adjacency_matrix<boost::undirectedS> UGraph;
+		UGraph ug(N);
+		add_edge(B, C, ug);
+		add_edge(B, F, ug);
+		add_edge(C, A, ug);
+		add_edge(D, E, ug);
+		add_edge(F, A, ug);
+
+		std::cout << "vertex set: ";
+		boost::print_vertices(ug, name);
+		std::cout << std::endl;
+
+		std::cout << "edge set: ";
+		boost::print_edges(ug, name);
+		std::cout << std::endl;
+
+		std::cout << "incident edges: " << std::endl;
+		boost::print_graph(ug, name);
+		std::cout << std::endl;
+	}
+}
+
+void default_undirected_and_directed_graph()
+{
+	// boost::undirected_graph<>.
+	{
+		// Instead of using the adjacency list-based version to create an undirected graph, you can use the BGL-provided undirected_graph class.
+		// However, this class internally uses an adjacency list, and using graphs based on adjacency lists always provides for greater flexibility.
+
+		boost::undirected_graph<> g;
+
+		boost::undirected_graph<>::vertex_descriptor u = g.add_vertex();
+		boost::undirected_graph<>::vertex_descriptor v = g.add_vertex();
+		boost::undirected_graph<>::vertex_descriptor w = g.add_vertex();
+		boost::undirected_graph<>::vertex_descriptor x = g.add_vertex();
+		boost::add_edge(u, v, g);
+		boost::add_edge(u, w, g);
+		boost::add_edge(u, x, g);
+		std::cout << "degree of u: " << boost::degree(u, g) << std::endl;
+
+		//
+		boost::undirected_graph<>::vertex_iterator vertexIt, vertexEnd;  // Iterate over all the vertices of the graph.
+		boost::undirected_graph<>::adjacency_iterator neighborIt, neighborEnd;  // Iterate over the corresponding adjacent vertices.
+		boost::undirected_graph<>::out_edge_iterator edgeIt, edgeEnd;  // Iterate over all the incident edges of a vertex.
+		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
+		for (; vertexIt != vertexEnd; ++vertexIt)
+		{
+			// Access adjacent vertices of each vertex.
+			std::cout << *vertexIt << " is connected with ";
+			boost::tie(neighborIt, neighborEnd) = boost::adjacent_vertices(*vertexIt, g);
+			for (; neighborIt != neighborEnd; ++neighborIt)
+				std::cout << *neighborIt << " ";
+			std::cout << std::endl;
+
+			// Access incident edges of each vertex.
+			std::cout << *vertexIt << " is incident to ";
+			boost::tie(edgeIt, edgeEnd) = boost::incident_edges(*vertexIt, g);
+			for (; edgeIt != edgeEnd; ++edgeIt)
+				std::cout << *edgeIt << " ";
+			std::cout << std::endl;
+		}
+	}
+
+	// boost::directed_graph<>.
+	{
+		boost::directed_graph<> g;
+
+		// TODO [add] >>
+	}
+}
+
+// Define a simple function to print vertices.
+template<typename Graph>
+void print_vertex(typename boost::graph_traits<Graph>::vertex_descriptor vertex_to_print)
+{
+	std::cout << "(" << vertex_to_print[0] << ", " << vertex_to_print[1] << ", " << vertex_to_print[2] << ")" << std::endl;
+}
+
+// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/graph/example/grid_graph_example.cpp
+void grid_graph()
+{
+	const int DIMENSIONS = 3;
+
+	typedef boost::grid_graph<DIMENSIONS> graph_type;
+	typedef boost::graph_traits<graph_type> traits_type;
+
+	// Define a 3x5x7 grid_graph where the second dimension doesn't wrap.
+	boost::array<std::size_t, 3> lengths = { { 3, 5, 7 } };
+	boost::array<bool, 3> wrapped = { { true, false, true } };
+	graph_type graph(lengths, wrapped);
+
+	// Do a round-trip test of the vertex index functions.
+	for (traits_type::vertices_size_type v_index = 0; v_index < num_vertices(graph); ++v_index)
+	{
+		// The two indicies should always be equal.
+		std::cout << "Index of vertex " << v_index << " is " << get(boost::vertex_index, graph, vertex(v_index, graph)) << std::endl;
+	}
+
+	// Do a round-trip test of the edge index functions.
+	for (traits_type::edges_size_type e_index = 0; e_index < num_edges(graph); ++e_index)
+	{
+		// The two indicies should always be equal.
+		std::cout << "Index of edge " << e_index << " is " << get(boost::edge_index, graph, edge_at(e_index, graph)) << std::endl;
+	}
+
+	// Print number of dimensions.
+	std::cout << graph.dimensions() << std::endl;  // Prints "3".
+
+	// Print dimension lengths (same order as in the lengths array).
+	std::cout << graph.length(0) << "x" << graph.length(1) << "x" << graph.length(2) << std::endl;  // Prints "3x5x7".
+
+	// Print dimension wrapping (W = wrapped, U = unwrapped).
+	std::cout << (graph.wrapped(0) ? "W" : "U") << ", " << (graph.wrapped(1) ? "W" : "U") << ", " << (graph.wrapped(2) ? "W" : "U") << std::endl;  // Prints "W, U, W".
+
+	// Start with the first vertex in the graph.
+	traits_type::vertex_descriptor first_vertex = vertex(0, graph);
+	print_vertex<graph_type>(first_vertex);  // Prints "(0, 0, 0)".
+
+	// Print the next vertex in dimension 0.
+	print_vertex<graph_type>(graph.next(first_vertex, 0));  // Prints "(1, 0, 0)".
+
+	// Print the next vertex in dimension 1.
+	print_vertex<graph_type>(graph.next(first_vertex, 1));  // Prints "(0, 1, 0)".
+
+	// Print the 5th next vertex in dimension 2.
+	print_vertex<graph_type>(graph.next(first_vertex, 2, 5));  // Prints "(0, 0, 4)".
+
+	// Print the previous vertex in dimension 0 (wraps).
+	print_vertex<graph_type>(graph.previous(first_vertex, 0));  // Prints "(2, 0, 0)".
+
+	// Print the previous vertex in dimension 1 (doesn't wrap, so it's the same).
+	print_vertex<graph_type>(graph.previous(first_vertex, 1));  // Prints "(0, 0, 0)".
+
+	// Print the 20th previous vertex in dimension 2 (wraps around twice).
+	print_vertex<graph_type>(graph.previous(first_vertex, 2, 20));  // Prints "(0, 0, ?)".
 }
 
 void graphviz()
