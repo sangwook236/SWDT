@@ -87,20 +87,25 @@
 	- restore
 		- When restoring parts which are implemented temporarily for testing into the original state.
 
-##### Note Task
+##### Notice Task
 - Format
-	- // NOTE [task-id] >> `<brief description>`
+	- // NOTICE [task-id] >> `<brief description>`
 	- //  - `<detailed explanation>` (optional)
 - task-id
 	- caution
 	- error, warn
 	- info
+	- note
+		- REF [] >> "Note Taking"
 
 ##### Reference Task
 - Format
 	- // REF [task-id] >> `<information on reference>`
 	- //  - `<detailed explanation>` (optional)
 - task-id
+	- cross reference
+		- cross-reference-id, page no.
+			- cross-reference-id: Roman numerals, (i, ii, iii. iv, ...)
 	- site
 	- file
 	- paper
