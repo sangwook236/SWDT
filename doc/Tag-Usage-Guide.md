@@ -106,6 +106,7 @@
 	- cross reference
 		- cross-reference-id, page no.
 			- cross-reference-id: Roman numerals, (i, ii, iii. iv, ...)
+			- e.g.) REF [iii,p137] >>
 	- site
 	- file
 	- paper
