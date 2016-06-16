@@ -1,5 +1,5 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.gtk.org/
 
 		https://glade.gnome.org/

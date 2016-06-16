@@ -1,3 +1,19 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 /****************************************************************************
 *
 * ZivkovicAGMM.cpp
@@ -36,11 +52,8 @@ ZivkovicAGMM::ZivkovicAGMM()
 
 ZivkovicAGMM::~ZivkovicAGMM()
 {
-	if(m_modes != NULL)
-		delete[] m_modes;
-
-	if(m_modes_per_pixel != NULL)
-		delete[] m_modes_per_pixel;
+	delete[] m_modes;
+	delete[] m_modes_per_pixel;
 }
 
 void ZivkovicAGMM::Initalize(const BgsParams& param)

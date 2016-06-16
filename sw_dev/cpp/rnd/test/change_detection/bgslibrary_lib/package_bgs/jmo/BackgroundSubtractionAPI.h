@@ -1,7 +1,23 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 /* --- --- ---
 * Copyright (C) 2008--2010 Idiap Research Institute (.....@idiap.ch)
 * All rights reserved.
-* 
+*
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions
 * are met:
@@ -12,7 +28,7 @@
 *    documentation and/or other materials provided with the distribution.
 * 3. The name of the author may not be used to endorse or promote products
 *    derived from this software without specific prior written permission.
-* 
+*
 * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -49,9 +65,9 @@
 #if !defined(_BACKGROUND_SUBTRACTION_API_H_)
 #define _BACKGROUND_SUBTRACTION_API_H_
 
-#include "cv.h"
+#include <opencv2/opencv.hpp>
 
-class CBackgroundSubtractionAPI  
+class CBackgroundSubtractionAPI
 {
 public:
   //CBackgroundSubtractionAPI(){};
@@ -60,7 +76,7 @@ public:
   //-------------------------------------------------------------
   // TO CALL AT INITIALISATION: DEFINES THE SIZE OF THE INPUT IMAGES
   // NORMALLY, UNNECESSARY IF A CONFIGURATION FILE IS LOADED
-  void   Init(int width,int height);
+  void   Init(int width, int height);
 
   //-------------------------------------------------------------
   // PROVIDE A MASK TO DEFINE THE SET OF POINTS WHERE BACKGROUND 

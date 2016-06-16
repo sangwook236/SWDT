@@ -1,6 +1,25 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "MixtureOfGaussianV2BGS.h"
 
 MixtureOfGaussianV2BGS::MixtureOfGaussianV2BGS() : firstTime(true), alpha(0.05), enableThreshold(true), threshold(15), showOutput(true)
+//--S [] 2016/06/16: Sang-Wook Lee
+, mog(cv::createBackgroundSubtractorMOG2())
+//--E [] 2016/06/16: Sang-Wook Lee
 {
   std::cout << "MixtureOfGaussianV2BGS()" << std::endl;
 }
@@ -37,10 +56,16 @@ void MixtureOfGaussianV2BGS::process(const cv::Mat &img_input, cv::Mat &img_outp
   //    vol.26, no.5, pages 651-656, 2004.
   //------------------------------------------------------------------
 
-  mog(img_input, img_foreground, alpha);
-  
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //mog(img_input, img_foreground, alpha);
+  mog->apply(img_input, img_foreground, alpha);
+  //--E [] 2016/06/16: Sang-Wook Lee
+
   cv::Mat img_background;
-  mog.getBackgroundImage(img_background);
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //mog.getBackgroundImage(img_background);
+  mog->getBackgroundImage(img_background);
+  //--E [] 2016/06/16: Sang-Wook Lee
 
   if(enableThreshold)
     cv::threshold(img_foreground, img_foreground, threshold, 255, cv::THRESH_BINARY);

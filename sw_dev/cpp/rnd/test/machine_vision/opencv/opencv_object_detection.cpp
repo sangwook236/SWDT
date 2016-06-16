@@ -7,6 +7,7 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <ctime>
 
 #if defined(WIN32) || defined(_WIN32)
 #include <io.h>

@@ -1,7 +1,23 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "T2FMRF_UV.h"
 
-T2FMRF_UV::T2FMRF_UV() : firstTime(true), frameNumber(0), showOutput(true), threshold(9.0), alpha(0.01), 
-gaussians(3), km(2), kv(0.9)
+T2FMRF_UV::T2FMRF_UV() : firstTime(true), frameNumber(0), threshold(9.0), alpha(0.01), 
+km(2.f), kv(0.9f), gaussians(3), showOutput(true) 
 {
   std::cout << "T2FMRF_UV()" << std::endl;
 }
@@ -61,7 +77,7 @@ void T2FMRF_UV::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &
   }
 
   bgs.Subtract(frameNumber, frame_data, lowThresholdMask, highThresholdMask);
-  cvCopyImage(lowThresholdMask.Ptr(), old);
+  cvCopy(lowThresholdMask.Ptr(), old);
 
   /************************************************************************/
 	/* the code for MRF, it can be noted when using other methods   */
@@ -76,15 +92,18 @@ void T2FMRF_UV::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &
 		mrf.out_image = lowThresholdMask.Ptr();
 		mrf.InitEvidence2(gmm,hmm,old_labeling);
 		mrf.ICM2();
-		cvCopyImage(mrf.out_image, lowThresholdMask.Ptr());
+		cvCopy(mrf.out_image, lowThresholdMask.Ptr());
 	}
 
-  cvCopyImage(old, old_labeling);
+  cvCopy(old, old_labeling);
 
   lowThresholdMask.Clear();
   bgs.Update(frameNumber, frame_data, lowThresholdMask);
-  
-  cv::Mat foreground(highThresholdMask.Ptr());
+
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //cv::Mat foreground(highThresholdMask.Ptr());
+  cv::Mat foreground(cv::cvarrToMat(highThresholdMask.Ptr()));
+  //--E [] 2016/06/16: Sang-Wook Lee
 
   if(showOutput)
     cv::imshow("T2FMRF-UV", foreground);

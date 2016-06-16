@@ -1,4 +1,20 @@
 /*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/*
 *  TBackground.cpp
 *  Framework
 *
@@ -54,22 +70,22 @@ int TBackground::Init(IplImage * pSource)
 
 bool TBackground::isInitOk(IplImage * pSource, IplImage *pBackground, IplImage *pMotionMask)
 {
-  bool bResult = TRUE;
-  int nbl, nbc;
+  bool bResult = true;
 
   if(pSource == NULL || pSource->nChannels != 1 || pSource->depth != IPL_DEPTH_8U)
-    bResult = FALSE;
+    bResult = false;
 
   if(bResult)
   {
+    int nbl, nbc;
     nbl = pSource->height;
     nbc = pSource->width;
     
     if(pBackground == NULL || pBackground->width != nbc || pBackground->height != nbl || pBackground->imageSize != pSource->imageSize)
-      bResult = FALSE;
+      bResult = false;
     
     if(pMotionMask == NULL || pMotionMask->width != nbc || pMotionMask->height != nbl || pMotionMask->imageSize != pSource->imageSize)
-      bResult = FALSE;
+      bResult = false;
   }
 
   return bResult;
@@ -95,7 +111,6 @@ int TBackground::UpdateTest(IplImage *pSource, IplImage *pBackground, IplImage *
   int nErr = 0;
   CvScalar Color;
   unsigned char *ptr;
-  int l, c;
 
   if(pTest == NULL || !isInitOk(pSource, pBackground, pSource))
     nErr = 1;
@@ -119,6 +134,7 @@ int TBackground::UpdateTest(IplImage *pSource, IplImage *pBackground, IplImage *
 
   if(!nErr)
   {
+    int l, c;
     // recupere l'indice de la colonne
     ptr = (unsigned char *)(pTest->imageData);
     c = *ptr;

@@ -1,36 +1,36 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.wxwidgets.org/
 		http://trac.wxwidgets.org/
 
 		https://github.com/wxWidgets/wxWidgets
 
 [-] Building ver. 2.6 (VC)
-	+> IDE
-		-. Target project file
+	+> IDE.
+		- Target project file.
 			"${WXWIDGETS_HOME}/build/msw/wx.dsw"
 			"${WXWIDGETS_HOME}/build/msw/wx_dll.dsw"
-		-. There are project dependencies
+		- There are project dependencies.
 			0: wxexpat.lib wxjpeg.lib wxpng.lib wxregex.lib wxtiff.lib wxzlib.lib
 			1: wxbase.lib
 			2: wxmsw_core.lib
 			3: wxbase_net.lib wxbase_odbc.lib wxbase_xml.lib
 			4: wxmsw_adv.lib wxmsw_gl.lib wxmsw_html.lib wxmsw_media.lib wxmsw_qa.lib wxmsw_xrc.lib
 			5: wxmsw_dbgrid.lib
-	+> Visual Studio Command Prompt
-		-. Target project file
+	+> Visual Studio Command Prompt.
+		- Target project file.
 			"${WXWIDGETS_HOME}/build/msw/"
-		-. Command
+		- Command.
 			nmake -f makefile.vc
 			nmake -f makefile.vc clean
 
 [-] Building ver. 2.9.2 (VC)
 	REF [file] >> ${WXWIDGETS_HOME}/docs/msw/install.txt
 
-	1. Configure setup.h file
+	1. Configure setup.h file.
 		${WXWIDGETS_HOME}/include/wx/msw/setup.h
-	2. Change directory to ${WXWIDGETS_HOME}/build/msw
-	3. Build makefile
+	2. Change directory to ${WXWIDGETS_HOME}/build/msw.
+	3. Build makefile.
 		nmake -f makefile.vc
 		nmake -f makefile.vc BUILD=debug UNICODE=1
 		nmake -f makefile.vc BUILD=release SHARED=1 UNICODE=1 USE_OPENGL=1 USE_HTML=1 USE_XRC=1
@@ -55,8 +55,8 @@
 			VENDOR=<your company name>
 			CFG=<configuration name>
 			COMPILER_PREFIX=<string>
-	4. (optional) Change directory to ${WXWIDGETS_HOME}/utils/wxrc
-	5. (optional) Build makefile
+	4. (Optional) Change directory to ${WXWIDGETS_HOME}/utils/wxrc.
+	5. (Optional) Build makefile.
 		nmake -f makefile.vc BUILD=debug UNICODE=1
 		nmake -f makefile.vc BUILD=release UNICODE=1
 
@@ -64,12 +64,12 @@
 	REF [file] >> ${WXWIDGETS_HOME}/BuildGit.txt
 	REF [file] >> ${WXWIDGETS_HOME}/docs/msw/install.txt
 
-	-. Copy setup.h
+	- Copy setup.h.
 		Copy include/wx/msw/setup0.h to include/wx/msw/setup.h.
-	-. Run Visual Studio Command Prompt if using nmake 	
-	-. Change a directory
+	- Run Visual Studio Command Prompt if using nmake.
+	- Change a directory.
 		${WXWIDGETS_HOME}/build/msw
-	-. Build
+	- Build.
 		Use a solution file.
 			Open wx_vc14.sln
 				Can build all static & shared libraries of Win32 & Win64.
@@ -77,11 +77,11 @@
 			nmake /f makefile.vc
 			nmake /f makefile.vc BUILD=release
 			nmake /f makefile.vc BUILD=release SHARED=1
-	-. Copy header files & libraries
+	- Copy header files & libraries.
 		${WXWIDGETS_HOME}/lib/vc_dll, vc_lib, vc_x64_dll, vc_x64_lib.
 
 [-] Using (Common)
-	-. Using wx-config
+	- Using wx-config.
 		REF [file] >> ${WXWIDGETS_BIN_DIR}/wx-config
 
 		Set compiler and linker options.
@@ -89,7 +89,7 @@
 			`wx-config  --version=3.0 --static=no --unicode=yes --debug=no --cflags`
 			`wx-config --libs`
 			`wx-config  --version=3.0 --static=no --unicode=yes --debug=no --libs`
-	-. Using traditional approach
+	- Using traditional approach.
 		Set include & library paths.
 			${INCLUDE_DIR}/wx-3.0, wxwidgets
 			${LIBRARY_DIR}/wxwidgets
@@ -110,11 +110,11 @@
 				${LIBRARY_DIR}/wxwidgets/vc_x86_dll/mswu, mswud
 
 [-] Using (VC)
-	-. Create a new project
+	- Create a new project.
 		Win32 Project:
 			Windows application
 			Empty project
-	-. Set include path
+	- Set include path.
 		Standard:
 			${INCLUDE_DIR}/wxwidgets/wx
 			${INCLUDE_DIR}/wxwidgets/msvc/wx
@@ -137,10 +137,10 @@
 				${LIBRARY_DIR}/wxwidget/vc_dll/mswunivd
 				${LIBRARY_DIR}/wxwidget/vc_dll/mswunivu
 				${LIBRARY_DIR}/wxwidget/vc_dll/mswunivud
-	-. Set library path
+	- Set library path.
 		${LIBRARY_DIR}/wxwidget/vc_lib
 		${LIBRARY_DIR}/wxwidget/vc_dll
-	-. Set linking library
+	- Set linking library.
 		Windows Libraries:
 			kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib
 			winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib

@@ -4,17 +4,19 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "opencv_objdetect243d.lib")
-#pragma comment(lib, "opencv_imgproc243d.lib")
-#pragma comment(lib, "opencv_highgui243d.lib")
-#pragma comment(lib, "opencv_core243d.lib")
+#pragma comment(lib, "opencv_videoio310d.lib")
+#pragma comment(lib, "opencv_objdetect310d.lib")
+#pragma comment(lib, "opencv_imgproc310d.lib")
+#pragma comment(lib, "opencv_highgui310d.lib")
+#pragma comment(lib, "opencv_core310d.lib")
 
 #		else
 
-#pragma comment(lib, "opencv_objdetect243.lib")
-#pragma comment(lib, "opencv_imgproc243.lib")
-#pragma comment(lib, "opencv_highgui243.lib")
-#pragma comment(lib, "opencv_core243.lib")
+#pragma comment(lib, "opencv_videoio310.lib")
+#pragma comment(lib, "opencv_objdetect310.lib")
+#pragma comment(lib, "opencv_imgproc310.lib")
+#pragma comment(lib, "opencv_highgui310.lib")
+#pragma comment(lib, "opencv_core310.lib")
 
 #		endif
 

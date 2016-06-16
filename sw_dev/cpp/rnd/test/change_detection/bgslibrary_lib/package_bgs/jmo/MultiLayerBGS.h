@@ -1,8 +1,24 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #pragma once
 
 #include <iostream>
-#include <cv.h>
-#include <highgui.h>
+#include <opencv2/opencv.hpp>
+
 
 #include "../IBGS.h"
 #include "CMultiLayerBGS.h"
@@ -12,8 +28,8 @@ class MultiLayerBGS : public IBGS
 public:
   enum Status
   {
-    MLBGS_NONE   = -1,
-    MLBGS_LEARN  = 0,
+    MLBGS_NONE = -1,
+    MLBGS_LEARN = 0,
     MLBGS_DETECT = 1
   };
 
@@ -39,7 +55,7 @@ private:
   IplImage* fg_prob_img3;
   IplImage* merged_img;
   std::string bg_model_preload;
-  
+
   bool loadDefaultParams;
 
   int max_mode_num;
@@ -66,7 +82,7 @@ private:
   float learn_mode_learn_rate_per_second;
   float learn_weight_learn_rate_per_second;
   float learn_init_mode_weight;
-  
+
   float detect_mode_learn_rate_per_second;
   float detect_weight_learn_rate_per_second;
   float detect_init_mode_weight;

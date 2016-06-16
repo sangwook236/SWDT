@@ -1,5 +1,5 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.qt.io/
 		http://www.qt.io/developers/
 
@@ -7,8 +7,8 @@
 		http://download.qt.io/official_releases/jom/
 
 [-] Building (Windows)
-	-. qmake.exe or QMAKESPEC 관련 오류.
-		[ref] http://stackoverflow.com/questions/5303634/qmake-qmakespec-has-not-been-set
+	- qmake.exe or QMAKESPEC 관련 오류.
+		REF [site] >> http://stackoverflow.com/questions/5303634/qmake-qmakespec-has-not-been-set
 
 		<error>
 			qmake.exe failed to create a makefile Make sure you have a working Qt qmake on your PATH.

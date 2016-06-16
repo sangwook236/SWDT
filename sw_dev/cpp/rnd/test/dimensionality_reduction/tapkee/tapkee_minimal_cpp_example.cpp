@@ -20,7 +20,7 @@ struct MyDistanceCallback
 
 namespace my_tapkee {
 
-// [ref] ${TAPKEE_HOME}/examples/minimal.cpp
+// REF [file] >> ${TAPKEE_HOME}/examples/minimal.cpp
 void minimal_cpp_example()
 {
 	const int N = 100;

@@ -1,4 +1,4 @@
 [-] General
-	-. Site
-		http://gnebehay.github.io/OpenTLD/
-
+	- Site.
+		https://github.com/zk00006/OpenTLD
+		http://www.gnebehay.com/tld/

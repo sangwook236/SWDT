@@ -1,5 +1,7 @@
 [-] General
-	-. Site
-		http://flood.sourceforge.net/
-		http://sourceforge.net/projects/flood/
+	- Site.
+		http://www.opennn.net/
+		https://sourceforge.net/projects/opennn/
 		http://opennn.cimne.com/
+		http://www.cimne.com/flood
+		https://github.com/Artelnics/OpenNN
