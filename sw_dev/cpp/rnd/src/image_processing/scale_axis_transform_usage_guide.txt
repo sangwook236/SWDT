@@ -19,29 +19,56 @@
 		${SCALE_AXIS_TRANSFORM_HOME}/res/manual_3.html
 
 [-] Build (VC)
+	- Open (Visual Studio) Command Prompt.
 	- Set path for qmake.
 		set path=${QT_HOME}/bin;%path%
+		==> Use Qt4.
+	- Set environment variables.
+		set BOOST_ROOT=${BOOST_HOME}/stage
+		set CGAL_DIR=${CGAL_INCLUDE_DIR}
+		==> 정의가 유효한 환경에서 Visual Studio를 실행해야 설정된 environment variable이 유효하게 됨.
 	- Change directory.
 		cd ${SCALE_AXIS_TRANSFORM_HOME}/win
 	- Generate Visual Studio project files from Qt project files.
 		Need to modify command files to generate project files for Visual Studio 2015.
+			e.g.)
+				<before>
+					qmake mesecina2d.pro -o mesecina2d.vcproj
+				<after>
+					qmake -spec win32-msvc2015 -tp vc mesecina2d.pro -o mesecina2d.vcxproj
 			REF [file] >> generate_Visual_Studio_project_file_from_Qt_project_file.txt
 		Run command file.
 			${SCALE_AXIS_TRANSFORM_HOME}/win/update_project_files_2d.bat
 			${SCALE_AXIS_TRANSFORM_HOME}/win/update_project_files_3d.bat
 	- Change *.vcproj into *.vcxproj in solution files.
 		Automatic upgrade by Visual Studio 2015 doesn't correctly work.
+		==> Rename *.vcproj to *.vcxproj in sln files.
 	- Open solution file.
 		${SCALE_AXIS_TRANSFORM_HOME}/win/Mesecina2d.sln
 		${SCALE_AXIS_TRANSFORM_HOME}/win/Mesecina3d.sln
 
 [-] Trouble Shooting (VC)
 	- geometry_common.pro file을 찾을 수 없다는 오류 발생.
-		<cause>
-			geometry_common.pro file의 위치가 잘못 지정.
+		<cause> geometry_common.pro file의 위치가 잘못 지정.
 		<solution>
 			${SCALE_AXIS_TRANSFORM_HOME}/src/geometries/geometry_2.pro & geometry_3.pro files 수정.
 			<before>
 			    include(../geometry_common.pro)
 			<after>
 			    include(./geometry_common.pro)
+	- Target copy 관련 오류 발생.
+		<error>
+		Microsoft.CppCommon.targets: error MSB3073: The command "copy ~"
+		<cause>
+		Debug build mode에서 생성되는 library file name과 copy하려는 file name이 달라서 발생.
+		<solution>
+		변경: $(ProjectName) -> $(ProjectName)d
+		Project Properties -> Configuration Properties -> General -> Target Name
+	- Icon resource 관련 오류 발생.
+		<error>
+		CVT1100: duplicate resource, type:ICON, name:~
+		<cause>
+		Icon resource ID의 정의 문제.
+		<solution>
+		mesecina.rc에 resource.h 추가.
+			#include "resource.h"
