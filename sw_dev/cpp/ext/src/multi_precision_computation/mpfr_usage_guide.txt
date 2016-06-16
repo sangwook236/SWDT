@@ -1,12 +1,12 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.mpfr.org/
-	-. Reference
+	- Reference.
 		gmp_usage_guide.txt
 
 [-] Building (Cygwin or MinGW)
-	-. Run "Cygwin Bash" or "MSYS"
-	-. Configure
+	- Run "Cygwin Bash" or "MSYS".
+	- Configure.
 		cd ${MPFR_HOME}
 		For static library:
 			./configure --prefix=${MPFR_INSTALL} --with-gmp-include=${GMP_INSTALL}/include --with-gmp-lib=${GMP_INSTALL}/lib
@@ -14,7 +14,7 @@
 		For shared library:
 			./configure --prefix=${MPFR_INSTALL} --with-gmp-include=${GMP_INSTALL}/include --with-gmp-lib=${GMP_INSTALL}/lib --disable-static --enable-shared
 				./configure --prefix=/cygdrive/d/usr/local --with-gmp-include=/cygdrive/d/usr/local/include/mpir --with-gmp-lib=/cygdrive/d/usr/local/lib --disable-static --enable-shared
-	-. Make
+	- Make.
 		make
 		(optional) make check
 		(optional) make install
@@ -24,12 +24,12 @@
 		For shared library:
 			A windows DLL "cygmpfr-4.dll" (Cygwin) or "libmpfr-4.dll" (MinGW) will be generated.
 
-	-. Ensure that these DLLs can be called by a Microsoft Visual C++ program
-		you must generate an import library (.lib) for them.
+	- Ensure that these DLLs can be called by a Microsoft Visual C++ program.
+		You must generate an import library (.lib) for them.
 
-		if you have an existing DLL already, you need to build a Cygwin-compatible import library.
+		If you have an existing DLL already, you need to build a Cygwin-compatible import library.
 
-		(1) if there is no def file in ${MPFR_HOME}/src/.libs, generate def file
+		(1) If there is no def file in ${MPFR_HOME}/src/.libs, generate def file
 			cd ${MPFR_HOME}/src/.libs or ${MPFR_INSTALL}/bin
 			echo EXPORTS > ${MPFR_LIB_NAME}.dll.def
 			nm ${MPFR_LIB_NAME}.dll | grep ' T _' | sed 's/.* T _//' >> ${MPFR_LIB_NAME}.dll.def
@@ -39,20 +39,20 @@
 			Note that this will only work if the DLL is not stripped.
 			Otherwise you will get an error message: "No symbols in ${MPFR_LIB_NAME}.dll".
 
-		(2) once you have the ${MPFR_LIB_NAME}.dll.def file, you can create an import library from it like this.
+		(2) Once you have the ${MPFR_LIB_NAME}.dll.def file, you can create an import library from it like this.
 
 			(주의) dll file과 def file의 이름이 다르다면 def file의 이름과 형식에 맞추어 dll file과 lib file의 이름을 정해야 한다. (확인 필요)
 				e.g.) libmpfr-4.dll & libmpfr-4.dll.def ==> libmpfr-4.dll.dll & libmpfr-4.dll.def
 
 			cd ${MPFR_HOME}/src/.libs
 			mv ${MPFR_LIB_NAME}.dll ${MPFR_LIB_NAME}.dll.dll
-			(a) using dlltool in Cygwin & MinGW
+			(a) Using dlltool in Cygwin & MinGW.
 				dlltool --def ${MPFR_LIB_NAME}.dll.def --dllname ${MPFR_LIB_NAME}.dll.dll --output-lib ${MPFR_LIB_NAME}.dll.lib
-			(b) using Microsoft LIB tool
+			(b) Using Microsoft LIB tool.
 				lib /machine:i386 /def:${MPFR_LIB_NAME}.dll.def /out:${MPFR_LIB_NAME}.dll.lib
 
-		(3) (optional) in Cygwin & MinGW
-			removes unnecessary information from executable binary programs and object files,
+		(3) (Optional) in Cygwin & MinGW.
+			Removes unnecessary information from executable binary programs and object files,
 			thus potentially resulting in better performance and sometimes significantly less disk space usage.
 
 			strip ${MPFR_LIB_NAME}.dll.lib
@@ -60,20 +60,20 @@
 			==> strip을 수행하는 것이 좋은 듯함.
 
 [-] Building Github (VC)
-	-. Source repository
+	- Source repository.
 		https://github.com/BrianGladman/mpfr
 
-	-. Open a solution file
+	- Open a solution file.
 		${MPFR_HOME}/build.vc14/lib_mpfr.sln
-	-. Set projects
+	- Set projects.
 		Undefine HAVE_CONFIG_H.
 		Define HAVE_STDARG.
 		Add ${GMP_INCLUDE_DIR} to additional include path.
 		Add ${GMP_LIBRARY} to additional library dependency.
-	-. Build
+	- Build.
 
-[-] Trouble Shooting Github (VC)
-	-. mparam.h를 찾을 수 없다는 오류 발생
+[-] Trouble Shooting (Github, VC)
+	- mparam.h를 찾을 수 없다는 오류 발생.
 		<solution>
 			Use ${MPFR_HOME}/build.vc14/mparam.h
 			Add ${MPFR_HOME}/build.vc14 to additional include path.
