@@ -103,10 +103,10 @@
 	- // REF [task-id] >> `<information on reference>`
 	- //  - `<detailed explanation>` (optional)
 - task-id
-	- cross reference
-		- cross-reference-id, page no.
+	- cross, cross ref, cross reference
+		- {cross-reference-id, page no.}
 			- cross-reference-id: Roman numerals, (i, ii, iii. iv, ...)
-			- e.g.) REF [iii,p137] >>
+		- e.g.) REF [cross] {iii, p137} >>
 	- site
 	- file
 	- paper
