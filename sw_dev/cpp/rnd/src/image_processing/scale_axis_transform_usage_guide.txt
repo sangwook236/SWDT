@@ -18,6 +18,9 @@
 		${SCALE_AXIS_TRANSFORM_HOME}/res/manual_2.html
 		${SCALE_AXIS_TRANSFORM_HOME}/res/manual_3.html
 
+		${SCALE_AXIS_TRANSFORM_HOME}/doc/Mesecina_diagrams.ppt
+
+
 [-] Build (VC)
 	- Open (Visual Studio) Command Prompt.
 	- Set path for qmake.
