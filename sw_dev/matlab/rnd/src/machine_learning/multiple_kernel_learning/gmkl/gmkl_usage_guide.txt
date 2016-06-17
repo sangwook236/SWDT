@@ -1,3 +1,0 @@
-[-] General
-	-. Site
-		http://research.microsoft.com/en-us/um/people/manik/code/GMKL/download.html

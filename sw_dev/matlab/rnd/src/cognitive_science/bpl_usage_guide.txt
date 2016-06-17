@@ -1,0 +1,8 @@
+[-] General
+	- Site.
+		https://github.com/brendenlake/BPL
+
+		http://web.mit.edu/cocosci/josh.html
+
+	- Dataset
+		https://github.com/brendenlake/omniglot
