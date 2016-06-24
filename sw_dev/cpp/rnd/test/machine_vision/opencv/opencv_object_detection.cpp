@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
+#include <opencv2/contrib/contrib.hpp>
 #include <boost/filesystem.hpp>
 #include <iostream>
 #include <algorithm>
@@ -68,8 +69,7 @@ void detect_and_draw_objects(IplImage *image, CvLatentSvmDetector *detector, con
 	cvReleaseMemStorage(&storage);
 }
 
-// [ref]
-//	${OPENCV_HOME}/samples/c/latentsvmdetect.cpp
+// REF [file] >> ${OPENCV_HOME}/samples/c/latentsvmdetect.cpp
 //	"Object Detection with Discriminatively Trained Part-Based Models", P. Felzenszwalb, R. Girshick, D. McAllester, & D. Ramanan, TPAMI, 2010.
 void latentsvmdetect_sample()
 {

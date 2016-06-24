@@ -5,42 +5,50 @@
 #		if defined(DEBUG) || defined(_DEBUG)
 
 //#pragma comment(lib, "surfWinDLL_d.lib")
-#pragma comment(lib, "opensift_d.lib")
-#pragma comment(lib, "SiftGPU_d.lib")
+//#pragma comment(lib, "opensift_d.lib")
+//#pragma comment(lib, "SiftGPU_d.lib")
 
-#pragma comment(lib, "opencv_calib3d243d.lib")
-#pragma comment(lib, "opencv_objdetect243d.lib")
-#pragma comment(lib, "opencv_imgproc243d.lib")
-#pragma comment(lib, "opencv_highgui243d.lib")
-#pragma comment(lib, "opencv_core243d.lib")
+#pragma comment(lib, "opencv_videoio310d.lib")
+#pragma comment(lib, "opencv_calib3d310d.lib")
+#pragma comment(lib, "opencv_objdetect310d.lib")
+#pragma comment(lib, "opencv_imgcodecs310d.lib")
+#pragma comment(lib, "opencv_imgproc310d.lib")
+#pragma comment(lib, "opencv_highgui310d.lib")
+#pragma comment(lib, "opencv_core310d.lib")
 
-#pragma comment(lib, "cudpp32d.lib")
-#pragma comment(lib, "cudart.lib")
+//#pragma comment(lib, "cudpp32d.lib")
+//#pragma comment(lib, "cudart.lib")
 
-#pragma comment(lib, "libmat.lib")
-#pragma comment(lib, "libmx.lib")
+//#pragma comment(lib, "libmat.lib")
+//#pragma comment(lib, "libmx.lib")
 
-#pragma comment(lib, "lapack_d.lib")
-#pragma comment(lib, "blas_d.lib")
-#pragma comment(lib, "libf2c_d.lib")
+#pragma comment(lib, "boost_chrono-vc140-mt-gd-1_61.lib")
+
+#pragma comment(lib, "lapackd.lib")
+#pragma comment(lib, "blasd.lib")
+#pragma comment(lib, "libf2cd.lib")
 
 #		else
 
 //#pragma comment(lib, "surfWinDLL.lib")
-#pragma comment(lib, "opensift.lib")
-#pragma comment(lib, "SiftGPU.lib")
+//#pragma comment(lib, "opensift.lib")
+//#pragma comment(lib, "SiftGPU.lib")
 
-#pragma comment(lib, "opencv_calib3d243.lib")
-#pragma comment(lib, "opencv_objdetect243.lib")
-#pragma comment(lib, "opencv_imgproc243.lib")
-#pragma comment(lib, "opencv_highgui243.lib")
-#pragma comment(lib, "opencv_core243.lib")
+#pragma comment(lib, "opencv_videoio310.lib")
+#pragma comment(lib, "opencv_calib3d310.lib")
+#pragma comment(lib, "opencv_objdetect310.lib")
+#pragma comment(lib, "opencv_imgcodecs310.lib")
+#pragma comment(lib, "opencv_imgproc310.lib")
+#pragma comment(lib, "opencv_highgui310.lib")
+#pragma comment(lib, "opencv_core310.lib")
 
-#pragma comment(lib, "cudpp32.lib")
-#pragma comment(lib, "cudart.lib")
+//#pragma comment(lib, "cudpp32.lib")
+//#pragma comment(lib, "cudart.lib")
 
-#pragma comment(lib, "libmat.lib")
-#pragma comment(lib, "libmx.lib")
+//#pragma comment(lib, "libmat.lib")
+//#pragma comment(lib, "libmx.lib")
+
+#pragma comment(lib, "boost_chrono-vc140-mt-1_61.lib")
 
 #pragma comment(lib, "lapack.lib")
 #pragma comment(lib, "blas.lib")

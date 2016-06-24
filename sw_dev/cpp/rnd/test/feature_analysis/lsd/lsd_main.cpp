@@ -2,6 +2,7 @@
 #include <opencv2/opencv.hpp>
 #include <boost/timer/timer.hpp>
 #include <iostream>
+#include <list>
 
 
 namespace {

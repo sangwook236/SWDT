@@ -21,7 +21,7 @@ void structure_tensor_2d(const cv::Mat &img, const double deriv_sigma, const dou
 	const int deriv_kernel_size = 2 * (int)std::ceil(deriv_sigma) + 1;
 	cv::Mat kernelX(1, deriv_kernel_size, CV_64FC1), kernelY(deriv_kernel_size, 1, CV_64FC1);
 
-	// construct derivative kernels.
+	// Construct derivative kernels.
 	for (int i = 0, k = -deriv_kernel_size/2; k <= deriv_kernel_size/2; ++i, ++k)
 	{
 		const double val = k * std::exp(-k*k / _2sigma2) / den;
@@ -29,12 +29,12 @@ void structure_tensor_2d(const cv::Mat &img, const double deriv_sigma, const dou
 		kernelY.at<double>(i, 0) = val;
 	}
 
-	// compute x- & y-gradients.
+	// Compute x- & y-gradients.
 	cv::Mat Ix, Iy;
 	cv::filter2D(img, Ix, -1, kernelX, cv::Point(-1, -1), 0.0, cv::BORDER_DEFAULT);
 	cv::filter2D(img, Iy, -1, kernelY, cv::Point(-1, -1), 0.0, cv::BORDER_DEFAULT);
 
-	// solve eigensystem.
+	// Solve eigensystem.
 
 	const cv::Mat Ix2 = Ix.mul(Ix);  // Ix^2 = Ix * Ix
 	const cv::Mat Iy2 = Iy.mul(Iy);  // Iy^2 = Iy * Iy
@@ -48,7 +48,7 @@ void structure_tensor_2d(const cv::Mat &img, const double deriv_sigma, const dou
 	cv::GaussianBlur(IxIy, IxIy, cv::Size(blur_kernel_size, blur_kernel_size), blur_sigma, blur_sigma, cv::BORDER_DEFAULT);
 #endif
 
-	// structure tensor at point (i, j), S = [ Ix2(i, j) IxIy(i, j) ; IxIy(i, j) Iy2(i, j) ];
+	// Structure tensor at point (i, j), S = [ Ix2(i, j) IxIy(i, j) ; IxIy(i, j) Iy2(i, j) ].
 	const cv::Mat detS = Ix2.mul(Iy2) - IxIy.mul(IxIy);
 	const cv::Mat S11_plus_S22 = Ix2 + Iy2;
 #if 0
@@ -83,10 +83,10 @@ void structure_tensor_2d(const cv::Mat &img, const double deriv_sigma, const dou
 	cv::sqrt(sqrtDiscriminant, sqrtDiscriminant);
 #endif
 
-	// eigenvalues
+	// Eigenvalues.
 	eval1 = (S11_plus_S22 + sqrtDiscriminant) * 0.5;
 	eval2 = (S11_plus_S22 - sqrtDiscriminant) * 0.5;
-	// eigenvectors
+	// Eigenvectors.
 	evec1 = cv::Mat::zeros(img.size(), CV_64FC2);
 	evec2 = cv::Mat::zeros(img.size(), CV_64FC2);
 
@@ -107,7 +107,7 @@ void structure_tensor_2d(const cv::Mat &img, const double deriv_sigma, const dou
 
 void compute_valid_region_using_coherence(const cv::Mat &eval1, const cv::Mat &eval2, const cv::Mat &valid_eval_region_mask, const cv::Mat &constant_region_mask, cv::Mat &valid_region)
 {
-	// coherence = 1 when the gradient is totally aligned, and coherence = 0 (lambda1 = lambda2) when it has no predominant direction.
+	// Coherence = 1 when the gradient is totally aligned, and coherence = 0 (lambda1 = lambda2) when it has no predominant direction.
 	cv::Mat coherence((eval1 - eval2) / (eval1 + eval2));  // if eigenvalue2 > 0.
 	coherence = coherence.mul(coherence);
 
@@ -211,7 +211,7 @@ void structure_tensor()
 			local::structure_tensor_2d(img_double, deriv_sigma, blur_sigma, eval1, eval2, evec1, evec2);
 		}
 
-		// post-processing.
+		// Post-processing.
 		eval1 = cv::abs(eval1);
 		eval2 = cv::abs(eval2);
 
@@ -225,7 +225,7 @@ void structure_tensor()
 		const cv::Mat constant_region_mask(eval1 < tol & eval2 < tol);  // if lambda1 = lambda2 = 0, the image within the window is constant.
 
 		// METHOD #1; using coherence.
-		//	[ref] http://en.wikipedia.org/wiki/Structure_tensor
+		//	REF [site] >> http://en.wikipedia.org/wiki/Structure_tensor
 		{
 			cv::Mat valid_region;
 			{

@@ -7,6 +7,7 @@
 #include <boost/timer/timer.hpp>
 #include <iostream>
 #include <string>
+#include <list>
 #include <cstdlib>
 #include <cmath>
 

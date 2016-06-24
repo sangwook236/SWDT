@@ -1,7 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/legacy/legacy.hpp>
-#include <opencv2/nonfree/features2d.hpp>
+#include <opencv2/xfeatures2d.hpp>
 #include <opencv2/opencv.hpp>
 #include <fstream>
 #include <iostream>
@@ -70,8 +69,12 @@ void sift(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &k
 	{
 		double t = (double)cv::getTickCount();
 
-		const std::string decriptorExtractorName("SIFT");
-		cv::Ptr<cv::DescriptorExtractor> extractor = cv::DescriptorExtractor::create(decriptorExtractorName);
+		const int nfeatures = 0;
+		const int nOctaveLayers = 3;
+		const double contrastThreshold = 0.04;
+		const double edgeThreshold = 10,
+		const double sigma = 1.6;
+		cv::Ptr<cv::xfeatures2d::SIFT> extractor = cv::xfeatures2d::SIFT::create(nfeatures, nOctaveLayers, contrastThreshold, edgeThreshold, sigma);
 
 		extractor->compute(img1, keypoints1, descriptors1);
 		extractor->compute(img2, keypoints2, descriptors2);
@@ -104,8 +107,12 @@ void surf(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &k
 	{
 		double t = (double)cv::getTickCount();
 
-		const std::string decriptorExtractorName("SURF");
-		cv::Ptr<cv::DescriptorExtractor> extractor = cv::DescriptorExtractor::create(decriptorExtractorName);
+		const double hessianThreadhold = 100;
+		const int nOctaves = 4;
+		const int nOctaveLayers = 3;
+		const bool extended = false;
+		const bool upright = false;
+		cv::Ptr<cv::xfeatures2d::SURF> extractor = cv::xfeatures2d::SURF::create(hessianThreadhold, nOctaves, nOctaveLayers, extended, upright);
 
 		extractor->compute(img1, keypoints1, descriptors1);
 		extractor->compute(img2, keypoints2, descriptors2);
@@ -419,12 +426,18 @@ void feature_description()
 
 	// extract keypoints
 	std::cout << "extracting keypoints" << std::endl;
+	//cv::Ptr<cv::Feature2D> featureDetector = cv::xfeatures2d::SIFT::create();
+	cv::Ptr<cv::Feature2D> featureDetector = cv::xfeatures2d::SURF::create();
+	//cv::Ptr<cv::Feature2D> featureDetector = cv::FastFeatureDetector::create();
+	//cv::Ptr<cv::Feature2D> featureDetector = cv::AgastFeatureDetector::create();
+	//cv::Ptr<cv::Feature2D> featureDetector = cv::GFTTDetector::create();
+	//cv::Ptr<cv::Feature2D> featureDetector = cv::SimpleBlobDetector::create();
+	//cv::Ptr<cv::Feature2D> featureDetector = cv::KAZE::create();
+	//cv::Ptr<cv::Feature2D> featureDetector = cv::AKAZE::create();
+
 	std::vector<cv::KeyPoint> keypoints1, keypoints2;
-	//cv::SiftFeatureDetector featureDetector;
-	cv::SurfFeatureDetector featureDetector;
-	//cv::FastFeatureDetector featureDetector(50);
-	featureDetector.detect(img1, keypoints1);
-	featureDetector.detect(img2, keypoints2);
+	featureDetector->detect(img1, keypoints1);
+	featureDetector->detect(img2, keypoints2);
 	std::cout << "\textracted " << keypoints1.size() << " keypoints from the first image" << std::endl;
 	std::cout << "\textracted " << keypoints2.size() << " keypoints from the second image" << std::endl;
 
