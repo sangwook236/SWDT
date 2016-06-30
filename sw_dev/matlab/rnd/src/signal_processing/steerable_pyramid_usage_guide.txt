@@ -1,3 +1,14 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.cns.nyu.edu/~eero/steerpyr/
+		https://github.com/LabForComputationalVision/matlabPyrTools
+
+	- Manual.
+		${matlabPyrTools_HOME}/TUTORIALS/matlabPyrTools.html
+
+	- Image pyramid.
+		Gaussian pyramid.
+		Laplacian pyramid.
+		Separable orthonormal QMF/wavelet pyramid.
+		Steerable pyramid.
+		Steerable filters / derivatives.
