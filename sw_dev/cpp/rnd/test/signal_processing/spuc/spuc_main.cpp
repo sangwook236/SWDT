@@ -1,11 +1,9 @@
 //#define GET_ROOTS 1
 
-#include <spuc/vector.h>
-#include <spuc/matrix.h>
 #ifdef GET_ROOTS
 #include <spuc/get_roots.h>
 #endif
-#include <spuc/find_roots.h>
+#include <spuce/filters/find_roots.h>
 #include <spuc/complex.h>
 #include <spuc/spuc_typedefs.h>
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
@@ -18,23 +16,25 @@
 namespace {
 namespace local {
 
-// [ref] ${SPUC_HOME}/examples/test_cmat.cpp
+/*
+// REF [file] >> ${SPUC_HOME}/examples/test_cmat.cpp (?)
 void matrix_operation_example()
 {
-    SPUC::matrix<SPUC::complex<double> > P(3, 3);
+    SPUC::matrix<std::complex<double> > P(3, 3);
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)
-            P(i, j) = SPUC::complex<double>(std::rand() % 100, std::rand() % 100);
-    //SPUC::vector<SPUC::complex<double> > k;
-    //SPUC::vector<double> w, u, ut, x;
-    SPUC::complex<double> d(3, 2);
+            P(i, j) = std::complex<double>(std::rand() % 100, std::rand() % 100);
+    //std::vector<std::complex<double> > k;
+    //std::vector<double> w, u, ut, x;
+	std::complex<double> d(3, 2);
 
-    SPUC::matrix<SPUC::complex<double> > Z = d * P;
-    SPUC::matrix<SPUC::complex<double> > Y = P * d;
-    SPUC::matrix<SPUC::complex<double> > X = d + P;
+    SPUC::matrix<std::complex<double> > Z = d * P;
+    SPUC::matrix<std::complex<double> > Y = P * d;
+    SPUC::matrix<std::complex<double> > X = d + P;
 }
+*/
 
-// [ref] ${SPUC_HOME}/examples/test_ls_solve.cpp
+// REF [file] >> ${SPUC_HOME}/examples/test_ls_solve.cpp
 void linear_system_example()
 {
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
@@ -82,7 +82,7 @@ void linear_system_example()
 #endif
 }
 
-// [ref] ${SPUC_HOME}/examples/test_ls_solve.cpp
+// REF [file] >> ${SPUC_HOME}/examples/test_ls_solve.cpp
 void root_finding_example()
 {
     //const std::size_t maxiter = 500;
@@ -90,7 +90,7 @@ void root_finding_example()
     const int n = 5;
 
     SPUC::float_type a[] = { 0.20882,  -0.97476,   2.08818,  -1.94952,   1.04409,  -0.19495 };
-    SPUC::smart_array<SPUC::float_type> b(6);
+    std::vector<SPUC::float_type> b(6);
     b[0] = -0.19495;
     b[1] =  1.04409;
     b[2] = -1.94952;
@@ -133,7 +133,7 @@ void root_finding_example()
 
     std::cout << "METHOD 2" << std::endl;
 
-    SPUC::smart_array<SPUC::complex<SPUC::float_type> > p = SPUC::find_roots(b, n);
+    std::vector<std::complex<SPUC::float_type> > p = spuce::find_roots(b, n);
 
     //std::cout << std::endl << "Roots (" << numr << " found):" << std::endl;
     std::cout.setf(std::ios::showpoint);
@@ -143,7 +143,7 @@ void root_finding_example()
     {
         std::cout.width(18);
         //std::cout << SPUC::real(p[i]) << " " << SPUC::imag(p[i]) << "I" << std::endl;
-        std::cout << p[i].re << " " << p[i].im << "I" << std::endl;
+        std::cout << p[i].real() << " " << p[i].imag() << "I" << std::endl;
     }
 }
 

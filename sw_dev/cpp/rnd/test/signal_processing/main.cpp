@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 #endif
 
 		std::cout << "\nSignal Processing using C++ (SPUC) library --------------------------" << std::endl;
-		//retval = spuc_main(argc, argv);
+		retval = spuc_main(argc, argv);
 
 		std::cout << "\nSignal Processing Library in C++ (tspl) -----------------------------" << std::endl;
 		//retval = tspl_main(argc, argv);  // not yet implemented.

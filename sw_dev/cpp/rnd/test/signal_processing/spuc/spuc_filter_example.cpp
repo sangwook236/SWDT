@@ -1,18 +1,19 @@
 //#include "stdafx.h"
-#include <spuc/fir.h>
-#include <spuc/fir_coeff.h>
-#include <spuc/remez_fir.h>
-#include <spuc/gaussian_fir.h>
-#include <spuc/butterworth_fir.h>
-#include <spuc/create_remez_lpfir.h>
-#include <spuc/butterworth_iir.h>
-#include <spuc/elliptic_iir.h>
-#include <spuc/iir.h>
-#include <spuc/iir_2nd.h>
-#include <spuc/iir_allpass1.h>
-#include <spuc/iir_allpass1_cascade.h>
+#include <spuce/filters/fir.h>
+#include <spuce/filters/fir_coeff.h>
+#include <spuce/filters/remez_fir.h>
+#include <spuce/filters/gaussian_fir.h>
+#include <spuce/filters/butterworth_fir.h>
+#include <spuce/filters/create_remez_lpfir.h>
+#include <spuce/filters/butterworth_iir.h>
+#include <spuce/filters/elliptic_iir.h>
+#include <spuce/filters/iir.h>
+#include <spuce/filters/iir_2nd.h>
+#include <spuce/filters/iir_allpass1.h>
+#include <spuce/filters/iir_allpass1_cascade.h>
 #include <spuc/spuc_fp.h>
 #include <spuc/freqz.h>
+#include <spuc/magsq.h>
 #include <spuc/spuc_typedefs.h>
 #include <fstream>
 #include <iostream>
@@ -21,7 +22,7 @@
 namespace {
 namespace local {
 
-// [ref] ${SPUC_HOME}/examples/test_filters.cpp
+// REF [file] >> ${SPUC_HOME}/examples/test_filters.cpp (?)
 void filters_example()
 {
     const std::size_t PTS = 200;
@@ -30,18 +31,18 @@ void filters_example()
     SPUC::float_type pass_edge = 0.245;
     SPUC::float_type stop_edge = 0.30625;
 
-    SPUC::fir_coeff<SPUC::float_type> BF(TAPS);
-    SPUC::fir_coeff<SPUC::float_type> RF(TAPS);
-    SPUC::fir_coeff<SPUC::float_type> GF(TAPS);
-    //SPUC::allpass_iir<SPUC::float_type> AF(0.23, 0.769, 2);
-    SPUC::iir_allpass1_cascade<SPUC::float_type> AF1(0.4, 2);
-    SPUC::iir_allpass1_cascade<SPUC::float_type> AF2(0.44, 3);
+    spuce::fir_coeff<SPUC::float_type> BF(TAPS);
+	spuce::fir_coeff<SPUC::float_type> RF(TAPS);
+	spuce::fir_coeff<SPUC::float_type> GF(TAPS);
+    //spuce::allpass_iir<SPUC::float_type> AF(0.23, 0.769, 2);
+	//spuce::iir_allpass1_cascade<SPUC::float_type> AF1(0.4, 2);
+	//spuce::iir_allpass1_cascade<SPUC::float_type> AF2(0.44, 3);
 
-    SPUC::complex<SPUC::float_type> h[PTS];
+    std::complex<SPUC::float_type> h[PTS];
 
-    SPUC::create_remez_lpfir(RF, pass_edge, stop_edge, 1);
-    SPUC::butterworth_fir(BF, 0.15);
-    SPUC::gaussian_fir(GF, 0.25, 8);
+	spuce::create_remez_lpfir(RF, pass_edge, stop_edge, 1);
+	spuce::butterworth_fir(BF, 0.15);
+	spuce::gaussian_fir(GF, 0.25);
 
     RF.print();
     BF.print();
@@ -73,7 +74,7 @@ void filters_example()
     HF.close();
 }
 
-// [ref] ${SPUC_HOME}/examples/test_fir2.cpp
+// REF [file] >> ${SPUC_HOME}/examples/test_fir2.cpp (?)
 void fir2_example()
 {
     //SPUC::float_type x;
@@ -83,14 +84,14 @@ void fir2_example()
 
     std::ofstream IMP("./data/signal_processing/spuc/impulses_fir2.dat");
 
-    SPUC::fir<long, SPUC::float_type> test1(3);
-    SPUC::fir<SPUC::complex<long>, SPUC::float_type> test2(3);
-    SPUC::fir<SPUC::float_type, SPUC::float_type> test3(3);
-    SPUC::fir<SPUC::complex<SPUC::float_type>, SPUC::float_type> test4(3);
-    SPUC::fir<long, long> test5(3);
-    SPUC::fir<SPUC::complex<long>, long> test6(3);
-    SPUC::fir<SPUC::float_type, long> test7(3);
-    SPUC::fir<SPUC::complex<SPUC::float_type>, long> test8(3);
+	spuce::fir<long, SPUC::float_type> test1(3);
+	spuce::fir<std::complex<long>, SPUC::float_type> test2(3);
+	spuce::fir<SPUC::float_type, SPUC::float_type> test3(3);
+	spuce::fir<std::complex<SPUC::float_type>, SPUC::float_type> test4(3);
+	spuce::fir<long, long> test5(3);
+	spuce::fir<std::complex<long>, long> test6(3);
+	spuce::fir<SPUC::float_type, long> test7(3);
+	spuce::fir<std::complex<SPUC::float_type>, long> test8(3);
 
     //test2.print();
     //LPF.print();
@@ -114,7 +115,7 @@ void fir2_example()
     IMP.close();
 }
 
-// [ref] ${SPUC_HOME}/examples/test_iir.cpp
+// REF [file] >> ${SPUC_HOME}/examples/test_iir.cpp (?)
 void iir_example()
 {
     const long N = 32;
@@ -124,12 +125,12 @@ void iir_example()
     //SPUC::float_type pass_edge = 0.2;
     //SPUC::float_type stop_edge = 0.22;
 
-    SPUC::iir_coeff BPF(O);
-    SPUC::butterworth_iir(BPF, 0.1, true, 3.0);
-    SPUC::iir<SPUC::float_type> LPF(BPF);
+	spuce::iir_coeff BPF(O);
+	spuce::butterworth_iir(BPF, 0.1, 3.0);
+	spuce::iir<SPUC::float_type> LPF(BPF);
 
-    SPUC::iir<SPUC::spuc_int<16>, SPUC::float_type> IPF(BPF);
-    SPUC::iir<SPUC::float_type, SPUC::spuc_fixed<30, 15> > SPF(BPF);
+	spuce::iir<SPUC::spuc_int<16>, SPUC::float_type> IPF(BPF);
+	spuce::iir<SPUC::float_type, SPUC::spuc_fixed<30, 15> > SPF(BPF);
 
     std::ofstream IMP("./data/signal_processing/spuc/impulses_iir.dat");
 
@@ -174,7 +175,7 @@ void iir_example()
     }
 }
 
-// [ref] ${SPUC_HOME}/examples/test_iir2nd.cpp
+// REF [file] >> ${SPUC_HOME}/examples/test_iir2nd.cpp (?)
 void iir2nd_example()
 {
     //double x;
@@ -182,10 +183,10 @@ void iir2nd_example()
     //double pass_edge = 0.08;
     //double stop_edge = 0.16;
 
-    SPUC::iir_coeff BPF(2);
-    SPUC::elliptic_iir(BPF, 0.2, true, 0.22, 40, 0.5);
-    SPUC::butterworth_iir(BPF, 0.35, true, 3);
-    SPUC::iir<double> LPF(BPF);
+	spuce::iir_coeff BPF(2);
+	spuce::elliptic_iir(BPF, 0.2, 0.22, 40);
+	spuce::butterworth_iir(BPF, 0.35, 3);
+	spuce::iir<double> LPF(BPF);
     LPF.print();
 
     const double dA1 = BPF.get_coeff_a(0);
@@ -199,18 +200,18 @@ void iir2nd_example()
     std::ofstream IMP("./data/signal_processing/spuc/impulses_iir2nd.dat");
 
     // REAL TYPEs
-    SPUC::iir_2nd<long, double> test1(dA1, dA2);
-    SPUC::iir_2nd<double, double> test2(dA1, dA2);
+    spuce::iir_2nd<long, double> test1(dA1, dA2);
+    spuce::iir_2nd<double, double> test2(dA1, dA2);
 
-    SPUC::iir_2nd<long, long> test3(1, 2, 1, A1, A2, ROUND_BITS);
-    SPUC::iir_2nd<double, long> test4(1, 2, 1, A1, A2, ROUND_BITS);
+    spuce::iir_2nd<long, long> test3(1, 2, 1, A1, A2, ROUND_BITS);
+    spuce::iir_2nd<double, long> test4(1, 2, 1, A1, A2, ROUND_BITS);
 
     // COMPLEX TYPES
-    SPUC::iir_2nd<SPUC::complex<long>, double> test5(dA1, dA2);
-    SPUC::iir_2nd<SPUC::complex<double>, double> test6(dA1, dA2);
+    spuce::iir_2nd<std::complex<long>, double> test5(dA1, dA2);
+    spuce::iir_2nd<std::complex<double>, double> test6(dA1, dA2);
 
-    SPUC::iir_2nd<SPUC::complex<long>, long> test7(1, 2, 1, A1, A2, ROUND_BITS);
-    SPUC::iir_2nd<SPUC::complex<double>, long> test8(1, 2, 1, A1, A2, ROUND_BITS);
+    spuce::iir_2nd<std::complex<long>, long> test7(1, 2, 1, A1, A2, ROUND_BITS);
+    spuce::iir_2nd<std::complex<double>, long> test8(1, 2, 1, A1, A2, ROUND_BITS);
 
     test2.print();
     test3.print();

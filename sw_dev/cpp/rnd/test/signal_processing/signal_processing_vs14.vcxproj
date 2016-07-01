@@ -55,7 +55,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>NO_XML;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/fftw;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/fftw;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -71,7 +71,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NO_XML;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/fftw;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/fftw;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -123,7 +123,10 @@
     </ClCompile>
     <ClCompile Include="nyu_depth_toolbox_v2_lib\cbf_windows.cpp" />
     <ClCompile Include="spuc\spuc_auto_correlation.cpp" />
-    <ClCompile Include="spuc\spuc_filter_example.cpp" />
+    <ClCompile Include="spuc\spuc_filter_example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="spuc\spuc_main.cpp" />
     <ClCompile Include="spuc\spuc_maximum_likelihood_sequence_estimation.cpp" />
   </ItemGroup>
