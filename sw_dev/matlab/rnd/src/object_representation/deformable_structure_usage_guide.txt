@@ -1,3 +1,6 @@
 [-] General
-	-. Site
-		http://ps.is.tue.mpg.de/project/Deformable_Structures
+	- Site.
+		http://ps.is.tuebingen.mpg.de/research_projects/deformable-structures
+
+		From Pictorial Structures to Deformable Structures:
+		http://cs.brown.edu/people/zuffi/Site/Welcome.html
