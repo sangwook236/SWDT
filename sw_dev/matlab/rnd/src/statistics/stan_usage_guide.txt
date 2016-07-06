@@ -1,0 +1,12 @@
+[-] General
+	- Site.
+		http://mc-stan.org/
+		https://github.com/stan-dev/
+
+		https://github.com/stan-dev/stan
+		https://github.com/stan-dev/rstan
+		https://github.com/stan-dev/pystan
+		https://github.com/brian-lau/MatlabStan
+
+		https://github.com/stan-dev/math
+		https://github.com/stan-dev/nomad
