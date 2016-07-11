@@ -3,6 +3,7 @@
 		http://mc-stan.org/
 		https://github.com/stan-dev/
 
+		https://github.com/stan-dev/cmdstan
 		https://github.com/stan-dev/stan
 		https://github.com/stan-dev/rstan
 		https://github.com/stan-dev/pystan
@@ -10,3 +11,33 @@
 
 		https://github.com/stan-dev/math
 		https://github.com/stan-dev/nomad
+
+[-] Build CmdStan (MinGW, GCC)
+	- Download Stan, Stan Math, & CmdStan.
+	- Change options.
+		In ${CmdStan_HOME}/makefile
+			CC = i686-w64-mingw32-g++
+			STAN = D:/lib_repo/cpp/rnd/stan_github/
+			MATH = D:/lib_repo/cpp/rnd/stan_math_github/
+	- Open Command Prompt.
+	- Set path.
+		set path=${MINGW_HOME}/bin;${GNUWIN32_HOME}/bin;%path%
+	- Change directory.
+		cd ${CmdStan_HOME}
+	- Build CmdStan.
+		mingw32-make -j4 build
+		mingw32-make clean
+
+[-] Build CmdStan (Cygwin, GCC)
+	- Download Stan, Stan Math, & CmdStan.
+	- Set the paths of Stan & Stan Math.
+		In ${CmdStan_HOME}/makefile
+			STAN = D:/lib_repo/cpp/rnd/stan_github/
+			MATH = D:/lib_repo/cpp/rnd/stan_math_github/
+	- Open Cygwin Terminal.
+	- Change directory.
+		cd ${CmdStan_HOME}
+	- Build CmdStan.
+		make -j4 build
+		make clean
+	==> 정상적으로 build는 되나 MatlabStan에서 사용할 수 없음.
