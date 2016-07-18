@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "OpenCV library ------------------------------------------------------" << std::endl;
-		//retval = opencv_main(argc, argv);
+		retval = opencv_main(argc, argv);
 
 		std::cout << "\nVXL (the Vision-something-Libraries) library ------------------------" << std::endl;
 		//	-. pictorial structures matching.
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 		//		Quick shift, SLIC.
 		//	-. learning algorithm.
 		//		SVM.
-		retval = vlfeat_main(argc, argv);
+		//retval = vlfeat_main(argc, argv);
 
 		std::cout << "\nC-based/Cached/Core Computer Vision (CCV) library -------------------" << std::endl;
 		//	-. feature analysis.
