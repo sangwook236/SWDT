@@ -1,0 +1,54 @@
+[-] General
+	-. Site
+		http://eigen.tuxfamily.org/
+
+		https://bitbucket.org/eigen/eigen
+
+[-] Porting from Eigen2 to Eigen3
+	[ref] http://eigen.tuxfamily.org/dox/Eigen2ToEigen3.html
+
+[-] Building
+	-. Eigen library는 기본적으로 header file만 있으면 됨
+		따라서 source를 별도로 build하지 않아도 됨.
+		Source 대부분은 test code임.
+
+	-. DLL project 존재
+		eigen_blas & eigen_lapack project 존재.
+		Shared library 생성.
+			Shared library로 build되지 않음.
+			==> 아래의 trouble shooting 참고.
+		==> BLAS & LAPACK의 function 대부분을 가지고 있지 않음.
+
+[-] Building (CMake)
+	-. Configure & generate
+		Set BUILD_SHARED_LIBS to false (X) ==> not working.
+		Set BUILD_STATIC_LIBS to true (X) ==> not working.
+		Set BUILD_TESTING to false.
+		Set CMAKE_DEBUG_POSTFIX to d.
+	-. Build
+
+[-] Trouble Shooting
+	-. Fortran compiler detection warning
+		<error message>
+			No fortran compiler has been detected, the blas build will be incomplete.
+		<cause>
+			fortran version의 BLAS library를 building하기 위해 fortran compiler를 요구함.
+		<solution>
+			Warning이므로 project file generation까지 수행하고
+			Eigen library를 사용하는 곳에서 필요한 경우 BLAS or LAPACK library를 linking하면 될 듯함.
+
+[-] Trouble Shooting (VC)
+	-. eigen_blas linking error
+		<error>
+			cannot open file '..\blas\Debug\eigen_blasd.lib'
+		<cause>
+			Symbol export를 하지 않아 import library (.lib)가 생성되지 않음.
+		<solution>
+			Static library로 변경하여 build하여야 함.
+			CMake option인 BUILD_SHARED_LIBS & BUILD_STATIC_LIBS의 설정 변경은 정상 작동하지 않음.
+			Project 설정을 static library로 변경하여야 함.
+	-. eigen_lapack compile error
+		<error>
+			number of sections exceeded object file format limit: compile with /bigobj
+		<solution>
+			Add /bigobj into "Project's Property Pages -> C/C++ -> Command Line -> Additional Options".

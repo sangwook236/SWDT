@@ -1,3 +1,19 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "MRF.h"
 
 using namespace Algorithms::BackgroundSubtraction;
@@ -199,7 +215,7 @@ void MRF_TC::InitEvidence2(GMM *gmm, HMM *hmm, IplImage *labeling)
   int i, j;
 
   background = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
-  cvCopyImage(background2,background.Ptr());
+  cvCopy(background2,background.Ptr());
 
   unsigned char *in_data = (unsigned char *)(in_image->imageData);
   unsigned char *labeling_data = (unsigned char *)(labeling->imageData);
@@ -293,7 +309,6 @@ double MRF_TC::LocalEnergy2(int i, int j, int label)
 void MRF_TC::ICM2()
 {
   int i, j;
-  int r;
   //double summa_deltaE = 0;
   double localenergy0 = 0, localenergy1 = 0;
 

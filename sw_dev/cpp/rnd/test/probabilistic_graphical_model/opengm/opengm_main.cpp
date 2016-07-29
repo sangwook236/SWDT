@@ -17,7 +17,7 @@ namespace local {
 
 void basic_operation()
 {
-	// [ref] ${OPENGM_HOME}/src/examples/unsorted-examples/space_types.cxx
+	// REF [file] >> ${OPENGM_HOME}/src/examples/unsorted-examples/space_types.cxx
 	{
 		typedef float ValueType;
 		typedef opengm::UInt32Type IndexType;
@@ -25,7 +25,7 @@ void basic_operation()
 		typedef opengm::Adder OperationType;
 		typedef opengm::ExplicitFunction<ValueType> FunctionType;
 
-		// dense space where all variables can have a different number of variables
+		// dense space where all variables can have a different number of variables.
 		{
 			typedef opengm::DiscreteSpace<IndexType, LabelType> SpaceType;
 			typedef opengm::GraphicalModel<
@@ -36,11 +36,11 @@ void basic_operation()
 			> GraphicalModelType;
 			const LabelType numsOfLabels[] = { 2, 4, 6, 4, 3 };
 
-			// graphical model with 5 variables with 2, 4, 6, 4, and 3 labels
+			// graphical model with 5 variables with 2, 4, 6, 4, and 3 labels.
 			GraphicalModelType gm(SpaceType(numsOfLabels, numsOfLabels + 5));
 		}
 
-		// simple space where all variables have the same number of labels
+		// simple space where all variables have the same number of labels.
 		{
 			typedef opengm::SimpleDiscreteSpace<IndexType, LabelType> SpaceType;
 			typedef opengm::GraphicalModel<
@@ -50,33 +50,34 @@ void basic_operation()
 				SpaceType
 			> GraphicalModelType;
 
-			// graphical model with 5 variables, each having 2 labels 
+			// graphical model with 5 variables, each having 2 labels.
 			const IndexType numOfVariables = 5;
 			const LabelType numOfLabels = 4;
 			GraphicalModelType gm(SpaceType(numOfVariables, numOfLabels));
 		}
 	}
 
-	// [ref] ${OPENGM_HOME}/src/examples/unsorted-examples/inference_types.cxx
+	// REF [file] >> ${OPENGM_HOME}/src/examples/unsorted-examples/inference_types.cxx
 	{
-		// construct a graphical model with 
-		// - addition as the operation (template parameter Adder)
-		// - support for Potts functions (template parameter PottsFunction<double>)
+		// construct a graphical model with
+		// - addition as the operation (template parameter Adder).
+		// - support for Potts functions (template parameter PottsFunction<double>).
 		typedef OPENGM_TYPELIST_2(opengm::ExplicitFunction<double>, opengm::PottsFunction<double>) FunctionTypelist;
 		typedef opengm::SimpleDiscreteSpace<std::size_t, std::size_t> Space;
 		typedef opengm::GraphicalModel<double, opengm::Adder, FunctionTypelist, Space> Model;
 		Model gm;
 
-		// Let us assume we have added some variables, factors and functions to the graphical model gm
-		// (see other exampels for building a model)
+		// Let us assume we have added some variables, factors and functions to the graphical model gm.
+		// (see other exampels for building a model).
 		{
-			// [ref] ${OPENGM_HOME}/src/examples/unsorted-examples/markov-chain.cxx
+			// REF [file] >> ${OPENGM_HOME}/src/examples/unsorted-examples/markov-chain.cxx
 
 			const std::size_t numberOfVariables = 10;
 			const std::size_t numberOfLabels = 2;
 			gm = Model(Space(numberOfVariables, numberOfLabels));
 
-			// for each variable, add one 1st order functions and one 1st order factor
+			// Local model.
+			// for each variable, add one 1st order functions and one 1st order factor.
 			for (std::size_t v = 0; v < numberOfVariables; ++v)
 			{
 				const std::size_t shape[] = { numberOfLabels };
@@ -90,12 +91,13 @@ void basic_operation()
 				gm.addFactor(fid1, variableIndices, variableIndices + 1);
 			}
 
+			// Pairwise interaction.
 			{
-				// add one (!) 2nd order Potts function
+				// add one (!) 2nd order Potts function.
 				opengm::PottsFunction<double> func2(numberOfLabels, numberOfLabels, 0.0, 0.3);
 				const Model::FunctionIdentifier fid2 = gm.addFunction(func2);
 
-				// for each pair of consecutive variables, add one factor that refers to the Potts function
+				// for each pair of consecutive variables, add one factor that refers to the Potts function.
 				for (std::size_t v = 0; v < numberOfVariables - 1; ++v)
 				{
 					const std::size_t variableIndices[] = { v, v + 1 };
@@ -104,75 +106,75 @@ void basic_operation()
 			}
 		}
 
-		// Optimize the model with different Optimizers
+		// Optimize the model with different optimizers.
 
-		// Gibbs
+		// Gibbs sampler.
 		{
-			// typedefs to a Gibbs minimizer and maximizer
+			// typedefs to a Gibbs minimizer and maximizer.
 			typedef opengm::Gibbs<Model, opengm::Minimizer> OptimizerMinimizerType;
 			typedef opengm::Gibbs<Model, opengm::Maximizer> OptimizerMaximizerType;
 			typedef OptimizerMinimizerType::Parameter OptimizerMinimizerParameterType;
 			typedef OptimizerMaximizerType::Parameter OptimizerMaximizerParameterType;
 
-			// construct solver parameters (all parameters have default values)
+			// construct solver parameters (all parameters have default values).
 			const OptimizerMinimizerParameterType minimizerParameter(
-				1000000,   // number of iterations
-				100000  // stop after 100000 iterations without improvement
+				1000000,  // number of iterations.
+				100000  // stop after 100000 iterations without improvement.
 			);
 			// default parameter
 			const OptimizerMaximizerParameterType maximizerParameter;
 
-			// construct optimizers (minimizer and maximizer)
+			// construct optimizers (minimizer and maximizer).
 			OptimizerMinimizerType optimizerMinimizer(gm, minimizerParameter);
 			OptimizerMaximizerType optimizerMaximizer(gm, maximizerParameter);
 
-			// optimize the models (minimizer and maximizer)
+			// optimize the models (minimizer and maximizer).
 			std::cout << "on inferring ..." << std::endl;
 			optimizerMinimizer.infer();
 			optimizerMaximizer.infer();
 
-			// get the argmin / argmax 
+			// get the argmin / argmax.
 			std::vector<Model::LabelType> argmin, argmax;
 			optimizerMinimizer.arg(argmin);
 			optimizerMaximizer.arg(argmax);
 		}
 
-		// ICM
+		// ICM.
 		{
-			// typedefs to a ICM minimizer and maximizer
+			// typedefs to a ICM minimizer and maximizer.
 			typedef opengm::ICM<Model, opengm::Minimizer> OptimizerMinimizerType;
 			typedef opengm::ICM<Model, opengm::Maximizer> OptimizerMaximizerType;
 			typedef OptimizerMinimizerType::Parameter OptimizerMinimizerParameterType;
 			typedef OptimizerMaximizerType::Parameter OptimizerMaximizerParameterType;
 
-			// construct solver parameters (all parameters have default values)
+			// construct solver parameters (all parameters have default values).
 			std::vector<Model::LabelType> startingPoint(gm.numberOfVariables());
 
-			//fill starting point
+			//fill starting point.
 			// ....
 
-			// assume starting point is filled with labels
+			// assume starting point is filled with labels.
 			OptimizerMinimizerParameterType minimizerParameter(
-				OptimizerMinimizerType::SINGLE_VARIABLE,  // flip a single variable (FACTOR for flip all var. a factor depends on)
+				OptimizerMinimizerType::SINGLE_VARIABLE,  // flip a single variable (FACTOR for flip all var. a factor depends on).
 				startingPoint
 			);
 
-			// without starting point
+			// without starting point.
 			OptimizerMaximizerParameterType maximizerParameter(
-				OptimizerMaximizerType::FACTOR,  // flip a single variable (FACTOR for flip all var. a factor depends on)
+				OptimizerMaximizerType::FACTOR,  // flip a single variable (FACTOR for flip all var. a factor depends on).
 				startingPoint
 			);
 
-			// construct optimizers (minimizer and maximizer)
+			// construct optimizers (minimizer and maximizer).
 			OptimizerMinimizerType optimizerMinimizer(gm,minimizerParameter);
 			OptimizerMaximizerType optimizerMaximizer(gm,maximizerParameter);
 
-			// optimize the models (minimizer and maximizer)
+			// optimize the models (minimizer and maximizer).
 			std::cout << "on inferring ..." << std::endl;
 			optimizerMinimizer.infer();
 			optimizerMaximizer.infer();
 
-			// get the argmin / argmax 
+			// get the argmin / argmax.
 			std::vector<Model::LabelType> argmin, argmax;
 			optimizerMinimizer.arg(argmin);
 			optimizerMaximizer.arg(argmax);
@@ -180,12 +182,12 @@ void basic_operation()
 	}
 }
 
-// [ref] ${OPENGM_HOME}/src/examples/io-examples/io_graphical_model.cxx
+// REF [file] >> ${OPENGM_HOME}/src/examples/io-examples/io_graphical_model.cxx
 void input_output_example()
 {
 	typedef opengm::GraphicalModel<float, opengm::Multiplier> GraphicalModel;
 
-	// build a graphical model (other examples have more details)
+	// build a graphical model (other examples have more details).
 	const std::size_t numsOfLabels[] = { 3, 3, 3, 3 };
 	GraphicalModel gmA(opengm::DiscreteSpace<>(numsOfLabels, numsOfLabels + 4)); 
 
@@ -202,10 +204,10 @@ void input_output_example()
 		gmA.addFactor(fid, vi, vi + 1);
 	}
 
-	// save graphical model into an hdf5 dataset named "toy-gm"
+	// save graphical model into an hdf5 dataset named "toy-gm".
 	opengm::hdf5::save(gmA, "./data/probabilistic_graphical_model/opengm/gm.h5", "toy-gm");
 
-	// load the graphical model from the hdf5 dataset
+	// load the graphical model from the hdf5 dataset.
 	GraphicalModel gmB;
 	opengm::hdf5::load(gmB, "./data/probabilistic_graphical_model/opengm/gm.h5","toy-gm");
 }
@@ -238,47 +240,47 @@ int opengm_main(int argc, char *argv[])
 	// examples
 	{
 		std::cout << "\ninput & output example ----------------------------------------------" << std::endl;
-		//local::input_output_example();  // HDF5
+		//local::input_output_example();  // HDF5.
 
 		std::cout << "\nquick start example -------------------------------------------------" << std::endl;
-		//my_opengm::quick_start_example();  // 3rd order explicit function + ICM
+		//my_opengm::quick_start_example();  // 3-wise interaction(3rd order explicit function) + ICM.
 
 		std::cout << "\nMarkov chain example ------------------------------------------------" << std::endl;
-		//my_opengm::markov_chain_example();  // Potts model + BP
+		//my_opengm::markov_chain_example();  // Potts model + BP.
 
 		std::cout << "\nGibbs sampling example ----------------------------------------------" << std::endl;
-		//my_opengm::gibbs_example();  // Potts model + Gibbs sampling
+		//my_opengm::gibbs_example();  // Potts model + Gibbs sampling.
 
 		std::cout << "\nSwendsen-Wang sampling example --------------------------------------" << std::endl;
-		//my_opengm::swendsenwang_example();  // Potts model + Swendsen-Wang sampling
+		//my_opengm::swendsenwang_example();  // Potts model + Swendsen-Wang sampling.
 
 		std::cout << "\nbipartite matching example ------------------------------------------" << std::endl;
-		//my_opengm::bipartite_matching_example();  // Potts model + A-star search
+		//my_opengm::bipartite_matching_example();  // Potts model + A-star search.
 
 		std::cout << "\nPotts model on a 2-dim grid example ---------------------------------" << std::endl;
-		//my_opengm::potts_model_on_2d_grid_example();  // Potts model + BP
+		//my_opengm::potts_model_on_2d_grid_example();  // Potts model + BP.
 
 		std::cout << "\ninterpixel boundary segmentation example ----------------------------" << std::endl;
-		my_opengm::interpixel_boundary_segmentation_example();  // "user-defined" 4th order closedness function + lazy flipper
+		my_opengm::interpixel_boundary_segmentation_example();  // 4-wise interaction("user-defined" 4th order closedness function) + lazy flipper.
 	}
 
 	// inference algorithm
 	{
-		// an example for segmentation
-		//	[ref] ${CPP_RND_HOME}/test/segmentation/interactive_graph_cuts/interactive_graph_cuts_main.cpp
+		// an example for segmentation.
+		//	REF [file] >> ${CPP_RND_HOME}/test/segmentation/interactive_graph_cuts/interactive_graph_cuts_main.cpp
 
 		std::cout << "\ninference algorithms ------------------------------------------------" << std::endl;
-		// image segmentation, stereo matching, & image restoration
+		// image segmentation, stereo matching, & image restoration.
 		//my_opengm::inference_algorithms();
 	}
 
-	// external library interfacing
+	// external library interfacing.
 	{
 		std::cout << "\nlibDAI interface ----------------------------------------------------" << std::endl;
 		//my_opengm::libdai_interface();
 
 		std::cout << "\nMRFLib interface ----------------------------------------------------" << std::endl;
-		//my_opengm::mrflib_interface();  // compile-time error
+		//my_opengm::mrflib_interface();  // compile-time error.
 	}
 
 	return 0;

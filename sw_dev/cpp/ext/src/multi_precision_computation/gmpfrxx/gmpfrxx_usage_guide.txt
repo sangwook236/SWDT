@@ -1,3 +1,0 @@
-[-] General
-	-. Site
-		http://math.berkeley.edu/~wilken/code/gmpfrxx/

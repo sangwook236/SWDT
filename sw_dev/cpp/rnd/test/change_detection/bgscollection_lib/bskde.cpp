@@ -21,6 +21,9 @@
 #include	<cxcore.h>
 #include	<cvaux.h>
 #include	"bskde.h"
+//--S [] 2016/06/16: Sang-Wook Lee
+#include <ctime>
+//--E [] 2016/06/16: Sang-Wook Lee
 
 BS_KDE::BS_KDE()
 {

@@ -1,3 +1,19 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 /****************************************************************************
 *
 * T2FMRF.cpp
@@ -45,8 +61,7 @@ T2FMRF::T2FMRF()
 
 T2FMRF::~T2FMRF()
 {
-  if(m_modes != NULL) 
-    delete[] m_modes;
+  delete[] m_modes;
 }
 
 void T2FMRF::Initalize(const BgsParams& param)
@@ -101,11 +116,11 @@ void T2FMRF::InitModel(const RgbImage& data)
   for (unsigned int j = 0; j < m_params.Size(); ++j)
   {
     m_state[j].State = background;
-    m_state[j].Ab2b = 0.7;
-    m_state[j].Ab2f = 0.3;
-    m_state[j].Af2b = 0.4;
-    m_state[j].Af2f = 0.6;
-    m_state[j].T = 0.7;
+    m_state[j].Ab2b = 0.7f;
+    m_state[j].Ab2f = 0.3f;
+    m_state[j].Af2b = 0.4f;
+    m_state[j].Af2f = 0.6f;
+    m_state[j].T = 0.7f;
   }
 }
 

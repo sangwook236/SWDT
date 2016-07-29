@@ -1,4 +1,4 @@
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 #define _WIN32_WINNT_NT4 0x0400  // Windows NT 4.0
 #define _WIN32_WINNT_WIN2K 0x0500  // Windows 2000
 #define _WIN32_WINNT_WINXP 0x0501  // Windows XP
@@ -440,7 +440,7 @@ void asio_async_serial_port_better()
 			}
 
 			boost::scoped_ptr<boost::thread> thrd(new boost::thread(serial_port_thread_functor(ioService)));
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 			Sleep(0);  // un-necessary
 #else
             boost::this_thread::yield();
@@ -471,7 +471,7 @@ void asio_async_serial_port_better()
 
 			boost::scoped_ptr<boost::thread> thrd1(new boost::thread(serial_port_thread_functor(ioService1)));
 			boost::scoped_ptr<boost::thread> thrd2(new boost::thread(serial_port_thread_functor(ioService2)));
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 			Sleep(0);  // un-necessary
 #else
             boost::this_thread::yield();

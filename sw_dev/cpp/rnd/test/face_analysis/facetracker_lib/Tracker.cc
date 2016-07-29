@@ -38,6 +38,7 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ///////////////////////////////////////////////////////////////////////////////
 #include <FaceTracker/Tracker.h>
+#include <opencv2/opencv.hpp>
 #define db at<double>
 #define TSCALE 0.3
 using namespace FACETRACKER;

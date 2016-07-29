@@ -33,5 +33,11 @@
     <ClCompile Include="loki\loki_main.cpp">
       <Filter>Source Files\loki</Filter>
     </ClCompile>
+    <ClCompile Include="dlib\dlib_graph_labeling_example.cpp">
+      <Filter>Source Files\dlib</Filter>
+    </ClCompile>
+    <ClCompile Include="dlib\dlib_svm_struct_example.cpp">
+      <Filter>Source Files\dlib</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

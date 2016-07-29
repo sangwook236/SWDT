@@ -1,0 +1,12 @@
+[-] General
+	- Site
+		https://github.com/mblum/libgp
+
+[-] Trouble Shooting (VC)
+	- _ITERATOR_DEBUG_LEVEL 관련 오류 발생
+		<cause>
+			Debug build에서 runtime library가 release build용이 사용.
+		<solution>
+			Multi-threaded DLL (/MD) -> Multi-threaded Debug DLL (/MDd) 변경.
+			==> CMake에서 변경하면 정상적으로 적용되지 않음.
+			==> Visual Studio에서 project property를 변경해야 함.

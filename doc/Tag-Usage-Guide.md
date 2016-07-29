@@ -1,32 +1,23 @@
 ## Documentation Tag
 
 ##### Hierarachy
-- [-]
-- [1]
-	- <->
-	- <1>
-		- ->
-		- +>
-		- :>
-		- >>
-		- <>
-		- 1>
-			- -.
-			- 1.
-			- i.
+- [-], [1]
+	- =, (1), {1}
+		- -, (i)
 
 ##### Status, Explanation or Constraint
 - Use brace: {...}
 - Usage
-	- [-] {*} 1 tab == 4 spaces.
-	- -. {/,need} change tag structure.
-	- -. {progress,problem} our system malfunctions.
-- category
-	- {current}: current status
-		- completion, *
-		- progress, - or ~
-		- delay, !
-		- cancel, /
+	- [-] {*~} 1 tab == 4 spaces.
+		- = {/;need} change tag structure.
+			- - {#;problem} our system malfunctions.
+- Category
+	- {status}: current status
+		- important: *
+		- completion: # or O
+		- progress: ~ or -
+		- delay: !
+		- cancel: / or X
 
 	- {need}: need or requirement.
 	- {cause}: cause.
@@ -41,28 +32,28 @@
 	- {cause}: cause.
 	- {solution}: solution.
 
+	- {note}: note.
 
 ## Revision (History) Tag
 
 ##### Format
-- when multiple lines
+- When multiple lines
 	- //--S [tag-id] yyyy/mm/dd: modifier-id
-	- //	-. {action-id}: <explanation>
+	- //	- {action-id}: <explanation>
 	- //--E [tag-id] yyyy/mm/dd: modifier-id
-- when single line & no explanation
+- When single line & no explanation
 	- //-- [tag-id] yyyy/mm/dd: modifier-id
 
 ##### Feature
-- can be nested
+- Can be nested
 - tag-id
-	- tag id는 동일 file 내에서 unique하여야 하며 생략될 수 있다.
-		- 그러나 bracket은 항상 존재하여야 한다.
-	- revision history가 있을 경우 history id를 사용하는 것이 좋다.
-	- bug 수정시에는 tag id를 error id로 하는 것이 좋을 듯하다.
+	- Tag-id need to be unique in the same file and can be omitted. But the bracket always has to exist.
+	- In case that revision history exists, it's good that history-id is used.
+	- When fixing bugs it seems good that error id is used as tag-id.
 - modifier-id
-	- tagging을 한 사람의 name or identifier.
+	- Name or identifier of a subject to tag.
 - action-id
-	- start tag 후에 수행 동작과 설명을 추가할 수 있다.
+	- Add some actions or explanation after the start tag.
 	- identifier
 		- {A}: add
 		- {M}: modify
@@ -72,55 +63,87 @@
 
 ## Task Tag
 
-##### Format
-- review
-	- // TODO [review] >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- e.g.) 추가적인 검토가 필요한 경우.
-- check
-	- // TODO [check] >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- e.g.) 검증이나 테스트가 충분히 되지 않은 경우.
-- add/implement
-	- // TODO [add/implement] >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- 미구현 사항이 있는 부분에 사용.
-- modify/enhance/update/upgrade/fix/correct
-	- // FIXME [modify/enhance/update/upgrade/fix/correct] >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- 구현은 되어 있으나 (재사용성 등의 이유로) 수정이 필요한 부분에 사용.
-- delete
-	- // FIXME [delete] >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- e.g.) test를 위해 작성한 경우.
-- restore
-	- // FIXME [restore] >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- test 등을 위해 대체했던 부분을 원상태로 복귀.
+##### To-Do Task
+- Format
+	- // TODO [task-id] >> `<brief description>`
+	- //  - `<detailed explanation>` (optional)
+- task-id
+	- review
+		- When an additional review is needed.
+	- check
+		- When more verification or tests are needed.
+	- add, implement
+		- When there are unimplements parts.
 
-- note
-	- // NOTE [caution] >> `<brief description>`
-	- //  -. `<detailed explanation>`
+##### Fix Task
+- Format
+	- // FIXME [task-id] >> `<brief description>`
+	- //  - `<detailed explanation>` (optional)
+- task-id
+	- modify, enhance, update, upgrade, fix, correct
+		- When there are parts to be modified even though they are currently implemented.
+	- delete
+		- When some parts are written for other purposes like testing.
+	- restore
+		- When restoring parts which are implemented temporarily for testing into the original state.
 
-- reference
-	- // REF [site/file/doc/paper] >> `<brief description>`
-	- //  -. `<reference site or document, etc.>`
-	- //  -. `<additional comment>`
+##### Notice Task
+- Format
+	- // NOTICE [task-id] >> `<brief description>`
+	- //  - `<detailed explanation>` (optional)
+- task-id
+	- caution
+	- error, warn
+	- info
+	- note
+		- REF [] >> "Note Taking"
 
-- pseudocode programming process (PPP)
+##### Reference Task
+- Format
+	- // REF [task-id] >> `<information on reference>`
+	- //  - `<detailed explanation>` (optional)
+- task-id
+	- cross, cross ref, cross reference
+		- {cross-reference-id, page no.}
+			- cross-reference-id: Roman numerals, (i, ii, iii. iv, ...)
+		- e.g.)
+			- REF [cross] {iii: p.137} >>
+			- REF [cross ref] {i: p.73, v: p.123} >>
+	- site
+	- file
+	- paper
+	- doc, presentation
+	- video, audio
+
+##### Pseudocode Programming Process (PPP) Task
+- Format
 	- // PPP [] {step:#} >> `<brief description>`
-	- //  -. `<detailed explanation>`
+	- //  - `<detailed explanation>` (optional)
 
-- design by contract (DbC)
-	- // CONTRACT [precondition/postcondition/invariant] {required/optional} >> `<brief description>`
-	- //  -. `<detailed explanation>`
-		- [ref] ContractViolation and its derived classes in ${VIGRA_LIBRARY_HOME}/include/vigra/error.hxx
-- precondition
+##### Design by Contract (DbC) Task
+- Format
+	- // CONTRACT [task-id] {required/optional} >> `<brief description>`
+	- //  - `<detailed explanation>` (optional)
+	- // DbC [task-id] {required/optional} >> `<brief description>`
+	- //  - `<detailed explanation>` (optional)
 	- // PRECONDITION [] {none/required/optional} >> `<brief description>`
-	- //  -. `<detailed explanation>`
-- postcondition
+	- //  - `<detailed explanation>` (optional)
 	- // POSTCONDITION [] {none/required/optional} >> `<brief description>`
-	- //  -. `<detailed explanation>`
-- invariant
+	- //  - `<detailed explanation>` (optional)
 	- // INVARIANT [] {none/required/optional} >> `<brief description>`
-	- //  -. `<detailed explanation>`
+	- //  - `<detailed explanation>` (optional)
+- task-id
+	- precondition
+	- postcondition
+	- invariant
+- REF [file] >> ContractViolation and its derived classes in ${VIGRA_LIBRARY_HOME}/include/vigra/error.hxx
+
+## Note Taking
+- Use bullet
+	- REF [site] >> http://bulletjournal.com/
+
+	- .(dot): task
+	- O(circle): event
+	- -: note
+	- *: important
+	- X: complete

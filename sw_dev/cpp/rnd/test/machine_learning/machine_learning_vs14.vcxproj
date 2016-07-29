@@ -52,8 +52,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/RLlib;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -68,8 +68,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/RLlib;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -97,16 +97,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\dimensionality_reduction\mfa_lib\mfa.cpp" />
+    <ClCompile Include="caffe\caffe_classification_example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="caffe\caffe_main.cpp" />
     <ClCompile Include="clustering\clustering_kmeanspp.cpp" />
     <ClCompile Include="clustering\clustering_k_medoids.cpp" />
     <ClCompile Include="clustering\clustering_main.cpp" />
     <ClCompile Include="clustering\clustering_spectral_clustering.cpp" />
-    <ClCompile Include="dlib_ml\dlib_ml_main.cpp" />
     <ClCompile Include="encog\encog_main.cpp" />
     <ClCompile Include="kmeanspp_lib\KMeans.cpp" />
     <ClCompile Include="kmeanspp_lib\KmTree.cpp" />
     <ClCompile Include="kmeanspp_lib\KmUtils.cpp" />
+    <ClCompile Include="libgp\libgp_main.cpp" />
     <ClCompile Include="liblearning\liblearning_deep_learning_example.cpp" />
     <ClCompile Include="liblearning\liblearning_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
@@ -146,6 +150,14 @@
     <ClCompile Include="mysvm_lib\smo.cpp" />
     <ClCompile Include="mysvm_lib\svm_c.cpp" />
     <ClCompile Include="mysvm_lib\svm_nu.cpp" />
+    <ClCompile Include="rllib\rllib_boyan_chain_lstd_example.cpp" />
+    <ClCompile Include="rllib\rllib_cliff_walking_qlearning_example.cpp" />
+    <ClCompile Include="rllib\rllib_cliff_walking_sarsa_example.cpp" />
+    <ClCompile Include="rllib\rllib_inverted_pendulum_ktdq_example.cpp" />
+    <ClCompile Include="rllib\rllib_inverted_pendulum_lspi_example.cpp" />
+    <ClCompile Include="rllib\rllib_inverted_pendulum_mlp_ktdq_example.cpp" />
+    <ClCompile Include="rllib\rllib_main.cpp" />
+    <ClCompile Include="rllib\rllib_mountain_car_ktdsarsa_example.cpp" />
     <ClCompile Include="rl_glue\rl_glue_main.cpp" />
     <ClCompile Include="shogun\shogun_classifier_conjugateindex_example.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -324,9 +336,18 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="svm_light\svm_light_main.cpp" />
+    <ClCompile Include="tiny_cnn\tiny_cnn_basic_example.cpp" />
+    <ClCompile Include="tiny_cnn\tiny_cnn_cifar10_example.cpp" />
+    <ClCompile Include="tiny_cnn\tiny_cnn_main.cpp" />
+    <ClCompile Include="tiny_cnn\tiny_cnn_mnist_example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="torch\torch_deep_learning_example.cpp" />
     <ClCompile Include="torch\torch_main.cpp" />
     <ClCompile Include="waffles\waffles_main.cpp" />
+    <ClCompile Include="waffles\waffles_manifold_example.cpp" />
+    <ClCompile Include="waffles\waffles_ml_example.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

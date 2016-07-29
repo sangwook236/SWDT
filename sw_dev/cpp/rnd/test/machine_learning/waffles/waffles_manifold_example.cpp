@@ -27,12 +27,7 @@ double LengthOfSineFunc(void *pThis, double x)
 
 double LengthOfSwissRoll(double x)
 {
-#ifdef WINDOWS
-	throw Ex("not implemented yet for Windows");
-	return 0;
-#else
 	return (x * std::sqrt(x * x + 1) + std::asinh(x)) / 2;
-#endif
 }
 
 void generate_swiss_roll_data(const std::size_t nPoints, const bool bComputeIdeal, GClasses::GMatrix *&pData, GClasses::GRelation *&pRelation, double *&pIdealResults, GClasses::GRand *prng)
@@ -50,13 +45,13 @@ void generate_swiss_roll_data(const std::size_t nPoints, const bool bComputeIdea
     for (std::size_t n = 0; n < nPoints; ++n)
     {
         const double t = ((double)n * 8) / nPoints;
-        double *pVector = pData->newRow();
-        pVector[0] = (t + 2) * std::sin(t) + 14;
-        pVector[1] = prng->uniform() * 12 - 6;
-        pVector[2] = (t + 2) * std::cos(t);
+        GClasses::GVec datVec = pData->newRow();
+		datVec[0] = (t + 2) * std::sin(t) + 14;
+		datVec[1] = prng->uniform() * 12 - 6;
+		datVec[2] = (t + 2) * std::cos(t);
         if (bComputeIdeal)
         {
-            pIdealResults[2 * n] = pVector[1];
+            pIdealResults[2 * n] = datVec[1];
             pIdealResults[2 * n + 1] = LengthOfSwissRoll(t + 2);/* - LengthOfSwissRoll(2);*/
         }
     }
@@ -77,13 +72,13 @@ void generate_s_curve_data(const std::size_t nPoints, const bool bComputeIdeal, 
     for (std::size_t n = 0; n < nPoints; ++n)
     {
         const double t = ((double)n * 2.2 * M_PI - .1 * M_PI) / nPoints;
-        double *pVector = pData->newRow();
-        pVector[0] = 1.0 - std::sin(t);
-        pVector[1] = t;
-        pVector[2] = prng->uniform() * 2;
+		GClasses::GVec datVec = pData->newRow();
+		datVec[0] = 1.0 - std::sin(t);
+		datVec[1] = t;
+		datVec[2] = prng->uniform() * 2;
         if (bComputeIdeal)
         {
-            pIdealResults[2 * n] = pVector[2];
+            pIdealResults[2 * n] = datVec[2];
             pIdealResults[2 * n + 1] = (n > 0 ? GClasses::GMath::integrate(LengthOfSineFunc, 0, t, n + 30, NULL) : 0);
         }
     }
@@ -108,27 +103,27 @@ void generate_spirals_data(const std::size_t nPoints, const bool bComputeIdeal, 
     for (std::size_t n = 0; n < nPoints; ++n)
     {
         const double t = ((double)n * dTotalLength) / nPoints;
-        double *pVector = pData->newRow();
+		GClasses::GVec datVec = pData->newRow();
         if (t < dSpiralLength)
         {
             const double d = (dSpiralLength - t) * dWraps * 2 * M_PI / dSpiralLength; // d = radians
-            pVector[0] = -std::cos(d);
-            pVector[1] = dHeight * t / dSpiralLength;
-            pVector[2] = -std::sin(d);
+			datVec[0] = -std::cos(d);
+			datVec[1] = dHeight * t / dSpiralLength;
+			datVec[2] = -std::sin(d);
         }
         else if (t - 2.0 - dSpiralLength >= 0)
         {
             const double d = (t - 2.0 - dSpiralLength) * dWraps * 2 * M_PI / dSpiralLength; // d = radians
-            pVector[0] = std::cos(d);
-            pVector[1] = dHeight * (dSpiralLength - (t - 2.0 - dSpiralLength)) / dSpiralLength;
-            pVector[2] = std::sin(d);
+			datVec[0] = std::cos(d);
+			datVec[1] = dHeight * (dSpiralLength - (t - 2.0 - dSpiralLength)) / dSpiralLength;
+			datVec[2] = std::sin(d);
         }
         else
         {
             const double d = (t - dSpiralLength) / 2.0; // 2 = diameter
-            pVector[0] = 2.0 * d - 1.0;
-            pVector[1] = dHeight;
-            pVector[2] = 0;
+			datVec[0] = 2.0 * d - 1.0;
+			datVec[1] = dHeight;
+			datVec[2] = 0;
         }
         if (bComputeIdeal)
             pIdealResults[n] = dTotalLength * n / nPoints;
@@ -355,8 +350,12 @@ void semi_supervised_manifold_sculpting_for_swiss_roll()
         for (int i = 0; i < nSupervisedPoints; ++i)
         {
             const std::size_t nPoint = (std::size_t)rng.next(nPoints);
-            GClasses::GVec::copy(pSculpter->data().row(nPoint), pPrevSculpter->data().row(nPoints), pSculpter->data().relation().size());
-            pSculpter->clampPoint(nPoint);
+			//--S [] 2016/05/19: Sang-Wook Lee
+			//	- {check}: not yet tested.
+            //GClasses::GVec::copy(pSculpter->data().row(nPoint), pPrevSculpter->data().row(nPoints), pSculpter->data().relation().size());
+			pSculpter->data().row(nPoint).copy(pPrevSculpter->data().row(nPoints));
+			//--E [] 2016/05/19: Sang-Wook Lee
+			pSculpter->clampPoint(nPoint);
         }
     }
 

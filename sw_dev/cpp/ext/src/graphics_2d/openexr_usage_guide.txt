@@ -1,0 +1,22 @@
+[-] General
+	-. Site
+		http://www.openexr.com/
+
+[-] Build (CMake + VC)
+	-. Download files
+		IlmBase & OpenEXR.
+
+	-. Configure & generate IlmBase
+		set CMAKE_INSTALL_PREFIX to ${OPENEXR_INSTALL_DIR}.
+	-. Build IlmBase
+	-. Install IlmBase
+		아래의 directory에 설치.
+			${OPENEXR_INSTALL_DIR}/include/OpenEXR
+			${OPENEXR_INSTALL_DIR}/lib/OpenEXR
+		==> Install까지 정상적으로 되어야 이후 OpenEXR 설치할 때 편리.
+
+	-. Configure & generate OpenEXR
+		set ILMBASE_PACKAGE_PREFIX to ${OPENEXR_INSTALL_DIR}.
+		set CMAKE_INSTALL_PREFIX to ${OPENEXR_INSTALL_DIR}.
+	-. Build OpenEXR
+	-. Install OpenEXR

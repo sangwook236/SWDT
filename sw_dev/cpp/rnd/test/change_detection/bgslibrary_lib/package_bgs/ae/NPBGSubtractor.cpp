@@ -1,4 +1,20 @@
 /*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/*
 *
 * Copyright 2001 by Ahmed Elgammal All  rights reserved.
 *
@@ -10,21 +26,21 @@
 * copyright notice must be included.  For any other uses of this software,
 * in original or  modified form, including but not limited to distribution
 * in whole or in  part, specific  prior permission  must be  obtained from
-* Author or UMIACS.  These programs shall not  be  used, rewritten, or
-* adapted as  the basis  of  a commercial  software  or  hardware product
-* without first obtaining appropriate licenses  from Author.
+* Author or UMIACS.  These programs shall not  be  used, rewritten, or  
+* adapted as  the basis  of  a commercial  software  or  hardware product 
+* without first obtaining appropriate licenses  from Author. 
 * Other than these cases, no part of this software may be used or
 * distributed without written permission of the author.
 *
-* Neither the author nor UMIACS make any representations about the
-* suitability of this software for any purpose.  It is provided
+* Neither the author nor UMIACS make any representations about the 
+* suitability of this software for any purpose.  It is provided 
 * "as is" without express or implied warranty.
 *
 * Ahmed Elgammal
-*
+* 
 * University of Maryland at College Park
 * UMIACS
-* A.V. Williams Bldg.
+* A.V. Williams Bldg. 
 * CollegePark, MD 20742
 * E-mail:  elgammal@umiacs.umd.edu
 *
@@ -36,7 +52,7 @@
 
 #include "NPBGSubtractor.h"
 #include <assert.h>
-#include <cmath>
+#include <math.h>
 #include <string.h>
 
 //#ifdef _DEBUG
@@ -51,7 +67,7 @@ void BGR2SnGnRn(unsigned char * in_image,
                 unsigned int cols)
 {
   unsigned int i;
-  unsigned int r1,r2,r3;
+  unsigned int r2,r3;
   unsigned int r,g,b;
   double s;
 
@@ -83,11 +99,11 @@ void UpdateDiffHist(unsigned char * image1, unsigned char * image2, DynamicMedia
   unsigned char *pAbsDiffHist = pHist->Hist;
 
   int histbins_1 = histbins-1;
-
+  
   for(j = 0; j < imagesize; j++)
   {
     diff = (int) image1[j] - (int) image2[j];
-    diff = std::abs(diff);
+    diff = abs(diff);
     // update histogram
     bin = (diff < histbins ? diff : histbins_1);
     pAbsDiffHist[j*histbins+bin]++;
@@ -183,7 +199,7 @@ void EstimateSDsFromAbsDiffHist(DynamicMedianHistogram * pAbsDiffHist,
 {
   double v;
   double kernelbinfactor=(kernelbins-1)/(MaxSD-MinSD);
-  int medianCount;
+  int medianCount; 
   int sum;
   int bin;
   unsigned int histindex;
@@ -290,7 +306,7 @@ void NPBGSubtractor::AddFrame(unsigned char *ImageBuffer)
 {
   if(UseColorRatiosFlag && color_channels==3)
     BGR2SnGnRn(ImageBuffer,ImageBuffer,rows,cols);
-
+  
   BGModel->AddFrame(ImageBuffer);
 }
 
@@ -311,7 +327,7 @@ void NPBGSubtractor::Estimation()
 
   TimeIndex=0;
 
-  // estimate standard deviations
+  // estimate standard deviations 
 
   if(SdEstimateFlag)
   {
@@ -352,7 +368,7 @@ void BuildImageIndex(unsigned char * Image,
     {
       if(Image[j])
         image_list[i++]=j;
-
+      
       j++;
     }
     j+=2;
@@ -403,7 +419,7 @@ void HystExpandOperatorIndexed(unsigned char * inImage,
 
   out_list=outIndex->List;
   k=0;
-
+  
   for(i = 0; i < in_cnt; i++)
   {
     for(j = 0; j < 9; j++)
@@ -460,7 +476,7 @@ void HystShrinkOperatorIndexed(unsigned char * inImage,
 
   out_list=outIndex->List;
   k=0;
-
+  
   for(i = 0; i < in_cnt; i++)
   {
     idx = in_list[i];
@@ -468,7 +484,7 @@ void HystShrinkOperatorIndexed(unsigned char * inImage,
 
     while(j < 9 && inImage[idx+Nbr[j]])
       j++;
-
+    
     if(j >= 9 || Pimage[idx] <= hyst_th)
       outImage[idx]=255;
   }
@@ -689,7 +705,7 @@ void NPBGSubtractor::SequenceBGUpdate_Pairs(unsigned char * image,
   rate=(rate > 2) ? rate : 2;
 
 
-  TemporalBufferNext=(TemporalBufferTop+1)
+  TemporalBufferNext=(TemporalBufferTop+1) 
     % TemporalBufferLength;
 
   // pointers to Masks : Top and Next
@@ -721,16 +737,16 @@ void NPBGSubtractor::SequenceBGUpdate_Pairs(unsigned char * image,
         {
           if(color_channels==1)
           {
-            histindex=i*histbins;
+            histindex=i*histbins;	
 
             // add new pair from temporal buffer
-            diff=(unsigned char) std::abs((int) *pTBbase1 - (int) *pTBbase2);
+            diff=(unsigned char) abs((int) *pTBbase1 - (int) *pTBbase2);
             bin=(diff < histbins ? diff : histbins_1);
             pAbsDiffHist[histindex+bin]++;
 
 
             // remove old pair from the model
-            diff=(unsigned char) std::abs((int) *pModelbase1-(int) *pModelbase2);
+            diff=(unsigned char) abs((int) *pModelbase1-(int) *pModelbase2);
             bin=(diff < histbins ? diff : histbins_1);
             pAbsDiffHist[histindex+bin]--;
           }
@@ -739,35 +755,41 @@ void NPBGSubtractor::SequenceBGUpdate_Pairs(unsigned char * image,
             // color
 
             // add new pair from temporal buffer
-            histindex=ic*histbins;
-            diff=std::abs(*pTBbase1 - *pTBbase2);
+            histindex=ic*histbins;	
+            diff=abs(*pTBbase1 -
+              *pTBbase2);
             bin=(diff < histbins ? diff : histbins_1);
             pAbsDiffHist[histindex+bin]++;
 
-            histindex+=histbins;
-            diff=std::abs(*(pTBbase1+1) - *(pTBbase2+1));
+            histindex+=histbins;	
+            diff=abs(*(pTBbase1+1) -
+              *(pTBbase2+1));
             bin=(diff < histbins ? diff : histbins_1);
             pAbsDiffHist[histindex+bin]++;
 
-            histindex+=histbins;
-            diff=std::abs(*(pTBbase1+2) - *(pTBbase2+2));
+            histindex+=histbins;	
+            diff=abs(*(pTBbase1+2) -
+              *(pTBbase2+2));
             bin=(diff < histbins ? diff : histbins_1);
             pAbsDiffHist[histindex+bin]++;
 
             // remove old pair from the model
-            histindex=ic*histbins;
+            histindex=ic*histbins;	
 
-            diff=std::abs(*pModelbase1- *pModelbase2);
+            diff=abs(*pModelbase1-
+              *pModelbase2);
             bin=(diff < histbins ? diff : histbins_1);
             pAbsDiffHist[histindex+bin]--;
 
-            histindex+=histbins;
-            diff=std::abs(*(pModelbase1+1)- *(pModelbase2+1));
+            histindex+=histbins;	
+            diff=abs(*(pModelbase1+1)-
+              *(pModelbase2+1));
             bin=(diff < histbins ? diff : histbins_1);
             pAbsDiffHist[histindex+bin]--;
 
-            histindex+=histbins;
-            diff=std::abs(*(pModelbase1+2)- *(pModelbase2+2));
+            histindex+=histbins;	
+            diff=abs(*(pModelbase1+2)-
+              *(pModelbase2+2));
             bin=(diff < histbins ? diff : histbins_1);
             pAbsDiffHist[histindex+bin]--;
           }
@@ -880,7 +902,7 @@ void NPBGSubtractor::NPBGSubtraction_Subset_Kernel(
   double p;
   double th;
 
-  double alpha,beta,beta_over_alpha, betau,betau_over_alpha;
+  double alpha;
 
   alpha= AlphaValue;
 
@@ -895,12 +917,12 @@ void NPBGSubtractor::NPBGSubtraction_Subset_Kernel(
   int k,g;
 
 
-  if (color_channels==1)
+  if (color_channels==1) 
   {
     // gray scale
 
     int kernelbase;
-
+    
     for (i=0;i<rows*cols;i++)
     {
       kernelbase=SDbins[i]*(2*KernelHalfWidth+1);
@@ -932,11 +954,11 @@ void NPBGSubtractor::NPBGSubtraction_Subset_Kernel(
 
     unsigned int kerneltablewidth=2*KernelHalfWidth+1;
 
-    beta=3.0;    // minimum bound on the range.
-    betau=100.0;
+    double beta=3.0;    // minimum bound on the range.
+    double betau=100.0;
 
-    beta_over_alpha = beta / alpha;
-    betau_over_alpha = betau / alpha;
+    double beta_over_alpha = beta / alpha;
+    double betau_over_alpha = betau / alpha;
 
 
     double brightness_lowerbound = 1-alpha;
@@ -958,7 +980,7 @@ void NPBGSubtractor::NPBGSubtraction_Subset_Kernel(
       {
         base=j*imagesize+i;
         g=pSequence[base];
-
+        
         if (g < beta_over_alpha)
         {
           x1=(int) (g-beta);
@@ -994,7 +1016,7 @@ void NPBGSubtractor::NPBGSubtraction_Subset_Kernel(
 
       p=sum / j;
       Pimage1[ig]=p;
-    }
+    }	
   }
   else if (UseColorRatiosFlag && ! SubsetFlag)
   {
@@ -1041,7 +1063,7 @@ void NPBGSubtractor::NPBGSubtraction_Subset_Kernel(
           bin = KernelBins -1 ;
         else
           bin= (int) ((g-gmin) * gfactor + 0.5);
-
+        
         kernelbase1=bin*kerneltablewidth;
 
         k= (g-  image[i]) +KernelHalfWidth;
@@ -1100,7 +1122,7 @@ void NPBGSubtractor::NPBGSubtraction_Subset_Kernel(
         sum+=kernel1*kernel2*kernel3;
         j++;
       }
-
+      
       p=sum/j;
       Pimage1[ig]=p;
     }
@@ -1121,7 +1143,7 @@ void NPBGSubtractor::NBBGSubtraction(unsigned char * Frame,
   else
     memcpy(tempFrame,Frame,rows*cols*color_channels);
 
-  NPBGSubtraction_Subset_Kernel(tempFrame,FGImage,FilteredFGImage);
+  NPBGSubtraction_Subset_Kernel(tempFrame,FGImage,FilteredFGImage);	
   /*NoiseFilter_o(FGImage,DisplayBuffers[3],rows,cols,4);
   BuildImageIndex(DisplayBuffers[3],imageindex,rows,cols);
 

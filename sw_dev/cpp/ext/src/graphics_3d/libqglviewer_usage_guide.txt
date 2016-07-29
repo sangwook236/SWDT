@@ -1,0 +1,26 @@
+[-] General
+	- Site.
+		http://www.libqglviewer.com/
+
+		https://github.com/GillesDebunne/libQGLViewer
+
+	- Installation
+		REF [file] >> ${libQGLViewer_HOME}/doc/installWindows.html
+
+[-] Build (VC)
+	- Open (Visual Studio) Command Prompt.
+	- Set path for qmake.
+		set path=${QT_HOME}/bin;%path%
+		==> Use Qt4.
+	- Set environment variables.
+		set QTDIR=${QT_HOME}
+		==> 정의가 유효한 환경에서 Visual Studio를 실행해야 설정된 environment variable이 유효하게 됨.
+	- Change directory.
+		cd ${libQGLViewer_HOME}/QGLViewer
+	- Generate Visual Studio project files from Qt project files.
+		qmake -spec win32-msvc2015 -tp vc QGLViewer.pro -o QGLViewer.vcxproj
+		REF [file] >> generate_Visual_Studio_project_file_from_Qt_project_file.txt
+		==> ${libQGLViewer_HOME}/QGLViewer에 존재하는 QGLViewer.vcproj를 사용할 경우 build error 발생.
+	- Open project file.
+		${libQGLViewer_HOME}/QGLViewer/QGLViewer.vcxproj
+		==> Release build mode만 존재.

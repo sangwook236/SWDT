@@ -1,3 +1,19 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "VuMeter.h"
 
 VuMeter::VuMeter() : firstTime(true), showOutput(true), enableFilter(true), binSize(8), alpha(0.995), threshold(0.03)
@@ -44,8 +60,12 @@ void VuMeter::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &im
     cvCvtColor(frame,gray,CV_RGB2GRAY);
   
   bgs.UpdateBackground(gray,background,mask);
-  cv::Mat img_foreground(mask);
-  cv::Mat img_bkg(background);
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //cv::Mat img_foreground(mask);
+  //cv::Mat img_bkg(background);
+  cv::Mat img_foreground(cv::cvarrToMat(mask));
+  cv::Mat img_bkg(cv::cvarrToMat(background));
+  //--E [] 2016/06/16: Sang-Wook Lee
 
   if(enableFilter)
   {

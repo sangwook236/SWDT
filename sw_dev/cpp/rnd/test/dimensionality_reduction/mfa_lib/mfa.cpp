@@ -27,7 +27,6 @@
 //--S [] 2015/08/05 : Sang-Wook Lee
 #if defined(_MSC_VER)
 #include <boost/math/special_functions/fpclassify.hpp>
-using namespace boost::math;  // for isnan().
 #endif
 //--E [] 2015/08/05 : Sang-Wook Lee
 
@@ -838,7 +837,7 @@ std::size_t mfa_t::compute_permutation(gsl_permutation* permutation,
   gsl_permutation_init(permutation);
   int obs_tail = permutation->size-1;
   //have obs_tail point to the first element from the end that is hidden
-  while (obs_tail >= 0 && !isnan(gsl_vector_get(data, obs_tail))) {
+  while (obs_tail >= 0 && !boost::math::isnan(gsl_vector_get(data, obs_tail))) {
     obs_tail--;
   }
   if (obs_tail < 0)
@@ -848,18 +847,18 @@ std::size_t mfa_t::compute_permutation(gsl_permutation* permutation,
   int num_hidden = 0;
   while(true) {
     const double value = gsl_vector_get(data, num_hidden);
-    if (!isnan(value)) {
+    if (!boost::math::isnan(value)) {
       gsl_permutation_swap(permutation, num_hidden, obs_tail);
       num_hidden++;
       obs_tail--;
       while (obs_tail > num_hidden
-             && !isnan(gsl_vector_get(data, obs_tail))) {
+             && !boost::math::isnan(gsl_vector_get(data, obs_tail))) {
         obs_tail--;
       }
     } else
       num_hidden++;
     if (obs_tail <= num_hidden) {
-      if (num_hidden < static_cast<int>(data->size) && isnan(num_hidden)) 
+      if (num_hidden < static_cast<int>(data->size) && boost::math::isnan(num_hidden))
         return static_cast<std::size_t>(num_hidden + 1); 
       else
         return static_cast<std::size_t>(num_hidden); 
@@ -941,7 +940,7 @@ void mfa_t::compute_mu(vector_data_set_t& data) {
   while(data.get_next_vector(next_vector)) {
     for (std::size_t i = 0; i < n; ++i) {
       double next_data = gsl_vector_get(next_vector, i);
-      if (isnan(next_data))
+      if (boost::math::isnan(next_data))
         continue;
       gsl_vector_set(current_data, i, 
                      gsl_vector_get(current_data, i) + next_data);
@@ -954,7 +953,7 @@ void mfa_t::compute_mu(vector_data_set_t& data) {
   //if so, it sets them to be 0
   for (std::size_t i = 0; i < n; ++i) {
     double cur_data_pt = gsl_vector_get(current_data, i);
-    if (isnan(cur_data_pt)) {
+    if (boost::math::isnan(cur_data_pt)) {
       gsl_vector_set(current_data, i, 0);
       assert(gsl_vector_get(count, i) == 0);
     }

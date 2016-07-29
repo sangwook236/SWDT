@@ -1,0 +1,7 @@
+[-] General
+	-. Site
+		http://glaros.dtc.umn.edu/gkhome/metis/metis/overview
+
+[-] Building
+	-. Visual Studio에서 build가 되지 않으면 SuiteSparse GitHub 참고
+		https://github.com/jlblancoc/suitesparse-metis-for-windows

@@ -1,6 +1,22 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "DPEigenbackgroundBGS.h"
 
-DPEigenbackgroundBGS::DPEigenbackgroundBGS() : firstTime(true), frameNumber(0), showOutput(true), threshold(225), historySize(20), embeddedDim(10)
+DPEigenbackgroundBGS::DPEigenbackgroundBGS() : firstTime(true), frameNumber(0), threshold(225), historySize(20), embeddedDim(10), showOutput(true) 
 {
   std::cout << "DPEigenbackgroundBGS()" << std::endl;
 }
@@ -53,7 +69,10 @@ void DPEigenbackgroundBGS::process(const cv::Mat &img_input, cv::Mat &img_output
   lowThresholdMask.Clear();
   bgs.Update(frameNumber, frame_data, lowThresholdMask);
   
-  cv::Mat foreground(highThresholdMask.Ptr());
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //cv::Mat foreground(highThresholdMask.Ptr());
+  cv::Mat foreground(cv::cvarrToMat(highThresholdMask.Ptr()));
+  //--E [] 2016/06/16: Sang-Wook Lee
 
   if(showOutput)
     cv::imshow("Eigenbackground (Oliver)", foreground);

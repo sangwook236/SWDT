@@ -1,4 +1,0 @@
-[-] General
-	-. Site
-		https://github.com/gflags/gflags
-		https://google-gflags.googlecode.com/

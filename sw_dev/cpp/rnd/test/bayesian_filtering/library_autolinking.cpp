@@ -5,9 +5,9 @@
 #		if defined(DEBUG) || defined(_DEBUG)
 
 //#pragma comment(lib, "BayesFilter_UBLAS_MD7d.lib")
-#pragma comment(lib, "lapack_d.lib")
-#pragma comment(lib, "blas_d.lib")
-#pragma comment(lib, "libf2c_d.lib")
+#pragma comment(lib, "lapackd.lib")
+#pragma comment(lib, "blasd.lib")
+#pragma comment(lib, "libf2cd.lib")
 
 #		else
 

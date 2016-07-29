@@ -1,0 +1,154 @@
+[-] General
+	- Site.
+		http://www.wxwidgets.org/
+		http://trac.wxwidgets.org/
+
+		https://github.com/wxWidgets/wxWidgets
+
+[-] Building ver. 2.6 (VC)
+	+> IDE.
+		- Target project file.
+			"${WXWIDGETS_HOME}/build/msw/wx.dsw"
+			"${WXWIDGETS_HOME}/build/msw/wx_dll.dsw"
+		- There are project dependencies.
+			0: wxexpat.lib wxjpeg.lib wxpng.lib wxregex.lib wxtiff.lib wxzlib.lib
+			1: wxbase.lib
+			2: wxmsw_core.lib
+			3: wxbase_net.lib wxbase_odbc.lib wxbase_xml.lib
+			4: wxmsw_adv.lib wxmsw_gl.lib wxmsw_html.lib wxmsw_media.lib wxmsw_qa.lib wxmsw_xrc.lib
+			5: wxmsw_dbgrid.lib
+	+> Visual Studio Command Prompt.
+		- Target project file.
+			"${WXWIDGETS_HOME}/build/msw/"
+		- Command.
+			nmake -f makefile.vc
+			nmake -f makefile.vc clean
+
+[-] Building ver. 2.9.2 (VC)
+	REF [file] >> ${WXWIDGETS_HOME}/docs/msw/install.txt
+
+	1. Configure setup.h file.
+		${WXWIDGETS_HOME}/include/wx/msw/setup.h
+	2. Change directory to ${WXWIDGETS_HOME}/build/msw.
+	3. Build makefile.
+		nmake -f makefile.vc
+		nmake -f makefile.vc BUILD=debug UNICODE=1
+		nmake -f makefile.vc BUILD=release SHARED=1 UNICODE=1 USE_OPENGL=1 USE_HTML=1 USE_XRC=1
+		nmake -f makefile.vc BUILD=debug SHARED=1 UNICODE=1 USE_OPENGL=1 USE_HTML=1 USE_XRC=1
+		nmake -f makefile.vc BUILD=release SHARED=0 UNICODE=1 USE_OPENGL=1 USE_HTML=1 USE_XRC=1
+		nmake -f makefile.vc BUILD=debug SHARED=0 UNICODE=1 USE_OPENGL=1 USE_HTML=1 USE_XRC=1
+		option	
+			BUILD=debug/release {debug}
+			SHARED=0|1 {0}
+			UNICODE=0|1 {1}
+			WXUNIV=0|1 {0}
+			MONOLITHIC=0|1 {0}
+			USE_GUI=0|1 {1}
+			USE_OPENGL=0|1 {0}
+			USE_HTML=0|1
+			USE_XRC=0|1
+			RUNTIME_LIBS=static
+			MSLU=0/1 {0}
+			DEBUG_FLAG=0|1|2
+			DEBUG_INFO=0|1
+			TARGET_CPU=X64|AMD64|IA64 {x86}
+			VENDOR=<your company name>
+			CFG=<configuration name>
+			COMPILER_PREFIX=<string>
+	4. (Optional) Change directory to ${WXWIDGETS_HOME}/utils/wxrc.
+	5. (Optional) Build makefile.
+		nmake -f makefile.vc BUILD=debug UNICODE=1
+		nmake -f makefile.vc BUILD=release UNICODE=1
+
+[-] Building GitHub (VC): 2016/05/05
+	REF [file] >> ${WXWIDGETS_HOME}/BuildGit.txt
+	REF [file] >> ${WXWIDGETS_HOME}/docs/msw/install.txt
+
+	- Copy setup.h.
+		Copy include/wx/msw/setup0.h to include/wx/msw/setup.h.
+	- Run Visual Studio Command Prompt if using nmake.
+	- Change a directory.
+		${WXWIDGETS_HOME}/build/msw
+	- Build.
+		Use a solution file.
+			Open wx_vc14.sln
+				Can build all static & shared libraries of Win32 & Win64.
+		Use nmake.
+			nmake /f makefile.vc
+			nmake /f makefile.vc BUILD=release
+			nmake /f makefile.vc BUILD=release SHARED=1
+	- Copy header files & libraries.
+		${WXWIDGETS_HOME}/lib/vc_dll, vc_lib, vc_x64_dll, vc_x64_lib.
+
+[-] Using (Common)
+	- Using wx-config.
+		REF [file] >> ${WXWIDGETS_BIN_DIR}/wx-config
+
+		Set compiler and linker options.
+			`wx-config --cflags`
+			`wx-config  --version=3.0 --static=no --unicode=yes --debug=no --cflags`
+			`wx-config --libs`
+			`wx-config  --version=3.0 --static=no --unicode=yes --debug=no --libs`
+	- Using traditional approach.
+		Set include & library paths.
+			${INCLUDE_DIR}/wx-3.0, wxwidgets
+			${LIBRARY_DIR}/wxwidgets
+		Set defines.
+			__WXGTK__ or __WXMSW__
+			__WXDEBUG__
+			WXUSINGDLL (required if shared libraries are used)
+			wxUSE_UNICODE (optional)
+			wxUSE_GUI=1 (optional)
+		Set a path for setup.h (if necessary).
+			Linux:
+				${LIBRARY_DIR}/wx/include/gtk2-unicode-3.0 (?
+				${LIBRARY_DIR}/wx/include/base-unicode-3.0 (?)
+			Windows:
+				${LIBRARY_DIR}/wxwidgets/vc_lib/mswu, mswud
+				${LIBRARY_DIR}/wxwidgets/vc_dll/mswu, mswud
+				${LIBRARY_DIR}/wxwidgets/vc_x86_lib/mswu, mswud
+				${LIBRARY_DIR}/wxwidgets/vc_x86_dll/mswu, mswud
+
+[-] Using (VC)
+	- Create a new project.
+		Win32 Project:
+			Windows application
+			Empty project
+	- Set include path.
+		Standard:
+			${INCLUDE_DIR}/wxwidgets/wx
+			${INCLUDE_DIR}/wxwidgets/msvc/wx
+		When there is a certain problem(?):
+			When static linking: depending on building modes.
+				${LIBRARY_DIR}/wxwidget/vc_lib/msw
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswd
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswu
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswud
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswuniv
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswunivd
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswunivu
+				${LIBRARY_DIR}/wxwidget/vc_lib/mswunivud
+			When dynamic linking: depending on building modes.
+				${LIBRARY_DIR}/wxwidget/vc_dll/msw
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswd
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswu
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswud
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswuniv
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswunivd
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswunivu
+				${LIBRARY_DIR}/wxwidget/vc_dll/mswunivud
+	- Set library path.
+		${LIBRARY_DIR}/wxwidget/vc_lib
+		${LIBRARY_DIR}/wxwidget/vc_dll
+	- Set linking library.
+		Windows Libraries:
+			kernel32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib
+			winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib
+			uuid.lib rpcrt4.lib advapi32.lib wsock32.lib oleacc.lib odbc32.lib 
+		ver. 2.6:
+			wxexpat.lib wxjpeg.lib wxpng.lib wxregex.lib wxtiff.lib wxzlib.lib
+			wxbase.lib
+			wxmsw_core.lib
+			wxbase_net.lib wxbase_odbc.lib wxbase_xml.lib
+			wxmsw_adv.lib wxmsw_gl.lib wxmsw_html.lib wxmsw_media.lib wxmsw_qa.lib wxmsw_xrc.lib
+			wxmsw_dbgrid.lib

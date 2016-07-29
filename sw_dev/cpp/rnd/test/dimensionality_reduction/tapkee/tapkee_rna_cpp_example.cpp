@@ -23,7 +23,7 @@ struct MatchKernelCallback
 
 namespace my_tapkee {
 
-// [ref] ${TAPKEE_HOME}/examples/rna.cpp
+// REF [file] >> ${TAPKEE_HOME}/examples/rna.cpp
 void RNA_cpp_example()
 {
 	const std::string input_filename("./data/dimensionality_reduction/tapkee/rna.dat");

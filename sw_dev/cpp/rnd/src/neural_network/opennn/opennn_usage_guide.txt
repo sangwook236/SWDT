@@ -1,5 +1,0 @@
-[-] General
-	-. Site
-		http://flood.sourceforge.net/
-		http://sourceforge.net/projects/flood/
-		http://opennn.cimne.com/

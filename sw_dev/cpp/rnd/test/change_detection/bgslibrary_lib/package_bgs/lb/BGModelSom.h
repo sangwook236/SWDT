@@ -1,3 +1,19 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 /*  Scene 1.0.1 -- Background subtraction and object tracking for complex environments  
 BGModelSom.h
 
@@ -39,7 +55,7 @@ namespace lb_library
     const float EPS1 = 100.0; // model match distance during training
     const float EPS2 = 20.0;  // model match distance
     const float C1 = 1.0;     // learning rate during training
-    const float C2 = 0.05;    // learning rate
+    const float C2 = 0.05f;    // learning rate
 
     class BGModelSom : public BGModel
     {

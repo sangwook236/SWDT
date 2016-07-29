@@ -1,7 +1,23 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 /* --- --- ---
 * Copyright (C) 2008--2010 Idiap Research Institute (.....@idiap.ch)
 * All rights reserved.
-* 
+*
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions
 * are met:
@@ -12,7 +28,7 @@
 *    documentation and/or other materials provided with the distribution.
 * 3. The name of the author may not be used to endorse or promote products
 *    derived from this software without specific prior written permission.
-* 
+*
 * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -37,6 +53,10 @@
 #include <fstream>						// file I/O
 #include <cmath>						// math includes
 #include <iostream>                                             // I/O streams
+//#include <opencv2/legacy/compat.hpp>
+#include <opencv2/opencv.hpp>
+
+using namespace Blob;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -134,7 +154,7 @@ CMultiLayerBGS::~CMultiLayerBGS() {
     int a;
     for (a = 0; a < m_nLBPImgNum; a++)
       cvReleaseImage(&m_ppOrgLBPImgs[a]);
-    delete [] m_ppOrgLBPImgs;
+    delete[] m_ppOrgLBPImgs;
   }
   if (m_pEdgeImg)
     cvReleaseImage(&m_pEdgeImg);
@@ -201,25 +221,28 @@ void CMultiLayerBGS::MergeImages(int num, ...) {
 
   int img_idx = 0;
   for (a = 0; a < nRows; a++)
-    for (b = 0; b < nCols; b++) {
-      if (img_idx >= num)
-        break;
+  for (b = 0; b < nCols; b++) {
+    if (img_idx >= num)
+      break;
 
-      imgROIRect = cvRect(b * imgSize.width, a * imgSize.height, imgSize.width, imgSize.height);
+    imgROIRect = cvRect(b * imgSize.width, a * imgSize.height, imgSize.width, imgSize.height);
 
-      cvSetImageROI(ppIplImg[num], imgROIRect);
-      cvCopyImage(ppIplImg[img_idx++], ppIplImg[num]);
-      cvResetImageROI(ppIplImg[num]);
-    }
+    cvSetImageROI(ppIplImg[num], imgROIRect);
+	//--S [] 2016/06/16: Sang-Wook Lee
+	//cvCopyImage(ppIplImg[img_idx++], ppIplImg[num]);
+	cvCopy(ppIplImg[img_idx++], ppIplImg[num]);
+	//--E [] 2016/06/16: Sang-Wook Lee
+	cvResetImageROI(ppIplImg[num]);
+  }
 
-    delete [] ppIplImg;
+  delete[] ppIplImg;
 }
 
 void CMultiLayerBGS::Update_MAX_MIN_Intensity(unsigned char *cur_intensity, float *max_intensity, float *min_intensity) {
   int a;
   float curI;
   for (a = 0; a < m_nChannel; a++) {
-    curI = (float) cur_intensity[a];
+    curI = (float)cur_intensity[a];
 
     min_intensity[a] = MIN(curI, min_intensity[a]);
     max_intensity[a] = MAX(curI, max_intensity[a]);
@@ -229,7 +252,7 @@ void CMultiLayerBGS::Update_MAX_MIN_Intensity(unsigned char *cur_intensity, floa
 void CMultiLayerBGS::UpdateBgPixelColor(unsigned char *cur_intensity, float* bg_intensity) {
   int a;
   for (a = 0; a < m_nChannel; a++)
-    bg_intensity[a] = m_f1_ModeUpdatingLearnRate * bg_intensity[a] + m_fModeUpdatingLearnRate * (float) cur_intensity[a];
+    bg_intensity[a] = m_f1_ModeUpdatingLearnRate * bg_intensity[a] + m_fModeUpdatingLearnRate * (float)cur_intensity[a];
 }
 
 void CMultiLayerBGS::UpdateBgPixelPattern(float *cur_pattern, float *bg_pattern) {
@@ -256,7 +279,8 @@ void CMultiLayerBGS::QuickSort(float *pData, unsigned short *pIdxes, long low, l
 
       /* find element below ... */
       while (pData[j] > z) j--;
-    } else {
+    }
+    else {
       /* find member below ... */
       while (pData[i] > z) i++;
 
@@ -294,11 +318,11 @@ float CMultiLayerBGS::DistLBP(LBPStruct *LBP1, LBPStruct *LBP2) {
   for (a = 0; a < m_nLBPLength; a++) {
     pattern_dist = fabsf(LBP1->bg_pattern[a] - LBP1->bg_pattern[a]);
   }
-  pattern_dist /= (float) m_nLBPLength;
+  pattern_dist /= (float)m_nLBPLength;
 
   float color_dist = 0;
   for (a = 0; a < m_nChannel; a++) {
-    color_dist += fabsf((float) LBP1->bg_intensity[a]-(float) LBP2->bg_intensity[a]);
+    color_dist += fabsf((float)LBP1->bg_intensity[a] - (float)LBP2->bg_intensity[a]);
   }
   color_dist /= 3.0f * 125.0f;
 
@@ -349,7 +373,10 @@ void CMultiLayerBGS::SetBkMaskImage(IplImage *mask_img) {
   if (m_pBkMaskImg == NULL) {
     m_pBkMaskImg = cvCreateImage(cvGetSize(mask_img), mask_img->depth, mask_img->nChannels);
   }
-  cvCopyImage(mask_img, m_pBkMaskImg);
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //cvCopyImage(mask_img, m_pBkMaskImg);
+  cvCopy(mask_img, m_pBkMaskImg);
+  //--E [] 2016/06/16: Sang-Wook Lee
 }
 
 void CMultiLayerBGS::BackgroundSubtractionProcess() {
@@ -454,7 +481,7 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
       if (lbp_num == 0) { // empty pattern list
         curLBP = (&(LBPs[0]));
         for (a = 0; a < m_nLBPLength; a++) {
-          curLBP->bg_pattern[a] = (float) cur_pattern[a];
+          curLBP->bg_pattern[a] = (float)cur_pattern[a];
         }
 
         curLBP->bg_layer_num = 0;
@@ -465,12 +492,12 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
         curLBP->last_time = m_nCurImgFrameIdx;
         curLBP->freq = 1;
 
-        (*PLBP).matched_mode_first_time = (float) m_nCurImgFrameIdx;
+        (*PLBP).matched_mode_first_time = (float)m_nCurImgFrameIdx;
 
         for (a = 0; a < m_nChannel; a++) {
-          curLBP->bg_intensity[a] = (float) cur_intensity[a];
-          curLBP->min_intensity[a] = (float) cur_intensity[a];
-          curLBP->max_intensity[a] = (float) cur_intensity[a];
+          curLBP->bg_intensity[a] = (float)cur_intensity[a];
+          curLBP->min_intensity[a] = (float)cur_intensity[a];
+          curLBP->max_intensity[a] = (float)cur_intensity[a];
         }
 
         lbp_idxes[0] = 0;
@@ -482,7 +509,8 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
         PLBP++;
         *bg_dist++ = 0.0f;
         continue;
-      } else { // not empty pattern list
+      }
+      else { // not empty pattern list
         /*
         // remove the background layers
         // end of removing the background layer
@@ -492,7 +520,7 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
         best_match_bg_dist = 999.0f;
 
         // find the best match
-        for (a = 0; a < (int) lbp_num; a++) {
+        for (a = 0; a < (int)lbp_num; a++) {
           // get the current index for lbp pattern
           cur_lbp_idx = lbp_idxes[a];
 
@@ -534,27 +562,28 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
         bBackgroundUpdating = ((best_match_bg_dist < m_fPatternColorDistBgUpdatedThreshold));
 
         // reset the weight of the mode
-        if (best_match_idx >= (int) bg_num && LBPs[lbp_idxes[best_match_idx]].max_weight < m_fReliableBackgroundModeWeight) // found not in the background models
+        if (best_match_idx >= (int)bg_num && LBPs[lbp_idxes[best_match_idx]].max_weight < m_fReliableBackgroundModeWeight) // found not in the background models
           best_match_bg_dist = MAX(best_match_bg_dist, m_fPatternColorDistBgThreshold * 2.5f);
 
         *bg_dist = best_match_bg_dist;
       }
       if (m_disableLearning) {
         // no creation or update when learning is disabled
-      } else if (!bBackgroundUpdating) { // no match
+      }
+      else if (!bBackgroundUpdating) { // no match
 
-        for (a = 0; a < (int) lbp_num; a++) { // decrease the weights
+        for (a = 0; a < (int)lbp_num; a++) { // decrease the weights
           curLBP = &(LBPs[lbp_idxes[a]]);
           curLBP->weight *= (1.0f - m_fWeightUpdatingLearnRate / (1.0f + m_fWeightUpdatingConstant * curLBP->max_weight));
         }
 
-        if ((int) lbp_num < m_nMaxLBPModeNum) { // add a new pattern
+        if ((int)lbp_num < m_nMaxLBPModeNum) { // add a new pattern
           // find the pattern index for addition
           int add_lbp_idx = 0;
           bool bFound;
           for (a = 0; a < m_nMaxLBPModeNum; a++) {
             bFound = true;
-            for (b = 0; b < (int) lbp_num; b++)
+            for (b = 0; b < (int)lbp_num; b++)
               bFound &= (a != lbp_idxes[b]);
             if (bFound) {
               add_lbp_idx = a;
@@ -568,10 +597,10 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
           curLBP->freq = 1;
           curLBP->layer_time = -1;
 
-          (*PLBP).matched_mode_first_time = (float) m_nCurImgFrameIdx;
+          (*PLBP).matched_mode_first_time = (float)m_nCurImgFrameIdx;
 
           for (a = 0; a < m_nLBPLength; a++) {
-            curLBP->bg_pattern[a] = (float) cur_pattern[a];
+            curLBP->bg_pattern[a] = (float)cur_pattern[a];
           }
 
           curLBP->bg_layer_num = 0;
@@ -579,16 +608,17 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
           curLBP->max_weight = m_fLowInitialModeWeight;
 
           for (a = 0; a < m_nChannel; a++) {
-            curLBP->bg_intensity[a] = (float) cur_intensity[a];
-            curLBP->min_intensity[a] = (float) cur_intensity[a];
-            curLBP->max_intensity[a] = (float) cur_intensity[a];
+            curLBP->bg_intensity[a] = (float)cur_intensity[a];
+            curLBP->min_intensity[a] = (float)cur_intensity[a];
+            curLBP->max_intensity[a] = (float)cur_intensity[a];
           }
 
           lbp_idxes[lbp_num] = add_lbp_idx;
 
           lbp_num++;
           (*PLBP).num = lbp_num;
-        } else { // replacing the pattern with the minimal weight
+        }
+        else { // replacing the pattern with the minimal weight
           // find the replaced pattern index
           /*
           int rep_pattern_idx = -1;
@@ -613,10 +643,10 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
           curLBP->freq = 1;
           curLBP->layer_time = -1;
 
-          (*PLBP).matched_mode_first_time = (float) m_nCurImgFrameIdx;
+          (*PLBP).matched_mode_first_time = (float)m_nCurImgFrameIdx;
 
           for (a = 0; a < m_nLBPLength; a++) {
-            curLBP->bg_pattern[a] = (float) cur_pattern[a];
+            curLBP->bg_pattern[a] = (float)cur_pattern[a];
           }
 
           curLBP->bg_layer_num = 0;
@@ -624,12 +654,13 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
           curLBP->max_weight = m_fLowInitialModeWeight;
 
           for (a = 0; a < m_nChannel; a++) {
-            curLBP->bg_intensity[a] = (float) cur_intensity[a];
-            curLBP->min_intensity[a] = (float) cur_intensity[a];
-            curLBP->max_intensity[a] = (float) cur_intensity[a];
+            curLBP->bg_intensity[a] = (float)cur_intensity[a];
+            curLBP->min_intensity[a] = (float)cur_intensity[a];
+            curLBP->max_intensity[a] = (float)cur_intensity[a];
           }
         }
-      } else { // find match
+      }
+      else { // find match
         // updating the background pattern model
         cur_lbp_idx = lbp_idxes[best_match_idx];
         curLBP = &(LBPs[cur_lbp_idx]);
@@ -663,13 +694,13 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
         if (curLBP->bg_layer_num > 0) {
           bool removed_bg_layers = false;
           if (curLBP->weight > curLBP->max_weight * 0.2f) {
-            for (a = 0; a < (int) lbp_num; a++) {
+            for (a = 0; a < (int)lbp_num; a++) {
               removed_modes[a] = false;
               if (LBPs[lbp_idxes[a]].bg_layer_num > curLBP->bg_layer_num &&
                 LBPs[lbp_idxes[a]].weight < LBPs[lbp_idxes[a]].max_weight * 0.9f) { /* remove layers */
-                  //LBPs[lbp_idxes[a]].bg_layer_num = 0;
-                  removed_modes[a] = true;
-                  removed_bg_layers = true;
+                //LBPs[lbp_idxes[a]].bg_layer_num = 0;
+                removed_modes[a] = true;
+                removed_bg_layers = true;
               }
             }
           }
@@ -678,9 +709,10 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
             RemoveBackgroundLayers(PLBP, removed_modes);
             lbp_num = (*PLBP).num;
           }
-        } else if (curLBP->max_weight > m_fReliableBackgroundModeWeight && curLBP->bg_layer_num == 0) {
+        }
+        else if (curLBP->max_weight > m_fReliableBackgroundModeWeight && curLBP->bg_layer_num == 0) {
           int max_bg_layer_num = LBPs[lbp_idxes[0]].bg_layer_num;
-          for (a = 1; a < (int) lbp_num; a++)
+          for (a = 1; a < (int)lbp_num; a++)
             max_bg_layer_num = MAX(max_bg_layer_num, LBPs[lbp_idxes[a]].bg_layer_num);
           curLBP->bg_layer_num = max_bg_layer_num + 1;
           curLBP->layer_time = m_nCurImgFrameIdx;
@@ -689,7 +721,7 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
         (*PLBP).cur_bg_layer_no = curLBP->bg_layer_num;
 
         // decrease the weights of non-best matched modes
-        for (a = 0; a < (int) lbp_num; a++) {
+        for (a = 0; a < (int)lbp_num; a++) {
           if (a != best_match_idx) {
             curLBP = &(LBPs[lbp_idxes[a]]);
             curLBP->weight *= (1.0f - m_fWeightUpdatingLearnRate / (1.0f + m_fWeightUpdatingConstant * curLBP->max_weight));
@@ -698,20 +730,20 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
       }
 
       // sort the list of modes based on the weights of modes
-      if ((int) lbp_num > 1 && !m_disableLearning) {
+      if ((int)lbp_num > 1 && !m_disableLearning) {
         float weights[100], tot_weights = 0;
-        for (a = 0; a < (int) lbp_num; a++) {
+        for (a = 0; a < (int)lbp_num; a++) {
           weights[a] = LBPs[lbp_idxes[a]].weight;
           tot_weights += weights[a];
         }
 
         // sort weights in the descent order
-        QuickSort(weights, lbp_idxes, 0, (int) lbp_num - 1, false);
+        QuickSort(weights, lbp_idxes, 0, (int)lbp_num - 1, false);
 
         // calculate the first potential background modes number, bg_num
         float threshold_weight = m_fBackgroundModelPercent*tot_weights;
         tot_weights = 0;
-        for (a = 0; a < (int) lbp_num; a++) {
+        for (a = 0; a < (int)lbp_num; a++) {
           tot_weights += LBPs[lbp_idxes[a]].weight;
           if (tot_weights > threshold_weight) {
             bg_num = a + 1;
@@ -730,7 +762,8 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
     if (m_pFgMaskImg)
       cvSetZero(m_pFgMaskImg);
     cvSetZero(m_pBgDistImg);
-  } else {
+  }
+  else {
     // set the image data
     if (roi) {
       cvSetZero(m_pBgDistImg);
@@ -769,9 +802,9 @@ void CMultiLayerBGS::BackgroundSubtractionProcess() {
   }
 
   // release memories
-  delete [] _mask;
-  delete [] _bg_dist;
-  delete [] _org_intensity;
+  delete[] _mask;
+  delete[] _bg_dist;
+  delete[] _org_intensity;
 }
 
 void CMultiLayerBGS::GetBackgroundImage(IplImage *bk_img) {
@@ -797,7 +830,8 @@ void CMultiLayerBGS::GetBackgroundImage(IplImage *bk_img) {
     if ((*PLBP).num == 0) {
       for (channel = 0; channel < m_nChannel; channel++)
         *c1++ = 0;
-    } else {
+    }
+    else {
       c2 = (*PLBP).LBPs[bg_img_idx].bg_intensity;
       for (channel = 0; channel < m_nChannel; channel++)
         *c1++ = cvRound(*c2++);
@@ -806,9 +840,12 @@ void CMultiLayerBGS::GetBackgroundImage(IplImage *bk_img) {
   }
 
   ODC.SetImageData(bg_img, org_data);
-  delete [] org_data;
+  delete[] org_data;
 
-  cvCopyImage(m_pBgImg, bk_img);
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //cvCopyImage(m_pBgImg, bk_img);
+  cvCopy(m_pBgImg, bk_img);
+  //--E [] 2016/06/16: Sang-Wook Lee
 }
 
 void CMultiLayerBGS::GetForegroundImage(IplImage *fg_img, CvScalar bg_color) {
@@ -829,7 +866,8 @@ void CMultiLayerBGS::GetForegroundImage(IplImage *fg_img, CvScalar bg_color) {
     cvResetImageROI(org_img);
     cvResetImageROI(fg_img);
     cvResetImageROI(fg_mask_img);
-  } else
+  }
+  else
     cvCopy(org_img, fg_img, fg_mask_img);
 }
 
@@ -844,7 +882,8 @@ void CMultiLayerBGS::GetForegroundMaskImage(IplImage *fg_mask_img) {
     cvThreshold(m_pFgMaskImg, fg_mask_img, 0, 255, CV_THRESH_BINARY);
     cvResetImageROI(m_pFgMaskImg);
     cvResetImageROI(fg_mask_img);
-  } else
+  }
+  else
     cvThreshold(m_pFgMaskImg, fg_mask_img, 0, 255, CV_THRESH_BINARY);
 }
 
@@ -947,7 +986,7 @@ float CMultiLayerBGS::CalPatternBgDist(float *cur_pattern, float *bg_pattern) {
   for (a = 0; a < m_nLBPLength; a++)
     bg_hamming_dist += fabsf(cur_pattern[a] - bg_pattern[a]) > m_f1_MinLBPBinaryProb;
 
-  bg_hamming_dist /= (float) m_nLBPLength;
+  bg_hamming_dist /= (float)m_nLBPLength;
 
   return bg_hamming_dist;
 }
@@ -1027,26 +1066,27 @@ void CMultiLayerBGS::ComputeGradientImage(IplImage *src, IplImage *dst, bool bIs
 
   if (bIsFloat) {
     for (a = 0; a < length; a++) {
-      *fSrc = cvSqrt((float) ((*dX)*(*dX)+(*dY)*(*dY)) / (32.0f * 255.0f));
+      *fSrc = cvSqrt((float)((*dX)*(*dX) + (*dY)*(*dY)) / (32.0f * 255.0f));
       fSrc++;
       dX++;
       dY++;
     }
     ODC3.SetImageData(dst, dst_f_data);
-    delete [] dst_f_data;
-  } else {
+    delete[] dst_f_data;
+  }
+  else {
     for (a = 0; a < length; a++) {
-      *uSrc = cvRound(cvSqrt((float) ((*dX)*(*dX)+(*dY)*(*dY)) / 32.0f));
+      *uSrc = cvRound(cvSqrt((float)((*dX)*(*dX) + (*dY)*(*dY)) / 32.0f));
       uSrc++;
       dX++;
       dY++;
     }
     ODC2.SetImageData(dst, dst_u_data);
-    delete [] dst_u_data;
+    delete[] dst_u_data;
   }
 
-  delete [] dX_data;
-  delete [] dY_data;
+  delete[] dX_data;
+  delete[] dY_data;
 
   cvReleaseImage(&_dX);
   cvReleaseImage(&_dY);
@@ -1111,8 +1151,8 @@ float CMultiLayerBGS::CalVectorsAngle(float *c1, unsigned char *c2, int length) 
 
   int a;
   for (a = 0; a < length; a++) {
-    elem1 = (float) (c1[a]);
-    elem2 = (float) (c2[a]);
+    elem1 = (float)(c1[a]);
+    elem2 = (float)(c2[a]);
     dot2 += elem1*elem2;
     norm1 += elem1*elem1;
     norm2 += elem2*elem2;
@@ -1155,7 +1195,7 @@ float CMultiLayerBGS::CalColorRangeDist(unsigned char *cur_intensity, float *bg_
     maxI = MAX(bg_intensity[channel]+m_fRobustColorOffset, MIN(max_intensity[channel]*highlight_rate,min_intensity[channel]/shadow_rate));
     */
 
-    curI = (float) (cur_intensity[channel]);
+    curI = (float)(cur_intensity[channel]);
 
     /*
     //cdist = fabsf(bgI-curI)/512.0f;
@@ -1207,13 +1247,13 @@ void CMultiLayerBGS::GetLayeredBackgroundImage(int layered_no, IplImage *layered
     // get lbp information
     LBPs = (*PLBP).LBPs;
     lbp_idxes = (*PLBP).lbp_idxes;
-    lbp_num = (int) ((*PLBP).num);
+    lbp_num = (int)((*PLBP).num);
     bool found = false;
     for (b = 0; b < lbp_num; b++) {
       if (LBPs[lbp_idxes[b]].bg_layer_num == layered_no) {
         cur_bg_intensity = LBPs[lbp_idxes[b]].bg_intensity;
         for (c = 0; c < m_pOrgImg->nChannels; c++)
-          *_bg_img_data++ = (uchar) * cur_bg_intensity++;
+          *_bg_img_data++ = (uchar)* cur_bg_intensity++;
         found = true;
         break;
       }
@@ -1226,7 +1266,7 @@ void CMultiLayerBGS::GetLayeredBackgroundImage(int layered_no, IplImage *layered
 
   ODC.SetImageData(layered_bg_img, bg_img_data);
 
-  delete [] bg_img_data;
+  delete[] bg_img_data;
 }
 
 void CMultiLayerBGS::GetBgLayerNoImage(IplImage *bg_layer_no_img, CvScalar *layer_colors, int layer_num) {
@@ -1243,7 +1283,8 @@ void CMultiLayerBGS::GetBgLayerNoImage(IplImage *bg_layer_no_img, CvScalar *laye
   if (layer_colors) {
     for (int l = 0; l < layer_num; l++)
       bg_layer_colors[l] = layer_colors[l];
-  } else {
+  }
+  else {
     int rgb[3];
     rgb[0] = rgb[1] = rgb[2] = 0;
     int rgb_idx = 0;
@@ -1266,7 +1307,7 @@ void CMultiLayerBGS::GetBgLayerNoImage(IplImage *bg_layer_no_img, CvScalar *laye
   for (int a = 0; a < img_length; a++) {
     cur_bg_layer_no = (*PLBP).cur_bg_layer_no;
     for (int b = 0; b < bg_layer_no_img->nChannels; b++) {
-      *_bg_layer_data++ = (uchar) (bg_layer_colors[cur_bg_layer_no].val[b]);
+      *_bg_layer_data++ = (uchar)(bg_layer_colors[cur_bg_layer_no].val[b]);
     }
     PLBP++;
   }
@@ -1274,93 +1315,96 @@ void CMultiLayerBGS::GetBgLayerNoImage(IplImage *bg_layer_no_img, CvScalar *laye
   COpencvDataConversion<uchar, uchar> ODC;
   ODC.SetImageData(bg_layer_no_img, bg_layer_data);
 
-  delete [] bg_layer_data;
-  delete [] bg_layer_colors;
+  delete[] bg_layer_data;
+  delete[] bg_layer_colors;
 }
 
 void CMultiLayerBGS::GetCurrentLayeredBackgroundImage(int layered_no, IplImage *layered_bg_img, IplImage *layered_fg_img, CvScalar layered_bg_bk_color, CvScalar layered_fg_color,
   int smooth_win, float smooth_sigma, float below_layer_noise, float above_layer_noise, int min_blob_size) {
-    PixelLBPStruct *PLBP = m_pPixelLBPs;
-    LBPStruct* LBPs;
-    unsigned short* lbp_idxes;
+  PixelLBPStruct *PLBP = m_pPixelLBPs;
+  LBPStruct* LBPs;
+  unsigned short* lbp_idxes;
 
-    int a;
-    int img_length = m_pOrgImg->width * m_pOrgImg->height;
+  int a;
+  int img_length = m_pOrgImg->width * m_pOrgImg->height;
 
-    float *bg_layer_mask = new float[img_length];
-    float *_bg_layer_mask = bg_layer_mask;
+  float *bg_layer_mask = new float[img_length];
+  float *_bg_layer_mask = bg_layer_mask;
 
-    for (a = 0; a < img_length; a++) {
-      // get lbp information
-      LBPs = (*PLBP).LBPs;
-      lbp_idxes = (*PLBP).lbp_idxes;
-      *_bg_layer_mask++ = (float) (*PLBP).cur_bg_layer_no;
-      PLBP++;
-    }
+  for (a = 0; a < img_length; a++) {
+    // get lbp information
+    LBPs = (*PLBP).LBPs;
+    lbp_idxes = (*PLBP).lbp_idxes;
+    *_bg_layer_mask++ = (float)(*PLBP).cur_bg_layer_no;
+    PLBP++;
+  }
 
-    COpencvDataConversion<float, float> ODC;
-    IplImage* bg_layer_float_mask_img = cvCreateImage(cvGetSize(m_pOrgImg), IPL_DEPTH_32F, 1);
-    IplImage* bg_layer_low_mask_img = cvCreateImage(cvGetSize(m_pOrgImg), IPL_DEPTH_8U, 1);
-    IplImage* bg_layer_high_mask_img = cvCreateImage(cvGetSize(m_pOrgImg), IPL_DEPTH_8U, 1);
-    IplImage* bg_layer_mask_img = cvCreateImage(cvGetSize(m_pOrgImg), IPL_DEPTH_8U, 1);
+  COpencvDataConversion<float, float> ODC;
+  IplImage* bg_layer_float_mask_img = cvCreateImage(cvGetSize(m_pOrgImg), IPL_DEPTH_32F, 1);
+  IplImage* bg_layer_low_mask_img = cvCreateImage(cvGetSize(m_pOrgImg), IPL_DEPTH_8U, 1);
+  IplImage* bg_layer_high_mask_img = cvCreateImage(cvGetSize(m_pOrgImg), IPL_DEPTH_8U, 1);
+  IplImage* bg_layer_mask_img = cvCreateImage(cvGetSize(m_pOrgImg), IPL_DEPTH_8U, 1);
 
-    ODC.SetImageData(bg_layer_float_mask_img, bg_layer_mask);
+  ODC.SetImageData(bg_layer_float_mask_img, bg_layer_mask);
 
-    /* method 1 using smooth */
-    /*
-    cvSmooth(bg_layer_float_mask_img, bg_layer_float_mask_img, CV_GAUSSIAN, smooth_win, smooth_win, smooth_sigma);
+  /* method 1 using smooth */
+  /*
+  cvSmooth(bg_layer_float_mask_img, bg_layer_float_mask_img, CV_GAUSSIAN, smooth_win, smooth_win, smooth_sigma);
 
-    cvThreshold(bg_layer_float_mask_img, bg_layer_low_mask_img, (float)layered_no-below_layer_noise, 1, CV_THRESH_BINARY);
-    cvThreshold(bg_layer_float_mask_img, bg_layer_high_mask_img, (float)layered_no+above_layer_noise, 1, CV_THRESH_BINARY_INV);
+  cvThreshold(bg_layer_float_mask_img, bg_layer_low_mask_img, (float)layered_no-below_layer_noise, 1, CV_THRESH_BINARY);
+  cvThreshold(bg_layer_float_mask_img, bg_layer_high_mask_img, (float)layered_no+above_layer_noise, 1, CV_THRESH_BINARY_INV);
 
-    cvAnd(bg_layer_low_mask_img, bg_layer_high_mask_img, bg_layer_mask_img);
-    */
+  cvAnd(bg_layer_low_mask_img, bg_layer_high_mask_img, bg_layer_mask_img);
+  */
 
-    /* method 2 using dilate, erode, blob removing */
-    cvSmooth(bg_layer_float_mask_img, bg_layer_float_mask_img, CV_GAUSSIAN, smooth_win, smooth_win, smooth_sigma);
+  /* method 2 using dilate, erode, blob removing */
+  cvSmooth(bg_layer_float_mask_img, bg_layer_float_mask_img, CV_GAUSSIAN, smooth_win, smooth_win, smooth_sigma);
 
-    cvThreshold(bg_layer_float_mask_img, bg_layer_low_mask_img, (float) layered_no - below_layer_noise, 1, CV_THRESH_BINARY);
-    cvThreshold(bg_layer_float_mask_img, bg_layer_high_mask_img, (float) layered_no + above_layer_noise, 1, CV_THRESH_BINARY_INV);
-    cvAnd(bg_layer_low_mask_img, bg_layer_high_mask_img, bg_layer_mask_img);
+  cvThreshold(bg_layer_float_mask_img, bg_layer_low_mask_img, (float)layered_no - below_layer_noise, 1, CV_THRESH_BINARY);
+  cvThreshold(bg_layer_float_mask_img, bg_layer_high_mask_img, (float)layered_no + above_layer_noise, 1, CV_THRESH_BINARY_INV);
+  cvAnd(bg_layer_low_mask_img, bg_layer_high_mask_img, bg_layer_mask_img);
 
-    cvDilate(bg_layer_mask_img, bg_layer_mask_img, 0, 2);
-    cvErode(bg_layer_mask_img, bg_layer_mask_img, 0, 2);
+  cvDilate(bg_layer_mask_img, bg_layer_mask_img, 0, 2);
+  cvErode(bg_layer_mask_img, bg_layer_mask_img, 0, 2);
 
-    //cvMorphologyEx(bg_layer_mask_img, bg_layer_mask_img, NULL, 0, CV_MOP_OPEN|CV_MOP_CLOSE, 1);
+  //cvMorphologyEx(bg_layer_mask_img, bg_layer_mask_img, NULL, 0, CV_MOP_OPEN|CV_MOP_CLOSE, 1);
 
-    // Extract the blobs using a threshold of 100 in the image
-    CBlobResult blobs = CBlobResult(bg_layer_mask_img, NULL, 0, true);
-    // discard the blobs with less area than 100 pixels
-    // ( the criteria to filter can be any class derived from COperadorBlob )
-    blobs.Filter(blobs, B_INCLUDE, CBlobGetArea(), B_GREATER, min_blob_size);
+  // Extract the blobs using a threshold of 100 in the image
+  CBlobResult blobs = CBlobResult(bg_layer_mask_img, NULL, 0, true);
+  // discard the blobs with less area than 100 pixels
+  // ( the criteria to filter can be any class derived from COperadorBlob )
+  blobs.Filter(blobs, B_INCLUDE, CBlobGetArea(), B_GREATER, min_blob_size);
 
-    CBlob filtered_blob;
-    cvSetZero(bg_layer_mask_img);
-    for (a = 0; a < blobs.GetNumBlobs(); a++) {
-      filtered_blob = blobs.GetBlob(a);
-      filtered_blob.FillBlob(bg_layer_mask_img, cvScalar(1));
-    }
-    blobs.GetNthBlob(CBlobGetArea(), 0, filtered_blob);
-    filtered_blob.FillBlob(bg_layer_mask_img, cvScalar(0));
+  CBlob filtered_blob;
+  cvSetZero(bg_layer_mask_img);
+  for (a = 0; a < blobs.GetNumBlobs(); a++) {
+    filtered_blob = blobs.GetBlob(a);
+    filtered_blob.FillBlob(bg_layer_mask_img, cvScalar(1));
+  }
+  blobs.GetNthBlob(CBlobGetArea(), 0, filtered_blob);
+  filtered_blob.FillBlob(bg_layer_mask_img, cvScalar(0));
 
 
-    cvSet(layered_bg_img, layered_bg_bk_color);
-    cvCopy(m_pBgImg, layered_bg_img, bg_layer_mask_img);
+  cvSet(layered_bg_img, layered_bg_bk_color);
+  cvCopy(m_pBgImg, layered_bg_img, bg_layer_mask_img);
 
-    if (layered_fg_img) {
-      cvCopy(m_pOrgImg, layered_fg_img);
-      cvSet(layered_fg_img, layered_fg_color, bg_layer_mask_img);
-    }
+  if (layered_fg_img) {
+    cvCopy(m_pOrgImg, layered_fg_img);
+    cvSet(layered_fg_img, layered_fg_color, bg_layer_mask_img);
+  }
 
-    cvReleaseImage(&bg_layer_float_mask_img);
-    cvReleaseImage(&bg_layer_low_mask_img);
-    cvReleaseImage(&bg_layer_high_mask_img);
-    cvReleaseImage(&bg_layer_mask_img);
-    delete [] bg_layer_mask;
+  cvReleaseImage(&bg_layer_float_mask_img);
+  cvReleaseImage(&bg_layer_low_mask_img);
+  cvReleaseImage(&bg_layer_high_mask_img);
+  cvReleaseImage(&bg_layer_mask_img);
+  delete[] bg_layer_mask;
 }
 
 void CMultiLayerBGS::GetColoredBgMultiLayeredImage(IplImage *bg_multi_layer_img, CvScalar *layer_colors) {
-  cvCopyImage(m_pOrgImg, bg_multi_layer_img);
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //cvCopyImage(m_pOrgImg, bg_multi_layer_img);
+  cvCopy(m_pOrgImg, bg_multi_layer_img);
+  //--E [] 2016/06/16: Sang-Wook Lee
 
   COpencvDataConversion<uchar, uchar> ODC;
 
@@ -1391,7 +1435,7 @@ void CMultiLayerBGS::GetColoredBgMultiLayeredImage(IplImage *bg_multi_layer_img,
     if ((*_fg_maskD == 0)) {
       bg_layer_num = LBPs[lbp_idxes[0]].bg_layer_num;
       int first_layer_idx = 0;
-      for (c = 0; c < (int) lbp_num; c++) {
+      for (c = 0; c < (int)lbp_num; c++) {
         if (LBPs[lbp_idxes[c]].bg_layer_num == 1) {
           first_layer_idx = c;
           break;
@@ -1399,13 +1443,14 @@ void CMultiLayerBGS::GetColoredBgMultiLayeredImage(IplImage *bg_multi_layer_img,
       }
       if (bg_layer_num > 1 && DistLBP(&(LBPs[lbp_idxes[0]]), &(LBPs[first_layer_idx])) > 0.1f) {
         for (c = 0; c < channels; c++)
-          *_bg_ml_imgD++ = (uchar) (layer_colors[bg_layer_num].val[c]);
+          *_bg_ml_imgD++ = (uchar)(layer_colors[bg_layer_num].val[c]);
         bLayeredBg = true;
       }
 
       if (!bLayeredBg)
         _bg_ml_imgD += channels;
-    } else {
+    }
+    else {
       _bg_ml_imgD += channels;
     }
 
@@ -1415,8 +1460,8 @@ void CMultiLayerBGS::GetColoredBgMultiLayeredImage(IplImage *bg_multi_layer_img,
 
   ODC.SetImageData(bg_multi_layer_img, bg_ml_imgD);
 
-  delete [] fg_maskD;
-  delete [] bg_ml_imgD;
+  delete[] fg_maskD;
+  delete[] bg_ml_imgD;
 }
 
 void CMultiLayerBGS::GetForegroundProbabilityImage(IplImage *fg_dist_img) {
@@ -1446,8 +1491,8 @@ void CMultiLayerBGS::GetForegroundProbabilityImage(IplImage *fg_dist_img) {
 
   ODC2.SetImageData(fg_dist_img, _fg_progI);
 
-  delete [] _fg_distD;
-  delete [] _fg_progI;
+  delete[] _fg_distD;
+  delete[] _fg_progI;
 }
 
 void CMultiLayerBGS::RemoveBackgroundLayers(PixelLBPStruct *PLBP, bool *removed_modes) {
@@ -1479,7 +1524,8 @@ void CMultiLayerBGS::RemoveBackgroundLayers(PixelLBPStruct *PLBP, bool *removed_
           PLBP->LBPs[lbp_idxes[a]].bg_layer_num--;
       }
     }
-  } else {
+  }
+  else {
     int removed_bg_layer_nums[10];
     int removed_layer_num = 0;
     for (a = 0; a < lbp_num; a++) {
@@ -1505,21 +1551,21 @@ void CMultiLayerBGS::RemoveBackgroundLayers(PixelLBPStruct *PLBP, bool *removed_
   }
 
   // sort the list of modes based on the weights of modes
-  if (lbp_num != (int) PLBP->num) {
+  if (lbp_num != (int)PLBP->num) {
     float weights[100], tot_weights = 0;
-    for (a = 0; a < (int) lbp_num; a++) {
+    for (a = 0; a < (int)lbp_num; a++) {
       weights[a] = PLBP->LBPs[lbp_idxes[a]].weight;
       tot_weights += weights[a];
     }
 
     // sort weights in the descent order
-    QuickSort(weights, lbp_idxes, 0, (int) lbp_num - 1, false);
+    QuickSort(weights, lbp_idxes, 0, (int)lbp_num - 1, false);
 
     // calculate the first potential background modes number, bg_num
     float threshold_weight = m_fBackgroundModelPercent*tot_weights;
     int bg_num = 0;
     tot_weights = 0;
-    for (a = 0; a < (int) lbp_num; a++) {
+    for (a = 0; a < (int)lbp_num; a++) {
       tot_weights += PLBP->LBPs[lbp_idxes[a]].weight;
       if (tot_weights > threshold_weight) {
         bg_num = a + 1;
@@ -1539,13 +1585,14 @@ void CMultiLayerBGS::RemoveBackgroundLayers(PixelLBPStruct *PLBP, bool *removed_
   for (a = 0; a < lbp_num; a++) {
     bg_layer_num = PLBP->LBPs[lbp_idxes[a]].bg_layer_num;
     if (bg_layer_num) {
-      bg_layer_data[tot_bg_layer_num] = (float) bg_layer_num;
+      bg_layer_data[tot_bg_layer_num] = (float)bg_layer_num;
       bg_layer_idxes[tot_bg_layer_num++] = lbp_idxes[a];
     }
   }
   if (tot_bg_layer_num == 1) {
     PLBP->LBPs[bg_layer_idxes[0]].bg_layer_num = 1;
-  } else if (tot_bg_layer_num) {
+  }
+  else if (tot_bg_layer_num) {
     // sort weights in the descent order
     QuickSort(bg_layer_data, bg_layer_idxes, 0, tot_bg_layer_num - 1, true);
     for (a = 0; a < tot_bg_layer_num; a++)
@@ -1641,10 +1688,10 @@ void CMultiLayerBGS::GetFloatEdgeImage(IplImage *src, IplImage *dst) {
 
   int x, y;
   for (y = 0; y < dst->height; y++) {
-    src_x_data = (uchar*) (src->imageData + src->widthStep * y);
-    dst_x_data = (float*) (dst->imageData + dst->widthStep * y);
+    src_x_data = (uchar*)(src->imageData + src->widthStep * y);
+    dst_x_data = (float*)(dst->imageData + dst->widthStep * y);
     for (x = 0; x < dst->width; x++) {
-      *dst_x_data++ = (float) (*src_x_data++) / 255.0f;
+      *dst_x_data++ = (float)(*src_x_data++) / 255.0f;
     }
   }
 }
@@ -1674,7 +1721,7 @@ void CMultiLayerBGS::UpdatePatternColorDistWeights(float *cur_pattern, float *bg
     bg_true_num += (bg_pattern[a] > 0.5f);
     bg_false_num += (bg_pattern[a] < 0.5f);
   }
-  m_fTextureWeight = expf(-(fabsf(cur_true_num - cur_false_num) + fabsf(bg_true_num - bg_false_num) + 0.8f) / (float) m_nLBPLength);
+  m_fTextureWeight = expf(-(fabsf(cur_true_num - cur_false_num) + fabsf(bg_true_num - bg_false_num) + 0.8f) / (float)m_nLBPLength);
   m_fTextureWeight = MAX(MIN(m_fTextureWeight, 0.5f), 0.1f);
   m_fColorWeight = 1.0f - m_fTextureWeight;
 }
@@ -1708,9 +1755,9 @@ void CMultiLayerBGS::Save(const char *bg_model_fn, int save_type) {
 
     for (int yx = 0; yx < img_length; yx++) {
       fprintf(fout, "%3d %3d %3d", (*PLBP).num, (*PLBP).bg_num, (*PLBP).cur_bg_layer_no);
-      for (i = 0; i < (int) (*PLBP).num; i++)
+      for (i = 0; i < (int)(*PLBP).num; i++)
         fprintf(fout, " %3d", (*PLBP).lbp_idxes[i]);
-      for (i = 0; i < (int) (*PLBP).num; i++) {
+      for (i = 0; i < (int)(*PLBP).num; i++) {
         int li = (*PLBP).lbp_idxes[i];
         for (j = 0; j < m_nChannel; j++) {
           fprintf(fout, " %7.1f %7.1f %7.1f", (*PLBP).LBPs[li].bg_intensity[j],
@@ -1728,7 +1775,8 @@ void CMultiLayerBGS::Save(const char *bg_model_fn, int save_type) {
       fprintf(fout, "\n");
       PLBP++;
     }
-  } else if (save_type == 1) { /* save current parameters for background subtraction */
+  }
+  else if (save_type == 1) { /* save current parameters for background subtraction */
     fprintf(fout, "FILE_TYPE:  MODEL_PARAS\n\n");
 
     fprintf(fout, "MAX_MODEL_NUM: %5d\n", m_nMaxLBPModeNum);
@@ -1760,7 +1808,8 @@ void CMultiLayerBGS::Save(const char *bg_model_fn, int save_type) {
     fprintf(fout, "\nLBP_NEIG_POINT_NUMS: ");
     for (i = 0; i < m_nLBPLevelNum; i++)
       fprintf(fout, "%6d", m_pLBPMeigPointNums[i]);
-  } else if (save_type == 2) { /* save the background model information and parameters */
+  }
+  else if (save_type == 2) { /* save the background model information and parameters */
     fprintf(fout, "FILE_TYPE:  MODEL_PARAS_INFO\n\n");
 
     fprintf(fout, "MAX_MODEL_NUM: %5d\n", m_nMaxLBPModeNum);
@@ -1805,9 +1854,9 @@ void CMultiLayerBGS::Save(const char *bg_model_fn, int save_type) {
 
     for (int yx = 0; yx < img_length; yx++) {
       fprintf(fout, "%3d %3d %3d", (*PLBP).num, (*PLBP).bg_num, (*PLBP).cur_bg_layer_no);
-      for (i = 0; i < (int) (*PLBP).num; i++)
+      for (i = 0; i < (int)(*PLBP).num; i++)
         fprintf(fout, " %3d", (*PLBP).lbp_idxes[i]);
-      for (i = 0; i < (int) (*PLBP).num; i++) {
+      for (i = 0; i < (int)(*PLBP).num; i++) {
         int li = (*PLBP).lbp_idxes[i];
         for (j = 0; j < m_nChannel; j++) {
           fprintf(fout, " %7.1f %7.1f %7.1f", (*PLBP).LBPs[li].bg_intensity[j],
@@ -1825,7 +1874,8 @@ void CMultiLayerBGS::Save(const char *bg_model_fn, int save_type) {
       fprintf(fout, "\n");
       PLBP++;
     }
-  } else { /* wrong save type */
+  }
+  else { /* wrong save type */
     printf("Please input correct save type: 0 - model_info  1 - model_paras  2 - model_paras_info\n");
     fclose(fout);
     exit(0);
@@ -1865,8 +1915,8 @@ bool CMultiLayerBGS::Load(const char *bg_model_fn) {
     if (max_lbp_mode_num != m_nMaxLBPModeNum) {
       PixelLBPStruct* PLBP = m_pPixelLBPs;
       for (int yx = 0; yx < img_length; yx++) {
-        delete [] (*PLBP).LBPs;
-        delete [] (*PLBP).lbp_idxes;
+        delete[](*PLBP).LBPs;
+        delete[](*PLBP).lbp_idxes;
         (*PLBP).LBPs = new LBPStruct[m_nMaxLBPModeNum];
         (*PLBP).lbp_idxes = new unsigned short[m_nMaxLBPModeNum];
       }
@@ -1879,9 +1929,9 @@ bool CMultiLayerBGS::Load(const char *bg_model_fn) {
 
     for (int yx = 0; yx < img_length; yx++) {
       fin >> (*PLBP).num >> (*PLBP).bg_num >> (*PLBP).cur_bg_layer_no;
-      for (i = 0; i < (int) (*PLBP).num; i++)
+      for (i = 0; i < (int)(*PLBP).num; i++)
         fin >> (*PLBP).lbp_idxes[i];
-      for (i = 0; i < (int) (*PLBP).num; i++) {
+      for (i = 0; i < (int)(*PLBP).num; i++) {
         int li = (*PLBP).lbp_idxes[i];
         for (j = 0; j < m_nChannel; j++) {
           fin >> (*PLBP).LBPs[li].bg_intensity[j] >>
@@ -1894,7 +1944,8 @@ bool CMultiLayerBGS::Load(const char *bg_model_fn) {
       }
       PLBP++;
     }
-  } else if (!strcmp(model_type, "MODEL_PARAS")) {
+  }
+  else if (!strcmp(model_type, "MODEL_PARAS")) {
     fin >> para_name >> m_nMaxLBPModeNum;
     fin >> para_name >> m_fFrameDuration;
     fin >> para_name >> m_fModeUpdatingLearnRate;
@@ -1924,7 +1975,8 @@ bool CMultiLayerBGS::Load(const char *bg_model_fn) {
     fin >> para_name;
     for (i = 0; i < m_nLBPLevelNum; i++)
       fin >> m_pLBPMeigPointNums[i];
-  } else if (!strcmp(model_type, "MODEL_PARAS_INFO")) {
+  }
+  else if (!strcmp(model_type, "MODEL_PARAS_INFO")) {
     fin >> para_name >> m_nMaxLBPModeNum;
     fin >> para_name >> m_fFrameDuration;
     fin >> para_name >> m_fModeUpdatingLearnRate;
@@ -1968,8 +2020,8 @@ bool CMultiLayerBGS::Load(const char *bg_model_fn) {
     if (max_lbp_mode_num != m_nMaxLBPModeNum) {
       PixelLBPStruct* PLBP = m_pPixelLBPs;
       for (int yx = 0; yx < img_length; yx++) {
-        delete [] (*PLBP).LBPs;
-        delete [] (*PLBP).lbp_idxes;
+        delete[](*PLBP).LBPs;
+        delete[](*PLBP).lbp_idxes;
         (*PLBP).LBPs = new LBPStruct[m_nMaxLBPModeNum];
         (*PLBP).lbp_idxes = new unsigned short[m_nMaxLBPModeNum];
       }
@@ -1982,9 +2034,9 @@ bool CMultiLayerBGS::Load(const char *bg_model_fn) {
 
     for (int yx = 0; yx < img_length; yx++) {
       fin >> (*PLBP).num >> (*PLBP).bg_num >> (*PLBP).cur_bg_layer_no;
-      for (i = 0; i < (int) (*PLBP).num; i++)
+      for (i = 0; i < (int)(*PLBP).num; i++)
         fin >> (*PLBP).lbp_idxes[i];
-      for (i = 0; i < (int) (*PLBP).num; i++) {
+      for (i = 0; i < (int)(*PLBP).num; i++) {
         int li = (*PLBP).lbp_idxes[i];
         for (j = 0; j < m_nChannel; j++) {
           fin >> (*PLBP).LBPs[li].bg_intensity[j] >>
@@ -1997,7 +2049,8 @@ bool CMultiLayerBGS::Load(const char *bg_model_fn) {
       }
       PLBP++;
     }
-  } else {
+  }
+  else {
     printf("Not correct model save type!\n");
     fin.close();
     exit(0);
@@ -2030,8 +2083,8 @@ void CMultiLayerBGS::SetFrameRate(float frameDuration) {
 void CMultiLayerBGS::Init(int width, int height) {
   IplImage* first_img = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
   int lbp_level_num = 1;
-  float radiuses[] = {2.0f};
-  int neig_pt_nums[] = {6};
+  float radiuses[] = { 2.0f };
+  int neig_pt_nums[] = { 6 };
   Initialization(first_img, lbp_level_num, radiuses, neig_pt_nums);
   cvReleaseImage(&first_img);
 }
@@ -2045,8 +2098,8 @@ int CMultiLayerBGS::SetRGBInputImage(IplImage *inputImage, CvRect *roi) {
     inputImage->height != m_cvImgSize.height ||
     inputImage->depth != IPL_DEPTH_8U ||
     inputImage->nChannels != 3) {
-      printf("Please provide the correct IplImage pointer, \ne.g. inputImage = cvCreateImage(imgSize, IPL_DEPTH_8U, 3);\n");
-      return 0;
+    printf("Please provide the correct IplImage pointer, \ne.g. inputImage = cvCreateImage(imgSize, IPL_DEPTH_8U, 3);\n");
+    return 0;
   }
   SetNewImage(inputImage, roi);
   return 1;
@@ -2079,8 +2132,8 @@ int CMultiLayerBGS::SetForegroundMaskImage(IplImage* fg_mask_img) {
     fg_mask_img->height != m_cvImgSize.height ||
     fg_mask_img->depth != IPL_DEPTH_8U ||
     fg_mask_img->nChannels != 1) {
-      printf("Please provide the correct IplImage pointer, \ne.g. fg_mask_img = cvCreateImage(imgSize, IPL_DEPTH_8U, 1);\n");
-      return 0;
+    printf("Please provide the correct IplImage pointer, \ne.g. fg_mask_img = cvCreateImage(imgSize, IPL_DEPTH_8U, 1);\n");
+    return 0;
   }
 
   m_pFgMaskImg = fg_mask_img;
@@ -2096,8 +2149,8 @@ int CMultiLayerBGS::SetForegroundProbImage(IplImage* fg_prob_img) {
   if (fg_prob_img->width != m_cvImgSize.width ||
     fg_prob_img->height != m_cvImgSize.height ||
     fg_prob_img->depth != IPL_DEPTH_8U) {
-      printf("Please provide the correct IplImage pointer, \ne.g. fg_prob_img = cvCreateImage(imgSize, IPL_DEPTH_8U, 1);\n");
-      return 0;
+    printf("Please provide the correct IplImage pointer, \ne.g. fg_prob_img = cvCreateImage(imgSize, IPL_DEPTH_8U, 1);\n");
+    return 0;
   }
 
   m_pFgProbImg = fg_prob_img;

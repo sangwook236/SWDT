@@ -1,12 +1,10 @@
 //#include "stdafx.h"
 #include "PascalVocDataset.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/features2d/features2d.hpp>
-#include <opencv2/ml/ml.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/xfeatures2d.hpp>
 #include <iostream>
-#if defined WIN32 || defined _WIN32
+#if defined(WIN32) || defined(_WIN32)
 #include <Windows.h>
 #endif
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
@@ -28,7 +26,7 @@ const std::string plotsDir = "/plots";
 //-------------------------------------------------------------------
 void makeDir( const std::string& dir )
 {
-#if defined WIN32 || defined _WIN32
+#if defined(WIN32) || defined(_WIN32)
     CreateDirectoryA( dir.c_str(), 0 );
 #else
     mkdir( dir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
@@ -240,13 +238,13 @@ cv::Mat trainVocabulary( const std::string& filename, PascalVocDataset& vocData,
 
 		while( images.size() > 0 )
 		{
-			if( bowTrainer.descripotorsCount() >= maxDescCount )
+			if( bowTrainer.descriptorsCount() >= maxDescCount )
 			{
-				assert( bowTrainer.descripotorsCount() == maxDescCount );
+				assert( bowTrainer.descriptorsCount() == maxDescCount );
 #ifdef DEBUG_DESC_PROGRESS
-				std::cout << "Breaking due to full memory ( descriptors count = " << bowTrainer.descripotorsCount()
+				std::cout << "Breaking due to full memory ( descriptors count = " << bowTrainer.descriptorsCount()
 					<< "; descriptor size in bytes = " << descByteSize << "; all used memory = "
-					<< bowTrainer.descripotorsCount()*descByteSize << std::endl;
+					<< bowTrainer.descriptorsCount()*descByteSize << std::endl;
 #endif
 				break;
 			}
@@ -277,7 +275,7 @@ cv::Mat trainVocabulary( const std::string& filename, PascalVocDataset& vocData,
 
 				for( int i = 0; i < descCount; i++ )
 				{
-					if( usedMask[i] && bowTrainer.descripotorsCount() < maxDescCount )
+					if( usedMask[i] && bowTrainer.descriptorsCount() < maxDescCount )
 						bowTrainer.add( imageDescriptors.row(i) );
 				}
 			}
@@ -285,7 +283,7 @@ cv::Mat trainVocabulary( const std::string& filename, PascalVocDataset& vocData,
 #ifdef DEBUG_DESC_PROGRESS
 			std::cout << images.size() << " images left, " << images[randImgIdx].id << " processed - "
 				<</* descs_extracted << "/" << image_descriptors.rows << " extracted - " << */
-				cvRound((static_cast<double>(bowTrainer.descripotorsCount())/static_cast<double>(maxDescCount))*100.0)
+				cvRound((static_cast<double>(bowTrainer.descriptorsCount())/static_cast<double>(maxDescCount))*100.0)
 				<< " % memory used" << ( imageDescriptors.empty() ? " -> no descriptors extracted, skipping" : "") << std::endl;
 #endif
 
@@ -293,7 +291,7 @@ cv::Mat trainVocabulary( const std::string& filename, PascalVocDataset& vocData,
 			images.erase( images.begin() + randImgIdx );
 		}
 
-		std::cout << "Maximum allowed descriptor count: " << maxDescCount << ", Actual descriptor count: " << bowTrainer.descripotorsCount() << std::endl;
+		std::cout << "Maximum allowed descriptor count: " << maxDescCount << ", Actual descriptor count: " << bowTrainer.descriptorsCount() << std::endl;
 
 		std::cout << "Training vocabulary..." << std::endl;
 		vocabulary = bowTrainer.cluster();
@@ -423,14 +421,14 @@ void removeBowImageDescriptorsByCount( std::vector<ObdImage>& images, std::vecto
 	CV_Assert( bowImageDescriptors.size() == objectPresent.size() );
 }
 
-void setSVMParams( CvSVMParams& svmParams, CvMat& class_wts_cv, const cv::Mat& responses, bool balanceClasses )
+void setSVMParams( cv::Ptr<cv::ml::SVM>& svm, cv::Mat& class_wts_cv, const cv::Mat& responses, bool balanceClasses )
 {
 	int pos_ex = countNonZero(responses == 1);
 	int neg_ex = countNonZero(responses == -1);
 	std::cout << pos_ex << " positive training samples; " << neg_ex << " negative training samples" << std::endl;
 
-	svmParams.svm_type = CvSVM::C_SVC;
-	svmParams.kernel_type = CvSVM::RBF;
+	svm->setType(cv::ml::SVM::C_SVC);
+	svm->setKernel(cv::ml::SVM::RBF);
 	if( balanceClasses )
 	{
 		cv::Mat class_wts( 2, 1, CV_32FC1 );
@@ -448,32 +446,32 @@ void setSVMParams( CvSVMParams& svmParams, CvMat& class_wts_cv, const cv::Mat& r
 			class_wts.at<float>(1) = static_cast<float>(pos_ex)/static_cast<float>(pos_ex+neg_ex);
 		}
 		class_wts_cv = class_wts;
-		svmParams.class_weights = &class_wts_cv;
+		svm->setClassWeights(class_wts_cv);
 	}
 }
 
-void setSVMTrainAutoParams( CvParamGrid& c_grid, CvParamGrid& gamma_grid,
-	CvParamGrid& p_grid, CvParamGrid& nu_grid,
-	CvParamGrid& coef_grid, CvParamGrid& degree_grid )
+void setSVMTrainAutoParams( cv::ml::ParamGrid& c_grid, cv::ml::ParamGrid& gamma_grid,
+	cv::ml::ParamGrid& p_grid, cv::ml::ParamGrid& nu_grid,
+	cv::ml::ParamGrid& coef_grid, cv::ml::ParamGrid& degree_grid )
 {
-	c_grid = CvSVM::get_default_grid(CvSVM::C);
+	c_grid = cv::ml::SVM::getDefaultGrid(cv::ml::SVM::C);
 
-	gamma_grid = CvSVM::get_default_grid(CvSVM::GAMMA);
+	gamma_grid = cv::ml::SVM::getDefaultGrid(cv::ml::SVM::GAMMA);
 
-	p_grid = CvSVM::get_default_grid(CvSVM::P);
-	p_grid.step = 0;
+	p_grid = cv::ml::SVM::getDefaultGrid(cv::ml::SVM::P);
+	p_grid.logStep = 0;
 
-	nu_grid = CvSVM::get_default_grid(CvSVM::NU);
-	nu_grid.step = 0;
+	nu_grid = cv::ml::SVM::getDefaultGrid(cv::ml::SVM::NU);
+	nu_grid.logStep = 0;
 
-	coef_grid = CvSVM::get_default_grid(CvSVM::COEF);
-	coef_grid.step = 0;
+	coef_grid = cv::ml::SVM::getDefaultGrid(cv::ml::SVM::COEF);
+	coef_grid.logStep = 0;
 
-	degree_grid = CvSVM::get_default_grid(CvSVM::DEGREE);
-	degree_grid.step = 0;
+	degree_grid = cv::ml::SVM::getDefaultGrid(cv::ml::SVM::DEGREE);
+	degree_grid.logStep = 0;
 }
 
-void trainSVMClassifier( CvSVM& svm, const SVMTrainParamsExt& svmParamsExt, const std::string& objClassName, PascalVocDataset& vocData,
+void trainSVMClassifier( cv::Ptr<cv::ml::SVM>& svm, const SVMTrainParamsExt& svmParamsExt, const std::string& objClassName, PascalVocDataset& vocData,
 	cv::Ptr<cv::BOWImgDescriptorExtractor>& bowExtractor, const cv::Ptr<cv::FeatureDetector>& fdetector,
 	const std::string& resPath )
 {
@@ -484,7 +482,7 @@ void trainSVMClassifier( CvSVM& svm, const SVMTrainParamsExt& svmParamsExt, cons
 	if( fs.isOpened() )
 	{
 		std::cout << "*** LOADING SVM CLASSIFIER FOR CLASS " << objClassName << " ***" << std::endl;
-		svm.load( svmFilename.c_str() );
+		svm->load( svmFilename.c_str() );
 	}
 	else
 	{
@@ -535,20 +533,20 @@ void trainSVMClassifier( CvSVM& svm, const SVMTrainParamsExt& svmParamsExt, cons
 		}
 
 		std::cout << "TRAINING SVM FOR CLASS ..." << objClassName << "..." << std::endl;
-		CvSVMParams svmParams;
-		CvMat class_wts_cv;
-		setSVMParams( svmParams, class_wts_cv, responses, svmParamsExt.balanceClasses );
-		CvParamGrid c_grid, gamma_grid, p_grid, nu_grid, coef_grid, degree_grid;
+		cv::Mat class_wts_cv;
+		setSVMParams(svm, class_wts_cv, responses, svmParamsExt.balanceClasses );
+		cv::ml::ParamGrid c_grid, gamma_grid, p_grid, nu_grid, coef_grid, degree_grid;
 		setSVMTrainAutoParams( c_grid, gamma_grid,  p_grid, nu_grid, coef_grid, degree_grid );
-		svm.train_auto( trainData, responses, cv::Mat(), cv::Mat(), svmParams, 10, c_grid, gamma_grid, p_grid, nu_grid, coef_grid, degree_grid );
+		cv::Ptr<cv::ml::TrainData> train_data = cv::ml::TrainData::create(trainData, cv::ml::ROW_SAMPLE, responses);
+		svm->trainAuto(train_data, 10, c_grid, gamma_grid, p_grid, nu_grid, coef_grid, degree_grid );
 		std::cout << "SVM TRAINING FOR CLASS " << objClassName << " COMPLETED" << std::endl;
 
-		svm.save( svmFilename.c_str() );
+		svm->save( svmFilename.c_str() );
 		std::cout << "SAVED CLASSIFIER TO FILE" << std::endl;
 	}
 }
 
-void computeConfidences( CvSVM& svm, const std::string& objClassName, PascalVocDataset& vocData,
+void computeConfidences( cv::Ptr<cv::ml::SVM>& svm, const std::string& objClassName, PascalVocDataset& vocData,
 	cv::Ptr<cv::BOWImgDescriptorExtractor>& bowExtractor, const cv::Ptr<cv::FeatureDetector>& fdetector,
 	const std::string& resPath )
 {
@@ -574,12 +572,12 @@ void computeConfidences( CvSVM& svm, const std::string& objClassName, PascalVocD
 		if( imageIdx == 0 )
 		{
 			// In the first iteration, determine the sign of the positive class
-			float classVal = confidences[imageIdx] = svm.predict( bowImageDescriptors[imageIdx], false );
-			float scoreVal = confidences[imageIdx] = svm.predict( bowImageDescriptors[imageIdx], true );
+			float classVal = confidences[imageIdx] = svm->predict( bowImageDescriptors[imageIdx], cv::noArray(), 0);
+			float scoreVal = confidences[imageIdx] = svm->predict( bowImageDescriptors[imageIdx], cv::noArray(), cv::ml::SVM::RAW_OUTPUT);
 			signMul = (classVal < 0) == (scoreVal < 0) ? 1.f : -1.f;
 		}
 		// svm output of decision function
-		confidences[imageIdx] = signMul * svm.predict( bowImageDescriptors[imageIdx], true );
+		confidences[imageIdx] = signMul * svm->predict( bowImageDescriptors[imageIdx], cv::noArray(), cv::ml::SVM::RAW_OUTPUT);
 	}
 
 	std::cout << "WRITING QUERY RESULTS TO VOC RESULTS FILE FOR CLASS " << objClassName << "..." << std::endl;
@@ -638,13 +636,13 @@ void bag_of_words()
 		vocName = PascalVocDataset::getVocName(vocPath);
 
 		// Feature detector name (e.g. SURF, FAST...)
-		//	Currently 12/2010, this is FAST, STAR, SIFT, SURF, MSER, GFTT, HARRIS
+		//	As of 12/2010, this is FAST, STAR, SIFT, SURF, MSER, GFTT, HARRIS
 		const std::string featDetectorName("SIFT");
 		// Descriptor extractor name (e.g. SURF, SIFT)
-		//	Currently 12/2010, this is SURF, OpponentSIFT, SIFT, OpponentSURF, BRIEF
+		//	As of 12/2010, this is SURF, OpponentSIFT, SIFT, OpponentSURF, BRIEF
 		const std::string descExtracterName("SIFT");
 		// Descriptor matcher name (e.g. BruteForce)
-		//	Currently 12/2010, this is BruteForce, BruteForce-L1, FlannBased, BruteForce-Hamming, BruteForce-HammingLUT
+		//	As of 12/2010, this is BruteForce, BruteForce-L1, FlannBased, BruteForce-Hamming, BruteForce-HammingLUT
 		const std::string descMatcherName("FlannBased");
 
 		ddmParams = local::DDMParams(featDetectorName, descExtracterName, descMatcherName);
@@ -663,8 +661,8 @@ void bag_of_words()
 	}
 
 	// Create detector, descriptor, matcher.
-	cv::Ptr<cv::FeatureDetector> featureDetector = cv::FeatureDetector::create(ddmParams.detectorType);
-	cv::Ptr<cv::DescriptorExtractor> descExtractor = cv::DescriptorExtractor::create(ddmParams.descriptorType);
+	cv::Ptr<cv::FeatureDetector> featureDetector = cv::xfeatures2d::SIFT::create();
+	cv::Ptr<cv::DescriptorExtractor> descExtractor = cv::xfeatures2d::SIFT::create();
 	cv::Ptr<cv::BOWImgDescriptorExtractor> bowExtractor;
 	if (featureDetector.empty() || descExtractor.empty())
 	{
@@ -696,7 +694,7 @@ void bag_of_words()
 	for (size_t classIdx = 0; classIdx < objClasses.size(); ++classIdx)
 	{
 		// Train a classifier on train dataset
-		CvSVM svm;
+		cv::Ptr<cv::ml::SVM> svm = cv::ml::SVM::create();
 		local::trainSVMClassifier(svm, svmTrainParamsExt, objClasses[classIdx], vocData, bowExtractor, featureDetector, resPath);
 
 		// Now use the classifier over all images on the test dataset and rank according to score order also calculating precision-recall etc.

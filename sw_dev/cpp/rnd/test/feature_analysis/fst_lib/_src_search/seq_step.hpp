@@ -115,7 +115,7 @@ protected:
 public:
 	void enable_result_tracking(PResultTracker tracker) {_tracker=tracker;}
 	void disable_result_tracking() {_tracker.reset();}
-	bool result_tracker_active() const {return _tracker;}
+	bool result_tracker_active() const {return !!_tracker;}
 
 	void set_output_detail(OutputDetail detail) {_detail=detail;} //!< sets the amount of information that is logged to output stream throughout the course of search
 	OutputDetail get_output_detail() const {return _detail;}

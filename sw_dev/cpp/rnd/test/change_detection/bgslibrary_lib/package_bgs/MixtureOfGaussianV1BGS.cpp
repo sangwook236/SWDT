@@ -1,6 +1,25 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "MixtureOfGaussianV1BGS.h"
 
 MixtureOfGaussianV1BGS::MixtureOfGaussianV1BGS() : firstTime(true), alpha(0.05), enableThreshold(true), threshold(15), showOutput(true)
+//--S [] 2016/06/16: Sang-Wook Lee
+, mog(cv::bgsegm::createBackgroundSubtractorMOG())
+//--E [] 2016/06/16: Sang-Wook Lee
 {
   std::cout << "MixtureOfGaussianV1BGS()" << std::endl;
 }
@@ -32,17 +51,26 @@ void MixtureOfGaussianV1BGS::process(const cv::Mat &img_input, cv::Mat &img_outp
   //   Proc. 2nd European Workshp on Advanced Video-Based Surveillance Systems, 2001
   //------------------------------------------------------------------
 
-  mog(img_input, img_foreground, alpha);
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //mog(img_input, img_foreground, alpha);
+  mog->apply(img_input, img_foreground, alpha);
+  //--E [] 2016/06/16: Sang-Wook Lee
   cv::Mat img_background;
-  mog.getBackgroundImage(img_background);
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //mog.getBackgroundImage(img_background);
+  mog->getBackgroundImage(img_background);
+  //--E [] 2016/06/16: Sang-Wook Lee
 
   if(enableThreshold)
     cv::threshold(img_foreground, img_foreground, threshold, 255, cv::THRESH_BINARY);
 
   if(showOutput)
   {
-    cv::imshow("GMM (KadewTraKuPong&Bowden)", img_foreground);
-    cv::imshow("GMM BKG (KadewTraKuPong&Bowden)", img_background);
+    if (!img_foreground.empty())
+      cv::imshow("GMM FG (KadewTraKuPong&Bowden)", img_foreground);
+    
+    if (!img_background.empty())
+      cv::imshow("GMM BG (KadewTraKuPong&Bowden)", img_background);
   }
 
   img_foreground.copyTo(img_output);

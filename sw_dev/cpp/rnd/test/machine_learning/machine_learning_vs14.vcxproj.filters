@@ -46,9 +46,6 @@
     <Filter Include="Source Files\svm_light">
       <UniqueIdentifier>{03ed5322-1126-41e4-8328-b968050877a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\dlib_ml">
-      <UniqueIdentifier>{240a43ab-9675-43eb-ac48-9a940d64b1b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\multiboost">
       <UniqueIdentifier>{d79b9bbc-c738-4927-896f-8fb56e2e5512}</UniqueIdentifier>
     </Filter>
@@ -63,6 +60,15 @@
     </Filter>
     <Filter Include="Source Files\mfa_lib">
       <UniqueIdentifier>{c168b10e-7a32-4699-8bfa-caf14c7183cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tiny_cnn">
+      <UniqueIdentifier>{a8e0d22a-e682-4f86-9b02-bba3869d7f6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\libgp">
+      <UniqueIdentifier>{14085248-2cea-4e18-b85c-bb9bf937cd51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rllib">
+      <UniqueIdentifier>{9185df37-7bb8-4a3f-938d-1545e754e6d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -344,9 +350,6 @@
     <ClCompile Include="svm_light\svm_light_main.cpp">
       <Filter>Source Files\svm_light</Filter>
     </ClCompile>
-    <ClCompile Include="dlib_ml\dlib_ml_main.cpp">
-      <Filter>Source Files\dlib_ml</Filter>
-    </ClCompile>
     <ClCompile Include="multiboost\multiboost_main.cpp">
       <Filter>Source Files\multiboost</Filter>
     </ClCompile>
@@ -361,6 +364,54 @@
     </ClCompile>
     <ClCompile Include="..\dimensionality_reduction\mfa_lib\mfa.cpp">
       <Filter>Source Files\mfa_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="tiny_cnn\tiny_cnn_main.cpp">
+      <Filter>Source Files\tiny_cnn</Filter>
+    </ClCompile>
+    <ClCompile Include="tiny_cnn\tiny_cnn_mnist_example.cpp">
+      <Filter>Source Files\tiny_cnn</Filter>
+    </ClCompile>
+    <ClCompile Include="tiny_cnn\tiny_cnn_cifar10_example.cpp">
+      <Filter>Source Files\tiny_cnn</Filter>
+    </ClCompile>
+    <ClCompile Include="caffe\caffe_classification_example.cpp">
+      <Filter>Source Files\caffe</Filter>
+    </ClCompile>
+    <ClCompile Include="waffles\waffles_manifold_example.cpp">
+      <Filter>Source Files\waffles</Filter>
+    </ClCompile>
+    <ClCompile Include="waffles\waffles_ml_example.cpp">
+      <Filter>Source Files\waffles</Filter>
+    </ClCompile>
+    <ClCompile Include="tiny_cnn\tiny_cnn_basic_example.cpp">
+      <Filter>Source Files\tiny_cnn</Filter>
+    </ClCompile>
+    <ClCompile Include="libgp\libgp_main.cpp">
+      <Filter>Source Files\libgp</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_main.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_boyan_chain_lstd_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_cliff_walking_qlearning_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_cliff_walking_sarsa_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_inverted_pendulum_ktdq_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_inverted_pendulum_lspi_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_inverted_pendulum_mlp_ktdq_example.cpp">
+      <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rllib\rllib_mountain_car_ktdsarsa_example.cpp">
+      <Filter>Source Files\rllib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

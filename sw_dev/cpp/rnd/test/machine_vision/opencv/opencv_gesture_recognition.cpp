@@ -944,7 +944,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 	cv::namedWindow(windowName4, cv::WINDOW_AUTOSIZE);
 	cv::namedWindow(windowName5, cv::WINDOW_AUTOSIZE);
 
-	// TODO [adjust] >> design parameter
+	// TODO [adjust] >> design parameter.
 	const size_t ACCUMULATED_HISTOGRAM_NUM = 20;
 	const size_t ACCUMULATED_HISTOGRAM_NUM_FOR_SHORT_TIME_GESTURE = 3;  // must be less thna and equal to ACCUMULATED_HISTOGRAM_NUM
 	const size_t MAX_MATCHED_HISTOGRAM_NUM = 10;
@@ -974,24 +974,24 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 	boost::circular_buffer<size_t> matched_histogram_indexes(MAX_MATCHED_HISTOGRAM_NUM);
 	boost::circular_buffer<bool> fast_motion_flags(MAX_MATCHED_HISTOGRAM_NUM);
 
-	// histograms' parameters
+	// histograms' parameters.
 	const int histDims = 1;
 
 	const int phaseHistBins = 360;
 	const int phaseHistSize[] = { phaseHistBins };
-	// phase varies from 0 to 359
-	const float phaseHistRange1[] = { 0, phaseHistBins };
+	// phase varies from 0 to 359.
+	const float phaseHistRange1[] = { 0, 360.0f };
 	const float *phaseHistRanges[] = { phaseHistRange1 };
-	// we compute the histogram from the 0-th channel
+	// we compute the histogram from the 0-th channel.
 	const int phaseHistChannels[] = { 0 };
 	const int phaseHistBinWidth = 1, phaseHistMaxHeight = 100;
 
 	const int magHistBins = 30;
 	const int magHistSize[] = { magHistBins };
-	// magnitude varies from 1 to 30
-	const float magHistRange1[] = { 1, magHistBins + 1 };
+	// magnitude varies from 1 to 30.
+	const float magHistRange1[] = { 1, 31 };
 	const float *magHistRanges[] = { magHistRange1 };
-	// we compute the histogram from the 0-th channel
+	// we compute the histogram from the 0-th channel.
 	const int magHistChannels[] = { 0 };
 	const int magHistBinWidth = 5, magHistMaxHeight = 100;
 
@@ -999,7 +999,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 	const int indexHistSize[] = { indexHistBins };
 	const float indexHistRange1[] = { 0, indexHistBins };
 	const float *indexHistRanges[] = { indexHistRange1 };
-	// we compute the histogram from the 0-th channel
+	// we compute the histogram from the 0-th channel.
 	const int indexHistChannels[] = { 0 };
 	const int indexHistBinWidth = 5, indexHistMaxHeight = 100;
 
@@ -1202,7 +1202,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 					cv::minMaxLoc(flow_mag, &minVal, &maxVal, NULL, NULL);
 					const double mag_threshold = minVal + (maxVal - minVal) * magnitude_filtering_threshold_ratio;
 
-					// TODO [check] >> magic number, -1 is correct ?
+					// TODO [check] >> magic number, -1 is correct?
 					flow_phase.setTo(cv::Scalar::all(-1), flow_mag < mag_threshold);
 
 					flow_mag.setTo(cv::Scalar::all(0), flow_mag < mag_threshold);

@@ -98,10 +98,6 @@
     <ClCompile Include="coin_or\coin_or_cbc_simple_example.cpp" />
     <ClCompile Include="coin_or\coin_or_clp_simple_example.cpp" />
     <ClCompile Include="coin_or\coin_or_main.cpp" />
-    <ClCompile Include="galib\galib_ex1.cpp" />
-    <ClCompile Include="galib\galib_ex3.cpp" />
-    <ClCompile Include="galib\galib_ex7.cpp" />
-    <ClCompile Include="galib\galib_main.cpp" />
     <ClCompile Include="glpk\glpk_interior_point_sample.cpp" />
     <ClCompile Include="glpk\glpk_main.cpp" />
     <ClCompile Include="glpk\glpk_mip_sample.cpp" />

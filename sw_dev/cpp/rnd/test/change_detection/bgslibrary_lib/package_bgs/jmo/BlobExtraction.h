@@ -1,7 +1,23 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 /* --- --- ---
 * Copyright (C) 2008--2010 Idiap Research Institute (.....@idiap.ch)
 * All rights reserved.
-* 
+*
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions
 * are met:
@@ -12,7 +28,7 @@
 *    documentation and/or other materials provided with the distribution.
 * 3. The name of the author may not be used to endorse or promote products
 *    derived from this software without specific prior written permission.
-* 
+*
 * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -38,20 +54,23 @@
 #if !defined(_CLASSE_BLOBEXTRACTION_INCLUDED)
 #define _CLASSE_BLOBEXTRACTION_INCLUDED
 
+namespace Blob
+{
 
-//! Extreu els blobs d'una imatge
-bool BlobAnalysis(IplImage* inputImage, uchar threshold, IplImage* maskImage,
-  bool borderColor, bool findmoments, blob_vector &RegionData );
+  //! Extreu els blobs d'una imatge
+  bool BlobAnalysis(IplImage* inputImage, uchar threshold, IplImage* maskImage,
+    bool borderColor, bool findmoments, blob_vector &RegionData);
 
 
-// FUNCIONS AUXILIARS
+  // FUNCIONS AUXILIARS
 
-//! Fusiona dos blobs
-void Subsume(blob_vector &RegionData, int, int*, CBlob*, CBlob*, bool, int, int );
-//! Reallocata el vector auxiliar de blobs subsumats
-int *NewSubsume(int *SubSumedRegion, int elems_inbuffer);
-//! Retorna el perimetre extern d'una run lenght
-double GetExternPerimeter( int start, int end, int row, int width, int height, IplImage *maskImage );
+  //! Fusiona dos blobs
+  void Subsume(blob_vector &RegionData, int, int*, CBlob*, CBlob*, bool, int, int);
+  //! Reallocata el vector auxiliar de blobs subsumats
+  int *NewSubsume(int *SubSumedRegion, int elems_inbuffer);
+  //! Retorna el perimetre extern d'una run lenght
+  double GetExternPerimeter(int start, int end, int row, int width, int height, IplImage *maskImage);
+}
 
 #endif //_CLASSE_BLOBEXTRACTION_INCLUDED
 

@@ -1,0 +1,10 @@
+[-] General
+	-. Site
+		http://giflib.sourceforge.net/
+
+		Windows:
+		http://blog.issamsoft.com/?q=en/node/82
+			위 사이트에서 giflib-5.1.2-windowss.zip download 후 windows project가 있는 directory만 copy하여 사용.
+			Gif header files에 symbol export를 위한 수정 필요.
+				${GIFLIB_HOME}/lib/gif_lib.h
+				${GIFLIB_HOME}/lib/gif_hash.h (?)

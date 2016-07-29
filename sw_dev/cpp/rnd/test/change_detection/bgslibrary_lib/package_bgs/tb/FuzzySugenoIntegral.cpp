@@ -1,4 +1,21 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "FuzzySugenoIntegral.h"
+//#include <opencv2/legacy/compat.hpp>
 
 FuzzySugenoIntegral::FuzzySugenoIntegral() : firstTime(true), frameNumber(0), showOutput(true),
   framesToLearn(10), alphaLearn(0.1), alphaUpdate(0.01), colorSpace(1), option(2), smooth(true), threshold(0.67)
@@ -70,12 +87,18 @@ void FuzzySugenoIntegral::process(const cv::Mat &img_input, cv::Mat &img_output,
     IplImage* background_f1 = new IplImage(img_background_f1);
 
     IplImage* lbp_input_f1 = cvCreateImage(cvSize(input_f1->width, input_f1->height), IPL_DEPTH_32F, 1);
-    cvFillImage(lbp_input_f1, 0.0);
-    fu.LBP(input_f1, lbp_input_f1);
+	//--S [] 2016/06/16: Sang-Wook Lee
+	//cvFillImage(lbp_input_f1, 0.0);
+	cv::cvarrToMat(lbp_input_f1).setTo(cv::Scalar(0.0));
+	//--E [] 2016/06/16: Sang-Wook Lee
+	fu.LBP(input_f1, lbp_input_f1);
 
     IplImage* lbp_background_f1 = cvCreateImage(cvSize(background_f1->width, background_f1->height), IPL_DEPTH_32F , 1);
-    cvFillImage(lbp_background_f1, 0.0);
-    fu.LBP(background_f1, lbp_background_f1);
+	//--S [] 2016/06/16: Sang-Wook Lee
+	//cvFillImage(lbp_background_f1, 0.0);
+	cv::cvarrToMat(lbp_background_f1).setTo(cv::Scalar(0.0));
+	//--E [] 2016/06/16: Sang-Wook Lee
+	fu.LBP(background_f1, lbp_background_f1);
 
     IplImage* sim_texture_f1 = cvCreateImage(cvSize(input_f1->width, input_f1->height), IPL_DEPTH_32F, 1);
     fu.SimilarityDegreesImage(lbp_input_f1, lbp_background_f1, sim_texture_f1, 1, colorSpace);
@@ -89,19 +112,19 @@ void FuzzySugenoIntegral::process(const cv::Mat &img_input, cv::Mat &img_output,
     // 3 color components
     if(option == 1)
     {
-      fu.FuzzyMeasureG(0.4, 0.3, 0.3, measureG);
+      fu.FuzzyMeasureG(0.4f, 0.3f, 0.3f, measureG);
       fu.getFuzzyIntegralSugeno(sim_texture_f1, sim_color_f3, option, measureG, integral_sugeno_f1);
     }
 
     // 2 color components + 1 texture component
     if(option == 2)
     {
-      fu.FuzzyMeasureG(0.6, 0.3, 0.1, measureG);
+      fu.FuzzyMeasureG(0.6f, 0.3f, 0.1f, measureG);
       fu.getFuzzyIntegralSugeno(sim_texture_f1, sim_color_f3, option, measureG, integral_sugeno_f1);
     }
 
     free(measureG);
-    cv::Mat img_integral_sugeno_f1(integral_sugeno_f1);
+    cv::Mat img_integral_sugeno_f1(cv::cvarrToMat(integral_sugeno_f1));
 
     if(smooth)
       cv::medianBlur(img_integral_sugeno_f1, img_integral_sugeno_f1, 3);
@@ -133,10 +156,16 @@ void FuzzySugenoIntegral::process(const cv::Mat &img_input, cv::Mat &img_output,
       std::cout << "FuzzySugenoIntegral updating background model by adaptive-selective learning..." << std::endl;
 
     IplImage* updated_background_f3 = cvCreateImage(cvSize(input_f1->width, input_f1->height), IPL_DEPTH_32F, 3);
-    cvFillImage(updated_background_f3, 0.0);
-    fu.AdaptativeSelectiveBackgroundModelUpdate(input_f3, background_f3, updated_background_f3, integral_sugeno_f1, threshold, alphaUpdate);
-    cv::Mat img_updated_background_f3(updated_background_f3);
-    img_updated_background_f3.copyTo(img_background_f3);
+	//--S [] 2016/06/16: Sang-Wook Lee
+	//cvFillImage(updated_background_f3, 0.0);
+	cv::cvarrToMat(updated_background_f3).setTo(cv::Scalar(0.0));
+	//--E [] 2016/06/16: Sang-Wook Lee
+	fu.AdaptativeSelectiveBackgroundModelUpdate(input_f3, background_f3, updated_background_f3, integral_sugeno_f1, threshold, alphaUpdate);
+	//--S [] 2016/06/16: Sang-Wook Lee
+	//cv::Mat img_updated_background_f3(updated_background_f3);
+	cv::Mat img_updated_background_f3(cv::cvarrToMat(updated_background_f3));
+	//--E [] 2016/06/16: Sang-Wook Lee
+	img_updated_background_f3.copyTo(img_background_f3);
 
     cvReleaseImage(&lbp_input_f1);
     cvReleaseImage(&lbp_background_f1);

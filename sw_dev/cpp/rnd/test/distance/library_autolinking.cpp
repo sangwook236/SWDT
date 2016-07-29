@@ -4,11 +4,13 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-//#pragma comment(lib, "opencv_core243d.lib")
+#pragma comment(lib, "libboost_chrono-vc140-mt-gd-1_61.lib")
+#pragma comment(lib, "libboost_system-vc140-mt-gd-1_61.lib")
 
 #		else
 
-//#pragma comment(lib, "opencv_core243.lib")
+#pragma comment(lib, "libboost_chrono-vc140-mt-1_61.lib")
+#pragma comment(lib, "libboost_system-vc140-mt-1_61.lib")
 
 #		endif
 

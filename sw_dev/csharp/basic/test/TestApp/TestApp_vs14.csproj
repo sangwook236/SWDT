@@ -100,9 +100,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TestClassLibrary\TestClassLibrary_vc10.csproj">
+    <ProjectReference Include="..\TestClassLibrary\TestClassLibrary_vs14.csproj">
       <Project>{9C241F47-F357-4C9D-81EF-117AFCBA5908}</Project>
-      <Name>TestClassLibrary_msvc10</Name>
+      <Name>TestClassLibrary_vs14</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

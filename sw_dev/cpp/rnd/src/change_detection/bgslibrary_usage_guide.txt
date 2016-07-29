@@ -1,0 +1,42 @@
+[-] General
+	- Site.
+		https://github.com/andrewssobral/bgslibrary
+		http://code.google.com/p/bgslibrary/
+		http://www.computervisiononline.com/software/background-subtraction-library
+
+	- Subversion Checkout.
+		svn checkout http://bgslibrary.googlecode.com/svn/trunk/ bgslibrary-read-only
+
+[-] Building (MSVC)
+	- (중요) CMake에 의해 생성되는 bgslibrary project는 executable을 생성.
+	- static library building을 위한 project를 만들어서 사용하여야 함.
+		project에 아래 directory에 있는 모든 source & header file을 추가해야 building.
+		${BGSLIBRARY_ROOT}/package_bgs
+		${BGSLIBRARY_ROOT}/package_analysis
+
+[-] Trouble Shooting (MSVC)
+	- 아래와 같은 MFC DLL 관련 error.
+		"Building MFC application with /MD[d] (CRT dll version) requires MFC shared dll version"
+		==> "Use MFC in a Shared DLL"을 설정하여 library building.
+		==> ${BGSLIBRARY_ROOT}/package_bgs/jml/BlobResult.cpp file 안에서
+			'변경 전' 부분의 include를 file의 최상단 위치로 옮기고
+			_WIN32_WINNT macro 추가.
+			<before>
+				#ifdef _DEBUG
+				#include <afx.h>			//suport per a CStrings
+				#include <afxwin.h>			//suport per a AfxMessageBox
+				#endif
+			<after>
+				#define _WIN32_WINNT 0x601
+				#ifdef _DEBUG
+				#include <afx.h>			//suport per a CStrings
+				#include <afxwin.h>			//suport per a AfxMessageBox
+				#endif
+	- bgslibrary를 linking해 사용하는 경우, file storage 관련 error.
+		<error message> Invalid pointer to file storage
+		==> executable file이 실행되는 directory하에 아래의 config directory이 있어야 함. (?)
+				./config
+			해당 config directory에 file을 추가해 설정을 할 수 있음.
+				./config/FrameProcessor.xml
+				./config/PreProcessor.xml
+				./config/VideoCapture.xml

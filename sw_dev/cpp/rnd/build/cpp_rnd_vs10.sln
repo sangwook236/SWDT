@@ -34,7 +34,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pose_estimation_vs10", "..\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shape_analysis_vs10", "..\test\shape_analysis\shape_analysis_vs10.vcxproj", "{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hand_analysis_vs10", "..\test\hand_analysis\hand_analysis_vs10.vcxproj", "{5764CA80-F4D8-4DA7-924F-E4ED8734C009}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_tracking_vs10", "..\test\object_tracking\object_tracking_vs10.vcxproj", "{5764CA80-F4D8-4DA7-924F-E4ED8734C009}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "statistics_vs10", "..\test\statistics\statistics_vs10.vcxproj", "{0E6076D4-05F3-4EBB-B706-DD8E198E397B}"
 EndProject

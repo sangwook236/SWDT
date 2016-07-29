@@ -140,36 +140,36 @@ void construct_diagonal_matrix(const matrix_type& W, const int num_points, matri
 
 double run_spectral_clustering(const int clustering_method, const matrix_type &W, const int num_points, const int dim_features, const int num_clusters, const int num_attempts, std::vector<double> &cluster_centers, std::vector<int> &assignments)
 {
-	// construct diagonal matrix, D.
+	// Construct diagonal matrix, D.
 	matrix_type D;
 	construct_diagonal_matrix(W, num_points, D);
 
-	// (unnormalized) graph Laplacian matrix, L = D - W.
+	// (Nnnormalized) graph Laplacian matrix, L = D - W.
 
 	matrix_type eigVals, eigVecs;
 	std::vector<double> new_points;
 	new_points.reserve(num_points * num_clusters);
-	if (1 == clustering_method)  // unnormalized spectral clustering.
+	if (1 == clustering_method)  // Nnnormalized spectral clustering.
 	{
-		// eigen value decomposition, L * u = lambda * u.
+		// Eigen value decomposition, L * u = lambda * u.
 		Eigen::SelfAdjointEigenSolver<matrix_type> evd(D - W);
 
 		//eigVals = evd.eigenvalues();
 		eigVecs = evd.eigenvectors();
 	}
-	else if (2 == clustering_method)  // normalized spectral clustering according to Shi and Malik (2000).
+	else if (2 == clustering_method)  // Normalized spectral clustering according to Shi and Malik (2000).
 	{
-		// generalized eigen value decomposition, L * u = lambda * D * u.
+		// Generalized eigen value decomposition, L * u = lambda * D * u.
 		Eigen::GeneralizedSelfAdjointEigenSolver<matrix_type> evd(D - W, D);
 
 		//eigVals = evd.eigenvalues();
 		eigVecs = evd.eigenvectors();
 	}
-	else if (3 == clustering_method)  // normalized spectral clustering according to Ng et al. (2000).
+	else if (3 == clustering_method)  // Normalized spectral clustering according to Ng et al. (2000).
 	{
-		// (normalized) graph Laplacian matrix, Lsym = D^-1/2 * L * D^-1/2
+		// (Normalized) graph Laplacian matrix, Lsym = D^-1/2 * L * D^-1/2.
 
-		// eigen value decomposition, Lsym * u = lambda * u
+		// Eigen value decomposition, Lsym * u = lambda * u
 		matrix_type Dsqrt;
 		D.sqrt().evalTo(Dsqrt);
 		//Eigen::MatrixSquareRoot<matrix_type>(D).compute(Dsqrt);
@@ -179,16 +179,16 @@ double run_spectral_clustering(const int clustering_method, const matrix_type &W
 		//eigVals = evd.eigenvalues();
 		eigVecs = evd.eigenvectors().leftCols(num_clusters);
 
-		// TODO [check] >> normalization of each row is required?
+		// TODO [check] >> Normalization of each row is required?
 		const matrix_type normvec = eigVecs.rowwise().norm();
 		for (int n = 0; n < num_points; ++n)
 			eigVecs.row(n) /= normvec(n);
 	}
-	else if (4 == clustering_method)  // normalized spectral clustering according to Ng et al. (2000).
+	else if (4 == clustering_method)  // Normalized spectral clustering according to Ng et al. (2000).
 	{
-		// (normalized) graph Laplacian matrix, Lrw = D^-1 * L
+		// (Normalized) graph Laplacian matrix, Lrw = D^-1 * L
 
-		// eigen value decomposition, Lrw * u = lambda * u.
+		// Eigen value decomposition, Lrw * u = lambda * u.
 		Eigen::SelfAdjointEigenSolver<matrix_type> evd(D.inverse() * (D - W));
 
 		//eigVals = evd.eigenvalues();
@@ -209,12 +209,12 @@ double run_spectral_clustering(const int clustering_method, const matrix_type &W
 		for (int d = 0; d < num_clusters; ++d)
 			new_points.push_back(eigVecs(n, d));
 
-	// run k-means or k-means++.
+	// Run k-means or k-means++.
 	//return RunKMeans(num_points, num_clusters, num_clusters, (Scalar *)&new_points[0], num_attempts, (Scalar *)&cluster_centers[0], &assignments[0]);
 	return RunKMeansPlusPlus(num_points, num_clusters, num_clusters, (Scalar *)&new_points[0], num_attempts, (Scalar *)&cluster_centers[0], &assignments[0]);
 }
 
-// [ref]
+// REF [paper] >>
 //	"A tutorial on spectral clustering", U. von Luxburg, SC, 2007
 //	"Normalized cuts and image segmentation", J. Shi and J. Malik, TPAMI, 2000
 void spectral_clustering_sample_1()
@@ -225,10 +225,10 @@ void spectral_clustering_sample_1()
 	const int dim_features = 2;
 	const int num_clusters = 3;
 
-	// TODO [adjust] >> epsilon & k have to be adjusted. results of spectral clustering is sensitive to epsilon, k, & sigma.
-	const double epsilon = 7.0;  // for graph construction method 1.
+	// TODO [adjust] >> Epsilon & k have to be adjusted. results of spectral clustering is sensitive to epsilon, k, & sigma.
+	const double epsilon = 7.0;  // For graph construction method 1.
 	const int k = 10;  // k-nearest neighbors. for graph construction method 2.
-	const double sigma = 1.0;  // for graph construction method 3.
+	const double sigma = 1.0;  // For graph construction method 3.
 
 	// clustering_method 1 ~ 3: good when sigma = 1.0.
 	// clustering_method 4: not so good.
@@ -238,26 +238,26 @@ void spectral_clustering_sample_1()
 	const int dim_features = 2;
 	const int num_clusters = 3;
 
-	// TODO [adjust] >> epsilon & k have to be adjusted. results of spectral clustering is sensitive to epsilon, k, & sigma.
-	const double epsilon = 4.0;  // for graph construction method 1.
+	// TODO [adjust] >> Epsilon & k have to be adjusted. results of spectral clustering is sensitive to epsilon, k, & sigma.
+	const double epsilon = 4.0;  // For graph construction method 1.
 	const int k = 10;  // k-nearest neighbors. for graph construction method 2.
-	const double sigma = 2.0;  // for graph construction method 3.
+	const double sigma = 2.0;  // For graph construction method 3.
 
-	// clustering_method 1 ~ 3: good when sigma = 2.0.
-	// clustering_method 4: good when sigma = 1.0.
+	// Clustering_method 1 ~ 3: good when sigma = 2.0.
+	// Clustering_method 4: good when sigma = 1.0.
 #elif 0
 	const std::string input_filename("./data/machine_learning/clustering/processed_input.txt");
 	const int num_points = 78;
 	const int dim_features = 2;
 	const int num_clusters = 3;
 
-	// TODO [adjust] >> epsilon & k have to be adjusted. results of spectral clustering is sensitive to epsilon, k, & sigma.
-	const double epsilon = 100.0;  // for graph construction method 1.
+	// TODO [adjust] >> Epsilon & k have to be adjusted. results of spectral clustering is sensitive to epsilon, k, & sigma.
+	const double epsilon = 100.0;  // For graph construction method 1.
 	const int k = 10;  // k-nearest neighbors. for graph construction method 2.
-	const double sigma = 100.0;  // for graph construction method 3.
+	const double sigma = 100.0;  // For graph construction method 3.
 
-	// clustering_method 1 ~ 3: good when sigma = 100.0.
-	// clustering_method 4: good when sigma = 70.0.
+	// Clustering_method 1 ~ 3: good when sigma = 100.0.
+	// Clustering_method 4: good when sigma = 70.0.
 #endif
 	const int num_attempts = 1000;
 	const int clustering_method = 2;  // 1 <= clustering_method <= 4. clustering_method 2 is recommended.
@@ -290,7 +290,7 @@ void spectral_clustering_sample_1()
 		assert(points.size() == num_points * dim_features);
 	}
 
-	// construct weighted adjacent matrix, W.
+	// Construct weighted adjacent matrix, W.
 	matrix_type weighted_adjacent_matrix;
 	if (1 == graph_construction_method)
 		construct_epsilon_neighborhood_graph(epsilon, num_points, dim_features, points, square_Euclidean_distance_function(points, dim_features), weighted_adjacent_matrix);
@@ -304,7 +304,7 @@ void spectral_clustering_sample_1()
 		return;
 	}
 
-	// [ref] ${CPP_RND_HOME}/test/machine_learning/clustering/clustering_kmeanspp.cpp
+	// REF [file] >> ${CPP_RND_HOME}/test/machine_learning/clustering/clustering_kmeanspp.cpp
 	{
 		//std::vector<double> cluster_centers(num_clusters * dim_features, 0);
 		std::vector<double> cluster_centers(num_clusters * num_clusters, 0);
@@ -318,7 +318,7 @@ void spectral_clustering_sample_1()
 		}
 		std::cout << "end spectral clustering ..." << std::endl;
 
-		// show results
+		// Show results.
 		std::cout << "the final cost of the clustering = " << cost << std::endl;
 		std::cout << "the locations of all cluster centers:" << std::endl;
 		for (int k = 0; k < num_clusters; ++k)

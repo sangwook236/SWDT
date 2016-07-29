@@ -1,4 +1,0 @@
-[-] General
-	-. Site
-		http://www.mpir.org/
-		http://www.exploringbinary.com/how-to-install-and-run-gmp-on-windows-using-mpir/

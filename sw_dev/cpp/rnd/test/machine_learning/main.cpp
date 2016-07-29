@@ -1,5 +1,5 @@
 //include "stdafx.h"
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 #include <vld/vld.h>
 #endif
 #include <iostream>
@@ -21,15 +21,19 @@ int main(int argc, char *argv[])
 	int shogun_main(int argc, char *argv[]);
 	int encog_main(int argc, char *argv[]);
 	int torch_main(int argc, char *argv[]);
-	int dlib_ml_main(int argc, char *argv[]);
-	int caffe_main(int argc, char *argv[]);
 	int liblearning_main(int argc, char *argv[]);
 	int waffles_main(int argc, char *argv[]);
+
+	int caffe_main(int argc, char *argv[]);
+	int tiny_cnn_main(int argc, char *argv[]);
 
 	int manifold_learning_main(int argc, char *argv[]);
 	int manifold_alignment_main(int argc, char *argv[]);
 
+	int libgp_main(int argc, char *argv[]);
+
 	int rl_glue_main(int argc, char *argv[]);
+	int rllib_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -91,7 +95,7 @@ int main(int argc, char *argv[])
         std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 
-		std::cout << "\nDlib-ml library -----------------------------------------------------" << std::endl;
+		std::cout << "\ndlib-ml library -----------------------------------------------------" << std::endl;
 		//	-. support vector machines (SVM).
 		//	-. relevance vector machines (RVM).
 		//	-. structured prediction.
@@ -107,12 +111,9 @@ int main(int argc, char *argv[])
 		//		Bayesian network.
 		//		inference algorithms.
 		//	-. image processing.
+		//	-. reinforcement learning (RL).
+		//		least-squares policy iteration (LSPI).
 		// REF [library] >> ${GDT_HOME}/sw_dev/cpp/ext/src/general_purpose_library/dlib.
-		//retval = dlib_ml_main(argc, argv);  // not yet implemented.
-
-		std::cout << "\nCaffe framework -----------------------------------------------------" << std::endl;
-		//	-. deep learning.
-		//retval = caffe_main(argc, argv);
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
 		//	-. deep learning.
@@ -130,12 +131,29 @@ int main(int argc, char *argv[])
 		//	-. dimensionality reduction, manifold learning, attribute selection, and tools related to NLDR.
 		//retval = waffles_main(argc, argv);
 
+		std::cout << "\nCaffe framework -----------------------------------------------------" << std::endl;
+		//	-. deep learning.
+		//retval = caffe_main(argc, argv);
+
+		std::cout << "\ntiny-cnn library ----------------------------------------------------" << std::endl;
+		//	-. deep learning.
+		//		convolutional neural network.
+		//		denoising auto-encoder.
+		//		dropout.
+		//retval = tiny_cnn_main(argc, argv);
+
 		std::cout << "\nManifold learning & alignment ---------------------------------------" << std::endl;
 		//retval = manifold_learning_main(argc, argv);  // not yet implemented.
-		retval = manifold_alignment_main(argc, argv);
+		//retval = manifold_alignment_main(argc, argv);
+
+		std::cout << "\nlibgp library ------------------------------------------------------" << std::endl;
+		//retval = libgp_main(argc, argv);
 
 		std::cout << "\nRL-Glue (Reinforcement Learning Glue) library -----------------------" << std::endl;
 		//retval = rl_glue_main(argc, argv);  // not yet implemented.
+
+		std::cout << "\nRLlib library -------------------------------------------------------" << std::endl;
+		retval = rllib_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

@@ -47,7 +47,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -70,7 +70,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl-1.17.0/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -219,6 +219,7 @@
     <ClCompile Include="opencv\opencv_stereo_matching.cpp" />
     <ClCompile Include="opencv\opencv_stereo_matching_using_gpu.cpp" />
     <ClCompile Include="opencv\opencv_structure_tensor.cpp" />
+    <ClCompile Include="opencv\opencv_superpixel.cpp" />
     <ClCompile Include="opencv\opencv_template_matching.cpp" />
     <ClCompile Include="opencv\opencv_text_output.cpp" />
     <ClCompile Include="opencv\opencv_skeletonization_and_thinning.cpp" />

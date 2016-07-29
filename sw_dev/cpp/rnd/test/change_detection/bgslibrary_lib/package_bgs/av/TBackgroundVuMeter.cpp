@@ -1,4 +1,20 @@
 /*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/*
 *  TBackgroundVuMeter.cpp
 *  Framework
 *
@@ -11,11 +27,11 @@
 
 TBackgroundVuMeter::TBackgroundVuMeter(void)
   : m_pHist(NULL)
-  , m_nBinSize(8)
   , m_nBinCount(0)
+  , m_nBinSize(8)
+  , m_nCount(0)
   , m_fAlpha(0.995)
   , m_fThreshold(0.03)
-  , m_nCount(0)
 {
   std::cout << "TBackgroundVuMeter()" << std::endl;
 }
@@ -28,19 +44,17 @@ TBackgroundVuMeter::~TBackgroundVuMeter(void)
 
 void TBackgroundVuMeter::Clear(void)
 {
-  int i;
-
   TBackground::Clear();
 
   if(m_pHist != NULL)
   {
-    for(i = 0; i < m_nBinCount; ++i)
+    for(int i = 0; i < m_nBinCount; ++i)
     {
       if(m_pHist[i] != NULL)
         cvReleaseImage(&m_pHist[i]);
     }
 
-    delete m_pHist;
+    delete[] m_pHist;
     m_pHist = NULL;
     m_nBinCount = 0;
   }
@@ -50,7 +64,6 @@ void TBackgroundVuMeter::Clear(void)
 
 void TBackgroundVuMeter::Reset(void)
 {
-  int i;
   float fVal = 0.0;
 
   TBackground::Reset();
@@ -60,7 +73,7 @@ void TBackgroundVuMeter::Reset(void)
     //		fVal = (m_nBinCount != 0) ? (float)(1.0 / (double)m_nBinCount) : (float)0.0;
     fVal = 0.0;
 
-    for(i = 0; i < m_nBinCount; ++i)
+    for(int i = 0; i < m_nBinCount; ++i)
     {
       if(m_pHist[i] != NULL)
       {
@@ -159,7 +172,6 @@ int TBackgroundVuMeter::SetParameterValue(int nInd, std::string csNew)
 int TBackgroundVuMeter::Init(IplImage * pSource)
 {
   int nErr = 0;
-  int i;
   int nbl, nbc;
 
   Clear();
@@ -192,7 +204,7 @@ int TBackgroundVuMeter::Init(IplImage * pSource)
   // creation des images
   if(!nErr)
   {
-    for(i = 0; i < m_nBinCount; ++i)
+    for(int i = 0; i < m_nBinCount; ++i)
     {
       m_pHist[i] = cvCreateImage(cvSize(nbc, nbl), IPL_DEPTH_32F, 1);
 
@@ -211,35 +223,34 @@ int TBackgroundVuMeter::Init(IplImage * pSource)
 
 bool TBackgroundVuMeter::isInitOk(IplImage * pSource, IplImage *pBackground, IplImage *pMotionMask)
 {
-  bool bResult = TRUE;
+  bool bResult = true;
   int i;
-  int nbl, nbc;
 
   bResult = TBackground::isInitOk(pSource, pBackground, pMotionMask);
 
   if(pSource == NULL)
-    bResult = FALSE;
+    bResult = false;
 
   if(m_nBinSize == 0)
-    bResult = FALSE;
+    bResult = false;
 
   if(bResult)
   {
     i = (m_nBinSize != 0) ? 256 / m_nBinSize : 0;
 
     if(i != m_nBinCount || m_pHist == NULL)
-      bResult = FALSE;
+      bResult = false;
   }
 
   if(bResult)
   {
-    nbl = pSource->height;
-    nbc = pSource->width;
+    int nbl = pSource->height;
+    int nbc = pSource->width;
 
     for(i = 0; i < m_nBinCount; ++i)
     {
       if(m_pHist[i] == NULL || m_pHist[i]->width != nbc || m_pHist[i]->height != nbl)
-        bResult = FALSE;
+        bResult = false;
     }
   }
 
@@ -249,10 +260,8 @@ bool TBackgroundVuMeter::isInitOk(IplImage * pSource, IplImage *pBackground, Ipl
 int TBackgroundVuMeter::UpdateBackground(IplImage *pSource, IplImage *pBackground, IplImage *pMotionMask)
 {
   int nErr = 0;
-  int i, l, c, nbl, nbc;
   unsigned char *ptrs, *ptrb, *ptrm;
   float *ptr1, *ptr2;
-  unsigned char v;
 
   if(!isInitOk(pSource, pBackground, pMotionMask))
     nErr = Init(pSource);
@@ -260,24 +269,24 @@ int TBackgroundVuMeter::UpdateBackground(IplImage *pSource, IplImage *pBackgroun
   if(!nErr)
   {
     m_nCount++;
-    nbc = pSource->width;
-    nbl = pSource->height;
-    v = m_nBinSize;
+    int nbc = pSource->width;
+    int nbl = pSource->height;
+    unsigned char v = m_nBinSize;
 
     // multiplie tout par alpha
-    for(i = 0; i < m_nBinCount; ++i)
+    for(int i = 0; i < m_nBinCount; ++i)
       cvConvertScale(m_pHist[i], m_pHist[i], m_fAlpha, 0.0);
 
-    for(l = 0; l < nbl; ++l)
+    for(int l = 0; l < nbl; ++l)
     {
       ptrs = (unsigned char *)(pSource->imageData + pSource->widthStep * l);
       ptrm = (unsigned char *)(pMotionMask->imageData + pMotionMask->widthStep * l);
       ptrb = (unsigned char *)(pBackground->imageData + pBackground->widthStep * l);
 
-      for(c = 0; c < nbc; ++c, ptrs++, ptrb++, ptrm++)
+      for(int c = 0; c < nbc; ++c, ptrs++, ptrb++, ptrm++)
       {
         // recherche le bin à augmenter
-        i = *ptrs / v;
+        int i = *ptrs / v;
         
         if(i < 0 || i >= m_nBinCount)
           i = 0;
@@ -325,7 +334,6 @@ IplImage *TBackgroundVuMeter::CreateTestImg()
 int TBackgroundVuMeter::UpdateTest(IplImage *pSource, IplImage *pBackground, IplImage *pTest, int nX, int nY, int nInd)
 {
   int nErr = 0;
-  int i, nbl, nbc;
   float *ptrf;
 
   if(pTest == NULL || !isInitOk(pSource, pBackground, pSource)) 
@@ -333,8 +341,8 @@ int TBackgroundVuMeter::UpdateTest(IplImage *pSource, IplImage *pBackground, Ipl
 
   if(!nErr)
   {
-    nbl = pTest->height;
-    nbc = pTest->width;
+    int nbl = pTest->height;
+    int nbc = pTest->width;
 
     if(nbl != 100 || nbc != m_nBinCount) 
       nErr = 1;
@@ -347,7 +355,7 @@ int TBackgroundVuMeter::UpdateTest(IplImage *pSource, IplImage *pBackground, Ipl
   {
     cvSetZero(pTest);
 
-    for(i = 0; i < m_nBinCount; ++i)
+    for(int i = 0; i < m_nBinCount; ++i)
     {
       ptrf = (float *)(m_pHist[i]->imageData + m_pHist[i]->widthStep * nY);
       ptrf += nX;

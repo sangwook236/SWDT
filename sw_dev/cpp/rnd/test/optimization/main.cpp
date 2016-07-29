@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 #include <vld/vld.h>
 #endif
 #define GLOG_NO_ABBREVIATED_SEVERITIES 1
@@ -19,8 +19,6 @@ int main(int argc, char *argv[])
 
 	int nlopt_main(int argc, char *argv[]);
 	int optpp_main(int argc, char *argv[]);
-
-	int galib_main(int argc, char *argv[]);
 
 	int coin_or_main(int argc, char *argv[]);
 
@@ -53,10 +51,6 @@ int main(int argc, char *argv[])
 #else
 		std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
-
-		std::cout << "\nGAlib library -------------------------------------------------------" << std::endl;
-		//  -. Genetic algorithm.
-		//retval = galib_main(argc, argv);
 
 		std::cout << "\nComputational Infrastructure for Operations Research (COIN-OR) ------" << std::endl;
 		//retval = coin_or_main(argc, argv);

@@ -1,0 +1,10 @@
+[-] General
+	- Site.
+		http://people.csail.mit.edu/torralba/shortCourseRLOC/
+		http://www.umiacs.umd.edu/~jsp/Links.html
+
+		Cascaded pictorial structures:
+		http://vision.grasp.upenn.edu/cgi-bin/index.php?n=VideoLearning.CascadedPictorialStructuresCode
+
+		Parts structure:
+		http://people.csail.mit.edu/fergus/iccv2005/partsstructure.html

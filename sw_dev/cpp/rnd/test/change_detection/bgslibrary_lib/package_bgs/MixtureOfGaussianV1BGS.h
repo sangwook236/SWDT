@@ -1,9 +1,28 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #pragma once
 
 #include <iostream>
-#include <cv.h>
-#include <highgui.h>
-#include <opencv2/video/background_segm.hpp>
+#include <opencv2/opencv.hpp>
+
+//--S [] 2016/06/16: Sang-Wook Lee
+//#include <opencv2/video/background_segm.hpp>
+#include <opencv2/bgsegm.hpp>
+//--S [] 2016/06/16: Sang-Wook Lee
 
 #include "IBGS.h"
 
@@ -11,7 +30,10 @@ class MixtureOfGaussianV1BGS : public IBGS
 {
 private:
   bool firstTime;
-  cv::BackgroundSubtractorMOG mog;
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //cv::BackgroundSubtractorMOG mog;
+  cv::Ptr<cv::bgsegm::BackgroundSubtractorMOG> mog;
+  //--E [] 2016/06/16: Sang-Wook Lee
   cv::Mat img_foreground;
   double alpha;
   bool enableThreshold;

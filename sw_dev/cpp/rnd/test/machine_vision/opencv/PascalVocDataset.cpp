@@ -1,10 +1,9 @@
 //#include "stdafx.h"
 #include "PascalVocDataset.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/features2d/features2d.hpp>
+#include <opencv2/opencv.hpp>
 #include <fstream>
+#include <functional>
 #include <sys/stat.h>
 
 
@@ -1600,7 +1599,7 @@ void PascalVocDataset::getSortOrder(const std::vector<float>& values, std::vecto
 void PascalVocDataset::readFileToString(const std::string filename, std::string& file_contents)
 {
     std::ifstream ifs(filename.c_str());
-    if (ifs == false) CV_Error(CV_StsError,"could not open text file");
+    if (!ifs) CV_Error(CV_StsError,"could not open text file");
 
     std::stringstream oss;
     oss << ifs.rdbuf();

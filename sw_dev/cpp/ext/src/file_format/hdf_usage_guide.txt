@@ -1,0 +1,10 @@
+[-] General
+	-. Site
+		http://www.hdfgroup.org/HDF5/
+		http://www.hdfgroup.org/
+
+[-] Linking with HDF5 (Windows)
+	-. Link with HDF5 as a shared library
+		If you are linking with protobufs as a DLL then you will need to define _HDF5USEDLL_ in your client application.
+			define _HDF5USEDLL_.
+		==> 문제가 해결되지 않으면 static library와 linking.

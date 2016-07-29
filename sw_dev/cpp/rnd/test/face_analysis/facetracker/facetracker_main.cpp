@@ -105,7 +105,7 @@ void basic_example()
 		IplImage *I = cvQueryFrame(camera);
 		if (!I) continue;
 		
-		frame = I;
+		frame = cv::cvarrToMat(I, false);
 		if (1 == scale) im = frame;
 		else cv::resize(frame, im, cv::Size(scale * frame.cols, scale * frame.rows));
 

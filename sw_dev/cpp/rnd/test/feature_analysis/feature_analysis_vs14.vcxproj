@@ -30,7 +30,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 7.5.props" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 8.0.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -54,12 +54,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CudaCompile>
@@ -80,14 +80,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;D:\MyProgramFiles\MATLAB\R2012b_win32\extern\lib\win32\microsoft;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CudaCompile>
@@ -98,93 +98,6 @@
       <PtxAsOptionV>true</PtxAsOptionV>
     </CudaCompile>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <CudaCompile Include="surfgpu_lib\cuda\buildDetCUDA.cu">
-      <FileType>Document</FileType>
-      <CInterleavedPTX Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</CInterleavedPTX>
-      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">compute_20,sm_21</CodeGeneration>
-      <PtxAsOptionV Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</PtxAsOptionV>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\buildDetGPU.cu">
-      <FileType>Document</FileType>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\buildSURFDescriptorsCUDA.cu">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\buildSURFDescriptorsGPU.cu">
-      <FileType>Document</FileType>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\convertRGB2GrayFloatCUDA.cu">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\convertRGB2GrayFloatGPU.cu">
-      <FileType>Document</FileType>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\convertRGBA2GrayFloatCUDA.cu">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\convertRGBA2GrayFloatGPU.cu">
-      <FileType>Document</FileType>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\detectIpointOrientationsCUDA.cu">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\detectIpointOrientationsGPU.cu">
-      <FileType>Document</FileType>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\haarXY.cu">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\matchSURFKeypointsCUDA.cu">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\matchSURFKeypointsGPU.cu">
-      <FileType>Document</FileType>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\nonMaxCUDA.cu">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\nonMaxGPU.cu">
-      <FileType>Document</FileType>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\normalizeSURFDescriptorsCUDA.cu">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\normalizeSURFDescriptorsGPU.cu">
-      <FileType>Document</FileType>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\reductionCUDA.cu">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\transposeCUDA.cu">
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CudaCompile>
-    <CudaCompile Include="surfgpu_lib\cuda\transposeGPU.cu">
-      <FileType>Document</FileType>
-    </CudaCompile>
-  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="elsd_lib\elsd.h" />
     <ClInclude Include="elsd_lib\process_curve.h" />
@@ -276,43 +189,20 @@
     <ClInclude Include="fst_lib\_src_search\seq_step_straight_threaded.hpp" />
     <ClInclude Include="fst_lib\_src_search\stopwatch.hpp" />
     <ClInclude Include="lsd_lib\lsd.h" />
-    <ClInclude Include="opensurf_lib\fasthessian.h" />
-    <ClInclude Include="opensurf_lib\integral.h" />
-    <ClInclude Include="opensurf_lib\ipoint.h" />
-    <ClInclude Include="opensurf_lib\kmeans.h" />
-    <ClInclude Include="opensurf_lib\responselayer.h" />
-    <ClInclude Include="opensurf_lib\surf.h" />
-    <ClInclude Include="opensurf_lib\surflib.h" />
-    <ClInclude Include="opensurf_lib\utils.h" />
-    <ClInclude Include="surfgpu_lib\buildDetGPU.h" />
-    <ClInclude Include="surfgpu_lib\buildSURFDescriptorsGPU.h" />
-    <ClInclude Include="surfgpu_lib\convertRGB2GrayFloatGPU.h" />
-    <ClInclude Include="surfgpu_lib\convertRGBA2GrayFloatGPU.h" />
-    <ClInclude Include="surfgpu_lib\cudaimage.h" />
-    <ClInclude Include="surfgpu_lib\cuda\common_kernel.h" />
-    <ClInclude Include="surfgpu_lib\cuda\cudpp_helper_funcs.h" />
-    <ClInclude Include="surfgpu_lib\cuda\helper_funcs.h" />
-    <ClInclude Include="surfgpu_lib\cuda\strerror_cudpp.h" />
-    <ClInclude Include="surfgpu_lib\defines.h" />
-    <ClInclude Include="surfgpu_lib\detectIpointOrientationsGPU.h" />
-    <ClInclude Include="surfgpu_lib\fasthessianGPU.h" />
-    <ClInclude Include="surfgpu_lib\fasthessian_cudaipoint.h" />
-    <ClInclude Include="surfgpu_lib\integralGPU.h" />
-    <ClInclude Include="surfgpu_lib\ipointGPU.h" />
-    <ClInclude Include="surfgpu_lib\kmeansGPU.h" />
-    <ClInclude Include="surfgpu_lib\matchSURFKeypointsGPU.h" />
-    <ClInclude Include="surfgpu_lib\nonMaxGPU.h" />
-    <ClInclude Include="surfgpu_lib\normalizeSURFDescriptorsGPU.h" />
-    <ClInclude Include="surfgpu_lib\surfGPU.h" />
-    <ClInclude Include="surfgpu_lib\surflibGPU.h" />
-    <ClInclude Include="surfgpu_lib\surf_cudaipoint.h" />
-    <ClInclude Include="surfgpu_lib\transposeGPU.h" />
-    <ClInclude Include="surfgpu_lib\utilsGPU.h" />
     <ClInclude Include="surf\surf_imload.h" />
     <ClInclude Include="surf\surf_os_mapping.h" />
-    <ClInclude Include="svm_light_lib\svm_light\kernel.h" />
-    <ClInclude Include="svm_light_lib\svm_light\svm_common.h" />
-    <ClInclude Include="svm_light_lib\svm_light\svm_learn.h" />
+    <ClInclude Include="svm_light_lib\svm_light\kernel.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="svm_light_lib\svm_light\svm_common.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="svm_light_lib\svm_light\svm_learn.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="elsd\elsd_main.cpp" />
@@ -324,8 +214,14 @@
     <ClCompile Include="fst\fst_demo10.cpp" />
     <ClCompile Include="fst\fst_main.cpp" />
     <ClCompile Include="fst_lib\_src_global\global.cpp" />
-    <ClCompile Include="hog\hog_main.cpp" />
-    <ClCompile Include="hog\hog_training_HOG.cpp" />
+    <ClCompile Include="hog\hog_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="hog\hog_training_HOG.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="lsd\lsd_main.cpp" />
     <ClCompile Include="lsd_lib\lsd.cpp" />
@@ -338,48 +234,22 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="opensift\opensift_display_feature.cpp" />
-    <ClCompile Include="opensift\opensift_extract_feature.cpp" />
-    <ClCompile Include="opensift\opensift_main.cpp" />
-    <ClCompile Include="opensift\opensift_match_feature.cpp" />
-    <ClCompile Include="opensurf\opensurf_example.cpp" />
-    <ClCompile Include="opensurf\opensurf_main.cpp" />
-    <ClCompile Include="opensurf_lib\fasthessian.cpp" />
-    <ClCompile Include="opensurf_lib\integral.cpp" />
-    <ClCompile Include="opensurf_lib\ipoint.cpp" />
-    <ClCompile Include="opensurf_lib\main.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="opensurf_lib\surf.cpp" />
-    <ClCompile Include="opensurf_lib\utils.cpp" />
-    <ClCompile Include="siftgpu\siftgpu_main.cpp" />
-    <ClCompile Include="siftgpu\siftgpu_simple_example.cpp" />
-    <ClCompile Include="surfgpu\surfgpu_example.cpp" />
-    <ClCompile Include="surfgpu\surfgpu_main.cpp" />
-    <ClCompile Include="surfgpu_lib\cuda\getMatchesGPU.cpp" />
-    <ClCompile Include="surfgpu_lib\cuda\helper_funcs.cpp" />
-    <ClCompile Include="surfgpu_lib\cuda\strerror_cudpp.cpp" />
-    <ClCompile Include="surfgpu_lib\fasthessianGPU.cpp" />
-    <ClCompile Include="surfgpu_lib\getMatchesCPU.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="surfgpu_lib\integralGPU.cpp" />
-    <ClCompile Include="surfgpu_lib\ipointGPU.cpp" />
-    <ClCompile Include="surfgpu_lib\main.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="surfgpu_lib\surfGPU.cpp" />
-    <ClCompile Include="surfgpu_lib\utilsGPU.cpp" />
     <ClCompile Include="svm_light_lib\svm_light\svm_classify.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="svm_light_lib\svm_light\svm_common.c" />
-    <ClCompile Include="svm_light_lib\svm_light\svm_hideo.c" />
-    <ClCompile Include="svm_light_lib\svm_light\svm_learn.c" />
+    <ClCompile Include="svm_light_lib\svm_light\svm_common.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_hideo.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="svm_light_lib\svm_light\svm_learn.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="svm_light_lib\svm_light\svm_learn_main.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -391,6 +261,6 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 7.5.targets" />
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 8.0.targets" />
   </ImportGroup>
 </Project>

@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_vision", "..\test\machine_vision\machine_vision_vs14.vcxproj", "{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}"
 EndProject
@@ -36,7 +36,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pose_estimation", "..\test\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shape_analysis", "..\test\shape_analysis\shape_analysis_vs14.vcxproj", "{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hand_analysis", "..\test\hand_analysis\hand_analysis_vs14.vcxproj", "{5764CA80-F4D8-4DA7-924F-E4ED8734C009}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_tracking", "..\test\object_tracking\object_tracking_vs14.vcxproj", "{5764CA80-F4D8-4DA7-924F-E4ED8734C009}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "statistics", "..\test\statistics\statistics_vs14.vcxproj", "{0E6076D4-05F3-4EBB-B706-DD8E198E397B}"
 EndProject
@@ -61,6 +61,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dimensionality_reduction", "..\test\dimensionality_reduction\dimensionality_reduction_vs14.vcxproj", "{F249ECED-8E6C-438D-B55F-580E74888E2F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "failure_analysis", "..\test\failure_analysis\failure_analysis_vs14.vcxproj", "{73E8CB7C-42B5-4B48-B711-288EFEEAAF61}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "artificial_intelligence", "..\test\artificial_intelligence\artificial_intelligence_vs14.vcxproj", "{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -172,12 +174,6 @@ Global
 		{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}.Release|Win32.ActiveCfg = Release|Win32
 		{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}.Release|Win32.Build.0 = Release|Win32
 		{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}.Release|x64.ActiveCfg = Release|Win32
-		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Debug|Win32.Build.0 = Debug|Win32
-		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Debug|x64.ActiveCfg = Debug|Win32
-		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Release|Win32.ActiveCfg = Release|Win32
-		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Release|Win32.Build.0 = Release|Win32
-		{A1FCEC55-5FAC-4D7A-9B06-D9EC2A564BD0}.Release|x64.ActiveCfg = Release|Win32
 		{5764CA80-F4D8-4DA7-924F-E4ED8734C009}.Debug|Win32.ActiveCfg = Debug|Win32
 		{5764CA80-F4D8-4DA7-924F-E4ED8734C009}.Debug|Win32.Build.0 = Debug|Win32
 		{5764CA80-F4D8-4DA7-924F-E4ED8734C009}.Debug|x64.ActiveCfg = Debug|Win32
@@ -258,6 +254,14 @@ Global
 		{73E8CB7C-42B5-4B48-B711-288EFEEAAF61}.Release|Win32.Build.0 = Release|Win32
 		{73E8CB7C-42B5-4B48-B711-288EFEEAAF61}.Release|x64.ActiveCfg = Release|x64
 		{73E8CB7C-42B5-4B48-B711-288EFEEAAF61}.Release|x64.Build.0 = Release|x64
+		{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}.Debug|Win32.Build.0 = Debug|Win32
+		{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}.Debug|x64.ActiveCfg = Debug|x64
+		{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}.Debug|x64.Build.0 = Debug|x64
+		{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}.Release|Win32.ActiveCfg = Release|Win32
+		{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}.Release|Win32.Build.0 = Release|Win32
+		{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}.Release|x64.ActiveCfg = Release|x64
+		{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

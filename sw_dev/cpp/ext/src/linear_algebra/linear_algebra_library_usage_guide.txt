@@ -57,6 +57,14 @@
 		Features:
 			'cblas_'로 시작하는 함수 제공.
 			'clapack_'로 시작하는 함수 제공.
+	-. Eigen
+		BLAS & LAPACK의 function 대부분을 가지고 있지 않음.
+		Library files:
+			eigen_blas.so/dll
+			eigen_lapack.so/dll
+		Features:
+			'cblas_'로 시작하지 않는 함수 제공. (?)
+			'clapack_'로 시작하지 않는 함수 제공. (?)
 	-. GSL
 		gsl-1.15 version의 static library 사용.
 		Library files:

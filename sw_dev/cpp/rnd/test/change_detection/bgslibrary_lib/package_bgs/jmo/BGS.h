@@ -1,7 +1,23 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 /* --- --- ---
 * Copyright (C) 2008--2010 Idiap Research Institute (.....@idiap.ch)
 * All rights reserved.
-* 
+*
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions
 * are met:
@@ -12,7 +28,7 @@
 *    documentation and/or other materials provided with the distribution.
 * 3. The name of the author may not be used to endorse or promote products
 *    derived from this software without specific prior written permission.
-* 
+*
 * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
 * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -27,7 +43,7 @@
 #if !defined(_BGS_H_)
 #define _BGS_H_
 
-#include <cv.h>
+#include <opencv2/opencv.hpp>
 
 
 // TODO check these defines are not used (or not redundant with real params)
@@ -53,9 +69,9 @@
 #define ROBUST_HIGHLIGHT_RATE	1.20f
 
 #define BINARY_PATTERM_ELEM(c1, c2, offset)	\
-  ((float)(c2)-(float)(c1)+offset>0)
+  ((float)(c2)-(float)(c1)+offset > 0)
 
-/*		
+/*
 #define BINARY_PATTERM_ELEM(c1, c2, offset)	\
 ( fabsf((float)(c2)-(float)(c1)) <= offset ? 1 : (float)(c2)-(float)(c1) >=0 )
 */
@@ -116,7 +132,7 @@ public:
   int lbp_pattern_length;
   int color_channel;
 
-  BG_PIXEL_MODE(int _lbp_pattern_length, int _color_channel=3) {
+  BG_PIXEL_MODE(int _lbp_pattern_length, int _color_channel = 3) {
     lbp_pattern_length = _lbp_pattern_length;
     color_channel = _color_channel;
 
@@ -127,10 +143,10 @@ public:
   };
 
   virtual ~BG_PIXEL_MODE() {
-    delete [] bg_lbp_pattern;
-    delete [] bg_intensity;
-    delete [] max_intensity;
-    delete [] min_intensity;
+    delete[] bg_lbp_pattern;
+    delete[] bg_intensity;
+    delete[] max_intensity;
+    delete[] min_intensity;
   };
 };
 
@@ -149,14 +165,14 @@ public:
   int color_channel;
   int pixel_mode_num;
 
-  BG_PIXEL_PATTERN(int _pixel_mode_num, int _lbp_pattern_length, int _color_channel=3) {
+  BG_PIXEL_PATTERN(int _pixel_mode_num, int _lbp_pattern_length, int _color_channel = 3) {
     pixel_mode_num = _pixel_mode_num;
     lbp_pattern_length = _lbp_pattern_length;
     color_channel = _color_channel;
 
     pixel_MODEs = new BG_PIXEL_MODE*[pixel_mode_num];
 
-    for ( int i = 0 ; i < pixel_mode_num ; i++ ) {
+    for (int i = 0; i < pixel_mode_num; i++) {
       pixel_MODEs[i] = new BG_PIXEL_MODE(_lbp_pattern_length, _color_channel);
     }
 
@@ -166,13 +182,13 @@ public:
   };
 
   virtual ~BG_PIXEL_PATTERN() {
-    delete [] lbp_pattern_idxes;
-    delete [] cur_intensity;
-    delete [] cur_lbp_pattern;
+    delete[] lbp_pattern_idxes;
+    delete[] cur_intensity;
+    delete[] cur_lbp_pattern;
 
-    for ( int i = 0 ; i < pixel_mode_num ; i++ )
+    for (int i = 0; i < pixel_mode_num; i++)
       delete pixel_MODEs[i];
-    delete [] pixel_MODEs;
+    delete[] pixel_MODEs;
   };
 };
 
@@ -182,17 +198,17 @@ class IMAGE_BG_MODEL
 
   BG_PIXEL_PATTERN** pixel_PATTERNs;
 
-  IMAGE_BG_MODEL(int _pixel_length, int _pixel_mode_num, int _lbp_pattern_length, int _color_channel=3) {
+  IMAGE_BG_MODEL(int _pixel_length, int _pixel_mode_num, int _lbp_pattern_length, int _color_channel = 3) {
     pixel_length = _pixel_length;
 
     pixel_PATTERNs = new BG_PIXEL_PATTERN*[pixel_length];
-    for ( int i = 0 ; i < pixel_length ; i++ ) 
+    for (int i = 0; i < pixel_length; i++)
       pixel_PATTERNs[i] = new BG_PIXEL_PATTERN(_pixel_mode_num, _lbp_pattern_length, _color_channel);
   }
   virtual ~IMAGE_BG_MODEL() {
-    for ( int i = 0 ; i < pixel_length ; i++ )
+    for (int i = 0; i < pixel_length; i++)
       delete pixel_PATTERNs[i];
-    delete [] pixel_PATTERNs;
+    delete[] pixel_PATTERNs;
   }
 };
 

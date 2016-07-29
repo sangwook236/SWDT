@@ -99,8 +99,8 @@ void thinningZhangSuenIteration(cv::Mat& img, int iter)
  * 		src  The source image, binary with range = [0,255]
  * 		dst  The destination image
  */
-// [ref]
-//	"A fast parallel algorithm for thinning digital patterns", T.Y. Zhang and C.Y. Suen, CACM, 1984.
+// REF [paper] >> "A fast parallel algorithm for thinning digital patterns", T.Y. Zhang and C.Y. Suen, CACM, 1984.
+// REF [site] >>
 //	https://github.com/bsdnoobz/zhang-suen-thinning
 //	http://opencv-code.com/quick-tips/implementation-of-thinning-algorithm-in-opencv/
 void zhang_suen_thinning_algorithm(const cv::Mat &src, cv::Mat &dst)
@@ -165,9 +165,8 @@ void thinningGuoHallIteration(cv::Mat &im, const int iter)
 *
 * @param  im  Binary image with range = 0-255
 */
-// [ref]
-//	"Parallel thinning with two sub-iteration algorithms", Zicheng Guo and Richard Hall, CACM, 1989.
-//	http://opencv-code.com/quick-tips/implementation-of-guo-hall-thinning-algorithm/
+// REF [paper] >> "Parallel thinning with two sub-iteration algorithms", Zicheng Guo and Richard Hall, CACM, 1989.
+// REF [site] >> http://opencv-code.com/quick-tips/implementation-of-guo-hall-thinning-algorithm/
 void guo_hall_thinning_algorithm(cv::Mat &im)
 {
 	im /= 255;
@@ -221,16 +220,16 @@ void skeletonization_and_thinning()
 
 	// Guo-Hall thinning algorithm.
 	{
-		cv::Mat bw;
-		cv::cvtColor(src, bw, CV_BGR2GRAY);
+		cv::Mat gray;
+		cv::cvtColor(src, gray, CV_BGR2GRAY);
 
 		{
 			boost::timer::auto_cpu_timer timer;
 
-			local::guo_hall_thinning_algorithm(bw);
+			local::guo_hall_thinning_algorithm(gray);
 		}
 
-		cv::imshow("Guo-Hall thinning algorithm - result", bw);
+		cv::imshow("Guo-Hall thinning algorithm - result", gray);
 	}
 
 	cv::waitKey();

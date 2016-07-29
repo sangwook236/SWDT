@@ -1,0 +1,89 @@
+[-] Building (Win32)
+	REF [file] >> ${QT_HOME}/INSTALL
+
+	0. Eexecute "Visual Studio Command Prompt".
+	1. Uncompress Qt source files to a directory.
+		source directory를 'D:/Qt-4.8.6'과 같이 하는 것이 바람직함.
+		==> 위의 예와 같이 간단한 이름을 사용해야 함.
+			그렇지 않을 경우 building이 제대로 되지 않을 수 있음.
+		==> 'make install'을 이용해 Qt를 설치할 때 아래와 같은 directory에 설치됨.
+			${INSTALL_ROOT}/Qt-4.8.6
+			e.g.) Qt source를 directory 'D:/Qt/4.8.6'에 복사했다면.
+				${INSTALL_ROOT}/Qt/4.8.6
+			REF [] >> 10 & 11번 참고.
+		==> ${INSTALL_PREFIX}를 사용한다면, source directory를 고려하지 않아도 됨.
+			configure에서 '-prefix ${INSTALL_PREFIX}'을 지정하였다면, 해당 directory에 설치됨.
+			REF [] >> 7번 참고.
+	2. Set PATH.
+		${QT_HOME}/bin
+		    to locate qmake, moc and other Qt tools.
+	3. (Optional) set the environment variable, QMAKESPEC.
+		set QMAKESPEC=win32-msvc2013
+	4. Make a directory for win32-msvc15 (==> not working).
+		copy ${QT_HOME}/mkspecs/win32-msvc2013 to ${QT_HOME}/mkspecs/win32-msvc2015
+		modify qmake.conf
+		==> MSVC2015는 지원하지 않음. (as of 2015/12/30)
+		==> 아래 참고.
+	5. Modify ${QT_HOME}/qmake/Makefile.win32 (==> not working).
+		add win32-msvc2015 in a few places.
+	6. Change directory to ${QT_HOME}.
+	    cd /D ${QT_HOME}
+	7. Cconfigure.
+		configure -make nmake -prefix ${INSTALL_PREFIX} -debug-and-release -platform win32-msvc2013 -opensource -confirm-license -opengl desktop -nomake examples -nomake tests
+		configure -make nmake -prefix ${INSTALL_PREFIX} -debug-and-release -platform win32-msvc2013 -opensource -no-opengl -no-openvg -graphicssystem raster
+		configure -make nmake -prefix ${INSTALL_PREFIX} -debug-and-release -platform win32-msvc2013 -opensource -no-opengl -no-openvg -graphicssystem raster -arch windows -shared -ltcg -no-fast -exceptions -accessibility -stl -qt-sql-sqlite -qt-zlib -qt-gif -qt-libpng -qt-libmng -qt-libtiff -qt-libjpeg -no-dsp -no-vcproj -incredibuild-xge -plugin-manifests -qmake -process -rtti -mmx -3dnow -sse -sse2 -no-openssl -no-dbus -phonon -phonon-backend -multimedia -audio-backend -webkit -script -scripttools -declarative -qt-style-windows -qt-style-windowsxp -qt-style-windowsvista -no-style-plastique -no-style-cleanlooks -no-style-motif -no-style-cde -no-style-windowsce -no-style-windowsmobile -no-style-s60 -native-gestures
+	    	REF [site] >> http://wiki.qt.io/Building_Qt_Desktop_for_Windows_with_MSVC
+	    	INSTALL_PREFIX는 '\usr\local\Qt-4.8.6'과 같이 지정.
+	    ==> to reconfigure:
+	    	nmake confclean
+	    	configure ...
+	8. Check Makefiles (==> not working).
+		change win32-msvc10 to win32-msvc13 in Makefiles.
+			${QT_HOME}/Makefile
+			${QT_HOME}/???/Makefile
+	9. Build.
+		nmake
+	10. (Optional) set the environment variable, INSTALL_ROOT.
+		만약 install root directory로 'D:/usr/local'을 설정하고 싶다면
+		drive에 대한 정보를 빼고 아래와 같이 설정.
+			set INSTALL_ROOT=\usr\local
+		설치되는 drive는 nmake가 실행되는 drive인 듯함.
+		==> ${INSTALL_ROOT} 사용 보다 ${INSTALL_PREFIX}의 사용이 더 바람직함.
+	11. Install.
+		nmake install
+		==> ${INSTALL_PREFIX}/include, lib, & bin, etc에 설치.
+			${INSTALL_ROOT}를 설정하는 경우 ${INSTALL_ROOT}/${INSTALL_PREFIX}/include, lib, & bin, etc에 설치.
+
+[-] Building (VS2015)
+	REF [site] >> http://stackoverflow.com/questions/32848962/how-to-build-qt-4-8-6-with-visual-studio-2015-without-official-support
+
+	- Patch.
+		아래의 diff file을 보고 patch.
+			02-fix_build_with_msvc2015-45e8f4ee.diff
+		수동으로 patch 가능.
+		patch 명령어 이용.
+			copy the patch file, 02-fix_build_with_msvc2015-45e8f4ee.diff to ${QT_HOME}
+			cd ${QT_HOME}
+			patch -p1 < 02-fix_build_with_msvc2015-45e8f4ee.diff
+	- Build.
+		위 참고 site에 따라 build 수행.
+	    Create a new win32-msvc2015 spec in ${QT_HOME}/mkspecs.
+	    Edit makefile.win32 file in ${QT_HOME}/qmake
+
+[-] Trouble Shooting
+	- PATH_MAX 관련 오류 발생.
+		==> change PATH_MAX to MAX_PATH.
+	- cstdint 관련 오류 발생.
+		<error message> 'int_least8_t': is not a member of '`global namespace''
+		==> MSVC2015에서 build하기 위해서 patch 필요. (==> not working)
+			copy the patch file, 02-fix_build_with_msvc2015-45e8f4ee.diff to ${QT_HOME}
+			cd ${QT_HOME}
+			patch -p1 < 02-fix_build_with_msvc2015-45e8f4ee.diff
+			REF [site] >>  https://forum.qt.io/topic/56453/compiling-qt4-head-with-msvc-2015-cstdint-errors
+	- Q_INTERFACES "Error: Undefined interface".
+		REF [site] >>  https://bugreports.qt-project.org/browse/QTBUG-16293
+	- manifest file 생성 error.
+		MSVC를 이용해 building하는 경우 mt.exe를 이용해 manifest file을 생성하는 과정에서
+		manifest file을 생성하지 못하는 오류 발생.
+		==> 다시 building하면 됨.
+			원인을 알 수 없지만 Visual Studio IDE에서도 동일한 현상이 발생함.

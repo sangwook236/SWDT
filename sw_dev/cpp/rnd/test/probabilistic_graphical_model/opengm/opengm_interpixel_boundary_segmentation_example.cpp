@@ -183,6 +183,7 @@ void interpixel_boundary_segmentation_example()
 	typedef Model::FunctionIdentifier FunctionIdentifier;
 	Model gm(opengm::SimpleDiscreteSpace<>(numOfVariables, 2));
 
+	// Local model.
 	// for each boundary in the grid, i.e. for each variable of the model, add one 1st order functions and one 1st order factor
 	{
 		const std::size_t shape[] = { 2 };
@@ -201,6 +202,7 @@ void interpixel_boundary_segmentation_example()
 				}
 	}
 
+	// 4-wise interaction.
 	// for each junction of four inter-pixel edges on the grid, 
 	// one factor is added that connects the corresponding variable indices and refers to the ClosednessFunctor function
 	{

@@ -14,263 +14,19 @@
 #include <boost/pending/disjoint_sets.hpp>
 #include <boost/foreach.hpp>
 #include <fstream>
-#include <utility>
-#include <algorithm>
 #include <iostream>
+#include <algorithm>
 #include <string>
+#include <utility>
 #include <stdexcept>
 
 
 namespace {
 namespace local {
 
-template <class Graph>
-struct exercise_vertex
-{
-	exercise_vertex(Graph &g, const char *name)
-	: g_(g), name_(name)
-	{}
-
-	typedef typename boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor_type;
-
-	void operator()(const vertex_descriptor_type &v) const
-	{
-		typename boost::property_map<Graph, boost::vertex_index_t>::type vertex_id = boost::get(boost::vertex_index, g_);
-
-		std::cout << "vertex: " << name_[boost::get(vertex_id, v)] << std::endl;
-
-		// write out the outgoing edges
-		std::cout << "\tout-edges: ";
-		typename boost::graph_traits<Graph>::out_edge_iterator out_i, out_end;
-		typename boost::graph_traits<Graph>::edge_descriptor e;
-		for (boost::tie(out_i, out_end) = boost::out_edges(v, g_); out_i != out_end; ++out_i)
-		{
-			e = *out_i;
-			vertex_descriptor_type src = boost::source(e, g_), targ = boost::target(e, g_);
-			std::cout << "(" << name_[boost::get(vertex_id, src)] << "," << name_[boost::get(vertex_id, targ)] << ") ";
-		}
-		std::cout << std::endl;
-
-		// write out the incoming edges
-		std::cout << "\tin-edges: ";
-		typename boost::graph_traits<Graph>::in_edge_iterator in_i, in_end;
-		for (boost::tie(in_i, in_end) = boost::in_edges(v, g_); in_i != in_end; ++in_i)
-		{
-			e = *in_i;
-			vertex_descriptor_type src = boost::source(e, g_), targ = boost::target(e, g_);
-			std::cout << "(" << name_[boost::get(vertex_id, src)] << "," << name_[boost::get(vertex_id, targ)] << ") ";
-		}
-		std::cout << std::endl;
-
-		// write out all adjacent vertices
-		std::cout << "\tadjacent vertices: ";
-		typename boost::graph_traits<Graph>::adjacency_iterator ai, ai_end;
-		for (boost::tie(ai, ai_end) = boost::adjacent_vertices(v, g_); ai != ai_end; ++ai)
-			std::cout << name_[boost::get(vertex_id, *ai)] <<  " ";
-		std::cout << std::endl;
-	}
-
-private:
-	Graph &g_;
-	const char *name_;
-};
-
-// REF [file] >> ${BOOST_HOME}/libs/graph/example/quick_tour.cpp
-void boost_quick_tour()
-{
-	// create a typedef for the graph_type type
-	typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, boost::no_property, boost::property<boost::edge_weight_t, float> > graph_type;
-
-	// make convenient labels for the vertices
-	enum { A, B, C, D, E, N };
-	const int num_vertices = N;
-	const char name[] = "ABCDE";
-
-	// writing out the edges in the graph
-	typedef std::pair<int, int> edge_type;
-
-	const edge_type edge_array[] = { edge_type(A, B), edge_type(A, D), edge_type(C, A), edge_type(D, C), edge_type(C, E), edge_type(B, D), edge_type(D, E), };
-	const int num_edges = sizeof(edge_array) / sizeof(edge_array[0]);
-
-	// average transmission delay (in milliseconds) for each connection
-	const float transmission_delay[] = { 1.2f, 4.5f, 2.6f, 0.4f, 5.2f, 1.8f, 3.3f, 9.1f };
-
-	// declare a graph object, adding the edges and edge properties
-#if defined(BOOST_MSVC) && BOOST_MSVC <= 1300
-	// VC++ can't handle the iterator constructor
-	graph_type g(num_vertices);
-	boost::property_map<graph_type, boost::edge_weight_t>::type weightmap = boost::get(boost::edge_weight, g);
-	for (std::size_t j = 0; j < num_edges; ++j)
-	{
-		boost::graph_traits<graph_type>::edge_descriptor e;
-		bool inserted;
-		boost::tie(e, inserted) = boost::add_edge(edge_array[j].first, edge_array[j].second, g);
-		weightmap[e] = transmission_delay[j];
-	}
-#else
-	graph_type g(edge_array, edge_array + num_edges, transmission_delay, num_vertices);
-#endif
-
-	boost::property_map<graph_type, boost::vertex_index_t>::type vertex_ids = boost::get(boost::vertex_index, g);
-	boost::property_map<graph_type, boost::edge_weight_t>::type trans_delays = boost::get(boost::edge_weight, g);
-
-	std::cout << "vertices(g) = ";
-	typedef boost::graph_traits<graph_type>::vertex_iterator vertex_iterator_type;
-	std::pair<vertex_iterator_type, vertex_iterator_type> vp;
-	for (vp = boost::vertices(g); vp.first != vp.second; ++vp.first)
-	{
-		std::cout << name[boost::get(vertex_ids, *vp.first)] <<  " ";
-		//std::cout << name[vertex_ids[*vp.first]] <<  " ";
-	}
-	std::cout << std::endl;
-
-	std::cout << "edges(g) = ";
-	boost::graph_traits<graph_type>::edge_iterator ei, ei_end;
-	for (boost::tie(ei, ei_end) = boost::edges(g); ei != ei_end; ++ei)
-	{
-		std::cout << "(" << name[boost::get(vertex_ids, boost::source(*ei, g))] << "," << name[boost::get(vertex_ids, boost::target(*ei, g))] << ") ";
-		//std::cout << "(" << name[vertex_ids[boost::source(*ei, g)]] << "," << name[vertex_ids[boost::target(*ei, g)]] << ") ";
-	}
-	std::cout << std::endl;
-
-	//
-	std::for_each(boost::vertices(g).first, boost::vertices(g).second, exercise_vertex<graph_type>(g, name));
-
-	//
-	std::map<std::string, std::string> graph_attr, vertex_attr, edge_attr;
-	graph_attr["size"] = "3,3";
-	graph_attr["rankdir"] = "LR";
-	graph_attr["ratio"] = "fill";
-	vertex_attr["shape"] = "circle";
-
-	boost::write_graphviz(
-		std::cout,
-		g,
-		boost::make_label_writer(name),
-		boost::make_label_writer(trans_delays),
-		boost::make_graph_attributes_writer(graph_attr, vertex_attr, edge_attr)
-	);
-}
-
-// REF [site] >> http://www.ibm.com/developerworks/aix/library/au-aix-boost-graph/index.html
-void basic_operation()
-{
-	std::cout << "--------------------------------------------------------------" << std::endl;
-	{
-		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS> graph_type;
-
-		// create a simple undirected graph
-		graph_type g;
-		boost::add_edge(0, 1, g);
-		boost::add_edge(0, 3, g);
-		boost::add_edge(1, 2, g);
-		boost::add_edge(2, 3, g);
-
-		graph_type::vertex_iterator vertexIt, vertexEnd;  // iterate over all the vertices of the graph
-		graph_type::adjacency_iterator neighbourIt, neighbourEnd;  // iterate over the corresponding adjacent vertices
-
-		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
-		for (; vertexIt != vertexEnd; ++vertexIt)
-		{
-			std::cout << *vertexIt << " is connected with ";
-			boost::tie(neighbourIt, neighbourEnd) = boost::adjacent_vertices(*vertexIt, g);
-			for (; neighbourIt != neighbourEnd; ++neighbourIt)
-				std::cout << *neighbourIt << " ";
-			std::cout << std::endl;
-		}
-	}
-
-	std::cout << "\n--------------------------------------------------------------" << std::endl;
-	{
-		// Instead of using the adjacency list-based version to create an undirected graph, you can use the BGL-provided undirected_graph class.
-		// However, this class internally uses an adjacency list, and using graphs based on adjacency lists always provides for greater flexibility.
-
-		boost::undirected_graph<> g;
-
-		boost::undirected_graph<>::vertex_descriptor u = g.add_vertex();
-		boost::undirected_graph<>::vertex_descriptor v = g.add_vertex();
-		boost::undirected_graph<>::vertex_descriptor w = g.add_vertex();
-		boost::undirected_graph<>::vertex_descriptor x = g.add_vertex();
-		boost::add_edge(u, v, g);
-		boost::add_edge(u, w, g);
-		boost::add_edge(u, x, g);
-		std::cout << "degree of u: " << boost::degree(u, g) << std::endl;
-	}
-
-	std::cout << "\n--------------------------------------------------------------" << std::endl;
-	{
-		// when using the directedS tag in BGL, you are allowed to use only the out_edges helper function and associated iterators.
-		// 5sing in_edges requires changing the graph type to bidirectionalS, although this is still more or less a directed graph.
-		// typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> graph_type;  // compile-time error
-		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS> graph_type;
-
-		graph_type g;
-		boost::add_edge(0, 1, g);
-		boost::add_edge(0, 3, g);
-		boost::add_edge(1, 2, g);
-		boost::add_edge(2, 3, g);
-
-		graph_type::vertex_iterator vertexIt, vertexEnd;
-		graph_type::in_edge_iterator inedgeIt, inedgeEnd;
-
-		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
-		for (; vertexIt != vertexEnd; ++vertexIt)
-		{
-			std::cout << "incoming edges for " << *vertexIt << ": ";
-			boost::tie(inedgeIt, inedgeEnd) = boost::in_edges(*vertexIt, g);
-			for (; inedgeIt != inedgeEnd; ++inedgeIt)
-				std::cout << *inedgeIt << " ";
-			std::cout << std::endl;
-		}
-
-		//
-		graph_type::out_edge_iterator outedgeIt, outedgeEnd;
-
-		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
-		for (; vertexIt != vertexEnd; ++vertexIt)
-		{
-			std::cout << "out-edges for " << *vertexIt << ": ";
-			boost::tie(outedgeIt, outedgeEnd) = boost::out_edges(*vertexIt, g);  // similar to incoming edges
-			for (; outedgeIt != outedgeEnd; ++outedgeIt)
-				std::cout << *outedgeIt << " ";
-			std::cout << std::endl;
-		}
-	}
-
-	std::cout << "\n--------------------------------------------------------------" << std::endl;
-	{
-		typedef boost::property<boost::edge_weight_t, int> EdgeWeightProperty;
-		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, boost::no_property, EdgeWeightProperty> graph_type;
-
-		graph_type g;
-		boost::add_edge(0, 1, 8, g);
-		boost::add_edge(0, 3, 18, g);
-		boost::add_edge(1, 2, 20, g);
-		boost::add_edge(2, 3, 2, g);
-		boost::add_edge(3, 1, 1, g);
-		boost::add_edge(1, 3, 7, g);
-
-		std::cout << "number of edges: " << boost::num_edges(g) << std::endl;
-		std::cout << "number of vertices: " << boost::num_vertices(g) << std::endl;
-
-		graph_type::vertex_iterator vertexIt, vertexEnd;
-		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
-		for (; vertexIt != vertexEnd; ++vertexIt)
-		{
-			std::cout << "in-degree for " << *vertexIt << ": " << boost::in_degree(*vertexIt, g) << std::endl;
-			std::cout << "out-degree for " << *vertexIt << ": " << boost::out_degree(*vertexIt, g) << std::endl;
-		}
-
-		graph_type::edge_iterator edgeIt, edgeEnd;
-		boost::tie(edgeIt, edgeEnd) = boost::edges(g);
-		for (; edgeIt != edgeEnd; ++edgeIt)
-			std::cout << "edge " << boost::source(*edgeIt, g) << "-->" << boost::target(*edgeIt, g) << std::endl;
-	}
-}
-
 void other_core_algorithms()
 {
-	std::cout << "ntopological sort ---------------------------------------------" << std::endl;
+	std::cout << "\ntopological sort ---------------------------------------------" << std::endl;
 	{
 		//boost::topological_sort();
 		throw std::runtime_error("not yet implemented");
@@ -284,7 +40,6 @@ void other_core_algorithms()
 }
 
 // REF [file] >> ${BOOST_HOME}/libs/graph/example/connected_components.cpp
-// REF [file] >> ${BOOST_HOME}/libs/graph/example/connected-components.cpp
 void connected_components_algorithm()
 {
 	{
@@ -325,7 +80,6 @@ void connected_components_algorithm()
 	}
 }
 
-// REF [file] >> ${BOOST_HOME}/libs/graph/example/strong-components.cpp
 // REF [file] >> ${BOOST_HOME}/libs/graph/example/strong_components.cpp
 void strong_components_algorithm()
 {
@@ -352,13 +106,13 @@ void strong_components_algorithm()
 	}
 /*
 	{
-		// vertex properties
+		// Vertex properties.
 		typedef boost::property<boost::vertex_name_t, std::string> vertex_p;
-		// edge properties
+		// Edge properties.
 		typedef boost::property<boost::edge_weight_t, double> edge_p;
-		// graph properties
+		// Graph properties.
 		typedef boost::property<boost::graph_name_t, std::string, boost::property<boost::graph_graph_attribute_t, float> > graph_p;
-		// adjacency_list-based type
+		// Adjacency_list-based type.
 		typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, vertex_p, edge_p, graph_p> graph_type;
 		//typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS> graph_type;
 
@@ -366,7 +120,7 @@ void strong_components_algorithm()
 		boost::dynamic_properties dp;
 
 		{
-			// compile-time error
+			// Compile-time error
 
 			boost::property_map<graph_type, boost::vertex_name_t>::type vertex_name = boost::get(boost::vertex_name, g);
 			dp.property("shape", vertex_name);
@@ -463,14 +217,14 @@ void incremental_connected_components_algorithm()
 		typedef boost::graph_traits<graph_type>::edge_descriptor edge_descriptor_type;
 		typedef boost::graph_traits<graph_type>::vertices_size_type vertex_index_type;
 
-		// create a graph
+		// Create a graph.
 		const int VERTEX_COUNT = 6;
 		graph_type graph(VERTEX_COUNT);
 
 		boost::add_edge(0, 1, graph);
 		boost::add_edge(1, 4, graph);
 
-		// create the disjoint-sets object, which requires rank and parent vertex properties.
+		// Create the disjoint-sets object, which requires rank and parent vertex properties.
 		std::vector<vertex_descriptor_type> rank(boost::num_vertices(graph));
 		std::vector<vertex_descriptor_type> parent(boost::num_vertices(graph));
 
@@ -478,11 +232,11 @@ void incremental_connected_components_algorithm()
 		typedef vertex_descriptor_type * parent_type;
 		boost::disjoint_sets<rank_type, parent_type> ds(&rank[0], &parent[0]);
 
-		// determine the connected components, storing the results in the disjoint-sets object.
+		// Determine the connected components, storing the results in the disjoint-sets object.
 		boost::initialize_incremental_components(graph, ds);
 		boost::incremental_components(graph, ds);
 
-		// add a couple more edges and update the disjoint-sets
+		// Add a couple more edges and update the disjoint-sets.
 		boost::add_edge(4, 0, graph);
 		boost::add_edge(2, 5, graph);
 
@@ -493,13 +247,13 @@ void incremental_connected_components_algorithm()
 			std::cout << "representative[" << current_vertex << "] = " << ds.find_set(current_vertex) << std::endl;
 		std::cout << std::endl;
 
-		// generate component index.
+		// Generate component index.
 		// NOTE: We would need to pass in a vertex index map into the component_index constructor
 		// if our graph type used listS instead of vecS (identity_property_map is used by default).
 		typedef boost::component_index<vertex_index_type> components_type;
 		components_type components(parent.begin(), parent.end());
 
-		// iterate through the component indices
+		// Iterate through the component indices.
 		BOOST_FOREACH(vertex_index_type component_index, components)
 		{
 			std::cout << "component " << component_index << " contains: ";
@@ -560,7 +314,7 @@ void incremental_connected_components_algorithm()
 		// If we were to use listS instead, the index map would need to be explicitly passed to the component_index constructor.
 		components_type components(parent.begin(), parent.end());
 
-		// iterate through the component indices
+		// Iterate through the component indices.
 		BOOST_FOREACH(vertex_index_type current_index, components)
 		{
 			std::cout << "component " << current_index << " contains: ";
@@ -619,51 +373,20 @@ void graph_structure_comparisons()
 	throw std::runtime_error("not yet implemented");
 }
 
-void graphviz()
-{
-	// read graphviz
-	{
-		// vertex properties
-		typedef boost::property<boost::vertex_name_t, std::string, boost::property<boost::vertex_color_t, float> > vertex_p;
-		// edge properties
-		typedef boost::property<boost::edge_weight_t, double> edge_p;
-		// graph properties
-		typedef boost::property<boost::graph_name_t, std::string> graph_p;
-		// adjacency_list-based type
-		typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, vertex_p, edge_p, graph_p> graph_type;
-
-		// construct an empty graph and prepare the dynamic_property_maps.
-		graph_type graph(0);
-		boost::dynamic_properties dp;
-
-		boost::property_map<graph_type, boost::vertex_name_t>::type name = boost::get(boost::vertex_name, graph);
-		dp.property("node_id", name);
-
-		boost::property_map<graph_type, boost::vertex_color_t>::type mass = boost::get(boost::vertex_color, graph);
-		dp.property("mass", mass);
-
-		boost::property_map<graph_type, boost::edge_weight_t>::type weight = boost::get(boost::edge_weight, graph);
-		dp.property("weight", weight);
-
-		// use ref_property_map to turn a graph property into a property map
-		boost::ref_property_map<graph_type *, std::string> gname(boost::get_property(graph, boost::graph_name));
-		dp.property("name", gname);
-
-		// sample graph as an std::istream;
-		std::istringstream gvgraph_stream("digraph { graph [name=\"graphname\"]  a  c e [mass = 6.66] }");
-
-		const bool status = boost::read_graphviz(gvgraph_stream, graph, dp, "node_id");
-	}
-
-	// write graphviz
-	{
-	}
-}
-
 }  // namespace local
 }  // unnamed namespace
 
 namespace boost_graph {
+
+void boost_quick_tour();
+void basic_operation();
+
+void bundled_properties_1();
+void bundled_properties_2();
+void graph_based_on_adjacency_matrix();
+void default_undirected_and_directed_graph();
+void grid_graph();
+void graphviz();
 
 void traversal();
 void shortest_paths();
@@ -678,29 +401,61 @@ void metric_tsp_approximation();
 
 void graph()
 {
-    // basic.
-    {
-        std::cout << "basic operation ----------------------------------------------" << std::endl;
-        //local::boost_quick_tour();
-        //local::basic_operation();
+    // Basic.
+	{
+		std::cout << "quick tour ---------------------------------------------------" << std::endl;
+		// Access and iterate vertices, edges, and their properties.
+		//boost_graph::boost_quick_tour();
 
+		std::cout << "\nbasic operation ----------------------------------------------" << std::endl;
+		// Undirected, directed, and bidirectional graphs based on boost::adjacency_list.
+		// boost::undirected_graph<> and boost::directed_graph<>.
+		// Access adjacent vertices, incoming and outgoing edges of a vertex.
+		// Access the degree, in- & out-degree of a vertex and the source and target of an edge.
+		//boost_graph::basic_operation();
+
+		std::cout << "\nbundled properties -------------------------------------------" << std::endl;
+		// Bundled(user-defined) properties of vertex, edge, or graph.
+		//boost_graph::bundled_properties_1();
+		//boost_graph::bundled_properties_2();
+
+		std::cout << "\ngraph based on adjacency matrix ------------------------------" << std::endl;
+		// Undirected and directed graphs based on boost::adjacency_matrix.
+		// Use boost::print_vertices, boost::print_edges, and boost::print_graph.
+		//boost_graph::graph_based_on_adjacency_matrix();
+
+		std::cout << "\nboost::undirected_graph<> and boost::directed_graph<> --------" << std::endl;
+		// boost::undirected_graph<> and boost::directed_graph<>.
+		//boost_graph::default_undirected_and_directed_graph();
+
+		std::cout << "\ngrid graph ---------------------------------------------------" << std::endl;
+		// Grid graph.
+		//boost_graph::grid_graph();
+
+		std::cout << "\ngraphviz -----------------------------------------------------" << std::endl;
+		// Use graphviz.
+		boost_graph::graphviz();
+	}
+
+	// Algorithm.
+	{
         std::cout << "\ntraversal algorithms -----------------------------------------" << std::endl;
-        boost_graph::traversal();
+        //boost_graph::traversal();
 
         std::cout << "\nshortest paths / cost minimization algorithms ----------------" << std::endl;
         //boost_graph::shortest_paths();
 
         std::cout << "\nother core algorithms ----------------------------------------" << std::endl;
-        //local::other_core_algorithms();  // not yet implemented.
+        //local::other_core_algorithms();  // Not yet implemented.
 
         std::cout << "\nminimum spanning tree algorithms -----------------------------" << std::endl;
         //boost_graph::minimum_spanning_tree();
 
         std::cout << "\nrandom spanning tree algorithms ------------------------------" << std::endl;
-        //boost_graph::random_spanning_tree();  // not yet implemented.
+        //boost_graph::random_spanning_tree();  // Not yet implemented.
 
         std::cout << "\nalgorithm for common spanning trees of two graphs ------------" << std::endl;
-        //boost_graph::common_spanning_tree();  // not yet implemented.
+        //boost_graph::common_spanning_tree();  // Not yet implemented.
 
         std::cout << "\nconnected components algorithms ------------------------------" << std::endl;
         //local::connected_components();
@@ -712,31 +467,25 @@ void graph()
         //boost_graph::minimum_cut();
 
         std::cout << "\nsparse matrix ordering algorithms ----------------------------" << std::endl;
-        //local::sparse_matrix_ordering();  // not yet implemented.
+        //local::sparse_matrix_ordering();  // Not yet implemented.
 
         std::cout << "\nlayout algorithms --------------------------------------------" << std::endl;
-        //local::layout_algorithms();  // not yet implemented.
+        //local::layout_algorithms();  // Not yet implemented.
 
         std::cout << "\nclustering algorithms ----------------------------------------" << std::endl;
-        //local::clustering();  // not yet implemented.
+        //local::clustering();  // Not yet implemented.
 
         std::cout << "\nplanar graph algorithms --------------------------------------" << std::endl;
-        //local::planar_graph_algorithms();  // not yet implemented.
+        //local::planar_graph_algorithms();  // Not yet implemented.
 
         std::cout << "\ngraph metrics ------------------------------------------------" << std::endl;
-        //local::graph_metrics();  // not yet implemented.
+        //local::graph_metrics();  // Not yet implemented.
 
         std::cout << "\ngraph structure comparisons ----------------------------------" << std::endl;
-        //local::graph_structure_comparisons();  // not yet implemented.
+        //local::graph_structure_comparisons();  // Not yet implemented.
     }
 
-    // utility.
-    {
-        std::cout << "\ngraphviz -----------------------------------------------------" << std::endl;
-        //local::graphviz();
-    }
-
-    //  application.
+    // Application.
     {
         //boost_graph::metric_tsp_approximation();
     }

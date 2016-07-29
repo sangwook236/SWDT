@@ -1,0 +1,49 @@
+[-] General
+	-. Site
+		http://www.libtiff.org/
+
+		http://www.remotesensing.org/libtiff/
+		http://libtiff.maptools.org/
+
+[-] Building (VC)
+	-. Download
+		http://www.remotesensing.org/libtiff/
+	-. Run Visual Studio Developer Command Prompt
+	-. Copy tif.config.h
+		Copy ${LIBTIFF_HOME}/libtiff/tif_config.vc.h to ${LIBTIFF_HOME}/libtiff/tif_config.h.
+	-. Build library
+		nmake -f Makefile.vc all
+		nmake nodebug=1 -f Makefile.vc all
+		==> build가 정상적으로 수행되지 않으면 clean을 먼저 수행.
+			nmake -f Makefile.vc clean
+			nmake nodebug=1 -f Makefile.vc clean
+		==> build eror가 발생하지만, tiff library는 정상 build됨.
+	-. Install library & header
+		resulting library files are installed into a subdirectory
+			${LIBTIFF_HOME}/libtiff/libtiff.lib
+			${LIBTIFF_HOME}/libtiff/libtiff.dll
+			${LIBTIFF_HOME}/libtiff/libtiff_i.lib
+		resulting include files are installed into a subdirectory
+			${LIBTIFF_HOME}/libtiff/tiff.h
+			${LIBTIFF_HOME}/libtiff/tiffio.h
+			${LIBTIFF_HOME}/libtiff/tiffvers.h
+
+[-] Trouble Shooting (VC)
+	-. Can't find <unistd.h>
+		<solution>
+			in ${LIBTIFF_HOME}/libtiff/tiffgt.c
+			<before>
+				//#include <unistd.h>
+			<after>
+				#include <windows.h>
+	-. snprintf
+		<error message>
+			fatal error C1189: #error: Macro definition of snprintf conflicts with Standard Library function declaration
+		<solution>
+			in ${LIBTIFF_HOME}/libtiff/tiffiop.h
+			<before>
+				#define snprintf _TIFF_snprintf_f
+				extern int snprintf(char* str, size_t size, const char* format, ...);
+			<after>
+				//#define snprintf _TIFF_snprintf_f
+				//extern int snprintf(char* str, size_t size, const char* format, ...);

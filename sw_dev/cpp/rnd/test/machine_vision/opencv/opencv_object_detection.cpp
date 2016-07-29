@@ -1,14 +1,16 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
+#include <opencv2/contrib/contrib.hpp>
 #include <boost/filesystem.hpp>
 #include <iostream>
 #include <algorithm>
 #include <list>
 #include <vector>
 #include <string>
+#include <ctime>
 
-#ifdef WIN32
+#if defined(WIN32) || defined(_WIN32)
 #include <io.h>
 #else
 #include <dirent.h>
@@ -67,8 +69,7 @@ void detect_and_draw_objects(IplImage *image, CvLatentSvmDetector *detector, con
 	cvReleaseMemStorage(&storage);
 }
 
-// [ref]
-//	${OPENCV_HOME}/samples/c/latentsvmdetect.cpp
+// REF [file] >> ${OPENCV_HOME}/samples/c/latentsvmdetect.cpp
 //	"Object Detection with Discriminatively Trained Part-Based Models", P. Felzenszwalb, R. Girshick, D. McAllester, & D. Ramanan, TPAMI, 2010.
 void latentsvmdetect_sample()
 {
@@ -151,7 +152,8 @@ void read_directory(const std::string &directoryName, std::vector<std::string> &
                 filenames.push_back(itr->path().filename().string());
 		}
 	}
-#elif defined(WIN32)
+#elif defined(WIN32) || defined(_WIN32)
+
     struct _finddata_t s_file;
     std::string str = directoryName + "\\*.*";
 

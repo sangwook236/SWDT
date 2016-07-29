@@ -1,7 +1,5 @@
 //#include "stdafx.h"
-//#define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/legacy/legacy.hpp>
-#include <opencv2/legacy/compat.hpp>
+#define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <list>
@@ -238,11 +236,12 @@ void mser(cv::Mat &srcImage, const cv::Mat &grayImage)
 	const double area_threshold = 1.01;
 	const double min_margin = 0.003;
 	const int edge_blur_size = 5;
-	cv::MSER mser;
+	cv::Ptr<cv::MSER> mser = cv::MSER::create(delta, min_area, max_area, max_variation, min_diversity, max_evolution, area_threshold, min_margin, edge_blur_size);
 
 	double t = (double)cv::getTickCount();
 	std::vector<std::vector<cv::Point> > contours;
-	cv::MSER()(yuv, contours);
+	std::vector<cv::Rect> bboxes;
+	mser->detectRegions(yuv, contours, bboxes);
 	t = cv::getTickCount() - t;
 
 	std::cout << "MSER extracted " << contours.size() << " contours in " << (t / ((double)cv::getTickFrequency() * 1000.0)) << " ms" << std::endl;

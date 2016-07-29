@@ -1,3 +1,0 @@
-[-] General
-	-. Site
-		http://theoval.cmp.uea.ac.uk/~gcc/matlab/default.html#sammon

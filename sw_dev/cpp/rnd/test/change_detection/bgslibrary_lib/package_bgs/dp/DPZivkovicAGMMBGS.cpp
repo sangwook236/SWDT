@@ -1,6 +1,22 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "DPZivkovicAGMMBGS.h"
 
-DPZivkovicAGMMBGS::DPZivkovicAGMMBGS() : firstTime(true), frameNumber(0), showOutput(true), threshold(25.0f), alpha(0.001f), gaussians(3)
+DPZivkovicAGMMBGS::DPZivkovicAGMMBGS() : firstTime(true), frameNumber(0), threshold(25.0f), alpha(0.001f), gaussians(3), showOutput(true) 
 {
   std::cout << "DPZivkovicAGMMBGS()" << std::endl;
 }
@@ -51,7 +67,10 @@ void DPZivkovicAGMMBGS::process(const cv::Mat &img_input, cv::Mat &img_output, c
   lowThresholdMask.Clear();
   bgs.Update(frameNumber, frame_data, lowThresholdMask);
   
-  cv::Mat foreground(highThresholdMask.Ptr());
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //cv::Mat foreground(highThresholdMask.Ptr());
+  cv::Mat foreground(cv::cvarrToMat(highThresholdMask.Ptr()));
+  //--E [] 2016/06/16: Sang-Wook Lee
 
   if(showOutput)
     cv::imshow("Gaussian Mixture Model (Zivkovic)", foreground);

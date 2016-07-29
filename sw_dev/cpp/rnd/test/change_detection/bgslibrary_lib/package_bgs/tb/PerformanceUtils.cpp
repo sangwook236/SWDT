@@ -1,4 +1,21 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "PerformanceUtils.h"
+//#include <opencv2/legacy/compat.hpp>
 
 PerformanceUtils::PerformanceUtils(void){}
 
@@ -49,7 +66,10 @@ float PerformanceUtils::NrTruePositives(IplImage *image, IplImage *ground_truth,
   if(debug)
   {
     TPimage = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-    cvFillImage(TPimage,0.0);
+	//--S [] 2016/06/16: Sang-Wook Lee
+    //cvFillImage(TPimage,0.0);
+	cv::cvarrToMat(TPimage).setTo(cv::Scalar(0.0));
+	//--E [] 2016/06/16: Sang-Wook Lee
   }
 
   PixelUtils p;
@@ -99,7 +119,10 @@ float PerformanceUtils::NrTrueNegatives(IplImage* image, IplImage* ground_truth,
   if(debug)
   {
     TNimage = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-    cvFillImage(TNimage, 0.0);
+	//--S [] 2016/06/16: Sang-Wook Lee
+	//cvFillImage(TNimage, 0.0);
+	cv::cvarrToMat(TNimage).setTo(cv::Scalar(0.0));
+	//--E [] 2016/06/16: Sang-Wook Lee
   }
 
   PixelUtils p;
@@ -151,7 +174,10 @@ float PerformanceUtils::NrFalsePositives(IplImage *image, IplImage *ground_truth
   if(debug)
   {
     FPimage = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-    cvFillImage(FPimage, 0.0);
+	//--S [] 2016/06/16: Sang-Wook Lee
+	//cvFillImage(FPimage, 0.0);
+	cv::cvarrToMat(FPimage).setTo(cv::Scalar(0.0));
+	//--E [] 2016/06/16: Sang-Wook Lee
   }
 
   PixelUtils p;
@@ -201,7 +227,10 @@ float PerformanceUtils::NrFalseNegatives(IplImage * image, IplImage *ground_trut
   if(debug)
   {
     FNimage = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-    cvFillImage(FNimage, 0.0);
+	//--S [] 2016/06/16: Sang-Wook Lee
+	//cvFillImage(FNimage, 0.0);
+	cv::cvarrToMat(FNimage).setTo(cv::Scalar(0.0));
+	//--E [] 2016/06/16: Sang-Wook Lee
   }
 
   PixelUtils p;
@@ -241,8 +270,12 @@ float PerformanceUtils::NrFalseNegatives(IplImage * image, IplImage *ground_trut
 
 float PerformanceUtils::SimilarityMeasure(IplImage *image, IplImage *ground_truth, bool debug)
 {
-  cv::Mat img_input(image,true);
-  cv::Mat img_ref(ground_truth,true);
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //cv::Mat img_input(image,true);
+  //cv::Mat img_ref(ground_truth,true);
+  cv::Mat img_input = cv::cvarrToMat(image,true);
+  cv::Mat img_ref = cv::cvarrToMat(ground_truth,true);
+  //--E [] 2016/06/16: Sang-Wook Lee
 
   int rn = cv::countNonZero(img_ref);
   cv::Mat i;
@@ -284,7 +317,10 @@ void PerformanceUtils::ImageROC(IplImage *image, IplImage* ground_truth, bool sa
   unsigned char *pixelI = (unsigned char*) malloc(1*sizeof(unsigned char));
 
   IplImage *ROCimage = cvCreateImage(cvSize(image->width,image->height),image->depth,image->nChannels);
-  cvFillImage(ROCimage, 0.0);
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //cvFillImage(ROCimage, 0.0);
+  cv::cvarrToMat(ROCimage).setTo(cv::Scalar(0.0));
+  //--E [] 2016/06/16: Sang-Wook Lee
 
   PixelUtils p;
 

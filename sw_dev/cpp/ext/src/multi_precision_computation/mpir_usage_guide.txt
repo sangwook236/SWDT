@@ -1,0 +1,53 @@
+[-] General
+	- Site.
+		http://www.mpir.org/
+		https://github.com/wbhart/mpir
+
+[-] Building (VS 2015)
+	REF [file] >> ${MPIR_HOME}/build.vc14/readme.txt
+	REF [site] >> http://www.exploringbinary.com/how-to-install-and-run-gmp-on-windows-using-mpir/
+
+	- Download or build Yasm.
+		1. http://yasm.tortall.net/
+			Easier way.
+		2. ${MPIR_HOME}/yasm/Mkfiles/vc10
+			Build 오류 발생 in MSVS 2015.
+			REF [file] >> ${MPIR_HOME}/yasm/Mkfiles/vc10/readme.vc10.txt
+	- Copy files in Yasm.
+		vsyasm.exe
+			Win32: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin
+			Win64: C:\Program Files\Microsoft Visual Studio 14.0\VC\bin
+		yasm.props, yasm.targets, yasm.xml (optional)
+		    Win32: C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\BuildCustomizations
+		    Win64: C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\BuildCustomizations
+	- Open a solution file.
+		${MPIR_HOME}/build.vc14/mpir.sln
+
+[1] Building (Cygwin or MinGW)
+	- Run "Cygwin Bash" or "MSYS".
+	- Configure.
+		cd ${MPFR_HOME}
+		For static library:
+			./configure --prefix=${MPIR_INSTALL} --enable-static --disable-shared
+		For shared library:
+			./configure --prefix=${MPIR_INSTALL} --disable-static --enable-shared
+	- Make.
+		make
+		(optional) make check
+		(optional) make install
+
+[-] Trouble Shooting (VC)
+	- yasm 관련 오류 (Win32).
+		<error message>
+			error MSB3721: The command ""C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\"vsyasm.exe -Xvc -f Win32 -g cv8 -i "..\..\mpn\x86_64w\\" -d "DLL" -o "Win32\Release\mpn\\" -rnasm -pnasm   ..\..\mpn\x86w\add_n.asm  ..\..\mpn\x86w\p3\addmul_1.asm  ..\..\mpn\x86w\p3\copyd.asm  ..\..\mpn\x86w\copyi.asm  ..\..\mpn\x86w\p3\divexact_1.asm  ..\..\mpn\x86w\p3\divexact_by3c.asm  ..\..\mpn\x86w\p3\divrem_1.asm  ..\..\mpn\x86w\p3\hamdist.asm  ..\..\mpn\x86w\p3\lshift.asm  ..\..\mpn\x86w\p3\mod_1.asm  ..\..\mpn\x86w\mod_34lsub1.asm  ..\..\mpn\x86w\mul_1.asm  ..\..\mpn\x86w\mul_basecase.asm  ..\..\mpn\x86w\p3\popcount.asm  ..\..\mpn\x86w\rshift.asm  ..\..\mpn\x86w\sub_n.asm  ..\..\mpn\x86w\p3\submul_1.asm  ..\..\mpn\x86w\udiv_qrnnd.asm  ..\..\mpn\x86w\umul_ppmm.asm" exited with code 1.
+		<cause>
+			vsyasm.exe가 "-f Win32"을 인식하지 못해서 발생.
+				<error message> vsyasm: FATAL: unrecognized object format 'WIN32'.
+				error는 command prompt에서 확인 가능.
+			"-f x64"는 정상 수행됨.
+		<solution>
+			Win32 -> win32로 변경 (case sensitive) in ${MPIR_HOME}/build.vc14/vsysam.props.
+			<before>
+        		<CommandLineTemplate>"$(YasmPath)"vsyasm.exe -Xvc -f $(Platform) [AllOptions] [AdditionalOptions] [Inputs]</CommandLineTemplate>
+        	<after>
+    			<CommandLineTemplate>"$(YasmPath)"vsyasm.exe -Xvc -f win32 [AllOptions] [AdditionalOptions] [Inputs]</CommandLineTemplate>

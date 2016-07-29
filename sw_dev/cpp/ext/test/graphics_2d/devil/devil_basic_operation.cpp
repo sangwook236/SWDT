@@ -7,7 +7,7 @@
 #endif  // _DEBUG
 
 #define ILUT_USE_OPENGL
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 #include <IL/config.h>
 #endif
 #include <IL/il.h>

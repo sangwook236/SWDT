@@ -1,14 +1,36 @@
+/*
+This file is part of BGSLibrary.
+
+BGSLibrary is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+BGSLibrary is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "GMG.h"
 
 GMG::GMG() : firstTime(true), initializationFrames(20), decisionThreshold(0.7), showOutput(true)
 {
   std::cout << "GMG()" << std::endl;
 
-  cv::initModule_video();
+  //--S [] 2016/06/16: Sang-Wook Lee
+  // FIXME [check] >>
+  //cv::initModule_video();
+  //--E [] 2016/06/16: Sang-Wook Lee
   cv::setUseOptimized(true);
   cv::setNumThreads(8);
 
-  fgbg = cv::Algorithm::create<cv::BackgroundSubtractorGMG>("BackgroundSubtractor.GMG");
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //fgbg = cv::Algorithm::create<cv::BackgroundSubtractorGMG>("BackgroundSubtractor.GMG");
+  fgbg = cv::bgsegm::createBackgroundSubtractorGMG();
+  //--E [] 2016/06/16: Sang-Wook Lee
 }
 
 GMG::~GMG()
@@ -25,8 +47,12 @@ void GMG::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bg
 
   if(firstTime)
   {
-    fgbg->set("initializationFrames", initializationFrames);
-    fgbg->set("decisionThreshold", decisionThreshold);
+	//--S [] 2016/06/16: Sang-Wook Lee
+    //fgbg->set("initializationFrames", initializationFrames);
+    //fgbg->set("decisionThreshold", decisionThreshold);
+	fgbg->setNumFrames(initializationFrames);
+	fgbg->setDecisionThreshold(decisionThreshold);
+	//--E [] 2016/06/16: Sang-Wook Lee
 
     saveConfig();
   }
@@ -37,7 +63,10 @@ void GMG::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bg
     return;
   }
 
-  (*fgbg)(img_input, img_foreground);
+  //--S [] 2016/06/16: Sang-Wook Lee
+  //(*fgbg)(img_input, img_foreground);
+  fgbg->apply(img_input, img_foreground);
+  //--E [] 2016/06/16: Sang-Wook Lee
 
   cv::Mat img_background;
   (*fgbg).getBackgroundImage(img_background);
@@ -47,8 +76,11 @@ void GMG::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bg
 
   if(showOutput)
   {
-    cv::imshow("GMG (Godbehere-Matsukawa-Goldberg)", img_foreground);
-    cv::imshow("GMG BKG (Godbehere-Matsukawa-Goldberg)", img_background);
+    if (!img_foreground.empty())
+      cv::imshow("GMG FG (Godbehere-Matsukawa-Goldberg)", img_foreground);
+    
+    if (!img_background.empty())
+      cv::imshow("GMG BG (Godbehere-Matsukawa-Goldberg)", img_background);
   }
 
   img_foreground.copyTo(img_output);

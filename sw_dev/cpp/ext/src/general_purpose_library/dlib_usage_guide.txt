@@ -1,0 +1,38 @@
+[-] General
+	-. Site
+		http://dlib.net/
+
+[-] Using
+	-. A linking error related with dlib/all/source.cpp or preprocessor directives, DEBUG or ENABLE_ASSERTS
+		REF [site] >> http://dlib.net/compile.html
+
+		<error>
+			unresolved external symbol _USER_ERROR__missing_dlib_all_source_cpp_file__OR__inconsistent_use_of_DEBUG_or_ENABLE_ASSERTS_preprocessor_directives_
+		<solution>
+			define NO_MAKEFILE.
+
+[-] Building (CMake)
+	REF [site] >> http://dlib.net/compile.html
+
+	-. CMakeLists.txt
+		${DLIB_HOME}/dlib
+		${DLIB_HOME}/dlib/test
+		${DLIB_HOME}/dlib/test/blas_bindings
+		${DLIB_HOME}/dlib/matlab
+		${DLIB_HOME}/examples
+			Use OpenCV.
+
+	-. Configure & generate
+		Set CMAKE_DEBUG_POSTFIX to d.
+		Delete all settings in external libraries below:
+			zlib, jpeg, png.
+		==> Errors rise if these external libraries are assigned explicitly.
+		==> Use external libraries that dlib has.
+	-. Build
+	-. Install
+
+[-] Building
+	REF [site] >> http://dlib.net/compile.html
+
+	-. Create static library.
+		${DLIB_HOME}/dlib/all/source.cpp file 하나만을 포함하는 project를 생성한 후 building.

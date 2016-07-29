@@ -423,6 +423,9 @@
     <ClCompile Include="vlfeat\vlfeat_gmm.cpp">
       <Filter>Source Files\vlfeat</Filter>
     </ClCompile>
+    <ClCompile Include="opencv\opencv_superpixel.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opencv\PascalVocDataset.h">

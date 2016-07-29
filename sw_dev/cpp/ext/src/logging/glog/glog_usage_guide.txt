@@ -1,8 +1,0 @@
-[-] General
-    -. Site
-        https://github.com/google/glog
-        https://code.google.com/p/google-glog/
-
-[-] Trouble Shooting (Windows)
-	-. Use shared library
-		Set BUILD_SHARED_LIBS to true.

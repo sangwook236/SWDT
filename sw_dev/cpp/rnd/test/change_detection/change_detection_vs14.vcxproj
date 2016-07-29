@@ -53,7 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -69,7 +69,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-2.4.3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -83,6 +83,7 @@
     <ClInclude Include="bgscollection_lib\bskde.h" />
     <ClInclude Include="bgscollection_lib\sobs.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\AdaptiveBackgroundLearning.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\AdaptiveSelectiveBackgroundLearning.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\ae\KDE.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\ae\KernelTable.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\ae\NPBGmodel.h" />
@@ -90,13 +91,21 @@
     <ClInclude Include="bgslibrary_lib\package_bgs\av\TBackground.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\av\TBackgroundVuMeter.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\av\VuMeter.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\bl\sdLaMa091.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\bl\SigmaDeltaBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\bl\stdbool.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\ck\block.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\ck\graph.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\ck\LbpMrf.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\ck\MEDefs.hpp" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\ck\MEHistogram.hpp" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\ck\MEImage.hpp" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\ck\MotionDetection.hpp" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\db\imbs.hpp" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\db\IndependentMultimodalBGS.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\dp\AdaptiveMedianBGS.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\dp\Bgs.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\dp\BgsParams.h" />
-    <ClInclude Include="bgslibrary_lib\package_bgs\dp\Blob.h" />
-    <ClInclude Include="bgslibrary_lib\package_bgs\dp\BlobExtraction.h" />
-    <ClInclude Include="bgslibrary_lib\package_bgs\dp\BlobResult.h" />
-    <ClInclude Include="bgslibrary_lib\package_bgs\dp\ConnectedComponents.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPAdaptiveMedianBGS.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPEigenbackgroundBGS.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\dp\DPGrimsonGMMBGS.h" />
@@ -141,8 +150,16 @@
     <ClInclude Include="bgslibrary_lib\package_bgs\lb\Types.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\MixtureOfGaussianV1BGS.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\MixtureOfGaussianV2BGS.h" />
-    <ClInclude Include="bgslibrary_lib\package_bgs\pt\PBAS.h" />
-    <ClInclude Include="bgslibrary_lib\package_bgs\pt\PixelBasedAdaptiveSegmenter.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\my\MyBGS.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\pl\BackgroundSubtractorLBSP.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\pl\BackgroundSubtractorLOBSTER.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\pl\BackgroundSubtractorSuBSENSE.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\pl\DistanceUtils.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\pl\LBSP.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\pl\LOBSTER.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\pl\RandUtils.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\pl\SuBSENSE.h" />
+    <ClInclude Include="bgslibrary_lib\package_bgs\sjn\SJN_MultiCueBGS.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\StaticFrameDifferenceBGS.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\tb\FuzzyChoquetIntegral.h" />
     <ClInclude Include="bgslibrary_lib\package_bgs\tb\FuzzySugenoIntegral.h" />
@@ -165,6 +182,7 @@
     <ClCompile Include="bgscollection_lib\sobs.cpp" />
     <ClCompile Include="bgslibrary\bgslibrary_main.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\AdaptiveBackgroundLearning.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\AdaptiveSelectiveBackgroundLearning.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\ae\KDE.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\ae\KernelTable.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\ae\NPBGmodel.cpp" />
@@ -172,11 +190,18 @@
     <ClCompile Include="bgslibrary_lib\package_bgs\av\TBackground.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\av\TBackgroundVuMeter.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\av\VuMeter.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\bl\sdLaMa091.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\bl\SigmaDeltaBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\ck\graph.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\ck\LbpMrf.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\ck\maxflow.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\ck\MEDefs.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\ck\MEHistogram.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\ck\MEImage.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\ck\MotionDetection.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\db\imbs.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\db\IndependentMultimodalBGS.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\dp\AdaptiveMedianBGS.cpp" />
-    <ClCompile Include="bgslibrary_lib\package_bgs\dp\Blob.cpp" />
-    <ClCompile Include="bgslibrary_lib\package_bgs\dp\BlobExtraction.cpp" />
-    <ClCompile Include="bgslibrary_lib\package_bgs\dp\BlobResult.cpp" />
-    <ClCompile Include="bgslibrary_lib\package_bgs\dp\ConnectedComponents.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPAdaptiveMedianBGS.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPEigenbackgroundBGS.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\dp\DPGrimsonGMMBGS.cpp" />
@@ -215,8 +240,14 @@
     <ClCompile Include="bgslibrary_lib\package_bgs\lb\LBSimpleGaussian.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\MixtureOfGaussianV1BGS.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\MixtureOfGaussianV2BGS.cpp" />
-    <ClCompile Include="bgslibrary_lib\package_bgs\pt\PBAS.cpp" />
-    <ClCompile Include="bgslibrary_lib\package_bgs\pt\PixelBasedAdaptiveSegmenter.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\my\MyBGS.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\pl\BackgroundSubtractorLBSP.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\pl\BackgroundSubtractorLOBSTER.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\pl\BackgroundSubtractorSuBSENSE.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\pl\LBSP.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\pl\LOBSTER.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\pl\SuBSENSE.cpp" />
+    <ClCompile Include="bgslibrary_lib\package_bgs\sjn\SJN_MultiCueBGS.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\StaticFrameDifferenceBGS.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\tb\FuzzyChoquetIntegral.cpp" />
     <ClCompile Include="bgslibrary_lib\package_bgs\tb\FuzzySugenoIntegral.cpp" />
@@ -234,6 +265,12 @@
     <ClCompile Include="bgslibrary_lib\package_bgs\WeightedMovingVarianceBGS.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bgslibrary_lib\package_bgs\pl\LBSP_16bits_dbcross_1ch.i" />
+    <None Include="bgslibrary_lib\package_bgs\pl\LBSP_16bits_dbcross_3ch1t.i" />
+    <None Include="bgslibrary_lib\package_bgs\pl\LBSP_16bits_dbcross_3ch3t.i" />
+    <None Include="bgslibrary_lib\package_bgs\pl\LBSP_16bits_dbcross_s3ch.i" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

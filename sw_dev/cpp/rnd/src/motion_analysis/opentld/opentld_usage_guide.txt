@@ -1,4 +1,0 @@
-[-] General
-	-. Site
-		http://gnebehay.github.io/OpenTLD/
-

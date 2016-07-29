@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 #include <windows.h>
 //#include <wincrypt.h>
 #endif
@@ -22,7 +22,7 @@ namespace local {
 
 void encrypt(sqlite3_context *context, int argc, sqlite3_value **argv)
 {
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 	if (2 != argc)
 	{
 		sqlite3_result_error(context, "error: Invalid param count", -1);
@@ -123,7 +123,7 @@ void encrypt(sqlite3_context *context, int argc, sqlite3_value **argv)
 
 void decrypt(sqlite3_context *context, int argc, sqlite3_value **argv)
 {
-#if defined(WIN32)
+#if defined(WIN32) || defined(_WIN32)
 	if (2 != argc)
 	{
 		sqlite3_result_error(context, "error: Invalid param count", -1);

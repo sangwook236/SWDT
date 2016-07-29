@@ -15,18 +15,12 @@ GDT includes various programming languages and hardware components:
 * Hardware
   * Component
     * Sensor
-      * Image Sensor
-        * Kinect
-      * AHRS
-      * GPS
-      * IMU
+      * Image Sensor: Kinect
+      * AHRS, IMU, GPS
   * Open Source Hardware (OSHW)
     * Arduino
   * Microprocessor and Microcontroller
-    * ARM
-      * Raspberry Pi
-      * STM32
-      * AT91SAM
-    * AVR
-      * ATmega128
+    * ARM: Raspberry Pi, STM32, AT91SAM
+    * AVR: ATmega128
+
 

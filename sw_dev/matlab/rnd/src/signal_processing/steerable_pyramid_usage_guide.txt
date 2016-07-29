@@ -1,0 +1,44 @@
+[-] General
+	- Site.
+		http://www.cns.nyu.edu/~eero/steerpyr/
+		https://github.com/LabForComputationalVision/matlabPyrTools
+
+	- Manual.
+		${matlabPyrTools_HOME}/TUTORIALS/matlabPyrTools.html
+
+	- Image pyramid.
+		Gaussian pyramid.
+		Laplacian pyramid.
+		Separable orthonormal QMF/wavelet pyramid.
+		Steerable pyramid.
+		Steerable filters / derivatives.
+
+[-] Usage
+	- Help.
+		help matlabPyrTools
+
+	- Gaussian pyramid.
+		im = imread('test.png');
+		im = double(rgb2gray(im));
+		[pyr, pind] = buildGpyr(im);
+		showLpyr(pyr, pind);
+
+	- Laplacian pyramid.
+		im = imread('test.png');
+		im = double(rgb2gray(im));
+		[pyr, pind] = buildLpyr(im);
+		showLpyr(pyr, pind);
+
+	- Steerable pyramid.
+		im = imread('test.png');
+		im = double(rgb2gray(im));
+		%[pyr, pind] = buildSpyr(im, 4-imSubSample, 'sp3Filters');
+		[pyr, pind] = buildSpyr(im, 'auto', 'sp3Filters');
+		showSpyr(pyr, pind);
+
+	- Steerable pyramid, constructed in frequency domain.
+		im = imread('test.png');
+		im = rgb2gray(im);
+		%[pyr, pind] = buildSFpyr(im, 5-imSubSample, 4);
+		[pyr, pind] = buildSFpyr(im);
+		showSpyr(pyr, pind);

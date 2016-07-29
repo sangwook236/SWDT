@@ -1,9 +1,0 @@
-[-] General
-	-. Site
-		https://github.com/google/googletest
-
-		https://github.com/ospector/gtest-gbar
-		https://github.com/kinow/gtest-tap-listener
-
-		https://code.google.com/p/googletest/wiki/Documentation
-		https://code.google.com/p/googletest/wiki/V1_6_Documentation

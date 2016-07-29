@@ -11,7 +11,7 @@
 namespace {
 namespace local {
 
-// [ref] ${CPP_RND_HOME}/test/machine_learning/clustering/clustering_spectral_clustering.cpp
+// REF [file] >> ${CPP_RND_HOME}/test/machine_learning/clustering/clustering_spectral_clustering.cpp
 void kmeanspp_sample_1()
 {
 #if 1

@@ -38,6 +38,7 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ///////////////////////////////////////////////////////////////////////////////
 #include <FaceTracker/PAW.h>
+#include <opencv2/opencv.hpp>
 #define it at<int>
 #define db at<double>
 using namespace FACETRACKER;

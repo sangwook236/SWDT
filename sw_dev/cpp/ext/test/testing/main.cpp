@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "CppUnit library -----------------------------------------------------" << std::endl;
+		// REF [project] >> ${GDT_HOME}/sw_dev/cpp/ext/test/testing/cppunit_mfc
 		//retval = cppunit_main(argc, argv);
 
 		std::cout << "\nGoogle Test library -------------------------------------------------" << std::endl;

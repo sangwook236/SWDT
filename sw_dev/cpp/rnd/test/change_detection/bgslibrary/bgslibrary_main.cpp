@@ -30,7 +30,6 @@
 #include "../bgslibrary_lib/package_bgs/lb/LBFuzzyAdaptiveSOM.h"
 
 #include "../bgslibrary_lib/package_bgs/jmo/MultiLayerBGS.h"
-#include "../bgslibrary_lib/package_bgs/pt/PixelBasedAdaptiveSegmenter.h"
 #include "../bgslibrary_lib/package_bgs/av/VuMeter.h"
 #include "../bgslibrary_lib/package_bgs/ae/KDE.h"
 
@@ -54,7 +53,7 @@ void demo()
 #endif
 	if (!capture.isOpened())
 	{
-		std::cout << "a vision sensor not found" << std::endl;
+		std::cout << "A vision sensor not found" << std::endl;
 		return;
 	}
 
@@ -91,7 +90,7 @@ void demo()
 		ALGO_LBFuzzyAdaptiveSOM,
 
 		ALGO_MultiLayerBGS,
-		ALGO_PixelBasedAdaptiveSegmenter,  // PBAS
+		//ALGO_PixelBasedAdaptiveSegmenter,  // PBAS.
 		ALGO_VuMeter,
 		ALGO_KDE,
 	};
@@ -103,7 +102,7 @@ void demo()
 	bool useColorImage = true;
 	IBGS *bgs = NULL;
 
-	// background subtraction methods
+	// Background subtraction methods.
 	switch (whichAlgorithm)
 	{
 	case ALGO_FrameDifferenceBGS:
@@ -118,7 +117,7 @@ void demo()
 	case ALGO_WeightedMovingVarianceBGS:
 		bgs = new WeightedMovingVarianceBGS;
 		break;
-	case ALGO_MixtureOfGaussianV1BGS:  // run-time error
+	case ALGO_MixtureOfGaussianV1BGS:  // NOTICE [error] >> Run-time error.
 		bgs = new MixtureOfGaussianV1BGS;
 		//useColorImage = false;
 		break;
@@ -128,7 +127,7 @@ void demo()
 	case ALGO_AdaptiveBackgroundLearning:
 		bgs = new AdaptiveBackgroundLearning;
 		break;
-	case ALGO_GMG:  // run-time error
+	case ALGO_GMG:  // NOTICE [error] >> Run-time error.
 		bgs = new GMG;
 		//useColorImage = false;
 		break;
@@ -200,11 +199,12 @@ void demo()
 	case ALGO_MultiLayerBGS:
 		bgs = new MultiLayerBGS;
 		break;
-
+/*
 	// PT Package (adapted from Hofmann)
 	case ALGO_PixelBasedAdaptiveSegmenter:
 		bgs = new PixelBasedAdaptiveSegmenter;
 		break;
+*/
 
 	//
 	case ALGO_VuMeter:
@@ -248,15 +248,15 @@ void demo()
 
 		if (useColorImage)
 		{
-			// bgs internally shows the foreground mask image
-			bgs->process(input_image, mask_image, bkg_image);  // use it for JMO Package and LB Package
+			// bgs internally shows the foreground mask image.
+			bgs->process(input_image, mask_image, bkg_image);  // Use it for JMO Package and LB Package.
 		}
 		else
 		{
 			cv::cvtColor(input_image, gray_image, CV_BGR2GRAY);
 			cv::imshow("bgslibrary: gray", gray_image);
 
-			// bgs internally shows the foreground mask image
+			// bgs internally shows the foreground mask image.
 			bgs->process(gray_image, mask_image, bkg_image);
 		}
 
@@ -265,12 +265,12 @@ void demo()
 
 		if (!mask_image.empty())
 		{
-			// do something
+			// Do something.
 		}
 
 		if (!bkg_image.empty())
 		{
-			// do something
+			// Do something.
 		}
 	}
 

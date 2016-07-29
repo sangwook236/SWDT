@@ -91,15 +91,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ann\ann_main.cpp" />
-    <ClCompile Include="astar_algorithm_cpp\astar_algorithm_cpp_main.cpp" />
-    <ClCompile Include="astar_algorithm_cpp_lib\8puzzle.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="astar_algorithm_cpp_lib\findpath.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="kdtree\kdtree_main.cpp" />
     <ClCompile Include="kdtree_lib\kdtree.c" />
     <ClCompile Include="libkdtreepp\libkdtreepp_main.cpp">
@@ -142,8 +133,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="astar_algorithm_cpp_lib\fsa.h" />
-    <ClInclude Include="astar_algorithm_cpp_lib\stlastar.h" />
     <ClInclude Include="kdtree_lib\kdtree.h" />
     <ClInclude Include="libkdtreepp_lib\kdtree++\allocator.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

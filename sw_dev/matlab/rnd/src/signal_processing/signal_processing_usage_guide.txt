@@ -1,8 +1,8 @@
 [-] General
-	-. Reference
+	- Reference.
 		http://www.ni.com/white-paper/4278/en/
 		http://zone.ni.com/reference/en-XX/help/371361B-01/lvanlsconcepts/char_smoothing_windows/
 		http://www.multi-instrument.com/doc/D1003/Evaluation_of_Various_Window_Functions_using_Multi-Instrument_D1003.pdf
 
-	-. Reference for Audio Signal Processing
+	- Reference for Audio Signal Processing.
 		http://www.cs.tut.fi/sgn/arg/intro/basics.html

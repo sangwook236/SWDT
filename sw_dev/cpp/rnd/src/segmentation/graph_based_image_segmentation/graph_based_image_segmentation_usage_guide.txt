@@ -1,3 +1,0 @@
-[-] General
-	-. Site
-		http://www.cs.brown.edu/~pff/segment/
