@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 	{
 		local::cpp_2011();
 		local::cpp_2014();
-		
+
 		//virtual_function();
 
 		//predefined_macro();
