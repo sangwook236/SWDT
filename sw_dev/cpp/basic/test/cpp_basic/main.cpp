@@ -1,11 +1,12 @@
-#if defined(WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <vld/vld.h>
 #endif
-#include <iostream>
-#include <cmath>
-#include <fstream>
 #include <sstream>
+#include <fstream>
+#include <iostream>
+#include <set>
 #include <typeinfo>
+#include <cmath>
 
 
 namespace {
@@ -51,11 +52,14 @@ int main(int argc, char **argv)
 
 	void performance_analysis();
 
+	void static_lib_linking();
+	void shared_lib_linking();
+
 	try
 	{
-		local::cpp_2011();
-		local::cpp_2014();
-		
+		//local::cpp_2011();
+		//local::cpp_2014();
+
 		//virtual_function();
 
 		//predefined_macro();
@@ -70,6 +74,10 @@ int main(int argc, char **argv)
 		//stl_algorithm();
 
 		//performance_analysis();
+
+		//
+		static_lib_linking();
+		shared_lib_linking();
 
 		// test
 #if 0

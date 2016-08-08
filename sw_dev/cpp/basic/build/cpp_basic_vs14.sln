@@ -1,16 +1,20 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpp_basic_vs14", "..\test\cpp_basic\cpp_basic_vs14.vcxproj", "{41AEE60E-3330-49FF-9F22-223C2B88B58C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpp_basic", "..\test\cpp_basic\cpp_basic_vs14.vcxproj", "{41AEE60E-3330-49FF-9F22-223C2B88B58C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "microsoft_vs14", "..\test\microsoft\microsoft_vs14.vcxproj", "{D8C77DA8-C070-4EB6-B356-115E6AA15249}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "microsoft", "..\test\microsoft\microsoft_vs14.vcxproj", "{D8C77DA8-C070-4EB6-B356-115E6AA15249}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openmp_vs14", "..\test\openmp\openmp_vs14.vcxproj", "{2956D88B-8DBF-4A5E-8717-0DF51C3E2353}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openmp", "..\test\openmp\openmp_vs14.vcxproj", "{2956D88B-8DBF-4A5E-8717-0DF51C3E2353}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simd_vs14", "..\test\simd\simd_vs14.vcxproj", "{C9069975-991D-40C3-B269-12023BDE7495}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simd", "..\test\simd\simd_vs14.vcxproj", "{C9069975-991D-40C3-B269-12023BDE7495}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "microsoft_specific_vs14", "..\test\microsoft_specific\microsoft_specific_vs14.vcxproj", "{BB048AB5-7899-45C5-8191-A1A72DA1F5F4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "microsoft_specific", "..\test\microsoft_specific\microsoft_specific_vs14.vcxproj", "{BB048AB5-7899-45C5-8191-A1A72DA1F5F4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sharedlib", "..\test\sharedlib\sharedlib_vs14.vcxproj", "{85008E03-54A7-4115-A05F-5D5BD65A43FE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "staticlib", "..\test\staticlib\staticlib_vs14.vcxproj", "{66598E8B-55C7-4577-9431-F5DBFD14ACF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +54,22 @@ Global
 		{BB048AB5-7899-45C5-8191-A1A72DA1F5F4}.Release|Win32.ActiveCfg = Release|Win32
 		{BB048AB5-7899-45C5-8191-A1A72DA1F5F4}.Release|Win32.Build.0 = Release|Win32
 		{BB048AB5-7899-45C5-8191-A1A72DA1F5F4}.Release|x64.ActiveCfg = Release|Win32
+		{85008E03-54A7-4115-A05F-5D5BD65A43FE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{85008E03-54A7-4115-A05F-5D5BD65A43FE}.Debug|Win32.Build.0 = Debug|Win32
+		{85008E03-54A7-4115-A05F-5D5BD65A43FE}.Debug|x64.ActiveCfg = Debug|x64
+		{85008E03-54A7-4115-A05F-5D5BD65A43FE}.Debug|x64.Build.0 = Debug|x64
+		{85008E03-54A7-4115-A05F-5D5BD65A43FE}.Release|Win32.ActiveCfg = Release|Win32
+		{85008E03-54A7-4115-A05F-5D5BD65A43FE}.Release|Win32.Build.0 = Release|Win32
+		{85008E03-54A7-4115-A05F-5D5BD65A43FE}.Release|x64.ActiveCfg = Release|x64
+		{85008E03-54A7-4115-A05F-5D5BD65A43FE}.Release|x64.Build.0 = Release|x64
+		{66598E8B-55C7-4577-9431-F5DBFD14ACF9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{66598E8B-55C7-4577-9431-F5DBFD14ACF9}.Debug|Win32.Build.0 = Debug|Win32
+		{66598E8B-55C7-4577-9431-F5DBFD14ACF9}.Debug|x64.ActiveCfg = Debug|x64
+		{66598E8B-55C7-4577-9431-F5DBFD14ACF9}.Debug|x64.Build.0 = Debug|x64
+		{66598E8B-55C7-4577-9431-F5DBFD14ACF9}.Release|Win32.ActiveCfg = Release|Win32
+		{66598E8B-55C7-4577-9431-F5DBFD14ACF9}.Release|Win32.Build.0 = Release|Win32
+		{66598E8B-55C7-4577-9431-F5DBFD14ACF9}.Release|x64.ActiveCfg = Release|x64
+		{66598E8B-55C7-4577-9431-F5DBFD14ACF9}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
