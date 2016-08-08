@@ -10,6 +10,35 @@ int DOUBLE(const int val);
 class Arithmetic
 {
 public:
+	struct InnerStruct
+	{
+	public:
+		InnerStruct(const int val)
+		: val_(val)
+		{}
+
+	public:
+		int add(const int lhs) const;
+
+	private:
+		int val_;
+	};
+
+	class InnerClass
+	{
+	public:
+		InnerClass(const int val)
+		: val_(val)
+		{}
+
+	public:
+		int subtract(const int lhs) const;
+
+	private:
+		int val_;
+	};
+
+public:
 	Arithmetic(const int lhs)
 	: lhs_(lhs)
 	{}

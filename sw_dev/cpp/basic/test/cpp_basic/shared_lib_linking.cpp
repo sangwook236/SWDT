@@ -17,4 +17,10 @@ void shared_lib_linking()
 	std::cout << "cos(pi) = " << tri.cos() << std::endl;
 	tri.tan();
 	std::cout << "tan(pi) = " << tri.getValue() << std::endl;
+
+	//
+	Trigonometric::InnerStruct innerStruct(3);
+	std::cout << "3 + 2 = " << innerStruct.add(2) << std::endl;
+	Trigonometric::InnerClass innerClass(3);
+	std::cout << "3 - 2 = " << innerClass.subtract(2) << std::endl;
 }

@@ -34,3 +34,13 @@ void Arithmetic::multiply(const int rhs)
 {
 	lhs_ *= rhs;
 }
+
+int Arithmetic::InnerStruct::add(const int lhs) const
+{
+	return val_ + lhs;
+}
+
+int Arithmetic::InnerClass::subtract(const int lhs) const
+{
+	return val_ - lhs;
+}

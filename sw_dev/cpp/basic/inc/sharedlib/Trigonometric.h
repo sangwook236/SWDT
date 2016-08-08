@@ -17,6 +17,35 @@ SHAREDLIB_API double SQRT(const double val);
 class SHAREDLIB_API Trigonometric
 {
 public:
+	struct SHAREDLIB_API InnerStruct
+	{
+	public:
+		InnerStruct(const int val)
+		: val_(val)
+		{}
+
+	public:
+		int add(const int lhs) const;
+
+	private:
+		int val_;
+	};
+
+	class SHAREDLIB_API InnerClass
+	{
+	public:
+		InnerClass(const int val)
+		: val_(val)
+		{}
+
+	public:
+		int subtract(const int lhs) const;
+
+	private:
+		int val_;
+	};
+
+public:
 	Trigonometric(const double val)
 	: val_(val)
 	{}

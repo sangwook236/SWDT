@@ -25,3 +25,13 @@ void Trigonometric::tan()
 {
 	val_ = std::tan(val_);
 }
+
+int Trigonometric::InnerStruct::add(const int lhs) const
+{
+	return val_ + lhs;
+}
+
+int Trigonometric::InnerClass::subtract(const int lhs) const
+{
+	return val_ - lhs;
+}

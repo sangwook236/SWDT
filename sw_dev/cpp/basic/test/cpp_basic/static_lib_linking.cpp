@@ -21,4 +21,10 @@ void static_lib_linking()
 
 	ari.multiply(2);
 	std::cout << "3 * 2 = " << ari.getValue() << std::endl;
+
+	//
+	Arithmetic::InnerStruct innerStruct(3);
+	std::cout << "3 + 2 = " << innerStruct.add(2) << std::endl;
+	Arithmetic::InnerClass innerClass(3);
+	std::cout << "3 - 2 = " << innerClass.subtract(2) << std::endl;
 }
