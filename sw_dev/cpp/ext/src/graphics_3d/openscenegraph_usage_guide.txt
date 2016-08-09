@@ -1,3 +1,8 @@
 [-] General
 	- Site.
 		http://www.openscenegraph.org/
+
+[-] Build (CMake)
+	- Add an entry
+		ZLIB_LIBRARY = D:/usr/local/lib/zlib.lib
+		==> 이를 지정하지 않으면, project files build할 때에 optimized.lib & debug.lib를 찾음.

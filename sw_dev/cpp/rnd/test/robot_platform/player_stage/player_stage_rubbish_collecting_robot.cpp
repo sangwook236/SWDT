@@ -299,7 +299,7 @@ void rubbish_collecting_robot(int argc, char *argv[])
 		// set motors
 		posProxy.SetSpeed(forwardSpeed, PlayerCc::dtor(turnSpeed));
 
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 		Sleep(1000);
 #else
 		sleep(1);

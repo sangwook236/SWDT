@@ -1,3 +1,6 @@
 [-] General
 	- Site.
 		http://www.ogre3d.org/
+
+[-] Build (CMake)
+	- Link with static libraries of FreeImage.

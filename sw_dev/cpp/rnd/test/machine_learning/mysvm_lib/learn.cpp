@@ -476,7 +476,7 @@ svm_result calc_c(){
       result_value = to_minimize(the_result);
       //      std::cout<<result_value<<std::endl;
       last_dec++;
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
       if((result_value<minimal_value) && (! _isnan(result_value))){
 #else
       if((result_value<minimal_value) && (! isnan(result_value))){

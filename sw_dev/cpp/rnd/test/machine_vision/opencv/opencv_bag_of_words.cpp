@@ -4,7 +4,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/xfeatures2d.hpp>
 #include <iostream>
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <Windows.h>
 #endif
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
@@ -26,7 +26,7 @@ const std::string plotsDir = "/plots";
 //-------------------------------------------------------------------
 void makeDir( const std::string& dir )
 {
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
     CreateDirectoryA( dir.c_str(), 0 );
 #else
     mkdir( dir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );

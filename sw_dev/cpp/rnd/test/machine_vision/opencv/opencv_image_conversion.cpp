@@ -113,7 +113,7 @@ void convert_image(const std::string &imageName, const std::string &srcImageExt,
 
 void convert_images(const std::string &dirName, const std::string &srcImageExt, const std::string &dstImageExt, const bool isGray)
 {
-#if (defined(WIN32) || defined(_WIN32)) && 0
+#if (defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)) && 0
 	WIN32_FIND_DATAA FindFileData;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
 	DWORD dwError;

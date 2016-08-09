@@ -1,5 +1,5 @@
 //include "stdafx.h"
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <vld/vld.h>
 #endif
 #include <iostream>
@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "Open Dynamics Engine (ODE) library ----------------------------------" << std::endl;
-		retval = ode_main(argc, argv);  // not yet implemented.
+		retval = ode_main(argc, argv);  // Not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

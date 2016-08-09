@@ -1,4 +1,4 @@
 [-] General
-	-. Site
+	- Site.
 		http://openslam.org/rgbdslam.html
 		http://www.openslam.org/hog-man.html

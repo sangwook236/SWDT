@@ -26,7 +26,7 @@ void daisy()
 	ccv_enable_default_cache();
 
 	ccv_dense_matrix_t *image = NULL;
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 	ccv_read_impl(image_filename.c_str(), &image, CCV_IO_GRAY | CCV_IO_ANY_FILE, 0, 0, 0);
 #else
 	ccv_read(image_filename.c_str(), &image, CCV_IO_GRAY | CCV_IO_ANY_FILE);

@@ -1,4 +1,16 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.ffmpeg.org/
 		http://ffmpeg.zeranoe.com/builds/
+
+[-] Usage (Windows)
+	- Download files.
+		https://ffmpeg.zeranoe.com/builds/
+		https://ffmpeg.org/download.html
+
+		Download one set out of two below.
+			FFmpeg Shared & Dev.
+			FFmpeg Static & Dev.
+		==> FFmpeg Dev에 있는 .lib & .a file은 모두 import library인 듯함.
+		==> FFmpeg는 Windows에서 build하기 어려워 built된 library를 이용하는 것이 편리.
+	- Uncompress files.

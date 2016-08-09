@@ -80,7 +80,7 @@ char* prepend_path(const char* path, const char* file)
   int name_length = strlen(path) + strlen(file) + 2;
   char* pathname = (char*)malloc( name_length * sizeof(char) );
 
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
   _snprintf( pathname, name_length, "%s/%s", path, file );
 #else
   snprintf( pathname, name_length, "%s/%s", path, file );

@@ -1,5 +1,5 @@
 //include "stdafx.h"
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <vld/vld.h>
 #endif
 #include <iostream>

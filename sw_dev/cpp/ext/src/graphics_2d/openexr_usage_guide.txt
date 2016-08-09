@@ -1,22 +1,27 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.openexr.com/
 
 [-] Build (CMake + VC)
-	-. Download files
+	- Download files.
 		IlmBase & OpenEXR.
 
-	-. Configure & generate IlmBase
-		set CMAKE_INSTALL_PREFIX to ${OPENEXR_INSTALL_DIR}.
-	-. Build IlmBase
-	-. Install IlmBase
+	- Configure & generate IlmBase.
+		Set CMAKE_INSTALL_PREFIX to ${OPENEXR_INSTALL_DIR}.
+	- Build IlmBase.
+	- Install IlmBase.
 		아래의 directory에 설치.
 			${OPENEXR_INSTALL_DIR}/include/OpenEXR
 			${OPENEXR_INSTALL_DIR}/lib/OpenEXR
 		==> Install까지 정상적으로 되어야 이후 OpenEXR 설치할 때 편리.
 
-	-. Configure & generate OpenEXR
+	- Configure & generate OpenEXR.
 		set ILMBASE_PACKAGE_PREFIX to ${OPENEXR_INSTALL_DIR}.
 		set CMAKE_INSTALL_PREFIX to ${OPENEXR_INSTALL_DIR}.
-	-. Build OpenEXR
-	-. Install OpenEXR
+	- Build OpenEXR.
+	- Install OpenEXR.
+
+[-] Trouble Shooting (VC)
+	- OpenEXR library의 Half.lib를 link할 때 half::_toFloat & half::_eLut를 찾을 수 없다는 오류.
+		<error message>	LNK2001 unresolved external symbol half::_toFloat & half::_eLut
+		==> half class에서 half::_toFloat & half::_eLut를 사용하는 함수를 header file에서 source file로 이동.

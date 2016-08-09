@@ -1,4 +1,4 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.roboticslibrary.org/
 		http://sourceforge.net/projects/roblib/

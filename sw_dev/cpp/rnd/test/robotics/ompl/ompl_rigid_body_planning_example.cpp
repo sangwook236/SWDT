@@ -2,6 +2,7 @@
 #include <ompl/base/spaces/SE3StateSpace.h>
 #include <ompl/geometric/planners/rrt/RRTConnect.h>
 #include <ompl/geometric/SimpleSetup.h>
+#include <boost/bind.hpp>
 #include <iostream>
 
 

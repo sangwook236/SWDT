@@ -1,14 +1,14 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.libmng.com/
 		http://libmng.sourceforge.net/
 		http://www.libpng.org/pub/mng/
 
 [-] Build (CMake)
-	-. Disable little CMS (LCMS)
+	- Disable little CMS (LCMS).
 		REF [file] >> ${GDT_HOME}/sw_dev/cpp/ext/src/graphics_2d/little_cms
 
-		set HAVE_LIBLCMS2 to 0
+		Set HAVE_LIBLCMS2 to 0.
 			in ${MNG_HOME}/libmng_types.h
 			<before>
 				#define HAVE_LIBLCMS2 1
@@ -16,12 +16,12 @@
 			<after>
 				/* #define HAVE_LIBLCMS2 1 */
 				/* #define MNG_FULL_CMS 1 */
-		set WITH_LCMS2 to OFF
+		Set WITH_LCMS2 to OFF.
 			in ${MNG_HOME}/CmakeLists.txt
 			<before>
 				OPTION(WITH_LCMS2 "Build MNG library with liblcms version 2" ON)
 			<after>
 				OPTION(WITH_LCMS2 "Build MNG library with liblcms version 2" OFF)
-	-. CMake
-	-. Build
-		==> build eror가 발생하지만, tiff library는 정상 build됨.
+	- CMake.
+	- Build.
+		==> Build eror가 발생하지만, tiff library는 정상 build됨.

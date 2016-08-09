@@ -1,4 +1,4 @@
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <windows.h>
 #endif
 #include <iostream>
@@ -73,7 +73,7 @@ int pictorial_structures_revisited_main(int argc, char *argv[])
 	sstream2 << num_images;
 
 	//
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 	const BOOL retval = SetCurrentDirectoryA(curr_directory.c_str());
 #elif defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
     const int retval = chdir(curr_directory.c_str());

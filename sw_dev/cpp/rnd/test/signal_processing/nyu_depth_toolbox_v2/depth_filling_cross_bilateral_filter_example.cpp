@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include "../nyu_depth_toolbox_v2_lib/cbf_windows.h"
 #else
 #include "../nyu_depth_toolbox_v2_lib/cbf.h"
@@ -116,7 +116,7 @@ void depth_filling_cross_bilateral_filter_example()
 		boost::timer::auto_cpu_timer timer;
 
 		// cross bilateral filtering.
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 		// TODO [check] >>
 		//	-. in order to change IMG_HEIGHT, IMG_WIDTH, and/or NUM_SCALES, macros have to be changed in ${CPP_RND_HOME}/test/signal_processing/nyu_depth_toolbox_v2_lib/cbf_windows.h.
 		//		#define NUM_SCALES 3

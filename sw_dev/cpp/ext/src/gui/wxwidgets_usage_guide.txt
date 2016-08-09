@@ -5,7 +5,7 @@
 
 		https://github.com/wxWidgets/wxWidgets
 
-[-] Building ver. 2.6 (VC)
+[-] Build ver. 2.6 (VC)
 	+> IDE.
 		- Target project file.
 			"${WXWIDGETS_HOME}/build/msw/wx.dsw"
@@ -24,7 +24,7 @@
 			nmake -f makefile.vc
 			nmake -f makefile.vc clean
 
-[-] Building ver. 2.9.2 (VC)
+[-] Build ver. 2.9.2 (VC)
 	REF [file] >> ${WXWIDGETS_HOME}/docs/msw/install.txt
 
 	1. Configure setup.h file.
@@ -60,7 +60,7 @@
 		nmake -f makefile.vc BUILD=debug UNICODE=1
 		nmake -f makefile.vc BUILD=release UNICODE=1
 
-[-] Building GitHub (VC): 2016/05/05
+[-] Build GitHub (VC): 2016/05/05
 	REF [file] >> ${WXWIDGETS_HOME}/BuildGit.txt
 	REF [file] >> ${WXWIDGETS_HOME}/docs/msw/install.txt
 
@@ -80,7 +80,14 @@
 	- Copy header files & libraries.
 		${WXWIDGETS_HOME}/lib/vc_dll, vc_lib, vc_x64_dll, vc_x64_lib.
 
-[-] Using (Common)
+	-. Build wxrc.
+		Change directory
+			${WXWIDGETS_HOME}/utils/wxrc
+		Open project.
+			wxrc_vc9.vcproj
+		Build.
+
+[-] Usage (Common)
 	- Using wx-config.
 		REF [file] >> ${WXWIDGETS_BIN_DIR}/wx-config
 
@@ -109,7 +116,7 @@
 				${LIBRARY_DIR}/wxwidgets/vc_x86_lib/mswu, mswud
 				${LIBRARY_DIR}/wxwidgets/vc_x86_dll/mswu, mswud
 
-[-] Using (VC)
+[-] Usage (VC)
 	- Create a new project.
 		Win32 Project:
 			Windows application

@@ -1,3 +1,32 @@
 [-] General
-	-. Site
+	- Site.
 		http://openil.sourceforge.net/
+
+[-] Build (CMake)
+	- 정상 작동하지 않는 것으로 보임.
+
+[-] Build (VS 2015)
+	- Copy a project file.
+		Copy ${DevIL_HOME}/projects/msvc9 to ${DevIL_HOME}/projects/msvc14.
+	- Open the project file.
+	- Add a missing source file to a project, IL.
+		${DevIL_HOME}/src-IL/il_ktx.c
+	- Add additional include directories.
+		$(MY_USR_LOCAL_INCLUDE)/libjpeg
+		$(MY_USR_LOCAL_INCLUDE)/libtiff
+		$(MY_USR_LOCAL_INCLUDE)/lcms2
+		$(MY_USR_LOCAL_INCLUDE)/OpenEXR
+	- Add additional libraries.
+		libjpeg.lib, libjpegd.lib
+		libjasper.lib, libjasperd.lib
+		libtiff.lib, libtiffd.lib
+		libpng.lib, libpngd.lib
+		lcms2_static.lib, lcms2_staticd.lib
+		IlmImf-2_2.lib
+		Half.lib
+	- Build.
+		Post-build event로 생성된 DLL files을 Windows/system32 directory로 copy함.
+
+[-] Trouble Shooting (VC)
+	- OpenEXR library의 Half.lib 안에서 half::_toFloat & half::_eLut를 찾을 수 없다는 오류.
+		REF [file] >> openexr_usage_guide.txt

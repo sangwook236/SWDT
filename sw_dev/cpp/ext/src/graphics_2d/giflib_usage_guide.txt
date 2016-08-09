@@ -1,5 +1,5 @@
 [-] General
-	-. Site
+	- Site.
 		http://giflib.sourceforge.net/
 
 		Windows:

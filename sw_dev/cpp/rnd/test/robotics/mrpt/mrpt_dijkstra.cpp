@@ -1,6 +1,6 @@
 //#include "stdafx.h"
-#include <mrpt/graphs/dijkstra.h>
-#include <mrpt/graphs/CNetworkOfPoses.h>
+#include <mrpt/math/dijkstra.h>
+#include <mrpt/poses/CNetworkOfPoses.h>
 #include <mrpt/gui/CDisplayWindowPlots.h>
 #include <mrpt/utils/CTicTac.h>
 #include <mrpt/random.h>
@@ -12,7 +12,7 @@ namespace {
 namespace local {
 
 // The type of my Dijkstra problem:
-typedef mrpt::graphs::CDijkstra<mrpt::graphs::CNetworkOfPoses2D> my_Dijkstra_type;   // See other options in mrpt::graphs::CNetworkOfPoses<>
+typedef mrpt::math::CDijkstra<mrpt::poses::CNetworkOfPoses2D> my_Dijkstra_type;   // See other options in mrpt::graphs::CNetworkOfPoses<>
 
 // adds a new edge to the graph. The edge is annotated with the relative position of the two nodes
 void add_edge(mrpt::utils::TNodeID from, mrpt::utils::TNodeID to, const mrpt::aligned_containers<mrpt::utils::TNodeID, mrpt::poses::CPose2D>::map_t &real_poses, mrpt::graphs::CNetworkOfPoses2D &graph_links)
@@ -37,8 +37,8 @@ namespace my_mrpt {
 void dijkstra()
 {
 	mrpt::utils::CTicTac tictac;
-	mrpt::graphs::CNetworkOfPoses2D graph_links;
-	mrpt::graphs::CNetworkOfPoses2D::global_poses_t optimal_poses, optimal_poses_dijkstra;
+	mrpt::poses::CNetworkOfPoses2D graph_links;
+	mrpt::poses::CNetworkOfPoses2D::global_poses_t optimal_poses, optimal_poses_dijkstra;
 	mrpt::aligned_containers<mrpt::utils::TNodeID, mrpt::poses::CPose2D>::map_t real_poses;
 
 	mrpt::random::randomGenerator.randomize(10);

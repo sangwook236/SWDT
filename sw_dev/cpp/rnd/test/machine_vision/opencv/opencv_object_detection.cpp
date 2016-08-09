@@ -10,7 +10,7 @@
 #include <string>
 #include <ctime>
 
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <io.h>
 #else
 #include <dirent.h>
@@ -152,7 +152,7 @@ void read_directory(const std::string &directoryName, std::vector<std::string> &
                 filenames.push_back(itr->path().filename().string());
 		}
 	}
-#elif defined(WIN32) || defined(_WIN32)
+#elif defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 
     struct _finddata_t s_file;
     std::string str = directoryName + "\\*.*";

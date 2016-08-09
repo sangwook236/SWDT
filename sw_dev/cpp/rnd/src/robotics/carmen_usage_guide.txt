@@ -1,3 +1,3 @@
 [-] General
-	-. Site
+	- Site.
 		http://carmen.sourceforge.net/

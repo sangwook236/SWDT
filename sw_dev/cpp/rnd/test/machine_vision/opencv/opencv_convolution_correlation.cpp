@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 #include <cassert>
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <windows.h>
 #endif
 

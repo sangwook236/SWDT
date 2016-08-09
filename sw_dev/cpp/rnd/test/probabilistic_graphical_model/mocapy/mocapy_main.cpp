@@ -1,7 +1,7 @@
 //#include "stdafx.h"
 #include <framework/mocapyexceptions.h>
 #include <iostream>
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <stdexcept>
 #endif
 

@@ -190,7 +190,7 @@ int export_ref_histos(histogram **ref_histos, int n)
 
 	for (i = 0; i < n; ++i)
 	{
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 		_snprintf(num, 3, "%02d", i);
 #else
 		snprintf(num, 3, "%02d", i);

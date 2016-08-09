@@ -1,8 +1,38 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.cairographics.org/
-	-. Usage
-		GTK+ All-in-one bundles에 포함된 binary library 사용
+
+	- Usage.
+		GTK+ All-in-one bundles에 포함된 binary library 사용.
 
 		http://www.gtk.org
 		http://www.gtk.org/download-windows.html
+
+[-] Build (VC)
+	REF [file] >> ${CAIRO_HOME}/README.win32
+		==> Win64는 build되지 않는 듯함.
+
+	- Open Visual Studio Command Prompt.
+	- Uncompress libraries.
+		pixman
+		cairo
+	- Change directory.
+		cd ${PIXMAN_HOME}/pixman
+	- Build pixman library.
+		make -f Makefile.win32 CFG=release
+	- Change directory.
+		cd ${CAIRO_HOME}
+	- Edit makefile.
+		In ${CAIRO_HOME}/build/Makefile.win32.common.
+			PIXMAN_PATH
+			LIBPNG_PATH
+			ZLIB_PATH
+
+			e.g.)
+				PIXMAN_PATH := $(top_builddir)/../pixman-0.34.0
+				LIBPNG_PATH := /usr/local/include/libpng16
+				ZLIB_PATH := /usr/local/include
+				CAIRO_LIBS += D:/usr/local/lib/libpng16.lib
+				CAIRO_LIBS += D:/usr/local/lib/zdll.lib
+	- Build cario library.
+		make -f Makefile.win32 CFG=release

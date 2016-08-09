@@ -1,12 +1,16 @@
 [-] General
-	-. Site
+	- Site.
 		http://freeimage.sourceforge.net/
 
 [-] Build (VC)
-	-. Use VC solution file in FreeImage
+	- Use VC solution files in FreeImage.
+	- Set runtime library.
+		In Configuration Properties -> C/C++ -> Code Generation -> Runtime Library.
+			Multi-threaded DLL (/MD)
+			Multi-threaded Debug DLL (/MDd)
 
 [-] Trouble Shooting (VC)
-	-. snprintf
+	- snprintf.
 		<error message>
 			warning C4005: 'snprintf': macro redefinition
 			fatal error C1189: #error:  Macro definition of snprintf conflicts with Standard Library function declaration

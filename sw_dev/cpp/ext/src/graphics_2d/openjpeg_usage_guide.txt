@@ -1,9 +1,9 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.openjpeg.org/
 
 [-] Build (VC)
-	-. Disable little CMS (LCMS)
+	- Disable little CMS (LCMS).
 		REF [file] >> ${GDT_HOME}/sw_dev/cpp/ext/src/graphics_2d/little_cms
-	-. Build
-		==> build eror가 발생하지만, openjpeg library는 정상 build됨.
+	- Build.
+		==> Build eror가 발생하지만, openjpeg library는 정상 build됨.
