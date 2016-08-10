@@ -1,9 +1,28 @@
 [-] Libraries
-	- BLAS & LAPACK.
+	- BLAS.
+	- GotoBLAS.
+		(Windows) MinGW를 이용해서 build 후 사용.
+			REF [site] >> http://icl.cs.utk.edu/lapack-for-windows/lapack/
+		Library files:
+			libgoto2_penrynp-r1.13.a/lib
+		Features:
+			'cblas_'로 시작하는 함수와 시작하지 않는 함수 모두 제공.
+				e.g.) _sgemm_, _cblas_sgemm
+			'lapack_'로 시작하는 함수와 시작하지 않는 함수 제공.
+				e.g.) _cheev
+	- OpenBLAS.
+		(Windows) Cygwin을 이용해서 build 후 사용.
+		Library files:
+			libopenblas.so/dll(libopenblas.a)
+		Features:
+			'cblas_'로 시작하는 함수와 시작하지 않는 함수 모두 제공.
+				e.g.) _sgemm, _sgemm_, _cblas_sgemm
+			'LAPACKE_'로 시작하는 함수 제공.
+				e.g.) _LAPACKE_cheev
 	- LAPACK.
 		lapack-3.6.0 version의 shared library 사용.
 		(Windows) MinGW를 이용해서 build 후 사용.
-			[ref] http://icl.cs.utk.edu/lapack-for-windows/lapack/
+			REF [site] >> http://icl.cs.utk.edu/lapack-for-windows/lapack/
 		Library files:
 			libblas.so/dll(libblas.lib)
 			liblapack.so/dll(liblapack.lib)
@@ -28,25 +47,6 @@
 				e.g.) _sgemm_
 			'clapack_'로 시작하지 않는 함수 제공.
 				e.g.) _cheev_
-	- GotoBLAS.
-		(Windows) MinGW를 이용해서 build 후 사용.
-			[ref] http://icl.cs.utk.edu/lapack-for-windows/lapack/
-		Library files:
-			libgoto2_penrynp-r1.13.a/lib
-		Features:
-			'cblas_'로 시작하는 함수와 시작하지 않는 함수 모두 제공.
-				e.g.) _sgemm_, _cblas_sgemm
-			'lapack_'로 시작하는 함수와 시작하지 않는 함수 제공.
-				e.g.) _cheev
-	- OpenBLAS.
-		(Windows) Cygwin을 이용해서 build 후 사용.
-		Library files:
-			libopenblas.so/dll(libopenblas.a)
-		Features:
-			'cblas_'로 시작하는 함수와 시작하지 않는 함수 모두 제공.
-				e.g.) _sgemm, _sgemm_, _cblas_sgemm
-			'LAPACKE_'로 시작하는 함수 제공.
-				e.g.) _LAPACKE_cheev
 	- ATLAS.
 		atlas3.9.72 version의 static library 사용.
 		Library files:
