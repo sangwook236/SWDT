@@ -1,3 +1,3 @@
 [-] General
-	-. Site
+	- Site.
 		http://icl.cs.utk.edu/magma/

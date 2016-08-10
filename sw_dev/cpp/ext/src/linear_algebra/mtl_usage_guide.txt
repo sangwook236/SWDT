@@ -1,5 +1,5 @@
 [-] General
-	-. Site
+	- Site.
 		http://osl.iu.edu/research/mtl/
 
 		http://www.mtl4.org/
@@ -7,32 +7,30 @@
 
 		http://osl.iu.edu/research/mtl/mtl2.php3
 
-<< Building >>
+[-] Building
+	- Download.
+		http://www.osl.iu.edu/research/mtl/
+	- Uncompress.
+	- Install.
+		Resulting include files are installed into a subdirectory.
+			%MTL_ROOT%/mtl
 
-[-] MTL site로부터 file download
-	-. http://www.osl.iu.edu/research/mtl/
-[-] 압축 해제
-[-] install header
-	-. resulting include files are installed into a subdirectory
-		%MTL_ROOT%/mtl
+[-] Usage
+	- building 하지 않고 사용.
+	- LAPACK과의 interfacing을 위해서는 LAPACK 관련 library가 추가적으로 요구됨.
+		CLAPACK 사용 가능.
 
-<< Usage >>
+[-] Trouble Shooting
+	- '_Ptrit': is no element of 'std'.
+		Platform
+			MSVC 7.1
+		REF [site] >> http://geocities.yahoo.com.br/guiparreira/
+		REF [site] >> http://www.osl.iu.edu/MailArchives/mtl-devel/msg00635.php
 
-[-] building 하지 않고 사용
-[-] LAPACK과의 interfacing을 위해서는 LAPACK 관련 library가 추가적으로 요구됨
-	-. CLAPACK 사용 가능
-
-<< Trouble Shooting >>
-
-[-] '_Ptrit': is no element of 'std'
-	-. platform
-		MSVC 7.1
-	-. Reference
-		http://geocities.yahoo.com.br/guiparreira/
-		http://www.osl.iu.edu/MailArchives/mtl-devel/msg00635.php
-[-] 
-[-] deprecated API
-	-. mtl::set
-		template <class Vector, class T> void set(Vector x, const T& alpha);
-		template <class Matrix, class T> void set(Matrix x, const T& alpha);
-		==> template <class LinalgObj, class T> void set_value(LinalgObj A, const T& alpha);
+	- Deprecated API.
+		mtl::set
+		<before>
+			template <class Vector, class T> void set(Vector x, const T& alpha);
+			template <class Matrix, class T> void set(Matrix x, const T& alpha);
+		<after>
+			template <class LinalgObj, class T> void set_value(LinalgObj A, const T& alpha);

@@ -1,26 +1,26 @@
 [-] General
-	-. Site
+	- Site.
 		https://www.tacc.utexas.edu/research-development/tacc-software/gotoblas2
 
-	-. Reference
+	- Reference.
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Building (Win32/MinGW)
-	-. Using MinGW
-		1. run Visual Studio Command Prompt.
-		2. set the GNU runtime directory in PATH.
+[-] Build (Win32/MinGW)
+	- Use Command Prompt.
+		1. Run Visual Studio Command Prompt.
+		2. Set the GNU runtime directory in PATH.
 			set path=${MINGW_ROOT}/bin;${CYGWIN_HOME}/bin;%path%
 			==> ${CYGWIN_HOME}/bin는 wget을 사용하기 위해 필요.
 				wget & tar는 lapack download를 위해 필요.
 					${GOTOBLAS2_HOME}/lapack-3.1.1.tgz
 		3. cd ${GOTOBLAS2_HOME}.
-		4. run make.
-			[ref] ${GOTOBLAS2_HOME}/quickbuild.win32
+		4. Run make.
+			REF [file] >> ${GOTOBLAS2_HOME}/quickbuild.win32
 			mingw32-make BINARY=32 CC=gcc FC=gfortran
 				gfortran을 사용하는 경우, 원인 모를 linking error 발생.
 					<error message> cannot find -l -lgfortran
 					==> lapack source file을 찾지 못해서 발생.
 						shared library building 과정에서 발생.
 						static library는 정상적으로 생성.
-		5. built library.
+		5. Build library.
 			libgoto2_penrynp-r1.13.lib

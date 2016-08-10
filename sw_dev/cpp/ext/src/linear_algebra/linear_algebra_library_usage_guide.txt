@@ -1,6 +1,6 @@
 [-] Libraries
-	-. BLAS & LAPACK
-	-. LAPACK
+	- BLAS & LAPACK.
+	- LAPACK.
 		lapack-3.6.0 version의 shared library 사용.
 		(Windows) MinGW를 이용해서 build 후 사용.
 			[ref] http://icl.cs.utk.edu/lapack-for-windows/lapack/
@@ -14,7 +14,7 @@
 				e.g.) _sgemm_
 			'clapack_'로 시작하지 않는 함수 제공.
 				e.g.) _cheev_
-	-. CLAPACK
+	- CLAPACK.
 		clapack-3.2.1-CMAKE version의 static library 사용.
 		(Windows) Visual Studio를 이용해서 build 후 사용.
 		Library files:
@@ -28,7 +28,7 @@
 				e.g.) _sgemm_
 			'clapack_'로 시작하지 않는 함수 제공.
 				e.g.) _cheev_
-	-. GotoBLAS
+	- GotoBLAS.
 		(Windows) MinGW를 이용해서 build 후 사용.
 			[ref] http://icl.cs.utk.edu/lapack-for-windows/lapack/
 		Library files:
@@ -38,7 +38,7 @@
 				e.g.) _sgemm_, _cblas_sgemm
 			'lapack_'로 시작하는 함수와 시작하지 않는 함수 제공.
 				e.g.) _cheev
-	-. OpenBLAS
+	- OpenBLAS.
 		(Windows) Cygwin을 이용해서 build 후 사용.
 		Library files:
 			libopenblas.so/dll(libopenblas.a)
@@ -47,7 +47,7 @@
 				e.g.) _sgemm, _sgemm_, _cblas_sgemm
 			'LAPACKE_'로 시작하는 함수 제공.
 				e.g.) _LAPACKE_cheev
-	-. ATLAS
+	- ATLAS.
 		atlas3.9.72 version의 static library 사용.
 		Library files:
 			f77blas.a
@@ -57,7 +57,7 @@
 		Features:
 			'cblas_'로 시작하는 함수 제공.
 			'clapack_'로 시작하는 함수 제공.
-	-. Eigen
+	- Eigen.
 		BLAS & LAPACK의 function 대부분을 가지고 있지 않음.
 		Library files:
 			eigen_blas.so/dll
@@ -65,7 +65,7 @@
 		Features:
 			'cblas_'로 시작하지 않는 함수 제공. (?)
 			'clapack_'로 시작하지 않는 함수 제공. (?)
-	-. GSL
+	- GSL.
 		gsl-1.15 version의 static library 사용.
 		Library files:
 			cblas.a/lib

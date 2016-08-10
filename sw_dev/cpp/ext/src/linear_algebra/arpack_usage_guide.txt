@@ -1,19 +1,19 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.caam.rice.edu/software/ARPACK/
 		http://www.caam.rice.edu/~kristyn/parpack_home.html
 		http://www.ime.unicamp.br/~chico/arpack++/
 
-[-] Building in Win32/Cygwin
-	-. set path
+[-] Build (Win32/Cygwin)
+	- Set path.
 		export HOME=/home/sangwook
 			이렇게 설정하면 ${HOME}/ARPACK directory를 ARPACK library's root directory로 사용.
-			[ref] ${ARPACK_HOME}/ARmake.inc
-	-. set platform
+			REF [file] >> ${ARPACK_HOME}/ARmake.inc
+	- Set platform.
 		${ARPACK_HOME}/ARmake.inc file 안에 있는 platform 설정 변경.
 			PLAT = cygwin
 		${ARPACK_HOME}/ARmake.inc file에 PARPACK library's directory setting 추가.
 			PUTILdir = $(home)/PARPACK/UTIL/MPI
 			PSRCdir = $(home)/PARPACK/SRC/MPI
-	-. make
+	- Make.
 		make all

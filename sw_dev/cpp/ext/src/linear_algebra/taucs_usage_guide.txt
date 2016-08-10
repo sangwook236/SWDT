@@ -1,11 +1,14 @@
 [-] General
-	-. Site
+	- Site.
 		http://www.tau.ac.il/~stoledo/taucs/
 
-[-] Building (VC)
-	-.
-		DOS 창에서 vsvars32.bat 실행
-		${TAUCS_HOME}/configure.bat 실행
-			.lastconf를 찾을 수 없다는 에러가 발생하지만 make를 실행시킬 수 있음.
-		set OSTYPE=win32 설정
+[-] Build (VC)
+	- Open Visual Studio Command Prompt.
+	- Change directory to ${TAUCS_HOME}.
+	- Configure.
+		configure.bat
+		==> .lastconf를 찾을 수 없다는 에러가 발생하지만 make를 실행시킬 수 있음.
+	- Set environment variable.
+		set OSTYPE=win32
+	- Make.
 		nmake -f ${TAUCS_HOME}/build/${OSTYPE}/makefile

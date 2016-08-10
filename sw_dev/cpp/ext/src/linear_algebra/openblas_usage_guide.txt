@@ -1,44 +1,45 @@
 [-] General
-	-. Site
+	- Site.
 		http://xianyi.github.io/OpenBLAS/
 		https://github.com/xianyi/OpenBLAS
 
 		https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
 
-	-. Reference
+	- Reference.
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Building GitHub (VC): 2016/05/05
-	-. Warning
-		CMake support is experimental
-		x86 support only
-			Only x86 support is currently available.
-			==> MinGW or Cygwin은 x64를 지원.
-			==> Win64도 정상적으로 build됨.
+[-] Build GitHub (VC): 2016/05/05
+	- 현재 x86만 지원.
+		<warning>
+			CMake support is experimental
+			x86 support only
+				Only x86 support is currently available.
+		==> MinGW or Cygwin은 x64를 지원.
+		==> Win64도 정상적으로 build됨.
 
-	-. Configure and generate
+	- Configure and generate.
 		Set CMAKE_DEBUG_POSTFIX to d.
-	-. Build
-	-. Install
-		Install Project가 만들어지지 않음.
-		==> header file은 적절히 알아서 복사해야 함.
+	- Build.
+	- Install.
+		Install project가 만들어지지 않음.
+		==> Header file은 적절히 알아서 복사해야 함.
 
-[-] Building (Win32/MinGW)
+[-] Build (Win32/MinGW)
 	REF [file] >>  mingw_usage_guide.txt
 
-	-. Run Visual Studio Command Prompt
-	-. Set the GNU runtime directory in PATH
+	- Run Visual Studio Command Prompt.
+	- Set the GNU runtime directory in PATH.
 		set path=${MINGW_ROOT}/bin;%path%
-	-. Run cmake-gui
-	    Specify 'MinGW Makefiles' as the generator
-	-. Configure and generate
-		set the 'CMAKE_SH' option to ${MSYS_ROOT}/bin/sh.exe
-		set the 'CMAKE_Fortran_COMPILER' option to ${MINGW_ROOT}/bin/gfortran.exe
-		set the 'CMAKE_GNUtoMS' option to ON.
+	- Run cmake-gui.
+	    Specify 'MinGW Makefiles' as the generator.
+	- Configure and generate.
+		Set the 'CMAKE_SH' option to ${MSYS_ROOT}/bin/sh.exe.
+		Set the 'CMAKE_Fortran_COMPILER' option to ${MINGW_ROOT}/bin/gfortran.exe.
+		Set the 'CMAKE_GNUtoMS' option to ON.
 			<warning> Disabling CMAKE_GNUtoMS option because CMAKE_GNUtoMS_VCVARS is not set
-			==> set the 'CMAKE_GNUtoMS_VCVARS' option to 'C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/vcvars32.bat'
+			==> Set the 'CMAKE_GNUtoMS_VCVARS' option to 'C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/vcvars32.bat'.
 
-		fortran files을 찾을 수 없다는 error 발생.
+		Fortran files을 찾을 수 없다는 error 발생.
 			<error> Cannot find source file
 				sgegs.f, sgegv.f, etc.
 			==> 해당 files이 deprecated 되어 발생.
@@ -61,39 +62,39 @@
 						cd ${OPENBLAS_HOME}/lapack-netlib/SRC
 						dir z*.f > list.txt + ilazlr.f ilazlc.f
 						copy file list to set(SLRSRC ...)
-	-. Change directory
+	- Change directory.
 		cd cmake-build directory.
-	-. Make
+	- Make.
 		mingw32-make
-		mingw32-make PREFIX=${INSTAL_PREFIX} install
+		mingw32-make PREFIX=${INSTALL_PREFIX} install
 
-[-] Building (Win32/Cgywin)
+[-] Build (Win32/Cgywin)
 	REF [site] >> https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
 
-	-. Use quick build
+	- Use quick build.
 		${OPENBLAS_HOME}/quickbuild.win32
 		${OPENBLAS_HOME}/quickbuild.win64
 
-	-. Run cygwin
-	-. Run quick build script
+	- Run cygwin.
+	- Run quick build script.
 		cd ${OPENBLAS_HOME}
 		./quickbuild.win32
 		./quickbuild.win64
-	-. Run Visual Studio Command Prompt
-	-. Generate def file
+	- Run Visual Studio Command Prompt.
+	- Generate def file.
 		a) dumpbin.exe 이용.
 			dumpbin.exe /exports libopenblas.dll > libopenblas.def
 			==> 생성된 def file을 그대로 사용할 수 없음.
-				def file 형식에 맞게 수정해야 함.
+				Def file 형식에 맞게 수정해야 함.
 		b) OpenBLAS library에서 생성한 def file 이용.
 			${OPENBLAS_HOME}/exports/libopenblas.def
 			==> Windows 환경에서 사용할 수 있는지 검증 필요.
-	-. Generate import library
+	- Generate import library.
 		cd ${OPENBLAS_HOME}/exports
-		For 32-bit, lib.exe /machine:i386 /def:libopenblas.def
-		For 64-bit, lib.exe /machine:X64 /def:libopenblas.def
+		For 32-bit: lib.exe /machine:i386 /def:libopenblas.def
+		For 64-bit: lib.exe /machine:X64 /def:libopenblas.def
 		==> ${OPENBLAS_HOME}/exports directory에 OpenBLAS에서 생성한 def file & import file이 존재.
 			이들을 Windows 환경에서 사용할 수 있는지 검증 필요.
 
-	-. Install
-		make PREFIX=${INSTAL_PREFIX} install
+	- Install.
+		make PREFIX=${INSTALL_PREFIX} install

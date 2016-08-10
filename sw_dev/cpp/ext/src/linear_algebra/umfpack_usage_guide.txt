@@ -1,6 +1,7 @@
 [-] General
-	-. SuiteSparse에 포함되어 있음.
-	-. Site
+	- SuiteSparse에 포함되어 있음.
+
+	- Site.
 		http://matrixprogramming.com/2008/03/umfpack
 
 		http://www.cise.ufl.edu/research/sparse/umfpack/

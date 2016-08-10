@@ -1,0 +1,13 @@
+[-] General
+	- Site.
+		http://viennacl.sourceforge.net/
+
+[-] Build (VC)
+	- Ambiguous symbol error.
+		<error> ambiguous symbol.
+			viennacl & viennacl::ocl.
+			backend, context, etc.
+		<cause>
+			Conflict between basic namespace's objects and OpenCL(ocl) namespace's objects.
+		<measure>
+			Don't use OpenCL.
