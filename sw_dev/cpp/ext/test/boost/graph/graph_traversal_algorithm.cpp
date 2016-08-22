@@ -127,7 +127,9 @@ public:
     {}
 
 public:
-    template<typename Vertex, typename Graph>
+	// This is invoked the first time the algorithm encounters vertex u.
+	// All vertices closer to the source vertex have been discovered, and vertices further from the source have not yet been discovered.
+	template<typename Vertex, typename Graph>
     void discover_vertex(const Vertex& u, const Graph&) const
     {
         boost::put(m_timemap, u, m_time++);
