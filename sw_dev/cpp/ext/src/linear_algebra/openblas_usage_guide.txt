@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		http://xianyi.github.io/OpenBLAS/
 		https://github.com/xianyi/OpenBLAS
@@ -8,7 +8,11 @@
 	- Reference.
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Build GitHub (VC): 2016/05/05
+[-] Build.
+	- Required compiler.
+		Fortran compiler if Lapack is included.
+
+[-] Build GitHub (VC): 2016/05/05.
 	- 현재 x86만 지원.
 		<warning>
 			CMake support is experimental
@@ -24,7 +28,7 @@
 		Install project가 만들어지지 않음.
 		==> Header file은 적절히 알아서 복사해야 함.
 
-[-] Build (Win32/MinGW)
+[-] Build (Win32/MinGW).
 	REF [file] >>  mingw_usage_guide.txt
 
 	- Run Visual Studio Command Prompt.
@@ -68,7 +72,7 @@
 		mingw32-make
 		mingw32-make PREFIX=${INSTALL_PREFIX} install
 
-[-] Build (Win32/Cgywin)
+[-] Build (Win32/Cgywin).
 	REF [site] >> https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
 
 	- Use quick build.

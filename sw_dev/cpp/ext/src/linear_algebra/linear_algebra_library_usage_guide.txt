@@ -1,4 +1,4 @@
-[-] Libraries
+[-] Libraries.
 	- BLAS.
 	- GotoBLAS.
 		(Windows) MinGW를 이용해서 build 후 사용.

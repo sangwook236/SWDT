@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		http://osl.iu.edu/research/mtl/
 
@@ -7,7 +7,7 @@
 
 		http://osl.iu.edu/research/mtl/mtl2.php3
 
-[-] Building
+[-] Building.
 	- Download.
 		http://www.osl.iu.edu/research/mtl/
 	- Uncompress.
@@ -15,12 +15,12 @@
 		Resulting include files are installed into a subdirectory.
 			%MTL_ROOT%/mtl
 
-[-] Usage
+[-] Usage.
 	- building 하지 않고 사용.
 	- LAPACK과의 interfacing을 위해서는 LAPACK 관련 library가 추가적으로 요구됨.
 		CLAPACK 사용 가능.
 
-[-] Trouble Shooting
+[-] Trouble Shooting.
 	- '_Ptrit': is no element of 'std'.
 		Platform
 			MSVC 7.1

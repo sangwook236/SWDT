@@ -1,11 +1,11 @@
-[-] General
+[-] General.
 	- Site.
 		https://www.tacc.utexas.edu/research-development/tacc-software/gotoblas2
 
 	- Reference.
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Build (Win32/MinGW)
+[-] Build (Win32/MinGW).
 	- Use Command Prompt.
 		1. Run Visual Studio Command Prompt.
 		2. Set the GNU runtime directory in PATH.

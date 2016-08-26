@@ -1,6 +1,10 @@
-[-] General
+[-] General.
 	- Site.
 		http://arma.sourceforge.net/
 
 	- Reference.
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
+
+[-] Build.
+	- Required libraries.
+		Atlas & SuperLU.

@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		http://math-atlas.sourceforge.net/atlas_install/
 		http://math-atlas.sourceforge.net/errata.htm
@@ -13,7 +13,7 @@
 	- Reference.
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Build in Cygwin
+[-] Build in Cygwin.
 	- Reference.
 		${ATLAS_HOME}/INSTALL.txt
 		${ATLAS_HOME}/doc/Windows.txt
@@ -102,7 +102,7 @@
 			libmsvcrt.a
 		Shared object (DLL)를 직접적으로 생성하는 것이 바람직.
 
-[-] Build in MinGW
+[-] Build in MinGW.
 	- Reference.
 		http://icl.cs.utk.edu/lapack-for-windows/lapack/
 			Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW.
@@ -121,7 +121,7 @@
 			mingw32-make
 			mingw32-make install
 
-[-] Trouble shooting (Cygwin) (ver. 3.9.72)
+[-] Trouble shooting (Cygwin) (ver. 3.9.72).
 	- 아래의 file을 copy할 수 없다는 error가 발생하는 경우.
 		${ATLAS_HOME}/build_cyg/ARCHS/Core232SSE3/gemm/atlas_tcacheedge.h
 		==> atlas_tcacheedge.h file을 다른 directory에서 찾아 해당 directory에 복사.

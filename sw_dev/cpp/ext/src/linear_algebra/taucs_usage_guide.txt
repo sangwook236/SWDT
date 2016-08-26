@@ -1,8 +1,8 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.tau.ac.il/~stoledo/taucs/
 
-[-] Build (VC)
+[-] Build (VC).
 	- Open Visual Studio Command Prompt.
 	- Change directory to ${TAUCS_HOME}.
 	- Configure.

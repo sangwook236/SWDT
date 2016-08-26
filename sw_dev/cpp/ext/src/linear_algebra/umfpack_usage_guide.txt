@@ -1,5 +1,5 @@
-[-] General
-	- SuiteSparse에 포함되어 있음.
+[-] General.
+	- Included in SuiteSparse.
 
 	- Site.
 		http://matrixprogramming.com/2008/03/umfpack

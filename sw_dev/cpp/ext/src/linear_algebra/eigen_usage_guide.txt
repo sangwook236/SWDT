@@ -1,13 +1,13 @@
-[-] General
+[-] General.
 	- Site.
 		http://eigen.tuxfamily.org/
 
 		https://bitbucket.org/eigen/eigen
 
-[-] Porting from Eigen2 to Eigen3
+[-] Porting from Eigen2 to Eigen3.
 	REF [site] >> http://eigen.tuxfamily.org/dox/Eigen2ToEigen3.html
 
-[-] Build
+[-] Build.
 	- Eigen library는 기본적으로 header file만 있으면 됨.
 		따라서 source를 별도로 build하지 않아도 됨.
 		Source 대부분은 test code임.
@@ -19,7 +19,7 @@
 			==> 아래의 trouble shooting 참고.
 		==> BLAS & LAPACK의 function 대부분을 가지고 있지 않음.
 
-[-] Build (CMake)
+[-] Build (CMake).
 	- Configure & generate.
 		Set BUILD_SHARED_LIBS to false (X) ==> not working.
 		Set BUILD_STATIC_LIBS to true (X) ==> not working.
@@ -27,7 +27,7 @@
 		Set CMAKE_DEBUG_POSTFIX to d.
 	- Build.
 
-[-] Trouble Shooting
+[-] Trouble Shooting.
 	- Fortran compiler detection warning.
 		<error>
 			No fortran compiler has been detected, the blas build will be incomplete.
@@ -37,7 +37,7 @@
 			Warning이므로 project file generation까지 수행하고
 			Eigen library를 사용하는 곳에서 필요한 경우 BLAS or LAPACK library를 linking하면 될 듯함.
 
-[-] Trouble Shooting (VC)
+[-] Trouble Shooting (VC).
 	- eigen_blas linking error.
 		<error>
 			cannot open file '..\blas\Debug\eigen_blasd.lib'

@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		http://faculty.cse.tamu.edu/davis/suitesparse.html
 
@@ -15,7 +15,7 @@
 
 		http://matrixprogramming.com/2008/03/umfpack
 
-[-] Build (Cygwin GCC)
+[-] Build (Cygwin GCC).
 	REF [file] >> ${SUITESPARSE_HOME}/README.txt
 
 	- Set compiler & linker, etc.
@@ -34,7 +34,7 @@
 		The Microsoft linker recognizes the libraries compiled by gcc under Cygwin.
 		What we need to do is to just rename them from *.a to *.lib.
 
-[-] Build (VC)
+[-] Build (VC).
 	- Use ${SUITESPARSE_HOME}/Project/SuiteSparse.sln.
 		SuiteSparse library의 일부만 build되는 것 같음.
 			UMFPACK & CSparse 등과 같은 library는 build되지 않음.
@@ -58,7 +58,7 @@
 			../$(Configuration) for Win32.
 			../$(Platform)/$(Configuration) for Win64.
 
-[-] Trouble Shooting (VC)
+[-] Trouble Shooting (VC).
 	- metis.h 관련 오류 발생.
 		<error>
 			Cannot open include file: 'metis.h': No such file or directory
@@ -72,12 +72,12 @@
 			In Project Properties -> Linker -> System -> SubSystem:
 			Change from Windows (/SUBSYSTEM:WINDOWS) to Console (/SUBSYSTEM:CONSOLE).
 
-[-] Build GibHub (VC)
+[-] Build GibHub (VC).
 	- Download files.
 		https://github.com/jlblancoc/suitesparse-metis-for-windows
 	- CMake.
 
-[-] Trouble Shooting GibHub (VC)
+[-] Trouble Shooting GibHub (VC).
 	- rint 함수 관련 오류 발생.
 		<error>
 			syntax error: '('
