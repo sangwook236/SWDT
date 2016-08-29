@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.qt.io/
 		http://www.qt.io/developers/
@@ -6,7 +6,7 @@
 		http://wiki.qt.io/Jom
 		http://download.qt.io/official_releases/jom/
 
-[-] Building (Windows)
+[-] Build (Windows).
 	- qmake.exe or QMAKESPEC 관련 오류.
 		REF [site] >> http://stackoverflow.com/questions/5303634/qmake-qmakespec-has-not-been-set
 
@@ -21,3 +21,15 @@
 		==> 아래의 명령으로 확인 가능.
 			qmake -query QMAKESPEC
 			qmake -query
+
+[-] Trouble Shooting (VC).
+	- moc.exe or uic.exe 관련 오류.
+		<error>
+			MSB6006: "cmd.exe" exited with code3.
+			The system cannot find the path specified.
+			Moc'ing xxx.h
+			Uic'ing xxx.ui
+		<cause>
+			moc.exe & uic.exe를 찾지 못해서 발생.
+		<solution>
+			set QTDIR=${QT_HOME}

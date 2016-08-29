@@ -1,4 +1,4 @@
-[-] Building (Win32)
+[-] Building (Win32).
 	REF [file] >> ${QT_HOME}/INSTALL
 
 	0. Eexecute "Visual Studio Command Prompt".
@@ -54,7 +54,7 @@
 		==> ${INSTALL_PREFIX}/include, lib, & bin, etc에 설치.
 			${INSTALL_ROOT}를 설정하는 경우 ${INSTALL_ROOT}/${INSTALL_PREFIX}/include, lib, & bin, etc에 설치.
 
-[-] Building (VS2015)
+[-] Building (VS2015).
 	REF [site] >> http://stackoverflow.com/questions/32848962/how-to-build-qt-4-8-6-with-visual-studio-2015-without-official-support
 
 	- Patch.
@@ -70,7 +70,7 @@
 	    Create a new win32-msvc2015 spec in ${QT_HOME}/mkspecs.
 	    Edit makefile.win32 file in ${QT_HOME}/qmake
 
-[-] Trouble Shooting
+[-] Trouble Shooting.
 	- PATH_MAX 관련 오류 발생.
 		==> change PATH_MAX to MAX_PATH.
 	- cstdint 관련 오류 발생.

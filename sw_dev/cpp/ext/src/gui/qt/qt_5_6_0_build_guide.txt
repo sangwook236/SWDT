@@ -1,4 +1,4 @@
-[-] Building (Windows)
+[-] Building (Windows).
 	REF [file] >> ${QT_HOME}/README & ${QT_HOME}/qtbase/INSTALL
 	REF [site] >> http://doc.qt.io/qt-5/gettingstarted.html
 
@@ -45,9 +45,9 @@
 		- mingw32-make install
 		==> ${INSTALL_PREFIX}/include, lib, & bin, etc에 설치.
 
-[-] Trouble Shooting (VC)
+[-] Trouble Shooting (VC).
 	- Build 과정에서 error가 발생하면 source 전체를 지우고 다시 압축 해제 후 설치 진행. (?)
-		[ref] http://stackoverflow.com/questions/34416611/error-when-building-qt-with-desktop-opengl
+		[site] >>  http://stackoverflow.com/questions/34416611/error-when-building-qt-with-desktop-opengl
 	- manifest file 생성 오류.
 		<cause>
 			VC를 이용해 building하는 경우 mt.exe를 이용해 manifest file을 생성하는 과정에서 manifest file을 생성하지 못하는 오류 발생.
