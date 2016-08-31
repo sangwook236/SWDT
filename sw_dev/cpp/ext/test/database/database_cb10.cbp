@@ -43,6 +43,8 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="mysql/mysql_main.cpp" />
 		<Unit filename="soci/soci_main.cpp" />
+		<Unit filename="soci/soci_postgresql_basic.cpp" />
+		<Unit filename="soci/soci_sqlite_basic.cpp" />
 		<Unit filename="sqlite/sqlite_basic.cpp" />
 		<Unit filename="sqlite/sqlite_encryption_decryption.cpp" />
 		<Unit filename="sqlite/sqlite_main.cpp" />
