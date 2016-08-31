@@ -1,4 +1,4 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://xerces.apache.org/xerces-c/
 		http://projects.apache.org/projects/xerces_for_c++_xml_parser.html

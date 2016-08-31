@@ -1,0 +1,6 @@
+[-] General.
+	- Site.
+		http://www.grinninglizard.com/tinyxml/
+		http://www.grinninglizard.com/tinyxml2/
+
+		https://github.com/leethomason/tinyxml2
