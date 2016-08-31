@@ -179,9 +179,9 @@ namespace my_sqlite {
 
 void basic()
 {
-	// open database
-	//const std::string databaseName = "data/database/sqlite/test.db";  // file db
-	const std::string databaseName = ":memory:";  // memory db
+	// Open database.
+	//const std::string databaseName = "data/database/sqlite/test.db";  // File DB.
+	const std::string databaseName = ":memory:";  // Memory DB.
 
 	sqlite3 *db = NULL;
 	const int rc = sqlite3_open(databaseName.c_str(), &db);
@@ -192,24 +192,24 @@ void basic()
 		return;
 	}
 
-	// create table
+	// Create table.
 	local::create_table(db);
 
-	// insert data
+	// Insert data.
 	local::insert_data_1(db);
 	local::insert_data_2(db);
 
-	// select data
+	// Select data.
 	local::select_data_1(db);
 	local::select_data_2(db);
 
-	// delete data
+	// Delete data.
 	local::delete_data_1(db);
 	local::delete_data_2(db);
 
 	local::select_data_2(db);
 
-	// close database
+	// Close database.
 	sqlite3_close(db);
 }
 

@@ -47,7 +47,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>./lmdbxx_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/lmdb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./lmdbxx_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/soci;$(MY_USR_LOCAL_INCLUDE)/sqlite;$(MY_USR_LOCAL_INCLUDE)/lmdb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -69,7 +69,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>./lmdbxx_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/lmdb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./lmdbxx_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/soci;$(MY_USR_LOCAL_INCLUDE)/sqlite;$(MY_USR_LOCAL_INCLUDE)/lmdb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -95,6 +95,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mysql\mysql_main.cpp" />
     <ClCompile Include="soci\soci_main.cpp" />
+    <ClCompile Include="soci\soci_postgresql_basic.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="soci\soci_sqlite_basic.cpp" />
     <ClCompile Include="sqlite\sqlite_basic.cpp" />
     <ClCompile Include="sqlite\sqlite_encryption_decryption.cpp" />
     <ClCompile Include="sqlite\sqlite_main.cpp" />

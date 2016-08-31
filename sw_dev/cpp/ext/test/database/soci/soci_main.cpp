@@ -1,6 +1,5 @@
 //#include "stdafx.h"
 #include <iostream>
-#include <stdexcept>
 
 
 namespace {
@@ -11,11 +10,15 @@ namespace local {
 
 namespace my_soci {
 
+void sqlite_basic();
+void postgresql_basic();
+
 }  // namespace my_soci
 
 int soci_main(int argc, char *argv[])
 {
-	throw std::runtime_error("Not yet implemented.");
+	my_soci::sqlite_basic();
+	//my_soci::postgresql_basic();
 
 	return 0;
 }

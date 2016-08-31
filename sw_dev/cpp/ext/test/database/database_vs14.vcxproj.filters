@@ -63,6 +63,12 @@
     <ClCompile Include="soci\soci_main.cpp">
       <Filter>Source Files\soci</Filter>
     </ClCompile>
+    <ClCompile Include="soci\soci_sqlite_basic.cpp">
+      <Filter>Source Files\soci</Filter>
+    </ClCompile>
+    <ClCompile Include="soci\soci_postgresql_basic.cpp">
+      <Filter>Source Files\soci</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sqlite_lib\sqlite3.h">

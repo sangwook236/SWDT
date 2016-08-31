@@ -4,12 +4,18 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "liblmdb_d.lib")
-//#pragma comment(lib, "sqlite.lib")
+#pragma comment(lib, "libsoci_sqlite3_3_2d.lib")
+#pragma comment(lib, "libsoci_empty_3_2d.lib")
+#pragma comment(lib, "libsoci_core_3_2d.lib")
+//#pragma comment(lib, "liblmdb_d.lib")
+//#pragma comment(lib, "sqlited.lib")
 
 #		else
 
-#pragma comment(lib, "liblmdb.lib")
+#pragma comment(lib, "libsoci_sqlite3_3_2.lib")
+#pragma comment(lib, "libsoci_empty_3_2.lib")
+#pragma comment(lib, "libsoci_core_3_2.lib")
+//#pragma comment(lib, "liblmdb.lib")
 //#pragma comment(lib, "sqlite.lib")
 
 #		endif

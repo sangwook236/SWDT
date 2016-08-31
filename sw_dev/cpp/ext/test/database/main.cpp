@@ -25,10 +25,10 @@ int main(int argc, char *argv[])
 		//retval = mysql_main(argc, argv);
 
 		std::cout << "\nLMDB++ --------------------------------------------------------------" << std::endl;
-		retval = lmdbxx_main(argc, argv);
+		//retval = lmdbxx_main(argc, argv);
 
 		std::cout << "\nSOCI library --------------------------------------------------------" << std::endl;
-		retval = soci_main(argc, argv);  // Not yet implement.
+		retval = soci_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{
