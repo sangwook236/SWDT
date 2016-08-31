@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://symas.com/mdb/
 		http://symas.com/mdb/doc/
 

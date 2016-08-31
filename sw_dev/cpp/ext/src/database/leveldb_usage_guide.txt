@@ -1,30 +1,30 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://leveldb.org/
         https://github.com/google/leveldb
 
-	-. Windows
+	- Windows.
         https://github.com/zao/kkowalczyk-leveldb
 
-[-] Building (VC)
-	-. Download source
+[-] Building (VC).
+	- Download source.
 		https://github.com/zao/kkowalczyk-leveldb
-	-. Change directory
+	- Change directory.
 		cd ${LEVELDB_HOME}/win
-	-. Run Visual Studio Command Prompt
-	-. Build
+	- Run Visual Studio Command Prompt.
+	- Build.
 		REF [file] >> ${LEVELDB_HOME}/win/build.bat
 		nmake -f makefile.msvc CFG=rel SRC=..
 		nmake -f makefile.msvc CFG=dbg SRC=..
 		nmake -f makefile.msvc CFG=rel PLATFORM=X64 SRC=..
-			compile errors occurred
-			==> REF [] >> Trouble Shooting
+			Compile errors occurred.
+			==> REF [] >> Trouble Shooting.
 		nmake -f makefile.msvc CFG=dbg PLATFORM=X64 SRC=..
-			compile errors occurred
-			==> REF [] >> Trouble Shooting
+			Compile errors occurred.
+			==> REF [] >> Trouble Shooting.
 
-[-] Trouble Shooting (VC)
-	-. snprintf 중복 정의 관련 오류
+[-] Trouble Shooting (VC).
+	- snprintf 중복 정의 관련 오류.
 		In ${LEVELDB_HOME}/port/port_win.h
 		<before>
 			#define snprintf _snprintf
@@ -32,7 +32,7 @@
 			#if _MSC_VER < 1900
 			#define snprintf _snprintf
 			#endif
-	-. warning treated as error 오류 발생
+	- Warning treated as error 오류 발생.
 		<error>
 			Compiler Error C2220: warning treated as error - no object file generated
 		In ${LEVELDB_HOME}/win/makefile.msvc

@@ -13,6 +13,8 @@ int main(int argc, char *argv[])
 	int mysql_main(int argc, char *argv[]);
 	int lmdbxx_main(int argc, char *argv[]);
 
+	int soci_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
@@ -24,6 +26,9 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nLMDB++ --------------------------------------------------------------" << std::endl;
 		retval = lmdbxx_main(argc, argv);
+
+		std::cout << "\nSOCI library --------------------------------------------------------" << std::endl;
+		retval = soci_main(argc, argv);  // Not yet implement.
 	}
     catch (const std::bad_alloc &e)
 	{

@@ -28,6 +28,9 @@
     <Filter Include="Source Files\lmdbxx">
       <UniqueIdentifier>{b418d391-936e-40b6-8ef0-756d3f0c1376}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\soci">
+      <UniqueIdentifier>{3a857cfa-b4f0-43a5-9866-6f8924d34610}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -56,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="lmdbxx\lmdbxx_main.cpp">
       <Filter>Source Files\lmdbxx</Filter>
+    </ClCompile>
+    <ClCompile Include="soci\soci_main.cpp">
+      <Filter>Source Files\soci</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

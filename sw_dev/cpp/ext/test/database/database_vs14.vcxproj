@@ -94,6 +94,7 @@
     <ClCompile Include="lmdbxx\lmdbxx_main.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mysql\mysql_main.cpp" />
+    <ClCompile Include="soci\soci_main.cpp" />
     <ClCompile Include="sqlite\sqlite_basic.cpp" />
     <ClCompile Include="sqlite\sqlite_encryption_decryption.cpp" />
     <ClCompile Include="sqlite\sqlite_main.cpp" />
