@@ -1,22 +1,31 @@
-[-] Execution Setting
-	-. vld configuration file은 executable file과 동일한 directory에 존재하여야 함.
+[-] Execution Setting.
+	- vld configuration file은 executable file과 동일한 directory에 존재하여야 함.
 		configuration file: vld.ini
 		존재하지 않는 경우 기본 설정이 적용됨.
-	-. 정상적인 실행을 위해서 아래의 file 필요.
+	- 정상적인 실행을 위해서 아래의 file 필요.
 		vld_x86.dll (vld.dll) & vld.lib
 		dbghelp.dll
 
-[-] Programming Setting
-	-. vld.h는 library or executable project의 하나의 file에서만 include 되면 됨. (?)
-	-. 실행이 정상 종료되는 경우에 결과가 생성됨.
-	-. 실행된 경로 상에 존재하는 memory leakage만을 detection
+[-] Programming Setting.
+	- vld.h는 library or executable project의 하나의 file에서만 include 되면 됨. (?)
+	- 실행이 정상 종료되는 경우에 결과가 생성됨.
+	- 실행된 경로 상에 존재하는 memory leakage만을 detection
 
-[-] Trouble Shooting (VC)
-	-. exe project에서 많은 오류를 발생
+[-] Trouble Shooting (VC).
+	- The application was unable to start correctly in the debug mode.
+		<error>
+			The application was unable to start correctly (0xc0150002)
+		<solution>
+			Need dbghelp.dll to use vld library.
+			Must use dbghelp.dll which is distributed together with source.
+				${VLD_HOME}/setup/dbghelp/x86/dbghelp.dll
+				${VLD_HOME}/setup/dbghelp/x64/dbghelp.dll
+		REF [site] >> http://stackoverflow.com/questions/19216358/the-application-was-unable-to-start-correctly-after-including-vld-h
+	- exe project에서 많은 오류를 발생.
 		<solution>
 			아래의 projects만 build하면 됨.
 				libformat & vld projects.
-	-. Windows.h, SDKDDKVer.h, kernel32.lib, and rc.exe를 찾을 수 없다는 오류 발생
+	- Windows.h, SDKDDKVer.h, kernel32.lib, and rc.exe를 찾을 수 없다는 오류 발생.
 		<error>
 			cannot open include file: 'windows.h'
 			cannot open file 'kernel32.lib'
