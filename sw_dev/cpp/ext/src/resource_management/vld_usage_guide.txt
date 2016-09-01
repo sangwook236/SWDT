@@ -3,8 +3,12 @@
 		configuration file: vld.ini
 		존재하지 않는 경우 기본 설정이 적용됨.
 	- 정상적인 실행을 위해서 아래의 file 필요.
-		vld_x86.dll (vld.dll) & vld.lib
+		vld_x86.dll/lib vld.lib
+		vld_x64.dll/lib vld.lib
 		dbghelp.dll
+		Microsoft.DTfW.DHL.manifest
+			manifest file of dbghelp.dll.
+		==> VLD library의 debug build를 사용하는 것이 좋은 것 같음.
 
 [-] Programming Setting.
 	- vld.h는 library or executable project의 하나의 file에서만 include 되면 됨. (?)
