@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv2/bioinspired.hpp>
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <string>
@@ -67,20 +68,20 @@ void retina_model()
     }
 
 	// create a retina instance with default parameters setup, uncomment the initialisation you wanna test
-	cv::Ptr<cv::Retina> retina;
+	cv::Ptr<cv::bioinspired::Retina> retina;
 
 	// if the last parameter is 'log', then activate log sampling (favour foveal vision and subsamples peripheral vision)
 	if (useLogSampling)
 	{
 		const bool colorMode = true;
-		const cv::RETINA_COLORSAMPLINGMETHOD colorSamplingMethod = cv::RETINA_COLOR_BAYER;
+		const int colorSamplingMethod = cv::bioinspired::RETINA_COLOR_BAYER;
 		const double reductionFactor = 2.0;
 		const double samplingStrenght = 10.0;
 
-		retina = new cv::Retina(inputFrame.size(), colorMode, colorSamplingMethod, useLogSampling, 2.0, samplingStrenght);
+		retina = cv::bioinspired::createRetina(inputFrame.size(), colorMode, colorSamplingMethod, useLogSampling, 2.0, samplingStrenght);
 	}
 	else  // allocate "classical" retina.
-		retina = new cv::Retina(inputFrame.size());
+		retina = cv::bioinspired::createRetina(inputFrame.size());
 
 #if 0
 	// save default retina parameters file in order to let you see this and maybe modify it and reload using method "setup".

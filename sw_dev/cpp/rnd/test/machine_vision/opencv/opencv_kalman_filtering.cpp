@@ -30,7 +30,7 @@ void kalman_filtering()
 	//
 	cv::KalmanFilter kalmanFilter(2, 1, 0);
 
-    kalmanFilter.transitionMatrix = *(cv::Mat_<float>(2, 2) << 1, 1, 0, 1);
+    kalmanFilter.transitionMatrix = (cv::Mat_<float>(2, 2) << 1, 1, 0, 1);
     cv::setIdentity(kalmanFilter.measurementMatrix);
 
     cv::setIdentity(kalmanFilter.processNoiseCov, cv::Scalar::all(1e-5));

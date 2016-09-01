@@ -150,7 +150,7 @@ void ikm()
 	// training.
 	if (-1 != vl_ikm_train(ikm, data, num_data))
 	{
-		const vl_ikm_acc *centers = vl_ikm_get_centers(ikm);
+		const vl_ikmacc_t *centers = vl_ikm_get_centers(ikm);
 		for (int i = 0; i < num_clusters; ++i)
 		{
 			std::cout << '(';

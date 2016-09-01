@@ -1,7 +1,8 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/legacy/compat.hpp>
-#include <opencv2/legacy/legacy.hpp>
+//#include <opencv2/legacy/compat.hpp>
+//#include <opencv2/legacy/legacy.hpp>
+#include <opencv2/optflow.hpp>
 #include <opencv2/opencv.hpp>
 #include <boost/polygon/polygon.hpp>
 #include <set>
@@ -657,11 +658,12 @@ void mser(cv::Mat &srcImage, const cv::Mat &grayImage)
 	const double area_threshold = 1.01;
 	const double min_margin = 0.003;
 	const int edge_blur_size = 5;
-	cv::MSER mser;
+	cv::Ptr<cv::MSER> mser = cv::MSER::create();
 
 	double t = (double)cv::getTickCount();
 	std::vector<std::vector<cv::Point> > contours;
-	cv::MSER()(yuv, contours);
+	std::vector<cv::Rect> bboxes;
+	mser->detectRegions(yuv, contours, bboxes);
 	t = cv::getTickCount() - t;
 
 	std::cout << "MSER extracted " << contours.size() << " contours in " << (t / ((double)cv::getTickFrequency() * 1000.0)) << " ms" << std::endl;
@@ -756,7 +758,8 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 #endif
 
 			// iterate snake.
-			cvSnakeImage(img, &points[0], NUMBER_OF_SNAKE_POINTS, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
+			// FIXME [correct] >> Compile-time error.
+			//cvSnakeImage(img, &points[0], NUMBER_OF_SNAKE_POINTS, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
 
 			// draw snake on image.
 			CvPoint *points_ptr = (CvPoint *)&points[0];
@@ -825,7 +828,8 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
         IplImage blurred_img_ipl = (IplImage)blurred_img;
 		cvSnakeImage(&blurred_img_ipl, &points[0], numSnakePts, (float *)&alpha, (float *)&beta, (float *)&gamma, CV_VALUE, win, term_criteria, use_gradient ? 1 : 0);
 #else
-		cvSnakeImage(&(IplImage)blurred_img, &points[0], numSnakePts, (float *)&alpha, (float *)&beta, (float *)&gamma, CV_VALUE, win, term_criteria, use_gradient ? 1 : 0);
+		// FIXME [correct] >> Compile-time error.
+		//cvSnakeImage(&(IplImage)blurred_img, &points[0], numSnakePts, (float *)&alpha, (float *)&beta, (float *)&gamma, CV_VALUE, win, term_criteria, use_gradient ? 1 : 0);
 #endif
 
 		snake_contour.assign(points.begin(), points.end());
@@ -866,7 +870,7 @@ void segment_motion_using_mhi(const cv::Mat &prev_gray_img, const cv::Mat &curr_
 	cv::absdiff(prev_gray_img, curr_gray_img, silh);  // get difference between frames
 
 	cv::threshold(silh, silh, diff_threshold, 1.0, cv::THRESH_BINARY);  // threshold
-	cv::updateMotionHistory(silh, mhi, timestamp, MHI_DURATION);  // update MHI
+	cv::motempl::updateMotionHistory(silh, mhi, timestamp, MHI_DURATION);  // update MHI
 
 	//
 	cv::Mat processed_mhi;  // processed MHI
@@ -887,25 +891,19 @@ void segment_motion_using_mhi(const cv::Mat &prev_gray_img, const cv::Mat &curr_
 	// calculate motion gradient orientation and valid orientation mask
 	cv::Mat mask;  // valid orientation mask
 	cv::Mat orient;  // orientation
-	cv::calcMotionGradient(processed_mhi, mask, orient, MAX_TIME_DELTA, MIN_TIME_DELTA, motion_gradient_aperture_size);
-
-	CvMemStorage *storage = cvCreateMemStorage(0);  // temporary storage
+	cv::motempl::calcMotionGradient(processed_mhi, mask, orient, MAX_TIME_DELTA, MIN_TIME_DELTA, motion_gradient_aperture_size);
 
 	// segment motion: get sequence of motion components
 	// segmask is marked motion components map. it is not used further
-	IplImage *segmask = cvCreateImage(cvSize(curr_gray_img.cols, curr_gray_img.rows), IPL_DEPTH_32F, 1);  // motion segmentation map
-#if defined(__GNUC__)
-    IplImage processed_mhi_ipl = (IplImage)processed_mhi;
-    CvSeq *seq = cvSegmentMotion(&processed_mhi_ipl, segmask, storage, timestamp, motion_segment_threshold);
-#else
-	CvSeq *seq = cvSegmentMotion(&(IplImage)processed_mhi, segmask, storage, timestamp, motion_segment_threshold);
-#endif
+	cv::Mat segmask(cv::Size(curr_gray_img.cols, curr_gray_img.rows), CV_32FC1);  // Motion segmentation map.
+	std::vector<cv::Rect> boundingRects;
+	cv::motempl::segmentMotion(processed_mhi, segmask, boundingRects, timestamp, motion_segment_threshold);
 
 	// FIXME [modify] >>
 #if 1
 	cv::Mat segmask_id;
-	//cv::Mat(segmask, false).convertTo(segmask_id, CV_8SC1, 1.0, 0.0);  // Oops !!! error
-	cv::Mat(segmask, false).convertTo(segmask_id, CV_8UC1, 1.0, 0.0);
+	//csegmask.convertTo(segmask_id, CV_8SC1, 1.0, 0.0);  // Oops !!! error.
+	segmask.convertTo(segmask_id, CV_8UC1, 1.0, 0.0);
 #elif 0
 	// Oops !!! error
 	cv::Mat segmask_id(segmask->width, segmask->height, CV_8UC1);
@@ -930,12 +928,11 @@ void segment_motion_using_mhi(const cv::Mat &prev_gray_img, const cv::Mat &curr_
 	if (max_component_idx > 0)
 	{
 		// iterate through the motion components
-		pointSets.reserve(seq->total);
-		for (int i = 0; i < seq->total; ++i)
+		int idx = 0;
+		for (std::vector<cv::Rect>::iterator it = boundingRects.begin(); it != boundingRects.end(); ++it, +idx)
 		{
-			const CvConnectedComp *comp = (CvConnectedComp *)cvGetSeqElem(seq, i);
-			const cv::Rect roi(comp->rect);
-			if (comp->area < 100 || roi.width + roi.height < 100)  // reject very small components
+			const cv::Rect roi(*it);
+			if (roi.area() < 100 || roi.width + roi.height < 100)  // reject very small components
 				continue;
 
 			const size_t count = (size_t)cv::norm(silh(roi), cv::NORM_L1);
@@ -946,25 +943,20 @@ void segment_motion_using_mhi(const cv::Mat &prev_gray_img, const cv::Mat &curr_
 #if 1
 			std::vector<std::vector<cv::Point> > contours;
 			std::vector<cv::Vec4i> hier;
-			make_contour(segmask_id, roi, i, contours, hier);
+			make_contour(segmask_id, roi, idx, contours, hier);
 
 			if (!hier.empty())
 				std::transform(hier.begin(), hier.end(), std::back_inserter(hierarchy), IncreaseHierarchyOp(pointSets.size()));
 
-			for (std::vector<std::vector<cv::Point> >::iterator it = contours.begin(); it != contours.end(); ++it)
-				if (!it->empty()) pointSets.push_back(*it);
+			for (std::vector<std::vector<cv::Point> >::iterator itPt = contours.begin(); itPt != contours.end(); ++itPt)
+				if (!itPt->empty()) pointSets.push_back(*itPt);
 #else
 			std::vector<cv::Point> convexHull;
-			make_convex_hull(segmask_id, roi, i, convexHull);
+			make_convex_hull(segmask_id, roi, idx, convexHull);
 			if (!convexHull.empty()) pointSets.push_back(convexHull);
 #endif
 		}
 	}
-
-	cvReleaseImage(&segmask);
-
-	cvClearMemStorage(storage);
-	cvReleaseMemStorage(&storage);
 }
 
 void segment_motion_using_mhi(const bool useConvexHull, const cv::Mat &prev_gray_img, const cv::Mat &curr_gray_img, cv::Mat &mhi, cv::Mat &segmentMask, std::vector<std::vector<cv::Point> > &pointSets, std::vector<cv::Vec4i> &hierarchy)
@@ -986,7 +978,7 @@ void segment_motion_using_mhi(const bool useConvexHull, const cv::Mat &prev_gray
 	cv::absdiff(prev_gray_img, curr_gray_img, silh);  // get difference between frames
 
 	cv::threshold(silh, silh, diff_threshold, 1.0, cv::THRESH_BINARY);  // threshold it
-	cv::updateMotionHistory(silh, mhi, timestamp, MHI_DURATION);  // update MHI
+	cv::motempl::updateMotionHistory(silh, mhi, timestamp, MHI_DURATION);  // update MHI
 
 	//
 	cv::Mat processed_mhi;  // processed MHI
@@ -1007,23 +999,17 @@ void segment_motion_using_mhi(const bool useConvexHull, const cv::Mat &prev_gray
 	// calculate motion gradient orientation and valid orientation mask
 	cv::Mat mask;  // valid orientation mask
 	cv::Mat orient;  // orientation
-	cv::calcMotionGradient(processed_mhi, mask, orient, MAX_TIME_DELTA, MIN_TIME_DELTA, motion_gradient_aperture_size);
-
-	CvMemStorage *storage = cvCreateMemStorage(0);  // temporary storage
+	cv::motempl::calcMotionGradient(processed_mhi, mask, orient, MAX_TIME_DELTA, MIN_TIME_DELTA, motion_gradient_aperture_size);
 
 	// segment motion: get sequence of motion components
 	// segmask is marked motion components map. it is not used further
-	IplImage *segmask = cvCreateImage(cvSize(curr_gray_img.cols, curr_gray_img.rows), IPL_DEPTH_32F, 1);  // motion segmentation map
-#if defined(__GNUC__)
-    IplImage processed_mhi_ipl = (IplImage)processed_mhi;
-	CvSeq *seq = cvSegmentMotion(&processed_mhi_ipl, segmask, storage, timestamp, motion_segment_threshold);
-#else
-	CvSeq *seq = cvSegmentMotion(&(IplImage)processed_mhi, segmask, storage, timestamp, motion_segment_threshold);
-#endif
+	cv::Mat segmask(cv::Size(curr_gray_img.cols, curr_gray_img.rows), CV_32FC1);  // Motion segmentation map.
+	std::vector<cv::Rect> boundingRects;
+	cv::motempl::segmentMotion(processed_mhi, segmask, boundingRects, timestamp, motion_segment_threshold);
 
 	//
-	//cv::Mat(segmask, false).convertTo(segmentMask, CV_8SC1, 1.0, 0.0);  // Oops !!! error
-	cv::Mat(segmask, false).convertTo(segmentMask, CV_8UC1, 1.0, 0.0);
+	//segmask.convertTo(segmentMask, CV_8SC1, 1.0, 0.0);  // Oops !!! error.
+	segmask.convertTo(segmentMask, CV_8UC1, 1.0, 0.0);
 
 	//
 	double minVal = 0.0, maxVal = 0.0;
@@ -1032,36 +1018,30 @@ void segment_motion_using_mhi(const bool useConvexHull, const cv::Mat &prev_gray
 	if (maxVal < 1.0e-5) return;
 
 	// iterate through the motion components
-	pointSets.reserve(seq->total);
-	for (int i = 0; i < seq->total; ++i)
+	int idx = 0;
+	for (std::vector<cv::Rect>::iterator it = boundingRects.begin(); it != boundingRects.end(); ++it, +idx)
 	{
-		const CvConnectedComp *comp = (CvConnectedComp *)cvGetSeqElem(seq, i);
-		const cv::Rect roi(comp->rect);
-		if (comp->area < 100 || roi.width + roi.height < 100)  // reject very small components
+		const cv::Rect roi(*it);
+		if (roi.area() < 100 || roi.width + roi.height < 100)  // reject very small components
 			continue;
 
 		if (useConvexHull)
 		{
 			std::vector<cv::Point> convexHull;
-			make_convex_hull(segmentMask, roi, i, convexHull);
+			make_convex_hull(segmentMask, roi, idx, convexHull);
 			if (!convexHull.empty()) pointSets.push_back(convexHull);
 		}
 		else
 		{
 			std::vector<std::vector<cv::Point> > contours;
 			std::vector<cv::Vec4i> hier;
-			make_contour(segmentMask, roi, i, contours, hier);
+			make_contour(segmentMask, roi, idx, contours, hier);
 
 			if (!hier.empty())
 				std::transform(hier.begin(), hier.end(), std::back_inserter(hierarchy), IncreaseHierarchyOp(pointSets.size()));
 			std::copy(contours.begin(), contours.end(), std::back_inserter(pointSets));
 		}
 	}
-
-	cvReleaseImage(&segmask);
-
-	cvClearMemStorage(storage);
-	cvReleaseMemStorage(&storage);
 }
 
 void segment_motion_using_mhi(const double timestamp, const double mhiTimeDuration, const cv::Mat &prev_gray_img, const cv::Mat &curr_gray_img, cv::Mat &mhi, cv::Mat &processed_mhi, cv::Mat &component_label_map, std::vector<cv::Rect> &component_rects)
@@ -1071,7 +1051,7 @@ void segment_motion_using_mhi(const double timestamp, const double mhiTimeDurati
 
 	const int diff_threshold = 8;
 	cv::threshold(silh, silh, diff_threshold, 1.0, cv::THRESH_BINARY);  // threshold
-	cv::updateMotionHistory(silh, mhi, timestamp, mhiTimeDuration);  // update MHI
+	cv::motempl::updateMotionHistory(silh, mhi, timestamp, mhiTimeDuration);  // update MHI
 
 	//
 	{
@@ -1107,33 +1087,16 @@ void segment_motion_using_mhi(const double timestamp, const double mhiTimeDurati
 	const double motion_segment_threshold = MAX_TIME_DELTA;
 
 #if 1
-	CvMemStorage *storage = cvCreateMemStorage(0);  // temporary storage
-
 	// segment motion: get sequence of motion components
 	// segmask is marked motion components map. it is not used further
-	IplImage *segmask = cvCreateImage(cvSize(curr_gray_img.cols, curr_gray_img.rows), IPL_DEPTH_32F, 1);  // motion segmentation map
-#if defined(__GNUC__)
-    IplImage processed_mhi_ipl = (IplImage)processed_mhi;
-	CvSeq *seq = cvSegmentMotion(&processed_mhi_ipl, segmask, storage, timestamp, motion_segment_threshold);
-#else
-	CvSeq *seq = cvSegmentMotion(&(IplImage)processed_mhi, segmask, storage, timestamp, motion_segment_threshold);
-#endif
-
-	//cv::Mat(segmask, false).convertTo(component_label_map, CV_8SC1, 1.0, 0.0);  // Oops !!! error
-	cv::Mat(segmask, false).convertTo(component_label_map, CV_8UC1, 1.0, 0.0);
+	cv::Mat segmask(cv::Size(curr_gray_img.cols, curr_gray_img.rows), CV_32FC1);  // Motion segmentation map.
+	std::vector<cv::Rect> boundingRects;
+	cv::motempl::segmentMotion(processed_mhi, segmask, boundingRects, timestamp, motion_segment_threshold);
 
 	// iterate through the motion components
-	component_rects.reserve(seq->total);
-	for (int i = 0; i < seq->total; ++i)
-	{
-		const CvConnectedComp *comp = (CvConnectedComp *)cvGetSeqElem(seq, i);
-		component_rects.push_back(cv::Rect(comp->rect));
-	}
-
-	cvReleaseImage(&segmask);
-
-	//cvClearMemStorage(storage);
-	cvReleaseMemStorage(&storage);
+	int idx = 0;
+	for (std::vector<cv::Rect>::iterator it = boundingRects.begin(); it != boundingRects.end(); ++it, +idx)
+		component_rects.push_back(*it);
 #else
 	std::vector<std::vector<cv::Point> > contours;
 	std::vector<cv::Vec4i> hierarchy;

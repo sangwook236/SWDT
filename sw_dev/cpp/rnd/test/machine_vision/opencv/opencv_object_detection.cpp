@@ -1,7 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
-#include <opencv2/contrib/contrib.hpp>
 #include <boost/filesystem.hpp>
 #include <iostream>
 #include <algorithm>

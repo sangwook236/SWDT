@@ -1,12 +1,12 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.vlfeat.org/
 
-[-] Building (MSVC 2010)
-	-. Visual Studio IDE에서의 building은 오류가 발생.
-	-. VLFeat를 사용하는 application에서 Debug build를 하고자 한다면
+[-] Building (VS 2010).
+	- Visual Studio IDE에서의 building은 오류 발생.
+	- VLFeat를 사용하는 application에서 Debug build를 하고자 한다면
 		Debug용 library가 필요.
-	-. Makefile을 이용해 building을 할 수 있음.
+	- Makefile을 이용해 building을 할 수 있음.
 		대상 makefile: ${VLFEAT_HOME}/Makefile.mak
 		기본적으로 제공되는 Makefile를 그대로 사용해 building을 하면 오류 발생.
 			Makefile 내에 설정을 변경해야 함.
@@ -26,5 +26,67 @@
 					/MD -> /MDd : for using Multi-threaded Debug DLL
 			==> vlfeat_0_9_9_build.bat 사용 가능.
 
-[-] Building (MSVC 2015)
-	-. Build 안됨 (2016/05/07)
+[-] Building (VS 2015).
+	- VLFeat library는 build 가능.
+		Matlab이 없어도 library build 가능.
+			Error가 발생하지만 library는 생성.
+		Makefile를 이용해 100% build가 되지 않지만 library는 build 가능.
+	- Built library 생성 위치.
+		${VLFEAT_HOME}/bin/win32
+		${VLFEAT_HOME}/bin/win64
+
+	- Open Visual Studio Prompt.
+	- Revise makefile.
+		Set variables.
+			ARCH=win32 or win64
+			DEBUG = yes or no
+			MSVCROOT = C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC
+			WINSDKROOT = C:\Program Files (x86)\Windows Kits\8.1\
+				환경변수 WindowsSdkDir의 정의되어 있으면 이를 사용.
+			MATLABROOT = C:\Program Files\MATLAB\R2016a
+				Matlab을 사용하지 않으려면 MATLABROOT 정의를 주석처리하면 됨.
+		VS 2015에서 c runtime library name이 변경된 것 같음.
+			msvcr -> vcruntime.
+		(1)
+			<before>
+				!if $(MSVSVER) <= 90
+				# VS <= 2008 needs a manifest too
+				bincrt = $(bindir)\msvcr$(MSVSVER).dll $(bindir)\$(MSVCR).manifest
+				mexcrt = $(mexdir)\msvcr$(MSVSVER).dll $(mexdir)\$(MSVCR).manifest
+				!else
+				bincrt = $(bindir)\msvcr$(MSVSVER).dll
+				mexcrt = $(mexdir)\msvcr$(MSVSVER).dll
+				!endif
+			<after>
+				!if $(MSVSVER) <= 90
+				# VS <= 2008 needs a manifest too
+				bincrt = $(bindir)\msvcr$(MSVSVER).dll $(bindir)\$(MSVCR).manifest
+				mexcrt = $(mexdir)\msvcr$(MSVSVER).dll $(mexdir)\$(MSVCR).manifest
+				!elseif $(MSVSVER) >= 140
+				bincrt = $(bindir)\vcruntime$(MSVSVER).dll
+				mexcrt = $(mexdir)\vcruntime$(MSVSVER).dll
+				!else
+				bincrt = $(bindir)\msvcr$(MSVSVER).dll
+				mexcrt = $(mexdir)\msvcr$(MSVSVER).dll
+				!endif
+		(2)
+			<before>
+				$(bindir)\msvcr$(MSVSVER).dll: "$(MSVCR_PATH)\msvcr$(MSVSVER).dll"
+				        copy $(**) "$(@)"
+			<after>
+				$(bindir)\vcruntime$(MSVSVER).dll: "$(MSVCR_PATH)\vcruntime$(MSVSVER).dll"
+				        copy $(**) "$(@)"
+	- (Optional) check if directories exist or not.
+		${VLFEAT_HOME}/bin/w32
+		${VLFEAT_HOME}/bin/w64
+		${VLFEAT_HOME}/toolbox/mex/mexw32
+		${VLFEAT_HOME}/toolbox/mex/mexw64
+	- Build.
+		nmake -f Makefile_vs2015_release.mak all ARCH=win32
+		nmake -f Makefile_vs2015_debug.mak all ARCH=win32
+		nmake -f Makefile_vs2015_release.mak all ARCH=win64
+		nmake -f Makefile_vs2015_debug.mak all ARCH=win64
+		==> Debug build를 생성하기 위해서는 makefile에서 아래 file name을 찾아 변경하면 됨.
+			vl.lib/dll -> vl_d.lib/dll.
+			<caution> VLD library의 import libray name이 vld.lib임.
+		==> Error가 발생하더라도 build를 계속 재실행하면 executables 생성.

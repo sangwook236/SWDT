@@ -1,8 +1,7 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/contrib/contrib.hpp>
+//#include <opencv2/contrib/contrib.hpp>
+#include <opencv2/opencv.hpp>
 #include <iostream>
 
 
@@ -46,7 +45,7 @@ void chamfer_matching()
 	const double minScale = 0.6, maxScale = 1.6;
 	const double orientationWeight = 0.5;
 	const double truncate = 20;
-	const int best_matched_idx = cv::chamerMatching(
+	const int best_matched_idx = cv::chamferMatching(
 		(cv::Mat &)image, (cv::Mat &)templ, results, costs,
 		templScale, maxMatches, minMatchDistance, padX, padY,
 		scales, minScale, maxScale, orientationWeight, truncate

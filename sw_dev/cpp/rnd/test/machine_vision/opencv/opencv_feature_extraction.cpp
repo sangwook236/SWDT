@@ -391,7 +391,7 @@ void feature_extraction()
 #   if 0
 		local::mser(srcImage, grayImage);
 #   else
-		local::mser(cv::Mat(srcImage), cv::Mat(grayImage));
+		local::mser(cv::cvarrToMat(srcImage), cv::cvarrToMat(grayImage));
 #   endif
 #endif
 

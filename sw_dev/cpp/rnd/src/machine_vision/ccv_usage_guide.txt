@@ -1,9 +1,9 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://libccv.org/
 
-[-] Building (Cygwin)
-	-. (중요) C++가 아닌 C compiler를 사용해야 함.
+[-] Building (Cygwin).
+	- (중요) C++가 아닌 C compiler를 사용해야 함.
 		CCV header를 include하는 경우 아래와 같이 'extern "C"'가 필요.
 		#ifdef __cplusplus
 		extern "C" {
@@ -13,7 +13,7 @@
 		}
 		#endif
 
-	-. build static library
+	- Build static library.
 		cd ${CCV_HOME}/lib
 		./configure --prefix=${CCV_INSTALL}
 		make
@@ -22,7 +22,7 @@
 
 		==> ${CCV_HOME}/lib/libccv.a file이 생성.
 
-	-. build shared library
+	- Build shared library.
 		cd ${CCV_HOME}/lib
 		./configure --prefix=${CCV_INSTALL}
 		${CCV_HOME}/makefile.shared => ${CCV_HOME}/lib/makefile로 복사
@@ -33,25 +33,25 @@
 		==> ${CCV_HOME}/lib에 아래의 file 생성.
 			libccv.dll, libccv.lib, libccv.def
 
-	-. 아래의 library가 필요.
+	- 아래의 library가 필요.
 		libjpeg, libpng, gsl, fftw3, liblinear, cblas, openmp, avcodec, avformat, swscale.
 
-	-. build 후 ${CCV_HOME}/lib/ccv.h에 아래의 macro 추가.
+	- Build 후 ${CCV_HOME}/lib/ccv.h에 아래의 macro 추가.
 		#if defined(_WIN32)
 		#define __attribute__(statement)
 		#endif
 		==> GCC를 위한 __attribute__ specifier의 영향을 없애기 위해.
 
-	-. build tests
+	- Build tests.
 		cd ${CCV_HOME}/test
 		make
 
-	-. build applications
+	- Build applications.
 		cd ${CCV_HOME}/bin
 		make
 
-[-] Running (Win32)
-	-. 아래의 DLL이 실행 directory에 존재해야 함.
+[-] Running (Win32).
+	- 아래의 DLL이 실행 directory에 존재해야 함.
 		cygblas-0.dll
 		cygfftw3-3.dll
 		cygfftw3f-3.dll

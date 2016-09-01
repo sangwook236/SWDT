@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv2/face.hpp>
 #include <opencv2/opencv.hpp>
 #include <sstream>
 #include <fstream>
@@ -62,9 +63,9 @@ void read_csv(const std::string &filename, std::vector<cv::Mat> &images, std::ve
 
 void simple_example()
 {
-	cv::Ptr<cv::FaceRecognizer> model = cv::createEigenFaceRecognizer();
-	//cv::Ptr<cv::FaceRecognizer> model = cv::createFisherFaceRecognizer();
-	//cv::Ptr<cv::FaceRecognizer> model = cv::createLBPHFaceRecognizer();
+	cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::createEigenFaceRecognizer();
+	//cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::createFisherFaceRecognizer();
+	//cv::Ptr<cv::face::LBPHFaceRecognizer> model = cv::face::createLBPHFaceRecognizer();
 
 	{
 		// holds images and labels
@@ -135,11 +136,11 @@ void facerec_demo()
 
 	//
 #if 1
-	cv::Ptr<cv::FaceRecognizer> model = cv::createFisherFaceRecognizer();
+	cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::createFisherFaceRecognizer();
 #else
 	const int num_components = 10;  // 10 components.
 	const double confidence_threshold = 123.0;  // a confidence threshold.
-	cv::Ptr<cv::FaceRecognizer> model = cv::createFisherFaceRecognizer(num_components, confidence_threshold);
+	cv::Ptr<cv::face::FaceRecognizer> model = cv::face::createFisherFaceRecognizer(num_components, confidence_threshold);
 #endif
 	model->train(images, labels);
 
@@ -164,7 +165,7 @@ void facerec_demo()
 
 		// First we'll use it to set the threshold of the FaceRecognizer to 0.0 without retraining the model.
 		// This can be useful if you are evaluating the model:
-		model->set("threshold", 0.0);
+		model->setThreshold(0.0);
 
 		// Now the threshold of this model is set to 0.0.
 		// A prediction now returns -1, as it's impossible to have a distance below it.
@@ -173,9 +174,9 @@ void facerec_demo()
 	}
 
     // Here is how to get the eigenvalues of this Eigenfaces model:
-    const cv::Mat eigenvalues = model->getMat("eigenvalues");
+    const cv::Mat eigenvalues = model->getEigenValues();
     // And we can do the same to display the Eigenvectors (read Eigenfaces):
-    const cv::Mat W = model->getMat("eigenvectors");
+    const cv::Mat W = model->getEigenVectors();
     // From this we will display the (at most) first 10 Eigenfaces:
 
     for (int i = 0; i < std::min(10, W.cols); ++i)
@@ -234,7 +235,7 @@ void eigenfaces_example()
 
 	//
 #if 1
-	cv::Ptr<cv::FaceRecognizer> model = cv::createEigenFaceRecognizer();
+	cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::createEigenFaceRecognizer();
 #else
 	const int num_components = 10;  // 10 components.
 	const double confidence_threshold = 123.0;  // a confidence threshold. if the distance to the nearest neighbor is larger than the threshold, this method returns -1.
@@ -257,11 +258,11 @@ void eigenfaces_example()
 	std::cout << result_message << std::endl;
 
 	// Here is how to get the eigenvalues of this Eigenfaces model.
-	const cv::Mat &eigenvalues = model->getMat("eigenvalues");
+	const cv::Mat &eigenvalues = model->getEigenValues();
 	// And we can do the same to display the Eigenvectors (read Eigenfaces).
-	const cv::Mat &W = model->getMat("eigenvectors");
+	const cv::Mat &W = model->getEigenVectors();
 	// Get the sample mean from the training data.
-	const cv::Mat &mean = model->getMat("mean");
+	const cv::Mat &mean = model->getMean();
 
 	// Display.
 	cv::imshow("eigenface - mean", norm_0_255(mean.reshape(1, images[0].rows)));
@@ -295,8 +296,8 @@ void eigenfaces_example()
 	{
 		// slice the eigenvectors from the model.
 		cv::Mat evs = cv::Mat(W, cv::Range::all(), cv::Range(0, num_components));
-		cv::Mat projection = cv::subspaceProject(evs, mean, images[0].reshape(1, 1));
-		cv::Mat reconstruction = cv::subspaceReconstruct(evs, mean, projection);
+		cv::Mat projection = cv::LDA::subspaceProject(evs, mean, images[0].reshape(1, 1));
+		cv::Mat reconstruction = cv::LDA::subspaceReconstruct(evs, mean, projection);
 
 		// Normalize the result.
 		reconstruction = norm_0_255(reconstruction.reshape(1, images[0].rows));
@@ -346,7 +347,7 @@ void fisherfaces_example()
 
 	//
 #if 1
-	cv::Ptr<cv::FaceRecognizer> model = cv::createFisherFaceRecognizer();
+	cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::createFisherFaceRecognizer();
 #else
 	const int num_components = 10;  // 10 components.
 	//const int num_components = 0;  // use all Fisherfaces.
@@ -370,11 +371,11 @@ void fisherfaces_example()
 	std::cout << result_message << std::endl;
 
 	// Here is how to get the eigenvalues of this Eigenfaces model.
-	const cv::Mat &eigenvalues = model->getMat("eigenvalues");
+	const cv::Mat &eigenvalues = model->getEigenValues();
 	// And we can do the same to display the Eigenvectors (read Eigenfaces).
-	cv::Mat W = model->getMat("eigenvectors");
+	cv::Mat W = model->getEigenVectors();
 	// Get the sample mean from the training data.
-	cv::Mat mean = model->getMat("mean");
+	cv::Mat mean = model->getMean();
 
 	// Display.
 	cv::imshow("Fisherface - mean", norm_0_255(mean.reshape(1, images[0].rows)));
@@ -408,8 +409,8 @@ void fisherfaces_example()
 	{
 		// Slice the Fisherface from the model.
 		const cv::Mat &ev = W.col(num_component);
-		const cv::Mat &projection = cv::subspaceProject(ev, mean, images[0].reshape(1, 1));
-		cv::Mat reconstruction = cv::subspaceReconstruct(ev, mean, projection);
+		const cv::Mat &projection = cv::LDA::subspaceProject(ev, mean, images[0].reshape(1, 1));
+		cv::Mat reconstruction = cv::LDA::subspaceReconstruct(ev, mean, projection);
 
 		// Normalize the result.
 		reconstruction = norm_0_255(reconstruction.reshape(1, images[0].rows));
@@ -459,14 +460,14 @@ void lbph_example()
 
 	//
 #if 1
-	cv::Ptr<cv::FaceRecognizer> model = cv::createLBPHFaceRecognizer();
+	cv::Ptr<cv::face::LBPHFaceRecognizer> model = cv::face::createLBPHFaceRecognizer();
 #else
 	const int radius = 1;  // the radius used for building the Circular Local Binary Pattern.
 	const int neighbors = 8;  // the number of sample points to build a Circular Local Binary Pattern from.
 	const int grid_x = 8;  // the number of cells in the horizontal direction.
 	const int grid_y = 8;  // the number of cells in the vertical direction.
 	const double confidence_threshold = 123.0;  // a confidence threshold. if the distance to the nearest neighbor is larger than the threshold, this method returns -1.
-	cv::Ptr<cv::FaceRecognizer> model = cv::createLBPHFaceRecognizer(radius, neighbors, grid_x, grid_y, confidence_threshold);
+	cv::Ptr<cv::face::LBPHFaceRecognizer> model = cv::face::createLBPHFaceRecognizer(radius, neighbors, grid_x, grid_y, confidence_threshold);
 #endif
 	model->train(images, labels);
 
@@ -487,7 +488,7 @@ void lbph_example()
 	}
 
 	{
-		model->set("threshold", 0.0);
+		model->setThreshold(0.0);
 
 		const int predictedLabel = model->predict(testSample);
 		std::cout << "Predicted class = " << predictedLabel << std::endl;
@@ -497,16 +498,16 @@ void lbph_example()
 	std::cout << "Model Information:" << std::endl;
 	const std::string model_info = cv::format(
 		"\tLBPH(radius=%i, neighbors=%i, grid_x=%i, grid_y=%i, threshold=%.2f)",
-		model->getInt("radius"),
-		model->getInt("neighbors"),
-		model->getInt("grid_x"),
-		model->getInt("grid_y"),
-		model->getDouble("threshold")
+		model->getRadius(),
+		model->getNeighbors(),
+		model->getGridX(),
+		model->getGridY(),
+		model->getThreshold()
 	);
 	std::cout << model_info << std::endl;
 
 	// We could get the histograms for example.
-	std::vector<cv::Mat> histograms = model->getMatVector("histograms");
+	std::vector<cv::Mat> histograms = model->getHistograms();
 	// But should I really visualize it? Probably the length is interesting.
 	std::cout << "Size of the histograms: " << histograms[0].total() << std::endl;
 }

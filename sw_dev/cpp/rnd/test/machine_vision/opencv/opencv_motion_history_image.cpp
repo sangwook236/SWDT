@@ -1,9 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv/cv.h>
-#include <opencv/cvaux.h>
-#include <opencv/cxmisc.h>
-#include <opencv/highgui.h>
+#include <opencv2/opencv.hpp>
 #include <map>
 #include <string>
 #include <iostream>

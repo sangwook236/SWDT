@@ -1,10 +1,10 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://hci.iwr.uni-heidelberg.de/vigra/
 		http://ukoethe.github.io/vigra/
 
 		https://github.com/ukoethe/vigra
 
-[-] Building (VC)
-	-. Linking with HDF
+[-] Building (VC).
+	- Linking with HDF.
 		Static library를 사용해야 함.

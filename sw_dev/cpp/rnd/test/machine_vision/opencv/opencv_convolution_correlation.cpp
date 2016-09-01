@@ -157,13 +157,13 @@ void convolution_correlation()
 		local::correlation(imgA, imgA_conv, matH_180, filterAnchor);  // by zero-padding
 
 		std::cout << "source image =>" << std::endl;
-		print_opencv_matrix(cv::Mat(imgA));
+		print_opencv_matrix(cv::cvarrToMat(imgA));
 		std::cout << "kernel =>" << std::endl;
 		print_opencv_matrix(&matH);
 		std::cout << "filtered image: correlation =>" << std::endl;
-		print_opencv_matrix(cv::Mat(imgA_corr));
+		print_opencv_matrix(cv::cvarrToMat(imgA_corr));
 		std::cout << "filtered image: convolution =>" << std::endl;
-		print_opencv_matrix(cv::Mat(imgA_conv));
+		print_opencv_matrix(cv::cvarrToMat(imgA_conv));
 	}
 	else if (iplDepth == IPL_DEPTH_32F)
 	{
@@ -188,13 +188,13 @@ void convolution_correlation()
 		local::correlation(imgA, imgA_conv, matH_180, filterAnchor);  // by zero-padding
 
 		std::cout << "source image =>" << std::endl;
-		print_opencv_matrix(cv::Mat(imgA));
+		print_opencv_matrix(cv::cvarrToMat(imgA));
 		std::cout << "kernel =>" << std::endl;
 		print_opencv_matrix(&matH);
 		std::cout << "filtered image: correlation =>" << std::endl;
-		print_opencv_matrix(cv::Mat(imgA_corr));
+		print_opencv_matrix(cv::cvarrToMat(imgA_corr));
 		std::cout << "filtered image: convolution =>" << std::endl;
-		print_opencv_matrix(cv::Mat(imgA_conv));
+		print_opencv_matrix(cv::cvarrToMat(imgA_conv));
 	}
 	else
 		assert(false);
@@ -220,7 +220,7 @@ void convolution_correlation()
 				p[i*3 + j] = (float)ii;
 		local::correlation(imgA1, imgA2, mask1);  // by zero-padding
 		local::correlation(imgA2, imgA3, mask2);  // by zero-padding
-		print_opencv_matrix(cv::Mat(imgA3));
+		print_opencv_matrix(cv::cvarrToMat(imgA3));
 
 		cvReleaseMat(&mask1);
 		cvReleaseMat(&mask2);
@@ -245,7 +245,7 @@ void convolution_correlation()
 				p[i*3 + j] = (double)ii;
 		local::correlation(imgA1, imgA2, mask1);  // by zero-padding
 		local::correlation(imgA2, imgA3, mask2);  // by zero-padding
-		print_opencv_matrix(cv::Mat(imgA3));
+		print_opencv_matrix(cv::cvarrToMat(imgA3));
 
 		cvReleaseMat(&mask1);
 		cvReleaseMat(&mask2);

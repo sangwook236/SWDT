@@ -1,9 +1,7 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/imgproc/imgproc_c.h>
-#include <opencv2/video/background_segm.hpp>
+#include <opencv2/bgsegm.hpp>
+#include <opencv2/opencv.hpp>
 #include <string>
 #include <iostream>
 
@@ -296,13 +294,13 @@ void background_segmentation_by_mog()
 	cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
 
 #if 1
-	cv::BackgroundSubtractorMOG bgSubtractor;
+	cv::Ptr<cv::bgsegm::BackgroundSubtractorMOG> bgSubtractor = cv::bgsegm::createBackgroundSubtractorMOG();
 #else
-	const int history = ;
-	const int numMixtures = ;
-	const double backgroundRatio = ;
-	const double noiseSigma = 10;
-	cv::BackgroundSubtractorMOG bgSubtractor(history, numMixtures, backgroundRatio, noiseSigma);
+	const int history = 200;
+	const int numMixtures = 5;
+	const double backgroundRatio = 0.7;
+	const double noiseSigma = 00;
+	cv::Ptr<cv::bgsegm::BackgroundSubtractorMOG> bgSubtractor = cv::bgsegm::createBackgroundSubtractorMOG(history, numMixtures, backgroundRatio, noiseSigma);
 #endif
 
     bool update_bg_model = true;
@@ -334,7 +332,7 @@ void background_segmentation_by_mog()
 		else frame = frame2;
 #endif
 
-        bgSubtractor(frame, fgMask, update_bg_model ? -1 : 0);
+        bgSubtractor->apply(frame, fgMask, update_bg_model ? -1 : 0);
 
         //cvSegmentFGMask(&(IplImage)fgMask);
 		refine_segments(frame, fgMask, segmented_img);

@@ -1,7 +1,7 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/core/core.hpp>
-#include <opencv2/gpu/gpu.hpp>
+//#include <opencv2/gpu/gpu.hpp>
 #include <iostream>
 
 
@@ -142,7 +142,7 @@ int opencv_main(int argc, char *argv[])
 	{
 		cv::theRNG();
 
-#if 1
+#if 0
 		if (cv::gpu::getCudaEnabledDeviceCount() > 0)
 		{
 			canUseGPU = true;

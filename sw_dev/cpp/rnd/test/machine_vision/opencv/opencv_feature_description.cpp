@@ -72,7 +72,7 @@ void sift(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &k
 		const int nfeatures = 0;
 		const int nOctaveLayers = 3;
 		const double contrastThreshold = 0.04;
-		const double edgeThreshold = 10,
+		const double edgeThreshold = 10;
 		const double sigma = 1.6;
 		cv::Ptr<cv::xfeatures2d::SIFT> extractor = cv::xfeatures2d::SIFT::create(nfeatures, nOctaveLayers, contrastThreshold, edgeThreshold, sigma);
 
@@ -218,8 +218,8 @@ void calonder(const std::string &classifierFilename, const cv::Mat &img1, const 
 	{
 		double t = (double)cv::getTickCount();
 
-		//cv::BruteForceMatcher<cv::L1<float> > descriptorMatcher;
-		cv::BruteForceMatcher<cv::L2<float> > descriptorMatcher;
+		//cv::BFMatcher descriptorMatcher(cv::NORM_L1, false);
+		cv::BFMatcher descriptorMatcher(cv::NORM_L2, false);
 		//cv::FlannBasedMatcher descriptorMatcher;
 
 		simpleMatching(descriptorMatcher, descriptors1, descriptors2, matches);
@@ -237,10 +237,10 @@ void brief(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &
 	{
 		double t = (double)cv::getTickCount();
 
-		cv::BriefDescriptorExtractor extractor(32);  // this is really 32 x 8 matches since they are binary matches packed into bytes
+		cv::Ptr<cv::xfeatures2d::BriefDescriptorExtractor> extractor = cv::xfeatures2d::BriefDescriptorExtractor::create(32, false,);  // this is really 32 x 8 matches since they are binary matches packed into bytes
 
-		extractor.compute(img1, keypoints1, descriptors1);
-		extractor.compute(img2, keypoints2, descriptors2);
+		extractor->compute(img1, keypoints1, descriptors1);
+		extractor->compute(img2, keypoints2, descriptors2);
 
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
 		std::cout << "\tdone computing descriptors... took " << t << " seconds" << std::endl;
@@ -251,8 +251,8 @@ void brief(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &
 	{
 		double t = (double)cv::getTickCount();
 
-		cv::BruteForceMatcher<cv::Hamming> descriptorMatcher;
-		//cv::BruteForceMatcher<cv::HammingLUT> descriptorMatcher;
+		cv::BFMatcher descriptorMatcher(cv::NORM_HAMMING);
+		//cv::BFMatcher descriptorMatcher(cv::NORM_HAMMING2);
 
 		simpleMatching(descriptorMatcher, descriptors1, descriptors2, matches);
 		//crossCheckMatching(descriptorMatcher, descriptors1, descriptors2, matches, 1);

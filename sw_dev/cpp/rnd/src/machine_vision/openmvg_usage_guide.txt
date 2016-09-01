@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		https://github.com/openMVG/openMVG/
 		https://github.com/openMVG/
 		http://imagine.enpc.fr/~moulonp/openMVG/
