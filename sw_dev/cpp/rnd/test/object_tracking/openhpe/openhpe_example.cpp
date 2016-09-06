@@ -385,7 +385,7 @@ void initialize_hand_data(DATA_FOR_TNC &d, const cv::Mat &mymask)
 		cv::findContours(_tmp, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
 		cv::vector<std::Point> approxCurve;
 		approxPolyDP(Mat(contours[0]), approxCurve, 3.0, true);
-		Mat(approxCurve).copyTo(d.contour);
+		cv::Mat(approxCurve).copyTo(d.contour);
 		
 		cv::Mat lap;
 		calc_laplacian(d.contour, lap);
