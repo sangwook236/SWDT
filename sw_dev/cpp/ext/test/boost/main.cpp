@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 			//type_traits();
 
 			//date_time();
-			//chrono();  // not yet implemented.
+			//chrono();  // Not yet implemented.
 			//progress_timer();  // deprecated.
 			//cpu_timer();
 		}
@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
 			//spirit_classic();
 			//statechart();
 			//thread();
-			//interprocess();  // not yet implemented.
+			//interprocess();  // Not yet implemented.
 		}
 
 		{
@@ -138,15 +138,15 @@ int main(int argc, char *argv[])
 			//math_bindings();
 			//numeric_bindings();
 
-			//multiprecision();  // not yet implemented.
+			//multiprecision();  // Not yet implemented.
 
 			//polygon();
 			//geometry();
 
 			graph();
-			//graph_parallel();  // not yet implemented.
+			//graph_parallel();  // Not yet implemented.
 
-			//ordinary_differential_equation();  // not yet implemented.
+			//ordinary_differential_equation();  // Not yet implemented.
 		}
 
 		{
