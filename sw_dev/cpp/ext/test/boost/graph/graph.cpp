@@ -412,7 +412,7 @@ void graph()
 		// boost::undirected_graph<> and boost::directed_graph<>.
 		// Access adjacent vertices, incoming and outgoing edges of a vertex.
 		// Access the degree, in- & out-degree of a vertex and the source and target of an edge.
-		//boost_graph::basic_operation();
+		boost_graph::basic_operation();
 
 		std::cout << "\nbundled properties -------------------------------------------" << std::endl;
 		// Bundled(user-defined) properties of vertex, edge, or graph.

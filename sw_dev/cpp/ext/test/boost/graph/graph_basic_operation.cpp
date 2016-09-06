@@ -61,10 +61,10 @@ struct exercise_vertex
 	{
 		typename boost::property_map<Graph, boost::vertex_index_t>::type vertex_ids = boost::get(boost::vertex_index, g_);
 
-		std::cout << "vertex: " << name_[boost::get(vertex_ids, v)] << std::endl;
+		std::cout << "Vertex: " << name_[boost::get(vertex_ids, v)] << std::endl;
 
 		// Write out the outgoing edges.
-		std::cout << "\tout-edges: ";
+		std::cout << "\tOut-edges: ";
 		typename boost::graph_traits<Graph>::out_edge_iterator out_i, out_end;
 		typename boost::graph_traits<Graph>::edge_descriptor e;
 		for (boost::tie(out_i, out_end) = boost::out_edges(v, g_); out_i != out_end; ++out_i)
@@ -76,7 +76,7 @@ struct exercise_vertex
 		std::cout << std::endl;
 
 		// Write out the incoming edges.
-		std::cout << "\tin-edges: ";
+		std::cout << "\tIn-edges: ";
 		typename boost::graph_traits<Graph>::in_edge_iterator in_i, in_end;
 		for (boost::tie(in_i, in_end) = boost::in_edges(v, g_); in_i != in_end; ++in_i)  // For boost::undirectedS and boost::bidirectionalS, but not boost::directedS.
 		{
@@ -87,7 +87,7 @@ struct exercise_vertex
 		std::cout << std::endl;
 
 		// Write out all adjacent vertices.
-		std::cout << "\tadjacent vertices: ";
+		std::cout << "\tAdjacent vertices: ";
 		typename boost::graph_traits<Graph>::adjacency_iterator ai, ai_end;
 		for (boost::tie(ai, ai_end) = boost::adjacent_vertices(v, g_); ai != ai_end; ++ai)
 			std::cout << name_[boost::get(vertex_ids, *ai)] <<  " ";
@@ -180,6 +180,7 @@ void boost_quick_tour()
 }
 
 // REF [site] >> http://www.ibm.com/developerworks/aix/library/au-aix-boost-graph/index.html
+// REF [site] >> Example 31.4 in http://www.theboostcpplibraries.com/boost.graph-vertices-and-edges
 void basic_operation()
 {
 	std::cout << "--------------------------------------------------------------" << std::endl;
@@ -192,7 +193,7 @@ void basic_operation()
 		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> directed_graph_type;
 		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS> bidirectional_graph_type;
 #else
-		// Use boost::setS as OutEdgeListS.
+		// boost::setS is used as the first template parameter (OutEdgeListS).
 		// Only one edge between two vertices can exist.
 		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::undirectedS> undirected_graph_type;
 		typedef boost::adjacency_list<boost::setS, boost::vecS, boost::directedS> directed_graph_type;
@@ -201,7 +202,7 @@ void basic_operation()
 
 		undirected_graph_type ungraph(3);
 		boost::add_edge(0, 1, ungraph);
-		boost::add_edge(1, 0, ungraph);
+		boost::add_edge(1, 0, ungraph);  // NOTICE [caution] >> Fail to add an edge.
 		boost::add_edge(0, 2, ungraph);
 
 		directed_graph_type digraph(3);
@@ -214,9 +215,9 @@ void basic_operation()
 		boost::add_edge(1, 0, bigraph);
 		boost::add_edge(0, 2, bigraph);
 
-		std::cout << "number of edges in the undirected graph = " << boost::num_edges(ungraph) << std::endl;
-		std::cout << "number of edges in the directed graph = " << boost::num_edges(digraph) << std::endl;
-		std::cout << "number of edges in the bidirectional graph = " << boost::num_edges(bigraph) << std::endl;
+		std::cout << "Number of edges in the undirected graph = " << boost::num_edges(ungraph) << std::endl;
+		std::cout << "Number of edges in the directed graph = " << boost::num_edges(digraph) << std::endl;
+		std::cout << "Number of edges in the bidirectional graph = " << boost::num_edges(bigraph) << std::endl;
 
 		std::pair<undirected_graph_type::edge_iterator, undirected_graph_type::edge_iterator> es1 = boost::edges(ungraph);
 		std::copy(es1.first, es1.second, std::ostream_iterator<undirected_graph_type::edge_descriptor>(std::cout, ", "));
@@ -270,7 +271,7 @@ void basic_operation()
 	{
 		// When using the directedS tag in BGL, you are allowed to use only the out_edges helper function and associated iterators.
 		// Using in_edges requires changing the graph type to bidirectionalS, although this is still more or less a directed graph.
-		//typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> graph_type;  // Compile-time error.
+		//typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS> graph_type;  // NOTICE [error] >> Compile-time error.
 		typedef boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS> graph_type;
 
 		graph_type g;
@@ -286,7 +287,7 @@ void basic_operation()
 		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
 		for (; vertexIt != vertexEnd; ++vertexIt)
 		{
-			std::cout << "in-edges for " << *vertexIt << ": ";
+			std::cout << "In-edges for " << *vertexIt << ": ";
 			boost::tie(inEdgeIt, inEdgeEnd) = boost::in_edges(*vertexIt, g);  // For boost::undirectedS and boost::bidirectionalS, but not boost::directedS.
 			for (; inEdgeIt != inEdgeEnd; ++inEdgeIt)
 				std::cout << *inEdgeIt << " ";
@@ -300,7 +301,7 @@ void basic_operation()
 		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
 		for (; vertexIt != vertexEnd; ++vertexIt)
 		{
-			std::cout << "out-edges for " << *vertexIt << ": ";
+			std::cout << "Out-edges for " << *vertexIt << ": ";
 			boost::tie(outEdgeIt, outEdgeEnd) = boost::out_edges(*vertexIt, g);  // Similar to incoming edges.
 			for (; outEdgeIt != outEdgeEnd; ++outEdgeIt)
 				std::cout << *outEdgeIt << " ";
@@ -321,21 +322,21 @@ void basic_operation()
 		boost::add_edge(3, 1, 1, g);
 		boost::add_edge(1, 3, 7, g);
 
-		std::cout << "number of edges: " << boost::num_edges(g) << std::endl;
-		std::cout << "number of vertices: " << boost::num_vertices(g) << std::endl;
+		std::cout << "Number of edges: " << boost::num_edges(g) << std::endl;
+		std::cout << "Number of vertices: " << boost::num_vertices(g) << std::endl;
 
 		graph_type::vertex_iterator vertexIt, vertexEnd;
 		boost::tie(vertexIt, vertexEnd) = boost::vertices(g);
 		for (; vertexIt != vertexEnd; ++vertexIt)
 		{
-			std::cout << "in-degree for " << *vertexIt << ": " << boost::in_degree(*vertexIt, g) << std::endl;  // For boost::undirectedS and boost::bidirectionalS, but not boost::directedS.
-			std::cout << "out-degree for " << *vertexIt << ": " << boost::out_degree(*vertexIt, g) << std::endl;
+			std::cout << "In-degree for " << *vertexIt << ": " << boost::in_degree(*vertexIt, g) << std::endl;  // For boost::undirectedS and boost::bidirectionalS, but not boost::directedS.
+			std::cout << "Out-degree for " << *vertexIt << ": " << boost::out_degree(*vertexIt, g) << std::endl;
 		}
 
 		graph_type::edge_iterator edgeIt, edgeEnd;
 		boost::tie(edgeIt, edgeEnd) = boost::edges(g);
 		for (; edgeIt != edgeEnd; ++edgeIt)
-			std::cout << "edge " << boost::source(*edgeIt, g) << "-->" << boost::target(*edgeIt, g) << std::endl;
+			std::cout << "Edge " << boost::source(*edgeIt, g) << "-->" << boost::target(*edgeIt, g) << std::endl;
 	}
 }
 
@@ -697,15 +698,15 @@ void graph_based_on_adjacency_matrix()
 		add_edge(E, D, g);
 		add_edge(F, A, g);
 
-		std::cout << "vertex set: ";
+		std::cout << "Vertex set: ";
 		boost::print_vertices(g, name);
 		std::cout << std::endl;
 
-		std::cout << "edge set: ";
+		std::cout << "Edge set: ";
 		boost::print_edges(g, name);
 		std::cout << std::endl;
 
-		std::cout << "out-edges: " << std::endl;
+		std::cout << "Out-edges: " << std::endl;
 		boost::print_graph(g, name);
 		std::cout << std::endl;
 	}
@@ -723,15 +724,15 @@ void graph_based_on_adjacency_matrix()
 		add_edge(D, E, ug);
 		add_edge(F, A, ug);
 
-		std::cout << "vertex set: ";
+		std::cout << "Vertex set: ";
 		boost::print_vertices(ug, name);
 		std::cout << std::endl;
 
-		std::cout << "edge set: ";
+		std::cout << "Edge set: ";
 		boost::print_edges(ug, name);
 		std::cout << std::endl;
 
-		std::cout << "incident edges: " << std::endl;
+		std::cout << "Incident edges: " << std::endl;
 		boost::print_graph(ug, name);
 		std::cout << std::endl;
 	}
@@ -753,7 +754,7 @@ void default_undirected_and_directed_graph()
 		boost::add_edge(u, v, g);
 		boost::add_edge(u, w, g);
 		boost::add_edge(u, x, g);
-		std::cout << "degree of u: " << boost::degree(u, g) << std::endl;
+		std::cout << "Degree of u: " << boost::degree(u, g) << std::endl;
 
 		//
 		boost::undirected_graph<>::vertex_iterator vertexIt, vertexEnd;  // Iterate over all the vertices of the graph.
