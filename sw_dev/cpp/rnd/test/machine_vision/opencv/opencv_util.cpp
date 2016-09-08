@@ -253,10 +253,8 @@ void make_contour(const cv::Mat &img, const cv::Rect &roi, const int segmentId, 
 	else
 	{
 #if defined(__GNUC__)
-        {
-            cv::Mat img_roi(img, roi);
-            cv::findContours(img_roi, contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
-        }
+        cv::Mat img_roi(img, roi);
+        cv::findContours(img_roi, contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
 #else
 		cv::findContours(img(roi), contours2, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
 		//cv::findContours(img : img(roi), contours2, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(roi.x, roi.y));
@@ -266,7 +264,7 @@ void make_contour(const cv::Mat &img, const cv::Rect &roi, const int segmentId, 
 	if (contours2.empty()) return;
 
 #if 1
-    // comment this out if you do not want approximation
+    // Comment this out if you do not want approximation.
 	for (std::vector<std::vector<cv::Point> >::iterator it = contours2.begin(); it != contours2.end(); ++it)
 	{
 		//if (it->empty()) continue;

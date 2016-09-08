@@ -143,6 +143,7 @@
 		<Unit filename="opencv/opencv_clustering.cpp" />
 		<Unit filename="opencv/opencv_color_correction.cpp" />
 		<Unit filename="opencv/opencv_color_filtering.cpp" />
+		<Unit filename="opencv/opencv_connected_component.cpp" />
 		<Unit filename="opencv/opencv_convex_hull.cpp" />
 		<Unit filename="opencv/opencv_convolution_correlation.cpp" />
 		<Unit filename="opencv/opencv_distance_measure.cpp" />
