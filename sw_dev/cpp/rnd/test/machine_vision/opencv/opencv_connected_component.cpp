@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #include <opencv2/opencv.hpp>
+#include <string>
 #include <cassert>
 
 
@@ -46,21 +47,26 @@ void connected_component()
 
 	{
 		// Prepare a test image.
+#if 1
 		cv::Mat gray(200, 200, CV_8UC1);
 		gray.setTo(cv::Scalar::all(0));
 
 		cv::line(gray, cv::Point(100, 50), cv::Point(100, 175), cv::Scalar::all(255), 1, cv::LINE_8);
 		cv::line(gray, cv::Point(100, 75), cv::Point(101, 75), cv::Scalar::all(255), 1, cv::LINE_8);
-		cv::line(gray, cv::Point(100, 100), cv::Point(102, 100), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(98, 100), cv::Point(100, 100), cv::Scalar::all(255), 1, cv::LINE_8);
 		cv::line(gray, cv::Point(100, 125), cv::Point(105, 125), cv::Scalar::all(255), 1, cv::LINE_8);
 		cv::line(gray, cv::Point(95, 150), cv::Point(105, 150), cv::Scalar::all(255), 1, cv::LINE_8);
+#else
+		const std::string img_filepath("D:/dataset/digital_phenotyping/rda_data/20160406_trimmed_plant/adaptor1/side_0.png.thinning_cca.png");
+		cv::Mat& gray = cv::imread(img_filepath, cv::IMREAD_GRAYSCALE);
+#endif
 
 		cv::imshow(windowName, gray);
 
 		// Connected component analysis (CCA).
 		std::vector<std::vector<cv::Point> > contours;
 		std::vector<cv::Vec4i> hierarchy;
-		cv::findContours(gray, contours, hierarchy, contourRetrievalModes[0], contourApproximationModes[0], cv::Point(0, 0));
+		cv::findContours(gray, contours, hierarchy, contourRetrievalModes[1], contourApproximationModes[0], cv::Point(0, 0));
 
 		// Output results.
 		{
@@ -117,6 +123,7 @@ void connected_component()
 
 	{
 		// Prepare a test image.
+#if 1
 		cv::Mat gray(200, 200, CV_8UC1);
 		//cv::Mat gray(200, 200, CV_32SC1);
 		gray.setTo(cv::Scalar::all(0));
@@ -125,6 +132,10 @@ void connected_component()
 		cv::circle(gray, cv::Point(60, 100), 30, cv::Scalar::all(0), cv::FILLED, cv::LINE_8);
 		cv::circle(gray, cv::Point(60, 100), 10, cv::Scalar::all(255), cv::FILLED, cv::LINE_8);
 		cv::circle(gray, cv::Point(140, 100), 30, cv::Scalar::all(0), cv::FILLED, cv::LINE_8);
+#else
+		const std::string img_filepath("D:/dataset/digital_phenotyping/rda_data/20160406_trimmed_plant/adaptor1/side_0.png.thinning_cca.png");
+		cv::Mat& gray = cv::imread(img_filepath, cv::IMREAD_GRAYSCALE);
+#endif
 
 		// NOTICE [info] >> Contours are borders of object areas (white pixels), but not of blackground (black pixels).
 		// Draw a line to check whether contours are contained in object areas or not
@@ -171,6 +182,21 @@ void connected_component()
 
 				// Display coutour points.
 				//local::outputContourPoints(contours);
+
+#if 0
+				// Trace contours.
+				for (auto contour : contours)
+					for (auto pt : contour)
+					{
+						cv::Mat rgb;
+						cv::cvtColor(gray, rgb, cv::COLOR_GRAY2BGR);
+						cv::circle(rgb, pt, 2, cv::Scalar(255, 0, 0), cv::FILLED, cv::LINE_AA);
+
+						cv::imshow(windowNameCCA + " - Contour Point", rgb);
+
+						cv::waitKey(10);
+					}
+#endif
 
 				//
 				cv::waitKey(0);
