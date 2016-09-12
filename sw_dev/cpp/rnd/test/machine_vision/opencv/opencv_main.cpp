@@ -77,7 +77,7 @@ void image_pyramid();
 void image_gradient();
 void edge_detection();
 void skeletonization_and_thinning();
-void connected_component();
+void contour();
 
 void outlier_removal();
 
@@ -196,7 +196,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::outlier_removal();
 
 		//my_opencv::skeletonization_and_thinning();
-		my_opencv::connected_component();
+		my_opencv::contour();
 
 		//my_opencv::hough_transform();
 		//my_opencv::template_matching();

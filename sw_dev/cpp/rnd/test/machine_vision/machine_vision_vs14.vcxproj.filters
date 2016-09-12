@@ -426,7 +426,7 @@
     <ClCompile Include="opencv\opencv_superpixel.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
-    <ClCompile Include="opencv\opencv_connected_component.cpp">
+    <ClCompile Include="opencv\opencv_contour.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
   </ItemGroup>
