@@ -34,8 +34,8 @@ void outputContourPoints(const std::vector<std::vector<cv::Point> >& contours)
 
 void simple_line_example()
 {
-	const std::string windowName("CCA - Original");
-	const std::string windowNameCCA("CCA - Result");
+	const std::string windowName("Contour - Original");
+	const std::string windowNameCCA("Contour - Result");
 
 	const cv::RetrievalModes contourRetrievalModes[] = { cv::RETR_EXTERNAL, cv::RETR_LIST, cv::RETR_CCOMP, cv::RETR_TREE, cv::RETR_FLOODFILL };
 	const cv::ContourApproximationModes contourApproximationModes[] = { cv::CHAIN_APPROX_NONE, cv::CHAIN_APPROX_SIMPLE, cv::CHAIN_APPROX_TC89_L1, cv::CHAIN_APPROX_TC89_KCOS };
@@ -65,7 +65,7 @@ void simple_line_example()
 
 	cv::imshow(windowName, gray);
 
-	// Connected component analysis (CCA).
+	// Find contours.
 	std::vector<std::vector<cv::Point> > contours;
 	std::vector<cv::Vec4i> hierarchy;
 	cv::findContours(gray, contours, hierarchy, contourRetrievalModes[1], contourApproximationModes[0], cv::Point(0, 0));
@@ -116,8 +116,8 @@ void simple_line_example()
 
 void line_example()
 {
-	const std::string windowName("CCA - Original");
-	const std::string windowNameCCA("CCA - Result");
+	const std::string windowName("Contour - Original");
+	const std::string windowNameCCA("Contour - Result");
 
 	const cv::RetrievalModes contourRetrievalModes[] = { cv::RETR_EXTERNAL, cv::RETR_LIST, cv::RETR_CCOMP, cv::RETR_TREE, cv::RETR_FLOODFILL };
 	const cv::ContourApproximationModes contourApproximationModes[] = { cv::CHAIN_APPROX_NONE, cv::CHAIN_APPROX_SIMPLE, cv::CHAIN_APPROX_TC89_L1, cv::CHAIN_APPROX_TC89_KCOS };
@@ -146,7 +146,7 @@ void line_example()
 
 	cv::imshow(windowName, gray);
 
-	// Connected component analysis (CCA).
+	// Find contours.
 	std::vector<std::vector<cv::Point> > contours;
 	std::vector<cv::Vec4i> hierarchy;
 	cv::findContours(gray, contours, hierarchy, contourRetrievalModes[1], contourApproximationModes[0], cv::Point(0, 0));
@@ -202,8 +202,8 @@ void line_example()
 
 void rectangle_example()
 {
-	const std::string windowName("CCA - Original");
-	const std::string windowNameCCA("CCA - Result");
+	const std::string windowName("Contour - Original");
+	const std::string windowNameCCA("Contour - Result");
 
 	const cv::RetrievalModes contourRetrievalModes[] = { cv::RETR_EXTERNAL, cv::RETR_LIST, cv::RETR_CCOMP, cv::RETR_TREE, cv::RETR_FLOODFILL };
 	const cv::ContourApproximationModes contourApproximationModes[] = { cv::CHAIN_APPROX_NONE, cv::CHAIN_APPROX_SIMPLE, cv::CHAIN_APPROX_TC89_L1, cv::CHAIN_APPROX_TC89_KCOS };
@@ -222,7 +222,7 @@ void rectangle_example()
 
 	cv::imshow(windowName, gray);
 
-	// Connected component analysis (CCA).
+	// Find contours.
 	std::vector<std::vector<cv::Point> > contours;
 	std::vector<cv::Vec4i> hierarchy;
 	cv::findContours(gray, contours, hierarchy, contourRetrievalModes[1], contourApproximationModes[0], cv::Point(0, 0));
@@ -273,8 +273,8 @@ void rectangle_example()
 
 void circle_example()
 {
-	const std::string windowName("CCA - Original");
-	const std::string windowNameCCA("CCA - Result");
+	const std::string windowName("Contour - Original");
+	const std::string windowNameCCA("Contour - Result");
 
 	const cv::RetrievalModes contourRetrievalModes[] = { cv::RETR_EXTERNAL, cv::RETR_LIST, cv::RETR_CCOMP, cv::RETR_TREE, cv::RETR_FLOODFILL };
 	const cv::ContourApproximationModes contourApproximationModes[] = { cv::CHAIN_APPROX_NONE, cv::CHAIN_APPROX_SIMPLE, cv::CHAIN_APPROX_TC89_L1, cv::CHAIN_APPROX_TC89_KCOS };
@@ -296,7 +296,7 @@ void circle_example()
 
 	cv::imshow(windowName, gray);
 
-	// Connected component analysis (CCA).
+	// Find contours.
 	for (auto contourRetrievalMode : contourRetrievalModes)
 	{
 		const cv::ContourApproximationModes& contourApproximationMode = contourApproximationModes[0];
