@@ -32,7 +32,7 @@ void outputContourPoints(const std::vector<std::vector<cv::Point> >& contours)
 	std::cout << std::endl;
 }
 
-void simple_line_example()
+void special_cases()
 {
 	const std::string windowName("Contour - Original");
 	const std::string windowNameCCA("Contour - Result");
@@ -45,23 +45,62 @@ void simple_line_example()
 	//	Pixels on the border might be removed.
 
 	// Prepare a test image.
-	cv::Mat gray(100, 100, CV_8UC1);
+	cv::Mat gray(150, 100, CV_8UC1);
 	gray.setTo(cv::Scalar::all(0));
 
-	// Important pixels: *(50, 30)*, (50, 31).
-	cv::line(gray, cv::Point(50, 28), cv::Point(50, 32), cv::Scalar::all(255), 1, cv::LINE_8);
-	cv::line(gray, cv::Point(50, 30), cv::Point(52, 30), cv::Scalar::all(255), 1, cv::LINE_8);
+	// T shape.
+	{
+		// Important pixels: *(30, 30)*, (30, 31).
+		cv::line(gray, cv::Point(30, 28), cv::Point(30, 32), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(30, 30), cv::Point(32, 30), cv::Scalar::all(255), 1, cv::LINE_8);
 
-	// Important pixels: (50, 49), (50, 50).
-	cv::line(gray, cv::Point(49, 47), cv::Point(49, 49), cv::Scalar::all(255), 1, cv::LINE_8);
-	cv::line(gray, cv::Point(49, 49), cv::Point(50, 50), cv::Scalar::all(255), 1, cv::LINE_8);
-	cv::line(gray, cv::Point(50, 50), cv::Point(52, 50), cv::Scalar::all(255), 1, cv::LINE_8);
-	cv::line(gray, cv::Point(49, 51), cv::Point(50, 50), cv::Scalar::all(255), 1, cv::LINE_8);
-	cv::line(gray, cv::Point(49, 51), cv::Point(49, 53), cv::Scalar::all(255), 1, cv::LINE_8);
+		// Important pixels: *(70, 30)*.
+		cv::line(gray, cv::Point(70, 28), cv::Point(70, 31), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(70, 30), cv::Point(71, 30), cv::Scalar::all(255), 1, cv::LINE_8);
 
-	// Important pixels: *(50, 70)*.
-	cv::line(gray, cv::Point(50, 65), cv::Point(50, 71), cv::Scalar::all(255), 1, cv::LINE_8);
-	cv::line(gray, cv::Point(49, 70), cv::Point(51, 70), cv::Scalar::all(255), 1, cv::LINE_8);
+		// Important pixels: (30, 49), (30, 50).
+		cv::line(gray, cv::Point(29, 47), cv::Point(29, 49), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(29, 49), cv::Point(30, 50), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(30, 50), cv::Point(32, 50), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(29, 51), cv::Point(30, 50), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(29, 51), cv::Point(29, 53), cv::Scalar::all(255), 1, cv::LINE_8);
+	}
+
+	// Cross.
+	{
+		// NOTICE [info] >> Two contours below are the same.
+
+		// Important pixels: *(30, 70)*.
+		cv::line(gray, cv::Point(30, 65), cv::Point(30, 71), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(29, 70), cv::Point(31, 70), cv::Scalar::all(255), 1, cv::LINE_8);
+
+		// Important pixels: *(70, 70)*.
+		cv::line(gray, cv::Point(70, 65), cv::Point(70, 69), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(70, 69), cv::Point(69, 70), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(69, 70), cv::Point(70, 71), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(70, 71), cv::Point(71, 70), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(71, 70), cv::Point(70, 69), cv::Scalar::all(255), 1, cv::LINE_8);
+	}
+
+	// Step.
+	{
+		cv::line(gray, cv::Point(30, 100), cv::Point(31, 100), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(31, 100), cv::Point(31, 101), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(31, 101), cv::Point(32, 101), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(32, 101), cv::Point(32, 102), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(32, 102), cv::Point(33, 102), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(33, 102), cv::Point(33, 103), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(33, 103), cv::Point(34, 103), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(34, 103), cv::Point(34, 104), cv::Scalar::all(255), 1, cv::LINE_8);
+	}
+
+	// Adjacent vertices.
+	{
+		// Important pixels: *(30, 120)*, *(30, 121)*.
+		cv::line(gray, cv::Point(30, 115), cv::Point(30, 125), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(30, 120), cv::Point(25, 120), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(30, 121), cv::Point(35, 121), cv::Scalar::all(255), 1, cv::LINE_8);
+	}
 
 	cv::imshow(windowName, gray);
 
@@ -362,7 +401,7 @@ namespace my_opencv {
 
 void contour()
 {
-	local::simple_line_example();
+	local::special_cases();
 	cv::waitKey(0);
 
 	//local::line_example();
