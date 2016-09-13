@@ -14,6 +14,7 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include <iterator>
 #include <string>
 #include <utility>
 
@@ -97,6 +98,26 @@ struct exercise_vertex
 private:
 	Graph &g_;
 	const char *name_;
+};
+
+template <typename Graph>
+struct EdgeComparator
+{
+public:
+	EdgeComparator(const size_t numVertices)
+	: numVertices_(numVertices)
+	{}
+
+	bool operator()(const typename Graph::edge_descriptor& lhs, const typename Graph::edge_descriptor& rhs) const
+	{
+		const size_t lsrc = lhs.m_source < lhs.m_target ? lhs.m_source : lhs.m_target, ldst = lhs.m_source < lhs.m_target ? lhs.m_target : lhs.m_source;
+		const size_t rsrc = rhs.m_source < rhs.m_target ? rhs.m_source : rhs.m_target, rdst = rhs.m_source < rhs.m_target ? rhs.m_target : rhs.m_source;
+		//return lsrc < rsrc || ldst < rdst;
+		return (lsrc * numVertices_ + ldst) < (rsrc * numVertices_ + rdst);
+	}
+
+private:
+	const size_t numVertices_;
 };
 
 // REF [file] >> ${BOOST_HOME}/libs/graph/example/quick_tour.cpp
@@ -337,6 +358,17 @@ void basic_operation()
 		boost::tie(edgeIt, edgeEnd) = boost::edges(g);
 		for (; edgeIt != edgeEnd; ++edgeIt)
 			std::cout << "Edge " << boost::source(*edgeIt, g) << "-->" << boost::target(*edgeIt, g) << std::endl;
+
+		// Sort edges.
+		//boost::graph_traits<graph_type>::edge_iterator ei, ei_end;
+		//boost::tie(ei, ei_end) = boost::edges(g);
+		std::pair<graph_type::edge_iterator, graph_type::edge_iterator> eis = boost::edges(g);
+		std::list<graph_type::edge_descriptor> edges(eis.first, eis.second);
+		edges.sort(EdgeComparator<graph_type>(boost::num_vertices(g)));
+
+		std::cout << "Sorted edges: ";
+		std::copy(edges.begin(), edges.end(), std::ostream_iterator<graph_type::edge_descriptor>(std::cout, ", "));
+		std::cout << std::endl;
 	}
 }
 
