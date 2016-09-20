@@ -54,19 +54,32 @@ void special_cases()
 		cv::line(gray, cv::Point(30, 28), cv::Point(30, 32), cv::Scalar::all(255), 1, cv::LINE_8);
 		cv::line(gray, cv::Point(30, 30), cv::Point(32, 30), cv::Scalar::all(255), 1, cv::LINE_8);
 
-		// Important pixels: *(70, 30)*.
-		cv::line(gray, cv::Point(70, 28), cv::Point(70, 31), cv::Scalar::all(255), 1, cv::LINE_8);
-		cv::line(gray, cv::Point(70, 30), cv::Point(71, 30), cv::Scalar::all(255), 1, cv::LINE_8);
+		// Important pixels: *(50, 30)*.
+		cv::line(gray, cv::Point(50, 28), cv::Point(50, 31), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(50, 30), cv::Point(51, 30), cv::Scalar::all(255), 1, cv::LINE_8);
 
-		// Important pixels: (30, 49), (30, 50).
-		cv::line(gray, cv::Point(29, 47), cv::Point(29, 49), cv::Scalar::all(255), 1, cv::LINE_8);
-		cv::line(gray, cv::Point(29, 49), cv::Point(30, 50), cv::Scalar::all(255), 1, cv::LINE_8);
-		cv::line(gray, cv::Point(30, 50), cv::Point(32, 50), cv::Scalar::all(255), 1, cv::LINE_8);
-		cv::line(gray, cv::Point(29, 51), cv::Point(30, 50), cv::Scalar::all(255), 1, cv::LINE_8);
-		cv::line(gray, cv::Point(29, 51), cv::Point(29, 53), cv::Scalar::all(255), 1, cv::LINE_8);
+		// Important pixels: (70, 29), (70, 30).
+		cv::line(gray, cv::Point(69, 27), cv::Point(69, 29), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(69, 29), cv::Point(70, 30), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(70, 30), cv::Point(72, 30), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(69, 31), cv::Point(70, 30), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(69, 31), cv::Point(69, 33), cv::Scalar::all(255), 1, cv::LINE_8);
 	}
 
-	// Cross.
+	// Y shape.
+	{
+		// Important pixels: (30, 50).
+		cv::line(gray, cv::Point(30, 50), cv::Point(28, 48), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(30, 50), cv::Point(32, 48), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(30, 50), cv::Point(30, 53), cv::Scalar::all(255), 1, cv::LINE_8);
+
+		// Important pixels: (50, 50).
+		cv::line(gray, cv::Point(50, 50), cv::Point(49, 49), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(50, 50), cv::Point(51, 49), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(50, 50), cv::Point(50, 53), cv::Scalar::all(255), 1, cv::LINE_8);
+	}
+
+	// Cross & diamond.
 	{
 		// NOTICE [info] >> Two contours below are the same.
 
@@ -74,12 +87,12 @@ void special_cases()
 		cv::line(gray, cv::Point(30, 65), cv::Point(30, 71), cv::Scalar::all(255), 1, cv::LINE_8);
 		cv::line(gray, cv::Point(29, 70), cv::Point(31, 70), cv::Scalar::all(255), 1, cv::LINE_8);
 
-		// Important pixels: *(70, 70)*.
-		cv::line(gray, cv::Point(70, 65), cv::Point(70, 69), cv::Scalar::all(255), 1, cv::LINE_8);
-		cv::line(gray, cv::Point(70, 69), cv::Point(69, 70), cv::Scalar::all(255), 1, cv::LINE_8);
-		cv::line(gray, cv::Point(69, 70), cv::Point(70, 71), cv::Scalar::all(255), 1, cv::LINE_8);
-		cv::line(gray, cv::Point(70, 71), cv::Point(71, 70), cv::Scalar::all(255), 1, cv::LINE_8);
-		cv::line(gray, cv::Point(71, 70), cv::Point(70, 69), cv::Scalar::all(255), 1, cv::LINE_8);
+		// Important pixels: *(50, 70)*.
+		cv::line(gray, cv::Point(50, 65), cv::Point(50, 69), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(50, 69), cv::Point(49, 70), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(49, 70), cv::Point(50, 71), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(50, 71), cv::Point(51, 70), cv::Scalar::all(255), 1, cv::LINE_8);
+		cv::line(gray, cv::Point(51, 70), cv::Point(50, 69), cv::Scalar::all(255), 1, cv::LINE_8);
 	}
 
 	// Step.
