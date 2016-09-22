@@ -1,13 +1,13 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.shogun-toolbox.org/
 		http://www.shogun-toolbox.org/page/documentation/information
 		https://github.com/shogun-toolbox/shogun
 		https://github.com/shogun-toolbox/
 		https://code.google.com/p/shogun-toolbox/
 
-[-] Building in Win32/Cygwin
-	-. build library
+[-] Build (Win32/Cygwin).
+	- Build library.
 		cd ${SHOGUN}/src
 		./configure --python=/usr/bin/python
 		./configure --destdir= --prefix=/usr/local --python=/usr/bin/python --interfaces=python_static,python_modular,cmdline_static
@@ -22,7 +22,7 @@
 		${SHOGUN}/src/shogun/libshogun.dll (symbolic link)
 		${SHOGUN}/src/interfaces/cmdline_static/shogun.exe
 
-	-. create import library from shared library
+	- Create import library from shared library.
 		cd ${SHOGUN}/src/shogun
 		echo EXPORTS > libshogun-13.0.dll.def
 		nm libshogun-13.0.dll | grep ' T _' | sed 's/.* T _//' >> libshogun-13.0.dll.def
@@ -30,8 +30,8 @@
 		strip libshogun-13.0.dll.lib (X)
 			strip을 수행하면 VC++에서 linking error 발생.
 
-[-] Building in Linux
-	-. build library
+[-] Build (Linux)
+	- Build library.
 		cd ${SHOGUN}/src
 		./configure --python=/usr/bin/python
 		./configure --destdir= --prefix=/usr/local --python=/usr/bin/python --interfaces=python_static,python_modular,cmdline_static --disable-readline

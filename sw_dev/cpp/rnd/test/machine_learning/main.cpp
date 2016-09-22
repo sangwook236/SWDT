@@ -23,13 +23,10 @@ int main(int argc, char *argv[])
 	int torch_main(int argc, char *argv[]);
 	int liblearning_main(int argc, char *argv[]);
 	int waffles_main(int argc, char *argv[]);
-
 	int caffe_main(int argc, char *argv[]);
-	int tiny_cnn_main(int argc, char *argv[]);
-
+	int tiny_dnn_main(int argc, char *argv[]);
 	int manifold_learning_main(int argc, char *argv[]);
 	int manifold_alignment_main(int argc, char *argv[]);
-
 	int libgp_main(int argc, char *argv[]);
 
 	int rl_glue_main(int argc, char *argv[]);
@@ -135,12 +132,12 @@ int main(int argc, char *argv[])
 		//	-. deep learning.
 		//retval = caffe_main(argc, argv);
 
-		std::cout << "\ntiny-cnn library ----------------------------------------------------" << std::endl;
+		std::cout << "\ntiny-dnn library ----------------------------------------------------" << std::endl;
 		//	-. deep learning.
 		//		convolutional neural network.
 		//		denoising auto-encoder.
 		//		dropout.
-		//retval = tiny_cnn_main(argc, argv);
+		retval = tiny_dnn_main(argc, argv);
 
 		std::cout << "\nManifold learning & alignment ---------------------------------------" << std::endl;
 		//retval = manifold_learning_main(argc, argv);  // not yet implemented.
@@ -153,7 +150,7 @@ int main(int argc, char *argv[])
 		//retval = rl_glue_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nRLlib library -------------------------------------------------------" << std::endl;
-		retval = rllib_main(argc, argv);
+		//retval = rllib_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

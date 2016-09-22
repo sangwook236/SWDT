@@ -193,6 +193,10 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="svm_light/svm_light_main.cpp" />
+		<Unit filename="tiny_dnn/tiny_dnn_basic_example.cpp" />
+		<Unit filename="tiny_dnn/tiny_dnn_cifar10_example.cpp" />
+		<Unit filename="tiny_dnn/tiny_dnn_main.cpp" />
+		<Unit filename="tiny_dnn/tiny_dnn_mnist_example.cpp" />
 		<Unit filename="torch/torch_deep_learning_example.cpp" />
 		<Unit filename="torch/torch_main.cpp" />
 		<Unit filename="waffles/waffles_main.cpp" />

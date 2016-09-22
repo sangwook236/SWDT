@@ -1,29 +1,28 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://uaf46365.ddns.uark.edu/waffles/
 		http://waffles.sourceforge.net/
 		http://waffles.sourceforge.net/apidoc/html/index.html
 
 		https://github.com/mikegashler/waffles
 
-[-] Build (VC)
-	-. Open Visual Studio solution
+[-] Build (VC).
+	- Open Visual Studio solution.
 		${WAFFLES_HOME}/src/waffles.sln
-	-. Configure
+	- Configure.
 		Change Runtime Library.
 			Multi-threaded (/MT) -> Multi-threaded DLL (/MD)
 			Multi-threaded Debug (/MTd) -> Multi-threaded Debug DLL (/MDd)
 
 [-] Build
-	-. Library
+	- Library.
 		cd src
 		make
 		make install
-	-. Demo
+	- Demo.
 		cd demos
 		make
 
-	-. Build waffles_generate
+	- Build waffles_generate.
 		cd ${WAFFLES_HOME}/src/depends/generate
 		make
-

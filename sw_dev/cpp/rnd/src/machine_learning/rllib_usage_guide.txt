@@ -1,15 +1,15 @@
-[-] General
-	- Site
+[-] General.
+	- Site.
 		https://github.com/HerveFrezza-Buet/RLlib
 
-[-] Usage
-	- Template library
+[-] Usage.
+	- Template library.
 		Only need header files to use.
-		
-	- GSL is required
 
-[-] Trouble Shooting (VC)
-	- ACTION_ITERATOR begin 과 관련된 오류 발생
+	- GSL is required.
+
+[-] Trouble Shooting (VC).
+	- ACTION_ITERATOR begin 과 관련된 오류 발생.
 		<error> 'rl::policy::Greedy<Q,ACTION_ITERATOR>::begin': is not a type name, static, or enumerator
 		<solution>
 			<before>

@@ -1,9 +1,9 @@
-[-] General
-	- Site
+[-] General.
+	- Site.
 		https://github.com/mblum/libgp
 
-[-] Trouble Shooting (VC)
-	- _ITERATOR_DEBUG_LEVEL 관련 오류 발생
+[-] Trouble Shooting (VC).
+	- _ITERATOR_DEBUG_LEVEL 관련 오류 발생.
 		<cause>
 			Debug build에서 runtime library가 release build용이 사용.
 		<solution>

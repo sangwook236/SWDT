@@ -1,3 +1,3 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.igi.tu-graz.ac.at/gerhard/ril-toolbox/
