@@ -11,11 +11,11 @@
 #pragma comment(lib, "pcl_surface_debug.lib")
 #pragma comment(lib, "pcl_features_debug.lib")
 #pragma comment(lib, "pcl_visualization_debug.lib")
+#pragma comment(lib, "pcl_sample_consensus_debug.lib")
 
-#pragma comment(lib, "vtkCommon.lib")
-#pragma comment(lib, "vtkFiltering.lib")
-#pragma comment(lib, "vtkGraphics.lib")
-#pragma comment(lib, "vtkRendering.lib")
+#pragma comment(lib, "vtkCommonCore-7.0.lib")
+#pragma comment(lib, "vtkCommonMath-7.0.lib")
+#pragma comment(lib, "vtkFiltersCore-7.0.lib")
 
 #pragma comment(lib, "flann.lib")
 
@@ -28,11 +28,16 @@
 #pragma comment(lib, "pcl_surface_release.lib")
 #pragma comment(lib, "pcl_features_release.lib")
 #pragma comment(lib, "pcl_visualization_release.lib")
+#pragma comment(lib, "pcl_sample_consensus_release.lib")
 
-#pragma comment(lib, "vtkCommon.lib")
-#pragma comment(lib, "vtkFiltering.lib")
-#pragma comment(lib, "vtkGraphics.lib")
-#pragma comment(lib, "vtkRendering.lib")
+#pragma comment(lib, "vtkCommonCore-7.0.lib")
+#pragma comment(lib, "vtkCommonMath-7.0.lib")
+#pragma comment(lib, "vtkCommonDataModel-7.0.lib")
+#pragma comment(lib, "vtkCommonExecutionModel-7.0.lib")
+#pragma comment(lib, "vtkRenderingCore-7.0.lib")
+#pragma comment(lib, "vtkRenderingLOD-7.0.lib")
+#pragma comment(lib, "vtkFiltersCore-7.0.lib")
+#pragma comment(lib, "vtkFiltersSources-7.0.lib")
 
 #pragma comment(lib, "flann.lib")
 

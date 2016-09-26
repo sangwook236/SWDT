@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.mrc-bsu.cam.ac.uk/bugs/
 		http://www.mrc-bsu.cam.ac.uk/bugs/winbugs/contents.shtml
 		http://www.rni.helsinki.fi/openbugs/OpenBUGS/Docu/WinBugs%20Manual.html

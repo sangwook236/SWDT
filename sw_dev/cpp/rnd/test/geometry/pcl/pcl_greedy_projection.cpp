@@ -5,8 +5,6 @@
 #include <pcl/features/normal_3d.h>
 #include <pcl/surface/gp3.h>
 #include <pcl/visualization/pcl_visualizer.h>
-#include <boost/smart_ptr.hpp>
-#include <boost/thread/thread.hpp>
 
 
 namespace {
@@ -17,6 +15,7 @@ namespace local {
 
 namespace my_pcl {
 
+// REF [site] >> http://pointclouds.org/documentation/tutorials/greedy_projection.php
 void greedy_projection()
 {
 #if 0

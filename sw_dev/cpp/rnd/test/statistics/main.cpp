@@ -27,21 +27,22 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)time(NULL));
 
 		std::cout << "RANSAC algorithm ----------------------------------------------------" << std::endl;
-		//	-. robust estimation.
-		//retval = ransac_main(argc, argv);
+		//	- Robust estimation.
+		//	REF [library] >> C++ templated RANSAC library in PCL.
+		retval = ransac_main(argc, argv);
 
-		std::cout << "J-Linkage algorithm ----------------------------------------------------" << std::endl;
-		//	-. robust multiple structures estimation.
-		retval = jlinkage_main(argc, argv);
+		std::cout << "\nJ-Linkage algorithm -------------------------------------------------" << std::endl;
+		//	- Robust multiple structures estimation.
+		//retval = jlinkage_main(argc, argv);
 
-		std::cout << "\nSequential Monte Carlo Template Class (SMCTC) library --------------" << std::endl;
-		//	-. sequential importance resampling (SIR) algorithm.
-		//	-. particle filter.
-		//	-. SMC sampler.
+		std::cout << "\nSequential Monte Carlo Template Class (SMCTC) library ---------------" << std::endl;
+		//	- Sequential importance resampling (SIR) algorithm.
+		//	- Particle filter.
+		//	- SMC sampler.
 		//retval = smctc_main(argc, argv);
 
 		std::cout << "\nMCMC++ library ------------------------------------------------------" << std::endl;
-		//	-. Markov Chain Monte Carlo (MCMC) analysis.
+		//	- Markov Chain Monte Carlo (MCMC) analysis.
 		//retval = mcmcpp_main(argc, argv);
 
 		std::cout << "\nScythe Statistical Library ------------------------------------------" << std::endl;
@@ -56,7 +57,7 @@ int main(int argc, char *argv[])
 		//retval = boom_main(argc, argv);  // not yet implemented.
 
 		std::cout << "\nMoVMF library -------------------------------------------------------" << std::endl;
-		//	-. directional statistics.
+		//	- Directional statistics.
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		//retval = movmf_main(argc, argv);
 #else

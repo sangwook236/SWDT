@@ -61,7 +61,7 @@ void train_cifar10(const std::string& data_dir_path, const double learning_rate,
 
 	std::cout << "Load models..." << std::endl;
 
-	// Load cifar dataset.
+	// Load CIFAR10 dataset.
 	std::vector<tiny_dnn::label_t> train_labels, test_labels;
 	std::vector<tiny_dnn::vec_t> train_images, test_images;
 
@@ -140,13 +140,25 @@ void recognize(const std::string& dictionary, const std::string& filename)
 	std::vector<std::pair<double, int> > scores;
 
 	// Sort & print top-3.
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 10; ++i)
 		scores.emplace_back(rescale<tiny_dnn::tan_h>(res[i]), i);
 
-	std::sort(scores.begin(), scores.end(), std::greater<std::pair<double, int>>());
+	std::sort(scores.begin(), scores.end(), std::greater<std::pair<double, int> >());
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 3; ++i)
 		std::cout << scores[i].second << "," << scores[i].first << std::endl;
+
+#if 0
+	// Visualize outputs of each layer.
+	for (size_t i = 0; i < nn.layer_size(); ++i)
+	{
+		auto out_img = nn[i]->output_to_image();
+		cv::imshow("Layer:" + std::to_string(i), image2mat(out_img));
+	}
+	// Visualize filter shape of first convolutional layer.
+	auto weight = nn.at<tiny_dnn::convolutional_layer<tiny_dnn::activation::identity> >(0).weight_to_image();
+	cv::imshow("Weights:", image2mat(weight));
+#endif
 }
 
 }  // namespace local
@@ -158,17 +170,33 @@ namespace my_tiny_dnn {
 void cifar10_train_example()
 {
 	// REF [site] >> http://www.cs.toronto.edu/~kriz/cifar.html
-	const std::string path_to_data("./data/machine_learning/cifar10");
+	const std::string path_to_dataset("./data/machine_learning/cifar10");
 	const double learning_rate = 0.01;
 
-	local::train_cifar10(path_to_data, learning_rate, std::cout);
+	local::train_cifar10(path_to_dataset, learning_rate, std::cout);
 }
 
 // REF [file] >> ${TINY_DNN_HOME}/examples/cifar10/test.cpp
 void cifar10_test_example()
 {
-	const std::string image_file("./data/machine_learning/cifar10/???.???");
-	local::recognize("./data/machine_learning/tiny_dnn/cifar-weights", image_file);
+	try
+	{
+		const std::string image_file("./data/machine_learning/cifar10/cat2.png");
+		//const std::string image_file("./data/machine_learning/cifar10/deer6.png");
+		//const std::string image_file("./data/machine_learning/cifar10/truck5.png");
+
+		local::recognize("./data/machine_learning/tiny_dnn/cifar-weights", image_file);
+	}
+	catch (const cv::Exception& e)
+	{
+		//std::cout << "OpenCV exception caught: " << e.what() << std::endl;
+		//std::cout << "OpenCV exception caught: " << cvErrorStr(e.code) << std::endl;
+		std::cout << "OpenCV exception caught:" << std::endl
+			<< "\tdescription: " << e.err << std::endl
+			<< "\tline:        " << e.line << std::endl
+			<< "\tfunction:    " << e.func << std::endl
+			<< "\tfile:        " << e.file << std::endl;
+	}
 }
 
 }  // namespace my_tiny_dnn

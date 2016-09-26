@@ -1,7 +1,8 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.diegm.uniud.it/fusiello/demo/jlk/
 		http://www.3dflow.net/it/tools/jlinkage/
+		http://www.3dflow.net/tools/jlinkage-multiple-models-fitting/
 
 		http://opensvr.googlecode.com/hg/JLinkageLib/
 		http://opensvr.googlecode.com/hg/

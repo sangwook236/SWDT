@@ -1,6 +1,7 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www2.warwick.ac.uk/fac/sci/statistics/staff/academic-research/johansen/smctc/
 		http://www.jstatsoft.org/v30/i06/
-	-. Reference
-        "SMCTC: Sequential Monte Carlo in C++"
+
+	- Reference.
+        "SMCTC: Sequential Monte Carlo in C++".

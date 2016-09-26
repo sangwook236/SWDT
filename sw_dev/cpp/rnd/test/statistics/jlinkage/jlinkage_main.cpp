@@ -36,65 +36,68 @@ inline void Read_Line(std::istream &in, std::vector<std::vector<float> *> &pts)
 	std::cout << "Read Line Done!" << std::endl;
 }
 
-// ${OPENSVR_HOME}/JLnkTest/main.cpp.
+// REF [file] >> ${OPENSVR_HOME}/JLnkTest/main.cpp.
 void vanishing_point_estimation_from_lines_example()
 {
 #if 0
 	const std::string input_filename("./data/statistics/jlinkage/vp_indoor_lines.in");
 	const std::string output_filename(input_filename + ".out");
-	const int ModelType = 2;  // model type 0 for plane, 1 for line, 2 for vanishing point.
+	const int ModelType = 2;  // Model type 0 for plane, 1 for line, 2 for vanishing point.
 #else
 	const std::string input_filename("./data/statistics/jlinkage/vp_outdoor_lines.in");
 	const std::string output_filename(input_filename + ".out");
-	const int ModelType = 2;  // model type 0 for plane, 1 for line, 2 for vanishing point.
+	const int ModelType = 2;  // Model type 0 for plane, 1 for line, 2 for vanishing point.
 #endif
-	const int NumberOfDesiredSamples = 5000;  // number of minimal sample sets (MSS).
+	const int NumberOfDesiredSamples = 5000;  // Number of minimal sample sets (MSS).
 	double *FirstSamplingVector = NULL;
 	const unsigned int NFSamplingType = NFST_NN_ME;
-	const double InlierThreshold = 2.0;  // inlier threshold.
+	const double InlierThreshold = 2.0;  // Inlier threshold.
 	const double SigmaExp = 0.2;
 
-    // read input.
+    // Read input.
 	std::vector<std::vector<float> *> pts;
 	{
-        // input file format : x1 y1 x2 y2 width.
+        // Input file format : x1 y1 x2 y2 width.
 		std::ifstream stream(input_filename.c_str());
 		if (!stream)
 		{
-            std::cerr << "input file not found : " << input_filename << std::endl;
+            std::cerr << "Input file not found : " << input_filename << std::endl;
             return;
 		}
 
 		Read_Line(stream, pts);
 	}
 
-    // run J-linkages.
-	std::vector<std::vector<float> *> *models = JlnkSample::run(&pts, NumberOfDesiredSamples, ModelType, FirstSamplingVector, NFSamplingType, SigmaExp);
-
+    // J-linkages.
+	std::vector<std::vector<float> *> *models = nullptr;
 	std::vector<unsigned int> labels;
 	std::vector<unsigned int> labelCount;
-	const unsigned int numClusters = JlnkCluster::run(labels, labelCount, &pts, models, InlierThreshold, ModelType);
-	std::cout << "num of clusters : " << numClusters << std::endl;
-
-    // write output.
 	{
-        // output file format : x1 y1 x2 y2 label.
+		// Sampling.
+		models = JlnkSample::run(&pts, NumberOfDesiredSamples, ModelType, FirstSamplingVector, NFSamplingType, SigmaExp);
+
+		// Clustering.
+		const unsigned int numClusters = JlnkCluster::run(labels, labelCount, &pts, models, InlierThreshold, ModelType);
+		std::cout << "Number of clusters : " << numClusters << std::endl;
+	}
+
+    // Write output.
+	{
+        // Output file format : x1 y1 x2 y2 label.
 		std::ofstream stream(output_filename.c_str());
 		if (!stream)
 		{
-            std::cerr << "output file not found : " << output_filename << std::endl;
+            std::cerr << "Output file not found : " << output_filename << std::endl;
             return;
 		}
 
 		const unsigned int len = (unsigned int)labels.size();
 		for (unsigned int i = 0; i < len; ++i)
-		{
 			stream << (*pts[i])[0] << ' ' << (*pts[i])[1] << ' ' << (*pts[i])[2] << ' ' << (*pts[i])[3] << ' ' << labels.at(i) << std::endl;
-		}
 		stream.close();
 	}
 
-    // clean up.
+    // Clean up.
 	for (unsigned int i = 0; i < pts.size(); ++i)
 		delete pts[i];
 

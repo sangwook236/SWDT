@@ -43,14 +43,14 @@ int tiny_dnn_main(int argc, char *argv[])
 		}
 
 		std::cout << "\tTrain MNIST -------------------------------------------------" << std::endl;
-		my_tiny_dnn::mnist_train_example();
+		//my_tiny_dnn::mnist_train_example();
 		std::cout << "\tTest MNIST --------------------------------------------------" << std::endl;
-		//my_tiny_dnn::mnist_test_example();
+		my_tiny_dnn::mnist_test_example();
 
 		std::cout << "\tTrain CIFAR10 -----------------------------------------------" << std::endl;
-		my_tiny_dnn::cifar10_train_example();
-		std::cout << "\tTest CIFAR10 -----------------------------------------------" << std::endl;
-		//my_tiny_dnn::cifar10_test_example();
+		//my_tiny_dnn::cifar10_train_example();
+		std::cout << "\tTest CIFAR10 ------------------------------------------------" << std::endl;
+		my_tiny_dnn::cifar10_test_example();
 	}
 	catch (const tiny_dnn::nn_error& e)
 	{

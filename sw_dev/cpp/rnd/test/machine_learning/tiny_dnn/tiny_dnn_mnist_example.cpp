@@ -35,7 +35,7 @@ void convert_image(const std::string& imagefilename, double minv, double maxv, i
 	cv::Mat_<uint8_t> resized;
 	cv::resize(img, resized, cv::Size(w, h));
 
-	// mnist dataset is "white on black", so negate required.
+	// MNIST dataset is "white on black", so negate required.
 	std::transform(resized.begin(), resized.end(), std::back_inserter(data), [=](uint8_t c) { return (255 - c) * (maxv - minv) / 255.0 + minv; });
 }
 
@@ -159,9 +159,9 @@ void recognize(const std::string& dictionary, const std::string& filename)
 	for (int i = 0; i < 10; ++i)
 		scores.emplace_back(rescale<tiny_dnn::activation::tan_h>(res[i]), i);
 
-	std::sort(scores.begin(), scores.end(), std::greater<std::pair<double, int>>());
+	std::sort(scores.begin(), scores.end(), std::greater<std::pair<double, int> >());
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 3; ++i)
 		std::cout << scores[i].second << "," << scores[i].first << std::endl;
 
 	// Visualize outputs of each layer.
@@ -186,9 +186,9 @@ namespace my_tiny_dnn {
 void mnist_train_example()
 {
 	// REF [site] >> http://yann.lecun.com/exdb/mnist/
-	const std::string path_to_data("./data/machine_learning/mnist");
+	const std::string path_to_dataset("./data/machine_learning/mnist");
 
-	local::train_lenet(path_to_data);
+	local::train_lenet(path_to_dataset);
 }
 
 // REF [file] >> ${TINY_DNN_HOME}/examples/mnist/test.cpp
@@ -196,7 +196,10 @@ void mnist_test_example()
 {
 	try
 	{
-		const std::string image_file("./data/machine_learning/mnist/???.???");
+		const std::string image_file("./data/machine_learning/mnist/five1.png");
+		//const std::string image_file("./data/machine_learning/mnist/zero1.png");
+		//const std::string image_file("./data/machine_learning/mnist/four1.png");
+		//const std::string image_file("./data/machine_learning/mnist/one1.png");
 
 		local::recognize("./data/machine_learning/tiny_dnn/LeNet-model", image_file);
 	}

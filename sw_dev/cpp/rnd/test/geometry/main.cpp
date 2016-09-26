@@ -20,9 +20,9 @@ int main(int argc, char *argv[])
 		std::cout << "Point Cloud Library (PCL) -------------------------------------------" << std::endl;
 		retval = pcl_main(argc, argv);
 
-		std::cout << "\n3DTK - The 3D Toolkit ------------------------------------------------" << std::endl;
+		std::cout << "\n3DTK - The 3D Toolkit -----------------------------------------------" << std::endl;
 		//	-. 3D point clouds.
-		//retval = threedtk_main(argc, argv);  // not yet implemented.
+		//retval = threedtk_main(argc, argv);  // Not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

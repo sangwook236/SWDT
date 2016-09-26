@@ -264,6 +264,7 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> meshesVis2(pcl::PointCloud<
 
 namespace my_pcl {
 
+// REF [site] >> http://pointclouds.org/documentation/tutorials/visualization.php
 void visualization(int argc, char **argv)
 {
 	// --------------------------------------

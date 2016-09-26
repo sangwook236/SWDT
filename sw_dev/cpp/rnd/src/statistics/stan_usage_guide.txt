@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		http://mc-stan.org/
 		https://github.com/stan-dev/
@@ -12,7 +12,7 @@
 		https://github.com/stan-dev/math
 		https://github.com/stan-dev/nomad
 
-[-] Build CmdStan (MinGW, GCC)
+[-] Build CmdStan (MinGW, GCC).
 	- Download Stan, Stan Math, & CmdStan.
 	- Change options.
 		In ${CmdStan_HOME}/makefile
@@ -28,7 +28,7 @@
 		mingw32-make -j4 build
 		mingw32-make clean
 
-[-] Build CmdStan (Cygwin, GCC)
+[-] Build CmdStan (Cygwin, GCC).
 	- Download Stan, Stan Math, & CmdStan.
 	- Set the paths of Stan & Stan Math.
 		In ${CmdStan_HOME}/makefile

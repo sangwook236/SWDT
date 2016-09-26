@@ -1,17 +1,17 @@
-[-] General
+[-] General.
 	- Site.
 		http://opende.sourceforge.net/
 		http://ode-wiki.org/
 		http://www.ode.org/
 
-[-] Building (VS2015)
+[-] Building (VS2015).
 	REF [file] >> ${ODE_HOME}/INSTALL.txt
 
 	- Build.
 		cd {ODE_HOME}/build
 		premake4.exe --with-tests --with-demos vs2010
 
-[-] Usage
+[-] Usage.
 	-. Define dDOUBLE or dSINGLE.
 		#define dDOUBLE
 		#define dSINGLE

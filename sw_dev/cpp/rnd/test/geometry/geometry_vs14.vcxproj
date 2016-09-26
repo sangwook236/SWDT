@@ -53,7 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pcl-1.5;$(MY_USR_LOCAL_INCLUDE)/eigen3;$(MY_USR_LOCAL_INCLUDE)/vtk-5.10;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pcl-1.8;$(MY_USR_LOCAL_INCLUDE)/eigen3;$(MY_USR_LOCAL_INCLUDE)/vtk-7.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -70,7 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pcl-1.5;$(MY_USR_LOCAL_INCLUDE)/eigen3;$(MY_USR_LOCAL_INCLUDE)/vtk-5.10;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pcl-1.8;$(MY_USR_LOCAL_INCLUDE)/eigen3;$(MY_USR_LOCAL_INCLUDE)/vtk-7.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -87,6 +87,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pcl\pcl_greedy_projection.cpp" />
     <ClCompile Include="pcl\pcl_main.cpp" />
+    <ClCompile Include="pcl\pcl_ransac.cpp" />
     <ClCompile Include="pcl\pcl_resampling.cpp" />
     <ClCompile Include="pcl\pcl_visualization.cpp" />
   </ItemGroup>

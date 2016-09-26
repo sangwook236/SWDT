@@ -12,43 +12,36 @@ namespace local {
 
 namespace my_pcl {
 
+// REF [site] >> http://www.pointclouds.org/documentation/tutorials/resampling.php
 void resampling()
 {
-	// load input file into a PointCloud<T> with an appropriate type.
+	// Load input file into a PointCloud<T> with an appropriate type.
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>());
-	// load bun0.pcd -- should be available with the PCL archive in test.
+	// Load bun0.pcd -- should be available with the PCL archive in test.
 	pcl::io::loadPCDFile("./data/geometry/pcl/bun0.pcd", *cloud);
 
-	// create a KD-Tree.
-	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
+	// Create a KD-Tree.
+	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
 
-	// output has the same type as the input one, it will be only smoothed.
-	pcl::PointCloud<pcl::PointXYZ> mls_points;
+	// Output has the PointNormal type in order to store the normals calculated by MLS.
+	pcl::PointCloud<pcl::PointNormal> mls_points;
 
-	// init object (second point type is for the normals, even if unused).
-	pcl::MovingLeastSquares<pcl::PointXYZ, pcl::Normal> mls;
+	// Init object (second point type is for the normals, even if unused).
+	pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointNormal> mls;
 
-	// optionally, a pointer to a cloud can be provided, to be set by MLS.
-	pcl::PointCloud<pcl::Normal>::Ptr mls_normals(new pcl::PointCloud<pcl::Normal>());
-	// FIXME [modify] >> pcl::MovingLeastSquares<>: has no member named setOutputNormals().
-	//mls.setOutputNormals(mls_normals);
+	mls.setComputeNormals(true);
 
-	// set parameters.
+	// Set parameters.
 	mls.setInputCloud(cloud);
 	mls.setPolynomialFit(true);
 	mls.setSearchMethod(tree);
 	mls.setSearchRadius(0.03);
 
-	// reconstruct.
-	// FIXME [modify] >> pcl::MovingLeastSquares<>: has no member named reconstruct().
-	//mls.reconstruct(mls_points);
+	// Reconstruct.
+	mls.process(mls_points);
 
-	// concatenate fields for saving.
-	pcl::PointCloud<pcl::PointNormal> mls_cloud;
-	pcl::concatenateFields(mls_points, *mls_normals, mls_cloud);
-
-	// save output.
-	pcl::io::savePCDFile("./data/geometry/pcl/bun0-mls.pcd", mls_cloud);
+	// Save output.
+	pcl::io::savePCDFile("./data/geometry/pcl/bun0_mls.pcd", mls_points);
 }
 
 }  // namespace my_pcl
