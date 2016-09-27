@@ -77,7 +77,7 @@ void vanishing_point_estimation_from_lines_example()
 		models = JlnkSample::run(&pts, NumberOfDesiredSamples, ModelType, FirstSamplingVector, NFSamplingType, SigmaExp);
 
 		// Clustering.
-		const unsigned int numClusters = JlnkCluster::run(labels, labelCount, &pts, models, InlierThreshold, ModelType);
+		const unsigned int numClusters = JlnkCluster::run(labels, labelCount, &pts, models, (float)InlierThreshold, ModelType);
 		std::cout << "Number of clusters : " << numClusters << std::endl;
 	}
 

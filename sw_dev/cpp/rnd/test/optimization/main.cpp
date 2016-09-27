@@ -32,18 +32,18 @@ int main(int argc, char *argv[])
 		//retval = glpk_main(argc, argv);
 
         std::cout << "\nCeres Solver --------------------------------------------------------" << std::endl;
-        //  -. Non-linear least squares.
-        //  -. General unconstrained minimization.
+        //  - Non-linear least squares.
+        //  - General unconstrained minimization.
         //      Curve fitting.
         //      Robust curve fitting.
         //      Bundle adjustment.
-		retval = ceres_solver_main(argc, argv);
+		//retval = ceres_solver_main(argc, argv);
 
 		std::cout << "\nLevenberg-Marquardt (LM) algorithm ----------------------------------" << std::endl;
 		//retval = levmar_main(argc, argv);
 
         std::cout << "\nNLopt library -------------------------------------------------------" << std::endl;
-		//retval = nlopt_main(argc, argv);
+		retval = nlopt_main(argc, argv);
 
         std::cout << "\nOPT++ library -------------------------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)

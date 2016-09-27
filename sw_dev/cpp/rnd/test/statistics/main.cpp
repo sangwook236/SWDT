@@ -11,6 +11,7 @@
 int main(int argc, char *argv[])
 {
 	int ransac_main(int argc, char *argv[]);
+	int gransac_main(int argc, char *argv[]);
 	int jlinkage_main(int argc, char *argv[]);
 
 	int smctc_main(int argc, char *argv[]);
@@ -28,8 +29,16 @@ int main(int argc, char *argv[])
 
 		std::cout << "RANSAC algorithm ----------------------------------------------------" << std::endl;
 		//	- Robust estimation.
-		//	REF [library] >> C++ templated RANSAC library in PCL.
+		//		RANSAC, MLESAC, PROSAC.
 		retval = ransac_main(argc, argv);
+
+		std::cout << "\nGRANSAC library -----------------------------------------------------" << std::endl;
+		//	- Robust estimation.
+		//		RANSAC.
+		//retval = gransac_main(argc, argv);
+
+		std::cout << "\nC++ templated RANSAC library in PCL ---------------------------------" << std::endl;
+		// REF [library] >> C++ templated RANSAC library in PCL.
 
 		std::cout << "\nJ-Linkage algorithm -------------------------------------------------" << std::endl;
 		//	- Robust multiple structures estimation.

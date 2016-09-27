@@ -48,6 +48,11 @@
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="boom/boom_main.cpp" />
+		<Unit filename="gransac/gransac_curve_estimation.cpp" />
+		<Unit filename="gransac/gransac_main.cpp" />
+		<Unit filename="gransac/gransac_line_estimation.cpp" />
+		<Unit filename="gransac_lib/AbstractModel.hpp" />
+		<Unit filename="gransac_lib/GRANSAC.hpp" />
 		<Unit filename="jlinkage/jlinkage_main.cpp" />
 		<Unit filename="jlinkage_lib/JLinkage.cpp" />
 		<Unit filename="jlinkage_lib/JLinkage.h" />
@@ -125,6 +130,8 @@
 		<Unit filename="movmf_lib/newbessel.cc" />
 		<Unit filename="movmf_lib/newbessel.h" />
 		<Unit filename="movmf_lib/timerUtil.h" />
+		<Unit filename="ransac/Ransac.cpp" />
+		<Unit filename="ransac/Ransac.h" />
 		<Unit filename="ransac/ransac_main.cpp" />
 		<Unit filename="ransac/ransac_plane_estimation.cpp" />
 		<Unit filename="scythe/scythe_main.cpp" />

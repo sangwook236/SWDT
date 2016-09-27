@@ -12,12 +12,16 @@
 #pragma comment(lib, "libCoinUtils_d.lib")
 #pragma comment(lib, "levmar_d.lib")
 #pragma comment(lib, "ceres-debug.lib")
-#pragma comment(lib, "glog_d.lib")
-#pragma comment(lib, "gflags_d.lib")
+#pragma comment(lib, "glogd.lib")
+#pragma comment(lib, "gflagsd.lib")
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "ga_d.lib")
 #pragma comment(lib, "glpk_4_57.lib")
 #pragma comment(lib, "nlopt.lib")
+#pragma comment(lib, "libboost_chrono-vc140-mt-gd-1_61.lib")
+#pragma comment(lib, "libboost_system-vc140-mt-gd-1_61.lib")
+//#pragma comment(lib, "gsld.lib")
+//#pragma comment(lib, "cblasd.lib")
 
 #		else
 
@@ -35,6 +39,10 @@
 #pragma comment(lib, "ga.lib")
 #pragma comment(lib, "glpk_4_57.lib")
 #pragma comment(lib, "nlopt.lib")
+#pragma comment(lib, "libboost_chrono-vc140-mt-1_61.lib")
+#pragma comment(lib, "libboost_system-vc140-mt-1_61.lib")
+//#pragma comment(lib, "gsl.lib")
+//#pragma comment(lib, "cblas.lib")
 
 #		endif
 

@@ -19,10 +19,10 @@ void plane3_estimation();
 
 int ransac_main(int argc, char *argv[])
 {
-	my_ransac::line2_estimation();
+	//my_ransac::line2_estimation();
 	my_ransac::circle2_estimation();
 	my_ransac::quadratic2_estimation();
-	my_ransac::plane3_estimation();
+	//my_ransac::plane3_estimation();
 
 	return 0;
 }

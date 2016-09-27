@@ -64,6 +64,12 @@
     <Filter Include="Source Files\scythestat_lib\scythestat\rng">
       <UniqueIdentifier>{a42d5f33-3f70-4aa8-9222-a8546206effa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\gransac_lib">
+      <UniqueIdentifier>{6021c62e-7791-4406-ad69-4e2fabe890c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gransac">
+      <UniqueIdentifier>{35fe5d80-8f60-4002-a8f9-e6b6dafbb88b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="movmf_lib\DenseMatrixDouble.h">
@@ -273,6 +279,15 @@
     <ClInclude Include="jlinkage_lib\RandomSampler.h">
       <Filter>Source Files\jlinkage_lib</Filter>
     </ClInclude>
+    <ClInclude Include="gransac_lib\AbstractModel.hpp">
+      <Filter>Source Files\gransac_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="gransac_lib\GRANSAC.hpp">
+      <Filter>Source Files\gransac_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ransac\Ransac.h">
+      <Filter>Source Files\ransac</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -406,6 +421,24 @@
     </ClCompile>
     <ClCompile Include="mcmcpp_lib\util.cpp">
       <Filter>Source Files\mcmcpp_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="gransac\gransac_main.cpp">
+      <Filter>Source Files\gransac</Filter>
+    </ClCompile>
+    <ClCompile Include="ransac\Ransac.cpp">
+      <Filter>Source Files\ransac</Filter>
+    </ClCompile>
+    <ClCompile Include="gransac\gransac_line_estimation.cpp">
+      <Filter>Source Files\gransac</Filter>
+    </ClCompile>
+    <ClCompile Include="ransac\ransac_curve_estimation.cpp">
+      <Filter>Source Files\ransac</Filter>
+    </ClCompile>
+    <ClCompile Include="ransac\ransac_line_estimation.cpp">
+      <Filter>Source Files\ransac</Filter>
+    </ClCompile>
+    <ClCompile Include="gransac\gransac_curve_estimation.cpp">
+      <Filter>Source Files\gransac</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

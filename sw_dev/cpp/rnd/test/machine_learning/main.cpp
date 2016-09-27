@@ -38,30 +38,30 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)time(NULL));
 
 		std::cout << "clustering algorithm ------------------------------------------------" << std::endl;
-		//	-. k-means & k-means++ algorithms.
-		//	-. spectral clustering.
+		//	- k-means & k-means++ algorithms.
+		//	- Spectral clustering.
 		//retval = clustering_main(argc, argv);
 
 		std::cout << "\nlibsvm library ------------------------------------------------------" << std::endl;
 		//retval = libsvm_main(argc, argv);
 
 		std::cout << "\nmysvm library -------------------------------------------------------" << std::endl;
-		//retval = mysvm_main(argc, argv);  // not yet implemented.
+		//retval = mysvm_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nSVM-Light library ---------------------------------------------------" << std::endl;
-		//	-. SVM struct: structured SVM.
-		//	-. SVM multiclass: multi-class SVM.
-		//	-. SVM hmm: structured SVMs for sequence tagging.
-		//	-. SVM alignment: structured SVMs for sequence alignment.
-		//	-. latent SVM struct: latent structured SVM.
-		//retval = svm_light_main(argc, argv);  // not yet implemented.
+		//	- SVM struct: structured SVM.
+		//	- SVM multiclass: multi-class SVM.
+		//	- SVM hmm: structured SVMs for sequence tagging.
+		//	- SVM alignment: structured SVMs for sequence alignment.
+		//	- Latent SVM struct: latent structured SVM.
+		//retval = svm_light_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nmultiboost library --------------------------------------------------" << std::endl;
-		//retval = multiboost_main(argc, argv);  // not yet implemented.
+		//retval = multiboost_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nshogun library ------------------------------------------------------" << std::endl;
-		//	-. multiple kernel learning (MKL).
-		//	-. Gaussian process (GP) regression.
+		//	- Multiple kernel learning (MKL).
+		//	- Gaussian process (GP) regression.
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		//retval = shogun_main(argc, argv);
 #else
@@ -69,85 +69,85 @@ int main(int argc, char *argv[])
 #endif
 
 		std::cout << "\nEncog Machine Learning Framework ------------------------------------" << std::endl;
-		//	-. Java, .NET and C/C++.
-		//	-. neural network.
+		//	- Java, .NET and C/C++.
+		//	- Meural network (NN).
 		//		ADALINE neural network.
-		//		adaptive resonance theory 1 (ART1).
-		//		bidirectional associative memory (BAM).
+		//		Adaptive resonance theory 1 (ART1).
+		//		Bidirectional associative memory (BAM).
 		//		Boltzmann machine.
-		//		feedforward neural network.
-		//		recurrent neural network.
+		//		Feedforward neural network.
+		//		Recurrent neural network.
 		//		Hopfield neural network.
-		//		radial basis function network (RBFN).
-		//		neuroevolution of augmenting topologies (NEAT).
-		//		(recurrent) self organizing map (SOM).
-		//retval = encog_main(argc, argv);  // not yet implemented.
+		//		Radial basis function network (RBFN).
+		//		Nuroevolution of augmenting topologies (NEAT).
+		//		(Recurrent) self organizing map (SOM).
+		//retval = encog_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\ntorch library -------------------------------------------------------" << std::endl;
-		//  -. tensor.
-		//	-. deep learning.
+		//  - Tensor.
+		//	- Deep learning.
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-		//retval = torch_main(argc, argv);  // not yet implemented.
+		//retval = torch_main(argc, argv);  // Not yet implemented.
 #else
         std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 
 		std::cout << "\ndlib-ml library -----------------------------------------------------" << std::endl;
-		//	-. support vector machines (SVM).
-		//	-. relevance vector machines (RVM).
-		//	-. structured prediction.
-		//	-. multi-layer perceptrons (MLP).
-		//	-. radial basis function network (RBFN).
-		//	-. clustering.
-		//	-. unsupervised learning.
-		//		canonical correlation analysis (CCA).
-		//	-. semi-supervised learning.
-		//	-. feature selection.
-		//	-. optimization.
-		//	-. graphical model.
+		//	- Support vector machines (SVM).
+		//	- Relevance vector machines (RVM).
+		//	- Structured prediction.
+		//	- Multi-layer perceptrons (MLP).
+		//	- Radial basis function network (RBFN).
+		//	- Clustering.
+		//	- Unsupervised learning.
+		//		Canonical correlation analysis (CCA).
+		//	- Semi-supervised learning.
+		//	- Feature selection.
+		//	- Optimization.
+		//	- Graphical model.
 		//		Bayesian network.
-		//		inference algorithms.
-		//	-. image processing.
-		//	-. reinforcement learning (RL).
-		//		least-squares policy iteration (LSPI).
+		//		Inference algorithms.
+		//	- Image processing.
+		//	- Reinforcement learning (RL).
+		//		Least-squares policy iteration (LSPI).
 		// REF [library] >> ${GDT_HOME}/sw_dev/cpp/ext/src/general_purpose_library/dlib.
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
-		//	-. deep learning.
+		//	- Deep learning.
 		//retval = liblearning_main(argc, argv);
 
 		std::cout << "\nWaffles library -----------------------------------------------------" << std::endl;
-		//	-. generation of various types of data.
-		//	-. supervised and semi-supervised learning algorithms.
-		//	-. transforming datasets.
-		//	-. predicting missing values in incomplete data, or testing collaborative filtering recommendation systems.
-		//	-. learning from and operating on sparse data.
-		//	-. plotting and visualizing datasets.
-		//	-. audio processing.
-		//	-. clustering.
-		//	-. dimensionality reduction, manifold learning, attribute selection, and tools related to NLDR.
+		//	- Generation of various types of data.
+		//	- Supervised and semi-supervised learning algorithms.
+		//	- Transforming datasets.
+		//	- Predicting missing values in incomplete data, or testing collaborative filtering recommendation systems.
+		//	- Learning from and operating on sparse data.
+		//	- Plotting and visualizing datasets.
+		//	- Audio processing.
+		//	- Clustering.
+		//	- Dimensionality reduction, manifold learning, attribute selection, and tools related to NLDR.
 		//retval = waffles_main(argc, argv);
 
 		std::cout << "\nCaffe framework -----------------------------------------------------" << std::endl;
-		//	-. deep learning.
+		//	- Deep learning.
 		//retval = caffe_main(argc, argv);
 
 		std::cout << "\ntiny-dnn library ----------------------------------------------------" << std::endl;
-		//	-. deep learning.
-		//		convolutional neural network.
-		//		denoising auto-encoder.
-		//		dropout.
+		//	- Deep learning.
+		//		Convolutional neural network.
+		//		Denoising auto-encoder.
+		//		Dropout.
 		retval = tiny_dnn_main(argc, argv);
 
 		std::cout << "\nManifold learning & alignment ---------------------------------------" << std::endl;
-		//retval = manifold_learning_main(argc, argv);  // not yet implemented.
+		//retval = manifold_learning_main(argc, argv);  // Not yet implemented.
 		//retval = manifold_alignment_main(argc, argv);
 
 		std::cout << "\nlibgp library ------------------------------------------------------" << std::endl;
 		//retval = libgp_main(argc, argv);
 
 		std::cout << "\nRL-Glue (Reinforcement Learning Glue) library -----------------------" << std::endl;
-		//retval = rl_glue_main(argc, argv);  // not yet implemented.
+		//retval = rl_glue_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nRLlib library -------------------------------------------------------" << std::endl;
 		//retval = rllib_main(argc, argv);

@@ -4,9 +4,9 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "gslwrap_d.lib")
-#pragma comment(lib, "gsl_d.lib")
-#pragma comment(lib, "cblas_d.lib")
+#pragma comment(lib, "gslwrapd.lib")
+#pragma comment(lib, "gsld.lib")
+#pragma comment(lib, "cblasd.lib")
 
 #		else
 

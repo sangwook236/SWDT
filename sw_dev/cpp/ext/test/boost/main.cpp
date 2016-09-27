@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 
 			//date_time();
 			//chrono();  // Not yet implemented.
-			//progress_timer();  // deprecated.
+			//progress_timer();  // Deprecated.
 			//cpu_timer();
 		}
 
@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
 			//polygon();
 			//geometry();
 
-			graph();
+			//graph();
 			//graph_parallel();  // Not yet implemented.
 
 			//ordinary_differential_equation();  // Not yet implemented.

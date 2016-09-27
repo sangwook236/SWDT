@@ -4,12 +4,20 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "opencv_imgproc310d.lib")
+#pragma comment(lib, "opencv_highgui310d.lib")
+#pragma comment(lib, "opencv_core310d.lib")
+
 //#pragma comment(lib, "MCMC++_d.lib")
 #pragma comment(lib, "smctcd.lib")
-#pragma comment(lib, "gsl_d.lib")
-#pragma comment(lib, "cblas_d.lib")
+#pragma comment(lib, "gsld.lib")
+#pragma comment(lib, "cblasd.lib")
 
 #		else
+
+#pragma comment(lib, "opencv_imgproc310.lib")
+#pragma comment(lib, "opencv_highgui310.lib")
+#pragma comment(lib, "opencv_core310.lib")
 
 //#pragma comment(lib, "MCMC++.lib")
 #pragma comment(lib, "smctc.lib")
