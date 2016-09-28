@@ -4,9 +4,10 @@
 #include <algorithm>
 #include <map>
 #include <list>
-#include <vector>
 #include <limits>
 #include <cmath>
+#include <random>
+
 
 #if defined(max)
 #undef max
@@ -48,11 +49,8 @@ public:
 	typedef Ransac base_type;
 
 public:
-	Plane3RansacEstimator(const std::vector<Point3> &samples, const size_t minimalSampleSetSize)
-	: base_type(samples.size(), minimalSampleSetSize), samples_(samples)
-	{}
-	Plane3RansacEstimator(const std::vector<Point3> &samples, const size_t minimalSampleSetSize, const std::vector<double> &scores)
-	: base_type(samples.size(), minimalSampleSetSize, scores), samples_(samples)
+	Plane3RansacEstimator(const std::vector<Point3> &samples, const size_t minimalSampleSize, const size_t usedSampleSize = 0, const std::shared_ptr<std::vector<double>> &scores = nullptr)
+	: base_type(samples.size(), minimalSampleSize, usedSampleSize, scores), samples_(samples)
 	{}
 
 public:
@@ -62,15 +60,15 @@ public:
 	double getD() const  {  return d_;  }
 
 private:
-	/*virtual*/ bool estimateModel(const std::vector<size_t> &indices);
-	/*virtual*/ bool verifyModel() const;
-	/*virtual*/ bool estimateModelFromInliers();
+	/*virtual*/ bool estimateModel(const std::vector<size_t> &indices) override;
+	/*virtual*/ bool verifyModel() const override;
+	/*virtual*/ bool estimateModelFromInliers() override;
 
 	// For RANSAC.
-	/*virtual*/ size_t lookForInliers(std::vector<bool> &inliers, const double threshold) const;
+	/*virtual*/ size_t lookForInliers(std::vector<bool> &inlierFlags, const double threshold) const override;
 	// For MLESAC.
-	/*virtual*/ void computeInlierProbabilities(std::vector<double> &inlierProbs, const double inlierSquaredStandardDeviation) const;
-	/*virtual*/ size_t lookForInliers(std::vector<bool> &inliers, const std::vector<double> &inlierProbs, const double outlierUniformProbability) const;
+	/*virtual*/ void computeInlierProbabilities(std::vector<double> &inlierProbs, const double inlierSquaredStandardDeviation) const override;
+	/*virtual*/ size_t lookForInliers(std::vector<bool> &inlierFlags, const std::vector<double> &inlierProbs, const double inlierThresholdProbability) const override;
 
 	bool calculateNormal(const double vx1, const double vy1, const double vz1, const double vx2, const double vy2, const double vz2, double &nx, double &ny, double &nz) const
 	{
@@ -97,7 +95,7 @@ private:
 
 bool Plane3RansacEstimator::estimateModel(const std::vector<size_t> &indices)
 {
-	if (indices.size() < minimalSampleSetSize_) return false;
+	if (indices.size() < minimalSampleSize_) return false;
 
 	const Point3 &pt1 = samples_[indices[0]];
 	const Point3 &pt2 = samples_[indices[1]];
@@ -113,6 +111,7 @@ bool Plane3RansacEstimator::estimateModel(const std::vector<size_t> &indices)
 
 bool Plane3RansacEstimator::verifyModel() const
 {
+	// TODO [improve] >> Check the validity of the estimated model.
 	return true;
 }
 
@@ -122,7 +121,7 @@ bool Plane3RansacEstimator::estimateModelFromInliers()
 	return true;
 }
 
-size_t Plane3RansacEstimator::lookForInliers(std::vector<bool> &inliers, const double threshold) const
+size_t Plane3RansacEstimator::lookForInliers(std::vector<bool> &inlierFlags, const double threshold) const
 {
 	const double denom = std::sqrt(a_*a_ + b_*b_ + c_*c_);
 	size_t inlierCount = 0;
@@ -132,11 +131,12 @@ size_t Plane3RansacEstimator::lookForInliers(std::vector<bool> &inliers, const d
 		// Compute distance from a point to a model.
 		const double dist = std::abs(a_ * it->x + b_ * it->y + c_ * it->z + d_) / denom;
 
-		inliers[k] = dist < threshold;
-		if (inliers[k]) ++inlierCount;
+		inlierFlags[k] = dist < threshold;
+		if (inlierFlags[k]) ++inlierCount;
 	}
 
 	return inlierCount;
+	//return std::count(inlierFlags.begin(), inlierFlags.end(), true);
 }
 
 void Plane3RansacEstimator::computeInlierProbabilities(std::vector<double> &inlierProbs, const double inlierSquaredStandardDeviation) const
@@ -155,14 +155,14 @@ void Plane3RansacEstimator::computeInlierProbabilities(std::vector<double> &inli
 	}
 }
 
-size_t Plane3RansacEstimator::lookForInliers(std::vector<bool> &inliers, const std::vector<double> &inlierProbs, const double outlierUniformProbability) const
+size_t Plane3RansacEstimator::lookForInliers(std::vector<bool> &inlierFlags, const std::vector<double> &inlierProbs, const double inlierThresholdProbability) const
 {
 	size_t inlierCount = 0;
 	int k = 0;
 	for (std::vector<Point3>::const_iterator it = samples_.begin(); it != samples_.end(); ++it, ++k)
 	{
-		inliers[k] = inlierProbs[k] >= outlierUniformProbability;
-		if (inliers[k]) ++inlierCount;
+		inlierFlags[k] = inlierProbs[k] >= inlierThresholdProbability;
+		if (inlierFlags[k]) ++inlierCount;
 	}
 
 	return inlierCount;
@@ -185,25 +185,29 @@ void plane3_estimation()
 	std::vector<local::Point3> samples;
 	samples.reserve(NUM_PLANE + NUM_NOISE);
 	{
+		std::random_device seedDevice;
+		std::mt19937 RNG = std::mt19937(seedDevice());
+
+		std::uniform_real_distribution<double> unifDistInlier(-3, 3);  // [-3, 3].
+		const double sigma = 0.1;
+		//const double sigma = 0.2;  // Much harder.
+		std::normal_distribution<double> noiseDist(0.0, sigma);
 		for (size_t i = 0; i < NUM_PLANE; ++i)
 		{
-			const double x = std::rand() % 10001 * 0.0006 - 3.0;  // [-3, 3].
-			const double y = std::rand() % 10001 * 0.0006 - 3.0;  // [-3, 3].
-			const double z = -(PLANE_EQN[0] * x + PLANE_EQN[1] * y + PLANE_EQN[3]) / PLANE_EQN[2];
-			samples.push_back(local::Point3(x, y, z));
+			const double x = unifDistInlier(RNG), y = unifDistInlier(RNG), z = -(PLANE_EQN[0] * x + PLANE_EQN[1] * y + PLANE_EQN[3]) / PLANE_EQN[2];
+			samples.push_back(local::Point3(x + noiseDist(RNG), y + noiseDist(RNG), z + noiseDist(RNG)));
 		}
 
+		std::uniform_real_distribution<double> unifDistOutlier(-5, 5);  // [-5, 5].
 		for (size_t i = 0; i < NUM_NOISE; ++i)
-		{
-			const double x = std::rand() % 10001 * 0.0010 - 5.0;  // [-5, 5].
-			const double y = std::rand() % 10001 * 0.0010 - 5.0;  // [-5, 5].
-			const double z = std::rand() % 10001 * 0.0010 - 5.0;  // [-5, 5].
-			samples.push_back(local::Point3(x, y, z));
-		}
+			samples.push_back(local::Point3(unifDistOutlier(RNG), unifDistOutlier(RNG), unifDistOutlier(RNG)));
+
+		std::random_shuffle(samples.begin(), samples.end());
 	}
 
-	const size_t minimalSampleSetSize = 3;
-	local::Plane3RansacEstimator ransac(samples, minimalSampleSetSize);
+	// RANSAC.
+	const size_t minimalSampleSize = 3;
+	local::Plane3RansacEstimator ransac(samples, minimalSampleSize);
 
 	const size_t maxIterationCount = 500;
 	const size_t minInlierCount = 50;
@@ -212,14 +216,13 @@ void plane3_estimation()
 
 	std::cout << "********* RANSAC of Plane3" << std::endl;
 	{
-		const double threshold = 0.05;
+		const double distanceThreshold = 0.1;  // Distance threshold.
 
-		const size_t inlierCount = ransac.runRANSAC(maxIterationCount, minInlierCount, alarmRatio, isProsacSampling, threshold);
+		const size_t inlierCount = ransac.runRANSAC(maxIterationCount, minInlierCount, alarmRatio, isProsacSampling, distanceThreshold);
 
 		std::cout << "\tThe number of iterations: " << ransac.getIterationCount() << std::endl;
 		std::cout << "\tThe number of inliers: " << inlierCount << std::endl;
-		//if (inlierCount != (size_t)-1)
-		if (inlierCount >= minInlierCount)
+		if (inlierCount != (size_t)-1 && inlierCount >= minInlierCount)
 		{
 			if (std::abs(ransac.getA()) > eps)
 				std::cout << "\tEstimated plane model: " << "x + " << (ransac.getB() / ransac.getA()) << " * y + " << (ransac.getC() / ransac.getA()) << " * z + " << (ransac.getD() / ransac.getA()) << " = 0" << std::endl;
@@ -227,10 +230,10 @@ void plane3_estimation()
 				std::cout << "\tEstimated plane model: " << ransac.getA() << " * x + " << ransac.getB() << " * y + " << ransac.getC() << " * z + " << ransac.getD() << " = 0" << std::endl;
 			std::cout << "\tTrue plane model:      " << "x + " << (PLANE_EQN[1] / PLANE_EQN[0]) << " * y + " << (PLANE_EQN[2] / PLANE_EQN[0]) << " * z + " << (PLANE_EQN[3] / PLANE_EQN[0]) << " = 0" << std::endl;
 
-			const std::vector<bool> &inliers = ransac.getInliers();
+			const std::vector<bool> &inlierFlags = ransac.getInlierFlags();
 			std::cout << "\tIndices of inliers: ";
 			size_t idx = 0;
-			for (std::vector<bool>::const_iterator it = inliers.begin(); it != inliers.end(); ++it, ++idx)
+			for (std::vector<bool>::const_iterator it = inlierFlags.begin(); it != inlierFlags.end(); ++it, ++idx)
 				if (*it) std::cout << idx << ", ";
 			std::cout << std::endl;
 		}
@@ -240,16 +243,15 @@ void plane3_estimation()
 
 	std::cout << "********* MLESAC of Plane3" << std::endl;
 	{
-		const double inlierSquaredStandardDeviation = 0.01;
-		const double outlierUniformProbability = 0.1;
+		const double inlierSquaredStandardDeviation = 0.001;  // Inliers' squared standard deviation. Assume that inliers follow normal distribution.
+		const double inlierThresholdProbability = 0.1;  // Inliers' threshold probability. Assume that outliers follow uniform distribution.
 		const size_t maxEMIterationCount = 50;
 
-		const size_t inlierCount = ransac.runMLESAC(maxIterationCount, minInlierCount, alarmRatio, isProsacSampling, inlierSquaredStandardDeviation, outlierUniformProbability, maxEMIterationCount);
+		const size_t inlierCount = ransac.runMLESAC(maxIterationCount, minInlierCount, alarmRatio, isProsacSampling, inlierSquaredStandardDeviation, inlierThresholdProbability, maxEMIterationCount);
 
 		std::cout << "\tThe number of iterations: " << ransac.getIterationCount() << std::endl;
 		std::cout << "\tThe number of inliers: " << inlierCount << std::endl;
-		//if (inlierCount != (size_t)-1)
-		if (inlierCount >= minInlierCount)
+		if (inlierCount != (size_t)-1 && inlierCount >= minInlierCount)
 		{
 			if (std::abs(ransac.getA()) > eps)
 				std::cout << "\tEstimated plane model: " << "x + " << (ransac.getB() / ransac.getA()) << " * y + " << (ransac.getC() / ransac.getA()) << " * z + " << (ransac.getD() / ransac.getA()) << " = 0" << std::endl;
@@ -257,10 +259,10 @@ void plane3_estimation()
 				std::cout << "\tEstimated plane model: " << ransac.getA() << " * x + " << ransac.getB() << " * y + " << ransac.getC() << " * z + " << ransac.getD() << " = 0" << std::endl;
 			std::cout << "\tTrue plane model:      " << "x + " << (PLANE_EQN[1] / PLANE_EQN[0]) << " * y + " << (PLANE_EQN[2] / PLANE_EQN[0]) << " * z + " << (PLANE_EQN[3] / PLANE_EQN[0]) << " = 0" << std::endl;
 
-			const std::vector<bool> &inliers = ransac.getInliers();
+			const std::vector<bool> &inlierFlags = ransac.getInlierFlags();
 			std::cout << "\tIndices of inliers: ";
 			size_t idx = 0;
-			for (std::vector<bool>::const_iterator it = inliers.begin(); it != inliers.end(); ++it, ++idx)
+			for (std::vector<bool>::const_iterator it = inlierFlags.begin(); it != inlierFlags.end(); ++it, ++idx)
 				if (*it) std::cout << idx << ", ";
 			std::cout << std::endl;
 		}

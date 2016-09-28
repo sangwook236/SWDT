@@ -1,9 +1,13 @@
+//#define __USE_GSL_FOR_CHECKING 1
 //#include "stdafx.h"
 #include <nlopt.hpp>
-//#include <gsl/gsl_poly.h>
+#if defined(__USE_GSL_FOR_CHECKING)
+#include <gsl/gsl_poly.h>
+#endif
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <random>
 #include <cassert>
 
 
@@ -150,7 +154,11 @@ double distance_with_quadratic_curve(const std::vector<double> &x, std::vector<d
 	return (xf - x0)*(xf - x0) + (yf - y0)*(yf - y0);
 }
 
+#if __USE_GSL_FOR_CHECKING
+void min_distance_with_quadratic_curve_using_derivative_free_algorithm(const double a, const double b, const double c, const double d, const double x0, const double y0, size_t &errorCount)
+#else
 void min_distance_with_quadratic_curve_using_derivative_free_algorithm(const double a, const double b, const double c, const double d, const double x0, const double y0)
+#endif
 {
 	// Algorithm and dimensionality.
 	nlopt::opt opt(nlopt::LN_COBYLA, 1);
@@ -183,34 +191,42 @@ void min_distance_with_quadratic_curve_using_derivative_free_algorithm(const dou
 		//std::cout << "Found minimum at f(" << x[0] << ") = " << minf << std::endl;
 		std::cout << "Found minimum at f(" << x[0] << ") = " << std::sqrt(minf) << std::endl;
 
-		const double xf = x[0];
-		const double yf = -(a * xf*xf + b * xf + d) / c;
-		std::cout << "Nearest point: " << "(" << xf << "," << yf << ")" << std::endl;
-		std::cout << "Distance between (" << x0 << "," << y0 << ") and (" << xf << "," << yf << ") = " << std::sqrt((xf - x0)*(xf - x0) + (yf - y0)*(yf - y0)) << std::endl;
+		const double xs = x[0], ys = -(a * xs*xs + b * xs + d) / c;
+		std::cout << "Nearest point: " << "(" << xs << "," << ys << ")" << std::endl;
+		std::cout << "Distance between (" << x0 << "," << y0 << ") and (" << xs << "," << ys << ") = " << std::sqrt((xs - x0)*(xs - x0) + (ys - y0)*(ys - y0)) << std::endl;
 
-#if 0
+#if __USE_GSL_FOR_CHECKING
 		// For checking.
 		const double eps = 1.0e-10;
 		const double c_2 = c * c;
-		assert(std::abs(c_2) > eps);
-		const double aa = 4.0*a*a / c_2, bb = 6.0*a*b / c_2, cc = 2.0*(b*b / c_2 + 2.0*a*(d + y0) / c_2 + 1.0), dd = 2.0*(b*(d + y0) / c_2 - x0);
-		assert(std::abs(aa) > eps);
+		assert(c_2 > eps);
+		const double aa = 4.0*a*a / c_2, bb = 6.0*a*b / c_2, cc = 2.0*(b*b / c_2 + 2.0*a*(d + c*y0) / c_2 + 1.0), dd = 2.0*(b*(d + c*y0) / c_2 - x0);
+		assert(aa > eps);
 
 		gsl_complex z[3];
 		gsl_poly_complex_solve_cubic(bb / aa, cc / aa, dd / aa, &z[0], &z[1], &z[2]);
 
-		bool exist = false;
+		int selected = -1;
+		double minDist2 = std::numeric_limits<double>::max();
 		for (int i = 0; i < 3; ++i)
 			if (std::abs(z[i].dat[1]) < eps)
 			{
-				const double xf = z[i].dat[0], yf = -(a * xf*xf + b * xf + d) / c;
-				const double dist = std::sqrt((xf - x0)*(xf - x0) + (yf - y0)*(yf - y0));
+				const double xx = z[i].dat[0], yy = -(a * xx*xx + b * xx + d) / c;
+				const double dist2 = (xx - x0)*(xx - x0) + (yy - y0)*(yy - y0);
 
-				std::cout << "Distance between (" << x0 << "," << y0 << ") and (" << xf << "," << yf << ") = " << dist << std::endl;
-				break;
+				if (dist2 < minDist2)
+				{
+					selected = i;
+					minDist2 = dist2;
+				}
 			}
-		if (!exist)
-			std::cout << "Solution not found" << std::endl;
+		assert(selected >= 0);
+
+		const double xs2 = z[selected].dat[0], ys2 = -(a * xs2*xs2 + b * xs2 + d) / c;
+		std::cout << "Distance between (" << x0 << "," << y0 << ") and (" << xs2 << "," << ys2 << ") = " << std::sqrt(minDist2) << std::endl;
+
+		if (std::abs(xs - xs2) > 10e-4 || std::abs(ys - ys2) > 10e-4)
+			++errorCount;
 #endif
 	}
 }
@@ -229,12 +245,31 @@ int nlopt_main(int argc, char *argv[])
 	//local::simple_cpp_sample_using_derivative_free_algorithm();
 
 	// -------------------------------------------------------
-	// Quadratic curve equation: x^2 - x + y - 2 = 0.
-	const double a = 1.0, b = -1.0, c = 1.0, d = -2.0;
-	//const double x0 = 0.0, y0 = 0.0;
-	//const double x0 = 5.0, y0 = 0.0;
-	const double x0 = -5.0, y0 = 0.0;
-	local::min_distance_with_quadratic_curve_using_derivative_free_algorithm(a, b, c, d, x0, y0);
+	{
+		// Quadratic curve equation: x^2 - x + y - 2 = 0.
+		const double a = 1.0, b = -1.0, c = 1.0, d = -2.0;
+
+#if __USE_GSL_FOR_CHECKING
+		std::random_device seedDevice;
+		std::mt19937 RNG = std::mt19937(seedDevice());
+
+		std::uniform_real_distribution<double> unifDist(-5, 5);  // [-5, 5].
+		size_t iterations = 100;
+		size_t errorCount = 0;
+		for (int i = 0; i < iterations; ++i)
+		{
+			const double x0 = unifDist(RNG), y0 = unifDist(RNG);
+			local::min_distance_with_quadratic_curve_using_derivative_free_algorithm(a, b, c, d, x0, y0, errorCount);
+		}
+
+		std::cout << "#errors = " << errorCount << ", #iterations = " << iterations << ", error rate = " << (double)errorCount / iterations << std::endl;
+#else
+		//const double x0 = 0.0, y0 = 0.0;
+		//const double x0 = 5.0, y0 = 0.0;
+		const double x0 = -5.0, y0 = 0.0;
+		local::min_distance_with_quadratic_curve_using_derivative_free_algorithm(a, b, c, d, x0, y0);
+#endif
+	}
 
     return 0;
 }

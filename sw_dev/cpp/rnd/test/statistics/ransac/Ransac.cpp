@@ -38,7 +38,8 @@ private:
 
 size_t Ransac::runRANSAC(const size_t maxIterationCount, const size_t minInlierCount, const double alarmRatio, const bool isProsacSampling, const double threshold)
 {
-	if (totalSampleCount_ < minimalSampleSetSize_)
+	const size_t availableSampleSetSize = usedSampleSize_ > 0 ? std::max(usedSampleSize_, minimalSampleSize_) : minimalSampleSize_;
+	if (totalSampleSize_ < availableSampleSetSize)
 		return -1;
 
 	if (isProsacSampling) sortSamples();
@@ -46,10 +47,10 @@ size_t Ransac::runRANSAC(const size_t maxIterationCount, const size_t minInlierC
 	size_t maxIteration = maxIterationCount;
 
 	size_t inlierCount = 0;
-	inlierFlags_.resize(totalSampleCount_, false);
-	std::vector<bool> currInlierFlags(totalSampleCount_, false);
+	inlierFlags_.resize(totalSampleSize_, false);
+	std::vector<bool> currInlierFlags(totalSampleSize_, false);
 
-	std::vector<size_t> indices(minimalSampleSetSize_, -1);
+	std::vector<size_t> indices(availableSampleSetSize, -1);
 
 	// TODO [check] >>
 	size_t prosacSampleCount = 10;
@@ -59,13 +60,13 @@ size_t Ransac::runRANSAC(const size_t maxIterationCount, const size_t minInlierC
 		// Draw a sample.
 		if (isProsacSampling)
 		{
-			drawRandomSample(prosacSampleCount, minimalSampleSetSize_, true, indices);
+			drawRandomSample(prosacSampleCount, availableSampleSetSize, true, indices);
 
 			// This incrementing strategy is naive and simple but works just fine most of the time.
-			if (prosacSampleCount < totalSampleCount_)
+			if (prosacSampleCount < totalSampleSize_)
 				++prosacSampleCount;
 		}
-		else drawRandomSample(totalSampleCount_, minimalSampleSetSize_, false, indices);
+		else drawRandomSample(totalSampleSize_, availableSampleSetSize, false, indices);
 
 		// Estimate a model.
 		if (estimateModel(indices) && verifyModel())
@@ -75,8 +76,8 @@ size_t Ransac::runRANSAC(const size_t maxIterationCount, const size_t minInlierC
 
 			if (currInlierCount > inlierCount)
 			{
-				const double inlierRatio = double(currInlierCount) / totalSampleCount_;
-				const size_t newMaxIteration = (size_t)std::floor(std::log(alarmRatio) / std::log(1.0 - std::pow(inlierRatio, (double)minimalSampleSetSize_)));
+				const double inlierRatio = double(currInlierCount) / totalSampleSize_;
+				const size_t newMaxIteration = (size_t)std::floor(std::log(alarmRatio) / std::log(1.0 - std::pow(inlierRatio, (double)availableSampleSetSize)));
 				if (newMaxIteration < maxIteration) maxIteration = newMaxIteration;
 
 				inlierCount = currInlierCount;
@@ -88,23 +89,27 @@ size_t Ransac::runRANSAC(const size_t maxIterationCount, const size_t minInlierC
 	}
 
 	// Re-estimate with all inliers and loop until the number of inliers does not increase anymore.
-	size_t oldInlierCount = inlierCount;
-	do
+	if (inlierCount >= minimalSampleSize_)
 	{
-		if (!estimateModelFromInliers()) return -1;
+		size_t oldInlierCount = inlierCount;
+		do
+		{
+			if (!estimateModelFromInliers()) return -1;
 
-		oldInlierCount = inlierCount;
+			oldInlierCount = inlierCount;
+			inlierCount = lookForInliers(inlierFlags_, threshold);
+		} while (inlierCount > oldInlierCount);
+
 		inlierCount = lookForInliers(inlierFlags_, threshold);
-	} while (inlierCount > oldInlierCount);
-
-	inlierCount = lookForInliers(inlierFlags_, threshold);
+	}
 
 	return inlierCount;
 }
 
-size_t Ransac::runMLESAC(const size_t maxIterationCount, const size_t minInlierCount, const double alarmRatio, const bool isProsacSampling, const double inlierSquaredStandardDeviation, const double outlierUniformProbability, const size_t maxEMIterationCount)
+size_t Ransac::runMLESAC(const size_t maxIterationCount, const size_t minInlierCount, const double alarmRatio, const bool isProsacSampling, const double inlierSquaredStandardDeviation, const double inlierThresholdProbability, const size_t maxEMIterationCount)
 {
-	if (totalSampleCount_ < minimalSampleSetSize_)
+	const size_t availableSampleSetSize = usedSampleSize_ > 0 ? std::max(usedSampleSize_, minimalSampleSize_) : minimalSampleSize_;
+	if (totalSampleSize_ < availableSampleSetSize)
 		return -1;
 
 	if (isProsacSampling) sortSamples();
@@ -112,27 +117,28 @@ size_t Ransac::runMLESAC(const size_t maxIterationCount, const size_t minInlierC
 	size_t maxIteration = maxIterationCount;
 
 	size_t inlierCount = 0;
-	inlierFlags_.resize(totalSampleCount_, false);
-	std::vector<double> inlierProbs(totalSampleCount_, 0.0);
+	inlierFlags_.resize(totalSampleSize_, false);
+	std::vector<double> inlierProbs(totalSampleSize_, 0.0);
 	double minNegativeLogLikelihood = std::numeric_limits<double>::max();
 
-	std::vector<size_t> indices(minimalSampleSetSize_, -1);
+	std::vector<size_t> indices(availableSampleSetSize, -1);
 
 	// TODO [check] >>
 	size_t prosacSampleCount = 10;
 	iteration_ = 0;
+	const double eps = 1.0e-10;
 	while (iteration_ < maxIteration && inlierCount < minInlierCount)
 	{
 		// Draw a sample.
 		if (isProsacSampling)
 		{
-			drawRandomSample(prosacSampleCount, minimalSampleSetSize_, true, indices);
+			drawRandomSample(prosacSampleCount, availableSampleSetSize, true, indices);
 
 			// This incrementing strategy is naive and simple but works just fine most of the time.
-			if (prosacSampleCount < totalSampleCount_)
+			if (prosacSampleCount < totalSampleSize_)
 				++prosacSampleCount;
 		}
-		else drawRandomSample(totalSampleCount_, minimalSampleSetSize_, false, indices);
+		else drawRandomSample(totalSampleSize_, availableSampleSetSize, false, indices);
 
 		// Estimate a model.
 		if (estimateModel(indices) && verifyModel())
@@ -146,33 +152,36 @@ size_t Ransac::runMLESAC(const size_t maxIterationCount, const size_t minInlierC
 			double gamma = 0.5, prevGamma;
 			for (size_t i = 0; i < maxEMIterationCount; ++i)
 			{
-				const double outlierProb = (1.0 - gamma) * outlierUniformProbability;
+				const double outlierProb = (1.0 - gamma) * inlierThresholdProbability;
 				double sumInlierProb = 0.0;
-				for (size_t k = 0; k < totalSampleCount_; ++k)
+				for (size_t k = 0; k < totalSampleSize_; ++k)
 				{
 					const double inlierProb = gamma * inlierProbs[k];
 					sumInlierProb += inlierProb / (inlierProb + outlierProb);
 				}
 
 				prevGamma = gamma;
-				gamma = sumInlierProb / totalSampleCount_;
+				gamma = sumInlierProb / totalSampleSize_;
 
-				if (std::fabs(gamma - prevGamma) < tol) break;
+				if (std::abs(gamma - prevGamma) < tol) break;
 			}
 
 			// Evaluate a model.
-			const double outlierProb = (1.0 - gamma) * outlierUniformProbability;
+			const double outlierProb = (1.0 - gamma) * inlierThresholdProbability;
 			double negativeLogLikelihood = 0.0;
-			for (size_t k = 0; k < totalSampleCount_; ++k)
+			for (size_t k = 0; k < totalSampleSize_; ++k)
 				negativeLogLikelihood -= std::log(gamma * inlierProbs[k] + outlierProb);  // Negative log likelihood.
 
-			//
 			if (negativeLogLikelihood < minNegativeLogLikelihood)
 			{
-				const size_t newMaxIteration = (size_t)std::floor(std::log(alarmRatio) / std::log(1.0 - std::pow(gamma, (double)minimalSampleSetSize_)));
-				if (newMaxIteration < maxIteration) maxIteration = newMaxIteration;
+				const double denom = std::log(1.0 - std::pow(gamma, (double)availableSampleSetSize));
+				if (std::abs(denom) > eps)
+				{
+					const size_t newMaxIteration = (size_t)std::floor(std::log(alarmRatio) / denom);
+					if (newMaxIteration < maxIteration) maxIteration = newMaxIteration;
+				}
 
-				inlierCount = lookForInliers(inlierFlags_, inlierProbs, outlierUniformProbability);
+				inlierCount = lookForInliers(inlierFlags_, inlierProbs, inlierThresholdProbability);
 
 				minNegativeLogLikelihood = negativeLogLikelihood;
 			}
@@ -182,22 +191,25 @@ size_t Ransac::runMLESAC(const size_t maxIterationCount, const size_t minInlierC
 	}
 
 	// Re-estimate with all inliers and loop until the number of inliers does not increase anymore.
-	size_t oldInlierCount = 0;
-	do
+	if (inlierCount >= minimalSampleSize_)
 	{
-		if (!estimateModelFromInliers()) return -1;
+		size_t oldInlierCount = 0;
+		do
+		{
+			if (!estimateModelFromInliers()) return inlierCount;
+
+			// Compute inliers' probabilities.
+			computeInlierProbabilities(inlierProbs, inlierSquaredStandardDeviation);
+
+			oldInlierCount = inlierCount;
+			inlierCount = lookForInliers(inlierFlags_, inlierProbs, inlierThresholdProbability);
+		} while (inlierCount > oldInlierCount);
 
 		// Compute inliers' probabilities.
 		computeInlierProbabilities(inlierProbs, inlierSquaredStandardDeviation);
 
-		oldInlierCount = inlierCount;
-		inlierCount = lookForInliers(inlierFlags_, inlierProbs, outlierUniformProbability);
-	} while (inlierCount > oldInlierCount);
-
-	// Compute inliers' probabilities.
-	computeInlierProbabilities(inlierProbs, inlierSquaredStandardDeviation);
-
-	inlierCount = lookForInliers(inlierFlags_, inlierProbs, outlierUniformProbability);
+		inlierCount = lookForInliers(inlierFlags_, inlierProbs, inlierThresholdProbability);
+	}
 
 	return inlierCount;
 }
@@ -220,10 +232,10 @@ void Ransac::drawRandomSample(const size_t maxCount, const size_t count, const b
 
 void Ransac::sortSamples()
 {
-	sortedIndices_.reserve(totalSampleCount_);
-	for (size_t i = 0; i < totalSampleCount_; ++i)
+	sortedIndices_.reserve(totalSampleSize_);
+	for (size_t i = 0; i < totalSampleSize_; ++i)
 		sortedIndices_.push_back(i);
 
-	if (scores_ && !scores_->empty())
+	if (scores_ && !scores_)
 		std::sort(sortedIndices_.begin(), sortedIndices_.end(), local::CompareByScore(*scores_));
 }
