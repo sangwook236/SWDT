@@ -10,15 +10,15 @@ namespace local {
 
 namespace my_gransac {
 
-void line_estimation();
-void quadratic_estimation();
+void line2_estimation();
+void quadratic2_estimation();
 
 }  // namespace my_gransac
 
 int gransac_main(int argc, char *argv[])
 {
-	//my_gransac::line_estimation();
-	my_gransac::quadratic_estimation();
+	//my_gransac::line2_estimation();
+	my_gransac::quadratic2_estimation();
 
 	return 0;
 }
