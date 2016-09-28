@@ -98,7 +98,7 @@ int gsl_main(int argc, char *argv[])
 
 		//my_gsl::special_function();
 
-		my_gsl::lu();
+		//my_gsl::lu();
 		//my_gsl::qr();
 		//my_gsl::cholesky();
 		//my_gsl::eigensystem();
@@ -111,9 +111,9 @@ int gsl_main(int argc, char *argv[])
 		//my_gsl::multidim_minimization_simplex();
 		//my_gsl::multidim_minimization_steepest_descent();
 
-		//my_gsl::quadratic_equation_root_finding();
-		//my_gsl::cubic_equation_root_finding();
-		//my_gsl::polynomial_root_finding();
+		my_gsl::quadratic_equation_root_finding();
+		my_gsl::cubic_equation_root_finding();
+		my_gsl::polynomial_root_finding();
 		//my_gsl::one_dim_root_finding();
 		//my_gsl::multidim_root_finding();
 		
