@@ -19,9 +19,6 @@
     <Filter Include="Source Files\movmf_lib">
       <UniqueIdentifier>{688478b8-6a2e-4a5c-b99c-6384c51ba4fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ransac">
-      <UniqueIdentifier>{b67f21a7-e401-4a30-8bf5-8b91e1dc0a5c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\mcmcpp">
       <UniqueIdentifier>{ea633884-4646-43f4-81f4-40634e75763d}</UniqueIdentifier>
     </Filter>
@@ -285,9 +282,6 @@
     <ClInclude Include="gransac_lib\GRANSAC.hpp">
       <Filter>Source Files\gransac_lib</Filter>
     </ClInclude>
-    <ClInclude Include="ransac\Ransac.h">
-      <Filter>Source Files\ransac</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -322,12 +316,6 @@
     </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ransac\ransac_main.cpp">
-      <Filter>Source Files\ransac</Filter>
-    </ClCompile>
-    <ClCompile Include="ransac\ransac_plane_estimation.cpp">
-      <Filter>Source Files\ransac</Filter>
     </ClCompile>
     <ClCompile Include="mcmcpp\mcmcpp_main.cpp">
       <Filter>Source Files\mcmcpp</Filter>
@@ -425,17 +413,8 @@
     <ClCompile Include="gransac\gransac_main.cpp">
       <Filter>Source Files\gransac</Filter>
     </ClCompile>
-    <ClCompile Include="ransac\Ransac.cpp">
-      <Filter>Source Files\ransac</Filter>
-    </ClCompile>
     <ClCompile Include="gransac\gransac_line_estimation.cpp">
       <Filter>Source Files\gransac</Filter>
-    </ClCompile>
-    <ClCompile Include="ransac\ransac_curve_estimation.cpp">
-      <Filter>Source Files\ransac</Filter>
-    </ClCompile>
-    <ClCompile Include="ransac\ransac_line_estimation.cpp">
-      <Filter>Source Files\ransac</Filter>
     </ClCompile>
     <ClCompile Include="gransac\gransac_curve_estimation.cpp">
       <Filter>Source Files\gransac</Filter>

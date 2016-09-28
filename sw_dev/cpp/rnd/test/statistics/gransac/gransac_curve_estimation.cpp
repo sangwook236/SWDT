@@ -94,36 +94,40 @@ protected:
 		if (nullptr == extPoint2D)
 			throw std::runtime_error("Quadratic2DModel::ComputeDistanceMeasure() - Passed parameter are not of type Point2D.");
 
-		// http://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html
-		// Return distance between passed "point" and this quadratic curve.
-		const double eps = 1.0e-20;
+		const double eps = 1.0e-10;
 		const double x0 = extPoint2D->m_Point2D[0], y0 = extPoint2D->m_Point2D[1];
+
+		// Return distance between passed "point" and this quadratic curve.
 		const double c_2 = c_ * c_;
-
-		// FIXME [delete] >>
-		if (c_2 < eps)
-			std::cout << "There !!!" << std::endl;
-
 		assert(c_2 > eps);
-		const double aa = 4.0*a_*a_ / c_2, bb = 6.0*a_*b_ / c_2, cc = 2.0*(b_*b_ / c_2 + 2.0*a_*(d_ + y0) / c_2 + 1.0), dd = 2.0*(b_*(d_ + y0) / c_2 - x0);
-		assert(std::abs(aa) > eps);
+		const double aa = 4.0*a_*a_ / c_2, bb = 6.0*a_*b_ / c_2, cc = 2.0*(b_*b_ / c_2 + 2.0*a_*(d_ + c_ * y0) / c_2 + 1.0), dd = 2.0*(b_*(d_ + c_ * y0) / c_2 - x0);
+		assert(aa > eps);
 
-		gsl_complex z[3];
-		gsl_poly_complex_solve_cubic(bb / aa, cc / aa, dd / aa, &z[0], &z[1], &z[2]);
-
-		double dist;
-		bool exist = false;
-		for (int i = 0; i < 3; ++i)
-			if (std::abs(z[i].dat[1]) < eps)
+		double minDist2 = std::numeric_limits<double>::max();
+		double roots[3] = { 0.0, };
+		switch (gsl_poly_solve_cubic(bb / aa, cc / aa, dd / aa, &roots[0], &roots[1], &roots[2]))
+		{
+		case 1:
 			{
-				const double xf = z[i].dat[0], yf = -(a_ * xf*xf + b_ * xf + d_) / c_;
-				dist = std::sqrt((xf - x0)*(xf - x0) + (yf - y0)*(yf - y0));
-				exist = true;
-				break;
+				const double xx = roots[0], yy = -(a_ * xx*xx + b_ * xx + d_) / c_;
+				minDist2 = (xx - x0)*(xx - x0) + (yy - y0)*(yy - y0);
 			}
-		assert(exist);
+			break;
+		case 3:
+			for (int i = 0; i < 3; ++i)
+			{
+				const double xx = roots[i], yy = -(a_ * xx*xx + b_ * xx + d_) / c_;
+				const double dist2 = (xx - x0)*(xx - x0) + (yy - y0)*(yy - y0);
+				if (dist2 < minDist2)
+					minDist2 = dist2;
+			}
+			break;
+		default:
+			assert(false);
+			break;
+		}
 
-		return dist;
+		return minDist2;
 	}
 
 protected:
@@ -139,7 +143,7 @@ protected:
 
 namespace my_gransac {
 
-void quadratic_estimation()
+void quadratic2_estimation()
 {
 	const int RANGE = 5;  // Image size.
 	const int NUM_POINTS = 500;
@@ -156,17 +160,18 @@ void quadratic_estimation()
 	for (int i = 0; i < NUM_POINTS; ++i)
 	{
 		// Quadratic curve equation: x^2 - x + y - 2 = 0.
-		const int x = uniDist(RNG);
-		const int y = 2 - x*x + x;
+		const GRANSAC::VPFloat x = uniDist(RNG);
+		const GRANSAC::VPFloat y = -x*x + x + 2;
 
 		dataPoints.push_back(std::make_shared<local::Point2D>(std::floor(x + perturbDist(RNG)), std::floor(y + perturbDist(RNG))));
 	}
 
+	// RANSAC.
 	GRANSAC::RANSAC<local::Quadratic2DModel, 3> estimator;
-	estimator.Initialize(20, 100);  // Threshold, iterations.
+	estimator.Initialize(1.0, 1000);  // Threshold, iterations.
 	estimator.Estimate(dataPoints);
 
-	//
+	// Output.
 	const auto bestInliers = estimator.GetBestInliers();
 	if (bestInliers.size() > 0)
 	{

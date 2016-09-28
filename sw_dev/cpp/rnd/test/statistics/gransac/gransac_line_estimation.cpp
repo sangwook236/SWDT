@@ -95,10 +95,10 @@ protected:
 		const GRANSAC::VPFloat numer = std::fabs(m_a * extPoint2D->m_Point2D[0] + m_b * extPoint2D->m_Point2D[1] + m_c);
 		const GRANSAC::VPFloat dist = numer / m_DistDenominator;
 
-		// // Debug.
-		// std::cout << "Point: " << extPoint2D->m_Point2D[0] << ", " << extPoint2D->m_Point2D[1] << std::endl;
-		// std::cout << "Line: " << m_a << " x + " << m_b << " y + "  << m_c << std::endl;
-		// std::cout << "Distance: " << dist << std::endl << std::endl;
+		// Debug.
+		//std::cout << "Point: " << extPoint2D->m_Point2D[0] << ", " << extPoint2D->m_Point2D[1] << std::endl;
+		//std::cout << "Line: " << m_a << " x + " << m_b << " y + "  << m_c << std::endl;
+		//std::cout << "Distance: " << dist << std::endl << std::endl;
 
 		return dist;
 	}
@@ -140,7 +140,7 @@ void drawFullLine(cv::Mat& img, cv::Point a, cv::Point b, cv::Scalar color, int 
 namespace my_gransac {
 
 // REF [site] >> https://github.com/srinath1905/GRANSAC/blob/master/examples/LineFittingSample.cpp
-void line_estimation()
+void line2_estimation()
 {
 	const int IMAGE_SIZE = 1000;  // Image size.
 	const int NUM_POINTS = 500;
@@ -161,7 +161,7 @@ void line_estimation()
 	std::vector<std::shared_ptr<GRANSAC::AbstractParameter>> dataPoints;
 	for (int i = 0; i < NUM_POINTS; ++i)
 	{
-		const int diag = uniDist(RNG);  // Diagonal line.
+		const int diag = uniDist(RNG);  // Diagonal line: y = x.
 		const local::Point2D pt(std::floor(diag + perturbDist(RNG)), std::floor(diag + perturbDist(RNG)));
 #if defined(__USE_OPENCV)
 		cv::circle(canvas, cv::Point(pt.m_Point2D[0], pt.m_Point2D[1]), 2, cv::Scalar(0, 0, 0), cv::FILLED, cv::LINE_8);

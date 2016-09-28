@@ -10,7 +10,6 @@
 
 int main(int argc, char *argv[])
 {
-	int ransac_main(int argc, char *argv[]);
 	int gransac_main(int argc, char *argv[]);
 	int jlinkage_main(int argc, char *argv[]);
 
@@ -27,15 +26,15 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)time(NULL));
 
-		std::cout << "RANSAC algorithm ----------------------------------------------------" << std::endl;
+		std::cout << "RANSAC algorithm in SWL ---------------------------------------------" << std::endl;
 		//	- Robust estimation.
 		//		RANSAC, MLESAC, PROSAC.
-		retval = ransac_main(argc, argv);
+		// REF [library] >> RANSAC & MLESAC algorithms in SWL library.
 
 		std::cout << "\nGRANSAC library -----------------------------------------------------" << std::endl;
 		//	- Robust estimation.
 		//		RANSAC.
-		//retval = gransac_main(argc, argv);
+		retval = gransac_main(argc, argv);
 
 		std::cout << "\nC++ templated RANSAC library in PCL ---------------------------------" << std::endl;
 		// REF [library] >> C++ templated RANSAC library in PCL.

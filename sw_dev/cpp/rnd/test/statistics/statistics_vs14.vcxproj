@@ -55,7 +55,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_EXPM1;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./jlinkage_lib;./mcmcpp_lib;./scythemcmc_lib;./scythestat_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./jlinkage_lib;./mcmcpp_lib;./scythemcmc_lib;./scythestat_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
@@ -72,7 +72,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_EXPM1;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./jlinkage_lib;./mcmcpp_lib;./scythemcmc_lib;./scythestat_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./jlinkage_lib;./mcmcpp_lib;./scythemcmc_lib;./scythestat_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
@@ -158,7 +158,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="ransac\Ransac.h" />
     <ClInclude Include="scythemcmc_lib\mcmc.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -309,11 +308,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="ransac\Ransac.cpp" />
-    <ClCompile Include="ransac\ransac_curve_estimation.cpp" />
-    <ClCompile Include="ransac\ransac_line_estimation.cpp" />
-    <ClCompile Include="ransac\ransac_main.cpp" />
-    <ClCompile Include="ransac\ransac_plane_estimation.cpp" />
     <ClCompile Include="scythe\scythemcmc_normal_example.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
