@@ -5,6 +5,7 @@
 #include <opencv2/opencv.hpp>
 #endif
 #include <gsl/gsl_poly.h>
+#include <array>
 #include <iostream>
 #include <cmath>
 #include <random>

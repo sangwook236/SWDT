@@ -1,0 +1,4 @@
+/usr/bin/x86_64-w64-mingw32-ar.exe
+/usr/bin/x86_64-w64-mingw32-ranlib.exe
+/usr/bin/x86_64-w64-mingw32-gcc.exe
+/usr/bin/x86_64-w64-mingw32-gfortran.exe

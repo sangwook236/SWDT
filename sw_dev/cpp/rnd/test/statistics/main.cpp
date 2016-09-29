@@ -26,7 +26,10 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)time(NULL));
 
-		std::cout << "RANSAC algorithm in SWL ---------------------------------------------" << std::endl;
+		std::cout << "Data Normalization in SWL -------------------------------------------" << std::endl;
+		// REF [library] >> Data normalization methods in SWL library.
+
+		std::cout << "\nRANSAC algorithm in SWL ---------------------------------------------" << std::endl;
 		//	- Robust estimation.
 		//		RANSAC, MLESAC, PROSAC.
 		// REF [library] >> RANSAC & MLESAC algorithms in SWL library.
