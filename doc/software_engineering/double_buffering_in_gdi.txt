@@ -1,0 +1,30 @@
+HDC          hdcMem;
+HBITMAP      hbmMem;
+HANDLE       hOld;
+
+PAINTSTRUCT  ps;
+HDC          hdc;
+
+....
+case WM_PAINT:
+
+    // Get DC for window
+    hdc = BeginPaint(hwnd, &ps);
+
+    // Create an off-screen DC for double-buffering
+    hdcMem = CreateCompatibleDC(hdc);
+    hbmMem = CreateCompatibleBitmap(hdc, win_width, win_height);
+    hOld   = SelectObject(hdcMem, hbmMem);
+
+    // Draw into hdcMem
+
+    // Transfer the off-screen DC to the screen
+    BitBlt(hdc, 0, 0, win_width, win_height, hdcMem, 0, 0, SRCCOPY);
+
+    // Free-up the off-screen DC
+    SelectObject(hdcMem, hOld);
+    DeleteObject(hbmMem);
+    DeleteDC(hdcMem);
+
+    EndPaint(hwnd, &ps);
+    return 0;

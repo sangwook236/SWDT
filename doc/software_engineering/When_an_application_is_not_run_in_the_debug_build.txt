@@ -1,0 +1,15 @@
+[-] Windows.
+	- The application was unable to start correctly in the debug mode.
+		<error>
+			The application was unable to start correctly (0xc0150002)
+			The application was unable to start correctly (0xc000007b)
+		<solution>
+			Use Dependency Walker.
+				Compare the binary application (built in the debug mode) with a application which can be run (built in the release build) in Dependency Walker.
+				Some error messages are probably different between them.
+		Reference sites.
+			http://stackoverflow.com/questions/19216358/the-application-was-unable-to-start-correctly-after-including-vld-h
+				REF [doc] >> vld_usage_guide.txt
+			http://stackoverflow.com/questions/5126105/c-unable-to-start-correctly-0xc0150002
+			https://msoos.wordpress.com/2010/09/11/0xc000007b-error-solution/
+			http://blog.naver.com/PostView.nhn?blogId=sun_rose0518&logNo=70141032510

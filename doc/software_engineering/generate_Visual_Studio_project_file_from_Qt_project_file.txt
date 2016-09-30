@@ -1,0 +1,8 @@
+[-] Qt project file -> Visual Studio project file
+	- Can generate Visual Studio project file from Qt project file.
+		qmake qt_pjt.pro -o vc_pjt.vcxproj
+		qmake -tp vc qt_pjt.pro -o vc_pjt.vcxproj
+		qmake -spec win32-msvc2015 -tp vc qt_pjt.pro -o vc_pjt.vcxproj
+
+		qmake -t vcapp qt_app_pjt.pro -o vc_app_pjt.vcxproj
+		qmake -t vclib qt_lib_pjt.pro -o vc_lib_pjt.vcxproj

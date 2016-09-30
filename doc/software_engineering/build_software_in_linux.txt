@@ -1,0 +1,41 @@
+[-] Library configuration
+	- LD_LIBRARY_PATH.
+		e.g.)
+			export LD_LIBRARY_PATH=/usr/lib:/usr/local/lib
+			export LD_LIBRARY_PATH+=/usr/local/lib
+			echo $LD_LIBRARY_PATH
+
+	- ldconfig.
+		Configure dynamic linker run-time bindings.
+
+		/etc/ld.so.conf
+
+		e.g.)
+			/sbin/ldconfig -n /path/to/lib
+				only process directories specified on the command line.
+			/sbin/ldconfig -v
+
+			export LD_LIBRARY_PATH+=/path/to/lib
+			/sbin/ldconfig -l /path/to/lib/libfoo.so
+				manually link individual libraries. intended for use by experts only.
+
+	- LD_DEBUG.
+		libs       display library search paths
+		reloc      display relocation processing
+		files      display progress for input file
+		symbols    display symbol table processing
+		bindings   display information about symbol binding
+		versions   display version dependencies
+		all        all previous options combined
+		statistics display relocation statistics
+		help       display this help message and exit
+
+		e.g.)
+			LD_DEBUG=help /path/to/executable
+
+	- ldd.
+		Print shared library dependencies.
+
+		e.g.)
+			ldd /usr/ls
+

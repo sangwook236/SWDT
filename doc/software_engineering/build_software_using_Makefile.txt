@@ -1,0 +1,11 @@
+[-] Building using Makefile
+	REF [project] >> ${GDT_HOME}/sw_dev/cpp/basic/test/simple_make_test
+
+	REF [file] >> building_software_in_linux.txt
+	REF [file] >> building_software_using_gcc.txt
+
+	- Build.
+		make -j4
+			The "-j4" is assuming that you have a 4-core CPU.
+		sudo make install
+		make clean

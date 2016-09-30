@@ -1,0 +1,24 @@
+[-] Win32(x86) or Win64(x64)
+	-. Win32(x86)
+		1. Use "Developer Command Prompt for VS20xx"
+		2. Use "VS20xx x86 Native Tools Command Prompt"
+		3. Use vcvars32.bat
+			Open Command Prompt.
+			Run C:/Program Files (x86)/Microsoft Visual Studio 1x.x/VC/bin/vcvars32.bat.
+
+	-. Win64(x64)
+		1. Use "VS20xx x64 Native Tools Command Prompt"
+		2. Use vcvars64.bat
+			Open Command Prompt
+			Run C:/Program Files (x86)/Microsoft Visual Studio 1x.x/VC/bin/amd64/vcvars64.bat.
+
+	-. Check system
+		Run "set Platform"
+		Run "set Framework"
+
+[-] Debug or release build
+	-. Debug build
+		nmake -f makefile.vc
+
+	-. Release build
+		nmake nodebug=1 -f makefile.vc

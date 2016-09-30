@@ -1,0 +1,20 @@
+[ref] http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-3.html
+[ref] http://www.tuxfiles.org/linuxhelp/iodirection.html
+
+
+-. stdin to file
+	cat < listing.txt
+
+-. stdout to file (rewriting)
+	ls > listing.txt
+-. stdout to file (appeding)
+	ls >> listing.txt
+-. stderr to file
+	ls 2> listing.txt
+-. stdout & stderr to file
+	ls &> listing.txt
+
+-. stdout to stderr
+	ls 1>&2
+-. stderr to stdout
+	ls 2>&1

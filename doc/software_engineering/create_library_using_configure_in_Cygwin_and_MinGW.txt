@@ -1,0 +1,29 @@
+[-] Building Static Library
+	run "Cygwin Bash" or "MSYS"
+	cd ${LIB_ROOT}
+	./configure
+		./configure --prefix=${LIB_INSTALL_DIR}
+	make
+		make -j4
+	(optional) make check
+	make install
+		sudo make install
+		sudo make PREFIX=${LIB_INSTALL_DIR} install
+
+	make clean
+		make distclean
+
+[-] Building Shared Library
+	run "Cygwin Bash" or "MSYS"
+	cd ${LIB_ROOT}
+	./configure
+		./configure --prefix=${LIB_INSTALL_DIR} --disable-static --enable-shared
+	make
+		make -j4
+	(optional) make check
+	make install
+		sudo make install
+		sudo make PREFIX=${LIB_INSTALL_DIR} install
+
+	make clean
+		make distclean

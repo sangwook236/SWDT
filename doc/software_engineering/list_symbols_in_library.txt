@@ -1,0 +1,24 @@
+[-] Static library
+	- Windows.
+		Use 7-zip.
+			Exported symbol이 txt file에 list.
+		lib /list my_library.lib | grep my_function
+		dumpbin /archivemembers my_library.lib | grep my_function
+	- Linux.
+		nm my_library.lib | grep my_function
+
+[-] Shared library
+	- Windows.
+		Use Dependency Walker.
+		dumpbin /exports my_library.dll | grep my_function
+	- Linux.
+		nm -D my_library.so | grep my_function
+		readelf --syms my_library.so | grep my_function
+
+[-] Import library
+	- Windows.
+		dumpbin /exports my_library.lib | grep my_function
+		dumpbin /archivemembers my_library.lib | grep my_function
+		Use 7-zip.
+			Shared library file 이름들이 list.
+			Exported symbol이 txt file에 list.

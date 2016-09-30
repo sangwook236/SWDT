@@ -1,0 +1,49 @@
+[-] Build
+	- Basic procedure.
+		1. Go to the root directory.
+		2. Run './configure'.
+			./configure --prefix=${LIB_INSTALL_DIR}
+		3. Run 'make' to compile sources.
+			make -j4
+			make --debug=FLAGS
+				where flags can be:
+					a for all debugging (same as make -d and make --debug).
+					b for basic debugging.
+					v for slightly more verbose basic debugging.
+					i for implicit rules.
+					j for invocation information.
+					m for information during makefile remakes.
+		4. Run 'make check' to compile and launch test suite (optionally).
+		5. Run 'make install' to install library.
+			sudo make install
+			sudo make PREFIX=${LIB_INSTALL_DIR} install
+	- Notes.
+		- Step 2 (Run './configure') should be run on initial or on compiler changing.
+		- If you want to install library to some directory instead of '/usr/local' (as default),
+			you can use '--prefix' option of 'configure' script
+			(run './configure -h' to read more)
+		- You can use object directory to build library.
+			In this case step 2 looks like 'SRCROOT/configure',
+			where 'SRCROOT' is relative path to source root directory
+		- If you have some error during compiling or if you want to view compiling message later,
+			run 'make 2>&1 | tee compiling.log' instead of 'make'
+
+[-] Archive file (*.a)
+	- ar.
+		: Create, modify, and extract from archives.
+		ar x libfoo.a
+			Extract members (object files) from archive.
+			Archive file에 포함된 object file (*.o)를 모두 추출해 냄.
+		ar r libfoo.a foo1.o foo2.o
+			Insert members (object files) into archive (with replacement).
+	- file.
+		: Determine file type.
+		file libfoo.a
+		file foo.o
+	- objdump.
+		: Display information from object files.
+		objdump -a libfoo.a
+	- nm.
+		: List symbols from object files.
+	- ranlib.
+		: Generate index to archive.

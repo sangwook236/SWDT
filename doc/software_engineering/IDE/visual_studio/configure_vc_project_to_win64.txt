@@ -1,0 +1,3 @@
+[-]
+	-. Configure Visual C++ Projects to Target 64-Bit Platforms
+		REF [site] >> https://msdn.microsoft.com/en-us/library/9yb4317s.aspx

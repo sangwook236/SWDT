@@ -1,0 +1,22 @@
+http://www.ayrware.com/articles/gdidoublebuffer.html
+
+    Bitmap memoryBitmap(rect.right - rect.left, rect.bottom - rect.top);
+
+    // Create a Graphics object that is associated with the image.
+    Graphics* canvas = Graphics::FromImage(&memoryBitmap);
+    Color backgroundColor(0xFF, 0xFF, 0xFF, 0xFF);
+    canvas->Clear(backgroundColor);
+
+    // Draw something.
+    Color foregroundColor(0x00, 0x00, 0x00, 0x00);
+    Pen pen(foregroundColor);
+    canvas->DrawLine(&pen, 0, 0, x, y);
+
+    // (1) When all drawing has been completed, a new graphics canvas should be created, but this time it should be associated with the actual output screen or window
+    Graphics* graphics = new Graphics(hWnd);
+    graphics->DrawImage(&memoryBitmap, rect.left, rect.top, rect.right, rect.bottom);
+
+    // (2) When all drawing has been completed, a new graphics canvas should be created, but this time it should be associated with the actual output screen or window
+    Graphics* graphics = new Graphics(hWnd);
+    CachedBitmap cachedBitmap(&memoryBitmap, graphics);
+    graphics->DrawCachedBitmap(&cachedBitmap, rect.left, rect.top, rect.right, rect.bottom);
