@@ -8,11 +8,11 @@
 		<Project filename="../test/file_format/file_format_cb10.cbp" />
 		<Project filename="../test/general_purpose_library/general_purpose_library_cb10.cbp" />
 		<Project filename="../test/geometry/geometry_cb10.cbp" />
-		<Project filename="../test/gpu_computation/gpu_computation_cb10.cbp" />
 		<Project filename="../test/graph/graph_cb10.cbp" />
 		<Project filename="../test/graphics_2d/graphics_2d_cb10.cbp" />
 		<Project filename="../test/graphics_3d/graphics_3d_cb10.cbp" />
 		<Project filename="../test/gui/gui_cb10.cbp" />
+		<Project filename="../test/high_performance_computing/high_performance_computing_cb10.cbp" />
 		<Project filename="../test/linear_algebra/linear_algebra_cb10.cbp" />
 		<Project filename="../test/logging/logging_cb10.cbp" />
 		<Project filename="../test/multilinear_algebra/multilinear_algebra_cb10.cbp" />

@@ -26,7 +26,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "visualization_vs10", "..\te
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphics_2d_vs10", "..\test\graphics_2d\graphics_2d_vs10.vcxproj", "{046579FF-F6FF-4378-BA3E-61951BD731FB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gpu_computation_vs10", "..\test\gpu_computation\gpu_computation_vs10.vcxproj", "{05AC83E8-E05E-46BA-8C19-CED811F98BC9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "high_performance_computing_vs10", "..\test\high_performance_computing\high_performance_computing_vs10.vcxproj", "{05AC83E8-E05E-46BA-8C19-CED811F98BC9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geometry_vs10", "..\test\geometry\geometry_vs10.vcxproj", "{0A59B6C2-56F9-4997-A8F2-E9A329CC4BA0}"
 EndProject

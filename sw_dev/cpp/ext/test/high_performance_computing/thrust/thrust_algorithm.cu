@@ -18,27 +18,27 @@ namespace local {
 
 void transform_1()
 {
-	// allocate three device_vectors with 10 elements
+	// Allocate three device_vectors with 10 elements.
 	thrust::device_vector<int> X(10);
 	thrust::device_vector<int> Y(10);
 	thrust::device_vector<int> Z(10);
 
-	// initialize X to 0,1,2,3, ....
+	// Initialize X to 0,1,2,3, ....
 	thrust::sequence(X.begin(), X.end());
 
-	// compute Y = -X
+	// Compute Y = -X.
 	thrust::transform(X.begin(), X.end(), Y.begin(), thrust::negate<int>());
 
-	// fill Z with twos
+	// Fill Z with twos.
 	thrust::fill(Z.begin(), Z.end(), 2);
 
-	// compute Y = X mod 2
+	// Compute Y = X mod 2.
 	thrust::transform(X.begin(), X.end(), Z.begin(), Y.begin(), thrust::modulus<int>());
 
-	// replace all the ones in Y with tens
+	// Replace all the ones in Y with tens
 	thrust::replace(Y.begin(), Y.end(), 1, 10);
 
-	// print Y
+	// Print Y.
 	thrust::copy(Y.begin(), Y.end(), std::ostream_iterator<int>(std::cout, ", "));
 	std::cout << std::endl;
 }
@@ -58,7 +58,7 @@ struct saxpy_functor
 
 void saxpy_fast(float A, thrust::device_vector<float> &X, thrust::device_vector<float> &Y)
 {
-	// Y <- A * X + Y
+	// Y <- A * X + Y.
 	thrust::transform(X.begin(), X.end(), Y.begin(), Y.begin(), saxpy_functor(A));
 }
 
@@ -66,11 +66,11 @@ void saxpy_slow(float A, thrust::device_vector<float> &X, thrust::device_vector<
 {
 	thrust::device_vector<float> temp(X.size());
 
-	// temp <- A
+	// temp <- A.
 	thrust::fill(temp.begin(), temp.end(), A);
-	// temp <- A * X
+	// temp <- A * X.
 	thrust::transform(X.begin(), X.end(), temp.begin(), temp.begin(), thrust::multiplies<float>());
-	// Y <- A * X + Y
+	// Y <- A * X + Y.
 	thrust::transform(temp.begin(), temp.end(), Y.begin(), Y.begin(), thrust::plus<float>());
 }
 
@@ -78,17 +78,17 @@ void transform_2()
 {
 	const float A = 2.0f;
 
-	// allocate three device_vectors with 10 elements
+	// Allocate three device_vectors with 10 elements.
 	thrust::device_vector<float> X(10);
 	thrust::device_vector<float> Y(10);
 
-	// initialize X & Y to 0,1,2,3, ....
+	// Initialize X & Y to 0,1,2,3, ....
 	thrust::sequence(X.begin(), X.end());
 	thrust::sequence(Y.begin(), Y.end());
 
 	saxpy_fast(A, X, Y);
 
-	// print Y
+	// Print Y.
 	thrust::copy(Y.begin(), Y.end(), std::ostream_iterator<int>(std::cout, ", "));
 	std::cout << std::endl;
 
@@ -97,34 +97,34 @@ void transform_2()
 
 	saxpy_fast(A, X, Y);
 
-	// print Y
+	// Print Y.
 	thrust::copy(Y.begin(), Y.end(), std::ostream_iterator<int>(std::cout, ", "));
 	std::cout << std::endl;
 }
 
 void reduce_1()
 {
-	// allocate three device_vectors with 10 elements
+	// Allocate three device_vectors with 10 elements.
 	thrust::device_vector<int> D(10);
 
-	// initialize D to 0,1,2,3, ....
+	// Initialize D to 0,1,2,3, ....
 	thrust::sequence(D.begin(), D.end());
 
 	const int sum = thrust::reduce(D.begin(), D.end(), 0, thrust::plus<int>());
 	std::cout << "sum = " << sum << std::endl;
 
-	// put three 1s in a device_vector
+	// Put three 1s in a device_vector.
 	thrust::device_vector<int> dev_vec(5,0);
 	dev_vec[1] = 1;
 	dev_vec[3] = 1;
 	dev_vec[4] = 1;
 
-	// count the 1s
+	// Count the 1s.
 	const int count = thrust::count(dev_vec.begin(), dev_vec.end(), 1);
 	std::cout << "count = " << count << std::endl;
 }
 
-// square<T> computes the square of a number f(x) -> x*x
+// square<T> computes the square of a number f(x) -> x*x.
 template <typename T>
 struct square
 {
@@ -137,13 +137,13 @@ struct square
 
 void reduce_2()
 {
-	// initialize host array
+	// Initialize host array.
 	const float x[4] = { 1.0f, 2.0f, 3.0f, 4.0f };
 
-	// transfer to device
+	// Transfer to device.
 	thrust::device_vector<float> dev_vec(x, x + 4);
 
-	// compute norm
+	// Compute norm.
 	const float init = 0;
 	const float norm = std::sqrt(thrust::transform_reduce(dev_vec.begin(), dev_vec.end(), square<float>(), init, thrust::plus<float>()));
 	std::cout << "norm = " << norm << std::endl;
@@ -167,15 +167,15 @@ namespace my_thrust {
 
 void algorithm()
 {
-	// transform algorithm --------------------------------
+	// Transform algorithm --------------------------------
 	local::transform_1();
 	local::transform_2();
 
-	// reduce algorithm -----------------------------------
+	// Reduce algorithm -----------------------------------
 	local::reduce_1();
 	local::reduce_2();
 
-	// scan operation -------------------------------------
+	// Scan operation -------------------------------------
 	{
 		//
 		int data1[6] = { 1, 0, 2, 2, 1, 3 };
@@ -190,7 +190,7 @@ void algorithm()
 		std::cout << std::endl;
 	}
 
-	// sorting --------------------------------------------
+	// Sorting --------------------------------------------
 	{
 		const int N = 6;
 
@@ -222,27 +222,27 @@ void algorithm()
 
 	// for_each -------------------------------------------
 	{
-		// allocate storage
+		// Allocate storage.
 		thrust::device_vector<float> A(5);
 		thrust::device_vector<float> B(5);
 		thrust::device_vector<float> C(5);
 		thrust::device_vector<float> D(5);
 
-		// initialize input vectors
+		// Initialize input vectors.
 		A[0] = 3;  B[0] = 6;  C[0] = 2; 
 		A[1] = 4;  B[1] = 7;  C[1] = 5; 
 		A[2] = 0;  B[2] = 2;  C[2] = 7; 
 		A[3] = 8;  B[3] = 1;  C[3] = 4; 
 		A[4] = 2;  B[4] = 8;  C[4] = 3; 
 
-		// apply the transformation
+		// Apply the transformation.
 		thrust::for_each(
 			thrust::make_zip_iterator(thrust::make_tuple(A.begin(), B.begin(), C.begin(), D.begin())),
 			thrust::make_zip_iterator(thrust::make_tuple(A.end(),   B.end(),   C.end(),   D.end())),
 			local::arbitrary_functor()
 		);
 
-		// print the output
+		// Print the output.
 		for (int i = 0; i < 5; i++)
 			std::cout << A[i] << " + " << B[i] << " * " << C[i] << " = " << D[i] << std::endl;
 	}

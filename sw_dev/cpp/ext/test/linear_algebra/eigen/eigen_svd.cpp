@@ -18,37 +18,35 @@ void svd()
 	typedef Eigen::Matrix<double, nrow, ncol> MatrixType;
 
 	MatrixType m = MatrixType::Random();
-	std::cout << "matrix m:" << std::endl << m << std::endl;
+	std::cout << "Matrix m:" << std::endl << m << std::endl;
 
-	// MxN matrix, K=min(M,N), M>=N
+	// MxN matrix, K=min(M,N), M>=N.
 	//const Eigen::SVD<MatrixType> svd(m);
-	const Eigen::JacobiSVD<MatrixType> svd = m.jacobiSvd();
-	std::cout << "singular value decomposition:" << std::endl;
+	const Eigen::JacobiSVD<MatrixType> svd = m.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV);
+	std::cout << "Singular value decomposition:" << std::endl;
 
-	// K vector
-	std::cout << "singular values:" << std::endl;
+	// Singular values: K vector.
+	std::cout << "Singular values:" << std::endl;
 	const Eigen::Matrix<double, ncol, 1> &sigmas = svd.singularValues();
 	std::cout << sigmas << std::endl;
-	std::cout << "singular value matrix:" << std::endl;
+	std::cout << "Singular value matrix:" << std::endl;
 	const Eigen::DiagonalMatrix<double, ncol> &S = sigmas.asDiagonal();
-	//const Eigen::DiagonalMatrix<Eigen::VectorXd> &S = sigmas.asDiagonal();  // error !!!
+	//const Eigen::DiagonalMatrix<Eigen::VectorXd> &S = sigmas.asDiagonal();  // Error !!!
 	std::cout << Eigen::Matrix<double, ncol, ncol>(S) << std::endl;
 
-	// MxK matrix
-	std::cout << "left singular vectors:" << std::endl;
+	// Left singular vectors: MxK matrix.
+	std::cout << "Left singular vectors:" << std::endl;
 	const Eigen::JacobiSVD<MatrixType>::MatrixUType &U = svd.matrixU();
 	std::cout << U << std::endl;
 
-	// KxN matrix
-	std::cout << "right singular vectors:" << std::endl;
+	// Right singular vectors: KxN matrix.
+	std::cout << "Right singular vectors:" << std::endl;
 	const Eigen::JacobiSVD<MatrixType>::MatrixVType &V = svd.matrixV();
 	std::cout << V << std::endl;
 
-	// FIXME [correct] >> compile-time error
-/*
-	std::cout << "reconstruct the original matrix m:" << std::endl;
-	std::cout << U * S * V.transpose() << std::endl;
-*/
+	// Reconstruct.
+	std::cout << "Reconstruct the original matrix m:" << std::endl;
+	std::cout << U * S * V << std::endl;
 }
 
 }  // namespace my_eigen

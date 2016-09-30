@@ -57,7 +57,7 @@
 			-fPIC
 		Shared library:
 			../configure --prefix=./install --shared
-			../configure --prefix=./install --shared -Si nocygwin 1
+			../configure --prefix=./install --shared -Si nocygwin 1 ==> **가장 추천**.
 		Static library:
 			../configure --prefix=./install
 			../configure --prefix=./install -Si nocygwin 1
@@ -80,13 +80,17 @@
 				e.g.) /usr/local directory에 설치하는 경우.
 				cygwin을 관리자 권한으로 실행해야 함.
 	- Create import library.
-		For 32-bit:
-			lib.exe /nologo /machine:x86 /def:libtatlas.def
-			lib.exe /nologo /machine:x86 /def:libsatlas.def
-		For 64-bit:
-			lib.exe /nologo /machine:x64 /def:libtatlas.def
-			lib.exe /nologo /machine:x64 /def:libsatlas.def
-		REF [doc] >> "Creating MSVC++ compatible import libraries" section in ${ATLAS_HOME}/doc/atlas_install.pdf
+		1. ATLAS library가 생성해주는 def files (libtatlas.def & libsatlas.def)를 사용하는 경우.
+			For 32-bit:
+				lib.exe /nologo /machine:x86 /def:libtatlas.def
+				lib.exe /nologo /machine:x86 /def:libsatlas.def
+			For 64-bit:
+				lib.exe /nologo /machine:x64 /def:libtatlas.def
+				lib.exe /nologo /machine:x64 /def:libsatlas.def
+			REF [doc] >> "Creating MSVC++ compatible import libraries" section in ${ATLAS_HOME}/doc/atlas_install.pdf
+			==> VC++에서 정상적으로 link가 되지 않음.
+		2. dumpbin.exe를 이용해 def files을 직접 생성하는 경우.
+			REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
 
 [-] Build (Cygwin).
 	REF [doc] >> ${ATLAS_HOME}/doc/atlas_install.pdf
@@ -122,7 +126,7 @@
 	- Make a build directory.
 		mkdir ${ATLAS_BUILD_DIR}
 		cd ${ATLAS_BUILD_DIR}
-			e.g.) ${ATLAS_BUILD_DIR} = build_cyg인 경우
+			e.g.) ${ATLAS_BUILD_DIR} = build_cyg인 경우.
 				mkdir build_cyg
 				cd build_cyg
 	- (Optional) specify the MinGW binutils to use.

@@ -19,6 +19,9 @@
     <Filter Include="Source Files\thrust">
       <UniqueIdentifier>{aafc36b9-fabc-44a0-b501-3050676dfd5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\vexcl">
+      <UniqueIdentifier>{0f5e504a-f8eb-4a40-ab92-f72a7161db2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cuda\cuda_main.cpp">
@@ -32,6 +35,9 @@
     </ClCompile>
     <ClCompile Include="thrust\thrust_main.cpp">
       <Filter>Source Files\thrust</Filter>
+    </ClCompile>
+    <ClCompile Include="vexcl\vexcl_main.cpp">
+      <Filter>Source Files\vexcl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -31,7 +31,7 @@ void matrix_arithmetic_2()
 	B.set_size(10, 10);
 	B.zeros(5, 6);
 
-	// fixed size matrices
+	// Fixed size matrices.
 	arma::mat::fixed<5, 6> F;
 	F.ones();
 
@@ -40,7 +40,7 @@ void matrix_arithmetic_2()
 
 	std::cout << arma::mat22().randu() << std::endl;
 
-	// constructing matrices from auxiliary (external) memory
+	// Construct matrices from auxiliary (external) memory.
 	double aux_mem[24];
 	arma::mat H(aux_mem, 4, 6, false);
 }

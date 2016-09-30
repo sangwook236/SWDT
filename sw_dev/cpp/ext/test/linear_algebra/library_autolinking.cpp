@@ -4,17 +4,23 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "atlas_kml.lib")
-#pragma comment(lib, "cvm_ia32_debug.lib")
-#pragma comment(lib, "tmglib_d.lib")
-#pragma comment(lib, "lapack_d.lib")
-#pragma comment(lib, "blas_d.lib")
-#pragma comment(lib, "libf2c_d.lib")
+//#pragma comment(lib, "cvm_ia32_debug.lib")
+
+//#pragma comment(lib, "cblasd.lib")
+#pragma comment(lib, "libtatlas.dll.lib")
+//#pragma comment(lib, "libsatlas.dll.lib")
+#pragma comment(lib, "tmglibd.lib")
+#pragma comment(lib, "lapackd.lib")
+#pragma comment(lib, "blasd.lib")
+#pragma comment(lib, "libf2cd.lib")
 
 #		else
 
-#pragma comment(lib, "atlas_kml.lib")
-#pragma comment(lib, "cvm_ia32.lib")
+//#pragma comment(lib, "cvm_ia32.lib")
+
+//#pragma comment(lib, "cblas.lib")
+#pragma comment(lib, "libtatlas.dll.lib")
+//#pragma comment(lib, "libsatlas.dll.lib")
 #pragma comment(lib, "tmglib.lib")
 #pragma comment(lib, "lapack.lib")
 #pragma comment(lib, "blas.lib")

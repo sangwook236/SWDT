@@ -17,9 +17,12 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "Sophus library -------------------------------------------------------" << std::endl;
-		//	-. Lie Groups.
-		//retval = sophus_main(argc, argv);  // not yet implemented.
+		std::cout << "Boost.Geometry & Boost.Polygon libraries -----------------------------" << std::endl;
+		//	REF [library] >> Boost library.
+
+		std::cout << "\Sophus library -------------------------------------------------------" << std::endl;
+		//	- Lie Groups.
+		//retval = sophus_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nComputational Geometry Algorithms Library (CGAl) --------------------" << std::endl;
 		retval = cgal_main(argc, argv);

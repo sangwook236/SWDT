@@ -34,14 +34,14 @@ void polygon2()
 	point_type points[] = { point_type(0,0), point_type(5.1,0), point_type(1,1), point_type(0.5,6) };
 	polygon_type pgn(points, points + 4);
 
-	// check if the polygon is simple.
+	// Check if the polygon is simple.
 	std::cout << "The polygon is " << (pgn.is_simple() ? "" : "not ") << "simple." << std::endl;
 	std::cout << "The polygon is " << (CGAL::is_simple_2(points, points + 4, kernel_type()) ? "" : "not ") << "simple." << std::endl;
 
-	// check if the polygon is convex
+	// Check if the polygon is convex
 	std::cout << "The polygon is " << (pgn.is_convex() ? "" : "not ") << "convex." << std::endl;
 
-	// check if the polygon is simple.
+	// Check if the polygon is simple.
 #if defined(__GNUC__)
     {
         point_type pt1(0.5, 0.5);

@@ -64,6 +64,7 @@
 		<Unit filename="eigen/eigen_basic_operation.cpp" />
 		<Unit filename="eigen/eigen_cholesky.cpp" />
 		<Unit filename="eigen/eigen_evd.cpp" />
+		<Unit filename="eigen/eigen_least_squares.cpp" />
 		<Unit filename="eigen/eigen_linear_system.cpp" />
 		<Unit filename="eigen/eigen_lu.cpp" />
 		<Unit filename="eigen/eigen_main.cpp" />

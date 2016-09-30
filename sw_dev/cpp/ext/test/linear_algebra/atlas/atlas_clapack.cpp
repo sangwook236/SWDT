@@ -1,10 +1,7 @@
-//#include "stdafx.h"
 #if defined(__cplusplus)
 extern "C" {
 #endif
-
-#include <atlas/clapack.h>
-
+#include <clapack.h>
 #if defined(__cplusplus)
 }
 #endif
@@ -39,11 +36,11 @@ void clapack()
 #if 1
 	const int info = clapack_dgesv(CblasRowMajor, 3, 1, m, 3, ipiv, x, 3);
 #else
-    // FIXME [correct] >>
-	const int info = dgesv_(CblasRowMajor, 3, 1, m, 3, ipiv, x, 3);
+    // FIXME [correct] >> ATLAS library does't support this function.
+	const int info = dgesv(CblasRowMajor, 3, 1, m, 3, ipiv, x, 3);
 #endif
 	if (info != 0)
-		std::cerr << "failure with error: " << info << std::endl;;
+		std::cerr << "Failure with error: " << info << std::endl;;
 
 	for (int i = 0; i < 3; ++i)
 		std::cout << x[i] << ", " << ipiv[i] << std::endl;

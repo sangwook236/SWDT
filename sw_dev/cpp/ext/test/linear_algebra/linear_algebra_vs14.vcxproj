@@ -53,7 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/atlas;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/armadillo-7.400.2;$(MY_USR_LOCAL_INCLUDE)/atlas3.10.3;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -71,7 +71,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/atlas;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/armadillo-7.400.2;$(MY_USR_LOCAL_INCLUDE)/atlas3.10.3;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -90,19 +90,50 @@
     <ClCompile Include="atlas\atlas_cblas.cpp" />
     <ClCompile Include="atlas\atlas_clapack.cpp" />
     <ClCompile Include="atlas\atlas_main.cpp" />
-    <ClCompile Include="cvm\cvm_cholesky.cpp" />
-    <ClCompile Include="cvm\cvm_eigen.cpp" />
-    <ClCompile Include="cvm\cvm_lu.cpp" />
-    <ClCompile Include="cvm\cvm_main.cpp" />
-    <ClCompile Include="cvm\cvm_matrix_function.cpp" />
-    <ClCompile Include="cvm\cvm_matrix_operation.cpp" />
-    <ClCompile Include="cvm\cvm_qr.cpp" />
-    <ClCompile Include="cvm\cvm_svd.cpp" />
-    <ClCompile Include="cvm\cvm_vector_function.cpp" />
-    <ClCompile Include="cvm\cvm_vector_operation.cpp" />
+    <ClCompile Include="cvm\cvm_cholesky.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_eigen.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_lu.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_matrix_function.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_matrix_operation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_qr.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_svd.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_vector_function.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="cvm\cvm_vector_operation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="eigen\eigen_basic_operation.cpp" />
     <ClCompile Include="eigen\eigen_cholesky.cpp" />
     <ClCompile Include="eigen\eigen_evd.cpp" />
+    <ClCompile Include="eigen\eigen_least_squares.cpp" />
     <ClCompile Include="eigen\eigen_linear_system.cpp" />
     <ClCompile Include="eigen\eigen_lu.cpp" />
     <ClCompile Include="eigen\eigen_main.cpp" />
@@ -113,9 +144,18 @@
     <ClCompile Include="lapack\lapack_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mtl\mtl_main.cpp" />
-    <ClCompile Include="mtl\mtl_matrix_operation.cpp" />
-    <ClCompile Include="mtl\mtl_vector_operation.cpp" />
+    <ClCompile Include="mtl\mtl_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="mtl\mtl_matrix_operation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="mtl\mtl_vector_operation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="newmat\newmat_main.cpp" />
     <ClCompile Include="suitesparse\suitesparse_main.cpp" />
     <ClCompile Include="viennacl\viennacl_main.cpp" />

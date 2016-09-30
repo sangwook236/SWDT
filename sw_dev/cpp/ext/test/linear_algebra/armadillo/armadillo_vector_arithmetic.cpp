@@ -18,7 +18,7 @@ void vector_arithmetic_1()
 	arma::vec y = arma::zeros<arma::vec>(10, 1);
 
 	arma::mat A = arma::randu<arma::mat>(10, 10);
-	arma::vec z = A.col(5);  // extract a column vector
+	arma::vec z = A.col(5);  // Extract a column vector.
 
 	std::cout << z << std::endl;
 }

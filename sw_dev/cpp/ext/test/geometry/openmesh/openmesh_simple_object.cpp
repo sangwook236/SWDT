@@ -11,7 +11,7 @@ void cube()
 
 	MyMesh mesh;
 
-	// generate vertices
+	// Generate vertices.
 
 	MyMesh::VertexHandle vhandle[8];
 
@@ -25,7 +25,7 @@ void cube()
 	vhandle[7] = mesh.add_vertex(MyMesh::Point(-1,  1, -1));
 
 
-	// generate (quadrilateral) faces
+	// Generate (quadrilateral) faces.
 
 	std::vector<MyMesh::VertexHandle>  face_vhandles;
 
@@ -72,7 +72,7 @@ void cube()
 	mesh.add_face(face_vhandles);
 
 
-	// write mesh to output.obj
+	// Write mesh to output.obj.
 	if (!OpenMesh::IO::write_mesh(mesh, "./data/geometry/openmesh/output.off") )
 		std::cerr << "Cannot write mesh to file 'output.off'" << std::endl;
 }

@@ -18,7 +18,7 @@ void qr()
 	typedef Eigen::Matrix<double, nrow, ncol> MatrixType;
 
 	MatrixType m = MatrixType::Random();
-	std::cout << "matrix m:" << std::endl << m << std::endl;
+	std::cout << "Matrix m:" << std::endl << m << std::endl;
 
 	// MxN matrix, K=min(M,N), M>=N
 	//const Eigen::QR<MatrixType> qr(m);

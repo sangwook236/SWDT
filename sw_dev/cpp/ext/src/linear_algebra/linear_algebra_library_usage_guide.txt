@@ -59,10 +59,10 @@
 			libsatlas.dll
 			libtatlas.dll
 		Features:
-			'cblas_'로 시작하는 함수와 시작하지 않는 함수 모두 제공.
-				e.g.) cblas_sgemm, sgemm_
-			'clapack_'로 시작하는 함수와 시작하지 않는 함수 모두 제공.
-				e.g.) clapack_dgesv, dgesv_
+			'cblas_'로 시작하는 함수 제공.
+				e.g.) cblas_sgemm
+			'clapack_'로 시작하는 함수 제공.
+				e.g.) clapack_dgesv
 	- Eigen.
 		BLAS & LAPACK의 function 대부분을 가지고 있지 않음.
 		Library files:

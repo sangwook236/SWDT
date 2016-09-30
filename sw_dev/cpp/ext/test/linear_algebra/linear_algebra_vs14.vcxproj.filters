@@ -109,6 +109,9 @@
     <ClCompile Include="suitesparse\suitesparse_main.cpp">
       <Filter>Source Files\suitesparse</Filter>
     </ClCompile>
+    <ClCompile Include="eigen\eigen_least_squares.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

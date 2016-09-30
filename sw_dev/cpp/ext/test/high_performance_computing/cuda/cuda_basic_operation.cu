@@ -28,17 +28,17 @@ void basic_operation()
 
 		int *device_memory = NULL;
 
-		// allocate memory in device
+		// Allocate memory in device.
 		cudaMalloc((void **)&device_memory, 5 * sizeof(int));
 
-		// host -> device
+		// Host -> device.
 		cudaMemcpy(device_memory, input_data, 5 * sizeof(int), cudaMemcpyHostToDevice);
 
-		// device -> host
+		// Device -> host.
 		cudaMemcpy(output_data, device_memory, 5 * sizeof(int), cudaMemcpyDeviceToHost);
 
 		for (int i = 0; i < 5; ++i)
-			std::cout << "output data[" << i << "] = " << output_data[i] << std::endl;
+			std::cout << "Output data[" << i << "] = " << output_data[i] << std::endl;
 
 		cudaFree(device_memory);
 	}
@@ -50,11 +50,11 @@ void basic_operation()
 		local::simple_kernel_function<<<6,6>>>(1, 2, 3, sum_in_device);
 
 #if 0
-		// run-time error: access to device memory
+		// Run-time error: access to device memory.
 		std::cout << "CUDA kernel function => sum = " << *sum_in_device << std::endl;
 #else
-		// device -> host
-		// not correctly working
+		// Device -> host.
+		// Not correctly working.
 		int sum = 0;
 		cudaMemcpy(sum_in_device, &sum, sizeof(int), cudaMemcpyDeviceToHost);
 		std::cout << "CUDA kernel function => sum = " << sum << std::endl;

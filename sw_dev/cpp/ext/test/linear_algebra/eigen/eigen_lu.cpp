@@ -16,7 +16,7 @@ void lu_1()
 	typedef Eigen::Matrix<double, 5, 5> Matrix5x5;
 
 	Matrix5x3 m = Matrix5x3::Random();
-	std::cout << "matrix m:" << std::endl << m << std::endl;
+	std::cout << "Matrix m:" << std::endl << m << std::endl;
 
 	//const Eigen::LU<Matrix5x3> lu(m);
 	const Eigen::PartialPivLU<Matrix5x3> lu = m.lu();
@@ -31,15 +31,15 @@ void lu_1()
 	Matrix5x3 u = lu.matrixLU().triangularView<Eigen::Upper>();
 	std::cout << u << std::endl;
 
-	// FIXME [correct] >> compile-time error: not exactly working
+	// FIXME [correct] >> Compile-time error: not exactly working.
 /*
-	std::cout << "reconstruct the original matrix m:" << std::endl;
+	std::cout << "Reconstruct the original matrix m:" << std::endl;
 	Matrix5x3 x = l * u;
 	Matrix5x3 y;
 	for (int i = 0; i < 5; ++i)
-		for(int j = 0; j < 3; ++j)
+		for (int j = 0; j < 3; ++j)
 			y(i, lu.permutationQ()[j]) = x(lu.permutationP()[i], j);
-	std::cout << y << std::endl;  // should be equal to the original matrix m
+	std::cout << y << std::endl;  // Should be equal to the original matrix m.
 */
 }
 
@@ -52,7 +52,7 @@ void lu_2()
     Eigen::FullPivLU<Eigen::Matrix3f> lu_decomp(A);
     std::cout << "The rank of A is " << lu_decomp.rank() << std::endl;
     std::cout << "Here is a matrix whose columns form a basis of the null-space of A:\n" << lu_decomp.kernel() << std::endl;
-    std::cout << "Here is a matrix whose columns form a basis of the column-space of A:\n" << lu_decomp.image(A) << std::endl; // yes, have to pass the original A
+    std::cout << "Here is a matrix whose columns form a basis of the column-space of A:\n" << lu_decomp.image(A) << std::endl;  // Yes, have to pass the original A.
 }
 
 void lu_3()
@@ -69,9 +69,9 @@ void lu_3()
 }  // namespace local
 }  // unnamed namespace
 
-namespace eigen {
+namespace my_eigen {
 
-void my_lu()
+void lu()
 {
     local::lu_1();
     local::lu_2();

@@ -9,17 +9,24 @@
 
 int main(int argc, char *argv[])
 {
-    int cuda_main(int argc, char *argv[]);
+    int vexcl_main(int argc, char *argv[]);
     int thrust_main(int argc, char *argv[]);
+    int cuda_main(int argc, char *argv[]);
 
     int retval = EXIT_SUCCESS;
     try
     {
-		std::cout << "Compute Unified Device Architecture (CUDA) --------------------------" << std::endl;
-        retval = cuda_main(argc, argv);
+		std::cout << "Boost.Compute library -----------------------------------------------" << std::endl;
+		//	REF [library] >> Boost library.
+
+		std::cout << "\nVexCL library -------------------------------------------------------" << std::endl;
+        //retval = vexcl_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nThrust library ------------------------------------------------------" << std::endl;
         //retval = thrust_main(argc, argv);
+
+		std::cout << "\nCompute Unified Device Architecture (CUDA) --------------------------" << std::endl;
+        retval = cuda_main(argc, argv);
     }
     catch (const std::bad_alloc &e)
     {
