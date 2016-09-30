@@ -23,6 +23,6 @@ GDT includes various programming languages and hardware components:
     * ARM: Raspberry Pi, STM32, AT91SAM
     * AVR: ATmega128
 
-# GDT Wiki
-- [Documentation Wiki](https://github.com/sangwook236/general-development-and-testing/wiki/Home)
+# Wikis
+- [Sang-Wook's Wiki](https://github.com/sangwook236/general-development-and-testing/wiki/Home)
 
