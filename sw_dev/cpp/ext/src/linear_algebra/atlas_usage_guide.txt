@@ -22,6 +22,13 @@
 			ATLAS's threaded libs.
 			All parallel APIs (parallel LAPACK and parallel BLAS).
 
+	- Run executables linked with ATLAS (shared) libraries.
+	    ATLAS (shared) library와 link된 executable을 실행하기 위해서는 아래의 library가 있어야 함.
+			libgcc_s_dw2-1.dll
+			libgfortran-3.dll
+			libquadmath-0.dll
+		==> Cygwin에서 제공.
+
 [-] Build ver. 3.10.3 (Cygwin + Win32/64).
 	REF [doc] >> ${ATLAS_HOME}/doc/atlas_install.pdf
 		"Special Instruction for Windows" sub-chapter.
@@ -68,7 +75,7 @@
 		Edit ${ATLAS_BUILD_DIR}/Make.inc.
 			Look for XCCFLAGS.
 			Change -m32 to -m64.
-				==> '-b 32' option을 지정하면 -m32 생성.
+		==> '-b 32' option을 지정하면 -m32 option을 가지는 file이 생성.
 		REF [doc] >> "Building 32-bit libraries on 64-bit Windows and cygwin64" section in ${ATLAS_HOME}/doc/atlas_install.pdf
 	- Revise ${ATLAS_BUILD_DIR}/Make.top.
 		REF [] >> Trouble shooting (Cygwin) (ver. 3.10.3).
@@ -93,11 +100,8 @@
 			==> VC++에서 정상적으로 link가 되지 않음.
 		2. dumpbin.exe를 이용해 def files을 직접 생성하는 경우.
 			REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
-	==> Built된 ATLAS (shared) library를 사용하기 위해서는 아래의 library가 있어야 함.
-		libgcc_s_dw2-1.dll
-		libgfortran-3.dll
-		libquadmath-0.dll
-		==> Cygwin에서 제공.
+	- Run executables linked with ATLAS (shared) libraries.
+		REF [] >> Usage section.
 
 [-] Build (Cygwin).
 	REF [doc] >> ${ATLAS_HOME}/doc/atlas_install.pdf
