@@ -32,26 +32,26 @@ int main(int argc, char* argv[])
 		//retval = armadillo_main(argc, argv);
 
 		std::cout << "\nNewmat C++ matrix library -------------------------------------------" << std::endl;
-		//retval = newmat_main(argc, argv);  // not yet implemented.
+		//retval = newmat_main(argc, argv);  // Not yet implemented.
 		std::cout << "\nCVM Class Library ---------------------------------------------------" << std::endl;
 		//retval = cvm_main(argc, argv);
 
 		std::cout << "\nMatrix Template Library (MTL) ---------------------------------------" << std::endl;
-		//retval = suitesparse_main(argc, argv);  // not yet implemented.
+		//retval = suitesparse_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nSuiteSparse library -------------------------------------------------" << std::endl;
 		//retval = mtl_main(argc, argv);
 
 		std::cout << "\nThe Vienna Computing Library (ViennaCL) -----------------------------" << std::endl;
-		//	-. incomplete LU factorization (ILU).
-		//	-. eigenproblem.
-		//		bisection.
-		//		iterative solver.
-		//			power iteration.
+		//	- Incomplete LU factorization (ILU).
+		//	- Eigenproblem.
+		//		Bisection.
+		//		Iterative solver.
+		//			Power iteration.
 		//			Lanczos algorithm.
-		//	-. nonnegative matrix factorization (NMF).
-		//	-. fast Fourier transform (FFT).
-		//retval = viennacl_main(argc, argv);  // not yet implemented.
+		//	- Nonnegative matrix factorization (NMF).
+		//	- Fast Fourier transform (FFT).
+		//retval = viennacl_main(argc, argv);  // Not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{

@@ -51,16 +51,18 @@
 	- Configure library.
 		Options:
 			-Si nocygwin 1
-			-b 32 ==> pointer bitwidth.
+			-b 32
 			-D c -DPentiumCPS=2833
 			-Fa alg
 			-fPIC
 		Shared library:
+			../configure --prefix=./install --shared -Si nocygwin 1 ==> For 64-bit.
+			../configure --prefix=./install --shared -Si nocygwin 1 -b 32 ==> For 32-bit.
 			../configure --prefix=./install --shared
-			../configure --prefix=./install --shared -Si nocygwin 1 ==> **가장 추천**.
 		Static library:
+			../configure --prefix=./install -Si nocygwin 1 ==> For 64-bit.
+			../configure --prefix=./install -Si nocygwin 1 -b 32 ==> For 32-bit.
 			../configure --prefix=./install
-			../configure --prefix=./install -Si nocygwin 1
 		==> configure를 실행하면 error가 발생되는 경우가 있는데, 생성된 file을 모두 삭제 후 재실행하면 되는 경우가 있음.
 	- (Optional) build 32-bit libraries on cygwin64.
 		Edit ${ATLAS_BUILD_DIR}/Make.inc.
@@ -91,6 +93,11 @@
 			==> VC++에서 정상적으로 link가 되지 않음.
 		2. dumpbin.exe를 이용해 def files을 직접 생성하는 경우.
 			REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+	==> Built된 ATLAS (shared) library를 사용하기 위해서는 아래의 library가 있어야 함.
+		libgcc_s_dw2-1.dll
+		libgfortran-3.dll
+		libquadmath-0.dll
+		==> Cygwin에서 제공.
 
 [-] Build (Cygwin).
 	REF [doc] >> ${ATLAS_HOME}/doc/atlas_install.pdf

@@ -7,8 +7,8 @@
 //#pragma comment(lib, "cvm_ia32_debug.lib")
 
 //#pragma comment(lib, "cblasd.lib")
-#pragma comment(lib, "libtatlas.dll.lib")
-//#pragma comment(lib, "libsatlas.dll.lib")
+#pragma comment(lib, "libtatlas.lib")
+//#pragma comment(lib, "libsatlas.lib")
 #pragma comment(lib, "tmglibd.lib")
 #pragma comment(lib, "lapackd.lib")
 #pragma comment(lib, "blasd.lib")
@@ -19,8 +19,8 @@
 //#pragma comment(lib, "cvm_ia32.lib")
 
 //#pragma comment(lib, "cblas.lib")
-#pragma comment(lib, "libtatlas.dll.lib")
-//#pragma comment(lib, "libsatlas.dll.lib")
+#pragma comment(lib, "libtatlas.lib")
+//#pragma comment(lib, "libsatlas.lib")
 #pragma comment(lib, "tmglib.lib")
 #pragma comment(lib, "lapack.lib")
 #pragma comment(lib, "blas.lib")
