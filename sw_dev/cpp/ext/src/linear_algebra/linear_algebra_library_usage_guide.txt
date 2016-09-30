@@ -8,7 +8,7 @@
 		Features:
 			'cblas_'로 시작하는 함수와 시작하지 않는 함수 모두 제공.
 				e.g.) _sgemm_, _cblas_sgemm
-			'lapack_'로 시작하는 함수와 시작하지 않는 함수 제공.
+			'lapack_'로 시작하는 함수와 시작하지 않는 함수 제공. (?)
 				e.g.) _cheev
 	- OpenBLAS.
 		(Windows) Cygwin을 이용해서 build 후 사용.
@@ -48,15 +48,21 @@
 			'clapack_'로 시작하지 않는 함수 제공.
 				e.g.) _cheev_
 	- ATLAS.
-		atlas3.9.72 version의 static library 사용.
+		atlas3.10.3 version의 static library 사용.
 		Library files:
-			f77blas.a
-			cblas.a
-			lapack.a
-			atlas.a
+			libf77blas.a
+			libptf77blas.a
+			libcblas.a
+			libptcblas.a
+			liblapack.a
+			libatlas.a
+			libsatlas.dll
+			libtatlas.dll
 		Features:
-			'cblas_'로 시작하는 함수 제공.
-			'clapack_'로 시작하는 함수 제공.
+			'cblas_'로 시작하는 함수와 시작하지 않는 함수 모두 제공.
+				e.g.) cblas_sgemm, sgemm_
+			'clapack_'로 시작하는 함수와 시작하지 않는 함수 모두 제공.
+				e.g.) clapack_dgesv, dgesv_
 	- Eigen.
 		BLAS & LAPACK의 function 대부분을 가지고 있지 않음.
 		Library files:
@@ -66,7 +72,7 @@
 			'cblas_'로 시작하지 않는 함수 제공. (?)
 			'clapack_'로 시작하지 않는 함수 제공. (?)
 	- GSL.
-		gsl-1.15 version의 static library 사용.
+		GSL-1.15 version의 static library 사용.
 		Library files:
 			cblas.a/lib
 			cblas.so/dll

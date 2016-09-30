@@ -1,18 +1,18 @@
-[-] General
-    -. Site
-	https://github.com/strasdat/Sophus
-	http://wiki.ros.org/sophus
+[-] General.
+    - Site.
+		https://github.com/strasdat/Sophus
+		http://wiki.ros.org/sophus
 
-[-] Building (VC10)
-    -. Building is not accomplished
+[-] Building (VC10).
+    - Building is not accomplished.
 
-[-] Building (VC 12)
-    -. math macro, M_PI_2, is not defined
-        add a define, _USE_MATH_DEFINES
-    -. EIGEN_DEPRECATED
-        before:
+[-] Building (VC12).
+    - Math macro, M_PI_2, is not defined.
+        Add a define, _USE_MATH_DEFINES.
+    - EIGEN_DEPRECATED.
+        <before>
             typedef SO2Group<double> SO2 EIGEN_DEPRECATED;
-        after:
+        <after>
             #if defined(_MSC_VER)
             EIGEN_DEPRECATED typedef SO2Group<double> SO2;
             #else

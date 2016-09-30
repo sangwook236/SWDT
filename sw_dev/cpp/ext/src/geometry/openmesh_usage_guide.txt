@@ -1,9 +1,9 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.openmesh.org/
 
-[-] Setting CMake
-	-. OpenMesh library의 기본 설정은 debug build임.
+[-] Setting (CMake).
+	- OpenMesh library의 기본 설정은 debug build임.
 		==> release build를 수행하기 위해서는 CMAKE_BUILD_TYPE 항목을 아래와 같이 설정.
-			CMAKE_BUILD_TYPE -> Release
+			CMAKE_BUILD_TYPE -> Release.
 

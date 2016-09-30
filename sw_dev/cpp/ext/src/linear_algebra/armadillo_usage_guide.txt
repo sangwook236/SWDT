@@ -8,3 +8,6 @@
 [-] Build.
 	- Required libraries.
 		Atlas & SuperLU.
+
+[-] Usage
+	- Can use armadillo library if header files exist. (?)

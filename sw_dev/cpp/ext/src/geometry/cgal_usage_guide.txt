@@ -1,6 +1,6 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.cgal.org/
 
-[-] Building (VC)
+[-] Building (VC).
 	- Win32¸¸ build °¡´É (as of 2016/06/16).

@@ -1,4 +1,15 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.sintef.no/Projectweb/Geometry-Toolkits/GoTools/
+		http://www.sintef.no/Projectweb/Geometry-Toolkits/SISL/
+		http://www.sintef.no/Projectweb/Geometry-Toolkits/LSMG/
+		http://www.sintef.no/Projectweb/Geometry-Toolkits/MBA/
+		http://www.sintef.no/Projectweb/Geometry-Toolkits/TTL/
 		http://www.sintef.no/Projectweb/Geometry-Toolkits/
+
+		https://github.com/SINTEF-Geometry/GoTools
+		https://github.com/SINTEF-Geometry/SISL
+		https://github.com/SINTEF-Geometry/LSMG
+		https://github.com/SINTEF-Geometry/MBA
+		https://github.com/SINTEF-Geometry/TTL
+		https://github.com/SINTEF-Geometry

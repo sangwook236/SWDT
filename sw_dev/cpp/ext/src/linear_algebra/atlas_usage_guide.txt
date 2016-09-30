@@ -13,11 +13,87 @@
 	- Reference.
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Build in Cygwin.
-	- Reference.
-		${ATLAS_HOME}/INSTALL.txt
-		${ATLAS_HOME}/doc/Windows.txt
-		${ATLAS_HOME}/doc/atlas_install.pdf
+[-] Usage.
+	- Library.
+		libsatlas.so/dylib/dll
+			ATLAS's sequential libs.
+			All serial APIs (serial lapack, serial BLAS).
+		libtatlas.so/dylib/dll
+			ATLAS's threaded libs.
+			All parallel APIs (parallel LAPACK and parallel BLAS).
+
+[-] Build ver. 3.10.3 (Cygwin + Win32/64).
+	REF [doc] >> ${ATLAS_HOME}/doc/atlas_install.pdf
+		"Special Instruction for Windows" sub-chapter.
+			"Creating MSVC++ compatible import libraries" section.
+	REF [doc] >> ${ATLAS_HOME}/INSTALL.txt
+
+	- Make a build directory.
+		mkdir ${ATLAS_BUILD_DIR}
+		cd ${ATLAS_BUILD_DIR}
+			e.g.) ${ATLAS_BUILD_DIR} = build_cygwin인 경우
+				mkdir build_cygwin
+				cd build_cygwin
+	- (Optional) specify the MinGW binutils to use.
+		${ATLAS_BUILD_DIR}/MinGW32.dat
+			/usr/bin/i686-pc-mingw32-ar.exe
+			/usr/bin/i686-pc-mingw32-ranlib.exe
+			/usr/bin/i686-pc-mingw32-gc.exe
+			/usr/bin/i686-pc-mingw32-gfortran.exe
+		${ATLAS_BUILD_DIR}/MinGW64.dat
+			/usr/bin/x86_64-w64-mingw32-ar.exe
+			/usr/bin/x86_64-w64-mingw32-ranlib.exe
+			/usr/bin/x86_64-w64-mingw32-gcc.exe
+			/usr/bin/x86_64-w64-mingw32-gfortran.exe
+		REF [doc] >> "Specifying the MinGW binutils to use" section in ${ATLAS_HOME}/doc/atlas_install.pdf
+		REF [site] >> http://math-atlas.sourceforge.net/atlas_install/node55.html
+		REF [site] >> http://math-atlas.sourceforge.net/atlas_install/
+	- Configure library.
+		Options:
+			-Si nocygwin 1
+			-b 32 ==> pointer bitwidth.
+			-D c -DPentiumCPS=2833
+			-Fa alg
+			-fPIC
+		Shared library:
+			../configure --prefix=./install --shared
+			../configure --prefix=./install --shared -Si nocygwin 1
+		Static library:
+			../configure --prefix=./install
+			../configure --prefix=./install -Si nocygwin 1
+		==> configure를 실행하면 error가 발생되는 경우가 있는데, 생성된 file을 모두 삭제 후 재실행하면 되는 경우가 있음.
+	- (Optional) build 32-bit libraries on cygwin64.
+		Edit ${ATLAS_BUILD_DIR}/Make.inc.
+			Look for XCCFLAGS.
+			Change -m32 to -m64.
+				==> '-b 32' option을 지정하면 -m32 생성.
+		REF [doc] >> "Building 32-bit libraries on 64-bit Windows and cygwin64" section in ${ATLAS_HOME}/doc/atlas_install.pdf
+	- Revise ${ATLAS_BUILD_DIR}/Make.top.
+		REF [] >> Trouble shooting (Cygwin) (ver. 3.10.3).
+	- Build library.
+		make > make.log
+			==> library file은 ${ATLAS_BUILD_DIR}/lib directory에 생성.
+		make check
+		make time
+		make install
+			==> 'make install'을 수행하기 위해서 관리자 권한이 필요한 경우가 있음.
+				e.g.) /usr/local directory에 설치하는 경우.
+				cygwin을 관리자 권한으로 실행해야 함.
+	- Create import library.
+		For 32-bit:
+			lib.exe /nologo /machine:x86 /def:libtatlas.def
+			lib.exe /nologo /machine:x86 /def:libsatlas.def
+		For 64-bit:
+			lib.exe /nologo /machine:x64 /def:libtatlas.def
+			lib.exe /nologo /machine:x64 /def:libsatlas.def
+		REF [doc] >> "Creating MSVC++ compatible import libraries" section in ${ATLAS_HOME}/doc/atlas_install.pdf
+
+[-] Build (Cygwin).
+	REF [doc] >> ${ATLAS_HOME}/doc/atlas_install.pdf
+		"Special Instruction for Windows" sub-chapter.
+			"Creating MSVC++ compatible import libraries" section.
+	REF [doc] >> ${ATLAS_HOME}/INSTALL.txt
+	REF [doc] >> ${ATLAS_HOME}/doc/Windows.txt
 
 	- Tip.
 		Cygwin에서 building 시 error가 많이 발생하는데 출력되는 사항이 많이 error를 확인하는 것이 어려움.
@@ -61,30 +137,28 @@
 				/usr/bin/x86_64-w64-mingw32-ranlib.exe
 				/usr/bin/x86_64-w64-mingw32-gcc-4.8.3.exe
 				/usr/bin/x86_64-w64-mingw32-gfortran.exe
+		REF [doc] >> "Specifying the MinGW binutils to use" section in ${ATLAS_HOME}/doc/atlas_install.pdf
 		REF [site] >> http://math-atlas.sourceforge.net/atlas_install/node55.html
 		REF [site] >> http://math-atlas.sourceforge.net/atlas_install/
 	- Copy LAPACK file to ${ATLAS_HOME}.
 		${ATLAS_HOME}/lapack-3.5.0.tgz
 	- Configure library.
+		Options:
+			-b 32
+			-Si nocygwin 1
+			-D c -DPentiumCPS=2833
+			-Fa alg
+			-fPIC
 		Static library:
 			../configure --prefix=./install --with-netlib-lapack-tarfile=/cygdrive/d/work/sw_dev/cpp/ext/src/linear_algebra/atlas/atlas3.10.1.tar/ATLAS/lapack-3.5.0.tgz
-				-b 32
-				-Si nocygwin 1
-				-D c -DPentiumCPS=2833
-				-Fa alg 
 			For problems with gcc 4.2 on Windows.
 			../configure --prefix=./install --with-netlib-lapack-tarfile=../lapack-3.5.0.tgz -b 32 -D c -DPentiumCPS=2833 -Fa alg -fno-common
 		Shared library:
 			../configure --prefix=./install --shared --with-netlib-lapack-tarfile=/cygdrive/d/work/sw_dev/cpp/ext/src/linear_algebra/atlas/atlas3.10.1.tar/ATLAS/lapack-3.5.0.tgz
-				-b 32
-				-Si nocygwin 1
-				-D c -DPentiumCPS=2833
-				-Fa alg
-				-fPIC
 			For problems with gcc 4.2 on Windows.
 			../configure --prefix=./install --shared --with-netlib-lapack-tarfile=../lapack-3.5.0.tgz -b 32 -Si nocygwin 1 -D c -DPentiumCPS=2833 -Fa alg -fPIC -fno-common
 			==> Cygwin에서는 shared object가 생성되지 않는 듯함.
-		==> Error가 발생하는 경우가 있는데 이럴 경우 다시 해볼 것.
+		==> Error가 발생하는 경우가 있는데 이럴 경우 다시 시도해볼 것.
 		==> Make.inc가 생성되지 않음.
 	- Build library.
 		make > make.log
@@ -102,10 +176,9 @@
 			libmsvcrt.a
 		Shared object (DLL)를 직접적으로 생성하는 것이 바람직.
 
-[-] Build in MinGW.
-	- Reference.
-		http://icl.cs.utk.edu/lapack-for-windows/lapack/
-			Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW.
+[-] Build (MinGW).
+	REF [doc] >> http://icl.cs.utk.edu/lapack-for-windows/lapack/
+		Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW.
 
 	- Use MSYS.
 		1. (Optional) put the GNU runtime directory in $PATH.
@@ -120,6 +193,12 @@
 		4. Make.
 			mingw32-make
 			mingw32-make install
+
+[-] Trouble shooting (Cygwin) (ver. 3.10.3).
+	- '-V' option 관련 오류.
+		/bin/gcc.exe -V 2>&1
+		==> '-v' option의 오타인 듯함.
+			In ${ATLAS_BUILD_DIR}/Make.top, comment the corresponding line or change '-V' to '-v'.
 
 [-] Trouble shooting (Cygwin) (ver. 3.9.72).
 	- 아래의 file을 copy할 수 없다는 error가 발생하는 경우.
@@ -159,7 +238,7 @@
 		ZERO_RET:
 		//   xor %rax, %rax
 		   xor %eax, %eax
-	-. ${ATLAS_HOME}/src/threads/ATL_ResetAtomicCount_amd64.S에서 register 이름을 변경.
+	- ${ATLAS_HOME}/src/threads/ATL_ResetAtomicCount_amd64.S에서 register 이름을 변경.
 		//   sub $-128, %rdi            /* skip false sharing guard zone */
 		   sub $-128, %edi            /* skip false sharing guard zone */
 		   ATOMIC_LOOP:
