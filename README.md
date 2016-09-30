@@ -24,5 +24,5 @@ GDT includes various programming languages and hardware components:
     * AVR: ATmega128
 
 # GDT Wiki
-- [Documentation Wiki](https://github.com/sangwook236/documentation/wiki/Home)
+- [Documentation Wiki](https://github.com/sangwook236/general-development-and-testing/wiki/Home)
 
