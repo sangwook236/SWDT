@@ -80,7 +80,7 @@ static PLOptionTable options[] = {
 class x01
 {
 public:
-    x01(int, const char **);
+    x01(int, char **);
 
     void plot1(int);
     void plot2();
@@ -94,7 +94,7 @@ private:
 };
 
 
-x01::x01(int argc, const char ** argv)
+x01::x01(int argc, char ** argv)
 {
     char ver[80];
 
@@ -305,9 +305,9 @@ void x01::plot2()
     // Draw the line.
 
     pls->col0( 3 );
-    pls->wid( 2 );
+    pls->width( 2 );
     pls->line( 100, x, y );
-    pls->wid( 1 );
+    pls->width( 1 );
 
     delete[] x;
     delete[] y;
@@ -369,7 +369,7 @@ void x01::plot3()
 
 namespace my_plplot {
 
-void x01_example(const int argc, const char **argv)
+void x01_example(const int argc, char **argv)
 {
     boost::scoped_ptr<local::x01> x(new local::x01(argc, argv));
 }

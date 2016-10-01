@@ -2,7 +2,9 @@
 #include <rapidjson/reader.h>
 #include <rapidjson/writer.h>
 #include <rapidjson/prettywriter.h>
-#include <rapidjson/filestream.h>
+#include <rapidjson/filereadstream.h>
+#include <rapidjson/filewritestream.h>
+#include <rapidjson/error/en.h>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -137,7 +139,7 @@ private:
 
 namespace my_rapidjson {
 
-// [ref] ${RAPIDJSON_HOME}/example/serialize/serialize.cpp.
+// REF [file] >> ${RAPIDJSON_HOME}/example/serialize/serialize.cpp.
 void serialize_example()
 {
 	std::vector<local::Employee> employees;
@@ -148,8 +150,8 @@ void serialize_example()
 
 	employees.push_back(local::Employee("Percy TSE", 30, false));
 
-	rapidjson::FileStream s(stdout);
-	rapidjson::PrettyWriter<rapidjson::FileStream> writer(s);  // Can also use Writer for condensed formatting.
+	rapidjson::StringBuffer sb;
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
 
 	writer.StartArray();
 	for (std::vector<local::Employee>::const_iterator employeeItr = employees.begin(); employeeItr != employees.end(); ++employeeItr)
@@ -157,34 +159,37 @@ void serialize_example()
 	writer.EndArray();
 }
 
-// [ref] ${RAPIDJSON_HOME}/example/condense/condense.cpp.
-// [ref] ${RAPIDJSON_HOME}/example/pretty/pretty.cpp.
+// REF [file] >> ${RAPIDJSON_HOME}/example/condense/condense.cpp.
+// REF [file] >> ${RAPIDJSON_HOME}/example/pretty/pretty.cpp.
 void condense_and_pretty_example()
 {
+	// Prepare JSON reader and input stream.
+	rapidjson::Reader reader;
+	char readBuffer[65536];
 #if 0
-	rapidjson::FileStream is(stdin);
+	rapidjson::FileReadStream is(stdin, readBuffer, sizeof(readBuffer));
 #else
 	//FILE *fp = fopen("./data/serialization/json/glossary.json", "r+");
 	FILE *fp = fopen("./data/serialization/json/menu.json", "r+");
 	//FILE *fp = fopen("./data/serialization/json/sample.json", "r+");
 	//FILE *fp = fopen("./data/serialization/json/webapp.json", "r+");
 	//FILE *fp = fopen("./data/serialization/json/widget.json", "r+");
-	rapidjson::FileStream is(fp);
+	rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
 #endif
 
 	// Prepare JSON writer and output stream.
-	rapidjson::FileStream os(stdout);
+	char writeBuffer[65536];
+	rapidjson::FileWriteStream os(stdout, writeBuffer, sizeof(writeBuffer));
 #if 0
-	rapidjson::Writer<rapidjson::FileStream> writer(os);
+	rapidjson::Writer<rapidjson::FileWriteStream> writer(os);
 #else
-	rapidjson::PrettyWriter<rapidjson::FileStream> writer(os);
+	rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(os);
 #endif
 
 	// JSON reader parse from the input stream and let writer generate the output.
-	rapidjson::Reader reader;
 	if (!reader.Parse<0>(is, writer))
 	{
-		std::cerr << "\nError(" << (unsigned)reader.GetErrorOffset() << "): " << reader.GetParseError() << std::endl;
+		std::cerr << "\nError(" << (unsigned)reader.GetErrorOffset() << "): " << GetParseError_En(reader.GetParseErrorCode()) << std::endl;
 		return;
 	}
 

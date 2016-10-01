@@ -4,7 +4,7 @@
 
 	- Reference.
 		http://www.mingw.org/wiki/MSVC_and_MinGW_DLLs
-			* Important
+			* Important.
 
 		http://www.mingw.org/wiki/Interoperability_of_Libraries_Created_by_Different_Compiler_Brands
 		http://stackoverflow.com/questions/25787344/using-dll-compiled-with-cygwin-inside-visual-studio-2010
@@ -21,6 +21,10 @@
 		https://wiki.videolan.org/GenerateLibFromDll
 		http://cadcam.yonsei.ac.kr/bbs/zboard.php?id=resource&no=72
 
+	- MinGW/Cygwin을 이용해 DLL을 생성할 수 있으면, 이로부터 lib.exe를 이용해 import library를 생성한 후 VC++에서 사용.
+		Cygwin의 경우, nocygwin option을 사용하면 보다 편리.
+		REF [doc] >> altas_usage_guide.txt
+
 	- GCC DLL -> import library.
 		1. Visual Studio Command Prompt를 실행.
 			Lib.exe를 사용하기 위해.
@@ -35,7 +39,7 @@
 						DEF file 형식에 맞게 수정해야 함.
 		3. Modify DEF file.
 			e.g.) foo.dll.def
-				;LIBRARY foo.dll ==> DLL filename을 정확히 지정해야 함.
+				;LIBRARY foo.dll ==> DLL filename을 정확히 지정하는 것이 유리.
 				EXPORTS
 				; 여기서 부터는 리스트된 함수를 나열.
 				; 예를 들어 func_a, func_b 라면
@@ -81,10 +85,10 @@
 
 	- MSVC DLL -> import library.
 		1. Export symbols from DLL.
-			> Use nm
+			> Use nm.
 				echo EXPORTS > foo.dll.def
 				nm foo.dll | grep ' T _' | sed 's/.* T _//' >> foo.dll.def
-			> Use pexports in the mingw-utils package
+			> Use pexports in the mingw-utils package.
 				pexports foo.dll | sed "s/^_//" > foo.dll.def
 			==> Name mangling.
 				MSVC will prefix an underscore to __stdcall functions while MinGW will not.

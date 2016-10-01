@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		https://gforge.inria.fr/projects/mpfi/
 	- Reference.
@@ -6,24 +6,24 @@
 
 		NOTICE [caution] >> Static library·Î build µÊ.
 
-[-] Build static library (Cygwin & MinGW)
+[-] Build static library (Cygwin & MinGW).
 	Run "Cygwin Bash" or "MSYS".
 	cd ${MPFI_HOME}
 	./configure --prefix=${MPFI_INSTALL} --with-mpfr-include=${MPFR_INSTALL}/include --with-mpfr-lib=${MPFR_INSTALL}/lib --with-gmp-include=${GMP_INSTALL}/include --with-gmp-lib=${GMP_INSTALL}/lib
 	make
-	(optional) make check
-	(optional) make install
+	(Optional) make check
+	(Optional) make install
 
 	==> .a fileÀÌ »ý¼º.
 
-[-] Build shared library (Cygwin & MinGW)
+[-] Build shared library (Cygwin & MinGW).
 	1. Build shared library.
 		Run "Cygwin Bash" or "MSYS".
 		cd ${MPFI_HOME}
 		./configure --prefix=${MPFI_INSTALL} --with-mpfr-include=${MPFR_INSTALL}/include --with-mpfr-lib=${MPFR_INSTALL}/lib --with-gmp-include=${GMP_INSTALL}/include --with-gmp-lib=${GMP_INSTALL}/lib --disable-static --enable-shared
 		make
-		(optional) make check
-		(optional) make install
+		(Optional) make check
+		(Optional) make install
 
 		A windows DLL "cygmpfi-1.dll" (Cygwin) or "libmpfi-1.dll" (MinGW) will be generated.
 

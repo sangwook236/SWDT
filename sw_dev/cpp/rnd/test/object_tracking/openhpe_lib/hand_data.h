@@ -1,6 +1,6 @@
 #define SIZE_OF_HAND_DATA 8
 
-#include <cv.h>
+#include <opencv2/opencv.hpp>
 
 typedef struct finger_data
 {

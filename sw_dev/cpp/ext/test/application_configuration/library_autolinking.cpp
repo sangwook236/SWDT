@@ -4,11 +4,11 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "iniparser_d.lib")
+//#pragma comment(lib, "iniparserd.lib")
 
 #		else
 
-#pragma comment(lib, "iniparser.lib")
+//#pragma comment(lib, "iniparser.lib")
 
 #		endif
 

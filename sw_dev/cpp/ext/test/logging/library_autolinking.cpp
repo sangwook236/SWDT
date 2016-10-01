@@ -4,17 +4,17 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "glog_d.lib")
-#pragma comment(lib, "log4cxx.lib")
-#pragma comment(lib, "libboost_thread-vc140-mt-gd-1_59.lib")
-#pragma comment(lib, "libboost_test_exec_monitor-vc140-mt-gd-1_59.lib")
+#pragma comment(lib, "glogd.lib")
+#pragma comment(lib, "log4cxxd.lib")
+#pragma comment(lib, "libboost_thread-vc140-mt-gd-1_61.lib")
+#pragma comment(lib, "libboost_test_exec_monitor-vc140-mt-gd-1_61.lib")
 
 #		else
 
 #pragma comment(lib, "glog.lib")
 #pragma comment(lib, "log4cxx.lib")
-#pragma comment(lib, "libboost_thread-vc140-mt-1_59.lib")
-#pragma comment(lib, "libboost_test_exec_monitor-vc140-mt-1_59.lib")
+#pragma comment(lib, "libboost_thread-vc140-mt-1_61.lib")
+#pragma comment(lib, "libboost_test_exec_monitor-vc140-mt-1_61.lib")
 
 #		endif
 

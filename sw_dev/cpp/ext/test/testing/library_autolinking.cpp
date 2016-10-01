@@ -4,10 +4,10 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-//#pragma comment(lib, "gmock_main_d.lib")
-#pragma comment(lib, "gmock_d.lib")
-//#pragma comment(lib, "gtest_main_d.lib")
-#pragma comment(lib, "gtest_d.lib")
+//#pragma comment(lib, "gmock_maind.lib")
+#pragma comment(lib, "gmockd.lib")
+//#pragma comment(lib, "gtest_maind.lib")
+#pragma comment(lib, "gtestd.lib")
 #pragma comment(lib, "cppunitd_dll.lib")
 //#pragma comment(lib, "TestRunnerud.lib")
 

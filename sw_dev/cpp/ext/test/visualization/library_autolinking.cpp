@@ -4,21 +4,21 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "mgl2-glut_d.lib")
-#pragma comment(lib, "mgl2_d.lib")
+#pragma comment(lib, "libmgl-glut.lib")
+#pragma comment(lib, "libmgl.lib")
 
-#pragma comment(lib, "plplotd.lib")
-#pragma comment(lib, "plplotcxxd.lib")
+#pragma comment(lib, "plplot.lib")
+#pragma comment(lib, "plplotcxx.lib")
 #pragma comment(lib, "csirocsa.lib")
 #pragma comment(lib, "qsastime.lib")
 
 #		else
 
-#pragma comment(lib, "mgl2-glut.lib")
-#pragma comment(lib, "mgl2.lib")
+//#pragma comment(lib, "libmgl-glut.lib")
+#pragma comment(lib, "libmgl.lib")
 
-#pragma comment(lib, "plplotd.lib")
-#pragma comment(lib, "plplotcxxd.lib")
+#pragma comment(lib, "plplot.lib")
+#pragma comment(lib, "plplotcxx.lib")
 #pragma comment(lib, "csirocsa.lib")
 #pragma comment(lib, "qsastime.lib")
 

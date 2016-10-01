@@ -25,7 +25,7 @@
 namespace {
 namespace local {
 
-// [ref] ${PartsBasedDetector_HOME}/src/demo.cpp
+// REF [file] >> ${PartsBasedDetector_HOME}/src/demo.cpp
 void demo()
 {
 	//const std::string model_filename("./data/pose_estimation/PartsBasedDetector/model/Bird_9parts.xml");
@@ -49,7 +49,7 @@ void demo()
 	const bool has_depth_file = false;
 	const std::string depth_filename(".");
 
-	// determine the type of model to read
+	// Determine the type of model to read.
 	boost::scoped_ptr<Model> model;
 	const std::string ext = boost::filesystem::path(model_filename).extension().string();
 	if (ext.compare(".xml") == 0 || ext.compare(".yaml") == 0)
@@ -64,56 +64,56 @@ void demo()
 #endif
 	else
 	{
-		std::cout << "unsupported model format: " << ext << std::endl;
+		std::cout << "Unsupported model format: " << ext << std::endl;
 		return;
 	}
 
-	std::cout << "loading a model file ..." << std::endl;
+	std::cout << "Loading a model file ..." << std::endl;
 	const bool ok = model->deserialize(model_filename);
 	if (!ok)
 	{
-		std::cout << "error deserializing file" << std::endl;
+		std::cout << "Error deserializing file" << std::endl;
 		return;
 	}
 
-	// create the PartsBasedDetector and distribute the model parameters
+	// Create the PartsBasedDetector and distribute the model parameters.
 	PartsBasedDetector<float> pbd;
 	pbd.distributeModel(*model);
 
-	// load the image from file
-	std::cout << "loading an input file ..." << std::endl;
+	// Load the image from file.
+	std::cout << "Loading an input file ..." << std::endl;
 	cv::Mat im = cv::imread(input_filename);
 	if (im.empty())
 	{
-		std::cout << "image not found or invalid image format" << std::endl;
+		std::cout << "Image not found or invalid image format" << std::endl;
 		return;
 	}
 
 	cv::Mat_<float> depth;
 	if (has_depth_file)
 	{
-		std::cout << "loading a depth file ..." << std::endl;
+		std::cout << "Loading a depth file ..." << std::endl;
 		depth = cv::imread(depth_filename, CV_LOAD_IMAGE_ANYDEPTH);
 
-		// convert the depth image from mm to m
+		// Convert the depth image from mm to m.
 		depth = depth / 1000.0f;
 	}
 
-	// detect potential candidates in the image
+	// Detect potential candidates in the image.
 	std::cout << "start detecting ..." << std::endl;
 	double t = (double)cv::getTickCount();
 
-	cv::vector<Candidate> candidates;
+	std::vector<Candidate> candidates;
 	pbd.detect(im, depth, candidates);
 
-	std::cout << "detection time: " << ((double)cv::getTickCount() - t) / cv::getTickFrequency() << std::endl;
-	std::cout << "number of candidates: " << candidates.size() << std::endl;
-	std::cout << "end detecting ..." << std::endl;
+	std::cout << "Detection time: " << ((double)cv::getTickCount() - t) / cv::getTickFrequency() << std::endl;
+	std::cout << "Number of candidates: " << candidates.size() << std::endl;
+	std::cout << "End detecting ..." << std::endl;
 
-	// display the best candidates
+	// Display the best candidates.
 	if (candidates.empty())
 	{
-		std::cout << "fail to detect objects ..." << std::endl;
+		std::cout << "Fail to detect objects ..." << std::endl;
 	}
 	else
 	{
@@ -130,7 +130,7 @@ void demo()
 		std::cout << "# of selected candidates: " << candidates.size() << std::endl;
 
 		//
-		std::cout << "displaying results ..." << std::endl;
+		std::cout << "Displaying results ..." << std::endl;
 		Visualize visualize(model->name());
 		cv::Mat canvas;
 		visualize.candidates(im, candidates, canvas, true);
@@ -149,8 +149,8 @@ namespace my_parts_based_detector {
 
 int parts_based_detector_main(int argc, char *argv[])
 {
-	// [ref] "Articulated pose estimation with flexible mixtures-of-parts", Y. Yang & D. Ramanan, CVPR, 2011.
-	//	it is related to pictorial structures.
+	// REF [paper] >> "Articulated pose estimation with flexible mixtures-of-parts", Y. Yang & D. Ramanan, CVPR, 2011.
+	//	It is related to pictorial structures.
 
 	local::demo();
 

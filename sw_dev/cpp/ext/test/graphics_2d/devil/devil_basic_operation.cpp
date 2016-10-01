@@ -40,45 +40,45 @@ void load_and_save_in_c()
 		return;
 	}
 
-	// initialize IL
+	// Initialize IL.
 	ilInit();
-	// initialize ILU
+	// Initialize ILU.
 	iluInit();
 
-	// initialize ILUT with OpenGL support
-	//	ILUT_OPENGL – initializes ILUT's OpenGL support
-	//	ILUT_ALLEGRO – initializes ILUT's Allegro support
+	// Initialize ILUT with OpenGL support.
+	//	ILUT_OPENGL – initializes ILUT's OpenGL support.
+	//	ILUT_ALLEGRO – initializes ILUT's Allegro support.
 	//	ILUT_WIN32 – initializes ILUT's Windows GDI and DirectX 8 support.
 	ilutRenderer(ILUT_OPENGL);
 
-	// generate the main image name to use.
+	// Generate the main image name to use.
 	ILuint imgId;
 	ilGenImages(1, &imgId);
 
-	// bind this image name.
+	// Bind this image name.
 	ilBindImage(imgId);
 
-	// loads the image specified by file into the image named by imgId.
+	// Loads the image specified by file into the image named by imgId.
 	if (!ilLoadImage(input_image_filename.c_str()))
 	{
-		std::cout << "fail to load an image file" << std::endl;
+		std::cout << "Fail to load an image file" << std::endl;
 		return;
 	}
 
 	//
-	std::cout << "width: " << ilGetInteger(IL_IMAGE_WIDTH) << ",  height: " << ilGetInteger(IL_IMAGE_HEIGHT) << ",  depth: " << ilGetInteger(IL_IMAGE_DEPTH) << ",  Bpp: " << ilGetInteger(IL_IMAGE_BITS_PER_PIXEL) << std::endl;
+	std::cout << "Width: " << ilGetInteger(IL_IMAGE_WIDTH) << ",  height: " << ilGetInteger(IL_IMAGE_HEIGHT) << ",  depth: " << ilGetInteger(IL_IMAGE_DEPTH) << ",  Bpp: " << ilGetInteger(IL_IMAGE_BITS_PER_PIXEL) << std::endl;
 
-	// enable this to let us overwrite the destination file if it already exists.
+	// Enable this to let us overwrite the destination file if it already exists.
 	ilEnable(IL_FILE_OVERWRITE);
 
-	// save an image.
+	// Save an image.
 	if (!ilSaveImage(output_image_filename.c_str()))
 	{
-		std::cout << "fail to save an image file" << std::endl;
+		std::cout << "Fail to save an image file" << std::endl;
 		return;
 	}
 
-	// we're done with the image, so let's delete it.
+	// We're done with the image, so let's delete it.
 	ilDeleteImages(1, &imgId);
 }
 
@@ -102,23 +102,23 @@ void load_and_save_in_cpp()
 
 	ilImage image;
 
-	// loads an image.
+	// Loads an image.
 	if (!image.Load(input_image_filename.c_str()))
 	{
-		std::cout << "fail to load an image file" << std::endl;
+		std::cout << "Fail to load an image file" << std::endl;
 		return;
 	}
 
 	//
-	std::cout << "width: " << image.Width() << ",  height: " << image.Height() << ",  depth: " << image.Depth() << ",  Bpp: " << (ILuint)image.Bitpp() << std::endl;
+	std::cout << "Width: " << image.Width() << ",  height: " << image.Height() << ",  depth: " << image.Depth() << ",  Bpp: " << (ILuint)image.Bitpp() << std::endl;
 
-	// enable this to let us overwrite the destination file if it already exists.
+	// Enable this to let us overwrite the destination file if it already exists.
 	ilEnable(IL_FILE_OVERWRITE);
 
-	// save an image.
+	// Save an image.
 	if (!image.Save(output_image_filename.c_str()))
 	{
-		std::cout << "fail to save an image file" << std::endl;
+		std::cout << "Fail to save an image file" << std::endl;
 		return;
 	}
 }

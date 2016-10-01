@@ -1,33 +1,33 @@
-[-] General
+[-] General.
 	- Site.
 		http://gmplib.org/
 	- Reference.
 		http://cs.nyu.edu/exact/core/gmp/
 		http://gladman.plushost.co.uk/oldsite/computing/gmp4win.php
 
-[-] Use MPIR library
+[-] Use MPIR library.
 	MPIR library를 대신 사용할 수 있음.
 	MPIR library안에 GMP를 포함하고 있음.
 	Windows 환경에서도 building 가능.
 	REF [library] >> sw_dev/cpp/ext/src/multi_precision_computation/mpir
 
-[-] Build static library (Cygwin & MinGW)
+[-] Build static library (Cygwin & MinGW).
 	Run "Cygwin Bash" or "MSYS".
 	cd ${GMP_HOME}
 	./configure --prefix=${GMP_INSTALL}
 	make
-	(optional) make check
+	(Optional) make check
 	make install
 
 	==> .a file이 생성.
 
-[-] Build shared library (Cygwin & MinGW)
+[-] Build shared library (Cygwin & MinGW).
 	1. Build shared library.
 		Run "Cygwin Bash" or "MSYS".
 		cd ${GMP_HOME}
 		./configure --prefix=${GMP_INSTALL} --disable-static --enable-shared
 		make
-		(optional) make check
+		(Optional) make check
 		make install
 
 		A windows DLL "cyggmp-3.dll" (Cygwin) or "libgmp-3.dll" (MinGW) will be generated.
@@ -67,7 +67,7 @@
 
 			==> strip은 하지 않는 것이 좋은 듯함.
 
-[-] Building static GMP library (Cygwin & MinGW)
+[-] Building static GMP library (Cygwin & MinGW).
 	- Cygwin.
 		Download latest GMP from GNU MP to ${GMP_DOWNLOAD}.
 		Run "Cygwin Bash", unzip and untar GMP into ${GMP_HOME} using following command:
@@ -120,7 +120,7 @@
 		Install GMP header files and lib files:
 			make install
 
-[-] Cygwin & MinGW (Building dynamic GMP library)
+[-] Cygwin & MinGW (Building dynamic GMP library).
 	GMP cannot build static and shared libraries at the same time and it will only build static library by default.
 	To use dynamic library, i.e DLL under windows platform, you need to add the options "--disable-static --enable-shared" when you configure GMP, i.e. run this command: 
 		./configure --prefix=${GMP_INSTALL} --disable-static --enable-shared

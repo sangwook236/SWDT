@@ -47,7 +47,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/gmp;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/mpfr;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/taucs;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/mpfr;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/gmp;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/mpfr;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/taucs;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/mpfr;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;CGAL_NO_AUTOLINK_MPFR;CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -71,7 +71,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/gmp;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/mpfr;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/taucs;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/mpfr;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/gmp;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/mpfr;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/taucs;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/mpfr;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;CGAL_NO_AUTOLINK_MPFR;CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>

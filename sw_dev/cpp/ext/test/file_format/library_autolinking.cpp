@@ -4,15 +4,15 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "assimp.lib")
-#pragma comment(lib, "hdf5d.lib")
-#pragma comment(lib, "hdf5_cppd.lib")
-#pragma comment(lib, "hdf5_hld.lib")
-#pragma comment(lib, "hdf5_hl_cppd.lib")
+#pragma comment(lib, "assimp-vc140-mt.lib")
+#pragma comment(lib, "hdf5_D.lib")
+#pragma comment(lib, "hdf5_cpp_D.lib")
+#pragma comment(lib, "hdf5_hl_D.lib")
+#pragma comment(lib, "hdf5_hl_cpp_D.lib")
 
 #		else
 
-#pragma comment(lib, "assimp.lib")
+#pragma comment(lib, "assimp-vc140-mt.lib")
 #pragma comment(lib, "hdf5.lib")
 #pragma comment(lib, "hdf5_cpp.lib")
 #pragma comment(lib, "hdf5_hl.lib")

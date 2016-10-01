@@ -1,28 +1,28 @@
-<<  Building  >>
+[-] General.
+	- Site.
+		http://www.graphviz.org/
+		http://www.research.att.com/sw/tools/graphviz/
 
-[-] downloads files
-	http://www.graphviz.org/
-	http://www.research.att.com/sw/tools/graphviz/
-[-]	adds the third-party libraries
-	-. downloads third-party executable packages
+[-] Build.
+	- Download files.
+	- Add the third-party libraries.
+	- Download third-party executable packages.
 		http://www.research.att.com/sw/tools/graphviz/dist/third-party.zip
 		http://www.graphviz.org/
-	-. sets include & library paths of third-party libraries
-		"%GRAPHVIZ_ROOT%/third-party/include"
-		"%GRAPHVIZ_ROOT%/third-party/lib"
-[-] builds a project
-	<-> ref
-		"%GRAPHVIZ_ROOT%/doc/build.html"
-	<-> graphviz-win-2.2.1 & msvc
-		-. in Visual Studio IDE
-			-> target project file
-				"%GRAPHVIZ_ROOT%/makearch/win32/static/graphviz.dsw"
-				"%GRAPHVIZ_ROOT%/makearch/win32/static/Tools.dsw"
-			-> static linking library
-				there are no project dependencies
-		-. in CLI
-			"%GRAPHVIZ_ROOT%/build.bat"
-			"%GRAPHVIZ_ROOT%/install.bat"
+	- Set include & library paths of third-party libraries.
+		${GRAPHVIZ_HOME}/third-party/include
+		${GRAPHVIZ_HOME}/third-party/lib
 
+[-] Build a project
+	REF [file] >> ${GRAPHVIZ_HOME}/doc/build.html
 
-<<  Linking  >>
+	- graphviz-win-2.2.1 & msvc.
+		In VS.
+			Target project file.
+				${GRAPHVIZ_HOME}/makearch/win32/static/graphviz.dsw
+				${GRAPHVIZ_HOME}/makearch/win32/static/Tools.dsw
+			Static linking library.
+				There are no project dependencies.
+		In CLI
+			${GRAPHVIZ_HOME}/build.bat
+			${GRAPHVIZ_HOME}/install.bat

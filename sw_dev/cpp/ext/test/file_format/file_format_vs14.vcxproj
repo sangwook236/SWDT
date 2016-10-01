@@ -55,7 +55,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./arff_lib;./csv_parser_lib;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -71,7 +71,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./arff_lib;./csv_parser_lib;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -82,12 +82,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="arff\arff_main.cpp" />
+    <ClCompile Include="arff_lib\arff_attr.cpp" />
+    <ClCompile Include="arff_lib\arff_data.cpp" />
+    <ClCompile Include="arff_lib\arff_instance.cpp" />
+    <ClCompile Include="arff_lib\arff_lexer.cpp" />
+    <ClCompile Include="arff_lib\arff_parser.cpp" />
+    <ClCompile Include="arff_lib\arff_scanner.cpp" />
+    <ClCompile Include="arff_lib\arff_token.cpp" />
+    <ClCompile Include="arff_lib\arff_utils.cpp" />
+    <ClCompile Include="arff_lib\arff_value.cpp" />
     <ClCompile Include="assimp\assimp_main.cpp" />
     <ClCompile Include="csv_parser\csv_parser_main.cpp" />
     <ClCompile Include="csv_parser_lib\csv_parser.cpp" />
     <ClCompile Include="hdf\hdf_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="arff_lib\arff_attr.h" />
+    <ClInclude Include="arff_lib\arff_data.h" />
+    <ClInclude Include="arff_lib\arff_instance.h" />
+    <ClInclude Include="arff_lib\arff_lexer.h" />
+    <ClInclude Include="arff_lib\arff_parser.h" />
+    <ClInclude Include="arff_lib\arff_scanner.h" />
+    <ClInclude Include="arff_lib\arff_token.h" />
+    <ClInclude Include="arff_lib\arff_utils.h" />
+    <ClInclude Include="arff_lib\arff_value.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -19,10 +19,10 @@ int sample_2(mglGraph *gr);
 int sample_3(mglGraph *gr);
 int sample_d(mglGraph *gr);
 
-// [ref] ${MATHGL_HOME}/examples/glut_example.cpp.
+// REF [file] >> ${MATHGL_HOME}/examples/glut_example.cpp.
 void glut_example()
 {
-	// NOTICE [caution] >> run-time error in DEBUG mode.
+	// NOTICE [caution] >> Run-time error in DEBUG mode.
 
 	mglGLUT gr(sample_1, "1D plots");
 	//mglGLUT gr(sample_2, "2D plots");

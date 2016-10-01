@@ -18,11 +18,11 @@ cv::Scalar refineSegments(const cv::Mat &img, const cv::Mat &mask, cv::Mat &dst,
     
     cv::Mat temp;
     
-    //dilate(mask, temp, cv::Mat(), cv::Point(-1, -1), cv::niters);
-    //erode(temp, temp, cv::Mat(), cv::Point(-1, -1), cv::niters * 2);
-    //dilate(temp, temp, cv::Mat(), cv::Point(-1, -1), cv::niters);
-	blur(mask, temp, Size(11, 11));
-	//imshow("temp", temp);
+    //cv::dilate(mask, temp, cv::Mat(), cv::Point(-1, -1), cv::niters);
+    //cv::erode(temp, temp, cv::Mat(), cv::Point(-1, -1), cv::niters * 2);
+    //cv::dilate(temp, temp, cv::Mat(), cv::Point(-1, -1), cv::niters);
+	cv::blur(mask, temp, Size(11, 11));
+	//cv::imshow("temp", temp);
 	temp = temp > 95.0;
 	    
     cv::findContours(temp, contours, /*hierarchy,*/ CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);

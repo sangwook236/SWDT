@@ -13,15 +13,15 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "dlib library --------------------------------------------------------" << std::endl;
-		//  algorithm, threading, networking, parsing.
-		//  graphical user interfaces (GUI).
-		//  linear algebra, numerical algorithms.
-		//  optimization.
-		//  image processing.
-		//  machine learning algorithms.
-		//  graph tools, Bayesian networks, graphical model inference algorithms.
-		//  data compression and integrity algorithms.
-		//  testing, general utilities.
+		//  Algorithm, threading, networking, parsing.
+		//  Graphical user interfaces (GUI).
+		//  Linear algebra, numerical algorithms.
+		//  Optimization.
+		//  Image processing.
+		//  Machine learning algorithms.
+		//  Graph tools, Bayesian networks, graphical model inference algorithms.
+		//  Data compression and integrity algorithms.
+		//  Testing, general utilities.
 		retval = dlib_main(argc, argv);
 
 		std::cout << "\nLoki library --------------------------------------------------------" << std::endl;

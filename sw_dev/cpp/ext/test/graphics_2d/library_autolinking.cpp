@@ -5,18 +5,22 @@
 #		if defined(DEBUG) || defined(_DEBUG)
 
 #pragma comment(lib, "cairo.lib")
-#pragma comment(lib, "bgd.lib")
+#pragma comment(lib, "libgd.lib")
 #pragma comment(lib, "devil.lib")
 #pragma comment(lib, "ilu.lib")
 #pragma comment(lib, "ilut.lib")
+//#pragma comment(lib, "libjpegd.lib")
+//#pragma comment(lib, "libpng16d.lib")
 
 #		else
 
 #pragma comment(lib, "cairo.lib")
-#pragma comment(lib, "bgd.lib")
+#pragma comment(lib, "libgd.lib")
 #pragma comment(lib, "devil.lib")
 #pragma comment(lib, "ilu.lib")
 #pragma comment(lib, "ilut.lib")
+//#pragma comment(lib, "libjpeg.lib")
+//#pragma comment(lib, "libpng16.lib")
 
 #		endif
 

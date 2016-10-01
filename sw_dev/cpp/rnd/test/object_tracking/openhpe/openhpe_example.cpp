@@ -163,7 +163,7 @@ static double calc_Energy(DATA_FOR_TNC &d, DATA_FOR_TNC &orig_d)
 	double _sum = 0.0;
 	
 	//external energy: closness of tips ot target points
-	cv::vector<cv::Point2d> tmp;
+	std::vector<cv::Point2d> tmp;
 	cv::Mat tips(5, 1, CV_64FC2);
 	
 	cv::Point2d hand_origin = getHandOrigin(d.hand);

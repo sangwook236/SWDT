@@ -11,9 +11,9 @@
 
 using namespace std;
 
-//#include <opencv2/opencv.hpp>
-#include <cv.h>
-#include <highgui.h>
-#include <cvaux.h>
+#include <opencv2/opencv.hpp>
+//#include <cv.h>
+//#include <highgui.h>
+//#include <cvaux.h>
 
 using namespace cv;
