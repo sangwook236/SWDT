@@ -20,8 +20,8 @@ int mysvm_main(int argc, char *argv[])
 {
 	try
 	{
-		my_mysvm::learn_example();  // not yet implemented.
-		my_mysvm::predict_example();  // not yet implemented.
+		my_mysvm::learn_example();  // Not yet implemented.
+		my_mysvm::predict_example();  // Not yet implemented.
 	}
 	catch (const general_exception &e)
 	{

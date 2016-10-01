@@ -11,18 +11,18 @@ namespace local {
 
 void vector_operation()
 {
-    throw std::runtime_error("not yet implemented");
+    throw std::runtime_error("Not yet implemented");
 }
 
 void matrix_operation()
 {
     GClasses::GMatrix data;
     data.loadArff("./data/machine_learning/iris.arff");
-    //data.swapColumns(1, data.cols() - 1);  // swap the first column with the last one.
+    //data.swapColumns(1, data.cols() - 1);  // Swap the first column with the last one.
 
     //data.print(std::cout);
 
-    GClasses::GDataColSplitter splitter(data, 1);  // the last 1 column will be used for the label matrix.
+    GClasses::GDataColSplitter splitter(data, 1);  // The last 1 column will be used for the label matrix.
     GClasses::GMatrix &features = splitter.features();
     GClasses::GMatrix &labels = splitter.labels();
 
@@ -46,7 +46,7 @@ void dimensionality_reduction();
 
 int waffles_main(int argc, char *argv[])
 {
-    //local::vector_operation();  // not yet implemented.
+    //local::vector_operation();  // Not yet implemented.
     local::matrix_operation();
 
     // REF [site] >>
@@ -56,14 +56,14 @@ int waffles_main(int argc, char *argv[])
     my_waffles::ml_example();
 
     // Dimensionality reduction & manifold learning.
-    //  GManifoldSculpting.
-    //  GIsomap.
-    //  GLLE.
-    //  GBreadthFirstUnfolding.
-    //  GNeuroPCA.
-    //  GDynamicSystemStateAligner.
-    //  GUnsupervisedBackProp.
-    //  GScalingUnfolder.
+    //  - GManifoldSculpting.
+    //  - GIsomap.
+    //  - GLLE.
+    //  - GBreadthFirstUnfolding.
+    //  - GNeuroPCA.
+    //  - GDynamicSystemStateAligner.
+    //  - GUnsupervisedBackProp.
+    //  - GScalingUnfolder.
     my_waffles::manifold_sculpting_example();
 
     my_waffles::dimensionality_reduction();

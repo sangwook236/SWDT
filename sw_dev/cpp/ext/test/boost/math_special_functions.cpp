@@ -23,52 +23,52 @@ namespace local {
 
 void gamma_functions()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void factorial()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void binomial_coefficients()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void beta_functions()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void error_functions()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void legendre_polynomials()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void laguerre_polynomials()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void hermite_polynomials()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void spheric_harmonic()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void bessel_functions()
 {
-	// the Bessel functions of the first and second kinds
+	// The Bessel functions of the first and second kinds.
 	{
 		const double v = 1.0, x = 1.0;
 
@@ -76,7 +76,7 @@ void bessel_functions()
 		std::cout << "the Bessel function, Y_v(x) = N_v(x) of the second kind and order " << v << " = " << boost::math::cyl_neumann(v, x) << std::endl;
 	}
 
-	// the modified Bessel functions of the first and second kinds
+	// The modified Bessel functions of the first and second kinds.
 	{
 		const double v = 1.0, x = 1.0;
 
@@ -84,7 +84,7 @@ void bessel_functions()
 		std::cout << "the modified Bessel function, K_v(x) of the second kind and order " << v << " = " << boost::math::cyl_bessel_k(v, x) << std::endl;
 	}
 
-	// the spherical Bessel functions of the first and second kinds
+	// The spherical Bessel functions of the first and second kinds.
 	{
 		const unsigned int v = 1;
 		const double x = 1.0;
@@ -96,17 +96,17 @@ void bessel_functions()
 
 void elliptic_integrals()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void zeta_functions()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void exponential_integrals()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local

@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		throw std::runtime_error("not yet implemented");
+		throw std::runtime_error("Not yet implemented");
 	}
     catch (const std::bad_alloc &e)
 	{
@@ -26,11 +26,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

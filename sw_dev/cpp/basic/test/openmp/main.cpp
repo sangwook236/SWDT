@@ -20,7 +20,7 @@ public:
 	{
 	}
 
-	__int64 getElapsedTime() const  // msec
+	__int64 getElapsedTime() const  // [msec].
 	{
 		LARGE_INTEGER endTime;
 		QueryPerformanceCounter(&endTime);
@@ -44,14 +44,14 @@ int main(int argc, char **argv)
 	}
 	catch (const std::exception &e)
 	{
-		std::cout << "std::exception occurred !!!: " << e.what() << std::endl;
+		std::cout << "std::exception caught !!!: " << e.what() << std::endl;
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception occurred !!!" << std::endl;
+		std::cout << "Unknown exception caught !!!" << std::endl;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
     return 0;
@@ -61,21 +61,21 @@ void parallel_directive()
 {
 	int nthreads, tid;
 
-	// Fork a team of threads giving them their own copies of variables
+	// Fork a team of threads giving them their own copies of variables.
 #pragma omp parallel private(tid)
 	{
-		// Obtain and print thread id
+		// Obtain and print thread id.
 		tid = omp_get_thread_num();
 		printf("Hello World from thread = %d\n", tid);
 
-		// Only master thread does this
+		// Only master thread does this.
 		if (tid == 0) 
 		{
 			nthreads = omp_get_num_threads();
 			printf("Number of threads = %d\n", nthreads);
 		}
 
-	}  // All threads join master thread and terminate
+	}  // All threads join master thread and terminate.
 }
 
 void do_directive()
@@ -87,7 +87,7 @@ void do_directive()
 	int i, j, chunk;
 	float a[N], b[N], c[N], d[N];
 
-	// Some initializations
+	// Some initializations.
 	for (i = 0; i < N; ++i)
 		a[i] = b[i] = i * 1.0f;
 	chunk = CHUNKSIZE;
@@ -147,7 +147,7 @@ void do_directive()
 					std::cout << sstream.str();
 				}
 			}
-		}  // end of parallel section
+		}  // End of parallel section.
 
 		const boost::posix_time::ptime etime = boost::posix_time::microsec_clock::universal_time();
 		const boost::posix_time::time_duration td = etime - stime;

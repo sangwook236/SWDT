@@ -11,7 +11,7 @@ namespace local {
 
 void human_detection_using_gpu_hog()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local

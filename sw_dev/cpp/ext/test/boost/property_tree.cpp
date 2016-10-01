@@ -12,22 +12,22 @@ namespace local {
 
 void xml_parser()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void json_parser()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void ini_parser()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void info_parser()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // local

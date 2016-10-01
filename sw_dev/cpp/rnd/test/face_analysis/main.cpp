@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "Stasm Library -------------------------------------------------------" << std::endl;
-		//retval = stasm_main(argc, argv);  // not yet implemented.
+		//retval = stasm_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nFaceTracker library -------------------------------------------------" << std::endl;
 		retval = facetracker_main(argc, argv);
@@ -36,11 +36,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

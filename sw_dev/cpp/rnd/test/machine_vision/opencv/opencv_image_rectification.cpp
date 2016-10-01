@@ -336,14 +336,14 @@ void rectify_kinect_images_from_IR_to_RGB_using_depth(
 	}
 }
 
-// RGB (left) to IR (right)
+// RGB (left) to IR (right)..
 void rectify_kinect_images_from_RGB_to_IR_using_depth(
 	const std::vector<cv::Mat> &input_images_left, const std::vector<cv::Mat> &input_images_right, std::vector<cv::Mat> &output_images_left, std::vector<cv::Mat> &output_images_right,
 	const cv::Size &imageSize_left, const cv::Size &imageSize_right,
 	const cv::Mat &K_left, const cv::Mat &K_right, const cv::Mat &R, const cv::Mat &T
 )
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void load_kinect_sensor_parameters_from_IR_to_RGB(
@@ -565,7 +565,7 @@ void rectify_kinect_images_using_depth(
 			rgb_input_images2, ir_input_images2, rgb_output_images, ir_output_images,
 			imageSize_rgb, imageSize_ir,
 			K_rgb, K_ir, R, T
-		);  // not yet implemented.
+		);  // Not yet implemented.
 }
 
 }  // namespace local

@@ -115,7 +115,7 @@ void encrypt(sqlite3_context *context, int argc, sqlite3_value **argv)
 		}
 	}
 #else
-    throw std::runtime_error("not yet implemented");
+    throw std::runtime_error("Not yet implemented");
 #endif
 }
 
@@ -215,7 +215,7 @@ void decrypt(sqlite3_context *context, int argc, sqlite3_value **argv)
 		}
 	}
 #else
-    throw std::runtime_error("not yet implemented");
+    throw std::runtime_error("Not yet implemented");
 #endif
 }
 

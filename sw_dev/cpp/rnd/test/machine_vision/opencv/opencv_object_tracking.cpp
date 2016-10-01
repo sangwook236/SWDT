@@ -444,15 +444,15 @@ void camshift_tracking_demo()
 
 void meanshift_tracking()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 
 	//cv::meanShift();
 }
 
-// [ref] ${OPENCV_HOME}/samples/cpp/hybridtrackingsample.cpp
+// REF [file] >> ${OPENCV_HOME}/samples/cpp/hybridtrackingsample.cpp
 void hybrid_tracking_sample()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local
@@ -462,9 +462,9 @@ namespace my_opencv {
 
 void object_tracking()
 {
-	//local::meanshift_tracking();  // not yet implemented.
+	//local::meanshift_tracking();  // Not yet implemented.
 	local::camshift_tracking_demo();
-	//local::hybrid_tracking_sample();  // not yet implemented.
+	//local::hybrid_tracking_sample();  // Not yet implemented.
 }
 
 }  // namespace my_opencv

@@ -29,13 +29,13 @@ void other_core_algorithms()
 	std::cout << "\ntopological sort ---------------------------------------------" << std::endl;
 	{
 		//boost::topological_sort();
-		throw std::runtime_error("not yet implemented");
+		throw std::runtime_error("Not yet implemented");
 	}
 
 	std::cout << "\ntransitive closure -------------------------------------------" << std::endl;
 	{
 		//boost::transitive_closure();
-		throw std::runtime_error("not yet implemented");
+		throw std::runtime_error("Not yet implemented");
 	}
 }
 
@@ -345,32 +345,32 @@ void connected_components()
 
 void sparse_matrix_ordering()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void layout_algorithms()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void clustering()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void planar_graph_algorithms()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void graph_metrics()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void graph_structure_comparisons()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local

@@ -64,8 +64,8 @@ int main(int argc, char *argv[])
 #endif
 
 		std::cout << "\nboom library --------------------------------------------------------" << std::endl;
-		// Bayesian computation in C++.
-		//retval = boom_main(argc, argv);  // not yet implemented.
+		//	- Bayesian computation in C++.
+		//retval = boom_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nMoVMF library -------------------------------------------------------" << std::endl;
 		//	- Directional statistics.
@@ -87,11 +87,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

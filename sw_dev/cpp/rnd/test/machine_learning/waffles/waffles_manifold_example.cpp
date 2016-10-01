@@ -397,7 +397,7 @@ void semi_supervised_manifold_sculpting_for_swiss_roll()
 // REF [function] >> DoFaceDemo() in ${WAFFLES_HOME}/demos/manifold/src/main.cpp.
 void manifold_sculpting_for_face()
 {
-    throw std::runtime_error("not yet implemented");
+    throw std::runtime_error("Not yet implemented");
 }
 
 void dimensionality_reduction(const int idAlgorithm, const int idData)
@@ -511,7 +511,7 @@ void manifold_sculpting_example()
 
     local::semi_supervised_manifold_sculpting_for_swiss_roll();
 
-    //local::manifold_sculpting_for_face();  // not yet implemented.
+    //local::manifold_sculpting_for_face();  // Not yet implemented.
 }
 
 }  // namespace my_waffles

@@ -13,23 +13,23 @@ namespace local {
 
 namespace my_vlfeat {
 
-void sift();  // scale invariant feature transform (SIFT).
+void sift();  // Scale invariant feature transform (SIFT).
 void dense_sift();
-void mser();  // maximally stable extremal regions (MSER).
-void hog();  // histogram of oriented gradients (HOG).
-void lbp();  // local binary patterns (LBP).
+void mser();  // Maximally stable extremal regions (MSER).
+void hog();  // Histogram of oriented gradients (HOG).
+void lbp();  // Local binary patterns (LBP).
 void covariant_feature_detectors();
 void fisher_vector();  // Fisher vector (FV) encoding.
-void vlad();  // vector of locally aggregated descriptors (VLAD) encoding.
-void liop();  // local intensity order pattern (LIOP) descriptor.
+void vlad();  // Vector of locally aggregated descriptors (VLAD) encoding.
+void liop();  // Local intensity order pattern (LIOP) descriptor.
 
 void kmeans();  // k-means.
 void gmm();  // Gaussian mixture models (GMM).
-void ikm();  // integer K-means (IKM).
-void hikm();  // hierarchical Integer K-means (HIKM).
-void aib();  // agglomerative information bottleneck (AIB).
+void ikm();  // Integer K-means (IKM).
+void hikm();  // Hierarchical Integer K-means (HIKM).
+void aib();  // Agglomerative information bottleneck (AIB).
 
-void slic();  // simple linear iterative clustering (SLIC).
+void slic();  // Simple linear iterative clustering (SLIC).
 void quick_shift();
 
 }  // namespace my_vlfeat
@@ -50,50 +50,50 @@ int vlfeat_main(int argc, char *argv[])
 			std::cout << "GPU not found ..." << std::endl;
 #endif
 
-		// image operation ------------------------------------------
-		//	image convolution.
-		//	integral image.
-		//	distance transform (DT).
-		//	image smoothing.
-		//	image gradient.
-		//	affine warping.
-		//	thin-plate spline warping.
-		//	inverse thin-plate spline warping.
+		// Image operation ------------------------------------------
+		//	Image convolution.
+		//	Integral image.
+		//	Distance transform (DT).
+		//	Image smoothing.
+		//	Image gradient.
+		//	Affine warping.
+		//	Thin-plate spline warping.
+		//	Inverse thin-plate spline warping.
 
-		// machine learning -----------------------------------------
-		//	support vector machine (SVM).
+		// Machine learning -----------------------------------------
+		//	Support vector machine (SVM).
 
-		// feature analysis -----------------------------------------
-		//	scale Invariant feature transform (SIFT).
-		//	dense scale invariant feature transform (DSIFT).
-		//	pyramid histogram of visual words (PHOW).
-		//	maximally stable extremal regions (MSER).
-		//	histogram of oriented gradients (HOG).
-		//	local binary patterns (LBP).
-		//	covariant feature detectors.
+		// Feature analysis -----------------------------------------
+		//	Scale Invariant feature transform (SIFT).
+		//	Dense scale invariant feature transform (DSIFT).
+		//	Pyramid histogram of visual words (PHOW).
+		//	Maximally stable extremal regions (MSER).
+		//	Histogram of oriented gradients (HOG).
+		//	Local binary patterns (LBP).
+		//	Covariant feature detectors.
 		//	Gaussian scale space (GSS).
 		//	Fisher vector (FV) encoding.
-		//	vector of locally aggregated descriptors (VLAD) encoding.
-		//	local intensity order pattern (LIOP) descriptor.
+		//	Vector of locally aggregated descriptors (VLAD) encoding.
+		//	Local intensity order pattern (LIOP) descriptor.
 		{
 			//my_vlfeat::sift();
-			//my_vlfeat::dense_sift();  // not yet implemented.
+			//my_vlfeat::dense_sift();  // Not yet implemented.
 			//my_vlfeat::mser();
 			//my_vlfeat::hog();
 			my_vlfeat::lbp();
-			//my_vlfeat::covariant_feature_detectors();  // not yet implemented.
-			//my_vlfeat::fisher_vector();  // [ref] gmm().
-			//my_vlfeat::vlad();  // [ref] gmm().
+			//my_vlfeat::covariant_feature_detectors();  // Not yet implemented.
+			//my_vlfeat::fisher_vector();  // REF [function] >> gmm().
+			//my_vlfeat::vlad();  // REF [funciton] >> gmm().
 			//my_vlfeat::liop();
 		}
 
-		// clustering -----------------------------------------------
+		// Clustering -----------------------------------------------
 		//	k-means clustering.
 		//	Gaussian mixture models (GMM).
-		//	integer k-means (IKM).
-		//	hierarchical integer k-means (HIKM).
-		//	agglomerative information bottleneck (AIB).
-		//	forests of kd-trees.
+		//	Integer k-means (IKM).
+		//	Hierarchical integer k-means (HIKM).
+		//	Agglomerative information bottleneck (AIB).
+		//	Forests of kd-trees.
 		{
 			//my_vlfeat::kmeans();
 			//my_vlfeat::gmm();
@@ -102,9 +102,9 @@ int vlfeat_main(int argc, char *argv[])
 			//my_vlfeat::aib();
 		}
 
-		// segmentation ---------------------------------------------
-		//	simple linear iterative clustering (SLIC).
-		//	quick shift image segmentation.
+		// Segmentation ---------------------------------------------
+		//	Simple linear iterative clustering (SLIC).
+		//	Quick shift image segmentation.
 		{
 			//my_vlfeat::slic();
 			//my_vlfeat::quick_shift();

@@ -396,11 +396,11 @@ void capture_image_from_cam()
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, imageHeight);
 
 	//
-	const char *windowName = "capturing from CAM";
+	const char *windowName = "Capturing from CAM";
 	cvNamedWindow(windowName, CV_WINDOW_AUTOSIZE);
 	cvResizeWindow(windowName, imageWidth, imageHeight);
 
-	std::cout << "press any key to exit ... " << std::endl;
+	std::cout << "Press any key to exit ... " << std::endl;
 	IplImage *frame = NULL;
 	IplImage *image = NULL;
 	while (capture && cvWaitKey(1) < 0)
@@ -441,8 +441,8 @@ void capture_image_from_cam()
 
 void capture_image_by_callback()
 {
-	// TODO [check] >> maybe does not support
-	throw std::runtime_error("not yet implemented");
+	// TODO [check] >> Maybe does not support.
+	throw std::runtime_error("Not yet implemented");
 }
 #else
 void capture_image_from_cam()
@@ -505,18 +505,18 @@ void capture_image_from_cam()
 	capture.set(CV_CAP_PROP_FRAME_HEIGHT, imageHeight);
 
 	//
-	const std::string windowName("capturing from CAM");
+	const std::string windowName("Capturing from CAM");
 	cv::namedWindow(windowName);
 	//cv::resizeWindow(windowName, imageWidth, imageHeight);
 
-	std::cout << "press any key to exit ... " << std::endl;
+	std::cout << "Press any key to exit ... " << std::endl;
 	cv::Mat frame, image;
 	while (cv::waitKey(1) < 0)
 	{
 		capture >> frame;
 		if (frame.empty())
 		{
-			std::cout << "a frame not found ..." << std::endl;
+			std::cout << "A frame not found ..." << std::endl;
 			//break;
 			continue;
 		}
@@ -547,8 +547,8 @@ void capture_image_from_cam()
 
 void capture_image_by_callback()
 {
-	// TODO [check] >> maybe does not support
-	throw std::runtime_error("not yet implemented");
+	// TODO [check] >> Maybe does not support.
+	throw std::runtime_error("Not yet implemented");
 }
 #endif
 

@@ -18,12 +18,12 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "dynamic time warping (DTW) algorithm --------------------------------" << std::endl;
+		std::cout << "Dynamic time warping (DTW) algorithm --------------------------------" << std::endl;
 		retval = dynamic_time_warping_main(argc, argv);
 
 		std::cout << "\nFastEMD algorithm ---------------------------------------------------" << std::endl;
-		//	-. earth mover's distance (EMD).
-		//retval = fastemd_main(argc, argv);  // not yet implemented.
+		//	- Earth mover's distance (EMD).
+		//retval = fastemd_main(argc, argv);  // Not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{
@@ -37,11 +37,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

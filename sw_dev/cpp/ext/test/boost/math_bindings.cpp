@@ -12,5 +12,5 @@ namespace local {
 
 void math_bindings()
 {
-    throw std::runtime_error("not yet implemented");
+    throw std::runtime_error("Not yet implemented");
 }

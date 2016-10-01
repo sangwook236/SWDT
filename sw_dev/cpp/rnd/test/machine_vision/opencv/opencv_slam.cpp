@@ -10,7 +10,7 @@ namespace local {
 
 void fab_map_sample()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local
@@ -18,7 +18,7 @@ void fab_map_sample()
 
 namespace my_opencv {
 
-// ${OPENCV_HOME}/sample/cpp/fabmap_sample.cpp
+// REF [file] >> ${OPENCV_HOME}/sample/cpp/fabmap_sample.cpp
 void slam()
 {
 	local::fab_map_sample();

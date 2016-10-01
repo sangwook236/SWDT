@@ -1084,10 +1084,10 @@ void Farneback_motion_estimation_algorithm()
 #endif
 }
 
-// [ref] ${OPENCV_HOME}/samples/cpp/simpleflow_demo.cpp.
+// REF [file] >> ${OPENCV_HOME}/samples/cpp/simpleflow_demo.cpp.
 void motion_estimation_algorithm_by_simpleflow()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local
@@ -1103,7 +1103,7 @@ void optical_flow()
 	//local::pyramid_Lucas_Kanade_optical_flow_algorithm_1();
 	//local::pyramid_Lucas_Kanade_optical_flow_algorithm_2();
 	local::Farneback_motion_estimation_algorithm();
-	//local::motion_estimation_algorithm_by_simpleflow();  // not yet implemented.
+	//local::motion_estimation_algorithm_by_simpleflow();  // Not yet implemented.
 }
 
 }  // namespace my_opencv

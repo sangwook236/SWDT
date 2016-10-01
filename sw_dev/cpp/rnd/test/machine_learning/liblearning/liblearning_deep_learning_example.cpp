@@ -13,7 +13,7 @@ namespace my_liblearning {
 
 void deep_learning_example()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace my_liblearning

@@ -13,12 +13,12 @@ namespace local {
 
 void inference_using_graphcut()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void inference_using_belief_propagation()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local
@@ -49,32 +49,32 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		{
-            std::cout << "belief propagation (BP) algorithm -----------------------------------" << std::endl;
-			//retval = local::inference_using_belief_propagation();  // not yet implemented.
+            std::cout << "Belief propagation (BP) algorithm -----------------------------------" << std::endl;
+			//retval = local::inference_using_belief_propagation();  // Not yet implemented.
 			//retval = bp_vision_main(argc, argv);
 
-            std::cout << "\ngraph-cuts algorithm ------------------------------------------------" << std::endl;
-			//retval = local::inference_using_graphcut();  // not yet implemented.
-			//retval = cuda_cut_main(argc, argv);  // not yet implemented.
+            std::cout << "\nGraph-cuts algorithm ------------------------------------------------" << std::endl;
+			//retval = local::inference_using_graphcut();  // Not yet implemented.
+			//retval = cuda_cut_main(argc, argv);  // Not yet implemented.
 
             std::cout << "\nTree-Reweighted (TRW-S) message passing algorithm -------------------" << std::endl;
-			//retval = trws_main(argc, argv);  // not yet implemented.
+			//retval = trws_main(argc, argv);  // Not yet implemented.
 
-            std::cout << "\nquadratic pseudo-boolean optimization (QPBO) algorithm --------------" << std::endl;
-			//retval = qpbo_main(argc, argv);  // not yet implemented.
+            std::cout << "\nQuadratic pseudo-boolean optimization (QPBO) algorithm --------------" << std::endl;
+			//retval = qpbo_main(argc, argv);  // Not yet implemented.
 		}
 
-		std::cout << "\nhidden Markov model (HMM) -------------------------------------------" << std::endl;
+		std::cout << "\nHidden Markov model (HMM) -------------------------------------------" << std::endl;
 		//retval = hmm_main(argc, argv);
 
 		std::cout << "\nMarkov random field (MRF) -------------------------------------------" << std::endl;
 		//retval = middlebury_main(argc, argv);
 
-		std::cout << "\nconditional random field (CRF) --------------------------------------" << std::endl;
+		std::cout << "\nConditional random field (CRF) --------------------------------------" << std::endl;
 		//retval = crfpp_main(argc, argv);
 		retval = hcrf_main(argc, argv);
 
-		std::cout << "\ndynamic Bayesian network (DBN) --------------------------------------" << std::endl;
+		std::cout << "\nDynamic Bayesian network (DBN) --------------------------------------" << std::endl;
 
 		std::cout << "\nProbabilistic Networks Library (PNL) --------------------------------" << std::endl;
 		//retval = pnl_main(argc, argv);
@@ -104,11 +104,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

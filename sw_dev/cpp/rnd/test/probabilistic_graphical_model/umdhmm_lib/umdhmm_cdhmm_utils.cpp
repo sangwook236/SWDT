@@ -193,27 +193,27 @@ double multivariate_normal_distribution(const double *symbol, const int state, c
 
 	//boost::math::normal pdf(set_of_params[state].mean, set_of_params[state].covar);
 
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 double von_mises_distribution(const double *symbol, const int state, const void *set_of_parameters)
 {
 	const vonMisesParams *set_of_params = reinterpret_cast<const vonMisesParams *>(set_of_parameters);
 
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 double von_mises_fisher_distribution(const double *symbol, const int state, const void *set_of_parameters)
 {
 	const vonMisesFisherParams *set_of_params = reinterpret_cast<const vonMisesFisherParams *>(set_of_parameters);
 
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 UnivariateNormalParams * AllocSetOfParams_UnivariateNormal(int nl, int nh)
 {
 	UnivariateNormalParams *s = (UnivariateNormalParams *)calloc(unsigned(nh - nl + 1), sizeof(UnivariateNormalParams));
-	if (!s) nrerror("allocation failure 1 in dmatrix()");
+	if (!s) nrerror("Allocation failure 1 in dmatrix()");
 	s -= nl;
 
 	return s;

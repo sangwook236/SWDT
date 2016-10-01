@@ -180,7 +180,7 @@ void gradient(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const i
 
 void hit_and_miss()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void top_hat(const cv::Mat &src, cv::Mat &dst, const cv::Mat &selement, const int iterations)

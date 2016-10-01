@@ -22,7 +22,7 @@ int clustering_main(int argc, char *argv[])
 	// k-means & k-means++.
 	my_clustering::kmeanspp();
 
-	//my_clustering::k_medoids();  // not yet implemented.
+	//my_clustering::k_medoids();  // Not yet implemented.
 
 	my_clustering::spectral_clustering();
 

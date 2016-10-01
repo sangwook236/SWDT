@@ -14,10 +14,10 @@ namespace my_shogun {
 
 using namespace shogun;
 
-// [ref] ${SHOGUN_HOME}/examples/undocumented/libshogun/classifier_latent_svm.cpp
+// REF [file] >> ${SHOGUN_HOME}/examples/undocumented/libshogun/classifier_latent_svm.cpp
 void classifier_latent_svm_example()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace my_shogun

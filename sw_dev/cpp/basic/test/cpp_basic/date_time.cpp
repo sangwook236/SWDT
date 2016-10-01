@@ -533,6 +533,6 @@ void date_time()
 	local::year_example();
 
 	//
-	local::seconds2datetime_test();  // not yet implemented.
-	local::datetime2seconds_test();  // not yet implemented.
+	local::seconds2datetime_test();  // Not yet implemented.
+	local::datetime2seconds_test();  // Not yet implemented.
 }

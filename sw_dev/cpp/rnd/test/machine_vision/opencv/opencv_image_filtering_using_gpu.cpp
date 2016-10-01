@@ -16,7 +16,7 @@ namespace my_opencv {
 
 void image_filtering_using_gpu()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace my_opencv

@@ -183,10 +183,10 @@ void infer_bayesian_network_using_naive_inference_algorithm(const boost::scoped_
 	delete evidForWS;
 }
 
-// [ref] ${PNL_ROOT}/c_pgmtk/tests/src/APearlInfEngine.cpp.
+// REF [file] >> ${PNL_ROOT}/c_pgmtk/tests/src/APearlInfEngine.cpp.
 void infer_bayesian_network_using_belief_propagation_algorithm(const boost::scoped_ptr<pnl::CBNet> &bnet)
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local
@@ -196,9 +196,9 @@ namespace my_pnl {
 
 void bayesian_network_example()
 {
-	std::cout << "========== infer water-sprinkler Bayesian network" << std::endl;
+	std::cout << "========== Infer water-sprinkler Bayesian network" << std::endl;
 	{
-		// create Water-Sprinkler BNet.
+		// Create Water-Sprinkler BNet.
 #if 1
 		const boost::scoped_ptr<pnl::CBNet> wsBNet(pnl::pnlExCreateWaterSprinklerBNet());
 #else
@@ -207,17 +207,17 @@ void bayesian_network_example()
 
 		if (!wsBNet)
 		{
-			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "Fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
-		// get content of Graph.
+		// Get content of Graph.
 		wsBNet->GetGraph()->Dump();
 
-		// naive inference algorithm.
+		// Naive inference algorithm.
 		local::infer_bayesian_network_using_naive_inference_algorithm(wsBNet);
-		// belief propagation (Pearl inference) algorithm
-		//local::infer_bayesian_network_using_belief_propagation_algorithm(wsBNet);  // not yet implemented.
+		// Belief propagation (Pearl inference) algorithm
+		//local::infer_bayesian_network_using_belief_propagation_algorithm(wsBNet);  // Not yet implemented.
 	}
 }
 

@@ -105,7 +105,7 @@ int shogun_main(int argc, char *argv[])
             //my_shogun::classifier_conjugateindex_example();
 
             //my_shogun::classifier_minimal_svm_example();
-            //my_shogun::classifier_latent_svm_example();  // not yet implemented.
+            //my_shogun::classifier_latent_svm_example();  // Not yet implemented.
             //my_shogun::classifier_libsvm_example();
 
             //my_shogun::classifier_multiclasslibsvm_example();

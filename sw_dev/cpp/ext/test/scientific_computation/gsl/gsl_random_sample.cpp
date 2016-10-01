@@ -217,7 +217,7 @@ void random_sample_bivariate_normal()
 
 void random_sample_multivariate_normal()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void random_sample_spherical_2d()

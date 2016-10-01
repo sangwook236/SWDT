@@ -10,5 +10,5 @@ namespace local {
 
 void graph_parallel()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }

@@ -31,13 +31,13 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "line feature --------------------------------------------------------" << std::endl;
+		std::cout << "Line feature --------------------------------------------------------" << std::endl;
 		retval = lsd_main(argc, argv);
 
-		std::cout << "\nellipse & line feature ----------------------------------------------" << std::endl;
+		std::cout << "\nEllipse & line feature ----------------------------------------------" << std::endl;
 		//retval = elsd_main(argc, argv);
 
-		std::cout << "\nlocal descriptors ---------------------------------------------------" << std::endl;
+		std::cout << "\nLocal descriptors ---------------------------------------------------" << std::endl;
 		//retval = opensift_main(argc, argv);
 		//retval = siftgpu_main(argc, argv);
 
@@ -61,11 +61,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

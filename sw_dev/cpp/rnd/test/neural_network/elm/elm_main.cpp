@@ -16,7 +16,7 @@ void elm_linear_test();
 
 int elm_main(int argc, char *argv[])
 {
-	my_elm::elm_linear_test();  // not yet implemented.
+	my_elm::elm_linear_test();  // Not yet implemented.
 
 	return 0;
 }

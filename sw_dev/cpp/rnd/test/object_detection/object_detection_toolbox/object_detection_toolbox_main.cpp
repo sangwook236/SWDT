@@ -20,7 +20,7 @@ namespace my_object_detection_toolbox {
 
 int object_detection_toolbox_main(int argc, char *argv[])
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 
 	return 0;
 }

@@ -10,10 +10,10 @@ namespace local {
 
 namespace my_mysvm {
 
-// [ref] ${MYSVM_HOME}/predict.cpp
+// REF [file] >> ${MYSVM_HOME}/predict.cpp
 void predict_example()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace my_mysvm

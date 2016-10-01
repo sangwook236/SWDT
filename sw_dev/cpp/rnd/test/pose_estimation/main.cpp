@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "parts-based detector algorithm --------------------------------------" << std::endl;
-		// "Articulated pose estimation with flexible mixtures-of-parts".
-		//	-. pictorial structures.
-		//	-. star-based pictorial structures.
+		//	REF [paper] >> "Articulated pose estimation with flexible mixtures-of-parts".
+		//	- Pictorial structures.
+		//	- Star-based pictorial structures.
 		retval = parts_based_detector_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
@@ -32,11 +32,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

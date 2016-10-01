@@ -250,7 +250,7 @@ void cdhmm_with_univariate_gaussian_observations__sample_umdhmm()
 
 void cdhmm_with_univariate_gaussian_mixture_observations__sample_umdhmm()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local
@@ -262,7 +262,7 @@ void hmm_sample()
 {
 	//local::hmm_with_discrete_multinomial_observations__sample_umdhmm();
 	local::cdhmm_with_univariate_gaussian_observations__sample_umdhmm();
-	//local::cdhmm_with_univariate_gaussian_mixture_observations__sample_umdhmm();  // not yet implemented.
+	//local::cdhmm_with_univariate_gaussian_mixture_observations__sample_umdhmm();  // Not yet implemented.
 }
 
 }  // namespace my_hmm

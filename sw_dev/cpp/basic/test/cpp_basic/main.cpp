@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 		//complex();
 		//date_time();
 
-		//file_io();  // not yet implemented
+		//file_io();  // Not yet implemented.
 
 		//stl_data_structure();
 		//stl_algorithm();
@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 		static_lib_linking();
 		shared_lib_linking();
 
-		// test
+		// Test.
 #if 0
 		{
 			const float f11 = -3.45f;
@@ -106,14 +106,14 @@ int main(int argc, char **argv)
 	}
 	catch (const std::exception &e)
 	{
-		std::cout << "std::exception occurred !!!: " << e.what() << std::endl;
+		std::cout << "std::exception caught !!!: " << e.what() << std::endl;
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception occurred !!!" << std::endl;
+		std::cout << "Unknown exception caught !!!" << std::endl;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
     return 0;

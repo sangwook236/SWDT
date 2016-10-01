@@ -20,18 +20,18 @@ void multi_scan_mcmcda_algorithm();
 
 int mcmcpp_main(int argc, char *argv[])
 {
-	// example -------------------------------------------------------------
+	// Example -------------------------------------------------------------
 	{
 		my_mcmcpp::normal_example();
 		//my_mcmcpp::binomial_example();
 		//my_mcmcpp::multinomial_example();
 
-		//my_mcmcpp::normal_mixture_example();  // TODO [check] >> not working ???
+		//my_mcmcpp::normal_mixture_example();  // TODO [check] >> Not working ???
 	}
 
-	// application ---------------------------------------------------------
+	// Application ---------------------------------------------------------
 	{
-		//my_mcmcpp::multi_scan_mcmcda_algorithm();  // not yet implemented.
+		//my_mcmcpp::multi_scan_mcmcda_algorithm();  // Not yet implemented.
 	}
 
 	return 0;

@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nRobot Operating System (ROS) ----------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-		// [ref] http://wiki.ros.org/ko/cturtle/Installation/Windows
-		//retval = ros_main(argc, argv);  // not yet implemented.
+		// REF [site] >> http://wiki.ros.org/ko/cturtle/Installation/Windows
+		//retval = ros_main(argc, argv);  // Not yet implemented.
 #else
         std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
@@ -41,11 +41,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

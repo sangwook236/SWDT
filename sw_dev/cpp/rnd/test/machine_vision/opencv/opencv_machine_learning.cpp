@@ -220,13 +220,13 @@ void train_by_ann()
 // ${OPENCV_HOME}/sample/cpp/tutorial_code/ml/introduction_to_svm/introduction_to_svm.cpp
 void svm_example()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
-// ${OPENCV_HOME}/sample/cpp/tutorial_code/ml/non_linear_svms/non_linear_svms.cpp
+// REF [file] >> ${OPENCV_HOME}/sample/cpp/tutorial_code/ml/non_linear_svms/non_linear_svms.cpp
 void non_linear_svms_example()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local

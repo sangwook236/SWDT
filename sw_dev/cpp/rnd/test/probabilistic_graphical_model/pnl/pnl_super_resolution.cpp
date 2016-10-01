@@ -11,10 +11,10 @@ namespace local {
 
 namespace my_pnl {
 
-// [ref] ${PNL_ROOT}/c_pgmtk/tests/src/AMRF2PearlInf.cpp
+// REF [file] >> ${PNL_ROOT}/c_pgmtk/tests/src/AMRF2PearlInf.cpp
 void super_resolution()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace my_pnl

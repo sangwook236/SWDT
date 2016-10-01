@@ -10,5 +10,5 @@ namespace local {
 
 void ordinary_differential_equation()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }

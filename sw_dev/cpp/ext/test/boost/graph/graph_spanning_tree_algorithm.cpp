@@ -268,21 +268,21 @@ void minimum_spanning_tree()
 {
 	std::cout << "Kruskal's minimum spanning tree algorithm ---------------------" << std::endl;
 	local::kruskal_minimum_spanning_tree_example();
-	//local::kruskal_minimum_spanning_tree_telephone_example();  // compile-time error
+	//local::kruskal_minimum_spanning_tree_telephone_example();  // Compile-time error.
 
 	std::cout << "\nPrim's minimum spanning tree algorithm ------------------------" << std::endl;
 	local::prim_minimum_spanning_tree_example();
-	//local::prim_minimum_spanning_tree_telephone_example();  // compile-time error
+	//local::prim_minimum_spanning_tree_telephone_example();  // Compile-time error.
 }
 
 void random_spanning_tree()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 void common_spanning_tree()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace boost_graph

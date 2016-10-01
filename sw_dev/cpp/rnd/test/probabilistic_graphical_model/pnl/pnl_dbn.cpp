@@ -489,18 +489,18 @@ void infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_in
 	}
 }
 
-// [ref]
+// REF [file] >>
 //	${PNL_ROOT}/c_pgmtk/tests/src/ABKInfDBN.cpp.
 //	${PNL_ROOT}/c_pgmtk/tests/src/ABKInfUsingClusters.cpp.
 void infer_dbn_with_mixture_of_gaussians_observations_using_boyen_koller_inference_algorithm(const boost::scoped_ptr<pnl::CDBN> &hmm)
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
-// [ref] ${PNL_ROOT}/c_pgmtk/tests/src/A2TPFInfDBN.cpp
+// REF [file] >> ${PNL_ROOT}/c_pgmtk/tests/src/A2TPFInfDBN.cpp
 void infer_dbn_with_mixture_of_gaussians_observations_using_2T_slice_particle_filtering_inference_algorithm(const boost::scoped_ptr<pnl::CDBN> &hmm)
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local
@@ -525,9 +525,9 @@ void dbn()
 		// 1.5 slice junction tree inference algorithm.
 		local::infer_dbn_with_mixture_of_gaussians_observations_using_1_5_junction_tree_inference_algorithm(dbn);
 		// Boyen-Koller (BK) inference algorithm (approximate algorithm).
-		//local::infer_dbn_with_mixture_of_gaussians_observations_using_boyen_koller_inference_algorithm(dbn);  // not yet implemented.
+		//local::infer_dbn_with_mixture_of_gaussians_observations_using_boyen_koller_inference_algorithm(dbn);  // Not yet implemented.
 		// 2T slice particle filtering inference algorithm (approximate algorithm).
-		//local::infer_dbn_with_mixture_of_gaussians_observations_using_2T_slice_particle_filtering_inference_algorithm(dbn);  // not yet implemented.
+		//local::infer_dbn_with_mixture_of_gaussians_observations_using_2T_slice_particle_filtering_inference_algorithm(dbn);  // Not yet implemented.
 	}
 }
 

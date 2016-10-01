@@ -16,7 +16,7 @@ namespace my_opencv {
 
 void feature_extraction_and_matching_using_gpu()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace my_opencv

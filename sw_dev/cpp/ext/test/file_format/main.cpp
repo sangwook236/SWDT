@@ -26,10 +26,10 @@ int main(int argc, char *argv[])
 		//retval = csv_parser_main(argc, argv);
 
 		std::cout << "\nASSIMP library ------------------------------------------------------" << std::endl;
-		//retval = assimp_main(argc, argv);  // not yet implemented.
+		//retval = assimp_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nHDF library ---------------------------------------------------------" << std::endl;
-		//retval = hdf_main(argc, argv);  // not yet implemented.
+		//retval = hdf_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nARFF file reader ----------------------------------------------------" << std::endl;
 		retval = arff_main(argc, argv);
@@ -46,11 +46,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

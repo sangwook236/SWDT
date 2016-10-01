@@ -581,17 +581,17 @@ pnl::CBNet * create_mixture_of_gaussians_bayesian_network()
 void learn_mixture_of_gaussians_bayesian_network(const boost::scoped_ptr<pnl::CBNet> &mogBNet)
 {
 	// FIXME [implement] >>
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
-// [ref] ${PNL_ROOT}/c_pgmtk/tests/src/AMixtureGaussainModel.cpp.
+// REF [file] >> ${PNL_ROOT}/c_pgmtk/tests/src/AMixtureGaussainModel.cpp.
 void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::CBNet> &mogBNet)
 {
-	// create evidence on all Gaussian nodes.
+	// Create evidence on all Gaussian nodes.
 
 	//const int numNodes = mogBNet->GetNumberOfNodes();
 
-	// create evidence for inference.
+	// Create evidence for inference.
 	const int numObsNodes = 3;
 	const int obsNodes[] = { 2, 3, 4 };
 
@@ -602,17 +602,17 @@ void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::
 
 	boost::scoped_ptr<pnl::CEvidence> evidence(pnl::CEvidence::Create(mogBNet.get(), numObsNodes, obsNodes, obsVals));
 
-	// create inference engine.
+	// Create inference engine.
 	boost::scoped_ptr<pnl::CNaiveInfEngine> naiveInfEngine(pnl::CNaiveInfEngine::Create(mogBNet.get()));
 	boost::scoped_ptr<pnl::CJtreeInfEngine> juncTreeInfEngine(pnl::CJtreeInfEngine::Create(mogBNet.get()));
 
-	// start inference with maximization.
+	// Sart inference with maximization.
 	{
 		const int maximizeFlag = 1;
 		const int queryNode = 0;
 		const int queryNodes[] = { 0, 1 };
 
-		// naive inference.
+		// Naive inference.
 		naiveInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 #if 1
 		naiveInfEngine->MarginalNodes(&queryNode, 1);
@@ -625,7 +625,7 @@ void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::
 		const int mpeValNaive1 = mpeEvidNaive->GetValue(queryNodes[1])->GetInt();
 #endif
 
-		// junction tree inference.
+		// Junction tree inference.
 		juncTreeInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 #if 1
 		juncTreeInfEngine->MarginalNodes(&queryNode, 1);
@@ -644,13 +644,13 @@ void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::
 #endif
 	}
 
-	// start inference without maximization.
+	// Start inference without maximization.
 	{
 		const int maximizeFlag = 0;
 		const int queryNode = 0;
 		const int queryNodes[] = { 0, 1 };
 
-		// naive inference.
+		// Naive inference.
 		naiveInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 #if 1
 		naiveInfEngine->MarginalNodes(&queryNode, 1);
@@ -661,7 +661,7 @@ void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::
 #endif
 		//marginalNaive->Dump();
 
-		// junction tree inference.
+		// Junction tree inference.
 		juncTreeInfEngine->EnterEvidence(evidence.get(), maximizeFlag);
 #if 1
 		juncTreeInfEngine->MarginalNodes(&queryNode, 1);
@@ -683,10 +683,10 @@ void infer_mixture_of_gaussians_bayesian_network_1(const boost::scoped_ptr<pnl::
 
 void infer_mixture_of_gaussians_bayesian_network_2(const boost::scoped_ptr<pnl::CBNet> &mogBNet)
 {
-	// create simple evidence for nodes 2, 3, 4 from BNet.
+	// Create simple evidence for nodes 2, 3, 4 from BNet.
 	const pnl::CModelDomain *modelDomain = mogBNet->GetModelDomain();
 
-	// let nodes 2, 3, & 4 be observed.
+	// Let nodes 2, 3, & 4 be observed.
 	const int numObsNodes = 3;
 	const int obsNodes[] = { 2, 3, 4 };
 
@@ -696,10 +696,10 @@ void infer_mixture_of_gaussians_bayesian_network_2(const boost::scoped_ptr<pnl::
 	{
 		numObsValues += modelDomain->GetNumVlsForNode(obsNodes[i]);
 	}
-	// evidence for node 2 consists of 1 value.
-	// evidence for node 3 consists of 1 value.
-	// evidence for node 4 consists of 2 values.
-	// so, numObsValues = 4.
+	// Evidence for node 2 consists of 1 value.
+	// Evidence for node 3 consists of 1 value.
+	// Evidence for node 4 consists of 2 values.
+	// So, numObsValues = 4.
 
 	pnl::valueVector obsValues(numObsValues);
 	for (int i = 0; i < numObsValues; ++i)
@@ -710,18 +710,18 @@ void infer_mixture_of_gaussians_bayesian_network_2(const boost::scoped_ptr<pnl::
 
 	boost::scoped_ptr<pnl::CEvidence> evidence(pnl::CEvidence::Create(modelDomain, numObsNodes, obsNodes, obsValues));
 
-	// create junction tree inference engine.
+	// Create junction tree inference engine.
 	boost::scoped_ptr<pnl::CJtreeInfEngine> juncTreeInfEngine(pnl::CJtreeInfEngine::Create(mogBNet.get()));
 
-	// enter evidence created before and started inference procedure.
+	// Enter evidence created before and started inference procedure.
 	juncTreeInfEngine->EnterEvidence(evidence.get());
 
-	// get a marginal for query.
+	// Get a marginal for query.
 	const int numQueryNodes = 1;
 	const int queryNodes[] = { 0 };
 	juncTreeInfEngine->MarginalNodes(queryNodes, numQueryNodes);
 	const pnl::CPotential *queryPot = juncTreeInfEngine->GetQueryJPD();
-	// node 0 is discrete, then query potential is tabular.
+	// Node 0 is discrete, then query potential is tabular.
 
 	const pnl::CDistribFun *distribFun = queryPot->GetDistribFun();
 	const pnl::CMatrix<float> *queryPotMat = distribFun->GetMatrix(pnl::matTable);
@@ -736,8 +736,8 @@ void infer_mixture_of_gaussians_bayesian_network_2(const boost::scoped_ptr<pnl::
 		std::cout << val << std::endl;
 	}
 
-	// distribution of the query hase dense matrix.
-	// the row data is
+	// Distribution of the query hase dense matrix.
+	// The row data is
 	int numElem;
 	const float *data;
 	static_cast<const pnl::CNumericDenseMatrix<float> *>(queryPotMat)->GetRawData(&numElem, &data);
@@ -760,30 +760,30 @@ namespace my_pnl {
 
 void bayesian_network()
 {
-	// discrete Bayesian network.
-	std::cout << "========== discrete Bayesian network" << std::endl;
+	// Discrete Bayesian network.
+	std::cout << "========== Discrete Bayesian network" << std::endl;
 	{
 		const boost::scoped_ptr<pnl::CBNet> discreteBNet(local::create_discrete_bayesian_network());
 
 		if (!discreteBNet)
 		{
-			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "Fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
-		//boost::scoped_ptr<pnl::CJtreeInfEngine> juncTreeInfEngine(pnl::CJtreeInfEngine::Create(discreteBNet.get()));  // runtime-error.
+		//boost::scoped_ptr<pnl::CJtreeInfEngine> juncTreeInfEngine(pnl::CJtreeInfEngine::Create(discreteBNet.get()));  // Runtime-error.
 	}
 
-	std::cout << "\n========== single mixture-of-Gaussians Bayesian network" << std::endl;
-	// single mixture-of-Gaussians Bayesian network.
+	std::cout << "\n========== Single mixture-of-Gaussians Bayesian network" << std::endl;
+	// Single mixture-of-Gaussians Bayesian network.
 	{
-		// create single mixture-of-Gaussians BNet.
+		// Create single mixture-of-Gaussians BNet.
 		//const boost::scoped_ptr<pnl::CBNet> mogBNet(local::create_single_mixture_of_gaussians_bayesian_network());
 		const boost::scoped_ptr<pnl::CBNet> mogBNet(pnl::pnlExCreateSingleGauMix());
 
 		if (!mogBNet)
 		{
-			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "Fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
@@ -791,26 +791,26 @@ void bayesian_network()
 		local::infer_single_mixture_of_gaussians_bayesian_network(mogBNet);  // run-time error: to be verified.
 	}
 
-	std::cout << "\n========== mixture-of-Gaussians Bayesian network" << std::endl;
-	// mixture-of-Gaussians Bayesian network.
+	std::cout << "\n========== Mixture-of-Gaussians Bayesian network" << std::endl;
+	// Mixture-of-Gaussians Bayesian network.
 	{
-		// create mixture-of-Gaussians BNet.
+		// Create mixture-of-Gaussians BNet.
 		const boost::scoped_ptr<pnl::CBNet> mogBNet(local::create_mixture_of_gaussians_bayesian_network());
 		//const boost::scoped_ptr<pnl::CBNet> discreteBNet(pnl::pnlExCreateVerySimpleGauMix());
 		//const boost::scoped_ptr<pnl::CBNet> discreteBNet(pnl::pnlExCreateSimpleGauMix());
 
 		if (!mogBNet)
 		{
-			std::cout << "fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
+			std::cout << "Fail to create a probabilistic graphical model at " << __LINE__ << " in " << __FILE__ << std::endl;
 			return;
 		}
 
 		{
-			std::cout << " graph of mixture-of-Gaussians Bayesian network";
+			std::cout << "Graph of mixture-of-Gaussians Bayesian network";
 			mogBNet->GetGraph()->Dump();
 		}
 
-		//local::learn_mixture_of_gaussians_bayesian_network(mogBNet);  // not yet implemented.
+		//local::learn_mixture_of_gaussians_bayesian_network(mogBNet);  // Not yet implemented.
 #if 0
 		local::infer_mixture_of_gaussians_bayesian_network_1(mogBNet);
 #else

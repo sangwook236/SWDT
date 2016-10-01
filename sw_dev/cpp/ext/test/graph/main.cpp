@@ -26,17 +26,17 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "\nastar-algorithm-cpp algorithm ---------------------------------------" << std::endl;
-		//retval = astar_algorithm_cpp_main(argc, argv);  // not yet implemented.
+		//retval = astar_algorithm_cpp_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nmin-cut/max-flow algorithms -----------------------------------------" << std::endl;
-		retval = maxflow_main(argc, argv);  // not yet implemented.
-		retval = ibfs_main(argc, argv);  // not yet implemented.
+		retval = maxflow_main(argc, argv);  // Not yet implemented.
+		retval = ibfs_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nGraphLab library ----------------------------------------------------" << std::endl;
-		retval = graphlab_main(argc, argv);  // not yet implemented.
+		retval = graphlab_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nGraphChi library ----------------------------------------------------" << std::endl;
-		retval = graphchi_main(argc, argv);  // not yet implemented.
+		retval = graphchi_main(argc, argv);  // Not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{
@@ -50,11 +50,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

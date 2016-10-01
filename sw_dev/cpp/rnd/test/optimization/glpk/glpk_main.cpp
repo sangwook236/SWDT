@@ -22,19 +22,19 @@ void netgen_sample();
 
 int glpk_main(int argc, char *argv[])
 {
-	std::cout << "simplex method ------------------------------------------------------" << std::endl;
+	std::cout << "Simplex method ------------------------------------------------------" << std::endl;
 	my_glpk::simplex_sample();
 
-	std::cout << "\ninterior-point method -----------------------------------------------" << std::endl;
+	std::cout << "\nInterior-point method -----------------------------------------------" << std::endl;
 	my_glpk::interior_point_sample();
 
-	std::cout << "\nmixed integer programming (MIP) -------------------------------------" << std::endl;
-	//my_glpk::mip_sample();  // not yet implemented.
+	std::cout << "\nMixed integer programming (MIP) -------------------------------------" << std::endl;
+	//my_glpk::mip_sample();  // Not yet implemented.
 
 	std::cout << "\nmathematical programming language (MPL) -----------------------------" << std::endl;
 	my_glpk::mpl_sample();
 
-	std::cout << "\ngraph ---------------------------------------------------------------" << std::endl;
+	std::cout << "\nGraph ---------------------------------------------------------------" << std::endl;
 	//my_glpk::netgen_sample();
 
 	return 0;

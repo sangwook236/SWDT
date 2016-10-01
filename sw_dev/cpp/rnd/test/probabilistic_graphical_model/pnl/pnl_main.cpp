@@ -24,7 +24,7 @@ void dbn_example();
 void dbn();
 void hmm();
 void viterbi_segmentation();
-void super_resolution();  // not yet implemented.
+void super_resolution();  // Not yet implemented.
 
 }  // namespace my_pnl
 
@@ -35,23 +35,23 @@ int pnl_main(int argc, char *argv[])
 		std::ofstream logFileStream("pnl.log", std::ios::app);
 		pnl::LogDrvStream logDriver(&logFileStream, pnl::eLOG_ALL, pnl::eLOGSRV_ALL);
 
-		// Bayesian network
-		//my_pnl::bayesian_network_example();  // from an example in "PNL: User Guide & Reference Manual".
+		// Bayesian network.
+		//my_pnl::bayesian_network_example();  // From an example in "PNL: User Guide & Reference Manual".
 		//my_pnl::bayesian_network();
 
-		// Markov network
-		//my_pnl::mnet_example();  // from a test of PNL.
-		//my_pnl::mrf_example();  // from a test of PNL.
+		// Markov network.
+		//my_pnl::mnet_example();  // From a test of PNL.
+		//my_pnl::mrf_example();  // From a test of PNL.
 		//my_pnl::mrf2();
 
-		// dynamic Bayesian network
-		//my_pnl::dbn_example();  // from an example in "PNL: User Guide & Reference Manual".
+		// Dynamic Bayesian network.
+		//my_pnl::dbn_example();  // From an example in "PNL: User Guide & Reference Manual".
 		//my_pnl::dbn();
 		//my_pnl::hmm();
 
-		// application
+		// Application.
 		my_pnl::viterbi_segmentation();
-		//my_pnl::super_resolution();  // not yet implemented.
+		//my_pnl::super_resolution();  // Not yet implemented.
 	}
 	catch (const pnl::CException &e)
 	{

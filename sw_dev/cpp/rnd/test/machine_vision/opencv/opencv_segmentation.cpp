@@ -785,7 +785,7 @@ void segmentation()
 
 void meanshift_segmentation_using_gpu()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 
 	//cv::gpu::meanShiftFiltering();
 	//cv::gpu::meanShiftProc();

@@ -18,7 +18,7 @@
 #include <boost/geometry/strategies/transform.hpp>
 #include <boost/geometry/strategies/transform/matrix_transformers.hpp>
 
-// Optional includes and defines to handle c-arrays as points, std::vectors as linestrings
+// Optional includes and defines to handle c-arrays as points, std::vectors as linestrings.
 #include <boost/geometry/geometries/register/linestring.hpp>
 #include <boost/geometry/geometries/adapted/boost_tuple.hpp>
 #include <boost/geometry/geometries/adapted/boost_array.hpp>
@@ -60,35 +60,35 @@ public:
 
     /// Default constructor, does not initialize anything
     inline point_xyz()
-        : boost::geometry::model::point<CoordinateType, 3, CoordinateSystem>()
+    : boost::geometry::model::point<CoordinateType, 3, CoordinateSystem>()
     {}
 
     /// Constructor with x/y values
     inline point_xyz(CoordinateType const &x, CoordinateType const &y)
-        : boost::geometry::model::point<CoordinateType, 3, CoordinateSystem>(x, y)
+    : boost::geometry::model::point<CoordinateType, 3, CoordinateSystem>(x, y)
     {}
 
-    /// Get x-value
+    /// Get x-value.
     inline CoordinateType const & x() const
     { return this->template get<0>(); }
 
-    /// Get y-value
+    /// Get y-value.
     inline CoordinateType const & y() const
     { return this->template get<1>(); }
 
-    /// Get z-value
+    /// Get z-value.
     inline CoordinateType const & z() const
     { return this->template get<2>(); }
 
-    /// Set x-value
+    /// Set x-value.
     inline void x(CoordinateType const &v)
     { this->template set<0>(v); }
 
-    /// Set y-value
+    /// Set y-value.
     inline void y(CoordinateType const &v)
     { this->template set<1>(v); }
 
-    /// Set z-value
+    /// Set z-value.
     inline void z(CoordinateType const &v)
     { this->template set<2>(v); }
 };
@@ -96,7 +96,7 @@ public:
 }  // namespace d2
 }  // namespace model
 
-// Adapt the point_xyz to the concept
+// Adapt the point_xyz to the concept.
 #ifndef DOXYGEN_NO_TRAITS_SPECIALIZATIONS
 namespace traits
 {
@@ -152,31 +152,30 @@ namespace local {
 void point_2d()
 {
 	// GGL contains several point types:
-	// 1: it's own generic type
+	// 1: it's own generic type.
 	boost::geometry::model::point<double, 2, boost::geometry::cs::cartesian> pt1;
 
-	// 2: it's own type targetted to Cartesian (x,y) coordinates
+	// 2: it's own type targetted to Cartesian (x,y) coordinates.
 	boost::geometry::model::d2::point_xy<double> pt2;
 
-	// 3: it supports Boost tuple's (by including the headerfile)
+	// 3: it supports Boost tuple's (by including the headerfile).
 	boost::tuple<double, double> pt3;
 
-	// 4: it supports normal arrays
+	// 4: it supports normal arrays.
 	double pt4[2];
 
-    // 5: it supports arrays-as-points from Boost.Array
+    // 5: it supports arrays-as-points from Boost.Array.
     boost::array<double, 2> pt5;
 
     // 6: it supports points from Boost.Polygon
     boost::polygon::point_data<double> pt6;
 
-    // 7: in the past there was a typedef point_2d
+    // 7: in the past there was a typedef point_2d.
     //    But users are now supposted to do that themselves:
     typedef boost::geometry::model::d2::point_xy<double> point_2d_t;
     point_2d_t pt7;
 
-	// All these types are handled the same way. We show here
-	// assigning them and calculating distances.
+	// All these types are handled the same way. We show here assigning them and calculating distances.
 	boost::geometry::assign_values(pt1, 1, 1);
 	boost::geometry::assign_values(pt2, 2, 2);
 	boost::geometry::assign_values(pt3, 3, 3);
@@ -190,53 +189,52 @@ void point_2d()
     const double d3 = boost::geometry::distance(pt5, pt6);
 	std::cout << "Distances: " << d1 << " and " << d2 << " and " << d3 << std::endl;
 
-	// (in case you didn't note, distances can be calculated from points with different point-types)
+	// (in case you didn't note, distances can be calculated from points with different point-types).
 
-	// Several ways of construction and setting point values
-	// 1: default, empty constructor, causing no initialization at all
+	// Several ways of construction and setting point values.
+	// 1: default, empty constructor, causing no initialization at all.
 	boost::geometry::model::d2::point_xy<double> p1;
 
-	// 2: as shown above, assign
+	// 2: as shown above, assign.
 	boost::geometry::model::d2::point_xy<double> p2;
 	boost::geometry::assign_values(p2, 1, 1);
 
-	// 3: using "set" function
-	//    set uses the concepts behind, such that it can be applied for
-	//    every point-type (like assign)
+	// 3: using "set" function.
+	//    Set uses the concepts behind, such that it can be applied for every point-type (like assign).
 	boost::geometry::model::d2::point_xy<double> p3;
 	boost::geometry::set<0>(p3, 1.0);
 	boost::geometry::set<1>(p3, 1);
-	// boost::geometry::set<2>(p3, 1); //will result in compile-error
+	// boost::geometry::set<2>(p3, 1);  // Will result in compile-error.
 
 
 	// 4: for any point type, and other geometry objects:
-	//    there is the "make" object generator
+	//    there is the "make" object generator.
 	//    (this one requires to specify the point-type).
 	boost::geometry::model::d2::point_xy<double> p4 = boost::geometry::make<boost::geometry::model::d2::point_xy<double> >(1, 1);
 	//boost::geometry::model::d2::point_xy<double> p4 = boost::geometry::make<boost::geometry::model::d2::point_xy<double>, double>(1.0, 1.0);
 
-	// 5: for the point_2d type only: constructor with two values
+	// 5: for the point_2d type only: constructor with two values.
 	boost::geometry::model::d2::point_xy<double> p5(1, 1);
 
-	// 6: for boost tuples you can of course use make_tuple
+	// 6: for boost tuples you can of course use make_tuple.
 
 
-	// Some ways of getting point values
+	// Some ways of getting point values.
 
-	// 1: using the "get" function following the concepts behind
+	// 1: using the "get" function following the concepts behind.
 	std::cout << boost::geometry::get<0>(p2) << "," << boost::geometry::get<1>(p2) << std::endl;
 
-	// 2: for point-2d only
+	// 2: for point-2d only.
 	std::cout << p2.x() << "," << p2.y() << std::endl;
 
-	// 3: using boost-tuples you of course can boost-tuple-methods
+	// 3: using boost-tuples you of course can boost-tuple-methods.
 	std::cout << pt3.get<0>() << "," << pt3.get<1>() << std::endl;
 
-	// 4: GGL supports various output formats, e.g. DSV (delimiter separated values)
+	// 4: GGL supports various output formats, e.g. DSV (delimiter separated values).
 	std::cout << boost::geometry::dsv(pt3) << std::endl;
 
 
-	// Other examples show other types of points, geometries and more algorithms
+	// Other examples show other types of points, geometries and more algorithms.
 }
 
 template<typename P>
@@ -262,13 +260,13 @@ void linestring_2d()
     typedef boost::geometry::model::box<point_2d_t> box_2d_t;
 
 	// Define a linestring, which is a vector of points, and add some points
-	// (we add them deliberately in different ways)
+	// (we add them deliberately in different ways).
 	linestring_2d_t ls;
 
-	// points can be created using "make" and added to a linestring using the std:: "push_back"
+	// Points can be created using "make" and added to a linestring using the std:: "push_back".
 	ls.push_back(boost::geometry::make<point_2d_t>(1.1, 1.1));
 
-	// points can also be assigned using "assign" and added to a linestring using "append"
+	// Points can also be assigned using "assign" and added to a linestring using "append".
 	point_2d_t lp;
 	boost::geometry::assign_values(lp, 2.5, 2.1);
 	boost::geometry::append(ls, lp);
@@ -276,24 +274,24 @@ void linestring_2d()
 	// Lines can be streamed using DSV (delimiter separated values)
 	std::cout << boost::geometry::dsv(ls) << std::endl;
 
-	// The bounding box of linestrings can be calculated
+	// The bounding box of linestrings can be calculated.
 	box_2d_t b;
 	boost::geometry::envelope(ls, b);
 	std::cout << boost::geometry::dsv(b) << std::endl;
 
-	// The length of the line can be calulated
+	// The length of the line can be calulated.
 	std::cout << "length: " << boost::geometry::length(ls) << std::endl;
 
-	// All things from std::vector can be called, because a linestring is a vector
+	// All things from std::vector can be called, because a linestring is a vector.
 	std::cout << "number of points 1: " << ls.size() << std::endl;
 
-	// All things from boost ranges can be called because a linestring is considered as a range
+	// All things from boost ranges can be called because a linestring is considered as a range.
 	std::cout << "number of points 2: " << boost::size(ls) << std::endl;
 
-	// Generic function from geometry/OGC delivers the same value
+	// Generic function from geometry/OGC delivers the same value.
 	std::cout << "number of points 3: " << boost::geometry::num_points(ls) << std::endl;
 
-	// The distance from a point to a linestring can be calculated
+	// The distance from a point to a linestring can be calculated.
 	point_2d_t p(1.9, 1.2);
 	std::cout << "distance of " << boost::geometry::dsv(p) << " to line: " << boost::geometry::distance(p, ls) << std::endl;
 
@@ -303,35 +301,33 @@ void linestring_2d()
 	std::cout << "distance: " << d << std::endl;
 
 	// Add some three points more, let's do it using a classic array.
-	// (See documentation for picture of this linestring)
+	// (See documentation for picture of this linestring).
 	const double c[][2] = { {3.1, 3.1}, {4.9, 1.1}, {3.1, 1.9} };
 	boost::geometry::append(ls, c);
 	std::cout << "appended: " << boost::geometry::dsv(ls) << std::endl;
 
-	// Output as iterator-pair on a vector
+	// Output as iterator-pair on a vector.
 	{
 		std::vector<point_2d_t> v;
 		std::copy(ls.begin(), ls.end(), std::back_inserter(v));
 
 		std::cout << "as vector: " << boost::geometry::dsv(v) << std::endl;
-		//std::cout << "as it-pair: " << boost::geometry::dsv(std::make_pair(v.begin(), v.end())) << std::endl;  // Oops !!! compile-time error
+		//std::cout << "as it-pair: " << boost::geometry::dsv(std::make_pair(v.begin(), v.end())) << std::endl;  // Oops !!! compile-time error.
 	}
 
-	// All algorithms from std can be used: a linestring is a vector
+	// All algorithms from std can be used: a linestring is a vector.
 	std::reverse(ls.begin(), ls.end());
 	std::cout << "reversed: " << boost::geometry::dsv(ls) << std::endl;
 	std::reverse(boost::begin(ls), boost::end(ls));
 
-	// The other way, using a vector instead of a linestring, is also possible
+	// The other way, using a vector instead of a linestring, is also possible.
 	std::vector<point_2d_t> pv(ls.begin(), ls.end());
 	std::cout << "length: " << boost::geometry::length(pv) << std::endl;
 
-	// If there are double points in the line, you can use unique to remove them
-	// So we add the last point, print, make a unique copy and print
+	// If there are double points in the line, you can use unique to remove them.
+	// So we add the last point, print, make a unique copy and print.
 	{
-		// (sidenote, we have to make copies, because
-		// ls.push_back(ls.back()) often succeeds but
-		// IS dangerous and erroneous!
+		// (sidenote, we have to make copies, because ls.push_back(ls.back()) often succeeds but IS dangerous and erroneous!
 		point_2d_t last = ls.back(), first = ls.front();
 		ls.push_back(last);
 		ls.insert(ls.begin(), first);
@@ -345,17 +341,17 @@ void linestring_2d()
 		std::cout << "uniquecopy: " << boost::geometry::dsv(ls) << std::endl;
 	}
 
-	// Lines can be simplified. This removes points, but preserves the shape
+	// Lines can be simplified. This removes points, but preserves the shape.
 	linestring_2d_t ls_simplified;
 	boost::geometry::simplify(ls, ls_simplified, 0.5);
 	std::cout << "simplified: " << boost::geometry::dsv(ls_simplified) << std::endl;
 
 	// for_each:
-	// 1) Lines can be visited with std::for_each
-	// 2) for_each_point is also defined for all geometries
-	// 3) for_each_segment is defined for all geometries to all segments
+	// 1) Lines can be visited with std::for_each.
+	// 2) for_each_point is also defined for all geometries.
+	// 3) for_each_segment is defined for all geometries to all segments.
 	// 4) loop is defined for geometries to visit segments
-	//    with state apart, and to be able to break out (not shown here)
+	//    with state apart, and to be able to break out (not shown here).
 	{
 		linestring_2d_t lscopy = ls;
 		std::for_each(lscopy.begin(), lscopy.end(), translate_function<point_2d_t>);
@@ -364,13 +360,13 @@ void linestring_2d()
 		std::cout << "modified line: " << boost::geometry::dsv(lscopy) << std::endl;
 	}
 
-	// Lines can be clipped using a clipping box. Clipped lines are added to the output iterator
+	// Lines can be clipped using a clipping box. Clipped lines are added to the output iterator.
 	box_2d_t cb(point_2d_t(1.5, 1.5), point_2d_t(4.5, 2.5));
 
 	std::vector<linestring_2d_t> clipped;
 	boost::geometry::intersection(cb, ls, clipped);
 
-	// Also possible: clip-output to a vector of vectors
+	// Also possible: clip-output to a vector of vectors.
 	std::vector<std::vector<point_2d_t> > vector_out;
 	boost::geometry::intersection(cb, ls, vector_out);
 
@@ -380,20 +376,20 @@ void linestring_2d()
 		std::cout << boost::geometry::dsv(*it) << std::endl;
 	}
 
-	// Calculate the convex hull of the linestring
+	// Calculate the convex hull of the linestring.
 	boost::geometry::model::polygon<point_2d_t> hull;
 	boost::geometry::convex_hull(ls, hull);
 	std::cout << "Convex hull:" << boost::geometry::dsv(hull) << std::endl;
 
 
-	// With DSV you can also use other delimiters, e.g. JSON style
+	// With DSV you can also use other delimiters, e.g. JSON style.
 	std::cout << "JSON: " << boost::geometry::dsv(ls, ", ", "[", "]", ", ", "[ ", " ]") << std::endl;
 }
 
 void linestring_3d()
 {
-	// All the above assumed 2D Cartesian linestrings. 3D is possible as well
-	// Let's define a 3D point ourselves, this time using 'float'
+	// All the above assumed 2D Cartesian linestrings. 3D is possible as well.
+	// Let's define a 3D point ourselves, this time using 'float'.
 	typedef boost::geometry::model::point<float, 3, boost::geometry::cs::cartesian> point_3d_t;
 	typedef boost::geometry::model::linestring<point_3d_t> line_3d_t;
 
@@ -415,7 +411,7 @@ void polygon_2d()
 	typedef boost::geometry::model::box<point_2d_t> box_2d_t;
 
 	// Define a polygon and fill the outer ring.
-	// In most cases you will read it from a file or database
+	// In most cases you will read it from a file or database.
 	polygon_2d_t poly;
 	{
 		const double coor[][2] = {
@@ -426,14 +422,13 @@ void polygon_2d()
 		boost::geometry::assign_points(poly, coor);
 	}
 
-	// Polygons should be closed, and directed clockwise. If you're not sure if that is the case, call the correct algorithm
+	// Polygons should be closed, and directed clockwise. If you're not sure if that is the case, call the correct algorithm.
 	boost::geometry::correct(poly);
 
-	// Polygons can be streamed as text
-	// (or more precisely: as DSV (delimiter separated values))
+	// Polygons can be streamed as text (or more precisely: as DSV (delimiter separated values)).
 	std::cout << boost::geometry::dsv(poly) << std::endl;
 
-	// As with lines, bounding box of polygons can be calculated
+	// As with lines, bounding box of polygons can be calculated.
 	box_2d_t b;
 	boost::geometry::envelope(poly, b);
 	std::cout << boost::geometry::dsv(b) << std::endl;
@@ -441,17 +436,17 @@ void polygon_2d()
 	// The area of the polygon can be calulated
 	std::cout << "area: " << boost::geometry::area(poly) << std::endl;
 
-	// And the centroid, which is the center of gravity
+	// And the centroid, which is the center of gravity.
 	point_2d_t cent;
 	boost::geometry::centroid(poly, cent);
 	std::cout << "centroid: " << boost::geometry::dsv(cent) << std::endl;
 
 
-	// The number of points have to called per ring separately
+	// The number of points have to called per ring separately.
 	std::cout << "number of points in outer ring: " << poly.outer().size() << std::endl;
 
 	// Polygons can have one or more inner rings, also called holes, donuts, islands, interior rings.
-	// Let's add one
+	// Let's add one.
 	{
 		poly.inners().resize(1);
 		boost::geometry::model::ring<point_2d_t> &inner = poly.inners().back();
@@ -463,12 +458,12 @@ void polygon_2d()
 	boost::geometry::correct(poly);
 
 	std::cout << "with inner ring:" << boost::geometry::dsv(poly) << std::endl;
-	// The area of the polygon is changed of course
+	// The area of the polygon is changed of course.
 	std::cout << "new area of polygon: " << boost::geometry::area(poly) << std::endl;
 	boost::geometry::centroid(poly, cent);
 	std::cout << "new centroid: " << boost::geometry::dsv(cent) << std::endl;
 
-	// You can test whether points are within a polygon
+	// You can test whether points are within a polygon.
 	std::cout << "point in polygon:"
 		<< " p1: "  << std::boolalpha << boost::geometry::within(boost::geometry::make<point_2d_t>(3.0, 2.0), poly)
 		<< " p2: "  << boost::geometry::within(boost::geometry::make<point_2d_t>(3.7, 2.0), poly)
@@ -479,7 +474,7 @@ void polygon_2d()
 	// fill color and stroke color. Or SRID (spatial reference ID). Or Z-value. Or a property map.
 	// We don't show this here.
 
-	// Clip the polygon using a bounding box
+	// Clip the polygon using a bounding box.
 	box_2d_t cb(boost::geometry::make<point_2d_t>(1.5, 1.5), boost::geometry::make<point_2d_t>(4.5, 2.5));
 	typedef std::vector<polygon_2d_t> polygon_2d_list_t;
 
@@ -501,8 +496,8 @@ void polygon_2d()
 	std::cout << "Convex hull:" << boost::geometry::dsv(hull) << std::endl;
 
 	// If you really want:
-	//   You don't have to use a vector, you can define a polygon with a deque
-	//   You can specify the container for the points and for the inner rings independantly
+	//   You don't have to use a vector, you can define a polygon with a deque.
+	//   You can specify the container for the points and for the inner rings independantly.
 
 	typedef boost::geometry::model::polygon<point_2d_t, true, true, std::deque, std::deque> deque_polygon_t;
 
@@ -518,8 +513,8 @@ void polygon_2d()
 
 void polygon_3d()
 {
-	// All the above assumed 2D Cartesian linestrings. 3D is possible as well
-	// Let's define a 3D point ourselves, this time using 'float'
+	// All the above assumed 2D Cartesian linestrings. 3D is possible as well.
+	// Let's define a 3D point ourselves, this time using 'float'.
 	typedef boost::geometry::model::point<float, 3, boost::geometry::cs::cartesian> point_3d_t;
 	typedef boost::geometry::model::polygon<point_3d_t> polygon_3d_t;
 
@@ -537,7 +532,7 @@ void polygon_3d()
 
 	std::cout << "3D: polygon: " << boost::geometry::dsv(poly3) << std::endl;
 
-	std::cout << "3D: length: " << boost::geometry::length(poly3) << std::endl;  // Oops !!!: error
+	std::cout << "3D: length: " << boost::geometry::length(poly3) << std::endl;  // Oops !!!: error.
 	//std::cout << "3D: area: " << boost::geometry::area(poly3) << std::endl;
 
 	//point_3d_t cent;
@@ -547,7 +542,7 @@ void polygon_3d()
 	std::cout << "point in polygon:" << std::boolalpha << boost::geometry::within(boost::geometry::make<point_3d_t>(2, 4, 3), poly3) << std::endl;
 }
 
-// [ref] ${BOOST_HOME}/libs/geometry/example/06_a_transformation_example.cpp
+// REF [file] >> ${BOOST_HOME}/libs/geometry/example/06_a_transformation_example.cpp
 void transform_2d()
 {
 	typedef boost::geometry::model::d2::point_xy<double> point_2d_t;
@@ -565,14 +560,14 @@ void transform_2d()
 	boost::geometry::transform(p, p2, translate);
 	std::cout << "transformed point " << boost::geometry::dsv(p2) << std::endl;
 
-	// Transform a polygon
+	// Transform a polygon.
 #if BOOST_VERSION <= 105200
 	point_2d_t poly, poly2;
 #else
     boost::geometry::model::polygon<point_2d_t> poly, poly2;
 #endif
 	const double coor[][2] = { {0, 0}, {0, 7}, {2, 2}, {2, 0}, {0, 0} };
-	// note that for this syntax you have to include the two include files above (c_array.hpp)
+	// Note that for this syntax you have to include the two include files above (c_array.hpp).
 	boost::geometry::assign_points(poly, coor);
 	//read_wkt("POLYGON((0 0,0 7,4 2,2 0,0 0))", poly);
 	boost::geometry::transform(poly, poly2, translate);
@@ -581,10 +576,10 @@ void transform_2d()
 	std::cout << "transformed polygon " << boost::geometry::dsv(poly2) << std::endl;
 
 	// Many more transformations are possible:
-	// - from Cartesian to Spherical coordinate systems and back
-	// - from Cartesian to Cartesian (mapping, affine transformations) and back (inverse)
-	// - Map Projections
-	// - from Degree to Radian and back in spherical or geographic coordinate systems
+	// - from Cartesian to Spherical coordinate systems and back.
+	// - from Cartesian to Cartesian (mapping, affine transformations) and back (inverse).
+	// - Map Projections.
+	// - from Degree to Radian and back in spherical or geographic coordinate systems.
 }
 
 void overlay_polygon()
@@ -626,7 +621,7 @@ void overlay_polygon()
 	svg.map(b, "opacity:0.6;fill:rgb(0,0,255);");
 #endif
 
-	// Calculate interesection(s)
+	// Calculate interesection(s).
 	std::vector<polygon_2d_t> intersection;
 	boost::geometry::intersection(a, b, intersection);
 
@@ -641,7 +636,7 @@ void overlay_polygon()
 	}
 }
 
-// [ref] ${BOOST_HOME}/libs/geometry/example/05_b_overlay_linestring_polygon_example.cpp
+// REF [file] >> ${BOOST_HOME}/libs/geometry/example/05_b_overlay_linestring_polygon_example.cpp
 void overlay_polygon_linestring()
 {
 	typedef boost::geometry::model::d2::point_xy<double> point_2d_t;
@@ -671,7 +666,7 @@ void overlay_polygon_linestring()
 	svg.map(p, "opacity:0.6;fill:rgb(0,0,255);");
 #endif
 
-	// Calculate intersection points (turn points)
+	// Calculate intersection points (turn points).
 #if BOOST_VERSION <= 105500
 	typedef boost::geometry::detail::overlay::turn_info<point_2d_t> turn_info_t;
 #else
@@ -710,7 +705,7 @@ void overlay_polygon_linestring()
 	}
 }
 
-// [ref] ${BOOST_HOME}/libs/geometry/example/06_b_transformation_example.cpp
+// REF [file] >> ${BOOST_HOME}/libs/geometry/example/06_b_transformation_example.cpp
 struct random_style
 {
 	random_style()
@@ -745,7 +740,7 @@ struct random_style
 	boost::variate_generator<boost::mt19937 &, boost::uniform_int<> > colour;
 };
 
-// [ref] ${BOOST_HOME}/libs/geometry/example/06_b_transformation_example.cpp
+// REF [file] >> ${BOOST_HOME}/libs/geometry/example/06_b_transformation_example.cpp
 template <typename OutputStream>
 struct svg_output
 {
@@ -785,7 +780,7 @@ private:
 	random_style style;
 };
 
-// [ref] ${BOOST_HOME}/libs/geometry/example/06_b_transformation_example.cpp
+// REF [file] >> ${BOOST_HOME}/libs/geometry/example/06_b_transformation_example.cpp
 void affine_transform_2d()
 {
 	typedef boost::geometry::model::d2::point_xy<double> point_2d_t;
@@ -795,13 +790,13 @@ void affine_transform_2d()
 	std::ofstream ofs(file.c_str());
 	svg_output<std::ofstream> svg(ofs, 0.5);
 
-	// G1 - create subject for affine transformations
+	// G1 - create subject for affine transformations.
 	boost::geometry::model::polygon<point_2d_t> g1;
 	boost::geometry::read_wkt("POLYGON((50 250, 400 250, 150 50, 50 250))", g1);
-	std::clog << "source box:\t" << boost::geometry::dsv(g1) << std::endl;
+	std::clog << "Source box:\t" << boost::geometry::dsv(g1) << std::endl;
 	svg.put(g1, "g1");
 
-	// G1 - Translate -> G2
+	// G1 - Translate -> G2.
 #if BOOST_VERSION <= 105200
 	boost::geometry::strategy::transform::translate_transformer<point_2d_t, point_2d_t> translate(0, 250);
 #else
@@ -809,10 +804,10 @@ void affine_transform_2d()
 #endif
 	boost::geometry::model::polygon<point_2d_t> g2;
 	boost::geometry::transform(g1, g2, translate);
-	std::clog << "translated:\t" << boost::geometry::dsv(g2) << std::endl;
+	std::clog << "Translated:\t" << boost::geometry::dsv(g2) << std::endl;
 	svg.put(g2, "g2=g1.translate(0,250)");
 
-	// G2 - Scale -> G3
+	// G2 - Scale -> G3.
 #if BOOST_VERSION <= 105200
 	boost::geometry::strategy::transform::scale_transformer<point_2d_t, point_2d_t> scale(0.5, 0.5);
 #else
@@ -820,18 +815,18 @@ void affine_transform_2d()
 #endif
 	boost::geometry::model::polygon<point_2d_t> g3;
 	boost::geometry::transform(g2, g3, scale);
-	std::clog << "scaled:\t" << boost::geometry::dsv(g3) << std::endl;
+	std::clog << "Scaled:\t" << boost::geometry::dsv(g3) << std::endl;
 	svg.put(g3, "g3=g2.scale(0.5,0.5)");
 
-	// G3 - Combine rotate and translate -> G4
+	// G3 - Combine rotate and translate -> G4.
 #if BOOST_VERSION <= 105200
 	boost::geometry::strategy::transform::rotate_transformer<point_2d_t, point_2d_t, boost::geometry::degree> rotate(45);
 #else
 	boost::geometry::strategy::transform::rotate_transformer<boost::geometry::degree, double, 2, 2> rotate(45);
 #endif
 
-	// Compose matrix for the two transformation
-	// Create transformer attached to the transformation matrix
+	// Compose matrix for the two transformation.
+	// Create transformer attached to the transformation matrix.
 #if BOOST_VERSION <= 105200
 	boost::geometry::strategy::transform::ublas_transformer<point_2d_t, point_2d_t, 2, 2> combined(boost::numeric::ublas::prod(rotate.matrix(), translate.matrix()));
 	//boost::geometry::strategy::transform::ublas_transformer<point_2d_t, point_2d_t, 2, 2> combined(rotate.matrix());
@@ -840,11 +835,11 @@ void affine_transform_2d()
 	//boost::geometry::strategy::transform::ublas_transformer<double, 2, 2> combined(rotate.matrix());
 #endif
 
-	// Apply transformation to subject geometry point-by-point
+	// Apply transformation to subject geometry point-by-point.
 	boost::geometry::model::polygon<point_2d_t> g4;
 	boost::geometry::transform(g3, g4, combined);
 
-	std::clog << "rotated & translated:\t" << boost::geometry::dsv(g4) << std::endl;
+	std::clog << "Rotated & translated:\t" << boost::geometry::dsv(g4) << std::endl;
 	svg.put(g4, "g4 = g3.(rotate(45) * translate(0,250))");
 
 	std::clog << "Saved SVG file:\t" << file << std::endl;
@@ -853,7 +848,7 @@ void affine_transform_2d()
 void graph_route()
 {
 	// ref: example
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 // [ref] http://www.boost.org/doc/libs/1_53_0/libs/geometry/doc/html/geometry/reference/algorithms/intersection.html

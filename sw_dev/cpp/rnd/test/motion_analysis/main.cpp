@@ -20,14 +20,14 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "particle filter object tracking algorithm --------------------------" << std::endl;
+		std::cout << "Particle filter object tracking algorithm --------------------------" << std::endl;
 		retval = particle_filter_object_tracking_main(argc, argv);
 
 		std::cout << "\nKanade-Lucas-Tomasi (KLT) Feature Tracker algorithm -----------------" << std::endl;
 		//retval = klt_main(argc, argv);
 
 		std::cout << "\nMultiple Hypothesis Tracking (MHT) algorithm ------------------------" << std::endl;
-		//retval = mht_main(argc, argv);  // not yet implemented.
+		//retval = mht_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nOpenTLD algorithm ---------------------------------------------------" << std::endl;
 		//retval = opentld_main(argc, argv);
@@ -44,11 +44,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

@@ -1,7 +1,7 @@
 #include "../gslic_lib/FastImgSeg.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
-#include <opencv2/gpu/gpu.hpp>
+//#include <opencv2/gpu/gpu.hpp>
 #include <list>
 #include <string>
 #include <sstream>
@@ -12,7 +12,7 @@
 namespace {
 namespace local {
 
-// [ref] ${GSLIC_HOME}/testCV/main.cpp
+// REF [file] >> ${GSLIC_HOME}/testCV/main.cpp
 void gslic_sample(std::vector<cv::Mat> &input_images, const SEGMETHOD seg_method, const double seg_weight, const int num_segments)
 {
 	cv::Mat mask;
@@ -20,7 +20,7 @@ void gslic_sample(std::vector<cv::Mat> &input_images, const SEGMETHOD seg_method
     {
 		const int64 start = cv::getTickCount();
 
-		// gSLIC currently only support 4-dimensional image
+		// gSLIC currently only support 4-dimensional image.
 		unsigned char *imgBuffer = new unsigned char [it->cols * it->rows * 4];
 		memset(imgBuffer, 0, sizeof(unsigned char) * it->cols * it->rows * 4);
 
@@ -43,12 +43,12 @@ void gslic_sample(std::vector<cv::Mat> &input_images, const SEGMETHOD seg_method
 
 			gslic.LoadImg(imgBuffer);
 			gslic.DoSegmentation(seg_method, seg_weight);
-			gslic.Tool_GetMarkedImg();  // required for display of segmentation boundary
+			gslic.Tool_GetMarkedImg();  // Required for display of segmentation boundary.
 
 			delete [] imgBuffer;
 			imgBuffer = NULL;
 
-			// build superpixel boundaries
+			// Build superpixel boundaries.
 			ptr = gslic.markedImg;
 			for (int i = 0; i < it->rows; ++i)
 				for (int j = 0; j < it->cols; ++j)
@@ -72,18 +72,18 @@ void gslic_sample(std::vector<cv::Mat> &input_images, const SEGMETHOD seg_method
 		const double fps = freq / elapsed;
 		std::cout << std::setprecision(4) << "elapsed time: " << etime <<  ", FPS: " << fps << std::endl;
 
-		// show superpixel boundary
-		cv::imshow("superpixels by gSLIC - boundary", *it);
+		// Show superpixel boundary.
+		cv::imshow("Superpixels by gSLIC - boundary", *it);
 
 #if 0
-		// show superpixel mask
-		// segment indexes are stored in FastImgSeg::segMask
+		// Show superpixel mask.
+		// Segment indexes are stored in FastImgSeg::segMask.
 		cv::Mat mask_tmp(it->size(), CV_32SC1, (void *)gslic.segMask);
         double minVal = 0.0, maxVal = 0.0;
 		cv::minMaxLoc(mask_tmp, &minVal, &maxVal);
 		mask_tmp.convertTo(mask, CV_32FC1, 1.0 / maxVal, 0.0);
 
-		cv::imshow("superpixels by gSLIC - mask", mask);
+		cv::imshow("Superpixels by gSLIC - mask", mask);
 #endif
 
 		//gslic.clearFastSeg();
@@ -108,7 +108,7 @@ void smooth_image(const cv::Mat &in, cv::Mat &out)
 	// METHOD #2: Gaussian filtering.
 
 	{
-		// FIXME [adjust] >> adjust parameters.
+		// FIXME [adjust] >> Adjust parameters.
 		const int kernelSize = 3;
 		const double sigma = 2.0;
 		cv::GaussianBlur(in, out, cv::Size(kernelSize, kernelSize), sigma, sigma, cv::BORDER_DEFAULT);
@@ -117,8 +117,8 @@ void smooth_image(const cv::Mat &in, cv::Mat &out)
 	// METHOD #3: box filtering.
 
 	{
-		// FIXME [adjust] >> adjust parameters.
-		const int ddepth = -1;  // the output image depth. -1 to use src.depth().
+		// FIXME [adjust] >> Adjust parameters.
+		const int ddepth = -1;  // The output image depth. -1 to use src.depth().
 		const int kernelSize = 3;
 		const bool normalize = true;
 		cv::boxFilter(in, out, ddepth, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
@@ -128,10 +128,10 @@ void smooth_image(const cv::Mat &in, cv::Mat &out)
 	// METHOD #4: bilateral filtering.
 
 	{
-		// FIXME [adjust] >> adjust parameters.
-		const int diameter = -1;  // diameter of each pixel neighborhood that is used during filtering. if it is non-positive, it is computed from sigmaSpace.
-		const double sigmaColor = 3.0;  // for range filter.
-		const double sigmaSpace = 50.0;  // for space filter.
+		// FIXME [adjust] >> Adjust parameters.
+		const int diameter = -1;  // Diameter of each pixel neighborhood that is used during filtering. if it is non-positive, it is computed from sigmaSpace.
+		const double sigmaColor = 3.0;  // For range filter.
+		const double sigmaSpace = 50.0;  // For space filter.
 		cv::bilateralFilter(in, out, diameter, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
 	}
 #else
@@ -148,7 +148,7 @@ namespace my_gslic {
 
 void create_superpixel_by_gSLIC(const cv::Mat &input_image, cv::Mat &superpixel_mask, const SEGMETHOD seg_method, const double seg_weight, const int num_segments)
 {
-	// gSLIC currently only support 4-dimensional image
+	// gSLIC currently only support 4-dimensional image.
 	unsigned char *imgBuffer = new unsigned char [input_image.cols * input_image.rows * 4];
 	memset(imgBuffer, 0, sizeof(unsigned char) * input_image.cols * input_image.rows * 4);
 
@@ -170,7 +170,7 @@ void create_superpixel_by_gSLIC(const cv::Mat &input_image, cv::Mat &superpixel_
 
 	gslic.LoadImg(imgBuffer);
 	gslic.DoSegmentation(seg_method, seg_weight);
-	//gslic.Tool_GetMarkedImg();  // required for display of segmentation boundary
+	//gslic.Tool_GetMarkedImg();  // Required for display of segmentation boundary.
 
 	delete [] imgBuffer;
 	imgBuffer = NULL;
@@ -181,7 +181,7 @@ void create_superpixel_by_gSLIC(const cv::Mat &input_image, cv::Mat &superpixel_
 	//gslic.clearFastSeg();
 }
 
-// [ref] FastImgSeg::Tool_GetMarkedImg()
+// REF [function] >> FastImgSeg::Tool_GetMarkedImg()
 void create_superpixel_boundary(const cv::Mat &superpixel_mask, cv::Mat &superpixel_boundary)
 {
 	superpixel_boundary = cv::Mat::zeros(superpixel_mask.size(), CV_8UC1);
@@ -246,7 +246,7 @@ int gslic_main(int argc, char *argv[])
 
 			//
 			const int num_segments = 1200;
-			const SEGMETHOD seg_method = XYZ_SLIC;  // SLIC, RGB_SLIC, XYZ_SLIC
+			const SEGMETHOD seg_method = XYZ_SLIC;  // SLIC, RGB_SLIC, XYZ_SLIC.
 			const double seg_weight = 0.3;
 
 #if 0
@@ -257,7 +257,7 @@ int gslic_main(int argc, char *argv[])
 				cv::Mat img(cv::imread(*it, CV_LOAD_IMAGE_COLOR));
 				if (img.empty())
 				{
-					std::cout << "image file not found: " << *it << std::endl;
+					std::cout << "Image file not found: " << *it << std::endl;
 					continue;
 				}
 			}
@@ -270,18 +270,18 @@ int gslic_main(int argc, char *argv[])
 				cv::Mat input_image(cv::imread(*it, CV_LOAD_IMAGE_COLOR));
 				if (input_image.empty())
 				{
-					std::cout << "image file not found: " << *it << std::endl;
+					std::cout << "Image file not found: " << *it << std::endl;
 					continue;
 				}
 
-				// smoothing.
+				// Smoothing.
 				local::smooth_image(input_image.clone(), input_image);
 
-				// superpixel.
+				// Superpixel.
 				{
 					const int64 start = cv::getTickCount();
 
-					// superpixel mask consists of segment indexes.
+					// Superpixel mask consists of segment indexes.
 					my_gslic::create_superpixel_by_gSLIC(input_image, superpixel_mask, seg_method, seg_weight, num_segments);
 					my_gslic::create_superpixel_boundary(superpixel_mask, superpixel_boundary);
 
@@ -293,24 +293,24 @@ int gslic_main(int argc, char *argv[])
 				}
 
 #if 0
-				// show superpixel mask.
+				// Show superpixel mask.
 				cv::Mat mask;
 				double minVal = 0.0, maxVal = 0.0;
 				cv::minMaxLoc(superpixel_mask, &minVal, &maxVal);
 				superpixel_mask.convertTo(mask, CV_32FC1, 1.0 / maxVal, 0.0);
 
-				cv::imshow("superpixels by gSLIC - mask", mask);
+				cv::imshow("Superpixels by gSLIC - mask", mask);
 #endif
 
 #if 1
-				// show superpixel boundary.
+				// Show superpixel boundary.
 				//cv::Mat superpixel_boundary;
 				//my_gslic::create_superpixel_boundary(superpixel_mask, superpixel_boundary);
 
 				cv::Mat img(input_image.clone());
 				img.setTo(cv::Scalar(0, 0, 255), superpixel_boundary);
 
-				cv::imshow("superpixels by gSLIC - boundary", img);
+				cv::imshow("Superpixels by gSLIC - boundary", img);
 #endif
 
 				const unsigned char key = cv::waitKey(0);

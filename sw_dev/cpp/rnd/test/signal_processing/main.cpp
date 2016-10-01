@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "fast bilateral filter algorithm -------------------------------------" << std::endl;
+		std::cout << "Fast bilateral filter algorithm -------------------------------------" << std::endl;
 		//retval = fast_bilateral_filter_main(argc, argv);
 
 		std::cout << "\nNYU Depth Toolbox V2 ------------------------------------------------" << std::endl;
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 		retval = spuc_main(argc, argv);
 
 		std::cout << "\nSignal Processing Library in C++ (tspl) -----------------------------" << std::endl;
-		//retval = tspl_main(argc, argv);  // not yet implemented.
+		//retval = tspl_main(argc, argv);  // Not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{
@@ -52,11 +52,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

@@ -17,24 +17,24 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "Bayes++ library ----------------------------------------------------" << std::endl;
-		//	-. Kalman filter (KF).
-		//	-. extended Kalman filter (EKF).
-		//	-. unscented Kalman filter (UKF).
-		//	-. covariance intersection filter.
-		//	-. U*d*U' factorisation of covariance filter.
-        //      a 'Square-root' linearised Kalman filter.
-		//	-. covariance filter.
-		//	-. information filter.
-		//	-. information root filter.
-		//	-. iterated covariance filter.
-		//	-. sampling importance resampling (SIR) filter.
-		//      particle filter.
-		//  -. simultaneous localization and mapping (SLAM).
+		//	- Kalman filter (KF).
+		//	- Extended Kalman filter (EKF).
+		//	- Unscented Kalman filter (UKF).
+		//	- Covariance intersection filter.
+		//	- U*d*U' factorisation of covariance filter.
+        //      A 'Square-root' linearised Kalman filter.
+		//	- Covariance filter.
+		//	- Information filter.
+		//	- Information root filter.
+		//	- Iterated covariance filter.
+		//	- Sampling importance resampling (SIR) filter.
+		//      Particle filter.
+		//  - Simultaneous localization and mapping (SLAM).
 		retval = bayespp_main(argc, argv);
 
 		std::cout << "\nParticle++ library -------------------------------------------------" << std::endl;
-		//	-. particle filter.
-		//	-. sequential Monte Carlo (SMC) method.
+		//	- Particle filter.
+		//	- Sequential Monte Carlo (SMC) method.
 		//retval = particleplusplus_main(argc, argv);
 
 		std::cout << "\nCONDENATION (CONditional DENsity propagATION) algorithm -----------" << std::endl;
@@ -52,11 +52,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

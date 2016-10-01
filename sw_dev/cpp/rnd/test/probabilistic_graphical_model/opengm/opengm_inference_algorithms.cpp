@@ -872,24 +872,24 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 	const bool runBP = true;
 	const bool runTRBP = true;
 	const bool runTRWS = true;
-	const bool runLP = false;  // not yet implemented.
+	const bool runLP = false;  // Not yet implemented.
 	const bool runDP = false;
 	const bool runDualDecomposition = true;
 	const bool runAStar = false;
-	const bool runGraphCuts = isBinaryVariable;  // for binary variables only.
-	const bool runQPBO = isBinaryVariable;  // for binary variables only.
+	const bool runGraphCuts = isBinaryVariable;  // For binary variables only.
+	const bool runQPBO = isBinaryVariable;  // For binary variables only.
 	const bool runExpansionMove = true;
 	const bool runSwapMove = true;
 	const bool runICM = true;
 	const bool runLazyFlipper = true;
 	const bool runLOC = true;
-	const bool runnGibbs = false;  // not yet implemented.
-	const bool runSwendsenWang = false;  // not yet implemented.
+	const bool runnGibbs = false;  // Not yet implemented.
+	const bool runSwendsenWang = false;  // Not yet implemented.
 	const bool runBruteforce = false;
 
-	// inference algorithms.
+	// Inference algorithms.
 	{
-		std::cout << "\nbelief propagation (BP) algorithm -----------------------------------" << std::endl;
+		std::cout << "\nBelief propagation (BP) algorithm -----------------------------------" << std::endl;
 		if (runBP)
 		{
 			const std::string inf_name("_bp");
@@ -944,13 +944,13 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), trws, problem_name + inf_name);
 		}
 
-		std::cout << "\n(integer) linear programming (ILP) ----------------------------------" << std::endl;
+		std::cout << "\n(Integer) linear programming (ILP) ----------------------------------" << std::endl;
 		if (runLP)
 		{
-			throw std::runtime_error("not yet implemented");
+			throw std::runtime_error("Not yet implemented");
 		}
 
-		std::cout << "\ndynamic programming (DP) --------------------------------------------" << std::endl;
+		std::cout << "\nDynamic programming (DP) --------------------------------------------" << std::endl;
 		if (runDP)
 		{
 			const std::string inf_name("_dp");
@@ -963,7 +963,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), dp, problem_name + inf_name);
 		}
 
-		std::cout << "\ndual decomposition algorithm ----------------------------------------" << std::endl;
+		std::cout << "\nDual decomposition algorithm ----------------------------------------" << std::endl;
 		if (runDualDecomposition)
 		{
 			const std::string inf_name("_dd");
@@ -1013,10 +1013,10 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), astar, problem_name + inf_name);
 		}
 
-		std::cout << "\ngraph-cuts algorithm ------------------------------------------------" << std::endl;
+		std::cout << "\nGraph-cuts algorithm ------------------------------------------------" << std::endl;
 		if (runGraphCuts)
 		{
-			// Caution: this implementation of the graph-cuts supports only binary variables.
+			// NOTIC [caution] >> this implementation of the graph-cuts supports only binary variables.
 
 			const std::string inf_name("_graphcuts");
 
@@ -1038,7 +1038,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		std::cout << "\nquadratic pseudo-boolean optimization (QPBO) algorithm --------------" << std::endl;
 		if (runQPBO)
 		{
-			// caution: this implementation of QPBO supports only binary variables.
+			// NOTICE [caution] >> this implementation of QPBO supports only binary variables.
 
 			const std::string inf_name("_qpbo");
 
@@ -1046,10 +1046,10 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			typedef opengm::external::QPBO<GraphicalModel> QPBO;
 
 			typename QPBO::Parameter parameter;
-			parameter.strongPersistency_ = true;  // forcing strong persistency
-			parameter.useImproveing_ = false;  // using improving technique
-			parameter.useProbeing_ = false;  // using probeing technique
-			//parameter.label_ = ...;  // initial configuration for improving
+			parameter.strongPersistency_ = true;  // Forcing strong persistency.
+			parameter.useImproveing_ = false;  // Using improving technique.
+			parameter.useProbeing_ = false;  // Using probeing technique.
+			//parameter.label_ = ...;  // Initial configuration for improving.
 			QPBO qpbo(gm, parameter);
 
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), qpbo, problem_name + inf_name);
@@ -1060,9 +1060,9 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		}
 	}
 
-	// move making algorithms.
+	// Move making algorithms.
 	{
-		std::cout << "\nexpansion-move algorithm --------------------------------------------" << std::endl;
+		std::cout << "\nExpansion-move algorithm --------------------------------------------" << std::endl;
 		if (runExpansionMove)
 		{
 			const std::string inf_name("_expansion");
@@ -1085,7 +1085,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), expansion, problem_name + inf_name);
 		}
 
-		std::cout << "\nswap-move algorithm -------------------------------------------------" << std::endl;
+		std::cout << "\nSwap-move algorithm -------------------------------------------------" << std::endl;
 		if (runSwapMove)
 		{
 			const std::string inf_name("_swap");
@@ -1109,7 +1109,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), swap, problem_name + inf_name);
 		}
 
-		std::cout << "\niterative conditional modes (ICM) algorithm -------------------------" << std::endl;
+		std::cout << "\nIterative conditional modes (ICM) algorithm -------------------------" << std::endl;
 		if (runICM)
 		{
 			const std::string inf_name("_icm");
@@ -1125,7 +1125,7 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			run_inference_algorithm<GraphicalModel>(gm.numberOfVariables(), icm, problem_name + inf_name);
 		}
 
-		std::cout << "\nlazy flipper algorithm ----------------------------------------------" << std::endl;
+		std::cout << "\nLazy flipper algorithm ----------------------------------------------" << std::endl;
 		if (runLazyFlipper)
 		{
 			const std::string inf_name("_lf");
@@ -1166,22 +1166,22 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 		}
 	}
 
-	// sampling algorithms.
+	// Sampling algorithms.
 	{
 		std::cout << "\nGibbs sampling algorithm --------------------------------------------" << std::endl;
 		if (runnGibbs)
 		{
-			throw std::runtime_error("not yet implemented");
+			throw std::runtime_error("Not yet implemented");
 		}
 
 		std::cout << "\nSwendsen-Wang sampling algorithm ------------------------------------" << std::endl;
 		if (runSwendsenWang)
 		{
-			throw std::runtime_error("not yet implemented");
+			throw std::runtime_error("Not yet implemented");
 		}
 	}
 
-	std::cout << "\nbrute-force algorithm -----------------------------------------------" << std::endl;
+	std::cout << "\nBrute-force algorithm -----------------------------------------------" << std::endl;
 	if (runBruteforce)
 	{
 		const std::string inf_name("_bf");
@@ -1202,31 +1202,31 @@ namespace my_opengm {
 
 void inference_algorithms()
 {
-	std::cout << "image segmentation (Potts model) ------------------------------------" << std::endl;
+	std::cout << "Image segmentation (Potts model) ------------------------------------" << std::endl;
 	if (false)
 	{
 		// Build the model.
-		std::cout << "creating a graphical model... ---------------------------------------" << std::endl;
+		std::cout << "Creating a graphical model... ---------------------------------------" << std::endl;
 		local::GraphicalModelForPottsModel gmForPottsModel;
 		if (local::createGraphicalModelForPottsModel(gmForPottsModel))
 			local::inference_algorithms<local::GraphicalModelForPottsModel>(gmForPottsModel, "segmentation");
 	}
 
-	std::cout << "\nstereo matching -----------------------------------------------------" << std::endl;
+	std::cout << "\nStereo matching -----------------------------------------------------" << std::endl;
 	if (false)
 	{
 		// Build the model.
-		std::cout << "creating a graphical model... ---------------------------------------" << std::endl;
+		std::cout << "Creating a graphical model... ---------------------------------------" << std::endl;
 		local::GraphicalModelForStereoMatching gmForStereoMatching;
 		if (local::createGraphicalModelForStereoMatching(gmForStereoMatching))
 			local::inference_algorithms<local::GraphicalModelForStereoMatching>(gmForStereoMatching, "stereo");
 	}
 
-	std::cout << "\nimage restoration ---------------------------------------------------" << std::endl;
+	std::cout << "\nImage restoration ---------------------------------------------------" << std::endl;
 	if (true)
 	{
 		// Build the model.
-		std::cout << "creating a graphical model... ---------------------------------------" << std::endl;
+		std::cout << "Creating a graphical model... ---------------------------------------" << std::endl;
 		local::GraphicalModelForImageRestoration gmForImageRestoration;
 		if (local::createGraphicalModelForImageRestoration(gmForImageRestoration))
 			local::inference_algorithms<local::GraphicalModelForImageRestoration>(gmForImageRestoration, "restoration");

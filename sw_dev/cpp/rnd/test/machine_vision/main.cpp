@@ -27,42 +27,42 @@ int main(int argc, char *argv[])
 		retval = opencv_main(argc, argv);
 
 		std::cout << "\nVXL (the Vision-something-Libraries) library ------------------------" << std::endl;
-		//	-. pictorial structures matching.
-		//	-. shape model library.
+		//	- Pictorial structures matching.
+		//	- Shape model library.
 		//retval = vxl_main(argc, argv);
 
 		std::cout << "\nIntegrating Vision Toolkit (IVT) library ----------------------------" << std::endl;
-		//	-. Hough transform.
-		//	-. KLT tracker.
-		//	-. particle filtering.
+		//	- Hough transform.
+		//	- KLT tracker.
+		//	- Particle filtering.
 		//retval = ivt_main(argc, argv);
 
 		std::cout << "\nVision Lab Features Library (VLFeat) --------------------------------" << std::endl;
-		//	-. feature analysis.
+		//	- Feature analysis.
 		//		SIFT, DSIFT, MSER, HOG, LBP.
 		//		Covariant detectors.
 		//		Local Intensity Order Pattern (LIOP).
 		//		Bag of Visual Words (BoVW).
 		//		Vector of Locally Aggregated Descriptors (VLAD) encoding, Fisher Vector (FV) encoding.
-		//	-. clustering.
+		//	- Clustering.
 		//		k-means, GMM, IKM, HIKM, AIB.
-		//	-. segmentation.
+		//	- Segmentation.
 		//		Quick shift, SLIC.
-		//	-. learning algorithm.
+		//	- Learning algorithm.
 		//		SVM.
 		//retval = vlfeat_main(argc, argv);
 
 		std::cout << "\nC-based/Cached/Core Computer Vision (CCV) library -------------------" << std::endl;
-		//	-. feature analysis.
-		//		scale invariant feature transform (SIFT).
+		//	- Feature analysis.
+		//		Scale invariant feature transform (SIFT).
 		//		DAISY.
-		//		histogram of oriented gradients (HOG).
-		//		brightness binary feature (BBF).
-		//	-. object detection & tracking.
-		//		deformable parts model (DPM) - discriminatively trained part-based models.
-		//		stroke width transform (SWT).
-		//		tracking-learning-detection (TLD).
-		//	-. sparse coding & compressive sensing.
+		//		Histogram of oriented gradients (HOG).
+		//		Brightness binary feature (BBF).
+		//	- Object detection & tracking.
+		//		Deformable parts model (DPM) - discriminatively trained part-based models.
+		//		Stroke width transform (SWT).
+		//		Tracking-learning-detection (TLD).
+		//	- Sparse coding & compressive sensing.
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		// TODO [check] >> run-time error in Windows. not correctly working.
 		//retval = ccv_main(argc, argv);
@@ -71,16 +71,16 @@ int main(int argc, char *argv[])
 #endif
 
 		std::cout << "\nVision with Generic Algorithms (VIGRA) library ----------------------" << std::endl;
-		//	-. segmentation.
-		//		seeded region growing (SRG).
-		//		watershed region growing.
-		//		simple linear iterative clustering (SLIC).
+		//	- Segmentation.
+		//		Seeded region growing (SRG).
+		//		Watershed region growing.
+		//		Simple linear iterative clustering (SLIC).
 		//retval = vigra_main(argc, argv);
 
 		std::cout << "\nDarwin library ------------------------------------------------------" << std::endl;
-		//	-. machine learning.
-		//	-. probabilistic graphical model.
-		//retval = darwin_main(argc, argv);  // not yet implemented.
+		//	- Machine learning.
+		//	- Probabilistic graphical model.
+		//retval = darwin_main(argc, argv);  // Not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{
@@ -94,11 +94,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

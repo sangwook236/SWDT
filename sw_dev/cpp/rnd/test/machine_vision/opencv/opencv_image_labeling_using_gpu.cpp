@@ -129,7 +129,7 @@ void background_subtraction_by_graph_cut()
 
 void belief_propagation()
 {
-	throw std::runtime_error("not yet implemented");
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local
@@ -140,7 +140,7 @@ namespace my_opencv {
 void image_labeling_using_gpu()
 {
 	local::background_subtraction_by_graph_cut();
-	//local::belief_propagation();  // not yet implemented.
+	//local::belief_propagation();  // Not yet implemented.
 }
 
 }  // namespace my_opencv

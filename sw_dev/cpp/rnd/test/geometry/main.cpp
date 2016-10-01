@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 		retval = pcl_main(argc, argv);
 
 		std::cout << "\n3DTK - The 3D Toolkit -----------------------------------------------" << std::endl;
-		//	-. 3D point clouds.
+		//	- 3D point clouds.
 		//retval = threedtk_main(argc, argv);  // Not yet implemented.
 	}
     catch (const std::bad_alloc &e)
@@ -36,11 +36,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

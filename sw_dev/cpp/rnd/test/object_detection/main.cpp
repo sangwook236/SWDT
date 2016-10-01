@@ -21,23 +21,23 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "a LIBrary for PArt-Based Object Detection in C++ (LibPaBOD) ---------" << std::endl;
-		//	-. discriminatively trained part-based model.
+		//	- Discriminatively trained part-based model.
 		//retval = libpabod_main(argc, argv);
 
 		std::cout << "\nINRIA Object Detection and Localization Toolkit ---------------------" << std::endl;
-		//	-. histogram of oriented gradients (HOG).
-		//retval = object_detection_and_localization_toolkit_main(argc, argv);  // not yet implemented.
+		//	- Histogram of oriented gradients (HOG).
+		//retval = object_detection_and_localization_toolkit_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nObject Detection Toolbox --------------------------------------------" << std::endl;
-		//	-. structured SVM.
-		//retval = object_detection_toolbox_main(argc, argv);  // not yet implemented.
+		//	- Structured SVM.
+		//retval = object_detection_toolbox_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nC4 detector ---------------------------------------------------------" << std::endl;
 		// C4: Real-time pedestrian detection.
-		//	-. CENTRIST descriptor.
+		//	- CENTRIST descriptor.
 		//retval = c4_main(argc, argv);
 
-		std::cout << "\nshadow detection and removal algorithm ------------------------------" << std::endl;
+		std::cout << "\nShadow detection and removal algorithm ------------------------------" << std::endl;
 		retval = shadows_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
@@ -52,11 +52,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

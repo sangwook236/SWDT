@@ -31,7 +31,7 @@ int darwin_main(int argc, char *argv[])
 			std::cout << "GPU not found ..." << std::endl;
 #endif
 
-		throw std::runtime_error("not yet implemented");
+		throw std::runtime_error("Not yet implemented");
 	}
 	catch (const cv::Exception &e)
 	{

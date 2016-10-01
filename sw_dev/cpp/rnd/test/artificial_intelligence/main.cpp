@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nCMA-ES algorithm ----------------------------------------------------" << std::endl;
 		//  - Covariance matrix adaptation evolution strategy.
-		//retval = cma_es_main(argc, argv);  // not yet implemented.
+		//retval = cma_es_main(argc, argv);  // Not yet implemented.
 	}
     catch (const std::bad_alloc &e)
 	{
@@ -35,11 +35,11 @@ int main(int argc, char *argv[])
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception caught" << std::endl;
+		std::cout << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit ..." << std::endl;
 	std::cin.get();
 
 	return retval;

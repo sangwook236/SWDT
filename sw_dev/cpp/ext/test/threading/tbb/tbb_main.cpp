@@ -17,7 +17,7 @@ void complex_loop_parallelization();
 int tbb_main(int argc, char *argv[])
 {
 	my_tbb::simple_loop_parallelization();
-	//my_tbb::complex_loop_parallelization();  // not yet implemented.
+	//my_tbb::complex_loop_parallelization();  // Not yet implemented.
 
 	return 0;
 }
