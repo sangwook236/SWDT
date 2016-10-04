@@ -34,11 +34,11 @@
 				또다른 기능으로는 DLL에서 export하는 함수리스트를 보여 줌.
 			dumpbin
 				/exports option을 사용해 export된 함수리스트를 볼 수 있음.
-					dumpbin.exe /exports foo.dll > foo.dll.def
+					dumpbin.exe /exports foo.dll > foo.def
 					==> 생성된 export file을 그대로 DEF file로 사용할 수 없음.
 						DEF file 형식에 맞게 수정해야 함.
-		3. Modify DEF file.
-			e.g.) foo.dll.def
+		3. Edit DEF file.
+			e.g.) foo.def
 				;LIBRARY foo.dll ==> DLL filename을 정확히 지정하는 것이 유리.
 				EXPORTS
 				; 여기서 부터는 리스트된 함수를 나열.
@@ -50,14 +50,13 @@
 					생성되는 import library: foo.dll.lib.
 					생성되는 import library와 연결되는 DLL: foo.dll.dll.
 		4. Generate import library from DEF file.
-			lib.exe /nologo /def:foo.dll.def 
-				For 32-bit:
-					lib.exe /nologo /machine:x86 /def:foo.dll.def
-					lib.exe /nologo /machine:i386 /def:foo.dll.def
-				For 64-bit:
-					lib.exe /nologo /machine:X64 /def:foo.dll.def
-			foo.dll.lib 생성.
-			생성된 import library(lib)를 이용하여 link.
+			For 32-bit:
+				lib.exe /nologo /machine:x86 /def:foo.def
+				lib.exe /nologo /machine:i386 /def:foo.def
+			For 64-bit:
+				lib.exe /nologo /machine:X64 /def:foo.def
+		5. Link.
+			Link with the generated import library (foo.lib).
 
 	- DLL만 존재할 경우.
 		LoadLibrary()를 사용하여 각 함수 prototype을 선언한 후 사용.
@@ -86,20 +85,20 @@
 	- MSVC DLL -> import library.
 		1. Export symbols from DLL.
 			> Use nm.
-				echo EXPORTS > foo.dll.def
-				nm foo.dll | grep ' T _' | sed 's/.* T _//' >> foo.dll.def
+				echo EXPORTS > foo.def
+				nm foo.dll | grep ' T _' | sed 's/.* T _//' >> foo.def
 			> Use pexports in the mingw-utils package.
-				pexports foo.dll | sed "s/^_//" > foo.dll.def
+				pexports foo.dll | sed "s/^_//" > foo.def
 			==> Name mangling.
 				MSVC will prefix an underscore to __stdcall functions while MinGW will not.
 				REF [site] >> http://www.mingw.org/wiki/MSVC_and_MinGW_DLLs
 			==> Note that this will only work if the DLL is not stripped.
 				Otherwise you will get an error message: "No symbols in foo.dll".
 		2. Generate import library from DLL & DEF file.
-			dlltool --def foo.dll.def --dllname foo.dll --output-lib foo.dll.a
-			dlltool -U -d foo.dll.def -l foo.dll.a
+			dlltool --def foo.def --dllname foo.dll --output-lib foo.dll.a
+			dlltool -U -d foo.def -l foo.dll.a
 			==> Can generate import library when building DLL.
-				gcc -shared -o foo.dll foo.c -Wl,--output-def,foo.dll.def,--out-implib,foo.dll.a
+				gcc -shared -o foo.dll foo.c -Wl,--output-def,foo.def,--out-implib,foo.dll.a
 		3. (Optional) strip import library. (?)
 			strip foo.dll.a
 			==> Removes unnecessary information from executable binary programs and object files,
