@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://sourceforge.net/projects/libjson/
 
 		http://jsoncpp.sourceforge.net/

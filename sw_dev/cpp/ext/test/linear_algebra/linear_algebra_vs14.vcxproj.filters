@@ -112,6 +112,12 @@
     <ClCompile Include="eigen\eigen_least_squares.cpp">
       <Filter>Source Files\eigen</Filter>
     </ClCompile>
+    <ClCompile Include="openblas\openblas_main.cpp">
+      <Filter>Source Files\openblas</Filter>
+    </ClCompile>
+    <ClCompile Include="superlu\superlu_main.cpp">
+      <Filter>Source Files\superlu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -152,6 +158,12 @@
     </Filter>
     <Filter Include="Source Files\viennacl">
       <UniqueIdentifier>{5a200790-e7b1-43be-81f9-d1af6514adac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\openblas">
+      <UniqueIdentifier>{58a0fe1b-ab8b-4cbc-9142-0a7199676f2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\superlu">
+      <UniqueIdentifier>{fd174e62-bbfb-4be2-9ae7-4da0194b0491}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

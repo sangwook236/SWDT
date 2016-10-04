@@ -8,6 +8,7 @@
 
 int main(int argc, char* argv[])
 {
+	int openblas_main(int argc, char* argv[]);
 	int lapack_main(int argc, char* argv[]);
 	int atlas_main(int argc, char* argv[]);
 	int eigen_main(int argc, char* argv[]);
@@ -16,17 +17,32 @@ int main(int argc, char* argv[])
 	int cvm_main(int argc, char* argv[]);
 	int mtl_main(int argc, char* argv[]);
 	int suitesparse_main(int argc, char* argv[]);
+	int superlu_main(int argc, char* argv[]);
 	int viennacl_main(int argc, char* argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "Linear Algebra PACKage (LAPACK) -------------------------------------" << std::endl;
+		std::cout << "OpenBLAS library ----------------------------------------------------" << std::endl;
+		retval = openblas_main(argc, argv);
+		std::cout << "\nLinear Algebra PACKage (LAPACK) -------------------------------------" << std::endl;
 		//retval = lapack_main(argc, argv);
 
 		std::cout << "\nAutomatically Tuned Linear Algebra Software (ATLAS) -----------------" << std::endl;
 		//retval = atlas_main(argc, argv);
 		std::cout << "\nEigen library -------------------------------------------------------" << std::endl;
+		//	- External library support.
+		//		SuiteSparse, Cholmod, UmfPack, SuperLU, Pardiso, PaStiX, SPQR, Metis.
+		//	- Unsupported.
+		//		Differentiation.
+		//			Numerical differentiation.
+		//			Automatic differentiation.
+		//		Polynomial.
+		//		Geometry.
+		//		Fast Fourier transform (FFT).
+		//		Non-linear optimization.
+		//		Spline and Spline fitting.
+		//		MPFR support.
 		retval = eigen_main(argc, argv);
 		std::cout << "\nArmadillo library ---------------------------------------------------" << std::endl;
 		//retval = armadillo_main(argc, argv);
@@ -35,12 +51,13 @@ int main(int argc, char* argv[])
 		//retval = newmat_main(argc, argv);  // Not yet implemented.
 		std::cout << "\nCVM Class Library ---------------------------------------------------" << std::endl;
 		//retval = cvm_main(argc, argv);
-
 		std::cout << "\nMatrix Template Library (MTL) ---------------------------------------" << std::endl;
-		//retval = suitesparse_main(argc, argv);  // Not yet implemented.
+		//retval = mtl_main(argc, argv);
 
 		std::cout << "\nSuiteSparse library -------------------------------------------------" << std::endl;
-		//retval = mtl_main(argc, argv);
+		//retval = suitesparse_main(argc, argv);  // Not yet implemented.
+		std::cout << "\nSuperLU library -----------------------------------------------------" << std::endl;
+		retval = superlu_main(argc, argv);
 
 		std::cout << "\nThe Vienna Computing Library (ViennaCL) -----------------------------" << std::endl;
 		//	- Incomplete LU factorization (ILU).

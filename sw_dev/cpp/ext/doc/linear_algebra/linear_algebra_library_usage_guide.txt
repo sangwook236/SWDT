@@ -1,80 +1,88 @@
 [-] Libraries.
 	- BLAS.
 	- GotoBLAS.
-		(Windows) MinGW를 이용해서 build 후 사용.
-			REF [site] >> http://icl.cs.utk.edu/lapack-for-windows/lapack/
+		Windows:
+			Build in MinGW.
+			    REF [site] >> http://icl.cs.utk.edu/lapack-for-windows/lapack/
 		Library files:
 			libgoto2_penrynp-r1.13.a/lib
 		Features:
-			'cblas_'로 시작하는 함수와 시작하지 않는 함수 모두 제공.
+			Export functions both starting with and not starting with 'cblas_'.
 				e.g.) _sgemm_, _cblas_sgemm
-			'lapack_'로 시작하는 함수와 시작하지 않는 함수 제공. (?)
+			Export functions both starting with and not starting with 'lapack_'. (?)
 				e.g.) _cheev
 	- OpenBLAS.
-		(Windows) Cygwin을 이용해서 build 후 사용.
+		Windows:
+			Build in MSYS & Cygwin.
+				Prefer MSYS.
 		Library files:
-			libopenblas.so/dll(libopenblas.a)
+			libopenblas.so/dll
+			libopenblas.a
 		Features:
-			'cblas_'로 시작하는 함수와 시작하지 않는 함수 모두 제공.
+			Export functions both starting with and not starting with 'cblas_'.
 				e.g.) _sgemm, _sgemm_, _cblas_sgemm
-			'LAPACKE_'로 시작하는 함수 제공.
+			Export functions starting with 'LAPACKE_'.
 				e.g.) _LAPACKE_cheev
 	- LAPACK.
-		lapack-3.6.0 version의 shared library 사용.
-		(Windows) MinGW를 이용해서 build 후 사용.
-			REF [site] >> http://icl.cs.utk.edu/lapack-for-windows/lapack/
+		Use shared libraries of lapack-3.6.0 version.
+		Windows:
+			Build in MinGW.
+			    REF [site] >> http://icl.cs.utk.edu/lapack-for-windows/lapack/
 		Library files:
 			libblas.so/dll(libblas.lib)
 			liblapack.so/dll(liblapack.lib)
 			libtmglib.so/dll(libtmglib.lib)
 		Features:
-			함수명 뒤에 _가 붙어있는 형태로 export.
-			'cblas_'로 시작하지 않는 함수 제공.
+			Export functions ending in '_'.
+			Export functions not starting with 'cblas_'.
 				e.g.) _sgemm_
-			'clapack_'로 시작하지 않는 함수 제공.
+			Export functions not starting with 'clapack_'.
 				e.g.) _cheev_
 	- CLAPACK.
-		clapack-3.2.1-CMAKE version의 static library 사용.
-		(Windows) Visual Studio를 이용해서 build 후 사용.
+		Use static libraries of clapack-3.2.1-CMAKE version.
+		Windows:
+			Build in Visual Studio.
 		Library files:
 			libf2c.a/lib
 			blas.a/lib
 			lapack.a/lib
 			tmglib.a/lib
 		Features:
-			함수명 뒤에 _가 붙어있는 형태로 export.
-			'cblas_'로 시작하지 않는 함수 제공.
+			Export functions ending in '_'.
+			Export functions not starting with 'cblas_'.
 				e.g.) _sgemm_
-			'clapack_'로 시작하지 않는 함수 제공.
+			Export functions not starting with 'clapack_'.
 				e.g.) _cheev_
 	- ATLAS.
-		atlas3.10.3 version의 static library 사용.
+		Use shared libraries of atlas3.10.3 version.
+		Windows:
+			Build in Cygwin.
 		Library files:
+			libsatlas.dll
+			libtatlas.dll
 			libf77blas.a
 			libptf77blas.a
 			libcblas.a
 			libptcblas.a
 			liblapack.a
 			libatlas.a
-			libsatlas.dll
-			libtatlas.dll
 		Features:
-			'cblas_'로 시작하는 함수 제공.
+			Export functions starting with 'cblas_'.
 				e.g.) cblas_sgemm
-			'clapack_'로 시작하는 함수 제공.
+			Export functions starting with 'clapack_'.
 				e.g.) clapack_dgesv
 	- Eigen.
-		BLAS & LAPACK의 function 대부분을 가지고 있지 않음.
+		Do not provide a small part of functions of BLAS & LAPACK.
 		Library files:
 			eigen_blas.so/dll
 			eigen_lapack.so/dll
 		Features:
-			'cblas_'로 시작하지 않는 함수 제공. (?)
-			'clapack_'로 시작하지 않는 함수 제공. (?)
+			Export functions not starting with 'cblas_'. (?)
+			Export functions not starting with 'clapack_'. (?)
 	- GSL.
-		GSL-1.15 version의 static library 사용.
+		Use static libraries of GSL-1.15 version.
 		Library files:
 			cblas.a/lib
 			cblas.so/dll
 		Features:
-			'cblas_'로 시작하는 함수 제공.
+			Export functions starting with 'cblas_'.

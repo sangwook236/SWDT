@@ -157,7 +157,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="newmat\newmat_main.cpp" />
+    <ClCompile Include="openblas\openblas_main.cpp" />
     <ClCompile Include="suitesparse\suitesparse_main.cpp" />
+    <ClCompile Include="superlu\superlu_main.cpp" />
     <ClCompile Include="viennacl\viennacl_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

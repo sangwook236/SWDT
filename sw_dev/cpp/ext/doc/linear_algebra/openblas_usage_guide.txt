@@ -3,48 +3,152 @@
 		http://xianyi.github.io/OpenBLAS/
 		https://github.com/xianyi/OpenBLAS
 
-		https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
-
 	- Reference.
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Build.
+[-] Building.
+	REF [site] >> https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
+
 	- Required compiler.
 		Fortran compiler if Lapack is included.
 
-[-] Build GitHub (VC): 2016/05/05.
-	- 현재 x86만 지원.
-		<warning>
-			CMake support is experimental
-			x86 support only
-				Only x86 support is currently available.
-		==> MinGW or Cygwin은 x64를 지원.
-		==> Win64도 정상적으로 build됨.
+	- System info.
+		REF [file] >> ${OPENBLAS_HOME}/Makefile & ${OPENBLAS_HOME}/Makefile.system
+			OSNAME
+				WINNT, CYGWIN_NT.
+			ARCH
+				x86, x86_64.
+		For 32-bit:
+			OSNAME = WINNT
+			ARCH = x86
+		For 32-bit:
+			OSNAME = WINNT
+			ARCH = x86_64.
 
+[-] Building (Win32/Cgywin).
+	REF [site] >> https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
+
+	==> Dependency upon Cygwin shared libraries.
+
+	- Run Cygwin terminal.
+		For 32-bit, use Cygwin32.
+		For 64-bit, use Cygwin64.
+	- Change directory.
+		cd ${OPENBLAS_HOME}
+	- Run quick build script.
+		./quickbuild.win32
+		./quickbuild.win64
+		==> quickbuild.win32 & quickbuild.win64 have to be UNIX file format.
+			When running scripts, An error about '\r' occurs.
+	- Run Visual Studio Command Prompt.
+	- Generate def file.
+		Use dumpbin.exe.
+			dumpbin.exe /exports libopenblas.dll > libopenblas.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+	- Edit the def file.
+		LIBRARY libopenblas.dll
+		EXPORTS
+	- Generate import library.
+		For 32-bit:
+			lib.exe /machine:x86 /def:libopenblas.def
+		For 64-bit:
+			lib.exe /machine:X64 /def:libopenblas.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+		==> ${OPENBLAS_HOME}/exports directory에 OpenBLAS에서 생성한 def file & import file이 존재.
+			Windows 환경에서 사용 가능 여부 확인 필요.
+	- Install.
+		make PREFIX=${INSTALL_PREFIX} install
+
+[-] Building GitHub (Win32/MSYS).
+	REF [site] >> https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
+	REF [file] >> mingw_usage_guide.txt
+
+	==> Win64 shared library is not built.
+		This error seems to be related with Win32 object files.
+		There is -m32 in the compile options.
+
+	- Run MSYS terminal.
+	- (Optional) set the GNU runtime directory in PATH.
+		export PATH=${MINGW_HOME}/bin:$PATH
+	- Change directory.
+		cd ${OPENBLAS_HOME}.
+	- Run make.
+		./quickbuild.win32
+		./quickbuild.win64
+	- Run Visual Studio Command Prompt.
+	- Generate def file.
+		Use dumpbin.exe.
+			dumpbin.exe /exports libopenblas.dll > libopenblas.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+	- Edit the def file.
+		LIBRARY libopenblas.dll
+		EXPORTS
+	- Generate import library.
+		For 32-bit:
+			lib.exe /machine:x86 /def:libopenblas.def
+		For 64-bit:
+			lib.exe /machine:X64 /def:libopenblas.def
+		==> ${OPENBLAS_HOME}/exports directory에 OpenBLAS에서 생성한 def file & import file이 존재.
+			이들을 Windows 환경에서 사용할 수 있는지 검증 필요.
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+	- Install.
+		make PREFIX=${INSTALL_PREFIX} install
+
+[-] Building GitHub (Win32/MSYS + CMake).
+	REF [site] >> https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
+	REF [file] >> mingw_usage_guide.txt
+
+	==> Make errors occurred.
+
+	- Run MSYS terminal.
+	- (Optional) set the GNU runtime directory in PATH.
+		export PATH=${MINGW_HOME}/bin:$PATH
+	- Run cmake-gui in MSYS terminal.
+	- Specify 'MSYS Makefiles' as the generator.
 	- Configure and generate.
 		Set CMAKE_DEBUG_POSTFIX to d.
-	- Build.
-	- Install.
-		Install project가 만들어지지 않음.
-		==> Header file은 적절히 알아서 복사해야 함.
+	- Change directory.
+		cd cmake-build-directory.
+	- Run make.
+		mingw32-make
+		mingw32-make BINARY=32 CC=gcc FC=gfortran USE_OPENMP=1 NO_LAPACK=1 NO_CBLAS=1
+		mingw32-make PREFIX=${INSTALL_PREFIX} install
 
-[-] Build (Win32/MinGW).
-	REF [file] >>  mingw_usage_guide.txt
+[-] Building (Win32/MinGW + CMake).
+	REF [site] >> https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
+	REF [file] >> mingw_usage_guide.txt
 
-	- Run Visual Studio Command Prompt.
-	- Set the GNU runtime directory in PATH.
-		set path=${MINGW_ROOT}/bin;%path%
-	- Run cmake-gui.
-	    Specify 'MinGW Makefiles' as the generator.
+	==> Make errors occurred.
+
+	- Run Command Prompt.
+		a) When using MinGW terminal.
+			Run MinGW terminal.
+				For 64-bit:
+					Run ${MINGW_HOME}/mingw-w64.bat.
+			Set the GNU runtime directory in PATH.
+				set path=${MINGW_HOME}/bin;${MSYS_ROOT}/bin;%path%
+				set path=${MINGW_HOME}/bin;${CYGWIN_HOME}/bin;%path%
+				set path=${MINGW_HOME}/bin;${GNUWIN32_HOME}/bin;%path%
+		b) When using (Visual Studio) Command Prompt.
+			Run (Visual Studio) Command Prompt.
+		    Set the GNU runtime directory in PATH.
+				set path=${MINGW_HOME}/bin;${MSYS_ROOT}/bin;%path%
+				set path=${MINGW_HOME}/bin;${CYGWIN_HOME}/bin;%path%
+				set path=${MINGW_HOME}/bin;${GNUWIN32_HOME}/bin;%path%
+	- Run cmake-gui in terminal.
+	- Specify 'MinGW Makefiles' as the generator.
 	- Configure and generate.
-		Set the 'CMAKE_SH' option to ${MSYS_ROOT}/bin/sh.exe.
-		Set the 'CMAKE_Fortran_COMPILER' option to ${MINGW_ROOT}/bin/gfortran.exe.
-		Set the 'CMAKE_GNUtoMS' option to ON.
+		Set CMAKE_SH to ${MSYS_ROOT}/bin/sh.exe.
+		Set CMAKE_Fortran_COMPILER to ${MINGW_HOME}/bin/gfortran.exe.
+		Set CMAKE_GNUtoMS to ON.
 			<warning> Disabling CMAKE_GNUtoMS option because CMAKE_GNUtoMS_VCVARS is not set
 			==> Set the 'CMAKE_GNUtoMS_VCVARS' option to 'C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/vcvars32.bat'.
+		Set BUILD_SHARED_LIBS to ON.
+			이 option을 지정하지 않으면 .a library file 생성.
+		Set CMAKE_DEBUG_POSTFIX to d.
 
 		Fortran files을 찾을 수 없다는 error 발생.
-			<error> Cannot find source file
+			<error> Cannot find source file.
 				sgegs.f, sgegv.f, etc.
 			==> 해당 files이 deprecated 되어 발생.
 				${OPENBLAS_HOME}/lapack-netlib/SRC -> ${OPENBLAS_HOME}/lapack-netlib/SRC/DEPRECATED.
@@ -67,38 +171,24 @@
 						dir z*.f > list.txt + ilazlr.f ilazlc.f
 						copy file list to set(SLRSRC ...)
 	- Change directory.
-		cd cmake-build directory.
-	- Make.
+		cd cmake-build-directory.
+	- Run make.
 		mingw32-make
 		mingw32-make PREFIX=${INSTALL_PREFIX} install
 
-[-] Build (Win32/Cgywin).
-	REF [site] >> https://github.com/xianyi/OpenBLAS/wiki/How-to-use-OpenBLAS-in-Microsoft-Visual-Studio
+[-] Building GitHub (VC): 2016/05/05.
+	- 현재 x86만 지원.
+		<warning>
+			CMake support is experimental.
+			x86 support only.
+				Only x86 support is currently available.
+		==> MinGW or Cygwin은 x64를 지원.
+		==> Win64도 정상적으로 build됨.
 
-	- Use quick build.
-		${OPENBLAS_HOME}/quickbuild.win32
-		${OPENBLAS_HOME}/quickbuild.win64
-
-	- Run cygwin.
-	- Run quick build script.
-		cd ${OPENBLAS_HOME}
-		./quickbuild.win32
-		./quickbuild.win64
-	- Run Visual Studio Command Prompt.
-	- Generate def file.
-		a) dumpbin.exe 이용.
-			dumpbin.exe /exports libopenblas.dll > libopenblas.def
-			==> 생성된 def file을 그대로 사용할 수 없음.
-				Def file 형식에 맞게 수정해야 함.
-		b) OpenBLAS library에서 생성한 def file 이용.
-			${OPENBLAS_HOME}/exports/libopenblas.def
-			==> Windows 환경에서 사용할 수 있는지 검증 필요.
-	- Generate import library.
-		cd ${OPENBLAS_HOME}/exports
-		For 32-bit: lib.exe /machine:i386 /def:libopenblas.def
-		For 64-bit: lib.exe /machine:X64 /def:libopenblas.def
-		==> ${OPENBLAS_HOME}/exports directory에 OpenBLAS에서 생성한 def file & import file이 존재.
-			이들을 Windows 환경에서 사용할 수 있는지 검증 필요.
-
+	- Configure and generate.
+		Set CMAKE_DEBUG_POSTFIX to d.
+	- Open solution file.
+	- Build.
 	- Install.
-		make PREFIX=${INSTALL_PREFIX} install
+		Install project가 만들어지지 않음.
+		==> Header file은 적절히 알아서 복사해야 함.

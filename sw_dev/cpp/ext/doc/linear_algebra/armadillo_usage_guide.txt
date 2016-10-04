@@ -10,4 +10,4 @@
 		Atlas & SuperLU.
 
 [-] Usage
-	- Can use armadillo library if header files exist. (?)
+	- Can use armadillo library if header files exist.

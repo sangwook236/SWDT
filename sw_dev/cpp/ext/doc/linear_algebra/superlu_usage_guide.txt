@@ -5,6 +5,126 @@
 	- Reference.
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Build.
+[-] Building.
+	REF [doc] >> ${SUPERLU_HOME}/README
+
 	- Required libraries.
 		Fortran compiler.
+
+[-] Building (Cygwin + CMake).
+	REF [doc] >> '2. Using CMake build system." in ${SUPERLU_HOME}/README
+
+	==> Dependency upon Cygwin shared libraries.
+
+	- Run Cygwin terminal.
+		For 32-bit, use Cygwin32.
+		For 64-bit, use Cygwin64.
+	- Run cmake-gui in Cygwin/X.
+	- Specify 'Unix Makefiles' as a generator. (?)
+	- Configure & generate.
+		For shared library:
+			Set USE_XSDK_DEFAULTS to OFF.
+			Set BUILD_SHARED_LIBS to OFF.
+		For static library:
+			Set USE_XSDK_DEFAULTS to ON.
+			Set BUILD_SHARED_LIBS to ON.
+			==> Cannot link in VC++.
+		Set enable_blaslib to ON.
+			==> If this is set to OFF, use external BLAS library.
+		For 32-bit:
+			When adding -mnocygwin to CMAKE_C_FLAGS, some errors occur.
+			We should change gcc, ar, ld in Cygwin into them in MinGW.
+		For 64-bit:
+			Add -mnocygwin to CMAKE_C_FLAGS.
+	- (Optional) copy make.inc.
+		Copy ${SUPERLU_HOME}/MAKE_INC/make.linux to ${SUPERLU_HOME}/make.inc.
+		==> make.inc is automatically generate by CMake.
+	- (Optional) edit the make.inc.
+		If there is BLAS library available on your machine,
+	        BLASDEF = -DUSE_VENDOR_BLAS
+	        BLASLIB = $(SUPERLULIB) D:/usr/local/lib/libtatlas.lib
+	        BLASLIB = $(SUPERLULIB) D:/usr/local/lib64/libtatlas.lib
+	        TMGLIB = tmglib.lib
+	- Change directory.
+		cd cmake-build-directory
+	- Run make.
+		make
+		==> It does not matter if MATGEN library is built or not.
+	- Run Visual Studio Command Prompt.
+	- Generate def file.
+		Use dumpbin.exe.
+			dumpbin.exe /exports libsuperlu.dll > libsuperlu.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+	- Edit the def file.
+		LIBRARY libsuperlu.dll
+		EXPORTS
+	- Generate import library.
+		For 32-bit:
+			lib.exe /machine:x86 /def:libsuperlu.def
+		For 64-bit:
+			lib.exe /machine:X64 /def:libsuperlu.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+
+[-] Building (MSYS or MinGW + CMake).
+	REF [doc] >> '2. Using CMake build system." in ${SUPERLU_HOME}/README
+
+	- Run MSYS or MinGW terminal.
+		Run ${MINGW_HOME}/mingw-w64.bat.
+	- Run cmake-gui in the terminal.
+		Can use cmake-gui for Windows.
+	- Specify a generator.
+		MSYS Makefiles.
+		MinGW Makefiles.
+	- Configure & generate.
+		For shared library:
+			Set USE_XSDK_DEFAULTS to OFF.
+			Set BUILD_SHARED_LIBS to OFF.
+		For static library:
+			Set USE_XSDK_DEFAULTS to ON.
+			Set BUILD_SHARED_LIBS to ON.
+			==> Cannot link in VC++.
+		Set enable_blaslib to OFF.
+			==> If this is set to OFF, use external BLAS library.
+				TPL_BLAS_LIBRARIES=D:/usr/local/lib/libtatlas.lib
+				TPL_BLAS_LIBRARIES=D:/usr/local64/lib/libtatlas.lib
+	- (Optional) copy make.inc.
+		Copy ${SUPERLU_HOME}/MAKE_INC/make.linux to ${SUPERLU_HOME}/make.inc.
+		==> make.inc is automatically generate by CMake.
+	- (Optional) edit the make.inc.
+		If there is BLAS library available on your machine,
+	        BLASDEF = -DUSE_VENDOR_BLAS
+	        BLASLIB = $(SUPERLULIB) D:/usr/local/lib/libtatlas.lib
+	        BLASLIB = $(SUPERLULIB) D:/usr/local64/lib/libtatlas.lib
+	        TMGLIB = tmglib.lib
+	- Change directory.
+		cd cmake-build-directory
+	- Run make.
+		make
+		==> It does not matter if MATGEN library is built or not.
+	- Run Visual Studio Command Prompt.
+	- Generate def file.
+		Use dumpbin.exe.
+			dumpbin.exe /exports libsuperlu.dll > libsuperlu.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+	- Edit the def file.
+		LIBRARY libsuperlu.dll
+		EXPORTS
+	- Generate import library.
+		For 32-bit:
+			lib.exe /machine:x86 /def:libsuperlu.def
+		For 64-bit:
+			lib.exe /machine:X64 /def:libsuperlu.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+
+[-] Trouble shooting (Cygwin, MinGW, MSYS).
+    - input_error() function error.
+    	<error> undefined reference to 'input_error'
+    		input_error() is defined in ${SUPERLU_HOME}/SRC/input_error.c.
+    	<cause>
+    		Because SuperLU is built as a shared library.
+    	<solution> add the defintion of inputer_error() in ${SUPERLU_HOME}/CBLAS and ${SUPERLU_HOME}/TESTING/MATGEN.
+    		e.g.)
+    			${SUPERLU_HOME}/CBLAS/cgemv.c
+    			${SUPERLU_HOME}/TESTING/MATGEN/clagge.c
+    		<after>
+    			int input_error(char *srname, int *info) { return 0; }
