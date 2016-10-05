@@ -1,4 +1,34 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		https://software.sandia.gov/opt++/
 		https://software.sandia.gov/opt++/opt++2.4_doc/html/index.html
+
+[-] Building ver. 2.4 (MSYS2).
+	- Problem.
+		Do not generate shared libraries.
+			Just generate static libraries without regard to --enable-shared option.
+
+	- Open MSYS2 terminal.
+		REF [doc] >> mingw_usage_guide.txt
+	- Change directory.
+		cd ${OPTPP_HOME}
+	- Configure.
+		./configure --prefix=/d/lib_repo/cpp/rnd/optpp-2.4/install --enable-shared F77=gfortran
+	- Run make.
+		mingw32-make MAKE=mingw32-make
+		mingw32-make MAKE=mingw32-make clean
+		mingw32-make MAKE=mingw32-make install
+	- Run Visual Studio command prompt.
+	- Generate def file.
+		Use dumpbin.exe.
+			dumpbin.exe /exports libopt.dll > libopt.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+	- Edit the def file.
+		LIBRARY libopt.dll
+		EXPORTS
+	- Generate import library.
+		For 32-bit:
+			lib.exe /machine:x86 /def:libopt.def
+		For 64-bit:
+			lib.exe /machine:X64 /def:libopt.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt

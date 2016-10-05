@@ -123,7 +123,7 @@ namespace my_superlu {
 
 int superlu_main(int argc, char* argv[])
 {
-	local::clinsol_example();
+	local::clinsol_example();  // Too slow. (?)
 
 	return 0;
 }

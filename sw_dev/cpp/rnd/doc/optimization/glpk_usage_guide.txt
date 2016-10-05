@@ -1,16 +1,16 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.gnu.org/software/glpk/
 		http://winglpk.sourceforge.net/
 
-[-] Building (Windows)
-	-. WinGLPK 4.57
+[-] Building (Windows).
+	- WinGLPK 4.57.
 		Build:
 			Open the general Command Prompt, but not Visual Studio Command Prompt.
 			cd ${WINGLPK_HOME}
 			Run Build_WinGLPK.bat
 		Output directory:
-			Win32
+			Win32:
 				${WINGLPK_HOME}/build32/w32
-			x86
+			Win64:
 				${WINGLPK_HOME}/build64/w64

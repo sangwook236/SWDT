@@ -11,10 +11,101 @@
 	- Required libraries.
 		Fortran compiler.
 
+[-] Building (MSYS2 + CMake).
+	REF [doc] >> '2. Using CMake build system." in ${SUPERLU_HOME}/README
+
+	- Run MSYS2 MinGW 32-bit or 64-bit terminal.
+	- Run cmake-gui in the terminal.
+		Can use cmake-gui for Windows (recommend) or MSYS2
+	- Specify 'MSYS Makefiles' as a generator.
+	- Configure & generate.
+		Set CMAKE_MAKE_PROGRAM to /mingw64/bin/mingw32-make.
+		Set CMAKE_MAKE_PROGRAM to /mingw32/bin/mingw32-make.
+		For shared library:
+			Set USE_XSDK_DEFAULTS to OFF.
+			Set BUILD_SHARED_LIBS to OFF.
+		For static library:
+			Set USE_XSDK_DEFAULTS to ON.
+			Set BUILD_SHARED_LIBS to ON.
+			==> Cannot link in VC++.
+		Set enable_blaslib to OFF.
+			If this is set to OFF, use external BLAS library.
+		Set BLAS_blas_LIBRARY to D:/usr/local/lib/libtatlas.lib or libopenblas.lib.
+			Show TPL_BLAS_LIBRARIES option.
+	- Change directory.
+		cd cmake-build-directory
+	- Run make.
+		mingw32-make
+		==> It does not matter if MATGEN library is built or not.
+	- Run Visual Studio command prompt.
+	- Generate def file.
+		Use dumpbin.exe.
+			dumpbin.exe /exports libsuperlu.dll > libsuperlu.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+	- Edit the def file.
+		LIBRARY libsuperlu.dll
+		EXPORTS
+	- Generate import library.
+		For 32-bit:
+			lib.exe /machine:x86 /def:libsuperlu.def
+		For 64-bit:
+			lib.exe /machine:X64 /def:libsuperlu.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+
+[-] Building (MSYS or MinGW + CMake).
+	REF [doc] >> '2. Using CMake build system." in ${SUPERLU_HOME}/README
+
+	- Run MSYS or MinGW terminal.
+		Run ${MINGW_HOME}/mingw-w64.bat.
+	- Run cmake-gui in the terminal.
+		Can use cmake-gui for Windows.
+	- Specify a generator.
+		MSYS Makefiles.
+		MinGW Makefiles.
+	- Configure & generate.
+		For shared library:
+			Set USE_XSDK_DEFAULTS to OFF.
+			Set BUILD_SHARED_LIBS to OFF.
+		For static library:
+			Set USE_XSDK_DEFAULTS to ON.
+			Set BUILD_SHARED_LIBS to ON.
+			==> Cannot link in VC++.
+		Set enable_blaslib to OFF.
+			==> If this is set to OFF, use external BLAS library.
+	- (Optional) copy make.inc.
+		Copy ${SUPERLU_HOME}/MAKE_INC/make.linux to ${SUPERLU_HOME}/make.inc.
+		==> make.inc is automatically generate by CMake.
+	- (Optional) edit the make.inc.
+		If there is BLAS library available on your machine,
+	        BLASDEF = -DUSE_VENDOR_BLAS
+	        BLASLIB = $(SUPERLULIB) D:/usr/local/lib/libtatlas.lib
+	        BLASLIB = $(SUPERLULIB) D:/usr/local64/lib/libtatlas.lib
+	        TMGLIB = tmglib.lib
+	- Change directory.
+		cd cmake-build-directory
+	- Run make.
+		make
+		==> It does not matter if MATGEN library is built or not.
+	- Run Visual Studio command prompt.
+	- Generate def file.
+		Use dumpbin.exe.
+			dumpbin.exe /exports libsuperlu.dll > libsuperlu.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+	- Edit the def file.
+		LIBRARY libsuperlu.dll
+		EXPORTS
+	- Generate import library.
+		For 32-bit:
+			lib.exe /machine:x86 /def:libsuperlu.def
+		For 64-bit:
+			lib.exe /machine:X64 /def:libsuperlu.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+
 [-] Building (Cygwin + CMake).
 	REF [doc] >> '2. Using CMake build system." in ${SUPERLU_HOME}/README
 
-	==> Dependency upon Cygwin shared libraries.
+	- Problem.
+		Dependency upon Cygwin shared libraries.
 
 	- Run Cygwin terminal.
 		For 32-bit, use Cygwin32.
@@ -50,58 +141,7 @@
 	- Run make.
 		make
 		==> It does not matter if MATGEN library is built or not.
-	- Run Visual Studio Command Prompt.
-	- Generate def file.
-		Use dumpbin.exe.
-			dumpbin.exe /exports libsuperlu.dll > libsuperlu.def
-		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
-	- Edit the def file.
-		LIBRARY libsuperlu.dll
-		EXPORTS
-	- Generate import library.
-		For 32-bit:
-			lib.exe /machine:x86 /def:libsuperlu.def
-		For 64-bit:
-			lib.exe /machine:X64 /def:libsuperlu.def
-		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
-
-[-] Building (MSYS or MinGW + CMake).
-	REF [doc] >> '2. Using CMake build system." in ${SUPERLU_HOME}/README
-
-	- Run MSYS or MinGW terminal.
-		Run ${MINGW_HOME}/mingw-w64.bat.
-	- Run cmake-gui in the terminal.
-		Can use cmake-gui for Windows.
-	- Specify a generator.
-		MSYS Makefiles.
-		MinGW Makefiles.
-	- Configure & generate.
-		For shared library:
-			Set USE_XSDK_DEFAULTS to OFF.
-			Set BUILD_SHARED_LIBS to OFF.
-		For static library:
-			Set USE_XSDK_DEFAULTS to ON.
-			Set BUILD_SHARED_LIBS to ON.
-			==> Cannot link in VC++.
-		Set enable_blaslib to OFF.
-			==> If this is set to OFF, use external BLAS library.
-				TPL_BLAS_LIBRARIES=D:/usr/local/lib/libtatlas.lib
-				TPL_BLAS_LIBRARIES=D:/usr/local64/lib/libtatlas.lib
-	- (Optional) copy make.inc.
-		Copy ${SUPERLU_HOME}/MAKE_INC/make.linux to ${SUPERLU_HOME}/make.inc.
-		==> make.inc is automatically generate by CMake.
-	- (Optional) edit the make.inc.
-		If there is BLAS library available on your machine,
-	        BLASDEF = -DUSE_VENDOR_BLAS
-	        BLASLIB = $(SUPERLULIB) D:/usr/local/lib/libtatlas.lib
-	        BLASLIB = $(SUPERLULIB) D:/usr/local64/lib/libtatlas.lib
-	        TMGLIB = tmglib.lib
-	- Change directory.
-		cd cmake-build-directory
-	- Run make.
-		make
-		==> It does not matter if MATGEN library is built or not.
-	- Run Visual Studio Command Prompt.
+	- Run Visual Studio command prompt.
 	- Generate def file.
 		Use dumpbin.exe.
 			dumpbin.exe /exports libsuperlu.dll > libsuperlu.def
