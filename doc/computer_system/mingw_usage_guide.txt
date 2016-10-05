@@ -3,6 +3,7 @@
 		${GDT_HOME}/MinGW-Usage-Guide.md
 
 	- Site.
+		MinGW:
 		http://www.mingw.org/
 		http://mingw-w64.org/
 
@@ -12,6 +13,27 @@
 			peexports
 			reimp
 		http://sourceforge.net/projects/mingw/files/MinGW/Contributed/
+
+		MSYS2:
+		http://msys2.github.io/
+		https://github.com/msys2
+
+		https://sourceforge.net/p/msys2/wiki/Packages/
+		https://sourceforge.net/projects/msys2/files/Base/
+
+		https://github.com/Alexpux/MSYS2-packages
+
+		MSYS:
+		For 32-bit:
+			http://www.mingw.org/wiki/MSYS
+		For 64-bit:
+			https://sourceforge.net/p/mingw-w64/wiki2/MSYS/
+			https://sourceforge.net/projects/mingw-w64/files/External%20binary%20packages%20%28Win64%20hosted%29/MSYS%20%2832-bit%29/
+
+		http://sourceforge.net/projects/mingw/files/MSYS/Base/
+		http://sourceforge.net/projects/mingw/files/MSYS/Extension/
+			wget
+		http://sourceforge.net/projects/mingw/files/MSYS/Contributed/
 
 	- Document.
 		http://www.mingw.org/wiki
@@ -33,11 +55,19 @@
 		e.g.)
 			mingw-get install lib-package-name
 			mingw-get update
+	- MSYS2.
+		Search package:
+			pacman -Ss cmake
+		Install package:
+			pacman -S mingw32/mingw-w64-i686-cmake
+			pacman -S --force mingw64/mingw-w64-x86_64-cmake
+		REF [doc] >> pacman_usage_guide.txt
 	- MSYS.
 		mingw-get.exe으로 설치되지 않는 package의 경우 아래의 사이트에서 찾을 수 있음.
 			http://sourceforge.net/projects/mingw/files/MSYS/Extension/
 			http://sourceforge.net/projects/mingw/files/MSYS/Base/
 		Download 받은 file을 ${MSYS_HOME}에 복사한 후 압축을 풀면 ${MSYS_HOME}/bin에 복사됨.
+
 
 [-] Toolchain (MinGW-w64).
 	- Site.
@@ -73,27 +103,6 @@
 			${MINGW_HOME}/lib/gcc/x86_64-w64-mingw32
 
 [-] MSYS.
-	- Site.
-		MSYS2:
-			http://msys2.github.io/
-			https://github.com/msys2
-
-			https://sourceforge.net/p/msys2/wiki/Packages/
-			https://sourceforge.net/projects/msys2/files/Base/
-
-			https://github.com/Alexpux/MSYS2-packages
-		MSYS:
-			For 32-bit:
-				http://www.mingw.org/wiki/MSYS
-			For 64-bit:
-				https://sourceforge.net/p/mingw-w64/wiki2/MSYS/
-				https://sourceforge.net/projects/mingw-w64/files/External%20binary%20packages%20%28Win64%20hosted%29/MSYS%20%2832-bit%29/
-
-			http://sourceforge.net/projects/mingw/files/MSYS/Base/
-			http://sourceforge.net/projects/mingw/files/MSYS/Extension/
-				wget
-			http://sourceforge.net/projects/mingw/files/MSYS/Contributed/
-
 	- Installation.
 		MSYS2:
 			REF [site] >> https://sourceforge.net/p/msys2/wiki/MSYS2%20installation/
@@ -110,6 +119,7 @@
 
 			pacman -Sy pacman
 			pacman -Syu
+			pacman -Su
 
 	- Mount MinGW directory.
 		mount c:/mingw /mingw
