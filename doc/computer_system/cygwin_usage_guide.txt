@@ -1,0 +1,98 @@
+[-] General.
+	- Reference.
+		${GDT_HOME}/Cygwin-Usage-Guide.md
+
+	- Site.
+		https://www.cygwin.com/
+
+		https://cygwin.com/docs.html
+		https://cygwin.com/faq.html
+
+[-] Usage.
+	- Reference.
+		mingw_usage_guide.txt
+    	${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
+
+	- Both Cygwin32 and Cygwin64 are all required.
+		For 32-bit, use Cygwin32.
+		For 64-bit, use Cygwin64.
+
+	- Set environment variable for Cygwin.
+		http://cygwin.com/cygwin-ug-net/using-cygwinenv.html
+		e.g.)
+			set CYGWIN=nodosfilewarning
+
+	- Check required modules.
+		objdump -p foo.exe | grep 'DLL Name'
+		cygcheck ./foo.exe
+		==> Dependency Walker.
+
+[-] System command.
+- X-Window.S
+		Script:
+			/usr/bin/startxwin.sh
+			/usr/bin/startxwin.bat
+		Configuration file:
+			~/.xinitrc
+			/etc/X11/xinit/xinitrc
+		Displaying remote clients using ssh.
+			ssh -Y -l username remote_hostname_or_ip_address
+	
+	- System information.
+		/bin/uname
+	
+	- Package management.
+		/bin/cygcheck
+			cygcheck -c
+	
+	- Linking-libraries imformation.
+		Cygwin is telling you that there are some libraries missing.
+		You¡¯ll need to find out which ones and then run the setup/installer to fix it.
+		to fix it, first use the cygwin utility 'cygcheck' to reveal the names of the missing DLLs.
+		Run the command to generate a list of the missing libraries/DLLs:
+			cygcheck program_name
+
+[-] Toolchain.
+	- General.
+		i686-pc-cygwin: Cygwin, 32-bit.
+		x86_64-pc-cygwin: Cygwin, 64-bit.
+			==> Require cygwin1.dll.
+		i686-pc-mingw32: MinGW, 32-bit.
+		i686-w64-mingw32: MinGW-w64, 32-bit.
+		x86_64-w64-mingw32: MinGW-w64, 64-bit.
+
+	- Files & directories.
+		Binaries:
+			/bin/???.exe
+				gcc.
+					For 32-bit: hard-link to /bin/i686-pc-cygwin-gcc.exe. (?)
+					For 64-bit: hard-link to /bin/x86_64-pc-cygwin-gcc.exe. (?)
+				g++.
+				gfortran.
+				ld.
+				etc.
+			/bin/i686-pc-cygwin-???.exe
+			/bin/x86_64-pc-cygwin-???.exe
+			/bin/i686-pc-mingw32-???.exe
+			/bin/i686-w64-mingw32-???.exe
+			/bin/x86_64-w64-mingw32-???.exe
+		Binaries, headers, libraries:
+			/usr/i686-pc-cygwin
+			/usr/x86_64-pc-cygwin
+			/usr/i686-pc-mingw32
+			/usr/i686-w64-mingw32
+			/usr/x86_64-w64-mingw32
+		Libraries:
+			/lib/gcc/i686-pc-cygwin
+			/lib/gcc/x86_64-pc-cygwin
+			/lib/gcc/i686-pc-mingw32
+			/lib/gcc/i686-w64-mingw32
+			/lib/gcc/x86_64-w64-mingw32
+
+[-] Building.
+	- Options.
+		For 32-bit:
+			-m32
+		For 64-bit:
+			-m64
+		-mnocygwin or -mno-cygwin

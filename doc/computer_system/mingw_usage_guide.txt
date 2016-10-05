@@ -1,0 +1,221 @@
+[-] General.
+	- Reference.
+		${GDT_HOME}/MinGW-Usage-Guide.md
+
+	- Site.
+		http://www.mingw.org/
+		http://mingw-w64.org/
+
+		http://sourceforge.net/projects/mingw/files/MinGW/Base/
+		http://sourceforge.net/projects/mingw/files/MinGW/Extension/
+			mingw-utils
+			peexports
+			reimp
+		http://sourceforge.net/projects/mingw/files/MinGW/Contributed/
+
+	- Document.
+		http://www.mingw.org/wiki
+		http://www.mingw.org/wiki/HOWTO
+		http://www.mingw.org/wiki/FAQ
+
+		http://www.mingw.org/wiki/MSVC_and_MinGW_DLLs
+		http://www.mingw.org/wiki/Interoperability_of_Libraries_Created_by_Different_Compiler_Brands
+		http://www.mingw.org/wiki/JNI_MinGW_DLL
+
+[-] Usage.
+	- Reference.
+    	${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
+
+[-] Package Management.
+	- MinGW.
+		Use mingw-get.exe.
+			${MINGW_HOME}/bin/mingw-get.exe
+		e.g.)
+			mingw-get install lib-package-name
+			mingw-get update
+	- MSYS.
+		mingw-get.exe으로 설치되지 않는 package의 경우 아래의 사이트에서 찾을 수 있음.
+			http://sourceforge.net/projects/mingw/files/MSYS/Extension/
+			http://sourceforge.net/projects/mingw/files/MSYS/Base/
+		Download 받은 file을 ${MSYS_HOME}에 복사한 후 압축을 풀면 ${MSYS_HOME}/bin에 복사됨.
+
+[-] Toolchain (MinGW-w64).
+	- Site.
+		i686-w64-mingw32: MinGW-w64, 32-bit.
+			mingw-w64-install.exe
+				==> Support package management.
+			https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/
+			https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/6.2.0/threads-posix/dwarf/
+				==> Manually uncompress.
+			==> Install in ${MINGW_INSTALL_DIR}/mingw32.
+		x86_64-w64-mingw32: MinGW-w64, 64bit.
+			https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/
+			https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/6.2.0/threads-posix/seh/
+				==> Manually uncpress.
+			==> Install in ${MINGW_INSTALL_DIR}/mingw64.
+
+	- Files & directories.
+		Binaries:
+			${MINGW_HOME}/bin/???.exe
+				gcc.
+					For 32-bit: hard-link to /bin/i686-pc-cygwin-gcc.exe. (?)
+				g++.
+				gfortran.
+				ld.
+				etc.
+			${MINGW_HOME}/bin/i686-w64-mingw32-???.exe
+			${MINGW_HOME}/bin/x86_64-w64-mingw32-???.exe
+		Binaries, headers, libraries:
+			${MINGW_HOME}/i686-w64-mingw32
+			${MINGW_HOME}/x86_64-w64-mingw32
+		Libraries:
+			${MINGW_HOME}/lib/gcc/i686-w64-mingw32
+			${MINGW_HOME}/lib/gcc/x86_64-w64-mingw32
+
+[-] MSYS.
+	- Site.
+		MSYS2:
+			http://msys2.github.io/
+			https://github.com/msys2
+
+			https://sourceforge.net/p/msys2/wiki/Packages/
+			https://sourceforge.net/projects/msys2/files/Base/
+
+			https://github.com/Alexpux/MSYS2-packages
+		MSYS:
+			For 32-bit:
+				http://www.mingw.org/wiki/MSYS
+			For 64-bit:
+				https://sourceforge.net/p/mingw-w64/wiki2/MSYS/
+				https://sourceforge.net/projects/mingw-w64/files/External%20binary%20packages%20%28Win64%20hosted%29/MSYS%20%2832-bit%29/
+
+			http://sourceforge.net/projects/mingw/files/MSYS/Base/
+			http://sourceforge.net/projects/mingw/files/MSYS/Extension/
+				wget
+			http://sourceforge.net/projects/mingw/files/MSYS/Contributed/
+
+	- Installation.
+		MSYS2:
+			REF [site] >> https://sourceforge.net/p/msys2/wiki/MSYS2%20installation/
+			==> Install only one of two installation files below.
+				msys2-i686-yyyymmdd.exe
+				msys2-x86_64-yyyymmdd.exe
+				==> Terminals below are installed.
+					MSYS2 MinGW 32-bit
+					MSYS2 MinGW 64-bit
+					MSYS2 MSYS
+	- Update package database.
+		MSYS2:
+			REF [site] >> http://msys2.github.io/
+
+			pacman -Sy pacman
+			pacman -Syu
+
+	- Mount MinGW directory.
+		mount c:/mingw /mingw
+			For MSYS:
+				mount D:/MyProgramFiles/mingw-w64/i686-5.3.0-posix-dwarf-rt_v4-rev0/mingw32 /mingw
+			For MSYS2 MinGW 32-bit:
+				mount D:/MyProgramFiles/mingw-w64/i686-6.2.0-posix-dwarf-rt_v5-rev1/mingw32 /mingw32
+			For MSYS2 MinGW 64-bit:
+				mount D:/MyProgramFiles/mingw-w64/x86_64-6.2.0-release-posix-seh-rt_v5-rev1/mingw64 /mingw64
+			==> This setting is sufficient to be set once. (?)
+		Add into ${MSYS_HOME}/etc/fstab.
+			D:/MyProgramFiles/mingw-w64/i686-6.2.0-posix-dwarf-rt_v5-rev1/mingw32 /mingw32
+			D:/MyProgramFiles/mingw-w64/x86_64-6.2.0-release-posix-seh-rt_v5-rev1/mingw64 /mingw64
+
+[-] Setting.
+	- Compiler, linker, & make to use for building library.
+	    ${MINGW_HOME}/bin 하위의 file을 사용.
+		"mingw32-"이 없는 executable file을 사용.
+			mingw32-gcc.exe (X) ==> gcc.exe (O)
+			mingw32-g++.exe (X) ==> g++.exe (O)
+		Use mingw32-make.exe.
+			make.exe (X) ==> mingw32-make.exe (O)
+	- Set the GNU runtime directory in PATH. 
+		set path=${MINGW_HOME}/bin;${MSYS_ROOT}/bin;%path%
+		set path=${MINGW_HOME}/bin;${CYGWIN_HOME}/bin;%path%
+		set path=${MINGW_HOME}/bin;${GNUWIN32_HOME}/bin;%path%
+
+	- Set environment.
+		a) When using MSYS terminal.
+			Run MSYS terminal.
+			(Optional) mount MinGW directory.
+				==> Refer to "MSYS".
+			(Optional) Set the MinGW directory in PATH.
+				Use 'export PATH'.
+				export PATH=${MINGW_HOME}/bin:$PATH
+					e.g.) export PATH=d/MyProgramFiles2/MinGW/bin:$PATH
+			==> It is the best to use MSYS.
+		b) When using MinGW terminal.
+			Run MinGW terminal.
+				For 64-bit:
+					Run ${MINGW_HOME}/mingw-w64.bat.
+				==> Use command prompt.
+			(Optional) Set the GNU runtime directory in PATH.
+				Use 'set path'.
+				Refer to "Set the GNU runtime directory in PATH".
+		c) When using (Visual Studio) command prompt.
+			Run (Visual Studio) command prompt.
+			Set the GNU runtime directory in PATH.
+				Use 'set path'.
+				Refer to "Set the GNU runtime directory in PATH".
+
+[-] Building (Terminal).
+	- Set environment.
+		Refer to "Setting".
+	- Change directory.
+	- Run make.
+		In MSYS2 and MinGW terminal:
+			mingw32-make
+			mingw32-make PREFIX=${INSTAL_PREFIX} install
+		In MSYS terminal:
+			make
+			make PREFIX=${INSTAL_PREFIX} install
+
+[-] Building (CMake).
+	- Set environment.
+		Refer to "Setting".
+	- Set CMake.
+		a) When using MSYS terminal.
+			Run cmake-gui in MSYS terminal.
+				Can use cmake-gui for Windows.
+			Specify 'MSYS Makefiles' as a generator.
+		b) When using MinGW terminal.
+			Run cmake-gui in MinGW terminal.
+				Can use cmake-gui for Windows.
+			Specify 'MinGW Makefiles' as a generator.
+		c) When using (Visual Studio) command prompt.
+			Run cmake-gui in command prompt.
+			Specify 'MinGW Makefiles' as a generator.
+	- Configure and generate.
+		> When an error occurs about 'sh', re-run 'Configure'.
+			<error> sh.exe was found in your PATH.
+		> When an error occurs about Fortran compiler.
+			<error> The Fortran compiler "${VISUALSTUDIO_HOME}/VC/bin/ifc.exe" is not able to compile a simple test program.
+		Set CMAKE_SH to ${MSYS_ROOT}/bin/sh.exe.
+		Set CMAKE_Fortran_COMPILER to ${MINGW_HOME}/bin/gfortran.exe.
+		Set CMAKE_GNUtoMS to ON.
+			REF [site] >> https://cmake.org/cmake/help/v3.0/prop_tgt/GNUtoMS.html
+			<warning> Disabling CMAKE_GNUtoMS option because CMAKE_GNUtoMS_VCVARS is not set
+			==> Set the 'CMAKE_GNUtoMS_VCVARS' option to '${VISUALSTUDIO_HOME}/VC/bin/vcvars32.bat'.
+		Set BUILD_SHARED_LIBS to ON.
+			If this option is not set, a static library (a) is generated.
+		Set CMAKE_DEBUG_POSTFIX to d.
+	- Change directory.
+		cd cmake-build-directory.
+	- Run make.
+		In MSYS2 and MinGW terminal:
+			mingw32-make
+			mingw32-make PREFIX=${INSTAL_PREFIX} install
+		In MSYS terminal:
+			make
+			make PREFIX=${INSTAL_PREFIX} install
+
+[-] Installation Prefix Setting.
+	- MinGW나 MSYS의 경우 /usr 이나 /usr/local directory가 없음.
+		따라서, software installation prefix로 아래의 directory를 사용하여야 함.
+			--prefix=${MINGW_HOME}
+		그러면 아래의 directory에 installation file이 추가.
+			${MINGW_HOME}/include or ${MSYS_ROOT}/include
+			${MINGW_HOME}/lib or ${MSYS_ROOT}/lib

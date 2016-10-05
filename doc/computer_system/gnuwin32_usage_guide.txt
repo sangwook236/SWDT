@@ -1,0 +1,33 @@
+[-] General.
+	- Site.
+		http://gnuwin32.sourceforge.net/
+
+		http://gnuwin32.sourceforge.net/install.html
+		http://gnuwin32.sourceforge.net/install.html
+		http://gnuwin32.sourceforge.net/faq.html
+
+		http://gnuwin32.sourceforge.net/links.html
+
+	- Package installation.
+		Download package.
+			http://gnuwin32.sourceforge.net/packages.html
+		Unzip package.
+		Copy package.
+			${GNUWIN32_HOME}/gnuwin32
+
+[-] Installation (Windows).
+	- Prepare the installation of GnuWin32.
+		Download GetGnuWin32.
+			http://getgnuwin32.sourceforge.net
+		Run GetGnuWin32.
+			GetGnuWin32-0.6.3.exe
+			Destination folder: D:/depot/downloaded_material/util_software
+
+	- Install GnuWin32.
+		Run command prompt.
+		Change directory.
+			cd ${GetGnuWin32_HOME}
+		Run download.
+			download.bat
+		Install GnuWin32.
+			install.bat ${GNUWIN32_INSTALL_DIR}
