@@ -1,11 +1,40 @@
-[-] Building using Makefile
+[-] Building (Makefile).
 	REF [project] >> ${GDT_HOME}/sw_dev/cpp/basic/test/simple_make_test
 
-	REF [file] >> building_software_in_linux.txt
-	REF [file] >> building_software_using_gcc.txt
+	REF [file] >> build_software_in_linux.txt
+	REF [file] >> build_software_using_gcc.txt
 
+	- Configure.
+		Command:
+			./configure --prefix=${INSTALL_PREFIX}
+			./configure --enable-shared
+		Options:
+			--enable-static
+			--enable-thread
+			--enable-smp
+			--with-PACKAGE
+			--without-PACKAGE
+			--includedir=DIR
+			--libdir=DIR
+			--program-prefix=PREFIX
+			--program-prefix=SUFFIX
 	- Build.
-		make -j4
-			The "-j4" is assuming that you have a 4-core CPU.
-		sudo make install
-		make clean
+		Command:
+			make
+			make all
+			make -j4
+				The "-j4" is assuming that you have a 4-core CPU.
+			make CC=gcc CXX=g++ FC=gfortran
+				F77, CPP, LD, CFLAGS, CXXFLAGS, FFLAGS, CPPFLAGS, LDFLAGS.
+				Can use environment variables.
+			make ARCH=WINNT DEBUG=1
+			DEBUG=1 make (?)
+	- Clean.
+		Command:
+			make clean
+			make clean DEBUG=1
+			make distclean
+	- Install.
+		Command:
+			sudo make install
+			sudo make PREFIX=${INSTALL_PREFIX} install

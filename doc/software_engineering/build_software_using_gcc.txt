@@ -1,4 +1,4 @@
-[-] Build
+[-] Build.
 	- Basic procedure.
 		1. Go to the root directory.
 		2. Run './configure'.
@@ -28,12 +28,12 @@
 		- If you have some error during compiling or if you want to view compiling message later,
 			run 'make 2>&1 | tee compiling.log' instead of 'make'
 
-[-] Archive file (*.a)
+[-] Archive file (*.a).
 	- ar.
 		: Create, modify, and extract from archives.
 		ar x libfoo.a
 			Extract members (object files) from archive.
-			Archive file에 포함된 object file (*.o)를 모두 추출해 냄.
+			Extract all object file (*.o) from an archive file.
 		ar r libfoo.a foo1.o foo2.o
 			Insert members (object files) into archive (with replacement).
 	- file.

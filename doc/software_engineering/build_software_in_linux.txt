@@ -1,4 +1,4 @@
-[-] Library configuration
+[-] Library configuration.
 	- LD_LIBRARY_PATH.
 		e.g.)
 			export LD_LIBRARY_PATH=/usr/lib:/usr/local/lib

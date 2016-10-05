@@ -1,4 +1,4 @@
-[-] Build
+[-] Build.
 	- Implement functions.
 	- Export symbols.
 		Place __declspec(dllexport) in front of the functions.
@@ -13,7 +13,7 @@
 		    -Wl,--whole-archive ${old_libs} \
 		    -Wl,--no-whole-archive ${dependency_libs}
 
-[-] MinGW
+[-] MinGW.
 	- In ${CYGWIN_HOME}/bin.
 		i686-w64-mingw32-gcc : 32-bit compiler.
 		x86_64-w64-mingw32-gcc : 64-bit compiler.
