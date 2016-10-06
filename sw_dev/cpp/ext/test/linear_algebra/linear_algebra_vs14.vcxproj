@@ -139,6 +139,7 @@
     <ClCompile Include="eigen\eigen_main.cpp" />
     <ClCompile Include="eigen\eigen_qr.cpp" />
     <ClCompile Include="eigen\eigen_svd.cpp" />
+    <ClCompile Include="eigen\eigen_spline.cpp" />
     <ClCompile Include="lapack\lapack_cblas.cpp" />
     <ClCompile Include="lapack\lapack_clapack.cpp" />
     <ClCompile Include="lapack\lapack_main.cpp" />

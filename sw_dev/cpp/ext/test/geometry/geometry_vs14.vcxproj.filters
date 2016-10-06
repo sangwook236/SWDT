@@ -22,6 +22,9 @@
     <ClCompile Include="sophus\sophus_main.cpp">
       <Filter>Source Files\sophus</Filter>
     </ClCompile>
+    <ClCompile Include="tinyspline\tinyspline_main.cpp">
+      <Filter>Source Files\tinyspline</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -44,6 +47,9 @@
     </Filter>
     <Filter Include="Source Files\sophus">
       <UniqueIdentifier>{f5f6e8c4-db67-4a9b-83dd-bde6869a9d83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tinyspline">
+      <UniqueIdentifier>{fc44137b-6c0b-47f6-b1e1-7b2c1b7973de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

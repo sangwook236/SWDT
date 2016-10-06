@@ -4,21 +4,27 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "libtinysplinecppd.lib")
+#pragma comment(lib, "libtinysplined.lib")
+
 #pragma comment(lib, "OpenMeshCored.lib")
 #pragma comment(lib, "OpenMeshToolsd.lib")
 
-#pragma comment(lib, "libgmp-3.dll.lib")
-#pragma comment(lib, "libmpfr-4.dll.lib")
-#pragma comment(lib, "libtaucs.lib")
+#pragma comment(lib, "libgmp-10.lib")
+//#pragma comment(lib, "libmpfr-4.lib")
+//#pragma comment(lib, "libtaucs.lib")
 
 #		else
+
+#pragma comment(lib, "libtinysplinecpp.lib")
+#pragma comment(lib, "libtinyspline.lib")
 
 #pragma comment(lib, "OpenMeshCore.lib")
 #pragma comment(lib, "OpenMeshTools.lib")
 
-#pragma comment(lib, "libgmp-3.dll.lib")
-#pragma comment(lib, "libmpfr-4.dll.lib")
-#pragma comment(lib, "libtaucs.lib")
+#pragma comment(lib, "libgmp-10.lib")
+//#pragma comment(lib, "libmpfr-4.lib")
+//#pragma comment(lib, "libtaucs.lib")
 
 #		endif
 

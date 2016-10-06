@@ -1,3 +1,7 @@
 [-] General.
 	- Site.
 		https://github.com/retuxx/tinyspline
+
+[-] Usage.
+	- Define a macro or not.
+		TINYSPLINE_DOUBLE_PRECISION

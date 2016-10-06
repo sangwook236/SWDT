@@ -21,6 +21,8 @@ void linear_system();
 void linear_least_squares();
 void nonlinear_least_squares();
 
+void spline();
+
 }  // namespace my_eigen
 
 //-----------------------------------------------------------------------
@@ -38,10 +40,16 @@ int eigen_main(int argc, char *argv[])
 	//my_eigen::qr();
 	//my_eigen::cholesky();
 
-	// -------------------------------------------------------
+	// Linear system -----------------------------------------
 	//my_eigen::linear_system();
-	my_eigen::linear_least_squares();
+
+	// Least squares -----------------------------------------
+	//my_eigen::linear_least_squares();
 	//my_eigen::nonlinear_least_squares();  // Not yet implemented.
+
+	// Unsupported -------------------------------------------
+	//	- Base spline (B-spline).
+	my_eigen::spline();
 
 	return 0;
 }

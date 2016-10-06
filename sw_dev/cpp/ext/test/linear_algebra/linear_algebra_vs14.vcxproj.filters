@@ -118,6 +118,9 @@
     <ClCompile Include="superlu\superlu_main.cpp">
       <Filter>Source Files\superlu</Filter>
     </ClCompile>
+    <ClCompile Include="eigen\eigen_spline.cpp">
+      <Filter>Source Files\eigen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

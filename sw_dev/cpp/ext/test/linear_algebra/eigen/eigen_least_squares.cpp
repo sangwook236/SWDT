@@ -11,27 +11,27 @@ namespace local {
 // Using the SVD decomposition.
 void use_svd()
 {
-	Eigen::MatrixXf A = Eigen::MatrixXf::Random(3, 2);
+	const Eigen::MatrixXf A = Eigen::MatrixXf::Random(3, 2);
 	std::cout << "Here is the matrix A:\n" << A << std::endl;
-	Eigen::VectorXf b = Eigen::VectorXf::Random(3);
+	const Eigen::VectorXf b = Eigen::VectorXf::Random(3);
 	std::cout << "Here is the right hand side b:\n" << b << std::endl;
-	std::cout << "The least-squares solution is:\n" << A.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(b) << std::endl;
+	std::cout << "The least-squares solution using SVD is:\n" << A.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(b) << std::endl;
 }
 
 // Using the QR decomposition.
 void use_qr()
 {
-	Eigen::MatrixXf A = Eigen::MatrixXf::Random(3, 2);
-	Eigen::VectorXf b = Eigen::VectorXf::Random(3);
-	std::cout << "The solution using the QR decomposition is:\n" << A.colPivHouseholderQr().solve(b) << std::endl;
+	const Eigen::MatrixXf A = Eigen::MatrixXf::Random(3, 2);
+	const Eigen::VectorXf b = Eigen::VectorXf::Random(3);
+	std::cout << "The least-squares solution using QR is:\n" << A.colPivHouseholderQr().solve(b) << std::endl;
 }
 
 // Using normal equations.
 void use_normal_equation()
 {
-	Eigen::MatrixXf A = Eigen::MatrixXf::Random(3, 2);
-	Eigen::VectorXf b = Eigen::VectorXf::Random(3);
-	std::cout << "The solution using normal equations is:\n" << (A.transpose() * A).ldlt().solve(A.transpose() * b) << std::endl;
+	const Eigen::MatrixXf A = Eigen::MatrixXf::Random(3, 2);
+	const Eigen::VectorXf b = Eigen::VectorXf::Random(3);
+	std::cout << "The least-squares solution using normal equation is:\n" << (A.transpose() * A).ldlt().solve(A.transpose() * b) << std::endl;
 }
 
 }  // namespace local

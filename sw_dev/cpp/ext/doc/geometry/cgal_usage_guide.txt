@@ -2,5 +2,13 @@
 	- Site.
 		http://www.cgal.org/
 
+[-] Usage (Windows)
+	- External libraries are required.
+		GMP, (MPFR, and TAUCS).
+		REF [doc] >> gmp_usage_guide.txt
+	- Define macros.
+		CGAL_NO_AUTOLINK_GMP
+		CGAL_NO_AUTOLINK_MPFR (?)
+
 [-] Building (VC).
-	- Win32¸¸ build °¡´É (as of 2016/06/16).
+	- Can build in Win32 only. (as of 2016/10/06).

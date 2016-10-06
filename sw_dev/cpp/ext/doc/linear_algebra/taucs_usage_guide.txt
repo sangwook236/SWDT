@@ -2,13 +2,16 @@
 	- Site.
 		http://www.tau.ac.il/~stoledo/taucs/
 
-[-] Build (VC).
-	- Open Visual Studio Command Prompt.
+[-] Building (VC).
+	- Problem.
+		Do not support Win64.
+
+	- Open Visual Studio command prompt.
 	- Change directory to ${TAUCS_HOME}.
 	- Configure.
 		configure.bat
-		==> .lastconf를 찾을 수 없다는 에러가 발생하지만 make를 실행시킬 수 있음.
+		==> Can run make even though a message that .lastconf cannot be found occurs.
 	- Set environment variable.
 		set OSTYPE=win32
-	- Make.
+	- Run make.
 		nmake -f ${TAUCS_HOME}/build/${OSTYPE}/makefile
