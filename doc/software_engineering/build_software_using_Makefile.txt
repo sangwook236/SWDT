@@ -11,11 +11,13 @@
 		Options:
 			--enable-static
 			--enable-thread
-			--enable-smp
 			--with-PACKAGE
 			--without-PACKAGE
+				--with-openmp
 			--includedir=DIR
 			--libdir=DIR
+			--with-cflags=FLAGS
+			--with-cxxflags=FLAGS
 			--program-prefix=PREFIX
 			--program-prefix=SUFFIX
 	- Build.

@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 		//	- Lie Groups.
 		//retval = sophus_main(argc, argv);  // Not yet implemented.
 
-		std::cout << "\nComputational Geometry Algorithms Library (CGAl) --------------------" << std::endl;
+		std::cout << "\nComputational Geometry Algorithms Library (CGAL) --------------------" << std::endl;
 		retval = cgal_main(argc, argv);
 
 		std::cout << "\nOpenMesh library ----------------------------------------------------" << std::endl;

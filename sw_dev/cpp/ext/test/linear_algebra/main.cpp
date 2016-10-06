@@ -38,6 +38,7 @@ int main(int argc, char* argv[])
 		//		Differentiation.
 		//			Numerical differentiation.
 		//			Automatic differentiation.
+		//				ADOL-C
 		//		Polynomial.
 		//		Geometry.
 		//		Fast Fourier transform (FFT).
