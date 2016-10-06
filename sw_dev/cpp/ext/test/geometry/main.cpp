@@ -8,7 +8,7 @@
 
 
 //-----------------------------------------------------------------------
-// B-spline
+// Basis spline (B-spline).
 //	REF [site] >> https://en.wikipedia.org/wiki/B-spline
 //	- Any spline function of given degree can be expressed as a linear combination of B-splines of that degree.
 //	- Cardinal B-splines have knots that are equidistant from each other.
