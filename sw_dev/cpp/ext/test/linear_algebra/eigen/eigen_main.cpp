@@ -48,7 +48,6 @@ int eigen_main(int argc, char *argv[])
 	//my_eigen::nonlinear_least_squares();  // Not yet implemented.
 
 	// Unsupported -------------------------------------------
-	//	- Base spline (B-spline).
 	my_eigen::spline();
 
 	return 0;

@@ -186,11 +186,13 @@ void nurbs_example()
 
 	//
 	{
+		//spline.order
+		//spline.dim
+		//spline.n_ctrlp
+		//spline.ctrlp
 		//spline.n_knots
 		//spline.knots
-		//spline.dim
-		//spline.ctrlp
-		//spline.order
+
 		//for (int i = 0; i < spline.n_ctrlp; ++i)
 		//	spline.ctrlp[i * spline.dim];
 
@@ -251,6 +253,13 @@ void bezier_example()
 
 	//
 	{
+		//spline.order
+		//spline.dim
+		//spline.n_ctrlp
+		//spline.ctrlp
+		//spline.n_knots
+		//spline.knots
+
 		//for (int i = 0; i < spline.n_ctrlp; ++i)
 		//	spline.ctrlp[i * spline.dim];
 
@@ -259,12 +268,6 @@ void bezier_example()
 			retval = ts_bspline_to_beziers(&spline, &draw);
 		else
 			retval = ts_bspline_copy(&spline, &draw);
-
-		//draw.n_knots
-		//draw.knots
-		//draw.dim
-		//draw.ctrlp
-		//draw.order
 
 		ts_bspline_free(&draw);
 	}

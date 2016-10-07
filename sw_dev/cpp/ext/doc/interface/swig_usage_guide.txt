@@ -1,0 +1,10 @@
+[-] General.
+	- Site.
+		http://www.swig.org/
+		https://github.com/swig/swig/
+
+	- Document.
+		${SWIG_HOME}/Doc/Manual/
+
+[-] Building (Windows)
+	REF [doc] >> ${SWIG_HOME}/Doc/Manual/Windows.html

@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 		//	- Spline.
 		//		Basis spline (B-spline).
 		//		Non-uniform rational B-spline (NURBS).
-		//		Thin-plate spline (TPS).
+		//		Thin-plate spline (TPS). (?)
 		//	- Bezier.
 		retval = tinyspline_main(argc, argv);
 	}

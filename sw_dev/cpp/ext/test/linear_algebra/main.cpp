@@ -38,12 +38,13 @@ int main(int argc, char* argv[])
 		//		Differentiation.
 		//			Numerical differentiation.
 		//			Automatic differentiation.
-		//				ADOL-C
+		//				ADOL-C.
 		//		Polynomial.
 		//		Geometry.
 		//		Fast Fourier transform (FFT).
 		//		Non-linear optimization.
 		//		Spline and spline fitting.
+		//			Basis spline (B-spline).
 		//		MPFR support.
 		retval = eigen_main(argc, argv);
 		std::cout << "\nArmadillo library ---------------------------------------------------" << std::endl;
