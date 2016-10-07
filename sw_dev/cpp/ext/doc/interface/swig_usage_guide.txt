@@ -5,6 +5,11 @@
 
 	- Document.
 		${SWIG_HOME}/Doc/Manual/
+		${SWIG_HOME}/Doc/Manual/SWIGDocumentation.pdf
 
-[-] Building (Windows)
+[-] Usage.
+	- Command.
+		swig -python -c++ swig_api.i
+
+[-] Building (Windows).
 	REF [doc] >> ${SWIG_HOME}/Doc/Manual/Windows.html
