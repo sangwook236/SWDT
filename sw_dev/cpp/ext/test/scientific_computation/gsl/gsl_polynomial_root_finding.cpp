@@ -3,6 +3,7 @@
 #include <gsl/gsl_errno.h>
 #include <iostream>
 #include <cmath>
+#include <cassert>
 
 
 namespace {
@@ -32,6 +33,19 @@ void quadratic_equation_root_finding()
 			std::cout << "\tSolution #1 = " << x1 << std::endl;
 		}
 		else std::cerr << "\tRoot finding failed" << std::endl;
+	}
+
+	{
+		double x0, x1;
+
+		const int numRoots1 = gsl_poly_solve_quadratic(0.0, 0.0, 0.0, &x0, &x1);
+		assert(0 == numRoots1);
+
+		const int numRoots2 = gsl_poly_solve_quadratic(1.0, 0.0, 0.0, &x0, &x1);
+		assert(2 == numRoots2);  // NOTICE [error] >> Not a single solution.
+
+		const int numRoots3 = gsl_poly_solve_quadratic(0.0, 1.0, 0.0, &x0, &x1);
+		assert(1 == numRoots3);
 	}
 
 	{
@@ -69,6 +83,12 @@ void cubic_equation_root_finding()
 			std::cout << "\tSolution #2 = " << x2 << std::endl;
 		}
 		else std::cerr << "\tRoot finding failed" << std::endl;
+	}
+
+	{
+		double x0, x1, x2;
+		const int numRoots = gsl_poly_solve_cubic(0.0, 0.0, 0.0, &x0, &x1, &x2);
+		assert(3 == numRoots);  // NOTICE [error] >> Not a single solution.
 	}
 
 	{
