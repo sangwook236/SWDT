@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# usage ---------------------------------------------------
+# Usage ---------------------------------------------------
 
 # ---------------------------------------------------------
 
@@ -21,5 +21,5 @@ export LOCAL_LIB_PATH=/usr/local/lib
 
 java $HEAP_OPTION -jar $LOCAL_LIB_PATH/<runnable-jar-file> <class-name>
 
-# error ---------------------------------------------------
+# Error ---------------------------------------------------
 #java $HEAP_OPTION -jar $LIB_PATH/<non-runnable-jar-file>

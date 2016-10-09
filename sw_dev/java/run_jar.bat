@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-rem usage -------------------------------------------------
+rem Usage -------------------------------------------------
 
 rem -------------------------------------------------------
 
@@ -25,7 +25,7 @@ rem -------------------------------------------------------
 
 java %HEAP_OPTION% -jar %LOCAL_LIB_PATH%\<runnable-jar-file> <class-name>
 
-rem error -------------------------------------------------
+rem Error -------------------------------------------------
 rem java %HEAP_OPTION% -jar %LOCAL_LIB_PATH%\<non-runnable-jar-file>
 
 endlocal
