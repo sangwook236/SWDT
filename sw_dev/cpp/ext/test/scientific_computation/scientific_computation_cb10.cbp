@@ -60,6 +60,7 @@
 		<Unit filename="gsl/gsl_random_sample.cpp" />
 		<Unit filename="gsl/gsl_root_finding.cpp" />
 		<Unit filename="gsl/gsl_simulated_annealing.cpp" />
+		<Unit filename="gsl/gsl_spline.cpp" />
 		<Unit filename="gsl/gsl_svd.cpp" />
 		<Unit filename="gsl/gsl_vector_operation.cpp" />
 		<Unit filename="gslwrap/gslwrap_main.cpp" />
