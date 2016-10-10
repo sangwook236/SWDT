@@ -73,6 +73,7 @@ void random_sample();
 void distribution();
 void monte_carlo_integration();
 void simulated_annealing();
+void spline();
 
 }  // namespace my_gsl
 
@@ -111,9 +112,9 @@ int gsl_main(int argc, char *argv[])
 		//my_gsl::multidim_minimization_simplex();
 		//my_gsl::multidim_minimization_steepest_descent();
 
-		my_gsl::quadratic_equation_root_finding();
-		my_gsl::cubic_equation_root_finding();
-		my_gsl::polynomial_root_finding();
+		//my_gsl::quadratic_equation_root_finding();
+		//my_gsl::cubic_equation_root_finding();
+		//my_gsl::polynomial_root_finding();
 		//my_gsl::one_dim_root_finding();
 		//my_gsl::multidim_root_finding();
 		
@@ -123,6 +124,8 @@ int gsl_main(int argc, char *argv[])
 		//my_gsl::distribution();
 		//my_gsl::monte_carlo_integration();
 		//my_gsl::simulated_annealing();
+
+		my_gsl::spline();
 	}
 	catch (const std::runtime_error &e)
 	{

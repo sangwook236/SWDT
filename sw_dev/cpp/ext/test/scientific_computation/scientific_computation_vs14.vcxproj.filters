@@ -96,5 +96,8 @@
     <ClCompile Include="gsl\gsl_special_function.cpp">
       <Filter>Source Files\gsl</Filter>
     </ClCompile>
+    <ClCompile Include="gsl\gsl_spline.cpp">
+      <Filter>Source Files\gsl</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
