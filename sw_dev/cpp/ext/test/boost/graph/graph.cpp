@@ -26,13 +26,13 @@ namespace local {
 
 void other_core_algorithms()
 {
-	std::cout << "\ntopological sort ---------------------------------------------" << std::endl;
+	std::cout << "\nTopological sort ---------------------------------------------" << std::endl;
 	{
 		//boost::topological_sort();
 		throw std::runtime_error("Not yet implemented");
 	}
 
-	std::cout << "\ntransitive closure -------------------------------------------" << std::endl;
+	std::cout << "\nTransitive closure -------------------------------------------" << std::endl;
 	{
 		//boost::transitive_closure();
 		throw std::runtime_error("Not yet implemented");
@@ -55,9 +55,9 @@ void connected_components_algorithm()
 		const int num = boost::connected_components(g, &components[0]);
 
 		//
-		std::cout << "total number of components: " << num << std::endl;
+		std::cout << "Total number of components: " << num << std::endl;
 		for (std::vector<int>::size_type i = 0; i != components.size(); ++i)
-		  std::cout << "vertex " << i <<" is in component " << components[i] << std::endl;
+		  std::cout << "Vertex " << i <<" is in component " << components[i] << std::endl;
 	}
 
 	{
@@ -74,9 +74,9 @@ void connected_components_algorithm()
 		const int num = boost::connected_components(g, boost::make_iterator_property_map(c.begin(), boost::get(boost::vertex_index, g), c[0]));
 
 		std::cout << std::endl;
-		std::cout << "total number of components: " << num << std::endl;
+		std::cout << "Total number of components: " << num << std::endl;
 		for (std::vector<int>::iterator i = c.begin(); i != c.end(); ++i)
-			std::cout << "vertex " << i - c.begin() << " is in component " << *i << std::endl;
+			std::cout << "Vertex " << i - c.begin() << " is in component " << *i << std::endl;
 	}
 }
 
@@ -100,9 +100,9 @@ void strong_components_algorithm()
 		std::vector<int> components(N);
 		const int num = boost::strong_components(g, boost::make_iterator_property_map(components.begin(), boost::get(boost::vertex_index, g), components[0]));
 
-		std::cout << "total number of components: " << num << std::endl;
+		std::cout << "Total number of components: " << num << std::endl;
 		for (std::vector<int>::iterator i = components.begin(); i != components.end(); ++i)
-			std::cout << "vertex " << i - components.begin() << " is in component " << *i << std::endl;
+			std::cout << "Vertex " << i - components.begin() << " is in component " << *i << std::endl;
 	}
 /*
 	{
@@ -153,9 +153,9 @@ void strong_components_algorithm()
 					discover_time_map(boost::make_iterator_property_map(discover_time.begin(), boost::get(boost::vertex_index, g)))
 		);
 
-		std::cout << "total number of components: " << num << std::endl;
+		std::cout << "Total number of components: " << num << std::endl;
 		for (std::vector<int>::size_type i = 0; i != components.size(); ++i)
-			std::cout << "vertex " << name[i] <<" is in component " << components[i] << std::endl;
+			std::cout << "Vertex " << name[i] <<" is in component " << components[i] << std::endl;
 	}
 */
 }
@@ -188,12 +188,12 @@ void biconnected_components_algorithm()
 	//
 	boost::property_map<graph_type, edge_component_t>::type components = boost::get(edge_component, g);
 	const std::size_t num_comps = boost::biconnected_components(g, components);
-	std::cout << "found " << num_comps << " biconnected components." << std::endl;
+	std::cout << "Found " << num_comps << " biconnected components." << std::endl;
 
 	//
 	std::vector<vertex_descriptor_type> art_points;
 	boost::articulation_points(g, std::back_inserter(art_points));
-	std::cout << "found " << art_points.size() << " articulation points." << std::endl;
+	std::cout << "Found " << art_points.size() << " articulation points." << std::endl;
 
 	//
 	std::cout << "graph A {\n" << "  node[shape=\"circle\"]" << std::endl;
@@ -244,7 +244,7 @@ void incremental_connected_components_algorithm()
 		ds.union_set(2, 5);
 
 		BOOST_FOREACH(vertex_descriptor_type current_vertex, boost::vertices(graph))
-			std::cout << "representative[" << current_vertex << "] = " << ds.find_set(current_vertex) << std::endl;
+			std::cout << "Representative[" << current_vertex << "] = " << ds.find_set(current_vertex) << std::endl;
 		std::cout << std::endl;
 
 		// Generate component index.
@@ -256,9 +256,9 @@ void incremental_connected_components_algorithm()
 		// Iterate through the component indices.
 		BOOST_FOREACH(vertex_index_type component_index, components)
 		{
-			std::cout << "component " << component_index << " contains: ";
+			std::cout << "Component " << component_index << " contains: ";
 
-			// iterate through the child vertex indices for [component_index]
+			// Iterate through the child vertex indices for [component_index].
 			BOOST_FOREACH(vertex_index_type child_index, components[component_index])
 				std::cout << child_index << " ";
 			std::cout << std::endl;
@@ -300,12 +300,12 @@ void incremental_connected_components_algorithm()
 		boost::tie(edge, flag) = boost::add_edge(2, 5, graph);
 		ds.union_set(2, 5);
 
-		std::cout << "an undirected graph:" << std::endl;
+		std::cout << "An undirected graph:" << std::endl;
 		boost::print_graph(graph, boost::get(boost::vertex_index, graph));
 		std::cout << std::endl;
 
 		BOOST_FOREACH(vertex_descriptor_type current_vertex, boost::vertices(graph))
-			std::cout << "representative[" << current_vertex << "] = " << ds.find_set(current_vertex) << std::endl;
+			std::cout << "Representative[" << current_vertex << "] = " << ds.find_set(current_vertex) << std::endl;
 		std::cout << std::endl;
 
 		typedef boost::component_index<vertex_index_type> components_type;
@@ -317,9 +317,9 @@ void incremental_connected_components_algorithm()
 		// Iterate through the component indices.
 		BOOST_FOREACH(vertex_index_type current_index, components)
 		{
-			std::cout << "component " << current_index << " contains: ";
+			std::cout << "Component " << current_index << " contains: ";
 
-			// iterate through the child vertex indices for [current_index]
+			// Iterate through the child vertex indices for [current_index].
 			BOOST_FOREACH(vertex_index_type child_index, components[current_index])
 				std::cout << child_index << " ";
 			std::cout << std::endl;
@@ -330,16 +330,16 @@ void incremental_connected_components_algorithm()
 
 void connected_components()
 {
-	std::cout << "connected components algorithm --------------------------------" << std::endl;
+	std::cout << "Connected components algorithm --------------------------------" << std::endl;
 	connected_components_algorithm();
 
-	std::cout << "\nstrong components algorithm -----------------------------------" << std::endl;
+	std::cout << "\nStrong components algorithm -----------------------------------" << std::endl;
 	strong_components_algorithm();
 
-	std::cout << "\nbiconnected components algorithm ------------------------------" << std::endl;
+	std::cout << "\nBiconnected components algorithm ------------------------------" << std::endl;
 	biconnected_components_algorithm();
 
-	std::cout << "\nincremental connected components algorithm --------------------" << std::endl;
+	std::cout << "\nIncremental connected components algorithm --------------------" << std::endl;
 	incremental_connected_components_algorithm();
 }
 
@@ -403,23 +403,23 @@ void graph()
 {
     // Basic.
 	{
-		std::cout << "quick tour ---------------------------------------------------" << std::endl;
+		std::cout << "Quick tour ---------------------------------------------------" << std::endl;
 		// Access and iterate vertices, edges, and their properties.
 		//boost_graph::boost_quick_tour();
 
-		std::cout << "\nbasic operation ----------------------------------------------" << std::endl;
+		std::cout << "\nBasic operation ----------------------------------------------" << std::endl;
 		// Undirected, directed, and bidirectional graphs based on boost::adjacency_list.
 		// boost::undirected_graph<> and boost::directed_graph<>.
 		// Access adjacent vertices, incoming and outgoing edges of a vertex.
 		// Access the degree, in- & out-degree of a vertex and the source and target of an edge.
 		boost_graph::basic_operation();
 
-		std::cout << "\nbundled properties -------------------------------------------" << std::endl;
+		std::cout << "\nBundled properties -------------------------------------------" << std::endl;
 		// Bundled(user-defined) properties of vertex, edge, or graph.
 		//boost_graph::bundled_properties_1();
 		//boost_graph::bundled_properties_2();
 
-		std::cout << "\ngraph based on adjacency matrix ------------------------------" << std::endl;
+		std::cout << "\nGraph based on adjacency matrix ------------------------------" << std::endl;
 		// Undirected and directed graphs based on boost::adjacency_matrix.
 		// Use boost::print_vertices, boost::print_edges, and boost::print_graph.
 		//boost_graph::graph_based_on_adjacency_matrix();
@@ -428,65 +428,66 @@ void graph()
 		// boost::undirected_graph<> and boost::directed_graph<>.
 		//boost_graph::default_undirected_and_directed_graph();
 
-		std::cout << "\ngrid graph ---------------------------------------------------" << std::endl;
+		std::cout << "\nGrid graph ---------------------------------------------------" << std::endl;
 		// Grid graph.
 		//boost_graph::grid_graph();
 
-		std::cout << "\ngraphviz -----------------------------------------------------" << std::endl;
+		std::cout << "\nGraphviz -----------------------------------------------------" << std::endl;
 		// Use graphviz.
 		boost_graph::graphviz();
 	}
 
 	// Algorithm.
 	{
-        std::cout << "\ntraversal algorithms -----------------------------------------" << std::endl;
+        std::cout << "\nTraversal algorithms -----------------------------------------" << std::endl;
         //boost_graph::traversal();
 
-        std::cout << "\nshortest paths / cost minimization algorithms ----------------" << std::endl;
+        std::cout << "\nShortest paths / cost minimization algorithms ----------------" << std::endl;
         //boost_graph::shortest_paths();
 
-        std::cout << "\nother core algorithms ----------------------------------------" << std::endl;
+        std::cout << "\nOther core algorithms ----------------------------------------" << std::endl;
         //local::other_core_algorithms();  // Not yet implemented.
 
-        std::cout << "\nminimum spanning tree algorithms -----------------------------" << std::endl;
+        std::cout << "\nMinimum spanning tree algorithms -----------------------------" << std::endl;
         //boost_graph::minimum_spanning_tree();
 
-        std::cout << "\nrandom spanning tree algorithms ------------------------------" << std::endl;
+        std::cout << "\nRandom spanning tree algorithms ------------------------------" << std::endl;
         //boost_graph::random_spanning_tree();  // Not yet implemented.
 
-        std::cout << "\nalgorithm for common spanning trees of two graphs ------------" << std::endl;
+        std::cout << "\nAlgorithm for common spanning trees of two graphs ------------" << std::endl;
         //boost_graph::common_spanning_tree();  // Not yet implemented.
 
-        std::cout << "\nconnected components algorithms ------------------------------" << std::endl;
+        std::cout << "\nConnected components algorithms ------------------------------" << std::endl;
         //local::connected_components();
 
-        std::cout << "\nmaximum flow and matching algorithms -------------------------" << std::endl;
+        std::cout << "\nMaximum flow and matching algorithms -------------------------" << std::endl;
         //boost_graph::maximum_flow_and_matching();
 
-        std::cout << "\nminimum cut algorithms ---------------------------------------" << std::endl;
+        std::cout << "\nMinimum cut algorithms ---------------------------------------" << std::endl;
         //boost_graph::minimum_cut();
 
-        std::cout << "\nsparse matrix ordering algorithms ----------------------------" << std::endl;
+        std::cout << "\nSparse matrix ordering algorithms ----------------------------" << std::endl;
         //local::sparse_matrix_ordering();  // Not yet implemented.
 
-        std::cout << "\nlayout algorithms --------------------------------------------" << std::endl;
+        std::cout << "\nLayout algorithms --------------------------------------------" << std::endl;
         //local::layout_algorithms();  // Not yet implemented.
 
-        std::cout << "\nclustering algorithms ----------------------------------------" << std::endl;
+        std::cout << "\nClustering algorithms ----------------------------------------" << std::endl;
         //local::clustering();  // Not yet implemented.
 
-        std::cout << "\nplanar graph algorithms --------------------------------------" << std::endl;
+        std::cout << "\nPlanar graph algorithms --------------------------------------" << std::endl;
         //local::planar_graph_algorithms();  // Not yet implemented.
 
-        std::cout << "\ngraph metrics ------------------------------------------------" << std::endl;
+        std::cout << "\nGraph metrics ------------------------------------------------" << std::endl;
         //local::graph_metrics();  // Not yet implemented.
 
-        std::cout << "\ngraph structure comparisons ----------------------------------" << std::endl;
+        std::cout << "\nGraph structure comparisons ----------------------------------" << std::endl;
         //local::graph_structure_comparisons();  // Not yet implemented.
     }
 
     // Application.
     {
+		// Traveling salesperson problem (TSP).
         //boost_graph::metric_tsp_approximation();
     }
 }
