@@ -26,5 +26,5 @@ SWDT includes various programming languages and hardware components:
     * AVR: ATmega128
 
 # Wikis
-- [SWDT's Wiki](https://github.com/sangwook236/SWDT/wiki/Home)
+- [SWDT Wiki](https://github.com/sangwook236/SWDT/wiki/Home)
 
