@@ -63,10 +63,10 @@
 			pacman -S --force mingw64/mingw-w64-x86_64-cmake
 		REF [doc] >> pacman_usage_guide.txt
 	- MSYS.
-		mingw-get.exeÀ¸·Î ¼³Ä¡µÇÁö ¾Ê´Â packageÀÇ °æ¿ì ¾Æ·¡ÀÇ »çÀÌÆ®¿¡¼­ Ã£À» ¼ö ÀÖÀ½.
+		mingw-get.exeìœ¼ë¡œ ì„¤ì¹˜ë˜ì§€ ì•ŠëŠ” packageì˜ ê²½ìš° ì•„ë˜ì˜ ì‚¬ì´íŠ¸ì—ì„œ ì°¾ì„ ìˆ˜ ìˆìŒ.
 			http://sourceforge.net/projects/mingw/files/MSYS/Extension/
 			http://sourceforge.net/projects/mingw/files/MSYS/Base/
-		Download ¹ŞÀº fileÀ» ${MSYS_HOME}¿¡ º¹»çÇÑ ÈÄ ¾ĞÃàÀ» Ç®¸é ${MSYS_HOME}/bin¿¡ º¹»çµÊ.
+		Download ë°›ì€ fileì„ ${MSYS_HOME}ì— ë³µì‚¬í•œ í›„ ì••ì¶•ì„ í’€ë©´ ${MSYS_HOME}/binì— ë³µì‚¬ë¨.
 
 
 [-] Toolchain (MinGW-w64).
@@ -136,8 +136,8 @@
 
 [-] Setting.
 	- Compiler, linker, & make to use for building library.
-	    ${MINGW_HOME}/bin ÇÏÀ§ÀÇ fileÀ» »ç¿ë.
-		"mingw32-"ÀÌ ¾ø´Â executable fileÀ» »ç¿ë.
+	    Use executables in ${MINGW_HOME}/bin.
+		"mingw32-"ì´ ì—†ëŠ” executable fileì„ ì‚¬ìš©.
 			mingw32-gcc.exe (X) ==> gcc.exe (O)
 			mingw32-g++.exe (X) ==> g++.exe (O)
 		Use mingw32-make.exe.
@@ -223,9 +223,9 @@
 			make PREFIX=${INSTAL_PREFIX} install
 
 [-] Installation Prefix Setting.
-	- MinGW³ª MSYSÀÇ °æ¿ì /usr ÀÌ³ª /usr/local directory°¡ ¾øÀ½.
-		µû¶ó¼­, software installation prefix·Î ¾Æ·¡ÀÇ directory¸¦ »ç¿ëÇÏ¿©¾ß ÇÔ.
+	- MinGWë‚˜ MSYSì˜ ê²½ìš° /usr ì´ë‚˜ /usr/local directoryê°€ ì—†ìŒ.
+		ë”°ë¼ì„œ, software installation prefixë¡œ ì•„ë˜ì˜ directoryë¥¼ ì‚¬ìš©í•˜ì—¬ì•¼ í•¨.
 			--prefix=${MINGW_HOME}
-		±×·¯¸é ¾Æ·¡ÀÇ directory¿¡ installation fileÀÌ Ãß°¡.
+		ê·¸ëŸ¬ë©´ ì•„ë˜ì˜ directoryì— installation fileì´ ì¶”ê°€.
 			${MINGW_HOME}/include or ${MSYS_ROOT}/include
 			${MINGW_HOME}/lib or ${MSYS_ROOT}/lib
