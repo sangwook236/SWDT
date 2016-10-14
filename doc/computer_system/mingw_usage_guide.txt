@@ -63,10 +63,10 @@
 			pacman -S --force mingw64/mingw-w64-x86_64-cmake
 		REF [doc] >> pacman_usage_guide.txt
 	- MSYS.
-		mingw-get.exe으로 설치되지 않는 package의 경우 아래의 사이트에서 찾을 수 있음.
+		For packages which are not installed by mingw-get.exe, find them in the sites below.
 			http://sourceforge.net/projects/mingw/files/MSYS/Extension/
 			http://sourceforge.net/projects/mingw/files/MSYS/Base/
-		Download 받은 file을 ${MSYS_HOME}에 복사한 후 압축을 풀면 ${MSYS_HOME}/bin에 복사됨.
+		Copy downloaded files, uncompress, and copy to ${MSYS_HOME}/bin.
 
 
 [-] Toolchain (MinGW-w64).
@@ -137,7 +137,7 @@
 [-] Setting.
 	- Compiler, linker, & make to use for building library.
 	    Use executables in ${MINGW_HOME}/bin.
-		"mingw32-"이 없는 executable file을 사용.
+		Use executables without "mingw32-".
 			mingw32-gcc.exe (X) ==> gcc.exe (O)
 			mingw32-g++.exe (X) ==> g++.exe (O)
 		Use mingw32-make.exe.
