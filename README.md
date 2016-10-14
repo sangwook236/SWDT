@@ -1,11 +1,11 @@
-# General Development and Testing (GDT)
+# Sang-Wook's Development and Testing (SWDT)
 
 ## Introduction
 
-The goal of GDT is to systematically accumulate source codes, knowledge, and experience acquired in the development and testing of software and hardware. <br />
-GDT is a rich repository of knowledge for development and testing.
+The goal of SWDT is to systematically accumulate source codes, knowledge, and experience acquired in the development and testing of software and hardware. <br />
+SWDT is a rich repository of knowledge for development and testing.
 
-GDT includes various programming languages and hardware components:
+SWDT includes various programming languages and hardware components:
 * Software
   * C/C++
   * C#
