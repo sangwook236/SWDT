@@ -1,5 +1,5 @@
 [-] Building (Makefile).
-	REF [project] >> ${GDT_HOME}/sw_dev/cpp/basic/test/simple_make_test
+	REF [project] >> ${SWDT_HOME}/sw_dev/cpp/basic/test/simple_make_test
 
 	REF [file] >> build_software_in_linux.txt
 	REF [file] >> build_software_using_gcc.txt
@@ -40,3 +40,13 @@
 		Command:
 			sudo make install
 			sudo make PREFIX=${INSTALL_PREFIX} install
+
+[-] Setting.
+	- Print text.
+		@echo "text"
+			@echo "Hello, 'World!'"
+
+		$(error text)
+		$(warning text)
+		$(info text)
+			$(info PATH is $(PATH))
