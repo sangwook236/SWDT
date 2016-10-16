@@ -17,7 +17,7 @@
 namespace {
 namespace local {
 
-// Meyer's (reformulated) problem, minimum at (2.48, 6.18, 3.45)
+// Meyer's (reformulated) problem, minimum at (2.48, 6.18, 3.45).
 static void meyer(double* params, double* func, int dimParams, int dimFuncs, void* data)
 {
 	for (register int i = 0; i < dimFuncs; ++i)
@@ -34,7 +34,7 @@ void jacmeyer(double* params, double* jacobian, int dimParams, int dimFuncs, voi
 		const double ui = 0.45 + 0.05*i;
 		const double tmp = exp(10.0*params[1] / (ui + params[2]) - 13.0);
 
-		// jacobian: dimMeasures-by-dimParams
+		// Jacobian: dimMeasures-by-dimParams.
 		jacobian[j++] = tmp;
 		jacobian[j++] = 10.0*params[0]*tmp / (ui + params[2]);
 		jacobian[j++] = -10.0*params[0]*params[1]*tmp / ((ui + params[2]) * (ui + params[2]));
@@ -43,15 +43,15 @@ void jacmeyer(double* params, double* jacobian, int dimParams, int dimFuncs, voi
 
 bool levenberg_marquardt__nonlinear_least_square__unconstrained_optimization__1()
 {
-    const int dimParams = 3;  // parameter vector dimension (i.e. #unknowns)
-	const int dimMeasures = 16;  // measurement vector dimension
+    const int dimParams = 3;  // Parameter vector dimension (i.e. #unknowns).
+	const int dimMeasures = 16;  // Measurement vector dimension.
 	assert(dimMeasures >= dimParams);
 
-	double params[dimParams];  // initial parameter estimates. On output contains the estimated solution
+	double params[dimParams];  // Initial parameter estimates. On output contains the estimated solution.
     params[0] = 8.85;
 	params[1] = 4.0;
 	params[2] = 2.5;
-	double measures[dimMeasures];  // measurement vector: not changed -> given function values
+	double measures[dimMeasures];  // Measurement vector: not changed -> given function values.
 	measures[0] = 34.780;
 	measures[1] = 28.610;
 	measures[2] = 23.650;
@@ -74,7 +74,7 @@ bool levenberg_marquardt__nonlinear_least_square__unconstrained_optimization__1(
 	//double* work = new double [LM_DER_WORKSZ(dimParams, dimMeasures) + dimParams*dimParams];
 	if (!work)
 	{
-		std::cout << "memory allocation request failed" << std::endl;
+		std::cout << "Memory allocation request failed" << std::endl;
 		return false;
 	}
 	double* covar = work + LM_DIF_WORKSZ(dimParams, dimMeasures);
@@ -85,20 +85,20 @@ bool levenberg_marquardt__nonlinear_least_square__unconstrained_optimization__1(
 	opts[1] = 1.0e-15;
 	opts[2] = 1.0e-15;
 	opts[3] = 1.0e-20;
-	opts[4] = LM_DIFF_DELTA;  // relevant only if the finite difference jacobian version is used
+	opts[4] = LM_DIFF_DELTA;  // Relevant only if the finite difference jacobian version is used
 
 	const int maxIteration = 1000;
-	const int ret = dlevmar_dif(meyer, params, measures, dimParams, dimMeasures, maxIteration, opts, info, work, covar, NULL); // no jacobian, caller allocates work memory, covariance estimated
-    //const int ret = dlevmar_der(meyer, jacmeyer, params, measures, dimParams, dimMeasures, maxIteration, opts, info, work, covar, NULL); // with analytic jacobian
+	const int ret = dlevmar_dif(meyer, params, measures, dimParams, dimMeasures, maxIteration, opts, info, work, covar, NULL);  // No jacobian, caller allocates work memory, covariance estimated.
+    //const int ret = dlevmar_der(meyer, jacmeyer, params, measures, dimParams, dimMeasures, maxIteration, opts, info, work, covar, NULL);  // With analytic jacobian.
 	assert(ret >= 0);
 
 	//
-	std::cout << "solution:" << std::endl;
+	std::cout << "Solution:" << std::endl;
 	for (int i = 0; i < dimParams; ++i)
 		std::cout << params[i] << ' ';
 	std::cout << std::endl;
 
-	std::cout << "covariance of the fit:" << std::endl;
+	std::cout << "Covariance of the fit:" << std::endl;
 	for (int i = 0; i < dimParams; ++i)
 	{
 		for (int j = 0; j < dimParams; ++j)
@@ -122,8 +122,8 @@ static void objective_f(double* params, double* func, int dimParams, int dimFunc
 
 	for (register int i = 0; i < dimFuncs; ++i)
 	{
-		// unknowns: a0, a1, a2, a3, a4, a5
-		// model: fi = a0 + a1 * i + a2 * i^2 + a3 * i^3 + a4 * i^4 + a5 * i^5
+		// Unknowns: a0, a1, a2, a3, a4, a5.
+		// Model: fi = a0 + a1 * i + a2 * i^2 + a3 * i^3 + a4 * i^4 + a5 * i^5.
 		const double t = i;
 		func[i] = a0 + a1 * t + a2 * t*t + a3 * t*t*t + a4 * t*t*t*t + a5 * t*t*t*t*t;
 	}
@@ -141,12 +141,12 @@ static void objective_df(double* params, double* jacobian, int dimParams, int di
 */
 	for (register int i = 0, j = 0; i < dimFuncs; ++i)
 	{
-		// unknowns: a0, a1, a2, a3, a4, a5
-		// Jacobian matrix J(i,j) = dfi / dxj
-		//   where fi = a0 + a1 * i + a2 * i^2 + a3 * i^3 + a4 * i^4 + a5 * i^5
-		//         xj = the parameters (a0, a1, a2, a3, a4, a5)
+		// Unknowns: a0, a1, a2, a3, a4, a5.
+		// Jacobian matrix J(i,j) = dfi / dxj.
+		//   where fi = a0 + a1 * i + a2 * i^2 + a3 * i^3 + a4 * i^4 + a5 * i^5.
+		//         xj = the parameters (a0, a1, a2, a3, a4, a5).
 
-		// jacobian: dimMeasures-by-dimParams
+		// Jacobian: dimMeasures-by-dimParams.
 		const double t = i;
 		jacobian[j++] = 1.0;
 		jacobian[j++] = t;
@@ -163,12 +163,12 @@ bool levenberg_marquardt__nonlinear_least_square__unconstrained_optimization__2(
 	//const int measureCount = rand();
 	const int measureCount = 40;
 
-    const int dimParams = 6;  // parameter vector dimension (i.e. #unknowns)
-	const int dimMeasures = std::max(measureCount, dimParams);  // measurement vector dimension
+    const int dimParams = 6;  // Parameter vector dimension (i.e. #unknowns).
+	const int dimMeasures = std::max(measureCount, dimParams);  // Measurement vector dimension.
 	assert(measureCount >= dimParams);
 
-	double params[dimParams] = { 0.0, };  // initial parameter estimates. On output contains the estimated solution
-	std::vector<double> measures(dimMeasures, 0.0);  // measurement vector: not changed -> given function values
+	double params[dimParams] = { 0.0, };  // Initial parameter estimates. On output contains the estimated solution.
+	std::vector<double> measures(dimMeasures, 0.0);  // Measurement vector: not changed -> given function values.
 	{
 /*
 		typedef boost::minstd_rand base_generator_type;
@@ -205,7 +205,7 @@ bool levenberg_marquardt__nonlinear_least_square__unconstrained_optimization__2(
 	double* work = new double [LM_DER_WORKSZ(dimParams, dimMeasures) + dimParams*dimParams];
 	if (!work)
 	{
-		std::cout << "memory allocation request failed" << std::endl;
+		std::cout << "Memory allocation request failed" << std::endl;
 		return false;
 	}
 	//double* covar = work + LM_DIF_WORKSZ(dimParams, dimMeasures);
@@ -216,7 +216,7 @@ bool levenberg_marquardt__nonlinear_least_square__unconstrained_optimization__2(
 	opts[1] = 1.0e-15;
 	opts[2] = 1.0e-15;
 	opts[3] = 1.0e-20;
-	opts[4] = LM_DIFF_DELTA;  // relevant only if the finite difference jacobian version is used
+	opts[4] = LM_DIFF_DELTA;  // Relevant only if the finite difference jacobian version is used.
 
 	const int maxIteration = 1000;
 	//const int ret = dlevmar_dif(objective_f, params, &measures[0], dimParams, dimMeasures, maxIteration, opts, info, work, covar, NULL); // no jacobian, caller allocates work memory, covariance estimated
@@ -228,7 +228,7 @@ bool levenberg_marquardt__nonlinear_least_square__unconstrained_optimization__2(
 		std::vector<double> resultMeasures(dimMeasures, 0.0);;
 		objective_f(params, &resultMeasures[0], dimParams, dimMeasures, NULL);
 
-		std::cout << "covariance of the fit:" << std::endl;
+		std::cout << "Covariance of the fit:" << std::endl;
 		for (int i = 0; i < dimParams; ++i)
 		{
 			for (int j = 0; j < dimParams; ++j)
@@ -242,9 +242,9 @@ bool levenberg_marquardt__nonlinear_least_square__unconstrained_optimization__2(
 		chi = std::sqrt(chi);
 		const double dof = measureCount - dimParams;
 		const double c = std::max(1.0, chi / std::sqrt(dof));
-		std::cout << "chisq/dof = " << std::pow(chi, 2.0) / dof << std::endl;
+		std::cout << "Chisq/dof = " << std::pow(chi, 2.0) / dof << std::endl;
 
-		std::cout << "solution:" << std::endl;
+		std::cout << "Solution:" << std::endl;
 		std::cout << "a0 = " << params[0] << " +/- " << c * std::sqrt(covar[0*dimParams+0]) << std::endl;
 		std::cout << "a1 = " << params[1] << " +/- " << c * std::sqrt(covar[1*dimParams+1]) << std::endl;
 		std::cout << "a2 = " << params[2] << " +/- " << c * std::sqrt(covar[2*dimParams+2]) << std::endl;

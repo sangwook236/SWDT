@@ -12,7 +12,7 @@ namespace local {
 
 namespace my_glpk {
 
-// [ref] ${GLPK_HOME}/examples/iptsamp.c
+// REF [file] >> ${GLPK_HOME}/examples/iptsamp.c
 void interior_point_sample()
 {
 	glp_prob *P = glp_create_prob();

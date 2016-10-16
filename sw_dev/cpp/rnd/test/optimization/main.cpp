@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 	int optpp_main(int argc, char *argv[]);
 
 	int coin_or_main(int argc, char *argv[]);
+	int scip_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -43,7 +44,7 @@ int main(int argc, char *argv[])
 		//retval = levmar_main(argc, argv);
 
         std::cout << "\nNLopt library -------------------------------------------------------" << std::endl;
-		retval = nlopt_main(argc, argv);
+		//retval = nlopt_main(argc, argv);
 
         std::cout << "\nOPT++ library -------------------------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
@@ -54,6 +55,9 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nComputational Infrastructure for Operations Research (COIN-OR) ------" << std::endl;
 		//retval = coin_or_main(argc, argv);
+
+		std::cout << "\nSolving Constraint Integer Programs (SCIP) Optimization Suite -------" << std::endl;
+		retval = scip_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

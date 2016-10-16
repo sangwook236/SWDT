@@ -174,7 +174,7 @@ DEFINE_string(minimizer, "trust_region", "Minimizer type to use, choices are: li
 
 // REF [site] >> https://ceres-solver.googlesource.com/ceres-solver/+/master/examples/powell.cc
 /*
-    minimization of Powell's singular function.
+    Minimization of Powell's singular function.
 
     F = 1/2 (f1^2 + f2^2 + f3^2 + f4^2)
 

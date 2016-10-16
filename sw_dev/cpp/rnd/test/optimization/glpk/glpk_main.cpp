@@ -31,7 +31,7 @@ int glpk_main(int argc, char *argv[])
 	std::cout << "\nMixed integer programming (MIP) -------------------------------------" << std::endl;
 	//my_glpk::mip_sample();  // Not yet implemented.
 
-	std::cout << "\nmathematical programming language (MPL) -----------------------------" << std::endl;
+	std::cout << "\nMathematical programming language (MPL) -----------------------------" << std::endl;
 	my_glpk::mpl_sample();
 
 	std::cout << "\nGraph ---------------------------------------------------------------" << std::endl;

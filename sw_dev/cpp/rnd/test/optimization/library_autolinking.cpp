@@ -4,6 +4,10 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "libscip.mingw.x86.msvc.opt.lib")
+//#pragma comment(lib, "libobjscip.mingw.x86.msvc.opt.lib")
+//#pragma comment(lib, "libnlpi.cppad.mingw.x86.msvc.opt.lib")
+//#pragma comment(lib, "liblpispx2.mingw.x86.msvc.opt.lib")
 #pragma comment(lib, "libCbc_d.lib")
 #pragma comment(lib, "libClp_d.lib")
 #pragma comment(lib, "libCgl_d.lib")
@@ -25,6 +29,10 @@
 
 #		else
 
+#pragma comment(lib, "libscip.mingw.x86.msvc.opt.lib")
+//#pragma comment(lib, "libobjscip.mingw.x86.msvc.opt.lib")
+//#pragma comment(lib, "libnlpi.cppad.mingw.x86.msvc.opt.lib")
+//#pragma comment(lib, "liblpispx2.mingw.x86.msvc.opt.lib")
 #pragma comment(lib, "libCbc.lib")
 #pragma comment(lib, "libClp.lib")
 #pragma comment(lib, "libCgl.lib")

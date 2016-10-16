@@ -70,7 +70,7 @@ struct a_data { double cap, cost; };
 
 namespace my_glpk {
 
-// [ref] ${GLPK_HOME}/examples/netgen.c
+// REF [file] >> ${GLPK_HOME}/examples/netgen.c
 void netgen_sample()
 {
 	glp_graph *G = glp_create_graph(sizeof(local::v_data), sizeof(local::a_data));

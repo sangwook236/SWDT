@@ -135,7 +135,7 @@ void edmonds_maximum_cardinality_matching_example()
 {
 	typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> graph_type;
 
-	// create the following graph: (it'll look better when output to the terminal in a fixed width font...)
+	// Create the following graph: (it'll look better when output to the terminal in a fixed width font...)
 	const int num_vertices = 18;
 
 	std::vector<std::string> ascii_graph;
@@ -147,10 +147,10 @@ void edmonds_maximum_cardinality_matching_example()
 	ascii_graph.push_back("            /     \\     /     \\        ");
 	ascii_graph.push_back("     12   13      14---15      16   17 ");
 
-	// it has a perfect matching of size 8. there are two isolated vertices that we'll use later...
+	// It has a perfect matching of size 8. There are two isolated vertices that we'll use later...
 	graph_type g(num_vertices);
 
-	// our vertices are stored in a vector, so we can refer to vertices by integers in the range 0..15
+	// Our vertices are stored in a vector, so we can refer to vertices by integers in the range 0..15
 	boost::add_edge(0, 4, g);
 	boost::add_edge(1, 5, g);
 	boost::add_edge(2, 6, g);
@@ -171,8 +171,8 @@ void edmonds_maximum_cardinality_matching_example()
 
 	std::vector<boost::graph_traits<graph_type>::vertex_descriptor> mate(num_vertices);
 
-	// find the maximum cardinality matching.
-	// we'll use a checked version of the algorithm, which takes a little longer than the unchecked version,
+	// Find the maximum cardinality matching.
+	// We'll use a checked version of the algorithm, which takes a little longer than the unchecked version,
 	// but has the advantage that it will return "false" if the matching returned is not actually a maximum cardinality matching in the graph.
 #if 0
 	boost::edmonds_maximum_cardinality_matching(g, &mate[0]);
@@ -181,12 +181,12 @@ void edmonds_maximum_cardinality_matching_example()
 	assert(success1);
 #endif
 
-	std::cout << "in the following graph:" << std::endl << std::endl;
+	std::cout << "In the following graph:" << std::endl << std::endl;
 	for (std::vector<std::string>::iterator itr = ascii_graph.begin(); itr != ascii_graph.end(); ++itr)
 		std::cout << *itr << std::endl;
 
-	std::cout << std::endl << "found a matching of size " << boost::matching_size(g, &mate[0]) << std::endl;
-	std::cout << "the matching is:" << std::endl;
+	std::cout << std::endl << "Found a matching of size " << boost::matching_size(g, &mate[0]) << std::endl;
+	std::cout << "The matching is:" << std::endl;
 	boost::graph_traits<graph_type>::vertex_iterator vi, vi_end;
 	for (boost::tie(vi, vi_end) = boost::vertices(g); vi != vi_end; ++vi)
 		if (mate[*vi] != boost::graph_traits<graph_type>::null_vertex() && *vi < mate[*vi])
@@ -207,12 +207,12 @@ void edmonds_maximum_cardinality_matching_example()
 	assert(success2);
 #endif
 
-	std::cout << "in the following graph:" << std::endl << std::endl;
+	std::cout << "In the following graph:" << std::endl << std::endl;
 	for (std::vector<std::string>::iterator itr = ascii_graph.begin(); itr != ascii_graph.end(); ++itr)
 		std::cout << *itr << std::endl;
 
-	std::cout << std::endl << "found a matching of size " << boost::matching_size(g, &mate[0]) << std::endl;
-	std::cout << "the matching is:" << std::endl;
+	std::cout << std::endl << "Found a matching of size " << boost::matching_size(g, &mate[0]) << std::endl;
+	std::cout << "The matching is:" << std::endl;
 	for (boost::tie(vi, vi_end) = boost::vertices(g); vi != vi_end; ++vi)
 		if (mate[*vi] != boost::graph_traits<graph_type>::null_vertex() && *vi < mate[*vi])
 			std::cout << "{" << *vi << ", " << mate[*vi] << "}" << std::endl;
@@ -238,12 +238,12 @@ void maximum_flow_and_matching()
 	std::ifstream stream(max_flow_dat_file);
 #endif
 
-	std::cout << "max-flow algorithm -------------------------------------------" << std::endl;
+	std::cout << "Max-flow algorithm -------------------------------------------" << std::endl;
 	stream.clear();
 	stream.seekg(0, std::ios::beg);
 	if (stream.is_open()) local::max_flow_example(stream);
 
-	std::cout << "\npush–relabel maximum flow algorithm --------------------------" << std::endl;
+	std::cout << "\nPush–relabel maximum flow algorithm --------------------------" << std::endl;
 	stream.clear();
 	stream.seekg(0, std::ios::beg);
 	if (stream.is_open()) local::push_relabel_example(stream);
@@ -264,31 +264,31 @@ void minimum_cut()
 	typedef boost::property_map<undirected_graph_type, boost::edge_weight_t>::type weight_map_type;
 	typedef boost::property_traits<weight_map_type>::value_type weight_type;
 
-	// define the 16 edges of the graph. {3, 4} means an undirected edge between vertices 3 and 4.
+	// Define the 16 edges of the graph. {3, 4} means an undirected edge between vertices 3 and 4.
 	const local::edge_t edges[] = {
 		{3, 4}, {3, 6}, {3, 5}, {0, 4}, {0, 1}, {0, 6}, {0, 7}, {0, 5},
 		{0, 2}, {4, 1}, {1, 6}, {1, 5}, {6, 7}, {7, 5}, {5, 2}, {3, 4}
 	};
 
-	// for each of the 16 edges, define the associated edge weight.
+	// For each of the 16 edges, define the associated edge weight.
 	// ws[i] is the weight for the edge that is described by edges[i].
 	const weight_type ws[] = { 0, 3, 1, 3, 1, 2, 6, 1, 8, 1, 1, 80, 2, 1, 1, 4 };
 
-	// construct the graph object.
+	// Construct the graph object.
 	// 8 is the number of vertices, which are numbered from 0 // through 7, and 16 is the number of edges.
 	undirected_graph_type g(edges, edges + 16, ws, 8, 16);
 
-	// define a property map, 'parities', that will store a boolean value for each vertex.
-	// vertices that have the same parity after 'stoer_wagner_min_cut' runs are on the same side of the min-cut.
+	// Define a property map, 'parities', that will store a boolean value for each vertex.
+	// Vertices that have the same parity after 'stoer_wagner_min_cut' runs are on the same side of the min-cut.
 	BOOST_AUTO(parities, boost::make_one_bit_color_map(boost::num_vertices(g), boost::get(boost::vertex_index, g)));
 
-	// run the Stoer-Wagner algorithm to obtain the min-cut weight. `parities` is also filled in.
+	// Run the Stoer-Wagner algorithm to obtain the min-cut weight. `parities` is also filled in.
 	const int w = boost::stoer_wagner_min_cut(g, boost::get(boost::edge_weight, g), boost::parity_map(parities));
 
-	std::cout << "the min-cut weight of G is " << w << ".\n" << std::endl;
+	std::cout << "The min-cut weight of G is " << w << ".\n" << std::endl;
 	assert(w == 7);
 
-	std::cout << "one set of vertices consists of:" << std::endl;
+	std::cout << "One set of vertices consists of:" << std::endl;
 	std::size_t i;
 	for (i = 0; i < boost::num_vertices(g); ++i)
 	{
@@ -297,7 +297,7 @@ void minimum_cut()
 	}
 	std::cout << std::endl;
 
-	std::cout << "the other set of vertices consists of:" << std::endl;
+	std::cout << "The other set of vertices consists of:" << std::endl;
 	for (i = 0; i < boost::num_vertices(g); ++i)
 	{
 		if (!boost::get(parities, i))

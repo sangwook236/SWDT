@@ -8,7 +8,7 @@
 namespace {
 namespace local {
 
-// minimize 100(x_2 - x_{1}^2)^2 + (1 - x_1)^2.
+// Minimize 100(x_2 - x_{1}^2)^2 + (1 - x_1)^2.
 
 void init_rosen(const int ndim, NEWMAT::ColumnVector &x)
 {

@@ -113,9 +113,8 @@ public:
         p[1] += camera[4];
         p[2] += camera[5];
 
-        // Compute the center of distortion. The sign change comes from
-        // the camera model that Noah Snavely's Bundler assumes, whereby
-        // the camera coordinate system has a negative z axis.
+        // Compute the center of distortion.
+		// The sign change comes from the camera model that Noah Snavely's Bundler assumes, whereby the camera coordinate system has a negative z axis.
         T xp = -p[0] / p[2];
         T yp = -p[1] / p[2];
 
@@ -136,8 +135,7 @@ public:
         return true;
     }
 
-    // Factory to hide the construction of the CostFunction object from
-    // the client code.
+    // Factory to hide the construction of the CostFunction object from the client code.
     static ceres::CostFunction * Create(const double observed_x, const double observed_y)
     {
         return (new ceres::AutoDiffCostFunction<SnavelyReprojectionError, 2, 9, 3>(new SnavelyReprojectionError(observed_x, observed_y)));
@@ -156,7 +154,7 @@ namespace my_ceres_solver {
 // REF [site] >> https://ceres-solver.googlesource.com/ceres-solver/+/master/examples/simple_bundle_adjuster.cc
 void bundle_adjustment_example()
 {
-    // BAL dataset
+    // BAL dataset.
     // REF [site] >> http://grail.cs.washington.edu/projects/bal/
     const std::string filename("./data/machine_vision/bundle_adjustment/problem-49-7776-pre.txt");
 
@@ -179,7 +177,7 @@ void bundle_adjustment_example()
         ceres::CostFunction *cost_function = local::SnavelyReprojectionError::Create(observations[2 * i + 0], observations[2 * i + 1]);
         problem.AddResidualBlock(
             cost_function,
-            NULL /* squared loss */,
+            NULL,  // Squared loss.
             bal_problem.mutable_camera_for_observation(i),
             bal_problem.mutable_point_for_observation(i)
         );

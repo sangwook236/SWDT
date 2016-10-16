@@ -7,7 +7,7 @@
 namespace {
 namespace local {
 
-// [ref] ${GLPK_HOME}/examples/mplsamp1.c
+// REF [file] >> ${GLPK_HOME}/examples/mplsamp1.c
 void mpl_sample_1()
 {
 	glp_prob *lp = glp_create_prob();
@@ -37,7 +37,7 @@ skip:
 	glp_delete_prob(lp);
 }
 
-// [ref] ${GLPK_HOME}/examples/mplsamp2.c
+// REF [file] >> ${GLPK_HOME}/examples/mplsamp2.c
 void mpl_sample_2()
 {
 	glp_prob *mip = glp_create_prob();

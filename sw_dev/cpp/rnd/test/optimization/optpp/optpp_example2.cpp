@@ -11,7 +11,7 @@
 namespace {
 namespace local {
 
-// minimize (x_1 - x_2)^2 + (1/9)(x_1 + x_2 - 10)^2 + (x_3 - 5)^2
+// Minimize (x_1 - x_2)^2 + (1/9)(x_1 + x_2 - 10)^2 + (x_3 - 5)^2
 // subject to x_1^2 + x_2^2 + x_3^2 <= 48
 //            -4.5 <= x_1 <= 4.5
 //            -4.5 <= x_2 <= 4.5

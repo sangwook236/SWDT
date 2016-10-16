@@ -1,0 +1,142 @@
+[-] General.
+	- Site.
+		http://scip.zib.de
+		http://zimpl.zib.de
+		http://soplex.zib.de
+		http://ug.zib.de/
+		http://www.or.rwth-aachen.de/gcg/
+
+[-] Building (VC).
+	- Open Visual Studio command prompt.
+	- Set path.
+		set path=${MSYS2}/usr/bin;${MINGW}/mingw32/bin;%path%
+		set path=${MSYS2}/usr/bin;${MINGW}/mingw64/bin;%path%
+
+	- Build SoPlex.
+		REF [site] >> ${SOPLEX_HOME}/INSTALL
+
+		Change directory to ${SOPLEX_HOME}.
+		Run make.
+			Build a static library.
+			For 32-bit:
+				make OSTYPE=mingw ARCH=x86 COMP=msvc OPT=opt SHARED=false USRFLAGS=-ID:/usr/local/include/mpir USRCPPFLAGS=-ID:/usr/local/include/mpir USRCFLAGS=-ID:/usr/local/include/mpir USRLDFLAGS=-LD:/usr/local/lib
+			For 64-bit:
+				make OSTYPE=mingw ARCH=x86_64 COMP=msvc OPT=opt SHARED=false USRFLAGS=-ID:/usr/local64/include/mpir USRCPPFLAGS=-ID:/usr/local64/include/mpir USRCFLAGS=-ID:/usr/local64/include/mpir USRLDFLAGS=-LD:/usr/local64/lib
+			==> Generated libraries.
+				${SOPLEX_HOME}/lib/libsoplex.$(OSTYPE).$(ARCH).$(COMP).$(OPT).lib
+			==> Do not care even though there are some errors about building executables.
+
+	- Build ZIMPL.
+		REF [site] >> ${ZIMPL_HOME}/README
+
+		Do not need to build if GMP is not used.
+
+		Change directory to ${ZIMPL_HOME}.
+		Edit Makefile.
+			<before>
+			ARCH = x86
+			CFLAGS = 
+			LDFLAGS = /NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD /STACK:67108864 /OPT:REF /OPT:ICF /NOLOGO
+			<after>
+			For 32-bit:
+				CFLAGS = /I${MINGW_HOME}/mingw32/include /ID:/usr/local/include/mpir
+				LDFLAGS = /NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD /STACK:67108864 /OPT:REF /OPT:ICF /NOLOGO /LIBPATH:${MINGW_HOME}/mingw32/lib /LIBPATH:D:/usr/local/lib
+			For 64-bit:
+				ARCH = x86_64
+				CFLAGS = /I${MINGW_HOME}/mingw64/include /ID:/usr/local64/include/mpir
+				LDFLAGS = /NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD /STACK:67108864 /OPT:REF /OPT:ICF /NOLOGO /LIBPATH:${MINGW_HOME}/mingw64/lib /LIBPATH:D:/usr/local64/lib
+		Run make.
+			Build a static library.
+			nmake -f Makefile.nmake
+			==> Generated libraries.
+				${ZIMPL_HOME}/lib/libzimpl-$(VER).$(OSTYPE).$(ARCH).$(COMP).$(OPT).lib
+			==> Do not care even though there are some errors about building executables.
+		Copy the library.
+			cp ${ZIMPL_HOME}/lib/libzimpl-$(VER).$(OSTYPE).$(ARCH).$(COMP).$(OPT).lib ${ZIMPL_HOME}/lib/libzimpl.$(OSTYPE).$(ARCH).$(COMP).$(OPT).lib
+
+	- Copy libraries and header files.
+		cp ${SOPLEX_HOME}/src/*.* ${SCIP_HOME}/lib/spxinc/soplex/
+		cp ${ZIMPL_HOME}/src/*.* ${SCIP_HOME}/lib/zimplinc/zimpl/
+
+		cp ${SOPLEX_HOME}/lib/libsoplex.$(OSTYPE).$(ARCH).$(COMP).$(OPT).lib ${SCIP_HOME}/lib
+		cp ${ZIMPL_HOME}/lib/libzimpl.$(OSTYPE).$(ARCH).$(COMP).$(OPT).lib ${SCIP_HOME}/lib/libzimpl.mingw.x86.msvc.opt.lib
+
+	- Build SCIP.
+		REF [site] >> ${SCIP_HOME}/INSTALL
+
+		Change directory to ${SCIP_HOME}.
+		Run make.
+			Build a static library.
+			For 32-bit:
+				make OSTYPE=mingw ARCH=x86 COMP=msvc OPT=opt SHARED=false LPS=spx2 GMP=true USRFLAGS=-ID:/usr/local/include/mpir USRCPPFLAGS=-ID:/usr/local/include/mpir USRCFLAGS=-ID:/usr/local/include/mpir USRLDFLAGS=-LD:/usr/local/lib
+			For 64-bit:
+				make OSTYPE=mingw ARCH=x86_64 COMP=msvc OPT=opt SHARED=false LPS=spx2 GMP=true USRFLAGS=-ID:/usr/local64/include/mpir USRCPPFLAGS=-ID:/usr/local64/include/mpir USRCFLAGS=-ID:/usr/local64/include/mpir USRLDFLAGS=-LD:/usr/local64/lib
+			==> Do not care even though there are some errors about building executables.
+		Install.
+			For 32-bit:
+				make INSTALLDIR=./install_win32 install OSTYPE=mingw ARCH=x86 COMP=msvc OPT=opt SHARED=false LPS=spx2 GMP=true USRFLAGS=-ID:/usr/local/include/mpir USRCPPFLAGS=-ID:/usr/local/include/mpir USRCFLAGS=-ID:/usr/local/include/mpir USRLDFLAGS=-LD:/usr/local/lib
+			For 64-bit:
+				make INSTALLDIR=./install_win64 install OSTYPE=mingw ARCH=x86_64 COMP=msvc OPT=opt SHARED=false LPS=spx2 GMP=true USRFLAGS=-ID:/usr/local64/include/mpir USRCPPFLAGS=-ID:/usr/local64/include/mpir USRCFLAGS=-ID:/usr/local64/include/mpir USRLDFLAGS=-LD:/usr/local64/lib
+
+[-] Building (MSYS2).
+	- Download SCIP Optimization Suite.
+
+	- Build SoPlex.
+		REF [site] >> ${SOPLEX_HOME}/INSTALL
+
+		Change directory to ${SOPLEX_HOME}.
+		Run make.
+			Build a static library.
+			For 32-bit:
+				mingw32-make OSTYPE=mingw ARCH=x86 COMP=gnu OPT=opt USRFLAGS=-I/mingw32/include USRCPPFLAGS=-I/mingw32/include USRCFLAGS=-I/mingw32/include USRLDFLAGS=-L/mingw32/lib
+			For 64-bit:
+				mingw32-make OSTYPE=mingw ARCH=x86_64 COMP=gnu OPT=opt USRFLAGS=-I/mingw64/include USRCPPFLAGS=-I/mingw64/include USRCFLAGS=-I/mingw64/include USRLDFLAGS=-L/mingw64/lib
+			==> Generated libraries.
+				${SOPLEX_HOME}/lib/libsoplex.$(OSTYPE).$(ARCH).$(COMP).$(OPT).a
+			==> Do not care even though there are some errors about building executables.
+
+	- Build ZIMPL.
+		REF [site] >> ${ZIMPL_HOME}/README
+
+		Change directory to ${ZIMPL_HOME}.
+		Run make.
+			Build a static library.
+			For 32-bit:
+				mingw32-make OSTYPE=mingw ARCH=x86 COMP=gnu OPT=opt USRFLAGS=-I/mingw32/include USRCPPFLAGS=-I/mingw32/include USRCFLAGS=-I/mingw32/include USRLDFLAGS=-L/mingw32/lib
+			For 64-bit:
+				mingw32-make OSTYPE=mingw ARCH=x86_64 COMP=gnu OPT=opt USRFLAGS=-I/mingw64/include USRCPPFLAGS=-I/mingw64/include USRCFLAGS=-I/mingw64/include USRLDFLAGS=-L/mingw64/lib
+			==> Generated libraries.
+				${ZIMPL_HOME}/lib/libzimpl.$(OSTYPE).$(ARCH).$(COMP).$(OPT).a
+			==> Do not care even though there are some errors about building executables.
+
+	- Create symbolic links.
+		REF [site] >> ${SCIP_HOME}/INSTALL
+
+		cd ${SCIP_HOME}/lib/spxinc
+		ln -s ${SOPLEX_HOME}/src soplex
+		cd ${SCIP_HOME}/lib/zimplinc/
+		ln -s ${ZIMPL_HOME}/src zimpl
+
+		cd ${SCIP_HOME}/lib
+		ln -s ${SOPLEX_HOME}/lib/libsoplex.$(OSTYPE).$(ARCH).$(COMP).$(OPT).a
+		ln -s ${ZIMPL_HOME}/lib/libzimpl.$(OSTYPE).$(ARCH).$(COMP).$(OPT).a
+
+	- Build SCIP.
+		REF [site] >> ${SCIP_HOME}/INSTALL
+
+		Problem.
+			Can build only static library.
+
+		Change directory to ${SCIP_HOME}.
+		Run make.
+			Build a static library.
+			For 32-bit:
+				mingw32-make OSTYPE=mingw ARCH=x86 COMP=gnu OPT=opt SHARED=false LPS=spx2 USRFLAGS=-I/mingw32/include USRCPPFLAGS=-I/mingw32/include USRCFLAGS=-I/mingw32/include USRLDFLAGS=-L/mingw32/lib
+			For 64-bit:
+				mingw32-make OSTYPE=mingw ARCH=x86_64 COMP=gnu OPT=opt SHARED=false LPS=spx2 USRFLAGS=-I/mingw64/include USRCPPFLAGS=-I/mingw64/include USRCFLAGS=-I/mingw64/include USRLDFLAGS=-L/mingw64/lib
+			==> Do not care even though there are some errors about building executables.
+		Install.
+			For 32-bit:
+				mingw32-make INSTALLDIR=./install_win32 OSTYPE=mingw ARCH=x86 COMP=gnu OPT=opt SHARED=false LPS=spx2 USRFLAGS=-I/mingw32/include USRCPPFLAGS=-I/mingw32/include USRCFLAGS=-I/mingw32/include USRLDFLAGS=-L/mingw32/lib install
+			For 64-bit:
+				mingw32-make INSTALLDIR=./install_win64 STYPE=mingw ARCH=x86_64 COMP=gnu OPT=opt SHARED=false LPS=spx2 USRFLAGS=-I/mingw64/include USRCPPFLAGS=-I/mingw64/include USRCFLAGS=-I/mingw64/include USRLDFLAGS=-L/mingw64/lib install

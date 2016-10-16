@@ -7,7 +7,7 @@
 namespace {
 namespace local {
 
-// [ref] ${GLPK_HOME}/examples/sample.c
+// REF [file] >> ${GLPK_HOME}/examples/sample.c
 void simple_simplex_sample()
 {
 	glp_prob *lp = glp_create_prob();
@@ -36,15 +36,15 @@ void simple_simplex_sample()
 
 	int ia[1 + 1000], ja[1 + 1000];
 	double ar[1 + 1000];
-	ia[1] = 1, ja[1] = 1, ar[1] =  1.0;  // a[1,1] =  1
-	ia[2] = 1, ja[2] = 2, ar[2] =  1.0;  // a[1,2] =  1
-	ia[3] = 1, ja[3] = 3, ar[3] =  1.0;  // a[1,3] =  1
-	ia[4] = 2, ja[4] = 1, ar[4] = 10.0;  // a[2,1] = 10
-	ia[5] = 3, ja[5] = 1, ar[5] =  2.0;  // a[3,1] =  2
+	ia[1] = 1, ja[1] = 1, ar[1] =  1.0;  // a[1,1] =  1.
+	ia[2] = 1, ja[2] = 2, ar[2] =  1.0;  // a[1,2] =  1.
+	ia[3] = 1, ja[3] = 3, ar[3] =  1.0;  // a[1,3] =  1.
+	ia[4] = 2, ja[4] = 1, ar[4] = 10.0;  // a[2,1] = 10.
+	ia[5] = 3, ja[5] = 1, ar[5] =  2.0;  // a[3,1] =  2.
 	ia[6] = 2, ja[6] = 2, ar[6] =  4.0;  // a[2,2] =  4
-	ia[7] = 3, ja[7] = 2, ar[7] =  2.0;  // a[3,2] =  2
-	ia[8] = 2, ja[8] = 3, ar[8] =  5.0;  // a[2,3] =  5
-	ia[9] = 3, ja[9] = 3, ar[9] =  6.0;  // a[3,3] =  6
+	ia[7] = 3, ja[7] = 2, ar[7] =  2.0;  // a[3,2] =  2.
+	ia[8] = 2, ja[8] = 3, ar[8] =  5.0;  // a[2,3] =  5.
+	ia[9] = 3, ja[9] = 3, ar[9] =  6.0;  // a[3,3] =  6.
 	glp_load_matrix(lp, 9, ia, ja, ar);
 
 	{
@@ -62,7 +62,7 @@ void simple_simplex_sample()
 	lp = NULL;
 }
 
-// [ref] ${GLPK_HOME}/examples/spxsamp1.c
+// REF [file] >> ${GLPK_HOME}/examples/spxsamp1.c
 void simplex_sample_1()
 {
 	glp_prob *P = glp_create_prob();
@@ -81,7 +81,7 @@ void simplex_sample_1()
 	P = NULL;
 }
 
-// [ref] ${GLPK_HOME}/examples/spxsamp2.c
+// REF [file] >> ${GLPK_HOME}/examples/spxsamp2.c
 void simplex_sample_2()
 {
 	glp_prob *P = glp_create_prob();
