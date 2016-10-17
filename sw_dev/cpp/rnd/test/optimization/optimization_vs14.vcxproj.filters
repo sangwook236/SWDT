@@ -31,6 +31,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\scip">
+      <UniqueIdentifier>{a6da7260-f7db-447a-8ecf-22c2fe48f236}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -89,6 +92,12 @@
     </ClCompile>
     <ClCompile Include="ceres_solver\ceres_solver_main.cpp">
       <Filter>Source Files\ceres_solver</Filter>
+    </ClCompile>
+    <ClCompile Include="scip\scip_main.cpp">
+      <Filter>Source Files\scip</Filter>
+    </ClCompile>
+    <ClCompile Include="scip\scip_bin_packing_example.cpp">
+      <Filter>Source Files\scip</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

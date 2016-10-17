@@ -20,7 +20,7 @@ namespace local {
 void init_hs65(const int ndim, NEWMAT::ColumnVector &x)
 {
 	if (3 != ndim)
-		throw std::runtime_error("incorrect vector dimension : ndim == 3");
+		throw std::runtime_error("Incorrect vector dimension : ndim == 3");
 
 	double factor = 0.0;
 
@@ -33,7 +33,7 @@ void init_hs65(const int ndim, NEWMAT::ColumnVector &x)
 void hs65(const int mode, const int ndim, const NEWMAT::ColumnVector &x, double &fx, NEWMAT::ColumnVector &gx, NEWMAT::SymmetricMatrix &Hx, int &result)
 {
 	if (3 != ndim)
-		throw std::runtime_error("incorrect vector dimension : ndim == 3");
+		throw std::runtime_error("Incorrect vector dimension : ndim == 3");
 
 	const double x1 = x(1);
 	const double x2 = x(2);
@@ -73,10 +73,10 @@ void hs65(const int mode, const int ndim, const NEWMAT::ColumnVector &x, double 
 
 void ineq_hs65(const int mode, const int ndim, const NEWMAT::ColumnVector &x, NEWMAT::ColumnVector &cx, NEWMAT::Matrix &cgx, OPTPP::OptppArray<NEWMAT::SymmetricMatrix> &cHx, int &result)
 {
-	// Hock and Schittkowski's Problem 65 
+	// Hock and Schittkowski's Problem 65.
 
 	if (ndim != 3)
-		throw std::runtime_error("incorrect vector dimension : ndim == 3");
+		throw std::runtime_error("Incorrect vector dimension : ndim == 3");
 
 	const double x1 = x(1);
 	const double x2 = x(2);
@@ -122,8 +122,8 @@ void ineq_hs65(const int mode, const int ndim, const NEWMAT::ColumnVector &x, NE
 
 namespace my_optpp {
 
-// Example 2: Nonlinear Interior-Point Method With General Constraints
-//  [ref] https://software.sandia.gov/opt++/opt++2.4_doc/html/example2.html
+// Example 2: Nonlinear Interior-Point Method With General Constraints.
+//	REF [site] >> https://software.sandia.gov/opt++/opt++2.4_doc/html/example2.html
 void example2(int argc, char *argv[])
 {
 	const int ndim = 3;

@@ -54,10 +54,10 @@ int main(int argc, char *argv[])
 #endif
 
 		std::cout << "\nComputational Infrastructure for Operations Research (COIN-OR) ------" << std::endl;
-		//retval = coin_or_main(argc, argv);
+		retval = coin_or_main(argc, argv);
 
 		std::cout << "\nSolving Constraint Integer Programs (SCIP) Optimization Suite -------" << std::endl;
-		retval = scip_main(argc, argv);
+		//retval = scip_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

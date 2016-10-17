@@ -13,7 +13,7 @@ namespace local {
 void init_rosen(const int ndim, NEWMAT::ColumnVector &x)
 {
 	if (2 != ndim)
-		throw std::runtime_error("incorrect vector dimension : ndim == 2");
+		throw std::runtime_error("Incorrect vector dimension : ndim == 2");
 
 	// ColumnVectors are indexed from 1, and they use parentheses around the index.
 	x(1) = -1.2;
@@ -23,7 +23,7 @@ void init_rosen(const int ndim, NEWMAT::ColumnVector &x)
 void rosen(const int ndim, const NEWMAT::ColumnVector &x, double &fx, int &result)
 {
 	if (2 != ndim)
-		throw std::runtime_error("incorrect vector dimension : ndim == 2");
+		throw std::runtime_error("Incorrect vector dimension : ndim == 2");
 
 	const double x1 = x(1);
 	const double x2 = x(2);
@@ -39,8 +39,8 @@ void rosen(const int ndim, const NEWMAT::ColumnVector &x, double &fx, int &resul
 
 namespace my_optpp {
 
-// Example 1: Unconstrained Quasi-Newton Without Derivatives
-//  [ref] https://software.sandia.gov/opt++/opt++2.4_doc/html/example1.html
+// Example 1: Unconstrained Quasi-Newton Without Derivatives.
+//  REF [site] >> https://software.sandia.gov/opt++/opt++2.4_doc/html/example1.html
 void example1(int argc, char *argv[])
 {
 	const int ndim = 2;
@@ -55,7 +55,7 @@ void example1(int argc, char *argv[])
 	// The "0" in the second argument says to create a new file.
 	// A "1" would signify appending to an existing file.
 	if (!objfcn.setOutputFile("./data/optimization/optpp/example1.out", 0))
-		std::cerr << "main: output file open failed" << std::endl;
+		std::cerr << "Main: output file open failed" << std::endl;
 
 	objfcn.optimize();
 

@@ -9,11 +9,13 @@ namespace local {
 
 namespace my_scip {
 
+void bin_packing_example(int argc, char *argv[]);
+
 }  // namespace my_scip
 
 int scip_main(int argc, char *argv[])
 {
-	throw std::runtime_error("Not yet implemented");
+	my_scip::bin_packing_example(argc, argv);
 
     return 0;
 }

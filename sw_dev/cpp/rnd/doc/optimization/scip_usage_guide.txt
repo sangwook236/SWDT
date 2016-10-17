@@ -6,6 +6,15 @@
 		http://ug.zib.de/
 		http://www.or.rwth-aachen.de/gcg/
 
+[-] Usage.
+	- Download binaries and use them right away.
+		Can use binaries after downloading from its websie.
+
+	- When using examples.
+		Open Cygwin terminal.
+		cd ${SOPLEX_HOME}/examples/Binpacking
+		make doc
+
 [-] Building (VC).
 	- Open Visual Studio command prompt.
 	- Set path.
