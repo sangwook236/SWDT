@@ -4,7 +4,7 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "libscip.mingw.x86.msvc.opt.lib")
+//#pragma comment(lib, "libscip.mingw.x86.msvc.opt.lib")
 //#pragma comment(lib, "libobjscip.mingw.x86.msvc.opt.lib")
 //#pragma comment(lib, "libnlpi.cppad.mingw.x86.msvc.opt.lib")
 //#pragma comment(lib, "liblpispx2.mingw.x86.msvc.opt.lib")
@@ -29,7 +29,7 @@
 
 #		else
 
-#pragma comment(lib, "libscip.mingw.x86.msvc.opt.lib")
+//#pragma comment(lib, "libscip.mingw.x86.msvc.opt.lib")
 //#pragma comment(lib, "libobjscip.mingw.x86.msvc.opt.lib")
 //#pragma comment(lib, "libnlpi.cppad.mingw.x86.msvc.opt.lib")
 //#pragma comment(lib, "liblpispx2.mingw.x86.msvc.opt.lib")

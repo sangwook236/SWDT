@@ -30,7 +30,13 @@ int main(int argc, char *argv[])
         google::InitGoogleLogging(argv[0]);
 
         std::cout << "GNU Linear Programming Kit (GLPK) library ---------------------------" << std::endl;
-		//retval = glpk_main(argc, argv);
+		//	- Primal and dual simplex method.
+		//	- Primal-dual interior-point method.
+		//	- Branch-and-cut method.
+		//	- Stand-alone LP/MIP solver.
+		//	- Mathematical programming language.
+		//		GNU MathProg (GMPL), MPS format, CPLEX LP format.
+		retval = glpk_main(argc, argv);
 
         std::cout << "\nCeres Solver --------------------------------------------------------" << std::endl;
         //  - Non-linear least squares.
@@ -54,7 +60,7 @@ int main(int argc, char *argv[])
 #endif
 
 		std::cout << "\nComputational Infrastructure for Operations Research (COIN-OR) ------" << std::endl;
-		retval = coin_or_main(argc, argv);
+		//retval = coin_or_main(argc, argv);
 
 		std::cout << "\nSolving Constraint Integer Programs (SCIP) Optimization Suite -------" << std::endl;
 		//retval = scip_main(argc, argv);

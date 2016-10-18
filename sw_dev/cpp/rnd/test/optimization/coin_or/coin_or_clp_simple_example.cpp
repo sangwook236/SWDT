@@ -1,6 +1,5 @@
 #include <coin/ClpSimplex.hpp>
 #include <iostream>
-#include <cassert>
 
 
 namespace {

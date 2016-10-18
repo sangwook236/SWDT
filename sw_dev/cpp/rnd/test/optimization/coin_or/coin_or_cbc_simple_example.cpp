@@ -36,7 +36,7 @@ void cbc_simple_example()
 
 	for (int iColumn = 0; iColumn < numberColumns; ++iColumn)
 	{
-		double value = solution[iColumn];
+		const double value = solution[iColumn];
 		if (fabs(value) > 1.0e-7 && model.solver()->isInteger(iColumn))
 			std::cout << iColumn << " has value " << value << std::endl;
 	}
