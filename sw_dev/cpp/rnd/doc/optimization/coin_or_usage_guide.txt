@@ -17,7 +17,12 @@
 		http://www.coin-or.org/Cbc/
 		http://www.coin-or.org/Bonmin/
 
+		Download:
 		http://www.coin-or.org/download/
 		http://www.coin-or.org/download/source/
 		http://www.coin-or.org/download/binary/
 		http://www.coin-or.org/download/binary/CoinAll/
+
+		Subversion:
+		https://projects.coin-or.org/svn/Clp/trunk
+		https://projects.coin-or.org/svn/Cbc/trunk

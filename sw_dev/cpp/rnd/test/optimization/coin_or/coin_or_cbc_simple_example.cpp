@@ -16,29 +16,29 @@ namespace my_coin_or {
 // REF [doc] >> ${COIN-OR_HOME}/COIN-OR/doc/cbcuserguide.html#firstexample
 void cbc_simple_example()
 {
-	OsiClpSolverInterface solver1;
+	OsiClpSolverInterface solver;
 
 	// Read in example model in MPS file format and assert that it is a clean model.
-	const int numMpsReadErrors = solver1.readMps("./data/optimization/p0033.mps", "");
+	const int numMpsReadErrors = solver.readMps("./data/optimization/p0033.mps", "");
 	assert(numMpsReadErrors == 0);
 
 	// Pass the solver with the problem to be solved to CbcModel.
-	CbcModel model(solver1);
+	CbcModel model(solver);
 
 	// Do complete search.
 	model.branchAndBound();
 
 	// Print the solution.
 	// CbcModel clones the solver so we need to get current copy from the CbcModel.
-	const int numberColumns = model.solver()->getNumCols();
+	const int numColumns = model.solver()->getNumCols();
 
 	const double *solution = model.bestSolution();
 
-	for (int iColumn = 0; iColumn < numberColumns; ++iColumn)
+	for (int iCol = 0; iCol < numColumns; ++iCol)
 	{
-		const double value = solution[iColumn];
-		if (fabs(value) > 1.0e-7 && model.solver()->isInteger(iColumn))
-			std::cout << iColumn << " has value " << value << std::endl;
+		const double value = solution[iCol];
+		if (std::abs(value) > 1.0e-7 && model.solver()->isInteger(iCol))
+			std::cout << iCol << " has value " << value << std::endl;
 	}
 }
 

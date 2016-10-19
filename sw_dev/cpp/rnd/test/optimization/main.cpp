@@ -60,6 +60,8 @@ int main(int argc, char *argv[])
 #endif
 
 		std::cout << "\nComputational Infrastructure for Operations Research (COIN-OR) ------" << std::endl;
+		//	- Mathematical programming language.
+		//		GNU MathProg (GMPL), MPS format, LP format.
 		//retval = coin_or_main(argc, argv);
 
 		std::cout << "\nSolving Constraint Integer Programs (SCIP) Optimization Suite -------" << std::endl;
