@@ -10,8 +10,8 @@ namespace local{
 /*
 Maximize
 	obj: x1 + 2 x2 + 3 x3 + x4
-Subject To
-	c1: - x1 + x2 + x3 + 10 x4 <= 20
+Subject to
+	c1: -x1 + x2 + x3 + 10 x4 <= 20
 	c2: x1 - 3 x2 + x3 <= 30
 	c3: x2 - 3.5 x4 = 0
 Bounds
@@ -41,7 +41,7 @@ void mip_simple_sample()
 	glp_set_col_name(mip, 4, "x4");
 	glp_set_col_bnds(mip, 4, GLP_DB, 2.0, 3.0);
 	glp_set_obj_coef(mip, 4, 1.0);
-	glp_set_col_kind(mip, 4, GLP_IV);
+	glp_set_col_kind(mip, 4, GLP_IV);  // Integer variable.
 
 	// Constraints.
 	glp_add_rows(mip, 3);
@@ -129,6 +129,41 @@ void mip_mps_sample()
 	glp_delete_prob(mip);
 }
 
+void path_cover_problem()
+{
+	glp_prob *mip = glp_create_prob();
+
+	int retval = glp_read_mps(mip, GLP_MPS_FILE, NULL, "./data/optimization/path_cover_problem.mps");
+	if (0 != retval)
+	{
+		std::cerr << "Model file not found." << std::endl;
+		glp_delete_prob(mip);
+		return;
+	}
+
+	glp_adv_basis(mip, NULL);
+	// Solve LP problem with the simplex method.
+	retval = glp_simplex(mip, NULL);
+	if (0 != retval)
+	{
+		std::cerr << "Error on simplex method." << std::endl;
+		glp_delete_prob(mip);
+		return;
+	}
+	// Solve MIP problem with the branch-and-bound method.
+	retval = glp_intopt(mip, NULL);
+	if (0 != retval)
+	{
+		std::cerr << "Error on branch-and-bound method." << std::endl;
+		glp_delete_prob(mip);
+		return;
+	}
+
+	glp_print_mip(mip, "./data/optimization/glpk/path_cover_problem.txt");
+
+	glp_delete_prob(mip);
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -138,8 +173,12 @@ void mip_sample()
 {
 	// REF [function] >> local::mpl_sample_2() in ./glpk_mpl_sample.cpp
 
-	local::mip_simple_sample();
-	local::mip_mps_sample();
+	//local::mip_simple_sample();
+	//local::mip_mps_sample();
+
+	// Real-world application --------------------------------
+	// RDA data: 2016/04/06, adaptor 1, side 0deg.
+	local::path_cover_problem();
 }
 
 }  // namespace my_glpk

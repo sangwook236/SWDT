@@ -109,6 +109,9 @@ void mpl_sample()
 {
 	local::mpl_lp_sample();
 	local::mpl_mip_sample();
+
+	// Use AMPL IDE to convert AMPL to MPS.
+	//	REF [site] >> http://ampl.com/faqs/how-do-i-write-an-mps-file-for-my-problem/
 }
 
 }  // namespace my_glpk
