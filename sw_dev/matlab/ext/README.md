@@ -1,3 +1,3 @@
-# GDT for 3rd-party Libraries in Matlab
+# SWDT-Matlab for 3rd-party Libraries
 
 ## Introduction

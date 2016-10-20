@@ -1,3 +1,3 @@
-# GDT for S/W Libraries in Java
+# SWDT-Java for S/W Libraries
 
 ## Introduction

@@ -1,3 +1,3 @@
-# GDT for S/W Libraries
+# SWDT for S/W Libraries
 
 ## Introduction

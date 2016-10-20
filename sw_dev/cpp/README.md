@@ -1,3 +1,3 @@
-# GDT for S/W Libraries in C++
+# SWDT-C++ for S/W Libraries
 
 ## Introduction

@@ -1,3 +1,3 @@
-# GDT for Research and Development (R&D) Libraries in Java
+# SWDT-Java for Research and Development (R&D) Libraries
 
 ## Introduction

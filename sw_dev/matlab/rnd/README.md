@@ -1,3 +1,3 @@
-# GDT for Research and Development (R&D) Libraries in Matlab
+# SWDT-Matlab for Research and Development (R&D) Libraries
 
 ## Introduction

@@ -1,3 +1,3 @@
-# GDT for 3rd-party Libraries in Java
+# SWDT-Java for 3rd-party Libraries
 
 ## Introduction

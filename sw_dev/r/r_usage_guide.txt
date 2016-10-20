@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.r-project.org/
 		http://www.rstudio.com/
 
