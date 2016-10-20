@@ -1,3 +1,3 @@
-# GDT for Open Source Hardware (OSHW) Libraries
+# SWDT for Open Source H/W (OSHW)
 
 ## Introduction

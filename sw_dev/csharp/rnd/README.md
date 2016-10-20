@@ -1,3 +1,3 @@
-# GDT for Research and Development (R&D) Libraries in C# 
+# SWDT-C# for Research and Development (R&D) Libraries
 
 ## Introduction

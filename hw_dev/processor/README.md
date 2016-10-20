@@ -1,3 +1,3 @@
-# GDT for Processor Libraries
+# SWDT for Processor
 
 ## Introduction

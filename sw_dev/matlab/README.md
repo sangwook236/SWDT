@@ -1,3 +1,3 @@
-# GDT for S/W Libraries in Matlab
+# SWDT-Matlab for S/W Libraries
 
 ## Introduction
