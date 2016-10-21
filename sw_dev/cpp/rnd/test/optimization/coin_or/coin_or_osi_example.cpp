@@ -5,25 +5,27 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <array>
 #include <cassert>
 
 
 namespace {
 namespace local {
 
-// REF [doc] >> "5.4 parameters.cpp" in "${COIN-OR_HOME}/COIN-OR/doc/A Gentle Introduction to Optimization Solver Interface.pdf"
+// REF [doc] >> "5.1 basic.cpp ~ 5.3 query.cpp" in "${COIN-OR_HOME}/COIN-OR/doc/A Gentle Introduction to Optimization Solver Interface.pdf"
 void osi_basic_example()
 {
 	// Create a problem pointer. We use the base class here.
 	// When we instantiate the object, we need a specific derived class.
-	std::shared_ptr<OsiSolverInterface> si(new OsiClpSolverInterface);
-	//std::shared_ptr<OsiSolverInterface> si(new OsiGlpkSolverInterface);
+	const std::unique_ptr<OsiSolverInterface> si(new OsiClpSolverInterface);
+	//const std::unique_ptr<OsiSolverInterface> si(new OsiGlpkSolverInterface);
 
 	// Read in an mps file. This one's from the MIPLIB library.
 	si->readMps("./data/optimization/p0033");
 
 #if 0
-	// Demonstrate some problem and solution query methods and also demonstrate some parameter setting.
+	// Demonstrate some problem and solution query methods.
+	//	REF [doc] >> "5.3 query.cpp" in "${COIN-OR_HOME}/COIN-OR/doc/A Gentle Introduction to Optimization Solver Interface.pdf"
 	{
 		// Display some information about the instance.
 		const int nrows = si->getNumRows();
@@ -33,8 +35,12 @@ void osi_basic_example()
 
 		const double const * upper_bounds = si->getColUpper();
 		std::cout << "The upper bound on the first column is " << upper_bounds[0] << std::endl;
-
 		// All the information about the instance is available with similar methods.
+	}
+
+	// Demonstrate some parameter setting.
+	//	REF [doc] >> "5.4 parameters.cpp" in "${COIN-OR_HOME}/COIN-OR/doc/A Gentle Introduction to Optimization Solver Interface.pdf"
+	{
 		// Before solving, indicate some parameters.
 		si->setIntParam(OsiMaxNumIteration, 10);
 		si->setDblParam(OsiPrimalTolerance, 0.001);
@@ -51,9 +57,9 @@ void osi_basic_example()
 	//	REF [doc] >> "5.6 specific.cpp" in "${COIN-OR_HOME}/COIN-OR/doc/A Gentle Introduction to Optimization Solver Interface.pdf"
 	{
 		// The next few lines are solver-dependent!
-		ClpSimplex * clpPointer = std::dynamic_pointer_cast<OsiClpSolverInterface>(si)->getModelPtr();
-		clpPointer->setLogLevel(0);
-		//clpPointer->setMaximumIterations(10);
+		ClpSimplex * clp = dynamic_cast<OsiClpSolverInterface *>(si.get())->getModelPtr();
+		clp->setLogLevel(0);
+		//clp->setMaximumIterations(10);
 
 		// Could tell Clp many other things.
 	}
@@ -97,7 +103,7 @@ void osi_build_example()
 {
 	// Create a problem pointer. We use the base class here.
 	// When we instantiate the object, we need a specific derived class.
-	std::shared_ptr<OsiSolverInterface> si(new OsiClpSolverInterface);
+	const std::unique_ptr<OsiSolverInterface> si(new OsiClpSolverInterface);
 
 	// Build our own instance from scratch.
 	{
@@ -115,31 +121,32 @@ void osi_build_example()
 		 *		x1 >= 0
 		 */
 		const int n_cols = 2;
-		double * objective = new double [n_cols];  // The objective coefficients.
-		double * col_lb = new double [n_cols];  // The column lower bounds.
-		double * col_ub = new double [n_cols];  // The column upper bounds.
+		std::array<double, n_cols> objective = { 0.0, };  // The objective coefficients.
+		std::array<double, n_cols> col_lb = { 0.0, };  // The column lower bounds.
+		std::array<double, n_cols> col_ub = { 0.0, };  // The column upper bounds.
 
 		// Define the objective coefficients.
-		//	minimize -1 x0 - 1 x1
+		//	minimize -1 x0 - 1 x1.
 		objective[0] = -1.0;
 		objective[1] = -1.0;
 
 		// Define the variable lower/upper bounds.
-		//	x0 >= 0 ==> 0 <= x0 <= infinity
-		//	x1 >= 0 ==> 0 <= x1 <= infinity
+		//	x0 >= 0 ==> 0 <= x0 <= infinity.
+		//	x1 >= 0 ==> 0 <= x1 <= infinity.
 		col_lb[0] = 0.0;
 		col_lb[1] = 0.0;
 		col_ub[0] = si->getInfinity();
 		col_ub[1] = si->getInfinity();
+
 		const int n_rows = 2;
-		double * row_lb = new double [n_rows];  // The row lower bounds.
-		double * row_ub = new double [n_rows];  // The row upper bounds.
+		std::array<double, n_rows> row_lb = { 0.0, };  // The row lower bounds.
+		std::array<double, n_rows> row_ub = { 0.0, };  // The row upper bounds.
 
 		// Define the constraint matrix.
-		CoinPackedMatrix * matrix = new CoinPackedMatrix(false, 0, 0);
+		const std::unique_ptr<CoinPackedMatrix> matrix(new CoinPackedMatrix(false, 0, 0));
 		matrix->setDimensions(0, n_cols);
 
-		//	1 x0 + 2 x1 <= 3 => -infinity <= 1 x0 + 2 x2 <= 3
+		//	1 x0 + 2 x1 <= 3 ==> -infinity <= 1 x0 + 2 x2 <= 3.
 		CoinPackedVector row1;
 		row1.insert(0, 1.0);
 		row1.insert(1, 2.0);
@@ -147,7 +154,7 @@ void osi_build_example()
 		row_ub[0] = 3.0;
 		matrix->appendRow(row1);
 
-		//	2 x0 + 1 x1 <= 3 => -infinity <= 2 x0 + 1 x1 <= 3
+		//	2 x0 + 1 x1 <= 3 ==> -infinity <= 2 x0 + 1 x1 <= 3.
 		CoinPackedVector row2;
 		row2.insert(0, 2.0);
 		row2.insert(1, 1.0);
@@ -156,7 +163,7 @@ void osi_build_example()
 		matrix->appendRow(row2);
 
 		// Load the problem to OSI.
-		si->loadProblem(*matrix, col_lb, col_ub, objective, row_lb, row_ub);
+		si->loadProblem(*matrix, col_lb.data(), col_ub.data(), objective.data(), row_lb.data(), row_ub.data());
 
 		// Write the MPS file to a file called example.mps.
 		si->writeMps("./data/optimization/coin_or/example");
@@ -202,7 +209,7 @@ namespace my_coin_or {
 
 void osi_example()
 {
-	//local::osi_basic_example();
+	local::osi_basic_example();
 
 	// Build the instance internally with sparse matrix object.
 	local::osi_build_example();
