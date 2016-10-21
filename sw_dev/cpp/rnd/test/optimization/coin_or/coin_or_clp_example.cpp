@@ -14,6 +14,8 @@ void clp_simple_example()
 	if (!status)
 	{
 		model.primal();
+
+		// Do something.
 	}
 }
 

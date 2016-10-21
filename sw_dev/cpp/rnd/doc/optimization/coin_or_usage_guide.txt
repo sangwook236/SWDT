@@ -24,6 +24,9 @@
 		http://www.coin-or.org/download/binary/CoinAll/
 
 		Subversion:
+		https://github.com/coin-or
+		https://github.com/coin-or/COIN-OR-OptimizationSuite
+
 		https://projects.coin-or.org/svn/CoinBinary/OptimizationSuite/stable/1.8
 
 		https://projects.coin-or.org/svn/CoinBinary/CoinAll/trunk

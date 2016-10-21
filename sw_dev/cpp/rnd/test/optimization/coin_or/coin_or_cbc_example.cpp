@@ -9,6 +9,7 @@ namespace {
 namespace local {
 
 // REF [doc] >> ${COIN-OR_HOME}/COIN-OR/doc/cbcuserguide.html#firstexample
+// REF [function] >> local::osi_example() in ./coin_or_osi_example()
 void cbc_simple_example()
 {
 	OsiClpSolverInterface solver;
@@ -30,6 +31,14 @@ void cbc_simple_example()
 	model.branchAndBound();
 
 	// Print the solution.
+	// REF [doc] >> ${COIN-OR_HOME}/COIN-OR/doc/cbcuserguide.html#gettingsolution
+	//	Primal column solution: OsiSolverInterface::getColSolution(). It is safer to use CbcModel version, CbcModel::bestSolution().
+	//	Dual row solution: OsiSolverInterface::getRowPrice() = CbcModel::getRowPrice().
+	//	Primal row solution: OsiSolverInterface::getRowActivity() = CbcModel::getRowActivity().
+	//	Dual column solution: OsiSolverInterface::getReducedCost() = CbcModel::gtReducedCost().
+	//	Number of rows in model: OsiSolverInterface::getNumRows() = CbcModel::getNumRows(). The number of rows can change due to cuts.
+	//	Number of columns in model: OsiSolverInterface::getNumCols() = CbcModel::getNumCols().
+
 	// CbcModel clones the solver so we need to get current copy from the CbcModel.
 	const int numColumns = model.solver()->getNumCols();
 	const double *solution = model.bestSolution();

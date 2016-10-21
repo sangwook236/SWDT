@@ -1,5 +1,14 @@
+//#include <coin/OsiGlpkSolverInterface.hpp>
+//#include <coin/OsiSpxSolverInterface.hpp>
+//#include <coin/OsiCpxSolverInterface.hpp>
+//#include <coin/OsiGrbSolverInterface.hpp>
+//#include <coin/OsiMskSolverInterface.hpp>
+//#include <coin/OsiXprSolverInterface.hpp>
+#include <coin/OsiVolSolverInterface.hpp>
+#include <coin/OsiSymSolverInterface.hpp>
+#include <coin/OsiCbcSolverInterface.hpp>
+//#include <coin/OsiDylpSolverInterface.hpp>
 #include <coin/OsiClpSolverInterface.hpp>
-#include <coin/OsiGlpkSolverInterface.hpp>
 #include <coin/CoinPackedMatrix.hpp>
 #include <coin/CoinPackedVector.hpp>
 #include <iostream>
@@ -13,12 +22,11 @@ namespace {
 namespace local {
 
 // REF [doc] >> "5.1 basic.cpp ~ 5.3 query.cpp" in "${COIN-OR_HOME}/COIN-OR/doc/A Gentle Introduction to Optimization Solver Interface.pdf"
-void osi_basic_example()
+void osi_clp_basic_example()
 {
 	// Create a problem pointer. We use the base class here.
 	// When we instantiate the object, we need a specific derived class.
 	const std::unique_ptr<OsiSolverInterface> si(new OsiClpSolverInterface);
-	//const std::unique_ptr<OsiSolverInterface> si(new OsiGlpkSolverInterface);
 
 	// Read in an mps file. This one's from the MIPLIB library.
 	si->readMps("./data/optimization/p0033");
@@ -99,7 +107,7 @@ void osi_basic_example()
 }
 
 // REF [doc] >> "5.5 build.cpp" in "${COIN-OR_HOME}/COIN-OR/doc/A Gentle Introduction to Optimization Solver Interface.pdf"
-void osi_build_example()
+void osi_clp_build_example()
 {
 	// Create a problem pointer. We use the base class here.
 	// When we instantiate the object, we need a specific derived class.
@@ -202,6 +210,58 @@ void osi_build_example()
 	}
 }
 
+void osi_example()
+{
+	// Create a solver.
+	//const std::unique_ptr<OsiSolverInterface> si(new OsiClpSolverInterface);
+	//const std::unique_ptr<OsiSolverInterface> si(new OsiDylpSolverInterface);
+	//const std::unique_ptr<OsiSolverInterface> si(new OsiCbcSolverInterface);
+	const std::unique_ptr<OsiSolverInterface> si(new OsiSymSolverInterface);
+	//const std::unique_ptr<OsiSolverInterface> si(new OsiVolSolverInterface);
+
+	//const std::unique_ptr<OsiSolverInterface> si(new OsiGlpkSolverInterface);  // GLPK.
+	//const std::unique_ptr<OsiSolverInterface> si(new OsiSpxSolverInterface);  // SoPlex.
+	//const std::unique_ptr<OsiSolverInterface> si(new OsiCpxSolverInterface);  // CPLEX.
+	//const std::unique_ptr<OsiSolverInterface> si(new OsiGrbSolverInterface);  // Gurobi.
+	//const std::unique_ptr<OsiSolverInterface> si(new OsiMskSolverInterface);  // MOSEK.
+	//const std::unique_ptr<OsiSolverInterface> si(new OsiXprSolverInterface);  // Xpress-MP.
+
+	// Read in an mps file. This one's from the MIPLIB library.
+	si->readMps("./data/optimization/p0033.mps");
+
+	// Solve the (relaxation of the) problem.
+	si->initialSolve();
+
+	// Check the solution.
+	if (si->isProvenOptimal())
+	{
+		std::cout << "Found optimal solution!" << std::endl;
+		std::cout << "Objective value is " << si->getObjValue() << std::endl;
+
+		// Examine solution.
+		const int n = si->getNumCols();
+		const double *solution = si->getColSolution();
+
+		std::cout << "Solution: ";
+		for (int i = 0; i < n; ++i)
+			std::cout << solution[i] << " ";
+		std::cout << std::endl;
+		std::cout << "It took " << si->getIterationCount() << " iterations" << " to solve." << std::endl;
+	}
+	else
+	{
+		std::cout << "Didn't find optimal solution." << std::endl;
+
+		// Check other status functions. What happened?
+		if (si->isProvenPrimalInfeasible())
+			std::cout << "Problem is proven to be infeasible." << std::endl;
+		if (si->isProvenDualInfeasible())
+			std::cout << "Problem is proven dual infeasible." << std::endl;
+		if (si->isIterationLimitReached())
+			std::cout << "Reached iteration limit." << std::endl;
+	}
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -209,10 +269,18 @@ namespace my_coin_or {
 
 void osi_example()
 {
-	local::osi_basic_example();
+	// Primal column solution: OsiSolverInterface::getColSolution().
+	// Dual row solution: OsiSolverInterface::getRowPrice().
+	// Primal row solution: OsiSolverInterface::getRowActivity().
+	// Dual column solution: OsiSolverInterface::getReducedCost().
+	// Number of rows in model: OsiSolverInterface::getNumRows(). The number of rows can change due to cuts.
+	// Number of columns in model: OsiSolverInterface::getNumCols().
 
+	//local::osi_clp_basic_example();
 	// Build the instance internally with sparse matrix object.
-	local::osi_build_example();
+	//local::osi_clp_build_example();
+
+	local::osi_example();
 }
 
 }  // namespace my_coin_or
