@@ -131,8 +131,13 @@ void mip_mps_sample()
 
 void path_cover_problem()
 {
+	// Use AMPL IDE to convert AMPL to MPS.
+	//	REF [site] >> http://ampl.com/faqs/how-do-i-write-an-mps-file-for-my-problem/
+
 	glp_prob *mip = glp_create_prob();
 
+	// Read MPS file format.
+	//	- RDA data: 2016/04/06, adaptor 1, side 0deg.
 	int retval = glp_read_mps(mip, GLP_MPS_FILE, NULL, "./data/optimization/path_cover_problem.mps");
 	if (0 != retval)
 	{
@@ -159,7 +164,8 @@ void path_cover_problem()
 		return;
 	}
 
-	glp_print_mip(mip, "./data/optimization/glpk/path_cover_problem.txt");
+	glp_print_mip(mip, "./data/optimization/glpk/path_cover_problem_mip.txt");
+	//glp_print_sol(mip, "./data/optimization/glpk/path_cover_problem_sol.txt");
 
 	glp_delete_prob(mip);
 }
@@ -173,11 +179,12 @@ void mip_sample()
 {
 	// REF [function] >> local::mpl_sample_2() in ./glpk_mpl_sample.cpp
 
+	// Sample ---------------------------------------------
 	//local::mip_simple_sample();
 	//local::mip_mps_sample();
 
-	// Real-world application --------------------------------
-	// RDA data: 2016/04/06, adaptor 1, side 0deg.
+	// Application ----------------------------------------
+	// Path cover problem.
 	local::path_cover_problem();
 }
 

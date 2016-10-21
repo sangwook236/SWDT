@@ -24,5 +24,22 @@
 		http://www.coin-or.org/download/binary/CoinAll/
 
 		Subversion:
+		https://projects.coin-or.org/svn/CoinBinary/OptimizationSuite/stable/1.8
+
+		https://projects.coin-or.org/svn/CoinBinary/CoinAll/trunk
 		https://projects.coin-or.org/svn/Clp/trunk
 		https://projects.coin-or.org/svn/Cbc/trunk
+
+[-] Building.
+	REF [site] >> https://projects.coin-or.org/CoinBinary
+	REF [site] >> https://projects.coin-or.org/BuildTools
+	REF [site] >> https://projects.coin-or.org/MSVisualStudio
+
+	- In Visual Studio.
+		Open ${COIN-OR_HOME}/MSVisualStudio/v10/CoinAll.sln
+
+	- In Unix-like systems.
+		cd ${COIN-OR_HOME}
+		./configure
+		make
+		make install
