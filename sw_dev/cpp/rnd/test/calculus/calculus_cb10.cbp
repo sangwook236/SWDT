@@ -41,6 +41,8 @@
 			<Add directory="/usr/local/lib" />
 			<Add directory="/usr/lib" />
 		</Linker>
+		<Unit filename="cppad/cppad_eigen.cpp" />
+		<Unit filename="cppad/cppad_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
