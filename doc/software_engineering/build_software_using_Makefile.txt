@@ -10,7 +10,7 @@
 				aclocal
 				autoconf or autoreconf -i
 				autoheader
-				automake --add-missing
+				automake or automake --add-missing
 			./configure --prefix=${INSTALL_PREFIX}
 			./configure --enable-shared
 		Options:
