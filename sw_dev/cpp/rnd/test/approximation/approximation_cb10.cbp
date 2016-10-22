@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="calculus" />
+		<Option title="approximation" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../bin/calculus_d" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/approximation_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -17,7 +17,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="../../bin/calculus" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/approximation" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
@@ -40,8 +40,7 @@
 			<Add directory="/usr/local/lib" />
 			<Add directory="/usr/lib" />
 		</Linker>
-		<Unit filename="cppad/cppad_eigen.cpp" />
-		<Unit filename="cppad/cppad_main.cpp" />
+		<Unit filename="tinyspline/tinyspline_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

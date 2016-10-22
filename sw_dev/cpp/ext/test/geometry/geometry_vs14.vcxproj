@@ -48,7 +48,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/gmp;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/mpfr;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/taucs;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/mpfr;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>TINYSPLINE_DOUBLE_PRECISION;CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -72,7 +72,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/gmp;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/mpfr;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/taucs;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/mpfr;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>TINYSPLINE_DOUBLE_PRECISION;CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -101,7 +101,6 @@
     <ClCompile Include="openmesh\openmesh_main.cpp" />
     <ClCompile Include="openmesh\openmesh_simple_object.cpp" />
     <ClCompile Include="sophus\sophus_main.cpp" />
-    <ClCompile Include="tinyspline\tinyspline_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

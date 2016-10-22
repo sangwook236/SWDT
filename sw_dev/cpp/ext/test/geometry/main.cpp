@@ -20,7 +20,6 @@ int main(int argc, char *argv[])
 	int openmesh_main(int argc, char *argv[]);
 
 	int sophus_main(int argc, char *argv[]);
-	int tinyspline_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -29,7 +28,7 @@ int main(int argc, char *argv[])
 		//	REF [library] >> Boost library.
 
 		std::cout << "\nComputational Geometry Algorithms Library (CGAL) --------------------" << std::endl;
-		//retval = cgal_main(argc, argv);
+		retval = cgal_main(argc, argv);
 
 		std::cout << "\nOpenMesh library ----------------------------------------------------" << std::endl;
 		//retval = openmesh_main(argc, argv);
@@ -37,14 +36,6 @@ int main(int argc, char *argv[])
 		std::cout << "\nSophus library ------------------------------------------------------" << std::endl;
 		//	- Lie Groups.
 		//retval = sophus_main(argc, argv);  // Not yet implemented.
-
-		std::cout << "\nTinySpline library --------------------------------------------------" << std::endl;
-		//	- Spline.
-		//		Basis spline (B-spline).
-		//		Non-uniform rational B-spline (NURBS).
-		//		Thin-plate spline (TPS). (?)
-		//	- Bezier.
-		retval = tinyspline_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{
