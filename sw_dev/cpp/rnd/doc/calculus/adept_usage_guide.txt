@@ -1,0 +1,23 @@
+[-] General.
+	- Site.
+		http://www.met.reading.ac.uk/clouds/adept/
+		https://github.com/rjhogan/Adept
+
+		http://www.met.reading.ac.uk/clouds/adept2/
+		https://github.com/rjhogan/Adept-2
+
+[-] Building.
+	- Required library.
+		BLAS.
+
+	- If some errors arise when running 'configure'.
+		aclocal
+		autoconf or autoreconf -i
+		autoheader
+		automake or automake --add-missing
+	- Configure.
+		./configure
+	- Run make
+		make
+		make check
+		make install

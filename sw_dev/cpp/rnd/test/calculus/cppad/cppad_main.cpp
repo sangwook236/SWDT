@@ -38,6 +38,7 @@ private:
 };
 
 // REF [site] >> http://www.coin-or.org/CppAD/Doc/get_started.cpp.xml
+// REF [file] >> ${COIN-OR_HOME}/cppad/example/poly.cpp
 template<class Function, typename Type = Function::value_type>
 Type function_derivative_example(Function func, const Type &val)
 {
@@ -66,13 +67,13 @@ Type function_derivative_example(Function func, const Type &val)
 	return jac[0];
 }
 
-void simple_polynomial_example()
+void function_jacobian_example()
 {
 	// Vector of polynomial coefficients.
 	const size_t k = 5;  // Number of polynomial coefficients.
 	std::vector<double> coeffs(k);  // Vector of polynomial coefficients.
-	for (size_t i = 0; i < k; i++)
-		coeffs[i] = 1.;  // Value of polynomial coefficients.
+	for (size_t i = 0; i < k; ++i)
+		coeffs[i] = 1.0;  // Value of polynomial coefficients.
 
 	const double jacobian = function_derivative_example(Polynomial<double>(coeffs), 3.0);
 
@@ -81,6 +82,50 @@ void simple_polynomial_example()
 	std::cout << "The true value of f'(3) = 142.0" << std::endl;
 }
 
+// REF [site] >> http://www.coin-or.org/CppAD/Doc/add.cpp.htm
+void forward_and_reverse_derivative_example()
+{
+	// Domain space vector.
+	const size_t n = 1;
+	const double x0 = 0.5;
+	std::vector<CppAD::AD<double>> x(n);
+	x[0] = x0;
+
+	// Declare independent variables and start tape recording.
+	CppAD::Independent(x);
+
+	// Some binary addition operations.
+	CppAD::AD<double> a = x[0] + 1.;  // AD<double> + double.
+	CppAD::AD<double> b = a + 2;  // AD<double> + int.
+	CppAD::AD<double> c = 3. + b;  // double + AD<double>.
+	CppAD::AD<double> d = 4 + c;  // int + AD<double>.
+
+	// Range space vector.
+	const size_t m = 1;
+	std::vector<CppAD::AD<double>> y(m);
+	// y = 2 * x + 10.
+	y[0] = d + x[0];  // AD<double> + AD<double>
+
+	// Create f: x -> y and stop tape recording.
+	CppAD::ADFun<double> f(x, y);
+
+	// Check value.
+	std::cout << "y = " << y[0] << ", the true value of y = " << (2.0 * x0 + 10.0) << std::endl;
+
+	// Forward computation of partials w.r.t. x[0].
+	std::vector<double> dx(n);
+	std::vector<double> dy(m);
+	dx[0] = 1.0;
+	dy = f.Forward(1, dx);
+	std::cout << "Forward derivative of dy = " << dy[0] << ", the true value of dy = 2.0" << std::endl;
+
+	// Reverse computation of derivative of y[0].
+	std::vector<double> w(m);
+	std::vector<double> dw(n);
+	w[0] = 1.0;
+	dw = f.Reverse(1, w);
+	std::cout << "Reverse derivative of dy = " << dw[0] << ", the true value of dy = 2.0" << std::endl;
+}
 }  // namespace local
 }  // unnamed namespace
 
@@ -90,7 +135,11 @@ namespace my_cppad {
 
 int cppad_main(int argc, char *argv[])
 {
-	local::simple_polynomial_example();
+	// Derivative of functions such as polynomials.
+	//local::function_jacobian_example();
+
+	// Forward and reverse derivatives.
+	local::forward_and_reverse_derivative_example();
 
 	return 0;
 }

@@ -1,0 +1,23 @@
+[-] General.
+	- Site.
+		https://projects.coin-or.org/ADOL-C
+
+[-] Building (VC2015).
+	- Copy ColPack library.
+		If ColPack library does not want to be used, set HAVE_LIBCOLPACK.
+
+		Copy ColPack library's files to ${ADOLC_HOME}/MSVisualStudio/v14.
+			BipartiteGraphBicoloring
+			BipartiteGraphPartialColoring
+			GraphColoring
+			Graphs
+			Main
+			Recovery
+			SampleDrivers
+			Utilities
+
+	- Open its solution file.
+		${ADOLC_HOME}/adolc.sln
+	- Fix 'Additional Include Directories'.
+		$(ProjectDir)/ColPack/$(IntDir)/include --> $(ProjectDir)/$(IntDir)/include
+	- Build.

@@ -4,11 +4,11 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-//#pragma comment(lib, "libCppADd.lib")
+//#pragma comment(lib, "adolc.lib")
 
 #		else
 
-//#pragma comment(lib, "libCppAD.lib")
+//#pragma comment(lib, "adolc.lib")
 
 #		endif
 
