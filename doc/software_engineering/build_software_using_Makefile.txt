@@ -6,7 +6,9 @@
 
 	- Configure.
 		Command:
-			(Optional) autoconf
+			(Optional)
+				autoconf
+				autoreconf -i
 			./configure --prefix=${INSTALL_PREFIX}
 			./configure --enable-shared
 		Options:
