@@ -6,6 +6,11 @@
 
 	- Configure.
 		Command:
+			If some errors arise in the process of configuring:
+				aclocal
+				autoconf or autoreconf -i
+				autoheader
+				automake or automake --add-missing
 			./configure --prefix=${INSTALL_PREFIX}
 			./configure --enable-shared
 		Options:
