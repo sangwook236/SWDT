@@ -64,6 +64,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "failure_analysis", "..\test
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "artificial_intelligence", "..\test\artificial_intelligence\artificial_intelligence_vs14.vcxproj", "{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "calculus", "..\test\calculus\calculus_vs14.vcxproj", "{363C9CFA-5054-4362-9FBE-E81F8D3BB72A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -262,6 +264,14 @@ Global
 		{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}.Release|Win32.Build.0 = Release|Win32
 		{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}.Release|x64.ActiveCfg = Release|x64
 		{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}.Release|x64.Build.0 = Release|x64
+		{363C9CFA-5054-4362-9FBE-E81F8D3BB72A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{363C9CFA-5054-4362-9FBE-E81F8D3BB72A}.Debug|Win32.Build.0 = Debug|Win32
+		{363C9CFA-5054-4362-9FBE-E81F8D3BB72A}.Debug|x64.ActiveCfg = Debug|x64
+		{363C9CFA-5054-4362-9FBE-E81F8D3BB72A}.Debug|x64.Build.0 = Debug|x64
+		{363C9CFA-5054-4362-9FBE-E81F8D3BB72A}.Release|Win32.ActiveCfg = Release|Win32
+		{363C9CFA-5054-4362-9FBE-E81F8D3BB72A}.Release|Win32.Build.0 = Release|Win32
+		{363C9CFA-5054-4362-9FBE-E81F8D3BB72A}.Release|x64.ActiveCfg = Release|x64
+		{363C9CFA-5054-4362-9FBE-E81F8D3BB72A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

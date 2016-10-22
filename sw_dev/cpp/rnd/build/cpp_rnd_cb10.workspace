@@ -3,6 +3,7 @@
 	<Workspace title="Workspace">
 		<Project filename="../test/artificial_intelligence/artificial_intelligence_cb10.cbp" />
 		<Project filename="../test/bayesian_filtering/bayesian_filtering_cb10.cbp" />
+		<Project filename="../test/calculus/calculus_cb10.cbp" />
 		<Project filename="../test/change_detection/change_detection_cb10.cbp" />
 		<Project filename="../test/dimensionality_reduction/dimensionality_reduction_cb10.cbp" />
 		<Project filename="../test/distance/distance_cb10.cbp" />

@@ -97,7 +97,6 @@
     <ClCompile Include="ceres_solver\ceres_solver_main.cpp" />
     <ClCompile Include="coin_or\coin_or_cbc_example.cpp" />
     <ClCompile Include="coin_or\coin_or_clp_example.cpp" />
-    <ClCompile Include="coin_or\coin_or_main.cpp" />
     <ClCompile Include="coin_or\coin_or_osi_example.cpp" />
     <ClCompile Include="glpk\glpk_interior_point_sample.cpp" />
     <ClCompile Include="glpk\glpk_main.cpp" />

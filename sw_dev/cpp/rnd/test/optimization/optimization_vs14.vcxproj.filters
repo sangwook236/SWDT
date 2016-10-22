@@ -75,9 +75,6 @@
     <ClCompile Include="optpp\optpp_main.cpp">
       <Filter>Source Files\optpp</Filter>
     </ClCompile>
-    <ClCompile Include="coin_or\coin_or_main.cpp">
-      <Filter>Source Files\coin_or</Filter>
-    </ClCompile>
     <ClCompile Include="ceres_solver\ceres_solver_bundle_adjustment_example.cpp">
       <Filter>Source Files\ceres_solver</Filter>
     </ClCompile>

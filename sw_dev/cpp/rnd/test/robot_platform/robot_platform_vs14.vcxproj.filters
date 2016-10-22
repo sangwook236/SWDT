@@ -39,5 +39,8 @@
     <ClCompile Include="ros\ros_main.cpp">
       <Filter>Source Files\ros</Filter>
     </ClCompile>
+    <ClCompile Include="..\optimization\coin_or\coin_or_main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
