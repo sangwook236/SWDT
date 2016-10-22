@@ -27,5 +27,8 @@
     <ClCompile Include="cppad\cppad_main.cpp">
       <Filter>Source Files\cppad</Filter>
     </ClCompile>
+    <ClCompile Include="cppad\cppad_eigen.cpp">
+      <Filter>Source Files\cppad</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
