@@ -76,6 +76,8 @@ int main(int argc, char *argv[])
 
 	void image();
 
+	void compute();
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
@@ -170,6 +172,10 @@ int main(int argc, char *argv[])
 
 		{
 			//image();
+		}
+
+		{
+			compute();
 		}
 	}
     catch (const std::bad_alloc &e)

@@ -4,6 +4,7 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "OpenCL.lib")
 //#pragma comment(lib, "gmpfrxx_d.lib")
 //#pragma comment(lib, "libmpfr-4.dll.lib")
 //#pragma comment(lib, "libgmp-3.dll.lib")
@@ -15,6 +16,7 @@
 
 #		else
 
+#pragma comment(lib, "OpenCL.lib")
 //#pragma comment(lib, "gmpfrxx.lib")
 //#pragma comment(lib, "libmpfr-4.dll.lib")
 //#pragma comment(lib, "libgmp-3.dll.lib")
