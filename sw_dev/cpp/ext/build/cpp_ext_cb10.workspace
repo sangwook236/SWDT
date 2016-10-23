@@ -2,7 +2,9 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
 		<Project filename="../test/application_configuration/application_configuration_cb10.cbp" />
+		<Project filename="../test/approximation/approximation_cb10.cbp" />
 		<Project filename="../test/boost/boost_cb10.cbp" />
+		<Project filename="../test/calculus/calculus_cb10.cbp" />
 		<Project filename="../test/compression/compression_cb10.cbp" />
 		<Project filename="../test/database/database_cb10.cbp" />
 		<Project filename="../test/file_format/file_format_cb10.cbp" />

@@ -14,7 +14,10 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "COIN-OR CppAD library -----------------------------------------------" << std::endl;
+		std::cout << "Boost.Numeric.Odeint library ----------------------------------------" << std::endl;
+		// REF [library] >> Boost library.
+
+		std::cout << "\nCOIN-OR CppAD library -----------------------------------------------" << std::endl;
 		//  - Automatic differentiation (AutoDiff).
 		retval = cppad_main(argc, argv);
 	}
