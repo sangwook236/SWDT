@@ -163,7 +163,7 @@ void akima_spline()
 	std::cout << v << std::endl;  // EXPECTED: 0.0625.
 }
 
-void spline_derivative()
+void spline_differentiation()
 {
 	// Use piecewise linear spline to interpolate f(x)=x^2 sampled at 5 equidistant nodes on [-1, +1].
 	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";
@@ -172,13 +172,15 @@ void spline_derivative()
 	// Build spline.
 	alglib::spline1dinterpolant spline;
 	//alglib::spline1dbuildcubic(x, y, spline);
+	//const alglib::ae_int_t natural_bound_type = 2;
+	//alglib::spline1dbuildcubic(x, y, 5, natural_bound_type, 0.0, natural_bound_type, 0.0, spline);
 	alglib::spline1dbuildakima(x, y, spline);
 
 	// Differentiate.
 	const double t = 0.25;
 	double s = 0.0, ds = 0.0, d2s = 0.0;
 	alglib::spline1ddiff(spline, t, s, ds, d2s);
-	std::cout << "s = " << s << ", ds = " << ds << ", ds2 = " << d2s << std::endl;
+	std::cout << "t = " << t << ", s = " << s << ", ds = " << ds << ", d2s = " << d2s << std::endl;
 }
 
 void spline_integration()
@@ -190,12 +192,14 @@ void spline_integration()
 	// Build spline.
 	alglib::spline1dinterpolant spline;
 	//alglib::spline1dbuildcubic(x, y, spline);
+	//const alglib::ae_int_t natural_bound_type = 2;
+	//alglib::spline1dbuildcubic(x, y, 5, natural_bound_type, 0.0, natural_bound_type, 0.0, spline);
 	alglib::spline1dbuildakima(x, y, spline);
 
 	// Integrate.
 	const double t = 0.25;
 	const double sdt = alglib::spline1dintegrate(spline, t);
-	std::cout << "sdt = " << sdt << std::endl;
+	std::cout << "t = (-1," << t << "), sdt = " << sdt << std::endl;
 }
 
 }  // namespace local
@@ -212,10 +216,10 @@ void spline()
 
 	//
 	//local::hermite_spline();
-	local::akima_spline();
+	//local::akima_spline();
 
 	// Differentiation and integration of spline.
-	local::spline_derivative();
+	local::spline_differentiation();
 	local::spline_integration();
 }
 

@@ -15,10 +15,11 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "GSL Spline library ------------------------------------------------" << std::endl;
+		//	- Spline and its differentiation and integration.
 		// REF [library] >> GSL library.
 
 		std::cout << "\nALGLIB Spline library -----------------------------------------------" << std::endl;
-		//	- Spline and its derivative and integration.
+		//	- Spline and its differentiation and integration.
 		// REF [library] >> ALGLIB library.
 
 		std::cout << "\nEigen Spline library ------------------------------------------------" << std::endl;

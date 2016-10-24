@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "GNU Scientific Library (GSL) ----------------------------------------" << std::endl;
-		//retval = gsl_main(argc, argv);
+		retval = gsl_main(argc, argv);
 		std::cout << "\nGSLwrap library -----------------------------------------------------" << std::endl;
 		//retval = gslwrap_main(argc, argv);
 

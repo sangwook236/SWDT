@@ -74,6 +74,7 @@ void distribution();
 void monte_carlo_integration();
 void simulated_annealing();
 void spline();
+void bspline();
 
 }  // namespace my_gsl
 
@@ -126,6 +127,7 @@ int gsl_main(int argc, char *argv[])
 		//my_gsl::simulated_annealing();
 
 		my_gsl::spline();
+		//my_gsl::bspline();
 	}
 	catch (const std::runtime_error &e)
 	{
