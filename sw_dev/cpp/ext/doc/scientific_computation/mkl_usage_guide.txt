@@ -1,3 +1,3 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://software.intel.com/en-us/intel-mkl/

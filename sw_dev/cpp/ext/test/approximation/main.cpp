@@ -14,7 +14,14 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "Eigen Spline library ------------------------------------------------" << std::endl;
+		std::cout << "GSL Spline library ------------------------------------------------" << std::endl;
+		// REF [library] >> GSL library.
+
+		std::cout << "\nALGLIB Spline library -----------------------------------------------" << std::endl;
+		//	- Spline and its derivative and integration.
+		// REF [library] >> ALGLIB library.
+
+		std::cout << "\nEigen Spline library ------------------------------------------------" << std::endl;
 		// REF [library] >> Eigen library.
 
 		std::cout << "\nTinySpline library --------------------------------------------------" << std::endl;

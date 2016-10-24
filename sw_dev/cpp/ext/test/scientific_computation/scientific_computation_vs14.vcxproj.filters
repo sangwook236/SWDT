@@ -19,6 +19,12 @@
     <Filter Include="Source Files\gslwrap">
       <UniqueIdentifier>{a0c371d9-25f9-4d3a-9e25-c6613d0bcd54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\alglib">
+      <UniqueIdentifier>{4f787622-d7e6-48cc-936f-fe9b8727119c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\alglib_lib">
+      <UniqueIdentifier>{740a093b-d935-40be-9005-7b5920599836}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -99,5 +105,94 @@
     <ClCompile Include="gsl\gsl_spline.cpp">
       <Filter>Source Files\gsl</Filter>
     </ClCompile>
+    <ClCompile Include="alglib_lib\alglibinternal.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib_lib\alglibmisc.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib_lib\ap.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib_lib\dataanalysis.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib_lib\diffequations.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib_lib\fasttransforms.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib_lib\integration.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib_lib\interpolation.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib_lib\linalg.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib_lib\optimization.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib_lib\solvers.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib_lib\specialfunctions.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib_lib\statistics.cpp">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib\alglib_main.cpp">
+      <Filter>Source Files\alglib</Filter>
+    </ClCompile>
+    <ClCompile Include="alglib\alglib_spline.cpp">
+      <Filter>Source Files\alglib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="alglib_lib\alglibinternal.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\alglibmisc.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\ap.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\dataanalysis.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\diffequations.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\fasttransforms.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\integration.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\interpolation.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\linalg.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\optimization.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\solvers.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\specialfunctions.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\statistics.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="alglib_lib\stdafx.h">
+      <Filter>Source Files\alglib_lib</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

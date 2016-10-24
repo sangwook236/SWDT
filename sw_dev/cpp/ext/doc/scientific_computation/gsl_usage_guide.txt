@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.gnu.org/software/gsl/
 
 		http://gladman.plushost.co.uk/oldsite/computing/gnu_scientific_library.php
@@ -10,13 +10,13 @@
 		http://gladman.plushost.co.uk/oldsite/computing/gnu_scientific_library.php
 		http://david.geldreich.free.fr/dev.html
 
-	-. Reference
+	- Reference.
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Building (VC10)
-	[ref] ${GSL_HOME}/build.vc10/gsl.vc10.readme.txt
+[-] Building (VC10).
+	REF [file] >> ${GSL_HOME}/build.vc10/gsl.vc10.readme.txt
 
-	-. extract source files & project-related files
+	- Extract source files & project-related files.
 		gsl-1.15.tar.gz & gsl-1.15-vc10.zip file을 동일한 directory, ${GSL_HOME}에 압축 해제.
 			${GSL_HOME}/blas
 			${GSL_HOME}/block
@@ -25,7 +25,7 @@
 			${GSL_HOME}/ieee-utils
 			...
 
-	-. create GSL header files
+	- Create GSL header files.
 		1. 압축을 해제하면 GSL header file들이 존재하지 않음.
 			${GSL_HOME}/gsl
 		2. GSL solution file에서 gslhdrs project or gsldefs project 중 하나를 rebuild하면,
@@ -39,38 +39,38 @@
 			gsldefs project는 import library file을 생성하기 위해 def file을 사용.
 				${GSL_HOME}/build.vc10/gsldefs/cblas.def
 				${GSL_HOME}/build.vc10/gsldefs/gsl.def
-		3. GSL header file 배포
+		3. GSL header file 배포.
 			아래의 file들를 원하는 directory로 복사.
 				${GSL_HOME}/gsl/*.h
 				${GSL_HOME}/build.vc10/config.h
-			shared library와 static library를 위한 header file이 다르게 생성되므로 적절히 사용해야 함. (?)
+			Shared library와 static library를 위한 header file이 다르게 생성되므로 적절히 사용해야 함. (?)
 
-	-. building shared library.
-		1. open solution file
+	- Build shared library.
+		1. Open solution file.
 			${GSL_HOME}/build.vc10/gsl.dll.sln
-		2. build library
+		2. Build library.
 			${GSL_HOME}/build.vc10/dll/Win32/Release/cblas.dll & lib
 			${GSL_HOME}/build.vc10/dll/Win32/Release/gsl.dll & lib
 			${GSL_HOME}/build.vc10/dll/Win32/Debug/cblas.dll & lib
 			${GSL_HOME}/build.vc10/dll/Win32/Debug/gsl.dll & lib
 
-	-. building static library
-		1. open solution file
+	- Build static library
+		1. Open solution file.
 			${GSL_HOME}/build.vc10/gsl.lib.sln
-		2. build library
+		2. Build library.
 			${GSL_HOME}/build.vc10/lib/Win32/Release/cblas.lib
 			${GSL_HOME}/build.vc10/lib/Win32/Release/gsl.lib
 			${GSL_HOME}/build.vc10/lib/Win32/Debug/cblas.lib
 			${GSL_HOME}/build.vc10/lib/Win32/Debug/gsl.lib
 
-[-] Trouble Shooting
-	-. GSLwrap library를 사용하는 경우
+[-] Trouble shooting.
+	- GSLwrap library를 사용하는 경우.
 		GSLwrap library의 경우 shared library를 생성하기 어렵기 때문에
 		GSL library도 static library를 사용하는 것이 유리.
-	-. ${GSL_HOME}/gsl directory에 header file들이 생성되지 않는 경우.
+	- ${GSL_HOME}/gsl directory에 header file들이 생성되지 않는 경우.
 		GSL header file을 포함하고 있는 다른 directory가 path에 설정되어 있는 경우에 발생 가능.
 			e.g.) sw_dev/ext/inc/gsl
-	-. static library가 build 되지 않는 경우.
+	- Static library가 build 되지 않는 경우.
 		아래와 같은 오류 발생:
 			..\..\ode-initval2\rk4imp.c(252): error C2097: illegal initialization
 		오류 원인은 파악하지 못함.
@@ -81,13 +81,13 @@
 		    double c[2];
 		    c[0] = (3. - sqrt (3.)) / 6.;
 			c[1] = (3. + sqrt (3.)) / 6.;
-	-. static library가 build 되지 않는 경우.
+	- Static library가 build 되지 않는 경우.
 		오류 원인은 파악하지 못함.
 		==> CBLAS & GSL library project에 아래 macro 정의를 삭제하면 됨.
 				GSL_RANGE_CHECK
 			GSL_RANGE_CHECK macro는 Debug build에만 정의되어 있고 Release build에는 정의되어 있지 않음.
 				오류 확인용 기능을 위한 macro로 보임.
-	-. static library를 linking해 사용하는 application에서 오류 발생
+	- Static library를 linking해 사용하는 application에서 오류 발생.
 		linking 과정에서 _HUGE 변수의 정의를 찾을 수 없다는 오류가 발생.
 		GSL library, GSLwrap library, & application에서 사용하는 runtime library의 차이에 의해 발생.
 			Multi-threaded (/MT) or Multi-threaded Debug (/MTd)
@@ -95,9 +95,9 @@
 		==> 동일한 runtime library를 사용해야 함.
 			DLL version의 runtime library를 사용하는 것이 좋을 듯함.
 				Multi-threaded DLL (/MD) or Multi-threaded Debug DLL (/MDd)
-	-. shared library가 build 되지 않는 경우.
-		cblas library의 import library file이 생성되지 않아 발생.
-		하지만, cblas library를 위한 def file이 생성됨.
+	- Shared library가 build 되지 않는 경우.
+		CBLAS library의 import library file이 생성되지 않아 발생.
+		하지만, CBLAS library를 위한 def file이 생성됨.
 			${GSL_HOME}/gsldefs/cblas.def
 		==> cblas.dll file & cblas.def를 이용해 import library file을 생성.
 				${GSL_HOME}/dll/Win32/Release/cblas.dll
@@ -107,8 +107,7 @@
 				lib /def:cblas.def 
 			Cygwin:
 				dlltool --def cblas.def --dllname cblas.dll --output-lib cblas.a
-		==> gsl library의 import library file는 자동으로 생성되지만
-			정상적으로 동작하지 않아 수동적으로 생성해야 함.
+		==> GSL library의 import library file는 자동으로 생성되지만 정상적으로 동작하지 않아 수동적으로 생성해야 함.
 				${GSL_HOME}/gsldefs/gsl.def
 				${GSL_HOME}/dll/Win32/Release/gsl.dll
 				${GSL_HOME}/dll/Win32/Debug/gsl.dll
@@ -117,8 +116,8 @@
 				lib /def:gsl.def 
 			Cygwin:
 				dlltool --def gsl.def --dllname gsl.dll --output-lib gsl.a
-	-. Error message : 'gsl_acosh' : redefinition; different linkage
-		==> To fix this, go into build.vc11/config.h and change
+	- Error message : 'gsl_acosh' : redefinition; different linkage.
+		==> To fix this, go into build.vc11/config.h and change.
 			<before> #undef HAVE_DECL_ACOSH
 			<after> #define HAVE_DECL_ACOSH 1
-		[ref] http://qubitcal.blogspot.com/2013/08/gsl-on-windows.html
+		REF [site] >> http://qubitcal.blogspot.com/2013/08/gsl-on-windows.html

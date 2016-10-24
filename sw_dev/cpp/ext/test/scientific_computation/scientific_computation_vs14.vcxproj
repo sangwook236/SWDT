@@ -47,7 +47,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./alglib_lib;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;HAVE_INLINE;HAVE_CONFIG_H;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -70,7 +70,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./alglib_lib;../../inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;HAVE_INLINE;HAVE_CONFIG_H;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -92,6 +92,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="alglib\alglib_main.cpp" />
+    <ClCompile Include="alglib\alglib_spline.cpp" />
+    <ClCompile Include="alglib_lib\alglibinternal.cpp" />
+    <ClCompile Include="alglib_lib\alglibmisc.cpp" />
+    <ClCompile Include="alglib_lib\ap.cpp" />
+    <ClCompile Include="alglib_lib\dataanalysis.cpp" />
+    <ClCompile Include="alglib_lib\diffequations.cpp" />
+    <ClCompile Include="alglib_lib\fasttransforms.cpp" />
+    <ClCompile Include="alglib_lib\integration.cpp" />
+    <ClCompile Include="alglib_lib\interpolation.cpp" />
+    <ClCompile Include="alglib_lib\linalg.cpp" />
+    <ClCompile Include="alglib_lib\optimization.cpp" />
+    <ClCompile Include="alglib_lib\solvers.cpp" />
+    <ClCompile Include="alglib_lib\specialfunctions.cpp" />
+    <ClCompile Include="alglib_lib\statistics.cpp" />
     <ClCompile Include="gslwrap\gslwrap_main.cpp" />
     <ClCompile Include="gslwrap\gslwrap_test.cpp" />
     <ClCompile Include="gslwrap\gslwrap_test_min.cpp" />
@@ -118,6 +133,22 @@
     <ClCompile Include="gsl\gsl_vector_operation.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="alglib_lib\alglibinternal.h" />
+    <ClInclude Include="alglib_lib\alglibmisc.h" />
+    <ClInclude Include="alglib_lib\ap.h" />
+    <ClInclude Include="alglib_lib\dataanalysis.h" />
+    <ClInclude Include="alglib_lib\diffequations.h" />
+    <ClInclude Include="alglib_lib\fasttransforms.h" />
+    <ClInclude Include="alglib_lib\integration.h" />
+    <ClInclude Include="alglib_lib\interpolation.h" />
+    <ClInclude Include="alglib_lib\linalg.h" />
+    <ClInclude Include="alglib_lib\optimization.h" />
+    <ClInclude Include="alglib_lib\solvers.h" />
+    <ClInclude Include="alglib_lib\specialfunctions.h" />
+    <ClInclude Include="alglib_lib\statistics.h" />
+    <ClInclude Include="alglib_lib\stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
