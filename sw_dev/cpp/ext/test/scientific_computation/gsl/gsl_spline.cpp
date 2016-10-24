@@ -244,24 +244,6 @@ void spline_1d_integration()
 	gsl_interp_accel_free(acc);
 }
 
-}  // namespace local
-}  // unnamed namespace
-
-namespace my_gsl {
-
-void spline()
-{
-	//local::spline_1d_example();
-	//local::spline_1d_periodic_example();
-	//local::spline_1d_comparision_example();
-
-	//local::spline_2d_example();
-
-	//
-	local::spline_1d_differentiation();
-	local::spline_1d_integration();
-}
-
 // REF [site] >> https://www.gnu.org/software/gsl/manual/html_node/Example-programs-for-B_002dsplines.html#Example-programs-for-B_002dsplines
 void bspline()
 {
@@ -308,7 +290,7 @@ void bspline()
 		gsl_vector_set(y, i, yi);
 		gsl_vector_set(w, i, 1.0 / (sigma * sigma));
 
-		std::cout << xi << ", " << yi << std::endl;
+		//std::cout << xi << ", " << yi << std::endl;
 	}
 
 	// Use uniform breakpoints on [0, 15].
@@ -363,6 +345,29 @@ void bspline()
 	gsl_vector_free(w);
 	gsl_matrix_free(cov);
 	gsl_multifit_linear_free(mw);
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+namespace my_gsl {
+
+void spline()
+{
+	// 1-dim spline.
+	//local::spline_1d_example();
+	//local::spline_1d_periodic_example();
+	//local::spline_1d_comparision_example();
+
+	// 2-dim spline.
+	//local::spline_2d_example();
+
+	// Differentiation and integration.
+	local::spline_1d_differentiation();
+	local::spline_1d_integration();
+
+	// B-spline.
+	//local::bspline();
 }
 
 }  // namespace my_gsl
