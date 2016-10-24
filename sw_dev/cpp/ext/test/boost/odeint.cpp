@@ -26,6 +26,7 @@ private:
 	const double gamma_;
 };
 
+// REF [file] >> ${BOOST_HOME}/libs/numeric/odeint/examples/harmonic_oscillator.cpp
 // Integration observer.
 struct push_back_state_and_time
 {

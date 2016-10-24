@@ -130,6 +130,7 @@
     <ClCompile Include="image.cpp" />
     <ClCompile Include="interprocess.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
+    <ClCompile Include="log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math_bindings.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>

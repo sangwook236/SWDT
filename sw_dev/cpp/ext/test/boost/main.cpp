@@ -11,6 +11,8 @@ int main(int argc, char *argv[])
 	void utility();
 	void utility_binary();
 
+	void log();
+
 	bool program_options(int argc, char *argv[]);
 	void filesystem();
 	void conversion();
@@ -85,6 +87,8 @@ int main(int argc, char *argv[])
 			//utility();
 			//utility_binary();
 
+			log();
+
 			//program_options(argc, argv);
 			//filesystem();
 			//conversion();
@@ -138,7 +142,7 @@ int main(int argc, char *argv[])
 			//math_statistical_distributions();
 			//random();
 			//ublas();
-			odeint();
+			//odeint();
 			//math_bindings();
 			//numeric_bindings();
 

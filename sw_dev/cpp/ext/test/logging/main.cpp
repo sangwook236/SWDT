@@ -14,7 +14,10 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "log4cxx libary ------------------------------------------------------" << std::endl;
+		std::cout << "Boost.Log libary ----------------------------------------------------" << std::endl;
+		// REF [library] >> Boost library.
+
+		std::cout << "\nlog4cxx libary ------------------------------------------------------" << std::endl;
 		//retval = log4cxx_main(argc, argv);
 
 		std::cout << "\nglog library --------------------------------------------------------" << std::endl;

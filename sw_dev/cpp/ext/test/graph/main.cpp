@@ -25,12 +25,15 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "\nastar-algorithm-cpp algorithm ---------------------------------------" << std::endl;
+		std::cout << "astar-algorithm-cpp algorithm ---------------------------------------" << std::endl;
 		//retval = astar_algorithm_cpp_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nmin-cut/max-flow algorithms -----------------------------------------" << std::endl;
 		retval = maxflow_main(argc, argv);  // Not yet implemented.
 		retval = ibfs_main(argc, argv);  // Not yet implemented.
+
+		std::cout << "Boost Graph Libary (BGL) ----------------------------------------------" << std::endl;
+		// REF [library] >> Boost library.
 
 		std::cout << "\nGraphLab library ----------------------------------------------------" << std::endl;
 		retval = graphlab_main(argc, argv);  // Not yet implemented.

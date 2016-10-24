@@ -30,6 +30,9 @@ int main(int argc, char* argv[])
 		std::cout << "\nAutomatically Tuned Linear Algebra Software (ATLAS) -----------------" << std::endl;
 		//retval = atlas_main(argc, argv);
 
+		std::cout << "Boost uBLAS library -------------------------------------------------" << std::endl;
+		// REF [library] >> Boost library.
+
 		std::cout << "\nEigen library -------------------------------------------------------" << std::endl;
 		//	- External library support.
 		//		SuiteSparse, Cholmod, UmfPack, SuperLU, Pardiso, PaStiX, SPQR, Metis.

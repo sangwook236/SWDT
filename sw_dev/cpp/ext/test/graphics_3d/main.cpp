@@ -14,7 +14,10 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "OpenSceneGraph library ----------------------------------------------" << std::endl;
+		std::cout << "Boost.QVM (Quaternions, Vectors, Matrices) library ------------------" << std::endl;
+		// REF [library] >> Boost library.
+
+		std::cout << "\nOpenSceneGraph library ----------------------------------------------" << std::endl;
 		retval = osg_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

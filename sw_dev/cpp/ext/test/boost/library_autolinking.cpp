@@ -9,6 +9,7 @@
 //#pragma comment(lib, "libmpfr-4.dll.lib")
 //#pragma comment(lib, "libgmp-3.dll.lib")
 #pragma comment(lib, "libboost_graph-vc140-mt-gd-1_61.lib")
+#pragma comment(lib, "psapi.lib")  // For Boost.Log library.
 #pragma comment(lib, "lapack.lib")
 #pragma comment(lib, "blas.lib")
 #pragma comment(lib, "libf2c.lib")
@@ -21,6 +22,7 @@
 //#pragma comment(lib, "libmpfr-4.dll.lib")
 //#pragma comment(lib, "libgmp-3.dll.lib")
 #pragma comment(lib, "libboost_graph-vc140-mt-1_61.lib")
+#pragma comment(lib, "psapi.lib")  // For Boost.Log library.
 #pragma comment(lib, "lapack.lib")
 #pragma comment(lib, "blas.lib")
 #pragma comment(lib, "libf2c.lib")
