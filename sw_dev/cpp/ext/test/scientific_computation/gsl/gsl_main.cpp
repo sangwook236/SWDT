@@ -20,7 +20,7 @@ void print_gsl_vector(gsl_vector *vec, const int dim)
 		if (0 != i) std::cout << ' ';
 		std::cout << gsl_vector_get(vec, i);
 	}
-	std::cout << " ]\n";
+	std::cout << " ]" << std::endl;
 }
 
 void print_gsl_matrix(gsl_matrix *mat, const int rdim, const int cdim)

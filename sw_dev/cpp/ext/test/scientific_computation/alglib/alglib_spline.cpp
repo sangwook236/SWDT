@@ -22,7 +22,7 @@ void linear_spline_example()
 	// Calculate S(0.25) - it is quite different from 0.25^2 = 0.0625.
 	const double t = 0.25;
 	const double v = alglib::spline1dcalc(spline, t);
-	std::cout << v << std::endl;  // EXPECTED: 0.125.
+	std::cout << "Spline at t = " << v << std::endl;  // EXPECTED: 0.125.
 }
 
 // REF [site] >> http://www.alglib.net/translator/man/manual.cpp.html#example_spline1d_d_cubic
@@ -40,7 +40,7 @@ void cubic_spline_example()
 
 		double t = 0.25;
 		const double v = alglib::spline1dcalc(spline, t);
-		std::cout << v << std::endl;  // EXPECTED: 0.0625.
+		std::cout << "Spline at t = " << v << std::endl;  // EXPECTED: 0.0625.
 	}
 
 	// Then try to use natural boundary conditions
@@ -55,7 +55,7 @@ void cubic_spline_example()
 
 		double t = 0.25;
 		const double v = alglib::spline1dcalc(spline, t);
-		std::cout << v << std::endl;  // EXPECTED: 0.0580.
+		std::cout << "Spline at t = " << v << std::endl;  // EXPECTED: 0.0580.
 	}
 }
 
@@ -75,7 +75,7 @@ void differentiation_on_grid_example()
 	{
 		alglib::real_1d_array d1;
 		alglib::spline1dgriddiffcubic(x, y, d1);
-		std::cout << d1.tostring(3) << std::endl;  // EXPECTED: [-2.0, -1.0, 0.0, +1.0, +2.0].
+		std::cout << "The first deriative of spline = " << d1.tostring(3) << std::endl;  // EXPECTED: [-2.0, -1.0, 0.0, +1.0, +2.0].
 	}
 
 	// Calculate first and second derivatives.
@@ -83,8 +83,8 @@ void differentiation_on_grid_example()
 	{
 		alglib::real_1d_array d1, d2;
 		alglib::spline1dgriddiff2cubic(x, y, d1, d2);
-		std::cout << d1.tostring(3) << std::endl;  // EXPECTED: [-2.0, -1.0, 0.0, +1.0, +2.0].
-		std::cout << d2.tostring(3) << std::endl;  // EXPECTED: [ 2.0,  2.0, 2.0,  2.0,  2.0].
+		std::cout << "The first deriative of spline = " << d1.tostring(3) << std::endl;  // EXPECTED: [-2.0, -1.0, 0.0, +1.0, +2.0].
+		std::cout << "The second deriative of spline = " << d2.tostring(3) << std::endl;  // EXPECTED: [ 2.0,  2.0, 2.0,  2.0,  2.0].
 	}
 }
 
@@ -106,7 +106,9 @@ void conversion_from_one_grid_to_another_example()
 	{
 		alglib::real_1d_array y_new;
 		alglib::spline1dconvcubic(x_old, y_old, x_new, y_new);
-		std::cout << y_new.tostring(3) << std::endl;  // EXPECTED: [1.0000, 0.5625, 0.2500, 0.0625, 0.0000, 0.0625, 0.2500, 0.5625, 1.0000].
+
+		std::cout << "Conversion without differentiation" << std::endl;
+		std::cout << '\t' << y_new.tostring(3) << std::endl;  // EXPECTED: [1.0000, 0.5625, 0.2500, 0.0625, 0.0000, 0.0625, 0.2500, 0.5625, 1.0000].
 	}
 
 	// Then, conversion with differentiation (first derivatives only).
@@ -114,8 +116,10 @@ void conversion_from_one_grid_to_another_example()
 		alglib::real_1d_array y_new;
 		alglib::real_1d_array d1_new;
 		alglib::spline1dconvdiffcubic(x_old, y_old, x_new, y_new, d1_new);
-		std::cout << y_new.tostring(3) << std::endl;  // EXPECTED: [1.0000, 0.5625, 0.2500, 0.0625, 0.0000, 0.0625, 0.2500, 0.5625, 1.0000].
-		std::cout << d1_new.tostring(3) << std::endl;  // EXPECTED: [-2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0].
+
+		std::cout << "Conversion with the first derivative only" << std::endl;
+		std::cout << '\t' << y_new.tostring(3) << std::endl;  // EXPECTED: [1.0000, 0.5625, 0.2500, 0.0625, 0.0000, 0.0625, 0.2500, 0.5625, 1.0000].
+		std::cout << '\t' << d1_new.tostring(3) << std::endl;  // EXPECTED: [-2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0].
 	}
 
 	// Finally, conversion with first and second derivatives.
@@ -123,9 +127,11 @@ void conversion_from_one_grid_to_another_example()
 		alglib::real_1d_array y_new;
 		alglib::real_1d_array d1_new, d2_new;
 		alglib::spline1dconvdiff2cubic(x_old, y_old, x_new, y_new, d1_new, d2_new);
-		std::cout << y_new.tostring(3) << std::endl;  // EXPECTED: [1.0000, 0.5625, 0.2500, 0.0625, 0.0000, 0.0625, 0.2500, 0.5625, 1.0000].
-		std::cout << d1_new.tostring(3) << std::endl;  // EXPECTED: [-2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0].
-		std::cout << d2_new.tostring(3) << std::endl;  // EXPECTED: [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0].
+
+		std::cout << "Conversion with the first and second derivatives" << std::endl;
+		std::cout << '\t' << y_new.tostring(3) << std::endl;  // EXPECTED: [1.0000, 0.5625, 0.2500, 0.0625, 0.0000, 0.0625, 0.2500, 0.5625, 1.0000].
+		std::cout << '\t' << d1_new.tostring(3) << std::endl;  // EXPECTED: [-2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0].
+		std::cout << '\t' << d2_new.tostring(3) << std::endl;  // EXPECTED: [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0].
 	}
 }
 
@@ -144,7 +150,7 @@ void hermite_spline()
 	// Calculate S(0.25) - it is quite different from 0.25^2 = 0.0625.
 	const double t = 0.25;
 	const double v = alglib::spline1dcalc(spline, t);
-	std::cout << v << std::endl;  // EXPECTED: 0.0625.
+	std::cout << "Hermite spline at t = " << v << std::endl;  // EXPECTED: 0.0625.
 }
 
 void akima_spline()
@@ -160,7 +166,7 @@ void akima_spline()
 	// Calculate S(0.25) - it is quite different from 0.25^2 = 0.0625.
 	const double t = 0.25;
 	const double v = alglib::spline1dcalc(spline, t);
-	std::cout << v << std::endl;  // EXPECTED: 0.0625.
+	std::cout << "Akima spline at t = " << v << std::endl;  // EXPECTED: 0.0625.
 }
 
 void spline_differentiation()
@@ -180,7 +186,8 @@ void spline_differentiation()
 	const double t = 0.25;
 	double s = 0.0, ds = 0.0, d2s = 0.0;
 	alglib::spline1ddiff(spline, t, s, ds, d2s);
-	std::cout << "t = " << t << ", s = " << s << ", ds = " << ds << ", d2s = " << d2s << std::endl;
+	std::cout << "Derivative of spline:" << std::endl;
+	std::cout << "\tt = " << t << ", s = " << s << ", ds = " << ds << ", d2s = " << d2s << std::endl;
 }
 
 void spline_integration()
@@ -199,7 +206,8 @@ void spline_integration()
 	// Integrate.
 	const double t = 0.25;
 	const double sdt = alglib::spline1dintegrate(spline, t);
-	std::cout << "t = (-1," << t << "), sdt = " << sdt << std::endl;
+	std::cout << "Integration of spline:" << std::endl;
+	std::cout << "\tt = (-1," << t << "), sdt = " << sdt << std::endl;
 }
 
 }  // namespace local
