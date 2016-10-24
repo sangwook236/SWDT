@@ -15,7 +15,10 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "CppUnit library -----------------------------------------------------" << std::endl;
+		std::cout << "Boost Test library --------------------------------------------------" << std::endl;
+		// REF [library] >> Boost library.
+
+		std::cout << "\nCppUnit library -----------------------------------------------------" << std::endl;
 		// REF [project] >> ${GDT_HOME}/sw_dev/cpp/ext/test/testing/cppunit_mfc
 		//retval = cppunit_main(argc, argv);
 

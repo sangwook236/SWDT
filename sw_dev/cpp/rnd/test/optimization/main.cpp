@@ -60,11 +60,31 @@ int main(int argc, char *argv[])
 #endif
 
 		std::cout << "\nComputational Infrastructure for Operations Research (COIN-OR) ------" << std::endl;
+		//	- Continuous linear programming.
+		//		CLP, DyLP.
+		//	- Discrete linear programming.
+		//		CBC, Cgl, SYMPHONY, ABACUS.
+		//	- Continuous nonliner pLrogramming.
+		//		Ipopt.
+		//	- Discrete nonlinear programming.
+		//		BONMIN.
+		//	- Nonconvex nonlinear mixed integer programming.
+		//		Couenne.
+		//	- Semidefinite programming.
+		//		CSDP.
 		//	- Mathematical programming language.
-		//		GNU MathProg (GMPL), MPS format, LP format.
+		//		CMPL, GNU MathProg (GMPL), MPS format, LP format.
+		//	- Automatic differentiation (AutoDiff).
+		//		CppAD.
 		retval = coin_or_main(argc, argv);
 
 		std::cout << "\nSolving Constraint Integer Programs (SCIP) Optimization Suite -------" << std::endl;
+		//	- Linear programming.
+		//		SoPlex.
+		//	- Mixed integer programming.
+		//		GCG, UG.
+		//	- Mathematical programming language.
+		//		ZIMPL, LP format, MPS format.
 		//retval = scip_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

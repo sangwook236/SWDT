@@ -143,7 +143,7 @@
     <ClCompile Include="multi_array.cpp" />
     <ClCompile Include="multi_index.cpp" />
     <ClCompile Include="numeric_bindings.cpp" />
-    <ClCompile Include="ordinary_differential_equation.cpp" />
+    <ClCompile Include="odeint.cpp" />
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="program_options.cpp" />
     <ClCompile Include="progress_timer.cpp" />

@@ -147,9 +147,6 @@
     <ClCompile Include="progress_timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ordinary_differential_equation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="multiprecision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -217,6 +214,9 @@
       <Filter>Source Files\graph</Filter>
     </ClCompile>
     <ClCompile Include="compute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="odeint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

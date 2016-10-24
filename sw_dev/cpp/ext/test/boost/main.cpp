@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
 	void math_statistical_distributions();
 	void random_boost();
 	void ublas();
+	void odeint();
 	void math_bindings();
 	void numeric_bindings();
 	void multiprecision();
@@ -59,7 +60,6 @@ int main(int argc, char *argv[])
 	void geometry();
 	void graph();
 	void graph_parallel();
-	void ordinary_differential_equation();
 
 	void asio_timer();
 	void asio_synchronizing_handler();
@@ -128,6 +128,7 @@ int main(int argc, char *argv[])
 			//interprocess();  // Not yet implemented.
 		}
 
+		// Mathematics & scientific computation.
 		{
 			//units();
 
@@ -137,6 +138,7 @@ int main(int argc, char *argv[])
 			//math_statistical_distributions();
 			//random();
 			//ublas();
+			odeint();
 			//math_bindings();
 			//numeric_bindings();
 
@@ -147,10 +149,9 @@ int main(int argc, char *argv[])
 
 			//graph();
 			//graph_parallel();  // Not yet implemented.
-
-			//ordinary_differential_equation();  // Not yet implemented.
 		}
 
+		// Communication.
 		{
 			//asio_timer();
 			//asio_synchronizing_handler();
@@ -170,12 +171,14 @@ int main(int argc, char *argv[])
             //asio_udp_broadcast();
 		}
 
+		// High performance computing.
 		{
+			// OpenCL
 			//image();
 		}
 
 		{
-			compute();
+			//compute();
 		}
 	}
     catch (const std::bad_alloc &e)
