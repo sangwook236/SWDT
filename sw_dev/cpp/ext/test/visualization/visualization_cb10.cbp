@@ -36,10 +36,16 @@
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
 		</Compiler>
+		<Unit filename="gnuplot/gnuplot_cpp_example.cpp" />
+		<Unit filename="gnuplot/gnuplot_i.hpp" />
+		<Unit filename="gnuplot/gnuplot_iostream_example.cpp" />
+		<Unit filename="gnuplot/gnuplot_main.cpp" />
+		<Unit filename="gnuplot/gnuplot-iostream.h" />
 		<Unit filename="graphviz/graphviz_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mathgl/mathgl_glut_example.cpp" />
 		<Unit filename="mathgl/mathgl_main.cpp" />
+		<Unit filename="mathgl/mathgl_qt_example.cpp" />
 		<Unit filename="plplot/plc++demos.h" />
 		<Unit filename="plplot/plplot_main.cpp" />
 		<Unit filename="plplot/plplot_x01_example.cpp" />
