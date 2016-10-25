@@ -39,6 +39,9 @@
     <ClInclude Include="plplot\plc++demos.h">
       <Filter>Source Files\plplot</Filter>
     </ClInclude>
+    <ClInclude Include="gnuplot\gnuplot_i.hpp">
+      <Filter>Source Files\gnuplot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

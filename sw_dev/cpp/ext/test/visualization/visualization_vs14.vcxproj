@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="gnuplot\gnuplot_i.hpp" />
     <ClInclude Include="plplot\plc++demos.h" />
   </ItemGroup>
   <ItemGroup>

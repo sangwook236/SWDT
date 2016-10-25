@@ -45,7 +45,7 @@ void gnuplot_cpp_example()
 
 #if defined(__APPLE__)
 	// Set a special standard terminal for showonscreen (normally not needed),
-	//   e.g. Mac users who want to use x11 instead of aqua terminal:
+	//	e.g. Mac users who want to use x11 instead of aqua terminal:
 	Gnuplot::set_terminal_std("x11");
 #endif 
 
