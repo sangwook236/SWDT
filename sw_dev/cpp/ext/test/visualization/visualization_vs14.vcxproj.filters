@@ -34,12 +34,21 @@
     <ClCompile Include="mathgl\mathgl_qt_example.cpp">
       <Filter>Source Files\mathgl</Filter>
     </ClCompile>
+    <ClCompile Include="gnuplot\gnuplot_cpp_example.cpp">
+      <Filter>Source Files\gnuplot</Filter>
+    </ClCompile>
+    <ClCompile Include="gnuplot\gnuplot_iostream_example.cpp">
+      <Filter>Source Files\gnuplot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="plplot\plc++demos.h">
       <Filter>Source Files\plplot</Filter>
     </ClInclude>
     <ClInclude Include="gnuplot\gnuplot_i.hpp">
+      <Filter>Source Files\gnuplot</Filter>
+    </ClInclude>
+    <ClInclude Include="gnuplot\gnuplot-iostream.h">
       <Filter>Source Files\gnuplot</Filter>
     </ClInclude>
   </ItemGroup>

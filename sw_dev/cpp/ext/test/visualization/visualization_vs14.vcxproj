@@ -80,10 +80,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="gnuplot\gnuplot-iostream.h" />
     <ClInclude Include="gnuplot\gnuplot_i.hpp" />
     <ClInclude Include="plplot\plc++demos.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="gnuplot\gnuplot_cpp_example.cpp" />
+    <ClCompile Include="gnuplot\gnuplot_iostream_example.cpp" />
     <ClCompile Include="gnuplot\gnuplot_main.cpp" />
     <ClCompile Include="graphviz\graphviz_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />

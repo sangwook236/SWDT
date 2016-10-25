@@ -145,7 +145,10 @@ public:
     ///
     /// \return true on success, false otherwise
     // ----------------------------------------------------------------------------
-    static bool set_GNUPlotPath(const std::string &path);
+	//--S [] 2016/10/25: Sang-Wook Lee
+    //static bool set_GNUPlotPath(const std::string &path);
+	static bool set_GNUPlotPath(const std::string &path, const std::string &filename = std::string());
+	//--E [] 2016/10/25: Sang-Wook Lee
 
 
     // ----------------------------------------------------------------------------
@@ -606,10 +609,7 @@ public:
 int Gnuplot::tmpfile_num = 0;
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__TOS_WIN__)
-//--S [] 2016/10/25: Sang-Wook Lee
-//std::string Gnuplot::m_sGNUPlotFileName = "pgnuplot.exe";
-std::string Gnuplot::m_sGNUPlotFileName = "gnuplot.exe";
-//--E [] 2016/10/25: Sang-Wook Lee
+std::string Gnuplot::m_sGNUPlotFileName = "pgnuplot.exe";
 std::string Gnuplot::m_sGNUPlotPath = "C:/program files/gnuplot/bin/";
 #elif defined(unix) || defined(__unix) || defined(__unix__) || defined(__APPLE__)
 std::string Gnuplot::m_sGNUPlotFileName = "gnuplot";
@@ -872,11 +872,16 @@ Gnuplot& Gnuplot::plot_xyz(const X &x,
 // define static member function: set Gnuplot path manual
 //   for windows: path with slash '/' not backslash '\'
 //
-bool Gnuplot::set_GNUPlotPath(const std::string &path)
+//--S [] 2016/10/25: Sang-Wook Lee
+//bool Gnuplot::set_GNUPlotPath(const std::string &path)
+bool Gnuplot::set_GNUPlotPath(const std::string &path, const std::string &filename /*= std::string()*/)
+//--E [] 2016/10/25: Sang-Wook Lee
 {
 
-    std::string tmp = path + "/" + Gnuplot::m_sGNUPlotFileName;
-
+	//--S [] 2016/10/25: Sang-Wook Lee
+    //std::string tmp = path + "/" + Gnuplot::m_sGNUPlotFileName;
+    const std::string tmp = path + "/" + (filename.empty() ? Gnuplot::m_sGNUPlotFileName : filename);
+	//--E [] 2016/10/25: Sang-Wook Lee
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__TOS_WIN__)
     if ( Gnuplot::file_exists(tmp,0) ) // check existence
@@ -884,11 +889,17 @@ bool Gnuplot::set_GNUPlotPath(const std::string &path)
     if ( Gnuplot::file_exists(tmp,1) ) // check existence and execution permission
 #endif
     {
+		//--S [] 2016/10/25: Sang-Wook Lee
+    	if (!filename.empty()) Gnuplot::m_sGNUPlotFileName = filename;
+		//--E [] 2016/10/25: Sang-Wook Lee
         Gnuplot::m_sGNUPlotPath = path;
         return true;
     }
     else
     {
+		//--S [] 2016/10/25: Sang-Wook Lee
+        //Gnuplot::m_sGNUPlotFileName.clear();
+		//--E [] 2016/10/25: Sang-Wook Lee
         Gnuplot::m_sGNUPlotPath.clear();
         return false;
     }
