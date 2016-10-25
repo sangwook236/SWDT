@@ -11,7 +11,7 @@ namespace local {
 void linear_spline_example()
 {
 	// Use piecewise linear spline to interpolate f(x)=x^2 sampled at 5 equidistant nodes on [-1, +1].
-	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";
+	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";  // x values need not to be increasing.
 	const alglib::real_1d_array y = "[+1.0, 0.25, 0.0, 0.25, +1.0]";  // Function values.
 
 	// Build spline.
@@ -29,7 +29,7 @@ void linear_spline_example()
 void cubic_spline_example()
 {
 	// Use cubic spline to interpolate f(x)=x^2 sampled at 5 equidistant nodes on [-1, +1].
-	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";
+	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";  // x values need not to be increasing.
 	const alglib::real_1d_array y = "[+1.0, 0.25, 0.0, 0.25, +1.0]";  // Function values.
 
 	// First, use default boundary conditions ("parabolically terminated spline") because cubic spline built with such boundary conditions will exactly reproduce any quadratic f(x).
@@ -63,7 +63,7 @@ void cubic_spline_example()
 void differentiation_on_grid_example()
 {
 	// Use cubic spline to do grid differentiation, i.e. having values of f(x)=x^2 sampled at 5 equidistant nodes on [-1, +1]
-	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";
+	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";  // x values need not to be increasing.
 	const alglib::real_1d_array y = "[+1.0, 0.25, 0.0, 0.25, +1.0]";  // Function values.
 
 	// Use default boundary conditions ("parabolically terminated spline") because cubic spline built with such boundary conditions will exactly reproduce any quadratic f(x).
@@ -92,7 +92,7 @@ void differentiation_on_grid_example()
 void conversion_from_one_grid_to_another_example()
 {
 	// Use cubic spline to do resampling, i.e. having values of f(x)=x^2 sampled at 5 equidistant nodes on [-1, +1].
-	const alglib::real_1d_array x_old = "[-1.0, -0.5, 0.0, +0.5, +1.0]";
+	const alglib::real_1d_array x_old = "[-1.0, -0.5, 0.0, +0.5, +1.0]";  // x values need not to be increasing.
 	const alglib::real_1d_array y_old = "[+1.0, 0.25, 0.0, 0.25, +1.0]";  // Function values.
 	const alglib::real_1d_array x_new = "[-1.00, -0.75, -0.50, -0.25, 0.00, +0.25, +0.50, +0.75, +1.00]";
 
@@ -138,7 +138,7 @@ void conversion_from_one_grid_to_another_example()
 void hermite_spline()
 {
 	// Use piecewise linear spline to interpolate f(x)=x^2 sampled at 5 equidistant nodes on [-1, +1].
-	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";
+	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";  // x values need not to be increasing.
 	const alglib::real_1d_array y = "[+1.0, 0.25, 0.0, 0.25, +1.0]";  // Function values.
 	const alglib::real_1d_array d = "[+2.0, +1.0, 0.0, +1.0, +2.0]";  // Derivatives.
 
@@ -150,29 +150,30 @@ void hermite_spline()
 	// Calculate S(0.25) - it is quite different from 0.25^2 = 0.0625.
 	const double t = 0.25;
 	const double v = alglib::spline1dcalc(spline, t);
-	std::cout << "Hermite spline at t = " << v << std::endl;  // EXPECTED: 0.0625.
+	std::cout << "Hermite spline at " << t << " = " << v << std::endl;  // EXPECTED: 0.0625.
 }
 
 void akima_spline()
 {
 	// Use piecewise linear spline to interpolate f(x)=x^2 sampled at 5 equidistant nodes on [-1, +1].
-	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";
+	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";  // x values need not to be increasing.
 	const alglib::real_1d_array y = "[+1.0, 0.25, 0.0, 0.25, +1.0]";  // Function values.
 
 	// Build spline.
 	alglib::spline1dinterpolant spline;
 	alglib::spline1dbuildakima(x, y, spline);
+	//alglib::spline1dbuildakima(x, y, 5, spline);
 
 	// Calculate S(0.25) - it is quite different from 0.25^2 = 0.0625.
 	const double t = 0.25;
 	const double v = alglib::spline1dcalc(spline, t);
-	std::cout << "Akima spline at t = " << v << std::endl;  // EXPECTED: 0.0625.
+	std::cout << "Akima spline at " << t << " = " << v << std::endl;  // EXPECTED: 0.0625.
 }
 
 void spline_differentiation()
 {
 	// Use piecewise linear spline to interpolate f(x)=x^2 sampled at 5 equidistant nodes on [-1, +1].
-	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";
+	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";  // x values need not to be increasing.
 	const alglib::real_1d_array y = "[+1.0, 0.25, 0.0, 0.25, +1.0]";  // Function values.
 
 	// Build spline.
@@ -193,7 +194,7 @@ void spline_differentiation()
 void spline_integration()
 {
 	// Use piecewise linear spline to interpolate f(x)=x^2 sampled at 5 equidistant nodes on [-1, +1].
-	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";
+	const alglib::real_1d_array x = "[-1.0, -0.5, 0.0, +0.5, +1.0]";  // x values need not to be increasing.
 	const alglib::real_1d_array y = "[+1.0, 0.25, 0.0, 0.25, +1.0]";  // Function values.
 
 	// Build spline.
@@ -217,18 +218,25 @@ namespace my_alglib {
 
 void spline()
 {
-	//local::linear_spline_example();
-	//local::cubic_spline_example();
-	//local::differentiation_on_grid_example();
-	//local::conversion_from_one_grid_to_another_example();
+	try
+	{
+		//local::linear_spline_example();
+		//local::cubic_spline_example();
+		//local::differentiation_on_grid_example();
+		//local::conversion_from_one_grid_to_another_example();
 
-	//
-	//local::hermite_spline();
-	//local::akima_spline();
+		//
+		//local::hermite_spline();
+		local::akima_spline();
 
-	// Differentiation and integration of spline.
-	local::spline_differentiation();
-	local::spline_integration();
+		// Differentiation and integration of spline.
+		local::spline_differentiation();
+		local::spline_integration();
+	}
+	catch (const alglib::ap_error &ex)
+	{
+		std::cerr << "alglib::ap_error caught: " << ex.msg << std::endl;
+	}
 }
 
 }  // namespace my_alglib
