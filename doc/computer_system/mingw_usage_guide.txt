@@ -201,9 +201,12 @@
 	- Configure and generate.
 		> When an error occurs about 'sh', re-run 'Configure'.
 			<error> sh.exe was found in your PATH.
+		> When an error occurs about C/C++ compiler.
+			<error> The C compiler "${MINGW_HOME}/bin/gcc.exe" is not able to compile a simple test program.
 		> When an error occurs about Fortran compiler.
 			<error> The Fortran compiler "${VISUALSTUDIO_HOME}/VC/bin/ifc.exe" is not able to compile a simple test program.
 		Set CMAKE_SH to ${MSYS_ROOT}/bin/sh.exe.
+		Set CMAKE_MAKE_PROGRAM to ${MINGW_HOME}/bin/mingw32-make.exe.
 		Set CMAKE_Fortran_COMPILER to ${MINGW_HOME}/bin/gfortran.exe.
 		Set CMAKE_GNUtoMS to ON.
 			REF [site] >> https://cmake.org/cmake/help/v3.0/prop_tgt/GNUtoMS.html
