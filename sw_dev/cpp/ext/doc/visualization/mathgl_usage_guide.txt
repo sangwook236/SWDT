@@ -5,17 +5,20 @@
 		http://udav.sourceforge.net/
 
 [-] Building (VS14).
+	- Problem.
+		Some errors occur which are related with OpenMP.
+		==> Use sources that are downloaded from SourceForge SVN.
+
 	- Open Visual Studio command prompt.
 	- Run cmake-gui in Visual Studio command prompt.
 	- Specify 'Visual Studio' as a generator.
 	- Set options.
-		Set CMAKE_INSTALL_PREFIX to ./install.
 		Set CMAKE_DEBUG_POSTFIX to d.
-		Set enable-mgl2 to TRUE.
+		Set enable-mgl2 to TRUE. (?)
 		Set enable-glut to TRUE.
 		Set enable-pthread to FALSE.
 		Set enable-pthr-widget to FALSE.
-		Set MGL_CGI_PATH to ./install/share/mathgl.
+		Set MGL_CGI_PATH to D:/usr/local/share/mathgl.
 	- Configure and generate.
 	- Build.
 
