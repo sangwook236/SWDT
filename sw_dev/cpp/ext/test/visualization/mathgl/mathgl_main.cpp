@@ -521,6 +521,7 @@ void mgls_prepare3v(mglData *ex, mglData *ey, mglData *ez)
 }
 
 void glut_example();
+void qt_example();
 
 }  // namespace my_mathgl
 
@@ -534,7 +535,7 @@ void simple_example_1()
 	
 	mgl_fplot(gr, "sin(pi * x)", "", "");
 
-	// Ssave the result.
+	// Save the result.
 	//mgl_write_frame(gr, "./data/visualization/mathgl/simple_example_1.png", "");  // NOTICE [error] >> Run-time error.
 	mgl_write_frame(gr, "./data/visualization/mathgl/simple_example_1.jpg", "");
 	//mgl_write_jpg(gr, "./data/visualization/mathgl/simple_example_1.jpg", "");
@@ -550,7 +551,7 @@ void simple_example_2()
 
 	gr.FPlot("sin(pi * x)");
 	
-	// Ssave the result.
+	// Save the result.
 	//gr.WriteFrame("./data/visualization/mathgl/simple_example_2.png");  // NOTICE [error] >> Run-time error.
 	gr.WriteFrame("./data/visualization/mathgl/simple_example_2.jpg");
 	//gr.WritePNG("./data/visualization/mathgl/simple_example_2.png");  // NOTICE [error] >> Run-time error.
@@ -584,11 +585,14 @@ void simple_example_3()
 
 int mathgl_main(int argc, char* argv[])
 {
+	// NOTICE [caution] >> Some errors arise in run-time.
+
 	local::simple_example_1();
 	//local::simple_example_2();
 	//local::simple_example_3();
 
 	//my_mathgl::glut_example();
+	//my_mathgl::qt_example();
 
     return 0;
 }

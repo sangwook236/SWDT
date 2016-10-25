@@ -87,11 +87,9 @@
     <ClCompile Include="graphviz\graphviz_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mathgl\mathgl_glut_example.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="mathgl\mathgl_main.cpp">
+    <ClCompile Include="mathgl\mathgl_glut_example.cpp" />
+    <ClCompile Include="mathgl\mathgl_main.cpp" />
+    <ClCompile Include="mathgl\mathgl_qt_example.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>

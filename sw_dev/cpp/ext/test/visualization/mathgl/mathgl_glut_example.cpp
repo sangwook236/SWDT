@@ -22,8 +22,6 @@ int sample_d(mglGraph *gr);
 // REF [file] >> ${MATHGL_HOME}/examples/glut_example.cpp.
 void glut_example()
 {
-	// NOTICE [caution] >> Run-time error in DEBUG mode.
-
 	mglGLUT gr(sample_1, "1D plots");
 	//mglGLUT gr(sample_2, "2D plots");
 	//mglGLUT gr(sample_3, "3D plots");
