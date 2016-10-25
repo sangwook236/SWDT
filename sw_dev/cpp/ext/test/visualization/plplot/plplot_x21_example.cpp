@@ -20,7 +20,7 @@ namespace local {
 class x21
 {
 public:
-    x21(int, char **);
+    x21(int argc, char *argv[]);
 
 private:
     void create_data(PLFLT **xi, PLFLT **yi, PLFLT **zi, PLINT pts);
@@ -139,17 +139,17 @@ PLOptionTable x21::options[] =
     },
 
     {
-        NULL,                   // option
-        NULL,                   // handler
-        NULL,                   // client data
-        NULL,                   // address of variable to set
-        0,                      // mode flag
-        NULL,                   // short syntax
+        NULL,                   // Option.
+        NULL,                   // Handler.
+        NULL,                   // Client data.
+        NULL,                   // Address of variable to set.
+        0,                      // Mode flag.
+        NULL,                   // Short syntax.
         NULL
-    }                           // long syntax
+    }                           // Long syntax.
 };
 
-x21::x21(int argc, char **argv)
+x21::x21(int argc, char *argv[])
 {
     PLFLT      *x, *y, *z, *clev;
     PLFLT      *xg, *yg, **zg;
@@ -168,7 +168,7 @@ x21::x21(int argc, char **argv)
     xm = ym = -0.2;
     xM = yM = 0.6;
 
-    // plplot initialization
+    // plplot initialization.
 
     pls = new plstream();
 
@@ -185,7 +185,7 @@ x21::x21(int argc, char **argv)
     // Initialize PLplot.
     pls->init();
 
-    create_data( &x, &y, &z, pts ); // the sampled data
+    create_data( &x, &y, &z, pts );  // The sampled data.
     zmin = z[0];
     zmax = z[0];
     for ( i = 1; i < pts; i++ )
@@ -196,8 +196,8 @@ x21::x21(int argc, char **argv)
             zmin = z[i];
     }
 
-    create_grid( &xg, xp, &yg, yp ); // grid the data at
-    pls->Alloc2dGrid( &zg, xp, yp ); // the output grided data
+    create_grid( &xg, xp, &yg, yp );  // Grid the data at.
+    pls->Alloc2dGrid( &zg, xp, yp );  // The output grided data.
     clev = new PLFLT[nl];
 
     pls->col0( 1 );
@@ -218,9 +218,8 @@ x21::x21(int argc, char **argv)
             pls->griddata( x, y, z, pts, xg, xp, yg, yp, zg, alg, opt[alg - 1] );
 
             // - CSA can generate NaNs (only interpolates?!).
-            // - DTLI and NNI can generate NaNs for points outside the convex hull
-            //      of the data points.
-            // - NNLI can generate NaNs if a sufficiently thick triangle is not found
+            // - DTLI and NNI can generate NaNs for points outside the convex hull of the data points.
+            // - NNLI can generate NaNs if a sufficiently thick triangle is not found.
             //
             // PLplot should be NaN/Inf aware, but changing it now is quite a job...
             // so, instead of not plotting the NaN regions, a weighted average over
@@ -236,7 +235,7 @@ x21::x21(int argc, char **argv)
                 {
                     for ( j = 0; j < yp; j++ )
                     {
-                        if ( isnan( zg[i][j] ) ) // average (IDW) over the 8 neighbors
+                        if ( isnan( zg[i][j] ) )  // Average (IDW) over the 8 neighbors.
 
                         {
                             zg[i][j] = 0.; dist = 0.;
@@ -324,11 +323,11 @@ void x21::cmap1_init()
 {
     PLFLT i[2], h[2], l[2], s[2];
 
-    i[0] = 0.0;         // left boundary
-    i[1] = 1.0;         // right boundary
+    i[0] = 0.0;         // Left boundary.
+    i[1] = 1.0;         // Right boundary.
 
-    h[0] = 240;         // blue -> green -> yellow ->
-    h[1] = 0;           // -> red
+    h[0] = 240;         // Blue -> green -> yellow ->
+    h[1] = 0;           // -> red.
 
     l[0] = 0.6;
     l[1] = 0.6;
@@ -380,7 +379,7 @@ void x21::create_data( PLFLT **xi, PLFLT **yi, PLFLT **zi, PLINT pts )
             *x = xt + xm;
             *y = yt + ym;
         }
-        else // std=1, meaning that many points are outside the plot range
+        else  // std=1, meaning that many points are outside the plot range.
         {
             *x = sqrt( -2. * log( xt ) ) * cos( 2. * M_PI * yt ) + xm;
             *y = sqrt( -2. * log( xt ) ) * sin( 2. * M_PI * yt ) + ym;
@@ -410,7 +409,7 @@ void x21::free_data( PLFLT *x, PLFLT *y, PLFLT *z )
 
 namespace my_plplot {
 
-void x21_example(const int argc, char **argv)
+void x21_example(const int argc, char *argv[])
 {
     boost::scoped_ptr<local::x21> x(new local::x21(argc, argv));
 }

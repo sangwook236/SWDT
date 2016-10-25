@@ -4,8 +4,8 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "libmgl-glut.lib")
-#pragma comment(lib, "libmgl.lib")
+#pragma comment(lib, "libmgl2-glut.lib")
+#pragma comment(lib, "libmgl2.lib")
 
 #pragma comment(lib, "plplot.lib")
 #pragma comment(lib, "plplotcxx.lib")
@@ -14,8 +14,8 @@
 
 #		else
 
-//#pragma comment(lib, "libmgl-glut.lib")
-#pragma comment(lib, "libmgl.lib")
+#pragma comment(lib, "libmgl2-glut.lib")
+#pragma comment(lib, "libmgl2.lib")
 
 #pragma comment(lib, "plplot.lib")
 #pragma comment(lib, "plplotcxx.lib")

@@ -28,6 +28,9 @@
     <ClCompile Include="plplot\plplot_x21_example.cpp">
       <Filter>Source Files\plplot</Filter>
     </ClCompile>
+    <ClCompile Include="gnuplot\gnuplot_main.cpp">
+      <Filter>Source Files\gnuplot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="plplot\plc++demos.h">
@@ -58,6 +61,9 @@
     </Filter>
     <Filter Include="Source Files\plplot">
       <UniqueIdentifier>{15b05e14-2a35-4e85-8d5b-c370b7bb8048}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gnuplot">
+      <UniqueIdentifier>{75def8f2-eaaf-4451-bc1c-d999243e52c6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

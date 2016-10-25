@@ -3,3 +3,61 @@
 		http://sourceforge.net/projects/mathgl/
 		http://mathgl.sourceforge.net/
 		http://udav.sourceforge.net/
+
+[-] Building (VS14).
+	- Open Visual Studio command prompt.
+	- Run cmake-gui in Visual Studio command prompt.
+	- Specify 'Visual Studio' as a generator.
+	- Set options.
+		Set CMAKE_INSTALL_PREFIX to ./install.
+		Set CMAKE_DEBUG_POSTFIX to d.
+		Set enable-mgl2 to TRUE.
+		Set enable-glut to TRUE.
+		Set enable-pthread to FALSE.
+		Set enable-pthr-widget to FALSE.
+		Set MGL_CGI_PATH to ./install/share/mathgl.
+	- Configure and generate.
+	- Build.
+
+[-] Building (MSYS2).
+	- Open MSYS2 terminal.
+	- Run cmake-gui.
+	- Specify 'MSYS Makefiles' as a generator.
+	- Set options.
+		Set CMAKE_MAKE_PROGRAM to ${MINGW_HOME}/mingw32/bin/mingw32-make.exe.
+		Set CMAKE_MAKE_PROGRAM to ${MINGW_HOME}/mingw64/bin/mingw32-make.exe.
+		Set CMAKE_INSTALL_PREFIX to ./install.
+		Set CMAKE_GNUtoMS to TRUE.
+		Set enable-mgl2 to TRUE.
+		Set enable-glut to TRUE.
+		Set MGL_CGI_PATH to ./install/share/mathgl.
+	- Configure and generate.
+	- Run make.
+		mingw32-make
+			==> Shared libraries are built.
+				${MATHGL_HOME}/${CMAKE_BUILD_DIR}/src/
+				${MATHGL_HOME}/${CMAKE_BUILD_DIR}/widgets/
+		mingw32-make install
+	- Run Visual Studio command prompt.
+	- Generate def file.
+		Use dumpbin.exe.
+			dumpbin.exe /exports libmgl.dll > libmgl.def
+			dumpbin.exe /exports libmgl-glut.dll > libmgl-glut.def
+			dumpbin.exe /exports libmgl2.dll > libmgl2.def
+			dumpbin.exe /exports libmgl2-glut.dll > libmgl2-glut.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt
+	- Edit the def file.
+		LIBRARY libmgl.dll
+		EXPORTS
+	- Generate import library.
+		For 32-bit:
+			lib.exe /machine:x86 /def:libmgl.def
+			lib.exe /machine:x86 /def:libmgl-glut.def
+			lib.exe /machine:x86 /def:libmgl2.def
+			lib.exe /machine:x86 /def:libmgl2-glut.def
+		For 64-bit:
+			lib.exe /machine:X64 /def:libmgl.def
+			lib.exe /machine:X64 /def:libmgl-glut.def
+			lib.exe /machine:X64 /def:libmgl2.def
+			lib.exe /machine:X64 /def:libmgl2-glut.def
+		REF [doc] >> interoperate_libraries_in_MSVC_MinGW_Cygwin.txt

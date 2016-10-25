@@ -30,7 +30,7 @@ static const char   *notes[] = { "Make sure you get it right!", "" };
 // Options data structure definition.
 static PLOptionTable options[] = {
     {
-        "locate",               // Turns on test of API locate function
+        "locate",               // Turns on test of API locate function.
         NULL,
         NULL,
         &locate_mode,
@@ -39,7 +39,7 @@ static PLOptionTable options[] = {
         "Turns on test of API locate function"
     },
     {
-        "xor",                  // Turns on test of xor function
+        "xor",                  // Turns on test of xor function.
         NULL,
         NULL,
         &test_xor,
@@ -48,7 +48,7 @@ static PLOptionTable options[] = {
         "Turns on test of XOR"
     },
     {
-        "font",                 // For switching between font set 1 & 2
+        "font",                 // For switching between font set 1 & 2.
         NULL,
         NULL,
         &fontset,
@@ -57,30 +57,30 @@ static PLOptionTable options[] = {
         "Selects stroke font set (0 or 1, def:1)"
     },
     {
-        "save",                 // For saving in postscript
+        "save",                 // For saving in postscript.
         NULL,
         NULL,
         &f_name,
         PL_OPT_STRING,
         "-save filename",
-        "Save plot in color postscript `file'"
+        "Save plot in color postscript 'file'"
     },
     {
-        NULL,                   // option
-        NULL,                   // handler
-        NULL,                   // client data
-        NULL,                   // address of variable to set
-        0,                      // mode flag
-        NULL,                   // short syntax
+        NULL,                   // Option.
+        NULL,                   // Handler.
+        NULL,                   // Client data.
+        NULL,                   // Address of variable to set.
+        0,                      // Mode flag.
+        NULL,                   // Short syntax.
         NULL
-    }                           // long syntax
+    }                           // Long syntax.
 };
 
 
 class x01
 {
 public:
-    x01(int, char **);
+    x01(int argc, char *argv[]);
 
     void plot1(int);
     void plot2();
@@ -94,14 +94,14 @@ private:
 };
 
 
-x01::x01(int argc, char ** argv)
+x01::x01(int argc, char *argv[])
 {
     char ver[80];
 
     fontset = 1;
     f_name  = NULL;
 
-    // plplot initialization
+    // plplot initialization.
     // Divide page into 2x2 plots unless user overrides.
 
     pls = new plstream();
@@ -122,24 +122,24 @@ x01::x01(int argc, char ** argv)
     // Select the multi-stroke font.
     pls->fontld( 1 );
 
-    // Set up the data
-    // Original case
+    // Set up the data.
+    // Original case.
 
     xscale = 6.;
     yscale = 1.;
     xoff   = 0.;
     yoff   = 0.;
 
-    // Do a plot
+    // Do a plot.
     plot1( 0 );
 
-    // Set up the data
+    // Set up the data.
 
     xscale = 1.;
     yscale = 0.0014;
     yoff   = 0.0185;
 
-    // Do a plot
+    // Do a plot.
 
     int digmax = 5;
     pls->syax( digmax, 0 );
@@ -151,26 +151,25 @@ x01::x01(int argc, char ** argv)
     plot3();
 
     // Show how to save a plot:
-    // Open a new device, make it current, copy parameters,
-    // and replay the plot buffer
+    // Open a new device, make it current, copy parameters, and replay the plot buffer.
 
-    if (f_name) // command line option '-save filename'
+    if (f_name) // command line option '-save filename'.
     {
-        std::cout << "The current plot was saved in color Postscript under the name `" << f_name << "'" << std::endl;
+        std::cout << "The current plot was saved in color Postscript under the name '" << f_name << "'" << std::endl;
         plstream *pls2;
 
-        pls2 = new plstream();       // create a new one
+        pls2 = new plstream();       // Ceate a new one.
 
-        pls2->sfnam( f_name );       // file name
-        pls2->sdev( "psc" );         // device type
+        pls2->sfnam( f_name );       // File name.
+        pls2->sdev( "psc" );         // Device type.
 
-        pls2->cpstrm( *pls, false ); // copy old stream parameters to new stream
-        pls2->replot();              // do the save by replaying the plot buffer
+        pls2->cpstrm( *pls, false ); // Dopy old stream parameters to new stream.
+        pls2->replot();              // Do the save by replaying the plot buffer.
 
         delete pls2;
     }
 
-    // Let's get some user input
+    // Let's get some user input.
 
     if ( locate_mode )
     {
@@ -197,8 +196,8 @@ x01::x01(int argc, char ** argv)
         }
     }
 
-    // In C++ we don't call plend() to finish off
-    // this is handled by the destructor
+    // In C++ we don't call plend() to finish off.
+    // This is handled by the destructor.
     delete pls;
 }
 
@@ -248,23 +247,23 @@ void x01::plot1( int do_test )
     pls->line( 60, x, y );
 
 // xor mode enable erasing a line/point/text by replotting it again
-// it does not work in double buffering mode, however
+// it does not work in double buffering mode, however.
 
     if ( do_test && test_xor )
     {
 #ifdef PL_HAVE_USLEEP
         bool st;
-        pls->xormod( true, &st ); // enter xor mode
+        pls->xormod( true, &st ); // Enter xor mode.
         if ( st )
         {
             for ( i = 0; i < 60; i++ )
             {
-                pls->poin( 1, x + i, y + i, 9 );   // draw a point
-                usleep( 50000 );                   // wait a little
-                pls->flush();                      // force an update of the tk driver
-                pls->poin( 1, x + i, y + i, 9 );   // erase point
+                pls->poin( 1, x + i, y + i, 9 );   // Draw a point.
+                usleep( 50000 );                   // Wait a little.
+                pls->flush();                      // Force an update of the tk driver.
+                pls->poin( 1, x + i, y + i, 9 );   // Erase point.
             }
-            pls->xormod( false, &st );             // leave xor mode
+            pls->xormod( false, &st );             // Leave xor mode.
         }
 #else
         std::cout << "The -xor command line option can only be exercised if your system has usleep(), which does not seems to happen." << std::endl;
@@ -323,13 +322,11 @@ void x01::plot3()
     PLFLT *x     = new PLFLT[101];
     PLFLT *y     = new PLFLT[101];
 
-    // For the final graph we wish to override the default tick intervals,
-    // and so do not use plenv().
+    // For the final graph we wish to override the default tick intervals, and so do not use plenv().
 
     pls->adv( 0 );
 
-    // Use standard viewport, and define X range from 0 to 360 degrees, Y
-    // range from -1.2 to 1.2.
+    // Use standard viewport, and define X range from 0 to 360 degrees, Y range from -1.2 to 1.2.
 
     pls->vsta();
     pls->wind( 0.0, 360.0, -1.2, 1.2 );
@@ -348,8 +345,7 @@ void x01::plot3()
     pls->styl( 0, &mark0, &space0 );
 
     pls->col0( 3 );
-    pls->lab( "Angle (degrees)", "sine",
-        "#frPLplot Example 1 - Sine function" );
+    pls->lab( "Angle (degrees)", "sine", "#frPLplot Example 1 - Sine function" );
 
     for ( i = 0; i < 101; i++ )
     {
@@ -369,7 +365,7 @@ void x01::plot3()
 
 namespace my_plplot {
 
-void x01_example(const int argc, char **argv)
+void x01_example(const int argc, char *argv[])
 {
     boost::scoped_ptr<local::x01> x(new local::x01(argc, argv));
 }

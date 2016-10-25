@@ -3,7 +3,7 @@
 		http://www.graphviz.org/
 		http://www.research.att.com/sw/tools/graphviz/
 
-[-] Build.
+[-] Building.
 	- Download files.
 	- Add the third-party libraries.
 	- Download third-party executable packages.
@@ -13,16 +13,15 @@
 		${GRAPHVIZ_HOME}/third-party/include
 		${GRAPHVIZ_HOME}/third-party/lib
 
-[-] Build a project
+[-] Building ver.2.2.1 (VC).
 	REF [file] >> ${GRAPHVIZ_HOME}/doc/build.html
 
-	- graphviz-win-2.2.1 & msvc.
-		In VS.
-			Target project file.
-				${GRAPHVIZ_HOME}/makearch/win32/static/graphviz.dsw
-				${GRAPHVIZ_HOME}/makearch/win32/static/Tools.dsw
-			Static linking library.
-				There are no project dependencies.
-		In CLI
-			${GRAPHVIZ_HOME}/build.bat
-			${GRAPHVIZ_HOME}/install.bat
+	- Use IDE.
+		Target project file.
+			${GRAPHVIZ_HOME}/makearch/win32/static/graphviz.dsw
+			${GRAPHVIZ_HOME}/makearch/win32/static/Tools.dsw
+		Static linking library.
+			There are no project dependencies.
+	- Use Visual Studio command prompt.
+		${GRAPHVIZ_HOME}/build.bat
+		${GRAPHVIZ_HOME}/install.bat

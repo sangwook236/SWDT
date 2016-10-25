@@ -6,7 +6,7 @@
 
 namespace my_mathgl {
 
-// [ref] ${MATHGL_HOME}/examples/wnd_samples.cpp.
+// REF [file] >> R ${MATHGL_HOME}/examples/wnd_samples.cpp.
 int test_wnd(mglGraph *gr)
 {
 	mgl_set_test_mode(true);
@@ -40,7 +40,7 @@ int test_wnd(mglGraph *gr)
 	return 0;
 }
 
-// [ref] ${MATHGL_HOME}/examples/wnd_samples.cpp.
+// REF [file] >> ${MATHGL_HOME}/examples/wnd_samples.cpp.
 int sample(mglGraph *gr)
 {
 	gr->Rotate(20, 40);
@@ -51,7 +51,7 @@ int sample(mglGraph *gr)
 	return 0;
 }
 
-// [ref] ${MATHGL_HOME}/examples/wnd_samples.cpp.
+// REF [file] >> ${MATHGL_HOME}/examples/wnd_samples.cpp.
 int sample_m(mglGraph *gr)
 {
 	//gr->Rotate(0,0);  gr->Axis();  gr->Box();  return 0;
@@ -97,7 +97,7 @@ int sample_m(mglGraph *gr)
 	return 0;
 }
 
-// [ref] ${MATHGL_HOME}/examples/wnd_samples.cpp.
+// REF [file] >> ${MATHGL_HOME}/examples/wnd_samples.cpp.
 int sample_1(mglGraph *gr)
 {
 	mglData a(50, 15), d(50), d1(50), d2(50);
@@ -194,7 +194,7 @@ int sample_1(mglGraph *gr)
 	return gr->GetNumFrame();
 }
 
-// [ref] ${MATHGL_HOME}/examples/wnd_samples.cpp.
+// REF [file] >> ${MATHGL_HOME}/examples/wnd_samples.cpp.
 int sample_2(mglGraph *gr)
 {
 	mglData a(50, 50), b(50, 50), c(50, 50), d(50, 50), m(50, 50), c1(50, 50, 7), d1(50), d2(50);
@@ -241,7 +241,7 @@ int sample_2(mglGraph *gr)
 	gr->Box();  gr->Axis();
 	gr->Puts(mglPoint(0, 1.2, 1), "Density plot");
 	gr->Dens(a);
-	gr->InPlot(0.6, 1, 0.6, 1, false);  // new axis in upper right corner.
+	gr->InPlot(0.6, 1, 0.6, 1, false);  // New axis in upper right corner.
 	gr->Box();  gr->Axis();
 	gr->Puts(mglPoint(0, 1.2, 1), "... with bicolor");
 	gr->Dens(a, "BbwrR");
@@ -322,7 +322,7 @@ int sample_2(mglGraph *gr)
 	return gr->GetNumFrame();
 }
 
-// [ref] ${MATHGL_HOME}/examples/wnd_samples.cpp.
+// REF [file] >> ${MATHGL_HOME}/examples/wnd_samples.cpp.
 int sample_3(mglGraph *gr)
 {
 	mglData a(50,50,50), b(50, 50, 50), c(50, 50, 50), d(50, 50, 50), d1(50) ,d2(50), d3(50);
@@ -388,7 +388,7 @@ int sample_3(mglGraph *gr)
 	return gr->GetNumFrame();
 }
 
-// [ref] ${MATHGL_HOME}/examples/wnd_samples.cpp.
+// REF [file] >> ${MATHGL_HOME}/examples/wnd_samples.cpp.
 int sample_d(mglGraph *gr)
 {
 	mglData a(50, 50), b(50, 50);
@@ -420,7 +420,7 @@ int sample_d(mglGraph *gr)
 	return gr->GetNumFrame();
 }
 
-// [ref] ${MATHGL_HOME}/examples/wnd_samples.cpp.
+// REF [file] >> ${MATHGL_HOME}/examples/wnd_samples.cpp.
 void mgls_prepare1d(mglData *y, mglData *y1, mglData *y2, mglData *x1, mglData *x2)
 {
 	long n=50;
@@ -444,7 +444,7 @@ void mgls_prepare1d(mglData *y, mglData *y1, mglData *y2, mglData *x1, mglData *
 	}
 }
 
-// [ref] ${MATHGL_HOME}/examples/wnd_samples.cpp.
+// REF [file] >> ${MATHGL_HOME}/examples/wnd_samples.cpp.
 void mgls_prepare2d(mglData *a, mglData *b, mglData *v)
 {
 	long n=50,m=40;
@@ -460,7 +460,7 @@ void mgls_prepare2d(mglData *a, mglData *b, mglData *v)
 	}
 }
 
-// [ref] ${MATHGL_HOME}/examples/wnd_samples.cpp.
+// REF [file] >> ${MATHGL_HOME}/examples/wnd_samples.cpp.
 void mgls_prepare3d(mglData *a, mglData *b)
 {
 	long n=61,m=50,l=40;
@@ -475,7 +475,7 @@ void mgls_prepare3d(mglData *a, mglData *b)
 	}
 }
 
-// [ref] ${MATHGL_HOME}/examples/wnd_samples.cpp.
+// REF [file] >> ${MATHGL_HOME}/examples/wnd_samples.cpp.
 void mgls_prepare2v(mglData *a, mglData *b)
 {
 	long n=20,m=30;
@@ -490,7 +490,7 @@ void mgls_prepare2v(mglData *a, mglData *b)
 	}
 }
 
-// [ref] ${MATHGL_HOME}/examples/wnd_samples.cpp.
+// REF [file] >> ${MATHGL_HOME}/examples/wnd_samples.cpp.
 void mgls_prepare3v(mglData *ex, mglData *ey, mglData *ez)
 {
 	long n=10;
@@ -527,7 +527,7 @@ void glut_example();
 namespace {
 namespace local {
 
-// [ref] MathGL manual.
+// REF [doc] >> MathGL manual.
 void simple_example_1()
 {
 	HMGL gr = mgl_create_graph(600, 400);
@@ -535,7 +535,7 @@ void simple_example_1()
 	mgl_fplot(gr, "sin(pi * x)", "", "");
 
 	// Ssave the result.
-	//mgl_write_frame(gr, "./data/visualization/mathgl/simple_example_1.png", "");  // run-time error.
+	//mgl_write_frame(gr, "./data/visualization/mathgl/simple_example_1.png", "");  // NOTICE [error] >> Run-time error.
 	mgl_write_frame(gr, "./data/visualization/mathgl/simple_example_1.jpg", "");
 	//mgl_write_jpg(gr, "./data/visualization/mathgl/simple_example_1.jpg", "");
 	//mgl_write_bmp(gr, "./data/visualization/mathgl/simple_example_1.bmp", "");
@@ -543,7 +543,7 @@ void simple_example_1()
 	mgl_delete_graph(gr);
 }
 
-// [ref] MathGL manual.
+// REF [doc] >> MathGL manual.
 void simple_example_2()
 {
 	mglGraph gr;
@@ -551,14 +551,14 @@ void simple_example_2()
 	gr.FPlot("sin(pi * x)");
 	
 	// Ssave the result.
-	//gr.WriteFrame("./data/visualization/mathgl/simple_example_2.png");  // run-time error.
+	//gr.WriteFrame("./data/visualization/mathgl/simple_example_2.png");  // NOTICE [error] >> Run-time error.
 	gr.WriteFrame("./data/visualization/mathgl/simple_example_2.jpg");
-	//gr.WritePNG("./data/visualization/mathgl/simple_example_2.png");  // run-time error.
+	//gr.WritePNG("./data/visualization/mathgl/simple_example_2.png");  // NOTICE [error] >> Run-time error.
 	//gr.WriteJPEG("./data/visualization/mathgl/simple_example_2.jpg");
 	//gr.WriteBMP("./data/visualization/mathgl/simple_example_2.bmp");
 }
 
-// [ref] MathGL manual.
+// REF [doc] >> MathGL manual.
 void simple_example_3()
 {
 	mglGraph gr;
@@ -573,8 +573,8 @@ void simple_example_3()
 	//my_mathgl::sample(&gr);
 
 	// Ssave the result.
-	//gr.WriteEPS("./data/visualization/mathgl/simple_example_3.eps");  // run-time error.
-	//gr.WritePNG("./data/visualization/mathgl/simple_example_3.png");  // run-time error.
+	//gr.WriteEPS("./data/visualization/mathgl/simple_example_3.eps");  // NOTICE [error] >> Run-time error.
+	//gr.WritePNG("./data/visualization/mathgl/simple_example_3.png");  // NOTICE [error] >> Run-time error.
 	gr.WriteJPEG("./data/visualization/mathgl/simple_example_3.jpg");
 	//gr.WriteBMP("./data/visualization/mathgl/simple_example_3.bmp");
 }

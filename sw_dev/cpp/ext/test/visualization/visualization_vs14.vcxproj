@@ -83,11 +83,18 @@
     <ClInclude Include="plplot\plc++demos.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="gnuplot\gnuplot_main.cpp" />
     <ClCompile Include="graphviz\graphviz_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mathgl\mathgl_glut_example.cpp" />
-    <ClCompile Include="mathgl\mathgl_main.cpp" />
+    <ClCompile Include="mathgl\mathgl_glut_example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="mathgl\mathgl_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="plplot\plplot_main.cpp" />
     <ClCompile Include="plplot\plplot_x01_example.cpp" />
     <ClCompile Include="plplot\plplot_x21_example.cpp" />

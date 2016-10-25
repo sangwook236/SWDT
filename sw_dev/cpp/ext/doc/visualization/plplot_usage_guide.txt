@@ -5,29 +5,29 @@
 			ENABLE_DYN_DRIVERS=OFF
 
 [-] Trouble Shooting.
-	- Windows에서 아래와 같이 device driver를 로드할 수 없다는 에러 메시지를 출력하면서 실행되지 않는 경우.
+	- Cannot load device driver in Windows.
 		<error>
 			"unable to load driver"
 			or
 			"plInitDispatchTable: Could not open drivers directory, aborting operation"
-		==> Environment variable 설정. (?)
+		==> Set environment variable. (?)
 			set PLPLOT_DRV_DIR=${PLPLOT_INSTALL}\lib\plplot5.9.9\driversd
 			or
 			set PLPLOT_DRV_DIR=${PLPLOT_HOME}\${BUILD_DIR}\drivers
-		==> Executable file의 실행 폴더로 복사.
+		==> Copy executables to a directory for exection.
 			${PLPLOT_INSTALL}/lib/plplot5.9.9/driversd/*.dll & * driver_info
 			or
 			${PLPLOT_HOME}/${BUILD_DIR}/dll/Release/*.dll
 			${PLPLOT_HOME}/${BUILD_DIR}/dll/Debug/*.dll
 			${PLPLOT_HOME}/${BUILD_DIR}/drivers/*.driver_info
 
-	- Windows에서 아래와 같이 경고 메시지를 출력하면서 실행되지 않는 경우.
+	- Execution error in Windows.
 		<warning>
 			"Unable to open cmap0 file cmap0_default.pal"
 			"Unable to open cmap1 .pal file cmap1_default.pal"
-		==> Environment variable 설정. (?)
+		==> Set environment variable. (?)
 			set PLPLOT_LIB=${PLPLOT_INSTALL}\share\plplot5.9.9
 			or
 			set PLPLOT_LIB=${PLPLOT_HOME}\data
-		==> Executable file의 실행 폴더로 복사.
+		==> Copy executables to a directory for exection.
 			${PLPLOT_HOME}/data/*.pal & *.fnt
