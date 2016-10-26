@@ -14,12 +14,23 @@ int main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "GSL Spline library ------------------------------------------------" << std::endl;
-		//	- Spline and its differentiation and integration.
+		std::cout << "GSL library -------------------------------------------------------" << std::endl;
+		//	- Polynomial interpolation.
+		//		Spline and its differentiation and integration.
+		//	- Chebyshev approximation.
+		//	- Linear/nonlinear least-squares fitting.
+		//	- Basis spline (B-spline).
 		// REF [library] >> GSL library.
 
-		std::cout << "\nALGLIB Spline library -----------------------------------------------" << std::endl;
-		//	- Spline and its differentiation and integration.
+		std::cout << "\nALGLIB library ------------------------------------------------------" << std::endl;
+		//	- Interpolation and fitting.
+		//		Polynomial interpolation.
+		//		Rational interpolation.
+		//		Spline interpolation.
+		//			Spline and its differentiation and integration.
+		//			Bilinear and bicubic spline interpolation.
+		//		Linear/nonlinear least squares fitting.
+		//		Fast RBF interpolation/fitting.
 		// REF [library] >> ALGLIB library.
 
 		std::cout << "\nEigen Spline library ------------------------------------------------" << std::endl;

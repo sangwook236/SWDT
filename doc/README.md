@@ -1,4 +1,4 @@
-# Documentation for GDT
+# Documentation for SWDT
 
 ## Introduction
 
