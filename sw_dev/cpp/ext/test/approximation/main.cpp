@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 		std::cout << "GSL library -------------------------------------------------------" << std::endl;
 		//	- Polynomial interpolation.
 		//		Spline and its differentiation and integration.
-		//	- Chebyshev approximations.
+		//	- Chebyshev approximation.
 		//	- Linear/nonlinear least-squares fitting.
 		//	- Basis spline (B-spline).
 		// REF [library] >> GSL library.
