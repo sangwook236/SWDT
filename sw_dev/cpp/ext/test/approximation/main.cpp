@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 		//	- Interpolation and fitting.
 		//		Polynomial interpolation.
 		//		Rational interpolation.
-		//		Spline interpolation
+		//		Spline interpolation.
 		//			Spline and its differentiation and integration.
 		//			Bilinear and bicubic spline interpolation.
 		//		Linear/nonlinear least squares fitting.
