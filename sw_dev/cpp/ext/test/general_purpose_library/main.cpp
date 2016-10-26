@@ -7,12 +7,17 @@
 
 int main(int argc, char *argv[])
 {
+	int stlport_main(int argc, char *argv[]);
 	int dlib_main(int argc, char *argv[]);
 	int loki_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "dlib library --------------------------------------------------------" << std::endl;
+		std::cout << "STLport library -----------------------------------------------------" << std::endl;
+		//retval = stlport_main(argc, argv);  // Not yet implemented.
+
+		std::cout << "\ndlib library --------------------------------------------------------" << std::endl;
 		//  Algorithm, threading, networking, parsing.
 		//  Graphical user interfaces (GUI).
 		//  Linear algebra, numerical algorithms.

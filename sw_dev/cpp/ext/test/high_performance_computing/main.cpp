@@ -20,13 +20,13 @@ int main(int argc, char *argv[])
 		// REF [library] >> Boost library.
 
 		std::cout << "\nVexCL library -------------------------------------------------------" << std::endl;
-        //retval = vexcl_main(argc, argv);  // Not yet implemented.
+        retval = vexcl_main(argc, argv);
 
 		std::cout << "\nThrust library ------------------------------------------------------" << std::endl;
         //retval = thrust_main(argc, argv);
 
 		std::cout << "\nCompute Unified Device Architecture (CUDA) --------------------------" << std::endl;
-        retval = cuda_main(argc, argv);
+        //retval = cuda_main(argc, argv);
     }
     catch (const std::bad_alloc &e)
     {

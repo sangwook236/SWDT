@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "boost", "..\test\boost\boost_vs14.vcxproj", "{FE865C87-952D-4D24-9247-6ED2EB61067A}"
 EndProject
@@ -39,8 +39,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "serialization", "..\test\serialization\serialization_vs14.vcxproj", "{06F19B3E-026F-4B2B-A342-CC98AB2CE95C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "networking", "..\test\networking\networking_vs14.vcxproj", "{2BAA7170-259E-4A41-B87C-CCE654E8D191}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stl", "..\test\stl\stl_vs14.vcxproj", "{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testing", "..\test\testing\testing_vs14.vcxproj", "{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}"
 EndProject
@@ -186,12 +184,6 @@ Global
 		{2BAA7170-259E-4A41-B87C-CCE654E8D191}.Release|Win32.ActiveCfg = Release|Win32
 		{2BAA7170-259E-4A41-B87C-CCE654E8D191}.Release|Win32.Build.0 = Release|Win32
 		{2BAA7170-259E-4A41-B87C-CCE654E8D191}.Release|x64.ActiveCfg = Release|Win32
-		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Debug|Win32.ActiveCfg = Debug|Win32
-		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Debug|Win32.Build.0 = Debug|Win32
-		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Debug|x64.ActiveCfg = Debug|Win32
-		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Release|Win32.ActiveCfg = Release|Win32
-		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Release|Win32.Build.0 = Release|Win32
-		{7A974DB2-BAEA-4CF5-AB10-D9D7A9E0F3EF}.Release|x64.ActiveCfg = Release|Win32
 		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Debug|Win32.ActiveCfg = Debug|Win32
 		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Debug|Win32.Build.0 = Debug|Win32
 		{503BBDAA-11B5-4FAB-8DFD-1E5DAAB85B7B}.Debug|x64.ActiveCfg = Debug|Win32

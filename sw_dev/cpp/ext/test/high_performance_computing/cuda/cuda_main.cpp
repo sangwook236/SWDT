@@ -1,16 +1,13 @@
 #include <iostream>
 
 
-namespace
-{
-namespace local
-{
+namespace {
+namespace local {
 
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_cuda
-{
+namespace my_cuda {
 
 void hello_world();
 void basic_operation();

@@ -19,6 +19,9 @@
     <Filter Include="Source Files\loki">
       <UniqueIdentifier>{cf8ab717-8897-435f-874f-989ca0825cde}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\stlport">
+      <UniqueIdentifier>{bd75bef6-b27f-4426-8b5e-8f2748e3b909}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -38,6 +41,9 @@
     </ClCompile>
     <ClCompile Include="dlib\dlib_svm_struct_example.cpp">
       <Filter>Source Files\dlib</Filter>
+    </ClCompile>
+    <ClCompile Include="stlport\stlport_main.cpp">
+      <Filter>Source Files\stlport</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

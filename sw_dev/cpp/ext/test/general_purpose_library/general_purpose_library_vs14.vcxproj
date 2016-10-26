@@ -88,6 +88,7 @@
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="loki\loki_main.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="stlport\stlport_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,10 +5,12 @@
 #		if defined(DEBUG) || defined(_DEBUG)
 
 #pragma comment(lib, "cudart.lib")
+#pragma comment(lib, "OpenCL.lib")
 
 #		else
 
 #pragma comment(lib, "cudart.lib")
+#pragma comment(lib, "OpenCL.lib")
 
 #		endif
 

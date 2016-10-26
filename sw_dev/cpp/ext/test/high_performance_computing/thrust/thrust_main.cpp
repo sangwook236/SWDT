@@ -1,16 +1,13 @@
 #include <iostream>
 
 
-namespace
-{
-namespace local
-{
+namespace {
+namespace local {
 
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_thrust
-{
+namespace my_thrust {
 
 void basic_operation();
 
