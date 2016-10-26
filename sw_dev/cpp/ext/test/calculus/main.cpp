@@ -17,6 +17,12 @@ int main(int argc, char *argv[])
 		std::cout << "Boost.Numeric.Odeint library ----------------------------------------" << std::endl;
 		// REF [library] >> Boost library.
 
+		std::cout << "\nGSL library -------------------------------------------------------" << std::endl;
+		//	- Numerical differentiation.
+		//	- Numerical integration.
+		//	- Monte Carlo integration.
+		// REF [library] >> GSL library.
+
 		std::cout << "\nCOIN-OR CppAD library -----------------------------------------------" << std::endl;
 		//  - Automatic differentiation (AutoDiff).
 		retval = cppad_main(argc, argv);
