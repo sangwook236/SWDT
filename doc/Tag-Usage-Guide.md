@@ -26,11 +26,17 @@
 	- {problem}: problem or trouble.
 	- {secondary-problem}: secondary/derived problem.
 
+	<!-- -->
+
 	- {error-msg}: error message.
 	- {warning-msg}: warning message.
 
+	<!-- -->
+
 	- {cause}: cause.
 	- {solution}: solution.
+
+	<!-- -->
 
 	- {note}: note.
 
@@ -97,6 +103,7 @@
 	- info
 	- note
 		- REF [] >> "Note Taking"
+	- assumption, limitation
 
 ##### Reference Task
 - Format
@@ -141,6 +148,8 @@
 ## Note Taking
 - Use bullet
 	- REF [site] >> http://bulletjournal.com/
+
+	<!-- -->
 
 	- .(dot): task
 	- O(circle): event
