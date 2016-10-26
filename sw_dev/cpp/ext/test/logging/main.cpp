@@ -25,7 +25,6 @@ namespace local {
 // REF [site] >> https://msdn.microsoft.com/en-us/library/windows/desktop/dd996928(v=vs.85).aspx
 void event_log_example()
 {
-	// REF [site] >> https://msdn.microsoft.com/en-us/library/windows/desktop/dd996928(v=vs.85).aspx
 	throw std::runtime_error("Not yet implemented");
 }
 #else
