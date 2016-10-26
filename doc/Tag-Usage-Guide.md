@@ -24,20 +24,11 @@
 	- {solution}: solution.
 	- {error}: error, bug, defect.
 	- {problem}: problem or trouble.
-	- {secondary-problem}: secondary/derived problem.
-
-	<!-- -->
-
+	- {secondary-problem}: secondary/derived problem. <br/><br/>
 	- {error-msg}: error message.
-	- {warning-msg}: warning message.
-
-	<!-- -->
-
+	- {warning-msg}: warning message. <br/><br/>
 	- {cause}: cause.
-	- {solution}: solution.
-
-	<!-- -->
-
+	- {solution}: solution. <br/><br/>
 	- {note}: note.
 
 ## Revision (History) Tag
@@ -147,10 +138,7 @@
 
 ## Note Taking
 - Use bullet
-	- REF [site] >> http://bulletjournal.com/
-
-	<!-- -->
-
+	- REF [site] >> http://bulletjournal.com/ <br/><br/>
 	- .(dot): task
 	- O(circle): event
 	- -: note
