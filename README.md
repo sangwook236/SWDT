@@ -7,13 +7,9 @@ SWDT is a rich repository of knowledge for development and testing.
 
 SWDT includes various programming languages and hardware components:
 - Software
-  - C/C++
-  - C#
-  - Java
-  - Matlab
-  - R
+  - C/C++, C#, Java, Objective-C
   - Python
-  - Objective-C
+  - Matlab, R
 - Hardware
   - Component
     - Sensor
