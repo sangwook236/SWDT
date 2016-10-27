@@ -21,7 +21,10 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "kdtree library ------------------------------------------------------" << std::endl;
+		std::cout << "Boost.Sort library --------------------------------------------------" << std::endl;
+		// REF [library] >> Boost library.
+
+		std::cout << "\nkdtree library ------------------------------------------------------" << std::endl;
 		//retval = kdtree_main(argc, argv);
 
 		std::cout << "\nlibkdtree++ library -------------------------------------------------" << std::endl;
