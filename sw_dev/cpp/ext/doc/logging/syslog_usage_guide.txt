@@ -1,0 +1,16 @@
+[-] General.
+    - Site.
+        https://github.com/google/glog
+        https://code.google.com/p/google-glog/
+
+[-] Usage.
+	- Config file.
+		/etc/rsyslog.conf
+		/etc/syslog.conf
+	- Log file.
+		/var/log/syslog
+
+	- View syslog.
+		tail -f /var/log/syslog
+		tail -f /var/log/syslog | grep process_name
+		less /var/log/syslog

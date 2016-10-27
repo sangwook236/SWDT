@@ -1,38 +1,30 @@
-[-] General
+[-] General.
 	- Site.
 		https://logging.apache.org/log4cxx/
 		http://apr.apache.org/
 
-[-] Building
+[-] Building.
 	- Follow.
 		REF [site] >> http://stackoverflow.com/questions/8461123/building-log4cxx-in-vs-2010-c
 		REF [site] >> https://logging.apache.org/log4cxx/latest_stable/building/vstudio.html
 
-	- MSVC 환경변수 설정.
-		Visual Studio 6.0.
-			>< ${VC6_ROOT}/Vc98/bin/vcvars32.bat 실행
-			>< command
-				vcvars32.bat > nul
-		Visual Studio 2003.
-			>< ${VC71_ROOT}/Vc7/bin/vcvars32.bat 실행
-			>< command
-				vcvars32.bat > nul
-	- Build library.
-		Visual Studio 6.0
+	- Run Visual Studio command prompt.
+	- Open a project file.
+		Visual Studio 6.0:
 			>< ${LOG4CXX_ROOT}/projects/log4cxx.dsw
-		Visual Studio .NET 2003
+		Visual Studio .NET 2003:
 			>< ${LOG4CXX_ROOT}/projects/log4cxx.sln
-	- Output files.
-		Output directory.
+	- Build library.
+		Output directory:
 			${LOG4CXX_ROOT}/projects/Debug
 			${LOG4CXX_ROOT}/projects/Release
 
-[-] Trouble Shooting
+[-] Trouble Shooting.
 	- Rename output files.
 		Debug-build "NTEventLogAppender.dll".
 			>> Target file.
 				${LOG4CXX_ROOT}/include/log4cxx/nt/EventLogCategories.mc
-			>> Debug mode를 위한 "NTEventLogAppender.dll"의 이름을 "NTEventLogAppenderd.dll"으로 변경하려면.
-				1. click right mouse button on "EventLogCategories.mc" in Visual Studio IDE
-				2. click "Properties" item
-				3. change the DLL's name into "NTEventLogAppenderd.dll" in Custom Build Step
+			>> In order to use "NTEventLogAppenderd.dll" in the debug build.
+				1. Click right mouse button on "EventLogCategories.mc" in Visual Studio IDE.
+				2. Click "Properties" item.
+				3. Change the DLL's name into "NTEventLogAppenderd.dll" in Custom Build Step.

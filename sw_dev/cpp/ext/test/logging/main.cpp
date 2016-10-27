@@ -28,12 +28,6 @@ void event_log_example()
 	throw std::runtime_error("Not yet implemented");
 }
 #else
-// Config file: /etc/rsyslog.conf or /etc/syslog.conf.
-// Log file: /var/log/syslog.
-//	tail -f /var/log/syslog
-//	tail -f /var/log/syslog | grep process_name
-//	less /var/log/syslog
-
 // REF [site] >>
 //	https://www.gnu.org/software/libc/manual/html_node/Syslog.html
 //	https://www.gnu.org/software/libc/manual/html_node/Submitting-Syslog-Messages.html
