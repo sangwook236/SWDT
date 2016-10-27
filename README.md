@@ -27,6 +27,6 @@ SWDT includes various programming languages and hardware components:
 
 # Wikis
 
-A repository of documents for research and development of S/W and H/W including ideation, conceptualization, and mathematical formulation, etc.
+A repository of resources for research and development of S/W and H/W including ideation, conceptualization, and mathematical formulation, etc.
 - [SWDT Wiki](https://github.com/sangwook236/SWDT/wiki/Home)
 
