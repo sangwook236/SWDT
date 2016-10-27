@@ -6,6 +6,7 @@
 #include <winevt.h>
 #else
 #include <syslog.h>
+#include <unistd.h>
 #endif
 #include <iostream>
 #include <stdexcept>
@@ -72,7 +73,7 @@ int main(int argc, char *argv[])
 		//retval = log4cxx_main(argc, argv);
 
 		std::cout << "\nglog library --------------------------------------------------------" << std::endl;
-		retval = glog_main(argc, argv);
+		//retval = glog_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

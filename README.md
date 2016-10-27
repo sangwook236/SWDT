@@ -6,25 +6,23 @@ The goal of SWDT is to systematically accumulate source codes, knowledge, and ex
 SWDT is a rich repository of knowledge for development and testing.
 
 SWDT includes various programming languages and hardware components:
-* Software
-  * C/C++
-  * C#
-  * Java
-  * Matlab
-  * R
-  * Python
-  * Objective-C
-* Hardware
-  * Component
-    * Sensor
-      * Image Sensor: Kinect
-      * AHRS, IMU, GPS
-  * Open Source Hardware (OSHW)
-    * Arduino
-  * Microprocessor and Microcontroller
-    * ARM: Raspberry Pi, STM32, AT91SAM
-    * AVR: ATmega128
+- Software
+  - C/C++, C#, Java, Objective-C
+  - Python
+  - Matlab, R
+- Hardware
+  - Component
+    - Sensor
+      - Image Sensor: Kinect
+      - AHRS, IMU, GPS
+  - Open Source Hardware (OSHW)
+    - Arduino
+  - Microprocessor and Microcontroller
+    - ARM: Raspberry Pi, STM32, AT91SAM
+    - AVR: ATmega128
 
-# Wikis
+## Wikis
+
+A repository of resources for research and development of S/W and H/W including ideation, conceptualization, and mathematical formulation, etc.
 - [SWDT Wiki](https://github.com/sangwook236/SWDT/wiki/Home)
 
