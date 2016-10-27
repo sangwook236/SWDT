@@ -1,7 +1,7 @@
 [-] General.
     - Site.
-        https://github.com/google/glog
-        https://code.google.com/p/google-glog/
+        http://www.rsyslog.com/
+        http://www.syslog.org/logged/
 
 [-] Usage.
 	- Config file.
