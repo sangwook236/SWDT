@@ -25,7 +25,7 @@ SWDT includes various programming languages and hardware components:
     - ARM: Raspberry Pi, STM32, AT91SAM
     - AVR: ATmega128
 
-# Wikis
+## Wikis
 
 A repository of resources for research and development of S/W and H/W including ideation, conceptualization, and mathematical formulation, etc.
 - [SWDT Wiki](https://github.com/sangwook236/SWDT/wiki/Home)
