@@ -31,11 +31,13 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
-			<Add directory="/usr/local/include/" />
+			<Add directory="/usr/local/include" />
+			<Add directory="/usr/include" />
 		</Compiler>
 		<Linker>
 			<Add library="glog" />
@@ -43,9 +45,13 @@
 			<Add library="boost_thread" />
 			<Add library="boost_unit_test_framework" />
 			<Add library="boost_system" />
-			<Add directory="/usr/local/lib/" />
+			<Add directory="/usr/local/lib" />
+			<Add directory="/usr/lib" />
 		</Linker>
-		<Unit filename="glog/glog_main.cpp" />
+		<Unit filename="glog/glog_main.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="log4cxx/log4cxx_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
