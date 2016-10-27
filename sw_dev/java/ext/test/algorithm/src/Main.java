@@ -5,7 +5,7 @@ public class Main {
 		try
 		{
 			System.out.println("Apache Lucene project -----------------------------------------------");			
-			lucene.Lucene_Main.run(args);  // not yet implemented.
+			lucene.Lucene_Main.run(args);  // Not yet implemented.
 		}
 		catch (Exception e)
 		{
