@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 		std::cout << "\nALGLIB library ------------------------------------------------------" << std::endl;
 		//	- Linear algebra.
 		//	- Interpolation.
-		//		Spline: Linear splien, Hermite spline, Catmull-Rom spline, Cubic spline, Akima spline.
+		//		Spline: linear, Hermite, Catmull-Rom, cubic, and Akima splines.
 		//	- Differentiataion & integration
 		//	- Optimization.
 		//	- Statistics.
