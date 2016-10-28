@@ -4,8 +4,8 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+//#pragma comment(lib, "viennacld.lib")
 //#pragma comment(lib, "cvm_ia32_debug.lib")
-
 #pragma comment(lib, "libsuperlu.lib")
 //#pragma comment(lib, "libumfpackd.lib")
 //#pragma comment(lib, "libspqrd.lib")
@@ -27,11 +27,12 @@
 #pragma comment(lib, "lapackd.lib")
 #pragma comment(lib, "blasd.lib")
 #pragma comment(lib, "libf2cd.lib")
+#pragma comment(lib, "OpenCL.lib")
 
 #		else
 
+//#pragma comment(lib, "viennacl.lib")
 //#pragma comment(lib, "cvm_ia32.lib")
-
 #pragma comment(lib, "libsuperlu.lib")
 //#pragma comment(lib, "libumfpack.lib")
 //#pragma comment(lib, "libspqr.lib")
@@ -53,6 +54,7 @@
 #pragma comment(lib, "lapack.lib")
 #pragma comment(lib, "blas.lib")
 #pragma comment(lib, "libf2c.lib")
+#pragma comment(lib, "OpenCL.lib")
 
 #		endif
 

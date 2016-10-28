@@ -60,6 +60,7 @@ struct Running : boost::statechart::simple_state<Running, Active>
 private:
 	std::time_t startTime_;
 };
+
 struct Stopped : boost::statechart::simple_state<Stopped, Active>
 {
 	typedef boost::statechart::transition<EvStartStop, Running> reactions;

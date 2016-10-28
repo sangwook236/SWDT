@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 		//		Spline and spline fitting.
 		//			Basis spline (B-spline).
 		//		MPFR support.
-		retval = eigen_main(argc, argv);
+		//retval = eigen_main(argc, argv);
 		std::cout << "\nArmadillo library ---------------------------------------------------" << std::endl;
 		//retval = armadillo_main(argc, argv);
 
@@ -74,7 +74,8 @@ int main(int argc, char* argv[])
 		//			Lanczos algorithm.
 		//	- Nonnegative matrix factorization (NMF).
 		//	- Fast Fourier transform (FFT).
-		//retval = viennacl_main(argc, argv);  // Not yet implemented.
+		//	- Interfaceing with Boost uBLAS, Eigen, MTL4, Python, and Matlab.
+		retval = viennacl_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

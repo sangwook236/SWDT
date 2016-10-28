@@ -21,7 +21,30 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "Boost.Sort library --------------------------------------------------" << std::endl;
+		std::cout << "Boost library -------------------------------------------------------" << std::endl;
+		//	- Algorithm.
+		//		Boost.Algorithm.
+		//		Boost.Sort.
+		//		Boost.Min-Max.
+		//	- String algorithm.
+		//		Boost Tokenizer.
+		//		Boost String Algorithms.
+		//		Boost Format.
+		//	- Regular expression.
+		//		Boost.Regex.
+		//		Boost.Xpressive.
+		//	- Conversion.
+		//		Boost.NumericConversion.
+		//		Boost.Convert.
+		//		Boost.Lexical_Cast.
+		//		Boost Conversion Library: polymorphic cast.
+		//	- State machine.
+		//		Boost.Statechart.
+		//		Boost Meta State Machine (MSM).
+		//	- Parser.
+		//		Boost Spirit.
+		//		Boost.Metaparse.
+		//		Boost.Proto.
 		// REF [library] >> Boost library.
 
 		std::cout << "\nkdtree library ------------------------------------------------------" << std::endl;
