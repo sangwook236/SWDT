@@ -25,9 +25,11 @@ int main(int argc, char *argv[])
 		// REF [library] >> Boost library.
 
 		std::cout << "\nkdtree library ------------------------------------------------------" << std::endl;
+		//	- k-dimensional tree (k-d tree).
 		//retval = kdtree_main(argc, argv);
 
 		std::cout << "\nlibkdtree++ library -------------------------------------------------" << std::endl;
+		//	- k-dimensional tree (k-d tree).
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		//retval = libkdtreepp_main(argc, argv);
 #else
@@ -35,9 +37,11 @@ int main(int argc, char *argv[])
 #endif
 
 		std::cout << "\nA Library for Approximate Nearest Neighbor Searching (ANN) ----------" << std::endl;
+		//	- Approximate nearest neighbor.
 		retval = ann_main(argc, argv);
 
 		std::cout << "\nLSHKIT library ------------------------------------------------------" << std::endl;
+		//	- Locality-sensitive hashing (LSH).
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		//retval = lshkit_main(argc, argv);
 #else
@@ -45,7 +49,7 @@ int main(int argc, char *argv[])
 #endif
 
 		std::cout << "\nslash library -------------------------------------------------------" << std::endl;
-		//  -. Spherical LSH (SLSH).
+		//  - Spherical locality-sensitive hashing (SLSH).
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		//retval = slash_main(argc, argv);
 #else
