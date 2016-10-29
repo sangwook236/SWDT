@@ -306,7 +306,7 @@ void iterative_solvers_with_ublas_example()
 		return;
 	}
 
-	// Read associated vectors from files
+	// Read associated vectors from files.
 	if (!readVectorFromFile("./data/linear_algebra/rhs65025.txt", rhs))
 	{
 		std::cerr << "Error reading RHS file" << std::endl;
@@ -377,7 +377,7 @@ void iterative_solvers_with_eigen_example()
 	{
 		std::cerr << "Error reading RHS file" << std::endl;
 		return;
-}
+	}
 
 	if (!readVectorFromFile("./data/linear_algebra/result65025.txt", ref_result))
 	{

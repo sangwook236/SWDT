@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nTinySpline library --------------------------------------------------" << std::endl;
 		//	- Spline.
-		//		Basis spline (B-spline).
+		//		Basis spline (B-spline) and its differentiation.
 		//		Non-uniform rational B-spline (NURBS).
 		//		Thin-plate spline (TPS). (?)
 		//	- Bezier.

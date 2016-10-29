@@ -67,14 +67,16 @@ int main(int argc, char* argv[])
 
 		std::cout << "\nThe Vienna Computing Library (ViennaCL) -----------------------------" << std::endl;
 		//	- Incomplete LU factorization (ILU).
+		//	- Multigrid method.
+		//		Algebraic multigrid (AMG) method.
 		//	- Eigenproblem.
 		//		Bisection.
 		//		Iterative solver.
 		//			Power iteration.
 		//			Lanczos algorithm.
+		//	- Interfaceing with Boost uBLAS, Eigen, MTL4, Python, and Matlab.
 		//	- Nonnegative matrix factorization (NMF).
 		//	- Fast Fourier transform (FFT).
-		//	- Interfaceing with Boost uBLAS, Eigen, MTL4, Python, and Matlab.
 		retval = viennacl_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

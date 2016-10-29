@@ -103,6 +103,8 @@ void bspline_example()
 		retval = ts_bspline_evaluate(&spline, 0.5f, &net);
 		//net.result
 
+		// Do something.
+
 		ts_deboornet_free(&net);
 	}
 
@@ -201,6 +203,8 @@ void nurbs_example()
 		retval = ts_bspline_evaluate(&spline, u, &net);
 		//net.result
 
+		// Do something.
+
 		ts_deboornet_free(&net);
 	}
 
@@ -269,7 +273,65 @@ void bezier_example()
 		else
 			retval = ts_bspline_copy(&spline, &draw);
 
+		// Do something.
+
 		ts_bspline_free(&draw);
+	}
+
+	// Tear down.
+	ts_bspline_free(&spline);
+}
+
+void bspline_derivative_example()
+{
+	const size_t degree = 3;  // Degree of spline.
+	const size_t dim = 3;  // Dimension of each point.
+	const size_t numControlPoints = 7;  // Number of control points.
+	const tsBSplineType splineType = TS_CLAMPED;  // Used to hit first and last control point.
+	tsError retval;
+
+	// Create a clamped spline.
+	tsBSpline spline;
+	retval = ts_bspline_new(degree, dim, numControlPoints, splineType, &spline);
+
+	// Set up the control points.
+	spline.ctrlp[0] = -1.75;
+	spline.ctrlp[1] = -1.0;
+	spline.ctrlp[2] = 0.0;
+
+	spline.ctrlp[3] = -1.5;
+	spline.ctrlp[4] = -0.5;
+	spline.ctrlp[5] = 0.0;
+
+	spline.ctrlp[6] = -1.5;
+	spline.ctrlp[7] = 0.0;
+	spline.ctrlp[8] = 0.0;
+
+	spline.ctrlp[9] = -1.25;
+	spline.ctrlp[10] = 0.5;
+	spline.ctrlp[11] = 0.0;
+
+	spline.ctrlp[12] = -0.75;
+	spline.ctrlp[13] = 0.75;
+	spline.ctrlp[14] = 0.0;
+
+	spline.ctrlp[15] = 0.0;
+	spline.ctrlp[16] = 0.5;
+	spline.ctrlp[17] = 0.0;
+
+	spline.ctrlp[18] = 0.5;
+	spline.ctrlp[19] = 0.0;
+	spline.ctrlp[20] = 0.0;
+
+	//
+	{
+		tsBSpline deriv;
+		retval = ts_bspline_derive(&spline, &deriv);
+		//net.result
+
+		// Do something.
+
+		ts_bspline_free(&deriv);
 	}
 
 	// Tear down.
@@ -292,6 +354,10 @@ int tinyspline_main(int argc, char *argv[])
 	local::bspline_example();
 	local::nurbs_example();
 	local::bezier_example();
+
+	// Derivative -----------------------------------------
+	// REF [site] >> http://www.cs.mtu.edu/~shene/COURSES/cs3621/NOTES/spline/B-spline/bspline-derv.html
+	local::bspline_derivative_example();
 
 	return 0;
 }
