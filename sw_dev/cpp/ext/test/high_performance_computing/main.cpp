@@ -14,18 +14,18 @@ int main(int argc, char *argv[])
 
 	int vexcl_main(int argc, char *argv[]);
 
-    int thrust_main(int argc, char *argv[]);
-    int cuda_main(int argc, char *argv[]);
+	int thrust_main(int argc, char *argv[]);
+	int cuda_main(int argc, char *argv[]);
 
-    int retval = EXIT_SUCCESS;
-    try
-    {
+	int retval = EXIT_SUCCESS;
+	try
+	{
 		std::cout << "Open Multi-Processing (OpenMP) --------------------------------------" << std::endl;
 		//retval = openmp_main(argc, argv);
 
 		std::cout << "\nSingle instruction, mutiple data (SIMD) -----------------------------" << std::endl;
 		//	- Streaming SIMD Extensions (SSE).
-		retval = simd_main(argc, argv);
+		//retval = simd_main(argc, argv);
 
 		std::cout << "\nBoost.Compute library -----------------------------------------------" << std::endl;
 		// REF [library] >> Boost library.
@@ -34,29 +34,29 @@ int main(int argc, char *argv[])
 		retval = vexcl_main(argc, argv);
 
 		std::cout << "\nThrust library ------------------------------------------------------" << std::endl;
-        //retval = thrust_main(argc, argv);
+		//retval = thrust_main(argc, argv);
 
 		std::cout << "\nCompute Unified Device Architecture (CUDA) --------------------------" << std::endl;
-        //retval = cuda_main(argc, argv);
-    }
-    catch (const std::bad_alloc &e)
-    {
-        std::cout << "std::bad_alloc caught: " << e.what() << std::endl;
-        retval = EXIT_FAILURE;
-    }
-    catch (const std::exception &e)
-    {
-        std::cout << "std::exception caught: " << e.what() << std::endl;
-        retval = EXIT_FAILURE;
-    }
-    catch (...)
-    {
-        std::cout << "Unknown exception caught" << std::endl;
-        retval = EXIT_FAILURE;
-    }
+		//retval = cuda_main(argc, argv);
+	}
+	catch (const std::bad_alloc &ex)
+	{
+		std::cout << "std::bad_alloc caught: " << ex.what() << std::endl;
+		retval = EXIT_FAILURE;
+	}
+	catch (const std::exception &ex)
+	{
+		std::cout << "std::exception caught: " << ex.what() << std::endl;
+		retval = EXIT_FAILURE;
+	}
+	catch (...)
+	{
+		std::cout << "Unknown exception caught" << std::endl;
+		retval = EXIT_FAILURE;
+	}
 
-    std::cout << "Press any key to exit ..." << std::endl;
-    std::cin.get();
+	std::cout << "Press any key to exit ..." << std::endl;
+	std::cin.get();
 
-    return retval;
+	return retval;
 }

@@ -38,6 +38,7 @@
 			<Add library="tbb" />
 		</Linker>
 		<Unit filename="main.cpp" />
+		<Unit filename="std_thread.cpp" />
 		<Unit filename="tbb/tbb_complex_loop_parallelization.cpp" />
 		<Unit filename="tbb/tbb_main.cpp" />
 		<Unit filename="tbb/tbb_simple_loop_parallelization.cpp" />

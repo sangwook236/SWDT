@@ -180,9 +180,9 @@ int vexcl_main(int argc, char *argv[])
 {
 	try
 	{
-		//local::devlist_example();
+		local::devlist_example();
 		//local::exclusive_example();
-		local::symbolic_example();
+		//local::symbolic_example();  // Run-time error.
 	}
 	catch (const cl::Error &ex)
 	{

@@ -44,6 +44,9 @@
 			<Option link="1" />
 		</Unit>
 		<Unit filename="cuda/cuda_main.cpp" />
+		<Unit filename="openmp/openmp_main.cpp" />
+		<Unit filename="simd/simd_main.cpp" />
+		<Unit filename="simd/sse.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="thrust/thrust_algorithm.cu">
 			<Option compile="1" />
