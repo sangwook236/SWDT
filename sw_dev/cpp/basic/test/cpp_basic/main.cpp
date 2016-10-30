@@ -47,6 +47,8 @@ int main(int argc, char **argv)
 
 	void file_io();
 
+	void thread();
+
 	void stl_data_structure();
 	void stl_algorithm();
 
@@ -70,14 +72,16 @@ int main(int argc, char **argv)
 
 		//file_io();  // Not yet implemented.
 
+		thread();
+
 		//stl_data_structure();
 		//stl_algorithm();
 
 		//performance_analysis();
 
 		//
-		static_lib_linking();
-		shared_lib_linking();
+		//static_lib_linking();
+		//shared_lib_linking();
 
 		// Test.
 #if 0

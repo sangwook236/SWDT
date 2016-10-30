@@ -1,8 +1,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpp_basic", "..\test\cpp_basic\cpp_basic_vs14.vcxproj", "{41AEE60E-3330-49FF-9F22-223C2B88B58C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{85008E03-54A7-4115-A05F-5D5BD65A43FE} = {85008E03-54A7-4115-A05F-5D5BD65A43FE}
+		{66598E8B-55C7-4577-9431-F5DBFD14ACF9} = {66598E8B-55C7-4577-9431-F5DBFD14ACF9}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "microsoft", "..\test\microsoft\microsoft_vs14.vcxproj", "{D8C77DA8-C070-4EB6-B356-115E6AA15249}"
 EndProject

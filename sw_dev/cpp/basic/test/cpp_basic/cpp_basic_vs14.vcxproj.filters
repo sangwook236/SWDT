@@ -40,6 +40,9 @@
     <ClCompile Include="static_lib_linking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
