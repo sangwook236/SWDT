@@ -1,3 +1,3 @@
-# SWDT for S/W Libraries
+# SWDT for S/W Libraries (SWDT-SW)
 
 ## Introduction
