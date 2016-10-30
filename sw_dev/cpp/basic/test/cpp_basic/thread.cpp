@@ -1,8 +1,11 @@
 #include <iostream>
+#include <condition_variable>
+#include <mutex>
 #include <thread>
 #include <atomic>
 #include <future>
 #include <vector>
+#include <string>
 #include <chrono>
 
 
@@ -120,11 +123,63 @@ void thread()
 	}
 }
 
+std::mutex mtx;
+std::condition_variable condvar;
+std::string data;
+std::atomic_bool ready(false);
+std::atomic_bool processed(false);
+
+void worker_thread()
+{
+	{
+		// Wait until main() sends data.
+		std::unique_lock<std::mutex> lock(mtx);
+		condvar.wait(lock, []() -> std::atomic_bool& { return ready; });
+
+		// After the wait, we own the lock.
+		std::cout << "Worker thread is processing data." << std::endl;
+		data += " after processing";
+
+		// Send data back to main().
+		processed = true;
+		std::cout << "Worker thread signals data processing completed." << std::endl;
+
+		// Manual unlocking is done before notifying, to avoid waking up the waiting thread only to block again (see notify_one for details).
+		//lock.unlock();
+	}
+	condvar.notify_one();
+}
+
+void inter_thread_commuincation()
+{
+	std::thread worker(worker_thread);
+
+	data = "example data";
+
+	// Send data to the worker thread.
+	{
+		std::lock_guard<std::mutex> lock(mtx);
+		ready = true;
+		std::cout << "main() signals data ready for processing." << std::endl;
+	}
+	condvar.notify_one();
+
+	// Wait for the worker.
+	{
+		std::unique_lock<std::mutex> lock(mtx);
+		condvar.wait(lock, []() -> std::atomic_bool& { return processed; });
+	}
+	std::cout << "Back in main(), data = " << data << std::endl;
+
+	worker.join();
+}
+
 }  // namespace local
 }  // unnamed namespace
 
 void thread()
 {
-	local::async();
+	//local::async();
 	//local::thread();
+	local::inter_thread_commuincation();
 }
