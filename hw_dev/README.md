@@ -1,3 +1,3 @@
-# SWDT for H/W
+# SWDT for H/W (SWDT-HW)
 
 ## Introduction
