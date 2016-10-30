@@ -1,4 +1,4 @@
-# Documentation for SWDT
+# Documentation for SWDT (SWDT-Doc)
 
 ## Introduction
 
