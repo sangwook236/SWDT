@@ -7,6 +7,14 @@
 #include <ctime>
 
 
+// NOTICE [important] >>
+//	If it is impossible to use an explicit form y = y(x), a parametric form x = x(t) & y = y(t) may be anothor choice.
+//		y = y(x) --> x = x(t), y = y(t).
+//		z = z(x, y) --> x = x(s), y = y(t), z = z(s, t).
+//	e.g.)
+//		In case of splines, x values must not be identical. If x values have duplicate ones, evaluating a spline becomes to fail.
+//		In this case, we can use a parametric form and do other jobs like plotting an x-y graph.
+
 int main(int argc, char *argv[])
 {
 	int tinyspline_main(int argc, char *argv[]);

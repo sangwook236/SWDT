@@ -59,9 +59,13 @@ int main(int argc, char *argv[])
         std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
 
-		std::cout << "\nA Library for Approximate Nearest Neighbor Searching (ANN) ----------" << std::endl;
-		//	- Approximate nearest neighbor.
+		std::cout << "\nApproximate Nearest Neighbor (ANN) library --------------------------" << std::endl;
+		//	- Approximate nearest neighbor search.
 		retval = ann_main(argc, argv);
+
+		std::cout << "\nFast Library for Approximate Nearest Neighbors (FLANN) --------------" << std::endl;
+		//	- Approximate nearest neighbor search.
+		//retval = flann_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nLSHKIT library ------------------------------------------------------" << std::endl;
 		//	- Locality-sensitive hashing (LSH).
