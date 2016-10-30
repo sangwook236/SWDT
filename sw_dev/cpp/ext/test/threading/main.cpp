@@ -8,12 +8,16 @@
 
 int main(int argc, char *argv[])
 {
+	int std_thread_main(int argc, char *argv[]);
 	int tbb_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "Threading Building Blocks (TBB) library -----------------------------" << std::endl;
+		std::cout << "C++ Multithreading --------------------------------------------------" << std::endl;
+		retval = std_thread_main(argc, argv);
+
+		std::cout << "\nThreading Building Blocks (TBB) library -----------------------------" << std::endl;
 		retval = tbb_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)

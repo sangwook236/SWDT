@@ -10,10 +10,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpp_basic", "..\test\cpp_ba
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "microsoft", "..\test\microsoft\microsoft_vs14.vcxproj", "{D8C77DA8-C070-4EB6-B356-115E6AA15249}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openmp", "..\test\openmp\openmp_vs14.vcxproj", "{2956D88B-8DBF-4A5E-8717-0DF51C3E2353}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simd", "..\test\simd\simd_vs14.vcxproj", "{C9069975-991D-40C3-B269-12023BDE7495}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "microsoft_specific", "..\test\microsoft_specific\microsoft_specific_vs14.vcxproj", "{BB048AB5-7899-45C5-8191-A1A72DA1F5F4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sharedlib", "..\test\sharedlib\sharedlib_vs14.vcxproj", "{85008E03-54A7-4115-A05F-5D5BD65A43FE}"
@@ -40,18 +36,6 @@ Global
 		{D8C77DA8-C070-4EB6-B356-115E6AA15249}.Release|Win32.ActiveCfg = Release|Win32
 		{D8C77DA8-C070-4EB6-B356-115E6AA15249}.Release|Win32.Build.0 = Release|Win32
 		{D8C77DA8-C070-4EB6-B356-115E6AA15249}.Release|x64.ActiveCfg = Release|Win32
-		{2956D88B-8DBF-4A5E-8717-0DF51C3E2353}.Debug|Win32.ActiveCfg = Debug|Win32
-		{2956D88B-8DBF-4A5E-8717-0DF51C3E2353}.Debug|Win32.Build.0 = Debug|Win32
-		{2956D88B-8DBF-4A5E-8717-0DF51C3E2353}.Debug|x64.ActiveCfg = Debug|Win32
-		{2956D88B-8DBF-4A5E-8717-0DF51C3E2353}.Release|Win32.ActiveCfg = Release|Win32
-		{2956D88B-8DBF-4A5E-8717-0DF51C3E2353}.Release|Win32.Build.0 = Release|Win32
-		{2956D88B-8DBF-4A5E-8717-0DF51C3E2353}.Release|x64.ActiveCfg = Release|Win32
-		{C9069975-991D-40C3-B269-12023BDE7495}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C9069975-991D-40C3-B269-12023BDE7495}.Debug|Win32.Build.0 = Debug|Win32
-		{C9069975-991D-40C3-B269-12023BDE7495}.Debug|x64.ActiveCfg = Debug|Win32
-		{C9069975-991D-40C3-B269-12023BDE7495}.Release|Win32.ActiveCfg = Release|Win32
-		{C9069975-991D-40C3-B269-12023BDE7495}.Release|Win32.Build.0 = Release|Win32
-		{C9069975-991D-40C3-B269-12023BDE7495}.Release|x64.ActiveCfg = Release|Win32
 		{BB048AB5-7899-45C5-8191-A1A72DA1F5F4}.Debug|Win32.ActiveCfg = Debug|Win32
 		{BB048AB5-7899-45C5-8191-A1A72DA1F5F4}.Debug|Win32.Build.0 = Debug|Win32
 		{BB048AB5-7899-45C5-8191-A1A72DA1F5F4}.Debug|x64.ActiveCfg = Debug|Win32

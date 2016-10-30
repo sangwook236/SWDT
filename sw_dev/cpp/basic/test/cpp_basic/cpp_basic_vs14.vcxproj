@@ -108,7 +108,6 @@
     <ClCompile Include="stl_data_structure.cpp" />
     <ClCompile Include="stl_algorithm.cpp" />
     <ClCompile Include="string.cpp" />
-    <ClCompile Include="thread.cpp" />
     <ClCompile Include="virtual_function.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

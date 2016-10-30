@@ -1,12 +1,14 @@
-#include "stdafx.h"
-#include <xmmintrin.h>
-#include <windows.h>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <algorithm>
 #include <cfloat>
 #include <cmath>
 #include <ctime>
 #include <cstdlib>
+#if defined(_WIN64) || defined(_WIN32)
+#include <xmmintrin.h>
+#include <windows.h>
+#endif
+
 
 #if defined(max)
 #undef max
@@ -19,6 +21,7 @@
 namespace {
 namespace local {
 
+#if defined(_WIN64) || defined(_WIN32)
 class Timer
 {
 public:
@@ -42,6 +45,7 @@ private:
 	LARGE_INTEGER freq_;
 	LARGE_INTEGER startTime_;
 };
+#endif
 
 void test1()
 {
@@ -69,7 +73,9 @@ void test1()
 
 		//
 		const boost::posix_time::ptime stime = boost::posix_time::microsec_clock::universal_time();
+#if defined(_WIN64) || defined(_WIN32)
 		Timer timer;
+#endif
 
 		for (int i = 0; i < array_size; ++i)
 		{
@@ -84,7 +90,9 @@ void test1()
 		const boost::posix_time::time_duration td = etime - stime;
 
 		std::cout << stime << " : " << etime << " : " << td << std::endl;
+#if defined(_WIN64) || defined(_WIN32)
 		std::cout << timer.getElapsedTime() << std::endl;
+#endif
 	}
 
 	{
@@ -100,7 +108,9 @@ void test1()
 
 		//
 		const boost::posix_time::ptime stime = boost::posix_time::microsec_clock::universal_time();
+#if defined(_WIN64) || defined(_WIN32)
 		Timer timer;
+#endif
 
 		for (int i = 0; i < loop_count; ++i)
 		{
@@ -119,7 +129,9 @@ void test1()
 		const boost::posix_time::time_duration td = etime - stime;
 
 		std::cout << stime << " : " << etime << " : " << td << std::endl;
+#if defined(_WIN64) || defined(_WIN32)
 		std::cout << timer.getElapsedTime() << std::endl;
+#endif
 	}
 /*
 	_aligned_free(arr1);
@@ -151,7 +163,9 @@ void test2()
 
 		//
 		const boost::posix_time::ptime stime = boost::posix_time::microsec_clock::universal_time();
+#if defined(_WIN64) || defined(_WIN32)
 		Timer timer;
+#endif
 
 		for (int i = 0; i < array_size; ++i)
 		{
@@ -167,7 +181,9 @@ void test2()
 		const boost::posix_time::time_duration td = etime - stime;
 
 		std::cout << stime << " : " << etime << " : " << td << std::endl;
+#if defined(_WIN64) || defined(_WIN32)
 		std::cout << timer.getElapsedTime() << std::endl;
+#endif
 	}
 
 	{
@@ -184,7 +200,9 @@ void test2()
 
 		//
 		const boost::posix_time::ptime stime = boost::posix_time::microsec_clock::universal_time();
+#if defined(_WIN64) || defined(_WIN32)
 		Timer timer;
+#endif
 
 		for (int i = 0; i < loop_count; ++i)
 		{
@@ -198,7 +216,7 @@ void test2()
 			++dst;
 		}
 
-		// extract minimum and maximum values from min128 and max128
+		// Extract minimum and maximum values from min128 and max128.
 		union u
 		{
 			__m128 m;
@@ -217,7 +235,9 @@ void test2()
 		const boost::posix_time::time_duration td = etime - stime;
 
 		std::cout << stime << " : " << etime << " : " << td << std::endl;
+#if defined(_WIN64) || defined(_WIN32)
 		std::cout << timer.getElapsedTime() << std::endl;
+#endif
 	}
 /*
 	_aligned_free(arr);
@@ -228,9 +248,12 @@ void test2()
 }  // namespace local
 }  // unnamed namespace
 
+namespace my_simd {
 
 void sse()
 {
 	local::test1();
 	local::test2();
 }
+
+}  // namespace my_simd

@@ -177,9 +177,11 @@ void inter_thread_commuincation()
 }  // namespace local
 }  // unnamed namespace
 
-void thread()
+int std_thread_main(int argc, char *argv[])
 {
 	//local::async();
 	//local::thread();
 	local::inter_thread_commuincation();
+
+	return 0;
 }

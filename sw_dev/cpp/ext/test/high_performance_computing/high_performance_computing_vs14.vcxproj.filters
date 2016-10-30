@@ -22,6 +22,12 @@
     <Filter Include="Source Files\vexcl">
       <UniqueIdentifier>{0f5e504a-f8eb-4a40-ab92-f72a7161db2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\openmp">
+      <UniqueIdentifier>{d5082a7c-6200-4584-b743-4efbccf1d381}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\simd">
+      <UniqueIdentifier>{9a481b05-aebb-42c4-bb3b-0e879b311077}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cuda\cuda_main.cpp">
@@ -38,6 +44,15 @@
     </ClCompile>
     <ClCompile Include="vexcl\vexcl_main.cpp">
       <Filter>Source Files\vexcl</Filter>
+    </ClCompile>
+    <ClCompile Include="openmp\openmp_main.cpp">
+      <Filter>Source Files\openmp</Filter>
+    </ClCompile>
+    <ClCompile Include="simd\simd_main.cpp">
+      <Filter>Source Files\simd</Filter>
+    </ClCompile>
+    <ClCompile Include="simd\sse.cpp">
+      <Filter>Source Files\simd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

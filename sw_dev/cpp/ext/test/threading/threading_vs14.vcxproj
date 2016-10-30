@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="std_thread.cpp" />
     <ClCompile Include="tbb\tbb_complex_loop_parallelization.cpp" />
     <ClCompile Include="tbb\tbb_main.cpp" />
     <ClCompile Include="tbb\tbb_simple_loop_parallelization.cpp" />

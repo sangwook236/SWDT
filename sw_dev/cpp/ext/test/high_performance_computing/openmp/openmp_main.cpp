@@ -1,13 +1,20 @@
-#include "stdafx.h"
-#include <omp.h>
 //#include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/tr1/cmath.hpp>
-#include <iterator>
 #include <iostream>
+#include <iterator>
+#include <omp.h>
+#if defined(_WIN64) || defined(_WIN32)
+#include <xmmintrin.h>
+#include <windows.h>
+#endif
 
 
+namespace {
+namespace local {
+
+#if defined(_WIN64) || defined(_WIN32)
 class Timer
 {
 public:
@@ -31,31 +38,7 @@ private:
 	LARGE_INTEGER freq_;
 	LARGE_INTEGER startTime_;
 };
-
-void parallel_directive();
-void do_directive();
-
-int main(int argc, char **argv)
-{
-	try
-	{
-		//parallel_directive();
-		do_directive();
-	}
-	catch (const std::exception &e)
-	{
-		std::cout << "std::exception caught !!!: " << e.what() << std::endl;
-	}
-	catch (...)
-	{
-		std::cout << "Unknown exception caught !!!" << std::endl;
-	}
-
-	std::cout << "Press any key to exit ..." << std::endl;
-	std::cin.get();
-
-    return 0;
-}
+#endif
 
 void parallel_directive()
 {
@@ -66,13 +49,13 @@ void parallel_directive()
 	{
 		// Obtain and print thread id.
 		tid = omp_get_thread_num();
-		printf("Hello World from thread = %d\n", tid);
+		std::cout << "Hello World from thread = " << tid << std::endl;
 
 		// Only master thread does this.
-		if (tid == 0) 
+		if (0 == tid) 
 		{
 			nthreads = omp_get_num_threads();
-			printf("Number of threads = %d\n", nthreads);
+			std::cout << "Number of threads = " << nthreads << std::endl;
 		}
 
 	}  // All threads join master thread and terminate.
@@ -125,7 +108,9 @@ void do_directive()
 		boost::int64_t loop_count = 0;
 		std::ostringstream sstream;
 		const boost::posix_time::ptime stime = boost::posix_time::microsec_clock::universal_time();
+#if defined(_WIN64) || defined(_WIN32)
 		Timer timer;
+#endif
 
 #pragma omp parallel shared(a, b, c, d, loop_count, chunk) private(i)
 //#pragma omp parallel shared(a, b, c, d, loop_count, i, chunk)
@@ -139,12 +124,16 @@ void do_directive()
 					const double beta = std::tr1::beta(100, 100);
 					const double err = std::tr1::erf(100);
 					const double gamma = std::tr1::lgamma(100);
-					d[i] = beta + err + gamma;
+					d[i] = float(beta + err + gamma);
 
 					++loop_count;
-					const int tid = omp_get_thread_num();
-					sstream << tid << ": " << i << ", " << a[i] << ", " << b[i] << ", " << c[i] << ", " << loop_count << std::endl;
-					std::cout << sstream.str();
+
+					if (i % 1000 == 0)
+					{
+						const int tid = omp_get_thread_num();
+						sstream << tid << ": " << i << ", " << a[i] << ", " << b[i] << ", " << c[i] << ", " << loop_count << std::endl;
+						std::cout << sstream.str();
+					}
 				}
 			}
 		}  // End of parallel section.
@@ -153,9 +142,26 @@ void do_directive()
 		const boost::posix_time::time_duration td = etime - stime;
 
 		std::cout << stime << " : " << etime << " : " << td << std::endl;
+#if defined(_WIN64) || defined(_WIN32)
 		std::cout << timer.getElapsedTime() << std::endl;
+#endif
 		std::cout << loop_count << std::endl;
 	}
 
 	//std::copy(c, c + N, std::ostream_iterator<int>(std::cout, " "));
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+namespace my_openmp {
+
+}  // namespace my_openmp
+
+int openmp_main(int argc, char *argv[])
+{
+	local::parallel_directive();
+	//local::do_directive();
+
+	return 0;
 }

@@ -9,18 +9,29 @@
 
 int main(int argc, char *argv[])
 {
-    int vexcl_main(int argc, char *argv[]);
+	int openmp_main(int argc, char *argv[]);
+	int simd_main(int argc, char *argv[]);
+
+	int vexcl_main(int argc, char *argv[]);
+
     int thrust_main(int argc, char *argv[]);
     int cuda_main(int argc, char *argv[]);
 
     int retval = EXIT_SUCCESS;
     try
     {
-		std::cout << "Boost.Compute library -----------------------------------------------" << std::endl;
+		std::cout << "Open Multi-Processing (OpenMP) --------------------------------------" << std::endl;
+		//retval = openmp_main(argc, argv);
+
+		std::cout << "\nSingle instruction, mutiple data (SIMD) -----------------------------" << std::endl;
+		//	- Streaming SIMD Extensions (SSE).
+		retval = simd_main(argc, argv);
+
+		std::cout << "\nBoost.Compute library -----------------------------------------------" << std::endl;
 		// REF [library] >> Boost library.
 
 		std::cout << "\nVexCL library -------------------------------------------------------" << std::endl;
-        retval = vexcl_main(argc, argv);
+		retval = vexcl_main(argc, argv);
 
 		std::cout << "\nThrust library ------------------------------------------------------" << std::endl;
         //retval = thrust_main(argc, argv);
