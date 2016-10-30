@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 		// REF [library] >> Boost library.
 
 		std::cout << "\nCppUnit library -----------------------------------------------------" << std::endl;
-		// REF [project] >> ${GDT_HOME}/sw_dev/cpp/ext/test/testing/cppunit_mfc
+		// REF [project] >> ${SWDT_C++_HOME}/ext/test/testing/cppunit_mfc
 		//retval = cppunit_main(argc, argv);
 
 		std::cout << "\nGoogle Test library -------------------------------------------------" << std::endl;

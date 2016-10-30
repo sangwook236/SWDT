@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
 		//	- Image processing.
 		//	- Reinforcement learning (RL).
 		//		Least-squares policy iteration (LSPI).
-		// REF [library] >> ${GDT_HOME}/sw_dev/cpp/ext/src/general_purpose_library/dlib.
+		// REF [library] >> ${SWDT_C++_HOME}/ext/test/general_purpose_library/dlib.
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
 		//	- Deep learning.

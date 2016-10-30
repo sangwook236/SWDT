@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 		retval = qt4_main(argc, argv);
 
 		std::cout << "\nwxWidgets library ---------------------------------------------------" << std::endl;
-		// REF [project] >> ${GDT_HOME}/sw_dev/cpp/ext/test/gui/wxwidgets
+		// REF [project] >> ${SWDT_C++_HOME}/ext/test/gui/wxwidgets
 	}
     catch (const std::bad_alloc &e)
 	{

@@ -22,7 +22,7 @@ void linear_spline_example()
 	// Calculate S(0.25) - it is quite different from 0.25^2 = 0.0625.
 	const double t = 0.25;
 	const double v = alglib::spline1dcalc(spline, t);
-	std::cout << "Spline at t = " << v << std::endl;  // EXPECTED: 0.125.
+	std::cout << "Spline at " << t << " = " << v << std::endl;  // EXPECTED: 0.125.
 }
 
 // REF [site] >> http://www.alglib.net/translator/man/manual.cpp.html#example_spline1d_d_cubic
@@ -38,9 +38,9 @@ void cubic_spline_example()
 		alglib::spline1dinterpolant spline;
 		alglib::spline1dbuildcubic(x, y, spline);
 
-		double t = 0.25;
+		const double t = 0.25;
 		const double v = alglib::spline1dcalc(spline, t);
-		std::cout << "Spline at t = " << v << std::endl;  // EXPECTED: 0.0625.
+		std::cout << "Spline at " << t << " = " << v << std::endl;  // EXPECTED: 0.0625.
 	}
 
 	// Then try to use natural boundary conditions
@@ -53,9 +53,9 @@ void cubic_spline_example()
 		alglib::spline1dinterpolant spline;
 		alglib::spline1dbuildcubic(x, y, 5, natural_bound_type, 0.0, natural_bound_type, 0.0, spline);
 
-		double t = 0.25;
+		const double t = 0.25;
 		const double v = alglib::spline1dcalc(spline, t);
-		std::cout << "Spline at t = " << v << std::endl;  // EXPECTED: 0.0580.
+		std::cout << "Spline at " << t << " = " << v << std::endl;  // EXPECTED: 0.0580.
 	}
 }
 
@@ -221,7 +221,7 @@ void spline()
 	try
 	{
 		//local::linear_spline_example();
-		//local::cubic_spline_example();
+		local::cubic_spline_example();
 		//local::differentiation_on_grid_example();
 		//local::conversion_from_one_grid_to_another_example();
 
