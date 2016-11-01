@@ -4,14 +4,14 @@
 	<Project>
 		<Option title="high_performance_computing" />
 		<Option pch_mode="2" />
-		<Option compiler="nvidia_nvcc_cuda_compiler" />
+		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
 				<Option output="../../bin/high_performance_computing_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
-				<Option compiler="nvidia_nvcc_cuda_compiler" />
+				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -31,23 +31,28 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add directory="/usr/local/cuda/include" />
+			<Add directory="/usr/local/include" />
+			<Add directory="/usr/include" />
 		</Compiler>
 		<Linker>
 			<Add library="cudart" />
+			<Add library="OpenCL" />
 			<Add directory="/usr/local/cuda/lib64" />
+			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="cuda/cuda_basic_operation.cu">
 			<Option compile="1" />
 			<Option link="1" />
 		</Unit>
 		<Unit filename="cuda/cuda_main.cpp" />
+		<Unit filename="main.cpp" />
 		<Unit filename="openmp/openmp_main.cpp" />
 		<Unit filename="simd/simd_main.cpp" />
 		<Unit filename="simd/sse.cpp" />
-		<Unit filename="main.cpp" />
 		<Unit filename="thrust/thrust_algorithm.cu">
 			<Option compile="1" />
 			<Option link="1" />

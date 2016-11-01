@@ -47,7 +47,7 @@
 		<Unit filename="protobuf/protobuf_main.cpp" />
 		<Unit filename="protobuf/protobuf_person.pb.cc" />
 		<Unit filename="protobuf/protobuf_person.pb.h" />
-		<Unit filename="protobuf/protobuf_simple_example.cpp" />
+		<Unit filename="protobuf/protobuf_proto2_example.cpp" />
 		<Unit filename="rapidjson/rapidjson_examples.cpp" />
 		<Unit filename="rapidjson/rapidjson_main.cpp" />
 		<Unit filename="yaml_cpp/yaml_cpp_basic_emitting.cpp">

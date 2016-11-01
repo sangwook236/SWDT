@@ -1,11 +1,12 @@
 //#include "stdafx.h"
-#include <kdtree++/kdtree.hpp>
 #include <iostream>
 #include <set>
 #include <map>
 #include <vector>
 #include <iterator>
 #include <cmath>
+#include <cstdlib>
+#include <kdtree++/kdtree.hpp>
 
 
 namespace {

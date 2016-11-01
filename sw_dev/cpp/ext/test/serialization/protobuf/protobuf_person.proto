@@ -1,5 +1,17 @@
+syntax = "proto2";
+
 message Person {
 	required int32 id = 1;
 	required string name = 2;
 	optional string email = 3;
 }
+
+/*
+syntax = "proto3";
+
+message Person {
+	int32 id = 1;
+	string name = 2;
+	string email = 3;
+}
+*/

@@ -31,17 +31,20 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add directory="/usr/local/include" />
 			<Add directory="/usr/include" />
 		</Compiler>
 		<Linker>
+			<Add library="tinysplinecpp" />
+			<Add library="tinyspline" />
 			<Add directory="/usr/local/lib" />
 			<Add directory="/usr/lib" />
 		</Linker>
-		<Unit filename="tinyspline/tinyspline_main.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="tinyspline/tinyspline_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

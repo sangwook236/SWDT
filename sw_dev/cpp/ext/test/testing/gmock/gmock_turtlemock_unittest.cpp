@@ -30,6 +30,8 @@ public:
         {
             turtle_->PenUp();
         }
+
+        return true;
     }
 
 private:

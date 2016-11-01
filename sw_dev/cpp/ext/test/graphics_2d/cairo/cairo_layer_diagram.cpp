@@ -28,10 +28,10 @@
 namespace {
 namespace local {
 
-void diagram (char *name, double *alpha);
-void draw_source (char *name, cairo_t *cr);
-void draw_mask (char *name, cairo_t *cr);
-void draw_dest (char *name, cairo_t *cr);
+void diagram (const char *name, double *alpha);
+void draw_source (const char *name, cairo_t *cr);
+void draw_mask (const char *name, cairo_t *cr);
+void draw_dest (const char *name, cairo_t *cr);
 void diagram_draw_source (cairo_t *cr);
 void diagram_draw_mask (cairo_t *cr);
 void diagram_draw_mask_pattern (cairo_t *cr, cairo_pattern_t *pat);
@@ -48,7 +48,7 @@ void mask_draw_source (cairo_t *cr);
 void mask_draw_mask (cairo_t *cr);
 void mask_draw_dest (cairo_t *cr);
 
-void diagram (char *name, double *alpha)
+void diagram (const char *name, double *alpha)
 {
 	cairo_surface_t *surf;
 	cairo_t *cr;
@@ -173,7 +173,7 @@ void diagram (char *name, double *alpha)
 	cairo_surface_destroy (surf);
 }
 
-void draw_source (char *name, cairo_t *cr)
+void draw_source (const char *name, cairo_t *cr)
 {
 	if (strcmp (name, "paint") == 0) {
 		paint_draw_source (cr);
@@ -184,7 +184,7 @@ void draw_source (char *name, cairo_t *cr)
 	}
 }
 
-void draw_mask (char *name, cairo_t *cr)
+void draw_mask (const char *name, cairo_t *cr)
 {
 	if (strcmp (name, "stroke") == 0) {
 		stroke_draw_mask (cr);
@@ -199,7 +199,7 @@ void draw_mask (char *name, cairo_t *cr)
 		diagram_draw_mask (cr);
 	}
 }
-void draw_dest (char *name, cairo_t *cr)
+void draw_dest (const char *name, cairo_t *cr)
 {
 	if (strcmp(name, "stroke") == 0) {
 		stroke_draw_dest (cr);

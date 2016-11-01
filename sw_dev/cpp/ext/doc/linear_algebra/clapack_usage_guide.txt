@@ -7,7 +7,7 @@
 	- Reference.
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Build.
+[-] Building (VC).
 	- Download files from CLAPACK site.
 		CLAPACK version 2.0.
 			clapack2.tgz
@@ -29,6 +29,21 @@
 		Resulting include files are installed into a subdirectory.
 			${CLAPACK_ROOT}/install/f2c.h
 			${CLAPACK_ROOT}/clapack.h
+
+[-] Building (Linux).
+	REF [doc] >> ${CLAPACK_HOME}/README.install
+
+	- Download files from CLAPACK site.
+		clapack.tgz
+	- Uncompress.
+	- Copy make.inc.
+		Copy make.inc.example to make.inc.
+	- Run make.
+		make blaslib
+		make
+			make single
+			make single complex
+			make single double complex complex16
 
 [-] Usage.
 	- 외부에서 CLAPACK library를 interfacing하기 위해 사용하는 header file.

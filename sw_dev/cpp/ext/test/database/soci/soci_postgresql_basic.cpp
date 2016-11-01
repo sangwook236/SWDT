@@ -1,5 +1,9 @@
 //#include "stdafx.h"
+#if defined(_WIN64) || defined(_WIN32)
 #include <soci/soci-postgresql.h>
+#else
+#include <soci/postgresql/soci-postgresql.h>
+#endif
 #include <soci/soci.h>
 #include <boost/fusion/include/define_struct.hpp>
 #include <boost/fusion/include/for_each.hpp>

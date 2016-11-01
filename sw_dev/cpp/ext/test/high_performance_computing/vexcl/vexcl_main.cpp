@@ -1,5 +1,7 @@
 //#define VEXCL_SHOW_KERNELS
-//#define VEXCL_BACkEND_COMPUTE
+//#define VEXCL_BACKEND_OPENCL  // Default.
+#define VEXCL_BACKEND_COMPUTE
+//#define VEXCL_BACKEND_CUDA
 #include <vexcl/vexcl.hpp>
 #include <boost/numeric/odeint.hpp>
 #include <sstream>
@@ -17,49 +19,60 @@ namespace local {
 // REF [file] >> ${VEC_HOME}/examples/devlist.cpp
 void devlist_example()
 {
-	std::cout << "OpenCL devices:" << std::endl << std::endl;
-	const auto dev = vex::device_list(vex::Filter::All);
-	for (auto d = dev.begin(); d != dev.end(); ++d)
+#if defined(VEXCL_BACKEND_OPENCL)
+	try
 	{
-		std::cout << "  " << d->getInfo<CL_DEVICE_NAME>() << std::endl
-			<< "    " << std::left << std::setw(32) << "CL_PLATFORM_NAME" << " = "
-			<< cl::Platform(d->getInfo<CL_DEVICE_PLATFORM>()).getInfo<CL_PLATFORM_NAME>()
-			<< std::endl;
+        std::cout << "OpenCL devices:" << std::endl << std::endl;
+        const auto dev = vex::device_list(vex::Filter::All);
+        for (auto d = dev.begin(); d != dev.end(); ++d)
+        {
+            std::cout << "  " << d->getInfo<CL_DEVICE_NAME>() << std::endl
+                << "    " << std::left << std::setw(32) << "CL_PLATFORM_NAME" << " = "
+                << cl::Platform(d->getInfo<CL_DEVICE_PLATFORM>()).getInfo<CL_PLATFORM_NAME>()
+                << std::endl;
 
 #define SHOW_DEVPROP(name) \
     std::cout << "    " << std::left << std::setw(32) << #name << " = " << d->getInfo<name>() << std::endl
 
-		SHOW_DEVPROP(CL_DEVICE_VENDOR);
-		SHOW_DEVPROP(CL_DEVICE_MAX_COMPUTE_UNITS);
-		SHOW_DEVPROP(CL_DEVICE_HOST_UNIFIED_MEMORY);
-		SHOW_DEVPROP(CL_DEVICE_GLOBAL_MEM_SIZE);
-		SHOW_DEVPROP(CL_DEVICE_LOCAL_MEM_SIZE);
-		SHOW_DEVPROP(CL_DEVICE_MAX_MEM_ALLOC_SIZE);
-		SHOW_DEVPROP(CL_DEVICE_MAX_CLOCK_FREQUENCY);
+            SHOW_DEVPROP(CL_DEVICE_VENDOR);
+            SHOW_DEVPROP(CL_DEVICE_MAX_COMPUTE_UNITS);
+            SHOW_DEVPROP(CL_DEVICE_HOST_UNIFIED_MEMORY);
+            SHOW_DEVPROP(CL_DEVICE_GLOBAL_MEM_SIZE);
+            SHOW_DEVPROP(CL_DEVICE_LOCAL_MEM_SIZE);
+            SHOW_DEVPROP(CL_DEVICE_MAX_MEM_ALLOC_SIZE);
+            SHOW_DEVPROP(CL_DEVICE_MAX_CLOCK_FREQUENCY);
 
 #undef SHOW_DEVPROP
 
-		std::cout << "    " << std::left << std::setw(32) << "CL_DEVICE_EXTENSIONS" << " = ";
-		{
-			std::istringstream iss(d->getInfo<CL_DEVICE_EXTENSIONS>());
-			std::set<std::string> extensions;
+            std::cout << "    " << std::left << std::setw(32) << "CL_DEVICE_EXTENSIONS" << " = ";
+            {
+                std::istringstream iss(d->getInfo<CL_DEVICE_EXTENSIONS>());
+                std::set<std::string> extensions;
 
-			extensions.insert(std::istream_iterator<std::string>(iss), std::istream_iterator<std::string>());
+                extensions.insert(std::istream_iterator<std::string>(iss), std::istream_iterator<std::string>());
 
-			size_t w = 40;
-			for (auto s = extensions.begin(); s != extensions.end(); ++s)
-			{
-				w += s->length() + 1;
-				if (w > 80)
-				{
-					std::cout << std::endl << std::setw(w = 8) << "";
-					w += s->length() + 1;
-				}
-				std::cout << *s << " ";
-			}
-		}
-		std::cout << std::endl << std::endl;
+                size_t w = 40;
+                for (auto s = extensions.begin(); s != extensions.end(); ++s)
+                {
+                    w += s->length() + 1;
+                    if (w > 80)
+                    {
+                        std::cout << std::endl << std::setw(w = 8) << "";
+                        w += s->length() + 1;
+                    }
+                    std::cout << *s << " ";
+                }
+            }
+            std::cout << std::endl << std::endl;
+        }
 	}
+	catch (const cl::Error &ex)
+	{
+		std::cerr << "cl::Error caught: " << ex << std::endl;
+	}
+#else
+    std::cout << "The backend of VexCL is not OpenCL." << std::endl;
+#endif
 }
 
 // REF [file] >> ${VEC_HOME}/examples/exclusive.cpp
@@ -77,7 +90,11 @@ void exclusive_example()
 }
 
 typedef double value_type;
+#if defined(_WIN64) || defined(WIN32)
 typedef vex::generator::symbolic<value_type> sym_value_type;
+#else
+typedef vex::symbolic<value_type> sym_value_type;
+#endif
 typedef std::array<sym_value_type, 3> sym_state_type;
 
 // REF [file] >> ${VEC_HOME}/examples/symbolic.cpp
@@ -149,7 +166,7 @@ void symbolic_example()
 	const value_type Rmin = 0.1;
 	const value_type Rmax = 50.0;
 	const value_type dR = (Rmax - Rmin) / (n - 1);
-																																																																																																																																																																																																																										
+
 	vex::vector<value_type> X(ctx, n);
 	vex::vector<value_type> Y(ctx, n);
 	vex::vector<value_type> Z(ctx, n);
@@ -178,16 +195,9 @@ namespace my_vexcl {
 
 int vexcl_main(int argc, char *argv[])
 {
-	try
-	{
-		local::devlist_example();
-		//local::exclusive_example();
-		//local::symbolic_example();  // Run-time error.
-	}
-	catch (const cl::Error &ex)
-	{
-		std::cerr << "cl::Error caught: " << ex << std::endl;
-	}
+    local::devlist_example();
+    //local::exclusive_example();
+    //local::symbolic_example();  // Run-time error.
 
     return 0;
 }

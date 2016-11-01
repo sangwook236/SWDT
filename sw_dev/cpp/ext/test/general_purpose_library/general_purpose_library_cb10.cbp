@@ -31,12 +31,16 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="dlib/dlib_graph_labeling_example.cpp" />
 		<Unit filename="dlib/dlib_main.cpp" />
+		<Unit filename="dlib/dlib_svm_struct_example.cpp" />
 		<Unit filename="loki/loki_main.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="stlport/stlport_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

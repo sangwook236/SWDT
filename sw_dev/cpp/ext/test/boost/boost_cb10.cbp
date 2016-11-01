@@ -31,13 +31,14 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-fpermissive" />
-			<Add option="-std=c++11" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
 			<Add directory="/usr/local/include" />
+			<Add directory="/usr/include" />
 		</Compiler>
 		<Linker>
 			<Add library="boost_chrono" />
@@ -46,6 +47,8 @@
 			<Add library="boost_filesystem" />
 			<Add library="boost_graph" />
 			<Add library="boost_locale" />
+			<Add library="boost_log" />
+			<Add library="boost_log_setup" />
 			<Add library="boost_math_c99" />
 			<Add library="boost_math_c99f" />
 			<Add library="boost_math_c99l" />
@@ -71,6 +74,7 @@
 			<Add library="blas" />
 			<Add library="jpeg" />
 			<Add library="pthread" />
+			<Add library="OpenCL" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="any.cpp" />
@@ -89,6 +93,7 @@
 		<Unit filename="asio/asio_udp_server.cpp" />
 		<Unit filename="bind.cpp" />
 		<Unit filename="chrono.cpp" />
+		<Unit filename="compute.cpp" />
 		<Unit filename="conversion.cpp" />
 		<Unit filename="cpu_timer.cpp" />
 		<Unit filename="date_time.cpp" />
@@ -97,6 +102,7 @@
 		<Unit filename="function.cpp" />
 		<Unit filename="geometry.cpp" />
 		<Unit filename="graph/graph.cpp" />
+		<Unit filename="graph/graph_basic_operation.cpp" />
 		<Unit filename="graph/graph_maximum_flow_minimun_cut_algorithm.cpp" />
 		<Unit filename="graph/graph_metric_tsp_approximation.cpp" />
 		<Unit filename="graph/graph_parallel.cpp" />
@@ -108,6 +114,7 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="interprocess.cpp" />
+		<Unit filename="log.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="math_bindings.cpp">
 			<Option compile="0" />
@@ -124,7 +131,7 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="ordinary_differential_equation.cpp" />
+		<Unit filename="odeint.cpp" />
 		<Unit filename="polygon.cpp" />
 		<Unit filename="program_options.cpp" />
 		<Unit filename="progress_timer.cpp" />

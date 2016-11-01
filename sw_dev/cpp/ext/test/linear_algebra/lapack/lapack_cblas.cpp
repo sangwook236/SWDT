@@ -8,22 +8,22 @@ extern "C" {
 #include <clapack/f2c.h>
 //#include <clapack/blaswrap.h>
 #include <clapack/clapack.h>
-
-#if defined(abs)
-#undef abs
-#endif
-
 #else
-#include <f2c.h>
 #include <clapack.h>
 #include <cblas.h>
+#include <f2c.h>
 #endif
 
 #if defined(__cplusplus)
 }
 #endif
 
+#if defined(abs)
+#undef abs
+#endif
+
 #include <iostream>
+#include <cmath>
 
 
 namespace {
@@ -51,7 +51,7 @@ void cblas()
 		std::cout << std::endl;
 	}
 
-#if 1
+#if defined(WIN32) || defined(_WIN32)
 	integer rdim = 3, cdim = 3;
 	double alpha = 1.0, beta = 0.0;
 	integer lda = rdim;

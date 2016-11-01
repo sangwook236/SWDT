@@ -1,9 +1,9 @@
 //#include "stdafx.h"
+#include <gsl/gsl_multifit_nlin.h>
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_blas.h>
-#include <gsl/gsl_multifit_nlin.h>
 #include <cmath>
 #include <cstdlib>
 #include <cstdio>
@@ -258,6 +258,7 @@ void levenberg_marquardt_fdf_1()
 		status = gsl_multifit_test_delta(s->dx, s->x, 1e-4, 1e-4);
 	} while (status == GSL_CONTINUE && iter < 500);
 
+#if !(defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux))
 	//
 	gsl_matrix *covar = gsl_matrix_alloc(p, p);
 	gsl_multifit_covar(s->J, 0.0, covar);
@@ -274,6 +275,10 @@ void levenberg_marquardt_fdf_1()
 		printf("lambda = %.5f +/- %.5f\n", FIT(1), c*ERR(1));
 		printf("b = %.5f +/- %.5f\n", FIT(2), c*ERR(2));
 	}
+
+#undef FIT
+#undef ERR
+#endif
 
 	printf("status = %s\n", gsl_strerror(status));
 
@@ -402,6 +407,7 @@ void levenberg_marquardt_fdf_2()
 		status = gsl_multifit_test_delta(s->dx, s->x, 1.0e-7, 1.0e-7);
 	} while (status == GSL_CONTINUE && iter < 500);
 
+#if !(defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux))
 	//
 	gsl_matrix *covar = gsl_matrix_alloc(p, p);
 	gsl_multifit_covar(s->J, 0.0, covar);
@@ -447,6 +453,10 @@ void levenberg_marquardt_fdf_2()
 		printf("a4 = %.5f +/- %.5f\n", FIT(4), c*ERR(4));
 		printf("a5 = %.5f +/- %.5f\n", FIT(5), c*ERR(5));
 	}
+
+#undef FIT
+#undef ERR
+#endif
 
 	printf("status = %s\n", gsl_strerror(status));
 

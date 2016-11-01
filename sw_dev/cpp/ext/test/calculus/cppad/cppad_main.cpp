@@ -124,7 +124,7 @@ private:
 
 // REF [site] >> http://www.coin-or.org/CppAD/Doc/get_started.cpp.xml
 // REF [file] >> ${COIN-OR_HOME}/cppad/example/poly.cpp
-template<class Function, typename Type = Function::value_type>
+template<class Function, typename Type = typename Function::value_type>
 Type function_derivative_example(Function func, const Type &val)
 {
 	// Domain space vector.

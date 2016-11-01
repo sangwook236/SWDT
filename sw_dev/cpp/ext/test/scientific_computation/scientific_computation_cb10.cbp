@@ -31,6 +31,7 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-DUNICODE" />
@@ -39,10 +40,38 @@
 		</Compiler>
 		<Linker>
 			<Add library="gsl" />
-			<Add library="gslwrap" />
 			<Add library="cblas" />
 			<Add directory="/usr/local/lib/" />
 		</Linker>
+		<Unit filename="alglib/alglib_main.cpp" />
+		<Unit filename="alglib/alglib_spline.cpp" />
+		<Unit filename="alglib_lib/alglibinternal.cpp" />
+		<Unit filename="alglib_lib/alglibinternal.h" />
+		<Unit filename="alglib_lib/alglibmisc.cpp" />
+		<Unit filename="alglib_lib/alglibmisc.h" />
+		<Unit filename="alglib_lib/ap.cpp" />
+		<Unit filename="alglib_lib/ap.h" />
+		<Unit filename="alglib_lib/dataanalysis.cpp" />
+		<Unit filename="alglib_lib/dataanalysis.h" />
+		<Unit filename="alglib_lib/diffequations.cpp" />
+		<Unit filename="alglib_lib/diffequations.h" />
+		<Unit filename="alglib_lib/fasttransforms.cpp" />
+		<Unit filename="alglib_lib/fasttransforms.h" />
+		<Unit filename="alglib_lib/integration.cpp" />
+		<Unit filename="alglib_lib/integration.h" />
+		<Unit filename="alglib_lib/interpolation.cpp" />
+		<Unit filename="alglib_lib/interpolation.h" />
+		<Unit filename="alglib_lib/linalg.cpp" />
+		<Unit filename="alglib_lib/linalg.h" />
+		<Unit filename="alglib_lib/optimization.cpp" />
+		<Unit filename="alglib_lib/optimization.h" />
+		<Unit filename="alglib_lib/solvers.cpp" />
+		<Unit filename="alglib_lib/solvers.h" />
+		<Unit filename="alglib_lib/specialfunctions.cpp" />
+		<Unit filename="alglib_lib/specialfunctions.h" />
+		<Unit filename="alglib_lib/statistics.cpp" />
+		<Unit filename="alglib_lib/statistics.h" />
+		<Unit filename="alglib_lib/stdafx.h" />
 		<Unit filename="gsl/gsl_cholesky.cpp" />
 		<Unit filename="gsl/gsl_conjugate_gradient.cpp" />
 		<Unit filename="gsl/gsl_distribution.cpp" />
@@ -60,11 +89,18 @@
 		<Unit filename="gsl/gsl_random_sample.cpp" />
 		<Unit filename="gsl/gsl_root_finding.cpp" />
 		<Unit filename="gsl/gsl_simulated_annealing.cpp" />
+		<Unit filename="gsl/gsl_special_function.cpp" />
 		<Unit filename="gsl/gsl_spline.cpp" />
 		<Unit filename="gsl/gsl_svd.cpp" />
 		<Unit filename="gsl/gsl_vector_operation.cpp" />
-		<Unit filename="gslwrap/gslwrap_main.cpp" />
-		<Unit filename="gslwrap/gslwrap_test.cpp" />
+		<Unit filename="gslwrap/gslwrap_main.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="gslwrap/gslwrap_test.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="gslwrap/gslwrap_test_min.cpp">
 			<Option compile="0" />
 			<Option link="0" />

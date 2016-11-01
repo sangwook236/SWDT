@@ -1,7 +1,11 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
+#if defined(WIN32) || defined(_WIN32)
 #include <cblas.h>
+#else
+#include <atlas/cblas.h>
+#endif
 #if defined(__cplusplus)
 }
 #endif

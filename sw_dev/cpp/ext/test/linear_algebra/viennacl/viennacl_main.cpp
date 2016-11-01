@@ -43,6 +43,22 @@ namespace {
 namespace local {
 
 // REF [file] >> ${VIENNACL_HOME}/examples/tutorial/vector-io.hpp
+template<typename MatrixType>
+class my_inserter
+{
+public:
+    my_inserter(MatrixType & mat) : mat_(mat) {}
+
+    void apply(long row, long col, double value)
+    {
+        insert(mat_, row, col, value);
+    }
+
+private:
+    MatrixType & mat_;
+};
+
+// REF [file] >> ${VIENNACL_HOME}/examples/tutorial/vector-io.hpp
 template<typename VectorType>
 void resize_vector(VectorType & vec, unsigned int size)
 {
@@ -218,7 +234,7 @@ void dense_matrix_example()
 	const size_t dim = 5;
 	boost::numeric::ublas::vector<scalar_type> std_rhs(dim);
 	for (size_t i = 0; i < std_rhs.size(); ++i)
-		std_rhs(i) = scalar_type(i + 1); 
+		std_rhs(i) = scalar_type(i + 1);
 	boost::numeric::ublas::matrix<scalar_type> std_matrix(dim, dim);
 	for (size_t i = 0; i < std_matrix.size1(); ++i)
 		for (size_t j = 0; j < std_matrix.size2(); ++j)

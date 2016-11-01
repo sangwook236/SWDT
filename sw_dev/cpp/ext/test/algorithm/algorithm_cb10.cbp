@@ -33,7 +33,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add option="-std=gnu++0x" />
+			<Add option="-std=c++14" />
 			<Add directory="./libkdtreepp_lib" />
 			<Add directory="/usr/local/include" />
 		</Compiler>
@@ -75,9 +75,7 @@
 		<Unit filename="slash_lib/hash.cc" />
 		<Unit filename="slash_lib/hash.h" />
 		<Unit filename="slash_lib/lsh.h" />
-		<Unit filename="slash_lib/lsh_test.cc">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
+		<Unit filename="slash_lib/lsh_test.cc" />
 		<Unit filename="slash_lib/math.cc" />
 		<Unit filename="slash_lib/math.h" />
 		<Unit filename="slash_lib/querycontext.h" />

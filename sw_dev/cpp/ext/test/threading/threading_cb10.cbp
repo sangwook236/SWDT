@@ -31,11 +31,17 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="/usr/local/include" />
+			<Add directory="/usr/include" />
 		</Compiler>
 		<Linker>
 			<Add library="tbb" />
+			<Add library="pthread" />
+			<Add directory="/usr/local/lib" />
+			<Add directory="/usr/lib" />
 		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="std_thread.cpp" />

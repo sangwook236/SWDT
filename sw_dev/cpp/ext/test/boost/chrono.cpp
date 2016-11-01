@@ -182,11 +182,7 @@ void time_point()
 
 	{
 		// delay for at least 500 nanoseconds
-#if defined(_MSC_VER)
 		auto go = boost::chrono::steady_clock::now() + boost::chrono::nanoseconds(500);
-#else
-		auto boost::chrono::steady_clock::time_point go = boost::chrono::steady_clock::now() + boost::chrono::nanoseconds(500);
-#endif
 
 		std::cout << "waiting for 500 nano-seconds ..." << std::endl;
 		while (boost::chrono::steady_clock::now() < go)

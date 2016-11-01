@@ -1,5 +1,5 @@
 //#include "stdafx.h"
-#define KDTREE_DEFINE_OSTREAM_OPERATORS
+#define KDTREE_DEFINE_OSTREAM_OPERATORS 1
 #include <kdtree++/kdtree.hpp>
 #include <iostream>
 #include <functional>
@@ -17,7 +17,7 @@ namespace local {
 
 namespace my_libkdtreepp {
 
-// used to ensure all triplets that are accessed via the operator<< are initialised.
+// Used to ensure all triplets that are accessed via the operator<< are initialised.
 std::set<const void *> registered;
 
 struct triplet
@@ -83,17 +83,17 @@ double tac(triplet t, size_t k)
 	return t[k];
 }
 
-typedef KDTree::KDTree<3, triplet, std::pointer_to_binary_function<triplet, size_t, double> > triplet_tree_type;
+typedef KDTree::KDTree<3, triplet, std::pointer_to_binary_function<triplet, size_t, double> > tree_type;
 
 struct Predicate
 {
 	bool operator()(triplet const &t) const
 	{
-		return t[0] > 3;  // anything, we are currently testing that it compiles.
+		return t[0] > 3;  // Anything, we are currently testing that it compiles.
 	}
 };
 
-// never finds anything
+// Never finds anything
 struct FalsePredicate
 {
 	bool operator()(triplet const &t) const
@@ -105,45 +105,45 @@ struct FalsePredicate
 // ${LIBKDTREE++_HOME}/examples/test_kdtree.cpp.
 bool kdtree_example()
 {
-	// check that it'll find nodes exactly MAX away.
+	// Check that it'll find nodes exactly MAX away.
 	{
-		triplet_tree_type exact_dist(std::ptr_fun(&tac));
+		tree_type exact_dist(std::ptr_fun(&tac));
 		triplet c0(5, 4, 0);
 		exact_dist.insert(c0);
 		triplet target(7, 4, 0);
 
-		std::pair<triplet_tree_type::const_iterator, double> found = exact_dist.find_nearest(target, 2);
+		std::pair<tree_type::const_iterator, double> found = exact_dist.find_nearest(target, 2);
 		assert(found.first != exact_dist.end());
 		assert(found.second == 2);
 		std::cout << "Test find_nearest(), found at exact distance away from " << target << ", found " << *found.first << std::endl;
 	}
 
 	{
-		triplet_tree_type exact_dist(std::ptr_fun(&tac));
+		tree_type exact_dist(std::ptr_fun(&tac));
 		triplet c0(5, 2, 0);
 		exact_dist.insert(c0);
 		triplet target(7, 4, 0);
 
-		// call find_nearest without a range value - it found a compile error earlier.
-		std::pair<triplet_tree_type::const_iterator, double> found = exact_dist.find_nearest(target);
+		// Call find_nearest without a range value - it found a compile error earlier.
+		std::pair<tree_type::const_iterator, double> found = exact_dist.find_nearest(target);
 		assert(found.first != exact_dist.end());
 		std::cout << "Test find_nearest(), found at exact distance away from " << target << ", found " << *found.first << " @ " << found.second << " should be " << std::sqrt(8.0) << std::endl;
 		assert(found.second == std::sqrt(8.0));
 	}
 
 	{
-		triplet_tree_type exact_dist(std::ptr_fun(&tac));
+		tree_type exact_dist(std::ptr_fun(&tac));
 		triplet c0(5, 2, 0);
 		exact_dist.insert(c0);
 		triplet target(7, 4, 0);
 
-		std::pair<triplet_tree_type::const_iterator,double> found = exact_dist.find_nearest(target, std::sqrt(8.0));
+		std::pair<tree_type::const_iterator,double> found = exact_dist.find_nearest(target, std::sqrt(8.0));
 		assert(found.first != exact_dist.end());
 		std::cout << "Test find_nearest(), found at exact distance away from " << target << ", found " << *found.first << " @ " << found.second << " should be " << std::sqrt(8.0) << std::endl;
 		assert(found.second == std::sqrt(8.0));
 	}
 
-	triplet_tree_type src(std::ptr_fun(&tac));
+	tree_type src(std::ptr_fun(&tac));
 
 	triplet c0(5, 4, 0); src.insert(c0);
 	triplet c1(4, 2, 1); src.insert(c1);
@@ -166,16 +166,16 @@ bool kdtree_example()
 	src.optimise();
 
 
-	// test the efficient_replace_and_optimise()
-	triplet_tree_type eff_repl = src;
+	// Test the efficient_replace_and_optimise().
+	tree_type eff_repl = src;
 	{
 		std::vector<triplet> vec;
-		// erased above as part of test vec.push_back(triplet(5, 4, 0));
-		// erased above as part of test vec.push_back(triplet(4, 2, 1));
+		// Erased above as part of test vec.push_back(triplet(5, 4, 0));
+		// Erased above as part of test vec.push_back(triplet(4, 2, 1));
 		vec.push_back(triplet(7, 6, 9));
-		// erased above as part of test vec.push_back(triplet(2, 2, 1));
+		// Erased above as part of test vec.push_back(triplet(2, 2, 1));
 		vec.push_back(triplet(8, 0, 5));
-		// erased above as part of test vec.push_back(triplet(5, 7, 0));
+		// Erased above as part of test vec.push_back(triplet(5, 7, 0));
 		vec.push_back(triplet(3, 3, 8));
 		vec.push_back(triplet(9, 7, 3));
 		vec.push_back(triplet(2, 2, 6));
@@ -188,15 +188,15 @@ bool kdtree_example()
 
 	std::cout << std::endl << src << std::endl;
 
-	triplet_tree_type copied(src);
+	tree_type copied(src);
 	std::cout << copied << std::endl;
-	triplet_tree_type assigned;
+	tree_type assigned;
 	assigned = src;
 	std::cout << assigned << std::endl;
 
 	for (int loop = 0; loop != 4; ++loop)
 	{
-		triplet_tree_type *target;
+		tree_type *target;
 		switch (loop)
 		{
 		case 0:
@@ -220,10 +220,10 @@ bool kdtree_example()
 			target = &eff_repl;
 			break;
 		}
-		triplet_tree_type &t = *target;
+		tree_type &t = *target;
 
 		int i = 0;
-		for (triplet_tree_type::const_iterator iter = t.begin(); iter != t.end(); ++iter, ++i);
+		for (tree_type::const_iterator iter = t.begin(); iter != t.end(); ++iter, ++i);
 		std::cout << "iterator walked through " << i << " nodes in total" << std::endl;
 		if (i != 6)
 		{
@@ -231,7 +231,7 @@ bool kdtree_example()
 			return 1;
 		}
 		i = 0;
-		for (triplet_tree_type::const_reverse_iterator iter = t.rbegin(); iter != t.rend(); ++iter, ++i);
+		for (tree_type::const_reverse_iterator iter = t.rbegin(); iter != t.rend(); ++iter, ++i);
 		std::cout << "reverse_iterator walked through " << i << " nodes in total" << std::endl;
 		if (i != 6)
 		{
@@ -255,10 +255,10 @@ bool kdtree_example()
 
 		std::cout << std::endl << t << std::endl;
 
-		// search for all the nodes at exactly 0 dist away
-		for (triplet_tree_type::const_iterator target = t.begin(); target != t.end(); ++target)
+		// Search for all the nodes at exactly 0 dist away.
+		for (tree_type::const_iterator target = t.begin(); target != t.end(); ++target)
 		{
-			std::pair<triplet_tree_type::const_iterator, double> found = t.find_nearest(*target, 0);
+			std::pair<tree_type::const_iterator, double> found = t.find_nearest(*target, 0);
 			assert(found.first != t.end());
 			assert(*found.first == *target);
 			std::cout << "Test find_nearest(), found at exact distance away from " << *target << ", found " << *found.first << std::endl;
@@ -266,7 +266,7 @@ bool kdtree_example()
 
 		{
 			const double small_dist = 0.0001;
-			std::pair<triplet_tree_type::const_iterator, double> notfound = t.find_nearest(s, small_dist);
+			std::pair<tree_type::const_iterator, double> notfound = t.find_nearest(s, small_dist);
 			std::cout << "Test find_nearest(), nearest to " << s << " within " << small_dist << " should not be found" << std::endl;
 
 			if (notfound.first != t.end())
@@ -279,10 +279,10 @@ bool kdtree_example()
 		}
 
 		{
-			std::pair<triplet_tree_type::const_iterator, double> nif = t.find_nearest_if(s, std::numeric_limits<double>::max(), Predicate());
+			std::pair<tree_type::const_iterator, double> nif = t.find_nearest_if(s, std::numeric_limits<double>::max(), Predicate());
 			std::cout << "Test find_nearest_if(), nearest to " << s << " @ " << nif.second << ": " << *nif.first << std::endl;
 
-			std::pair<triplet_tree_type::const_iterator, double> cantfind = t.find_nearest_if(s, std::numeric_limits<double>::max(), FalsePredicate());
+			std::pair<tree_type::const_iterator, double> cantfind = t.find_nearest_if(s, std::numeric_limits<double>::max(), FalsePredicate());
 			std::cout << "Test find_nearest_if(), nearest to " << s << " should never be found (predicate too strong)" << std::endl;
 			assert(cantfind.first == t.end());
 		}
@@ -291,7 +291,7 @@ bool kdtree_example()
 
 
 		{
-			std::pair<triplet_tree_type::const_iterator, double> found = t.find_nearest(s, std::numeric_limits<double>::max());
+			std::pair<tree_type::const_iterator, double> found = t.find_nearest(s, std::numeric_limits<double>::max());
 			std::cout << "Nearest to " << s << " @ " << found.second << " " << *found.first << std::endl;
 			std::cout << "Should be " << found.first->distance_to(s) << std::endl;
 			// NOTE: the assert does not check for an exact match, as it is not exact when -O2 or -O3 is
@@ -301,7 +301,7 @@ bool kdtree_example()
 
 		{
 			triplet s2(10, 10, 2);
-			std::pair<triplet_tree_type::const_iterator, double> found = t.find_nearest(s2, std::numeric_limits<double>::max());
+			std::pair<tree_type::const_iterator, double> found = t.find_nearest(s2, std::numeric_limits<double>::max());
 			std::cout << "Nearest to " << s2 << " @ " << found.second << " " << *found.first << std::endl;
 			std::cout << "Should be " << found.first->distance_to(s2) << std::endl;
 			// NOTE: the assert does not check for an exact match, as it is not exact when -O2 or -O3 is
@@ -313,7 +313,7 @@ bool kdtree_example()
 
 		std::cout << t << std::endl;
 
-		// Testing iterators
+		// Testing iterators.
 		{
 			std::cout << "Testing iterators" << std::endl;
 
@@ -328,12 +328,12 @@ bool kdtree_example()
 
 			std::cout << "Forward iterator test..." << std::endl;
 			std::vector<triplet> forwards;
-			for (triplet_tree_type::iterator i = t.begin(); i != t.end(); ++i)
+			for (tree_type::iterator i = t.begin(); i != t.end(); ++i)
 			{ std::cout << *i << " " << std::flush; forwards.push_back(*i); }
 			std::cout << std::endl;
 			std::cout << "Reverse iterator test..." << std::endl;
 			std::vector<triplet> backwards;
-			for (triplet_tree_type::reverse_iterator i = t.rbegin(); i != t.rend(); ++i)
+			for (tree_type::reverse_iterator i = t.rbegin(); i != t.rend(); ++i)
 			{ std::cout << *i << " " << std::flush; backwards.push_back(*i); }
 			std::cout << std::endl;
 			std::reverse(backwards.begin(), backwards.end());

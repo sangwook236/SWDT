@@ -9,21 +9,19 @@ extern "C" {
 #include <clapack/f2c.h>
 //#include <clapack/blaswrap.h>
 #include <clapack/clapack.h>
-
-#if defined(abs)
-#	undef abs
-#endif
-
 #else
 #include <f2c.h>
-#include <clapack.h>
 #include <cblas.h>
+#include <clapack.h>
 #endif
 
 #if defined(__cplusplus)
 }
 #endif
 
+#if defined(abs)
+#undef abs
+#endif
 #if defined(max)
 #undef max
 #endif
@@ -99,7 +97,11 @@ void clapack()
 
 		real *work = new real [lwork];
 
+#if 1
 		ssyev_("V", "U", &dim, mat, &dim, eigval, work, &lwork, &info);
+#else
+		clapck_ssyev("V", "U", &dim, mat, &dim, eigval, work, &lwork, &info);
+#endif
 		local::print_matrix("eigenvalue:", eigval, 1, dim);
 		local::print_matrix("eigenvector:", mat, dim, dim);
 

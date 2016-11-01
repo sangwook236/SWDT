@@ -1,5 +1,6 @@
 //#include <boost/compute/core.hpp>
 #include <boost/compute.hpp>
+//#include <CL/cl.h>
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -117,7 +118,7 @@ void vector_data_type()
 
 	// Calculate centroid.
 	boost::compute::float4_ centroid;
-	for (size_t i = 0; i < 4; i++) 
+	for (size_t i = 0; i < 4; i++)
 		centroid[i] = sum[i] / 5.0f;
 
 	// Print centroid.

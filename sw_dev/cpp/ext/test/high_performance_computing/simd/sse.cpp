@@ -7,6 +7,8 @@
 #if defined(_WIN64) || defined(_WIN32)
 #include <xmmintrin.h>
 #include <windows.h>
+#else
+#include <x86intrin.h>
 #endif
 
 
@@ -51,6 +53,7 @@ void test1()
 {
 	const int array_size = 60000;
 
+#if defined(_WIN64) || defined(_WIN32)
 	__declspec(align(16)) float arr1[array_size]= { 0.0f, };
 	__declspec(align(16)) float arr2[array_size] = { 0.0f, };
 	__declspec(align(16)) float result[array_size] = { 0.0f, };
@@ -59,6 +62,11 @@ void test1()
 	__declspec(align(16)) float *arr2 = (float *)_aligned_malloc(array_size * sizeof(float), 16);
 	__declspec(align(16)) float *result = (float *)_aligned_malloc(array_size * sizeof(float), 16);
 */
+#else
+	__attribute__ ((aligned(16))) float arr1[array_size]= { 0.0f, };
+	__attribute__ ((aligned(16))) float arr2[array_size] = { 0.0f, };
+	__attribute__ ((aligned(16))) float result[array_size] = { 0.0f, };
+#endif
 
 	for (int i = 0; i < array_size; ++i)
 	{
@@ -146,6 +154,7 @@ void test2()
 
 	std::srand((unsigned int)time(NULL));
 
+#if defined(_WIN64) || defined(_WIN32)
 	__declspec(align(16)) float arr[array_size]= { 0.0f, };
 	__declspec(align(16)) float result[array_size] = { 0.0f, };
 /*
@@ -153,6 +162,10 @@ void test2()
 	__declspec(align(16)) float *result = (float *)_aligned_malloc(array_size * sizeof(float), 16);
 
 */
+#else
+	__attribute__ ((aligned(16))) float arr[array_size]= { 0.0f, };
+	__attribute__ ((aligned(16))) float result[array_size] = { 0.0f, };
+#endif
 
 	for (int i = 0; i < array_size; ++i)
 		arr[i] = (float)std::fabs((float)std::rand());

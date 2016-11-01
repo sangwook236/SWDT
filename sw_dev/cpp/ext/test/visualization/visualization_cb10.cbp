@@ -31,16 +31,33 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-std=gnu++11" />
+			<Add option="-fext-numeric-literals" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
+			<Add directory="/usr/local/include" />
+			<Add directory="/usr/include/plplot" />
 		</Compiler>
+		<Linker>
+			<Add library="mgl-glut" />
+			<Add library="mgl-qt5" />
+			<Add library="mgl-qt" />
+			<Add library="mgl" />
+			<Add library="plplotcxxd" />
+			<Add library="plplotd" />
+			<Add library="boost_iostreams" />
+			<Add library="boost_filesystem" />
+			<Add library="boost_system" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
+		<Unit filename="gnuplot/gnuplot-iostream.h" />
 		<Unit filename="gnuplot/gnuplot_cpp_example.cpp" />
 		<Unit filename="gnuplot/gnuplot_i.hpp" />
 		<Unit filename="gnuplot/gnuplot_iostream_example.cpp" />
 		<Unit filename="gnuplot/gnuplot_main.cpp" />
-		<Unit filename="gnuplot/gnuplot-iostream.h" />
 		<Unit filename="graphviz/graphviz_main.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mathgl/mathgl_glut_example.cpp" />

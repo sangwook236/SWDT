@@ -33,12 +33,19 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-std=c++14" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
+			<Add directory="/usr/include/soci" />
+			<Add directory="/usr/local/include" />
+			<Add directory="/usr/include" />
+			<Add directory="/usr/include/postgresql" />
 		</Compiler>
 		<Linker>
 			<Add library="pthread" />
 			<Add library="dl" />
+			<Add directory="/usr/local/lib" />
+			<Add directory="/usr/lib" />
 		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="mysql/mysql_main.cpp" />

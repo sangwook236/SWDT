@@ -54,7 +54,7 @@ void async()
 	}
 
 	{
-		std::atomic_bool done = false;
+		std::atomic_bool done(false);
 
 		auto ret1 = std::async([&done]() {
 			std::cout << "Starting the first async." << std::endl;
