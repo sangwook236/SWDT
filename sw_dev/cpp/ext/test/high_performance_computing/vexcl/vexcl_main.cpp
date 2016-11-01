@@ -1,7 +1,12 @@
 //#define VEXCL_SHOW_KERNELS
 //#define VEXCL_BACKEND_OPENCL  // Default.
-#define VEXCL_BACKEND_COMPUTE
+//#define VEXCL_BACKEND_COMPUTE
 //#define VEXCL_BACKEND_CUDA
+#if defined(_WIN64) || defined(_WIN32)
+#define VEXCL_BACKEND_OPENCL
+#else
+#define VEXCL_BACKEND_COMPUTE
+#endif
 #include <vexcl/vexcl.hpp>
 #include <boost/numeric/odeint.hpp>
 #include <sstream>

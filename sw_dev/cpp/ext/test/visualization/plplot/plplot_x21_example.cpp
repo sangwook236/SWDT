@@ -3,9 +3,12 @@
 #include <boost/smart_ptr.hpp>
 #include <cmath>
 
-#define PL_BROKEN_ISNAN_CXX
 
-// Need for some Mac OSX systems with broken <cmath> header
+#if defined(__APPLE__) && defined(__MACH__)
+#define PL_BROKEN_ISNAN_CXX
+#endif
+
+// Need for some Mac OSX systems with broken <cmath> header.
 #ifdef PL_BROKEN_ISNAN_CXX
 extern "C" int isnan( double );
 #endif
@@ -15,6 +18,7 @@ extern "C" int isnan( double );
 using namespace std;
 #endif
 */
+
 
 namespace {
 namespace local {
@@ -178,7 +182,11 @@ x21::x21(int argc, char *argv[])
 
     // Parse and process command line arguments.
     pls->MergeOpts( options, "x21c options", NULL );
-    pls->parseopts( &argc, (const char **)argv, PL_PARSE_FULL );
+#if defined(_WIN64) || defined(_WIN32)
+	pls->parseopts(&argc, (char **)argv, PL_PARSE_FULL);
+#else
+	pls->parseopts( &argc, (const char **)argv, PL_PARSE_FULL );
+#endif
 
     opt[2] = wmin;
     opt[3] = (PLFLT) knn_order;

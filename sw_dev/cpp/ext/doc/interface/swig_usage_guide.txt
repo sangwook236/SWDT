@@ -9,7 +9,7 @@
 
 [-] Usage.
 	- Command.
-		swig -python -c++ swig_api.i
+		swig -python -c++ swig_simple_example.i
 
 [-] Building (Windows).
 	REF [doc] >> ${SWIG_HOME}/Doc/Manual/Windows.html

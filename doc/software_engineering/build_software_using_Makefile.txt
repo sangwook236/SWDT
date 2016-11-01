@@ -45,6 +45,9 @@
 		Command:
 			sudo make install
 			sudo make PREFIX=${INSTALL_PREFIX} install
+	- Refresh shared library cache.
+		Command:
+		    sudo ldconfig
 
 [-] Setting.
 	- Print text.

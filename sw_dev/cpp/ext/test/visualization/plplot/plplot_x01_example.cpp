@@ -108,7 +108,11 @@ x01::x01(int argc, char *argv[])
 
     // Parse and process command line arguments.
     pls->MergeOpts( options, "x01c options", notes );
-    pls->parseopts( &argc, (const char**)argv, PL_PARSE_FULL );
+#if defined(_WIN64) || defined(_WIN32)
+	pls->parseopts( &argc, (char**)argv, PL_PARSE_FULL );
+#else
+	pls->parseopts(&argc, (const char**)argv, PL_PARSE_FULL);
+#endif
 
     // Print out version number, just for kicks.
     pls->gver( ver );

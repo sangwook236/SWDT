@@ -89,7 +89,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="protobuf\protobuf_main.cpp" />
     <ClCompile Include="protobuf\protobuf_person.pb.cc" />
-    <ClCompile Include="protobuf\protobuf_simple_example.cpp" />
+    <ClCompile Include="protobuf\protobuf_proto2_example.cpp" />
     <ClCompile Include="rapidjson\rapidjson_examples.cpp" />
     <ClCompile Include="rapidjson\rapidjson_main.cpp" />
     <ClCompile Include="yaml_cpp\yaml_cpp_basic_emitting.cpp">

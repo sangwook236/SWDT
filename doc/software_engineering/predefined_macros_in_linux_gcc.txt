@@ -1,4 +1,4 @@
-[ref] http://www.commandlinefu.com/commands/view/3918/display-gcc-predefined-macros
+REF [site] >> http://www.commandlinefu.com/commands/view/3918/display-gcc-predefined-macros
 
 command:
 	gcc -dM -E - <<<''

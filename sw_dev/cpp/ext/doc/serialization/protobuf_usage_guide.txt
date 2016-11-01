@@ -20,3 +20,16 @@
 				Unset protobuf_BUILD_TESTS.
 	- Build.
 	- Install.
+
+[-] Building (Linux)
+	REF [doc] >> ${PROTOBUF_HOME}/src/README.md
+
+	- Configure.
+		./autogen.sh
+	    ./configure
+	- Run make.
+	    make
+	    make check
+	    sudo make install
+	- Refresh shared library cache.
+	    sudo ldconfig
