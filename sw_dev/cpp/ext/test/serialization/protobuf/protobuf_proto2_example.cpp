@@ -24,7 +24,7 @@ void input_person()
 	std::fstream in("./data/serialization/protobuf/person.pb", std::ios::in | std::ios::binary);
 	if (!person.ParseFromIstream(&in))
 	{
-		std::cerr << "failed to parse person.pb." << std::endl;
+		std::cerr << "Failed to parse person.pb." << std::endl;
 		return;
 	}
 
@@ -39,7 +39,7 @@ void input_person()
 
 namespace my_protobuf {
 
-void simple_example()
+void proto2_example()
 {
 	local::output_person();
 	local::input_person();
