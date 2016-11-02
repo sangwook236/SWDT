@@ -12,10 +12,9 @@ int main(int argc, char *argv[])
 	int openmp_main(int argc, char *argv[]);
 	int simd_main(int argc, char *argv[]);
 
-	int vexcl_main(int argc, char *argv[]);
-
-	int thrust_main(int argc, char *argv[]);
 	int cuda_main(int argc, char *argv[]);
+	int vexcl_main(int argc, char *argv[]);
+	int thrust_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -28,16 +27,19 @@ int main(int argc, char *argv[])
 		//retval = simd_main(argc, argv);
 
 		std::cout << "\nBoost.Compute library -----------------------------------------------" << std::endl;
+		//	- Open Computing Language (OpenCL).
 		// REF [library] >> Boost library.
-
-		std::cout << "\nVexCL library -------------------------------------------------------" << std::endl;
-		retval = vexcl_main(argc, argv);
-
-		std::cout << "\nThrust library ------------------------------------------------------" << std::endl;
-		//retval = thrust_main(argc, argv);
 
 		std::cout << "\nCompute Unified Device Architecture (CUDA) --------------------------" << std::endl;
 		//retval = cuda_main(argc, argv);
+
+		std::cout << "\nVexCL library -------------------------------------------------------" << std::endl;
+		//	- Support OpenCL, CUDA, and Boost.Compute.
+		retval = vexcl_main(argc, argv);
+
+		std::cout << "\nThrust library ------------------------------------------------------" << std::endl;
+		// - Interoperability with CUDA, TBB, and OpenMP.
+		//retval = thrust_main(argc, argv);
 	}
 	catch (const std::bad_alloc &ex)
 	{
