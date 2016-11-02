@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 		retval = vexcl_main(argc, argv);
 
 		std::cout << "\nThrust library ------------------------------------------------------" << std::endl;
-		// - Interoperability with CUDA, TBB, and OpenMP.
+		//	- Interoperability with CUDA, TBB, and OpenMP.
 		//retval = thrust_main(argc, argv);
 	}
 	catch (const std::bad_alloc &ex)
