@@ -4,7 +4,7 @@
 #include <cmath>
 
 
-#if defined(__APPLE__) && defined(__MACH__)
+#if defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix) || defined(__APPLE__) && defined(__MACH__)
 #define PL_BROKEN_ISNAN_CXX
 #endif
 

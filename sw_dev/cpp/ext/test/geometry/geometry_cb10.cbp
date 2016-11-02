@@ -42,7 +42,6 @@
 			<Add library="CGAL" />
 			<Add library="CGAL_Core" />
 			<Add library="CGAL_ImageIO" />
-			<Add library="CGAL_Qt4" />
 			<Add library="gmp" />
 			<Add library="mpfr" />
 			<Add library="mpfi" />
