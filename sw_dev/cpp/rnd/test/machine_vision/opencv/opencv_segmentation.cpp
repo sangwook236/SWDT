@@ -61,7 +61,7 @@ void watershed_algorithm(const cv::Mat &img0)
     img0.copyTo(watershed_img);
 
 #if 0
-	// use gradient
+	// Use gradient.
 	cv::Mat gray;
     cv::cvtColor(img0, gray, CV_BGR2GRAY);
 
@@ -133,11 +133,11 @@ void watershed_algorithm(const cv::Mat &img0)
 			double t = (double)cv::getTickCount();
             watershed( img0, markers );
             t = (double)cv::getTickCount() - t;
-            printf( "execution time = %gms\n", t*1000./cv::getTickFrequency() );
+            printf( "Execution time = %gms\n", t*1000./cv::getTickFrequency() );
 
             cv::Mat wshed(markers.size(), CV_8UC3);
 
-            // paint the watershed image
+            // Paint the watershed image.
             for( i = 0; i < markers.rows; ++i)
                 for( j = 0; j < markers.cols; ++j )
                 {
@@ -151,7 +151,7 @@ void watershed_algorithm(const cv::Mat &img0)
                 }
 
             wshed = wshed*0.5 + imgGray*0.5;
-            cv::imshow( "watershed transform", wshed );
+            cv::imshow( "Watershed transform", wshed );
         }
     }
 }
@@ -467,7 +467,7 @@ void GCApplication::mouseClick( int event, int x, int y, int flags, void* )
     // TODO add bad args check.
     switch( event )
     {
-    case CV_EVENT_LBUTTONDOWN: // set rect or GC_BGD(GC_FGD) labels.
+    case CV_EVENT_LBUTTONDOWN: // Set rect or GC_BGD(GC_FGD) labels.
         {
             bool isb = (flags & BGD_KEY) != 0,
                  isf = (flags & FGD_KEY) != 0;
@@ -480,7 +480,7 @@ void GCApplication::mouseClick( int event, int x, int y, int flags, void* )
                 lblsState = IN_PROCESS;
         }
         break;
-    case CV_EVENT_RBUTTONDOWN: // set GC_PR_BGD(GC_PR_FGD) labels.
+    case CV_EVENT_RBUTTONDOWN: // Set GC_PR_BGD(GC_PR_FGD) labels.
         {
             bool isb = (flags & BGD_KEY) != 0,
                  isf = (flags & FGD_KEY) != 0;
@@ -564,10 +564,10 @@ void grabcut_on_mouse(int event, int x, int y, int flags, void *param)
     gcapp.mouseClick(event, x, y, flags, param);
 }
 
-// [ref] ${OPENCV_HOME}/samples/cpp/grabcut.cpp.
+// REF [file] >> ${OPENCV_HOME}/samples/cpp/grabcut.cpp.
 void grabcut_algorithm(const cv::Mat &image)
 {
-	// [ref] run_grabcut_using_depth_guided_mask() in ${SWL_CPP_HOME}/app/kinect_segmentation_app/SegmentationUsingGrabCut.cpp.
+	// REF [file] >> run_grabcut_using_depth_guided_mask() in ${SWL_CPP_HOME}/app/kinect_segmentation_app/SegmentationUsingGrabCut.cpp.
 
     grabcut_help();
 
@@ -652,7 +652,7 @@ static void meanShiftSegmentation(int, void *)
 }
 */
 
-// [ref] ${OPENCV_HOME}/samples/cpp/meanshift_segmentation.cpp.
+// REF [file] >> ${OPENCV_HOME}/samples/cpp/meanshift_segmentation.cpp.
 void image_segmentation_by_meanshift(const cv::Mat &img)
 {
 /*
@@ -684,7 +684,7 @@ void image_segmentation_by_meanshift(const cv::Mat &img)
 	const int colorRad = 10;
 	const int maxPyrLevel = 1;
 
-	const std::string winName("mean-shift segmentation");
+	const std::string winName("Mean-shift segmentation");
 	cv::namedWindow(winName, CV_WINDOW_AUTOSIZE);
 
 	cv::Mat res;
@@ -758,14 +758,14 @@ void segmentation()
 	//const std::string filename("./data/machine_vision/opencv/hand_35.jpg");
 	//const std::string filename("./data/machine_vision/opencv/hand_36.jpg");
 
-	//const std::string windowName("segmentation");
+	//const std::string windowName("Segmentation");
 	//cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
 
 	//
 	cv::Mat img = cv::imread(filename, CV_LOAD_IMAGE_COLOR);
 	if (img.empty())
 	{
-		std::cout << "fail to load image file: " << filename << std::endl;
+		std::cout << "Fail to load image file: " << filename << std::endl;
 		return;
 	}
 
