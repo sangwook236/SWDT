@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
 	void any();
 	void array_main();
 	void tuple();
+	void circular_buffer();
 	void multi_array();
 	void multi_index();
 	void property_map();
@@ -51,6 +52,7 @@ int main(int argc, char *argv[])
 	void math_floating_point_utilities();
 	void math_special_functions();
 	void math_statistical_distributions();
+	void accumulator();
 	void random_boost();
 	void ublas();
 	void odeint();
@@ -87,7 +89,7 @@ int main(int argc, char *argv[])
 			//utility();
 			//utility_binary();
 
-			log();
+			//log();
 
 			//program_options(argc, argv);
 			//filesystem();
@@ -107,6 +109,7 @@ int main(int argc, char *argv[])
 			//any();
 			//array_main();
 			//tuple();
+			//circular_buffer();
 			//multi_array();
 			//multi_index();
 
@@ -140,6 +143,7 @@ int main(int argc, char *argv[])
 			//math_floating_point_utilities();
 			//math_special_functions();
 			//math_statistical_distributions();
+			accumulator();
 			//random();
 			//ublas();
 			//odeint();
@@ -175,13 +179,13 @@ int main(int argc, char *argv[])
             //asio_udp_broadcast();
 		}
 
-		// High performance computing.
 		{
-			// OpenCL
 			//image();
 		}
 
+		// High performance computing.
 		{
+			// OpenCL.
 			//compute();
 		}
 	}

@@ -95,6 +95,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="accumulator.cpp" />
     <ClCompile Include="any.cpp" />
     <ClCompile Include="array.cpp" />
     <ClCompile Include="asio\asio_line_based_operation.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="asio\asio_udp_server.cpp" />
     <ClCompile Include="bind.cpp" />
     <ClCompile Include="chrono.cpp" />
+    <ClCompile Include="circular_buffer.cpp" />
     <ClCompile Include="compute.cpp" />
     <ClCompile Include="conversion.cpp" />
     <ClCompile Include="cpu_timer.cpp" />
