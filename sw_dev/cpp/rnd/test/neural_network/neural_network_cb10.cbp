@@ -41,8 +41,12 @@
 			<Add library="tinyxml" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="elm/elm_linear_test.cpp" />
+		<Unit filename="elm/elm_main.cpp" />
+		<Unit filename="elm_linear_lib/elml.hpp" />
 		<Unit filename="fann/fann_main.cpp" />
 		<Unit filename="fann/fann_xor_example.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="opennn/opennn_main.cpp" />
 		<Unit filename="opennn/opennn_simple_function_regression_example.cpp" />

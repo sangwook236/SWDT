@@ -60,9 +60,11 @@
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="3dtk/3dtk_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="pcl/pcl_greedy_projection.cpp" />
 		<Unit filename="pcl/pcl_main.cpp" />
+		<Unit filename="pcl/pcl_ransac.cpp" />
 		<Unit filename="pcl/pcl_resampling.cpp" />
 		<Unit filename="pcl/pcl_visualization.cpp" />
 		<Extensions>

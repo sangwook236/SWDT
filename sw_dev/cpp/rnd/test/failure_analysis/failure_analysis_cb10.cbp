@@ -38,6 +38,7 @@
 		<Linker>
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

@@ -77,6 +77,7 @@
 			<Add library="OpenCL" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="accumulator.cpp" />
 		<Unit filename="any.cpp" />
 		<Unit filename="array.cpp" />
 		<Unit filename="asio/asio_line_based_operation.cpp" />
@@ -93,6 +94,7 @@
 		<Unit filename="asio/asio_udp_server.cpp" />
 		<Unit filename="bind.cpp" />
 		<Unit filename="chrono.cpp" />
+		<Unit filename="circular_buffer.cpp" />
 		<Unit filename="compute.cpp" />
 		<Unit filename="conversion.cpp" />
 		<Unit filename="cpu_timer.cpp" />
@@ -114,6 +116,7 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="interprocess.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="log.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="math_bindings.cpp">

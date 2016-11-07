@@ -45,7 +45,9 @@
 		</Linker>
 		<Unit filename="document_image_binarization/binarizewolfjolion.cpp" />
 		<Unit filename="document_image_binarization/document_image_binarization_main.cpp" />
+		<Unit filename="kaldi/kaldi_main.cpp" />
 		<Unit filename="leptonica/leptonica_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="tesseract/tesseract_main.cpp" />
 		<Extensions>

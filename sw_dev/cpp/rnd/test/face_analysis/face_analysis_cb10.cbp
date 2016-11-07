@@ -45,6 +45,8 @@
 			<Add library="v4l2" />
 			<Add library="v4l1compat" />
 			<Add directory="/usr/local/lib" />
+			<Add directory="/usr/lib/x86_64-linux-gnu/libv4l" />
+			<Add directory="/usr/lib/x86_64-linux-gnu" />
 		</Linker>
 		<Unit filename="facetracker/facetracker_main.cpp" />
 		<Unit filename="facetracker_lib/CLM.cc" />
@@ -63,6 +65,7 @@
 		<Unit filename="facetracker_lib/PDM.cc" />
 		<Unit filename="facetracker_lib/Patch.cc" />
 		<Unit filename="facetracker_lib/Tracker.cc" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="stasm/stasm_main.cpp" />
 		<Extensions>

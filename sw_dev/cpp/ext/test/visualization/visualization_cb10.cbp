@@ -59,6 +59,7 @@
 		<Unit filename="gnuplot/gnuplot_iostream_example.cpp" />
 		<Unit filename="gnuplot/gnuplot_main.cpp" />
 		<Unit filename="graphviz/graphviz_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mathgl/mathgl_glut_example.cpp" />
 		<Unit filename="mathgl/mathgl_main.cpp" />

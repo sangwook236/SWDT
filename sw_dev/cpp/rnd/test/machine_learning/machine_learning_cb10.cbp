@@ -73,8 +73,10 @@
 		<Unit filename="kmeanspp_lib/KmTree.h" />
 		<Unit filename="kmeanspp_lib/KmUtils.cpp" />
 		<Unit filename="kmeanspp_lib/KmUtils.h" />
+		<Unit filename="libgp/libgp_main.cpp" />
 		<Unit filename="liblearning/liblearning_deep_learning_example.cpp" />
 		<Unit filename="liblearning/liblearning_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="libsvm/libsvm_main.cpp" />
 		<Unit filename="libsvm/libsvm_predict_example.cpp" />
 		<Unit filename="libsvm/libsvm_train_example.cpp" />
@@ -127,6 +129,14 @@
 		<Unit filename="mysvm_lib/svm_nu.h" />
 		<Unit filename="mysvm_lib/version.h" />
 		<Unit filename="rl_glue/rl_glue_main.cpp" />
+		<Unit filename="rllib/rllib_boyan_chain_lstd_example.cpp" />
+		<Unit filename="rllib/rllib_cliff_walking_qlearning_example.cpp" />
+		<Unit filename="rllib/rllib_cliff_walking_sarsa_example.cpp" />
+		<Unit filename="rllib/rllib_inverted_pendulum_ktdq_example.cpp" />
+		<Unit filename="rllib/rllib_inverted_pendulum_lspi_example.cpp" />
+		<Unit filename="rllib/rllib_inverted_pendulum_mlp_ktdq_example.cpp" />
+		<Unit filename="rllib/rllib_main.cpp" />
+		<Unit filename="rllib/rllib_mountain_car_ktdsarsa_example.cpp" />
 		<Unit filename="shogun/shogun_classifier_conjugateindex_example.cpp" />
 		<Unit filename="shogun/shogun_classifier_latent_svm_example.cpp" />
 		<Unit filename="shogun/shogun_classifier_libsvm_example.cpp" />

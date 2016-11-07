@@ -41,6 +41,8 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add directory="/usr/local/include" />
+			<Add directory="/usr/lib/x86_64-linux-gnu/wx/include/base-unicode-3.0" />
+			<Add directory="/usr/include/wx-3.0" />
 		</Compiler>
 		<Linker>
 			<Add directory="/usr/local/lib" />
@@ -48,6 +50,7 @@
 		<Unit filename="GUIFrame.cpp" />
 		<Unit filename="GUIFrame.h" />
 		<Unit filename="WxWizFrame.fbp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="wxwidgetsApp.cpp" />
 		<Unit filename="wxwidgetsApp.h" />
 		<Unit filename="wxwidgetsMain.cpp" />

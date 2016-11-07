@@ -177,6 +177,7 @@
 		<Unit filename="hog/hog_main.cpp" />
 		<Unit filename="hog/hog_training_HOG.cpp" />
 		<Unit filename="hog/svmlight/svmlight.h" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="lsd/lsd_main.cpp" />
 		<Unit filename="lsd_lib/lsd.cpp" />
 		<Unit filename="lsd_lib/lsd.h" />

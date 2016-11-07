@@ -42,9 +42,9 @@
 		</Compiler>
 		<Linker>
 			<Add library="spuc_filt" />
-      <Add library="spuc" />
-      <Add library="spuc_types" />
-      <Add library="itpp" />
+			<Add library="spuc" />
+			<Add library="spuc_types" />
+			<Add library="itpp" />
 			<Add library="opencv_imgproc" />
 			<Add library="opencv_highgui" />
 			<Add library="opencv_core" />
@@ -81,6 +81,7 @@
 		<Unit filename="fast_bilateral_filter_lib/mixed_vector.h" />
 		<Unit filename="fast_bilateral_filter_lib/msg_stream.h" />
 		<Unit filename="itpp/itpp_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="nyu_depth_toolbox_v2/depth_filling_cross_bilateral_filter_example.cpp" />
 		<Unit filename="nyu_depth_toolbox_v2/nyu_depth_toolbox_v2_main.cpp" />
@@ -95,6 +96,7 @@
 		<Unit filename="spuc/spuc_filter_example.cpp" />
 		<Unit filename="spuc/spuc_main.cpp" />
 		<Unit filename="spuc/spuc_maximum_likelihood_sequence_estimation.cpp" />
+		<Unit filename="tspl/tspl_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

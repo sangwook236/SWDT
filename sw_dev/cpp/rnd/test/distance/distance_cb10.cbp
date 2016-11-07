@@ -36,11 +36,13 @@
 			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
+			<Add library="boost_timer" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="dynamic_time_warping/dynamic_time_warping_main.cpp" />
 		<Unit filename="dynamic_time_warping_lib/DynamicTimeWarping.h" />
 		<Unit filename="fastemd/fastemd_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

@@ -45,6 +45,7 @@
 		<Unit filename="galib/galib_ex3.cpp" />
 		<Unit filename="galib/galib_ex7.cpp" />
 		<Unit filename="galib/galib_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

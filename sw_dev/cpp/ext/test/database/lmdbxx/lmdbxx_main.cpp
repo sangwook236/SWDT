@@ -8,13 +8,13 @@
 namespace {
 namespace local {
 
-// [ref] ${LMDBXX_HOME}/example.cc
+// REF [file] >> ${LMDBXX_HOME}/example.cc
 void example()
 {
 #if __cplusplus >= 201103L
 	// Create and open the LMDB environment.
 	auto env = lmdb::env::create();
-	env.open("./example.mdb", 0, 0664);
+	env.open("./data/database/example.mdb", 0, 0664);
 
 	// Insert some key/value pairs in a write transaction.
 	auto wtxn = lmdb::txn::begin(env);

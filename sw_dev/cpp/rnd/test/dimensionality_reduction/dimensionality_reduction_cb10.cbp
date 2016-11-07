@@ -44,6 +44,7 @@
 			<Add directory="../../lib" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mfa/mfa_main.cpp" />
 		<Unit filename="mfa_lib/log.hpp" />

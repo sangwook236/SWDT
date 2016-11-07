@@ -89,6 +89,7 @@
 		</Unit>
 		<Unit filename="gslic_lib/cudaUtil.h" />
 		<Unit filename="interactive_graph_cuts/interactive_graph_cuts_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="region_growing/region_growing_andres_seeded_region_growing.cpp" />
 		<Unit filename="region_growing/region_growing_by_contrast.cpp" />

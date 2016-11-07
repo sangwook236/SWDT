@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 
 namespace {
@@ -22,7 +23,11 @@ void simple_scalar_dtw_example()
 	std::vector<double> scalars1;
 	std::vector<double> scalars2;
 	{
+#if defined(__GNUC__)
+		std::ifstream strm(filename1.c_str());
+#else
 		std::ifstream strm(filename1);
+#endif
 		if (!strm.is_open())
 		{
 			std::cerr << "file not found: " << filename1 << std::endl;
@@ -42,7 +47,11 @@ void simple_scalar_dtw_example()
 		}
 	}
 	{
+#if defined(__GNUC__)
+		std::ifstream strm(filename2.c_str());
+#else
 		std::ifstream strm(filename2);
+#endif
 		if (!strm.is_open())
 		{
 			std::cerr << "file not found: " << filename2 << std::endl;

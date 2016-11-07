@@ -60,6 +60,7 @@
 		<Unit filename="csv_parser_lib/csv_parser.cpp" />
 		<Unit filename="csv_parser_lib/csv_parser/csv_parser.hpp" />
 		<Unit filename="hdf/hdf_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="string_tokenization.cpp" />
 		<Extensions>

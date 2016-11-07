@@ -39,6 +39,7 @@
 		<Linker>
 			<Add library="xerces-c" />
 		</Linker>
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="xercesc/xercesc_DOMPrintErrorHandler.cpp" />
 		<Unit filename="xercesc/xercesc_DOMPrintErrorHandler.hpp" />

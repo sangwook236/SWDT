@@ -31,6 +31,7 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-DHAVE_EXPM1" />
@@ -49,8 +50,8 @@
 		</Linker>
 		<Unit filename="boom/boom_main.cpp" />
 		<Unit filename="gransac/gransac_curve_estimation.cpp" />
-		<Unit filename="gransac/gransac_main.cpp" />
 		<Unit filename="gransac/gransac_line_estimation.cpp" />
+		<Unit filename="gransac/gransac_main.cpp" />
 		<Unit filename="gransac_lib/AbstractModel.hpp" />
 		<Unit filename="gransac_lib/GRANSAC.hpp" />
 		<Unit filename="jlinkage/jlinkage_main.cpp" />
@@ -87,6 +88,7 @@
 		<Unit filename="jlinkage_lib/kdtree++/node.hpp" />
 		<Unit filename="jlinkage_lib/kdtree++/region.hpp" />
 		<Unit filename="jlinkage_lib/kdtree++/region_copy.hpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mcmcpp/mcmcpp_binomial_example.cpp" />
 		<Unit filename="mcmcpp/mcmcpp_main.cpp" />

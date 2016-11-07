@@ -41,6 +41,7 @@
 			<Add library="z" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="zlib/zlib_main.cpp" />
 		<Extensions>

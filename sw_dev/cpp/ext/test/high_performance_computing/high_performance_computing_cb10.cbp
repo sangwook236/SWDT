@@ -49,6 +49,7 @@
 			<Option link="1" />
 		</Unit>
 		<Unit filename="cuda/cuda_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="openmp/openmp_main.cpp" />
 		<Unit filename="simd/simd_main.cpp" />

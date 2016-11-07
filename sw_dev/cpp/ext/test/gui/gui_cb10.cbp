@@ -40,14 +40,15 @@
 			<Add library="QtCore" />
 			<Add directory="/usr/lib/x86_64-linux-gnu" />
 		</Linker>
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="qt4/qt4_main.cpp" />
 		<Unit filename="qt4/MyMainWindow.cpp" />
 		<Unit filename="qt4/MyMainWindow.h" />
 		<Unit filename="qt4/MyWindow.cpp" />
 		<Unit filename="qt4/MyWindow.h" />
 		<Unit filename="qt4/moc_MyMainWindow.cpp" />
 		<Unit filename="qt4/moc_MyWindow.cpp" />
+		<Unit filename="qt4/qt4_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

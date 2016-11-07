@@ -35,6 +35,7 @@
 			<Add option="-fexceptions" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="osg" />
@@ -54,7 +55,9 @@
 			<Add library="osgVolume" />
 			<Add library="osgWidget" />
 			<Add library="OpenThreads" />
+			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="openscenegraph/osg_basic_geometry.cpp" />
 		<Unit filename="openscenegraph/osg_main.cpp" />

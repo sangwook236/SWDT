@@ -40,6 +40,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add directory="/usr/local/include" />
+			<Add directory="/usr/include/opencv" />
+			<Add directory="/usr/include" />
 		</Compiler>
 		<Linker>
 			<Add library="opencv_core" />
@@ -71,6 +73,8 @@
 		<Unit filename="bgslibrary/bgslibrary_main.cpp" />
 		<Unit filename="bgslibrary_lib/package_bgs/AdaptiveBackgroundLearning.cpp" />
 		<Unit filename="bgslibrary_lib/package_bgs/AdaptiveBackgroundLearning.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/AdaptiveSelectiveBackgroundLearning.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/AdaptiveSelectiveBackgroundLearning.h" />
 		<Unit filename="bgslibrary_lib/package_bgs/FrameDifferenceBGS.cpp" />
 		<Unit filename="bgslibrary_lib/package_bgs/FrameDifferenceBGS.h" />
 		<Unit filename="bgslibrary_lib/package_bgs/GMG.cpp" />
@@ -100,6 +104,29 @@
 		<Unit filename="bgslibrary_lib/package_bgs/av/TBackgroundVuMeter.h" />
 		<Unit filename="bgslibrary_lib/package_bgs/av/VuMeter.cpp" />
 		<Unit filename="bgslibrary_lib/package_bgs/av/VuMeter.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/bl/SigmaDeltaBGS.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/bl/SigmaDeltaBGS.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/bl/sdLaMa091.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/bl/sdLaMa091.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/bl/stdbool.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/LbpMrf.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/LbpMrf.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/MEDefs.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/MEDefs.hpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/MEHistogram.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/MEHistogram.hpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/MEImage.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/MEImage.hpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/MotionDetection.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/MotionDetection.hpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/block.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/graph.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/graph.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/ck/maxflow.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/db/IndependentMultimodalBGS.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/db/IndependentMultimodalBGS.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/db/imbs.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/db/imbs.hpp" />
 		<Unit filename="bgslibrary_lib/package_bgs/dp/AdaptiveMedianBGS.cpp" />
 		<Unit filename="bgslibrary_lib/package_bgs/dp/AdaptiveMedianBGS.h" />
 		<Unit filename="bgslibrary_lib/package_bgs/dp/Bgs.h" />
@@ -194,10 +221,28 @@
 		<Unit filename="bgslibrary_lib/package_bgs/lb/LBSimpleGaussian.cpp" />
 		<Unit filename="bgslibrary_lib/package_bgs/lb/LBSimpleGaussian.h" />
 		<Unit filename="bgslibrary_lib/package_bgs/lb/Types.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/my/MyBGS.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/my/MyBGS.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/BackgroundSubtractorLBSP.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/BackgroundSubtractorLBSP.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/BackgroundSubtractorLOBSTER.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/BackgroundSubtractorLOBSTER.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/BackgroundSubtractorSuBSENSE.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/BackgroundSubtractorSuBSENSE.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/DistanceUtils.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/LBSP.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/LBSP.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/LOBSTER.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/LOBSTER.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/RandUtils.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/SuBSENSE.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/pl/SuBSENSE.h" />
 		<Unit filename="bgslibrary_lib/package_bgs/pt/PBAS.cpp" />
 		<Unit filename="bgslibrary_lib/package_bgs/pt/PBAS.h" />
 		<Unit filename="bgslibrary_lib/package_bgs/pt/PixelBasedAdaptiveSegmenter.cpp" />
 		<Unit filename="bgslibrary_lib/package_bgs/pt/PixelBasedAdaptiveSegmenter.h" />
+		<Unit filename="bgslibrary_lib/package_bgs/sjn/SJN_MultiCueBGS.cpp" />
+		<Unit filename="bgslibrary_lib/package_bgs/sjn/SJN_MultiCueBGS.h" />
 		<Unit filename="bgslibrary_lib/package_bgs/tb/FuzzyChoquetIntegral.cpp" />
 		<Unit filename="bgslibrary_lib/package_bgs/tb/FuzzyChoquetIntegral.h" />
 		<Unit filename="bgslibrary_lib/package_bgs/tb/FuzzySugenoIntegral.cpp" />
@@ -222,6 +267,7 @@
 		<Unit filename="bgslibrary_lib/package_bgs/tb/T2FMRF_UM.h" />
 		<Unit filename="bgslibrary_lib/package_bgs/tb/T2FMRF_UV.cpp" />
 		<Unit filename="bgslibrary_lib/package_bgs/tb/T2FMRF_UV.h" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

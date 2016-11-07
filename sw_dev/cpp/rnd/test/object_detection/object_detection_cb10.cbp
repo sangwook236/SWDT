@@ -52,9 +52,40 @@
 		</Unit>
 		<Unit filename="c4_lib/mdarray.h" />
 		<Unit filename="libpabod/libpabod_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="object_detection_and_localization_toolkit/object_detection_and_localization_toolkit_main.cpp" />
 		<Unit filename="object_detection_toolbox/object_detection_toolbox_main.cpp" />
+		<Unit filename="shadows/shadows_main.cpp" />
+		<Unit filename="shadows_lib/ChromacityShadRem.cpp" />
+		<Unit filename="shadows_lib/ChromacityShadRem.h" />
+		<Unit filename="shadows_lib/ChromacityShadRemParams.cpp" />
+		<Unit filename="shadows_lib/ChromacityShadRemParams.h" />
+		<Unit filename="shadows_lib/GeometryShadRem.cpp" />
+		<Unit filename="shadows_lib/GeometryShadRem.h" />
+		<Unit filename="shadows_lib/GeometryShadRemParams.cpp" />
+		<Unit filename="shadows_lib/GeometryShadRemParams.h" />
+		<Unit filename="shadows_lib/LrTextureShadRem.cpp" />
+		<Unit filename="shadows_lib/LrTextureShadRem.h" />
+		<Unit filename="shadows_lib/LrTextureShadRemParams.cpp" />
+		<Unit filename="shadows_lib/LrTextureShadRemParams.h" />
+		<Unit filename="shadows_lib/PhysicalShadRem.cpp" />
+		<Unit filename="shadows_lib/PhysicalShadRem.h" />
+		<Unit filename="shadows_lib/PhysicalShadRemParams.cpp" />
+		<Unit filename="shadows_lib/PhysicalShadRemParams.h" />
+		<Unit filename="shadows_lib/SrTextureShadRem.cpp" />
+		<Unit filename="shadows_lib/SrTextureShadRem.h" />
+		<Unit filename="shadows_lib/SrTextureShadRemParams.cpp" />
+		<Unit filename="shadows_lib/SrTextureShadRemParams.h" />
+		<Unit filename="shadows_lib/main.cpp" />
+		<Unit filename="shadows_lib/utils/ConnComp.cpp" />
+		<Unit filename="shadows_lib/utils/ConnComp.h" />
+		<Unit filename="shadows_lib/utils/ConnCompGroup.cpp" />
+		<Unit filename="shadows_lib/utils/ConnCompGroup.h" />
+		<Unit filename="shadows_lib/utils/GaborFilter.cpp" />
+		<Unit filename="shadows_lib/utils/GaborFilter.h" />
+		<Unit filename="shadows_lib/utils/GaussianMixtureModel.cpp" />
+		<Unit filename="shadows_lib/utils/GaussianMixtureModel.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

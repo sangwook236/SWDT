@@ -44,6 +44,7 @@
 		</Linker>
 		<Unit filename="cppad/cppad_eigen.cpp" />
 		<Unit filename="cppad/cppad_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

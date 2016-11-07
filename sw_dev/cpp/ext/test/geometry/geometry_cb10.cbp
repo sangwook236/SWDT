@@ -52,6 +52,7 @@
 		</Linker>
 		<Unit filename="cgal/cgal_main.cpp" />
 		<Unit filename="cgal/cgal_polygon.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="openmesh/openmesh_main.cpp" />
 		<Unit filename="openmesh/openmesh_simple_object.cpp" />

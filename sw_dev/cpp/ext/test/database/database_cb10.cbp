@@ -47,6 +47,9 @@
 			<Add directory="/usr/local/lib" />
 			<Add directory="/usr/lib" />
 		</Linker>
+		<Unit filename="library_autolinking.cpp" />
+		<Unit filename="lmdbxx/lmdbxx_main.cpp" />
+		<Unit filename="lmdbxx_lib/lmdb++.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mysql/mysql_main.cpp" />
 		<Unit filename="soci/soci_main.cpp" />

@@ -35,11 +35,23 @@
 			<Add option="-fexceptions" />
 			<Add option="-fpermissive" />
 		</Compiler>
+		<Unit filename="astar_algorithm_cpp/astar_algorithm_cpp_main.cpp" />
+		<Unit filename="astar_algorithm_cpp_lib/8puzzle.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="astar_algorithm_cpp_lib/findpath.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="astar_algorithm_cpp_lib/fsa.h" />
+		<Unit filename="astar_algorithm_cpp_lib/stlastar.h" />
 		<Unit filename="graphchi/graphchi_main.cpp" />
 		<Unit filename="graphlab/graphlab_main.cpp" />
 		<Unit filename="ibfs/ibfs_main.cpp" />
 		<Unit filename="ibfs_lib/ibfs.cpp" />
 		<Unit filename="ibfs_lib/ibfs.h" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="maxflow/maxflow_main.cpp" />
 		<Unit filename="maxflow_lib/block.h" />

@@ -73,6 +73,7 @@
 		<Unit filename="libhand/libhand_file_dialog.cpp" />
 		<Unit filename="libhand/libhand_main.cpp" />
 		<Unit filename="libhand/libhand_render_hog_descriptor.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="openhpe/openhpe_example.cpp" />
 		<Unit filename="openhpe/openhpe_main.cpp" />

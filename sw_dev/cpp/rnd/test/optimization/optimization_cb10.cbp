@@ -61,9 +61,12 @@
 		<Unit filename="ceres_solver/ceres_solver_bundle_adjustment_example.cpp" />
 		<Unit filename="ceres_solver/ceres_solver_curve_fitting_example.cpp" />
 		<Unit filename="ceres_solver/ceres_solver_main.cpp" />
+		<Unit filename="coin_or/coin_or_cbc_example.cpp" />
 		<Unit filename="coin_or/coin_or_cbc_simple_example.cpp" />
+		<Unit filename="coin_or/coin_or_clp_example.cpp" />
 		<Unit filename="coin_or/coin_or_clp_simple_example.cpp" />
 		<Unit filename="coin_or/coin_or_main.cpp" />
+		<Unit filename="coin_or/coin_or_osi_example.cpp" />
 		<Unit filename="glpk/glpk_interior_point_sample.cpp" />
 		<Unit filename="glpk/glpk_main.cpp" />
 		<Unit filename="glpk/glpk_mip_sample.cpp" />
@@ -71,6 +74,7 @@
 		<Unit filename="glpk/glpk_netgen_sample.cpp" />
 		<Unit filename="glpk/glpk_simplex_sample.cpp" />
 		<Unit filename="levmar/levmar_main.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="nlopt/nlopt_main.cpp" />
 		<Unit filename="optpp/optpp_example1.cpp">
@@ -85,6 +89,8 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="scip/scip_bin_packing_example.cpp" />
+		<Unit filename="scip/scip_main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

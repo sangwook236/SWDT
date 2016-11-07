@@ -96,6 +96,7 @@
 		<Unit filename="condensation_lib/model_parameters.h" />
 		<Unit filename="condensation_lib/model_specific.cpp" />
 		<Unit filename="condensation_lib/utility.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="particleplusplus/particleplusplus_main.cpp" />
 		<Extensions>

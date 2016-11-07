@@ -108,6 +108,7 @@
 		<Unit filename="libdai/libdai_sprinkler_example.cpp" />
 		<Unit filename="libdai/libdai_sprinkler_gibbs_examples.cpp" />
 		<Unit filename="libdai/libdai_varset_examples.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="middlebury/middlebury_main.cpp" />
 		<Unit filename="middlebury_lib/BP-S.cpp" />

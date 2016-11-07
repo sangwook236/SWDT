@@ -43,6 +43,7 @@
 			<Add directory="/usr/local/lib" />
 			<Add directory="/usr/lib" />
 		</Linker>
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="tinyspline/tinyspline_main.cpp" />
 		<Extensions>

@@ -72,6 +72,7 @@
 			<Add library="boost_system" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mrpt/mrpt_dijkstra.cpp" />
 		<Unit filename="mrpt/mrpt_feature_extraction_and_matching.cpp">

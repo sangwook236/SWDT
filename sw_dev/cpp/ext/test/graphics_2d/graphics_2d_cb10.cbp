@@ -56,6 +56,7 @@
 		<Unit filename="gd/gd_basic_operation.cpp" />
 		<Unit filename="gd/gd_main.cpp" />
 		<Unit filename="gd/gd_two_link_arm.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

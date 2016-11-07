@@ -66,6 +66,7 @@
 		<Unit filename="libkdtreepp_lib/kdtree++/kdtree.hpp" />
 		<Unit filename="libkdtreepp_lib/kdtree++/node.hpp" />
 		<Unit filename="libkdtreepp_lib/kdtree++/region.hpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="lshkit/lshkit_fitdata_example.cpp" />
 		<Unit filename="lshkit/lshkit_main.cpp" />
 		<Unit filename="lshkit/lshkit_scan_example.cpp" />

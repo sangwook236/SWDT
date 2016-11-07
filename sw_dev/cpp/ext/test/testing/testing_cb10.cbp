@@ -62,6 +62,7 @@
 		<Unit filename="gtest/gtest_sample2_unittest.cpp" />
 		<Unit filename="gtest/gtest_sample3_inl.h" />
 		<Unit filename="gtest/gtest_sample3_unittest.cpp" />
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

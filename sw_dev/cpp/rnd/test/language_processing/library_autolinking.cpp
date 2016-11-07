@@ -20,7 +20,7 @@
 
 #	else
 
-#error [SWL] not supported compiler
+//#error [SWL] not supported compiler
 
 #	endif
 
@@ -34,7 +34,7 @@
 
 #	else
 
-#error [SWL] not supported compiler
+//#error [SWL] not supported compiler
 
 #	endif
 
@@ -48,7 +48,7 @@
 
 #	else
 
-#error [SWL] not supported compiler
+//#error [SWL] not supported compiler
 
 #	endif
 
@@ -62,7 +62,7 @@
 
 #	else
 
-#error [SWL] not supported compiler
+//#error [SWL] not supported compiler
 
 #	endif
 
@@ -76,7 +76,7 @@
 
 #	else
 
-#error [SWL] not supported compiler
+//#error [SWL] not supported compiler
 
 #	endif
 
@@ -90,7 +90,7 @@
 
 #	else
 
-#error [SWL] not supported compiler
+//#error [SWL] not supported compiler
 
 #	endif
 

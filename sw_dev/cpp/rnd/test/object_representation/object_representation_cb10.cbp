@@ -73,6 +73,7 @@
 			<Add directory="/usr/local/MATLAB/R2012b/bin/glnxa64" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="pictorial_structures_revisited/parteval.cpp" />
 		<Unit filename="pictorial_structures_revisited/parteval.h" />
