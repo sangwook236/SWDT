@@ -34,11 +34,11 @@
     <ClCompile Include="mathgl\mathgl_qt_example.cpp">
       <Filter>Source Files\mathgl</Filter>
     </ClCompile>
-    <ClCompile Include="gnuplot\gnuplot_cpp_example.cpp">
-      <Filter>Source Files\gnuplot</Filter>
-    </ClCompile>
     <ClCompile Include="gnuplot\gnuplot_iostream_example.cpp">
-      <Filter>Source Files\gnuplot</Filter>
+      <Filter>Source Files\gnuplot_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="gnuplot\gnuplot_cpp_example.cpp">
+      <Filter>Source Files\gnuplot_lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +79,9 @@
     </Filter>
     <Filter Include="Source Files\gnuplot">
       <UniqueIdentifier>{75def8f2-eaaf-4451-bc1c-d999243e52c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gnuplot_lib">
+      <UniqueIdentifier>{f9c7e701-1773-427a-951e-b51ff8347bd3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
