@@ -5,10 +5,10 @@
 namespace {
 namespace local {
 
-// ${MoVMF_HOME}/main.cc
+// REF [file] >> ${MoVMF_HOME}/main.cc
 void basic_example()
 {
-	// [ref] http://people.kyb.tuebingen.mpg.de/suvrit/work/progs/movmf/vmfREADME.html
+	// REF [site] >> http://people.kyb.tuebingen.mpg.de/suvrit/work/progs/movmf/vmfREADME.html
 /*
 	USAGE: moVMF [switches] word-doc-file
 		-a algorithm
