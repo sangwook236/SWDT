@@ -59,16 +59,16 @@ void one_dim_root_finding_using_f()
 	double x_lo = 0.0, x_hi = 5.0;
 	gsl_root_fsolver_set(s, &func, x_lo, x_hi);
 
-	std::cout << "===== using " << gsl_root_fsolver_name(s) << " method =====" << std::endl;
-	std::cout << std::setw(5) << "iter" << " [" << std::setw(9) << "lower" << ", " << std::setw(9) << "upper" << "] " << std::setw(9) << "root" << std::setw(11) << "err" << std::setw(10) << "err(est)" << std::endl;
+	std::cout << "===== Using " << gsl_root_fsolver_name(s) << " method =====" << std::endl;
+	std::cout << std::setw(5) << "Iter" << " [" << std::setw(9) << "lower" << ", " << std::setw(9) << "upper" << "] " << std::setw(9) << "root" << std::setw(11) << "err" << std::setw(10) << "err(est)" << std::endl;
 
 	int status;
-	int iter = 0, max_iter = 100;
-	double r = 0, r_expected = std::sqrt(5.0);
+	int iter = 0;
+	const int max_iter = 100;
+	double r = 0;
+	const double r_expected = std::sqrt(5.0);
 	do
 	{
-		++iter;
-
 		status = gsl_root_fsolver_iterate(s);
 		r = gsl_root_fsolver_root(s);
 		x_lo = gsl_root_fsolver_x_lower(s);
@@ -76,13 +76,19 @@ void one_dim_root_finding_using_f()
 		status = gsl_root_test_interval(x_lo, x_hi, 0, 0.001);
 
 		if (GSL_SUCCESS == status)
-			std::cout << "converged" << std::endl;
+			break;
 
 		std::cout << std::setw(5) << iter << " [" << std::setw(9) << x_lo << ", " << std::setw(9) << x_hi << "] " << std::setw(9) << r << std::setw(11) << (r - r_expected) << std::setw(10) << (x_hi - x_lo) << std::endl;
+
+		++iter;
 	} while (GSL_CONTINUE == status && iter < max_iter);
 
-	if (GSL_SUCCESS != status)
-		std::cout << "not converged" << std::endl;
+	if (GSL_SUCCESS == status)
+		std::cout << "Converged." << std::endl;
+	else
+		std::cout << "Not converged: status = " << gsl_strerror(status) << std::endl;
+
+	gsl_root_fsolver_free(s);
 }
 
 void one_dim_root_finding_using_fdf()
@@ -103,16 +109,16 @@ void one_dim_root_finding_using_fdf()
 	double x = 5.0;
 	gsl_root_fdfsolver_set(s, &func, x);
 
-	std::cout << "===== using " << gsl_root_fdfsolver_name(s) << " method =====" << std::endl;
-	std::cout << std::setw(5) << "iter" << std::setw(11) << "root" << std::setw(11) << "err" << std::setw(11) << "err(est)" << std::endl;
+	std::cout << "===== Using " << gsl_root_fdfsolver_name(s) << " method =====" << std::endl;
+	std::cout << std::setw(5) << "Iter" << std::setw(11) << "root" << std::setw(11) << "err" << std::setw(11) << "err(est)" << std::endl;
 
 	int status;
-	int iter = 0, max_iter = 100;
-	double x0, x_expected = std::sqrt(5.0);
+	int iter = 0;
+	const int max_iter = 100;
+	double x0;
+	const double x_expected = std::sqrt(5.0);
 	do
 	{
-		++iter;
-
 		x0 = x;
 
 		status = gsl_root_fdfsolver_iterate(s);
@@ -120,13 +126,19 @@ void one_dim_root_finding_using_fdf()
 		status = gsl_root_test_delta(x, x0, 0, 1e-3);
 
 		if (GSL_SUCCESS == status)
-			std::cout << "converged" << std::endl;
+			break;
 
 		std::cout << std::setw(5) << iter << std::setw(11) << x << std::setw(11) << (x - x_expected) << std::setw(11) << (x - x0) << std::endl;
+
+		++iter;
 	} while (GSL_CONTINUE == status && iter < max_iter);
 
-	if (GSL_SUCCESS != status)
-		std::cout << "not converged" << std::endl;
+	if (GSL_SUCCESS == status)
+		std::cout << "Converged." << std::endl;
+	else
+		std::cout << "Not converged: status = " << gsl_strerror(status) << std::endl;
+
+	gsl_root_fdfsolver_free(s);
 }
 
 struct rparams
@@ -205,25 +217,26 @@ void multidim_root_finding_using_f()
 	gsl_multiroot_fsolver *s = gsl_multiroot_fsolver_alloc(T, 2);
 	gsl_multiroot_fsolver_set(s, &func, x);
 
-	std::cout << "===== using " << gsl_multiroot_fsolver_name(s) << " method =====" << std::endl;
+	std::cout << "===== Using " << gsl_multiroot_fsolver_name(s) << " method =====" << std::endl;
 	size_t iter = 0;
-	std::cout << "iter = " << std::setw(3) << iter << " x = " << std::setw(10) << gsl_vector_get(s->x, 0) << std::setw(10) << gsl_vector_get(s->x, 1) << " f(x) = " << std::setw(10) << gsl_vector_get(s->f, 0) << std::setw(10) << gsl_vector_get(s->f, 1) << std::endl;
+	std::cout << "Iter = " << std::setw(3) << iter << " x = " << std::setw(10) << gsl_vector_get(s->x, 0) << std::setw(10) << gsl_vector_get(s->x, 1) << " f(x) = " << std::setw(10) << gsl_vector_get(s->f, 0) << std::setw(10) << gsl_vector_get(s->f, 1) << std::endl;
 
 	int status;
+	const int max_iter = 1000;
 	do
 	{
-		++iter;
-
 		status = gsl_multiroot_fsolver_iterate(s);
-		std::cout << "iter = " << std::setw(3) << iter << " x = " << std::setw(10) << gsl_vector_get(s->x, 0) << std::setw(10) << gsl_vector_get(s->x, 1) << " f(x) = " << std::setw(10) << gsl_vector_get(s->f, 0) << std::setw(10) << gsl_vector_get(s->f, 1) << std::endl;
+		std::cout << "Iter = " << std::setw(3) << iter << " x = " << std::setw(10) << gsl_vector_get(s->x, 0) << std::setw(10) << gsl_vector_get(s->x, 1) << " f(x) = " << std::setw(10) << gsl_vector_get(s->f, 0) << std::setw(10) << gsl_vector_get(s->f, 1) << std::endl;
 
-		if (status)  // check if solver is stuck
+		if (status)  // Check if solver is stuck.
 			break;
 
 		status = gsl_multiroot_test_residual(s->f, 1e-7);
-	} while (GSL_CONTINUE == status && iter < 1000);
 
-	std::cout << "status = " << gsl_strerror(status) << std::endl;
+		++iter;
+	} while (GSL_CONTINUE == status && iter < max_iter);
+
+	std::cout << "Status = " << gsl_strerror(status) << std::endl;
 
 	gsl_multiroot_fsolver_free(s);
 	gsl_vector_free(x);
@@ -256,25 +269,26 @@ void multidim_root_finding_using_fdf()
 	gsl_multiroot_fdfsolver *s = gsl_multiroot_fdfsolver_alloc(T, n);
 	gsl_multiroot_fdfsolver_set(s, &func, x);
 
-	std::cout << "===== using " << gsl_multiroot_fdfsolver_name(s) << " method =====" << std::endl;
+	std::cout << "===== Using " << gsl_multiroot_fdfsolver_name(s) << " method =====" << std::endl;
 	size_t iter = 0;
-	std::cout << "iter = " << std::setw(3) << iter << " x = " << std::setw(10) << gsl_vector_get(s->x, 0) << std::setw(10) << gsl_vector_get(s->x, 1) << " f(x) = " << std::setw(10) << gsl_vector_get(s->f, 0) << std::setw(10) << gsl_vector_get(s->f, 1) << std::endl;
+	std::cout << "Iter = " << std::setw(3) << iter << " x = " << std::setw(10) << gsl_vector_get(s->x, 0) << std::setw(10) << gsl_vector_get(s->x, 1) << " f(x) = " << std::setw(10) << gsl_vector_get(s->f, 0) << std::setw(10) << gsl_vector_get(s->f, 1) << std::endl;
 
 	int status;
+	const int max_iter = 1000;
 	do
 	{
-		++iter;
-
 		status = gsl_multiroot_fdfsolver_iterate(s);
-		std::cout << "iter = " << std::setw(3) << iter << " x = " << std::setw(10) << gsl_vector_get(s->x, 0) << std::setw(10) << gsl_vector_get(s->x, 1) << " f(x) = " << std::setw(10) << gsl_vector_get(s->f, 0) << std::setw(10) << gsl_vector_get(s->f, 1) << std::endl;
+		std::cout << "Iter = " << std::setw(3) << iter << " x = " << std::setw(10) << gsl_vector_get(s->x, 0) << std::setw(10) << gsl_vector_get(s->x, 1) << " f(x) = " << std::setw(10) << gsl_vector_get(s->f, 0) << std::setw(10) << gsl_vector_get(s->f, 1) << std::endl;
 
-		if (status)
+		if (status)  // Check if solver is stuck.
 			break;
 
 		status = gsl_multiroot_test_residual(s->f, 1e-7);
-	} while (GSL_CONTINUE == status && iter < 1000);
 
-	std::cout << "status = " << gsl_strerror(status) << std::endl;
+		++iter;
+	} while (GSL_CONTINUE == status && iter < max_iter);
+
+	std::cout << "Status = " << gsl_strerror(status) << std::endl;
 
 	gsl_multiroot_fdfsolver_free(s);
 	gsl_vector_free(x);
