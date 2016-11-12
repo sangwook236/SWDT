@@ -38,6 +38,7 @@
 			<Add option="-fext-numeric-literals" />
 			<Add option="-DUNICODE" />
 			<Add option="-D_UNICODE" />
+			<Add directory="./gnuplot_lib" />
 			<Add directory="/usr/local/include" />
 			<Add directory="/usr/include/plplot" />
 		</Compiler>
@@ -53,11 +54,11 @@
 			<Add library="boost_system" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
-		<Unit filename="gnuplot/gnuplot-iostream.h" />
 		<Unit filename="gnuplot/gnuplot_cpp_example.cpp" />
-		<Unit filename="gnuplot/gnuplot_i.hpp" />
 		<Unit filename="gnuplot/gnuplot_iostream_example.cpp" />
 		<Unit filename="gnuplot/gnuplot_main.cpp" />
+		<Unit filename="gnuplot_lib/gnuplot-iostream.h" />
+		<Unit filename="gnuplot_lib/gnuplot_i.hpp" />
 		<Unit filename="graphviz/graphviz_main.cpp" />
 		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
