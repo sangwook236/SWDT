@@ -17,8 +17,9 @@ SWDT includes various programming languages and hardware components:
       - AHRS, IMU, GPS
   - Open Source Hardware (OSHW)
     - Arduino
+    - Raspberry Pi
   - Microprocessor and Microcontroller
-    - ARM: Raspberry Pi, STM32, AT91SAM
+    - ARM: STM32, AT91SAM
     - AVR: ATmega128
 
 ## Wikis
