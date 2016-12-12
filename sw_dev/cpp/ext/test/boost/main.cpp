@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 			//utility();
 			//utility_binary();
 
-			//log();
+			log();
 
 			//program_options(argc, argv);
 			//filesystem();
@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
 			//math_floating_point_utilities();
 			//math_special_functions();
 			//math_statistical_distributions();
-			accumulator();
+			//accumulator();
 			//random();
 			//ublas();
 			//odeint();

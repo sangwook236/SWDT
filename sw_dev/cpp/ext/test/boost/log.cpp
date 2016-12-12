@@ -19,6 +19,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <climits>
 
 
 namespace {
@@ -66,7 +67,7 @@ void basic_usage()
 	// One can also use lambda expressions to setup filters and formatters.
 	boost::log::add_file_log
 	(
-		"./data/boost/sample.log",
+		"./logs/boost_sample.log",
 		boost::log::keywords::filter = boost::log::expressions::attr<severity_level>("Severity") >= warning,
 		boost::log::keywords::format = boost::log::expressions::stream
 			<< boost::log::expressions::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d, %H:%M:%S.%f")
@@ -98,6 +99,7 @@ void basic_usage()
 	BOOST_LOG(logger) << "Hello, World!";
 
 	// Now, let's try boost::log with severity.
+	//boost::log::sources::severity_logger<> slg;
 	boost::log::sources::severity_logger<severity_level> slg;
 
 	// Let's pretend we also want to profile our code, so add a special timer attribute.
@@ -116,13 +118,13 @@ void rotating_file()
 	// Create a text file sink.
 	typedef boost::log::sinks::synchronous_sink<boost::log::sinks::text_file_backend> file_sink;
 	boost::shared_ptr<file_sink> sink(new file_sink(
-		boost::log::keywords::file_name = "%Y%m%d_%H%M%S_%5N.log",  // File name pattern.
+		boost::log::keywords::file_name = "boost_log_%Y%m%d_%H%M%S_%5N.log",  // File name pattern.
 		boost::log::keywords::rotation_size = 16384  // Rotation size, in characters.
 	));
 
 	// Set up where the rotated files will be stored.
 	sink->locked_backend()->set_file_collector(boost::log::sinks::file::make_collector(
-		boost::log::keywords::target = "./data/boost/logs",  // Where to store rotated files.
+		boost::log::keywords::target = "./logs",  // Where to store rotated files.
 		boost::log::keywords::max_size = 16 * 1024 * 1024,  // Maximum total size of the stored files, in bytes.
 		boost::log::keywords::min_free_space = 100 * 1024 * 1024,  // Minimum free space on the drive, in bytes.
 		boost::log::keywords::max_files = 512  // Maximum number of stored files.
@@ -143,58 +145,91 @@ void rotating_file()
 	boost::log::core::get()->add_sink(sink);
 
 	// Add some attributes too.
+	//boost::log::add_common_attributes();
 	boost::log::core::get()->add_global_attribute("TimeStamp", boost::log::attributes::local_clock());
 	boost::log::core::get()->add_global_attribute("RecordID", boost::log::attributes::counter<unsigned int>());
+	//boost::log::core::get()->add_thread_attribute("Scope", boost::log::attributes::named_scope());
 
 	// Do some logging.
 	boost::log::sources::logger logger;
 	std::cout << "Start logging..." << std::endl;
 	for (size_t i = 0; i < LOG_RECORDS_TO_WRITE; ++i)
 	{
-		BOOST_LOG(logger) << "Some log record";
+		BOOST_LOG(logger) << "Some log record #" << i;
 	}
 	std::cout << "End logging..." << std::endl;
 }
 
-//  Global logger declaration.
+// Global logger declaration.
 BOOST_LOG_INLINE_GLOBAL_LOGGER_DEFAULT(test_logger, boost::log::sources::severity_logger<>)
 
 // REF [file] >> ${BOOST_HOME}/libs/log/examples/settings_file/main.cpp
 void settings_file()
 {
-	// Open the file.
-	std::ifstream settings("./data/boost/boost_log_settings.txt");
-	if (!settings.is_open())
+	const size_t LOG_RECORDS_TO_WRITE = 10000;
+
 	{
-		std::cout << "Could not open ./data/boost/boost_log_settings.txt file" << std::endl;
-		return;
+		// Open the file.
+		std::ifstream settings("./data/boost/boost_log_settings.txt");
+		if (!settings.is_open())
+		{
+			std::cout << "Could not open ./data/boost/boost_log_settings.txt file" << std::endl;
+			return;
+		}
+
+		// Read the settings and initialize logging library.
+		boost::log::init_from_stream(settings);
 	}
 
-	// Read the settings and initialize logging library.
-	boost::log::init_from_stream(settings);
-
 	// Add some attributes.
+	//boost::log::add_common_attributes();
 	boost::log::core::get()->add_global_attribute("TimeStamp", boost::log::attributes::local_clock());
+	boost::log::core::get()->add_global_attribute("RecordID", boost::log::attributes::counter<unsigned int>());
+	//boost::log::core::get()->add_thread_attribute("Scope", boost::log::attributes::named_scope());
 
 	// Try logging.
 	{
+		//boost::log::sources::severity_logger<> logger;
 		boost::log::sources::severity_logger<>& logger = test_logger::get();
-		BOOST_LOG_SEV(logger, normal) << "This is a normal severity record";
-		BOOST_LOG_SEV(logger, notification) << "This is a notification severity record";
-		BOOST_LOG_SEV(logger, warning) << "This is a warning severity record";
-		BOOST_LOG_SEV(logger, error) << "This is a error severity record";
-		BOOST_LOG_SEV(logger, critical) << "This is a critical severity record";
+		BOOST_LOG_SEV(logger, normal) << "*1* This is a normal severity record";
+		BOOST_LOG_SEV(logger, notification) << "*1* This is a notification severity record";
+		BOOST_LOG_SEV(logger, warning) << "*1* This is a warning severity record";
+		BOOST_LOG_SEV(logger, error) << "*1* This is an error severity record";
+		BOOST_LOG_SEV(logger, critical) << "*1* This is a critical severity record";
 	}
 
 	// Now enable tagging and try again.
-	BOOST_LOG_SCOPED_THREAD_TAG("Tag", "TAGGED");
+	// NOTICE [info] >> Take a look at settings file.
 	{
-		boost::log::sources::severity_logger<>& logger = test_logger::get();
-		BOOST_LOG_SEV(logger, normal) << "This is a normal severity record";
-		BOOST_LOG_SEV(logger, notification) << "This is a notification severity record";
-		BOOST_LOG_SEV(logger, warning) << "This is a warning severity record";
-		BOOST_LOG_SEV(logger, error) << "This is a error severity record";
-		BOOST_LOG_SEV(logger, critical) << "This is a critical severity record";
+		BOOST_LOG_SCOPED_THREAD_TAG("Tag", "TAGGED");
+		{
+			//boost::log::sources::severity_logger<> logger;
+			boost::log::sources::severity_logger<>& logger = test_logger::get();
+			BOOST_LOG_SEV(logger, normal) << "*2* This is a normal severity record";
+			BOOST_LOG_SEV(logger, notification) << "*2* This is a notification severity record";
+			BOOST_LOG_SEV(logger, warning) << "*2* This is a warning severity record";
+			BOOST_LOG_SEV(logger, error) << "*2* This is an error severity record";
+			BOOST_LOG_SEV(logger, critical) << "*2* This is a critical severity record";
+		}
+	}
+
+	// Do some logging.
+	{
+		//boost::log::sources::logger logger;
+		boost::log::sources::severity_logger<> logger;
+		//boost::log::sources::severity_logger<severity_level> logger;  // Not working.
+		//boost::log::sources::severity_logger<>& logger = test_logger::get();
+		std::cout << "Start logging..." << std::endl;
+		for (size_t i = 0; i < LOG_RECORDS_TO_WRITE; ++i)
+		{
+			//BOOST_LOG(logger) << "*3* Some log record #" << i;
+			BOOST_LOG_SEV(logger, normal) << "*3* Normal log record #" << i;
+			BOOST_LOG_SEV(logger, notification) << "*3* Notification log record #" << i;
+			BOOST_LOG_SEV(logger, warning) << "*3* Warning log record #" << i;
+			BOOST_LOG_SEV(logger, error) << "*3* Error log record #" << i;
+			BOOST_LOG_SEV(logger, critical) << "*3* Critical log record #" << i;
+		}
+		std::cout << "End logging..." << std::endl;
 	}
 }
 
@@ -205,6 +240,6 @@ void log()
 {
 	//local::trivial_log_example();
 	//local::basic_usage();
-	local::rotating_file();
-	//local::settings_file();
+	//local::rotating_file();
+	local::settings_file();
 }

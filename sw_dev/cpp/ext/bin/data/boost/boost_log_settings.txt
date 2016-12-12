@@ -1,25 +1,23 @@
-#
-#          Copyright Andrey Semashev 2007 - 2014.
-# Distributed under the Boost Software License, Version 1.0.
-#    (See accompanying file LICENSE_1_0.txt or copy at
-#          http://www.boost.org/LICENSE_1_0.txt)
-#
-
+#----------------------------------------------------------
 [Core]
 
+DisableLogging=false
 Filter="%Severity% >= 2"
 
-
-[Sinks.1]
+#----------------------------------------------------------
+[Sinks.ConsoleSink]
 
 Destination=Console
 Format="%TimeStamp% *** %Message%"
 Filter="%Tag% | %Severity% > 3"
+#Filter="%Target% contains \"TestSink1\""
 
-
-[Sinks.2]
+#----------------------------------------------------------
+[Sinks.FileSink]
 
 Destination=TextFile
-FileName=test.log
+FileName="logs/boost_log_%Y%m%d_%H%M%S_%5N.log"
 AutoFlush=true
-Format="[%TimeStamp%] %Tag% %Message%"
+RotationSize=1048576  # 1M [byte].
+MaxSize=104857600  # 100M [byte].
+Format="%RecordID% <%Severity%> [%TimeStamp%]: %Tag%: %Message%"
