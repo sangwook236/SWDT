@@ -23,7 +23,7 @@
 - Toolchain
 	- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Tool Chain Editor" tree item (?)
 		- Cannot assign a tool chain which I want to use, but just choose one of existing ones.
-		- [ref] http://www.codebuilder.me/2014/03/setting-up-eclipse-on-a-mac-for-gcc-4-8-toolchain/ (?)
+		- REF [site] >> http://www.codebuilder.me/2014/03/setting-up-eclipse-on-a-mac-for-gcc-4-8-toolchain/ (?)
 	- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Compiler" tree item -> "Command:" item (?)
 		- e.g.) g++ : `/my_usr/local/bin/g++`
 	- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Linker" tree item -> "Command:" item (?)
@@ -71,8 +71,8 @@
 - Output directory
 	- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Build Artifact" tab 
 		- in case of library : 
-			- "Artifact name:" item: `lib${ProjName}_d`
-			- "Output prefix:" item: `../../../lib/`
+			- "Artifact name:" item: `${ProjName}_d`
+			- "Output prefix:" item: `../../../lib/lib`
 
 - Working directory
 	- "Run" main menu item -> "Run/Debug/Profile Configurations..." menu item -> "C/C++ Application" tree item -> 'project launch configuration' tree item -> "(x)= Arguments" tab -> "Working directory:" item
