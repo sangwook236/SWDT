@@ -42,7 +42,7 @@
 
 - Compiler
 	- Additional include directories
-		- "Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Code Analysis" tree item -> "Paths and Symbols" tree item -> "Includes" tab
+		- "Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Paths and Symbols" tree item -> "Includes" tab
 			- set directory paths as usual.
 				- e.g.) `../../inc`
 		- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Compiler" tree item -> "Includes" tree item -> "Include paths (-I)" listview
@@ -51,26 +51,28 @@
 	- Compiler options
 		- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Compiler" tree item -> "Optimization", "Debugging", "Warnings", and "Miscellaneous" tree items
 	- Defines
-		- "Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Code Analysis" tree item -> "Paths and Symbols" tree item -> "Symbols" tabs
+		- "Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Paths and Symbols" tree item -> "Symbols" tabs
 		- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Compiler" tree item -> "Preprocessor" tree item -> "Defined symbols (-D)" listview
 
 - Linker
 	- Additional library directories
-		- "Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Code Analysis" tree item -> "Paths and Symbols" tree item -> "Library Paths" tab
+		- "Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Paths and Symbols" tree item -> "Library Paths" tab
 			- set directory paths as usual.
 				- e.g.) `../../lib`
 		- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Linker" tree item -> "Libraries" tree item -> "Library search path (-L)" listview
 			- set directory paths with a deeper step than we think.
 				- e.g.) `../../../lib`
 	- Link libraries
-		- "Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Code Analysis" tree item -> "Paths and Symbols" tree item -> "Libraries" tab
+		- "Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Paths and Symbols" tree item -> "Libraries" tab
 		- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Linker" tree item -> "Libraries" tree item -> "Libraries (-l)" listview
 	- Link linker options
 		- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Tool Settings" tab -> "xxx Linker" tree item -> "General", "Miscellaneous", and "Shared Library Settings" tree items
 
 - Output directory
-	- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Build Artifact" tab -> "Output prefix:" item (?)
-		- in case of library : `../../../lib`
+	- "Project" main menu item -> "Properties" menu item -> "C/C++ Build" tree item -> "Settings" tree item -> "Build Artifact" tab 
+		- in case of library : 
+			- "Artifact name:" item: `lib${ProjName}_d`
+			- "Output prefix:" item: `../../../lib/`
 
 - Working directory
 	- "Run" main menu item -> "Run/Debug/Profile Configurations..." menu item -> "C/C++ Application" tree item -> 'project launch configuration' tree item -> "(x)= Arguments" tab -> "Working directory:" item
@@ -78,7 +80,7 @@
 
 - Project dependency
 	- "Project" main menu item -> "Properties" menu item -> "Project References" tree item
-	- "Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Code Analysis" tree item -> "Paths and Symbols" tree item -> "References" tab
+	- "Project" main menu item -> "Properties" menu item -> "C/C++ General" tree item -> "Paths and Symbols" tree item -> "References" tab
 
 - Debugger
 	- "Run" main menu item -> "Debug Configurations..." menu item -> "C/C++ Application" tree item -> 'project launch configuration' tree item -> "Debugger" tab
