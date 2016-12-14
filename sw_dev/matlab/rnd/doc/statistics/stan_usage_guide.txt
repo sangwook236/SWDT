@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		https://github.com/brian-lau/MatlabStan
 		https://github.com/brian-lau/MatlabProcessManager
@@ -14,10 +14,10 @@
 		https://github.com/stan-dev/math
 		https://github.com/stan-dev/nomad
 
-[-] Build CmdStan
+[-] Build CmdStan.
 	REF [file] >> ${GDT_HOME}/sw_dev/cpp/rnd/src/statistics/stan_usage_guide.txt
 
-[-] Usage (Windows)
+[-] Usage (Windows).
 	- Download MatlabStan & MatlabProcessManager.
 	- Add CmdStan path.
 		In ${MatlabStan_HOME}/+mstan/stan_home.m

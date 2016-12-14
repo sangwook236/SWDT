@@ -40,4 +40,4 @@
 	- Build CmdStan.
 		make -j4 build
 		make clean
-	==> 정상적으로 build는 되나 MatlabStan에서 사용할 수 없음.
+	==> Can normally be built, but cannot be used in MatlabStan.
