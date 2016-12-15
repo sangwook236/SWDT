@@ -198,7 +198,7 @@
 	- Use MSYS.
 		1. (Optional) put the GNU runtime directory in $PATH.
 			export PATH=/D/MyProgramFiles/MinGW/bin:$PATH
-		2. Cchange a directory to $ATLAS_HOME.
+		2. Change a directory to $ATLAS_HOME.
 		3. Make & change a build directory.
 			mkdir build_msys
 			cd build_msys
