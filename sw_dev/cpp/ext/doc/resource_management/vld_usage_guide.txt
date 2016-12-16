@@ -1,43 +1,49 @@
 [-] Execution Setting.
-	- vld configuration file은 executable file과 동일한 directory에 존재하여야 함.
+	- vld configuration file has to exist in the same directory with an executable file.
 		configuration file: vld.ini
-		존재하지 않는 경우 기본 설정이 적용됨.
-	- 정상적인 실행을 위해서 아래의 file 필요.
+		If it does not already exist, default settings are applied.
+	- Need the file below to run.
 		vld_x86.dll/lib vld.lib
 		vld_x64.dll/lib vld.lib
 		dbghelp.dll
 		Microsoft.DTfW.DHL.manifest
 			manifest file of dbghelp.dll.
-		==> VLD library의 debug build를 사용하는 것이 좋은 것 같음.
+		==> Might as well use VLD library of debug build.
 
-[-] Programming Setting.
-	- vld.h는 library or executable project의 하나의 file에서만 include 되면 됨. (?)
-	- 실행이 정상 종료되는 경우에 결과가 생성됨.
-	- 실행된 경로 상에 존재하는 memory leakage만을 detection
+[-] Usage.
+	- vld.h has to be included in a file of library or executable project. (?)
+	- When an executable terminates normally, the VLD's results are generated.
+	- Only detect memory leakage on the execution path.
 
 [-] Trouble Shooting (VC).
 	- The application was unable to start correctly in the debug mode.
 		<error>
 			The application was unable to start correctly (0xc0150002)
-		<solution>
+		<solution #1>
 			Need dbghelp.dll to use vld library.
 			Must use dbghelp.dll which is distributed together with source.
 				${VLD_HOME}/setup/dbghelp/x86/dbghelp.dll
 				${VLD_HOME}/setup/dbghelp/x64/dbghelp.dll
+		<solution #2>
+			Comment the following line on vld.h
+			<before>
+				#pragma comment(linker, "/include:__imp_?g_vld@@3VVisualLeakDetector@@A")
+			<after>
+				//#pragma comment(linker, "/include:__imp_?g_vld@@3VVisualLeakDetector@@A")
 		REF [site] >> http://stackoverflow.com/questions/19216358/the-application-was-unable-to-start-correctly-after-including-vld-h
-	- exe project에서 많은 오류를 발생.
+	- Many errors occur in executable projects.
 		<solution>
-			아래의 projects만 build하면 됨.
+			Build the projects below.
 				libformat & vld projects.
-	- Windows.h, SDKDDKVer.h, kernel32.lib, and rc.exe를 찾을 수 없다는 오류 발생.
+	- Cannot find Windows.h, SDKDDKVer.h, kernel32.lib, and rc.exe.
 		<error>
 			cannot open include file: 'windows.h'
 			cannot open file 'kernel32.lib'
 			cannot run 'rc.exe'
 		<solution>
-			Project Property Pages에서 platform toolset을 올바르게 설정.
+			Set a correct platform toolset in Project Property Pages.
 				Project Property Pages -> Configuration Properties -> General -> Platform Toolset
-			아래와 같은 방법을 사용할 수도 있음.
+			Can use the methods below.
 				Add "$(WindowsSDKDir)/Include" to additional include directories.
 				Add "$(WindowsSDKDir)/Lib" to additional library dependencies.
 				Add "$(WindowsSDKDir)/Bin" to PATH environment variable.
