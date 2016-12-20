@@ -31,7 +31,7 @@
 
 	- Run MSYS2 MinGW 32-bit or 64-bit terminal.
 	- Change directory.
-		cd ${OPENBLAS_HOME}.
+		cd ${OPENBLAS_HOME}
 	- Edit make files.
 		In ${OPENBLAS_HOME}/quickbuild.win32 & ${OPENBLAS_HOME}/quickbuild.win64
 		<before>
@@ -76,7 +76,7 @@
 	- (Optional) set the GNU runtime directory in PATH.
 		export PATH=${MINGW_HOME}/bin:$PATH
 	- Change directory.
-		cd ${OPENBLAS_HOME}.
+		cd ${OPENBLAS_HOME}
 	- Run make.
 		./quickbuild.win32
 		./quickbuild.win64

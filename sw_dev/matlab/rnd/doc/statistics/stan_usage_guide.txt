@@ -14,8 +14,8 @@
 		https://github.com/stan-dev/math
 		https://github.com/stan-dev/nomad
 
-[-] Build CmdStan.
-	REF [file] >> ${GDT_HOME}/sw_dev/cpp/rnd/src/statistics/stan_usage_guide.txt
+[-] Building CmdStan.
+	REF [file] >> ${SWDT_CPP_HOME}/rnd/src/statistics/stan_usage_guide.txt
 
 [-] Usage (Windows).
 	- Download MatlabStan & MatlabProcessManager.

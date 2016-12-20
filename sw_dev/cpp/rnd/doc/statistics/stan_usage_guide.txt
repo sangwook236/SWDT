@@ -12,7 +12,7 @@
 		https://github.com/stan-dev/math
 		https://github.com/stan-dev/nomad
 
-[-] Build CmdStan (MinGW, GCC).
+[-] Building CmdStan (MinGW, GCC).
 	- Download Stan, Stan Math, & CmdStan.
 	- Change options.
 		In ${CmdStan_HOME}/makefile
@@ -28,7 +28,7 @@
 		mingw32-make -j4 build
 		mingw32-make clean
 
-[-] Build CmdStan (Cygwin, GCC).
+[-] Building CmdStan (Cygwin, GCC).
 	- Download Stan, Stan Math, & CmdStan.
 	- Set the paths of Stan & Stan Math.
 		In ${CmdStan_HOME}/makefile
@@ -41,3 +41,28 @@
 		make -j4 build
 		make clean
 	==> Can normally be built, but cannot be used in MatlabStan.
+
+[-] Building Stan Math.
+	- Do not need to build.
+		A header-only C++ library.
+
+[-] Building Stan (MSYS, GCC).
+	- Run MSYS2 MinGW 32-bit or 64-bit terminal.
+	- Set environment variables.
+		export STAN_HOME=${STAN_HOME}
+
+		export STAN=${STAN_HOME}/
+		export MATH=${STAN_MATH_HOME}/
+		export BOOST=${STAN_MATH_HOME}/lib/boost_1.60.0
+		export EIGEN=${STAN_MATH_HOME}/lib/eigen_3.2.8
+		export CVODES=${STAN_MATH_HOME}/lib/cvodes_2.8.2
+		export GTEST=${STAN_MATH_HOME}/lib/gtest_1.7.0
+
+		export CPPLINT=${STAN_MATH_HOME}/lib/cpplint_4.45
+		export PYTHON2=python
+	- Change directory.
+		cd ${STAN_HOME}
+	- Run make.
+		mingw32-make bin/libstan.a (?)
+			==> Do not need to build. (?)
+		mingw32-make bin/libstanc.a
