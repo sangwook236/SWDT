@@ -36,6 +36,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c++11" />
 			<Add option="-fexceptions" />
 			<Add directory="/usr/local/include/ivt" />
 			<Add directory="/usr/local/include/vxl/contrib/mul" />
@@ -45,33 +46,12 @@
 			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
-			<Add library="opencv_core" />
-			<Add library="opencv_highgui" />
-			<Add library="opencv_ml" />
-			<Add library="opencv_imgproc" />
-			<Add library="opencv_features2d" />
-			<Add library="opencv_objdetect" />
-			<Add library="opencv_flann" />
-			<Add library="opencv_video" />
-			<Add library="opencv_calib3d" />
-			<Add library="opencv_legacy" />
-			<Add library="opencv_contrib" />
-			<Add library="opencv_gpu" />
-			<Add library="opencv_ts" />
-			<Add library="opencv_nonfree" />
 			<Add library="ivtvideocapture" />
-			<Add library="ivtopencv" />
 			<Add library="ivtgui" />
 			<Add library="ivt" />
 			<Add library="ccv" />
 			<Add library="vl" />
 			<Add library="vigraimpex" />
-			<Add library="boost_timer" />
-			<Add library="boost_filesystem" />
-			<Add library="v4l2" />
-			<Add library="v4l1compat" />
-			<Add library="png" />
-			<Add library="GL" />
 			<Add library="msm_utils" />
 			<Add library="msm" />
 			<Add library="fhs" />
@@ -87,7 +67,6 @@
 			<Add library="vil3d_io" />
 			<Add library="vil3d_algo" />
 			<Add library="vil3d" />
-			<Add library="vil1_io" />
 			<Add library="vil1" />
 			<Add library="vil_pro" />
 			<Add library="vil_io" />
@@ -103,9 +82,59 @@
 			<Add library="vbl" />
 			<Add library="v3p_netlib" />
 			<Add library="netlib" />
-			<Add library="openjpeg2" />
+			<Add library="opencv_aruco" />
+			<Add library="opencv_bgsegm" />
+			<Add library="opencv_bioinspired" />
+			<Add library="opencv_ccalib" />
+			<Add library="opencv_datasets" />
+			<Add library="opencv_dnn" />
+			<Add library="opencv_dpm" />
+			<Add library="opencv_fuzzy" />
+			<Add library="opencv_line_descriptor" />
+			<Add library="opencv_photo" />
+			<Add library="opencv_plot" />
+			<Add library="opencv_reg" />
+			<Add library="opencv_rgbd" />
+			<Add library="opencv_saliency" />
+			<Add library="opencv_shape" />
+			<Add library="opencv_stereo" />
+			<Add library="opencv_stitching" />
+			<Add library="opencv_structured_light" />
+			<Add library="opencv_superres" />
+			<Add library="opencv_surface_matching" />
+			<Add library="opencv_text" />
+			<Add library="opencv_tracking" />
+			<Add library="opencv_ts" />
+			<Add library="opencv_videostab" />
+			<Add library="opencv_viz" />
+			<Add library="opencv_xobjdetect" />
+			<Add library="opencv_xphoto" />
+			<Add library="opencv_optflow" />
+			<Add library="opencv_face" />
+			<Add library="opencv_xfeatures2d" />
+			<Add library="opencv_ximgproc" />
+			<Add library="opencv_ml" />
+			<Add library="opencv_objdetect" />
+			<Add library="opencv_flann" />
+			<Add library="opencv_calib3d" />
+			<Add library="opencv_videoio" />
+			<Add library="opencv_video" />
+			<Add library="opencv_features2d" />
+			<Add library="opencv_imgproc" />
+			<Add library="opencv_imgcodecs" />
+			<Add library="opencv_highgui" />
+			<Add library="opencv_core" />
+			<Add library="QtGui" />
+			<Add library="QtCore" />
+			<Add library="boost_timer" />
+			<Add library="boost_filesystem" />
+			<Add library="boost_system" />
+			<Add library="GL" />
 			<Add library="geotiff" />
-			<Add directory="/usr/local/lib/vxl" />
+			<Add library="openjpeg2" />
+			<Add library="jpeg" />
+			<Add library="tiff" />
+			<Add library="png" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="ccv/ccv_bbf.cpp" />
@@ -138,7 +167,10 @@
 		<Unit filename="opencv/opencv_basic_operation.cpp" />
 		<Unit filename="opencv/opencv_camera_calibration.cpp" />
 		<Unit filename="opencv/opencv_camera_geometry.cpp" />
-		<Unit filename="opencv/opencv_chamfer_matching.cpp" />
+		<Unit filename="opencv/opencv_chamfer_matching.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_change_detection.cpp" />
 		<Unit filename="opencv/opencv_change_detection_using_gpu.cpp" />
 		<Unit filename="opencv/opencv_clustering.cpp" />
@@ -153,20 +185,50 @@
 		<Unit filename="opencv/opencv_face_detection.cpp" />
 		<Unit filename="opencv/opencv_face_detection_using_gpu.cpp" />
 		<Unit filename="opencv/opencv_face_recognition.cpp" />
-		<Unit filename="opencv/opencv_feature_description.cpp" />
-		<Unit filename="opencv/opencv_feature_extraction.cpp" />
-		<Unit filename="opencv/opencv_feature_extraction_and_matching.cpp" />
-		<Unit filename="opencv/opencv_feature_extraction_and_matching_by_signature.cpp" />
-		<Unit filename="opencv/opencv_feature_extraction_and_matching_using_gpu.cpp" />
-		<Unit filename="opencv/opencv_feature_matching.cpp" />
+		<Unit filename="opencv/opencv_feature_description.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="opencv/opencv_feature_extraction.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="opencv/opencv_feature_extraction_and_matching.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="opencv/opencv_feature_extraction_and_matching_by_signature.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="opencv/opencv_feature_extraction_and_matching_using_gpu.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="opencv/opencv_feature_matching.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_fourier_transform.cpp" />
-		<Unit filename="opencv/opencv_generic_description_and_matching.cpp" />
+		<Unit filename="opencv/opencv_generic_description_and_matching.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_gesture_recognition.cpp" />
-		<Unit filename="opencv/opencv_hand_detection.cpp" />
-		<Unit filename="opencv/opencv_hand_pose_estimation.cpp" />
+		<Unit filename="opencv/opencv_hand_detection.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="opencv/opencv_hand_pose_estimation.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_histogram.cpp" />
 		<Unit filename="opencv/opencv_histogram_using_gpu.cpp" />
-		<Unit filename="opencv/opencv_homography.cpp" />
+		<Unit filename="opencv/opencv_homography.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_hough_transform.cpp" />
 		<Unit filename="opencv/opencv_human_detection.cpp" />
 		<Unit filename="opencv/opencv_human_detection_using_gpu.cpp" />
@@ -174,7 +236,10 @@
 		<Unit filename="opencv/opencv_image_filtering.cpp" />
 		<Unit filename="opencv/opencv_image_filtering_using_gpu.cpp" />
 		<Unit filename="opencv/opencv_image_gradient.cpp" />
-		<Unit filename="opencv/opencv_image_labeling_using_gpu.cpp" />
+		<Unit filename="opencv/opencv_image_labeling_using_gpu.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_image_operation.cpp" />
 		<Unit filename="opencv/opencv_image_processing_using_gpu.cpp" />
 		<Unit filename="opencv/opencv_image_pyramid.cpp" />
@@ -183,30 +248,57 @@
 		<Unit filename="opencv/opencv_image_undistortion.cpp" />
 		<Unit filename="opencv/opencv_iterative_closest_point.cpp" />
 		<Unit filename="opencv/opencv_kalman_filtering.cpp" />
-		<Unit filename="opencv/opencv_machine_learning.cpp" />
+		<Unit filename="opencv/opencv_machine_learning.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_main.cpp" />
 		<Unit filename="opencv/opencv_matrix_operation.cpp" />
 		<Unit filename="opencv/opencv_matrix_operation_using_gpu.cpp" />
 		<Unit filename="opencv/opencv_morphological_operation.cpp" />
-		<Unit filename="opencv/opencv_motion_history_image.cpp" />
+		<Unit filename="opencv/opencv_motion_history_image.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_motion_segmentation.cpp" />
-		<Unit filename="opencv/opencv_object_detection.cpp" />
+		<Unit filename="opencv/opencv_object_detection.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_object_tracking.cpp" />
 		<Unit filename="opencv/opencv_openni.cpp" />
-		<Unit filename="opencv/opencv_optical_flow.cpp" />
+		<Unit filename="opencv/opencv_optical_flow.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_optical_flow_using_gpu.cpp" />
-		<Unit filename="opencv/opencv_outlier_removal.cpp" />
+		<Unit filename="opencv/opencv_outlier_removal.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_pca.cpp" />
 		<Unit filename="opencv/opencv_retina_model.cpp" />
 		<Unit filename="opencv/opencv_segmentation.cpp" />
 		<Unit filename="opencv/opencv_shape_finding.cpp" />
-		<Unit filename="opencv/opencv_shape_matching.cpp" />
+		<Unit filename="opencv/opencv_shape_matching.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_skeletonization_and_thinning.cpp" />
-		<Unit filename="opencv/opencv_skin_color_filtering.cpp" />
+		<Unit filename="opencv/opencv_skin_color_filtering.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_slam.cpp" />
 		<Unit filename="opencv/opencv_stereo_camera_calibration.cpp" />
-		<Unit filename="opencv/opencv_stereo_matching.cpp" />
-		<Unit filename="opencv/opencv_stereo_matching_using_gpu.cpp" />
+		<Unit filename="opencv/opencv_stereo_matching.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="opencv/opencv_stereo_matching_using_gpu.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="opencv/opencv_structure_tensor.cpp" />
 		<Unit filename="opencv/opencv_superpixel.cpp" />
 		<Unit filename="opencv/opencv_template_matching.cpp" />
@@ -214,15 +306,6 @@
 		<Unit filename="opencv/opencv_util.cpp" />
 		<Unit filename="opencv/opencv_vector_operation.cpp" />
 		<Unit filename="opencv/vehicle_classification.h" />
-		<Unit filename="opencv_win/BumbleBeeVisionSensor.cpp" />
-		<Unit filename="opencv_win/ChildFrm.cpp" />
-		<Unit filename="opencv_win/MainFrm.cpp" />
-		<Unit filename="opencv_win/OpenCvVisionSensor.cpp" />
-		<Unit filename="opencv_win/VisionSensor.cpp" />
-		<Unit filename="opencv_win/opencv_win.cpp" />
-		<Unit filename="opencv_win/opencv_winDoc.cpp" />
-		<Unit filename="opencv_win/opencv_winView.cpp" />
-		<Unit filename="opencv_win/stdafx.cpp" />
 		<Unit filename="vigra/vigra_main.cpp" />
 		<Unit filename="vigra/vigra_seeded_region_growing.cpp" />
 		<Unit filename="vigra/vigra_slic.cpp" />
@@ -255,6 +338,7 @@
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

@@ -22,12 +22,21 @@ void decision_tree(GClasses::GMatrix &features, GClasses::GMatrix &labels, const
 
 void neural_network(GClasses::GMatrix &features, GClasses::GMatrix &labels, const GClasses::GVec &test_features, GClasses::GVec &predicted_labels)
 {
-	GClasses::GNeuralNet *pNN = new GClasses::GNeuralNet();
-	pNN->addLayer(new GClasses::GLayerClassic(FLEXIBLE_SIZE, 3));
-	pNN->addLayer(new GClasses::GLayerClassic(3, FLEXIBLE_SIZE));
-	pNN->setLearningRate(0.1);
-	pNN->setMomentum(0.1);
-	GClasses::GAutoFilter af(pNN);
+    //--S [] 2016/12/20: Sang-Wook Lee
+    //  FIXME [check] >>
+	//GClasses::GNeuralNet *pNN = new GClasses::GNeuralNet();
+	//pNN->addLayer(new GClasses::GLayerClassic(FLEXIBLE_SIZE, 3));
+	//pNN->addLayer(new GClasses::GLayerClassic(3, FLEXIBLE_SIZE));
+	//pNN->setLearningRate(0.1);
+	//pNN->setMomentum(0.1);
+	//GClasses::GAutoFilter af(pNN);
+	GClasses::GNeuralNetLearner nn;
+	nn.newLayer().add(new GClasses::GBlockTanh(3));
+	nn.newLayer().add(new GClasses::GBlockTanh(3));
+	nn.optimizer().setLearningRate(0.1);
+	dynamic_cast<GClasses::GSGDOptimizer &>(nn.optimizer()).setMomentum(0.1);
+	GClasses::GAutoFilter af(&nn);
+    //--E [] 2016/12/20: Sang-Wook Lee
 	af.train(features, labels);
 	af.predict(test_features, predicted_labels);
 }

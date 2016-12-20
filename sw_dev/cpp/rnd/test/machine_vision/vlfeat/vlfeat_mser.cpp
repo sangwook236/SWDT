@@ -145,7 +145,7 @@ void mser()
 
 			const int nframes = vl_mser_get_ell_num(filt);
 			const int dof = vl_mser_get_ell_dof(filt);
-			const float const *frames = vl_mser_get_ell(filt);
+			const float *frames = vl_mser_get_ell(filt);
 			for (int i = 0; i < nframes; ++i)
 			{
 				for (int j = 0; j < dof; ++j)
@@ -186,7 +186,7 @@ void mser()
 
 			const int nframesinv = vl_mser_get_ell_num(filtinv);
 			const int dof = vl_mser_get_ell_dof(filtinv);
-			const float const *framesinv = vl_mser_get_ell(filtinv);
+			const float *framesinv = vl_mser_get_ell(filtinv);
 			for (int i = 0; i < nframesinv; ++i)
 			{
 				for (int j = 0; j < dof; ++j)

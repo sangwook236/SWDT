@@ -1,10 +1,10 @@
+#include <iostream>
 #include <vigra/multi_watersheds.hxx>
 #include <vigra/convolution.hxx>
 #include <vigra/multi_array.hxx>
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/opencv.hpp>
 #include <boost/timer/timer.hpp>
-#include <iostream>
 #include <list>
 
 
@@ -102,7 +102,7 @@ void watershed_example()
 
 		// quantize the gradient image to 256 gray levels.
 		vigra::MultiArray<2, unsigned char> gradMag256(src.shape());
-		vigra::FindMinMax<float> minmax; 
+		vigra::FindMinMax<float> minmax;
 		vigra::inspectImage(gradMag, minmax);  // find original range.
 		vigra::transformImage(gradMag, gradMag256, vigra::linearRangeMapping(minmax, 0, 255));
 

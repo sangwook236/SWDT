@@ -19,11 +19,11 @@ void construct_net(N& nn)
     const int n_fmaps2 = 64;  // Number of feature maps for lower layer.
     const int n_fc = 64;  // Number of hidden units in fully-connected layer.
 
-    nn << conv(32, 32, 5, 3, n_fmaps, tiny_dnn::core::padding::same)
+    nn << conv(32, 32, 5, 3, n_fmaps, tiny_dnn::padding::same)
         << pool(32, 32, n_fmaps, 2)
-        << conv(16, 16, 5, n_fmaps, n_fmaps, tiny_dnn::core::padding::same)
+        << conv(16, 16, 5, n_fmaps, n_fmaps, tiny_dnn::padding::same)
         << pool(16, 16, n_fmaps, 2)
-        << conv(8, 8, 5, n_fmaps, n_fmaps2, tiny_dnn::core::padding::same)
+        << conv(8, 8, 5, n_fmaps, n_fmaps2, tiny_dnn::padding::same)
         << pool(8, 8, n_fmaps2, 2)
         << tiny_dnn::fully_connected_layer<tiny_dnn::activation::identity>(4 * 4 * n_fmaps2, n_fc)
         << tiny_dnn::fully_connected_layer<tiny_dnn::activation::softmax>(n_fc, 10);

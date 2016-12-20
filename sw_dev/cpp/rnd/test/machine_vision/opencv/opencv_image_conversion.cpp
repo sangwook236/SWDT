@@ -1,8 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv/cv.h>
-#include <opencv/cxcore.h>
-#include <opencv/highgui.h>
+#include <opencv2/opencv.hpp>
 #include <boost/filesystem.hpp>
 #include <string>
 #include <iostream>
@@ -139,7 +137,7 @@ void convert_images(const std::string &dirName, const std::string &srcImageExt, 
 			return;
 		}
 	}
-	
+
 	CloseHandle(hFind);
 #else
 	const boost::filesystem::path dir_path(dirName);

@@ -1,4 +1,10 @@
-#include <ccv/ccv.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include <ccv.h>
+#ifdef __cplusplus
+}
+#endif
 #include <iostream>
 #include <stdexcept>
 

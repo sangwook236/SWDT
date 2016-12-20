@@ -32,20 +32,24 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c++11" />
 			<Add option="-fexceptions" />
 			<Add option="-fpermissive" />
 			<Add option="-std=gnu++11" />
 			<Add directory="./mfa_lib" />
 			<Add directory="./kmeanspp_lib" />
-			<Add directory="/usr/include/eigen3" />
+			<Add directory="/usr/local/include/rl" />
 			<Add directory="/usr/local/include" />
+			<Add directory="/usr/include/eigen3" />
 		</Compiler>
 		<Linker>
+			<Add library="gp" />
 			<Add library="GClasses" />
 			<Add library="caffe" />
 			<Add library="shogun" />
 			<Add library="nlopt" />
 			<Add library="opencv_imgproc" />
+			<Add library="opencv_imgcodecs" />
 			<Add library="opencv_highgui" />
 			<Add library="opencv_core" />
 			<Add library="glog" />
@@ -65,7 +69,6 @@
 		<Unit filename="clustering/clustering_kmeanspp.cpp" />
 		<Unit filename="clustering/clustering_main.cpp" />
 		<Unit filename="clustering/clustering_spectral_clustering.cpp" />
-		<Unit filename="dlib_ml/dlib_ml_main.cpp" />
 		<Unit filename="encog/encog_main.cpp" />
 		<Unit filename="kmeanspp_lib/KMeans.cpp" />
 		<Unit filename="kmeanspp_lib/KMeans.h" />
@@ -137,6 +140,75 @@
 		<Unit filename="rllib/rllib_inverted_pendulum_mlp_ktdq_example.cpp" />
 		<Unit filename="rllib/rllib_main.cpp" />
 		<Unit filename="rllib/rllib_mountain_car_ktdsarsa_example.cpp" />
+		<Unit filename="rnnlib/rnnlib_main.cpp" />
+		<Unit filename="rnnlib_lib/ActivationFunctions.hpp" />
+		<Unit filename="rnnlib_lib/Agg.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="rnnlib_lib/BiasLayer.hpp" />
+		<Unit filename="rnnlib_lib/BivariateNorm.cpp" />
+		<Unit filename="rnnlib_lib/BivariateNorm.h" />
+		<Unit filename="rnnlib_lib/BlockLayer.hpp" />
+		<Unit filename="rnnlib_lib/CharWindowLayer.hpp" />
+		<Unit filename="rnnlib_lib/ClassificationLayer.hpp" />
+		<Unit filename="rnnlib_lib/CollapseLayer.hpp" />
+		<Unit filename="rnnlib_lib/ConfigFile.hpp" />
+		<Unit filename="rnnlib_lib/Connection.hpp" />
+		<Unit filename="rnnlib_lib/Container.hpp" />
+		<Unit filename="rnnlib_lib/CopyConnection.hpp" />
+		<Unit filename="rnnlib_lib/DataExporter.cpp" />
+		<Unit filename="rnnlib_lib/DataExporter.hpp" />
+		<Unit filename="rnnlib_lib/DataSequence.hpp" />
+		<Unit filename="rnnlib_lib/DatasetErrors.hpp" />
+		<Unit filename="rnnlib_lib/FullConnection.hpp" />
+		<Unit filename="rnnlib_lib/GatherLayer.hpp" />
+		<Unit filename="rnnlib_lib/GradientCheck.hpp" />
+		<Unit filename="rnnlib_lib/Helpers.hpp" />
+		<Unit filename="rnnlib_lib/IdentityLayer.hpp" />
+		<Unit filename="rnnlib_lib/InputHiddenConnection.hpp" />
+		<Unit filename="rnnlib_lib/InputLayer.hpp" />
+		<Unit filename="rnnlib_lib/Layer.hpp" />
+		<Unit filename="rnnlib_lib/Log.cpp" />
+		<Unit filename="rnnlib_lib/Log.hpp" />
+		<Unit filename="rnnlib_lib/Lstm1dLayer.hpp" />
+		<Unit filename="rnnlib_lib/LstmLayer.hpp" />
+		<Unit filename="rnnlib_lib/Main.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="rnnlib_lib/Matrix.hpp" />
+		<Unit filename="rnnlib_lib/Mdrnn.hpp" />
+		<Unit filename="rnnlib_lib/MixtureOutputLayer.hpp" />
+		<Unit filename="rnnlib_lib/MultiArray.hpp" />
+		<Unit filename="rnnlib_lib/MultilayerNet.hpp" />
+		<Unit filename="rnnlib_lib/Named.hpp" />
+		<Unit filename="rnnlib_lib/NetcdfDataset.hpp" />
+		<Unit filename="rnnlib_lib/NetworkOutput.hpp" />
+		<Unit filename="rnnlib_lib/NeuronLayer.hpp" />
+		<Unit filename="rnnlib_lib/Optimiser.hpp" />
+		<Unit filename="rnnlib_lib/Random.cpp" />
+		<Unit filename="rnnlib_lib/Random.hpp" />
+		<Unit filename="rnnlib_lib/Rmsprop.hpp" />
+		<Unit filename="rnnlib_lib/Rprop.hpp" />
+		<Unit filename="rnnlib_lib/SeqBuffer.hpp" />
+		<Unit filename="rnnlib_lib/SoftmaxLayer.hpp" />
+		<Unit filename="rnnlib_lib/SteepestDescent.hpp" />
+		<Unit filename="rnnlib_lib/String.hpp" />
+		<Unit filename="rnnlib_lib/StringAlignment.hpp" />
+		<Unit filename="rnnlib_lib/Synth.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="rnnlib_lib/Trainer.hpp" />
+		<Unit filename="rnnlib_lib/TranscriptionLayer.hpp" />
+		<Unit filename="rnnlib_lib/Val.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="rnnlib_lib/VerticalNet.hpp" />
+		<Unit filename="rnnlib_lib/WeightContainer.hpp" />
+		<Unit filename="rnnlib_lib/fromstd.hpp" />
 		<Unit filename="shogun/shogun_classifier_conjugateindex_example.cpp" />
 		<Unit filename="shogun/shogun_classifier_latent_svm_example.cpp" />
 		<Unit filename="shogun/shogun_classifier_libsvm_example.cpp" />
@@ -215,6 +287,7 @@
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

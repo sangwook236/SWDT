@@ -36,9 +36,9 @@ void structure_tensor_2d(const cv::Mat &img, const double deriv_sigma, const dou
 
 	// Solve eigensystem.
 
-	const cv::Mat Ix2 = Ix.mul(Ix);  // Ix^2 = Ix * Ix
-	const cv::Mat Iy2 = Iy.mul(Iy);  // Iy^2 = Iy * Iy
-	const cv::Mat IxIy = Ix.mul(Iy);  // Ix * Iy
+	const cv::Mat Ix2 = Ix.mul(Ix);  // Ix^2 = Ix * Ix.
+	const cv::Mat Iy2 = Iy.mul(Iy);  // Iy^2 = Iy * Iy.
+	const cv::Mat IxIy = Ix.mul(Iy);  // Ix * Iy.
 
 #if 1
 	// TODO [add] >> if Gaussian blur is required, blurring is applied to Ix2, Iy2, & IxIy.
@@ -61,7 +61,7 @@ void structure_tensor_2d(const cv::Mat &img, const double deriv_sigma, const dou
 	const int count1 = cv::countNonZero(sqrtDiscriminant < 0.0);
 	if (count1 > 0)
 	{
-		std::cout << "non-zero count = " << count1 << std::endl;
+		std::cout << "Non-zero count = " << count1 << std::endl;
 
 		const int count2 = cv::countNonZero(sqrtDiscriminant < -tol);
 		if (count2 > 0)
@@ -73,7 +73,7 @@ void structure_tensor_2d(const cv::Mat &img, const double deriv_sigma, const dou
 						std::cout << i << ", " << j << " = " << sqrtDiscriminant.at<double>(i, j) << std::endl;
 #endif
 
-			std::cerr << "complex eigenvalues exist" << std::endl;
+			std::cerr << "Complex eigenvalues exist" << std::endl;
 			return;
 		}
 		else
@@ -108,12 +108,12 @@ void structure_tensor_2d(const cv::Mat &img, const double deriv_sigma, const dou
 void compute_valid_region_using_coherence(const cv::Mat &eval1, const cv::Mat &eval2, const cv::Mat &valid_eval_region_mask, const cv::Mat &constant_region_mask, cv::Mat &valid_region)
 {
 	// Coherence = 1 when the gradient is totally aligned, and coherence = 0 (lambda1 = lambda2) when it has no predominant direction.
-	cv::Mat coherence((eval1 - eval2) / (eval1 + eval2));  // if eigenvalue2 > 0.
+	cv::Mat coherence((eval1 - eval2) / (eval1 + eval2));  // If eigenvalue2 > 0.
 	coherence = coherence.mul(coherence);
 
 	double minVal, maxVal;
 	cv::minMaxLoc(coherence, &minVal, &maxVal);
-	std::cout << "coherence: min = " << minVal << ", max = " << maxVal << std::endl;
+	std::cout << "Coherence: min = " << minVal << ", max = " << maxVal << std::endl;
 
 #if 0
 	const double threshold = 0.5;
@@ -123,7 +123,7 @@ void compute_valid_region_using_coherence(const cv::Mat &eval1, const cv::Mat &e
 	valid_region = coherence >= threshold;
 #else
 	const double threshold1 = 0.2, threshold2 = 0.8;
-	valid_region = threshold1 <= coherence & coherence <= threshold2;
+	valid_region = (threshold1 <= coherence) & (coherence <= threshold2);
 #endif
 
 	valid_region.setTo(cv::Scalar::all(0), constant_region_mask);
@@ -140,10 +140,10 @@ void compute_valid_region_using_ev_ratio(const cv::Mat &eval1, const cv::Mat &ev
 
 #if 0
 	const double threshold = 0.5;
-	valid_region = cv::abs(eval_ratio - 1.0f) <= threshold;  // if lambda1 = lambda2, the gradient in the window has no predominant direction.
+	valid_region = cv::abs(eval_ratio - 1.0f) <= threshold;  // If lambda1 = lambda2, the gradient in the window has no predominant direction.
 #else
 	const double threshold1 = 1.0, threshold2 = 5.0;
-	valid_region = threshold1 <= eval_ratio & eval_ratio <= threshold2;
+	valid_region = (threshold1 <= eval_ratio) & (eval_ratio <= threshold2);
 #endif
 
 	valid_region.setTo(cv::Scalar::all(0), constant_region_mask);
@@ -176,7 +176,7 @@ void structure_tensor()
 #endif
 	if (src.empty())
 	{
-		std::cerr << "file not found: " << input_filename << std::endl;
+		std::cerr << "File not found: " << input_filename << std::endl;
 		return;
 	}
 
@@ -200,7 +200,7 @@ void structure_tensor()
 		{
 			cv::Mat tmp;
 			img_double.convertTo(tmp, CV_32FC1, 1.0, 0.0);
-			cv::imshow("src image", tmp);
+			cv::imshow("Src image", tmp);
 		}
 
 		const double deriv_sigma = 3.0;
@@ -216,13 +216,13 @@ void structure_tensor()
 		eval2 = cv::abs(eval2);
 
 		cv::minMaxLoc(eval1, &minVal, &maxVal);
-		std::cout << "max eigenvalue: " << minVal << ", " << maxVal << std::endl;
+		std::cout << "Max eigenvalue: " << minVal << ", " << maxVal << std::endl;
 		cv::minMaxLoc(eval2, &minVal, &maxVal);
-		std::cout << "min eigenvalue: " << minVal << ", " << maxVal << std::endl;
+		std::cout << "Min eigenvalue: " << minVal << ", " << maxVal << std::endl;
 
 		const double tol = 1.0e-10;
 		const cv::Mat valid_eval_region_mask(eval2 >= tol);
-		const cv::Mat constant_region_mask(eval1 < tol & eval2 < tol);  // if lambda1 = lambda2 = 0, the image within the window is constant.
+		const cv::Mat constant_region_mask((eval1 < tol) & (eval2 < tol));  // If lambda1 = lambda2 = 0, the image within the window is constant.
 
 		// METHOD #1; using coherence.
 		//	REF [site] >> http://en.wikipedia.org/wiki/Structure_tensor
@@ -233,7 +233,7 @@ void structure_tensor()
 				local::compute_valid_region_using_coherence(eval1, eval2, valid_eval_region_mask, constant_region_mask, valid_region);
 			}
 
-			cv::imshow("structure tensor - coherence", valid_region);
+			cv::imshow("Structure tensor - coherence", valid_region);
 			//cv::imwrite("./data/machine_vision/opencv/structure_tensor_coherence.png", valid_region);
 		}
 
@@ -245,7 +245,7 @@ void structure_tensor()
 				local::compute_valid_region_using_ev_ratio(eval1, eval2, valid_eval_region_mask, constant_region_mask, valid_region);
 			}
 
-			cv::imshow("structure tensor - ratio of eigenvalues", valid_region);
+			cv::imshow("Structure tensor - ratio of eigenvalues", valid_region);
 			//cv::imwrite("./data/machine_vision/opencv/structure_tensor_ev_ratio.png", valid_region);
 		}
 	}

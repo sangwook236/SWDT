@@ -4,8 +4,9 @@
 #elif defined(__APPLE__)
 #include <VideoCapture/QuicktimeCapture.h>
 #else
-#include <VideoCapture/Linux1394Capture2.h>
-#include <VideoCapture/V4LCapture.h>
+//#include <VideoCapture/Linux1394Capture2.h>
+//#include <VideoCapture/V4LCapture.h>
+#include <VideoCapture/OpenCVCapture.h>
 #endif
 #include <Interfaces/ApplicationHandlerInterface.h>
 #include <Interfaces/MainWindowInterface.h>
@@ -52,12 +53,14 @@ public:
 	{
 		// create capture object
 #if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
-		CVFWCapture capture(0);
+		//CVFWCapture capture(0);
+		COpenCVCapture capture(0);
 #elif defined(__APPLE__)
 		CQuicktimeCapture capture(CVideoCaptureInterface::e640x480);
 #else
 		//CLinux1394Capture2 capture(-1, CVideoCaptureInterface::e640x480, CVideoCaptureInterface::eRGB24);
-		CV4LCapture capture("/dev/video0", 0, CVideoCaptureInterface::e640x480);
+		//CV4LCapture capture("/dev/video0", 0, CVideoCaptureInterface::e640x480);
+		COpenCVCapture capture(0);
 #endif
 
         // open camera

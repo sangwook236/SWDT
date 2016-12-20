@@ -25,7 +25,11 @@ void dense_example()
 	double y;
 	for (int i = 0; i < n; ++i)
 	{
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 		const double x[] = { libgp::Utils::drand48() * 4 - 2, libgp::Utils::drand48() * 4 - 2 };
+#else
+		const double x[] = { drand48() * 4 - 2, drand48() * 4 - 2 };
+#endif
 		y = libgp::Utils::hill(x[0], x[1]) + libgp::Utils::randn() * 0.1;
 		gp.add_pattern(x, y);
 	}
@@ -35,7 +39,11 @@ void dense_example()
 	double tss = 0.0, error, f;
 	for (int i = 0; i < m; ++i)
 	{
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 		const double x[] = { libgp::Utils::drand48() * 4 - 2, libgp::Utils::drand48() * 4 - 2 };
+#else
+		const double x[] = { drand48() * 4 - 2, drand48() * 4 - 2 };
+#endif
 		f = gp.f(x);
 		y = libgp::Utils::hill(x[0], x[1]);
 		error = f - y;

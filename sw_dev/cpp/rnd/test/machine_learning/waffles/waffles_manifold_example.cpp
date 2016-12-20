@@ -152,7 +152,7 @@ void manifold_sculpting_for_swiss_roll()
     pSculpter->setSquishingRate(dSquishingRate);
 
     // Learn model.
-    std::cout << "start manifold sculpting for swiss roll ..." << std::endl;
+    std::cout << "Start manifold sculpting for swiss roll ..." << std::endl;
     {
         const double timeStart = GClasses::GTime::seconds();
 
@@ -172,9 +172,9 @@ void manifold_sculpting_for_swiss_roll()
         }
 
         const double timeEnd = GClasses::GTime::seconds();
-        std::cout << "\tconverged = " << (bConverged ? "true" : "false") << ", elapsed time = " << (timeEnd - timeStart) << std::endl;
+        std::cout << "\tConverged = " << (bConverged ? "true" : "false") << ", elapsed time = " << (timeEnd - timeStart) << std::endl;
     }
-    std::cout << "end manifold sculpting for swiss roll ..." << std::endl;
+    std::cout << "End manifold sculpting for swiss roll ..." << std::endl;
 
     // Clean up.
     delete pSculpter;
@@ -205,7 +205,7 @@ void manifold_sculpting_for_s_curve()
     pSculpter->setSquishingRate(dSquishingRate);
 
     // Learn model.
-    std::cout << "start manifold sculpting for S-curve ..." << std::endl;
+    std::cout << "Start manifold sculpting for S-curve ..." << std::endl;
     {
         const double timeStart = GClasses::GTime::seconds();
 
@@ -225,9 +225,9 @@ void manifold_sculpting_for_s_curve()
         }
 
         const double timeEnd = GClasses::GTime::seconds();
-        std::cout << "\tconverged = " << (bConverged ? "true" : "false") << ", elapsed time = " << (timeEnd - timeStart) << std::endl;
+        std::cout << "\tConverged = " << (bConverged ? "true" : "false") << ", elapsed time = " << (timeEnd - timeStart) << std::endl;
     }
-    std::cout << "end manifold sculpting for S-curve ..." << std::endl;
+    std::cout << "End manifold sculpting for S-curve ..." << std::endl;
 
     // Clean up.
     delete pSculpter;
@@ -257,8 +257,8 @@ void manifold_sculpting_for_spirals()
     pSculpter->beginTransform(pData);
     pSculpter->setSquishingRate(dSquishingRate);
 
-    // Leanr model.
-    std::cout << "start manifold sculpting for spirals ..." << std::endl;
+    // Learn model.
+    std::cout << "Start manifold sculpting for spirals ..." << std::endl;
     {
         const double timeStart = GClasses::GTime::seconds();
 
@@ -278,9 +278,9 @@ void manifold_sculpting_for_spirals()
         }
 
         const double timeEnd = GClasses::GTime::seconds();
-        std::cout << "\tconverged = " << (bConverged ? "true" : "false") << ", elapsed time = " << (timeEnd - timeStart) << std::endl;
+        std::cout << "\tConverged = " << (bConverged ? "true" : "false") << ", elapsed time = " << (timeEnd - timeStart) << std::endl;
     }
-    std::cout << "end manifold sculpting for spirals ..." << std::endl;
+    std::cout << "End manifold sculpting for spirals ..." << std::endl;
 
     // Clean up.
     delete pSculpter;
@@ -312,7 +312,7 @@ void semi_supervised_manifold_sculpting_for_swiss_roll()
     pPrevSculpter->setSquishingRate(dSquishingRate);
 
     // Learn previous model.
-    std::cout << "start manifold sculpting for swiss roll ..." << std::endl;
+    std::cout << "Start manifold sculpting for swiss roll ..." << std::endl;
     {
         const double timeStart = GClasses::GTime::seconds();
 
@@ -332,9 +332,9 @@ void semi_supervised_manifold_sculpting_for_swiss_roll()
         }
 
         const double timeEnd = GClasses::GTime::seconds();
-        std::cout << "\tconverged = " << (bConverged ? "true" : "false") << ", elapsed time = " << (timeEnd - timeStart) << std::endl;
+        std::cout << "\tConverged = " << (bConverged ? "true" : "false") << ", elapsed time = " << (timeEnd - timeStart) << std::endl;
     }
-    std::cout << "end manifold sculpting for swiss roll ..." << std::endl;
+    std::cout << "End manifold sculpting for swiss roll ..." << std::endl;
 
     // Generate data.
     rng.setSeed(0);
@@ -351,7 +351,7 @@ void semi_supervised_manifold_sculpting_for_swiss_roll()
         {
             const std::size_t nPoint = (std::size_t)rng.next(nPoints);
 			//--S [] 2016/05/19: Sang-Wook Lee
-			//	- {check}: not yet tested.
+			//	- {check}: Not yet tested.
             //GClasses::GVec::copy(pSculpter->data().row(nPoint), pPrevSculpter->data().row(nPoints), pSculpter->data().relation().size());
 			pSculpter->data().row(nPoint).copy(pPrevSculpter->data().row(nPoints));
 			//--E [] 2016/05/19: Sang-Wook Lee
@@ -363,7 +363,7 @@ void semi_supervised_manifold_sculpting_for_swiss_roll()
     pPrevSculpter = NULL;
 
     // Learn model.
-    std::cout << "start semi-supervised manifold sculpting for swiss roll ..." << std::endl;
+    std::cout << "Start semi-supervised manifold sculpting for swiss roll ..." << std::endl;
     {
         const double timeStart = GClasses::GTime::seconds();
 
@@ -383,9 +383,9 @@ void semi_supervised_manifold_sculpting_for_swiss_roll()
         }
 
         const double timeEnd = GClasses::GTime::seconds();
-        std::cout << "\tconverged = " << (bConverged ? "true" : "false") << ", elapsed time = " << (timeEnd - timeStart) << std::endl;
+        std::cout << "\tConverged = " << (bConverged ? "true" : "false") << ", elapsed time = " << (timeEnd - timeStart) << std::endl;
     }
-    std::cout << "end semi-supervised manifold sculpting for swiss roll ..." << std::endl;
+    std::cout << "End semi-supervised manifold sculpting for swiss roll ..." << std::endl;
 
     // Clean up.
     delete pSculpter;
@@ -426,7 +426,7 @@ void dimensionality_reduction(const int idAlgorithm, const int idData)
         generate_spirals_data(nPoints, bComputeIdeal, pData, pRelation, pIdealResults, &rng);
         break;
     default:
-        throw std::runtime_error("invalid data ID");
+        throw std::runtime_error("Invalid data ID");
         break;
     }
 
@@ -445,43 +445,43 @@ void dimensionality_reduction(const int idAlgorithm, const int idData)
         break;
     case 3:
         {
-            const std::size_t reps = 1;  // the number of times to compute the embedding. If you just want fast results, use reps = 1.
+            const std::size_t reps = 1;  // The number of times to compute the embedding. If you just want fast results, use reps = 1.
             pDimensionalityReducer = new GClasses::GBreadthFirstUnfolding(reps, nNeighbors, nTargetDims);
             if (pNeighberFinder) ((GClasses::GBreadthFirstUnfolding *)pDimensionalityReducer)->setNeighborFinder(pNeighberFinder);
             //((GClasses::GBreadthFirstUnfolding *)pDimensionalityReducer)->useMds(true);
         }
         break;
     case 4:
-        pDimensionalityReducer = new GClasses::GNeuroPCA(nTargetDims, &rng);
+        //pDimensionalityReducer = new GClasses::GNeuroPCA(nTargetDims, &rng);  // Depricated.
         break;
     case 5:
         pDimensionalityReducer = new GClasses::GScalingUnfolder();
         ((GClasses::GScalingUnfolder *)pDimensionalityReducer)->setNeighborCount(nNeighbors);
         ((GClasses::GScalingUnfolder *)pDimensionalityReducer)->setTargetDims(nTargetDims);
-        //((GClasses::GScalingUnfolder *)pDimensionalityReducer)->setPasses();  // the number of times to 'scale the data then recover local relationships.
-        //((GClasses::GScalingUnfolder *)pDimensionalityReducer)->setRefinesPerScale();  // the number of times to refine the points after each scaling.
-        //((GClasses::GScalingUnfolder *)pDimensionalityReducer)->setScaleRate();  // the scaling rate. The default is 0.9.
+        //((GClasses::GScalingUnfolder *)pDimensionalityReducer)->setPasses();  // The number of times to 'scale the data then recover local relationships.
+        //((GClasses::GScalingUnfolder *)pDimensionalityReducer)->setRefinesPerScale();  // The number of times to refine the points after each scaling.
+        //((GClasses::GScalingUnfolder *)pDimensionalityReducer)->setScaleRate();  // The scaling rate. The default is 0.9.
         //((GClasses::GScalingUnfolder *)pDimensionalityReducer)->unfold();
         break;
     default:
-        throw std::runtime_error("invalid dimensionality reduction algorithm ID");
+        throw std::runtime_error("Invalid dimensionality reduction algorithm ID");
         break;
     }
 
     // Learn model.
-    std::cout << "start dimensionality reduction ..." << std::endl;
+    std::cout << "Start dimensionality reduction ..." << std::endl;
     {
         const double timeStart = GClasses::GTime::seconds();
 
         GClasses::GMatrix *pReducedData = pDimensionalityReducer->reduce(*pData);
 
         const double timeEnd = GClasses::GTime::seconds();
-        std::cout << "\telapsed time = " << (timeEnd - timeStart) << std::endl;
+        std::cout << "\tElapsed time = " << (timeEnd - timeStart) << std::endl;
 
         //
         delete pReducedData;
     }
-    std::cout << "end dimensionality reduction ..." << std::endl;
+    std::cout << "End dimensionality reduction ..." << std::endl;
 
     // Clean up.
     delete pDimensionalityReducer;

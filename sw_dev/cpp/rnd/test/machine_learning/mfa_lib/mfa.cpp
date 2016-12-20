@@ -1,6 +1,6 @@
 // EM for Mixtures of Factor Analyzers
 // Copyright (C) 2005  Kurt Tadayuki Miller and Mark Andrew Paskin
-// 
+//
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
 // License as published by the Free Software Foundation; either
@@ -44,41 +44,41 @@ using namespace boost::math;  // for isnan().
  * --------------------------------------
  * PPCA
  * --------------------------------------
- * 
+ *
  * PPCA has been thoroughly tested and can be trained in 1 of 3 ways:
  * EM, "solve," and "solve_fast."
- * 
+ *
  * EM finds the solution in an iterative manner and is slow.  However,
  * it is the only one that supports missing data points, so if there
  * are missing/hidden data points, this is the only method to solve
- * the problem. 
+ * the problem.
  *
  * "solve_fast" reads all data into memory and solves the closed form
  * solution.  If all the data fits in memory, this is the prefered
  * way.
- * 
+ *
  * If the data does not fit in memory, "solve" still does the closed
  * form solution, but has to go through the data O(N) times and can
  * therefore be significantly slower.
- * 
+ *
  * -------------------------------------
  * FA
  * --------------------------------------
- * 
+ *
  * FA has been decently tested.  If running MFA with one component, it
  * is recommended to first run ppca_solve or ppca_solve_fast to
  * initialize with a good first estimate.  At that point,
  * convert_PPCA_to_FA can be used to switch to FA and then use em will
  * solve the rest.
- * 
+ *
  * -------------------------------------
  * MFA
  * --------------------------------------
- * 
+ *
  * MFA has only been tested on small data sets.  With a larger data
  * set, it gave unexpected results, but the cause has not been
  * determined.
- * 
+ *
  * -------------------------------------
  * Training
  * --------------------------------------
@@ -90,11 +90,11 @@ using namespace boost::math;  // for isnan().
  * -------------------------------------
  * Testing
  * --------------------------------------
- * 
+ *
  * To use this as a classifier, use one of the likelihood functions.
  * To see what the expected data would be, use get_expected_data.
  * This is helpful in testing proper convergence/functionality.
- * 
+ *
  */
 
 //==================== debug utils =========================
@@ -102,7 +102,7 @@ void matrix_printf(const gsl_matrix* m, const bool one_line) {
   for (unsigned int r = 0; r < m->size1; ++r) {
     for (unsigned int c = 0; c < m->size2; ++c)
       printf("%.5lf ", gsl_matrix_get(m, r, c));
-    if (!one_line) 
+    if (!one_line)
       printf("\n");
   }
   if (one_line)
@@ -129,7 +129,7 @@ mfa_t::fa_info_t::~fa_info_t() {
 }
 
 //======================== mfa_t::mfa_scratch_t ==============================
-mfa_t::mfa_scratch_t::mfa_scratch_t(std::size_t m, std::size_t n, 
+mfa_t::mfa_scratch_t::mfa_scratch_t(std::size_t m, std::size_t n,
                                            bool ppca) {
   //allocate memory
   this->expected_yx = gsl_matrix_alloc(n, m);
@@ -137,7 +137,7 @@ mfa_t::mfa_scratch_t::mfa_scratch_t(std::size_t m, std::size_t n,
   this->expected_yy = gsl_vector_alloc(n);
   if (ppca)
     this->sigma_em = gsl_vector_alloc(1);
-  else 
+  else
     this->sigma_em = gsl_vector_alloc(n);
   this->m1_by_m1_scratch = gsl_matrix_alloc(m+1, m+1);
   this->n_by_m1_scratch = gsl_matrix_alloc(n, m+1);
@@ -186,7 +186,7 @@ mfa_t::fa_factor_scratch_t::~fa_factor_scratch_t() {
 }
 
 //======================== mfa_t public ==================================
-mfa_t::mfa_t(std::string path) throw (std::runtime_error) : 
+mfa_t::mfa_t(std::string path) throw (std::runtime_error) :
   mfa_scratch_ptr(NULL), initialized(false), mu_initialized(false) {
   //load the data, which in turn initializes the model
   load(path);
@@ -240,10 +240,10 @@ double mfa_t::log_likelihood(const gsl_vector* data) {
   prl::log_t<double> ll;
   for (std::size_t j = 0; j < k; ++j) {
     permute_parameters(j, n_permutation);
-    this->compute_M(j, num_hidden); 
-    this->compute_q(j, current_data, num_hidden); 
+    this->compute_M(j, num_hidden);
+    this->compute_q(j, current_data, num_hidden);
     prl::log_t<double> log_prior(gsl_vector_get(pi, j));
-    prl::log_t<double> 
+    prl::log_t<double>
       log_lh(this->log_likelihood(j, current_data, num_hidden),
              prl::log_tag_t());
     ll += log_prior * log_lh;
@@ -288,7 +288,7 @@ bool mfa_t::em(vector_data_set_t& data, double tol,
     //and set the over-relaxation parameter
     eta = 1.0;
   }
-  // repeat until convergence / num repetitions 
+  // repeat until convergence / num repetitions
   std::size_t iteration = 0;
   while(iteration < max_iter) {
     iteration++;
@@ -308,7 +308,7 @@ bool mfa_t::em(vector_data_set_t& data, double tol,
       if (data.get_next_vector(current_data) == false)
         break;
       //compute the permutation and number of hidden data points
-      std::size_t num_hidden = 
+      std::size_t num_hidden =
         compute_permutation(n_permutation, current_data);
       if (num_hidden == n)
         continue;  //ignore any completely empty frames
@@ -329,11 +329,11 @@ bool mfa_t::em(vector_data_set_t& data, double tol,
         permute_parameters(j, n_permutation);
         // First compute the LU decomposition of M, M_inv, and q for the
         // identified mixture component.
-        this->compute_M(j, num_hidden, true); 
-        this->compute_q(j, current_data, num_hidden, true); 
+        this->compute_M(j, num_hidden, true);
+        this->compute_q(j, current_data, num_hidden, true);
         //Compute the addition of the log likelihood and the h accumulator
 	prl::log_t<double> prior(gsl_vector_get(pi, j));
-	prl::log_t<double> 
+	prl::log_t<double>
           likelihood(log_likelihood(j, current_data, num_hidden, true),
                      prl::log_tag_t());
 	prl::log_t<double> posterior =  prior * likelihood;
@@ -364,32 +364,32 @@ bool mfa_t::em(vector_data_set_t& data, double tol,
         gsl_permute_vector(n_permutation_inv, sigma_inv);
       }
     }
-    // done going through all data, now check to see if we have 
+    // done going through all data, now check to see if we have
     // converged, need to un-relax, or update parameters
-    printf("Log likelihood = %14.6lf (difference = %12.6lf) ", 
-           current_log_likelihood, 
-           current_log_likelihood - previous_log_likelihood); 
-    if ((current_log_likelihood + tol < previous_log_likelihood) && 
+    printf("Log likelihood = %14.6lf (difference = %12.6lf) ",
+           current_log_likelihood,
+           current_log_likelihood - previous_log_likelihood);
+    if ((current_log_likelihood + tol < previous_log_likelihood) &&
         (eta > 1.0)) {
       printf("eta reset\n");
       reset_over_relaxation();
-    } else {      
-      if (current_log_likelihood - previous_log_likelihood 
+    } else {
+      if (current_log_likelihood - previous_log_likelihood
 	  < tol) {
-        if (eta > 1.0) 
+        if (eta > 1.0)
           eta = 1.0;
         else {
           printf("CONVERGED!\n");
           converged = true;
           break;
         }
-      } else 
+      } else
         eta *= alpha;
       printf("eta: %.3lf ", eta);
       previous_log_likelihood = current_log_likelihood;
       // and re-estimate the parameters for each factor analyzer
-      for (std::size_t j = 0; j < k; ++j)  
-        recompute_parameters(j, N, eta); 
+      for (std::size_t j = 0; j < k; ++j)
+        recompute_parameters(j, N, eta);
       recompute_sigma(N, eta);
       // if we have a mixture, show the factor weights
       if (k > 1) {
@@ -426,7 +426,7 @@ void mfa_t::ppca_solve(vector_data_set_t& data) {
   gsl_vector_set_zero(mu);
   data.reset();
   printf("Computing average..."); fflush(stdout);
-  while(data.get_next_vector(current_data)) {     
+  while(data.get_next_vector(current_data)) {
     num_data_points++;
     gsl_blas_daxpy(1.0, current_data, mu);
   }
@@ -434,7 +434,7 @@ void mfa_t::ppca_solve(vector_data_set_t& data) {
   mu_initialized = true;
   printf("done!\n");
   //allocate data needed once
-  gsl_matrix* at_a_matrix    = gsl_matrix_alloc(num_data_points, 
+  gsl_matrix* at_a_matrix    = gsl_matrix_alloc(num_data_points,
                                                 num_data_points);
   gsl_vector* reference_data = gsl_vector_alloc(n);
   //compute A'A where A is the matrix with all the data points
@@ -451,7 +451,7 @@ void mfa_t::ppca_solve(vector_data_set_t& data) {
     gsl_blas_daxpy(-1.0, mu, reference_data);
     gsl_blas_ddot(reference_data, reference_data, &dot_prod);
     gsl_matrix_set(at_a_matrix, frame1_no, frame1_no, dot_prod);
-    for (std::size_t frame2_no = frame1_no + 1; frame2_no < num_data_points; 
+    for (std::size_t frame2_no = frame1_no + 1; frame2_no < num_data_points;
          ++frame2_no) {
       data.get_next_vector(current_data);
       gsl_blas_daxpy(-1.0, mu, current_data);
@@ -479,7 +479,7 @@ void mfa_t::ppca_solve_fast(vector_data_set_t& data) {
   data.reset();
   gsl_vector_set_zero(mu);
   printf("Computing average..."); fflush(stdout);
-  while(data.get_next_vector(current_data)) {     
+  while(data.get_next_vector(current_data)) {
     gsl_blas_daxpy(1.0, current_data, mu);
     num_data_points++;
   }
@@ -505,7 +505,7 @@ void mfa_t::ppca_solve_fast(vector_data_set_t& data) {
   gsl_matrix_free(at_a_matrix);
 }
 
-bool mfa_t::save(const std::string& path) 
+bool mfa_t::save(const std::string& path)
   const throw(std::runtime_error) {
   assert(initialized);
   FILE* outfile;
@@ -541,7 +541,7 @@ bool mfa_t::save(const std::string& path)
 
 void mfa_t::load(const std::string& path) throw(std::runtime_error) {
   FILE* infile;
-  if ((infile = fopen(path.c_str(), "rb")) == NULL) 
+  if ((infile = fopen(path.c_str(), "rb")) == NULL)
     throw std::runtime_error("Cannot open file for reading");
   // Read the dimensions from the file.
   fread(&n, sizeof(std::size_t), 1, infile);
@@ -551,21 +551,21 @@ void mfa_t::load(const std::string& path) throw(std::runtime_error) {
   initialize(k, m, n, ppca);
   // Read the data from file.
   assert(pi->size == this->k);
-  if (gsl_vector_fread(infile, pi) == GSL_EFAILED) 
+  if (gsl_vector_fread(infile, pi) == GSL_EFAILED)
     throw std::runtime_error("Cannot read pi from file");
   assert(sigma->size == this->n && !ppca ||
          sigma->size == 1 && ppca);
-  if (gsl_vector_fread(infile, sigma) == GSL_EFAILED) 
+  if (gsl_vector_fread(infile, sigma) == GSL_EFAILED)
     throw std::runtime_error("Cannot read noise variance from file");
   for (std::size_t i = 0; i < k; ++i) {
     fa_info_t* fa_info_ptr = this->fa_ptr_vec[i];
     gsl_vector* mu = fa_info_ptr->mu;
     gsl_matrix* W = fa_info_ptr->W;
     assert(mu->size == n);
-    if (gsl_vector_fread(infile, mu) == GSL_EFAILED) 
+    if (gsl_vector_fread(infile, mu) == GSL_EFAILED)
       throw std::runtime_error("Cannot read average data from file");
     assert(W->size1 == n && W->size2 == m);
-    if (gsl_matrix_fread(infile, W) == GSL_EFAILED) 
+    if (gsl_matrix_fread(infile, W) == GSL_EFAILED)
       throw std::runtime_error("Cannot read weight matrix from file");
   }
   fclose(infile);
@@ -623,7 +623,7 @@ void mfa_t::get_expected_data(const gsl_vector* data,
   std::size_t num_hidden = compute_permutation(n_permutation, hidden_mask);
   gsl_permutation_inverse(n_permutation_inv, n_permutation);
   gsl_permute_vector(n_permutation, current_data);
-  
+
   if (!ppca) {
     gsl_permute_vector(n_permutation, sigma);
     gsl_permute_vector(n_permutation, sigma_inv);
@@ -634,8 +634,8 @@ void mfa_t::get_expected_data(const gsl_vector* data,
     gsl_vector* mu   = fa_ptr_vec[j]->mu;
     gsl_matrix* W    = fa_ptr_vec[j]->W;
     permute_parameters(j, n_permutation);
-    this->compute_M(j, num_hidden); 
-    this->compute_q(j, current_data, num_hidden); 
+    this->compute_M(j, num_hidden);
+    this->compute_q(j, current_data, num_hidden);
     //now that we have our M and q, unpermute the paramters
     //gets the expected_x
     gsl_linalg_LU_solve(this->M_lu, this->m_permutation, this->q, expected_x);
@@ -679,7 +679,7 @@ void mfa_t::print_mu_to_file(const std::size_t j,
     exit(EXIT_FAILURE);
   }
   gsl_vector* mu  = fa_ptr_vec[j]->mu;
-  for (std::size_t i = 0; i < n; ++i) 
+  for (std::size_t i = 0; i < n; ++i)
     fprintf(outfile, "%.8lf\n", gsl_vector_get(mu, i));
   fclose(outfile);
 }
@@ -694,14 +694,14 @@ void mfa_t::print_sigma_to_file(const std::string& file_name) const {
   if (ppca) {
     fprintf(outfile, "%.8lf\n", gsl_vector_get(sigma, 0));
   } else {
-    for (std::size_t i = 0; i < n; ++i) 
+    for (std::size_t i = 0; i < n; ++i)
       fprintf(outfile, "%.8lf\n", gsl_vector_get(sigma, i));
   }
   fclose(outfile);
 }
 
 //======================== mfa_t protected ==================================
-void mfa_t::initialize(std::size_t k, std::size_t m, 
+void mfa_t::initialize(std::size_t k, std::size_t m,
                               std::size_t n, bool ppca) {
   prng.seed(3);
   this->k = k;
@@ -767,10 +767,10 @@ void mfa_t::initialize(std::size_t k, std::size_t m,
     gsl_vector_set_zero(fa_ptr_vec[i]->mu);
     //add small noise to all the W parameters
     if (k > 1) {
-      for (std::size_t row = 0; row < n; row++) 
+      for (std::size_t row = 0; row < n; row++)
         for (std::size_t col = 0; col < m; col++)
           gsl_matrix_set(fa_ptr_vec[i]->W, row, col, 1.0 + sample_normal(1.0));
-    } else 
+    } else
       gsl_matrix_set_all(fa_ptr_vec[i]->W, 1.0);
   }
   gsl_vector_set_all(sigma, 1.0);
@@ -780,7 +780,7 @@ void mfa_t::initialize(std::size_t k, std::size_t m,
   initialized = true;
 }
 
-void mfa_t::ppca_svd_solve(gsl_matrix* at_a_matrix, 
+void mfa_t::ppca_svd_solve(gsl_matrix* at_a_matrix,
                                   vector_data_set_t& data,
                                   const std::size_t num_data_points) {
   fa_info_t* fa_info_ptr = this->fa_ptr_vec[0];
@@ -830,7 +830,7 @@ void mfa_t::ppca_svd_solve(gsl_matrix* at_a_matrix,
   printf("Done!\n");
 }
 
-std::size_t mfa_t::compute_permutation(gsl_permutation* permutation, 
+std::size_t mfa_t::compute_permutation(gsl_permutation* permutation,
                                               const gsl_vector* data) {
   //make sure we have the right sized data
   assert(data->size == permutation->size);
@@ -838,7 +838,7 @@ std::size_t mfa_t::compute_permutation(gsl_permutation* permutation,
   gsl_permutation_init(permutation);
   int obs_tail = permutation->size-1;
   //have obs_tail point to the first element from the end that is hidden
-  while (obs_tail >= 0 && !isnan(gsl_vector_get(data, obs_tail))) {
+  while (obs_tail >= 0 && !std::isnan(gsl_vector_get(data, obs_tail))) {
     obs_tail--;
   }
   if (obs_tail < 0)
@@ -848,26 +848,26 @@ std::size_t mfa_t::compute_permutation(gsl_permutation* permutation,
   int num_hidden = 0;
   while(true) {
     const double value = gsl_vector_get(data, num_hidden);
-    if (!isnan(value)) {
+    if (!std::isnan(value)) {
       gsl_permutation_swap(permutation, num_hidden, obs_tail);
       num_hidden++;
       obs_tail--;
       while (obs_tail > num_hidden
-             && !isnan(gsl_vector_get(data, obs_tail))) {
+             && !std::isnan(gsl_vector_get(data, obs_tail))) {
         obs_tail--;
       }
     } else
       num_hidden++;
     if (obs_tail <= num_hidden) {
-      if (num_hidden < static_cast<int>(data->size) && isnan(num_hidden)) 
-        return static_cast<std::size_t>(num_hidden + 1); 
+      if (num_hidden < static_cast<int>(data->size) && std::isnan(num_hidden))
+        return static_cast<std::size_t>(num_hidden + 1);
       else
-        return static_cast<std::size_t>(num_hidden); 
+        return static_cast<std::size_t>(num_hidden);
     }
   }
 }
 
-std::size_t mfa_t::compute_permutation(gsl_permutation* permutation, 
+std::size_t mfa_t::compute_permutation(gsl_permutation* permutation,
                                               const std::vector<bool>& hidden_mask) {
   //make sure we have the right sized mask
   assert(hidden_mask.size() == permutation->size);
@@ -892,11 +892,11 @@ std::size_t mfa_t::compute_permutation(gsl_permutation* permutation,
     } else
       num_hidden++;
     if (obs_tail <= num_hidden) {
-      if (num_hidden < static_cast<int>(hidden_mask.size()) 
+      if (num_hidden < static_cast<int>(hidden_mask.size())
           && hidden_mask[num_hidden])
-        return static_cast<std::size_t>(num_hidden + 1); 
+        return static_cast<std::size_t>(num_hidden + 1);
       else
-        return static_cast<std::size_t>(num_hidden); 
+        return static_cast<std::size_t>(num_hidden);
     }
   }
 }
@@ -914,7 +914,7 @@ void mfa_t::permute_parameters(const std::size_t j,
   }
 }
 
-void 
+void
 mfa_t::permute_sufficient_statistics(const gsl_permutation* permutation) {
   gsl_vector* expected_y  = mfa_scratch_ptr->expected_y;
   gsl_matrix* expected_yx = mfa_scratch_ptr->expected_yx;
@@ -936,14 +936,14 @@ void mfa_t::compute_mu(vector_data_set_t& data) {
   gsl_vector_set_zero(current_data);
   gsl_vector_set_zero(count);
   data.reset();
-  //accumlates all the data points and keeps track of how many 
+  //accumlates all the data points and keeps track of how many
   //times each data point is observed
   while(data.get_next_vector(next_vector)) {
     for (std::size_t i = 0; i < n; ++i) {
       double next_data = gsl_vector_get(next_vector, i);
-      if (isnan(next_data))
+      if (std::isnan(next_data))
         continue;
-      gsl_vector_set(current_data, i, 
+      gsl_vector_set(current_data, i,
                      gsl_vector_get(current_data, i) + next_data);
       gsl_vector_set(count, i,
                      gsl_vector_get(count, i) + 1.0);
@@ -954,7 +954,7 @@ void mfa_t::compute_mu(vector_data_set_t& data) {
   //if so, it sets them to be 0
   for (std::size_t i = 0; i < n; ++i) {
     double cur_data_pt = gsl_vector_get(current_data, i);
-    if (isnan(cur_data_pt)) {
+    if (std::isnan(cur_data_pt)) {
       gsl_vector_set(current_data, i, 0);
       assert(gsl_vector_get(count, i) == 0);
     }
@@ -986,9 +986,9 @@ void mfa_t::compute_M(const std::size_t j,
     M_j_inv = this->M_inv;
     mj_permutation = this->m_permutation;
   }
-  gsl_matrix_view W_obs 
+  gsl_matrix_view W_obs
     = gsl_matrix_submatrix(W, num_hidden, 0, n - num_hidden, m);
-  if (ppca) { 
+  if (ppca) {
     gsl_blas_dgemm(CblasTrans, CblasNoTrans, 1.0,
                    &W_obs.matrix, &W_obs.matrix, 0.0, M_j);
     double s = gsl_vector_get(sigma_inv, 0);
@@ -1032,27 +1032,27 @@ void mfa_t::compute_q(const std::size_t j,
   gsl_vector* q_j;
   if (to_scratch)
     q_j = fa_factor_scratch_vec[j]->q_j;
-  else 
+  else
     q_j = this->q;
-  gsl_matrix_view W_obs 
+  gsl_matrix_view W_obs
     = gsl_matrix_submatrix(W, num_hidden, 0, n - num_hidden, m);
-  gsl_vector_view obs_by_1_scratch = 
+  gsl_vector_view obs_by_1_scratch =
     gsl_vector_subvector(n_by_1_scratch, num_hidden, n - num_hidden);
-  gsl_vector_view mu_obs = 
+  gsl_vector_view mu_obs =
     gsl_vector_subvector(mu, num_hidden, n - num_hidden);
-  gsl_vector_const_view data_obs = 
+  gsl_vector_const_view data_obs =
     gsl_vector_const_subvector(data, num_hidden, n - num_hidden);
   gsl_blas_dcopy(&data_obs.vector, &obs_by_1_scratch.vector);
   gsl_vector_sub(&obs_by_1_scratch.vector, &mu_obs.vector);
   if (ppca) {
     gsl_blas_dgemv(CblasTrans, 1.0, &W_obs.matrix, &obs_by_1_scratch.vector,
                    0.0, q_j);
-    double s = gsl_vector_get(sigma_inv, 0); 
+    double s = gsl_vector_get(sigma_inv, 0);
     gsl_blas_dscal(s, q_j);
   } else {
     for (std::size_t row = num_hidden; row < n; ++row) {
       double s = gsl_vector_get(sigma_inv, row);
-      gsl_vector_set(n_by_1_scratch, row, 
+      gsl_vector_set(n_by_1_scratch, row,
                      gsl_vector_get(n_by_1_scratch, row) * s);
     }
     gsl_blas_dgemv(CblasTrans, 1.0, &W_obs.matrix, &obs_by_1_scratch.vector,
@@ -1060,8 +1060,8 @@ void mfa_t::compute_q(const std::size_t j,
   }
 }
 
-void 
-mfa_t::compute_sufficient_statistics(const std::size_t j, 
+void
+mfa_t::compute_sufficient_statistics(const std::size_t j,
                                             const gsl_vector* data,
                                             const std::size_t num_hidden) {
   //requires that M_lu, M_inv and q have been computed
@@ -1086,30 +1086,30 @@ mfa_t::compute_sufficient_statistics(const std::size_t j,
   //observed data
   gsl_vector_const_view data_obs =
     gsl_vector_const_subvector(data, num_hidden, n - num_hidden);
-  gsl_vector_view expected_y_obs = 
+  gsl_vector_view expected_y_obs =
     gsl_vector_subvector(expected_y, num_hidden, n - num_hidden);
-  gsl_vector_view expected_yy_obs = 
+  gsl_vector_view expected_yy_obs =
     gsl_vector_subvector(expected_yy, num_hidden, n - num_hidden);
   gsl_blas_dcopy(&data_obs.vector, &expected_y_obs.vector);
   gsl_blas_dcopy(&expected_y_obs.vector, &expected_yy_obs.vector);
   gsl_vector_mul(&expected_yy_obs.vector, &expected_y_obs.vector);
-  
-  gsl_matrix_view expected_yx_obs = 
+
+  gsl_matrix_view expected_yx_obs =
     gsl_matrix_submatrix(expected_yx, num_hidden, 0, n - num_hidden, m);
   gsl_matrix_set_zero(&expected_yx_obs.matrix);
   if (num_hidden > 0) {
-    gsl_matrix_view W_hidden 
+    gsl_matrix_view W_hidden
       = gsl_matrix_submatrix(W, 0, 0, num_hidden, m);
-    gsl_vector_view mu_hidden = 
+    gsl_vector_view mu_hidden =
       gsl_vector_subvector(mu, 0, num_hidden);
-    gsl_vector_view expected_y_hidden = 
+    gsl_vector_view expected_y_hidden =
       gsl_vector_subvector(expected_y, 0, num_hidden);
     gsl_blas_dcopy(&mu_hidden.vector, &expected_y_hidden.vector);
-    gsl_blas_dgemv(CblasNoTrans, 1.0, &W_hidden.matrix, expected_x, 
+    gsl_blas_dgemv(CblasNoTrans, 1.0, &W_hidden.matrix, expected_x,
                    1.0, &expected_y_hidden.vector);
-    gsl_matrix_view expected_yx_hidden = 
+    gsl_matrix_view expected_yx_hidden =
       gsl_matrix_submatrix(expected_yx, 0, 0, num_hidden, m);
-    gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0, 
+    gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0,
                    &W_hidden.matrix, M_j_inv,
                    0.0, &expected_yx_hidden.matrix);
     //<yy^T> = sigma + W_i * <xx^t> * W_i' + 2 * W_i * <x> * mu_i + mu_i^2
@@ -1120,20 +1120,20 @@ mfa_t::compute_sufficient_statistics(const std::size_t j,
       w_row = gsl_matrix_row(W, i);
       mu_i = gsl_vector_get(mu, i);
       gsl_blas_ddot(&w_row.vector, expected_x, &a);
-      gsl_blas_dgemv(CblasNoTrans, 1.0, expected_xx, 
+      gsl_blas_dgemv(CblasNoTrans, 1.0, expected_xx,
                      &w_row.vector, 0.0, m_by_1_scratch);
       gsl_blas_ddot(&w_row.vector, m_by_1_scratch, &b);
       if (!ppca)
         s = gsl_vector_get(sigma, i);
       gsl_vector_set(expected_yy, i, s + b + 2.0 * a * mu_i + mu_i * mu_i);
-    } 
+    }
   }
   // Let <yx^T> += <y><x>^T
   gsl_blas_dger(1.0, expected_y, expected_x, expected_yx);
-  return;  
+  return;
 }
 
-void 
+void
 mfa_t::accumulate_sufficient_statistics(const std::size_t j,
                                                const double h) {
   gsl_matrix* expected_yx = mfa_scratch_ptr->expected_yx;
@@ -1165,8 +1165,8 @@ mfa_t::accumulate_sufficient_statistics(const std::size_t j,
   fa_factor_scratch_ptr->h1 += h;
 }
 
-void mfa_t::recompute_parameters(const std::size_t j, 
-                                        const std::size_t N, 
+void mfa_t::recompute_parameters(const std::size_t j,
+                                        const std::size_t N,
                                         const double eta) {
   fa_info_t* fa_info_ptr = fa_ptr_vec[j];
   gsl_matrix* W  = fa_info_ptr->W;
@@ -1192,16 +1192,16 @@ void mfa_t::recompute_parameters(const std::size_t j,
   //compute \f$[W; mu] = W1 * W2^{-1}\f$
   int sign;
   gsl_linalg_LU_decomp(W2, mfa_scratch_ptr->m1_permutation, &sign);
-  gsl_linalg_LU_invert(W2, mfa_scratch_ptr->m1_permutation, 
+  gsl_linalg_LU_invert(W2, mfa_scratch_ptr->m1_permutation,
                        mfa_scratch_ptr->m1_by_m1_scratch);
   gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0,
-                 W1, mfa_scratch_ptr->m1_by_m1_scratch, 0.0, 
+                 W1, mfa_scratch_ptr->m1_by_m1_scratch, 0.0,
                  mfa_scratch_ptr->n_by_m1_scratch);
   //copy corresponding parts into \f$W\f$ and \f$\mu\f$
-  gsl_matrix_view W_new = 
+  gsl_matrix_view W_new =
     gsl_matrix_submatrix(mfa_scratch_ptr->n_by_m1_scratch, 0, 0, n, m);
   gsl_matrix_memcpy(W, &W_new.matrix);
-  gsl_vector_view mu_new = 
+  gsl_vector_view mu_new =
     gsl_matrix_column(mfa_scratch_ptr->n_by_m1_scratch, m);
   gsl_blas_dcopy(&mu_new.vector, mu);
   // recompute pi_i = h1 / N
@@ -1223,7 +1223,7 @@ void mfa_t::recompute_parameters(const std::size_t j,
 }
 
 void mfa_t::recompute_sigma(const std::size_t N, const double eta) {
-  //minimum value to set sigma at.  Since we are restricting the form of 
+  //minimum value to set sigma at.  Since we are restricting the form of
   //sigma, we may have negative diagonal elements, which is a result of
   //our model being incorrect or a set of bad paramters in EM.
   //TODO: could make this a paramter
@@ -1245,7 +1245,7 @@ void mfa_t::recompute_sigma(const std::size_t N, const double eta) {
       w1_row    = gsl_matrix_row(&W1_yx.matrix, i);
       w_new_row = gsl_matrix_row(W, i);
       gsl_blas_ddot(&w_new_row.vector, &w1_row.vector, &dot_prod);
-      result = gsl_vector_get(sigma1, i) - 
+      result = gsl_vector_get(sigma1, i) -
         gsl_vector_get(&W1_y.vector, i) * gsl_vector_get(mu, i) - dot_prod;
       gsl_vector_set(n_by_1_scratch, i,  result);
     }
@@ -1296,7 +1296,7 @@ void mfa_t::recompute_sigma(const std::size_t N, const double eta) {
         w1_row    = gsl_matrix_row(&W1_yx.matrix, i);
         w_new_row = gsl_matrix_row(W, i);
         gsl_blas_ddot(&w_new_row.vector, &w1_row.vector, &dot_prod);
-        result = gsl_vector_get(sigma1, i) - 
+        result = gsl_vector_get(sigma1, i) -
           gsl_vector_get(&W1_y.vector, i) * gsl_vector_get(mu, i) - dot_prod;
         gsl_vector_set(n_by_1_scratch, i,  result);
       }
@@ -1352,7 +1352,7 @@ double mfa_t::log_likelihood(const std::size_t j,
   gsl_vector* q_j;
   gsl_permutation* mj_permutation;
   int sign;
-  
+
   if (from_scratch) {
     fa_factor_scratch_t* fa_factor_scratch_ptr = fa_factor_scratch_vec[j];
     M_j_lu         = fa_factor_scratch_ptr->M_j_lu;
@@ -1378,9 +1378,9 @@ double mfa_t::log_likelihood(const std::size_t j,
   gsl_vector* mu = this->fa_ptr_vec[j]->mu;
   gsl_vector_const_view data_obs =
     gsl_vector_const_subvector(data, num_hidden, n - num_hidden);
-  gsl_vector_view mu_obs = 
+  gsl_vector_view mu_obs =
     gsl_vector_subvector(mu, num_hidden, n - num_hidden);
-  gsl_vector_view obs_by_1_scratch = 
+  gsl_vector_view obs_by_1_scratch =
     gsl_vector_subvector(n_by_1_scratch, num_hidden, n - num_hidden);
 
   gsl_blas_dcopy(&data_obs.vector, &obs_by_1_scratch.vector);
@@ -1389,7 +1389,7 @@ double mfa_t::log_likelihood(const std::size_t j,
     gsl_blas_ddot(&obs_by_1_scratch.vector, &obs_by_1_scratch.vector, &b);
     double s = gsl_vector_get(sigma, 0);
     b /= s;
-    log_det_Sigma = (n - num_hidden) * log(s); 
+    log_det_Sigma = (n - num_hidden) * log(s);
   } else {
     double d, s;
     for (std::size_t i = num_hidden; i < n; ++i) {
@@ -1405,7 +1405,7 @@ double mfa_t::log_likelihood(const std::size_t j,
   double z = -0.5 * (// The constant below is ln(2\pi)
     (n - num_hidden) * 1.837877066409
     // This is log(det(W W^T + \Sigma))
-    + log_det_Sigma 
+    + log_det_Sigma
     + log(gsl_linalg_LU_det(M_j_lu, sign)));
   // The overall log likelihood is the sum of z and e.
   return e + z;
@@ -1414,12 +1414,12 @@ double mfa_t::log_likelihood(const std::size_t j,
 double mfa_t::sample_normal(const double sigma) {
   // set up the normal distribution
   boost::normal_distribution<double> norm_dist(0.0, sigma);
-  
+
   // bind random number generator to distribution, forming a function
-  boost::variate_generator<boost::mt19937&, 
-    boost::normal_distribution<double> > 
+  boost::variate_generator<boost::mt19937&,
+    boost::normal_distribution<double> >
     normal_sampler(prng, norm_dist);
-  
+
   // sample from the normal distribution
   return normal_sampler();
 }

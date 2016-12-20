@@ -330,7 +330,7 @@ bool simple_convex_hull(const cv::Mat &img, const cv::Rect &roi, const int pixVa
 	if (convexHull.empty()) return false;
 
 #if 1
-    // comment this out if you do not want approximation
+    // Comment this out if you do not want approximation
 	cv::approxPolyDP(convexHull, convexHull, 3.0, true);
 #endif
 
@@ -403,7 +403,7 @@ void find_convexity_defect(CvMemStorage *storage, const std::vector<cv::Point> &
 	}
 
 	// FIXME [modify] >> Oops !!! too stupid
-	// convex hull is already calculated by cv::convexHull()
+	// Convex hull is already calculated by cv::convexHull()
 	CvSeq *hullSeq = cvConvexHull2(contourSeq, NULL, CV_CLOCKWISE, 0);
 
 	CvSeq *convexityDefectSeq = cvConvexityDefects(contourSeq, hullSeq, storage);
@@ -415,7 +415,7 @@ void find_convexity_defect(CvMemStorage *storage, const std::vector<cv::Point> &
 #if 0
 		convexityDefects.push_back(std::vector<CvConvexityDefect>(defects, defects + convexityDefectSeq->total));
 #else
-		// eliminate interior convexity defect
+		// Eliminate interior convexity defect
 		// FIXME [modify] >> Oops !!! stupid implementation
 		std::vector<CvConvexityDefect> dfts;
 		dfts.reserve(convexityDefectSeq->total);
@@ -446,7 +446,7 @@ void find_convexity_defect(CvMemStorage *storage, const std::vector<cv::Point> &
 				pt1 = pt2;
 			}
 #else
-			// FIXME [check] >> is it really correct?
+			// FIXME [check] >> Is it really correct?
 			cv::Point pt1, pt2;
 
 			std::vector<cv::Point>::const_iterator it = convexHull.begin();
@@ -476,7 +476,7 @@ void find_convexity_defect(CvMemStorage *storage, const std::vector<cv::Point> &
 
 		delete [] defects;
 
-		// get next contour
+		// Get next contour
 		convexityDefectSeq = convexityDefectSeq->h_next;
 	}
 
@@ -487,7 +487,7 @@ void find_convexity_defect(CvMemStorage *storage, const std::vector<cv::Point> &
 			defectPts.push_back(cv::Point(itDefect->depth_point->x, itDefect->depth_point->y));
 
 	// FIXME [restore] >>
-	// sort convexity defect contour
+	// Sort convexity defect contour
 	//cv::convexHull(cv::Mat(defectPts), convexityDefectPoints, false);
 	convexityDefectPoints.swap(defectPts);
 }
@@ -550,7 +550,7 @@ void draw_histogram_2D(const cv::MatND &hist, const int horzBinCount, const int 
 #endif
 }
 
-// the function normalizes the histogram bins by scaling them, such that the sum of the bins becomes equal to factor
+// The function normalizes the histogram bins by scaling them, such that the sum of the bins becomes equal to factor
 void normalize_histogram(cv::MatND &hist, const double factor)
 {
 #if 0
@@ -585,7 +585,7 @@ void mser(IplImage *srcImage, IplImage *grayImage)
 
 	std::cout << "MSER extracted " << contours->total << " contours in " << (t / ((double)cvGetTickFrequency() * 1000.0)) << " ms" << std::endl;
 
-	// draw MSER with different color
+	// Draw MSER with different color
 	//unsigned char *imgptr = (unsigned char *)srcImage->imageData;
 	//for (int i = contours->total - 1; i >= 0; --i)
 	//{
@@ -599,8 +599,8 @@ void mser(IplImage *srcImage, IplImage *grayImage)
 	//	}
 	//}
 
-	// find ellipse ( it seems cvFitEllipse2 have error or sth? )
-	// FIXME [check] >> there are some errors. have to compare original source (mser_sample.cpp)
+	// Find ellipse ( it seems cvFitEllipse2 have error or sth? )
+	// FIXME [check] >> There are some errors. have to compare original source (mser_sample.cpp)
 	for (int i = 0; i < contours->total; ++i)
 	{
 		const CvContour *contour = *(CvContour **)cvGetSeqElem(contours, i);
@@ -613,7 +613,7 @@ void mser(IplImage *srcImage, IplImage *grayImage)
 	cvClearMemStorage(storage);
 }
 #else
-// [ref] ${OPENCV_ROOT}/sample/c/mser_sample.cpp
+// REF [file] >> ${OPENCV_ROOT}/sample/c/mser_sample.cpp
 void mser(cv::Mat &srcImage, const cv::Mat &grayImage)
 {
 	const cv::Scalar colors[] =
@@ -666,8 +666,8 @@ void mser(cv::Mat &srcImage, const cv::Mat &grayImage)
 
 	std::cout << "MSER extracted " << contours.size() << " contours in " << (t / ((double)cv::getTickFrequency() * 1000.0)) << " ms" << std::endl;
 
-	// find ellipse ( it seems cvFitEllipse2 have error or sth? )
-	// FIXME [check] >> there are some errors. have to compare original source (mser_sample.cpp)
+	// Find ellipse ( it seems cvFitEllipse2 have error or sth? )
+	// FIXME [check] >> There are some errors. have to compare original source (mser_sample.cpp)
     for (int i = (int)contours.size() - 1; i >= 0; --i)
 	{
         const std::vector<cv::Point> &r = contours[i];
@@ -677,7 +677,7 @@ void mser(cv::Mat &srcImage, const cv::Mat &grayImage)
             srcImage.at<cv::Vec3b>(pt) = bcolors[i % 9];
         }
 
-        // find ellipse (it seems cvfitellipse2 have error or sth?)
+        // Find ellipse (it seems cvfitellipse2 have error or sth?).
         cv::RotatedRect box = cv::fitEllipse(r);
 
         box.angle = (float)CV_PI / 2 - box.angle;
@@ -703,27 +703,27 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 	{
 		IplImage *tmp_img = cvCloneImage(grayImage);
 
-		// make a average filtering.
+		// Make a average filtering.
 		cvSmooth(tmp_img, img, CV_BLUR, 31, 15);
 		//iplBlur(tmp_img, img, 31, 31, 15, 15);  // don't use IPL.
 
-		// do a threshold.
+		// Do a threshold.
 		cvThreshold(img, tmp_img, threshold, 255, CV_THRESH_BINARY);
 		//iplThreshold(img, tmp_img, threshold);  // don't use IPL.
 
-		// expand the thresholded image of ones - smoothing the edge.
-		// move start position of snake out since there are no balloon force.
+		// Expand the thresholded image of ones - smoothing the edge.
+		// Move start position of snake out since there are no balloon force.
 		cvDilate(tmp_img, img, NULL, 3);
 
 		cvReleaseImage(&tmp_img);
 	}
 
-	// find the contours.
+	// Find the contours.
 	CvMemStorage *storage = cvCreateMemStorage(0);
 	CvSeq *contour = NULL;
 	cvFindContours(img, storage, &contour, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
 
-	// run through the found coutours.
+	// Run through the found contours.
 	std::vector<CvPoint> points(NUMBER_OF_SNAKE_POINTS, cvPoint(0, 0));
 	while (contour)
 	{
@@ -732,13 +732,13 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 			//memset(points, 0, NUMBER_OF_SNAKE_POINTS * sizeof(CvPoint));
 
 			cvSmooth(grayImage, img, CV_BLUR, 7, 3);
-			//iplBlur(grayImage, img, 7, 7, 3, 3);  // don't use IPL.
+			//iplBlur(grayImage, img, 7, 7, 3, 3);  // Don't use IPL.
 
 #if 0
 			std::vecto<CvPoint> pts(contour->total);
-			cvCvtSeqToArray(contour, &pts[0], CV_WHOLE_SEQ);  // copy the contour to an array.
+			cvCvtSeqToArray(contour, &pts[0], CV_WHOLE_SEQ);  // Copy the contour to an array.
 
-			// number of jumps between the desired points (downsample only!).
+			// Number of jumps between the desired points (downsample only!).
 			const int stride = int(contour->total / NUMBER_OF_SNAKE_POINTS);
 			for (int i = 0; i < NUMBER_OF_SNAKE_POINTS; ++i)
 			{
@@ -755,16 +755,16 @@ void snake(IplImage *srcImage, IplImage *grayImage)
 			}
 #endif
 
-			// iterate snake.
+			// Iterate snake.
 			// FIXME [correct] >> Compile-time error.
 			//cvSnakeImage(img, &points[0], NUMBER_OF_SNAKE_POINTS, &alpha, &beta, &gamma, CV_VALUE, win, term_criteria, use_gradient);
 
-			// draw snake on image.
+			// Draw snake on image.
 			CvPoint *points_ptr = (CvPoint *)&points[0];
 			cvPolyLine(srcImage, (CvPoint **)points_ptr, &NUMBER_OF_SNAKE_POINTS, 1, 1, CV_RGB(255, 0, 0), 3, 8, 0);
 		}
 
-		// get next contours.
+		// Get next contours.
 		contour = contour->h_next;
 	}
 
@@ -785,14 +785,14 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
 
 		cv::Mat binary_img;
 
-		// make a average filtering.
+		// Make a average filtering.
 		cv::blur(gray_img, binary_img, cv::Size(31, 15));
 
-		// do a threshold.
+		// Do a threshold.
 		cv::threshold(binary_img, binary_img, threshold, 255, cv::THRESH_BINARY);
 
-		// expand the thressholded image of ones - smoothing the edge.
-		// move start position of snake out since there are no ballon force.
+		// Expand the thressholded image of ones - smoothing the edge.
+		// Move start position of snake out since there are no ballon force.
 		{
 			const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
 			cv::dilate(binary_img, binary_img, selement, cv::Point(-1, -1), 3);
@@ -804,7 +804,7 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
 
 	const CvTermCriteria term_criteria = cvTermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 100, 1.0);
 
-	// run through the found coutours.
+	// Run through the found contours.
 	const size_t &numPts = contour.size();
 	const size_t numSnakePts = 0 == numSnakePoints ? numPts : numSnakePoints;
 	if (numPts >= numSnakePts)
@@ -821,10 +821,11 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
 			points[i] = cvPoint(pt.x, pt.y);
 		}
 
-		// iterate snake.
+		// Iterate snake.
 #if defined(__GNUC__)
+		// FIXME [correct] >> Compile-time error.
         IplImage blurred_img_ipl = (IplImage)blurred_img;
-		cvSnakeImage(&blurred_img_ipl, &points[0], numSnakePts, (float *)&alpha, (float *)&beta, (float *)&gamma, CV_VALUE, win, term_criteria, use_gradient ? 1 : 0);
+		//cvSnakeImage(&blurred_img_ipl, &points[0], numSnakePts, (float *)&alpha, (float *)&beta, (float *)&gamma, CV_VALUE, win, term_criteria, use_gradient ? 1 : 0);
 #else
 		// FIXME [correct] >> Compile-time error.
 		//cvSnakeImage(&(IplImage)blurred_img, &points[0], numSnakePts, (float *)&alpha, (float *)&beta, (float *)&gamma, CV_VALUE, win, term_criteria, use_gradient ? 1 : 0);

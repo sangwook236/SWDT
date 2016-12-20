@@ -1,7 +1,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include <ccv/ccv.h>
+#include <ccv.h>
 #ifdef __cplusplus
 }
 #endif

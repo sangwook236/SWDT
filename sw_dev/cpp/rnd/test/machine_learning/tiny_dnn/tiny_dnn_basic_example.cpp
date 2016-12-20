@@ -49,7 +49,7 @@ void convnet_sample(const std::string& data_dir_path)
 	tiny_dnn::parse_mnist_images(data_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 2, 2);
 
 	std::cout << "Start training..." << std::endl;
-	
+
 	tiny_dnn::progress_display disp(train_images.size());
     tiny_dnn::timer t;
     int minibatch_size = 10;
@@ -70,10 +70,10 @@ void convnet_sample(const std::string& data_dir_path)
     };
 
     auto on_enumerate_minibatch = [&]()
-	{ 
-        disp += minibatch_size; 
+	{
+        disp += minibatch_size;
     };
-    
+
     // Training.
 	nn.train<tiny_dnn::mse>(optimizer, train_images, train_labels, minibatch_size, 20, on_enumerate_minibatch, on_enumerate_epoch);
 
@@ -84,7 +84,7 @@ void convnet_sample(const std::string& data_dir_path)
 	// Test and show results.
 	nn.test(test_images, test_labels).print_detail(std::cout);
 
-	std::cout << "Eend testing..." << std::endl;
+	std::cout << "End testing..." << std::endl;
 
     // Save networks.
     std::ofstream ofs("LeNet-weights");
@@ -95,7 +95,7 @@ void convnet_sample(const std::string& data_dir_path)
 // Learning 3-Layer Networks.
 void mlp_sample(const std::string& data_dir_path)
 {
-    const tiny_dnn::cnn_size_t num_hidden_units = 500;
+    const tiny_dnn::serial_size_t num_hidden_units = 500;
 
 #if defined(_MSC_VER) && _MSC_VER < 1800
     // Initializer-list is not supported.
@@ -139,9 +139,9 @@ void mlp_sample(const std::string& data_dir_path)
     };
 
     auto on_enumerate_data = [&]()
-	{ 
-        ++disp; 
-    };  
+	{
+        ++disp;
+    };
 
 	nn.train<tiny_dnn::mse>(optimizer, train_images, train_labels, 1, 20, on_enumerate_data, on_enumerate_epoch);
 
@@ -223,9 +223,9 @@ void dropout_sample(const std::string& data_dir_path)
 {
     typedef tiny_dnn::network<tiny_dnn::sequential> Network;
     Network nn;
-    tiny_dnn::cnn_size_t input_dim = 28*28;
-    tiny_dnn::cnn_size_t hidden_units = 800;
-    tiny_dnn::cnn_size_t output_dim = 10;
+    tiny_dnn::serial_size_t input_dim = 28*28;
+    tiny_dnn::serial_size_t hidden_units = 800;
+    tiny_dnn::serial_size_t output_dim = 10;
 	tiny_dnn::gradient_descent optimizer;
 
 	tiny_dnn::fully_connected_layer<tiny_dnn::activation::tan_h> f1(input_dim, hidden_units);
@@ -255,7 +255,7 @@ void dropout_sample(const std::string& data_dir_path)
     auto on_enumerate_epoch = [&]()
 	{
         std::cout << t.elapsed() << "s elapsed." << std::endl;
-  
+
         dropout.set_context(tiny_dnn::net_phase::test);
         tiny_dnn::result res = nn.test(test_images, test_labels);
         dropout.set_context(tiny_dnn::net_phase::train);
