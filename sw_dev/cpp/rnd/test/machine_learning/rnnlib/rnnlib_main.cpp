@@ -3,6 +3,9 @@
 #include <stdexcept>
 
 
+bool verbose = false;
+std::ostream &COUT = std::cout;
+
 namespace {
 namespace local {
 
