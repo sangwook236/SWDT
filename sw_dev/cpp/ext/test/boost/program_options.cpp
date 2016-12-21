@@ -96,6 +96,8 @@ bool program_options(int argc, char *argv[])
 #endif
 	//boost::program_options::store(boost::program_options::parse_command_line(argc, argv, cmdline_options), vm);
 
+	boost::program_options::notify(vm);
+
 	//---------------------------------------------------------------------------------------------
 	// From file.
 
@@ -104,9 +106,9 @@ bool program_options(int argc, char *argv[])
 	{
 		boost::program_options::store(boost::program_options::parse_config_file(stream, config_file_options), vm);
 		stream.close();
-	}
 
-	boost::program_options::notify(vm);
+		boost::program_options::notify(vm);
+	}
 
 	//---------------------------------------------------------------------------------------------
 	// Step #5
