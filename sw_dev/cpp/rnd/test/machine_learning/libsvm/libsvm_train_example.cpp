@@ -47,7 +47,7 @@ bool read_problem(const char *filename, struct svm_problem &prob, struct svm_par
 
 	if (fp == NULL)
 	{
-		std::cout << "can't open input file " << filename << std::endl;
+		std::cout << "Can't open input file " << filename << std::endl;
 		return false;
 	}
 
@@ -58,13 +58,13 @@ bool read_problem(const char *filename, struct svm_problem &prob, struct svm_par
 	char *line = (char *)malloc(sizeof(char) * max_line_len);
 	while (readline(fp, line, max_line_len) != NULL)
 	{
-		char *p = strtok(line, " \t");  // label
+		char *p = strtok(line, " \t");  // Label.
 
 		// features
 		while (1)
 		{
 			p = strtok(NULL, " \t");
-			if (p == NULL || *p == '\n')  // check '\n' as ' ' may be after the last feature
+			if (p == NULL || *p == '\n')  // Check '\n' as ' ' may be after the last feature.
 				break;
 			++elements;
 		}
@@ -81,11 +81,11 @@ bool read_problem(const char *filename, struct svm_problem &prob, struct svm_par
 	j = 0;
 	for (i = 0; i < prob.l; ++i)
 	{
-		inst_max_index = -1;  // strtol gives 0 if wrong format, and precomputed kernel has <index> start from 0
+		inst_max_index = -1;  // Strtol gives 0 if wrong format, and precomputed kernel has <index> start from 0.
 		readline(fp, line, max_line_len);
 		prob.x[i] = &x_space[j];
 		label = strtok(line, " \t\n");
-		if (label == NULL)  // empty line
+		if (label == NULL)  // Empty line.
 		{
 			exit_input_error(i + 1);
 			return false;
@@ -196,25 +196,25 @@ void do_cross_validation(const struct svm_problem &prob, const struct svm_parame
 
 namespace my_libsvm {
 
-// [ref] ${LIBSVM_HOME}/svm-train.c
+// REF [file] >> ${LIBSVM_HOME}/svm-train.c
 void train_example()
 {
 	struct svm_parameter param;
 	param.svm_type = C_SVC;
 	param.kernel_type = RBF;
-	param.degree = 3;  // set degree in kernel function
-	param.gamma = 0;  // set gamma in kernel function. default: 1 / num_features
-	param.coef0 = 0;  // set coef0 in kernel function
-	param.nu = 0.5;  // set the parameter nu of nu-SVC, one-class SVM, and nu-SVR
-	param.cache_size = 100;  // set cache memory size in MB
-	param.C = 1.0;  // set the parameter C of C-SVC, epsilon-SVR, and nu-SVR
-	param.eps = 1e-3;  // set tolerance of termination criterion
-	param.p = 0.1;  // set the epsilon in loss function of epsilon-SVR
-	param.shrinking = 1;  // whether to use the shrinking heuristics, 0 or 1
-	param.probability = 0;  // whether to train a SVC or SVR model for probability estimates, 0 or 1
-	param.nr_weight = 0;  // set the parameter C of class i to weight*C, for C-SVC
-	param.weight_label = NULL;  // set the parameter C of class i to weight*C, for C-SVC
-	param.weight = NULL;  // set the parameter C of class i to weight*C, for C-SVC
+	param.degree = 3;  // Set degree in kernel function.
+	param.gamma = 0;  // Set gamma in kernel function. default: 1 / num_features.
+	param.coef0 = 0;  // Set coef0 in kernel function.
+	param.nu = 0.5;  // Set the parameter nu of nu-SVC, one-class SVM, and nu-SVR.
+	param.cache_size = 100;  // Set cache memory size in MB.
+	param.C = 1.0;  // Set the parameter C of C-SVC, epsilon-SVR, and nu-SVR.
+	param.eps = 1e-3;  // Set tolerance of termination criterion.
+	param.p = 0.1;  // Set the epsilon in loss function of epsilon-SVR.
+	param.shrinking = 1;  // Whether to use the shrinking heuristics, 0 or 1.
+	param.probability = 0;  // Whether to train a SVC or SVR model for probability estimates, 0 or 1.
+	param.nr_weight = 0;  // Set the parameter C of class i to weight*C, for C-SVC.
+	param.weight_label = NULL;  // Set the parameter C of class i to weight*C, for C-SVC.
+	param.weight = NULL;  // Set the parameter C of class i to weight*C, for C-SVC.
 	const bool cross_validation = false;
 	const int nr_fold = 10;
 
@@ -243,7 +243,7 @@ void train_example()
 		struct svm_model *model = svm_train(&prob, &param);
 		if (svm_save_model(model_file_name.c_str(), model))
 		{
-			std::cout << "can't save model to file " << model_file_name << std::endl;
+			std::cout << "Can't save model to file " << model_file_name << std::endl;
 			return;
 		}
 		svm_free_and_destroy_model(&model);

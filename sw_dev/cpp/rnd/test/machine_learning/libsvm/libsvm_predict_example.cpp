@@ -168,7 +168,7 @@ bool predict(FILE *input, FILE *output, const struct svm_model *model, const boo
 
 namespace my_libsvm {
 
-// [ref] ${LIBSVM_HOME}/svm-predict.c
+// REF [file] >> ${LIBSVM_HOME}/svm-predict.c
 void predict_example()
 {
 	const bool predict_probability = false;
@@ -180,21 +180,21 @@ void predict_example()
 	FILE *input = fopen(test_file_name.c_str(), "r");
 	if(input == NULL)
 	{
-		std::cout << "can't open input file " << test_file_name << std::endl;
+		std::cout << "Can't open input file " << test_file_name << std::endl;
 		return;
 	}
 
 	FILE *output = fopen(output_file_name.c_str(), "w");
 	if(output == NULL)
 	{
-		std::cout << "can't open output file " << output_file_name << std::endl;
+		std::cout << "Can't open output file " << output_file_name << std::endl;
 		return;
 	}
 
 	struct svm_model *model = svm_load_model(model_file_name.c_str());
 	if (NULL == model)
 	{
-		std::cout << "can't open model file " << model_file_name << std::endl;
+		std::cout << "Can't open model file " << model_file_name << std::endl;
 		return;
 	}
 

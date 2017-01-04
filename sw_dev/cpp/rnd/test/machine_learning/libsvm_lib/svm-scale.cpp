@@ -37,6 +37,7 @@ long int new_num_nonzeros = 0;
 void output_target(double value);
 void output(int index, double value);
 char* readline(FILE *input);
+int clean_up(FILE *fp_restore, FILE *fp, const char *msg);
 
 int main(int argc,char **argv)
 {
@@ -177,7 +178,8 @@ int main(int argc,char **argv)
 		double target;
 		double value;
 
-		sscanf(p,"%lf",&target);
+		if (sscanf(p,"%lf",&target) != 1)
+			return clean_up(fp_restore, fp, "ERROR: failed to read labels\n");
 		y_max = max(y_max,target);
 		y_min = min(y_min,target);
 		
@@ -218,8 +220,9 @@ int main(int argc,char **argv)
 		
 		if((c = fgetc(fp_restore)) == 'y')
 		{
-			fscanf(fp_restore, "%lf %lf\n", &y_lower, &y_upper);
-			fscanf(fp_restore, "%lf %lf\n", &y_min, &y_max);
+			if(fscanf(fp_restore, "%lf %lf\n", &y_lower, &y_upper) != 2 ||
+			   fscanf(fp_restore, "%lf %lf\n", &y_min, &y_max) != 2)
+				return clean_up(fp_restore, fp, "ERROR: failed to read scaling parameters\n");
 			y_scaling = 1;
 		}
 		else
@@ -227,7 +230,8 @@ int main(int argc,char **argv)
 
 		if (fgetc(fp_restore) == 'x') 
 		{
-			fscanf(fp_restore, "%lf %lf\n", &lower, &upper);
+			if(fscanf(fp_restore, "%lf %lf\n", &lower, &upper) != 2)
+				return clean_up(fp_restore, fp, "ERROR: failed to read scaling parameters\n");
 			while(fscanf(fp_restore,"%d %lf %lf\n",&idx,&fmin,&fmax)==3)
 			{
 				for(i = next_index;i<idx;i++)
@@ -288,7 +292,8 @@ int main(int argc,char **argv)
 		double target;
 		double value;
 		
-		sscanf(p,"%lf",&target);
+		if (sscanf(p,"%lf",&target) != 1)
+			return clean_up(NULL, fp, "ERROR: failed to read labels\n");
 		output_target(target);
 
 		SKIP_TARGET
@@ -313,8 +318,8 @@ int main(int argc,char **argv)
 	if (new_num_nonzeros > num_nonzeros)
 		fprintf(stderr, 
 			"WARNING: original #nonzeros %ld\n"
-			"         new      #nonzeros %ld\n"
-			"Use -l 0 if many original feature values are zeros\n",
+			"       > new      #nonzeros %ld\n"
+			"If feature values are non-negative and sparse, use -l 0 rather than the default -l -1\n",
 			num_nonzeros, new_num_nonzeros);
 
 	free(line);
@@ -377,3 +382,16 @@ void output(int index, double value)
 		new_num_nonzeros++;
 	}
 }
+
+int clean_up(FILE *fp_restore, FILE *fp, const char* msg)
+{
+	fprintf(stderr,	"%s", msg);
+	free(line);
+	free(feature_max);
+	free(feature_min);
+	fclose(fp);
+	if (fp_restore)
+		fclose(fp_restore);
+	return -1;
+}
+
