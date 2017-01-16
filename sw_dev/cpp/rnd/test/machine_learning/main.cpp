@@ -98,18 +98,19 @@ int main(int argc, char *argv[])
 		//	- Structured prediction.
 		//	- Multi-layer perceptrons (MLP).
 		//	- Radial basis function network (RBFN).
+		//	- Deep learning.
 		//	- Clustering.
 		//	- Unsupervised learning.
 		//		Canonical correlation analysis (CCA).
 		//	- Semi-supervised learning.
-		//	- Feature selection.
-		//	- Optimization.
+		//	- Reinforcement learning (RL).
+		//		Least-squares policy iteration (LSPI).
 		//	- Graphical model.
 		//		Bayesian network.
 		//		Inference algorithms.
+		//	- Feature selection.
+		//	- Optimization.
 		//	- Image processing.
-		//	- Reinforcement learning (RL).
-		//		Least-squares policy iteration (LSPI).
 		// REF [library] >> ${SWDT_C++_HOME}/ext/test/general_purpose_library/dlib.
 
 		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;

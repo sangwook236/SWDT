@@ -17,13 +17,13 @@ void graph_labeling_example();
 
 int dlib_main(int argc, char *argv[])
 {
-	// matrix operation example.
+	// Matrix operation example.
 	// REF [file] >> ${DLIB_HOME}/examples/matrix_ex.cpp
 
-	// structured SVM example.
+	// Structured SVM example.
 	my_dlib::svm_struct_example();
 
-	// graph labeling example.
+	// Graph labeling example.
 	my_dlib::graph_labeling_example();
 
 	return 0;
