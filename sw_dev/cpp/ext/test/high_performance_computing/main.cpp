@@ -26,6 +26,10 @@ int main(int argc, char *argv[])
 		//	- Streaming SIMD Extensions (SSE).
 		//retval = simd_main(argc, argv);
 
+		std::cout << "\nBoost.MPI library ---------------------------------------------------" << std::endl;
+		//	- Message Passing Interface (MPI).
+		// REF [library] >> Boost library.
+
 		std::cout << "\nBoost.Compute library -----------------------------------------------" << std::endl;
 		//	- Open Computing Language (OpenCL).
 		// REF [library] >> Boost library.

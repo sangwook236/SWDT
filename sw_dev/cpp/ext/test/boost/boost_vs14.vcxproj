@@ -142,6 +142,10 @@
     <ClCompile Include="math_floating_point_utilities.cpp" />
     <ClCompile Include="math_special_functions.cpp" />
     <ClCompile Include="math_statistical_distributions.cpp" />
+    <ClCompile Include="mpi.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="multiprecision.cpp" />
     <ClCompile Include="multi_array.cpp" />
     <ClCompile Include="multi_index.cpp" />

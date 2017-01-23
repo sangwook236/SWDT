@@ -81,6 +81,7 @@ int main(int argc, char *argv[])
 	void image();
 
 	void compute();
+	void mpi();
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -89,7 +90,7 @@ int main(int argc, char *argv[])
 			//utility();
 			//utility_binary();
 
-			log();
+			//log();
 
 			//program_options(argc, argv);
 			//filesystem();
@@ -185,8 +186,11 @@ int main(int argc, char *argv[])
 
 		// High performance computing.
 		{
-			// OpenCL.
-			//compute();
+			// Open Computing Language (OpenCL).
+			compute();
+
+			// Message Passing Interface (MPI).
+			//mpi();
 		}
 	}
     catch (const std::bad_alloc &e)
