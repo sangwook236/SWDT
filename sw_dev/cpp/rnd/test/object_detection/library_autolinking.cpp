@@ -1,4 +1,4 @@
-#if defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 
 #	if defined(_MSC_VER)
 

@@ -1,17 +1,17 @@
-#if defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 
 #	if defined(_MSC_VER)
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "annd.lib")
+#pragma comment(lib, "ANNd.lib")
 
 #pragma comment(lib, "libboost_chrono-vc140-mt-gd-1_61.lib")
 #pragma comment(lib, "libboost_system-vc140-mt-gd-1_61.lib")
 
 #		else
 
-#pragma comment(lib, "ann.lib")
+#pragma comment(lib, "ANN.lib")
 
 #pragma comment(lib, "libboost_chrono-vc140-mt-1_61.lib")
 #pragma comment(lib, "libboost_system-vc140-mt-1_61.lib")

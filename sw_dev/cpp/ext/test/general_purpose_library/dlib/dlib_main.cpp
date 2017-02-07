@@ -26,5 +26,8 @@ int dlib_main(int argc, char *argv[])
 	// Graph labeling example.
 	my_dlib::graph_labeling_example();
 
+	// Deep learning example.
+
+
 	return 0;
 }

@@ -27,5 +27,14 @@
     <ClCompile Include="nmea\nmea_main.cpp">
       <Filter>Source Files\nmea</Filter>
     </ClCompile>
+    <ClCompile Include="nmea\nmea_generation.cpp">
+      <Filter>Source Files\nmea</Filter>
+    </ClCompile>
+    <ClCompile Include="nmea\nmea_math.cpp">
+      <Filter>Source Files\nmea</Filter>
+    </ClCompile>
+    <ClCompile Include="nmea\nmea_parsing.cpp">
+      <Filter>Source Files\nmea</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -47,8 +47,6 @@ int main(int argc, char **argv)
 
 	void file_io();
 
-	void thread();
-
 	void stl_data_structure();
 	void stl_algorithm();
 
@@ -71,8 +69,6 @@ int main(int argc, char **argv)
 		//date_time();
 
 		//file_io();  // Not yet implemented.
-
-		thread();
 
 		//stl_data_structure();
 		//stl_algorithm();
