@@ -1,40 +1,42 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://lancet.mit.edu/ga/
 
-[-] Builing (MSVC)
-	-. Visual Studio command prompt 이용.
-	-. build 환경 설정.
-		${GALIB_HOME}/makevars.vcpp file의 내용을 수정해야 함.
-		install directory 설정.
+[-] Building (MSVC).
+	- Edit ${GALIB_HOME}/makevars.vcpp file.
+		Set install directory.
 			DESTDIR=${GALIB_INSTALL_DIR}
-		'Multi-threaded DLL' 설정을 compile option에 추가.
-			<수정전>
+		Add 'Multi-threaded DLL' option in the compile option.
+			<before>
 			CXXLIBFLAGS  = $(CFLAGS) /DNDEBUG /MT /O2 (at line 45)
 			CXXEXEFLAGS  = $(CFLAGS) /DNDEBUG /MT /O2 (at line 46)
 			CXXLIBFLAGS  = $(CFLAGS) /D_DEBUG /MTd /Od /Zi (at line 50)
 			CXXEXEFLAGS  = $(CFLAGS) /D_DEBUG /MTd /Od /Zi (at line 51)
-			<수정후>
+			<after>
 			CXXLIBFLAGS  = $(CFLAGS) /DNDEBUG /MD /O2 (at line 45)
 			CXXEXEFLAGS  = $(CFLAGS) /DNDEBUG /MD /O2 (at line 46)
 			CXXLIBFLAGS  = $(CFLAGS) /D_DEBUG /MDd /Od /Zi (at line 50)
 			CXXEXEFLAGS  = $(CFLAGS) /D_DEBUG /MDd /Od /Zi (at line 51)
-		'Ignore All Default Libraries' 설정을 linking option에 추가.
-			<수정전>
+		Set 'Ignore All Default Libraries' in the linking option.
+			<before>
 			LINKFLAGS = $(LINKFLAGS) (at line 66)
 			ARFLAGS  = /nologo (at line 74)
-			<수정후>
+			<after>
 			LINKFLAGS = $(LINKFLAGS) /NODEFAULTLIB (at line 66)
 			ARFLAGS  = /nologo /NODEFAULTLIB (at line 74)
-	-. build 수행.
+	- Open Visual Studio command prompt.
+	- Change directory.
 		cd ${GALIB_HOME}/ga
-		for release build
+	- Build.
+		For release build:
 			nmake RELEASE_BUILD=1 -f makefile.vcpp
-		for debug build
+		For debug build:
 			nmake -f makefile.vcpp
-		make -f makefile.vcpp install
-	-. shared library building은 정상적으로 수행되지 않음.
-		for shared library
+
+		For shared library:
 			nmake SHARED_BUILD=1 -f makefile.vcpp
-		for static library
+		For static library:
 			nmake -f makefile.vcpp
+		==> Fail to build shared library.
+	- Install.
+		make -f makefile.vcpp install

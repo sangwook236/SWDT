@@ -15,7 +15,12 @@
 
 #pragma comment(lib, "vtkCommonCore-7.0.lib")
 #pragma comment(lib, "vtkCommonMath-7.0.lib")
+#pragma comment(lib, "vtkCommonDataModel-7.0.lib")
+#pragma comment(lib, "vtkCommonExecutionModel-7.0.lib")
+#pragma comment(lib, "vtkRenderingCore-7.0.lib")
+#pragma comment(lib, "vtkRenderingLOD-7.0.lib")
 #pragma comment(lib, "vtkFiltersCore-7.0.lib")
+#pragma comment(lib, "vtkFiltersSources-7.0.lib")
 
 #pragma comment(lib, "flann.lib")
 

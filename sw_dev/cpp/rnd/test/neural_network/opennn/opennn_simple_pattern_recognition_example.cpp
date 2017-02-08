@@ -12,71 +12,97 @@ namespace local {
 
 namespace my_opennn {
 
-// [ref] ${FANN_HOME}/examples/simple_pattern_recognition/simple_pattern_recognition_application.cpp
+// REF [file] >> ${OPENNN_HOME}/examples/simple_pattern_recognition/main.cpp
 void simple_pattern_recognition_example()
 {
 	std::cout << "OpenNN. Simple Pattern Recognition Application." << std::endl;
 
-	// Data set object
+	//std::srand((unsigned)std::time(NULL));
+
+	// Data set object.
 	OpenNN::DataSet data_set;
-	data_set.load_data("./data/neural_network/opennn/simple_pattern_recognition.dat");
 
-	OpenNN::VariablesInformation *variables_information_pointer = data_set.get_variables_information_pointer();
+	data_set.set_data_file_name("./data/neural_network/opennn/simple_pattern_recognition.dat");
 
-	variables_information_pointer->set_name(0, "x1");   
-	variables_information_pointer->set_name(1, "x2");   
-	variables_information_pointer->set_name(2, "y");   
+	data_set.load_data();
 
-	OpenNN::InstancesInformation *instances_information_pointer = data_set.get_instances_information_pointer();
+	OpenNN::Variables* variables_pointer = data_set.get_variables_pointer();
 
-	instances_information_pointer->split_random_indices(0.75, 0.0, 0.25);
+	variables_pointer->set_name(0, "x1");
+	variables_pointer->set_name(1, "x2");
+	variables_pointer->set_name(2, "y");
 
-	OpenNN::Vector<OpenNN::Vector<std::string> > variables_information = variables_information_pointer->arrange_inputs_targets_information();
+	// Neural network object.
+	OpenNN::Instances* instances_pointer = data_set.get_instances_pointer();
 
-	const OpenNN::Vector<OpenNN::Vector<double> > variables_statistics = data_set.scale_inputs();
+	instances_pointer->set_training();
 
-	// Neural network object
+	OpenNN::Matrix<std::string> inputs_information = variables_pointer->arrange_inputs_information();
+	OpenNN::Matrix<std::string> targets_information = variables_pointer->arrange_targets_information();
+
+	const OpenNN::Vector<OpenNN::Statistics<double> > inputs_statistics = data_set.scale_inputs_minimum_maximum();
+
+
 	OpenNN::NeuralNetwork neural_network(2, 2, 1);
 
-	neural_network.set_inputs_outputs_information(variables_information);
-	neural_network.set_inputs_outputs_statistics(variables_statistics);
+	OpenNN::Inputs* inputs_pointer = neural_network.get_inputs_pointer();
 
-	neural_network.set_scaling_layer_flag(false);
+	inputs_pointer->set_information(inputs_information);
 
-	// Performance functional
+	neural_network.construct_scaling_layer();
+
+	OpenNN::ScalingLayer* scaling_layer_pointer = neural_network.get_scaling_layer_pointer();
+
+	scaling_layer_pointer->set_statistics(inputs_statistics);
+
+	scaling_layer_pointer->set_scaling_method(OpenNN::ScalingLayer::NoScaling);
+
+	OpenNN::MultilayerPerceptron* multilayer_perceptron_pointer = neural_network.get_multilayer_perceptron_pointer();
+
+	multilayer_perceptron_pointer->set_layer_activation_function(1, OpenNN::Perceptron::Logistic);
+
+	OpenNN::Outputs* outputs_pointer = neural_network.get_outputs_pointer();
+
+	outputs_pointer->set_information(targets_information);
+
+	// Performance functional.
 	OpenNN::PerformanceFunctional performance_functional(&neural_network, &data_set);
 
 	// Training strategy
 	OpenNN::TrainingStrategy training_strategy(&performance_functional);
-	OpenNN::TrainingStrategy::Results training_stategy_results = training_strategy.perform_training();
 
-	neural_network.set_scaling_layer_flag(true);
+	OpenNN::QuasiNewtonMethod* quasi_Newton_method_pointer = training_strategy.get_quasi_Newton_method_pointer();
 
-	// Testing analysis
+	quasi_Newton_method_pointer->set_minimum_performance_increase(1.0e-4);
+
+	OpenNN::TrainingStrategy::Results training_strategy_results = training_strategy.perform_training();
+
+	// Testing analysis.
+	instances_pointer->set_testing();
+
 	OpenNN::TestingAnalysis testing_analysis(&neural_network, &data_set);
-	testing_analysis.construct_pattern_recognition_testing();
 
-	OpenNN::PatternRecognitionTesting *pattern_recognition_testing_pointer = testing_analysis.get_pattern_recognition_testing_pointer();
+	OpenNN::Vector<double> binary_classification_tests = testing_analysis.calculate_binary_classification_tests();
 
-	// Save results
+	OpenNN::Matrix<size_t> confusion = testing_analysis.calculate_confusion();
+
+//	Matrix<double> ROC_curve = testing_analysis.calculate_ROC_curve();
+
+	// Save results.
+	scaling_layer_pointer->set_scaling_method(OpenNN::ScalingLayer::MinimumMaximum);
+
 	data_set.save("./data/neural_network/opennn/simple_pattern_recognition/data_set.xml");
-	data_set.load("./data/neural_network/opennn/simple_pattern_recognition/data_set.xml");
 
 	neural_network.save("./data/neural_network/opennn/simple_pattern_recognition/neural_network.xml");
-	neural_network.load("./data/neural_network/opennn/simple_pattern_recognition/neural_network.xml");
-
 	neural_network.save_expression("./data/neural_network/opennn/simple_pattern_recognition/expression.txt");
 
 	performance_functional.save("./data/neural_network/opennn/simple_pattern_recognition/performance_functional.xml");
-	performance_functional.load("./data/neural_network/opennn/simple_pattern_recognition/performance_functional.xml");
 
 	training_strategy.save("./data/neural_network/opennn/simple_pattern_recognition/training_strategy.xml");
-	training_strategy.load("./data/neural_network/opennn/simple_pattern_recognition/training_strategy.xml");
+	training_strategy_results.save("./data/neural_network/opennn/simple_pattern_recognition/training_strategy_results.dat");
 
-	training_stategy_results.save("./data/neural_network/opennn/simple_pattern_recognition/training_strategy_results.dat");
-
-	pattern_recognition_testing_pointer->save_binary_classification_test("./data/neural_network/opennn/simple_pattern_recognition/binary_classification_test.dat");
-	pattern_recognition_testing_pointer->save_confusion("./data/neural_network/opennn/simple_pattern_recognition/confusion.dat");
+	binary_classification_tests.save("./data/neural_network/opennn/simple_pattern_recognition/binary_classification_tests.dat");
+	confusion.save("./data/neural_network/opennn/simple_pattern_recognition/confusion.dat");
 }
 
 }  // namespace my_opennn

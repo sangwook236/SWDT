@@ -1,7 +1,7 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <clapack.h>
 #else
 #include <atlas/clapack.h>
@@ -40,7 +40,7 @@ void clapack()
 #if 1
 	const int info = clapack_dgesv(CblasRowMajor, 3, 1, m, 3, ipiv, x, 3);
 #else
-    // FIXME [correct] >> ATLAS library does't support this function.
+    // FIXME [correct] >> ATLAS library doesn't support this function.
 	const int info = dgesv(CblasRowMajor, 3, 1, m, 3, ipiv, x, 3);
 #endif
 	if (info != 0)

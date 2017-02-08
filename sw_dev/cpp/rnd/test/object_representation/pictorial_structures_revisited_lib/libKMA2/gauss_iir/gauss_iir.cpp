@@ -15,14 +15,6 @@
 #include "gauss_iir.h"
 #include <iostream>
       
-//--S [] 2012/08/07: Sang-Wook Lee
-int rint(double arg)
-{
-	return (int)ceil(arg + 0.5);
-}
-
-//--E [] 2012/08/07
-
 // FIXME: Why are only the variables static and the functions are not...
      
 static float** table_exp_lap;

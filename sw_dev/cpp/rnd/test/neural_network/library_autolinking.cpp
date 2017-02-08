@@ -8,7 +8,7 @@
 #pragma comment(lib, "fannfloatd.lib")
 //#pragma comment(lib, "fannfixedd.lib")
 #pragma comment(lib, "opennnd.lib")
-#pragma comment(lib, "tinyxmld.lib")
+#pragma comment(lib, "tinyxml2d.lib")
 
 #		else
 
@@ -16,7 +16,7 @@
 #pragma comment(lib, "fannfloat.lib")
 //#pragma comment(lib, "fannfixed.lib")
 #pragma comment(lib, "opennn.lib")
-#pragma comment(lib, "tinyxml.lib")
+#pragma comment(lib, "tinyxml2.lib")
 
 #		endif
 

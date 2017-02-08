@@ -28,8 +28,8 @@
 #include "highgui.h"
 */
 #include <opencv2/opencv.hpp>
-#include <opencv2/legacy/compat.hpp>
-#include <opencv2/legacy/legacy.hpp>
+//#include <opencv2/legacy/compat.hpp>
+//#include <opencv2/legacy/legacy.hpp>
 //--E [] 2013/07/16: Sang-Wook Lee
 
 /* From GSL */

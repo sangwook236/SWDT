@@ -13,58 +13,57 @@ namespace local {
 
 void load_and_save()
 {
-	// allocate the image: 64 pixels across by 64 pixels tall
+	// Allocate the image: 64 pixels across by 64 pixels tall.
 	gdImagePtr im = gdImageCreate(64, 64);
 
-	// allocate the color black (red, green and blue all minimum). Since this is the first color in a new image, it will be the background color
+	// Allocate the color black (red, green and blue all minimum). Since this is the first color in a new image, it will be the background color.
 	const int black = gdImageColorAllocate(im, 0, 0, 0);
 
-	// allocate the color white (red, green and blue all maximum)
+	// Allocate the color white (red, green and blue all maximum).
 	const int white = gdImageColorAllocate(im, 255, 255, 255);
 
-	// draw a line from the upper left to the lower right, using white color index
+	// Draw a line from the upper left to the lower right, using white color index.
 	gdImageLine(im, 0, 0, 63, 63, white);
 
-	// open a file for writing. "wb" means "write binary", important under MSDOS, harmless under Unix
-	std::FILE *pngout = std::fopen("./data/graphics_2d/gd/test.png", "wb");
+	// Open a file for writing. "wb" means "write binary", important under MSDOS, harmless under Unix.
+	FILE *pngout = std::fopen("./data/graphics_2d/gd/test.png", "wb");
 	if (NULL == pngout)
 	{
 		if (EACCES == errno)
-			std::cout << "error access" << std::endl;
+			std::cout << "Error access." << std::endl;
 		else if (EISDIR == errno)
-			std::cout << "error directory" << std::endl;
+			std::cout << "Error directory." << std::endl;
 		else if (ENOENT == errno)
-			std::cout << "error file" << std::endl;
+			std::cout << "Error file." << std::endl;
 
 		return;
 	}
 
-	// do the same for a JPEG-format file
-	std::FILE *jpegout = std::fopen("./data/graphics_2d/gd/test.jpg", "wb");
+	// Do the same for a JPEG-format file.
+	FILE *jpegout = std::fopen("./data/graphics_2d/gd/test.jpg", "wb");
 	if (NULL == jpegout)
-
 	{
 		if (EACCES == errno)
-			std::cout << "error access" << std::endl;
+			std::cout << "Error access." << std::endl;
 		else if (EISDIR == errno)
-			std::cout << "error directory" << std::endl;
+			std::cout << "Error directory." << std::endl;
 		else if (ENOENT == errno)
-			std::cout << "error file" << std::endl;
+			std::cout << "Error file." << std::endl;
 
 		return;
 	}
 
-	// output the image to the disk file in PNG format
+	// Output the image to the disk file in PNG format.
 	gdImagePng(im, pngout);
 
-	// output the same image in JPEG format, using the default JPEG quality setting
+	// Output the same image in JPEG format, using the default JPEG quality setting.
 	gdImageJpeg(im, jpegout, -1);
 
-	// close the files
+	// Close the files.
 	std::fclose(pngout);
 	std::fclose(jpegout);
 
-	// destroy the image in memory
+	// Destroy the image in memory.
 	gdImageDestroy(im);
 }
 

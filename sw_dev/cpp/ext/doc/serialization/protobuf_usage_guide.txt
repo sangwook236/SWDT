@@ -21,7 +21,7 @@
 	- Build.
 	- Install.
 
-[-] Building (Linux)
+[-] Building (Linux).
 	REF [doc] >> ${PROTOBUF_HOME}/src/README.md
 
 	- Configure.

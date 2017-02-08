@@ -110,7 +110,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/scip-3.2.1;$(MY_USR_LOCAL_INCLUDE)/COIN-OR-1.8.0;$(MY_USR_LOCAL_INCLUDE)/glpk;$(MY_USR_LOCAL_INCLUDE)/nlopt;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -154,7 +154,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/scip-3.2.1;$(MY_USR_LOCAL_INCLUDE)/COIN-OR-1.8.0;$(MY_USR_LOCAL_INCLUDE)/glpk;$(MY_USR_LOCAL_INCLUDE)/nlopt;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -180,6 +180,7 @@
     <ClCompile Include="ceres_solver\ceres_solver_main.cpp" />
     <ClCompile Include="coin_or\coin_or_cbc_example.cpp" />
     <ClCompile Include="coin_or\coin_or_clp_example.cpp" />
+    <ClCompile Include="coin_or\coin_or_main.cpp" />
     <ClCompile Include="coin_or\coin_or_osi_example.cpp" />
     <ClCompile Include="glpk\glpk_interior_point_sample.cpp" />
     <ClCompile Include="glpk\glpk_main.cpp" />

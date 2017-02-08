@@ -1,6 +1,7 @@
 //include "stdafx.h"
 #if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <VideoCapture/VFWCapture.h>
+//#include <VideoCapture/OpenCVCapture.h>
 #elif defined(__APPLE__)
 #include <VideoCapture/QuicktimeCapture.h>
 #else
@@ -53,8 +54,8 @@ public:
 	{
 		// create capture object
 #if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
-		//CVFWCapture capture(0);
-		COpenCVCapture capture(0);
+		CVFWCapture capture(0);
+		//COpenCVCapture capture(0);
 #elif defined(__APPLE__)
 		CQuicktimeCapture capture(CVideoCaptureInterface::e640x480);
 #else

@@ -12,7 +12,7 @@ namespace local {
 
 namespace my_tapkee {
 
-// REF [file] >> ${TAPKEE_HOME}/examples/precomputed.cpp
+// REF [file] >> ${TAPKEE_HOME}/examples/precomputed/precomputed.cpp
 void precomputed_distance_cpp_example()
 {
 	const int N = 100;

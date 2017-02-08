@@ -13,13 +13,13 @@ void basic_operation_1()
 	typedef array_type::index index_type;
 	typedef array_type::index_range range_type;
 
-	// create a 3D array that is 2 x 3 x 4
+	// Create a 3D array that is 2 x 3 x 4.
 	const int size1 = 2;
 	const int size2 = 3;
 	const int size3 = 4;
 
 	//-------------------------------------------------------------------------
-	// specifying array dimensions
+	// Specifying array dimensions.
 #if 1
 	array_type marrA(boost::extents[size1][size2][size3]);
 #else
@@ -28,10 +28,10 @@ void basic_operation_1()
 #endif
 
 	//
-	//marrA[ boost::indices[range_type()][range_type()][range_type()] ] = 1.0;  // error !!!
+	//marrA[ boost::indices[range_type()][range_type()][range_type()] ] = 1.0;  // Error !!!
 	memset(marrA.data(), 0, sizeof(double) * size1 * size2 * size3);
 
-	// assign values to the elements
+	// Assign values to the elements.
 	int values = 0;
 	for(index_type i = 0; i != size1; ++i)
 		for(index_type j = 0; j != size2; ++j)
@@ -65,36 +65,36 @@ void basic_operation_1()
 	//-------------------------------------------------------------------------
 	//
 
-	std::cout << "dimensionality: " << array_type::dimensionality << std::endl;
-	std::cout << "number of dimensionality: " << marrA.num_dimensions() << std::endl;
+	std::cout << "Dimensionality: " << array_type::dimensionality << std::endl;
+	std::cout << "Number of dimensionality: " << marrA.num_dimensions() << std::endl;
 
-	// the number of values contained in a. It is equivalent to a.shape()[0].
-	std::cout << "size: " << marrA.size() << std::endl;
-	std::cout << "number of elements: " << marrA.num_elements() << std::endl;
-	std::cout << "address of the elements: " << marrA.origin() << std::endl;
-	// if all dimensions of the array are 0-indexed and stored in ascending order, this is equivalent to origin().
-	std::cout << "address of the elements: " << marrA.data() << std::endl;
+	// The number of values contained in a. It is equivalent to a.shape()[0].
+	std::cout << "Size: " << marrA.size() << std::endl;
+	std::cout << "Number of elements: " << marrA.num_elements() << std::endl;
+	std::cout << "Address of the elements: " << marrA.origin() << std::endl;
+	// If all dimensions of the array are 0-indexed and stored in ascending order, this is equivalent to origin().
+	std::cout << "Address of the elements: " << marrA.data() << std::endl;
 
 	const array_type::size_type *shape = marrA.shape();
-	std::cout << "shape: ";
+	std::cout << "Shape: ";
 	for (array_type::size_type i = 0; i < array_type::dimensionality; ++i)
 		std::cout << shape[i] << ", ";
 	std::cout << std::endl;
 
 	const array_type::index *strides = marrA.strides();
-	std::cout << "strides: ";
+	std::cout << "Strides: ";
 	for (array_type::size_type i = 0; i < array_type::dimensionality; ++i)
 		std::cout << strides[i] << ", ";
 	std::cout << std::endl;
 
 	const array_type::index *index_bases = marrA.index_bases();
-	std::cout << "index bases: ";
+	std::cout << "Index bases: ";
 	for (array_type::size_type i = 0; i < array_type::dimensionality; ++i)
 		std::cout << index_bases[i] << ", ";
 	std::cout << std::endl;
 
 	//-------------------------------------------------------------------------
-	// accessing elements
+	// Accessing elements.
 #if 1
 	marrA[0][0][0] = 3.14;
 #else
@@ -162,11 +162,11 @@ void basic_operation_2()
 			std::cout << std::endl;
 		}
 
-		//boost::multi_array<double, 2>::array_view<1>::type sub1(marr[boost::indices[0]]);  // compile-time error
+		//boost::multi_array<double, 2>::array_view<1>::type sub1(marr[boost::indices[0]]);  // Compile-time error.
 		boost::multi_array<double, 2>::array_view<1>::type sub(marr[boost::indices[0][boost::multi_array<double, 2>::index_range()]]);
 
 		for(boost::multi_array<double, 2>::index j = 0; j != size2; ++j)
-			sub[j] = -j - 1;
+			sub[j] = double(-j - 1);
 
 		std::cout << "marr(after) =" << std::endl;
 		for(boost::multi_array<double, 2>::index i = 0; i != size1; ++i)
@@ -184,7 +184,7 @@ void array_view()
 	typedef array_type::index index_type;
 	typedef array_type::index_range range_type;
 
-	// create a 3D array that is 2 x 3 x 4
+	// Create a 3D array that is 2 x 3 x 4.
 	const int size1 = 2;
 	const int size2 = 3;
 	const int size3 = 4;
@@ -192,53 +192,78 @@ void array_view()
 #if 1
 	array_type marrA(boost::extents[size1][size2][size3]);
 #else
-	boost::array<index_type, 3> shape = {{ size1, size2, size3 }};
+	boost::array<index_type, 3> shape = { { size1, size2, size3 } };
 	array_type marrA(shape);
 #endif
 
 	//
-	//marrA[ boost::indices[range_type()][range_type()][range_type()] ] = 1.0;  // error !!!
+	//marrA[ boost::indices[range_type()][range_type()][range_type()] ] = 1.0;  // Error !!!
 	memset(marrA.data(), 0, sizeof(double) * size1 * size2 * size3);
 
-	// assign values to the elements
+	// Assign values to the elements.
 	int values = 0;
-	for(index_type i = 0; i != size1; ++i)
-		for(index_type j = 0; j != size2; ++j)
-			for(index_type k = 0; k != size3; ++k)
+	for (index_type i = 0; i != size1; ++i)
+		for (index_type j = 0; j != size2; ++j)
+			for (index_type k = 0; k != size3; ++k)
 				marrA[i][j][k] = ++values;
 
 	//-------------------------------------------------------------------------
-	// creating views
+	// Creating views.
 
 	// array_view dims: [base,bound) (dimension striding default = 1)
 	// dim 0: [0,2)
 	// dim 1: [1,3)
 	// dim 2: [0,4) (strided by 2)
-	array_type::array_view<3>::type myview1 = marrA[ boost::indices[range_type(0,2)][range_type(1,3)][range_type(0,4,2)] ];
+	array_type::array_view<3>::type myview1 = marrA[boost::indices[range_type(0, 2)][range_type(1, 3)][range_type(0, 4, 2)]];
 
 	// array_view dims:
 	// [base,stride,bound)
 	// [0,1,2), 1, [0,2,4)
 	array_type::index_gen indices;
-	array_type::array_view<2>::type myview2 = marrA[ indices[range_type(0,2)][1][range_type(0,4,2)] ];
-	std::cout << "type id of array view: " << typeid(myview2).name() << std::endl;
+	array_type::array_view<2>::type myview2 = marrA[indices[range_type(0, 2)][1][range_type(0, 4, 2)]];
+	std::cout << "Type id of array view: " << typeid(myview2).name() << std::endl;
+
+	{
+		// All elemetns in this dimension.
+		range_type arange = range_type();
+
+		// Indices i where 3 <= i.
+		arange = range_type().start(3);
+#if defined(_MSC_VER)
+		arange = index_type(3) <= range_type();
+		arange = index_type(2) < range_type();
+#else
+		arange = 3L <= range_type();
+		arange = 2L < range_type();
+#endif
+
+		// Indices i where i < 7.
+		arange = range_type().finish(7);
+#if defined(_MSC_VER)
+		arange = range_type() < index_type(7);
+		arange = range_type() <= index_type(6);
+#else
+		arange = range_type() < 7L;
+		arange = range_type() <= 6L;
+#endif
+	}
 
 #if defined(_MSC_VER)
-	array_type::array_view<3>::type myview3 = marrA[ boost::indices[range_type()][range_type() < 3][1 <= range_type().stride(2) <= 3] ];
+	array_type::array_view<3>::type myview3 = marrA[ boost::indices[range_type()][range_type() < index_type(3)][index_type(1) <= range_type().stride(2) <= index_type(3)] ];
 #else
 	array_type::array_view<3>::type myview3 = marrA[ boost::indices[range_type()][range_type() < 3L][1L <= range_type().stride(2) <= 3L] ];
 #endif
 
 	//-------------------------------------------------------------------------
-	// testing sub-array
+	// Testing sub-array.
 
-	// compile-time error
-	//	cannot convert from 'boost::detail::multi_array::sub_array<T,NumDims>' to 'boost::detail::multi_array::multi_array_impl_base<T,NumDims>::subarray<NDims>
+	// Compile-time error.
+	//	Cannot convert from 'boost::detail::multi_array::sub_array<T,NumDims>' to 'boost::detail::multi_array::multi_array_impl_base<T,NumDims>::subarray<NDims>
 	//array_type::subarray<1> mysubarray = marrA[0][1];
 
 	array_type::subarray<1> subarr;
-	std::cout << "type id of sub-array: " << typeid(subarr).name() << std::endl;
-	std::cout << "type id of sub-array: " << typeid(marrA[0][1]).name() << std::endl;
+	std::cout << "Type id of sub-array: " << typeid(subarr).name() << std::endl;
+	std::cout << "Type id of sub-array: " << typeid(marrA[0][1]).name() << std::endl;
 }
 
 void array_ordering_and_base()
@@ -246,9 +271,9 @@ void array_ordering_and_base()
 	typedef boost::multi_array<double, 3> array_type;
 
 	//-------------------------------------------------------------------------
-	// storage ordering
+	// Storage ordering.
 
-	// create a 3D array that is 2 x 3 x 4
+	// Create a 3D array that is 2 x 3 x 4.
 	const int size1 = 2;
 	const int size2 = 3;
 	const int size3 = 4;
@@ -261,33 +286,33 @@ void array_ordering_and_base()
 	//
 	typedef boost::general_storage_order<3> storage_type;
 
-	// store last dimension, then first, then middle
+	// Store last dimension, then first, then middle.
 	array_type::size_type ordering[] = { 2, 0, 1 };
 
-	// store the first dimension(dimension 0) in descending order
+	// Store the first dimension(dimension 0) in descending order.
 	bool ascending[] = { false, true, true };
 
 	array_type marrB3(boost::extents[3][4][2], storage_type(ordering, ascending));
 
 	//-------------------------------------------------------------------------
-	// setting the array base
+	// Setting the array base.
 
 	//typedef boost::multi_array_types::extent_range extent_range_type;
 	typedef array_type::extent_range extent_range_type;
 
 	array_type::extent_gen extents;
 
-	// dimension 0: 0-based
-	// dimension 1: 1-based
-	// dimension 2: (-1)-based
+	// Dimension 0: 0-based.
+	// Dimension 1: 1-based.
+	// Dimension 2: (-1)-based.
 	array_type marrC1(extents[2][extent_range_type(1,4)][extent_range_type(-1,3)]);
 
-	// to set all bases to the same value
+	// To set all bases to the same value.
 	marrC1.reindex(1);
 
-	// dimension 0: 0-based
-	// dimension 1: 1-based
-	// dimension 2: (-1)-based
+	// Dimension 0: 0-based.
+	// Dimension 1: 1-based.
+	// Dimension 2: (-1)-based.
 	array_type marrC2(extents[2][3][4]);
 	boost::array<array_type::index, 3> bases = {{ 0, 1, -1 }};
 	marrC2.reindex(bases);
@@ -298,31 +323,31 @@ void array_size()
 	typedef boost::multi_array<double, 3> array_type;
 
 	//-------------------------------------------------------------------------
-	// changing an array's shape
+	// Changing an array's shape.
 
 	array_type marrD(boost::extents[2][3][4]);
 	boost::array<array_type::index, 3> dims = {{ 4, 3, 2 }};
 	marrD.reshape(dims);
 
 	//-------------------------------------------------------------------------
-	// resizing an array
+	// Resizing an array.
 	array_type marrE(boost::extents[3][4][2]);
 	marrE[0][0][0] = 4;
 	marrE[2][2][1] = 5;
 #if defined(NDEBUG) || defined(_STLPORT_VERSION)
 	marrE.resize(boost::extents[2][3][4]);
 #else
-	// FIXME [modify] >> MSVC: compile-time error in debug build
-	//	I don't know why
+	// FIXME [modify] >> MSVC: Compile-time error in debug build.
+	//	I don't know why.
 	//marrE.resize(boost::extents[2][3][4]);
 	//marrE = array_type(boost::extents[2][3][4]);
 #endif
 	std::cout << std::endl;
 	assert(marrE[0][0][0] == 4);
-	//marrE[2][2][1] is no longer valid
+	//marrE[2][2][1] is no longer valid.
 
 	//-------------------------------------------------------------------------
-	// resizing an array
+	// Resizing an array.
 	array_type marrF(boost::extents[3][4][5]);
 	marrF.resize((boost::extents[0][0][0]));
 	std::cout << "number of elements after resizing: " << marrF.num_elements() << std::endl;

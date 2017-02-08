@@ -24,18 +24,21 @@ void neural_network(GClasses::GMatrix &features, GClasses::GMatrix &labels, cons
 {
     //--S [] 2016/12/20: Sang-Wook Lee
     //  FIXME [check] >>
-	//GClasses::GNeuralNet *pNN = new GClasses::GNeuralNet();
-	//pNN->addLayer(new GClasses::GLayerClassic(FLEXIBLE_SIZE, 3));
-	//pNN->addLayer(new GClasses::GLayerClassic(3, FLEXIBLE_SIZE));
-	//pNN->setLearningRate(0.1);
-	//pNN->setMomentum(0.1);
-	//GClasses::GAutoFilter af(pNN);
+#if 1
+	GClasses::GNeuralNet *pNN = new GClasses::GNeuralNet();
+	pNN->addLayer(new GClasses::GLayerClassic(FLEXIBLE_SIZE, 3));
+	pNN->addLayer(new GClasses::GLayerClassic(3, FLEXIBLE_SIZE));
+	pNN->setLearningRate(0.1);
+	pNN->setMomentum(0.1);
+	GClasses::GAutoFilter af(pNN);
+#else
 	GClasses::GNeuralNetLearner nn;
 	nn.newLayer().add(new GClasses::GBlockTanh(3));
 	nn.newLayer().add(new GClasses::GBlockTanh(3));
 	nn.optimizer().setLearningRate(0.1);
 	dynamic_cast<GClasses::GSGDOptimizer &>(nn.optimizer()).setMomentum(0.1);
 	GClasses::GAutoFilter af(&nn);
+#endif
     //--E [] 2016/12/20: Sang-Wook Lee
 	af.train(features, labels);
 	af.predict(test_features, predicted_labels);

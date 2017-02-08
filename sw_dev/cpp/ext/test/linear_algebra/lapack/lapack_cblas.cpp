@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <clapack/f2c.h>
 //#include <clapack/blaswrap.h>
 #include <clapack/clapack.h>
@@ -51,7 +51,7 @@ void cblas()
 		std::cout << std::endl;
 	}
 
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 	integer rdim = 3, cdim = 3;
 	double alpha = 1.0, beta = 0.0;
 	integer lda = rdim;

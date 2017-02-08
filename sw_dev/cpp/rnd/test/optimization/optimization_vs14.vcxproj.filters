@@ -99,5 +99,8 @@
     <ClCompile Include="coin_or\coin_or_osi_example.cpp">
       <Filter>Source Files\coin_or</Filter>
     </ClCompile>
+    <ClCompile Include="coin_or\coin_or_main.cpp">
+      <Filter>Source Files\coin_or</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

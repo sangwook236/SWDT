@@ -20,7 +20,7 @@ void greedy_projection()
 {
 #if 0
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>());
-	sensor_msgs::PointCloud2 cloud_blob;
+	pcl::PointCloud2 cloud_blob;
 	pcl::io::loadPCDFile("./data/geometry/pcl/bun0.pcd", cloud_blob);
 	pcl::fromROSMsg(cloud_blob, *cloud);
 #else

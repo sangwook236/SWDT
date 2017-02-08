@@ -1,7 +1,7 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
-#if defined(WIN32) || defined(_WIN32)
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <cblas.h>
 #else
 #include <atlas/cblas.h>
@@ -40,7 +40,7 @@ void cblas()
 #if 1
 	cblas_dgemv(CblasRowMajor, CblasNoTrans, 3, 3, 1.0, m, 3, x, 1, 0.0, y, 1);
 #else
-	// FIXME [correct] >> ATLAS library does't support this function.
+	// FIXME [correct] >> ATLAS library doesn't support this function.
 	long rdim = 3, cdim = 3;
 	double alpha = 1.0, beta = 0.0;
 	long lda = rdim;

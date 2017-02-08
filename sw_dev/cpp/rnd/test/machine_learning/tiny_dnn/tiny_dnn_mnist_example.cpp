@@ -55,15 +55,15 @@ void construct_net(tiny_dnn::network<tiny_dnn::sequential>& nn)
 #undef O
 #undef X
 
-	tiny_dnn::core::backend_t backend_type = tiny_dnn::core::default_engine();
+	tiny_dnn::core::backend_t backend_type = tiny_dnn::core::backend_t::tiny_dnn;
 
 	// REF [paper] >> "Gradient-Based Learning Applied to Document Recognition", PIEEE 1998.
     // Construct nets.
-    nn << tiny_dnn::convolutional_layer<tiny_dnn::activation::tan_h>(32, 32, 5, 1, 6, tiny_dnn::padding::valid, true, 1, 1, backend_type)  // C1, 1@32x32-in, 6@28x28-out.
+    nn << tiny_dnn::convolutional_layer<tiny_dnn::activation::tan_h>(32, 32, 5, 1, 6, tiny_dnn::core::padding::valid, true, 1, 1, backend_type)  // C1, 1@32x32-in, 6@28x28-out.
        << tiny_dnn::average_pooling_layer<tiny_dnn::activation::tan_h>(28, 28, 6, 2)  // S2, 6@28x28-in, 6@14x14-out.
-       << tiny_dnn::convolutional_layer<tiny_dnn::activation::tan_h>(14, 14, 5, 6, 16, tiny_dnn::core::connection_table(tbl, 6, 16), tiny_dnn::padding::valid, true, 1, 1, backend_type)  // C3, 6@14x14-in, 16@10x10-in.
+       << tiny_dnn::convolutional_layer<tiny_dnn::activation::tan_h>(14, 14, 5, 6, 16, tiny_dnn::core::connection_table(tbl, 6, 16), tiny_dnn::core::padding::valid, true, 1, 1, backend_type)  // C3, 6@14x14-in, 16@10x10-in.
        << tiny_dnn::average_pooling_layer<tiny_dnn::activation::tan_h>(10, 10, 16, 2)  // S4, 16@10x10-in, 16@5x5-out.
-       << tiny_dnn::convolutional_layer<tiny_dnn::activation::tan_h>(5, 5, 5, 16, 120, tiny_dnn::padding::valid, true, 1, 1, backend_type)  // C5, 16@5x5-in, 120@1x1-out.
+       << tiny_dnn::convolutional_layer<tiny_dnn::activation::tan_h>(5, 5, 5, 16, 120, tiny_dnn::core::padding::valid, true, 1, 1, backend_type)  // C5, 16@5x5-in, 120@1x1-out.
        << tiny_dnn::fully_connected_layer<tiny_dnn::activation::tan_h>(120, 10, true, backend_type);  // F6, 120-in, 10-out.
 }
 

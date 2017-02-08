@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.cairographics.org/
 
@@ -8,7 +8,7 @@
 		http://www.gtk.org
 		http://www.gtk.org/download-windows.html
 
-[-] Build (VC)
+[-] Build (VC).
 	REF [file] >> ${CAIRO_HOME}/README.win32
 		==> Win64는 build되지 않는 듯함.
 

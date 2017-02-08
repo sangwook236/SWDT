@@ -54,7 +54,7 @@ void convnet_sample(const std::string& data_dir_path)
     tiny_dnn::timer t;
     int minibatch_size = 10;
 
-	optimizer.alpha *= std::sqrt(minibatch_size);
+	optimizer.alpha *= (tiny_dnn::float_t)std::sqrt(minibatch_size);
 
     // Create callback.
     auto on_enumerate_epoch = [&]()
@@ -95,7 +95,7 @@ void convnet_sample(const std::string& data_dir_path)
 // Learning 3-Layer Networks.
 void mlp_sample(const std::string& data_dir_path)
 {
-    const tiny_dnn::serial_size_t num_hidden_units = 500;
+    const tiny_dnn::cnn_size_t num_hidden_units = 500;
 
 #if defined(_MSC_VER) && _MSC_VER < 1800
     // Initializer-list is not supported.
@@ -115,7 +115,7 @@ void mlp_sample(const std::string& data_dir_path)
 	tiny_dnn::parse_mnist_labels(data_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
 	tiny_dnn::parse_mnist_images(data_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 0, 0);
 
-	optimizer.alpha = 0.001;
+	optimizer.alpha = (tiny_dnn::float_t)0.001;
 
 	std::cout << "Start training..." << std::endl;
 
@@ -131,7 +131,7 @@ void mlp_sample(const std::string& data_dir_path)
 
         std::cout << optimizer.alpha << "," << res.num_success << "/" << res.num_total << std::endl;
 
-		optimizer.alpha *= 0.85;  // Decay learning rate.
+		optimizer.alpha *= (tiny_dnn::float_t)0.85;  // Decay learning rate.
 		optimizer.alpha = std::max((tiny_dnn::float_t)0.00001, optimizer.alpha);
 
         disp.restart(train_images.size());
@@ -178,7 +178,7 @@ void denoising_auto_encoder_sample(const std::string& data_dir_path)
 	std::vector<tiny_dnn::vec_t> train_data_corrupted(train_images);  // For MNIST dataset.
 
     for (auto& d : train_data_corrupted)
-        d = tiny_dnn::corrupt(std::move(d), 0.1, 0.0);  // Corrupt 10% data.
+        d = tiny_dnn::corrupt(std::move(d), (tiny_dnn::float_t)0.1, (tiny_dnn::float_t)0.0);  // Corrupt 10% data.
 
 	tiny_dnn::gradient_descent optimizer;
 
@@ -195,7 +195,7 @@ void denoising_auto_encoder_sample(const std::string& data_dir_path)
 
 		std::cout << optimizer.alpha << "," << res.num_success << "/" << res.num_total << std::endl;
 
-		optimizer.alpha *= 0.85;  // Decay learning rate.
+		optimizer.alpha *= (tiny_dnn::float_t)0.85;  // Decay learning rate.
 		optimizer.alpha = std::max((tiny_dnn::float_t)0.00001, optimizer.alpha);
 
 		disp.restart(train_images.size());
@@ -223,9 +223,9 @@ void dropout_sample(const std::string& data_dir_path)
 {
     typedef tiny_dnn::network<tiny_dnn::sequential> Network;
     Network nn;
-    tiny_dnn::serial_size_t input_dim = 28*28;
-    tiny_dnn::serial_size_t hidden_units = 800;
-    tiny_dnn::serial_size_t output_dim = 10;
+    tiny_dnn::cnn_size_t input_dim = 28*28;
+    tiny_dnn::cnn_size_t hidden_units = 800;
+    tiny_dnn::cnn_size_t output_dim = 10;
 	tiny_dnn::gradient_descent optimizer;
 
 	tiny_dnn::fully_connected_layer<tiny_dnn::activation::tan_h> f1(input_dim, hidden_units);
@@ -233,7 +233,7 @@ void dropout_sample(const std::string& data_dir_path)
 	tiny_dnn::fully_connected_layer<tiny_dnn::activation::tan_h> f2(hidden_units, output_dim);
     nn << f1 << dropout << f2;
 
-	optimizer.alpha = 0.003;  // TODO: not optimized.
+	optimizer.alpha = (tiny_dnn::float_t)0.003;  // TODO: not optimized.
 	optimizer.lambda = 0.0;
 
     // Load MNIST dataset.
@@ -262,7 +262,7 @@ void dropout_sample(const std::string& data_dir_path)
 
         std::cout << optimizer.alpha << "," << res.num_success << "/" << res.num_total << std::endl;
 
-		optimizer.alpha *= 0.99;  // Decay learning rate.
+		optimizer.alpha *= (tiny_dnn::float_t)0.99;  // Decay learning rate.
 		optimizer.alpha = std::max((tiny_dnn::float_t)0.00001, optimizer.alpha);
 
         disp.restart(train_images.size());

@@ -1,4 +1,12 @@
-
+//--S [] 2017/02/08: Sang-Wook Lee
+#if defined(min)
+#undef min
+#endif
+#if defined(max)
+#undef max
+#endif
+#include <algorithm>
+//--E [] 2017/02/08: Sang-Wook Lee
 #include <libAnnotation/annorect.h>
 #include <libAnnotation/xmlhelpers.h>
 #include <libAdaBoost/AdaBoost.h>  //-- [] 2012/08/07: Sang-Wook Lee

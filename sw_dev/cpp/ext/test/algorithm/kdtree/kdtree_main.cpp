@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+//#inclucde "stdafx.h"
 #include "../kdtree_lib/kdtree.h"
 #include <boost/timer/timer.hpp>
 #include <iostream>
@@ -10,14 +10,14 @@
 namespace {
 namespace local {
 
-// ${KDTREE_HOME}/examples/test.c.
+// REF [file] >> ${KDTREE_HOME}/examples/test.c.
 bool example1()
 {
 	const int vcount = 1000;
 
-	std::cout << "inserting " << vcount << " random vectors... " << std::endl;
+	std::cout << "Inserting " << vcount << " random vectors... " << std::endl;
 
-	// create a k-d tree for 3-dimensional points.
+	// Create a k-d tree for 3-dimensional points.
 	kdtree *kd = kd_create(3);
 
 	{
@@ -39,7 +39,7 @@ bool example1()
 
 		kdres *set = kd_nearest_range3(kd, 0.0, 0.0, 0.0, 40.0);
 
-		std::cout << "range query returned " << kd_res_size(set) << " items" << std::endl;
+		std::cout << "Range query returned " << kd_res_size(set) << " items" << std::endl;
 		//const boost::timer::cpu_times elapsed_times(timer.elapsed());
 		//std::cout << "elpased time : " << (elapsed_times.system + elapsed_times.user) << " sec" << std::endl;
 		std::cout << timer.format() << std::endl;
@@ -52,7 +52,7 @@ bool example1()
 	return true;
 }
 
-// returns the distance squared between two dims-dimensional double arrays.
+// Returns the distance squared between two dims-dimensional double arrays.
 double dist_sq(double *a1, double *a2, int dims)
 {
 	double dist_sq = 0, diff;
@@ -64,13 +64,13 @@ double dist_sq(double *a1, double *a2, int dims)
 	return dist_sq;
 }
 
-// get a random double between -10 and 10.
+// Get a random double between -10 and 10.
 double rd()
 {
 	return ((double)std::rand() / RAND_MAX) * 20.0 - 10.0;
 }
 
-// ${KDTREE_HOME}/examples/test2.c.
+// REF [file] >> ${KDTREE_HOME}/examples/test2.c.
 bool example2()
 {
 	const int num_pts = 1000;
@@ -78,16 +78,16 @@ bool example2()
 	char *data = new char [num_pts];
 	if (NULL == data)
 	{
-		std::cerr << "memory allocation failed" << std::endl;
+		std::cerr << "Memory allocation failed" << std::endl;
 		return false;
 	}
 
 	std::srand((unsigned int)std::time(NULL));
 
-	// create a k-d tree for 3-dimensional points.
+	// Create a k-d tree for 3-dimensional points.
 	kdtree *ptree = kd_create(3);
 
-	// add some random nodes to the tree (assert nodes are successfully inserted).
+	// Add some random nodes to the tree (assert nodes are successfully inserted).
 	for (int i = 0; i < num_pts; ++i)
 	{
 		data[i] = 'a' + i;
@@ -95,31 +95,31 @@ bool example2()
 		assert(0 == retval);
 	}
 
-	// find points closest to the origin and within distance radius.
+	// Find points closest to the origin and within distance radius.
 	double pt[3] = { 0.0, 0.0, 5.0 };
 	const double radius = 5.0;
 	kdres *presults = kd_nearest_range(ptree, pt, radius);
 
-	// print out all the points found in results.
-	std::cout << "found " << kd_res_size(presults) << " results: " << std::endl;
+	// Print out all the points found in results.
+	std::cout << "Found " << kd_res_size(presults) << " results: " << std::endl;
 
 	double pos[3], dist;
 	while (!kd_res_end(presults))
 	{
-		// get the data and position of the current result item.
+		// Get the data and position of the current result item.
 		const char *pch = (char *)kd_res_item(presults, pos);
 
-		// compute the distance of the current result from the pt.
+		// Compute the distance of the current result from the pt.
 		dist = std::sqrt(dist_sq(pt, pos, 3));
 
-		// print out the retrieved data.
-		std::cout << "node at (" << pos[0] << ", " << pos[1] << ", " << pos[2] << ") is " << dist << " away and has data = " << *pch << std::endl;
+		// Print out the retrieved data.
+		std::cout << "Node at (" << pos[0] << ", " << pos[1] << ", " << pos[2] << ") is " << dist << " away and has data = " << *pch << std::endl;
 
-		// go to the next entry.
+		// Go to the next entry.
 		kd_res_next(presults);
 	}
 
-	// free our tree, results set, and other allocated memory.
+	// Free our tree, results set, and other allocated memory.
 	delete [] data;
 	kd_res_free(presults);
 	kd_free(ptree);

@@ -113,7 +113,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/gmp;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/mpfr;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/taucs;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/mpfr;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -159,7 +159,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/gmp;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/mpfr;$(MY_USR_LOCAL_INCLUDE)/CGAL_auxiliary/taucs;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/mpfr;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CGAL_NO_AUTOLINK_GMP;_USE_MATH_DEFINES;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>

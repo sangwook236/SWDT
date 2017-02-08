@@ -51,9 +51,6 @@
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="kdtree_lib\kdtree.c">
-      <Filter>Source Files\kdtree_lib</Filter>
-    </ClCompile>
     <ClCompile Include="kdtree\kdtree_main.cpp">
       <Filter>Source Files\kdtree</Filter>
     </ClCompile>
@@ -83,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="slash_lib\util.cc">
       <Filter>Source Files\slash_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="kdtree_lib\kdtree.c">
+      <Filter>Source Files\kdtree_lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

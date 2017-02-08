@@ -1,3 +1,6 @@
+#if defined(_WIN64) || defined(WIN64)
+#define WIN32
+#endif
 //#include "stdafx.h"
 #include <osg/Node>
 #include <osg/Group>

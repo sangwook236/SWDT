@@ -19,7 +19,11 @@
 #pragma comment(lib, "libprotobufd.lib")
 #pragma comment(lib, "gflagsd.lib")
 #pragma comment(lib, "glogd.lib")
+#if defined(_WIN64) || defined(WIN64)
+#pragma comment(lib, "snappy64d.lib")
+#else
 #pragma comment(lib, "snappy32d.lib")
+#endif
 //#pragma comment(lib, "libleveldb.lib")
 //#pragma comment(lib, "liblmdb.lib")
 //#pragma comment(lib, "MultiBoostLib_d.lib")
@@ -47,7 +51,11 @@
 #pragma comment(lib, "libprotobuf.lib")
 #pragma comment(lib, "gflags.lib")
 #pragma comment(lib, "glog.lib")
+#if defined(_WIN64) || defined(WIN64)
+#pragma comment(lib, "snappy64.lib")
+#else
 #pragma comment(lib, "snappy32.lib")
+#endif
 //#pragma comment(lib, "libleveldb.lib")
 //#pragma comment(lib, "liblmdb.lib")
 //#pragma comment(lib, "MultiBoostLib.lib")

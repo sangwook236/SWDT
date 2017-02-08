@@ -35,7 +35,7 @@ void draw_link(gdImagePtr im, const int X, const int Y, const double L, const in
 #endif
 
 #if 1
-	// inscribe a filled ellipse in the image
+	// Inscribe a filled ellipse in the image.
 	gdImageFilledEllipse(im, X, Y, W, W, color);
 	gdImageFilledEllipse(im, X2, Y2, W, W, color);
 #else
@@ -55,39 +55,39 @@ void draw_arm(const double theta1, const double theta2, const int index)
 	const int gray = gdImageColorAllocate(im, 127, 127, 127);
 
 	//
-	const int L1 = 30, W1 = 6;  // upper-arm
-	const int L2 = 20, W2 = 6;  // forearm
+	const int L1 = 30, W1 = 6;  // Upper-arm.
+	const int L2 = 20, W2 = 6;  // Forearm.
 
 	const int X1 = WIDTH / 3, Y1 = HEIGHT / 2;
 	const int X2 = X1 + (int)std::floor(L1 * std::cos(theta1) + 0.5), Y2 = Y1 + (int)std::floor(L1 * std::sin(theta1) + 0.5);
 
-	// draw arm
-	draw_link(im, X1, Y1, L1, W1, theta1, white);  // upper-arm
-	draw_link(im, X2, Y2, L2, W2, theta1 + theta2, white);  // forearm
+	// Draw arm.
+	draw_link(im, X1, Y1, L1, W1, theta1, white);  // Upper-arm.
+	draw_link(im, X2, Y2, L2, W2, theta1 + theta2, white);  // Forearm.
 
-	// open a file for writing. "wb" means "write binary", important under MSDOS, harmless under Unix
+	// Open a file for writing. "wb" means "write binary", important under MSDOS, harmless under Unix.
 	std::ostringstream sstream;
 	sstream << "./data/graphics_2d/gd/two_link_arm_" << index << ".png";
-	std::FILE *pngout = std::fopen(sstream.str().c_str(), "wb");
+	FILE *pngout = std::fopen(sstream.str().c_str(), "wb");
 	if (NULL == pngout)
 	{
 		if (EACCES == errno)
-			std::cout << "error access" << std::endl;
+			std::cout << "Error access." << std::endl;
 		else if (EISDIR == errno)
-			std::cout << "error directory" << std::endl;
+			std::cout << "Error directory." << std::endl;
 		else if (ENOENT == errno)
-			std::cout << "error file" << std::endl;
+			std::cout << "Error file." << std::endl;
 
 		return;
 	}
 
-	// output the image to the disk file in PNG format
+	// Output the image to the disk file in PNG format.
 	gdImagePng(im, pngout);
 
-	// close the files
+	// Close the files.
 	std::fclose(pngout);
 
-	// destroy the image in memory
+	// Destroy the image in memory.
 	gdImageDestroy(im);
 }
 

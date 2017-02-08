@@ -21,7 +21,7 @@
 #pragma comment(lib, "libCgld.lib")
 #pragma comment(lib, "libOsid.lib")
 #pragma comment(lib, "libCoinUtilsd.lib")
-#pragma comment(lib, "levmar_d.lib")
+#pragma comment(lib, "levmard.lib")
 #pragma comment(lib, "ceres-debug.lib")
 #pragma comment(lib, "glogd.lib")
 #pragma comment(lib, "gflagsd.lib")

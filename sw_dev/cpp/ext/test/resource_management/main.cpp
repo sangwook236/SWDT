@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 #if defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
 		std::cout << "Valgrind ------------------------------------------------------------" << std::endl;
 		retval = valgrind_main(argc, argv);
-#elif defined(WIN32) || defined(_WIN32)
+#elif defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 		std::cout << "\nVisual Leak Detector (VLD) ------------------------------------------" << std::endl;
 		retval = vld_main(argc, argv);
 #endif
