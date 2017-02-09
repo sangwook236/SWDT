@@ -8,6 +8,7 @@
 int main(int argc, char *argv[])
 {
 	int stlport_main(int argc, char *argv[]);
+
 	int dlib_main(int argc, char *argv[]);
 	int loki_main(int argc, char *argv[]);
 
@@ -18,15 +19,16 @@ int main(int argc, char *argv[])
 		//retval = stlport_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\ndlib library --------------------------------------------------------" << std::endl;
-		//  Algorithm, threading, networking, parsing.
-		//  Graphical user interfaces (GUI).
-		//  Linear algebra, numerical algorithms.
-		//  Optimization.
-		//  Image processing.
-		//  Machine learning algorithms.
-		//  Graph tools, Bayesian networks, graphical model inference algorithms.
-		//  Data compression and integrity algorithms.
-		//  Testing, general utilities.
+		//  - Algorithm, threading, networking, parsing.
+		//  - Graphical user interfaces (GUI).
+		//  - Linear algebra, numerical algorithms.
+		//  - Optimization.
+		//  - Image processing.
+		//  - Machine learning algorithms.
+		//		Deep learning.
+		//  - Graph tools, Bayesian networks, graphical model inference algorithms.
+		//  - Data compression and integrity algorithms.
+		//  - Testing, general utilities.
 		retval = dlib_main(argc, argv);
 
 		std::cout << "\nLoki library --------------------------------------------------------" << std::endl;

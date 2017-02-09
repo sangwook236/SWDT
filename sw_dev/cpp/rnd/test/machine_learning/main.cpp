@@ -18,13 +18,16 @@ int main(int argc, char *argv[])
 
 	int multiboost_main(int argc, char *argv[]);
 
-	int shogun_main(int argc, char *argv[]);
-	int encog_main(int argc, char *argv[]);
-	int torch_main(int argc, char *argv[]);
-	int liblearning_main(int argc, char *argv[]);
-	int waffles_main(int argc, char *argv[]);
 	int caffe_main(int argc, char *argv[]);
 	int tiny_dnn_main(int argc, char *argv[]);
+	int waffles_main(int argc, char *argv[]);
+	int shogun_main(int argc, char *argv[]);
+	int liblearning_main(int argc, char *argv[]);
+	int encog_main(int argc, char *argv[]);
+	int torch_main(int argc, char *argv[]);
+
+	int rnnlib_main(int argc, char *argv[]);
+
 	int manifold_learning_main(int argc, char *argv[]);
 	int manifold_alignment_main(int argc, char *argv[]);
 	int libgp_main(int argc, char *argv[]);
@@ -59,6 +62,66 @@ int main(int argc, char *argv[])
 		std::cout << "\nmultiboost library --------------------------------------------------" << std::endl;
 		//retval = multiboost_main(argc, argv);  // Not yet implemented.
 
+		std::cout << "\ndlib-ml library -----------------------------------------------------" << std::endl;
+		//	- Support vector machines (SVM).
+		//	- Relevance vector machines (RVM).
+		//	- Structured prediction.
+		//	- Multi-layer perceptrons (MLP).
+		//	- Radial basis function network (RBFN).
+		//	- Deep learning.
+		//	- Clustering.
+		//	- Unsupervised learning.
+		//		Canonical correlation analysis (CCA).
+		//	- Semi-supervised learning.
+		//	- Reinforcement learning (RL).
+		//		Least-squares policy iteration (LSPI).
+		//	- Graphical model.
+		//		Bayesian network.
+		//		Inference algorithms.
+		//	- Feature selection.
+		//	- Optimization.
+		//	- Image processing.
+		// REF [library] >> ${SWDT_C++_HOME}/ext/test/general_purpose_library/dlib.
+
+		std::cout << "\nCaffe framework -----------------------------------------------------" << std::endl;
+		//	- Deep learning.
+		//retval = caffe_main(argc, argv);
+
+		std::cout << "\ntiny-dnn library ----------------------------------------------------" << std::endl;
+		//	- Deep learning.
+		//		Convolutional neural network.
+		//		Denoising auto-encoder.
+		//		Dropout.
+		retval = tiny_dnn_main(argc, argv);
+
+		std::cout << "\nWaffles library -----------------------------------------------------" << std::endl;
+		//	- Generation of various types of data.
+		//	- Transforming datasets.
+		//	- Predicting missing values in incomplete data.
+		//	- Learning from and operating on sparse data.
+		//	- Plotting and visualizing datasets.
+		//      Scatter plot matrix.
+		//      Precision/recall.
+		//
+		//	- Supervised and semi-supervised learning.
+		//      Decision tree.
+		//      Bayesian (belief) network.
+		//      Neural network.
+		//      Ensemble.
+		//      Transduction.
+		//      Cross validation.
+		//	- Clustering.
+		//	- Dimensionality reduction.
+		//      Manifold learning.
+		//      Attribute selection.
+		//      Tools related to NLDR.
+		//
+		//  - Collaborative filtering and recommendation systems.
+		//  - Time-series.
+		//	- Audio processing.
+		//  - Document classification.
+		//retval = waffles_main(argc, argv);
+
 		std::cout << "\nshogun library ------------------------------------------------------" << std::endl;
 		//	- Multiple kernel learning (MKL).
 		//	- Gaussian process (GP) regression.
@@ -67,6 +130,10 @@ int main(int argc, char *argv[])
 #else
         std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
+
+		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
+		//	- Deep learning.
+		//retval = liblearning_main(argc, argv);
 
 		std::cout << "\nEncog Machine Learning Framework ------------------------------------" << std::endl;
 		//	- Java, .NET and C/C++.
@@ -89,72 +156,8 @@ int main(int argc, char *argv[])
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
 		//retval = torch_main(argc, argv);  // Not yet implemented.
 #else
-        std::cout << "\tThis library can be used in unix-like systems" << std::endl;
+		std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif
-
-		std::cout << "\ndlib-ml library -----------------------------------------------------" << std::endl;
-		//	- Support vector machines (SVM).
-		//	- Relevance vector machines (RVM).
-		//	- Structured prediction.
-		//	- Multi-layer perceptrons (MLP).
-		//	- Radial basis function network (RBFN).
-		//	- Deep learning.
-		//	- Clustering.
-		//	- Unsupervised learning.
-		//		Canonical correlation analysis (CCA).
-		//	- Semi-supervised learning.
-		//	- Reinforcement learning (RL).
-		//		Least-squares policy iteration (LSPI).
-		//	- Graphical model.
-		//		Bayesian network.
-		//		Inference algorithms.
-		//	- Feature selection.
-		//	- Optimization.
-		//	- Image processing.
-		// REF [library] >> ${SWDT_C++_HOME}/ext/test/general_purpose_library/dlib.
-
-		std::cout << "\nliblearning library -------------------------------------------------" << std::endl;
-		//	- Deep learning.
-		//retval = liblearning_main(argc, argv);
-
-		std::cout << "\nWaffles library -----------------------------------------------------" << std::endl;
-		//	- Generation of various types of data.
-		//	- Transforming datasets.
-		//	- Predicting missing values in incomplete data.
-		//	- Learning from and operating on sparse data.
-		//	- Plotting and visualizing datasets.
-		//      Scatter plot matrix.
-		//      Precision/recall.
-		//
-		//	- Supervised and semi-supervised learning.
-		//      Decision tree.
-		//      Bayesian (belief) network.
-		//      Neural network.
-		//      Ensemble.
-		//      Transduction.
-		//      Cross validation.
-		//	- Clustering.
-		//	- Dimensionality reduction.
-        //      Manifold learning.
-        //      Attribute selection.
-        //      Tools related to NLDR.
-        //
-		//  - Collaborative filtering and recommendation systems.
-		//  - Time-series.
-		//	- Audio processing.
-		//  - Document classification.
-		//retval = waffles_main(argc, argv);
-
-		std::cout << "\nCaffe framework -----------------------------------------------------" << std::endl;
-		//	- Deep learning.
-		//retval = caffe_main(argc, argv);
-
-		std::cout << "\ntiny-dnn library ----------------------------------------------------" << std::endl;
-		//	- Deep learning.
-		//		Convolutional neural network.
-		//		Denoising auto-encoder.
-		//		Dropout.
-		retval = tiny_dnn_main(argc, argv);
 
 		std::cout << "\nRNNLIB library ------------------------------------------------------" << std::endl;
 		//	- Recurrent neural network (RNN).
@@ -162,7 +165,7 @@ int main(int argc, char *argv[])
 		//      Gated recurrent unit (GRU).
 		//      Connectionist Temporal Classification (CTC).
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-		//retval = rnnlib_main(argc, argv);
+		//retval = rnnlib_main(argc, argv);  // Not yet implemented.
 #else
         std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif

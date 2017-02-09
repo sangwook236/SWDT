@@ -70,6 +70,9 @@
     <Filter Include="Source Files\rllib">
       <UniqueIdentifier>{9185df37-7bb8-4a3f-938d-1545e754e6d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\rnnlib">
+      <UniqueIdentifier>{4859f40a-e2f5-4a72-bd57-930372e52353}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libsvm_lib\svm.h">
@@ -412,6 +415,9 @@
     </ClCompile>
     <ClCompile Include="rllib\rllib_mountain_car_ktdsarsa_example.cpp">
       <Filter>Source Files\rllib</Filter>
+    </ClCompile>
+    <ClCompile Include="rnnlib\rnnlib_main.cpp">
+      <Filter>Source Files\rnnlib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

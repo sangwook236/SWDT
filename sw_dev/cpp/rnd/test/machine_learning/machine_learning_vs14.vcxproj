@@ -105,6 +105,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/RLlib;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -240,6 +241,7 @@
     <ClCompile Include="rllib\rllib_main.cpp" />
     <ClCompile Include="rllib\rllib_mountain_car_ktdsarsa_example.cpp" />
     <ClCompile Include="rl_glue\rl_glue_main.cpp" />
+    <ClCompile Include="rnnlib\rnnlib_main.cpp" />
     <ClCompile Include="shogun\shogun_classifier_conjugateindex_example.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

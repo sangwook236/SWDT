@@ -45,5 +45,8 @@
     <ClCompile Include="stlport\stlport_main.cpp">
       <Filter>Source Files\stlport</Filter>
     </ClCompile>
+    <ClCompile Include="dlib\dlib_dnn_example.cpp">
+      <Filter>Source Files\dlib</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
