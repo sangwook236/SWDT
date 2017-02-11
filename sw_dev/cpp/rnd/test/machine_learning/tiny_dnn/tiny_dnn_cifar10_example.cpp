@@ -70,12 +70,12 @@ void train_cifar10(const std::string& data_dir_path, const double learning_rate,
 
 	tiny_dnn::parse_cifar10(data_dir_path + "/test_batch.bin", &test_images, &test_labels, -1.0, 1.0, 0, 0);
 
-	std::cout << "Start learning" << std::endl;
+	std::cout << "Start learning." << std::endl;
 
 	tiny_dnn::progress_display disp((unsigned long)train_images.size());
 	tiny_dnn::timer t;
-	const int n_minibatch = 10;     ///< minibatch size
-	const int n_train_epochs = 30;  ///< training duration
+	const int n_minibatch = 10;  // Mini-batch size.
+	const int n_train_epochs = 30;  // Training duration.
 
 	optimizer.alpha *= static_cast<tiny_dnn::float_t>(std::sqrt(n_minibatch) * learning_rate);
 

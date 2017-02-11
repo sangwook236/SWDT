@@ -6,19 +6,25 @@
 
 #pragma comment(lib, "dlibd.lib")
 //#pragma comment(lib, "stlport.lib")
+
+#if defined(_WIN64) || defined(WIN64)
 #pragma comment(lib, "cudnn.lib")
 #pragma comment(lib, "cublas.lib")
 #pragma comment(lib, "curand.lib")
 #pragma comment(lib, "cudart.lib")
+#endif
 
 #		else
 
 #pragma comment(lib, "dlib.lib")
 //#pragma comment(lib, "stlport.lib")
+
+#if defined(_WIN64) || defined(WIN64)
 #pragma comment(lib, "cudnn.lib")
 #pragma comment(lib, "cublas.lib")
 #pragma comment(lib, "curand.lib")
 #pragma comment(lib, "cudart.lib")
+#endif
 
 #		endif
 

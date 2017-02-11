@@ -13,7 +13,7 @@
 namespace {
 namespace local {
 
-// [ref] ${VIGRA_HOME}/doc/vigra/group__SeededRegionGrowing.html
+// REF [site] >> ${VIGRA_HOME}/doc/vigra/group__SeededRegionGrowing.html
 void seeded_region_growing_example()
 {
 	const int width = 400, height = 300;
@@ -23,17 +23,17 @@ void seeded_region_growing_example()
 
 	const int max_region_label = 100;
 
-	// throw in some random points.
+	// Throw in some random points.
 	for (int i = 1; i <= max_region_label; ++i)
 		points(height * std::rand() / RAND_MAX , width * std::rand() / RAND_MAX) = i;
 
-	// calculate Euclidean distance transform.
+	// Calculate Euclidean distance transform.
 	vigra::distanceTransform(points, dist, 0, 2);
 
-	// init statistics functor.
+	// Init statistics functor.
 	vigra::ArrayOfRegionStatistics<vigra::SeedRgDirectValueFunctor<float> > stats(max_region_label);
 
-	// find Voronoi region of each point (the point image is overwritten with the Voronoi region labels).
+	// Find Voronoi region of each point (the point image is overwritten with the Voronoi region labels).
 	{
 		boost::timer::auto_cpu_timer timer;
 #if 0
@@ -43,7 +43,7 @@ void seeded_region_growing_example()
 #endif
 	}
 
-	// display.
+	// Display.
 	cv::Mat input_img(height, width, CV_32FC1, cv::Scalar::all(0)), label_img(height, width, CV_32SC1, cv::Scalar::all(0));
 	for (int i = 0; i < input_img.rows; ++i)
 		for (int j = 0; j < input_img.cols; ++j)
@@ -58,8 +58,8 @@ void seeded_region_growing_example()
 	cv::minMaxLoc(label_img, &minVal, &maxVal);
 	label_img.convertTo(label_img, CV_32FC1, 1.0 / maxVal, 0.0);
 
-	cv::imshow("seeded region growing - input", input_img);
-	cv::imshow("seeded region growing - label", label_img);
+	cv::imshow("Seeded region growing - input", input_img);
+	cv::imshow("Seeded region growing - label", label_img);
 
 	cv::waitKey(0);
 
@@ -104,7 +104,7 @@ void seeded_region_growing()
 	cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_GRAYSCALE);
 	if (input_img.empty())
 	{
-		std::cout << "image file not found: " << input_filename << std::endl;
+		std::cout << "Image file not found: " << input_filename << std::endl;
 		return;
 	}
 
@@ -127,10 +127,10 @@ void seeded_region_growing()
 	for (std::list<cv::Point>::const_iterator cit = seed_points.begin(); cit != seed_points.end(); ++cit)
 		points(cit->y, cit->x) = idx++;
 
-	// init statistics functor.
+	// Init statistics functor.
 	vigra::ArrayOfRegionStatistics<vigra::SeedRgDirectValueFunctor<float> > stats(max_region_label);
 
-	// find voronoi region of each point (the point image is overwritten with the voronoi region labels).
+	// Find voronoi region of each point (the point image is overwritten with the voronoi region labels).
 	{
 		boost::timer::auto_cpu_timer timer;
 #if 1
@@ -140,7 +140,7 @@ void seeded_region_growing()
 #endif
 	}
 
-	// display.
+	// Display.
 	cv::Mat label_img(height, width, CV_32SC1, cv::Scalar::all(0));
 	for (int i = 0; i < label_img.rows; ++i)
 		for (int j = 0; j < label_img.cols; ++j)
@@ -149,7 +149,7 @@ void seeded_region_growing()
 	cv::minMaxLoc(label_img, &minVal, &maxVal);
 	label_img.convertTo(label_img, CV_32FC1, 1.0 / maxVal, 0.0);
 
-	cv::imshow("seeded region growing - input", input_img);
+	cv::imshow("Seeded region growing - input", input_img);
 	cv::imshow("seeded region growing - label", label_img);
 
 	cv::waitKey(0);
@@ -164,8 +164,8 @@ namespace my_vigra {
 
 void seeded_region_growing()
 {
-	// seeded region growing (SRG).
-	//	-. [ref] "Seeded Region Growing", R. Adams and L. Bischof, TPAMI, 1994.
+	// Seeded region growing (SRG).
+	//	- REF [paper] >> "Seeded Region Growing", R. Adams and L. Bischof, TPAMI 1994.
 
 	//local::seeded_region_growing_example();
 	local::seeded_region_growing();
