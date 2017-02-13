@@ -33,7 +33,7 @@ CvMemStorage *storage = 0;  // temporary storage
 //  img - input video frame
 //  dst - resultant motion picture
 //  args - optional parameters
-void  update_mhi(IplImage* img, IplImage* dst, int diff_threshold)
+void update_mhi(IplImage* img, IplImage* dst, int diff_threshold)
 {
 	double timestamp = (double)clock() / CLOCKS_PER_SEC;  // get current time in seconds
 	CvSize size = cvSize(img->width, img->height);  // get current frame size

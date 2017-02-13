@@ -2,11 +2,58 @@
 #define CV_NO_BACKWARD_COMPATIBILITY
 #include <opencv2/core/core.hpp>
 //#include <opencv2/gpu/gpu.hpp>
+#include <opencv2/opencv.hpp>
 #include <iostream>
 
 
+namespace my_opencv {
+
+// REF [file] >> ${SWL_CPP_HOME}/test/machine_vision/opencv/opencv_util.cpp
+void canny(const cv::Mat &gray, const int lowerEdgeThreshold, const int upperEdgeThreshold, const bool useL2, cv::Mat &edge);
+void sobel(const cv::Mat &gray, const double thresholdRatio, cv::Mat &gradient);
+
+}  // namespace my_opencv
+
 namespace {
 namespace local {
+
+void basic_processing()
+{
+	const std::string patty_img_file("D:/depot/download/patty_1_trimmed.png");
+
+	// Load an imaeg.
+	cv::Mat& rgb = cv::imread(patty_img_file, cv::IMREAD_COLOR);
+	cv::Mat gray;
+	cv::cvtColor(rgb, gray, cv::COLOR_BGR2GRAY);
+
+	//
+	const std::string windowName("Analyze patty");
+	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
+
+	cv::imshow(windowName, rgb);
+
+	// Smooth image.
+	const int kernelSize = 3;
+	const double sigma = 5.0;
+	cv::GaussianBlur(gray, gray, cv::Size(kernelSize, kernelSize), sigma, sigma, cv::BORDER_DEFAULT);
+
+	// Filter image.
+#if 0
+	const double thresholdRatio = 0.15;
+	my_opencv::sobel(gray, thresholdRatio, gray);
+#elif 1
+	const int lowerEdgeThreshold = 20, upperEdgeThreshold = 50;
+	const bool useL2 = true;
+	my_opencv::canny(gray, lowerEdgeThreshold, upperEdgeThreshold, useL2, gray);
+#endif
+
+	// Show the result.
+	cv::imshow(windowName + " - filtered", gray);
+
+	cv::waitKey(0);
+
+	cv::destroyAllWindows();
+}
 
 }  // namespace local
 }  // unnamed namespace
@@ -162,7 +209,9 @@ int opencv_main(int argc, char *argv[])
 			std::cout << "GPU not found ..." << std::endl;
 #endif
 
-		//opencv::text_output();
+		local::basic_processing();
+
+		//my_opencv::text_output();
 
 		//my_opencv::basic_operation();
 		//my_opencv::matrix_operation();
@@ -196,7 +245,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::outlier_removal();
 
 		//my_opencv::skeletonization_and_thinning();
-		my_opencv::contour();
+		//my_opencv::contour();
 
 		//my_opencv::hough_transform();
 		//my_opencv::template_matching();

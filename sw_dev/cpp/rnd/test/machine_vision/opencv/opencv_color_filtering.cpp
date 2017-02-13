@@ -9,7 +9,7 @@
 
 namespace my_opencv {
 
-// [ref] ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp
+// REF [file] >> ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp
 void canny(const cv::Mat &gray, const int lowerEdgeThreshold, const int upperEdgeThreshold, const bool useL2, cv::Mat &edge);
 void sobel(const cv::Mat &gray, const double thresholdRatio, cv::Mat &gradient);
 
@@ -101,7 +101,7 @@ void color_channel_extraction()
 
 	for (std::list<std::string>::iterator it = filenames.begin(); it != filenames.end(); ++it)
     {
-		const cv::Mat &img = cv::imread(*it, CV_LOAD_IMAGE_COLOR);
+		const cv::Mat &img = cv::imread(*it, cv::IMREAD_COLOR);
 		if (img.empty())
 		{
 			std::cout << "fail to load image file: " << *it << std::endl;
