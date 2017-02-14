@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
 
 	int manifold_learning_main(int argc, char *argv[]);
 	int manifold_alignment_main(int argc, char *argv[]);
+
 	int libgp_main(int argc, char *argv[]);
 
 	int rl_glue_main(int argc, char *argv[]);

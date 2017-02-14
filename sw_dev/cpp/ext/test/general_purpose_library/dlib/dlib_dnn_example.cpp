@@ -1,4 +1,4 @@
-#if defined(_WIN64) || defined(WIN64)
+#if !defined(_WIN32) && !defined(WIN32)
 #define DLIB_USE_CUDA 1
 #endif
 #include <dlib/dnn.h>
@@ -46,7 +46,7 @@ void dnn_introduction_example()
 	// Ask the trainer to save its state to a file named "mnist_sync" every 20 seconds.
 	trainer.set_synchronization_file("./data/general_purpose_library/dlib/mnist_sync", std::chrono::seconds(20));
 	// Begin training.
-	// Keep doing this until the learning rate has dropped below the min learning rate defined above or the maximum number of epochs as been executed (defaulted to 10000). 
+	// Keep doing this until the learning rate has dropped below the min learning rate defined above or the maximum number of epochs as been executed (defaulted to 10000).
 	trainer.train(training_images, training_labels);
 
 	// Save to disk.
@@ -208,7 +208,7 @@ void dnn_introduction2_example()
 	// Access the layer 2 layers after tag4.
 	dlib::layer<dlib::tag4, 2>(pnet);
 
-	// The dnn_trainer will use SGD by default, but you can tell it to use different solvers like adam with a weight decay of 0.0005 and the given momentum parameters. 
+	// The dnn_trainer will use SGD by default, but you can tell it to use different solvers like adam with a weight decay of 0.0005 and the given momentum parameters.
 	dlib::dnn_trainer<net_type, dlib::adam> trainer(net, dlib::adam(0.0005, 0.9, 0.999));
 	// If you have multiple graphics cards you can tell the trainer to use them together to make the training faster.
 	// Use GPU cards 0 and 1.
@@ -225,7 +225,7 @@ void dnn_introduction2_example()
 	trainer.set_learning_rate(1e-3);
 
 	// What if your training dataset is so big it doesn't fit in RAM?
-	// You make mini-batches yourself, any way you like, and you send them to the trainer by repeatedly calling trainer.train_one_step(). 
+	// You make mini-batches yourself, any way you like, and you send them to the trainer by repeatedly calling trainer.train_one_step().
 
 	std::vector<dlib::matrix<unsigned char>> mini_batch_samples;
 	std::vector<unsigned long> mini_batch_labels;
@@ -251,7 +251,7 @@ void dnn_introduction2_example()
 		// You can also feed validation data into the trainer by periodically calling trainer.test_one_step(samples, labels).
 		// Unlike train_one_step(), test_one_step() doesn't modify the network, it only computes the testing error which it records internally.
 		// This testing error will then be print in the verbose logging and will also determine when the trainer's automatic learning rate shrinking happens.
-		// Therefore, test_one_step() can be used to perform automatic early stopping based on held out data.   
+		// Therefore, test_one_step() can be used to perform automatic early stopping based on held out data.
 	}
 
 	// When you call train_one_step(), the trainer will do its processing in a separate thread.
@@ -276,7 +276,7 @@ void dnn_introduction2_example()
 		>>>>>>>>>>;
 	// Simply assign our trained net to our testing net.
 	test_net_type tnet = net;
-	// Deserialize it directly into your testing network.  
+	// Deserialize it directly into your testing network.
 	dlib::deserialize("./data/general_purpose_library/dlib/mnist_res_network.dat") >> tnet;
 
 	// Run the testing network over our data.
@@ -317,7 +317,7 @@ namespace inception {
 	template <typename SUBNET> using block_a3 = dlib::relu<dlib::con<10, 5, 5, 1, 1, dlib::relu<dlib::con<16, 1, 1, 1, 1, SUBNET>>>>;
 	template <typename SUBNET> using block_a4 = dlib::relu<dlib::con<10, 1, 1, 1, 1, dlib::max_pool<3, 3, 1, 1, SUBNET>>>;
 
-	// Define a inception layer  
+	// Define a inception layer
 	template <typename SUBNET> using incept_a = dlib::inception4<block_a1, block_a2, block_a3, block_a4, SUBNET>;
 
 	// Network can have inception layers of different structure.
@@ -427,6 +427,22 @@ namespace my_dlib {
 
 void dnn_example()
 {
+    // CUDA.
+    {
+        if (dlib::cuda::get_num_devices() > 0)
+        {
+            //int dev = 0;
+            //CHECK_CUDA(cudaGetDevice(&dev));
+            const int dev = dlib::cuda::get_device();
+            std::cout << "CUDA device name: " << dlib::cuda::get_device_name(dev) << std::endl;
+        }
+        else
+        {
+            std::cout << "No CUDA device found." << std::endl;
+            return;
+        }
+    }
+
 	// Example.
 	local::dnn_introduction_example();
 	local::dnn_introduction2_example();

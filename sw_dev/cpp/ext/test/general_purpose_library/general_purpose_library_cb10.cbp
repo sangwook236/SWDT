@@ -31,15 +31,19 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-std=c++11" />
 			<Add option="-Wall" />
+			<Add option="-std=c++11" />
 			<Add option="-fexceptions" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
 		<Linker>
 			<Add library="dlib" />
 			<Add library="cblas" />
 			<Add library="lapack" />
+			<Add directory="/usr/local/lib" />
+			<Add directory="/usr/lib/nvidia-367" />
 		</Linker>
+		<Unit filename="dlib/dlib_dnn_example.cpp" />
 		<Unit filename="dlib/dlib_graph_labeling_example.cpp" />
 		<Unit filename="dlib/dlib_main.cpp" />
 		<Unit filename="dlib/dlib_svm_struct_example.cpp" />
@@ -50,6 +54,7 @@
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
