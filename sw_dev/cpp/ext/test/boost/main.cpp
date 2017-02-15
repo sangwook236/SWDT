@@ -1,3 +1,5 @@
+//#define BOOST_ALL_DYN_LINK 1
+
 #if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <vld/vld.h>
 #endif

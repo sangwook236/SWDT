@@ -12,7 +12,10 @@ namespace my_dlib {
 
 void svm_struct_example();
 void graph_labeling_example();
+
 void dnn_example();
+void dnn_resnet_example();
+void dnn_inception_example();
 
 }  // namespace my_dlib
 

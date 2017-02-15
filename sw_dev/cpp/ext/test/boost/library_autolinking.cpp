@@ -4,33 +4,35 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "OpenCL.lib")
 //#pragma comment(lib, "gmpfrxx_d.lib")
 //#pragma comment(lib, "libmpfr-4.dll.lib")
 //#pragma comment(lib, "libgmp-3.dll.lib")
 #pragma comment(lib, "libboost_graph-vc140-mt-gd-1_61.lib")
-#pragma comment(lib, "boost_log_setup-vc140-mt-gd-1_61.lib")
-#pragma comment(lib, "boost_log-vc140-mt-gd-1_61.lib")
-#pragma comment(lib, "psapi.lib")  // For Boost.Log library.
+//#pragma comment(lib, "libboost_log_setup-vc140-mt-gd-1_61.lib")
+//#pragma comment(lib, "libboost_log-vc140-mt-gd-1_61.lib")
 #pragma comment(lib, "lapack.lib")
 #pragma comment(lib, "blas.lib")
 #pragma comment(lib, "libf2c.lib")
 #pragma comment(lib, "libjpeg.lib")
 
+#pragma comment(lib, "OpenCL.lib")
+#pragma comment(lib, "psapi.lib")  // For Boost.Log library.
+
 #		else
 
-#pragma comment(lib, "OpenCL.lib")
 //#pragma comment(lib, "gmpfrxx.lib")
 //#pragma comment(lib, "libmpfr-4.dll.lib")
 //#pragma comment(lib, "libgmp-3.dll.lib")
 #pragma comment(lib, "libboost_graph-vc140-mt-1_61.lib")
-#pragma comment(lib, "boost_log_setup-vc140-mt-1_61.lib")
-#pragma comment(lib, "boost_log-vc140-mt-1_61.lib")
-#pragma comment(lib, "psapi.lib")  // For Boost.Log library.
+//#pragma comment(lib, "libboost_log_setup-vc140-mt-1_61.lib")
+//#pragma comment(lib, "libboost_log-vc140-mt-1_61.lib")
 #pragma comment(lib, "lapack.lib")
 #pragma comment(lib, "blas.lib")
 #pragma comment(lib, "libf2c.lib")
 #pragma comment(lib, "libjpeg.lib")
+
+#pragma comment(lib, "OpenCL.lib")
+#pragma comment(lib, "psapi.lib")  // For Boost.Log library.
 
 #		endif
 

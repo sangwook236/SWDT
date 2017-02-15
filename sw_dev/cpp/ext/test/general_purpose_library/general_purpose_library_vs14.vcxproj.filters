@@ -48,5 +48,11 @@
     <ClCompile Include="dlib\dlib_dnn_example.cpp">
       <Filter>Source Files\dlib</Filter>
     </ClCompile>
+    <ClCompile Include="dlib\dlib_inception_example.cpp">
+      <Filter>Source Files\dlib</Filter>
+    </ClCompile>
+    <ClCompile Include="dlib\dlib_resnet_example.cpp">
+      <Filter>Source Files\dlib</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
