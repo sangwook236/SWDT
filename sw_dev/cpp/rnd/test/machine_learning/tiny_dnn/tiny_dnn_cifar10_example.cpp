@@ -50,7 +50,7 @@ void convert_image(const std::string& imagefilename, double minv, double maxv, i
 				data[c * w * h + y * w + x] = resized.data[y * resized.step + x * resized.step + c];
 }
 
-void train_cifar10(const std::string& data_dir_path, const double learning_rate, std::ostream& log)
+void train_cifar10(const std::string& dataset_dir_path, const double learning_rate, std::ostream& log)
 {
 	tiny_dnn::network<tiny_dnn::sequential> nn;
 	tiny_dnn::adam optimizer;
@@ -66,9 +66,9 @@ void train_cifar10(const std::string& data_dir_path, const double learning_rate,
 	std::vector<tiny_dnn::vec_t> train_images, test_images;
 
 	for (int i = 1; i <= 5; ++i)
-		tiny_dnn::parse_cifar10(data_dir_path + "/data_batch_" + std::to_string(i) + ".bin", &train_images, &train_labels, -1.0, 1.0, 0, 0);
+		tiny_dnn::parse_cifar10(dataset_dir_path + "/data_batch_" + std::to_string(i) + ".bin", &train_images, &train_labels, -1.0, 1.0, 0, 0);
 
-	tiny_dnn::parse_cifar10(data_dir_path + "/test_batch.bin", &test_images, &test_labels, -1.0, 1.0, 0, 0);
+	tiny_dnn::parse_cifar10(dataset_dir_path + "/test_batch.bin", &test_images, &test_labels, -1.0, 1.0, 0, 0);
 
 	std::cout << "Start learning." << std::endl;
 
@@ -170,7 +170,7 @@ namespace my_tiny_dnn {
 void cifar10_train_example()
 {
 	// REF [site] >> http://www.cs.toronto.edu/~kriz/cifar.html
-	const std::string path_to_dataset("./data/machine_learning/cifar10");
+	const std::string path_to_dataset("D:/dataset/machine_learning/cifar10");
 	const double learning_rate = 0.01;
 
 	local::train_cifar10(path_to_dataset, learning_rate, std::cout);

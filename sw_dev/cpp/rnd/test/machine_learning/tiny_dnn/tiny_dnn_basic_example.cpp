@@ -8,7 +8,7 @@ namespace my_tiny_dnn {
 
 // REF [file] >> sample1_convnet() in ${TINY_DNN_HOME}/examples/main.cpp
 // Learning convolutional neural networks (LeNet-5 like architecture).
-void convnet_sample(const std::string& data_dir_path)
+void convnet_sample(const std::string& dataset_dir_path)
 {
     // Construct LeNet-5 architecture.
 	tiny_dnn::network<tiny_dnn::sequential> nn;
@@ -43,10 +43,10 @@ void convnet_sample(const std::string& data_dir_path)
     std::vector<tiny_dnn::label_t> train_labels, test_labels;
     std::vector<tiny_dnn::vec_t> train_images, test_images;
 
-	tiny_dnn::parse_mnist_labels(data_dir_path + "/train-labels.idx1-ubyte", &train_labels);
-	tiny_dnn::parse_mnist_images(data_dir_path + "/train-images.idx3-ubyte", &train_images, -1.0, 1.0, 2, 2);
-	tiny_dnn::parse_mnist_labels(data_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
-	tiny_dnn::parse_mnist_images(data_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 2, 2);
+	tiny_dnn::parse_mnist_labels(dataset_dir_path + "/train-labels.idx1-ubyte", &train_labels);
+	tiny_dnn::parse_mnist_images(dataset_dir_path + "/train-images.idx3-ubyte", &train_images, -1.0, 1.0, 2, 2);
+	tiny_dnn::parse_mnist_labels(dataset_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
+	tiny_dnn::parse_mnist_images(dataset_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 2, 2);
 
 	std::cout << "Start training..." << std::endl;
 
@@ -93,7 +93,7 @@ void convnet_sample(const std::string& data_dir_path)
 
 // REF [file] >> sample2_mlp() in ${TINY_DNN_HOME}/examples/main.cpp
 // Learning 3-Layer Networks.
-void mlp_sample(const std::string& data_dir_path)
+void mlp_sample(const std::string& dataset_dir_path)
 {
     const tiny_dnn::cnn_size_t num_hidden_units = 500;
 
@@ -110,10 +110,10 @@ void mlp_sample(const std::string& data_dir_path)
     std::vector<tiny_dnn::label_t> train_labels, test_labels;
     std::vector<tiny_dnn::vec_t> train_images, test_images;
 
-	tiny_dnn::parse_mnist_labels(data_dir_path + "/train-labels.idx1-ubyte", &train_labels);
-	tiny_dnn::parse_mnist_images(data_dir_path + "/train-images.idx3-ubyte", &train_images, -1.0, 1.0, 0, 0);
-	tiny_dnn::parse_mnist_labels(data_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
-	tiny_dnn::parse_mnist_images(data_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 0, 0);
+	tiny_dnn::parse_mnist_labels(dataset_dir_path + "/train-labels.idx1-ubyte", &train_labels);
+	tiny_dnn::parse_mnist_images(dataset_dir_path + "/train-images.idx3-ubyte", &train_images, -1.0, 1.0, 0, 0);
+	tiny_dnn::parse_mnist_labels(dataset_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
+	tiny_dnn::parse_mnist_images(dataset_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 0, 0);
 
 	optimizer.alpha = (tiny_dnn::float_t)0.001;
 
@@ -150,7 +150,7 @@ void mlp_sample(const std::string& data_dir_path)
 
 // REF [file] >> sample3_dae() in ${TINY_DNN_HOME}/examples/main.cpp
 // Denoising auto-encoder.
-void denoising_auto_encoder_sample(const std::string& data_dir_path)
+void denoising_auto_encoder_sample(const std::string& dataset_dir_path)
 {
 #if defined(_MSC_VER) && _MSC_VER < 1800
     // Initializer-list is not supported.
@@ -169,10 +169,10 @@ void denoising_auto_encoder_sample(const std::string& data_dir_path)
 	std::vector<tiny_dnn::label_t> train_labels, test_labels;
 	std::vector<tiny_dnn::vec_t> train_images, test_images;
 
-	tiny_dnn::parse_mnist_labels(data_dir_path + "/train-labels.idx1-ubyte", &train_labels);
-	tiny_dnn::parse_mnist_images(data_dir_path + "/train-images.idx3-ubyte", &train_images, -1.0, 1.0, 0, 0);
-	tiny_dnn::parse_mnist_labels(data_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
-	tiny_dnn::parse_mnist_images(data_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 0, 0);
+	tiny_dnn::parse_mnist_labels(dataset_dir_path + "/train-labels.idx1-ubyte", &train_labels);
+	tiny_dnn::parse_mnist_images(dataset_dir_path + "/train-images.idx3-ubyte", &train_images, -1.0, 1.0, 0, 0);
+	tiny_dnn::parse_mnist_labels(dataset_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
+	tiny_dnn::parse_mnist_images(dataset_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 0, 0);
 
 	//std::vector<tiny_dnn::vec_t> train_data_corrupted(train_data_original);
 	std::vector<tiny_dnn::vec_t> train_data_corrupted(train_images);  // For MNIST dataset.
@@ -207,19 +207,19 @@ void denoising_auto_encoder_sample(const std::string& data_dir_path)
 		++disp;
 	};
 
-	std::cout << "start training..." << std::endl;
+	std::cout << "Start training..." << std::endl;
 
 	// Learning 100-400-100 denoising auto-encoder.
 	//nn.train<tiny_dnn::mse>(optimizer, train_data_corrupted, train_data_original);
 	// Learning 28*28-400-28*28 denoising auto-encoder.
 	nn.train<tiny_dnn::mse>(optimizer, train_data_corrupted, train_labels, 1, 100, on_enumerate_data, on_enumerate_epoch);  // for MNIST dataset.
 
-	std::cout << "end training..." << std::endl;
+	std::cout << "End training..." << std::endl;
 }
 
 // REF [file] >> sample4_dropout() in ${TINY_DNN_HOME}/examples/main.cpp
 // Dropout-learning.
-void dropout_sample(const std::string& data_dir_path)
+void dropout_sample(const std::string& dataset_dir_path)
 {
     typedef tiny_dnn::network<tiny_dnn::sequential> Network;
     Network nn;
@@ -240,10 +240,10 @@ void dropout_sample(const std::string& data_dir_path)
     std::vector<tiny_dnn::label_t> train_labels, test_labels;
     std::vector<tiny_dnn::vec_t> train_images, test_images;
 
-	tiny_dnn::parse_mnist_labels(data_dir_path + "/train-labels.idx1-ubyte", &train_labels);
-	tiny_dnn::parse_mnist_images(data_dir_path + "/train-images.idx3-ubyte", &train_images, -1.0, 1.0, 0, 0);
-	tiny_dnn::parse_mnist_labels(data_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
-	tiny_dnn::parse_mnist_images(data_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 0, 0);
+	tiny_dnn::parse_mnist_labels(dataset_dir_path + "/train-labels.idx1-ubyte", &train_labels);
+	tiny_dnn::parse_mnist_images(dataset_dir_path + "/train-images.idx3-ubyte", &train_images, -1.0, 1.0, 0, 0);
+	tiny_dnn::parse_mnist_labels(dataset_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
+	tiny_dnn::parse_mnist_images(dataset_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 0, 0);
 
 	std::cout << "Start training..." << std::endl;
 

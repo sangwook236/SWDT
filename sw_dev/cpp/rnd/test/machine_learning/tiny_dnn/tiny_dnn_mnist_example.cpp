@@ -67,7 +67,7 @@ void construct_net(tiny_dnn::network<tiny_dnn::sequential>& nn)
        << tiny_dnn::fully_connected_layer<tiny_dnn::activation::tan_h>(120, 10, true, backend_type);  // F6, 120-in, 10-out.
 }
 
-void train_lenet(const std::string& data_dir_path)
+void train_lenet(const std::string& dataset_dir_path)
 {
     // Specify loss-function and learning strategy.
 	tiny_dnn::network<tiny_dnn::sequential> nn;
@@ -81,12 +81,12 @@ void train_lenet(const std::string& data_dir_path)
     std::vector<tiny_dnn::label_t> train_labels, test_labels;
     std::vector<tiny_dnn::vec_t> train_images, test_images;
 
-	tiny_dnn::parse_mnist_labels(data_dir_path + "/train-labels.idx1-ubyte", &train_labels);
-	tiny_dnn::parse_mnist_images(data_dir_path + "/train-images.idx3-ubyte", &train_images, -1.0, 1.0, 2, 2);
-	tiny_dnn::parse_mnist_labels(data_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
-	tiny_dnn::parse_mnist_images(data_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 2, 2);
+	tiny_dnn::parse_mnist_labels(dataset_dir_path + "/train-labels.idx1-ubyte", &train_labels);
+	tiny_dnn::parse_mnist_images(dataset_dir_path + "/train-images.idx3-ubyte", &train_images, -1.0, 1.0, 2, 2);
+	tiny_dnn::parse_mnist_labels(dataset_dir_path + "/t10k-labels.idx1-ubyte", &test_labels);
+	tiny_dnn::parse_mnist_images(dataset_dir_path + "/t10k-images.idx3-ubyte", &test_images, -1.0, 1.0, 2, 2);
 
-    std::cout << "Start training" << std::endl;
+    std::cout << "Start training." << std::endl;
 
 	tiny_dnn::progress_display disp(train_images.size());
 	tiny_dnn::timer t;
@@ -186,7 +186,7 @@ namespace my_tiny_dnn {
 void mnist_train_example()
 {
 	// REF [site] >> http://yann.lecun.com/exdb/mnist/
-	const std::string path_to_dataset("./data/machine_learning/mnist");
+	const std::string path_to_dataset("D:/dataset/machine_learning/mnist");
 
 	local::train_lenet(path_to_dataset);
 }
