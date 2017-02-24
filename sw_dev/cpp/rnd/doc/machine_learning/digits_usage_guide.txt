@@ -1,0 +1,32 @@
+[-] General.
+	- Site.
+		https://github.com/NVIDIA/DIGITS
+		https://developer.nvidia.com/digits
+
+[-] Usage.
+	- Reference.
+		https://github.com/NVIDIA/DIGITS/blob/master/docs/GettingStarted.md
+		https://github.com/NVIDIA/DIGITS/blob/master/docs/StandardDatasets.md
+
+	- Set environment variable.
+		Export CAFFE_ROOT.
+			${CAFFE_ROOT}/build/tools/caffe executable must exist.
+				Not 'build_linux' directory, but 'build' directory.
+			e.g.) export CAFFE_ROOT=~/lib_repo/cpp/DIGITS_github
+		Export PYTHONPATH to ${CAFFE_ROOT}/python.
+			e.g.) export PYTHONPATH=$CAFFE_ROOT/python:$PYTHONPATH
+	- Start a server.
+		${DIGITS_HOME}/digits-devserver
+		${DIGITS_HOME}/digits-devserver --help
+	- Run a web browser.
+	- Open DIGITS page.
+		http://localhost:5000/
+		http://localhost/
+
+[-] Building.
+	- Reference.
+		https://github.com/NVIDIA/DIGITS/blob/master/docs/BuildDigits.md
+		https://github.com/NVIDIA/DIGITS/blob/master/docs/BuildDigitsWindows.md
+		https://github.com/NVIDIA/DIGITS/blob/master/docs/InstallCuda.md
+		https://github.com/NVIDIA/DIGITS/blob/master/docs/BuildCaffe.md
+		https://github.com/NVIDIA/DIGITS/blob/master/docs/BuildTorch.md
