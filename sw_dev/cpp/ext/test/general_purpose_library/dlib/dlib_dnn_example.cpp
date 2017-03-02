@@ -17,7 +17,7 @@ namespace local {
 // REF [file] >> ${DLIB_HOME}/examples/dnn_introduction_ex.cpp
 void dnn_lenet_example()
 {
-	const std::string mnist_data_dir("../../rnd/bin/data/machine_learning/mnist");
+	const std::string mnist_data_dir("D:/dataset/pattern_recognition/mnist");
 
 	// Load MNIST data.
 	std::vector<dlib::matrix<unsigned char>> training_images;

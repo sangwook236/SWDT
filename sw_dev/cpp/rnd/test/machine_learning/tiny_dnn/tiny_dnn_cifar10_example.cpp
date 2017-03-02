@@ -170,7 +170,7 @@ namespace my_tiny_dnn {
 void cifar10_train_example()
 {
 	// REF [site] >> http://www.cs.toronto.edu/~kriz/cifar.html
-	const std::string path_to_dataset("D:/dataset/machine_learning/cifar10");
+	const std::string path_to_dataset("D:/dataset/pattern_recognition/cifar10");
 	const double learning_rate = 0.01;
 
 	local::train_cifar10(path_to_dataset, learning_rate, std::cout);

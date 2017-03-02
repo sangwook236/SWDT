@@ -54,7 +54,7 @@ void dnn_inception_example()
 	*/
 
 	//
-	const std::string mnist_data_dir("../../rnd/bin/data/machine_learning/mnist");
+	const std::string mnist_data_dir("D:/dataset/pattern_recognition/mnist");
 
 	// Load the MNIST dataset.
 	std::vector<dlib::matrix<unsigned char>> training_images;

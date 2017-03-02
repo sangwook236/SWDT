@@ -186,7 +186,7 @@ namespace my_tiny_dnn {
 void mnist_train_example()
 {
 	// REF [site] >> http://yann.lecun.com/exdb/mnist/
-	const std::string path_to_dataset("D:/dataset/machine_learning/mnist");
+	const std::string path_to_dataset("D:/dataset/pattern_recognition/mnist");
 
 	local::train_lenet(path_to_dataset);
 }

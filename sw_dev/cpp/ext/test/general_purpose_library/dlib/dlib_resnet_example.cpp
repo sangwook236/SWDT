@@ -74,7 +74,7 @@ void dnn_resnet_example()
 	//	REF [paper] >> Figure 2 in "Deep Residual Learning for Image Recognition", arXiv 2015.
 
 	//
-	const std::string mnist_data_dir("../../rnd/bin/data/machine_learning/mnist");
+	const std::string mnist_data_dir("D:/dataset/pattern_recognition/mnist");
 
 	// Load MNIST data.
 	std::vector<dlib::matrix<unsigned char>> training_images;
