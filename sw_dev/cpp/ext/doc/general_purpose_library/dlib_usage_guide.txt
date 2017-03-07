@@ -1,9 +1,9 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://dlib.net/
 
-[-] Using
-	-. A linking error related with dlib/all/source.cpp or preprocessor directives, DEBUG or ENABLE_ASSERTS
+[-] Usage.
+	- A linking error related with dlib/all/source.cpp or preprocessor directives, DEBUG or ENABLE_ASSERTS
 		REF [site] >> http://dlib.net/compile.html
 
 		<error>
@@ -11,10 +11,17 @@
 		<solution>
 			define NO_MAKEFILE.
 
-[-] Building (CMake)
+[-] Tool.
+	- ImgLab.
+		REF [site] >> https://github.com/davisking/dlib/tree/master/tools/imglab
+
+		${DLIB_HOME}/tools/imglab
+
+
+[-] Building (CMake).
 	REF [site] >> http://dlib.net/compile.html
 
-	-. CMakeLists.txt
+	- Edit CMakeLists.txt.
 		${DLIB_HOME}/dlib
 		${DLIB_HOME}/dlib/test
 		${DLIB_HOME}/dlib/test/blas_bindings
@@ -22,17 +29,17 @@
 		${DLIB_HOME}/examples
 			Use OpenCV.
 
-	-. Configure & generate
+	- Configure & generate.
 		Set CMAKE_DEBUG_POSTFIX to d.
 		Delete all settings in external libraries below:
 			zlib, jpeg, png.
 		==> Errors rise if these external libraries are assigned explicitly.
 		==> Use external libraries that dlib has.
-	-. Build
-	-. Install
+	- Build.
+	- Install.
 
-[-] Building
+[-] Building.
 	REF [site] >> http://dlib.net/compile.html
 
-	-. Create static library.
+	- Create static library.
 		${DLIB_HOME}/dlib/all/source.cpp file 하나만을 포함하는 project를 생성한 후 building.
