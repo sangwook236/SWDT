@@ -1,8 +1,13 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		https://github.com/google/snappy
 		http://google.github.io/snappy/
 
-	-. Windows
+		Windows:
 		https://snappy.angeloflogic.com/
 		https://github.com/kmanley/snappy-msvc
+
+[-] Usage (VC).
+	- Download binaries.
+		https://snappy.angeloflogic.com/
+	- Copy libraries.
