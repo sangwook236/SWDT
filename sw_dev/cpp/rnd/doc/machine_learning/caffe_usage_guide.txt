@@ -17,6 +17,14 @@
 		http://caffe.berkeleyvision.org/gathered/examples/finetune_flickr_style.html
 		http://caffe.berkeleyvision.org/gathered/examples/feature_extraction.html
 
+[-] Usage.
+	- PyCaffe.
+		Support Python 2.
+
+		Set PYTHONPATH to ${CAFFE_HOME}/python.
+			export PYTHONPATH=${CAFFE_HOME}/python:$PYTHONPATH
+		'python2-numpy' has to be installed from 'apt-get' rather than from 'pip2'.
+
 [-] Building (CMake).
 	- The name of a build directory for CMake has to be "build". (?)
 		The existing scripts in Caffe assume its build directory is "build".
@@ -30,3 +38,12 @@
 	- Build.
 		Build errors occurred. Build cannot be succeeded in VC.
 	- Install.
+
+[-] Trouble shooting.
+	- PyCaffe import error.
+		<error>
+			dynamic module does not define module export function (PyInit__caffe)
+		<solution>
+			Set PYTHONPATH to ${CAFFE_HOME}/python.
+			'python2-numpy' has to be installed from 'apt-get' rather than from 'pip2'.
+			'_caffe.so' exists in the '${CAFFE_HOME}/python/caffe' folder.
