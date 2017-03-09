@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://graphlab.org/graphchi/
 		https://code.google.com/p/graphchi/
 		http://code.google.com/p/graphchi-java

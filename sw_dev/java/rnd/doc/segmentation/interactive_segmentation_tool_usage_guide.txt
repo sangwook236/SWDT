@@ -1,4 +1,4 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://kspace.cdvp.dcu.ie/public/interactive-segmentation/index.html
 		http://kspace.cdvp.dcu.ie/public/segmentation-evaluation/index.html

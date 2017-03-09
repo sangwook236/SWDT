@@ -1,4 +1,4 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://mallet.cs.umass.edu/grmm
 		http://mallet.cs.umass.edu/

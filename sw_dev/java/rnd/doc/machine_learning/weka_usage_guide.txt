@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.cs.waikato.ac.nz/ml/weka/
 		http://www.cs.waikato.ac.nz/ml/
 
@@ -7,12 +7,12 @@
 		http://weka.sourceforge.net/doc/
 		http://sourceforge.net/projects/weka/files/
 
-[-] Database
-	-. copy a file, DatabaseUtils.props to $WEKA_HOME/props
-	-. edit DatabaseUtils.props
-	-. 참고할 DatabaseUtils.props file은 아래의 jar file에서 찾을 수 있음.
+[-] Database.
+	- Copy a file, DatabaseUtils.props to $WEKA_HOME/props.
+	- Edit DatabaseUtils.props.
+	- 참고할 DatabaseUtils.props file은 아래의 jar file에서 찾을 수 있음.
 		weka.jar의 weka/experiment/DatabaseUtils.props.*
 
-[-] Linking External Library
-	-. Massive Online Analysis (MOA)
-		copy a file, moa.jar to $WEKA_HOME/packages/massiveOnlineAnalysis
+[-] Linking External Library.
+	- Massive Online Analysis (MOA).
+		Copy a file, moa.jar to $WEKA_HOME/packages/massiveOnlineAnalysis.

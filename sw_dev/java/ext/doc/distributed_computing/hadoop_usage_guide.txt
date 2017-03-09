@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://hadoop.apache.org/
 		http://www.cloudera.com/hadoop/
 

@@ -1,16 +1,16 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.rapidminer.com/
 		http://www.rapidminerresources.com/
 		http://www.radoop.eu/
 
 		http://rapidminer.com/learning/getting-started/
 		http://www.slideshare.net/cloudera/hadoop-world-2011-radoop-a-graphical-analytics-tool-for-big-data-gabor-makrai-radoop
-	-. Documentation
+	- Documentation.
 		http://www.rapidminer.com/documentation/
 
-[-] RapidMiner 사용
-	-. RapidMiner GUI 환경에서
+[-] Usage.
+	- RapidMiner GUI 환경에서.
 		1. RapidMiner GUI 환경에서 (analysis) process를 작성.
 		2. RapidMiner 환경에서 Main Process의 입출력 port를 Operator의 입출력 port와 연결.
 			Main Process의 입력 port (inp)를 입력 데이터를 받을 Operator와 연결.
@@ -20,7 +20,7 @@
 		3. (analysis) process를 XML file로 저장.
 			"Export Process..." menu 이용.
 
-	-. Java IDE 환경에서
+	- In Java IDE.
 		1. AbstractRapidMinerProcess로부터 상속된 process(?) class 생성.
 			[ref] skeleton_code/RapidMinerPCA & skeleton_code/RapidMinerLogisticRegression
 		2. 설정값 지정.
@@ -29,4 +29,4 @@
 		3. 생성한 process 실행.
 			생성한 process class의 run() 함수 실행.
 
-	-. 박영민군이 도움을 줌.
+	- 박영민군이 도움을 줌.
