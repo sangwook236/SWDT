@@ -38,7 +38,7 @@
 	- Make a build directory.
 		mkdir ${ATLAS_BUILD_DIR}
 		cd ${ATLAS_BUILD_DIR}
-			e.g.) ${ATLAS_BUILD_DIR} = build_cygwin인 경우
+			e.g.) ${ATLAS_BUILD_DIR} = build_cygwin인 경우.
 				mkdir build_cygwin
 				cd build_cygwin
 	- (Optional) specify the MinGW binutils to use.

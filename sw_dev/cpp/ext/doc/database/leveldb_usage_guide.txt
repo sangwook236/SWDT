@@ -4,9 +4,18 @@
         https://github.com/google/leveldb
 
 	- Windows.
+		https://github.com/bureau14/leveldb
         https://github.com/zao/kkowalczyk-leveldb
 
 [-] Building (VC).
+	- Download source.
+		https://github.com/bureau14/leveldb
+	- Use CMake.
+		Build static libraries.
+
+[-] Building (VC).
+	NOTICE [caution] >> cannot build this library.
+
 	- Download source.
 		https://github.com/zao/kkowalczyk-leveldb
 	- Change directory.
@@ -40,3 +49,8 @@
 			CFLAGS = $(CFLAGS) /W3 /WX /GR- /Zi /GS /Gy
 		<after>
 			CFLAGS = $(CFLAGS) /W3 /GR- /Zi /GS /Gy
+	- Linking error with DLL.
+		<error>
+			LNK2019: unresolved external symbol.
+		<cause>
+			Some symbols are not exported.

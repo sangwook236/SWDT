@@ -2,3 +2,8 @@
 	- Site.
 		Stereo matching using graph-cut:
 		http://pub.ist.ac.at/~vnk/software.html
+
+		Plane sweeping stereo matching algorithm:
+		https://cvg.ethz.ch/research/planeSweepLib/
+		https://github.com/bastienjacquet/PlaneSweepLib
+		https://github.com/tlgimenes/GPUImageSweep

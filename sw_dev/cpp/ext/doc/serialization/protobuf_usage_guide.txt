@@ -5,7 +5,7 @@
 [-] Usage (Windows).
 	- Link with protobuf as a shared library.
 		If you are linking with protobufs as a DLL then you will need to define PROTOBUF_USE_DLLS in your client application to get it to pull in the DLL import __declspec stuff properly.
-			define PROTOBUF_USE_DLLS.
+			Define PROTOBUF_USE_DLLS.
 
 [-] Building (CMake).
 	- Change directory.

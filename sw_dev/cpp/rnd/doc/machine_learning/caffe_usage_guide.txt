@@ -31,10 +31,15 @@
 
 	- Configure & generate.
 		Set CMAKE_DEBUG_POSTFIX to d.
-		Set USE_LEVELDB to false.
+		Set USE_CUDNN to true.
+		Set USE_NCCL to true.
+		Set USE_OPENCV to true.
+		Set USE_LEVELDB to true.
 		Set USE_LMDB to false.
 		Set BUILD_python to false.
 		Set BUILD_python_layer to false.
+		Set BUILD_SHARED_LIBS to false (for Windows).
+			Build static libraries in Windows.
 	- Build.
 		Build errors occurred. Build cannot be succeeded in VC.
 	- Install.
