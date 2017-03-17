@@ -1,12 +1,12 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://riot.ieor.berkeley.edu/Applications/Co-segmentation/Co-segmentation.htm
 
-	-. Paper
+	- Paper.
 		"An Efficient Algorithm for Co-Segmentation", D. S. Hochbaum and V. Singh, ICCV 2009
 
 [-] Usage (Windows)
-	-, Modify ${COSEG_MAXFLOW_HOME}/histogram_creation_code/call_hist_rgbgabor.m
+	- Modify ${COSEG_MAXFLOW_HOME}/histogram_creation_code/call_hist_rgbgabor.m.
 			==> Fix function name:
 				<before> function [V1_cf V2_cf]=call_hist_rgbgabpr(no_of_bins,im1,im2)
 				<after> function [V1_cf V2_cf]=call_hist_rgbgabor(no_of_bins,im1,im2)
@@ -14,23 +14,23 @@
 			<before> !g++ do_hist_comparison.cpp -o do_hist_comparison -lm
 			<after> !cl do_hist_comparison.cpp
 
-	-. Run ${COSEG_MAXFLOW_HOME}/histogram_creation_code/call_hist_rgbgabor.m in Matlab
+	- Run ${COSEG_MAXFLOW_HOME}/histogram_creation_code/call_hist_rgbgabor.m in Matlab.
 		im1 = imread('../pairimages/stone1_small_128.png');
 		im2 = imread('../pairimages/stone2_small_128.png');
 		%[V1_cf V2_cf] = call_hist_rgbgabor([3 3 3 10], im1, im2);
 		[V1_cf V2_cf] = call_hist_rgbgabor([10 10 10 3], im1, im2);
-		==> output.
-			output files by call_hist_rgbgabor.m:
+		==> Output.
+			Output files by call_hist_rgbgabor.m:
 				./pixelwise_list_i1.txt
 				./pixelwise_list_i2.txt
 				./rgb_bins_i1_cpp.txt
 				./rgb_bins_i2_cpp.txt
-			output files by write_file.m used in call_hist_rgbgabor.m:
+			Output files by write_file.m used in call_hist_rgbgabor.m:
 				../coseg_code/histsizes.dat
 				../coseg_code/histfile1.raw
 				../coseg_code/histfile2.raw
 
-	-. Build coseg_maxflow
+	- Build coseg_maxflow.
 		A conflict of Arc exists in Graph.h
 		==> Add the below code.
 			#define Arc ArcType
@@ -41,11 +41,11 @@
 			#undef max
 			#endif
 
-	-. Set path to GraphicsMagick and ImageMagick
-		use gm.exe
+	- Set path to GraphicsMagick and ImageMagick.
+		Use gm.exe
 			set path=D:\MyProgramFiles2\GraphicsMagick-1.3.23-Q16;%path%
-		use convert.exe
+		Use convert.exe
 			set path=D:\MyProgramFiles2\ImageMagick-7.0.0-0-portable-Q16-x64;%path%
 
-	-. Run executable
+	- Run executable.
 		segment.exe -conf seg.conf.stone ../pairimages/stone1_small_128.png ../pairimages/stone2_small_128.png

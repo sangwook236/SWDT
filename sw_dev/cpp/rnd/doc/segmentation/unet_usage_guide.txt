@@ -1,0 +1,11 @@
+[-] General.
+	- Site.
+		http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/
+
+[-] Building (MSYS2).
+	- Download a source file.
+		http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/
+	- Open MSYS2 console.
+	- Run CMake.
+	- Make.
+		mingw32-make

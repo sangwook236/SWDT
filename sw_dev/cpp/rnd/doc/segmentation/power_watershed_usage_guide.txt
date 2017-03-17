@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://powerwatershed.sourceforge.net/
 		http://sourceforge.net/projects/powerwatershed/
 
