@@ -1,0 +1,26 @@
+[-] General.
+	- Important paths.
+		Windows:
+			%PYTHONPATH%
+			%PYTHONPATH%\Scripts
+			%APPDATA%\Python\Python35\Scripts
+			%PYTHONPATH%\Lib\site-packages
+			%APPDATA%\Python\Python35\site-packages
+
+[-] Python interpreter가 실행되지 않거나 extending/embedding이 정상적으로 수행되지 않는 경우.
+	- "unresolved external symbol" error.
+		unresolved external symbol __imp__Py_Initialize
+		==>	64-bit Python library를 32-bit application에서 linking하는 경우 발생.
+	- py_Initialize와 관련된 error.
+		Fatal Python error: Py_Initialize: unable to load the file system codec
+		LookupError: no codec search functions registered: can't find encoding
+		==>	${PYTHON_ROOT}/Lib directory를 현재 실행되는 python interpreter의 하위 directory에 복사.
+			${PYTHON_INTERPRETER_ROOT}/Lib로 복사.
+	- Manifest 생성 관련 error.
+		General error c1010070: Failed to load and parse the manifest. @ |D >D  F5Hd.
+		Error: command 'mt.exe' failed with exit status 31
+		==> 무시해도 됨.
+
+[-] Building extention module.
+	REF [doc] >> sw_dev/python/basic/test/extending/extention_module_build_guide.txt
+	REF [site] >>  http://en.wikibooks.org/wiki/Python_Programming/Extending_with_C%2B%2B
