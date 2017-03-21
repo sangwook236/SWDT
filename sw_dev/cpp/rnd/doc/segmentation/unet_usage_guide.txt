@@ -6,6 +6,10 @@
 	- Download a source file.
 		http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/
 	- Open MSYS2 console.
+	- Install required libraries.
+		glog, gflags, protobuf, hdf5.
+	- Build external library.
+		ATLAS, LevelDB.
 	- Run CMake.
 	- Make.
 		mingw32-make

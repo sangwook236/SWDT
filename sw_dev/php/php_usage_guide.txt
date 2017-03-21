@@ -1,3 +1,9 @@
+[-] General.
+	- Site.
+		http://php.net/
+
+		https://www.phpmyadmin.net/
+
 [-] Execution.
 	- www home directory, ${WWW_HOME}의 subdirectory에 php file을 위치시키고
 		web browser에서 해당 php file을 실행하면 됨.

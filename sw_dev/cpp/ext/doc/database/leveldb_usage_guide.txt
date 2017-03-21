@@ -7,7 +7,22 @@
 		https://github.com/bureau14/leveldb
         https://github.com/zao/kkowalczyk-leveldb
 
+[-] Building (Cygwin).
+	- Download source.
+		https://github.com/google/leveldb
+	- Change directory.
+		cd ${LEVELDB_HOME}
+	- Edit makefile.
+		<before>
+			CXXFLAGS += -I. -I./include $(PLATFORM_CXXFLAGS) $(OPT)
+		<after>
+			CXXFLAGS += -I. -I./include $(PLATFORM_CXXFLAGS) $(OPT) -std=gnu++11
+	- Build.
+		make
+
 [-] Building (VC).
+	NOTICE [caution] >> cannot build this library.
+
 	- Download source.
 		https://github.com/bureau14/leveldb
 	- Use CMake.
