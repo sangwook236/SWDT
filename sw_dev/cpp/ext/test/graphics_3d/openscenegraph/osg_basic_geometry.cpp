@@ -1,5 +1,5 @@
 #if defined(_WIN64) || defined(WIN64)
-#define WIN32
+#include <windows.h>
 #endif
 //#include "stdafx.h"
 #include <osg/Node>

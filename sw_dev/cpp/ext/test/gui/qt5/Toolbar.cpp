@@ -43,11 +43,13 @@
 
 #include <stdlib.h>
 
+//--S [] 2017/04/05: Sang-Wook Lee.
 namespace my_qt5 {
 
 void render_qt_text(QPainter *, int, int, const QColor &);
 
 }  // namespace my_qt5
+//--E [] 2017/04/05: Sang-Wook Lee.
 
 static QPixmap genIcon(const QSize &iconSize, const QString &, const QColor &color)
 {
@@ -59,8 +61,11 @@ static QPixmap genIcon(const QSize &iconSize, const QString &, const QColor &col
 
     QPainter p(&image);
 
-    //extern void render_qt_text(QPainter *, int, int, const QColor &);
-    my_qt5::render_qt_text(&p, w, h, color);
+	//--S [] 2017/04/05: Sang-Wook Lee.
+	//extern void render_qt_text(QPainter *, int, int, const QColor &);
+	//render_qt_text(&p, w, h, color);
+	my_qt5::render_qt_text(&p, w, h, color);
+	//--E [] 2017/04/05: Sang-Wook Lee.
 
     return QPixmap::fromImage(image, Qt::DiffuseDither | Qt::DiffuseAlphaDither);
 }

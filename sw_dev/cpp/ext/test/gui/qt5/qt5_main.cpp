@@ -1,53 +1,23 @@
 #include <QApplication>
 #include <QCommandLineParser>
+#include <QCommandLineOption>
 #include <QPainterPath>
 #include <QPainter>
 #include <QMap>
 #include <QDebug>
-#include "SdiMainWindow.h"
+#include <QDir>
+#include <QGuiApplication>
+#include <QQmlEngine>
+#include <QQmlFileSelector>
+#include <QQuickView>  // Not using QQmlApplicationEngine because many examples don't have a Window{}.
 #include "MainWindow.h"
+#include "SdiMainWindow.h"
+#include "MdiMainWindow.h"
+#include "OsgMainWindow.h"
 
 
 namespace {
 namespace local {
-
-// Meta Object Compiler (moc).
-//  moc object_name.h -o moc_object_name.cpp
-// Resource Compiler (rcc).
-//	(optional) rcc -binary project_name.qrc -o project_name.rcc
-//	rcc project_name.qrc -name project_name -o rcc_project_name.cpp
-
-// REF [file] >> ${QT5_HOME}/examples/widgets/mainwindows/sdi/main.cpp
-// REF [site] >> http://doc.qt.io/qt-5/qtwidgets-mainwindows-sdi-example.html
-int mainwindows_sdi_example(int argc, char* argv[])
-{
-	//Q_INIT_RESOURCE(sdi);  // Move to main().
-	QApplication app(argc, argv);
-    QCoreApplication::setApplicationName("SDI Example");
-    QCoreApplication::setOrganizationName("QtProject");
-    QCoreApplication::setApplicationVersion(QT_VERSION_STR);
-    QCommandLineParser parser;
-    parser.setApplicationDescription(QCoreApplication::applicationName());
-    parser.addHelpOption();
-    parser.addVersionOption();
-    parser.addPositionalArgument("file", "The file(s) to open.");
-    parser.process(app);
-
-    SdiMainWindow *mainWin = Q_NULLPTR;
-    foreach (const QString &file, parser.positionalArguments())
-	{
-        SdiMainWindow *newWin = new SdiMainWindow(file);
-        newWin->tile(mainWin);
-        newWin->show();
-        mainWin = newWin;
-    }
-
-    if (!mainWin)
-        mainWin = new SdiMainWindow;
-    mainWin->show();
-
-    return app.exec();
-}
 
 void usage()
 {
@@ -122,7 +92,117 @@ int mainwindows_mainwindow_example(int argc, char* argv[])
 	MainWindow mainWin(customSizeHints);
 	mainWin.resize(800, 600);
 	mainWin.show();
+
 	return app.exec();
+}
+
+// REF [file] >> ${QT5_HOME}/examples/widgets/mainwindows/sdi/main.cpp
+// REF [site] >> http://doc.qt.io/qt-5/qtwidgets-mainwindows-sdi-example.html
+int mainwindows_sdi_example(int argc, char* argv[])
+{
+	//Q_INIT_RESOURCE(sdi);  // Move to main().
+
+	QApplication app(argc, argv);
+	QCoreApplication::setApplicationName("SDI Example");
+	QCoreApplication::setOrganizationName("QtProject");
+	QCoreApplication::setApplicationVersion(QT_VERSION_STR);
+	QCommandLineParser parser;
+	parser.setApplicationDescription(QCoreApplication::applicationName());
+	parser.addHelpOption();
+	parser.addVersionOption();
+	parser.addPositionalArgument("file", "The file(s) to open.");
+	parser.process(app);
+
+	SdiMainWindow *mainWin = Q_NULLPTR;
+	foreach(const QString &file, parser.positionalArguments())
+	{
+		SdiMainWindow *newWin = new SdiMainWindow(file);
+		newWin->tile(mainWin);
+		newWin->show();
+		mainWin = newWin;
+	}
+
+	if (!mainWin)
+		mainWin = new SdiMainWindow;
+	mainWin->show();
+
+	return app.exec();
+}
+
+// REF [file] >> ${QT5_HOME}/examples/widgets/mainwindows/mdi/main.cpp
+// REF [site] >> http://doc.qt.io/qt-5/qtwidgets-mainwindows-mdi-example.html
+int mainwindows_mdi_example(int argc, char* argv[])
+{
+	//Q_INIT_RESOURCE(mdi);  // Move to main().
+
+	QApplication app(argc, argv);
+	QCoreApplication::setApplicationName("MDI Example");
+	QCoreApplication::setOrganizationName("QtProject");
+	QCoreApplication::setApplicationVersion(QT_VERSION_STR);
+	QCommandLineParser parser;
+	parser.setApplicationDescription("Qt MDI Example");
+	parser.addHelpOption();
+	parser.addVersionOption();
+	parser.addPositionalArgument("file", "The file to open.");
+	parser.process(app);
+
+	MdiMainWindow mainWin;
+	foreach(const QString &fileName, parser.positionalArguments())
+		mainWin.openFile(fileName);
+	mainWin.show();
+
+	return app.exec();
+}
+
+// REF [file] >> ${QT5_HOME}/examples/quick/demos/samegame/main.cpp
+// REF [site] >> http://doc.qt.io/qt-5/qtquick-demos-samegame-main-cpp.html
+int qml_samegame_example(int argc, char* argv[])
+{
+    QGuiApplication app(argc,argv);
+    app.setOrganizationName("QtProject");
+    app.setOrganizationDomain("qt-project.org");
+    app.setApplicationName(QFileInfo(app.applicationFilePath()).baseName());
+
+    QQuickView view;
+    if (qgetenv("QT_QUICK_CORE_PROFILE").toInt())
+	{
+        QSurfaceFormat f = view.format();
+        f.setProfile(QSurfaceFormat::CoreProfile);
+        f.setVersion(4, 4);
+        view.setFormat(f);
+    }
+    view.connect(view.engine(), &QQmlEngine::quit, &app, &QCoreApplication::quit);
+	new QQmlFileSelector(view.engine(), &view);
+	view.setSource(QUrl("qrc:///demos/samegame/samegame.qml"));  // REF [file] >> ./samegame.qrc.
+	if (view.status() == QQuickView::Error)
+        return -1;
+    view.setResizeMode(QQuickView::SizeRootObjectToView);
+    if (QGuiApplication::platformName() == QLatin1String("qnx") || QGuiApplication::platformName() == QLatin1String("eglfs"))
+	{
+        view.showFullScreen();
+    }
+	else
+	{
+        view.show();
+    }
+
+    return app.exec();
+}
+
+// REF [site] >> https://github.com/openscenegraph/osgQt
+int osg_integration_using_osgqt(int argc, char** argv)
+{
+}
+
+// REF [site] >> https://github.com/Submanifold/QtOSG/blob/master/QtOSG.cpp
+int osg_integration_using_qtosg(int argc, char** argv)
+{
+	QApplication application(argc, argv);
+
+	OsgMainWindow mainWindow;
+	mainWindow.show();
+
+	return application.exec();
 }
 
 }  // namespace local
@@ -202,11 +282,28 @@ void render_qt_text(QPainter *painter, int w, int h, const QColor &color)
 
 }  // namespace my_qt5
 
+// Meta Object Compiler (moc).
+//  moc object_name.h -o moc_object_name.cpp
+// Resource Compiler (rcc).
+//	(optional) rcc -binary project_name.qrc -o project_name.rcc
+//	rcc project_name.qrc -name project_name -o rcc_project_name.cpp
+
 int qt5_main(int argc, char* argv[])
 {
-	//Q_INIT_RESOURCE(sdi);
-	//const int retval = local::mainwindows_sdi_example(argc, argv);
-	const int retval = local::mainwindows_mainwindow_example(argc, argv);
+	// Example -------------------------------------------------------
+	//const int retval = local::mainwindows_mainwindow_example(argc, argv);
 
-    return retval;
+	//Q_INIT_RESOURCE(sdi);  // Move from local::mainwindows_sdi_example() to here.
+	//const int retval = local::mainwindows_sdi_example(argc, argv);
+	//Q_INIT_RESOURCE(mdi);  // Move from local::mainwindows_sdi_example() to here.
+	//const int retval = local::mainwindows_mdi_example(argc, argv);
+
+	// QML -----------------------------------------------------------
+	//const int retval = local::qml_samegame_example(argc, argv);
+
+	// Integration with OpenSceneGraph -------------------------------
+	const int retval = local::osg_integration_using_osgqt(argc, argv);
+	const int retval = local::osg_integration_using_qtosg(argc, argv);
+
+	return retval;
 }

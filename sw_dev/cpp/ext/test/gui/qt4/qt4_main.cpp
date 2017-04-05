@@ -28,8 +28,6 @@ int very_simple_example(int argc, char* argv[])
     return app.exec();
 }
 
-// Meta Object Compiler (moc).
-//  moc-qt4 MyWindow.h -o moc_MyWindow.cpp
 int simple_example_1(int argc, char* argv[])
 {
     QApplication app(argc, argv);
@@ -45,8 +43,6 @@ int simple_example_1(int argc, char* argv[])
     return app.exec();
 }
 
-// Meta Object Compiler (moc).
-//  moc-qt4 MyMainWindow.h -o moc_MyMainWindow.cpp
 int simple_example_2(int argc, char* argv[])
 {
     QApplication app(argc, argv);
@@ -61,6 +57,12 @@ int simple_example_2(int argc, char* argv[])
 
 }  // namespace local
 }  // unnamed namespace
+
+// Meta Object Compiler (moc).
+//  moc object_name.h -o moc_object_name.cpp
+// Resource Compiler (rcc).
+//	(optional) rcc -binary project_name.qrc -o project_name.rcc
+//	rcc project_name.qrc -name project_name -o rcc_project_name.cpp
 
 int qt4_main(int argc, char* argv[])
 {

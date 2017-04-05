@@ -126,11 +126,13 @@ ColorDock::ColorDock(const QString &c, QWidget *parent)
     setFont(font);
 }
 
+//--S [] 2017/04/05: Sang-Wook Lee.
 namespace my_qt5 {
 
 void render_qt_text(QPainter *, int, int, const QColor &);
 
 }  // namespace my_qt5
+//--E [] 2017/04/05: Sang-Wook Lee.
 
 void ColorDock::paintEvent(QPaintEvent *)
 {
@@ -140,8 +142,11 @@ void ColorDock::paintEvent(QPaintEvent *)
 
     p.save();
 
-    //extern void render_qt_text(QPainter *, int, int, const QColor &);
+	//--S [] 2017/04/05: Sang-Wook Lee.
+	//extern void render_qt_text(QPainter *, int, int, const QColor &);
+	//render_qt_text(&p, width(), height(), fgColorForName(color));
 	my_qt5::render_qt_text(&p, width(), height(), fgColorForName(color));
+	//--E [] 2017/04/05: Sang-Wook Lee.
 
     p.restore();
 

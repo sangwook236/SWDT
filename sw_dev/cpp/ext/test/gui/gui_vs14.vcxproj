@@ -93,7 +93,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQuick;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQml;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,7 +108,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQuick;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQml;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -124,7 +124,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQuick;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQml;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,7 +143,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQuick;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQml;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -188,11 +188,22 @@
     </ClCompile>
     <ClCompile Include="qt5\ColorSwatch.cpp" />
     <ClCompile Include="qt5\MainWindow.cpp" />
+    <ClCompile Include="qt5\MdiChild.cpp" />
+    <ClCompile Include="qt5\MdiMainWindow.cpp" />
     <ClCompile Include="qt5\moc_ColorSwatch.cpp" />
     <ClCompile Include="qt5\moc_MainWindow.cpp" />
+    <ClCompile Include="qt5\moc_MdiChild.cpp" />
+    <ClCompile Include="qt5\moc_MdiMainWindow.cpp" />
+    <ClCompile Include="qt5\moc_OsgMainWindow.cpp" />
+    <ClCompile Include="qt5\moc_OsgWidget.cpp" />
     <ClCompile Include="qt5\moc_SdiMainWindow.cpp" />
     <ClCompile Include="qt5\moc_Toolbar.cpp" />
+    <ClCompile Include="qt5\OsgMainWindow.cpp" />
+    <ClCompile Include="qt5\OsgPickHandler.cpp" />
+    <ClCompile Include="qt5\OsgWidget.cpp" />
     <ClCompile Include="qt5\rcc_MainWindow.cpp" />
+    <ClCompile Include="qt5\rcc_mdi.cpp" />
+    <ClCompile Include="qt5\rcc_samegame.cpp" />
     <ClCompile Include="qt5\SdiMainWindow.cpp" />
     <ClCompile Include="qt5\qt5_main.cpp" />
     <ClCompile Include="qt5\rcc_sdi.cpp" />
@@ -213,6 +224,11 @@
     </ClInclude>
     <ClInclude Include="qt5\ColorSwatch.h" />
     <ClInclude Include="qt5\MainWindow.h" />
+    <ClInclude Include="qt5\MdiChild.h" />
+    <ClInclude Include="qt5\MdiMainWindow.h" />
+    <ClInclude Include="qt5\OsgMainWindow.h" />
+    <ClInclude Include="qt5\OsgPickHandler.h" />
+    <ClInclude Include="qt5\OsgWidget.h" />
     <ClInclude Include="qt5\SdiMainWindow.h" />
     <ClInclude Include="qt5\Toolbar.h" />
   </ItemGroup>
