@@ -14,12 +14,16 @@ namespace local {
 int main(int argc, char *argv[])
 {
 	int qt4_main(int argc, char *argv[]);
+	int qt5_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
 		std::cout << "Qt4 library ---------------------------------------------------------" << std::endl;
-		retval = qt4_main(argc, argv);
+		//retval = qt4_main(argc, argv);
+
+		std::cout << "\nQt5 library ---------------------------------------------------------" << std::endl;
+		retval = qt5_main(argc, argv);
 
 		std::cout << "\nwxWidgets library ---------------------------------------------------" << std::endl;
 		// REF [project] >> ${SWDT_C++_HOME}/ext/test/gui/wxwidgets

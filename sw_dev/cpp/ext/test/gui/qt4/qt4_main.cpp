@@ -59,8 +59,8 @@ int simple_example_2(int argc, char* argv[])
     return app.exec();
 }
 
-}
-}
+}  // namespace local
+}  // unnamed namespace
 
 int qt4_main(int argc, char* argv[])
 {

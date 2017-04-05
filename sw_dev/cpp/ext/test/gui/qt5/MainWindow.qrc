@@ -1,0 +1,9 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource prefix="/res">
+   <file>images/qt.png</file>
+   <file>images/titlebarLeft.png</file>
+   <file>images/titlebarCenter.png</file>
+   <file>images/titlebarRight.png</file>
+</qresource>
+</RCC>

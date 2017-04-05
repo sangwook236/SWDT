@@ -4,13 +4,19 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "QtGuid4.lib")
-#pragma comment(lib, "QtCored4.lib")
+//#pragma comment(lib, "QtGuid4.lib")
+//#pragma comment(lib, "QtCored4.lib")
+#pragma comment(lib, "Qt5Widgetsd.lib")
+#pragma comment(lib, "Qt5Guid.lib")
+#pragma comment(lib, "Qt5Cored.lib")
 
 #		else
 
-#pragma comment(lib, "QtGui4.lib")
-#pragma comment(lib, "QtCore4.lib")
+//#pragma comment(lib, "QtGui4.lib")
+//#pragma comment(lib, "QtCore4.lib")
+#pragma comment(lib, "Qt5Widgets.lib")
+#pragma comment(lib, "Qt5Gui.lib")
+#pragma comment(lib, "Qt5Core.lib")
 
 #		endif
 
