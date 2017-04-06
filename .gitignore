@@ -31,10 +31,16 @@ Debug
 Release
 sw_dev/cpp/basic/bin
 sw_dev/cpp/basic/lib
+sw_dev/cpp/basic/bin64
+sw_dev/cpp/basic/lib64
 sw_dev/cpp/ext/bin
 sw_dev/cpp/ext/lib
+sw_dev/cpp/ext/bin64
+sw_dev/cpp/ext/lib64
 sw_dev/cpp/rnd/bin
 sw_dev/cpp/rnd/lib
+sw_dev/cpp/rnd/bin64
+sw_dev/cpp/rnd/lib64
 sw_dev/csharp/basic/bin
 sw_dev/csharp/ext/bin
 sw_dev/csharp/rnd/bin
@@ -46,3 +52,5 @@ sw_dev/java/rnd/bin
 sw_dev/java/rnd/lib
 hw_dev/ext/bin
 hw_dev/ext/lib
+hw_dev/ext/bin64
+hw_dev/ext/lib64
