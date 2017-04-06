@@ -4,6 +4,7 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "osgQt5d.lib")
 #pragma comment(lib, "osgd.lib")
 #pragma comment(lib, "osgDBd.lib")
 #pragma comment(lib, "osgUtild.lib")
@@ -24,6 +25,7 @@
 
 #		else
 
+#pragma comment(lib, "osgQt5.lib")
 #pragma comment(lib, "osg.lib")
 #pragma comment(lib, "osgDB.lib")
 #pragma comment(lib, "osgUtil.lib")

@@ -189,11 +189,6 @@ int qml_samegame_example(int argc, char* argv[])
     return app.exec();
 }
 
-// REF [site] >> https://github.com/openscenegraph/osgQt
-int osg_integration_using_osgqt(int argc, char** argv)
-{
-}
-
 // REF [site] >> https://github.com/Submanifold/QtOSG/blob/master/QtOSG.cpp
 int osg_integration_using_qtosg(int argc, char** argv)
 {
@@ -280,6 +275,9 @@ void render_qt_text(QPainter *painter, int w, int h, const QColor &color)
 	painter->drawPath(path);
 }
 
+int osgqt_widgets_example(int argc, char **argv);
+int osgqt_vierwer_example(int argc, char **argv);
+
 }  // namespace my_qt5
 
 // Meta Object Compiler (moc).
@@ -302,8 +300,10 @@ int qt5_main(int argc, char* argv[])
 	//const int retval = local::qml_samegame_example(argc, argv);
 
 	// Integration with OpenSceneGraph -------------------------------
-	const int retval = local::osg_integration_using_osgqt(argc, argv);
-	const int retval = local::osg_integration_using_qtosg(argc, argv);
+	//const int retval = my_qt5::osgqt_widgets_example(argc, argv);  // Compile-time error. I guess this example is for mobile devices.
+	const int retval = my_qt5::osgqt_vierwer_example(argc, argv);
+	
+	//const int retval = local::osg_integration_using_qtosg(argc, argv);
 
 	return retval;
 }
