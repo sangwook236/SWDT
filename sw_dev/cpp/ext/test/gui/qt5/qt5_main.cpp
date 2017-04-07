@@ -1,3 +1,4 @@
+#include <memory>
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
@@ -9,12 +10,16 @@
 #include <QGuiApplication>
 #include <QQmlEngine>
 #include <QQmlApplicationEngine>
+#include <QQmlComponent>
+#include <QQmlProperty>
 #include <QQmlFileSelector>
 #include <QQuickView>  // Not using QQmlApplicationEngine because many examples don't have a Window{}.
+#include <QQuickItem>
 #include "MainWindow.h"
 #include "SdiMainWindow.h"
 #include "MdiMainWindow.h"
 #include "OsgMainWindow.h"
+#include "MySlotClass.h"
 
 
 namespace {
@@ -210,6 +215,76 @@ int qml_samegame_example(int argc, char* argv[])
     return app.exec();
 }
 
+// REF [site] >> http://doc.qt.io/qt-5/qtqml-cppintegration-interactqmlfromcpp.html
+int qml_interaction_with_object_example(int argc, char* argv[])
+{
+	QGuiApplication app(argc, argv);
+
+#if 0
+	// Use QQmlComponent.
+	QQmlEngine engine;
+	//QQmlApplicationEngine engine;
+	//QQmlComponent component(&engine, QUrl::fromLocalFile("data/gui/qt5/window.qml"));
+	QQmlComponent component(&engine, QUrl::fromLocalFile("data/gui/qt5/item.qml"));
+
+	std::unique_ptr<QObject> root(component.create());
+
+	// Show view.
+	// Do something.
+#else
+	// Use QQuickView.
+	QQuickView view;
+#if 0
+	// NOTICE [error] >> Runtime error.
+	//	- QQuickView does not support using windows as a root item.
+	//	- If you wish to create your root window from QML, consider using QQmlApplicationEngine instead.
+	view.setSource(QUrl::fromLocalFile("data/gui/qt5/window.qml"));
+#else
+	view.setSource(QUrl::fromLocalFile("data/gui/qt5/item.qml"));
+#endif
+
+	std::unique_ptr<QObject> root((QObject *)view.rootObject());
+#endif
+
+	// Access objects.
+	root->setProperty("width", 300);
+	QQmlProperty(root.get(), "height").write(300);
+
+	QQuickItem *item(qobject_cast<QQuickItem *>(root.get()));
+	if (item)
+		item->setWidth(500);
+
+	QObject *rect(root->findChild<QObject *>("rect"));
+	if (rect)
+		rect->setProperty("color", "red");
+
+	// Access properties.
+	// Always use QObject::setProperty(), QQmlPerperty or QMetaProperty::write() to change a QML property vale, to ensure the QML engine is made aware of the property change.
+	qDebug() << "Property value:" << QQmlProperty::read(root.get(), "someNumber").toInt();
+	QQmlProperty::write(root.get(), "someNumber", 5000);
+
+	qDebug() << "Property value:" << root->property("someNumber").toInt();
+	root->setProperty("someNumber", 100);
+
+	// Invoke QML methods.
+	QVariant returnedValue;
+	QVariant msg("Hello from C++");
+	QMetaObject::invokeMethod(root.get(), "myQmlFunction",
+		Q_RETURN_ARG(QVariant, returnedValue),
+		Q_ARG(QVariant, msg));
+
+	qDebug() << "QML function returned:" << returnedValue.toString();
+
+	// Connect to QML signals.
+	MySlotClass myClass;
+	QObject::connect(root.get(), SIGNAL(qmlSignal(QString)), &myClass, SLOT(cppSlot(QString)));
+	QObject::connect(root.get(), SIGNAL(qmlSignalObject(QVariant)), &myClass, SLOT(cppSlotObject(QVariant)));
+
+	view.show();
+
+	return app.exec();
+}
+
 // REF [site] >> https://github.com/Submanifold/QtOSG/blob/master/QtOSG.cpp
 int osg_integration_using_qtosg(int argc, char** argv)
 {
@@ -318,13 +393,15 @@ int qt5_main(int argc, char* argv[])
 	//const int retval = local::mainwindows_mdi_example(argc, argv);
 
 	// QML -----------------------------------------------------------
-	const int retval = local::qml_simpler_example(argc, argv);
+	//const int retval = local::qml_simpler_example(argc, argv);
 	//const int retval = local::qml_simple_example(argc, argv);
 	//const int retval = local::qml_samegame_example(argc, argv);
 
+	//const int retval = local::qml_interaction_with_object_example(argc, argv);
+
 	// Integration with OpenSceneGraph -------------------------------
 	//const int retval = my_qt5::osgqt_widgets_example(argc, argv);  // Compile-time error. I guess this example is for mobile devices.
-	//const int retval = my_qt5::osgqt_vierwer_example(argc, argv);
+	const int retval = my_qt5::osgqt_vierwer_example(argc, argv);
 	
 	//const int retval = local::osg_integration_using_qtosg(argc, argv);
 

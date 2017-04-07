@@ -99,9 +99,6 @@
     <ClCompile Include="qt5\OsgPickHandler.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
-    <ClCompile Include="qt5\OsgWidget.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
     <ClCompile Include="qt5\moc_OsgMainWindow.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
@@ -118,6 +115,12 @@
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
     <ClCompile Include="qt5\rcc_SimplerQml.cpp">
+      <Filter>Source Files\qt5</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\moc_MySlotClass.cpp">
+      <Filter>Source Files\qt5</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\OSGWidget.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
   </ItemGroup>
@@ -152,7 +155,10 @@
     <ClInclude Include="qt5\OsgPickHandler.h">
       <Filter>Source Files\qt5</Filter>
     </ClInclude>
-    <ClInclude Include="qt5\OsgWidget.h">
+    <ClInclude Include="qt5\MySlotClass.h">
+      <Filter>Source Files\qt5</Filter>
+    </ClInclude>
+    <ClInclude Include="qt5\OSGWidget.h">
       <Filter>Source Files\qt5</Filter>
     </ClInclude>
   </ItemGroup>
