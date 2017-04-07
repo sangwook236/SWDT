@@ -12,6 +12,8 @@
 #include <QQmlComponent>
 #include <QQmlProperty>
 #include <QQuickWidget>
+#include <QQuickItem>
+#include <QDebug>
 #include <osgViewer/CompositeViewer>
 #include <osgViewer/ViewerEventHandlers>
 #include <osgGA/MultiTouchTrackballManipulator>
@@ -63,16 +65,17 @@ public:
 
         camera->setClearColor(osg::Vec4(0.2, 0.2, 0.6, 1.0));
         camera->setViewport(new osg::Viewport(0, 0, traits->width, traits->height));
-        camera->setProjectionMatrixAsPerspective(30.0f, static_cast<double>(traits->width)/static_cast<double>(traits->height), 1.0f, 10000.0f);
+        camera->setProjectionMatrixAsPerspective(30.0f, static_cast<double>(traits->width) / static_cast<double>(traits->height), 1.0f, 10000.0f);
 
         view->setSceneData(scene);
         view->addEventHandler(new osgViewer::StatsHandler);
         view->setCameraManipulator(new osgGA::MultiTouchTrackballManipulator);
         gw->setTouchEventsEnabled(true);
+
         return gw->getGLWidget();
     }
 
-    osgQt::GraphicsWindowQt * createGraphicsWindow(int x, int y, int w, int h, const std::string& name = "", bool windowDecoration = false)
+    osgQt::GraphicsWindowQt * createGraphicsWindow(int x, int y, int w, int h, const std::string &name = "", bool windowDecoration = false)
     {
         osg::DisplaySettings *ds = osg::DisplaySettings::instance().get();
         osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
@@ -132,7 +135,7 @@ int osgqt_vierwer_example(int argc, char **argv)
 	std::unique_ptr<local::OsgViewerWidget> osgViewerWidget(new local::OsgViewerWidget(0, Qt::Widget, threadingModel));
 	osgViewerWidget->setGeometry(100, 100, 800, 600);
 	osgViewerWidget->show();
-#else
+#elif 1
 	QApplication app(argc, argv);
 
 	// Use QQuickWidget.
@@ -145,6 +148,44 @@ int osgqt_vierwer_example(int argc, char **argv)
 	QGridLayout *grid = new QGridLayout;
 	grid->addWidget(osgViewerWidget, 0, 0);
 	view.setLayout(grid);
+
+	view.show();
+#else
+	QApplication app(argc, argv);
+
+	// Use QQuickWidget.
+	QQuickWidget view(QUrl::fromLocalFile("data/gui/qt5/rectangle.qml"));
+
+	QQuickItem *root = view.rootObject();
+	if (!root)
+	{
+		qDebug() << "Root object not found !!!";
+		return -1;
+	}
+
+	//QObject *region = root->findChild<QObject *>("rectangle1");
+	QQuickItem *region = root->findChild<QQuickItem *>("rectangle1");
+	//QQuickWidget *region = root->findChild<QQuickWidget *>("rectangle1");  // Runtime error: casting error.
+	if (!region)
+	{
+		qDebug() << "Object not found !!!";
+		return -1;
+	}
+
+	local::OsgViewerWidget *osgViewerWidget = new local::OsgViewerWidget(0, Qt::Widget, threadingModel);
+	//osgViewerWidget->setGeometry(100, 100, 800, 600);
+	//osgViewerWidget->show();
+
+	// FIXME [fix] >> Not working.
+
+	QGridLayout *grid = new QGridLayout;
+	grid->addWidget(osgViewerWidget, 0, 0);
+
+	QQuickWidget widget(&view);
+	widget.setLayout(grid);
+	widget.show();
+	QQuickItem *abc = widget.rootObject();
+	abc->setParent(region);
 
 	view.show();
 #endif

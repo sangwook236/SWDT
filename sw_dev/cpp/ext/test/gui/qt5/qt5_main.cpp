@@ -160,7 +160,7 @@ int mainwindows_mdi_example(int argc, char* argv[])
 	return app.exec();
 }
 
-int qml_simpler_example(int argc, char* argv[])
+int qtquick_simpler_example(int argc, char* argv[])
 {
 	QGuiApplication app(argc, argv);
 
@@ -170,7 +170,7 @@ int qml_simpler_example(int argc, char* argv[])
 	return app.exec();
 }
 
-int qml_simple_example(int argc, char* argv[])
+int qtquick_simple_example(int argc, char* argv[])
 {
 	QGuiApplication app(argc, argv);
 
@@ -182,7 +182,7 @@ int qml_simple_example(int argc, char* argv[])
 
 // REF [file] >> ${QT5_HOME}/examples/quick/demos/samegame/main.cpp
 // REF [site] >> http://doc.qt.io/qt-5/qtquick-demos-samegame-main-cpp.html
-int qml_samegame_example(int argc, char* argv[])
+int qtquick_samegame_example(int argc, char* argv[])
 {
     QGuiApplication app(argc,argv);
     app.setOrganizationName("QtProject");
@@ -215,8 +215,20 @@ int qml_samegame_example(int argc, char* argv[])
     return app.exec();
 }
 
+// REF [site] >> http://doc.qt.io/qt-5/qtquick-layouts-example.html
+int qtquick_layouts_example(int argc, char* argv[])
+{
+	QGuiApplication app(argc, argv);
+
+	QQmlApplicationEngine engine;
+	//engine.load(QUrl(QStringLiteral("qrc:///layouts/layouts.qml")));
+	engine.load(QUrl::fromLocalFile("data/gui/qt5/layouts.qml"));
+
+	return app.exec();
+}
+
 // REF [site] >> http://doc.qt.io/qt-5/qtqml-cppintegration-interactqmlfromcpp.html
-int qml_interaction_with_object_example(int argc, char* argv[])
+int qtquick_interaction_with_object_example(int argc, char* argv[])
 {
 	QGuiApplication app(argc, argv);
 
@@ -224,7 +236,7 @@ int qml_interaction_with_object_example(int argc, char* argv[])
 	// Use QQmlComponent.
 	QQmlEngine engine;
 	//QQmlApplicationEngine engine;
-	//QQmlComponent component(&engine, QUrl::fromLocalFile("data/gui/qt5/window.qml"));
+	//QQmlComponent component(&engine, QUrl::fromLocalFile("data/gui/qt5/rectangle.qml"));
 	QQmlComponent component(&engine, QUrl::fromLocalFile("data/gui/qt5/item.qml"));
 
 	std::unique_ptr<QObject> root(component.create());
@@ -238,30 +250,30 @@ int qml_interaction_with_object_example(int argc, char* argv[])
 	// NOTICE [error] >> Runtime error.
 	//	- QQuickView does not support using windows as a root item.
 	//	- If you wish to create your root window from QML, consider using QQmlApplicationEngine instead.
-	view.setSource(QUrl::fromLocalFile("data/gui/qt5/window.qml"));
+	view.setSource(QUrl::fromLocalFile("data/gui/qt5/rectangle.qml"));
 #else
 	view.setSource(QUrl::fromLocalFile("data/gui/qt5/item.qml"));
 #endif
 
-	std::unique_ptr<QObject> root((QObject *)view.rootObject());
+	QObject *root = (QObject *)view.rootObject();
 #endif
 
 	// Access objects.
 	root->setProperty("width", 300);
-	QQmlProperty(root.get(), "height").write(300);
+	QQmlProperty(root, "height").write(300);
 
-	QQuickItem *item(qobject_cast<QQuickItem *>(root.get()));
+	QQuickItem *item = qobject_cast<QQuickItem *>(root);
 	if (item)
 		item->setWidth(500);
 
-	QObject *rect(root->findChild<QObject *>("rect"));
+	QObject *rect = root->findChild<QObject *>("rect");
 	if (rect)
 		rect->setProperty("color", "red");
 
 	// Access properties.
 	// Always use QObject::setProperty(), QQmlPerperty or QMetaProperty::write() to change a QML property vale, to ensure the QML engine is made aware of the property change.
-	qDebug() << "Property value:" << QQmlProperty::read(root.get(), "someNumber").toInt();
-	QQmlProperty::write(root.get(), "someNumber", 5000);
+	qDebug() << "Property value:" << QQmlProperty::read(root, "someNumber").toInt();
+	QQmlProperty::write(root, "someNumber", 5000);
 
 	qDebug() << "Property value:" << root->property("someNumber").toInt();
 	root->setProperty("someNumber", 100);
@@ -269,7 +281,7 @@ int qml_interaction_with_object_example(int argc, char* argv[])
 	// Invoke QML methods.
 	QVariant returnedValue;
 	QVariant msg("Hello from C++");
-	QMetaObject::invokeMethod(root.get(), "myQmlFunction",
+	QMetaObject::invokeMethod(root, "myQmlFunction",
 		Q_RETURN_ARG(QVariant, returnedValue),
 		Q_ARG(QVariant, msg));
 
@@ -277,8 +289,8 @@ int qml_interaction_with_object_example(int argc, char* argv[])
 
 	// Connect to QML signals.
 	MySlotClass myClass;
-	QObject::connect(root.get(), SIGNAL(qmlSignal(QString)), &myClass, SLOT(cppSlot(QString)));
-	QObject::connect(root.get(), SIGNAL(qmlSignalObject(QVariant)), &myClass, SLOT(cppSlotObject(QVariant)));
+	QObject::connect(root, SIGNAL(qmlSignal(QString)), &myClass, SLOT(cppSlot(QString)));
+	QObject::connect(root, SIGNAL(qmlSignalObject(QVariant)), &myClass, SLOT(cppSlotObject(QVariant)));
 
 	view.show();
 
@@ -392,16 +404,18 @@ int qt5_main(int argc, char* argv[])
 	//Q_INIT_RESOURCE(mdi);  // Move from local::mainwindows_sdi_example() to here.
 	//const int retval = local::mainwindows_mdi_example(argc, argv);
 
-	// QML -----------------------------------------------------------
-	//const int retval = local::qml_simpler_example(argc, argv);
-	//const int retval = local::qml_simple_example(argc, argv);
-	//const int retval = local::qml_samegame_example(argc, argv);
+	// Qt Quick ------------------------------------------------------
+	//const int retval = local::qtquick_simpler_example(argc, argv);
+	//const int retval = local::qtquick_simple_example(argc, argv);
 
-	//const int retval = local::qml_interaction_with_object_example(argc, argv);
+	const int retval = local::qtquick_layouts_example(argc, argv);
+	//const int retval = local::qtquick_samegame_example(argc, argv);
+
+	//const int retval = local::qtquick_interaction_with_object_example(argc, argv);
 
 	// Integration with OpenSceneGraph -------------------------------
 	//const int retval = my_qt5::osgqt_widgets_example(argc, argv);  // Compile-time error. I guess this example is for mobile devices.
-	const int retval = my_qt5::osgqt_vierwer_example(argc, argv);
+	//const int retval = my_qt5::osgqt_vierwer_example(argc, argv);
 	
 	//const int retval = local::osg_integration_using_qtosg(argc, argv);
 
