@@ -114,6 +114,9 @@
     <ClCompile Include="qt5\osgviewerQt.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
+    <ClCompile Include="qt5\rcc_SimpleQml.cpp">
+      <Filter>Source Files\qt5</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="qt4\MyMainWindow.h">

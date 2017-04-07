@@ -8,6 +8,7 @@
 #include <QDir>
 #include <QGuiApplication>
 #include <QQmlEngine>
+#include <QQmlApplicationEngine>
 #include <QQmlFileSelector>
 #include <QQuickView>  // Not using QQmlApplicationEngine because many examples don't have a Window{}.
 #include "MainWindow.h"
@@ -150,6 +151,16 @@ int mainwindows_mdi_example(int argc, char* argv[])
 	foreach(const QString &fileName, parser.positionalArguments())
 		mainWin.openFile(fileName);
 	mainWin.show();
+
+	return app.exec();
+}
+
+int qml_simple_example(int argc, char* argv[])
+{
+	QGuiApplication app(argc, argv);
+
+	QQmlApplicationEngine engine;
+	engine.load(QUrl(QStringLiteral("qrc:/SimpleQml.qml")));  // REF [file] >> ./SimpleQml.qrc.
 
 	return app.exec();
 }
@@ -297,11 +308,12 @@ int qt5_main(int argc, char* argv[])
 	//const int retval = local::mainwindows_mdi_example(argc, argv);
 
 	// QML -----------------------------------------------------------
+	const int retval = local::qml_simple_example(argc, argv);
 	//const int retval = local::qml_samegame_example(argc, argv);
 
 	// Integration with OpenSceneGraph -------------------------------
 	//const int retval = my_qt5::osgqt_widgets_example(argc, argv);  // Compile-time error. I guess this example is for mobile devices.
-	const int retval = my_qt5::osgqt_vierwer_example(argc, argv);
+	//const int retval = my_qt5::osgqt_vierwer_example(argc, argv);
 	
 	//const int retval = local::osg_integration_using_qtosg(argc, argv);
 

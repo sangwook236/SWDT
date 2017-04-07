@@ -211,6 +211,7 @@
     <ClCompile Include="qt5\rcc_MainWindow.cpp" />
     <ClCompile Include="qt5\rcc_mdi.cpp" />
     <ClCompile Include="qt5\rcc_samegame.cpp" />
+    <ClCompile Include="qt5\rcc_SimpleQml.cpp" />
     <ClCompile Include="qt5\SdiMainWindow.cpp" />
     <ClCompile Include="qt5\qt5_main.cpp" />
     <ClCompile Include="qt5\rcc_sdi.cpp" />
