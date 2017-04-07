@@ -155,6 +155,16 @@ int mainwindows_mdi_example(int argc, char* argv[])
 	return app.exec();
 }
 
+int qml_simpler_example(int argc, char* argv[])
+{
+	QGuiApplication app(argc, argv);
+
+	QQmlApplicationEngine engine;
+	engine.load(QUrl(QStringLiteral("qrc:/SimplerQml.qml")));  // REF [file] >> ./SimplerQml.qrc.
+
+	return app.exec();
+}
+
 int qml_simple_example(int argc, char* argv[])
 {
 	QGuiApplication app(argc, argv);
@@ -308,7 +318,8 @@ int qt5_main(int argc, char* argv[])
 	//const int retval = local::mainwindows_mdi_example(argc, argv);
 
 	// QML -----------------------------------------------------------
-	const int retval = local::qml_simple_example(argc, argv);
+	const int retval = local::qml_simpler_example(argc, argv);
+	//const int retval = local::qml_simple_example(argc, argv);
 	//const int retval = local::qml_samegame_example(argc, argv);
 
 	// Integration with OpenSceneGraph -------------------------------
