@@ -396,19 +396,22 @@ int osgqt_vierwer_example(int argc, char **argv);
 
 int qt5_main(int argc, char* argv[])
 {
-	// Example -------------------------------------------------------
+	// ---------------------------------------------------------------
 	//const int retval = local::mainwindows_mainwindow_example(argc, argv);
 
-	//Q_INIT_RESOURCE(sdi);  // Move from local::mainwindows_sdi_example() to here.
-	//const int retval = local::mainwindows_sdi_example(argc, argv);
-	//Q_INIT_RESOURCE(mdi);  // Move from local::mainwindows_sdi_example() to here.
+	// SDI -----------------------------------------------------------
+	Q_INIT_RESOURCE(sdi);  // Move from local::mainwindows_sdi_example() to here.
+	const int retval = local::mainwindows_sdi_example(argc, argv);
+
+	// MDI -----------------------------------------------------------
+	//Q_INIT_RESOURCE(mdi);  // Move from local::mainwindows_mdi_example() to here.
 	//const int retval = local::mainwindows_mdi_example(argc, argv);
 
 	// Qt Quick ------------------------------------------------------
 	//const int retval = local::qtquick_simpler_example(argc, argv);
 	//const int retval = local::qtquick_simple_example(argc, argv);
 
-	const int retval = local::qtquick_layouts_example(argc, argv);
+	//const int retval = local::qtquick_layouts_example(argc, argv);
 	//const int retval = local::qtquick_samegame_example(argc, argv);
 
 	//const int retval = local::qtquick_interaction_with_object_example(argc, argv);
