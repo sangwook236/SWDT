@@ -61,8 +61,11 @@ int simple_example_2(int argc, char* argv[])
 // Meta Object Compiler (moc).
 //  moc object_name.h -o moc_object_name.cpp
 // Resource Compiler (rcc).
-//	(optional) rcc -binary project_name.qrc -o project_name.rcc
-//	rcc project_name.qrc -name project_name -o rcc_project_name.cpp
+//	(optional) rcc -binary resource_name.qrc -o resource_name.rcc
+//	rcc resource_name.qrc -name resource_name -o qrc_resource_name.cpp
+// Build Qt Project.
+//	qmake project_name.pro -spec win32-msvc2015
+//	make or jom
 
 int qt4_main(int argc, char* argv[])
 {

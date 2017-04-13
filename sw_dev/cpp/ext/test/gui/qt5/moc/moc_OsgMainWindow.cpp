@@ -1,16 +1,16 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'MdiChild.h'
+** Meta object code from reading C++ file 'OsgMainWindow.h'
 **
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.6.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "MdiChild.h"
+#include "../OsgMainWindow.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'MdiChild.h' doesn't include <QObject>."
+#error "The header file 'OsgMainWindow.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
 #error "This file was generated using the moc from 5.6.0. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -18,27 +18,27 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-struct qt_meta_stringdata_MdiChild_t {
+struct qt_meta_stringdata_OsgMainWindow_t {
     QByteArrayData data[3];
-    char stringdata0[30];
+    char stringdata0[28];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_MdiChild_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_OsgMainWindow_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_MdiChild_t qt_meta_stringdata_MdiChild = {
+static const qt_meta_stringdata_OsgMainWindow_t qt_meta_stringdata_OsgMainWindow = {
     {
-QT_MOC_LITERAL(0, 0, 8), // "MdiChild"
-QT_MOC_LITERAL(1, 9, 19), // "documentWasModified"
-QT_MOC_LITERAL(2, 29, 0) // ""
+QT_MOC_LITERAL(0, 0, 13), // "OsgMainWindow"
+QT_MOC_LITERAL(1, 14, 12), // "onCreateView"
+QT_MOC_LITERAL(2, 27, 0) // ""
 
     },
-    "MdiChild\0documentWasModified\0"
+    "OsgMainWindow\0onCreateView\0"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_MdiChild[] = {
+static const uint qt_meta_data_OsgMainWindow[] = {
 
  // content:
        7,       // revision
@@ -60,42 +60,42 @@ static const uint qt_meta_data_MdiChild[] = {
        0        // eod
 };
 
-void MdiChild::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void OsgMainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         Q_ASSERT(staticMetaObject.cast(_o));
-        MdiChild *_t = static_cast<MdiChild *>(_o);
+        OsgMainWindow *_t = static_cast<OsgMainWindow *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->documentWasModified(); break;
+        case 0: _t->onCreateView(); break;
         default: ;
         }
     }
     Q_UNUSED(_a);
 }
 
-const QMetaObject MdiChild::staticMetaObject = {
-    { &QTextEdit::staticMetaObject, qt_meta_stringdata_MdiChild.data,
-      qt_meta_data_MdiChild,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+const QMetaObject OsgMainWindow::staticMetaObject = {
+    { &QMainWindow::staticMetaObject, qt_meta_stringdata_OsgMainWindow.data,
+      qt_meta_data_OsgMainWindow,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
 };
 
 
-const QMetaObject *MdiChild::metaObject() const
+const QMetaObject *OsgMainWindow::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *MdiChild::qt_metacast(const char *_clname)
+void *OsgMainWindow::qt_metacast(const char *_clname)
 {
     if (!_clname) return Q_NULLPTR;
-    if (!strcmp(_clname, qt_meta_stringdata_MdiChild.stringdata0))
-        return static_cast<void*>(const_cast< MdiChild*>(this));
-    return QTextEdit::qt_metacast(_clname);
+    if (!strcmp(_clname, qt_meta_stringdata_OsgMainWindow.stringdata0))
+        return static_cast<void*>(const_cast< OsgMainWindow*>(this));
+    return QMainWindow::qt_metacast(_clname);
 }
 
-int MdiChild::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int OsgMainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QTextEdit::qt_metacall(_c, _id, _a);
+    _id = QMainWindow::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
