@@ -92,11 +92,11 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtOpenGL;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQuickWidgets;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQuick;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQml;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../lib;$(MY_USR_LOCAL_LIB)/../Qt-5.6.0/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -107,11 +107,11 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtOpenGL;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQuickWidgets;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQuick;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQml;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../lib64;$(MY_USR_LOCAL_LIB)/../../local64/Qt-5.6.0/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -145,11 +145,11 @@ rcc qt5/SimplerQml.qrc -name SimplerQml -o qt5/qrc/qrc_SimplerQml.cpp
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtOpenGL;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQuickWidgets;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQuick;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQml;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -164,11 +164,11 @@ rcc qt5/SimplerQml.qrc -name SimplerQml -o qt5/qrc/qrc_SimplerQml.cpp
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtOpenGL;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQuickWidgets;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQuick;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQml;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
