@@ -86,3 +86,7 @@ LIBS += -L/usr/local/lib
 }
 
 DISTFILES +=
+
+#message(QTDIR = $$(QTDIR))
+#MY_USR = $$(HOME)/my_usr
+#message(MY_USR = $${MY_USR})
