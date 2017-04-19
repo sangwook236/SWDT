@@ -93,3 +93,8 @@ void string()
 		std::cout << "std::stold(\"" << strld << "\") is " << numld << std::endl;
 	}
 }
+
+void string_tokenization()
+{
+	// REF [file] >> boost/tokenizer.cpp.
+}

@@ -8,7 +8,7 @@
 namespace {
 namespace local {
 
-// [ref] http://www.boost.org/doc/libs/1_58_0/doc/html/string_algo/usage.html
+// REF [site] >> http://www.boost.org/doc/libs/1_58_0/doc/html/string_algo/usage.html
 void conversion_example()
 {
 	std::string str1(" hello world! ");
@@ -34,7 +34,7 @@ void predicates_and_classification_example()
         << str1
         << (is_executable(str1) ? "is" : "is not") 
         << "an executable" 
-        << std::endl;  // prints "command.com is an executable"
+        << std::endl;  // Print "command.com is an executable".
     
     //
 	const char text1[] = "hello";
@@ -42,7 +42,7 @@ void predicates_and_classification_example()
         << text1 
         << (boost::all(text1, boost::is_lower()) ? " is" : " is not")
         << " written in the lower case" 
-        << std::endl;  // prints "hello is written in the lower case"}
+        << std::endl;  // Print "hello is written in the lower case".
 }
 
 void trimming_example()
@@ -56,7 +56,7 @@ void trimming_example()
 	std::cout << str1 << std::endl;
 
 	std::string phone("00423333444");
-	// remove leading 0 from the phone number.
+	// Remove leading 0 from the phone number.
 	boost::trim_left_if(phone, boost::is_any_of("0"));  // phone == "423333444"
 	std::cout << phone << std::endl;
 }
@@ -73,7 +73,7 @@ void find_example()
 	boost::to_upper(result);  // text == "hello doMMy!"
 	std::cout << text << std::endl;
 
-	// iterator_range is convertible to bool
+	// iterator_range is convertible to bool.
 	if (boost::find_first(text, "dolly"))
 		std::cout << "Dolly is there" << std::endl;
 }
@@ -97,14 +97,14 @@ void find_iterator()
 	// FIXME [error] >> boost::make_find_iterator not found => don't know why.
 /*
 	const std::string str1("abc-*-ABC-*-aBc");
-	// Find all 'abc' substd::strings (ignoring the case)
-	// Create a find_iterator
+	// Find all 'abc' substd::strings (ignoring the case).
+	// Create a find_iterator.
 	typedef boost::find_iterator<std::string::iterator> string_find_iterator;
 	for (string_find_iterator it = boost::make_find_iterator(str1, boost::first_finder("abc", boost::is_iequal())); it != string_find_iterator(); ++it)
 	{
 		std::cout << boost::copy_range<std::string>(*it) << std::endl;
 
-		// shift all chars in the match by one
+		// Shift all chars in the match by one.
         std::transform(it->begin(), it->end(), it->begin(), std::bind2nd(std::plus<char>(), 1));
 	}
 
@@ -154,7 +154,7 @@ void string_tokenization()
 	std::vector<std::string> tokens;
 	boost::split(tokens, str, boost::is_any_of(","));
 
-	// output.
+	// Output.
 	BOOST_FOREACH(const std::string &tok, tokens)
 	//for (const auto &tok : tokens)
 		std::cout << tok << '.';

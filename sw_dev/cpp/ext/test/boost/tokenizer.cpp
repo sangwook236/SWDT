@@ -11,6 +11,8 @@ namespace local {
 
 void tokenizer()
 {
+	// REF [function] >> string_tokenization() in string_algorithm.cpp.
+
 #if defined(UNICODE) || defined(_UNICODE)
 	typedef boost::tokenizer<boost::char_separator<wchar_t>, std::wstring::const_iterator, std::wstring> tokenizer_type;
 #else

@@ -187,6 +187,7 @@
     <ClCompile Include="liblearning\liblearning_main.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="libsvm\libsvm_main.cpp" />
+    <ClCompile Include="libsvm\libsvm_one_class_classification.cpp" />
     <ClCompile Include="libsvm\libsvm_predict_example.cpp" />
     <ClCompile Include="libsvm\libsvm_train_example.cpp" />
     <ClCompile Include="libsvm_lib\svm-predict.cpp">

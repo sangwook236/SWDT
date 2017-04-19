@@ -23,11 +23,11 @@ void path_info_1()
 		std::cout << "Something is rotten in foobar" << std::endl;
 
 	std::cout << "[ 1] " << my_path.string() << std::endl;
-	//std::cout << "[ 2] " << my_path.file_string() << std::endl;  // deprecated
-	//std::cout << "[ 3] " << my_path.directory_string() << std::endl;  // deprecated
+	//std::cout << "[ 2] " << my_path.file_string() << std::endl;  // Deprecated.
+	//std::cout << "[ 3] " << my_path.directory_string() << std::endl;  // Deprecated.
 
-	//std::cout << "[ 4] " << my_path.external_file_string() << std::endl;  // deprecated
-	///std::cout << "[ 5] " << my_path.external_directory_string() << std::endl;  // deprecated
+	//std::cout << "[ 4] " << my_path.external_file_string() << std::endl;  // Deprecated.
+	///std::cout << "[ 5] " << my_path.external_directory_string() << std::endl;  // Deprecated.
 #if !defined(__GNUC__)
 	std::wcout << L"[ 4] " << my_path.native() << std::endl;
 #endif
@@ -70,15 +70,15 @@ void path_info_2(const std::string &path)
 		return 1;
 	}
 
-	boost::filesystem::path p;  //  compose a path from the command line arguments
+	boost::filesystem::path p;  //  Compose a path from the command line arguments.
 
 	for (; argc > 1; --argc, ++argv)
 		p /= argv[1];
 */
 
-	boost::filesystem::path p(path.c_str());  // compose a path from the command line arguments
+	boost::filesystem::path p(path.c_str());  // Compose a path from the command line arguments.
 
-	std::cout  <<  "\ncomposed path:" << std::endl;
+	std::cout  <<  "\nComposed path:" << std::endl;
 	std::cout  <<  "  std::cout << -------------: " << p << std::endl;
 	std::cout  <<  "  make_preferred()----------: " << boost::filesystem::path(p).make_preferred() << std::endl;
 
@@ -87,7 +87,7 @@ void path_info_2(const std::string &path)
 	for (boost::filesystem::path::iterator it(p.begin()), it_end(p.end()); it != it_end; ++it)
 		std::cout << "  " << *it << std::endl;
 
-	std::cout  <<  "\nobservers, native format:" << std::endl;
+	std::cout  <<  "\nObservers, native format:" << std::endl;
 # ifdef BOOST_POSIX_API
 	std::cout  <<  "  native()-------------: " << p.native() << std::endl;
 	std::cout  <<  "  c_str()--------------: " << p.c_str() << std::endl;
@@ -98,11 +98,11 @@ void path_info_2(const std::string &path)
 	std::cout  <<  "  string()-------------: " << p.string() << std::endl;
 	std::wcout << L"  wstring()------------: " << p.wstring() << std::endl;
 
-	std::cout  <<  "\nobservers, generic format:" << std::endl;
+	std::cout  <<  "\nObservers, generic format:" << std::endl;
 	std::cout  <<  "  generic_string()-----: " << p.generic_string() << std::endl;
 	std::wcout << L"  generic_wstring()----: " << p.generic_wstring() << std::endl;
 
-	std::cout  <<  "\ndecomposition:" << std::endl;
+	std::cout  <<  "\nDecomposition:" << std::endl;
 	std::cout  <<  "  root_name()----------: " << p.root_name() << std::endl;
 	std::cout  <<  "  root_directory()-----: " << p.root_directory() << std::endl;
 	std::cout  <<  "  root_path()----------: " << p.root_path() << std::endl;
@@ -112,7 +112,7 @@ void path_info_2(const std::string &path)
 	std::cout  <<  "  stem()---------------: " << p.stem() << std::endl;
 	std::cout  <<  "  extension()----------: " << p.extension() << std::endl;
 
-	std::cout  <<  "\nquery:" << std::endl;
+	std::cout  <<  "\nQuery:" << std::endl;
 	std::cout  <<  "  empty()--------------: " << say_what(p.empty()) << std::endl;
 	std::cout  <<  "  is_absolute()--------: " << say_what(p.is_absolute()) << std::endl;
 	std::cout  <<  "  has_root_name()------: " << say_what(p.has_root_name()) << std::endl;
@@ -129,14 +129,14 @@ bool find_file(const boost::filesystem::path &dir_path, const std::string &file_
 {
 	if (!boost::filesystem::exists(dir_path)) return false;
 
-	boost::filesystem::directory_iterator end_itr;  // default construction yields past-the-end
+	boost::filesystem::directory_iterator end_itr;  // Default construction yields past-the-end.
 	for (boost::filesystem::directory_iterator itr(dir_path); itr != end_itr; ++itr)
 	{
 		if (boost::filesystem::is_directory(itr->status()))
 		{
 			if (find_file(itr->path(), file_name, path_found)) return true;
 		}
-		else if (itr->path().filename() == file_name)  // see below
+		else if (itr->path().filename() == file_name)  // See below.
 		{
 			path_found = itr->path();
 			return true;
@@ -156,17 +156,17 @@ bool file_size(const std::string &path)
 
 	if (!boost::filesystem::exists(p))
 	{
-		std::cout << "not found: " << path << std::endl;
+		std::cout << "Not found: " << path << std::endl;
 		return false;
 	}
 
 	if (!boost::filesystem::is_regular(p))
 	{
-		std::cout << "not a regular file: " << path << std::endl;
+		std::cout << "Not a regular file: " << path << std::endl;
 		return false;
 	}
 
-	std::cout << "size of " << path << " is " << boost::filesystem::file_size(p) << std::endl;
+	std::cout << "Size of " << path << " is " << boost::filesystem::file_size(p) << std::endl;
 	return true;
 }
 
@@ -230,7 +230,7 @@ bool ls(const std::string &path)
 			<< other_count << " others" << std::endl
 			<< err_count << " errors" << std::endl;
 	}
-	else // must be a file
+	else  // Must be a file.
 	{
 		std::cout << "\nFound: " << full_path.string() << std::endl;
 	}
@@ -242,7 +242,7 @@ bool rename_files_in_directory(const boost::filesystem::path &dir_path)
 {
 	if (!boost::filesystem::exists(dir_path)) return false;
 
-	boost::filesystem::directory_iterator end_itr;  // default construction yields past-the-end
+	boost::filesystem::directory_iterator end_itr;  // Default construction yields past-the-end.
 	for (boost::filesystem::directory_iterator itr(dir_path); itr != end_itr; ++itr)
 	{
 		if (boost::filesystem::is_regular_file(itr->status()) && itr->path().extension() == ".ppm")

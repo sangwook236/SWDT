@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 		//array();
 		//string();
 		//complex();
-		//date_time();
+		date_time();
 
 		//file_io();  // Not yet implemented.
 

@@ -47,7 +47,13 @@ int main(int argc, char *argv[])
 		//retval = clustering_main(argc, argv);
 
 		std::cout << "\nlibsvm library ------------------------------------------------------" << std::endl;
-		//retval = libsvm_main(argc, argv);
+		//	- Multi-class classification (SVC).
+		//	- Regression (SVR).
+		//	- Probability output.
+		//		Platt scaling.
+		//	- One-class SVM.
+		//	- Support vector data description (SVDD).
+		retval = libsvm_main(argc, argv);
 
 		std::cout << "\nmysvm library -------------------------------------------------------" << std::endl;
 		//retval = mysvm_main(argc, argv);  // Not yet implemented.
@@ -93,7 +99,7 @@ int main(int argc, char *argv[])
 		//		Convolutional neural network.
 		//		Denoising auto-encoder.
 		//		Dropout.
-		retval = tiny_dnn_main(argc, argv);
+		//retval = tiny_dnn_main(argc, argv);
 
 		std::cout << "\nWaffles library -----------------------------------------------------" << std::endl;
 		//	- Generation of various types of data.

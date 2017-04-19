@@ -22,16 +22,16 @@ void exit_input_error(int line_num)
 
 char * readline(FILE *input, char *line, int max_line_len)
 {
-	if (fgets(line, max_line_len, input) == NULL)
-		return NULL;
+	if (fgets(line, max_line_len, input) == nullptr)
+		return nullptr;
 
 	int len;
-	while (strrchr(line, '\n') == NULL)
+	while (strrchr(line, '\n') == nullptr)
 	{
 		max_line_len *= 2;
 		line = (char *)realloc(line, max_line_len);
 		len = (int)strlen(line);
-		if (fgets(line + len, max_line_len - len, input) == NULL)
+		if (fgets(line + len, max_line_len - len, input) == nullptr)
 			break;
 	}
 
@@ -43,7 +43,7 @@ bool predict(FILE *input, FILE *output, const struct svm_model *model, const boo
 	const int svm_type = svm_get_svm_type(model);
 	const int nr_class = svm_get_nr_class(model);
 
-	double *prob_estimates = NULL;
+	double *prob_estimates = nullptr;
 	if (predict_probability)
 	{
 		if (svm_type == NU_SVR || svm_type == EPSILON_SVR)
@@ -68,22 +68,22 @@ bool predict(FILE *input, FILE *output, const struct svm_model *model, const boo
 	int total = 0;
 	double error = 0;
 	double sump = 0, sumt = 0, sumpp = 0, sumtt = 0, sumpt = 0;
-	while (readline(input, line, max_line_len) != NULL)
+	while (readline(input, line, max_line_len) != nullptr)
 	{
 		int i = 0;
 		double target_label, predict_label;
 		char *idx, *val, *label, *endptr;
-		int inst_max_index = -1;  // strtol gives 0 if wrong format, and precomputed kernel has <index> start from 0
+		int inst_max_index = -1;  // strtol gives 0 if wrong format, and precomputed kernel has <index> start from 0.
 
 		label = strtok(line, " \t\n");
-		if (label == NULL)  // empty line
+		if (nullptr == label)  // Empty line.
 		{
 			exit_input_error(total + 1);
 			return false;
 		}
 
 		target_label = strtod(label, &endptr);
-		if (endptr == label || *endptr != '\0')
+		if (endptr == label || '\0' != *endptr)
 		{
 			exit_input_error(total + 1);
 			return false;
@@ -91,20 +91,20 @@ bool predict(FILE *input, FILE *output, const struct svm_model *model, const boo
 
 		while (1)
 		{
-			if (i >= max_nr_attr - 1)  // need one more for index = -1
+			if (i >= max_nr_attr - 1)  // Need one more for index = -1
 			{
 				max_nr_attr *= 2;
 				x = (struct svm_node *)realloc(x, max_nr_attr * sizeof(struct svm_node));
 			}
 
-			idx = strtok(NULL, ":");
-			val = strtok(NULL, " \t");
+			idx = strtok(nullptr, ":");
+			val = strtok(nullptr, " \t");
 
-			if (val == NULL)
+			if (nullptr == val)
 				break;
 			errno = 0;
 			x[i].index = (int)strtol(idx, &endptr,10);
-			if (endptr == idx || errno != 0 || *endptr != '\0' || x[i].index <= inst_max_index)
+			if (endptr == idx || 0 != errno || '\0' != *endptr || x[i].index <= inst_max_index)
 			{
 				exit_input_error(total + 1);
 				return false;
@@ -114,7 +114,7 @@ bool predict(FILE *input, FILE *output, const struct svm_model *model, const boo
 
 			errno = 0;
 			x[i].value = strtod(val, &endptr);
-			if (endptr == val || errno != 0 || (*endptr != '\0' && !isspace(*endptr)))
+			if (endptr == val || 0 != errno || ('\0' != *endptr && !isspace(*endptr)))
 			{
 				exit_input_error(total+1);
 				return false;
@@ -124,7 +124,7 @@ bool predict(FILE *input, FILE *output, const struct svm_model *model, const boo
 		}
 		x[i].index = -1;
 
-		if (predict_probability && (svm_type == C_SVC || svm_type == NU_SVC))
+		if (predict_probability && (C_SVC == svm_type || NU_SVC == svm_type))
 		{
 			predict_label = svm_predict_probability(model, x, prob_estimates);
 			fprintf(output, "%g", predict_label);
@@ -148,7 +148,7 @@ bool predict(FILE *input, FILE *output, const struct svm_model *model, const boo
 		sumpt += predict_label * target_label;
 		++total;
 	}
-	if (svm_type == NU_SVR || svm_type == EPSILON_SVR)
+	if (NU_SVR == svm_type || EPSILON_SVR == svm_type)
 	{
 		std::cout << "Mean squared error = " << (error / total) << " (regression)" << std::endl;
 		std::cout << "Squared correlation coefficient = " << ((total*sumpt - sump*sumt) * (total*sumpt - sump*sumt)) / ((total*sumpp - sump*sump) * (total*sumtt - sumt*sumt)) << " (regression)" << std::endl;
@@ -178,21 +178,21 @@ void predict_example()
 	const std::string model_file_name("./data/machine_learning/svm/heart_scale.model");
 
 	FILE *input = fopen(test_file_name.c_str(), "r");
-	if(input == NULL)
+	if (nullptr == input)
 	{
 		std::cout << "Can't open input file " << test_file_name << std::endl;
 		return;
 	}
 
 	FILE *output = fopen(output_file_name.c_str(), "w");
-	if(output == NULL)
+	if (nullptr == output)
 	{
 		std::cout << "Can't open output file " << output_file_name << std::endl;
 		return;
 	}
 
 	struct svm_model *model = svm_load_model(model_file_name.c_str());
-	if (NULL == model)
+	if (nullptr == model)
 	{
 		std::cout << "Can't open model file " << model_file_name << std::endl;
 		return;
@@ -200,15 +200,15 @@ void predict_example()
 
 	if (predict_probability)
 	{
-		if (svm_check_probability_model(model) == 0)
+		if (0 == svm_check_probability_model(model))
 		{
-			std::cout << "Model does not support probabiliy estimates" << std::endl;
+			std::cout << "Model does not support probabiliy estimates." << std::endl;
 			return;
 		}
 	}
 	else
 	{
-		if (svm_check_probability_model(model) != 0)
+		if (0 != svm_check_probability_model(model))
 			std::cout << "Model supports probability estimates, but disabled in prediction." << std::endl;
 	}
 
