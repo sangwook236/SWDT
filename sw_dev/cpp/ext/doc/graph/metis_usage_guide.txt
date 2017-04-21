@@ -1,7 +1,35 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://glaros.dtc.umn.edu/gkhome/metis/metis/overview
 
-[-] Building
-	-. Visual Studio에서 build가 되지 않으면 SuiteSparse GitHub 참고
-		https://github.com/jlblancoc/suitesparse-metis-for-windows
+[-] Building (VS).
+	REF [site] >> https://github.com/jlblancoc/suitesparse-metis-for-windows
+	REF [doc] >> suitesparse_usage_guide.txt
+
+[-] Trouble shooting (VC).
+	- rint error.
+		METIS library error.
+		<error>
+			syntax error: '('
+		<solution>
+			Modify ${METIS_HOME}/metis/GKlib/gk_arch.h.
+			<before>
+				#ifdef __MSC__
+				/* MSC does not have rint() function */
+				#define rint(x) ((int)((x)+0.5))  
+
+				/* MSC does not have INFINITY defined */
+				#ifndef INFINITY
+				#define INFINITY FLT_MAX
+				#endif
+				#endif
+			<after>
+				//#ifdef __MSC__
+				///* MSC does not have rint() function */
+				//#define rint(x) ((int)((x)+0.5))  
+				//
+				///* MSC does not have INFINITY defined */
+				//#ifndef INFINITY
+				//#define INFINITY FLT_MAX
+				//#endif
+				//#endif

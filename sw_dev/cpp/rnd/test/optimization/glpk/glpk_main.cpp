@@ -29,10 +29,11 @@ int glpk_main(int argc, char *argv[])
 	//my_glpk::interior_point_sample();
 
 	std::cout << "\nMixed integer programming (MIP) -------------------------------------" << std::endl;
-	my_glpk::mip_sample();
+	//my_glpk::mip_sample();
 
 	std::cout << "\nMathematical programming language (MPL) -----------------------------" << std::endl;
-	//my_glpk::mpl_sample();
+	//	- GMPL.
+	my_glpk::mpl_sample();
 
 	std::cout << "\nGraph ---------------------------------------------------------------" << std::endl;
 	//my_glpk::netgen_sample();

@@ -1,0 +1,92 @@
+# GMPL model file.
+# RDA data: D:/dataset/life_science/phenotyping/RDA/20160406_trimmed_plant/adaptor3/side_240.png.
+
+# Minimum path cover problem.
+#	Usage: glpsol --math path_cover_problem.model
+
+# Parameter.
+param num_vertices, integer, >= 1;  # Number of vertices.
+param num_edges, integer, >= 1;  # Number of edges.
+param num_paths, integer, >= 1;  # Number of paths.
+
+# Set.
+set V := {0 .. num_vertices-1};  # Vertices.
+set E, dimen 3, within {0 .. num_edges-1} cross V cross V;  # Edges: (edge index ; v1, v2).
+#set EP, dimen 4, within V cross V cross V cross R;  # Edge pairs: (v1, v2, v3 ; edge smoothness).
+set P{1 .. num_paths};  # Paths: edge index list.
+set PC, dimen 2;  # Path costs: (path index ; path cost).
+
+# Parameter.
+#param EC{1 .. card(E)};  # Edge costs: edge weight.
+
+# Indices.
+set J := setof {(p,c) in PC} p;
+
+# Variable.
+var x{J}, binary;
+
+#---------------------------------------------------------------------
+# Objective.
+minimize total_cost :
+	sum {(p,c) in PC} c * x[p];
+
+# Constraint.
+s.t. edge_usage_constraint {(e,v1,v2) in E} :
+	sum {j in J: e in P[j]} x[j] >= 1;
+
+solve;
+
+#---------------------------------------------------------------------
+printf "The chosen paths:\n";
+#printf {j in J: 1 == x[j]} : " %i", j;
+for {j in J: 1 == x[j]}
+{
+	printf {p in P[j], (e,v1,v2) in E: p = e} : " %i(%i,%i),", e, v1, v2;
+	printf "\n";
+}
+printf "\n";
+
+printf "The edge usage counts:\n";
+for {(e,v1,v2) in E}
+{
+	printf " %i (%i,%i): %i", e, v1, v2, sum {j in J: e in P[j]} x[j];
+	printf "\n";
+}
+printf "\n";
+
+#---------------------------------------------------------------------
+data;
+
+# Parameter.
+param num_vertices := 10;  # Number of vertices.
+param num_edges := 9;  # Number of edges.
+param num_paths := 4;  # Number of paths.
+
+# Edges: (edge index ; v1, v2).
+set E :=
+	0 4 9
+	1 8 9
+	2 3 9
+	3 7 8
+	4 6 7
+	5 5 6
+	6 2 6
+	7 0 5
+	8 1 5
+;
+
+# Paths: edge index list.
+set P[1] := 0 1 3 4 5 7;
+set P[2] := 0 1 3 4 5 8;
+set P[3] := 0 1 3 4 6;
+set P[4] := 0 2;
+
+# Path costs: (path index ; path cost).
+set PC :=
+	1 46.1607
+	2 50.7746
+	3 36.5713
+	4 20.3994
+;
+
+end;

@@ -8,7 +8,7 @@ namespace {
 namespace local {
 
 // REF [file] >> ${GLPK_HOME}/examples/mplsamp1.c
-void mpl_lp_sample()
+void gmpl_lp_sample()
 {
 	glp_prob *lp = glp_create_prob();
 	glp_tran *tran = glp_mpl_alloc_wksp();
@@ -37,7 +37,7 @@ void mpl_lp_sample()
 	}
 
 	// Need to solve the problem.
-	// REF [function] >> mpl_mip_sample()
+	// REF [function] >> gmpl_mip_sample()
 
 skip:
 	glp_mpl_free_wksp(tran);
@@ -45,19 +45,35 @@ skip:
 }
 
 // REF [file] >> ${GLPK_HOME}/examples/mplsamp2.c
-void mpl_mip_sample()
+void gmpl_mip_sample()
 {
+#if 0
+	const std::string model_filename("./data/optimization/glpk/sudoku.mod");
+	const std::string data_filename("./data/optimization/glpk/sudoku.dat");
+#elif 0
+	const std::string model_filename("./data/optimization/glpk/transportation_problem.model");
+	const std::string data_filename;  // Need a data file.
+#elif 0
+	const std::string model_filename("./data/optimization/glpk/path_cover_problem.model");
+	const std::string data_filename;  // Need a data file.
+#else
+	const std::string model_filename("./data/optimization/glpk/path_cover_problem2.model");
+	const std::string data_filename("./data/optimization/glpk/path_cover_problem2.data");
+#endif
+
 	glp_prob *mip = glp_create_prob();
 	glp_tran *tran = glp_mpl_alloc_wksp();
 
-	int retval = glp_mpl_read_model(tran, "./data/optimization/glpk/sudoku.mod", 1);
+	// If the model file also contains the data section, that section is ignored.
+	int retval = glp_mpl_read_model(tran, model_filename.c_str(), 1);
 	if (0 != retval)
 	{
 		std::cerr << "Error on translating model" << std::endl;
 		goto skip;
 	}
 
-	retval = glp_mpl_read_data(tran, "./data/optimization/glpk/sudoku.dat");
+	//retval = glp_mpl_read_data(tran, data_filename.empty() ? model_filename.c_str() : data_filename.c_str());  // Error: Cannot read data from a model file.
+	retval = glp_mpl_read_data(tran, data_filename.c_str());
 	if (0 != retval)
 	{
 		std::cerr << "Error on translating data" << std::endl;
@@ -107,10 +123,18 @@ namespace my_glpk {
 
 void mpl_sample()
 {
-	local::mpl_lp_sample();
-	local::mpl_mip_sample();
+	// GMPL: GNU MathProg modeling language.
+	//local::gmpl_lp_sample();
+	local::gmpl_mip_sample();
 
-	// Use AMPL IDE to convert AMPL to MPS.
+	// Convert GMPL to MPS.
+	//	REF [function] >> local::gmpl_lp_sample().
+	// Convert GMPL to CPLEX LP format.
+	//	Use glpsol:
+	//		glpsol --model foo.model --wlp foo.lp
+	//	REF [doc] >> gmpl.pdf.
+	// Convert AMPL to MPS.
+	//	Use AMPL IDE.
 	//	REF [site] >> http://ampl.com/faqs/how-do-i-write-an-mps-file-for-my-problem/
 }
 
