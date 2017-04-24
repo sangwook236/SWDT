@@ -13,7 +13,7 @@ namespace local {
 
 namespace my_libdai {
 
-// [ref] ${LIBDAI_HOME}/examples/example_sprinkler.cpp
+// REF [file] >> ${LIBDAI_HOME}/examples/example_sprinkler.cpp
 void sprinkler_example()
 {
 	// This example program illustrates how to construct a factorgraph by means of the sprinkler network example discussed at

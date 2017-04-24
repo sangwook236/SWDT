@@ -4,7 +4,8 @@
 		http://winglpk.sourceforge.net/
 
 	- Document.
-        http://en.wikibooks.org/wii/GLPK
+        https://en.wikibooks.org/wii/GLPK
+        https://en.wikibooks.org/wiki/GLPK/Solution_information
 
 [-] Usage.
 	- GMPL: GNU MathProg.

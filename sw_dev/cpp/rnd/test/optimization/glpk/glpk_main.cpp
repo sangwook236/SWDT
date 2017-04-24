@@ -22,6 +22,9 @@ void netgen_sample();
 
 int glpk_main(int argc, char *argv[])
 {
+	// Information on solution.
+	//	REF [site] >> https://en.wikibooks.org/wiki/GLPK/Solution_information
+
 	std::cout << "Simplex method ------------------------------------------------------" << std::endl;
 	//my_glpk::simplex_sample();
 

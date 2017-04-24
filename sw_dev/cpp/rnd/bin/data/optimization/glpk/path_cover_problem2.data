@@ -2,9 +2,8 @@
 # RDA data: D:/dataset/life_science/phenotyping/RDA/20160406_trimmed_plant/adaptor3/side_240.png.
 
 # Minimum path cover problem.
-#	Usage: glpsol --model path_cover_problem2.model --data path_cover_problem2.data
+#	Usage: glpsol --model path_cover_problem2.model --data path_cover_problem2.data --output path_cover_problem2.output --display path_cover_problem2.display
 
-#---------------------------------------------------------------------
 data;
 
 # Parameter.
@@ -12,7 +11,7 @@ param num_vertices := 10;  # Number of vertices.
 param num_edges := 9;  # Number of edges.
 param num_paths := 4;  # Number of paths.
 
-# Edges: (edge index ; v1, v2).
+# Edges: edge index, (v1, v2).
 set E :=
 	0 4 9
 	1 8 9
@@ -31,7 +30,7 @@ set P[2] := 0 1 3 4 5 8;
 set P[3] := 0 1 3 4 6;
 set P[4] := 0 2;
 
-# Path costs: (path index ; path cost).
+# Path costs: path index, path cost.
 set PC :=
 	1 46.1607
 	2 50.7746

@@ -14,7 +14,7 @@ namespace local {
 
 namespace my_libdai {
 
-// [ref] ${LIBDAI_HOME}/examples/example_varset.cpp
+// REF [file] >> ${LIBDAI_HOME}/examples/example_varset.cpp
 void varset_example()
 {
 	dai::Var x0(0, 2);  // Define binary variable x0 (with label 0)

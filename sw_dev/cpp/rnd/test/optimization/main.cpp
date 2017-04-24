@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
 		//		GNU MathProg (GMPL), MPS format, CPLEX LP format.
 		retval = glpk_main(argc, argv);
 
-        std::cout << "\nCeres Solver --------------------------------------------------------" << std::endl;
-        //  - Non-linear least squares.
+		std::cout << "\nCeres Solver library ------------------------------------------------" << std::endl;
+		//  - Non-linear least squares.
         //  - General unconstrained minimization.
         //      Curve fitting.
         //      Robust curve fitting.

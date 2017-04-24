@@ -2,7 +2,7 @@
 # RDA data: D:/dataset/life_science/phenotyping/RDA/20160406_trimmed_plant/adaptor3/side_240.png.
 
 # Minimum path cover problem.
-#	Usage: glpsol --math path_cover_problem.model
+#	Usage: glpsol --math path_cover_problem.model --output path_cover_problem.output --display path_cover_problem.display
 
 # Parameter.
 param num_vertices, integer, >= 1;  # Number of vertices.
@@ -37,22 +37,23 @@ s.t. edge_usage_constraint {(e,v1,v2) in E} :
 solve;
 
 #---------------------------------------------------------------------
-printf "The chosen paths:\n";
+printf "The identified leaf paths :=\n";
 #printf {p in PI: 1 == x[p]} : " %i", p;
 for {p in PI: 1 == x[p]}
 {
+	printf " %i:", p;
 	printf {pe in P[p], (e,v1,v2) in E: pe = e} : " %i(%i,%i),", e, v1, v2;
 	printf "\n";
 }
-printf "\n";
+printf ";\n\n";
 
-printf "The edge usage counts:\n";
+printf "The edge usage counts :=\n";
 for {(e,v1,v2) in E}
 {
-	printf " %i (%i,%i): %i", e, v1, v2, sum {p in PI: e in P[p]} x[p];
+	printf " %i(%i,%i): %i", e, v1, v2, sum {p in PI: e in P[p]} x[p];
 	printf "\n";
 }
-printf "\n";
+printf ";\n";
 
 #---------------------------------------------------------------------
 data;

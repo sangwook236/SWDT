@@ -87,9 +87,28 @@ int main(int argc, char *argv[])
 #endif
 
 		std::cout << "\nlibDAI library ------------------------------------------------------" << std::endl;
+		//	- Exact inference by brute force enumeration.
+		//	- Exact inference by junction-tree methods.
+		//	- Mean field.
+		//	- Loopy belief propagation (LBP).
+		//	- Fractional belief propagation.
+		//	- Tree-reweighted belief propagation (TRBP).
+		//	- Tree expectation propagation.
+		//	- Generalized belief propagation (GBP).
+		//	- Double-loop GBP.
+		//	- Various variants of loop corrected belief propagation.
+		//	- Gibbs sampler.
+		//	- Conditioned belief propagation.
+		//	- Decimation algorithm.
 		//retval = libdai_main(argc, argv);
 
 		std::cout << "\nOpenGM library ------------------------------------------------------" << std::endl;
+		//	- Combinatorial/gobal optimal method.
+		//	- Linear programming relaxation.
+		//	- Message passing method.
+		//	- Move making method.
+		//	- Sampling.
+		//	- Wrapped external code for discrete graphical models.
 		//retval = opengm_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
