@@ -406,6 +406,7 @@
     </ClCompile>
     <ClCompile Include="opencv\opencv_pca.cpp" />
     <ClCompile Include="opencv\opencv_retina_model.cpp" />
+    <ClCompile Include="opencv\opencv_saliency.cpp" />
     <ClCompile Include="opencv\opencv_segmentation.cpp" />
     <ClCompile Include="opencv\opencv_shape_finding.cpp" />
     <ClCompile Include="opencv\opencv_shape_matching.cpp">

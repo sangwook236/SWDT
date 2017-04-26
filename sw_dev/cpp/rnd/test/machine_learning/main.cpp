@@ -182,12 +182,15 @@ int main(int argc, char *argv[])
 		//retval = manifold_alignment_main(argc, argv);
 
 		std::cout << "\nlibgp library ------------------------------------------------------" << std::endl;
+		//	- Gaussian process (GP).
 		//retval = libgp_main(argc, argv);
 
 		std::cout << "\nRL-Glue (Reinforcement Learning Glue) library -----------------------" << std::endl;
+		//	- Reinforcement learning (RL).
 		//retval = rl_glue_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nRLlib library -------------------------------------------------------" << std::endl;
+		//	- Reinforcement learning (RL).
 		//retval = rllib_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
