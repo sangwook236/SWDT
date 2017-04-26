@@ -15,7 +15,7 @@ namespace my_opencv {
 // REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/saliency/samples/computeSaliency.cpp.
 void saliency_detection()
 {
-	const cv::String saliency_algorithm("BING");  // SPECTRAL_RESIDUAL (static saliency), FINE_GRAINED (static saliency), BinWangApr2014 (motion saliency), BING (objectness), 
+	const cv::String saliency_algorithm("SPECTRAL_RESIDUAL");  // SPECTRAL_RESIDUAL (static saliency), FINE_GRAINED (static saliency), BinWangApr2014 (motion saliency), BING (objectness), 
 
 	// Instantiate the specific saliency.
 	cv::Ptr<cv::saliency::Saliency> saliencyAlgorithm = cv::saliency::Saliency::create(saliency_algorithm);
@@ -32,8 +32,7 @@ void saliency_detection()
 	if (saliency_algorithm.find("SPECTRAL_RESIDUAL") == 0)  // Static saliency.
 	{
 		//const std::string img_filepath("./data/machine_vision/objects.jpg");
-		//const std::string img_filepath("./data/machine_vision/tumblr.jpg");
-		const std::string img_filepath("D:/dataset/defect_analysis/food/2016y10m03d hamburger(OK_or_NG)/patty/Bad_hamburger_162943_1139484.tif");
+		const std::string img_filepath("./data/machine_vision/tumblr.jpg");
 
 		//const cv::Mat image = cv::imread(img_filepath, cv::IMREAD_COLOR);
 		const cv::Mat image = cv::imread(img_filepath, cv::IMREAD_GRAYSCALE);
@@ -50,8 +49,8 @@ void saliency_detection()
 			cv::Mat binaryMap;
 			spec.computeBinaryMap(saliencyMap, binaryMap);
 
-			cv::imshow("Saliency Map", saliencyMap);
 			cv::imshow("Original Image", image);
+			cv::imshow("Saliency Map", saliencyMap);
 			cv::imshow("Binary Map", binaryMap);
 			cv::waitKey(0);
 		}
@@ -73,8 +72,8 @@ void saliency_detection()
 		cv::Mat saliencyMap;
 		if (saliencyAlgorithm->computeSaliency(image, saliencyMap))
 		{
-			cv::imshow("Saliency Map", saliencyMap);
 			cv::imshow("Original Image", image);
+			cv::imshow("Saliency Map", saliencyMap);
 			cv::waitKey(0);
 		}
 	}
@@ -155,7 +154,7 @@ void saliency_detection()
 			}
 
 			saliencyAlgorithm.dynamicCast<cv::saliency::ObjectnessBING>()->setTrainingPath(training_path);
-			//saliencyAlgorithm.dynamicCast<cv::saliency::ObjectnessBING>()->setBBResDir("./data/machine_vision/opencv/bing_result");
+			saliencyAlgorithm.dynamicCast<cv::saliency::ObjectnessBING>()->setBBResDir("./data/machine_vision/opencv/bing_result");
 
 			std::vector<cv::Vec4i> objectnessBoundingBoxes;
 			cv::RNG& rng = cv::theRNG();
@@ -197,7 +196,7 @@ void saliency_detection()
 					cv::rectangle(rgb, cv::Point(box[0], box[1]), cv::Point(box[2], box[3]), CV_RGB(rng(256), rng(256), rng(256)), 1, cv::LINE_AA);
 					if (0 == idx % 10)
 					{
-						cv::imshow("Image with objectness regions", rgb);
+						cv::imshow("Objectness regions", rgb);
 						cv::waitKey(100);
 
 						image.copyTo(rgb);

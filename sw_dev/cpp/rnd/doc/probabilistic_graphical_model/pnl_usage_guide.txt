@@ -1,31 +1,31 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://sourceforge.net/projects/openpnl/
 		https://github.com/crishoj/OpenPNL
 
-[-] MSVC project file
-	PNL
+[-] MSVC project file.
+	PNL:
 		${PNL_ROOT}/c_pgmtk/make/pnl.dsw
 		${PNL_ROOT}/c_pgmtk/make/*.dsp
 		${PNL_ROOT}/c_pgmtk/examples/??/*.dsp
 		${PNL_ROOT}/trs/make/trs.dsp
-	cxore
+	cxore:
 		${PNL_ROOT}/cxcore/cxcore/make/cxcore.dsw
 		${PNL_ROOT}/cxcore/cxcore/make/cxcore.dsp
 
-	dsp file (& dsw file)을 상위의 vcproj file, vcxproj file (& sln file)로 변환할 때
+	Dsp file (& dsw file)을 상위의 vcproj file, vcxproj file (& sln file)로 변환할 때
 	"Cannot load the project due to a corrupt project file."와 같은 error가 발생하는 경우가 있다.
 	이는 dsp file (& dsw file)의 개행문자가 DOS style 아니라 UNIX style이어서 발생한다.
 	따라서 모든 dsp file (& dsw file)를 열어 DOS style로 저장을 한 후
 	vcproj file, vcxproj file (& sln file)로 변환하면 된다.
-	[ref] http://connect.microsoft.com/VisualStudio/feedback/details/546432/problems-with-vs2010rc-doing-conversion-of-vs6-dsp-file-vcproj-file
+	REF [site] >> http://connect.microsoft.com/VisualStudio/feedback/details/546432/problems-with-vs2010rc-doing-conversion-of-vs6-dsp-file-vcproj-file
 
 	MSVC6 project file을 MSVC9 & MSVC10 project file로 직접 변환하여도 정상 작동함.
 
-[-] Building (Visual Studio) (original version)
-	[ref] http://sourceforge.net/projects/openpnl/
+[-] Building (Visual Studio) (original version).
+	REF [site] >> http://sourceforge.net/projects/openpnl/
 
-	[1] cxcore library 이름 변경
+	[1] cxcore library 이름 변경.
 		PNL이 cxcore library를 사용하는데 OpenCV와의 충돌을 피하기 위해 pnl_cxcore로 이름을 변경하는 경우.
 		pnl project 뿐만 아니라 다른 project들에서도 cxcore library를 사용하고 있으시 모두 변경하여야 함.
 	[2] class template인데 PNL_API macro를 통해 __declspec(dllexport)가 적용된 class가 있음.
@@ -53,8 +53,8 @@
 			CPU info를 얻어오는 함수인데 이의 구현에 문제가 있는 것으로 판단.
 			MSVC가 제공하는 __cpuid() 함수로 대체 구현 가능
 
-			[ref] http://msdn.microsoft.com/en-us/library/hskdteyh.aspx
-			[ref] http://en.wikipedia.org/wiki/CPUID
+			REF [site] >> http://msdn.microsoft.com/en-us/library/hskdteyh.aspx
+			REF [site] >> http://en.wikipedia.org/wiki/CPUID
 
 			icxGetProcessorType() 함수 안에서 version & features를 계산하는 부분을 아래와 같이 변경하면 됨
 				const int a = 1;
@@ -64,46 +64,46 @@
 				const int version = b[0];
 				const int features = b[3];
 
-[-] Building (MinGW32) (original version)
-	-. Windows command window에서 ${MINGW32_ROOT}/bin & ${MSYS_ROOT}/bin을 path 설정
+[-] Building (MinGW32) (original version).
+	- Windows command window에서 ${MINGW32_ROOT}/bin & ${MSYS_ROOT}/bin을 path 설정.
 		${MSYS_ROOT}/bin를 path 설정하는 것은 sh를 사용하기 위함
 		set path=${MINGW32_ROOT}/bin;${MSYS_ROOT}/bin;%path%
-	-. software building을 위해서 ${MINGW32_ROOT}/bin 하위의 executable file을 사용
+	- Software building을 위해서 ${MINGW32_ROOT}/bin 하위의 executable file을 사용.
 		"mingw32-"이 없는 executable file을 사용
 			e.g.)
 				mingw32-gcc.exe (X) ==> gcc.exe (O)
 				mingw32-g++.exe (X) ==> g++.exe (O)
 		단, make의 경우 mingw32-make.exe를 사용
 			make.exe (X) ==> mingw32-make.exe (O)
-	-. building
-		[ref] follow instructions in readme.txt
+	- Build.
+		REF [doc] >> Follow instructions in readme.txt
 
 		1. Go to the root directory (it contain this file and changes.txt)
 		2. Run 'sh ./configure.gcc'
 		3. Run 'make' to compile sources
 		4. Run 'make check' to compile and launch test suite (optionally)
 		5. Run 'make install' to install library
-	-. compile-time error 발생
-		GetTime() in ${PNL_ROOT}/trs/src/trsapi.c 에서 error 발생
-			RDTSC(addr) macro의 asm 처리 부분에서 error
-		PNL의 linux version에서도 동일한 error 발생
+	- Compile-time error 발생.
+		GetTime() in ${PNL_ROOT}/trs/src/trsapi.c 에서 error 발생.
+			RDTSC(addr) macro의 asm 처리 부분에서 error.
+		PNL의 linux version에서도 동일한 error 발생.
 
-[-] Building (MSYS) (original version)
-	-. compile-time error 발생
-		MinGW32에서와 동일한 이유로 MSYS에서도 compile-time error 발생
+[-] Building (MSYS) (original version).
+	- Compile-time error 발생.
+		MinGW32에서와 동일한 이유로 MSYS에서도 compile-time error 발생.
 
-[-] Building (Cygwin) (original version)
-	[1] building
-		[ref] follow instructions in readme.txt
+[-] Building (Cygwin) (original version).
+	[1] Build.
+		REF [doc] >> Follow instructions in readme.txt.
 
-		1. Go to the root directory (it contain this file and changes.txt)
-		2. Run './configure.gcc'
-		3. Run 'make' to compile sources
-		4. Run 'make check' to compile and launch test suite (optionally)
-		5. Run 'make install' to install library
+		1. Go to the root directory (it contain this file and changes.txt).
+		2. Run './configure.gcc'.
+		3. Run 'make' to compile sources.
+		4. Run 'make check' to compile and launch test suite (optionally).
+		5. Run 'make install' to install library.
 
 		Notes:
-		- Step 2 (Run './configure.gcc') should be run on initial or on compiler changing
+		- Step 2 (Run './configure.gcc') should be run on initial or on compiler changing.
 		- If you want to install library to some directory instead of '/usr/local' (as default),
 			you can use '--prefix' option of 'configure' script in 'configure.gcc' file
 			(run './configure -h' to read more)
@@ -113,8 +113,8 @@
 		- If you have some error during compiling or if you want to view compiling message later,
 			run 'make 2>&1 | tee compiling.log' instead of 'make'
 	[2] pnl library
-		-. 여러 syntax error를 수정해야 함
-		-. error 처리
+		- 여러 syntax error를 수정해야 함.
+		- Error 처리.
 			${PNL_ROOT}/c_pgmtk/src/libpnl.la file의 "dependency_libs=' -ldl -lcxcore /usr/lib/gcc/i686-pc-cygwin/4.5.3/libstdc++.la'"에 의해 발생하는 문제로 추측.
 
 			pnl library를 buidling 할 때 "ld: cannot find -lcxcore"라는 경우
@@ -123,78 +123,78 @@
 					cxcore library building 후 libcxcore.a는 ${PNL_ROOT}/cxcore/cxcore/src dicretory하에 생성.
 				LDFLAGS = -L/usr/local/lib
 					libcxcore.a가 cxcore library building 후 /usr/local/lib directory에 설치되어 있어야 함.
-	[3] pnl high library (PNL wrapper)
-		-. pnl & cxcore library의 기능을 찾지 못하는 error 발생
+	[3] pnl high library (PNL wrapper).
+		- pnl & cxcore library의 기능을 찾지 못하는 error 발생.
 			"${PNL_ROOT}/high/source/Makefile"에 아래의 내용을 추가해야 함.
 				LDFLAGS = -L$(top_srcdir)/c_pgmtk/src/.libs -L$(top_srcdir)/cxcore/cxcore/src
 				LIBS = -ldl -lm -lpnl.dll -lcxcore
 
-[-] Building (Visual Studio) (crishoj-OpenPNL version)
-	[ref] https://github.com/crishoj/OpenPNL
+[-] Building (Visual Studio) (crishoj-OpenPNL version).
+	REF [site] >> https://github.com/crishoj/OpenPNL
 
-	(주의) build가 되지 않음
+	NOTICE [caustion] >> Cannot build.
 
-	[1] cxcore library
+	[1] cxcore library.
 		${PNL_ROOT}/cxcore/cxcore/make/cxcore.dsp를 building하기 위해서 아래 사항을 수정하여야 한다.
-		(1) Compiler & Linker option 변경
-			"C/C++ option --> Preprocessor --> Processor Definition"에 "CVAPI_EXPORTS" 추가
-			"Linker option --> Input item --> Module Definition File"에서 "..\src\_cxexport.def"를 모두 삭제
-			Solution Explorer 창에서 "__cxexport.def"를 제거하거나 build로부터 제외
-		(2) project에 아래의 파일을 추가
+		(1) Compiler & Linker option 변경.
+			"C/C++ option --> Preprocessor --> Processor Definition"에 "CVAPI_EXPORTS" 추가.
+			"Linker option --> Input item --> Module Definition File"에서 "..\src\_cxexport.def"를 모두 삭제.
+			Solution Explorer 창에서 "__cxexport.def"를 제거하거나 build로부터 제외.
+		(2) project에 아래의 파일을 추가.
 			${PNL_ROOT}/cxcore/cxcore/src/cxlut.cpp
 			${PNL_ROOT}/cxcore/cxcore/src/cximage.cpp
-		(3) Output file인 dll file & lib file의 파일명을 수정
+		(3) Output file인 dll file & lib file의 파일명을 수정.
 			cxcore{d}.dll --> pnl_cxcore{d}.dll
 			cxcore{d}.lib --> pnl_cxcore{d}.lib
-	[2] pnl library
+	[2] pnl library.
 		${PNL_ROOT}/c_pgmtk/make/pnl.dsp를 building하기 위해서 아래 사항을 수정하여야 한다.
-		(1) Compiler & Linker option 변경
-			"Linker option --> General item --> Additional Library Directories"에서 "../../../lib" -> "../../../../lib"로 변경
-			"Linker option --> Input item --> Additional Dependencies"에서 pnl{d}.lib 추가
-			"Linker option --> Input item --> Additional Dependencies"에서 cxcore{d}.lib -> pnl_excore{d}.lib로 변경
-		(2) ${PNL_ROOT}/c_pgmtk/src/include/cart/inlines.h 파일 변경
-			#include <inttypes.h>를 주석 처리
-		(3) CMatrix<T>::Dump()의 구현이 없음
-			"${PNL_ROOT}/c_pgmtk/include/pnlMatrix.hpp" file 안에 CMatrix<T>::Dump()의 구현부가 없음
-			"${PNL_ROOT}/c_pgmtk/include/pnlMatrix_imple.hpp" file안에 존재
-			따라서 "${PNL_ROOT}/c_pgmtk/include/pnlMatrix.hpp" file 끝부분에 아래의 code를 추가해야 함
+		(1) Compiler & Linker option 변경.
+			"Linker option --> General item --> Additional Library Directories"에서 "../../../lib" -> "../../../../lib"로 변경.
+			"Linker option --> Input item --> Additional Dependencies"에서 pnl{d}.lib 추가.
+			"Linker option --> Input item --> Additional Dependencies"에서 cxcore{d}.lib -> pnl_excore{d}.lib로 변경.
+		(2) ${PNL_ROOT}/c_pgmtk/src/include/cart/inlines.h 파일 변경.
+			#include <inttypes.h>를 주석 처리.
+		(3) CMatrix<T>::Dump()의 구현이 없음.
+			"${PNL_ROOT}/c_pgmtk/include/pnlMatrix.hpp" file 안에 CMatrix<T>::Dump()의 구현부가 없음.
+			"${PNL_ROOT}/c_pgmtk/include/pnlMatrix_imple.hpp" file안에 존재.
+			따라서 "${PNL_ROOT}/c_pgmtk/include/pnlMatrix.hpp" file 끝부분에 아래의 code를 추가해야 함.
 				#include "pnlMatrix_impl.hpp"
-	[3] pnl high library (PNL wrapper)
+	[3] pnl high library (PNL wrapper).
 
-[-] Building (Cygwin) (crishoj-OpenPNL version)
-	[1] building
-		[ref] follow instructions in readme.txt
+[-] Building (Cygwin) (crishoj-OpenPNL version).
+	[1] Build.
+		REF [doc] >> Follow instructions in readme.txt
 
-		1. Go to the root directory (it contain this file and changes.txt)
-		2. Run './configure.gcc'
-		3. Run 'make' to compile sources
-		4. Run 'make check' to compile and launch test suite (optionally)
-		5. Run 'make install' to install library
+		1. Go to the root directory (it contain this file and changes.txt).
+		2. Run './configure.gcc'.
+		3. Run 'make' to compile sources.
+		4. Run 'make check' to compile and launch test suite (optionally).
+		5. Run 'make install' to install library.
 
 		Notes:
-		- Step 2 (Run './configure.gcc') should be run on initial or on compiler changing
+		- Step 2 (Run './configure.gcc') should be run on initial or on compiler changing.
 		- If you want to install library to some directory instead of '/usr/local' (as default),
-			you can use '--prefix' option of 'configure' script in 'configure.gcc' file
+			you can use '--prefix' option of 'configure' script in 'configure.gcc' file.
 			(run './configure -h' to read more)
 		- You can use object directory to build library.
 			In this case step 2 looks like 'SRCROOT/configure.gcc',
 			where 'SRCROOT' is relative path to source root directory
 		- If you have some error during compiling or if you want to view compiling message later,
-			run 'make 2>&1 | tee compiling.log' instead of 'make'
-	[3] pnl high library (PNL wrapper)
-		-. "${PNL_ROOT}/high/source/pnlWProbabilisticNet.cpp" file에 아래의 두 file을 including.
+			run 'make 2>&1 | tee compiling.log' instead of 'make'.
+	[3] pnl high library (PNL wrapper).
+		- "${PNL_ROOT}/high/source/pnlWProbabilisticNet.cpp" file에 아래의 두 file을 including.
 			#include "pnlContextPersistence.hpp"
 			#include "pnlEvidence.hpp"
-		-. pnl & cxcore library의 기능을 찾지 못하는 error 발생
+		- pnl & cxcore library의 기능을 찾지 못하는 error 발생.
 			"${PNL_ROOT}/high/source/Makefile"에 아래의 내용을 추가해야 함.
 				LDFLAGS = -L$(top_srcdir)/c_pgmtk/src/.libs -L$(top_srcdir)/cxcore/cxcore/src
 				LIBS = -ldl -lm -lpnl -lcxcore
 
-[-] Building (Linux)
-	-. PNL library building
-		[ref] ${PNL_HOME}/reamdme.txt
+[-] Building (Linux).
+	- Build PNL library.
+		REF [doc] >> ${PNL_HOME}/reamdme.txt
 		sh ./configure.gcc
-			(주의)
+			NOTICE [caution] >>
 			PNL library의 installation directory로 user permission이 있는 local directory를 지정해야 함.
 			그렇지 않고, /usr/local 등을 지정한다면 설치 과정에서 permission 오류 발생.
 			'sh ./configure.gcc --prefix=${PNL_INSTALL_DIR}' 명령이 정상적으로 동작하지 않음.
@@ -208,7 +208,7 @@
 			root 권한으로 수행을 하여도 permission 오류 발생.
 		make install
 			설치는 수동으로 수행하여야 함. (?)
-	-. -fpermissive 옵션이 필요하다는 오류 발생.
+	- -fpermissive 옵션이 필요하다는 오류 발생.
 		==> ${PNL_HOME}/cxcore/cxcore/src/Makefile 수정.
 				(line 94) CFLAGS = -g -O2 -> CFLAGS = -g -O2 -fpermissve
 				(line 96) CPPFLAGS = -> CPPFLAGS = -fpermissve
@@ -221,8 +221,8 @@
 				(line 67) CFLAGS = -g -O2 -> CFLAGS = -g -O2 -fpermissve
 				(line 69) CPPFLAGS = -> CPPFLAGS = -fpermissve
 				(line 73) CXXFLAGS = -g -O2 -> CXXFLAGS = -g -O2 -fpermissve
-	-. PNL library building 과정에서 identifier를 찾을 수 없다는 오류 발생.
-		header file이 include되지 않아 발생.
+	- PNL library building 과정에서 identifier를 찾을 수 없다는 오류 발생.
+		Header file이 include되지 않아 발생.
 		==> memcmp() 함수 관련 오류.
 				${PNL_HOME}/c_pgmtk/include/pnlString.hpp
 				#include <cstring> 추가.
@@ -231,7 +231,7 @@
 				${PNL_HOME}/c_pgmtk/include/pnlAllocator.hpp
 				${PNL_HOME}/c_pgmtk/include/pnlStackMemProv.hpp
 				#include <climits> 추가.
-	-. header file에서 extra qualification 관련 오류.
+	- Header file에서 extra qualification 관련 오류.
 		destructor or member function에 영역 지정자가 있어 발생하는 문제.
 		==> 영역 지정자 삭제.
 			${PNL_HOME}/c_pgmtk/src/include/pnlCondSoftMaxDistribFun.hpp

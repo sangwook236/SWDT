@@ -1,20 +1,22 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://cs.ru.nl/~jorism/libDAI/
 
 [-] Building (Linux)
-	-. Makefile을 이용해 build해야 함.
-		copy ${LIBDAI_HOME}/Makefile.LINUX to ${LIBDAI_HOME}/Makefile.conf
-		modify ${LIBDAI_HOME}/Makefile.ALL & ${LIBDAI_HOME}/Makefile.conf in order to set-up
-			아래 항목 참고
+	- Use Makefile to build.
+		Copy ${LIBDAI_HOME}/Makefile.LINUX to ${LIBDAI_HOME}/Makefile.conf
+		Modify ${LIBDAI_HOME}/Makefile.ALL & ${LIBDAI_HOME}/Makefile.conf in order to set-up
+			Refer to the trouble shooting.
 		make
-	-. Boost.Program_Options library 관련 오류.
-		==> 올바른 Boost library가 linking되지 않아서 발생.
-			${LIBDAI_HOME}/Makefile.conf file 수정.
+
+[-] Trouble shooting (Linux).
+	- Boost.Program_Options library error.
+		==> Did not link the right Boost library.
+			Revise ${LIBDAI_HOME}/Makefile.conf file..
 				(line 49) BOOSTLIBS_PO=-lboost_program_options-mt -> -lboost_program_options
 				(line 50) BOOSTLIBS_PO=-lboost_unit_test_framework-mt -> -lboost_unit_test_framework
 				(line 52) CCLIB=-Llib -> CCLIB=-Llib -L/usr/local/lib
-	-. MATLAB 관련 오류.
-		==> MATLAB path가 올바르게 지정되지 않아서 발생.
-			${LIBDAI_HOME}/Makefile.conf file 수정.
+	- MATLAB error.
+		==> MATLAB path error.
+			Revise ${LIBDAI_HOME}/Makefile.conf file.
 				(line 58) MATLABDIR=/opt/Matlab-R2010b -> MATLABDIR=/usr/local/MATLAB/R2012b
