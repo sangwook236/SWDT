@@ -33,13 +33,13 @@
 			sudo ln -s /usr/lib/nvidia-current/libcuda.so /usr/lib/libcuda.so
 			sudo ln -s /usr/lib/nvidia-current/libcuda.so.1 /usr/lib/libcuda.so.1
 
-[-] Trouble Shooting (VC).
-	- highgui project에서 OpenEXR 관련 error.
+[-] Trouble shooting (VC).
+	- OpenEXR error in highgui project.
 		OpenEXR library를 shared library linking하기 위해서 OPENEXR_DLL macro가 정의되어야 함
 		==> CMake 환경에서 macro로 /DOPENEXR_DLL를 정의하거나
 			highgui project에 OPENEXR_DLL를 정의하여야 함.
 
-	- protobuf library 관련 linking error.
+	- protobuf library linking error.
 		<cause>
 			protobuf shared library를 정상적으로 link하지 못함.
 		<solution>

@@ -7,6 +7,16 @@
 		If you are linking with protobufs as a DLL then you will need to define PROTOBUF_USE_DLLS in your client application to get it to pull in the DLL import __declspec stuff properly.
 			Define PROTOBUF_USE_DLLS.
 
+	- protoc.
+		protoc --cpp_out=OUT_DIR protobuf_person.proto
+		protoc --java_out=OUT_DIR protobuf_person.proto
+		protoc --csharp_out=OUT_DIR protobuf_person.proto
+		protoc --objc_out=OUT_DIR protobuf_person.proto
+		protoc --python_out=OUT_DIR protobuf_person.proto
+		protoc --ruby_out=OUT_DIR protobuf_person.proto
+		protoc --php_out=OUT_DIR protobuf_person.proto
+		protoc --js_out=OUT_DIR protobuf_person.proto
+
 [-] Building (CMake).
 	- Change directory.
 		${PROTOBUF_HOME}/cmake/CMakeLists.txt
