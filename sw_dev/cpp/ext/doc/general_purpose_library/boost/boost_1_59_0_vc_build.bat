@@ -24,7 +24,7 @@ rem b2 stage --stagedir=stage64 toolset=msvc address-model=64 link=static,shared
 rem b2 stage -sICU_PATH=${ICU_ROOT} -sZLIB_SOURCE=${ZLIB_ROOT} toolset=msvc link=static,shared
 
 b2 stage -j4 toolset=msvc variant=release,debug link=static,shared threading=multi --build-type=complete --without-mpi -sICU_PATH="D:/lib_repo/cpp/ext/icu4c-57_1-src/icu" -sICU_LINK="-LD:/usr/local/lib" -sZLIB_SOURCE="D:/lib_repo/cpp/ext/zlib-1.2.8"
-rem b2 stage -j4 --stagedir=stage64 toolset=msvc address-model=64 variant=release,debug link=static,shared threading=multi --build-type=complete --without-mpi -sICU_PATH="D:/lib_repo/cpp/ext/icu4c-57_1-src/icu" -sICU_LINK="-LD:/usr/local/lib" -sZLIB_SOURCE="D:/lib_repo/cpp/ext/zlib-1.2.8"
+rem b2 stage -j4 --stagedir=stage64 toolset=msvc address-model=64 variant=release,debug link=static,shared threading=multi --build-type=complete --without-mpi -sICU_PATH="D:/lib_repo/cpp/ext/icu4c-57_1-src/icu" -sICU_LINK="-LD:/usr/local64/lib" -sZLIB_SOURCE="D:/lib_repo/cpp/ext/zlib-1.2.8"
 
 rem step 4 ----------------------------------------------------------
 rem b2 install --prefix=/usr/local

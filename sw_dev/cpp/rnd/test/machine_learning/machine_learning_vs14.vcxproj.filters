@@ -419,5 +419,8 @@
     <ClCompile Include="rnnlib\rnnlib_main.cpp">
       <Filter>Source Files\rnnlib</Filter>
     </ClCompile>
+    <ClCompile Include="libsvm\libsvm_one_class_classification.cpp">
+      <Filter>Source Files\libsvm</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

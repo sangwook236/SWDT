@@ -37,6 +37,9 @@ int main(int argc, char *argv[])
 		//	- CENTRIST descriptor.
 		//retval = c4_main(argc, argv);
 
+		std::cout << "\nOpenCV Saliency API -------------------------------------------------" << std::endl;
+		// REF [library] >> OpenCV Saliency API.
+
 		std::cout << "\nShadow detection and removal algorithm ------------------------------" << std::endl;
 		retval = shadows_main(argc, argv);
 	}

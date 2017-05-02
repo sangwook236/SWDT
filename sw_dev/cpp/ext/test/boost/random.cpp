@@ -29,7 +29,7 @@ void random_boost()
 		generator_type die_gen(baseGenerator, distribution_type(1, 6));
 		for(int j = 0; j < 10; ++j)
 		{
-			//baseGenerator.seed(42u);  // caution: generate repetitive sample
+			//baseGenerator.seed(42u);  // NOTICE [caution] >> Generate repetitive sample.
 
 			for(int i = 0; i < 10; ++i)
 				std::cout << die_gen() << ' ';
@@ -48,7 +48,7 @@ void random_boost()
 		generator_type uni_gen(baseGenerator, distribution_type(0, 1));
 		for(int j = 0; j < 10; ++j)
 		{
-			//baseGenerator.seed(42u);  // caution: generate repetitive sample
+			//baseGenerator.seed(42u);  // Notice [caution] >> Generate repetitive sample.
 
 			for (int i = 0; i < 10; ++i)
 				std::cout << uni_gen() << ' ';
@@ -67,7 +67,7 @@ void random_boost()
 		generator_type normal_gen(baseGenerator, distribution_type(mean, sigma));
 		for(int j = 0; j < 10; ++j)
 		{
-			//baseGenerator.seed(42u);  // caution: generate repetitive sample
+			//baseGenerator.seed(42u);  // NOTICE [caution] >> Generate repetitive sample.
 
 			for(int i = 0; i < 10; ++i)
 				std::cout << normal_gen() << ' ';

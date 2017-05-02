@@ -19,6 +19,9 @@ void exit_with_help()
 	"	2 -- one-class SVM\n"
 	"	3 -- epsilon-SVR	(regression)\n"
 	"	4 -- nu-SVR		(regression)\n"
+	"	5 -- SVDD		(C should be between 1/num_instances and 1)\n"
+	"	6 -- R^2: L1SVM\n"
+	"	7 -- R^2: L2SVM\n"
 	"-t kernel_type : set type of kernel function (default 2)\n"
 	"	0 -- linear: u'*v\n"
 	"	1 -- polynomial: (gamma*u'*v + coef0)^degree\n"
@@ -28,7 +31,7 @@ void exit_with_help()
 	"-d degree : set degree in kernel function (default 3)\n"
 	"-g gamma : set gamma in kernel function (default 1/num_features)\n"
 	"-r coef0 : set coef0 in kernel function (default 0)\n"
-	"-c cost : set the parameter C of C-SVC, epsilon-SVR, and nu-SVR (default 1)\n"
+	"-c cost : set the parameter C of -s 0, 3, 4, 5 and 7 (default 1, except 2/num_instances for -s 5)\n"
 	"-n nu : set the parameter nu of nu-SVC, one-class SVM, and nu-SVR (default 0.5)\n"
 	"-p epsilon : set the epsilon in loss function of epsilon-SVR (default 0.1)\n"
 	"-m cachesize : set cache memory size in MB (default 100)\n"
@@ -98,12 +101,17 @@ int main(int argc, char **argv)
 
 	if(cross_validation)
 	{
-		do_cross_validation();
+		if(param.svm_type == R2 || param.svm_type == R2q)
+			fprintf(stderr, "\"R^2\" cannot do cross validation.\n");
+		else
+			do_cross_validation();
 	}
 	else
 	{
 		model = svm_train(&prob,&param);
-		if(svm_save_model(model_file_name,model))
+		if(param.svm_type == R2 || param.svm_type == R2q)
+			fprintf(stderr, "\"R^2\" does not generate a model.\n");
+		else if(svm_save_model(model_file_name,model))
 		{
 			fprintf(stderr, "can't save model to file %s\n", model_file_name);
 			exit(1);
@@ -171,7 +179,7 @@ void parse_command_line(int argc, char **argv, char *input_file_name, char *mode
 	param.coef0 = 0;
 	param.nu = 0.5;
 	param.cache_size = 100;
-	param.C = 1;
+	param.C = 0;	// 1 or 2/prob.l
 	param.eps = 1e-3;
 	param.p = 0.1;
 	param.shrinking = 1;
@@ -360,6 +368,13 @@ void read_problem(const char *filename)
 
 	if(param.gamma == 0 && max_index > 0)
 		param.gamma = 1.0/max_index;
+	if(param.C == 0)
+	{
+		if (param.svm_type == SVDD && prob.l > 0)
+			param.C = 2.0/prob.l;
+		else
+			param.C = 1;
+	}
 
 	if(param.kernel_type == PRECOMPUTED)
 		for(i=0;i<prob.l;i++)

@@ -13,7 +13,7 @@ namespace local {
 
 namespace my_libdai {
 
-// [ref] ${LIBDAI_HOME}/examples/example_sprinkler_em.cpp
+// REF [file] >> ${LIBDAI_HOME}/examples/example_sprinkler_em.cpp
 void sprinkler_em_example()
 {
 	// This example program illustrates how to learn the parameters of a Bayesian network from a sample of the sprinkler network discussed at

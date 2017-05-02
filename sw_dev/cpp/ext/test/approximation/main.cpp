@@ -43,6 +43,12 @@ int main(int argc, char *argv[])
 		//		Fast RBF interpolation/fitting.
 		// REF [library] >> ALGLIB library.
 
+        std::cout << "\nCeres Solver library ------------------------------------------------" << std::endl;
+        //  - General unconstrained minimization.
+        //      Curve fitting.
+        //      Robust curve fitting.
+		// REF [library] >> Ceres Solver library.
+
 		std::cout << "\nEigen Spline library ------------------------------------------------" << std::endl;
 		// REF [library] >> Eigen library.
 

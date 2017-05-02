@@ -429,6 +429,9 @@
     <ClCompile Include="opencv\opencv_contour.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
+    <ClCompile Include="opencv\opencv_saliency.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opencv\PascalVocDataset.h">

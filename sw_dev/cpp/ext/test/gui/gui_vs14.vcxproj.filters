@@ -19,6 +19,15 @@
     <Filter Include="Source Files\qt5">
       <UniqueIdentifier>{1c64db03-711a-45ae-9803-16f4e6b0c45e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\qt4\moc">
+      <UniqueIdentifier>{dc1910ec-e0e6-490d-afb3-b3b2eb034877}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\qt5\moc">
+      <UniqueIdentifier>{64a7fa7f-0aea-46f9-a92a-4d744d212b14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\qt5\qrc">
+      <UniqueIdentifier>{8f9439ea-c190-4102-b2a2-b62cc5345301}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp">
@@ -26,12 +35,6 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="qt4\moc_MyMainWindow.cpp">
-      <Filter>Source Files\qt4</Filter>
-    </ClCompile>
-    <ClCompile Include="qt4\moc_MyWindow.cpp">
-      <Filter>Source Files\qt4</Filter>
     </ClCompile>
     <ClCompile Include="qt4\MyMainWindow.cpp">
       <Filter>Source Files\qt4</Filter>
@@ -45,31 +48,13 @@
     <ClCompile Include="qt5\qt5_main.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
-    <ClCompile Include="qt5\rcc_sdi.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
-    <ClCompile Include="qt5\moc_SdiMainWindow.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
     <ClCompile Include="qt5\MainWindow.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
-    <ClCompile Include="qt5\moc_MainWindow.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
-    <ClCompile Include="qt5\rcc_MainWindow.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
     <ClCompile Include="qt5\Toolbar.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
-    <ClCompile Include="qt5\moc_Toolbar.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
     <ClCompile Include="qt5\ColorSwatch.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
-    <ClCompile Include="qt5\moc_ColorSwatch.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
     <ClCompile Include="qt5\MdiChild.cpp">
@@ -78,19 +63,7 @@
     <ClCompile Include="qt5\MdiMainWindow.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
-    <ClCompile Include="qt5\moc_MdiChild.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
-    <ClCompile Include="qt5\moc_MdiMainWindow.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
-    <ClCompile Include="qt5\rcc_mdi.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
     <ClCompile Include="qt5\SdiMainWindow.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
-    <ClCompile Include="qt5\rcc_samegame.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
     <ClCompile Include="qt5\OsgMainWindow.cpp">
@@ -99,29 +72,65 @@
     <ClCompile Include="qt5\OsgPickHandler.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
-    <ClCompile Include="qt5\moc_OsgMainWindow.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
-    <ClCompile Include="qt5\moc_OsgWidget.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
     <ClCompile Include="qt5\osgQtWidgets.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
     <ClCompile Include="qt5\osgviewerQt.cpp">
       <Filter>Source Files\qt5</Filter>
     </ClCompile>
-    <ClCompile Include="qt5\rcc_SimpleQml.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
-    <ClCompile Include="qt5\rcc_SimplerQml.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
-    <ClCompile Include="qt5\moc_MySlotClass.cpp">
-      <Filter>Source Files\qt5</Filter>
-    </ClCompile>
     <ClCompile Include="qt5\OSGWidget.cpp">
       <Filter>Source Files\qt5</Filter>
+    </ClCompile>
+    <ClCompile Include="qt4\moc\moc_MyMainWindow.cpp">
+      <Filter>Source Files\qt4\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt4\moc\moc_MyWindow.cpp">
+      <Filter>Source Files\qt4\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\moc\moc_ColorSwatch.cpp">
+      <Filter>Source Files\qt5\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\moc\moc_MainWindow.cpp">
+      <Filter>Source Files\qt5\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\moc\moc_MdiChild.cpp">
+      <Filter>Source Files\qt5\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\moc\moc_MdiMainWindow.cpp">
+      <Filter>Source Files\qt5\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\moc\moc_MySlotClass.cpp">
+      <Filter>Source Files\qt5\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\moc\moc_OsgMainWindow.cpp">
+      <Filter>Source Files\qt5\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\moc\moc_OsgWidget.cpp">
+      <Filter>Source Files\qt5\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\moc\moc_SdiMainWindow.cpp">
+      <Filter>Source Files\qt5\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\moc\moc_Toolbar.cpp">
+      <Filter>Source Files\qt5\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\qrc\qrc_MainWindow.cpp">
+      <Filter>Source Files\qt5\qrc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\qrc\qrc_mdi.cpp">
+      <Filter>Source Files\qt5\qrc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\qrc\qrc_samegame.cpp">
+      <Filter>Source Files\qt5\qrc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\qrc\qrc_sdi.cpp">
+      <Filter>Source Files\qt5\qrc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\qrc\qrc_SimpleQml.cpp">
+      <Filter>Source Files\qt5\qrc</Filter>
+    </ClCompile>
+    <ClCompile Include="qt5\qrc\qrc_SimplerQml.cpp">
+      <Filter>Source Files\qt5\qrc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

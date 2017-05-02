@@ -391,17 +391,23 @@ int osgqt_vierwer_example(int argc, char **argv);
 // Meta Object Compiler (moc).
 //  moc object_name.h -o moc_object_name.cpp
 // Resource Compiler (rcc).
-//	(optional) rcc -binary project_name.qrc -o project_name.rcc
-//	rcc project_name.qrc -name project_name -o rcc_project_name.cpp
+//	(Optional) rcc -binary resource_name.qrc -o resource_name.rcc
+//	rcc resource_name.qrc -name resource_name -o qrc_resource_name.cpp
+// Build Qt Project.
+//	qmake project_name.pro -spec win32-msvc2015
+//	make or jom
 
 int qt5_main(int argc, char* argv[])
 {
-	// Example -------------------------------------------------------
+	// ---------------------------------------------------------------
 	//const int retval = local::mainwindows_mainwindow_example(argc, argv);
 
+	// SDI -----------------------------------------------------------
 	//Q_INIT_RESOURCE(sdi);  // Move from local::mainwindows_sdi_example() to here.
 	//const int retval = local::mainwindows_sdi_example(argc, argv);
-	//Q_INIT_RESOURCE(mdi);  // Move from local::mainwindows_sdi_example() to here.
+
+	// MDI -----------------------------------------------------------
+	//Q_INIT_RESOURCE(mdi);  // Move from local::mainwindows_mdi_example() to here.
 	//const int retval = local::mainwindows_mdi_example(argc, argv);
 
 	// Qt Quick ------------------------------------------------------

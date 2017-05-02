@@ -150,10 +150,11 @@ void retina_model();
 void bag_of_words();
 
 void object_detection();
-void face_detection();
-void face_detection_using_gpu();
 void human_detection();
 void human_detection_using_gpu();
+void saliency_detection();
+void face_detection();
+void face_detection_using_gpu();
 void face_recognition();
 
 void camera_geometry();
@@ -209,7 +210,7 @@ int opencv_main(int argc, char *argv[])
 			std::cout << "GPU not found ..." << std::endl;
 #endif
 
-		local::basic_processing();
+		//local::basic_processing();
 
 		//my_opencv::text_output();
 
@@ -276,11 +277,12 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::machine_learning();
 
 		//my_opencv::object_detection();
-		//my_opencv::face_detection();
-		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // Not yet implemented.
 		//my_opencv::human_detection();
 		//if (canUseGPU) my_opencv::human_detection_using_gpu();  // Not yet implemented.
+		my_opencv::saliency_detection();
 
+		//my_opencv::face_detection();
+		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // Not yet implemented.
 		//my_opencv::face_recognition();
 
 		//my_opencv::camera_geometry();

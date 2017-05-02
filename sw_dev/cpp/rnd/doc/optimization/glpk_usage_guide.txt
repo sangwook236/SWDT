@@ -3,6 +3,25 @@
 		http://www.gnu.org/software/glpk/
 		http://winglpk.sourceforge.net/
 
+	- Document.
+        https://en.wikibooks.org/wii/GLPK
+        https://en.wikibooks.org/wiki/GLPK/Solution_information
+
+[-] Usage.
+	- GMPL: GNU MathProg.
+		REF [doc] >> gmpl_usage_guide.txt
+
+		https://en.wikibooks.org/wiki/GLPK/GMPL_(MathProg)
+		https://en.wikibooks.org/wiki/GLPK/Using_GMPL_(MathProg)
+		https://en.wikibooks.org/wiki/GLPK/GMPL_Examples
+		https://en.wikibooks.org/wiki/GLPK/Knapsack_Problem
+
+	- GLPSOL: GLPK LP/MIP solver.
+		REF [doc] >> gmpl_usage_guide.txt
+		REF [doc] >> Appendix D in gmpl.pdf
+
+		https://en.wikibooks.org/wiki/GLPK/Using_GLPSOL
+
 [-] Building (Windows).
 	- WinGLPK 4.57.
 		Build:

@@ -15,7 +15,7 @@
 
 		http://matrixprogramming.com/2008/03/umfpack
 
-[-] Build (Cygwin GCC).
+[-] Building (Cygwin GCC).
 	REF [file] >> ${SUITESPARSE_HOME}/README.txt
 
 	- Set compiler & linker, etc.
@@ -34,19 +34,40 @@
 		The Microsoft linker recognizes the libraries compiled by gcc under Cygwin.
 		What we need to do is to just rename them from *.a to *.lib.
 
-[-] Build (VC).
-	- Use ${SUITESPARSE_HOME}/Project/SuiteSparse.sln.
-		SuiteSparse library의 일부만 build되는 것 같음.
-			UMFPACK & CSparse 등과 같은 library는 build되지 않음.
+[-] Building (VC).
+	- Download.
+		https://github.com/jlblancoc/suitesparse-metis-for-windows
+	- CMake.
+
+[-] Building (VC).
+	NOTICE [important] >> Use suitesparse-metis-for-windows.
+		The original SuiteSparse library has some link errors in using other S/W.
+
+	- Open a solution file.
+		${SUITESPARSE_HOME}/Project/SuiteSparse.sln.
+			Do not build some of SuiteSparse libraries.
+				UMFPACK & CSparse.
+	- Change project settings.
+		CHOLMOD project:
+			1) Build static library, but not shared library.
+			2) Change preprocessor definition.
+				Delete _WINDOWS, _USRDLL, CHOLMOD_SHARED_EXPORTS.
+				Add _LIB.
+		CHOLMOD_demo & CHOLMOD_simple projects:
+			1) Revise additional library dependency..
+				Refer to Win32 platform.
+			2) Change preprocessor definition.
+				Delete _WINDOWS.
+				Add _CONSOLE.
+			3) Change subsystem.
+				In Project Properties -> Linker -> System -> SubSystem:
+					Windows (/SUBSYSTEM:WINDOWS) -> Console (/SUBSYSTEM:CONSOLE).
+
 		Win64 platform이 AMD project에만 존재.
 			AMD project를 제외한 뒤, 다른 모든 projects에 대해 x64 platform을 지운 후 다시 생성.
-		CHOLMOD project의 경우 DLL을 위한 project가 존재.
-			Static library로 변경 후 사용.
 		몇몇 project의 경우 output directory가 올바르지 않음.
 			아래와 같이 output directory를 변경 후 사용.
 				$(SolutionDir)$(Platform)\$(Configuration)\
-		CHOLMOD_demo & CHOLMOD_simple projects의 additional library dependency 수정.
-			Projects의 Win32 platform을 참고하여 수정.
 	- Set additional include path.
 		../../SuiteSparse_config
 		Project에 해당하는 header file path.
@@ -58,48 +79,24 @@
 			../$(Configuration) for Win32.
 			../$(Platform)/$(Configuration) for Win64.
 
-[-] Trouble Shooting (VC).
-	- metis.h 관련 오류 발생.
+[-] Trouble shooting (VC).
+	- idxtype error.
 		<error>
-			Cannot open include file: 'metis.h': No such file or directory
+			'idxtype': undeclared identifier
 		<solution>
-			Set NPARTITION macro.
-			Reset USE_ACML macro.
-	- WinMain 관련 오류 발생 in project CHOLMOD_demo.
+			typedef in cholmod_metis.c
+				typedef idx_t idxtype;
+
+	- rint error.
+		METIS library error.
+		<error>
+			syntax error: '('
+		<solution>
+			REF [doc] >> metis_usage_guide.txt
+
+	- WinMain error in project CHOLMOD_demo.
 		<error>
 			unresolved external symbol WinMain referenced in function "int __cdecl invoke_main(void)"
 		<solution>
 			In Project Properties -> Linker -> System -> SubSystem:
 			Change from Windows (/SUBSYSTEM:WINDOWS) to Console (/SUBSYSTEM:CONSOLE).
-
-[-] Build GibHub (VC).
-	- Download files.
-		https://github.com/jlblancoc/suitesparse-metis-for-windows
-	- CMake.
-
-[-] Trouble Shooting GibHub (VC).
-	- rint 함수 관련 오류 발생.
-		<error>
-			syntax error: '('
-		<solution>
-			Modify ${SUITESPARSE_HOME}/meis/GKlib/gk_arch.h.
-			<before>
-				#ifdef __MSC__
-				/* MSC does not have rint() function */
-				#define rint(x) ((int)((x)+0.5))  
-				
-				/* MSC does not have INFINITY defined */
-				#ifndef INFINITY
-				#define INFINITY FLT_MAX
-				#endif
-				#endif
-			<after>
-				//#ifdef __MSC__
-				///* MSC does not have rint() function */
-				//#define rint(x) ((int)((x)+0.5))  
-				//s
-				///* MSC does not have INFINITY defined */
-				//#ifndef INFINITY
-				//#define INFINITY FLT_MAX
-				//#endif
-				//#endif

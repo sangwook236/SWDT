@@ -6,6 +6,18 @@
 		http://wiki.qt.io/Jom
 		http://download.qt.io/official_releases/jom/
 
+[-] Usage.
+	REF [directory] >> ${SWDT_C++/ext/test/gui/qt5.
+
+	- Meta object compiler (moc).
+		moc object_name.h -o moc_object_name.cpp
+	- Resource compiler (rcc).
+		(Optional) rcc -binary resource_name.qrc -o resource_name.rcc
+		rcc resource_name.qrc -name resource_name -o qrc_resource_name.cpp
+	- Build Qt project.
+		qmake project_name.pro -spec win32-msvc2015
+		make or jom
+
 [-] Build (Windows).
 	- qmake.exe or QMAKESPEC 관련 오류.
 		REF [site] >> http://stackoverflow.com/questions/5303634/qmake-qmakespec-has-not-been-set

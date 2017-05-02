@@ -34,12 +34,14 @@ int main(int argc, char *argv[])
 		//	- Primal-dual interior-point method.
 		//	- Branch-and-cut method.
 		//	- Stand-alone LP/MIP solver.
+		//	- Graph and Network.
+		//	- CNF Satisfiability (CNF-SAT) problem.
 		//	- Mathematical programming language.
 		//		GNU MathProg (GMPL), MPS format, CPLEX LP format.
-		//retval = glpk_main(argc, argv);
+		retval = glpk_main(argc, argv);
 
-        std::cout << "\nCeres Solver --------------------------------------------------------" << std::endl;
-        //  - Non-linear least squares.
+		std::cout << "\nCeres Solver library ------------------------------------------------" << std::endl;
+		//  - Non-linear least squares.
         //  - General unconstrained minimization.
         //      Curve fitting.
         //      Robust curve fitting.
@@ -76,7 +78,7 @@ int main(int argc, char *argv[])
 		//		CMPL, GNU MathProg (GMPL), MPS format, LP format.
 		//	- Automatic differentiation (AutoDiff).
 		//		CppAD.
-		retval = coin_or_main(argc, argv);
+		//retval = coin_or_main(argc, argv);
 
 		std::cout << "\nSolving Constraint Integer Programs (SCIP) Optimization Suite -------" << std::endl;
 		//	- Linear programming.

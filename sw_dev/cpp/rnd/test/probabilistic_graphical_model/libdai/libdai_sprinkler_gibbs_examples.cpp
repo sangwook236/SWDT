@@ -15,7 +15,7 @@ namespace local {
 
 namespace my_libdai {
 
-// [ref] ${LIBDAI_HOME}/examples/example_sprinkler_gibbs.cpp
+// REF [file] >> ${LIBDAI_HOME}/examples/example_sprinkler_gibbs.cpp
 void sprinkler_gibbs_example()
 {
     // This example program illustrates how to use Gibbs sampling to sample from a joint probability distribution described by a factor graph, using the sprinkler network example discussed at

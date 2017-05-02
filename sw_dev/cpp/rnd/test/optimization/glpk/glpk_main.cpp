@@ -22,6 +22,9 @@ void netgen_sample();
 
 int glpk_main(int argc, char *argv[])
 {
+	// Information on solution.
+	//	REF [site] >> https://en.wikibooks.org/wiki/GLPK/Solution_information
+
 	std::cout << "Simplex method ------------------------------------------------------" << std::endl;
 	//my_glpk::simplex_sample();
 
@@ -29,10 +32,11 @@ int glpk_main(int argc, char *argv[])
 	//my_glpk::interior_point_sample();
 
 	std::cout << "\nMixed integer programming (MIP) -------------------------------------" << std::endl;
-	my_glpk::mip_sample();
+	//my_glpk::mip_sample();
 
 	std::cout << "\nMathematical programming language (MPL) -----------------------------" << std::endl;
-	//my_glpk::mpl_sample();
+	//	- GMPL.
+	my_glpk::mpl_sample();
 
 	std::cout << "\nGraph ---------------------------------------------------------------" << std::endl;
 	//my_glpk::netgen_sample();

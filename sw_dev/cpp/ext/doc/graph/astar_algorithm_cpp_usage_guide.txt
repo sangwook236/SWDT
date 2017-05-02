@@ -1,4 +1,4 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		https://github.com/justinhj/astar-algorithm-cpp
 		https://code.google.com/p/a-star-algorithm-implementation/

@@ -1,5 +1,7 @@
 #if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
 #include <vld/vld.h>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #endif
 #include <iostream>
 #include <cstdlib>
@@ -11,10 +13,23 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
+#if defined(_UNICODE) || defined(UNICODE)
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR, int nCmdShow)
+#else
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR, int nCmdShow)
+#endif
+#else
 int main(int argc, char *argv[])
+#endif
 {
 	int qt4_main(int argc, char *argv[]);
 	int qt5_main(int argc, char *argv[]);
+
+#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
+	int argc = 0;
+	char **argv = nullptr;
+#endif
 
 	int retval = EXIT_SUCCESS;
 	try
