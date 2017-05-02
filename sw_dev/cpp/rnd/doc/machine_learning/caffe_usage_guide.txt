@@ -25,8 +25,111 @@
 			export PYTHONPATH=${CAFFE_HOME}/python:$PYTHONPATH
 		'python2-numpy' has to be installed from 'apt-get' rather than from 'pip2'.
 
+[-] Example.
+	- Protobuf definitions used by Caffe.
+		${CAFFE_HOME}/src/caffe/proto/caffe.proto
+
+	- MNIST.
+		REF [site] >> http://caffe.berkeleyvision.org/gathered/examples/mnist.html
+		REF [directory] >> ${CAFFE_HOME}/examples/mnist
+
+		Download dataset.
+			${CAFFE_HOME}/data/mnist/get_mnist.sh
+			${CAFFE_HOME}/examples/mnist/create_mnist.sh
+				<option>
+					EXAMPLE=examples/mnist
+					DATA=data/mnist
+					BUILD=build/examples/mnist
+					BACKEND="lmdb"
+				<database>
+					${CAFFE_HOME}/examples/mnist/mnist_train_lmdb
+					${CAFFE_HOME}/examples/mnist/mnist_test_lmdb
+		Define a model.
+			${CAFFE_HOME}/examples/mnist/lenet_train_test.prototxt
+			${CAFFE_HOME}/examples/mnist/lenet.prototxt
+		Define a solver,
+			${CAFFE_HOME}/examples/mnist/lenet_solver.prototxt
+			${CAFFE_HOME}/examples/mnist/lenet_multistep_solver.prototxt
+		Train and test the model.
+			${CAFFE_HOME}/examples/mnist/train_lenet.sh
+			${CAFFE_HOME}/build/tools/caffe train --solver=examples/mnist/lenet_solver.prototxt
+
+	- CIFAR-10.
+		REF [site] >> http://caffe.berkeleyvision.org/gathered/examples/cifar10.html
+		REF [directory] >> ${CAFFE_HOME}/examples/cifar10
+
+		Download dataset.
+			${CAFFE_HOME}/data/cifar10/get_cifar10.sh
+			${CAFFE_HOME}/examples/cifar10/create_cifar10.sh
+				<option>
+					EXAMPLE=examples/cifar10
+					DATA=data/cifar10
+					DBTYPE=lmdb
+				<database>
+					${CAFFE_HOME}/examples/cifar10/cifar10_train_lmdb
+					${CAFFE_HOME}/examples/cifar10/cifar10_test_lmdb
+				<image mean>
+					${CAFFE_HOME}/examples/cifar10/mean.binaryproto
+		Define a model.
+			${CAFFE_HOME}/examples/cifar10/cifar10_quick_train_test.prototxt
+		Define a solver,
+			${CAFFE_HOME}/examples/cifar10/cifar10_quick_solver.prototxt
+		Train and test a quick model.
+			${CAFFE_HOME}/examples/cifar10/train_quick.sh
+			${CAFFE_HOME}/build/tools/caffe train --solver=examples/cifar10/cifar10_quick_solver.prototxt
+
+	- ImageNet.
+		REF [site] >> http://caffe.berkeleyvision.org/gathered/examples/imagenet.html
+		REF [directory] >> ${CAFFE_HOME}/examples/imagenet
+
+		NOTICE [caution] >> The Caffe build directory should be ${CAFFE_HOME}/build.
+
+		Download ImageNet dataset.
+		Download auxiliary data for training.
+			${CAFFE_HOME}/data/ilsvrc12/get_ilsvrc_aux.sh
+		Create ImageNet database.
+			${CAFFE_HOME}/examples/imagenet/create_imagenet.sh
+				<option>
+					TRAIN_DATA_ROOT=${IMAGENET_DATASET_DIR}/Data/CLS-LOC/train/
+					VAL_DATA_ROOT=${IMAGENET_DATASET_DIR}/Data/CLS-LOC/val/
+					RESIZE=true
+					EXAMPLE=examples/imagenet
+					DATA=data/ilsvrc12
+					TOOLS=build/tools
+				<database>
+					${CAFFE_HOME}/examples/imagenet/ilsvrc12_train_lmdb
+					${CAFFE_HOME}/examples/imagenet/ilsvrc12_test_lmdb
+			NOTICE [caution] >> ${CAFFE_HOME}/examples/imagenet/ilsvrc12_train_lmdb and ${CAFFE_HOME}/examples/imagenet/ilsvrc12_val_lmdb should not exist before this execution.
+		Compute image mean.
+			${CAFFE_HOME}/examples/imagenet/make_imagenet_mean.sh
+		Define a model.
+			${CAFFE_HOME}/models/bvlc_reference_caffenet/train_val.prototxt
+		Define a solver,
+			${CAFFE_HOME}/models/bvlc_reference_caffenet/solver.prototxt
+		Train the model.
+			${CAFFE_HOME}/examples/imagenet/train_caffenet.sh
+			${CAFFE_HOME}/build/tools/caffe train --solver=models/bvlc_reference_caffenet/solver.prototxt
+		Resume training.
+			${CAFFE_HOME}/examples/imagenet/resume_training.sh
+			${CAFFE_HOME}/build/tools/caffe train --solver=models/bvlc_reference_caffenet/solver.prototxt --snapshot=models/bvlc_reference_caffenet/caffenet_train_iter_10000.solverstate
+
+	- Model.
+		AlexNet:
+			${CAFFE_HOME}/models/bvlc_alexnet
+		GoogLeNet:
+			${CAFFE_HOME}/models/bvlc_googlenet
+		CaffeNet:
+			${CAFFE_HOME}/models/bvlc_reference_caffenet
+		R-CNN:
+			${CAFFE_HOME}/models/bvlc_reference_rcnn_ilsvrc13
+
+	- Convert image/label datasets to database.
+		REF [file] >> ${CAFFE_HOME}/examples/mnist/convert_mnist_data.cpp
+		REF [file] >> ${CAFFE_HOME}/examples/cifar10/convert_cifar_data.cpp
+		REF [file] >> ${CAFFE_HOME}/tools/convert_imageset.cpp
+
 [-] Building (CMake).
-	- The name of a build directory for CMake has to be "build". (?)
+	- The name of a build directory for CMake should be "build".
 		The existing scripts in Caffe assume its build directory is "build".
 
 	- Configure & generate.
