@@ -243,7 +243,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::image_gradient();
 		//my_opencv::edge_detection();
 
-		my_opencv::line();
+		//my_opencv::line();
 
 		//my_opencv::distance_measure();
 		//my_opencv::distance_transform();

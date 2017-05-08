@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "OpenCV library ------------------------------------------------------" << std::endl;
-		//retval = opencv_main(argc, argv);
+		retval = opencv_main(argc, argv);
 
 		std::cout << "\nVXL (the Vision-something-Libraries) library ------------------------" << std::endl;
 		//	- Pictorial structures matching.
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nquirc library -------------------------------------------------------" << std::endl;
 		//	- QR code.
-		retval = quirc_main(argc, argv);
+		//retval = quirc_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{
