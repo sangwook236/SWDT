@@ -331,7 +331,7 @@ int opencv_main(int argc, char *argv[])
 
 		//my_opencv::iterative_closest_point();
 
-		//---------------.--------------------------------------------------
+		//-----------------------------------------------------------------
 		// Application
 
 		//my_opencv::hand_detection();

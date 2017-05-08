@@ -10,8 +10,7 @@ namespace local {
 // REF [file] >> ${OPENCV_HOME}/samples/cpp/lsd_lines.cpp.
 void lsd()
 {
-	//const std::string img_filename("./data/feature_analysis/chairs.pgm");
-	const std::string img_filename("D:/depot/download/30deg_trimmed.png");
+	const std::string img_filename("./data/feature_analysis/chairs.pgm");
 
 	cv::Mat image = cv::imread(img_filename, cv::IMREAD_GRAYSCALE);
 	if (image.empty())
@@ -31,11 +30,9 @@ void lsd()
 #endif
 
 	// Create and LSD detector with standard or no refinement.
-#if 1
-	cv::Ptr<cv::LineSegmentDetector> ls = cv::createLineSegmentDetector(cv::LSD_REFINE_STD, 0.1);
-#else
-	cv::Ptr<cv::LineSegmentDetector> ls = cv::createLineSegmentDetector(cv::LSD_REFINE_NONE);
-#endif
+	//cv::Ptr<cv::LineSegmentDetector> ls = cv::createLineSegmentDetector(cv::LSD_REFINE_NONE);
+	cv::Ptr<cv::LineSegmentDetector> ls = cv::createLineSegmentDetector(cv::LSD_REFINE_STD);
+	//cv::Ptr<cv::LineSegmentDetector> ls = cv::createLineSegmentDetector(cv::LSD_REFINE_ADV);
 
 	const double start = double(cv::getTickCount());
 	std::vector<cv::Vec4f> lines_std;

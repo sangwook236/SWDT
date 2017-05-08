@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-#define __USE_COLAR_IMAGE_ 1
+//#define __USE_COLOR_IMAGE_ 1
 
 
 namespace {
@@ -107,14 +107,15 @@ void simple_example()
 	//const std::string img_filename("./data/machine_vision/qr_code_south.png");
 	//const std::string img_filename("./data/machine_vision/qr_code_east.png");
 	//const std::string img_filename("./data/machine_vision/qr_code_west.png");
-	const std::string img_filename("./data/machine_vision/qr_code_tilt.png");
+	//const std::string img_filename("./data/machine_vision/qr_code_tilt.png");
 	//const std::string img_filename("./data/machine_vision/qr_code_1.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_2.png");  // Detected, but not correct.
-	//const std::string img_filename("./data/machine_vision/qr_code_3.png");  // Detected, but not correct.
+	//const std::string img_filename("./data/machine_vision/qr_code_2.png");  // Detect, but not correct.
+	//const std::string img_filename("./data/machine_vision/qr_code_3.png");  // Detect, but not correct.
 	//const std::string img_filename("./data/machine_vision/qr_code_4.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_5.png");  // Incorrect.
+	const std::string img_filename("./data/machine_vision/qr_code_5.png");  // Detect only two.
+	//const std::string img_filename("./data/machine_vision/qr_code_6.png");  // Incorrect.
 
-#if defined(__USE_COLAR_IMAGE_)
+#if defined(__USE_COLOR_IMAGE_)
 	const cv::Mat img(cv::imread(img_filename, cv::IMREAD_COLOR));
 #else
 	const cv::Mat img(cv::imread(img_filename, cv::IMREAD_GRAYSCALE));
@@ -140,7 +141,7 @@ void simple_example()
 	}
 
 	uint8_t *dst = quirc_begin(qr, NULL, NULL);
-#if defined(__USE_COLAR_IMAGE_)
+#if defined(__USE_COLOR_IMAGE_)
 	bgr_to_luma(img, img.cols, dst);
 #else
 	gray_to_luma(img, img.cols, dst);
@@ -149,7 +150,7 @@ void simple_example()
 
 	// Show the result.
 	cv::Mat rgb;
-#if defined(__USE_COLAR_IMAGE_)
+#if defined(__USE_COLOR_IMAGE_)
 	img.copyTo(rgb);
 #else
 	cv::cvtColor(img, rgb, cv::COLOR_GRAY2BGR);
