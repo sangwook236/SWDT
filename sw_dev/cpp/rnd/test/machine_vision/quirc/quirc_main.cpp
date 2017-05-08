@@ -5,24 +5,39 @@
 #include <iostream>
 
 
+#define __USE_COLAR_IMAGE_ 1
+
+
 namespace {
 namespace local {
 
-void bgr_to_luma(const cv::Mat &img, const int dst_pitch, uint8_t *dst)
+void bgr_to_luma(const cv::Mat &bgrImg, const int dst_pitch, uint8_t *dst)
 {
 	int y;
 
-	for (y = 0; y < img.rows; ++y)
+	for (y = 0; y < bgrImg.rows; ++y)
 	{
 		uint8_t *gray = dst + y * dst_pitch;
-		for (int i = 0; i < img.cols; ++i)
+		for (int i = 0; i < bgrImg.cols; ++i)
 		{
 			// ITU-R colorspace assumed.
-			const cv::Vec3b bgr(img.at<cv::Vec3b>(y, i));
+			const cv::Vec3b bgr(bgrImg.at<cv::Vec3b>(y, i));
 			const int sum = int(bgr[2]) * 59 + int(bgr[1]) * 150 + int(bgr[0]) * 29;
 
 			*(gray++) = sum >> 8;
 		}
+	}
+}
+
+void gray_to_luma(const cv::Mat &grayImg, const int dst_pitch, uint8_t *dst)
+{
+	int y;
+
+	for (y = 0; y < grayImg.rows; ++y)
+	{
+		uint8_t *gray = dst + y * dst_pitch;
+		for (int i = 0; i < grayImg.cols; ++i)
+			*(gray++) = grayImg.at<unsigned char>(y, i);
 	}
 }
 
@@ -40,7 +55,9 @@ void print_data(const struct quirc_data *data, struct dthash *dt)
 void draw_qr(cv::Mat &img, struct quirc *qr, struct dthash *dt = nullptr)
 {
 	const int count = quirc_count(qr);
+	std::cout << "Number of detected QR codes = " << count << std::endl;
 
+	cv::RNG &rng = cv::theRNG();
 	for (int i = 0; i < count; ++i)
 	{
 		int xc = 0;
@@ -49,6 +66,7 @@ void draw_qr(cv::Mat &img, struct quirc *qr, struct dthash *dt = nullptr)
 		struct quirc_code code;
 		quirc_extract(qr, i, &code);
 
+		const cv::Scalar color = count > 1 ? CV_RGB(rng(256), rng(256), rng(256)) : CV_RGB(255, 0, 0);
 		for (int j = 0; j < 4; ++j)
 		{
 			struct quirc_point *a = &code.corners[j];
@@ -56,21 +74,21 @@ void draw_qr(cv::Mat &img, struct quirc *qr, struct dthash *dt = nullptr)
 
 			xc += a->x;
 			yc += a->y;
-			cv::line(img, cv::Point(a->x, a->y), cv::Point(b->x, b->y), cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
+
+			cv::line(img, cv::Point(a->x, a->y), cv::Point(b->x, b->y), color, 1, cv::LINE_AA);
 		}
 
 		xc /= 4;
 		yc /= 4;
 
-		{
-			std::cout << "\tCode size: " << code.size << " cells" << std::endl;
-		}
+		//
+		std::cout << "\tCode size: " << code.size << " cells" << std::endl;
 
 		struct quirc_data data;
 		const quirc_decode_error_t err = quirc_decode(&code, &data);
 		if (err)
 		{
-			std::cerr << "Error: " << quirc_strerror(err) << std::endl;
+			std::cerr << "\tError: " << quirc_strerror(err) << std::endl;
 		}
 		else
 		{
@@ -89,18 +107,23 @@ void simple_example()
 	//const std::string img_filename("./data/machine_vision/qr_code_south.png");
 	//const std::string img_filename("./data/machine_vision/qr_code_east.png");
 	//const std::string img_filename("./data/machine_vision/qr_code_west.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_tilt.png");
+	const std::string img_filename("./data/machine_vision/qr_code_tilt.png");
 	//const std::string img_filename("./data/machine_vision/qr_code_1.png");
 	//const std::string img_filename("./data/machine_vision/qr_code_2.png");  // Detected, but not correct.
 	//const std::string img_filename("./data/machine_vision/qr_code_3.png");  // Detected, but not correct.
-	const std::string img_filename("./data/machine_vision/qr_code_4.png");
+	//const std::string img_filename("./data/machine_vision/qr_code_4.png");
+	//const std::string img_filename("./data/machine_vision/qr_code_5.png");  // Incorrect.
 
-	cv::Mat img = cv::imread(img_filename, cv::IMREAD_COLOR);
+#if defined(__USE_COLAR_IMAGE_)
+	const cv::Mat img(cv::imread(img_filename, cv::IMREAD_COLOR));
+#else
+	const cv::Mat img(cv::imread(img_filename, cv::IMREAD_GRAYSCALE));
+#endif
 	if (img.empty())
 	{
 		std::cerr << "ERR: Failed to open image: " << img_filename << std::endl;
 		return;
-	}
+}
 
 	struct quirc *qr = quirc_new();
 	if (!qr)
@@ -117,12 +140,20 @@ void simple_example()
 	}
 
 	uint8_t *dst = quirc_begin(qr, NULL, NULL);
+#if defined(__USE_COLAR_IMAGE_)
 	bgr_to_luma(img, img.cols, dst);
+#else
+	gray_to_luma(img, img.cols, dst);
+#endif
 	quirc_end(qr);
 
 	// Show the result.
 	cv::Mat rgb;
+#if defined(__USE_COLAR_IMAGE_)
 	img.copyTo(rgb);
+#else
+	cv::cvtColor(img, rgb, cv::COLOR_GRAY2BGR);
+#endif
 	draw_qr(rgb, qr);
 
 	cv::imshow("QR code - Input image", img);

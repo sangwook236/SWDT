@@ -284,7 +284,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::object_detection();
 		//my_opencv::human_detection();
 		//if (canUseGPU) my_opencv::human_detection_using_gpu();  // Not yet implemented.
-		//my_opencv::saliency_detection();
+		my_opencv::saliency_detection();
 
 		//my_opencv::face_detection();
 		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // Not yet implemented.
@@ -340,7 +340,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::motion_segmentation();
 		//my_opencv::gesture_recognition();
 
-		my_opencv::qr_code();
+		//my_opencv::qr_code();
 	}
 	catch (const cv::Exception& ex)
 	{

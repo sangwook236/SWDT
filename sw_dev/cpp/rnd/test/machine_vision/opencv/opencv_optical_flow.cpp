@@ -956,11 +956,11 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_2()
 				const int y = prev_points[k].y < 0.0 ? 0 : (prev_points[k].y >= flow.rows ? flow.rows-1 : cvRound(prev_points[k].y));
 				flow.at<cv::Point2f>(y, x) = curr_points[k] - prev_points[k];
 
-				cv::circle(cflow, curr_points[k], 3, CV_RGB(0,255,0), -1, 8, 0);
+				cv::circle(cflow, curr_points[k], 3, CV_RGB(0, 255, 0), -1, 8, 0);
 			}
 
 			//
-			drawOpticalFlowMap(flow, cflow, 5, 1.5, CV_RGB(255,0,0), cv::Point(0, 0), 1.0);
+			drawOpticalFlowMap(flow, cflow, 5, 1.5, CV_RGB(255, 0, 0), cv::Point(0, 0), 1.0);
 			cv::imshow(windowName1, cflow);
 
 			draw_orientation_histogram(flow, windowName2, MAX_COUNT);

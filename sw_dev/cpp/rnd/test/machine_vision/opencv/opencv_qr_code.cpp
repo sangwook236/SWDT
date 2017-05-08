@@ -252,6 +252,7 @@ void qr_code()
 	//const std::string img_filename("./data/machine_vision/qr_code_2.png");  // Failed to detect.
 	//const std::string img_filename("./data/machine_vision/qr_code_3.png");  // Failed to detect.
 	//const std::string img_filename("./data/machine_vision/qr_code_4.png");  // Failed to detect.
+	//const std::string img_filename("./data/machine_vision/qr_code_5.png");  // Failed to detect.
 
 	cv::Mat image = cv::imread(img_filename);
 	if (image.empty())

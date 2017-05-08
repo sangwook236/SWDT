@@ -108,11 +108,11 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		obb.points(vertices);
 		const std::vector<cv::Point> pts(vertices, vertices + num_pts);
 		const cv::Point *ptr = (cv::Point *)&(pts[0]);
-		cv::fillPoly(mask, (const cv::Point **)&ptr, &num_pts, 1, CV_RGB(255,255,255), CV_AA, 0, cv::Point());
+		cv::fillPoly(mask, (const cv::Point **)&ptr, &num_pts, 1, CV_RGB(255, 255, 255), CV_AA, 0, cv::Point());
 #elif defined(__USE_AABB)
-		cv::rectangle(mask, aabb.tl(), aabb.br(), CV_RGB(255,255,255), CV_FILLED, CV_AA, 0);
+		cv::rectangle(mask, aabb.tl(), aabb.br(), CV_RGB(255, 255, 255), CV_FILLED, CV_AA, 0);
 #elif defined(__USE_BS)
-		cv::circle(mask, center, cvRound(radius), CV_RGB(255,255,255), CV_FILLED, CV_AA, 0);
+		cv::circle(mask, center, cvRound(radius), CV_RGB(255, 255, 255), CV_FILLED, CV_AA, 0);
 #endif
 	}
 
@@ -211,17 +211,17 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		cv::Point2f vertices[4] = { cv::Point2f(), };
 		obb.points(vertices);
 		for (int i = 0; i < 4; ++i)
-			cv::line(img, vertices[i], vertices[(i+1)%4], CV_RGB(255,0,0), 1, CV_AA, 0);
+			cv::line(img, vertices[i], vertices[(i+1)%4], CV_RGB(255, 0, 0), 1, CV_AA, 0);
 
 		// axis-aligned bounding box
 		const cv::Rect aabb(cv::boundingRect(pts_mat));
-		cv::rectangle(img, aabb.tl(), aabb.br(), CV_RGB(0,255,0), 1, CV_AA, 0);
+		cv::rectangle(img, aabb.tl(), aabb.br(), CV_RGB(0, 255, 0), 1, CV_AA, 0);
 
 		// bounding sphere
 		cv::Point2f center;
 		float radius = 0.0f;
 		cv::minEnclosingCircle(pts_mat, center, radius);
-		cv::circle(img, center, cvRound(radius), CV_RGB(0,0,255), 1, CV_AA, 0);
+		cv::circle(img, center, cvRound(radius), CV_RGB(0, 0, 255), 1, CV_AA, 0);
 	}
 
 	// chamfer matching
