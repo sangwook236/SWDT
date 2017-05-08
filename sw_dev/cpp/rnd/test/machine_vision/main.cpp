@@ -18,13 +18,15 @@ int main(int argc, char *argv[])
 	int vigra_main(int argc, char *argv[]);
 	int darwin_main(int argc, char *argv[]);
 
+	int quirc_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "OpenCV library ------------------------------------------------------" << std::endl;
-		retval = opencv_main(argc, argv);
+		//retval = opencv_main(argc, argv);
 
 		std::cout << "\nVXL (the Vision-something-Libraries) library ------------------------" << std::endl;
 		//	- Pictorial structures matching.
@@ -81,6 +83,10 @@ int main(int argc, char *argv[])
 		//	- Machine learning.
 		//	- Probabilistic graphical model.
 		//retval = darwin_main(argc, argv);  // Not yet implemented.
+
+		std::cout << "\nquirc library -------------------------------------------------------" << std::endl;
+		//	- QR code.
+		retval = quirc_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

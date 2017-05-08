@@ -123,6 +123,7 @@ void morphological_operation();
 void image_pyramid();
 void image_gradient();
 void edge_detection();
+void line();
 void skeletonization_and_thinning();
 void contour();
 
@@ -190,6 +191,8 @@ void hand_pose_estimation();
 void motion_segmentation();
 void gesture_recognition();
 
+void qr_code();
+
 }  // namespace my_opencv
 
 int opencv_main(int argc, char *argv[])
@@ -240,6 +243,8 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::image_gradient();
 		//my_opencv::edge_detection();
 
+		my_opencv::line();
+
 		//my_opencv::distance_measure();
 		//my_opencv::distance_transform();
 		//my_opencv::distance_transform_using_edge_info();
@@ -279,7 +284,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::object_detection();
 		//my_opencv::human_detection();
 		//if (canUseGPU) my_opencv::human_detection_using_gpu();  // Not yet implemented.
-		my_opencv::saliency_detection();
+		//my_opencv::saliency_detection();
 
 		//my_opencv::face_detection();
 		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // Not yet implemented.
@@ -313,12 +318,12 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::slam();  // Not yet implemented.
 
 		//-----------------------------------------------------------------
-		// Interfacing
+		// Interfacing.
 
 		//my_opencv::openni_interface();
 
 		//-----------------------------------------------------------------
-		// Extension
+		// Extension.
 
 		//my_opencv::util();  // For utility test.
 
@@ -326,7 +331,7 @@ int opencv_main(int argc, char *argv[])
 
 		//my_opencv::iterative_closest_point();
 
-		//-----------------------------------------------------------------
+		//---------------.--------------------------------------------------
 		// Application
 
 		//my_opencv::hand_detection();
@@ -334,16 +339,18 @@ int opencv_main(int argc, char *argv[])
 
 		//my_opencv::motion_segmentation();
 		//my_opencv::gesture_recognition();
+
+		my_opencv::qr_code();
 	}
-	catch (const cv::Exception& e)
+	catch (const cv::Exception& ex)
 	{
-		//std::cout << "OpenCV exception caught: " << e.what() << std::endl;
-		//std::cout << "OpenCV exception caught: " << cvErrorStr(e.code) << std::endl;
+		//std::cout << "OpenCV exception caught: " << ex.what() << std::endl;
+		//std::cout << "OpenCV exception caught: " << cvErrorStr(ex.code) << std::endl;
 		std::cout << "OpenCV exception caught:" << std::endl
-			<< "\tdescription: " << e.err << std::endl
-			<< "\tline:        " << e.line << std::endl
-			<< "\tfunction:    " << e.func << std::endl
-			<< "\tfile:        " << e.file << std::endl;
+			<< "\tdescription: " << ex.err << std::endl
+			<< "\tline:        " << ex.line << std::endl
+			<< "\tfunction:    " << ex.func << std::endl
+			<< "\tfile:        " << ex.file << std::endl;
 
 		return 1;
 	}

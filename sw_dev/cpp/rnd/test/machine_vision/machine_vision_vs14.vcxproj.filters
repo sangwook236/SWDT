@@ -37,6 +37,12 @@
     <Filter Include="Source Files\vigra">
       <UniqueIdentifier>{71565af5-7e93-40d8-aef5-4737ddb215e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\quirc_lib">
+      <UniqueIdentifier>{eebf7d03-14fd-4817-9cd6-081c739ed866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\quirc">
+      <UniqueIdentifier>{ca28d7d9-6e91-4e56-8882-df6d2bfe6e0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -432,6 +438,27 @@
     <ClCompile Include="opencv\opencv_saliency.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
+    <ClCompile Include="opencv\opencv_line.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_qr_code.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="quirc_lib\decode.cpp">
+      <Filter>Source Files\quirc_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="quirc_lib\identify.cpp">
+      <Filter>Source Files\quirc_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="quirc_lib\quirc.cpp">
+      <Filter>Source Files\quirc_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="quirc_lib\version_db.cpp">
+      <Filter>Source Files\quirc_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="quirc\quirc_main.cpp">
+      <Filter>Source Files\quirc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opencv\PascalVocDataset.h">
@@ -445,6 +472,12 @@
     </ClInclude>
     <ClInclude Include="ivt\ParticleFilter3D.h">
       <Filter>Source Files\ivt</Filter>
+    </ClInclude>
+    <ClInclude Include="quirc_lib\quirc.h">
+      <Filter>Source Files\quirc_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="quirc_lib\quirc_internal.h">
+      <Filter>Source Files\quirc_lib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,34 +10,34 @@ namespace local {
 
 void lsd_example()
 {
-	const int X = 128;  // x image size
-	const int Y = 128;  // y image size
+	const int X = 128;  // x image size.
+	const int Y = 128;  // y image size.
 
-	// create a simple image: left half black, right half gray
+	// Create a simple image: left half black, right half gray.
 	double *image = new double [X * Y];
 	if (NULL == image)
 	{
-		std::cerr << "error: not enough memory" << std::endl;
+		std::cerr << "Error: not enough memory" << std::endl;
 		return;
 	}
 	for (int x = 0; x < X; ++x)
 		for (int y = 0; y < Y; ++y)
-			image[x + y * X] = (x < X / 2) ? 0.0 : 64.0;  // image(x, y)
+			image[x + y * X] = (x < X / 2) ? 0.0 : 64.0;  // image(x, y).
 
-	// LSD call
+	// LSD call.
 	boost::timer::cpu_timer timer;
 
 	int n;
 	double *out = lsd(&n, image, X, Y);
 
 	boost::timer::cpu_times const elapsed_times(timer.elapsed());
-	std::cout << "elpased time : " << (elapsed_times.system + elapsed_times.user) << std::endl;
+	std::cout << "Elpased time : " << (elapsed_times.system + elapsed_times.user) << std::endl;
 
 	// A double array of size 7 x n_out, containing the list of line segments detected.
 	// The seven values:
 	//	x1, y1, x2, y2, width, p, -log10(NFA).
 	//	coordinates (x1,y1) to (x2,y2), a width 'width', an angle precision of p in (0,1) given by angle_tolerance/180 degree, NFA value.
-	// print output
+	// Print output.
 	std::cout << n << " line segments found:" << std::endl;
 	for (int i = 0; i < n; ++i)
 	{
@@ -46,7 +46,7 @@ void lsd_example()
 		std::cout << std::endl;
 	}
 
-	// free memory
+	// Free memory.
 	free((void *)out);
 	delete [] image;
 }
@@ -124,7 +124,7 @@ void lsd_image_test()
 		cv::Mat img = cv::imread(*it, CV_LOAD_IMAGE_COLOR);
 		if (img.empty())
 		{
-			std::cout << "fail to load image file: " << *it << std::endl;
+			std::cout << "Fail to load image file: " << *it << std::endl;
 			return;
 		}
 
@@ -155,16 +155,16 @@ void lsd_image_test()
 #endif
 		}
 
-		// call LSD
+		// Call LSD.
 		boost::timer::cpu_timer timer;
 
 		int numLines = 0;
 		const double *lines = lsd(&numLines, (double *)gray_img_dbl.data, gray_img_dbl.cols, gray_img_dbl.rows);
 
 		boost::timer::cpu_times const elapsed_times(timer.elapsed());
-		std::cout << "elpased time : " << (elapsed_times.system + elapsed_times.user) << std::endl;
+		std::cout << "Elpased time : " << (elapsed_times.system + elapsed_times.user) << std::endl;
 
-		// print output
+		// Print output.
 		std::cout << numLines << " line segments found:" << std::endl;
 		for (int i = 0; i < numLines; ++i)
 		{
@@ -173,7 +173,7 @@ void lsd_image_test()
 				std::cout << lines[7 * i + j] << ", ";
 			std::cout << std::endl;
 #endif
-			// x1, y1, x2, y2, width, p, -log10(NFA)
+			// x1, y1, x2, y2, width, p, -log10(NFA).
 			//cv::line(img, cv::Point(lines[7 * i + 0], lines[7 * i + 1]), cv::Point(lines[7 * i + 2], lines[7 * i + 3]), CV_RGB(255, 0, 0), lines[7 * i + 4], 8, 0);
 			cv::line(img, cv::Point(lines[7 * i + 0], lines[7 * i + 1]), cv::Point(lines[7 * i + 2], lines[7 * i + 3]), CV_RGB(255, 0, 0), 2, 8, 0);
 		}
@@ -196,7 +196,7 @@ int lsd_main(int argc, char *argv[])
 {
 	try
 	{
-		// line segment detector (LSD) -----------------------------------------
+		// Line segment detector (LSD) -----------------------------------------
 		//local::lsd_example();
 		local::lsd_image_test();
 	}

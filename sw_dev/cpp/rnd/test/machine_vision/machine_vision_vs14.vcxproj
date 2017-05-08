@@ -366,6 +366,7 @@
     <ClCompile Include="opencv\opencv_image_undistortion.cpp" />
     <ClCompile Include="opencv\opencv_iterative_closest_point.cpp" />
     <ClCompile Include="opencv\opencv_kalman_filtering.cpp" />
+    <ClCompile Include="opencv\opencv_line.cpp" />
     <ClCompile Include="opencv\opencv_machine_learning.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -405,6 +406,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="opencv\opencv_pca.cpp" />
+    <ClCompile Include="opencv\opencv_qr_code.cpp" />
     <ClCompile Include="opencv\opencv_retina_model.cpp" />
     <ClCompile Include="opencv\opencv_saliency.cpp" />
     <ClCompile Include="opencv\opencv_segmentation.cpp" />
@@ -443,6 +445,11 @@
     <ClCompile Include="opencv\opencv_util.cpp" />
     <ClCompile Include="opencv\opencv_vector_operation.cpp" />
     <ClCompile Include="opencv\PascalVocDataset.cpp" />
+    <ClCompile Include="quirc\quirc_main.cpp" />
+    <ClCompile Include="quirc_lib\decode.cpp" />
+    <ClCompile Include="quirc_lib\identify.cpp" />
+    <ClCompile Include="quirc_lib\quirc.cpp" />
+    <ClCompile Include="quirc_lib\version_db.cpp" />
     <ClCompile Include="vigra\vigra_main.cpp" />
     <ClCompile Include="vigra\vigra_seeded_region_growing.cpp" />
     <ClCompile Include="vigra\vigra_slic.cpp" />
@@ -477,6 +484,8 @@
     <ClInclude Include="ivt\ParticleFilter3D.h" />
     <ClInclude Include="opencv\PascalVocDataset.h" />
     <ClInclude Include="opencv\vehicle_classification.h" />
+    <ClInclude Include="quirc_lib\quirc.h" />
+    <ClInclude Include="quirc_lib\quirc_internal.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
