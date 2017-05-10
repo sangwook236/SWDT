@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
 			//multiprecision();  // Not yet implemented.
 
 			//polygon();
-			//geometry();
+			geometry();
 
 			//graph();
 			//graph_parallel();  // Not yet implemented.
@@ -189,7 +189,7 @@ int main(int argc, char *argv[])
 		// High performance computing.
 		{
 			// Open Computing Language (OpenCL).
-			compute();
+			//compute();
 
 			// Message Passing Interface (MPI).
 			//mpi();

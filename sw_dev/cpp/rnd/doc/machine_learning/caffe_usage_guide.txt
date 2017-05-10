@@ -18,6 +18,11 @@
 		http://caffe.berkeleyvision.org/gathered/examples/feature_extraction.html
 
 [-] Usage.
+	- Linking (Windows).
+		Link two libraries.
+			caffe.lib
+			proto.lib
+
 	- PyCaffe.
 		Support Python 2.
 

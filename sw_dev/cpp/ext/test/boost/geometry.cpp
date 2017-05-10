@@ -7,16 +7,22 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 
+#include <boost/geometry.hpp>
 #include <boost/geometry/geometry.hpp>
+#include <boost/geometry/geometries/point.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
+#include <boost/geometry/geometries/segment.hpp>
 #include <boost/geometry/geometries/linestring.hpp>
+#include <boost/geometry/geometries/box.hpp>
 #include <boost/geometry/geometries/polygon.hpp>
 #include <boost/geometry/multi/multi.hpp>
 #include <boost/geometry/multi/geometries/multi_polygon.hpp>
 #include <boost/geometry/algorithms/centroid.hpp>
 #include <boost/geometry/strategies/transform.hpp>
 #include <boost/geometry/strategies/transform/matrix_transformers.hpp>
+#include <boost/geometry/index/rtree.hpp>
 
 // Optional includes and defines to handle c-arrays as points, std::vectors as linestrings.
 #include <boost/geometry/geometries/register/linestring.hpp>
@@ -25,6 +31,7 @@
 #include <boost/geometry/geometries/adapted/boost_polygon/point.hpp>
 #include <boost/geometry/geometries/adapted/c_array.hpp>
 
+// Well-known text (WKT): a general markup format in ASCII.
 //#include <boost/geometry/domains/gis/io/wkt/read_wkt.hpp>
 #include <boost/geometry/io/wkt/wkt.hpp>
 
@@ -121,20 +128,18 @@ struct coordinate_system<boost::geometry::model::d3::point_xyz<CoordinateType, C
 
 template<typename CoordinateType, typename CoordinateSystem>
 struct dimension<boost::geometry::model::d3::point_xyz<CoordinateType, CoordinateSystem> >
-    : boost::mpl::int_<3>
+: boost::mpl::int_<3>
 {};
 
 template<typename CoordinateType, typename CoordinateSystem, std::size_t Dimension>
 struct access<model::d3::point_xyz<CoordinateType, CoordinateSystem>, Dimension>
 {
-    static inline CoordinateType get(
-        model::d3::point_xyz<CoordinateType, CoordinateSystem> const &p)
+    static inline CoordinateType get(model::d3::point_xyz<CoordinateType, CoordinateSystem> const &p)
     {
         return p.template get<Dimension>();
     }
 
-    static inline void set(model::d3::point_xyz<CoordinateType, CoordinateSystem> &p,
-        CoordinateType const &value)
+    static inline void set(model::d3::point_xyz<CoordinateType, CoordinateSystem> &p, CoordinateType const &value)
     {
         p.template set<Dimension>(value);
     }
@@ -217,7 +222,6 @@ void point_2d()
 	boost::geometry::model::d2::point_xy<double> p5(1, 1);
 
 	// 6: for boost tuples you can of course use make_tuple.
-
 
 	// Some ways of getting point values.
 
@@ -655,13 +659,13 @@ void overlay_polygon_linestring()
 	boost::geometry::correct(p);
 
 #if defined(HAVE_SVG)
-	// Create SVG-mapper
+	// Create SVG-mapper.
 	std::ofstream stream("05_b_overlay_linestring_polygon_example.svg");
 	boost::geometry::svg_mapper<point_2d_t> svg(stream, 500, 500);
-	// Determine extend by adding geometries
+	// Determine extend by adding geometries.
 	svg.add(p);
 	svg.add(ls);
-	// Map geometries
+	// Map geometries.
 	svg.map(ls, "opacity:0.6;stroke:rgb(255,0,0);stroke-width:2;");
 	svg.map(p, "opacity:0.6;fill:rgb(0,0,255);");
 #endif
@@ -678,12 +682,17 @@ void overlay_polygon_linestring()
 	boost::geometry::detail::get_turns::no_interrupt_policy policy;
 #if BOOST_VERSION <= 105500
 	boost::geometry::get_turns<false, false, boost::geometry::detail::overlay::assign_null_policy>(ls, p, turns, policy);
-#else
+#elif BOOST_VERSION <= 106100
 	boost::geometry::detail::no_rescale_policy rescale_policy;
 	boost::geometry::get_turns<false, false, boost::geometry::detail::overlay::assign_null_policy>(ls, p, rescale_policy, turns, policy);
+#else
+	boost::geometry::detail::no_rescale_policy rescale_policy;
+	boost::geometry::strategy::intersection::cartesian_segments<> intersection_strategy;
+	// FIXME [check] >> intersection_strategy?
+	boost::geometry::get_turns<false, false, boost::geometry::detail::overlay::assign_null_policy>(ls, p, intersection_strategy, rescale_policy, turns, policy);
 #endif
 
-	std::cout << "Intersection of linestring/polygon" << std::endl;
+	std::cout << "Intersection of linestring/polygon." << std::endl;
 	BOOST_FOREACH(turn_info_t const &turn, turns)
 	{
 		std::string action = "intersecting";
@@ -830,9 +839,11 @@ void affine_transform_2d()
 #if BOOST_VERSION <= 105200
 	boost::geometry::strategy::transform::ublas_transformer<point_2d_t, point_2d_t, 2, 2> combined(boost::numeric::ublas::prod(rotate.matrix(), translate.matrix()));
 	//boost::geometry::strategy::transform::ublas_transformer<point_2d_t, point_2d_t, 2, 2> combined(rotate.matrix());
-#else
+#elif BOOST_VERSION <= 106100
 	boost::geometry::strategy::transform::ublas_transformer<double, 2, 2> combined(boost::numeric::ublas::prod(rotate.matrix(), translate.matrix()));
 	//boost::geometry::strategy::transform::ublas_transformer<double, 2, 2> combined(rotate.matrix());
+#else
+	boost::geometry::strategy::transform::matrix_transformer<double, 2, 2> combined(rotate.matrix() * translate.matrix());
 #endif
 
 	// Apply transformation to subject geometry point-by-point.
@@ -847,11 +858,11 @@ void affine_transform_2d()
 
 void graph_route()
 {
-	// ref: example
+	// Ref: example
 	throw std::runtime_error("Not yet implemented");
 }
 
-// [ref] http://www.boost.org/doc/libs/1_53_0/libs/geometry/doc/html/geometry/reference/algorithms/intersection.html
+// REF [site] >> http://www.boost.org/doc/libs/1_53_0/libs/geometry/doc/html/geometry/reference/algorithms/intersection.html
 void intersection_2d()
 {
 	typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double> > polygon;
@@ -925,13 +936,180 @@ void intersection_3d()
 #endif
 }
 
+// REF [site] >> http://www.boost.org/doc/libs/1_64_0/libs/geometry/doc/html/geometry/spatial_indexes/rtree_examples/quick_start.html
+void r_tree_quick_start_example()
+{
+	typedef boost::geometry::model::point<float, 2, boost::geometry::cs::cartesian> point_type;
+	typedef boost::geometry::model::box<point_type> box_type;
+	typedef std::pair<box_type, unsigned> value_type;
+
+	// Create the R-tree using default constructor.
+	boost::geometry::index::rtree<value_type, boost::geometry::index::quadratic<16> > rtree;
+
+	// Create some values.
+	for (unsigned i = 0; i < 10; ++i)
+	{
+		// Create a box.
+		const box_type b(point_type(i + 0.0f, i + 0.0f), point_type(i + 0.5f, i + 0.5f));
+		// Insert new value.
+		rtree.insert(std::make_pair(b, i));
+	}
+
+	// REF [site] >> http://www.boost.org/doc/libs/1_64_0/libs/geometry/doc/html/geometry/reference/spatial_indexes/group__predicates.html
+	// Predicates:
+	//	boost::geometry::index::contains(Geometry const &)
+	//	boost::geometry::index::covered_by(Geometry const &)
+	//	boost::geometry::index::covers(Geometry const &)
+	//	boost::geometry::index::disjoint(Geometry const &)
+	//	boost::geometry::index::intersects(Geometry const &)
+	//	boost::geometry::index::overlaps(Geometry const &)
+	//	boost::geometry::index::within(Geometry const &)
+	//	boost::geometry::index::satisfies(UnaryPredicate const &)
+	//	boost::geometry::index::nearest(Geometry const &, unsigned)
+
+	// Find values intersecting some area defined by a box.
+	const box_type query_box(point_type(0, 0), point_type(5, 5));
+	std::vector<value_type> result_s;
+	rtree.query(boost::geometry::index::intersects(query_box), std::back_inserter(result_s));
+
+	// Find 5 nearest values to a point.
+	std::vector<value_type> result_n;
+	rtree.query(boost::geometry::index::nearest(point_type(0, 0), 5), std::back_inserter(result_n));
+
+	// Note: in Boost.Geometry WKT representation of a box is polygon.
+
+	// Display results.
+	std::cout << "Spatial query box:" << std::endl;
+	std::cout << boost::geometry::wkt<box_type>(query_box) << std::endl;
+	std::cout << "Spatial query result:" << std::endl;
+	for (const value_type const& v : result_s)
+		std::cout << boost::geometry::wkt<box_type>(v.first) << " - " << v.second << std::endl;
+
+	std::cout << "k-NN query point:" << std::endl;
+	std::cout << boost::geometry::wkt<point_type>(point_type(0, 0)) << std::endl;
+	std::cout << "k-NN query result:" << std::endl;
+	for (const value_type const& v : result_n)
+		std::cout << boost::geometry::wkt<box_type>(v.first) << " - " << v.second << std::endl;
+}
+
+// REF [site] >> http://www.boost.org/doc/libs/1_64_0/libs/geometry/doc/html/geometry/spatial_indexes/rtree_examples/index_of_polygons_stored_in_vector.html
+void r_tree_polygons_stored_in_vector()
+{
+	typedef boost::geometry::model::point<float, 2, boost::geometry::cs::cartesian> point_type;
+	typedef boost::geometry::model::box<point_type> box_type;
+	typedef boost::geometry::model::polygon<point_type, false, false> polygon_type;  // CCW, open polygon.
+	typedef std::pair<box_type, unsigned> value_type;
+
+	// Polygons.
+	std::vector<polygon_type> polygons;
+
+	// Create some polygons.
+	for (unsigned i = 0; i < 10; ++i)
+	{
+		// Create a polygon
+		polygon_type p;
+		for (float a = 0.f; a < 6.28316f; a += 1.04720f)
+		{
+			const float x = i + int(10 * std::cos(a)) * 0.1f;
+			const float y = i + int(10 * std::sin(a)) * 0.1f;
+			p.outer().push_back(point_type(x, y));
+		}
+
+		// Add polygon.
+		polygons.push_back(p);
+	}
+
+	// Display polygons.
+	std::cout << "Generated polygons:" << std::endl;
+	for (const polygon_type const& p : polygons)
+		std::cout << boost::geometry::wkt<polygon_type>(p) << std::endl;
+
+	// Create the rtree using default constructor.
+	boost::geometry::index::rtree<value_type, boost::geometry::index::rstar<16, 4> > rtree;
+
+	// Fill the spatial index.
+	for (unsigned i = 0; i < polygons.size(); ++i)
+	{
+		// Calculate polygon bounding box.
+		const box_type &b = boost::geometry::return_envelope<box_type>(polygons[i]);
+		// Insert new value.
+		rtree.insert(std::make_pair(b, i));
+	}
+
+	// Find values intersecting some area defined by a box.
+	const box_type query_box(point_type(0, 0), point_type(5, 5));
+	std::vector<value_type> result_s;
+	rtree.query(boost::geometry::index::intersects(query_box), std::back_inserter(result_s));
+
+	// Find 5 nearest values to a point.
+	std::vector<value_type> result_n;
+	rtree.query(boost::geometry::index::nearest(point_type(0, 0), 5), std::back_inserter(result_n));
+
+	// Note: in Boost.Geometry the WKT representation of a box is polygon.
+
+	// Note: the values store the bounding boxes of polygons the polygons aren't used for querying but are printed.
+
+	// Display results.
+	std::cout << "Spatial query box:" << std::endl;
+	std::cout << boost::geometry::wkt<box_type>(query_box) << std::endl;
+	std::cout << "Spatial query result:" << std::endl;
+	for (const value_type const& v : result_s)
+		std::cout << boost::geometry::wkt<polygon_type>(polygons[v.second]) << std::endl;
+
+	std::cout << "k-NN query point:" << std::endl;
+	std::cout << boost::geometry::wkt<point_type>(point_type(0, 0)) << std::endl;
+	std::cout << "k-NN query result:" << std::endl;
+	for (const value_type const& v : result_n)
+		std::cout << boost::geometry::wkt<polygon_type>(polygons[v.second]) << std::endl;
+}
+
+// REF [site] >> http://stackoverflow.com/questions/31320633/packing-algorithm-in-rtree-in-boost
+void r_tree_example()
+{
+	using point_type = boost::geometry::model::point<int, 2, boost::geometry::cs::cartesian>;
+	using value_type = std::pair<point_type, size_t>;
+
+	std::vector<point_type> contourCenters;  // Has some value.
+	std::vector<value_type> cloud;
+
+	// FIXME [add] >> Do something.
+
+	size_t id_gen = 0;
+	std::transform(
+		contourCenters.begin(), contourCenters.end(),
+		std::back_inserter(cloud),
+		[&](const point_type const &p) { return std::make_pair(p, id_gen++); }
+	);
+
+	for (const auto &pi : cloud)
+		std::cout << "Contour Centers: (" << boost::geometry::get<0>(pi.first) << "," << boost::geometry::get<1>(pi.first) << ")";
+
+	// REF [site] >> http://www.boost.org/doc/libs/1_64_0/libs/geometry/doc/html/geometry/reference/spatial_indexes/parameters.html
+	// R-tree parameters:
+	//	boost::geometry::index::linear
+	//	boost::geometry::index::quadratic
+	//	boost::geometry::index::rstar
+	//	boost::geometry::index::dynamic_linear
+	//	boost::geometry::index::dynamic_quadratic
+	//	boost::geometry::index::dynamic_rstar
+
+	//boost::geometry::index::rtree<value_type, boost::geometry::index::linear<16> > rtree(cloud);
+	boost::geometry::index::rtree<value_type, boost::geometry::index::quadratic<16> > rtree(cloud);
+	//boost::geometry::index::rtree<value_type, boost::geometry::index::rstar<16> > rtree(cloud);
+	//boost::geometry::index::rtree<value_type, boost::geometry::index::dynamic_linear> rtree(cloud);
+	//boost::geometry::index::rtree<value_type, boost::geometry::index::dynamic_quadratic> rtree(cloud);
+	//boost::geometry::index::rtree<value_type, boost::geometry::index::dynamic_rstar> rtree(cloud);
+}
+
 }  // namespace local
 }  // unnamed namespace
 
 void geometry()
 {
-    // examples.
-    if (true)
+	// REF [site] >> http://www.boost.org/doc/libs/1_64_0/libs/geometry/doc/html/index.html
+
+    // Examples.
+    if (false)
     {
         local::point_2d();
         local::linestring_2d();
@@ -950,8 +1128,23 @@ void geometry()
         local::intersection_2d();
     }
 
-    // extensions.
-    {
-        //local::intersection_3d();  // not working.
-    }
+	// Extensions.
+	{
+		//local::intersection_3d();  // Not working.
+	}
+
+	// Spatial indexing.
+	{
+		// R-tree.
+		//	REF [site] >> http://www.boost.org/doc/libs/1_64_0/libs/geometry/doc/html/geometry/spatial_indexes/introduction.html
+		//	REF [site] >> http://www.boost.org/doc/libs/1_64_0/libs/geometry/doc/html/geometry/spatial_indexes/creation_and_modification.html
+		//	REF [site] >> http://www.boost.org/doc/libs/1_64_0/libs/geometry/doc/html/geometry/spatial_indexes/queries.html
+		//	REF [file] >> ${BOOST_HOME}/libs/geometry/index/example/random_test.cpp.
+		//	REF [file] >> ${BOOST_HOME}/libs/geometry/index/example/glut_vis.cpp.
+
+		//local::r_tree_quick_start_example();  // Intersection & k-NN of boxes.
+		local::r_tree_polygons_stored_in_vector();  // Intersection & k-NN of polygons.
+
+		//local::r_tree_example();  // Not completed.
+	}
 }

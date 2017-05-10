@@ -254,7 +254,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::contour();
 
 		//my_opencv::hough_transform();
-		//my_opencv::template_matching();
+		my_opencv::template_matching();
 		//my_opencv::chamfer_matching();
 		//my_opencv::shape_finding();
 		//my_opencv::shape_matching();
@@ -284,7 +284,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::object_detection();
 		//my_opencv::human_detection();
 		//if (canUseGPU) my_opencv::human_detection_using_gpu();  // Not yet implemented.
-		my_opencv::saliency_detection();
+		//my_opencv::saliency_detection();
 
 		//my_opencv::face_detection();
 		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // Not yet implemented.
