@@ -55,6 +55,12 @@
     <Filter Include="Source Files\svm_light_lib\svm_light">
       <UniqueIdentifier>{cb8e93a4-939d-4dd8-a3f2-7948f854fa33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\lbd">
+      <UniqueIdentifier>{3d4726f8-731e-4291-8416-2b7567a97a2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lbd_lib">
+      <UniqueIdentifier>{4e04e100-feed-48af-8ef7-c742d4282ba4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lsd_lib\lsd.h">
@@ -342,6 +348,18 @@
     <ClInclude Include="svm_light_lib\svm_light\svm_learn.h">
       <Filter>Source Files\svm_light_lib\svm_light</Filter>
     </ClInclude>
+    <ClInclude Include="lbd_lib\EDLineDetector.hh">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lbd_lib\LineDescriptor.hh">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lbd_lib\LineStructure.hh">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lbd_lib\PairwiseLineMatching.hh">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lsd_lib\lsd.cpp">
@@ -412,6 +430,21 @@
     </ClCompile>
     <ClCompile Include="svm_light_lib\svm_light\svm_loqo.c">
       <Filter>Source Files\svm_light_lib\svm_light</Filter>
+    </ClCompile>
+    <ClCompile Include="lbd_lib\EDLineDetector.cpp">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lbd_lib\LineDescriptor.cpp">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lbd_lib\PairwiseLineMatching.cpp">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lbd_lib\TestLineMatchingAlgorithm.cpp">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lbd\lbd_main.cpp">
+      <Filter>Source Files\lbd</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

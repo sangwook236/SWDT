@@ -18,6 +18,7 @@
 int main(int argc, char *argv[])
 {
 	int lsd_main(int argc, char *argv[]);
+	int lbd_main(int argc, char *argv[]);
 	int elsd_main(int argc, char *argv[]);
 	int opensift_main(int argc, char *argv[]);
 	int siftgpu_main(int argc, char *argv[]);
@@ -32,7 +33,8 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "Line feature --------------------------------------------------------" << std::endl;
-		retval = lsd_main(argc, argv);
+		retval = lsd_main(argc, argv);  // Line segment detector (LSD).
+		retval = lbd_main(argc, argv);  // EDLine detector & line band descriptor (LBD).
 
 		std::cout << "\nEllipse & line feature ----------------------------------------------" << std::endl;
 		//retval = elsd_main(argc, argv);
@@ -49,14 +51,14 @@ int main(int argc, char *argv[])
 		std::cout << "\nFeature Selection Toolbox (FST) library -----------------------------" << std::endl;
 		//retval = fst_main(argc, argv);
 	}
-    catch (const std::bad_alloc &e)
+    catch (const std::bad_alloc &ex)
 	{
-		std::cout << "std::bad_alloc caught: " << e.what() << std::endl;
+		std::cout << "std::bad_alloc caught: " << ex.what() << std::endl;
 		retval = EXIT_FAILURE;
 	}
-	catch (const std::exception &e)
+	catch (const std::exception &ex)
 	{
-		std::cout << "std::exception caught: " << e.what() << std::endl;
+		std::cout << "std::exception caught: " << ex.what() << std::endl;
 		retval = EXIT_FAILURE;
 	}
 	catch (...)
