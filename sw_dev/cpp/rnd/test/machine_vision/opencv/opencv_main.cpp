@@ -253,12 +253,12 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::skeletonization_and_thinning();
 		//my_opencv::contour();
 
-		//my_opencv::hough_transform();
-		my_opencv::template_matching();
+		my_opencv::hough_transform();
+		//my_opencv::template_matching();
 		//my_opencv::chamfer_matching();
 		//my_opencv::shape_finding();
 		//my_opencv::shape_matching();
-		//my_opencv::active_contour_model();  // snake.
+		//my_opencv::active_contour_model();  // Snake.
 
 		//my_opencv::segmentation();
 		//my_opencv::superpixel();

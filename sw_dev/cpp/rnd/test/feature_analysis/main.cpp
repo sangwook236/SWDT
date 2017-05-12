@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "Line feature --------------------------------------------------------" << std::endl;
-		retval = lsd_main(argc, argv);  // Line segment detector (LSD).
+		//retval = lsd_main(argc, argv);  // Line segment detector (LSD).
 		retval = lbd_main(argc, argv);  // EDLine detector & line band descriptor (LBD).
 
 		std::cout << "\nEllipse & line feature ----------------------------------------------" << std::endl;

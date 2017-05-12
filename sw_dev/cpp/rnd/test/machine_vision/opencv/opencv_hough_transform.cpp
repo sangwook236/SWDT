@@ -1,113 +1,235 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv/cxcore.h>
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
+#include <opencv2/opencv.hpp>
 #include <iostream>
+#include <vector>
 #include <cassert>
 
 
 namespace {
 namespace local {
 
-void hough_line_standard(IplImage *srcImage, IplImage *grayImage)
+void draw_lines(const std::vector<cv::Vec2f> &lines, cv::Mat &rgb)
 {
-	CvMemStorage *storage = cvCreateMemStorage(0);
-
-	cvCanny(grayImage, grayImage, 50.0, 200.0, 3);
-
-	const CvSeq *lines = cvHoughLines2(
-		grayImage,
-		storage,
-		CV_HOUGH_STANDARD,
-		1.0,
-		CV_PI / 180.0,
-		100,
-		0,
-		0
-	);
-
-	//const int lineCount = lines->total;
-	const int lineCount = MIN(lines->total, 100);
-	for (int i = 0; i < lineCount; ++i)
+	const size_t drawingLineCount = std::min(lines.size(), (size_t)100);
+	for (size_t i = 0; i < drawingLineCount; ++i)
 	{
-		const float *line = (float *)cvGetSeqElem(lines, i);
-		const float &rho = line[0];  // a distance between (0,0) point and the line,
-		const float &theta = line[1];  // the angle between x-axis and the normal to the line
+		const cv::Vec2f &line = lines[i];
+
+		const float &rho = line[0];  // A distance between (0,0) point and the line.
+		const float &theta = line[1];  // The angle between x-axis and the normal to the line.
 
 		const double a = std::cos(theta), b = std::sin(theta);
 		const double x0 = a * rho, y0 = b * rho;
 
-		CvPoint pt1, pt2;
+		cv::Point pt1, pt2;
 		pt1.x = cvRound(x0 + 1000 * (-b));
 		pt1.y = cvRound(y0 + 1000 * (a));
 		pt2.x = cvRound(x0 - 1000 * (-b));
 		pt2.y = cvRound(y0 - 1000 * (a));
-		cvLine(srcImage, pt1, pt2, CV_RGB(255,0,0), 1, CV_AA, 0);
+		cv::line(rgb, pt1, pt2, CV_RGB(255, 0, 0), 1, cv::LINE_AA, 0);
 	}
-
-	cvClearMemStorage(storage);
 }
 
-void hough_line_probabilistic(IplImage *srcImage, IplImage *grayImage)
+void draw_lines(const std::vector<cv::Vec4i> &lines, cv::Mat &rgb)
 {
-	CvMemStorage *storage = cvCreateMemStorage(0);
-
-	cvCanny(grayImage, grayImage, 50.0, 200.0, 3);
-
-	const CvSeq *lines = cvHoughLines2(
-		grayImage,
-		storage,
-		CV_HOUGH_PROBABILISTIC,
-		1.0,
-		CV_PI / 180.0,
-		80,
-		30.0,
-		10.0
-	);
-
-	//const int lineCount = lines->total;
-	const int lineCount = MIN(lines->total, 100);
-	for (int i = 0; i < lineCount; ++i)
+	const size_t drawingLineCount = std::min(lines.size(), (size_t)100);
+	for (size_t i = 0; i < drawingLineCount; ++i)
 	{
-		const CvPoint *line = (CvPoint *)cvGetSeqElem(lines, i);
-		cvLine(srcImage, line[0], line[1], CV_RGB(255,0,0), 1, CV_AA, 0);
-	}
+		const cv::Vec4i &line = lines[i];
 
-	cvClearMemStorage(storage);
+		cv::line(rgb, cv::Point(line[0], line[1]), cv::Point(line[2], line[3]), CV_RGB(255, 0, 0), 1, cv::LINE_AA, 0);
+	}
 }
 
-void hough_circle(IplImage *srcImage, IplImage *grayImage)
+void draw_circles(const std::vector<cv::Vec3f> &circles, cv::Mat &rgb)
 {
-	CvMemStorage *storage = cvCreateMemStorage(0);
-
-	cvSmooth(grayImage, grayImage, CV_GAUSSIAN, 9, 9, 0.0, 0.0);
-
-	const CvSeq *circles = cvHoughCircles(
-		grayImage,
-		storage,
-		CV_HOUGH_GRADIENT,
-		2,
-		grayImage->height / 4.0,
-		200,
-		100,
-		0,
-		0
-	);
-
-	//const int circleCount = circles->total;
-	const int circleCount = MIN(circles->total, 100);
-	for (int i = 0; i < circleCount; ++i)
+	const size_t drawingcircleCount = std::min(circles.size(), (size_t)100);
+	for (size_t i = 0; i < drawingcircleCount; ++i)
 	{
-		const float *circle = (float *)cvGetSeqElem(circles, i);
+		const cv::Vec3f &circle = circles[i];
+
 		const float &x = circle[0];
 		const float &y = circle[1];
 		const float &r = circle[2];
-		cvCircle(srcImage, cvPoint(cvRound(x), cvRound(y)), 3, CV_RGB(0,255,0), CV_FILLED, CV_AA, 0);
-		cvCircle(srcImage, cvPoint(cvRound(x), cvRound(y)), cvRound(r), CV_RGB(255,0,0), 1, CV_AA, 0);
+		cv::circle(rgb, cv::Point(cvRound(x), cvRound(y)), 3, CV_RGB(0, 255, 0), cv::FILLED, cv::LINE_AA, 0);
+		cv::circle(rgb, cv::Point(cvRound(x), cvRound(y)), cvRound(r), CV_RGB(255, 0, 0), 1, cv::LINE_AA, 0);
+	}
+}
+
+void hough_transform_for_line()
+{
+	//const std::string img_filename("./data/machine_vision/hough_line.png");
+	const std::string img_filename("./data/feature_analysis/chairs.pgm");
+
+	// Open an image.
+	cv::Mat img(cv::imread(img_filename, cv::IMREAD_COLOR));
+	if (img.empty())
+	{
+		std::cerr << "File not found: " << img_filename << std::endl;
+		return;
 	}
 
-	cvClearMemStorage(storage);
+	cv::Mat gray;
+	cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+
+	// Pre-process.
+	{
+		//cv::GaussianBlur(gray, gray, cv::Size(9, 9), 2.0, 2.0, cv::BORDER_DEFAULT);
+		cv::Canny(gray, gray, 50.0, 200.0, 3);
+	}
+
+#if 1
+	// Hough transform.
+	std::vector<cv::Vec2f> lines;
+	{
+		const double rho = 1.0;  // Distance resolution of the accumulator in pixels.
+		const double theta = CV_PI / 180.0;  // Angle resolution of the accumulator in radians.
+		const int threshold = 100;  // Accumulator threshold parameter. Only those lines are returned that get enough votes.
+		const double srn = 0.0;  // For the multi-scale Hough transform, it is a divisor for the distance resolution rho.
+		const double stn = 0.0;  // For the multi-scale Hough transform, it is a divisor for the angle resolution theta.
+		const double min_theta = 0.0;  // For standard and multi-scale Hough transform, minimum angle to check for lines. Must fall between 0 and max_theta.
+		const double max_theta = CV_PI;  // For standard and multi-scale Hough transform, maximum angle to check for lines. Must fall between min_theta and CV_PI.
+		cv::HoughLines(gray, lines, rho, theta, threshold, srn, stn, min_theta, max_theta);
+	}
+
+	// Draw lines.
+	draw_lines(lines, img);
+#else
+	// Hough transform.
+	std::vector<cv::Vec4i> lines;
+	{
+		const double rho = 1.0;  // Distance resolution of the accumulator in pixels.
+		const double theta = CV_PI / 18.0;  // Angle resolution of the accumulator in radians.
+		const int threshold = 80;  // Accumulator threshold parameter. Only those lines are returned that get enough votes.
+		const double minLineLength = 30.0;  // Minimum line length. Line segments shorter than that are rejected.
+		const double maxLineGap = 10.0;  // Maximum allowed gap between points on the same line to link them.
+		cv::HoughLinesP(gray, lines, rho, theta, threshold, minLineLength, maxLineGap);
+	}
+
+	// Draw lines.
+	draw_lines(lines, img);
+#endif
+
+	// Show the result.
+	cv::imshow("Hough transform - Gray", gray);
+	cv::imshow("Hough transform - Result", img);
+	cv::waitKey();
+
+	cv::destroyAllWindows();
+}
+
+void hough_transform_for_circle()
+{
+	const std::string img_filename("./data/feature_analysis/stars.pgm");
+
+	// Open an image.
+	cv::Mat img(cv::imread(img_filename, cv::IMREAD_COLOR));
+	if (img.empty())
+	{
+		std::cerr << "File not found: " << img_filename << std::endl;
+		return;
+	}
+
+	cv::Mat gray;
+	cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+
+	// Pre-process.
+	{
+		//cv::GaussianBlur(gray, gray, cv::Size(9, 9), 2.0, 2.0, cv::BORDER_DEFAULT);
+		cv::Canny(gray, gray, 50.0, 200.0, 3);
+	}
+
+	// Hough transform.
+	std::vector<cv::Vec3f> circles;
+	{
+		// cv::HOUGH_STANDARD, cv::HOUGH_PROBABILISTIC, cv::HOUGH_MULTI_SCALE, cv::HOUGH_GRADIENT.
+		const int method = cv::HOUGH_GRADIENT;  // Currently, the only implemented method is cv::HOUGH_GRADIENT.
+		const double dp = 2.0;  // Inverse ratio of the accumulator resolution to the image resolution.
+		const double minDist = gray.rows / 4.0;  // Minimum distance between the centers of the detected circles.
+		const double param1 = 200.0;  // First method-specific parameter. In case of cv::HOUGH_GRADIENT, it is the higher threshold of the two passed to the Canny edge detector (the lower one is twice smaller).
+		const double param2 = 100.0;  // Second method-specific parameter. In case of cv::HOUGH_GRADIENT, it is the accumulator threshold for the circle centers at the detection stage.
+		const int minRadius = 0;  // Minimum circle radius.
+		const int maxRadius = 0;  // Maximum circle radius.
+		cv::HoughCircles(gray, circles, method, dp, minDist, param1, param2, minRadius, maxRadius);
+	}
+
+	// Draw circles.
+	draw_circles(circles, img);
+
+	// Show the result.
+	cv::imshow("Hough transform - Gray", gray);
+	cv::imshow("Hough transform - Result", img);
+	cv::waitKey();
+
+	cv::destroyAllWindows();
+}
+
+void hough_transform_for_alignment_marker()
+{
+	const std::string img_filename("./data/machine_vision/alignment_marker.png");
+
+	// Open an image.
+	cv::Mat img(cv::imread(img_filename, cv::IMREAD_COLOR));
+	if (img.empty())
+	{
+		std::cerr << "File not found: " << img_filename << std::endl;
+		return;
+	}
+
+	cv::Mat gray;
+	cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+
+	// Pre-process.
+	{
+		cv::GaussianBlur(gray, gray, cv::Size(9, 9), 9.0, 9.0, cv::BORDER_DEFAULT);
+
+		cv::threshold(gray, gray, 100, 255, cv::THRESH_BINARY);
+
+		const cv::Mat selement(cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1)));
+		cv::morphologyEx(gray, gray, cv::MORPH_CLOSE, selement, cv::Point(-1, -1), 9);
+
+		cv::Canny(gray, gray, 50.0, 200.0, 3);
+	}
+
+#if 1
+	// Hough transform.
+	std::vector<cv::Vec2f> lines;
+	{
+		const double rho = 1.0;  // Distance resolution of the accumulator in pixels.
+		const double theta = CV_PI / 18.0;  // Angle resolution of the accumulator in radians.
+		const int threshold = 40;  // Accumulator threshold parameter. Only those lines are returned that get enough votes.
+		const double srn = 0.0;  // For the multi-scale Hough transform, it is a divisor for the distance resolution rho.
+		const double stn = 0.0;  // For the multi-scale Hough transform, it is a divisor for the angle resolution theta.
+		const double min_theta = 0.0;  // For standard and multi-scale Hough transform, minimum angle to check for lines. Must fall between 0 and max_theta.
+		const double max_theta = CV_PI;  // For standard and multi-scale Hough transform, maximum angle to check for lines. Must fall between min_theta and CV_PI.
+		cv::HoughLines(gray, lines, rho, theta, threshold, srn, stn, min_theta, max_theta);
+	}
+
+	// Draw lines.
+	draw_lines(lines, img);
+#else
+	// Hough transform.
+	std::vector<cv::Vec4i> lines;
+	{
+		const double rho = 1.0;  // Distance resolution of the accumulator in pixels.
+		const double theta = CV_PI / 18.0;  // Angle resolution of the accumulator in radians.
+		const int threshold = 80;  // Accumulator threshold parameter. Only those lines are returned that get enough votes.
+		const double minLineLength = 30.0;  // Minimum line length. Line segments shorter than that are rejected.
+		const double maxLineGap = 10.0;  // Maximum allowed gap between points on the same line to link them.
+		cv::HoughLinesP(gray, lines, rho, theta, threshold, minLineLength, maxLineGap);
+	}
+
+	// Draw lines.
+	draw_lines(lines, img);
+#endif
+
+	// Show the result.
+	cv::imshow("Hough transform - Gray", gray);
+	cv::imshow("Hough transform - Result", img);
+	cv::waitKey();
+
+	cv::destroyAllWindows();
 }
 
 }  // namespace local
@@ -117,51 +239,11 @@ namespace my_opencv {
 
 void hough_transform()
 {
-	const std::string imageFileName("./data/machine_vision/opencv/hough_line.png");
+	//local::hough_transform_for_line();
+	//local::hough_transform_for_circle();
 
-	const char *windowName = "hough transform";
-	cvNamedWindow(windowName, CV_WINDOW_AUTOSIZE);
-
-	//
-	IplImage *srcImage = cvLoadImage(imageFileName.c_str(), 1);
-
-	IplImage *grayImage = NULL;
-	if (1 == srcImage->nChannels)
-		cvCopy(srcImage, grayImage, NULL);
-	else
-	{
-		grayImage = cvCreateImage(cvGetSize(srcImage), srcImage->depth, 1);
-#if defined(__GNUC__)
-		if (strcasecmp(srcImage->channelSeq, "RGB") == 0)
-#elif defined(_MSC_VER)
-		if (_stricmp(srcImage->channelSeq, "RGB") == 0)
-#endif
-			cvCvtColor(srcImage, grayImage, CV_RGB2GRAY);
-#if defined(__GNUC__)
-		else if (strcasecmp(srcImage->channelSeq, "BGR") == 0)
-#elif defined(_MSC_VER)
-		else if (_stricmp(srcImage->channelSeq, "BGR") == 0)
-#endif
-			cvCvtColor(srcImage, grayImage, CV_BGR2GRAY);
-		else
-			assert(false);
-		grayImage->origin = srcImage->origin;
-	}
-
-	//
-	//local::hough_line_standard(srcImage, grayImage);
-	//local::hough_line_probabilistic(srcImage, grayImage);
-	local::hough_circle(srcImage, grayImage);
-
-	//
-	cvShowImage(windowName, srcImage);
-	cvWaitKey();
-
-	//
-	cvReleaseImage(&grayImage);
-	cvReleaseImage(&srcImage);
-
-	cvDestroyWindow(windowName);
+	// Application.
+	local::hough_transform_for_alignment_marker();
 }
 
 }  // namespace my_opencv

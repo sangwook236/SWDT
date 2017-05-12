@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	try
 	{
 		std::cout << "Open Multi-Processing (OpenMP) --------------------------------------" << std::endl;
-		//retval = openmp_main(argc, argv);
+		retval = openmp_main(argc, argv);
 
 		std::cout << "\nSingle instruction, mutiple data (SIMD) -----------------------------" << std::endl;
 		//	- Streaming SIMD Extensions (SSE).
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nVexCL library -------------------------------------------------------" << std::endl;
 		//	- Support OpenCL, CUDA, and Boost.Compute.
-		retval = vexcl_main(argc, argv);
+		//retval = vexcl_main(argc, argv);
 
 		std::cout << "\nThrust library ------------------------------------------------------" << std::endl;
 		//	- Interoperability with CUDA, TBB, and OpenMP.
