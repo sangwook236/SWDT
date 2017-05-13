@@ -68,7 +68,8 @@ void sum_value(const double val, double sum, const int n)
 //	"Guide into OpenMP: Easy multithreading programming for C++".
 void basic()
 {
-#if defined(__GNUC__)
+	std::cout << "<1>----------------------------------------------------------" << std::endl;
+#if _OPENMP >= 201307  // Ver. 4.0.
 	{
 		const int size = 256;
 		double sinTable[size];
@@ -76,7 +77,10 @@ void basic()
 		for (int n = 0; n < size; ++n)
 			sinTable[n] = std::sin(2 * M_PI * n / size);
 	}
+#endif
 
+	std::cout << "<2>----------------------------------------------------------" << std::endl;
+#if _OPENMP >= 201307  // Ver. 4.0.
 	{
 		const int size = 256;
 		double sinTable[size];
@@ -86,25 +90,28 @@ void basic()
 	}
 #endif
 
-	std::cout << "----------------------------------------------------------" << std::endl;
+	std::cout << "<3>----------------------------------------------------------" << std::endl;
 	{
-#pragma omp parallel
+//#pragma omp parallel
+#pragma omp parallel num_threads(5)
 		{
 			std::cout << "Hello!" << std::endl;
 		}
 	}
 
-	std::cout << "----------------------------------------------------------" << std::endl;
+	std::cout << "<4>----------------------------------------------------------" << std::endl;
 	{
 		const int parallelism_enabled = 1;
-#pragma omp parallel for if(parallelism_enabled)
+//#pragma omp parallel for if(parallelism_enabled)
+#pragma omp parallel for num_threads(5) if(parallelism_enabled)
 		for (int c = 0; c < 10; ++c)
 			std::cout << "c = " << c << std::endl;
 	}
 
-	std::cout << "----------------------------------------------------------" << std::endl;
+	std::cout << "<5>----------------------------------------------------------" << std::endl;
 	{
-#pragma omp parallel
+//#pragma omp parallel
+#pragma omp parallel num_threads(5)
 		{
 #pragma omp for
 			for (int n = 0; n < 10; ++n)
@@ -113,40 +120,33 @@ void basic()
 		}
 	}
 
-	std::cout << "----------------------------------------------------------" << std::endl;
-	{
-#pragma omp parallel num_threads(3)
-		{
-#pragma omp for
-			for (int n = 0; n < 10; ++n)
-				std::cout << ' ' << n;
-			std::cout << std::endl;
-		}
-	}
-
-	std::cout << "----------------------------------------------------------" << std::endl;
+	std::cout << "<6>----------------------------------------------------------" << std::endl;
 	{
 		int n;
-#pragma omp parallel for private(n)
+//#pragma omp parallel for private(n)
+#pragma omp parallel for private(n) num_threads(5)
 		for (n = 0; n < 10; ++n)
 			std::cout << ' ' << n;
 		std::cout << std::endl;
 	}
 
-	std::cout << "----------------------------------------------------------" << std::endl;
+	std::cout << "<7>----------------------------------------------------------" << std::endl;
 	{
-		//#pragma omp parallel for schedule(dynamic)
-#pragma omp parallel for schedule(dynamic, 3)
+//#pragma omp parallel for schedule(dynamic)
+//#pragma omp parallel for schedule(dynamic) num_threads(5)
+//#pragma omp parallel for schedule(dynamic, 3)
+#pragma omp parallel for schedule(dynamic, 3) num_threads(5)
 		for (int n = 0; n < 10; ++n)
 			std::cout << ' ' << n;
 		std::cout << std::endl;
 	}
 
-	std::cout << "----------------------------------------------------------" << std::endl;
+	std::cout << "<8>----------------------------------------------------------" << std::endl;
 	{
 		double val[10] = { 0.0, };
 		double sum = 0.0;
-#pragma omp parallel for ordered schedule(dynamic)
+//#pragma omp parallel for ordered schedule(dynamic)
+#pragma omp parallel for ordered schedule(dynamic) num_threads(5)
 		for (int n = 0; n < 10; ++n)
 		{
 			set_value(val[n], n);
@@ -156,10 +156,12 @@ void basic()
 		}
 	}
 
-	std::cout << "----------------------------------------------------------" << std::endl;
+	std::cout << "<9>----------------------------------------------------------" << std::endl;
 	{
 //#pragma omp sections
-#pragma omp parallel sections
+//#pragma omp sections num_threads(5)
+//#pragma omp parallel sections
+#pragma omp parallel sections num_threads(5)
 		{
 			{
 				std::cout << "Work #1." << std::endl;
