@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://people.kyb.tuebingen.mpg.de/suvrit/work/progs/movmf/
 		http://people.kyb.tuebingen.mpg.de/suvrit/work/progs/movmf.html
 		http://people.kyb.tuebingen.mpg.de/suvrit/work/progs/

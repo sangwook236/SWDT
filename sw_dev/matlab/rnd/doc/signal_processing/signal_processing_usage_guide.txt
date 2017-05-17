@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Reference.
 		http://www.ni.com/white-paper/4278/en/
 		http://zone.ni.com/reference/en-XX/help/371361B-01/lvanlsconcepts/char_smoothing_windows/

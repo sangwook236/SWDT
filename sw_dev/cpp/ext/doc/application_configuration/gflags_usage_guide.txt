@@ -1,9 +1,9 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		https://github.com/gflags/gflags
 		https://google-gflags.googlecode.com/
 
-[-] Building (CMake)
-	-. Set options
+[-] Building (CMake).
+	- Set options.
 		Set BUILD_SHARED_LIBS to true.
 		Set CMAKE_DEBUG_POSTFIX to d.

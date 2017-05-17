@@ -5,7 +5,7 @@
 	- Paper.
 		"An Efficient Algorithm for Co-Segmentation", D. S. Hochbaum and V. Singh, ICCV 2009
 
-[-] Usage (Windows)
+[-] Usage (Windows).
 	- Modify ${COSEG_MAXFLOW_HOME}/histogram_creation_code/call_hist_rgbgabor.m.
 			==> Fix function name:
 				<before> function [V1_cf V2_cf]=call_hist_rgbgabpr(no_of_bins,im1,im2)

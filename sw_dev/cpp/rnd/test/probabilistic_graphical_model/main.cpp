@@ -71,6 +71,9 @@ int main(int argc, char *argv[])
 		//retval = middlebury_main(argc, argv);
 
 		std::cout << "\nConditional random field (CRF) --------------------------------------" << std::endl;
+		//	- Hidden CRF (HCRF).
+		//	- Laten-dynamc CRF (LDCRF).
+		//	- Fully-connected (dense) CRF.
 		//retval = crfpp_main(argc, argv);
 		retval = hcrf_main(argc, argv);
 

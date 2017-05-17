@@ -1,6 +1,6 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.ogre3d.org/
 
-[-] Build (CMake)
+[-] Building (CMake).
 	- Link with static libraries of FreeImage.

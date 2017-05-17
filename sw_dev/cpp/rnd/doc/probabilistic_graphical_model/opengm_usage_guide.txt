@@ -8,9 +8,9 @@
 [-] Usage.
     - OpenGM library는 사용할 때 header file만 있으면 됨.
 		OpenGM library를 사용하기 위해 link해야 하는 static or shared library file은 없음.
-    - Need to link external libraries in order to use OpenGM in client applications
+    - Need to link external libraries in order to use OpenGM in client applications.
 
-    - opengm-externals repository는 필요없는 것으로 판단됨. (2016/04/29)
+    - opengm-externals repository는 필요없는 것으로 판단됨 (2016/04/29).
 
 [-] Building GitHub (CMake): 2016/05/04.
 	- Prepare to download external libraries (configure & generate).

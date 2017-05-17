@@ -2,7 +2,7 @@
 	- Site.
 		http://www.cgal.org/
 
-[-] Usage (Windows)
+[-] Usage (Windows).
 	- External libraries are required.
 		GMP, (MPFR, and TAUCS).
 		REF [doc] >> gmp_usage_guide.txt

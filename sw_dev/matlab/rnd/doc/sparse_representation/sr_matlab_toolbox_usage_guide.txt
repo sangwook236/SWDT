@@ -1,1 +1,3 @@
-http://cs.uwindsor.ca/~li11112c/sr.html
+[-] General.
+	- Site.
+		http://cs.uwindsor.ca/~li11112c/sr.html

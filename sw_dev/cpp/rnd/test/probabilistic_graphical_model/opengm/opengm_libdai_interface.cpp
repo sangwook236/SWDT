@@ -23,18 +23,18 @@ typedef opengm::SimpleDiscreteSpace<std::size_t, std::size_t> Space;
 typedef OPENGM_TYPELIST_2(opengm::ExplicitFunction<double>, opengm::PottsFunction<double>) FunctionTypelist;
 typedef opengm::GraphicalModel<double, opengm::Adder, FunctionTypelist, Space> GraphicalModel;
 
-// [ref] ${OPENGM_HOME}/src/examples/unsorted-examples/markov-chain.cxx
-// construct a graphical model with 
+// REF [file] >> ${OPENGM_HOME}/src/examples/unsorted-examples/markov-chain.cxx
+// Construct a graphical model with 
 // - addition as the operation (template parameter Adder)
-// - support for Potts functions (template parameter PottsFunction<double>)
+// - support for Potts functions (template parameter PottsFunction<double>).
 void buildGraphicalModel(GraphicalModel &gm)
 {
-	// construct a label space with numOfVariables many variables, each having numOfLabels many labels
+	// Construct a label space with numOfVariables many variables, each having numOfLabels many labels.
 	const std::size_t numOfVariables = 20; 
 	const std::size_t numOfLabels = 5;
 	gm = GraphicalModel(Space(numOfVariables, numOfLabels));
 
-	// for each variable, add one 1st order functions and one 1st order factor
+	// For each variable, add one 1st order functions and one 1st order factor.
 	for (std::size_t v = 0; v < numOfVariables; ++v)
 	{
 		const std::size_t shape[] = { numOfLabels };
@@ -49,11 +49,11 @@ void buildGraphicalModel(GraphicalModel &gm)
 	}
 
 	{
-		// add one (!) 2nd order Potts function
+		// Add one (!) 2nd order Potts function.
 		opengm::PottsFunction<double> func2(numOfLabels, numOfLabels, 0.0, 0.3);
 		const GraphicalModel::FunctionIdentifier fid2 = gm.addFunction(func2);
 
-		// for each pair of consecutive variables, add one factor that refers to the Potts function
+		// For each pair of consecutive variables, add one factor that refers to the Potts function.
 		for (std::size_t v = 0; v < numOfVariables - 1; ++v)
 		{
 			const std::size_t variableIndices[] = { v, v + 1 };
@@ -67,7 +67,7 @@ void belief_propagation()
 	GraphicalModel gm;
 	buildGraphicalModel(gm);
 
-	// set up the optimizer (BP)
+	// Set up the optimizer (BP).
 	typedef opengm::external::libdai::Bp<GraphicalModel, opengm::Maximizer> Bp;
 
 	const std::size_t maxIterations = 100;
@@ -80,11 +80,11 @@ void belief_propagation()
 	const Bp::Parameter parameter(maxIterations, damping, tolerance, updateRule, verboseLevel);
 	Bp bp(gm, parameter);
 
-	// optimize (approximately)
-	std::cout << "on inferring ..." << std::endl;
+	// Optimize (approximately).
+	std::cout << "On inferring ..." << std::endl;
 	bp.infer();
 
-	// obtain the (approximate) argmax
+	// Obtain the (approximate) argmax.
 	std::vector<std::size_t> labeling(gm.numberOfVariables());
 	bp.arg(labeling);
 
@@ -97,7 +97,7 @@ void tree_reweighted_belief_propagation()
 	GraphicalModel gm;
 	buildGraphicalModel(gm);
 
-	// set up the optimizer (trbp)
+	// Set up the optimizer (trbp).
 	typedef opengm::external::libdai::TreeReweightedBp<GraphicalModel, opengm::Maximizer> Trbp;
 
 	const std::size_t maxIterations = 100;
@@ -111,11 +111,11 @@ void tree_reweighted_belief_propagation()
 	const Trbp::Parameter parameter(maxIterations, damping, tolerance, ntrees, updateRule, verboseLevel);
 	Trbp trbp(gm, parameter);
 
-	// optimize (approximately)
-	std::cout << "on inferring ..." << std::endl;
+	// Optimize (approximately).
+	std::cout << "On inferring ..." << std::endl;
 	trbp.infer();
 
-	// obtain the (approximate) argmax
+	// Obtain the (approximate) argmax.
 	std::vector<std::size_t> labeling(gm.numberOfVariables());
 	trbp.arg(labeling);
 
@@ -128,7 +128,7 @@ void double_loop_generalized_belief_propagation()
 	GraphicalModel gm;
 	buildGraphicalModel(gm);
 
-	// set up the optimizer (double loop generalized BP)
+	// Set up the optimizer (double loop generalized BP).
 	typedef opengm::external::libdai::DoubleLoopGeneralizedBP<GraphicalModel, opengm::Minimizer> DoubleLoopGeneralizedBP;
 
 	const bool doubleLoop = 1;
@@ -143,11 +143,11 @@ void double_loop_generalized_belief_propagation()
 	const DoubleLoopGeneralizedBP::Parameter parameter(doubleLoop, clusters, loopDepth, init, maxIterations, tolerance, verboseLevel);
 	DoubleLoopGeneralizedBP gdlbp(gm, parameter);
 
-	// optimize (approximately)
-	std::cout << "on inferring ..." << std::endl;
+	// Optimize (approximately).
+	std::cout << "On inferring ..." << std::endl;
 	gdlbp.infer();
 
-	// obtain the (approximate) argmin
+	// Obtain the (approximate) argmin.
 	std::vector<std::size_t> labeling(gm.numberOfVariables());
 	gdlbp.arg(labeling);
 
@@ -160,7 +160,7 @@ void fractional_belief_propagation()
 	GraphicalModel gm;
 	buildGraphicalModel(gm);
 
-	// set up the optimizer (fractional BP)
+	// Set up the optimizer (fractional BP).
 	typedef opengm::external::libdai::FractionalBp<GraphicalModel, opengm::Maximizer> FractionalBp;
 
 	const std::size_t maxIterations = 100;
@@ -173,11 +173,11 @@ void fractional_belief_propagation()
 	const FractionalBp::Parameter parameter(maxIterations, damping, tolerance, updateRule, verboseLevel);
 	FractionalBp fbp(gm, parameter);
 
-	// optimize (approximately)
-	std::cout << "on inferring ..." << std::endl;
+	// Optimize (approximately).
+	std::cout << "On inferring ..." << std::endl;
 	fbp.infer();
 
-	// obtain the (approximate) argmax
+	// Obtain the (approximate) argmax.
 	std::vector<std::size_t> labeling(gm.numberOfVariables());
 	fbp.arg(labeling);
 
@@ -190,7 +190,7 @@ void tree_expectation_propagation()
 	GraphicalModel gm;
 	buildGraphicalModel(gm);
 
-	// set up the optimizer (tree expectation propagation)
+	// Set up the optimizer (tree expectation propagation).
 	typedef opengm::external::libdai::TreeExpectationPropagation<GraphicalModel, opengm::Maximizer> TreeExpectationPropagation;
 
 	// TreeExpectationPropagation::TreeEpType = ORG | ALT
@@ -201,11 +201,11 @@ void tree_expectation_propagation()
 	const TreeExpectationPropagation::Parameter parameter(treeEpType, maxIterations, tolerance, verboseLevel);
 	TreeExpectationPropagation treeEp(gm, parameter);
 
-	// optimize (approximately)
-	std::cout << "on inferring ..." << std::endl;
+	// Optimize (approximately).
+	std::cout << "On inferring ..." << std::endl;
 	treeEp.infer();
 
-	// obtain the (approximate) argmax
+	// Obtain the (approximate) argmax.
 	std::vector<std::size_t> labeling(gm.numberOfVariables());
 	treeEp.arg(labeling);
 
@@ -218,18 +218,18 @@ void exact_inference()
 	GraphicalModel gm;
 	buildGraphicalModel(gm);
 
-	// set up the optimizer (junction tree)
+	// Set up the optimizer (junction tree).
 	typedef opengm::external::libdai::Exact<GraphicalModel, opengm::Minimizer> Exact;
 
 	const std::size_t verboseLevel = 0;
 	const Exact::Parameter parameter(verboseLevel);
 	Exact exact(gm, parameter);
 
-	// optimize (to global optimum)
-	std::cout << "on inferring ..." << std::endl;
+	// Optimize (to global optimum).
+	std::cout << "On inferring ..." << std::endl;
 	exact.infer();
 	
-	// obtain the argmin
+	// Obtain the argmin.
 	std::vector<std::size_t> labeling(gm.numberOfVariables());
 	exact.arg(labeling);
 
@@ -242,7 +242,7 @@ void junction_tree_inference()
 	GraphicalModel gm;
 	buildGraphicalModel(gm);
 
-	// set up the optimizer (exact)
+	// Set up the optimizer (exact).
 	typedef opengm::external::libdai::JunctionTree<GraphicalModel, opengm::Minimizer> JunctionTree;
 
 	// JunctionTree::UpdateRule = HUGIN | SHSH
@@ -253,11 +253,11 @@ void junction_tree_inference()
 	const JunctionTree::Parameter parameter(updateRule, heuristic, verboseLevel);
 	JunctionTree jt(gm, parameter);
 
-	// optimize (to global optimum)
-	std::cout << "on inferring ..." << std::endl;
+	// Optimize (to global optimum).
+	std::cout << "Oon inferring ..." << std::endl;
 	jt.infer();
 
-	// obtain the argmin
+	// Obtain the argmin.
 	std::vector<std::size_t> labeling(gm.numberOfVariables());
 	jt.arg(labeling);
 
@@ -270,7 +270,7 @@ void gibbs_sampling()
 	GraphicalModel gm;
 	buildGraphicalModel(gm);
 
-	// set up the optimizer (Gibbs sampler)
+	// Set up the optimizer (Gibbs sampler).
 	typedef opengm::external::libdai::Gibbs<GraphicalModel, opengm::Minimizer> Gibbs;
 
 	const std::size_t maxIterations = 10000;
@@ -280,11 +280,11 @@ void gibbs_sampling()
 	const Gibbs::Parameter parameter(maxIterations, burnIn, restart, verboseLevel);
 	Gibbs gibbs(gm, parameter);
 
-	// optimize
-	std::cout << "on inferring ..." << std::endl;
+	// Optimize.
+	std::cout << "On inferring ..." << std::endl;
 	gibbs.infer();
 
-	// obtain the argmin
+	// Obtain the argmin.
 	std::vector<std::size_t> labeling(gm.numberOfVariables());
 	gibbs.arg(labeling);
 
@@ -297,7 +297,7 @@ void mean_field_inference()
 	GraphicalModel gm;
 	buildGraphicalModel(gm);
 
-	// set up the optimizer (mean field)
+	// Set up the optimizer (mean field).
 	typedef opengm::external::libdai::MeanField<GraphicalModel, opengm::Minimizer> MeanField;
 
 	const std::size_t maxIterations = 10000;
@@ -311,11 +311,11 @@ void mean_field_inference()
 	const MeanField::Parameter parameter(maxIterations, damping, tolerance, updateRule, init, verboseLevel);
 	MeanField mf(gm, parameter);
 
-	// optimize (approximately)
-	std::cout << "on inferring ..." << std::endl;
+	// Optimize (approximately).
+	std::cout << "On inferring ..." << std::endl;
 	mf.infer();
 
-	// obtain the (approximate) argmin
+	// Obtain the (approximate) argmin.
 	std::vector<std::size_t> labeling(gm.numberOfVariables());
 	mf.arg(labeling);
 
@@ -337,7 +337,7 @@ void libdai_interface()
 	local::tree_reweighted_belief_propagation();
 
 	std::cout << "\nlibDAI double loop generalized belief propagation -------------------" << std::endl;
-	//local::double_loop_generalized_belief_propagation();  // run-time error
+	//local::double_loop_generalized_belief_propagation();  // Run-time error.
 
 	std::cout << "\nlibDAI fractional belief propagation --------------------------------" << std::endl;
 	local::fractional_belief_propagation();
@@ -355,7 +355,7 @@ void libdai_interface()
 	local::gibbs_sampling();
 
 	std::cout << "\nlibDAI mean field inference -----------------------------------------" << std::endl;
-	//local::mean_field_inference();  // run-time error
+	//local::mean_field_inference();  // Run-time error.
 }
 
 }  // namespace my_opengm

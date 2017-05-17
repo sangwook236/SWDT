@@ -1,32 +1,30 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://sourceforge.net/apps/mediawiki/cppunit/
 		https://launchpad.net/cppunit2
 		http://cppunit.sourceforge.net/cppunit2/
 
-<< Building >>
+[-] Building QtTestRunner library (VC).
+	REF [file] >> ${CPPUNIT_ROOT}/src/qttestrunner/make_lib.bat
 
-[-] Building QtTestRunner library (VC)
-	[ref] ${CPPUNIT_ROOT}/src/qttestrunner/make_lib.bat
-
-	-. Use Qt3 library
+	- Use Qt3 library.
 		Qt4 사용이 가능한 듯 하나 해야 할 일이 많음.
 		Qt5는 Qt3에 대한 하위 호환이 좋지 않아 사용 불가능.
-	-. source file path
+	- Source file path.
 		${CPPUNIT_ROOT}/src/qttestrunner
-	-. building 전에 QT 관련 directory를 path에 추가해야 함
+	- Building 전에 QT 관련 directory를 path에 추가해야 함.
 		set path=${QT_ROOT}/bin;${QT_ROOT};%path%
-	-. using qmake
+	- Using qmake.
 		qmake qttestrunnerlib.pro
 			==> 생성된 Makefile.Release & Makefile.Debug file의 $(QT_ROOT} path가 잘못 지정되어 있는 경우가 있으니 이를 올바른 path로 변경하여야 함.
 		nmake distclean
 			==> 실행하면 이전 명령으로 생성되었던 makefile 등의 관련 file이 모두 지워짐.
 				실행하지 말아야 함.
 		nmake
-	-. 아래와 같은 error가 발생한다면
+	- 아래와 같은 error가 발생한다면.
 		"Could not find mkspecs for your QMAKESPEC(win32-msvc2010) after trying"
 			==> qmake -spec ${QT_ROOT}/mkspecs/win32-msvc2010 qttestrunnerlib.pro
-	-. nmake를 실행하는 경우 *.ui file을 uic.exe로 building하는 과정에 error가 발생
+	- nmake를 실행하는 경우 *.ui file을 uic.exe로 building하는 과정에 error가 발생.
 		1. *.ui file이 Qt3 version이어서 error 발생.
 			1) convert version
 				{QT4_ROOT}/bin/uic3.exe를 이용해 ui file version을 upgrade.
@@ -41,26 +39,25 @@
 				-i를 포함하는 부분 삭제.
 			4-2) (Qt5) modify option flag in uic.exe
 				-i -> --include
-		2) Makefile.Release & Makefile.Debug file 안에서 uic.exe file을 찾아서 uic3.exe로 변경
-	-. building 과정에서 qptrlist.h를 찾지 못한다는 error 발생
+		2) Makefile.Release & Makefile.Debug file 안에서 uic.exe file을 찾아서 uic3.exe로 변경.
+	- Building 과정에서 qptrlist.h를 찾지 못한다는 error 발생.
 		${CPPUNIT_ROOT}/src/qttestrunner/MostRecentTests.h
 		${CPPUNIT_ROOT}/src/qttestrunner/TestRunnerModel.h
 		 ==> 주석 처리.
 		 ==> 그래도 compile-time error 발생.
 
-<< Trouble Shooting >>
+[-] Trouble Shooting.
+	- Building 과정에서 일부 file이 copy가 되지 않는 경우.
+		Output File에 지정된 file name과 Post-Build Event에 지정된 file name이 달라서 발생하는 문제임.
 
-[-] Building 과정에서 일부 file이 copy가 되지 않는 경우
-	-. Output File에 지정된 file name과 Post-Build Event에 지정된 file name이 달라서 발생하는 문제임.
-
-[-] TestRunner & TestPlugInRunner projects can't be compiled
-	-. error message
-		MsDevCallerListCtrl.cpp(68): error C3505: cannot load type library '{80CC9F66-E7D8-4DDD-85B6-D9E6CD0E93E2}'
-	-. solution
-		아래의 import 문을 
-			#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
-		다음과 같이 변경
-			//The following #import imports EnvDTE based on its LIBID.
-			#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("10.0") lcid("0") raw_interfaces_only named_guids
-			//The following #import imports EnvDTE80 based on its LIBID.
-			#import "libid:1A31287A-4D7D-413e-8E32-3B374931BD89" version("10.0") lcid("0") raw_interfaces_only named_guids
+	- TestRunner & TestPlugInRunner projects can't be compiled.
+		<error>
+			MsDevCallerListCtrl.cpp(68): error C3505: cannot load type library '{80CC9F66-E7D8-4DDD-85B6-D9E6CD0E93E2}'
+		<solution>
+			아래의 import 문을 
+				#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("7.0") lcid("0") raw_interfaces_only named_guids
+			다음과 같이 변경.
+				//The following #import imports EnvDTE based on its LIBID.
+				#import "libid:80cc9f66-e7d8-4ddd-85b6-d9e6cd0e93e2" version("10.0") lcid("0") raw_interfaces_only named_guids
+				//The following #import imports EnvDTE80 based on its LIBID.
+				#import "libid:1A31287A-4D7D-413e-8E32-3B374931BD89" version("10.0") lcid("0") raw_interfaces_only named_guids

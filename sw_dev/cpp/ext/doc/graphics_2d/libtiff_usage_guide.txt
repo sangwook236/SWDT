@@ -1,11 +1,11 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.libtiff.org/
 
 		http://www.remotesensing.org/libtiff/
 		http://libtiff.maptools.org/
 
-[-] Building (VC)
+[-] Building (VC).
 	- Download.
 		http://www.remotesensing.org/libtiff/
 	- Run Visual Studio Developer Command Prompt.
@@ -28,7 +28,7 @@
 			${LIBTIFF_HOME}/libtiff/tiffio.h
 			${LIBTIFF_HOME}/libtiff/tiffvers.h
 
-[-] Trouble Shooting (VC)
+[-] Trouble Shooting (VC).
 	- Can't find <unistd.h>.
 		<solution>
 			in ${LIBTIFF_HOME}/libtiff/tiffgt.c

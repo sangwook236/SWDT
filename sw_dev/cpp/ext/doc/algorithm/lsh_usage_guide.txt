@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		slash:
 		https://github.com/salviati/slash
 

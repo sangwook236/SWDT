@@ -1,7 +1,7 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.gris.informatik.tu-darmstadt.de/~aandriye/contracking.html
-	-. Paper
+	- Paper.
 		"Multi-target Tracking by Continuous Energy Minimization", Anton Andriyenko and Konrad Schindler, CVPR, 2011.
 		"An Analytical Formulation of Global Occlusion Reasoning for Multi-Target Tracking", Anton Andriyenko, Stefan Roth, and Konrad Schindler, ICCVW, 2011.
 		"Discrete-Continuous Optimization for Multi-Target Tracking", Anton Andriyenko, Konrad Schindler, and Stefan Roth, CVPR, 2012.

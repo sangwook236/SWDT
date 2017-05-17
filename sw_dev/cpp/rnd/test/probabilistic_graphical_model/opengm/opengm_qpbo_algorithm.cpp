@@ -7,6 +7,7 @@
 #include <opengm/operations/adder.hxx>
 #include <opengm/inference/messagepassing/messagepassing.hxx>
 #include <iostream>
+#include <stdexcept>
 
 
 namespace {
@@ -19,6 +20,7 @@ namespace my_opengm {
 
 void qpbo_algorithm()
 {
+	throw std::runtime_error("Not yet implemented.");
 }
 
 }  // namespace my_opengm

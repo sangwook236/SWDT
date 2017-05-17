@@ -1,9 +1,9 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.ffmpeg.org/
 		http://ffmpeg.zeranoe.com/builds/
 
-[-] Usage (Windows)
+[-] Usage (Windows).
 	- Download files.
 		https://ffmpeg.zeranoe.com/builds/
 		https://ffmpeg.org/download.html

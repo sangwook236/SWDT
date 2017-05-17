@@ -1,10 +1,10 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.libmng.com/
 		http://libmng.sourceforge.net/
 		http://www.libpng.org/pub/mng/
 
-[-] Build (CMake)
+[-] Building (CMake).
 	- Disable little CMS (LCMS).
 		REF [file] >> ${GDT_HOME}/sw_dev/cpp/ext/src/graphics_2d/little_cms
 

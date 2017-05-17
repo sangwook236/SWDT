@@ -16,9 +16,9 @@ typedef opengm::PottsFunction<double> PottsFunction;
 typedef opengm::meta::TypeListGenerator<ExplicitFunction, PottsFunction>::type FunctionTypes;
 typedef opengm::GraphicalModel<double, opengm::Multiplier, FunctionTypes, Space> GraphicalModel;
 
-// build a model with 10 binary variables in which
+// Build a model with 10 binary variables in which
 // - the first variable is more likely to be labeled 1 than 0
-// - neighboring variables are more likely to have similar labels than dissimilar
+// - neighboring variables are more likely to have similar labels than dissimilar.
 void buildGraphicalModel(GraphicalModel &gm)
 {
 	const std::size_t numberOfVariables = 10;
@@ -27,25 +27,25 @@ void buildGraphicalModel(GraphicalModel &gm)
 	gm = GraphicalModel(space);
 
 	{
-		// add 1st order function
+		// Add 1st order function.
 		ExplicitFunction func1(&numberOfLabels, &numberOfLabels + 1);
 		func1(0) = 0.2;
 		func1(1) = 0.8;
 		const GraphicalModel::FunctionIdentifier fid1 = gm.addFunction(func1);
 
-		// add 1st order factor (at first variable)
+		// Add 1st order factor (at first variable).
 		const std::size_t variableIndices[] = { 0 };
 		gm.addFactor(fid1, variableIndices, variableIndices + 1);
 	}
 
 	{
-		// add 2nd order function
+		// Add 2nd order function.
 		const double probEqual = 0.7;
 		const double probUnequal = 0.3;
 		const PottsFunction func2(numberOfLabels, numberOfLabels, probEqual, probUnequal);
 		const GraphicalModel::FunctionIdentifier fid2 = gm.addFunction(func2);
 
-		// add 2nd order factors
+		// Add 2nd order factors.
 		for (std::size_t j = 0; j < numberOfVariables - 1; ++j)
 		{
 			const std::size_t variableIndices[] = { j, j + 1 };
@@ -54,7 +54,7 @@ void buildGraphicalModel(GraphicalModel &gm)
 	}
 }
 
-// use Gibbs sampling for the purpose of finding the most probable labeling
+// Use Gibbs sampling for the purpose of finding the most probable labeling.
 void gibbsSamplingForOptimization(const GraphicalModel &gm)
 {
 	typedef opengm::Gibbs<GraphicalModel, opengm::Maximizer> Gibbs;
@@ -65,19 +65,19 @@ void gibbsSamplingForOptimization(const GraphicalModel &gm)
 
 	Gibbs gibbs(gm, parameter);
 
-	std::cout << "on inferring ..." << std::endl;
+	std::cout << "On inferring ..." << std::endl;
 	gibbs.infer();
 
 	std::vector<std::size_t> argmax;
 	gibbs.arg(argmax);
 
-	std::cout << "most probable labeling sampled: (";
+	std::cout << "Most probable labeling sampled: (";
 	for (std::size_t j = 0; j < argmax.size(); ++j)
 		std::cout << argmax[j] << ", ";
 	std::cout << ')' << std::endl;
 }
-
-// use Gibbs sampling to estimate marginals
+/*
+// Use Gibbs sampling to estimate marginals.
 void gibbsSamplingForMarginalEstimation(const GraphicalModel &gm)
 {
 	typedef opengm::Gibbs<GraphicalModel, opengm::Maximizer> Gibbs;
@@ -85,25 +85,25 @@ void gibbsSamplingForMarginalEstimation(const GraphicalModel &gm)
 
 	MarginalVisitor visitor(gm);
 
-	// extend the visitor to sample first order marginals
+	// Extend the visitor to sample first order marginals.
 	for (std::size_t j = 0; j < gm.numberOfVariables(); ++j)
 		visitor.addMarginal(j);
 
-	// extend the visitor to sample certain second order marginals
+	// Extend the visitor to sample certain second order marginals.
 	for (std::size_t j = 0; j < gm.numberOfVariables() - 1; ++j)
 	{
 		const std::size_t variableIndices[] = { j, j + 1 };
 		visitor.addMarginal(variableIndices, variableIndices + 2);
 	}
 
-	// sample
+	// Sample.
 	Gibbs gibbs(gm);
 
-	std::cout << "on inferring ..." << std::endl;
+	std::cout << "On inferring ..." << std::endl;
 	gibbs.infer(visitor);
 
-	// output sampled first order marginals
-	std::cout << "sampled first order marginals:" << std::endl;
+	// Output sampled first order marginals.
+	std::cout << "Sampled first order marginals:" << std::endl;
 	for (std::size_t j = 0; j < gm.numberOfVariables(); ++j)
 	{
 		std::cout << "var" << j << ": ";
@@ -115,8 +115,8 @@ void gibbsSamplingForMarginalEstimation(const GraphicalModel &gm)
 		std::cout << std::endl;
 	}
 
-	// output sampled second order marginals
-	std::cout << "sampled second order marginals:" << std::endl;
+	// Output sampled second order marginals.
+	std::cout << "Sampled second order marginals:" << std::endl;
 	for (std::size_t j = gm.numberOfVariables(); j < visitor.numberOfMarginals(); ++j)
 	{
 		std::cout << "var" << visitor.marginal(j).variableIndex(0) << ", var" << visitor.marginal(j).variableIndex(1) << ": ";
@@ -129,20 +129,20 @@ void gibbsSamplingForMarginalEstimation(const GraphicalModel &gm)
 		std::cout << std::endl;
 	}
 }
-
+*/
 }  // namespace local
 }  // unnamed namespace
 
 namespace my_opengm {
 
-// [ref] ${OPENGM_HOME}/src/examples/unsorted-examples/gibbs.cxx
+// REF [file] >> ${OPENGM_HOME}/src/examples/unsorted-examples/gibbs.cxx
 void gibbs_example()
 {
 	local::GraphicalModel gm;
 
 	local::buildGraphicalModel(gm);
-	local::gibbsSamplingForOptimization(gm);
-	local::gibbsSamplingForMarginalEstimation(gm);
+	//local::gibbsSamplingForOptimization(gm);
+	//local::gibbsSamplingForMarginalEstimation(gm);
 }
 
 }  // namespace my_opengm

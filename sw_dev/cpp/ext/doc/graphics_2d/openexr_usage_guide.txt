@@ -1,8 +1,8 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.openexr.com/
 
-[-] Build (CMake + VC)
+[-] Building (CMake + VC).
 	- Download files.
 		IlmBase & OpenEXR.
 
@@ -21,7 +21,7 @@
 	- Build OpenEXR.
 	- Install OpenEXR.
 
-[-] Trouble Shooting (VC)
+[-] Trouble Shooting (VC).
 	- OpenEXR library의 Half.lib를 link할 때 half::_toFloat & half::_eLut를 찾을 수 없다는 오류.
 		<error message>	LNK2001 unresolved external symbol half::_toFloat & half::_eLut
 		==> half class에서 half::_toFloat & half::_eLut를 사용하는 함수를 header file에서 source file로 이동.

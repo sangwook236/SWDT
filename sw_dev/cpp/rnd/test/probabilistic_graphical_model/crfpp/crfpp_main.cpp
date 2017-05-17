@@ -13,8 +13,8 @@ namespace local {
 
 bool example()
 {
-	// -v 3: access deep information like alpha, beta, prob
-	// -nN: enable nbest output. N should be >= 2
+	// -v 3: access deep information like alpha, beta, prob.
+	// -nN: enable nbest output. N should be >= 2.
 	CRFPP::Tagger *tagger = CRFPP::createTagger("-m ./data/probabilistic_graphical_model/crfpp/model -v 3 -n2");
 
 	if (!tagger)
@@ -23,10 +23,10 @@ bool example()
 		return false;
 	}
 
-	// clear internal context
+	// Clear internal context.
 	tagger->clear();
 
-	// add context
+	// Add context.
 	tagger->add("Confidence NN");
 	tagger->add("in IN");
 	tagger->add("the DT");
@@ -45,20 +45,20 @@ bool example()
 	tagger->add("for IN");
 	tagger->add("September NNP");
 
-	std::cout << "column size: " << tagger->xsize() << std::endl;
-	std::cout << "token size: " << tagger->size() << std::endl;
-	std::cout << "tag size: " << tagger->ysize() << std::endl;
+	std::cout << "Column size: " << tagger->xsize() << std::endl;
+	std::cout << "Token size: " << tagger->size() << std::endl;
+	std::cout << "Tag size: " << tagger->ysize() << std::endl;
 
-	std::cout << "tagset information:" << std::endl;
+	std::cout << "Tagset information:" << std::endl;
 	for (size_t i = 0; i < tagger->ysize(); ++i)
 	{
-		std::cout << "tag " << i << " " << tagger->yname(i) << std::endl;
+		std::cout << "\tTag " << i << " " << tagger->yname(i) << std::endl;
 	}
 
-	// parse and change internal stated as 'parsed'
+	// Parse and change internal stated as 'parsed'.
 	if (!tagger->parse()) return false;
 
-	std::cout << "conditional prob = " << tagger->prob() << ", log(Z) = " << tagger->Z() << std::endl;
+	std::cout << "Conditional prob = " << tagger->prob() << ", log(Z) = " << tagger->Z() << std::endl;
 
 	for (size_t i = 0; i < tagger->size(); ++i)
 	{
@@ -68,7 +68,7 @@ bool example()
 		}
 		std::cout << tagger->y2(i) << '\t' << std::endl;
 
-		std::cout << "details";
+		std::cout << "Details:";
 		for (size_t j = 0; j < tagger->ysize(); ++j)
 		{
 			std::cout << '\t' << tagger->yname(j) << "/prob=" << tagger->prob(i, j) << "/alpha=" << tagger->alpha(i, j) << "/beta=" << tagger->beta(i, j);
@@ -76,13 +76,13 @@ bool example()
 		std::cout << std::endl;
 	}
 
-	// when -n20 is specified, you can access nbest outputs
+	// When -n20 is specified, you can access nbest outputs.
 	std::cout << "nbest outputs: " << std::endl;
 	for (size_t n = 0; n < 10; ++n)
 	{
 		if (!tagger->next()) break;
 		std::cout << "nbest n =" << n << ",\tconditional prob = " << tagger->prob() << std::endl;
-		// you can access any information using tagger->y()...
+		// You can access any information using tagger->y()...
 	}
 	std::cout << "done" << std::endl;
 
@@ -107,7 +107,7 @@ int crfpp_main(int argc, char *argv[])
 
 	int retval = EXIT_SUCCESS;
 
-	// training (encoding) -----------------------------------
+	// Train (encoding).
 	std::cout << "training (encoding) ..." << std::endl;
 	{
 		const std::string template_filename(base_directory + "template");
@@ -143,7 +143,7 @@ int crfpp_main(int argc, char *argv[])
 		retval = crfpp_learn(my_argc, (char **)my_argv);
 	}
 
-	// testing (decoding) ------------------------------------
+	// Test (decoding).
 	std::cout << "testing (decoding) ..." << std::endl;
 	{
 		const std::string model_filename(base_directory + "model");
@@ -159,7 +159,7 @@ int crfpp_main(int argc, char *argv[])
 		retval = crfpp_test(my_argc, (char **)my_argv);
 	}
 
-	// running example ---------------------------------------
+	// Run example.
 	std::cout << "running example ..." << std::endl;
 	{
 		retval = local::example() ? EXIT_SUCCESS : EXIT_FAILURE;

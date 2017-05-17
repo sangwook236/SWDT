@@ -1,11 +1,11 @@
-[-] General
+[-] General.
 	- Site.
 		http://openil.sourceforge.net/
 
-[-] Build (CMake)
+[-] Building (CMake).
 	- 정상 작동하지 않는 것으로 보임.
 
-[-] Build (VS 2015)
+[-] Building (VS 2015).
 	- Copy a project file.
 		Copy ${DevIL_HOME}/projects/msvc9 to ${DevIL_HOME}/projects/msvc14.
 	- Open the project file.
@@ -27,6 +27,6 @@
 	- Build.
 		Post-build event로 생성된 DLL files을 Windows/system32 directory로 copy함.
 
-[-] Trouble Shooting (VC)
+[-] Trouble Shooting (VC).
 	- OpenEXR library의 Half.lib 안에서 half::_toFloat & half::_eLut를 찾을 수 없다는 오류.
 		REF [file] >> openexr_usage_guide.txt

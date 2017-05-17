@@ -2,7 +2,7 @@
 	- Site.
 		http://www.vtk.org
 
-[-] Build ver. 5.10.0 (VC10).
+[-] Building ver. 5.10.0 (VC10).
 	- 여러 실행 project에서 Qt library 관련 오류 발생.
 		<error>
 			syntax error : identifier 'QCleanlooksStyle'
@@ -10,7 +10,7 @@
 			해당 부분을 주석 처리.
 				QApplication::setStyle(new QCleanlooksStyle);
 
-[-] Build (MSVC6).
+[-] Building (MSVC6).
 	- VTK site로 부터 file download.
 		Related files.
 			VTK source code and examples.
@@ -49,7 +49,7 @@
 			>< debug & release build의 file name이 동일.
 				따라서 install시 덮어쓰지 않도록 주의하여야 함.
 
-[-] Link.
+[-] Linking.
 	- Include Path.
 	- Library Path.
 		${VTK_BUILD_ROOT}/bin/Release

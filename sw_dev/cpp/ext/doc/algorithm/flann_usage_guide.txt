@@ -1,8 +1,8 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.cs.ubc.ca/~mariusm/index.php/FLANN/FLANN
 
-[-] Building (MSVC)
+[-] Building (MSVC).
 	- MEX extension 생성 관련 오류 발생.
 		{FLANN_HOME}/build_msvc10/src/matlab/nearest_neighbors.mexw32를 생성할 수 없음.
 		==> MSVC로 32-bit building을 하면서 64-bit Matlab을 사용하거나 그 역인 경우 발생.

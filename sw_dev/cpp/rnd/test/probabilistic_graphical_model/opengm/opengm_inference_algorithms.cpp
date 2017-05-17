@@ -1150,11 +1150,12 @@ void inference_algorithms(GraphicalModel &gm, const std::string &problem_name)
 			// Set up the optimizer.
 			typedef opengm::LOC<GraphicalModel, opengm::Minimizer> LOC;
 
+			const std::string solver("ad3");
 			const double phi = 0.5;
 			const std::size_t maxRadius = 10;
 			const std::size_t maxIterations = MAX_ITERATIONS;
 			const std::size_t aStarThreshold = 5;
-			const typename LOC::Parameter parameter(phi, maxRadius, maxIterations, aStarThreshold);
+			const typename LOC::Parameter parameter(solver, phi, maxRadius, maxIterations, aStarThreshold);
 			LOC loc(gm, parameter);
 
 			// Set starting point.

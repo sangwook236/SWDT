@@ -1,23 +1,23 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		https://github.com/wg-perception/PartsBasedDetector
 
-		<주의> source file과 같이 download한 모델이나 아래의 사이트에서 file 자체를 download하면 정상적인 model file을 받을 수 없음.
+		NOTICE [caution] >> source file과 같이 download한 모델이나 아래의 사이트에서 file 자체를 download하면 정상적인 model file을 받을 수 없음.
 			==> 정상적인 model file을 download하려면:
 				1. Git를 이용해 source file을 download.
 				2. 아래의 사이트에서 개별 model file을 열고 copy-and-paste.
 
 		https://github.com/wg-perception/PartsBasedDetectorModels
 
-[-] Building (MSVC)
-	-. EigenConfig.cmake를 찾을 수 없다는 오류 발생.
+[-] Building (MSVC).
+	- EigenConfig.cmake를 찾을 수 없다는 오류 발생.
 		$EIGEN_HOME/cmake/FindEigen3.cmake를 ${PartsBasedDetector_HOME}/cmake/EigenConfig.cmake로 복사.
 		==> CMake에 아래의 항목 설정 및 추가.
 			Eigen_DIR -> ${PartsBasedDetector_HOME}/cmake
 			EIGEN_INCLUDE_DIRS -> D:/work_center/sw_dev/cpp/ext/inc/eigen3
 			EIGEN3_INCLUDE_DIRS -> D:/work_center/sw_dev/cpp/ext/inc/eigen3
-	-. ${PartsBasedDetector_HOME}/src/CMakeLists.txt에서 아래의 오류 발생.
-		<오류메시지>
+	- ${PartsBasedDetector_HOME}/src/CMakeLists.txt에서 아래의 오류 발생.
+		<error>
 			"install Library TARGETS given no DESTINATION!"
 		==> 아래와 같이 수정.
 			수정전:
@@ -30,51 +30,50 @@
 				        ARCHIVE DESTINATION ${PROJECT_SOURCE_DIR}/lib
 				        RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/lib
 				)
-	-. symbol을 export하기 위해 __declspec(dllexport)을 export하고자 하는 대상에 추가되어야 함.
+	- Symbol을 export하기 위해 __declspec(dllexport)을 export하고자 하는 대상에 추가되어야 함.
 		PartsBasedDetector_lib_EXPORTS macro는 DLL library project에 정의되어 있음.
 		==> ${PartsBasedDetector_HOME}/inlcude/Export.h를 복사.
-	-. class template 관련한 linking error 발생.
-		1. class template의 header file & source file을 분리해 놓아 발생하는 문제.
+	- Class template 관련한 linking error 발생.
+		1. Class template의 header file & source file을 분리해 놓아 발생하는 문제.
 			PartsBasedDetector => ${PartsBasedDetector_HOME}/include/PartsBasedDetector.hpp
 			DynamicProgram => ${PartsBasedDetector_HOME}/include/DynamicProgram.hpp
 			HOGFeatures => ${PartsBasedDetector_HOME}/include/HOGFeatures.hpp
-			==> class template의 경우 PartsBasedDetector_lib_EXPORTS macro & Export.h file은 사용하지 않고
-				source file의 내용을 header file에 삽입.
+			==> Class template의 경우 PartsBasedDetector_lib_EXPORTS macro & Export.h file은 사용하지 않고 source file의 내용을 header file에 삽입.
 				a. header file에 아래와 같이 추가.
 					#include "PartsBasedDetector.cpp"
 					#include "DynamicProgram.cpp"
 					#include "HOGFeatures.cpp"
 				b. source file을 building 대상에서 제외.
-		2. ctor & dtor의 정의를 header file에 포함하는 경우 linking 오류 발생.
+		2. Ctor & dtor의 정의를 header file에 포함하는 경우 linking 오류 발생.
 			FileStorageModel -> ${PartsBasedDetector_HOME}/include/FileStorageModel.hpp & ${PartsBasedDetector_HOME}/src/FileStorageModel.cpp
 			MatlabIOModel -> ${PartsBasedDetector_HOME}/include/MatlabIOModel.hpp & ${PartsBasedDetector_HOME}/src/MatlabIOModel.cpp
 			==> header file에서는 ctor & dtor의 선언만 남기고 정의는 source file로 이동.
-	-. header file을 찾을 수 없다는 오류 발생.
+	- Header file을 찾을 수 없다는 오류 발생.
 		CMake-GUI에 header file directory를 지정할 수 없어서 발생.
 			MatlabIO.hpp
 			zlib.h
 		==> 해당 library의 header file directory를 include path에 추가.
 			D:/work_center/sw_dev/cpp/rnd/inc/cvmatio/
 			D:/work_center/sw_dev/cpp/ext/inc/zlib/
-	-. Boost.Filesystem 관련 오류 발생.
-		<오류메시지>
+	- Boost.Filesystem 관련 오류 발생.
+		<error>
 			binary '=' : no operator found which takes a right-hand operand of type 'const boost::filesystem::path::value_type *'
 		==> wchar_t & char 사이의 변환 문제.
-			${PartsBasedDetector_HOME}/src/MatlabIOModel.cpp에서 아래의 항목을 수정
-			<수정전>
+			${PartsBasedDetector_HOME}/src/MatlabIOModel.cpp에서 아래의 항목을 수정.
+			<before>
 			name_ = boost::filesystem::path(filename).stem().c_str();
-			<수정후 (1번안)>
+			<after (1번안)>
 			name_ = boost::filesystem::path(filename).stem().string();
-			<수정후 (2번안)>
+			<after (2번안)>
 #ifdef BOOST_WINDOWS_API
 			const std::wstring tmp_name = boost::filesystem::path(filename).stem().c_str();
 			std::copy(tmp_name.begin(), tmp_name.end(), name_.begin());
 #else
 			name_ = boost::filesystem::path(filename).stem().c_str();
 #endif
-	-. CMake에 의해 생성된 project 모두 multi-byte character set을 사용.
+	- CMake에 의해 생성된 project 모두 multi-byte character set을 사용.
 		==> unicode character set을 변경하는 것이 좋을 듯함.
-	-. CMake-GUI에 설정한 CMAKE_INSTALL_PREFIX가 정상적으로 작동하지 않음.
+	- CMake-GUI에 설정한 CMAKE_INSTALL_PREFIX가 정상적으로 작동하지 않음.
 		CMAKE_INSTALL_PREFIX에 지정된 directory에 install되는 것이 아니라
 		${PartsBasedDetector_HOME}/lib directory하에 존재함.
 		ModelTransfer project에서 발생하는 linking 오류는 무시함.
@@ -85,16 +84,16 @@
 			${PartsBasedDetector_HOME}/build_msvc10/src/Release/PartsBasedDetector.lib
 			${PartsBasedDetector_HOME}/build_msvc10/src/Debug/PartsBasedDetector.dll
 			${PartsBasedDetector_HOME}/build_msvc10/src/Debug/PartsBasedDetector.lib
-	-. Application에서 debug version의 PartsBasedDetector library를 사용하는 경우
+	- Application에서 debug version의 PartsBasedDetector library를 사용하는 경우
 		run-time에 vector에 대한 out-of-range 오루 발생.
 		==> the past-the-end element를 가르키고자 하는 의도가 out-of-range 오류를 발생.
-			<수정전>
+			<before>
 			return vectorf(&((*biasw_)[offset]), &((*biasw_)[offset+nmixtures()]));
-			<수정후>
+			<after>
 			return vectorf(&((*biasw_)[offset]), &((*biasw_)[offset])+nmixtures());
 
-[-] Building (Code::Blocks)
-	-. EigenConfig.cmake를 찾을 수 없다는 오류 발생.
+[-] Building (Code::Blocks).
+	- EigenConfig.cmake를 찾을 수 없다는 오류 발생.
 		$EIGEN_HOME/cmake/FindEigen3.cmake를 ${PartsBasedDetector_HOME}/cmake/EigenConfig.cmake로 복사.
 		==> CMake에 아래의 항목 설정 및 추가.
 			Eigen_DIR -> ${PartsBasedDetector_HOME}/cmake

@@ -1,9 +1,9 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.ijg.org/
 		http://libjpeg.sourceforge.net/
 
-[-] Building (VC)
+[-] Building (VC).
 	- Copy config file.
 		jconfig.vc -> jconfig.h
 
@@ -13,7 +13,7 @@
 		Relese build:
 			nmake nodebug=1 -f makefile.vc
 
-[-] Trouble Shooting (VC)
+[-] Trouble Shooting (VC).
 	- Error message : "win32.mak not found".
 		==> Solution/
 			Copy C:/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Include/Win32.mak to ${LIBJPEG_HOME}.

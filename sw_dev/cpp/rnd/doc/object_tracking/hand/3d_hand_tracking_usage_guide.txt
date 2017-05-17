@@ -1,4 +1,4 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://cvrlcode.ics.forth.gr/handtracking/
 		http://www.openni.org/files/3d-hand-tracking-library/

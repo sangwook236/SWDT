@@ -1,4 +1,4 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://accord-framework.net/
 		https://code.google.com/p/accord/

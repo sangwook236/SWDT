@@ -59,7 +59,7 @@
 			REF [file] >> ${MINGW_HOME}/examples/CMakeLists.txt
 
 [-] Building (MinGW & MSYS).
-	- (중요)
+	- Important.
 		Mocapy library의 API들에 '__declspec(dllexport)'이 선언되어 있지 않아 symbol이 export되지 않음.
 		따라서, MinGW & MSYS에서 생성된 shared library를 실제 사용할 수 없음.
 	

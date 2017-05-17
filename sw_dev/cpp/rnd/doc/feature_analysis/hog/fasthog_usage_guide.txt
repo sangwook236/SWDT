@@ -1,7 +1,9 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.robots.ox.ac.uk/ActiveVision/Downloads/index.html
 
-[-] Explanation
-	-. fasthoglib.tar.gz - for single GPU.
-	-. fasthoglib_v2.tar.gz - for multi GPU.
+[-] Explanation.
+	- For single GPU.
+		fasthoglib.tar.gz.
+	- For multi GPU.
+		fasthoglib_v2.tar.gz.

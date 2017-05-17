@@ -1,6 +1,6 @@
-[-] General
-	-. Site
-		installation:
+[-] General.
+	- Site.
+		Installation:
 		http://www.studentguru.gr/blogs/vangos/archive/2011/01/20/how-to-successfully-install-kinect-windows-openni-nite.aspx
 
 		https://github.com/avin2/SensorKinect

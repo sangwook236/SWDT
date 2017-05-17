@@ -1,4 +1,4 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.robots.ox.ac.uk/~vgg/hzbook/
 		http://www.robots.ox.ac.uk/~vgg/hzbook/code/

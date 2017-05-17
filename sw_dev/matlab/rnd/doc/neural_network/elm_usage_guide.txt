@@ -1,10 +1,10 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.ntu.edu.sg/home/egbhuang/elm_codes.html
 		https://github.com/usptact/ELM-C--
 
-[-] Usage in ELM-C--
-    -. Build Mex
+[-] Usage in ELM-C--.
+    - Build Mex.
         cd ${EML-C--_HOME}
         mex -I${EIGEN_HOME} mexElmTrain.cpp
         mex -I${EIGEN_HOME} mexElmPredict.cpp

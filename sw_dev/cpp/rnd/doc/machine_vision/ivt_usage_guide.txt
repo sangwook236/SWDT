@@ -26,4 +26,3 @@
 			USE_OPENCV = 1
 			USE_OPENCV_HIGHGUI = 1
 	- Run make.
-

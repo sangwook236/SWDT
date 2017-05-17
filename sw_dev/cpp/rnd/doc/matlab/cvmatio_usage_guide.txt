@@ -1,19 +1,19 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		https://github.com/hbristow/cvmatio
 
-[-] Building (MSVC)
-	-. building 시에 아래의 오류 발생.
+[-] Building (MSVC).
+	- Building 시에 아래의 오류 발생.
 		cl : Command line error D8021: invalid numeric argument '/Wextra'
 		==> Visual Studio에서 cvmatio project의 compile option에서 아래의 항목들 제거.
 			"Property Pages -> Configuration Properties -> C/C++ -> Command Line"에 위치.
 				/Wextra
 				/Wno-unused-parameter
 				/Werror
-	-. ${CVMATIO_HOME}/include/typetraits.hpp에서 type 정의와 관련된 오류 발생.
+	- ${CVMATIO_HOME}/include/typetraits.hpp에서 type 정의와 관련된 오류 발생.
 		==> ${CVMATIO_HOME}/include/typetraits.hpp filed에 아래와 같이 include 추가.
 			#include <boost/cstdint.hpp>
-	-. import library가 생성되지 않음.
+	- Import library가 생성되지 않음.
 		MatlabIO class에 __declspec(dllexport)가 없어서 발생하는 오류.
 		==> ${CVMATIO_HOME}/include/MatlabIO.hpp에 아래와 같이 추가.
 			#if defined(_MSC_VER)
@@ -26,7 +26,7 @@
 			class cvmatio_API MatlabIO {
 				// ...
 			};
-	-. CMake-GUI에 설정한 CMAKE_INSTALL_PREFIX가 정상적으로 작동하지 않음.
+	- CMake-GUI에 설정한 CMAKE_INSTALL_PREFIX가 정상적으로 작동하지 않음.
 		CMAKE_INSTALL_PREFIX에 지정된 directory에 install되는 것이 아니라
 		${CVMATIO_HOME}/bin directory하에 설치.
 		==> 생성된 file 위치:

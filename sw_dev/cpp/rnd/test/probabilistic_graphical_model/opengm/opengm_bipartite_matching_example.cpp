@@ -21,7 +21,7 @@ void createAndPrintData(const std::size_t numOfVariables, marray::Marray<T> &dat
 	const std::size_t shape[] = { numOfVariables, numOfVariables };
 	data.resize(shape, shape + 2);
 
-	std::cout << "pariwise costs:" << std::endl;
+	std::cout << "Pariwise costs:" << std::endl;
 	//std::srand(0);
 	for (std::size_t v = 0; v < data.shape(0); ++v)
 	{
@@ -37,7 +37,7 @@ void createAndPrintData(const std::size_t numOfVariables, marray::Marray<T> &dat
 void printSolution(const std::vector<std::size_t> &solution)
 {
 	std::set<std::size_t> unique;
-	std::cout << std::endl << "solution labels :" << std::endl;
+	std::cout << std::endl << "Solution labels :" << std::endl;
 	for (std::size_t v = 0; v < solution.size(); ++v)
 		std::cout << std::left << std::setw(2) << v << "  ->   " << solution[v] << std::endl;
 }
@@ -47,24 +47,24 @@ void printSolution(const std::vector<std::size_t> &solution)
 
 namespace my_opengm {
 
-// [ref] ${OPENGM_HOME}/src/examples/unsorted-examples/one_to_one_matching.cxx
-// [ref] "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
+// REF [file] >> ${OPENGM_HOME}/src/examples/unsorted-examples/one_to_one_matching.cxx
+// REF [paper] >> "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
 void bipartite_matching_example()
 {
-	// model parameters
+	// Model parameters.
 	const std::size_t numOfVariables = 5;
 	const std::size_t numOfLabels = numOfVariables;
-	std::cout << std::endl << "matching with one to one correspondences:" << std::endl
+	std::cout << std::endl << "Matching with one to one correspondences:" << std::endl
 		<< numOfVariables << " variables with " << numOfLabels <<" labels" << std::endl << std::endl;
 
-	// pairwise costs
+	// Pairwise costs.
 	marray::Marray<float> data;
 	local::createAndPrintData(numOfVariables, data);
 
-	// build the model with
+	// Build the model with
 	// - addition as the operation (template parameter Adder)
 	// - support for Potts functions (template parameter PottsFunction<double>))
-	// - numOfVariables variables, each having numOfLabels labels
+	// - numOfVariables variables, each having numOfLabels labels.
 	typedef opengm::ExplicitFunction<float> ExplicitFunction;
 	typedef opengm::PottsFunction<float> PottsFunction;
 	typedef opengm::GraphicalModel<
@@ -77,7 +77,7 @@ void bipartite_matching_example()
 
 	Model gm(opengm::SimpleDiscreteSpace<>(numOfVariables, numOfLabels));
 
-	// add 1st order functions and factors
+	// Add 1st order functions and factors.
 	{
 		const std::size_t shape[] = { numOfLabels };
 		ExplicitFunction func1(shape, shape + 1);
@@ -92,15 +92,15 @@ void bipartite_matching_example()
 		}
 	}
 
-	// add 2nd order functions and factors
+	// Add 2nd order functions and factors.
 	{
 		const float high = 20;
 
-		// add one (!) 2nd order Potts function
+		// Add one (!) 2nd order Potts function.
 		PottsFunction func2(numOfLabels, numOfLabels, high, 0);
 		const FunctionIdentifier fid2 = gm.addFunction(func2);
 
-		// add pair potentials for all variables
+		// Add pair potentials for all variables.
 		for (std::size_t v1 = 0; v1 < numOfVariables; ++v1)
 			for (std::size_t v2 = v1 + 1; v2 < numOfVariables; ++v2)
 			{
@@ -109,11 +109,11 @@ void bipartite_matching_example()
 			}
 	}
 
-	// set up the optimizer (A-star search)
+	// Set up the optimizer (A-star search).
 	typedef opengm::AStar<Model, opengm::Minimizer> AstarType;
 	AstarType astar(gm);
 
-	// obtain and print the argmin
+	// Obtain and print the argmin.
 	AstarType::VerboseVisitorType verboseVisitor;
 
 	std::cout << "\nA-star search:" << std::endl;

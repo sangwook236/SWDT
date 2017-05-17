@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.cns.nyu.edu/~eero/steerpyr/
 		https://github.com/LabForComputationalVision/matlabPyrTools
@@ -13,7 +13,7 @@
 		Steerable pyramid.
 		Steerable filters / derivatives.
 
-[-] Usage
+[-] Usage.
 	- Help.
 		help matlabPyrTools
 

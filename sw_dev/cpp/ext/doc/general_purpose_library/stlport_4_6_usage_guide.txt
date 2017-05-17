@@ -14,7 +14,7 @@
 				#	define _STLP_DEBUG 1
 				#endif
 
-[-] Build.
+[-] Building.
 	- Download & uncompress.
 	- Set STLport.
 		${STLPORT_HOME}/stlport/stl_user_config.h 에서 원하는 항목을 적절히 설정.

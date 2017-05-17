@@ -1,4 +1,4 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://philippberens.wordpress.com/code/circstats/
 		http://www.mathworks.com/matlabcentral/fileexchange/10676

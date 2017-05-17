@@ -1,13 +1,13 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.libqglviewer.com/
 
 		https://github.com/GillesDebunne/libQGLViewer
 
-	- Installation
+	- Installation.
 		REF [file] >> ${libQGLViewer_HOME}/doc/installWindows.html
 
-[-] Build (VC)
+[-] Building (VC).
 	- Open (Visual Studio) Command Prompt.
 	- Set path for qmake.
 		set path=${QT_HOME}/bin;%path%

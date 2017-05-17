@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		MFA (Zoubin):
 		ftp://ftp.cs.utoronto.ca/pub/zoubin
 

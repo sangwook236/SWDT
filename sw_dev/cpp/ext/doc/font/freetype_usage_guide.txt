@@ -1,16 +1,16 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.freetype.org/
 
-[-] Build (VC)
-	-. Use VC solution file in FreeType
+[-] Building (VC).
+	- Use VC solution file in FreeType.
 		${FreeType_HOME}/builds/windows
 
-[-] Build (CMake + VC)
-	-. Configure & generate
-	-. Build
+[-] Building (CMake + VC).
+	- Configure & generate.
+	- Build.
 
-[-] Trouble Shooting (VC)
+[-] Trouble Shooting (VC).
 		<error mesasge>
 			error C2065: 'AF_SCRIPT_CYRL': undeclared identifier
 		<solution>

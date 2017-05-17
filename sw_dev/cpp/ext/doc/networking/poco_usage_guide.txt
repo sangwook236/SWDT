@@ -1,9 +1,9 @@
-[-] General
+[-] General.
 	- Site.
 		http://pocoproject.org/
 		http://pocoproject.org/docs/
 
-[-] Build (VC)
+[-] Building (VC).
 	- Open Visual Studio Command Prompt.
 	- Change directory.
 		cd ${POCO_HOME}
@@ -12,5 +12,5 @@
 		buildwin 140 build shared both x64 samples
 		==> build_vs140.cmd file은 정상적으로 작동하지 않음.
 
-[-] Build (CMake)
-	-. 정상적으로 build되지 않음.
+[-] Building (CMake).
+	- 정상적으로 build되지 않음.

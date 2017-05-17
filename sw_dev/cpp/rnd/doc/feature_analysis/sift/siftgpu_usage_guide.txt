@@ -1,9 +1,9 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.cs.unc.edu/~ccwu/siftgpu/
 
-[-] Building (MSVC)
-	-. Linking하는 external library를 변경해야 할 필요가 있음.
+[-] Building (MSVC).
+	- Linking하는 external library를 변경해야 할 필요가 있음.
 		OpenGL 
 		GLut (only by the viewer)
 		GLEW 1.51

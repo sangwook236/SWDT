@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.cs.berkeley.edu/~lbourdev/poselets/
 		http://ttic.uchicago.edu/~smaji/
 

@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://code.google.com/p/bgscollection/
-	-. Subversion Checkout
+	- Subversion Checkout.
 		svn checkout http://bgscollection.googlecode.com/svn/trunk/ bgscollection-read-only

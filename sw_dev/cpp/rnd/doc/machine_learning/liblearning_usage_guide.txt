@@ -2,7 +2,7 @@
 	- Site.
 		https://code.google.com/p/liblearning/
 
-[-] Build (VC).
+[-] Building (VC).
 	- camp::Class::construct() 함수 관련 오류 발생.
 		==> 확인이 필요한 사항임. (???)
 			<before>

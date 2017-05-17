@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.opengl.org/
 
@@ -15,7 +15,7 @@
 		http://www.glfw.org/
 		http://sourceforge.net/projects/glhlib/
 
-[-] Building GLUT 3.7 (VC)
+[-] Building GLUT 3.7 (VC).
 	- Run Visual Studio Command Prompt.
 	- Copy Win32.mak.
 		Copy C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Include\Win32.mak to ${GLUT_HOME}/lib/glut.
@@ -23,7 +23,7 @@
 		nmake -f Makefile.win
 		nmake nodebug=1 -f Makefile.win
 
-[-] Trouble Shooting GLUT 3.7 (VC)
+[-] Trouble Shooting GLUT 3.7 (VC).
 	- glut32.lib를 찾을 수 없다는 오류 발생.
 		<error message>
 			cannot open file 'glut32.lib'
@@ -37,12 +37,12 @@
 		<solution>
 			LFLAGS = /LIBPATH:"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Lib" $(LFLAGS)
 
-[-] Building GLEW GitHub (VC)
+[-] Building GLEW GitHub (VC).
 	- Build 되지 않음.
 		일부 source file이 존재하지 않음.
 			${GLEW_HOME}/src.
 
-[-] Building GLEW 1.13.0 (VC)
+[-] Building GLEW 1.13.0 (VC).
 	- Open a solution file.
 		${GLEW_HOME}/build/vc12/glew.sln.
 	- Build.

@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		https://bitbucket.org/dhr/odtgf
 		https://bitbucket.org/dhr/odtgf/src/3845c232c052/Code/geom/structureTensor.m
 

@@ -12,7 +12,7 @@
 namespace {
 namespace local {
 
-// this function maps a node (x, y) in the grid to a unique variable index
+// This function maps a node (x, y) in the grid to a unique variable index.
 inline std::size_t variableIndex(const std::size_t Nx, const std::size_t x, const std::size_t y)
 { 
 	return x + Nx * y;
@@ -27,19 +27,19 @@ namespace my_opengm {
 // REF [paper] >> "Efficient Belief Propagation for Early Vision", P. F. Felzenszwalb & D. Huttenlocher, IJCV, 2006
 void potts_model_on_2d_grid_example()
 {
-	// model parameters (global variables are used only in example code).
-	const std::size_t Nx = 30;  // width of the grid.
-	const std::size_t Ny = 30;  // height of the grid.
+	// Model parameters (global variables are used only in example code).
+	const std::size_t Nx = 30;  // Width of the grid.
+	const std::size_t Ny = 30;  // Height of the grid.
 	const std::size_t numOfLabels = 5;
-	const double lambda = 0.1;  // coupling strength of the Potts model.
+	const double lambda = 0.1;  // Coupling strength of the Potts model.
 
-	// construct a label space with
+	// Construct a label space with
 	// - Nx * Ny variables.
 	// - each having numOfLabels many labels.
 	typedef opengm::SimpleDiscreteSpace<std::size_t, std::size_t> Space;
 	Space space(Nx * Ny, numOfLabels);
 
-	// construct a graphical model with 
+	// Construct a graphical model with 
 	// - addition as the operation (template parameter Adder).
 	// - support for Potts functions (template parameter PottsFunction<double>).
 	typedef opengm::GraphicalModel<double, opengm::Adder, OPENGM_TYPELIST_2(opengm::ExplicitFunction<double>, opengm::PottsFunction<double>), Space> Model;
@@ -47,12 +47,12 @@ void potts_model_on_2d_grid_example()
 
 	// Local model.
 	{
-		// for each node (x, y) in the grid, i.e. for each variable variableIndex(Nx, x, y) of the model,
+		// For each node (x, y) in the grid, i.e. for each variable variableIndex(Nx, x, y) of the model,
 		// add one 1st order functions and one 1st order factor.
 		for (std::size_t y = 0; y < Ny; ++y) 
 			for (std::size_t x = 0; x < Nx; ++x)
 			{
-				// function.
+				// Function.
 				const std::size_t shape[] = { numOfLabels };
 				opengm::ExplicitFunction<double> func1(shape, shape + 1);
 				for (std::size_t state = 0; state < numOfLabels; ++state)
@@ -60,7 +60,7 @@ void potts_model_on_2d_grid_example()
 
 				const Model::FunctionIdentifier fid1 = gm.addFunction(func1);
 
-				// factor.
+				// Factor.
 				const std::size_t variableIndices[] = { local::variableIndex(Nx, x, y) };
 				gm.addFactor(fid1, variableIndices, variableIndices + 1);
 			}
@@ -68,11 +68,11 @@ void potts_model_on_2d_grid_example()
 
 	// Pairwise interaction.
 	{
-		// add one (!) 2nd order Potts function.
+		// Add one (!) 2nd order Potts function.
 		opengm::PottsFunction<double> func2(numOfLabels, numOfLabels, 0.0, lambda);
 		const Model::FunctionIdentifier fid2 = gm.addFunction(func2);
 
-		// for each pair of nodes (x1, y1), (x2, y2) which are adjacent on the grid,
+		// For each pair of nodes (x1, y1), (x2, y2) which are adjacent on the grid,
 		// add one factor that connects the corresponding variable indices and refers to the Potts function.
 		for (std::size_t y = 0; y < Ny; ++y) 
 			for (std::size_t x = 0; x < Nx; ++x)
@@ -92,7 +92,7 @@ void potts_model_on_2d_grid_example()
 			}
 	}
 
-	// set up the optimizer (loopy belief propagation).
+	// Set up the optimizer (loopy belief propagation).
 	typedef opengm::BeliefPropagationUpdateRules<Model, opengm::Minimizer> UpdateRules;
 	typedef opengm::MessagePassing<Model, opengm::Minimizer, UpdateRules, opengm::MaxDistance> BeliefPropagation;
 
@@ -102,16 +102,16 @@ void potts_model_on_2d_grid_example()
 	const BeliefPropagation::Parameter parameter(maxNumberOfIterations, convergenceBound, damping);
 	BeliefPropagation bp(gm, parameter);
 
-	// optimize (approximately).
+	// Optimize (approximately).
 	std::cout << "on inferring ..." << std::endl;
 	BeliefPropagation::VerboseVisitorType visitor;
 	bp.infer(visitor);
 
-	// obtain the (approximate) argmin.
+	// Obtain the (approximate) argmin.
 	std::vector<std::size_t> labeling(Nx * Ny);
 	bp.arg(labeling);
 
-	// output the (approximate) argmin.
+	// Output the (approximate) argmin.
 	std::size_t variableIndex = 0;
 	for (std::size_t y = 0; y < Ny; ++y)
 	{

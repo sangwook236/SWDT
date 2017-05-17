@@ -6,7 +6,7 @@
 
 #pragma comment(lib, "pnld.lib")
 #pragma comment(lib, "pnl_cxcored.lib")
-//#pragma comment(lib, "cygMocapy.dll.lib")  // not correctly working
+//#pragma comment(lib, "cygMocapy.dll.lib")  // Not correctly working.
 #pragma comment(lib, "libdai_d.lib")
 #pragma comment(lib, "external-library-ad3d.lib")
 #pragma comment(lib, "external-library-gcod.lib")
@@ -21,7 +21,13 @@
 #pragma comment(lib, "hdf5d.lib")
 
 #pragma comment(lib, "crfpp.lib")
-#pragma comment(lib, "hcrf_ompd.lib")
+#if defined(_WIN64) || defined(WIN64)
+//#pragma comment(lib, "hCRFd64.lib")
+#pragma comment(lib, "hCRF_ompd64.lib")
+#else
+//#pragma comment(lib, "hCRFd.lib")
+#pragma comment(lib, "hCRF_ompd.lib")
+#endif
 
 #pragma comment(lib, "opencv_features2d310d.lib")
 #pragma comment(lib, "opencv_imgproc310d.lib")
@@ -32,7 +38,7 @@
 
 #pragma comment(lib, "pnl.lib")
 #pragma comment(lib, "pnl_cxcore.lib")
-//#pragma comment(lib, "cygMocapy.dll.lib")  // not correctly working
+//#pragma comment(lib, "cygMocapy.dll.lib")  // Not correctly working.
 #pragma comment(lib, "libdai.lib")
 #pragma comment(lib, "external-library-ad3.lib")
 #pragma comment(lib, "external-library-gco.lib")
@@ -47,7 +53,13 @@
 #pragma comment(lib, "hdf5.lib")
 
 #pragma comment(lib, "crfpp.lib")
-#pragma comment(lib, "hcrf_omp.lib")
+#if defined(_WIN64) || defined(WIN64)
+//#pragma comment(lib, "hCRF64.lib")
+#pragma comment(lib, "hCRF_omp64.lib")
+#else
+//#pragma comment(lib, "hCRF.lib")
+#pragma comment(lib, "hCRF_omp.lib")
+#endif
 
 #pragma comment(lib, "opencv_features2d310.lib")
 #pragma comment(lib, "opencv_imgproc310.lib")

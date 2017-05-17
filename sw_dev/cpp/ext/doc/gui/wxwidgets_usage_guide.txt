@@ -5,7 +5,7 @@
 
 		https://github.com/wxWidgets/wxWidgets
 
-[-] Build ver. 2.6 (VC).
+[-] Building ver. 2.6 (VC).
 	+> IDE.
 		- Target project file.
 			"${WXWIDGETS_HOME}/build/msw/wx.dsw"
@@ -24,7 +24,7 @@
 			nmake -f makefile.vc
 			nmake -f makefile.vc clean
 
-[-] Build ver. 2.9.2 (VC).
+[-] Building ver. 2.9.2 (VC).
 	REF [file] >> ${WXWIDGETS_HOME}/docs/msw/install.txt
 
 	1. Configure setup.h file.
@@ -60,7 +60,7 @@
 		nmake -f makefile.vc BUILD=debug UNICODE=1
 		nmake -f makefile.vc BUILD=release UNICODE=1
 
-[-] Build GitHub (VC): 2016/05/05.
+[-] Building GitHub (VC): 2016/05/05.
 	REF [file] >> ${WXWIDGETS_HOME}/BuildGit.txt
 	REF [file] >> ${WXWIDGETS_HOME}/docs/msw/install.txt
 

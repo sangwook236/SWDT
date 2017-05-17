@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://md5deep.sourceforge.net/
 		http://www.md5summer.org/
 

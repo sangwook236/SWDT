@@ -1,6 +1,6 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://groups.inf.ed.ac.uk/calvin/calvin_upperbody_detector/
 		http://www.robots.ox.ac.uk/~vgg/software/UpperBody/
-	-. Reference
+	- Reference.
 		${SW_DEV_HOME}/matlab/rnd/src/pose_estimation/articulated_pose_estimation_with_flexible_mixtures_of_parts

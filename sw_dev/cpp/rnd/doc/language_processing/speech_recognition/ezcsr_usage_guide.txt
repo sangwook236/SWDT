@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://speech.chungbuk.ac.kr/~owkwon/cgi-bin/technote/read.cgi?board=01Download&nnew=2&y_number=8
 		http://speech.chungbuk.ac.kr/~owkwon/cgi-bin/technote/main.cgi?board=01Download&number=&ryal=&back=
 		http://speech.chungbuk.ac.kr/~owkwon/

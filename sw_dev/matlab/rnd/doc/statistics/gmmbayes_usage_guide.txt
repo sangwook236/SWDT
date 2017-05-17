@@ -1,4 +1,4 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.it.lut.fi/project/gmmbayes/
 		http://www.it.lut.fi/project/gmmbayes/doc/gmmbayestb-v1.0/gmmbayestb-v1.0/index.html

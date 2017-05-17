@@ -7,7 +7,7 @@
 [-] Porting from Eigen2 to Eigen3.
 	REF [site] >> http://eigen.tuxfamily.org/dox/Eigen2ToEigen3.html
 
-[-] Build.
+[-] Building.
 	- Eigen library는 기본적으로 header file만 있으면 됨.
 		따라서 source를 별도로 build하지 않아도 됨.
 		Source 대부분은 test code임.
@@ -19,7 +19,7 @@
 			==> 아래의 trouble shooting 참고.
 		==> BLAS & LAPACK의 function 대부분을 가지고 있지 않음.
 
-[-] Build (CMake).
+[-] Building (CMake).
 	- Configure & generate.
 		Set BUILD_SHARED_LIBS to false (X) ==> not working.
 		Set BUILD_STATIC_LIBS to true (X) ==> not working.

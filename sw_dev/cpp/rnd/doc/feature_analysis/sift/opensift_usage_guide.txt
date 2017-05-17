@@ -1,4 +1,8 @@
-[-] Building (MSVC)
+[-] General.
+	- Site.
+		http://robwhess.github.com/opensift/
+
+[-] Building (MSVC).
 	- Source file의 확장자를 cpp로 변경해야 함.
 	- MSVC를 위한 project or make file을 제공하지 않음.
 		Static library project를 만들어서 사용해야 함.

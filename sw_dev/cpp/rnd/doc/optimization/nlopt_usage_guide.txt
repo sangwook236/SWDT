@@ -17,6 +17,5 @@
 [-] Building (Windows).
 	REF [site] >> http://ab-initio.mit.edu/wiki/index.php/NLopt_on_Windows
 
-	- Using CMake.
+	- Use CMake.
 		Download CMakeLists.txt and config.cmake.h.in files form referene site.
-

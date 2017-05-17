@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.gazegroup.org/downloads/23-gazetracker
 		http://sourceforge.net/projects/gazetrackinglib/
 		http://www.gazegroup.org/forum/

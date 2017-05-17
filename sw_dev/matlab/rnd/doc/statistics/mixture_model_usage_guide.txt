@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.lx.it.pt/~mtf/
 			"Unsupervised learning of finite mixture models", M. Figueiredo and A. K. Jain, TPAMI 2002.
 			Source code: mixturecode2.zip

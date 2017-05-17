@@ -1,4 +1,4 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.colordescriptors.com/
 		http://koen.me/research/colordescriptors/

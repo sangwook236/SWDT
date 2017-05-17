@@ -19,9 +19,9 @@ typedef opengm::meta::TypeListGenerator<ExplicitFunction, PottsFunction>::type F
 typedef opengm::GraphicalModel<double, opengm::Multiplier, FunctionTypes, Space> GraphicalModel;
 typedef opengm::SwendsenWang<GraphicalModel, opengm::Maximizer> SwendsenWang;
 
-// build a Markov Chain with 10 binary variables in which
+// Build a Markov Chain with 10 binary variables in which
 // - the first variable is more likely to be labeled 1 than 0
-// - neighboring variables are more likely to have similar labels than dissimilar
+// - neighboring variables are more likely to have similar labels than dissimilar.
 void buildGraphicalModel(GraphicalModel &gm)
 {
 	const std::size_t numberOfVariables = 10;
@@ -29,26 +29,26 @@ void buildGraphicalModel(GraphicalModel &gm)
 	Space space(numberOfVariables, numberOfLabels);
 	gm = GraphicalModel(space);
 
-	// add 1st order function
+	// Add 1st order function.
 	{
 		ExplicitFunction func1(&numberOfLabels, &numberOfLabels + 1);
 		func1(0) = 0.2;
 		func1(1) = 0.8;
 		const GraphicalModel::FunctionIdentifier fid1 = gm.addFunction(func1);
 
-		// add 1st order factor (at first variable)
+		// Add 1st order factor (at first variable).
 		const std::size_t variableIndices[] = { 0 };
 		gm.addFactor(fid1, variableIndices, variableIndices + 1);
 	}
 
-	// add 2nd order function
+	// Add 2nd order function.
 	{
 		const double probEqual = 0.7;
 		const double probUnequal = 0.3;
 		const PottsFunction func2(numberOfLabels, numberOfLabels, probEqual, probUnequal);
 		const GraphicalModel::FunctionIdentifier fid2 = gm.addFunction(func2);
 
-		// add 2nd order factors
+		// Add 2nd order factors.
 		for (std::size_t j = 0; j < numberOfVariables - 1; ++j)
 		{
 			const std::size_t variableIndices[] = { j, j + 1 };
@@ -57,7 +57,7 @@ void buildGraphicalModel(GraphicalModel &gm)
 	}
 }
 
-// use Swendsen-Wang sampling for the purpose of finding the most probable labeling
+// Use Swendsen-Wang sampling for the purpose of finding the most probable labeling.
 void swendsenWangSamplingForOptimization(const GraphicalModel &gm)
 {
 	const std::size_t numberOfSamplingSteps = 1e4;
@@ -65,44 +65,44 @@ void swendsenWangSamplingForOptimization(const GraphicalModel &gm)
 	const SwendsenWang::Parameter parameter(numberOfSamplingSteps, numberOfBurnInSteps);
 	SwendsenWang swendsenWang(gm, parameter);
 
-	std::cout << "on inferring ..." << std::endl;
+	std::cout << "On inferring ..." << std::endl;
 	swendsenWang.infer();
 
 	std::vector<std::size_t> argmax;
 	swendsenWang.arg(argmax);
 
-	std::cout << "most probable labeling sampled: (";
+	std::cout << "Most probable labeling sampled: (";
 	for (std::size_t j = 0; j < argmax.size(); ++j)
 		std::cout << argmax[j] << ", ";
 	std::cout << ")" << std::endl;
 }
 
-// use Swendsen-Wang sampling to estimate marginals
+// Use Swendsen-Wang sampling to estimate marginals.
 void swendsenWangSamplingForMarginalEstimation(const GraphicalModel &gm)
 {
 	typedef opengm::SwendsenWangMarginalVisitor<SwendsenWang> MarginalVisitor;
 
 	MarginalVisitor visitor(gm);
 
-	// extend the visitor to sample first order marginals
+	// Extend the visitor to sample first order marginals.
 	for (std::size_t j = 0; j < gm.numberOfVariables(); ++j)
 		visitor.addMarginal(j);
 
-	// extend the visitor to sample certain second order marginals
+	// Extend the visitor to sample certain second order marginals.
 	for (std::size_t j = 0; j < gm.numberOfVariables() - 1; ++j)
 	{
 		const std::size_t variableIndices[] = {j, j + 1};
 		visitor.addMarginal(variableIndices, variableIndices + 2);
 	}
 
-	// sample
+	// Sample.
 	SwendsenWang swendsenWang(gm);
 
-	std::cout << "on inferring ..." << std::endl;
+	std::cout << "On inferring ..." << std::endl;
 	swendsenWang.infer(visitor);
 
-	// output sampled first order marginals
-	std::cout << "sampled first order marginals:" << std::endl;
+	// Output sampled first order marginals.
+	std::cout << "Sampled first order marginals:" << std::endl;
 	for (std::size_t j = 0; j < gm.numberOfVariables(); ++j)
 	{
 		std::cout << "x" << j << ": ";
@@ -114,8 +114,8 @@ void swendsenWangSamplingForMarginalEstimation(const GraphicalModel &gm)
 		std::cout << std::endl;
 	}
 
-	// output sampled second order marginals
-	std::cout << "sampled second order marginals:" << std::endl;
+	// Output sampled second order marginals.
+	std::cout << "Sampled second order marginals:" << std::endl;
 	for (std::size_t j = gm.numberOfVariables(); j < visitor.numberOfMarginals(); ++j)
 	{
 		std::cout << "var" << visitor.marginal(j).variableIndex(0) << ", var" << visitor.marginal(j).variableIndex(1) << ": ";
@@ -134,7 +134,7 @@ void swendsenWangSamplingForMarginalEstimation(const GraphicalModel &gm)
 
 namespace my_opengm {
 
-// [ref] ${OPENGM_HOME}/src/examples/unsorted-examples/swendsenwang.cxx
+// REF [file] >> ${OPENGM_HOME}/src/examples/unsorted-examples/swendsenwang.cxx
 void swendsenwang_example()
 {
 	local::GraphicalModel gm;

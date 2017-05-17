@@ -2,7 +2,7 @@
 	- Site.
 		http://cs.ru.nl/~jorism/libDAI/
 
-[-] Building (Linux)
+[-] Building (Linux).
 	- Use Makefile to build.
 		Copy ${LIBDAI_HOME}/Makefile.LINUX to ${LIBDAI_HOME}/Makefile.conf
 		Modify ${LIBDAI_HOME}/Makefile.ALL & ${LIBDAI_HOME}/Makefile.conf in order to set-up

@@ -29,7 +29,7 @@
 			libquadmath-0.dll
 		==> Cygwin에서 제공.
 
-[-] Build ver. 3.10.3 (Cygwin + Win32/64).
+[-] Building ver. 3.10.3 (Cygwin + Win32/64).
 	REF [doc] >> ${ATLAS_HOME}/doc/atlas_install.pdf
 		"Special Instruction for Windows" sub-chapter.
 			"Creating MSVC++ compatible import libraries" section.
@@ -103,7 +103,7 @@
 	- Run executables linked with ATLAS (shared) libraries.
 		REF [] >> Usage section.
 
-[-] Build (Cygwin).
+[-] Building (Cygwin).
 	REF [doc] >> ${ATLAS_HOME}/doc/atlas_install.pdf
 		"Special Instruction for Windows" sub-chapter.
 			"Creating MSVC++ compatible import libraries" section.
@@ -191,7 +191,7 @@
 			libmsvcrt.a
 		Shared object (DLL)를 직접적으로 생성하는 것이 바람직.
 
-[-] Build (MinGW).
+[-] Building (MinGW).
 	REF [doc] >> http://icl.cs.utk.edu/lapack-for-windows/lapack/
 		Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW.
 

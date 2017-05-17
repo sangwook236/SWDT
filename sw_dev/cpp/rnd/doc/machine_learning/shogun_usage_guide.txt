@@ -6,7 +6,7 @@
 		https://github.com/shogun-toolbox/
 		https://code.google.com/p/shogun-toolbox/
 
-[-] Build (Win32/Cygwin).
+[-] Building (Win32/Cygwin).
 	- Build library.
 		cd ${SHOGUN}/src
 		./configure --python=/usr/bin/python
@@ -30,7 +30,7 @@
 		strip libshogun-13.0.dll.lib (X)
 			strip을 수행하면 VC++에서 linking error 발생.
 
-[-] Build (Linux)
+[-] Building (Linux)
 	- Build library.
 		cd ${SHOGUN}/src
 		./configure --python=/usr/bin/python

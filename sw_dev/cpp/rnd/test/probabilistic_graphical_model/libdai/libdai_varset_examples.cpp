@@ -50,7 +50,10 @@ void varset_example()
 
 	std::cout << std::endl << "And vice versa:" << std::endl;
 	std::cout << "  state of x0:   state of x1:   (linear) state of X:" << std::endl;
-	for (std::size_t S = 0; S < X.nrStates(); ++S)  // for all (joint) states of X
+	//--S [] 2017/05/16 : Sang-Wook Lee.
+	//for (std::size_t S = 0; S < X.nrStates(); ++S)  // for all (joint) states of X
+	for (std::size_t S = 0; S < X.nrStates().get_ui(); ++S)  // for all (joint) states of X
+	//--E [] 2017/05/16 : Sang-Wook Lee.
 	{
 		// calculate states of x0 and x1 corresponding to state S of X
 		std::map<dai::Var, std::size_t> states = dai::calcState(X, S);

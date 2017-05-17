@@ -1,8 +1,8 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://threadingbuildingblocks.org/
 
-[-] Building (VC)
-	-. Use its solution file
+[-] Building (VC).
+	- Use its solution file.
 		${TBB_HOME}/build/vs2010/makefile.sln
-	-. Build
+	- Build.

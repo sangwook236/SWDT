@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.cs.utexas.edu/~inderjit/software.shtml
 		http://www.cs.utexas.edu/users/dml/Software/gmeans.html
 		http://www.cs.utexas.edu/users/dml/Software/cocluster.html

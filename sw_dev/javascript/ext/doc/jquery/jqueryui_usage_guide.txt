@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://jqueryui.com/
 		https://developers.google.com/speed/libraries/devguide
 		http://www.asp.net/ajaxlibrary/cdn.ashx

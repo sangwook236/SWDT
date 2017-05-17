@@ -2,6 +2,23 @@
 	- Site.
 		http://libccv.org/
 
+[-] Usage (Win32).
+	- 아래의 DLL이 실행 directory에 존재해야 함.
+		cygblas-0.dll
+		cygfftw3-3.dll
+		cygfftw3f-3.dll
+		cyggcc_s-1.dll
+		cyggfortran-3.dll
+		cyggomp-1.dll
+		cyggsl-0.dll
+		cygjpeg-8.dll
+		cyglapack-0.dll
+		cygpng15-15.dll
+		cygwin1.dll
+		cygz.dll
+		==> Cygwin에서는 실행 가능.
+			하지만 Visual Studio에서는 실행되지 않음.
+
 [-] Building (Cygwin).
 	- (중요) C++가 아닌 C compiler를 사용해야 함.
 		CCV header를 include하는 경우 아래와 같이 'extern "C"'가 필요.
@@ -49,20 +66,3 @@
 	- Build applications.
 		cd ${CCV_HOME}/bin
 		make
-
-[-] Running (Win32).
-	- 아래의 DLL이 실행 directory에 존재해야 함.
-		cygblas-0.dll
-		cygfftw3-3.dll
-		cygfftw3f-3.dll
-		cyggcc_s-1.dll
-		cyggfortran-3.dll
-		cyggomp-1.dll
-		cyggsl-0.dll
-		cygjpeg-8.dll
-		cyglapack-0.dll
-		cygpng15-15.dll
-		cygwin1.dll
-		cygz.dll
-		==> Cygwin에서는 실행 가능.
-			하지만 Visual Studio에서는 실행되지 않음.

@@ -1,4 +1,4 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://staffwww.dcs.sheffield.ac.uk/people/N.Lawrence/fgplvm/
 		http://staffwww.dcs.sheffield.ac.uk/people/N.Lawrence/gplvm/

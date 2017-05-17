@@ -6,7 +6,7 @@
 
 		https://github.com/mikegashler/waffles
 
-[-] Build (VC).
+[-] Building (VC).
 	- Open Visual Studio solution.
 		${WAFFLES_HOME}/src/waffles.sln
 	- Configure.
@@ -14,7 +14,7 @@
 			Multi-threaded (/MT) -> Multi-threaded DLL (/MD)
 			Multi-threaded Debug (/MTd) -> Multi-threaded Debug DLL (/MDd)
 
-[-] Build
+[-] Building.
 	- Library.
 		cd src
 		make

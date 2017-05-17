@@ -15,7 +15,7 @@
 namespace {
 namespace local {
 
-// this class is used to map a node (x, y) in the topological grid to a unique variable index
+// This class is used to map a node (x, y) in the topological grid to a unique variable index.
 class TopologicalCoordinateToIndex
 {
 public:
@@ -47,7 +47,7 @@ void randomData(const std::size_t gridSizeX, const std::size_t gridSizeY, marray
 template<class T>
 void printData(const marray::Marray<T> &data)
 {
-	std::cout << "energy for boundary to be active:" << std::endl;
+	std::cout << "Energy for boundary to be active:" << std::endl;
 	for (std::size_t y = 0; y < data.shape(1) * 2 - 1; ++y)
 	{
 		for (std::size_t x = 0; x < data.shape(0) * 2 - 1; ++x)
@@ -65,13 +65,13 @@ void printData(const marray::Marray<T> &data)
 	}
 }
 
-// output the (approximate) argmin
+// Output the (approximate) argmin.
 template<class T>
 void printSolution(const marray::Marray<T> &data, const std::vector<std::size_t> &solution) 
 {
 	TopologicalCoordinateToIndex cTHelper(data.shape(0), data.shape(1));
-	std::cout << std::endl << "solution states:" << std::endl;
-	std::cout << "solution:" << std::endl;
+	std::cout << std::endl << "Solution states:" << std::endl;
+	std::cout << "Solution:" << std::endl;
 	for (std::size_t x = 0; x < data.shape(0) * 2 - 1; ++x)
 		std::cout << std::left << std::setw(3) << std::setprecision(1) << "___";
 	std::cout << std::endl;
@@ -110,7 +110,7 @@ void printSolution(const marray::Marray<T> &data, const std::vector<std::size_t>
 	std::cout << std::endl;
 }
 
-// user defined Function Type
+// User defined Function Type.
 template<class T>
 struct ClosednessFunctor
 {
@@ -152,15 +152,15 @@ public:
 
 namespace my_opengm {
 
-// [ref] ${OPENGM_HOME}/src/examples/image-processing-examples/interpixel_boundary_segmentation.cxx
+// REF [file] >> ${OPENGM_HOME}/src/examples/image-processing-examples/interpixel_boundary_segmentation.cxx
 void interpixel_boundary_segmentation_example()
 {
-	// model parameters
-	const std::size_t gridSizeX = 5, gridSizeY = 5;  // size of grid
-	const float beta = 0.9;  // bias to choose between under- and over-segmentation
-	const float high = 10;  // closedness-enforcing soft-constraint
+	// Model parameters.
+	const std::size_t gridSizeX = 5, gridSizeY = 5;  // Size of grid.
+	const float beta = 0.9;  // Bias to choose between under- and over-segmentation.
+	const float high = 10;  // Closedness-enforcing soft-constraint.
 
-	// size of the topological grid
+	// Size of the topological grid.
 	const std::size_t tGridSizeX = 2 * gridSizeX - 1, tGridSizeY = 2 * gridSizeY - 1;
 	const std::size_t numOfVariables = gridSizeY * (gridSizeX - 1) + gridSizeX * (gridSizeY - 1);
 	const std::size_t dimT[] = { tGridSizeX, tGridSizeY };
@@ -168,10 +168,10 @@ void interpixel_boundary_segmentation_example()
 	marray::Marray<float> data;
 	local::randomData(gridSizeX, gridSizeY, data);
 
-	std::cout << "interpixel boundary segmentation with closedness:" << std::endl;
+	std::cout << "Interpixel boundary segmentation with closedness:" << std::endl;
 	local::printData(data);
 
-	// construct a graphical model with 
+	// Construct a graphical model with 
 	// - addition as the operation (template parameter Adder)
 	// - the user defined function type ClosednessFunctor<float>
 	// - gridSizeY * (gridSizeX - 1) + gridSizeX * (gridSizeY - 1) variables, each having 2 many labels.
@@ -184,7 +184,7 @@ void interpixel_boundary_segmentation_example()
 	Model gm(opengm::SimpleDiscreteSpace<>(numOfVariables, 2));
 
 	// Local model.
-	// for each boundary in the grid, i.e. for each variable of the model, add one 1st order functions and one 1st order factor
+	// For each boundary in the grid, i.e. for each variable of the model, add one 1st order functions and one 1st order factor.
 	{
 		const std::size_t shape[] = { 2 };
 		opengm::ExplicitFunction<float> func1(shape, shape + 1);
@@ -203,15 +203,15 @@ void interpixel_boundary_segmentation_example()
 	}
 
 	// 4-wise interaction.
-	// for each junction of four inter-pixel edges on the grid, 
-	// one factor is added that connects the corresponding variable indices and refers to the ClosednessFunctor function
+	// For each junction of four inter-pixel edges on the grid, 
+	// one factor is added that connects the corresponding variable indices and refers to the ClosednessFunctor function.
 	{
-		// add one (!) 4th order ClosednessFunctor function
+		// Add one (!) 4th order ClosednessFunctor function.
 		local::ClosednessFunctor<float> func4;
 		func4.high = high;
 		const FunctionIdentifier fid4 = gm.addFunction(func4);
 
-		// add factors
+		// Add factors.
 		for (std::size_t y = 0; y < dimT[1]; ++y)
 			for (std::size_t x = 0; x < dimT[0]; ++x)
 				if (x % 2 + y % 2 == 2)
@@ -227,17 +227,17 @@ void interpixel_boundary_segmentation_example()
 				}
 	}
 
-	// set up the optimizer (lazy flipper)
+	// Set up the optimizer (lazy flipper).
 	typedef opengm::LazyFlipper<Model, opengm::Minimizer> LazyFlipperType;
 	LazyFlipperType::VerboseVisitorType verboseVisitor;
 	const std::size_t maxSubgraphSize = 5;
 	LazyFlipperType lazyFlipper(gm, maxSubgraphSize);
 
-	// obtain the (approximate) argmin
-	std::cout << "start inference:" << std::endl;
+	// Obtain the (approximate) argmin.
+	std::cout << "Start inference:" << std::endl;
 	lazyFlipper.infer(verboseVisitor);
 
-	// output the (approximate) argmin
+	// Output the (approximate) argmin.
 	std::vector<std::size_t> solution;
 	lazyFlipper.arg(solution);
 	local::printSolution(data, solution);

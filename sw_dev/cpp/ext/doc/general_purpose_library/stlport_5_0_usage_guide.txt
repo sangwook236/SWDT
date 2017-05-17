@@ -2,7 +2,7 @@
 	- Site.
 		http://www.stlport.org/
 
-[-] Build.
+[-] Building.
 	- Download & uncompress.
 	- Set STLport.
 		Run configure.

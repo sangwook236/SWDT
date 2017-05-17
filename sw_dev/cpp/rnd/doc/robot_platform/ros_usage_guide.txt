@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.ros.org/
 		http://wiki.ros.org/ROS
 		http://wiki.ros.org/ko
@@ -24,22 +24,22 @@
 		http://openslam.org/rgbdslam.html
 		http://www.openslam.org/hog-man.html
 
-[-] Run in Linux
-	-.
+[-] Run in Linux.
+	-
 
-[-] Run in Windows
-	-. 
-		[ref] http://wiki.ros.org/cturtle/Installation/Windows
+[-] Run in Windows.
+	-
+		REF [site] >> http://wiki.ros.org/cturtle/Installation/Windows
 
-		in server-side:
+		In server-side:
 			export ROS_HOSTNAME=utopia.kaist.ac.kr
 			export ROS_IP=143.248.139.17
 			export ROS_MASTER_URI=http://utopia.kaist.ac.kr:11311
-		in client-side (Windows)
+		In client-side (Windows):
 			set ROS_MASTER_URI=http://utopia.kaist.ac.kr:11311
 			set ROS_ROOT=D:\work_center\sw_dev\cpp\rnd\src\ros\ROSWIN32\bin
 			set ROSCONSOLE_CONFIG_FILE=D:\work_center\sw_dev\cpp\rnd\src\ros\ROSWIN32\config\rosconsole.config
-		in client-side (cygwin)
+		In client-side (cygwin):
 			rosrun roscpp_tutorials add_two_ints_client.exe 1 3
 
 		roslaunch openni_camera openni_node.launch
@@ -58,31 +58,30 @@
 		roslaunch openni_camera openni_node.launch 
 		rosrun rgbdslam rgbdslam
 
-[-] Trouble Shooting in Ubuntu
-	-. cannot install ros indigo
-		<error message>
+[-] Trouble Shooting in Ubuntu.
+	- Cannot install ros indigo.
+		<error>
 		The following packages have unmet dependencies
 		Depends: ros-indigo-common-tutorials but it is not going to be installed
-		=> unmatched version of Boost library.
+		=> Unmatched version of Boost library.
 			Currently, Boost version 1.54.0 is used. (2015/10/22).
 
-[-] Touble Shooting in VirtualBox (Host: MacOS, Guest: Ubuntu)
-	-. cannot use FaceTime HD Camera
-		[ref] https://tskamath.wordpress.com/2014/10/29/macbook-camera-virtualbox/
+[-] Touble Shooting in VirtualBox (Host: MacOS, Guest: Ubuntu).
+	- Cannot use FaceTime HD Camera.
+		REF [site] >> https://tskamath.wordpress.com/2014/10/29/macbook-camera-virtualbox/
 
-		<in MacOS>
+		<In MacOS>
 		VBoxManage list webcams
 			# alias "user friendly name"
 			# host path or identifier
 		VBoxManage list vms
 			# VM name
-		(optional) VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam list
+		(Optional) VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam list
 			# VBoxManage controlvm "VM name" webcam list
 
 		VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam attach .1
 			# VBoxManage controlvm "VM name" webcam attach [host_path|alias [settings]]
-		(optional) VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam list
+		(Optional) VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam list
 		VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam detach .1
 			# VBoxManage controlvm "VM name" webcam detach [host_path|alias]
-		(optional) VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam list
-
+		(Optional) VBoxManage controlvm "ubuntu-14.04.2-desktop-amd64" webcam list

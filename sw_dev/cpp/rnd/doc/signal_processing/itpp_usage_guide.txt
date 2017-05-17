@@ -1,27 +1,27 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://itpp.sourceforge.net/4.3.1/
 		http://itpp.sourceforge.net/
 
-[-] Building in MinGW
-	-. Reference
+[-] Building (MinGW)
+	- Reference.
 		http://icl.cs.utk.edu/lapack-for-windows/lapack/
-			Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW
-	-. Using CMake
-		1. run command prompt or MSYS(?).
-		2. put the GNU runtime directory in $PATH.
+			Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW.
+	- Use CMake.
+		1. Run command prompt or MSYS(?).
+		2. Put the GNU runtime directory in $PATH.
 			set path=D:\MyProgramFiles\MinGW\bin;%path%
 			export PATH=/D/MyProgramFiles/MinGW/bin:$PATH
-		3. (optional) change a directory to $IT++_HOME.
-		4. set $LD_LIBRARY_PATH.
-			copy blas.dll, lapack.dll, & fftw.dll to $LD_LIBRARY_PATH
-			put a directory in which blas.dll, lapack.dll, & fftw.dll exist in $LD_LIBRARY_PATH
+		3. (Optional) change a directory to $IT++_HOME.
+		4. Set $LD_LIBRARY_PATH.
+			Copy blas.dll, lapack.dll, & fftw.dll to $LD_LIBRARY_PATH.
+			Put a directory in which blas.dll, lapack.dll, & fftw.dll exist in $LD_LIBRARY_PATH.
 				export LD_LIBRARY_PATH=.:/D/MyProgramFiles/MinGW/bin:$LD_LIBRARY_PATH
-		5. run CMake-gui in the command prompt or MSYS(?).
-			refer to Reference about settings
-				choose MinGW Makefiles
-				set the 'BUILD_SHARED_LIBS' option to ON
-				set the 'CMAKE_GNUtoMS' option to ON
-		6. run make.
+		5. Run CMake-gui in the command prompt or MSYS(?).
+			Refer to Reference about settings.
+				Choose MinGW Makefiles.
+				Set the 'BUILD_SHARED_LIBS' option to ON.
+				Set the 'CMAKE_GNUtoMS' option to ON.
+		6. Make.
 			mingw32-make
 			mingw32-make install

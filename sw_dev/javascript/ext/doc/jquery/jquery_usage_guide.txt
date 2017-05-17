@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://jquery.com/
 		http://jquery.com/download/
 		http://jquery.org/

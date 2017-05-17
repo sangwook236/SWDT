@@ -227,6 +227,13 @@ inline void l1_dist_trans_comp(FLOATTYPE smoothMax, FLOATTYPE c, FLOATTYPE* tmpM
 }
 
 
+//--S [] 2017/05/16 : Sang-Wook Lee.
+#if defined(_MSC_VER)
+#if defined(INFINITY)
+#undef INFINITY
+#endif
+#endif
+//--S [] 2017/05/16 : Sang-Wook Lee.
 
 inline void l2_dist_trans_comp(FLOATTYPE smoothMax, FLOATTYPE c, FLOATTYPE* tmpMsgDest, FLOATTYPE * msgProd, int numStates)
 {

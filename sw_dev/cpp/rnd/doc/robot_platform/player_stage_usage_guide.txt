@@ -1,30 +1,30 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://playerstage.sourceforge.net/
-	-. Stage's Github URI
+	- Stage's Github URI.
 		http://github.com/rtv/Stage
 
-[-] Installation (Ubuntu)
-	-. Player/Stage
-		installation path:
+[-] Installation (Ubuntu).
+	- Player/Stage.
+		Installation path:
 			/home/playerstage/
-		
-		exection:
+
+		Exection:
 			export LD_LIBRARY_PATH=/home/playerstage/lib
 			player test.cfg
-		
-		reference:
+
+		Reference:
 			http://www.control.aau.dk/~tb/wiki/index.php/Installing_Player_and_Stage_in_Ubuntu
 			http://playerstage.sourceforge.net/wiki/Getting_help
 			http://playerstage.sourceforge.net/wiki/Download
-				in Ubuntu 9.04
+				In Ubuntu 9.04:
 					sudo apt-get install python-gdal netcdfg-dev libpq-dev libhdf4g-dev libgeos-dev libatk1.0-0 lib3ds-dev freeglut3-dev
-			
+
 			http://playerstage.sourceforge.net/doc/Player-2.1.0/player/index.html
 			http://playerstage.sourceforge.net/doc/Player-2.1.0/player/group__interfaces.html
 
-[-] Installation (Cygwin)
-	-. Stage
+[-] Installation (Cygwin).
+	- Stage.
 		export PATH=/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin
 		export CMAKE_INCLUDE_PATH=/usr/local/include:/usr/include
 		export CMAKE_LIBRARY_PATH=/usr/local/lib:/usr/lib:/lib

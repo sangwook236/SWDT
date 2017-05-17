@@ -62,7 +62,7 @@
 		export PYTHON2=python
 	- Change directory.
 		cd ${STAN_HOME}
-	- Run make.
+	- Make.
 		mingw32-make bin/libstan.a (?)
 			==> Do not need to build. (?)
 		mingw32-make bin/libstanc.a

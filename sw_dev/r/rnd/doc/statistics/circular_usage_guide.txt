@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		https://cran.r-project.org/web/packages/circular/index.html
 
 		http://circstatinr.st-andrews.ac.uk/

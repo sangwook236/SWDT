@@ -1,3 +1,3 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://slam6d.sourceforge.net/

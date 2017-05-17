@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.mathworks.com/matlabcentral/fileexchange/32449-edit-distances
 
 		http://www.mathworks.com/matlabcentral/fileexchange/17585-calculation-of-distance-between-strings

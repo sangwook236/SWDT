@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		http://www.math.duke.edu/~mauro/code.html
 		http://www.math.duke.edu/~mauro/

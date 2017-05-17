@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://phoenix.ics.uci.edu/software/pose/
-	-. Reference
+	- Reference.
 		${SW_DEV_HOME}/matlab/rnd/src/object_detection/upper_body_detector

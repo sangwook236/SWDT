@@ -4,7 +4,7 @@
 		http://www.caam.rice.edu/~kristyn/parpack_home.html
 		http://www.ime.unicamp.br/~chico/arpack++/
 
-[-] Build (Win32/Cygwin).
+[-] Building (Win32/Cygwin).
 	- Set path.
 		export HOME=/home/sangwook
 			이렇게 설정하면 ${HOME}/ARPACK directory를 ARPACK library's root directory로 사용.

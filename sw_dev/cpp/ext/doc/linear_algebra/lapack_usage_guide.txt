@@ -10,7 +10,7 @@
 	- Reference.
 		${GDT_HOME}/sw_dev/cpp/ext/src/linear_algebra/linear_algebra_library_usage_guide.txt
 
-[-] Build.
+[-] Building.
 	- Required libraries.
 		Fortran compiler.
 
@@ -19,7 +19,7 @@
 			Build Instructions to create LAPACK and LAPACKE 3.5.0 dlls for Windows with MinGW.
 		http://www.canerten.com/compile-lapack-and-blas-as-dll-on-windows/
 
-[-] Build (Win32/CMake).
+[-] Building (Win32/CMake).
 	REF [file] >> mingw_usage_guide.txt
 
 	- Download and uncompress Lapack.
@@ -45,7 +45,7 @@
 		mingw32-make install
 		==> 이유를 알 수 없지만 안되는 경우도 있음.
 
-[-] Build (Win32/MinGW).
+[-] Building (Win32/MinGW).
 	- Use Command Prompt.
 		1. Set the GNU runtime directory in PATH.
 			set path=${MINGW_ROOT}/bin;%path%
@@ -91,7 +91,7 @@
 			mingw32-gfortran --shared -o lapacke.dll lapacke/src/*.f lapack.dll blas.dll -O
 			i686-w64-mingw32-gfortran --shared -o lapacke.dll lapacke/src/*.f lapack.dll blas.dll -O
 
-[-] Build (Win32/Cygwin).
+[-] Building (Win32/Cygwin).
 	- Change a directory to $LAPACK_HOME.
 	- Build BLAS.
 		i686-pc-mingw32-gfortran --shared -o blas.dll BLAS/SRC/*.f -O

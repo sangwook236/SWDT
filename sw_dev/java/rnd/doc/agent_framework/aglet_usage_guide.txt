@@ -1,16 +1,15 @@
-<<  Usage  >>
+[-] Usage.
+	- Run.
+		Run the command.
+			set_aglet.bat
+		Run the command.
+			${AGLET_HOME}/bin/ant.bat
+		Follow the displayed instructions for installing a keystore and policy file.
+			look for the *** READ ME *** 's.
+			==>  Run the command: ${AGLET_HOME}/bin/ant.bat install-home
+		Run the command.
+			${AGLET_HOME}/bin/agletsd.bat -f ${AGLET_HOME}/cnf/aglets.props
+			${AGLET_HOME}/bin/agletsd.bat
 
-[-] Run step
-	- Run the command.
-		set_aglet.bat
-	- Run the command.
-		${AGLET_HOME}/bin/ant.bat
-	- Follow the displayed instructions for installing a keystore and policy file.
-		look for the *** READ ME *** 's.
-		==>  Run the command: ${AGLET_HOME}/bin/ant.bat install-home
-	- Run the command.
-		${AGLET_HOME}/bin/agletsd.bat -f ${AGLET_HOME}/cnf/aglets.props
-		${AGLET_HOME}/bin/agletsd.bat
-	
-	REF [doc] >> aglets-2.0.2.jar/Install.html
-	REF [site] >> Tahiti User's Guide: http://www.trl.ibm.com/aglets/tahiti1.1/index_e.htm
+		REF [doc] >> aglets-2.0.2.jar/Install.html
+		REF [site] >> Tahiti User's Guide: http://www.trl.ibm.com/aglets/tahiti1.1/index_e.htm

@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://system.data.sqlite.org/
 		http://sqlite.phxsoftware.com/
 		http://blog.kurtschindler.net/post/getting-started-with-sqlite-and-net

@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		CJLIN:
 		http://www.csie.ntu.edu.tw/~cjlin/nmf/
 

@@ -18,7 +18,7 @@
 		qmake project_name.pro -spec win32-msvc2015
 		make or jom
 
-[-] Build (Windows).
+[-] Building (Windows).
 	- qmake.exe or QMAKESPEC 관련 오류.
 		REF [site] >> http://stackoverflow.com/questions/5303634/qmake-qmakespec-has-not-been-set
 

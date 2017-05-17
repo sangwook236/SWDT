@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://kaldi-asr.org/
 		https://github.com/kaldi-asr/kaldi
 

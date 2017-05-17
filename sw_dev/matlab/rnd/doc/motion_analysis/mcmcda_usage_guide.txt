@@ -1,8 +1,8 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://cpslab.snu.ac.kr/software/multi-scan-mcmcda
 		http://cpslab.snu.ac.kr/
 
-[-] Execution
-	-. 32bit version Matlab에서 실행해야 함
-		mcmcda.dll이 32bit version.
+[-] Execution.
+	- Execute in Matlab 32bit.
+		mcmcda.dll: 32bit version.

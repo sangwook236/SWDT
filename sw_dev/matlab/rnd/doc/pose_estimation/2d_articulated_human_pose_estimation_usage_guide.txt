@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://groups.inf.ed.ac.uk/calvin/articulated_human_pose_estimation_code/
 		http://groups.inf.ed.ac.uk/calvin/calvin_upperbody_detector/
 		http://www.robots.ox.ac.uk/~vgg/research/pose_estimation/index.html

@@ -1,8 +1,8 @@
-[-] General
+[-] General.
 	- Site.
 		http://viennacl.sourceforge.net/
 
-[-] Build (VC)
+[-] Building (VC).
 	- Ambiguous symbol error.
 		<error> ambiguous symbol.
 			viennacl & viennacl::ocl.

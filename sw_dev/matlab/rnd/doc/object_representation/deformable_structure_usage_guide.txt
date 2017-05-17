@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		http://ps.is.tuebingen.mpg.de/research_projects/deformable-structures
 

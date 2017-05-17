@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		MFA (Zoubin):
 		https://www.lri.fr/~kegl/researchUdeM/research/pcurves/
 

@@ -1,3 +1,3 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		https://code.google.com/p/ehci/

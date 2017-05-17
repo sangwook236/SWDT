@@ -1,3 +1,3 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://lear.inrialpes.fr/people/klaeser/software_3d_video_descriptor

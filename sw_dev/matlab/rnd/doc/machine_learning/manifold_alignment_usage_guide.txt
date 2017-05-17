@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		Locally linear coordination (LLC) alignment algorithm:
 		http://www.stats.ox.ac.uk/~teh/projects.html
 
