@@ -10,7 +10,6 @@
 #include <sstream>
 #include <ctime>
 
-//#define _OPENMP 1
 #ifdef _OPENMP
 #include <omp.h>
 #endif
@@ -68,7 +67,7 @@ void sample()
 	const std::string filenameStats(dataset_base_directory + "stats.txt");
 
 /*
-	// read command-line arguments.
+	// Read command-line arguments.
 	for (int k = 1; k < argc; ++k)
 	{
 		if (argv[k][0] != '-') break;
@@ -240,7 +239,7 @@ void sample()
 
 	if (MODE_TRAIN & mode)
 	{
-		std::cout << "reading training set (for training)..." << std::endl;
+		std::cout << "Reading training set (for training)..." << std::endl;
 		const char *fileData = filenameDataTrain.empty() ? NULL : filenameDataTrain.c_str();
 		const char *fileDataSparse = filenameDataTrainSparse.empty() ? NULL : filenameDataTrainSparse.c_str();
 
@@ -264,7 +263,7 @@ void sample()
 		// Uncomment if you want same starting point.
 		//toolbox->setWeightInitType(INIT_ZERO);
 
-		std::cout << "starting training ..." << std::endl;
+		std::cout << "Starting training ..." << std::endl;
 		if (doesContinueTraining)
 		{
 			toolbox->load((char *)filenameModel.c_str(), (char *)filenameFeatures.c_str());
@@ -281,14 +280,14 @@ void sample()
 	// TODO: Implement the validate function in Toolbox.
 	if (MODE_VALIDATE & mode)
 	{
-		std::cout << "reading training set (for validation)..." << std::endl;
+		std::cout << "Reading training set (for validation)..." << std::endl;
 		DataSet dataTrain;
 		if (TOOLBOX_HCRF == toolboxType || TOOLBOX_GHCRF == toolboxType)
 			dataTrain.load((char *)filenameDataTrain.c_str(), NULL, (char *)filenameSeqLabelsTrain.c_str());
 		else
 			dataTrain.load((char *)filenameDataTrain.c_str(), (char *)filenameLabelsTrain.c_str());
 
-		std::cout << "reading validation set (for validation)..." << std::endl;
+		std::cout << "Reading validation set (for validation)..." << std::endl;
 		DataSet dataValidate;
 		if (TOOLBOX_HCRF == toolboxType || TOOLBOX_GHCRF == toolboxType)
 			dataValidate.load((char *)filenameDataValidate.c_str(), NULL, (char *)filenameSeqLabelsValidate.c_str());
@@ -298,13 +297,13 @@ void sample()
 		if (maxIterationCount >= 0)
 			toolbox->setMaxNbIteration(maxIterationCount);
 
-		std::cout << "starting validation ..." << std::endl;
+		std::cout << "Starting validation ..." << std::endl;
 		toolbox->validate(dataTrain, dataValidate, regFactorL2, (char *)filenameStats.c_str());
 	}
 
 	if (MODE_TEST & mode)
 	{
-		std::cout << "reading testing set (for testing)..." << std::endl;
+		std::cout << "Reading testing set (for testing)..." << std::endl;
 		DataSet data;
 		if (TOOLBOX_HCRF == toolboxType || TOOLBOX_GHCRF == toolboxType)
 			data.load((char *)filenameDataTest.c_str(), NULL, (char *)filenameSeqLabelsTest.c_str());
@@ -318,7 +317,7 @@ void sample()
 			fileStats1.close();
 		}
 
-		std::cout << "starting testing ..." << std::endl;
+		std::cout << "Starting testing ..." << std::endl;
 		toolbox->load((char *)filenameModel.c_str(), (char *)filenameFeatures.c_str());
 		toolbox->test(data, (char *)filenameOutput.c_str(), (char *)filenameStats.c_str());
 
@@ -338,10 +337,10 @@ void sample()
 				fileOutput.close();
 			}
 */
-			std::cout << "reading training set (for testing)..." << std::endl;
+			std::cout << "Reading training set (for testing)..." << std::endl;
 			DataSet dataTrain((char *)filenameDataTrain.c_str(), (char *)filenameLabelsTrain.c_str(), (char *)filenameSeqLabelsTrain.c_str());
 
-			std::cout << "starting testing ..." << std::endl;
+			std::cout << "Starting testing ..." << std::endl;
 			toolbox->test(dataTrain, NULL, (char *)filenameStats.c_str());
 			//toolbox->test(dataTrain, (char *)filenameOutput.c_str(), (char *)filenameStats.c_str());
 		}
@@ -362,10 +361,10 @@ void sample()
 				fileOutput.close();
 			}
 */
-			std::cout << "reading validation set (for testing)..." << std::endl;
+			std::cout << "Reading validation set (for testing)..." << std::endl;
 			DataSet dataValidate((char *)filenameDataValidate.c_str(), (char *)filenameLabelsValidate.c_str(), (char *)filenameSeqLabelsValidate.c_str());
 
-			std::cout << "starting testing ..." << std::endl;
+			std::cout << "Starting testing ..." << std::endl;
 			toolbox->test(dataValidate, NULL, (char *)filenameStats.c_str());
 			//toolbox->test(dataValidate, (char *)filenameDataTrain.c_str(), (char *)filenameStats.c_str());
 		}
@@ -440,7 +439,7 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 		boost::filesystem::path dir(resultantDirectoryName);
 		if (!boost::filesystem::create_directory(dir))
 		{
-			std::cerr << "cannot create a HCRF resultant directory: " << resultantDirectoryName << std::endl;
+			std::cerr << "Cannot create a HCRF resultant directory: " << resultantDirectoryName << std::endl;
 			return;
 		}
 	}
@@ -488,7 +487,7 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 			const char *fileData = filenameDataTrain.empty() ? NULL : filenameDataTrain.c_str();
 			const char *fileDataSparse = filenameDataTrainSparse.empty() ? NULL : filenameDataTrainSparse.c_str();
 
-			std::cout << "reading training set (for training)...: " << filenameDataTrain << std::endl;
+			std::cout << "Reading training set (for training)...: " << filenameDataTrain << std::endl;
 			DataSet data;
 			if (TOOLBOX_HCRF == toolboxType || TOOLBOX_GHCRF == toolboxType)
 				data.load(fileData, NULL, (char *)filenameSeqLabelsTrain.c_str(), NULL, NULL, fileDataSparse);
@@ -510,7 +509,7 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 			toolbox->setWeightInitType(INIT_ZERO);
 #endif
 
-			std::cout << "starting training (training feature file ID: " << feature_file_id << ") ..." << std::endl;
+			std::cout << "Starting training (training feature file ID: " << feature_file_id << ") ..." << std::endl;
 			try
 			{
 				if (doesContinueTraining || trainDataFilePairList.begin() != cit)
@@ -529,7 +528,7 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 			{
 				if (ofsErrorReport.is_open())
 				{
-					ofsErrorReport << "error: " << e.what() << ", dataset dir: " << datasetDirectory << ", video file id: " << cit->first << std::endl;
+					ofsErrorReport << "Error: " << e.what() << ", dataset dir: " << datasetDirectory << ", video file id: " << cit->first << std::endl;
 				}
 			}
 		}
@@ -552,7 +551,7 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 			const char *fileData = filenameDataTrain.empty() ? NULL : filenameDataTrain.c_str();
 			const char *fileDataSparse = filenameDataTrainSparse.empty() ? NULL : filenameDataTrainSparse.c_str();
 
-			std::cout << "reading training set (for validation)...: " << filenameDataTrain << std::endl;
+			std::cout << "Reading training set (for validation)...: " << filenameDataTrain << std::endl;
 			if (TOOLBOX_HCRF == toolboxType || TOOLBOX_GHCRF == toolboxType)
 				dataTrain.load((char *)filenameDataTrain.c_str(), NULL, (char *)filenameSeqLabelsTrain.c_str());
 			else
@@ -566,7 +565,7 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 			const std::string filenameLabelsValidate(cit->first.empty() ? std::string() : (datasetDirectory + cit->first + labelExtName));
 			const std::string filenameSeqLabelsValidate(cit->first.empty() ? std::string() : (datasetDirectory + cit->first + sequenceLabelExtName));
 
-			std::cout << "reading validation set (for validation)...: " << filenameDataValidate << std::endl;
+			std::cout << "Reading validation set (for validation)...: " << filenameDataValidate << std::endl;
 			DataSet dataValidate;
 			if (TOOLBOX_HCRF == toolboxType || TOOLBOX_GHCRF == toolboxType)
 				dataValidate.load((char *)filenameDataValidate.c_str(), NULL, (char *)filenameSeqLabelsValidate.c_str());
@@ -576,7 +575,7 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 			if (maxIterationCount >= 0)
 				toolbox->setMaxNbIteration(maxIterationCount);
 
-			std::cout << "starting validation (validation feature file ID: " << feature_file_id << ") ..." << std::endl;
+			std::cout << "Starting validation (validation feature file ID: " << feature_file_id << ") ..." << std::endl;
 			try
 			{
 				toolbox->validate(dataTrain, dataValidate, regFactorL2, (char *)filenameStats.c_str());
@@ -585,7 +584,7 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 			{
 				if (ofsErrorReport.is_open())
 				{
-					ofsErrorReport << "error: " << e.what() << ", dataset dir: " << datasetDirectory << ", video file id: " << cit->first << std::endl;
+					ofsErrorReport << "Error: " << e.what() << ", dataset dir: " << datasetDirectory << ", video file id: " << cit->first << std::endl;
 				}
 			}
 		}
@@ -595,7 +594,7 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 	{
 		boost::timer::auto_cpu_timer timer;
 
-		std::cout << "loading model & feature files for testing..." << std::endl;
+		std::cout << "Loading model & feature files for testing..." << std::endl;
 		toolbox->load((char *)filenameModel.c_str(), (char *)filenameFeatures.c_str());
 
 		//if (TEST_ON_TEST_SET & testDataset)
@@ -617,14 +616,14 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 				const std::string filenameLabelsTest(cit->first.empty() ? std::string() : (datasetDirectory + cit->first + labelExtName));
 				const std::string filenameSeqLabelsTest(cit->first.empty() ? std::string() : (datasetDirectory + cit->first + sequenceLabelExtName));
 
-				std::cout << "reading testing set (for testing)...: " << filenameDataTest << std::endl;
+				std::cout << "Reading testing set (for testing)...: " << filenameDataTest << std::endl;
 				DataSet data;
 				if (TOOLBOX_HCRF == toolboxType || TOOLBOX_GHCRF == toolboxType)
 					data.load((char *)filenameDataTest.c_str(), NULL, (char *)filenameSeqLabelsTest.c_str());
 				else
 					data.load((char *)filenameDataTest.c_str(), (char *)filenameLabelsTest.c_str());
 
-				std::cout << "starting testing (testing feature file ID: " << feature_file_id << ") ..." << std::endl;
+				std::cout << "Starting testing (testing feature file ID: " << feature_file_id << ") ..." << std::endl;
 				try
 				{
 					toolbox->test(data, (char *)filenameOutput.c_str(), (char *)filenameStats.c_str());
@@ -633,7 +632,7 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 				{
 					if (ofsErrorReport.is_open())
 					{
-						ofsErrorReport << "error: " << e.what() << ", dataset dir: " << datasetDirectory << ", video file id: " << cit->first << std::endl;
+						ofsErrorReport << "Error: " << e.what() << ", dataset dir: " << datasetDirectory << ", video file id: " << cit->first << std::endl;
 					}
 				}
 			}
@@ -664,10 +663,10 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 				const std::string filenameLabelsTrain(cit->first.empty() ? std::string() : (datasetDirectory + cit->first + labelExtName));
 				const std::string filenameSeqLabelsTrain(cit->first.empty() ? std::string() : (datasetDirectory + cit->first + sequenceLabelExtName));
 
-				std::cout << "reading training set (for testing)...: " << filenameDataTrain << std::endl;
+				std::cout << "Reading training set (for testing)...: " << filenameDataTrain << std::endl;
 				DataSet dataTrain((char *)filenameDataTrain.c_str(), (char *)filenameLabelsTrain.c_str(), (char *)filenameSeqLabelsTrain.c_str());
 
-				std::cout << "starting testing (training feature file ID: " << feature_file_id << ") ..." << std::endl;
+				std::cout << "Starting testing (training feature file ID: " << feature_file_id << ") ..." << std::endl;
 				try
 				{
 					toolbox->test(dataTrain, NULL, (char *)filenameStats.c_str());
@@ -677,7 +676,7 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 				{
 					if (ofsErrorReport.is_open())
 					{
-						ofsErrorReport << "error: " << e.what() << ", dataset dir: " << datasetDirectory << ", video file id: " << cit->first << std::endl;
+						ofsErrorReport << "Error: " << e.what() << ", dataset dir: " << datasetDirectory << ", video file id: " << cit->first << std::endl;
 					}
 				}
 			}
@@ -707,10 +706,10 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 				const std::string filenameLabelsValidate(cit->first.empty() ? std::string() : (datasetDirectory + cit->first + labelExtName));
 				const std::string filenameSeqLabelsValidate(cit->first.empty() ? std::string() : (datasetDirectory + cit->first + sequenceLabelExtName));
 
-				std::cout << "reading validation set (for testing)..." << std::endl;
+				std::cout << "Reading validation set (for testing)..." << std::endl;
 				DataSet dataValidate((char *)filenameDataValidate.c_str(), (char *)filenameLabelsValidate.c_str(), (char *)filenameSeqLabelsValidate.c_str());
 
-				std::cout << "starting testing (validation feature file ID: " << feature_file_id << ") ..." << std::endl;
+				std::cout << "Starting testing (validation feature file ID: " << feature_file_id << ") ..." << std::endl;
 				try
 				{
 					toolbox->test(dataValidate, NULL, (char *)filenameStats.c_str());
@@ -720,7 +719,7 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 				{
 					if (ofsErrorReport.is_open())
 					{
-						ofsErrorReport << "error: " << e.what() << ", dataset dir: " << datasetDirectory << ", video file id: " << cit->first << std::endl;
+						ofsErrorReport << "Error: " << e.what() << ", dataset dir: " << datasetDirectory << ", video file id: " << cit->first << std::endl;
 					}
 				}
 			}
@@ -731,28 +730,28 @@ void gesture_recognition_using_THoG(const std::string &datasetDirectory, const s
 void gesture_recognition_using_THoG()
 {
 #if 1
-	// at desire.kaist.ac.kr.
+	// At desire.kaist.ac.kr.
 
-	// using ChaLearn Gesture Challenge dataset.
+	// Use ChaLearn Gesture Challenge dataset.
 	const std::string dataset_base_directory("E:/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/");
-	// using AIM gesture dataset.
+	// Use AIM gesture dataset.
 	//const std::string dataset_base_directory("F:/AIM_gesture_dataset/");
 #elif 0
-	// at eden.kaist.ac.kr.
+	// At eden.kaist.ac.kr.
 
-	// using ChaLearn Gesture Challenge dataset.
+	// Use ChaLearn Gesture Challenge dataset.
 	const std::string dataset_base_directory("E:/sangwook/dataset/motion/ChaLearn_Gesture_Challenge_dataset/quasi_lossless_format/train_data/");
-	// using AIM gesture dataset.
+	// Use AIM gesture dataset.
 	const std::string dataset_base_directory("E:/sangwook/AIM_gesture_dataset/");
 #endif
 
-	// the number of training dataset (devel01 ~ devel20).
+	// The number of training dataset (devel01 ~ devel20).
 	//	10, 10, 8, 10, 8, 10, 9, 11, 9, 9, 8, 11, 12, 8, 8, 13, 8, 10, 9, 9
 
 	std::list<std::pair<std::string, std::size_t> > dataset_directory_list;
 #if 1
 	{
-		// for ChaLearn Gesture Challenge dataset.
+		// For ChaLearn Gesture Challenge dataset.
 
 		//dataset_directory_list.push_back(std::make_pair(dataset_base_directory + std::string("devel01_thog2_10deg_hcrf/"), 10));
 		dataset_directory_list.push_back(std::make_pair(dataset_base_directory + std::string("devel02_thog2_10deg_hcrf/"), 10));
@@ -798,7 +797,7 @@ void gesture_recognition_using_THoG()
 	}
 #else
 	{
-		// for AIM gesture dataset.
+		// For AIM gesture dataset.
 
 		dataset_directory_list.push_back(std::make_pair(dataset_base_directory + std::string("s01_sangwook.lee_20120719_per_gesture_avi_640x480_30fps_3000kbps_thog2_1deg_hcrf/"), ?));
 		dataset_directory_list.push_back(std::make_pair(dataset_base_directory + std::string("s01_sangwook.lee_20120719_per_gesture_avi_640x480_30fps_3000kbps_thog2_10deg_hcrf/"), ?));
@@ -846,7 +845,7 @@ int hcrf_main(int argc, char *argv[])
 {
 	//local::sample();
 
-	// gesture recognition using THoG.
+	// Gesture recognition using THoG.
 	local::gesture_recognition_using_THoG();
 
 	return 0;

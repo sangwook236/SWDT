@@ -1,11 +1,23 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://crfpp.sourceforge.net/
 
-[-] Building (Linux)
-	-. Makefile을 이용해 build해야 함.
-		[ref] ${CRFPP_HOME}/doc/index.html
+[-] Building (Linux).
+	- Make.
+		REF [file] >> ${CRFPP_HOME}/doc/index.html
 
 		./configure
 		make
 		sudo make install
+
+[-] Building (VS).
+	- Edit a command file.
+		${CRFPP_HOME}/make.bat:
+			Set PATH=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64;%PATH%
+			Set INCLUDE=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Include;%INCLUDE%
+			Set LIB=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\lib\amd64;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Lib\x64;%LIB%
+		${CRFPP_HOME}/Makefile.msvc (for 64-bit):
+			Add /MACHINE:X64 to LDFLAGS.
+	- Open Visual Studio command prompt.
+	- Make.
+		make.bat

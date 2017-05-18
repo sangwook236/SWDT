@@ -6,7 +6,10 @@
 
 #include "instances.inc"
 
-void DefaultErrorFn(char* msg)
+//--S [] 2017/05/18: Sang-Wook Lee.
+//void DefaultErrorFn(char* msg)
+static void DefaultErrorFn(char* msg)
+//--E [] 2017/05/18: Sang-Wook Lee.
 {
 	fprintf(stderr, "%s\n", msg);
 	exit(1);

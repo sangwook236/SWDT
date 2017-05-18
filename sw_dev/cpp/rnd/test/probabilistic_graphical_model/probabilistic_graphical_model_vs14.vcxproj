@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pnl/pnl;$(MY_USR_LOCAL_INCLUDE)/pnl/cxcore;$(MY_USR_LOCAL_INCLUDE)/pnl/src/include;$(MY_USR_LOCAL_INCLUDE)/mocapy;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MRF;$(MY_USR_LOCAL_INCLUDE)/opengm_external/TRWS;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opengm_external/ibfs;$(MY_USR_LOCAL_INCLUDE)/opengm_external/QPBO;$(MY_USR_LOCAL_INCLUDE)/opengm_external;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/hdf5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pnl/pnl;$(MY_USR_LOCAL_INCLUDE)/pnl/cxcore;$(MY_USR_LOCAL_INCLUDE)/pnl/src/include;$(MY_USR_LOCAL_INCLUDE)/mocapy;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MRF;$(MY_USR_LOCAL_INCLUDE)/opengm_external/TRWS;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opengm_external/ibfs;$(MY_USR_LOCAL_INCLUDE)/opengm_external/QPBO;$(MY_USR_LOCAL_INCLUDE)/opengm_external;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/hdf5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -103,7 +103,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pnl/pnl;$(MY_USR_LOCAL_INCLUDE)/pnl/cxcore;$(MY_USR_LOCAL_INCLUDE)/pnl/src/include;$(MY_USR_LOCAL_INCLUDE)/mocapy;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MRF;$(MY_USR_LOCAL_INCLUDE)/opengm_external/TRWS;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opengm_external/ibfs;$(MY_USR_LOCAL_INCLUDE)/opengm_external/QPBO;$(MY_USR_LOCAL_INCLUDE)/opengm_external;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/hdf5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pnl/pnl;$(MY_USR_LOCAL_INCLUDE)/pnl/cxcore;$(MY_USR_LOCAL_INCLUDE)/pnl/src/include;$(MY_USR_LOCAL_INCLUDE)/mocapy;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MRF;$(MY_USR_LOCAL_INCLUDE)/opengm_external/TRWS;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opengm_external/ibfs;$(MY_USR_LOCAL_INCLUDE)/opengm_external/QPBO;$(MY_USR_LOCAL_INCLUDE)/opengm_external;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/hdf5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,7 +119,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pnl/pnl;$(MY_USR_LOCAL_INCLUDE)/pnl/cxcore;$(MY_USR_LOCAL_INCLUDE)/pnl/src/include;$(MY_USR_LOCAL_INCLUDE)/mocapy;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MRF;$(MY_USR_LOCAL_INCLUDE)/opengm_external/TRWS;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opengm_external/ibfs;$(MY_USR_LOCAL_INCLUDE)/opengm_external/QPBO;$(MY_USR_LOCAL_INCLUDE)/opengm_external;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/hdf5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pnl/pnl;$(MY_USR_LOCAL_INCLUDE)/pnl/cxcore;$(MY_USR_LOCAL_INCLUDE)/pnl/src/include;$(MY_USR_LOCAL_INCLUDE)/mocapy;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MRF;$(MY_USR_LOCAL_INCLUDE)/opengm_external/TRWS;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opengm_external/ibfs;$(MY_USR_LOCAL_INCLUDE)/opengm_external/QPBO;$(MY_USR_LOCAL_INCLUDE)/opengm_external;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/hdf5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,7 +137,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pnl/pnl;$(MY_USR_LOCAL_INCLUDE)/pnl/cxcore;$(MY_USR_LOCAL_INCLUDE)/pnl/src/include;$(MY_USR_LOCAL_INCLUDE)/mocapy;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MRF;$(MY_USR_LOCAL_INCLUDE)/opengm_external/TRWS;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opengm_external/ibfs;$(MY_USR_LOCAL_INCLUDE)/opengm_external/QPBO;$(MY_USR_LOCAL_INCLUDE)/opengm_external;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/hdf5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/pnl/pnl;$(MY_USR_LOCAL_INCLUDE)/pnl/cxcore;$(MY_USR_LOCAL_INCLUDE)/pnl/src/include;$(MY_USR_LOCAL_INCLUDE)/mocapy;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MRF;$(MY_USR_LOCAL_INCLUDE)/opengm_external/TRWS;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opengm_external/ibfs;$(MY_USR_LOCAL_INCLUDE)/opengm_external/QPBO;$(MY_USR_LOCAL_INCLUDE)/opengm_external;$(MY_USR_LOCAL_INCLUDE)/gmp;$(MY_USR_LOCAL_INCLUDE)/hdf5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -211,6 +211,7 @@
     </ClCompile>
     <ClCompile Include="crfpp\crfpp_main.cpp" />
     <ClCompile Include="cuda_cut\cuda_cut_main.cpp" />
+    <ClCompile Include="densecrf\densecrf_main.cpp" />
     <ClCompile Include="hcrf\hcrf_main.cpp" />
     <ClCompile Include="hmm\hmm_forward_backward.cpp" />
     <ClCompile Include="hmm\hmm_learning.cpp" />
@@ -330,17 +331,72 @@
     <ClCompile Include="opengm\opengm_qpbo_algorithm.cpp" />
     <ClCompile Include="opengm\opengm_quick_start_example.cpp" />
     <ClCompile Include="opengm\opengm_swendsenwang_example.cpp" />
-    <ClCompile Include="pnl\pnl_bayesian_network.cpp" />
-    <ClCompile Include="pnl\pnl_bayesian_network_example.cpp" />
-    <ClCompile Include="pnl\pnl_dbn.cpp" />
-    <ClCompile Include="pnl\pnl_dbn_example.cpp" />
-    <ClCompile Include="pnl\pnl_hmm.cpp" />
-    <ClCompile Include="pnl\pnl_main.cpp" />
-    <ClCompile Include="pnl\pnl_mnet_example.cpp" />
-    <ClCompile Include="pnl\pnl_mrf2.cpp" />
-    <ClCompile Include="pnl\pnl_mrf_example.cpp" />
-    <ClCompile Include="pnl\pnl_super_resolution.cpp" />
-    <ClCompile Include="pnl\pnl_viterbi_segmentation.cpp" />
+    <ClCompile Include="pnl\pnl_bayesian_network.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_bayesian_network_example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_dbn.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_dbn_example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_hmm.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_mnet_example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_mrf2.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_mrf_example.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_super_resolution.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="pnl\pnl_viterbi_segmentation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="qpbo\qpbo_main.cpp" />
     <ClCompile Include="qpbo_lib\QPBO.cpp" />
     <ClCompile Include="qpbo_lib\QPBO_extra.cpp" />

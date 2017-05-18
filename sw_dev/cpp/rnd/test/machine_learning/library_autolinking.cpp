@@ -31,8 +31,8 @@
 //#pragma comment(lib, "libshogun-13.0.dll.lib")
 //#pragma comment(lib, "librlglue.lib")
 //#pragma comment(lib, "librlutils.lib")
-#pragma comment(lib, "libboost_chrono-vc140-mt-gd-1_61.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-gd-1_61.lib")
+#pragma comment(lib, "libboost_chrono-vc140-mt-gd-1_64.lib")
+#pragma comment(lib, "libboost_system-vc140-mt-gd-1_64.lib")
 
 #		else
 
@@ -63,8 +63,8 @@
 //#pragma comment(lib, "libshogun-13.0.dll.lib")
 //#pragma comment(lib, "librlglue.lib")
 //#pragma comment(lib, "librlutils.lib")
-#pragma comment(lib, "libboost_chrono-vc140-mt-1_61.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-1_61.lib")
+#pragma comment(lib, "libboost_chrono-vc140-mt-1_64.lib")
+#pragma comment(lib, "libboost_system-vc140-mt-1_64.lib")
 
 #		endif
 

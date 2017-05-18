@@ -3,11 +3,24 @@
 		http://cs.ru.nl/~jorism/libDAI/
 
 [-] Building (Linux).
-	- Use Makefile to build.
+	- Make.
 		Copy ${LIBDAI_HOME}/Makefile.LINUX to ${LIBDAI_HOME}/Makefile.conf
 		Modify ${LIBDAI_HOME}/Makefile.ALL & ${LIBDAI_HOME}/Makefile.conf in order to set-up
 			Refer to the trouble shooting.
 		make
+
+[-] Building (Visual Studio).
+	- Use a solution file or Makefile.
+		${LIBDAI_HOME}/Makefile.WINDOWS
+		${LIBDAI_HOME}/Makefile.WINDOWS64
+		${LIBDAI_HOME}/vc10/libdai.sln
+
+[-] Trouble shooting (Visual Studio).
+	- Linking error with GLC.
+		<solution>
+			Add ${LIBDAI_HOME}/src/glc.cpp, cobwebgraph.cpp & ${LIBDAI_HOME}/include/dai/glc.h, cobwebgraph.h to the project.
+			Build after defining DAI_WITH_GLC.
+		==> REF [file] >> ${LIBDAI_HOME}/dai_config.h
 
 [-] Trouble shooting (Linux).
 	- Boost.Program_Options library error.

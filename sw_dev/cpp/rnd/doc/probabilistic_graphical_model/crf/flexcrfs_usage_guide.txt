@@ -1,3 +1,3 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://flexcrfs.sourceforge.net/

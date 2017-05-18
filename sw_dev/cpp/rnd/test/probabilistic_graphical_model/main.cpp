@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
 
 	int crfpp_main(int argc, char *argv[]);
 	int hcrf_main(int argc, char *argv[]);
+	int densecrf_main(int argc, char *argv[]);
 
 	int pnl_main(int argc, char *argv[]);
 	int mocapy_main(int argc, char *argv[]);
@@ -71,11 +72,12 @@ int main(int argc, char *argv[])
 		//retval = middlebury_main(argc, argv);
 
 		std::cout << "\nConditional random field (CRF) --------------------------------------" << std::endl;
+		//retval = crfpp_main(argc, argv);
 		//	- Hidden CRF (HCRF).
 		//	- Laten-dynamc CRF (LDCRF).
+		//retval = hcrf_main(argc, argv);
 		//	- Fully-connected (dense) CRF.
-		//retval = crfpp_main(argc, argv);
-		retval = hcrf_main(argc, argv);
+		retval = densecrf_main(argc, argv);
 
 		std::cout << "\nDynamic Bayesian network (DBN) --------------------------------------" << std::endl;
 

@@ -110,33 +110,55 @@ void basic_operation()
 
 		// Gibbs sampler.
 		{
-			// typedefs to a Gibbs minimizer and maximizer.
-			typedef opengm::Gibbs<Model, opengm::Minimizer> OptimizerMinimizerType;
-			typedef opengm::Gibbs<Model, opengm::Maximizer> OptimizerMaximizerType;
-			typedef OptimizerMinimizerType::Parameter OptimizerMinimizerParameterType;
-			typedef OptimizerMaximizerType::Parameter OptimizerMaximizerParameterType;
+			// NOTICE [caution] >>
+			//	- Only support opengm::Gibbs using 'opengm::Adder + opengm::Minimizer' and 'opengm::Multiplier + opengm::Maximizer'.
 
-			// Construct solver parameters (all parameters have default values).
-			const OptimizerMinimizerParameterType minimizerParameter(
-				1000000,  // number of iterations.
-				100000  // stop after 100000 iterations without improvement.
-			);
-			// Default parameter.
-			const OptimizerMaximizerParameterType maximizerParameter;
+#if 1
+			{
+				// typedefs to a Gibbs minimizer.
+				typedef opengm::Gibbs<Model, opengm::Minimizer> OptimizerMinimizerType;
+				typedef OptimizerMinimizerType::Parameter OptimizerMinimizerParameterType;
 
-			// Construct optimizers (minimizer and maximizer).
-			OptimizerMinimizerType optimizerMinimizer(gm, minimizerParameter);
-			OptimizerMaximizerType optimizerMaximizer(gm, maximizerParameter);
+				// Construct solver parameters (all parameters have default values).
+				const OptimizerMinimizerParameterType minimizerParameter(
+					1000000,  // Number of iterations.
+					100000  // Stop after 100000 iterations without improvement.
+				);
 
-			// Optimize the models (minimizer and maximizer).
-			std::cout << "On inferring ..." << std::endl;
-			optimizerMinimizer.infer();
-			optimizerMaximizer.infer();
+				// Construct optimizers (minimizer).
+				OptimizerMinimizerType optimizerMinimizer(gm, minimizerParameter);
 
-			// Get the argmin / argmax.
-			std::vector<Model::LabelType> argmin, argmax;
-			optimizerMinimizer.arg(argmin);
-			optimizerMaximizer.arg(argmax);
+				// Optimize the models (minimizer).
+				std::cout << "On inferring ..." << std::endl;
+				optimizerMinimizer.infer();
+
+				// Get the argmin.
+				std::vector<Model::LabelType> argmin;
+				optimizerMinimizer.arg(argmin);
+			}
+#endif
+
+#if 0
+			{
+				// typedefs to a Gibbs maximizer.
+				typedef opengm::Gibbs<Model, opengm::Maximizer> OptimizerMaximizerType;
+				typedef OptimizerMaximizerType::Parameter OptimizerMaximizerParameterType;
+
+				// Default parameter.
+				const OptimizerMaximizerParameterType maximizerParameter;
+
+				// Construct optimizers (maximizer).
+				OptimizerMaximizerType optimizerMaximizer(gm, maximizerParameter);
+
+				// Optimize the models (maximizer).
+				std::cout << "On inferring ..." << std::endl;
+				optimizerMaximizer.infer();
+
+				// Get the argmax.
+				std::vector<Model::LabelType> argmax;
+				optimizerMaximizer.arg(argmax);
+			}
+#endif			
 		}
 
 		// ICM.
@@ -269,7 +291,7 @@ int opengm_main(int argc, char *argv[])
 		// An example for segmentation.
 		//	REF [file] >> ${CPP_RND_HOME}/test/segmentation/interactive_graph_cuts/interactive_graph_cuts_main.cpp
 
-		std::cout << "\ninference algorithms ------------------------------------------------" << std::endl;
+		std::cout << "\nInference algorithms ------------------------------------------------" << std::endl;
 		// Image segmentation, stereo matching, & image restoration.
 		//my_opengm::inference_algorithms();
 	}

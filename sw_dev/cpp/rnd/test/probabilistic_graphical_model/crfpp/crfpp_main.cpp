@@ -108,7 +108,7 @@ int crfpp_main(int argc, char *argv[])
 	int retval = EXIT_SUCCESS;
 
 	// Train (encoding).
-	std::cout << "training (encoding) ..." << std::endl;
+	std::cout << "Training (encoding) ..." << std::endl;
 	{
 		const std::string template_filename(base_directory + "template");
 		const std::string training_data_filename(base_directory + "train.data");
@@ -144,7 +144,7 @@ int crfpp_main(int argc, char *argv[])
 	}
 
 	// Test (decoding).
-	std::cout << "testing (decoding) ..." << std::endl;
+	std::cout << "Testing (decoding) ..." << std::endl;
 	{
 		const std::string model_filename(base_directory + "model");
 		const std::string testing_data_filename(base_directory + "test.data");
@@ -160,7 +160,7 @@ int crfpp_main(int argc, char *argv[])
 	}
 
 	// Run example.
-	std::cout << "running example ..." << std::endl;
+	std::cout << "Running example ..." << std::endl;
 	{
 		retval = local::example() ? EXIT_SUCCESS : EXIT_FAILURE;
 	}
