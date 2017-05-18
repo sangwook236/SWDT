@@ -1,66 +1,66 @@
-[-] General
-	-. Principle
-		LibraryÀÇ °£ ¿¬°ü¼ºÀÌ °¡´ÉÇÑ ÃÖ¼Ò°¡ µÇµµ·Ï build.
-			Library buildingÇÒ ¶§ ²À ÇÊ¿äÇÑ library¸¸ linkÇÏ°í optional library´Â °¡´ÉÇÑ linkÇÏÁö ¾ÊÀ½.
-		´Ù¸¥ library¿¡ ÀÇÇØ »ç¿ëµÇÁö ¾Ê°Å³ª ÁÖ·Î executable¿¡ Á÷Á¢ »ç¿ëµÇ´Â library´Â »ç¿ëÇÏÁö ±â·ÏÇÏÁö ¸» °Í.
-		°³º° libraryÀÇ Áß¿äµµ´Â ¾Æ·¡ÀÇ ±âÈ£¸¦ ÀÌ¿ëÇØ Ç¥½Ã:
-			**: 75% ÀÌ»óÀÇ library¿¡¼­ ¿ä±¸µÊ.
-			*: 50% ÀÌ»óÀÇ library¿¡¼­ ¿ä±¸µÊ.
-			?: ÇÊ¿ä¼º È®ÀÎ ÇÊ¿ä.
+[-] General.
+	- Principle.
+		Libraryì˜ ê°„ ì—°ê´€ì„±ì´ ê°€ëŠ¥í•œ ìµœì†Œê°€ ë˜ë„ë¡ build.
+			Library buildingí•  ë•Œ ê¼­ í•„ìš”í•œ libraryë§Œ linkí•˜ê³  optional libraryëŠ” ê°€ëŠ¥í•œ linkí•˜ì§€ ì•ŠìŒ.
+		ë‹¤ë¥¸ libraryì— ì˜í•´ ì‚¬ìš©ë˜ì§€ ì•Šê±°ë‚˜ ì£¼ë¡œ executableì— ì§ì ‘ ì‚¬ìš©ë˜ëŠ” libraryëŠ” ì‚¬ìš©í•˜ì§€ ê¸°ë¡í•˜ì§€ ë§ ê²ƒ.
+		ê°œë³„ libraryì˜ ì¤‘ìš”ë„ëŠ” ì•„ë˜ì˜ ê¸°í˜¸ë¥¼ ì´ìš©í•´ í‘œì‹œ:
+			**: 75% ì´ìƒì˜ libraryì—ì„œ ìš”êµ¬ë¨.
+			*: 50% ì´ìƒì˜ libraryì—ì„œ ìš”êµ¬ë¨.
+			?: í•„ìš”ì„± í™•ì¸ í•„ìš”.
 
-		Basic library buildÇÏ´Â µ¥¸¸ 2~3ÀÏ °É¸².
+		Basic library buildí•˜ëŠ” ë°ë§Œ 2~3ì¼ ê±¸ë¦¼.
 
-[-] Library Level (General)
-	-. Level 0
-		zlib(**)
+[-] Library Level (General).
+	- Level 0.
+		zlib(**).
 
-	-. Level 1
-		icu(*), iconv(GnuWin32)
-		OpenGL(**)
+	- Level 1.
+		icu(*), iconv(GnuWin32).
+		OpenGL(**).
 
-	-. Level 3
-		Boost(**)
-		libjpeg(**), libpng(*), libtiff(*)
-		vld
+	- Level 3.
+		Boost(**).
+		libjpeg(**), libpng(*), libtiff(*).
+		vld.
 
-	-. Level 5
-		pthreads(?), tbb, openthread
-		giflib, libmng(?)
-		openjpeg, jasper
-		openexr, freeimage
-		freetype
-		HDF
+	- Level 5.
+		pthreads(?), tbb, openthread.
+		giflib, libmng(?).
+		openjpeg, jasper.
+		openexr, freeimage.
+		freetype.
+		HDF.
 
-	-. Level 7
-		log4cxx
-		gflags, glog, gtest
-		GLUT, GLEW
+	- Level 7.
+		log4cxx.
+		gflags, glog, gtest.
+		GLUT, GLEW.
 
-	-. Level 9
-		Qt
-		protobuf
+	- Level 9.
+		Qt.
+		protobuf.
 
-	-. Level 11
-		Dlib
-		GPU, OpenCL
-		expat
-		wxWidgets
-		VTK
+	- Level 11.
+		Dlib.
+		GPU, OpenCL.
+		expat.
+		wxWidgets.
+		VTK.
 
-[-] Library Level (R&D)
-	-. Level 0
-		BLAS, LAPACK
+[-] Library Level (R&D).
+	- Level 0.
+		BLAS, LAPACK.
 
-	-. Level 1
+	- Level 1.
 
-	-. Level 3
-		FFTW3
+	- Level 3.
+		FFTW3.
 
-	-. Level 5
-		GSL
-		GMP/MPIR, MPFR
-		SuiteSparse
+	- Level 5.
+		GSL.
+		GMP/MPIR, MPFR.
+		SuiteSparse.
 
-	-. Level 7
-		Eigen
-		OpenCV
+	- Level 7.
+		Eigen.
+		OpenCV.
