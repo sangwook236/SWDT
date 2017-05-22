@@ -37,7 +37,7 @@ unsigned char * colorize(const VectorXs &labeling, int W, int H)
 		const int c = colors[labeling[k]];
 		putColor(r + 3 * k, c);
 	}
-	//std::cout << r[0] << ' ' << r[1] << ' ' << r[2] << ' ' << std::end;;
+	//std::cout << r[0] << ' ' << r[1] << ' ' << r[2] << ' ' << std::end;
 	return r;
 }
 
@@ -45,7 +45,7 @@ unsigned char * colorize(const VectorXs &labeling, int W, int H)
 VectorXs getLabeling(const unsigned char *im, int N, int M)
 {
 	VectorXs res(N);
-	//std::cout << im[0] << ' ' << im[1] << ' ' << im[2] << ' ' << std::end;;
+	//std::cout << im[0] << ' ' << im[1] << ' ' << im[2] << ' ' << std::end;
 	for (int k = 0; k < N; ++k)
 	{
 		// Map the color to a label.
@@ -72,7 +72,7 @@ MatrixXf computeUnary(const VectorXs &lbl, const int NUM_LABELS, const float GT_
 
 	MatrixXf r(NUM_LABELS, lbl.rows());
 	r.fill(u_energy);
-	//std::cout << im[0] << ' ' << im[1] << ' ' << im[2] << ' ' << std::end;;
+	//std::cout << im[0] << ' ' << im[1] << ' ' << im[2] << ' ' << std::end;
 	for (int k = 0; k < lbl.rows(); ++k)
 	{
 		// Set the energy.
@@ -85,7 +85,7 @@ MatrixXf computeUnary(const VectorXs &lbl, const int NUM_LABELS, const float GT_
 	return r;
 }
 
-// The energy object implements an energy function that is minimized using LBFGS
+// The energy object implements an energy function that is minimized using LBFGS.
 class CRFEnergy : public EnergyFunction
 {
 public:
@@ -160,6 +160,9 @@ void inference_example()
 #elif 0
 	const std::string img_filename("./data/probabilistic_graphical_model/im3.ppm");
 	const std::string anno_filename("./data/probabilistic_graphical_model/anno3.ppm");
+#else
+	const std::string img_filename("D:/dataset/phenotyping/RDA/20160406_trimmed_plant/adaptor1/side_0.png");
+	const std::string anno_filename("D:/dataset/phenotyping/RDA/20160406_trimmed_plant/adaptor1/side_0.png.init_fg.png");
 #endif
 
 	// Number of labels.
@@ -227,11 +230,11 @@ void inference_example()
 	std::unique_ptr<unsigned char> res(colorize(map, img.cols, img.rows));
 
 	const cv::Mat rgb(img.rows, img.cols, img.type(), res.get());
-	//cv::imshow("DenseCRF - Image", img);
-	//cv::imshow("DenseCRF - Annotation", anno);
-	//cv::imshow("DenseCRF - Result", rgb);
+	cv::imshow("DenseCRF - Image", img);
+	cv::imshow("DenseCRF - Annotation", anno);
+	cv::imshow("DenseCRF - Result", rgb);
 
-	cv::imwrite("./data/probabilistic_graphical_model/densecrf/inf_result.jpg", rgb);
+	//cv::imwrite("./data/probabilistic_graphical_model/densecrf/inf_result.jpg", rgb);
 
 	cv::waitKey(0);
 	cv::destroyAllWindows();
@@ -249,6 +252,9 @@ void learning_example()
 #elif 0
 	const std::string img_filename("./data/probabilistic_graphical_model/im3.ppm");
 	const std::string anno_filename("./data/probabilistic_graphical_model/anno3.ppm");
+#else
+	const std::string img_filename("D:/dataset/phenotyping/RDA/20160406_trimmed_plant/adaptor1/side_0.png");
+	const std::string anno_filename("D:/dataset/phenotyping/RDA/20160406_trimmed_plant/adaptor1/side_0.png.init_fg.png");
 #endif
 
 	// Number of labels.
@@ -292,8 +298,8 @@ void learning_example()
 			logistic_feature(2, idx) = bgr[0] / 255.;
 		}
 
-	for (int j = 0; j<logistic_transform.cols(); ++j)
-		for (int i = 0; i<logistic_transform.rows(); ++i)
+	for (int j = 0; j < logistic_transform.cols(); ++j)
+		for (int i = 0; i < logistic_transform.rows(); ++i)
 			//--S [] 2017/05/18: Sang-Wook Lee.
 			//logistic_transform(i, j) = 0.01 * (1 - 2. * random() / RAND_MAX);
 			logistic_transform(i, j) = 0.01 * (1 - 2. * std::rand() / RAND_MAX);
@@ -305,7 +311,7 @@ void learning_example()
 	crf.setUnaryEnergy(logistic_transform, logistic_feature);
 	// Add simple pairwise potts terms.
 	crf.addPairwiseGaussian(3, 3, new PottsCompatibility(1));
-	// Add a longer range label compatibility term
+	// Add a longer range label compatibility term.
 	crf.addPairwiseBilateral(80, 80, 13, 13, 13, img.data, new MatrixCompatibility(MatrixXf::Identity(NUM_LABELS, NUM_LABELS)));
 
 	// Choose your loss function.
@@ -365,11 +371,11 @@ void learning_example()
 	std::unique_ptr<unsigned char> res(colorize(map, img.cols, img.rows));
 
 	const cv::Mat rgb(img.rows, img.cols, img.type(), res.get());
-	//cv::imshow("DenseCRF - Image", img);
-	//cv::imshow("DenseCRF - Annotation", anno);
-	//cv::imshow("DenseCRF - Result", rgb);
+	cv::imshow("DenseCRF - Image", img);
+	cv::imshow("DenseCRF - Annotation", anno);
+	cv::imshow("DenseCRF - Result", rgb);
 
-	cv::imwrite("./data/probabilistic_graphical_model/densecrf/learn_result.jpg", rgb);
+	//cv::imwrite("./data/probabilistic_graphical_model/densecrf/learn_result.jpg", rgb);
 
 	cv::waitKey(0);
 	cv::destroyAllWindows();

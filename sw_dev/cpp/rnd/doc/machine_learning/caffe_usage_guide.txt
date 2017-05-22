@@ -134,6 +134,8 @@
 		REF [file] >> ${CAFFE_HOME}/tools/convert_imageset.cpp
 
 [-] Building (CMake).
+	NOTICE [info] >> Fail to be built in VC.
+
 	- The name of a build directory for CMake should be "build".
 		The existing scripts in Caffe assume its build directory is "build".
 
@@ -143,13 +145,13 @@
 		Set USE_NCCL to true.
 		Set USE_OPENCV to true.
 		Set USE_LEVELDB to true.
-		Set USE_LMDB to false.
+		Set USE_LMDB to true.
+
 		Set BUILD_python to false.
 		Set BUILD_python_layer to false.
 		Set BUILD_SHARED_LIBS to false (for Windows).
 			Build static libraries in Windows.
 	- Build.
-		Build errors occurred. Build cannot be succeeded in VC.
 	- Install.
 
 [-] Trouble shooting.
@@ -160,3 +162,10 @@
 			Set PYTHONPATH to ${CAFFE_HOME}/python.
 			'python2-numpy' has to be installed from 'apt-get' rather than from 'pip2'.
 			'_caffe.so' exists in the '${CAFFE_HOME}/python/caffe' folder.
+	- CUDA architecture error.
+		<error>
+			nvcc fatal : Unsupported gpu architecture 'compute_21'
+		<solution>
+			Set CUDA_ARCH_NAME to Kepler, Maxwell, or Pascal. (?)
+			CUDA architecture:
+				Fermi -> Kepler -> Maxwell -> Pascal -> Volta.

@@ -15,7 +15,7 @@ namespace my_leptonica {
 
 int leptonica_main(int argc, char *argv[])
 {
-	throw std::runtime_error("Not yet implemented");
+	throw std::runtime_error("Not yet implemented.");
 
 	return 0;
 }

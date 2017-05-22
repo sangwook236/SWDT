@@ -48,7 +48,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_processing_vs10", "..
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_representation_vs10", "..\test\object_representation\object_representation_vs10.vcxproj", "{3E747F79-FAD1-43A9-AD15-276F40F642D2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "distance_vs10", "..\test\distance\distance_vs10.vcxproj", "{86D56BB4-B86B-41F9-BFAF-DB6B5BBFE9C1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "topology_vs10", "..\test\topology\topology_vs10.vcxproj", "{86D56BB4-B86B-41F9-BFAF-DB6B5BBFE9C1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "motion_analysis_vs10", "..\test\motion_analysis\motion_analysis_vs10.vcxproj", "{C4B80E59-A395-44D7-8D4D-234C26924652}"
 EndProject

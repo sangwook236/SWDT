@@ -5,7 +5,6 @@
 		<Project filename="../test/bayesian_filtering/bayesian_filtering_cb10.cbp" />
 		<Project filename="../test/change_detection/change_detection_cb10.cbp" />
 		<Project filename="../test/dimensionality_reduction/dimensionality_reduction_cb10.cbp" />
-		<Project filename="../test/distance/distance_cb10.cbp" />
 		<Project filename="../test/face_analysis/face_analysis_cb10.cbp" />
 		<Project filename="../test/failure_analysis/failure_analysis_cb10.cbp" />
 		<Project filename="../test/feature_analysis/feature_analysis_cb10.cbp" />
@@ -31,5 +30,6 @@
 		<Project filename="../test/signal_processing/signal_processing_cb10.cbp" />
 		<Project filename="../test/simulation/simulation_cb10.cbp" />
 		<Project filename="../test/statistics/statistics_cb10.cbp" />
+		<Project filename="../test/topology/topology_cb10.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
