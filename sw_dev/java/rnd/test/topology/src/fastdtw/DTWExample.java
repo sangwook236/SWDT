@@ -7,11 +7,11 @@ import com.dtw.TimeWarpInfo;
 
 public class DTWExample {
 	
-	// [ref] ${FASTDTW_HOME}/src/com/DtwTest.java. 
+	// REF [file] >> ${FASTDTW_HOME}/src/com/DtwTest.java. 
 	public static void run(String[] args)
 	{
-		final String filename1 = "./data/distance_measure/trace0.csv";
-		final String filename2 = "./data/distance_measure/trace1.csv";
+		final String filename1 = "./data/topology/trace0.csv";
+		final String filename2 = "./data/topology/trace1.csv";
 
 		final TimeSeries tsI = new TimeSeries(filename1, false, false, ',');
         final TimeSeries tsJ = new TimeSeries(filename2, false, false, ',');

@@ -17,8 +17,8 @@ double abs_distance(const double &val1, const double &val2)
 
 void simple_scalar_dtw_example()
 {
-	const std::string filename1("./data/distance_measure/trace0.csv");
-	const std::string filename2("./data/distance_measure/trace1.csv");
+	const std::string filename1("./data/topology/trace0.csv");
+	const std::string filename2("./data/topology/trace1.csv");
 
 	std::vector<double> scalars1;
 	std::vector<double> scalars2;
@@ -30,7 +30,7 @@ void simple_scalar_dtw_example()
 #endif
 		if (!strm.is_open())
 		{
-			std::cerr << "file not found: " << filename1 << std::endl;
+			std::cerr << "File not found: " << filename1 << std::endl;
 			return;
 		}
 
@@ -54,7 +54,7 @@ void simple_scalar_dtw_example()
 #endif
 		if (!strm.is_open())
 		{
-			std::cerr << "file not found: " << filename2 << std::endl;
+			std::cerr << "File not found: " << filename2 << std::endl;
 			return;
 		}
 
@@ -71,7 +71,7 @@ void simple_scalar_dtw_example()
 		}
 	}
 
-	// [ref] FastDTW algorithm in Java.
+	// REF [algorithm] >> FastDTW algorithm in Java.
 	// Warp Distance: 9.139400704860002.
 	// Warp Path:     [(0,0),(0,1),(1,2),(2,3),...,(272,272),(273,272),(274,273),(274,274)].
 	std::cout << "Scalar dynamic time warping (DTW) test ..." << std::endl;
@@ -95,13 +95,13 @@ public:
 	double x, y, z;
 };
 
-// compute the L1 distance.
+// Compute the L1 distance.
 double L1_distance(const Point &p1, const Point &p2)
 {
 	return std::fabs(p1.x - p2.x) + std::fabs(p1.y - p2.y) + std::fabs(p1.z - p2.z);
 }
 
-// compute Euclidean (L2) distance.
+// Compute Euclidean (L2) distance.
 double L2_distance(const Point &p1, const Point &p2)
 {
 	return std::sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) + (p1.z - p2.z) * (p1.z - p2.z));
