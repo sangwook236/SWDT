@@ -22,16 +22,16 @@ public abstract class AbstractRapidMinerProcess implements Runnable
 		{
 			RapidMiner.setExecutionMode(ExecutionMode.EMBEDDED_WITHOUT_UI);
 			System.setProperty("rapidminer.home", new File("D:/MyProgramFiles/Rapid-I/RapidMiner5").getAbsolutePath());
-			
-			// activate parallel plug-in.
+
+			// Activate parallel plug-in.
 			//com.rapidminer.ParallelPluginInit.initPlugin();
 			//com.rapidminer.PluginInitWekaExtension.initPluginManager();
-			
+
 			RapidMiner.init();
 			initRapidminer_ = false;
 		}
 	}
-	
+
 	/**
 	 * RapidMiner 프로세스를 수행하는 클래스를 생성한다.
 	 * 
@@ -41,21 +41,21 @@ public abstract class AbstractRapidMinerProcess implements Runnable
 	{
 		Logger logger = LogManager.getLogger(AbstractRapidMinerProcess.class);
 		procConfigFile_ = new File(processConfig);
-		
+
 		if (initRapidminer_)
 		{
 			AbstractRapidMinerProcess.init();
 		}
-	
+
 		if (procConfigFile_.exists())
 		{
 			try
 			{
 				proc_ = new Process(procConfigFile_);
 			}
-			catch (Exception e)
+			catch (Exception eX)
 			{
-				logger.error(e);
+				logger.error(eX);
 			}
 		}
 		else
@@ -64,8 +64,8 @@ public abstract class AbstractRapidMinerProcess implements Runnable
 			System.exit(-1);
 		}
 	}
-	
-	// Getter & Setter
+
+	// Getter & Setter.
 	
 	/**
 	 * 프로세스 파일 경로를 얻어낸다
@@ -75,10 +75,10 @@ public abstract class AbstractRapidMinerProcess implements Runnable
 	{
 		return procConfigFile_.exists() ? procConfigFile_.getAbsolutePath() : null;
 	}
-	
+
 	/**
-	 * 프로세스 파일을 설정한다
-	 * @param procConfigFile_
+	 * 프로세스 파일을 설정한다.
+	 * @param processConfig
 	 */
 	public void setProcessConfigureation(String processConfig)
 	{
@@ -87,17 +87,17 @@ public abstract class AbstractRapidMinerProcess implements Runnable
 		{
 			proc_ = new Process(procConfigFile_);
 		}
-		catch (IOException e)
+		catch (IOException eX)
 		{
-			e.printStackTrace();
+			eX.printStackTrace();
 		}
-		catch (XMLException e)
+		catch (XMLException eX)
 		{
-			e.printStackTrace();
+			eX.printStackTrace();
 		}
 	}
 
 	private static boolean initRapidminer_ = true;
 	protected Process proc_;  // RapidMiner process.
-	protected File procConfigFile_;  // a file in which a process is defined 
+	protected File procConfigFile_;  // A file in which a process is defined.
 }

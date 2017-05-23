@@ -19,7 +19,7 @@ import com.rapidminer.operator.features.transformation.PCAModel;
 
 
 /**
- * RapidMiner의 PCA 과정을 래핑한 래퍼 클래스
+ * RapidMiner의 PCA 과정을 래핑한 래퍼 클래스.
  */
 public class RapidMinerPCA extends AbstractRapidMinerProcess
 {
@@ -30,7 +30,7 @@ public class RapidMinerPCA extends AbstractRapidMinerProcess
 	{
 		super("data/machine_learning/rapidminer/proc_PCA.xml");
 	}
-	
+
 	/**
 	 * PCA를 수행하는 컴포넌트를 생성한다.
 	 * 
@@ -40,7 +40,7 @@ public class RapidMinerPCA extends AbstractRapidMinerProcess
 	{
 		super(processFile);
 	}
-	
+
 	/**
 	 */
 	@Override
@@ -48,35 +48,35 @@ public class RapidMinerPCA extends AbstractRapidMinerProcess
 	{
 		if (null == example_)
 		{
-			System.err.println("ExampleSet is null - loadData() before run()");
+			System.err.println("ExampleSet is null - loadData() before run().");
 			return;
 		}
-		
-		// 프로세스
+
+		// 프로세스.
 		try
 		{
-			// 미리 설정되어 있는 RapidMiner 과정을 수행한다
+			// 미리 설정되어 있는 RapidMiner 과정을 수행한다.
 			IOContainer c = proc_.run(new IOContainer(example_));
-			
-			// PCA Model 을 얻고 고유벡터와 고유값을 다른 형태로 저장한다 
+
+			// PCA Model 을 얻고 고유벡터와 고유값을 다른 형태로 저장한다.
 			//com.rapidminer.example.set.SimpleExampleSet exampleSet = (com.rapidminer.example.set.SimpleExampleSet)c.getElementAt(0);
 			//com.rapidminer.example.set.SimpleExampleSet original = (com.rapidminer.example.set.SimpleExampleSet)c.getElementAt(1);
 			PCAModel pcaModel = (PCAModel)c.getElementAt(2);
-			
-			// 고유값
+
+			// 고유값.
 			EigenvalueTableModel eigenValMat = pcaModel.getEigenvalueTableModel();			
-			// 고유벡터
+			// 고유벡터.
 			EigenvectorTableModel eigenVecMat = pcaModel.getEigenvectorTableModel();
 
-			System.out.println("Eigen Values : " + eigenValMat.getRowCount() + " rows");
-			System.out.println("Eigen Vectors : " + eigenVecMat.getColumnCount() + " x " + eigenVecMat.getRowCount() + " matrix");
+			System.out.println("Eigen Values : " + eigenValMat.getRowCount() + " rows.");
+			System.out.println("Eigen Vectors : " + eigenVecMat.getColumnCount() + " x " + eigenVecMat.getRowCount() + " matrix.");
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			e.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 */
 	public void loadData()
@@ -87,10 +87,10 @@ public class RapidMinerPCA extends AbstractRapidMinerProcess
 		{
 			parser.setSplitExpression(com.rapidminer.tools.LineParser.SPLIT_BY_COMMA_EXPRESSION);
 		}
-		catch (OperatorException e1)
+		catch (OperatorException ex)
 		{
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			ex.printStackTrace();
 		}
 		com.rapidminer.gui.tools.dialogs.wizards.dataimport.csv.CSVFileReader reader = new com.rapidminer.gui.tools.dialogs.wizards.dataimport.csv.CSVFileReader(new File(filepath), true, parser, java.text.NumberFormat.getInstance()); 
 
@@ -101,13 +101,13 @@ public class RapidMinerPCA extends AbstractRapidMinerProcess
 			attributes.setLabel(attributes.get("label"));
 			attributes.remove(attributes.get("id"));
 		}
-		catch (IOException e)
+		catch (IOException ex)
 		{
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 
-	// RapidMiner 데이터
+	// RapidMiner 데이터.
 	private ExampleSet example_ = null;
 }

@@ -4,7 +4,8 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			imagej.ImageJ_Main.run(args);  // Not yet implemented.
+			System.out.println("ImageJ library ------------------------------------------------------");			
+			imagej.ImageJ_Main.run(args);
 		}
 		catch (Exception ex)
 		{

@@ -11,6 +11,6 @@ class ArffLoader {
 		//JFrame frame = new JFrame();
 		//ArffViewerMainPanel mainPanel = new ArffViewerMainPanel(frame);
 
-		System.err.println("not yet implemented");
+		System.err.println("Not yet implemented.");
 	}
 }

@@ -15,22 +15,22 @@ class Example1 {
 		try
 		{
 			Instances dataset = DataSource.read("./data/machine_learning/weka/iris.arff");
-			
+
 			if (dataset.classIndex() == -1)
 				dataset.setClassIndex(dataset.numAttributes() - 1);
 
 			//
 			String[] options = new String[1];
 			options[0] = "-C 0.25 -M 2";
-			
+
 			J48 model = new J48();
 			model.setOptions(options);
-			
+
 			model.buildClassifier(dataset);
 
 			//
 			Evaluation eval = new Evaluation(dataset);
-			
+
 			eval.crossValidateModel(model, dataset, 10, new Random(10));
 			System.out.println(eval.toSummaryString("\nResults\n\n", false));
 
@@ -38,27 +38,27 @@ class Example1 {
 			{
 				DataSink.write("./data/machine_learning/weka/example1.xrff", dataset);
 				//DataSink.write("./data/machine_learning/weka/example1.csv", dataset);
-	
+
 				CSVSaver saver = new CSVSaver();
 				saver.setInstances(dataset);
 				saver.setFile(new java.io.File("./data/machine_learning/weka/example1.csv"));
 				saver.writeBatch();
 			}
-			
+
 			//
-			
-			// use Java serialized object
+
+			// Use Java serialized object.
 			try
 			{
 				String modelFileName = "./data/machine_learning/weka/example1.model";
-				
+
 				//
 				java.io.ObjectOutputStream ostream = new java.io.ObjectOutputStream(new java.io.FileOutputStream(modelFileName));
 				ostream.writeObject(model);
 				ostream.close();
-				
+
 				ostream = null;
-				
+
 				//
 				java.io.ObjectInputStream istream = new java.io.ObjectInputStream(new java.io.FileInputStream(modelFileName));
 
@@ -69,18 +69,18 @@ class Example1 {
 
 				//
 				options[0] = "-C 0.5 -M 4";
-				
+
 				readModel.setOptions(options);
 				readModel.buildClassifier(dataset);
 			}
-			catch (java.io.IOException e)
+			catch (java.io.IOException eX)
 			{
-				System.out.println("I/O exception occurred: " + e.getMessage());
+				System.out.println("I/O exception occurred: " + eX.getMessage());
 			}
 		}
-		catch (Exception e)
+		catch (Exception eX)
 		{
-			e.printStackTrace();
+			eX.printStackTrace();
 		}
 	}
 }
