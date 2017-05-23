@@ -347,10 +347,10 @@ int opencv_main(int argc, char *argv[])
 		//std::cout << "OpenCV exception caught: " << ex.what() << std::endl;
 		//std::cout << "OpenCV exception caught: " << cvErrorStr(ex.code) << std::endl;
 		std::cout << "OpenCV exception caught:" << std::endl
-			<< "\tdescription: " << ex.err << std::endl
-			<< "\tline:        " << ex.line << std::endl
-			<< "\tfunction:    " << ex.func << std::endl
-			<< "\tfile:        " << ex.file << std::endl;
+			<< "\tDescription: " << ex.err << std::endl
+			<< "\tLine:        " << ex.line << std::endl
+			<< "\tFunction:    " << ex.func << std::endl
+			<< "\tFile:        " << ex.file << std::endl;
 
 		return 1;
 	}

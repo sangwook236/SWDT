@@ -45,3 +45,11 @@
 			moc.exe & uic.exe를 찾지 못해서 발생.
 		<solution>
 			set QTDIR=${QT_HOME}
+	- Qt platform loading error.
+		<error>
+			This application failed to start because it could not find or load the Qt platform plugin "windows" in "".
+			Reinstalling the application may fix this problem.
+		<cause>
+			Qt library linking error.
+		<solution>
+			Add Qt directory to $PATH.
