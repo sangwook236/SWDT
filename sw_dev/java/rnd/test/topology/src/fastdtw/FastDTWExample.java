@@ -15,9 +15,9 @@ public class FastDTWExample {
 
 		final TimeSeries tsI = new TimeSeries(filename1, false, false, ',');
         final TimeSeries tsJ = new TimeSeries(filename2, false, false, ',');
-        
+
         final DistanceFunction distFn = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");  // EuclideanDistance, ManhattanDistance, BinaryDistance.
-        
+
         final int radius = 10;
         final TimeWarpInfo info = com.dtw.FastDTW.getWarpInfoBetween(tsI, tsJ, radius, distFn);
 

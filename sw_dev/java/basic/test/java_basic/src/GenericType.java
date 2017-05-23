@@ -5,17 +5,17 @@ class Cell<T>
 	{
 		value_ = val;
 	}
-	
+
 	T get()
 	{
 		return value_;
 	}
-	
+
 	void set(T val)
 	{
 		value_ = val;
 	}
-	
+
 	T value_;
 }
 

@@ -17,14 +17,14 @@ public class Spark_Main {
 	 */
 	public static void run(String[] args)
 	{
-		// FIXME [modify] >> don't know how to run in Eclipse.
+		// FIXME [modify] >> Don't know how to run in Eclipse.
 
 		String inputFile = "./SimpleApp.java";
 		String outputFile = "./wordcount";
 
 		SparkConf conf = new SparkConf().setAppName("WordCountApp");
 		JavaSparkContext sc = new JavaSparkContext(conf);
-		
+
 		JavaRDD<String> input = sc.textFile(inputFile);
 
 		JavaRDD<String> words = input.flatMap(

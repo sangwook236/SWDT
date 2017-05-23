@@ -16,14 +16,14 @@ public class WidgetWindow extends ApplicationWindow {
 	{
 		super(null);
 	}
-	
+
 	protected Control createContents(Composite parent)
 	{
 		getShell().setText("Widget Window");
 		parent.setSize(400, 250);
 		return parent;
 	}
-	
+
 	/**
 	 * @param args
 	 */

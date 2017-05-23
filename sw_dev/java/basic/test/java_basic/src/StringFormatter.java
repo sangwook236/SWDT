@@ -13,25 +13,25 @@ public class StringFormatter {
 		final Calendar c = new GregorianCalendar(1995, MAY, 23);
 		String str = String.format("Duke's Birthday: %1$tm %1$te,%1$tY", c);		
 		System.out.println(str);
-		
+
 		//
 		StringBuilder sb = new StringBuilder();
-		// send all output to the appendable object sb
+		// Send all output to the appendable object sb
 		Formatter formatter = new Formatter(sb, Locale.US);
-		
-		// explicit argument indices may be used to re-order output.
+
+		// Explicit argument indices may be used to re-order output.
 		formatter.format("%4$2s %3$2s %2$2s %1$2s", "a", "b", "c", "d");
 		System.out.println(formatter);
-		
-		// optional locale as the first argument can be used to get locale-specific formatting of numbers.
-		// the precision and width can be given to round and align the value.
+
+		// Optional locale as the first argument can be used to get locale-specific formatting of numbers.
+		// The precision and width can be given to round and align the value.
 		formatter.format(Locale.FRANCE, "e = %+10.4f", Math.E);
 		System.out.println(formatter);
 
-		// the '(' numeric flag may be used to format negative numbers with parentheses rather than a minus sign.
-		// group separators are automatically inserted.
+		// The '(' numeric flag may be used to format negative numbers with parentheses rather than a minus sign.
+		// Group separators are automatically inserted.
 		final double balanceDelta = -6217.58;
-		formatter.format("amount gained or lost since last statement: $ %(,.2f", balanceDelta);
+		formatter.format("Amount gained or lost since last statement: $ %(,.2f", balanceDelta);
 		System.out.println(formatter);
 	}
 }

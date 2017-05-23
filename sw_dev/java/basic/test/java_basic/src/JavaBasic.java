@@ -8,10 +8,10 @@ public class JavaBasic {
 		// TODO Auto-generated method stub
 
 		//GeneralIssue.runAll();
-		
+
 		//SimpleIo.runAll();
 		PrimitiveDataType.runAll();
-		
+
 	    //Final.runAll();
 		//GenericType.runAll();
 	}

@@ -13,7 +13,7 @@ public class LabelTest implements Application
 	{
 	    DesktopApplicationContext.main(LabelTest.class, args);
 	}
-	
+
 	@Override
     public void startup(Display display, Map<String, String> properties) throws Exception
     {

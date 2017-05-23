@@ -45,13 +45,13 @@ public class JFreeChart_Main {
 	public static void run(String[] args)
 	{
 		//SimplePieChartExample();
-		
+
 		BarChartDemo1();
 		//PieChartDemo1();
 		//TimeSeriesChartDemo1();
 	}
 
-	// [ref] JFreeChart Install Manual.
+	// REF [doc] >> JFreeChart Install Manual.
 	private static void SimplePieChartExample()
 	{
 		// Create a dataset.
@@ -59,7 +59,7 @@ public class JFreeChart_Main {
 		data.setValue("Category 1", 43.2);
 		data.setValue("Category 2", 27.9);
 		data.setValue("Category 3", 79.5);
-		
+
 		// Create a chart.
 		JFreeChart chart = ChartFactory.createPieChart(
 			"Sample Pie Chart",
@@ -68,23 +68,23 @@ public class JFreeChart_Main {
 			true,  // tooltips?
 			false  // URLs?
 		);
-		
+
 		// Create and display a frame.
 		ChartFrame frame = new ChartFrame("Simple Pie Chart Example", chart);
 		frame.pack();
 		frame.setVisible(true);
 	}
 
-	// [ref] ${JFREECHART_HOME}/source/org/jfree/chart/demo/BarChartDemo1.java.
+	// REF [file] >> ${JFREECHART_HOME}/source/org/jfree/chart/demo/BarChartDemo1.java.
 	private static void BarChartDemo1()
 	{
-		// Create a sample dataset.
-		// row keys.
+		// Crerate a sample dataset.
+		// Row keys.
 		String series1 = "First";
 		String series2 = "Second";
 		String series3 = "Third";
 
-		// column keys.
+		// Column keys.
 		String category1 = "Category 1";
 		String category2 = "Category 2";
 		String category3 = "Category 3";
@@ -113,15 +113,15 @@ public class JFreeChart_Main {
 		dataset.addValue(6.0, series3, category5);
 
 		//
-		// create the chart...
+		// Create the chart...
 		JFreeChart chart = ChartFactory.createBarChart(
-		    "Bar Chart Demo 1",  // chart title.
-		    "Category",  // domain axis label.
-		    "Value",  // range axis label.
-		    dataset,  // data.
-		    PlotOrientation.VERTICAL,  // orientation.
-		    true,  // legend?
-		    true,  // tooltips?
+		    "Bar Chart Demo 1",  // Chart title.
+		    "Category",  // Domain axis label.
+		    "Value",  // Range axis label.
+		    dataset,  // Data.
+		    PlotOrientation.VERTICAL,  // Orientation.
+		    true,  // Legend?
+		    true,  // Tooltips?
 		    false  // URLs?
 		);
 
@@ -153,14 +153,14 @@ public class JFreeChart_Main {
 		domainAxis.setCategoryLabelPositions(
 		        CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0)
 		);
-		
+
 		// Create a panel.
 	    chart.setPadding(new RectangleInsets(4, 8, 2, 2));
 	    ChartPanel panel = new ChartPanel(chart);
 	    panel.setFillZoomRectangle(true);
 	    panel.setMouseWheelEnabled(true);
 	    panel.setPreferredSize(new Dimension(600, 300));
-		
+
 		// Create and display a frame.
 		ChartFrame frame = new ChartFrame("Bar Chart Demo 1", chart);
 		frame.setContentPane(panel);
@@ -169,33 +169,33 @@ public class JFreeChart_Main {
 		frame.setVisible(true);
 	}
 
-	// [ref] ${JFREECHART_HOME}/source/org/jfree/chart/demo/PieChartDemo1.java.
+	// REF [file] >> ${JFREECHART_HOME}/source/org/jfree/chart/demo/PieChartDemo1.java.
 	private static void PieChartDemo1()
 	{
 		// Set a theme using the new shadow generator feature available in 1.0.14
-		// - for backwards compatibility it is not enabled by default
+		// - For backwards compatibility it is not enabled by default.
 		ChartFactory.setChartTheme(new StandardChartTheme("JFree/Shadow", true));
-		
+
 		// Create a sample dataset.
 	    DefaultPieDataset dataset = new DefaultPieDataset();
 	    dataset.setValue("Samsung", new Double(27.8));
 	    dataset.setValue("Others", new Double(55.3));
 	    dataset.setValue("Nokia", new Double(16.8));
 	    dataset.setValue("Apple", new Double(17.1));
-	    
+
 	    JFreeChart chart = ChartFactory.createPieChart(
-	    	"Smart Phones Manufactured / Q3 2011",  // chart title.
-	    	dataset,  // data.
-	    	false,  // legend?
-	    	true,  // tooltips?
+	    	"Smart Phones Manufactured / Q3 2011",  // Chart title.
+	    	dataset,  // Data.
+	    	false,  // Legend?
+	    	true,  // Tooltips?
 	    	false  // URL generation?
 	    );
-		  
+
 		// Set a custom background for the chart.
 		chart.setBackgroundPaint(
 			new GradientPaint(new Point(0, 0), new Color(20, 20, 20), new Point(400, 200), Color.DARK_GRAY)
 		);
-		  
+
 		// Customize the title position and font.
 		TextTitle t = chart.getTitle();
 		t.setHorizontalAlignment(HorizontalAlignment.LEFT);
@@ -206,7 +206,7 @@ public class JFreeChart_Main {
 		plot.setBackgroundPaint(null);
 		plot.setInteriorGap(0.04);
 		plot.setOutlineVisible(false);
-		  
+
 		// Use gradients and white borders for the section colors.
 		plot.setSectionPaint("Others", createGradientPaint(new Color(200, 200, 255), Color.BLUE));
 		plot.setSectionPaint("Samsung", createGradientPaint(new Color(255, 200, 200), Color.RED));
@@ -215,7 +215,7 @@ public class JFreeChart_Main {
 		plot.setBaseSectionOutlinePaint(Color.WHITE);
 		plot.setSectionOutlinesVisible(true);
 		plot.setBaseSectionOutlineStroke(new BasicStroke(2.0f));
-		  
+
 		// Customize the section label appearance.
 		plot.setLabelFont(new Font("Courier New", Font.BOLD, 20));
 		plot.setLabelLinkPaint(Color.WHITE);
@@ -223,7 +223,7 @@ public class JFreeChart_Main {
 		plot.setLabelOutlineStroke(null);
 		plot.setLabelPaint(Color.WHITE);
 		plot.setLabelBackgroundPaint(null);
-		  
+
 		// Add a subtitle giving the data source.
 		TextTitle source = new TextTitle(
 			"Source: http://www.bbc.co.uk/news/business-15489523", 
@@ -239,7 +239,7 @@ public class JFreeChart_Main {
 	    ChartPanel panel = new ChartPanel(chart);
 	    panel.setMouseWheelEnabled(true);
 	    panel.setPreferredSize(new Dimension(600, 300));
-		
+
 		// Create and display a frame.
 		ChartFrame frame = new ChartFrame("Pie Chart Demo 1", chart);
 		frame.setContentPane(panel);
@@ -255,8 +255,8 @@ public class JFreeChart_Main {
 		float[] dist = { 0.0f, 1.0f };
 		return new RadialGradientPaint(center, radius, dist, new Color[] { c1, c2 });
 	}
-	
-	// [ref] ${JFREECHART_HOME}/source/org/jfree/chart/demo/TimeSeriesChartDemo1.java.
+
+	// REF [file] >> ${JFREECHART_HOME}/source/org/jfree/chart/demo/TimeSeriesChartDemo1.java.
 	private static void TimeSeriesChartDemo1()
 	{
 		// Create a dataset, consisting of two series of monthly data.
@@ -306,17 +306,17 @@ public class JFreeChart_Main {
 
 		// Create a chart.
 		JFreeChart chart = ChartFactory.createTimeSeriesChart(
-		    "Legal & General Unit Trust Prices",  // chart title.
+		    "Legal & General Unit Trust Prices",  // Chart title.
 		    "Date",  // x-axis label.
 		    "Price Per Unit",  // y-axis label.
-		    dataset,  // data.
-		    true,  // legend?
-		    true,  // tooltips?
+		    dataset,  // Data.
+		    true,  // Legend?
+		    true,  // Tooltips?
 		    false  // URLs?
 		);
 
 		chart.setBackgroundPaint(Color.white);
-		
+
 		XYPlot plot = (XYPlot)chart.getPlot();
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
@@ -324,7 +324,7 @@ public class JFreeChart_Main {
 		plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
 		plot.setDomainCrosshairVisible(true);
 		plot.setRangeCrosshairVisible(true);
-		
+
 		XYItemRenderer r = plot.getRenderer();
 		if (r instanceof XYLineAndShapeRenderer)
 		{
@@ -333,10 +333,10 @@ public class JFreeChart_Main {
 		    renderer.setBaseShapesFilled(true);
 		    renderer.setDrawSeriesLineAsPath(true);
 		}
-		
+
 		DateAxis axis = (DateAxis)plot.getDomainAxis();
 		axis.setDateFormatOverride(new SimpleDateFormat("MMM-yyyy"));
-			
+
 		// Create a panel.
 	    ChartPanel panel = new ChartPanel(chart);
 	    panel.setFillZoomRectangle(true);

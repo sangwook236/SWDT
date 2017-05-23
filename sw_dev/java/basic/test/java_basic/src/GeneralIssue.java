@@ -4,7 +4,7 @@ public class GeneralIssue {
 	boolean b;
 	int i;
 	String str;
-	
+
 	public GeneralIssue(boolean b, int i, String str) {
 		this.b = b;
 		this.i = i;

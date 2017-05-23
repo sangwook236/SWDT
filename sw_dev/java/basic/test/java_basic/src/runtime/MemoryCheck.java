@@ -9,12 +9,12 @@ public class MemoryCheck {
 		// TODO Auto-generated method stub
 
 		Runtime runtime = Runtime.getRuntime();
-		
+
 		final long freeMem = runtime.freeMemory();
 		final long totalMem = runtime.totalMemory();
 		final long maxMem = runtime.maxMemory();
-		// sizeOf();
-		
+		//sizeOf();
+
 		System.out.println(freeMem);
 		System.out.println(totalMem);
 		System.out.println(maxMem);

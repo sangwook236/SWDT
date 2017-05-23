@@ -35,13 +35,13 @@ public class SimpleIo {
 				catch (NumberFormatException e)
 				{
 				}
-*/				
+*/
 				System.out.println("size: " + s.length() + ", data: " + s);
 			}
 		}
-		catch (IOException e)
+		catch (IOException ex)
 		{
-			e.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 

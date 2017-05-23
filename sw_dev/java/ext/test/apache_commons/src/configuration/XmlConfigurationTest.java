@@ -5,7 +5,7 @@ import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 //import java.util.ArrayList;
 
 final class XmlConfigurationTest {
-	
+
 	public static void run(String[] args)
 	{
 		try
@@ -16,7 +16,7 @@ final class XmlConfigurationTest {
 			final String textColor = config.getString("colors.text");
 			final String linkNormal = config.getString("colors.link[@normal]");
 			final String defColor = config.getString("colors.default");
-		    
+
 			final int rowsPerPage = config.getInt("rowsPerPage");
 
 			final Object buttons = config.getList("buttons.name");
@@ -30,20 +30,20 @@ final class XmlConfigurationTest {
 			System.out.println("buttons.name: " + buttons);
 
 			//
-			config.setProperty("colors.foreground", "#000000");  // Ok
+			config.setProperty("colors.foreground", "#000000");  // Ok.
 			//config.addProperty("colors.background", "#000000");
 			config.setReloadingStrategy(new FileChangedReloadingStrategy());
 
 			config.setAutoSave(true);
 			//config.save();
 		}
-		catch(ConfigurationException e)
+		catch(ConfigurationException ex)
 		{
-			e.printStackTrace();
+			ex.printStackTrace();
 		}
 		finally
 		{
 		}
 	}
-	
+
 }

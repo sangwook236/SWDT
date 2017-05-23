@@ -8,7 +8,7 @@ public class Main {
 		try
 		{
 			System.out.println("JBoost library ------------------------------------------------------");			
-			//jboost.JBoost_Main.run(args);  // not yet implemented.
+			//jboost.JBoost_Main.run(args);  // Not yet implemented.
 			
 			System.out.println("Weka library --------------------------------------------------------");			
 			//weka.Weka_Main.run(args);
@@ -17,26 +17,26 @@ public class Main {
 			rapidminer.RapidMiner_Main.run(args);
 
 			System.out.println("Mahout library ------------------------------------------------------");			
-			//mahout.Mahout_Main.run(args);  // not yet implemented.
+			//mahout.Mahout_Main.run(args);  // Not yet implemented.
 
 			System.out.println("Encog Machine Learning Framework ------------------------------------");
-			//	-. Java, .NET and C/C++.
-			//	-. neural network.
+			//	- Java, .NET and C/C++.
+			//	- Neural network.
 			//		ADALINE neural network.
-			//		adaptive resonance theory 1 (ART1).
-			//		bidirectional associative memory (BAM).
+			//		Adaptive resonance theory 1 (ART1).
+			//		Bidirectional associative memory (BAM).
 			//		Boltzmann machine.
-			//		feedforward neural network.
-			//		recurrent neural network.
+			//		Feedforward neural network.
+			//		Recurrent neural network (rnn).
 			//		Hopfield neural network.
-			//		radial basis function network (RBFN).
-			//		neuroevolution of augmenting topologies (NEAT).
-			//		(recurrent) self organizing map (SOM).
-			//encog.Encog_Main.run(args);  // not yet implemented.
+			//		Radial basis function network (RBFN).
+			//		Neuroevolution of augmenting topologies (NEAT).
+			//		(Recurrent) self organizing map (SOM).
+			//encog.Encog_Main.run(args);  // Not yet implemented.
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			System.err.println("Exception occurred: " + e.toString());
+			System.err.println("Exception occurred: " + ex.toString());
 		}
 	}
 

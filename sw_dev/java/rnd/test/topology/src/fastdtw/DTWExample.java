@@ -6,7 +6,6 @@ import com.util.DistanceFunctionFactory;
 import com.dtw.TimeWarpInfo;
 
 public class DTWExample {
-	
 	// REF [file] >> ${FASTDTW_HOME}/src/com/DtwTest.java. 
 	public static void run(String[] args)
 	{
@@ -15,9 +14,9 @@ public class DTWExample {
 
 		final TimeSeries tsI = new TimeSeries(filename1, false, false, ',');
         final TimeSeries tsJ = new TimeSeries(filename2, false, false, ',');
-        
+
         final DistanceFunction distFn = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");  // EuclideanDistance, ManhattanDistance, BinaryDistance. 
-        
+
         final TimeWarpInfo info = com.dtw.DTW.getWarpInfoBetween(tsI, tsJ, distFn);
 
         System.out.println("Warp Distance: " + info.getDistance());

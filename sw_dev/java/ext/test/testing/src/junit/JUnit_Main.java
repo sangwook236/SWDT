@@ -20,4 +20,5 @@ public final class JUnit_Main {
 		suite.addTestSuite(junit.arithmetic.ArithmeticTest.class);
 		return suite;
 	}
+
 }

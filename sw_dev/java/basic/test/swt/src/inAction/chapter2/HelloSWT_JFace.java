@@ -9,7 +9,7 @@ public class HelloSWT_JFace extends ApplicationWindow {
 	public HelloSWT_JFace() {
 		super(null);
 	}
-	
+
 	protected Control createContents(Composite parent)
 	{
 		Text helloText = new Text(parent, SWT.CENTER);

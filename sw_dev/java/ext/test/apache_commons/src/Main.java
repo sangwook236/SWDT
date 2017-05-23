@@ -7,15 +7,15 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			//collections.Collections_Main.run(args);  // not yet implemented.
+			//collections.Collections_Main.run(args);  // Not yet implemented.
 			//configuration.Configuration_Main.run(args);
-			//dbutils.DbUtils_Main.run(args);  // not yet implemented.
-			//lang.Lang_Main.run(args);  // not yet implemented.
+			//dbutils.DbUtils_Main.run(args);  // Not yet implemented.
+			//lang.Lang_Main.run(args);  // Not yet implemented.
 			math.Math_Main.run(args);
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			System.err.println("Exception occurred: " + e.toString());
+			System.err.println("Exception occurred: " + ex.toString());
 		}
 	}
 

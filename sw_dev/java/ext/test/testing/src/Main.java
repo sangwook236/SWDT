@@ -7,13 +7,15 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
+			System.out.println("JUnit ---------------------------------------------------------------");
 			junit.JUnit_Main.run(args);
-			
-			//hamcrest.Hamcrest_Main.run(args);  // not yet implemented.
+
+			System.out.println("Hamcrest library ----------------------------------------------------");
+			//hamcrest.Hamcrest_Main.run(args);  // Not yet implemented.
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			System.err.println("Exception occurred: " + e.toString());
+			System.err.println("Exception occurred: " + ex.toString());
 		}
 	}
 

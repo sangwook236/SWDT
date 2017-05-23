@@ -7,12 +7,15 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
+			System.out.println("SQLite --------------------------------------------------------------");
 			sqlite.SQLite_Main.run(args);
+			
+			System.out.println("MySQL ---------------------------------------------------------------");
 			//mysql.MySQLMain.run(args);
 		}
-		catch (ClassNotFoundException e)
+		catch (ClassNotFoundException ex)
 		{
-    		System.err.println(e);
+    		System.err.println(ex);
 		}
 	}
 

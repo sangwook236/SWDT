@@ -5,7 +5,7 @@ import java.util.*;
 public class PMD_Main {
 
 	public static void run(String[] args) {
-		
+
 		System.out.println("중복 소스코드 검출");
 		String url;
 		if (args.length == 0)
@@ -17,7 +17,7 @@ public class PMD_Main {
 			url = args[0];
 		}
 		System.out.println("중복 소스코드 검출");
-		
+
 		if (true)
 		{
 			int temp = 1;
@@ -30,7 +30,7 @@ public class PMD_Main {
 			temp = 8;
 			temp = 9;
 		}
-		
+
 		StringTokenizer st = new StringTokenizer(url, ":/.~", false);
 		while (st.hasMoreTokens())
 		{

@@ -13,7 +13,7 @@ public class PushButtonTest implements Application
 	{
 	    DesktopApplicationContext.main(PushButtonTest.class, args);
 	}
-	
+
 	@Override
     public void startup(Display display, Map<String, String> properties) throws Exception
     {

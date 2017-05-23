@@ -7,11 +7,13 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			graphchi.GraphChi_Main.run(args);  // not yet implemented.
+			System.out.println("Hadoop --------------------------------------------------------------");
+			System.out.println("GraphChi ------------------------------------------------------------");
+			graphchi.GraphChi_Main.run(args);  // Not yet implemented.
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			System.err.println("Exception occurred: " + e.toString());
+			System.err.println("Exception occurred: " + ex.toString());
 		}
 	}
 

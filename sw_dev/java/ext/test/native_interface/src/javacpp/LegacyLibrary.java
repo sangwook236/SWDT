@@ -4,7 +4,7 @@ import com.googlecode.javacpp.*;
 import com.googlecode.javacpp.annotation.*;
 
 @Platform(
-	// for linking static libraries
+	// For linking static libraries.
 	include = {
 	    "LegacyLibrary.h"
 	},
@@ -27,8 +27,8 @@ import com.googlecode.javacpp.annotation.*;
 	}
 
 /*
-	// for linking shared libraries
-	// shared library files exist in the same directory as a java source file
+	// For linking shared libraries.
+	// Shared library files exist in the same directory as a java source file
 	include = {
 	    "LegacyLibrary.h"
 	},
@@ -76,14 +76,14 @@ public class LegacyLibrary {
             System.out.println("Parent  dir : " + dir2.getCanonicalPath());
             
             // Pointer objects allocated in Java get deallocated once they become unreachable,
-            // but C++ destructors can still be called in a timely fashion with Pointer.deallocate()
+            // but C++ destructors can still be called in a timely fashion with Pointer.deallocate().
             LegacyClass l = new LegacyClass();
             l.set_property("Hello World!");
             System.out.println(l.property());
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            e.printStackTrace();
+            ex.printStackTrace();
         }
     }
 

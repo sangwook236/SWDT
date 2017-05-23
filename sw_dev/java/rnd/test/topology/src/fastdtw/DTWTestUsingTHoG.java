@@ -27,7 +27,7 @@ public class DTWTestUsingTHoG {
 
 		final TimeSeries ts1 = new TimeSeries(filenameList[0], false, false, ' ');
 		final TimeSeries ts2 = new TimeSeries(filenameList[1], false, false, ' ');
-		
+
         //final DistanceFunction distFunc = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");  // EuclideanDistance, ManhattanDistance, BinaryDistance.
         final DistanceFunction distFunc = new HistogramComparisonFunction();
         final int radius = 10;
@@ -35,7 +35,7 @@ public class DTWTestUsingTHoG {
         //final TimeWarpInfo info = com.dtw.DTW.getWarpInfoBetween(ts1, ts2, distFunc);
         final TimeWarpInfo info = com.dtw.FastDTW.getWarpInfoBetween(ts1, ts2, radius, distFunc);
     	final double endTime = (double)System.nanoTime() * 1.0e-6;
-		
+
     	System.out.println("Elapsed time:  " + (endTime - startTime));
         System.out.println("Warp distance: " + info.getDistance());
         System.out.println("Warp path:     " + info.getPath());
@@ -52,7 +52,7 @@ public class DTWTestUsingTHoG {
 
 		final TimeSeries ts1 = new TimeSeries(filenameList[0], false, false, ' ');
 		final TimeSeries ts2 = new TimeSeries(filenameList[0], false, false, ' ');
-		
+
     	final int numFeatures1 = ts1.numOfDimensions();
     	final int numFrames1 = ts1.numOfPts();
     	final int numFeatures2 = ts2.numOfDimensions();
@@ -77,12 +77,12 @@ public class DTWTestUsingTHoG {
         //final TimeWarpInfo info = com.dtw.DTW.getWarpInfoBetween(ts1_partial, ts2_partial, distFunc);
         final TimeWarpInfo info = com.dtw.FastDTW.getWarpInfoBetween(ts1_partial, ts2_partial, radius, distFunc);
     	final double endTime = (double)System.nanoTime() * 1.0e-6;
-		
+
     	System.out.println("Elapsed time:  " + (endTime - startTime));
         System.out.println("Warp distance: " + info.getDistance());
         System.out.println("Warp path:     " + info.getPath());
 	}
-	
+
 	private static void compareTHoGsUsingFullReferenceTHoG()
 	{
 		final String[] filenameList = {
@@ -116,7 +116,7 @@ public class DTWTestUsingTHoG {
 		        final TimeSeries ts2 = timeSeriesList[uu];
 	        	final int numFeatures2 = ts2.numOfDimensions();
 	        	final int numFrames2 = ts2.numOfPts();
-	        
+
 	        	result[tt][uu] = new double [numFrames2 - frameWinSize + 1];
 		        for (int ff = 0; ff <= numFrames2 - frameWinSize; ++ff)
 				{
@@ -142,7 +142,7 @@ public class DTWTestUsingTHoG {
 				}
 			}
 		}
-        
+
         // Display result.
         for (int i = 0; i < result.length; ++i)
         {
@@ -154,7 +154,7 @@ public class DTWTestUsingTHoG {
             }
         }
 	}
-	
+
 	private static void compareTHoGsUsingPartialReferenceTHoG()
 	{
 		final String[] filenameList = {
@@ -170,7 +170,7 @@ public class DTWTestUsingTHoG {
 
 		//
 		double[][][] result = new double [filenameList.length][filenameList.length][];
-		
+
         //final DistanceFunction distFunc = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");  // EuclideanDistance, ManhattanDistance, BinaryDistance.
         final DistanceFunction distFunc = new HistogramComparisonFunction();
         final int radius = 10;
@@ -191,7 +191,7 @@ public class DTWTestUsingTHoG {
 		        final TimeSeries ts2 = timeSeriesList[uu];
 	        	//final int numFeatures2 = ts2.numOfDimensions();
 	        	final int numFrames2 = ts2.numOfPts();
-	        
+
 	        	result[tt][uu] = new double [numFrames2 - frameWinSize2 + 1];
 		        for (int ff = 0; ff <= numFrames2 - frameWinSize2; ++ff)
 				{
@@ -225,16 +225,16 @@ public class DTWTestUsingTHoG {
 		        	System.out.println("\tElapsed time:  " + (endTime - startTime));
 			        System.out.println("\tWarp distance: " + bestWarpInfo.getDistance());
 			        System.out.println("\tWarp path:     " + bestWarpInfo.getPath());
-			        
+
 			        result[tt][uu][ff] = bestWarpInfo.getDistance();
-			        
+
 			        //
 			        System.gc();
 			        Thread.yield();
 				}
 			}
 		}
-        
+
         // Display result.
         for (int i = 0; i < result.length; ++i)
         {

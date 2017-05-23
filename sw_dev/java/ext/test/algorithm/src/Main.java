@@ -4,12 +4,12 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			System.out.println("Apache Lucene project -----------------------------------------------");			
+			System.out.println("Apache Lucene project -----------------------------------------------");
 			lucene.Lucene_Main.run(args);  // Not yet implemented.
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			System.err.println("Exception occurred: " + e.toString());
+			System.err.println("Exception occurred: " + ex.toString());
 		}
 	}
 

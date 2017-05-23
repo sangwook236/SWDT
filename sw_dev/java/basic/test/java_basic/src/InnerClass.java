@@ -29,6 +29,5 @@ public class InnerClass {
 		// TODO Auto-generated method stub
 		return super.toString();
 	}
-	
 
 }

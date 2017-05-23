@@ -10,7 +10,7 @@ public class Test5 {
 	public void print() {
 		System.out.println("Test5.print()");
 	}
-	
+
 	private int i_;
 
 	public int getI() {
@@ -20,4 +20,5 @@ public class Test5 {
 	public void setI(int i) {
 		this.i_ = i;
 	}
+
 }

@@ -13,7 +13,7 @@ public class ToggleButtonTest implements Application
 	{
 	    DesktopApplicationContext.main(ToggleButtonTest.class, args);
 	}
-	
+
 	@Override
     public void startup(Display display, Map<String, String> properties) throws Exception
     {

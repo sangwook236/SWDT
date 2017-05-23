@@ -18,9 +18,9 @@ public class JOptionPaneTest {
 			output = "공룡";
 		else
 			output = "모르는 종";
-		
+
 		//JOptionPane.showMessageDialog(null, output);
-		
+
 		JTextArea showArea = new JTextArea();
 	    showArea.setText(output);
 

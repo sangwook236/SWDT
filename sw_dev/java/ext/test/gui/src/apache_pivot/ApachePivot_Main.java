@@ -10,7 +10,7 @@ public final class ApachePivot_Main {
 		HelloBXML.run(args);
 
 		//LabelTest.run(args);
-		//ext.LabelTest.run(args);  // run-time error
+		//ext.LabelTest.run(args);  // Run-time error
 		//ImageViewTest.run(args);
 
 		//PushButtonTest.run(args);

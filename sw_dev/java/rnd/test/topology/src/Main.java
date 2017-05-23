@@ -9,9 +9,9 @@ public class Main {
 		{
 			fastdtw.FastDTW_Main.run(args);
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			System.err.println("Exception occurred: " + e.toString());
+			System.err.println("Exception occurred: " + ex.toString());
 		}
 	}
 

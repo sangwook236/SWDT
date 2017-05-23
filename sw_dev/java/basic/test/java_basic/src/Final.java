@@ -8,12 +8,12 @@ public class Final {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public Final(final int i)
 	{
 		i_ = i;
 	}
-	
+
 	public void setVal(final int i)
 	{
 		i_ = i;

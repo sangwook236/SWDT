@@ -7,12 +7,15 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
+			System.out.println("JavaCPP -------------------------------------------------------------");
 			javacpp.JavaCPP_Main.run(args);
-			//jni.JNIMain.run(args);  // not yet implemented
+
+			System.out.println("Java Native Interface (JNI) -----------------------------------------");
+			//jni.JNIMain.run(args);  // Not yet implemented.
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			System.err.println("Exception occurred: " + e.toString());
+			System.err.println("Exception occurred: " + ex.toString());
 		}
 	}
 

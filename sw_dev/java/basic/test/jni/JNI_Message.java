@@ -1,8 +1,8 @@
 class JNI_Message
 {
 	native String Message(String input);
-   
-  // 라이브러리 적재(Load the library)  
+
+	// Load the library.
 	static
 	{
 		System.loadLibrary("Msg_DLL");
@@ -12,12 +12,12 @@ class JNI_Message
 	{
 		String buf;
 
-		// 클래스 인스턴스 생성(Create class instance)
+		// Create class instance.
 		JNI_Message myJNI = new JNI_Message();
 
-		// 원시 메소드에 값을 주고 받음
+		// Call native method.
 		buf = myJNI.Message("Apple");
 
-		System.out.print(buf); // 받은값 출력
+		System.out.print(buf);
 	}
 }

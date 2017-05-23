@@ -13,7 +13,7 @@ public class RadioButtonTest implements Application
 	{
 	    DesktopApplicationContext.main(RadioButtonTest.class, args);
 	}
-	
+
 	@Override
     public void startup(Display display, Map<String, String> properties) throws Exception
     {

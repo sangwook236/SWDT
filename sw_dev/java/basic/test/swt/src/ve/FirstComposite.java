@@ -44,9 +44,9 @@ public class FirstComposite extends Composite {
 	}
 
 	/**
-	 * This method initializes jLabel	
+	 * This method initializes jLabel
 	 * 	
-	 * @return javax.swing.JLabel	
+	 * @return javax.swing.JLabel
 	 */
 	private JLabel getJLabel() {
 		if (jLabel == null) {
@@ -58,9 +58,9 @@ public class FirstComposite extends Composite {
 	}
 
 	/**
-	 * This method initializes jList	
+	 * This method initializes jList
 	 * 	
-	 * @return javax.swing.JList	
+	 * @return javax.swing.JList
 	 */
 	private JList getJList() {
 		if (jList == null) {
@@ -71,9 +71,9 @@ public class FirstComposite extends Composite {
 	}
 
 	/**
-	 * This method initializes jSlider	
+	 * This method initializes jSlider
 	 * 	
-	 * @return javax.swing.JSlider	
+	 * @return javax.swing.JSlider
 	 */
 	private JSlider getJSlider() {
 		if (jSlider == null) {
@@ -84,9 +84,9 @@ public class FirstComposite extends Composite {
 	}
 
 	/**
-	 * This method initializes jPanel	
+	 * This method initializes jPanel
 	 * 	
-	 * @return javax.swing.JPanel	
+	 * @return javax.swing.JPanel
 	 */
 	private JPanel getJPanel() {
 		if (jPanel == null) {

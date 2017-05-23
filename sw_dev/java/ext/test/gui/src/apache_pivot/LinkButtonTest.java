@@ -13,7 +13,7 @@ public class LinkButtonTest implements Application
 	{
 	    DesktopApplicationContext.main(LinkButtonTest.class, args);
 	}
-	
+
 	@Override
     public void startup(Display display, Map<String, String> properties) throws Exception
     {

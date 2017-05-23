@@ -11,11 +11,11 @@ public class HelloSWT {
 		// TODO Auto-generated method stub
 		Display display = new Display();
 		Shell shell = new Shell(display);
-		
+
 		Text helloText = new Text(shell, SWT.CENTER);
 		helloText.setText("Hellow SWT!");
 		helloText.pack();
-		
+
 		shell.pack();
 		shell.open();
 		while (!shell.isDisposed())

@@ -20,7 +20,7 @@ public class Arithmetic {
 	{
 		return lhs / rhs;
 	}
-	
+
 	public static double divideByZero() throws ArithmeticException
 	{
 		return 2 / 0;

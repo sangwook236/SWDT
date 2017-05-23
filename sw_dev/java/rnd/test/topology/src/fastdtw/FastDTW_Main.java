@@ -1,7 +1,7 @@
 package fastdtw;
 
 public class FastDTW_Main {
-	
+
 	public static void run(String[] args)
 	{
 		//DTWExample.run(args);
@@ -9,5 +9,5 @@ public class FastDTW_Main {
 
 		DTWTestUsingTHoG.run(args);
 	}
-	
+
 }

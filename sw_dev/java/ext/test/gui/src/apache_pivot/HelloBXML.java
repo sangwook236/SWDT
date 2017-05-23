@@ -13,7 +13,7 @@ public class HelloBXML implements Application
 	{
 	    DesktopApplicationContext.main(HelloBXML.class, args);
 	}
-	
+
 	@Override
     public void startup(Display display, Map<String, String> properties) throws Exception
     {

@@ -13,7 +13,7 @@ public class CheckboxTest implements Application
 	{
 	    DesktopApplicationContext.main(CheckboxTest.class, args);
 	}
-	
+
 	@Override
     public void startup(Display display, Map<String, String> properties) throws Exception
     {

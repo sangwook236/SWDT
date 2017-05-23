@@ -13,7 +13,7 @@ public class ImageViewTest implements Application
 	{
 	    DesktopApplicationContext.main(ImageViewTest.class, args);
 	}
-	
+
 	@Override
     public void startup(Display display, Map<String, String> properties) throws Exception
     {

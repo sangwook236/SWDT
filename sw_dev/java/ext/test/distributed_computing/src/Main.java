@@ -7,12 +7,15 @@ public class Main {
 	public static void main(String[] args) {
 		try
 		{
-			//hadoop.Hadoop_Main.run(args);  // not yet implemented.
+			System.out.println("Hadoop --------------------------------------------------------------");
+			//hadoop.Hadoop_Main.run(args);  // Not yet implemented.
+
+			System.out.println("Spark ---------------------------------------------------------------");
 			spark.Spark_Main.run(args);
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			System.err.println("Exception occurred: " + e.toString());
+			System.err.println("Exception occurred: " + ex.toString());
 		}
 	}
 

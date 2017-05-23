@@ -48,7 +48,7 @@ public class ArithmeticTest extends TestCase {
 		{
 		}
 	}
-	
+
 	private double x_;
 	private double y_;
 }

@@ -7,9 +7,9 @@ public class Main {
 			System.out.println("HYDRA MCMC Library --------------------------------------------------");
 			hydra_mcmc.HydraMCMC_Main.run(args);  // not yet implemented.
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			System.err.println("Exception occurred: " + e.toString());
+			System.err.println("Exception occurred: " + ex.toString());
 		}
 	}
 
