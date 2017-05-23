@@ -13,16 +13,19 @@ public class ImageJ_Main {
 
 	public static void run(String[] args)
 	{
-		//createImage();
-		//openImage();
-		saveImage();
-		editImage();
+		// Basic operation.
+		{
+			// REF [site] >> http://albert.rierol.net/imagej_programming_tutorials.html#ImageJ programming basics
+			
+			//createImage();
+			openImage();
+			//saveImage();
+			//editImage();
+		}
 	}
 
 	static void createImage()
 	{
-		// REF [site] >> http://albert.rierol.net/imagej_programming_tutorials.html#ImageJ programming basics
-		
 		int width = 400;
 		int height = 400;
 
@@ -65,21 +68,22 @@ public class ImageJ_Main {
 		ImagePlus imp1 = IJ.openImage("data/image_processing/racoon.jpg");
 		imp1.show();
 
-		ImagePlus imp2 = IJ.openImage("http://www.example.org/path/to/image.tif");
+		ImagePlus imp2 = IJ.openImage("https://www.gstatic.com/webp/gallery3/1.png");
 		imp2.show();
 
 		// Without getting back a pointer, and automatically showing it.
-		IJ.open("data/image_processing/racoon.jpg");
+		//IJ.open("data/image_processing/racoon.jpg");  // Exception occurred.
+		IJ.open("D:/work/swdt_github/sw_dev/java/rnd/bin/data/image_processing/racoon.jpg");
 		// Same but from an URL.
-		IJ.open("http://www.example.org/path/to/image.tif");
+		IJ.open("https://www.gstatic.com/webp/gallery3/1.png");
 
 		Opener opener1 = new Opener();
 		ImagePlus imp3 = opener1.openImage("data/image_processing/racoon.jpg");
 		imp3.show();
 
 		Opener opener2 = new Opener();
-		ImagePlus imp4 = opener2.openImage("http://www.example.org/path/to/image.tif");
-		//ImagePlus imp4 = opener2.openURL("http://www.example.org/path/to/image.tif");
+		ImagePlus imp4 = opener2.openImage("https://www.gstatic.com/webp/gallery3/1.png");
+		//ImagePlus imp4 = opener2.openURL("https://www.gstatic.com/webp/gallery3/1.png");
 		imp4.show();
 	}
 	
@@ -152,7 +156,7 @@ public class ImageJ_Main {
 				// Rotate WITHOUT enlarging the canvas to fit.
 				double angle = 45;
 				ip.setInterpolate(true);  // Bilinear.
-				ip.rotate(45);
+				ip.rotate(angle);
 
 				// Rotate ENLARGING the canvas and filling the new areas with background color.
 				double angle2 = 45;
