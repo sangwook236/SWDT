@@ -3,6 +3,8 @@
 import scipy.misc
 import numpy as np
 
+#%%-------------------------------------------------------------------
+
 img_filename = "D:/dataset/pattern_recognition/street1.png"
 #img_filename = "D:/dataset/pattern_recognition/street2.jpg"
 
