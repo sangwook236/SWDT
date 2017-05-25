@@ -24,7 +24,7 @@ ny = 572
 
 generator = image_gen.GrayScaleDataProvider(nx, ny, cnt=20)
 
-x_test, y_test = generator(4)
+x_test, y_test = generator(4)  % 4 images.
 
 fig, ax = plt.subplots(1,2, sharey=True, figsize=(8,4))
 ax[0].imshow(x_test[0,...,0], aspect="auto")

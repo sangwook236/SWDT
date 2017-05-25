@@ -5,7 +5,7 @@ import numpy as np
 #%%-------------------------------------------------------------------
 
 a = np.arange(30).reshape(3, 5, 2)
-%a = np.zeros((3, 5, 2), dtype = np.complex128)
+#a = np.zeros((3, 5, 2), dtype = np.complex128)
 
 a.ndim
 a.size
@@ -55,6 +55,12 @@ c = np.arange(24).reshape(2, 3, 4)
 print(c)
 
 #%%-------------------------------------------------------------------
+# Conversion.
+
+a = np.random.random((2, 3))
+np.int32(np.round(a))
+
+#%%-------------------------------------------------------------------
 # Basic operation.
 
 a = np.array([20, 30, 40, 50])
@@ -81,8 +87,8 @@ b += a
 # b is not automatically converted to integer type.
 #a += b
 
-a = np.ones(3, dtype=np.int32)
-b = np.linspace(0,pi,3)
+a = np.ones(3, dtype = np.int32)
+b = np.linspace(0, pi, 3)
 b.dtype.name
 c = a + b
 c.dtype.name
@@ -136,7 +142,7 @@ a
 #%%-------------------------------------------------------------------
 # Vector stacking.
 
-x = np.arange(0,10,2)
+x = np.arange(0, 10, 2)
 y = np.arange(5)
 
 m = np.vstack([x, y])

@@ -3,7 +3,7 @@
 import numpy as np
 
 #%%-------------------------------------------------------------------
-% Fancy indexing and index trick.
+# Fancy indexing and index trick.
 
 a = np.arange(12)**2
 # An array of indices.
@@ -28,7 +28,7 @@ l = [i, j]
 a[l]  # a[i, j].
 
 s = np.array([i, j])
-a[s]
+#a[s]  # Error.
 a[tuple(s)]  # a[i, j].
 
 time = np.linspace(20, 145, 5)
@@ -41,7 +41,7 @@ ind = data.argmax(axis = 0)
 ind
 # Times corresponding to the maxima.
 time_max = time[ind]
-data_max = data[ind, xrange(data.shape[1])]  # => data[ind[0],0], data[ind[1],1]...
+data_max = data[ind, range(data.shape[1])]  # => data[ind[0],0], data[ind[1],1]...
 time_max
 data_max
 np.all(data_max == data.max(axis = 0))
