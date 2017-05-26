@@ -37,7 +37,7 @@ train_data_provider = image_util.ImageDataProvider(search_path = train_dataset_s
 
 trainer = unet.Trainer(net)
 
-model_filepath = trainer.train(train_data_provider, model_output_path, training_iters=32, epochs=100)
+model_filepath = trainer.train(train_data_provider, model_output_path, training_iters = 32, epochs = 100)
 #model_filepath = model_output_path + '/model.cpkt'
 
 #%%------------------------------------------------------------------
@@ -93,8 +93,8 @@ import numpy as np
 x_test_all, y_test_all = train_data_provider(16)
 idx = 3  # 0, 3, 13.
 
-x_test_single = np.zeros((1, 1024, 1000, 1), dtype=np.float64)
-y_test_single = np.zeros((1, 1024, 1000, 2), dtype=np.float64)
+x_test_single = np.zeros((1, 1024, 1000, 1), dtype = np.float64)
+y_test_single = np.zeros((1, 1024, 1000, 2), dtype = np.float64)
 x_test_single[0] = x_test_all[idx]
 y_test_single[0] = y_test_all[idx]
 
