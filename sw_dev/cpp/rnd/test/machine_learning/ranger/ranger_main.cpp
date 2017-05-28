@@ -11,7 +11,7 @@
 #include <cmath>
 
 
-#define _TRAINING_PHASE 1
+//#define _TRAINING_PHASE 1
 
 
 namespace {
@@ -56,7 +56,7 @@ void iris_classification_example()
 	//	REF [file] >> ${RANGER_HOME}/cpp_version/src/utility/ArgumentHandler.cpp.
 	//	REF [file] >> ${RANGER_HOME}/src/globals.h.
 
-	const TreeType tree_type = TreeType::TREE_CLASSIFICATION;  // TREE_CLASSIFICATION, TREE_REGRESSION, TREE_SURVIVAL, TREE_PROBABILITY.
+	const TreeType tree_type = TreeType::TREE_PROBABILITY;  // TREE_CLASSIFICATION, TREE_REGRESSION, TREE_SURVIVAL, TREE_PROBABILITY.
 	const bool probability = false;  // Probability estimation (for classification forests only).
 	const std::string dependent_variable_name("species");  // Name of dependent variable. For survival trees this is the time variable.
 	const std::string status_variable_name;  // Name of status variable (for survival forests only). Coding is 1 for event and 0 for censored.
