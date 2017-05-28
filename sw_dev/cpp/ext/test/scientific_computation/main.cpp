@@ -24,10 +24,35 @@ int main(int argc, char *argv[])
 		std::cout << "\nALGLIB library ------------------------------------------------------" << std::endl;
 		//	- Linear algebra.
 		//	- Interpolation.
+		//		Polynomial interpolation.
+		//		Rational interpolation.
 		//		Spline: linear, Hermite, Catmull-Rom, cubic, and Akima splines.
-		//	- Differentiataion & integration
+		//		Bilinear and bicubic spline interpolation.
+		//		Fast RBF interpolation/fitting.
+		//		Least squares fitting (linear/nonlinear).
+		//	- Differentiataion & integration.
 		//	- Optimization.
 		//	- Statistics.
+		//		Distribution.
+		//			F-distribution, chi-square distribution, binomial distribution, Poisson distribution, Student's t-distribution, normal distribution, error function.
+		//		Hypothesis testing.
+		//			Student's t-tests, F-test and chi-square test.
+		//			Sign test, Wilcoxon signed-rank test, Mann-Whitney U-test.
+		//			Jarque-Bera test, significance test for correlation coefficient.
+		//	- Data analysis.
+		//		Linear regression, multinomial logit regression.
+		//		Neural networks, neural network ensembles.
+		//		(Random) decision forest.
+		//		Principal component analysis (PCA), linear discriminant analysis (LDA).
+		//		Clustering: hierarchical, k-means++.
+		//	- Special function.
+		//		Orthogonal polynomial.
+		//			Chebyshev polynomial, Hermite polynomial, Laguerre polynomial, Legendre polynomial.
+		//		(Incomplete) gamma function, psi function.
+		//		(Incomplete) beta function.
+		//		Bessel functions of integer order.
+		//		Elliptic integrals of the first and second kind, Jacobian elliptic functions.
+		//		Dawson integral, exponential integral, trigonometric integral, Fresnel integral, Airy function.
 		retval = alglib_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
