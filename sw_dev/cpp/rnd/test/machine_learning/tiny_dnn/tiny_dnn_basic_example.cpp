@@ -30,12 +30,18 @@ void convnet_sample(const std::string& dataset_dir_path)
 
 	// REF [paper] >> "Gradient-Based Learning Applied to Document Recognition", PIEEE 1998.
 	// Construct nets.
-	nn << tiny_dnn::convolutional_layer<tiny_dnn::activation::tan_h>(32, 32, 5, 1, 6)  // 32x32 in, 5x5 kernel, 1-6 fmaps conv.
-       << tiny_dnn::average_pooling_layer<tiny_dnn::activation::tan_h>(28, 28, 6, 2)  // 28x28 in, 6 fmaps, 2x2 subsampling.
-       << tiny_dnn::convolutional_layer<tiny_dnn::activation::tan_h>(14, 14, 5, 6, 16, tiny_dnn::core::connection_table(connection, 6, 16))  // With connection-table.
-       << tiny_dnn::average_pooling_layer<tiny_dnn::activation::tan_h>(10, 10, 16, 2)
-       << tiny_dnn::convolutional_layer<tiny_dnn::activation::tan_h>(5, 5, 5, 16, 120)
-       << tiny_dnn::fully_connected_layer<tiny_dnn::activation::tan_h>(120, 10);
+	nn << tiny_dnn::convolutional_layer(32, 32, 5, 1, 6)  // 32x32 in, 5x5 kernel, 1-6 fmaps conv.
+		<< tiny_dnn::tanh_layer(28, 28, 6)
+		<< tiny_dnn::average_pooling_layer(28, 28, 6, 2)  // 28x28 in, 6 fmaps, 2x2 subsampling.
+		<< tiny_dnn::tanh_layer(14, 14, 6)
+		<< tiny_dnn::convolutional_layer(14, 14, 5, 6, 16, tiny_dnn::core::connection_table(connection, 6, 16))
+		<< tiny_dnn::tanh_layer(10, 10, 16)
+		<< tiny_dnn::average_pooling_layer(10, 10, 16, 2)
+		<< tiny_dnn::tanh_layer(5, 5, 16)
+		<< tiny_dnn::convolutional_layer(5, 5, 5, 16, 120)
+		<< tiny_dnn::tanh_layer(1, 1, 120)
+		<< tiny_dnn::fully_connected_layer(120, 10)
+		<< tiny_dnn::tanh_layer(10);
 
     std::cout << "Load models..." << std::endl;
 
@@ -95,14 +101,14 @@ void convnet_sample(const std::string& dataset_dir_path)
 // Learning 3-Layer Networks.
 void mlp_sample(const std::string& dataset_dir_path)
 {
-    const tiny_dnn::cnn_size_t num_hidden_units = 500;
+    const tiny_dnn::serial_size_t num_hidden_units = 500;
 
 #if defined(_MSC_VER) && _MSC_VER < 1800
     // Initializer-list is not supported.
     int num_units[] = { 28 * 28, num_hidden_units, 10 };
-    auto nn = tiny_dnn::make_mlp<tiny_dnn::activation::tan_h>(num_units, num_units + 3);
+    auto nn = tiny_dnn::make_mlp<tiny_dnn::tanh_layer>(num_units, num_units + 3);
 #else
-    auto nn = tiny_dnn::make_mlp<tiny_dnn::activation::tan_h>({ 28 * 28, num_hidden_units, 10 });
+    auto nn = tiny_dnn::make_mlp<tiny_dnn::tanh_layer>({ 28 * 28, num_hidden_units, 10 });
 #endif
 	tiny_dnn::gradient_descent optimizer;
 
@@ -157,11 +163,11 @@ void denoising_auto_encoder_sample(const std::string& dataset_dir_path)
 	//int num_units[] = { 100, 400, 100 };
 	int num_units[] = { 28*28, 400, 28*28 };  // For MNIST dataset.
 	//int num_units[] = { 28*28, 400, 100, 400, 28*28 };  // For MNIST dataset.
-	auto nn = tiny_dnn::make_mlp<tiny_dnn::activation::tan_h>(num_units, num_units + 3);
+	auto nn = tiny_dnn::make_mlp<tiny_dnn::tanh_layer>(num_units, num_units + 3);
 #else
-	//auto nn = tiny_dnn::make_mlp<tiny_dnn::activation::tan_h>({ 100, 400, 100 });
-	auto nn = tiny_dnn::make_mlp<tiny_dnn::activation::tan_h>({ 28*28, 400, 28*28 });  // For MNIST dataset.
-	//auto nn = tiny_dnn::make_mlp<tiny_dnn::activation::tan_h>({ 28*28, 400, 100, 400, 28*28 });  // For MNIST dataset.
+	//auto nn = tiny_dnn::make_mlp<tiny_dnn::tanh_layer>({ 100, 400, 100 });
+	auto nn = tiny_dnn::make_mlp<tiny_dnn::tanh_layer>({ 28*28, 400, 28*28 });  // For MNIST dataset.
+	//auto nn = tiny_dnn::make_mlp<tiny_dnn::tanh_layer>({ 28*28, 400, 100, 400, 28*28 });  // For MNIST dataset.
 #endif
 
     // Load train-data.
@@ -223,15 +229,17 @@ void dropout_sample(const std::string& dataset_dir_path)
 {
     typedef tiny_dnn::network<tiny_dnn::sequential> Network;
     Network nn;
-    tiny_dnn::cnn_size_t input_dim = 28*28;
-    tiny_dnn::cnn_size_t hidden_units = 800;
-    tiny_dnn::cnn_size_t output_dim = 10;
+    tiny_dnn::serial_size_t input_dim = 28*28;
+    tiny_dnn::serial_size_t hidden_units = 800;
+    tiny_dnn::serial_size_t output_dim = 10;
 	tiny_dnn::gradient_descent optimizer;
 
-	tiny_dnn::fully_connected_layer<tiny_dnn::activation::tan_h> f1(input_dim, hidden_units);
+	tiny_dnn::fully_connected_layer f1(input_dim, hidden_units);
+	tiny_dnn::tanh_layer th1(hidden_units);
 	tiny_dnn::dropout_layer dropout(hidden_units, 0.5);
-	tiny_dnn::fully_connected_layer<tiny_dnn::activation::tan_h> f2(hidden_units, output_dim);
-    nn << f1 << dropout << f2;
+	tiny_dnn::fully_connected_layer f2(hidden_units, output_dim);
+	tiny_dnn::tanh_layer th2(output_dim);
+	nn << f1 << th1 << dropout << f2 << th2;
 
 	optimizer.alpha = (tiny_dnn::float_t)0.003;  // TODO: not optimized.
 	optimizer.lambda = 0.0;

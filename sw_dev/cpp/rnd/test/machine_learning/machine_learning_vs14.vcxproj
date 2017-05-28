@@ -90,7 +90,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WINDOWS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/RLlib;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0;$(MY_USR_LOCAL_INCLUDE)/RLlib;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -104,7 +104,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/RLlib;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0;$(MY_USR_LOCAL_INCLUDE)/RLlib;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -121,7 +121,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WINDOWS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/RLlib;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0;$(MY_USR_LOCAL_INCLUDE)/RLlib;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,7 +139,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/RLlib;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./kmeanspp_lib;./spectral_clustering_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0;$(MY_USR_LOCAL_INCLUDE)/RLlib;$(MY_USR_LOCAL_INCLUDE)/MultiBoost-1.2.01;$(MY_USR_LOCAL_INCLUDE)/eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,6 +164,23 @@
     <ClInclude Include="mysvm_lib\svm_c.h" />
     <ClInclude Include="mysvm_lib\svm_nu.h" />
     <ClInclude Include="mysvm_lib\version.h" />
+    <ClInclude Include="ranger_lib\Data.h" />
+    <ClInclude Include="ranger_lib\DataChar.h" />
+    <ClInclude Include="ranger_lib\DataDouble.h" />
+    <ClInclude Include="ranger_lib\DataFloat.h" />
+    <ClInclude Include="ranger_lib\DataSparse.h" />
+    <ClInclude Include="ranger_lib\Forest.h" />
+    <ClInclude Include="ranger_lib\ForestClassification.h" />
+    <ClInclude Include="ranger_lib\ForestProbability.h" />
+    <ClInclude Include="ranger_lib\ForestRegression.h" />
+    <ClInclude Include="ranger_lib\ForestSurvival.h" />
+    <ClInclude Include="ranger_lib\globals.h" />
+    <ClInclude Include="ranger_lib\Tree.h" />
+    <ClInclude Include="ranger_lib\TreeClassification.h" />
+    <ClInclude Include="ranger_lib\TreeProbability.h" />
+    <ClInclude Include="ranger_lib\TreeRegression.h" />
+    <ClInclude Include="ranger_lib\TreeSurvival.h" />
+    <ClInclude Include="ranger_lib\utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\dimensionality_reduction\mfa_lib\mfa.cpp" />
@@ -233,6 +250,47 @@
     <ClCompile Include="mysvm_lib\smo.cpp" />
     <ClCompile Include="mysvm_lib\svm_c.cpp" />
     <ClCompile Include="mysvm_lib\svm_nu.cpp" />
+    <ClCompile Include="ranger\ranger_main.cpp" />
+    <ClCompile Include="ranger_lib\AAA_check_cpp11.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\Data.cpp" />
+    <ClCompile Include="ranger_lib\DataChar.cpp" />
+    <ClCompile Include="ranger_lib\DataDouble.cpp" />
+    <ClCompile Include="ranger_lib\DataFloat.cpp" />
+    <ClCompile Include="ranger_lib\DataSparse.cpp" />
+    <ClCompile Include="ranger_lib\Forest.cpp" />
+    <ClCompile Include="ranger_lib\ForestClassification.cpp" />
+    <ClCompile Include="ranger_lib\ForestProbability.cpp" />
+    <ClCompile Include="ranger_lib\ForestRegression.cpp" />
+    <ClCompile Include="ranger_lib\ForestSurvival.cpp" />
+    <ClCompile Include="ranger_lib\rangerCpp.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\ranger_init.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\RcppExports.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\Tree.cpp" />
+    <ClCompile Include="ranger_lib\TreeClassification.cpp" />
+    <ClCompile Include="ranger_lib\TreeProbability.cpp" />
+    <ClCompile Include="ranger_lib\TreeRegression.cpp" />
+    <ClCompile Include="ranger_lib\TreeSurvival.cpp" />
+    <ClCompile Include="ranger_lib\utility.cpp" />
     <ClCompile Include="rllib\rllib_boyan_chain_lstd_example.cpp" />
     <ClCompile Include="rllib\rllib_cliff_walking_qlearning_example.cpp" />
     <ClCompile Include="rllib\rllib_cliff_walking_sarsa_example.cpp" />

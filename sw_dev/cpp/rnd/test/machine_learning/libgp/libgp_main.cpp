@@ -11,16 +11,16 @@ namespace local {
 // REF [file] >> ${LIBGP_HOME}/examples/gp_example_dense.cc
 void dense_example()
 {
-	// initialize Gaussian process for 2-D input using the squared exponential covariance function with additive white noise.
+	// Initialize Gaussian process for 2-D input using the squared exponential covariance function with additive white noise.
 	libgp::GaussianProcess gp(2, "CovSum(CovSEiso, CovNoise)");
 
-	// initialize hyper parameter vector.
+	// Initialize hyper parameter vector.
 	Eigen::VectorXd params(gp.covf().get_param_dim());
 	params << 0.0, 0.0, -2.0;
-	// set parameters of covariance function.
+	// Set parameters of covariance function.
 	gp.covf().set_loghyper(params);
 
-	// add training patterns.
+	// Add training patterns.
 	const int n = 4000;
 	double y;
 	for (int i = 0; i < n; ++i)
@@ -34,7 +34,7 @@ void dense_example()
 		gp.add_pattern(x, y);
 	}
 
-	// total squared error.
+	// Total squared error.
 	const int m = 1000;
 	double tss = 0.0, error, f;
 	for (int i = 0; i < m; ++i)
@@ -49,7 +49,7 @@ void dense_example()
 		error = f - y;
 		tss += error * error;
 	}
-	std::cout << "mse = " << tss / m << std::endl;
+	std::cout << "MSE = " << tss / m << std::endl;
 }
 
 }  // namespace local

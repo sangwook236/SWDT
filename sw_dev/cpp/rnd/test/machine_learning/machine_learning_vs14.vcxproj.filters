@@ -73,6 +73,12 @@
     <Filter Include="Source Files\rnnlib">
       <UniqueIdentifier>{4859f40a-e2f5-4a72-bd57-930372e52353}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ranger">
+      <UniqueIdentifier>{f9fc8659-42af-4c24-8e8b-4ec731df6faf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ranger_lib">
+      <UniqueIdentifier>{7ea43945-3acf-4526-9f57-24213659d2f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libsvm_lib\svm.h">
@@ -116,6 +122,57 @@
     </ClInclude>
     <ClInclude Include="..\dimensionality_reduction\mfa_lib\mfa.hpp">
       <Filter>Source Files\mfa_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\Data.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\DataChar.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\DataDouble.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\DataFloat.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\DataSparse.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\Forest.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\ForestClassification.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\ForestProbability.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\ForestRegression.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\ForestSurvival.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\globals.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\Tree.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\TreeClassification.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\TreeProbability.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\TreeRegression.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\TreeSurvival.h">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger_lib\utility.h">
+      <Filter>Source Files\ranger_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -421,6 +478,69 @@
     </ClCompile>
     <ClCompile Include="libsvm\libsvm_one_class_classification.cpp">
       <Filter>Source Files\libsvm</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\AAA_check_cpp11.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\Data.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\DataChar.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\DataDouble.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\DataFloat.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\DataSparse.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\Forest.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\ForestClassification.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\ForestProbability.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\ForestRegression.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\ForestSurvival.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\ranger_init.c">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\rangerCpp.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\RcppExports.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\Tree.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\TreeClassification.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\TreeProbability.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\TreeRegression.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\TreeSurvival.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger_lib\utility.cpp">
+      <Filter>Source Files\ranger_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger\ranger_main.cpp">
+      <Filter>Source Files\ranger</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

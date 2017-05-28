@@ -1,0 +1,7 @@
+[-] General.
+	- Site.
+		https://python-pillow.org/
+		https://github.com/python-pillow/Pillow
+
+	- Document.
+		http://pillow.readthedocs.io/

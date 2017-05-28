@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 	int svm_light_main(int argc, char *argv[]);
 
 	int multiboost_main(int argc, char *argv[]);
+	int ranger_main(int argc, char *argv[]);
 
 	int caffe_main(int argc, char *argv[]);
 	int tiny_dnn_main(int argc, char *argv[]);
@@ -53,7 +54,7 @@ int main(int argc, char *argv[])
 		//		Platt scaling.
 		//	- One-class SVM.
 		//	- Support vector data description (SVDD).
-		retval = libsvm_main(argc, argv);
+		//retval = libsvm_main(argc, argv);
 
 		std::cout << "\nmysvm library -------------------------------------------------------" << std::endl;
 		//retval = mysvm_main(argc, argv);  // Not yet implemented.
@@ -68,6 +69,11 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nmultiboost library --------------------------------------------------" << std::endl;
 		//retval = multiboost_main(argc, argv);  // Not yet implemented.
+
+		std::cout << "\nranger library ------------------------------------------------------" << std::endl;
+		//	- Random forest (RF).
+		//		Classification, regression, survival.
+		retval = ranger_main(argc, argv);
 
 		std::cout << "\ndlib-ml library -----------------------------------------------------" << std::endl;
 		//	- Support vector machines (SVM).

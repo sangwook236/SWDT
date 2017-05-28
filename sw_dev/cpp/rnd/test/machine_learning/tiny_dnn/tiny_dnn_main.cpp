@@ -52,9 +52,9 @@ int tiny_dnn_main(int argc, char *argv[])
 		std::cout << "\tTest CIFAR10 ------------------------------------------------" << std::endl;
 		my_tiny_dnn::cifar10_test_example();
 	}
-	catch (const tiny_dnn::nn_error& e)
+	catch (const tiny_dnn::nn_error &ex)
 	{
-		std::cout << "tiny_dnn::nn_error caught: " << e.what() << std::endl;
+		std::cout << "tiny_dnn::nn_error caught: " << ex.what() << std::endl;
 
 		return 1;
 	}
