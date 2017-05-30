@@ -4,6 +4,7 @@
 from tf_unet import unet, util, image_util
 import numpy as np
 from PIL import Image
+import os
 
 #%%------------------------------------------------------------------
 # Load data.
@@ -15,7 +16,15 @@ dataset_home_path = "D:/dataset/biomedical_imaging/isbi2012_em_segmentation_chal
 train_dataset_search_pattern = dataset_home_path + "/*.tif"
 test_dataset_search_pattern = dataset_home_path + "/*.tif"
 
-model_output_path = dataset_home_path + "/output"
+model_output_dir_path = dataset_home_path + "/output"
+prediction_dir_path = dataset_home_path + "/prediction"
+
+if not os.path.exists(prediction_dir_path):
+	try:
+		os.makedirs(prediction_dir_path)
+	except OSError as exception:
+		if exception.errno != os.errno.EEXIST:
+			raise
 
 #%%------------------------------------------------------------------
 # Setup model.
@@ -37,8 +46,8 @@ train_data_provider = image_util.ImageDataProvider(search_path = train_dataset_s
 
 trainer = unet.Trainer(net)
 
-model_filepath = trainer.train(train_data_provider, model_output_path, training_iters = 32, epochs = 100)
-#model_filepath = model_output_path + '/model.cpkt'
+model_filepath = trainer.train(train_data_provider, model_output_dir_path, training_iters = 32, epochs = 100)
+#model_filepath = model_output_dir_path + '/model.cpkt'
 
 #%%------------------------------------------------------------------
 # Test.
@@ -70,7 +79,7 @@ for idx in indexes:
 	print("Error rate = %f" % unet.error_rate(prediction, util.crop_to_shape(y_test, prediction.shape)))
 
 	img = util.combine_img_prediction(x_test, y_test, prediction)
-	util.save_image(img, dataset_home_path + "/prediction" + str(idx) + ".jpg")
+	util.save_image(img, prediction_dir_path + "/prediction" + str(idx) + ".jpg")
 
 #%%------------------------------------------------------------------
 # Test.
@@ -84,7 +93,7 @@ prediction = net.predict(model_filepath, x_test)
 print("Error rate = %f" % unet.error_rate(prediction, util.crop_to_shape(y_test, prediction.shape)))
 
 img = util.combine_img_prediction(x_test, y_test, prediction)
-util.save_image(img, dataset_home_path + "/prediction.jpg")
+util.save_image(img, prediction_dir_path + "/prediction.jpg")
 
 #%%------------------------------------------------------------------
 
@@ -103,4 +112,4 @@ prediction = net.predict(model_filepath, x_test_single)
 unet.error_rate(prediction, util.crop_to_shape(y_test_single, prediction.shape))
 
 img = util.combine_img_prediction(x_test_single, y_test_single, prediction)
-util.save_image(img, dataset_home_path + "/prediction.jpg")
+util.save_image(img, prediction_dir_path + "/prediction.jpg")

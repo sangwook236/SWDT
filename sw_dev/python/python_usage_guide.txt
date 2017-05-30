@@ -1,5 +1,5 @@
 [-] General.
-	- Important paths.
+	- Directory.
 		Windows:
 			%PYTHONPATH%
 			%PYTHONPATH%\Scripts
@@ -17,10 +17,10 @@
 		==>	${PYTHON_ROOT}/Lib directory를 현재 실행되는 python interpreter의 하위 directory에 복사.
 			${PYTHON_INTERPRETER_ROOT}/Lib로 복사.
 	- Manifest 생성 관련 error.
-		General error c1010070: Failed to load and parse the manifest. @ |D >D  F5Hd.
+		General error c1010070: Failed to load and parse the manifest.
 		Error: command 'mt.exe' failed with exit status 31
 		==> 무시해도 됨.
 
 [-] Building extention module.
-	REF [doc] >> sw_dev/python/basic/test/extending/extention_module_build_guide.txt
+	REF [doc] >> ${SWDT_PYTHON_HOME}/basic/test/extending/extention_module_build_guide.txt
 	REF [site] >>  http://en.wikibooks.org/wiki/Python_Programming/Extending_with_C%2B%2B
