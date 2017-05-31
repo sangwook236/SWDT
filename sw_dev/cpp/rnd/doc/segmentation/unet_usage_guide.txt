@@ -2,6 +2,27 @@
 	- Site.
 		http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/
 
+[-] Usage.
+	- Reference. (?)
+		${UNET_HOME}/README.txt
+		${UNET_HOME}/segmentAndTrack.sh
+
+	- Use Caffe library to train.
+		Use the original Caffe library as it is.
+			There is no special model(layer, function, etc.) for U-Net.
+
+		Training dataset:
+			Cell tracking challenge (CTC).
+				http://www.codesolorzano.com/Challenges/CTC/Welcome.html
+				http://www.codesolorzano.com/Challenges/CTC/Datasets.html
+			PhC-C3DH-U373.
+			DIC-C2DH-HeLa.
+
+		Caffe model:
+			${UNET_HOME}/phseg_v5-train.prototxt
+		Pretrained Caffe model:
+			${UNET_HOME}/phseg_v5.caffemodel
+
 [-] Building (MSYS2).
 	- Download a source file.
 		http://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/
@@ -11,5 +32,16 @@
 	- Build external library.
 		ATLAS, LevelDB.
 	- Run CMake.
-	- Make.
+		Do not need Matlab.
+		- Make.
 		mingw32-make
+
+	==> Fail to make.
+
+[-] Building (Linux).
+	- Change directory.
+		cd ${UNET_HOME}/caffe-unet-src
+	- Run CMake.
+		Do not need Matlab.
+	- Make.
+		make -j4
