@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 '''
 Created on 2009. 2. 22.
 
@@ -19,10 +21,13 @@ def fib2(n):
 		a, b = b, a + b
 	return result
 
+def main():
+	import sys
+	fib(int(sys.argv[1]))
+	#pass
+
 # Usage:
 #	python module.py 50
 
 if __name__ == '__main__':
-	import sys
-	fib(int(sys.argv[1]))
-	#pass
+	main()

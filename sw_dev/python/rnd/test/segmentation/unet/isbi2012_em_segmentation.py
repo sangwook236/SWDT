@@ -9,15 +9,17 @@ import os
 #%%------------------------------------------------------------------
 # Load data.
 
-#dataset_home_path = "/home/sangwooklee/my_dataset/biomedical_imaging/isbi2012_em_segmentation_challenge"
-dataset_home_path = "D:/dataset/biomedical_imaging/isbi2012_em_segmentation_challenge"
+#dataset_home_dir_path = "/home/shared1/sangwook_dataset"
+dataset_home_dir_path = "D:/dataset"
 
-#train_dataset_search_pattern = dataset_home_path + "/train-volume.tif"
-train_dataset_search_pattern = dataset_home_path + "/*.tif"
-test_dataset_search_pattern = dataset_home_path + "/*.tif"
+dataset_dir_path = dataset_home_dir_path + "/my_dataset/biomedical_imaging/isbi2012_em_segmentation_challenge"
 
-model_output_dir_path = dataset_home_path + "/output"
-prediction_dir_path = dataset_home_path + "/prediction"
+#train_dataset_search_pattern = dataset_dir_path + "/train-volume.tif"
+train_dataset_search_pattern = dataset_dir_path + "/*.tif"
+test_dataset_search_pattern = dataset_dir_path + "/*.tif"
+
+model_output_dir_path = dataset_dir_path + "/output"
+prediction_dir_path = dataset_dir_path + "/prediction"
 
 if not os.path.exists(prediction_dir_path):
 	try:
@@ -84,7 +86,7 @@ for idx in indexes:
 #%%------------------------------------------------------------------
 # Test.
 
-test_data_provider = image_util.ImageDataProvider(dataset_home_path + "/test_img09.tif")
+test_data_provider = image_util.ImageDataProvider(dataset_dir_path + "/test_img09.tif")
 
 x_test, y_test = test_data_provider(1)  # Single image.
 
