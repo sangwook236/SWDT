@@ -92,8 +92,10 @@
 	- caution
 	- error, warn
 	- info
+		- e.g.)
+			- NOTICE [info] {important} >>
 	- note
-		- REF [] >> "Note Taking"
+		- REF [section] >> Note Taking
 	- assumption, limitation
 
 ##### Reference Task
