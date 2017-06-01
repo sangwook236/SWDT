@@ -31,6 +31,7 @@ if not os.path.exists(prediction_dir_path):
 #%%------------------------------------------------------------------
 # Setup model.
 
+# Support two classes only.
 net = unet.Unet(layers = 3, features_root = 64, channels = 1, n_class = 2)
 #net = unet.Unet(layers = 3, features_root = 32, channels = 1, n_class = 2)
 #net = unet.Unet(layers = 3, features_root = 128, channels = 1, n_class = 2)
