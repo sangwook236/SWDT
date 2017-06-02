@@ -24,7 +24,9 @@ set HEAP_OPTION=-Xmx1000M
 
 rem -------------------------------------------------------
 
-java %HEAP_OPTION% -jar %WEKA_HOME%\weka.jar
+start /b java %HEAP_OPTION% -jar %WEKA_HOME%\weka.jar %1% %2% %3% %4% %5%
+rem start /b javaw %HEAP_OPTION% -jar %WEKA_HOME%\weka.jar %1% %2% %3% %4% %5%
+rem start /min javaw %HEAP_OPTION% -jar %WEKA_HOME%\weka.jar %1% %2% %3% %4% %5%
 
 endlocal
 echo on

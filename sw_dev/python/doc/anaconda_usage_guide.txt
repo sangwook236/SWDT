@@ -1,0 +1,33 @@
+[-] General.
+	- Site
+		https://anaconda.org
+
+	- Directory.
+		Package:
+			${ANACONDA_HOME}/Lib/site-packages
+		Environment:
+			${ANACONDA_HOME}/envs
+
+[-] Usage.
+	- Package management.
+		conda:
+			conda_usage_guide.txt
+		pip:
+			pip_usage_guide.txt
+
+[-] Package.
+	- Tensorflow (Windows).
+		REF [site] >> http://jaejunyoo.blogspot.com/2017/02/start-tensorflow-gpu-window-10.html
+
+		Creaet a new environment:
+			conda create -n data_analysis-3.5 python=3.5 anaconda
+				Tensorflow only supports Python ver 3.5 in Windows (2017/06/02).
+		Activate the environment:
+			activate data_analysis-3.5
+		Install packages:
+			conda install tensorflow-gpu
+				Package not found.
+			pip install tensorflow-gpu
+		Update (optional):
+			pip install --ignore-installed --upgrade https://pypi.python.org/packages/41/b6/a0351378c2a495797932c55a3c0a2917a29b6fcd6b8f26a275c5beb992bf/tensorflow_gpu-1.2.0rc1-cp35-cp35m-win_amd64.whl
+				Search for new packages in https://pypi.python.org/.

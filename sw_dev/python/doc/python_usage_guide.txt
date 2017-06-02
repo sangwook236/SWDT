@@ -1,4 +1,9 @@
 [-] General.
+	- Site.
+		https://www.python.org/
+		https://docs.python.org/
+		https://pypi.python.org
+
 	- Directory.
 		Windows:
 			%PYTHONPATH%

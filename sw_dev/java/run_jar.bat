@@ -24,6 +24,8 @@ rem set HEAP_OPTION=-Xms4096m -Xmx8192m
 rem -------------------------------------------------------
 
 java %HEAP_OPTION% -jar %LOCAL_LIB_PATH%\<runnable-jar-file> <class-name>
+rem start /b java %HEAP_OPTION% -jar %LOCAL_LIB_PATH%\<runnable-jar-file> <class-name>
+rem start /min java %HEAP_OPTION% -jar %LOCAL_LIB_PATH%\<runnable-jar-file> <class-name>
 
 rem Error -------------------------------------------------
 rem java %HEAP_OPTION% -jar %LOCAL_LIB_PATH%\<non-runnable-jar-file>

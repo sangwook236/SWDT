@@ -9,14 +9,15 @@ import os
 #%%------------------------------------------------------------------
 # Load data.
 
-#dataset_home_dir_path = "/home/shared1/sangwook_dataset"
+#dataset_home_dir_path = "/home/sangwook/my_dataset"
+#dataset_home_dir_path = "/home/HDD1/sangwook/my_dataset"
 dataset_home_dir_path = "D:/dataset"
 
-dataset_dir_path = dataset_home_dir_path + "/my_dataset/biomedical_imaging/isbi2012_em_segmentation_challenge"
+dataset_dir_path = dataset_home_dir_path + "/biomedical_imaging/isbi2012_em_segmentation_challenge"
 
 #train_dataset_search_pattern = dataset_dir_path + "/train-volume.tif"
-train_dataset_search_pattern = dataset_dir_path + "/*.tif"
-test_dataset_search_pattern = dataset_dir_path + "/*.tif"
+train_dataset_search_pattern = dataset_dir_path + "/train/*.tif"
+test_dataset_search_pattern = dataset_dir_path + "/train/*.tif"
 
 model_output_dir_path = dataset_dir_path + "/output"
 prediction_dir_path = dataset_dir_path + "/prediction"
@@ -31,6 +32,7 @@ if not os.path.exists(prediction_dir_path):
 #%%------------------------------------------------------------------
 # Setup model.
 
+# Support two classes only.
 net = unet.Unet(layers = 3, features_root = 64, channels = 1, n_class = 2)
 #net = unet.Unet(layers = 3, features_root = 32, channels = 1, n_class = 2)
 #net = unet.Unet(layers = 3, features_root = 128, channels = 1, n_class = 2)
