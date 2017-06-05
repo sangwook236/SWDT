@@ -50,7 +50,7 @@ train_data_provider = image_util.ImageDataProvider(search_path = train_dataset_s
 
 trainer = unet.Trainer(net)
 
-model_filepath = trainer.train(train_data_provider, model_output_dir_path, training_iters = 32, epochs = 100)
+model_filepath = trainer.train(train_data_provider, model_output_dir_path, training_iters = 32, epochs = 100, dropout = 0.75, display_step = 1, retore = False, write_graph = False)
 #model_filepath = model_output_dir_path + '/model.cpkt'
 
 #%%------------------------------------------------------------------
