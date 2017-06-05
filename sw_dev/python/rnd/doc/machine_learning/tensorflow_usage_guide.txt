@@ -1,0 +1,15 @@
+[-] General.
+	- Site.
+		https://www.tensorflow.org/
+
+[-] Usage.
+	- TensorBoard.
+		Run.
+			tensorboard --logdir=path/to/log-directory
+		Open web browser.
+			http://localhost:6006/
+
+[-] Installation.
+	- Install TensorFlow from sources.
+		https://www.tensorflow.org/install/install_sources
+		https://bazel.build/versions/master/docs/install-ubuntu.html

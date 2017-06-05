@@ -17,18 +17,36 @@
 		http://caffe.berkeleyvision.org/gathered/examples/finetune_flickr_style.html
 		http://caffe.berkeleyvision.org/gathered/examples/feature_extraction.html
 
-[-] Usage.
-	- Linking (Windows).
-		Link two libraries.
-			caffe.lib
-			proto.lib
+[-] Linking (Windows).
+	- Link two libraries.
+		caffe.lib
+		proto.lib
+
+[-] Installation.
+	REF [site] >> http://caffe.berkeleyvision.org/installation.html
 
 	- PyCaffe.
-		Support Python 2.
+		Support Python 2 or 3.
 
 		Set PYTHONPATH to ${CAFFE_HOME}/python.
 			export PYTHONPATH=${CAFFE_HOME}/python:$PYTHONPATH
-		'python2-numpy' has to be installed from 'apt-get' rather than from 'pip2'.
+			set PYTHONPATH=${CAFFE_HOME}/python:%PYTHONPATH%
+			==> Do not import the module in the ${CAFFE_HOME}/python/caffe directory.
+		Change directory.
+			cd ${CAFFE_HOME}/python
+		Install the packages.
+			pip install -r requirements.txt
+		Run a python interpreter.
+			import caffe
+
+[-] Deployment.
+	REF [site] >> https://github.com/BVLC/caffe/wiki/Using-a-Trained-Network:-Deploy
+
+	- Prediction.
+		REF [file] >> ${SWDT_C++_HOME}/rnd/test/machine_learning/caffe/caffe_classification_example.cpp
+
+		A network is defined by its design (.prototxt), and its weights (.caffemodel).
+		As a network is being trained, the current state of that network's weights are stored in a .caffemodel.
 
 [-] Example.
 	- Protobuf definitions used by Caffe.

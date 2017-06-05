@@ -69,7 +69,7 @@ Classifier::Classifier(const std::string &model_file, const std::string &trained
 
     // Load labels.
     std::ifstream labels(label_file.c_str());
-    CHECK(labels) << "Unable to open labels file " << label_file;
+    CHECK(labels) << "Unable to open labels file: " << label_file;
     std::string line;
     while (std::getline(labels, line))
     labels_.push_back(std::string(line));
@@ -236,27 +236,27 @@ void classification_example()
     const std::string caffe_root("/home/sangwook/git/caffe");
     const std::string model_file(caffe_root + "/models/bvlc_reference_caffenet/deploy.prototxt");
     const std::string trained_file(caffe_root + "/models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel");
-    const std::string mean_file(caffe_root + "/data/ilsvrc12/imagenet_mean.binaryproto");
+    const std::string mean_file(caffe_root + "/data/ilsvrc12/imagenet_mean.binaryproto");  // pixel-level average.
     const std::string label_file(caffe_root + "/data/ilsvrc12/synset_words.txt");
     const std::string test_file(caffe_root + "/examples/images/cat.jpg");
 
     cv::Mat img = cv::imread(test_file, -1);
-    CHECK(!img.empty()) << "Unable to decode image " << test_file;
+    CHECK(!img.empty()) << "Unable to decode image: " << test_file;
 
     // Load model.
-    std::cout << "start loading model ..." << std::endl;
+    std::cout << "Start loading model ..." << std::endl;
     const local::Classifier classifier(model_file, trained_file, mean_file, label_file);
-    std::cout << "end loading model ..." << std::endl;
+    std::cout << "End loading model ..." << std::endl;
 
     // Predict.
-    std::cout << "start prediction for " << test_file << " ..." << std::endl;
+    std::cout << "Start prediction for " << test_file << " ..." << std::endl;
     std::vector<local::Prediction> predictions;
     {
         boost::timer::auto_cpu_timer timer;
 
         predictions = classifier.Classify(img);
     }
-    std::cout << "end prediction ..." << std::endl;
+    std::cout << "End prediction ..." << std::endl;
 
     // Print the top N predictions.
     for (std::vector<local::Prediction>::const_iterator cit = predictions.begin(); cit < predictions.end(); ++cit)
