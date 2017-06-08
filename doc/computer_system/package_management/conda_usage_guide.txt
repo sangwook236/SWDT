@@ -3,8 +3,6 @@
 		https://conda.io/
 		https://github.com/conda/conda
 
-		http://anaconda.org
-
 [-] Usage.
 	REF [site] >> http://egloos.zum.com/mataeoh/v/7052271
 
