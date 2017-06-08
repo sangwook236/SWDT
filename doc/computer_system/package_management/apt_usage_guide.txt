@@ -1,0 +1,63 @@
+[-] General.
+	- Site.
+		https://www.poftut.com/apt-and-apt-get-tutorial-with-examples/
+		http://www.debian.org/doc/manuals/apt-howto/
+		https://en.wikipedia.org/wiki/Advanced_Packaging_Tool
+
+	- Advanced Packaging Tool (apt).
+		Package index info:
+			/etc/apt/sources.list
+		deb packages which are installed by apt are installed in a directory as shown below:
+			/var/cache/apt/archive/
+
+[-] Usage.
+	- Command.
+		Update package index:
+			sudo apt-get update
+		Upgrade installed packages:
+			sudo apt-get upgrade
+		Upgrade installed packages, and check dependence:
+			sudo apt-get dist-upgrade
+
+		Download package source:
+			sudo apt-get source package_name
+			sudo apt-get --download-only source package_name
+		Download, unpack and compile package:
+			sudo apt-get --compile source package_name
+		Download only package:
+			apt-get download package_name
+
+		Search package:
+			sudo apt-cache search package_name
+		Show package info:
+			sudo apt-cache show package_name
+
+		Install all dependencies for package:
+			sudo apt-get build-dep package_name
+		Check broken dependencies:
+			sudo apt-get check
+		Get change log of package:
+			sudo apt-get changelog package_name
+
+		Install package:
+			sudo apt-get install package_name
+		Re-install package:
+			sudo apt-get --reinstall install package_name
+		Uninstall package:
+			sudo apt-get remove package_name
+		Uninstall package with configuration:
+			sudo apt-get --purge remove package_name
+			==> Normally removing package will uninstall the package binary files and documentation.
+				Configuration files are do not removed for future installation.
+				If we want to remove configuration files too we need to provide ?purge option.
+		Completely remove packages:
+			sudo apt-get purge package_name
+			sudo apt-get remove --purge package_name
+			==> Package configuration can be removed if its not needed or corrupted.
+				Purge is the command used to clear configuration of packages.
+		Auto remove:
+			sudo apt-get autoremove package_name
+		Clean apt cache:
+			sudo apt-get clean
+		Auto clean:
+			sudo apt-get autoclean

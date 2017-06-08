@@ -1,0 +1,13 @@
+[-] General.
+	- Site.
+		http://www.viewvc.org/
+
+	- Directory.
+		/etc/viewvc/
+		/usr/lib/viewvc/
+		/usr/share/viewvc/
+
+	- File.
+		/etc/viewvc/viewvc.conf
+		/etc/viewvc/cvsgraph.conf
+		/usr/lib/viewvc/viewvc.py

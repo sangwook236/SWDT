@@ -1,0 +1,60 @@
+[-] General.
+	- Site.
+		https://conda.io/
+		https://github.com/conda/conda
+
+		http://anaconda.org
+
+[-] Usage.
+	REF [site] >> http://egloos.zum.com/mataeoh/v/7052271
+
+	- Basic.
+		conda --help
+		conda update --help
+		conda info --all
+
+	- Update.
+		conda update conda
+		conda update package_names
+
+	- Activate an environment.
+		source activate env_name (Unix)
+		activate env_name (Windows)
+	- Activate the root environment.
+		source activate (Unix)
+		activate (Windows)
+	- Dectivate an environment.
+		source deactivate env_name (Unix)
+		deactivate env_name (Windows)
+	- Deactivate the root environment.
+		source deactivate (Unix)
+		deactivate (Windows)
+
+	- Create an environment.
+		conda create --name env_name package_names
+			Create a new conda environment from a list of specified packages.
+		e.g.)
+			conda create --name sangwook astroid babel
+			conda create -n tensorflow-gpu-py3.6 python=3.6 bottleneck=0.8.0 anaconda
+				Python & anaconda are also regarded as normal packages like other ones.
+			conda create -n env_name-py2.7 python=2.7
+	- Clone an environment.
+		conda create --name new_env_name --clone existing_env_name
+	- Remove an environment.
+		conda remove --name env_name --all
+	- List environments.
+		conda info --envs
+
+	- List packages and versions installed in an environment
+		conda list
+	- Search for a package.
+		conda list package_name
+	- Install a package.
+		conda install package_name
+		conda install --name env_name package_name
+		conda install --channel https://conda.anaconda.org/pandas bottleneck
+			Download into the current environment from http://anaconda.org.
+			Go to http://anaconda.org in a browser and in the top left box named "Search Packages" type "bottleneck" and click the Search button.
+	- Remove a package.
+		conda remove package_name
+		conda remove --name env_name package_name

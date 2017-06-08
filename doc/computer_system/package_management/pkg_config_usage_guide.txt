@@ -1,0 +1,33 @@
+setting:
+	Make sure that pkg-config can find a library(e.g. playercore).
+	Test it like so.
+
+		pkg-config --modversion playercore
+
+	This should output the version number of the installed library (probably 2.2.0 or later).
+	If not, add the location of the library's pkg-config file to your `PKG_CONFIG_PATH`,
+	e.g. in bash, and replacing <libray installation prefix> with the correct directory.
+
+		export PKG_CONFIG_PATH+=<libray installation prefix>/lib/pkgconfig
+
+	pkg-config는 대개 설정 파일들을 /usr/lib/pkgconfig/에서 읽어옵니다.'
+	만약 설정 파일이 다른 곳에 위치해 있다면
+	환경 변수인 PKG_CONFIG_PATH를 그 위치로 지정해 주어야 합니다.
+
+		export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib/pkgconfig
+		export PKG_CONFIG_PATH+=/usr/local/lib/pkgconfig
+
+	참고로 위 환경 변수 내용을 바꾸기 전에 pkg-config를 실행해서,
+	pkg-config가 제대로 설정 파일을 인식했는지 확인할 수도 있습니다.
+
+		pkg-config --list-all
+
+usage:
+	pkg-config is a helper tool used when compiling applications and libraries.
+	It helps you insert the correct compiler options on the command line
+	so an application can use
+
+		gcc -o test test.c `pkg-config --libs --cflags glib-2.0`
+
+	for instance, rather than hard-coding values on where to find glib (or other libraries).
+

@@ -1,0 +1,125 @@
+[-] Setting in /etc/apache2/httpd.conf (Setting up multiple projects)
+	=> 2012/07/22 시점에 적합하지 않음.
+	=> LoadModule은 /etc/apache2/mods-enabled/ sub-directory에 *.load를 symbolic link하는 것이 더 일반적임.
+
+	LoadModule dav_module modules/mod_dav.so
+	LoadModule dav_svn_module modules/mod_dav_svn.so
+	LoadModule authz_svn_module modules/mod_authz_svn.so
+	LoadModule ssl_module modules/mod_ssl.so
+	LoadModule python_module modules/mod_python.so
+
+	### Setting up multiple projects
+	NameVirtualHost *:443
+	<VirtualHost *:443>
+		SSLEngine on
+		SSLCertificateFile /etc/apache2/ssl/example.crt
+		SSLCertificateKeyFile /etc/apache2/ssl/example.key
+		SSLProtocol all
+		SSLCipherSuite HIGH:MEDIUM
+
+		<Location /svn>
+			DAV svn
+			SVNParentPath /home/svnrepos/
+
+			# our access control policy
+			AuthzSVNAccessFile "/home/svnrepos/.authz"
+
+			AuthType Basic
+			AuthName "KAIST AIM Lab Repository"
+			AuthUserFile "/home/svnrepos/.htpasswd"
+			Require valid-user
+		</Location>
+	</VirtualHost>
+
+[-] Setting in /etc/apache2/httpd.conf (Setting up each project)
+	=> 2012/07/22 시점에 적합하지 않음.
+	=> 개별 project를 setting하는 것보다 여러 project를 동시에 setting하는 방법이 더 유리.
+	=> LoadModule은 /etc/apache2/mods-enabled/ sub-directory에 *.load를 symbolic link하는 것이 더 일반적임.
+
+	LoadModule dav_module modules/mod_dav.so
+	LoadModule dav_svn_module modules/mod_dav_svn.so
+	LoadModule authz_svn_module modules/mod_authz_svn.so
+	LoadModule ssl_module modules/mod_ssl.so
+	LoadModule python_module modules/mod_python.so
+
+	### Setting up each project
+	NameVirtualHost *:443
+	<VirtualHost *:443>
+		SSLEngine on
+		SSLCertificateFile /etc/apache2/ssl/example.crt
+		SSLCertificateKeyFile /etc/apache2/ssl/example.key
+		SSLProtocol all
+		SSLCipherSuite HIGH:MEDIUM
+
+		<Location /svn/aim>
+			DAV svn
+			SVNPath /home/svnrepos/aim/
+
+			# our access control policy
+			AuthzSVNAccessFile "/home/svnrepos/aim/conf/authz"
+
+			AuthType Basic
+			AuthName "KAIST AIM Lab Repository"
+			AuthUserFile "/home/svnrepos/.htpasswd"
+			Require valid-user
+		</Location>
+
+		<Location /svn/psylogic>
+			DAV svn
+			SVNPath /home/svnrepos/psylogic/
+			 
+			# our access control policy
+			AuthzSVNAccessFile "/home/svnrepos/psylogic/conf/authz"
+
+			AuthType Basic
+			AuthName "Repository of Psylogic, Inc"
+			AuthUserFile "/home/svnrepos/.htpasswd"
+			Require valid-user
+		</Location>
+
+		<Location /svn/sandbox>
+			DAV svn
+			SVNPath /home/svnrepos/sandbox/
+
+			# our access control policy
+			AuthzSVNAccessFile "/home/svnrepos/sandbox/conf/authz"
+
+			AuthType Basic
+			AuthName "Sandbox project for testing Subversion"
+			AuthUserFile "/home/svnrepos/.htpasswd"
+			Require valid-user
+		</Location>
+	</VirtualHost>
+
+[-] Setting in /etc/apache2/mods-available/dav_svn.conf (Setting up multiple projects)
+	=> [ref] installing_subversion_on_ubuntu_apache2_ssl.docx
+
+	### Setting up multiple projects
+	<Location /svn>
+		DAV svn
+		SVNParentPath /home/svnrepos/
+
+		# our access control policy
+		AuthzSVNAccessFile "/home/svnrepos/.authz"
+
+		AuthType Basic
+		AuthName "KAIST AIM Lab Repository"
+		AuthUserFile "/home/svnrepos/.htpasswd"
+		Require valid-user
+		SSLRequireSSL
+	</Location>
+
+[-] Setting in /etc/apache2/sites-available/${SITENAME}.conf
+	=> ${SITENAME}는 utopia.kaist.ac.kr를 사용하고 있음.
+	=> SSL 사용하는 site에 한번만 설정하면 됨. (?)
+	=> [ref] installing_subversion_on_ubuntu_apache2_ssl.docx
+
+	NameVirtualHost *:443
+	<VirtualHost *:443>
+		SSLEngine on
+		#SSLCertificateFile /etc/apache2/ssl/example.crt
+		#SSLCertificateKeyFile /etc/apache2/ssl/example.key
+		SSLCertificateKeyFile /etc/apache2/ssl/apache.pem
+		SSLProtocol all
+		SSLCipherSuite HIGH:MEDIUM
+	</VirtualHost>

@@ -1,0 +1,19 @@
+[-] General.
+	- Site.
+		https://wiki.archlinux.org/index.php/pacman
+
+[-] Usage.
+	- Update.
+		pacman -Sy pacman
+		pacman -Syu
+		pacman -Su
+
+	- Clean.
+		pacman -Sc
+
+	- Search package.
+		pacman -Ss cmake
+
+	- Install package.
+		pacman -S mingw32/mingw-w64-i686-cmake
+		pacman -S --force mingw64/mingw-w64-x86_64-cmake

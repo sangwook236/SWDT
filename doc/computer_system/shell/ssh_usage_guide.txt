@@ -1,0 +1,33 @@
+[-] General
+	- Site.
+		http://www.openssh.com/
+
+		https://winscp.net/
+
+[-] Usage.
+	- ssh.
+		ssh -Y -p port_no user_name@example.com
+		ssh -Y user_name@example.com:port_no
+
+	- scp.
+		Local -> remote:
+			Copy a file:
+				scp /path/to/src/file_name user_name@example.com:/path/to/dst
+				scp -P port_no /path/to/src/file_name user_name@example.com:/path/to/dst
+			Copy a directory:
+				scp -r /path/to/src/dir_name user_name@example.com:/path/to/dst
+				scp -P port_no -r /path/to/src/dir_name user_name@example.com:/path/to/dst
+		Remote -> local:
+			Copy a file:
+				scp user_name@example.com:/path/to/src/file_name /path/to/dst
+				scp -P port_no user_name@example.com:/path/to/src/file_name /path/to/dst
+			Copy a directory:
+				scp -r user_name@example.com:/path/to/src/dir_name /path/to/dst
+				scp -P port_no -r user_name@example.com:/path/to/src/dir_name /path/to/dst
+
+	- sftp.
+		scp user_name@example.com
+		scp -P port_no user_name@example.com
+
+	- rsync over ssh.
+		REF [doc] >> rsync_usage_guide.txt

@@ -1,0 +1,31 @@
+[-] General.
+	- Site.
+		https://pip.pypa.io/
+		https://pypi.python.org/
+
+[-] Usage.
+	- Search for packages.
+		pip search package_name
+
+	- Install packages.
+		pip install package_name
+		pip install package_name==1.0.4
+		pip install 'package_name>=1.0.4'
+		pip install --upgrade package_name
+		pip install --upgrade --no-deps package_name
+		pip install --user package_name
+		pip install -r requirements.txt
+		pip install --download dir_name -r requirements.txt
+		pip install package_name.whl
+		pip wheel --wheel-dir dir_name -r requirements.txt
+	- Reinstall packages.
+		pip install --ignore-installed package_name
+	- Uninstall packages.
+		pip uninstall package_name
+
+	- List installed packages.
+		pip list
+	- List version about installed packages.
+		pip freeze
+	- Show details about an installed package.
+		pip show package_name

@@ -1,0 +1,10 @@
+[-] General.
+	- Site.
+		http://rabbitvcs.org/
+
+[-] Trouble Shooting (Linux).
+	- No context menu in Nautilus after installing RabbitVCS.
+		==> install 'rabbitvcs-nautilus3' instead of 'rabbitvcs-nautilus'.
+			sudo add-apt-repository ppa:rabbitvcs/ppa
+			sudo apt-get update
+			sudo apt-get install rabbitvcs-cli rabbitvcs-core rabbitvcs-gedit rabbitvcs-nautilus3

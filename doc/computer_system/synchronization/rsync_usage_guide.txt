@@ -1,0 +1,27 @@
+[-] General
+	- Site.
+		https://rsync.samba.org/
+
+[-] Usage.
+	REF [site] >> https://www.tecmit.com/rsync-local-remote-file-synchronization-commands/
+
+	- Copy/sync files and directories.
+		Modified files are tracked.
+		But renamed or moved files are not tracked.
+
+		Local <-> local:
+			rsync -zvh /path/to/src/file_name /path/to/dst
+			rsync -zvh /path/to/src/dir_name /path/to/dst
+			rsync -azvh /path/to/src/dir_name /path/to/dst
+
+		Local <-> remote:
+			rsync -zvh /path/to/src/file_name user_name@example.com:/path/to/dst
+			rsync -azvh /path/to/src/dir_name user_name@example.com:/path/to/dst
+			rsync -zvh user_name@example.com:/path/to/src/file_name /path/to/dst
+			rsync -azvh user_name@example.com:/path/to/src/dir_name /path/to/dst
+
+		Local <-> remote (rsync over ssh):
+			rsync -zvhe ssh /path/to/src/file_name user_name@example.com:/path/to/dst
+			rsync -azvhe ssh /path/to/src/dir_name user_name@example.com:/path/to/dst
+			rsync -zvhe ssh user_name@example.com:/path/to/src/file_name /path/to/dst
+			rsync -azvhe ssh user_name@example.com:/path/to/src/dir_name /path/to/dst

@@ -19,7 +19,7 @@
 	- Tensorflow (Windows).
 		REF [site] >> http://jaejunyoo.blogspot.com/2017/02/start-tensorflow-gpu-window-10.html
 
-		Creaet a new environment:
+		Create a new environment:
 			conda create -n data_analysis-3.5 python=3.5 anaconda
 				Tensorflow only supports Python ver 3.5 in Windows (2017/06/02).
 		Activate the environment:

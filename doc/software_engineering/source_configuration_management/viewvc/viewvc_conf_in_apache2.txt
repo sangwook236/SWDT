@@ -1,0 +1,82 @@
+[-] Setting in /etc/apache2/httpd.conf
+	=> 2012/07/22 시점에 적합하지 않음.
+	=> SSL 사용하지 않음.
+
+	NameVirtualHost *:80
+	<VirtualHost *:80>
+		ScriptAlias /viewvc "/usr/lib/viewvc/viewvc.py"
+		<Location /viewvc>
+			AddHandler mode_python .py
+			PythonPath "[r'/usr/lib/viewvc']+sys.path"
+			PythonHandler handler
+			PythonDebug On
+			AddDefaultCharset UTF-8
+			Options +Includes
+		</Location>
+	</VirtualHost>
+
+[-] Setting in /etc/apache2/httpd.conf
+	=> 2012/07/22 시점에 적합하지 않음.
+	=> SSL 사용.
+
+	NameVirtualHost *:443
+	<VirtualHost *:443>
+		SSLEngine on
+		SSLCertificateFile /etc/apache2/ssl/example.crt
+		SSLCertificateKeyFile /etc/apache2/ssl/example.key
+		SSLProtocol all
+		SSLCipherSuite HIGH:MEDIUM
+
+		ScriptAlias /viewvc "/usr/lib/viewvc/viewvc.py"
+		<Location /viewvc>
+			AddHandler mode_python .py
+			PythonPath "[r'/usr/lib/viewvc']+sys.path"
+			PythonHandler handler
+			PythonDebug On
+			AddDefaultCharset UTF-8
+			Options +Includes
+		</Location>
+	</VirtualHost>
+
+[-] Setting in /etc/apache2/mods-available/dav_svn.conf
+	=> ${SITENAME}는 utopia를 사용하고 있음.
+	=> [ref] installing_subversion_on_ubuntu_apache2_ssl.docx
+
+	-. 방법 1 (old)
+	ScriptAlias /viewvc "/usr/lib/viewvc/viewvc.py"
+	<Location /viewvc>
+		AddHandler mode_python .py
+		PythonPath "[r'/usr/lib/viewvc']+sys.path"
+		PythonHandler handler
+		PythonDebug On
+		AddDefaultCharset UTF-8
+		Options +Includes
+	</Location>
+
+	-. 방법 2 (new)
+	ScriptAlias /viewvc /usr/lib/cgi-bin/viewvc.cgi
+	<Location /viewvc>
+		# our access control policy
+		AuthzSVNAccessFile "/home/svnrepos/.authz"
+
+		AuthType Basic
+		AuthName "KAIST AIM Lab Repository"
+		AuthUserFile "/home/svnrepos/.htpasswd"
+		Require valid-user
+		SSLRequireSSL
+	</Location>
+
+[-] Setting in /etc/apache2/sites-available/${SITENAME}
+	=> ${SITENAME}는 utopia를 사용하고 있음.
+	=> SSL 사용하는 site에 한번만 설정하면 됨. (?)
+	=> [ref] installing_subversion_on_ubuntu_apache2_ssl.docx
+
+	NameVirtualHost *:443
+	<VirtualHost *:443>
+		SSLEngine on
+		#SSLCertificateFile /etc/apache2/ssl/example.crt
+		#SSLCertificateKeyFile /etc/apache2/ssl/example.key
+		SSLCertificateKeyFile /etc/apache2/ssl/apache.pem
+		SSLProtocol all
+		SSLCipherSuite HIGH:MEDIUM
+	</VirtualHost>

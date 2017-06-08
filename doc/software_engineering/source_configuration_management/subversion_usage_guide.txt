@@ -1,0 +1,192 @@
+[-] General.
+	- Site.
+		https://subversion.apache.org/
+
+	- Executable.
+		/usr/sbin/svn
+		/usr/sbin/svnadmin
+		/usr/sbin/svnserve
+		/usr/sbin/svnsync
+
+[-] Setting.
+	- Configuration.
+		Files:
+			config
+			servers
+		Per-user configuration area:
+			Unix:
+				~/.subversion/
+			Windows:
+				%HOMEPATH%/Application Data/Subversion/
+		System-wide configuration area:
+			Unix:
+				/etc/subversion/
+			Windows:
+				Windows Registry
+					HKEY_CURRENT_USER/Software/Tigris.org/Subversion/Config/
+		Configuration file:
+			Unix:
+				~/.subversion/config
+			Windows:
+				%HOMEPATH%/Application Data/Subversion/config
+	- Property.
+		Feature:
+			Adding, modifying, and removing versioned properties on each of versioned directories and files
+			Two-column tables that map property names to arbitrary values attached to each item in a working copy
+			The names and values of the properties can be whatever you want tem to be, with the constraint that the names must be human-readable text
+		Command:
+			svn propset/propedit/proplist/propget/propdel
+		Automatic property setting:
+			Mapping of filename patterns to property names and values in a runtime configuration area.
+			In the section 'auto-props' in the configuration file.
+			auto-props functionality must be enabled.
+				enable-auto-props = yes
+	[-] Ignoring files.
+		global-ignores:
+			Unix:
+				Configuration file (client-side):
+					~/.subversion/config
+			Windows:
+				Configuration file (client-side):
+					%HOMEPATH%/Application Data/Subversion/config
+				Registry (client-side):
+					HKEY_CURRENT_USER/Software/Tigris.org/Subversion/Config/miscellany/
+					HKEY_LOCAL_MACHINE/Software/Tigris.org/Subversion/Config/Miscellany/
+				TortoiseSVN:
+					TortoiseSVN popup -> Settings menu -> General tree item -> Glabal ignore pattern.
+			Working copy에 국한되어 적용.
+			Miscellany section of the config file.
+		svn:ignore property:
+			Command:
+				svn propset svn:ignore ...
+			Repository의 directory 단위로 적용.
+				file or revision 단위로도 적용됨.
+			TSVN의 "Add to ignore list" pop-up menu item 수행시 설정.
+
+[-] Usage.
+	- Import.
+		After moving into an upper directory of imported_dir.
+			Windows:
+				svn import imported_dir file:///Drive:/svnrepo/repo_name -m "message"
+				svn import imported_dir "file:///Drive|/svnrepo/repo_name" -m "message"
+	- Check out.
+		Use a daemon mode.
+			svn co svn://baramsori.dyndns.org/sandbox
+	- Rename file/directory.
+		Commit all the files in a working copy.
+		Rename a file or a directory in a repository.
+		Update the working copy.
+	- Delete file/directory.
+		Deletes a file or a directory in a repository.
+		Updates a working copy.
+
+[-] Server Setting.
+	- svn.
+	    Repository directory permission.
+		    Repository를 사용하려면 해당 directory의 접근 permission이 올바르게 지젇되어 있어야 함.
+		    Windows system에도 적용됨.
+		Use a daemon mode.
+			Windows:
+				svnserve -d -r Drive:/svnrepo
+					e.g.)
+						When subversion is invoked using the following command, C:\>svnserve -d -r D:\svnrepo and repositories exist in D:\svnrepo\repo_name,
+						clients can access repositories using URL, svn://domainname/repo_name.
+				svnserve -d
+					Command가 실행된 drive(e.g. c:\)상에 있는 repository만 client가 access 가능.
+					실행된 drive의 root가 repository access시 URL의 기준이 됨.
+						하위 folder에서 실행되더라도(e.g. x:\svnrepo\) drive root folder(e.g. x:\)가 기준이 됨.
+					e.g.)
+						When invoking subversion using the following command, C:\>svnserve -d,
+						1. If repositories exist in C:\svnrepo\repo_name,
+							clients CAN access repositories using URL, svn://domainname/svnrepo/repo_name.
+						2. If repositories exist in D:\svnrepo\repo_name,
+							clients CAN NOT access any repositories on drives except C: drive
+							using URL, svn://domainname/svnrepo/repo_name.
+		ID 설정(server-side).
+			Tunnel mode인 경우:
+			Tunnel mode가 아닌 경우:
+	  			1. Server의 "%REPO_ROOT%/%REPO_NAME%/conf/svnserve.conf" file에 password file name 추가
+	  				password-db = <password_file_name>
+	  			2. Server의 "%REPO_ROOT%/%REPO_NAME%/conf/<password_file_name>" file 생성
+	  			3. 아래와 같이 password file format 작성
+	  				[users]
+	  				user_id = password
+	  		REF [site] >> http://wiki.kldp.org/wiki.php/Subversion-HOWTO section 4.3
+		Path-based authorization 설정(server-side).
+			Proceudre
+				1. server의 "%REPO_ROOT%/%REPO_NAME%/conf/svnserve.conf" file에 authorization file name 추가.
+					authz-db = <authorization_file_name>
+				2. server의 "%REPO_ROOT%/%REPO_NAME%/conf/<authorization_file_name>" file 생성.
+				3. 아래와 같이 authorization file format 작성.
+					[groups]
+					group1 = user1
+					[svnrepos:/module1]
+					@group1 = rw
+					[svnrepos:/module2]
+					user1 = r
+					[svnrepos:/sandbox]
+					* = rw
+	    모든 mode(daemon, tunnel, etc)에 적용됨.
+	    Authentication 설정은 하위 directory에 그대로 적용.
+			만약 아래와 같이 설정하였다면 모든 사용자는 repository의 모든 directory를 읽을 수 있음.
+			[svnrepos:/]
+			* = r
+		svn service wrapper for Windows
+			http://dark.clansoft.dk/~mbn/svnservice/
+			http://www.pyrasis.com/main/SVNSERVEManager
+	- svn+ssh.
+		Use a tunnel mode.
+			Windows:
+				svnserve -t
+				Windows에서 tunnel mode를 사용하는 경우 repository는 C:\ drive에 있어야 함. (?)
+		Login ID 설정(client-side).
+			보통의 Secure Shell을 이용하는 경우.
+		  		1. Client의 svn configuration file에 아래의 내용 추가.
+		  			[tunnels]
+		  			ssh = ssh -l <User ID>
+		  		2. Info on a configuration file.
+		  			REF [doc] >> ./svn_usage.txt
+		  	Ref [site] >> http://wiki.kldp.org/wiki.php/Subversion-HOWTO section 4.4
+	    TSVN을 이용하는 경우.
+			1. "TortoiseSVN -> Settings" 메뉴 선택.
+			2. "TortoiseSVN Settings" 대화상자에서 "Network" 항목 선택.
+			3. "SSH client" 항목에 "TortoisePlink.exe -l <User ID>" 추가.
+		Reference:
+			To change the Windows directory /home corresponds to, you will need to edit a registry entry under HKEY_LOCAL_MACHINE\SOFTWARE\Cygnus Solutions\Cygwin\mounts v2\/home.
+			The value of the key named "native" is the directory that /home is.
+			If you want all your users to enter in a directory on your machine called C:\Users, change "native" to read C:\Users.
+			By default, each user will then be placed in the directory C:\Users\username, where username is the name of the user account.
+			To place the user directly under C:\Users, change the home directory in passwd to /home.
+	- Apache HTTP server.
+
+[-] Administration.
+	- Create a repository.
+		Windows:
+			svnadmin create --fs-type [fsfs/bdb] Drive:/svnrepo/repo_name
+	- Recover a repository.
+		Windows:
+			svnadmin recover Drive:/svnrepo/repo_name
+	- Repository's dump & load.
+		Dump:
+			svnadmin dump c:\svnrepos\repo_name [--incremental] > repo_backup_file
+				--incremental ==> 각 revision들간에 incremental하게 dump 생성.
+		Load:
+			svnadmin load c:\svnrepos\repo_name < repo_backup_file
+		Load command의 경우:
+			존재하는 repository를 덮어쓰지는 않는 것 같음.
+			새로운 directory를 지정해 backup된 사항을 복원해야 함.
+	- Repository backup scheduling.
+		Windows:
+			D:\devtool\svn\svn-win32-1.6.2\bin\svnadmin dump F:\svnrepos\sangwook --incremental > F:\svnrepos_backup\svn_sangwook.dump
+		Unix:
+			In /home/svnrepos/svnrepos_backup.sh:
+				#!/bin/sh
+				svnadmin dump /home/svnrepos/sangwook --incremental > /backup_hdd/svnrepos_backup/svn_sangwook.dump
+				svnadmin dump /home/svnrepos/innovion --incremental > /backup_hdd/svnrepos_backup/svn_innovion.dump
+				svnadmin dump /home/svnrepos/psylogic --incremental > /backup_hdd/svnrepos_backup/svn_psylogic.dump
+				svnadmin dump /home/svnrepos/aim --incremental > /backup_hdd/svnrepos_backup/svn_aim.dump
+			In /etc/crontab:
+				0  3	* * *	root	sh /home/svnrepos/svnrepos_backup.sh
+
+[-] Tip.
+	- Server가 network 상에서 작동하는 type을 변경하고 난 후에는 recover를 수행해 주어야 subversion server가 정상적으로 작동.
