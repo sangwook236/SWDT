@@ -12,7 +12,7 @@
 
 	- Install tensorflow r0.12.
 		REF [doc] >> tensorflow_usage_guide.txt
-	- Copy a file.
+	- Copy a file. (?)
 		cp ${CVPPP2017_DATASET_HOME}/CVPPP2017_testing/testing/A1/all.txt ${CVPPP2017_DATASET_HOME}/CVPPP2017_testing/testing/A1/test.txt
 	- Change files.
 		chmod a+x setup_cvppp.py
