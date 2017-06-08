@@ -1,0 +1,26 @@
+[-] General.
+	- Site.
+		http://www.cs.toronto.edu/~mren/
+		https://github.com/renmengye/rec-attend-public
+
+	- Paper.
+		"End-to-End Instance Segmentation with Recurrent Attention", CVPR 2017
+
+[-] Usage.
+	REF [site] >> https://github.com/renmengye/rec-attend-public
+	REF [doc] >> ${REC_ATTNED_HOME}/README.md
+
+	- Install tensorflow r0.12.
+		REF [doc] >> tensorflow_usage_guide.txt
+	- Copy a file.
+		cp ${CVPPP2017_DATASET_HOME}/CVPPP2017_testing/testing/A1/all.txt ${CVPPP2017_DATASET_HOME}/CVPPP2017_testing/testing/A1/test.txt
+	- Change files.
+		chmod a+x setup_cvppp.py
+		chmod a+x run_cvppp.py
+	- Modify setup_cvppp.sh.
+		CVPPP_DATA=${CVPPP2017_DATASET_HOME}/CVPPP2017_LSC_training/training
+		CVPPP_TEST_DATA=${CVPPP2017_DATASET_HOME}/CVPPP2017_testing/testing
+	- Run scripts.
+		bash ./hungarian_build.sh
+		bash ./setup_cvppp.sh
+		bash ./run_cvppp.sh

@@ -1,3 +1,12 @@
 [-] General.
 	- Site.
 		http://www.scipy.org/
+
+[-] Installation.
+	- Windows.
+		pip does not work well for Windows because the standard pip package index site, PyPI, does not yet have Windows wheels for some packages, such as SciPy.
+
+		Download a wheel file:
+			http://www.lfd.uci.edu/~gohlke/pythonlibs/
+		Install:
+			pip install scipy-0.19.0-cp27-cp27m-win_amd64.whl
