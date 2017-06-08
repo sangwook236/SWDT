@@ -1,0 +1,8 @@
+[-] General.
+	- Site.
+		http://www.doxygen.org/
+		http://www.stack.nl/~dimitri/doxygen
+		http://www.stack.nl/~dimitri/doxygen/helpers.html
+
+	- Document.
+		http://www.stack.nl/~dimitri/doxygen/manual/index.html

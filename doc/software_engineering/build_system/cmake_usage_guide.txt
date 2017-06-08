@@ -1,0 +1,127 @@
+[-] General.
+    - Site.
+        http://www.cmake.org/
+
+		https://cmake.org/documentation/
+
+    	http://www.cmake.org/Wiki/CMake
+    	http://www.cmake.org/Wiki/CMake_Useful_Variables
+
+[-] Usage.
+	- Reference.
+		${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
+
+[-] Executable.
+	- cmake or ccmake.
+		mkdir build_cygwin
+		cd build_cygwin
+		> Initial setting.
+			ccmake.exe -G "Unix Makefiles" -D BOOST_LIBRARYDIR:PATH=/usr/lib --build ..
+			cmake.exe -i -G "Unix Makefiles" -D BOOST_LIBRARYDIR:PATH=/usr/lib --build ..
+		> Re-seting.
+			ccmake ..
+			cmake -i ..
+		> Relase and debug.
+			cmake -DCMAKE_BUILD_TYPE=Release ..
+			cmake -DCMAKE_BUILD_TYPE=Debug ..
+		make -j4
+			The "-j4" is assuming that you have a 4-core CPU.
+	
+	- cmake-gui.
+		Windows:
+			cmake-gui
+		Linux:
+			library: cmake-qt-gui
+			executable: cmake-gui
+
+[-] Using external library.
+	REF [site] >> http://www.cmake.org/Wiki/CMake:How_To_Find_Libraries
+
+	- CMake가 지원하는 library를 사용하는 경우.
+		library 찾기 위해 Find???.cmake file 사용.
+		${CMAKE_INSTALL}\share\cmake-2.8\Modules에 존재.
+	- CMake가 지원하지 않는 library를 사용하는 경우.
+		"참고 사이트" 참고.
+		==> 개별 source directory에 .cmake 추가.
+			${SRC_HOME}/cmake
+			e.g.) ${SWL_CPP_HOME}/cmake/FindLog4cxx.cmake
+
+[-] Options.
+	- Installation path.
+		Change a variable.
+			Name: CMAKE_INSTALL_PREFIX
+			Type: Path
+			Value: D:/usr/local
+	- Debug mode postfix.
+		REF [site] >> https://cmake.org/pipermail/cmake/2007-September/016177.html
+		Add a variable.
+			Name: CMAKE_DEBUG_POSTFIX
+			Type: String
+			Value: d
+	- Static/shared library.
+		REF [site] >> https://cmake.org/pipermail/cmake/2007-September/016177.html
+		Add a variable.
+			Name: BUILD_SHARED_LIBS
+			Type: Bool
+			Name: BUILD_STATIC_LIBS
+			Type: Bool
+	- GNU to MS.
+		REF [site] >> openblas_usage_guide.txt
+		Add a variable.
+			Name: CMAKE_GNUtoMS_VCVARS
+			Type: File
+			Value: C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/vcvars32.bat
+			Name: CMAKE_GNUtoMS
+			Type: Bool
+			Value: On
+
+[-] Setting (CMake).
+	- Reference.
+		${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocap_build_guide.txt
+		${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/Mocapy++-1.07/src/CMakeLists.txt
+		${GDT_HOME}/sw_dev/cpp/rnd/src/hand_analysis/libhand/libhand-0.9/hand_cpp/source/CMakeLists.txt
+
+	- CMake GUI에서 설정된 값은 CMakeCache.txt에 저장됨.
+		e.g.)
+			${MOCAPY_HOME}/build_mingw/CMakeCache.txt
+	- 생성된 CMakeCache.txt file은 building 과정에서 사용됨.
+		e.g.)
+			${MOCAPY_HOME}/build_mingw/CMakefiles/Makefile.cmake
+
+	- BUILD_STATIC_LIBS를 on으로 설정. (?)
+		SET(BUILD_STATIC_LIBS ON) or SET(BUILD_SHARED_LIBS OFF)
+	- Building static library을 생성하기 위해서는 아래와 같이 add_library 항목이 추가되어야 함.
+		e.g.)
+		SET(Library_src1
+		src1/file1.cpp
+		src1/file2.cpp
+		)
+		SET(Library_src2
+		src2/file1.cpp
+		src2/file2.cpp
+		)
+		add_library (Library_name STATIC
+			${Library_src1}
+		    ${Library_src2}
+		)
+	- BUILD_SHARED_LIBS를 on으로 설정.
+		SET(BUILD_SHARED_LIBS ON)
+	- Building shared library을 생성하기 위해서는 아래와 같이 add_library 항목이 추가되어야 함.
+		e.g.)
+		SET(Library_src1
+		src1/file1.cpp
+		src1/file2.cpp
+		)
+		SET(Library_src2
+		src2/file1.cpp
+		src2/file2.cpp
+		)
+		add_library (Library_name SHARED
+			${Library_src1}
+		    ${Library_src2}
+		)
+
+[-] Trouble Shooting.
+	- cmake error and output files.
+		${SRC_BUILD_HOME}/CMakeFiles/CMakeError.log
+		${SRC_BUILD_HOME}/CMakeFiles/CMakeOutput.log

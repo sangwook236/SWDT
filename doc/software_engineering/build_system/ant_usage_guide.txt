@@ -1,0 +1,11 @@
+[-] Usage.
+	- Compile all Pivot source files into binary class files.
+		ant compile
+	- Generate Javadoc.
+		ant doc
+	- Generate the Pivot source distribution.
+		ant dist
+	- Generate the Pivot binary distribution.
+		ant install
+	- Install in a local Maven repository (requires Maven Ant tasks).
+		ant maven-install

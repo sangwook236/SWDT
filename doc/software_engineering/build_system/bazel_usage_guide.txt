@@ -1,0 +1,25 @@
+[-] General.
+    - Site.
+		https://bazel.build/
+		https://github.com/bazelbuild/bazel
+
+[-] Usage.
+	- Install.
+		Windows;
+			Download a release.
+				https://github.com/bazelbuild/bazel/releases/
+	- Set environment variables.
+		Windows;
+			set BAZEL_SH=${MSYS_HOME}/usr/bin/bash.exe
+			set BAZEL_PYTHON=${PYTHON_HOME}/python.exe
+			set BAZEL_VC=${MSVC_HOME}/VC
+	- Set path.
+		Windows;
+			set path=${MSYS_HOME}/usr/bin;${MINGW_HOME}/mingw64/bin;${BAZEL_HOME};%path%
+	- Create a build file.
+		https://bazel.build/versions/master/docs/getting-started.html
+		https://bazel.build/versions/master/docs/tutorial/cpp.html
+		https://bazel.build/versions/master/docs/tutorial/java.html
+	- Build.
+		bazel build :hello-world
+		bazel build main:hello-world
