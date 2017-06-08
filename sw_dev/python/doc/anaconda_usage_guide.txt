@@ -16,7 +16,7 @@
 			pip_usage_guide.txt
 
 [-] Package.
-	- Tensorflow (Windows).
+	- TensorFlow (Windows).
 		REF [site] >> http://jaejunyoo.blogspot.com/2017/02/start-tensorflow-gpu-window-10.html
 
 		Create a new environment:
