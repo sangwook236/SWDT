@@ -5,8 +5,8 @@
 [-] Usage.
 	- TensorBoard.
 		Run.
-			tensorboard --logdir=path/to/log-directory
-		Open web browser.
+			tensorboard --logdir=/path/to/log-directory
+		Open a web browser.
 			http://localhost:6006/
 
 [-] Installation.
@@ -30,12 +30,10 @@
 	- ResNet.
 		REF [site] >> https://github.com/tensorflow/models/tree/master/resnet
 
-		Install Bazel.
-			REF [doc] >> bazel_usage_guide.txt
-		Download CIFAR-10/CIFAR-100 dataset.
+		Download CIFAR-10/CIFAR-100 datasets.
 			wget https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz
 			wget https://www.cs.toronto.edu/~kriz/cifar-100-binary.tar.gz
-		Uncompress dataset.
+		Uncompress datasets.
 			tar xvf cifar-10-binary.tar.gz
 			tar xvf cifar-100-binary.tar.gz
 		(Optional) modify files.
@@ -44,11 +42,13 @@
 					Uncomment 'filters = [16, 160, 320, 640]' in line 87.
 				In ${TENSORFLOW_MODELS_HOME}/resnet/resnet_main.py:
                 	<before>
-                	num_residual_units=5,
+                	num_residual_units=5, (line 197)
                 	<after>
                 	num_residual_units=4, (?)
-		Build for GPU.
-			bazel build -c opt --config=cuda resnet/...
+		Build.
+			REF [doc] >> bazel_usage_guide.txt
+			GPU:
+				bazel build -c opt --config=cuda resnet/...
 		Train model.
 			Unix:
 				bazel-bin/resnet/resnet_main --train_data_path=${CIFAR10_DATASET_HOME}/data_batch* --log_root=./resnet_model_cifar10 --train_dir=./resnet_model_cifar10/train --dataset='cifar10' --num_gpus=1

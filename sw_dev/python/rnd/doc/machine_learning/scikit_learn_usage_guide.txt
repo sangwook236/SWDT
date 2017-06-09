@@ -1,0 +1,9 @@
+[-] General.
+	- Site.
+		http://scikit-learn.org/
+		https://github.com/scikit-learn/scikit-learn
+
+		http://scikit-learn.org/stable/documentation.html
+		http://scikit-learn.org/stable/user_guide.html
+
+		http://scikit-learn.org/stable/modules/classes.html
