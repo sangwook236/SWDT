@@ -22,6 +22,12 @@ SWDT includes various programming languages and hardware components:
     - ARM: STM32, AT91SAM
     - AVR: ATmega128
 
+## Resource
+
+* S/W Engineering
+* Computer System
+* Computer Graphics
+
 ## Wikis
 
 A repository of resources for research and development of S/W and H/W including ideation, conceptualization, and mathematical formulation, etc.
