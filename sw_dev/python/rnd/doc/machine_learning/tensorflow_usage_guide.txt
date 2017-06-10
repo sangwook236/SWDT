@@ -2,12 +2,19 @@
 	- Site.
 		https://www.tensorflow.org/
 
+		https://www.tensorflow.org/api_guides/
+		https://www.tensorflow.org/api_guides/python/
+
 [-] Usage.
 	- TensorBoard.
 		Run.
 			tensorboard --logdir=/path/to/log-directory
 		Open a web browser.
 			http://localhost:6006/
+
+	- Preprocessing.
+		https://www.tensorflow.org/api_guides/python/image
+		http://tensorlayer.readthedocs.io/
 
 [-] Installation.
 	- Windows.
@@ -27,8 +34,13 @@
 		pip install --upgrade https://storage.googleapis.com/tensorflow/windows/gpu/tensorflow_gpu-0.12.1-cp35-cp35m-win_amd64.whl
 
 [-] Model.
+	REF [site] >> https://github.com/tensorflow/models
+	REF [site] >> https://github.com/tensorflow/models/tree/master/slim
+	REF [site] >> https://github.com/tensorflow/models/tree/master/slim/nets
+
 	- ResNet.
 		REF [site] >> https://github.com/tensorflow/models/tree/master/resnet
+		REF [site] >> https://github.com/tensorflow/models/tree/master/slim/nets
 
 		Download CIFAR-10/CIFAR-100 datasets.
 			wget https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz

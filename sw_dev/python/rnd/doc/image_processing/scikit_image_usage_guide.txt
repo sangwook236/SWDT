@@ -2,3 +2,12 @@
 	- Site.
 		http://scikit-image.org/
 		https://github.com/scikit-image/scikit-image
+
+		http://scikit-image.org/docs/stable/
+		http://scikit-image.org/docs/stable/user_guide.html
+
+		http://scikit-image.org/docs/stable/api/api.html
+
+[-] Usage.
+	- Qt.
+		Support PyQt4.
