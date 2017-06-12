@@ -12,6 +12,31 @@
 			%PYTHONPATH%\Lib\site-packages
 			%APPDATA%\Python\Python35\site-packages
 
+[-] Usage.
+	- Anaconda.
+		Recommend using Anaconda.
+
+	- ipython.
+		ipython
+		ipython --matplotlib
+		ipython --matplotlib=qt
+		ipython qtconsole (deprecated)
+
+[-] Package management.
+	- pip.
+		REF [doc] >> pip_usage_guide.txt
+		Windows:
+			pip does not work well for Windows because the standard pip package index site, PyPI, does not yet have Windows wheels for some packages, such as SciPy.
+			==> 1) Use conda.
+				2) Use wheel file.
+	- Wheel file.
+		Download a wheel file:
+			http://www.lfd.uci.edu/~gohlke/pythonlibs/
+		Install:
+			pip install foo.whl
+	- conda.
+		REF [doc] >> conda_usage_guide.txt
+
 [-] Python interpreter가 실행되지 않거나 extending/embedding이 정상적으로 수행되지 않는 경우.
 	- "unresolved external symbol" error.
 		unresolved external symbol __imp__Py_Initialize

@@ -23,7 +23,7 @@ mnist_data = input_data.read_data_sets('MNIST_data', one_hot = True)
 # Call Keras layers on TensorFlow tensors.
 
 # This placeholder will contain our input digits, as flat vectors.
-img = tf.placeholder(tf.float32, shape=(None, 784))
+img = tf.placeholder(tf.float32, shape = (None, 784))
 
 # Use Keras layers to speed up the model definition process.
 # Keras layers can be called on TensorFlow tensors.
