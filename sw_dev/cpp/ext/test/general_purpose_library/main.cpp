@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 		//  - Graphical user interfaces (GUI).
 		//  - Linear algebra, numerical algorithms.
 		//  - Optimization.
+		//		Hungarian algorithm (Kuhn-Munkres algorithm).
 		//  - Image processing.
 		//  - Machine learning algorithms.
 		//		Deep learning.

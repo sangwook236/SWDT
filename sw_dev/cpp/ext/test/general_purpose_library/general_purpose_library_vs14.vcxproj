@@ -155,6 +155,7 @@
     <ClCompile Include="dlib\dlib_graph_labeling_example.cpp" />
     <ClCompile Include="dlib\dlib_inception_example.cpp" />
     <ClCompile Include="dlib\dlib_main.cpp" />
+    <ClCompile Include="dlib\dlib_max_cost_assignment_example.cpp" />
     <ClCompile Include="dlib\dlib_resnet_example.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
