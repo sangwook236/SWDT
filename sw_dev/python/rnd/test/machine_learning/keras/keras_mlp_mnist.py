@@ -11,7 +11,7 @@ batch_size = 128
 num_classes = 10
 epochs = 20
 
-# the data, shuffled and split between train and test sets
+# The data, shuffled and split between train and test sets.
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 x_train = x_train.reshape(60000, 784)
@@ -23,7 +23,7 @@ x_test /= 255
 print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')
 
-# convert class vectors to binary class matrices
+# Convert class vectors to binary class matrices.
 y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 
