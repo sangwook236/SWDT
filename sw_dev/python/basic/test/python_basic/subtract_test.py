@@ -17,10 +17,10 @@ class SubtractTestCase(unittest.TestCase):
 		self.assertEqual(subtract(2, 1), 1)
 
 # Usage:
-#	python -m unittest subtract_testcase
-#	python -m unittest subtract_testcase.py
-#	python -m unittest add_testcase subtract_testcase
-#	python -m unittest add_testcase.py subtract_testcase.py
+#	python -m unittest subtract_test
+#	python -m unittest subtract_test.py
+#	python -m unittest add_test subtract_test
+#	python -m unittest add_test.py subtract_test.py
 
 if '__main__' == __name__:
 	unittest.main()
