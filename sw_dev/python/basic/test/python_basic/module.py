@@ -24,10 +24,9 @@ def fib2(n):
 def main():
 	import sys
 	fib(int(sys.argv[1]))
-	#pass
 
 # Usage:
 #	python module.py 50
 
-if __name__ == '__main__':
+if '__main__' == __name__:
 	main()

@@ -20,19 +20,19 @@ void dnn_example();
 
 int dlib_main(int argc, char *argv[])
 {
-	// Matrix operation example.
+	// Matrix operation.
 	// REF [file] >> ${DLIB_HOME}/examples/matrix_ex.cpp
 
 	// Assignment problem (use Hungarian/Kuhn-Munkres algorithm).
 	my_dlib::max_cost_assignment_example();
 
-	// Graph labeling example.
+	// Graph labeling.
 	//my_dlib::graph_labeling_example();
 
-	// Structured SVM example.
+	// Structured SVM.
 	//my_dlib::svm_struct_example();
 
-	// Deep learning example.
+	// Deep learning.
 	//my_dlib::dnn_example();
 
 	return 0;

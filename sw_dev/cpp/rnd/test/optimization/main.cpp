@@ -51,6 +51,11 @@ int main(int argc, char *argv[])
 		std::cout << "\nLevenberg-Marquardt (LM) algorithm ----------------------------------" << std::endl;
 		//retval = levmar_main(argc, argv);
 
+		std::cout << "\ndlib library --------------------------------------------------------" << std::endl;
+		//	- Optimization.
+		//		Assignment problem (use Hungarian/Kuhn-Munkres algorithm).
+		// REF [library] >> ${SWDT_C++_HOME}/ext/test/general_purpose_library/dlib.
+
         std::cout << "\nNLopt library -------------------------------------------------------" << std::endl;
 		//retval = nlopt_main(argc, argv);
 
