@@ -17,6 +17,6 @@ if __debug__:
 if not os.path.exists(prediction_dir_path):
 	try:
 		os.makedirs(prediction_dir_path)
-	except OSError as exception:
-		if exception.errno != os.errno.EEXIST:
+	except OSError as ex:
+		if ex.errno != os.errno.EEXIST:
 			raise

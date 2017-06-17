@@ -12,10 +12,17 @@ from keras.objectives import categorical_crossentropy
 from tensorflow.examples.tutorials.mnist import input_data
 from keras.metrics import categorical_accuracy as accuracy
 
-sess = tf.Session()
+#%%-------------------------------------------------------------------
+
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+sess = tf.Session(config=config)
 
 # This means that Keras will use the session we registered to initialize all variables that it creates internally.
 K.set_session(sess)
+K.set_learning_phase(0)
+
+#%%-------------------------------------------------------------------
 
 mnist_data = input_data.read_data_sets('MNIST_data', one_hot = True)
 
