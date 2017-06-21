@@ -58,7 +58,7 @@ with sess.as_default():
 # Evaluate the model.
 acc_value = accuracy(labels, preds)
 with sess.as_default():
-	print acc_value.eval(feed_dict = {img: mnist_data.test.images, labels: mnist_data.test.labels})
+	print(acc_value.eval(feed_dict = {img: mnist_data.test.images, labels: mnist_data.test.labels}))
 
 #%%-------------------------------------------------------------------
 # Different behaviors during training and testing.
@@ -92,7 +92,7 @@ with sess.as_default():
 	print(acc_value.eval(feed_dict = {img: mnist_data.test.images, labels: mnist_data.test.labels, K.learning_phase(): 0}))
 
 #%%-------------------------------------------------------------------
-% Compatibility with name scopes, device scopes.
+# Compatibility with name scopes, device scopes.
 
 # Keras layers and models are fully compatible with TensorFlow name scopes.
 x = tf.placeholder(tf.float32, shape = (None, 20, 64))
@@ -132,7 +132,7 @@ for old_value, new_value in layer.updates:
 
 # In case you need to explicitly collect a layer's trainable weights, you can do so via layer.trainable_weights (or model.trainable_weights), a list of TensorFlow Variable instances.
 layer = Dense(32)(x)  # Instantiate and call a layer.
-print layer.trainable_weights  # List of TensorFlow Variables.
+print(layer.trainable_weights)  # List of TensorFlow Variables.
 
 #%%-------------------------------------------------------------------
 # Use Keras models with TensorFlow.
@@ -172,7 +172,7 @@ with tf.device('/gpu:1'):
 
 # If you want to train multiple replicas of a same model on different GPUs, while sharing the same weights across the different replicas, you should first instantiate your model (or layers) under one device scope, then call the same model instance multiple times in different GPU device scopes.
 with tf.device('/cpu:0'):
-	x = tf.placeholder(tf.float32, shape = None, 784))
+	x = tf.placeholder(tf.float32, shape = (None, 784))
 
 	# Shared model living on CPU:0.
 	# It won't actually be run during training; it acts as an op template and as a repository for shared variables.
@@ -180,7 +180,7 @@ with tf.device('/cpu:0'):
 	model.add(Dense(32, activation = 'relu', input_dim = 784))
 	model.add(Dense(10, activation = 'softmax'))
 
-# Replica 0
+# Replica 0.
 with tf.device('/gpu:0'):
 	output_0 = model(x)  # All ops in the replica will live on GPU:0.
 
