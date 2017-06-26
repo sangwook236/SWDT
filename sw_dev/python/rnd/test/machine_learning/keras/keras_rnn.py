@@ -5,6 +5,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.layers import Embedding
 from keras.layers import LSTM
+import numpy as np
 
 max_features = 1000
 
@@ -19,8 +20,6 @@ model.compile(loss='binary_crossentropy',
               metrics=['accuracy'])
 
 # Generate dummy data.
-import numpy as np
-
 x_train = np.random.random((500, 100))
 y_train = np.random.randint(2, size=(500, 1))
 
@@ -40,9 +39,9 @@ num_classes = 10
 
 # Expected input data shape: (batch_size, timesteps, data_dim).
 model = Sequential()
-model.add(LSTM(32, return_sequences=True,
-               input_shape=(timesteps, data_dim)))  # Returns a sequence of vectors of dimension 32.
-model.add(LSTM(32, return_sequences=True))  # Returns a sequence of vectors of dimension 32.
+# To stack recurrent layers, use return_sequences=True on any recurrent layer that feeds into another recurrent layer.
+model.add(LSTM(32, return_sequences=True, input_shape=(timesteps, data_dim)))  # Return a sequence of vectors of dimension 32.
+model.add(LSTM(32, return_sequences=True))  # Return a sequence of vectors of dimension 32.
 model.add(LSTM(32))  # Return a single vector of dimension 32.
 model.add(Dense(10, activation='softmax'))
 
@@ -64,6 +63,7 @@ model.fit(x_train, y_train,
 
 #%%-------------------------------------------------------------------
 # Stateful stacked LSTM model.
+
 from keras.models import Sequential
 from keras.layers import LSTM, Dense
 import numpy as np
@@ -73,12 +73,11 @@ timesteps = 8
 num_classes = 10
 batch_size = 32
 
-# Expected input batch shape: (batch_size, timesteps, data_dim)
+# Expected input batch shape: (batch_size, timesteps, data_dim).
 # Note that we have to provide the full batch_input_shape since the network is stateful.
 # The sample of index i in batch k is the follow-up for the sample i in batch k-1.
 model = Sequential()
-model.add(LSTM(32, return_sequences=True, stateful=True,
-               batch_input_shape=(batch_size, timesteps, data_dim)))
+model.add(LSTM(32, return_sequences=True, stateful=True, batch_input_shape=(batch_size, timesteps, data_dim)))
 model.add(LSTM(32, return_sequences=True, stateful=True))
 model.add(LSTM(32, stateful=True))
 model.add(Dense(10, activation='softmax'))
@@ -87,11 +86,11 @@ model.compile(loss='categorical_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
 
-# Generate dummy training data
+# Generate dummy training data.
 x_train = np.random.random((batch_size * 10, timesteps, data_dim))
 y_train = np.random.random((batch_size * 10, num_classes))
 
-# Generate dummy validation data
+# Generate dummy validation data.
 x_val = np.random.random((batch_size * 3, timesteps, data_dim))
 y_val = np.random.random((batch_size * 3, num_classes))
 
