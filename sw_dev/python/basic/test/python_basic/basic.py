@@ -1,4 +1,23 @@
-import os
+import os, sys, platform
+
+#%%------------------------------------------------------------------
+# Platform.
+
+os.name
+
+sys.platform
+
+platform.platform()
+platform.system()
+platform.machine()
+
+platform.uname()
+platform.release()
+platform.version()
+
+platform.dist()
+platform.linux_distribution()
+platform.mac_ver()
 
 #%%------------------------------------------------------------------
 # Assert.
