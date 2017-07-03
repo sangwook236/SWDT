@@ -1,0 +1,25 @@
+[-] General.
+	- Site.
+
+[-] Procedure.
+	- Create a Java class file.
+		${Module_HOME}/src/main/java/com/sangwook/samplejni/SampleJni.java
+		e.g.)
+			package com.sangwook.samplejni;
+
+			public class SampleJni {
+			    public native void foo();
+
+			    static {
+			        System.loadLibrary("sample_native_lib");
+			    }
+			}
+	- Set Java path.
+		set path=${JAVA_HOME}/bin;%PATH%
+	- Change directory.
+		cd ${Module_HOME}/src/main/java
+	- Generate a JNI header file.
+		javah -jni -o ../cpp/SampleJni.h com.sangwook.samplejni.SampleJni
+		==> The generated header file is generated in ${Module_HOME}/src/main/java.
+	- (Optional) move the generated header file.
+		${Module_HOME}/src/main/java --> ${Module_HOME}/src/main/cpp.
