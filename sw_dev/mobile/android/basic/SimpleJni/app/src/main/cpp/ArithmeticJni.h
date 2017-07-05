@@ -23,6 +23,22 @@ JNIEXPORT jint JNICALL Java_com_sangwook_simplejni_ArithmeticJni_add
 JNIEXPORT jint JNICALL Java_com_sangwook_simplejni_ArithmeticJni_sub
   (JNIEnv *, jobject, jint, jint);
 
+/*
+ * Class:     com_sangwook_simplejni_ArithmeticJni
+ * Method:    add_in_lib
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_com_sangwook_simplejni_ArithmeticJni_add_1in_1lib
+  (JNIEnv *, jobject, jint, jint);
+
+/*
+ * Class:     com_sangwook_simplejni_ArithmeticJni
+ * Method:    sub_in_lib
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_com_sangwook_simplejni_ArithmeticJni_sub_1in_1lib
+  (JNIEnv *, jobject, jint, jint);
+
 #ifdef __cplusplus
 }
 #endif
