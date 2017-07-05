@@ -1,5 +1,8 @@
 [-] General.
 	- Site.
+		https://developer.android.com/studio/projects/add-native-code.html
+		https://developer.android.com/ndk/index.html
+		https://github.com/googlesamples/android-ndk
 
 [-] Procedure.
 	- Create a Java class file.
