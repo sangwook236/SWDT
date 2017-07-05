@@ -6,6 +6,6 @@ public class StringJni {
     public native String getStringFromNative();
 
     static {
-        System.loadLibrary("string_native_lib");
+        System.loadLibrary("string_lib");
     }
 }

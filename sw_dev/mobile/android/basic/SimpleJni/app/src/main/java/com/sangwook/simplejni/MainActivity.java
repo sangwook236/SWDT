@@ -19,8 +19,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
         Button button = (Button)findViewById(R.id.button);
         final StringJni stringJni = new StringJni();
-        final ArithmeticJni arithmeticJni = new ArithmeticJni();  // Interface to native C++ classes in the same project and in an external native library.
-        final Arithmetic arithmetic = new Arithmetic();  // Interface to Java class.
+        final ArithmeticJni arithmeticJni = new ArithmeticJni();  // Interface to a native C++ class in the same project.
+        final TrigonometricJni trigonometricJni = new TrigonometricJni();  // Interface to a native C++ class in an external native library.
+        final Arithmetic arithmetic = new Arithmetic();  // Interface to a Java class in an external AAR.
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -28,7 +30,7 @@ public class MainActivity extends Activity {
                 Toast.makeText(getApplicationContext(),
                         stringJni.getStringFromNative() +
                         "\n3 + 5 = " + arithmeticJni.add(3, 5) + ", 7 - 2 = " + arithmeticJni.sub(7, 2) +
-                        "\n7 + 3 = " + arithmeticJni.add_in_lib(7, 3) + ", 2 - 5 = " + arithmeticJni.sub_in_lib(2, 5) +
+                        "\nsin(45) = " + trigonometricJni.sin(45.0 * Math.PI / 180.0) + ", cos(30) = " + trigonometricJni.cos(30.0 * Math.PI / 180.0) +
                         "\n2 * 3 = " + arithmetic.mul(2, 3) + ", 6 / 5 = " + arithmetic.div(6, 5),
                         Toast.LENGTH_LONG).show();
             }
