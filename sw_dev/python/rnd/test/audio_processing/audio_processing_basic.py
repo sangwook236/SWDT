@@ -91,11 +91,3 @@ stream.close()
 # Close PyAudio.
 p.terminate()
 wavefile.close()
-
-#%%------------------------------------------------------------------
-
-import Sound
-
-s = Sound()
-s.read(data_dir_path + '/KMHFF41CBBA036937_2000RPM ( 0.00- 5.73 s).wav')
-s.play()

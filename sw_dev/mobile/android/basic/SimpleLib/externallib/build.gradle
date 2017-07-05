@@ -1,14 +1,6 @@
 apply plugin: 'com.android.library'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'sangwook-android-key'
-            keyPassword 'myKeyPassword'
-            storeFile file('D:/work/SWDT_github/sw_dev/mobile/android/apk_sign/android.jks')
-            storePassword 'myStoredPassword'
-        }
-    }
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {

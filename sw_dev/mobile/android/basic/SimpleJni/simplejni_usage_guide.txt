@@ -39,10 +39,9 @@
 			${SWDT-Mobile_HOME}/android/basic/SimpleLib/externallib/build/outputs/aar
 				==> Build a release Android library module (AAR).
 	- Copy native binaries.
-		Copy files from ${SWDT-Mobile_HOME}/android/basic/SimpleLib/externallib/build/intermediates/cmake to ${SWDT-Mobile_HOME}/android/basic/SimpleJni/app/jnilibs/bin. (???)
-		Copy files from ${SWDT-Mobile_HOME}/android/basic/SimpleLib/externallib/build/intermediates/cmake to ${SWDT-Mobile_HOME}/android/basic/SimpleJni/app/build/intermediates/cmake. (???)
+		Copy files from ${SWDT-Mobile_HOME}/android/basic/SimpleLib/externallib/build/intermediates/cmake/release/obj/* to ${SWDT-Mobile_HOME}/android/basic/SimpleJni/app/src/main/libs.
 	- Copy AAR file.
-		Copy files from ${SWDT-Mobile_HOME}/android/basic/SimpleLib/externallib/build/outputs/aar/externallib-release.aar	 to ${SWDT-Mobile_HOME}/android/basic/SimpleJni/externallib-release/externallib-release.aar.
+		Copy files from ${SWDT-Mobile_HOME}/android/basic/SimpleLib/externallib/build/outputs/aar/externallib-release.aar to ${SWDT-Mobile_HOME}/android/basic/SimpleJni/externallib-release/externallib-release.aar.
 	- (Optional) import AAR in SimpleLib library module.
 		'File -> New -> New Module... -> Import .JAR/.AAR Package'
 		${SWDT-Mobile_HOME}/android/basic/SimpleLib/externallib/build/outputs/aar/externallib-release.aar

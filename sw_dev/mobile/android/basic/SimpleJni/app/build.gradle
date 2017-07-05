@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'sangwook-android-key'
-            keyPassword 'myKeyPassword'
-            storeFile file('D:/work/SWDT_github/sw_dev/mobile/android/apk_sign/android.jks')
-            storePassword 'myStoredPassword'
+            keyAlias 'sangwook-apk-sign'
+            keyPassword 'abcd1234'
+            storeFile file('config/apk_sign.jks')
+            storePassword 'abcd1234'
         }
     }
     compileSdkVersion 26
@@ -29,6 +29,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
     externalNativeBuild {
@@ -41,7 +45,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar','*.so'], dir: 'libs')
+    compile fileTree(include: ['*.jar', '*.so'], dir: 'libs')
     compile project(':externallib-release')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

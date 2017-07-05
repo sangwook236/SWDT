@@ -35,8 +35,6 @@ add_library( # Sets the name of the library.
 #set_target_properties(external_arithmetic_lib
 #                      PROPERTIES IMPORTED_LOCATION libexternal_lib.so )
 #                      #PROPERTIES IMPORTED_LOCATION jnilibs/bin/${CMAKE_BUILD_TYPE}/obj/${ANDROID_ABI}/libexternal_lib.so )
-#                      #PROPERTIES IMPORTED_LOCATION D:/work/SWDT_github/sw_dev/mobile/android/basic/SimpleLib/externallib/build/intermediates/cmake/${CMAKE_BUILD_TYPE}/obj/${ANDROID_ABI}/libexternal_lib.so )
-#                      #PROPERTIES IMPORTED_LOCATION D:/work/SWDT_github/sw_dev/mobile/android/basic/SimpleJni/app/jnilibs/bin/${CMAKE_BUILD_TYPE}/obj/${ANDROID_ABI}/libexternal_lib.so )
 #include_directories(jnilibs/include)
 #link_directories(jnilibs/bin)
 
@@ -66,6 +64,8 @@ target_link_libraries( # Specifies the target library.
 
 target_link_libraries( # Specifies the target library.
                        arithmetic_lib
+
+                       #external_arithmetic_lib
 
                        # Links the target library to the log library
                        # included in the NDK.
