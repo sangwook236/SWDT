@@ -17,12 +17,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Button button = (Button)findViewById(R.id.button);
-        final SimpleJni myJni = new SimpleJni();
+        final StringJni stringJni = new StringJni();
+        final ArithmeticJni arithmeticJni = new ArithmeticJni();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(), "Hello, Android !!!", Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), myJni.getStringFromNative(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), stringJni.getStringFromNative() + "\n3 + 5 = " + arithmeticJni.add(3, 5) + ", 7 - 2 = " + arithmeticJni.sub(7, 2), Toast.LENGTH_LONG).show();
             }
         });
     }

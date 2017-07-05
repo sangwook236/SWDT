@@ -2,10 +2,10 @@ package com.sangwook.simplejni;
 
 // REF [doc] >> JNI_in_Android.txt
 
-public class SimpleJni {
+public class StringJni {
     public native String getStringFromNative();
 
     static {
-        System.loadLibrary("simple_native_lib");
+        System.loadLibrary("string_native_lib");
     }
 }

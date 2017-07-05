@@ -1,11 +1,11 @@
-#include "SimpleJni.h"
+#include "StringJni.h"
 #include <string>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-JNIEXPORT jstring JNICALL Java_com_sangwook_simplejni_SimpleJni_getStringFromNative(JNIEnv *env, jobject)
+JNIEXPORT jstring JNICALL Java_com_sangwook_simplejni_StringJni_getStringFromNative(JNIEnv *env, jobject)
 {
 #if defined(__arm__)
     #if defined(__ARM_ARCH_7A__)
