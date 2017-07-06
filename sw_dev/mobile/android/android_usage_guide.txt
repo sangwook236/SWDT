@@ -1,0 +1,16 @@
+[-] General.
+	- Site.
+		https://www.android.com/
+		https://developer.android.com/
+		https://developer.android.com/develop/
+
+		https://developer.android.com/reference/
+
+[-] Usage.
+	- Copy file.
+		Desktop -> emulator.
+			adb push <local> <remote>
+				adb push foo.txt /sdcard/foo.txt
+				adb push foo.txt /storage/emulated/0/foo.txt
+		Emulator -> desktop.
+			adb pull <remote> <local>
