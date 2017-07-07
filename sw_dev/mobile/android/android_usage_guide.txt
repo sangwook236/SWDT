@@ -6,11 +6,73 @@
 
 		https://developer.android.com/reference/
 
+		https://developer.android.com/studio/intro/index.html
+
+	- Native Development Kit (NDK).
+		https://developer.android.com/studio/projects/add-native-code.html
+		https://developer.android.com/ndk/index.html
+		https://github.com/googlesamples/android-ndk
+
 [-] Usage.
-	- Copy file.
+	- Copy files between a host and a device.
 		Desktop -> emulator.
 			adb push <local> <remote>
 				adb push foo.txt /sdcard/foo.txt
 				adb push foo.txt /storage/emulated/0/foo.txt
 		Emulator -> desktop.
 			adb pull <remote> <local>
+
+	- Build Android library modules (AAR) in both release and debug modes.
+		<Method #1>
+			https://stackoverflow.com/questions/27646262/how-to-create-a-release-android-library-package-aar-in-android-studio-not-deb
+		<Method #2>
+			In ${ANDROID_PROJECT_HOME}/app/build.gradle:
+				dependencies {
+					...
+				    releaseCompile project(path: ':library_module_name', configuration: 'release')
+				    debugCompile project(path: ':library_module_name', configuration: 'debug')
+				    ...
+				}
+			In ${ANDROID_PROJECT_HOME}/library_module_name/build.gradle:
+				android {
+					...
+				    defaultConfig {
+				    	...
+						defaultPublishConfig 'release'
+				    	publishNonDefault true
+				    	...
+				    }
+				    ...
+				}
+
+	- Link AAR or JAR as external module.
+		https://developer.android.com/studio/projects/android-library.html
+
+	- Sign apps.
+		https://developer.android.com/studio/publish/app-signing.html
+
+[-] NDK.
+	- Reference.
+		simplejni_usage_guide.txt
+
+	- Create a Java class file.
+		${Module_HOME}/src/main/java/com/sangwook/samplejni/SampleJni.java
+		e.g.)
+			package com.sangwook.samplejni;
+
+			public class SampleJni {
+			    public native void foo();
+
+			    static {
+			        System.loadLibrary("sample_native_lib");
+			    }
+			}
+	- Set Java path.
+		set path=${JAVA_HOME}/bin;%PATH%
+	- Change directory.
+		cd ${Module_HOME}/src/main/java
+	- Generate a JNI header file.
+		javah -jni -o ../cpp/SampleJni.h com.sangwook.samplejni.SampleJni
+		==> The generated header file is generated in ${Module_HOME}/src/main/java.
+	- (Optional) move the generated header file.
+		${Module_HOME}/src/main/java --> ${Module_HOME}/src/main/cpp.

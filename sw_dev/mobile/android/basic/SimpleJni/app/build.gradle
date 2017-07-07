@@ -9,12 +9,12 @@ android {
             storePassword 'abcd1234'
         }
     }
-    compileSdkVersion 26
+    compileSdkVersion 25
     buildToolsVersion "26.0.0"
     defaultConfig {
         applicationId "com.sangwook.simplejni"
         minSdkVersion 14
-        targetSdkVersion 26
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -29,6 +29,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
     externalNativeBuild {

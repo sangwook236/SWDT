@@ -1,6 +1,7 @@
-package com.sangwook.simplejni;
+package com.sangwook.externallib;
 
-// REF [doc] >> JNI_in_Android.txt
+// REF [doc] >> simplejni_usage_guide.txt
+// REF [doc] >> android_usage_guide.txt
 
 public class TrigonometricJni
 {

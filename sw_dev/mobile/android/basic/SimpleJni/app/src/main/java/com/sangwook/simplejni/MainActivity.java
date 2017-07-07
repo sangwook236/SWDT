@@ -7,10 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.sangwook.externallib.Arithmetic;
-
-/**
- * Created by sangwook on 7/3/2017.
- */
+import com.sangwook.externallib.TrigonometricJni;
 
 public class MainActivity extends Activity {
     @Override
@@ -18,7 +15,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Button button = (Button)findViewById(R.id.button);
-        final StringJni stringJni = new StringJni();
+
+        final StringJni stringJni = new StringJni();  // Interface to a native C++ class in the same project.
         final ArithmeticJni arithmeticJni = new ArithmeticJni();  // Interface to a native C++ class in the same project.
         final TrigonometricJni trigonometricJni = new TrigonometricJni();  // Interface to a native C++ class in an external native library.
         final Arithmetic arithmetic = new Arithmetic();  // Interface to a Java class in an external AAR.
