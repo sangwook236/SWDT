@@ -53,7 +53,7 @@
 
 [-] NDK.
 	- Reference.
-		simplejni_usage_guide.txt
+		simpleapp_usage_guide.txt
 
 	- Create a Java class file.
 		${Module_HOME}/src/main/java/com/sangwook/samplejni/SampleJni.java
