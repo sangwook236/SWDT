@@ -1,4 +1,4 @@
-package com.sangwook.simplejni;
+package com.sangwook.simpleapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.sangwook.simplejni", appContext.getPackageName());
+        assertEquals("com.sangwook.simpleapp", appContext.getPackageName());
     }
 }

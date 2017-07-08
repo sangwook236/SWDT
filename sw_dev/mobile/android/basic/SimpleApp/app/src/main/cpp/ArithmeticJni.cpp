@@ -9,13 +9,13 @@
 extern "C" {
 #endif
 
-JNIEXPORT jint JNICALL Java_com_sangwook_simplejni_ArithmeticJni_add(JNIEnv *env, jobject obj, jint lhs, jint rhs)
+JNIEXPORT jint JNICALL Java_com_sangwook_simpleapp_ArithmeticJni_add(JNIEnv *env, jobject obj, jint lhs, jint rhs)
 {
     jint result = add(lhs, rhs);
     return result;
 }
 
-JNIEXPORT jint JNICALL Java_com_sangwook_simplejni_ArithmeticJni_sub(JNIEnv *env, jobject obj, jint lhs, jint rhs)
+JNIEXPORT jint JNICALL Java_com_sangwook_simpleapp_ArithmeticJni_sub(JNIEnv *env, jobject obj, jint lhs, jint rhs)
 {
     jint result = sub(lhs, rhs);
     return result;

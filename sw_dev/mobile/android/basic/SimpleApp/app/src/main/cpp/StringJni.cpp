@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-JNIEXPORT jstring JNICALL Java_com_sangwook_simplejni_StringJni_getStringFromNative(JNIEnv *env, jobject)
+JNIEXPORT jstring JNICALL Java_com_sangwook_simpleapp_StringJni_getStringFromNative(JNIEnv *env, jobject)
 {
 #if defined(__arm__)
     #if defined(__ARM_ARCH_7A__)

@@ -1,4 +1,4 @@
-package com.sangwook.simplejni;
+package com.sangwook.simpleapp;
 
 import org.junit.Test;
 

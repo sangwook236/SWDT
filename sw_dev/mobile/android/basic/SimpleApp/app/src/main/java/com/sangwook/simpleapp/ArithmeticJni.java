@@ -1,4 +1,4 @@
-package com.sangwook.simplejni;
+package com.sangwook.simpleapp;
 
 // REF [doc] >> simplejni_usage_guide.txt
 // REF [doc] >> android_usage_guide.txt

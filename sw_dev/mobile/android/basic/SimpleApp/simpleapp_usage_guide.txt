@@ -1,0 +1,53 @@
+[-] General.
+	- Reference.
+		android_usage_guide.txt
+
+[-] Build Android app & lib modules.
+	- Directory.
+		Android app module: SimpleApp.
+			${APP_MODULE_HOME} -> ${SWDT-Mobile_HOME}/android/basic/SimpleApp
+		Android library module: SimpleLib.
+			${LIB_MODULE_HOME} -> ${SWDT-Mobile_HOME}/android/basic/SimpleLib
+
+	- Change directory.
+		${APP_MODULE_HOME}/app/src/main/java
+	- Generate JNI interfaces.
+		javah -jni -o ../cpp/ArithmeticJni.h com.sangwook.simpleapp.ArithmeticJni
+		javah -jni -o ../cpp/StringJni.h com.sangwook.simpleapp.StringJni
+	- Change directory.
+		${LIB_MODULE_HOME}/externallib/src/main/java
+	- Generate JNI interfaces.
+		javah -jni -o ../cpp/TrigonometricJni.h com.sangwook.externallib.TrigonometricJni
+	- Create & implement JNI source files.
+		${APP_MODULE_HOME}/app/src/main/cpp/ArithmeticJni.cpp
+		${APP_MODULE_HOME}/app/src/main/cpp/StringJni.cpp
+		${LIB_MODULE_HOME}/externallib/src/main/cpp/TrigonometricJni.cpp
+
+	- Open app & library modules.
+		${APP_MODULE_HOME}
+		${LIB_MODULE_HOME}
+	- Make a library module.
+		This module does not contain app module, so it can not be run.
+		Output files:
+			${LIB_MODULE_HOME}/externallib/build/outputs/aar/externallib-release.aar
+				==> Build a release Android library module (AAR).
+			${LIB_MODULE_HOME}/externallib/build/outputs/aar/externallib-debug.aar
+		==> AAR files contain class & shared object (.so) files.
+	- Import a JAR/AAR package into app module project.
+		'File -> New -> New Module... -> Import .JAR/.AAR Package'
+			${LIB_MODULE_HOME}/externallib/build/outputs/aar/externallib-release.aar
+		==> Java, class, & shared object files are not needed to link with app projects.
+			Because AAR files contain all of them, they are only required to link.
+	- (Optional) edit setting files.
+		In ${APP_MODULE_HOME}/settings.gradle:
+			include ':app', ':externallib-release'
+		In ${APP_MODULE_HOME}/app/build.gradle:
+			dependencies {
+				...
+			    compile project(':externallib-release')
+				...
+			}
+	- Make app module.
+	- Run app module.
+		${APP_MODULE_HOME}/app/build/outputs/apk/app-release.apk
+		${APP_MODULE_HOME}/app/build/outputs/apk/app-debug.apk

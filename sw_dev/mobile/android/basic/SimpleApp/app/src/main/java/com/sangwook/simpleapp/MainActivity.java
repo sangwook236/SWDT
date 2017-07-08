@@ -1,4 +1,4 @@
-package com.sangwook.simplejni;
+package com.sangwook.simpleapp;
 
 import android.app.Activity;
 import android.os.Bundle;

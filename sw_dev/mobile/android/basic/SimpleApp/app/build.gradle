@@ -12,7 +12,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "26.0.0"
     defaultConfig {
-        applicationId "com.sangwook.simplejni"
+        applicationId "com.sangwook.simpleapp"
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
@@ -45,7 +45,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar', '*.so'], dir: 'libs')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':externallib-release')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
