@@ -11,6 +11,7 @@
 	- Native Development Kit (NDK).
 		https://developer.android.com/studio/projects/add-native-code.html
 		https://developer.android.com/ndk/index.html
+		https://developer.android.com/ndk/guides/index.html
 		https://github.com/googlesamples/android-ndk
 
 [-] Usage.
