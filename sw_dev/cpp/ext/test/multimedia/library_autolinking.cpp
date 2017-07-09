@@ -7,12 +7,14 @@
 //#pragma comment(lib, "sfml-graphics.lib")
 //#pragma comment(lib, "sfml-window.lib")
 //#pragma comment(lib, "sfml-system.lib")
+#pragma comment(lib, "portaudio_x64.lib")
 
 #		else
 
 //#pragma comment(lib, "sfml-graphics.lib")
 //#pragma comment(lib, "sfml-window.lib")
 //#pragma comment(lib, "sfml-system.lib")
+#pragma comment(lib, "portaudio_x64.lib")
 
 #		endif
 

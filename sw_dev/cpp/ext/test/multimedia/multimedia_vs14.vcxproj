@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="portaudio\portaudio_main.cpp" />
     <ClCompile Include="sfml\sfml_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

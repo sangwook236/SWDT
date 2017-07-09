@@ -6,14 +6,24 @@
 #include <cstdlib>
 
 
+namespace {
+namespace local {
+
+}  // namespace local
+}  // unnamed namespace
+
 int main(int argc, char *argv[])
 {
+	int portaudio_main(int argc, char *argv[]);
 	int sfml_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
-		std::cout << "Simple and Fast Multimedia Library (SFML) ---------------------------" << std::endl;
+		std::cout << "PortAudio library ---------------------------------------------------" << std::endl;
+		//portaudio_main(argc, argv);  // Not yet implemented.
+
+		std::cout << "\nSimple and Fast Multimedia Library (SFML) ---------------------------" << std::endl;
 		//sfml_main(argc, argv);  // Not yet implemented.
 	}
     catch (const std::bad_alloc &e)

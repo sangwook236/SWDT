@@ -16,6 +16,9 @@
     <Filter Include="Source Files\sfml">
       <UniqueIdentifier>{25346f8e-0935-4e56-9cf1-23e8f936baf8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\portaudio">
+      <UniqueIdentifier>{1ca65bdc-673d-40be-abbc-d91a72662514}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp">
@@ -26,6 +29,9 @@
     </ClCompile>
     <ClCompile Include="sfml\sfml_main.cpp">
       <Filter>Source Files\sfml</Filter>
+    </ClCompile>
+    <ClCompile Include="portaudio\portaudio_main.cpp">
+      <Filter>Source Files\portaudio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
