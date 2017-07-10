@@ -9,11 +9,11 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_tspl {
+namespace my_aquila {
 
-}  // namespace my_tspl
+}  // namespace my_aquila
 
-int tspl_main(int argc, char *argv[])
+int aquila_main(int argc, char *argv[])
 {
 	throw std::runtime_error("Not yet implemented");
 }

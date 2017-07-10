@@ -34,6 +34,9 @@
     <Filter Include="Source Files\spuc">
       <UniqueIdentifier>{96f7499f-c437-4269-ba9d-409004ff30eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\aquila">
+      <UniqueIdentifier>{87341aeb-839f-4d42-b64d-b9f3b1d3382b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fast_bilateral_filter_lib\array.h">
@@ -136,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="spuc\spuc_maximum_likelihood_sequence_estimation.cpp">
       <Filter>Source Files\spuc</Filter>
+    </ClCompile>
+    <ClCompile Include="aquila\aquila_main.cpp">
+      <Filter>Source Files\aquila</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

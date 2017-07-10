@@ -171,6 +171,7 @@
     <ClInclude Include="nyu_depth_toolbox_v2_lib\cbf_windows.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="aquila\aquila_main.cpp" />
     <ClCompile Include="fast_bilateral_filter\color_bilateral_filter_example.cpp" />
     <ClCompile Include="fast_bilateral_filter\cross_bilateral_filter_example.cpp" />
     <ClCompile Include="fast_bilateral_filter\depth_filling_cross_bilateral_filter.cpp" />
