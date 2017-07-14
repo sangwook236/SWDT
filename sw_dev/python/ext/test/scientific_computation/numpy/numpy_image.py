@@ -10,8 +10,8 @@ from PIL import Image
 img = Image.open('/path/to/image')
 
 img_array = np.asarray(img, dtype='uint8')
-%img_array = np.uint8(img_array_float * 255)  # For RGB (3-dim).
-%img_array = np.uint8(img_array_float * 255, mode='L')  # For grayscale (2-dim).
+#img_array = np.uint8(img_array_float * 255)  # For RGB (3-dim).
+#img_array = np.uint8(img_array_float * 255, mode='L')  # For grayscale (2-dim).
 
 # Do something.
 
