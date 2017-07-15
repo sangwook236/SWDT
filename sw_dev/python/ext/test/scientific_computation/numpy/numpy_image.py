@@ -24,8 +24,10 @@ img.save("tmp.jpg")
 
 import scipy.ndimage
 import scipy.misc
+import matplotlib.pyplot as plt
 
 img_array = scipy.ndimage.imread('/path/to/image', mode="RGB")
 
-scipy.misc.imshow(img_array)
+#scipy.misc.imshow(img_array)  # Use the environment variable, SCIPY_PIL_IMAGE_VIEWER.
+plt.imshow(img_array)
 scipy.misc.imsave('tmp.jpg', img_array)
