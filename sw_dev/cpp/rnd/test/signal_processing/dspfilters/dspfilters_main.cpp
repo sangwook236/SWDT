@@ -29,8 +29,10 @@ void generate_signal(const double startTime, const double endTime, const double 
 	signal.reserve(numSignal + 1);
 	for (double t = startTime; t <= endTime; t += interval)
 		signal.push_back(
-			amplitude1 * std::sin(2.0 * M_PI * frequency1 * t) + amplitude2 * std::sin(2.0 * M_PI * frequency2 * t) +
-			amplitude3 * std::sin(2.0 * M_PI * frequency3 * t) + amplitude4 * std::sin(2.0 * M_PI * frequency4 * t)
+			amplitude1 * std::sin(2.0 * M_PI * frequency1 * t) +
+			amplitude2 * std::sin(2.0 * M_PI * frequency2 * t) +
+			amplitude3 * std::sin(2.0 * M_PI * frequency3 * t) +
+			amplitude4 * std::sin(2.0 * M_PI * frequency4 * t)
 		);
 }
 
