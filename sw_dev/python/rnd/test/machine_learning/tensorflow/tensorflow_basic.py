@@ -1,24 +1,34 @@
 # REF [site] >> https://www.tensorflow.org/get_started/get_started
 
 import tensorflow as tf
+import numpy as np
 
 #%%-------------------------------------------------------------------
 
 sess = tf.Session()
 
-A = tf.constant([[[1, 1, 1], [2, 2, 2]], [[3, 3, 3], [4, 4, 4]]])
+#A = tf.constant([[[1, 1, 1], [2, 2, 2]], [[3, 3, 3], [4, 4, 4]]])
+#A = tf.constant([[[1, 11, 21], [2, 12, 22]], [[3, 13, 23], [4, 14, 24]]])
+A = tf.constant([[[1, -3, -12], [0, -7, 5]], [[-11, 19, 13], [37, 5, -19]]])
 
 e1 = A[0, 1, :]
 e2 = A[1, :, :]
+e3 = A[0:-1, :, 1:-1]
 
 type(A)
 type(e1)
-print(sess.run([e1, e2]))
+print(sess.run([e1, e2, e3]))
 
 size = tf.size(A)
 print(sess.run(size))
 shape = tf.shape(A)
 print(sess.run(shape))
+
+M0 = tf.argmax(A, axis=0)
+M1 = tf.argmax(A, axis=1)
+M2 = tf.argmax(A, axis=2)
+M_1 = tf.argmax(A, axis=-1)
+sess.run([M0, M1, M2, M_1])
 
 #%%-------------------------------------------------------------------
 
@@ -81,9 +91,6 @@ for i in range(1000):
 print(sess.run([W, b]))
 
 #%%-------------------------------------------------------------------
-
-import numpy as np
-import tensorflow as tf
 
 # Model parameters.
 W = tf.Variable([.3], tf.float32)
