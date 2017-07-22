@@ -127,6 +127,8 @@ void line();
 void skeletonization_and_thinning();
 void contour();
 
+void image_similarity();
+
 void outlier_removal();
 
 void hough_transform();
@@ -166,15 +168,18 @@ void kinect_image_undistortion();
 void image_rectification();
 void kinect_image_rectification();
 void homography();
+
 void image_labeling_using_gpu();
 void stereo_matching();
 void stereo_matching_using_gpu();
 void change_detection();
 void change_detection_using_gpu();
+
 void object_tracking();
 void kalman_filtering();
 void optical_flow();
 void motion_history_image();
+
 void slam();
 
 void pca();
@@ -253,7 +258,9 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::skeletonization_and_thinning();
 		//my_opencv::contour();
 
-		my_opencv::hough_transform();
+		my_opencv::image_similarity();
+
+		//my_opencv::hough_transform();
 		//my_opencv::template_matching();
 		//my_opencv::chamfer_matching();
 		//my_opencv::shape_finding();

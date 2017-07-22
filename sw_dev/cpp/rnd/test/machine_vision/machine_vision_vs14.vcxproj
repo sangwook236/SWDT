@@ -363,6 +363,7 @@
     <ClCompile Include="opencv\opencv_image_pyramid.cpp" />
     <ClCompile Include="opencv\opencv_image_rectification.cpp" />
     <ClCompile Include="opencv\opencv_image_sequence.cpp" />
+    <ClCompile Include="opencv\opencv_image_similarity.cpp" />
     <ClCompile Include="opencv\opencv_image_undistortion.cpp" />
     <ClCompile Include="opencv\opencv_iterative_closest_point.cpp" />
     <ClCompile Include="opencv\opencv_kalman_filtering.cpp" />
