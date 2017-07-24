@@ -90,7 +90,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>NO_XML;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/fftw;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;./dspfilters_lib/include;../../inc;$(MY_USR_LOCAL_INCLUDE)/fftw;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -104,7 +104,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>NO_XML;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/fftw;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;./dspfilters_lib/include;../../inc;$(MY_USR_LOCAL_INCLUDE)/fftw;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,7 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NO_XML;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/fftw;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;./dspfilters_lib/include;../../inc;$(MY_USR_LOCAL_INCLUDE)/fftw;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,7 +138,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NO_XML;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/fftw;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fast_bilateral_filter_lib;./dspfilters_lib/include;../../inc;$(MY_USR_LOCAL_INCLUDE)/fftw;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,6 +149,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Bessel.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Biquad.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Butterworth.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Cascade.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\ChebyshevI.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\ChebyshevII.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Common.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Custom.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Design.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Dsp.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Elliptic.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Filter.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Layout.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Legendre.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\MathSupplement.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Params.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\PoleFilter.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\RBJ.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\RootFinder.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\SmoothedFilter.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\State.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Types.h" />
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Utilities.h" />
     <ClInclude Include="fast_bilateral_filter_lib\array.h" />
     <ClInclude Include="fast_bilateral_filter_lib\array_n.h" />
     <ClInclude Include="fast_bilateral_filter_lib\chrono.h" />
@@ -172,6 +195,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aquila\aquila_main.cpp" />
+    <ClCompile Include="dspfilters\dspfilters_main.cpp" />
+    <ClCompile Include="dspfilters_lib\source\Bessel.cpp" />
+    <ClCompile Include="dspfilters_lib\source\Biquad.cpp" />
+    <ClCompile Include="dspfilters_lib\source\Butterworth.cpp" />
+    <ClCompile Include="dspfilters_lib\source\Cascade.cpp" />
+    <ClCompile Include="dspfilters_lib\source\ChebyshevI.cpp" />
+    <ClCompile Include="dspfilters_lib\source\ChebyshevII.cpp" />
+    <ClCompile Include="dspfilters_lib\source\Custom.cpp" />
+    <ClCompile Include="dspfilters_lib\source\Design.cpp" />
+    <ClCompile Include="dspfilters_lib\source\Documentation.cpp" />
+    <ClCompile Include="dspfilters_lib\source\Elliptic.cpp" />
+    <ClCompile Include="dspfilters_lib\source\Filter.cpp" />
+    <ClCompile Include="dspfilters_lib\source\Legendre.cpp" />
+    <ClCompile Include="dspfilters_lib\source\Param.cpp" />
+    <ClCompile Include="dspfilters_lib\source\PoleFilter.cpp" />
+    <ClCompile Include="dspfilters_lib\source\RBJ.cpp" />
+    <ClCompile Include="dspfilters_lib\source\RootFinder.cpp" />
+    <ClCompile Include="dspfilters_lib\source\State.cpp" />
     <ClCompile Include="fast_bilateral_filter\color_bilateral_filter_example.cpp" />
     <ClCompile Include="fast_bilateral_filter\cross_bilateral_filter_example.cpp" />
     <ClCompile Include="fast_bilateral_filter\depth_filling_cross_bilateral_filter.cpp" />

@@ -459,6 +459,9 @@
     <ClCompile Include="quirc\quirc_main.cpp">
       <Filter>Source Files\quirc</Filter>
     </ClCompile>
+    <ClCompile Include="opencv\opencv_image_similarity.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opencv\PascalVocDataset.h">

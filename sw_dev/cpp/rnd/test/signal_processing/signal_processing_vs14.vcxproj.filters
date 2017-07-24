@@ -37,6 +37,21 @@
     <Filter Include="Source Files\aquila">
       <UniqueIdentifier>{87341aeb-839f-4d42-b64d-b9f3b1d3382b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\dspfilters">
+      <UniqueIdentifier>{5e201218-f919-4f9c-8445-d66cef8ee856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dspfilters_lib">
+      <UniqueIdentifier>{8e726f66-3e54-4486-8ef7-6877937f8fdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dspfilters_lib\include">
+      <UniqueIdentifier>{43025e9e-5d4a-47dd-b794-280327618890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dspfilters_lib\source">
+      <UniqueIdentifier>{96f63ea1-83d4-4792-992b-47e09e45aae1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dspfilters_lib\include\DspFilters">
+      <UniqueIdentifier>{4d9fd62c-5d88-4a95-8e0a-48bb19c3c74c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fast_bilateral_filter_lib\array.h">
@@ -83,6 +98,75 @@
     </ClInclude>
     <ClInclude Include="nyu_depth_toolbox_v2_lib\cbf.h">
       <Filter>Source Files\nyu_depth_toolbox_v2_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Bessel.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Biquad.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Butterworth.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Cascade.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\ChebyshevI.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\ChebyshevII.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Common.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Custom.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Design.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Dsp.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Elliptic.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Filter.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Layout.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Legendre.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\MathSupplement.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Params.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\PoleFilter.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\RBJ.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\RootFinder.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\SmoothedFilter.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\State.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Types.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
+    </ClInclude>
+    <ClInclude Include="dspfilters_lib\include\DspFilters\Utilities.h">
+      <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +226,60 @@
     </ClCompile>
     <ClCompile Include="aquila\aquila_main.cpp">
       <Filter>Source Files\aquila</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\Bessel.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\Biquad.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\Butterworth.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\Cascade.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\ChebyshevI.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\ChebyshevII.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\Custom.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\Design.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\Documentation.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\Elliptic.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\Filter.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\Legendre.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\Param.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\PoleFilter.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\RBJ.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\RootFinder.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters_lib\source\State.cpp">
+      <Filter>Source Files\dspfilters_lib\source</Filter>
+    </ClCompile>
+    <ClCompile Include="dspfilters\dspfilters_main.cpp">
+      <Filter>Source Files\dspfilters</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

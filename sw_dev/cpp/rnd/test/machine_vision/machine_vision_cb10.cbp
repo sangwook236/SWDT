@@ -245,6 +245,7 @@
 		<Unit filename="opencv/opencv_image_pyramid.cpp" />
 		<Unit filename="opencv/opencv_image_rectification.cpp" />
 		<Unit filename="opencv/opencv_image_sequence.cpp" />
+		<Unit filename="opencv/opencv_image_similarity.cpp" />
 		<Unit filename="opencv/opencv_image_undistortion.cpp" />
 		<Unit filename="opencv/opencv_iterative_closest_point.cpp" />
 		<Unit filename="opencv/opencv_kalman_filtering.cpp" />
