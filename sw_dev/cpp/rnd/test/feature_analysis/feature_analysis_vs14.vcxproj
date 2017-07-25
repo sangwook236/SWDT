@@ -91,7 +91,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,7 +115,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,7 +142,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -168,7 +168,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-3.2.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

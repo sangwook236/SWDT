@@ -8,11 +8,11 @@
 #include <ctime>
 
 
-// for compiling using NVIDIA NVCC CUDA Compiler.
-//  [ref] http://benbarsdell.blogspot.kr/2009/03/cuda-in-codeblocks-first-things-second.html.
+// For compiling using NVIDIA NVCC CUDA Compiler.
+//  REF [site] >> http://benbarsdell.blogspot.kr/2009/03/cuda-in-codeblocks-first-things-second.html.
 
-// for running SiftGPU & SURFGPU.
-//  -. nvcc compiler가 path에 설정되어 있어야 함.
+// For running SiftGPU & SURFGPU.
+//  - Add the path of NVCC compiler to PATH.
 //      e.g.) export PATH=$PATH:/usr/local/cuda/bin
 
 int main(int argc, char *argv[])
