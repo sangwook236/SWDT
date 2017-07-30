@@ -1,13 +1,13 @@
 /****************************************************************************
 ** Resource object code
 **
-** Created by: The Resource Compiler for Qt version 5.6.0
+** Created by: The Resource Compiler for Qt version 5.8.0
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
 static const unsigned char qt_resource_data[] = {
-  // D:/work/swdt_github/sw_dev/cpp/ext/test/gui/qt5/SimplerQml.qml
+  // D:/work/SWDT_github/sw_dev/cpp/ext/test/gui/qt5/SimplerQml.qml
   0x0,0x0,0x3,0x26,
   0x69,
   0x6d,0x70,0x6f,0x72,0x74,0x20,0x51,0x74,0x51,0x75,0x69,0x63,0x6b,0x20,0x32,0x2e,
@@ -76,8 +76,10 @@ static const unsigned char qt_resource_name[] = {
 static const unsigned char qt_resource_struct[] = {
   // :
   0x0,0x0,0x0,0x0,0x0,0x2,0x0,0x0,0x0,0x1,0x0,0x0,0x0,0x1,
+0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,
   // :/SimplerQml.qml
   0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1,0x0,0x0,0x0,0x0,
+0x0,0x0,0x1,0x5b,0x46,0xde,0x15,0x5c,
 
 };
 
@@ -109,7 +111,7 @@ int QT_RCC_MANGLE_NAMESPACE(qInitResources_SimplerQml)();
 int QT_RCC_MANGLE_NAMESPACE(qInitResources_SimplerQml)()
 {
     QT_RCC_PREPEND_NAMESPACE(qRegisterResourceData)
-        (0x01, qt_resource_struct, qt_resource_name, qt_resource_data);
+        (0x02, qt_resource_struct, qt_resource_name, qt_resource_data);
     return 1;
 }
 
@@ -117,7 +119,7 @@ int QT_RCC_MANGLE_NAMESPACE(qCleanupResources_SimplerQml)();
 int QT_RCC_MANGLE_NAMESPACE(qCleanupResources_SimplerQml)()
 {
     QT_RCC_PREPEND_NAMESPACE(qUnregisterResourceData)
-       (0x01, qt_resource_struct, qt_resource_name, qt_resource_data);
+       (0x02, qt_resource_struct, qt_resource_name, qt_resource_data);
     return 1;
 }
 

@@ -132,6 +132,9 @@
     <ClCompile Include="qt5\qrc\qrc_SimplerQml.cpp">
       <Filter>Source Files\qt5\qrc</Filter>
     </ClCompile>
+    <ClCompile Include="qt5\qt5_qt3d.cpp">
+      <Filter>Source Files\qt5</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="qt4\MyMainWindow.h">

@@ -93,12 +93,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtOpenGL;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQuickWidgets;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQuick;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQml;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_QT_DIR)/include/QtOpenGL;$(MY_QT_DIR)/include/QtQuickWidgets;$(MY_QT_DIR)/include/QtQuick;$(MY_QT_DIR)/include/QtQml;$(MY_QT_DIR)/include/QtWidgets;$(MY_QT_DIR)/include/QtGui;$(MY_QT_DIR)/include/QtCore;$(MY_QT_DIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib;$(MY_USR_LOCAL_LIB)/../Qt-5.6.0/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;$(MY_QT_DIR)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -108,12 +108,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtOpenGL;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQuickWidgets;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQuick;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQml;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_QT_DIR)/include/QtOpenGL;$(MY_QT_DIR)/include/QtQuickWidgets;$(MY_QT_DIR)/include/QtQuick;$(MY_QT_DIR)/include/QtQml;$(MY_QT_DIR)/include/QtWidgets;$(MY_QT_DIR)/include/QtGui;$(MY_QT_DIR)/include/QtCore;$(MY_QT_DIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib64;$(MY_USR_LOCAL_LIB)/../../local64/Qt-5.6.0/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib64;$(MY_QT_DIR)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
       <Command>
@@ -146,14 +146,14 @@ rcc qt5/SimplerQml.qrc -name SimplerQml -o qt5/qrc/qrc_SimplerQml.cpp
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtOpenGL;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQuickWidgets;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQuick;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtQml;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_QT_DIR)/include/QtOpenGL;$(MY_QT_DIR)/include/QtQuickWidgets;$(MY_QT_DIR)/include/QtQuick;$(MY_QT_DIR)/include/QtQml;$(MY_QT_DIR)/include/QtWidgets;$(MY_QT_DIR)/include/QtGui;$(MY_QT_DIR)/include/QtCore;$(MY_QT_DIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib;$(MY_USR_LOCAL_LIB)/../Qt-5.6.0/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;$(MY_QT_DIR)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,14 +165,14 @@ rcc qt5/SimplerQml.qrc -name SimplerQml -o qt5/qrc/qrc_SimplerQml.cpp
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtOpenGL;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQuickWidgets;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQuick;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtQml;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtWidgets;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtGui;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include/QtCore;$(MY_USR_LOCAL_INCLUDE)/../../local64/Qt-5.6.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/openscenegraph;$(MY_QT_DIR)/include/QtOpenGL;$(MY_QT_DIR)/include/QtQuickWidgets;$(MY_QT_DIR)/include/QtQuick;$(MY_QT_DIR)/include/QtQml;$(MY_QT_DIR)/include/QtWidgets;$(MY_QT_DIR)/include/QtGui;$(MY_QT_DIR)/include/QtCore;$(MY_QT_DIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib64;$(MY_USR_LOCAL_LIB)/../../local64/Qt-5.6.0/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib64;$(MY_QT_DIR)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
       <Command>
@@ -259,6 +259,7 @@ rcc qt5/SimplerQml.qrc -name SimplerQml -o qt5/qrc/qrc_SimplerQml.cpp
     <ClCompile Include="qt5\qrc\qrc_sdi.cpp" />
     <ClCompile Include="qt5\qrc\qrc_SimpleQml.cpp" />
     <ClCompile Include="qt5\qrc\qrc_SimplerQml.cpp" />
+    <ClCompile Include="qt5\qt5_qt3d.cpp" />
     <ClCompile Include="qt5\SdiMainWindow.cpp" />
     <ClCompile Include="qt5\qt5_main.cpp" />
     <ClCompile Include="qt5\Toolbar.cpp" />

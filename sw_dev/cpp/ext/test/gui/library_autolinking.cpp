@@ -17,6 +17,9 @@
 
 //#pragma comment(lib, "QtGuid4.lib")
 //#pragma comment(lib, "QtCored4.lib")
+#pragma comment(lib, "Qt53DRenderd.lib")
+#pragma comment(lib, "Qt53DExtrasd.lib")
+#pragma comment(lib, "Qt53DCored.lib")
 #pragma comment(lib, "Qt5QuickWidgetsd.lib")
 #pragma comment(lib, "Qt5Quickd.lib")
 #pragma comment(lib, "Qt5Qmld.lib")
@@ -39,6 +42,9 @@
 
 //#pragma comment(lib, "QtGui4.lib")
 //#pragma comment(lib, "QtCore4.lib")
+#pragma comment(lib, "Qt53DRender.lib")
+#pragma comment(lib, "Qt53DExtras.lib")
+#pragma comment(lib, "Qt53DCore.lib")
 #pragma comment(lib, "Qt5QuickWidgets.lib")
 #pragma comment(lib, "Qt5Quick.lib")
 #pragma comment(lib, "Qt5Qml.lib")

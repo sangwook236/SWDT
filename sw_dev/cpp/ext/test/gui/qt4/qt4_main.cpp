@@ -58,14 +58,15 @@ int simple_example_2(int argc, char* argv[])
 }  // namespace local
 }  // unnamed namespace
 
-// Meta Object Compiler (moc).
-//  moc object_name.h -o moc_object_name.cpp
-// Resource Compiler (rcc).
-//	(optional) rcc -binary resource_name.qrc -o resource_name.rcc
-//	rcc resource_name.qrc -name resource_name -o qrc_resource_name.cpp
-// Build Qt Project.
-//	qmake project_name.pro -spec win32-msvc2015
-//	make or jom
+// Usage.
+//	- Compile meta objects by Meta Object Compiler (moc).
+//		moc object_name.h -o moc_object_name.cpp
+//	- Compile resources by Resource Compiler (rcc).
+//		(optional) rcc -binary resource_name.qrc -o resource_name.rcc
+//		rcc resource_name.qrc -name resource_name -o qrc_resource_name.cpp
+//	- Build Qt project.
+//		qmake project_name.pro -spec win32-msvc2015
+//		make or jom
 
 int qt4_main(int argc, char* argv[])
 {

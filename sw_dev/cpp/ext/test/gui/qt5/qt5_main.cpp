@@ -383,19 +383,22 @@ void render_qt_text(QPainter *painter, int w, int h, const QColor &color)
 	painter->drawPath(path);
 }
 
+int qt3d(int argc, char **argv);
+
 int osgqt_widgets_example(int argc, char **argv);
 int osgqt_vierwer_example(int argc, char **argv);
 
 }  // namespace my_qt5
 
-// Meta Object Compiler (moc).
-//  moc object_name.h -o moc_object_name.cpp
-// Resource Compiler (rcc).
-//	(Optional) rcc -binary resource_name.qrc -o resource_name.rcc
-//	rcc resource_name.qrc -name resource_name -o qrc_resource_name.cpp
-// Build Qt Project.
-//	qmake project_name.pro -spec win32-msvc2015
-//	make or jom
+// Usage.
+//	- Compile meta objects by Meta Object Compiler (moc).
+//		moc object_name.h -o moc_object_name.cpp
+//	- Compile resources by Resource Compiler (rcc).
+//		(Optional) rcc -binary resource_name.qrc -o resource_name.rcc
+//		rcc resource_name.qrc -name resource_name -o qrc_resource_name.cpp
+//	- Build Qt project.
+//		qmake project_name.pro -spec win32-msvc2015
+//		make or jom
 
 int qt5_main(int argc, char* argv[])
 {
@@ -414,14 +417,19 @@ int qt5_main(int argc, char* argv[])
 	//const int retval = local::qtquick_simpler_example(argc, argv);
 	//const int retval = local::qtquick_simple_example(argc, argv);
 
-	const int retval = local::qtquick_layouts_example(argc, argv);
+	//const int retval = local::qtquick_layouts_example(argc, argv);
 	//const int retval = local::qtquick_samegame_example(argc, argv);
 
 	//const int retval = local::qtquick_interaction_with_object_example(argc, argv);
 
+	// Qt 3D ---------------------------------------------------------
+	// REF [site] >> https://doc.qt.io/qt-5/qt3d-index.html
+
+	const int retval = my_qt5::qt3d(argc, argv);
+
 	// Integration with OpenSceneGraph -------------------------------
 	//const int retval = my_qt5::osgqt_widgets_example(argc, argv);  // Compile-time error. I guess this example is for mobile devices.
-	//const int retval = my_qt5::osgqt_vierwer_example(argc, argv);
+	//const int retval = my_qt5::osgqt_vierwer_example(argc, argv);  // Not correctly working. (?)
 	
 	//const int retval = local::osg_integration_using_qtosg(argc, argv);
 
