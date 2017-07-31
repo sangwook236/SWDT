@@ -15,7 +15,7 @@ Debug:MOC_DIR = x64/debug
 Debug:RCC_DIR = x64/debug
 Debug:UI_DIR = x64/debug
 
-SOURCES += main.cpp \
+SOURCES += qt5_main.cpp \
     ColorSwatch.cpp \
     MainWindow.cpp \
     MdiChild.cpp \
@@ -44,7 +44,7 @@ RESOURCES += \
 	MainWindow.qrc \
 	mdi.qrc \
 	samegame.qrc \
-	sdu.qrc \
+	#sdu.qrc \
 	SimpleQml.qrc \
 	SimplerQml.qrc
 

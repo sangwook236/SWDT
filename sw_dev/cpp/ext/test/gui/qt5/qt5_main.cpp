@@ -396,9 +396,13 @@ int osgqt_vierwer_example(int argc, char **argv);
 //	- Compile resources by Resource Compiler (rcc).
 //		(Optional) rcc -binary resource_name.qrc -o resource_name.rcc
 //		rcc resource_name.qrc -name resource_name -o qrc_resource_name.cpp
-//	- Build Qt project.
-//		qmake project_name.pro -spec win32-msvc2015
-//		make or jom
+//	- Generate Makefile.
+//		qmake -spec win32-msvc2015 project_name.pro
+//		qmake -spec win32-msvc2015 -tp vc project_name.pro
+//	- Make.
+//		jom
+//		make
+//		nmake
 
 int qt5_main(int argc, char* argv[])
 {
