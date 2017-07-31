@@ -132,3 +132,74 @@ print('\tMax-value after min-max scaling:\n\tAlcohol={:.2f}, Malic acid={:.2f}'.
 
 plot1()
 plt.show()
+
+#%%------------------------------------------------------------------
+
+from sklearn.cross_validation import train_test_split
+
+X_wine = df.values[:,1:]
+y_wine = df.values[:,0]
+X_train, X_test, y_train, y_test = train_test_split(X_wine, y_wine, test_size=0.30, random_state=None)
+
+std_scale = preprocessing.StandardScaler().fit(X_train)
+X_train_std = std_scale.transform(X_train)
+X_test_std = std_scale.transform(X_test)
+
+# Dimensionality reduction via Principal Component Analysis (PCA).
+from sklearn.decomposition import PCA
+
+# On non-standardized data.
+pca = PCA(n_components=2).fit(X_train)
+X_train = pca.transform(X_train)
+X_test = pca.transform(X_test)
+
+# On standardized data.
+pca_std = PCA(n_components=2).fit(X_train_std)
+X_train_std = pca_std.transform(X_train_std)
+X_test_std = pca_std.transform(X_test_std)
+
+def plot3():
+	fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(10,4))
+
+	for l,c,m in zip(range(1,4), ('blue', 'red', 'green'), ('^', 's', 'o')):
+		ax1.scatter(X_train[y_train==l, 0], X_train[y_train==l, 1], color=c, label='class %s' %l, alpha=0.5, marker=m)
+
+	for l,c,m in zip(range(1,4), ('blue', 'red', 'green'), ('^', 's', 'o')):
+		ax2.scatter(X_train_std[y_train==l, 0], X_train_std[y_train==l, 1], color=c, label='class %s' %l, alpha=0.5, marker=m)
+
+	ax1.set_title('Transformed NON-standardized training dataset after PCA')    
+	ax2.set_title('Transformed standardized training dataset after PCA')    
+
+	for ax in (ax1, ax2):
+		ax.set_xlabel('1st principal component')
+		ax.set_ylabel('2nd principal component')
+		ax.legend(loc='upper right')
+		ax.grid()
+	plt.tight_layout()
+
+plot3()
+plt.show()
+
+# Training a naive Bayes classifier.
+from sklearn.naive_bayes import GaussianNB
+from sklearn import metrics
+
+# On non-standardized data.
+gnb = GaussianNB()
+fit = gnb.fit(X_train, y_train)
+
+# On standardized data.
+gnb_std = GaussianNB()
+fit_std = gnb_std.fit(X_train_std, y_train)
+
+pred_train = gnb.predict(X_train)
+pred_test = gnb.predict(X_test)
+
+print('Prediction accuracy for the training dataset = {:.2%}'.format(metrics.accuracy_score(y_train, pred_train)))
+print('Prediction accuracy for the test dataset = {:.2%}\n'.format(metrics.accuracy_score(y_test, pred_test)))
+
+pred_train_std = gnb_std.predict(X_train_std)
+pred_test_std = gnb_std.predict(X_test_std)
+
+print('Prediction accuracy for the training dataset (std) = {:.2%}'.format(metrics.accuracy_score(y_train, pred_train_std)))
+print('Prediction accuracy for the test dataset (std) = {:.2%}\n'.format(metrics.accuracy_score(y_test, pred_test_std)))
