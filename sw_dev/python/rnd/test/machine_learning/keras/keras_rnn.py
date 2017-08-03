@@ -15,9 +15,7 @@ model.add(LSTM(128))
 model.add(Dropout(0.5))
 model.add(Dense(1, activation='sigmoid'))
 
-model.compile(loss='binary_crossentropy',
-              optimizer='rmsprop',
-              metrics=['accuracy'])
+model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=['accuracy'])
 
 # Generate dummy data.
 x_train = np.random.random((500, 100))
@@ -45,9 +43,7 @@ model.add(LSTM(32, return_sequences=True))  # Return a sequence of vectors of di
 model.add(LSTM(32))  # Return a single vector of dimension 32.
 model.add(Dense(10, activation='softmax'))
 
-model.compile(loss='categorical_crossentropy',
-              optimizer='rmsprop',
-              metrics=['accuracy'])
+model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Generate dummy training data.
 x_train = np.random.random((1000, timesteps, data_dim))
@@ -58,8 +54,8 @@ x_val = np.random.random((100, timesteps, data_dim))
 y_val = np.random.random((100, num_classes))
 
 model.fit(x_train, y_train,
-          batch_size=64, epochs=5,
-          validation_data=(x_val, y_val))
+		batch_size=64, epochs=5,
+		validation_data=(x_val, y_val))
 
 #%%-------------------------------------------------------------------
 # Stateful stacked LSTM model.
@@ -82,9 +78,7 @@ model.add(LSTM(32, return_sequences=True, stateful=True))
 model.add(LSTM(32, stateful=True))
 model.add(Dense(10, activation='softmax'))
 
-model.compile(loss='categorical_crossentropy',
-              optimizer='rmsprop',
-              metrics=['accuracy'])
+model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Generate dummy training data.
 x_train = np.random.random((batch_size * 10, timesteps, data_dim))
@@ -95,5 +89,5 @@ x_val = np.random.random((batch_size * 3, timesteps, data_dim))
 y_val = np.random.random((batch_size * 3, num_classes))
 
 model.fit(x_train, y_train,
-          batch_size=batch_size, epochs=5, shuffle=False,
-          validation_data=(x_val, y_val))
+		batch_size=batch_size, epochs=5, shuffle=False,
+		validation_data=(x_val, y_val))

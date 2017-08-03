@@ -1,11 +1,12 @@
 #%%------------------------------------------------------------------
-# Load data.
 
-#dataset_home_dir_path = "/home/sangwook/my_dataset"
-#dataset_home_dir_path = "/home/HDD1/sangwook/my_dataset"
-dataset_home_dir_path = "D:/dataset"
+if 'posix' == os.name:
+	#dataset_home_dir_path = '/home/sangwook/my_dataset'
+	dataset_home_dir_path = '/home/HDD1/sangwook/my_dataset'
+else:
+	dataset_home_dir_path = 'D:/dataset'
 
-data_dir_path = dataset_home_dir_path + "/failure_analysis/defect/motor_20170621/0_original/500-1500Hz"
+data_dir_path = dataset_home_dir_path + '/failure_analysis/defect/motor_20170621/0_original/500-1500Hz'
 
 #%%------------------------------------------------------------------
 
