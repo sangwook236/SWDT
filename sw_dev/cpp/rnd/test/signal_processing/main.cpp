@@ -54,7 +54,7 @@ void write_signal(const std::vector<double> &signal, const std::string &filepath
 #endif
 }
 
-// REF [function] >> filter() in Matlab.
+// REF [function] >> filter() in ${SWL_HOME}/cpp/src/rnd_util/SignalProcessing.cpp.
 void filter(const std::vector<double> &a, const std::vector<double> &b, const std::vector<double> &x, std::vector<double> &y)
 {
 	// a[0] * y[n] = b[0] * x[n] + b[1] * x[n - 1] + ... + b[nb] * x[n - nb] - a[1] * y[n - 1] - ... - a[na] * y[n - na].
