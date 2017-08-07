@@ -192,6 +192,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="nyu_depth_toolbox_v2_lib\cbf_windows.h" />
+    <ClInclude Include="sigproc_lib\iir.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aquila\aquila_main.cpp" />
@@ -237,6 +238,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="nyu_depth_toolbox_v2_lib\cbf_windows.cpp" />
+    <ClCompile Include="sigproc\sigproc_main.cpp" />
+    <ClCompile Include="sigproc_lib\liir.cpp" />
     <ClCompile Include="spuc\spuc_auto_correlation.cpp" />
     <ClCompile Include="spuc\spuc_filter_example.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

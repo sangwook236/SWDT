@@ -2,57 +2,22 @@
 #include "DspFilters/Filter.h"
 #include "DspFilters/Butterworth.h"
 #include "DspFilters/ChebyshevI.h"
-#include <fstream>
 #include <iostream>
 #include <algorithm>
-#include <iterator>
 #include <string>
 #include <vector>
 #include <cmath>
-#if defined(_WIN64) || defined(_WIN32)
-#define _USE_MATH_DEFINES
-#include <math.h>
-#endif
 
+
+namespace my_common_api {
+
+void generate_signal(const double startTime, const double endTime, const double interval, std::vector<double> &signal);
+void write_signal(const std::vector<double> &signal, const std::string &filepath);
+
+}  // namespace my_common_api
 
 namespace {
 namespace local {
-
-void generate_signal(const double startTime, const double endTime, const double interval, std::vector<double> &signal)
-{
-	const double frequency1 = 5.0, amplitude1 = 2.0;
-	const double frequency2 = 20.0, amplitude2 = 1.0;
-	const double frequency3 = 35.0, amplitude3 = 4.0;
-	const double frequency4 = 60.0, amplitude4 = 3.0;
-
-	const size_t numSignal = (size_t)std::ceil((endTime - startTime) / interval);
-	signal.reserve(numSignal + 1);
-	for (double t = startTime; t <= endTime; t += interval)
-		signal.push_back(
-			amplitude1 * std::sin(2.0 * M_PI * frequency1 * t) +
-			amplitude2 * std::sin(2.0 * M_PI * frequency2 * t) +
-			amplitude3 * std::sin(2.0 * M_PI * frequency3 * t) +
-			amplitude4 * std::sin(2.0 * M_PI * frequency4 * t)
-		);
-}
-
-void write_signal(const std::vector<double> &signal, const std::string &filepath)
-{
-	std::ofstream stream(filepath, std::ios::trunc);
-	if (!stream)
-	{
-		std::cerr << "File not found: " << filepath << std::endl;
-		return;
-	}
-
-#if 0
-	// Too slow.
-	for (const auto &sig : signal)
-		stream << sig << std::endl;
-#else
-	std::copy(signal.begin(), signal.end(), std::ostream_iterator<double>(stream, "\n"));
-#endif
-}
 
 void simple_example()
 {
@@ -72,8 +37,8 @@ void simple_example()
 	// REF [site] >> https://github.com/vinniefalco/DSPFilters
 	{
 		std::vector<double> signal;
-		generate_signal(startTime, endTime, 1.0 / samplingRate, signal);
-		write_signal(signal, "./data/signal_processing/before_chebyshev_filtering.txt");
+		my_common_api::generate_signal(startTime, endTime, 1.0 / samplingRate, signal);
+		my_common_api::write_signal(signal, "./data/signal_processing/before_chebyshev_bandstop_filtering.txt");
 
 		// Create a Chebyshev type I bandstop filter of order 'order' with state for processing 'channels' channels of audio.
 		Dsp::SimpleFilter<Dsp::ChebyshevI::BandStop<MaxOrder>, Channels> filter;
@@ -87,7 +52,7 @@ void simple_example()
 		double *signals[] = { &signal[0], };
 		filter.process((int)signal.size(), signals);
 
-		write_signal(signal, "./data/signal_processing/after_chebyshev_filtering.txt");
+		my_common_api::write_signal(signal, "./data/signal_processing/after_chebyshev_bandstop_filtering.txt");
 
 /*
 		% Visualize in Matlab.
@@ -105,8 +70,8 @@ void simple_example()
 
 	{
 		std::vector<double> signal;
-		generate_signal(startTime, endTime, 1.0 / samplingRate, signal);
-		write_signal(signal, "./data/signal_processing/before_butterworth_filtering.txt");
+		my_common_api::generate_signal(startTime, endTime, 1.0 / samplingRate, signal);
+		my_common_api::write_signal(signal, "./data/signal_processing/before_butterworth_bandpass_filtering.txt");
 
 		// Create a Butterworth bandpass filter of order 'order' with state for processing 'channels' channels of audio.
 		Dsp::SimpleFilter<Dsp::Butterworth::BandPass<MaxOrder>, Channels> filter;
@@ -119,7 +84,7 @@ void simple_example()
 		double *signals[] = { &signal[0], };
 		filter.process((int)signal.size(), signals);
 
-		write_signal(signal, "./data/signal_processing/after_butterworth_filtering.txt");
+		my_common_api::write_signal(signal, "./data/signal_processing/after_butterworth_bandpass_filtering.txt");
 
 /*
 		% Visualize in Matlab.

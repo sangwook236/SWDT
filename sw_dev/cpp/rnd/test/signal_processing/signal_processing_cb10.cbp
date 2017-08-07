@@ -93,6 +93,9 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="nyu_depth_toolbox_v2_lib/cbf_windows.h" />
+		<Unit filename="sigproc/sigproc_main.cpp" />
+		<Unit filename="sigproc_lib/liir.cpp" />
+		<Unit filename="sigproc_lib/iir.h" />
 		<Unit filename="spuc/spuc_auto_correlation.cpp" />
 		<Unit filename="spuc/spuc_filter_example.cpp" />
 		<Unit filename="spuc/spuc_main.cpp" />

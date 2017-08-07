@@ -52,6 +52,12 @@
     <Filter Include="Source Files\dspfilters_lib\include\DspFilters">
       <UniqueIdentifier>{4d9fd62c-5d88-4a95-8e0a-48bb19c3c74c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\sigproc_lib">
+      <UniqueIdentifier>{c14af1d6-6d15-433e-9a57-15d7cc0349d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sigproc">
+      <UniqueIdentifier>{2e6080c8-1f3f-48b1-b26e-f715f2b7fbf2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fast_bilateral_filter_lib\array.h">
@@ -168,6 +174,9 @@
     <ClInclude Include="dspfilters_lib\include\DspFilters\Utilities.h">
       <Filter>Source Files\dspfilters_lib\include\DspFilters</Filter>
     </ClInclude>
+    <ClInclude Include="sigproc_lib\iir.h">
+      <Filter>Source Files\sigproc_lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -280,6 +289,12 @@
     </ClCompile>
     <ClCompile Include="dspfilters\dspfilters_main.cpp">
       <Filter>Source Files\dspfilters</Filter>
+    </ClCompile>
+    <ClCompile Include="sigproc\sigproc_main.cpp">
+      <Filter>Source Files\sigproc</Filter>
+    </ClCompile>
+    <ClCompile Include="sigproc_lib\liir.cpp">
+      <Filter>Source Files\sigproc_lib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
