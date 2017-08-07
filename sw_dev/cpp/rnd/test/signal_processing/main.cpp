@@ -68,13 +68,9 @@ void filter(const std::vector<double> &a, const std::vector<double> &b, const st
 	{
 		double sum = 0.0;
 		for (size_t i = 0; i <= nb && i <= n; ++i)
-		{
 			sum += b[i] * x[n - i];
-		}
 		for (size_t i = 1; i <= na && i <= n; ++i)
-		{
 			sum -= a[i] * y[n - i];
-		}
 
 		y.push_back(sum / a[0]);
 	}
