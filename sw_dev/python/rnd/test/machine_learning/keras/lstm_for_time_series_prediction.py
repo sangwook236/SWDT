@@ -75,7 +75,7 @@ def plot_graph(dataset, trainPredict, testPredict):
 np.random.seed(7)
 
 # REF [site] >> https://datamarket.com/data/set/22u3/international-airline-passengers-monthly-totals-in-thousands-jan-49-dec-60#!ds=22u3&display=line
-dataframe = pandas.read_csv('international-airline-passengers.csv', usecols=[1], engine='python', skipfooter=3)
+dataframe = pandas.read_csv('../../../data/machine_learning/international-airline-passengers.csv', usecols=[1], engine='python', skipfooter=3)
 plt.plot(dataframe)
 plt.show()
 
