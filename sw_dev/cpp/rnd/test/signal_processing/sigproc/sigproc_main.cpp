@@ -99,7 +99,7 @@ void butterworth_band_pass_filter_coefficients()
 
 	std::vector<double> signal;
 	my_common_api::generate_signal(startTime, endTime, 1.0 / samplingRate, signal);
-	my_common_api::write_signal(signal, "./data/signal_processing/before_butterworth_bandpass_filtering2.txt");
+	//my_common_api::write_signal(signal, "./data/signal_processing/before_butterworth_bandpass_filtering2.txt");
 
 	// Filter.
 	const size_t order = 4;  // Filter order.

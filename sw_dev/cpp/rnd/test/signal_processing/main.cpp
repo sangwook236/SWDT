@@ -64,15 +64,29 @@ void filter(const std::vector<double> &a, const std::vector<double> &b, const st
 	const size_t nx = x.size();
 
 	y.reserve(nx);
-	for (size_t n = 0; n < nx; ++n)
+	if (na == nb)
 	{
-		double sum = 0.0;
-		for (size_t i = 0; i <= nb && i <= n; ++i)
-			sum += b[i] * x[n - i];
-		for (size_t i = 1; i <= na && i <= n; ++i)
-			sum -= a[i] * y[n - i];
+		for (size_t n = 0; n < nx; ++n)
+		{
+			double sum = b[0] * x[n];
+			for (size_t i = 1; i <= nb && i <= n; ++i)
+				sum += b[i] * x[n - i] - a[i] * y[n - i];
 
-		y.push_back(sum / a[0]);
+			y.push_back(sum / a[0]);
+		}
+	}
+	else
+	{
+		for (size_t n = 0; n < nx; ++n)
+		{
+			double sum = 0.0;
+			for (size_t i = 0; i <= nb && i <= n; ++i)
+				sum += b[i] * x[n - i];
+			for (size_t i = 1; i <= na && i <= n; ++i)
+				sum -= a[i] * y[n - i];
+
+			y.push_back(sum / a[0]);
+		}
 	}
 }
 
