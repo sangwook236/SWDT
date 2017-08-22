@@ -1,5 +1,6 @@
 #%%------------------------------------------------------------------
 
+import os
 if 'posix' == os.name:
 	#dataset_home_dir_path = '/home/sangwook/my_dataset'
 	dataset_home_dir_path = '/home/HDD1/sangwook/my_dataset'
