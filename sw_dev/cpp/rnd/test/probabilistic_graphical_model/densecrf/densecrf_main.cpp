@@ -507,12 +507,12 @@ void foreground_extraction_for_plant()
 {
 #if 0
 	const std::string img_filename("D:/dataset/phenotyping/cvppp2017_lsc_lcc_challenge/package/CVPPP2017_LSC_training/training/A1/plant001_rgb.png");
-	const std::string anno_filename("D:/dataset/phenotyping/cvppp2017_lsc_lcc_challenge/package/CVPPP2017_LSC_training/training/A1/plant001_fg.png");
-	//const std::string anno_filename("D:/dataset/phenotyping/cvppp2017_lsc_lcc_challenge/package/CVPPP2017_LSC_training/training/prediction_by_fc_densenet/prediction0_500x530.jpg");
+	//const std::string anno_filename("D:/dataset/phenotyping/cvppp2017_lsc_lcc_challenge/package/CVPPP2017_LSC_training/training/A1/plant001_fg.png");
+	const std::string anno_filename("D:/dataset/phenotyping/cvppp2017_lsc_lcc_challenge/package/CVPPP2017_LSC_training/training/prediction_by_fc_densenet/prediction0_500x530.jpg");
 #elif 0
 	const std::string img_filename("D:/dataset/phenotyping/cvppp2017_lsc_lcc_challenge/package/CVPPP2017_LSC_training/training/A1/plant159_rgb.png");
-	const std::string anno_filename("D:/dataset/phenotyping/cvppp2017_lsc_lcc_challenge/package/CVPPP2017_LSC_training/training/A1/plant159_fg.png");
-	//const std::string anno_filename("D:/dataset/phenotyping/cvppp2017_lsc_lcc_challenge/package/CVPPP2017_LSC_training/training/prediction_by_fc_densenet/prediction126_500x530.jpg");
+	//const std::string anno_filename("D:/dataset/phenotyping/cvppp2017_lsc_lcc_challenge/package/CVPPP2017_LSC_training/training/A1/plant159_fg.png");
+	const std::string anno_filename("D:/dataset/phenotyping/cvppp2017_lsc_lcc_challenge/package/CVPPP2017_LSC_training/training/prediction_by_fc_densenet/prediction126_500x530.jpg");
 #elif 1
 	//const std::string img_filename("D:/dataset/phenotyping/RDA/20160406_trimmed_plant/adaptor1/side_0.png");
 	//const std::string anno_filename("D:/dataset/phenotyping/RDA/20160406_trimmed_plant/adaptor1/side_0.png.init_fg.png");
@@ -548,7 +548,7 @@ void foreground_extraction_for_plant()
 #if 0
 		cv::cvtColor(anno, anno_gray, cv::COLOR_BGR2GRAY);
 
-		const cv::Mat& selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
+		const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
 		cv::morphologyEx(anno_gray, anno_gray, cv::MORPH_ERODE, selement, cv::Point(-1, -1), 1);
 
 		cv::cvtColor(anno_gray, anno, cv::COLOR_GRAY2BGR);
@@ -560,7 +560,7 @@ void foreground_extraction_for_plant()
 #elif 1
 		cv::cvtColor(anno, anno_gray, cv::COLOR_BGR2GRAY);
 
-		const cv::Mat& selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
+		const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
 		cv::morphologyEx(anno_gray, anno_gray, cv::MORPH_ERODE, selement, cv::Point(-1, -1), 1);
 
 		// Extract foreground by color filtering.
@@ -571,7 +571,6 @@ void foreground_extraction_for_plant()
 		cv::morphologyEx(anno_bg, anno_bg, cv::MORPH_ERODE, selement, cv::Point(-1, -1), 3);
 
 		cv::cvtColor(anno_gray, anno, cv::COLOR_GRAY2BGR);
-
 		anno.setTo(cv::Scalar::all(128), 0 != anno_bg);
 		anno.setTo(cv::Scalar::all(255), 0 != anno_gray);
 #endif
@@ -629,7 +628,147 @@ void foreground_extraction_for_plant()
 		//	x_stddev = y_stddev = 60.
 		//	r_stddev = g_stddev = b_stddev = 20.
 		//	weight = 10.
-		crf.addPairwiseBilateral(80, 80, 13, 13, 13, img.data, new PottsCompatibility(10));
+		crf.addPairwiseBilateral(80, 80, 13, 13, 13, img.data, new PottsCompatibility(20));
+		//crf.addPairwiseBilateral(80, 80, 13, 13, 13, img.data, new MatrixCompatibility(MatrixXf::Identity(NUM_LABELS, NUM_LABELS)));
+	}
+
+	// Do MAP inference.
+	std::cout << "Start infering..." << std::endl;
+	const int num_iterations = 5;
+	boost::timer::cpu_timer timer;
+#if 0
+	MatrixXf Q = crf.startInference(), t1, t2;
+	std::cout << "KL divergence = " << crf.klDivergence(Q) << std::endl;
+	for (int it = 0; it < num_iterations; ++it)
+	{
+		crf.stepInference(Q, t1, t2);
+		std::cout << "KL divergence = " << crf.klDivergence(Q) << std::endl;
+	}
+	const VectorXs map(crf.currentMap(Q));
+#else
+	const VectorXs map(crf.map(num_iterations));
+#endif
+	std::cout << timer.format() << std::endl;
+	timer.stop();
+	std::cout << "End infering..." << std::endl;
+
+	// Store the result.
+	std::unique_ptr<unsigned char> res(colorize(map, img.cols, img.rows));
+
+	const cv::Mat rgb(img.rows, img.cols, img.type(), res.get());
+	cv::imshow("DenseCRF - Image", img);
+	cv::imshow("DenseCRF - Annotation", anno);
+	cv::imshow("DenseCRF - Result", rgb);
+
+	//cv::imwrite("./data/probabilistic_graphical_model/densecrf/inf_result.jpg", rgb);
+
+	cv::waitKey(0);
+	cv::destroyAllWindows();
+}
+
+void foreground_extraction_for_foreign_body()
+{
+#if 1
+	const std::string img_filename("D:/dataset/failure_analysis/defect/xray_201702/2016y10m03d hamburger(OK_or_NG)_processed/patty/image_equalized/Bad_hamburger_164620_2136000.tif");
+	const std::string anno_filename("D:/work_biz/defeat_analysis_git/proto/result/fc_densenet_using_foreign_body_loader/patty_sample_std_rmsprop_lr1e-5_decay1e-9_batch4_epoch200/prediction/prediction14_1000x1024.jpg");
+	//const std::string img_filename("D:/dataset/failure_analysis/defect/xray_201702/2016y10m03d hamburger(OK_or_NG)_processed/patty/image_equalized/Bad_hamburger_164739_2214828.tif");
+	//const std::string anno_filename("D:/work_biz/defeat_analysis_git/proto/result/fc_densenet_using_foreign_body_loader/patty_sample_std_rmsprop_lr1e-5_decay1e-9_batch4_epoch200/prediction/prediction15_1000x1024.jpg");
+#else
+	//const std::string img_filename("D:/dataset/failure_analysis/defect/xray_201702/2016y10m03d hamburger(OK_or_NG)_processed/FB_trimmed/image_equalized/Bad_hamburger_164620_2136000.tif");
+	//const std::string anno_filename("D:/work_biz/defeat_analysis_git/proto/result/fc_densenet_using_foreign_body_loader/fb_sample_std_rmsprop_lr1e-3_decay1e-7_batch4_epoch1000/prediction/prediction9_400x400.jpg");
+	const std::string img_filename("D:/dataset/failure_analysis/defect/xray_201702/2016y10m03d hamburger(OK_or_NG)_processed/FB_trimmed/image_equalized/Bad_hamburger_164739_2214828.tif");
+	const std::string anno_filename("D:/work_biz/defeat_analysis_git/proto/result/fc_densenet_using_foreign_body_loader/fb_sample_std_rmsprop_lr1e-3_decay1e-7_batch4_epoch1000/prediction/prediction10_400x400.jpg");
+#endif
+
+	// Load the color image and some crude annotations (which are used in a simple classifier).
+	const cv::Mat img(cv::imread(img_filename, cv::IMREAD_COLOR));
+	if (img.empty())
+	{
+		std::cerr << "Failed to load image: " << img_filename << std::endl;
+		return;
+	}
+	cv::Mat anno(cv::imread(anno_filename, cv::IMREAD_COLOR));
+	if (anno.empty())
+	{
+		std::cerr << "Failed to load annotations: " << anno_filename << std::endl;
+		return;
+	}
+	if (img.rows != anno.rows || img.cols != anno.cols)
+	{
+		std::cerr << "Annotation size doesn't match image!" << std::endl;
+		return;
+	}
+
+#if 1
+	// TODO [caution] >> Here 0 means the unknown label. So the background label has to be changed from 0 to non-zero.
+	{
+		cv::Mat anno_gray;
+		cv::cvtColor(anno, anno_gray, cv::COLOR_BGR2GRAY);
+
+		cv::Mat anno_bg = cv::Scalar::all(255) - anno_gray;
+
+		const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
+		cv::morphologyEx(anno_bg, anno_bg, cv::MORPH_ERODE, selement, cv::Point(-1, -1), 30);
+		cv::morphologyEx(anno_gray, anno_gray, cv::MORPH_ERODE, selement, cv::Point(-1, -1), 5);
+
+		cv::cvtColor(anno_gray, anno, cv::COLOR_GRAY2BGR);
+		anno.setTo(cv::Scalar::all(128), 0 != anno_bg);
+		anno.setTo(cv::Scalar::all(255), 0 != anno_gray);
+	}
+#endif
+
+	// Number of labels.
+	const int NUM_LABELS = 2;
+
+	// Setup the CRF model.
+	DenseCRF2D crf(img.cols, img.rows, NUM_LABELS);
+	{
+#if 1
+		// Put your own unary classifier here.
+		// Certainty that the groundtruth is correct.
+		const float GT_PROB = 0.9f;
+		// Simple classifier that is 50% certain that the annotation is correct.
+		const MatrixXf unary(computeUnary(getLabeling(anno.data, anno.rows * anno.cols, NUM_LABELS), NUM_LABELS, GT_PROB));
+
+		// Specify the unary potential as an array of size W*H*(#classes).
+		//	Packing order: x0y0l0 x0y0l1 x0y0l2 .. x1y0l0 x1y0l1 ...
+		crf.setUnaryEnergy(unary);
+#else
+		// Get the logistic features (unary term).
+		// Here we just use the color as a feature.
+		MatrixXf logistic_feature(4, anno.rows * anno.cols), logistic_transform(NUM_LABELS, 4);
+		logistic_feature.fill(1.0f);
+		for (int r = 0, idx = 0; r < img.rows; ++r)
+			for (int c = 0; c < img.cols; ++c, ++idx)
+			{
+				const cv::Vec3b bgr(img.at<cv::Vec3b>(r, c));
+				logistic_feature(0, idx) = bgr[2] / 255.0f;
+				logistic_feature(1, idx) = bgr[1] / 255.0f;
+				logistic_feature(2, idx) = bgr[0] / 255.0f;
+			}
+		for (int j = 0; j < logistic_transform.cols(); ++j)
+			for (int i = 0; i < logistic_transform.rows(); ++i)
+			{
+				//--S [] 2017/05/18: Sang-Wook Lee.
+				//logistic_transform(i, j) = 0.01f * (1.0f - 2.0f * (float)random() / (float)RAND_MAX);
+				logistic_transform(i, j) = 0.01f * (1.0f - 2.0f * (float)std::rand() / (float)RAND_MAX);  // TODO [check] >> What is its objective?
+																										  //--E [] 2017/05/18: Sang-Wook Lee.
+			}
+
+		crf.setUnaryEnergy(logistic_transform, logistic_feature);
+#endif
+	}
+	{
+		// Add a color independent term (feature = pixel location 0..W-1, 0..H-1).
+		//	x_stddev = y_stddev = 3.
+		//	weight = 3.
+		crf.addPairwiseGaussian(1, 1, new PottsCompatibility(4));
+
+		// Add a color dependent term (feature = xyrgb).
+		//	x_stddev = y_stddev = 60.
+		//	r_stddev = g_stddev = b_stddev = 20.
+		//	weight = 10.
+		crf.addPairwiseBilateral(20, 20, 4, 4, 4, img.data, new PottsCompatibility(3));
 		//crf.addPairwiseBilateral(80, 80, 13, 13, 13, img.data, new MatrixCompatibility(MatrixXf::Identity(NUM_LABELS, NUM_LABELS)));
 	}
 
@@ -681,7 +820,8 @@ int densecrf_main(int argc, char *argv[])
 	//local::learning_example();
 
 	// Application.
-	local::foreground_extraction_for_plant();
+	//local::foreground_extraction_for_plant();
+	local::foreground_extraction_for_foreign_body();
 
 	return 0;
 }
