@@ -59,6 +59,7 @@ def load_dataset(max_features, max_len):
 
 max_features = 20000
 maxlen = 80  # Cut texts after this number of words (among top max_features most common words).
+embedding_size = 128
 batch_size = 32
 num_epoches = 15
 
@@ -67,7 +68,7 @@ x_train, y_train, x_test, y_test = load_dataset(max_features, maxlen)
 
 # Build model.
 model = Sequential()
-model.add(Embedding(max_features, 128))
+model.add(Embedding(max_features, embedding_size))
 model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
 model.add(Dense(1, activation='sigmoid'))
 
@@ -88,8 +89,8 @@ print('Test accuracy:', acc)
 # Bidirectional LSTM.
 
 max_features = 20000
-# Cut texts after this number of words (among top max_features most common words).
-maxlen = 100
+maxlen = 100  # Cut texts after this number of words (among top max_features most common words).
+embedding_size = 128
 batch_size = 32
 num_epochs = 4
 
@@ -98,7 +99,7 @@ x_train, y_train, x_test, y_test = load_dataset(max_features, maxlen)
 
 # Build model.
 model = Sequential()
-model.add(Embedding(max_features, 128, input_length=maxlen))
+model.add(Embedding(max_features, embedding_size, input_length=maxlen))
 model.add(Bidirectional(LSTM(64)))
 model.add(Dropout(0.5))
 model.add(Dense(1, activation='sigmoid'))
@@ -123,7 +124,7 @@ print('Test accuracy:', acc)
 max_features = 5000
 maxlen = 400
 batch_size = 32
-embedding_dims = 50
+embedding_size = 50
 filters = 250
 kernel_size = 3
 hidden_dims = 250
@@ -136,7 +137,7 @@ x_train, y_train, x_test, y_test = load_dataset(max_features, maxlen)
 model = Sequential()
 
 # Start off with an efficient embedding layer which maps our vocab indices into embedding_dims dimensions.
-model.add(Embedding(max_features, embedding_dims, input_length=maxlen))
+model.add(Embedding(max_features, embedding_size, input_length=maxlen))
 model.add(Dropout(0.2))
 
 # Add a Convolution1D, which will learn filters word group filters of size filter_length.

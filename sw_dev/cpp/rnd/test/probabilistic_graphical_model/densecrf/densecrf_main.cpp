@@ -674,10 +674,10 @@ void foreground_extraction_for_foreign_body()
 	//const std::string img_filename("D:/dataset/failure_analysis/defect/xray_201702/2016y10m03d hamburger(OK_or_NG)_processed/patty/image_equalized/Bad_hamburger_164739_2214828.tif");
 	//const std::string anno_filename("D:/work_biz/defeat_analysis_git/proto/result/fc_densenet_using_foreign_body_loader/patty_sample_std_rmsprop_lr1e-5_decay1e-9_batch4_epoch200/prediction/prediction15_1000x1024.jpg");
 #else
-	//const std::string img_filename("D:/dataset/failure_analysis/defect/xray_201702/2016y10m03d hamburger(OK_or_NG)_processed/FB_trimmed/image_equalized/Bad_hamburger_164620_2136000.tif");
-	//const std::string anno_filename("D:/work_biz/defeat_analysis_git/proto/result/fc_densenet_using_foreign_body_loader/fb_sample_std_rmsprop_lr1e-3_decay1e-7_batch4_epoch1000/prediction/prediction9_400x400.jpg");
-	const std::string img_filename("D:/dataset/failure_analysis/defect/xray_201702/2016y10m03d hamburger(OK_or_NG)_processed/FB_trimmed/image_equalized/Bad_hamburger_164739_2214828.tif");
-	const std::string anno_filename("D:/work_biz/defeat_analysis_git/proto/result/fc_densenet_using_foreign_body_loader/fb_sample_std_rmsprop_lr1e-3_decay1e-7_batch4_epoch1000/prediction/prediction10_400x400.jpg");
+	const std::string img_filename("D:/dataset/failure_analysis/defect/xray_201702/2016y10m03d hamburger(OK_or_NG)_processed/FB_trimmed/image_equalized/Bad_hamburger_164620_2136000.tif");
+	const std::string anno_filename("D:/work_biz/defeat_analysis_git/proto/result/fc_densenet_using_foreign_body_loader/fb_sample_std_rmsprop_lr1e-3_decay1e-7_batch4_epoch1000/prediction/prediction9_400x400.jpg");
+	//const std::string img_filename("D:/dataset/failure_analysis/defect/xray_201702/2016y10m03d hamburger(OK_or_NG)_processed/FB_trimmed/image_equalized/Bad_hamburger_164739_2214828.tif");
+	//const std::string anno_filename("D:/work_biz/defeat_analysis_git/proto/result/fc_densenet_using_foreign_body_loader/fb_sample_std_rmsprop_lr1e-3_decay1e-7_batch4_epoch1000/prediction/prediction10_400x400.jpg");
 #endif
 
 	// Load the color image and some crude annotations (which are used in a simple classifier).
