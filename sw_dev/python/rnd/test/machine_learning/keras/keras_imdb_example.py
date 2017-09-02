@@ -11,6 +11,7 @@ from keras.layers import Dense, LSTM, Dropout, Activation, Bidirectional
 from keras.layers.convolutional import Conv1D
 from keras.layers.pooling import MaxPooling1D, GlobalMaxPooling1D
 from keras.layers.embeddings import Embedding
+from keras import optimizers, callbacks
 from keras.preprocessing import sequence
 from keras.datasets import imdb
 
@@ -58,22 +59,30 @@ def load_dataset(max_features, max_len):
 # LSTM.
 
 max_features = 20000
-maxlen = 80  # Cut texts after this number of words (among top max_features most common words).
+max_len = 400  # Cut texts after this number of words (among top max_features most common words).
 embedding_size = 128
 batch_size = 32
-num_epoches = 15
+num_epoches = 20
 
 # Loading data.
-x_train, y_train, x_test, y_test = load_dataset(max_features, maxlen)
+x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
 
 # Build model.
 model = Sequential()
 model.add(Embedding(max_features, embedding_size))
-model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
+model.add(LSTM(256, dropout=0.2, recurrent_dropout=0.2))
 model.add(Dense(1, activation='sigmoid'))
 
+#optimizer = optimizers.SGD(lr=0.01, decay=1.0e-7, momentum=0.95, nesterov=False)
+#optimizer = optimizers.RMSprop(lr=1.0e-5, decay=1.0e-9, rho=0.9, epsilon=1.0e-8)
+#optimizer = optimizers.Adagrad(lr=0.01, decay=1.0e-7, epsilon=1.0e-8)
+#optimizer = optimizers.Adadelta(lr=1.0, decay=0.0, rho=0.95, epsilon=1.0e-8)
+optimizer = optimizers.Adam(lr=1.0e-5, decay=1.0e-9, beta_1=0.9, beta_2=0.999, epsilon=1.0e-8)
+#optimizer = optimizers.Adamax(lr=0.002, decay=0.0, beta_1=0.9, beta_2=0.999, epsilon=1.0e-8)
+#optimizer = optimizers.Nadam(lr=0.002, schedule_decay=0.004, beta_1=0.9, beta_2=0.999, epsilon=1.0e-8)
+
 # Try using different optimizers and different optimizer configs.
-model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
 print(model.summary())
 
 # Train.
@@ -89,17 +98,17 @@ print('Test accuracy:', acc)
 # Bidirectional LSTM.
 
 max_features = 20000
-maxlen = 100  # Cut texts after this number of words (among top max_features most common words).
+max_len = 400  # Cut texts after this number of words (among top max_features most common words).
 embedding_size = 128
 batch_size = 32
-num_epochs = 4
+num_epochs = 20
 
 # Loading data.
-x_train, y_train, x_test, y_test = load_dataset(max_features, maxlen)
+x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
 
 # Build model.
 model = Sequential()
-model.add(Embedding(max_features, embedding_size, input_length=maxlen))
+model.add(Embedding(max_features, embedding_size, input_length=max_len))
 model.add(Bidirectional(LSTM(64)))
 model.add(Dropout(0.5))
 model.add(Dense(1, activation='sigmoid'))
@@ -122,22 +131,22 @@ print('Test accuracy:', acc)
 
 # Set parameters.
 max_features = 5000
-maxlen = 400
-batch_size = 32
-embedding_size = 50
+max_len = 400
+embedding_size = 128
 filters = 250
 kernel_size = 3
 hidden_dims = 250
-num_epochs = 2
+batch_size = 32
+num_epochs = 20
 
 # Loading data.
-x_train, y_train, x_test, y_test = load_dataset(max_features, maxlen)
+x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
 
 # Build model.
 model = Sequential()
 
 # Start off with an efficient embedding layer which maps our vocab indices into embedding_dims dimensions.
-model.add(Embedding(max_features, embedding_size, input_length=maxlen))
+model.add(Embedding(max_features, embedding_size, input_length=max_len))
 model.add(Dropout(0.2))
 
 # Add a Convolution1D, which will learn filters word group filters of size filter_length.
@@ -171,7 +180,7 @@ print('Test accuracy:', acc)
 
 # Embedding.
 max_features = 20000
-maxlen = 100
+max_len = 400
 embedding_size = 128
 
 # Convolution.
@@ -184,18 +193,18 @@ lstm_output_size = 70
 
 # Training.
 batch_size = 30
-num_epochs = 2
+num_epochs = 20
 
 # NOTICE [note] >>
 #	batch_size is highly sensitive.
 #	Only 2 epochs are needed as the dataset is very small.
 
 # Loading data.
-x_train, y_train, x_test, y_test = load_dataset(max_features, maxlen)
+x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
 
 # Build model.
 model = Sequential()
-model.add(Embedding(max_features, embedding_size, input_length=maxlen))
+model.add(Embedding(max_features, embedding_size, input_length=max_len))
 model.add(Dropout(0.25))
 model.add(Conv1D(filters, kernel_size, padding='valid', activation='relu', strides=1))
 model.add(MaxPooling1D(pool_size=pool_size))

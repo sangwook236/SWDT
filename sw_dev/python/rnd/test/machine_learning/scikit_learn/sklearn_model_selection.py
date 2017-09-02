@@ -1,8 +1,50 @@
-# REF [site] >> http://scikit-learn.org/stable/modules/grid_search.html
-# REF [site] >> http://scikit-learn.org/stable/auto_examples/model_selection/randomized_search.html
+# REF [site] >> http://scikit-learn.org/stable/model_selection.html
 
 #%%-------------------------------------------------------------------
-# REF [paper] >> "Random Search for Hyper-Parameter Optimization", JMLR 2012
+# Cross validation.
+# REF [site] >> http://scikit-learn.org/stable/modules/cross_validation.html
+
+import numpy as np
+from sklearn.model_selection import train_test_split, cross_val_score, ShuffleSplit
+from sklearn import metrics
+from sklearn import datasets
+from sklearn import svm
+
+iris = datasets.load_iris()
+
+#
+X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.4, random_state=0)
+
+print(X_train.shape, y_train.shape)
+print(X_test.shape, y_test.shape)
+
+clf = svm.SVC(kernel='linear', C=1).fit(X_train, y_train)
+scores = clf.score(X_test, y_test)   
+print('scores =', scores)
+
+#
+clf = svm.SVC(kernel='linear', C=1)
+scores = cross_val_score(clf, iris.data, iris.target, cv=5)
+print('scores =', scores)
+print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+scores = cross_val_score(clf, iris.data, iris.target, cv=5, scoring='f1_macro')
+print('scores =', scores)
+print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+#
+cv = ShuffleSplit(n_splits=3, test_size=0.3, random_state=0)
+scores = cross_val_score(clf, iris.data, iris.target, cv=cv)
+print('scores =', scores)
+print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+#%%-------------------------------------------------------------------
+# Hyper-parameter optimization.
+
+# REF [paper] >> "Random Search for Hyper-Parameter Optimization", JMLR 2012.
+
+# REF [site] >> http://scikit-learn.org/stable/modules/grid_search.html
+# REF [site] >> http://scikit-learn.org/stable/auto_examples/model_selection/randomized_search.html
 
 import numpy as np
 
