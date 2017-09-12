@@ -7,7 +7,7 @@ if 'posix' == os.name:
 else:
 	dataset_home_dir_path = 'D:/dataset'
 
-data_dir_path = dataset_home_dir_path + '/failure_analysis/defect/motor_20170621/0_original/500-1500Hz'
+data_dir_path = dataset_home_dir_path + '/failure_analysis/defect/knock_sound/500-1500Hz'
 
 #%%------------------------------------------------------------------
 
