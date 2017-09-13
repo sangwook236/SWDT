@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 	void spirit_classic();
 	void statechart();
 	void thread();
+	void process();
 	void interprocess();
 
 	void units();
@@ -134,7 +135,9 @@ int main(int argc, char *argv[])
 
 			//spirit_classic();
 			//statechart();
+
 			//thread();
+			process();
 			//interprocess();  // Not yet implemented.
 		}
 
@@ -156,7 +159,7 @@ int main(int argc, char *argv[])
 			//multiprecision();  // Not yet implemented.
 
 			//polygon();
-			geometry();
+			//geometry();
 
 			//graph();
 			//graph_parallel();  // Not yet implemented.
