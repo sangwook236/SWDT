@@ -1,15 +1,7 @@
-#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
-#define _WIN32_WINNT_NT4 0x0400  // Windows NT 4.0
-#define _WIN32_WINNT_WIN2K 0x0500  // Windows 2000
-#define _WIN32_WINNT_WINXP 0x0501  // Windows XP
-#define _WIN32_WINNT_WIN7 0x0601  // Windows 7
-#define _WIN32_WINNT_WIN10 0x0A00  // Windows 10
-#define _WIN32_WINNT _WIN32_WINNT_WIN10
-#endif
-
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
 #include <iostream>
+#include <stdexcept>
 
 
 namespace {
@@ -17,7 +9,9 @@ namespace local {
 
 void asio_async_tcp_client()
 {
-	boost::asio::io_service ioService;
+	throw std::runtime_error("Not yet implemented");
+
+	//boost::asio::io_service ioService;
 }
 
 void asio_sync_tcp_client()
@@ -26,8 +20,8 @@ void asio_sync_tcp_client()
 	{
 		boost::asio::io_service ioService;
 		boost::asio::ip::tcp::resolver resolver(ioService);
-		//boost::asio::ip::tcp::resolver::query query("127.0.0.1", "daytime");  // use a service name.
-		boost::asio::ip::tcp::resolver::query query("127.0.0.1", "30001");  // use a port number.
+		//boost::asio::ip::tcp::resolver::query query("127.0.0.1", "daytime");  // Use a service name.
+		boost::asio::ip::tcp::resolver::query query("127.0.0.1", "30001");  // Use a port number.
 		boost::asio::ip::tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 		boost::asio::ip::tcp::resolver::iterator itEnd;
 		boost::asio::ip::tcp::socket socket(ioService);
@@ -83,9 +77,9 @@ void asio_sync_tcp_client()
 			}
 		}
 	}
-	catch (const std::exception &e)
+	catch (const std::exception &ex)
 	{
-		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
+		std::cerr << "Boost.Asio exception: " << ex.what() << std::endl;
 	}
 }
 
@@ -94,6 +88,6 @@ void asio_sync_tcp_client()
 
 void asio_tcp_client()
 {
-	//local::asio_async_tcp_client();
+	//local::asio_async_tcp_client();  // Not yet implemented.
 	local::asio_sync_tcp_client();
 }

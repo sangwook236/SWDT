@@ -181,6 +181,7 @@
     <ClCompile Include="accumulator.cpp" />
     <ClCompile Include="any.cpp" />
     <ClCompile Include="array.cpp" />
+    <ClCompile Include="asio\asio_io_service.cpp" />
     <ClCompile Include="asio\asio_line_based_operation.cpp" />
     <ClCompile Include="asio\asio_multicast_receiver.cpp" />
     <ClCompile Include="asio\asio_multicast_sender.cpp" />

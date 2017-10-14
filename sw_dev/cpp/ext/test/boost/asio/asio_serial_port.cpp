@@ -1,12 +1,3 @@
-#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
-#define _WIN32_WINNT_NT4 0x0400  // Windows NT 4.0
-#define _WIN32_WINNT_WIN2K 0x0500  // Windows 2000
-#define _WIN32_WINNT_WINXP 0x0501  // Windows XP
-#define _WIN32_WINNT_WIN7 0x0601  // Windows 7
-#define _WIN32_WINNT_WIN10 0x0A00  // Windows 10
-#define _WIN32_WINNT _WIN32_WINNT_WIN10
-#endif
-
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
 #include <boost/bind.hpp>
@@ -64,7 +55,7 @@ public:
 		}
 		else
 		{
-			std::cerr << "failed to open serial port" << std::endl;
+			std::cerr << "Failed to open serial port." << std::endl;
 			return false;
 		}
 	}
@@ -74,7 +65,7 @@ public:
 		io_service_.post(boost::bind(&simple_serial_port_handler::do_close, this));
 	}
 
-	bool is_active() const  // return true if the serial port is still active
+	bool is_active() const  // Return true if the serial port is still active.
 	{
 		return is_active_;
 	}
@@ -138,8 +129,8 @@ private:
 		if (!error)
 		{
 #if 1
-			// for test.
-			std::cout << "sent: " << msg_.substr(0, len) << std::endl;
+			// For test.
+			std::cout << "Sent: " << msg_.substr(0, len) << std::endl;
 #endif
 
 			msg_.erase(0, len);
@@ -197,7 +188,7 @@ public:
 		{
 			is_active_ = true;
 
-			// options must be set after port was opened
+			// Options must be set after port was opened.
 			port_.set_option(boost::asio::serial_port::baud_rate(baud_rate));
 			port_.set_option(boost::asio::serial_port::flow_control(boost::asio::serial_port::flow_control::none));
 			port_.set_option(boost::asio::serial_port::parity(boost::asio::serial_port::parity::none));
@@ -210,7 +201,7 @@ public:
 		}
 		else
 		{
-			std::cerr << "failed to open serial port" << std::endl;
+			std::cerr << "Failed to open serial port." << std::endl;
 			return false;
 		}
 	}
@@ -225,7 +216,7 @@ public:
 		io_service_.post(boost::bind(&better_serial_port_handler::do_cancel, this, boost::system::error_code()));
 	}
 
-	bool is_active() const  // return true if the serial port is still active
+	bool is_active() const  // Return true if the serial port is still active.
 	{
 		return is_active_;
 	}
@@ -248,22 +239,22 @@ private:
 	{
 		if (!error)
 		{
-			// 1. push received data.
+			// 1. Push received data.
 			//read_msgs_.push_back(read_msg_);
 			for (size_t i = 0; i < bytes_transferred; ++i)
 				if (read_buf_.full())
-					std::cerr << "receive buffer is full" << std::endl;
+					std::cerr << "Receive buffer is full." << std::endl;
 				else
 					read_buf_.push_back(read_msg_[i]);
 
-			// 2. process buffered data.
+			// 2. Process buffered data.
 
-			// 3. pop processed data.
+			// 3. Pop processed data.
 			//read_msgs_.pop_front();
 
 #if 1
-			// for test.
-			std::cout << "***** read: " << std::endl;
+			// For test.
+			std::cout << "***** Read: " << std::endl;
 			std::cout.write(read_msg_, (std::streamsize)bytes_transferred);
 			std::cout << std::endl;
 #endif
@@ -296,8 +287,8 @@ private:
 		if (!error)
 		{
 #if 1
-			// for test.
-			std::cout << "***** write: " << std::endl;
+			// For test.
+			std::cout << "***** Write: " << std::endl;
 			std::cout << write_msgs_.front().c_str() << std::endl;
 #endif
 
@@ -311,14 +302,14 @@ private:
 
 	void do_close(const boost::system::error_code &error)
 	{
-		if (error == boost::asio::error::operation_aborted)  // if this call is the result of a timer cancel()
+		if (error == boost::asio::error::operation_aborted)  // If this call is the result of a timer cancel().
 			return;
 
 		if (error == boost::asio::error::eof)
 		{
 		}
 		else if (error)
-			std::cerr << "error: " << error.message() << std::endl;
+			std::cerr << "Error: " << error.message() << std::endl;
 
 		port_.close();
 		is_active_ = false;
@@ -330,7 +321,7 @@ private:
 		{
 		}
 		else if (error)
-			std::cerr << "error: " << error.message() << std::endl;
+			std::cerr << "Error: " << error.message() << std::endl;
 
 		port_.cancel();
 	}
@@ -360,9 +351,9 @@ struct serial_port_thread_functor
 public:
 	void operator()()
 	{
-		std::cout << "serial port thread is started" << std::endl;
+		std::cout << "Serial port thread is started." << std::endl;
 		ioService_.run();
-		std::cout << "serial port thread is terminated" << std::endl;
+		std::cout << "Serial port thread is terminated." << std::endl;
 	}
 
 private:
@@ -378,23 +369,23 @@ void asio_async_serial_port_simple()
 		simple_serial_port_handler handler(ioService);
 		if (!handler.open("COM1", 57600))
 		{
-			std::cout << "serial port fails to be opened" << std::endl;
+			std::cout << "Serial port fails to be opened." << std::endl;
 			return;
 		}
 
 #if 1
-		// for test.
-		handler.write("serial port: test message 1");
-		//handler.write("serial port: test message 2");  // Oops!!! error
+		// For test.
+		handler.write("Serial port: test message 1.");
+		//handler.write("Serial port: test message 2.");  // Oops!!! error.
 #endif
 
 		ioService.run();
 
-		std::cout << "io_service is terminated" << std::endl;
+		std::cout << "io_service is terminated." << std::endl;
 	}
-	catch (const std::exception &e)
+	catch (const std::exception &ex)
 	{
-		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
+		std::cerr << "Boost.Asio exception: " << ex.what() << std::endl;
 	}
 }
 
@@ -404,7 +395,7 @@ void asio_async_serial_port_better()
 	{
 		const int mode = 2;
 
-		// one io service & one serial port (no thread)
+		// One io service & one serial port (no thread).
 		if (0 == mode)
 		{
 			boost::asio::io_service ioService;
@@ -412,22 +403,22 @@ void asio_async_serial_port_better()
 			better_serial_port_handler handler(ioService);
 			if (!handler.open("COM1", 57600))
 			{
-				std::cout << "serial port fails to be opened" << std::endl;
+				std::cout << "Serial port fails to be opened." << std::endl;
 				return;
 			}
 
 #if 1
-			// for test.
-			handler.write("serial port: test message 1");
-			handler.write("serial port: test message 2");
+			// For test.
+			handler.write("Serial port: test message 1.");
+			handler.write("Serial port: test message 2.");
 			//handler.cancel();
 #endif
 
 			ioService.run();
 
-			std::cout << "io_service is terminated" << std::endl;
+			std::cout << "io_service is terminated." << std::endl;
 		}
-		// one io service & two serial ports (one thread)
+		// One io service & two serial ports (one thread).
 		else if (1 == mode)
 		{
 			boost::asio::io_service ioService;
@@ -435,29 +426,29 @@ void asio_async_serial_port_better()
 			better_serial_port_handler handler2(ioService);
 			if (!handler1.open("COM1", 57600) || !handler2.open("COM10", 57600))
 			{
-				std::cout << "serial ports fail to be opened" << std::endl;
+				std::cout << "Serial ports fail to be opened." << std::endl;
 				return;
 			}
 
 			boost::scoped_ptr<boost::thread> thrd(new boost::thread(serial_port_thread_functor(ioService)));
 #if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
-			Sleep(0);  // un-necessary
+			Sleep(0);  // Un-necessary.
 #else
             boost::this_thread::yield();
 #endif
 
 #if 1
-			// for test.
-			handler1.write("serial port 1: test message #1");
-			handler2.write("serial port 2: test message #1");
-			handler1.write("serial port 1: test message #2");
-			handler2.write("serial port 2: test message #2");
+			// For test.
+			handler1.write("Serial port 1: test message #1.");
+			handler2.write("Serial port 2: test message #1.");
+			handler1.write("Serial port 1: test message #2.");
+			handler2.write("Serial port 2: test message #2.");
 #endif
 
-			std::cout << "wait for joining thread" << std::endl;
+			std::cout << "Wait for joining thread." << std::endl;
 			if (thrd.get()) thrd->join();
 		}
-		// two io services & two serial ports (two threads)
+		// Two io services & two serial ports (two threads).
 		else if (2 == mode)
 		{
 			boost::asio::io_service ioService1, ioService2;
@@ -465,34 +456,34 @@ void asio_async_serial_port_better()
 			better_serial_port_handler handler2(ioService2);
 			if (!handler1.open("COM1", 57600) || !handler2.open("COM10", 57600))
 			{
-				std::cout << "serial ports fail to be opened" << std::endl;
+				std::cout << "Serial ports fail to be opened." << std::endl;
 				return;
 			}
 
 			boost::scoped_ptr<boost::thread> thrd1(new boost::thread(serial_port_thread_functor(ioService1)));
 			boost::scoped_ptr<boost::thread> thrd2(new boost::thread(serial_port_thread_functor(ioService2)));
 #if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
-			Sleep(0);  // un-necessary
+			Sleep(0);  // Un-necessary.
 #else
             boost::this_thread::yield();
 #endif
 
 #if 1
-			// for test.
-			handler1.write("serial port 1: test message #1");
-			handler2.write("serial port 2: test message #1");
-			handler1.write("serial port 1: test message #2");
-			handler2.write("serial port 2: test message #2");
+			// For test.
+			handler1.write("Serial port 1: test message #1.");
+			handler2.write("Serial port 2: test message #1.");
+			handler1.write("Serial port 1: test message #2.");
+			handler2.write("Serial port 2: test message #2.");
 #endif
 
-			std::cout << "wait for joining thread" << std::endl;
+			std::cout << "Wait for joining thread." << std::endl;
 			if (thrd1.get()) thrd1->join();
 			if (thrd2.get()) thrd2->join();
 		}
 	}
-	catch (const std::exception &e)
+	catch (const std::exception &ex)
 	{
-		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
+		std::cerr << "Boost.Asio exception: " << ex.what() << std::endl;
 	}
 }
 
@@ -510,7 +501,7 @@ void asio_sync_serial_port()
 		port.open(port_name);
 		if (port.is_open())
 		{
-			// options must be set after port was opened
+			// Options must be set after port was opened.
 			port.set_option(boost::asio::serial_port::baud_rate(59200));
 			port.set_option(boost::asio::serial_port::flow_control(boost::asio::serial_port::flow_control::none));
 			port.set_option(boost::asio::serial_port::parity(boost::asio::serial_port::parity::none));
@@ -528,9 +519,9 @@ void asio_sync_serial_port()
 
 				const std::size_t len = port.read_some(boost::asio::buffer(buf), error);
 				if (error == boost::asio::error::eof)
-					break; // connection closed cleanly by peer.
+					break;  // Connection closed cleanly by peer.
 				else if (error)
-					throw boost::system::system_error(error); // some other error.
+					throw boost::system::system_error(error);  // Some other error.
 
 				std::cout.write(buf.data(), (std::streamsize)len);
 			}
@@ -538,9 +529,9 @@ void asio_sync_serial_port()
 			port.close();
 		}
 	}
-	catch (const std::exception &e)
+	catch (const std::exception &ex)
 	{
-		std::cerr << "Boost.Asio exception: " << e.what() << std::endl;
+		std::cerr << "Boost.Asio exception: " << ex.what() << std::endl;
 	}
 }
 

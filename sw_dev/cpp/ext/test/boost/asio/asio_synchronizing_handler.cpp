@@ -1,12 +1,3 @@
-#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
-#define _WIN32_WINNT_NT4 0x0400  // Windows NT 4.0
-#define _WIN32_WINNT_WIN2K 0x0500  // Windows 2000
-#define _WIN32_WINNT_WINXP 0x0501  // Windows XP
-#define _WIN32_WINNT_WIN7 0x0601  // Windows 7
-#define _WIN32_WINNT_WIN10 0x0A00  // Windows 10
-#define _WIN32_WINNT _WIN32_WINNT_WIN10
-#endif
-
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/bind.hpp>
@@ -21,7 +12,7 @@ class printer
 {
 public:
 	printer(boost::asio::io_service& io)
-		: strand_(io),
+	: strand_(io),
 		timer1_(io, boost::posix_time::seconds(1)),
 		timer2_(io, boost::posix_time::seconds(1)),
 		count_(0)

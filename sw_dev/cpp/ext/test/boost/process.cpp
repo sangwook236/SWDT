@@ -1,6 +1,7 @@
 #include <boost/process.hpp>
 #include <boost/asio.hpp>
 #include <boost/filesystem.hpp>
+#include <thread>
 #include <chrono>
 #include <iostream>
 
@@ -85,8 +86,7 @@ void sync_child_example1()
 	//	std::cerr << "Timeout." << std::endl;
 	//}
 
-	const int exitCode = c.exit_code();
-	std::cout << "Exit code = " << exitCode << std::endl;
+	std::cout << "Exit code = " << c.exit_code() << std::endl;
 }
 
 // REF [site] >> http://www.boost.org/doc/libs/1_65_1/doc/html/boost_process/tutorial.html
@@ -112,8 +112,7 @@ void sync_child_example2()
 
 	c.wait();
 
-	const int exitCode = c.exit_code();
-	std::cout << "Exit code = " << exitCode << std::endl;
+	std::cout << "Exit code = " << c.exit_code() << std::endl;
 	std::cout << "Count = " << data.size() << std::endl;
 	if (!data.empty())
 	{
@@ -149,8 +148,7 @@ void sync_child_example3()
 	nm.wait();
 	filt.wait();
 
-	const int exitCode = filt.exit_code();
-	std::cout << "Exit code = " << exitCode << std::endl;
+	std::cout << "Exit code = " << filt.exit_code() << std::endl;
 	std::cout << "Count = " << data.size() << std::endl;
 	if (!data.empty())
 	{
@@ -172,26 +170,21 @@ void async_child_example1()
 	boost::process::child c(boost::process::search_path("ls"), "-la", boost::process::std_out > buf, ios);
 #endif
 
+	// FIXME [check] >> An error occurred in debug mode.
 	ios.run();
+	// TODO [check] >> Exit code is changed.
+	//c.wait();  // Passing an instance of boost::asio::io_service to the launching function automatically cause it to wait asynchronously for the exit, so no call of wait is needed.
 
-	std::vector<std::string> data;
-	std::string line;
-	std::istream is(&buf);
-	while (c.running())
+	std::cout << "Exit code = " << c.exit_code() << std::endl;
+	if (buf.size())
 	{
-		std::getline(is, line);
-		if (!line.empty()) data.push_back(line);
-	}
-
-	c.wait();
-
-	const int exitCode = c.exit_code();
-	std::cout << "Exit code = " << exitCode << std::endl;
-	std::cout << "Count = " << data.size() << std::endl;
-	if (!data.empty())
-	{
-		std::copy(data.begin(), data.end(), std::ostream_iterator<std::string>(std::cout, "\n"));
-		std::cout << std::endl;
+		std::istream is(&buf);
+		std::string line;
+		while (is)
+		{
+			std::getline(is, line);
+			std::cout << line << std::endl;
+		}
 	}
 }
 
@@ -199,7 +192,7 @@ void async_child_example1()
 void async_child_example2()
 {
 	boost::asio::io_service ios;
-	std::vector<char> buf;
+	std::vector<char> buf(128);
 	boost::process::async_pipe ap(ios);
 
 #if defined(_WIN64) || defined(_WIN32)
@@ -212,24 +205,27 @@ void async_child_example2()
 	boost::asio::async_read(ap, boost::asio::buffer(buf), [](const boost::system::error_code &ec, size_t size) {});
 
 	ios.run();
+	//c.wait();  // Passing an instance of boost::asio::io_service to the launching function automatically cause it to wait asynchronously for the exit, so no call of wait is needed.
 
-	c.wait();
-
-	const int exitCode = c.exit_code();
-	std::cout << "Exit code = " << exitCode << std::endl;
+	std::cout << "Exit code = " << c.exit_code() << std::endl;
 	std::cout << "Count = " << buf.size() << std::endl;
 	if (!buf.empty())
 	{
 		std::copy(buf.begin(), buf.end(), std::ostream_iterator<char>(std::cout, ""));
 		std::cout << std::endl;
 	}
+
+#if defined(_DEBUG)
+	// For debug mode.
+	ap.close();
+#endif
 }
 
 // REF [site] >> http://www.boost.org/doc/libs/1_65_1/doc/html/boost_process/tutorial.html
 void async_child_example3()
 {
 	boost::asio::io_service ios;
-	std::vector<char> buf;
+	std::vector<char> buf(128);
 
 #if defined(_WIN64) || defined(_WIN32)
 	//boost::process::child c(boost::process::search_path("dir"), "/a", boost::process::std_out > boost::asio::buffer(buf), ios);
@@ -238,12 +234,12 @@ void async_child_example3()
 	boost::process::child c(boost::process::search_path("ls"), "-la", boost::process::std_out > boost::asio::buffer(buf), ios);
 #endif
 
+	// FIXME [check] >> An error occurred in debug mode.
 	ios.run();
+	// TODO [check] >> Exit code is changed.
+	//c.wait();  // Passing an instance of boost::asio::io_service to the launching function automatically cause it to wait asynchronously for the exit, so no call of wait is needed.
 
-	c.wait();
-
-	const int exitCode = c.exit_code();
-	std::cout << "Exit code = " << exitCode << std::endl;
+	std::cout << "Exit code = " << c.exit_code() << std::endl;
 	std::cout << "Count = " << buf.size() << std::endl;
 	if (!buf.empty())
 	{
@@ -265,19 +261,14 @@ void async_child_example4()
 	boost::process::child c(boost::process::search_path("ls"), "-la", boost::process::std_in.close(), boost::process::std_out > data, boost::process::std_err > boost::process::null, ios);
 #endif
 
+	// FIXME [check] >> An error occurred in debug mode.
 	ios.run();
 
-	c.wait();
-
-	const int exitCode = c.exit_code();
-	std::cout << "Exit code = " << exitCode << std::endl;
-	const std::string str(data.get());
-	std::cout << "Count = " << str.size() << std::endl;
-	if (!str.empty())
-	{
-		std::copy(str.begin(), str.end(), std::ostream_iterator<char>(std::cout, ""));
-		std::cout << std::endl;
-	}
+	data.wait();  // Wait for result.
+	// TODO [check] >> Exit code is changed.
+	//c.wait();  // Passing an instance of boost::asio::io_service to the launching function automatically cause it to wait asynchronously for the exit, so no call of wait is needed.
+	if (!c.wait_for(std::chrono::nanoseconds(1)))
+		std::cout << "Timeout." << std::endl;
 }
 
 void process_group1()
@@ -333,14 +324,14 @@ void process()
 
 	//local::spawn_example();
 
-	local::sync_child_example1();
+	//local::sync_child_example1();
 	//local::sync_child_example2();
 	//local::sync_child_example3();
 
-	//local::async_child_example1(); // Not correctly working.
-	//local::async_child_example2();  // Not correctly working or too slow.
-	//local::async_child_example3(); // Not correctly working.
-	//local::async_child_example4();
+	//local::async_child_example1();
+	//local::async_child_example2();
+	//local::async_child_example3();
+	local::async_child_example4();
 
 	// The two main reasons to use groups are
 	//	1. Being able to terminate child processes of the child process.

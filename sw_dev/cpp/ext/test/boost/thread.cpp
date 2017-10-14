@@ -6,18 +6,18 @@
 namespace {
 namespace local {
 
-boost::mutex io_mutex; // The iostreams are not guaranteed to be thread-safe!
+boost::mutex io_mutex;  // The iostreams are not guaranteed to be thread-safe!
 
 struct thread_alarm
 {
 	thread_alarm(const int secs)
 	: secs_(secs)
 	{
-		std::cout << "thread_alarm object is created." << std::endl;
+		std::cout << "Thread_alarm object is created." << std::endl;
 	}
 	~thread_alarm()
 	{
-		std::cout << "thread_alarm object is deleted." << std::endl;
+		std::cout << "Thread_alarm object is deleted." << std::endl;
 	}
 
 public:
@@ -30,7 +30,7 @@ public:
 		boost::this_thread::sleep(boost::posix_time::seconds(secs_));
 		//boost::this_thread::sleep(boost::posix_time::milliseconds(secs_ * 1000));
 
-		std::cout << "alarm sounded..." << std::endl;
+		std::cout << "Alarm sounded..." << std::endl;
 	}
 
 private:
@@ -44,7 +44,7 @@ void simple_thread_2_proc(void *param)
 
 	{
 		boost::mutex::scoped_lock lock(io_mutex);
-		std::cout << "thread id: " << id << std::endl;
+		std::cout << "Thread id: " << id << std::endl;
 	}
 	//boost::xtime xt;
 	//boost::xtime_get(&xt, boost::TIME_UTC);
@@ -94,17 +94,17 @@ void change_count()
     int i = c.increment();
 
     boost::mutex::scoped_lock lock(io_mutex);
-    std::cout << "count == " << i << std::endl;
+    std::cout << "Count == " << i << std::endl;
 }
 
 void simple_thread_1()
 {
-	std::cout << "setting alarm for 5 seconds..." << std::endl;
+	std::cout << "Setting alarm for 5 seconds..." << std::endl;
 
 	const int secs = 5;
 	//thread_alarm alarm(secs);
-	//boost::scoped_ptr<boost::thread> thrd(new boost::thread(alarm));  // create thread
-	boost::scoped_ptr<boost::thread> thrd(new boost::thread(thread_alarm(secs)));  // create thread
+	//boost::scoped_ptr<boost::thread> thrd(new boost::thread(alarm));  // Create a thread.
+	boost::scoped_ptr<boost::thread> thrd(new boost::thread(thread_alarm(secs)));  // Create a thread.
 
 #if 0
 	boost::xtime xt;
@@ -115,15 +115,15 @@ void simple_thread_1()
 	boost::this_thread::sleep(boost::posix_time::seconds(secs - 2));
 #endif
 
-	thrd.reset();  // terminate thread
+	thrd.reset();  // Terminate the thread.
 
 	if (thrd.get())
 	{
 		thrd->join();
-		std::cout << "thread is joined" << std::endl;
+		std::cout << "Thread is joined" << std::endl;
 	}
 	else
-		std::cout << "thread has already been terminated" << std::endl;
+		std::cout << "Thread has already been terminated" << std::endl;
 }
 
 void simple_thread_2()

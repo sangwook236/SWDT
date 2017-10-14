@@ -45,7 +45,11 @@ int main(int argc, char *argv[])
 	void tokenizer();
 	void string_algorithms();
 	void spirit_classic();
+
 	void statechart();
+	void meta_state_machine();  // Meta State Machine (MSM), eUML.
+	void state_machine_library();  // State Machine Library (SML).
+
 	void thread();
 	void process();
 	void interprocess();
@@ -68,6 +72,7 @@ int main(int argc, char *argv[])
 	void graph();
 	void graph_parallel();
 
+	void asio_io_service();
 	void asio_timer();
 	void asio_synchronizing_handler();
 	void asio_line_based_operation();
@@ -134,10 +139,13 @@ int main(int argc, char *argv[])
 			//string_algorithms();
 
 			//spirit_classic();
+
 			//statechart();
+			//meta_state_machine();  // Not yet implemented.
+			//state_machine_library();  // Not yet implemented.
 
 			//thread();
-			process();
+			//process();
 			//interprocess();  // Not yet implemented.
 		}
 
@@ -167,6 +175,7 @@ int main(int argc, char *argv[])
 
 		// Communication.
 		{
+			asio_io_service();
 			//asio_timer();
 			//asio_synchronizing_handler();
 			//asio_line_based_operation();
@@ -197,15 +206,37 @@ int main(int argc, char *argv[])
 			// Message Passing Interface (MPI).
 			//mpi();
 		}
+
+#if 0
+		// Run a main loop.
+		while (true)
+		{
+			if (std::cin.rdbuf() && std::cin.rdbuf()->in_avail() >= 0)
+			{
+				std::cout << "Press 'Q' to exit ..." << std::endl;
+
+				const char ch = std::cin.rdbuf()->sgetc();
+				if ('q' == ch || 'Q' == ch)
+				{
+					break;
+				}
+
+				char dummy;
+				while (std::cin.readsome(&dummy, 1) > 0);
+			}
+
+			//std::this_thread::yield();
+		}
+#endif
 	}
-    catch (const std::bad_alloc &e)
+    catch (const std::bad_alloc &ex)
 	{
-		std::cout << "std::bad_alloc caught: " << e.what() << std::endl;
+		std::cout << "std::bad_alloc caught: " << ex.what() << std::endl;
 		retval = EXIT_FAILURE;
 	}
-	catch (const std::exception &e)
+	catch (const std::exception &ex)
 	{
-		std::cout << "std::exception caught: " << e.what() << std::endl;
+		std::cout << "std::exception caught: " << ex.what() << std::endl;
 		retval = EXIT_FAILURE;
 	}
 	catch (...)

@@ -1,12 +1,3 @@
-#if defined(_WIN64) || defined(WIN64) || defined(_WIN32) || defined(WIN32)
-#define _WIN32_WINNT_NT4 0x0400  // Windows NT 4.0
-#define _WIN32_WINNT_WIN2K 0x0500  // Windows 2000
-#define _WIN32_WINNT_WINXP 0x0501  // Windows XP
-#define _WIN32_WINNT_WIN7 0x0601  // Windows 7
-#define _WIN32_WINNT_WIN10 0x0A00  // Windows 10
-#define _WIN32_WINNT _WIN32_WINNT_WIN10
-#endif
-
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/bind.hpp>
@@ -32,21 +23,20 @@ void print(const boost::system::error_code & /*e*/, boost::asio::deadline_timer 
 void asio_async_timer()
 {
 	boost::asio::io_service ioService;
-
-	int count = 0;
 	boost::asio::deadline_timer timer(ioService, boost::posix_time::seconds(1));
 
+	int count = 0;
 	timer.async_wait(boost::bind(print, boost::asio::placeholders::error, &timer, &count));
+
 	ioService.run();
 
-	std::cout << "final count is " << count << std::endl;
+	std::cout << "Final count is " << count << std::endl;
 	std::cout << "io_service is terminated" << std::endl;
 }
 
 void asio_sync_timer()
 {
 	boost::asio::io_service ioService;
-
 	boost::asio::deadline_timer timer(ioService, boost::posix_time::seconds(3));
 
 	timer.wait();
