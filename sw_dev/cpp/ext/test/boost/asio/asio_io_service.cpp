@@ -1,5 +1,6 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/thread.hpp>
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -76,6 +77,7 @@ void basic()
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 
+		// REF [function] >> work_1() for distinction between run() and poll().
 #if 0
 		std::cout << "Run the io_service." << std::endl;
 		// Run the io_service object's event processing loop.
@@ -113,7 +115,7 @@ void basic()
 		//	After a call to reset(), the io_service object's stopped() function will return false.
 		io_service.reset();
 
-		std::unique_ptr<std::thread> thrd(new std::thread(add_task_thread(io_service)));
+		const std::unique_ptr<std::thread> thrd(new std::thread(add_task_thread(io_service)));
 
 #if 1
 		std::cout << "Re-run the io_service." << std::endl;
@@ -138,11 +140,66 @@ void basic()
 	}
 }
 
+struct worker_thread
+{
+public:
+	worker_thread(boost::asio::io_service &io_service, const int id)
+	: io_service_(io_service), id_(id)
+	{}
+
+public:
+	void operator()() const
+	{
+		std::cout << "Start a thread (" << id_ << ")." << std::endl;
+
+		// NOTICE [important] >> Use a single io_service object and call run() in each thread.
+		io_service_.run();
+
+		std::cout << "Finish a thread (" << id_ << ")." << std::endl;
+	}
+
+private:
+	boost::asio::io_service &io_service_;
+	const int id_;
+};
+
+void basic_thread()
+{
+	boost::asio::io_service io_service;
+	boost::asio::io_service::work work(io_service);
+
+	try
+	{
+		std::cout << "Started an io_service." << std::endl;
+		std::cout << "Press [return] to exit." << std::endl;
+
+		boost::thread_group worker_threads;
+		for (int id = 0; id < 4; ++id)
+		{
+			worker_threads.create_thread(worker_thread(io_service, id));
+		}
+
+		std::cin.get();
+
+		io_service.stop();
+		worker_threads.join_all();
+
+		std::cout << "Exited the io_service normally." << std::endl;
+	}
+	catch (const std::exception &ex)
+	{
+		std::cerr << "An exception caught: " << ex.what() << std::endl;
+
+		io_service.stop();
+		std::cout << "Exited the io_service exceptionally." << std::endl;
+	}
+}
+
 class stop_ioservice_thread
 {
 public:
 	stop_ioservice_thread(boost::asio::io_service &io_service, const int secs)
-		: io_service_(io_service), secs_(secs)
+	: io_service_(io_service), secs_(secs)
 	{}
 
 public:
@@ -165,7 +222,7 @@ class stop_ioservice_work_thread
 {
 public:
 	stop_ioservice_work_thread(std::unique_ptr<boost::asio::io_service::work> &work, const int secs)
-		: work_(work), secs_(secs)
+	: work_(work), secs_(secs)
 	{}
 
 public:
@@ -191,7 +248,39 @@ void work_1()
 	try
 	{
 		std::cout << "Started an io_service." << std::endl;
-		std::unique_ptr<std::thread> thrd(new std::thread(stop_ioservice_thread(io_service, 3)));
+
+		for (int x = 0; x < 42; ++x)
+		{
+#if 1
+			io_service.run();
+#else
+			// poll() will not block while there is more work to do.
+			// It simply executes the current set of work and then returns.
+			io_service.poll();
+#endif
+			std::cout << "Counter: " << x << std::endl;
+		}
+
+		std::cout << "Exited the io_service normally." << std::endl;
+	}
+	catch (const std::exception &ex)
+	{
+		std::cerr << "An exception caught: " << ex.what() << std::endl;
+
+		io_service.stop();
+		std::cout << "Exited the io_service exceptionally." << std::endl;
+	}
+}
+
+void work_2()
+{
+	boost::asio::io_service io_service;
+	boost::asio::io_service::work work(io_service);
+
+	try
+	{
+		std::cout << "Started an io_service." << std::endl;
+		const std::unique_ptr<std::thread> thrd(new std::thread(stop_ioservice_thread(io_service, 3)));
 
 		io_service.run();
 
@@ -207,7 +296,7 @@ void work_1()
 	}
 }
 
-void work_2()
+void work_3()
 {
 	boost::asio::io_service io_service;
 	std::unique_ptr<boost::asio::io_service::work> work(new boost::asio::io_service::work(io_service));
@@ -215,11 +304,36 @@ void work_2()
 	try
 	{
 		std::cout << "Started an io_service." << std::endl;
-		std::unique_ptr<std::thread> thrd(new std::thread(stop_ioservice_work_thread(work, 3)));
+		const std::unique_ptr<std::thread> thrd(new std::thread(stop_ioservice_work_thread(work, 3)));
 
 		io_service.run();
 
 		thrd->join();
+		std::cout << "Exited the io_service normally." << std::endl;
+	}
+	catch (const std::exception &ex)
+	{
+		std::cerr << "An exception caught: " << ex.what() << std::endl;
+
+		io_service.stop();
+		std::cout << "Exited the io_service exceptionally." << std::endl;
+	}
+}
+
+void work_4()
+{
+	boost::asio::io_service io_service;
+	std::unique_ptr<boost::asio::io_service::work> work(new boost::asio::io_service::work(io_service));
+
+	try
+	{
+		std::cout << "Started an io_service." << std::endl;
+
+		// Finish all pending work gracefully but not stop it prematurely.
+		work.reset();
+
+		io_service.run();
+
 		std::cout << "Exited the io_service normally." << std::endl;
 	}
 	catch (const std::exception &ex)
@@ -236,9 +350,14 @@ void work_2()
 
 void asio_io_service()
 {
+	// REF [site] >> https://www.gamedev.net/blogs/entry/2249317-a-guide-to-getting-started-with-boostasio/
+
 	//local::basic();
+	local::basic_thread();
 
 	// Prevent io_service's run() call from returning when there is no more work to do.
-	local::work_1();
-	local::work_2();
+	//local::work_1();
+	//local::work_2();
+	//local::work_3();
+	//local::work_4();
 }
