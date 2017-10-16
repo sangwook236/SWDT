@@ -58,19 +58,29 @@ def load_dataset(max_features, max_len):
 #%%-------------------------------------------------------------------
 # LSTM.
 
-max_features = 20000
+max_features = 5000
 max_len = 400  # Cut texts after this number of words (among top max_features most common words).
 embedding_size = 128
 batch_size = 32
-num_epoches = 20
+num_epoches = 200
 
 # Loading data.
 x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
 
+model_type = 1
+
 # Build model.
 model = Sequential()
 model.add(Embedding(max_features, embedding_size))
-model.add(LSTM(256, dropout=0.2, recurrent_dropout=0.2))
+if 1 == model_type:
+	model.add(LSTM(32, dropout=0.5, recurrent_dropout=0.5))
+elif 2 == model_type:
+	model.add(LSTM(8, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
+	model.add(LSTM(8, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
+	model.add(LSTM(8, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
+	model.add(LSTM(8, dropout=0.5, recurrent_dropout=0.5))
+else:
+	assert model_type > 0 and model_type < 3, 'Invalid model type.'
 model.add(Dense(1, activation='sigmoid'))
 
 #optimizer = optimizers.SGD(lr=0.01, decay=1.0e-7, momentum=0.95, nesterov=False)
@@ -106,11 +116,23 @@ num_epochs = 20
 # Loading data.
 x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
 
+model_type = 1
+
 # Build model.
 model = Sequential()
 model.add(Embedding(max_features, embedding_size, input_length=max_len))
-model.add(Bidirectional(LSTM(64)))
-model.add(Dropout(0.5))
+if 1 == model_type:
+	model.add(Bidirectional(LSTM(96)))
+	model.add(Dropout(0.5))
+elif 2 == model_type:
+	model.add(LSTM(256, dropout=0.5, recurrent_dropout=0.5))
+elif 3 == model_type:
+	model.add(LSTM(128, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
+	model.add(LSTM(128, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
+	model.add(LSTM(128, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
+	model.add(LSTM(128, dropout=0.5, recurrent_dropout=0.5))
+else:
+	assert model_type > 0 and model_type < 4, 'Invalid model type.'
 model.add(Dense(1, activation='sigmoid'))
 
 # Try using different optimizers and different optimizer configs.
