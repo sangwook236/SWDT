@@ -67,7 +67,7 @@ num_epoches = 200
 # Loading data.
 x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
 
-model_type = 1
+model_type = 2
 
 # Build model.
 model = Sequential()
@@ -116,7 +116,7 @@ num_epochs = 20
 # Loading data.
 x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
 
-model_type = 1
+model_type = 3
 
 # Build model.
 model = Sequential()
