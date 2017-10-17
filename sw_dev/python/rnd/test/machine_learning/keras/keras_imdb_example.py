@@ -80,7 +80,7 @@ elif 2 == model_type:
 	model.add(LSTM(8, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
 	model.add(LSTM(8, dropout=0.5, recurrent_dropout=0.5))
 else:
-	assert model_type > 0 and model_type < 3, 'Invalid model type.'
+	assert False, 'Invalid model type.'
 model.add(Dense(1, activation='sigmoid'))
 
 #optimizer = optimizers.SGD(lr=0.01, decay=1.0e-7, momentum=0.95, nesterov=False)
@@ -132,7 +132,7 @@ elif 3 == model_type:
 	model.add(LSTM(128, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
 	model.add(LSTM(128, dropout=0.5, recurrent_dropout=0.5))
 else:
-	assert model_type > 0 and model_type < 4, 'Invalid model type.'
+	assert False, 'Invalid model type.'
 model.add(Dense(1, activation='sigmoid'))
 
 # Try using different optimizers and different optimizer configs.
