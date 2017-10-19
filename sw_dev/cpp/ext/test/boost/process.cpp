@@ -256,9 +256,12 @@ void async_child_example4()
 
 #if defined(_WIN64) || defined(_WIN32)
 	//boost::process::child c(boost::process::search_path("dir"), "/a", boost::process::std_in.close(), boost::process::std_out > data, boost::process::std_err > boost::process::null, ios);
-	boost::process::child c(boost::process::search_path("ls"), "-la", boost::process::std_in.close(), boost::process::std_out > data, boost::process::std_err > boost::process::null, ios);
+	//boost::process::child c(boost::process::search_path("ls"), "-la", boost::process::std_in.close(), boost::process::std_out > data, boost::process::std_err > boost::process::null, ios);
+	boost::process::child c(boost::process::search_path("ls"), "-la", "*.exe", boost::process::std_in.close(), boost::process::std_out > data, boost::process::std_err > boost::process::null, ios);
+	//boost::process::child c("ls -la *.exe", boost::process::std_in.close(), boost::process::std_out > data, boost::process::std_err > boost::process::null, ios);
 #else
-	boost::process::child c(boost::process::search_path("ls"), "-la", boost::process::std_in.close(), boost::process::std_out > data, boost::process::std_err > boost::process::null, ios);
+	//boost::process::child c(boost::process::search_path("ls"), "-la", boost::process::std_in.close(), boost::process::std_out > data, boost::process::std_err > boost::process::null, ios);
+	boost::process::child c(boost::process::search_path("ls"), "-la", "*.exe", boost::process::std_in.close(), boost::process::std_out > data, boost::process::std_err > boost::process::null, ios);
 #endif
 
 	// FIXME [check] >> An error occurred in debug mode.
@@ -266,9 +269,14 @@ void async_child_example4()
 
 	data.wait();  // Wait for result.
 	// TODO [check] >> Exit code is changed.
-	//c.wait();  // Passing an instance of boost::asio::io_service to the launching function automatically cause it to wait asynchronously for the exit, so no call of wait is needed.
-	if (!c.wait_for(std::chrono::nanoseconds(1)))
-		std::cout << "Timeout." << std::endl;
+	c.wait();  // Passing an instance of boost::asio::io_service to the launching function automatically cause it to wait asynchronously for the exit, so no call of wait is needed.
+	//if (!c.wait_for(std::chrono::nanoseconds(1)))
+	//	std::cout << "Timeout." << std::endl;
+
+	std::cout << "Exit code = " << c.exit_code() << std::endl;
+	const std::string str(data.get());  // Can access only once.
+	if (!str.empty())
+		std::cout << str << std::endl;
 }
 
 void process_group1()
