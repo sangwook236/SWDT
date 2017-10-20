@@ -100,23 +100,36 @@ for idx in range(images.shape[0]):
 	images_pp[idx] = (images_pp[idx] - np.min(images_pp[idx])) / (np.max(images_pp[idx]) - np.min(images_pp[idx])) * 255
 images_pp = images_pp.astype(np.uint8)
 
+# Test 1 (good).
 seq_det = seq.to_deterministic()  # Call this for each batch again, NOT only once at the start.
-#images_aug = seq_det.augment_images(images)
-images_aug = seq_det.augment_images(images_pp)
-labels_aug = seq_det.augment_images(labels)
+#images_aug1 = seq_det.augment_images(images)
+images_aug1 = seq_det.augment_images(images_pp)
+labels_aug1 = seq_det.augment_images(labels)
+seq_det = seq.to_deterministic()  # Call this for each batch again, NOT only once at the start.
+#images_aug2 = seq_det.augment_images(images)
+images_aug2 = seq_det.augment_images(images_pp)
+labels_aug2 = seq_det.augment_images(labels)
 
 #export_images(images, labels, './augmented1/img', '')
 export_images(images_pp, labels, './augmented1/img', '')
-export_images(images_aug, labels_aug, './augmented1/img', '_aug')
+export_images(images_aug1, labels_aug1, './augmented1/img', '_aug1')
+export_images(images_aug2, labels_aug2, './augmented1/img', '_aug2')
 
+# Test 2 (bad).
 seq_det = seq.to_deterministic()  # Call this for each batch again, NOT only once at the start.
-#images_aug = seq_det.augment_images(images)
-images_aug = seq_det.augment_images(images_pp)
-labels_aug = seq_det.augment_images(labels)
+#images_aug1 = seq_det.augment_images(images)
+images_aug1 = seq_det.augment_images(images_pp)
+labels_aug1 = seq_det.augment_images(labels)
+#images_aug2 = seq_det.augment_images(images)
+images_aug2 = seq_det.augment_images(images_pp)
+labels_aug2 = seq_det.augment_images(labels)
 
 #export_images(images, labels, './augmented2/img', '')
 export_images(images_pp, labels, './augmented2/img', '')
-export_images(images_aug, labels_aug, './augmented2/img', '_aug')
+export_images(images_aug1, labels_aug1, './augmented2/img', '_aug1')
+export_images(images_aug2, labels_aug2, './augmented2/img', '_aug2')
+
+print('*********************************', images_pp.dtype)
 
 # FIXME [decide] >> Before or after random transformation?
 # Preprocessing (normalization, standardization, etc).
