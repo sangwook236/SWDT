@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
 			//state_machine_library();  // Not yet implemented.
 
 			//thread();
-			//process();
+			process();
 			//interprocess();  // Not yet implemented.
 		}
 
@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
 
 		// Communication.
 		{
-			asio_io_service();
+			//asio_io_service();
 			//asio_timer();
 			//asio_synchronizing_handler();
 			//asio_line_based_operation();
