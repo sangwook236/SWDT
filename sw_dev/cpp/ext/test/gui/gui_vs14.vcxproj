@@ -100,6 +100,24 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../lib;$(MY_QT_DIR)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>moc qt5/ColorSwatch.h -o qt5/moc/moc_ColorSwatch.cpp
+moc qt5/MainWindow.h -o qt5/moc/moc_MainWindow.cpp
+moc qt5/MdiChild.h -o qt5/moc/moc_MdiChild.cpp
+moc qt5/MdiMainWindow.h -o qt5/moc/moc_MdiMainWindow.cpp
+moc qt5/MySlotClass.h -o qt5/moc/moc_MySlotClass.cpp
+moc qt5/OsgMainWindow.h -o qt5/moc/moc_OsgMainWindow.cpp
+moc qt5/OsgWidget.h -o qt5/moc/moc_OsgWidget.cpp
+moc qt5/SdiMainWindow.h -o qt5/moc/moc_SdiMainWindow.cpp
+moc qt5/Toolbar.h -o qt5/moc/moc_Toolbar.cpp
+rcc qt5/MainWindow.qrc -name MainWindow -o qt5/qrc/qrc_MainWindow.cpp
+rcc qt5/mdi.qrc -name mdi -o qt5/qrc/qrc_mdi.cpp
+rcc qt5/samegame.qrc -name samegame -o qt5/qrc/qrc_samegame.cpp
+rcc qt5/sdi.qrc -name sdi -o qt5/qrc/qrc_sdi.cpp
+rcc qt5/SimpleQml.qrc -name SimpleQml -o qt5/qrc/qrc_SimpleQml.cpp
+rcc qt5/SimplerQml.qrc -name SimplerQml -o qt5/qrc/qrc_SimplerQml.cpp
+</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -155,6 +173,24 @@ rcc qt5/SimplerQml.qrc -name SimplerQml -o qt5/qrc/qrc_SimplerQml.cpp
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../lib;$(MY_QT_DIR)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>moc qt5/ColorSwatch.h -o qt5/moc/moc_ColorSwatch.cpp
+moc qt5/MainWindow.h -o qt5/moc/moc_MainWindow.cpp
+moc qt5/MdiChild.h -o qt5/moc/moc_MdiChild.cpp
+moc qt5/MdiMainWindow.h -o qt5/moc/moc_MdiMainWindow.cpp
+moc qt5/MySlotClass.h -o qt5/moc/moc_MySlotClass.cpp
+moc qt5/OsgMainWindow.h -o qt5/moc/moc_OsgMainWindow.cpp
+moc qt5/OsgWidget.h -o qt5/moc/moc_OsgWidget.cpp
+moc qt5/SdiMainWindow.h -o qt5/moc/moc_SdiMainWindow.cpp
+moc qt5/Toolbar.h -o qt5/moc/moc_Toolbar.cpp
+rcc qt5/MainWindow.qrc -name MainWindow -o qt5/qrc/qrc_MainWindow.cpp
+rcc qt5/mdi.qrc -name mdi -o qt5/qrc/qrc_mdi.cpp
+rcc qt5/samegame.qrc -name samegame -o qt5/qrc/qrc_samegame.cpp
+rcc qt5/sdi.qrc -name sdi -o qt5/qrc/qrc_sdi.cpp
+rcc qt5/SimpleQml.qrc -name SimpleQml -o qt5/qrc/qrc_SimpleQml.cpp
+rcc qt5/SimplerQml.qrc -name SimplerQml -o qt5/qrc/qrc_SimplerQml.cpp
+</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

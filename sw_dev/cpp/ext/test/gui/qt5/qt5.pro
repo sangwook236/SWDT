@@ -74,10 +74,10 @@ INCLUDEPATH += ../../../inc
 LIBS += -L../../../lib
 
 win32 {
-INCLUDEPATH += D:/usr/local64/include
-LIBS += -LD:/usr/local64/lib
-#CONFIG(release, debug|release): LIBS += -lopencv_imgproc310 -lopencv_imgcodecs310 -lopencv_highgui310 -lopencv_core310
-#else:CONFIG(debug, debug|release): LIBS += -lopencv_imgproc310d -lopencv_imgcodecs310d -lopencv_highgui310d -lopencv_core310d
+INCLUDEPATH += D:/usr/local/include
+LIBS += -LD:/usr/local/lib
+#CONFIG(release, debug|release): LIBS += -lopencv_imgproc320 -lopencv_imgcodecs320 -lopencv_highgui320 -lopencv_core320
+#else:CONFIG(debug, debug|release): LIBS += -lopencv_imgproc320d -lopencv_imgcodecs320d -lopencv_highgui320d -lopencv_core320d
 }
 unix {
 INCLUDEPATH += /usr/local/include

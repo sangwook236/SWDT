@@ -391,6 +391,8 @@ int osgqt_vierwer_example(int argc, char **argv);
 }  // namespace my_qt5
 
 // Usage.
+//	- Compile UI resources by User Interface Compiler (uic).
+//		uic resource_name.ui -o ui_resource_name.h
 //	- Compile meta objects by Meta Object Compiler (moc).
 //		moc object_name.h -o moc_object_name.cpp
 //	- Compile resources by Resource Compiler (rcc).
