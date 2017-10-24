@@ -120,10 +120,10 @@ int main(int argc, char *argv[])
 		//retval = dspfilters_main(argc, argv);
 
 		std::cout << "\nsigproc library -----------------------------------------------------" << std::endl;
-		retval = sigproc_main(argc, argv);
+		//retval = sigproc_main(argc, argv);
 
 		std::cout << "\nAquila library ------------------------------------------------------" << std::endl;
-		//retval = aquila_main(argc, argv);
+		retval = aquila_main(argc, argv);
 
 		std::cout << "\nIT++ library --------------------------------------------------------" << std::endl;
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
@@ -138,14 +138,14 @@ int main(int argc, char *argv[])
 		std::cout << "\nSignal Processing Library in C++ (tspl) -----------------------------" << std::endl;
 		//retval = tspl_main(argc, argv);  // Not yet implemented.
 	}
-    catch (const std::bad_alloc &e)
+    catch (const std::bad_alloc &ex)
 	{
-		std::cout << "std::bad_alloc caught: " << e.what() << std::endl;
+		std::cout << "std::bad_alloc caught: " << ex.what() << std::endl;
 		retval = EXIT_FAILURE;
 	}
-	catch (const std::exception &e)
+	catch (const std::exception &ex)
 	{
-		std::cout << "std::exception caught: " << e.what() << std::endl;
+		std::cout << "std::exception caught: " << ex.what() << std::endl;
 		retval = EXIT_FAILURE;
 	}
 	catch (...)

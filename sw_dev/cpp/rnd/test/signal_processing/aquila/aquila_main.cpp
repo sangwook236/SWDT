@@ -104,13 +104,10 @@ void mfcc_calculation_example()
 	input.setAmplitude(5).setFrequency(64).generate(SIZE);
 
 	Aquila::Mfcc mfcc(input.getSamplesCount());
-	auto mfccValues = mfcc.calculate(input);
-	std::cout << "MFCC coefficients:" << std::endl;
-	std::copy(
-		std::begin(mfccValues),
-		std::end(mfccValues),
-		std::ostream_iterator<double>(std::cout, " ")
-	);
+	const std::size_t numFeatures = 12;
+	const auto &mfccValues = mfcc.calculate(input, numFeatures);
+	std::cout << "Mel-frequency cepstrum coefficients (MFCCs):" << std::endl;
+	std::copy(std::begin(mfccValues), std::end(mfccValues), std::ostream_iterator<double>(std::cout, " "));
 	std::cout << std::endl;
 }
 
