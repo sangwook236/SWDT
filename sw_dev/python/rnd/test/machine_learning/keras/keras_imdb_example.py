@@ -73,8 +73,11 @@ model_type = 2
 model = Sequential()
 model.add(Embedding(max_features, embedding_size))
 if 1 == model_type:
-	model.add(LSTM(32, dropout=0.5, recurrent_dropout=0.5))
+	model.add(LSTM(32))
+	model.add(Dropout(0.5))
 elif 2 == model_type:
+	model.add(LSTM(32, dropout=0.5, recurrent_dropout=0.5))
+elif 3 == model_type:
 	model.add(LSTM(8, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
 	model.add(LSTM(8, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
 	model.add(LSTM(8, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
@@ -107,11 +110,11 @@ print('Test accuracy:', acc)
 #%%-------------------------------------------------------------------
 # Bidirectional LSTM.
 
-max_features = 20000
+max_features = 5000
 max_len = 400  # Cut texts after this number of words (among top max_features most common words).
 embedding_size = 128
 batch_size = 32
-num_epochs = 20
+num_epochs = 200
 
 # Loading data.
 x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
@@ -125,18 +128,27 @@ if 1 == model_type:
 	model.add(Bidirectional(LSTM(96)))
 	model.add(Dropout(0.5))
 elif 2 == model_type:
-	model.add(LSTM(256, dropout=0.5, recurrent_dropout=0.5))
+	model.add(Bidirectional(LSTM(256, dropout=0.5, recurrent_dropout=0.5)))
 elif 3 == model_type:
-	model.add(LSTM(128, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
-	model.add(LSTM(128, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
-	model.add(LSTM(128, dropout=0.5, recurrent_dropout=0.5, return_sequences=True))
-	model.add(LSTM(128, dropout=0.5, recurrent_dropout=0.5))
+	model.add(Bidirectional(LSTM(64, dropout=0.5, recurrent_dropout=0.5, return_sequences=True)))
+	model.add(Bidirectional(LSTM(64, dropout=0.5, recurrent_dropout=0.5, return_sequences=True)))
+	model.add(Bidirectional(LSTM(64, dropout=0.5, recurrent_dropout=0.5, return_sequences=True)))
+	model.add(Bidirectional(LSTM(64, dropout=0.5, recurrent_dropout=0.5)))
 else:
 	assert False, 'Invalid model type.'
 model.add(Dense(1, activation='sigmoid'))
 
+# Prepare training.
+#optimizer = optimizers.SGD(lr=0.01, decay=1.0e-7, momentum=0.95, nesterov=False)
+#optimizer = optimizers.RMSprop(lr=1.0e-5, decay=1.0e-9, rho=0.9, epsilon=1.0e-8)
+#optimizer = optimizers.Adagrad(lr=0.01, decay=1.0e-7, epsilon=1.0e-8)
+#optimizer = optimizers.Adadelta(lr=1.0, decay=0.0, rho=0.95, epsilon=1.0e-8)
+optimizer = optimizers.Adam(lr=1.0e-5, decay=1.0e-9, beta_1=0.9, beta_2=0.999, epsilon=1.0e-8)
+#optimizer = optimizers.Adamax(lr=0.002, decay=0.0, beta_1=0.9, beta_2=0.999, epsilon=1.0e-8)
+#optimizer = optimizers.Nadam(lr=0.002, schedule_decay=0.004, beta_1=0.9, beta_2=0.999, epsilon=1.0e-8)
+
 # Try using different optimizers and different optimizer configs.
-model.compile('adam', 'binary_crossentropy', metrics=['accuracy'])
+model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
 print(model.summary())
 
 # Train.
@@ -234,7 +246,7 @@ model.add(LSTM(lstm_output_size))
 model.add(Dense(1))
 model.add(Activation('sigmoid'))
 
-model.compile(loss='binary_crossentropy',optimizer='adam', metrics=['accuracy'])
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 print(model.summary())
 
 # Train.
