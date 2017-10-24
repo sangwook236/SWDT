@@ -115,7 +115,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Total</string>
+    <string>Sum</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButtonAverage">
@@ -141,7 +141,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="labelAverage">
@@ -154,7 +154,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
   </widget>
  </widget>

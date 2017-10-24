@@ -91,10 +91,10 @@ public:
         label_2->setText(QApplication::translate("MyWidget", "Korean:", Q_NULLPTR));
         label_3->setText(QApplication::translate("MyWidget", "English:", Q_NULLPTR));
         label_4->setText(QApplication::translate("MyWidget", "Math:", Q_NULLPTR));
-        pushButtonSum->setText(QApplication::translate("MyWidget", "Total", Q_NULLPTR));
+        pushButtonSum->setText(QApplication::translate("MyWidget", "Sum", Q_NULLPTR));
         pushButtonAverage->setText(QApplication::translate("MyWidget", "Average", Q_NULLPTR));
-        labelSum->setText(QApplication::translate("MyWidget", "TextLabel", Q_NULLPTR));
-        labelAverage->setText(QApplication::translate("MyWidget", "TextLabel", Q_NULLPTR));
+        labelSum->setText(QString());
+        labelAverage->setText(QString());
     } // retranslateUi
 
 };
