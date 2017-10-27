@@ -11,6 +11,9 @@ data_dir_path = dataset_home_dir_path + '/failure_analysis/defect/knock_sound/50
 
 #%%------------------------------------------------------------------
 
+import numpy as np
+import sounddevice as sd
+
 fs = 44100
 data = np.random.uniform(-1, 1, fs)
 sd.play(data, fs)
@@ -32,9 +35,7 @@ sd.default.reset()
 
 #%%------------------------------------------------------------------
 
-import numpy as np
 import scipy.io.wavfile  # For reading the .wav file.
-import sounddevice as sd
 
 # fs: sampling frequency.
 # signal: the numpy 2D array where the data of the wav file is written.

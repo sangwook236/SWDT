@@ -14,6 +14,7 @@ data_dir_path = dataset_home_dir_path + "/failure_analysis/defect/motor_20170621
 # REF [site] >> https://docs.scipy.org/doc/scipy-0.19.0/reference/generated/scipy.signal.spectrogram.html
 
 from scipy import signal
+import numpy as np
 import matplotlib.pyplot as plt
 
 # Generate a test signal, a 2 Vrms sine wave whose frequency is slowly modulated around 3kHz, corrupted by white noise of exponentially decreasing magnitude sampled at 10 kHz.
