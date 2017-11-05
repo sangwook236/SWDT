@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 		//		Bessel functions of integer order.
 		//		Elliptic integrals of the first and second kind, Jacobian elliptic functions.
 		//		Dawson integral, exponential integral, trigonometric integral, Fresnel integral, Airy function.
-		retval = alglib_main(argc, argv);
+		//retval = alglib_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

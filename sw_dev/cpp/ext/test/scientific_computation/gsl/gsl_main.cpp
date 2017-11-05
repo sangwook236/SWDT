@@ -121,11 +121,11 @@ int gsl_main(int argc, char *argv[])
 		//my_gsl::fft();
 		
 		//my_gsl::random_sample();
-		//my_gsl::distribution();
+		my_gsl::distribution();
 		//my_gsl::monte_carlo_integration();
 		//my_gsl::simulated_annealing();
 
-		my_gsl::spline();
+		//my_gsl::spline();
 	}
 	catch (const std::runtime_error &e)
 	{
