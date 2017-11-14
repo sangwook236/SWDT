@@ -69,9 +69,10 @@ x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
 
 model_type = 2
 
-# Build model.
+# Build a model.
 model = Sequential()
-model.add(Embedding(max_features, embedding_size))
+model.add(Embedding(max_features, embedding_size, input_length=max_len))
+# Now, the model's output shape = [samples, time steps, features] = [None, input_length, embedding_vector_length].
 if 1 == model_type:
 	model.add(LSTM(32))
 	model.add(Dropout(0.5))
@@ -121,9 +122,10 @@ x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
 
 model_type = 3
 
-# Build model.
+# Build a model.
 model = Sequential()
 model.add(Embedding(max_features, embedding_size, input_length=max_len))
+# Now, the model's output shape = [samples, time steps, features] = [None, input_length, embedding_vector_length].
 if 1 == model_type:
 	model.add(Bidirectional(LSTM(96)))
 	model.add(Dropout(0.5))
@@ -176,11 +178,12 @@ num_epochs = 20
 # Loading data.
 x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
 
-# Build model.
+# Build a model.
 model = Sequential()
 
 # Start off with an efficient embedding layer which maps our vocab indices into embedding_dims dimensions.
 model.add(Embedding(max_features, embedding_size, input_length=max_len))
+# Now, the model's output shape = [samples, time steps, features] = [None, input_length, embedding_vector_length].
 model.add(Dropout(0.2))
 
 # Add a Convolution1D, which will learn filters word group filters of size filter_length.
@@ -236,9 +239,10 @@ num_epochs = 20
 # Loading data.
 x_train, y_train, x_test, y_test = load_dataset(max_features, max_len)
 
-# Build model.
+# Build a model.
 model = Sequential()
 model.add(Embedding(max_features, embedding_size, input_length=max_len))
+# Now, the model's output shape = [None, input_length, embedding_vector_length] <= [samples, time steps, features].
 model.add(Dropout(0.25))
 model.add(Conv1D(filters, kernel_size, padding='valid', activation='relu', strides=1))
 model.add(MaxPooling1D(pool_size=pool_size))

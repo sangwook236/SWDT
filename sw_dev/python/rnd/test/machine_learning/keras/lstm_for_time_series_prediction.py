@@ -107,7 +107,7 @@ def fit_and_predict_lstm_using_window(train, test, look_back, num_epoches, batch
 	trainX = np.reshape(trainX, (trainX.shape[0], 1, trainX.shape[1]))
 	testX = np.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
 
-	# Create and fit the LSTM network.
+	# Create and fit an LSTM network.
 	model = Sequential()
 	model.add(LSTM(4, input_shape=(1, look_back)))
 	model.add(Dense(1))
@@ -171,7 +171,7 @@ def fit_and_predict_lstm_using_time_step(train, test, look_back, num_epoches, ba
 	trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
 	testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 
-	# Create and fit the LSTM network.
+	# Create and fit an LSTM network.
 	model = Sequential()
 	model.add(LSTM(4, input_shape=(look_back, 1)))
 	model.add(Dense(1))
@@ -229,7 +229,7 @@ def fit_and_predict_lstm_with_memory(train, test, look_back, num_epoches, batch_
 	trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
 	testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 
-	# Create and fit the LSTM network.
+	# Create and fit an LSTM network.
 	model = Sequential()
 	model.add(LSTM(4, batch_input_shape=(batch_size, look_back, 1), stateful=True))
 	model.add(Dense(1))
@@ -286,7 +286,7 @@ def fit_and_predict_stacked_lstms_with_memory(train, test, look_back, num_epoche
 	trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
 	testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
 
-	# Create and fit the LSTM network.
+	# Create and fit an LSTM network.
 	model = Sequential()
 	model.add(LSTM(4, batch_input_shape=(batch_size, look_back, 1), stateful=True, return_sequences=True))
 	model.add(LSTM(4, batch_input_shape=(batch_size, look_back, 1), stateful=True))
