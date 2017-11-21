@@ -18,12 +18,15 @@ from sklearn.metrics import mean_squared_error
 #%%-------------------------------------------------------------------
 
 # Convert an array of values into a dataset matrix.
-def create_dataset(dataset, look_back=1):
+#	Reshape into X=t-window_size:t and Y=t.
+#   Reshape into X=t:t+window_size and Y=t+window_size.
+def create_dataset(dataset, window_size=1):
 	dataX, dataY = [], []
-	for i in range(len(dataset) - look_back - 1):
-		a = dataset[i:(i + look_back), 0]
-		dataX.append(a)
-		dataY.append(dataset[i + look_back, 0])
+	# FIXME [check] >> Which one is correct?
+	#for i in range(len(dataset) - window_size - 1):
+	for i in range(len(dataset) - window_size):
+		dataX.append(dataset[i:(i + window_size), 0])
+		dataY.append(dataset[i + window_size, 0])  # Next value.
 	return np.array(dataX), np.array(dataY)
 
 def display_history(history):
@@ -51,7 +54,7 @@ def display_history(history):
 	plt.show()
 	plt.close(fig)
 
-def plot_graph(dataset, trainPredict, testPredict):
+def plot_graph(dataset, scaler, trainPredict, testPredict):
 	# Shift train predictions for plotting.
 	trainPredictPlot = np.empty_like(dataset)
 	trainPredictPlot[:, :] = np.nan
@@ -96,7 +99,7 @@ print(len(train), len(test))
 # LSTM for regression.
 
 def fit_and_predict_lstm_using_window(train, test, look_back, num_epoches, batch_size):
-	# Reshape into X=t and Y=t+1.
+	# Reshape into X=t:t+look_back and Y=t+look_back.
 	trainX, trainY = create_dataset(train, look_back)
 	testX, testY = create_dataset(test, look_back)
 
@@ -118,13 +121,12 @@ def fit_and_predict_lstm_using_window(train, test, look_back, num_epoches, batch
 	history = model.fit(trainX, trainY, validation_data=(testX, testY), epochs=num_epoches, batch_size=batch_size, verbose=2)
 	display_history(history)
 
-	# Note that we invert the predictions before calculating error scores to ensure that performance is reported in the same units as the original data (thousands of passengers per month).
-
 	# Make predictions.
 	trainPredict = model.predict(trainX)
 	testPredict = model.predict(testX)
 
 	# Invert predictions.
+	# Note that we invert the predictions before calculating error scores to ensure that performance is reported in the same units as the original data (thousands of passengers per month).
 	trainPredict = scaler.inverse_transform(trainPredict)
 	trainY_inv = scaler.inverse_transform([trainY])
 	testPredict = scaler.inverse_transform(testPredict)
@@ -136,7 +138,7 @@ def fit_and_predict_lstm_using_window(train, test, look_back, num_epoches, batch
 	testScore = math.sqrt(mean_squared_error(testY_inv[0], testPredict[:,0]))
 	print('Test Score: %.2f RMSE' % (testScore))
 
-	plot_graph(dataset, trainPredict, testPredict)
+	plot_graph(dataset, scaler, trainPredict, testPredict)
 
 look_back = 1
 num_epoches = 100
@@ -155,18 +157,18 @@ fit_and_predict_lstm_using_window(train, test, look_back, num_epoches, batch_siz
 #%%-------------------------------------------------------------------
 # LSTM for regression using time step.
 
+# NOTICE [important] >>
 # Some sequence problems may have a varied number of time steps per sample.
 # Time steps provide another way to phrase our time series problem.
 # Like above in the window example, we can take prior time steps in our time series as inputs to predict the output at the next time step.
 # Instead of phrasing the past observations as separate input features, we can use them as time steps of the one input feature, which is indeed a more accurate framing of the problem.
 
 def fit_and_predict_lstm_using_time_step(train, test, look_back, num_epoches, batch_size):
-	# Reshape into X=t and Y=t+1.
+	# Reshape into X=t:t+look_back and Y=t+look_back.
 	trainX, trainY = create_dataset(train, look_back)
 	testX, testY = create_dataset(test, look_back)
 
 	# The LSTM network expects the input data (X) to be provided with a specific array structure in the form of [samples, time steps, features].
-
 	# Reshape input to be [samples, time steps, features].
 	trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
 	testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
@@ -182,13 +184,12 @@ def fit_and_predict_lstm_using_time_step(train, test, look_back, num_epoches, ba
 	history = model.fit(trainX, trainY, validation_data=(testX, testY), epochs=num_epoches, batch_size=batch_size, verbose=2)
 	display_history(history)
 
-	# Note that we invert the predictions before calculating error scores to ensure that performance is reported in the same units as the original data (thousands of passengers per month).
-
 	# Make predictions.
 	trainPredict = model.predict(trainX)
 	testPredict = model.predict(testX)
 
 	# Invert predictions.
+	# Note that we invert the predictions before calculating error scores to ensure that performance is reported in the same units as the original data (thousands of passengers per month).
 	trainPredict = scaler.inverse_transform(trainPredict)
 	trainY_inv = scaler.inverse_transform([trainY])
 	testPredict = scaler.inverse_transform(testPredict)
@@ -200,7 +201,7 @@ def fit_and_predict_lstm_using_time_step(train, test, look_back, num_epoches, ba
 	testScore = math.sqrt(mean_squared_error(testY_inv[0], testPredict[:,0]))
 	print('Test Score: %.2f RMSE' % (testScore))
 
-	plot_graph(dataset, trainPredict, testPredict)
+	plot_graph(dataset, scaler, trainPredict, testPredict)
 
 look_back = 3
 num_epoches = 100
@@ -210,6 +211,7 @@ fit_and_predict_lstm_using_time_step(train, test, look_back, num_epoches, batch_
 #%%-------------------------------------------------------------------
 # LSTM with memory between batches.
 
+# NOTICE [important] >>
 # The LSTM network has memory, which is capable of remembering across long sequences.
 # Normally, the state within the network is reset after each training batch when fitting the model, as well as each call to model.predict() or model.evaluate().
 # We can gain finer control over when the internal state of the LSTM network is cleared in Keras by making the LSTM layer "stateful".
@@ -219,12 +221,11 @@ fit_and_predict_lstm_using_time_step(train, test, look_back, num_epoches, batch_
 #	- Instead of specifying the input dimensions, we must hard code the number of samples in a batch, number of time steps in a sample and number of features in a time step by setting the batch_input_shape parameter.
 
 def fit_and_predict_lstm_with_memory(train, test, look_back, num_epoches, batch_size):
-	# Reshape into X=t and Y=t+1.
+	# Reshape into X=t:t+look_back and Y=t+look_back.
 	trainX, trainY = create_dataset(train, look_back)
 	testX, testY = create_dataset(test, look_back)
 
 	# The LSTM network expects the input data (X) to be provided with a specific array structure in the form of [samples, time steps, features].
-
 	# Reshape input to be [samples, time steps, features].
 	trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
 	testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
@@ -242,14 +243,13 @@ def fit_and_predict_lstm_with_memory(train, test, look_back, num_epoches, batch_
 		model.reset_states()
 	#display_history(history)
 
-	# Note that we invert the predictions before calculating error scores to ensure that performance is reported in the same units as the original data (thousands of passengers per month).
-
 	# Make predictions.
 	trainPredict = model.predict(trainX, batch_size=batch_size)
 	model.reset_states()
 	testPredict = model.predict(testX, batch_size=batch_size)
 
 	# Invert predictions.
+	# Note that we invert the predictions before calculating error scores to ensure that performance is reported in the same units as the original data (thousands of passengers per month).
 	trainPredict = scaler.inverse_transform(trainPredict)
 	trainY_inv = scaler.inverse_transform([trainY])
 	testPredict = scaler.inverse_transform(testPredict)
@@ -261,7 +261,7 @@ def fit_and_predict_lstm_with_memory(train, test, look_back, num_epoches, batch_
 	testScore = math.sqrt(mean_squared_error(testY_inv[0], testPredict[:,0]))
 	print('Test Score: %.2f RMSE' % (testScore))
 
-	plot_graph(dataset, trainPredict, testPredict)
+	plot_graph(dataset, scaler, trainPredict, testPredict)
 
 look_back = 3
 num_epoches = 100
@@ -276,12 +276,11 @@ fit_and_predict_lstm_with_memory(train, test, look_back, num_epoches, batch_size
 # This can be done by setting the "return_sequences" parameter on the layer to True.
 
 def fit_and_predict_stacked_lstms_with_memory(train, test, look_back, num_epoches, batch_size):
-	# Reshape into X=t and Y=t+1.
+	# Reshape into X=t:t+look_back and Y=t+look_back.
 	trainX, trainY = create_dataset(train, look_back)
 	testX, testY = create_dataset(test, look_back)
 
 	# The LSTM network expects the input data (X) to be provided with a specific array structure in the form of [samples, time steps, features].
-
 	# Reshape input to be [samples, time steps, features].
 	trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
 	testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1))
@@ -300,14 +299,13 @@ def fit_and_predict_stacked_lstms_with_memory(train, test, look_back, num_epoche
 		model.reset_states()
 	#display_history(history)
 
-	# Note that we invert the predictions before calculating error scores to ensure that performance is reported in the same units as the original data (thousands of passengers per month).
-
 	# Make predictions.
 	trainPredict = model.predict(trainX, batch_size=batch_size)
 	model.reset_states()
 	testPredict = model.predict(testX, batch_size=batch_size)
 
 	# Invert predictions.
+	# Note that we invert the predictions before calculating error scores to ensure that performance is reported in the same units as the original data (thousands of passengers per month).
 	trainPredict = scaler.inverse_transform(trainPredict)
 	trainY_inv = scaler.inverse_transform([trainY])
 	testPredict = scaler.inverse_transform(testPredict)
@@ -319,7 +317,7 @@ def fit_and_predict_stacked_lstms_with_memory(train, test, look_back, num_epoche
 	testScore = math.sqrt(mean_squared_error(testY_inv[0], testPredict[:,0]))
 	print('Test Score: %.2f RMSE' % (testScore))
 
-	plot_graph(dataset, trainPredict, testPredict)
+	plot_graph(dataset, scaler, trainPredict, testPredict)
 
 look_back = 3
 num_epoches = 100

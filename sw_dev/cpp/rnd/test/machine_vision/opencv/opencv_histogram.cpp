@@ -6,7 +6,7 @@
 
 namespace my_opencv {
 
-// [ref] ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp.
+// REF [file] >> ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp.
 void draw_histogram_1D(const cv::MatND &histo, const int binCount, const double maxVal, const int binWidth, const int maxHeight, cv::Mat &histImg);
 void draw_histogram_2D(const cv::MatND &histo, const int horzBinCount, const int vertBinCount, const double maxVal, const int horzBinSize, const int vertBinSize, cv::Mat &histImg);
 void normalize_histogram(cv::MatND &histo, const double factor);
@@ -24,11 +24,11 @@ void histogram_1D()
 	const cv::Mat &src = cv::imread(img_filename, CV_LOAD_IMAGE_GRAYSCALE);
 	if (src.empty())
 	{
-		std::cerr << "image file not found: " << img_filename << std::endl;
+		std::cerr << "Image file not found: " << img_filename << std::endl;
 		return;
 	}
 
-	// calculate histogram.
+	// Calculate histogram.
 	const int dims = 1;
 	const int bins = 256;
 	const int histSize[] = { bins };
@@ -37,11 +37,11 @@ void histogram_1D()
 	const int channels[] = { 0 };
 
 #if 1
-	cv::MatND histo;  // return type: CV_32FC1, 1-dim (rows = bins, cols = 1).
+	cv::MatND histo;  // Return type: CV_32FC1, 1-dim (rows = bins, cols = 1).
 	cv::calcHist(
-		&src, 1, channels, cv::Mat(), // do not use mask.
+		&src, 1, channels, cv::Mat(),  // Do not use mask.
 		histo, dims, histSize, ranges,
-		true, // the histogram is uniform.
+		true,  // The histogram is uniform.
 		false
 	);
 #else
@@ -58,7 +58,7 @@ void histogram_1D()
 	}
 #endif
 
-	// normalize histogram.
+	// Normalize histogram.
 	const double factor = 1000.0;
 	my_opencv::normalize_histogram(histo, factor);
 
@@ -70,13 +70,13 @@ void histogram_1D()
 	const double maxVal = factor * 0.05;
 #endif
 
-	// draw 1-D histogram.
+	// Draw 1-D histogram.
 	const int bin_width = 1, max_height = 100;
 	cv::Mat histImg(cv::Mat::zeros(max_height, bins*bin_width, CV_8UC3));
 	my_opencv::draw_histogram_1D(histo, bins, maxVal, bin_width, max_height, histImg);
 
 	//
-	const std::string windowName("histogram 1D");
+	const std::string windowName("Histogram 1D");
 	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
 	cv::imshow(windowName, histImg);
 
@@ -93,32 +93,32 @@ void histogram_2D()
 	const cv::Mat &src = cv::imread(img_filename, CV_LOAD_IMAGE_COLOR);
 	if (src.empty())
 	{
-		std::cerr << "image file not found: " << img_filename << std::endl;
+		std::cerr << "Image file not found: " << img_filename << std::endl;
 		return;
 	}
 
 	cv::Mat hsv;
 	cv::cvtColor(src, hsv, CV_BGR2HSV);
 
-	// calculate histogram.
+	// Calculate histogram.
 	const int dims = 2;
-	// let's quantize the hue to 30 levels and the saturation to 32 levels.
+	// Let's quantize the hue to 30 levels and the saturation to 32 levels.
 	const int bins1 = 30, bins2 = 32;
 	const int histSize[] = { bins1, bins2 };
-	// hue varies from 0 to 179, see cvtColor.
+	// Hue varies from 0 to 179, see cvtColor.
 	const float range1[] = { 0, 180 };
-	// saturation varies from 0 (black-gray-white) to 255 (pure spectrum color).
+	// Saturation varies from 0 (black-gray-white) to 255 (pure spectrum color).
 	const float range2[] = { 0, 256 };
 	const float *ranges[] = { range1, range2 };
-	// we compute the histogram from the 0th and 1st channels.
+	// Compute the histogram from the 0th and 1st channels.
 	const int channels[] = { 0, 1 };
 
 #if 1
-	cv::MatND histo;  // return type: CV_32FC1, 2-dim (rows = bins1, cols = bins2).
+	cv::MatND histo;  // Return type: CV_32FC1, 2-dim (rows = bins1, cols = bins2).
 	cv::calcHist(
-		&hsv, 1, channels, cv::Mat(), // do not use mask.
+		&hsv, 1, channels, cv::Mat(),  // Do not use mask.
 		histo, dims, histSize, ranges,
-		true, // the histogram is uniform.
+		true,  // The histogram is uniform.
 		false
 	);
 #else
@@ -136,7 +136,7 @@ void histogram_2D()
 	}
 #endif
 
-	// normalize histogram.
+	// Normalize histogram.
 	const double factor = 1000.0;
 	my_opencv::normalize_histogram(histo, factor);
 
@@ -148,13 +148,13 @@ void histogram_2D()
 	const double maxVal = factor * 0.05;
 #endif
 
-	// draw 2-D histogram.
+	// Draw 2-D histogram.
 	const int hscale = 10, sscale = 10;
 	cv::Mat histImg(cv::Mat::zeros(bins2*sscale, bins1*hscale, CV_8UC3));
 	my_opencv::draw_histogram_2D(histo, bins1, bins2, maxVal, hscale, sscale, histImg);
 
 	//
-	const std::string windowName("histogram 2D");
+	const std::string windowName("Histogram 2D");
 	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
 	cv::imshow(windowName, histImg);
 
@@ -171,35 +171,35 @@ void histogram_3D()
 	const cv::Mat &src = cv::imread(img_filename, CV_LOAD_IMAGE_COLOR);
 	if (src.empty())
 	{
-		std::cerr << "image file not found: " << img_filename << std::endl;
+		std::cerr << "Image file not found: " << img_filename << std::endl;
 		return;
 	}
 
 	cv::Mat hsv;
 	cv::cvtColor(src, hsv, CV_BGR2HSV);
 
-	// calculate histogram.
+	// Calculate histogram.
 	const int dims = 3;
-	// let's quantize the hue to 30 levels and the saturation & the value to 32 levels.
+	// Let's quantize the hue to 30 levels and the saturation & the value to 32 levels.
 	const int bins1 = 30, bins2 = 32, bins3 = 32;
 	const int histSize[] = { bins1, bins2, bins3 };
-	// hue varies from 0 to 179.
-	// [ref] cv::cvtColor().
+	// Hue varies from 0 to 179.
+	// REF [function] >> cv::cvtColor().
 	const float range1[] = { 0, 180 };
-	// saturation varies from 0 (black-gray-white) to 255 (pure spectrum color).
+	// Saturation varies from 0 (black-gray-white) to 255 (pure spectrum color).
 	const float range2[] = { 0, 256 };
-	// value varies from 0 to 255.
+	// Value varies from 0 to 255.
 	const float range3[] = { 0, 256 };
 	const float *ranges[] = { range1, range2, range3 };
-	// we compute the histogram from the 0th, 1st, and 2nd channels.
+	// Compute the histogram from the 0th, 1st, and 2nd channels.
 	const int channels[] = { 0, 1, 2 };
 
 #if 1
-	cv::MatND histo;  // return type: CV_32FC1, 3-dim (1-dim (rows) = bins1, 2-dim (cols) = bins2, 3-dim = bins3).
+	cv::MatND histo;  // Return type: CV_32FC1, 3-dim (1-dim (rows) = bins1, 2-dim (cols) = bins2, 3-dim = bins3).
 	cv::calcHist(
-		&hsv, 1, channels, cv::Mat(), // do not use mask.
+		&hsv, 1, channels, cv::Mat(),  // Do not use mask.
 		histo, dims, histSize, ranges,
-		true, // the histogram is uniform.
+		true,  // The histogram is uniform.
 		false
 	);
 #else
@@ -221,7 +221,7 @@ void histogram_3D()
 	}
 #endif
 
-	// normalize histogram.
+	// Normalize histogram.
 	const double factor = 1000.0;
 	my_opencv::normalize_histogram(histo, factor);
 
@@ -233,14 +233,14 @@ void histogram_3D()
 	const double maxVal = factor * 0.05;
 #endif
 
-	// draw 3-D histogram.
+	// Draw 3-D histogram.
 /*
 	const int hscale = 10, sscale = 10;
 	cv::Mat histImg(cv::Mat::zeros(bins2*sscale, bins1*hscale, CV_8UC3));
 	my_opencv::draw_histogram_3D(histo, bins1, bins2, maxVal, hscale, sscale, histImg);
 
 	//
-	const std::string windowName("histogram 3D");
+	const std::string windowName("Histogram 3D");
 	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
 	cv::imshow(windowName, histImg);
 
@@ -259,7 +259,7 @@ void histogram()
 {
 	//local::histogram_1D();
 	local::histogram_2D();
-	//local::histogram_3D();  // not yet completely implemented.
+	//local::histogram_3D();  // Not yet completely implemented.
 }
 
 }  // namespace my_opencv
