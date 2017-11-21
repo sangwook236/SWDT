@@ -706,73 +706,73 @@ namespace my_opencv {
 
 void segmentation()
 {
-	//const std::string filename("./data/machine_vision/opencv/pic1.png");
-	//const std::string filename("./data/machine_vision/opencv/pic2.png");
-	//const std::string filename("./data/machine_vision/opencv/pic3.png");
-	//const std::string filename("./data/machine_vision/opencv/pic4.png");
-	//const std::string filename("./data/machine_vision/opencv/pic5.png");
-	//const std::string filename("./data/machine_vision/opencv/pic6.png");
-	//const std::string filename("./data/machine_vision/opencv/stuff.jpg");
-	//const std::string filename("./data/machine_vision/opencv/synthetic_face.png");
-	//const std::string filename("./data/machine_vision/opencv/puzzle.png");
-	//const std::string filename("./data/machine_vision/opencv/fruits.jpg");
-	//const std::string filename("./data/machine_vision/opencv/lena_rgb.bmp");
-	//const std::string filename("./data/machine_vision/opencv/hand_01.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_05.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_24.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/pic1.png");
+	//const std::string img_filename("./data/machine_vision/opencv/pic2.png");
+	//const std::string img_filename("./data/machine_vision/opencv/pic3.png");
+	//const std::string img_filename("./data/machine_vision/opencv/pic4.png");
+	//const std::string img_filename("./data/machine_vision/opencv/pic5.png");
+	//const std::string img_filename("./data/machine_vision/opencv/pic6.png");
+	//const std::string img_filename("./data/machine_vision/opencv/stuff.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/synthetic_face.png");
+	//const std::string img_filename("./data/machine_vision/opencv/puzzle.png");
+	//const std::string img_filename("./data/machine_vision/opencv/fruits.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/lena_rgb.bmp");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_01.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_05.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_24.jpg");
 
-	//const std::string filename("./data/machine_vision/opencv/hand_01.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_02.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_03.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_04.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_05.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_06.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_07.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_08.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_09.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_10.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_11.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_12.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_13.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_14.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_15.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_16.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_17.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_18.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_19.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_20.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_21.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_22.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_23.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_24.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_25.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_26.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_27.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_28.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_29.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_30.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_31.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_32.jpg");
-	const std::string filename("./data/machine_vision/opencv/hand_33.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_34.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_35.jpg");
-	//const std::string filename("./data/machine_vision/opencv/hand_36.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_01.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_02.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_03.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_04.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_05.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_06.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_07.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_08.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_09.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_10.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_11.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_12.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_13.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_14.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_15.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_16.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_17.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_18.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_19.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_20.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_21.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_22.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_23.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_24.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_25.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_26.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_27.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_28.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_29.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_30.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_31.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_32.jpg");
+	const std::string img_filename("./data/machine_vision/opencv/hand_33.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_34.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_35.jpg");
+	//const std::string img_filename("./data/machine_vision/opencv/hand_36.jpg");
 
 	//const std::string windowName("Segmentation");
 	//cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
 
 	//
-	cv::Mat img = cv::imread(filename, CV_LOAD_IMAGE_COLOR);
+	cv::Mat img = cv::imread(img_filename, cv::IMREAD_COLOR);
 	if (img.empty())
 	{
-		std::cout << "Fail to load image file: " << filename << std::endl;
+		std::cout << "Failed to load image file: " << img_filename << std::endl;
 		return;
 	}
 
 	//local::watershed_algorithm(img);
-	//local::grabcut_algorithm(img);
+	local::grabcut_algorithm(img);
 
-	local::image_segmentation_by_watershed(img);
+	//local::image_segmentation_by_watershed(img);
 	//local::image_segmentation_by_meanshift(img);
 
 	//

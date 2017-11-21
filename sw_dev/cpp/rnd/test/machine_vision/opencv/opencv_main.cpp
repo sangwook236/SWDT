@@ -258,7 +258,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::skeletonization_and_thinning();
 		//my_opencv::contour();
 
-		my_opencv::image_similarity();
+		//my_opencv::image_similarity();
 
 		//my_opencv::hough_transform();
 		//my_opencv::template_matching();
@@ -267,7 +267,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::shape_matching();
 		//my_opencv::active_contour_model();  // Snake.
 
-		//my_opencv::segmentation();
+		my_opencv::segmentation();
 		//my_opencv::superpixel();
 		//if (canUseGPU) my_opencv::meanshift_segmentation_using_gpu();  // Not yet implemented.
 

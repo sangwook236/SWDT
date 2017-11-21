@@ -7,7 +7,7 @@
 		http://download.qt.io/official_releases/jom/
 
 [-] Usage.
-	REF [directory] >> ${SWDT_C++/ext/test/gui/qt5.
+	REF [directory] >> ${SWDT_CPP_HOME}/ext/test/gui/qt5.
 
 	- Compile meta objects by Meta Object Compiler (moc).
 		moc object_name.h -o moc_object_name.cpp
@@ -22,7 +22,7 @@
 		make
 		nmake
 
-[-] Building (Windows).
+[-] Trouble shooting (Windows).
 	- qmake.exe or QMAKESPEC 관련 오류.
 		REF [site] >> http://stackoverflow.com/questions/5303634/qmake-qmakespec-has-not-been-set
 
@@ -38,7 +38,7 @@
 			qmake -query QMAKESPEC
 			qmake -query
 
-[-] Trouble Shooting (VC).
+[-] Trouble shooting (VC).
 	- moc.exe or uic.exe 관련 오류.
 		<error>
 			MSB6006: "cmd.exe" exited with code3.
@@ -56,4 +56,7 @@
 		<cause>
 			Qt library linking error.
 		<solution>
-			Add Qt directory to $PATH.
+			1) Copy qwindows.dll.
+				REF [site] >> http://www.tripleboot.org/?p=138
+				Copy ${QT_HOME}/plugins/platforms/qwindows.dll to ${EXECUTABLE_DIR}/platforms/qwindows.dll.
+			2) Add Qt directory to $PATH.
