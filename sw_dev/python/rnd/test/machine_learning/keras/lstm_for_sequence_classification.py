@@ -56,14 +56,15 @@ max_review_length = 500
 X_train = sequence.pad_sequences(X_train, maxlen=max_review_length)
 X_test = sequence.pad_sequences(X_test, maxlen=max_review_length)
 
-embedding_vecor_length = 32
+embedding_vector_length = 32
 
 #%%-------------------------------------------------------------------
 # Simple LSTM for sequence classification.
 
-# Create the model.
+# Create a model.
 model = Sequential()
-model.add(Embedding(top_words, embedding_vecor_length, input_length=max_review_length))
+model.add(Embedding(top_words, embedding_vector_length, input_length=max_review_length))
+# Now, the model's output shape = [samples, time steps, features] = [None, input_length, embedding_vector_length].
 model.add(LSTM(100))
 model.add(Dense(1, activation='sigmoid'))
 
@@ -84,8 +85,10 @@ print('Accuracy: %.2f%%' % (scores[1]*100))
 #	- Dropout is a powerful technique for combating overfitting in your LSTM models.
 #	- The dropout has the desired impact on training with a slightly slower trend in convergence and in this case a lower final accuracy.
 
+# Create a model.
 model = Sequential()
-model.add(Embedding(top_words, embedding_vecor_length, input_length=max_review_length))
+model.add(Embedding(top_words, embedding_vector_length, input_length=max_review_length))
+# Now, the model's output shape = [samples, time steps, features] = [None, input_length, embedding_vector_length].
 model.add(Dropout(0.2))
 model.add(LSTM(100))
 model.add(Dropout(0.2))
@@ -109,8 +112,10 @@ print('Accuracy: %.2f%%' % (scores[1]*100))
 #	- The LSTM specific dropout has a more pronounced effect on the convergence of the network than the layer-wise dropout.
 #	- You may bet better results with the gate-specific dropout.
 
+# Create a model.
 model = Sequential()
-model.add(Embedding(top_words, embedding_vecor_length, input_length=max_review_length))
+model.add(Embedding(top_words, embedding_vector_length, input_length=max_review_length))
+# Now, the model's output shape = [None, input_length, embedding_vector_length] <= [samples, time steps, features].
 model.add(LSTM(100, dropout=0.2, recurrent_dropout=0.2))
 model.add(Dense(1, activation='sigmoid'))
 
@@ -130,8 +135,10 @@ print('Accuracy: %.2f%%' % (scores[1]*100))
 # Convolutional neural networks excel at learning the spatial structure in input data.
 # The IMDB review data does have a one-dimensional spatial structure in the sequence of words in reviews.
 
+# Create a model.
 model = Sequential()
-model.add(Embedding(top_words, embedding_vecor_length, input_length=max_review_length))
+model.add(Embedding(top_words, embedding_vector_length, input_length=max_review_length))
+# Now, the model's output shape = [None, input_length, embedding_vector_length] <= [samples, time steps, features].
 model.add(Conv1D(filters=32, kernel_size=3, padding='same', activation='relu'))
 model.add(MaxPooling1D(pool_size=2))
 model.add(LSTM(100))

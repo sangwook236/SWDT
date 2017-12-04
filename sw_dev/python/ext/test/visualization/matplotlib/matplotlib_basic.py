@@ -9,7 +9,7 @@ import numpy as np
 
 #%%-------------------------------------------------------------------
 
-fig = plt.figure();
+fig = plt.figure()
 
 plt.plot([1, 2, 3, 4])
 plt.ylabel('some numbers')
