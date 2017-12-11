@@ -9,8 +9,10 @@ from tensorforce.agents import DQNAgent
 from tensorforce.execution import Runner
 
 gym_id = 'CartPole-v0'
-max_episodes = 10000
-max_timesteps = 1000
+batch_size = 64
+num_episodes = 10000
+num_episode_timesteps = 1000
+report_episodes = 10
 
 env = OpenAIGym(gym_id)
 network_spec = [
@@ -22,12 +24,10 @@ agent = DQNAgent(
 	states_spec=env.states,
 	actions_spec=env.actions,
 	network_spec=network_spec,
-	batch_size=64
+	batch_size=batch_size
 )
 
 runner = Runner(agent=agent, environment=env)
-
-report_episodes = 10
 
 def episode_finished(r):
 	if r.episode % report_episodes == 0:
@@ -38,6 +38,6 @@ def episode_finished(r):
 
 print("Starting {agent} for Environment '{env}'".format(agent=agent, env=env))
 
-runner.run(max_episodes, max_timesteps, episode_finished=episode_finished)
+runner.run(episodes=num_episodes, max_episode_timesteps=num_episode_timesteps, episode_finished=episode_finished)
 
 print("Learning finished. Total episodes: {ep}".format(ep=runner.episode))

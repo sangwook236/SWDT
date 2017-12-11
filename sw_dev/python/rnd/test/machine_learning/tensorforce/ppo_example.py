@@ -9,6 +9,10 @@ from tensorforce.agents import PPOAgent
 from tensorforce.execution import Runner
 from tensorforce.contrib.openai_gym import OpenAIGym
 
+batch_size = 4096
+num_episodes = 3000
+num_episode_timesteps = 200
+
 # Create an OpenAIgym environment.
 #env = OpenAIGym('CartPole-v0', visualize=True)
 env = OpenAIGym('CartPole-v0')
@@ -23,7 +27,7 @@ agent = PPOAgent(
 	states_spec=env.states,
 	actions_spec=env.actions,
 	network_spec=network_spec,
-	batch_size=4096,
+	batch_size=batch_size,
 	# BatchAgent
 	keep_last_timestep=True,
 	# PPOAgent
@@ -58,7 +62,7 @@ def episode_finished(r):
 	return True
 
 # Start learning.
-runner.run(episodes=3000, max_episode_timesteps=200, episode_finished=episode_finished)
+runner.run(episodes=num_episodes, max_episode_timesteps=num_episode_timesteps, episode_finished=episode_finished)
 
 # Print statistics.
 print("Learning finished. Total episodes: {ep}. Average reward of last 100 episodes: {ar}.".format(
