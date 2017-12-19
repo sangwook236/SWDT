@@ -65,7 +65,7 @@ void matches2points(const std::vector<cv::DMatch> &matches, const std::vector<cv
 
 void sift(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &keypoints1, std::vector<cv::KeyPoint> &keypoints2, cv::Mat &descriptors1, cv::Mat &descriptors2, std::vector<cv::DMatch> &matches)
 {
-	std::cout << "computing SIFT descriptors ..." << std::endl;
+	std::cout << "Computing SIFT descriptors ..." << std::endl;
 	{
 		double t = (double)cv::getTickCount();
 
@@ -80,11 +80,11 @@ void sift(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &k
 		extractor->compute(img2, keypoints2, descriptors2);
 
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-		std::cout << "\tdone computing descriptors... took " << t << " seconds" << std::endl;
+		std::cout << "\tDone computing descriptors... took " << t << " seconds." << std::endl;
 	}
 
-	// match descriptors
-	std::cout << "matching descriptors..." << std::endl;
+	// Match descriptors.
+	std::cout << "Matching descriptors..." << std::endl;
 	{
 		double t = (double)cv::getTickCount();
 
@@ -97,13 +97,13 @@ void sift(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &k
 		//crossCheckMatching(descriptorMatcher, descriptors1, descriptors2, matches, 1);
 
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-		std::cout << "\tdone matching descriptors... took " << t << " seconds" << std::endl;
+		std::cout << "\tDone matching descriptors... took " << t << " seconds." << std::endl;
 	}
 }
 
 void surf(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &keypoints1, std::vector<cv::KeyPoint> &keypoints2, cv::Mat &descriptors1, cv::Mat &descriptors2, std::vector<cv::DMatch> &matches)
 {
-	std::cout << "computing SURF descriptors ..." << std::endl;
+	std::cout << "Computing SURF descriptors ..." << std::endl;
 	{
 		double t = (double)cv::getTickCount();
 
@@ -118,11 +118,11 @@ void surf(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &k
 		extractor->compute(img2, keypoints2, descriptors2);
 
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-		std::cout << "\tdone computing descriptors... took " << t << " seconds" << std::endl;
+		std::cout << "\tDone computing descriptors... took " << t << " seconds." << std::endl;
 	}
 
-	// match descriptors
-	std::cout << "matching descriptors..." << std::endl;
+	// Match descriptors.
+	std::cout << "Matching descriptors..." << std::endl;
 	{
 		double t = (double)cv::getTickCount();
 
@@ -135,19 +135,20 @@ void surf(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &k
 		//crossCheckMatching(descriptorMatcher, descriptors1, descriptors2, matches, 1);
 
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-		std::cout << "\tdone matching descriptors... took " << t << " seconds" << std::endl;
+		std::cout << "\tDone matching descriptors... took " << t << " seconds." << std::endl;
 	}
 }
 
+#if 0
 void train_calonder_classifier(const cv::FeatureDetector &featureDetector, const std::string &trainImagesFilename, const std::string &classifierFilename)
 {
 	if (trainImagesFilename.empty())
 	{
-		std::cout << "invalid train images filename" << std::endl;
+		std::cout << "Invalid train images filename." << std::endl;
 		return;
 	}
 
-    // reads train images
+    // Reads train images.
 	std::ifstream stream(trainImagesFilename.c_str(), std::ios::in);
 	std::vector<cv::Mat> trainImgs;
     while (!stream.eof())
@@ -163,12 +164,12 @@ void train_calonder_classifier(const cv::FeatureDetector &featureDetector, const
 
     if (trainImgs.empty())
     {
-		std::cout << "all train images can not be read." << std::endl;
+		std::cout << "All train images can not be read." << std::endl;
         return;
     }
 	std::cout << trainImgs.size() << " train images were read." << std::endl;
 
-    // extracts keypoints from train images
+    // Extract keypoints from train images.
 	std::vector<cv::BaseKeypoint> trainPoints;
 	std::vector<IplImage> iplTrainImgs(trainImgs.size());
     for (size_t imgIdx = 0; imgIdx < trainImgs.size(); ++imgIdx)
@@ -184,23 +185,25 @@ void train_calonder_classifier(const cv::FeatureDetector &featureDetector, const
         }
     }
 
-    // trains Calonder classifier on extracted points
+    // Trains Calonder classifier on extracted points.
 	cv::RTreeClassifier classifier;
 	classifier.train(trainPoints, cv::theRNG(), 48, 9, 100);
 
-    // writes classifier
+    // Writes classifier.
     classifier.write(classifierFilename.c_str());
 }
+#endif
 
+#if 0
 void calonder(const std::string &classifierFilename, const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &keypoints1, std::vector<cv::KeyPoint> &keypoints2, cv::Mat &descriptors1, cv::Mat &descriptors2, std::vector<cv::DMatch> &matches)
 {
 	if (classifierFilename.empty())
 	{
-		std::cout << "invalid classifier filename" << std::endl;
+		std::cout << "Invalid classifier filename." << std::endl;
 		return;
 	}
 
-	std::cout << "computing Calonder's descriptors ..." << std::endl;
+	std::cout << "Computing Calonder's descriptors ..." << std::endl;
 	{
 		double t = (double)cv::getTickCount();
 
@@ -210,11 +213,11 @@ void calonder(const std::string &classifierFilename, const cv::Mat &img1, const 
 		extractor.compute(img2, keypoints2, descriptors2);
 
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-		std::cout << "\tdone computing descriptors... took " << t << " seconds" << std::endl;
+		std::cout << "\tDone computing descriptors... took " << t << " seconds." << std::endl;
 	}
 
-	// match descriptors
-	std::cout << "matching descriptors..." << std::endl;
+	// Match descriptors.
+	std::cout << "Matching descriptors ..." << std::endl;
 	{
 		double t = (double)cv::getTickCount();
 
@@ -226,28 +229,29 @@ void calonder(const std::string &classifierFilename, const cv::Mat &img1, const 
 		//crossCheckMatching(descriptorMatcher, descriptors1, descriptors2, matches, 1);
 
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-		std::cout << "\tdone matching descriptors... took " << t << " seconds" << std::endl;
+		std::cout << "\tDone matching descriptors... took " << t << " seconds." << std::endl;
 	}
 }
+#endif
 
 void brief(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &keypoints1, std::vector<cv::KeyPoint> &keypoints2, cv::Mat &descriptors1, cv::Mat &descriptors2, std::vector<cv::DMatch> &matches)
 {
-	// compute descriptors
-	std::cout << "computing BRIEF descriptors ..." << std::endl;
+	// Compute descriptors.
+	std::cout << "Computing BRIEF descriptors ..." << std::endl;
 	{
 		double t = (double)cv::getTickCount();
 
-		cv::Ptr<cv::xfeatures2d::BriefDescriptorExtractor> extractor = cv::xfeatures2d::BriefDescriptorExtractor::create(32, false,);  // this is really 32 x 8 matches since they are binary matches packed into bytes
+		cv::Ptr<cv::xfeatures2d::BriefDescriptorExtractor> extractor = cv::xfeatures2d::BriefDescriptorExtractor::create(32, false);  // this is really 32 x 8 matches since they are binary matches packed into bytes
 
 		extractor->compute(img1, keypoints1, descriptors1);
 		extractor->compute(img2, keypoints2, descriptors2);
 
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-		std::cout << "\tdone computing descriptors... took " << t << " seconds" << std::endl;
+		std::cout << "\tDone computing descriptors... took " << t << " seconds." << std::endl;
 	}
 
-	// match descriptors
-	std::cout << "matching descriptors..." << std::endl;
+	// Match descriptors.
+	std::cout << "Matching descriptors..." << std::endl;
 	{
 		double t = (double)cv::getTickCount();
 
@@ -258,15 +262,16 @@ void brief(const cv::Mat &img1, const cv::Mat &img2, std::vector<cv::KeyPoint> &
 		//crossCheckMatching(descriptorMatcher, descriptors1, descriptors2, matches, 1);
 
 		t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-		std::cout << "\tdone matching descriptors... took " << t << " seconds" << std::endl;
+		std::cout << "\tDone matching descriptors... took " << t << " seconds." << std::endl;
 	}
 }
 
+#if 0
 void fern(const std::string &modelFilename, const cv::Mat &img1, const cv::Mat &img2)
 {
 	if (modelFilename.empty())
 	{
-		std::cout << "invalid model filename" << std::endl;
+		std::cout << "Invalid model filename." << std::endl;
 		return;
 	}
 
@@ -276,7 +281,7 @@ void fern(const std::string &modelFilename, const cv::Mat &img1, const cv::Mat &
 		cv::FileStorage fs(modelFilename, cv::FileStorage::READ);
 		if (fs.isOpened())
 		{
-			std::cout << "try to load model file" << std::endl;
+			std::cout << "Try to load model file." << std::endl;
 			detector.read(fs.getFirstTopLevelNode());
 		}
 		else needToTrain = true;
@@ -302,18 +307,18 @@ void fern(const std::string &modelFilename, const cv::Mat &img1, const cv::Mat &
 
 	if (needToTrain)
 	{
-		std::cout << "model file not found" << std::endl;
-		std::cout << "start to train the model" << std::endl;
-		std::cout << "\tstep 1. finding the robust keypoints ..." << std::endl;
+		std::cout << "Model file not found" << std::endl;
+		std::cout << "Start to train the model" << std::endl;
+		std::cout << "\tStep 1. finding the robust keypoints ..." << std::endl;
 		ldetector.setVerbose(true);
 		std::vector<cv::KeyPoint> objKeypoints;
 		ldetector.getMostStable2D(object, objKeypoints, 100, patchGenerator);
 
-		std::cout << "\tstep 2. training ferns-based planar object detector ..." << std::endl;
+		std::cout << "\tStep 2. training ferns-based planar object detector ..." << std::endl;
 		detector.setVerbose(true);
 		detector.train(objpyr, objKeypoints, patchSize.width, 100, 11, 10000, ldetector, patchGenerator);
 
-		std::cout << "\tstep 3. saving the model to " << modelFilename << " ...";
+		std::cout << "\tStep 3. saving the model to " << modelFilename << " ...";
 		cv::FileStorage fs(modelFilename, cv::FileStorage::WRITE);
 		if (fs.isOpened())
 			detector.write(fs, "ferns_model");
@@ -324,8 +329,8 @@ void fern(const std::string &modelFilename, const cv::Mat &img1, const cv::Mat &
 	std::vector<cv::KeyPoint> imgKeypoints;
 	ldetector(imgpyr, imgKeypoints, 300);
 
-	// compute & match descriptors
-	std::cout << "computing & matching fern descriptors..." << std::endl;
+	// Compute & match descriptors.
+	std::cout << "Computing & matching fern descriptors ..." << std::endl;
 	cv::Mat H;
 	std::vector<cv::Point2f> targetCornerPoints;
 	std::vector<int> pairs;
@@ -335,9 +340,9 @@ void fern(const std::string &modelFilename, const cv::Mat &img1, const cv::Mat &
 	const bool found = detector(imgpyr, imgKeypoints, H, targetCornerPoints, &pairs);
 
 	t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-	std::cout << "\tdone matching descriptors... took " << t << " seconds" << std::endl;
+	std::cout << "\tDone matching descriptors... took " << t << " seconds." << std::endl;
 
-	// draw match points
+	// Draw match points.
 	cv::Mat img_correspondence(object.rows + image.rows, std::max(object.cols, image.cols), CV_8UC3, cv::Scalar::all(0));
 #if defined(__GNUC__)
     cv::Mat ic_tmp1(img_correspondence, cv::Rect(0, 0, object.cols, object.rows));
@@ -377,18 +382,14 @@ void fern(const std::string &modelFilename, const cv::Mat &img1, const cv::Mat &
 	cv::Mat img_warped;
 	cv::warpPerspective(img1, img_warped, H, img2.size());
 
-	const std::string windowName1("feature description - correspondence");
-	const std::string windowName2("feature description - warped image");
-	cv::namedWindow(windowName1, cv::WINDOW_AUTOSIZE);
-	cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
+	cv::imshow("Feature description - Correspondence", img_correspondence);
+	cv::imshow("Feature description - Warped image", img_warped);
 
-	cv::imshow(windowName1, img_correspondence);
-	cv::imshow(windowName2, img_warped);
 	cv::waitKey(0);
 
-	cv::destroyWindow(windowName1);
-	cv::destroyWindow(windowName2);
+	cv::destroyAllWindows();
 }
+#endif
 
 }  // namespace local
 }  // unnamed namespace
@@ -415,49 +416,54 @@ void feature_description()
 	const std::string classifierFilename("./data/machine_vision/opencv/calonder_classfier.txt");
 #endif
 
-	//std::cout << "reading the images..." << std::endl;
-	const cv::Mat &img1 = cv::imread(img1_name, CV_LOAD_IMAGE_GRAYSCALE);
-	const cv::Mat &img2 = cv::imread(img2_name, CV_LOAD_IMAGE_GRAYSCALE);
+	//std::cout << "Reading the images ..." << std::endl;
+	const cv::Mat &img1 = cv::imread(img1_name, cv::IMREAD_GRAYSCALE);
+	const cv::Mat &img2 = cv::imread(img2_name, cv::IMREAD_GRAYSCALE);
 	if (img1.empty() || img2.empty())
 	{
-		std::cout << "fail to load image files" << std::endl;
+		std::cout << "Failed to load image files." << std::endl;
 		return;
 	}
 
-	// extract keypoints
-	std::cout << "extracting keypoints" << std::endl;
-	//cv::Ptr<cv::Feature2D> featureDetector = cv::xfeatures2d::SIFT::create();
-	cv::Ptr<cv::Feature2D> featureDetector = cv::xfeatures2d::SURF::create();
-	//cv::Ptr<cv::Feature2D> featureDetector = cv::FastFeatureDetector::create();
-	//cv::Ptr<cv::Feature2D> featureDetector = cv::AgastFeatureDetector::create();
-	//cv::Ptr<cv::Feature2D> featureDetector = cv::GFTTDetector::create();
-	//cv::Ptr<cv::Feature2D> featureDetector = cv::SimpleBlobDetector::create();
-	//cv::Ptr<cv::Feature2D> featureDetector = cv::KAZE::create();
-	//cv::Ptr<cv::Feature2D> featureDetector = cv::AKAZE::create();
+	// Extract keypoints.
+	std::cout << "Extracting keypoints ..." << std::endl;
+	//cv::Ptr<cv::Feature2D> detector = cv::xfeatures2d::SIFT::create();
+	cv::Ptr<cv::Feature2D> detector = cv::xfeatures2d::SURF::create();
+	//cv::Ptr<cv::Feature2D> detector = cv::FastFeatureDetector::create();
+	//cv::Ptr<cv::Feature2D> detector = cv::AgastFeatureDetector::create();
+	//cv::Ptr<cv::Feature2D> detector = cv::GFTTDetector::create();
+	//cv::Ptr<cv::Feature2D> detector = cv::SimpleBlobDetector::create();
+	//cv::Ptr<cv::Feature2D> detector = cv::KAZE::create();
+	//cv::Ptr<cv::Feature2D> detector = cv::AKAZE::create();
+
+	const size_t MAX_KEYPOINT_COUNT = 200;
 
 	std::vector<cv::KeyPoint> keypoints1, keypoints2;
-	featureDetector->detect(img1, keypoints1);
-	featureDetector->detect(img2, keypoints2);
-	std::cout << "\textracted " << keypoints1.size() << " keypoints from the first image" << std::endl;
-	std::cout << "\textracted " << keypoints2.size() << " keypoints from the second image" << std::endl;
+	detector->detect(img1, keypoints1);
+	//cv::KeyPointsFilter::retainBest(keypoints1, MAX_KEYPOINT_COUNT);
+	detector->detect(img2, keypoints2);
+	//cv::KeyPointsFilter::retainBest(keypoints2, MAX_KEYPOINT_COUNT);
+	std::cout << "\tExtracted " << keypoints1.size() << " keypoints from the first image." << std::endl;
+	std::cout << "\tExtracted " << keypoints2.size() << " keypoints from the second image." << std::endl;
 
-	std::cout << "computing & matching descriptors ..." << std::endl;
+	std::cout << "Computing & matching descriptors ..." << std::endl;
 	cv::Mat descriptors1, descriptors2;
 	std::vector<cv::DMatch> matches;
 	{
 		//local::sift(img1, img2, keypoints1, keypoints2, descriptors1, descriptors2, matches);
 		//local::surf(img1, img2, keypoints1, keypoints2, descriptors1, descriptors2, matches);
-		//local::train_calonder_classifier(featureDetector, trainImagesFilename, classifierFilename);
-		local::calonder(classifierFilename, img1, img2, keypoints1, keypoints2, descriptors1, descriptors2, matches);
 		//local::brief(img1, img2, keypoints1, keypoints2, descriptors1, descriptors2, matches);
+
+		//local::train_calonder_classifier(featureDetector, trainImagesFilename, classifierFilename);
+		//local::calonder(classifierFilename, img1, img2, keypoints1, keypoints2, descriptors1, descriptors2, matches);
 		//local::fern(modelFilename, img1, img2);
 	}
 
-	// draw matches
+	// Draw matches.
 	if (!matches.empty())
 	{
 		std::vector<cv::Point2f> matchedPoints1, matchedPoints2;
-		local::matches2points(matches, keypoints1, keypoints2, matchedPoints1, matchedPoints2);  // extract a list of the (x,y) location of the matches
+		local::matches2points(matches, keypoints1, keypoints2, matchedPoints1, matchedPoints2);  // Extract a list of the (x,y) location of the matches.
 		std::vector<unsigned char> outlier_mask;
 		const double ransacReprojThreshold = 3.0;
 		const cv::Mat &H = cv::findHomography(cv::Mat(matchedPoints1), cv::Mat(matchedPoints2), outlier_mask, cv::RANSAC, ransacReprojThreshold);
@@ -469,17 +475,12 @@ void feature_description()
 		cv::Mat img_warped;
 		cv::warpPerspective(img1, img_warped, H, img2.size());
 
-		const std::string windowName1("feature description - correspondence");
-		const std::string windowName2("feature description - warped image");
-		cv::namedWindow(windowName1, cv::WINDOW_AUTOSIZE);
-		cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
+		cv::imshow("Feature description - Correspondence", img_correspondence);
+		cv::imshow("Feature description - Warped image", img_warped);
 
-		cv::imshow(windowName1, img_correspondence);
-		cv::imshow(windowName2, img_warped);
 		cv::waitKey(0);
 
-		cv::destroyWindow(windowName1);
-		cv::destroyWindow(windowName2);
+		cv::destroyAllWindows();
 	}
 }
 

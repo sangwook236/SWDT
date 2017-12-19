@@ -90,9 +90,6 @@
     <ClCompile Include="opencv\opencv_feature_description.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
-    <ClCompile Include="opencv\opencv_feature_extraction.cpp">
-      <Filter>Source Files\opencv</Filter>
-    </ClCompile>
     <ClCompile Include="opencv\opencv_feature_extraction_and_matching.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
@@ -100,9 +97,6 @@
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
     <ClCompile Include="opencv\opencv_feature_extraction_and_matching_using_gpu.cpp">
-      <Filter>Source Files\opencv</Filter>
-    </ClCompile>
-    <ClCompile Include="opencv\opencv_feature_matching.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
     <ClCompile Include="opencv\opencv_fourier_transform.cpp">
@@ -124,9 +118,6 @@
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
     <ClCompile Include="opencv\opencv_histogram_using_gpu.cpp">
-      <Filter>Source Files\opencv</Filter>
-    </ClCompile>
-    <ClCompile Include="opencv\opencv_homography.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
     <ClCompile Include="opencv\opencv_hough_transform.cpp">
@@ -460,6 +451,15 @@
       <Filter>Source Files\quirc</Filter>
     </ClCompile>
     <ClCompile Include="opencv\opencv_image_similarity.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_feature_detection.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_warping.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
+    <ClCompile Include="opencv\opencv_image_alignment.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
   </ItemGroup>

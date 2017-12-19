@@ -36,6 +36,13 @@ public:
         return mutable_points() + point_index_[i] * 3;
     }
 
+	// File contents:
+	//	#cameras = 49
+	//	#points = 7776
+	//	#observations = 31843
+	//	observation = [ camera id, point id, x, y ]
+	//	parameters : #parameters = 9 * #cameras + 3 * #points = 23769
+	//		camera parameters = [ angle-axis rotation (3), translation (3), second and fourth order radial distortion (2), focal length (1) (?) ]
     bool LoadFile(const char *filename)
     {
         FILE *fptr = fopen(filename, "r");
@@ -122,7 +129,7 @@ public:
         const T &l1 = camera[7];
         const T &l2 = camera[8];
         T r2 = xp * xp + yp * yp;
-        T distortion = T(1.0) + r2  * (l1 + l2  * r2);
+        T distortion = T(1.0) + r2 * (l1 + l2 * r2);
 
         // Compute final projected point position.
         const T &focal = camera[6];
@@ -155,6 +162,7 @@ namespace my_ceres_solver {
 void bundle_adjustment_example()
 {
     // BAL dataset.
+	// REF [paper] >> "Bundle Adjustment in the Large", ECCV 2010.
     // REF [site] >> http://grail.cs.washington.edu/projects/bal/
     const std::string filename("./data/machine_vision/bundle_adjustment/problem-49-7776-pre.txt");
 

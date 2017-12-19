@@ -142,9 +142,9 @@ void segmentation();
 void superpixel();
 void meanshift_segmentation_using_gpu();
 
-void feature_extraction();
+void feature_detection();
+void feature_detector_evaluation();
 void feature_description();
-void feature_matching();
 void feature_extraction_and_matching();
 void feature_extraction_and_matching_by_signature();
 void feature_extraction_and_matching_using_gpu();
@@ -167,7 +167,9 @@ void image_undistortion();
 void kinect_image_undistortion();
 void image_rectification();
 void kinect_image_rectification();
-void homography();
+
+void image_warping();
+void image_alignment();
 
 void image_labeling_using_gpu();
 void stereo_matching();
@@ -267,13 +269,13 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::shape_matching();
 		//my_opencv::active_contour_model();  // Snake.
 
-		my_opencv::segmentation();
+		//my_opencv::segmentation();
 		//my_opencv::superpixel();
 		//if (canUseGPU) my_opencv::meanshift_segmentation_using_gpu();  // Not yet implemented.
 
-		//my_opencv::feature_extraction();
+		//my_opencv::feature_detection();
+		//my_opencv::feature_detector_evaluation();
 		//my_opencv::feature_description();
-		//my_opencv::feature_matching();
 		//my_opencv::feature_extraction_and_matching();
 		//my_opencv::feature_extraction_and_matching_by_signature();
 		//if (canUseGPU) my_opencv::feature_extraction_and_matching_using_gpu();  // Not yet implemented.
@@ -304,7 +306,9 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::kinect_image_undistortion();
 		//my_opencv::image_rectification();
 		//my_opencv::kinect_image_rectification();
-		//my_opencv::homography();
+
+		//my_opencv::image_warping();
+		my_opencv::image_alignment();
 
 		//my_opencv::stereo_matching();
 		//if (canUseGPU) my_opencv::stereo_matching_using_gpu();

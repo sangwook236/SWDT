@@ -60,13 +60,12 @@ void initialization()
 		std::cout << "Comma initialized matrix = " << std::endl << m1 << std::endl;
 
 		Eigen::MatrixXf m2(2, 4);
-		m2 << 21, 22,  23, 24,  25, 26,  27, 28;
+		m2 << 21, 22, 23, 24,  25, 26, 27, 28;
 
 		std::cout << "Comma initialized matrix = " << std::endl << m2 << std::endl;
 
 		Eigen::MatrixXf m3(4, 2);
-		m3 << 31, 32, 33, 34,
-		      35, 36, 37, 38;
+		m3 << 31, 32,  33, 34,  35, 36,  37, 38;
 
 		std::cout << "Comma initialized matrix = " << std::endl << m3 << std::endl;
 	}
@@ -495,7 +494,7 @@ namespace my_eigen {
 
 void basic_operation()
 {
-	//local::initialization();
+	local::initialization();
 	//local::concatenation();
 	local::matrix_or_vector_expression_mapping();
 
