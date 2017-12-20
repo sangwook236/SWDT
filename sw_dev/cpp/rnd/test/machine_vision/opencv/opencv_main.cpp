@@ -276,7 +276,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::feature_detection();
 		//my_opencv::feature_detector_evaluation();
 		//my_opencv::feature_description();
-		//my_opencv::feature_extraction_and_matching();
+		my_opencv::feature_extraction_and_matching();
 		//my_opencv::feature_extraction_and_matching_by_signature();
 		//if (canUseGPU) my_opencv::feature_extraction_and_matching_using_gpu();  // Not yet implemented.
 		//my_opencv::generic_description_and_matching();
@@ -308,7 +308,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::kinect_image_rectification();
 
 		//my_opencv::image_warping();
-		my_opencv::image_alignment();
+		//my_opencv::image_alignment();
 
 		//my_opencv::stereo_matching();
 		//if (canUseGPU) my_opencv::stereo_matching_using_gpu();

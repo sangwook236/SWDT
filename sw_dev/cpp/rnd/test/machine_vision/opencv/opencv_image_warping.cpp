@@ -48,11 +48,12 @@ void warp_perspective_demo()
 	const cv::Size warped_image_size(cvRound(dst_corners[2].x), cvRound(dst_corners[2].y));
 
 	// Compute homography.
-	const cv::Mat H = cv::findHomography(roi_corners, dst_corners);
+	const cv::Mat &H = cv::findHomography(roi_corners, dst_corners);
 
 	// Warp image.
 	cv::Mat warped_image;
-	cv::warpPerspective(rgb, warped_image, H, warped_image_size);
+	//cv::warpPerspective(rgb, warped_image, H, warped_image_size);
+	cv::warpPerspective(rgb, warped_image, H, warped_image_size, cv::INTER_LINEAR + cv::WARP_INVERSE_MAP, cv::BORDER_CONSTANT, cv::Scalar());
 
 	// Show result.
 	cv::imshow("Image warping - Original", dst);
@@ -108,10 +109,11 @@ void auto_9_view()
 	const cv::Size warped_image_size(cvRound(dst_corners[2].x) * 2, cvRound(dst_corners[2].y) * 2);
 
 	// Compute homography.
-	const cv::Mat H = cv::findHomography(roi_corners, dst_corners);
+	const cv::Mat &H = cv::findHomography(roi_corners, dst_corners);
 
 	// Warp image.
 	cv::Mat warped_image;
+	//cv::warpPerspective(rgb, warped_image, H, warped_image_size);
 	cv::warpPerspective(rgb, warped_image, H, warped_image_size, cv::INTER_LINEAR + cv::WARP_INVERSE_MAP, cv::BORDER_CONSTANT, cv::Scalar());
 
 	// Show result.
