@@ -8,6 +8,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 #%%-------------------------------------------------------------------
+# Dynamic rc settings.
+
+plt.rcParams
+
+#%%-------------------------------------------------------------------
 
 fig = plt.figure()
 
