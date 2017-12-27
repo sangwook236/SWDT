@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 		//	- CNF Satisfiability (CNF-SAT) problem.
 		//	- Mathematical programming language.
 		//		GNU MathProg (GMPL), MPS format, CPLEX LP format.
-		retval = glpk_main(argc, argv);
+		//retval = glpk_main(argc, argv);
 
 		std::cout << "\nCeres Solver library ------------------------------------------------" << std::endl;
 		//  - Non-linear least squares.
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
         //      Curve fitting.
         //      Robust curve fitting.
         //      Bundle adjustment.
-		//retval = ceres_solver_main(argc, argv);
+		retval = ceres_solver_main(argc, argv);
 
 		std::cout << "\nLevenberg-Marquardt (LM) algorithm ----------------------------------" << std::endl;
 		//retval = levmar_main(argc, argv);

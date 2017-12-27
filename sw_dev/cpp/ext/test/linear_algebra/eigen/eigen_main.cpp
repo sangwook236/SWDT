@@ -31,7 +31,7 @@ void spline();
 
 int eigen_main(int argc, char *argv[])
 {
-	//my_eigen::basic_operation();
+	my_eigen::basic_operation();
 
 	// Decomposition -----------------------------------------
 	//my_eigen::lu();
@@ -48,7 +48,7 @@ int eigen_main(int argc, char *argv[])
 	//my_eigen::nonlinear_least_squares();  // Not yet implemented.
 
 	// Unsupported -------------------------------------------
-	my_eigen::spline();
+	//my_eigen::spline();
 
 	return 0;
 }

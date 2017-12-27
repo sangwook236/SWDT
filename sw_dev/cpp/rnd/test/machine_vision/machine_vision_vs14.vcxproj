@@ -276,24 +276,9 @@
     <ClCompile Include="opencv\opencv_face_detection.cpp" />
     <ClCompile Include="opencv\opencv_face_detection_using_gpu.cpp" />
     <ClCompile Include="opencv\opencv_face_recognition.cpp" />
-    <ClCompile Include="opencv\opencv_feature_description.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="opencv\opencv_feature_extraction.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="opencv\opencv_feature_extraction_and_matching.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="opencv\opencv_feature_description.cpp" />
+    <ClCompile Include="opencv\opencv_feature_detection.cpp" />
+    <ClCompile Include="opencv\opencv_feature_extraction_and_matching.cpp" />
     <ClCompile Include="opencv\opencv_feature_extraction_and_matching_by_signature.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -301,12 +286,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="opencv\opencv_feature_extraction_and_matching_using_gpu.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="opencv\opencv_feature_matching.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -334,15 +313,10 @@
     </ClCompile>
     <ClCompile Include="opencv\opencv_histogram.cpp" />
     <ClCompile Include="opencv\opencv_histogram_using_gpu.cpp" />
-    <ClCompile Include="opencv\opencv_homography.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="opencv\opencv_hough_transform.cpp" />
     <ClCompile Include="opencv\opencv_human_detection.cpp" />
     <ClCompile Include="opencv\opencv_human_detection_using_gpu.cpp" />
+    <ClCompile Include="opencv\opencv_image_alignment.cpp" />
     <ClCompile Include="opencv\opencv_image_conversion.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -365,6 +339,7 @@
     <ClCompile Include="opencv\opencv_image_sequence.cpp" />
     <ClCompile Include="opencv\opencv_image_similarity.cpp" />
     <ClCompile Include="opencv\opencv_image_undistortion.cpp" />
+    <ClCompile Include="opencv\opencv_image_warping.cpp" />
     <ClCompile Include="opencv\opencv_iterative_closest_point.cpp" />
     <ClCompile Include="opencv\opencv_kalman_filtering.cpp" />
     <ClCompile Include="opencv\opencv_line.cpp" />
