@@ -5,10 +5,10 @@ public class Main {
 		try
 		{
 			System.out.println("Apache Lucene project -----------------------------------------------");
-			lucene.Lucene_Main.run(args);  // Not yet implemented.
+			//lucene.Lucene_Main.run(args);  // Not yet implemented.
 
 			System.out.println("Apache Solr project -------------------------------------------------");
-			lucene.Solr_Main.run(args);  // Not yet implemented.
+			solr.Solr_Main.run(args);
 		}
 		catch (Exception ex)
 		{
