@@ -1,7 +1,7 @@
 # REF [site] >> https://reinforce.io/blog/introduction-to-tensorforce/
 # REF [site] >> https://reinforce.io/blog/end-to-end-computation-graphs-for-reinforcement-learning/
 
-# Path to libcudnn.so.5.
+# Path to libcudnn.so.
 #export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 
 #%%-------------------------------------------------------------------
@@ -48,8 +48,8 @@ config = dict(
 )
 
 agent = DQNAgent(
-	states_spec=env.states,
-	actions_spec=env.actions,
+	states_spec=states,
+	actions_spec=actions,
 	network_spec=network_spec,
 	**config
 )
