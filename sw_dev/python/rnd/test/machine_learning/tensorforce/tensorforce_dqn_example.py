@@ -1,5 +1,23 @@
 # REF [site] >> http://tensorforce.readthedocs.io/en/latest/runner.html
 
+# Path to libcudnn.so.5.
+#export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
+#%%-------------------------------------------------------------------
+
+import os, sys
+if 'posix' == os.name:
+	swl_python_home_dir_path = '/home/sangwook/work/SWL_github/python'
+	lib_home_dir_path = '/home/sangwook/lib_repo/python'
+else:
+	swl_python_home_dir_path = 'D:/work/SWL_github/python'
+	#lib_home_dir_path = 'D:/lib_repo/python'
+	lib_home_dir_path = 'D:/lib_repo/python/rnd'
+
+sys.path.append(swl_python_home_dir_path + '/src')
+sys.path.append(lib_home_dir_path + '/tensorforce_github')
+sys.path.append(lib_home_dir_path + '/gym_github')
+
 #%%-------------------------------------------------------------------
 
 import logging
