@@ -86,7 +86,7 @@ train = optimizer.minimize(loss)
 
 sess.run(init) # Reset values to incorrect defaults.
 for i in range(1000):
-  sess.run(train, {x:[1,2,3,4], y:[0,-1,-2,-3]})
+	sess.run(train, {x:[1,2,3,4], y:[0,-1,-2,-3]})
 
 print(sess.run([W, b]))
 
@@ -117,7 +117,7 @@ init = tf.global_variables_initializer()
 sess = tf.Session()
 sess.run(init)  # Reset values to wrong.
 for i in range(1000):
-  sess.run(train, {x: x_train, y: y_train})
+	sess.run(train, {x: x_train, y: y_train})
 
 # Evaluate training accuracy.
 curr_W, curr_b, curr_loss = sess.run([W, b, loss], {x: x_train, y: y_train})
