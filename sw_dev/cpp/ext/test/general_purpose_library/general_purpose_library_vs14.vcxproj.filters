@@ -57,5 +57,11 @@
     <ClCompile Include="dlib\dlib_max_cost_assignment_example.cpp">
       <Filter>Source Files\dlib</Filter>
     </ClCompile>
+    <ClCompile Include="dlib\dlib_optimization_example.cpp">
+      <Filter>Source Files\dlib</Filter>
+    </ClCompile>
+    <ClCompile Include="dlib\dlib_model_selection_example.cpp">
+      <Filter>Source Files\dlib</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
