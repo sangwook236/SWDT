@@ -2,7 +2,7 @@
 
 #%% Load datasets.
 from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets("D:/dataset/\pattern_recognition/mnist/download/", one_hot=True)
+mnist = input_data.read_data_sets("D:/dataset/pattern_recognition/mnist/download/", one_hot=True)
 
 #%% Set variables.
 import tensorflow as tf
