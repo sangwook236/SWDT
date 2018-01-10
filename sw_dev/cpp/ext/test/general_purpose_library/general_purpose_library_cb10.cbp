@@ -47,6 +47,8 @@
 		<Unit filename="dlib/dlib_graph_labeling_example.cpp" />
 		<Unit filename="dlib/dlib_main.cpp" />
 		<Unit filename="dlib/dlib_max_cost_assignment_example.cpp" />
+		<Unit filename="dlib/dlib_model_selection_example.cpp" />
+		<Unit filename="dlib/dlib_optimization_example.cpp" />
 		<Unit filename="dlib/dlib_svm_struct_example.cpp" />
 		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="loki/loki_main.cpp" />

@@ -1,12 +1,13 @@
 # REF [site] >> https://github.com/philipperemy/keras-attention-mechanism
 
 import numpy as np
-#np.random.seed(1337)  # For reproducibility.
 from keras.models import Model
 from keras.layers import Input, Dense, merge
 from keras.layers.core import Permute, Reshape, Lambda, RepeatVector, Flatten
 from keras.layers.recurrent import LSTM
 import keras.backend as K
+
+#np.random.seed(1337)  # For reproducibility.
 
 #%%------------------------------------------------------------------
 
@@ -25,21 +26,20 @@ def get_data(n, input_dim, attention_column=1):
 	x[:, attention_column] = y[:, 0]
 	return x, y
 
-
-def get_data_recurrent(n, time_steps, input_dim, attention_column=10):
+def get_data_recurrent(n, time_steps, input_dim, attention_time_step=10):
 	"""
 	Data generation. x is purely random except that it's first value equals the target y.
-	In practice, the network should learn that the target = x[attention_column].
-	Therefore, most of its attention should be focused on the value addressed by attention_column.
+	In practice, the network should learn that the target = x[attention_time_step].
+	Therefore, most of its attention should be focused on the value addressed by attention_time_step.
 	:param n: the number of samples to retrieve.
 	:param time_steps: the number of time steps of your series.
 	:param input_dim: the number of dimensions of each element in the series.
-	:param attention_column: the column linked to the target. Everything else is purely random.
+	:param attention_time_step: the column linked to the target. Everything else is purely random.
 	:return: x: model inputs, y: model targets
 	"""
 	x = np.random.standard_normal(size=(n, time_steps, input_dim))
 	y = np.random.randint(low=0, high=2, size=(n, 1))
-	x[:, attention_column, :] = np.tile(y[:], (1, input_dim))
+	x[:, attention_time_step, :] = np.tile(y[:], (1, input_dim))
 	return x, y
 
 def get_activations(model, inputs, print_shape_only=False, layer_name=None):
@@ -116,10 +116,10 @@ SINGLE_ATTENTION_VECTOR = False
 APPLY_ATTENTION_BEFORE_LSTM = False
 
 def attention_3d_block(inputs):
-	# inputs.shape = (batch_size, time_steps, input_dim)
+	# inputs.shape = (batch_size, time_steps, input_dim).
 	input_dim = int(inputs.shape[2])
 	a = Permute((2, 1))(inputs)
-	a = Reshape((input_dim, TIME_STEPS))(a) # this line is not useful. It's just to know which dimension is what.
+	a = Reshape((input_dim, TIME_STEPS))(a)  # This line is not useful. It's just to know which dimension is what.
 	a = Dense(TIME_STEPS, activation='softmax')(a)
 	if SINGLE_ATTENTION_VECTOR:
 		a = Lambda(lambda x: K.mean(x, axis=1), name='dim_reduction')(a)
@@ -148,7 +148,7 @@ def model_attention_applied_before_lstm():
 	return model
 
 N = 300000
-# N = 300 -> too few = no training.
+#N = 300 -> too few = no training.
 inputs_1, outputs = get_data_recurrent(N, TIME_STEPS, INPUT_DIM)
 
 if APPLY_ATTENTION_BEFORE_LSTM:
