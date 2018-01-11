@@ -19,8 +19,8 @@ noise *= np.exp(-time / 5)
 x = carrier + noise
 
 # Compute the spectrogram.
-#f, t, Zxx = signal.stft(x, fs)
-f, t, Zxx = signal.stft(x, fs, nperseg=1000)
+#f, t, Zxx = signal.stft(x, fs, nperseg=256)  # Zxx.shape = (129, 783).
+f, t, Zxx = signal.stft(x, fs, nperseg=1000)  # Zxx.shape = (501, 201).
 
 # Plot the spectrogram.
 #plt.pcolormesh(t, f, np.abs(Zxx))
