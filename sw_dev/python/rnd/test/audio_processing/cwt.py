@@ -31,11 +31,15 @@ carrier = amp * np.sin(2 * np.pi * 3e3 * time + mod)
 noise = np.random.normal(scale=np.sqrt(noise_power), size=time.shape)
 noise *= np.exp(-time / 5)
 x = carrier + noise
-# FIXME [fix] >> How to determine?
-widths = np.arange(1, 101)
+# TODO [fix] >> How to determine?
+scale = np.arange(1, 101)
 
 # Compute the CWT.
-cwtmatr = signal.cwt(x, signal.ricker, widths)
+cwtmatr = signal.cwt(x, signal.ricker, scale)
+
+# Scalogram: a spectrogram for wavelets. (???)
+plt.pcolormesh(time, scale, 20 * np.log10(np.abs(cwtmatr)))
+plt.show()
 
 # Plot the CWT.
 plt.imshow(cwtmatr, extent=[0, 10, 30, -30], cmap='PRGn', aspect='auto', vmax=abs(cwtmatr).max(), vmin=-abs(cwtmatr).max())
