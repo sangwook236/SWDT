@@ -10,6 +10,10 @@
 namespace {
 namespace local {
 
+// REF [paper] >> "Parameter Learning and Convergent Inference for Dense Random Fields", ICML 2013.
+// REF [paper] >> "Efficient Inference in Fully Connected CRFs with Gaussian Edge Potentials", NIPS 2011.
+// REF [paper] >> "Filter-Based Mean-Field Inference for Random Fields with Higher-Order Terms and Product Label-Spaces", IJCV 2014.
+
 // REF [file] >> ${DENSECRF_HOME}/examples/common.cpp
 
 // Store the colors we read, so that we can write them again.
@@ -51,7 +55,7 @@ VectorXs getLabeling(const unsigned char *im, int N, int M)
 		// Map the color to a label.
 		int c = getColor(im + 3 * k);
 		int i;
-		for (i = 0; i<nColors && c != colors[i]; i++);
+		for (i = 0; i < nColors && c != colors[i]; ++i);
 		if (c && i == nColors)
 		{
 			if (i < M)
@@ -133,7 +137,7 @@ public:
 		if (l2_norm_ > 0)
 		{
 			dx += l2_norm_ * x;
-			r += 0.5*l2_norm_ * (x.dot(x));
+			r += 0.5 * l2_norm_ * (x.dot(x));
 		}
 
 		return r;
@@ -195,6 +199,7 @@ void inference_example()
 		// Certainty that the groundtruth is correct.
 		const float GT_PROB = 0.5f;
 		// Simple classifier that is 50% certain that the annotation is correct.
+		// FIXME [improve] >> Too simple unary computed by GT_PROB is used here.
 		const MatrixXf unary(computeUnary(getLabeling(anno.data, anno.rows * anno.cols, NUM_LABELS), NUM_LABELS, GT_PROB));
 
 		// Specify the unary potential as an array of size W*H*(#classes).
@@ -322,6 +327,7 @@ void learning_example()
 		// Certainty that the groundtruth is correct.
 		const float GT_PROB = 0.5f;
 		// Simple classifier that is 50% certain that the annotation is correct.
+		// FIXME [improve] >> Too simple unary computed by GT_PROB is used here.
 		const MatrixXf unary(computeUnary(getLabeling(anno.data, anno.rows * anno.cols, NUM_LABELS), NUM_LABELS, GT_PROB));
 
 		// Specify the unary potential as an array of size W*H*(#classes).
@@ -330,7 +336,11 @@ void learning_example()
 #else
 		// Get the logistic features (unary term).
 		// Here we just use the color as a feature.
-		MatrixXf logistic_feature(4, anno.rows * anno.cols), logistic_transform(NUM_LABELS, 4);
+		// FIXME [improve] >> Use more powerful features.
+		//	- The result of a TextonBoost classifier.
+		//		REF [paper] >> "Parameter Learning and Convergent Inference for Dense Random Fields", ICML 2013.
+		//	- The label or features of CNN.
+		MatrixXf logistic_feature(4, img.rows * img.cols), logistic_transform(NUM_LABELS, 4);
 		logistic_feature.fill(1.0f);
 		for (int r = 0, idx = 0; r < img.rows; ++r)
 			for (int c = 0; c < img.cols; ++c, ++idx)
@@ -354,10 +364,17 @@ void learning_example()
 #endif
 	}
 	{
-		// Add simple pairwise potts terms.
+		// Add simple pairwise Potts terms.
+		//	x_stddev = 3.
+		//	y_stddev = 3.
+		//	weight = 3.
 		crf.addPairwiseGaussian(3, 3, new PottsCompatibility(3));
 
 		// Add a longer range label compatibility term.
+		//	x_stddev = 80.
+		//	y_stddev = 80.
+		//	r_stddev = g_stddev = b_stddev = 13.
+		//	weight = 10.
 		crf.addPairwiseBilateral(80, 80, 13, 13, 13, img.data, new MatrixCompatibility(MatrixXf::Identity(NUM_LABELS, NUM_LABELS)));
 		//crf.addPairwiseBilateral(80, 80, 13, 13, 13, img.data, new PottsCompatibility(10));
 	}
@@ -503,7 +520,7 @@ void color_filtering(const cv::Mat& img, cv::Mat& foreground_mask)
 	foreground_mask = filtered_imgs3[1];
 }
 
-void foreground_extraction_for_plant()
+void foreground_extraction_inference_for_plant()
 {
 #if 0
 	const std::string img_filename("D:/dataset/phenotyping/cvppp2017_lsc_lcc_challenge/package/CVPPP2017_LSC_training/training/A1/plant001_rgb.png");
@@ -588,6 +605,7 @@ void foreground_extraction_for_plant()
 		// Certainty that the groundtruth is correct.
 		const float GT_PROB = 0.6f;
 		// Simple classifier that is 50% certain that the annotation is correct.
+		// FIXME [improve] >> Too simple unary computed by GT_PROB is used here.
 		const MatrixXf unary(computeUnary(getLabeling(anno.data, anno.rows * anno.cols, NUM_LABELS), NUM_LABELS, GT_PROB));
 
 		// Specify the unary potential as an array of size W*H*(#classes).
@@ -666,7 +684,7 @@ void foreground_extraction_for_plant()
 	cv::destroyAllWindows();
 }
 
-void foreground_extraction_for_foreign_body()
+void foreground_extraction_inference_for_foreign_body()
 {
 #if 1
 	const std::string img_filename("D:/dataset/failure_analysis/defect/xray_201702/2016y10m03d hamburger(OK_or_NG)_processed/patty/image_equalized/Bad_hamburger_164620_2136000.tif");
@@ -728,6 +746,7 @@ void foreground_extraction_for_foreign_body()
 		// Certainty that the groundtruth is correct.
 		const float GT_PROB = 0.9f;
 		// Simple classifier that is 50% certain that the annotation is correct.
+		// FIXME [improve] >> Too simple unary computed by GT_PROB is used here.
 		const MatrixXf unary(computeUnary(getLabeling(anno.data, anno.rows * anno.cols, NUM_LABELS), NUM_LABELS, GT_PROB));
 
 		// Specify the unary potential as an array of size W*H*(#classes).
@@ -816,12 +835,12 @@ namespace my_densecrf {
 int densecrf_main(int argc, char *argv[])
 {
 	// Example.
-	//local::inference_example();
+	//local::inference_example();  // No parameter learning.
 	//local::learning_example();
 
 	// Application.
-	//local::foreground_extraction_for_plant();
-	local::foreground_extraction_for_foreign_body();
+	//local::foreground_extraction_inference_for_plant();
+	local::foreground_extraction_inference_for_foreign_body();
 
 	return 0;
 }
