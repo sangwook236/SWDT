@@ -1,15 +1,6 @@
 # A spectrogram, sonogram, spectral waterfalls, voiceprints, or voicegrams: a visual representation of the spectrum of frequencies in a sound.
 
 #%%------------------------------------------------------------------
-# Load data.
-
-#dataset_home_dir_path = "/home/sangwook/my_dataset"
-#dataset_home_dir_path = "/home/HDD1/sangwook/my_dataset"
-dataset_home_dir_path = "D:/dataset"
-
-data_dir_path = dataset_home_dir_path + "/failure_analysis/defect/motor_20170621/0_original/500-1500Hz"
-
-#%%------------------------------------------------------------------
 
 # REF [site] >> https://docs.scipy.org/doc/scipy-0.19.0/reference/generated/scipy.signal.spectrogram.html
 
@@ -18,7 +9,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Generate a test signal, a 2 Vrms sine wave whose frequency is slowly modulated around 3kHz, corrupted by white noise of exponentially decreasing magnitude sampled at 10 kHz.
-
 fs = 10e3
 N = 1e5
 
@@ -28,16 +18,28 @@ time = np.arange(N) / float(fs)
 mod = 500 * np.cos(2 * np.pi * 0.25 * time)
 carrier = amp * np.sin(2 * np.pi * 3e3 * time + mod)
 noise = np.random.normal(scale=np.sqrt(noise_power), size=time.shape)
-noise *= np.exp(-time/5)
+noise *= np.exp(-time / 5)
 x = carrier + noise
 
-# Compute and plot the spectrogram.
-
+# Compute the spectrogram.
+# REF [file] >> ./stft.py
 f, t, Sxx = signal.spectrogram(x, fs)
-plt.pcolormesh(t, f, Sxx)
+
+# Plot the spectrogram.
+#plt.pcolormesh(t, f, Sxx)
+plt.pcolormesh(t, f, 20 * np.log10(Sxx))
 plt.ylabel('Frequency [Hz]')
 plt.xlabel('Time [sec]')
 plt.show()
+
+#%%------------------------------------------------------------------
+# Load data.
+
+#dataset_home_dir_path = "/home/sangwook/my_dataset"
+#dataset_home_dir_path = "/home/HDD1/sangwook/my_dataset"
+dataset_home_dir_path = "D:/dataset"
+
+data_dir_path = dataset_home_dir_path + "/failure_analysis/defect/motor_20170621/0_original/500-1500Hz"
 
 #%%------------------------------------------------------------------
 
