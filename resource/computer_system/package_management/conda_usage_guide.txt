@@ -56,3 +56,9 @@
 	- Remove a package.
 		conda remove package_name
 		conda remove --name env_name package_name
+
+	- Update a package.
+		conda update package_name
+	- Update all packages.
+		conda update --all
+		conda update --all --alt-hint

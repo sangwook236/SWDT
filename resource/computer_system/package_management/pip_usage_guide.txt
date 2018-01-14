@@ -11,8 +11,6 @@
 		pip install package_name
 		pip install package_name==1.0.4
 		pip install 'package_name>=1.0.4'
-		pip install --upgrade package_name
-		pip install --upgrade --no-deps package_name
 		pip install --user package_name
 		pip install -r requirements.txt
 		pip install --download dir_name -r requirements.txt
@@ -22,6 +20,12 @@
 		pip install --ignore-installed package_name
 	- Uninstall packages.
 		pip uninstall package_name
+
+	- Upgrade a package.
+		pip install --upgrade package_name
+		pip install --upgrade --no-deps package_name
+	- Upgrade all packages.
+		pip list --outdated | cut -d ' ' -f1 | xargs -n1 pip install -U
 
 	- List installed packages.
 		pip list
