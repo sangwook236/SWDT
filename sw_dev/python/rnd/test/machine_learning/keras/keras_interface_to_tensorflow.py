@@ -1,4 +1,6 @@
 # REF [site] >> https://blog.keras.io/keras-as-a-simplified-interface-to-tensorflow-tutorial.html
+# REF [site] >> https://keras.io/getting-started/functional-api-guide
+# REF [site] >> https://keras.io/models/model/
 
 import tensorflow as tf
 from keras import backend as K
