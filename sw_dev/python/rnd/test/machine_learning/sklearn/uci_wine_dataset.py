@@ -5,21 +5,21 @@ else:
 	swl_python_home_dir_path = 'D:/work/SWL_github/python'
 sys.path.append(swl_python_home_dir_path + '/src')
 
-#%%------------------------------------------------------------------
-
-if 'posix' == os.name:
-	#dataset_home_dir_path = '/home/sangwook/my_dataset'
-	dataset_home_dir_path = '/home/HDD1/sangwook/my_dataset'
-else:
-	dataset_home_dir_path = 'D:/dataset'
-
-dataset_dir_path = dataset_home_dir_path + '/pattern_recognition/uci/wine'
-
+#--------------------
 import numpy as np
 import pandas as pd
 from sklearn import preprocessing
 #import keras
 #from keras.preprocessing.image import ImageDataGenerator
+
+#--------------------
+if 'posix' == os.name:
+	#data_home_dir_path = '/home/sangwook/my_dataset'
+	data_home_dir_path = '/home/HDD1/sangwook/my_dataset'
+else:
+	data_home_dir_path = 'D:/dataset'
+
+data_dir_path = data_home_dir_path + '/pattern_recognition/uci/wine'
 
 #%%------------------------------------------------------------------
 # Use pandas.DataFrame & sklearn.preprocessing.
@@ -27,11 +27,11 @@ from sklearn import preprocessing
 # REF [site] >> http://sebastianraschka.com/Articles/2014_about_feature_scaling.html
 
 #df = pd.io.parsers.read_csv(
-#		dataset_dir_path + '/wine.data',
+#		data_dir_path + '/wine.data',
 #		header=None)
 #df.columns=['Class label', 'Alcohol', 'Malic acid', 'Ash', 'Alcalinity of ash', 'Magnesium', 'Total phenols', 'Flavanoids', 'Nonflavanoid phenols', 'Proanthocyanins', 'Color intensity', 'Hue', 'OD280/OD315 of diluted wines', 'Proline' ]
 df = pd.io.parsers.read_csv(
-		dataset_dir_path + '/wine.data',
+		data_dir_path + '/wine.data',
 		header=None,
 		usecols=[0,1,2])
 df.columns=['Class label', 'Alcohol', 'Malic acid' ]
