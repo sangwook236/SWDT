@@ -31,12 +31,15 @@ d
 #%%-------------------------------------------------------------------
 # Create array.
 
-a = np.zeros((3, 4))
-b = np.ones((2, 3, 4), dtype = np.int16)
-c = np.empty((2, 3))
+a = np.ndarray(shape=(4, 2), dtype=np.float, order='F')  # At random.
 
-d = np.arange(10, 30, 5)
-e = np.arange(0, 2, 0.3)
+b = np.zeros((3, 4))
+c = np.ones((2, 3, 4), dtype=np.int16)
+d = np.empty((2, 3))
+e = np.full((2, 3), 6)
+
+f = np.arange(10, 30, 5)
+g = np.arange(0, 2, 0.3)
 
 from numpy import pi
 
@@ -59,6 +62,7 @@ print(c)
 
 a = np.random.random((2, 3))
 np.int32(np.round(a))
+a.astype(np.int)
 
 #%%-------------------------------------------------------------------
 # Basic operation.
@@ -147,3 +151,29 @@ y = np.arange(5)
 
 m = np.vstack([x, y])
 xy = np.hstack([x, y])
+
+#%%-------------------------------------------------------------------
+# Handling NaN and Infinity.
+#	REF [library] >> pandas for handling NaN.
+
+# np.nan: np.nansum, np.nanmin, np.nanmax, np.nanmean.
+# np.inf.
+
+np.array([0, 1, np.nan, np.inf, -10, 10]) * np.nan  # array([nan, nan, nan, nan, nan, nan]).
+
+a = np.array([1, 2, 3, 4, 5])
+b = np.array([1, 2, 3, 4, None])
+c = np.array([1, 2, 3, 4, np.nan])
+d = np.array([1, 2, 3, 4, np.inf])
+
+np.mean(a)  # 3.0.
+np.nanmean(a)  # 3.0.
+
+#np.mean(b)  # Error.
+#np.nanmean(b)  # Error.
+
+np.mean(c)  # np.nan.
+np.nanmean(c)  # 2.5.
+
+np.mean(d)  # np.inf.
+np.nanmean(d)  # np.inf.
