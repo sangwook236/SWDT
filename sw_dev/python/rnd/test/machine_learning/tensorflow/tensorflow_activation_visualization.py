@@ -1,4 +1,6 @@
+# REF [site] >> https://bigsnarf.wordpress.com/2016/10/19/visualizing-convnet-layers-and-activations/
 # REF [site] >> https://medium.com/@awjuliani/visualizing-neural-network-layer-activation-tensorflow-tutorial-d45f8bf7bbc4
+# REF [paper] >> "Visualizing and Understanding Convolutional Networks", ECCV 2014.
 
 import numpy as np 
 import matplotlib as mp
