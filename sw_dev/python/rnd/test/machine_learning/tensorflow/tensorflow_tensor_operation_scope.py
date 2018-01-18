@@ -4,6 +4,11 @@
 
 import tensorflow as tf
 
+# NOTE [infortant] >>
+#	- Variables created by tf.get_variable() are managed in a different way that variables created by tf.Variable are managed. (?)
+#	- The name scope is not applied to variables created by tf.get_variable().
+#	- In tf.get_variable('scope/name'), the name of variable is 'scope/name', but not 'name' in a scope 'scope'. (?)
+
 def create_variables(use_get_variable=True):
 	if True == use_get_variable:
 		tf.get_variable('Variable1', shape=(3, 3))  # name = 'Variable1'.
