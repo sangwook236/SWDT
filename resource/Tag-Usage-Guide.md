@@ -84,8 +84,11 @@
 	- restore
 		- When restoring parts which are implemented temporarily for testing into the original state.
 
-##### Notice Task
+##### Note/Notice Task
 - Format
+	- // NOTE [task-id] >> `<brief description>`
+	- //  - `<detailed explanation>` (optional)
+		- REF [section] >> Note Taking
 	- // NOTICE [task-id] >> `<brief description>`
 	- //  - `<detailed explanation>` (optional)
 - task-id
@@ -94,8 +97,6 @@
 	- info
 		- e.g.)
 			- NOTICE [info] {important} >>
-	- note
-		- REF [section] >> Note Taking
 	- assumption, limitation
 
 ##### Reference Task
