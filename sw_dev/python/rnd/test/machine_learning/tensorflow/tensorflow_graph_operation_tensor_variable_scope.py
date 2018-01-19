@@ -4,82 +4,59 @@
 
 import tensorflow as tf
 
-# NOTE [infortant] >>
-#	- Variables created by tf.get_variable() are managed in a different way that variables created by tf.Variable are managed. (?)
-#	- The name scope is not applied to variables created by tf.get_variable().
-#	- In tf.get_variable('scope/name'), the name of variable is 'scope/name', but not 'name' in a scope 'scope'. (?)
+# NOTE [info] {important} >>
+#	- Variables created by tf.get_variable() are managed in a different way that variables created by tf.Variable() are managed. (?)
+#		Variables created by tf.Variable() can be not retrieved by tf.get_variable().
+#		In order to access variables created by tf.Variable(), we have to keep their instances.
+#	- tf.name_scope() is not applied to variables created by tf.get_variable().
+#	- In tf.get_variable('scopeA/nameB'), the name of the variable is 'scopeA/nameB', but not 'nameB' in the scope 'scopeA'. (?)
+#		So we need to use tf.variable_scope() or tf.name_scope() to specify scopes.
+#	- Scopes defined by tf.variable_scope() & tf.name_scope() are different.
+#		Two variables which have the same name and  defined by tf.variable_scope() & tf.name_scope() are different
 
 def create_variables(use_get_variable=True):
 	if True == use_get_variable:
-		tf.get_variable('Variable1', shape=(3, 3))  # name = 'Variable1'.
+		tf.get_variable('Variable1', shape=(3, 3))  # Name = 'Variable1'.
 		# NOTE [error] >> Trying to share variable my_var_scope1/Variable1, but specified shape (5, 5) and found shape (3, 3).
 		#tf.get_variable('Variable1', shape=(5, 5))
 		tf.get_variable('Variable1')  # Shares an existing variable.
-		tf.get_variable('Variable2', shape=(3, 3))  # name = 'Variable2'.
+		tf.get_variable('Variable2', shape=(3, 3))  # Name = 'Variable2'.
 
-	tf.Variable(1)  # name = 'Variable'.
-	tf.Variable(1)  # name = 'Variable_1'.
-	tf.Variable(3, name='Variable1')  # name = 'Variable1_1'.
-	tf.Variable(5, name='Variable1')  # name = 'Variable1_2'.
-	tf.Variable(3, name='Variable2')  # name = 'Variable2_1'.
-	tf.Variable(3, name='Variable3')  # name = 'Variable3'.
+	tf.Variable(1)  # Name = 'Variable'.
+	tf.Variable(1)  # Name = 'Variable_1'.
+	tf.Variable(3, name='Variable1')  # Name = 'Variable1_1'.
+	tf.Variable(5, name='Variable1')  # Name = 'Variable1_2'.
+	tf.Variable(3, name='Variable2')  # Name = 'Variable2_1'.
+	tf.Variable(3, name='Variable3')  # Name = 'Variable3'.
 
 def create_operations():
 	# REF [site] >> https://www.tensorflow.org/api_guides/python/math_ops
 
-	x1 = tf.placeholder(tf.float32, shape=(2, 3))  # name = 'Placeholder'.
-	x2 = tf.placeholder(tf.float32, shape=(3,))  # name = 'Placeholder_1'.
-	A = tf.placeholder(tf.float32, shape=(5, 10))  # name = 'Placeholder_2'.
+	x1 = tf.placeholder(tf.float32, shape=(2, 3))  # Name = 'Placeholder'.
+	x2 = tf.placeholder(tf.float32, shape=(3,))  # Name = 'Placeholder_1'.
+	A = tf.placeholder(tf.float32, shape=(5, 10))  # Name = 'Placeholder_2'.
 
-	y1 = tf.sqrt(x1)  # name = 'Sqrt'.
-	y2 = tf.sin(x2)  # name = 'Sin'.
-	z1 = tf.add(y1, y2)  # name = 'Add'.
-	S1, U1, V1 = tf.svd(A, full_matrices=False, compute_uv=True)  # name = 'Svd'.
+	y1 = tf.sqrt(x1)  # Name = 'Sqrt'.
+	y2 = tf.sin(x2)  # Name = 'Sin'.
+	z1 = tf.add(y1, y2)  # Name = 'Add'.
+	S1, U1, V1 = tf.svd(A, full_matrices=False, compute_uv=True)  # Name = 'Svd'.
 
-	x1 = tf.placeholder(tf.float32, shape=(2, 3), name='x1')  # name = 'x1'.
-	x2 = tf.placeholder(tf.float32, shape=(3,), name='x2')  # name = 'x2'.
-	A = tf.placeholder(tf.float32, shape=(5, 10), name='A')  # name = 'A'.
+	x1 = tf.placeholder(tf.float32, shape=(2, 3), name='x1')  # Name = 'x1'.
+	x2 = tf.placeholder(tf.float32, shape=(3,), name='x2')  # Name = 'x2'.
+	A = tf.placeholder(tf.float32, shape=(5, 10), name='A')  # Name = 'A'.
 
-	y1 = tf.sqrt(x1, name='sqrt')  # name = 'sqrt'.
-	y2 = tf.sin(x2, name='sin')  # name = 'sin'.
-	z2 = tf.add(y1, y2, name='add')  # name = 'add'.
-	S2, U2, V2 = tf.svd(A, full_matrices=False, compute_uv=True, name='svd')  # name = 'svd'.
+	y1 = tf.sqrt(x1, name='sqrt')  # Name = 'sqrt'.
+	y2 = tf.sin(x2, name='sin')  # Name = 'sin'.
+	z2 = tf.add(y1, y2, name='add')  # Name = 'add'.
+	S2, U2, V2 = tf.svd(A, full_matrices=False, compute_uv=True, name='svd')  # Name = 'svd'.
 
 	return z1, S1, U1, V1, z2, S2, U2, V2
-
-#%%------------------------------------------------------------------
-# Test re-using.
-
-if False:
-	with tf.variable_scope('my_scope1', reuse=tf.AUTO_REUSE):
-		create_variables()
-		create_operations()
-
-	with tf.variable_scope('my_scope2', reuse=True):
-		# NOTE [error] >>
-		#	Variable my_scope2/Variable1 does not exist, or was not created with tf.get_variable().
-		#	Did you mean to set reuse=tf.AUTO_REUSE in VarScope?
-		#create_variables(True)
-		create_variables(False)
-		create_operations()
-
-	with tf.variable_scope('my_scope3', reuse=None):
-		# NOTE [error] >>
-		#	Variable my_scope3/Variable1 already exists, disallowed.
-		#	Did you mean to set reuse=True or reuse=tf.AUTO_REUSE in VarScope?
-		#create_variables(True)
-		create_variables(False)
-		create_operations()
 
 #%%------------------------------------------------------------------
 
 reuse = tf.AUTO_REUSE
 
 with tf.variable_scope('my_var_scope1', reuse=reuse):
-	create_variables()
-	create_operations()
-
-with tf.variable_scope('my_var_scope1', reuse=reuse):  # Its name is changed to 'my_var_scope1_1'.
 	create_variables()
 	create_operations()
 
@@ -101,15 +78,10 @@ with tf.variable_scope('my_var_scope4', reuse=reuse):
 
 reuse = tf.AUTO_REUSE
 
-with tf.name_scope('my_name_scope1'):  # NOTE [caution] >> The name scope is not applied to variables created by tf.get_variable().
-	# NOTE [error] >>
-	#	Variable Variable1 already exists, disallowed.
-	#	Did you mean to set reuse=True or reuse=tf.AUTO_REUSE in VarScope?
-	#create_variables(True)
-	create_variables(False)
-	create_operations()
-
+# NOTE [caution] >> The name scope is not applied to variables created by tf.get_variable().
 with tf.name_scope('my_name_scope1'):
+	# NOTE [error] >> Variable Variable1 already exists, disallowed. Did you mean to set reuse=True or reuse=tf.AUTO_REUSE in VarScope?
+	#create_variables(True)
 	create_variables(False)
 	create_operations()
 
@@ -202,32 +174,36 @@ for var in model_variables:
 	print(var)
 
 #var = tf.get_variable('my_name_scope4/inner_var_scope/A')  # NOTE [error] >> Is not tf.Variable but tf.Tensor.
-# NOTE [error] >>
-#	 Variable my_var_scope1/Variable1 already exists, disallowed.
-#	Did you mean to set reuse=True or reuse=tf.AUTO_REUSE in VarScope?
+# NOTE [error] >> Variable my_var_scope1/Variable1 already exists, disallowed. Did you mean to set reuse=True or reuse=tf.AUTO_REUSE in VarScope?
 #gvar = tf.get_variable('my_var_scope1/Variable1', shape=(5, 5, 1, 32))
 #gvar = tf.get_variable('my_var_scope1/Variable1')
 
 with tf.variable_scope('my_var_scope1', reuse=tf.AUTO_REUSE):
-	# NOTE [error] >>
-	#	Trying to share variable my_var_scope1/Variable1, but specified shape (3, 5) and found shape (3, 3).
+	# NOTE [error] >> Trying to share variable my_var_scope1/Variable1, but specified shape (3, 5) and found shape (3, 3).
 	#gvar = tf.get_variable('Variable1', shape=(3, 5))
 
-	gvar = tf.get_variable('Variable1', shape=(3, 3))  # Shares an existing variable.
+	# Shares an existing variable.
+	gvar = tf.get_variable('Variable1')
+	gvar = tf.get_variable('Variable1', shape=(3, 3))
 
 	# A new variable ''my_var_scope1/Variable3_1' is created.
 	gvar = tf.get_variable('Variable3', shape=(3, 5))
 with tf.variable_scope('my_var_scope1', reuse=True):
 	gvar = tf.get_variable('Variable1')  # Shares an existing variable.
 
-	# NOTE [error] >> The variable 'my_var_scope1/Variable3' was not created with tf.get_variable(), but with tf.Variable().
-	#	Variable my_var_scope1/Variable3 does not exist, or was not created with tf.get_variable().
-	#	Did you mean to set reuse=tf.AUTO_REUSE in VarScope?
+	# NOTE [error] >> Variable my_var_scope1/Variable3 does not exist, or was not created with tf.get_variable(). Did you mean to set reuse=tf.AUTO_REUSE in VarScope?
+	#	The variable 'my_var_scope1/Variable3' was not created with tf.get_variable(), but with tf.Variable().
 	#gvar = tf.get_variable('Variable3')
 with tf.variable_scope('my_var_scope1', reuse=None):
-	# NOTE [error] >>
-	#	Variable my_var_scope1/Variable1 already exists, disallowed.
-	#	Did you mean to set reuse=True or reuse=tf.AUTO_REUSE in VarScope?
+	# NOTE [error] >> Variable my_var_scope1/Variable1 already exists, disallowed. Did you mean to set reuse=True or reuse=tf.AUTO_REUSE in VarScope?
+	#gvar = tf.get_variable('Variable1')
+
+	pass
+
+with tf.name_scope('my_var_scope1'):
+	# NOTE [info] >> Scopes defined by tf.variable_scope() & tf.name_scope() are different.
+
+	# NOTE [error] >> Shape of a new variable (Variable1) must be fully defined, but instead was <unknown>.
 	#gvar = tf.get_variable('Variable1')
 
 	pass
@@ -237,15 +213,55 @@ with tf.variable_scope('my_var_scope1', reuse=None):
 #	REF [site] >> https://www.tensorflow.org/api_docs/python/tf/variable_scope
 #	A context manager for defining ops that creates variables (layers).
 #	This context manager validates that the (optional) values are from the same graph, ensures that graph is the default graph, and pushes a name scope and a variable scope.
-
-curr_variable_scope = tf.get_variable_scope()  # Get the current variable scope.
-print(curr_variable_scope)
-
-#%%------------------------------------------------------------------
 # tf.name_scope:
 #	REF [site] >> https://www.tensorflow.org/api_docs/python/tf/name_scope
 #	A context manager for use when defining a Python op.
 #	This context manager validates that the given values are from the same graph, makes that graph the default graph, and pushes a name scope in that graph (see tf.Graph.name_scope for more details on that).
 
+curr_variable_scope = tf.get_variable_scope()  # Get the current variable scope.
+print(curr_variable_scope)
+
 curr_name_scope = graph.get_name_scope()  # Get the current name scope.
 print(curr_name_scope)
+
+#--------------------
+# Scope with the same name.
+
+with tf.variable_scope('scope_with_the_same_name', reuse=tf.AUTO_REUSE):  # Name = 'scope_with_the_same_name'.
+	tf.get_variable('Variable1', shape=(1, 2))
+	var1 = tf.Variable('Variable2', name='Variable2')
+
+with tf.name_scope('scope_with_the_same_name'):  # Name = 'scope_with_the_same_name_2'.
+	tf.get_variable('Variable1', shape=(1, 2))  # Has no name scope.
+	var2 = tf.Variable('Variable2', name='Variable2')
+
+with tf.variable_scope('scope_with_the_same_name', reuse=tf.AUTO_REUSE):  # Name = 'scope_with_the_same_name_3'.
+	tf.get_variable('Variable1', shape=(1, 2))  # Shares an existing variable.
+	var3 = tf.Variable('Variable2', name='Variable2')
+
+with tf.name_scope('scope_with_the_same_name'):  # Name = 'scope_with_the_same_name_4'.
+	# NOTE [error] >> Variable Variable1 already exists, disallowed. Did you mean to set reuse=True or reuse=tf.AUTO_REUSE in VarScope?
+	#tf.get_variable('Variable1', shape=(1, 2))
+	var4 = tf.Variable('Variable2', name='Variable2')
+
+#--------------------
+# Test re-using.
+
+# If reuse=tf.AUTO_REUSE, tf.get_variable() creates a new variable if it did not exist or shares the variable if it exists.
+with tf.variable_scope('my_scope1', reuse=tf.AUTO_REUSE):
+	create_variables()
+	create_operations()
+
+# If reuse=True, tf.get_variable() retrieves only an existing variable.
+with tf.variable_scope('my_scope2', reuse=True):
+	# NOTE [error] >> Variable my_scope2/Variable1 does not exist, or was not created with tf.get_variable(). Did you mean to set reuse=tf.AUTO_REUSE in VarScope?
+	#create_variables(True)
+	create_variables(False)
+	create_operations()
+
+# If reuse=None, tf.get_variable() always creates a new variable.
+with tf.variable_scope('my_scope3', reuse=None):
+	# NOTE [error] >> Variable my_scope3/Variable1 already exists, disallowed. Did you mean to set reuse=True or reuse=tf.AUTO_REUSE in VarScope?
+	#create_variables(True)
+	create_variables(False)
+	create_operations()
