@@ -21,13 +21,15 @@ mnist = input_data.read_data_sets(data_home_dir_path + '/pattern_recognition/mni
 
 #%%------------------------------------------------------------------
 
-def weight_variable(shape, name=None):
-	initial = tf.truncated_normal(shape, stddev=0.1)
-	return tf.Variable(initial, name=name)
+def weight_variable(shape, name):
+	#initial = tf.truncated_normal(shape, stddev=0.1)
+	#return tf.Variable(initial, name=name)
+	return tf.get_variable(name, shape, initializer=tf.truncated_normal_initializer(stddev=0.1))
 
-def bias_variable(shape, name=None):
-	initial = tf.constant(0.1, shape=shape)
-	return tf.Variable(initial, name=name) 
+def bias_variable(shape, name):
+	#initial = tf.constant(0.1, shape=shape)
+	#return tf.Variable(initial, name=name) 
+	return tf.get_variable(name, shape, initializer=tf.constant_initializer(0.1))
 
 def create_tf_model(input_tensor, keep_prob_tensor):
 	with tf.variable_scope('my_tf_scope', reuse=tf.AUTO_REUSE):  # Applied variables and operations.
@@ -142,6 +144,7 @@ def create_tfslim_named_model(input_tensor, keep_prob_tensor):
 		return fc2_act
 
 #%%------------------------------------------------------------------
+# Create models.
 
 image_ph = tf.placeholder(tf.float32, [None, 784], name='input_tensor')
 label_ph = tf.placeholder(tf.float32, [None, 10], name='output_tensor')
@@ -165,120 +168,126 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
 #%%------------------------------------------------------------------
+# Train.
 
-sess = tf.Session()
+session = tf.Session()
 init = tf.global_variables_initializer()
-sess.run(init)
+session.run(init)
 
-batch_size = 50
-for step in range(1, 1001):
-	batch = mnist.train.next_batch(batch_size)
-	sess.run(train_step, feed_dict={image_ph: batch[0], label_ph: batch[1], keep_prob_ph: 0.5})
-	if 0 == step % 100:
-		train_acc = sess.run(accuracy, feed_dict={image_ph: batch[0], label_ph: batch[1], keep_prob_ph: 1.0})
-		print('Step %d: training accuracy = %g' % (step, train_acc))
+with session.as_default() as sess:
+	batch_size = 50
+	for step in range(1, 1001):
+		batch = mnist.train.next_batch(batch_size)
+		sess.run(train_step, feed_dict={image_ph: batch[0], label_ph: batch[1], keep_prob_ph: 0.5})
+		if 0 == step % 100:
+			train_acc = sess.run(accuracy, feed_dict={image_ph: batch[0], label_ph: batch[1], keep_prob_ph: 1.0})
+			print('Step %d: training accuracy = %g' % (step, train_acc))
 
-test_acc = sess.run(accuracy, feed_dict={image_ph: mnist.test.images, label_ph: mnist.test.labels, keep_prob_ph: 1.0})
-print('Test accuracy = %g' % (test_acc))
+	test_acc = sess.run(accuracy, feed_dict={image_ph: mnist.test.images, label_ph: mnist.test.labels, keep_prob_ph: 1.0})
+	print('Test accuracy = %g' % (test_acc))
 
 #%%------------------------------------------------------------------
 # Get tensors from their names.
 
-graph = sess.graph
+with session.as_default() as sess:
+	graph = sess.graph
 
-if model_output_tensor is tf_model_output_tensor:
-	conv1_preact = graph.get_tensor_by_name('my_tf_scope/add:0')
-	conv1_act = graph.get_tensor_by_name('my_tf_scope/Relu:0')
-	conv1_pool = graph.get_tensor_by_name('my_tf_scope/MaxPool:0')
+	if model_output_tensor is tf_model_output_tensor:
+		conv1_preact = graph.get_tensor_by_name('my_tf_scope/add:0')
+		conv1_act = graph.get_tensor_by_name('my_tf_scope/Relu:0')
+		conv1_pool = graph.get_tensor_by_name('my_tf_scope/MaxPool:0')
 
-	conv2_preact = graph.get_tensor_by_name('my_tf_scope/add_1:0')
-	conv2_act = graph.get_tensor_by_name('my_tf_scope/Relu_1:0')
-	conv2_pool = graph.get_tensor_by_name('my_tf_scope/MaxPool_1:0')
+		conv2_preact = graph.get_tensor_by_name('my_tf_scope/add_1:0')
+		conv2_act = graph.get_tensor_by_name('my_tf_scope/Relu_1:0')
+		conv2_pool = graph.get_tensor_by_name('my_tf_scope/MaxPool_1:0')
 
-	fc1_preact = graph.get_tensor_by_name('my_tf_scope/add_2:0')
-	fc1_act = graph.get_tensor_by_name('my_tf_scope/Relu_2:0')
-	fc1_dropout = graph.get_tensor_by_name('my_tf_scope/dropout/mul:0')  # ???
+		fc1_preact = graph.get_tensor_by_name('my_tf_scope/add_2:0')
+		fc1_act = graph.get_tensor_by_name('my_tf_scope/Relu_2:0')
+		fc1_dropout = graph.get_tensor_by_name('my_tf_scope/dropout/mul:0')  # ???
 
-	fc2_preact = graph.get_tensor_by_name('my_tf_scope/add_3:0')
-	fc2_act = graph.get_tensor_by_name('my_tf_scope/Softmax:0')
-elif model_output_tensor is tf_named_model_output_tensor:
-	conv1_preact = graph.get_tensor_by_name('my_tf_named_scope/conv1/add:0')
-	conv1_act = graph.get_tensor_by_name('my_tf_named_scope/conv1/activations:0')
-	conv1_pool = graph.get_tensor_by_name('my_tf_named_scope/conv1/pooling:0')
+		fc2_preact = graph.get_tensor_by_name('my_tf_scope/add_3:0')
+		fc2_act = graph.get_tensor_by_name('my_tf_scope/Softmax:0')
+	elif model_output_tensor is tf_named_model_output_tensor:
+		conv1_preact = graph.get_tensor_by_name('my_tf_named_scope/conv1/add:0')
+		conv1_act = graph.get_tensor_by_name('my_tf_named_scope/conv1/activations:0')
+		conv1_pool = graph.get_tensor_by_name('my_tf_named_scope/conv1/pooling:0')
 
-	conv2_preact = graph.get_tensor_by_name('my_tf_named_scope/conv2/add:0')
-	conv2_act = graph.get_tensor_by_name('my_tf_named_scope/conv2/activations:0')
-	conv2_pool = graph.get_tensor_by_name('my_tf_named_scope/conv2/pooling:0')
+		conv2_preact = graph.get_tensor_by_name('my_tf_named_scope/conv2/add:0')
+		conv2_act = graph.get_tensor_by_name('my_tf_named_scope/conv2/activations:0')
+		conv2_pool = graph.get_tensor_by_name('my_tf_named_scope/conv2/pooling:0')
 
-	fc1_preact = graph.get_tensor_by_name('my_tf_named_scope/fc1/add:0')
-	fc1_act = graph.get_tensor_by_name('my_tf_named_scope/fc1/activations:0')
-	fc1_dropout = graph.get_tensor_by_name('my_tf_named_scope/fc1/dropout/mul:0')  # ???
+		fc1_preact = graph.get_tensor_by_name('my_tf_named_scope/fc1/add:0')
+		fc1_act = graph.get_tensor_by_name('my_tf_named_scope/fc1/activations:0')
+		fc1_dropout = graph.get_tensor_by_name('my_tf_named_scope/fc1/dropout/mul:0')  # ???
 
-	fc2_preact = graph.get_tensor_by_name('my_tf_named_scope/fc2/add:0')
-	fc2_act = graph.get_tensor_by_name('my_tf_named_scope/fc2/activations:0')
-elif model_output_tensor is tfslim_model_output_tensor:
-	conv1_preact = graph.get_tensor_by_name('my_tfslim_scope/Conv/BiasAdd:0')
-	conv1_act = graph.get_tensor_by_name('my_tfslim_scope/Conv/Relu:0')
-	conv1_pool = graph.get_tensor_by_name('my_tfslim_scope/MaxPool2D/MaxPool:0')
+		fc2_preact = graph.get_tensor_by_name('my_tf_named_scope/fc2/add:0')
+		fc2_act = graph.get_tensor_by_name('my_tf_named_scope/fc2/activations:0')
+	elif model_output_tensor is tfslim_model_output_tensor:
+		conv1_preact = graph.get_tensor_by_name('my_tfslim_scope/Conv/BiasAdd:0')
+		conv1_act = graph.get_tensor_by_name('my_tfslim_scope/Conv/Relu:0')
+		conv1_pool = graph.get_tensor_by_name('my_tfslim_scope/MaxPool2D/MaxPool:0')
 
-	conv2_preact = graph.get_tensor_by_name('my_tfslim_scope/Conv_1/BiasAdd:0')
-	conv2_act = graph.get_tensor_by_name('my_tfslim_scope/Conv_1/Relu:0')
-	conv2_pool = graph.get_tensor_by_name('my_tfslim_scope/MaxPool2D_1/MaxPool:0')
+		conv2_preact = graph.get_tensor_by_name('my_tfslim_scope/Conv_1/BiasAdd:0')
+		conv2_act = graph.get_tensor_by_name('my_tfslim_scope/Conv_1/Relu:0')
+		conv2_pool = graph.get_tensor_by_name('my_tfslim_scope/MaxPool2D_1/MaxPool:0')
 
-	fc1_preact = graph.get_tensor_by_name('my_tfslim_scope/fully_connected/BiasAdd:0')
-	fc1_act = graph.get_tensor_by_name('my_tfslim_scope/fully_connected/Relu:0')
-	fc1_dropout = graph.get_tensor_by_name('my_tfslim_scope/Dropout/dropout/mul:0')  # ???
+		fc1_preact = graph.get_tensor_by_name('my_tfslim_scope/fully_connected/BiasAdd:0')
+		fc1_act = graph.get_tensor_by_name('my_tfslim_scope/fully_connected/Relu:0')
+		fc1_dropout = graph.get_tensor_by_name('my_tfslim_scope/Dropout/dropout/mul:0')  # ???
 
-	fc2_preact = graph.get_tensor_by_name('my_tfslim_scope/fully_connected_1/BiasAdd:0')
-	fc2_act = graph.get_tensor_by_name('my_tfslim_scope/fully_connected_1/Softmax:0')
-elif model_output_tensor is tfslim_named_model_output_tensor:
-	conv1_preact = graph.get_tensor_by_name('my_tfslim_named_scope/conv1/BiasAdd:0')
-	conv1_act = graph.get_tensor_by_name('my_tfslim_named_scope/conv1/Relu:0')
-	conv1_pool = graph.get_tensor_by_name('my_tfslim_named_scope/conv1_1/MaxPool:0')
+		fc2_preact = graph.get_tensor_by_name('my_tfslim_scope/fully_connected_1/BiasAdd:0')
+		fc2_act = graph.get_tensor_by_name('my_tfslim_scope/fully_connected_1/Softmax:0')
+	elif model_output_tensor is tfslim_named_model_output_tensor:
+		conv1_preact = graph.get_tensor_by_name('my_tfslim_named_scope/conv1/BiasAdd:0')
+		conv1_act = graph.get_tensor_by_name('my_tfslim_named_scope/conv1/Relu:0')
+		conv1_pool = graph.get_tensor_by_name('my_tfslim_named_scope/conv1_1/MaxPool:0')
 
-	conv2_preact = graph.get_tensor_by_name('my_tfslim_named_scope/conv2/BiasAdd:0')
-	conv2_act = graph.get_tensor_by_name('my_tfslim_named_scope/conv2/Relu:0')
-	conv2_pool = graph.get_tensor_by_name('my_tfslim_named_scope/conv2_1/MaxPool:0')
+		conv2_preact = graph.get_tensor_by_name('my_tfslim_named_scope/conv2/BiasAdd:0')
+		conv2_act = graph.get_tensor_by_name('my_tfslim_named_scope/conv2/Relu:0')
+		conv2_pool = graph.get_tensor_by_name('my_tfslim_named_scope/conv2_1/MaxPool:0')
 
-	fc1_preact = graph.get_tensor_by_name('my_tfslim_named_scope/fc1/BiasAdd:0')
-	fc1_act = graph.get_tensor_by_name('my_tfslim_named_scope/fc1/Relu:0')
-	fc1_dropout = graph.get_tensor_by_name('my_tfslim_named_scope/fc1_1/dropout/mul:0')  # ???
+		fc1_preact = graph.get_tensor_by_name('my_tfslim_named_scope/fc1/BiasAdd:0')
+		fc1_act = graph.get_tensor_by_name('my_tfslim_named_scope/fc1/Relu:0')
+		fc1_dropout = graph.get_tensor_by_name('my_tfslim_named_scope/fc1_1/dropout/mul:0')  # ???
 
-	fc2_preact = graph.get_tensor_by_name('my_tfslim_named_scope/fc2/BiasAdd:0')
-	fc2_act = graph.get_tensor_by_name('my_tfslim_named_scope/fc2/Softmax:0')
-else:
-	assert False, 'Invalid model type.'
+		fc2_preact = graph.get_tensor_by_name('my_tfslim_named_scope/fc2/BiasAdd:0')
+		fc2_act = graph.get_tensor_by_name('my_tfslim_named_scope/fc2/Softmax:0')
+	else:
+		assert False, 'Invalid model type.'
 
 #%%------------------------------------------------------------------
-# Visualize activation.
 
-# REF [function] >> plot_conv_units() in ./tensorflow_layer_unit_visualization_1.py.
-def plot_conv_units(units, num_columns=5, figsize=None):
-	num_filters = units.shape[3]
+# REF [function] >> plot_conv_neurons() in ./tensorflow_layer_neuron_visualization_1.py.
+def plot_conv_neurons(neurons, num_columns=5, figsize=None):
+	num_layers = neurons.shape[3]
 	plt.figure(figsize=figsize)
 	num_columns = num_columns if num_columns > 0 else 1
-	num_rows = math.ceil(num_filters / num_columns) + 1
-	for i in range(num_filters):
+	num_rows = math.ceil(num_layers / num_columns) + 1
+	for i in range(num_layers):
 		plt.subplot(num_rows, num_columns, i + 1)
-		plt.title('Filter ' + str(i))
-		plt.imshow(units[0,:,:,i], interpolation='nearest', cmap='gray')
+		plt.title("Neurons' output {}".format(i))
+		plt.imshow(neurons[0,:,:,i], interpolation='nearest', cmap='gray')
 
-# REF [function] >> compute_units_in_layer() in ./tensorflow_layer_unit_visualization_1.py.
-def compute_units_in_layer(sess, layer_tensor, input_stimuli):
-	return sess.run(layer_tensor, feed_dict={image_ph: np.reshape(input_stimuli, [1, 784], order='F'), keep_prob_ph: 1.0})  # units -> numpy.array.
+# REF [function] >> compute_neurons_in_layer() in ./tensorflow_layer_neuron_visualization_1.py.
+def compute_neurons_in_layer(sess, layer_tensor, input_stimuli):
+	return sess.run(layer_tensor, feed_dict={image_ph: np.reshape(input_stimuli, [1, 784], order='F'), keep_prob_ph: 1.0})  # Neurons -> numpy.array.
 
-imageToUse = mnist.test.images[0]
-plt.imshow(np.reshape(imageToUse, [28, 28]), interpolation='nearest', cmap='gray')
+#%%------------------------------------------------------------------
+# Visualize neurons' ouputs in a convolutional layer.
 
-units = compute_units_in_layer(sess, conv1_preact, imageToUse)
-plot_conv_units(units, figsize=(40, 40))
-units = compute_units_in_layer(sess, conv1_act, imageToUse)
-plot_conv_units(units, figsize=(40, 40))
-units = compute_units_in_layer(sess, conv1_pool, imageToUse)
-plot_conv_units(units, figsize=(40, 40))
-units = compute_units_in_layer(sess, conv2_preact, imageToUse)
-plot_conv_units(units, figsize=(40, 40))
-units = compute_units_in_layer(sess, conv2_act, imageToUse)
-plot_conv_units(units, figsize=(40, 40))
-units = compute_units_in_layer(sess, conv2_pool, imageToUse)
-plot_conv_units(units, figsize=(40, 40))
+with session.as_default() as sess:
+	imageToUse = mnist.test.images[0]
+	plt.imshow(np.reshape(imageToUse, [28, 28]), interpolation='nearest', cmap='gray')
+
+	neurons = compute_neurons_in_layer(sess, conv1_preact, imageToUse)
+	plot_conv_neurons(neurons, figsize=(40, 40))
+	neurons = compute_neurons_in_layer(sess, conv1_act, imageToUse)
+	plot_conv_neurons(neurons, figsize=(40, 40))
+	neurons = compute_neurons_in_layer(sess, conv1_pool, imageToUse)
+	plot_conv_neurons(neurons, figsize=(40, 40))
+	neurons = compute_neurons_in_layer(sess, conv2_preact, imageToUse)
+	plot_conv_neurons(neurons, figsize=(40, 40))
+	neurons = compute_neurons_in_layer(sess, conv2_act, imageToUse)
+	plot_conv_neurons(neurons, figsize=(40, 40))
+	neurons = compute_neurons_in_layer(sess, conv2_pool, imageToUse)
+	plot_conv_neurons(neurons, figsize=(40, 40))
