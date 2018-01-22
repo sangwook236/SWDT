@@ -252,28 +252,33 @@ else:
 #%%------------------------------------------------------------------
 # Visualize activation.
 
-# REF [function] >> plot_conv_filters() in ./tensorflow_activation_visualization_1.py.
-def plot_conv_filters(units):
-	filters = units.shape[3]
-	plt.figure(1, figsize=(20, 20))
-	n_columns = 6
-	n_rows = math.ceil(filters / n_columns) + 1
-	for i in range(filters):
-		plt.subplot(n_rows, n_columns, i + 1)
+# REF [function] >> plot_conv_units() in ./tensorflow_layer_unit_visualization_1.py.
+def plot_conv_units(units, num_columns=5, figsize=None):
+	num_filters = units.shape[3]
+	plt.figure(figsize=figsize)
+	num_columns = num_columns if num_columns > 0 else 1
+	num_rows = math.ceil(num_filters / num_columns) + 1
+	for i in range(num_filters):
+		plt.subplot(num_rows, num_columns, i + 1)
 		plt.title('Filter ' + str(i))
 		plt.imshow(units[0,:,:,i], interpolation='nearest', cmap='gray')
 
-# REF [function] >> visual_activations() in ./tensorflow_activation_visualization_1.py.
-def visual_activations(layer, stimuli):
-	units = sess.run(layer, feed_dict={image_ph: np.reshape(stimuli, [1, 784], order='F'), keep_prob_ph: 1.0})  # units -> numpy.array.
-	plot_conv_filters(units)
+# REF [function] >> compute_units_in_layer() in ./tensorflow_layer_unit_visualization_1.py.
+def compute_units_in_layer(sess, layer_tensor, input_stimuli):
+	return sess.run(layer_tensor, feed_dict={image_ph: np.reshape(input_stimuli, [1, 784], order='F'), keep_prob_ph: 1.0})  # units -> numpy.array.
 
 imageToUse = mnist.test.images[0]
 plt.imshow(np.reshape(imageToUse, [28, 28]), interpolation='nearest', cmap='gray')
 
-visual_activations(conv1_preact, imageToUse)
-visual_activations(conv1_act, imageToUse)
-visual_activations(conv1_pool, imageToUse)
-visual_activations(conv2_preact, imageToUse)
-visual_activations(conv2_act, imageToUse)
-visual_activations(conv2_pool, imageToUse)
+units = compute_units_in_layer(sess, conv1_preact, imageToUse)
+plot_conv_units(units, figsize=(40, 40))
+units = compute_units_in_layer(sess, conv1_act, imageToUse)
+plot_conv_units(units, figsize=(40, 40))
+units = compute_units_in_layer(sess, conv1_pool, imageToUse)
+plot_conv_units(units, figsize=(40, 40))
+units = compute_units_in_layer(sess, conv2_preact, imageToUse)
+plot_conv_units(units, figsize=(40, 40))
+units = compute_units_in_layer(sess, conv2_act, imageToUse)
+plot_conv_units(units, figsize=(40, 40))
+units = compute_units_in_layer(sess, conv2_pool, imageToUse)
+plot_conv_units(units, figsize=(40, 40))

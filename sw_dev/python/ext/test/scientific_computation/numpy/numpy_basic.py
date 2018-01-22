@@ -134,7 +134,6 @@ np.add(B, C)
 #%%-------------------------------------------------------------------
 # Copy and view.
 
-
 #%%-------------------------------------------------------------------
 # Automatic reshaping.
 
@@ -177,3 +176,11 @@ np.nanmean(c)  # 2.5.
 
 np.mean(d)  # np.inf.
 np.nanmean(d)  # np.inf.
+
+#%%------------------------------------------------------------------
+# Save & load a numpy.array to an npy file.
+
+arr = np.arange(10).reshape(2, 5)
+np.save('./arr.npy', arr)
+
+arr_loaded = np.load('./arr.npy')
