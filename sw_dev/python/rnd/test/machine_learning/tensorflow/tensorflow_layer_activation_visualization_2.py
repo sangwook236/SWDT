@@ -257,37 +257,37 @@ with session.as_default() as sess:
 
 #%%------------------------------------------------------------------
 
-# REF [function] >> plot_conv_neurons() in ./tensorflow_layer_neuron_visualization_1.py.
-def plot_conv_neurons(neurons, num_columns=5, figsize=None):
-	num_layers = neurons.shape[3]
+# REF [function] >> plot_conv_activations() in ./tensorflow_layer_activation_visualization_1.py.
+def plot_conv_activations(activations, num_columns=5, figsize=None):
+	num_layers = activations.shape[3]
 	plt.figure(figsize=figsize)
 	num_columns = num_columns if num_columns > 0 else 1
 	num_rows = math.ceil(num_layers / num_columns) + 1
 	for i in range(num_layers):
 		plt.subplot(num_rows, num_columns, i + 1)
-		plt.title("Neurons' output {}".format(i))
-		plt.imshow(neurons[0,:,:,i], interpolation='nearest', cmap='gray')
+		plt.title('Layer output {}'.format(i))
+		plt.imshow(activations[0,:,:,i], interpolation='nearest', cmap='gray')
 
-# REF [function] >> compute_neurons_in_layer() in ./tensorflow_layer_neuron_visualization_1.py.
-def compute_neurons_in_layer(sess, layer_tensor, input_stimuli):
+# REF [function] >> compute_layer_activations() in ./tensorflow_layer_activation_visualization_1.py.
+def compute_layer_activations(sess, layer_tensor, input_stimuli):
 	return sess.run(layer_tensor, feed_dict={image_ph: np.reshape(input_stimuli, [1, 784], order='F'), keep_prob_ph: 1.0})  # Neurons -> numpy.array.
 
 #%%------------------------------------------------------------------
-# Visualize neurons' ouputs in a convolutional layer.
+# Visualize activations(layer ouputs) in a convolutional layer.
 
 with session.as_default() as sess:
 	imageToUse = mnist.test.images[0]
 	plt.imshow(np.reshape(imageToUse, [28, 28]), interpolation='nearest', cmap='gray')
 
-	neurons = compute_neurons_in_layer(sess, conv1_preact, imageToUse)
-	plot_conv_neurons(neurons, figsize=(40, 40))
-	neurons = compute_neurons_in_layer(sess, conv1_act, imageToUse)
-	plot_conv_neurons(neurons, figsize=(40, 40))
-	neurons = compute_neurons_in_layer(sess, conv1_pool, imageToUse)
-	plot_conv_neurons(neurons, figsize=(40, 40))
-	neurons = compute_neurons_in_layer(sess, conv2_preact, imageToUse)
-	plot_conv_neurons(neurons, figsize=(40, 40))
-	neurons = compute_neurons_in_layer(sess, conv2_act, imageToUse)
-	plot_conv_neurons(neurons, figsize=(40, 40))
-	neurons = compute_neurons_in_layer(sess, conv2_pool, imageToUse)
-	plot_conv_neurons(neurons, figsize=(40, 40))
+	activations = compute_layer_activations(sess, conv1_preact, imageToUse)
+	plot_conv_activations(activations, figsize=(40, 40))
+	activations = compute_layer_activations(sess, conv1_act, imageToUse)
+	plot_conv_activations(activations, figsize=(40, 40))
+	activations = compute_layer_activations(sess, conv1_pool, imageToUse)
+	plot_conv_activations(activations, figsize=(40, 40))
+	activations = compute_layer_activations(sess, conv2_preact, imageToUse)
+	plot_conv_activations(activations, figsize=(40, 40))
+	activations = compute_layer_activations(sess, conv2_act, imageToUse)
+	plot_conv_activations(activations, figsize=(40, 40))
+	activations = compute_layer_activations(sess, conv2_pool, imageToUse)
+	plot_conv_activations(activations, figsize=(40, 40))
