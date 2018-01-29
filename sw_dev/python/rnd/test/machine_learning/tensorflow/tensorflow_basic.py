@@ -44,16 +44,41 @@ print("node3: ", node3)
 print("sess.run(node3): ",sess.run(node3))
 
 #%%-------------------------------------------------------------------
+# Placeholder.
 
-a = tf.placeholder(tf.float32)
-b = tf.placeholder(tf.float32)
-adder_node = a + b  # + provides a shortcut for tf.add(a, b)
+a_ph = tf.placeholder(tf.float32)
+b_ph = tf.placeholder(tf.float32)
+adder_node = a_ph + b_ph  # + provides a shortcut for tf.add(a, b).
 
-print(sess.run(adder_node, {a: 3, b: 4.5}))
-print(sess.run(adder_node, {a: [1, 3], b: [2, 4]}))
+print(sess.run(adder_node, feed_dict={a_ph: 3, b_ph: 4.5}))
+print(sess.run(adder_node, feed_dict={a_ph: [1, 3], b_ph: [2, 4]}))
 
 add_and_triple = adder_node * 3.
-print(sess.run(add_and_triple, {a: 3, b: 4.5}))
+print(sess.run(add_and_triple, feed_dict={a_ph: 3, b_ph: 4.5}))
+
+#--------------------
+x_ph = tf.placeholder(tf.float32, shape=(None, 6))
+y = tf.reduce_mean(x_ph, axis=1)
+with tf.Session() as sess:
+	x = []
+	x.append([1, 2, 3, 0, 0, 0])
+	x.append([6, 5, 4, 3, 2, 1])
+	r = sess.run(y, feed_dict={x_ph: x})  # A fixed-size list can be used.
+	#r = sess.run(y, feed_dict={x_ph: np.array(x)})  # An np.array can be used.
+	#r = sess.run(y, feed_dict={x_ph: tuple(map(tuple, x))})  # A fixed-size tuple can be used.
+	print(r)
+
+x_ph = tf.placeholder(tf.float32, shape=(None, None))
+y = tf.reduce_mean(x_ph, axis=1)
+with tf.Session() as sess:
+	x = []
+	x.append([1, 2, 3])
+	x.append([6, 5, 4, 3, 2, 1])
+	# TensorFlow internally uses np.arary for tf.placeholder. (?)
+	#r = sess.run(y, feed_dict={x_ph: x})  # ValueError: setting an array element with a sequence.
+	#r = sess.run(y, feed_dict={x_ph: np.array(x)})  # ValueError: setting an array element with a sequence.
+	#r = sess.run(y, feed_dict={x_ph: tuple(map(tuple, x))})  # ValueError: setting an array element with a sequence.
+	print(r)
 
 #%%-------------------------------------------------------------------
 
