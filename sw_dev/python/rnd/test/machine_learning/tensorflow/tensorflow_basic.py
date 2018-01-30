@@ -7,6 +7,8 @@ import numpy as np
 
 sess = tf.Session()
 
+# tf.Tensor can be handled as np.array.
+
 #A = tf.constant([[[1, 1, 1], [2, 2, 2]], [[3, 3, 3], [4, 4, 4]]])
 #A = tf.constant([[[1, 11, 21], [2, 12, 22]], [[3, 13, 23], [4, 14, 24]]])
 A = tf.constant([[[1, -3, -12], [0, -7, 5]], [[-11, 19, 13], [37, 5, -19]]])
@@ -79,6 +81,20 @@ with tf.Session() as sess:
 	#r = sess.run(y, feed_dict={x_ph: np.array(x)})  # ValueError: setting an array element with a sequence.
 	#r = sess.run(y, feed_dict={x_ph: tuple(map(tuple, x))})  # ValueError: setting an array element with a sequence.
 	print(r)
+
+#--------------------
+x_ph = tf.placeholder(tf.float32, shape=(None, None))
+y = tf.reduce_sum(x_ph)
+sh = tf.shape(x_ph)
+z = sh[0], sh[1]
+with tf.Session() as sess:
+	inputs = []
+	inputs.append([[1, 2, 3]])
+	inputs.append([[6, 5, 4, 3, 2, 1]])
+	inputs.append([[1, 2, 3, 0, 0, 0], [6, 5, 4, 3, 2, 1]])
+	for inp in inputs:
+		[r1, r2] = sess.run([y, z], feed_dict={x_ph: inp})
+		print(r1, r2)
 
 #%%-------------------------------------------------------------------
 
