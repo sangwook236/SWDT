@@ -15,23 +15,23 @@ from distutils.core import setup, Extension
 simple_extending_mod = Extension(
 	'simple_extending',
 	sources = ['simple_extending.cpp'],
-	libraries = ['python32'],
-	include_dirs = ['D:/work_center/sw_dev/python/basic/src/Python-3.2.2/Include'],
-	library_dirs = ['D:/work_center/sw_dev/python/basic/src/Python-3.2.2/PCBuild'],
+	libraries = ['python35'],
+	include_dirs = ['D:/util/Anaconda3/envs/py3.5/include'],
+	library_dirs = ['D:/util/Anaconda3/envs/py3.5/libs'],
 )
 greeting_mod = Extension(
 	'greeting',
 	sources = ['greeting.cpp'],
-	libraries = ['python32'],
-	include_dirs = ['D:/work_center/sw_dev/python/basic/src/Python-3.2.2/Include'],
-	library_dirs = ['D:/work_center/sw_dev/python/basic/src/Python-3.2.2/PCBuild'],
+	libraries = ['python35'],
+	include_dirs = ['D:/util/Anaconda3/envs/py3.5/include'],
+	library_dirs = ['D:/util/Anaconda3/envs/py3.5/libs'],
 )
 greeting_using_boost_mod = Extension(
 	'greeting_using_boost',
 	sources = ['greeting_using_boost.cpp'],
-	libraries = ['python32', 'boost_python3-vc100-mt-1_48'],
-	include_dirs = ['D:/work_center/sw_dev/python/basic/src/Python-3.2.2/Include', 'D:/work_center/sw_dev/cpp/ext/inc'],
-	library_dirs = ['D:/work_center/sw_dev/python/basic/src/Python-3.2.2/PCBuild', 'D:/work_center/sw_dev/cpp/ext/lib'],
+	libraries = ['python35', 'boost_python3-vc140-mt-1_64'],
+	include_dirs = ['D:/util/Anaconda3/envs/py3.5/include', 'D:/usr/local/include'],
+	library_dirs = ['D:/util/Anaconda3/envs/py3.5/libs', 'D:/usr/local/lib'],
 )
 
 
