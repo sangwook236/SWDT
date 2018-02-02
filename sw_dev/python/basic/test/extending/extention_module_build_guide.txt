@@ -1,14 +1,15 @@
-[-] Python interpreter가 실행되지 않거나 extending/embedding이 정상적으로 수행되지 않는 경우
-	REF [doc] >> ${SWDT_PYTHON_HOME}/python_usage_guide.txt
-
 [-] Building extention module.
 	REF [site] >> http://en.wikibooks.org/wiki/Python_Programming/Extending_with_C%2B%2B
 
-	- setup file(e.g.: extending_setup.py)을 적절히 수정하고 아래의 과정을 수행.
+	- Setup file(e.g.: extending_setup.py)을 적절히 수정하고 아래의 과정을 수행.
 		python.exe extending_setup.py build
 		python.exe extending_setup.py install
 	- 필요시 아래의 명령을 수행하면 도움말을 볼 수 있음.
 		python.exe extending_setup.py --help
 	- install command 수행시 installation directory는 아래와 같이 실행된 python interpreter의 하위 directory에 생성.
-		${PYTHON_INTERPRETER_ROOT}/Lib/site-packages
+		${PYTHON_HOME}/Lib/site-packages
 	- 별도의 shared or static library를 building할 필요 없음.
+
+[-] Trouble shooting.
+	- Python interpreter가 실행되지 않거나 extending/embedding이 정상적으로 수행되지 않는 경우.
+		REF [doc] >> ${SWDT_PYTHON_HOME}/python_usage_guide.txt
