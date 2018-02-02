@@ -151,6 +151,15 @@ y = np.arange(5)
 m = np.vstack([x, y])
 xy = np.hstack([x, y])
 
+#--------------------
+a = [np.array([[11,12], [13,14], [15,16]]), np.array([[21,22], [23,24], [25,26]]), np.array([[31,32], [33,34], [35,36]]), np.array([[41,42], [43,44], [45,46]])]
+b = np.array(a)
+c = b.tolist()
+
+np.stack(a, axis=1)
+np.stack(b, axis=1)
+np.stack(c, axis=1)
+
 #%%-------------------------------------------------------------------
 # Handling NaN and Infinity.
 #	REF [library] >> pandas for handling NaN.
