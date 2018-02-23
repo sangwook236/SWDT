@@ -257,7 +257,7 @@ with session.as_default() as sess:
 
 #%%------------------------------------------------------------------
 
-# REF [function] >> plot_conv_activations() in ./tensorflow_layer_activation_visualization_1.py.
+# REF [function] >> plot_conv_activations() in ./tensorflow_visualization_activation_1.py.
 def plot_conv_activations(activations, num_columns=5, figsize=None):
 	num_layers = activations.shape[3]
 	plt.figure(figsize=figsize)
@@ -268,9 +268,9 @@ def plot_conv_activations(activations, num_columns=5, figsize=None):
 		plt.title('Layer output {}'.format(i))
 		plt.imshow(activations[0,:,:,i], interpolation='nearest', cmap='gray')
 
-# REF [function] >> compute_layer_activations() in ./tensorflow_layer_activation_visualization_1.py.
-def compute_layer_activations(sess, layer_tensor, input_stimuli):
-	return sess.run(layer_tensor, feed_dict={image_ph: np.reshape(input_stimuli, [1, 784], order='F'), keep_prob_ph: 1.0})  # Neurons -> numpy.array.
+# REF [function] >> compute_layer_activations() in ./tensorflow_visualization_activation_1.py.
+def compute_layer_activations(sess, layer_tensor, feed_dict):
+	return sess.run(layer_tensor, feed_dict=feed_dict)  # Neurons -> numpy.array.
 
 #%%------------------------------------------------------------------
 # Visualize activations(layer ouputs) in a convolutional layer.
@@ -279,15 +279,16 @@ with session.as_default() as sess:
 	imageToUse = mnist.test.images[0]
 	plt.imshow(np.reshape(imageToUse, [28, 28]), interpolation='nearest', cmap='gray')
 
-	activations = compute_layer_activations(sess, conv1_preact, imageToUse)
+	feed_dict = {image_ph: np.reshape(imageToUse, [1, 784], order='F'), keep_prob_ph: 1.0}
+	activations = compute_layer_activations(sess, conv1_preact, feed_dict)
 	plot_conv_activations(activations, figsize=(40, 40))
-	activations = compute_layer_activations(sess, conv1_act, imageToUse)
+	activations = compute_layer_activations(sess, conv1_act, feed_dict)
 	plot_conv_activations(activations, figsize=(40, 40))
-	activations = compute_layer_activations(sess, conv1_pool, imageToUse)
+	activations = compute_layer_activations(sess, conv1_pool, feed_dict)
 	plot_conv_activations(activations, figsize=(40, 40))
-	activations = compute_layer_activations(sess, conv2_preact, imageToUse)
+	activations = compute_layer_activations(sess, conv2_preact, feed_dict)
 	plot_conv_activations(activations, figsize=(40, 40))
-	activations = compute_layer_activations(sess, conv2_act, imageToUse)
+	activations = compute_layer_activations(sess, conv2_act, feed_dict)
 	plot_conv_activations(activations, figsize=(40, 40))
-	activations = compute_layer_activations(sess, conv2_pool, imageToUse)
+	activations = compute_layer_activations(sess, conv2_pool, feed_dict)
 	plot_conv_activations(activations, figsize=(40, 40))

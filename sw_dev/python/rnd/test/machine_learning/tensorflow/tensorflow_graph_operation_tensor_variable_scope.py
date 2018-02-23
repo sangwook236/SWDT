@@ -15,11 +15,11 @@ import tensorflow as tf
 #		Two variables which have the same name and  defined by tf.variable_scope() & tf.name_scope() are different
 
 def create_variables(use_get_variable=True):
-	if True == use_get_variable:
+	if use_get_variable:
 		tf.get_variable('Variable1', shape=(3, 3))  # Name = 'Variable1'.
 		# NOTE [error] >> Trying to share variable my_var_scope1/Variable1, but specified shape (5, 5) and found shape (3, 3).
 		#tf.get_variable('Variable1', shape=(5, 5))
-		tf.get_variable('Variable1')  # Shares an existing variable.
+		tf.get_variable('Variable1')  # Shares the existing variable.
 		tf.get_variable('Variable2', shape=(3, 3))  # Name = 'Variable2'.
 
 	tf.Variable(1)  # Name = 'Variable'.
@@ -28,6 +28,15 @@ def create_variables(use_get_variable=True):
 	tf.Variable(5, name='Variable1')  # Name = 'Variable1_2'.
 	tf.Variable(3, name='Variable2')  # Name = 'Variable2_1'.
 	tf.Variable(3, name='Variable3')  # Name = 'Variable3'.
+	tf.Variable(3, name='Variable4')  # Name = 'Variable4'.
+
+	if use_get_variable:
+		# NOTE [info] >>
+		#	Shape of a new variable (my_var_scope1/Variable3) must be fully defined, but instead was <unknown>.
+		#tf.get_variable('Variable3')
+		tf.get_variable('Variable4', shape=(3, 3))  # Name = 'Variable4_1'.
+		tf.get_variable('Variable4')  # Shares the existing variable 'Variable4_1'.
+		tf.get_variable('Variable5', shape=(3, 3))  # Name = 'Variable5'.
 
 def create_operations():
 	# REF [site] >> https://www.tensorflow.org/api_guides/python/math_ops
