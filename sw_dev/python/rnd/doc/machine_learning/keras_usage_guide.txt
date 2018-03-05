@@ -2,3 +2,21 @@
 	- Site.
 		http://keras.io/
 		https://github.com/fchollet/keras
+
+[-] Usage.
+	- Keras to TensorFlow.
+		https://github.com/keras-team/keras/issues/3223
+		When you are using the TensorFlow backend, your Keras code is actually building a TF graph.
+		You can just grab this graph.
+		Keras only uses one graph and one session.
+		You can access the session via K.get_session().
+		The graph associated with it would then be: K.get_session().graph.
+
+		Export a Keras model with TensorFlow-serving:
+		https://blog.keras.io/keras-as-a-simplified-interface-to-tensorflow-tutorial.html
+
+		Keras model (hdf5) to TensorFlow model (pb):
+		https://github.com/amir-abdi/keras_to_tensorflow
+
+	- TensorFlow to Keras.
+		???

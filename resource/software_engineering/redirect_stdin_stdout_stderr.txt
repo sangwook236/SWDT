@@ -5,9 +5,9 @@ REF [site] >> http://www.tuxfiles.org/linuxhelp/iodirection.html
 - stdin to file.
 	cat < listing.txt
 
-- stdout to file (rewriting).
+- stdout to file (truncate).
 	ls > listing.txt
-- stdout to file (appeding).
+- stdout to file (append).
 	ls >> listing.txt
 - stderr to file.
 	ls 2> listing.txt
