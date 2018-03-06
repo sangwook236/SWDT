@@ -4,8 +4,6 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "zlib.lib")
-
 #pragma comment(lib, "densecrfd.lib")
 #pragma comment(lib, "densecrf_optimizationd.lib")  // Rename optimizationd.lib to densecrf_optimizationd.lib.
 #pragma comment(lib, "libcrfpp.lib")
@@ -45,8 +43,6 @@
 #pragma comment(lib, "libboost_system-vc140-mt-gd-1_64.lib")
 
 #		else
-
-#pragma comment(lib, "zlib.lib")
 
 #pragma comment(lib, "densecrf.lib")
 #pragma comment(lib, "densecrf_optimization.lib")  // Rename optimization.lib to densecrf_optimization.lib.
