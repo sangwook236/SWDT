@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 			//retval = local::inference_using_graphcut();  // Not yet implemented.
 			//retval = cuda_cut_main(argc, argv);  // Not yet implemented.
 
-            std::cout << "\nTree-Reweighted (TRW-S) message passing algorithm -------------------" << std::endl;
+            std::cout << "\nTree-reweighted (TRW-S) message passing algorithm -------------------" << std::endl;
 			//retval = trws_main(argc, argv);  // Not yet implemented.
 
             std::cout << "\nQuadratic pseudo-boolean optimization (QPBO) algorithm --------------" << std::endl;
@@ -74,9 +74,9 @@ int main(int argc, char *argv[])
 		std::cout << "\nConditional random field (CRF) --------------------------------------" << std::endl;
 		//retval = crfpp_main(argc, argv);
 		//	- Hidden CRF (HCRF).
-		//	- Laten-dynamc CRF (LDCRF).
+		//	- Latent-dynamic CRF (LDCRF).
 		//retval = hcrf_main(argc, argv);
-		//	- Fully-connected (dense) CRF.
+		//	- Dense CRF, fully-connected CRF (FC-CRF).
 		retval = densecrf_main(argc, argv);
 
 		std::cout << "\nDynamic Bayesian network (DBN) --------------------------------------" << std::endl;

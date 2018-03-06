@@ -160,6 +160,7 @@
     <ClInclude Include="bp_vision_lib\imutil.h" />
     <ClInclude Include="bp_vision_lib\misc.h" />
     <ClInclude Include="bp_vision_lib\pnmfile.h" />
+    <ClInclude Include="densecrf\cnpy.h" />
     <ClInclude Include="hmm\viterbi.hpp" />
     <ClInclude Include="middlebury_lib\block.h" />
     <ClInclude Include="middlebury_lib\BP-S.h" />
@@ -211,6 +212,7 @@
     </ClCompile>
     <ClCompile Include="crfpp\crfpp_main.cpp" />
     <ClCompile Include="cuda_cut\cuda_cut_main.cpp" />
+    <ClCompile Include="densecrf\cnpy.cpp" />
     <ClCompile Include="densecrf\densecrf_main.cpp" />
     <ClCompile Include="hcrf\hcrf_main.cpp" />
     <ClCompile Include="hmm\hmm_forward_backward.cpp" />
