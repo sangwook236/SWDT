@@ -283,9 +283,6 @@
     <ClCompile Include="densecrf\densecrf_main.cpp">
       <Filter>Source Files\densecrf</Filter>
     </ClCompile>
-    <ClCompile Include="densecrf\cnpy.cpp">
-      <Filter>Source Files\densecrf</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="umdhmm_lib\umdhmm_cdhmm.h">
@@ -392,9 +389,6 @@
     </ClInclude>
     <ClInclude Include="qpbo_lib\QPBO.h">
       <Filter>Source Files\qpbo_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="densecrf\cnpy.h">
-      <Filter>Source Files\densecrf</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
