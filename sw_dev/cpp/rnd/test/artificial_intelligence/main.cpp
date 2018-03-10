@@ -10,7 +10,7 @@
 int main(int argc, char *argv[])
 {
 	int galib_main(int argc, char *argv[]);
-	int cma_es_main(int argc, char *argv[]);
+	int libcmaes_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -19,9 +19,9 @@ int main(int argc, char *argv[])
 		//  - Genetic algorithm.
 		//retval = galib_main(argc, argv);
 
-		std::cout << "\nCMA-ES algorithm ----------------------------------------------------" << std::endl;
-		//  - Covariance matrix adaptation evolution strategy.
-		//retval = cma_es_main(argc, argv);  // Not yet implemented.
+		std::cout << "\nlibcmaes ------------------------------------------------------------" << std::endl;
+		//  - Covariance matrix adaptation evolution strategy (CMA-ES).
+		retval = libcmaes_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

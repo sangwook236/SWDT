@@ -16,6 +16,9 @@
     <Filter Include="Source Files\galib">
       <UniqueIdentifier>{2d17319b-ea74-4924-ab01-f1ed1b88e4ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\libcmaes">
+      <UniqueIdentifier>{551d2e43-4c67-4526-9289-d77236b85dfd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="galib\galib_ex1.cpp">
@@ -35,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libcmaes\libcmaes_main.cpp">
+      <Filter>Source Files\libcmaes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
