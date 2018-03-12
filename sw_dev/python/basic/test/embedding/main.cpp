@@ -20,16 +20,16 @@ int main(int argc, char* argv[])
 		//embedding_simple_string();
 		const bool retval = embedding_simple_script(argc, argv);
 	}
-	catch (const std::exception &e)
+	catch (const std::exception &ex)
 	{
-		std::cout << "std::exception occurred: " << e.what() << std::endl;
+		std::cout << "std::exception occurred: " << ex.what() << std::endl;
 	}
 	catch (...)
 	{
-		std::cout << "unknown exception occurred" << std::endl;
+		std::cout << "Unknown exception occurred" << std::endl;
 	}
 
-	std::cout << "press any key to exit ..." << std::flush;
+	std::cout << "Press any key to exit ..." << std::flush;
 	std::cin.get();
 
     return 0;

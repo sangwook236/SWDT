@@ -57,7 +57,7 @@ bool embedding_simple_script(int argc, char* argv[])
 				{
 					Py_DECREF(pArgs);
 					Py_DECREF(pModule);
-					std::cerr << "Cannot convert argument" << std::endl;
+					std::cerr << "Cannot convert argument." << std::endl;
 					return false;
 				}
 
