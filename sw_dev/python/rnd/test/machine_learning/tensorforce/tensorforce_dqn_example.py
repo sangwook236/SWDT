@@ -47,13 +47,13 @@ runner = Runner(agent=agent, environment=env)
 
 def episode_finished(r):
 	if r.episode % report_episodes == 0:
-		logging.info("Finished episode {ep} after {ts} timesteps".format(ep=r.episode, ts=r.timestep))
-		logging.info("Episode reward: {}".format(r.episode_rewards[-1]))
-		logging.info("Average of last 100 rewards: {}".format(sum(r.episode_rewards[-100:]) / 100))
+		logging.info('Finished episode {ep} after {ts} timesteps'.format(ep=r.episode, ts=r.timestep))
+		logging.info('Episode reward: {}'.format(r.episode_rewards[-1]))
+		logging.info('Average of last 100 rewards: {}'.format(sum(r.episode_rewards[-100:]) / 100))
 	return True
 
-print("Starting {agent} for Environment '{env}'".format(agent=agent, env=env))
+print('Starting {agent} for Environment '{env}''.format(agent=agent, env=env))
 
 runner.run(episodes=num_episodes, max_episode_timesteps=num_episode_timesteps, episode_finished=episode_finished)
 
-print("Learning finished. Total episodes: {ep}".format(ep=runner.episode))
+print('Learning finished. Total episodes: {ep}'.format(ep=runner.episode))
