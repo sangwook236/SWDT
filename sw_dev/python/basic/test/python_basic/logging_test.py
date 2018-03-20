@@ -16,5 +16,7 @@ def main():
 	logger.critical('[Critical] Critical.')
 	logger.exception('[Exception] Exception.')
 
-if __name__ == '__main__':
+#%%------------------------------------------------------------------
+
+if '__main__' == __name__:
 	main()
