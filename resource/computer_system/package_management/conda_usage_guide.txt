@@ -3,6 +3,8 @@
 		https://conda.io/
 		https://github.com/conda/conda
 
+		https://conda-forge.org/
+
 [-] Usage.
 	REF [site] >> http://egloos.zum.com/mataeoh/v/7052271
 
@@ -10,6 +12,8 @@
 		conda --help
 		conda update --help
 		conda info --all
+
+		conda config --add channels conda-forge 
 
 	- Update.
 		conda update conda
@@ -61,4 +65,3 @@
 		conda update package_name
 	- Update all packages.
 		conda update --all
-		conda update --all --alt-hint
