@@ -13,7 +13,7 @@
 		conda update --help
 		conda info --all
 
-		conda config --add channels conda-forge 
+		conda config --add channels conda-forge
 
 	- Update.
 		conda update conda
