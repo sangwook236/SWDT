@@ -14,7 +14,7 @@ rem -----------------------------------------------------------
 :SET
 
 if "%SWIG_HOME%" == "" (
-	set SWIG_HOME=D:\WorkingDir\Development\ExternalLib\Cpp\src\swig\SWIG-1.3.24
+	set SWIG_HOME=D:\lib_repo\cpp\ext\swig_github
 	set SWIG_HOME_IS_DEFINED=true
 )
 

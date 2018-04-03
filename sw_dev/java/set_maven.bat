@@ -19,7 +19,7 @@ if "%JAVA_HOME%" == "" (
 )
 
 if "%MAVEN_HOME%" == "" (
-	set MAVEN_HOME=D:\util\software_build\maven\apache-maven-3.3.3
+	set MAVEN_HOME=D:\util_portable\apache-maven-3.3.9
 	set MAVEN_HOME_IS_DEFINED=true
 )
 

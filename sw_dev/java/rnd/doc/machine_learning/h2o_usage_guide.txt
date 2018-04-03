@@ -1,0 +1,9 @@
+[-] General.
+	- Site.
+		https://www.h2o.ai/
+
+[-] Usage.
+	- Run.
+		java -jar h2o.jar
+	- Open.
+		Point your browser to http://localhost:54321.

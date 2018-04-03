@@ -8,13 +8,13 @@ rem -------------------------------------------------------
 rem set JAVA_HOME=C:\Program Files\Java\jre7
 set JAVA_HOME=C:\Program Files\Java\jdk1.7.0_04
 
-set PATH=D:\work\sw_dev\java\ext\bin;%PATH%
+set PATH=D:\work\SWDT_github\sw_dev\java\ext\bin;%PATH%
 
 rem -------------------------------------------------------
 
 set LOCAL_LIB_PATH=D:\usr\local\lib
-set JAVA_EXT_LIB_PATH=D:\work\sw_dev\java\ext\lib
-set JAVA_RND_LIB_PATH=D:\work\sw_dev\java\rnd\lib
+set JAVA_EXT_LIB_PATH=D:\work\SWDT_github\sw_dev\java\ext\lib
+set JAVA_RND_LIB_PATH=D:\work\SWDT_github\sw_dev\java\rnd\lib
 
 rem set CLASSPATH=.;%LOCAL_LIB_PATH%\<jar-file>;%CLASSPATH%
 

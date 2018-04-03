@@ -6,7 +6,7 @@
 
 export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 
-export PATH=/home/sangwook/work_center/sw_dev/java/ext/bin:$PATH
+export PATH=/home/sangwook/work/SWDT_github/sw_dev/java/ext/bin:$PATH
 
 # ---------------------------------------------------------
 
