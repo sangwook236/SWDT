@@ -1,68 +1,67 @@
 # REF [site] >> https://www.tensorflow.org/get_started/get_started
 
 import tensorflow as tf
+from PIL import Image
 import numpy as np
+import time
 
 #%%-------------------------------------------------------------------
 
-sess = tf.Session()
+img_filename = 'D:/dataset/pattern_recognition/street1.jpg'
 
+img = Image.open(img_filename)
+img = np.asarray(img, dtype='uint8') / 255
+#img = img.reshape((-1,) + img.shape)
+img = img.reshape((-1,) + (img.shape[0] // 4, img.shape[1] // 4, img.shape[2]))
+img 
+
+num_dims = 2
 num_classes = 2
-num_hidden_units = 128
-tied = False
-non_recurrent_fn = None
+batch_size, img_height, img_width = img.shape[:3]
+is_time_major = False
 
-#cell = tf.contrib.rnn.GridLSTMCell(num_hidden_units, num_frequency_blocks)
-cell = tf.contrib.grid_rnn.Grid2LSTMCell(num_hidden_units, tied, non_recurrent_fn)
-
+#%%-------------------------------------------------------------------
+num_hidden_units = 32
 keep_prob = 0.5
 
-# Unstack: a tensor of shape (samples, time-steps, features) -> a list of 'time-steps' tensors of shape (samples, features).
-input_tensor = tf.unstack(input_tensor, num_time_steps, axis=0 if is_time_major else 1)
+import grid_rnn_cell
+
+def create_unit_cell(num_hidden_units, tied=False, non_recurrent_fn=None):
+	#return tf.contrib.rnn.GridLSTMCell(num_hidden_units, num_frequency_blocks)
+	# NOTICE [info] >> tf.contrib.grid_rnn.Grid2LSTMCell receives input data from 0-th dimension only.
+	#return tf.contrib.grid_rnn.Grid2LSTMCell(num_hidden_units, tied, non_recurrent_fn)
+	def cell_fn(num_hidden_units):
+		return tf.contrib.rnn.LSTMCell(num_units=num_hidden_units, forget_bias=1.0, use_peepholes=False)
+	#return tf.contrib.grid_rnn.GridRNNCell(num_hidden_units, num_dims=num_dims, input_dims=[0, 1], output_dims=[0, 1], priority_dims=None, non_recurrent_dims=None, tied=tied, cell_fn=cell_fn, non_recurrent_fn=non_recurrent_fn)
+	#return tf.contrib.grid_rnn.GridRNNCell(num_hidden_units, num_dims=num_dims, input_dims=[0, 1], output_dims=[0, 1], priority_dims=None, non_recurrent_dims=None, tied=tied, cell_fn=None, non_recurrent_fn=non_recurrent_fn)
+	#return tf.contrib.grid_rnn.GridRNNCell(num_hidden_units, num_dims=num_dims, input_dims=0, output_dims=[0, 1], priority_dims=None, non_recurrent_dims=None, tied=tied, cell_fn=None, non_recurrent_fn=non_recurrent_fn)
+	# NOTICE [info] >> 'input_dims=None & output_dims=None' means that there are no input and no output.
+	#return tf.contrib.grid_rnn.GridRNNCell(num_hidden_units, num_dims=num_dims, input_dims=None, output_dims=None, priority_dims=None, non_recurrent_dims=None, tied=tied, cell_fn=None, non_recurrent_fn=non_recurrent_fn)
+	return grid_rnn_cell.GridRNNCell(num_hidden_units, num_dims=num_dims, input_dims=0, output_dims=[0, 1], priority_dims=None, non_recurrent_dims=None, tied=tied, cell_fn=None, non_recurrent_fn=non_recurrent_fn)
 
 # Defines a cell.
-cell = self._create_unit_cell(num_hidden_units)
-cell = tf.contrib.rnn.DropoutWrapper(cell, input_keep_prob=keep_prob, output_keep_prob=1.0, state_keep_prob=keep_prob)
+cell = create_unit_cell(num_hidden_units)
+#cell = tf.contrib.rnn.DropoutWrapper(cell, input_keep_prob=keep_prob, output_keep_prob=1.0, state_keep_prob=keep_prob)
 
-# Gets cell outputs.
-"""
-# REF [site] >> https://www.tensorflow.org/tutorials/recurrent
-#cell_state = cell.zero_state(batch_size, tf.float32)
-cell_state = tf.zeros([batch_size, cell.state_size])
-cell_output_list = []
-probabilities = []
-loss = 0.0
-for inp in input_tensor:
-	#cell_output, cell_state = cell(inp, cell_state)
-	cell_outputs, _ = cell(inp, cell_state)
-	cell_output_list.append(cell_outputs)
+#%%
+total_elapsed_time = time.time()
+cell_state = cell.zero_state(batch_size, tf.float32)
+#cell_state = [(tf.contrib.rnn.LSTMStateTuple(tf.zeros([batch_size, cell.state_size[i].c]), tf.zeros([batch_size, cell.state_size[i].h]))) for i in range(num_dims)]
+cell_outputs = []
+#input_tensor = tf.convert_to_tensor(img, np.float32)
+inp = tf.convert_to_tensor(img[:, 0, 0, :], np.float32)  # 1-dimensional input.
+for hh in range(img_height):
+	for ww in range(img_width):
+		#inp = tf.convert_to_tensor(img[:, hh, ww, :], np.float32)  # 1-dimensional input.
+		#inp = tf.convert_to_tensor(np.concatenate((img[:, hh, ww, :], img[:, hh, ww, :]), axis=1), np.float32)  # 2-dimensional input.
+		#cell_output, cell_state = cell(inp, cell_state)
+		#inp = input_tensor[:, hh, ww, :]  # 1-dimensional input.
+		#inp = tf.concat((input_tensor[:, hh, ww, :], input_tensor[:, hh, ww, :]), axis=1)  # 2-dimensional input.
+		#cell_output, cell_state = cell(inp, cell_state)
+		#cell_outputs.append(cell_output)
+		cell_output, _ = cell(inp, cell_state, scope='grid2lstm')
+	print('.', end='')
+print('\tTotal time = {}'.format(time.time() - total_elapsed_time))
 
-	#logits = tf.matmul(cell_output, weights) + biases
-	# TODO [check] >>
-	logits = tf.layers.dense(cell_output, 1024, activation=tf.nn.softmax, name='fc')
-	# NOTE [info] >> If dropout_rate=0.0, dropout layer is not created.
-	logits = tf.layers.dropout(logits, rate=dropout_rate, training=is_training, name='dropout')
-
-	probabilities.append(tf.nn.softmax(logits))
-	loss += loss_function(probabilities, output_tensor[:, i])
-"""
-#cell_outputs, cell_state = tf.nn.static_rnn(cell, input_tensor, dtype=tf.float32)
-cell_outputs, _ = tf.nn.static_rnn(cell, input_tensor, dtype=tf.float32)
-
-# Stack: a list of 'time-steps' tensors of shape (samples, features) -> a tensor of shape (samples, time-steps, features).
-cell_outputs = tf.stack(cell_outputs, axis=0 if is_time_major else 1)
-
-#with tf.variable_scope('rnn_tf', reuse=tf.AUTO_REUSE):
-#	dropout_rate = 1 - keep_prob
-#	# NOTE [info] >> If dropout_rate=0.0, dropout layer is not created.
-#	cell_outputs = tf.layers.dropout(cell_outputs, rate=dropout_rate, training=is_training, name='dropout')
-
-with tf.variable_scope('fc1', reuse=tf.AUTO_REUSE):
-	if 1 == num_classes:
-		fc1 = tf.layers.dense(cell_outputs, 1, activation=tf.sigmoid, name='fc')
-		#fc1 = tf.layers.dense(cell_outputs, 1, activation=tf.sigmoid, activity_regularizer=tf.contrib.layers.l2_regularizer(0.0001), name='fc')
-	elif num_classes >= 2:
-		fc1 = tf.layers.dense(cell_outputs, num_classes, activation=tf.nn.softmax, name='fc')
-		#fc1 = tf.layers.dense(cell_outputs, num_classes, activation=tf.nn.softmax, activity_regularizer=tf.contrib.layers.l2_regularizer(0.0001), name='fc')
-	else:
-		assert num_classes > 0, 'Invalid number of classes.'
+#%%
+sess = tf.Session()
