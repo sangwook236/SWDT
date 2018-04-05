@@ -1,6 +1,7 @@
 [-] General.
 	- Site.
 		https://www.h2o.ai/
+		http://docs.h2o.ai/
 
 [-] Usage.
 	- Run.

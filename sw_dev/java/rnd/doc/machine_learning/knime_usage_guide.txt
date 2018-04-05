@@ -1,3 +1,4 @@
 [-] General.
 	- Site.
 		http://www.knime.org/
+		https://www.knime.com/resources
