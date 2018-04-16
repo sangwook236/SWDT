@@ -1,11 +1,5 @@
 #!/usr/bin/env python
 
-'''
-Created on 2009. 2. 22.
-
-@author: sangwook
-'''
-
 def fib(n):
 	a, b = 0, 1
 	while b < n:
@@ -24,6 +18,8 @@ def fib2(n):
 def main():
 	import sys
 	fib(int(sys.argv[1]))
+
+#%%------------------------------------------------------------------
 
 # Usage:
 #	python module.py 50

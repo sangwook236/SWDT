@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import tensorflow as tf
 from PIL import Image
 import numpy as np
@@ -69,91 +71,95 @@ def create_grid_rnn_model(x, num_dims, num_hidden_units, num_layers, keep_prob):
 	# (height * width, num_output_dims, samples, features) -> (samples, height * width, num_output_dims, features).
 	cell_outputs = tf.transpose(cell_outputs, [2, 0, 1, 3])
 	# (samples, height * width, num_output_dims, features) -> (samples, height, width, num_output_dims * features).
-	y_shape = cell_outputs.shape
+	y_shape = cell_outputs.shape.as_list()
 	cell_outputs = tf.reshape(cell_outputs, (-1, x_shape[1], x_shape[2], num_output_dims * y_shape[-1]))
 
 	fc = tf.layers.dense(cell_outputs, num_classes, activation=tf.nn.softmax)
 
 	return fc
 
-# Prepares data.
-print('Preparing data...')
+def grid_rnn_main():
+	# Prepares data.
+	print('Preparing data...')
 
-num_dims = 2
-num_classes = 2
-num_examples = 10
-batch_size = 4
-num_epochs = 1000
-if True:
-	num_hidden_units = 256
-	num_layers = None
-else:
-	num_hidden_units = 32
-	num_layers = 4  # Error!!!
-keep_prob = 0.8
+	num_dims = 2
+	num_classes = 2
+	num_examples = 10
+	batch_size = 4
+	num_epochs = 1000
+	if True:
+		num_hidden_units = 256
+		num_layers = None
+	else:
+		num_hidden_units = 32
+		num_layers = 4  # Error!!!
+	keep_prob = 0.8
 
-input_shape = (None, 20, 30, 3)  # (samples, height, width, features(channels)).
-ouput_shape = input_shape[:3] + (num_classes,)
+	input_shape = (None, 20, 30, 3)  # (samples, height, width, features(channels)).
+	ouput_shape = input_shape[:3] + (num_classes,)
 
-x_ph = tf.placeholder(tf.float32, input_shape)
-y_ph = tf.placeholder(tf.float32, ouput_shape)
+	x_ph = tf.placeholder(tf.float32, input_shape)
+	y_ph = tf.placeholder(tf.float32, ouput_shape)
 
-# Generates random data.
-x = np.random.rand(num_examples, input_shape[1], input_shape[2], input_shape[3])
-y_gt = np.random.rand(num_examples, ouput_shape[1], ouput_shape[2], ouput_shape[3])
-y_gt = to_one_hot_encoding(np.argmax(y_gt, axis=-1), num_classes)
+	# Generates random data.
+	x = np.random.rand(num_examples, input_shape[1], input_shape[2], input_shape[3])
+	y_gt = np.random.rand(num_examples, ouput_shape[1], ouput_shape[2], ouput_shape[3])
+	y_gt = to_one_hot_encoding(np.argmax(y_gt, axis=-1), num_classes)
 
-# Builds model.
-print('Building model...')
-total_elapsed_time = time.time()
-with tf.variable_scope('2d_grid_rnn', reuse=tf.AUTO_REUSE):
-	y_pred = create_grid_rnn_model(x_ph, num_dims, num_hidden_units, num_layers, keep_prob)
+	# Builds model.
+	print('Building model...')
+	total_elapsed_time = time.time()
+	with tf.variable_scope('2d_grid_rnn', reuse=tf.AUTO_REUSE):
+		y_pred = create_grid_rnn_model(x_ph, num_dims, num_hidden_units, num_layers, keep_prob)
 
-	y_pred_vec = tf.reshape(y_pred, [-1, num_classes])
-	y_ph_vec = tf.reshape(y_ph, [-1, num_classes])
+		y_pred_vec = tf.reshape(y_pred, [-1, num_classes])
+		y_ph_vec = tf.reshape(y_ph, [-1, num_classes])
 
-	loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_pred_vec, labels=y_ph_vec))
-	train_step = tf.train.AdamOptimizer(learning_rate=0.001).minimize(loss)
-print('\tTotal time = {}'.format(time.time() - total_elapsed_time))
+		loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_pred_vec, labels=y_ph_vec))
+		train_step = tf.train.AdamOptimizer(learning_rate=0.001).minimize(loss)
+	print('\tTotal time = {}'.format(time.time() - total_elapsed_time))
 
-# Initializes variables.
-initializer = tf.global_variables_initializer()
-sess = tf.Session()
-sess.run(initializer)
+	# Initializes variables.
+	initializer = tf.global_variables_initializer()
+	sess = tf.Session()
+	sess.run(initializer)
 
-# Trains model.
-print('Training model...')
-total_elapsed_time = time.time()
-steps_per_epoch = math.ceil(num_examples / batch_size)
-for epoch in range(1, num_epochs + 1):
-	print('Epoch {}/{}'.format(epoch, num_epochs))
+	# Trains model.
+	print('Training model...')
+	total_elapsed_time = time.time()
+	steps_per_epoch = math.ceil(num_examples / batch_size)
+	for epoch in range(1, num_epochs + 1):
+		print('Epoch {}/{}'.format(epoch, num_epochs))
 
-	#pdb.set_trace
+		#pdb.set_trace
 
-	indices = np.arange(num_examples)
-	np.random.shuffle(indices)
+		indices = np.arange(num_examples)
+		np.random.shuffle(indices)
 
-	for step in range(steps_per_epoch):
-		start = step * batch_size
-		end = start + batch_size
-		batch_indices = indices[start:end]
-		data_batch, label_batch = x[batch_indices,], y_gt[batch_indices,]
+		for step in range(steps_per_epoch):
+			start = step * batch_size
+			end = start + batch_size
+			batch_indices = indices[start:end]
+			data_batch, label_batch = x[batch_indices,], y_gt[batch_indices,]
 
-		sess.run(train_step, feed_dict={x_ph: data_batch, y_ph: label_batch})
+			sess.run(train_step, feed_dict={x_ph: data_batch, y_ph: label_batch})
 
-		print('-', sep='', end='')
-	print()
-print('\tTotal time = {}'.format(time.time() - total_elapsed_time))
+			print('-', sep='', end='')
+		print()
+	print('\tTotal time = {}'.format(time.time() - total_elapsed_time))
 
-# Evaluates model.
-print('Evaluating model...')
-total_elapsed_time = time.time()
-pred = y_pred.eval(session=sess, feed_dict={x_ph: x, y_ph: y_gt})
-correct_prediction_count = np.count_nonzero(np.equal(np.argmax(pred, axis=-1), np.argmax(y_gt, axis=-1)))
-print('\tAccurary = {} / {} = {}'.format(correct_prediction_count, y_gt.size, correct_prediction_count / y_gt.size))
-print('\tTotal time = {}'.format(time.time() - total_elapsed_time))
+	# Evaluates model.
+	print('Evaluating model...')
+	total_elapsed_time = time.time()
+	pred = y_pred.eval(session=sess, feed_dict={x_ph: x, y_ph: y_gt})
+	correct_prediction_count = np.count_nonzero(np.equal(np.argmax(pred, axis=-1), np.argmax(y_gt, axis=-1)))
+	print('\tAccurary = {} / {} = {}'.format(correct_prediction_count, y_gt.size, correct_prediction_count / y_gt.size))
+	print('\tTotal time = {}'.format(time.time() - total_elapsed_time))
 
 #%%-------------------------------------------------------------------
+
+from memory_profiler import profile
+import gc
 
 def pad_image(img, target_height, target_width):
 	if 2 == img.ndim:
@@ -177,6 +183,7 @@ def pad_image(img, target_height, target_width):
 		#return np.pad(img, ((top_margin, bottom_margin), (left_margin, right_margin), (0, 0)), 'constant', constant_values=(0, 0))
 
 # Traverses pixels: '(left -> right) + (top -> bottom)' or '(top -> bottom) + (left -> right)'.
+@profile
 def traverse_pixel(grid_cell, input_tensor, is_row_major=True):
 	# Traverses input tensor in row-major order: (left -> right) + (top -> bottom).
 	def traverse_in_row_major_order(grid_cell, input_tensor, num_input_dims=1, num_output_dims=1):
@@ -194,7 +201,7 @@ def traverse_pixel(grid_cell, input_tensor, is_row_major=True):
 		# (height * width, num_output_dims, samples, features) -> (samples, height * width, num_output_dims, features).
 		cell_outputs = tf.transpose(cell_outputs, perm=(2, 0, 1, 3))
 		# (samples, height * width, num_output_dims, features) -> (samples, height, width, num_output_dims * features).
-		cell_outputs = tf.reshape(cell_outputs, (-1, height, width, num_output_dims * cell_outputs.shape[-1]))
+		cell_outputs = tf.reshape(cell_outputs, (-1, height, width, num_output_dims * cell_outputs.shape.as_list()[-1]))
 		return cell_outputs, cell_state
 
 	# Traverses input tenso in column-major order: (top -> bottom) + (left -> right).
@@ -229,7 +236,7 @@ def traverse_pixel(grid_cell, input_tensor, is_row_major=True):
 		# (height * width, num_output_dims, samples, features) -> (samples, height * width, num_output_dims, features).
 		cell_outputs = tf.transpose(cell_outputs, perm=(2, 0, 1, 3))
 		# (samples, height * width, num_output_dims, features) -> (samples, height, width, num_output_dims * features).
-		cell_outputs = tf.reshape(cell_outputs, (-1, height, width, num_output_dims * cell_outputs.shape[-1]))
+		cell_outputs = tf.reshape(cell_outputs, (-1, height, width, num_output_dims * cell_outputs.shape.as_list()[-1]))
 		return cell_outputs, cell_state
 
 	# Traverses input tenso in column-major order: (top -> bottom) + (left -> right).
@@ -256,7 +263,7 @@ def traverse_pixel(grid_cell, input_tensor, is_row_major=True):
 		# (height * width, num_output_dims, samples, features) -> (samples, height * width, num_output_dims, features).
 		cell_outputs = tf.transpose(cell_outputs, perm=(2, 0, 1, 3))
 		# (samples, height * width, num_output_dims, features) -> (samples, height, width, num_output_dims * features).
-		cell_outputs = tf.reshape(cell_outputs, (-1, height, width, num_output_dims * cell_outputs.shape[-1]))
+		cell_outputs = tf.reshape(cell_outputs, (-1, height, width, num_output_dims * cell_outputs.shape.as_list()[-1]))
 		cell_outputs = tf.transpose(cell_outputs, perm=(0, 2, 1, 3))
 		return cell_outputs, cell_state
 	"""
@@ -268,6 +275,7 @@ def traverse_pixel(grid_cell, input_tensor, is_row_major=True):
 		return traverse_in_column_major_order(grid_cell, input_tensor, num_input_dims, num_output_dims)
 
 # Traverses columns: left -> right.
+@profile
 def traverse_column(grid_cell, input_tensor, batch_size, num_output_dims=1):
 	height, width = input_tensor.shape.as_list()[1:3]
 	initial_cell_state = grid_cell.zero_state(batch_size, tf.float32)  # A tuple of 'num_recurrent_dims' LSTMStateTuple's.
@@ -290,10 +298,11 @@ def traverse_column(grid_cell, input_tensor, batch_size, num_output_dims=1):
 	# (height * width, num_output_dims, samples, features) -> (samples, height * width, num_output_dims, features).
 	cell_outputs = tf.transpose(cell_outputs, perm=(2, 0, 1, 3))
 	# (samples, height * width, num_output_dims, features) -> (samples, height, width, num_output_dims * features).
-	cell_outputs = tf.reshape(cell_outputs, (-1, height, width, num_output_dims * cell_outputs.shape[-1]))
+	cell_outputs = tf.reshape(cell_outputs, (-1, height, width, num_output_dims * cell_outputs.shape.as_list()[-1]))
 	return cell_outputs, cell_states
 
 # Traverses rows: top -> bottom.
+@profile
 def traverse_row(grid_cell, input_tensor, batch_size, num_output_dims=1):
 	height, width = input_tensor.shape.as_list()[1:3]
 	initial_cell_state = grid_cell.zero_state(batch_size, tf.float32)  # A tuple of 'num_recurrent_dims' LSTMStateTuple's.
@@ -316,7 +325,7 @@ def traverse_row(grid_cell, input_tensor, batch_size, num_output_dims=1):
 	# (height * width, num_output_dims, samples, features) -> (samples, height * width, num_output_dims, features).
 	cell_outputs = tf.transpose(cell_outputs, perm=(2, 0, 1, 3))
 	# (samples, height * width, num_output_dims, features) -> (samples, height, width, num_output_dims * features).
-	cell_outputs = tf.reshape(cell_outputs, (-1, height, width, num_output_dims * cell_outputs.shape[-1]))
+	cell_outputs = tf.reshape(cell_outputs, (-1, height, width, num_output_dims * cell_outputs.shape.as_list()[-1]))
 	return cell_outputs, cell_states
 
 def create_grid_encdec_model(x, num_dims, num_hidden_units, num_layers, keep_prob):
@@ -370,57 +379,100 @@ def create_grid_encdec_model(x, num_dims, num_hidden_units, num_layers, keep_pro
 
 	return fc
 
-# Prepares data.
-print('Preparing data...')
+def grid_encdec_main():
+	# Prepares data.
+	print('Preparing data...')
 
-rgb_img_filename = 'D:/dataset/phenotyping/RDA/all_plants_mask/plant/1.5xN_1(16.04.22) - ang0.png'
-mask_img_filename = 'D:/dataset/phenotyping/RDA/all_plants_mask/mask/1.5xN_1(16.04.22) - ang0_mask00.png'
-#mask_img_filename = 'D:/dataset/phenotyping/RDA/all_plants_mask/mask/1.5xN_1(16.04.22) - ang0_mask01.png'
-#mask_img_filename = 'D:/dataset/phenotyping/RDA/all_plants_mask/mask/1.5xN_1(16.04.22) - ang0_mask02.png'
+	num_dims = 2
+	num_classes = 2
+	num_examples = 10
+	batch_size = 4
+	num_epochs = 1000
+	num_hidden_units = 16
+	num_layers = None
+	keep_prob = 0.8
 
-rgb_img = Image.open(rgb_img_filename)
-rgb_img = np.asarray(rgb_img, dtype='uint8') / 255
-mask_img = Image.open(mask_img_filename)
-mask_img = np.asarray(mask_img, dtype='uint8') / 255
+	rgb_img_filename = 'D:/dataset/phenotyping/RDA/all_plants_mask/plant/1.5xN_1(16.04.22) - ang0.png'
+	mask_img_filename = 'D:/dataset/phenotyping/RDA/all_plants_mask/mask/1.5xN_1(16.04.22) - ang0_mask00.png'
+	#mask_img_filename = 'D:/dataset/phenotyping/RDA/all_plants_mask/mask/1.5xN_1(16.04.22) - ang0_mask01.png'
+	#mask_img_filename = 'D:/dataset/phenotyping/RDA/all_plants_mask/mask/1.5xN_1(16.04.22) - ang0_mask02.png'
 
-img_max_len = 300
-rgb_img = pad_image(rgb_img, img_max_len, img_max_len)
-mask_img = pad_image(mask_img, img_max_len, img_max_len)
+	rgb_img = Image.open(rgb_img_filename)
+	rgb_img = np.asarray(rgb_img, dtype='uint8') / 255
+	mask_img = Image.open(mask_img_filename)
+	mask_img = np.asarray(mask_img, dtype='uint8') / 255
 
-rgb_img = rgb_img.reshape((-1,) + rgb_img.shape)
-mask_img = mask_img.reshape((-1,) + mask_img.shape)
+	img_max_len = 300
+	rgb_img = pad_image(rgb_img, img_max_len, img_max_len)
+	mask_img = pad_image(mask_img, img_max_len, img_max_len)
 
-num_dims = 2
-num_classes = 2
-num_examples = 10
-batch_size = 4
-num_epochs = 1000
-num_hidden_units = 16
-num_layers = None
-keep_prob = 0.8
+	rgb_img = rgb_img.reshape((-1,) + rgb_img.shape)
+	mask_img = mask_img.reshape((-1,) + mask_img.shape)
 
-input_shape = (None,) + rgb_img.shape[1:]  # (samples, height, width, features(channels)).
-ouput_shape = input_shape[:3] + (num_classes,)
+	input_shape = (None,) + rgb_img.shape[1:]  # (samples, height, width, features(channels)).
+	ouput_shape = input_shape[:3] + (num_classes,)
 
-x_ph = tf.placeholder(tf.float32, input_shape)
-y_ph = tf.placeholder(tf.float32, ouput_shape)
+	x_ph = tf.placeholder(tf.float32, input_shape)
+	y_ph = tf.placeholder(tf.float32, ouput_shape)
 
-with tf.variable_scope('2d_grid_encdec', reuse=tf.AUTO_REUSE):
-	input_dims = [0] #[0, 1]
-	output_dims = [0] #[0, 1]
-	cell = create_grid_cell(num_hidden_units, num_dims, input_dims, output_dims)
-	cell_outputs, cell_states = traverse_column(cell, x_ph, batch_size)
-	#cell_outputs, cell_states = traverse_row(cell, x_ph, batch_size)
+	# Builds model.
+	print('Building model...')
+	total_elapsed_time = time.time()
+	with tf.variable_scope('2d_grid_encdec', reuse=tf.AUTO_REUSE):
+		y_pred = create_grid_encdec_model(x_ph, num_dims, num_hidden_units, num_layers, keep_prob)
 
-# Builds model.
-print('Building model...')
-total_elapsed_time = time.time()
-with tf.variable_scope('2d_grid_encdec', reuse=tf.AUTO_REUSE):
-	y_pred = create_grid_encdec_model(x_ph, num_dims, num_hidden_units, num_layers, keep_prob)
+		y_pred_vec = tf.reshape(y_pred, [-1, num_classes])
+		y_ph_vec = tf.reshape(y_ph, [-1, num_classes])
 
-	y_pred_vec = tf.reshape(y_pred, [-1, num_classes])
-	y_ph_vec = tf.reshape(y_ph, [-1, num_classes])
+		loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_pred_vec, labels=y_ph_vec))
+		train_step = tf.train.AdamOptimizer(learning_rate=0.001).minimize(loss)
+	print('\tTotal time = {}'.format(time.time() - total_elapsed_time))
 
-	loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_pred_vec, labels=y_ph_vec))
-	train_step = tf.train.AdamOptimizer(learning_rate=0.001).minimize(loss)
-print('\tTotal time = {}'.format(time.time() - total_elapsed_time))
+def grid_cell_test_main():
+	# Prepares data.
+	print('Preparing data...')
+
+	num_dims = 2
+	#num_classes = 2
+	num_examples = 1
+	batch_size = 4
+	num_hidden_units = 256
+
+	img_height, img_width = 50, 50
+	rgb_img = np.random.rand(num_examples, img_height, img_width, 3)
+	#mask_img = np.random.randint(2, size=(num_examples, img_height, img_width))
+
+	input_shape = (None,) + rgb_img.shape[1:]  # (samples, height, width, features(channels)).
+	#ouput_shape = input_shape[:3] + (num_classes,)
+
+	x_ph = tf.placeholder(tf.float32, input_shape)
+	#y_ph = tf.placeholder(tf.float32, ouput_shape)
+
+	# Builds model.
+	print('Building model...')
+	total_elapsed_time = time.time()
+	with tf.variable_scope('2d_grid_encdec', reuse=tf.AUTO_REUSE):
+		input_dims = [0] #[0, 1]
+		output_dims = [0] #[0, 1]
+		tied = False
+		cell = create_grid_cell(num_hidden_units, num_dims, input_dims, output_dims, tied=tied)
+	print('\tTotal time #1 = {}'.format(time.time() - total_elapsed_time))
+
+	# NOTE [info] {important} >>
+	#	Huge memory might be required due to unrolling RNN in case of large images.
+
+	total_elapsed_time = time.time()
+	with tf.variable_scope('2d_grid_encdec', reuse=tf.AUTO_REUSE):
+		cell_outputs, cell_states = traverse_column(cell, x_ph, batch_size)
+		#cell_outputs, cell_states = traverse_row(cell, x_ph, batch_size)
+	print('\tTotal time #2 = {}'.format(time.time() - total_elapsed_time))
+
+def main():
+	#grid_rnn_main()
+	#grid_encdec_main()
+	grid_cell_test_main()
+
+#%%------------------------------------------------------------------
+
+if '__main__' == __name__:
+	main()
