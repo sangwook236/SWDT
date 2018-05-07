@@ -6,3 +6,20 @@
 
 	- Dataset.
 		https://github.com/brendenlake/omniglot
+
+[-] Usage.
+	- Download.
+		The Lightspeed Matlab toolbox.
+			http://research.microsoft.com/en-us/um/people/minka/software/lightspeed/
+		The Omniglot data set.
+			https://github.com/brendenlake/omniglot
+	- Install Lightspeed.
+		install_lightspeed
+	- Copy data files.
+		${OMNIGLOT_HOME}/matlab/data_background -> ${BPL_HOME}/data/data_background
+		${OMNIGLOT_HOME}/matlab/data_evaluation -> ${BPL_HOME}/data/data_evaluation
+	- Add paths.
+		${LIGHTSPEED_HOME}
+		${BPL_HOME}
+		${BPL_HOME}/general_util
+		${BPL_HOME}/misc
