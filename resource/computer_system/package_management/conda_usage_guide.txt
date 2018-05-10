@@ -54,6 +54,7 @@
 	- Install a package.
 		conda install package_name
 		conda install --name env_name package_name
+		conda install -c conda-forge package_name
 		conda install --channel https://conda.anaconda.org/pandas bottleneck
 			Download into the current environment from http://anaconda.org.
 			Go to http://anaconda.org in a browser and in the top left box named "Search Packages" type "bottleneck" and click the Search button.
