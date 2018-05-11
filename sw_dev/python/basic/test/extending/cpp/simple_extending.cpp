@@ -1,11 +1,9 @@
 #include <Python.h>
 
 
-/*
-Usage in Python:
-	import simple_extending
-	status = simple_extending.system("ls -l")
-*/
+// Usage in Python:
+//	import simple_extending
+//	status = simple_extending.system("ls -l")
 
 static PyObject * extending_system(PyObject *self, PyObject *args)
 {
@@ -18,13 +16,13 @@ static PyObject * extending_system(PyObject *self, PyObject *args)
 	return Py_BuildValue("i", retval);
 }
 
-// method setting
+// Method setting.
 static PyMethodDef simple_extending_methods[] = {
 	{ "system", extending_system, METH_VARARGS, "system() doc string" },
 	{ NULL, NULL }
 };
 
-// module setting
+// Module setting.
 static struct PyModuleDef simple_extending_module = {
 	PyModuleDef_HEAD_INIT,
 	"simple_extending",
@@ -37,7 +35,7 @@ static struct PyModuleDef simple_extending_module = {
 	NULL
 };
 
-PyMODINIT_FUNC PyInit_simple_extending(void)  // this name has to agree with the module name in setup.py
+PyMODINIT_FUNC PyInit_simple_extending(void)  // This name has to agree with the module name in setup.py.
 {
 	return PyModule_Create(&simple_extending_module);
 }

@@ -2,6 +2,10 @@
 #include <iostream>
 
 
+// Usage in Python:
+//	import greeting
+//	status = greeting.greet("ls -l")
+
 static PyObject * greet(PyObject *self, PyObject *args)
 {
 	std::cout << "hello, world" << std::endl;
@@ -9,13 +13,13 @@ static PyObject * greet(PyObject *self, PyObject *args)
 	return Py_None;
 }
 
-// method setting
+// Method setting.
 static PyMethodDef greeting_methods[] = {
 	{ "greet", greet, METH_VARARGS, "greet() doc string" },
 	{ NULL, NULL }
 };
 
-// module setting
+// Module setting.
 static struct PyModuleDef greetingmodule = {
 	PyModuleDef_HEAD_INIT,
 	"greeting",
@@ -28,7 +32,7 @@ static struct PyModuleDef greetingmodule = {
 	NULL
 };
 
-PyMODINIT_FUNC PyInit_greeting(void)  // this name has to agree with the module name in setup.py
+PyMODINIT_FUNC PyInit_greeting(void)  // This name has to agree with the module name in setup.py.
 {
 	return PyModule_Create(&greetingmodule);
 }
