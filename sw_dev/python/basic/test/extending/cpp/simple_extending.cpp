@@ -2,7 +2,7 @@
 
 
 /*
-in python interperter:
+Usage in Python:
 	import simple_extending
 	status = simple_extending.system("ls -l")
 */

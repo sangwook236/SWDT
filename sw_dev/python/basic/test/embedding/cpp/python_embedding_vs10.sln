@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "embedding", "..\test\embedding\embedding_vc9.vcproj", "{3707F402-986D-4105-8A14-DBD761BC1637}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "embedding", "embedding_vs10.vcxproj", "{3707F402-986D-4105-8A14-DBD761BC1637}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
