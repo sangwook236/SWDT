@@ -12,9 +12,13 @@ def suite():
 	suite.addTest(SubtractTestCase())
 	return suite
 
+#%%------------------------------------------------------------------
+
 # Usage:
-#	python -m unittest arithmetic_test
-#	python -m unittest arithmetic_test.py
+#	python -m unittest unittest_main
+#	python -m unittest unittest_main.py
+#
+#	python -m unittest discover -s project_directory -p "*_test.py"
 
 if '__main__' == __name__:
 	unittest.main()
