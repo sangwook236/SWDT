@@ -1,0 +1,89 @@
+[-] Server.
+	- nginx + uwsgi + django.
+
+	- Configure.
+		/etc/nginx/sites-enabled/django.conf
+		/etc/nginx/sites-available/
+		${SERVER_HOME}/server/default_uwsgi.ini
+
+	- Run.
+		#virtualenv ENV
+		#pip install -r requirements.txt
+		source ${SERVER_HOME}/ENV/bin/activate
+		#deactivate
+
+		sudo service nginx start
+		sudo service uwsgi start
+		uwsgi --ini ${SERVER_HOME}/server/default_uwsgi.ini
+
+	- Log.
+		${SERVER_HOME}/server/uwsgi.log
+
+[-] Django.
+	- Reference.
+		https://docs.djangoproject.com
+		https://docs.djangoproject.com/en/2.0/intro/tutorial01/
+
+	- 
+		client -> nginx -> uwsgi -> urls.py -> views.py
+		urls.py, views.py, models.py, serializers.py (ORM).
+
+	- Administration.
+		Create a project:
+			django-admin startproject my_site_name
+
+		Create an application:
+			django-admin startapp app_name
+			python manage.py startapp app_name
+
+		python manage.py createsuperuser --email admin@example.com --username admin
+
+	- Shell.
+		python manage.py shell
+
+	- Launch a django server (slow).
+		python manage.py runserver
+		python manage.py runserver 0.0.0.0:8001
+
+		Register an application:
+			Edit INSTALLED_APPS in ${SERVER_HOME}/datasense/settings.py.
+
+	- Database.
+		Check synchronization between DB and models.
+			python manage.py makemigrations
+			python manage.py makemigrations app_name
+		Actually sybchronize.
+			python manage.py migrate
+
+		DB setting:
+			Edit DATABASES in ${SERVER_HOME}/datasense/settings.py.
+
+	- Fron-end.
+		In ${SERVER_HOME}/template,
+            npm run build
+
+[-] Django rest framework.
+	- Reference.
+		http://www.django-rest-framework.org/
+		http://www.django-rest-framework.org/tutorial/quickstart/
+		https://www.vinta.com.br/blog/2018/django-rest-framework-read-write-serializers/
+
+	- Test.
+		When using curl:
+			curl -H 'Accept: application/json; indent=4' -u sangwook:sangwook@django http://192.168.0.45/users/
+
+		When using httpie:
+			If you add a --debug switch to the http requests above, you will be able to see the request type in request headers.
+
+			http -a admin:password123 http://127.0.0.1:8000/users/
+
+			http http://127.0.0.1:8000/snippets/ Accept:application/json  # Request JSON.
+			http http://127.0.0.1:8000/snippets/ Accept:text/html         # Request HTML.
+			http http://127.0.0.1:8000/snippets.json  # JSON suffix.
+			http http://127.0.0.1:8000/snippets.api   # Browsable API suffix.
+
+			http --form POST http://127.0.0.1:8000/snippets/ code="print 123"  # Post using form data.
+			http --json POST http://127.0.0.1:8000/snippets/ code="print 456"  # Post using JSON.
+
+		In web browser:
+			http://127.0.0.1:8000/users/
