@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from statemachine import StateMachine, State
+from statemachine.exceptions import TransitionNotAllowed
 
 class TrafficLightMachine(StateMachine):
 	# States.
@@ -18,17 +19,17 @@ class TrafficLightMachine(StateMachine):
 	def on_enter_green(self):
 	    print('Enter green.')
 
-	def on_enter_yellow(self):
-	    print('Enter yellow.')
-
-	def on_enter_red(self):
-	    print('Enter red.')
-
 	def on_exit_green(self):
 	    print('Exit green.')
 
+	def on_enter_yellow(self):
+	    print('Enter yellow.')
+
 	def on_exit_yellow(self):
 	    print('Exit yellow.')
+
+	def on_enter_red(self):
+	    print('Enter red.')
 
 	def on_exit_red(self):
 	    print('Exit red.')
@@ -55,17 +56,26 @@ def main():
 	#obj = MyModel(state='green')
 	#statemachine = TrafficLightMachine(obj)
 
-	statemachine.cycle()
-	statemachine.cycle()
-	statemachine.cycle()
+	try:
+		statemachine.cycle()
+		statemachine.cycle()
+		statemachine.cycle()
+	except TransitionNotAllowed as ex:
+		print('TransitionNotAllowed:', ex)
 
-	statemachine.slowdown()
-	statemachine.stop()
-	statemachine.go()
+	try:
+		statemachine.slowdown()
+		statemachine.stop()
+		statemachine.go()
+	except TransitionNotAllowed as ex:
+		print('TransitionNotAllowed:', ex)
 
-	statemachine.run('slowdown')
-	statemachine.run('stop')
-	statemachine.run('go')
+	try:
+		statemachine.run('slowdown')
+		statemachine.run('stop')
+		statemachine.run('go')
+	except TransitionNotAllowed as ex:
+		print('TransitionNotAllowed:', ex)
 
 	print(statemachine.current_state)
 	print(statemachine.is_green)
