@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+# NOTE [info] >> Python State Machine.
+#	https://github.com/fgmacedo/python-statemachine
+#	pip install python-statemachine
+
 from statemachine import StateMachine, State
 from statemachine.exceptions import TransitionNotAllowed
 
