@@ -11,6 +11,7 @@ import urllib.request
 import urllib.parse
 import urllib.error
 import json, base64
+import requests
 
 # List all code snippets (GET).
 def list_snippets(url):
@@ -25,23 +26,22 @@ def list_snippets(url):
 
 # Create a new snippet (POST).
 def create_snippet(url):
-	# NOTE [caution] >> Send a file.
-	file_obj = open('data.txt', 'r')
-	file_obj = base64.b64encode(file_obj.read().encode('ascii'))
+	# Send files.
+	#file_obj = open('data.txt', 'r')
+	##file_obj = open('data.conf', 'r')
+	##file_obj = open('data.josn', 'r')
+	#file_obj = base64.b64encode(file_obj.read().encode('ascii'))
 
-	values = {
+	data = {
 		'title': 'test1',
 		'code': 'System.io.println("Java");',
 		'linenos': False,
 		#'language': 'java',
 		#'style': 'friendly',
-		'file': file_obj,
+		#'file': file_obj,
 	}
 
-	#params = 'title="test1"&code="System.io.println("Java");"&linenos=False&language=java&style=friendly'
-	params = urllib.parse.urlencode(values)
-	#params = urllib.parse.quote_plus(json.dumps(values))  # Not working.
-	#print(params)
+	params = urllib.parse.urlencode(data)
 	params = params.encode('ascii')  # Params should be bytes.
 	request = urllib.request.Request(url, params)
 
@@ -71,7 +71,7 @@ def retrieve_snippet(url, id):
 def update_snippet(url, id):
 	url = url + str(id) + '/'
 
-	values = {
+	data = {
 		'title': 'ABC',
 		'code': 'print(ABC)',
 		'linenos': False,
@@ -79,7 +79,7 @@ def update_snippet(url, id):
 		'style': 'colorful',
 	}
 
-	params = urllib.parse.urlencode(values)
+	params = urllib.parse.urlencode(data)
 	params = params.encode('ascii')  # Params should be bytes.
 	request = urllib.request.Request(url, params)
 	request.get_method = lambda: 'PUT'
@@ -109,15 +109,43 @@ def delete_snippet(url, id):
 	except urllib.error.HTTPError as ex:
 		print('HTTPError:', ex)
 
+# Upload files (POST).
+def upload_file(url):
+	url = url + 'files/'
+
+	# Send files.
+	filename = 'data.txt'
+	conf_filename = 'data.conf'
+	json_filename = 'data.json'
+
+	data = {
+	}
+	files = {
+		'file': (filename, open(filename, 'rb'), 'multipart/form-data'),
+		'conf_file': (conf_filename, open(conf_filename, 'rb'), 'multipart/form-data'),
+		'json_file': (json_filename, open(json_filename, 'rb'), 'multipart/form-data'),
+	}
+
+	try:
+		with requests.post(url, files=files, data=data) as response:
+			print(response.text)
+	except requests.HTTPError as ex:
+		print('requests.HTTPError:', ex)
+	except requests.RequestException as ex:
+		print('requests.RequestException:', ex)
+
 def main():
 	#url = 'http://127.0.0.1:8000/snippets/'
 	url = 'http://192.168.0.45:8001/snippets/'
 
 	#list_snippets(url)
 	#create_snippet(url)
+
 	retrieve_snippet(url, 2)
 	#update_snippet(url, 4)
 	#delete_snippet(url, 51)
+
+	#upload_file(url)
 
 #%%------------------------------------------------------------------
 

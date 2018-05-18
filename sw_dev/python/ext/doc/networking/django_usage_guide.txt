@@ -70,12 +70,16 @@
 
 	- Test.
 		When using curl:
-			curl -H 'Accept: application/json; indent=4' -u sangwook:sangwook@django http://192.168.0.45/users/
+			curl -X GET -H "Accept: application/json; indent=4" -u admin:password http://127.0.0.1:8000/snippets/
+			curl -H "Accept: application/json; indent=4" -u admin:password http://127.0.0.1:8000/snippets/ --data code="print 123" --data linenos=False
+
+			Send files:
+			curl -H "Accept: application/json; indent=4" -u admin:password http://127.0.0.1:8000/snippets/files/ --form "file=@data.txt;type=text/plain"
 
 		When using httpie:
 			If you add a --debug switch to the http requests above, you will be able to see the request type in request headers.
 
-			http -a admin:password123 http://127.0.0.1:8000/users/
+			http -a admin:password http://127.0.0.1:8000/snippets/
 
 			http http://127.0.0.1:8000/snippets/ Accept:application/json  # Request JSON.
 			http http://127.0.0.1:8000/snippets/ Accept:text/html         # Request HTML.
@@ -84,6 +88,9 @@
 
 			http --form POST http://127.0.0.1:8000/snippets/ code="print 123"  # Post using form data.
 			http --json POST http://127.0.0.1:8000/snippets/ code="print 456"  # Post using JSON.
+
+			Send files:
+			http -f POST -a admin:password http://127.0.0.1:8000/snippets/files/ "file@data.txt"
 
 		In web browser:
 			http://127.0.0.1:8000/users/
