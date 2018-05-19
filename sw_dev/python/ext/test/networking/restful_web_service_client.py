@@ -111,17 +111,14 @@ def delete_snippet(url, id):
 
 # Upload files (POST).
 def upload_file(url):
-	url = url + 'files/'
-
 	# Send files.
-	filename = 'data.txt'
+	txt_filename = 'data.txt'
 	conf_filename = 'data.conf'
 	json_filename = 'data.json'
 
-	data = {
-	}
+	data = None
 	files = {
-		'file': (filename, open(filename, 'rb'), 'multipart/form-data'),
+		'file': (txt_filename, open(txt_filename, 'rb'), 'multipart/form-data'),
 		'conf_file': (conf_filename, open(conf_filename, 'rb'), 'multipart/form-data'),
 		'json_file': (json_filename, open(json_filename, 'rb'), 'multipart/form-data'),
 	}
@@ -134,18 +131,118 @@ def upload_file(url):
 	except requests.RequestException as ex:
 		print('requests.RequestException:', ex)
 
+# List all jobs (GET).
+def list_jobs(url):
+	try:
+		with urllib.request.urlopen(url) as response:
+			#html = response.read()
+			html = response.read().decode('utf-8')
+			print(html)
+			print(response.status, response.msg)
+	except urllib.error.HTTPError as ex:
+		print('HTTPError:', ex)
+
+# Create a job (POST).
+def create_job(url):
+	# Job file.
+	job_filename = 'data.json'
+
+	data = {
+		'job_name': 'job0001',
+		'job_code': 'spark',
+		'job_description': 'This is a test job.',
+		'status': 'created',
+		'exit_code': 'undefined',
+	}
+	files = {
+		'job_file': (job_filename, open(job_filename, 'rb'), 'multipart/form-data'),
+	}
+
+	try:
+		with requests.post(url, files=files, data=data) as response:
+			print(response.text)
+	except requests.HTTPError as ex:
+		print('requests.HTTPError:', ex)
+	except requests.RequestException as ex:
+		print('requests.RequestException:', ex)
+
+# Retrieve a job (GET).
+def retrieve_job(url, id):
+	url = url + str(id) + '/'
+
+	try:
+		with urllib.request.urlopen(url) as response:
+			#html = response.read()
+			html = response.read().decode('utf-8')
+			print(html)
+			print(response.status, response.msg)
+	except urllib.error.HTTPError as ex:
+		print('HTTPError:', ex)
+
+# Update a job (PUT).
+def update_job(url, id):
+	url = url + str(id) + '/'
+
+	data = {
+		'job_name': 'job1000',
+		'job_code': 'hadoop',
+		'job_description': 'This is an updated job.',
+		'status': 'updated',
+		'exit_code': 'succeeded',
+	}
+
+	params = urllib.parse.urlencode(data)
+	params = params.encode('ascii')  # Params should be bytes.
+	request = urllib.request.Request(url, params)
+	request.get_method = lambda: 'PUT'
+
+	try:
+		with urllib.request.urlopen(request) as response:
+			#html = response.read()
+			html = response.read().decode('utf-8')
+			print(html)
+			print(response.status, response.msg)
+	except urllib.error.HTTPError as ex:
+		print('HTTPError:', ex)
+
+# Delete a job (DELETE).
+def delete_job(url, id):
+	url = url + str(id) + '/'
+
+	request = urllib.request.Request(url)
+	request.get_method = lambda: 'DELETE'
+
+	try:
+		with urllib.request.urlopen(request) as response:
+			#html = response.read()
+			html = response.read().decode('utf-8')
+			#print(html)
+			print(response.status, response.msg)
+	except urllib.error.HTTPError as ex:
+		print('HTTPError:', ex)
+
 def main():
-	#url = 'http://127.0.0.1:8000/snippets/'
-	url = 'http://192.168.0.45:8001/snippets/'
+	#url = 'http://127.0.0.1:8000/'
+	url = 'http://192.168.0.45:8001/'
 
-	#list_snippets(url)
-	#create_snippet(url)
+	#----------------------------------------------------------------
+	#list_snippets(url + 'snippets/')
+	#create_snippet(url + 'snippets/')
 
-	retrieve_snippet(url, 2)
-	#update_snippet(url, 4)
-	#delete_snippet(url, 51)
+	#retrieve_snippet(url + 'snippets/', 2)
+	#update_snippet(url + 'snippets/', 4)
+	#delete_snippet(url + 'snippets/', 51)
 
-	#upload_file(url)
+	#----------------------------------------------------------------
+	#upload_file(url + 'files/')
+
+	#----------------------------------------------------------------
+	#list_jobs(url + 'jobs/')
+	#create_job(url + 'jobs/')
+
+	#retrieve_job(url + 'jobs/', 2)
+	#update_job(url + 'jobs/', 4)
+	delete_job(url + 'jobs/', 6)
 
 #%%------------------------------------------------------------------
 

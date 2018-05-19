@@ -1,0 +1,20 @@
+[-] Usage.
+	- Run.
+		#virtualenv ENV
+		#pip install -r requirements.txt
+		source ${SERVER_HOME}/ENV/bin/activate
+		#deactivate
+
+	- Launch a django server (slow).
+		python manage.py runserver
+		python manage.py runserver 0.0.0.0:8001
+
+		Register an application:
+			Edit INSTALLED_APPS in ${SERVER_HOME}/datasense/settings.py.
+
+	- Database.
+		Check synchronization between DB and models.
+			python manage.py makemigrations
+			python manage.py makemigrations app_name
+		Actually sybchronize.
+			python manage.py migrate

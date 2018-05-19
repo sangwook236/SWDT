@@ -74,7 +74,7 @@
 			curl -H "Accept: application/json; indent=4" -u admin:password http://127.0.0.1:8000/snippets/ --data code="print 123" --data linenos=False
 
 			Send files:
-			curl -H "Accept: application/json; indent=4" -u admin:password http://127.0.0.1:8000/snippets/files/ --form "file=@data.txt;type=text/plain"
+			curl -H "Accept: application/json; indent=4" -u admin:password http://127.0.0.1:8000/files/ --form "file=@data.txt;type=text/plain"
 
 		When using httpie:
 			If you add a --debug switch to the http requests above, you will be able to see the request type in request headers.
@@ -90,7 +90,7 @@
 			http --json POST http://127.0.0.1:8000/snippets/ code="print 456"  # Post using JSON.
 
 			Send files:
-			http -f POST -a admin:password http://127.0.0.1:8000/snippets/files/ "file@data.txt"
+			http -f POST -a admin:password http://127.0.0.1:8000/files/ "file@data.txt"
 
 		In web browser:
 			http://127.0.0.1:8000/users/
