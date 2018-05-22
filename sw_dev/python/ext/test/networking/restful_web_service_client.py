@@ -6,6 +6,8 @@
 #	http://www.django-rest-framework.org/tutorial/1-serialization/
 #	http://www.django-rest-framework.org/tutorial/2-requests-and-responses/
 #	http://www.django-rest-framework.org/tutorial/3-class-based-views/
+# NOTE [info] >>
+#	https://docs.djangoproject.com/en/2.1/topics/http/file-uploads/
 
 import urllib.request
 import urllib.parse
@@ -173,8 +175,20 @@ def retrieve_job(url, id):
 	try:
 		with urllib.request.urlopen(url) as response:
 			#html = response.read()
-			html = response.read().decode('utf-8')
-			print(html)
+			#html = response.read().decode('utf-8')
+			#print(html)
+			headers = response.getheaders()
+			attachment = response.getheader('Content-Disposition')
+			istart = attachment.find('filename=')
+			istart = attachment.find('"', istart + 1) + 1
+			iend = attachment.find('"', istart + 1)
+			filename = attachment[istart:iend]
+			file_obj = response.read()
+			if file_obj is not None:
+				dst = open('./' + filename, 'wb')
+				dst.write(file_obj)
+				dst.close()
+			print('File downloaded.')
 			print(response.status, response.msg)
 	except urllib.error.HTTPError as ex:
 		print('HTTPError:', ex)
@@ -240,9 +254,9 @@ def main():
 	#list_jobs(url + 'jobs/')
 	#create_job(url + 'jobs/')
 
-	#retrieve_job(url + 'jobs/', 2)
+	retrieve_job(url + 'jobs/', 2)
 	#update_job(url + 'jobs/', 4)
-	delete_job(url + 'jobs/', 6)
+	#delete_job(url + 'jobs/', 6)
 
 #%%------------------------------------------------------------------
 
