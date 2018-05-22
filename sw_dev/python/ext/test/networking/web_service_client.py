@@ -113,7 +113,6 @@ def delete_snippet(url, id):
 
 # Upload files (POST).
 def upload_file(url):
-	# Send files.
 	txt_filename = 'data.txt'
 	conf_filename = 'data.conf'
 	json_filename = 'data.json'
@@ -132,6 +131,26 @@ def upload_file(url):
 		print('requests.HTTPError:', ex)
 	except requests.RequestException as ex:
 		print('requests.RequestException:', ex)
+
+# Download a file (GET).
+def download_file(url):
+	try:
+		with urllib.request.urlopen(url) as response:
+			headers = response.getheaders()
+			attachment = response.getheader('Content-Disposition')
+			istart = attachment.find('filename=')
+			istart = attachment.find('"', istart + 1) + 1
+			iend = attachment.find('"', istart + 1)
+			filename = attachment[istart:iend]
+			file_obj = response.read()
+			if file_obj is not None:
+				dst = open('./' + filename, 'wb')
+				dst.write(file_obj)
+				dst.close()
+			print('File downloaded.')
+			print(response.status, response.msg)
+	except urllib.error.HTTPError as ex:
+		print('HTTPError:', ex)
 
 # List all jobs (GET).
 def list_jobs(url):
@@ -175,20 +194,8 @@ def retrieve_job(url, id):
 	try:
 		with urllib.request.urlopen(url) as response:
 			#html = response.read()
-			#html = response.read().decode('utf-8')
-			#print(html)
-			headers = response.getheaders()
-			attachment = response.getheader('Content-Disposition')
-			istart = attachment.find('filename=')
-			istart = attachment.find('"', istart + 1) + 1
-			iend = attachment.find('"', istart + 1)
-			filename = attachment[istart:iend]
-			file_obj = response.read()
-			if file_obj is not None:
-				dst = open('./' + filename, 'wb')
-				dst.write(file_obj)
-				dst.close()
-			print('File downloaded.')
+			html = response.read().decode('utf-8')
+			print(html)
 			print(response.status, response.msg)
 	except urllib.error.HTTPError as ex:
 		print('HTTPError:', ex)
@@ -249,6 +256,7 @@ def main():
 
 	#----------------------------------------------------------------
 	#upload_file(url + 'files/')
+	#download_file(url + 'files/data.zip/')
 
 	#----------------------------------------------------------------
 	#list_jobs(url + 'jobs/')
