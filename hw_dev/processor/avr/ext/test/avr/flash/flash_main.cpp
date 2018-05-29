@@ -8,10 +8,10 @@ namespace local {
 void system_init()
 {
 	/*
-	 *	analog comparator
+	 *	Analog comparator.
 	 */
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
+	ACSR &= ~(_BV(ACIE));  // Analog comparator interrupt disable.
+	ACSR |= _BV(ACD);  // Analog comparator disable.
 }
 
 }  // namespace local
@@ -25,7 +25,6 @@ int flash_main(int argc, char *argv[])
 	cli();
 	local::system_init();
 	sei();
-
 	//const prog_char ch = { 'Z' };
 	const char ch PROGMEM = { 'Z' };
 	const uint8_t val1 = pgm_read_byte(&ch);

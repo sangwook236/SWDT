@@ -12,27 +12,27 @@ namespace local {
 void system_init()
 {
 	/*
-	 *	analog comparator
+	 *	Analog comparator.
 	 */
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
+	ACSR &= ~(_BV(ACIE));  // Analog comparator interrupt disable.
+	ACSR |= _BV(ACD);  // Analog comparator disable.
 
 	/*
-	 *	I/O port
+	 *	I/O port.
 	 */
 /*
-	// uses all pins on PortA for input
+	// Uses all pins on PortA for input.
 	DDRA = 0x00;
-	// it makes port input register(PINn) internally pulled-up state that port output register(PORTn) outputs 1(high)
+	// It makes port input register(PINn) internally pulled-up state that port output register(PORTn) outputs 1(high).
 	PORTA = 0xFF;
-	// it makes port input register(PINn) high-impedance state that port output register(PORTn) outputs 0(low)
-	// so that we can share the pin with other devices
+	// It makes port input register(PINn) high-impedance state that port output register(PORTn) outputs 0(low)
+	// so that we can share the pin with other devices.
 	//PORTA = 0x00;
 */
-	DDRA = 0xFF;  // uses all pins on PortA for output
-	//DDRB = 0xFF;  // uses all pins on PortB for SPI
-	DDRC = 0xFF;  // uses all pins on PortC for output
-	DDRD = 0xFF;  // uses all pins on PortD for output
+	DDRA = 0xFF;  // Uses all pins on PortA for output.
+	//DDRB = 0xFF;  // Uses all pins on PortB for SPI.
+	DDRC = 0xFF;  // Uses all pins on PortC for output.
+	DDRD = 0xFF;  // Uses all pins on PortD for output.
 }
 
 void test_spi_ee93Cxx()
@@ -65,7 +65,7 @@ void test_spi_ee25xxx()
 		return;
 	}
 
-	// set write-disable
+	// Set write-disable.
 	while (!ee25xxx_is_ready()) ;
 	ret = ee25xxx_set_write_disable();
 	if (0 == ret)
@@ -95,7 +95,7 @@ void test_spi_ee25xxx()
 		return;
 	}
 
-	// set write-enable
+	// Set write-enable.
 	while (!ee25xxx_is_ready()) ;
 	ret = ee25xxx_set_write_enable();
 	if (0 == ret)
@@ -148,26 +148,26 @@ void test_spi_ee25xxx()
 			else buf[i] = 0;
 		}
 	
-		// write bytes
+		// Write bytes.
 		for (uint16_t i = 0; i < len; ++i)
 		{
-			// caution: write-enable process is necessary
-			//	after write-data process, write-enable bit come to be reset
-			//	so before write-data process, it is necessary to make write-enable bit on
+			// Caution: Write-enable process is necessary.
+			//	After write-data process, write-enable bit come to be reset
+			//	so before write-data process, it is necessary to make write-enable bit on.
 			while (!ee25xxx_is_ready()) ;
 			ret = ee25xxx_set_write_enable();
 
 			while (!ee25xxx_is_ready()) ;
 			ret = ee25xxx_write_a_byte(eeaddr + i, buf[i]);
-	/*
+/*
 			if (ret) PORTA = buf[i];
 			_delay_ms(50);
 			PORTA = 0x00;
 			_delay_ms(50);
-	*/
+*/
 		}
 
-		// read bytes
+		// Read bytes.
 		for (uint16_t i = 0; i < len; ++i)
 		{
 			uint8_t byte = 0x00;
@@ -195,22 +195,22 @@ void test_spi_adis16350()
 	ret = adis16350_read_a_register(ADIS16350_ZGYRO_OUT, &word);
 	if (0 != ret)
 	{
-		const uint8_t nd_flag = ((word >> 15) & 0x01) == 0x01;  // new data indicator
-		const uint8_t ea_flag = ((word >> 14) & 0x01) == 0x01;  // system error or alarm condition
+		const uint8_t nd_flag = ((word >> 15) & 0x01) == 0x01;  // New data indicator.
+		const uint8_t ea_flag = ((word >> 14) & 0x01) == 0x01;  // System error or alarm condition.
 		const uint16_t data = word & 0x3FFF;  // output data
 
 		//PORTA = (uint8_t)((data >> 8) & 0x00FF);
 		//PORTA = (uint8_t)(data & 0x00FF);
 		//_delay_ms(10);
 
-		usart0_push_char('$');  // stx
+		usart0_push_char('$');  // STX.
 		usart0_push_char(nd_flag ? 'y' : 'n');
 		usart0_push_char(ea_flag ? 'y' : 'n');
 		usart0_push_char(hex2ascii((data >> 12) & 0x0F));
 		usart0_push_char(hex2ascii((data >> 8) & 0x0F));
 		usart0_push_char(hex2ascii((data >> 4) & 0x0F));
 		usart0_push_char(hex2ascii(data & 0x0F));
-		usart0_push_char('&');  // etx
+		usart0_push_char('&');  // ETX.
 	}
 	else
 	{
@@ -236,7 +236,7 @@ void test_spi_adis16350_self_test()
 	ret = adis16350_write_a_register(ADIS16350_MSC_CTRL, 0x0001);
 	_delay_ms(50);
 
-	// manual flash update command to store the nonvolatile data registers
+	// Manual flash update command to store the nonvolatile data registers.
 	ret = adis16350_write_a_register(ADIS16350_COMMAND, 0x0001 << 3);
 	_delay_ms(100);
 

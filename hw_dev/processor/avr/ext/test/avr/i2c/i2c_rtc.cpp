@@ -28,7 +28,7 @@ int ds1307_init()
 	//
 	if (0 == ds1307_read_a_byte(0x00, &val))
 		return 0;
-	if (val & 0x80)  // clock running ?
+	if (val & 0x80)  // Clock running ?
 	{
 		const int ret = ds1307_write_a_byte(0x00, val & 0x7F);
 		_delay_us(50);
@@ -36,7 +36,7 @@ int ds1307_init()
 			return 0;
 	}
 
-	ds1307_write_a_byte(0x07, 0x90);  // enable 1Hz SQW signal
+	ds1307_write_a_byte(0x07, 0x90);  // Enable 1Hz SQW signal.
 
 	return 1;
 }
@@ -47,7 +47,7 @@ int ds1307_set_date_time(const uint8_t year, const uint8_t month, const uint8_t 
 	const uint16_t bufLen = 7;
 	const uint8_t buf[] =
 	{
-		(((second / 10) << 4) | (second % 10)) & 0x7F,  // seconds to zero. start clock also
+		(((second / 10) << 4) | (second % 10)) & 0x7F,  // Seconds to zero. start clock also.
 		((minute / 10) << 4) | (minute % 10),
 		((hour / 10) << 4) | (hour % 10),
 		day_of_week,
@@ -116,14 +116,14 @@ int ds1307_get_date(uint8_t *year, uint8_t *month, uint8_t *date, uint8_t *day_o
 static const uint8_t MAX_RESTART_ITER_COUNT = 200;
 
 /*
- * TWI address for DS1307:
+ * TWI address for DS1307.
  */
 static const uint8_t TWI_SLA_DS1307 = 0xD0;
 
 
 int ds1307_write_a_byte(const uint8_t addr, const uint8_t byte)
 {
-	// patch DS1307 address into SLA
+	// Patch DS1307 address into SLA.
 	const uint8_t sla = TWI_SLA_DS1307;
 
 	uint8_t iter = 0;
@@ -132,20 +132,20 @@ int ds1307_write_a_byte(const uint8_t addr, const uint8_t byte)
 	while (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 	{
 		/*
-		 * First cycle: master transmitter mode
+		 * First cycle: Master transmitter mode.
 		 */
 
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+W
+		// Send SLA+W.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_w(sla);
@@ -154,7 +154,7 @@ int ds1307_write_a_byte(const uint8_t addr, const uint8_t byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// 8-bit register address
+		// 8-bit register address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address(addr);
@@ -163,7 +163,7 @@ int ds1307_write_a_byte(const uint8_t addr, const uint8_t byte)
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// transmit a byte
+		// Transmit a byte.
 		if (I2C_OK == status)
 		{
 			status = i2c_master_write_a_byte(byte);
@@ -172,7 +172,7 @@ int ds1307_write_a_byte(const uint8_t addr, const uint8_t byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();
@@ -185,7 +185,7 @@ int ds1307_write_a_byte(const uint8_t addr, const uint8_t byte)
 
 int ds1307_write_bytes(const uint8_t addr, const uint16_t bufLen, const uint8_t *buf, uint16_t *byteLenWritten)
 {
-	// patch DS1307 address into SLA
+	// Patch DS1307 address into SLA.
 	const uint8_t sla = TWI_SLA_DS1307;
 
 	uint8_t iter = 0;
@@ -194,20 +194,20 @@ int ds1307_write_bytes(const uint8_t addr, const uint16_t bufLen, const uint8_t 
 	while (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 	{
 		/*
-		 * First cycle: master transmitter mode
+		 * First cycle: Master transmitter mode.
 		 */
 
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+W
+		// Send SLA+W.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_w(sla);
@@ -216,7 +216,7 @@ int ds1307_write_bytes(const uint8_t addr, const uint16_t bufLen, const uint8_t 
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// 8-bit register address
+		// 8-bit register address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address(addr);
@@ -225,7 +225,7 @@ int ds1307_write_bytes(const uint8_t addr, const uint16_t bufLen, const uint8_t 
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// transmit a byte
+		// Transmit a byte.
 		if (I2C_OK == status)
 		{
 			status = i2c_master_write_bytes(bufLen, buf, byteLenWritten);
@@ -234,7 +234,7 @@ int ds1307_write_bytes(const uint8_t addr, const uint16_t bufLen, const uint8_t 
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();
@@ -247,11 +247,11 @@ int ds1307_write_bytes(const uint8_t addr, const uint16_t bufLen, const uint8_t 
 
 int ds1307_read_a_byte(const uint8_t addr, uint8_t *byte)
 {
-	// patch DS1307 address into SLA
+	// Patch DS1307 address into SLA.
 	const uint8_t sla = TWI_SLA_DS1307;
 
 	/*
-	 * First cycle: master transmitter mode
+	 * First cycle: Master transmitter mode.
 	 */
 	uint8_t iter = 0;
 	I2C_STATUS status = I2C_ERR_RESTART;
@@ -261,14 +261,14 @@ int ds1307_read_a_byte(const uint8_t addr, uint8_t *byte)
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+W
+		// Send SLA+W.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_w(sla);
@@ -277,7 +277,7 @@ int ds1307_read_a_byte(const uint8_t addr, uint8_t *byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// 8-bit register address
+		// 8-bit register address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address(addr);
@@ -286,7 +286,7 @@ int ds1307_read_a_byte(const uint8_t addr, uint8_t *byte)
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();
@@ -299,7 +299,7 @@ int ds1307_read_a_byte(const uint8_t addr, uint8_t *byte)
 	_delay_us(50);
 
 	/*
-	 * Next cycle(s): master receiver mode
+	 * Next cycle(s): Master receiver mode.
 	 */
 	iter = 0;
 	status = I2C_ERR_RESTART;
@@ -309,14 +309,14 @@ int ds1307_read_a_byte(const uint8_t addr, uint8_t *byte)
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+R
+		// Send SLA+R.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_r(sla);
@@ -325,7 +325,7 @@ int ds1307_read_a_byte(const uint8_t addr, uint8_t *byte)
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// receive a byte
+		// Receive a byte.
 		if (I2C_OK == status)
 		{
 			status = i2c_master_read_a_byte(byte);
@@ -334,7 +334,7 @@ int ds1307_read_a_byte(const uint8_t addr, uint8_t *byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();
@@ -347,11 +347,11 @@ int ds1307_read_a_byte(const uint8_t addr, uint8_t *byte)
 
 int ds1307_read_bytes(const uint8_t addr, const uint16_t bufLen, uint8_t *buf, uint16_t *byteLenRead)
 {
-	// patch DS1307 address into SLA
+	// Patch DS1307 address into SLA.
 	const uint8_t sla = TWI_SLA_DS1307;
 
 	/*
-	 * First cycle: master transmitter mode
+	 * First cycle: Master transmitter mode.
 	 */
 	uint8_t iter = 0;
 	I2C_STATUS status = I2C_ERR_RESTART;
@@ -361,14 +361,14 @@ int ds1307_read_bytes(const uint8_t addr, const uint16_t bufLen, uint8_t *buf, u
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+W
+		// Send SLA+W.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_w(sla);
@@ -377,7 +377,7 @@ int ds1307_read_bytes(const uint8_t addr, const uint16_t bufLen, uint8_t *buf, u
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// 8-bit register address
+		// 8-bit register address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address(addr);
@@ -386,7 +386,7 @@ int ds1307_read_bytes(const uint8_t addr, const uint16_t bufLen, uint8_t *buf, u
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();
@@ -399,7 +399,7 @@ int ds1307_read_bytes(const uint8_t addr, const uint16_t bufLen, uint8_t *buf, u
 	_delay_us(50);
 
 	/*
-	 * Next cycle(s): master receiver mode
+	 * Next cycle(s): Master receiver mode.
 	 */
 	iter = 0;
 	status = I2C_ERR_RESTART;
@@ -409,14 +409,14 @@ int ds1307_read_bytes(const uint8_t addr, const uint16_t bufLen, uint8_t *buf, u
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+R
+		// Send SLA+R.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_r(sla);
@@ -425,7 +425,7 @@ int ds1307_read_bytes(const uint8_t addr, const uint16_t bufLen, uint8_t *buf, u
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// receive a byte
+		// Receive a byte.
 		if (I2C_OK == status)
 		{
 			status = i2c_master_read_bytes(bufLen, buf, byteLenRead);
@@ -434,7 +434,7 @@ int ds1307_read_bytes(const uint8_t addr, const uint16_t bufLen, uint8_t *buf, u
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();

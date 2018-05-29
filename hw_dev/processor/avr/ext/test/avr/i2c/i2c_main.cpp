@@ -12,30 +12,30 @@ namespace local {
 void system_init()
 {
 	/*
-	 *	analog comparator
+	 *	Analog comparator.
 	 */
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
+	ACSR &= ~(_BV(ACIE));  // Analog comparator interrupt disable.
+	ACSR |= _BV(ACD);  // Analog comparator disable.
 
 	/*
-	 *	I/O port
+	 *	I/O port.
 	 */
 /*
-	// uses all pins on PortA for input
+	// Uses all pins on PortA for input.
 	DDRA = 0x00;
-	// it makes port input register(PINn) internally pulled-up state that port output register(PORTn) outputs 1(high)
+	// It makes port input register(PINn) internally pulled-up state that port output register(PORTn) outputs 1(high).
 	PORTA = 0xFF;
-	// it makes port input register(PINn) high-impedance state that port output register(PORTn) outputs 0(low)
-	// so that we can share the pin with other devices
+	// It makes port input register(PINn) high-impedance state that port output register(PORTn) outputs 0(low)
+	// so that we can share the pin with other devices.
 	//PORTA = 0x00;
 */
-	// uses all pins on PortD for output
+	// Uses all pins on PortD for output.
 	DDRD = 0xFF;
 
-	// for 7-segment
+	// For 7-segment.
 	DDRA = 0xFF;
 	DDRC = 0xFF;
-	// for two yellow LEDs
+	// For two yellow LEDs.
 	DDRG = 0x03;
 }
 
@@ -56,7 +56,7 @@ void test_i2c_eeprom()
 	const uint16_t eeaddr = 0x0080;
 	int ret;
 
-	// write case 1
+	// Write case 1.
 	for (uint16_t i = 0; i < len; ++i)
 	{
 		ret = ee24Cxxx_write_a_byte(eeaddr + i, buf[i]);
@@ -66,11 +66,11 @@ void test_i2c_eeprom()
 		//else PORTA = ret & 0x00FF;
 		//_delay_ms(500);
 	}
-	// write case 2
+	// Write case 2.
 /*
 	uint16_t byteLenWritten = 0;
-	ret = ee24Cxxx_write_bytes(eeaddr, len, buf, &byteLenWritten);  // error: Oops !!! i don't know why.
-	_delay_ms(20);  // necessary: delay for twr time
+	ret = ee24Cxxx_write_bytes(eeaddr, len, buf, &byteLenWritten);  // Error: Oops !!! i don't know why.
+	_delay_ms(20);  // Necessary: delay for twr time.
 
 	PORTA = ret & 0x00FF;
 	_delay_ms(500);
@@ -82,7 +82,7 @@ void test_i2c_eeprom()
 	PORTA = 0xC0;
 	_delay_ms(1000);
 
-	// read case 1
+	// Read case 1.
 /*
 	uint8_t byte = 0x00;
 	for (uint16_t i = 0; i < len; ++i)
@@ -95,7 +95,7 @@ void test_i2c_eeprom()
 		_delay_ms(500);
 	}
 */
-	// read case 2
+	// Read case 2.
 	uint16_t byteLenRead = 0;
 	uint8_t buf2[len];
 	for (uint16_t i = 0; i < len; ++i) buf2[i] = 0x00;
@@ -120,7 +120,7 @@ void test_i2c_rtc()
 	void four_digit_seven_segment_anode_commmon(const uint16_t four_digits);
 	void four_digit_seven_segment_cathode_commmon(const uint16_t four_digits);
 
-	// init ds1307
+	// Init ds1307.
 	if (0 == ds1307_init())
 	{
 		PORTA = 0x8F;
@@ -129,7 +129,7 @@ void test_i2c_rtc()
 	}
 
 #if 0
-	// set date & time: call just once after power-on
+	// Set date & time: call just once after power-on.
 	if (0 == ds1307_set_date_time(9, 6, 26, 5, 20, 26, 0))
 	{
 		PORTA = 0x4F;
@@ -152,7 +152,7 @@ void test_i2c_rtc()
 	{
 		if (0 != display_time)
 		{
-			// get time
+			// Get time.
 			if (0 == ds1307_get_time(&hour, &minute, &second))
 			{
 				PORTA = 0x1F;
@@ -165,7 +165,7 @@ void test_i2c_rtc()
 		}
 		else
 		{
-			// get date
+			// Get date.
 			if (0 == ds1307_get_date(&year, &month, &date, &day_of_week))
 			{
 				PORTA = 0x2F;
@@ -200,14 +200,14 @@ void test_i2c_hmc6352()
 
 #if 0
 	//
-	// operational mode
+	// Operational mode.
 	//
 	uint8_t op_mode = 0x00;
 	hmc6352_read_from_ram(HMC6352_RAM__OPERATIONAL_MODE, &op_mode);
 
-	//op_mode = (op_mode & 0xFC) | 0x00;  // stand-by mode
-	op_mode = (op_mode & 0xFC) | 0x01;  // query mode
-	//op_mode = (op_mode & 0xFC) | 0x02;  // continuous mode
+	//op_mode = (op_mode & 0xFC) | 0x00;  // Stand-by mode.
+	op_mode = (op_mode & 0xFC) | 0x01;  // Query mode.
+	//op_mode = (op_mode & 0xFC) | 0x02;  // Continuous mode.
 	hmc6352_write_to_ram(HMC6352_RAM__OPERATIONAL_MODE, op_mode);
 	_delay_ms(10);
 	op_mode = 0x00;
@@ -215,9 +215,9 @@ void test_i2c_hmc6352()
 	PORTA = op_mode;
 	_delay_ms(1000);
 
-	op_mode = (op_mode & 0xFC) | 0x00;  // stand-by mode
-	//op_mode = (op_mode & 0xFC) | 0x01;  // query mode
-	//op_mode = (op_mode & 0xFC) | 0x02;  // continuous mode
+	op_mode = (op_mode & 0xFC) | 0x00;  // Stand-by mode.
+	//op_mode = (op_mode & 0xFC) | 0x01;  // Query mode.
+	//op_mode = (op_mode & 0xFC) | 0x02;  // Continuous mode.
 	hmc6352_write_to_ram(HMC6352_RAM__OPERATIONAL_MODE, op_mode);
 	_delay_ms(10);
 	op_mode = 0x00;
@@ -226,7 +226,7 @@ void test_i2c_hmc6352()
 	_delay_ms(1000);
 
 	//
-	// output data mode
+	// Output data mode.
 	//
 	uint8_t out_mode = 0x00;
 	hmc6352_read_from_ram(HMC6352_RAM__OUTPUT_DATA_MODE, &out_mode);
@@ -248,18 +248,18 @@ void test_i2c_hmc6352()
 	switch (mode)
 	{
 	case MODE_STAND_BY:
-		op_mode = (op_mode & 0xFC) | 0x00;  // stand-by mode
+		op_mode = (op_mode & 0xFC) | 0x00;  // Stand-by mode.
 		hmc6352_write_to_ram(HMC6352_RAM__OPERATIONAL_MODE, op_mode);
 		_delay_ms(10);
 		break;
 	case MODE_QUERY:
-		op_mode = (op_mode & 0xFC) | 0x01;  // query mode
+		op_mode = (op_mode & 0xFC) | 0x01;  // Query mode.
 		hmc6352_write_to_ram(HMC6352_RAM__OPERATIONAL_MODE, op_mode);
 		_delay_ms(10);
 		hmc6352_get_data(data);
 		break;
 	case MODE_CONTINUOUS:
-		op_mode = (op_mode & 0xFC) | 0x02;  // continuous mode
+		op_mode = (op_mode & 0xFC) | 0x02;  // Continuous mode.
 		hmc6352_write_to_ram(HMC6352_RAM__OPERATIONAL_MODE, op_mode);
 		_delay_ms(10);
 		break;
@@ -275,16 +275,16 @@ void test_i2c_hmc6352()
 			switch (mode)
 			{
 			case MODE_STAND_BY:
-				hmc6352_get_data(data);  // [0, 3599]
+				hmc6352_get_data(data);  // [0, 3599].
 				break;
 			case MODE_QUERY:
 			case MODE_CONTINUOUS:
-				hmc6352_read_word_data(data);  // [0, 3599]
+				hmc6352_read_word_data(data);  // [0, 3599].
 				break;
 			}
 
-			//const uint8_t high = data[0];  // MSB
-			//const uint8_t low = data[1];  // LSB
+			//const uint8_t high = data[0];  // MSB.
+			//const uint8_t low = data[1];  // LSB.
 			angle = ((data[0] << 8) & 0xFF00) | (data[1] & 0x00FF);
 
 			if (1 == flag)

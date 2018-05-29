@@ -1,5 +1,5 @@
-[-] General
-	-. Reference
+[-] General.
+	- Reference.
 		http://erine.egloos.com/2233135
 		http://www.gpsinformation.org/dale/nmea.htm
 		http://home.pacific.net.au/~gnb/gps/nmea.html

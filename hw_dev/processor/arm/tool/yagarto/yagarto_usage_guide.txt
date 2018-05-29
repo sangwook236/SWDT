@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.yagarto.org/
 		http://sourceforge.net/projects/yagarto/
 		https://launchpad.net/gcc-arm-embedded

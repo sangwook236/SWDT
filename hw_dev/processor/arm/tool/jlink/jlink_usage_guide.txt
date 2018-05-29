@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		https://www.segger.com/
 		https://www.segger.com/jlink-debug-probes.html
 

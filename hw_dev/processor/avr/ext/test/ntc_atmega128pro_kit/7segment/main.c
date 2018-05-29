@@ -38,7 +38,7 @@ int main()
 
 void initSystem()
 {
-	// Analog Comparator
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
+	// Analog Comparator.
+	ACSR &= ~(_BV(ACIE));  // Analog comparator interrupt disable.
+	ACSR |= _BV(ACD);  // Analog comparator disable.
 }

@@ -12,9 +12,9 @@ int main(void)
 
 	int retval = EXIT_SUCCESS;
 	{
-		retval = uart_main();  // not yet implemented.
-		//retval = spi_main();  // not yet implemented.
-		//retval = i2c_main();  // not yet implemented.
+		retval = uart_main();  // Not yet implemented.
+		//retval = spi_main();  // Not yet implemented.
+		//retval = i2c_main();  // Not yet implemented.
 	}
 
 	return retval;

@@ -1,10 +1,10 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.coocox.org/
 
 		http://www.coocox.org/Cox.html
 		http://www.coocox.org/CoOS.htm
 		http://www.coocox.org/CooCox_CoIDE.htm
 		http://www.coocox.org/CoCenter.htm
-	-. Reference
+	- Reference.
 		http://www.coocox.org/cox/manual/interface/

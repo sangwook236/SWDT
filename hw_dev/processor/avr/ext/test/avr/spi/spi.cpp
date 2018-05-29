@@ -34,7 +34,7 @@ uint8_t spi_master_transmit_a_byte(const uint8_t byte)
 	loop_until_bit_is_set(SPSR, SPIF);
 #endif  // __SWL_AVR__USE_SPI_INTERRUPT
 
-	const uint8_t val = SPDR;  // a byte received
+	const uint8_t val = SPDR;  // A byte received.
 	return val;
 }
 
@@ -61,8 +61,8 @@ void spi_master_transmit_a_string(const uint8_t *str)
 
 uint8_t spi_master_receive_a_byte()
 {
-	return spi_master_transmit_a_byte(0xFF);  // dummy
-	//return spi_master_transmit_a_byte(0x00);  // dummy
+	return spi_master_transmit_a_byte(0xFF);  // Dummy.
+	//return spi_master_transmit_a_byte(0x00);  // Dummy.
 }
 
 void spi_master_receive_bytes(uint8_t *buf, const uint16_t lengthToBeRead)

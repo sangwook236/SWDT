@@ -6,7 +6,7 @@
 	- AVR JTAG.
 	    AVR Studio4, IAR.
 		JTAG가 지원하는 디바이스는 아래와 같다.
-		Mega16(L), Mega162(L), Mega169(L), Mega32(L), Mega323(L), Mega64(L), Mega128(L)
+		Mega16(L), Mega162(L), Mega169(L), Mega32(L), Mega323(L), Mega64(L), Mega128(L).
 
 	- AVR ISP(STK500 ISP Type).
 		AVR Studio4, Codevision, Avrdude 지원.

@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		IMU 6DOF Razor (SparkFun, LPR530AL & LY530ALH gyros : ST, ADXL335 : Analog Devices):
 			http://robottini.altervista.org/kalman-filter-vs-complementary-filter
 			https://www.sparkfun.com/products/retired/9431

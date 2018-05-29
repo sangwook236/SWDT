@@ -11,21 +11,21 @@ namespace local {
 void system_init()
 {
  	/*
-	 *	ADC
+	 *	ADC.
 	 */
-	set_sleep_mode(SLEEP_MODE_ADC);  // ADC noise reduction mode
+	set_sleep_mode(SLEEP_MODE_ADC);  // ADC noise reduction mode.
 
  	/*
-	 *	analog comparator
+	 *	Analog comparator.
 	 */
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
+	ACSR &= ~(_BV(ACIE));  // Analog comparator interrupt disable.
+	ACSR |= _BV(ACD);  // Analog comparator disable.
 
 	/*
-	 *	I/O port
+	 *	I/O port.
 	 */
 	PORTA = 0x00;
-	DDRA  = 0xFF;  // uses all pins on PortA for output
+	DDRA  = 0xFF;  // Uses all pins on PortA for output.
 	PORTB = 0x00;
 	DDRB  = 0x00;
 	PORTC = 0x00;
@@ -75,7 +75,7 @@ void test_adc_mma7260()
 	uint32_t x_accel = 0, y_accel = 0, z_accel = 0;
 	for (uint16_t i = 0; i < LOOP_COUNT; ++i)
 	{
-		// read X-axis
+		// Read X-axis.
 		if (0x01 & XYZ)
 		{
 			adc_stop();
@@ -86,7 +86,7 @@ void test_adc_mma7260()
 			x_accel += adc_read_value();
 		}
 
-		// read Y-axis
+		// Read Y-axis.
 		if (0x02 & XYZ)
 		{
 			adc_stop();
@@ -97,7 +97,7 @@ void test_adc_mma7260()
 			y_accel += adc_read_value();
 		}
 
-		// read Z-axis
+		// Read Z-axis.
 		if (0x04 & XYZ)
 		{
 			adc_stop();
@@ -109,11 +109,11 @@ void test_adc_mma7260()
 		}
 	}
 
-	// read X-axis
+	// Read X-axis.
 	if (0x01 & XYZ)
 	{
-		//x_accel = (x_accel >> LOOP_COUNT_BITS);  // averaging: accel / 16
-		x_accel = (x_accel >> LOOP_COUNT_BITS) & 0xFFFE;  // averaging
+		//x_accel = (x_accel >> LOOP_COUNT_BITS);  // Averaging: accel / 16.
+		x_accel = (x_accel >> LOOP_COUNT_BITS) & 0xFFFE;  // Averaging.
 
 		PORTA = x_accel & 0xFF;
 		if (usart0_is_empty())
@@ -129,11 +129,11 @@ void test_adc_mma7260()
 		_delay_ms(100);
 	}
 
-	// read Y-axis
+	// Read Y-axis.
 	if (0x02 & XYZ)
 	{
-		//y_accel = (y_accel >> LOOP_COUNT_BITS);  // averaging: accel / 16
-		y_accel = (y_accel >> LOOP_COUNT_BITS) & 0xFFFE;  // averaging
+		//y_accel = (y_accel >> LOOP_COUNT_BITS);  // Averaging: accel / 16.
+		y_accel = (y_accel >> LOOP_COUNT_BITS) & 0xFFFE;  // Averaging.
 
 		PORTA = y_accel & 0xFF;
 		if (usart0_is_empty())
@@ -149,11 +149,11 @@ void test_adc_mma7260()
 		_delay_ms(100);
 	}
 
-	// read Z-axis
+	// Read Z-axis.
 	if (0x04 & XYZ)
 	{
-		//z_accel = (z_accel >> LOOP_COUNT_BITS);  // averaging: accel / 16
-		z_accel = (z_accel >> LOOP_COUNT_BITS) & 0xFFFE;  // averaging
+		//z_accel = (z_accel >> LOOP_COUNT_BITS);  // Averaging: accel / 16.
+		z_accel = (z_accel >> LOOP_COUNT_BITS) & 0xFFFE;  // Averaging.
 
 		PORTA = z_accel & 0xFF;
 		if (usart0_is_empty())

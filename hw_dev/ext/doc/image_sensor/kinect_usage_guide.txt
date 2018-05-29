@@ -1,12 +1,12 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.microsoft.com/en-us/kinectforwindows/
 
-[-] Depth
-	-. unsigned short type으로 저장.
+[-] Depth.
+	- unsigned short type으로 저장.
 		하위 3 bits => player ID
 		상위 13 bits => actual depth value
 
-[-] Skeleton
-	-. NUI_SKELETON_FRAME type으로 저장.
+[-] Skeleton.
+	- NUI_SKELETON_FRAME type으로 저장.
 		실제 skeletal info는 NUI_SKELETON_DATA가 저장.

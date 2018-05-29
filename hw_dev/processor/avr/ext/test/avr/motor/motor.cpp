@@ -1,4 +1,4 @@
-//--TODO: need to add
+// TODO [add] >>
 #define ERROR_SUM_UPPER_LIMIT 1.0f
 #define ERROR_SUM_LOWER_LIMIT -1.0f
 #define CONTROL_LOOP_OUTPUT_UPPER_LIMIT 1.0f
@@ -7,7 +7,7 @@
 
 void readCurrentMotorPose(float *currPos, float *currVel)
 {
-	//--TODO: need to add
+	// TODO [add] >>
 	*currPos = 0.0f;
 	*currVel = 0.0f;
 }
@@ -61,15 +61,14 @@ void runControlLoop()
 	float currPos = 0.0f, currVel = 0.0f;
 	float targetPos = 0.0f, targetVel = 0.0f;
 
-	// stage level 1
+	// Stage level 1.
 	readCurrentMotorPose(&currPos, &currVel);
 	writeControlOutput(ctrlLoopOutput);
 	readSensors();
-	// stage level 2
+	// Stage level 2.
 	genTargetMotorPose(&targetPos, &targetVel);
-	// stage level 3
+	// Stage level 3.
 	ctrlLoopOutput = calcControlOutput(targetPos, targetVel, currPos, currVel);
-	// stage level 4
+	// Stage level 4.
 	outputDebugMsg();
 }
-

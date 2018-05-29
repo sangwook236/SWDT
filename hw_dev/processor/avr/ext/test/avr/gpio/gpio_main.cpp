@@ -8,49 +8,49 @@ namespace local {
 
 void system_init()
 {
-	// analog comparator.
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable.
-	ACSR |= _BV(ACD);  // analog comparator disable.
+	// Analog comparator.
+	ACSR &= ~(_BV(ACIE));  // Analog comparator interrupt disable.
+	ACSR |= _BV(ACD);  // Analog comparator disable.
 
 	// I/O port.
 #if 0
-	// uses all pins on PortA for input.
+	// Uses all pins on PortA for input.
    	//outp(0x00,DDRA);
 	DDRA = 0x00;
-	// it makes port input register(PINn) internally pulled-up state that port output register(PORTn) outputs 1(high).
+	// It makes port input register(PINn) internally pulled-up state that port output register(PORTn) outputs 1(high).
 	PORTA = 0xFF;
-	// it makes port input register(PINn) high-impedance state that port output register(PORTn) outputs 0(low)
+	// It makes port input register(PINn) high-impedance state that port output register(PORTn) outputs 0(low)
 	// so that we can share the pin with other devices.
 	//PORTA = 0x00;
 
-	// uses all pins on PortD for output.
+	// Uses all pins on PortD for output.
    	//outp(0xFF,DDRD);
 	DDRD = 0xFF;
 #else
-	DDRA = 0xFF;  // uses all pins on PortA for output.
+	DDRA = 0xFF;  // Uses all pins on PortA for output.
 #endif
 }
 
 void pio_test_1()
 {
-  	uint8_t led = 1;  // init variable representing the LED state.
+  	uint8_t led = 1;  // Init variable representing the LED state.
 
 	while (1)
 	{
-		//outp(led, PORTA);  // invert the output since a zero means: LED on.
+		//outp(led, PORTA);  // Invert the output since a zero means: LED on.
 		PORTA = led;
-		led <<= 1;  // move to next LED
-		if (!led)  // overflow: start with Port C0 again.
+		led <<= 1;  // Move to next LED
+		if (!led)  // Overflow: Start with Port C0 again.
 		led = 1;
 
 #if 0
-		for (int i = 0; i < 30000; ++i)  // outer delay loop.
-		for(int j = 0; j < 30000; ++j)  // inner delay loop.
-		++k;  // just do something - could also be a NOP.
+		for (int i = 0; i < 30000; ++i)  // Outer delay loop.
+		for(int j = 0; j < 30000; ++j)  // Inner delay loop.
+		++k;  // Just do something - Could also be a NOP.
 #else
-		// a maximal possible delay time is (262.14 / Fosc in MHz) ms.
-		// if Fosc = 16 MHz, a maximal possible delay time = 16.38375 ms.
-		// 500 ms -> 10 ms * 50 count
+		// A maximal possible delay time is (262.14 / Fosc in MHz) ms.
+		// If Fosc = 16 MHz, a maximal possible delay time = 16.38375 ms.
+		// 500 ms -> 10 ms * 50 count.
 		for (int i = 0; i < 50; ++i)
 			_delay_ms(10);
 #endif

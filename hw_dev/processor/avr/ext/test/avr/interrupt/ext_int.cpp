@@ -5,51 +5,51 @@
 /*
 // If an unexpected interrupt occurs (interrupt is enabled and no handler is installed, which usually indicates a bug),
 // then the default action is to reset the device by jumping to the reset vector.
-// You can override this by supplying a function named __vector_default which should be defined with ISR()
+// You can override this by supplying a function named __vector_default which should be defined with ISR().
 ISR(__vector_default)
 {
-    // user code here
+    // User code here.
 }
 */
 
 ISR(INT0_vect)
 {
 	PORTA = 0x01;
-	_delay_ms(500);  // 0.5 sec delay
+	_delay_ms(500);  // 0.5 sec delay.
 	PORTA = 0x10;
-	_delay_ms(500);  // 0.5 sec delay
+	_delay_ms(500);  // 0.5 sec delay.
 	PORTA = 0x00;
-	_delay_ms(500);  // 0.5 sec delay
+	_delay_ms(500);  // 0.5 sec delay.
 }
 
 ISR(INT1_vect)
 {
 	PORTA = 0x02;
-	_delay_ms(500);  // 0.5 sec delay
+	_delay_ms(500);  // 0.5 sec delay.
 	PORTA = 0x20;
-	_delay_ms(500);  // 0.5 sec delay
+	_delay_ms(500);  // 0.5 sec delay.
 	PORTA = 0x00;
-	_delay_ms(500);  // 0.5 sec delay
+	_delay_ms(500);  // 0.5 sec delay.
 }
 
 ISR(INT2_vect)
 {
 	PORTA = 0x04;
-	_delay_ms(500);  // 0.5 sec delay
+	_delay_ms(500);  // 0.5 sec delay.
 	PORTA = 0x40;
-	_delay_ms(500);  // 0.5 sec delay
+	_delay_ms(500);  // 0.5 sec delay.
 	PORTA = 0x00;
-	_delay_ms(500);  // 0.5 sec delay
+	_delay_ms(500);  // 0.5 sec delay.
 }
 
 ISR(INT3_vect)
 {
 	PORTA = 0x08;
-	_delay_ms(500);  // 0.5 sec delay
+	_delay_ms(500);  // 0.5 sec delay.
 	PORTA = 0x80;
-	_delay_ms(500);  // 0.5 sec delay
+	_delay_ms(500);  // 0.5 sec delay.
 	PORTA = 0x00;
-	_delay_ms(500);  // 0.5 sec delay
+	_delay_ms(500);  // 0.5 sec delay.
 }
 
 /*
@@ -103,13 +103,13 @@ void ext_int_init()
 	//EICRB |= _BV(ISC71);
 
 	EIMSK = 0x00;
-	EIMSK |= _BV(INT0);  // enables EINT0 interrupt
-	EIMSK |= _BV(INT1);  // enables EINT1 interrupt
-	EIMSK |= _BV(INT2);  // enables EINT2 interrupt
-	EIMSK |= _BV(INT3);  // enables EINT3 interrupt
-	//EIMSK |= _BV(INT4);  // enables EINT4 interrupt
-	//EIMSK |= _BV(INT5);  // enables EINT5 interrupt
-	//EIMSK |= _BV(INT6);  // enables EINT6 interrupt
-	//EIMSK |= _BV(INT7);  // enables EINT7 interrupt
+	EIMSK |= _BV(INT0);  // Enables EINT0 interrupt.
+	EIMSK |= _BV(INT1);  // Enables EINT1 interrupt.
+	EIMSK |= _BV(INT2);  // Enables EINT2 interrupt.
+	EIMSK |= _BV(INT3);  // Enables EINT3 interrupt.
+	//EIMSK |= _BV(INT4);  // Enables EINT4 interrupt.
+	//EIMSK |= _BV(INT5);  // Enables EINT5 interrupt.
+	//EIMSK |= _BV(INT6);  // Enables EINT6 interrupt.
+	//EIMSK |= _BV(INT7);  // Enables EINT7 interrupt.
 
 }

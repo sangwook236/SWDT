@@ -5,10 +5,10 @@
 /*
 // If an unexpected interrupt occurs (interrupt is enabled and no handler is installed, which usually indicates a bug),
 // then the default action is to reset the device by jumping to the reset vector.
-// You can override this by supplying a function named __vector_default which should be defined with ISR()
+// You can override this by supplying a function named __vector_default which should be defined with ISR().
 ISR(__vector_default)
 {
-    // user code here
+    // User code here.
 }
 */
 

@@ -9,29 +9,29 @@ namespace local {
 void system_init()
 {
 	/*
-	 *	analog comparator
+	 *	Analog comparator.
 	 */
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
+	ACSR &= ~(_BV(ACIE));  // Analog comparator interrupt disable.
+	ACSR |= _BV(ACD);  // Analog comparator disable.
 
 	/*
-	 *	I/O port
+	 *	I/O port.
 	 */
 /*
-	// uses all pins on PortA for input
+	// Uses all pins on PortA for input.
 	DDRA = 0x00;
-	// it makes port input register(PINn) internally pulled-up state that port output register(PORTn) outputs 1(high)
+	// It makes port input register(PINn) internally pulled-up state that port output register(PORTn) outputs 1(high).
 	PORTA = 0xFF;
-	// it makes port input register(PINn) high-impedence state that port output register(PORTn) outputs 0(low)
-	// so that we can share the pin with other devices
+	// It makes port input register(PINn) high-impedence state that port output register(PORTn) outputs 0(low)
+	// so that we can share the pin with other devices.
 	//PORTA = 0x00;
 */
-	// uses all pins on PortA for output
+	// Uses all pins on PortA for output.
 	DDRA = 0xFF;
 
-	// uses all pins on PortD for input
+	// Uses all pins on PortD for input.
 	DDRD = 0x00;
-	PORTD = 0xFF;  // unnecessary
+	PORTD = 0xFF;  // Unnecessary.
 }
 
 }  // namespace local
@@ -53,24 +53,24 @@ int intrrupt_main(int argc, char *argv[])
 	//EIFR = 0x00;
 	sei();
 
-	_delay_ms(1000);  // 1 sec delay ==> recommended
+	_delay_ms(1000);  // 1 sec delay ==> recommended.
 
 	PORTA = 0x81;
-	_delay_ms(100);  // 0.1 sec delay
+	_delay_ms(100);  // 0.1 sec delay.
 	PORTA = 0x42;
-	_delay_ms(100);  // 0.1 sec delay
+	_delay_ms(100);  // 0.1 sec delay.
 	PORTA = 0x24;
-	_delay_ms(100);  // 0.1 sec delay
+	_delay_ms(100);  // 0.1 sec delay.
 	PORTA = 0x18;
-	_delay_ms(100);  // 0.1 sec delay
+	_delay_ms(100);  // 0.1 sec delay.
 	PORTA = 0x18;
-	_delay_ms(100);  // 0.1 sec delay
+	_delay_ms(100);  // 0.1 sec delay.
 	PORTA = 0x24;
-	_delay_ms(100);  // 0.1 sec delay
+	_delay_ms(100);  // 0.1 sec delay.
 	PORTA = 0x42;
-	_delay_ms(100);  // 0.1 sec delay
+	_delay_ms(100);  // 0.1 sec delay.
 	PORTA = 0x81;
-	_delay_ms(100);  // 0.1 sec delay
+	_delay_ms(100);  // 0.1 sec delay.
 	PORTA = 0x00;
 
 	for (;;)

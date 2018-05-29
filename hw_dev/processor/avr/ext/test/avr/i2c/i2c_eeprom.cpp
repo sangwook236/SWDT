@@ -38,7 +38,7 @@ static const uint8_t TWI_SLA_24CXXX = 0xA0;  // E1 E0 = 0 0
 
 int ee24Cxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 {
-	// patch high bits of EEPROM address into SLA
+	// Patch high bits of EEPROM address into SLA
 	const uint8_t sla = TWI_SLA_24CXX | ((eeaddr >> 7) & 0x0E);
 
 	uint8_t iter = 0;
@@ -47,20 +47,20 @@ int ee24Cxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 	while (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 	{
 		/*
-		 * First cycle: master transmitter mode
+		 * First cycle: Master transmitter mode.
 		 */
 
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+W
+		// Send SLA+W.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_w(sla);
@@ -69,7 +69,7 @@ int ee24Cxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// low 8 bits of address
+		// Low 8 bits of address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address(eeaddr & 0x00FF);
@@ -78,7 +78,7 @@ int ee24Cxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// transmit a byte
+		// Transmit a byte.
 		if (I2C_OK == status)
 		{
 			status = i2c_master_write_a_byte(byte);
@@ -87,7 +87,7 @@ int ee24Cxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();
@@ -100,11 +100,11 @@ int ee24Cxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 
 int ee24Cxx_write_a_page(const uint16_t eeaddr, const uint16_t bufLen, const uint8_t *buf, uint16_t *byteLenWritten)
 {
-	// 1K/2K: 8-byte page write
-	// 4K/8K/16K: 16-byte page write
+	// 1K/2K: 8-byte page write.
+	// 4K/8K/16K: 16-byte page write.
 	const uint8_t PAGE_SIZE = 8;
 
-	// patch high bits of EEPROM address into SLA
+	// Patch high bits of EEPROM address into SLA.
 	const uint8_t sla = TWI_SLA_24CXX | ((eeaddr >> 7) & 0x0E);
 
 	const uint16_t len = (eeaddr + bufLen < (eeaddr | (PAGE_SIZE - 1))) ? bufLen : (eeaddr | (PAGE_SIZE - 1)) + 1 - eeaddr;
@@ -116,20 +116,20 @@ int ee24Cxx_write_a_page(const uint16_t eeaddr, const uint16_t bufLen, const uin
 	while (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 	{
 		/*
-		 * First cycle: master transmitter mode
+		 * First cycle: Master transmitter mode.
 		 */
 
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+W
+		// Send SLA+W.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_w(sla);
@@ -138,7 +138,7 @@ int ee24Cxx_write_a_page(const uint16_t eeaddr, const uint16_t bufLen, const uin
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// low 8 bits of address
+		// Low 8 bits of address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address(eeaddr & 0x00FF);
@@ -147,7 +147,7 @@ int ee24Cxx_write_a_page(const uint16_t eeaddr, const uint16_t bufLen, const uin
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// transmit bytes
+		// Transmit bytes.
 		if (I2C_OK == status)
 		{
 			status = i2c_master_write_bytes(len, buf, byteLenWritten);
@@ -156,7 +156,7 @@ int ee24Cxx_write_a_page(const uint16_t eeaddr, const uint16_t bufLen, const uin
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();
@@ -190,7 +190,7 @@ int ee24Cxx_write_bytes(const uint16_t eeaddr, const uint16_t bufLen, const uint
 
 int ee24Cxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 {
-	// patch high bits of EEPROM address into SLA
+	// Patch high bits of EEPROM address into SLA.
 	const uint8_t sla = TWI_SLA_24CXX | ((eeaddr >> 7) & 0x0E);
 
 	uint8_t iter = 0;
@@ -199,20 +199,20 @@ int ee24Cxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 	while (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 	{
 		/*
-		 * First cycle: master transmitter mode
+		 * First cycle: Master transmitter mode.
 		 */
 
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+W
+		// Send SLA+W.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_w(sla);
@@ -221,7 +221,7 @@ int ee24Cxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// low 8 bits of address
+		// Low 8 bits of address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address(eeaddr & 0x00FF);
@@ -231,10 +231,10 @@ int ee24Cxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 		}
 
 		/*
-		 * Next cycle(s): master receiver mode
+		 * Next cycle(s): Master receiver mode.
 		 */
 
-		// send (rep.) start condition
+		// Send (rep.) start condition.
 		if (I2C_OK == status)
 		{
 			status = i2c_repeated_start();
@@ -243,7 +243,7 @@ int ee24Cxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send SLA+R
+		// Send SLA+R.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_r(sla);
@@ -252,7 +252,7 @@ int ee24Cxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// receive a byte
+		// Receive a byte.
 		if (I2C_OK == status)
 		{
 			status = i2c_master_read_a_byte(byte);
@@ -261,7 +261,7 @@ int ee24Cxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();
@@ -274,7 +274,7 @@ int ee24Cxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 
 int ee24Cxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *buf, uint16_t *byteLenRead)
 {
-	// patch high bits of EEPROM address into SLA
+	// Patch high bits of EEPROM address into SLA.
 	const uint8_t sla = TWI_SLA_24CXX | ((eeaddr >> 7) & 0x0E);
 
 	uint8_t iter = 0;
@@ -284,20 +284,20 @@ int ee24Cxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *bu
 	while (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 	{
 		/*
-		 * First cycle: master transmitter mode
+		 * First cycle: Master transmitter mode.
 		 */
 
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+W
+		// Send SLA+W.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_w(sla);
@@ -306,7 +306,7 @@ int ee24Cxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *bu
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// low 8 bits of address
+		// Low 8 bits of address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address(eeaddr & 0x00FF);
@@ -316,10 +316,10 @@ int ee24Cxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *bu
 		}
 
 		/*
-		 * Next cycle(s): master receiver mode
+		 * Next cycle(s): Master receiver mode.
 		 */
 
-		// send (rep.) start condition
+		// Send (rep.) start condition.
 		if (I2C_OK == status)
 		{
 			status = i2c_repeated_start();
@@ -328,7 +328,7 @@ int ee24Cxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *bu
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send SLA+R
+		// Send SLA+R.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_r(sla);
@@ -337,7 +337,7 @@ int ee24Cxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *bu
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// receive bytes
+		// Receive bytes.
 		if (I2C_OK == status)
 		{
 			status = i2c_master_read_bytes(bufLen, buf, byteLenRead);
@@ -346,7 +346,7 @@ int ee24Cxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *bu
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();
@@ -362,7 +362,7 @@ int ee24Cxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *bu
 
 int ee24Cxxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 {
-	// patch hardwired input pins of EEPROM address into SLA
+	// Patch hardwired input pins of EEPROM address into SLA.
 	const uint8_t sla = TWI_SLA_24CXXX;
 
 	uint8_t iter = 0;
@@ -371,20 +371,20 @@ int ee24Cxxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 	while (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 	{
 		/*
-		 * First cycle: master transmitter mode
+		 * First cycle: Master transmitter mode.
 		 */
 
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+W
+		// Send SLA+W.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_w(sla);
@@ -393,7 +393,7 @@ int ee24Cxxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// first 8 bits of address
+		// First 8 bits of address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address((eeaddr >> 8) & 0x00FF);
@@ -402,7 +402,7 @@ int ee24Cxxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// second 8 bits of address
+		// Second 8 bits of address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address(eeaddr & 0x00FF);
@@ -411,7 +411,7 @@ int ee24Cxxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// transmit bytes
+		// Rransmit bytes.
 		if (I2C_OK == status)
 		{
 			status = i2c_master_write_a_byte(byte);
@@ -420,7 +420,7 @@ int ee24Cxxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();
@@ -433,10 +433,10 @@ int ee24Cxxx_write_a_byte(const uint16_t eeaddr, const uint8_t byte)
 
 int ee24Cxxx_write_a_page(const uint16_t eeaddr, const uint16_t bufLen, const uint8_t *buf, uint16_t *byteLenWritten)
 {
-	// 128K/256K: 64-byte page write
+	// 128K/256K: 64-byte page write.
 	const uint8_t PAGE_SIZE = 64;
 
-	// patch hardwired input pins of EEPROM address into SLA
+	// Patch hardwired input pins of EEPROM address into SLA.
 	const uint8_t sla = TWI_SLA_24CXXX;
 
 	const uint16_t len = (eeaddr + bufLen < (eeaddr | (PAGE_SIZE - 1))) ? bufLen : (eeaddr | (PAGE_SIZE - 1)) + 1 - eeaddr;
@@ -448,20 +448,20 @@ int ee24Cxxx_write_a_page(const uint16_t eeaddr, const uint16_t bufLen, const ui
 	while (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 	{
 		/*
-		 * First cycle: master transmitter mode
+		 * First cycle: Master transmitter mode.
 		 */
 
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+W
+		// Send SLA+W.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_w(sla);
@@ -470,7 +470,7 @@ int ee24Cxxx_write_a_page(const uint16_t eeaddr, const uint16_t bufLen, const ui
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// first 8 bits of address
+		// First 8 bits of address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address((eeaddr >> 8) & 0x00FF);
@@ -479,7 +479,7 @@ int ee24Cxxx_write_a_page(const uint16_t eeaddr, const uint16_t bufLen, const ui
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// second 8 bits of address
+		// Second 8 bits of address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address(eeaddr & 0x00FF);
@@ -488,7 +488,7 @@ int ee24Cxxx_write_a_page(const uint16_t eeaddr, const uint16_t bufLen, const ui
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// transmit bytes
+		// Transmit bytes.
 		if (I2C_OK == status)
 		{
 			status = i2c_master_write_bytes(len, buf, byteLenWritten);
@@ -497,7 +497,7 @@ int ee24Cxxx_write_a_page(const uint16_t eeaddr, const uint16_t bufLen, const ui
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();
@@ -531,7 +531,7 @@ int ee24Cxxx_write_bytes(const uint16_t eeaddr, const uint16_t bufLen, const uin
 
 int ee24Cxxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 {
-	// patch hardwired input pins of EEPROM address into SLA
+	// Patch hardwired input pins of EEPROM address into SLA.
 	const uint8_t sla = TWI_SLA_24CXXX;
 
 	uint8_t iter = 0;
@@ -540,20 +540,20 @@ int ee24Cxxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 	while (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 	{
 		/*
-		 * First cycle: master transmitter mode
+		 * First cycle: Master transmitter mode.
 		 */
 
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+W
+		// Send SLA+W.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_w(sla);
@@ -562,7 +562,7 @@ int ee24Cxxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// first 8 bits of address
+		// First 8 bits of address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address((eeaddr >> 8) & 0x00FF);
@@ -571,7 +571,7 @@ int ee24Cxxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// second 8 bits of address
+		// Second 8 bits of address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address(eeaddr & 0x00FF);
@@ -581,10 +581,10 @@ int ee24Cxxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 		}
 
 		/*
-		 * Next cycle(s): master receiver mode
+		 * Next cycle(s): Master receiver mode.
 		 */
 
-		// send (rep.) start condition
+		// Send (rep.) start condition.
 		if (I2C_OK == status)
 		{
 			status = i2c_repeated_start();
@@ -593,7 +593,7 @@ int ee24Cxxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send SLA+R
+		// Send SLA+R.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_r(sla);
@@ -602,7 +602,7 @@ int ee24Cxxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// receive a byte
+		// Receive a byte.
 		if (I2C_OK == status)
 		{
 			status = i2c_master_read_a_byte(byte);
@@ -611,7 +611,7 @@ int ee24Cxxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();
@@ -624,7 +624,7 @@ int ee24Cxxx_read_a_byte(const uint16_t eeaddr, uint8_t *byte)
 
 int ee24Cxxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *buf, uint16_t *byteLenRead)
 {
-	// patch hardwired input pins of EEPROM address into SLA
+	// Patch hardwired input pins of EEPROM address into SLA.
 	const uint8_t sla = TWI_SLA_24CXXX;
 
 	uint8_t iter = 0;
@@ -634,20 +634,20 @@ int ee24Cxxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *b
 	while (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 	{
 		/*
-		 * First cycle: master transmitter mode
+		 * First cycle: Master transmitter mode.
 		 */
 
 		if (I2C_ERR_RESTART == status && iter++ >= MAX_RESTART_ITER_COUNT)
 			return 0;
 
-		// send start condition
+		// Send start condition.
 		status = i2c_start();
 		if (I2C_ERR_RESTART == status || I2C_ERR_ARB_LOST == status)
 			continue;
 		else if (I2C_ERR_QUIT_WITHOUT_STOP == status)
 			return 0;
 
-		// send SLA+W
+		// Send SLA+W.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_w(sla);
@@ -656,7 +656,7 @@ int ee24Cxxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *b
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// first 8 bits of address
+		// First 8 bits of address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address((eeaddr >> 8) & 0x00FF);
@@ -665,7 +665,7 @@ int ee24Cxxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *b
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// second 8 bits of address
+		// Second 8 bits of address.
 		if (I2C_OK == status)
 		{
 			status = i2c_address(eeaddr & 0x00FF);
@@ -675,10 +675,10 @@ int ee24Cxxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *b
 		}
 
 		/*
-		 * Next cycle(s): master receiver mode
+		 * Next cycle(s): Master receiver mode.
 		 */
 
-		// send (rep.) start condition
+		// Send (rep.) start condition.
 		if (I2C_OK == status)
 		{
 			status = i2c_repeated_start();
@@ -687,7 +687,7 @@ int ee24Cxxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *b
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send SLA+R
+		// Send SLA+R.
 		if (I2C_OK == status)
 		{
 			status = i2c_sla_r(sla);
@@ -696,7 +696,7 @@ int ee24Cxxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *b
 			//else if (I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// receive bytes
+		// Receive bytes.
 		if (I2C_OK == status)
 		{
 			status = i2c_master_read_bytes(bufLen, buf, byteLenRead);
@@ -705,7 +705,7 @@ int ee24Cxxx_read_bytes(const uint16_t eeaddr, const uint16_t bufLen, uint8_t *b
 			//else if (I2C_ERR_QUIT_WITH_STOP == status) ;
 		}
 
-		// send stop condition
+		// Send stop condition.
 		if (I2C_OK == status || I2C_QUIT == status || I2C_ERR_QUIT_WITH_STOP == status)
 		{
 			i2c_stop();

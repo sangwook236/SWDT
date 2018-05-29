@@ -1,9 +1,9 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-//ICC-AVR application builder : 2007-06-27 오후 5:20:51
-// Target : M128
-// Crystal: 16.000Mhz
+// ICC-AVR application builder : 2007-06-27 오후 5:20:51.
+//	Target : M128.
+//	Crystal: 16.000Mhz.
 /*
 #include <iom128v.h>
 #include <macros.h>
@@ -27,41 +27,41 @@ void port_init(void)
 	DDRG  = 0x00;
 }
 
-//call this routine to initialize all peripherals
+// Call this routine to initialize all peripherals.
 void init_devices(void)
 {
-	//stop errant interrupts until set up
-	CLI(); //disable all interrupts
-	XDIV  = 0x00; //xtal divider
-	XMCRA = 0x00; //external memory
+	// Stop errant interrupts until set up.
+	CLI();  // Cisable all interrupts.
+	XDIV  = 0x00;  // xtal divider.
+	XMCRA = 0x00;  // External memory.
 	port_init();
 
 	MCUCR = 0x80;
-	EICRA = 0x00; //extended ext ints
-	EICRB = 0x00; //extended ext ints
+	EICRA = 0x00;  // Extended ext ints.
+	EICRB = 0x00;  // Extended ext ints.
 	EIMSK = 0x00;
-	TIMSK = 0x00; //timer interrupt sources
-	ETIMSK = 0x00; //extended timer interrupt sources
-	SEI(); //re-enable interrupts
-	//all peripherals are now initialized
+	TIMSK = 0x00;  // Timer interrupt sources.
+	ETIMSK = 0x00;  // Extended timer interrupt sources.
+	SEI();  // Re-enable interrupts.
+	// All peripherals are now initialized.
 }
 
 void main()
 {
 	int i;
-	//캐소드
-	unsigned int arr[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x27,0x7f,0x6f,0x77,
-		0x7c,0x39,0x5e,0x79,0x71};
+	// Cathode.
+	unsigned int arr[] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x27,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
 
 	init_devices();
-	while(1){
-		DDRB=0xff;
-		DDRD=0xff;
+	while(1)
+	{
+		DDRB = 0xff;
+		DDRD = 0xff;
 
-		for(i=0;i<16;i++){
-
-			PORTB=~0xff;
-			PORTD=arr[i];
+		for (i = 0; i < 16; ++i)
+		{
+			PORTB = ~0xff;
+			PORTD = arr[i];
 			delay(500);
 		}
 	}
@@ -90,9 +90,9 @@ void displayCathodeCommon()
 			PORTA = str_7segment_cathode[display_num[j]];
 			PORTC = ~(0x01 << j);
 
-			// a maximal possible delay time is (262.14 / Fosc in MHz) ms
-			// if Fosc = 16 MHz, a maximal possible delay time = 16.38375 ms
-			//	500 ms -> 10 ms * 50 count
+			// A maximal possible delay time is (262.14 / Fosc in MHz) ms.
+			// If Fosc = 16 MHz, a maximal possible delay time = 16.38375 ms.
+			//	500 ms -> 10 ms * 50 count.
 			//for (int k = 0; k < 5; ++k)
 				_delay_ms(5);
 		}
@@ -124,8 +124,8 @@ void four_digit_seven_segment_cathode_commmon(const uint16_t fourDigits)
 		//if (3 == j) PORTA += 0x80;  // the last DP(dot point) is displayed
 		PORTC = ~(0x01 << j);
 
-		// a maximal possible delay time is (262.14 / Fosc in MHz) ms
-		// if Fosc = 16 MHz, a maximal possible delay time = 16.38375 ms
+		// A maximal possible delay time is (262.14 / Fosc in MHz) ms.
+		// If Fosc = 16 MHz, a maximal possible delay time = 16.38375 ms.
 		//	500 ms -> 10 ms * 50 count
 		//for (int k = 0; k < 5; ++k)
 			_delay_ms(5);

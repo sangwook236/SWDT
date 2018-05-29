@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		http://www.nanowit.com/docs/index.html
 		http://www.nanowit.com/docs/nanowit2down.html
 		http://embone.com/index_nanowit.html

@@ -14,8 +14,8 @@ uint8_t mma7260_set(const uint8_t mode)
 	ADMUX &= ~(_BV(REFS1));
 	ADMUX |= _BV(REFS0);
 
-	// analog channel and gain selection
-	if (0 == mode)  // X-axis
+	// Analog channel and gain selection.
+	if (0 == mode)  // X-axis.
 	{
 		ADMUX &= ~(_BV(MUX4));
 		ADMUX &= ~(_BV(MUX3));
@@ -23,7 +23,7 @@ uint8_t mma7260_set(const uint8_t mode)
 		ADMUX &= ~(_BV(MUX1));
 		ADMUX &= ~(_BV(MUX0));
 	}
-	else if (1 == mode)  // Y-axis
+	else if (1 == mode)  // Y-axis.
 	{
 		ADMUX &= ~(_BV(MUX4));
 		ADMUX &= ~(_BV(MUX3));
@@ -31,7 +31,7 @@ uint8_t mma7260_set(const uint8_t mode)
 		ADMUX |= _BV(MUX1);
 		ADMUX &= ~(_BV(MUX0));
 	}
-	else if (2 == mode)  // Z-axis
+	else if (2 == mode)  // Z-axis.
 	{
 		ADMUX &= ~(_BV(MUX4));
 		ADMUX &= ~(_BV(MUX3));
@@ -41,10 +41,10 @@ uint8_t mma7260_set(const uint8_t mode)
 	}
 	else return 0;
 
-	// ADC free running
-	ADCSRA &= ~(_BV(ADFR));  // if 1, ADC free running mode
+	// ADC free running.
+	ADCSRA &= ~(_BV(ADFR));  // If 1, ADC free running mode.
 
-	// ADC prescaler select
+	// ADC prescaler select.
 	// ADPS2	ADPS1	ADPS0		prescaler
 	//--------------------------------------------------------------------
 	// 0		0		0			2
@@ -55,7 +55,7 @@ uint8_t mma7260_set(const uint8_t mode)
 	// 1		0		1			32
 	// 1		1		0			64
 	// 1		1		1			128
-	ADCSRA |= _BV(ADEN);  // prescaler can be set only when ADEN = 1
+	ADCSRA |= _BV(ADEN);  // Prescaler can be set only when ADEN = 1.
 		ADCSRA |= _BV(ADPS2);
 		ADCSRA |= _BV(ADPS1);
 		ADCSRA |= _BV(ADPS0);

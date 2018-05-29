@@ -1,8 +1,8 @@
-[-] General
-	-. Site
-		¾ç±¤¿õÀÇ Open Robotics
+[-] General.
+	- Site.
+		¾ç±¤¿õÀÇ Open Robotics:
 			http://blog.daum.net/pg365
 
-	-. Reference (Algorithm)
-	    Complementary filter
+	- Reference (Algorithm).
+	    Complementary filter:
     	    http://www.pieter-jan.com/node/11

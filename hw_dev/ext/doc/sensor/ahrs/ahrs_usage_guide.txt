@@ -1,5 +1,5 @@
-[-] General
-	-. Site
+[-] General.
+	- Site.
 		IMU AHRS 10DOF Dragon
 			http://www.jkelec.co.kr/img/ahrs/ahrs_manual.html
 			http://www.deviceshop.net/front/php/product.php?product_no=532&main_cate_no=110&display_group=1

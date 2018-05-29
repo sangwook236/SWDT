@@ -8,12 +8,12 @@ ISR(TIMER0_OVF_vect)
 	static uint8_t led = 0x01;
 	static uint16_t tick_count = 0;
 
-	// 0.1msec timer
-	// 0.1msec * 10000 = 1sec
+	// 0.1msec timer.
+	// 0.1msec * 10000 = 1sec.
 	if (10000 == ++tick_count) {
 		PORTD = led;
-		led <<= 1;  // moves to next LED
-		if (!led)  // overflow: starts with Port D0 again
+		led <<= 1;  // Moves to next LED.
+		if (!led)  // Overflow: Starts with Port D0 again.
 			led = 0x01;
 
 		tick_count = 0;
@@ -26,12 +26,12 @@ ISR(TIMER0_COMP_vect)
 	static uint8_t led = 0x01;
 	static uint16_t tick_count = 0;
 
-	// 0.1msec timer
-	// 0.1msec * 10000 = 1sec
+	// 0.1msec timer.
+	// 0.1msec * 10000 = 1sec.
 	if (10000 == ++tick_count) {
 		PORTD = led;
-		led <<= 1;  // moves to next LED
-		if (!led)  // overflow: starts with Port D0 again
+		led <<= 1;  // Moves to next LED.
+		if (!led)  // Overflow: Starts with Port D0 again.
 			led = 0x01;
 
 		tick_count = 0;
@@ -43,11 +43,11 @@ ISR(TIMER1_OVF_vect)
 	static uint8_t led = 0x01;
 
 	PORTD = led;
-	led <<= 1;  // moves to next LED
-	if (!led)  // overflow: starts with Port D0 again
+	led <<= 1;  // Moves to next LED.
+	if (!led)  // Overflow: Starts with Port D0 again.
 		led = 0x01;
 
-	// 16KHz = 16384 pulses/sec -> 16384 = 4000h: 65535(FFFFh) - 16384(4000h) = 49151(BFFFh)
+	// 16KHz = 16384 pulses/sec -> 16384 = 4000h: 65535(FFFFh) - 16384(4000h) = 49151(BFFFh).
 	TCNT1 = 0xBFFF;
 	//TCNT1H = 0xBF;
 	//TCNT1L = 0xFF;
@@ -72,16 +72,16 @@ ISR(TIMER1_CAPT_vect)
 
 void timer_init()
 {
-	TCCR0 = 0x6A;  // fast PWM mode(up counter), normal PWM output, Fcpu / 8 = 16MHz / 8 = 2MHz
+	TCCR0 = 0x6A;  // Fast PWM mode(up counter), normal PWM output, Fcpu / 8 = 16MHz / 8 = 2MHz.
 	TCCR1A = 0x00;
-	TCCR1B = 0x05;  // normal mode(up counter), Fcpu / 1024 = 16MHz / 1024 = 16KHz
+	TCCR1B = 0x05;  // Normal mode(up counter), Fcpu / 1024 = 16MHz / 1024 = 16KHz.
 	TCCR1C = 0x00;
 
 	//
 	TCNT0 = 0x00;
-	OCR0 = 192;  // duty ratio: (128 + 1) / 256 = ~50%, (192 + 1) / 256 = ~75%
+	OCR0 = 192;  // Duty ratio: (128 + 1) / 256 = ~50%, (192 + 1) / 256 = ~75%.
 
-	// 16KHz = 16384 pulses/sec -> 16384 = 4000h: 65535(FFFFh) - 16384(4000h) = 49151(BFFFh)
+	// 16KHz = 16384 pulses/sec -> 16384 = 4000h: 65535(FFFFh) - 16384(4000h) = 49151(BFFFh).
 	TCNT1 = 0xBFFF;
 	//TCNT1H = 0xBF;
 	//TCNT1L = 0xFF;
@@ -96,8 +96,8 @@ void timer_init()
 	//OCR1CL = 0x00;
 
 	TIMSK = 0x00;
-	TIMSK |= _BV(TOIE0);  // enables Timer0 overflow interrupt
-	TIMSK |= _BV(OCIE0);  // enables Timer0 output compare match interrupt
-	TIMSK &= ~(_BV(TOIE1));  // disables Timer1 overflow interrupt
+	TIMSK |= _BV(TOIE0);  // Enables Timer0 overflow interrupt.
+	TIMSK |= _BV(OCIE0);  // Enables Timer0 output compare match interrupt.
+	TIMSK &= ~(_BV(TOIE1));  // Disables Timer1 overflow interrupt.
 	ETIMSK = 0x00;
 }

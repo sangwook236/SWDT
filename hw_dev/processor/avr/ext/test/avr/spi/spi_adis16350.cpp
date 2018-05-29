@@ -19,54 +19,54 @@ void adis16350_chip_deselect()
 
 void adis16350_init(const uint8_t is_master)
 {
-	// step 1
+	// Step 1.
 	//PORTB = 0x00;
 	if (is_master)
 	{
-		// switch SS pin to output mode
+		// Switch SS pin to output mode.
 		DDRB |= _BV(PB0);
-		// check whether PB0 is an input
+		// Check whether PB0 is an input.
 		if (bit_is_clear(DDRB, PB0))
 		{
-		    // if yes, activate the pull-up
+		    // If yes, activate the pull-up.
 		    PORTB |= _BV(PB0);
 		}
 
-		// switch SCK and MOSI pins to output mode
+		// Switch SCK and MOSI pins to output mode.
 		DDRB |= _BV(PB1) | _BV(PB2);
-		//PORTB &= ~(_BV(PB2));  // enable MOSI high-impedence
+		//PORTB &= ~(_BV(PB2));  // Enable MOSI high-impedence.
 
-		// switch MISO pin to input mode
+		// Switch MISO pin to input mode.
 		DDRB &= ~(_BV(PB3));
-		//PORTB |= _BV(PB3);  // enable MISO pull-up
+		//PORTB |= _BV(PB3);  // Enable MISO pull-up.
 
-		//PORTB &= 0xF0;  // make PB0 ~ PB3 high-impedence
-		//PORTB |= 0x0F;  // make PB0 ~ PB3 pull-up
+		//PORTB &= 0xF0;  // Make PB0 ~ PB3 high-impedence.
+		//PORTB |= 0x0F;  // Make PB0 ~ PB3 pull-up.
 	}
 	else
 	{
-		// switch MOSI pin to input mode (?)
+		// Switch MOSI pin to input mode. (?)
 		DDRB &= ~(_BV(PB2));
-		// enable MOSI pull-up
+		// Enable MOSI pull-up.
 		PORTB |= _BV(PB2);
 
-		// switch MISO pin to output mode
+		// Switch MISO pin to output mode.
 		DDRB |= _BV(PB3);
 	}
 
-	// step 2: initialize ADIS16350 SPI module
+	// Step 2: Initialize ADIS16350 SPI module.
 	adis16350_chip_deselect();
 
-	// step 3
+	// Step 3.
 	//SPSR = 0x00;
 	//SPDR = 0;
-	//SPCR = 0x00;  // must not set SPCR
+	//SPCR = 0x00;  // Must not set SPCR.
 
-	// data order: if 0, MSB to LSB. if 1, LSB to MSB.
-	SPCR &= ~(_BV(DORD));  // the MSB is the first bit transmitted and received
+	// Data order: if 0, MSB to LSB. if 1, LSB to MSB.
+	SPCR &= ~(_BV(DORD));  // The MSB is the first bit transmitted and received.
 
-	// clock polarity: if 0, leading edge = rising edge. if 1, leading edge = falling edge.
-	// clock phase: if 0, sample at leading edge. if 1, sample at trailing edge
+	// Clock polarity: if 0, leading edge = rising edge. if 1, leading edge = falling edge.
+	// Clock phase: if 0, sample at leading edge. if 1, sample at trailing edge.
 
 	// SPI mode		CPOL	CPHA	at leading edge		at trailing edge
 	//--------------------------------------------------------------------
@@ -89,20 +89,20 @@ void adis16350_init(const uint8_t is_master)
 	// 1		1		0		Fosc / 32
 	// 1		1		1		Fosc / 64
 
-	// sampling period of ADIS16350
-	//	SPI SCK <= 2.5 MHz for FAST MODE (SMPL_PRD register <= 0x09)
+	// Sampling period of ADIS16350.
+	//	SPI SCK <= 2.5 MHz for FAST MODE (SMPL_PRD register <= 0x09).
 	SPSR |= _BV(SPI2X);
 	SPCR &= ~(_BV(SPR1));
 	SPCR |= _BV(SPR0);
-	//	SPI SCK <= 1 MHz for NORMAL MODE (SMPL_PRD register > 0x09)
+	//	SPI SCK <= 1 MHz for NORMAL MODE (SMPL_PRD register > 0x09).
 	//SPSR &= ~(_BV(SPI2X));
 	//SPCR &= ~(_BV(SPR1));
 	//SPCR |= _BV(SPR0);
 
-	// step 4
-	// activate the SPI hardware
-	//	SPIE: SPI interrupt enable
-	//	SPE: SPI enable
+	// Step 4.
+	// Activate the SPI hardware.
+	//	SPIE: SPI interrupt enable.
+	//	SPE: SPI enable.
 #if defined(__SWL_AVR__USE_SPI_INTERRUPT)
 	if (is_master)
 		SPCR |= _BV(SPIE) | _BV(SPE) | _BV(MSTR);
@@ -115,7 +115,7 @@ void adis16350_init(const uint8_t is_master)
 		SPCR |= _BV(SPE);
 #endif  // __SWL_AVR__USE_SPI_INTERRUPT
 
-	// clear status flags: the SPIF & WCOL flags
+	// Clear status flags: the SPIF & WCOL flags.
 	uint8_t dummy;
 	dummy = SPSR;
 	dummy = SPDR;
@@ -123,7 +123,7 @@ void adis16350_init(const uint8_t is_master)
 
 int adis16350_write_a_register(const uint8_t addr, const uint16_t word)
 {
-	const uint8_t OP_CODE = 0x80;  // write
+	const uint8_t OP_CODE = 0x80;  // Write.
 
 	spi_disable_interrupt();
 
@@ -146,15 +146,15 @@ int adis16350_write_a_register(const uint8_t addr, const uint16_t word)
 
 int adis16350_read_a_register(const uint8_t addr, uint16_t *word)
 {
-	const uint8_t OP_CODE = 0x00;  // read
+	const uint8_t OP_CODE = 0x00;  // Read.
 
 	spi_disable_interrupt();
 
 	adis16350_chip_select();
 	const uint8_t upper = spi_master_transmit_a_byte(OP_CODE | (addr & 0x3F));
-	const uint8_t lower = spi_master_transmit_a_byte(0x00);  // dummy
-	//const uint8_t upper = spi_master_transmit_a_byte(0x00);  // dummy
-	//const uint8_t lower = spi_master_transmit_a_byte(0x00);  // dummy
+	const uint8_t lower = spi_master_transmit_a_byte(0x00);  // Dummy.
+	//const uint8_t upper = spi_master_transmit_a_byte(0x00);  // Dummy.
+	//const uint8_t lower = spi_master_transmit_a_byte(0x00);  // Dummy.
 	adis16350_chip_deselect();
 
 	spi_enable_interrupt();

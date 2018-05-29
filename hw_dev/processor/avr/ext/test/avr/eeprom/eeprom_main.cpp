@@ -28,24 +28,24 @@ void eeprom_write_block(const void *__src, void *__dst, size_t __n);
 void system_init()
 {
 	/*
-	 *	analog comparator
+	 *	Analog comparator.
 	 */
-	ACSR &= ~(_BV(ACIE));  // analog comparator interrupt disable
-	ACSR |= _BV(ACD);  // analog comparator disable
+	ACSR &= ~(_BV(ACIE));  // Analog comparator interrupt disable.
+	ACSR |= _BV(ACD);  // Analog comparator disable.
 
 	/*
-	 *	I/O port
+	 *	I/O port.
 	 */
 /*
-	// uses all pins on PortA for input
+	// Uses all pins on PortA for input.
 	DDRA = 0x00;
-	// it makes port input register(PINn) internally pulled-up state that port output register(PORTn) outputs 1(high)
+	// It makes port input register(PINn) internally pulled-up state that port output register(PORTn) outputs 1(high).
 	PORTA = 0xFF;
-	// it makes port input register(PINn) high-impedance state that port output register(PORTn) outputs 0(low)
-	// so that we can share the pin with other devices
+	// It makes port input register(PINn) high-impedance state that port output register(PORTn) outputs 0(low)
+	// so that we can share the pin with other devices.
 	//PORTA = 0x00;
 */
-	// uses all pins on PortA for output
+	// Uses all pins on PortA for output.
 	DDRA = 0xFF;
 }
 
@@ -77,10 +77,10 @@ int eeprom_main(int argc, char *argv[])
 	uint16_t eeaddr = eeaddr_start;
 	for (int i = 0; i < len; ++i, ++eeaddr)
 	{
-		//eeprom_busy_wait();  // don't need
-		eeprom_write_byte((uint8_t *)eeaddr, buf[i]);  // caution !!! address
-		//eeprom_write_word((uint16_t *)eeaddr, buf[i]);  // caution !!! address
-		//eeprom_write_word((uint32_t *)eeaddr, buf[i]);  // caution !!! address
+		//eeprom_busy_wait();  // Don't need.
+		eeprom_write_byte((uint8_t *)eeaddr, buf[i]);  // Caution !!! address.
+		//eeprom_write_word((uint16_t *)eeaddr, buf[i]);  // Caution !!! address.
+		//eeprom_write_word((uint32_t *)eeaddr, buf[i]);  // Caution !!! address.
 
 		PORTA = buf[i];
 		_delay_ms(50);
@@ -93,10 +93,10 @@ int eeprom_main(int argc, char *argv[])
 	eeaddr = eeaddr_start;
 	for (int i = 0; i < len; ++i, ++eeaddr)
 	{
-		//eeprom_busy_wait();  // don't need
-		const uint8_t val = eeprom_read_byte((uint8_t *)eeaddr);  // caution !!! address
-		//const uint16_t val = eeprom_read_byte((uint16_t *)eeaddr);  // caution !!! address
-		//const uint32_t val = eeprom_read_byte((uint32_t *)eeaddr);  // caution !!! address
+		//eeprom_busy_wait();  // Don't need.
+		const uint8_t val = eeprom_read_byte((uint8_t *)eeaddr);  // Caution !!! address.
+		//const uint16_t val = eeprom_read_byte((uint16_t *)eeaddr);  // Caution !!! address.
+		//const uint32_t val = eeprom_read_byte((uint32_t *)eeaddr);  // Caution !!! address.
 
 		PORTA = val;
 		_delay_ms(500);
