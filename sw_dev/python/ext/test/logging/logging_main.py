@@ -2,16 +2,18 @@
 
 import logging
 from logging.handlers import RotatingFileHandler
+import argparse
 
-def simple_logging():
+def simple_logging(log_level):
 	#format = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
 	format = '%(asctime)-15s %(message)s'
 	logging.basicConfig(format=format)
+	#logging.basicConfig(filename='python_logging.log', filemode='w', level=log_level)
 
 	logger = logging.getLogger(__name__)
-	logger.setLevel(logging.INFO)
+	logger.setLevel(log_level)
 
-	logger.log(logging.WARNING, '[Warning] Warning.')
+	#logger.log(logging.WARNING, '[Warning] Warning.')
 	logger.debug('[Debug] Debug.')
 	logger.info('[Info] Info.')
 	logger.warning('[Warning] Warning.')
@@ -19,17 +21,16 @@ def simple_logging():
 	logger.critical('[Critical] Critical.')
 	logger.exception('[Exception] Exception.')
 
-def simple_file_logging():
+def simple_file_logging(log_level):
 	handler = RotatingFileHandler('./python_logging.log', maxBytes=5000, backupCount=10)
 	formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 	handler.setFormatter(formatter)
 
-	logger = logging.getLogger('myapp')
+	logger = logging.getLogger('python_logging_test')
 	logger.addHandler(handler) 
-	logger.setLevel(logging.WARNING)
+	logger.setLevel(log_level)
 
 	for _ in range(1000):
-		logger.log(logging.WARNING, '[Warning] Warning.')
 		logger.debug('[Debug] Debug.')
 		logger.info('[Info] Info.')
 		logger.warning('[Warning] Warning.')
@@ -37,11 +38,68 @@ def simple_file_logging():
 		logger.critical('[Critical] Critical.')
 		logger.exception('[Exception] Exception.')
 
+def log_setting_function(log_level):
+	format = '%(asctime)-15s %(message)s'
+	logging.basicConfig(format=format)
+
+	logger = logging.getLogger('python_logging_test')
+	logger.setLevel(log_level)
+
+def log_function():
+	logger = logging.getLogger('python_logging_test')
+
+	logger.debug('[Debug] Debug.')
+	logger.info('[Info] Info.')
+	logger.warning('[Warning] Warning.')
+	logger.error('[Error] Error.')
+	logger.critical('[Critical] Critical.')
+	logger.exception('[Exception] Exception.')
+
+def simple_logging_in_multiple_functions(log_level):
+	logger = logging.getLogger('python_logging_test')
+
+	logger.debug('[Debug] Debug.')
+	logger.info('[Info] Info.')
+	logger.warning('[Warning] Warning.')
+	logger.error('[Error] Error.')
+	logger.critical('[Critical] Critical.')
+	logger.exception('[Exception] Exception.')
+
+	log_setting_function(log_level)
+
+	log_function()
+
+	logger.debug('[Debug] Debug.')
+	logger.info('[Info] Info.')
+	logger.warning('[Warning] Warning.')
+	logger.error('[Error] Error.')
+	logger.critical('[Critical] Critical.')
+	logger.exception('[Exception] Exception.')
+
 def main():
-	#simple_logging()
-	simple_file_logging()
+	parser = argparse.ArgumentParser()
+
+	parser.add_argument('-l', '--loglevel', help='Log level')
+
+	args = parser.parse_args()
+
+	if args.loglevel is not None:
+		log_level = getattr(logging, args.loglevel.upper(), None)
+		if not isinstance(log_level, int):
+			raise ValueError('Invalid log level: {}'.format(log_level))
+	else:
+		log_level = logging.WARNING
+	print('Log level:', log_level)
+
+	#simple_logging(log_level)
+	#simple_file_logging(log_level)
+	simple_logging_in_multiple_functions(log_level)
 
 #%%------------------------------------------------------------------
+
+# Usage:
+#	python logging_main.py --loglevel=DEBUG
+#	python logging_main.py --loglevel=debug
 
 if '__main__' == __name__:
 	main()
