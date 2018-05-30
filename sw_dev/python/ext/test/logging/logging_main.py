@@ -4,6 +4,15 @@ import logging
 from logging.handlers import RotatingFileHandler
 import argparse
 
+def output_logs(logger):
+	#logger.log(logging.WARNING, '[Warning] Warning.')
+	logger.debug('[Debug] Debug.')
+	logger.info('[Info] Info.')
+	logger.warning('[Warning] Warning.')
+	logger.error('[Error] Error.')
+	logger.critical('[Critical] Critical.')
+	logger.exception('[Exception] Exception.')
+
 def simple_logging(log_level):
 	#format = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
 	format = '%(asctime)-15s %(message)s'
@@ -13,13 +22,7 @@ def simple_logging(log_level):
 	logger = logging.getLogger(__name__)
 	logger.setLevel(log_level)
 
-	#logger.log(logging.WARNING, '[Warning] Warning.')
-	logger.debug('[Debug] Debug.')
-	logger.info('[Info] Info.')
-	logger.warning('[Warning] Warning.')
-	logger.error('[Error] Error.')
-	logger.critical('[Critical] Critical.')
-	logger.exception('[Exception] Exception.')
+	output_logs(logger)
 
 def simple_file_logging(log_level):
 	handler = RotatingFileHandler('./python_logging.log', maxBytes=5000, backupCount=10)
@@ -31,12 +34,7 @@ def simple_file_logging(log_level):
 	logger.setLevel(log_level)
 
 	for _ in range(1000):
-		logger.debug('[Debug] Debug.')
-		logger.info('[Info] Info.')
-		logger.warning('[Warning] Warning.')
-		logger.error('[Error] Error.')
-		logger.critical('[Critical] Critical.')
-		logger.exception('[Exception] Exception.')
+		output_logs(logger)
 
 def log_setting_function(log_level):
 	format = '%(asctime)-15s %(message)s'
@@ -48,33 +46,18 @@ def log_setting_function(log_level):
 def log_function():
 	logger = logging.getLogger('python_logging_test')
 
-	logger.debug('[Debug] Debug.')
-	logger.info('[Info] Info.')
-	logger.warning('[Warning] Warning.')
-	logger.error('[Error] Error.')
-	logger.critical('[Critical] Critical.')
-	logger.exception('[Exception] Exception.')
+	output_logs(logger)
 
 def simple_logging_in_multiple_functions(log_level):
 	logger = logging.getLogger('python_logging_test')
 
-	logger.debug('[Debug] Debug.')
-	logger.info('[Info] Info.')
-	logger.warning('[Warning] Warning.')
-	logger.error('[Error] Error.')
-	logger.critical('[Critical] Critical.')
-	logger.exception('[Exception] Exception.')
+	output_logs(logger)
 
 	log_setting_function(log_level)
 
 	log_function()
 
-	logger.debug('[Debug] Debug.')
-	logger.info('[Info] Info.')
-	logger.warning('[Warning] Warning.')
-	logger.error('[Error] Error.')
-	logger.critical('[Critical] Critical.')
-	logger.exception('[Exception] Exception.')
+	output_logs(logger)
 
 def main():
 	parser = argparse.ArgumentParser()
