@@ -38,6 +38,7 @@ class TestArithmetic(object):
 	def subtract_test(self):
 		assert subtract(5, 3) == 3
 
+# NOTE [info] >> Will be not tested.
 class testArithmetic(object):
 	def test_add(self):
 		assert add(1, 3) == 5
@@ -53,6 +54,7 @@ class testArithmetic(object):
 	def subtract_test(self):
 		assert subtract(5, 3) == 3
 
+# NOTE [info] >> Will be not tested.
 class ArithmeticTest(object):
 	def test_add(self):
 		assert add(1, 3) == 5

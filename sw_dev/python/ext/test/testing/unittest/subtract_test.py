@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-# REF [site] >> https://docs.python.org/3/library/unittest.html
-
 import unittest
 from subtract import subtract
 
@@ -20,10 +18,7 @@ class SubtractTestCase(unittest.TestCase):
 #%%------------------------------------------------------------------
 
 # Usage:
-#	python -m unittest subtract_test
-#	python -m unittest subtract_test.py
-#	python -m unittest add_test subtract_test
-#	python -m unittest add_test.py subtract_test.py
+#	python subtract_test.py
 
 if '__main__' == __name__:
-	unittest.main()
+	unittest.main(verbosity=1)
