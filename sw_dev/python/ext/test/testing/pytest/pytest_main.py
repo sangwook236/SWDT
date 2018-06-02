@@ -1,17 +1,13 @@
 #!/usr/bin/env python
 
-# REF [site] >> https://docs.pytest.org/en/latest/
-
-import pytest
-
-def main():
-	pass
+#import pytest
 
 #%%------------------------------------------------------------------
 
+# REF [site] >> https://docs.pytest.org/en/latest/
 # REF [site] >> https://docs.pytest.org/en/latest/usage.html
 # All test functions must have their names starting with 'test_'.
-# All test classes must have their names starting with 'Test_'.
+# All test classes must have their names starting with 'Test'.
 
 # Usage:
 #	pytest
@@ -29,4 +25,4 @@ def main():
 #		Will run TestMyClass.test_something but not TestMyClass.test_method_simple.
 
 if '__main__' == __name__:
-	main()
+	pass
