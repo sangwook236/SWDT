@@ -12,12 +12,12 @@
 # Usage:
 #	pytest
 #	python -m pytest
-#		Runs tests in files starting with 'test_' or ending with '_test'.
+#		Tests run in files starting with 'test_' or ending with '_test'.
 #	pytest dir_path
 #	python -m pytest dir_path
 #	pytest python_module.py
 #	python -m pytest python_module.py
-#		Runs tests in the specified python module which does not need to have its name starting with 'test_' or ending with '_test'.
+#		Tests runs in the specified python module which does not need to have its name starting with 'test_' or ending with '_test'.
 #	pytest python_module.py::test_func
 #	python -m pytest python_module.py::test_func
 #	pytest -k "MyClass and not method"
