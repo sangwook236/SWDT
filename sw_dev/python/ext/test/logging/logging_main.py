@@ -61,7 +61,6 @@ def simple_logging_in_multiple_functions(log_level):
 
 def main():
 	parser = argparse.ArgumentParser()
-
 	parser.add_argument('-l', '--loglevel', help='Log level')
 
 	args = parser.parse_args()

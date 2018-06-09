@@ -22,7 +22,7 @@
 //#pragma comment(lib, "libmat.lib")
 //#pragma comment(lib, "libmx.lib")
 
-#pragma comment(lib, "boost_chrono-vc140-mt-gd-1_64.lib")
+#pragma comment(lib, "boost_container-vc141-mt-gd-x64-1_67.lib")
 
 #pragma comment(lib, "lapackd.lib")
 #pragma comment(lib, "blasd.lib")
@@ -48,7 +48,7 @@
 //#pragma comment(lib, "libmat.lib")
 //#pragma comment(lib, "libmx.lib")
 
-#pragma comment(lib, "boost_chrono-vc140-mt-1_64.lib")
+#pragma comment(lib, "boost_chrono-vc141-mt-x64-1_67.lib")
 
 #pragma comment(lib, "lapack.lib")
 #pragma comment(lib, "blas.lib")
