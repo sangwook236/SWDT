@@ -54,7 +54,7 @@ class MyModel(object):
 	def __init__(self, state):
 		self.state = state
 
-def main():
+def traffic_light_fsm():
 	statemachine = TrafficLightMachine()
 	#statemachine = TrafficLightMachine(start_value='red')
 	#obj = MyModel(state='green')
@@ -89,6 +89,52 @@ def main():
 
 	print([s.identifier for s in statemachine.states])
 	print([t.identifier for t in statemachine.transitions])
+
+class PingPongMachine(StateMachine):
+	# States.
+	playerA = State('PlayerA', initial=True)
+	playerB = State('PlayerB')
+
+	# Transitions.
+	#pingpong = playerA.to(playerB)
+	#pingpong = playerB.to(playerA)
+	pingpongA = playerA.to(playerB)
+	pingpongB = playerB.to(playerA)
+
+	def on_enter_playerA(self):
+	    print('Enter playerA.')
+
+	def on_exit_playerA(self):
+	    print('Exit playerA.')
+
+	def on_enter_playerB(self):
+	    print('Enter playerB.')
+
+	def on_exit_playerB(self):
+	    print('Exit playerB.')
+
+	def on_pingpongA(self):
+	    print('Pingpong.')
+
+	def on_pingpongB(self):
+	    print('Pingpong.')
+
+def pingpon_fsm():
+	fsm = PingPongMachine()
+
+	try:
+		fsm.pingpongA()
+	except TransitionNotAllowed as ex:
+		print('TransitionNotAllowed:', ex)
+
+	try:
+		fsm.pingpongB()
+	except TransitionNotAllowed as ex:
+		print('TransitionNotAllowed:', ex)
+
+def main():
+	#traffic_light_fsm()
+	pingpon_fsm()
 
 #%%------------------------------------------------------------------
 
