@@ -39,7 +39,7 @@ void slic_example()
 	const std::string output_filename("./data/segmentation/brain_small_segmented.png");
 #endif
 
-	cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_COLOR);
+	cv::Mat input_img = cv::imread(input_filename, cv::IMREAD_COLOR);
 	if (input_img.empty())
 	{
 		std::cout << "image file not found: " << input_filename << std::endl;

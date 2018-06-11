@@ -15,7 +15,7 @@ void basic_operation_1()
 	{
 		const std::string input_filename("./data/machine_vision/opencv/lena_rgb.bmp");
 
-		const cv::Mat &img = cv::imread(input_filename, CV_LOAD_IMAGE_COLOR);
+		const cv::Mat &img = cv::imread(input_filename, cv::IMREAD_COLOR);
 		if (img.empty())
 		{
 			std::cerr << "file not found: " << input_filename << std::endl;

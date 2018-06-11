@@ -4,10 +4,10 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "opencv_core243d.lib")
-#pragma comment(lib, "opencv_imgproc243d.lib")
-#pragma comment(lib, "opencv_highgui243d.lib")
-#pragma comment(lib, "opencv_calib3d243d.lib")
+#pragma comment(lib, "opencv_core400d.lib")
+#pragma comment(lib, "opencv_imgproc400d.lib")
+#pragma comment(lib, "opencv_highgui400d.lib")
+#pragma comment(lib, "opencv_calib3d400d.lib")
 
 #pragma comment(lib, "libmat.lib")
 #pragma comment(lib, "libmx.lib")
@@ -27,10 +27,10 @@
 
 #		else
 
-#pragma comment(lib, "opencv_core243.lib")
-#pragma comment(lib, "opencv_imgproc243.lib")
-#pragma comment(lib, "opencv_highgui243.lib")
-#pragma comment(lib, "opencv_calib3d243.lib")
+#pragma comment(lib, "opencv_core400.lib")
+#pragma comment(lib, "opencv_imgproc400.lib")
+#pragma comment(lib, "opencv_highgui400.lib")
+#pragma comment(lib, "opencv_calib3d400.lib")
 
 #pragma comment(lib, "libmat.lib")
 #pragma comment(lib, "libmx.lib")

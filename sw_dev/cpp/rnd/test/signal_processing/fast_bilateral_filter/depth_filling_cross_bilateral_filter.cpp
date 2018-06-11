@@ -47,7 +47,7 @@ void depth_filling_cross_bilateral_filter()
 	{
 		std::cout << "Load the color input image '" << color_input_filename << "'... " << std::flush;
 
-		color_img = cv::imread(color_input_filename, CV_LOAD_IMAGE_COLOR);
+		color_img = cv::imread(color_input_filename, cv::IMREAD_COLOR);
 		if (color_img.empty())
 		{
 			std::cerr << "color input file not found: " << color_input_filename << std::endl;
@@ -71,7 +71,7 @@ void depth_filling_cross_bilateral_filter()
 	{
 		std::cout << "Load the depth input image '" << depth_input_filename << "'... " << std::flush;
 
-		cv::Mat tmp = cv::imread(depth_input_filename, CV_LOAD_IMAGE_UNCHANGED);  // CV_16UC1
+		cv::Mat tmp = cv::imread(depth_input_filename, cv::IMREAD_UNCHANGED);  // CV_16UC1
 		if (tmp.empty())
 		{
 			std::cerr << "depth input file not found: " << depth_input_filename << std::endl;
@@ -100,7 +100,7 @@ void depth_filling_cross_bilateral_filter()
 	{
 		std::cout << "Load the color input image '" << color_input_filename << "'... " << std::flush;
 
-		color_img = cv::imread(color_input_filename, CV_LOAD_IMAGE_COLOR);
+		color_img = cv::imread(color_input_filename, cv::IMREAD_COLOR);
 		if (color_img.empty())
 		{
 			std::cerr << "color input file not found: " << color_input_filename << std::endl;
@@ -124,7 +124,7 @@ void depth_filling_cross_bilateral_filter()
 	{
 		std::cout << "Load the depth input image '" << depth_input_filename << "'... " << std::flush;
 
-		cv::Mat tmp = cv::imread(depth_input_filename, CV_LOAD_IMAGE_UNCHANGED);  // CV_8UC1
+		cv::Mat tmp = cv::imread(depth_input_filename, cv::IMREAD_UNCHANGED);  // CV_8UC1
 		if (tmp.empty())
 		{
 			std::cerr << "depth input file not found: " << depth_input_filename << std::endl;

@@ -101,7 +101,7 @@ void seeded_region_growing()
 	seed_points.push_back(cv::Point(45, 274));
 #endif
 
-	cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_GRAYSCALE);
+	cv::Mat input_img = cv::imread(input_filename, cv::IMREAD_GRAYSCALE);
 	if (input_img.empty())
 	{
 		std::cout << "Image file not found: " << input_filename << std::endl;

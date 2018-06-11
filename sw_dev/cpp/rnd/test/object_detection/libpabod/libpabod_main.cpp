@@ -36,7 +36,7 @@ void simple_example()
 	const std::string output_filename("./data/object_detection/libpabod/detection_output.jpg");
 
 	std::cout << "Loading an input file ..." << std::endl;
-	IplImage *img = cvLoadImage(input_filename.c_str(), CV_LOAD_IMAGE_COLOR);
+	IplImage *img = cvLoadImage(input_filename.c_str(), cv::IMREAD_COLOR);
 
 	std::cout << "Loading a model file ..." << std::endl;
 	Pabod detector(model_filename.c_str());

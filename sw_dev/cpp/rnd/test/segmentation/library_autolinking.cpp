@@ -12,13 +12,13 @@
 #pragma comment(lib, "external-library-qpbod.lib")
 #pragma comment(lib, "external-library-trwsd.lib")
 
-#pragma comment(lib, "opencv_imgcodecs310d.lib")
-#pragma comment(lib, "opencv_imgproc310d.lib")
-#pragma comment(lib, "opencv_highgui310d.lib")
-#pragma comment(lib, "opencv_core310d.lib")
+#pragma comment(lib, "opencv_imgcodecs400d.lib")
+#pragma comment(lib, "opencv_imgproc400d.lib")
+#pragma comment(lib, "opencv_highgui400d.lib")
+#pragma comment(lib, "opencv_core400d.lib")
 
-#pragma comment(lib, "libboost_chrono-vc140-mt-gd-1_61.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-gd-1_61.lib")
+#pragma comment(lib, "libboost_chrono-vc141-mt-gd-x64-1_67.lib")
+#pragma comment(lib, "libboost_system-vc141-mt-gd-x64-1_67.lib")
 
 #		else
 
@@ -30,13 +30,13 @@
 #pragma comment(lib, "external-library-qpbo.lib")
 #pragma comment(lib, "external-library-trws.lib")
 
-#pragma comment(lib, "opencv_imgcodecs310.lib")
-#pragma comment(lib, "opencv_imgproc310.lib")
-#pragma comment(lib, "opencv_highgui310.lib")
-#pragma comment(lib, "opencv_core310.lib")
+#pragma comment(lib, "opencv_imgcodecs400.lib")
+#pragma comment(lib, "opencv_imgproc400.lib")
+#pragma comment(lib, "opencv_highgui400.lib")
+#pragma comment(lib, "opencv_core400.lib")
 
-#pragma comment(lib, "libboost_chrono-vc140-mt-1_61.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-1_61.lib")
+#pragma comment(lib, "libboost_chrono-vc141-mt-x64-1_67.lib")
+#pragma comment(lib, "libboost_system-vc141-mt-x64-1_67.lib")
 
 #		endif
 

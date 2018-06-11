@@ -254,7 +254,7 @@ int gslic_main(int argc, char *argv[])
 			input_images.reserve(input_file_list.size());
 			for (std::list<std::string>::iterator it = input_file_list.begin(); it != input_file_list.end(); ++it)
 			{
-				cv::Mat img(cv::imread(*it, CV_LOAD_IMAGE_COLOR));
+				cv::Mat img(cv::imread(*it, cv::IMREAD_COLOR));
 				if (img.empty())
 				{
 					std::cout << "Image file not found: " << *it << std::endl;
@@ -267,7 +267,7 @@ int gslic_main(int argc, char *argv[])
 			cv::Mat superpixel_mask, superpixel_boundary;
 			for (std::list<std::string>::iterator it = input_file_list.begin(); it != input_file_list.end(); ++it)
 			{
-				cv::Mat input_image(cv::imread(*it, CV_LOAD_IMAGE_COLOR));
+				cv::Mat input_image(cv::imread(*it, cv::IMREAD_COLOR));
 				if (input_image.empty())
 				{
 					std::cout << "Image file not found: " << *it << std::endl;

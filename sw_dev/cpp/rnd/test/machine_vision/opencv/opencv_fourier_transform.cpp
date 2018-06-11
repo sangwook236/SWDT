@@ -75,7 +75,7 @@ void dft_based_convolution()
 	//
 	for (std::list<std::string>::iterator it = filenames.begin(); it != filenames.end(); ++it)
     {
-		const cv::Mat img = cv::imread(*it, CV_LOAD_IMAGE_COLOR);
+		const cv::Mat img = cv::imread(*it, cv::IMREAD_COLOR);
 		if (img.empty())
 		{
 			std::cout << "fail to load image file: " << *it << std::endl;

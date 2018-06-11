@@ -33,14 +33,14 @@
 #pragma comment(lib, "mpird.lib")
 #pragma comment(lib, "libhdf5_D.lib")
 
-#pragma comment(lib, "opencv_features2d320d.lib")
-#pragma comment(lib, "opencv_imgproc320d.lib")
-#pragma comment(lib, "opencv_imgcodecs320d.lib")
-#pragma comment(lib, "opencv_highgui320d.lib")
-#pragma comment(lib, "opencv_core320d.lib")
+#pragma comment(lib, "opencv_features2d400d.lib")
+#pragma comment(lib, "opencv_imgproc400d.lib")
+#pragma comment(lib, "opencv_imgcodecs400d.lib")
+#pragma comment(lib, "opencv_highgui400d.lib")
+#pragma comment(lib, "opencv_core400d.lib")
 
-#pragma comment(lib, "libboost_chrono-vc140-mt-gd-1_64.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-gd-1_64.lib")
+#pragma comment(lib, "libboost_chrono-vc141-mt-gd-x64-1_67.lib")
+#pragma comment(lib, "libboost_system-vc141-mt-gd-x64-1_67.lib")
 
 #		else
 
@@ -73,14 +73,14 @@
 #pragma comment(lib, "mpir.lib")
 #pragma comment(lib, "libhdf5.lib")
 
-#pragma comment(lib, "opencv_features2d320.lib")
-#pragma comment(lib, "opencv_imgproc320.lib")
-#pragma comment(lib, "opencv_imgcodecs320.lib")
-#pragma comment(lib, "opencv_highgui320.lib")
-#pragma comment(lib, "opencv_core320.lib")
+#pragma comment(lib, "opencv_features2d400.lib")
+#pragma comment(lib, "opencv_imgproc400.lib")
+#pragma comment(lib, "opencv_imgcodecs400.lib")
+#pragma comment(lib, "opencv_highgui400.lib")
+#pragma comment(lib, "opencv_core400.lib")
 
-#pragma comment(lib, "libboost_chrono-vc140-mt-1_64.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-1_64.lib")
+#pragma comment(lib, "libboost_chrono-vc141-mt-x64-1_67.lib")
+#pragma comment(lib, "libboost_system-vc141-mt-x64-1_67.lib")
 
 #		endif
 

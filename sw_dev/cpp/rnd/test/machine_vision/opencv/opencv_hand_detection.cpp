@@ -43,7 +43,7 @@ void save_ref_hand_image()
 
 	for (std::list<std::string>::const_iterator it = img_filenames.begin(); it != img_filenames.end(); ++it)
 	{
-		const cv::Mat &in_gray = cv::imread(*it, CV_LOAD_IMAGE_GRAYSCALE);
+		const cv::Mat &in_gray = cv::imread(*it, cv::IMREAD_GRAYSCALE);
 		cv::Mat gray;
 
 		//cv::equalizeHist(in_gray, gray);
@@ -278,7 +278,7 @@ void detect_hand_by_motion()
 	//const std::string ref_imge_filename("./data/machine_vision/opencv/hand_detection_ref_04_edge.jpg");
 	//const std::string ref_imge_filename("./data/machine_vision/opencv/hand_detection_ref_05_edge.jpg");
 
-	const cv::Mat &ref_edge0 = cv::imread(ref_imge_filename, CV_LOAD_IMAGE_GRAYSCALE);
+	const cv::Mat &ref_edge0 = cv::imread(ref_imge_filename, cv::IMREAD_GRAYSCALE);
 	if (ref_edge0.empty())
 	{
 		std::cout << "fail to open reference hand image" << std::endl;

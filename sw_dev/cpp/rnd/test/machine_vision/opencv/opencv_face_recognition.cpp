@@ -72,13 +72,13 @@ void simple_example()
 		std::vector<cv::Mat> images;
 		std::vector<int> labels;
 		// images for first person
-		images.push_back(cv::imread("person0/0.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(0);
-		images.push_back(cv::imread("person0/1.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(0);
-		images.push_back(cv::imread("person0/2.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(0);
+		images.push_back(cv::imread("person0/0.jpg", cv::IMREAD_GRAYSCALE)); labels.push_back(0);
+		images.push_back(cv::imread("person0/1.jpg", cv::IMREAD_GRAYSCALE)); labels.push_back(0);
+		images.push_back(cv::imread("person0/2.jpg", cv::IMREAD_GRAYSCALE)); labels.push_back(0);
 		// images for second person
-		images.push_back(cv::imread("person1/0.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
-		images.push_back(cv::imread("person1/1.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
-		images.push_back(cv::imread("person1/2.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
+		images.push_back(cv::imread("person1/0.jpg", cv::IMREAD_GRAYSCALE)); labels.push_back(1);
+		images.push_back(cv::imread("person1/1.jpg", cv::IMREAD_GRAYSCALE)); labels.push_back(1);
+		images.push_back(cv::imread("person1/2.jpg", cv::IMREAD_GRAYSCALE)); labels.push_back(1);
 
 		// train it on the given dataset (the face images and labels).
 		model->train(images, labels);
@@ -93,7 +93,7 @@ void simple_example()
 	}
 
 	{
-		cv::Mat img = cv::imread("person1/3.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+		cv::Mat img = cv::imread("person1/3.jpg", cv::IMREAD_GRAYSCALE);
 
 		const int predicted = model->predict(img);
 	}

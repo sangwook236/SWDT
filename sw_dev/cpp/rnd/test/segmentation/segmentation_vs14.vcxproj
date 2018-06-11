@@ -91,7 +91,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./efficient_graph_based_image_segmentation_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./efficient_graph_based_image_segmentation_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opencv-4.0.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,7 +106,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./efficient_graph_based_image_segmentation_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./efficient_graph_based_image_segmentation_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opencv-4.0.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,7 +126,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./efficient_graph_based_image_segmentation_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./efficient_graph_based_image_segmentation_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opencv-4.0.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,7 +145,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./efficient_graph_based_image_segmentation_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opencv-3.1.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./efficient_graph_based_image_segmentation_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opengm_external/MaxFlow;$(MY_USR_LOCAL_INCLUDE)/opencv-4.0.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

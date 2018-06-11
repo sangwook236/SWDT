@@ -37,8 +37,8 @@
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "glpk_4_60.lib")
 #pragma comment(lib, "nlopt.lib")
-#pragma comment(lib, "libboost_chrono-vc140-mt-gd-1_64.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-gd-1_64.lib")
+#pragma comment(lib, "libboost_chrono-vc141-mt-gd-x64-1_67.lib")
+#pragma comment(lib, "libboost_system-vc141-mt-gd-x64-1_67.lib")
 //#pragma comment(lib, "gsld.lib")
 //#pragma comment(lib, "cblasd.lib")
 
@@ -77,8 +77,8 @@
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "glpk_4_60.lib")
 #pragma comment(lib, "nlopt.lib")
-#pragma comment(lib, "libboost_chrono-vc140-mt-1_64.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-1_64.lib")
+#pragma comment(lib, "libboost_chrono-vc141-mt-x64-1_67.lib")
+#pragma comment(lib, "libboost_system-vc141-mt-x64-1_67.lib")
 //#pragma comment(lib, "gsl.lib")
 //#pragma comment(lib, "cblas.lib")
 

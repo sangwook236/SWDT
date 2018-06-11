@@ -41,7 +41,7 @@ void depth_filling_cross_bilateral_filter_example()
 	//const std::string depth_input_filename("../../hw_interface/bin/data/kinect/kinect2_depth_transformed_20130725T211842.png");
 
 	cv::Mat gray_img;
-	gray_img = cv::imread(color_input_filename, CV_LOAD_IMAGE_GRAYSCALE);
+	gray_img = cv::imread(color_input_filename, cv::IMREAD_GRAYSCALE);
 	if (gray_img.empty())
 	{
 		std::cerr << "color input file not found: " << color_input_filename << std::endl;
@@ -50,7 +50,7 @@ void depth_filling_cross_bilateral_filter_example()
 
 	cv::Mat depth_img;
 	{
-		cv::Mat tmp = cv::imread(depth_input_filename, CV_LOAD_IMAGE_UNCHANGED);  // CV_16UC1
+		cv::Mat tmp = cv::imread(depth_input_filename, cv::IMREAD_UNCHANGED);  // CV_16UC1
 		if (tmp.empty())
 		{
 			std::cerr << "depth input file not found: " << depth_input_filename << std::endl;
@@ -67,14 +67,14 @@ void depth_filling_cross_bilateral_filter_example()
 	const std::string depth_ref_filename("./data/signal_processing/nyu_depth_toolbox/nyu_depth_v2_labeled_1_depth_filled.png");
 
 	cv::Mat gray_img;
-	gray_img = cv::imread(color_input_filename, CV_LOAD_IMAGE_GRAYSCALE);
+	gray_img = cv::imread(color_input_filename, cv::IMREAD_GRAYSCALE);
 	if (gray_img.empty())
 	{
 		std::cerr << "color input file not found: " << color_input_filename << std::endl;
 		return;
 	}
 
-	cv::Mat depth_img = cv::imread(depth_input_filename, CV_LOAD_IMAGE_UNCHANGED);  // CV_8UC1
+	cv::Mat depth_img = cv::imread(depth_input_filename, cv::IMREAD_UNCHANGED);  // CV_8UC1
 	if (depth_img.empty())
 	{
 		std::cerr << "depth input file not found: " << depth_input_filename << std::endl;

@@ -50,8 +50,8 @@ void slic()
 	const std::string input_filename = "./img_uint8/machine_vision/vlfeat/slic_image.jpg";
 	//const std::string input_filename = "./img_uint8/machine_vision/opencv/fruits.jpg";
 
-	const cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_COLOR);
-	//const cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_GRAYSCALE);
+	const cv::Mat input_img = cv::imread(input_filename, cv::IMREAD_COLOR);
+	//const cv::Mat input_img = cv::imread(input_filename, cv::IMREAD_GRAYSCALE);
 	if (input_img.empty())
 	{
 		std::cerr << "file not found: " << input_filename << std::endl;

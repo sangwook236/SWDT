@@ -271,7 +271,7 @@ void image_undistortion()
 	std::vector<cv::Mat> input_images;
 	input_images.reserve(imageList.size());
 	for (std::vector<std::string>::const_iterator cit = imageList.begin(); cit != imageList.end(); ++cit)
-		input_images.push_back(cv::imread(*cit, CV_LOAD_IMAGE_GRAYSCALE));
+		input_images.push_back(cv::imread(*cit, cv::IMREAD_GRAYSCALE));
 
 	//
 	const double matK[] = { 5.3587897712223048e+002, 0., 3.4227646116834137e+002, 0., 5.3583540725808348e+002, 2.3552854434700765e+002, 0., 0., 1. };  // row-major
@@ -294,7 +294,7 @@ void image_undistortion()
 	std::vector<cv::Mat> input_images;
 	input_images.reserve(imageList.size());
 	for (std::vector<std::string>::const_iterator cit = imageList.begin(); cit != imageList.end(); ++cit)
-		input_images.push_back(cv::imread(*cit, CV_LOAD_IMAGE_COLOR));
+		input_images.push_back(cv::imread(*cit, cv::IMREAD_COLOR));
 
 	//
 	const double matK[] = { 5.8574839894570380e+002, 0., 2.9515016167159104e+002, 0., 5.8831673934047501e+002, 2.1618663678777577e+002, 0., 0., 1. };  // row-major
@@ -317,7 +317,7 @@ void image_undistortion()
 	std::vector<cv::Mat> input_images;
 	input_images.reserve(imageList.size());
 	for (std::vector<std::string>::const_iterator cit = imageList.begin(); cit != imageList.end(); ++cit)
-		input_images.push_back(cv::imread(*cit, CV_LOAD_IMAGE_COLOR));
+		input_images.push_back(cv::imread(*cit, cv::IMREAD_COLOR));
 
 	//
 	const double matK[] = { 5.2635228817969698e+002, 0., 3.2721575024118914e+002, 0., 5.2765917576898983e+002, 2.6550336208783216e+002, 0., 0., 1. };  // row-major
@@ -383,7 +383,7 @@ void kinect_image_undistortion()
 		std::vector<cv::Mat> input_images;
 		input_images.reserve(num_images);
 		for (std::size_t k = 0; k < num_images; ++k)
-			input_images.push_back(cv::imread(input_image_filenames[k], CV_LOAD_IMAGE_UNCHANGED));
+			input_images.push_back(cv::imread(input_image_filenames[k], cv::IMREAD_UNCHANGED));
 
 		//
 		std::vector<cv::Mat> output_images;
@@ -445,7 +445,7 @@ void kinect_image_undistortion()
 		std::vector<cv::Mat> input_images;
 		input_images.reserve(num_images);
 		for (std::size_t k = 0; k < num_images; ++k)
-			input_images.push_back(cv::imread(input_image_filenames[k], CV_LOAD_IMAGE_COLOR));
+			input_images.push_back(cv::imread(input_image_filenames[k], cv::IMREAD_COLOR));
 
 		//
 		std::vector<cv::Mat> output_images;

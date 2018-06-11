@@ -6,15 +6,15 @@
 
 #pragma comment(lib, "cmaes.lib")
 #pragma comment(lib, "gad.lib")
-#pragma comment(lib, "libboost_chrono-vc140-mt-gd-1_64.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-gd-1_64.lib")
+#pragma comment(lib, "libboost_chrono-vc141-mt-gd-x64-1_67.lib")
+#pragma comment(lib, "libboost_system-vc141-mt-gd-x64-1_67.lib")
 
 #		else
 
 #pragma comment(lib, "cmaes.lib")
 #pragma comment(lib, "ga.lib")
-#pragma comment(lib, "libboost_chrono-vc140-mt-1_64.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-1_64.lib")
+#pragma comment(lib, "libboost_chrono-vc141-mt-x64-1_67.lib")
+#pragma comment(lib, "libboost_system-vc141-mt-x64-1_67.lib")
 
 #		endif
 

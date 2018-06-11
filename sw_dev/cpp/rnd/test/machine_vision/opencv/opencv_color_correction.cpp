@@ -136,7 +136,7 @@ void color_correction_test_1()
 	const cv::Rect blueRect(1870, 1210, PATCH_WIDTH, PATCH_HEIGHT);
 #endif
 
-	const cv::Mat &image = cv::imread(filename, CV_LOAD_IMAGE_COLOR);
+	const cv::Mat &image = cv::imread(filename, cv::IMREAD_COLOR);
 
 	cv::Mat ref_white_balance_patch_images(PATCH_HEIGHT, PATCH_WIDTH * WHITE_BALANCE_PATCH_NUM, CV_32FC3);
 	ref_white_balance_patch_images(cv::Range::all(), cv::Range(0,PATCH_WIDTH)).setTo(cv::Scalar::all(0));
@@ -396,7 +396,7 @@ void color_correction_test_2()
 	const cv::Rect blueRect(1870, 1210, PATCH_WIDTH, PATCH_HEIGHT);
 #endif
 
-	const cv::Mat &image = cv::imread(filename, CV_LOAD_IMAGE_COLOR);
+	const cv::Mat &image = cv::imread(filename, cv::IMREAD_COLOR);
 
 	cv::Mat ref_color_correction_patch_mat(PATCH_HEIGHT, PATCH_WIDTH * PATCH_NUM, CV_32FC3);
 	ref_color_correction_patch_mat(cv::Range::all(), cv::Range(0,PATCH_WIDTH)).setTo(cv::Scalar::all(0));

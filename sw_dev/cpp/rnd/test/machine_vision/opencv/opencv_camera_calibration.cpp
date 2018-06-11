@@ -528,7 +528,7 @@ void camera_calibration()
 			view0.copyTo(view);
 		}
 		else if (i < (int)imageList.size())
-			view = cv::imread(imageList[i], CV_LOAD_IMAGE_COLOR);
+			view = cv::imread(imageList[i], cv::IMREAD_COLOR);
 
 		if (!view.data)
 		{
@@ -653,7 +653,7 @@ void camera_calibration()
 
 		for (std::size_t i = 0; i < imageList.size(); ++i)
 		{
-			view = cv::imread(imageList[i], CV_LOAD_IMAGE_COLOR);
+			view = cv::imread(imageList[i], cv::IMREAD_COLOR);
 			if (!view.data) continue;
 
 			//cv::undistort(view, rview, cameraMatrix, distCoeffs, cameraMatrix);

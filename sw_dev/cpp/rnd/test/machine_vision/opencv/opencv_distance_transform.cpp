@@ -61,7 +61,7 @@ void distance_transform()
 
 	for (std::list<std::string>::iterator it = filenames.begin(); it != filenames.end(); ++it)
     {
-		const cv::Mat img = cv::imread(*it, CV_LOAD_IMAGE_COLOR);
+		const cv::Mat img = cv::imread(*it, cv::IMREAD_COLOR);
 		if (img.empty())
 		{
 			std::cout << "image file not found: " << *it << std::endl;
@@ -242,13 +242,13 @@ void distance_transform_using_edge_info()
 
 	for (std::list<std::string>::iterator it = filenames.begin(), depth_it = depth_filenames.begin(); it != filenames.end(); ++it, ++depth_it)
     {
-		const cv::Mat img = cv::imread(*it, CV_LOAD_IMAGE_COLOR);
+		const cv::Mat img = cv::imread(*it, cv::IMREAD_COLOR);
 		if (img.empty())
 		{
 			std::cout << "color image file not found: " << *it << std::endl;
 			continue;
 		}
-		const cv::Mat depth_img = cv::imread(*depth_it, CV_LOAD_IMAGE_UNCHANGED);  // CV_16UC1
+		const cv::Mat depth_img = cv::imread(*depth_it, cv::IMREAD_UNCHANGED);  // CV_16UC1
 		if (img.empty())
 		{
 			std::cout << "depth image file not found: " << *it << std::endl;

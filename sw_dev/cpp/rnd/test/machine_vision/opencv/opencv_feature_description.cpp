@@ -157,7 +157,7 @@ void train_calonder_classifier(const cv::FeatureDetector &featureDetector, const
 		std::getline(stream, str);
         if (str.empty()) break;
 
-		const cv::Mat &img = cv::imread(str, CV_LOAD_IMAGE_GRAYSCALE);
+		const cv::Mat &img = cv::imread(str, cv::IMREAD_GRAYSCALE);
         if (!img.empty())
             trainImgs.push_back(img);
     }

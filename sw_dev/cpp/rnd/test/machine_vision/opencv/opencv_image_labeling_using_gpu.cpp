@@ -56,8 +56,8 @@ void background_subtraction_by_graph_cut()
 	const double threshold2 = 32.0;
 	const double lambda = 2.0;
 
-	const cv::Mat src_img = cv::imread(src_filename, CV_LOAD_IMAGE_GRAYSCALE);
-	const cv::Mat bg_img = cv::imread(bg_filename, CV_LOAD_IMAGE_GRAYSCALE);
+	const cv::Mat src_img = cv::imread(src_filename, cv::IMREAD_GRAYSCALE);
+	const cv::Mat bg_img = cv::imread(bg_filename, cv::IMREAD_GRAYSCALE);
 
 	//
 	cv::Mat src, bg;

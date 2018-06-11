@@ -84,9 +84,9 @@ void stereo_matching_using_gpu()
     const std::string imageT_filename("./data/machine_vision/tsukuba-truedispL.png");
 	const std::size_t NUM_DISPARITIES = 24;  // 8x
 
-	const cv::Mat &imgL = cv::imread(imageL_filename, CV_LOAD_IMAGE_COLOR);
-	const cv::Mat &imgR = cv::imread(imageR_filename, CV_LOAD_IMAGE_COLOR);
-	const cv::Mat &imgT = cv::imread(imageT_filename, CV_LOAD_IMAGE_COLOR);
+	const cv::Mat &imgL = cv::imread(imageL_filename, cv::IMREAD_COLOR);
+	const cv::Mat &imgR = cv::imread(imageR_filename, cv::IMREAD_COLOR);
+	const cv::Mat &imgT = cv::imread(imageT_filename, cv::IMREAD_COLOR);
 	if (imgL.empty() || imgR.empty())
 	{
 		std::cout << "image files not found ..." << std::endl;

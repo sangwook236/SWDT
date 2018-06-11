@@ -80,7 +80,7 @@ void image_pyramid()
 {
 	const std::string filename("./data/machine_vision/opencv/lena_rgb.bmp");
 
-	const cv::Mat &image = cv::imread(filename, CV_LOAD_IMAGE_GRAYSCALE);
+	const cv::Mat &image = cv::imread(filename, cv::IMREAD_GRAYSCALE);
 
 	//
 	const int PYRAMID_DEPTH = 4;

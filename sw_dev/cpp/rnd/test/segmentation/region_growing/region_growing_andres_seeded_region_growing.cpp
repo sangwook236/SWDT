@@ -68,7 +68,7 @@ void andres_seeded_region_growing()
 		const int min_intensity = 210, max_intensity = 220;
 #endif
 
-		const cv::Mat input_img = cv::imread(input_filename, CV_LOAD_IMAGE_GRAYSCALE);
+		const cv::Mat input_img = cv::imread(input_filename, cv::IMREAD_GRAYSCALE);
 		if (input_img.empty())
 		{
 			std::cout << "image file not found: " << input_filename << std::endl;

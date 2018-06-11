@@ -602,9 +602,9 @@ void image_rectification()
 	for (std::vector<std::string>::const_iterator cit = imageList.begin(); cit != imageList.end(); ++cit)
 	{
 		if (isLeft)
-			input_images_left.push_back(cv::imread(*cit, CV_LOAD_IMAGE_COLOR));
+			input_images_left.push_back(cv::imread(*cit, cv::IMREAD_COLOR));
 		else
-			input_images_right.push_back(cv::imread(*cit, CV_LOAD_IMAGE_COLOR));
+			input_images_right.push_back(cv::imread(*cit, cv::IMREAD_COLOR));
 
 		isLeft = !isLeft;
 	}
@@ -704,9 +704,9 @@ void image_rectification()
 		for (std::vector<std::string>::const_iterator cit = imageList.begin(); cit != imageList.end(); ++cit)
 		{
 			if (isLeft)
-				input_images_left.push_back(cv::imread(*cit, CV_LOAD_IMAGE_GRAYSCALE));
+				input_images_left.push_back(cv::imread(*cit, cv::IMREAD_GRAYSCALE));
 			else
-				input_images_right.push_back(cv::imread(*cit, CV_LOAD_IMAGE_GRAYSCALE));
+				input_images_right.push_back(cv::imread(*cit, cv::IMREAD_GRAYSCALE));
 
 			isLeft = !isLeft;
 		}
@@ -863,8 +863,8 @@ void kinect_image_rectification()
 		rgb_input_images.reserve(num_images);
 		for (std::size_t k = 0; k < num_images; ++k)
 		{
-			ir_input_images.push_back(cv::imread(ir_image_filenames[k], CV_LOAD_IMAGE_UNCHANGED));
-			rgb_input_images.push_back(cv::imread(rgb_image_filenames[k], CV_LOAD_IMAGE_COLOR));
+			ir_input_images.push_back(cv::imread(ir_image_filenames[k], cv::IMREAD_UNCHANGED));
+			rgb_input_images.push_back(cv::imread(rgb_image_filenames[k], cv::IMREAD_COLOR));
 		}
 
 		// rectify images

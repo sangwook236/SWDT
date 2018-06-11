@@ -28,7 +28,7 @@ void niblack_sauvola_wolfjolion_algoirthm()
 	//std::cout << "BINARIZEWOLF Version " << BINARIZEWOLF_VERSION << std::endl;
 
     // Load the image in grayscale mode
-    cv::Mat input = cv::imread(inputname, CV_LOAD_IMAGE_GRAYSCALE);
+    cv::Mat input = cv::imread(inputname, cv::IMREAD_GRAYSCALE);
     if ((input.rows <= 0) || (input.cols <= 0))
 	{
         std::cerr << "input image error: " << inputname << std::endl;

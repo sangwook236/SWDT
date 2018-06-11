@@ -267,8 +267,8 @@ void stereo_matching()
 	const std::string filename1("./data/machine_vision/opencv/scene_l.bmp");
 	const std::string filename2("./data/machine_vision/opencv/scene_r.bmp");
 
-	const cv::Mat &left_image = cv::imread(filename1, CV_LOAD_IMAGE_GRAYSCALE);
-	const cv::Mat &right_image = cv::imread(filename2, CV_LOAD_IMAGE_GRAYSCALE);
+	const cv::Mat &left_image = cv::imread(filename1, cv::IMREAD_GRAYSCALE);
+	const cv::Mat &right_image = cv::imread(filename2, cv::IMREAD_GRAYSCALE);
 
 	//
 	cv::Mat disparity8;

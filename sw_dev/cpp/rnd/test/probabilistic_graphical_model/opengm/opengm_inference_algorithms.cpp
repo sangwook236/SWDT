@@ -83,7 +83,7 @@ bool createGraphicalModelForPottsModel(GraphicalModelForPottsModel &gm)
 {
 	const std::string img_filename("./data/probabilistic_graphical_model/teddy-imL.png");
 
-	const cv::Mat &img = cv::imread(img_filename, CV_LOAD_IMAGE_GRAYSCALE);
+	const cv::Mat &img = cv::imread(img_filename, cv::IMREAD_GRAYSCALE);
 	if (img.empty())
 	{
 		std::cout << "image file not found" << std::endl;
@@ -179,9 +179,9 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 	const std::string imgR_filename("./data/probabilistic_graphical_model/tsukuba-imR.png");
 	const std::string imgT_filename("./data/probabilistic_graphical_model/tsukuba-truedispLR.png");
 
-	const cv::Mat &imgL = cv::imread(imgL_filename, CV_LOAD_IMAGE_GRAYSCALE);
-	const cv::Mat &imgR = cv::imread(imgR_filename, CV_LOAD_IMAGE_GRAYSCALE);
-	//const cv::Mat &imgT = cv::imread(imgT_filename, CV_LOAD_IMAGE_GRAYSCALE);
+	const cv::Mat &imgL = cv::imread(imgL_filename, cv::IMREAD_GRAYSCALE);
+	const cv::Mat &imgR = cv::imread(imgR_filename, cv::IMREAD_GRAYSCALE);
+	//const cv::Mat &imgT = cv::imread(imgT_filename, cv::IMREAD_GRAYSCALE);
 	if (imgL.empty() || imgR.empty())
 	{
 		std::cout << "image files not found" << std::endl;
@@ -320,8 +320,8 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 	const std::string img_filename("./data/probabilistic_graphical_model/penguin-input.png");
 	const std::string imgT_filename("./data/probabilistic_graphical_model/penguin-mask.png");
 
-	const cv::Mat &img = cv::imread(img_filename, CV_LOAD_IMAGE_GRAYSCALE);
-	//const cv::Mat &imgT = cv::imread(imgT_filename, CV_LOAD_IMAGE_GRAYSCALE);
+	const cv::Mat &img = cv::imread(img_filename, cv::IMREAD_GRAYSCALE);
+	//const cv::Mat &imgT = cv::imread(imgT_filename, cv::IMREAD_GRAYSCALE);
 	if (img.empty())
 	{
 		std::cout << "image file not found" << std::endl;
@@ -598,9 +598,9 @@ bool createGraphicalModelForStereoMatching(GraphicalModelForStereoMatching &gm)
 	const std::string imgR_filename("./data/probabilistic_graphical_model/tsukuba-imR.png");
 	const std::string imgT_filename("./data/probabilistic_graphical_model/tsukuba-truedispLR.png");
 
-	cv::Mat &imgL = cv::imread(imgL_filename, CV_LOAD_IMAGE_GRAYSCALE);
-	cv::Mat &imgR = cv::imread(imgR_filename, CV_LOAD_IMAGE_GRAYSCALE);
-	//const cv::Mat &imgT = cv::imread(imgT_filename, CV_LOAD_IMAGE_GRAYSCALE);
+	cv::Mat &imgL = cv::imread(imgL_filename, cv::IMREAD_GRAYSCALE);
+	cv::Mat &imgR = cv::imread(imgR_filename, cv::IMREAD_GRAYSCALE);
+	//const cv::Mat &imgT = cv::imread(imgT_filename, cv::IMREAD_GRAYSCALE);
 	if (imgL.empty() || imgR.empty())
 	{
 		std::cout << "image files not found" << std::endl;
@@ -712,8 +712,8 @@ bool createGraphicalModelForImageRestoration(GraphicalModelForImageRestoration &
 	const std::string img_filename("./data/probabilistic_graphical_model/penguin-input.png.png");
 	const std::string imgT_filename("./data/probabilistic_graphical_model/penguin-mask.png");
 
-	cv::Mat &img = cv::imread(img_filename, CV_LOAD_IMAGE_GRAYSCALE);
-	//const cv::Mat &imgT = cv::imread(imgT_filename, CV_LOAD_IMAGE_GRAYSCALE);
+	cv::Mat &img = cv::imread(img_filename, cv::IMREAD_GRAYSCALE);
+	//const cv::Mat &imgT = cv::imread(imgT_filename, cv::IMREAD_GRAYSCALE);
 	if (img.empty())
 	{
 		std::cout << "image file not found" << std::endl;

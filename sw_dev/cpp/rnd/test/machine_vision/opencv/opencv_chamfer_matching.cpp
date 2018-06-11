@@ -23,8 +23,8 @@ void chamfer_matching()
 	const std::string filename2("./data/machine_vision/opencv/melon_3.png");
 #endif
 
-	cv::Mat templ(cv::imread(filename1, CV_LOAD_IMAGE_GRAYSCALE));
-	cv::Mat image(cv::imread(filename2, CV_LOAD_IMAGE_GRAYSCALE));
+	cv::Mat templ(cv::imread(filename1, cv::IMREAD_GRAYSCALE));
+	cv::Mat image(cv::imread(filename2, cv::IMREAD_GRAYSCALE));
 
 	// if the image and the template are not edge maps but normal grayscale images, you might want to uncomment the lines below to produce the maps.
 	// you can also run Sobel instead of Canny.
@@ -32,7 +32,7 @@ void chamfer_matching()
 	cv::Canny(templ, templ, 5, 50, 3);
 
 	cv::Mat ctempl;
-	cv::cvtColor(templ, ctempl, CV_GRAY2BGR);
+	cv::cvtColor(templ, ctempl, cv::COLOR_GRAY2BGR);
 
 	std::vector<std::vector<cv::Point> > results;
 	std::vector<float> costs;

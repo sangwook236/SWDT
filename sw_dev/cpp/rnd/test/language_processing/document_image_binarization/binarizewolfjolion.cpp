@@ -337,7 +337,7 @@ int main (int argc, char **argv)
 
 	
     // Load the image in grayscale mode
-    cv::Mat input = cv::imread(inputname,CV_LOAD_IMAGE_GRAYSCALE);
+    cv::Mat input = cv::imread(inputname, cv::IMREAD_GRAYSCALE);
     
     
     if ((input.rows<=0) || (input.cols<=0)) {

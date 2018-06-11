@@ -258,9 +258,9 @@ int interactive_graph_cuts_main(int argc, char *argv[])
 		const std::string background_mask_filename("./data/segmentation/brain_small_background_2.png");
 #endif
 
-		const cv::Mat input_img(cv::imread(input_image_filename, CV_LOAD_IMAGE_GRAYSCALE));
-		const cv::Mat foreground_mask(cv::imread(foreground_mask_filename, CV_LOAD_IMAGE_GRAYSCALE));
-		const cv::Mat background_mask(cv::imread(background_mask_filename, CV_LOAD_IMAGE_GRAYSCALE));
+		const cv::Mat input_img(cv::imread(input_image_filename, cv::IMREAD_GRAYSCALE));
+		const cv::Mat foreground_mask(cv::imread(foreground_mask_filename, cv::IMREAD_GRAYSCALE));
+		const cv::Mat background_mask(cv::imread(background_mask_filename, cv::IMREAD_GRAYSCALE));
 		if (input_img.empty() || foreground_mask.empty() || background_mask.empty())
 		{
 			std::cout << "image file(s) not found" << std::endl;

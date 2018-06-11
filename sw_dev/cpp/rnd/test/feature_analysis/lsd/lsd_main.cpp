@@ -140,7 +140,7 @@ void lsd_image_test()
 		cv::Mat gray_img_dbl;
 		{
 			cv::Mat gray_img;
-			cv::cvtColor(img, gray_img, CV_BGR2GRAY);
+			cv::cvtColor(img, gray_img, cv::COLOR_BGR2GRAY);
 
 			//cv::imshow("LSD - Gray", gray_img);
 

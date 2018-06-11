@@ -108,7 +108,7 @@ void elsd_example()
 		std::cout << *it << std::endl;
 		std::cout << ell_count << " elliptical arcs, " << circ_count << " circular arcs, " << line_count << " line segments" << std::endl;
 #else
-		cv::Mat img = cv::imread(*it, CV_LOAD_IMAGE_COLOR);
+		cv::Mat img = cv::imread(*it, cv::IMREAD_COLOR);
 		if (img.empty())
 		{
 			std::cout << "fail to load image file: " << *it << std::endl;
@@ -118,7 +118,7 @@ void elsd_example()
 		cv::Mat gray_img_dbl;
 		{
 			cv::Mat gray_img;
-			cv::cvtColor(img, gray_img, CV_BGR2GRAY);
+			cv::cvtColor(img, gray_img, cv::COLOR_BGR2GRAY);
 
 			cv::imshow(windowName1, gray_img);
 

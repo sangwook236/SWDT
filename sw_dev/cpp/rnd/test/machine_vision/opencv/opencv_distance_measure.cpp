@@ -139,13 +139,13 @@ void earth_movers_distance()
 #endif
 
 	// Load images.
-	const cv::Mat &img1 = cv::imread(img1_filename, CV_LOAD_IMAGE_COLOR);
+	const cv::Mat &img1 = cv::imread(img1_filename, cv::IMREAD_COLOR);
 	if (img1.empty())
 	{
 		std::cerr << "Image file not found: " << img1_filename << std::endl;
 		return;
 	}
-	const cv::Mat &img2 = cv::imread(img2_filename, CV_LOAD_IMAGE_COLOR);
+	const cv::Mat &img2 = cv::imread(img2_filename, cv::IMREAD_COLOR);
 	if (img2.empty())
 	{
 		std::cerr << "Image file not found: " << img2_filename << std::endl;

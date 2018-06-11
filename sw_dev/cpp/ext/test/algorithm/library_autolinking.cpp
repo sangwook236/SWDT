@@ -6,15 +6,15 @@
 
 #pragma comment(lib, "ANNd.lib")
 
-#pragma comment(lib, "libboost_chrono-vc140-mt-gd-1_61.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-gd-1_61.lib")
+#pragma comment(lib, "libboost_chrono-vc141-mt-gd-x64-1_67.lib")
+#pragma comment(lib, "libboost_system-vc141-mt-gd-x64-1_67.lib")
 
 #		else
 
 #pragma comment(lib, "ANN.lib")
 
-#pragma comment(lib, "libboost_chrono-vc140-mt-1_61.lib")
-#pragma comment(lib, "libboost_system-vc140-mt-1_61.lib")
+#pragma comment(lib, "libboost_chrono-vc141-mt-x64-1_67.lib")
+#pragma comment(lib, "libboost_system-vc141-mt-x64-1_67.lib")
 
 #		endif
 

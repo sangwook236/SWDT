@@ -5,26 +5,26 @@
 #		if defined(DEBUG) || defined(_DEBUG)
 
 //#pragma comment(lib, "bgslibraryd.lib")
-#pragma comment(lib, "opencv_bgsegm310d.lib")
-#pragma comment(lib, "opencv_videoio310d.lib")
-#pragma comment(lib, "opencv_video310d.lib")
-#pragma comment(lib, "opencv_features2d310d.lib")
-#pragma comment(lib, "opencv_imgcodecs310d.lib")
-#pragma comment(lib, "opencv_imgproc310d.lib")
-#pragma comment(lib, "opencv_highgui310d.lib")
-#pragma comment(lib, "opencv_core310d.lib")
+#pragma comment(lib, "opencv_bgsegm400d.lib")
+#pragma comment(lib, "opencv_videoio400d.lib")
+#pragma comment(lib, "opencv_video400d.lib")
+#pragma comment(lib, "opencv_features2d400d.lib")
+#pragma comment(lib, "opencv_imgcodecs400d.lib")
+#pragma comment(lib, "opencv_imgproc400d.lib")
+#pragma comment(lib, "opencv_highgui400d.lib")
+#pragma comment(lib, "opencv_core400d.lib")
 
 #		else
 
 //#pragma comment(lib, "bgslibrary.lib")
-#pragma comment(lib, "opencv_bgsegm310.lib")
-#pragma comment(lib, "opencv_videoio310.lib")
-#pragma comment(lib, "opencv_video310.lib")
-#pragma comment(lib, "opencv_features2d310.lib")
-#pragma comment(lib, "opencv_imgcodecs310.lib")
-#pragma comment(lib, "opencv_imgproc310.lib")
-#pragma comment(lib, "opencv_highgui310.lib")
-#pragma comment(lib, "opencv_core310.lib")
+#pragma comment(lib, "opencv_bgsegm400.lib")
+#pragma comment(lib, "opencv_videoio400.lib")
+#pragma comment(lib, "opencv_video400.lib")
+#pragma comment(lib, "opencv_features2d400.lib")
+#pragma comment(lib, "opencv_imgcodecs400.lib")
+#pragma comment(lib, "opencv_imgproc400.lib")
+#pragma comment(lib, "opencv_highgui400.lib")
+#pragma comment(lib, "opencv_core400.lib")
 
 #		endif
 

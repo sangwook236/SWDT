@@ -23,8 +23,8 @@ void feature_extraction_and_matching_by_signature_1()
 #endif
 
 	//std::cout << "reading the images..." << std::endl;
-	const cv::Mat &img1 = cv::imread(img1_name, CV_LOAD_IMAGE_GRAYSCALE);
-	const cv::Mat &img2 = cv::imread(img2_name, CV_LOAD_IMAGE_GRAYSCALE);
+	const cv::Mat &img1 = cv::imread(img1_name, cv::IMREAD_GRAYSCALE);
+	const cv::Mat &img2 = cv::imread(img2_name, cv::IMREAD_GRAYSCALE);
 	if (img1.empty() || img2.empty())
 	{
 		std::cout << "fail to load image files" << std::endl;
