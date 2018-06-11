@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# NOTE [info] {important} >> This library is not good.
+
 # NOTE [info] >> Python State Machine.
 #	https://github.com/fgmacedo/python-statemachine
 #	pip install python-statemachine
@@ -119,7 +121,7 @@ class PingPongMachine(StateMachine):
 	def on_pingpongB(self):
 	    print('Pingpong.')
 
-def pingpon_fsm():
+def pingpong_fsm():
 	fsm = PingPongMachine()
 
 	try:
@@ -134,7 +136,7 @@ def pingpon_fsm():
 
 def main():
 	#traffic_light_fsm()
-	pingpon_fsm()
+	pingpong_fsm()
 
 #%%------------------------------------------------------------------
 
