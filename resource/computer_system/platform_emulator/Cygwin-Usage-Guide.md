@@ -8,7 +8,7 @@
 	- https://cygwin.com/faq.html
 
 
-- Reference
+- Reference.
 	- [MinGW Usage Guide](https://github.com/sangwook236/documentation/wiki/MinGW-Usage-Guide)
 	- ${SWDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
 
