@@ -16,6 +16,15 @@
 		https://www.tensorflow.org/api_guides/python/image
 		http://tensorlayer.readthedocs.io/
 
+	- Check devices.
+		from tensorflow.python.client import device_lib
+		print(device_lib.list_local_devices())
+
+	- NVIDIA driver version.
+		cat /proc/driver/nvidia/version
+	- CUDA version.
+		nvcc --version
+
 [-] Installation.
 	- Windows.
 		TensorFlow supports only 64-bit Python 3.5 on Windows.
