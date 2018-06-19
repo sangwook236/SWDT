@@ -2,7 +2,9 @@
 
 #%%-------------------------------------------------------------------
 # Cross validation.
-# REF [site] >> http://scikit-learn.org/stable/modules/cross_validation.html
+# REF [site] >>
+#	http://scikit-learn.org/stable/modules/cross_validation.html
+#	http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.html
 
 import numpy as np
 from sklearn.model_selection import train_test_split, cross_val_score, ShuffleSplit

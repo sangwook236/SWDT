@@ -7,14 +7,26 @@ import struct
 import sys
 
 def main():
-	print('byte order = {} endian.'.format(sys.byteorder))
-
+	#--------------------
 	packet = struct.pack('hhl', 1, 2, 3)  # bytes.
 	print('packet =', packet)
 
 	packet1 = struct.unpack('hhl', packet)
 	print('unpacked packet =', packet1)  # tuple: (1, 2, 3).
 
+	#--------------------
+	# Endian.
+
+	print('byte order = {} endian.'.format(sys.byteorder))
+
+	packet = struct.pack('hhl', 1, 2, 3)
+	print('native =', packet)
+	packet = struct.pack('<hhl', 1, 2, 3)  # Little endian.
+	print('little-endian =', packet)
+	packet = struct.pack('>hhl', 1, 2, 3)  # Big endian.
+	print('big-endian =', packet)
+
+	#--------------------
 	record = b'raymond   \x32\x12\x08\x01\x08'
 	name, serialnum, school, gradelevel = struct.unpack('<10sHHb', record)
 	print(name, serialnum, school, gradelevel)
