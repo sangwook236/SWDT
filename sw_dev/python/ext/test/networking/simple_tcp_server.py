@@ -8,19 +8,18 @@ import threading
 def handle_client_connection(client_socket):
 	request = client_socket.recv(1024)
 	print('Received {}'.format(request))
-	client_socket.send(bytes('ACK!', 'utf-8'))
+	#client_socket.send(bytes('ACK!', 'utf-8'))
 	#client_socket.close()
 
 def main():
-	#bind_ip = 'localhost'
-	bind_ip = '192.168.10.6'
-	bind_port = 6789
+	HOST, PORT = 'localhost', 9999
+	#HOST, PORT = '192.168.10.8', 6789
 
 	server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	server.bind((bind_ip, bind_port))
+	server.bind((HOST, PORT))
 	server.listen(5)  # Max backlog of connections.
 
-	print('Listening on {}:{}'.format(bind_ip, bind_port))
+	print('Listening on {}:{}'.format(HOST, PORT))
 
 	while True:
 		client_sock, address = server.accept()

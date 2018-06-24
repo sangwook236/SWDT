@@ -41,6 +41,13 @@ def kwargs_func2(last_name, param1=None, param2=None, param3=None, **kwargs2):
 	print('{}: {}'.format(kwargs2, type(kwargs2)))
 
 def args_kwargs_func(*args, **kwargs):
+	print('args =', args)
+	print('kwargs =', kwargs)
+	#print('Keys of kwargs =', kwargs.keys())
+	#print('Values of kwargs =', kwargs.values())
+	#print('Items of kwargs =', kwargs.items())
+	print('first_name =', kwargs.get('first_name', None))
+
 	args_func(678, *args, 'XyZ')
 	kwargs_func(grade=2, **kwargs, school='elementary')
 

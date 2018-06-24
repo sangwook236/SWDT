@@ -9,6 +9,7 @@ def main():
 	parser.add_argument('-i', '--input-file', help='Input file')
 	parser.add_argument('-c', '--config', default=None, help='Configuration file')
 	parser.add_argument('-s', '--season', default='Spring', choices={'Spring', 'Summer', 'Fall', 'Winter'}, help='Season')
+	parser.add_argument('-P', '--port', default=1236, type=int, help='Port number')
 
 	args = parser.parse_args()
 
@@ -16,6 +17,7 @@ def main():
 	print('Input file = {}'.format(args.input_file))
 	print('Config = {}'.format(args.config))
 	print('Season = {}'.format(args.season))
+	print('Port = {}'.format(args.port))
 
 #%%------------------------------------------------------------------
 

@@ -5,16 +5,16 @@
 import socket
 
 def main():
-	hostname, port = 'localhost', 6789
+	HOST, PORT = 'localhost', 9999
 
 	# Create an ipv4 (AF_INET) socket object using the tcp protocol (SOCK_STREAM).
 	client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 	# Connect the client.
-	client.connect((hostname, port))
+	client.connect((HOST, PORT))
 
 	# Send some data (in this case a HTTP GET request).
-	client.send(bytes('GET /index.html HTTP/1.1\r\nHost: {}\r\n\r\n'.format(hostname), 'utf-8'))
+	client.send(bytes('GET /index.html HTTP/1.1\r\nHost: {}\r\n\r\n'.format(HOST), 'utf-8'))
 
 	# Receive the response data (4096 is recommended buffer size).
 	response = client.recv(4096)
