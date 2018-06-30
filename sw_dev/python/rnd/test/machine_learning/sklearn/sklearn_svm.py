@@ -18,13 +18,17 @@ def svc_example():
 	#X, Y = datasets.make_classification(n_samples=10000, n_features=10, n_informative=2, n_redundant=0, n_repeated=0, n_classes=100, shuffle=False, random_state=0)
 	#X, Y = datasets.make_blobs(n_samples=10000, n_features=10, centers=100, cluster_std=1.0, center_box=(-10.0, 10.0), shuffle=False, random_state=0)
 
-	clf = svm.SVC(kernel='rbf', degree=3, probability=False, decision_function_shape='ovr', random_state=None)
+	probability = True
+	clf = svm.SVC(kernel='rbf', degree=3, probability=probability, decision_function_shape='ovr', random_state=None)
 	clf.fit(X, Y) 
 
 	#X_test = [[-0.8, -1]]
 	#X_test = [[5.1, 3.5, 1.4, 0.2]]
 	X_test = X
 	print('Prediction =', clf.predict(X_test))
+	if probability:
+		print('Prediction (probability) =', clf.predict_proba(X_test))
+		print('Prediction (log probability) =', clf.predict_log_proba(X_test))
 	# Signed distance to the separating hyperplane.
 	#	Shape = (n_samples, n_classes) when decision_function_shape = 'ovr'.
 	#	Shape = (n_samples, n_classes * (n_classes-1) / 2) when decision_function_shape = 'ovo'.
@@ -62,11 +66,15 @@ def nu_svc_example():
 	iris = datasets.load_iris()
 	X, Y = iris.data, iris.target
 
-	clf = svm.NuSVC(nu=0.5, kernel='rbf', degree=3, max_iter=-1, decision_function_shape='ovr', random_state=None)
+	probability = True
+	clf = svm.NuSVC(nu=0.5, kernel='rbf', degree=3, probability=probability, max_iter=-1, decision_function_shape='ovr', random_state=None)
 	clf.fit(X, Y) 
 
 	X_test = X
 	print('Prediction =', clf.predict(X_test))
+	if probability:
+		print('Prediction (probability) =', clf.predict_proba(X_test))
+		print('Prediction (log probability) =', clf.predict_log_proba(X_test))
 	# Signed distance to the separating hyperplane.
 	#	Shape = (n_samples, n_classes) when decision_function_shape = 'ovr'.
 	#	Shape = (n_samples, n_classes * (n_classes-1) / 2) when decision_function_shape = 'ovo'.
@@ -178,7 +186,7 @@ def libsvm_example():
 	print('Cross validation =', cross_val)
 
 def main():
-	#svc_example()
+	svc_example()
 	#linear_svc_example()
 	#nu_svc_example()
 
@@ -188,7 +196,7 @@ def main():
 
 	#one_class_svm_example()
 
-	libsvm_example()
+	#libsvm_example()
 
 #%%------------------------------------------------------------------
 

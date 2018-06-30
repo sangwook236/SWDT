@@ -6,6 +6,7 @@ import numpy as np
 #%%-------------------------------------------------------------------
 
 # REF [site] >> http://pandas.pydata.org/pandas-docs/stable/10min.html
+# REF [site] >> http://pandas.pydata.org/pandas-docs/stable/tutorials.html
 def basic_operation():
 	dates = pd.date_range('20130101', periods=6)
 	df = pd.DataFrame(np.random.randn(6, 4), index=dates, columns=list('ABCD'))
