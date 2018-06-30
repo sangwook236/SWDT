@@ -117,6 +117,8 @@ def learning_curve_example():
 def train_test_split_example():
 	iris = datasets.load_iris()
 	X_train, X_test, y_train, y_test = model_selection.train_test_split(iris.data, iris.target, test_size=0.4, shuffle=True, stratify=None, random_state=0)
+	# If variable y is a binary categorical variable with values 0 and  1 and there are 25% of zeros and 75% of ones, stratify=y will make sure that your random split has 25% of 0's and 75% of 1's.
+	#X_train, X_test, y_train, y_test = model_selection.train_test_split(iris.data, iris.target, test_size=0.4, shuffle=True, stratify=iris.target, random_state=0)
 
 	print(X_train.shape, y_train.shape)
 	print(X_test.shape, y_test.shape)
@@ -126,25 +128,115 @@ def train_test_split_example():
 	print('Scores =', scores)
 
 #%%-------------------------------------------------------------------
-def k_fold_example():
-	iris = datasets.load_iris()
-	X, y= iris.data, iris.target
+def split_example():
+	X = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
+	y = np.array([1, 2, 1, 2])
+	groups = np.array([0, 0, 2, 2])
 
-	kf = model_selection.KFold(n_splits=5, shuffle=True, random_state=None)
-	print('#splits =', kf.get_n_splits(X))
-	print('K-fold:', kf)
+	if False:
+		# The entry test_fold[i] represents the index of the test set that sample i belongs to.
+		# It is possible to exclude sample i from any test set (i.e. include sample i in every training set) by setting test_fold[i] equal to -1.
+		test_fold = [0, 1, -1, 1]
+		split = PredefinedSplit(test_fold)
+		print('#splits =', split.get_n_splits(X, y))
+	elif False:
+		# The stratified folds are made by preserving the percentage of samples for each class.
+		split = model_selection.StratifiedShuffleSplit(n_splits=3, test_size=0.25, random_state=None)
+		print('#splits =', split.get_n_splits(X, y))
+	elif False:
+		# The same group will not appear in two different folds.
+		# The number of distinct groups has to be at least equal to the number of folds.
+		split = model_selection.GroupShuffleSplit(n_splits=3, test_size=0.25, random_state=None)
+		#print('#splits =', split.get_n_splits(X, y, groups))
+		print('#splits =', split.get_n_splits(groups=groups))
+	elif False:
+		split = model_selection.TimeSeriesSplit(n_splits=3, max_train_size=None)
+		print('#splits =', split.get_n_splits())
+	else:
+		split = model_selection.ShuffleSplit(n_splits=3, test_size=0.25, random_state=None)
+		print('#splits =', split.get_n_splits(X))
+	print('Split:', split)
 
-	clf = svm.SVC(probability=True)
-
-	scores = []
-	for train_indices, test_indices in kf.split(X):
+	#for train_indices, test_indices in split.split():
+	#for train_indices, test_indices in split.split(X, y):
+	#for train_indices, test_indices in split.split(X, y, groups):
+	for train_indices, test_indices in split.split(X):
 		#print('TRAIN:', train_indices.shape, 'TEST:', test_indices.shape)
-		#print('TRAIN:', train_indices, 'TEST:', test_indices)
+		print('TRAIN:', train_indices, 'TEST:', test_indices)
+
 		X_train, X_test = X[train_indices], X[test_indices]
 		y_train, y_test = y[train_indices], y[test_indices]
-		clf.fit(X_train, y_train)
-		scores.append(clf.score(X_test, y_test))
-	print('Scores =', scores)
+		#print('TRAIN:\n', X_train, y_train)
+		#print('TEST:\n', X_test, y_test)
+
+#%%-------------------------------------------------------------------
+def k_fold_example():
+	X = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
+	y = np.array([1, 2, 1, 2])
+	groups = np.array([0, 0, 2, 2])
+
+	if False:
+		# The stratified folds are made by preserving the percentage of samples for each class.
+		kf = model_selection.StratifiedKFold(n_splits=4, shuffle=True, random_state=None)
+		#kf = model_selection.RepeatedStratifiedKFold(n_splits=4, n_repeats=10, random_state=None)
+		print('#splits =', kf.get_n_splits(X, y))
+	elif False:
+		# The same group will not appear in two different folds.
+		# The number of distinct groups has to be at least equal to the number of folds.
+		kf = model_selection.GroupKFold(n_splits=4)
+		print('#splits =', kf.get_n_splits(X, y, groups))
+	else:
+		kf = model_selection.KFold(n_splits=4, shuffle=True, random_state=None)
+		#kf = model_selection.RepeatedKFold(n_splits=5, n_repeats=10, random_state=None)
+		print('#splits =', kf.get_n_splits(X))
+	print('K-fold:', kf)
+
+	#for train_indices, test_indices in kf.split(X, y):
+	#for train_indices, test_indices in kf.split(X, y, groups):
+	for train_indices, test_indices in kf.split(X):
+		#print('TRAIN:', train_indices.shape, 'TEST:', test_indices.shape)
+		print('TRAIN:', train_indices, 'TEST:', test_indices)
+
+		X_train, X_test = X[train_indices], X[test_indices]
+		y_train, y_test = y[train_indices], y[test_indices]
+		#print('TRAIN:\n', X_train, y_train)
+		#print('TEST:\n', X_test, y_test)
+
+#%%-------------------------------------------------------------------
+def leave_out_example():
+	X = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
+	y = np.array([1, 2, 1, 2])
+	groups = np.array([0, 0, 2, 2])
+
+	if False:
+		lo = model_selection.LeavePOut(p=2)
+		print('#splits =', lo.get_n_splits(X))
+	elif False:
+		# The same group will not appear in two different folds.
+		# The number of distinct groups has to be at least equal to the number of folds.
+		lo = model_selection.LeaveOneGroupOut()
+		#print('#splits =', lo.get_n_splits(X, y, groups))
+		print('#splits =', lo.get_n_splits(groups=groups))
+	elif False:
+		# The same group will not appear in two different folds.
+		# The number of distinct groups has to be at least equal to the number of folds.
+		lo = model_selection.LeaveOneGroupOut(n_groups=2)
+		#print('#splits =', lo.get_n_splits(X, y, groups))
+		print('#splits =', lo.get_n_splits(groups=groups))
+	else:
+		lo = model_selection.LeaveOneOut()
+		print('#splits =', lo.get_n_splits(X))
+	print('Leave-out:', lo)
+
+	#for train_indices, test_indices in lo.split(X, y, groups):
+	for train_indices, test_indices in lo.split(X):
+		#print('TRAIN:', train_indices.shape, 'TEST:', test_indices.shape)
+		print('TRAIN:', train_indices, 'TEST:', test_indices)
+
+		X_train, X_test = X[train_indices], X[test_indices]
+		y_train, y_test = y[train_indices], y[test_indices]
+		#print('TRAIN:\n', X_train, y_train)
+		#print('TEST:\n', X_test, y_test)
 
 #%%-------------------------------------------------------------------
 # REF [site] >>
@@ -257,9 +349,11 @@ def main():
 	#learning_curve_example()
 
 	#train_test_split_example()
+	split_example()
 	#k_fold_example()
+	#leave_out_example()
 
-	cross_validation_example()
+	#cross_validation_example()
 
 	#hyper_parameter_optimization_example()
 
