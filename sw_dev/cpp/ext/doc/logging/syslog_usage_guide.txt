@@ -11,6 +11,13 @@
 		/var/log/syslog
 
 	- View syslog.
+		dmesg | grep something | less
+
+		cat /var/log/syslog
+
+		less /var/log/syslog
+
+		head -n 10 /var/log/syslog
+		tail -n 10 /var/log/syslog
 		tail -f /var/log/syslog
 		tail -f /var/log/syslog | grep process_name
-		less /var/log/syslog
