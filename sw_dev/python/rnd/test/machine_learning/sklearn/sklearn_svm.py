@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-# REF [site] >> http://scikit-learn.org/stable/auto_examples/applications/plot_face_recognition.html
-# REF [site] >> http://scikit-learn.org/stable/auto_examples/applications/svm_gui.html
+# REF [site] >>
+#	http://scikit-learn.org/stable/modules/svm.html
+#	http://scikit-learn.org/stable/auto_examples/applications/plot_face_recognition.html
+#	http://scikit-learn.org/stable/auto_examples/applications/svm_gui.html
 
 from sklearn import svm
 from sklearn import datasets
