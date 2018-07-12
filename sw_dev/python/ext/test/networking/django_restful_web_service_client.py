@@ -144,9 +144,8 @@ def download_file(url):
 			filename = attachment[istart:iend]
 			file_obj = response.read()
 			if file_obj is not None:
-				dst = open('./' + filename, 'wb')
-				dst.write(file_obj)
-				dst.close()
+				with open('./' + filename + '.copyed', 'wb') as file:
+					file.write(file_obj)
 			print('File downloaded.')
 			print(response.status, response.msg)
 	except urllib.error.HTTPError as ex:

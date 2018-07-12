@@ -1,4 +1,5 @@
 import os, sys, platform
+import traceback
 
 #%%------------------------------------------------------------------
 # Platform.
@@ -39,6 +40,13 @@ if not os.path.exists(prediction_dir_path):
 	except OSError as ex:
 		if ex.errno != os.errno.EEXIST:
 			raise
+	except:
+		#ex = sys.exc_info()  # (type, exception object, traceback).
+		##print('{} raised: {}.'.format(ex[0], ex[1]))
+		#print('{} raised: {}.'.format(ex[0].__name__, ex[1]))
+		#traceback.print_tb(ex[2], limit=None, file=sys.stdout)
+		#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
+		traceback.print_exc(limit=None, file=sys.stdout)
 
 #%%------------------------------------------------------------------
 # Lambda expression.
