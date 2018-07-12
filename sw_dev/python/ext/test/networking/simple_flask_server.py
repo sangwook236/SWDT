@@ -1,86 +1,54 @@
+#!/usr/bin/env python
+
+# REF [site] >>
+#	http://flask.pocoo.org/docs/
+#	https://www.tutorialspoint.com/flask/index.htm
+
 from flask import Flask
-from flask import request, send_file, render_template
+from flask import request, send_file, send_from_directory, render_template
+import os
 
 app = Flask(__name__)
 
+UPLOAD_FOLDER = './'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 @app.route('/')
 def hello():
-    # return os.getcwd()
-    return 'Hello MotorSense!'
+    #return os.getcwd()
+    return 'Hello Flask!'
 
-@app.route('/list')
-def list():
-    """
-    sensor_path = "accel_00099999"
-    files = os.listdir(sensor_path)
-    sample_files = [f for f in files if os.path.isfile(os.path.join(sensor_path, f))]
-    sample_files.sort()
+@app.route('/python/<path:filepath>', methods=['GET'])
+def show_python(filepath):
+	return send_file(filepath)
 
-    response = ""
-    for x in sample_files:
-        response += ('<a href="fft/{0}">{0}</a><br/>'.format(x))
-        #response += ('<a href="{0}fft/{1}">{1}</a><br/>'.format(request.url_root, x))
-    return response
-    """
+@app.route('/list/', defaults={'dir_path': ''})
+@app.route('/list/<path:dir_path>')
+def list_dir(dir_path):
+	#print('*****1', request.path, request.script_root, request.url, request.base_url, request.url_root)
+	#print('*****2', dir_path)
 
-    sensor_path = '.'
-    files = os.listdir(sensor_path)
-    sample_files = [f for f in files if os.path.join(sensor_path, f)]
-    sample_files.sort()
+	if bool(dir_path.strip()):
+		local_dir_path = dir_path
+	else:
+		local_dir_path = '.'
+	fd_list = os.listdir(local_dir_path)
+	fd_list.sort()
 
-    response = ""
-    for file in sample_files:
-    	if os.path.isfile(file):
-            response += ('<a href="fft/{0}">{0}</a><br/>'.format(file))
-            #response += ('<a href="{0}fft/{1}">{1}</a><br/>'.format(request.url_root, file))
-    	else:
-            response += ('<a href="list/{0}">{0}</a><br/>'.format(file))
-    return response
-
-def save_accel_fft(sensor_filepath, fft_image_filepath):
-	# 800 Hz, 10 secs, 3 channels, 2 bytes = 48000 bytes.
-	Fs = 800  # Hz.
-	timespan = 10  # secs.
-	num_channels = 3  # channels.
-
-	divisor = 256.0  # ADXL345.
-	#divisor = 3276.7  # ADXL357.
-
-	signals = sensor_util.load_accel_file(sensor_filepath, Fs, timespan, num_channels)
-	signals = pd.DataFrame(signals) / divisor
-
-	num_samples = signals.shape[0]
-	"""
-	#signal = signals.x  # X axis.
-	signal = signals.y  # Y axis.
-	#signal = signals.z  # Z axis.
-	sensor_util.save_fft(fft_image_filepath, signal, Fs, num_samples)
-	"""
-	sensor_util.save_fft_3ch(fft_image_filepath, signals, Fs, num_samples)
-
-@app.route('/fft/<path:filename>', methods=['GET'])
-def show_fft(filename):
-	if 'GET' == request.method:
-		print('***********************FFT', request.path, request.script_root, request.url, request.base_url, request.url_root)
-		print('***********************FFT', filename)
-
-		fft_image_filepath = './accel_fft.png'
-		sensor_filepath = SENOR_BASE_DIR + '/' + filename
-
-		save_accel_fft(sensor_filepath, fft_image_filepath)
-		return send_file(fft_image_filepath)
-
-@app.route('/upload/<int:sensor_id>', methods=['GET', 'POST'])
-def upload_file(sensor_id):
-    if request.method == 'POST':
-        timestamp = datetime.datetime.now().strftime('%Y%m%dT%H%M%S')
-        dir_path = './accel_{0:08}'.format(sensor_id)
-        make_dir(dir_path)
-        filepath = './accel_{0:08}/accel_{0:08}_{1}.raw'.format(sensor_id, timestamp)
-
-        f = request.files['sensor_data']
-        f.save(filepath)
-        return "OKAY"
+	response = ''
+	for fd in fd_list:
+		fd_path = os.path.join(local_dir_path, fd)
+		if os.path.isfile(fd_path):
+			if fd.endswith('.py'):
+				url = os.path.join(request.url_root, 'python', dir_path, fd)
+				response += ('<a href="{0}">{1}</a><br/>'.format(url, fd))
+			else:
+				response += ('{}<br/>'.format(fd))
+		else:
+			url = os.path.join(request.url, fd)
+			response += ('<a href="{0}/">{1}</a><br/>'.format(url, fd))
+	return response
 
 def make_tree(path):
 	tree = dict(name=os.path.basename(path), children=[])
@@ -97,38 +65,76 @@ def make_tree(path):
 				tree['children'].append(dict(name=name))
 	return tree
 
-@app.route('/list_all', defaults={'req_path': ''})
-@app.route('/list_all/<path:req_path>')
-def dirtree(req_path):
+@app.route('/list_all/', defaults={'dir_path': ''})
+@app.route('/list_all/<path:dir_path>')
+def list_all_dirs(dir_path):
 	#path = os.path.expanduser(u'~')
-	path = os.path.abspath(req_path)
+	path = os.path.abspath(dir_path)
 	return render_template('dirtree.html', tree=make_tree(path))
 
-@app.route('/', defaults={'dir_path': ''})
-@app.route('/<path:dir_path>')
-def list_dir(dir_path):
-	print('*****1', request.path, request.script_root, request.url, request.base_url, request.url_root)
-	print('*****2', dir_path)
+@app.route('/download/<path:filename>', methods=['GET', 'POST'])
+def download_file(filename):
+	return send_from_directory(directory='.', filename=filename, as_attachment=True)
+	#return send_file(path, as_attachment=True)
 
-	if bool(dir_path.strip()):
-		local_dir_path = SENOR_BASE_DIR + '/' + dir_path
-	else:
-		local_dir_path = SENOR_BASE_DIR
-	print('*****3', local_dir_path)
-	fd_list = os.listdir(local_dir_path)
-	fd_list.sort()
-
-	response = ''
-	for fd in fd_list:
-		fd_path = os.path.join(local_dir_path, fd)
-		if os.path.isfile(fd_path):
-			if fd.endswith('.raw'):
-				response += ('<a href="{0}fft/{1}{2}">{2}</a><br/>'.format(request.url_root, dir_path, fd))
-			else:
-				response += ('{}<br/>'.format(fd))
+# REF [site] >> http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
+@app.route('/upload/', methods=['GET', 'POST'])
+def upload_file():
+	if 'POST' == request.method:
+		#file = request.files['file']
+		file = request.files.get('file', None)
+		if file is not None:
+			filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename + '.uploaded')
+			file.save(filepath)
 		else:
-			response += ('<a href="{0}/">{0}</a><br/>'.format(fd))
-	return response
+			print('File not found: {}'.format('file'))
 
-if __name__ == "__main__":
-    app.run("0.0.0.0", 6788)
+		#file = request.files['conf_file']
+		file = request.files.get('conf_file', None)
+		if file is not None:
+			filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename + '.uploaded')
+			file.save(filepath)
+		else:
+			print('File not found: {}'.format('conf_file'))
+
+		#file = request.files['json_file']
+		file = request.files.get('json_file', None)
+		if file is not None:
+			filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename + '.uploaded')
+			file.save(filepath)
+		else:
+			print('File not found: {}'.format('json_file'))
+
+		return 'OK', 201
+
+#%%------------------------------------------------------------------
+
+# Usage:
+#	python simple_flask_server.py
+#
+#	flask run --help
+#	python -m flask run --help
+#
+#	FLASK_APP=simple_flask_server.py flask run
+#	FLASK_APP=simple_flask_server.py flask run --host=0.0.0.0 --port=8888
+#
+#	export FLASK_APP=simple_flask_server.py
+#	set FLASK_APP=simple_flask_server.py
+#	flask run
+#	flask run --host=0.0.0.0 --port=8888
+#
+#	export FLASK_APP=simple_flask_server.py
+#	set FLASK_APP=simple_flask_server.py
+#	python -m flask run
+#	python -m flask run --host=0.0.0.0 --port=8888
+
+if '__main__' == __name__:
+	try:
+		app.run(host='0.0.0.0', port=8888, debug=False)
+	except:
+		#ex = sys.exc_info()  # (type, exception object, traceback).
+		##print('{} raised: {}.'.format(ex[0], ex[1]))
+		#print('{} raised: {}.'.format(ex[0].__name__, ex[1]))
+		#traceback.print_tb(ex[2], limit=None, file=sys.stdout)
+		#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
+		traceback.print_exc(limit=None, file=sys.stdout)
