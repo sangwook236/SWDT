@@ -1,3 +1,9 @@
+[-] General.
+	- Site.
+		http://www.django-rest-framework.org/
+		http://www.django-rest-framework.org/tutorial/quickstart/
+		https://www.vinta.com.br/blog/2018/django-rest-framework-read-write-serializers/
+
 [-] Usage.
 	- Run.
 		#virtualenv ENV
@@ -18,3 +24,6 @@
 			python manage.py makemigrations app_name
 		Actually sybchronize.
 			python manage.py migrate
+
+	- Test.
+		curl, httpie, or web browser can be used as a client.
