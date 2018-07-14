@@ -6,6 +6,7 @@ from sklearn import datasets
 from sklearn import linear_model, svm, naive_bayes, ensemble
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 #%%-------------------------------------------------------------------
 def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None, n_jobs=1, train_sizes=np.linspace(.1, 1.0, 5)):
@@ -338,7 +339,8 @@ def hyper_parameter_optimization_example():
 		'criterion': ['gini', 'entropy']}
 
 	# Run grid search.
-	grid_search = model_selection.GridSearchCV(clf, param_grid=param_grid)
+	#os.environ["OMP_NUM_THREADS"] = "2"
+	grid_search = model_selection.GridSearchCV(clf, param_grid=param_grid, verbose=1, n_jobs=2)
 	start = time()
 	grid_search.fit(X, y)
 

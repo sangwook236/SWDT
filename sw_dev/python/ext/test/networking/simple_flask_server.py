@@ -12,10 +12,10 @@ app = Flask(__name__)
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app.config['UPLOAD_FOLDER'] = './'
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 @app.route('/')
 def hello():
-    #return os.getcwd()
     return 'Hello Flask!'
 
 @app.route('/python/<path:filepath>', methods=['GET'])
