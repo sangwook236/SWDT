@@ -2,39 +2,20 @@
 
 # REF [site] >> https://docs.scipy.org/doc/scipy/reference/fftpack.html
 
-from scipy import fftpack
 import numpy as np
-import matplotlib.pyplot as plt
 import traceback, sys
+import fft_util
 
 def toy_example():
-	Fs = 100
-	N = 100
-
-	N_2 = int(N / 2) + 1
+	Fs = 1000
+	N = 1500
 	time = np.arange(N) / float(Fs)
-	freq = np.linspace(0, 1, N_2) * Fs / 2
 
-	sig_freq = 5  # Frequency of the signal.
-	signal = np.sin(2 * np.pi * sig_freq * time)
-	sig_freq = 7  # Frequency of the signal.
-	signal += np.sin(2 * np.pi * sig_freq * time)
-	sig_freq = 15  # Frequency of the signal.
-	signal += np.sin(2 * np.pi * sig_freq * time)
-	sig_freq = 30  # Frequency of the signal.
-	signal += np.sin(2 * np.pi * sig_freq * time)
+	#signal = generate_toy_signal_1(time, noise=False, DC=True)
+	signal = fft_util.generate_toy_signal_2(time, noise=False, DC=True)
 
-	#signal_fft = fftpack.fft(signal)
-	signal_fft = fftpack.fft(signal) / N
-	signal_fft = signal_fft[:N_2]
-
-	fig, ax = plt.subplots(2, 1)
-	ax[0].plot(time, signal)
-	ax[0].set_xlabel('Time')
-	ax[0].set_ylabel('Amplitude')
-	ax[1].plot(freq, abs(signal_fft), 'r')
-	ax[1].set_xlabel('Freq (Hz)')
-	ax[1].set_ylabel('Magnitude')
+	fft_util.plot_fft(signal, Fs)
+	#fft_util.plot_fft(signal - signal.mean(), Fs)  # Removes DC component.
 
 def main():
 	toy_example()
