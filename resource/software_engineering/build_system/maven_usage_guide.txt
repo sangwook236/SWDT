@@ -12,17 +12,28 @@
 
 	- Repositories.
 		Remote repository: http://repo1.maven.org/maven2/
-		Local repository: %{USER_HOME}/.m2/repository
+		Local repository: ${USER_HOME}/.m2/repository
 			[groupId]/[artifactId]/[version]
 
 	- Create a project.
 		mvn archetype:generate
+			Generate pom.xml and directories.
 		mvn archetype:create
+
+		mvn dependency:copy-dependencies
+			Copy all libraries and dependencies to the 'target/dependency' folder.
 
 	- Build.
 		mvn compile
+		mvn -e compile
+		mvn -X compile
+
 		mvn test
+		mvn clean
 
 	- Package.
 		mvn package
+			Compile, run tests, and create jar.
+		mvn package -Dmaven.test.skip=true
+			Run no test.
 		mvn deploy
