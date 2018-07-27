@@ -1,16 +1,11 @@
-package com.sangwook.spark
+//package com.sangwook.spark
 
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 
-object Spark_Main {
+object Spark_WordCountExample {
 	def run(args: Array[String])
-	{
-		runWordCount()
-	}
-
-	def runWordCount()
 	{
 		// Create a Scala Spark Context.
 		val conf = new SparkConf().setMaster("local").setAppName("wordCount")
