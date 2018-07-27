@@ -3,20 +3,43 @@
 from pyspark import SparkConf, SparkContext
 
 def simple_example():
-	conf = SparkConf().setMaster('local').setAppName('My App')
+	# Create a Spark Context.
+	conf = SparkConf().setMaster('local').setAppName('filteringLines')
 	sc = SparkContext(conf=conf)
 
-	lines = sc.textFile('README.md')
+	nums = sc.parallelize([1, 2, 3, 4])
+	squared = nums.map(lambda x: x * x).collect()
+	for num in squared:
+		print('*****', num)
+
+	# Shut down Spark.
+	sc.stop()
+
+def filtering_line_example():
+	inputFile = './README.md'
+	outputFile = './filteringlines'
+
+	# Create a Spark Context.
+	conf = SparkConf().setMaster('local').setAppName('filteringLines')
+	sc = SparkContext(conf=conf)
+
+	# Load our input data.
+	lines = sc.textFile(inputFile)
 	print(lines.count())
 	print('The first line = {}'.format(lines.first()))
 
 	pythonLines = lines.filter(lambda line: 'Python' in line)
 	print('The first line = {}'.format(pythonLines.first()))
 
+	# Save the word count back out to a text file, causing evaluation.
+	pythonLines.saveAsTextFile(outputFile)
+
+	# Shut down Spark.
 	sc.stop()
 
 def main():
 	simple_example()
+	filtering_line_example()
 
 #%%------------------------------------------------------------------
 

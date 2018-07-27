@@ -11,7 +11,7 @@ import java.util.Arrays;
 //
 //	When using Maven:
 //		mvn clean && mvn compile && mvn package
-//		${SPARK_HOME}/bin/spark-submit2.cmd --class "Spark_Main" --master local[4] target/spark-example-1.0.0.jar
+//		spark-submit --class "Spark_Main" --master local[4] target/spark-example-1.0.0.jar
 
 public class Spark_Main {
 
@@ -35,8 +35,9 @@ public class Spark_Main {
 		JavaRDD<Integer> result = rdd.map(new Function<Integer, Integer>() {
 			public Integer call(Integer x) { return x * x; }
 		});
-		System.out.println(StringUtils.join(result.collect(), " ***** "));
+		System.out.println(StringUtils.join(result.collect(), " *****\n"));
 
+		// Shut down Spark.
 		sc.stop();
 	}
 

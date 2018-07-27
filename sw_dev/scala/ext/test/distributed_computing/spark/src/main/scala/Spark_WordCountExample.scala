@@ -26,6 +26,7 @@ object Spark_WordCountExample {
 		// Save the word count back out to a text file, causing evaluation.
 		counts.saveAsTextFile(outputFile)
 
+		// Shut down Spark.
 		sc.stop()
 	}
 }
