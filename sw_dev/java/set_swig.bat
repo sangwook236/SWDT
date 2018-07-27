@@ -18,6 +18,9 @@ set PYTHON_HOME=F:\Program Files\Python24
 set PYTHON_INCLUDE=%PYTHON_HOME%\include
 set PYTHON_LIB=%PYTHON_HOME%\libs\python24.lib
 
+set SAVED_PATH_FOR_SWIG=%PATH%
+set PATH=%ANT_HOME%\bin;%PATH%
+
 goto EXIT
 
 rem -----------------------------------------------------------
@@ -27,6 +30,8 @@ set PYTHON_LIB=
 set PYTHON_INCLUDE=
 set PYTHON_HOME=
 set SWIG_HOME=
+
+set PATH=%SAVED_PATH_FOR_SWIG%
 
 rem -----------------------------------------------------------
 :EXIT

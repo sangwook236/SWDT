@@ -16,12 +16,17 @@ rem -----------------------------------------------------------
 rem set JAVA_HOME=C:\Program Files\Java\jre1.8.0_40
 set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_40
 
+set SAVED_PATH_FOR_JAVA=%PATH%
+set PATH=%JAVA_HOME%\bin;%PATH%
+
 goto EXIT
 
 rem -----------------------------------------------------------
 :CLEAN
 
 set JAVA_HOME=
+
+set PATH=%SAVED_PATH_FOR_JAVA%
 
 rem -----------------------------------------------------------
 :EXIT
