@@ -13,37 +13,17 @@ goto EXIT
 rem -----------------------------------------------------------
 :SET
 
-if "%JAVA_HOME%" == "" (
-	echo Error: can't find java home
-	goto EXIT
-)
-
-if "%ANT_HOME%" == "" (
-	set ANT_HOME=D:\util_portable\apache-ant-1.9.6\bin
-	set ANT_HOME_IS_DEFINED=true
-)
-
-if "%ANT_OLD_PATH%" == "" (
-	set ANT_OLD_PATH=%PATH%
-	set PATH=%ANT_HOME%\bin;%PATH%
-	set ANT_OLD_PATH_IS_DEFINED=true
-)
+rem set JAVA_HOME=C:\Program Files\Java\jre1.8.0_40
+set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_40
+set ANT_HOME=D:\util_portable\apache-ant-1.9.6\bin
 
 goto EXIT
 
 rem -----------------------------------------------------------
 :CLEAN
 
-if "%ANT_HOME_IS_DEFINED%" == "true" (
-	set ANT_HOME=
-	set ANT_HOME_IS_DEFINED=
-)
-
-if "%ANT_OLD_PATH_IS_DEFINED%" == "true" (
-	set PATH=%ANT_OLD_PATH%
-	set ANT_OLD_PATH=
-	set ANT_OLD_PATH_IS_DEFINED=
-)
+set ANT_HOME=
+set JAVA_HOME=
 
 rem -----------------------------------------------------------
 :EXIT

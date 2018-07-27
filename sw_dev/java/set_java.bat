@@ -13,34 +13,15 @@ goto EXIT
 rem -----------------------------------------------------------
 :SET
 
-if "%JAVA_HOME%" == "" (
-	rem set JAVA_HOME=C:\Program Files\Java\jre1.8.0_40
-	set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_40
-	set JAVA_HOME_IS_DEFINED=true
-)
-
-if "%JAVA_OLD_PATH%" == "" (
-	set JAVA_OLD_PATH=%PATH%
-	set PATH=%JAVA_HOME%\bin;%PATH%
-	set JAVA_OLD_PATH_IS_DEFINED=true
-)
+rem set JAVA_HOME=C:\Program Files\Java\jre1.8.0_40
+set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_40
 
 goto EXIT
 
 rem -----------------------------------------------------------
 :CLEAN
 
-rem if not "%JAVA_HOME_IS_DEFINED%" == "true" (
-if "%JAVA_HOME_IS_DEFINED%" == "true" (
-	set JAVA_HOME=
-	set JAVA_HOME_IS_DEFINED=
-)
-
-if "%JAVA_OLD_PATH_IS_DEFINED%" == "true" (
-	set PATH=%JAVA_OLD_PATH%
-	set JAVA_OLD_PATH=
-	set JAVA_OLD_PATH_IS_DEFINED=
-)
+set JAVA_HOME=
 
 rem -----------------------------------------------------------
 :EXIT

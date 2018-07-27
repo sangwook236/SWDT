@@ -13,61 +13,20 @@ goto EXIT
 rem -----------------------------------------------------------
 :SET
 
-if "%SWIG_HOME%" == "" (
-	set SWIG_HOME=D:\lib_repo\cpp\ext\swig_github
-	set SWIG_HOME_IS_DEFINED=true
-)
-
-if "%SWIG_OLD_PATH%" == "" (
-	set SWIG_OLD_PATH=%PATH%
-	set PATH=%SWIG_HOME%;%PATH%
-	set SWIG_OLD_PATH_IS_DEFINED=true
-)
-
-if "%PYTHON_HOME%" == "" (
-	set PYTHON_HOME=F:\Program Files\Python24
-	set PYTHON_HOME_IS_DEFINED=true
-)
-
-if "%PYTHON_INCLUDE%" == "" (
-	set PYTHON_INCLUDE=%PYTHON_HOME%\include
-	set PYTHON_INCLUDE_IS_DEFINED=true
-)
-
-if "%PYTHON_LIB%" == "" (
-	set PYTHON_LIB=%PYTHON_HOME%\libs\python24.lib
-	set PYTHON_LIB_IS_DEFINED=true
-)
+set SWIG_HOME=D:\lib_repo\cpp\ext\swig_github
+set PYTHON_HOME=F:\Program Files\Python24
+set PYTHON_INCLUDE=%PYTHON_HOME%\include
+set PYTHON_LIB=%PYTHON_HOME%\libs\python24.lib
 
 goto EXIT
 
 rem -----------------------------------------------------------
 :CLEAN
 
-if "%PYTHON_HOME_IS_DEFINED%" == "true" (
-	set PYTHON_HOME=
-	set PYTHON_HOME_IS_DEFINED=
-)
-if "%PYTHON_INCLUDE_IS_DEFINED%" == "true" (
-	set PYTHON_INCLUDE=
-	set PYTHON_INCLUDE_IS_DEFINED=
-)
-
-if "%PYTHON_LIB_IS_DEFINED%" == "true" (
-	set PYTHON_LIB=
-	set PYTHON_LIB_IS_DEFINED=
-)
-
-if "%SWIG_HOME_IS_DEFINED%" == "true" (
-	set SWIG_HOME=
-	set SWIG_HOME_IS_DEFINED=
-)
-
-if "%SWIG_OLD_PATH_IS_DEFINED%" == "true" (
-	set PATH=%SWIG_OLD_PATH%
-	set SWIG_OLD_PATH=
-	set SWIG_OLD_PATH_IS_DEFINED=
-)
+set PYTHON_LIB=
+set PYTHON_INCLUDE=
+set PYTHON_HOME=
+set SWIG_HOME=
 
 rem -----------------------------------------------------------
 :EXIT

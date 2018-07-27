@@ -13,37 +13,17 @@ goto EXIT
 rem -----------------------------------------------------------
 :SET
 
-if "%JAVA_HOME%" == "" (
-	echo Error: can't find java home
-	goto EXIT
-)
-
-if "%MAVEN_HOME%" == "" (
-	set MAVEN_HOME=D:\util_portable\apache-maven-3.3.9
-	set MAVEN_HOME_IS_DEFINED=true
-)
-
-if "%MAVEN_OLD_PATH%" == "" (
-	set MAVEN_OLD_PATH=%PATH%
-	set PATH=%MAVEN_HOME%\bin;%PATH%
-	set MAVEN_OLD_PATH_IS_DEFINED=true
-)
+rem set JAVA_HOME=C:\Program Files\Java\jre1.8.0_40
+set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_40
+set MAVEN_HOME=D:\util_portable\apache-maven-3.3.9
 
 goto EXIT
 
 rem -----------------------------------------------------------
 :CLEAN
 
-if "%MAVEN_HOME_IS_DEFINED%" == "true" (
-	set MAVEN_HOME=
-	set MAVEN_HOME_IS_DEFINED=
-)
-
-if "%MAVEN_OLD_PATH_IS_DEFINED%" == "true" (
-	set PATH=%MAVEN_OLD_PATH%
-	set MAVEN_OLD_PATH=
-	set MAVEN_OLD_PATH_IS_DEFINED=
-)
+set MAVEN_HOME=
+set JAVA_HOME=
 
 rem -----------------------------------------------------------
 :EXIT
