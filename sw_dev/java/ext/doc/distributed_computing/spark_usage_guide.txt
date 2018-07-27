@@ -1,3 +1,59 @@
 [-] General.
 	- Site.
 		http://spark.apache.org/
+
+[-] Book.
+	https://github.com/holdenk/learning-spark-examples
+	https://github.com/PacktPublishing/Learning-PySpark
+
+[-] Usage.
+	- Run a Python script in Windows.
+		REF [site] >> https://stackoverflow.com/questions/35652665/java-io-ioexception-could-not-locate-executable-null-bin-winutils-exe-in-the-ha
+
+		Download winutils.exe
+			http://public-repo-1.hortonworks.com/hdp-win-alpha/winutils.exe
+			https://github.com/steveloughran/winutils
+		Set environment variable.
+			If winutils.exe is in ${WINUTILS_HOME}/bin:
+				set HADOOP_HOME=${WINUTILS_HOME}
+		Run a script.
+			spark-submit2 spark_python_script.py
+
+	- Run a Scala application.
+		When using sbt:
+			sbt clean package
+			${SPARK_HOME}/bin/spark-submit2.cmd --class "com.sangwook.Main" --master local[4] target/scala-2.11/simple-example_2.11-1.0.0.jar
+
+		When using Maven:
+			mvn archetype:generate
+				Generate pom.xml and directories.
+			mvn dependency:copy-dependencies
+				Copy all libraries and dependencies to the "target/dependency" folder.
+			mvn clean
+			mvn compile && mvn package
+				Compile, run tests, and create jar.
+			${SPARK_HOME}/bin/spark-submit2.cmd --class "com.sangwook.Main" --master local[4] target/simple-example-1.0.0.jar
+
+	- Run a Java application.
+		When using Maven:
+			mvn archetype:generate
+				Generate pom.xml and directories.
+			mvn dependency:copy-dependencies
+				Copy all libraries and dependencies to the "target/dependency" folder.
+			mvn clean
+			mvn compile && mvn package
+				Compile, run tests, and create jar.
+			${SPARK_HOME}/bin/spark-submit2.cmd --class "com.sangwook.Main" --master local[4] target/simple-example-1.0.0.jar
+
+[-] Trouble shooting (Windows).
+	- Run a Scala application.
+		<error>
+			Could not locate executable null\bin\winutils.exe in the Hadoop binaries.
+		<solution>
+			If winutils.exe is in ${WINUTILS_HOME}/bin:
+				set HADOOP_HOME=${WINUTILS_HOME}
+
+		<error>
+			'cmd' is not recognized as an internal or external command, operable program or batch file.
+		<solution>
+			set PATH=%SystemRoot%\system32;%PATH%
