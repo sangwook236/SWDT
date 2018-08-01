@@ -13,33 +13,20 @@ goto EXIT
 rem -----------------------------------------------------------
 :SET
 
-if "%PYTHONPATH%" == "" (
-	set PYTHONPATH=D:\MyProgramFiles\Python35
-	set PYTHONPATH_IS_DEFINED=true
-)
+set PYTHONPATH=D:\MyProgramFiles\Python35
 
-if "%PYTHON_OLD_PATH%" == "" (
-	set PYTHON_OLD_PATH=%PATH%
-	set PATH=%PYTHONPATH%;%PYTHONPATH%\Scripts;%APPDATA%\Python\Python35\Scripts;%PATH%
-	set PYTHON_OLD_PATH_IS_DEFINED=true
-)
+set SAVED_PATH_FOR_PYTHON=%PATH%
+set PATH=%PYTHONPATH%\bin;%PATH%
 
 goto EXIT
 
 rem -----------------------------------------------------------
 :CLEAN
 
-rem if not "%PYTHONPATH_IS_DEFINED%" == "true" (
-if "%PYTHONPATH_IS_DEFINED%" == "true" (
-	set PYTHONPATH=
-	set PYTHONPATH_IS_DEFINED=
-)
+set PYTHONPATH=
 
-if "%PYTHON_OLD_PATH_IS_DEFINED%" == "true" (
-	set PATH=%PYTHON_OLD_PATH%
-	set PYTHON_OLD_PATH=
-	set PYTHON_OLD_PATH_IS_DEFINED=
-)
+set PATH=%SAVED_PATH_FOR_PYTHON%
+set SAVED_PATH_FOR_PYTHON=
 
 rem -----------------------------------------------------------
 :EXIT

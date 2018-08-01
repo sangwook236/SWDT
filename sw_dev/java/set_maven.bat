@@ -29,6 +29,7 @@ set MAVEN_HOME=
 set JAVA_HOME=
 
 set PATH=%SAVED_PATH_FOR_MAVEN%
+set SAVED_PATH_FOR_MAVEN=
 
 rem -----------------------------------------------------------
 :EXIT

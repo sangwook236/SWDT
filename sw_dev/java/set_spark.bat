@@ -40,6 +40,7 @@ set JAVA_HOME=
 set HADOOP_HOME=
 
 set PATH=%SAVED_PATH_FOR_SPARK%
+set SAVED_PATH_FOR_SPARK=
 
 rem -----------------------------------------------------------
 :EXIT

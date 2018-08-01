@@ -32,6 +32,7 @@ set PYTHON_HOME=
 set SWIG_HOME=
 
 set PATH=%SAVED_PATH_FOR_SWIG%
+set SAVED_PATH_FOR_SWIG=
 
 rem -----------------------------------------------------------
 :EXIT

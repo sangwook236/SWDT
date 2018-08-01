@@ -29,6 +29,7 @@ set ANT_HOME=
 set JAVA_HOME=
 
 set PATH=%SAVED_PATH_FOR_ANT%
+set SAVED_PATH_FOR_ANT=
 
 rem -----------------------------------------------------------
 :EXIT
