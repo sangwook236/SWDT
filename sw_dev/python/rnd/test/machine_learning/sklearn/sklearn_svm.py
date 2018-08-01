@@ -22,7 +22,7 @@ def svc_example():
 
 	probability = True
 	clf = svm.SVC(kernel='rbf', degree=3, probability=probability, decision_function_shape='ovr', random_state=None)
-	clf.fit(X, Y) 
+	clf.fit(X, Y)
 
 	#X_test = [[-0.8, -1]]
 	#X_test = [[5.1, 3.5, 1.4, 0.2]]
@@ -45,7 +45,7 @@ def linear_svc_example():
 	X, Y = iris.data, iris.target
 
 	clf = svm.LinearSVC(penalty='l2', loss='squared_hinge', multi_class='ovr', max_iter=1000, random_state=None)
-	clf.fit(X, Y) 
+	clf.fit(X, Y)
 
 	#clf.densify()  # Converts coefficient matrix of dense array format.
 	#clf.sparsify()  # Converts coefficient matrix of sparse format.
@@ -70,7 +70,7 @@ def nu_svc_example():
 
 	probability = True
 	clf = svm.NuSVC(nu=0.5, kernel='rbf', degree=3, probability=probability, max_iter=-1, decision_function_shape='ovr', random_state=None)
-	clf.fit(X, Y) 
+	clf.fit(X, Y)
 
 	X_test = X
 	print('Prediction =', clf.predict(X_test))
@@ -93,7 +93,7 @@ def svr_example():
 	#X, Y = datasets.make_regression(n_samples=num_samples, n_features=num_features, n_informative=2, n_targets=1, shuffle=False, random_state=0)
 
 	clf = svm.SVR(epsilon=0.1, C=1.0, kernel='rbf', degree=3, max_iter=-1)
-	clf.fit(X, Y) 
+	clf.fit(X, Y)
 
 	X_test = np.random.randn(1, num_features)
 	#X_test = X
@@ -109,7 +109,7 @@ def linear_svr_example():
 	X, Y = iris.data, iris.target
 
 	clf = svm.LinearSVR(epsilon=0.0, C=1.0, loss='epsilon_insensitive', max_iter=1000, random_state=0)
-	clf.fit(X, Y) 
+	clf.fit(X, Y)
 
 	print('Coefficient =', clf.coef_)
 	print('Intercept =', clf.intercept_)
@@ -130,7 +130,7 @@ def nu_svr_example():
 	#X, Y = iris.data, iris.target
 
 	clf = svm.NuSVR(nu=0.5, kernel='rbf', degree=3, max_iter=-1)
-	clf.fit(X, Y) 
+	clf.fit(X, Y)
 
 	X_test = np.random.randn(5, n_features)
 	#X_test = X
@@ -145,7 +145,7 @@ def one_class_svm_example():
 	X, Y = iris.data, iris.target
 
 	clf = svm.OneClassSVM(kernel='rbf', degree=3, nu=0.5, max_iter=-1, random_state=0)
-	clf.fit(X) 
+	clf.fit(X)
 
 	X_test = X
 	print('Prediction =', clf.predict(X_test))
@@ -172,7 +172,7 @@ def libsvm_example():
 	shrinking = 1
 	probability = 1
 
-	support, SV, n_class_SV, sv_coef, intercept, probA, probB, fit_status = svm.libsvm.fit(X, Y, svm_type=svm_type, kernel=kernel, degree=degree, gamma=gamma, coef0=coef0, C=C, nu=nu, epsilon=epsilon, shrinking=shrinking, probability=probability, max_iter=-1, random_seed=0) 
+	support, SV, n_class_SV, sv_coef, intercept, probA, probB, fit_status = svm.libsvm.fit(X, Y, svm_type=svm_type, kernel=kernel, degree=degree, gamma=gamma, coef0=coef0, C=C, nu=nu, epsilon=epsilon, shrinking=shrinking, probability=probability, max_iter=-1, random_seed=0)
 	#print(probA, probB)
 
 	X_test = X[50,:].reshape((1, -1))

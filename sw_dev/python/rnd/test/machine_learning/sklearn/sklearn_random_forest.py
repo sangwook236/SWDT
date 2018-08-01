@@ -14,9 +14,10 @@ def random_forest_classifier_example():
 	#X, Y = datasets.make_blobs(n_samples=1000, n_features=4, centers=2, cluster_std=1.0, center_box=(-10.0, 10.0), shuffle=False, random_state=0)
 
 	clf = ensemble.RandomForestClassifier(n_estimators=10, criterion='gini', max_depth=2, random_state=0)
-	clf.fit(X, Y) 
+	clf.fit(X, Y)
 
-	print('Feature importances =', clf.feature_importances_)
+	if hasattr(clf, 'feature_importances_'):
+		print('Feature importance =', clf.feature_importances_)
 
 	X_test = [[0, 0, 0, 0]]
 	#X_test = X
@@ -31,7 +32,7 @@ def random_forest_regressor_example():
 	X, Y = datasets.make_regression(n_samples=1000, n_features=4, n_informative=2, n_targets=1, shuffle=False, random_state=0)
 
 	regr = ensemble.RandomForestRegressor(n_estimators=10, criterion='mse', max_depth=2, random_state=0)
-	regr.fit(X, Y) 
+	regr.fit(X, Y)
 
 	print('Feature importances =', regr.feature_importances_)
 

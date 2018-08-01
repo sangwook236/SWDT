@@ -11,7 +11,7 @@ def decision_tree_classifier_example():
 	X, Y = iris.data, iris.target
 
 	clf = tree.DecisionTreeClassifier(random_state=0)
-	clf.fit(X, Y) 
+	clf.fit(X, Y)
 
 	X_test = [[0, 0, 0, 0]]
 	#X_test = X

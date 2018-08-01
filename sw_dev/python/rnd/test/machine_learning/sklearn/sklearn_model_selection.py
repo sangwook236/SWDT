@@ -1,4 +1,8 @@
-# REF [site] >> http://scikit-learn.org/stable/model_selection.html
+#!/usr/bin/env python
+
+# REF [site] >>
+#	http://scikit-learn.org/stable/model_selection.html
+#	http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html
 
 from sklearn import model_selection
 from sklearn import metrics

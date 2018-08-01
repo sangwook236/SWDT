@@ -14,7 +14,7 @@ def main():
 	#X, Y = make_blobs(n_samples=10000, n_features=10, centers=100, random_state=0)
 
 	clf = LogisticRegression(penalty='l2')
-	clf.fit(X, Y) 
+	clf.fit(X, Y)
 
 	#print('Prediction =', clf.predict([[-0.8, -1]]))
 	#print('Prediction =', clf.predict([[5.1, 3.5, 1.4, 0.2]]))
