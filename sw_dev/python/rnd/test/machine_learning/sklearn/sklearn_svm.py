@@ -21,21 +21,37 @@ def svc_example():
 	#X, Y = datasets.make_blobs(n_samples=10000, n_features=10, centers=100, cluster_std=1.0, center_box=(-10.0, 10.0), shuffle=False, random_state=0)
 
 	probability = True
-	clf = svm.SVC(kernel='rbf', degree=3, probability=probability, decision_function_shape='ovr', random_state=None)
-	clf.fit(X, Y)
+	classifier = svm.SVC(kernel='rbf', degree=3, probability=probability, decision_function_shape='ovr', random_state=None)
+	#classifier = svm.SVC(kernel='linear', degree=3, probability=probability, decision_function_shape='ovr', random_state=None)
+	classifier.fit(X, Y)
+
+	if hasattr(classifier, 'coef_'):
+		print('Coefficient =', classifier.coef_)  # Shape = ((num_classes-1) * num_classes / 2, num_features).
+		print('Intercept =', classifier.intercept_)
+
+		# Feature importance. (?)
+		#	https://medium.com/@aneesha/visualising-top-features-in-linear-svm-with-scikit-learn-and-matplotlib-3454ab18a14d.
+		coef = classifier.coef_.ravel()  # coef_ is only available when using a linear kernel.
+		#num_top_features = 20
+		#top_positive_coefficients = np.argsort(coef)[-num_top_features:]
+		#top_negative_coefficients = np.argsort(coef)[:num_top_features]
+		#top_coefficients = np.hstack([top_negative_coefficients, top_positive_coefficients])
+		top_coefficients = np.argsort(coef)
+		print('Top coefficients =', top_coefficients)
+		#print('Top features =', feature_names[top_coefficients])
 
 	#X_test = [[-0.8, -1]]
 	#X_test = [[5.1, 3.5, 1.4, 0.2]]
 	X_test = X
-	print('Prediction =', clf.predict(X_test))
+	print('Prediction =', classifier.predict(X_test))
 	if probability:
-		print('Prediction (probability) =', clf.predict_proba(X_test))
-		print('Prediction (log probability) =', clf.predict_log_proba(X_test))
+		print('Prediction (probability) =', classifier.predict_proba(X_test))
+		print('Prediction (log probability) =', classifier.predict_log_proba(X_test))
 	# Signed distance to the separating hyperplane.
 	#	Shape = (n_samples, n_classes) when decision_function_shape = 'ovr'.
 	#	Shape = (n_samples, n_classes * (n_classes-1) / 2) when decision_function_shape = 'ovo'.
-	print('Distance =', clf.decision_function(X_test))
-	print('Score =', clf.score(X, Y))
+	print('Distance =', classifier.decision_function(X_test))
+	print('Score =', classifier.score(X, Y))
 
 #%%-------------------------------------------------------------------
 # Linear SVC.
@@ -44,22 +60,27 @@ def linear_svc_example():
 	iris = datasets.load_iris()
 	X, Y = iris.data, iris.target
 
-	clf = svm.LinearSVC(penalty='l2', loss='squared_hinge', multi_class='ovr', max_iter=1000, random_state=None)
-	clf.fit(X, Y)
+	classifier = svm.LinearSVC(penalty='l2', loss='squared_hinge', multi_class='ovr', max_iter=1000, random_state=None)
+	classifier.fit(X, Y)
 
-	#clf.densify()  # Converts coefficient matrix of dense array format.
-	#clf.sparsify()  # Converts coefficient matrix of sparse format.
+	#classifier.densify()  # Converts coefficient matrix of dense array format.
+	#classifier.sparsify()  # Converts coefficient matrix of sparse format.
 
-	print('Coefficient =', clf.coef_)
-	print('Intercept =', clf.intercept_)
+	print('Coefficient =', classifier.coef_)  # Shape = ((num_classes-1) * num_classes / 2, num_features).
+	print('Intercept =', classifier.intercept_)
+
+	# Feature importance. (?)
+	coef = classifier.coef_.ravel()
+	top_coefficients = np.argsort(coef)
+	print('Top coefficients =', top_coefficients)
 
 	X_test = X
-	print('Prediction =', clf.predict(X_test))
+	print('Prediction =', classifier.predict(X_test))
 	# Signed distance to the separating hyperplane.
 	#	Shape = (n_samples,) if n_classes == 2.
 	#	Shape = (n_samples, n_classes) if n_classes > 2.
-	print('Distance =', clf.decision_function(X_test))
-	print('Score =', clf.score(X, Y))
+	print('Distance =', classifier.decision_function(X_test))
+	print('Score =', classifier.score(X, Y))
 
 #%%-------------------------------------------------------------------
 # Nu SVC: Nu-support vector classification.
@@ -69,19 +90,19 @@ def nu_svc_example():
 	X, Y = iris.data, iris.target
 
 	probability = True
-	clf = svm.NuSVC(nu=0.5, kernel='rbf', degree=3, probability=probability, max_iter=-1, decision_function_shape='ovr', random_state=None)
-	clf.fit(X, Y)
+	classifier = svm.NuSVC(nu=0.5, kernel='rbf', degree=3, probability=probability, max_iter=-1, decision_function_shape='ovr', random_state=None)
+	classifier.fit(X, Y)
 
 	X_test = X
-	print('Prediction =', clf.predict(X_test))
+	print('Prediction =', classifier.predict(X_test))
 	if probability:
-		print('Prediction (probability) =', clf.predict_proba(X_test))
-		print('Prediction (log probability) =', clf.predict_log_proba(X_test))
+		print('Prediction (probability) =', classifier.predict_proba(X_test))
+		print('Prediction (log probability) =', classifier.predict_log_proba(X_test))
 	# Signed distance to the separating hyperplane.
 	#	Shape = (n_samples, n_classes) when decision_function_shape = 'ovr'.
 	#	Shape = (n_samples, n_classes * (n_classes-1) / 2) when decision_function_shape = 'ovo'.
-	print('Distance =', clf.decision_function(X_test))
-	print('Score =', clf.score(X, Y))
+	print('Distance =', classifier.decision_function(X_test))
+	print('Score =', classifier.score(X, Y))
 
 #%%-------------------------------------------------------------------
 # Epsilon-support vector regression.
@@ -92,13 +113,13 @@ def svr_example():
 	X, Y = np.random.randn(num_samples, num_features), np.random.randn(num_samples)
 	#X, Y = datasets.make_regression(n_samples=num_samples, n_features=num_features, n_informative=2, n_targets=1, shuffle=False, random_state=0)
 
-	clf = svm.SVR(epsilon=0.1, C=1.0, kernel='rbf', degree=3, max_iter=-1)
-	clf.fit(X, Y)
+	regressor = svm.SVR(epsilon=0.1, C=1.0, kernel='rbf', degree=3, max_iter=-1)
+	regressor.fit(X, Y)
 
 	X_test = np.random.randn(1, num_features)
 	#X_test = X
-	print('Prediction =', clf.predict(X_test))
-	print('Score =', clf.score(X, Y))
+	print('Prediction =', regressor.predict(X_test))
+	print('Score =', regressor.score(X, Y))
 
 #%%-------------------------------------------------------------------
 # Linear SVR.
@@ -108,16 +129,16 @@ def linear_svr_example():
 	iris = datasets.load_iris()
 	X, Y = iris.data, iris.target
 
-	clf = svm.LinearSVR(epsilon=0.0, C=1.0, loss='epsilon_insensitive', max_iter=1000, random_state=0)
-	clf.fit(X, Y)
+	regressor = svm.LinearSVR(epsilon=0.0, C=1.0, loss='epsilon_insensitive', max_iter=1000, random_state=0)
+	regressor.fit(X, Y)
 
-	print('Coefficient =', clf.coef_)
-	print('Intercept =', clf.intercept_)
+	print('Coefficient =', regressor.coef_)
+	print('Intercept =', regressor.intercept_)
 
 	#X_test = [[0, 0, 0, 0]]
 	X_test = X
-	print('Prediction =', clf.predict(X_test))
-	print('Score =', clf.score(X, Y))
+	print('Prediction =', regressor.predict(X_test))
+	print('Score =', regressor.score(X, Y))
 
 #%%-------------------------------------------------------------------
 # Nu SVR: Nu-support vector regression.
@@ -129,13 +150,13 @@ def nu_svr_example():
 	#iris = datasets.load_iris()
 	#X, Y = iris.data, iris.target
 
-	clf = svm.NuSVR(nu=0.5, kernel='rbf', degree=3, max_iter=-1)
-	clf.fit(X, Y)
+	regressor = svm.NuSVR(nu=0.5, kernel='rbf', degree=3, max_iter=-1)
+	regressor.fit(X, Y)
 
 	X_test = np.random.randn(5, n_features)
 	#X_test = X
-	print('Prediction =', clf.predict(X_test))
-	print('Score =', clf.score(X, Y))
+	print('Prediction =', regressor.predict(X_test))
+	print('Score =', regressor.score(X, Y))
 
 #%%-------------------------------------------------------------------
 # One-class SVM.
@@ -144,13 +165,13 @@ def one_class_svm_example():
 	iris = datasets.load_iris()
 	X, Y = iris.data, iris.target
 
-	clf = svm.OneClassSVM(kernel='rbf', degree=3, nu=0.5, max_iter=-1, random_state=0)
-	clf.fit(X)
+	classifier = svm.OneClassSVM(kernel='rbf', degree=3, nu=0.5, max_iter=-1, random_state=0)
+	classifier.fit(X)
 
 	X_test = X
-	print('Prediction =', clf.predict(X_test))
+	print('Prediction =', classifier.predict(X_test))
 	# Signed distance to the separating hyperplane: shape = (n_samples,).
-	print('Distance =', clf.decision_function(X_test))
+	print('Distance =', classifier.decision_function(X_test))
 
 #%%-------------------------------------------------------------------
 # libsvm.

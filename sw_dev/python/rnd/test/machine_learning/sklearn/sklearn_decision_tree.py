@@ -10,18 +10,20 @@ def decision_tree_classifier_example():
 	iris = datasets.load_iris()
 	X, Y = iris.data, iris.target
 
-	clf = tree.DecisionTreeClassifier(random_state=0)
-	clf.fit(X, Y)
+	classifier = tree.DecisionTreeClassifier(random_state=0)
+	classifier.fit(X, Y)
+
+	print('Feature importance =', classifier.feature_importances_)
 
 	X_test = [[0, 0, 0, 0]]
 	#X_test = X
-	print('Prediction =', clf.predict(X_test))
-	print('Prediction (probability) =', clf.predict_proba(X_test))
-	print('Prediction (log probability) =', clf.predict_log_proba(X_test))
-	print('Score =', clf.score(X, Y))
+	print('Prediction =', classifier.predict(X_test))
+	print('Prediction (probability) =', classifier.predict_proba(X_test))
+	print('Prediction (log probability) =', classifier.predict_log_proba(X_test))
+	print('Score =', classifier.score(X, Y))
 
-	print('Decision path =', clf.decision_path(X))
-	print('Index of the leaf =', clf.apply(X))
+	print('Decision path =', classifier.decision_path(X))
+	print('Index of the leaf =', classifier.apply(X))
 
 #%%-------------------------------------------------------------------
 
@@ -31,6 +33,8 @@ def decision_tree_regressor_example():
 
 	regressor = tree.DecisionTreeRegressor(random_state=0)
 	regressor.fit(X, Y)
+
+	print('Feature importance =', regressor.feature_importances_)
 
 	X_test = X
 	print('Prediction =', regressor.predict(X_test))

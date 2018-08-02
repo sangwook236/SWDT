@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-# REF [site] >> http://scikit-learn.org/stable/modules/ensemble.html
-# REF [site] >> http://scikit-learn.org/stable/auto_examples/ensemble/plot_forest_iris.html
+# REF [site] >>
+#	http://scikit-learn.org/stable/modules/ensemble.html
+#	http://scikit-learn.org/stable/auto_examples/ensemble/plot_forest_iris.html
 
 from sklearn.model_selection import cross_val_score
 from sklearn.datasets import make_blobs
@@ -21,20 +22,20 @@ def main():
 
 	num_estimators = 30
 
-	clf = DecisionTreeClassifier(max_depth=None, min_samples_split=2, random_state=0)
-	scores = cross_val_score(clf, X, y)
+	classifier = DecisionTreeClassifier(max_depth=None, min_samples_split=2, random_state=0)
+	scores = cross_val_score(classifier, X, y)
 	print("DecisionTreeClassifier =", scores.mean())
 
-	clf = RandomForestClassifier(n_estimators=num_estimators, max_depth=None, min_samples_split=2, random_state=0)
-	scores = cross_val_score(clf, X, y)
+	classifier = RandomForestClassifier(n_estimators=num_estimators, max_depth=None, min_samples_split=2, random_state=0)
+	scores = cross_val_score(classifier, X, y)
 	print("RandomForestClassifier =", scores.mean())
 
-	clf = ExtraTreesClassifier(n_estimators=num_estimators, max_depth=None, min_samples_split=2, random_state=0)
-	scores = cross_val_score(clf, X, y)
+	classifier = ExtraTreesClassifier(n_estimators=num_estimators, max_depth=None, min_samples_split=2, random_state=0)
+	scores = cross_val_score(classifier, X, y)
 	print("ExtraTreesClassifier =", scores.mean())
 
-	clf = AdaBoostClassifier(DecisionTreeClassifier(max_depth=3), n_estimators=num_estimators)
-	scores = cross_val_score(clf, X, y)
+	classifier = AdaBoostClassifier(DecisionTreeClassifier(max_depth=3), n_estimators=num_estimators)
+	scores = cross_val_score(classifier, X, y)
 	print("AdaBoostClassifier =", scores.mean())
 
 #%%------------------------------------------------------------------
