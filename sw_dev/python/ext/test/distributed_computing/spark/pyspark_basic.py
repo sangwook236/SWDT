@@ -50,7 +50,12 @@ def main():
 #	Set environment variable.
 #		If winutils.exe is in ${WINUTILS_HOME}/bin,
 #			set HADOOP_HOME=${WINUTILS_HOME}
+#
 #	spark-submit pyspark_basic.py
+#	spark-submit --master local[4] pyspark_basic.py
+#		Run in local mode with 4 cores.
+#	spark-submit --master spark://host:7077 --executor-memory 10g pyspark_basic.py
+#		Run in a Spark Standalone cluster.
 
 if '__main__' == __name__:
 	main()

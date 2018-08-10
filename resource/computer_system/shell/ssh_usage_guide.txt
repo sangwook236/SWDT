@@ -5,11 +5,34 @@
 		https://winscp.net/
 
 [-] Usage.
+	- Config file.
+		/etc/ssh/sshd_config
+
+		~/.ssh/config
+		~/.ssh/authorized_keys
+
+	- Public/private key.
+		ssh-keygen -t rsa -b 4096
+
+		ssh-copy-id user@hostname
+			Send all public keys in the local to server.
+			Use port 22 only.
+		scp -P 3456 ~/.ssh/id_rsa.pub user@hostname:/id_rsa.pub
+
+		touch ~/.ssh/authorized_keys
+		cat ~/id_rsa.pub >> ~/.ssh/authorized_keys
+			Save public keys in ~/.ssh/authorized_keys.
+		chmod 700 ~/.ssh
+		chmod 644 ~/.ssh/authorized_keys
+
 	- ssh.
 		ssh -Y -p port_no user_name@example.com
 		ssh -Y user_name@example.com:port_no
 
-	- scp.
+		ssh -i ~/.ssh/id_rsa user_name@example.com
+		ssh -i ~/.ssh/id_rsa -o IdentitiesOnly=yes user_name@example.com
+
+	- scp.s
 		Local -> remote:
 			Copy a file:
 				scp /path/to/src/file_name user_name@example.com:/path/to/dst
