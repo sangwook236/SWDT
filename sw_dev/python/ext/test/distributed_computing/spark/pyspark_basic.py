@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env spark-submit
 
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession, SQLContext
