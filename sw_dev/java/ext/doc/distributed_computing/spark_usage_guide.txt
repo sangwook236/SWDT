@@ -9,7 +9,7 @@
 			https://github.com/PacktPublishing/Learning-PySpark
 
 [-] UI.
-	- Spark Web UI.
+	- SparkUI: Spark web UI.
 		REF [book] >> "Learning Spark", p. 150.
 		http://masternode:4040/
 
@@ -28,6 +28,12 @@
 		Stop the cluster:
 			sh $SPARK_HOME/sbin/stop-all.sh
 
+		Open Spark shell:
+			spark-shell --master spark://masternode:7077
+			pyspark --master spark://masternode:7077
+		Run a Spark application in a Spark Standalone cluster:
+			spark-submit --master spark://masternode:7077 spark_python_script.py
+
 [-] Usage.
 	- Run a Python script.
 		spark-submit spark_python_script.py
@@ -40,7 +46,8 @@
 		When using sbt:
 			sbt clean package
 
-			${SPARK_HOME}/bin/spark-submit --class "com.sangwook.Main" --master local[4] target/scala-2.11/simple-example_2.11-1.0.0.jar
+			spark-submit --class "com.sangwook.Main" --master local[4] target/scala-2.11/simple-example_2.11-1.0.0.jar
+				Run in local mode with 4 cores.
 
 		When using Maven:
 			mvn archetype:generate
@@ -51,7 +58,8 @@
 			mvn compile && mvn package
 				Compile, run tests, and create jar.
 
-			${SPARK_HOME}/bin/spark-submit --class "com.sangwook.Main" --master local[4] target/simple-example-1.0.0.jar
+			spark-submit --class "com.sangwook.Main" --master local[4] target/simple-example-1.0.0.jar
+				Run in local mode with 4 cores.
 
 	- Run a Java application.
 		When using Maven:
