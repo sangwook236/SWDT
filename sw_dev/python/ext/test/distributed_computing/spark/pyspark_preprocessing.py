@@ -3,7 +3,8 @@
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession, SQLContext
 from pyspark.sql.types import *
-import pyspark.sql.functions as fn
+import pyspark.sql.functions as func
+import traceback, sys
 
 def handle_duplicate():
 	spark = SparkSession.builder.appName('handle-duplicate').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
@@ -38,8 +39,8 @@ def handle_duplicate():
 
 	#--------------------
 	df.agg(
-		fn.count('id').alias('count'),
-		fn.countDistinct('id').alias('distinct')
+		func.count('id').alias('count'),
+		func.countDistinct('id').alias('distinct')
 	).show()
 
 def handle_missing_value():
@@ -63,7 +64,7 @@ def handle_missing_value():
 
 	# Check what percentage of missing observations are there in each column.
 	df_miss.agg(*[
-		(1 - (fn.count(c) / fn.count('*'))).alias(c + '_missing')
+		(1 - (func.count(c) / func.count('*'))).alias(c + '_missing')
 		for c in df_miss.columns
 	]).show()
 
@@ -75,7 +76,7 @@ def handle_missing_value():
 
 	# Impute the observations.
 	means = df_miss_no_income.agg(
-		*[fn.mean(c).alias(c) for c in df_miss_no_income.columns if c != 'gender']
+		*[func.mean(c).alias(c) for c in df_miss_no_income.columns if c != 'gender']
 	).toPandas().to_dict('records')[0]
 	means['gender'] = 'missing'
 	df_miss_no_income.fillna(means).show()
@@ -131,4 +132,12 @@ def main():
 #	spark-submit --master spark://host:7077 --executor-memory 10g pyspark_preprocessing.py
 
 if '__main__' == __name__:
-	main()
+	try:
+		main()
+	except:
+		#ex = sys.exc_info()  # (type, exception object, traceback).
+		##print('{} raised: {}.'.format(ex[0], ex[1]))
+		#print('{} raised: {}.'.format(ex[0].__name__, ex[1]))
+		#traceback.print_tb(ex[2], limit=None, file=sys.stdout)
+		#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
+		traceback.print_exc(limit=None, file=sys.stdout)

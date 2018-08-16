@@ -6,6 +6,7 @@ import pyspark.sql.types as types
 import matplotlib.pyplot as plt
 from bokeh.plotting import figure, show, output_file
 from bokeh.io import output_notebook
+import traceback, sys
 
 def describe_statistics():
 	spark = SparkSession.builder.appName('describe-statistics').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
@@ -117,4 +118,12 @@ def main():
 #	spark-submit --master spark://host:7077 --executor-memory 10g pyspark_descriptive_statistics.py
 
 if '__main__' == __name__:
-	main()
+	try:
+		main()
+	except:
+		#ex = sys.exc_info()  # (type, exception object, traceback).
+		##print('{} raised: {}.'.format(ex[0], ex[1]))
+		#print('{} raised: {}.'.format(ex[0].__name__, ex[1]))
+		#traceback.print_tb(ex[2], limit=None, file=sys.stdout)
+		#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
+		traceback.print_exc(limit=None, file=sys.stdout)

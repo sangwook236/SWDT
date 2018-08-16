@@ -3,6 +3,7 @@
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession, SQLContext
 from pyspark.sql.types import *
+import traceback, sys
 
 def simple_rdd_example():
 	# Create a Spark Context.
@@ -42,6 +43,10 @@ def filtering_line_example():
 def simple_dataframe_example():
 	spark = SparkSession.builder.appName('simple-dataframe-example').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
 	sc = spark.sparkContext
+
+	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
+	# Enable Arrow-based columnar data transfers.
+	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
 
 	if False:
 		df = spark.read.csv('./dataset/swimmers.csv', header=True, infer_schema=True, delimiter=',')
@@ -149,4 +154,12 @@ def main():
 #		Run in a Spark Standalone cluster.
 
 if '__main__' == __name__:
-	main()
+	try:
+		main()
+	except:
+		#ex = sys.exc_info()  # (type, exception object, traceback).
+		##print('{} raised: {}.'.format(ex[0], ex[1]))
+		#print('{} raised: {}.'.format(ex[0].__name__, ex[1]))
+		#traceback.print_tb(ex[2], limit=None, file=sys.stdout)
+		#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
+		traceback.print_exc(limit=None, file=sys.stdout)
