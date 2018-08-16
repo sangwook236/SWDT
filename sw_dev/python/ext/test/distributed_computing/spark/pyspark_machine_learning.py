@@ -16,7 +16,11 @@ import traceback, sys
 # REF [site] >> https://github.com/drabastomek/learningPySpark/blob/master/Chapter05/LearningPySpark_Chapter05.ipynb
 def infant_survival_mllib():
 	spark = SparkSession.builder.appName('infant-survival-mllib').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
-	#sc = spark.sparkContext
+	spark.sparkContext.setLogLevel('WARN')
+
+	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
+	# Enable Arrow-based columnar data transfers.
+	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
 
 	labels = [
 		('INFANT_ALIVE_AT_REPORT', types.StringType()),
@@ -260,8 +264,99 @@ def infant_survival_mllib():
 	print('Area under ROC: {0:.2f}'.format(LR_evaluation_2.areaUnderROC))
 	LR_evaluation_2.unpersist()
 
+import pyspark.ml.feature as ml_ft
+import pyspark.ml.classification as ml_cl
+import pyspark.ml.evaluation as ml_ev
+from pyspark.ml import Pipeline, PipelineModel
+
+def infant_survival_ml():
+	spark = SparkSession.builder.appName('infant-survival-ml').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark.sparkContext.setLogLevel('WARN')
+
+	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
+	# Enable Arrow-based columnar data transfers.
+	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
+
+	labels = [
+		('INFANT_ALIVE_AT_REPORT', types.IntegerType()),
+		('BIRTH_PLACE', types.StringType()),
+		('MOTHER_AGE_YEARS', types.IntegerType()),
+		('FATHER_COMBINED_AGE', types.IntegerType()),
+		('CIG_BEFORE', types.IntegerType()),
+		('CIG_1_TRI', types.IntegerType()),
+		('CIG_2_TRI', types.IntegerType()),
+		('CIG_3_TRI', types.IntegerType()),
+		('MOTHER_HEIGHT_IN', types.IntegerType()),
+		('MOTHER_PRE_WEIGHT', types.IntegerType()),
+		('MOTHER_DELIVERY_WEIGHT', types.IntegerType()),
+		('MOTHER_WEIGHT_GAIN', types.IntegerType()),
+		('DIABETES_PRE', types.IntegerType()),
+		('DIABETES_GEST', types.IntegerType()),
+		('HYP_TENS_PRE', types.IntegerType()),
+		('HYP_TENS_GEST', types.IntegerType()),
+		('PREV_BIRTH_PRETERM', types.IntegerType())
+	]
+	schema = types.StructType([types.StructField(e[0], e[1], False) for e in labels])
+	births = spark.read.csv('dataset/births_transformed.csv.gz', header=True, schema=schema)
+
+	# Create transformers.
+	births = births.withColumn('BIRTH_PLACE_INT', births['BIRTH_PLACE'].cast(types.IntegerType()))
+	# Encode the BIRTH_PLACE column using the OneHotEncoder method.
+	encoder = ml_ft.OneHotEncoder(inputCol='BIRTH_PLACE_INT', outputCol='BIRTH_PLACE_VEC')
+
+	featuresCreator = ml_ft.VectorAssembler(inputCols=[col[0] for col in labels[2:]] + [encoder.getOutputCol()], outputCol='features')
+
+	# Create a model.
+	logistic = ml_cl.LogisticRegression(maxIter=10, regParam=0.01, labelCol='INFANT_ALIVE_AT_REPORT')
+
+	# Create a pipeline.
+	pipeline = Pipeline(stages=[encoder, featuresCreator, logistic])
+
+	# Split the dataset into training and testing datasets.
+	births_train, births_test = births.randomSplit([0.7, 0.3], seed=666)
+
+	# Run the pipeline and estimate the model.
+	model = pipeline.fit(births_train)
+	test_model = model.transform(births_test)
+
+	print('**********00001', test_model.take(1))
+
+	# Evaluate the performance of the model.
+	evaluator = ml_ev.BinaryClassificationEvaluator(rawPredictionCol='probability', labelCol='INFANT_ALIVE_AT_REPORT')
+	print(evaluator.evaluate(test_model, {evaluator.metricName: 'areaUnderROC'}))
+	print(evaluator.evaluate(test_model, {evaluator.metricName: 'areaUnderPR'}))
+
+	# Save the Pipeline definition.
+	pipelinePath = './infant_oneHotEncoder_Logistic_Pipeline'
+	pipeline.write().overwrite().save(pipelinePath)
+
+	# Load the Pipeline definition.
+	loadedPipeline = Pipeline.load(pipelinePath)
+	loadedPipeline.fit(births_train).transform(births_test).take(1)
+
+	# Save the PipelineModel.
+	modelPath = './infant_oneHotEncoder_Logistic_PipelineModel'
+	model.write().overwrite().save(modelPath)
+
+	# Load the PipelineModel.
+	loadedPipelineModel = PipelineModel.load(modelPath)
+	test_reloadedModel = loadedPipelineModel.transform(births_test)
+
+	print('**********00002', test_reloadedModel.take(1))
+
+def hyper_parameter_optimization():
+	spark = SparkSession.builder.appName('hyper-parameter-optimization').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark.sparkContext.setLogLevel('WARN')
+
+	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
+	# Enable Arrow-based columnar data transfers.
+	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
+
 def main():
-	infant_survival_mllib()
+	#infant_survival_mllib()
+	infant_survival_ml()
+
+	hyper_parameter_optimization()
 
 #%%------------------------------------------------------------------
 

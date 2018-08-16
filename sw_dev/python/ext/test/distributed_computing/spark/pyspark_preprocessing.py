@@ -8,6 +8,7 @@ import traceback, sys
 
 def handle_duplicate():
 	spark = SparkSession.builder.appName('handle-duplicate').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark.sparkContext.setLogLevel('WARN')
 
 	df = spark.createDataFrame(
 		[
@@ -45,6 +46,7 @@ def handle_duplicate():
 
 def handle_missing_value():
 	spark = SparkSession.builder.appName('handle-missing-value').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark.sparkContext.setLogLevel('WARN')
 
 	df_miss = spark.createDataFrame(
 		[

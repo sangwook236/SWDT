@@ -11,6 +11,7 @@ import traceback, sys
 def describe_statistics():
 	spark = SparkSession.builder.appName('describe-statistics').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
 	sc = spark.sparkContext
+	sc.setLogLevel('WARN')
 
 	# Read a dataset in and remove its header.
 	fraud = sc.textFile('dataset/ccFraud.csv.gz')
@@ -56,6 +57,7 @@ def visualize_data():
 
 	spark = SparkSession.builder.appName('visualize-data').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
 	sc = spark.sparkContext
+	sc.setLogLevel('WARN')
 
 	# Read a dataset in and remove its header.
 	fraud = sc.textFile('dataset/ccFraud.csv.gz')

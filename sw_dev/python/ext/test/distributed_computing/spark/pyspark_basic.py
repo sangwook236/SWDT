@@ -9,6 +9,7 @@ def simple_rdd_example():
 	# Create a Spark Context.
 	conf = SparkConf().setMaster('local').setAppName('filteringLines')
 	sc = SparkContext(conf=conf)
+	sc.setLogLevel('WARN')
 
 	nums = sc.parallelize([1, 2, 3, 4])
 	squared = nums.map(lambda x: x * x).collect()
@@ -25,6 +26,7 @@ def filtering_line_example():
 	# Create a Spark Context.
 	conf = SparkConf().setMaster('local').setAppName('filteringLines')
 	sc = SparkContext(conf=conf)
+	sc.setLogLevel('WARN')
 
 	# Load our input data.
 	lines = sc.textFile(inputFile)
@@ -43,6 +45,7 @@ def filtering_line_example():
 def simple_dataframe_example():
 	spark = SparkSession.builder.appName('simple-dataframe-example').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
 	sc = spark.sparkContext
+	sc.setLogLevel('WARN')
 
 	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
 	# Enable Arrow-based columnar data transfers.
@@ -98,6 +101,7 @@ def simple_dataframe_example():
 
 def flight_example():
 	spark = SparkSession.builder.appName('flight-example').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark.sparkContext.setLogLevel('WARN')
 
 	# Set file paths.
 	flightPerfFilePath = './dataset/flight/departuredelays.csv'
