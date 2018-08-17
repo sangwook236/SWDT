@@ -38,6 +38,7 @@
 	- Run a Python script.
 		spark-submit spark_python_script.py
 		spark-submit --master local[4] spark_python_script.py
+		spark-submit --master local[4] --packages mysql:mysql-connector-java:8.0.12 spark_python_script.py
 			Run in local mode with 4 cores.
 		spark-submit --master spark://host:7077 --executor-memory 10g spark_python_script.py
 			Run in a Spark Standalone cluster.

@@ -103,6 +103,10 @@ def flight_example():
 	spark = SparkSession.builder.appName('flight-example').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
 	spark.sparkContext.setLogLevel('WARN')
 
+	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
+	# Enable Arrow-based columnar data transfers.
+	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
+
 	# Set file paths.
 	flightPerfFilePath = './dataset/flight/departuredelays.csv'
 	airportsFilePath = './dataset/flight/airport-codes-na.txt'
