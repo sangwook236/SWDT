@@ -319,7 +319,7 @@ def infant_survival_ml():
 	model = pipeline.fit(births_train)
 	test_model = model.transform(births_test)
 
-	print('**********00001', test_model.take(1))
+	print(test_model.take(1))
 
 	# Evaluate the performance of the model.
 	evaluator = ml_ev.BinaryClassificationEvaluator(rawPredictionCol='probability', labelCol='INFANT_ALIVE_AT_REPORT')
@@ -342,21 +342,161 @@ def infant_survival_ml():
 	loadedPipelineModel = PipelineModel.load(modelPath)
 	test_reloadedModel = loadedPipelineModel.transform(births_test)
 
-	print('**********00002', test_reloadedModel.take(1))
+	print(test_reloadedModel.take(1))
 
-def hyper_parameter_optimization():
-	spark = SparkSession.builder.appName('hyper-parameter-optimization').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+import pyspark.ml.tuning as tune
+
+def train_validation_splitting_ml():
+	spark = SparkSession.builder.appName('train-validation-splitting-ml').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
 	spark.sparkContext.setLogLevel('WARN')
 
 	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
 	# Enable Arrow-based columnar data transfers.
 	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
 
+	labels = [
+		('INFANT_ALIVE_AT_REPORT', types.IntegerType()),
+		('BIRTH_PLACE', types.StringType()),
+		('MOTHER_AGE_YEARS', types.IntegerType()),
+		('FATHER_COMBINED_AGE', types.IntegerType()),
+		('CIG_BEFORE', types.IntegerType()),
+		('CIG_1_TRI', types.IntegerType()),
+		('CIG_2_TRI', types.IntegerType()),
+		('CIG_3_TRI', types.IntegerType()),
+		('MOTHER_HEIGHT_IN', types.IntegerType()),
+		('MOTHER_PRE_WEIGHT', types.IntegerType()),
+		('MOTHER_DELIVERY_WEIGHT', types.IntegerType()),
+		('MOTHER_WEIGHT_GAIN', types.IntegerType()),
+		('DIABETES_PRE', types.IntegerType()),
+		('DIABETES_GEST', types.IntegerType()),
+		('HYP_TENS_PRE', types.IntegerType()),
+		('HYP_TENS_GEST', types.IntegerType()),
+		('PREV_BIRTH_PRETERM', types.IntegerType())
+	]
+	schema = types.StructType([types.StructField(e[0], e[1], False) for e in labels])
+	births = spark.read.csv('dataset/births_transformed.csv.gz', header=True, schema=schema)
+
+	# Create transformers.
+	births = births.withColumn('BIRTH_PLACE_INT', births['BIRTH_PLACE'].cast(types.IntegerType()))
+	# Encode the BIRTH_PLACE column using the OneHotEncoder method.
+	encoder = ml_ft.OneHotEncoder(inputCol='BIRTH_PLACE_INT', outputCol='BIRTH_PLACE_VEC')
+
+	featuresCreator = ml_ft.VectorAssembler(inputCols=[col[0] for col in labels[2:]] + [encoder.getOutputCol()], outputCol='features')
+
+	# Split the dataset into training and testing datasets.
+	births_train, births_test = births.randomSplit([0.7, 0.3], seed=666)
+
+	# Select only the top five features.
+	selector = ml_ft.ChiSqSelector(
+		numTopFeatures=5,
+		featuresCol=featuresCreator.getOutputCol(),
+		outputCol='selectedFeatures',
+		labelCol='INFANT_ALIVE_AT_REPORT'
+	)
+
+	# Create a purely transforming Pipeline.
+	pipeline = Pipeline(stages=[encoder, featuresCreator, selector])
+	data_transformer = pipeline.fit(births_train)
+
+	# Create LogisticRegression and Pipeline.
+	logistic = ml_cl.LogisticRegression(labelCol='INFANT_ALIVE_AT_REPORT', featuresCol='selectedFeatures')
+	grid = tune.ParamGridBuilder() \
+		.addGrid(logistic.maxIter, [2, 10, 50]) \
+		.addGrid(logistic.regParam, [0.01, 0.05, 0.3]) \
+		.build()
+	# Define a way of comparing the models.
+	evaluator = ml_ev.BinaryClassificationEvaluator(rawPredictionCol='probability', labelCol='INFANT_ALIVE_AT_REPORT')
+
+	# Create a TrainValidationSplit object.
+	tvs = tune.TrainValidationSplit(estimator=logistic, estimatorParamMaps=grid, evaluator=evaluator)
+
+	# Fit our data to the model.
+	tvsModel = tvs.fit(data_transformer.transform(births_train))
+	data_train = data_transformer.transform(births_test)
+
+	# Calculate results.
+	results = tvsModel.transform(data_train)
+	print(evaluator.evaluate(results, {evaluator.metricName: 'areaUnderROC'}))
+	print(evaluator.evaluate(results, {evaluator.metricName: 'areaUnderPR'}))
+
+def hyper_parameter_optimization_ml():
+	spark = SparkSession.builder.appName('hyper-parameter-optimization-ml').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark.sparkContext.setLogLevel('WARN')
+
+	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
+	# Enable Arrow-based columnar data transfers.
+	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
+
+	labels = [
+		('INFANT_ALIVE_AT_REPORT', types.IntegerType()),
+		('BIRTH_PLACE', types.StringType()),
+		('MOTHER_AGE_YEARS', types.IntegerType()),
+		('FATHER_COMBINED_AGE', types.IntegerType()),
+		('CIG_BEFORE', types.IntegerType()),
+		('CIG_1_TRI', types.IntegerType()),
+		('CIG_2_TRI', types.IntegerType()),
+		('CIG_3_TRI', types.IntegerType()),
+		('MOTHER_HEIGHT_IN', types.IntegerType()),
+		('MOTHER_PRE_WEIGHT', types.IntegerType()),
+		('MOTHER_DELIVERY_WEIGHT', types.IntegerType()),
+		('MOTHER_WEIGHT_GAIN', types.IntegerType()),
+		('DIABETES_PRE', types.IntegerType()),
+		('DIABETES_GEST', types.IntegerType()),
+		('HYP_TENS_PRE', types.IntegerType()),
+		('HYP_TENS_GEST', types.IntegerType()),
+		('PREV_BIRTH_PRETERM', types.IntegerType())
+	]
+	schema = types.StructType([types.StructField(e[0], e[1], False) for e in labels])
+	births = spark.read.csv('dataset/births_transformed.csv.gz', header=True, schema=schema)
+
+	# Create transformers.
+	births = births.withColumn('BIRTH_PLACE_INT', births['BIRTH_PLACE'].cast(types.IntegerType()))
+	# Encode the BIRTH_PLACE column using the OneHotEncoder method.
+	encoder = ml_ft.OneHotEncoder(inputCol='BIRTH_PLACE_INT', outputCol='BIRTH_PLACE_VEC')
+
+	featuresCreator = ml_ft.VectorAssembler(inputCols=[col[0] for col in labels[2:]] + [encoder.getOutputCol()], outputCol='features')
+
+	# Split the dataset into training and testing datasets.
+	births_train, births_test = births.randomSplit([0.7, 0.3], seed=666)
+
+	# Create a purely transforming Pipeline.
+	pipeline = Pipeline(stages=[encoder, featuresCreator])
+	data_transformer = pipeline.fit(births_train)
+
+	# Specify our model and the list of parameters we want to loop through.
+	logistic = ml_cl.LogisticRegression(labelCol='INFANT_ALIVE_AT_REPORT')
+	grid = tune.ParamGridBuilder() \
+		.addGrid(logistic.maxIter, [2, 10, 50]) \
+		.addGrid(logistic.regParam, [0.01, 0.05, 0.3]) \
+		.build()
+	# Define a way of comparing the models.
+	evaluator = ml_ev.BinaryClassificationEvaluator(rawPredictionCol='probability', labelCol='INFANT_ALIVE_AT_REPORT')
+
+	# Create a logic that will do the validation work.
+	cv = tune.CrossValidator(estimator=logistic, estimatorParamMaps=grid, evaluator=evaluator)
+
+	cvModel = cv.fit(data_transformer.transform(births_train))
+
+	# See if cvModel performed better than our previous model
+	data_train = data_transformer.transform(births_test)
+	results = cvModel.transform(data_train)
+
+	print(evaluator.evaluate(results, {evaluator.metricName: 'areaUnderROC'}))
+	print(evaluator.evaluate(results, {evaluator.metricName: 'areaUnderPR'}))
+
+	# Parameters which the best model has.
+	results = [
+		([{key.name: paramValue} for key, paramValue in zip(params.keys(), params.values())], metric)
+		for params, metric in zip(cvModel.getEstimatorParamMaps(), cvModel.avgMetrics)
+	]
+	print(sorted(results, key=lambda el: el[1], reverse=True)[0])
+
 def main():
 	#infant_survival_mllib()
-	infant_survival_ml()
+	#infant_survival_ml()
 
-	hyper_parameter_optimization()
+	train_validation_splitting_ml()
+	#hyper_parameter_optimization_ml()
 
 #%%------------------------------------------------------------------
 
