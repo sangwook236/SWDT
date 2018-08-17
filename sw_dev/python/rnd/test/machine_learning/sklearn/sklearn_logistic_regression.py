@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-# REF [site] >> http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
+# REF [site] >>
+#	http://scikit-learn.org/stable/modules/linear_model.html
+#	http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
 
 from sklearn import linear_model
 from sklearn import datasets

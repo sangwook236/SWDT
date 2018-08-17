@@ -21,8 +21,8 @@ def svc_example():
 	#X, Y = datasets.make_blobs(n_samples=10000, n_features=10, centers=100, cluster_std=1.0, center_box=(-10.0, 10.0), shuffle=False, random_state=0)
 
 	probability = True
-	classifier = svm.SVC(kernel='rbf', degree=3, probability=probability, decision_function_shape='ovr', random_state=None)
-	#classifier = svm.SVC(kernel='linear', degree=3, probability=probability, decision_function_shape='ovr', random_state=None)
+	#classifier = svm.SVC(kernel='rbf', degree=3, probability=probability, decision_function_shape='ovr', random_state=None)
+	classifier = svm.SVC(kernel='linear', degree=3, probability=probability, decision_function_shape='ovr', random_state=None)
 	classifier.fit(X, Y)
 
 	if hasattr(classifier, 'coef_'):
@@ -52,6 +52,11 @@ def svc_example():
 	#	Shape = (n_samples, n_classes * (n_classes-1) / 2) when decision_function_shape = 'ovo'.
 	print('Distance =', classifier.decision_function(X_test))
 	print('Score =', classifier.score(X, Y))
+
+	# Support vectors.
+	print('#SVs = ', classifier.n_support_ )
+	print('SV indices = \n', classifier.support_)
+	print('SVs = \n', classifier.support_vectors_)
 
 #%%-------------------------------------------------------------------
 # Linear SVC.

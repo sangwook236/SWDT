@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
-# REF [site] >> http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
+# REF [site] >>
+#	http://scikit-learn.org/stable/modules/neural_networks_supervised.html
+#	http://scikit-learn.org/stable/modules/neural_networks_unsupervised.html
+#	http://scikit-learn.org/stable/auto_examples/neural_networks/plot_mnist_filters.html
 
 from sklearn import neural_network
 from sklearn import datasets
