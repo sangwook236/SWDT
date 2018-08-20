@@ -6,7 +6,7 @@ import traceback, sys
 # REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases
 
 def mysql_jdbc():
-	spark = SparkSession.builder.appName('database-example').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('mysql-jdbc').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
 	spark.sparkContext.setLogLevel('WARN')
 
 	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
@@ -15,11 +15,11 @@ def mysql_jdbc():
 
 	jdbc_df = spark.read \
 		.format('jdbc') \
-		.option('url', 'jdbc:mysql://192.168.0.45:3306/datasense?characterEncoding=UTF-8&serverTimezone=UTC') \
+		.option('url', 'jdbc:mysql://host:3306/dbname?characterEncoding=UTF-8&serverTimezone=UTC') \
 		.option('driver', 'com.mysql.cj.jdbc.Driver') \
-		.option('dbtable', 'data_set') \
-		.option('user', 'root') \
-		.option('password', '') \
+		.option('dbtable', 'tablename') \
+		.option('user', 'username') \
+		.option('password', 'password') \
 		.load()
 
 	jdbc_df.show()
