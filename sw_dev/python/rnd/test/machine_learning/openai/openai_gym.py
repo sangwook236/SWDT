@@ -12,7 +12,7 @@ def env_info():
 	print(gym.envs.registry.all())
 
 	#--------------------
-	env = gym.make('CartPole-v0')
+	env = gym.make('CartPole-v1')
 
 	print('Action space =', env.action_space)
 	print('Observation space =', env.observation_space)
@@ -22,11 +22,11 @@ def env_info():
 
 # REF [site] >> https://gym.openai.com/docs/
 def simple_agent_environment_loop():
-	env = gym.make('CartPole-v0')
+	env = gym.make('CartPole-v1')
 	env.reset()
 
 	for i_episode in range(20):
-		observation = env.reset()
+		observation = env.reset()  # Return an initial observation.
 		for t in range(100):
 			env.render()
 			print('Observation =', observation)

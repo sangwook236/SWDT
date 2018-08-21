@@ -63,8 +63,8 @@ class LinearMulticlass(gpflow.models.Model):
 
 # REF [site] >> https://gpflow.readthedocs.io/en/latest/notebooks/models.html
 def build_new_model_example():
-	plt.style.use('ggplot')
 	#%matplotlib inline
+	plt.style.use('ggplot')
 
 	X = np.vstack([
 		np.random.randn(10, 2) + [2, 2],
@@ -98,9 +98,6 @@ def main():
 	build_new_model_example()
 
 #%%------------------------------------------------------------------
-
-# Usage:
-#	python gpflow_basic.py
 
 if '__main__' == __name__:
 	main()

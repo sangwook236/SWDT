@@ -36,6 +36,7 @@ def plot(m, ax):
 # REF [site] >> https://gpflow.readthedocs.io/en/latest/notebooks/classification.html
 def classification_example():
 	%matplotlib inline
+	plt.style.use('ggplot')
 
 	Xtrain = np.loadtxt('dataset/banana_X_train.csv', delimiter=',')
 	Ytrain = np.loadtxt('dataset/banana_Y_train.csv', delimiter=',').reshape(-1, 1)
@@ -85,9 +86,6 @@ def main():
 	classification_example()
 
 #%%------------------------------------------------------------------
-
-# Usage:
-#	python gpflow_classification.py
 
 if '__main__' == __name__:
 	main()
