@@ -1,4 +1,4 @@
-#!/usr/bin/env spark-submit
+#!/usr/bin/env python
 
 from pyspark.sql import SparkSession
 import pyspark.sql.types as types
@@ -15,12 +15,8 @@ import traceback, sys
 
 # REF [site] >> https://github.com/drabastomek/learningPySpark/blob/master/Chapter05/LearningPySpark_Chapter05.ipynb
 def infant_survival_mllib():
-	spark = SparkSession.builder.appName('infant-survival-mllib').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('infant-survival-mllib').getOrCreate()
 	spark.sparkContext.setLogLevel('WARN')
-
-	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
-	# Enable Arrow-based columnar data transfers.
-	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
 
 	labels = [
 		('INFANT_ALIVE_AT_REPORT', types.StringType()),
@@ -270,12 +266,8 @@ import pyspark.ml.evaluation as ml_ev
 from pyspark.ml import Pipeline, PipelineModel
 
 def infant_survival_ml():
-	spark = SparkSession.builder.appName('infant-survival-ml').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('infant-survival-ml').getOrCreate()
 	spark.sparkContext.setLogLevel('WARN')
-
-	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
-	# Enable Arrow-based columnar data transfers.
-	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
 
 	labels = [
 		('INFANT_ALIVE_AT_REPORT', types.IntegerType()),
@@ -347,12 +339,8 @@ def infant_survival_ml():
 import pyspark.ml.tuning as tune
 
 def train_validation_splitting_ml():
-	spark = SparkSession.builder.appName('train-validation-splitting-ml').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('train-validation-splitting-ml').getOrCreate()
 	spark.sparkContext.setLogLevel('WARN')
-
-	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
-	# Enable Arrow-based columnar data transfers.
-	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
 
 	labels = [
 		('INFANT_ALIVE_AT_REPORT', types.IntegerType()),
@@ -420,12 +408,8 @@ def train_validation_splitting_ml():
 	print(evaluator.evaluate(results, {evaluator.metricName: 'areaUnderPR'}))
 
 def hyper_parameter_optimization_ml():
-	spark = SparkSession.builder.appName('hyper-parameter-optimization-ml').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('hyper-parameter-optimization-ml').getOrCreate()
 	spark.sparkContext.setLogLevel('WARN')
-
-	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
-	# Enable Arrow-based columnar data transfers.
-	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
 
 	labels = [
 		('INFANT_ALIVE_AT_REPORT', types.IntegerType()),
@@ -501,6 +485,7 @@ def main():
 #%%------------------------------------------------------------------
 
 # Usage:
+#	python pyspark_machine_learning.py
 #	spark-submit pyspark_machine_learning.py
 #	spark-submit --master local[4] pyspark_machine_learning.py
 #	spark-submit --master spark://host:7077 --executor-memory 10g pyspark_machine_learning.py

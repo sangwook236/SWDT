@@ -1,4 +1,4 @@
-#!/usr/bin/env spark-submit
+#!/usr/bin/env python
 
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession, SQLContext
@@ -7,7 +7,7 @@ import pyspark.sql.functions as func
 import traceback, sys
 
 def handle_duplicate():
-	spark = SparkSession.builder.appName('handle-duplicate').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('handle-duplicate').getOrCreate()
 	spark.sparkContext.setLogLevel('WARN')
 
 	df = spark.createDataFrame(
@@ -45,7 +45,7 @@ def handle_duplicate():
 	).show()
 
 def handle_missing_value():
-	spark = SparkSession.builder.appName('handle-missing-value').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('handle-missing-value').getOrCreate()
 	spark.sparkContext.setLogLevel('WARN')
 
 	df_miss = spark.createDataFrame(
@@ -84,7 +84,7 @@ def handle_missing_value():
 	df_miss_no_income.fillna(means).show()
 
 def handle_outlier():
-	spark = SparkSession.builder.appName('handle-missing-value').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('handle-missing-value').getOrCreate()
 
 	df_outliers = spark.createDataFrame(
 		[
@@ -129,6 +129,7 @@ def main():
 #%%------------------------------------------------------------------
 
 # Usage:
+#	python pyspark_preprocessing.py
 #	spark-submit pyspark_preprocessing.py
 #	spark-submit --master local[4] pyspark_preprocessing.py
 #	spark-submit --master spark://host:7077 --executor-memory 10g pyspark_preprocessing.py

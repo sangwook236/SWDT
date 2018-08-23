@@ -1,9 +1,48 @@
-#!/usr/bin/env spark-submit
+#!/usr/bin/env python
 
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession, SQLContext
 from pyspark.sql.types import *
 import traceback, sys
+
+# Configure Spark:
+#	1. Configurations declared explicitly in the user's code. (highest priority)
+#	2. Flags passed to spark-submit.
+#	3. Values in the properties file (conf/spark-defaults.conf in the Spark directory).
+#	4. Default values. (lowest priority)
+
+# Master URLs:
+#	REF [site] >> https://spark.apache.org/docs/latest/submitting-applications.html
+#	local								Run Spark locally with one worker thread (i.e. no parallelism at all).
+#	local[K]							Run Spark locally with K worker threads (ideally, set this to the number of cores on your machine).
+#	local[K,F]							Run Spark locally with K worker threads and F maxFailures (see spark.task.maxFailures for an explanation of this variable)
+#	local[*]							Run Spark locally with as many worker threads as logical cores on your machine.
+#	local[*,F]							Run Spark locally with as many worker threads as logical cores on your machine and F maxFailures.
+#	spark://HOST:PORT					Connect to the given Spark standalone cluster master. The port must be whichever one your master is configured to use, which is 7077 by default.
+#	spark://HOST1:PORT1,HOST2:PORT2		Connect to the given Spark standalone cluster with standby masters with Zookeeper.
+#	mesos://HOST:PORT					Connect to the given Mesos cluster. The port must be whichever one your is configured to use, which is 5050 by default.
+#	mesos://zk://HOST:PORT				Connect to the given Mesos cluster using ZooKeeper.
+#	yarn								Connect to a YARN cluster in client or cluster mode depending on the value of --deploy-mode. The cluster location will be found based on the HADOOP_CONF_DIR or YARN_CONF_DIR variable.
+#	k8s://HOST:PORT						Connect to a Kubernetes cluster in cluster mode.
+
+def basic_configuration():
+	spark = SparkSession.builder.appName('basic-configuration').master('local[4]').config('spark.executor.memory', '10g').getOrCreate()
+	#conf = SparkConf().set('spark.executor.cores', '3')
+	#spark = SparkSession.builder.appName('basic-configuration').master('local').config(conf=conf).enableHiveSupport().getOrCreate()
+	#spark = SparkSession.builder.appName('basic-configuration').master('spark://host:7077').config('spark.executor.memory', '10g').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark.sparkContext.setLogLevel('WARN')
+
+	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
+	# Enable Arrow-based columnar data transfers.
+	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
+
+	spark.conf.set('spark.cores.max', '3')
+	spark.conf.set('spark.driver.memory','8g')
+	spark.conf.set('spark.executor.memory', '8g')
+	spark.conf.set('spark.executor.cores', '3')
+
+	#print('All configuration =', spark.conf.getAll())  # Error: Not working.
+	print('All configuration =', spark.sparkContext.getConf().getAll())
 
 def simple_rdd_example():
 	# Create a Spark Context.
@@ -43,13 +82,9 @@ def filtering_line_example():
 	sc.stop()
 
 def simple_dataframe_example():
-	spark = SparkSession.builder.appName('simple-dataframe-example').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('simple-dataframe-example').getOrCreate()
 	sc = spark.sparkContext
 	sc.setLogLevel('WARN')
-
-	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
-	# Enable Arrow-based columnar data transfers.
-	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
 
 	if False:
 		df = spark.read.csv('./dataset/swimmers.csv', header=True, infer_schema=True, delimiter=',')
@@ -83,7 +118,7 @@ def simple_dataframe_example():
 			{"id": "234", "name": "Michael", "age": 22, "eyeColor": "green"},
 			{"id": "345", "name": "Simone", "age": 23, "eyeColor": "blue"}
 		))
-		
+
 		# Each line is a JSON object.
 		df = spark.read.json(stringJSONRDD)
 
@@ -96,16 +131,12 @@ def simple_dataframe_example():
 	df.count()
 
 	df.select('id', 'age').filter('age = 22').show()
-	df.select(df.id, df.age).filter(22 == swimmers.age).show()
+	df.select(df.id, df.age).filter(22 == df.age).show()
 	df.select('name', 'eyeColor').filter('eyeColor like "b%"').show()
 
 def flight_example():
-	spark = SparkSession.builder.appName('flight-example').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('flight-example').getOrCreate()
 	spark.sparkContext.setLogLevel('WARN')
-
-	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
-	# Enable Arrow-based columnar data transfers.
-	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
 
 	# Set file paths.
 	flightPerfFilePath = './dataset/flight/departuredelays.csv'
@@ -139,7 +170,9 @@ def flight_example():
 	).show()
 
 def main():
-	simple_rdd_example()
+	#basic_configuration()
+
+	#simple_rdd_example()
 	#filtering_line_example()
 
 	simple_dataframe_example()
@@ -148,13 +181,7 @@ def main():
 #%%------------------------------------------------------------------
 
 # Usage:
-#	Download winutils.exe
-#		http://public-repo-1.hortonworks.com/hdp-win-alpha/winutils.exe
-#		https://github.com/steveloughran/winutils
-#	Set environment variable.
-#		If winutils.exe is in ${WINUTILS_HOME}/bin,
-#			set HADOOP_HOME=${WINUTILS_HOME}
-#
+#	python pyspark_basic.py
 #	spark-submit pyspark_basic.py
 #	spark-submit --master local[4] pyspark_basic.py
 #		Run in local mode with 4 cores.

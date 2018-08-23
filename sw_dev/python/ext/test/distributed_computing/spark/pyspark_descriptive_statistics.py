@@ -1,4 +1,4 @@
-#!/usr/bin/env spark-submit
+#!/usr/bin/env python
 
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession, SQLContext
@@ -9,7 +9,7 @@ from bokeh.io import output_notebook
 import traceback, sys
 
 def describe_statistics():
-	spark = SparkSession.builder.appName('describe-statistics').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('describe-statistics').getOrCreate()
 	sc = spark.sparkContext
 	sc.setLogLevel('WARN')
 
@@ -55,7 +55,7 @@ def visualize_data():
 	plt.style.use('ggplot')
 	#output_notebook()
 
-	spark = SparkSession.builder.appName('visualize-data').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('visualize-data').getOrCreate()
 	sc = spark.sparkContext
 	sc.setLogLevel('WARN')
 
@@ -115,6 +115,7 @@ def main():
 #%%------------------------------------------------------------------
 
 # Usage:
+#	python pyspark_descriptive_statistics.py
 #	spark-submit pyspark_descriptive_statistics.py
 #	spark-submit --master local[4] pyspark_descriptive_statistics.py
 #	spark-submit --master spark://host:7077 --executor-memory 10g pyspark_descriptive_statistics.py

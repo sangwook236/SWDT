@@ -1,4 +1,4 @@
-#!/usr/bin/env spark-submit
+#!/usr/bin/env python
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
@@ -7,12 +7,8 @@ from graphframes import *
 import traceback, sys
 
 def flight_example():
-	spark = SparkSession.builder.appName('simple-tensorframes-example-1').config('spark.sql.crossJoin.enabled', 'true').getOrCreate()
+	spark = SparkSession.builder.appName('simple-tensorframes-example-1').getOrCreate()
 	spark.sparkContext.setLogLevel('WARN')
-
-	# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#pyspark-usage-guide-for-pandas-with-apache-arrow
-	# Enable Arrow-based columnar data transfers.
-	spark.conf.set('spark.sql.execution.arrow.enabled', 'true')
 
 	# Set file paths.
 	tripdelaysFilePath = 'dataset/flight/departuredelays.csv'
@@ -153,6 +149,7 @@ def main():
 #%%------------------------------------------------------------------
 
 # Usage:
+#	python pyspark_graphframes.py
 #	spark-submit --packages graphframes:graphframes:0.5.0-spark2.1-s_2.11 pyspark_graphframes.py
 #	spark-submit --master local[4] --packages graphframes:graphframes:0.5.0-spark2.1-s_2.11 pyspark_graphframes.py
 #	spark-submit --master spark://host:7077 --packages graphframes:graphframes:0.5.0-spark2.1-s_2.11 --executor-memory 10g pyspark_graphframes.py
