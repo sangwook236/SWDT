@@ -8,12 +8,13 @@ echo.
 echo Usage :
 echo   "%0% [--set | --clean]"
 echo.
+
 goto EXIT
 
 rem -----------------------------------------------------------
 :SET
 
-set PYTHONPATH=D:\MyProgramFiles\Python35
+set PYTHONPATH=D:\util\Anaconda3
 
 set SAVED_PATH_FOR_PYTHON=%PATH%
 set PATH=%PYTHONPATH%\bin;%PATH%

@@ -8,6 +8,7 @@ echo.
 echo Usage :
 echo   "%0% [--set | --clean]"
 echo.
+
 goto EXIT
 
 rem -----------------------------------------------------------
