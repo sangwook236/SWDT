@@ -5,7 +5,8 @@ from pyspark.sql import SparkSession, SQLContext
 from pyspark.sql.types import *
 import traceback, sys
 
-# Configure Spark:
+# Spark configuration:
+#	REF [site] >> https://spark.apache.org/docs/latest/configuration.html
 #	1. Configurations declared explicitly in the user's code. (highest priority)
 #	2. Flags passed to spark-submit.
 #	3. Values in the properties file (conf/spark-defaults.conf in the Spark directory).
@@ -40,6 +41,7 @@ def basic_configuration():
 	spark.conf.set('spark.driver.memory','8g')
 	spark.conf.set('spark.executor.memory', '8g')
 	spark.conf.set('spark.executor.cores', '3')
+	spark.conf.set('spark.jars.packages', 'mysql:mysql-connector-java:8.0.12,org.xerial:sqlite-jdbc:3.23.1')
 
 	#print('All configuration =', spark.conf.getAll())  # Error: Not working.
 	print('All configuration =', spark.sparkContext.getConf().getAll())
