@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set path=D:\MyProgramFiles\R\R-3.0.3\bin\x64;%path%
+set PATH=D:\util\R\R-3.2.3\bin\x64;%PATH%
 
 R CMD BATCH %1%
 
