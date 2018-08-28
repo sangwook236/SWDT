@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
+# REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html
+
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession, SQLContext
-from pyspark.sql.types import *
+import pyspark.sql.types as types
+import pyspark.sql.functions as func
 import traceback, sys
 
 # Spark configuration:
@@ -83,13 +86,16 @@ def filtering_line_example():
 	# Shut down Spark.
 	sc.stop()
 
-def simple_dataframe_example():
-	spark = SparkSession.builder.appName('simple-dataframe-example').getOrCreate()
+def dataframe_basic():
+	spark = SparkSession.builder.appName('dataframe-basic').getOrCreate()
 	sc = spark.sparkContext
 	sc.setLogLevel('WARN')
 
-	if False:
-		df = spark.read.csv('./dataset/swimmers.csv', header=True, infer_schema=True, delimiter=',')
+	if True:
+		df = spark.createDataFrame(
+			[(123, 'Katie', 19, 'brown'), (234, 'Michael', 22, 'green'), (345, 'Simone', 23, 'blue')],
+			('id', 'name', 'age', 'eyeColor')
+		)
 	elif True:
 		stringCSVRDD = sc.parallelize([
 			(123, 'Katie', 19, 'brown'),
@@ -97,15 +103,17 @@ def simple_dataframe_example():
 			(345, 'Simone', 23, 'blue')
 		])
 		# Specify schema.
-		schema = StructType([
-			StructField('id', LongType(), True),
-			StructField('name', StringType(), True),
-			StructField('age', LongType(), True),
-			StructField('eyeColor', StringType(), True)
+		schema = types.StructType([
+			types.StructField('id', types.LongType(), True),
+			types.StructField('name', types.StringType(), True),
+			types.StructField('age', types.LongType(), True),
+			types.StructField('eyeColor', types.StringType(), True)
 		])
 
 		#df = spark.read.csv(stringCSVRDD)
 		df = spark.createDataFrame(stringCSVRDD, schema)
+	elif False:
+		df = spark.read.csv('./dataset/swimmers.csv', header=True, infer_schema=True, delimiter=',')
 	elif False:
 		# Each line is a JSON object.
 		df = spark.read.json('./dataset/swimmers.json')
@@ -127,17 +135,41 @@ def simple_dataframe_example():
 	df.createOrReplaceTempView('swimmers')
 	df.printSchema()
 
-	spark.sql('select * from swimmers').collect()
+	print('df.collect() =', spark.sql('select * from swimmers').collect())
 	df.show()
-	df.take(2)
-	df.count()
+	print('df.take(2) =', df.take(2))
+	print('Count =', df.count())
 
 	df.select('id', 'age').filter('age = 22').show()
 	df.select(df.id, df.age).filter(22 == df.age).show()
 	df.select('name', 'eyeColor').filter('eyeColor like "b%"').show()
 
-def flight_example():
-	spark = SparkSession.builder.appName('flight-example').getOrCreate()
+def dataframe_operation():
+	spark = SparkSession.builder.appName('dataframe-operation').getOrCreate()
+	spark.sparkContext.setLogLevel('WARN')
+
+	# Add rows.
+	df1 = spark.range(3)
+	df2 = spark.range(5)
+	df3 = df1.union(df2)
+	df3.show()
+
+	# Add columns.
+	df1 = spark.createDataFrame([(1, 'a', 23.0), (3, 'B', -23.0)], ('x1', 'x2', 'x3'))
+	df2 = df1.withColumn('x4', func.lit(0))
+	df2.show()
+	df3 = df2.withColumn('x5', func.exp('x3'))
+	df3.show(truncate=False)
+
+	df4 = spark.createDataFrame([(1, 'foo'), (2, 'bar')], ('k', 'v'))
+	df5 = df3 \
+		.join(df4, func.col('x1') == func.col('k'), 'leftouter') \
+		.drop('k') \
+		.withColumnRenamed('v', 'x6')
+	df5.show(truncate=False)
+
+def flight_dataframe_example():
+	spark = SparkSession.builder.appName('flight-dataframe-example').getOrCreate()
 	spark.sparkContext.setLogLevel('WARN')
 
 	# Set file paths.
@@ -177,8 +209,10 @@ def main():
 	#simple_rdd_example()
 	#filtering_line_example()
 
-	simple_dataframe_example()
-	flight_example()
+	dataframe_basic()
+	dataframe_operation()
+
+	#flight_dataframe_example()
 
 #%%------------------------------------------------------------------
 

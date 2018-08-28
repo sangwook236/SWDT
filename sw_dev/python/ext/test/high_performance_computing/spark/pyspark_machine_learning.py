@@ -1,17 +1,85 @@
 #!/usr/bin/env python
 
+# REF [site] >> https://spark.apache.org/docs/latest/ml-guide.html
+
 from pyspark.sql import SparkSession
 import pyspark.sql.types as types
 import pyspark.sql.functions as func
-import pyspark.mllib.stat as st
-import pyspark.mllib.linalg as ln
-import pyspark.mllib.feature as ft
-import pyspark.mllib.regression as reg
+import pyspark.mllib.stat as mllib_stat
+import pyspark.mllib.linalg as mllib_linalg
+import pyspark.mllib.feature as mllib_feature
+import pyspark.mllib.regression as mllib_regression
 from pyspark.mllib.classification import LogisticRegressionWithLBFGS
 from pyspark.mllib.tree import RandomForest
-import pyspark.mllib.evaluation as ev
+import pyspark.mllib.evaluation as mllib_eval
+import pyspark.ml.feature as ml_feature
+import pyspark.ml.classification as ml_classification
+import pyspark.ml.evaluation as ml_eval
+from pyspark.ml import Pipeline, PipelineModel
 import numpy as np
 import traceback, sys
+
+# REF [site] >> https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#module-pyspark.ml.classification
+def classification_ml():
+	if False:
+		spark = SparkSession.builder.appName('classification-ml') \
+			.config('spark.jars.packages', 'org.xerial:sqlite-jdbc:3.23.1') \
+			.getOrCreate()
+
+		df = spark.read \
+			.format('jdbc') \
+			.option('url', 'jdbc:sqlite:iris.db') \
+			.option('driver', 'org.sqlite.JDBC') \
+			.option('dbtable', 'iris') \
+			.load()
+	else:
+		spark = SparkSession.builder.appName('classification-ml').getOrCreate()
+		df = spark.read.option('header', 'true').option('inferSchema', 'true').format('csv').load('dataset/iris.csv')
+	spark.sparkContext.setLogLevel('WARN')
+	df.show()
+
+	labels = [
+		('index', types.IntegerType()),
+		('a1', types.FloatType()),
+		('a2', types.FloatType()),
+		('a3', types.FloatType()),
+		('a4', types.FloatType()),
+		('id', types.StringType()),
+		('label', types.StringType())
+	]
+
+	stringIndexer = ml_feature.StringIndexer(inputCol='label', outputCol='label_int')
+	featuresCreator = ml_feature.VectorAssembler(inputCols=[col[0] for col in labels[1:5]], outputCol='features')
+
+	# Create a model.
+	logistic = ml_classification.LogisticRegression(featuresCol=featuresCreator.getOutputCol(), labelCol=stringIndexer.getOutputCol(), maxIter=10, regParam=0.01)
+
+	# Create a pipeline.
+	pipeline = Pipeline(stages=[stringIndexer, featuresCreator, logistic])
+
+	# Split the dataset into training and testing datasets.
+	df_train, df_test = df.randomSplit([0.7, 0.3], seed=666)
+
+	# Run the pipeline and estimate the model.
+	model = pipeline.fit(df_train)
+	test_result = model.transform(df_test)  # Dataframe.
+
+	#print(test_result.take(1))
+	#test_result.show(5, truncate=True, vertical=False)
+	test_result.show(truncate=False)
+
+	# Save and load.
+	lr_path = './lr'
+	logistic.write().overwrite().save(lr_path)
+	lr2 = ml_classification.LogisticRegression.load(lr_path)
+	print('Param =', lr2.getRegParam())
+
+	model_path = './lr_model'
+	model.write().overwrite().save(model_path)
+	model2 = PipelineModel.load(model_path)
+	print('Stages =', model.stages)
+	print(model.stages[2].coefficientMatrix == model2.stages[2].coefficientMatrix)
+	print(model.stages[2].interceptVector == model2.stages[2].interceptVector)
 
 # REF [site] >> https://github.com/drabastomek/learningPySpark/blob/master/Chapter05/LearningPySpark_Chapter05.ipynb
 def infant_survival_mllib():
@@ -138,7 +206,7 @@ def infant_survival_mllib():
 	]
 	numeric_rdd = births_transformed.select(numeric_cols).rdd.map(lambda row: [e for e in row])
 
-	mllib_stats = st.Statistics.colStats(numeric_rdd)
+	mllib_stats = mllib_stat.Statistics.colStats(numeric_rdd)
 
 	for col, m, v in zip(numeric_cols,  mllib_stats.mean(), mllib_stats.variance()):
 		print('{0}: \t{1:.2f} \t {2:.2f}'.format(col, m, np.sqrt(v)))
@@ -152,7 +220,7 @@ def infant_survival_mllib():
 		print(col, sorted(agg.collect(), key=lambda el: el[1], reverse=True))
 
 	# Correlation.
-	corrs = st.Statistics.corr(numeric_rdd)
+	corrs = mllib_stat.Statistics.corr(numeric_rdd)
 
 	for i, el in enumerate(corrs > 0.5):
 		correlated = [(numeric_cols[j], corrs[i][j]) for j, e in enumerate(el) if e == 1.0 and j != i]
@@ -186,23 +254,23 @@ def infant_survival_mllib():
 	    agg_rdd = agg.rdd.map(lambda row: (row[1:])).flatMap(lambda row: [0 if e == None else e for e in row]).collect()
 
 	    row_length = len(agg.collect()[0]) - 1
-	    agg = ln.Matrices.dense(row_length, 2, agg_rdd)
+	    agg = mllib_linalg.Matrices.dense(row_length, 2, agg_rdd)
 
-	    test = st.Statistics.chiSqTest(agg)
+	    test = mllib_stat.Statistics.chiSqTest(agg)
 	    print(cat, round(test.pValue, 4))
 
 	#--------------------
 	# Machine learning.
 
 	# Create an RDD of LabeledPoints.
-	hashing = ft.HashingTF(7)
+	hashing = mllib_feature.HashingTF(7)
 
 	births_hashed = births_transformed \
 		.rdd \
 		.map(lambda row: [list(hashing.transform(row[1]).toArray()) if col == 'BIRTH_PLACE' else row[i] for i, col in enumerate(features_to_keep)]) \
 		.map(lambda row: [[e] if type(e) == int else e for e in row]) \
 		.map(lambda row: [item for sublist in row for item in sublist]) \
-		.map(lambda row: reg.LabeledPoint(row[0], ln.Vectors.dense(row[1:])))
+		.map(lambda row: mllib_regression.LabeledPoint(row[0], mllib_linalg.Vectors.dense(row[1:])))
 
 	# Split into training and testing.
 	births_train, births_test = births_hashed.randomSplit([0.6, 0.4])
@@ -217,7 +285,7 @@ def infant_survival_mllib():
 
 	# Check how well or how bad our model performed.
 	print('********************************************000')
-	LR_evaluation = ev.BinaryClassificationMetrics(LR_results)
+	LR_evaluation = mllib_eval.BinaryClassificationMetrics(LR_results)
 	print('********************************************001')
 	print('Area under PR: {0:.2f}'.format(LR_evaluation.areaUnderPR))
 	print('********************************************002')
@@ -226,22 +294,22 @@ def infant_survival_mllib():
 	LR_evaluation.unpersist()
 
 	# Select the most predictable features using a Chi-Square selector.
-	selector = ft.ChiSqSelector(4).fit(births_train)
+	selector = mllib_feature.ChiSqSelector(4).fit(births_train)
 
 	topFeatures_train = (
 		births_train.map(lambda row: row.label).zip(selector.transform(births_train.map(lambda row: row.features)))
-	).map(lambda row: reg.LabeledPoint(row[0], row[1]))
+	).map(lambda row: mllib_regression.LabeledPoint(row[0], row[1]))
 
 	topFeatures_test = (
 		births_test.map(lambda row: row.label).zip(selector.transform(births_test.map(lambda row: row.features)))
-	).map(lambda row: reg.LabeledPoint(row[0], row[1]))
+	).map(lambda row: mllib_regression.LabeledPoint(row[0], row[1]))
 
 	# Build a random forest model.
 	RF_model = RandomForest.trainClassifier(data=topFeatures_train, numClasses=2, categoricalFeaturesInfo={}, numTrees=6, featureSubsetStrategy='all', seed=666)
 
 	RF_results = (topFeatures_test.map(lambda row: row.label).zip(RF_model.predict(topFeatures_test.map(lambda row: row.features))))
 
-	RF_evaluation = ev.BinaryClassificationMetrics(RF_results)
+	RF_evaluation = mllib_eval.BinaryClassificationMetrics(RF_results)
 
 	print('Area under PR: {0:.2f}'.format(RF_evaluation.areaUnderPR))
 	print('Area under ROC: {0:.2f}'.format(RF_evaluation.areaUnderROC))
@@ -254,16 +322,11 @@ def infant_survival_mllib():
 		topFeatures_test.map(lambda row: row.label).zip(LR_Model_2.predict(topFeatures_test.map(lambda row: row.features)))
 	).map(lambda row: (row[0], row[1] * 1.0))
 
-	LR_evaluation_2 = ev.BinaryClassificationMetrics(LR_results_2)
+	LR_evaluation_2 = mllib_eval.BinaryClassificationMetrics(LR_results_2)
 
 	print('Area under PR: {0:.2f}'.format(LR_evaluation_2.areaUnderPR))
 	print('Area under ROC: {0:.2f}'.format(LR_evaluation_2.areaUnderROC))
 	LR_evaluation_2.unpersist()
-
-import pyspark.ml.feature as ml_ft
-import pyspark.ml.classification as ml_cl
-import pyspark.ml.evaluation as ml_ev
-from pyspark.ml import Pipeline, PipelineModel
 
 def infant_survival_ml():
 	spark = SparkSession.builder.appName('infant-survival-ml').getOrCreate()
@@ -294,12 +357,12 @@ def infant_survival_ml():
 	# Create transformers.
 	births = births.withColumn('BIRTH_PLACE_INT', births['BIRTH_PLACE'].cast(types.IntegerType()))
 	# Encode the BIRTH_PLACE column using the OneHotEncoder method.
-	encoder = ml_ft.OneHotEncoder(inputCol='BIRTH_PLACE_INT', outputCol='BIRTH_PLACE_VEC')
+	encoder = ml_feature.OneHotEncoder(inputCol='BIRTH_PLACE_INT', outputCol='BIRTH_PLACE_VEC')
 
 	featuresCreator = ml_ft.VectorAssembler(inputCols=[col[0] for col in labels[2:]] + [encoder.getOutputCol()], outputCol='features')
 
 	# Create a model.
-	logistic = ml_cl.LogisticRegression(maxIter=10, regParam=0.01, labelCol='INFANT_ALIVE_AT_REPORT')
+	logistic = ml_classification.LogisticRegression(maxIter=10, regParam=0.01, labelCol='INFANT_ALIVE_AT_REPORT')
 
 	# Create a pipeline.
 	pipeline = Pipeline(stages=[encoder, featuresCreator, logistic])
@@ -314,7 +377,7 @@ def infant_survival_ml():
 	print(test_model.take(1))
 
 	# Evaluate the performance of the model.
-	evaluator = ml_ev.BinaryClassificationEvaluator(rawPredictionCol='probability', labelCol='INFANT_ALIVE_AT_REPORT')
+	evaluator = ml_eval.BinaryClassificationEvaluator(rawPredictionCol='probability', labelCol='INFANT_ALIVE_AT_REPORT')
 	print(evaluator.evaluate(test_model, {evaluator.metricName: 'areaUnderROC'}))
 	print(evaluator.evaluate(test_model, {evaluator.metricName: 'areaUnderPR'}))
 
@@ -367,15 +430,15 @@ def train_validation_splitting_ml():
 	# Create transformers.
 	births = births.withColumn('BIRTH_PLACE_INT', births['BIRTH_PLACE'].cast(types.IntegerType()))
 	# Encode the BIRTH_PLACE column using the OneHotEncoder method.
-	encoder = ml_ft.OneHotEncoder(inputCol='BIRTH_PLACE_INT', outputCol='BIRTH_PLACE_VEC')
+	encoder = ml_feature.OneHotEncoder(inputCol='BIRTH_PLACE_INT', outputCol='BIRTH_PLACE_VEC')
 
-	featuresCreator = ml_ft.VectorAssembler(inputCols=[col[0] for col in labels[2:]] + [encoder.getOutputCol()], outputCol='features')
+	featuresCreator = ml_feature.VectorAssembler(inputCols=[col[0] for col in labels[2:]] + [encoder.getOutputCol()], outputCol='features')
 
 	# Split the dataset into training and testing datasets.
 	births_train, births_test = births.randomSplit([0.7, 0.3], seed=666)
 
 	# Select only the top five features.
-	selector = ml_ft.ChiSqSelector(
+	selector = ml_feature.ChiSqSelector(
 		numTopFeatures=5,
 		featuresCol=featuresCreator.getOutputCol(),
 		outputCol='selectedFeatures',
@@ -387,13 +450,13 @@ def train_validation_splitting_ml():
 	data_transformer = pipeline.fit(births_train)
 
 	# Create LogisticRegression and Pipeline.
-	logistic = ml_cl.LogisticRegression(labelCol='INFANT_ALIVE_AT_REPORT', featuresCol='selectedFeatures')
+	logistic = ml_classification.LogisticRegression(labelCol='INFANT_ALIVE_AT_REPORT', featuresCol='selectedFeatures')
 	grid = tune.ParamGridBuilder() \
 		.addGrid(logistic.maxIter, [2, 10, 50]) \
 		.addGrid(logistic.regParam, [0.01, 0.05, 0.3]) \
 		.build()
 	# Define a way of comparing the models.
-	evaluator = ml_ev.BinaryClassificationEvaluator(rawPredictionCol='probability', labelCol='INFANT_ALIVE_AT_REPORT')
+	evaluator = ml_eval.BinaryClassificationEvaluator(rawPredictionCol='probability', labelCol='INFANT_ALIVE_AT_REPORT')
 
 	# Create a TrainValidationSplit object.
 	tvs = tune.TrainValidationSplit(estimator=logistic, estimatorParamMaps=grid, evaluator=evaluator)
@@ -436,9 +499,9 @@ def hyper_parameter_optimization_ml():
 	# Create transformers.
 	births = births.withColumn('BIRTH_PLACE_INT', births['BIRTH_PLACE'].cast(types.IntegerType()))
 	# Encode the BIRTH_PLACE column using the OneHotEncoder method.
-	encoder = ml_ft.OneHotEncoder(inputCol='BIRTH_PLACE_INT', outputCol='BIRTH_PLACE_VEC')
+	encoder = ml_feature.OneHotEncoder(inputCol='BIRTH_PLACE_INT', outputCol='BIRTH_PLACE_VEC')
 
-	featuresCreator = ml_ft.VectorAssembler(inputCols=[col[0] for col in labels[2:]] + [encoder.getOutputCol()], outputCol='features')
+	featuresCreator = ml_feature.VectorAssembler(inputCols=[col[0] for col in labels[2:]] + [encoder.getOutputCol()], outputCol='features')
 
 	# Split the dataset into training and testing datasets.
 	births_train, births_test = births.randomSplit([0.7, 0.3], seed=666)
@@ -448,13 +511,13 @@ def hyper_parameter_optimization_ml():
 	data_transformer = pipeline.fit(births_train)
 
 	# Specify our model and the list of parameters we want to loop through.
-	logistic = ml_cl.LogisticRegression(labelCol='INFANT_ALIVE_AT_REPORT')
+	logistic = ml_classification.LogisticRegression(labelCol='INFANT_ALIVE_AT_REPORT')
 	grid = tune.ParamGridBuilder() \
 		.addGrid(logistic.maxIter, [2, 10, 50]) \
 		.addGrid(logistic.regParam, [0.01, 0.05, 0.3]) \
 		.build()
 	# Define a way of comparing the models.
-	evaluator = ml_ev.BinaryClassificationEvaluator(rawPredictionCol='probability', labelCol='INFANT_ALIVE_AT_REPORT')
+	evaluator = ml_eval.BinaryClassificationEvaluator(rawPredictionCol='probability', labelCol='INFANT_ALIVE_AT_REPORT')
 
 	# Create a logic that will do the validation work.
 	cv = tune.CrossValidator(estimator=logistic, estimatorParamMaps=grid, evaluator=evaluator)
@@ -476,10 +539,12 @@ def hyper_parameter_optimization_ml():
 	print(sorted(results, key=lambda el: el[1], reverse=True)[0])
 
 def main():
+	classification_ml()
+
 	#infant_survival_mllib()
 	#infant_survival_ml()
 
-	train_validation_splitting_ml()
+	#train_validation_splitting_ml()
 	#hyper_parameter_optimization_ml()
 
 #%%------------------------------------------------------------------
