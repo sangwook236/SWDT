@@ -14,11 +14,12 @@ goto EXIT
 rem -----------------------------------------------------------
 :SET
 
-rem If winutils.exe is in D:/util_portable/spark-2.3.1-bin-hadoop2.7/bin:
-set HADOOP_HOME=D:\util_portable\spark-2.3.1-bin-hadoop2.7
+rem If winutils.exe is in D:/lib_repo/java/ext/winutils_github/hadoop-2.7.1/bin:
+rem set HADOOP_HOME=D:\util_portable\hadoop-3.0.3
+set HADOOP_HOME=D:\lib_repo\java\ext\winutils_github\hadoop-2.7.1
 
-rem set JAVA_HOME="C:\Program Files\Java\jre1.8.0_181"
-set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_112
+set JAVA_HOME=C:\Progra~1\Java\jre1.8.0_181
+rem set JAVA_HOME=C:\Progra~1\Java\jdk1.8.0_112
 set MAVEN_HOME=D:\util_portable\apache-maven-3.5.4
 set ANT_HOME=D:\util_portable\apache-ant-1.10.5
 set SBT_HOME=D:\util_portable\sbt-1.1.6\sbt
@@ -26,7 +27,7 @@ set SPARK_HOME=D:\util_portable\spark-2.3.1-bin-hadoop2.7
 
 set SAVED_PATH_FOR_SPARK=%PATH%
 rem set PATH=%SPARK_HOME%\bin;%SBT_HOME%\bin;%ANT_HOME%\bin;%MAVEN_HOME%\bin;%JAVA_HOME%\bin;%SystemRoot%\system32
-set PATH=%SPARK_HOME%\bin;%SBT_HOME%\bin;%ANT_HOME%\bin;%MAVEN_HOME%\bin;%JAVA_HOME%\bin;%PATH%
+set PATH=%SPARK_HOME%\bin;%HADOOP_HOME%\bin;%SBT_HOME%\bin;%ANT_HOME%\bin;%MAVEN_HOME%\bin;%JAVA_HOME%\bin;%PATH%
 
 goto EXIT
 

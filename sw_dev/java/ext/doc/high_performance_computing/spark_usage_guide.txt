@@ -93,3 +93,15 @@
 			'cmd' is not recognized as an internal or external command, operable program or batch file.
 		<solution>
 			set PATH=%SystemRoot%\system32;%PATH%
+
+	- HIVE permission error (Windows).
+		<error>
+			The root scratch dir: /tmp/hive on HDFS should be writable. Current permissions are: rw-rw-rw-
+		<solution>
+			REF [site] >>
+				https://stackoverflow.com/questions/34196302/the-root-scratch-dir-tmp-hive-on-hdfs-should-be-writable-current-permissions
+				https://stackoverflow.com/questions/41851066/exception-in-thread-main-java-lang-unsatisfiedlinkerror-org-apache-hadoop-io
+			Must use Hadoop downloaded from 'https://github.com/steveloughran/winutils' as HADOOP_HOME.
+
+			winutils.exe chmod -R 777 d:/tmp/hive
+			winutils.exe ls d:/tmp/hive

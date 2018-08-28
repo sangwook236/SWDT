@@ -181,7 +181,10 @@ void basic()
 {
 	// Open database.
 	//const std::string databaseName = "data/database/sqlite/test.db";  // File DB.
-	const std::string databaseName = ":memory:";  // Memory DB.
+	// REF [site] >> https://www.sqlite.org/inmemorydb.html
+	const std::string databaseName = ":memory:";  // In-memory DB.
+	//const std::string databaseName = "file::memory:?cache=shared";  // Shared in-memory DB.
+	//const std::string databaseName = "file:dbname?mode=memory&cache=shared";  // Named, shared in-memory DB.
 
 	sqlite3 *db = NULL;
 	const int rc = sqlite3_open(databaseName.c_str(), &db);
@@ -212,5 +215,4 @@ void basic()
 	// Close database.
 	sqlite3_close(db);
 }
-
 }  // namespace my_sqlite
