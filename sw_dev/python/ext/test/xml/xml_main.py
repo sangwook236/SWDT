@@ -46,7 +46,7 @@ def simple_element_tree_example():
 
 # REF [site] >> https://docs.python-guide.org/scenarios/xml/
 def simple_xmltodict_example():
-	with open('country_data.xml') as fd:
+	with open('country_data.xml', 'r') as fd:
 		doc = xmltodict.parse(fd.read())
 
 	print(doc['data']['country'])

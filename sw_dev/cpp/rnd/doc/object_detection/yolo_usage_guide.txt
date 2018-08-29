@@ -1,0 +1,84 @@
+[-] General.
+	- Site.
+		https://pjreddie.com/darknet/yolo/
+		https://github.com/AlexeyAB/darknet
+
+[-] Usage.
+	- Detect.
+		wget https://pjreddie.com/media/files/yolov3.weights
+		wget https://pjreddie.com/media/files/yolov3-tiny.weights
+
+		./darknet detect cfg/yolov3.cfg yolov3.weights data/dog.jpg
+		./darknet detect cfg/yolov3-tiny.cfg yolov3-tiny.weights data/dog.jpg
+		./darknet detector test cfg/coco.data cfg/yolov3.cfg yolov3.weights data/dog.jpg
+
+		./darknet detect cfg/yolov3.cfg yolov3.weights data/dog.jpg -thresh 0.2
+
+		When using a webcam:
+		./darknet detector demo cfg/coco.data cfg/yolov3.cfg yolov3.weights
+
+[-] Building.
+	- Build darknet.
+		Cannot compile by g++ (C, not C++).
+
+		cd $DARKNET_HOME
+		Edit Makefile.
+			GPU=0
+			CUDNN=0
+			OPENCV=1
+			OPENMP=1
+			==> NOTE [caution] >> When using GPU, detection results are different. 
+
+		export PATH=/usr/local/cuda/bin:$PATH
+		make
+
+[-] Training.
+	REF [site] >>
+		https://pjreddie.com/darknet/yolo/
+		https://github.com/AlexeyAB/darknet
+
+	- Generate label files.
+		REF [site] >> labelme2yolo.py & pcloud2yolo.py
+
+		Darknet wants a .txt file for each image with a line for each ground truth object in the image that looks like:
+			<object-class> <x> <y> <width> <height>
+		where x, y, width, and height are relative to the image's width and height.
+			<x> <y> = center of rectangle.
+			<width> = <absolute_width> / <image_width>, <height> = <absolute_height> / <image_height>.
+
+		==> Images and labels are saved into different directories. (?)
+			train_images/img1.jpg
+			train_labels/img1.txt
+
+	- Create files.
+		REF [site] >> https://github.com/AlexeyAB/darknet#how-to-train-to-detect-your-custom-objects
+
+		custom_objects.data
+			classes= 2
+			train = custom_objects_train.txt
+			valid = custom_objects_test.txt
+			names = custom_objects.names
+			backup = backup/
+		custom_objects.cfg
+		custom_objects.names
+			object_name1
+		custom_objects_train.txt
+			train_images/img1.jpg
+		custom_objects_test.txt
+			test_images/img1.jpg
+
+		==> If character set or line break is different, some error may occur.
+
+	- Train.
+		wget https://pjreddie.com/media/files/darknet53.conv.74
+
+		./darknet detector train custom_objects.data custom_objects.cfg darknet53.conv.74
+
+		./darknet detector train cfg/voc.data cfg/yolov3-voc.cfg darknet53.conv.74
+		./darknet detector train cfg/coco.data cfg/yolov3.cfg darknet53.conv.74
+
+		Multiple GPUs:
+		./darknet detector train cfg/coco.data cfg/yolov3.cfg darknet53.conv.74 -gpus 0,1,2,3
+
+		Stop and Restart training from a checkpoint:
+		./darknet detector train cfg/coco.data cfg/yolov3.cfg backup/yolov3.backup -gpus 0,1,2,3
