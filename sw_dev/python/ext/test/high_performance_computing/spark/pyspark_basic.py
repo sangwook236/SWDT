@@ -140,6 +140,12 @@ def dataframe_basic():
 	print('df.take(2) =', df.take(2))
 	print('Count =', df.count())
 
+	df.select('name', 'age').show()
+	#df.select(df.name, df.age).show()
+
+	df.select('id', (func.col('age') + 2).alias('age2')).show()
+	#df.select('id', (df.age + 2).alias('age2')).show()
+
 	df.select('id', 'age').filter('age = 22').show()
 	df.select(df.id, df.age).filter(22 == df.age).show()
 	df.select('name', 'eyeColor').filter('eyeColor like "b%"').show()
@@ -210,7 +216,7 @@ def main():
 	#filtering_line_example()
 
 	dataframe_basic()
-	dataframe_operation()
+	#dataframe_operation()
 
 	#flight_dataframe_example()
 

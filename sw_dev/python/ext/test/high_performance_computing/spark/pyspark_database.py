@@ -2,6 +2,7 @@
 
 from pyspark.sql import SparkSession
 import pyspark.sql.types as types
+import pyspark.sql.functions as func
 import traceback, sys
 
 # REF [site] >> https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases
@@ -57,17 +58,30 @@ def sqlite_jdbc():
 		df = spark.createDataFrame(rdd, schema)
 	df.show()
 
-	#df.createOrReplaceTempView('swimmers')
-	#df.printSchema()
-
-	# NOTE [info] >> It seems that Only file DB of SQLite can be used in Spark.
+	# NOTE [info] >> It seems that only file DB of SQLite can be used in Spark.
 	db_url = 'jdbc:sqlite:test.sqlite'  # File DB.
-	#df.write.jdbc(url=db_url, table='test', mode='overwrite', properties={'driver': 'org.sqlite.JDBC'})
+
 	# Isolation level: NONE, READ_COMMITTED, READ_UNCOMMITTED, REPEATABLE_READ, SERIALIZABLE.
 	#	REF [site] >> https://stackoverflow.com/questions/16162357/transaction-isolation-levels-relation-with-locks-on-table
 	df.write \
 		.format('jdbc') \
 		.mode('overwrite') \
+		.option('url', db_url) \
+		.option('driver', 'org.sqlite.JDBC') \
+		.option('dbtable', 'swimmers') \
+		.option('isolationLevel', 'NONE') \
+		.save()
+	#df.write.jdbc(url=db_url, table='test', mode='overwrite', properties={'driver': 'org.sqlite.JDBC'})
+
+	df1 = df.withColumn('gender', func.lit(0))
+
+	df2 = spark.createDataFrame(
+		[(13, 'Lucy', 12, 'brown'), (37, 'Brian', 47, 'black')],
+		('id', 'name', 'age', 'eyeColor')
+	)
+	df2.write \
+		.format('jdbc') \
+		.mode('append') \
 		.option('url', db_url) \
 		.option('driver', 'org.sqlite.JDBC') \
 		.option('dbtable', 'swimmers') \
@@ -97,9 +111,29 @@ def mysql_jdbc():
 		.load()
 	df.show()
 
+def sql_basic():
+	spark = SparkSession.builder.appName('dataframe-operation').getOrCreate()
+	spark.sparkContext.setLogLevel('WARN')
+
+	df = spark.createDataFrame(
+		[(123, 'Katie', 19, 'brown'), (234, 'Michael', 22, 'green'), (345, 'Simone', 23, 'blue')],
+		('id', 'name', 'age', 'eyeColor')
+	)
+	#df.printSchema()
+	#df.cache()
+
+	df.createOrReplaceTempView('swimmers')  # DataFrame -> SQL.
+	#df1 = spark.sql('select * from swimmers')  # SQL -> DataFrame.
+
+	spark.sql('select * from swimmers where age >= 20').show()
+
+	#spark.catalog.dropTempView('swimmers')
+
 def main():
-	sqlite_jdbc()
+	#sqlite_jdbc()
 	#mysql_jdbc()
+
+	sql_basic()
 
 #%%------------------------------------------------------------------
 
