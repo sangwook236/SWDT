@@ -14,9 +14,9 @@ goto EXIT
 rem -----------------------------------------------------------
 :SET
 
-rem set JAVA_HOME=C:\Program Files\Java\jre1.8.0_40
-set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_40
-set ANT_HOME=D:\util_portable\apache-ant-1.9.6\bin
+rem set JAVA_HOME=C:\Progra~1\Java\jre1.8.0_181
+set JAVA_HOME=C:\Progra~1\Java\jdk1.8.0_112
+set ANT_HOME=D:\util_portable\apache-ant-1.10.5
 
 set SAVED_PATH_FOR_ANT=%PATH%
 set PATH=%ANT_HOME%\bin;%JAVA_HOME%\bin;%PATH%

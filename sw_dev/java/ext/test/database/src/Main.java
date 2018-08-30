@@ -11,7 +11,7 @@ public class Main {
 			sqlite.SQLite_Main.run(args);
 			
 			System.out.println("MySQL ---------------------------------------------------------------");
-			//mysql.MySQLMain.run(args);
+			//mysql.MySQLMain.run(args);  // Not yet implemented.
 		}
 		catch (ClassNotFoundException ex)
 		{

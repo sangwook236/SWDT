@@ -1,7 +1,11 @@
 package configuration;
 
-import org.apache.commons.configuration.*;
-import org.apache.commons.configuration.reloading.*;
+import org.apache.commons.configuration2.*;
+import org.apache.commons.configuration2.ex.*;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 
 import java.awt.Dimension;
 //import java.util.ArrayList;
@@ -12,7 +16,14 @@ final class PropertiesConfigurationTest {
 	{
 		try
 		{
-			Configuration config = new PropertiesConfiguration("src/configuration/user_gui.properties");
+			FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+				    new FileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
+				    .configure(new Parameters().properties()
+				        .setFileName("src/configuration/user_gui.properties")
+				        .setThrowExceptionOnMissing(true)
+				        .setListDelimiterHandler(new DefaultListDelimiterHandler(';'))
+				        .setIncludesAllowed(false));
+			Configuration config = builder.getConfiguration();
 
 			final String foreColor = config.getString("colors.foreground");
 			final String backColor = config.getString("colors.background");
@@ -34,14 +45,14 @@ final class PropertiesConfigurationTest {
 
 			//
 			config.setProperty("colors.background", "#000000");
-			((PropertiesConfiguration)config).setReloadingStrategy(new FileChangedReloadingStrategy());
+			//((PropertiesConfiguration)config).setReloadingStrategy(new FileChangedReloadingStrategy());
 
-			((AbstractFileConfiguration)config).setAutoSave(true);
-			//((PropertiesConfiguration)config).save();
+			builder.setAutoSave(true);
+			builder.save();
 		}
-		catch (ConfigurationException e)
+		catch (ConfigurationException ex)
 		{
-			e.printStackTrace();
+			ex.printStackTrace();
 		}
 		finally
 		{

@@ -14,7 +14,10 @@ public class Main {
 			//weka.Weka_Main.run(args);
 
 			System.out.println("RapidMiner library --------------------------------------------------");			
-			rapidminer.RapidMiner_Main.run(args);
+			//rapidminer.RapidMiner_Main.run(args);
+
+			System.out.println("TensorFlow library --------------------------------------------------");			
+			tensorflow.TensorFlow_Main.run(args);
 
 			System.out.println("Mahout library ------------------------------------------------------");			
 			//mahout.Mahout_Main.run(args);  // Not yet implemented.

@@ -1,7 +1,8 @@
 package log4j;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.BasicConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.*;
 
 public final class Log4j_Main {
 
@@ -11,7 +12,7 @@ public final class Log4j_Main {
 	public static void run(String[] args)
 	{
 		// Set up a simple configuration that logs on the console.
-		BasicConfigurator.configure();
+		Configurator.initialize(new DefaultConfiguration());
 
 		logger.info("Entering application.");
 		Bar bar = new Bar();
@@ -19,7 +20,7 @@ public final class Log4j_Main {
 		logger.info("Exiting application.");
 	}
 
-	static Logger logger = Logger.getLogger(Log4j_Main.class);
+	static Logger logger = LogManager.getLogger(Log4j_Main.class);
 }
 
 class Bar {
@@ -28,5 +29,5 @@ class Bar {
 		logger.debug("Did it again!");
 	}
 
-	static Logger logger = Logger.getLogger(Bar.class);
+	static Logger logger = LogManager.getLogger(Bar.class);
 }

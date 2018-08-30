@@ -1,7 +1,10 @@
 package configuration;
 
-import org.apache.commons.configuration.*;
-import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
+import org.apache.commons.configuration2.*;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
+import org.apache.commons.configuration2.ex.*;
 //import java.util.ArrayList;
 
 final class XmlConfigurationTest {
@@ -10,7 +13,14 @@ final class XmlConfigurationTest {
 	{
 		try
 		{
-			XMLConfiguration config = new XMLConfiguration("src/configuration/user_gui.xml");
+			FileBasedConfigurationBuilder<XMLConfiguration> builder =
+				    new FileBasedConfigurationBuilder<XMLConfiguration>(XMLConfiguration.class)
+				    .configure(new Parameters().properties()
+				        .setFileName("src/configuration/user_gui.xml")
+				        .setThrowExceptionOnMissing(true)
+				        .setListDelimiterHandler(new DefaultListDelimiterHandler(';'))
+				        .setIncludesAllowed(false));
+			XMLConfiguration config = builder.getConfiguration();
 
 			final String backColor = config.getString("colors.background");
 			final String textColor = config.getString("colors.text");
@@ -30,12 +40,12 @@ final class XmlConfigurationTest {
 			System.out.println("buttons.name: " + buttons);
 
 			//
-			config.setProperty("colors.foreground", "#000000");  // Ok.
+			config.setProperty("colors.foreground", "#000000");  // OK.
 			//config.addProperty("colors.background", "#000000");
-			config.setReloadingStrategy(new FileChangedReloadingStrategy());
+			//config.setReloadingStrategy(new FileChangedReloadingStrategy());
 
-			config.setAutoSave(true);
-			//config.save();
+			builder.setAutoSave(true);
+			//builder.save();
 		}
 		catch(ConfigurationException ex)
 		{

@@ -1,8 +1,8 @@
 package math;
 
-import org.apache.commons.math.linear.*;
+import org.apache.commons.math3.linear.*;
 
-class LUDecomposition {
+class LUDecompositionTest {
 
 	public static void run(String[] args)
 	{
@@ -12,7 +12,7 @@ class LUDecomposition {
 		final RealMatrix mat = new Array2DRowRealMatrix(arrMat);
 		final RealVector vec = new ArrayRealVector(arrVec);
 
-		LUDecompositionImpl lud = new LUDecompositionImpl(mat);
+		LUDecomposition lud = new LUDecomposition(mat);
 
 		final double det = lud.getDeterminant();
 		final RealMatrix matL = lud.getL();

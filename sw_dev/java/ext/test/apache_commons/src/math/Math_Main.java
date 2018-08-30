@@ -7,7 +7,7 @@ public final class Math_Main {
 	 */
 	public static void run(String[] args)
 	{
-		LUDecomposition.run(args);
+		LUDecompositionTest.run(args);
 	}
 
 }

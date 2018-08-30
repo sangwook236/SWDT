@@ -14,9 +14,9 @@ goto EXIT
 rem -----------------------------------------------------------
 :SET
 
-rem set JAVA_HOME=C:\Program Files\Java\jre1.8.0_40
-set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_40
-set MAVEN_HOME=D:\util_portable\apache-maven-3.3.9
+rem set JAVA_HOME=C:\Progra~1\Java\jre1.8.0_181
+set JAVA_HOME=C:\Progra~1\Java\jdk1.8.0_112
+set MAVEN_HOME=D:\util_portable\apache-maven-3.5.4
 
 set SAVED_PATH_FOR_MAVEN=%PATH%
 set PATH=%MAVEN_HOME%\bin;%JAVA_HOME%\bin;%PATH%

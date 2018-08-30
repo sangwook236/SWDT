@@ -1,7 +1,7 @@
 package javacpp;
 
-import com.googlecode.javacpp.*;
-import com.googlecode.javacpp.annotation.*;
+import org.bytedeco.javacpp.*;
+import org.bytedeco.javacpp.annotation.*;
 
 @Platform(include="<vector>")
 public class VectorTest {
