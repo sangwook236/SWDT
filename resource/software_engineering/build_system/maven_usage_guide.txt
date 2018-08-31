@@ -15,6 +15,9 @@
 		Local repository: ${USER_HOME}/.m2/repository
 			[groupId]/[artifactId]/[version]
 
+	- Local directory structure.
+		https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html
+
 	- Create a project.
 		mvn archetype:generate
 			Generate pom.xml and directories.
