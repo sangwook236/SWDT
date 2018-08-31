@@ -3,8 +3,8 @@ package rapidminer;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.rapidminer.Process;
 import com.rapidminer.RapidMiner;
@@ -12,7 +12,7 @@ import com.rapidminer.RapidMiner.ExecutionMode;
 import com.rapidminer.tools.XMLException;
 
 /**
- * RapidMinerÀÇ ÇÁ·Î¼¼½º¸¦ ¼öÇàÇÏ±â À§ÇØ °øÅë ¼Ó¼º°ú ±â´ÉÀ» Á¤ÀÇÇÑ Ãß»ó Å¬·¡½º.
+ * RapidMinerì˜ í”„ë¡œì„¸ìŠ¤ë¥¼ ìˆ˜í–‰í•˜ê¸° ìœ„í•´ ê³µí†µ ì†ì„±ê³¼ ê¸°ëŠ¥ì„ ì •ì˜í•œ ì¶”ìƒ í´ë˜ìŠ¤.
  */
 public abstract class AbstractRapidMinerProcess implements Runnable
 {
@@ -21,7 +21,7 @@ public abstract class AbstractRapidMinerProcess implements Runnable
 		if (initRapidminer_)
 		{
 			RapidMiner.setExecutionMode(ExecutionMode.EMBEDDED_WITHOUT_UI);
-			System.setProperty("rapidminer.home", new File("D:/MyProgramFiles/Rapid-I/RapidMiner5").getAbsolutePath());
+			System.setProperty("rapidminer.home", new File("D:/util/Rapid-I/RapidMiner5").getAbsolutePath());
 
 			// Activate parallel plug-in.
 			//com.rapidminer.ParallelPluginInit.initPlugin();
@@ -33,9 +33,9 @@ public abstract class AbstractRapidMinerProcess implements Runnable
 	}
 
 	/**
-	 * RapidMiner ÇÁ·Î¼¼½º¸¦ ¼öÇàÇÏ´Â Å¬·¡½º¸¦ »ı¼ºÇÑ´Ù.
+	 * RapidMiner í”„ë¡œì„¸ìŠ¤ë¥¼ ìˆ˜í–‰í•˜ëŠ” í´ë˜ìŠ¤ë¥¼ ìƒì„±í•œë‹¤.
 	 * 
-	 * @param processConfig ÇÁ·Î¼¼½º ³»¿ëÀÌ Á¤ÀÇµÈ ÆÄÀÏ.
+	 * @param processConfig í”„ë¡œì„¸ìŠ¤ ë‚´ìš©ì´ ì •ì˜ëœ íŒŒì¼.
 	 */
 	public AbstractRapidMinerProcess(String processConfig)
 	{
@@ -68,7 +68,7 @@ public abstract class AbstractRapidMinerProcess implements Runnable
 	// Getter & Setter.
 	
 	/**
-	 * ÇÁ·Î¼¼½º ÆÄÀÏ °æ·Î¸¦ ¾ò¾î³½´Ù
+	 * í”„ë¡œì„¸ìŠ¤ íŒŒì¼ ê²½ë¡œë¥¼ ì–»ì–´ë‚¸ë‹¤
 	 * @return
 	 */
 	public String getProcessConfigureationFile()
@@ -77,7 +77,7 @@ public abstract class AbstractRapidMinerProcess implements Runnable
 	}
 
 	/**
-	 * ÇÁ·Î¼¼½º ÆÄÀÏÀ» ¼³Á¤ÇÑ´Ù.
+	 * í”„ë¡œì„¸ìŠ¤ íŒŒì¼ì„ ì„¤ì •í•œë‹¤.
 	 * @param processConfig
 	 */
 	public void setProcessConfigureation(String processConfig)

@@ -19,12 +19,12 @@ import com.rapidminer.operator.features.transformation.PCAModel;
 
 
 /**
- * RapidMinerÀÇ PCA °úÁ¤À» ·¡ÇÎÇÑ ·¡ÆÛ Å¬·¡½º.
+ * RapidMinerì˜ PCA ê³¼ì •ì„ ë˜í•‘í•œ ë˜í¼ í´ë˜ìŠ¤.
  */
 public class RapidMinerPCA extends AbstractRapidMinerProcess
 {
 	/**
-	 * µğÆúÆ® ÇÁ·Î¼¼½º·Î PCA¸¦ ¼öÇàÇÏ´Â ÄÄÆ÷³ÍÆ®¸¦ »ı¼ºÇÑ´Ù.
+	 * ë””í´íŠ¸ í”„ë¡œì„¸ìŠ¤ë¡œ PCAë¥¼ ìˆ˜í–‰í•˜ëŠ” ì»´í¬ë„ŒíŠ¸ë¥¼ ìƒì„±í•œë‹¤.
 	 */
 	public RapidMinerPCA()
 	{
@@ -32,9 +32,9 @@ public class RapidMinerPCA extends AbstractRapidMinerProcess
 	}
 
 	/**
-	 * PCA¸¦ ¼öÇàÇÏ´Â ÄÄÆ÷³ÍÆ®¸¦ »ı¼ºÇÑ´Ù.
+	 * PCAë¥¼ ìˆ˜í–‰í•˜ëŠ” ì»´í¬ë„ŒíŠ¸ë¥¼ ìƒì„±í•œë‹¤.
 	 * 
-	 * @param processFile PCA ÇÁ·Î¼¼½º°¡ ÀúÀåµÈ RapidMiner ÆÄÀÏ °æ·Î.
+	 * @param processFile PCA í”„ë¡œì„¸ìŠ¤ê°€ ì €ì¥ëœ RapidMiner íŒŒì¼ ê²½ë¡œ.
 	 */
 	public RapidMinerPCA(String processFile)
 	{
@@ -52,20 +52,20 @@ public class RapidMinerPCA extends AbstractRapidMinerProcess
 			return;
 		}
 
-		// ÇÁ·Î¼¼½º.
+		// í”„ë¡œì„¸ìŠ¤.
 		try
 		{
-			// ¹Ì¸® ¼³Á¤µÇ¾î ÀÖ´Â RapidMiner °úÁ¤À» ¼öÇàÇÑ´Ù.
+			// ë¯¸ë¦¬ ì„¤ì •ë˜ì–´ ìˆëŠ” RapidMiner ê³¼ì •ì„ ìˆ˜í–‰í•œë‹¤.
 			IOContainer c = proc_.run(new IOContainer(example_));
 
-			// PCA Model À» ¾ò°í °íÀ¯º¤ÅÍ¿Í °íÀ¯°ªÀ» ´Ù¸¥ ÇüÅÂ·Î ÀúÀåÇÑ´Ù.
+			// PCA Model ì„ ì–»ê³  ê³ ìœ ë²¡í„°ì™€ ê³ ìœ ê°’ì„ ë‹¤ë¥¸ í˜•íƒœë¡œ ì €ì¥í•œë‹¤.
 			//com.rapidminer.example.set.SimpleExampleSet exampleSet = (com.rapidminer.example.set.SimpleExampleSet)c.getElementAt(0);
 			//com.rapidminer.example.set.SimpleExampleSet original = (com.rapidminer.example.set.SimpleExampleSet)c.getElementAt(1);
 			PCAModel pcaModel = (PCAModel)c.getElementAt(2);
 
-			// °íÀ¯°ª.
+			// ê³ ìœ ê°’.
 			EigenvalueTableModel eigenValMat = pcaModel.getEigenvalueTableModel();			
-			// °íÀ¯º¤ÅÍ.
+			// ê³ ìœ ë²¡í„°.
 			EigenvectorTableModel eigenVecMat = pcaModel.getEigenvectorTableModel();
 
 			System.out.println("Eigen Values : " + eigenValMat.getRowCount() + " rows.");
@@ -108,6 +108,6 @@ public class RapidMinerPCA extends AbstractRapidMinerProcess
 		}
 	}
 
-	// RapidMiner µ¥ÀÌÅÍ.
+	// RapidMiner ë°ì´í„°.
 	private ExampleSet example_ = null;
 }
