@@ -22,12 +22,16 @@ public class TensorFlow_Main {
 
 	public static void run(String[] args)
 	{
-		runSimpleExample();
-		
-		// REF [file] >> mnist_cnn_tf.py & run_mnist_cnn.py in ${SWL_PYTHON_HOME}/test/machine_learning/tensorflow.
-		//predictByServingModel();
+		//runSimpleExample();
 
 		//predictByInceptionGraph();
+		
+		// CNN model for MNIST.
+		//	REF [file] >> mnist_cnn_tf.py & run_mnist_cnn.py in ${SWL_PYTHON_HOME}/test/machine_learning/tensorflow
+		// TensorFlow checkpoint to TensorFlow serving model:
+		//	REF [file] >> tensorflow_serving_model.py in ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/tensorflow
+		predictByCnnServingModel();
+		//predictByCnnGraph();  // Not correctly working.
 	}
 	
 	private static void runSimpleExample()
@@ -40,7 +44,6 @@ public class TensorFlow_Main {
 			Output y = graph.opBuilder("Placeholder", "y").setAttr("dtype", DataType.FLOAT).build().output(0);
 			Output z = graph.opBuilder("Add", "z").addInput(x).addInput(y).build().output(0);
 
-			// Let's say graph is an instance of 
 			try (Session sess = new Session(graph))
 			{
 				// Execute the graph multiple times, each time with a different value of x and y.
@@ -56,87 +59,6 @@ public class TensorFlow_Main {
 					}
 				}
 			}
-		}
-	}
-
-	// REF [site] >>
-	//	https://www.tensorflow.org/serving/serving_basic
-	//	https://www.tensorflow.org/guide/saved_model
-	//		"CLI to inspect and execute SavedModel":
-	//			saved_model_cli show --dir /path/to/serving_model
-	//			saved_model_cli show --dir /path/to/serving_model --tag_set serve
-	//			saved_model_cli show --dir /path/to/serving_model --tag_set serve,gpu
-	//			saved_model_cli show --dir /path/to/serving_model --tag_set serve --signature_def serving_default
-	//			saved_model_cli show --dir /path/to/serving_model --all
-	//
-	//	https://github.com/tensorflow/serving/blob/master/tensorflow_serving/example
-	//		mnist_saved_model.py
-	//	https://github.com/joyspark/TensorFlow
-	//		simpleRegression.py & loadPythonModel.java
-	private static void predictByServingModel()
-	{
-		// Save a TensorFlow serving model in Python:
-		//	builder = tf.saved_model.builder.SavedModelBuilder('/path/to/serving_model')
-		//	builder.add_meta_graph_and_variables(session, [tf.saved_model.tag_constants.SERVING], saver=saver)
-		//	builder.save(as_text=False)
-
-		final String[] imageFilepaths = {
-			"data/machine_learning/mnist_img_1.jpg",  // 2.
-			"data/machine_learning/mnist_img_2.jpg",  // 0.
-			"data/machine_learning/mnist_img_3.jpg",  // 9.
-			"data/machine_learning/mnist_img_4.jpg",  // 0.
-			"data/machine_learning/mnist_img_5.jpg"  // 3.
-		};
-
-		// Load an image.
-		byte[] imageBytes = readAllBytes(Paths.get(imageFilepaths[0]));
-		if (null == imageBytes)
-		{
-			System.err.println("Image not loaded.");
-			return;
-		}
-
-		// Create a saved model bundle.
-		//try (SavedModelBundle b = SavedModelBundle.load("/path/to/serving_model", "serve"))
-		try (SavedModelBundle b = SavedModelBundle.load("data/machine_learning/tensorflow/mnist_cnn_serving_model", "serve"))
-		{
-			// Create a session.
-			Session sess = b.session();
-			//Graph graph = b.graph();
-
-			// Create an input tensor.
-			try (Tensor<Float> image = constructTensorFromImage(imageBytes, 1))
-			{
-				/*
-				// For training.
-				float[][] outputLabels = new float[1][10];
-				Tensor<Float> label = Tensor.create(outputLabels).expect(Float.class);
-				//Operation op = graph.operation("output_tensor_ph");
-				try (Tensor<Float> accuracy = sess.runner().feed("input_tensor_ph", image).feed("output_tensor_ph", label).fetch("accuracy/accuracy").run().get(0).expect(Float.class))
-				*/
-				// For prediction.
-				try (Tensor<Float> pred = sess.runner().feed("input_tensor_ph", image).fetch("mnist_cnn_using_tf/fc2/fc/Softmax").run().get(0).expect(Float.class))
-				{
-					final long[] shape = pred.shape();
-					if (2 != pred.numDimensions() || 1 != shape[0])
-					{
-						throw new RuntimeException(
-							String.format("Expected model to produce a [1 N] shaped tensor where N is the number of labels, instead it produced one with shape %s", Arrays.toString(shape))
-						);
-					}
-
-					final int nlabels = (int)shape[1];
-					final float[] labelProbabilities = pred.copyTo(new float[1][nlabels])[0];
-					final int bestLabelIdx = getMaxIndex(labelProbabilities);
-					System.out.println(
-						String.format("BEST MATCH: %d (%.2f%% likely)", bestLabelIdx, labelProbabilities[bestLabelIdx] * 100f)
-					);
-				}
-			}
-		}
-		catch (Exception ex)
-		{
-			System.err.println("Exception thrown: " + ex);
 		}
 	}
 	
@@ -203,6 +125,157 @@ public class TensorFlow_Main {
 					}
 				}
 			}
+		}
+	}
+
+	// REF [site] >>
+	//	https://github.com/tensorflow/serving/blob/master/tensorflow_serving/example
+	//		mnist_saved_model.py
+	//	https://github.com/joyspark/TensorFlow
+	//		simpleRegression.py & loadPythonModel.java
+	private static void predictByCnnServingModel()
+	{
+		// Save a TensorFlow serving model in Python:
+		//	builder = tf.saved_model.builder.SavedModelBuilder('/path/to/serving_model')
+		//	builder.add_meta_graph_and_variables(session, [tf.saved_model.tag_constants.SERVING], saver=saver)
+		//	builder.save(as_text=False)
+
+		final String[] imageFilepaths = {
+			"data/machine_learning/mnist_img_1.jpg",  // 2.
+			"data/machine_learning/mnist_img_2.jpg",  // 0.
+			"data/machine_learning/mnist_img_3.jpg",  // 9.
+			"data/machine_learning/mnist_img_4.jpg",  // 0.
+			"data/machine_learning/mnist_img_5.jpg"  // 3.
+		};
+
+		// Load an image.
+		byte[] imageBytes = readAllBytes(Paths.get(imageFilepaths[0]));
+		if (null == imageBytes)
+		{
+			System.err.println("Image not loaded.");
+			return;
+		}
+
+		// Create a saved model bundle.
+		//try (SavedModelBundle b = SavedModelBundle.load("/path/to/serving_model", "serve"))
+		try (SavedModelBundle b = SavedModelBundle.load("data/machine_learning/tensorflow/mnist_cnn_serving_model", "serve"))
+		{
+			// Create a session.
+			Session sess = b.session();
+			//Graph graph = b.graph();
+
+			// Create an input tensor.
+			try (Tensor<Float> image = constructTensorFromImage(imageBytes, 1))
+			{
+				/*
+				// For training.
+				float[][] outputLabels = new float[1][10];
+				Tensor<Float> label = Tensor.create(outputLabels).expect(Float.class);
+				//Operation op = graph.operation("output_tensor_ph");
+				try (Tensor<Float> accuracy = sess.runner().feed("input_tensor_ph", image).feed("output_tensor_ph", label).fetch("accuracy/accuracy").run().get(0).expect(Float.class))
+				*/
+				// For prediction.
+				try (Tensor<Float> pred = sess.runner().feed("input_tensor_ph", image).fetch("mnist_cnn_using_tf/fc2/fc/Softmax").run().get(0).expect(Float.class))
+				{
+					final long[] shape = pred.shape();
+					if (2 != pred.numDimensions() || 1 != shape[0])
+					{
+						throw new RuntimeException(
+							String.format("Expected model to produce a [1 N] shaped tensor where N is the number of labels, instead it produced one with shape %s", Arrays.toString(shape))
+						);
+					}
+
+					final int nlabels = (int)shape[1];
+					final float[] labelProbabilities = pred.copyTo(new float[1][nlabels])[0];
+					final int bestLabelIdx = getMaxIndex(labelProbabilities);
+					System.out.println(
+						String.format("BEST MATCH: %d (%.2f%% likely)", bestLabelIdx, labelProbabilities[bestLabelIdx] * 100f)
+					);
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			System.err.println("Exception thrown: " + ex);
+		}
+	}
+
+	private static void predictByCnnGraph()
+	{
+		// Save a graph in Python:
+		//	tf.train.write_graph(session.graph_def, '/path/to/saved_dir, 'saved_graph.pb', as_text=False)
+		//	tf.train.write_graph(session.graph_def, '/path/to/saved_dir, 'saved_graph.pbtxt', as_text=True)
+
+		// NOTE [error] >> Attempting to use uninitialized value mnist_cnn_using_tf/fc1/fc/kernel.
+		final String modelDir = "data/machine_learning/tensorflow";
+		final String modelFile = "mnist_cnn_graph.pb";
+		// NOTE [error] >> Invalid GraphDef.
+		//final String modelDir = "data/machine_learning/tensorflow/mnist_cnn_serving_model";
+		//final String modelFile = "saved_model.pb";
+		final String[] imageFilepaths = {
+			"data/machine_learning/mnist_img_1.jpg",  // 2.
+			"data/machine_learning/mnist_img_2.jpg",  // 0.
+			"data/machine_learning/mnist_img_3.jpg",  // 9.
+			"data/machine_learning/mnist_img_4.jpg",  // 0.
+			"data/machine_learning/mnist_img_5.jpg"  // 3.
+		};
+
+		// Load an image.
+		byte[] imageBytes = readAllBytes(Paths.get(imageFilepaths[0]));
+		if (null == imageBytes)
+		{
+			System.err.println("Image not loaded.");
+			return;
+		}
+		
+		final byte[] graphDef = readAllBytes(Paths.get(modelDir, modelFile));
+		if (null == graphDef)
+		{
+			System.err.println("TensorFlow graph model not loaded.");
+			return;
+		}
+		
+		try (Graph graph = new Graph())
+		{
+			graph.importGraphDef(graphDef);
+		    //graph.importGraphDef(FileUtils.readFileToByteArray(new File(Paths.get(modelDir, modelFile).toString())));
+
+			try (Session sess = new Session(graph))
+			{
+				// Create an input tensor.
+				try (Tensor<Float> image = constructTensorFromImage(imageBytes, 1))
+				{
+					/*
+					// For training.
+					float[][] outputLabels = new float[1][10];
+					Tensor<Float> label = Tensor.create(outputLabels).expect(Float.class);
+					//Operation op = graph.operation("output_tensor_ph");
+					try (Tensor<Float> accuracy = sess.runner().feed("input_tensor_ph", image).feed("output_tensor_ph", label).fetch("accuracy/accuracy").run().get(0).expect(Float.class))
+					*/
+					// For prediction.
+					try (Tensor<Float> pred = sess.runner().feed("input_tensor_ph", image).fetch("mnist_cnn_using_tf/fc2/fc/Softmax").run().get(0).expect(Float.class))
+					{
+						final long[] shape = pred.shape();
+						if (2 != pred.numDimensions() || 1 != shape[0])
+						{
+							throw new RuntimeException(
+								String.format("Expected model to produce a [1 N] shaped tensor where N is the number of labels, instead it produced one with shape %s", Arrays.toString(shape))
+							);
+						}
+	
+						final int nlabels = (int)shape[1];
+						final float[] labelProbabilities = pred.copyTo(new float[1][nlabels])[0];
+						final int bestLabelIdx = getMaxIndex(labelProbabilities);
+						System.out.println(
+							String.format("BEST MATCH: %d (%.2f%% likely)", bestLabelIdx, labelProbabilities[bestLabelIdx] * 100f)
+						);
+					}
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			System.err.println("Exception thrown: " + ex);
 		}
 	}
 
