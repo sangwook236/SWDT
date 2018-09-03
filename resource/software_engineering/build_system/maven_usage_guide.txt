@@ -11,9 +11,15 @@
 		http://www.gliderwiki.org/wiki/105
 
 	- Repositories.
-		Remote repository: http://repo1.maven.org/maven2/
-		Local repository: ${USER_HOME}/.m2/repository
-			[groupId]/[artifactId]/[version]
+		Remote repository:
+			http://repo1.maven.org/maven2/
+		Local repository:
+			Default:
+				${USER_HOME}/.m2/repository
+					[groupId]/[artifactId]/[version]
+			In ${USER_HOME}/lib_repo/.m2/settings.xml:
+				${USER_HOME}/lib_repo/.m2/repository
+					[groupId]/[artifactId]/[version]
 
 	- Local directory structure.
 		https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html

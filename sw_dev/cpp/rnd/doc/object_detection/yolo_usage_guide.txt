@@ -23,8 +23,8 @@
 
 		cd $DARKNET_HOME
 		Edit Makefile.
-			GPU=0
-			CUDNN=0
+			GPU=1
+			CUDNN=1
 			OPENCV=1
 			OPENMP=1
 			==> NOTE [caution] >> When using GPU, detection results are different. 
