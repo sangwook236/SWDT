@@ -18,9 +18,9 @@
   </build>
   <dependencies>
   	<dependency>
-  		<groupId>jfree</groupId>
+  		<groupId>org.jfree</groupId>
   		<artifactId>jfreechart</artifactId>
-  		<version>1.0.3</version>
+  		<version>1.0.19</version>
   	</dependency>
   </dependencies>
 </project>

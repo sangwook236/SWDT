@@ -1,9 +1,9 @@
 package spark;
 
 import org.apache.spark.SparkConf;
-//import org.apache.spark.api.java.JavaSparkContext;
-//import org.apache.spark.api.java.JavaRDD;
-//import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.*;
 import org.apache.spark.api.java.function.*;
 import scala.Tuple2;

@@ -1,17 +1,19 @@
-package junit.arithmetic;
+package arithmetic;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author sangwook
  *
  */
-public class ArithmeticSimpleTest extends TestCase {
+public class ArithmeticSimpleTest {
 
 	/**
 	 * Test method for {@link ext.Arithmetic#add(double, double)}.
 	 */
-	public void testAdd() {
+	@Test
+	void testAdd() {
 		final double r = arithmetic.Arithmetic.add(x_, y_);
 		assertEquals(5.0, r, 1.0e-10);
 	}
@@ -19,7 +21,8 @@ public class ArithmeticSimpleTest extends TestCase {
 	/**
 	 * Test method for {@link ext.Arithmetic#sub(double, double)}.
 	 */
-	public void testSub() {
+	@Test
+	void testSub() {
 		final double r = arithmetic.Arithmetic.sub(x_, y_);
 		assertEquals(1.0, r, 1.0e-10);
 	}
@@ -27,7 +30,8 @@ public class ArithmeticSimpleTest extends TestCase {
 	/**
 	 * Test method for {@link ext.Arithmetic#mul(double, double)}.
 	 */
-	public void testMul() {
+	@Test
+	void testMul() {
 		final double r = arithmetic.Arithmetic.mul(x_, y_);
 		assertEquals(6.0, r, 1.0e-10);
 	}
@@ -35,20 +39,22 @@ public class ArithmeticSimpleTest extends TestCase {
 	/**
 	 * Test method for {@link ext.Arithmetic#div(double, double)}.
 	 */
-	public void testDiv() {
+	@Test
+	void testDiv() {
 		final double r = arithmetic.Arithmetic.div(x_, y_);
 		assertEquals(1.5, r, 1.0e-10);
 	}
 
-	public void testDivideByZero() {
+	@Test
+	void testDivideByZero() {
 		try
 		{
 			arithmetic.Arithmetic.divideByZero();
 			fail("Divided by Zero!");
 		}
-		catch (ArithmeticException e)
+		catch (ArithmeticException ex)
 		{
-			assertNotNull(e.getMessage());
+			assertNotNull(ex.getMessage());
 		}
 		finally
 		{

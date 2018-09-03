@@ -8,10 +8,13 @@ public class Main {
 		try
 		{
 			System.out.println("JavaCPP -------------------------------------------------------------");
-			javacpp.JavaCPP_Main.run(args);
+			//javacpp.JavaCPP_Main.run(args);
 
 			System.out.println("Java Native Interface (JNI) -----------------------------------------");
 			//jni.JNIMain.run(args);  // Not yet implemented.
+
+			System.out.println("Jython --------------------------------------------------------------");
+			jython.Jython_Main.run(args);
 		}
 		catch (Exception ex)
 		{
