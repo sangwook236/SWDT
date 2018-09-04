@@ -7,9 +7,12 @@
 
 # In a checkpoint directory:
 #	checkpoint
+#		Checkpoint info.
 #	model.ckpt-1042.data-00000-of-00001
+#		Weights of variables.
 #	model.ckpt-1042.index
 #	model.ckpt-1042.meta
+#		Meta graph.
 
 # REF [site] >>
 #	https://www.tensorflow.org/serving/
@@ -44,7 +47,6 @@ def save_model_to_checkpoint():
 	#config = tf.ConfigProto()
 	#with tf.Session(graph=graph, config=config) as sess:
 	with tf.Session(graph=graph) as sess:
-	sess.run(tf.global_variables_initializer())
 		sess.run(tf.global_variables_initializer())
 
 		# Do something with the model.
@@ -55,15 +57,15 @@ def save_model_to_checkpoint():
 def load_model_from_checkpoint():
 	model_checkpoint_dir_path = './mnist_cnn_checkpoint'
 	model_meta_graph_filename = 'model.meta'
-	graph_dir_path = '.'
 
 	graph = tf.Graph()
 	with graph.as_default():
 		# Method 1.
-		# Create a model.
+		#	Create a model.
 		#saver = tf.train.Saver()
 
 		# Method 2.
+		#	Load a graph.
 		saver = tf.train.import_meta_graph(os.path.join(model_checkpoint_dir_path, model_meta_graph_filename))
 
 	#config = tf.ConfigProto()
@@ -77,7 +79,7 @@ def load_model_from_checkpoint():
 		# Save graph and serving model.
 		#	REF [function] >> checkpoint_to_serving_model()
 
-def checkpoint_to_serving_model():
+def checkpoint_to_graph():
 	model_checkpoint_dir_path = './mnist_cnn_checkpoint'
 	model_meta_graph_filename = 'model.meta'
 	serving_model_dir_path = './mnist_cnn_serving_model'
@@ -85,6 +87,29 @@ def checkpoint_to_serving_model():
 
 	graph = tf.Graph()
 	with graph.as_default():
+		# Load a graph.
+		saver = tf.train.import_meta_graph(os.path.join(model_checkpoint_dir_path, model_meta_graph_filename))
+
+	#config = tf.ConfigProto()
+	#with tf.Session(graph=graph, config=config) as sess:
+	with tf.Session(graph=graph) as sess:
+		# Load a model checkpoint.
+		#ckpt = tf.train.get_checkpoint_state(model_checkpoint_dir_path)
+		#saver.restore(sess, ckpt.model_checkpoint_path)
+		##saver.restore(sess, tf.train.latest_checkpoint(model_checkpoint_dir_path))
+
+		# Save a graph.
+		tf.train.write_graph(sess.graph_def, graph_dir_path, 'mnist_cnn_graph.pb', as_text=False)
+		tf.train.write_graph(sess.graph_def, graph_dir_path, 'mnist_cnn_graph.pbtxt', as_text=True)
+
+def checkpoint_to_serving_model():
+	model_checkpoint_dir_path = './mnist_cnn_checkpoint'
+	model_meta_graph_filename = 'model.meta'
+	serving_model_dir_path = './mnist_cnn_serving_model'
+
+	graph = tf.Graph()
+	with graph.as_default():
+		# Load a graph.
 		saver = tf.train.import_meta_graph(os.path.join(model_checkpoint_dir_path, model_meta_graph_filename))
 
 	#config = tf.ConfigProto()
@@ -95,18 +120,16 @@ def checkpoint_to_serving_model():
 		saver.restore(sess, ckpt.model_checkpoint_path)
 		#saver.restore(sess, tf.train.latest_checkpoint(model_checkpoint_dir_path))
 
-		# Save a graph.
-		tf.train.write_graph(sess.graph_def, graph_dir_path, 'mnist_cnn_graph.pb', as_text=False)
-		tf.train.write_graph(sess.graph_def, graph_dir_path, 'mnist_cnn_graph.pbtxt', as_text=True)
-
 		# Save a serving model.
 		builder = tf.saved_model.builder.SavedModelBuilder(serving_model_dir_path)
 		builder.add_meta_graph_and_variables(sess, [tf.saved_model.tag_constants.SERVING], saver=saver)
 		builder.save(as_text=False)
 
 def main():
-	save_model_to_checkpoint()
-	load_model_from_checkpoint()
+	#save_model_to_checkpoint()
+	#load_model_from_checkpoint()
+
+	checkpoint_to_graph()
 
 	# TensorFlow Serving.
 	checkpoint_to_serving_model()
