@@ -52,6 +52,7 @@ def indexing_and_slicing():
 	print('Submatrix (iloc) =\n', iris_df.iloc[5:20, 1:3], sep='')
 	print('Submatrix (iloc) =\n', iris_df.iloc[5:20, [0, 1, 3]], sep='')
 
+# REF [site] >> https://pandas.pydata.org/pandas-docs/stable/missing_data.html
 def function_operation():
 	#df1 = pd.DataFrame(data=[[1, 7, 3, 2, 5, 2, 5, 3, 4, 7, 9, -1, 2, 5, -1, 7]])  # Row.
 	df1 = pd.DataFrame(data=[1, 7, 3, 2, 5, 2, 5, 3, 4, 7, 9, -1, 2, 5, -1, 7])  # Column.
@@ -65,6 +66,37 @@ def function_operation():
 	print('pd.unique(df2) =', pd.unique(df2.iloc[:, 0]))
 	print('np.sort(pd.unique(df2)) =', np.sort(pd.unique(df2.iloc[0, :])))
 	#print('pd.unique(df2) =', pd.unique(df2))  # Error.
+
+def value_operation():
+	pd.options.mode.use_inf_as_na = True
+
+	csv_filepath = './titanic_train.csv'
+	df = pd.read_csv(csv_filepath, sep=',', header='infer', index_col='PassengerId')
+
+	#df[df.Sex == 'female'].sum()
+	#df[df['Sex'] == 'female'].Survived.cumsum()
+	print('#survived females =', df[df.Sex == 'female'].count()['Survived'])
+
+	print('Unique values of Embarked =', df.Embarked.unique())
+
+	# Drop columns.
+	df = df.drop(columns=['Name', 'Ticket', 'Cabin'])
+	#df = df.drop(columns=['Name'])
+
+	# Replace values.
+	df.Sex = df.Sex.replace(['male', 'female'], [0, 1])
+	df.Embarked = df.Embarked.replace(['C', 'S', 'Q'], [0, 1, 2])
+
+	# Impute missing values.
+	df.Age = df.Age.fillna(0)
+	#values = {'Age': 0, 'Embarked': -1, 'Cabin': 'unknown'}
+	values = {'Embarked': -1}
+	df = df.fillna(value=values)
+
+	#print(df)
+	
+	# Write to a CSV file.
+	df.to_csv('./titanic_train_revised.csv', na_rep='N/A')
 
 def numpy_operation():
 	iris_df = pd.read_csv('./iris.csv', sep=',', header='infer')
@@ -80,9 +112,10 @@ def numpy_operation():
 	print('pd.DataFrame from np.ndarray =\n', iris_df2, sep='')
 
 def main():
-	basic_operation()
+	#basic_operation()
 	#indexing_and_slicing()
 	#function_operation()
+	value_operation()
 
 	#numpy_operation()
 
