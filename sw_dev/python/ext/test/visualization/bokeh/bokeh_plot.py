@@ -2,8 +2,7 @@
 
 from bokeh.io import output_file, show, save, export_png
 from bokeh.layouts import column
-from bokeh.plotting import figure
-import traceback, sys
+from bokeh.plotting import figure, curdoc
 
 # REF [site] >> https://bokeh.pydata.org/en/latest/docs/user_guide/plotting.html
 def scatter_marker_example():
@@ -67,13 +66,8 @@ def main():
 
 #%%------------------------------------------------------------------
 
+# Usage:
+#	python bokeh_plot.py
+
 if '__main__' == __name__:
-	try:
-		main()
-	except:
-		#ex = sys.exc_info()  # (type, exception object, traceback).
-		##print('{} raised: {}.'.format(ex[0], ex[1]))
-		#print('{} raised: {}.'.format(ex[0].__name__, ex[1]))
-		#traceback.print_tb(ex[2], limit=None, file=sys.stdout)
-		#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
-		traceback.print_exc(limit=None, file=sys.stdout)
+	main()

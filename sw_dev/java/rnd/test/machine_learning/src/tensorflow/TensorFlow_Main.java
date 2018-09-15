@@ -25,12 +25,12 @@ public class TensorFlow_Main {
 		//runSimpleExample();
 
 		//predictByInceptionGraph();
-		
+
 		// CNN model for MNIST.
 		//	REF [file] >> mnist_cnn_tf.py & run_mnist_cnn.py in ${SWL_PYTHON_HOME}/test/machine_learning/tensorflow
-		// TensorFlow checkpoint to TensorFlow serving model:
-		//	REF [file] >> tensorflow_serving_model.py in ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/tensorflow
-		predictByCnnServingModel();
+		// TensorFlow checkpoint to TensorFlow SavedModel:
+		//	REF [file] >> tensorflow_saving_and_loading.py in ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/tensorflow
+		predictByCnnSavedModel();
 		//predictByCnnGraph();  // Not correctly working.
 	}
 	
@@ -133,10 +133,10 @@ public class TensorFlow_Main {
 	//		mnist_saved_model.py
 	//	https://github.com/joyspark/TensorFlow
 	//		simpleRegression.py & loadPythonModel.java
-	private static void predictByCnnServingModel()
+	private static void predictByCnnSavedModel()
 	{
-		// Save a TensorFlow serving model in Python:
-		//	builder = tf.saved_model.builder.SavedModelBuilder('/path/to/serving_model')
+		// Save a TensorFlow SavedModel in Python:
+		//	builder = tf.saved_model.builder.SavedModelBuilder('/path/to/saved_model')
 		//	builder.add_meta_graph_and_variables(session, [tf.saved_model.tag_constants.SERVING], saver=saver)
 		//	builder.save(as_text=False)
 
@@ -157,8 +157,8 @@ public class TensorFlow_Main {
 		}
 
 		// Create a saved model bundle.
-		//try (SavedModelBundle b = SavedModelBundle.load("/path/to/serving_model", "serve"))
-		try (SavedModelBundle b = SavedModelBundle.load("data/machine_learning/tensorflow/mnist_cnn_serving_model", "serve"))
+		//try (SavedModelBundle b = SavedModelBundle.load("/path/to/saved_model", "serve"))
+		try (SavedModelBundle b = SavedModelBundle.load("data/machine_learning/tensorflow/mnist_cnn_saved_model", "serve"))
 		{
 			// Create a session.
 			Session sess = b.session();
@@ -210,7 +210,7 @@ public class TensorFlow_Main {
 		final String modelDir = "data/machine_learning/tensorflow";
 		final String modelFile = "mnist_cnn_graph.pb";
 		// NOTE [error] >> Invalid GraphDef.
-		//final String modelDir = "data/machine_learning/tensorflow/mnist_cnn_serving_model";
+		//final String modelDir = "data/machine_learning/tensorflow/mnist_cnn_saved_model";
 		//final String modelFile = "saved_model.pb";
 		final String[] imageFilepaths = {
 			"data/machine_learning/mnist_img_1.jpg",  // 2.
