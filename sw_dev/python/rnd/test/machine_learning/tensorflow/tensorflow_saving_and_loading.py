@@ -213,24 +213,28 @@ def graph_to_tensorboard_log():
 #		If there are still unsupported layers, check out graph_transform tools.
 #	${TENSORFLOW_HOME}/tensorflow/python/tools/freeze_graph.py
 #		The freeze_graph tool takes a graph definition and a set of checkpoints and freezes them together into a single file.
+#		freeze_graph
+#			cd ${TENSORFLOW_HOME}
+#			bazel build tensorflow/python/tools:freeze_graph
+#			bazel-bin/tensorflow/python/tools/freeze_graph --help
 #		python freeze_graph.py
 #			${TENSORFLOW_HOME}/tensorflow/python/tools/freeze_graph.py
-#		freeze_graph
-#			bazel build tensorflow/python/tools:freeze_graph
-#			bazel-bin/tensorflow/python/tools/freeze_graph
-#		freeze_graph --input_graph=/path/to/graph.pbtxt --input_binary=false --input_checkpoint=/path/to/checkpoint/tf_ckpt-1234 --output_graph=/path/to/frozen_graph.pb --output_node_names=output_tensor
-#		e.g.) bazel-bin/tensorflow/python/tools/freeze_graph --input_graph=/home/sangwook/work/mnist_cnn_graph.pbtxt --input_binary=false --input_checkpoint=/home/sangwook/work/mnist_cnn_checkpoint/tf_ckpt-7740 --output_graph=/home/sangwook/work/mnist_cnn_frozen_graph.pb --output_node_names=mnist_cnn_using_tf/fc2/fc/Softmax
+#		e.g.) freeze_graph --input_graph=/path/to/graph.pbtxt --input_binary=false --input_checkpoint=/path/to/checkpoint/tf_ckpt-1234 --output_graph=/path/to/frozen_graph.pb --output_node_names=output_nodes
+#			${TENSORFLOW_HOME}/bazel-bin/tensorflow/python/tools/freeze_graph --input_graph=/home/sangwook/work/mnist_cnn_graph.pbtxt --input_binary=false --input_checkpoint=/home/sangwook/work/mnist_cnn_checkpoint/tf_ckpt-7740 --output_graph=/home/sangwook/work/mnist_cnn_frozen_graph.pb --output_node_names=mnist_cnn_using_tf/fc2/fc/Softmax
+#		=> Recommend using TensorBoard to get 'output_node_names' which I think is operations' names in a TensorFlow graph.
 #	${TENSORFLOW_HOME}/tensorflow/python/tools/optimize_for_inference.py
 #		The optimize_for_inference tool takes in the input and output names and does another pass to strip out unnecessary layers.
+#		optimize_for_inference
+#			cd ${TENSORFLOW_HOME}
+#			bazel build tensorflow/python/tools:optimize_for_inference
+#			bazel-bin/tensorflow/python/tools/optimize_for_inference --help
 #		python optimize_for_inference.py
 #			${TENSORFLOW_HOME}/tensorflow/python/tools/optimize_for_inference.py
-#		optimize_for_inference
-#			bazel build tensorflow/python/tools:optimize_for_inference
-#			bazel-bin/tensorflow/python/tools/optimize_for_inference
-#		optimize_for_inference --input=/path/to/frozen_graph.pb --output=/path/to/optimized_frozen_graph.pb --frozen_graph=True --input_names=input_tensor --output_names=output_tensor
+#		e.g.) optimize_for_inference --input=/path/to/frozen_graph.pb --output=/path/to/optimized_frozen_graph.pb --frozen_graph=true --input_names=input_nodes --output_names=output_nodes
 #	REF [site] >>
 #		https://heartbeat.fritz.ai/intro-to-machine-learning-on-android-how-to-convert-a-custom-model-to-tensorflow-lite-e07d2d9d50e3
 def freeze_graph():
+	# Use the freeze_graph tool.
 	raise NotImplementedError
 
 from tensorflow.contrib.lite.python import lite
@@ -244,19 +248,21 @@ from tensorflow.contrib.lite.python import lite
 # Convert a model to tflite:
 #	${TENSORFLOW_HOME}/tensorflow/contrib/lite/python/lite.py
 #	${TENSORFLOW_HOME}/tensorflow/contrib/lite/python/tflite_convert.py
+#		tflite_convert
+#			cd ${TENSORFLOW_HOME}
+#			bazel build tensorflow/contrib/lite/python:tflite_convert
+#			bazel-bin/tensorflow/contrib/lite/python/tflite_convert --help
 #		python tflite_convert.py
 #			${TENSORFLOW_HOME}/tensorflow/contrib/lite/python/tflite_convert.py
-#		tflite_convert
-#			bazel build tensorflow/contrib/lite/python:tflite_convert
-#			bazel-bin/tensorflow/contrib/lite/python/tflite_convert
-#		tflite_convert --output_file=/path/to/saved_model.tflite --saved_model_dir=/path/to/saved_model
-#			saved_model_dir is a directory of TensorFlow SavedModel.
+#		e.g.) tflite_convert --output_file=/path/to/saved_model.tflite --saved_model_dir=/path/to/saved_model
+#		=> 'saved_model_dir' is a directory of TensorFlow SavedModel.
 #	${TENSORFLOW_HOME}/tensorflow/contrib/lite/toco/
 #		toco
+#			cd ${TENSORFLOW_HOME}
 #			bazel build tensorflow/contrib/lite/toco:toco
-#			bazel-bin/tensorflow/contrib/lite/toco/toco
-#		toco --input_file=/path/to/optimized_frozen_graph.pb --input_format=TENSORFLOW_GRAPHDEF --output_format=TFLITE --inference_type=FLOAT --input_type=FLOAT \
-#			--input_arrays=input_tensor --output_arrays=output_tensor --input_shapes=1,28,28,1 --output_file=/path/to/saved_model.tflite
+#			bazel-bin/tensorflow/contrib/lite/toco/toco --help
+#		e.g.) toco --input_file=/path/to/optimized_frozen_graph.pb --input_format=TENSORFLOW_GRAPHDEF --output_format=TFLITE --inference_type=FLOAT --input_type=FLOAT \
+#			--input_arrays=input_nodes --output_arrays=output_nodes --input_shapes=1,28,28,1 --output_file=/path/to/saved_model.tflite
 #	REF [site] >>
 #		https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/lite/toco/g3doc/cmdline_examples.md
 #		https://medium.com/tensorflow/using-tensorflow-lite-on-android-9bbc9cb7d69d
