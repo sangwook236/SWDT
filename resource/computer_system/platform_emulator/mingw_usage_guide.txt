@@ -124,15 +124,14 @@
 	- Mount MinGW directory.
 		mount c:/mingw /mingw
 			For MSYS:
-				mount D:/MyProgramFiles/mingw-w64/i686-5.3.0-posix-dwarf-rt_v4-rev0/mingw32 /mingw
+				mount D:/util/mingw-w64/i686-5.3.0-posix-dwarf-rt_v4-rev0/mingw32 /mingw
 			For MSYS2 MinGW 32-bit:
-				mount D:/MyProgramFiles/mingw-w64/i686-6.2.0-posix-dwarf-rt_v5-rev1/mingw32 /mingw32
+				mount D:/util/mingw-w64/i686-6.2.0-posix-dwarf-rt_v5-rev1/mingw32 /mingw32
 			For MSYS2 MinGW 64-bit:
-				mount D:/MyProgramFiles/mingw-w64/x86_64-6.2.0-release-posix-seh-rt_v5-rev1/mingw64 /mingw64
-			==> This setting is sufficient to be set once. (?)
+				mount D:/util/mingw-w64/x86_64-6.2.0-release-posix-seh-rt_v5-rev1/mingw64 /mingw64
 		Add into ${MSYS_HOME}/etc/fstab.
-			D:/MyProgramFiles/mingw-w64/i686-6.2.0-posix-dwarf-rt_v5-rev1/mingw32 /mingw32
-			D:/MyProgramFiles/mingw-w64/x86_64-6.2.0-release-posix-seh-rt_v5-rev1/mingw64 /mingw64
+			D:/util/mingw-w64/i686-6.2.0-posix-dwarf-rt_v5-rev1/mingw32 /mingw32
+			D:/util/mingw-w64/x86_64-6.2.0-release-posix-seh-rt_v5-rev1/mingw64 /mingw64
 
 [-] Setting.
 	- Compiler, linker, & make to use for building library.

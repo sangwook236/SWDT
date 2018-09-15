@@ -44,6 +44,10 @@ projector.visualize_embeddings(summary_writer, config)
 
 # Save the model.
 saver = tf.train.Saver()
-saver.save(sess, os.path.join('log', "model.ckpt"))
+saver.save(sess, os.path.join('log', 'tf_ckpt'))
 
-#tensorboard --logdir=log
+# TensorFlow graph to TensorBoard log
+#	REF [file] >> tensorflow_saving_and_loading.py
+
+# Usage:
+#	tensorboard --logdir=log

@@ -5,17 +5,19 @@
 
 [-] Usage.
 	- Install.
-		Windows;
+		Windows:
 			Download a release.
 				https://github.com/bazelbuild/bazel/releases/
 	- Set environment variables.
-		Windows;
+		Windows:
 			set BAZEL_SH=${MSYS_HOME}/usr/bin/bash.exe
 			set BAZEL_PYTHON=${PYTHON_HOME}/python.exe
-			set BAZEL_VC=${MSVC_HOME}/VC
+				Instead, a Python environment can be activated.
+			set BAZEL_VC=${VC_HOME}/VC
+				Instead, Visual Studio command prompt can be used.
 	- Set path.
-		Windows;
-			set path=${MSYS_HOME}/usr/bin;${MINGW_HOME}/mingw64/bin;${BAZEL_HOME};%path%
+		Windows:
+			set PATH=${MSYS_HOME}/usr/bin;${MINGW_HOME}/mingw64/bin;${BAZEL_HOME};%PATH%
 	- Create a build file.
 		https://bazel.build/versions/master/docs/getting-started.html
 		https://bazel.build/versions/master/docs/tutorial/cpp.html

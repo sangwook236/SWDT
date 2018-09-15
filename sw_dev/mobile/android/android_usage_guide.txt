@@ -79,3 +79,16 @@
 		==> The generated header file is generated in ${Module_HOME}/src/main/java.
 	- (Optional) move the generated header file.
 		${Module_HOME}/src/main/java --> ${Module_HOME}/src/main/cpp.
+
+[-] TensorFlow.
+	REF [doc] >> tensorflow_usage_guide.txt
+
+[-] Trouble shooting.
+	- AVD launching error.
+		<error> x86 emulation currently requires hardware acceleration
+		<solution>
+			In Android Studio:
+				'Tools -> SDK Manager -> Appearance & Behavior -> System Settings -> Android SDK -> SDK Tools'
+					Install 'Intel x86 Emulator Accelerator (HAXM installer)'.
+			In PC BIOS:
+				Enable virtualization technology.
