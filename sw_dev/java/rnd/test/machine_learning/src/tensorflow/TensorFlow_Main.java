@@ -17,8 +17,9 @@ import java.util.List;
 public class TensorFlow_Main {
 
 	// REF [site] >>
-	//	https://github.com/tensorflow/tensorflow/blob/master/tensorflow/java/README.md
-	//	https://github.com/tensorflow/tensorflow/blob/master/tensorflow/java/maven/README.md
+	//	https://github.com/tensorflow/tensorflow/tree/master/tensorflow/java
+	//	https://github.com/tensorflow/tensorflow/tree/master/tensorflow/java/maven
+	//	https://www.tensorflow.org/install/install_java
 
 	public static void run(String[] args)
 	{
