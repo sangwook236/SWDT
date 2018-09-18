@@ -129,6 +129,7 @@ def upload_file():
 
 if '__main__' == __name__:
 	try:
+		# With debug=True, Flask server will auto-reload when there are code changes.
 		app.run(host='0.0.0.0', port=8888, debug=False)
 	except:
 		#ex = sys.exc_info()  # (type, exception object, traceback).

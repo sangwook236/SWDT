@@ -41,6 +41,8 @@ def kwargs_func2(last_name, param1=None, param2=None, param3=None, **kwargs2):
 	print('{}: {}'.format(kwargs2, type(kwargs2)))
 
 def args_kwargs_func(*args, **kwargs):
+	print('********** args_kwargs_func()')
+	print('type(args) = {}, type(kwargs) = {}'.format(type(args), type(kwargs)))
 	print('args =', args)
 	print('kwargs =', kwargs)
 	#print('Keys of kwargs =', kwargs.keys())
