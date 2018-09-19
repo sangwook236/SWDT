@@ -9,13 +9,11 @@ import os
 #	Use TensorBoard or the summarize_graph tool to get a graph's shape.
 #	If there are still unsupported layers, check out graph_transform tools.
 
-def display_graph_def(graph_def, display_all_nodes=False):
-	print('------------------------------------------------ Nodes with "input".')
-	#print([n for n in graph_def.node if n.name.find('input') != -1])
-	print(*[n for n in graph_def.node if n.name.find('input') != -1], sep='\n')
-	print('------------------------------------------------ Nodes with "output".')
-	#print([n for n in graph_def.node if n.name.find('output') != -1])
-	print(*[n for n in graph_def.node if n.name.find('output') != -1], sep='\n')
+def display_graph_def(graph_def, node_names, display_all_nodes=False):
+	for node in node_names:
+		print('------------------------------------------------ Nodes with "{}".'.format(node))
+		#print([n for n in graph_def.node if n.name.find(node) != -1])
+		print(*[n for n in graph_def.node if n.name.find(node) != -1], sep='\n')
 	#print('------------------------------------------------ Node operations.')
 	##print([n.op for n in graph_def.node])
 	#print(*[n.op for n in graph_def.node], sep='\n')
@@ -25,11 +23,31 @@ def display_graph_def(graph_def, display_all_nodes=False):
 		print(*graph_def.node, sep='----------\n')  # Too much output in a frozen graph.
 	print('----------------------------------------------------------------------')
 
-def display_graph_operation(graph):
+def display_graph(graph):
 	print('------------------------------------------------ All operations.')
 	#print([op.name for op in graph.get_operations()])
 	print(*[op.name for op in graph.get_operations()], sep='\n')
 	print('----------------------------------------------------------------------')
+
+def display_graph_info():
+	#graph_filepath = './mnist_cnn_graph.pb'
+	#graph_filepath = './mnist_cnn_frozen_graph.pb'
+	graph_filepath = './mnist_cnn_optimized_frozen_graph.pb'
+	is_graph_file_text = False
+
+	if True:
+		graph_def = tf.GraphDef()
+		with tf.gfile.GFile(graph_filepath, 'r' if is_graph_file_text else 'rb') as fd:
+			graph_def.ParseFromString(fd.read())
+		display_graph_def(graph_def, node_names=['input', 'Softmax'], display_all_nodes=False)
+
+	if False:
+		with tf.Session() as sess:
+			g = tf.import_graph_def(graph_def)
+			if sess.graph is None:
+				display_graph(sess.graph)
+			else:
+				print('Graph not found:', sess.graph)
 
 def graph_to_tensorboard_log():
 	checkpoint_dir_path = './mnist_cnn_checkpoint'
@@ -45,13 +63,13 @@ def graph_to_tensorboard_log():
 		#	Load a graph.
 		tf.train.import_meta_graph(os.path.join(checkpoint_dir_path, checkpoint_meta_graph_filename))
 
-	display_graph_def(graph.as_graph_def(), display_all_nodes=True)
-	#display_graph_operation(graph)
+	#display_graph_def(graph.as_graph_def(), node_names=['input', 'output'], display_all_nodes=True)
+	#display_graph(graph)
 
 	#config = tf.ConfigProto()
 	#with tf.Session(graph=graph, config=config) as sess:
 	with tf.Session(graph=graph) as sess:
-		#display_graph_def(sess.graph_def, display_all_nodes=True)
+		#display_graph_def(sess.graph_def, node_names=['input', 'output'], display_all_nodes=True)
 
 		# Write log.
 		file_writer = tf.summary.FileWriter(logdir=log_dir_path, graph=graph) 
@@ -107,7 +125,7 @@ def freeze_graph_tool():
 	graph_def = tf.GraphDef()
 	with tf.gfile.GFile(output_frozen_graph_filepath, 'rb') as fd:
 		graph_def.ParseFromString(fd.read())
-	display_graph_def(graph_def, display_all_nodes=False)
+	display_graph_def(graph_def, node_names=['input', 'output'], display_all_nodes=False)
 
 # Optimized graph:
 #	The optimize_for_inference tool takes in the input and output names and does another pass to strip out unnecessary layers.
@@ -166,7 +184,8 @@ def summarize_graph_tool():
 	raise NotImplementedError('Use the summarize_graph tool')
 
 def main():
-	graph_to_tensorboard_log()
+	display_graph_info()
+	#graph_to_tensorboard_log()
 
 	#freeze_graph_tool()
 	#optimize_for_inference_tool()
