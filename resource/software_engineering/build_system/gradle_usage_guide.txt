@@ -1,0 +1,19 @@
+[-] General.
+	- Site.
+		https://gradle.org/
+
+[-] Usage.
+	- Repositories.
+		Remote repository:
+			repositories {
+				jcenter()
+				google()
+				mavenCentral()
+			}
+		Local repository:
+			Default:
+				${USER_HOME}/.gradle
+			Change local repository:
+				GRADLE_USER_HOME environment variable.
+				gradle.user.home system property.
+				--gradle-user-home command line option.
