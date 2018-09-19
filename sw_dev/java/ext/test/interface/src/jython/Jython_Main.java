@@ -78,7 +78,7 @@ public class Jython_Main {
 		// This should only be called once, before any other Python objects (including PythonInterpreter) are created.
 		PythonInterpreter.initialize(preprops, props, new String[] {""});
 	}
-	
+
 	// REF [site] >> https://smartbear.com/blog/test-and-monitor/embedding-jython-in-java-applications/
 	private static void runSimpleExample()
 	{
@@ -94,12 +94,12 @@ public class Jython_Main {
 
 			//final PyObject sys_path = interpreter.eval("sys.path");
 			//System.out.println("sys.path = " + sys_path);
-	
+
 			interpreter.set("val", new PyInteger(42));
 			interpreter.exec("square = val * val");
 			PyInteger sqr = (PyInteger)interpreter.get("square");
 			System.out.println("42^2 = " + sqr);
-	
+
 			interpreter.exec("from arithmetic import add, sub");
 			interpreter.set("val1", new PyInteger(12));
 			interpreter.set("val2", new PyInteger(25));
@@ -107,7 +107,7 @@ public class Jython_Main {
 			interpreter.exec("print('{} + {} = {}'.format(val1, val2, result))");
 			PyInteger result = (PyInteger)interpreter.get("result");
 			System.out.println("Result: " + result.asInt());
-	
+
 			PyFunction sub_func = (PyFunction)interpreter.get("sub");
 			final double sub_result = sub_func.__call__(new PyInteger(5), new PyInteger(2)).asDouble();
 			System.out.println("5 - 2 = " + sub_result);
@@ -129,14 +129,14 @@ public class Jython_Main {
 			//	Use python.path in jython_config.properties.
 			PyList paths = interpreter.getSystemState().path;
 			final String pythonHomeLibPath = paths.get(0).toString();
-	
+
 			// Append additional paths.
 			interpreter.exec(
 				"import sys\n" +
 				"sys.path.append('" + pythonHomeLibPath + "/site-packages')\n"  // For Python modules like numpy.
 			);
 			*/
-	
+
 			//interpreter.exec("import sys, os");
 			interpreter.exec("import numpy");
 			
@@ -154,7 +154,7 @@ public class Jython_Main {
 		try (PythonInterpreter interpreter = new PythonInterpreter())
 		{
 			BuildingFactory factory = new BuildingFactory(interpreter);
-	
+
 			IBuilding building1 = factory.create("BUILDING-A", "100 WEST MAIN", "1");
 			System.out.println(building1.toString());
 			print(building1);
