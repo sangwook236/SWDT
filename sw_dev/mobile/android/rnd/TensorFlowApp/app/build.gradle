@@ -43,6 +43,6 @@ dependencies {
 
     implementation 'org.tensorflow:tensorflow-android:+'
 	//implementation 'org.tensorflow:libtensorflow:+'
-	implementation 'org.tensorflow:libtensorflow_jni:+'
+	//implementation 'org.tensorflow:libtensorflow_jni:+'
     //implementation 'org.tensorflow:tensorflow-lite:+'
 }

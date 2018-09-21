@@ -1,13 +1,13 @@
 package com.sangwook.tensorflowapp;
 
 import android.Manifest;
+import android.os.Environment;
+import android.os.Bundle;
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -32,12 +32,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Request the read/write permissions.
-        MainActivity.requestStoragePermissions(this);
-
         Properties p = System.getProperties();
         System.setProperty("org.tensorflow.NativeLibrary.DEBUG", "1");
         //Log.i("[SWL-Mobile]", "" + System.getProperties().toString());
+
+        // Request the read/write permissions.
+        MainActivity.requestStoragePermissions(this);
 
         //
         if (isExternalStorageReadable())
@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         else
             Log.w("[SWL-Mobile]", "External storage NOT readable.");
 
-        final String rootDirPath = Environment.getRootDirectory().getAbsolutePath();
-        final String dataDirPath = Environment.getDataDirectory().getAbsolutePath();
+        //final String rootDirPath = Environment.getRootDirectory().getAbsolutePath();
+        //final String dataDirPath = Environment.getDataDirectory().getAbsolutePath();
         final String extStorageDirPath = Environment.getExternalStorageDirectory().getAbsolutePath();
 
         final String[] imageFilepaths = {
@@ -61,13 +61,13 @@ public class MainActivity extends AppCompatActivity {
                 extStorageDirPath + "/mnist_img_55.raw",  // 8.
                 extStorageDirPath + "/mnist_img_3.raw"  // 9.
         };
-        final String imageFilepath = imageFilepaths[9];
+        final String imageFilepath = imageFilepaths[0];
 
         // Load an image.
         final byte[] imageBytes = readAllBytes(Paths.get(imageFilepath));
         if (null == imageBytes)
         {
-            Log.e("[SWL-Mobile]", "Image not loaded.");
+            Log.e("[SWL-Mobile]", "Image not loaded: " + imageFilepath);
             return;
         }
 
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         //final int bestLabelIdx = predictBySavedModel(imageBytes, extStorageDirPath);  // Not working.
 
         // Example of a call to a native method
-        TextView tv = (TextView) findViewById(R.id.sample_text);
+        TextView tv = (TextView)findViewById(R.id.sample_text);
         //tv.setText(stringFromJNI());
         tv.setText("Predicted class = " + bestLabelIdx);
     }
@@ -130,22 +130,26 @@ public class MainActivity extends AppCompatActivity {
         }
         catch (IOException ex)
         {
-            Log.e("[SWL-Mobile]", "Exception thrown: Failed to read [\" + path + \"]" + ex);
+            Log.e("[SWL-Mobile]", "Exception thrown: Failed to read '" + path + "' " + ex);
         }
         return null;
     }
 
-    boolean isExternalStorageWritable() {
+    boolean isExternalStorageWritable()
+    {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state);
     }
 
-    boolean isExternalStorageReadable() {
+    boolean isExternalStorageReadable()
+    {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
-    static void requestStoragePermissions(Activity activity) {
+    // NOTE [info] >> Add the 'uses-permission' tag to app/src/main/AndroidManifest.xml.
+    static void requestStoragePermissions(Activity activity)
+    {
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         if (PackageManager.PERMISSION_GRANTED != permission)
