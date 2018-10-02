@@ -23,30 +23,30 @@
 		nmake
 
 [-] Trouble shooting (Windows).
-	- qmake.exe or QMAKESPEC 관련 오류.
+	- qmake.exe or QMAKESPEC.
 		REF [site] >> http://stackoverflow.com/questions/5303634/qmake-qmakespec-has-not-been-set
 
 		<error>
 			qmake.exe failed to create a makefile Make sure you have a working Qt qmake on your PATH.
 			QMAKESPEC has not been set, so configuration cannot be deduced.
 		<cause>
-			QMAKESPEC 환경 변수가 설정되지 않아서 발생.
+			QMAKESPEC environment variable is not set.
 		<solution>
 			set QMAKESPEC=win32-msvc2010
 			qmake -spec D:\usr\local\Qt-4.7.4\mkspecs\win32-msvc2010
-		==> 아래의 명령으로 확인 가능.
+		==> Can check by following commands.
 			qmake -query QMAKESPEC
 			qmake -query
 
 [-] Trouble shooting (VC).
-	- moc.exe or uic.exe 관련 오류.
+	- moc.exe or uic.exe.
 		<error>
 			MSB6006: "cmd.exe" exited with code3.
 			The system cannot find the path specified.
 			Moc'ing xxx.h
 			Uic'ing xxx.ui
 		<cause>
-			moc.exe & uic.exe를 찾지 못해서 발생.
+			Cannot find moc.exe & uic.exe.
 		<solution>
 			set QTDIR=${QT_HOME}
 	- Qt platform loading error.
