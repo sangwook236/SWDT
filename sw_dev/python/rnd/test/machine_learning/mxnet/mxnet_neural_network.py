@@ -68,7 +68,7 @@ def train_model(net, trainer, loss_func, train_data, valid_data, num_epochs):
 			loss.backward()
 
 			# Update parameters.
-			trainer.step(batch_size)
+			trainer.step(data.shape[0])
 
 			# Calculate training metrics.
 			train_loss += loss.mean().asscalar()
@@ -107,8 +107,8 @@ def verify_loaded_model(net):
 		data = nd.transpose(data, (0, 3, 1, 2))
 		out = net(data.as_in_context(ctx))
 		predictions = nd.argmax(out, axis=1)
-        print('Model predictions:', predictions.asnumpy())
-        print('Ground truth:     ', label.asnumpy())
+		print('Model predictions:', predictions.asnumpy())
+		print('Ground truth:     ', label.asnumpy())
 
 		break
 
@@ -275,7 +275,7 @@ def save_and_load_sequential_example():
 
 	# MNIST images are 28x28. Total pixels in input layer is 28x28 = 784.
 	#num_inputs = 784
-	# Clasify the images into one of the 10 digits
+	# Clasify the images into one of the 10 digits.
 	#num_outputs = 10
 	# 64 images in a batch.
 	batch_size = 64
@@ -338,7 +338,7 @@ def save_and_load_hybrid_sequential_example():
 
 	# MNIST images are 28x28. Total pixels in input layer is 28x28 = 784.
 	#num_inputs = 784
-	# Clasify the images into one of the 10 digits
+	# Clasify the images into one of the 10 digits.
 	#num_outputs = 10
 	# 64 images in a batch.
 	batch_size = 64
