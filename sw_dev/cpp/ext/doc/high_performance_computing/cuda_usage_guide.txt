@@ -1,3 +1,17 @@
 [-] General.
 	- Site.
 		https://developer.nvidia.com/cuda-zone
+
+[-] Usage.
+	- CUDA version.
+		nvcc --version
+		cat /usr/local/cuda/version.txt
+
+		Runtime API version:
+		cudaRuntimeGetVersion()
+		Driver API version:
+		cudaDriverGetVersion()
+		cuDriverGetVersion()
+
+	- Driver version.
+		nvidia-smi
