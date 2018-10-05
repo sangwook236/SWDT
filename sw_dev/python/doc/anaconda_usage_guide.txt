@@ -3,10 +3,11 @@
 		https://anaconda.org/
 
 	- Directory.
-		Package:
-			${ANACONDA_HOME}/Lib/site-packages
 		Environment:
 			${ANACONDA_HOME}/envs
+		Package:
+			${ANACONDA_HOME}/Lib/site-packages
+			${ANACONDA_HOME}/envs/[env_name]/lib/python3.6/site-packages
 
 [-] Package management.
 	- conda.

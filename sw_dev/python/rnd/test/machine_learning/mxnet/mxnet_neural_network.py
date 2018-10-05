@@ -88,7 +88,7 @@ def train_model(net, trainer, loss_func, train_data, valid_data, num_epochs):
 			net.export('training_model', epoch=epoch)
 		"""
 
-def verify_loaded_model(net):
+def verify_loaded_model(net, ctx):
 	def transform(data, label):
 		return data.astype(np.float32)/255, label.astype(np.float32)
 
@@ -329,7 +329,7 @@ def save_and_load_sequential_example():
 		# Load model parameters from file.
 		new_net.load_parameters(model_param_filepath, ctx=ctx)
 
-	verify_loaded_model(new_net)
+	verify_loaded_model(new_net, ctx=ctx)
 
 # REF [site] >> https://mxnet.incubator.apache.org/tutorials/gluon/save_load_params.html
 def save_and_load_hybrid_sequential_example():
@@ -369,15 +369,15 @@ def save_and_load_hybrid_sequential_example():
 	# Load model architecture and parameters from file.
 	deserialized_net = gluon.nn.SymbolBlock.imports('./lenet_hybrid-symbol.json', ['data'], './lenet_hybrid-0000.params')
 
-	verify_loaded_model(deserialized_net)
+	verify_loaded_model(deserialized_net, ctx=ctx)
 
 def main():
-	create_neural_network_example()
-	train_neural_network_example()
-	predict_with_pre_trained_model_example()
-	predict_with_models_from_gluon_model_zoo_example()
+	#create_neural_network_example()
+	#train_neural_network_example()
+	#predict_with_pre_trained_model_example()
+	#predict_with_models_from_gluon_model_zoo_example()
 
-	save_and_load_sequential_example()
+	#save_and_load_sequential_example()
 	save_and_load_hybrid_sequential_example()  # NOTE [info] >> Better choice.
 
 #%%-------------------------------------------------------------------

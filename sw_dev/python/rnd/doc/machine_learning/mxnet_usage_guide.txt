@@ -1,0 +1,131 @@
+[-] General.
+	- Site.
+		https://github.com/apache/incubator-mxnet
+
+[-] Building (v0.9.3).
+	- Download MXNet.
+		git clone https://github.com/apache/incubator-mxnet.git
+	- Change tag to v0.9.3.
+		cd ${MXNET_HOME}
+		git checkout tags/v0.9.3
+	- Download 3rd-party libraries.
+		cd ${MXNET_HOME}
+		git clone https://github.com/dmlc/dmlc-core.git
+		git clone https://github.com/dmlc/mshadow.git
+		git clone https://github.com/dmlc/ps-lite.git
+		git clone https://github.com/dmlc/nnvm.git
+		git clone https://github.com/baidu-research/warp-ctc.git
+	- Copy config.mk.
+		cp ${MXNET_HOME}/make/config.mk .
+	- Modify the config.mk.
+		USE_BLAS = openblas
+		USE_CUDA = 1
+		USE_CUDA_PATH = /usr/local/cuda
+		USE_CUDNN = 1
+		USE_MKLDNN = 1
+		WARPCTC_PATH = $(HOME)/warp-ctc
+		MXNET_PLUGINS += plugin/warpctc/warpctc.mk
+	- Make.
+		make -j8
+
+[-] Building.
+	https://mxnet.incubator.apache.org/install/build_from_source.html
+	https://github.com/apache/incubator-mxnet/tree/master/example/ctc#building-mxnet-from-source-with-warp-ctc-integration
+
+	- Create a conda environment
+		conda create -n mxnet python=3.6
+		source activate mxnet
+		conda install numpy pandas scipy scikit-image scikit-learn matplotlib pillow opencv
+		conda install mxnet (?)
+
+	- Download Warp-CTC library.
+		cd ${MXNET_HOME}
+		git clone https://github.com/baidu-research/warp-ctc.git
+	- Build Warp-CTC library.
+		https://github.com/baidu-research/warp-ctc#compilation
+
+		cd ${MXNET_HOME}
+		cd warp-ctc
+		mkdir build
+		cd build
+		cmake ../
+		make
+		sudo make install
+
+	- Download MXNet.
+		git clone https://github.com/apache/incubator-mxnet.git
+	- Download 3rd-party libraries.
+		https://github.com/apache/incubator-mxnet/tree/master/3rdparty
+
+		cd ${MXNET_HOME}/3rdparty
+		git clone https://github.com/dmlc/cub.git
+		git clone https://github.com/dmlc/dlpack.git
+		git clone https://github.com/dmlc/dmlc-core.git
+		git clone https://github.com/google/googletest.git
+		git clone https://github.com/intel/mkl-dnn.git
+		git clone https://github.com/dmlc/mshadow.git
+		git clone https://github.com/onnx/onnx-tensorrt.git
+		git clone https://github.com/llvm-mirror/openmp.git
+		git clone https://github.com/dmlc/ps-lite.git
+		git clone https://github.com/dmlc/tvm.git
+		mv mkl-dnn mkldnn
+
+	- Configure.
+		Using make:
+			cp ${MXNET_HOME}/make/config.mk . (???)
+				Do not copy ${MXNET_HOME}/make/config.mk to ${MXNET_HOME}.
+				Use ${MXNET_HOME}.
+			Edit config.mk.
+				USE_BLAS = openblas
+				USE_CUDA = 1
+				USE_CUDA_PATH = /usr/local/cuda
+				USE_CUDNN = 1
+				USE_MKLDNN = 1
+				WARPCTC_PATH = $(HOME)/warp-ctc
+				MXNET_PLUGINS += plugin/warpctc/warpctc.mk
+		Using CMake:
+			mkdir build
+			cd build
+			Set options.
+				USE_PLUGINS_WARPCTC
+	- Make.
+		https://mxnet.incubator.apache.org/install/ubuntu_setup.html#build-mxnet-from-source
+
+		Using make:
+			make -j8
+		Using CMake:
+			cmake ../
+			make -j8
+
+[-] Installation language packages.
+	http://mxnet.incubator.apache.org/install/ubuntu_setup.html#installing-language-packages-for-mxnet
+	http://mxnet.incubator.apache.org/install/ubuntu_setup.html#quick-installation
+	http://mxnet.incubator.apache.org/install
+
+	- Python.
+		cd ${MXNET_HOME}/python
+		pip install -e .
+
+		Recommended for training:
+			pip install mxnet-cu92
+		Recommended for inference:
+			pip install mxnet-cu92mkl
+
+[-] LSTM OCR example.
+	https://github.com/apache/incubator-mxnet/tree/master/example/ctc#run-lstm-ocr-example
+
+	- Train.
+		source activate mxnet
+		cd ${MXNET_HOME}/example/ctc$
+		python lstm_ocr_train.py --gpu 1 --num_proc 4 --loss ctc font/Ubuntu-M.ttf
+		python lstm_ocr_train.py --num_proc 4 --loss ctc font/Ubuntu-M.ttf
+
+	- Infer.
+		python lstm_ocr_infer.py --prefix ocr --epoch 100 sample.jpg
+
+	- Generate CAPTCHA samples.
+		python captcha_generator.py font/Ubuntu-M.ttf sample.jpg
+
+[-] Troubleshooting.
+	- pip install -e .
+		<error>
