@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "logging_vc8", "..\test\logging\logging_vc8.csproj", "{911457B3-8762-4907-BC07-861F4DE5BD32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nunit_vc8", "..\test\nunit\nunit_vc8.csproj", "{383CE2C8-BA38-45EA-9888-15A4A31545AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testing_vc8", "..\test\testing\testing_vc8.csproj", "{383CE2C8-BA38-45EA-9888-15A4A31545AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mathematics_vc8", "..\test\mathematics\mathematics_vc8.csproj", "{FEB1CB04-A7AE-4B88-9C86-4433772881F8}"
 EndProject

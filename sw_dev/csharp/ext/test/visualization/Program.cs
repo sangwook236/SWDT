@@ -17,9 +17,9 @@ namespace visualization
                 Console.WriteLine("Dynamic Data Display (D3) library -----------------------------------");
                 d3.D3_Main.run(args);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine("System.Exception occurred: {0}", e);
+                Console.WriteLine("System.Exception occurred: {0}", ex);
             }
 
             Console.WriteLine("press any key to exit ...");

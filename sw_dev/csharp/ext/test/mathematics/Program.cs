@@ -16,9 +16,9 @@ namespace mathematics
                 Console.WriteLine("\nILNumerics library --------------------------------------------------");
                 ilnumerics.ILNumerics_Main.run(args);  // not yet implemented.
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine("System.Exception occurred: {0}", e);
+                Console.WriteLine("System.Exception occurred: {0}", ex);
             }
 
             Console.WriteLine("press any key to exit ...");

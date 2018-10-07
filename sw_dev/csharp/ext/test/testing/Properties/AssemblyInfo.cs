@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("nunit")]
+[assembly: AssemblyTitle("testing")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("KAIST AIM Lab")]
-[assembly: AssemblyProduct("nunit")]
-[assembly: AssemblyCopyright("Copyright © KAIST AIM Lab 2009")]
+[assembly: AssemblyProduct("testing")]
+[assembly: AssemblyCopyright("Copyright ⓒ KAIST AIM Lab 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

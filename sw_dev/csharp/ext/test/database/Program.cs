@@ -13,9 +13,9 @@ namespace database
                 Console.WriteLine("sqlite --------------------------------------------------------------");
                 sqlite.sqlite_Main.run(args);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine("System.Exception occurred: {0}", e);
+                Console.WriteLine("System.Exception occurred: {0}", ex);
             }
 
             Console.WriteLine("press any key to exit ...");
