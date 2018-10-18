@@ -3,15 +3,16 @@
 		https://developer.nvidia.com/cuda-zone
 
 [-] Usage.
-	- CUDA version.
-		nvcc --version
+	- CUDA toolkit version.
 		cat /usr/local/cuda/version.txt
+		nvcc --version
 
 		Runtime API version:
-		cudaRuntimeGetVersion()
+			cudaRuntimeGetVersion()
 		Driver API version:
-		cudaDriverGetVersion()
-		cuDriverGetVersion()
+			cudaDriverGetVersion()
+			cuDriverGetVersion()
 
 	- Driver version.
+		cat /proc/driver/nvidia/version
 		nvidia-smi

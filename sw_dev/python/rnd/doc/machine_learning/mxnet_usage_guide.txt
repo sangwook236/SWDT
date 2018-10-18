@@ -3,6 +3,20 @@
 		https://github.com/apache/incubator-mxnet
 
 [-] Building (v0.9.3).
+	- Download Warp-CTC library.
+		cd ${MXNET_HOME}
+		git clone https://github.com/baidu-research/warp-ctc.git
+	- Build Warp-CTC library.
+		https://github.com/baidu-research/warp-ctc#compilation
+		cd ${MXNET_HOME}
+		cd warp-ctc
+		mkdir build
+		cd build
+		cmake ../
+		make -j8
+	- Install Warp-CTC library.
+		sudo make install
+
 	- Download MXNet.
 		git clone https://github.com/apache/incubator-mxnet.git
 	- Change tag to v0.9.3.
@@ -14,7 +28,7 @@
 		git clone https://github.com/dmlc/mshadow.git
 		git clone https://github.com/dmlc/ps-lite.git
 		git clone https://github.com/dmlc/nnvm.git
-		git clone https://github.com/baidu-research/warp-ctc.git
+		cp dmlc-core/ nnvm/
 	- Copy config.mk.
 		cp ${MXNET_HOME}/make/config.mk .
 	- Modify the config.mk.
@@ -22,9 +36,16 @@
 		USE_CUDA = 1
 		USE_CUDA_PATH = /usr/local/cuda
 		USE_CUDNN = 1
-		USE_MKLDNN = 1
+		USE_OPENCV = 0
+			See Troubleshooting.
+		USE_OPENMP = 1
 		WARPCTC_PATH = $(HOME)/warp-ctc
+			$(HOME) means user's home (~).
 		MXNET_PLUGINS += plugin/warpctc/warpctc.mk
+	- Edit files.
+		mshadow::TBlob -> mxnet::TBlob
+		mshadow::TShape -> mxnet::TShape
+		Type casting.
 	- Make.
 		make -j8
 
@@ -33,30 +54,31 @@
 	https://github.com/apache/incubator-mxnet/tree/master/example/ctc#building-mxnet-from-source-with-warp-ctc-integration
 
 	- Create a conda environment
-		conda create -n mxnet python=3.6
-		source activate mxnet
-		conda install numpy pandas scipy scikit-image scikit-learn matplotlib pillow opencv
+		conda create -n mxnet python=3
+		conda activate mxnet
+		conda install numpy pandas matplotlib pillow scipy scikit-image scikit-learn opencv cython
 		conda install mxnet (?)
+			If using WarpCTC, refer to "Installation (language packages)":
+				Use "pip install -e .".
 
 	- Download Warp-CTC library.
 		cd ${MXNET_HOME}
 		git clone https://github.com/baidu-research/warp-ctc.git
 	- Build Warp-CTC library.
 		https://github.com/baidu-research/warp-ctc#compilation
-
 		cd ${MXNET_HOME}
 		cd warp-ctc
 		mkdir build
 		cd build
 		cmake ../
-		make
+		make -j8
+	- Install Warp-CTC library.
 		sudo make install
 
 	- Download MXNet.
 		git clone https://github.com/apache/incubator-mxnet.git
 	- Download 3rd-party libraries.
 		https://github.com/apache/incubator-mxnet/tree/master/3rdparty
-
 		cd ${MXNET_HOME}/3rdparty
 		git clone https://github.com/dmlc/cub.git
 		git clone https://github.com/dmlc/dlpack.git
@@ -71,17 +93,22 @@
 		mv mkl-dnn mkldnn
 
 	- Configure.
+		cd ${MXNET_HOME}
 		Using make:
-			cp ${MXNET_HOME}/make/config.mk . (???)
-				Do not copy ${MXNET_HOME}/make/config.mk to ${MXNET_HOME}.
-				Use ${MXNET_HOME}.
-			Edit config.mk.
+			Edit make/config.mk.
 				USE_BLAS = openblas
 				USE_CUDA = 1
 				USE_CUDA_PATH = /usr/local/cuda
 				USE_CUDNN = 1
 				USE_MKLDNN = 1
+				USE_OPENCV = 1
+				USE_OPENMP = 1
+				USE_GPERFTOOLS = 0
+					See Troubleshooting.
+				USE_JEMALLOC = 0
+					See Troubleshooting.
 				WARPCTC_PATH = $(HOME)/warp-ctc
+					$(HOME) means user's home (~). (?)
 				MXNET_PLUGINS += plugin/warpctc/warpctc.mk
 		Using CMake:
 			mkdir build
@@ -90,14 +117,13 @@
 				USE_PLUGINS_WARPCTC
 	- Make.
 		https://mxnet.incubator.apache.org/install/ubuntu_setup.html#build-mxnet-from-source
-
 		Using make:
 			make -j8
 		Using CMake:
 			cmake ../
 			make -j8
 
-[-] Installation language packages.
+[-] Installation (language packages).
 	http://mxnet.incubator.apache.org/install/ubuntu_setup.html#installing-language-packages-for-mxnet
 	http://mxnet.incubator.apache.org/install/ubuntu_setup.html#quick-installation
 	http://mxnet.incubator.apache.org/install
@@ -115,17 +141,50 @@
 	https://github.com/apache/incubator-mxnet/tree/master/example/ctc#run-lstm-ocr-example
 
 	- Train.
-		source activate mxnet
-		cd ${MXNET_HOME}/example/ctc$
+		conda activate mxnet
+		cd ${MXNET_HOME}/example/ctc
 		python lstm_ocr_train.py --gpu 1 --num_proc 4 --loss ctc font/Ubuntu-M.ttf
 		python lstm_ocr_train.py --num_proc 4 --loss ctc font/Ubuntu-M.ttf
 
 	- Infer.
-		python lstm_ocr_infer.py --prefix ocr --epoch 100 sample.jpg
+		python lstm_ocr_infer.py --prefix ocr --epoch 80 sample.jpg
 
 	- Generate CAPTCHA samples.
 		python captcha_generator.py font/Ubuntu-M.ttf sample.jpg
 
 [-] Troubleshooting.
-	- pip install -e .
-		<error>
+	- Error in executing "pip install -e .".
+		<error> src/tcmalloc.cc:278] Attempt to free invalid pointer 0x558f65fe7080
+		<cause>
+			REF [site] >> https://github.com/apache/incubator-mxnet/issues/8569
+			There is a conflict between gperftools and opencv2.
+			I think the reason is that gperftools or jemalloc replaces the memory allocator including malloc, however python-opencv uses the default allocator.
+			Set USE_GPERFTOOLS = 0 and USE_JEMALLOC = 0 in $(MXNET_PATH)/make/config.mk, and rebuild MXNet.
+		<solution>
+			Edit ${MXNET_HOME}/make/config.mk:
+				USE_GPERFTOOLS = 0
+				USE_JEMALLOC = 0
+	- Error in making.
+		<error> '__gnu_cxx::__alloc_traits<std::allocator<mxnet::io::TBlobContainer> >::value_type {aka class mxnet::io::TBlobContainer}' has no member named 'dptr_'
+		<cause> mshadow library does not support TBlob. (?)
+		<solution>
+			Edit ${MXNET_HOME}/src/io/inst_vector.h.
+			<before>
+				mshadow::TBlob
+			<after>
+				mxnet::TBlob
+	- Error in making.
+		<error> 'TShape' in namespace 'mshadow' does not name a type
+		<cause> mshadow library does not support TShape.
+		<solution>
+			Edit ${MXNET_HOME}/src/io/inst_vector.h and ${MXNET_HOME}/src/io/iter_mnist.cc.
+			<before>
+				mshadow::TShape
+			<after>
+				mxnet::TShape
+	- Error in running.
+		<error> Segmentation fault (core dumped)
+		<cause> There is a conflict with opencv2.
+		<solution>
+			Edit ${MXNET_HOME}/make/config.mk:
+				USE_OPENCV = 0
