@@ -94,6 +94,13 @@ def load_model_from_checkpoint():
 		# Save the graph and model to a SavedModel.
 		#	REF [function] >> checkpoint_to_saved_model()
 
+	if True:
+		with tf.Session(graph=graph) as sess:
+			input_tensor = sess.graph.get_tensor_by_name('input_tensor_ph:0')
+			output_tensor = sess.graph.get_tensor_by_name('mnist_cnn_using_tf/fc2/fc/Softmax:0')
+			print('input_tensor =', input_tensor.get_shape())
+			print('output_tensor =', output_tensor.get_shape())
+
 # Inspect checkpoint:
 #	python inspect_checkpoint.py:
 #		${TENSORFLOW_HOME}/tensorflow/python/tools/inspect_checkpoint.py

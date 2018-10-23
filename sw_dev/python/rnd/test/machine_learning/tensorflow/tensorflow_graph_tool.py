@@ -30,9 +30,10 @@ def display_graph(graph):
 	print('----------------------------------------------------------------------')
 
 def display_graph_info():
-	#graph_filepath = './mnist_cnn_graph.pb'
+	# NOTE [info] >> checkpoint_to_graph() in tensorflow_saving_and_loading.py
+	graph_filepath = './mnist_cnn_graph.pb'
 	#graph_filepath = './mnist_cnn_frozen_graph.pb'
-	graph_filepath = './mnist_cnn_optimized_frozen_graph.pb'
+	#graph_filepath = './mnist_cnn_optimized_frozen_graph.pb'
 	is_graph_file_text = False
 
 	if True:
@@ -44,7 +45,22 @@ def display_graph_info():
 	if False:
 		with tf.Session() as sess:
 			g = tf.import_graph_def(graph_def)
-			if sess.graph is None:
+			if sess.graph is not None:
+				# NOTE [info] >> Use a graph loaded from checkpoint. Use node names, instead of tensor names, for a graph loaded from graph file.
+				# REF [function] >> load_model_from_checkpoint() in tensorflow_saving_and_loading.py
+				input_tensor = sess.graph.get_tensor_by_name('input_tensor_ph:0')  # NOTE [error] >> The name 'input_tensor_ph:0' refers to a Tensor which does not exist. The operation, 'input_tensor_ph', does not exist in the graph.
+				output_tensor = sess.graph.get_tensor_by_name('mnist_cnn_using_tf/fc2/fc/Softmax:0')  # NOTE [error] >> The name 'mnist_cnn_using_tf/fc2/fc/Softmax:0' refers to a Tensor which does not exist. The operation, 'mnist_cnn_using_tf/fc2/fc/Softmax', does not exist in the graph.
+				#input_tensor = sess.graph.get_operation_by_name('input_tensor_ph')  # NOTE [error] >> The name 'input_tensor_ph' refers to an Operation not in the graph.
+				#output_tensor = sess.graph.get_operation_by_name('mnist_cnn_using_tf/fc2/fc/Softmax')  # NOTE [error] >> The name 'mnist_cnn_using_tf/fc2/fc/Softmax' refers to an Operation not in the graph.
+				print('input_tensor =', input_tensor.get_shape())
+				print('output_tensor =', output_tensor.get_shape())
+			else:
+				print('Graph not found:', sess.graph)
+
+	if False:
+		with tf.Session() as sess:
+			g = tf.import_graph_def(graph_def)
+			if sess.graph is not None:
 				display_graph(sess.graph)
 			else:
 				print('Graph not found:', sess.graph)
