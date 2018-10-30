@@ -1,0 +1,18 @@
+[-] General.
+	- Site.
+		https://nodejs.org/
+
+[-] Usage.
+	- (Optional) set environment.
+		set PATH=${NODEJS_HOME};%PATH%
+		Activate an environment.
+			source activate js
+				Use Python 2.x
+
+	- Start.
+		node
+	- Exit.
+		.exit
+
+	- Run script.
+		node hello.js
