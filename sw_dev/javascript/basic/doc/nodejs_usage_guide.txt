@@ -1,14 +1,9 @@
 [-] General.
 	- Site.
 		https://nodejs.org/
+		https://www.npmjs.com/
 
 [-] Usage.
-	- (Optional) set environment.
-		set PATH=${NODEJS_HOME};%PATH%
-		Activate an environment.
-			source activate js
-				Use Python 2.x
-
 	- Start.
 		node
 	- Exit.
@@ -16,3 +11,22 @@
 
 	- Run script.
 		node hello.js
+
+[-] Usage (Windows).
+	- Upgrade npm.
+		Run Windows PowerShell as administrator.
+		Run commands.
+			Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
+	 		npm install --global --production npm-windows-upgrade
+			npm-windows-upgrade
+
+	- Set environment.
+		Run Windows Command Prompt.
+		Set environment variable.
+			set PATH=${NODEJS_HOME};%PATH%
+		Activate an environment.
+			source activate js
+				Use Python 2.x
+		Set Visual Studio environment.
+			${Visual_Studio_HOME}/Community/VC/Auxiliary/Build/vcvars32.bat
+			${Visual_Studio_HOME}/Community/VC/Auxiliary/Build/vcvars64.bat
