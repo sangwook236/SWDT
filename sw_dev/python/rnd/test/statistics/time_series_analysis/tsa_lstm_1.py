@@ -6,7 +6,6 @@
 #		LSTMs are terrible at time series forecasting.
 #	https://machinelearningmastery.com/multivariate-time-series-forecasting-lstms-keras/
 #	https://machinelearningmastery.com/multi-step-time-series-forecasting-long-short-term-memory-networks-python/
-#	https://machinelearningmastery.com/how-to-develop-lstm-models-for-multi-step-time-series-forecasting-of-household-power-consumption/
 #	https://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-networks-python-keras/
 
 import math

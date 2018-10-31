@@ -22,14 +22,16 @@ def text_example():
 	img.save('./pil_text.png')
 
 	#--------------------
-	font_type = 'C:/Windows/Fonts/Arial.ttf'
+	#font_type = 'C:/Windows/Fonts/Arial.ttf'
+	font_type = 'C:/Windows/Fonts/gulim.ttc'
 	#font_type = '/Library/Fonts/Arial.ttf'
-	font = ImageFont.truetype(font=font_type, size=15)
+	font = ImageFont.truetype(font=font_type, size=50, index=0)
 
-	img = Image.new(mode='RGB', size=(100, 30), color=(0, 0, 255))
+	img = Image.new(mode='RGB', size=(200, 100), color=(0, 0, 255))
 
 	d = ImageDraw.Draw(img)
-	d.text(xy=(10, 10), text='Hello World', font=font, fill=(255, 255, 255))
+	#d.text(xy=(10, 10), text='Hello World', font=font, fill=(255, 255, 255))
+	d.text(xy=(10, 10), text='안녕', font=font, fill=(255, 255, 255))
 
 	img.save('./pil_text_font.png')
 
