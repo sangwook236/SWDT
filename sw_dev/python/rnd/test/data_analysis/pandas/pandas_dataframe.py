@@ -30,6 +30,7 @@ def basic_operation():
 	print('df.columns =\n', df.columns, sep='')
 	print('df.values =\n', df.values, sep='')  # np.ndarray.
 
+	# REF [site] >> https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html
 	print('df.describe() =\n', df.describe(), sep='')
 
 def indexing_and_slicing():
