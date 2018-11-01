@@ -17,7 +17,7 @@ img_array = np.asarray(img, dtype='uint8')
 
 img = Image.fromarray(img_array)
 img.show()
-img.save("tmp.jpg")
+img.save('tmp.jpg')
 
 #%%-------------------------------------------------------------------
 # scipy.
@@ -25,7 +25,7 @@ img.save("tmp.jpg")
 import scipy.ndimage
 import scipy.misc
 
-img_array = scipy.ndimage.imread('/path/to/image', mode="RGB")
+img_array = scipy.ndimage.imread('/path/to/image', mode='RGB')
 #scipy.misc.imshow(img_array)  # Use the environment variable, SCIPY_PIL_IMAGE_VIEWER.
 scipy.misc.imsave('tmp.jpg', img_array)
 
