@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+# REF [site] >>
+#	https://machinelearningmastery.com/how-to-develop-lstm-models-for-multi-step-time-series-forecasting-of-household-power-consumption/
+#	https://machinelearningmastery.com/how-to-develop-deep-learning-models-for-univariate-time-series-forecasting/
+#	https://machinelearningmastery.com/findings-comparing-classical-and-machine-learning-methods-for-time-series-forecasting/
+
 import math
 import numpy as np
 import pandas as pd
