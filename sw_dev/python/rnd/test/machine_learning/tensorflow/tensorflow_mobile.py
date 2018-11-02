@@ -34,6 +34,7 @@
 # TensorFlow Lite:
 #	https://www.tensorflow.org/mobile/tflite/
 #		${TENSORFLOW_HOME}/tensorflow/contrib/lite
+#	https://codelabs.developers.google.com/codelabs/tensorflow-for-poets-2-tflite
 #	https://www.tensorflow.org/mobile/tflite/demo_android
 #	https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/lite
 #	https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/lite/java/demo/
