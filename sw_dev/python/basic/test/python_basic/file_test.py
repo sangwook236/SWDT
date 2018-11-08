@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 
 def main():
-	with open('data.txt', 'r') as file:
-	#with open('data.txt', 'r+') as file:
-	#with open('data.txt', 'rb') as file:
-		data = file.read()
+	with open('data.txt', 'r') as fd:
+	#with open('data.txt', 'r+') as fd:
+	#with open('data.txt', 'rb') as fd:
+		data = fd.read()
 
-	with open('data_copyed.txt', 'w') as file:
-	#with open('data_copyed.txt', 'w+') as file:
-	#with open('data_copyed.txt', 'wb') as file:
-		file.write(data)
+	with open('data_copyed.txt', 'w') as fd:
+	#with open('data_copyed.txt', 'w+') as fd:
+	#with open('data_copyed.txt', 'wb') as fd:
+		fd.write(data)
 
 	words = data.split()
 
-	with open('data.txt', 'r') as myfile:
-		lines = myfile.readlines()
+	with open('data.txt', 'r') as fd:
+		lines = fd.readlines()
 
 	lines2 = []
 	for line in lines:
