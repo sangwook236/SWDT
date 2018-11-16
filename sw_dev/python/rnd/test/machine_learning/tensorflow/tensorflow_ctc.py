@@ -11,9 +11,9 @@ def ctc_loss_example():
 
 	graph = tf.Graph()
 	with graph.as_default():
-		# [batch_size, max_stepsize, num_classes].
+		# [batch_size, max_time_steps, num_classes].
 		input_logits = tf.placeholder(tf.float32, [None, None, num_classes])
-		# We use sparse_placeholder that will generate a SparseTensor required by ctc_loss op.
+		# Uses tf.sparse_placeholder() that will generate a SparseTensor required by ctc_loss op.
 		targets = tf.sparse_placeholder(tf.int32)
 		# 1D array of size [batch_size].
 		seq_len = tf.placeholder(tf.int32, [None])
@@ -22,22 +22,25 @@ def ctc_loss_example():
 		#batch_size, max_time_steps = shape[0], shape[1]
 		#input_logits = tf.reshape(input_logits, [batch_size, -1, num_classes])
 
-		# Time-major.
-		input_logits_transposed = tf.transpose(input_logits, (1, 0, 2))
+		input_logits0 = tf.transpose(input_logits, (1, 0, 2))  # Time-major.
 
 		# Option 1.
-		loss = tf.nn.ctc_loss(targets, input_logits_transposed, seq_len)
+		#	Variable-length outputs.
+		loss = tf.nn.ctc_loss(targets, input_logits0, sequence_length=seq_len, ctc_merge_repeated=True, time_major=True)
 		cost = tf.reduce_mean(loss)
 
 		#optimizer = tf.train.MomentumOptimizer(initial_learning_rate, momentum).minimize(cost)
 
-		# Option 2: tf.nn.ctc_beam_search_decoder (it's slower but you'll get better results)
-		decoded, log_prob = tf.nn.ctc_greedy_decoder(input_logits_transposed, seq_len)
+		# Option 2.
+		#	tf.nn.ctc_beam_search_decoder: it's slower but you'll get better results.
+		#decoded, log_prob = tf.nn.ctc_beam_search_decoder(input_logits0, sequence_length=seq_len, beam_width=100, top_paths=1, merge_repeated=True)  # Time-major.
+		decoded, log_prob = tf.nn.ctc_greedy_decoder(input_logits0, sequence_length=seq_len, merge_repeated=True)  # Time-major.
 
 		# Inaccuracy: label error rate.
+		#	Variable-length outputs.
 		ler = tf.reduce_mean(tf.edit_distance(tf.cast(decoded[0], tf.int32), targets))
 
-		# NOTE [info] >> CTC decoder needs no optimizer.
+		# NOTE [info] >> CTC decoder needs no optimizer. (???)
 
 	with tf.Session(graph=graph) as sess:
 		tf.global_variables_initializer().run()
@@ -49,10 +52,12 @@ def ctc_loss_example():
 			[[0.1, 0.7, 0.2, 0.0], [0.1, 0.2, 0.7, 0.0], [0.1, 0.2, 0.7, 0.0], [0.1, 0.2, 0.7, 0.0], [0.1, 0.2, 0.7, 0.0]],
 			[[0.1, 0.2, 0.7, 0.0], [0.5, 0.2, 0.3, 0.0], [0.3, 0.6, 0.1, 0.0], [0.1, 0.2, 0.7, 0.0], [0.1, 0.2, 0.7, 0.0]]])
 		log_prob_inputs = np.log(prob_inputs)
-		target_inputs = tf.SparseTensorValue(indices=np.array([[0, 0], [0, 1], [1, 0], [2, 0], [2, 1], [3, 0], [3, 1], [3, 2], [3, 3]], dtype=np.int64), values=np.array([2, 0, 2, 1, 2, 2, 0, 1, 2], dtype=np.int64), dense_shape=np.array([4, 4], dtype=np.int64))
+		#dense_target_inputs = np.array([[2, 0, -1, -1], [2, -1, -1, -1], [1, 2, -1, -1], [2, 0, 1, 2]])
+		#sparse_target_inputs = tf.contrib.layers.dense_to_sparse(dense_target_inputs, eos_token=-1)
+		sparse_target_inputs = tf.SparseTensorValue(indices=np.array([[0, 0], [0, 1], [1, 0], [2, 0], [2, 1], [3, 0], [3, 1], [3, 2], [3, 3]], dtype=np.int64), values=np.array([2, 0, 2, 1, 2, 2, 0, 1, 2], dtype=np.int64), dense_shape=np.array([4, 4], dtype=np.int64))
 		sequence_lengths = np.array([max_time_steps] * batch_size, dtype=np.int32)
 
-		cost, ler = sess.run([cost, ler], feed_dict={input_logits: log_prob_inputs, targets: target_inputs, seq_len: sequence_lengths})
+		cost, ler = sess.run([cost, ler], feed_dict={input_logits: log_prob_inputs, targets: sparse_target_inputs, seq_len: sequence_lengths})
 		print('cost =', cost)
 		print('ler =', ler)
 
@@ -70,29 +75,29 @@ def ctc_loss_example():
 # REF [site] >> https://stackoverflow.com/questions/45482813/tensorflow-cant-understand-ctc-beam-search-decoder-output-sequence
 def ctc_beam_search_decoder_example_1():
 	batch_size = 4
-	sequence_max_len = 5
+	max_time_steps = 5
 	num_classes = 4  # num_classes = num_labels + 1. The largest value (num_classes - 1) is reserved for the blank label.
 
 	graph = tf.Graph()
 	with graph.as_default():
-		input_probs = tf.placeholder(tf.float32, shape=(batch_size, sequence_max_len, num_classes))
+		input_probs = tf.placeholder(tf.float32, shape=(batch_size, max_time_steps, num_classes))
 		input_probs_transposed = tf.transpose(input_probs, perm=[1, 0, 2])  # TF expects dimensions [max_time, batch_size, num_classes].
 		logits = tf.log(input_probs_transposed)
 
-		sequence_lengths = [sequence_max_len] * batch_size
-		decoded, log_probabilities = tf.nn.ctc_beam_search_decoder(logits, sequence_length=sequence_lengths, beam_width=3, top_paths=1, merge_repeated=False)
+		sequence_lengths = [max_time_steps] * batch_size
+		decoded, log_probabilities = tf.nn.ctc_beam_search_decoder(logits, sequence_length=sequence_lengths, beam_width=3, top_paths=1, merge_repeated=False)  # Time-major.
 
 	with tf.Session(graph=graph) as sess:
 		tf.global_variables_initializer().run()
 
 		if False:
 			np.random.seed(7)
-			r = np.random.randint(0, 100, size=(batch_size, sequence_max_len, num_classes))
-			prob_inputs = r / np.sum(r, 2).reshape(batch_size, sequence_max_len, 1)
+			r = np.random.randint(0, 100, size=(batch_size, max_time_steps, num_classes))
+			prob_inputs = r / np.sum(r, 2).reshape(batch_size, max_time_steps, 1)
 		elif False:
 			np.random.seed(50)
-			r = np.random.randint(0, 100, size=(batch_size, sequence_max_len, num_classes))
-			prob_inputs = r / np.sum(r, 2).reshape(batch_size, sequence_max_len, 1)
+			r = np.random.randint(0, 100, size=(batch_size, max_time_steps, num_classes))
+			prob_inputs = r / np.sum(r, 2).reshape(batch_size, max_time_steps, 1)
 		else:
 			prob_inputs = np.array([[[0.1, 0.1, 0.8, 0.0], [0.8, 0.1, 0.1, 0.0], [0.8, 0.1, 0.1, 0.0], [0.8, 0.1, 0.1, 0.0], [0.8, 0.1, 0.1, 0.0]],
 				[[0.1, 0.2, 0.7, 0.0], [0.1, 0.2, 0.7, 0.0], [0.1, 0.2, 0.7, 0.0], [0.1, 0.2, 0.7, 0.0], [0.1, 0.2, 0.7, 0.0]],
@@ -153,8 +158,8 @@ def ctc_beam_search_decoder_example_2():
 	graph = tf.Graph()
 	with graph.as_default():
 		input_logits = tf.placeholder(tf.float32, shape=(batch_size, max_time_steps, num_classes))
-		input_logits_transposed = tf.transpose(input_logits, perm=[1, 0, 2])  # TF expects dimensions [max_time, batch_size, num_classes].
-		decoded, log_probabilities = tf.nn.ctc_beam_search_decoder(input_logits_transposed, sequence_length=seq_lens, beam_width=2, top_paths=2, merge_repeated=True)
+		input_logits0 = tf.transpose(input_logits, perm=[1, 0, 2])  # TF expects dimensions [max_time, batch_size, num_classes].
+		decoded, log_probabilities = tf.nn.ctc_beam_search_decoder(input_logits0, sequence_length=seq_lens, beam_width=2, top_paths=2, merge_repeated=True)
 
 	with tf.Session(graph=graph) as sess:
 		tf.global_variables_initializer().run()
