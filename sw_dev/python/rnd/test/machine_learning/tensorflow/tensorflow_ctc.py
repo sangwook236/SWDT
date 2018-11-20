@@ -3,7 +3,7 @@
 import numpy as np
 import tensorflow as tf
 
-# REF [site] >>  https://github.com/igormq/ctc_tensorflow_example
+# REF [site] >> https://github.com/igormq/ctc_tensorflow_example
 def ctc_loss_example():
 	num_classes = 4  # num_classes = num_labels + 1. The largest value (num_classes - 1) is reserved for the blank label.
 	initial_learning_rate = 1e-2
@@ -24,23 +24,22 @@ def ctc_loss_example():
 
 		input_logits0 = tf.transpose(input_logits, (1, 0, 2))  # Time-major.
 
-		# Option 1.
-		#	Variable-length outputs.
+		# Loss.
+		#	Variable-length output.
 		loss = tf.nn.ctc_loss(targets, input_logits0, sequence_length=seq_len, ctc_merge_repeated=True, time_major=True)
 		cost = tf.reduce_mean(loss)
 
 		#optimizer = tf.train.MomentumOptimizer(initial_learning_rate, momentum).minimize(cost)
 
-		# Option 2.
+		# Accuracy.
 		#	tf.nn.ctc_beam_search_decoder: it's slower but you'll get better results.
+		#	decoded: a list of sparse tensors.
 		#decoded, log_prob = tf.nn.ctc_beam_search_decoder(input_logits0, sequence_length=seq_len, beam_width=100, top_paths=1, merge_repeated=True)  # Time-major.
 		decoded, log_prob = tf.nn.ctc_greedy_decoder(input_logits0, sequence_length=seq_len, merge_repeated=True)  # Time-major.
 
-		# Inaccuracy: label error rate.
-		#	Variable-length outputs.
+		# Label error rate => inaccuracy.
+		#	Variable-length output.
 		ler = tf.reduce_mean(tf.edit_distance(tf.cast(decoded[0], tf.int32), targets))
-
-		# NOTE [info] >> CTC decoder needs no optimizer. (???)
 
 	with tf.Session(graph=graph) as sess:
 		tf.global_variables_initializer().run()
