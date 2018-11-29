@@ -4,6 +4,7 @@ import numpy as np
 import tensorflow as tf
 
 # REF [site] >> https://github.com/igormq/ctc_tensorflow_example
+# REF [file] >> ${SWL_PYTHON_HOME}/test/machine_learning/tensorflow/run_ctc_example.py
 def ctc_loss_example():
 	num_classes = 4  # num_classes = num_labels + 1. The largest value (num_classes - 1) is reserved for the blank label.
 	initial_learning_rate = 1e-2
