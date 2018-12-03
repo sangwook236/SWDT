@@ -27,7 +27,7 @@ def ctc_loss_example():
 
 		# Loss.
 		#	Variable-length output.
-		loss = tf.nn.ctc_loss(targets, input_logits0, sequence_length=seq_len, ctc_merge_repeated=True, time_major=True)
+		loss = tf.nn.ctc_loss(targets, input_logits0, sequence_length=seq_len, preprocess_collapse_repeated=False, ctc_merge_repeated=True, ignore_longer_outputs_than_inputs=False, time_major=True)
 		cost = tf.reduce_mean(loss)
 
 		#optimizer = tf.train.MomentumOptimizer(initial_learning_rate, momentum).minimize(cost)
