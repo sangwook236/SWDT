@@ -74,6 +74,7 @@ def text_example():
 	#img = img.crop(text_area)
 
 	img.save('./pil_text_font.png')
+	#img.convert('L').save('./pil_text_font.png')  # Save as a grayscale image.
 
 def main():
 	#image_example()

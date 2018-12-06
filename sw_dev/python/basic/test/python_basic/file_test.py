@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
 def main():
-	with open('data.txt', 'r') as fd:
+	with open('data.txt', 'r', encoding='UTF8') as fd:
 	#with open('data.txt', 'r+') as fd:
 	#with open('data.txt', 'rb') as fd:
 		data = fd.read()
 
-	with open('data_copyed.txt', 'w') as fd:
-	#with open('data_copyed.txt', 'w+') as fd:
-	#with open('data_copyed.txt', 'wb') as fd:
+	with open('data_copyed.txt', 'w', encoding='UTF8') as fd:
+	#with open('data_copyed.txt', 'w+', encoding='UTF8') as fd:
+	#with open('data_copyed.txt', 'wb', encoding='UTF8') as fd:
 		fd.write(data)
 
 	words = data.split()
