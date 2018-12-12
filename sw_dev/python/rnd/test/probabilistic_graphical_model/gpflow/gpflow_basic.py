@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-import gpflow
-import tensorflow as tf
 import numpy as np
+import tensorflow as tf
 from matplotlib import pyplot as plt
 import matplotlib
+import gpflow
 
 # REF [site] >> https://gpflow.readthedocs.io/en/latest/notebooks/models.html
 def handle_model_example():

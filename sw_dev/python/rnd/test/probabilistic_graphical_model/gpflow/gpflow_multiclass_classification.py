@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-import gpflow
-import tensorflow as tf
+import sys, csv
 import numpy as np
 from scipy.cluster.vq import kmeans
+import tensorflow as tf
 from matplotlib import pyplot as plt
 import matplotlib
-import csv, sys
+import gpflow
 
 def plot(m):
 	f = plt.figure(figsize=(12, 6))

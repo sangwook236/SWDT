@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-import GPy
 import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib
 from IPython.display import display
+import GPy
 
 # REF [site] >> http://nbviewer.jupyter.org/github/SheffieldML/notebook/blob/master/GPy/models_basic.ipynb
 def basic_model_tutorial():
