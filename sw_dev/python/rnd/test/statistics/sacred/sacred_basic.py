@@ -25,8 +25,8 @@ def run(C, gamma):
 
 # Usage:
 #	Mongo Observer:
-#		python sacred_basic.py -m MY_DB
-#		python sacred_basic.py -m 192.168.1.1:27017:MY_DB
+#		python sacred_basic.py -m SACRED_DB
+#		python sacred_basic.py -m HOST:PORT:SACRED_DB
 #	File Storage Observer:
 #		python sacred_basic.py -F BASEDIR
 #		python sacred_basic.py --file_storage=BASEDIR
@@ -36,3 +36,14 @@ def run(C, gamma):
 #	SQL Observer:
 #		python sacred_basic.py -s DB_URL
 #		python sacred_basic.py --sql=DB_URL
+#
+# Frontend:
+#	Omniboard:
+#		omniboard -m HOST:PORT:SACRED_DB
+#		omniboard --mu mongodb://user:pwd@host/admin?authMechanism=SCRAM-SHA-1 sacred
+#			Open http://localhost:9000 in a web browser.
+#	Sacredboard:
+#		sacredboard -m SACRED_DB
+#		sacredboard -m HOST:PORT:SACRED_DB
+#			Open http://127.0.0.1:5000/runs in a web browser.
+#		sacredboard -F BASEDIR
