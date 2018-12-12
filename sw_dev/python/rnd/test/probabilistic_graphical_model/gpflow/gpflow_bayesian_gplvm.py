@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import numpy as np
-import matplotlib as mpl
+#import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import pods
@@ -31,7 +31,7 @@ def bayesian_gplvm_example():
 	Z = np.random.permutation(X_mean.copy())[:M]
 
 	fHmmm = False
-	if(fHmmm):
+	if fHmmm:
 		k = (kernels.RBF(3, ARD=True, active_dims=slice(0, 3)) + kernels.Linear(2, ARD=False, active_dims=slice(3, 5)))
 	else:
 		k = (kernels.RBF(3, ARD=True, active_dims=[0, 1, 2]) + kernels.Linear(2, ARD=False, active_dims=[3, 4]))
