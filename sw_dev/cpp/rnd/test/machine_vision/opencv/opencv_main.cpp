@@ -1,9 +1,8 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/core/core.hpp>
-//#include <opencv2/gpu/gpu.hpp>
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include <chrono>
 
 
 namespace my_opencv {
@@ -53,6 +52,57 @@ void basic_processing()
 	cv::waitKey(0);
 
 	cv::destroyAllWindows();
+}
+
+void operation_using_mask_and_roi()
+{
+	const int image_width = 8000, image_height = 4000;
+	cv::Mat a = cv::Mat::zeros(image_height, image_width, CV_32FC1), b = cv::Mat::zeros(image_height, image_width, CV_32FC1), mask = cv::Mat::zeros(image_height, image_width, CV_8UC1);
+	a(cv::Rect(0, 0, image_height, image_height)) = 1;
+	b(cv::Rect(3000, 2000, 3000, 1000)) = 1;
+	const cv::Rect roi(3000, 2000, 3000, 1000);
+	mask(roi) = 1;
+
+	// Use the whole image.
+	{
+		cv::Mat c;
+		const auto startTime(std::chrono::high_resolution_clock::now());
+		cv::bitwise_and(a, b, c);
+		const auto endTime(std::chrono::high_resolution_clock::now());
+		std::cout << "Took " << std::chrono::duration<double, std::milli>(endTime - startTime).count() << " ms." << std::endl;
+	}
+
+	// Uses a mask.
+	//	A mask is an ROI with an arbitary shape.
+	//	This is slowest.
+	//	Mask operation is kind of overhead.
+	{
+		cv::Mat c;
+		auto startTime(std::chrono::high_resolution_clock::now());
+		cv::bitwise_and(a, b, c, mask);
+		const auto endTime(std::chrono::high_resolution_clock::now());
+		std::cout << "Took " << std::chrono::duration<double, std::milli>(endTime - startTime).count() << " ms." << std::endl;
+	}
+
+	// Uses a rectangular ROI.
+	//	This is fastest.
+	{
+		cv::Mat c = cv::Mat::zeros(image_height, image_width, CV_32FC1);
+		auto startTime(std::chrono::high_resolution_clock::now());
+		cv::bitwise_and(a(roi), b(roi), c(roi));
+		const auto endTime(std::chrono::high_resolution_clock::now());
+		std::cout << "Took " << std::chrono::duration<double, std::milli>(endTime - startTime).count() << " ms." << std::endl;
+	}
+
+	// Uses an ROI with an arbitary shape.
+	//	An ROI with an arbitary shape = a rectangular ROI + mask.
+	{
+		cv::Mat c = cv::Mat::zeros(image_height, image_width, CV_32FC1);
+		auto startTime(std::chrono::high_resolution_clock::now());
+		cv::bitwise_and(a(roi), b(roi), c(roi), mask(roi));
+		const auto endTime(std::chrono::high_resolution_clock::now());
+		std::cout << "Took " << std::chrono::duration<double, std::milli>(endTime - startTime).count() << " ms." << std::endl;
+	}
 }
 
 }  // namespace local
@@ -221,6 +271,7 @@ int opencv_main(int argc, char *argv[])
 #endif
 
 		//local::basic_processing();
+		//local::operation_using_mask_and_roi();
 
 		//my_opencv::text_output();
 

@@ -46,7 +46,7 @@ def pool_1():
 	with mp.Pool(processes=5) as pool:
 		print(pool.map(sqr, [item for item in range(10000)]))
 
-		# In arbitrary order
+		# In arbitrary order.
 		for i in pool.imap_unordered(sqr, range(10)):
 			print(i)
 

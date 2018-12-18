@@ -252,7 +252,7 @@ void line_example()
 #endif
 }
 
-void rectangle_example()
+void rectangle_example_1()
 {
 	const std::string windowName("Contour - Original");
 	const std::string windowNameCCA("Contour - Result");
@@ -321,6 +321,48 @@ void rectangle_example()
 			cv::waitKey(10);
 		}
 #endif
+}
+
+void drawExternalContours(cv::Mat &img, const std::vector<std::vector<cv::Point> > &contours, const std::vector<cv::Vec4i> &hierarchy, const int idx)
+{
+	// For every contour of the same hierarchy level.
+	for (int i = idx; i >= 0; i = hierarchy[i][0])
+	{
+		cv::drawContours(img, contours, i, cv::Scalar(0, 0, 255));
+		//cv::rectangle(img, cv::boundingRect(contours[i]), cv::Scalar(255, 0, 0));  // Bounding box.
+
+		// For every of its internal contours.
+		for (int j = hierarchy[i][2]; j >= 0; j = hierarchy[j][0])
+		{
+			// Recursively print the external contours of its children.
+			drawExternalContours(img, contours, hierarchy, hierarchy[j][2]);
+		}
+	}
+}
+
+// REF [site] >> https://stackoverflow.com/questions/19079619/efficient-way-to-combine-intersecting-bounding-rectangles
+void rectangle_example_2()
+{
+	const std::string image_filepath("D:/work/SWDT_github/sw_dev/cpp/rnd/data/machine_vision/rectangles.png");
+
+	const cv::Mat gray(cv::imread(image_filepath, cv::IMREAD_GRAYSCALE));
+	if (gray.empty())
+	{
+		std::cerr << "Image file not found: " << image_filepath << std::endl;
+		return;
+	}
+
+	std::vector<std::vector<cv::Point> > contours;
+	std::vector<cv::Vec4i> hierarchy;
+	cv::findContours(gray, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE);
+
+	cv::Mat rgb;
+	cv::cvtColor(gray, rgb, cv::COLOR_GRAY2RGB);
+	drawExternalContours(rgb, contours, hierarchy, 0);
+
+	cv::imshow("Contour - Input", gray);
+	cv::imshow("Contour - Output", rgb);
+	cv::waitKey(0);
 }
 
 void circle_example()
@@ -420,7 +462,10 @@ void contour()
 	//local::line_example();
 	//cv::waitKey(0);
 
-	//local::rectangle_example();
+	//local::rectangle_example_1();
+	//cv::waitKey(0);
+
+	//local::rectangle_example_2();
 	//cv::waitKey(0);
 
 	//local::circle_example();
