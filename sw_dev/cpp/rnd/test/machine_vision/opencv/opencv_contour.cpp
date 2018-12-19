@@ -341,10 +341,31 @@ void drawExternalContours(cv::Mat &img, const std::vector<std::vector<cv::Point>
 	}
 }
 
+void drawInternalContours(cv::Mat &img, const std::vector<std::vector<cv::Point> > &contours, const std::vector<cv::Vec4i> &hierarchy, const int idx)
+{
+	// For every contour of the same hierarchy level.
+	for (int i = idx; i >= 0; i = hierarchy[i][0])  // Even depth level (external contour).
+	{
+		// For every of its internal contours.
+		for (int j = hierarchy[i][2]; j >= 0; j = hierarchy[j][0])  // Odd depth level (internal contour).
+		{
+			cv::drawContours(img, contours, j, cv::Scalar(255, 0, 0));
+			//cv::rectangle(img, cv::boundingRect(contours[j]), cv::Scalar(255, 255, 0));  // Bounding box.
+
+			// Recursively print the external contours of its children.
+			drawInternalContours(img, contours, hierarchy, hierarchy[j][2]);
+		}
+	}
+}
+
+// NOTE [info] >>
+//	When the parameter mode of cv::findContours() is set to cv::RETR_TREE:
+//		hierarchy is constructed in a way that every even depth level contains external contours, while odd depth levels contain internal contours.
 // REF [site] >> https://stackoverflow.com/questions/19079619/efficient-way-to-combine-intersecting-bounding-rectangles
 void rectangle_example_2()
 {
 	const std::string image_filepath("../data/machine_vision/rectangles.png");
+	//const std::string image_filepath("../data/machine_vision/rectangles_x10.png");
 
 	const cv::Mat gray(cv::imread(image_filepath, cv::IMREAD_GRAYSCALE));
 	if (gray.empty())
@@ -363,9 +384,11 @@ void rectangle_example_2()
 	cv::Mat rgb;
 	cv::cvtColor(gray, rgb, cv::COLOR_GRAY2RGB);
 	drawExternalContours(rgb, contours, hierarchy, 0);
+	//drawInternalContours(rgb, contours, hierarchy, 0);
 
 	cv::imshow("Contour - Input", gray);
 	cv::imshow("Contour - Output", rgb);
+	//cv::imwrite(image_filepath + "_result.png", rgb);
 	cv::waitKey(0);
 }
 
