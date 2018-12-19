@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include <opencv2/opencv.hpp>
 #include <string>
+#include <chrono>
 #include <cassert>
 
 
@@ -343,7 +344,7 @@ void drawExternalContours(cv::Mat &img, const std::vector<std::vector<cv::Point>
 // REF [site] >> https://stackoverflow.com/questions/19079619/efficient-way-to-combine-intersecting-bounding-rectangles
 void rectangle_example_2()
 {
-	const std::string image_filepath("D:/work/SWDT_github/sw_dev/cpp/rnd/data/machine_vision/rectangles.png");
+	const std::string image_filepath("../data/machine_vision/rectangles.png");
 
 	const cv::Mat gray(cv::imread(image_filepath, cv::IMREAD_GRAYSCALE));
 	if (gray.empty())
@@ -354,7 +355,10 @@ void rectangle_example_2()
 
 	std::vector<std::vector<cv::Point> > contours;
 	std::vector<cv::Vec4i> hierarchy;
+	const auto startTime(std::chrono::high_resolution_clock::now());
 	cv::findContours(gray, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_NONE);
+	const auto endTime(std::chrono::high_resolution_clock::now());
+	std::cout << "Took " << std::chrono::duration<double, std::milli>(endTime - startTime).count() << " ms." << std::endl;
 
 	cv::Mat rgb;
 	cv::cvtColor(gray, rgb, cv::COLOR_GRAY2RGB);
