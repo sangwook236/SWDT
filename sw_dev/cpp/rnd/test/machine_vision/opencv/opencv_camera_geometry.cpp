@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv2/calib3d/calib3d_c.h>
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <cassert>
@@ -109,7 +110,7 @@ void intrinsic_camera_params(const bool isPlanarCalibrationRigs)
 		//cvmSet(intrinsicParams, 1, 1, alpha_y);  // alpha_y
 		//cvmSet(intrinsicParams, 1, 1, y0);  // y0
 
-		flags = CV_CALIB_FIX_ASPECT_RATIO;
+		flags = cv::CALIB_FIX_ASPECT_RATIO;
 	}
 	else
 	{
@@ -121,7 +122,7 @@ void intrinsic_camera_params(const bool isPlanarCalibrationRigs)
 		cvmSet(intrinsicParams, 1, 1, 1.0);  // alpha_y
 		cvmSet(intrinsicParams, 1, 1, imgHeight * 0.5);  // y0
 
-		flags = CV_CALIB_USE_INTRINSIC_GUESS | CV_CALIB_FIX_ASPECT_RATIO;
+		flags = cv::CALIB_USE_INTRINSIC_GUESS | cv::CALIB_FIX_ASPECT_RATIO;
 	}
 
 	//

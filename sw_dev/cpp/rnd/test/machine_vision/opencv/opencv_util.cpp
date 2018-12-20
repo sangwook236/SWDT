@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv/cv.h>
 //#include <opencv2/legacy/compat.hpp>
 //#include <opencv2/legacy/legacy.hpp>
 #include <opencv2/optflow.hpp>
@@ -503,7 +504,7 @@ void draw_histogram_1D(const cv::MatND &hist, const int binCount, const double m
 			histImg,
 			cv::Point(i*binWidth, maxHeight), cv::Point((i+1)*binWidth - 1, maxHeight - binHeight),
 			binVal > maxVal ? CV_RGB(255, 0, 0) : CV_RGB(255, 255, 255),
-			CV_FILLED
+			cv::FILLED
 		);
 	}
 #else
@@ -515,7 +516,7 @@ void draw_histogram_1D(const cv::MatND &hist, const int binCount, const double m
 			histImg,
 			cv::Point(i*binWidth, maxHeight), cv::Point((i+1)*binWidth - 1, maxHeight - binHeight),
 			*binPtr > maxVal ? CV_RGB(255, 0, 0) : CV_RGB(255, 255, 255),
-			CV_FILLED
+			cv::FILLED
 		);
 	}
 #endif
@@ -532,7 +533,7 @@ void draw_histogram_2D(const cv::MatND &hist, const int horzBinCount, const int 
 				histImg,
 				cv::Point(h*horzBinSize, v*vertBinSize), cv::Point((h+1)*horzBinSize - 1, (v+1)*vertBinSize - 1),
 				binVal > maxVal ? CV_RGB(255, 0, 0) : cv::Scalar::all(cvRound(binVal * 255.0 / maxVal)),
-				CV_FILLED
+				cv::FILLED
 			);
 		}
 #else
@@ -544,7 +545,7 @@ void draw_histogram_2D(const cv::MatND &hist, const int horzBinCount, const int 
 				histImg,
 				cv::Point(h*horzBinSize, v*vertBinSize), cv::Point((h+1)*horzBinSize - 1, (v+1)*vertBinSize - 1),
 				*binPtr > maxVal ? cv::Scalar(CV_RGB(255, 0, 0)) : cv::Scalar::all(cvRound(*binPtr * 255.0 / maxVal)),
-				CV_FILLED
+				cv::FILLED
 			);
 		}
 #endif
@@ -1160,8 +1161,8 @@ void util()
 	{
 #if 0
 		cv::Mat bk_img(100, 100, CV_8UC1, cv::Scalar::all(0));
-		cv::rectangle(bk_img, cv::Point(10, 10), cv::Point(49, 29), CV_RGB(255, 255, 255), CV_FILLED, 8, 0);
-		cv::rectangle(bk_img, cv::Point(60, 70), cv::Point(99, 99), CV_RGB(255, 255, 255), CV_FILLED, 8, 0);
+		cv::rectangle(bk_img, cv::Point(10, 10), cv::Point(49, 29), CV_RGB(255, 255, 255), cv::FILLED, cv::LINE_8, 0);
+		cv::rectangle(bk_img, cv::Point(60, 70), cv::Point(99, 99), CV_RGB(255, 255, 255), cv::FILLED, cv::LINE_8, 0);
 
 		// the number of pixels on outer boundary:
 		//  8 connectivity	zero padding        rectangle 1					rectangle 2					total
@@ -1190,10 +1191,10 @@ void util()
 
 #else
 		cv::Mat bk_img(100, 100, CV_8UC1, cv::Scalar::all(0));
-		cv::rectangle(bk_img, cv::Point(10, 10), cv::Point(30, 30), CV_RGB(255, 255, 255), CV_FILLED, 8, 0);
-		cv::rectangle(bk_img, cv::Point(50, 50), cv::Point(80, 80), CV_RGB(255, 255, 255), CV_FILLED, 8, 0);
-		cv::rectangle(bk_img, cv::Point(60, 70), cv::Point(100, 100), CV_RGB(255, 255, 255), CV_FILLED, 8, 0);
-		cv::circle(bk_img, cv::Point(70, 20), 20, CV_RGB(255, 255, 255), CV_FILLED, 8, 0);
+		cv::rectangle(bk_img, cv::Point(10, 10), cv::Point(30, 30), CV_RGB(255, 255, 255), cv::FILLED, cv::LINE_8, 0);
+		cv::rectangle(bk_img, cv::Point(50, 50), cv::Point(80, 80), CV_RGB(255, 255, 255), cv::FILLED, cv::LINE_8, 0);
+		cv::rectangle(bk_img, cv::Point(60, 70), cv::Point(100, 100), CV_RGB(255, 255, 255), cv::FILLED, cv::LINE_8, 0);
+		cv::circle(bk_img, cv::Point(70, 20), 20, CV_RGB(255, 255, 255), cv::FILLED, cv::LINE_8, 0);
 
 		const bool use_8_connectivity = true;
 		const bool use_zero_padding = false;

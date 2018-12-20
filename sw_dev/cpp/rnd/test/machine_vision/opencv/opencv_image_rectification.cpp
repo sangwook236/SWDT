@@ -222,8 +222,8 @@ void rectify_images_using_opencv(
 		const cv::Mat &img_right_before = input_images_right[k];
 
 		cv::Mat img_left_after, img_right_after;
-		cv::remap(img_left_before, img_left_after, rmap_left[0], rmap_left[1], CV_INTER_LINEAR);
-		cv::remap(img_right_before, img_right_after, rmap_right[0], rmap_right[1], CV_INTER_LINEAR);
+		cv::remap(img_left_before, img_left_after, rmap_left[0], rmap_left[1], cv::INTER_LINEAR);
+		cv::remap(img_right_before, img_right_after, rmap_right[0], rmap_right[1], cv::INTER_LINEAR);
 
 		output_images_left.push_back(img_left_after);
 		output_images_right.push_back(img_right_after);
@@ -542,7 +542,7 @@ void rectify_kinect_images_using_depth(
 		for (std::vector<cv::Mat>::const_iterator cit = rgb_input_images.begin(); cit != rgb_input_images.end(); ++cit)
 		{
 			cv::Mat gray;
-			cv::cvtColor(*cit, gray, CV_BGR2GRAY);
+			cv::cvtColor(*cit, gray, cv::COLOR_BGR2GRAY);
 			rgb_input_gray_images.push_back(gray);
 		}
 
@@ -578,7 +578,7 @@ void image_rectification()
 	// [ref] stereo_camera_calibration() in opencv_stereo_camera_calibration.cpp
 #if 1
 	// [ref] http://blog.martinperis.com/2011/01/opencv-stereo-camera-calibration.html
-	const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib_2.xml");
+	const std::string imagelistfn("../data/machine_vision/opencv/camera_calibration/stereo_calib_2.xml");
 
 	const cv::Size imageSize_left(640, 480), imageSize_right(640, 480);
 	const cv::Size boardSize(9, 6);
@@ -658,8 +658,8 @@ void image_rectification()
 	// Caution: not correctly working
 
 	// Kinect IR & RGB images
-	//const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib_3.xml");
-	const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib_4.xml");
+	//const std::string imagelistfn("../data/machine_vision/opencv/camera_calibration/stereo_calib_3.xml");
+	const std::string imagelistfn("../data/machine_vision/opencv/camera_calibration/stereo_calib_4.xml");
 
 	const cv::Size imageSize_left(640, 480), imageSize_right(640, 480);
 	const cv::Size boardSize(7, 5);
@@ -679,7 +679,7 @@ void image_rectification()
 	const double matQ[] = {};  // row-major
 #else
 	// [ref] ${OPENCV_HOME}/samples/cpp/stereo_calib.xml
-	const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib.xml");
+	const std::string imagelistfn("../data/machine_vision/opencv/camera_calibration/stereo_calib.xml");
 
 	const cv::Size imageSize_left(640, 480), imageSize_right(640, 480);
 	const cv::Size boardSize(9, 6);
@@ -785,8 +785,8 @@ void image_rectification()
 		for (std::size_t i = 0; i < num_images; ++i)
 		{
 			cv::Mat rimg_left, rimg_right;
-			cv::remap(input_images_left[i], rimg_left, rmap_left[0], rmap_left[1], CV_INTER_LINEAR);
-			cv::remap(input_images_right[i], rimg_right, rmap_right[0], rmap_right[1], CV_INTER_LINEAR);
+			cv::remap(input_images_left[i], rimg_left, rmap_left[0], rmap_left[1], cv::INTER_LINEAR);
+			cv::remap(input_images_right[i], rimg_right, rmap_right[0], rmap_right[1], cv::INTER_LINEAR);
 
 			output_images_left.push_back(rimg_left);
 			output_images_right.push_back(rimg_right);
@@ -846,17 +846,17 @@ void kinect_image_rectification()
 
 		std::vector<std::string> ir_image_filenames;
 		ir_image_filenames.reserve(num_images);
-		ir_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_depth_20130530T103805.png");
-		ir_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023152.png");
-		ir_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023346.png");
-		ir_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023359.png");
+		ir_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_depth_20130530T103805.png");
+		ir_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023152.png");
+		ir_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023346.png");
+		ir_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023359.png");
 
 		std::vector<std::string> rgb_image_filenames;
 		rgb_image_filenames.reserve(num_images);
-		rgb_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
-		rgb_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
-		rgb_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
-		rgb_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
+		rgb_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
+		rgb_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
+		rgb_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
+		rgb_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
 
 		std::vector<cv::Mat> ir_input_images, rgb_input_images;
 		ir_input_images.reserve(num_images);
@@ -913,9 +913,9 @@ void kinect_image_rectification()
 		for (std::size_t k = 0; k < num_images; ++k)
 		{
 			std::ostringstream strm1, strm2;
-			strm1 << "./data/machine_vision/opencv/image_undistortion/rectified_image_depth_" << k << ".png";
+			strm1 << "../data/machine_vision/opencv/image_undistortion/rectified_image_depth_" << k << ".png";
 			cv::imwrite(strm1.str(), ir_output_images[k]);
-			strm2 << "./data/machine_vision/opencv/image_undistortion/rectified_image_rgb_" << k << ".png";
+			strm2 << "../data/machine_vision/opencv/image_undistortion/rectified_image_rgb_" << k << ".png";
 			cv::imwrite(strm2.str(), rgb_output_images[k]);
 		}
 #endif

@@ -79,9 +79,9 @@ void stereo_matching_using_gpu()
 {
 	// [ref] {OPENCV_HOME}/samples/gpu/stereo_match.cpp
 
-	const std::string imageL_filename("./data/machine_vision/tsukuba-imL.png");
-    const std::string imageR_filename("./data/machine_vision/tsukuba-imR.png");
-    const std::string imageT_filename("./data/machine_vision/tsukuba-truedispL.png");
+	const std::string imageL_filename("../data/machine_vision/tsukuba-imL.png");
+    const std::string imageR_filename("../data/machine_vision/tsukuba-imR.png");
+    const std::string imageT_filename("../data/machine_vision/tsukuba-truedispL.png");
 	const std::size_t NUM_DISPARITIES = 24;  // 8x
 
 	const cv::Mat &imgL = cv::imread(imageL_filename, cv::IMREAD_COLOR);
@@ -110,8 +110,8 @@ void stereo_matching_using_gpu()
 
 		cv::Mat grayL, grayR;
 
-        cv::cvtColor(imgL, grayL, CV_BGR2GRAY);
-        cv::cvtColor(imgR, grayR, CV_BGR2GRAY);
+        cv::cvtColor(imgL, grayL, cv::COLOR_BGR2GRAY);
+        cv::cvtColor(imgR, grayR, cv::COLOR_BGR2GRAY);
 
 		buffer.imgL.upload(grayL);
 		buffer.imgR.upload(grayR);

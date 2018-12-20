@@ -31,20 +31,20 @@ namespace my_opencv {
 void morphological_operation()
 {
 	std::list<std::string> filenames;
-	filenames.push_back("./data/machine_vision/opencv/pic1.png");
-	filenames.push_back("./data/machine_vision/opencv/pic2.png");
-	filenames.push_back("./data/machine_vision/opencv/pic3.png");
-	filenames.push_back("./data/machine_vision/opencv/pic4.png");
-	filenames.push_back("./data/machine_vision/opencv/pic5.png");
-	filenames.push_back("./data/machine_vision/opencv/pic6.png");
-	filenames.push_back("./data/machine_vision/opencv/stuff.jpg");
-	filenames.push_back("./data/machine_vision/opencv/synthetic_face.png");
-	filenames.push_back("./data/machine_vision/opencv/puzzle.png");
-	filenames.push_back("./data/machine_vision/opencv/fruits.jpg");
-	filenames.push_back("./data/machine_vision/opencv/lena_rgb.bmp");
-	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
+	filenames.push_back("../data/machine_vision/opencv/pic1.png");
+	filenames.push_back("../data/machine_vision/opencv/pic2.png");
+	filenames.push_back("../data/machine_vision/opencv/pic3.png");
+	filenames.push_back("../data/machine_vision/opencv/pic4.png");
+	filenames.push_back("../data/machine_vision/opencv/pic5.png");
+	filenames.push_back("../data/machine_vision/opencv/pic6.png");
+	filenames.push_back("../data/machine_vision/opencv/stuff.jpg");
+	filenames.push_back("../data/machine_vision/opencv/synthetic_face.png");
+	filenames.push_back("../data/machine_vision/opencv/puzzle.png");
+	filenames.push_back("../data/machine_vision/opencv/fruits.jpg");
+	filenames.push_back("../data/machine_vision/opencv/lena_rgb.bmp");
+	filenames.push_back("../data/machine_vision/opencv/hand_01.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_05.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_24.jpg");
 
 	const std::string windowName1("morphological operation - original");
 	const std::string windowName2("morphological operation - processed");
@@ -65,8 +65,8 @@ void morphological_operation()
 		if (1 == img.channels())
 			img.copyTo(gray);
 		else
-			cv::cvtColor(img, gray, CV_BGR2GRAY);
-			//cv::cvtColor(img, gray, CV_RGB2GRAY);
+			cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+			//cv::cvtColor(img, gray, cv::COLOR_RGB2GRAY);
 
 		//const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3, 3), cv::Point(-1, -1));
 		const cv::Mat &selement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5), cv::Point(-1, -1));

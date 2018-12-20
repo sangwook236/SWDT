@@ -16,8 +16,8 @@ inline cv::Point calc_trajectory(const cv::Point2f &center, const double radius,
 
 inline void draw_cross(cv::Mat &img, const cv::Point &center, const cv::Scalar &color, const int d)
 {
-	cv::line(img, cv::Point(center.x - d, center.y - d), cv::Point(center.x + d, center.y + d), color, 1, CV_AA, 0);
-	cv::line(img, cv::Point(center.x + d, center.y - d), cv::Point(center.x - d, center.y + d), color, 1, CV_AA, 0);
+	cv::line(img, cv::Point(center.x - d, center.y - d), cv::Point(center.x + d, center.y + d), color, 1, cv::LINE_AA, 0);
+	cv::line(img, cv::Point(center.x + d, center.y - d), cv::Point(center.x - d, center.y + d), color, 1, cv::LINE_AA, 0);
 }
 
 void kalman_filtering()
@@ -90,8 +90,8 @@ void kalman_filtering()
 		draw_cross(img, statePt, CV_RGB(255,255,255), 3);
 		draw_cross(img, measurePt, CV_RGB(255,0,0), 3);
 		draw_cross(img, predictPt, CV_RGB(0,255,0), 3);
-		cv::line(img, statePt, measurePt, CV_RGB(255,0,0), 3, CV_AA, 0);
-		cv::line(img, statePt, predictPt, CV_RGB(255,255,0), 3, CV_AA, 0);
+		cv::line(img, statePt, measurePt, CV_RGB(255,0,0), 3, cv::LINE_AA, 0);
+		cv::line(img, statePt, predictPt, CV_RGB(255,255,0), 3, cv::LINE_AA, 0);
 
 		cv::imshow(windowName, img);
 

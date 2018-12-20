@@ -26,7 +26,7 @@ void retina_model()
 #if 1
 	// still image processing.
 
-	const std::string img_filename("./data/machine_vision/opencv/lena_rgb.bmp");
+	const std::string img_filename("../data/machine_vision/opencv/lena_rgb.bmp");
 
 	inputFrame = cv::imread(img_filename, 1);  // load image in RGB mode.
 	if (inputFrame.empty())
@@ -37,7 +37,7 @@ void retina_model()
 #elif 0
     // video processing.
 
-	const std::string video_filename("./data/machine_vision/opencv/tree.avi");
+	const std::string video_filename("../data/machine_vision/opencv/tree.avi");
 
 	videoCapture.open(video_filename);
 	if (!videoCapture.isOpened())
@@ -78,19 +78,19 @@ void retina_model()
 		const double reductionFactor = 2.0;
 		const double samplingStrenght = 10.0;
 
-		retina = cv::bioinspired::createRetina(inputFrame.size(), colorMode, colorSamplingMethod, useLogSampling, 2.0, samplingStrenght);
+		retina = cv::bioinspired::Retina::create(inputFrame.size(), colorMode, colorSamplingMethod, useLogSampling, 2.0, samplingStrenght);
 	}
 	else  // allocate "classical" retina.
-		retina = cv::bioinspired::createRetina(inputFrame.size());
+		retina = cv::bioinspired::Retina::create(inputFrame.size());
 
 #if 0
 	// save default retina parameters file in order to let you see this and maybe modify it and reload using method "setup".
-	retina->write("./data/machine_vision/opencv/RetinaDefaultParameters.xml");
+	retina->write("../data/machine_vision/opencv/RetinaDefaultParameters.xml");
 #endif
 
 #if 0
 	// load parameters if file exists.
-	retina->setup("./data/machine_vision/opencv/RetinaSpecificParameters.xml");
+	retina->setup("../data/machine_vision/opencv/RetinaSpecificParameters.xml");
 	retina->clearBuffers();
 #endif
 

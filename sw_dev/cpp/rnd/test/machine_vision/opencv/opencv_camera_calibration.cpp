@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <string>
@@ -92,7 +93,7 @@ double computeReprojectionErrors(
 	for (i = 0; i < (int)objectPoints.size(); ++i)
 	{
 		cv::projectPoints(cv::Mat(objectPoints[i]), rvecs[i], tvecs[i], cameraMatrix, distCoeffs, imagePoints2);
-		err = norm(cv::Mat(imagePoints[i]), cv::Mat(imagePoints2), CV_L2);
+		err = norm(cv::Mat(imagePoints[i]), cv::Mat(imagePoints2), cv::NORM_L2);
 		int n = (int)objectPoints[i].size();
 		perViewErrors[i] = (float)std::sqrt(err*err/n);
 		totalErr += err*err;
@@ -135,7 +136,7 @@ bool runCalibration(const std::vector<std::vector<cv::Point2f> > &imagePoints,
 	double &totalAvgErr)
 {
 	cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
-	if (flags & CV_CALIB_FIX_ASPECT_RATIO)
+	if (flags & cv::CALIB_FIX_ASPECT_RATIO)
 		cameraMatrix.at<double>(0, 0) = aspectRatio;
 
 	distCoeffs = cv::Mat::zeros(8, 1, CV_64F);
@@ -148,8 +149,8 @@ bool runCalibration(const std::vector<std::vector<cv::Point2f> > &imagePoints,
 	double rms = calibrateCamera(
 		objectPoints, imagePoints, imageSize, cameraMatrix,
 		distCoeffs, rvecs, tvecs,
-		flags | CV_CALIB_FIX_K4 | CV_CALIB_FIX_K5
-		//flag /*| CV_CALIB_FIX_K3*/ | CV_CALIB_FIX_K4 | CV_CALIB_FIX_K5
+		flags | cv::CALIB_FIX_K4 | cv::CALIB_FIX_K5
+		//flag /*| cv::CALIB_FIX_K3*/ | cv::CALIB_FIX_K4 | cv::CALIB_FIX_K5
 	);
 	std::cout << "RMS error reported by calibrateCamera: " << rms << std::endl;
 
@@ -187,17 +188,17 @@ void saveCameraParams(const std::string &filename,
 	fs << "board_height" << boardSize.height;
 	fs << "square_size" << squareSize;
 
-	if (flags & CV_CALIB_FIX_ASPECT_RATIO)
+	if (flags & cv::CALIB_FIX_ASPECT_RATIO)
 		fs << "aspectRatio" << aspectRatio;
 
 	if (0 != flags)
 	{
 		sprintf(
 			buf, "flags: %s%s%s%s",
-			flags & CV_CALIB_USE_INTRINSIC_GUESS ? "+use_intrinsic_guess" : "",
-			flags & CV_CALIB_FIX_ASPECT_RATIO ? "+fix_aspectRatio" : "",
-			flags & CV_CALIB_FIX_PRINCIPAL_POINT ? "+fix_principal_point" : "",
-			flags & CV_CALIB_ZERO_TANGENT_DIST ? "+zero_tangent_dist" : ""
+			flags & cv::CALIB_USE_INTRINSIC_GUESS ? "+use_intrinsic_guess" : "",
+			flags & cv::CALIB_FIX_ASPECT_RATIO ? "+fix_aspectRatio" : "",
+			flags & cv::CALIB_FIX_PRINCIPAL_POINT ? "+fix_principal_point" : "",
+			flags & cv::CALIB_ZERO_TANGENT_DIST ? "+zero_tangent_dist" : ""
 		);
 		cvWriteComment(*fs, buf, 0);
 	}
@@ -301,7 +302,7 @@ namespace my_opencv {
 void camera_calibration()
 {
 #if 0
-	const std::string outputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib_data.yml");
+	const std::string outputFilename("../data/machine_vision/opencv/camera_calibration/camera_calib_data.yml");
 	std::string inputFilename;
 
 	cv::Size boardSize;
@@ -379,7 +380,7 @@ void camera_calibration()
 				std::cerr << "Invalid aspect ratio" << std::endl;
 				return;
 			}
-			flags |= CV_CALIB_FIX_ASPECT_RATIO;
+			flags |= cv::CALIB_FIX_ASPECT_RATIO;
 		}
 		else if (strcmp(s, "-d") == 0)
 		{
@@ -399,11 +400,11 @@ void camera_calibration()
 		}
 		else if (strcmp(s, "-zt") == 0)
 		{
-			flags |= CV_CALIB_ZERO_TANGENT_DIST;
+			flags |= cv::CALIB_ZERO_TANGENT_DIST;
 		}
 		else if (strcmp(s, "-p") == 0)
 		{
-			flags |= CV_CALIB_FIX_PRINCIPAL_POINT;
+			flags |= cv::CALIB_FIX_PRINCIPAL_POINT;
 		}
 		else if (strcmp(s, "-v") == 0)
 		{
@@ -435,11 +436,11 @@ void camera_calibration()
 		}
 	}
 #else
-	const std::string outputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib_data.yml");
+	const std::string outputFilename("../data/machine_vision/opencv/camera_calibration/camera_calib_data.yml");
 
 #if 0
 	// [ref] ${OPENCV_HOME}/samples/cpp/stereo_calib.xml
-	const std::string inputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib.xml");
+	const std::string inputFilename("../data/machine_vision/opencv/camera_calibration/camera_calib.xml");
 	const bool videofile = false;
 
 	const cv::Size boardSize(9, 6);
@@ -447,7 +448,7 @@ void camera_calibration()
 	const float aspectRatio = 1.0f;
 #elif 0
 	// [ref] http://blog.martinperis.com/2011/01/opencv-stereo-camera-calibration.html
-	const std::string inputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib_2.xml");
+	const std::string inputFilename("../data/machine_vision/opencv/camera_calibration/camera_calib_2.xml");
 	const bool videofile = false;
 
 	const cv::Size boardSize(9, 6);
@@ -455,7 +456,7 @@ void camera_calibration()
 	const float aspectRatio = 1.0f;
 #elif 1
 	// Kinect RGB images
-	const std::string inputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib_3.xml");
+	const std::string inputFilename("../data/machine_vision/opencv/camera_calibration/camera_calib_3.xml");
 	const bool videofile = false;
 
 	const cv::Size boardSize(7, 5);
@@ -472,7 +473,7 @@ void camera_calibration()
 
 	const bool writeExtrinsics = false, writePoints = false;
 	const int flags = 0;
-	//const int flags = CV_CALIB_FIX_ASPECT_RATIO | CV_CALIB_ZERO_TANGENT_DIST | CV_CALIB_FIX_PRINCIPAL_POINT;
+	//const int flags = cv::CALIB_FIX_ASPECT_RATIO | cv::CALIB_ZERO_TANGENT_DIST | cv::CALIB_FIX_PRINCIPAL_POINT;
 	const bool flipVertical = false;
 	const bool showUndistorted = true;
 	const int delay = 1000;
@@ -548,7 +549,7 @@ void camera_calibration()
 			cv::flip(view, view, 0);
 
 		std::vector<cv::Point2f> pointbuf;
-		cv::cvtColor(view, viewGray, CV_BGR2GRAY);
+		cv::cvtColor(view, viewGray, cv::COLOR_BGR2GRAY);
 
 		bool found;
 		switch (pattern)
@@ -556,7 +557,7 @@ void camera_calibration()
 		case local::CHESSBOARD:
 			found = cv::findChessboardCorners(
 				view, boardSize, pointbuf,
-				CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE
+				cv::CALIB_CB_ADAPTIVE_THRESH | cv::CALIB_CB_FAST_CHECK | cv::CALIB_CB_NORMALIZE_IMAGE
 			);
 			break;
 		case local::CIRCLES_GRID:

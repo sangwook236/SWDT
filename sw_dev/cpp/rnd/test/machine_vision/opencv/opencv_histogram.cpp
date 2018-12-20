@@ -18,7 +18,7 @@ namespace local {
 
 void histogram_1D()
 {
-	const std::string img_filename("./data/machine_vision/opencv/lena_gray.bmp");
+	const std::string img_filename("../data/machine_vision/opencv/lena_gray.bmp");
 
 	//
 	const cv::Mat &src = cv::imread(img_filename, cv::IMREAD_GRAYSCALE);
@@ -87,7 +87,7 @@ void histogram_1D()
 
 void histogram_2D()
 {
-	const std::string img_filename("./data/machine_vision/opencv/lena_rgb.bmp");
+	const std::string img_filename("../data/machine_vision/opencv/lena_rgb.bmp");
 
 	//
 	const cv::Mat &src = cv::imread(img_filename, cv::IMREAD_COLOR);
@@ -98,7 +98,7 @@ void histogram_2D()
 	}
 
 	cv::Mat hsv;
-	cv::cvtColor(src, hsv, CV_BGR2HSV);
+	cv::cvtColor(src, hsv, cv::COLOR_BGR2HSV);
 
 	// Calculate histogram.
 	const int dims = 2;
@@ -165,7 +165,7 @@ void histogram_2D()
 
 void histogram_3D()
 {
-	const std::string img_filename("./data/machine_vision/opencv/lena_rgb.bmp");
+	const std::string img_filename("../data/machine_vision/opencv/lena_rgb.bmp");
 
 	//
 	const cv::Mat &src = cv::imread(img_filename, cv::IMREAD_COLOR);

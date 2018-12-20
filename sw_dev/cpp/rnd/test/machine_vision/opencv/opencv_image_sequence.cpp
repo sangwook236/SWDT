@@ -1,13 +1,7 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#if 0
-#include <opencv/cxcore.h>
 #include <opencv/cv.h>
-#include <opencv/highgui.h>
-//#include <opencv/cvcam.h>
-#else
 #include <opencv2/opencv.hpp>
-#endif
 #include <iostream>
 #include <string>
 #include <cassert>
@@ -25,7 +19,7 @@ void capture_image_from_file()
 	const int imageWidth = 640, imageHeight = 480;
 	//const int imageWidth = 176, imageHeight = 144;
 
-	const std::string avi_filename("./data/machine_vision/opencv/flycap-0001.avi");
+	const std::string avi_filename("../data/machine_vision/opencv/flycap-0001.avi");
 	const std::string windowName("capturing from file");
 
 #if 0
@@ -59,7 +53,7 @@ void capture_image_from_file()
 		return;
 	}
 
-	cv::namedWindow(windowName, CV_WINDOW_AUTOSIZE);
+	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
 	cv::resizeWindow(windowName, imageWidth, imageHeight);
 
 	std::cout << "press any key if want to finish ..." << std::endl;
@@ -480,29 +474,29 @@ void capture_image_from_cam()
 	const double &propRectification = capture.get(CV_CAP_PROP_RECTIFICATION);
 	const double &propMonochrome = capture.get(CV_CAP_PROP_MONOCROME);
 
-	capture.set(CV_CAP_PROP_POS_MSEC, propPosMsec);
-	capture.set(CV_CAP_PROP_POS_FRAMES, propPosFrames);
-	capture.set(CV_CAP_PROP_POS_AVI_RATIO, propPosAviRatio);
-	capture.set(CV_CAP_PROP_FRAME_WIDTH, propFrameWidth);
-	capture.set(CV_CAP_PROP_FRAME_HEIGHT, propFrameHeight);
-	capture.set(CV_CAP_PROP_FPS, propFps);
-	capture.set(CV_CAP_PROP_FOURCC, propFourCC);
-	capture.set(CV_CAP_PROP_FRAME_COUNT, propFrameCount);
-	capture.set(CV_CAP_PROP_FORMAT, propFormat);
-	capture.set(CV_CAP_PROP_MODE, propMode);
-	capture.set(CV_CAP_PROP_BRIGHTNESS, propBrightness);
-	capture.set(CV_CAP_PROP_CONTRAST, propContrast);
-	capture.set(CV_CAP_PROP_SATURATION, propSaturation);
-	capture.set(CV_CAP_PROP_HUE, propHue);
-	capture.set(CV_CAP_PROP_GAIN, propGain);
-	capture.set(CV_CAP_PROP_EXPOSURE, propExposure);
-	capture.set(CV_CAP_PROP_CONVERT_RGB, propConvertRGB);
-	capture.set(CV_CAP_PROP_WHITE_BALANCE, propWhiteBalance);
-	capture.set(CV_CAP_PROP_RECTIFICATION, propRectification);
-	capture.set(CV_CAP_PROP_MONOCROME, propMonochrome);
+	capture.set(cv::CAP_PROP_POS_MSEC, propPosMsec);
+	capture.set(cv::CAP_PROP_POS_FRAMES, propPosFrames);
+	capture.set(cv::CAP_PROP_POS_AVI_RATIO, propPosAviRatio);
+	capture.set(cv::CAP_PROP_FRAME_WIDTH, propFrameWidth);
+	capture.set(cv::CAP_PROP_FRAME_HEIGHT, propFrameHeight);
+	capture.set(cv::CAP_PROP_FPS, propFps);
+	capture.set(cv::CAP_PROP_FOURCC, propFourCC);
+	capture.set(cv::CAP_PROP_FRAME_COUNT, propFrameCount);
+	capture.set(cv::CAP_PROP_FORMAT, propFormat);
+	capture.set(cv::CAP_PROP_MODE, propMode);
+	capture.set(cv::CAP_PROP_BRIGHTNESS, propBrightness);
+	capture.set(cv::CAP_PROP_CONTRAST, propContrast);
+	capture.set(cv::CAP_PROP_SATURATION, propSaturation);
+	capture.set(cv::CAP_PROP_HUE, propHue);
+	capture.set(cv::CAP_PROP_GAIN, propGain);
+	capture.set(cv::CAP_PROP_EXPOSURE, propExposure);
+	capture.set(cv::CAP_PROP_CONVERT_RGB, propConvertRGB);
+	capture.set(cv::CAP_PROP_WHITE_BALANCE, propWhiteBalance);
+	capture.set(cv::CAP_PROP_RECTIFICATION, propRectification);
+	capture.set(cv::CAP_PROP_MONOCROME, propMonochrome);
 */
-	capture.set(CV_CAP_PROP_FRAME_WIDTH, imageWidth);
-	capture.set(CV_CAP_PROP_FRAME_HEIGHT, imageHeight);
+	capture.set(cv::CAP_PROP_FRAME_WIDTH, imageWidth);
+	capture.set(cv::CAP_PROP_FRAME_HEIGHT, imageHeight);
 
 	//
 	const std::string windowName("Capturing from CAM");
@@ -606,7 +600,7 @@ void draw_cross(cv::Mat &img, const int x, const int y, const int len)
 
 void capture_write_file_from_images()
 {
-	const std::string VIDEO_FILENAME = "./data/machine_vision/opencv/synthesized_cross_output.avi";
+	const std::string VIDEO_FILENAME = "../data/machine_vision/opencv/synthesized_cross_output.avi";
 
 	const int IMAGE_WIDTH = 320, IMAGE_HEIGHT = 240;
 
@@ -652,7 +646,7 @@ void capture_write_file_from_images()
 	const double FPS = 30;
 	const cv::Size FRAME_SIZE(IMAGE_WIDTH, IMAGE_HEIGHT);
 	const bool isColor = true;
-	cv::VideoWriter videoWriter(VIDEO_FILENAME, CV_FOURCC('D', 'I', 'V', 'X'), FPS, FRAME_SIZE, isColor);
+	cv::VideoWriter videoWriter(VIDEO_FILENAME, cv::VideoWriter::fourcc('D', 'I', 'V', 'X'), FPS, FRAME_SIZE, isColor);
 	if (!videoWriter.isOpened())
 	{
 		std::cout << "cv::VideoWriter failed to open" << std::endl;

@@ -26,8 +26,8 @@ void quick_shift()
 	const vl_qs_type ratio = 0.5;  // tradeoff between spatial consistency and color consistency.
 
 	// read image data
-	const std::string input_filename = "./data/machine_vision/vlfeat/roofs1.jpg";
-	//const std::string input_filename = "./data/machine_vision/opencv/fruits.jpg";
+	const std::string input_filename = "../data/machine_vision/vlfeat/roofs1.jpg";
+	//const std::string input_filename = "../data/machine_vision/opencv/fruits.jpg";
 
 	const cv::Mat input_img = cv::imread(input_filename, cv::IMREAD_COLOR);
 	//const cv::Mat input_img = cv::imread(input_filename, cv::IMREAD_GRAYSCALE);

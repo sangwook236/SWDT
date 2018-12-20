@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <chrono>
@@ -173,7 +174,6 @@ void morphological_operation();
 void image_pyramid();
 void image_gradient();
 void edge_detection();
-void line();
 void skeletonization_and_thinning();
 void contour();
 
@@ -181,6 +181,7 @@ void image_similarity();
 
 void outlier_removal();
 
+void line();
 void hough_transform();
 void template_matching();
 void chamfer_matching();
@@ -301,8 +302,6 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::image_gradient();
 		//my_opencv::edge_detection();
 
-		//my_opencv::line();
-
 		//my_opencv::distance_measure();
 		//my_opencv::distance_transform();
 		//my_opencv::distance_transform_using_edge_info();
@@ -313,10 +312,11 @@ int opencv_main(int argc, char *argv[])
 
 		//my_opencv::image_similarity();
 
+		//my_opencv::line();
 		//my_opencv::hough_transform();
 		//my_opencv::template_matching();
 		//my_opencv::chamfer_matching();
-		//my_opencv::shape_finding();
+		my_opencv::shape_finding();  // Rectangle, ellipse.
 		//my_opencv::shape_matching();
 		//my_opencv::active_contour_model();  // Snake.
 
@@ -327,7 +327,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::feature_detection();
 		//my_opencv::feature_detector_evaluation();
 		//my_opencv::feature_description();
-		my_opencv::feature_extraction_and_matching();
+		//my_opencv::feature_extraction_and_matching();
 		//my_opencv::feature_extraction_and_matching_by_signature();
 		//if (canUseGPU) my_opencv::feature_extraction_and_matching_using_gpu();  // Not yet implemented.
 		//my_opencv::generic_description_and_matching();

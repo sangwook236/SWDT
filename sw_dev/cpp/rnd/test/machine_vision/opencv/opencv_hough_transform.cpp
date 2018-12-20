@@ -59,8 +59,8 @@ void draw_circles(const std::vector<cv::Vec3f> &circles, cv::Mat &rgb)
 
 void hough_transform_for_line()
 {
-	//const std::string img_filename("./data/machine_vision/hough_line.png");
-	const std::string img_filename("./data/feature_analysis/chairs.pgm");
+	//const std::string img_filename("../data/machine_vision/hough_line.png");
+	const std::string img_filename("../data/feature_analysis/chairs.pgm");
 
 	// Open an image.
 	cv::Mat img(cv::imread(img_filename, cv::IMREAD_COLOR));
@@ -167,7 +167,7 @@ void hough_transform_for_circle()
 
 void hough_transform_for_alignment_marker()
 {
-	const std::string img_filename("./data/machine_vision/alignment_marker.png");
+	const std::string img_filename("../data/machine_vision/alignment_marker.png");
 
 	// Open an image.
 	cv::Mat img(cv::imread(img_filename, cv::IMREAD_COLOR));

@@ -11,16 +11,16 @@ namespace local {
 void chamfer_matching()
 {
 #if 0
-	const std::string filename1("./data/machine_vision/opencv/logo.png");
-	const std::string filename2("./data/machine_vision/opencv/logo_in_clutter.png");
+	const std::string filename1("../data/machine_vision/opencv/logo.png");
+	const std::string filename2("../data/machine_vision/opencv/logo_in_clutter.png");
 #elif 1
-	const std::string filename1("./data/machine_vision/opencv/box.png");
-	const std::string filename2("./data/machine_vision/opencv/box_in_scene.png");
+	const std::string filename1("../data/machine_vision/opencv/box.png");
+	const std::string filename2("../data/machine_vision/opencv/box_in_scene.png");
 #elif 0
-	const std::string filename1("./data/machine_vision/opencv/melon_target.png");
-	//const std::string filename2("./data/machine_vision/opencv/melon_1.png");
-	//const std::string filename2("./data/machine_vision/opencv/melon_2.png");
-	const std::string filename2("./data/machine_vision/opencv/melon_3.png");
+	const std::string filename1("../data/machine_vision/opencv/melon_target.png");
+	//const std::string filename2("../data/machine_vision/opencv/melon_1.png");
+	//const std::string filename2("../data/machine_vision/opencv/melon_2.png");
+	const std::string filename2("../data/machine_vision/opencv/melon_3.png");
 #endif
 
 	cv::Mat templ(cv::imread(filename1, cv::IMREAD_GRAYSCALE));
@@ -58,7 +58,7 @@ void chamfer_matching()
 
 	//
 	cv::Mat cimg;
-	cv::cvtColor(image, cimg, CV_GRAY2BGR);
+	cv::cvtColor(image, cimg, cv::COLOR_GRAY2BGR);
 
 	const std::vector<cv::Point> &pts = results[best_matched_idx];
 	for (std::vector<cv::Point>::const_iterator it = pts.begin(); it != pts.end(); ++it)

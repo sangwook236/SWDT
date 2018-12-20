@@ -43,7 +43,7 @@ namespace my_vlfeat {
 
 void hog()
 {
-	const std::string input_filename = "./data/machine_vision/vlfeat/box.pgm";
+	const std::string input_filename = "../data/machine_vision/vlfeat/box.pgm";
 
 	// algorithm parameters.
 	vl_bool err = VL_ERR_OK;

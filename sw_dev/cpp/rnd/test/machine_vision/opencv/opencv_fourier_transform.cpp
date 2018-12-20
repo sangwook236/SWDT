@@ -50,20 +50,20 @@ void convolute_by_dft(const cv::Mat &A, const cv::Mat &B, cv::Mat &C)
 void dft_based_convolution()
 {
 	std::list<std::string> filenames;
-	filenames.push_back("./data/machine_vision/opencv/pic1.png");
-	filenames.push_back("./data/machine_vision/opencv/pic2.png");
-	filenames.push_back("./data/machine_vision/opencv/pic3.png");
-	filenames.push_back("./data/machine_vision/opencv/pic4.png");
-	filenames.push_back("./data/machine_vision/opencv/pic5.png");
-	filenames.push_back("./data/machine_vision/opencv/pic6.png");
-	filenames.push_back("./data/machine_vision/opencv/stuff.jpg");
-	filenames.push_back("./data/machine_vision/opencv/synthetic_face.png");
-	filenames.push_back("./data/machine_vision/opencv/puzzle.png");
-	filenames.push_back("./data/machine_vision/opencv/fruits.jpg");
-	filenames.push_back("./data/machine_vision/opencv/lena_rgb.bmp");
-	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
+	filenames.push_back("../data/machine_vision/opencv/pic1.png");
+	filenames.push_back("../data/machine_vision/opencv/pic2.png");
+	filenames.push_back("../data/machine_vision/opencv/pic3.png");
+	filenames.push_back("../data/machine_vision/opencv/pic4.png");
+	filenames.push_back("../data/machine_vision/opencv/pic5.png");
+	filenames.push_back("../data/machine_vision/opencv/pic6.png");
+	filenames.push_back("../data/machine_vision/opencv/stuff.jpg");
+	filenames.push_back("../data/machine_vision/opencv/synthetic_face.png");
+	filenames.push_back("../data/machine_vision/opencv/puzzle.png");
+	filenames.push_back("../data/machine_vision/opencv/fruits.jpg");
+	filenames.push_back("../data/machine_vision/opencv/lena_rgb.bmp");
+	filenames.push_back("../data/machine_vision/opencv/hand_01.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_05.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_24.jpg");
 
 	const std::string windowName1("Fourier transform - #1");
 	const std::string windowName2("Fourier transform - #2");
@@ -86,8 +86,8 @@ void dft_based_convolution()
 		if (1 == img.channels())
 			img.copyTo(gray);
 		else
-			cv::cvtColor(img, gray, CV_BGR2GRAY);
-			//cv::cvtColor(img, gray, CV_RGB2GRAY);
+			cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+			//cv::cvtColor(img, gray, cv::COLOR_RGB2GRAY);
 
 		cv::Mat img_float(gray.size(), CV_64FC1);
 		gray.convertTo(img_float, CV_64FC1, 1.0 / 255.0, 0.0);

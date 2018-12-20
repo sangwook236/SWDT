@@ -256,7 +256,7 @@ void image_undistortion()
 	// [ref] camera_calibration() in opencv_camera_calibration.cop
 #if 0
 	// [ref] ${OPENCV_HOME}/samples/cpp/stereo_calib.xml
-	const std::string inputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib.xml");
+	const std::string inputFilename("../data/machine_vision/opencv/camera_calibration/camera_calib.xml");
 
 	const cv::Size imageSize(640, 480);
 
@@ -279,7 +279,7 @@ void image_undistortion()
 	const double vecDistCoeffs[] = { -2.6621060985333589e-001, -3.9867063477248534e-002, 1.7924689671144441e-003, -2.9304640993473073e-004, 2.4053846993400707e-001, 0.0, 0.0, 0.0 };  // 8x1 vector
 #elif 0
 	// [ref] http://blog.martinperis.com/2011/01/opencv-stereo-camera-calibration.html
-	const std::string inputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib_2.xml");
+	const std::string inputFilename("../data/machine_vision/opencv/camera_calibration/camera_calib_2.xml");
 
 	const cv::Size imageSize(640, 480);
 
@@ -302,7 +302,7 @@ void image_undistortion()
 	const double vecDistCoeffs[] = { -1.2075418632920232e-001, -4.6789760656275450e-002, -3.4245413462073268e-003, 3.1902395837533786e-003, 2.3241583016410450e-001, 0.0, 0.0, 0.0 };  // 8x1 vector
 #elif 1
 	// Kinect RGB images
-	const std::string inputFilename("./data/machine_vision/opencv/camera_calibration/camera_calib_3.xml");
+	const std::string inputFilename("../data/machine_vision/opencv/camera_calibration/camera_calib_3.xml");
 
 	const cv::Size imageSize(640, 480);
 
@@ -372,10 +372,10 @@ void kinect_image_undistortion()
 	{
 		// prepare input images
 		std::vector<std::string> input_image_filenames;
-		input_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_depth_20130530T103805.png");
-		input_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023152.png");
-		input_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023346.png");
-		input_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023359.png");
+		input_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_depth_20130530T103805.png");
+		input_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023152.png");
+		input_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023346.png");
+		input_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_depth_20130531T023359.png");
 
 		const std::size_t num_images = input_image_filenames.size();
 		const cv::Size imageSize(640, 480);
@@ -424,7 +424,7 @@ void kinect_image_undistortion()
 		for (std::size_t k = 0; k < num_images; ++k)
 		{
 			std::ostringstream strm;
-			strm << "./data/machine_vision/opencv/image_undistortion/undistorted_image_" << k++ << ".png";
+			strm << "../data/machine_vision/opencv/image_undistortion/undistorted_image_" << k++ << ".png";
 			cv::imwrite(strm.str(), output_images[k]);
 		}
 	#endif
@@ -434,10 +434,10 @@ void kinect_image_undistortion()
 	{
 		// prepare input images
 		std::vector<std::string> input_image_filenames;
-		input_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
-		input_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
-		input_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
-		input_image_filenames.push_back("./data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
+		input_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_rgba_20130530T103805.png");
+		input_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023152.png");
+		input_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023346.png");
+		input_image_filenames.push_back("../data/machine_vision/opencv/image_undistortion/kinect_rgba_20130531T023359.png");
 
 		const std::size_t num_images = input_image_filenames.size();
 		const cv::Size imageSize(640, 480);
@@ -463,7 +463,7 @@ void kinect_image_undistortion()
 			for (std::vector<cv::Mat>::const_iterator cit = input_images.begin(); cit != input_images.end(); ++cit)
 			{
 				cv::Mat gray;
-				cv::cvtColor(*cit, gray, CV_BGR2GRAY);
+				cv::cvtColor(*cit, gray, cv::COLOR_BGR2GRAY);
 				input_gray_images.push_back(gray);
 			}
 

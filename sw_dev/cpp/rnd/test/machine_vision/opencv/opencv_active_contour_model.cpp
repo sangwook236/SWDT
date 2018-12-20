@@ -1,5 +1,7 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv/cv.h>
+#include <opencv/highgui.h>
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <list>
@@ -19,20 +21,20 @@ void snake(IplImage *srcImage, IplImage *grayImage);
 void active_contour_model()
 {
 	std::list<std::string> filenames;
-	filenames.push_back("./data/machine_vision/opencv/pic1.png");
-	filenames.push_back("./data/machine_vision/opencv/pic2.png");
-	filenames.push_back("./data/machine_vision/opencv/pic3.png");
-	filenames.push_back("./data/machine_vision/opencv/pic4.png");
-	filenames.push_back("./data/machine_vision/opencv/pic5.png");
-	filenames.push_back("./data/machine_vision/opencv/pic6.png");
-	filenames.push_back("./data/machine_vision/opencv/stuff.jpg");
-	filenames.push_back("./data/machine_vision/opencv/synthetic_face.png");
-	filenames.push_back("./data/machine_vision/opencv/puzzle.png");
-	filenames.push_back("./data/machine_vision/opencv/fruits.jpg");
-	filenames.push_back("./data/machine_vision/opencv/lena_rgb.bmp");
-	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
+	filenames.push_back("../data/machine_vision/opencv/pic1.png");
+	filenames.push_back("../data/machine_vision/opencv/pic2.png");
+	filenames.push_back("../data/machine_vision/opencv/pic3.png");
+	filenames.push_back("../data/machine_vision/opencv/pic4.png");
+	filenames.push_back("../data/machine_vision/opencv/pic5.png");
+	filenames.push_back("../data/machine_vision/opencv/pic6.png");
+	filenames.push_back("../data/machine_vision/opencv/stuff.jpg");
+	filenames.push_back("../data/machine_vision/opencv/synthetic_face.png");
+	filenames.push_back("../data/machine_vision/opencv/puzzle.png");
+	filenames.push_back("../data/machine_vision/opencv/fruits.jpg");
+	filenames.push_back("../data/machine_vision/opencv/lena_rgb.bmp");
+	filenames.push_back("../data/machine_vision/opencv/hand_01.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_05.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_24.jpg");
 
 	//
 	for (std::list<std::string>::iterator it = filenames.begin(); it != filenames.end(); ++it)

@@ -135,8 +135,8 @@ void gesture_recognition_by_frequency(cv::VideoCapture &capture)
 		else frame = frame2;
 #endif
 
-		cv::cvtColor(frame, gray, CV_BGR2GRAY);
-		cv::cvtColor(gray, img, CV_GRAY2BGR);
+		cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
+		cv::cvtColor(gray, img, cv::COLOR_GRAY2BGR);
 
 		// smoothing
 #if 0
@@ -213,7 +213,7 @@ void gesture_recognition_by_frequency(cv::VideoCapture &capture)
 			//}
 
 			//img = processed_mhi;
-			cv::cvtColor(component_label_map > 0, img, CV_GRAY2BGR);
+			cv::cvtColor(component_label_map > 0, img, cv::COLOR_GRAY2BGR);
 			img.setTo(cv::Scalar(255,0,0), processed_mhi >= (timestamp - 1.0e-20));  // last silhouette
 
 			size_t k = 1;
@@ -717,7 +717,7 @@ struct HistogramMatcher
 	std::vector<double> dists;
 	dists.reserve(refHistograms.size());
 	for (std::vector<cv::MatND>::const_iterator it = refHistograms.begin(); it != refHistograms.end(); ++it)
-		dists.push_back(cv::compareHist(hist, *it, CV_COMP_BHATTACHARYYA));
+		dists.push_back(cv::compareHist(hist, *it, cv::HISTCMP_BHATTACHARYYA));
 
 	std::vector<double>::iterator itMin = std::min_element(dists.begin(), dists.end());
 	minDist = *itMin;
@@ -1068,7 +1068,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 		else frame = frame2;
 #endif
 
-		cv::cvtColor(frame, gray, CV_BGR2GRAY);
+		cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
 
 		// smoothing
 #if 0
@@ -1115,7 +1115,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 		//gray = gray;
 #endif
 
-		cv::cvtColor(gray, img, CV_GRAY2BGR);
+		cv::cvtColor(gray, img, cv::COLOR_GRAY2BGR);
 
 		if (!prevgray.empty())
 		{
@@ -1139,7 +1139,7 @@ void gesture_recognition_by_histogram(cv::VideoCapture &capture)
 				// TODO [decide] >> want to use it ?
 				tmp_img.setTo(cv::Scalar(0), component_label_map == 0);
 
-				cv::cvtColor(tmp_img, img, CV_GRAY2BGR);
+				cv::cvtColor(tmp_img, img, cv::COLOR_GRAY2BGR);
 				img.setTo(cv::Scalar(255,0,0), processed_mhi >= (timestamp - 1.0e-20));  // last silhouette
 			}
 
@@ -1405,33 +1405,33 @@ void gesture_recognition()
 	const double &propRectification = capture.get(CV_CAP_PROP_RECTIFICATION);
 	const double &propMonochrome = capture.get(CV_CAP_PROP_MONOCROME);
 
-	capture.set(CV_CAP_PROP_POS_MSEC, propPosMsec);
-	capture.set(CV_CAP_PROP_POS_FRAMES, propPosFrames);
-	capture.set(CV_CAP_PROP_POS_AVI_RATIO, propPosAviRatio);
-	capture.set(CV_CAP_PROP_FRAME_WIDTH, propFrameWidth);
-	capture.set(CV_CAP_PROP_FRAME_HEIGHT, propFrameHeight);
-	capture.set(CV_CAP_PROP_FPS, propFps);
-	capture.set(CV_CAP_PROP_FOURCC, propFourCC);
-	capture.set(CV_CAP_PROP_FRAME_COUNT, propFrameCount);
-	capture.set(CV_CAP_PROP_FORMAT, propFormat);
-	capture.set(CV_CAP_PROP_MODE, propMode);
-	capture.set(CV_CAP_PROP_BRIGHTNESS, propBrightness);
-	capture.set(CV_CAP_PROP_CONTRAST, propContrast);
-	capture.set(CV_CAP_PROP_SATURATION, propSaturation);
-	capture.set(CV_CAP_PROP_HUE, propHue);
-	capture.set(CV_CAP_PROP_GAIN, propGain);
-	capture.set(CV_CAP_PROP_EXPOSURE, propExposure);
-	capture.set(CV_CAP_PROP_CONVERT_RGB, propConvertRGB);
-	capture.set(CV_CAP_PROP_WHITE_BALANCE, propWhiteBalance);
-	capture.set(CV_CAP_PROP_RECTIFICATION, propRectification);
-	capture.set(CV_CAP_PROP_MONOCROME, propMonochrome);
+	capture.set(cv::CAP_PROP_POS_MSEC, propPosMsec);
+	capture.set(cv::CAP_PROP_POS_FRAMES, propPosFrames);
+	capture.set(cv::CAP_PROP_POS_AVI_RATIO, propPosAviRatio);
+	capture.set(cv::CAP_PROP_FRAME_WIDTH, propFrameWidth);
+	capture.set(cv::CAP_PROP_FRAME_HEIGHT, propFrameHeight);
+	capture.set(cv::CAP_PROP_FPS, propFps);
+	capture.set(cv::CAP_PROP_FOURCC, propFourCC);
+	capture.set(cv::CAP_PROP_FRAME_COUNT, propFrameCount);
+	capture.set(cv::CAP_PROP_FORMAT, propFormat);
+	capture.set(cv::CAP_PROP_MODE, propMode);
+	capture.set(cv::CAP_PROP_BRIGHTNESS, propBrightness);
+	capture.set(cv::CAP_PROP_CONTRAST, propContrast);
+	capture.set(cv::CAP_PROP_SATURATION, propSaturation);
+	capture.set(cv::CAP_PROP_HUE, propHue);
+	capture.set(cv::CAP_PROP_GAIN, propGain);
+	capture.set(cv::CAP_PROP_EXPOSURE, propExposure);
+	capture.set(cv::CAP_PROP_CONVERT_RGB, propConvertRGB);
+	capture.set(cv::CAP_PROP_WHITE_BALANCE, propWhiteBalance);
+	capture.set(cv::CAP_PROP_RECTIFICATION, propRectification);
+	capture.set(cv::CAP_PROP_MONOCROME, propMonochrome);
 */
-	capture.set(CV_CAP_PROP_FRAME_WIDTH, imageWidth);
-	capture.set(CV_CAP_PROP_FRAME_HEIGHT, imageHeight);
+	capture.set(cv::CAP_PROP_FRAME_WIDTH, imageWidth);
+	capture.set(cv::CAP_PROP_FRAME_HEIGHT, imageHeight);
 #else
-	//const std::string avi_filename("./data/machine_vision/opencv/flycap-0001.avi");
-	//const std::string avi_filename("./data/machine_vision/opencv/tree.avi");
-	const std::string avi_filename("./data/machine_vision/opencv/s01_g01_1_ccw_normal.avi");
+	//const std::string avi_filename("../data/machine_vision/opencv/flycap-0001.avi");
+	//const std::string avi_filename("../data/machine_vision/opencv/tree.avi");
+	const std::string avi_filename("../data/machine_vision/opencv/s01_g01_1_ccw_normal.avi");
 
 	//const int imageWidth = 640, imageHeight = 480;
 

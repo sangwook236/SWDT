@@ -76,8 +76,8 @@ void convert_image_to_gray(const std::string &srcImageName, const std::string &d
 		{
 			cv::Mat grayImg;
 			// FIXME [enhance] >>
-			//cv::cvtColor(srcImage, grayImg, CV_RGB2GRAY);
-			cv::cvtColor(srcImage, grayImg, CV_BGR2GRAY);
+			//cv::cvtColor(srcImage, grayImg, cv::COLOR_RGB2GRAY);
+			cv::cvtColor(srcImage, grayImg, cv::COLOR_BGR2GRAY);
 
 			if (!grayImg.empty())
 				cv::imwrite(dstImageName, grayImg);

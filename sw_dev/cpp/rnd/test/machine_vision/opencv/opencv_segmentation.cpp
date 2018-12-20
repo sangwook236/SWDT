@@ -34,11 +34,11 @@ void watershed_onMouse( int event, int x, int y, int flags, void* )
 {
     if( x < 0 || x >= watershed_img.cols || y < 0 || y >= watershed_img.rows )
         return;
-    if( event == CV_EVENT_LBUTTONUP || !(flags & CV_EVENT_FLAG_LBUTTON) )
+	if (event == cv::EVENT_LBUTTONUP || !(flags & cv::EVENT_FLAG_LBUTTON))
         watershed_prevPt = cv::Point(-1,-1);
-    else if( event == CV_EVENT_LBUTTONDOWN )
+    else if( event == cv::EVENT_LBUTTONDOWN )
         watershed_prevPt = cv::Point(x,y);
-    else if( event == CV_EVENT_MOUSEMOVE && (flags & CV_EVENT_FLAG_LBUTTON) )
+    else if( event == cv::EVENT_MOUSEMOVE && (flags & cv::EVENT_FLAG_LBUTTON) )
     {
         cv::Point pt(x, y);
         if( watershed_prevPt.x < 0 )
@@ -63,7 +63,7 @@ void watershed_algorithm(const cv::Mat &img0)
 #if 0
 	// Use gradient.
 	cv::Mat gray;
-    cv::cvtColor(img0, gray, CV_BGR2GRAY);
+    cv::cvtColor(img0, gray, cv::COLOR_BGR2GRAY);
 
 	const int ksize = 5;
 	cv::Mat xgradient, ygradient;
@@ -78,14 +78,14 @@ void watershed_algorithm(const cv::Mat &img0)
 
 	cv::Mat gradient8u;
 	gradient.convertTo(gradient8u, CV_8UC1, 255.0 / (maxVal - minVal), 255.0 * minVal / (maxVal - minVal));
-    cv::cvtColor(gradient8u, watershed_img, CV_GRAY2BGR);
+    cv::cvtColor(gradient8u, watershed_img, cv::COLOR_GRAY2BGR);
 #endif
 
-    cv::cvtColor(watershed_img, watershed_markerMask, CV_BGR2GRAY);
-    cv::cvtColor(watershed_markerMask, imgGray, CV_GRAY2BGR);
+    cv::cvtColor(watershed_img, watershed_markerMask, cv::COLOR_BGR2GRAY);
+    cv::cvtColor(watershed_markerMask, imgGray, cv::COLOR_GRAY2BGR);
     watershed_markerMask = cv::Scalar::all(0);
-    cv::imshow( "Watershed segmentation", watershed_img );
-	cv::setMouseCallback( "Watershed segmentation", watershed_onMouse, 0 );
+    cv::imshow("Watershed segmentation", watershed_img);
+	cv::setMouseCallback("Watershed segmentation", watershed_onMouse, 0);
 
     for(;;)
     {
@@ -107,7 +107,7 @@ void watershed_algorithm(const cv::Mat &img0)
             std::vector<std::vector<cv::Point> > contours;
             std::vector<cv::Vec4i> hierarchy;
 
-            cv::findContours(watershed_markerMask, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
+            cv::findContours(watershed_markerMask, contours, hierarchy, cv::RETR_CCOMP, cv::CHAIN_APPROX_SIMPLE);
 
             if( contours.empty() )
                 continue;
@@ -324,13 +324,13 @@ const cv::Scalar BLUE = cv::Scalar(255,0,0);
 const cv::Scalar LIGHTBLUE = cv::Scalar(255,255,160);
 const cv::Scalar GREEN = cv::Scalar(0,255,0);
 
-const int BGD_KEY = CV_EVENT_FLAG_CTRLKEY;
-const int FGD_KEY = CV_EVENT_FLAG_SHIFTKEY;
+const int BGD_KEY = cv::EVENT_FLAG_CTRLKEY;
+const int FGD_KEY = cv::EVENT_FLAG_SHIFTKEY;
 
 void getBinMask( const cv::Mat& comMask, cv::Mat& binMask )
 {
     if( comMask.empty() || comMask.type()!=CV_8UC1 )
-        CV_Error( CV_StsBadArg, "comMask is empty or has incorrect type (not CV_8UC1)" );
+        CV_Error( cv::Error::StsBadArg, "comMask is empty or has incorrect type (not CV_8UC1)" );
     if( binMask.empty() || binMask.rows!=comMask.rows || binMask.cols!=comMask.cols )
         binMask.create( comMask.size(), CV_8UC1 );
     binMask = comMask & 1;
@@ -467,7 +467,7 @@ void GCApplication::mouseClick( int event, int x, int y, int flags, void* )
     // TODO add bad args check.
     switch( event )
     {
-    case CV_EVENT_LBUTTONDOWN: // Set rect or GC_BGD(GC_FGD) labels.
+    case cv::EVENT_LBUTTONDOWN: // Set rect or GC_BGD(GC_FGD) labels.
         {
             bool isb = (flags & BGD_KEY) != 0,
                  isf = (flags & FGD_KEY) != 0;
@@ -480,7 +480,7 @@ void GCApplication::mouseClick( int event, int x, int y, int flags, void* )
                 lblsState = IN_PROCESS;
         }
         break;
-    case CV_EVENT_RBUTTONDOWN: // Set GC_PR_BGD(GC_PR_FGD) labels.
+    case cv::EVENT_RBUTTONDOWN: // Set GC_PR_BGD(GC_PR_FGD) labels.
         {
             bool isb = (flags & BGD_KEY) != 0,
                  isf = (flags & FGD_KEY) != 0;
@@ -488,7 +488,7 @@ void GCApplication::mouseClick( int event, int x, int y, int flags, void* )
                 prLblsState = IN_PROCESS;
         }
         break;
-    case CV_EVENT_LBUTTONUP:
+    case cv::EVENT_LBUTTONUP:
         if( rectState == IN_PROCESS )
         {
             rect = cv::Rect( cv::Point(rect.x, rect.y), cv::Point(x,y) );
@@ -504,7 +504,7 @@ void GCApplication::mouseClick( int event, int x, int y, int flags, void* )
             showImage();
         }
         break;
-    case CV_EVENT_RBUTTONUP:
+    case cv::EVENT_RBUTTONUP:
         if( prLblsState == IN_PROCESS )
         {
             setLblsInMask(flags, cv::Point(x,y), true);
@@ -512,7 +512,7 @@ void GCApplication::mouseClick( int event, int x, int y, int flags, void* )
             showImage();
         }
         break;
-    case CV_EVENT_MOUSEMOVE:
+    case cv::EVENT_MOUSEMOVE:
         if( rectState == IN_PROCESS )
         {
             rect = cv::Rect( cv::Point(rect.x, rect.y), cv::Point(x,y) );
@@ -572,15 +572,15 @@ void grabcut_algorithm(const cv::Mat &image)
     grabcut_help();
 
     const std::string winName("GrabCut segmentation");
-    cvNamedWindow(winName.c_str(), CV_WINDOW_AUTOSIZE);
-    cvSetMouseCallback(winName.c_str(), grabcut_on_mouse, 0);
+	cv::namedWindow(winName.c_str(), cv::WINDOW_AUTOSIZE);
+	cv::setMouseCallback(winName.c_str(), grabcut_on_mouse, 0);
 
     gcapp.setImageAndWinName(image, winName);
     gcapp.showImage();
 
     for (;;)
     {
-        int c = cvWaitKey(0);
+        int c = cv::waitKey(0);
         switch ((char)c)
         {
         case '\x1b':
@@ -607,7 +607,7 @@ void grabcut_algorithm(const cv::Mat &image)
     }
 
 exit_main:
-    cvDestroyWindow(winName.c_str());
+	cv::destroyWindow(winName.c_str());
     return;
 }
 
@@ -685,7 +685,7 @@ void image_segmentation_by_meanshift(const cv::Mat &img)
 	const int maxPyrLevel = 1;
 
 	const std::string winName("Mean-shift segmentation");
-	cv::namedWindow(winName, CV_WINDOW_AUTOSIZE);
+	cv::namedWindow(winName, cv::WINDOW_AUTOSIZE);
 
 	cv::Mat res;
 	{
@@ -706,57 +706,57 @@ namespace my_opencv {
 
 void segmentation()
 {
-	//const std::string img_filename("./data/machine_vision/opencv/pic1.png");
-	//const std::string img_filename("./data/machine_vision/opencv/pic2.png");
-	//const std::string img_filename("./data/machine_vision/opencv/pic3.png");
-	//const std::string img_filename("./data/machine_vision/opencv/pic4.png");
-	//const std::string img_filename("./data/machine_vision/opencv/pic5.png");
-	//const std::string img_filename("./data/machine_vision/opencv/pic6.png");
-	//const std::string img_filename("./data/machine_vision/opencv/stuff.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/synthetic_face.png");
-	//const std::string img_filename("./data/machine_vision/opencv/puzzle.png");
-	//const std::string img_filename("./data/machine_vision/opencv/fruits.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/lena_rgb.bmp");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_01.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_05.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_24.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/pic1.png");
+	//const std::string img_filename("../data/machine_vision/opencv/pic2.png");
+	//const std::string img_filename("../data/machine_vision/opencv/pic3.png");
+	//const std::string img_filename("../data/machine_vision/opencv/pic4.png");
+	//const std::string img_filename("../data/machine_vision/opencv/pic5.png");
+	//const std::string img_filename("../data/machine_vision/opencv/pic6.png");
+	//const std::string img_filename("../data/machine_vision/opencv/stuff.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/synthetic_face.png");
+	//const std::string img_filename("../data/machine_vision/opencv/puzzle.png");
+	//const std::string img_filename("../data/machine_vision/opencv/fruits.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/lena_rgb.bmp");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_01.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_05.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_24.jpg");
 
-	//const std::string img_filename("./data/machine_vision/opencv/hand_01.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_02.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_03.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_04.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_05.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_06.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_07.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_08.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_09.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_10.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_11.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_12.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_13.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_14.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_15.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_16.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_17.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_18.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_19.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_20.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_21.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_22.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_23.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_24.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_25.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_26.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_27.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_28.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_29.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_30.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_31.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_32.jpg");
-	const std::string img_filename("./data/machine_vision/opencv/hand_33.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_34.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_35.jpg");
-	//const std::string img_filename("./data/machine_vision/opencv/hand_36.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_01.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_02.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_03.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_04.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_05.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_06.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_07.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_08.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_09.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_10.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_11.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_12.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_13.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_14.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_15.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_16.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_17.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_18.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_19.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_20.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_21.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_22.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_23.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_24.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_25.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_26.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_27.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_28.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_29.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_30.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_31.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_32.jpg");
+	const std::string img_filename("../data/machine_vision/opencv/hand_33.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_34.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_35.jpg");
+	//const std::string img_filename("../data/machine_vision/opencv/hand_36.jpg");
 
 	//const std::string windowName("Segmentation");
 	//cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);

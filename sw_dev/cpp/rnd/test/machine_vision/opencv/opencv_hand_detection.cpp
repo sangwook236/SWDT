@@ -30,11 +30,11 @@ namespace local {
 void save_ref_hand_image()
 {
 	std::list<std::string> img_filenames;
-	img_filenames.push_back("./data/machine_vision/opencv/hand_detection_ref_01.jpg");
-	img_filenames.push_back("./data/machine_vision/opencv/hand_detection_ref_02.jpg");
-	img_filenames.push_back("./data/machine_vision/opencv/hand_detection_ref_03.jpg");
-	img_filenames.push_back("./data/machine_vision/opencv/hand_detection_ref_04.jpg");
-	img_filenames.push_back("./data/machine_vision/opencv/hand_detection_ref_05.jpg");
+	img_filenames.push_back("../data/machine_vision/opencv/hand_detection_ref_01.jpg");
+	img_filenames.push_back("../data/machine_vision/opencv/hand_detection_ref_02.jpg");
+	img_filenames.push_back("../data/machine_vision/opencv/hand_detection_ref_03.jpg");
+	img_filenames.push_back("../data/machine_vision/opencv/hand_detection_ref_04.jpg");
+	img_filenames.push_back("../data/machine_vision/opencv/hand_detection_ref_05.jpg");
 
 	const std::string windowName1("hand detection - input");
 	const std::string windowName2("hand detection - edge");
@@ -108,11 +108,11 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		obb.points(vertices);
 		const std::vector<cv::Point> pts(vertices, vertices + num_pts);
 		const cv::Point *ptr = (cv::Point *)&(pts[0]);
-		cv::fillPoly(mask, (const cv::Point **)&ptr, &num_pts, 1, CV_RGB(255, 255, 255), CV_AA, 0, cv::Point());
+		cv::fillPoly(mask, (const cv::Point **)&ptr, &num_pts, 1, CV_RGB(255, 255, 255), cv::LINE_AA, 0, cv::Point());
 #elif defined(__USE_AABB)
-		cv::rectangle(mask, aabb.tl(), aabb.br(), CV_RGB(255, 255, 255), CV_FILLED, CV_AA, 0);
+		cv::rectangle(mask, aabb.tl(), aabb.br(), CV_RGB(255, 255, 255), cv::FILLED, cv::LINE_AA, 0);
 #elif defined(__USE_BS)
-		cv::circle(mask, center, cvRound(radius), CV_RGB(255, 255, 255), CV_FILLED, CV_AA, 0);
+		cv::circle(mask, center, cvRound(radius), CV_RGB(255, 255, 255), cv::FILLED, cv::LINE_AA, 0);
 #endif
 	}
 
@@ -122,7 +122,7 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 #if defined(__USE_CANNY)
 		cv::Mat mask_img, gray, edge;
 		img.copyTo(mask_img, mask);
-		cv::cvtColor(mask_img, gray, CV_BGR2GRAY);
+		cv::cvtColor(mask_img, gray, cv::COLOR_BGR2GRAY);
 
 		const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
 		const bool useL2 = true;
@@ -138,7 +138,7 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 #elif defined(__USE_SOBEL)
 		cv::Mat mask_img, gray, edge;
 		img.copyTo(mask_img, mask);
-		cv::cvtColor(mask_img, gray, CV_BGR2GRAY);
+		cv::cvtColor(mask_img, gray, cv::COLOR_BGR2GRAY);
 
 		my_opencv::sobel(gray, -1.0, edge);
 
@@ -153,7 +153,7 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 #elif defined(__USE_AABB)
 #if defined(__USE_CANNY)
 		cv::Mat gray, edge, edge_img;
-		cv::cvtColor(mask_img, gray, CV_BGR2GRAY);
+		cv::cvtColor(mask_img, gray, cv::COLOR_BGR2GRAY);
 
 		const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
 		const bool useL2 = true;
@@ -178,7 +178,7 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 #endif
 #elif defined(__USE_SOBEL)
 		cv::Mat gray, edge, edge_img;
-		cv::cvtColor(img(aabb), gray, CV_BGR2GRAY);
+		cv::cvtColor(img(aabb), gray, cv::COLOR_BGR2GRAY);
 
 		my_opencv::sobel(gray, -1.0, edge);
 
@@ -272,11 +272,11 @@ void detect_hand_by_motion()
 		return;
 	}
 
-	const std::string ref_imge_filename("./data/machine_vision/opencv/hand_detection_ref_01_edge.jpg");
-	//const std::string ref_imge_filename("./data/machine_vision/opencv/hand_detection_ref_02_edge.jpg");
-	//const std::string ref_imge_filename("./data/machine_vision/opencv/hand_detection_ref_03_edge.jpg");
-	//const std::string ref_imge_filename("./data/machine_vision/opencv/hand_detection_ref_04_edge.jpg");
-	//const std::string ref_imge_filename("./data/machine_vision/opencv/hand_detection_ref_05_edge.jpg");
+	const std::string ref_imge_filename("../data/machine_vision/opencv/hand_detection_ref_01_edge.jpg");
+	//const std::string ref_imge_filename("../data/machine_vision/opencv/hand_detection_ref_02_edge.jpg");
+	//const std::string ref_imge_filename("../data/machine_vision/opencv/hand_detection_ref_03_edge.jpg");
+	//const std::string ref_imge_filename("../data/machine_vision/opencv/hand_detection_ref_04_edge.jpg");
+	//const std::string ref_imge_filename("../data/machine_vision/opencv/hand_detection_ref_05_edge.jpg");
 
 	const cv::Mat &ref_edge0 = cv::imread(ref_imge_filename, cv::IMREAD_GRAYSCALE);
 	if (ref_edge0.empty())
@@ -333,7 +333,7 @@ void detect_hand_by_motion()
 		else frame = frame2;
 #endif
 
-		cv::cvtColor(frame, gray, CV_BGR2GRAY);
+		cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
 		frame.copyTo(input_img);
 
 		// smoothing
@@ -381,7 +381,7 @@ void detect_hand_by_motion()
 		//gray = gray;
 #endif
 
-		cv::cvtColor(gray, mhi_img, CV_GRAY2BGR);
+		cv::cvtColor(gray, mhi_img, cv::COLOR_GRAY2BGR);
 
 		if (!prevgray.empty())
 		{
@@ -405,9 +405,9 @@ void detect_hand_by_motion()
 				// TODO [decide] >> want to use it ?
 				tmp_img.setTo(cv::Scalar(0), component_label_map == 0);
 
-				cv::cvtColor(tmp_img, mhi_img, CV_GRAY2BGR);
+				cv::cvtColor(tmp_img, mhi_img, cv::COLOR_GRAY2BGR);
 				last_silhouette = processed_mhi >= (timestamp - 1.0e-20);  // last silhouette
-				mhi_img.setTo(cv::Scalar(255,0,0), last_silhouette);
+				mhi_img.setTo(cv::Scalar(255, 0, 0), last_silhouette);
 			}
 
 			// TODO [check] >> unexpected result
@@ -560,8 +560,8 @@ void detect_and_draw(cv::CascadeClassifier &hand_detector, cv::Mat &img)
 void detect_hand_by_haar_cascades_detector()
 {
 	// [ref] https://github.com/yandol/GstHanddetect
-	//const std::string hand_cascade_filename("./data/machine_vision/opencv/gsthanddetect/palm.xml");
-	const std::string hand_cascade_filename("./data/machine_vision/opencv/gsthanddetect/fist.xml");
+	//const std::string hand_cascade_filename("../data/machine_vision/opencv/gsthanddetect/palm.xml");
+	const std::string hand_cascade_filename("../data/machine_vision/opencv/gsthanddetect/fist.xml");
 
 	// load the cascades
 	cv::CascadeClassifier hand_detector;
@@ -593,7 +593,7 @@ void detect_hand_by_haar_cascades_detector()
 			//continue;
 		}
 
-		cv::cvtColor(frame, gray_img, CV_BGR2GRAY);
+		cv::cvtColor(frame, gray_img, cv::COLOR_BGR2GRAY);
 
 		cv::imshow("input", frame);
 

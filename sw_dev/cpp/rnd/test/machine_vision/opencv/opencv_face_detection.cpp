@@ -11,12 +11,12 @@ namespace local {
 void detect_faces_and_eyes(cv::Mat &frame, cv::CascadeClassifier &face_detector, cv::CascadeClassifier &eye_detector)
 {
 	cv::Mat frame_gray;
-	cv::cvtColor(frame, frame_gray, CV_BGR2GRAY);
+	cv::cvtColor(frame, frame_gray, cv::COLOR_BGR2GRAY);
 	cv::equalizeHist(frame_gray, frame_gray);
 
 	// detect faces
 	std::vector<cv::Rect> faces;
-	face_detector.detectMultiScale(frame_gray, faces, 1.1, 2, 0 | CV_HAAR_SCALE_IMAGE, cv::Size(30, 30));
+	face_detector.detectMultiScale(frame_gray, faces, 1.1, 2, 0 | cv::CASCADE_SCALE_IMAGE, cv::Size(30, 30));
 
 	for (size_t i = 0; i < faces.size(); ++i)
 	{
@@ -26,7 +26,7 @@ void detect_faces_and_eyes(cv::Mat &frame, cv::CascadeClassifier &face_detector,
 		// in each face, detect eyes
 		const cv::Mat faceROI = frame_gray(faces[i]);
 		std::vector<cv::Rect> eyes;
-		eye_detector.detectMultiScale(faceROI, eyes, 1.1, 2, 0 | CV_HAAR_SCALE_IMAGE, cv::Size(30, 30));
+		eye_detector.detectMultiScale(faceROI, eyes, 1.1, 2, 0 | cv::CASCADE_SCALE_IMAGE, cv::Size(30, 30));
 
 		for (size_t j = 0; j < eyes.size(); ++j)
 		{
@@ -50,9 +50,9 @@ namespace my_opencv {
 // ${OPENCV_HOME}/sample/cpp/tutorial_code/objectDetection/objectDetection2.cpp
 void face_detection()
 {
-	const std::string face_cascade_filename = "./data/machine_vision/opencv/haarcascades/haarcascade_frontalface_alt.xml";  // Haar-like feature
-	//const std::string face_cascade_filename = "./data/machine_vision/opencv/lbpcascades/lbpcascade_frontalface.xml";  // LBP feature
-	const std::string eyes_cascade_filename = "./data/machine_vision/opencv/haarcascades/haarcascade_eye_tree_eyeglasses.xml";
+	const std::string face_cascade_filename = "../data/machine_vision/opencv/haarcascades/haarcascade_frontalface_alt.xml";  // Haar-like feature
+	//const std::string face_cascade_filename = "../data/machine_vision/opencv/lbpcascades/lbpcascade_frontalface.xml";  // LBP feature
+	const std::string eyes_cascade_filename = "../data/machine_vision/opencv/haarcascades/haarcascade_eye_tree_eyeglasses.xml";
 
 	cv::RNG rng(12345);
 

@@ -243,17 +243,17 @@ namespace my_opencv {
 // REF [site] >> https://github.com/bharathp666/opencv_qr.
 void qr_code()
 {
-	//const std::string img_filename("./data/machine_vision/qr_code_north.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_south.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_east.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_west.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_tilt.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_1.png");  // Failed to detect.
-	//const std::string img_filename("./data/machine_vision/qr_code_2.png");  // Failed to detect.
-	//const std::string img_filename("./data/machine_vision/qr_code_3.png");  // Failed to detect.
-	//const std::string img_filename("./data/machine_vision/qr_code_4.png");  // Failed to detect.
-	const std::string img_filename("./data/machine_vision/qr_code_5.png");  // Detect only one.
-	//const std::string img_filename("./data/machine_vision/qr_code_6.png");  // Failed to detect.
+	//const std::string img_filename("../data/machine_vision/qr_code_north.png");
+	//const std::string img_filename("../data/machine_vision/qr_code_south.png");
+	//const std::string img_filename("../data/machine_vision/qr_code_east.png");
+	//const std::string img_filename("../data/machine_vision/qr_code_west.png");
+	//const std::string img_filename("../data/machine_vision/qr_code_tilt.png");
+	//const std::string img_filename("../data/machine_vision/qr_code_1.png");  // Failed to detect.
+	//const std::string img_filename("../data/machine_vision/qr_code_2.png");  // Failed to detect.
+	//const std::string img_filename("../data/machine_vision/qr_code_3.png");  // Failed to detect.
+	//const std::string img_filename("../data/machine_vision/qr_code_4.png");  // Failed to detect.
+	const std::string img_filename("../data/machine_vision/qr_code_5.png");  // Detect only one.
+	//const std::string img_filename("../data/machine_vision/qr_code_6.png");  // Failed to detect.
 
 	cv::Mat image = cv::imread(img_filename);
 	if (image.empty())
@@ -290,7 +290,7 @@ void qr_code()
 
 		//capture >> image;  // For Video input. Capture Image from Image Input.
 
-		cv::cvtColor(image, gray, CV_RGB2GRAY);  // Convert Image captured from Image Input to GrayScale.	
+		cv::cvtColor(image, gray, cv::COLOR_RGB2GRAY);  // Convert Image captured from Image Input to GrayScale.	
 		cv::Canny(gray, edges, 100, 200, 3);  // Apply Canny edge detection on the gray image.
 
 		cv::findContours(edges, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);  // Find contours with hierarchy.
@@ -439,10 +439,10 @@ void qr_code()
 					cv::warpPerspective(image, qr_raw, warp_matrix, cv::Size(qr.cols, qr.rows));
 					cv::copyMakeBorder(qr_raw, qr, 10, 10, 10, 10, cv::BORDER_CONSTANT, cv::Scalar(255, 255, 255));
 
-					cv::cvtColor(qr, qr_gray, CV_RGB2GRAY);
-					cv::threshold(qr_gray, qr_thres, 127, 255, CV_THRESH_BINARY);
+					cv::cvtColor(qr, qr_gray, cv::COLOR_RGB2GRAY);
+					cv::threshold(qr_gray, qr_thres, 127, 255, cv::THRESH_BINARY);
 
-					//cv::threshold(qr_gray, qr_thres, 0, 255, CV_THRESH_OTSU);
+					//cv::threshold(qr_gray, qr_thres, 0, 255, cv::THRESH_OTSU);
 					//for (int d = 0 ; d < 4; ++d)  {  src.pop_back(); dst.pop_back();  }
 				}
 

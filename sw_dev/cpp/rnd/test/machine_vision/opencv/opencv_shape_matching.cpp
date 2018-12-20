@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
 #include <iostream>
 
@@ -107,8 +108,8 @@ void image_moment()
 	cv::findContours(image2_in, contours2, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
 	cv::Mat img1, img2;
-	cv::cvtColor(image1_in, img1, CV_GRAY2BGR);
-	cv::cvtColor(image2_in, img2, CV_GRAY2BGR);
+	cv::cvtColor(image1_in, img1, cv::COLOR_GRAY2BGR);
+	cv::cvtColor(image2_in, img2, cv::COLOR_GRAY2BGR);
 
 	//
 	const int comparison_method = 3; //CONTOUR_MATCH_I1, CONTOUR_MATCH_I2, CONTOUR_MATCH_I3;
@@ -172,8 +173,8 @@ void pairwise_geometrical_histogram()
 	cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
 
 	cv::Mat img1, img2;
-	cv::cvtColor(image1, img1, CV_GRAY2BGR);
-	cv::cvtColor(image2, img2, CV_GRAY2BGR);
+	cv::cvtColor(image1, img1, cv::COLOR_GRAY2BGR);
+	cv::cvtColor(image2, img2, cv::COLOR_GRAY2BGR);
 
 	//
 	CvMemStorage *storage = cvCreateMemStorage();

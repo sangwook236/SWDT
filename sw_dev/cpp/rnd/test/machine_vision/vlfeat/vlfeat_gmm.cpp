@@ -256,8 +256,8 @@ void gmm()
 			VL_PRINT("%f \n", ((TYPE *)weights)[cIdx]);  // priors ?
 		}
 
-		const char *dataFileResults = "./data/machine_vision/vlfeat/gmm-results.mat";
-		const char *dataFileData = "./data/machine_vision/vlfeat/gmm-data.mat";
+		const char *dataFileResults = "../data/machine_vision/vlfeat/gmm-results.mat";
+		const char *dataFileData = "../data/machine_vision/vlfeat/gmm-data.mat";
 		local::saveResults(dataFileData, dataFileResults, gmm, (void *)data, numData);
 	}
 #endif

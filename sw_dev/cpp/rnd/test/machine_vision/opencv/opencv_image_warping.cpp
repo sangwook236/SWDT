@@ -10,7 +10,7 @@ namespace local {
 // REF [file] >> ${OPENCV_HOME}/samples/cpp/warpPerspective_demo.cpp
 void warp_perspective_demo()
 {
-	const std::string filename("./data/machine_vision/right.jpg");
+	const std::string filename("../data/machine_vision/right.jpg");
 
 	const cv::Mat rgb(cv::imread(filename, cv::IMREAD_COLOR));
 	if (rgb.empty())

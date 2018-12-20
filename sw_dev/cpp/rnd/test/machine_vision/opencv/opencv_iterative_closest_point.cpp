@@ -26,7 +26,7 @@ void ShowPoints(cv::Mat &im, cv::Mat &X, const cv::Scalar &c = cv::Scalar(255))
 			p.y = (int)_p.y;
 		}
 
-		cv::circle(im, p, 2, c, CV_FILLED);
+		cv::circle(im, p, 2, c, cv::FILLED);
 	}
 }
 
@@ -44,10 +44,10 @@ void ShowLines(cv::Mat &im, cv::Mat &X, cv::Mat &X_bar, const cv::Scalar &c1 = c
 			p.x = (int)_p.x;
 			p.y = (int)_p.y;
 		}
-		cv::circle(im, p, 1, c1, CV_FILLED);
+		cv::circle(im, p, 1, c1, cv::FILLED);
 
 		const cv::Point &p1 = X_bar.at<cv::Point>(i, 0);
-		cv::circle(im, p1, 1, c2, CV_FILLED);
+		cv::circle(im, p1, 1, c2, cv::FILLED);
 
 		cv::line(im, p, p1, cv::Scalar(0, 0, 255), 1);
 
@@ -312,58 +312,58 @@ void iterative_closest_point()
 #else
 	std::list<std::string> filenames;
 #if 0
-	filenames.push_back("./data/machine_vision/opencv/pic1.png");
-	filenames.push_back("./data/machine_vision/opencv/pic2.png");
-	filenames.push_back("./data/machine_vision/opencv/pic3.png");
-	filenames.push_back("./data/machine_vision/opencv/pic4.png");
-	filenames.push_back("./data/machine_vision/opencv/pic5.png");
-	filenames.push_back("./data/machine_vision/opencv/pic6.png");
-	filenames.push_back("./data/machine_vision/opencv/stuff.jpg");
-	filenames.push_back("./data/machine_vision/opencv/synthetic_face.png");
-	filenames.push_back("./data/machine_vision/opencv/puzzle.png");
-	filenames.push_back("./data/machine_vision/opencv/fruits.jpg");
-	filenames.push_back("./data/machine_vision/opencv/lena_rgb.bmp");
-	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
+	filenames.push_back("../data/machine_vision/opencv/pic1.png");
+	filenames.push_back("../data/machine_vision/opencv/pic2.png");
+	filenames.push_back("../data/machine_vision/opencv/pic3.png");
+	filenames.push_back("../data/machine_vision/opencv/pic4.png");
+	filenames.push_back("../data/machine_vision/opencv/pic5.png");
+	filenames.push_back("../data/machine_vision/opencv/pic6.png");
+	filenames.push_back("../data/machine_vision/opencv/stuff.jpg");
+	filenames.push_back("../data/machine_vision/opencv/synthetic_face.png");
+	filenames.push_back("../data/machine_vision/opencv/puzzle.png");
+	filenames.push_back("../data/machine_vision/opencv/fruits.jpg");
+	filenames.push_back("../data/machine_vision/opencv/lena_rgb.bmp");
+	filenames.push_back("../data/machine_vision/opencv/hand_01.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_05.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_24.jpg");
 #elif 1
-	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_02.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_03.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_04.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_06.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_07.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_08.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_09.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_10.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_11.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_12.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_13.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_14.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_15.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_16.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_17.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_18.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_19.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_20.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_21.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_22.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_23.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_25.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_26.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_27.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_28.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_29.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_30.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_31.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_32.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_01.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_02.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_03.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_04.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_05.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_06.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_07.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_08.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_09.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_10.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_11.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_12.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_13.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_14.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_15.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_16.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_17.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_18.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_19.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_20.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_21.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_22.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_23.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_24.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_25.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_26.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_27.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_28.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_29.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_30.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_31.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_32.jpg");
 #elif 0
-	filenames.push_back("./data/machine_vision/opencv/hand_33.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_34.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_35.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_36.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_33.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_34.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_35.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_36.jpg");
 #endif
 
 	const std::string windowName1("iterative closest point - original");
@@ -385,8 +385,8 @@ void iterative_closest_point()
 		if (1 == img.channels())
 			img.copyTo(gray);
 		else
-			cv::cvtColor(img, gray, CV_BGR2GRAY);
-			//cv::cvtColor(img, gray, CV_RGB2GRAY);
+			cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+			//cv::cvtColor(img, gray, cv::COLOR_RGB2GRAY);
 
 		//
 #if 1

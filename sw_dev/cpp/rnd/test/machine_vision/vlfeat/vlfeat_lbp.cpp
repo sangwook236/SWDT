@@ -24,7 +24,7 @@ void draw_histogram_1D(const cv::MatND &histo, const int binCount, const double 
 			histo_img,
 			cv::Point(i*binWidth, maxHeight), cv::Point((i+1)*binWidth - 1, maxHeight - binHeight),
 			binVal > maxVal ? CV_RGB(255, 0, 0) : CV_RGB(255, 255, 255),
-			CV_FILLED
+			cv::FILLED
 		);
 	}
 #else
@@ -36,7 +36,7 @@ void draw_histogram_1D(const cv::MatND &histo, const int binCount, const double 
 			histo_img,
 			cv::Point(i*binWidth, maxHeight), cv::Point((i+1)*binWidth - 1, maxHeight - binHeight),
 			*binPtr > maxVal ? CV_RGB(255, 0, 0) : CV_RGB(255, 255, 255),
-			CV_FILLED
+			cv::FILLED
 		);
 	}
 #endif
@@ -67,8 +67,8 @@ namespace my_vlfeat {
 
 void lbp()
 {
-	const std::string input_filename = "./data/machine_vision/vlfeat/box.pgm";
-	//const std::string input_filename = "./data/machine_vision/opencv/lena_gray.pgm";
+	const std::string input_filename = "../data/machine_vision/vlfeat/box.pgm";
+	//const std::string input_filename = "../data/machine_vision/opencv/lena_gray.pgm";
 
 	// read image data.
 	float *img_float = NULL;

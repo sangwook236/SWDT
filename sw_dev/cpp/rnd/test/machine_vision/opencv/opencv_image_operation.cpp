@@ -1,5 +1,7 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv/cv.h>
+#include <opencv/highgui.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/video/tracking.hpp>
@@ -70,9 +72,9 @@ void image_handling()
 
 void show_image()
 {
-	const char *winName = "./data/machine_vision/opencv/Image:";
-	const char *imgName = "./data/machine_vision/opencv/lena_gray.bmp";
-	const char *savedImgName = "./data/machine_vision/opencv/lena_gray_edge.png";
+	const char *winName = "../data/machine_vision/opencv/Image:";
+	const char *imgName = "../data/machine_vision/opencv/lena_gray.bmp";
+	const char *savedImgName = "../data/machine_vision/opencv/lena_gray_edge.png";
 
 	IplImage *img = cvLoadImage(imgName);
 	IplImage *grayImg = 0L;
@@ -135,12 +137,12 @@ void matches2points(const std::vector<cv::DMatch> &matches, const std::vector<cv
 
 void image_subtraction()
 {
-	const std::string img1_name("./data/machine_vision/opencv/table_only.jpg");
-	const std::string img2_name("./data/machine_vision/opencv/table_hand_01.jpg");
-	//const std::string img2_name("./data/machine_vision/opencv/table_hand_02.jpg");
-	//const std::string img2_name("./data/machine_vision/opencv/table_hand_03.jpg");
-	//const std::string img2_name("./data/machine_vision/opencv/table_hand_04.jpg");
-	//const std::string img2_name("./data/machine_vision/opencv/table_hand_05.jpg");
+	const std::string img1_name("../data/machine_vision/opencv/table_only.jpg");
+	const std::string img2_name("../data/machine_vision/opencv/table_hand_01.jpg");
+	//const std::string img2_name("../data/machine_vision/opencv/table_hand_02.jpg");
+	//const std::string img2_name("../data/machine_vision/opencv/table_hand_03.jpg");
+	//const std::string img2_name("../data/machine_vision/opencv/table_hand_04.jpg");
+	//const std::string img2_name("../data/machine_vision/opencv/table_hand_05.jpg");
 
 	const cv::Mat &img1 = cv::imread(img1_name, cv::IMREAD_GRAYSCALE);
 	const cv::Mat &img2 = cv::imread(img2_name, cv::IMREAD_GRAYSCALE);
@@ -279,12 +281,12 @@ void on_trackbar(int pos, void *userData)
 
 void image_subtraction_with_trackbar()
 {
-	const std::string img1_name("./data/machine_vision/opencv/table_only.jpg");
-	const std::string img2_name("./data/machine_vision/opencv/table_hand_01.jpg");
-	//const std::string img2_name("./data/machine_vision/opencv/table_hand_02.jpg");
-	//const std::string img2_name("./data/machine_vision/opencv/table_hand_03.jpg");
-	//const std::string img2_name("./data/machine_vision/opencv/table_hand_04.jpg");
-	//const std::string img2_name("./data/machine_vision/opencv/table_hand_05.jpg");
+	const std::string img1_name("../data/machine_vision/opencv/table_only.jpg");
+	const std::string img2_name("../data/machine_vision/opencv/table_hand_01.jpg");
+	//const std::string img2_name("../data/machine_vision/opencv/table_hand_02.jpg");
+	//const std::string img2_name("../data/machine_vision/opencv/table_hand_03.jpg");
+	//const std::string img2_name("../data/machine_vision/opencv/table_hand_04.jpg");
+	//const std::string img2_name("../data/machine_vision/opencv/table_hand_05.jpg");
 
 	const cv::Mat &img1 = cv::imread(img1_name, cv::IMREAD_GRAYSCALE);
 	const cv::Mat &img2 = cv::imread(img2_name, cv::IMREAD_GRAYSCALE);

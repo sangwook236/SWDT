@@ -78,7 +78,7 @@ namespace my_opencv {
 
 void image_pyramid()
 {
-	const std::string filename("./data/machine_vision/opencv/lena_rgb.bmp");
+	const std::string filename("../data/machine_vision/opencv/lena_rgb.bmp");
 
 	const cv::Mat &image = cv::imread(filename, cv::IMREAD_GRAYSCALE);
 

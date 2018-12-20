@@ -30,28 +30,28 @@ void histogram_comparison()
 	{
 		boost::timer::auto_cpu_timer timer;
 		// Correlation: better match has higher score - perfect match = 1.0, total mismatch = -1.0.
-		dist = cv::compareHist(histo1, histo2, CV_COMP_CORREL);
+		dist = cv::compareHist(histo1, histo2, cv::HISTCMP_CORREL);
 	}
 	std::cout << "\tCorrelation:   " << dist << std::endl;
 
 	{
 		boost::timer::auto_cpu_timer timer;
 		// Chi-square: better match has lower score - perfect match = 0.0, mismatch > 0.0.
-		dist = cv::compareHist(histo1, histo2, CV_COMP_CHISQR);
+		dist = cv::compareHist(histo1, histo2, cv::HISTCMP_CHISQR);
 	}
 	std::cout << "\tChi-Square:    " << dist << std::endl;
 
 	{
 		boost::timer::auto_cpu_timer timer;
 		// Histogram intersection: better match has higher score - perfect match = 1.0, total mismatch = 0.0 if two histograms are normalized to 1.
-		dist = cv::compareHist(histo1, histo2, CV_COMP_INTERSECT);
+		dist = cv::compareHist(histo1, histo2, cv::HISTCMP_INTERSECT);
 	}
 	std::cout << "\tIntersection:  " << dist << std::endl;
 
 	{
 		boost::timer::auto_cpu_timer timer;
 		// Bhattacharyya: better match has lower score - perfect match = 0.0, total mismatch = 1.0 (???).
-		dist = cv::compareHist(histo1, histo2, CV_COMP_BHATTACHARYYA);
+		dist = cv::compareHist(histo1, histo2, cv::HISTCMP_BHATTACHARYYA);
 	}
 	std::cout << "\tBhattacharyya: " << dist << std::endl;
 }
@@ -61,7 +61,7 @@ void compute_histogram(const cv::Mat &src, cv::Mat &histo, const int h_bins, con
 {
 	// Create images.
 	cv::Mat hsv;
-	cv::cvtColor(src, hsv, CV_BGR2HSV);
+	cv::cvtColor(src, hsv, cv::COLOR_BGR2HSV);
 
 	// Calculate histogram.
 	const int dims = 2;
@@ -129,13 +129,13 @@ void compute_signature(const cv::Mat &THoG, const std::size_t dims, const std::s
 void earth_movers_distance()
 {
 #if 1
-	const std::string img1_filename("./data/machine_vision/opencv/lena_rgb.bmp");
-	const std::string img2_filename("./data/machine_vision/opencv/lena_rgb.bmp");
-	//const std::string img2_filename("./data/machine_vision/opencv/lena_gray.bmp");
+	const std::string img1_filename("../data/machine_vision/opencv/lena_rgb.bmp");
+	const std::string img2_filename("../data/machine_vision/opencv/lena_rgb.bmp");
+	//const std::string img2_filename("../data/machine_vision/opencv/lena_gray.bmp");
 #elif 0
-	const std::string img1_filename("./data/machine_vision/teddy-imL.png");
-	//const std::string img2_filename("./data/machine_vision/teddy-imL.png");
-	const std::string img2_filename("./data/machine_vision/teddy-imR.png");
+	const std::string img1_filename("../data/machine_vision/teddy-imL.png");
+	//const std::string img2_filename("../data/machine_vision/teddy-imL.png");
+	const std::string img2_filename("../data/machine_vision/teddy-imR.png");
 #endif
 
 	// Load images.
@@ -249,7 +249,7 @@ void earth_movers_distance()
 		{
 			boost::timer::auto_cpu_timer timer;
 			// Better match has lower score - perfect match = 0.0, total mismatch = 1.0(?).
-			dist = cv::EMD(sig1, sig2, CV_DIST_L2);
+			dist = cv::EMD(sig1, sig2, cv::DIST_L2);
 		}
 		std::cout << "Earth mover's distance between two histograms: " << dist << std::endl;
 	}
@@ -410,7 +410,7 @@ void earth_movers_distance_applied_to_THoG_using_full_reference_THoG()
 					stream2 << sig2 << std::endl;
 				}
 
-				const float dist = cv::EMD(sig1, sig2, CV_DIST_L2);
+				const float dist = cv::EMD(sig1, sig2, cv::DIST_L2);
 				result[tt][uu][ff] = dist;
 			}
 		}
@@ -600,7 +600,7 @@ void earth_movers_distance_applied_to_THoG_using_partial_reference_THoG()
 							}
 						}
 
-					const float dist = cv::EMD(sig1, sig2, CV_DIST_L2);
+					const float dist = cv::EMD(sig1, sig2, cv::DIST_L2);
 					if (dist < bestDist) bestDist = dist;
 				}
 

@@ -103,17 +103,17 @@ void draw_qr(cv::Mat &img, struct quirc *qr, struct dthash *dt = nullptr)
 // REF [file] >> ${QUIRC_HOME}/demo/demo.c.
 void simple_example()
 {
-	//const std::string img_filename("./data/machine_vision/qr_code_north.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_south.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_east.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_west.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_tilt.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_1.png");
-	//const std::string img_filename("./data/machine_vision/qr_code_2.png");  // Detect, but not correct.
-	//const std::string img_filename("./data/machine_vision/qr_code_3.png");  // Detect, but not correct.
-	//const std::string img_filename("./data/machine_vision/qr_code_4.png");
-	const std::string img_filename("./data/machine_vision/qr_code_5.png");  // Detect only two.
-	//const std::string img_filename("./data/machine_vision/qr_code_6.png");  // Incorrect.
+	//const std::string img_filename("../data/machine_vision/qr_code_north.png");
+	//const std::string img_filename("../data/machine_vision/qr_code_south.png");
+	//const std::string img_filename("../data/machine_vision/qr_code_east.png");
+	//const std::string img_filename("../data/machine_vision/qr_code_west.png");
+	//const std::string img_filename("../data/machine_vision/qr_code_tilt.png");
+	//const std::string img_filename("../data/machine_vision/qr_code_1.png");
+	//const std::string img_filename("../data/machine_vision/qr_code_2.png");  // Detect, but not correct.
+	//const std::string img_filename("../data/machine_vision/qr_code_3.png");  // Detect, but not correct.
+	//const std::string img_filename("../data/machine_vision/qr_code_4.png");
+	const std::string img_filename("../data/machine_vision/qr_code_5.png");  // Detect only two.
+	//const std::string img_filename("../data/machine_vision/qr_code_6.png");  // Incorrect.
 
 #if defined(__USE_COLOR_IMAGE_)
 	const cv::Mat img(cv::imread(img_filename, cv::IMREAD_COLOR));

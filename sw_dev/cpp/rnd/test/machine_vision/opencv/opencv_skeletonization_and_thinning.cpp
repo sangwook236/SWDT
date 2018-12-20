@@ -192,8 +192,8 @@ namespace my_opencv {
 
 void skeletonization_and_thinning()
 {
-	const std::string input_filename("./data/machine_vision/opencv/thinning_img_1.png");
-	//const std::string input_filename("./data/machine_vision/opencv/thinning_img_2.jpg");
+	const std::string input_filename("../data/machine_vision/opencv/thinning_img_1.png");
+	//const std::string input_filename("../data/machine_vision/opencv/thinning_img_2.jpg");
 	const cv::Mat &src = cv::imread(input_filename);
 	if (src.empty())
 	{
@@ -206,8 +206,8 @@ void skeletonization_and_thinning()
 	// Zhang-Suen thinning algorithm.
 	{
 		cv::Mat bw;
-		cv::cvtColor(src, bw, CV_BGR2GRAY);
-		cv::threshold(bw, bw, 10, 255, CV_THRESH_BINARY);
+		cv::cvtColor(src, bw, cv::COLOR_BGR2GRAY);
+		cv::threshold(bw, bw, 10, 255, cv::THRESH_BINARY);
 
 		{
 			boost::timer::auto_cpu_timer timer;
@@ -221,7 +221,7 @@ void skeletonization_and_thinning()
 	// Guo-Hall thinning algorithm.
 	{
 		cv::Mat gray;
-		cv::cvtColor(src, gray, CV_BGR2GRAY);
+		cv::cvtColor(src, gray, cv::COLOR_BGR2GRAY);
 
 		{
 			boost::timer::auto_cpu_timer timer;

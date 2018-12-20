@@ -18,11 +18,10 @@ void saliency_detection()
 	const cv::String saliency_algorithm("SPECTRAL_RESIDUAL");  // SPECTRAL_RESIDUAL (static saliency), FINE_GRAINED (static saliency), BinWangApr2014 (motion saliency), BING (objectness), 
 
 	// Instantiate the specific saliency.
-	cv::Ptr<cv::saliency::Saliency> saliencyAlgorithm = cv::saliency::Saliency::create(saliency_algorithm);
-	//cv::Ptr<cv::saliency::Saliency> saliencyAlgorithm = cv::makePtr<cv::saliency::StaticSaliencySpectralResidual>();  // SPECTRAL_RESIDUAL (static saliency).
-	//cv::Ptr<cv::saliency::Saliency> saliencyAlgorithm = cv::makePtr<cv::saliency::StaticSaliencyFineGrained>();  // FINE_GRAINED (static saliency).
-	//cv::Ptr<cv::saliency::Saliency> saliencyAlgorithm = cv::makePtr<cv::saliency::MotionSaliencyBinWangApr2014>();  // BinWangApr2014 (motion saliency).
-	//cv::Ptr<cv::saliency::Saliency> saliencyAlgorithm = cv::makePtr<cv::saliency::ObjectnessBING>();  // BING (objectness).
+	cv::Ptr<cv::saliency::Saliency> saliencyAlgorithm = cv::saliency::StaticSaliencySpectralResidual::create();  // SPECTRAL_RESIDUAL (static saliency).
+	//cv::Ptr<cv::saliency::Saliency> saliencyAlgorithm = cv::saliency::StaticSaliencyFineGrained::create();  // FINE_GRAINED (static saliency).
+	//cv::Ptr<cv::saliency::Saliency> saliencyAlgorithm = cv::saliency::MotionSaliencyBinWangApr2014::create();  // BinWangApr2014 (motion saliency).
+	//cv::Ptr<cv::saliency::Saliency> saliencyAlgorithm = cv::saliency::ObjectnessBING::create();  // BING (objectness).
 	if (nullptr == saliencyAlgorithm)
 	{
 		std::cerr << "Error in the instantiation of the saliency algorithm." << std::endl;
@@ -31,8 +30,8 @@ void saliency_detection()
 
 	if (saliency_algorithm.find("SPECTRAL_RESIDUAL") == 0)  // Static saliency.
 	{
-		//const std::string img_filepath("./data/machine_vision/objects.jpg");
-		const std::string img_filepath("./data/machine_vision/tumblr.jpg");
+		//const std::string img_filepath("../data/machine_vision/objects.jpg");
+		const std::string img_filepath("../data/machine_vision/tumblr.jpg");
 
 		//const cv::Mat image = cv::imread(img_filepath, cv::IMREAD_COLOR);
 		const cv::Mat image = cv::imread(img_filepath, cv::IMREAD_GRAYSCALE);
@@ -58,8 +57,8 @@ void saliency_detection()
 	}
 	else if (saliency_algorithm.find("FINE_GRAINED") == 0)  // Static saliency.
 	{
-		const std::string img_filepath("./data/machine_vision/objects.jpg");
-		//const std::string img_filepath("./data/machine_vision/tumblr.jpg");
+		const std::string img_filepath("../data/machine_vision/objects.jpg");
+		//const std::string img_filepath("../data/machine_vision/tumblr.jpg");
 
 		const cv::Mat image = cv::imread(img_filepath, cv::IMREAD_COLOR);
 		//const cv::Mat image = cv::imread(img_filepath, cv::IMREAD_GRAYSCALE);
@@ -80,7 +79,7 @@ void saliency_detection()
 	else if (saliency_algorithm.find("BinWangApr2014") == 0)  // Motion saliency.
 	{
 		// Open the capture.
-		const cv::String video_name("./data/machine_vision/opencv/flycap-0001.avi");
+		const cv::String video_name("../data/machine_vision/opencv/flycap-0001.avi");
 		const int start_frame = 0;
 
 		cv::VideoCapture cap;
@@ -143,8 +142,8 @@ void saliency_detection()
 		}
 		else
 		{
-			//const std::string img_filepath("./data/machine_vision/objects.jpg");
-			const std::string img_filepath("./data/machine_vision/tumblr.jpg");
+			//const std::string img_filepath("../data/machine_vision/objects.jpg");
+			const std::string img_filepath("../data/machine_vision/tumblr.jpg");
 
 			cv::Mat image = cv::imread(img_filepath, cv::IMREAD_COLOR);
 			if (image.empty())
@@ -154,7 +153,7 @@ void saliency_detection()
 			}
 
 			saliencyAlgorithm.dynamicCast<cv::saliency::ObjectnessBING>()->setTrainingPath(training_path);
-			saliencyAlgorithm.dynamicCast<cv::saliency::ObjectnessBING>()->setBBResDir("./data/machine_vision/opencv/bing_result");
+			saliencyAlgorithm.dynamicCast<cv::saliency::ObjectnessBING>()->setBBResDir("../data/machine_vision/opencv/bing_result");
 
 			std::vector<cv::Vec4i> objectnessBoundingBoxes;
 			cv::RNG& rng = cv::theRNG();

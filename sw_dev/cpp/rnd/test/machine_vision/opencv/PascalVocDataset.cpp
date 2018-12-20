@@ -1,6 +1,7 @@
 //#include "stdafx.h"
 #include "PascalVocDataset.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
 #include <fstream>
 #include <functional>

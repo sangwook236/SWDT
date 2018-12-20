@@ -346,12 +346,12 @@ void fern(const std::string &modelFilename, const cv::Mat &img1, const cv::Mat &
 	cv::Mat img_correspondence(object.rows + image.rows, std::max(object.cols, image.cols), CV_8UC3, cv::Scalar::all(0));
 #if defined(__GNUC__)
     cv::Mat ic_tmp1(img_correspondence, cv::Rect(0, 0, object.cols, object.rows));
-	cv::cvtColor(object, ic_tmp1, CV_GRAY2BGR);
+	cv::cvtColor(object, ic_tmp1, cv::COLOR_GRAY2BGR);
     cv::Mat ic_tmp2(img_correspondence, cv::Rect(0, object.rows, image.cols, image.rows));
-    cv::cvtColor(image, ic_tmp2, CV_GRAY2BGR);
+    cv::cvtColor(image, ic_tmp2, cv::COLOR_GRAY2BGR);
 #else
-	cv::cvtColor(object, img_correspondence(cv::Rect(0, 0, object.cols, object.rows)), CV_GRAY2BGR);
-    cv::cvtColor(image, img_correspondence(cv::Rect(0, object.rows, image.cols, image.rows)), CV_GRAY2BGR);
+	cv::cvtColor(object, img_correspondence(cv::Rect(0, 0, object.cols, object.rows)), cv::COLOR_GRAY2BGR);
+    cv::cvtColor(image, img_correspondence(cv::Rect(0, object.rows, image.cols, image.rows)), cv::COLOR_GRAY2BGR);
 #endif
 
 	for (size_t i = 0; i < objKeypoints.size(); ++i)
@@ -399,21 +399,21 @@ namespace my_opencv {
 void feature_description()
 {
 #if 1
-	const std::string img1_name("./data/machine_vision/opencv/box.png");
-	const std::string img2_name("./data/machine_vision/opencv/box_in_scene.png");
+	const std::string img1_name("../data/machine_vision/opencv/box.png");
+	const std::string img2_name("../data/machine_vision/opencv/box_in_scene.png");
 
-	const std::string modelFilename("./data/machine_vision/opencv/fern_model.xml.gz");
-	const std::string trainImagesFilename("./data/machine_vision/opencv/calonder_train_images_filename.txt");
-	const std::string classifierFilename("./data/machine_vision/opencv/calonder_classfier.txt");
+	const std::string modelFilename("../data/machine_vision/opencv/fern_model.xml.gz");
+	const std::string trainImagesFilename("../data/machine_vision/opencv/calonder_train_images_filename.txt");
+	const std::string classifierFilename("../data/machine_vision/opencv/calonder_classfier.txt");
 #elif 0
-	const std::string img1_name("./data/machine_vision/opencv/melon_target.png");
-	const std::string img2_name("./data/machine_vision/opencv/melon_1.png");
-	//const std::string img2_name("./data/machine_vision/opencv/melon_2.png");
-	//const std::string img2_name("./data/machine_vision/opencv/melon_3.png");
+	const std::string img1_name("../data/machine_vision/opencv/melon_target.png");
+	const std::string img2_name("../data/machine_vision/opencv/melon_1.png");
+	//const std::string img2_name("../data/machine_vision/opencv/melon_2.png");
+	//const std::string img2_name("../data/machine_vision/opencv/melon_3.png");
 
-	const std::string modelFilename("./data/machine_vision/opencv/fern_model.xml.gz");
-	const std::string trainImagesFilename("./data/machine_vision/opencv/calonder_train_images_filename.txt");
-	const std::string classifierFilename("./data/machine_vision/opencv/calonder_classfier.txt");
+	const std::string modelFilename("../data/machine_vision/opencv/fern_model.xml.gz");
+	const std::string trainImagesFilename("../data/machine_vision/opencv/calonder_train_images_filename.txt");
+	const std::string classifierFilename("../data/machine_vision/opencv/calonder_classfier.txt");
 #endif
 
 	//std::cout << "Reading the images ..." << std::endl;

@@ -121,7 +121,7 @@ namespace my_vlfeat {
 
 void sift()
 {
-	const std::string input_filename = "./data/machine_vision/vlfeat/box.pgm";
+	const std::string input_filename = "../data/machine_vision/vlfeat/box.pgm";
 
 	// algorithm parameters
 	double edge_thresh = -1;  // edge-thresh

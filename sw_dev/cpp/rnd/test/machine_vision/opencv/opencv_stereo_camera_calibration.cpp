@@ -68,7 +68,7 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 					timg = img;
 				else
 					cv::resize(img, timg, cv::Size(), scale, scale);
-				found = cv::findChessboardCorners(timg, boardSize, corners, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE);
+				found = cv::findChessboardCorners(timg, boardSize, corners, cv::CALIB_CB_ADAPTIVE_THRESH | cv::CALIB_CB_NORMALIZE_IMAGE);
 				if (found)
 				{
 					if (scale > 1)
@@ -83,7 +83,7 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 			{
 				std::cout << filename << std::endl;
 				cv::Mat cimg, cimg1;
-				cvtColor(img, cimg, CV_GRAY2BGR);
+				cv::cvtColor(img, cimg, cv::COLOR_GRAY2BGR);
 				cv::drawChessboardCorners(cimg, boardSize, corners, found);
 				const double sf = 640.0 / MAX(img.rows, img.cols);
 				cv::resize(cimg, cimg1, cv::Size(), sf, sf);
@@ -96,7 +96,7 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 				putchar('.');
 			if (!found)
 				break;
-			cv::cornerSubPix(img, corners, cv::Size(11,11), cv::Size(-1,-1), cv::TermCriteria(CV_TERMCRIT_ITER + CV_TERMCRIT_EPS,30, 0.01));
+			cv::cornerSubPix(img, corners, cv::Size(11,11), cv::Size(-1,-1), cv::TermCriteria(cv::TermCriteria::MAX_ITER + cv::TermCriteria::EPS, 30, 0.01));
 		}
 		if (k == 2)
 		{
@@ -138,7 +138,7 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 		imageSize, R, T, E, F,
 		cv::CALIB_FIX_ASPECT_RATIO + cv::CALIB_ZERO_TANGENT_DIST + cv::CALIB_SAME_FOCAL_LENGTH + cv::CALIB_RATIONAL_MODEL + cv::CALIB_FIX_K3 + cv::CALIB_FIX_K4 + cv::CALIB_FIX_K5,
 		//cv::CALIB_USE_INTRINSIC_GUESS,
-		cv::TermCriteria(CV_TERMCRIT_ITER + CV_TERMCRIT_EPS, 100, 1e-5)
+		cv::TermCriteria(cv::TermCriteria::MAX_ITER + cv::TermCriteria::EPS, 100, 1e-5)
 	);
 	std::cout << "done with RMS error=" << rms << std::endl;
 
@@ -169,7 +169,7 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 	std::cout << "average reprojection err = " <<  (err / npoints) << std::endl;
 
 	// save intrinsic parameters
-	cv::FileStorage fs("./data/machine_vision/opencv/camera_calibration/stereo_calib_intrinsics.yml", CV_STORAGE_WRITE);
+	cv::FileStorage fs("../data/machine_vision/opencv/camera_calibration/stereo_calib_intrinsics.yml", cv::FileStorage::WRITE);
 	if (fs.isOpened())
 	{
 		fs << "M1" << cameraMatrix[0] << "D1" << distCoeffs[0] << "M2" << cameraMatrix[1] << "D2" << distCoeffs[1];
@@ -188,7 +188,7 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 		cv::CALIB_ZERO_DISPARITY, 1, imageSize, &validRoi[0], &validRoi[1]
 	);
 
-	fs.open("./data/machine_vision/opencv/camera_calibration/stereo_calib_extrinsics.yml", CV_STORAGE_WRITE);
+	fs.open("../data/machine_vision/opencv/camera_calibration/stereo_calib_extrinsics.yml", cv::FileStorage::WRITE);
 	if (fs.isOpened())
 	{
 		fs << "R" << R << "T" << T << "R1" << R1 << "R2" << R2 << "P1" << P1 << "P2" << P2 << "Q" << Q;
@@ -259,10 +259,10 @@ void StereoCalib(const std::vector<std::string> &imagelist, const cv::Size &boar
 		for (k = 0; k < 2; ++k)
 		{
 			cv::Mat img = cv::imread(goodImageList[i*2+k], 0), rimg, cimg;
-			cv::remap(img, rimg, rmap[k][0], rmap[k][1], CV_INTER_LINEAR);
-			cv::cvtColor(rimg, cimg, CV_GRAY2BGR);
+			cv::remap(img, rimg, rmap[k][0], rmap[k][1], cv::INTER_LINEAR);
+			cv::cvtColor(rimg, cimg, cv::COLOR_GRAY2BGR);
 			cv::Mat canvasPart = !isVerticalStereo ? canvas(cv::Rect(w*k, 0, w, h)) : canvas(cv::Rect(0, h*k, w, h));
-			cv::resize(cimg, canvasPart, canvasPart.size(), 0, 0, CV_INTER_AREA);
+			cv::resize(cimg, canvasPart, canvasPart.size(), 0, 0, cv::INTER_AREA);
 			if (useCalibrated)
 			{
 				cv::Rect vroi(cvRound(validRoi[k].x*sf), cvRound(validRoi[k].y*sf), cvRound(validRoi[k].width*sf), cvRound(validRoi[k].height*sf));
@@ -349,7 +349,7 @@ void stereo_camera_calibration()
 
 	if (imagelistfn == "")
 	{
-		imagelistfn = "./data/machine_vision/opencv/camera_calibration/stereo_calib.xml";
+		imagelistfn = "../data/machine_vision/opencv/camera_calibration/stereo_calib.xml";
 		boardSize = cv::Size(9, 6);
 	}
 	else if (boardSize.width <= 0 || boardSize.height <= 0)
@@ -359,20 +359,20 @@ void stereo_camera_calibration()
 	}
 #elif 0
 	// [ref] http://blog.martinperis.com/2011/01/opencv-stereo-camera-calibration.html
-	const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib_2.xml");
+	const std::string imagelistfn("../data/machine_vision/opencv/camera_calibration/stereo_calib_2.xml");
 
 	const cv::Size boardSize(9, 6);
 	const float squareSize = 2.5f;  // Set this to your actual square size, [cm]
 #elif 0
 	// Kinect IR & RGB images
-	//const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib_3.xml");
-	const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib_4.xml");
+	//const std::string imagelistfn("../data/machine_vision/opencv/camera_calibration/stereo_calib_3.xml");
+	const std::string imagelistfn("../data/machine_vision/opencv/camera_calibration/stereo_calib_4.xml");
 
 	const cv::Size boardSize(7, 5);
 	const float squareSize = 100.0f;  // Set this to your actual square size, [mm]
 #else
 	// [ref] ${OPENCV_HOME}/samples/cpp/stereo_calib.xml
-	const std::string imagelistfn("./data/machine_vision/opencv/camera_calibration/stereo_calib.xml");
+	const std::string imagelistfn("../data/machine_vision/opencv/camera_calibration/stereo_calib.xml");
 
 	const cv::Size boardSize(9, 6);
 	const float squareSize = 1.f;  // Set this to your actual square size, [cm]

@@ -10,10 +10,10 @@ namespace local {
 
 void normalized_cross_correlation()
 {
-	const std::string template_filename("./data/machine_vision/opencv/melon_target.png");
-	const std::string img_filename("./data/machine_vision/opencv/melon_1.png");
-	//const std::string img_filename("./data/machine_vision/opencv/melon_2.png");
-	//const std::string img_filename("./data/machine_vision/opencv/melon_3.png");
+	const std::string template_filename("../data/machine_vision/opencv/melon_target.png");
+	const std::string img_filename("../data/machine_vision/opencv/melon_1.png");
+	//const std::string img_filename("../data/machine_vision/opencv/melon_2.png");
+	//const std::string img_filename("../data/machine_vision/opencv/melon_3.png");
 
 	const cv::Mat templ(cv::imread(template_filename, cv::IMREAD_GRAYSCALE));
 	if (templ.empty())
@@ -54,8 +54,8 @@ void normalized_cross_correlation()
 	templ_resized.copyTo(img(cv::Range((int)pos_y, (int)pos_y + TEMPL_HEIGHT), cv::Range((int)pos_x, (int)pos_x + TEMPL_WIDTH)));
 #endif
 
-	// CV_TM_SQDIFF, CV_TM_SQDIFF_NORMED, CV_TM_CCORR, CV_TM_CCORR_NORMED, CV_TM_CCOEFF, CV_TM_CCOEFF_NORMED
-	const int comparison_method = CV_TM_CCOEFF_NORMED;
+	// cv::TM_SQDIFF, cv::TM_SQDIFF_NORMED, cv::TM_CCORR, cv::TM_CCORR_NORMED, cv::TM_CCOEFF, cv::TM_CCOEFF_NORMED
+	const int comparison_method = cv::TM_CCOEFF_NORMED;
 
 	// Perform NCC.
 	cv::Mat result;  // A single-channel 32-bit floating-point.
@@ -71,17 +71,17 @@ void normalized_cross_correlation()
 	switch (comparison_method)
 	{
 	// Sum of squared differences.
-	case CV_TM_SQDIFF:
-	case CV_TM_SQDIFF_NORMED:
+	case cv::TM_SQDIFF:
+	case cv::TM_SQDIFF_NORMED:
 		std::cout << "\tMin value: " << minVal << std::endl;
 		matched_loc = minLoc;
 		break;
 	// Correlation.
-	case CV_TM_CCORR:
-	case CV_TM_CCORR_NORMED:
+	case cv::TM_CCORR:
+	case cv::TM_CCORR_NORMED:
 	// Correlation coefficients.
-	case CV_TM_CCOEFF:
-	case CV_TM_CCOEFF_NORMED:
+	case cv::TM_CCOEFF:
+	case cv::TM_CCOEFF_NORMED:
 		std::cout << "\tMax value: " << maxVal << std::endl;
 		matched_loc = maxLoc;
 		break;
@@ -110,15 +110,15 @@ void normalized_cross_correlation()
 // REF [site] >> http://www.pyimagesearch.com/2015/01/26/multi-scale-template-matching-using-python-opencv/
 void simple_multiscale_ncc()
 {
-	const std::string template_filename("./data/machine_vision/call_of_duty_logo.png");
+	const std::string template_filename("../data/machine_vision/call_of_duty_logo.png");
 	std::list<std::string> img_filenames;
-	img_filenames.push_back("./data/machine_vision/call_of_duty_1.png");
-	img_filenames.push_back("./data/machine_vision/call_of_duty_2.jpg");
-	img_filenames.push_back("./data/machine_vision/call_of_duty_3.jpg");
-	img_filenames.push_back("./data/machine_vision/call_of_duty_4.jpg");
+	img_filenames.push_back("../data/machine_vision/call_of_duty_1.png");
+	img_filenames.push_back("../data/machine_vision/call_of_duty_2.jpg");
+	img_filenames.push_back("../data/machine_vision/call_of_duty_3.jpg");
+	img_filenames.push_back("../data/machine_vision/call_of_duty_4.jpg");
 
-	// CV_TM_SQDIFF, CV_TM_SQDIFF_NORMED, CV_TM_CCORR, CV_TM_CCORR_NORMED, CV_TM_CCOEFF, CV_TM_CCOEFF_NORMED.
-	const int comparison_method = CV_TM_CCOEFF_NORMED;
+	// cv::TM_SQDIFF, cv::TM_SQDIFF_NORMED, cv::TM_CCORR, cv::TM_CCORR_NORMED, cv::TM_CCOEFF, cv::TM_CCOEFF_NORMED.
+	const int comparison_method = cv::TM_CCOEFF_NORMED;
 
 	const cv::Mat templ(cv::imread(template_filename, cv::IMREAD_GRAYSCALE));
 	if (templ.empty())
@@ -204,17 +204,17 @@ void simple_multiscale_ncc()
 			switch (comparison_method)
 			{
 				// Sum of squared differences.
-			case CV_TM_SQDIFF:
-			case CV_TM_SQDIFF_NORMED:
+			case cv::TM_SQDIFF:
+			case cv::TM_SQDIFF_NORMED:
 				maxVal = -minVal;
 				maxLoc = minLoc;
 				break;
 				// Correlation.
-			case CV_TM_CCORR:
-			case CV_TM_CCORR_NORMED:
+			case cv::TM_CCORR:
+			case cv::TM_CCORR_NORMED:
 				// Correlation coefficients.
-			case CV_TM_CCOEFF:
-			case CV_TM_CCOEFF_NORMED:
+			case cv::TM_CCOEFF:
+			case cv::TM_CCOEFF_NORMED:
 				// Do nothing.
 				break;
 			}

@@ -84,10 +84,10 @@ void feature_extraction_and_matching()
 	}
 
 	//
-	const std::string filename1("./data/machine_vision/opencv/melon_target.png");
-	const std::string filename2("./data/machine_vision/opencv/melon_1.png");
-	//const std::string filename2("./data/machine_vision/opencv/melon_2.png");
-	//const std::string filename2("./data/machine_vision/opencv/melon_3.png");
+	const std::string filename1("../data/machine_vision/opencv/melon_target.png");
+	const std::string filename2("../data/machine_vision/opencv/melon_1.png");
+	//const std::string filename2("../data/machine_vision/opencv/melon_2.png");
+	//const std::string filename2("../data/machine_vision/opencv/melon_3.png");
 
 	const std::string windowName("Feature extraction 2");
 	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
@@ -247,8 +247,8 @@ void feature_extraction_and_matching()
 {
 	std::list<std::pair<std::string, std::string> > filename_pairs;
 #if 0
-	filename_pairs.push_back(std::make_pair("./data/machine_vision/opencv/melon_target.png", "./data/machine_vision/opencv/melon_1.png"));
-	//filename_pairs.push_back(std::make_pair("./data/machine_vision/opencv/melon_2.png", "./data/machine_vision/opencv/melon_3.png"));
+	filename_pairs.push_back(std::make_pair("../data/machine_vision/opencv/melon_target.png", "./data/machine_vision/opencv/melon_1.png"));
+	//filename_pairs.push_back(std::make_pair("../data/machine_vision/opencv/melon_2.png", "./data/machine_vision/opencv/melon_3.png"));
 #elif 1
 	filename_pairs.push_back(std::make_pair("D:/dataset/failure_analysis/defect/visible_ray/auto_9_view/Image_20171110/C12/resized/Review_0.jpg", "D:/dataset/failure_analysis/defect/visible_ray/auto_9_view/Image_20171110/C12/resized/Review_1.jpg"));
 	filename_pairs.push_back(std::make_pair("D:/dataset/failure_analysis/defect/visible_ray/auto_9_view/Image_20171110/C12/resized/Review_0.jpg", "D:/dataset/failure_analysis/defect/visible_ray/auto_9_view/Image_20171110/C12/resized/Review_2.jpg"));
@@ -608,9 +608,9 @@ void draw_inliers(const cv::Mat& img1, const cv::Mat& imgN, cv::Mat& img_com, co
 // REF [site] >> https://github.com/pablofdezalc/test_kaze_akaze_opencv/blob/master/test_akaze_match.cpp
 void kaze_match_test1()
 {
-	const std::string img1_filename("./data/machine_vision/opencv/graf1.png");
-	const std::string imgN_filename("./data/machine_vision/opencv/graf3.png");
-	const std::string H_filename("./data/machine_vision/opencv/H1to3p.xml");
+	const std::string img1_filename("../data/machine_vision/opencv/graf1.png");
+	const std::string imgN_filename("../data/machine_vision/opencv/graf3.png");
+	const std::string H_filename("../data/machine_vision/opencv/H1to3p.xml");
 
 	// Open the input image.
 	cv::Mat img1(cv::imread(img1_filename, cv::IMREAD_COLOR));
@@ -701,9 +701,9 @@ void kaze_match_test1()
 // REF [site] >> https://docs.opencv.org/master/db/d70/tutorial_akaze_matching.html
 void kaze_match_test2()
 {
-	const std::string img1_filename("./data/machine_vision/opencv/graf1.png");
-	const std::string imgN_filename("./data/machine_vision/opencv/graf3.png");
-	const std::string H_filename("./data/machine_vision/opencv/H1to3p.xml");
+	const std::string img1_filename("../data/machine_vision/opencv/graf1.png");
+	const std::string imgN_filename("../data/machine_vision/opencv/graf3.png");
+	const std::string H_filename("../data/machine_vision/opencv/H1to3p.xml");
 
 	// Open the input image.
 	cv::Mat img1(cv::imread(img1_filename, cv::IMREAD_COLOR));

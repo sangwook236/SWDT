@@ -43,14 +43,14 @@ void background_subtraction_by_graph_cut()
 	// [ref] http://ameblo.jp/sehr-lieber-querkopf/entry-11151368773.html
 	//	background subtraction with considering color continuity with neighbor pixels
 
-	const std::string src_filename("./data/machine_vision/opencv/bgsub_src.png");
-	const std::string bg_filename("./data/machine_vision/opencv/bgsub_bg.png");
-	const std::string diff_filename("./data/machine_vision/opencv/bgsub_diff.png");
-	const std::string rightTransp_filename("./data/machine_vision/opencv/bgsub_rightTransp.png");
-	const std::string bottom_filename("./data/machine_vision/opencv/bgsub_bottom.png");
-	const std::string result_filename("./data/machine_vision/opencv/bgsub_result.png");
-	const std::string diff_visualized_filename("./data/machine_vision/opencv/bgsub_diff_visualized.png");
-	const std::string result_visualized_filename("./data/machine_vision/opencv/bgsub_result_visualized.png");
+	const std::string src_filename("../data/machine_vision/opencv/bgsub_src.png");
+	const std::string bg_filename("../data/machine_vision/opencv/bgsub_bg.png");
+	const std::string diff_filename("../data/machine_vision/opencv/bgsub_diff.png");
+	const std::string rightTransp_filename("../data/machine_vision/opencv/bgsub_rightTransp.png");
+	const std::string bottom_filename("../data/machine_vision/opencv/bgsub_bottom.png");
+	const std::string result_filename("../data/machine_vision/opencv/bgsub_result.png");
+	const std::string diff_visualized_filename("../data/machine_vision/opencv/bgsub_diff_visualized.png");
+	const std::string result_visualized_filename("../data/machine_vision/opencv/bgsub_result_visualized.png");
 
 	const double threshold1 = 64.0;
 	const double threshold2 = 32.0;
@@ -118,12 +118,12 @@ void background_subtraction_by_graph_cut()
 	cv::imwrite(result_filename, label);
 
 	cv::Mat label_visualized = cv::Mat::zeros(label.size(), CV_8UC1);
-	cv::threshold(label, label_visualized, 0, 255, CV_THRESH_BINARY);
+	cv::threshold(label, label_visualized, 0, 255, cv::THRESH_BINARY);
 	cv::imwrite(result_visualized_filename, label_visualized);
 
 	cv::Mat diff_float, diff_visualized = cv::Mat::zeros(diff.size(), CV_8UC1);
 	diff.convertTo(diff_float, CV_32FC1);
-	cv::threshold(diff_float, diff_visualized, 0, 255, CV_THRESH_BINARY);
+	cv::threshold(diff_float, diff_visualized, 0, 255, cv::THRESH_BINARY);
 	cv::imwrite(diff_visualized_filename, diff_visualized);
 }
 

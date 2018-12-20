@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv/cv.h>
 //#include <opencv2/legacy/legacy.hpp>
 #include <opencv2/opencv.hpp>
 #include <iostream>
@@ -27,14 +28,14 @@ void normalize_histogram(cv::MatND &hist, const double factor);
 namespace {
 namespace local {
 
-//const std::string img1_filename = "./data/machine_vision/opencv/synthesized_training_image1.bmp";
-//const std::string img2_filename = "./data/machine_vision/opencv/synthesized_training_image2.bmp";
-//const std::string img2_filename = "./data/machine_vision/opencv/synthesized_training_image3.bmp";
-//const std::string img1_filename = "./data/machine_vision/opencv/synthesized_testing_image1.bmp";
-//const std::string img2_filename = "./data/machine_vision/opencv/synthesized_testing_image2.bmp";
-//const std::string img2_filename = "./data/machine_vision/opencv/synthesized_testing_image3.bmp";
-const std::string img1_filename = "./data/machine_vision/opencv/sample3_01.jpg";
-const std::string img2_filename = "./data/machine_vision/opencv/sample3_02.jpg";
+//const std::string img1_filename = "../data/machine_vision/opencv/synthesized_training_image1.bmp";
+//const std::string img2_filename = "../data/machine_vision/opencv/synthesized_training_image2.bmp";
+//const std::string img2_filename = "../data/machine_vision/opencv/synthesized_training_image3.bmp";
+//const std::string img1_filename = "../data/machine_vision/opencv/synthesized_testing_image1.bmp";
+//const std::string img2_filename = "../data/machine_vision/opencv/synthesized_testing_image2.bmp";
+//const std::string img2_filename = "../data/machine_vision/opencv/synthesized_testing_image3.bmp";
+const std::string img1_filename = "../data/machine_vision/opencv/sample3_01.jpg";
+const std::string img2_filename = "../data/machine_vision/opencv/sample3_02.jpg";
 
 void draw_orientation_histogram(const cv::Mat &flow, const std::string &windowName, const double normalization_factor)
 {
@@ -101,7 +102,7 @@ void block_matching_optical_flow_algorithm()
 	//CvCapture *capture = cvCaptureFromCAM(camId);
 	CvCapture *capture = cvCreateCameraCapture(camId);
 #else
-	const std::string avi_filename("./data/machine_vision/opencv/tree.avi");
+	const std::string avi_filename("../data/machine_vision/opencv/tree.avi");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 #endif
@@ -245,7 +246,7 @@ void Horn_Schunck_optical_flow_algorithm()
 	//CvCapture *capture = cvCaptureFromCAM(camId);
 	CvCapture *capture = cvCreateCameraCapture(camId);
 #else
-	const std::string avi_filename("./data/machine_vision/opencv/tree.avi");
+	const std::string avi_filename("../data/machine_vision/opencv/tree.avi");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 #endif
@@ -387,7 +388,7 @@ void Lucas_Kanade_optical_flow_algorithm()
 	//CvCapture *capture = cvCaptureFromCAM(camId);
 	CvCapture *capture = cvCreateCameraCapture(camId);
 #else
-	const std::string avi_filename("./data/machine_vision/opencv/tree.avi");
+	const std::string avi_filename("../data/machine_vision/opencv/tree.avi");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 #endif
@@ -555,7 +556,7 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_1()
 	//CvCapture *capture = cvCaptureFromCAM(camId);
 	CvCapture *capture = cvCreateCameraCapture(camId);
 #else
-	const std::string avi_filename("./data/machine_vision/opencv/tree.avi");
+	const std::string avi_filename("../data/machine_vision/opencv/tree.avi");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 #endif
@@ -665,7 +666,7 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_1()
 					continue;
 
 				points[1][k++] = points[1][i];
-				cvCircle(image, cvPointFrom32f(points[1][i]), 3, CV_RGB(0, 255, 0), CV_FILLED, 8, 0);
+				cvCircle(image, cvPointFrom32f(points[1][i]), 3, CV_RGB(0, 255, 0), CV_FILLED, cv::LINE_8, 0);
 			}
 			count = k;
 		}
@@ -860,8 +861,8 @@ void drawOpticalFlowMap(const cv::Mat &flow, cv::Mat &cflowmap, const int step, 
 		{
 			const cv::Point2f &fxy = flow.at<cv::Point2f>(y, x);
 			if (std::sqrt(fxy.x*fxy.x + fxy.y*fxy.y) < mag_threshold) continue;
-			cv::line(cflowmap, start_pt + cv::Point(x, y), start_pt + cv::Point(cvRound(x + fxy.x), cvRound(y + fxy.y)), color, 1, 8, 0);
-			//cv::circle(cflowmap, start_pt + cv::Point(x, y), 1, color, CV_FILLED, 8, 0);
+			cv::line(cflowmap, start_pt + cv::Point(x, y), start_pt + cv::Point(cvRound(x + fxy.x), cvRound(y + fxy.y)), color, 1, cv::LINE_8, 0);
+			//cv::circle(cflowmap, start_pt + cv::Point(x, y), 1, color, cv::FILLED, cv::LINE_8, 0);
 		}
 }
 
@@ -899,7 +900,7 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_2()
 			//continue;
 		}
 
-		cv::cvtColor(frame, tmp_gray, CV_BGR2GRAY);
+		cv::cvtColor(frame, tmp_gray, cv::COLOR_BGR2GRAY);
 
 #if 1
 		cv::pyrDown(tmp_gray, gray, cv::Size());
@@ -940,7 +941,7 @@ void pyramid_Lucas_Kanade_optical_flow_algorithm_2()
 			);
 
 			//
-			cv::cvtColor(prev_gray, cflow, CV_GRAY2BGR);
+			cv::cvtColor(prev_gray, cflow, cv::COLOR_GRAY2BGR);
 
 			cv::Mat flow(gray.rows, gray.cols, CV_32FC2, cv::Scalar::all(0));
 
@@ -1007,7 +1008,7 @@ void Farneback_motion_estimation_algorithm()
 			//continue;
 		}
 
-		cv::cvtColor(frame, tmp_gray, CV_BGR2GRAY);
+		cv::cvtColor(frame, tmp_gray, cv::COLOR_BGR2GRAY);
 
 #if 1
 		cv::pyrDown(tmp_gray, gray, cv::Size());
@@ -1030,7 +1031,7 @@ void Farneback_motion_estimation_algorithm()
 			);
 
 			//
-			cv::cvtColor(prev_gray, cflow, CV_GRAY2BGR);
+			cv::cvtColor(prev_gray, cflow, cv::COLOR_GRAY2BGR);
 			drawOpticalFlowMap(flow, cflow, 5, 1.5, CV_RGB(0, 255, 0), cv::Point(0, 0), 1.0);
 			cv::imshow(windowName1, cflow);
 
@@ -1057,8 +1058,8 @@ void Farneback_motion_estimation_algorithm()
 	if (img1.empty() || img2.empty()) return;
 
 	cv::Mat grey1, grey2;
-	cv::cvtColor(img1, grey1, CV_BGR2GRAY);
-	cv::cvtColor(img2, grey2, CV_BGR2GRAY);
+	cv::cvtColor(img1, grey1, cv::COLOR_BGR2GRAY);
+	cv::cvtColor(img2, grey2, cv::COLOR_BGR2GRAY);
 
 	//const cv::Rect roi(0, 0, img1.cols / 2, img1.rows / 2);
 	const cv::Rect roi(img1.cols / 2, img1.rows / 2, img1.cols / 2, img1.rows / 2);
@@ -1070,7 +1071,7 @@ void Farneback_motion_estimation_algorithm()
 	cv::calcOpticalFlowFarneback(grey1_roi, grey2_roi, flow, 0.5, 3, 15, 3, 5, 1.2, 0);
 
 	cv::Mat cflow;
-	cv::cvtColor(grey1, cflow, CV_GRAY2BGR);
+	cv::cvtColor(grey1, cflow, cv::COLOR_GRAY2BGR);
 	drawOpticalFlowMap(flow, cflow, 5, 1.5, CV_RGB(0, 255, 0), cv::Point(roi.x, roi.y), 1.0);
 
 	const std::string windowName("Farneback optical flow");

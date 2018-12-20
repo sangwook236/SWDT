@@ -83,7 +83,7 @@ cv::Scalar mssim(const cv::Mat &img1, const cv::Mat &img2)
 // REF [site] >> http://docs.opencv.org/3.2/doc/tutorials/highgui/video-input-psnr-ssim/video-input-psnr-ssim.html#image-similarity-psnr-and-ssim
 void video_similarity()
 {
-	const std::string sourceReference("./data/machine_vision/Megamind.avi"), sourceCompareWith("./data/machine_vision/Megamind_bugy.avi");
+	const std::string sourceReference("../data/machine_vision/Megamind.avi"), sourceCompareWith("./data/machine_vision/Megamind_bugy.avi");
 	const int psnrTriggerValue = 35, delay = 10;
 
 	int frameNum = -1;  // Frame counter.

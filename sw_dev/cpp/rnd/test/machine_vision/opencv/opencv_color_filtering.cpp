@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv/highgui.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/video/tracking.hpp>
@@ -22,74 +23,74 @@ void color_channel_extraction()
 {
 	std::list<std::string> filenames;
 #if 0
-	filenames.push_back("./data/machine_vision/opencv/pic1.png");
-	filenames.push_back("./data/machine_vision/opencv/pic2.png");
-	filenames.push_back("./data/machine_vision/opencv/pic3.png");
-	filenames.push_back("./data/machine_vision/opencv/pic4.png");
-	filenames.push_back("./data/machine_vision/opencv/pic5.png");
-	filenames.push_back("./data/machine_vision/opencv/pic6.png");
-	filenames.push_back("./data/machine_vision/opencv/stuff.jpg");
-	filenames.push_back("./data/machine_vision/opencv/synthetic_face.png");
-	filenames.push_back("./data/machine_vision/opencv/puzzle.png");
-	filenames.push_back("./data/machine_vision/opencv/fruits.jpg");
-	filenames.push_back("./data/machine_vision/opencv/lena_rgb.bmp");
-	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
+	filenames.push_back("../data/machine_vision/opencv/pic1.png");
+	filenames.push_back("../data/machine_vision/opencv/pic2.png");
+	filenames.push_back("../data/machine_vision/opencv/pic3.png");
+	filenames.push_back("../data/machine_vision/opencv/pic4.png");
+	filenames.push_back("../data/machine_vision/opencv/pic5.png");
+	filenames.push_back("../data/machine_vision/opencv/pic6.png");
+	filenames.push_back("../data/machine_vision/opencv/stuff.jpg");
+	filenames.push_back("../data/machine_vision/opencv/synthetic_face.png");
+	filenames.push_back("../data/machine_vision/opencv/puzzle.png");
+	filenames.push_back("../data/machine_vision/opencv/fruits.jpg");
+	filenames.push_back("../data/machine_vision/opencv/lena_rgb.bmp");
+	filenames.push_back("../data/machine_vision/opencv/hand_01.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_05.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_24.jpg");
 #elif 1
-	filenames.push_back("./data/machine_vision/opencv/hand_left_1.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_right_1.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_left_1.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_right_1.jpg");
 
-	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_02.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_03.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_04.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_06.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_07.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_08.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_09.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_10.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_11.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_12.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_13.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_14.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_15.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_16.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_17.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_18.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_19.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_20.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_21.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_22.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_23.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_25.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_26.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_27.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_28.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_29.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_30.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_31.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_32.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_33.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_34.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_35.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_36.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_01.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_02.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_03.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_04.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_05.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_06.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_07.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_08.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_09.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_10.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_11.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_12.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_13.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_14.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_15.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_16.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_17.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_18.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_19.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_20.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_21.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_22.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_23.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_24.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_25.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_26.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_27.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_28.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_29.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_30.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_31.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_32.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_33.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_34.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_35.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_36.jpg");
 #elif 0
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_01.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_02.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_03.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_04.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_05.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_06.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_07.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_08.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_09.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_10.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_11.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_12.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_13.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_01.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_02.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_03.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_04.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_05.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_06.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_07.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_08.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_09.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_10.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_11.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_12.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_13.jpg");
 #endif
 
 	const std::string windowName1("color filtering - channel 1");
@@ -109,13 +110,13 @@ void color_channel_extraction()
 		}
 
 		cv::Mat img2 = img;
-		//cv::cvtColor(img, img2, CV_BGR2GRAY);  // BGR <-> gray
-		//cv::cvtColor(img, img2, CV_BGR2XYZ);  // BGR <-> CIE XYZ
-		//cv::cvtColor(img, img2, CV_BGR2YCrCb);  // BGR <-> YCrCb JPEG
-		//cv::cvtColor(img, img2, CV_BGR2HSV);  // BGR <-> HSV
-		//cv::cvtColor(img, img2, CV_BGR2HLS);  // BGR <-> HLS
-		//cv::cvtColor(img, img2, CV_BGR2Lab);  // BGR <-> CIE L*a*b*
-		//cv::cvtColor(img, img2, CV_BGR2Luv);  // BGR <-> CIE L*u*v*
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2GRAY);  // BGR <-> gray
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2XYZ);  // BGR <-> CIE XYZ
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2YCrCb);  // BGR <-> YCrCb JPEG
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2HSV);  // BGR <-> HSV
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2HLS);  // BGR <-> HLS
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2Lab);  // BGR <-> CIE L*a*b*
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2Luv);  // BGR <-> CIE L*u*v*
 
 		std::vector<cv::Mat> filtered_imgs;
 		cv::split(img2, filtered_imgs);

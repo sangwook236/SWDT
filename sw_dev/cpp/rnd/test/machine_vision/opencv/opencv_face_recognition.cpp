@@ -44,7 +44,7 @@ void read_csv(const std::string &filename, std::vector<cv::Mat> &images, std::ve
 	if (!stream)
 	{
 		const std::string error_message = "No valid input file was given, please check the given filename.";
-		CV_Error(CV_StsBadArg, error_message);
+		CV_Error(cv::Error::StsBadArg, error_message);
 	}
 
 	std::string line, path, classlabel;
@@ -63,9 +63,9 @@ void read_csv(const std::string &filename, std::vector<cv::Mat> &images, std::ve
 
 void simple_example()
 {
-	cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::createEigenFaceRecognizer();
-	//cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::createFisherFaceRecognizer();
-	//cv::Ptr<cv::face::LBPHFaceRecognizer> model = cv::face::createLBPHFaceRecognizer();
+	cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::EigenFaceRecognizer::create();
+	//cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::FisherFaceRecognizer::create();
+	//cv::Ptr<cv::face::LBPHFaceRecognizer> model = cv::face::LBPHFaceRecognizer::create();
 
 	{
 		// holds images and labels
@@ -102,7 +102,7 @@ void simple_example()
 // ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_demo.cpp.
 void facerec_demo()
 {
-    const std::string csv_filename("./data/machine_vision/opencv/???.csv");
+    const std::string csv_filename("../data/machine_vision/opencv/???.csv");
 
     //
     std::vector<cv::Mat> images;
@@ -121,7 +121,7 @@ void facerec_demo()
     if (images.size() <= 1)
 	{
         const std::string error_message = "This demo needs at least 2 images to work. Please add more images to your data set!";
-        CV_Error(CV_StsError, error_message);
+        CV_Error(cv::Error::StsError, error_message);
     }
 
     // Get the height from the first image. We'll need this later in code to reshape the images to their original size:
@@ -136,7 +136,7 @@ void facerec_demo()
 
 	//
 #if 1
-	cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::createFisherFaceRecognizer();
+	cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::FisherFaceRecognizer::create();
 #else
 	const int num_components = 10;  // 10 components.
 	const double confidence_threshold = 123.0;  // a confidence threshold.
@@ -200,8 +200,8 @@ void facerec_demo()
 // ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_eigenfaces.cpp.
 void eigenfaces_example()
 {
-	const std::string csv_filename("./data/machine_vision/opencv/???.csv");
-	const std::string output_folder("./data/machine_vision/opencv");
+	const std::string csv_filename("../data/machine_vision/opencv/???.csv");
+	const std::string output_folder("../data/machine_vision/opencv");
 
 	//
 	std::vector<cv::Mat> images;
@@ -220,7 +220,7 @@ void eigenfaces_example()
     if (images.size() <= 1)
 	{
         const std::string error_message = "This demo needs at least 2 images to work. Please add more images to your data set!";
-        CV_Error(CV_StsError, error_message);
+        CV_Error(cv::Error::StsError, error_message);
     }
 
     // Get the height from the first image. We'll need this later in code to reshape the images to their original size:
@@ -235,7 +235,7 @@ void eigenfaces_example()
 
 	//
 #if 1
-	cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::createEigenFaceRecognizer();
+	cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::EigenFaceRecognizer::create();
 #else
 	const int num_components = 10;  // 10 components.
 	const double confidence_threshold = 123.0;  // a confidence threshold. if the distance to the nearest neighbor is larger than the threshold, this method returns -1.
@@ -312,8 +312,8 @@ void eigenfaces_example()
 // ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_fisherfaces.cpp.
 void fisherfaces_example()
 {
-	const std::string csv_filename("./data/machine_vision/opencv/???.csv");
-	const std::string output_folder("./data/machine_vision/opencv");
+	const std::string csv_filename("../data/machine_vision/opencv/???.csv");
+	const std::string output_folder("../data/machine_vision/opencv");
 
 	//
 	std::vector<cv::Mat> images;
@@ -332,7 +332,7 @@ void fisherfaces_example()
     if (images.size() <= 1)
 	{
         const std::string error_message = "This demo needs at least 2 images to work. Please add more images to your data set!";
-        CV_Error(CV_StsError, error_message);
+        CV_Error(cv::Error::StsError, error_message);
     }
 
     // Get the height from the first image. We'll need this later in code to reshape the images to their original size:
@@ -347,7 +347,7 @@ void fisherfaces_example()
 
 	//
 #if 1
-	cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::createFisherFaceRecognizer();
+	cv::Ptr<cv::face::BasicFaceRecognizer> model = cv::face::FisherFaceRecognizer::create();
 #else
 	const int num_components = 10;  // 10 components.
 	//const int num_components = 0;  // use all Fisherfaces.
@@ -425,8 +425,8 @@ void fisherfaces_example()
 // ${OPENCV_HOME}/modules/contrib/doc/facerec/src/facerec_lbph.cpp.
 void lbph_example()
 {
-	const std::string csv_filename("./data/machine_vision/opencv/???.csv");
-	const std::string output_folder("./data/machine_vision/opencv");
+	const std::string csv_filename("../data/machine_vision/opencv/???.csv");
+	const std::string output_folder("../data/machine_vision/opencv");
 
 	//
 	std::vector<cv::Mat> images;
@@ -445,7 +445,7 @@ void lbph_example()
     if (images.size() <= 1)
 	{
         const std::string error_message = "This demo needs at least 2 images to work. Please add more images to your data set!";
-        CV_Error(CV_StsError, error_message);
+        CV_Error(cv::Error::StsError, error_message);
     }
 
     // Get the height from the first image. We'll need this later in code to reshape the images to their original size:
@@ -460,7 +460,7 @@ void lbph_example()
 
 	//
 #if 1
-	cv::Ptr<cv::face::LBPHFaceRecognizer> model = cv::face::createLBPHFaceRecognizer();
+	cv::Ptr<cv::face::LBPHFaceRecognizer> model = cv::face::LBPHFaceRecognizer::create();
 #else
 	const int radius = 1;  // the radius used for building the Circular Local Binary Pattern.
 	const int neighbors = 8;  // the number of sample points to build a Circular Local Binary Pattern from.

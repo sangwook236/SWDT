@@ -157,9 +157,9 @@ namespace my_opencv {
 void structure_tensor()
 {
 #if 1
-	const std::string input_filename("./data/machine_vision/opencv/synthesized_training_image1.bmp");
-	//const std::string input_filename("./data/machine_vision/opencv/thinning_img_1.png");
-	//const std::string input_filename("./data/machine_vision/opencv/thinning_img_2.jpg");
+	const std::string input_filename("../data/machine_vision/opencv/synthesized_training_image1.bmp");
+	//const std::string input_filename("../data/machine_vision/opencv/thinning_img_1.png");
+	//const std::string input_filename("../data/machine_vision/opencv/thinning_img_2.jpg");
 	const cv::Mat &src = cv::imread(input_filename);
 
 	const bool useGray = true;
@@ -187,7 +187,7 @@ void structure_tensor()
 		if (useGray)
 		{
 			cv::Mat gray;
-			cv::cvtColor(src, gray, CV_BGR2GRAY);
+			cv::cvtColor(src, gray, cv::COLOR_BGR2GRAY);
 
 			gray.convertTo(img_double, CV_64FC1, 1.0 / 255.0, 0.0);
 		}
@@ -234,7 +234,7 @@ void structure_tensor()
 			}
 
 			cv::imshow("Structure tensor - coherence", valid_region);
-			//cv::imwrite("./data/machine_vision/opencv/structure_tensor_coherence.png", valid_region);
+			//cv::imwrite("../data/machine_vision/opencv/structure_tensor_coherence.png", valid_region);
 		}
 
 		// METHOD #2: using the ratio of eigenvales.
@@ -246,7 +246,7 @@ void structure_tensor()
 			}
 
 			cv::imshow("Structure tensor - ratio of eigenvalues", valid_region);
-			//cv::imwrite("./data/machine_vision/opencv/structure_tensor_ev_ratio.png", valid_region);
+			//cv::imwrite("../data/machine_vision/opencv/structure_tensor_ev_ratio.png", valid_region);
 		}
 	}
 

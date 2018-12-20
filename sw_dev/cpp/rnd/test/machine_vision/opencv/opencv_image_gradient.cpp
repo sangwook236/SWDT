@@ -18,58 +18,58 @@ void image_gradient()
 {
 	std::list<std::string> filenames;
 #if 0
-	filenames.push_back("./data/machine_vision/opencv/pic1.png");
-	filenames.push_back("./data/machine_vision/opencv/pic2.png");
-	filenames.push_back("./data/machine_vision/opencv/pic3.png");
-	filenames.push_back("./data/machine_vision/opencv/pic4.png");
-	filenames.push_back("./data/machine_vision/opencv/pic5.png");
-	filenames.push_back("./data/machine_vision/opencv/pic6.png");
-	filenames.push_back("./data/machine_vision/opencv/stuff.jpg");
-	filenames.push_back("./data/machine_vision/opencv/synthetic_face.png");
-	filenames.push_back("./data/machine_vision/opencv/puzzle.png");
-	filenames.push_back("./data/machine_vision/opencv/fruits.jpg");
-	filenames.push_back("./data/machine_vision/opencv/lena_rgb.bmp");
-	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
+	filenames.push_back("../data/machine_vision/opencv/pic1.png");
+	filenames.push_back("../data/machine_vision/opencv/pic2.png");
+	filenames.push_back("../data/machine_vision/opencv/pic3.png");
+	filenames.push_back("../data/machine_vision/opencv/pic4.png");
+	filenames.push_back("../data/machine_vision/opencv/pic5.png");
+	filenames.push_back("../data/machine_vision/opencv/pic6.png");
+	filenames.push_back("../data/machine_vision/opencv/stuff.jpg");
+	filenames.push_back("../data/machine_vision/opencv/synthetic_face.png");
+	filenames.push_back("../data/machine_vision/opencv/puzzle.png");
+	filenames.push_back("../data/machine_vision/opencv/fruits.jpg");
+	filenames.push_back("../data/machine_vision/opencv/lena_rgb.bmp");
+	filenames.push_back("../data/machine_vision/opencv/hand_01.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_05.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_24.jpg");
 #elif 0
-	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_02.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_03.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_04.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_06.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_07.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_08.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_09.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_10.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_11.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_12.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_13.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_14.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_15.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_16.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_17.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_18.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_19.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_20.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_21.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_22.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_23.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_25.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_26.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_27.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_28.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_29.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_30.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_31.jpg");
-	//filenames.push_back("./data/machine_vision/opencv/hand_32.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_01.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_02.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_03.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_04.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_05.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_06.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_07.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_08.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_09.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_10.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_11.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_12.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_13.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_14.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_15.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_16.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_17.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_18.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_19.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_20.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_21.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_22.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_23.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_24.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_25.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_26.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_27.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_28.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_29.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_30.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_31.jpg");
+	//filenames.push_back("../data/machine_vision/opencv/hand_32.jpg");
 #elif 0
-	filenames.push_back("./data/machine_vision/opencv/hand_33.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_34.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_35.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_36.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_33.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_34.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_35.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_36.jpg");
 #elif 1
 	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211659.png");
 	filenames.push_back("../../hw_interface/bin/data/kinect/kinect2_rgba_20130725T211705.png");
@@ -91,8 +91,8 @@ void image_gradient()
 		if (1 == img.channels())
 			img.copyTo(gray);
 		else
-			cv::cvtColor(img, gray, CV_BGR2GRAY);
-			//cv::cvtColor(img, gray, CV_RGB2GRAY);
+			cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+			//cv::cvtColor(img, gray, cv::COLOR_RGB2GRAY);
 
 		// smoothing
 #if 0
@@ -235,7 +235,7 @@ void image_gradient()
 #if 1
 		// draw gradients.
 		//cv::Mat gradient_rgb;
-		//cv::cvtColor(gradient_mask, gradient_rgb, CV_GRAY2BGR);
+		//cv::cvtColor(gradient_mask, gradient_rgb, cv::COLOR_GRAY2BGR);
 		cv::Mat gradient_rgb = img.clone();
 		const double maxGradientLen = 20.0 / maxMag;
 		for (int r = 0; r < gradient_mask.rows; ++r)
@@ -247,8 +247,8 @@ void image_gradient()
 					const double &dx = xgradient.at<double>(r, c) * maxGradientLen;
 					const double &dy = ygradient.at<double>(r, c) * maxGradientLen;
 
-					cv::line(gradient_rgb, cv::Point(c, r), cv::Point(cvRound(c + dx), cvRound(r + dy)), CV_RGB(255, 0, 0), 1, 8, 0);
-					//cv::circle(gradient_rgb, cv::Point(c, r), 1, CV_RGB(0, 0, 255), CV_FILLED, 8, 0);
+					cv::line(gradient_rgb, cv::Point(c, r), cv::Point(cvRound(c + dx), cvRound(r + dy)), CV_RGB(255, 0, 0), 1, cv::LINE_8, 0);
+					//cv::circle(gradient_rgb, cv::Point(c, r), 1, CV_RGB(0, 0, 255), cv::FILLED, cv::LINE_8, 0);
 				}
 			}
 

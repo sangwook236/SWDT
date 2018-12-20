@@ -47,18 +47,18 @@ namespace my_opencv {
 void generic_description_and_matching()
 {
 #if 1
-	const std::string img1_name("./data/machine_vision/opencv/box.png");
-	const std::string img2_name("./data/machine_vision/opencv/box_in_scene.png");
+	const std::string img1_name("../data/machine_vision/opencv/box.png");
+	const std::string img2_name("../data/machine_vision/opencv/box_in_scene.png");
 #elif 0
-	const std::string img1_name("./data/machine_vision/opencv/melon_target.png");
-	const std::string img2_name("./data/machine_vision/opencv/melon_1.png");
-	//const std::string img2_name("./data/machine_vision/opencv/melon_2.png");
-	//const std::string img2_name("./data/machine_vision/opencv/melon_3.png");
+	const std::string img1_name("../data/machine_vision/opencv/melon_target.png");
+	const std::string img2_name("../data/machine_vision/opencv/melon_1.png");
+	//const std::string img2_name("../data/machine_vision/opencv/melon_2.png");
+	//const std::string img2_name("../data/machine_vision/opencv/melon_3.png");
 #endif
 
 	// "Fern", "OneWay", "Vector"
 	const std::string algorithm_name("FERN");
-	const std::string algorithm_params_filename("./data/machine_vision/opencv/fern_params.xml");
+	const std::string algorithm_params_filename("../data/machine_vision/opencv/fern_params.xml");
 
 	cv::Ptr<cv::GenericDescriptorMatcher> descriptorMatcher = cv::GenericDescriptorMatcher::create(algorithm_name, algorithm_params_filename);
 	if (0 == descriptorMatcher)

@@ -72,8 +72,8 @@ void detect_and_draw_objects(IplImage *image, CvLatentSvmDetector *detector, con
 //	"Object Detection with Discriminatively Trained Part-Based Models", P. Felzenszwalb, R. Girshick, D. McAllester, & D. Ramanan, TPAMI, 2010.
 void latentsvmdetect_sample()
 {
-	const std::string model_filename("./data/machine_vision/opencv/object_detection/models_VOC2007/cat.xml");
-	const std::string image_filename("./data/machine_vision/opencv/object_detection/cat.png");
+	const std::string model_filename("../data/machine_vision/opencv/object_detection/models_VOC2007/cat.xml");
+	const std::string image_filename("../data/machine_vision/opencv/object_detection/cat.png");
 	const int tbbNumThreads = 4;
 
 	IplImage *image = cvLoadImage(image_filename.c_str());
@@ -191,9 +191,9 @@ void read_directory(const std::string &directoryName, std::vector<std::string> &
 //	"Object Detection with Discriminatively Trained Part-Based Models", P. Felzenszwalb, R. Girshick, D. McAllester, & D. Ramanan, TPAMI, 2010.
 void latentsvm_multidetect_sample()
 {
-	const std::string images_directory("./data/machine_vision/opencv/object_detection");
+	const std::string images_directory("../data/machine_vision/opencv/object_detection");
 	// [ref] ${OPENCV_EXTRA_HOME}/testdata/cv/latentsvmdetector/models_VOC2007.
-	const std::string models_directory("./data/machine_vision/opencv/object_detection/models_VOC2007");
+	const std::string models_directory("../data/machine_vision/opencv/object_detection/models_VOC2007");
 	const float overlapThreshold = 0.2f;  // [0, 1]
 	const int numThreads = 4;
 

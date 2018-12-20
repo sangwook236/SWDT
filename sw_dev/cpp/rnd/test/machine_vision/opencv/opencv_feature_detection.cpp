@@ -386,69 +386,69 @@ void feature_detection()
 	std::list<std::string> filenames;
 
 #if 0
-	filenames.push_back("./data/machine_vision/opencv/osp_robot_1.jpg");
-	filenames.push_back("./data/machine_vision/opencv/osp_robot_2.jpg");
-	filenames.push_back("./data/machine_vision/opencv/osp_robot_3.jpg");
-	filenames.push_back("./data/machine_vision/opencv/osp_robot_4.jpg");
-	filenames.push_back("./data/machine_vision/opencv/osp_rc_car_1.jpg");
-	filenames.push_back("./data/machine_vision/opencv/osp_rc_car_2.jpg");
-	filenames.push_back("./data/machine_vision/opencv/osp_rc_car_3.jpg");
+	filenames.push_back("../data/machine_vision/opencv/osp_robot_1.jpg");
+	filenames.push_back("../data/machine_vision/opencv/osp_robot_2.jpg");
+	filenames.push_back("../data/machine_vision/opencv/osp_robot_3.jpg");
+	filenames.push_back("../data/machine_vision/opencv/osp_robot_4.jpg");
+	filenames.push_back("../data/machine_vision/opencv/osp_rc_car_1.jpg");
+	filenames.push_back("../data/machine_vision/opencv/osp_rc_car_2.jpg");
+	filenames.push_back("../data/machine_vision/opencv/osp_rc_car_3.jpg");
 #elif 0
-	filenames.push_back("./data/machine_vision/opencv/beaver_target.png");
-	filenames.push_back("./data/machine_vision/opencv/melon_target.png");
-	filenames.push_back("./data/machine_vision/opencv/puzzle.png");
-	filenames.push_back("./data/machine_vision/opencv/lena_rgb.bmp");
+	filenames.push_back("../data/machine_vision/opencv/beaver_target.png");
+	filenames.push_back("../data/machine_vision/opencv/melon_target.png");
+	filenames.push_back("../data/machine_vision/opencv/puzzle.png");
+	filenames.push_back("../data/machine_vision/opencv/lena_rgb.bmp");
 #elif 0
-	filenames.push_back("./data/machine_vision/opencv/hand_01.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_02.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_03.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_04.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_05.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_06.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_07.jpg");  // error occurred !!!
-	filenames.push_back("./data/machine_vision/opencv/hand_08.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_09.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_10.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_11.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_12.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_13.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_14.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_15.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_16.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_17.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_18.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_19.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_20.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_21.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_22.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_23.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_24.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_25.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_26.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_27.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_28.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_29.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_30.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_31.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_32.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_33.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_34.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_35.jpg");
-	filenames.push_back("./data/machine_vision/opencv/hand_36.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_01.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_02.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_03.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_04.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_05.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_06.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_07.jpg");  // error occurred !!!
+	filenames.push_back("../data/machine_vision/opencv/hand_08.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_09.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_10.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_11.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_12.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_13.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_14.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_15.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_16.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_17.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_18.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_19.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_20.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_21.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_22.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_23.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_24.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_25.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_26.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_27.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_28.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_29.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_30.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_31.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_32.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_33.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_34.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_35.jpg");
+	filenames.push_back("../data/machine_vision/opencv/hand_36.jpg");
 #elif 0
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_01.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_02.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_03.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_04.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_05.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_06.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_07.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_08.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_09.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_10.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_11.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_12.jpg");
-	filenames.push_back("./data/machine_vision/opencv/simple_hand_13.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_01.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_02.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_03.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_04.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_05.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_06.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_07.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_08.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_09.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_10.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_11.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_12.jpg");
+	filenames.push_back("../data/machine_vision/opencv/simple_hand_13.jpg");
 #elif 1
 	filenames.push_back("D:/dataset/failure_analysis/defect/visible_ray/auto_9_view/Image_20171110/C12/resized/Review_0.jpg");
 	filenames.push_back("D:/dataset/failure_analysis/defect/visible_ray/auto_9_view/Image_20171110/C12/resized/Review_1.jpg");
@@ -495,7 +495,7 @@ void feature_detection()
 
 void feature_detector_evaluation()
 {
-	const std::string filename("./data/machine_vision/opencv/melon_target.png");
+	const std::string filename("../data/machine_vision/opencv/melon_target.png");
 
 	//
 	const cv::Mat img(cv::imread(filename, cv::IMREAD_COLOR));

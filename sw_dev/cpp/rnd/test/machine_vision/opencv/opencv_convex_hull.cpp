@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <ctime>
@@ -22,7 +23,7 @@ void convex_hull_basic()
 	IplImage *img = cvCreateImage(cvSize(500, 500), 8, 3);
 
 	const char *windowName = "convex hull";
-	cvNamedWindow(windowName, CV_WINDOW_AUTOSIZE);
+	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
 
 #if !defined(__USE_ARRAY)
 	CvMemStorage *storage = cvCreateMemStorage();
@@ -94,9 +95,9 @@ void convex_hull_basic()
 			pt0 = pt;
 		}
 
-		cvShowImage(windowName, img);
+		cv::imshow(windowName, cv::cvarrToMat(img));
 
-		const int key = cvWaitKey(0);
+		const int key = cv::waitKey(0);
 		if (key == 27)  // ESC
 			break;
 
@@ -113,13 +114,13 @@ void convex_hull_basic()
 #endif
 
 	cvReleaseImage(&img);
-	cvDestroyWindow(windowName);
+	cv::destroyWindow(windowName);
 }
 
 void convex_hull_2()
 {
-	//const std::string input_filename("./data/machine_vision/opencv/thinning_img_1.png");
-	const std::string input_filename("./data/machine_vision/opencv/thinning_img_2.jpg");
+	//const std::string input_filename("../data/machine_vision/opencv/thinning_img_1.png");
+	const std::string input_filename("../data/machine_vision/opencv/thinning_img_2.jpg");
 	cv::Mat src(cv::imread(input_filename));
 	if (src.empty())
 	{
@@ -128,8 +129,8 @@ void convex_hull_2()
 	}
 
 	cv::Mat bw;
-	cv::cvtColor(src, bw, CV_BGR2GRAY);
-	cv::threshold(bw, bw, 10, 255, CV_THRESH_BINARY);
+	cv::cvtColor(src, bw, cv::COLOR_BGR2GRAY);
+	cv::threshold(bw, bw, 10, 255, cv::THRESH_BINARY);
 
 	std::vector<cv::Point> convexHull;
 	my_opencv::simple_convex_hull(bw, cv::Rect(), 255, convexHull);
@@ -151,7 +152,7 @@ void convexity_defect()
 	IplImage *img = cvCreateImage(cvSize(500, 500), IPL_DEPTH_8U, 3), *gray = cvCreateImage(cvGetSize(img), img->depth, 1);
 
 	const char *windowName = "convexity defect";
-	cvNamedWindow(windowName, CV_WINDOW_AUTOSIZE);
+	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
 
 	CvMemStorage *storage = cvCreateMemStorage();
 
@@ -184,7 +185,7 @@ void convexity_defect()
 			pts[0] = pts[1];
 			pts[1] = pts[2];
 		}
-		cvCvtColor(img, gray, CV_BGR2GRAY);
+		cvCvtColor(img, gray, cv::COLOR_BGR2GRAY);
 		delete [] pts;
 
 		// calculate contours
@@ -245,9 +246,9 @@ void convexity_defect()
 			convexityDefect = convexityDefect->h_next;
 		}
 
-		cvShowImage(windowName, img);
+		cv::imshow(windowName, cv::cvarrToMat(img));
 
-		const int key = cvWaitKey(0);
+		const int key = cv::waitKey(0);
 		if (key == 27)  // ESC
 			break;
 
@@ -259,7 +260,7 @@ void convexity_defect()
 #endif
 
 	cvReleaseImage(&img);
-	cvDestroyWindow(windowName);
+	cv::destroyWindow(windowName);
 }
 
 }  // namespace local

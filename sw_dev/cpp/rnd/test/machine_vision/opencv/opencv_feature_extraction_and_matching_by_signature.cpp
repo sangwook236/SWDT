@@ -13,13 +13,13 @@ namespace local {
 void feature_extraction_and_matching_by_signature_1()
 {
 #if 1
-	const std::string img1_name("./data/machine_vision/opencv/box.png");
-	const std::string img2_name("./data/machine_vision/opencv/box_in_scene.png");
+	const std::string img1_name("../data/machine_vision/opencv/box.png");
+	const std::string img2_name("../data/machine_vision/opencv/box_in_scene.png");
 #elif 0
-	const std::string img1_name("./data/machine_vision/opencv/melon_target.png");
-	const std::string img2_name("./data/machine_vision/opencv/melon_1.png");
-	//const std::string img2_name("./data/machine_vision/opencv/melon_2.png");
-	//const std::string img2_name("./data/machine_vision/opencv/melon_3.png");
+	const std::string img1_name("../data/machine_vision/opencv/melon_target.png");
+	const std::string img2_name("../data/machine_vision/opencv/melon_1.png");
+	//const std::string img2_name("../data/machine_vision/opencv/melon_2.png");
+	//const std::string img2_name("../data/machine_vision/opencv/melon_3.png");
 #endif
 
 	//std::cout << "reading the images..." << std::endl;

@@ -614,7 +614,7 @@ void bag_of_words()
     //	bowImageDescriptors - to store image descriptors.
     //	svms - to store trained svms.
     //	plots - to store files for plots creating.
-	const std::string resPath("./data/machine_vision/opencv/bow");
+	const std::string resPath("../data/machine_vision/opencv/bow");
 
 	// Read or set default parameters
 	std::string vocName;
@@ -676,7 +676,7 @@ void bag_of_words()
 			std::cout << "descMatcher was not created" << std::endl;
 			return;
 		}
-		bowExtractor = new cv::BOWImgDescriptorExtractor(descExtractor, descMatcher);
+		bowExtractor.reset(new cv::BOWImgDescriptorExtractor(descExtractor, descMatcher));
 	}
 
 	// Print configuration to screen

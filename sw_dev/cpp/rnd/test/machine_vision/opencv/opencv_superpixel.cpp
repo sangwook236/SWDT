@@ -140,7 +140,7 @@ namespace my_opencv {
 
 void superpixel()
 {
-	const std::string img_filename("./data/machine_vision/vlfeat");
+	const std::string img_filename("../data/machine_vision/vlfeat");
 
 	local::lsc(img_filename);
 	local::seeds(img_filename);

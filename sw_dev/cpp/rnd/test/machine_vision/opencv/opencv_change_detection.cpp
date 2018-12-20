@@ -17,7 +17,7 @@ void background_segmentation()
 	//CvCapture *capture = cvCaptureFromCAM(camId);
 	CvCapture *capture = cvCreateCameraCapture(camId);
 #else
-	const std::string avi_filename("./data/machine_vision/opencv/tree.avi");
+	const std::string avi_filename("../data/machine_vision/opencv/tree.avi");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 #endif
@@ -110,7 +110,7 @@ void change_detection_using_codebook()
 	//CvCapture *capture = cvCaptureFromCAM(camId);
 	CvCapture *capture = cvCreateCameraCapture(camId);
 #else
-	const std::string avi_filename("./data/machine_vision/opencv/tree.avi");
+	const std::string avi_filename("../data/machine_vision/opencv/tree.avi");
 	//CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 	CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 #endif
@@ -273,7 +273,7 @@ void refine_segments(const cv::Mat &img, cv::Mat &mask, cv::Mat &dst)
 		}
 	}
 
-	cv::drawContours(dst, contours, largestComp, CV_RGB(255, 0, 0), CV_FILLED, 8, hierarchy);
+	cv::drawContours(dst, contours, largestComp, CV_RGB(255, 0, 0), cv::FILLED, 8, hierarchy);
 }
 
 void background_segmentation_by_mog()

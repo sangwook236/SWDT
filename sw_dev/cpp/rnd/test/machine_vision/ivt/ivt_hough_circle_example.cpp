@@ -204,7 +204,7 @@ namespace my_ivt {
 // [ref] ${IVT_HOME}/examples/HoughCirclesDemo/main.cpp
 void hough_circle_example()
 {
-	const std::string input_filename("./data/machine_vision/ivt/geometric_scene.bmp");
+	const std::string input_filename("../data/machine_vision/ivt/geometric_scene.bmp");
 
 	local::CHoughCirclesDemo demo;
 	const int retval = demo.Run(input_filename);

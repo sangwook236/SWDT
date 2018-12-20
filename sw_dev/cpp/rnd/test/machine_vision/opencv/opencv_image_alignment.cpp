@@ -62,7 +62,7 @@ void image_alignment_sample()
 {
 #if 0
 	const std::string template_filename;
-	const std::string input_filename("./data/machine_vision/opencv/fruits.jpg");
+	const std::string input_filename("../data/machine_vision/opencv/fruits.jpg");
 #elif 1
 	//const std::string template_filename("D:/dataset/failure_analysis/defect/visible_ray/auto_9_view/Image_20171110/C12/resized/Review_0.jpg");
 	//const std::string input_filename("D:/dataset/failure_analysis/defect/visible_ray/auto_9_view/Image_20171110/C12/resized/Review_2.jpg");

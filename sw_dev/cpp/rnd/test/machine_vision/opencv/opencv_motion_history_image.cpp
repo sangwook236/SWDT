@@ -1,5 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
+#include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
 #include <map>
 #include <string>
@@ -213,8 +214,8 @@ void motion_history_image()
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, imageWidth);
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, imageHeight);
 #else
-	//const std::string avi_filename("./data/machine_vision/opencv/flycap-0001.avi");
-	const std::string avi_filename("./data/machine_vision/opencv/tree.avi");
+	//const std::string avi_filename("../data/machine_vision/opencv/flycap-0001.avi");
+	const std::string avi_filename("../data/machine_vision/opencv/tree.avi");
 	//CvCapture *capture = cvCreateFileCapture(avi_filename.c_str());
 	CvCapture *capture = cvCaptureFromFile(avi_filename.c_str());
 #endif

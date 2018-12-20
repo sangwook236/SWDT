@@ -67,8 +67,8 @@ void motion_segmentation()
 		return;
 	}
 
-	const bool b1 = capture.set(CV_CAP_PROP_FRAME_WIDTH, imageWidth);
-	const bool b2 = capture.set(CV_CAP_PROP_FRAME_HEIGHT, imageHeight);
+	const bool b1 = capture.set(cv::CAP_PROP_FRAME_WIDTH, imageWidth);
+	const bool b2 = capture.set(cv::CAP_PROP_FRAME_HEIGHT, imageHeight);
 
 	const std::string windowName("motion-based segmentation");
 	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
@@ -105,8 +105,8 @@ void motion_segmentation()
 		else frame = frame2;
 #endif
 
-		cv::cvtColor(frame, gray, CV_BGR2GRAY);
-		cv::cvtColor(gray, img, CV_GRAY2BGR);
+		cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
+		cv::cvtColor(gray, img, cv::COLOR_GRAY2BGR);
 
 		// smoothing
 #if 1
