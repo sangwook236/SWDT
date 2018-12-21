@@ -21,7 +21,7 @@ void basic_processing()
 {
 	const std::string patty_img_file("D:/depot/download/patty_1_trimmed.png");
 
-	// Load an imaeg.
+	// Load an image.
 	cv::Mat& rgb = cv::imread(patty_img_file, cv::IMREAD_COLOR);
 	cv::Mat gray;
 	cv::cvtColor(rgb, gray, cv::COLOR_BGR2GRAY);
@@ -260,15 +260,15 @@ int opencv_main(int argc, char *argv[])
 	{
 		cv::theRNG();
 
-#if 0
-		if (cv::gpu::getCudaEnabledDeviceCount() > 0)
+#if true
+		if (cv::cuda::getCudaEnabledDeviceCount() > 0)
 		{
 			canUseGPU = true;
 			std::cout << "GPU info:" << std::endl;
-			cv::gpu::printShortCudaDeviceInfo(cv::gpu::getDevice());
+			cv::cuda::printShortCudaDeviceInfo(cv::cuda::getDevice());
 		}
 		else
-			std::cout << "GPU not found ..." << std::endl;
+			std::cout << "GPU not found." << std::endl;
 #endif
 
 		//local::basic_processing();

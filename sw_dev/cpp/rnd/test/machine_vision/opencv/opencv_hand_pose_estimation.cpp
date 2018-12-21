@@ -1,7 +1,6 @@
 //#include "stdafx.h"
 //#define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/legacy/compat.hpp>
-#include <opencv2/legacy/legacy.hpp>
+#include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <iterator>
@@ -369,7 +368,7 @@ void extractMserOnHand(const cv::Mat &img, const cv::Mat &mask, std::vector<cv::
 
 	// "FAST", "STAR", "SIFT", "SURF", "MSER", "GFTT", "HARRIS"
 	// also combined format is supported: feature detector adapter name ("Grid", "Pyramid") + feature detector name (see above), e.g. "GridFAST", "PyramidSTAR", etc.
-	cv::Ptr<cv::FeatureDetector> detector = cv::FeatureDetector::create("MSER");
+	cv::Ptr<cv::FeatureDetector> detector = cv::MSER::create();
 	if (detector.empty())
 	{
 		std::cout << "can not create detector of given types" << std::endl;

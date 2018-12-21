@@ -1,6 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-//#include <opencv2/gpu/gpu.hpp>
+#include <opencv2/cudalegacy.hpp>
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <iomanip>
@@ -11,12 +11,12 @@ namespace {
 namespace local {
 
 //------------------------------------------------------------------------------
-// cv::gpu::graphcut()
+// cv::cuda::graphcut()
 //	내부적으로 NVIDIA Performance Primitives (NPP) library에 있는 nppiGraphcut_32s8u() 사용.
 
 struct BufferForBackgroundSubtraction
 {
-	cv::gpu::GpuMat terminals, leftTransp, rightTransp, top, bottom, labels, buf;
+	cv::cuda::GpuMat terminals, leftTransp, rightTransp, top, bottom, labels, buf;
 };
 
 void calc_connectivity(const cv::Mat &src, cv::Mat &dst, const double threshold)
@@ -83,8 +83,8 @@ void background_subtraction_by_graph_cut()
 	// prepare for graph-cuts on GPU
 	BufferForBackgroundSubtraction buffer;
 
-	//cv::gpu::GpuMat leftTransp(rightTransp.size(), CV_32SC1, 0);
-	//cv::gpu::GpuMat top(bottom.size(), CV_32SC1 ,0);
+	//cv::cuda::GpuMat leftTransp(rightTransp.size(), CV_32SC1, 0);
+	//cv::cuda::GpuMat top(bottom.size(), CV_32SC1 ,0);
 
 	buffer.terminals.upload(diff);
 	buffer.leftTransp.upload(leftTransp);
@@ -98,9 +98,9 @@ void background_subtraction_by_graph_cut()
 		const int64 start = cv::getTickCount();
 
 		// performs labeling via graph cuts of a 2D regular 4-connected graph
-		cv::gpu::graphcut(buffer.terminals, buffer.leftTransp, buffer.rightTransp, buffer.top, buffer.bottom, buffer.labels, buffer.buf);
-		//cv::gpu::Stream stream;
-		//cv::gpu::graphcut(buffer.terminals, buffer.leftTransp, buffer.rightTransp, buffer.top, buffer.bottom, buffer.labels, buffer.buf, stream);
+		cv::cuda::graphcut(buffer.terminals, buffer.leftTransp, buffer.rightTransp, buffer.top, buffer.bottom, buffer.labels, buffer.buf);
+		cv::cuda::Stream stream;
+		//cv::cuda::graphcut(buffer.terminals, buffer.leftTransp, buffer.rightTransp, buffer.top, buffer.bottom, buffer.labels, buffer.buf, stream);
 
 		const int64 elapsed = cv::getTickCount() - start;
 		const double freq = cv::getTickFrequency();
