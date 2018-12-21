@@ -211,17 +211,17 @@ void process_bounding_region(const cv::Mat &ref_edge, const cv::Mat &pts_mat, cv
 		cv::Point2f vertices[4] = { cv::Point2f(), };
 		obb.points(vertices);
 		for (int i = 0; i < 4; ++i)
-			cv::line(img, vertices[i], vertices[(i+1)%4], CV_RGB(255, 0, 0), 1, CV_AA, 0);
+			cv::line(img, vertices[i], vertices[(i+1)%4], CV_RGB(255, 0, 0), 1, cv::LINE_AA, 0);
 
 		// axis-aligned bounding box
 		const cv::Rect aabb(cv::boundingRect(pts_mat));
-		cv::rectangle(img, aabb.tl(), aabb.br(), CV_RGB(0, 255, 0), 1, CV_AA, 0);
+		cv::rectangle(img, aabb.tl(), aabb.br(), CV_RGB(0, 255, 0), 1, cv::LINE_AA, 0);
 
 		// bounding sphere
 		cv::Point2f center;
 		float radius = 0.0f;
 		cv::minEnclosingCircle(pts_mat, center, radius);
-		cv::circle(img, center, cvRound(radius), CV_RGB(0, 0, 255), 1, CV_AA, 0);
+		cv::circle(img, center, cvRound(radius), CV_RGB(0, 0, 255), 1, cv::LINE_AA, 0);
 	}
 
 	// chamfer matching
@@ -525,7 +525,7 @@ void detect_hand_by_skin_color()
 		src_img = frame;
 		cv::imshow("src", src_img);
 
-		cv::cvtColor(src_img, hsv_img, CV_BGR2HSV);
+		cv::cvtColor(src_img, hsv_img, cv::COLOR_BGR2HSV);
 		cv::imshow("hsv-img", hsv_img);
 
 		cv::inRange(hsv_img, hsv_min, hsv_max, hsv_mask);
@@ -544,7 +544,7 @@ void detect_and_draw(cv::CascadeClassifier &hand_detector, cv::Mat &img)
 	std::vector<cv::Rect> hands;
 	const double scaleFactor = 1.1;
 	const int minNeighbors = 2;
-	hand_detector.detectMultiScale(img, hands, scaleFactor, minNeighbors, CV_HAAR_DO_CANNY_PRUNING, cv::Size(24, 24));
+	hand_detector.detectMultiScale(img, hands, scaleFactor, minNeighbors, cv::CASCADE_DO_CANNY_PRUNING, cv::Size(24, 24));
 
 	for (std::size_t i = 0; i < hands.size(); ++i)
 	{

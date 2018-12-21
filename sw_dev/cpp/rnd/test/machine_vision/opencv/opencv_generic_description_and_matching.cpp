@@ -1,6 +1,6 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/nonfree/features2d.hpp>
+//#include <opencv2/nonfree/features2d.hpp>
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <list>
@@ -15,15 +15,15 @@ void drawCorrespondences(const cv::Mat &img1, const std::vector<cv::KeyPoint> &f
 #if defined(__GNUC__)
 	{
 	    cv::Mat imgtmp(img_corr, cv::Rect(0, 0, img1.rows, img1.cols));
-        cv::cvtColor(img1, imgtmp, CV_GRAY2RGB);
+        cv::cvtColor(img1, imgtmp, cv::COLOR_GRAY2RGB);
 	}
 	{
 	    cv::Mat imgtmp(img_corr, cv::Rect(img1.rows, 0, img2.rows, img2.cols));
-        cv::cvtColor(img2, imgtmp, CV_GRAY2RGB);
+        cv::cvtColor(img2, imgtmp, cv::COLOR_GRAY2RGB);
 	}
 #else
-	cv::cvtColor(img1, img_corr(cv::Rect(0, 0, img1.rows, img1.cols)), CV_GRAY2RGB);
-	cv::cvtColor(img2, img_corr(cv::Rect(img1.rows, 0, img2.rows, img2.cols)), CV_GRAY2RGB);
+	cv::cvtColor(img1, img_corr(cv::Rect(0, 0, img1.rows, img1.cols)), cv::COLOR_GRAY2RGB);
+	cv::cvtColor(img2, img_corr(cv::Rect(img1.rows, 0, img2.rows, img2.cols)), cv::COLOR_GRAY2RGB);
 #endif
 
 	for (size_t i = 0; i < features1.size(); ++i)
