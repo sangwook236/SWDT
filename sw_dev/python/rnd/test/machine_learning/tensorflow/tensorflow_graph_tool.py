@@ -49,9 +49,9 @@ def display_graph_info():
 				# NOTE [info] >> Use a graph loaded from checkpoint. Use node names, instead of tensor names, for a graph loaded from graph file.
 				# REF [function] >> load_model_from_checkpoint() in tensorflow_saving_and_loading.py
 				input_tensor = sess.graph.get_tensor_by_name('input_tensor_ph:0')  # NOTE [error] >> The name 'input_tensor_ph:0' refers to a Tensor which does not exist. The operation, 'input_tensor_ph', does not exist in the graph.
-				output_tensor = sess.graph.get_tensor_by_name('mnist_cnn_using_tf/fc2/fc/Softmax:0')  # NOTE [error] >> The name 'mnist_cnn_using_tf/fc2/fc/Softmax:0' refers to a Tensor which does not exist. The operation, 'mnist_cnn_using_tf/fc2/fc/Softmax', does not exist in the graph.
+				output_tensor = sess.graph.get_tensor_by_name('mnist_cnn_using_tf/fc2/dense/Softmax:0')  # NOTE [error] >> The name 'mnist_cnn_using_tf/fc2/dense/Softmax:0' refers to a Tensor which does not exist. The operation, 'mnist_cnn_using_tf/fc2/dense/Softmax', does not exist in the graph.
 				#input_tensor = sess.graph.get_operation_by_name('input_tensor_ph')  # NOTE [error] >> The name 'input_tensor_ph' refers to an Operation not in the graph.
-				#output_tensor = sess.graph.get_operation_by_name('mnist_cnn_using_tf/fc2/fc/Softmax')  # NOTE [error] >> The name 'mnist_cnn_using_tf/fc2/fc/Softmax' refers to an Operation not in the graph.
+				#output_tensor = sess.graph.get_operation_by_name('mnist_cnn_using_tf/fc2/dense/Softmax')  # NOTE [error] >> The name 'mnist_cnn_using_tf/fc2/dense/Softmax' refers to an Operation not in the graph.
 				print('input_tensor =', input_tensor.get_shape())
 				print('output_tensor =', output_tensor.get_shape())
 			else:
@@ -104,15 +104,16 @@ def graph_to_tensorboard_log():
 #	python freeze_graph.py:
 #		${TENSORFLOW_HOME}/tensorflow/python/tools/freeze_graph.py
 #	e.g.) freeze_graph --input_graph=/path/to/graph.pbtxt --input_binary=false --input_checkpoint=/path/to/checkpoint/tf_ckpt-1234 --output_graph=/path/to/frozen_graph.pb --output_node_names=output_nodes
-#		${TENSORFLOW_HOME}/bazel-bin/tensorflow/python/tools/freeze_graph --input_graph=/home/sangwook/work/mnist_cnn_graph.pbtxt --input_binary=false --input_checkpoint=/home/sangwook/work/mnist_cnn_checkpoint/tf_ckpt-7740 --output_graph=/home/sangwook/work/mnist_cnn_frozen_graph.pb --output_node_names=mnist_cnn_using_tf/fc2/fc/Softmax
+#		${TENSORFLOW_HOME}/bazel-bin/tensorflow/python/tools/freeze_graph --input_graph=/home/sangwook/work/mnist_cnn_graph.pbtxt --input_binary=false --input_checkpoint=/home/sangwook/work/mnist_cnn_checkpoint/tf_ckpt-7740 --output_graph=/home/sangwook/work/mnist_cnn_frozen_graph.pb --output_node_names=mnist_cnn_using_tf/fc2/dense/Softmax
 #	=> Recommend using TensorBoard to get 'output_node_names' which I think is operations' names in a TensorFlow graph.
 def freeze_graph_tool():
+	# NOTE [info] >> checkpoint_to_graph() in tensorflow_saving_and_loading.py
 	model_graph_filepath = './mnist_cnn_graph.pb'
 	checkpoint_dir_path = './mnist_cnn_checkpoint'
 	checkpoint_filename = 'tf_ckpt-7740'
 
 	output_frozen_graph_filepath = './mnist_cnn_frozen_graph.pb'
-	output_node_names = 'mnist_cnn_using_tf/fc2/fc/Softmax'  # The name(s) of the output nodes, comma separated.
+	output_node_names = 'mnist_cnn_using_tf/fc2/dense/Softmax'  # The name(s) of the output nodes, comma separated.
 
 	input_binary = True
 	clear_devices = True
@@ -152,13 +153,13 @@ def freeze_graph_tool():
 #	python optimize_for_inference.py:
 #		${TENSORFLOW_HOME}/tensorflow/python/tools/optimize_for_inference.py
 #	e.g.) optimize_for_inference --input=/path/to/frozen_graph.pb --output=/path/to/optimized_frozen_graph.pb --frozen_graph=true --input_names=input_nodes --output_names=output_nodes
-#		${TENSORFLOW_HOME}/bazel-bin/tensorflow/python/tools/optimize_for_inference --input=/home/sangwook/work/mnist_cnn_frozen_graph.pb --output=/home/sangwook/work/mnist_cnn_optimized_frozen_graph.pb --frozen_graph=true --input_names=input_tensor_ph --output_names=mnist_cnn_using_tf/fc2/fc/Softmax
+#		${TENSORFLOW_HOME}/bazel-bin/tensorflow/python/tools/optimize_for_inference --input=/home/sangwook/work/mnist_cnn_frozen_graph.pb --output=/home/sangwook/work/mnist_cnn_optimized_frozen_graph.pb --frozen_graph=true --input_names=input_tensor_ph --output_names=mnist_cnn_using_tf/fc2/dense/Softmax
 def optimize_for_inference_tool():
 	input_frozen_graph_filepath = './mnist_cnn_frozen_graph.pb'
 	output_optimized_graph_filepath = './mnist_cnn_optimized_frozen_graph.pb'
 
 	input_node_names_list = ['input_tensor_ph']  # A list of names of the nodes that are fed inputs during inference.
-	output_node_names_list = ['mnist_cnn_using_tf/fc2/fc/Softmax']  # A list of names of the nodes that produce the final results.
+	output_node_names_list = ['mnist_cnn_using_tf/fc2/dense/Softmax']  # A list of names of the nodes that produce the final results.
 
 	input_graph_def = tf.GraphDef()
 	with tf.gfile.GFile(input_frozen_graph_filepath, 'rb') as fd:

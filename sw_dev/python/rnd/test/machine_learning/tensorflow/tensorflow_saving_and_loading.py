@@ -97,7 +97,7 @@ def load_model_from_checkpoint():
 	if True:
 		with tf.Session(graph=graph) as sess:
 			input_tensor = sess.graph.get_tensor_by_name('input_tensor_ph:0')
-			output_tensor = sess.graph.get_tensor_by_name('mnist_cnn_using_tf/fc2/fc/Softmax:0')
+			output_tensor = sess.graph.get_tensor_by_name('mnist_cnn_using_tf/fc2/dense/Softmax:0')
 			print('input_tensor =', input_tensor.get_shape())
 			print('output_tensor =', output_tensor.get_shape())
 
@@ -160,7 +160,7 @@ def checkpoint_to_saved_model():
 		#	#print(op)
 		#	print(op.name)
 		input_tensor = graph.get_tensor_by_name('input_tensor_ph:0')
-		output_tensor = graph.get_tensor_by_name('mnist_cnn_using_tf/fc2/fc/Softmax:0')
+		output_tensor = graph.get_tensor_by_name('mnist_cnn_using_tf/fc2/dense/Softmax:0')
 
 		# Build the SignatureDef map.
 		#	REF [site] >> https://www.tensorflow.org/serving/signature_defs

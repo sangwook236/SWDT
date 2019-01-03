@@ -17,6 +17,35 @@
 		When using a webcam:
 		./darknet detector demo cfg/coco.data cfg/yolov3.cfg yolov3.weights
 
+[-] Installation (YOLO3-4-Py).
+	https://github.com/madhawav/YOLO3-4-Py
+
+	- Install dependencies.
+		conda install cython numpy opencv
+		(Optional) sudo apt install python3-dev
+	- Build darknet.
+	- (Optional) edit ${YOLO3-4-Py_HOME}/setup.py.
+		<before>
+		library_paths = [".", "./__libdarknet"]
+		<after>
+		library_paths = [".", "./__libdarknet", "/home/sangwook/lib_repo/cpp/darknet_github_gpu", "/usr/lib/x86_64-linux-gnu"]
+	- Set environment variable.
+		export DARKNET_HOME=/home/sangwook/lib_repo/cpp/darknet_github
+		export CUDA_HOME=/usr/local/cuda
+		export GPU=1
+		export OPENCV=1
+
+		export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+	- Install.
+		cd ${YOLO3-4-Py_HOME}
+		python setup.py install
+		pip install .
+
+		pip install yolo34py
+		pip install yolo34py-gpu
+	- Test.
+		python image_demo.py
+
 [-] Building.
 	- Build darknet.
 		Cannot compile by g++ (C, not C++).
@@ -60,6 +89,8 @@
 			names = custom_objects.names
 			backup = backup/
 		custom_objects.cfg
+			If you changed width= or height= in your cfg-file, then new width and height must be divisible by 32.
+			If error Out of memory occurs then in .cfg-file you should increase subdivisions=16, 32 or 64.
 		custom_objects.names
 			object_name1
 		custom_objects_train.txt
@@ -82,3 +113,18 @@
 
 		Stop and Restart training from a checkpoint:
 		./darknet detector train cfg/coco.data cfg/yolov3.cfg backup/yolov3.backup -gpus 0,1,2,3
+
+[-] Trouble shooting.
+	- Input size error.
+		<error>
+			Layer before convolutional layer must output image.
+			darknet: ./src/utils.c:256: error: Assertion `0' failed.
+		<cause>
+			An input image is too small.
+
+	- Segmentation fault.
+		<error>
+			Resizing
+			Segmentation fault (core dumped)
+		<cause>
+			channels != 3 in the cfg-file.	
