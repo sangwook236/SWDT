@@ -1,3 +1,4 @@
 [-] General.
 	- Site.
-		http://smc.sourceforge.net/
+		http://smc.sourceforge.net
+		http://smc.sourceforge.net/SmcFaq.htm

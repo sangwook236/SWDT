@@ -1,0 +1,13 @@
+[-] General.
+	- Site.
+		https://www.gnu.org/software/gdb/
+		https://www.gnu.org/software/ddd/
+
+		https://www.gnu.org/software/gdb/documentation/
+
+		https://www.tutorialspoint.com/gnu_debugger
+		http://www.brendangregg.com/blog/2016-08-09/gdb-example-ncurses.html
+		https://betterexplained.com/articles/debugging-with-gdb/
+
+[-] Usage.
+	

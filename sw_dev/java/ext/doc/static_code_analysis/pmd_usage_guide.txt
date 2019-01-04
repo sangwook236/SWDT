@@ -1,0 +1,9 @@
+[-] General.
+	- Site.
+		http://pmd.sourceforge.net/
+
+		https://pmd.github.io/pmd-5.6.1/usage/running.html
+		https://pmd.github.io/pmd-5.6.1/usage/cpd-usage.html
+
+	- PMD for Eclipse Update Site.
+		https://sourceforge.net/projects/pmd/files/pmd-eclipse/update-site/

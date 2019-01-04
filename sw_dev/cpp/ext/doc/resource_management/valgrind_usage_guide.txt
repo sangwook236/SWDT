@@ -1,3 +1,7 @@
 [-] General.
 	- Site.
 		http://www.valgrind.org/
+
+		http://stackoverflow.com/questions/413477/is-there-a-good-valgrind-substitute-for-windows
+
+[-] Usage.
