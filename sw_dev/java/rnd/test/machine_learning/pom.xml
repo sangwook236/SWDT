@@ -26,6 +26,10 @@
 		</repository>
 		-->
 		<repository>
+			<id>rapidminer</id>
+			<url>https://maven.rapidminer.com/content/groups/public/</url>
+		</repository>
+		<repository>
 			<id>BeDataDriven</id>
 			<url>https://nexus.bedatadriven.com/content/repositories/public/</url>
 		</repository>
@@ -42,6 +46,11 @@
 			<groupId>weka</groupId>
 			<artifactId>weka</artifactId>
 			<version>3.7.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.rapidminer.studio</groupId>
+			<artifactId>rapidminer-studio-core</artifactId>
+			<version>LATEST</version>
 		</dependency>
 		<!--
 		<dependency>

@@ -9,6 +9,7 @@ import org.apache.spark.api.java.function.*;
 import scala.Tuple2;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class Spark_Main {
 
@@ -30,9 +31,9 @@ public class Spark_Main {
 		JavaRDD<String> words = input.flatMap(
 			new FlatMapFunction<String, String>()
 			{
-				public Iterable<String> call(String x)
+				public Iterator<String> call(String x)
 				{
-					return Arrays.asList(x.split(" "));
+					return (Iterator<String>) Arrays.asList(x.split(" "));
 				}
 			}
 		);
