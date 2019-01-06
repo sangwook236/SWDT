@@ -52,8 +52,8 @@ void utility()
 		data.push_back(5);
 
 		const std::list<int>::iterator p = data.begin();
-		const std::list<int>::iterator next = boost::next(p, 2);
-		const std::list<int>::iterator prev = boost::prior(next);
+		const std::list<int>::iterator next = std::next(p, 2);
+		const std::list<int>::iterator prev = std::prev(next);
 		std::cout << "next: " << *next << std::endl;
 		std::cout << "prev: " << *prev << std::endl;
 	}

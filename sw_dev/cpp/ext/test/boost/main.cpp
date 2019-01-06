@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
 			//state_machine_library();  // Not yet implemented.
 
 			//thread();
-			process();
+			//process();
 			//interprocess();  // Not yet implemented.
 		}
 
@@ -201,7 +201,7 @@ int main(int argc, char *argv[])
 		// High performance computing.
 		{
 			// Open Computing Language (OpenCL).
-			//compute();
+			compute();
 
 			// Message Passing Interface (MPI).
 			//mpi();

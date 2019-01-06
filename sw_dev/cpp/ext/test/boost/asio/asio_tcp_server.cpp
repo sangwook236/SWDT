@@ -109,8 +109,12 @@ public:
 	void start()
 	{
 		// put the socket into non-blocking mode.
+#if false
 		boost::asio::ip::tcp::socket::non_blocking_io non_blocking_io(true);
 		socket_.io_control(non_blocking_io);
+#else
+		socket_.non_blocking(true);
+#endif
 
 		start_operations();
 	}

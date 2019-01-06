@@ -1,0 +1,7 @@
+[-] General.
+	- Site.
+		https://www.khronos.org/registry/OpenCL/
+
+		https://github.com/KhronosGroup/OpenCL-Headers
+		https://github.com/KhronosGroup/OpenCL-CLHPP
+		https://github.com/boostorg/compute
