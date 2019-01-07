@@ -16,6 +16,9 @@
     <Filter Include="Source Files\swig">
       <UniqueIdentifier>{7b1ff2df-b119-4eec-8e7b-7474929db171}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\matlab">
+      <UniqueIdentifier>{515d6cfd-1805-43dc-8b1d-b5f483dcd260}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="library_autolinking.cpp">
@@ -26,6 +29,12 @@
     </ClCompile>
     <ClCompile Include="swig\swig_main.cpp">
       <Filter>Source Files\swig</Filter>
+    </ClCompile>
+    <ClCompile Include="matlab\matlab_main.cpp">
+      <Filter>Source Files\matlab</Filter>
+    </ClCompile>
+    <ClCompile Include="matlab\matlab_matio.cpp">
+      <Filter>Source Files\matlab</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

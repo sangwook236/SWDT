@@ -36,6 +36,8 @@
 		</Compiler>
 		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="matlab/matlab_main.cpp" />
+		<Unit filename="matlab/matlab_matio.cpp" />
 		<Unit filename="swig/swig_main.cpp" />
 		<Extensions>
 			<code_completion />

@@ -9,13 +9,11 @@ namespace local {
 }  // namespace local
 }  // unnamed namespace
 
-namespace my_matio {
+namespace my_matlab {
 
-}  // namespace my_matio
-
-int matio_main(int argc, char *argv[])
+void matio()
 {
 	throw std::runtime_error("Not yet implemented");
-
-	return 0;
 }
+
+}  // namespace my_matlab

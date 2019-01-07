@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_vision", "..\test\machine_vision\machine_vision_vs14.vcxproj", "{A2D1C37A-1DEA-46B8-9527-7383BA2884AF}"
 EndProject
@@ -27,8 +27,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_learning", "..\test\machine_learning\machine_learning_vs14.vcxproj", "{3CFD3B52-2108-44C4-8256-D316172F8D9C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_detection", "..\test\object_detection\object_detection_vs14.vcxproj", "{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "matlab", "..\test\matlab\matlab_vs14.vcxproj", "{A35C8053-9826-464E-8479-4CAE9F495BC3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pose_estimation", "..\test\pose_estimation\pose_estimation_vs14.vcxproj", "{97291D39-1AC2-4130-BE2C-39A442EBCC6D}"
 EndProject
@@ -174,14 +172,6 @@ Global
 		{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}.Release|Win32.Build.0 = Release|Win32
 		{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}.Release|x64.ActiveCfg = Release|x64
 		{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}.Release|x64.Build.0 = Release|x64
-		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Debug|Win32.Build.0 = Debug|Win32
-		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Debug|x64.ActiveCfg = Debug|x64
-		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Debug|x64.Build.0 = Debug|x64
-		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Release|Win32.ActiveCfg = Release|Win32
-		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Release|Win32.Build.0 = Release|Win32
-		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Release|x64.ActiveCfg = Release|x64
-		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Release|x64.Build.0 = Release|x64
 		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Debug|Win32.ActiveCfg = Debug|Win32
 		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Debug|Win32.Build.0 = Debug|Win32
 		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Debug|x64.ActiveCfg = Debug|x64
@@ -313,5 +303,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4418827D-7DAB-400A-9E34-B2FCEDE72390}
 	EndGlobalSection
 EndGlobal

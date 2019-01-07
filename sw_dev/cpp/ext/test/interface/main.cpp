@@ -9,12 +9,16 @@
 int main(int argc, char* argv[])
 {
 	int swig_main(int argc, char* argv[]);
+	int matlab_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
 	{
 		std::cout << "Simplified wrapper and interface generator (SWIG) -------------------" << std::endl;
 		retval = swig_main(argc, argv);  // Not yet implemented.
+
+		std::cout << "\nMATLAB interface ----------------------------------------------------" << std::endl;
+		retval = matlab_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

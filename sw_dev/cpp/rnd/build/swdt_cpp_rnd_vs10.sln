@@ -26,8 +26,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "machine_learning_vs10", "..
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_detection_vs10", "..\test\object_detection\object_detection_vs10.vcxproj", "{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "matlab_vs10", "..\test\matlab\matlab_vs10.vcxproj", "{A35C8053-9826-464E-8479-4CAE9F495BC3}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pose_estimation_vs10", "..\test\pose_estimation\pose_estimation_vs10.vcxproj", "{97291D39-1AC2-4130-BE2C-39A442EBCC6D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shape_analysis_vs10", "..\test\shape_analysis\shape_analysis_vs10.vcxproj", "{16274AAB-FDAC-4B9D-BB68-4BC26F20BAA0}"
@@ -118,10 +116,6 @@ Global
 		{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}.Debug|Win32.Build.0 = Debug|Win32
 		{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}.Release|Win32.ActiveCfg = Release|Win32
 		{66593EAE-0ACE-4B44-9370-E9DDCCCE4431}.Release|Win32.Build.0 = Release|Win32
-		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Debug|Win32.Build.0 = Debug|Win32
-		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Release|Win32.ActiveCfg = Release|Win32
-		{A35C8053-9826-464E-8479-4CAE9F495BC3}.Release|Win32.Build.0 = Release|Win32
 		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Debug|Win32.ActiveCfg = Debug|Win32
 		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Debug|Win32.Build.0 = Debug|Win32
 		{97291D39-1AC2-4130-BE2C-39A442EBCC6D}.Release|Win32.ActiveCfg = Release|Win32
