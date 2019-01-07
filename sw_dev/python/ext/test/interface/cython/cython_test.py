@@ -13,6 +13,26 @@ def cython_tutorial():
 def language_basic():
 	pass
 
+# REF [site] >> https://cython.readthedocs.io/en/latest/src/tutorial/external.html
+def cpp_function_example():
+	import pyarithmetic
+
+	a, b = 1, 2
+	c = pyarithmetic.add(a, b)
+	print('{} + {} = {}'.format(a, b, c))
+
+	a, b = 5, 3
+	c = pyarithmetic.sub(a, b)
+	print('{} - {} = {}'.format(a, b, c))
+
+	a, b = 2, 3
+	c = pyarithmetic.mul(a, b)
+	print('{} * {} = {}'.format(a, b, c))
+
+	a, b = 7, 2
+	c = pyarithmetic.div(a, b)
+	print('{} / {} = {}'.format(a, b, c))
+
 # REF [site] >> http://docs.cython.org/en/latest/src/userguide/wrapping_CPlusPlus.html
 def cpp_class_example():
 	import pyrectangle
@@ -35,6 +55,7 @@ def main():
 
 	language_basic()
 
+	cpp_function_example()
 	cpp_class_example()
 	cpp_stl_example()
 

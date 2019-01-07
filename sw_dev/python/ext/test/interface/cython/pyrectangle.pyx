@@ -1,4 +1,4 @@
-# distutils: language = c++
+# distutils: language=c++
 
 from rectangle cimport Rectangle
 
