@@ -106,6 +106,21 @@ void operation_using_mask_and_roi()
 	}
 }
 
+void gpu_test()
+{
+	cv::Mat img(cv::imread("../data/machine_vision/objects.jpg", CV_8UC1));
+
+	std::cout << "Start GPU test..." << std::endl;
+	const double start_time = (double)cv::getTickCount();
+	{
+		cv::cuda::GpuMat img_gpu;
+		img_gpu.upload(img);
+	}
+	const double elapsed_time = ((double)cv::getTickCount() - start_time) * 1000.0 / cv::getTickFrequency();
+	std::cout << "\tElapsed time: " << elapsed_time << " ms." << std::endl;
+	std::cout << "End GPU test." << std::endl;
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -266,6 +281,10 @@ int opencv_main(int argc, char *argv[])
 			canUseGPU = true;
 			std::cout << "GPU info:" << std::endl;
 			cv::cuda::printShortCudaDeviceInfo(cv::cuda::getDevice());
+
+			std::cout << "Initialize CUDA context." << std::endl;
+			// NOTE [info] >> The first call of any CUDA function is slow due to CUDA context initialization.
+			cv::cuda::GpuMat().create(1, 1, CV_8U);  // Just to initialize context.
 		}
 		else
 			std::cout << "GPU not found." << std::endl;
@@ -273,6 +292,8 @@ int opencv_main(int argc, char *argv[])
 
 		//local::basic_processing();
 		//local::operation_using_mask_and_roi();
+
+		if (canUseGPU) local::gpu_test();
 
 		//my_opencv::text_output();
 
