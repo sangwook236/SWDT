@@ -6,9 +6,17 @@
 
 //#pragma comment(lib, "swig.lib")
 
+//#pragma comment(lib, "libmat.lib")
+//#pragma comment(lib, "libmx.lib")
+//#pragma comment(lib, "libut.lib")
+
 #		else
 
 //#pragma comment(lib, "swig.lib")
+
+//#pragma comment(lib, "libmat.lib")
+//#pragma comment(lib, "libmx.lib")
+//#pragma comment(lib, "libut.lib")
 
 #		endif
 
