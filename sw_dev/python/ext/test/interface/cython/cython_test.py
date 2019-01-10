@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+# REF [site] >>
+#	http://docs.cython.org/en/latest/src/userguide/
+#	https://cython.readthedocs.io/en/latest/src/tutorial/
+
 # REF [site] >> http://docs.cython.org/en/latest/src/tutorial/cython_tutorial.html
 def cython_tutorial():
 	import helloworld
@@ -90,4 +94,3 @@ def main():
 
 if '__main__' == __name__:
 	main()
-

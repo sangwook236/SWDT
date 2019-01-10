@@ -19,5 +19,5 @@ def primes(int nb_primes):
 		n += 1
 
 	# Let's return the result in a python list:
-	result_as_list  = [prime for prime in p[:len_p]]
+	result_as_list = [prime for prime in p[:len_p]]
 	return result_as_list

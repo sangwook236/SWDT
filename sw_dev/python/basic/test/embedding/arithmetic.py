@@ -17,3 +17,6 @@ def div(a, b):
 	print('Will compute', a, '/', b)
 	c = a / b
 	return c
+
+# Usage:
+#	embedding.exe arithmetic add 3 2
