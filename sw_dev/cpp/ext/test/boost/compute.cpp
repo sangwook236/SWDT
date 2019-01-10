@@ -13,20 +13,20 @@
 namespace {
 namespace local {
 
-// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/tutorial.html
+// REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/tutorial.html
 void device_info()
 {
 	// Get the default device.
-	boost::compute::device device = boost::compute::system::default_device();
+	boost::compute::device device(boost::compute::system::default_device());
 
 	std::cout << "Device: " << device.name() << std::endl;
 
-	// Devices.
+	// Device.
 	const size_t numDevices = boost::compute::system::device_count();
 	std::cout << "#devices = " << numDevices << std::endl;
 
 	const std::vector<boost::compute::device> &devices = boost::compute::system::devices();
-	for (const auto dev: devices)
+	for (const auto &dev: devices)
 		std::cout << "\tDevice: " << dev.name() << std::endl;
 
 	boost::compute::device device0 = boost::compute::system::find_device(devices[0].name());
@@ -36,11 +36,11 @@ void device_info()
 	std::cout << "#platforms = " << numPlatforms << std::endl;
 
 	const std::vector<boost::compute::platform> &platforms = boost::compute::system::platforms();
-	for (const auto plat: platforms)
+	for (const auto &plat: platforms)
 		std::cout << "\tPlatform: " << plat.name() << std::endl;
 }
 
-// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/tutorial.html
+// REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/tutorial.html
 void transfer_data(boost::compute::context &context, boost::compute::command_queue &queue)
 {
 	// Create data array on host.
@@ -59,7 +59,7 @@ void transfer_data(boost::compute::context &context, boost::compute::command_que
 	boost::compute::copy(device_vector.begin(), device_vector.end(), host_vector.begin(), queue);
 }
 
-// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/tutorial.html
+// REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/tutorial.html
 void transform_data(boost::compute::context &context, boost::compute::command_queue &queue)
 {
 	// Generate random data on the host.
@@ -79,7 +79,7 @@ void transform_data(boost::compute::context &context, boost::compute::command_qu
 	boost::compute::copy(device_vector.begin(), device_vector.end(), host_vector.begin(), queue);
 }
 
-// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/advanced_topics.html
+// REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/advanced_topics.html
 void vector_data_type(boost::compute::context &context, boost::compute::command_queue &queue)
 {
 	// Point coordinates.
@@ -114,7 +114,7 @@ void vector_data_type(boost::compute::context &context, boost::compute::command_
 	std::cout << "Centroid: " << centroid << std::endl;
 }
 
-// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/advanced_topics.html
+// REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/advanced_topics.html
 void complex_type()
 {
 	// Create vector on device.
@@ -137,7 +137,7 @@ BOOST_COMPUTE_FUNCTION(int, add_four, (int x),
 });
 #endif
 
-// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/advanced_topics.html
+// REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/advanced_topics.html
 // REF [site] >> http://kylelutz.blogspot.kr/2014/03/custom-opencl-functions-in-c-with.html
 void custom_function(boost::compute::context &context, boost::compute::command_queue &queue)
 {
@@ -156,7 +156,7 @@ void custom_function(boost::compute::context &context, boost::compute::command_q
 	boost::compute::copy(device_vector.begin(), device_vector.end(), host_vector.begin(), queue);
 }
 
-// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/advanced_topics.html
+// REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/advanced_topics.html
 void lambda_expression(boost::compute::context &context, boost::compute::command_queue &queue)
 {
 	// Create data array on host.
@@ -166,17 +166,21 @@ void lambda_expression(boost::compute::context &context, boost::compute::command
 	boost::compute::vector<float> device_vector(host_vector.size(), context);
 	boost::compute::copy(host_vector.begin(), host_vector.end(), device_vector.begin(), queue);
 
-	boost::compute::count_if(device_vector.begin(), device_vector.end(), boost::compute::lambda::_1 % 2 == 1, queue);
+	//boost::compute::count_if(device_vector.begin(), device_vector.end(), 1 == boost::compute::lambda::_1 % 2, queue);  // NOTE [exception] >> Build Program Failure.
+	boost::compute::function<bool (int)> is_odd = 1 == boost::compute::lambda::_1 % 2;
+	boost::compute::count_if(device_vector.begin(), device_vector.end(), is_odd, queue);
+
 	boost::compute::transform(device_vector.begin(), device_vector.end(), device_vector.begin(), boost::compute::lambda::_1 * 3 - 4, queue);
 
-	boost::compute::function<int (int)> add_four = boost::compute::lambda::_1 + 4;
+	boost::compute::function<int (int)> add_two = boost::compute::lambda::_1 + 2;
+	boost::compute::transform(device_vector.begin(), device_vector.end(), device_vector.begin(), add_two, queue);
 }
 
-// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/advanced_topics.html
+// REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/advanced_topics.html
 void asynchronous_operation(boost::compute::context &context, boost::compute::command_queue &queue)
 {
 	// Create data array on host.
-	//std::array<float, 10> host_vector = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };  // NOTICE [info] >> Run-time error.
+	//std::array<float, 10> host_vector = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };  // NOTE [error] >> copy_async() is only supported for contiguous host iterators (compile-time error).
 	std::vector<float> host_vector = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
 	// Create a vector on the device.
@@ -196,7 +200,7 @@ void asynchronous_operation(boost::compute::context &context, boost::compute::co
 	boost::compute::sort(device_vector.begin(), device_vector.end(), queue);
 }
 
-// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/advanced_topics.html
+// REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/advanced_topics.html
 void performance_measure(boost::compute::context &context, boost::compute::command_queue &queue)
 {
 	// Generate random data on the host.
@@ -219,7 +223,7 @@ void performance_measure(boost::compute::context &context, boost::compute::comma
 	std::cout << "Time: " << duration.count() << " ms." << std::endl;
 }
 
-// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/advanced_topics.html
+// REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/advanced_topics.html
 void opencl_api_interoperability(boost::compute::context &ctx)
 {
 	// Query number of devices using the OpenCL API.
@@ -347,7 +351,7 @@ void boost_compute_example()
 		{
 			const auto start = std::chrono::high_resolution_clock::now();
 
-			boost::compute::command_queue queue = boost::compute::system::default_queue();
+			boost::compute::command_queue queue(boost::compute::system::default_queue());
 			boost::compute::mapped_view<int> mA(static_cast<const int *>(A.get()), BUFFER_SIZE), mB(static_cast<const int *>(B.get()), BUFFER_SIZE);
 			boost::compute::mapped_view<int> mC(C.get(), BUFFER_SIZE);
 			{
@@ -373,48 +377,57 @@ void boost_compute_example()
 		std::cerr << ex.what() << std::endl;
 	}
 }
+
 }  // namespace local
 }  // unnamed namespace
 
+// REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/reference.html
 void compute()
 {
-	// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/reference.html
-
-	local::device_info();
-
+	try
 	{
-		boost::compute::device device = boost::compute::system::default_device();
-		boost::compute::context context(device);
-		boost::compute::command_queue queue(context, device);
+		local::device_info();
 
-		local::transfer_data(context, queue);
-		local::transform_data(context, queue);
+		{
+			boost::compute::device device(boost::compute::system::default_device());
+			//boost::compute::context context(boost::compute::system::default_context());
+			boost::compute::context context(device);
+			//boost::compute::command_queue queue(boost::compute::system::default_queue());
+			boost::compute::command_queue queue(context, device);
 
-		local::vector_data_type(context, queue);
-		local::complex_type();
+			local::transfer_data(context, queue);
+			local::transform_data(context, queue);
 
-		local::custom_function(context, queue);
-		//local::lambda_expression(context, queue);  // NOTICE [error] >> Run-time error.
+			local::vector_data_type(context, queue);
+			local::complex_type();
 
-		local::asynchronous_operation(context, queue);
+			local::custom_function(context, queue);
+			local::lambda_expression(context, queue);
+
+			local::asynchronous_operation(context, queue);
+		}
+
+		{
+			boost::compute::device device(boost::compute::system::default_device());
+			boost::compute::context context(device);
+			boost::compute::command_queue queue(context, device, boost::compute::command_queue::enable_profiling);
+
+			local::performance_measure(context, queue);
+		}
+
+		{
+			// Create a context object.
+			boost::compute::context context(boost::compute::system::default_context());
+
+			// REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/porting_guide.html
+			local::opencl_api_interoperability(context);
+			// Boost.Compute provides a number of facilities to ease interoperability with other C and C++ libraries including OpenGL, OpenCV, Eigen, Qt, and VTK.
+			//	REF [site] >> http://www.boost.org/doc/libs/1_69_0/libs/compute/doc/html/boost_compute/interop.html
+		}
 	}
-
+	catch (const boost::compute::opencl_error &ex)
 	{
-		boost::compute::device device = boost::compute::system::default_device();
-		boost::compute::context context(device);
-		boost::compute::command_queue queue(context, device, boost::compute::command_queue::enable_profiling);
-
-		local::performance_measure(context, queue);
-	}
-
-	{
-		// Create a context object.
-		boost::compute::context context = boost::compute::system::default_context();
-
-		// REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/porting_guide.html
-		local::opencl_api_interoperability(context);
-		// Boost.Compute provides a number of facilities to ease interoperability with other C and C++ libraries including OpenGL, OpenCV, Eigen, Qt, and VTK.
-		//	REF [site] >> http://www.boost.org/doc/libs/1_61_0/libs/compute/doc/html/boost_compute/interop.html
+		std::cerr << "boost::compute::opencl_error caught: " << ex.what() << std::endl;
 	}
 
 	// Performance: Boost.Compute vs. OpenCL C++ Wrapper.
