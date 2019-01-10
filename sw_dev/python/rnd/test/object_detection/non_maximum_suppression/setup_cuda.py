@@ -67,7 +67,7 @@ def locate_cuda_in_unix_like_system():
     cudaconfig = {'home':home, 'nvcc':nvcc,
                   'include': pjoin(home, 'include'),
                   'lib64': pjoin(home, 'lib64')}
-    for k, v in cudaconfig.iteritems():
+    for k, v in cudaconfig.items():
         if not os.path.exists(v):
             raise EnvironmentError('The CUDA %s path could not be located in %s' % (k, v))
 
@@ -234,29 +234,34 @@ class custom_build_ext_cuda_windows(build_ext):
 
         return cmd
 
+if 'posix' == os.name:
+    # this syntax is specific to this build system
+    # we're only going to use certain compiler args with nvcc and not with
+    # gcc the implementation of this trick is in customize_compiler() below
+    extra_compile_args={
+        'gcc': [],
+        'nvcc': ['-arch=sm_35', '--ptxas-options=-v', '-c', '--compiler-options=-fPIC']
+    }
+else:
+    extra_compile_args={}
+
 ext_modules = [
     Extension(
         'cpu_nms',
         sources=['cpu_nms.pyx'],
-        extra_compile_args={cl_bin: []},
-        include_dirs=[numpy_include]
+        include_dirs=[numpy_include],
+        extra_compile_args=extra_compile_args,
+        language='c++',
     ),
     Extension(
 	    'gpu_nms',
         sources=['nms_kernel.cu', 'gpu_nms.pyx'],
-        include_dirs=[numpy_include, CUDA['include']]
+        include_dirs=[numpy_include, CUDA['include']],
         library_dirs=[CUDA['lib64']],
         libraries=['cudart'],
-        language='c++',
         #runtime_library_dirs=[pjoin(CUDA['home'], 'bin')],
-        # this syntax is specific to this build system
-        # we're only going to use certain compiler args with nvcc and not with
-        # gcc the implementation of this trick is in customize_compiler() below
-        #extra_compile_args={cl_bin: [],
-        #                    nvcc_bin: ['-arch=sm_35',
-        #                             '--ptxas-options=-v',
-        #                             '-c',
-        #                             '--compiler-options=-fPIC']},
+        extra_compile_args=extra_compile_args,
+        language='c++',
     ),
 ]
 

@@ -7,6 +7,16 @@ import numpy as np
 # REF [site] >>
 #	https://cython.readthedocs.io/en/latest/src/userguide/source_files_and_compilation.html
 
+def find_in_path(name, path):
+    "Find a file in a search path"
+    # Adapted fom
+    # http://code.activestate.com/recipes/52224-find-a-file-given-a-search-path/
+    for dir in path.split(os.pathsep):
+        binpath = os.path.join(dir, name)
+        if os.path.exists(binpath):
+            return os.path.abspath(binpath)
+    return None
+
 try:
     numpy_include = np.get_include()
 except AttributeError:
@@ -44,7 +54,7 @@ def locate_cuda_in_unix_like_system():
     cudaconfig = {'home': home, 'nvcc': nvcc,
                   'include': os.path.join(home, 'include'),
                   'lib64': os.path.join(home, 'lib64')}
-    for k, v in cudaconfig.iteritems():
+    for k, v in cudaconfig.items():
         if not os.path.exists(v):
             raise EnvironmentError('The CUDA %s path could not be located in %s' % (k, v))
 
@@ -65,7 +75,7 @@ CUDA = locate_cuda()
 
 # Compile nms_kernel.cu.
 if 'posix' == os.name:
-	subprocess.call([CUDA['nvcc'], '-c', 'nms_kernel.cu'])
+	subprocess.call([CUDA['nvcc'], '-c', 'nms_kernel.cu', '-arch=sm_35', '--ptxas-options=-v', '--compiler-options=-fPIC'])
 	nms_kernel_obj = 'nms_kernel.o'
 else:
 	subprocess.call([CUDA['nvcc'], '-c', 'nms_kernel.cu', '--compiler-options=/nologo,/Ox,/W3,/GL,/DNDEBUG,/MD,/EHsc'])
@@ -75,7 +85,8 @@ ext_modules=[
 	Extension(
 		'cpu_nms',
 		sources=['cpu_nms.pyx'],
-		include_dirs=[numpy_include]
+		include_dirs=[numpy_include],
+        language='c++',
 	),
 	Extension(
 		'gpu_nms',
