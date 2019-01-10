@@ -42,6 +42,11 @@ import setuptools.command.build_py
 import distutils.command.build
 import distutils.command.clean
 
+try:
+    numpy_include = np.get_include()
+except AttributeError:
+    numpy_include = np.get_numpy_include()
+
 class custom_build_ext(build_ext):
     def build_extensions(self):
 		self.compiler.src_extensions.append('.cu')
@@ -56,18 +61,6 @@ class custom_build_ext(build_ext):
 		# Do something.
 		spawn(cmd, search_path, verbose, dry_run)
 
-ext_modules = [
-	Extension(
-		'cython_ext',
-		sources=[
-			'helloworld.pyx', 'primes_c.pyx', 'primes_cpp.pyx',
-			'pyclibrary.pyx', 'pycpplibrary.pyx',
-			'pyarithmetic.pyx', 'pyrectangle.pyx', 'stl_cpp.pyx'
-		],
-		#libraries=['m']  # Unix-like specific.
-	),
-]
-
 cmdclass = {
     'build': build,
     'build_py': build_py,
@@ -78,46 +71,42 @@ cmdclass = {
     'install': install,
     'clean': clean,
 }
-
-# Usage:
-#	python setup.py build_ext --inplace
-
-setup(
-    name='extending',
-	ext_modules=ext_modules,
-    cmdclass=cmdclass,
-)
 """
 
-simple_extending_mod = Extension(
-	'simple_extending',
-	sources=['simple_extending.cpp'],
-	include_dirs=['D:/util/Anaconda3/include'],
-	library_dirs=['D:/util/Anaconda3/libs'],
-	#libraries=['python36'],
-)
-greeting_mod = Extension(
-	'greeting',
-	sources=['greeting.cpp'],
-	include_dirs=['D:/util/Anaconda3/include'],
-	library_dirs=['D:/util/Anaconda3/libs'],
-	#libraries=['python36'],
-)
-greeting_using_boost_mod = Extension(
-	'greeting_using_boost',
-	sources=['greeting_using_boost.cpp'],
-	#define_macros=[('PY_MAJOR_VERSION', '3'), ('PY_MINOR_VERSION', '6')],
-	include_dirs=['D:/util/Anaconda3/include', 'D:/usr/local/include'],
-	library_dirs=['D:/util/Anaconda3/libs', 'D:/usr/local/lib'],
-	#libraries=['python36', 'boost_python36-vc141-mt-x64-1_67'],
-	extra_compile_args=extra_compile_args,
-	extra_link_args=extra_link_args,
-	language='c++11',
-)
+ext_modules = [
+	Extension(
+		'simple_extending',
+		sources=['simple_extending.cpp'],
+		include_dirs=['D:/util/Anaconda3/include'],
+		library_dirs=['D:/util/Anaconda3/libs'],
+		#libraries=['python36'],
+	)
+	Extension(
+		'greeting',
+		sources=['greeting.cpp'],
+		include_dirs=['D:/util/Anaconda3/include'],
+		library_dirs=['D:/util/Anaconda3/libs'],
+		#libraries=['python36'],
+	)
+	Extension(
+		'greeting_using_boost',
+		sources=['greeting_using_boost.cpp'],
+		#extra_objects=['foo.obj'],
+		#define_macros=[('PY_MAJOR_VERSION', '3'), ('PY_MINOR_VERSION', '6')],
+		#include_dirs=['D:/util/Anaconda3/include', 'D:/usr/local/include', numpy_include],
+		include_dirs=['D:/util/Anaconda3/include', 'D:/usr/local/include'],
+		library_dirs=['D:/util/Anaconda3/libs', 'D:/usr/local/lib'],
+		#libraries=['python36', 'boost_python36-vc141-mt-x64-1_67'],
+		extra_compile_args=extra_compile_args,
+		extra_link_args=extra_link_args,
+		language='c++11',
+	),
+]
 
 # Usage:
 #	python setup.py build
-#		.pyd files are generated instead of .lib, .so, or .dll files.
+#		.so (Linux) or .pyd (Windows) files are generated.
+#		APIs can be used in Python if there are each .pyx file and its corresponding binary file (.so or .pyd file).
 #		Do not need to build any additional shared or static library.
 #
 #	python setup.py install
@@ -131,5 +120,6 @@ setup(
     author='Sang-Wook Lee',
 	author_email='sangwook236@gmail.com',
 	url='http://www.sangwook.com/',
-    ext_modules=[simple_extending_mod, greeting_mod, greeting_using_boost_mod],
+    ext_modules=ext_modules,
+    #cmdclass=cmdclass,
 )

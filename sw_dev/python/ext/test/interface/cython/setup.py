@@ -14,6 +14,6 @@ setup(
 		['helloworld.pyx', 'primes_c.pyx', 'primes_cpp.pyx',
 		 'pyclibrary.pyx', 'pycpplibrary.pyx',
 		 'pyarithmetic.pyx', 'pyrectangle.pyx', 'stl_cpp.pyx'],
-		annotate=True
+		annotate=False, quiet=True
 	),
 )
