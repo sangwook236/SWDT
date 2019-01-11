@@ -1,5 +1,6 @@
 # distutils: language = c++
 
+# In rectangle.pxd.
 from rectangle cimport Rectangle
 
 cdef class PyRectangle:

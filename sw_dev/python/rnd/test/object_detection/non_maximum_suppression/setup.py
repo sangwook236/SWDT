@@ -24,11 +24,11 @@ except AttributeError:
 
 def locate_cuda():
     if 'posix' == os.name:
-        return locate_cuda_in_unix_like_system()
+        return locate_cuda_in_linux()
     else:
         return locate_cuda_in_windows()
 
-def locate_cuda_in_unix_like_system():
+def locate_cuda_in_linux():
     """Locate the CUDA environment on the system
 
     Returns a dict with keys 'home', 'nvcc', 'include', and 'lib64'
@@ -75,23 +75,40 @@ CUDA = locate_cuda()
 
 # Compile nms_kernel.cu.
 if 'posix' == os.name:
-	subprocess.call([CUDA['nvcc'], '-c', 'nms_kernel.cu', '-arch=sm_35', '--ptxas-options=-v', '--compiler-options=-fPIC'])
-	nms_kernel_obj = 'nms_kernel.o'
+	subprocess.call([CUDA['nvcc'], '-c', 'nms_kernel.cu', 'parallel_nms_gpu.cu', '-arch=sm_35', '--ptxas-options=-v', '--compiler-options=-fPIC'])
+	gpu_nms_kernel_obj = 'nms_kernel.o'
+	parallel_nms_gpu_obj = 'parallel_nms_gpu.o'
 else:
-	subprocess.call([CUDA['nvcc'], '-c', 'nms_kernel.cu', '--compiler-options=/nologo,/Ox,/W3,/GL,/DNDEBUG,/MD,/EHsc'])
-	nms_kernel_obj = 'nms_kernel.obj'
+	subprocess.call([CUDA['nvcc'], '-c', 'nms_kernel.cu', 'parallel_nms_gpu.cu', '--compiler-options=/nologo,/Ox,/W3,/GL,/DNDEBUG,/MD,/EHsc'])
+	gpu_nms_kernel_obj = 'nms_kernel.obj'
+	parallel_nms_gpu_obj = 'parallel_nms_gpu.obj'
 
 ext_modules=[
 	Extension(
 		'cpu_nms',
 		sources=['cpu_nms.pyx'],
 		include_dirs=[numpy_include],
-        language='c++',
+		language='c++',
 	),
 	Extension(
 		'gpu_nms',
 		sources=['gpu_nms.pyx'],
-		extra_objects=[nms_kernel_obj],
+		extra_objects=[gpu_nms_kernel_obj],
+		include_dirs=[numpy_include, CUDA['include']],
+		library_dirs=[CUDA['lib64']],
+		libraries=['cudart'],
+		language='c++',
+	),
+	Extension(
+		'py_parallel_nms_cpu',
+		sources=['py_parallel_nms_cpu.pyx'],
+		include_dirs=[numpy_include],
+		language='c++',
+	),
+	Extension(
+		'py_parallel_nms_gpu',
+		sources=['py_parallel_nms_gpu.pyx'],
+		extra_objects=[parallel_nms_gpu_obj],
 		include_dirs=[numpy_include, CUDA['include']],
 		library_dirs=[CUDA['lib64']],
 		libraries=['cudart'],
