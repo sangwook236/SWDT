@@ -54,7 +54,7 @@ void normalized_cross_correlation()
 	templ_resized.copyTo(img(cv::Range((int)pos_y, (int)pos_y + TEMPL_HEIGHT), cv::Range((int)pos_x, (int)pos_x + TEMPL_WIDTH)));
 #endif
 
-	// cv::TM_SQDIFF, cv::TM_SQDIFF_NORMED, cv::TM_CCORR, cv::TM_CCORR_NORMED, cv::TM_CCOEFF, cv::TM_CCOEFF_NORMED
+	// cv::TM_SQDIFF, cv::TM_SQDIFF_NORMED, cv::TM_CCORR, cv::TM_CCORR_NORMED, cv::TM_CCOEFF, cv::TM_CCOEFF_NORMED.
 	const int comparison_method = cv::TM_CCOEFF_NORMED;
 
 	// Perform NCC.
