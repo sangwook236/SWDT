@@ -3,8 +3,8 @@
 import cv2
 
 def main():
-	image_filepath = './B004_1.jpg'
-	#image_filepath = './B008_1.jpg'
+	image_filepath = '../../../data/machine_vision/B004_1.jpg'
+	#image_filepath = '../../../data/machine_vision/B008_1.jpg'
 
 	# Read gray image.
 	img = cv2.imread(image_filepath, cv2.IMREAD_GRAYSCALE)

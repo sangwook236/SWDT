@@ -483,6 +483,8 @@ namespace my_opencv {
 
 void contour()
 {
+	// REF [site] >> https://docs.opencv.org/4.0.1/d9/d8b/tutorial_py_contours_hierarchy.html
+	
 	local::special_cases();
 	cv::waitKey(0);
 
