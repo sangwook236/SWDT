@@ -3,6 +3,9 @@
 		https://bazel.build/
 		https://github.com/bazelbuild/bazel
 
+		https://docs.bazel.build/versions/master/build-ref.html
+		https://docs.bazel.build/versions/master/external.html
+
 [-] Usage.
 	- Install.
 		Windows:
@@ -19,9 +22,9 @@
 		Windows:
 			set PATH=${MSYS_HOME}/usr/bin;${MINGW_HOME}/mingw64/bin;${BAZEL_HOME};%PATH%
 	- Create a build file.
-		https://bazel.build/versions/master/docs/getting-started.html
-		https://bazel.build/versions/master/docs/tutorial/cpp.html
-		https://bazel.build/versions/master/docs/tutorial/java.html
+		https://docs.bazel.build/versions/master/getting-started.html
+		https://docs.bazel.build/versions/master/tutorial/cpp.html
+		https://docs.bazel.build/versions/master/tutorial/java.html
 	- Build.
 		bazel build :hello-world
 		bazel build main:hello-world

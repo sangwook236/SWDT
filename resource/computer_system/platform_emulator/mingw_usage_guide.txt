@@ -66,7 +66,7 @@
 		For packages which are not installed by mingw-get.exe, find them in the sites below.
 			http://sourceforge.net/projects/mingw/files/MSYS/Extension/
 			http://sourceforge.net/projects/mingw/files/MSYS/Base/
-		Copy downloaded files, uncompress, and copy to ${MSYS_HOME}/bin.
+		Copy, uncompress, and copy downloaded files to ${MSYS_HOME}/bin.
 
 
 [-] Toolchain (MinGW-w64).
@@ -81,7 +81,7 @@
 		x86_64-w64-mingw32: MinGW-w64, 64bit.
 			https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/
 			https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/6.2.0/threads-posix/seh/
-				==> Manually uncpress.
+				==> Manually uncompress.
 			==> Install in ${MINGW_INSTALL_DIR}/mingw64.
 
 	- Files & directories.
@@ -122,7 +122,7 @@
 			pacman -Su
 
 	- Mount MinGW directory.
-		mount c:/mingw /mingw
+		mount D:/util/mingw /mingw
 			For MSYS:
 				mount D:/util/mingw-w64/i686-5.3.0-posix-dwarf-rt_v4-rev0/mingw32 /mingw
 			For MSYS2 MinGW 32-bit:
@@ -142,9 +142,9 @@
 		Use mingw32-make.exe.
 			make.exe (X) ==> mingw32-make.exe (O)
 	- Set the GNU runtime directory in PATH. 
-		set path=${MINGW_HOME}/bin;${MSYS_ROOT}/bin;%path%
-		set path=${MINGW_HOME}/bin;${CYGWIN_HOME}/bin;%path%
-		set path=${MINGW_HOME}/bin;${GNUWIN32_HOME}/bin;%path%
+		set PATH=${MINGW_HOME}/bin;${MSYS_ROOT}/bin;%PATH%
+		set PATH=${MINGW_HOME}/bin;${CYGWIN_HOME}/bin;%PATH%
+		set PATH=${MINGW_HOME}/bin;${GNUWIN32_HOME}/bin;%PATH%
 
 	- Set environment.
 		a) When using MSYS terminal.
@@ -154,7 +154,7 @@
 			(Optional) Set the MinGW directory in PATH.
 				Use 'export PATH'.
 				export PATH=${MINGW_HOME}/bin:$PATH
-					e.g.) export PATH=d/MyProgramFiles2/MinGW/bin:$PATH
+					e.g.) export PATH=d/util/MinGW/bin:$PATH
 			==> It is the best to use MSYS.
 		b) When using MinGW terminal.
 			Run MinGW terminal.
@@ -162,13 +162,21 @@
 					Run ${MINGW_HOME}/mingw-w64.bat.
 				==> Use command prompt.
 			(Optional) Set the GNU runtime directory in PATH.
-				Use 'set path'.
+				Use 'set PATH'.
 				Refer to "Set the GNU runtime directory in PATH".
 		c) When using (Visual Studio) command prompt.
 			Run (Visual Studio) command prompt.
 			Set the GNU runtime directory in PATH.
-				Use 'set path'.
+				Use 'set PATH'.
 				Refer to "Set the GNU runtime directory in PATH".
+
+	- Set installation prefix.
+		In case of MinGW or MSYS, there is no /usr or /usr/local directory.
+		Therefore, use the following directory as an installation prefix.
+			--prefix=${MINGW_HOME}
+		Then installed files are added to the following directories.
+			${MINGW_HOME}/include or ${MSYS_ROOT}/include
+			${MINGW_HOME}/lib or ${MSYS_ROOT}/lib
 
 [-] Building (Terminal).
 	- Set environment.
@@ -177,10 +185,10 @@
 	- Run make.
 		In MSYS2 and MinGW terminal:
 			mingw32-make
-			mingw32-make PREFIX=${INSTAL_PREFIX} install
+			mingw32-make PREFIX=${INSTALL_PREFIX} install
 		In MSYS terminal:
 			make
-			make PREFIX=${INSTAL_PREFIX} install
+			make PREFIX=${INSTALL_PREFIX} install
 
 [-] Building (CMake).
 	- Set environment.
@@ -213,22 +221,14 @@
 			<warning> Disabling CMAKE_GNUtoMS option because CMAKE_GNUtoMS_VCVARS is not set
 			==> Set the 'CMAKE_GNUtoMS_VCVARS' option to '${VISUALSTUDIO_HOME}/VC/bin/vcvars32.bat'.
 		Set BUILD_SHARED_LIBS to ON.
-			If this option is not set, a static library (a) is generated.
+			If this option is not set, a static library (.a) is generated.
 		Set CMAKE_DEBUG_POSTFIX to d.
 	- Change directory.
 		cd cmake-build-directory.
 	- Run make.
 		In MSYS2 and MinGW terminal:
 			mingw32-make
-			mingw32-make PREFIX=${INSTAL_PREFIX} install
+			mingw32-make PREFIX=${INSTALL_PREFIX} install
 		In MSYS terminal:
 			make
-			make PREFIX=${INSTAL_PREFIX} install
-
-[-] Installation Prefix Setting.
-	- MinGW나 MSYS의 경우 /usr 이나 /usr/local directory가 없음.
-		따라서, software installation prefix로 아래의 directory를 사용하여야 함.
-			--prefix=${MINGW_HOME}
-		그러면 아래의 directory에 installation file이 추가.
-			${MINGW_HOME}/include or ${MSYS_ROOT}/include
-			${MINGW_HOME}/lib or ${MSYS_ROOT}/lib
+			make PREFIX=${INSTALL_PREFIX} install
