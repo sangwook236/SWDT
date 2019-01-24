@@ -99,14 +99,30 @@ def map_filter_reduce():
 	product = reduce((lambda x, y: x * y), items)
 	print('product =', product)
 
+def func(i, f, s):
+	print(i, f, s)
+
+class func_obj(object):
+	def __init__(self, ii):
+		self._ii = ii
+
+	def __call__(self, i, f, s):
+		print(i + self._ii, f, s)
+
+def caller_func(callee):
+	callee(1, 2.0, 'abc')
+
 def main():
-	platform_test()
+	#platform_test()
 
-	assert_test()
-	exception_test()
+	#assert_test()
+	#exception_test()
 
-	lambda_expression()
-	map_filter_reduce()
+	#lambda_expression()
+	#map_filter_reduce()
+
+	caller_func(func)
+	caller_func(func_obj(2))
 
 #%%------------------------------------------------------------------
 
