@@ -99,11 +99,15 @@ def pool_async_2():
 		print(async_result_list)
 
 def func1(lock, i):
+	"""
 	lock.acquire()
 	try:
 		print('hello world', i)
 	finally:
 		lock.release()
+	"""
+	with lock:
+		print('hello world', i)
 
 # REF [site] >> https://docs.python.org/3.7/library/multiprocessing.html
 def synchronization():
@@ -159,7 +163,7 @@ class Adder(object):
 	def process(self, num):
 		return num + self._offset
 
-def worker0_func(args):
+def worker0_proc(args):
 	ii, ff, ss, job = args
 
 	worker_id = 0
@@ -176,7 +180,7 @@ def worker0_func(args):
 
 	print('\t{}: End worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
 
-def worker1_func(ii, ff, ss, job):
+def worker1_proc(ii, ff, ss, job):
 	worker_id = 1
 	#logger = logging.getLogger('python_mp_logging_test')
 	#logger.exception('\t{}: Start worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
@@ -191,7 +195,7 @@ def worker1_func(ii, ff, ss, job):
 
 	print('\t{}: End worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
 
-def worker2_func(ii, ff, ss, num_jobs):
+def worker2_proc(ii, ff, ss, num_jobs):
 	worker_id = 2
 	for job in range(num_jobs):
 		#logger = logging.getLogger('python_mp_logging_test')
@@ -207,7 +211,7 @@ def worker2_func(ii, ff, ss, num_jobs):
 
 		print('\t{}: End worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
 
-def worker3_func(lock, ii, ff, ss, job):
+def worker3_proc(lock, ii, ff, ss, job):
 	worker_id = 3
 	#logger = logging.getLogger('python_mp_logging_test')
 	#logger.exception('\t{}: Start worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
@@ -222,7 +226,7 @@ def worker3_func(lock, ii, ff, ss, job):
 
 	print('\t{}: End worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
 
-def worker4_func(args):
+def worker4_proc(args):
 	adder, ii, ff, ss, job = args
 
 	worker_id = 4
@@ -239,7 +243,7 @@ def worker4_func(args):
 
 	print('\t{}: End worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
 
-def worker5_func(adder, ii, ff, ss, job):
+def worker5_proc(adder, ii, ff, ss, job):
 	worker_id = 5
 	#logger = logging.getLogger('python_mp_logging_test')
 	#logger.exception('\t{}: Start worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
@@ -273,19 +277,19 @@ def run_worker_processes(lock, num_processes):
 	timeout = None
 	with mp.Pool(processes=num_processes, initializer=init, initargs=(lock,)) as pool:
 		num_jobs = np.random.randint(2, 8)
-		worker0_results = pool.map_async(worker0_func, [(0, 0.0, 'a0', job) for job in range(num_jobs)])
+		worker0_results = pool.map_async(worker0_proc, [(0, 0.0, 'a0', job) for job in range(num_jobs)])
 		num_jobs = np.random.randint(2, 8)
-		worker1_results = pool.map_async(partial(worker1_func, 1, 1.0, 'b1'), [job for job in range(num_jobs)])
+		worker1_results = pool.map_async(partial(worker1_proc, 1, 1.0, 'b1'), [job for job in range(num_jobs)])
 		num_jobs = np.random.randint(2, 8)
-		worker2_results = pool.apply_async(worker2_func, args=(2, 2.0, 'c2', num_jobs))
+		worker2_results = pool.apply_async(worker2_proc, args=(2, 2.0, 'c2', num_jobs))
 		# Passes a mp.Lock object as an argument.
 		#num_jobs = np.random.randint(2, 8)
-		#worker3_results = pool.map_async(partial(worker3_func, lock, 3, 3.0, 'd3'), [job for job in range(num_jobs)])  # RuntimeError: Lock objects should only be shared between processes through inheritance.
+		#worker3_results = pool.map_async(partial(worker3_proc, lock, 3, 3.0, 'd3'), [job for job in range(num_jobs)])  # RuntimeError: Lock objects should only be shared between processes through inheritance.
 		# Passes a Class object as an argument.
 		num_jobs = np.random.randint(2, 8)
-		worker4_results = pool.map_async(worker4_func, [(adder, 4, 4.0, 'e4', job) for job in range(num_jobs)])
+		worker4_results = pool.map_async(worker4_proc, [(adder, 4, 4.0, 'e4', job) for job in range(num_jobs)])
 		num_jobs = np.random.randint(2, 8)
-		worker5_results = pool.map_async(partial(worker5_func, adder, 5, 5.0, 'f5'), [job for job in range(num_jobs)])
+		worker5_results = pool.map_async(partial(worker5_proc, adder, 5, 5.0, 'f5'), [job for job in range(num_jobs)])
 
 		worker0_results.get(timeout)
 		worker1_results.get(timeout)
