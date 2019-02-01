@@ -21,14 +21,8 @@ def image_reading_and_writing():
 	cv2.imshow('Image', img)
 	cv2.waitKey(0)
 
-def image_processing():
-	raise NotImplementedError()
-
 def main():
 	image_reading_and_writing()
-
-	# REF [site] >> https://docs.opencv.org/4.0.1/d2/d96/tutorial_py_table_of_contents_imgproc.html
-	image_processing()
 
 #%%------------------------------------------------------------------
 
