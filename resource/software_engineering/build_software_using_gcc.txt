@@ -1,4 +1,4 @@
-[-] Build.
+[-] Building.
 	- Basic procedure.
 		1. Go to the root directory.
 		2. Run './configure'.

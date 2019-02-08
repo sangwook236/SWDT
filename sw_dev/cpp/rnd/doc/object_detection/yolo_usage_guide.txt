@@ -4,7 +4,7 @@
 		https://github.com/AlexeyAB/darknet
 
 [-] Usage.
-	- Detect.
+	- Detect (C/C++).
 		wget https://pjreddie.com/media/files/yolov3.weights
 		wget https://pjreddie.com/media/files/yolov3-tiny.weights
 
@@ -16,6 +16,14 @@
 
 		When using a webcam:
 		./darknet detector demo cfg/coco.data cfg/yolov3.cfg yolov3.weights
+
+	- Detect (Python).
+		export LD_LIBRARY_PATH+=${DARKNET_HOME}
+			or copy libdarknet.so to the working directory.
+		export PYTHONPATH+=${DARKNET_HOME}/python
+
+		python darknet_basic.py
+			${SWDT_PYTHON_HOME}/rnd/test/machine_learning/darknet/darknet_basic.py
 
 [-] Installation (YOLO3-4-Py).
 	https://github.com/madhawav/YOLO3-4-Py

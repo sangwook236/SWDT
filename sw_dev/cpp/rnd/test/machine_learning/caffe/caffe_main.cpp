@@ -1,5 +1,8 @@
+#define CPU_ONLY 1
+
 //#include "stdafx.h"
 #include <iostream>
+#include <caffe/caffe.hpp>
 
 
 namespace {
@@ -25,10 +28,16 @@ void classification_example();
 
 int caffe_main(int argc, char *argv[])
 {
-    // Train.
-    //  Use the executable, caffe.
+#ifdef CPU_ONLY
+    caffe::Caffe::set_mode(caffe::Caffe::CPU);
+#else
+    caffe::Caffe::set_mode(caffe::Caffe::GPU);
+#endif
 
-    // Predict.
+	// Train.
+	//  Use the executable, caffe.
+
+	// Predict.
 	//my_caffe::classification_example();
 
 	// Feature extraction.

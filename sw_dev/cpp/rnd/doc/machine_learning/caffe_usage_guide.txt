@@ -36,8 +36,8 @@
 			cd ${CAFFE_HOME}/python
 		Install the packages.
 			pip install -r requirements.txt
-		Run a python interpreter.
-			import caffe
+		Run a Python interpreter.
+			python -c "import caffe"
 
 [-] Deployment.
 	REF [site] >> https://github.com/BVLC/caffe/wiki/Using-a-Trained-Network:-Deploy
@@ -151,7 +151,7 @@
 		REF [file] >> ${CAFFE_HOME}/examples/cifar10/convert_cifar_data.cpp
 		REF [file] >> ${CAFFE_HOME}/tools/convert_imageset.cpp
 
-[-] Building (CMake).
+[-] Building (CMake, Windows).
 	NOTICE [info] >> Fail to be built in VC.
 
 	- The name of a build directory for CMake should be "build".
@@ -172,13 +172,42 @@
 	- Build.
 	- Install.
 
-[-] Trouble shooting.
+[-] Building (Ubuntu).
+	- Make.
+		mkdir build
+		cd build
+
+		Install protobuf.
+			conda install protobuf
+
+		Install dateutil.
+			conda install dateutil
+			pip install python-dateutil
+
+		cmake ..
+			In order to edit the configuration of CMake, use cmake-gui.
+			Use GCC ver 6, CUDA 9.x, and Python 3.
+			Use protobuf and HDF5 in Python virual environment.
+
+		make -j8 all
+			pycaffe is built too.
+		make -j8 runtest
+		make install
+
+		make pycaffe (?)
+		make distribute (?)
+
+		Set LD_LIBRARY_PATH to libcaffe.so.
+			export LD_LIBRARY_PATH+=${CAFFE_HOME}/build/install/lib
+		sudo ldconfig (?)
+
+[-] Troubleshooting.
 	- PyCaffe import error.
 		<error>
-			dynamic module does not define module export function (PyInit__caffe)
+			ImportError: dynamic module does not define module export function (PyInit__caffe)
 		<solution>
 			Set PYTHONPATH to ${CAFFE_HOME}/python.
-			'python2-numpy' has to be installed from 'apt-get' rather than from 'pip2'.
+			'python2-numpy' has to be installed from 'apt-get' rather than from 'pip2'. (?)
 			'_caffe.so' exists in the '${CAFFE_HOME}/python/caffe' folder.
 	- CUDA architecture error.
 		<error>
@@ -187,3 +216,24 @@
 			Set CUDA_ARCH_NAME to Kepler, Maxwell, or Pascal. (?)
 			CUDA architecture:
 				Fermi -> Kepler -> Maxwell -> Pascal -> Volta.
+	- CMake dependency error.
+		<error>
+			CMake Error at CMakeLists.txt:107 (add_dependencies):
+				The dependency target "pycaffe" of target "pytest" does not exist.
+		<solution>
+			Move the following sentences from ${CAFFE_HOME}/CMakeLists.txt to ${CAFFE_HOME}/python/CMakeLists.txt.
+				# ---[ pytest target
+				if(BUILD_python)
+					add_custom_target(pytest COMMAND python${python_version} -m unittest discover -s caffe/test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/python )
+					add_dependencies(pytest pycaffe)
+				endif()
+	- CMake regexp error.
+		<error>
+			CMake Error at cmake/Dependencies.cmake:156 (STRING):
+				STRING sub-command REGEX, mode REPLACE needs at least 6 arguments total to command.
+		<solution>
+			Fix ${CAFFE_HOME}/cmake/Dependencies.cmke.
+			<before>
+				STRING( REGEX REPLACE "[^0-9]" "" boost_py_version ${version} )
+			<after>
+				STRING( REGEX REPLACE "[^0-9]" "" boost_py_version "${version}" )

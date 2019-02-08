@@ -38,4 +38,3 @@
 
 		e.g.)
 			ldd /usr/ls
-

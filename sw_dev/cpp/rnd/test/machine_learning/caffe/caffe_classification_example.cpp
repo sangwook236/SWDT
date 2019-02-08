@@ -1,5 +1,3 @@
-#define CPU_ONLY 1
-
 //#include "stdafx.h"
 #include <caffe/caffe.hpp>
 #include <opencv2/core/core.hpp>
@@ -46,12 +44,6 @@ private:
 
 Classifier::Classifier(const std::string &model_file, const std::string &trained_file, const std::string &mean_file, const std::string &label_file)
 {
-#ifdef CPU_ONLY
-    caffe::Caffe::set_mode(caffe::Caffe::CPU);
-#else
-    caffe::Caffe::set_mode(caffe::Caffe::GPU);
-#endif
-
     // Load the network.
     net_.reset(new caffe::Net<float>(model_file, caffe::TEST));
     net_->CopyTrainedLayersFrom(trained_file);
@@ -230,37 +222,41 @@ namespace my_caffe {
 // REF [file] >> ${CAFFE_HOME}/examples/cpp_classification/classification.cpp.
 void classification_example()
 {
-    google::InitGoogleLogging("caffe_classification_example");
+	google::InitGoogleLogging("caffe_classification_example");
 
-    // REF [site] >> http://caffe.berkeleyvision.org/gathered/examples/cpp_classification.html.
-    const std::string caffe_root("/home/sangwook/git/caffe");
-    const std::string model_file(caffe_root + "/models/bvlc_reference_caffenet/deploy.prototxt");
-    const std::string trained_file(caffe_root + "/models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel");
-    const std::string mean_file(caffe_root + "/data/ilsvrc12/imagenet_mean.binaryproto");  // pixel-level average.
-    const std::string label_file(caffe_root + "/data/ilsvrc12/synset_words.txt");
-    const std::string test_file(caffe_root + "/examples/images/cat.jpg");
+	// REF [site] >> http://caffe.berkeleyvision.org/gathered/examples/cpp_classification.html.
+#if defined(_WIN64) || defined(_WIN32)
+	const std::string caffe_root_dir("D:/lib_repo/cpp/rnd/caffe_github");
+#else
+	const std::string caffe_root_dir("/home/sangwook/lib_repo/cpp/caffe_github");
+#endif
+	const std::string model_file(caffe_root_dir + "/models/bvlc_reference_caffenet/deploy.prototxt");
+	const std::string trained_file(caffe_root_dir + "/models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel");
+	const std::string mean_file(caffe_root_dir + "/data/ilsvrc12/imagenet_mean.binaryproto");  // Pixel-level average.
+	const std::string label_file(caffe_root_dir + "/data/ilsvrc12/synset_words.txt");
+	const std::string test_file(caffe_root_dir + "/examples/images/cat.jpg");
 
-    cv::Mat img = cv::imread(test_file, -1);
-    CHECK(!img.empty()) << "Unable to decode image: " << test_file;
+	cv::Mat img = cv::imread(test_file, -1);
+	CHECK(!img.empty()) << "Unable to decode image: " << test_file;
 
-    // Load model.
-    std::cout << "Start loading model ..." << std::endl;
-    const local::Classifier classifier(model_file, trained_file, mean_file, label_file);
-    std::cout << "End loading model ..." << std::endl;
+	// Load model.
+	std::cout << "Start loading model ..." << std::endl;
+	const local::Classifier classifier(model_file, trained_file, mean_file, label_file);
+	std::cout << "End loading model." << std::endl;
 
-    // Predict.
-    std::cout << "Start prediction for " << test_file << " ..." << std::endl;
-    std::vector<local::Prediction> predictions;
-    {
-        boost::timer::auto_cpu_timer timer;
+	// Predict.
+	std::cout << "Start prediction for " << test_file << " ..." << std::endl;
+	std::vector<local::Prediction> predictions;
+	{
+		boost::timer::auto_cpu_timer timer;
 
-        predictions = classifier.Classify(img);
-    }
-    std::cout << "End prediction ..." << std::endl;
+		predictions = classifier.Classify(img);
+	}
+	std::cout << "End prediction." << std::endl;
 
-    // Print the top N predictions.
-    for (std::vector<local::Prediction>::const_iterator cit = predictions.begin(); cit < predictions.end(); ++cit)
-        std::cout << std::fixed << std::setprecision(4) << cit->second << " - \"" << cit->first << "\"" << std::endl;
+	// Print the top N predictions.
+	for (std::vector<local::Prediction>::const_iterator cit = predictions.begin(); cit < predictions.end(); ++cit)
+		std::cout << std::fixed << std::setprecision(4) << cit->second << " - \"" << cit->first << "\"" << std::endl;
 }
 
 }  // namespace my_caffe

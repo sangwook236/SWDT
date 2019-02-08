@@ -1,4 +1,4 @@
-[-] Building Static Library
+[-] Building Static Library.
 	run "Cygwin Bash" or "MSYS"
 	cd ${LIB_ROOT}
 	./configure
@@ -13,7 +13,7 @@
 	make clean
 		make distclean
 
-[-] Building Shared Library
+[-] Building Shared Library.
 	run "Cygwin Bash" or "MSYS"
 	cd ${LIB_ROOT}
 	./configure
