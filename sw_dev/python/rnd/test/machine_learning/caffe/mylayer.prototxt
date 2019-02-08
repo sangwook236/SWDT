@@ -1,0 +1,11 @@
+layer {
+	name: 'MyPythonLayer'
+	type: 'Python'
+	top: 'output'
+	bottom: 'conv'
+	python_param {
+		module: 'mylayer'
+		layer: 'MyLayer'
+		param_str: "'num': 21"
+	}
+}
