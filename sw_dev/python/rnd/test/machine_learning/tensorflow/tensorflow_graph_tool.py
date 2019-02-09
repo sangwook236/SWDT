@@ -105,6 +105,7 @@ def graph_to_tensorboard_log():
 #		${TENSORFLOW_HOME}/tensorflow/python/tools/freeze_graph.py
 #	e.g.) freeze_graph --input_graph=/path/to/graph.pbtxt --input_binary=false --input_checkpoint=/path/to/checkpoint/tf_ckpt-1234 --output_graph=/path/to/frozen_graph.pb --output_node_names=output_nodes
 #		${TENSORFLOW_HOME}/bazel-bin/tensorflow/python/tools/freeze_graph --input_graph=/home/sangwook/work/mnist_cnn_graph.pbtxt --input_binary=false --input_checkpoint=/home/sangwook/work/mnist_cnn_checkpoint/tf_ckpt-7740 --output_graph=/home/sangwook/work/mnist_cnn_frozen_graph.pb --output_node_names=mnist_cnn_using_tf/fc2/dense/Softmax
+#	e.g.) python -m tensorflow.python.tools.freeze_graph --input_graph=/path/to/graph.pbtxt --input_binary=false --input_checkpoint=/path/to/checkpoint/tf_ckpt-1234 --output_graph=/path/to/frozen_graph.pb --output_node_names=output_nodes
 #	=> Recommend using TensorBoard to get 'output_node_names' which I think is operations' names in a TensorFlow graph.
 def freeze_graph_tool():
 	# NOTE [info] >> checkpoint_to_graph() in tensorflow_saving_and_loading.py

@@ -186,7 +186,7 @@ def simple_train_example():
 	#solver = caffe.Nesterov(solver_filepath)
 	#solver = caffe.RMSprop(solver_filepath)
 
-	# Now, it’s time to begin to see if everything works well and to fill the layers in a forward propagation in the net (computation of net.blobs[k].data from input layer until the loss layer).
+	# Now, it's time to begin to see if everything works well and to fill the layers in a forward propagation in the net (computation of net.blobs[k].data from input layer until the loss layer).
 	# Trains net.
 	solver.net.forward()
 
@@ -323,7 +323,7 @@ def detection_example():
 def train_example():
 	raise NotImplementedError
 
-def yolov3_prediction_example():
+def yolo_object_detection_example():
 	if 'posix' == os.name:
 		darknet_home_dir_path = '/home/sangwook/lib_repo/cpp/darknet_github'
 	else:
@@ -337,20 +337,26 @@ def yolov3_prediction_example():
 	caffe_model_filepath = './yolov3.caffemodel'  # Trained Caffe model file.
 	image_filepath = darknet_home_dir_path + '/data/dog.jpg'
 
-	thresh = 0.5
+	confidence_thresh = 0.5
 	hier_thresh = 0.5
-	nms = 0.45
+	nms_threshold = 0.45
 
-	# CNN reconstruction and loading the trained weights.
-	net = caffe.Net(deploy_prototxt_filepath, caffe_model_filepath, caffe.TEST)
-
+	#--------------------
 	img = Image.open(image_filepath)
+
 	# Input image size = (3, 608, 608).
 	img = img.resize(size=(608, 608), resample=Image.BICUBIC)
 	img = np.asarray(img, dtype=np.uint8)
 	# FIXME [check] >> Which one is correct?
 	#img = np.transpose(img, (2, 1, 0))
 	img = np.transpose(img, (2, 0, 1))
+	img = img[::-1,:,:]  # RGB to BGR. (?)
+	img = img / 255.0
+	#img = np.array(img, order='C')  # C-array type.
+
+	#--------------------
+	# CNN reconstruction and loading the trained weights.
+	net = caffe.Net(deploy_prototxt_filepath, caffe_model_filepath, caffe.TEST)
 
 	# Each prediction composes of a boundary box, a objectness, and 80 class scores, N * N * (B * (4 + 1 + C)).
 	#	N: the number of grids (19x19, 38x38, 76x76). 608 / 19 = 32, 608 / 38 = 16, 608 / 76 = 8.
@@ -362,14 +368,19 @@ def yolov3_prediction_example():
 
 	print("YOLO outputs' shapes =", yolo_outputs['layer83-yolo'].shape, yolo_outputs['layer95-yolo'].shape, yolo_outputs['layer107-yolo'].shape)
 
+	#--------------------
+	# REF [function] >> yolo_object_detection() in ${SWDT_PYTHON_HOME}/rnd/test/machine_vision/opencv/opencv_dnn.py
 	bbox_count = 0
 	for outp in yolo_outputs.values():
-		shape = outp.shape
-		for rr in range(shape[2]):
-			for cc in range(shape[3]):
-				# FIXME [fix] >> All values are negative, not probability.
-				if outp[0,4,rr,cc] > thresh:  # Objectness. (?)
-					++bbox_count
+		outp = np.reshape(outp, outp.shape[:2] + (-1,))
+		outp = np.dstack((outp[:,0:85,:], outp[:,85:170,:], outp[:,170:,:]))
+		#outp = np.concatenate((outp[:,0:85,:], outp[:,85:170,:], outp[:,170:,:]), axis=-1)
+		for dd in range(outp.shape[2]):
+			scores = outp[0,5:,dd]
+			class_id = np.argmax(scores)
+			confidence = scores[class_id]
+			if confidence > confidence_thresh:
+				++bbox_count
 	print('+++++++++++++++', bbox_count)
 
 	print(yolo_outputs['layer83-yolo'][0,:4,0,0])  # Bounding box. (?)
@@ -394,7 +405,7 @@ def main():
 	#detection_example()  # Not working.
 	#train_example()  # Not yet implemented.
 
-	yolov3_prediction_example()
+	yolo_object_detection_example()
 
 #%%-------------------------------------------------------------------
 
