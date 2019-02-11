@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-# export PYTHONPATH+=${CAFFE_HOME}/python
+# export PYTHONPATH=${CAFFE_HOME}/python:$PYTHONPATH
+# export LD_LIBRARY_PATH=${CAFFE_HOME}/build/install/lib:$LD_LIBRARY_PATH
 
 import os, time
 import numpy as np
@@ -31,14 +32,14 @@ def parse_caffe_model():
 	#caffe_model_filepath = './yolov3.caffemodel'
 
 	# REF [site] >> https://www.programcreek.com/python/example/104218/caffe.proto.caffe_pb2.NetParameter
-	trained_model  = caffe_pb2.NetParameter()
+	netParam  = caffe_pb2.NetParameter()
 	with open(caffe_model_filepath, 'rb') as fd:
-		trained_model.ParseFromString(fd.read())
+		netParam.ParseFromString(fd.read())
 
-	#print(trained_model)
-	print('#layers =', len(trained_model.layer))
+	#print(netParam)
+	print('#layers =', len(netParam.layer))
 
-	for layer in trained_model.layer:
+	for layer in netParam.layer:
 		shapes = list()
 		for blob in layer.blobs:
 			weights = np.reshape(np.array(blob.data), blob.shape.dim)
@@ -58,12 +59,66 @@ def parse_caffe_prototxt():
 	deploy_prototxt_filepath = caffe_home_dir_path + '/models/bvlc_reference_caffenet/deploy.prototxt'
 
 	# REF [site] >> https://www.programcreek.com/python/example/104218/caffe.proto.caffe_pb2.NetParameter
-	train_net  = caffe_pb2.NetParameter()
+	netParam  = caffe_pb2.NetParameter()
 	with open(deploy_prototxt_filepath, 'r') as fd:
-		text_format.Merge(fd.read(), train_net)
+		text_format.Merge(fd.read(), netParam)
 
-	#print(train_net)
-	print('#layers =', len(train_net.layer))
+	#print(netParam)
+	print('#layers =', len(netParam.layer))
+
+def numpy_to_blobproto():
+	arr = np.random.rand(2, 3, 4)
+	print(arr)
+
+	blob = caffe.io.array_to_blobproto(arr)
+	print(blob)
+
+	arr2 = caffe.io.blobproto_to_array(blob)
+	print(arr2)
+
+def load_npy_weights_into_caffe_model():
+	if 'posix' == os.name:
+		caffe_home_dir_path = '/home/sangwook/lib_repo/cpp/caffe_github'
+	else:
+		caffe_home_dir_path = 'D:/lib_repo/cpp/rnd/caffe_github'
+		#caffe_home_dir_path = 'D:/lib_repo/cpp/caffe_github'
+
+	# Network definition file.
+	#prototxt_filepath = caffe_home_dir_path + '/models/bvlc_alexnet/deploy.prototxt'
+	#prototxt_filepath = caffe_home_dir_path + '/models/bvlc_googlenet/deploy.prototxt'
+	#prototxt_filepath = caffe_home_dir_path + '/models/bvlc_reference_caffenet/deploy.prototxt'
+	prototxt_filepath = './yolov3.prototxt'
+
+	#--------------------
+	net = caffe.Net(prototxt_filepath, caffe.TEST)
+
+	print('#layers =', len(net.layers), len(net._layer_names))
+	print('#blobs =', len(net._blobs), len(net._blob_names))
+	print('#blobs =', len(net.blobs))
+
+	#--------------------
+	#for layer in net.layers:
+	#	print('layer =', type(layer))
+	#for blob in net._blobs:
+	#	print('blob =', type(blob))
+
+	#print("Layers' names =", net._layer_names)
+	#for idx, name in enumerate(net._layer_names):
+	#	print('Layer {} = {}'.format(idx, name))
+	#print("Blobs' names =", net._blob_names)):
+	#for idx, name in enumerate(net._blob_names):
+	#	print('Blob {} = {}'.format(idx, name))
+
+	# REF [site] >> http://caffe.berkeleyvision.org/tutorial/net_layer_blob.html
+	blob_count = 0
+	for idx, layer in enumerate(net.layers):
+		print('Layer {}: {}, {}, {}'.format(idx, net._layer_names[idx], layer.type, len(layer.blobs)))
+		blob_count += len(layer.blobs)
+		for ii, blob in enumerate(layer.blobs):
+			#print('\tBlob {} = {}, {}'.format(ii, type(blob.data), blob.data.shape))
+			blob.data[...] = np.full_like(blob.data, 37)
+			print(blob.data)
+	print('#actual blobs =', blob_count)
 
 def create_lenet(lmdb, batch_size):
 	net = caffe.NetSpec()
@@ -323,6 +378,9 @@ def detection_example():
 def train_example():
 	raise NotImplementedError
 
+def sigmoid(x):
+	return 1 / (1 + np.exp(-x))
+
 def yolo_object_detection_example():
 	if 'posix' == os.name:
 		darknet_home_dir_path = '/home/sangwook/lib_repo/cpp/darknet_github'
@@ -350,7 +408,8 @@ def yolo_object_detection_example():
 	# FIXME [check] >> Which one is correct?
 	#img = np.transpose(img, (2, 1, 0))
 	img = np.transpose(img, (2, 0, 1))
-	img = img[::-1,:,:]  # RGB to BGR. (?)
+	img = img[::-1,:,:]  # RGB to BGR (for the 1st axis).
+	#img = img[:,:,::-1]  # RGB to BGR (for the 3rd axis).
 	img = img / 255.0
 	#img = np.array(img, order='C')  # C-array type.
 
@@ -375,6 +434,10 @@ def yolo_object_detection_example():
 		outp = np.reshape(outp, outp.shape[:2] + (-1,))
 		outp = np.dstack((outp[:,0:85,:], outp[:,85:170,:], outp[:,170:,:]))
 		#outp = np.concatenate((outp[:,0:85,:], outp[:,85:170,:], outp[:,170:,:]), axis=-1)
+		# FIXME [fix] >> Implementation is not finished.
+		outp = sigmoid(outp)
+		#outp = np.exp(sigmoid(outp))
+
 		for dd in range(outp.shape[2]):
 			scores = outp[0,5:,dd]
 			class_id = np.argmax(scores)
@@ -383,9 +446,18 @@ def yolo_object_detection_example():
 				++bbox_count
 	print('+++++++++++++++', bbox_count)
 
-	print(yolo_outputs['layer83-yolo'][0,:4,0,0])  # Bounding box. (?)
-	print(yolo_outputs['layer83-yolo'][0,4,0,0])  # Objectness. (?)
-	print(yolo_outputs['layer83-yolo'][0,5:85,0,0])  # Class scores. (?)
+	aa = yolo_outputs['layer83-yolo']
+	print(aa[0,:4,0,0])  # Bounding box. (?)
+	print(aa[0,4,0,0])  # Objectness. (?)
+	print(aa[0,5:85,0,0])  # Class scores. (?)
+	aa = sigmoid(yolo_outputs['layer83-yolo'])
+	print(aa[0,:4,0,0])  # Bounding box. (?)
+	print(aa[0,4,0,0])  # Objectness. (?)
+	print(aa[0,5:85,0,0])  # Class scores. (?)
+	aa = np.exp(sigmoid(yolo_outputs['layer83-yolo']))
+	print(aa[0,:4,0,0])  # Bounding box. (?)
+	print(aa[0,4,0,0])  # Objectness. (?)
+	print(aa[0,5:85,0,0])  # Class scores. (?)
 
 def main():
 	#caffe.set_mode_cpu()
@@ -394,6 +466,9 @@ def main():
 
 	#parse_caffe_model()
 	#parse_caffe_prototxt()
+
+	#numpy_to_blobproto()
+	load_npy_weights_into_caffe_model()
 
 	#define_model()
 	#create_custom_python_layer()
@@ -405,7 +480,7 @@ def main():
 	#detection_example()  # Not working.
 	#train_example()  # Not yet implemented.
 
-	yolo_object_detection_example()
+	#yolo_object_detection_example()
 
 #%%-------------------------------------------------------------------
 

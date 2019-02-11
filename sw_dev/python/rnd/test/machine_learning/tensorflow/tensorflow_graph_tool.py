@@ -36,10 +36,11 @@ def display_graph_info():
 	#graph_filepath = './mnist_cnn_optimized_frozen_graph.pb'
 	is_graph_file_text = False
 
+	graph_def = tf.GraphDef()
+	with tf.gfile.GFile(graph_filepath, 'r' if is_graph_file_text else 'rb') as fd:
+		graph_def.ParseFromString(fd.read())
+
 	if True:
-		graph_def = tf.GraphDef()
-		with tf.gfile.GFile(graph_filepath, 'r' if is_graph_file_text else 'rb') as fd:
-			graph_def.ParseFromString(fd.read())
 		display_graph_def(graph_def, node_names=['input', 'Softmax'], display_all_nodes=False)
 
 	if False:
