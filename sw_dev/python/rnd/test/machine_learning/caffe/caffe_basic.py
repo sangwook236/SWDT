@@ -131,7 +131,7 @@ def create_lenet(lmdb, batch_size):
 	net.relu1 = caffe.layers.ReLU(net.ip1, in_place=True)
 	net.ip2 = caffe.layers.InnerProduct(net.relu1, num_output=10, weight_filler=dict(type='xavier'))
 	net.loss = caffe.layers.SoftmaxWithLoss(net.ip2, net.label)
-	return net.to_proto()
+	return net.to_proto()  # caffe.proto.caffe_pb2.NetParameter.
 
 # REF [site] >> http://christopher5106.github.io/deep/learning/2015/09/04/Deep-learning-tutorial-on-Caffe-Technology.html
 def define_model():
@@ -149,11 +149,11 @@ def define_model():
 	train_prototxt_filepath = caffe_home_dir_path + '/examples/mnist/lenet_auto_train.prototxt'
 	test_prototxt_filepath = caffe_home_dir_path + '/examples/mnist/lenet_auto_test.prototxt'
 
-	train_model = create_lenet(train_data_dir_path, 64)
+	train_model = create_lenet(train_data_dir_path, 64)  # caffe.proto.caffe_pb2.NetParameter.
 	with open(train_prototxt_filepath, 'w') as fd:
 		fd.write(str(train_model))
 
-	test_model = create_lenet(test_data_dir_path, 100)
+	test_model = create_lenet(test_data_dir_path, 100)  # caffe.proto.caffe_pb2.NetParameter.
 	with open(test_prototxt_filepath, 'w') as fd:
 		fd.write(str(test_model))
 

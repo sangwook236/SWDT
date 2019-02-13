@@ -1,0 +1,60 @@
+[-] General.
+	- Site.
+		https://github.com/baidu-research/warp-ctc
+
+[-] Building (CMake).
+	- Make.
+		cd ${WarpCTC_HOME}
+		mkdir build
+		cd build
+		cmake ..
+		make -j8
+			Created libwarpctc.so in ${WarpCTC_HOME}/build.
+
+[-] Building TensorFlow binding for WarpCTC.
+	https://github.com/baidu-research/warp-ctc/tree/master/tensorflow_binding
+
+	- Set path.
+		export TENSORFLOW_SRC_PATH=/path/to/tensorflow
+			export TENSORFLOW_SRC_PATH=/home/sangwook/lib_repo/python/tensorflow_github
+		export WARP_CTC_PATH=${WarpCTC_HOME}/build
+			Path to libwarpctc.so.
+			export TENSORFLOW_SRC_PATH=/home/sangwook/lib_repo/cpp/warp-ctc_github/build
+		export TF_CXX11_ABI=1
+		export CUDA_HOME=/path/to/cuda
+			export CUDA_HOME=/usr/local/cuda
+		export LD_LIBRARY_PATH=/path/to/libtensorflow_framework.so:$LD_LIBRARY_PATH
+			Path to libtensorflow_framework.so.
+			export LD_LIBRARY_PATH=${ANACONDA_HOME}/envs/tf/lib/python3.6/site-packages/tensorflow:$LD_LIBRARY_PATH
+			export LD_LIBRARY_PATH=/home/sangwook/anaconda3/envs/tf/lib/python3.6/site-packages/tensorflow:$LD_LIBRARY_PATH
+	- Setup.
+		python setup.py install
+			NOTE [warn] >> To re-install WarpCTC, delete generated files and directories. (?)
+		python setup.py test
+
+		pip uninstall warpctc-tensorflow
+
+[-] Troubleshooting.
+	- TensorFlow version comparison error.
+		<error> cannot find -ltensorflow_framework
+		<solution>
+			In ${WarpCTC_HOME}/tensorflow_binding/setup.py
+			<before>
+			if tf.__version__ >= '1.4':
+				if os.path.exists(os.path.join(tf_src_dir, 'libtensorflow_framework.so')):
+					extra_link_args = ['-L' + tf.sysconfig.get_lib(), '-ltensorflow_framework']
+			<after>
+			if tf.__version__ >= '1.4' or tf.__version__ >= '1.10':
+				if os.path.exists(os.path.join(tf_src_dir, 'libtensorflow_framework.so')):
+					extra_link_args = ['-L' + tf_src_dir, '-ltensorflow_framework']
+				else:
+					extra_link_args = ['-L' + tf.sysconfig.get_lib(), '-ltensorflow_framework']
+	- TensorShape.as_list() error.
+		<error> tensorflow test error as_list() is not defined on an unknow tensorshape
+		<solution>
+			https://github.com/baidu-research/warp-ctc/issues/132
+	- 'kernels' library linking error.
+		<error> ImportError: No module named 'kernels'
+		<solution>
+			Copy 'kernels' library to ${WarpCTC_HOME}/tensorflow_binding/warpctc_tensorflow.
+				${WarpCTC_HOME}/tensorflow_binding/build/lib.linux-x86_64-3.6/kernels.cpython-36m-x86_64-linux-gnu.so
