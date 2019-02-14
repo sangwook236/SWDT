@@ -53,6 +53,7 @@
 		conda list package_name
 	- Install a package.
 		conda install package_name
+		conda install --file requirements.txt
 		conda install --name env_name package_name
 		conda install -c conda-forge package_name
 		conda install --channel https://conda.anaconda.org/pandas bottleneck

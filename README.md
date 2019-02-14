@@ -1,5 +1,9 @@
 # Sang-Wook's Development and Testing (SWDT)
 
+[![Build Status](https://travis-ci.org/sangwook236/SWDT.svg?branch=master)](https://travis-ci.org/sangwook236/SWDT)
+[![codecov](https://codecov.io/gh/sangwook236/SWDT/branch/master/graph/badge.svg)](https://codecov.io/gh/sangwook236/SWDT)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1bfeed75ed55438b806c337ee88206d2)](https://www.codacy.com/app/sangwook236/SWDT?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sangwook236/SWDT&amp;utm_campaign=Badge_Grade)
+
 ## Introduction
 
 The goal of SWDT is to systematically accumulate source codes, knowledge, and experience acquired in the development and testing of software and hardware. <br />

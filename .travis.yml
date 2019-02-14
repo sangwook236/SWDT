@@ -1,0 +1,9 @@
+sudo: required
+
+language: generic
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      env: PYTHON=3.6 PYTHONWARNINGS=ignore
