@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
-# REF [site] >> https://docs.python.org/3.4/library/multiprocessing.html
+# REF [site] >> https://docs.python.org/3/library/multiprocessing.html
 
-import os, time
+import os, time, math, random
 from functools import partial
 import multiprocessing as mp
 from multiprocessing.managers import BaseManager
-import numpy as np
+from concurrent.futures import ProcessPoolExecutor
+import threading
 
 def process_info(title):
     print(title)
@@ -42,10 +43,11 @@ def process_with_context():
 	p.join()
 
 def sqr(x):
-    return x*x
+	return x * x
 
 def pool_1():
-	with mp.Pool(processes=5) as pool:
+	with mp.Pool(processes=5, initializer=None) as pool:
+	#with mp.pool.ThreadPool(processes=5, initializer=None) as pool:
 		print(pool.map(sqr, [item for item in range(10000)]))
 
 		# In arbitrary order.
@@ -59,10 +61,11 @@ def loop_with_sleep(sec):
 def pool_2():
 	# set_start_method() should not be used more than once in the program.
 	#mp.set_start_method('spawn')
-	with mp.Pool(processes=5) as pool:
-		pool.map(loop_with_sleep, [np.random.randint(6, 11) for _ in range(10)])
+	with mp.Pool(processes=5, initializer=None) as pool:
+	#with mp.pool.ThreadPool(processes=5, initializer=None) as pool:
+		pool.map(loop_with_sleep, [random.randint(6, 10) for _ in range(10)])
 		# Async.
-		#multiple_results = [pool.apply_async(loop_with_sleep, args=(np.random.randint(6, 11),)) for _ in range(10)]
+		#multiple_results = [pool.apply_async(loop_with_sleep, args=(random.randint(6, 10),)) for _ in range(10)]
 		#[res.get() for res in multiple_results]
 
 def sqr_with_sleep(x):
@@ -76,7 +79,8 @@ def async_callback(result):
 	async_result_list.append(result)
 
 def pool_async_1():
-	with mp.Pool(processes=5) as pool:
+	with mp.Pool(processes=5, initializer=None) as pool:
+	#with mp.pool.ThreadPool(processes=5, initializer=None) as pool:
 		# Evaluate 'os.getpid()' asynchronously.
 		res = pool.apply_async(os.getpid, args=())  # Runs in *only* one process.
 		print(res.get(timeout=1))
@@ -92,6 +96,7 @@ def pool_async_1():
 
 def pool_async_2():
 	with mp.Pool() as pool:
+	#with mp.pool.ThreadPool() as pool:
 		for i in range(10):
 			pool.apply_async(sqr_with_sleep, args=(i,), callback=async_callback)
 		pool.close()
@@ -152,6 +157,64 @@ def state_sharing_by_server_process():
 		print(d)
 		print(l)
 
+def is_prime(n):
+	if n % 2 == 0:
+		return False
+
+	sqrt_n = int(math.floor(math.sqrt(n)))
+	for i in range(3, sqrt_n + 1, 2):
+		if n % i == 0:
+			return False
+	return True
+
+# REF [site] >> https://docs.python.org/3/library/concurrent.futures.html
+def process_pool_executor():
+	PRIMES = [
+		112272535095293,
+		112582705942171,
+		112272535095293,
+		115280095190773,
+		115797848077099,
+		1099726899285419
+	]
+
+	with ProcessPoolExecutor(max_workers=3) as executor:
+		for number, prime in zip(PRIMES, executor.map(is_prime, PRIMES)):
+			print('%d is prime: %s' % (number, prime))
+
+def worker_thread_proc(sec):
+	print('\tThread {}: Start worker thread.'.format(threading.get_ident()))
+	for i in range(1, 11):
+		print('\tThread {}: Do something.'.format(threading.get_ident()))
+		time.sleep(sec)
+	print('\tThread {}: End worker thread.'.format(threading.get_ident()))
+
+def worker_process_proc(sec):
+	print('\tProcess {}: Start worker process.'.format(os.getpid()))
+	for i in range(1, 4):
+		print('\tProcess {}: Do something.'.format(os.getpid()))
+		time.sleep(sec)
+	print('\tProcess {}: End worker process.'.format(os.getpid()))
+
+def multiprocess_and_multithreading():
+	num_processes = 5
+	num_threads = 2
+
+	# Run worker threads.
+	worker_thread = threading.Thread(target=worker_thread_proc, args=(2,))
+	worker_thread.start()
+
+	# Run worker processes.
+	#timeout = 10
+	timeout = None
+	with mp.Pool(processes=num_processes) as pool:
+	#with mp.pool.ThreadPool(processes=num_processes) as pool:
+		worker_results = pool.map_async(worker_process_proc, [random.randint(1, 3) for _ in range(10)])
+
+		worker_results.get(timeout)
+
+	worker_thread.join()
+
 def init(lock):
 	global global_lock
 	global_lock = lock
@@ -176,7 +239,7 @@ def worker0_proc(args):
 	for loop in range(3):
 		with global_lock:
 			print('\t{}: Do something by worker{}(job{}, loop{}): {}, {}, {}.'.format(os.getpid(), worker_id, job, loop, ii, ff, ss))
-		time.sleep(np.random.randint(1, 4))
+		time.sleep(random.randint(1, 3))
 
 	print('\t{}: End worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
 
@@ -191,7 +254,7 @@ def worker1_proc(ii, ff, ss, job):
 	for loop in range(3):
 		with global_lock:
 			print('\t{}: Do something by worker{}(job{}, loop{}): {}, {}, {}.'.format(os.getpid(), worker_id, job, loop, ii, ff, ss))
-		time.sleep(np.random.randint(1, 4))
+		time.sleep(random.randint(1, 3))
 
 	print('\t{}: End worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
 
@@ -207,7 +270,7 @@ def worker2_proc(ii, ff, ss, num_jobs):
 		for loop in range(3):
 			with global_lock:
 				print('\t{}: Do something by worker{}(job{}, loop{}): {}, {}, {}.'.format(os.getpid(), worker_id, job, loop, ii, ff, ss))
-			time.sleep(np.random.randint(1, 4))
+			time.sleep(random.randint(1, 3))
 
 		print('\t{}: End worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
 
@@ -222,7 +285,7 @@ def worker3_proc(lock, ii, ff, ss, job):
 	for loop in range(3):
 		with lock:
 			print('\t{}: Do something by worker{}(job{}, loop{}): {}, {}, {}.'.format(os.getpid(), worker_id, job, loop, ii, ff, ss))
-		time.sleep(np.random.randint(1, 4))
+		time.sleep(random.randint(1, 3))
 
 	print('\t{}: End worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
 
@@ -239,7 +302,7 @@ def worker4_proc(args):
 	for loop in range(3):
 		with global_lock:
 			print('\t{}: Do something by worker{}(job{}, loop{}): {}, {}, {}, {}.'.format(os.getpid(), worker_id, job, loop, ii, ff, ss, adder.process(ii)))
-		time.sleep(np.random.randint(1, 4))
+		time.sleep(random.randint(1, 3))
 
 	print('\t{}: End worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
 
@@ -254,7 +317,7 @@ def worker5_proc(adder, ii, ff, ss, job):
 	for loop in range(3):
 		with global_lock:
 			print('\t{}: Do something by worker{}(job{}, loop{}): {}, {}, {}, {}.'.format(os.getpid(), worker_id, job, loop, ii, ff, ss, adder.process(ii)))
-		time.sleep(np.random.randint(1, 4))
+		time.sleep(random.randint(1, 3))
 
 	print('\t{}: End worker{}(job{}) process.'.format(os.getpid(), worker_id, job))
 
@@ -276,19 +339,20 @@ def run_worker_processes(lock, num_processes):
 	#timeout = 10
 	timeout = None
 	with mp.Pool(processes=num_processes, initializer=init, initargs=(lock,)) as pool:
-		num_jobs = np.random.randint(2, 8)
+	#with mp.pool.ThreadPool(processes=num_processes, initializer=init, initargs=(lock,)) as pool:
+		num_jobs = random.randint(2, 7)
 		worker0_results = pool.map_async(worker0_proc, [(0, 0.0, 'a0', job) for job in range(num_jobs)])
-		num_jobs = np.random.randint(2, 8)
+		num_jobs = random.randint(2, 7)
 		worker1_results = pool.map_async(partial(worker1_proc, 1, 1.0, 'b1'), [job for job in range(num_jobs)])
-		num_jobs = np.random.randint(2, 8)
+		num_jobs = random.randint(2, 7)
 		worker2_results = pool.apply_async(worker2_proc, args=(2, 2.0, 'c2', num_jobs))
 		# Passes a mp.Lock object as an argument.
-		#num_jobs = np.random.randint(2, 8)
+		#num_jobs = random.randint(2, 7)
 		#worker3_results = pool.map_async(partial(worker3_proc, lock, 3, 3.0, 'd3'), [job for job in range(num_jobs)])  # RuntimeError: Lock objects should only be shared between processes through inheritance.
 		# Passes a Class object as an argument.
-		num_jobs = np.random.randint(2, 8)
+		num_jobs = random.randint(2, 7)
 		worker4_results = pool.map_async(worker4_proc, [(adder, 4, 4.0, 'e4', job) for job in range(num_jobs)])
-		num_jobs = np.random.randint(2, 8)
+		num_jobs = random.randint(2, 7)
 		worker5_results = pool.map_async(partial(worker5_proc, adder, 5, 5.0, 'f5'), [job for job in range(num_jobs)])
 
 		worker0_results.get(timeout)
@@ -299,6 +363,8 @@ def run_worker_processes(lock, num_processes):
 		worker5_results.get(timeout)
 
 def main():
+	print('{}: Start main process.'.format(os.getpid()))
+
 	#simple_process()
 	#process_with_context()
 
@@ -313,11 +379,19 @@ def main():
 	#state_sharing_by_server_process()
 
 	#--------------------
+	#process_pool_executor()
+	
+	#--------------------
+	multiprocess_and_multithreading()
+
+	#--------------------
 	num_processes = 10
 	lock = mp.Lock()  # RuntimeError: Lock objects should only be shared between processes through inheritance.
 	#lock= mp.Manager().Lock()  # TypeError: can't pickle _thread.lock objects.
 
-	run_worker_processes(lock, num_processes)
+	#run_worker_processes(lock, num_processes)
+
+	print('{}: End main process.'.format(os.getpid()))
 
 #%%------------------------------------------------------------------
 
