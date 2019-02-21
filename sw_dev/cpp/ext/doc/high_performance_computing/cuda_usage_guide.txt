@@ -16,3 +16,6 @@
 	- Driver version.
 		cat /proc/driver/nvidia/version
 		nvidia-smi
+
+	- Monitor.
+		watch -n 0.5 nvidia-smi
