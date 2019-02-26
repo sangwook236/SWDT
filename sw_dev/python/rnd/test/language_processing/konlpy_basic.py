@@ -110,6 +110,29 @@ def integration_with_nltk():
 	text.plot(30)
 	plt.show()
 
+# REF [doc] >> Python 환경에서 한글 형태소 분석기 패키지 KoNLPy 사용법.pdf
+def bigram_or_trigram_extraction_with_nltk():
+	bigram_measures = nltk.collocations.BigramAssocMeasures()
+	doc = kolaw.open('constitution.txt').read()
+	pos = Kkma().pos(doc)
+	words = [s for s, t in pos]
+	tags = [t for s, t in pos]
+
+	print('\nCollocations among tagged words:')
+	finder = nltk.collocations.BigramCollocationFinder.from_words(pos)
+	pprint(finder.nbest(bigram_measures.pmi, 10))  # Top 10 n-grams with highest PMI.
+
+	print('\nCollocations among words:')
+	ignored_words = [u'안녕']
+	finder = nltk.collocations.BigramCollocationFinder.from_words(words)
+	finder.apply_word_filter(lambda w: len(w) < 2 or w in ignored_words)
+	finder.apply_freq_filter(3)  # Only bigrams that appear 3+ times.
+	pprint(finder.nbest(bigram_measures.pmi, 10))
+
+	print('\nCollocations among tags:')
+	finder = nltk.collocations.BigramCollocationFinder.from_words(tags)
+	pprint(finder.nbest(bigram_measures.pmi, 5))
+
 # REF [site] >> https://datascienceschool.net/view-notebook/70ce46db4ced4a999c6ec349df0f4eb0/
 def integration_with_wordcloud():
 	if 'posix' == os.name:
@@ -140,6 +163,7 @@ def main():
 	#simple_kobill_corpus_example()
 
 	integration_with_nltk()
+	bigram_or_trigram_extraction_with_nltk()
 	#integration_with_wordcloud()
 
 #%%------------------------------------------------------------------
