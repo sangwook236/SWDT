@@ -193,3 +193,44 @@ arr = np.arange(10).reshape(2, 5)
 np.save('./arr.npy', arr)
 
 arr_loaded = np.load('./arr.npy')
+
+#----------
+x1, y1 = np.arange(10).reshape(2, 5), np.arange(10, 20).reshape(2, 5)
+x2, y2 = np.arange(20).reshape(4, 5), np.arange(20, 40).reshape(4, 5)
+
+x_filepaths, y_filepaths = './x_npzfile.npz', './y_npzfile.npz'
+
+np.savez(x_filepaths, x1, x2)
+#np.savez(x_filepaths, *(x1, x2))
+#np.savez(y_filepaths, y1, y2)
+np.savez(y_filepaths, y2, y1)
+
+x_npzfile = np.load(x_filepaths)
+y_npzfile = np.load(y_filepaths)
+#print(type(x_npzfile), type(x_files.files))
+
+print('X files =', x_npzfile.files)
+print('Y files =', y_npzfile.files)
+print('X file 0 =', x_npzfile['arr_0'])
+print('X file 1 =', x_npzfile['arr_1'])
+print('Y file 0 =', y_npzfile['arr_0'])
+print('Y file 1 =', y_npzfile['arr_1'])
+
+#----------
+np.savez(x_filepaths, x1=x1, x2=x2)
+#np.savez(y_filepaths, y1=y1, y2=y2)
+np.savez(y_filepaths, y2=y2, y1=y1)
+
+x_npzfile = np.load(x_filepaths)
+y_npzfile = np.load(y_filepaths)
+
+print('X files =', x_npzfile.files)
+print('Y files =', y_npzfile.files)
+print('X file 0 =', x_npzfile['x1'])
+print('X file 1 =', x_npzfile['x2'])
+print('Y file 0 =', y_npzfile['y1'])
+print('Y file 1 =', y_npzfile['y2'])
+
+#for xk, yk in zip(x_npzfile.keys(), y_npzfile.keys()):
+for xk, yk in zip(sorted(x_npzfile.keys()), sorted(y_npzfile.keys())):
+	print(xk, yk)

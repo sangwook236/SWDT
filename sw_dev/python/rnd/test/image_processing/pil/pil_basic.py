@@ -8,7 +8,11 @@ def image_example():
 	img_filename = 'D:/dataset/pattern_recognition/street1.png'
 	#img_filename = 'D:/dataset/pattern_recognition/street2.jpg'
 
-	img = Image.open(img_filename)
+	try:
+		img = Image.open(img_filename)
+	except IOError as ex:
+		print('Failed to load an image:', img_filename)
+		return
 
 	img.rotate(45).show()
 
@@ -52,6 +56,7 @@ def text_example():
 		#font_type = '/usr/share/fonts/truetype/FreeSans.ttf'
 	else:
 		font_type = 'C:/Windows/Fonts/gulim.ttc'  # 굴림, 굴림체, 돋움, 돋움체.
+		#font_type = 'C:/Windows/Fonts/batang.ttc'  # 바탕, 바탕체, 궁서, 궁서체.
 		#font_type = 'C:/Windows/Fonts/Arial.ttf'
 	font = ImageFont.truetype(font=font_type, size=50, index=0)
 

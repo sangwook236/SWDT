@@ -21,6 +21,8 @@ def image_reading_and_writing():
 	cv2.imshow('Image', img)
 	cv2.waitKey(0)
 
+	cv2.destroyAllWindows()
+
 def main():
 	image_reading_and_writing()
 
