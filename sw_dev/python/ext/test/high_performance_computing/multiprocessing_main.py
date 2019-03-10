@@ -70,7 +70,7 @@ def pool_2():
 
 def sqr_with_sleep(x):
 	time.sleep(2)
-	return x*x
+	return x * x
 
 async_result_list = []
 def async_callback(result):
@@ -102,6 +102,26 @@ def pool_async_2():
 		pool.close()
 		pool.join()
 		print(async_result_list)
+
+def simple_worker_proc(val, step):
+	print('{}: step = {}.'.format(os.getpid(), step))
+
+	time.sleep(random.randrange(3))
+	val += 3
+	time.sleep(random.randrange(3))
+	return val + step
+
+def pool_async_3():
+	num_processes = 5
+	num_steps = 20
+
+	#timeout = 10
+	timeout = None
+	#with mp.Pool(processes=num_processes, initializer=initialize_lock, initargs=(lock,)) as pool:
+	with mp.Pool(processes=num_processes) as pool:
+		results = pool.map_async(partial(simple_worker_proc, 37), [step for step in range(num_steps)])
+
+		results.get(timeout)
 
 def func1(lock, i):
 	"""
@@ -372,6 +392,7 @@ def main():
 	#pool_2()
 	#pool_async_1()
 	#pool_async_2()
+	pool_async_3()
 
 	#synchronization()
 
@@ -382,7 +403,7 @@ def main():
 	#process_pool_executor()
 	
 	#--------------------
-	multiprocess_and_multithreading()
+	#multiprocess_and_multithreading()
 
 	#--------------------
 	num_processes = 10
