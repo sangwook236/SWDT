@@ -99,6 +99,38 @@ def map_filter_reduce():
 	product = reduce((lambda x, y: x * y), items)
 	print('product =', product)
 
+# REF [site] >>
+#	https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers
+#	https://docs.quantifiedcode.com/python-anti-patterns/correctness/exit_must_accept_three_arguments.html
+def with_statement_test():
+	class Guard(object):
+		def __init__(self, i):
+			self._i = i
+			print('Guard was constructed.')
+
+		def __del__(self):
+			print('Guard was destructed.')
+
+		def __enter__(self):
+			print('Guard was entered.')
+			return self
+
+		def __exit__(self, exception_type, exception_value, traceback):
+			print('Guard was exited.')
+
+		def func(self, d):
+			print('Guard.func() was called: {}, {}'.format(self._i, d))
+
+	print('Step #1.')
+	with Guard(1) as guard:
+		print('Step #2.')
+		if guard is None:
+			print('guard is None.')
+		else:
+			guard.func(2.0)
+		print('Step #3.')
+	print('Step #4.')
+
 def func(i, f, s):
 	print(i, f, s)
 
@@ -120,6 +152,8 @@ def main():
 
 	#lambda_expression()
 	#map_filter_reduce()
+
+	with_statement_test()
 
 	caller_func(func)
 	caller_func(func_obj(2))

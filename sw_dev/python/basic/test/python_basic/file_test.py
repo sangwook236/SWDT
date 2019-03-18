@@ -17,9 +17,11 @@ def main():
 		with open('data.txt', 'r') as fd:
 			lines = fd.readlines()
 
-		lines2 = []
+		lines2 = list()
 		for line in lines:
-			lines2.append(line.rstrip('\n'))
+			#line = line.strip('\n').split(' ')
+			line = line.rstrip('\n')
+			lines2.append(line)
 	except FileNotFoundError as ex:
 		print('FileNotFoundError raised:', ex)
 
