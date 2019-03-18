@@ -5,12 +5,12 @@
 import re
 
 def main():
-	re.compile("foo|bar")
+	re.compile('foo|bar')
 
 #%%------------------------------------------------------------------
 
 # Usage:
-#	python -m cProfile test_to_profile.py
+#	python -m cProfile profiling_on_existing_application.py
 
 if '__main__' == __name__:
 	main()

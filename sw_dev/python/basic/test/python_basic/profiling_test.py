@@ -44,7 +44,7 @@ def main():
 
 # Usage:
 #	1) python profiling_test.py
-#	2) python -m cProfile test_to_profile.py
+#	2) python -m cProfile profiling_on_existing_application.py
 
 if '__main__' == __name__:
 	main()

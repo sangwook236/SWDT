@@ -2,7 +2,8 @@
 
 # REF [site] >> https://wiki.python.org/moin/Generators
 
-import time
+import time, copy
+import numpy as np
 
 # Build and return a list.
 def firstn_1(n):
@@ -76,9 +77,37 @@ def simple_yield_example():
 	for i in gen:
 		print(i)
 
+def reuse_generator_example():
+	def create_generator(arr, length):
+		num_arr = len(arr)
+		start_idx = 0
+		while True:
+			end_idx = start_idx + length
+			sub_arr = arr[start_idx:end_idx]
+			yield sub_arr
+			if end_idx >= num_arr:
+				break
+			start_idx = end_idx
+
+	arr = np.arange(20)
+	gen = create_generator(arr, 3)
+	gen_copyed = gen
+	#gen_copyed = copy.deepcopy(gen)  # TypeError: can't pickle generator objects.
+
+	print('A generator is used first.')
+	for idx, sa in enumerate(gen):
+		print(idx, sa)
+
+	# NOTE [info] >> Cannot use a generator again.
+	print('A generator is used again.')
+	for idx, sa in enumerate(gen_copyed):
+		print(idx, sa)
+
 def main():
 	simple_generator_example()
 	simple_yield_example()
+
+	reuse_generator_example()
 
 #%%------------------------------------------------------------------
 
