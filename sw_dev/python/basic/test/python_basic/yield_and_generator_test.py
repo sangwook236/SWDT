@@ -47,7 +47,7 @@ def simple_yield_example_2():
 
 	def inner_generator_2():
 		print('Entered inner_generator_2().')
-		with open('./generator_test_file.txt', 'r', encoding='utf-8') as fd:
+		with open('./yield_test_file.txt', 'r', encoding='utf-8') as fd:
 			for line in fd.readlines():
 				line = line.strip('\n').split(' ')
 				yield int(line[0]), line[1]
@@ -72,6 +72,62 @@ def simple_yield_example_2():
 	for g in gen2:
 		for val in g:
 			print('Generated value =', val)
+
+def yield_example():
+	class MyClass(object):
+		def __init__(self):
+			print('MyClass.__init__() was called.')
+
+		def __del__(self):
+			print('MyClass.__del__() was called.')
+
+	class MyGuard(object):
+		def __enter__(self):
+			print('MyGuard.__enter__() was called.')
+			return self
+
+		def __exit__(self, exception_type, exception_value, traceback):
+			print('MyGuard.__exit__() was called.')
+
+	def create_generator1(num_steps):
+		for step in range(num_steps):
+			yield step
+
+	# NOTE [info] {important} >> Exits this function before starting yield.
+	def return_generator1(num_steps):
+		obj = MyClass()
+		with MyGuard() as guard:
+			return create_generator1(num_steps)
+
+	# NOTE [info] {important} >> Exits this function after finishing yield.
+	def create_generator2(num_steps):
+		obj = MyClass()
+		with MyGuard() as guard:
+			for step in range(num_steps):
+				yield step
+
+	def return_generator2(num_steps):
+		return create_generator2(num_steps)
+
+	# NOTE [info] {important} >> Exits this function after finishing yield.
+	def create_generator3(guard, num_steps):
+		obj = MyClass()
+		with guard:
+			for step in range(num_steps):
+				yield step
+
+	def return_generator3(num_steps):
+		guard = MyGuard()
+		return create_generator3(guard, num_steps)
+
+	for val in return_generator1(10):
+		print('Value1 =', val)
+
+	for val in return_generator2(10):
+		print('Value2 =', val)
+
+	for val in return_generator3(10):
+		print('Value3 =', val)
 
 # Build and return a list.
 def firstn_1(n):
@@ -160,7 +216,8 @@ def reuse_generator_example():
 
 def main():
 	#simple_yield_example_1()
-	simple_yield_example_2()
+	#simple_yield_example_2()
+	yield_example()
 
 	#simple_generator_example()
 	#reuse_generator_example()

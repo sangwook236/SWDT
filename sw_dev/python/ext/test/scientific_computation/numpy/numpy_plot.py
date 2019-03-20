@@ -1,9 +1,9 @@
+#!/usr/bin/env python
+
 # REF [site] >> https://docs.scipy.org/doc/numpy/user/quickstart.html#histograms
 
 import numpy as np
 import matplotlib.pyplot as plt
-
-#%%-------------------------------------------------------------------
 
 def mandelbrot(h, w, maxit = 20):
 	"""Returns an image of the Mandelbrot fractal of size (h,w)."""
@@ -21,21 +21,29 @@ def mandelbrot(h, w, maxit = 20):
 
 	return divtime
 
-plt.imshow(mandelbrot(400, 400))
-plt.show()
+def fractal_example():
+	plt.imshow(mandelbrot(400, 400))
+	plt.show()
 
-#%%-------------------------------------------------------------------
-# Histogram.
+def histogram_example():
+	# Build a vector of 10000 normal deviates with variance 0.5^2 and mean 2.
+	mu, sigma = 2, 0.5
+	v = np.random.normal(mu, sigma, 10000)
 
-# Build a vector of 10000 normal deviates with variance 0.5^2 and mean 2.
-mu, sigma = 2, 0.5
-v = np.random.normal(mu, sigma, 10000)
+	# Plot a normalized histogram with 50 bins.
+	plt.hist(v, bins = 50, normed = 1)  # Matplotlib version (plot).
+	plt.show()
 
-# Plot a normalized histogram with 50 bins.
-plt.hist(v, bins = 50, normed = 1)  # Matplotlib version (plot).
-plt.show()
+	# Compute the histogram with numpy and then plot it.
+	(n, bins) = np.histogram(v, bins = 50, normed = True)  # NumPy version (no plot).
+	plt.plot(.5 * (bins[1:] + bins[:-1]), n)
+	plt.show()
 
-# Compute the histogram with numpy and then plot it.
-(n, bins) = np.histogram(v, bins = 50, normed = True)  # NumPy version (no plot).
-plt.plot(.5 * (bins[1:] + bins[:-1]), n)
-plt.show()
+def main():
+	fractal_example()
+	histogram_example()
+
+#%%------------------------------------------------------------------
+
+if '__main__' == __name__:
+	main()
