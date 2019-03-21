@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 
 # REF [site] >> https://docs.opencv.org/master/d7/d4d/tutorial_py_thresholding.html
 def thresholding():
-	img = cv.imread('gradient.png', 0)
+	img = cv.imread('../../../data/machine_vision/gradient.png', 0)
 
 	ret, thresh1 = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
 	ret, thresh2 = cv.threshold(img, 127, 255, cv.THRESH_BINARY_INV)
@@ -17,14 +17,14 @@ def thresholding():
 	titles = ['Original Image', 'BINARY', 'BINARY_INV', 'TRUNC', 'TOZERO', 'TOZERO_INV']
 	images = [img, thresh1, thresh2, thresh3, thresh4, thresh5]
 
-	for i in xrange(6):
+	for i in range(6):
 		plt.subplot(2, 3, i+1), plt.imshow(images[i], 'gray')
 		plt.title(titles[i])
 		plt.xticks([]), plt.yticks([])
 	plt.show()
 
 	#--------------------
-	img = cv.imread('sudoku.png', 0)
+	img = cv.imread('../../../data/machine_vision/sudoku.png', 0)
 	img = cv.medianBlur(img, 5)
 
 	ret, th1 = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
@@ -34,14 +34,14 @@ def thresholding():
 	titles = ['Original Image', 'Global Thresholding (v = 127)', 'Adaptive Mean Thresholding', 'Adaptive Gaussian Thresholding']
 	images = [img, th1, th2, th3]
 
-	for i in xrange(4):
+	for i in range(4):
 		plt.subplot(2, 2, i+1), plt.imshow(images[i], 'gray')
 		plt.title(titles[i])
 		plt.xticks([]), plt.yticks([])
 	plt.show()
 
 	#--------------------
-	img = cv.imread('noisy2.png', 0)
+	img = cv.imread('../../../data/machine_vision/noisy2.png', 0)
 
 	# Global thresholding.
 	ret1, th1 = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
@@ -59,7 +59,7 @@ def thresholding():
 			  'Original Noisy Image', 'Histogram', "Otsu's Thresholding",
 			  'Gaussian filtered Image', 'Histogram', "Otsu's Thresholding"]
 
-	for i in xrange(3):
+	for i in range(3):
 		plt.subplot(3, 3, i*3+1), plt.imshow(images[i*3], 'gray')
 		plt.title(titles[i*3]), plt.xticks([]), plt.yticks([])
 		plt.subplot(3, 3, i*3+2), plt.hist(images[i*3].ravel(), 256)
@@ -70,7 +70,7 @@ def thresholding():
 
 # REF [site] >> https://docs.opencv.org/master/d5/daf/tutorial_py_histogram_equalization.html
 def histogram_equalization():
-	img = cv.imread('wiki.jpg', 0)
+	img = cv.imread('../../../data/machine_vision/wiki.jpg', 0)
 
 	hist, bins = np.histogram(img.flatten(), 256, [0, 256])
 
@@ -84,28 +84,28 @@ def histogram_equalization():
 	plt.show()
 
 	#--------------------
-	img = cv.imread('wiki.jpg', 0)
+	img = cv.imread('../../../data/machine_vision/wiki.jpg', 0)
 	equ = cv.equalizeHist(img)
 	res = np.hstack((img, equ))  # Stacking images side-by-side.
-	cv.imwrite('res.png', res)
+	cv.imwrite('./res.png', res)
 
 	#--------------------
 	# Contrast Limited Adaptive Histogram Equalization (CLAHE).
 
-	img = cv.imread('tsukuba_l.png', 0)
+	img = cv.imread('../../../data/machine_vision/tsukuba_l.png', 0)  # (height, width).
 
 	# Create a CLAHE object (Arguments are optional).
 	clahe = cv.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 	cl1 = clahe.apply(img)
 
-	cv.imwrite('clahe_2.jpg', cl1)
+	cv.imwrite('./clahe_2.jpg', cl1)
 
 # REF [site] >> https://docs.opencv.org/master/da/d6e/tutorial_py_geometric_transformations.html
 def geometric_transformation():
 	#--------------------
 	# Scaling.
 
-	img = cv.imread('messi5.jpg')
+	img = cv.imread('../../../data/machine_vision/messi5.jpg')
 	height, width = img.shape[:2]
 
 	res = cv.resize(img, None, fx=2, fy=2, interpolation=cv.INTER_CUBIC)
@@ -114,7 +114,7 @@ def geometric_transformation():
 	#--------------------
 	# Translation.
 
-	img = cv.imread('messi5.jpg', 0)
+	img = cv.imread('../../../data/machine_vision/messi5.jpg', 0)
 	rows, cols = img.shape
 
 	M = np.float32([[1, 0, 100], [0, 1, 50]])
@@ -127,7 +127,7 @@ def geometric_transformation():
 	#--------------------
 	# Rotation.
 
-	img = cv.imread('messi5.jpg', 0)
+	img = cv.imread('../../../data/machine_vision/messi5.jpg', 0)
 	rows, cols = img.shape
 
 	# cols-1 and rows-1 are the coordinate limits.
@@ -137,7 +137,7 @@ def geometric_transformation():
 	#--------------------
 	# Affine transformation.
 
-	img = cv.imread('drawing.png')
+	img = cv.imread('../../../data/machine_vision/drawing.png')
 	rows, cols, ch = img.shape
 
 	pts1 = np.float32([[50, 50], [200, 50], [50, 200]])
@@ -153,7 +153,7 @@ def geometric_transformation():
 	#--------------------
 	# Perspective transformation.
 
-	img = cv.imread('sudoku.png')
+	img = cv.imread('../../../data/machine_vision/sudoku.png')
 	rows, cols, ch = img.shape
 
 	pts1 = np.float32([[56, 65], [368, 52], [28, 387], [389, 390]])

@@ -9,17 +9,17 @@ import numpy as np
 def standardization_example():
 	X = np.array([[1.0, -1.0, 2.0], [2.0, 0.0, 0.0], [0.0, 1.0, -1.0]])
 
-	X_scaled = preprocessing.scale(X)
-	#X_scaled = preprocessing.minmax_scale(X)  # [0, 1].
-	#X_scaled = preprocessing.maxabs_scale(X)  # [-1, 1].
-	#X_scaled = preprocessing.robust_scale(X)
+	X_scaled = preprocessing.scale(X, axis=0, with_mean=True, with_std=True, copy=True)
+	#X_scaled = preprocessing.minmax_scale(X, feature_range=(0, 1), axis=0, copy=True)  # [0, 1].
+	#X_scaled = preprocessing.maxabs_scale(X, axis=0, copy=True)  # [-1, 1].
+	#X_scaled = preprocessing.robust_scale(X, axis=0, with_centering=True, with_scaling=True, quantile_range=(25.0, 75.0), copy=True)
 	X_scaled.mean(axis=0)
 	X_scaled.std(axis=0)
 
-	scaler = preprocessing.StandardScaler().fit(X)
-	#scaler = preprocessing.MinMaxScaler().fit(X)  # [0, 1].
-	#scaler = preprocessing.MaxAbsScaler().fit(X)  # [-1, 1].
-	#scaler = preprocessing.RobustScaler().fit(X)
+	scaler = preprocessing.StandardScaler(copy=True, with_mean=True, with_std=True).fit(X)
+	#scaler = preprocessing.MinMaxScaler(feature_range=(0, 1), copy=True).fit(X)  # [0, 1].
+	#scaler = preprocessing.MaxAbsScaler(copy=True).fit(X)  # [-1, 1].
+	#scaler = preprocessing.RobustScaler(with_centering=True, with_scaling=True, quantile_range=(25.0, 75.0), copy=True).fit(X)
 	print(scaler.mean_)
 	print(scaler.scale_)
 	scaler.transform(X)

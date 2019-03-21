@@ -12,7 +12,7 @@ def simple_yield_example_1():
 		yield 2
 		yield 3
 
-	gen = simple_generator()
+	gen = simple_generator()  # class 'generator'.
 	print('type(gen) =', type(gen), gen)
 
 	print('Next =', next(gen))

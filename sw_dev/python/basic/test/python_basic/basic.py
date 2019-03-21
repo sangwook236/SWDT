@@ -66,11 +66,18 @@ def lambda_expression():
 	a_plus_b_plus_c = list(map(lambda x, y, z: x + y + z, a, b, c))
 	print('a + b + c =', a_plus_b_plus_c)
 
+	null_func = lambda x, y: None
+	print('null_func is called:', null_func(2, 3))
+
+	#func2 = lambda x, y: x, y  # NameError: name 'y' is not defined.
+	func2 = lambda x, y: (x, y)
+	print('func2 is called:', func2(2, 3))
+
 #%%------------------------------------------------------------------
 # Map, filter, reduce.
 def map_filter_reduce():
 	items = [1, 2, 3, 4, 5]
-	squared = map(lambda x: x**2, items)
+	squared = map(lambda x: x**2, items)  # class 'map'.
 	print('Type of squared =', squared)
 	print('squared =', list(squared))
 
@@ -86,7 +93,7 @@ def map_filter_reduce():
 
 	#--------------------
 	number_list = range(-5, 5)
-	less_than_zero = filter(lambda x: x < 0, number_list)
+	less_than_zero = filter(lambda x: x < 0, number_list)  # class 'filter'.
 	print('Type of less_than_zero =', less_than_zero)
 	print('less_than_zero =', list(less_than_zero))
 
@@ -150,13 +157,13 @@ def main():
 	#assert_test()
 	#exception_test()
 
-	#lambda_expression()
+	lambda_expression()
 	#map_filter_reduce()
 
-	with_statement_test()
+	#with_statement_test()
 
-	caller_func(func)
-	caller_func(func_obj(2))
+	#caller_func(func)
+	#caller_func(func_obj(2))
 
 #%%------------------------------------------------------------------
 
