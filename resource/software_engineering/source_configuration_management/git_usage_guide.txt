@@ -3,3 +3,35 @@
 		https://git-scm.com/
 
 		https://tortoisegit.org/
+
+	- Config.
+		In Linux:
+			~/.gitconfig
+		In Windows:
+			${USERPROFILE}/.gitconfig
+
+[-] Usage (Linux).
+	- Use GUI tools.
+		REF [site] >> https://stackoverflow.com/questions/34119866/setting-up-and-using-meld-as-your-git-difftool-and-mergetool
+
+		Edit .gitconfig:
+			[diff]
+				tool = meld
+			[difftool]
+				prompt = false
+			[difftool "meld"]
+				cmd = meld "$LOCAL" "$REMOTE"
+
+			[merge]
+				tool = meld
+			[mergetool "meld"]
+				# Choose one of these 2 lines (not both!) explained below.
+				cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+				#cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
+		Use commands:
+			git difftool ...
+			git mergetool ...
+				You do NOT use git mergetool to perform an actual merge.
+				Before using git mergetool you perform a merge in the usual way with git.
+					git checkout master
+					git merge branch_name
