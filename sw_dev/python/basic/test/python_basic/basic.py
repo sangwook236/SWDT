@@ -171,6 +171,8 @@ def map_filter_reduce():
 		return reduce(operator.add, axi, 0)
 	print('Polynomial =', evaluate_polynomial([1, 2, 3, 4], 2))
 
+# Context managers allow you to allocate and release resources precisely when you want to.
+# The most widely used example of context managers is the with statement.
 # REF [site] >>
 #	https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers
 #	https://docs.quantifiedcode.com/python-anti-patterns/correctness/exit_must_accept_three_arguments.html

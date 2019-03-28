@@ -1,6 +1,0 @@
-[-] General.
-	- Site.
-		https://code.google.com/p/ocropus/
-
-		https://github.com/tmbdev/ocropy
-		https://github.com/mittagessen/kraken

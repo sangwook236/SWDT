@@ -1,36 +1,22 @@
 [-] General.
 	- Site.
 		https://code.google.com/p/tesseract-ocr/
+		https://github.com/tesseract-ocr/tesseract
+
 		http://capture2text.sourceforge.net/
 		http://cult1.tistory.com/159
 
-[-] Building.
-	- Reference.
-		https://github.com/tesseract-ocr/tesseract/wiki/Compiling
-		https://github.com/tesseract-ocr/tesseract/wiki/TesseractOpenCL
+	- Documentation.
+		https://github.com/tesseract-ocr/tesseract/wiki/Documentation
+		https://github.com/tesseract-ocr/tesseract/wiki/4.0-with-LSTM
 
-	- Install package.
-		sudo apt-get install libicu-dev libpango1.0-dev libcairo2-dev libleptonica-dev
+[-] Usage (ver 4.0).
+	- Run.
+		REF [site] >> https://github.com/tesseract-ocr/tesseract/wiki/Command-Line-Usage
 
-	- Configure.
-		cd ${TESSERACT_HOME}
-
-		./autogen.sh
-		./configure --prefix=$HOME/local/
-		./configure --prefix=$HOME/local/ --enable-opencl
-		export LIBRARY_PATH=/usr/local/cuda/lib64:$LIBRARY_PATH
-		CPPFLAGS+=-I/usr/local/cuda/include ./configure --enable-opencl 
-
-	- Make.
-		make
-		sudo make install
-		sudo ldconfig
-
-		make training
-		sudo make training-install
-
-		make ScrollView.jar
-		export SCROLLVIEW_PATH=$PWD/java
+		export TESSDATA_PREFIX=${TESSERACT_TESSDATA_HOME}
+		tesseract -l kor kor_gulimche_test.tif kor_gulimche_test
+		tesseract -l eng eng_arial_test.tif eng_arial_test
 
 [-] Tools.
 	- Directory.
@@ -64,9 +50,40 @@
 		List the content of a traineddata file and its version string.
 			${TESSERACT_HOME}/src/training/combine_tessdata -d ${TESSERACT_TESSDATA_HOME}/eng.traineddata
 
+	- jTessBoxEditor.
+		https://sourceforge.net/projects/vietocr/files/jTessBoxEditor/
+
 [-] Network specification.
 	- Reference.
 		https://github.com/tesseract-ocr/tesseract/wiki/VGSLSpecs
+
+[-] Building.
+	- Reference.
+		https://github.com/tesseract-ocr/tesseract/wiki/Compiling
+		https://github.com/tesseract-ocr/tesseract/wiki/TesseractOpenCL
+
+	- Install package.
+		sudo apt-get install libicu-dev libpango1.0-dev libcairo2-dev libleptonica-dev
+
+	- Configure.
+		cd ${TESSERACT_HOME}
+
+		./autogen.sh
+		./configure --prefix=$HOME/local/
+		./configure --prefix=$HOME/local/ --enable-opencl
+		export LIBRARY_PATH=/usr/local/cuda/lib64:$LIBRARY_PATH
+		CPPFLAGS+=-I/usr/local/cuda/include ./configure --enable-opencl 
+
+	- Make.
+		make
+		sudo make install
+		sudo ldconfig
+
+		make training
+		sudo make training-install
+
+		make ScrollView.jar
+		export SCROLLVIEW_PATH=$PWD/java
 
 [-] Training (ver 3.0)
 	- Reference.
@@ -122,11 +139,5 @@
 	- Fine-tune.
 		${TESSERACT_HOME}/src/training/lstmtraining
 
-	- Evaluation
+	- Evaluation.
 		${TESSERACT_HOME}/src/training/lstmeval
-
-[-] Recognition (ver 4.0).
-	- 
-		export TESSDATA_PREFIX=${TESSERACT_TESSDATA_HOME}
-		/home/sangwook/lib_repo/cpp/tesseract_github/src/api/tesseract -l kor kor_gulimche_test.tif kor_gulimche_test
-		/home/sangwook/lib_repo/cpp/tesseract_github/src/api/tesseract -l eng eng_arial_test.tif eng_arial_test
