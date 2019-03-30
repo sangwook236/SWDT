@@ -11,19 +11,34 @@
 		https://github.com/tesseract-ocr/tesseract/wiki/4.0-with-LSTM
 
 [-] Usage (ver 4.0).
+	- Info.
+		Use resolution 70 DPI. (?)
+			REF [doc] >> image_processing.pptx
+
 	- Run.
 		REF [site] >> https://github.com/tesseract-ocr/tesseract/wiki/Command-Line-Usage
 
 		export TESSDATA_PREFIX=${TESSERACT_TESSDATA_HOME}
-		tesseract -l kor kor_gulimche_test.tif kor_gulimche_test
-		tesseract -l eng eng_arial_test.tif eng_arial_test
+		tesseract --list-langs
+
+		tesseract --tessdata-dir /path/to/tessdata imagename output_results -l kor --oem=2 --psm=3
+			Generates output_results.txt as output.
+
+		tesseract -l kor kor_gulimche_test.tif output_results
+		tesseract -l eng eng_arial_test.tif output_results
+
+		tesseract image_list.txt output_results
+			In image_list.txt:
+				/path/to/1.png
+				/path/to/2.png
+				/path/to/3.tiff
 
 [-] Tools.
 	- Directory.
 		${TESSERACT_HOME}/src/training
 
 	- text2image.
-		Generate .tif & .box files.
+		Generates .tif & .box files.
 
 		${TESSERACT_HOME}/src/training/text2image --list_avaiable_fonts --fonts_dir /usr/share/fonts
 		${TESSERACT_HOME}/src/training/text2image --fonts_dir /usr/share/fonts --font 'Arial' --text ${TESSERACT_LANGDATA_HOME}/eng/eng.training_text --outputbase eng_training
@@ -36,7 +51,7 @@
 		text2image --fonts_dir /usr/share/fonts --find_fonts --render_per_font --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/kor/kor.training_text --outputbase ./training_data_kor_all/kor_training
 
 	- combine_lang_model.
-		Make a starter traineddata.
+		Makes a starter traineddata.
 
 		${TESSERACT_HOME}/src/training/combine_lang_model --script_dir ${TESSERACT_LANGDATA_HOME} --input_unicharset eng.unicharset --lang eng
 		${TESSERACT_HOME}/src/training/combine_lang_model --script_dir ${TESSERACT_LANGDATA_HOME} --input_unicharset eng.unicharset --lang kor
@@ -44,7 +59,7 @@
 		combine_lang_model --script_dir /home/sangwook/lib_repo/cpp/tesseract_langdata_github --input_unicharset ./engtrain/eng.unicharset --lang eng
 
 	- combine_tessdata.
-		Combine tessdata files.
+		Combines tessdata files.
 		Extract tessdata components.
 			${TESSERACT_HOME}/src/training/combine_tessdata -e ${TESSERACT_TESSDATA_HOME}/eng.traineddata ./eng.lstm
 		List the content of a traineddata file and its version string.
@@ -56,6 +71,14 @@
 [-] Network specification.
 	- Reference.
 		https://github.com/tesseract-ocr/tesseract/wiki/VGSLSpecs
+
+[-] Installation.
+	- Reference.
+		https://github.com/tesseract-ocr/tesseract/wiki
+
+	- Install (Linux).
+		sudo apt install tesseract-ocr
+		sudo apt install libtesseract-dev 
 
 [-] Building.
 	- Reference.
@@ -85,7 +108,7 @@
 		make ScrollView.jar
 		export SCROLLVIEW_PATH=$PWD/java
 
-[-] Training (ver 3.0)
+[-] Training (ver 3.0).
 	- Reference.
 		http://wookiist.tistory.com/9
 		http://sehyo88.tistory.com/entry/tesseractocr-학습데이터-만들기
@@ -93,6 +116,7 @@
 
 [-] Training (ver 4.0).
 	- Reference.
+		https://github.com/tesseract-ocr/tesseract/wiki/TrainingTesseract
 		https://github.com/tesseract-ocr/tesseract/wiki/TrainingTesseract-4.00
 
 		https://github.com/tesseract-ocr/langdata.git

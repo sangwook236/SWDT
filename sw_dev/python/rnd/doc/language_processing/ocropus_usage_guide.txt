@@ -5,11 +5,41 @@
 		https://github.com/tmbdev/ocropy
 		https://github.com/mittagessen/kraken
 
-[-] Usage (Ocropy).
-	-
+	- Document.
+		https://github.com/tmbdev/ocropy/wiki
+
+[-] Usage (OCRopy).
+	- Info.
+		The default parameters and settings of OCRopus assume 300dpi binary black-on-white images.
+		If your images are scanned at a different resolution, the simplest thing to do is to downscale/upscale them to 300dpi.
+		The text line recognizer is fairly robust to different resolutions, but the layout analysis is quite resolution dependent.
+
+	- Activate environment.
 		conda activate ocropus
 
-[-] Installation (Ocropy).
+	- Perform binarization.
+		ocropus-nlbin tests/ersch.png -o book
+	- Perform page layout analysis.
+		ocropus-gpageseg 'book/????.bin.png'
+			Question marks can be used.
+	- Perform text line recognition (on four cores, with a fraktur model).
+		ocropus-rpred -Q 4 -m models/fraktur.pyrnn.gz 'book/????/??????.bin.png'
+	- Generate HTML output.
+		ocropus-hocr 'book/????.bin.png' -o ersch.html
+	- Display the output.
+		firefox ersch.html
+
+[-] Tool (OCRopy).
+	- ocropus-linegen.
+		Generates training data.
+
+		ocropus-linegen -t tests/tomsawyer.txt -f tests/DejaVuSans.ttf
+			Creates a directory "linegen/..." containing training data suitable for training OCRopus with synthetic data.
+
+	- clstmtext.
+		Trains language models.
+
+[-] Installation (OCRopy).
 	REF [site] >> https://github.com/tmbdev/ocropy
 
 	- Conda.
@@ -23,3 +53,15 @@
 
 	- Test.
 		./run-test
+
+[-] Training (OCRopy).
+	REF [site] >> http://www.danvk.org/2015/01/11/training-an-ocropus-ocr-model.html
+
+	- Training data.
+		.png/.gt.txt files.
+
+	- Train.
+		Train from scratch:
+			ocropus-rtrain -o model_name book*/????/*.bin.png
+		Train on top of an existing model:
+			ocropus-rtrain --load en-default.pyrnn.gz -o model_name book*/????/*.bin.png

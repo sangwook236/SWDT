@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-def main():
+import glob
+
+def basic():
 	try:
 		with open('data.txt', 'r', encoding='UTF8') as fd:
 		#with open('data.txt', 'r+') as fd:
@@ -24,6 +26,20 @@ def main():
 			lines2.append(line)
 	except FileNotFoundError as ex:
 		print('FileNotFoundError raised:', ex)
+
+# Unix style pathname pattern expansion.
+# REF [site] >> https://docs.python.org/3/library/glob.html
+def glob_example():
+	glob.glob('./[0-9].*')
+	glob.glob('*.gif')
+	glob.glob('?.gif')
+	glob.glob('**/*.txt', recursive=True)
+	glob.glob('./**/', recursive=True)
+
+def main():
+	basic()
+
+	glob_example()
 
 #%%------------------------------------------------------------------
 

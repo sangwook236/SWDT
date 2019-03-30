@@ -85,9 +85,13 @@ def histogram_equalization():
 
 	#--------------------
 	img = cv.imread('../../../data/machine_vision/wiki.jpg', 0)
+
 	equ = cv.equalizeHist(img)
 	res = np.hstack((img, equ))  # Stacking images side-by-side.
-	cv.imwrite('./res.png', res)
+
+	#cv.imwrite('./res.png', res)
+	cv.imshow('Histogram Equalization', res)
+	cv.waitKey(0)
 
 	#--------------------
 	# Contrast Limited Adaptive Histogram Equalization (CLAHE).
@@ -98,7 +102,9 @@ def histogram_equalization():
 	clahe = cv.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 	cl1 = clahe.apply(img)
 
-	cv.imwrite('./clahe_2.jpg', cl1)
+	#cv.imwrite('./clahe_2.jpg', cl1)
+	cv.imshow('CLAHE', cl1)
+	cv.waitKey(0)
 
 # REF [site] >> https://docs.opencv.org/master/da/d6e/tutorial_py_geometric_transformations.html
 def geometric_transformation():
