@@ -195,7 +195,7 @@ def ctc_loss_example():
 
 		# Label error rate => inaccuracy.
 		#	Variable-length output.
-		ler = tf.reduce_mean(tf.edit_distance(tf.cast(decoded[0], tf.int32), targets))  # int64 -> int32.
+		ler = tf.reduce_mean(tf.edit_distance(tf.cast(decoded[0], tf.int32), targets, normalize=True))  # int64 -> int32.
 
 	with tf.Session(graph=graph) as sess:
 		tf.global_variables_initializer().run()
@@ -281,7 +281,7 @@ def ctc_loss_v2_example():
 
 		# Label error rate => inaccuracy.
 		#	Variable-length output.
-		ler = tf.reduce_mean(tf.edit_distance(tf.cast(decoded[0], tf.int32), targets))  # int64 -> int32.
+		ler = tf.reduce_mean(tf.edit_distance(tf.cast(decoded[0], tf.int32), targets, normalize=True))  # int64 -> int32.
 
 	with tf.Session(graph=graph) as sess:
 		tf.global_variables_initializer().run()
@@ -315,6 +315,44 @@ def ctc_loss_v2_example():
 				train_ler += batch_ler * batch_size
 			val_cost, val_ler = sess.run(input_logits_bm)
 		"""
+
+# REF [site] >> https://www.tensorflow.org/api_docs/python/tf/edit_distance
+def edit_distance_example():
+	# 'hypothesis' is a tensor of shape '[2, 1]' with variable-length values:
+	#   (0,0) = ['a']
+	#   (1,0) = ['b']
+	hypothesis = tf.SparseTensor(
+		[[0, 0, 0],
+		 [1, 0, 0]],
+		['a', 'b'],
+		(2, 1, 1)
+	)
+
+	# 'truth' is a tensor of shape '[2, 2]' with variable-length values:
+	#   (0,0) = []
+	#   (0,1) = ['a']
+	#   (1,0) = ['b', 'c']
+	#   (1,1) = ['a']
+	truth = tf.SparseTensor(
+		[[0, 1, 0],
+		 [1, 0, 0],
+		 [1, 0, 1],
+		 [1, 1, 0]],
+		['a', 'b', 'c', 'a'],
+		(2, 2, 2)
+	)
+
+	with tf.Session() as sess:
+		distance = tf.edit_distance(hypothesis, truth, normalize=False)
+
+		tf.global_variables_initializer().run()
+
+		dist = distance.eval(session=sess)
+		print('Edit distance =\n', dist)
+
+		# 'output' is a tensor of shape '[2, 2]' with edit distances normalized by 'truth' lengths.
+		#	[[inf, 1.0],  # (0,0): no truth, (0,1): no hypothesis.
+		#	 [0.5, 1.0]]  # (1,0): addition, (1,1): no hypothesis.
 
 # REF [site] >> https://stackoverflow.com/questions/45482813/tensorflow-cant-understand-ctc-beam-search-decoder-output-sequence
 def ctc_beam_search_decoder_example_1():
@@ -434,6 +472,8 @@ def main():
 	# CTC loss.
 	ctc_loss_example()
 	ctc_loss_v2_example()
+
+	#edit_distance_example()
 
 	#ctc_beam_search_decoder_example_1()
 	#ctc_beam_search_decoder_example_2()
