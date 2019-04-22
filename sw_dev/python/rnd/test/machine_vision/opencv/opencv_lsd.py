@@ -13,7 +13,7 @@ def main():
 	lsd = cv2.createLineSegmentDetector(cv2.LSD_REFINE_ADV, 0.8)
 
 	# Detect lines in the image.
-	lines, width, prec, nfa = lsd.detect(img)  # Lines' shape = (lines, 1, 4).
+	lines, width, prec, nfa = lsd.detect(img)  # The shape of lines = (#lines, 1, 4).
 	print('#detected lines =', lines.shape[0])
 
 	# Draw detected lines in the image.

@@ -1,0 +1,18 @@
+[-] General.
+	- Site.
+		https://github.com/studywolf/pydmps/
+
+		https://studywolf.wordpress.com/category/robotics/dynamic-movement-primitive/
+
+	- Paper.
+		"Dynamical Movement Primitives: Learning Attractor Models for Motor Behaviours", NeCo 2013
+		"Biologically-inspired dynamical systems for movement generation: Automatic real-time goal adaptation and obstacle avoidance", ICRA 2009
+
+[-] Usage.
+	- Install.
+		cd ${pydmps_HOME}
+		python setup.py build
+		python setup.py install
+
+	- Run examples.
+		cd ${pydmps_HOME}/exmaples

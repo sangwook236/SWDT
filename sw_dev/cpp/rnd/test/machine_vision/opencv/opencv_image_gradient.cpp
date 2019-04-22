@@ -83,7 +83,7 @@ void image_gradient()
 		const cv::Mat img = cv::imread(*it, cv::IMREAD_COLOR);
 		if (img.empty())
 		{
-			std::cout << "fail to load image file: " << *it << std::endl;
+			std::cout << "Failed to load image file: " << *it << std::endl;
 			continue;
 		}
 
@@ -94,9 +94,9 @@ void image_gradient()
 			cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
 			//cv::cvtColor(img, gray, cv::COLOR_RGB2GRAY);
 
-		// smoothing
+		// Smoothing.
 #if 0
-		// METHOD #1: down-scale and up-scale the image to filter out the noise.
+		// METHOD #1: Down-scale and up-scale the image to filter out the noise.
 
 		{
 			cv::Mat tmp;
@@ -107,51 +107,51 @@ void image_gradient()
 		// METHOD #2: Gaussian filtering.
 
 		{
-			// FIXME [adjust] >> adjust parameters.
+			// FIXME [adjust] >> Adjust parameters.
 			const int kernelSize = 3;
 			const double sigma = 2.0;
 			cv::GaussianBlur(gray, gray, cv::Size(kernelSize, kernelSize), sigma, sigma, cv::BORDER_DEFAULT);
 		}
 #elif 1
-		// METHOD #3: box filtering.
+		// METHOD #3: Box filtering.
 
 		{
-			// FIXME [adjust] >> adjust parameters.
-			const int ddepth = -1;  // the output image depth. -1 to use src.depth().
+			// FIXME [adjust] >> Adjust parameters.
+			const int ddepth = -1;  // The output image depth. -1 to use src.depth().
 			const int kernelSize = 3;
 			const bool normalize = true;
 			cv::boxFilter(gray.clone(), gray, ddepth, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), normalize, cv::BORDER_DEFAULT);
-			//cv::blur(gray.clone(), gray, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), cv::BORDER_DEFAULT);  // use the normalized box filter.
+			//cv::blur(gray.clone(), gray, cv::Size(kernelSize, kernelSize), cv::Point(-1, -1), cv::BORDER_DEFAULT);  // Use the normalized box filter.
 		}
 #elif 0
-		// METHOD #4: bilateral filtering.
+		// METHOD #4: Bilateral filtering.
 
 		{
-			// FIXME [adjust] >> adjust parameters.
-			const int diameter = -1;  // diameter of each pixel neighborhood that is used during filtering. if it is non-positive, it is computed from sigmaSpace.
-			const double sigmaColor = 3.0;  // for range filter.
-			const double sigmaSpace = 50.0;  // for space filter.
+			// FIXME [adjust] >> Adjust parameters.
+			const int diameter = -1;  // Diameter of each pixel neighborhood that is used during filtering. If it is non-positive, it is computed from sigmaSpace.
+			const double sigmaColor = 3.0;  // For range filter.
+			const double sigmaSpace = 50.0;  // For space filter.
 			cv::bilateralFilter(gray.clone(), gray, diameter, sigmaColor, sigmaSpace, cv::BORDER_DEFAULT);
 		}
 #else
-		// METHOD #5: no filtering.
+		// METHOD #5: No filtering.
 
 		//gray = gray;
 #endif
 
-		// compute x- & y-gradients.
+		// Compute x- & y-gradients.
 		cv::Mat xgradient, ygradient;
 #if 0
-		// METHOD #1: using Sobel operator.
+		// METHOD #1: Using Sobel operator.
 
 		{
 			//const int ksize = 5;
-			const int ksize = CV_SCHARR;  // use Scharr operator
+			const int ksize = CV_SCHARR;  // Use Scharr operator.
 			cv::Sobel(gray, xgradient, CV_64FC1, 1, 0, ksize, 1.0, 0.0, cv::BORDER_DEFAULT);
 			cv::Sobel(gray, ygradient, CV_64FC1, 0, 1, ksize, 1.0, 0.0, cv::BORDER_DEFAULT);
 		}
 #elif 1
-		// METHOD #2: using derivative of Gaussian distribution.
+		// METHOD #2: Using derivative of Gaussian distribution.
 
 		{
 			cv::Mat img_double;
@@ -168,7 +168,7 @@ void image_gradient()
 			const int deriv_kernel_size = 2 * (int)std::ceil(deriv_sigma) + 1;
 			cv::Mat kernelX(1, deriv_kernel_size, CV_64FC1), kernelY(deriv_kernel_size, 1, CV_64FC1);
 
-			// construct derivative kernels.
+			// Construct derivative kernels.
 			for (int i = 0, k = -deriv_kernel_size/2; k <= deriv_kernel_size/2; ++i, ++k)
 			{
 				const double val = k * std::exp(-k*k / _2sigma2) / den;
@@ -176,20 +176,20 @@ void image_gradient()
 				kernelY.at<double>(i, 0) = val;
 			}
 
-			// compute x- & y-gradients.
+			// Compute x- & y-gradients.
 			cv::filter2D(img_double, xgradient, -1, kernelX, cv::Point(-1, -1), 0.0, cv::BORDER_DEFAULT);
 			cv::filter2D(img_double, ygradient, -1, kernelY, cv::Point(-1, -1), 0.0, cv::BORDER_DEFAULT);
 		}
 #endif
 
 #if 0
-		// display gradients.
+		// Display gradients.
 		{
 			double minVal, maxVal;
 			cv::minMaxLoc(xgradient, &minVal, &maxVal);
-			std::cout << "x-gradient: min = " << minVal << ", max = " << maxVal << std::endl;
+			std::cout << "X-gradient: min = " << minVal << ", max = " << maxVal << std::endl;
 			cv::minMaxLoc(ygradient, &minVal, &maxVal);
-			std::cout << "y-gradient: min = " << minVal << ", max = " << maxVal << std::endl;
+			std::cout << "Y-gradient: min = " << minVal << ", max = " << maxVal << std::endl;
 
 			cv::Mat Ix = cv::abs(xgradient);
 			cv::Mat Iy = cv::abs(ygradient);
@@ -197,14 +197,14 @@ void image_gradient()
 			cv::Mat tmp;
 			cv::minMaxLoc(Ix, &minVal, &maxVal);
 			Ix.convertTo(tmp, CV_32FC1, 1.0 / maxVal, 0.0);
-			cv::imshow("image gradient - x-gradient", tmp);
+			cv::imshow("Image gradient - x-gradient", tmp);
 			cv::minMaxLoc(Iy, &minVal, &maxVal);
 			Iy.convertTo(tmp, CV_32FC1, 1.0 / maxVal, 0.0);
-			cv::imshow("image gradient - y-gradient", tmp);
+			cv::imshow("Image gradient - y-gradient", tmp);
 		}
 #endif
 
-		// magnitude & phase of gradient.
+		// Magnitude & phase of gradient.
 		cv::Mat gradient_mag, gradient_phase;
 		cv::magnitude(xgradient, ygradient, gradient_mag);  // CV_64FC1.
 		cv::phase(xgradient, ygradient, gradient_phase);  // CV_64FC1. [0, 2*pi].
@@ -219,7 +219,7 @@ void image_gradient()
 		//cv::Mat gradient_mask;
 		//cv::compare(gradient_mag, minMag + (maxVal - minMag) * thresholdRatio, gradient_mask, cv::CMP_GT);
 
-		// filtering.
+		// Filtering.
 		gradient_mag.setTo(cv::Scalar::all(0), 0 == gradient_mask);
 		gradient_phase.setTo(cv::Scalar::all(0), 0 == gradient_mask);
 
@@ -227,13 +227,13 @@ void image_gradient()
 		gradient_mag.convertTo(gradient_mag_img, CV_32FC1, 1.0 / (maxMag - minMag), -minMag / (maxMag - minMag));
 		gradient_phase.convertTo(gradient_phase_img, CV_32FC1, 1.0 / (maxPhase - minPhase), -minPhase / (maxPhase - minPhase));
 
-		cv::imshow("image gradient - input", img);
-		cv::imshow("image gradient - magnitude of gradient", gradient_mag_img);
-		cv::imshow("image gradient - phase of gradient", gradient_phase_img);
-		cv::imshow("image gradient - gradient mask", gradient_mask);
+		cv::imshow("Image gradient - Input", img);
+		cv::imshow("Image gradient - Magnitude of gradient", gradient_mag_img);
+		cv::imshow("Image gradient - Phase of gradient", gradient_phase_img);
+		cv::imshow("Image gradient - Gradient mask", gradient_mask);
 
 #if 1
-		// draw gradients.
+		// Draw gradients.
 		//cv::Mat gradient_rgb;
 		//cv::cvtColor(gradient_mask, gradient_rgb, cv::COLOR_GRAY2BGR);
 		cv::Mat gradient_rgb = img.clone();
@@ -252,7 +252,7 @@ void image_gradient()
 				}
 			}
 
-		cv::imshow("image gradient - gradient", gradient_rgb);
+		cv::imshow("Image gradient - gradient", gradient_rgb);
 #endif
 
 		const unsigned char key = cv::waitKey(0);
