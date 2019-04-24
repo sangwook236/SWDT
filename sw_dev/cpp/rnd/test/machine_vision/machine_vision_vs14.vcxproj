@@ -406,6 +406,7 @@
     <ClCompile Include="opencv\opencv_structure_tensor.cpp" />
     <ClCompile Include="opencv\opencv_superpixel.cpp" />
     <ClCompile Include="opencv\opencv_template_matching.cpp" />
+    <ClCompile Include="opencv\opencv_text.cpp" />
     <ClCompile Include="opencv\opencv_text_output.cpp" />
     <ClCompile Include="opencv\opencv_skeletonization_and_thinning.cpp" />
     <ClCompile Include="opencv\opencv_util.cpp" />

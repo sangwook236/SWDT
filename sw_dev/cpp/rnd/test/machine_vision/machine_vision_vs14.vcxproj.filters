@@ -462,6 +462,9 @@
     <ClCompile Include="opencv\opencv_image_alignment.cpp">
       <Filter>Source Files\opencv</Filter>
     </ClCompile>
+    <ClCompile Include="opencv\opencv_text.cpp">
+      <Filter>Source Files\opencv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opencv\PascalVocDataset.h">

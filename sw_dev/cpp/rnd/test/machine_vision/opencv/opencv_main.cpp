@@ -218,14 +218,6 @@ void generic_description_and_matching();
 void retina_model();
 void bag_of_words();
 
-void object_detection();
-void human_detection();
-void human_detection_using_gpu();
-void saliency_detection();
-void face_detection();
-void face_detection_using_gpu();
-void face_recognition();
-
 void camera_geometry();
 void camera_calibration();
 void stereo_camera_calibration();
@@ -253,6 +245,16 @@ void slam();
 void pca();
 void clustering();
 void machine_learning();
+
+void object_detection();
+void human_detection();
+void human_detection_using_gpu();
+void saliency_detection();
+void face_detection();
+void face_detection_using_gpu();
+void face_recognition();
+
+void text();
 
 void openni_interface();
 
@@ -370,6 +372,8 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::face_detection();
 		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // Not yet implemented.
 		//my_opencv::face_recognition();
+
+		//my_opencv::text();
 
 		//my_opencv::camera_geometry();
 		//my_opencv::camera_calibration();
