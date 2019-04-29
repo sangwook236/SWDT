@@ -203,16 +203,16 @@ void simple_multiscale_ncc()
 
 			switch (comparison_method)
 			{
-				// Sum of squared differences.
+			// Sum of squared differences.
 			case cv::TM_SQDIFF:
 			case cv::TM_SQDIFF_NORMED:
 				maxVal = -minVal;
 				maxLoc = minLoc;
 				break;
-				// Correlation.
+			// Correlation.
 			case cv::TM_CCORR:
 			case cv::TM_CCORR_NORMED:
-				// Correlation coefficients.
+			// Correlation coefficients.
 			case cv::TM_CCOEFF:
 			case cv::TM_CCOEFF_NORMED:
 				// Do nothing.
@@ -225,7 +225,7 @@ void simple_multiscale_ncc()
 				matched_loc = maxLoc;
 				matched_scale = scale;
 			}
-	}
+		}
 		const double &endTime = (double)cv::getTickCount();
 
 		cv::Mat rgb;

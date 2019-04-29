@@ -243,39 +243,29 @@ def ER_text_detector_example():
 #	${OPENCV_CONTRIB_HOME}/modules/text/samples/textbox_demo.cpp
 def TextBoxes_detector_example():
 	image_filepaths = [
-		#'./image.png',
-		'./image/driver_license_1.png',
-		'./image/driver_license_1_x2.png',
-		'./image/driver_license_20190329.jpg',
-		'./image/driver_license_20190329_x2.jpg',
-		'./image/passport_chaewanlee_20130402.jpg',
-		'./image/passport_chaewanlee_20130402_x2.jpg',
-		'./image/passport_chaewanlee_20170804.jpg',
-		'./image/passport_chaewanlee_20170804_x2.jpg',
-		'./image/passport_hyejoongkim_20140508.jpg',
-		'./image/passport_hyejoongkim_20140508_x2.jpg',
-		'./image/passport_jihyunglee_20130402.jpg',
-		'./image/passport_jihyunglee_20130402_x2.jpg',
-		'./image/passport_jihyunglee_20170804.jpg',
-		'./image/passport_jihyunglee_20170804_x2.jpg',
-		'./image/passport_malnamkang_1.jpg',
-		'./image/passport_malnamkang_1_x2.jpg',
-		'./image/passport_malnamkang_2.jpg',
-		'./image/passport_malnamkang_2_x2.jpg',
-		'./image/passport_sangwooklee_20031211.jpg',
-		'./image/passport_sangwooklee_20031211_x2.jpg',
-		'./image/passport_sangwooklee_20130402.jpg',
-		'./image/passport_sangwooklee_20130402_x2.jpg',
-		'./image/rrn_malnamkang.jpg',
-		'./image/rrn_malnamkang_x2.jpg',
-		'./image/rrn_sangwooklee_20190329.jpg',
-		'./image/rrn_sangwooklee_20190329_x2.jpg',
+		'./image.png',
 	]
 
-	# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/trained_classifierNM1.xml
-	textbox_prototxt_filepath = './textbox.prototxt'
-	# REF [file] >> https://www.dropbox.com/s/g8pjzv2de9gty8g/TextBoxes_icdar13.caffemodel?dl=0
-	textbox_caffemodel_filepath = './TextBoxes_icdar13.caffemodel'
+	if True:
+		# REF [site] >> https://github.com/MhLiao/TextBoxes
+
+		# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/textbox.prototxt
+		# REF [file] >> ${TextBoxes_HOME}/examples/TextBoxes/deploy.prototxt
+		textbox_prototxt_filepath = './TextBox.prototxt'
+		# REF [site] >> https://www.dropbox.com/s/g8pjzv2de9gty8g/TextBoxes_icdar13.caffemodel?dl=0
+		textbox_caffemodel_filepath = './TextBoxes_icdar13.caffemodel'
+	else:
+		# Error:
+		#	ReadProtoFromTextFile(param_file, param). Failed to parse NetParameter file: ./TextBoxespp_deploy.prototxt in function cv::dnn::ReadNetParamsFromTextFileOrDie
+
+		# REF [site] >> https://github.com/MhLiao/TextBoxes_plusplus
+	
+		# REF [file] >> ${TextBoxes_plusplus_HOME}/models/deploy.prototxt
+		textbox_prototxt_filepath = './TextBoxespp_deploy.prototxt'
+		# REF [site] >> https://www.dropbox.com/s/kpv17f3syio95vn/model_pre_train_syn.caffemodel?dl=0
+		#textbox_caffemodel_filepath = './TextBoxespp_pre_train_syn.caffemodel'
+		# REF [site] >> https://www.dropbox.com/s/9znpiqpah8rir9c/model_icdar15.caffemodel?dl=0
+		textbox_caffemodel_filepath = './TextBoxespp_icdar15.caffemodel'
 
 	textSpotter = cv.text.TextDetectorCNN_create(textbox_prototxt_filepath, textbox_caffemodel_filepath)
 	for image_filepath in image_filepaths:

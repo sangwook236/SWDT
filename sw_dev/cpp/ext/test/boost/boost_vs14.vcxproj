@@ -106,6 +106,9 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;libcmtd.lib</IgnoreSpecificDefaultLibraries>
+      <MergeSections>
+      </MergeSections>
+      <ImportLibrary>$(CUDA_PATH)/lib/Win32</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -128,11 +131,12 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;libcmtd.lib</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(CUDA_PATH)/lib/x64</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../inc;$(CUDA_PATH_V9_2)/include;$(MY_USR_LOCAL_INCLUDE)/gmpfrxx;$(MY_USR_LOCAL_INCLUDE)/libjpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(CUDA_PATH)/include;$(MY_USR_LOCAL_INCLUDE)/gmpfrxx;$(MY_USR_LOCAL_INCLUDE)/libjpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__CL_ENABLE_EXCEPTIONS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -141,7 +145,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../../lib;$(CUDA_PATH_V9_2)/lib/$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;$(CUDA_PATH)/lib/$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -152,11 +156,13 @@
       <TargetMachine>MachineX86</TargetMachine>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
+      <MergeSections>
+      </MergeSections>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../inc;$(CUDA_PATH_V9_2)/include;$(MY_USR_LOCAL_INCLUDE)/gmpfrxx;$(MY_USR_LOCAL_INCLUDE)/libjpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(CUDA_PATH)/include;$(MY_USR_LOCAL_INCLUDE)/gmpfrxx;$(MY_USR_LOCAL_INCLUDE)/libjpeg;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__CL_ENABLE_EXCEPTIONS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -165,7 +171,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../../lib64;$(CUDA_PATH_V9_2)/lib/$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib64;$(CUDA_PATH)/lib/$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -203,6 +209,7 @@
     <ClCompile Include="date_time.cpp" />
     <ClCompile Include="factory.cpp" />
     <ClCompile Include="filesystem.cpp" />
+    <ClCompile Include="format.cpp" />
     <ClCompile Include="function.cpp" />
     <ClCompile Include="geometry.cpp" />
     <ClCompile Include="graph\graph.cpp" />

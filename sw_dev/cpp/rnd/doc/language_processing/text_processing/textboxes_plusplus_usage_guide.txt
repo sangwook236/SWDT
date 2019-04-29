@@ -1,0 +1,25 @@
+[-] General.
+	- Site.
+		https://github.com/MhLiao/TextBoxes_plusplus
+
+[-] Usage (docker).
+	- Download and copy pre-trained models.
+		Place models in "./models/".
+			https://www.dropbox.com/s/kpv17f3syio95vn/model_pre_train_syn.caffemodel?dl=0
+			https://www.dropbox.com/s/9znpiqpah8rir9c/model_icdar15.caffemodel?dl=0
+		Place CRNN model in "./crnn/model/"
+			https://www.dropbox.com/s/kmi62qxm9z08o6h/model_crnn.t7?dl=0
+
+	- Run.
+		cd ${TextBoxes_plusplus_HOME}
+		./run.bash
+			nvidia-docker run -it --rm -v ${PWD}/models:/opt/caffe/models -v ${PWD}/crrn/model:/opt/caffe/crrn/model tbpp_crnn:gpu bash
+
+	- Run a demo.
+		python examples/text/demo.py
+			The detection results and recognition results are in "./demo_images"
+
+[-] Building (docker).
+	- Build.
+		cd ${TextBoxes_plusplus_HOME}
+		docker build -t tbpp_crnn:gpu .

@@ -237,5 +237,8 @@
     <ClCompile Include="asio\asio_io_service.cpp">
       <Filter>Source Files\asio</Filter>
     </ClCompile>
+    <ClCompile Include="format.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

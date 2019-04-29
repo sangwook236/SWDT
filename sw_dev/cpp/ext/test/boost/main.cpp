@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 	void log();
 
 	bool program_options(int argc, char *argv[]);
+	void format();
 	void filesystem();
 	void conversion();
 	void type_traits();
@@ -101,6 +102,7 @@ int main(int argc, char *argv[])
 			//log();
 
 			//program_options(argc, argv);
+			format();
 			//filesystem();
 			//conversion();
 			//type_traits();
@@ -201,7 +203,7 @@ int main(int argc, char *argv[])
 		// High performance computing.
 		{
 			// Open Computing Language (OpenCL).
-			compute();
+			//compute();
 
 			// Message Passing Interface (MPI).
 			//mpi();
