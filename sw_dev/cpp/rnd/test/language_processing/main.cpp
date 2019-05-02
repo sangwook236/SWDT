@@ -23,13 +23,13 @@ int main(int argc, char *argv[])
 		std::srand((unsigned int)std::time(NULL));
 
 		std::cout << "Tesseract OCR engine ------------------------------------------------" << std::endl;
-		//retval = tesseract_main(argc, argv);  // Not yet implemented.
+		retval = tesseract_main(argc, argv);
 		std::cout << "\nLeptonica Image Processing Library ----------------------------------" << std::endl;
 		//	- OCR.
 		//retval = leptonica_main(argc, argv);  // Not yet implemented.
 
 		std::cout << "\nDocument Image Binarization algorithm -------------------------------" << std::endl;
-		retval = document_image_binarization_main(argc, argv);
+		//retval = document_image_binarization_main(argc, argv);
 
 		std::cout << "\nKaldi Project -------------------------------------------------------" << std::endl;
 		//	- A toolkit for speech recognition.

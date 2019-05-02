@@ -1,7 +1,6 @@
 //#include "stdafx.h"
-#include <opencv/cxcore.h>
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
+#include <opencv2/core/core_c.h>
+#include <opencv2/highgui/highgui_c.h>
 #include <string>
 #include <iostream>
 #include <cassert>

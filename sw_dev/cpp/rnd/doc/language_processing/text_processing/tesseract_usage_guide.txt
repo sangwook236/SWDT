@@ -1,0 +1,213 @@
+[-] General.
+	- Site.
+		https://code.google.com/p/tesseract-ocr/
+		https://github.com/tesseract-ocr/tesseract
+
+		http://capture2text.sourceforge.net/
+		http://cult1.tistory.com/159
+
+	- Documentation.
+		https://github.com/tesseract-ocr/tesseract/wiki/Documentation
+		https://github.com/tesseract-ocr/tesseract/wiki/4.0-with-LSTM
+
+[-] Usage (ver 4.0).
+	- Info.
+		REF [site] >> https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality
+
+		Use the resolution of 70 DPI. (very important)
+			Resize the height of an input image to about 70 pixels.
+			REF [doc] >> image_processing.pptx
+
+	- Run.
+		REF [site] >>
+			https://github.com/tesseract-ocr/tesseract/wiki/Command-Line-Usage
+			https://github.com/tesseract-ocr/tesseract/wiki/ControlParams
+
+		export TESSDATA_PREFIX=${TESSERACT_TESSDATA_HOME}
+		tesseract --help
+		tesseract --help-extra
+		tesseract --list-langs
+		tesseract --tessdata-dir /path/to/tessdata --print-parameters
+
+			OCR Engine modes (--oem):
+				0	Legacy engine only.
+				1	Neural nets LSTM engine only.
+				2	Legacy + LSTM engines.
+				3	Default, based on what is available.
+
+			Page segmentation modes (--psm):
+				0	Orientation and script detection (OSD) only.
+				1	Automatic page segmentation with OSD.
+				2	Automatic page segmentation, but no OSD, or OCR.
+				3	Fully automatic page segmentation, but no OSD. (Default)
+				4	Assume a single column of text of variable sizes.
+				5	Assume a single uniform block of vertically aligned text.
+				6	Assume a single uniform block of text.
+				7	Treat the image as a single text line.
+				8	Treat the image as a single word.
+				9	Treat the image as a single word in a circle.
+				10	Treat the image as a single character.
+				11	Sparse text. Find as much text as possible in no particular order.
+				12	Sparse text with OSD.
+				13	Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.
+
+		tesseract --tessdata-dir /path/to/tessdata /path/to/image tess_ocr_results -l eng --oem 3 --psm 3
+			Generates tess_ocr_results.txt as output.
+		tesseract --tessdata-dir /path/to/tessdata /path/to/image stdout -l kor+~eng --oem 3 --psm 3
+		tesseract --tessdata-dir /path/to/tessdata /path/to/image stdout -l eng+equ --oem 3 --psm 3 --dpi 100
+		tesseract --tessdata-dir /path/to/tessdata /path/to/image stdout -l eng --oem 3 --psm 3 --user-words /path/to/tessdata/eng.user-words --user-patterns /path/to/tessdata/eng.user-patterns
+		tesseract --tessdata-dir /path/to/tessdata /path/to/image stdout -l kor -c preserve_interword_spaces=1 --oem 3 --psm 6
+			psm = 6 (PageSegMode.PSM_SINGLE_BLOCK) & preserve_interword_spaces = 1 resolves some spacing and recognition problems.
+	
+		tesseract -l kor kor_gulimche_test.tif tess_ocr_results
+		tesseract -l eng eng_arial_test.tif tess_ocr_results
+
+		tesseract image_list.txt tess_ocr_results
+			In image_list.txt:
+				/path/to/1.png
+				/path/to/2.png
+				/path/to/3.tiff
+
+[-] Tools.
+	- Directory.
+		${TESSERACT_HOME}/src/training
+
+	- text2image.
+		Generates .tif & .box files.
+
+		${TESSERACT_HOME}/src/training/text2image --list_avaiable_fonts --fonts_dir /usr/share/fonts
+		${TESSERACT_HOME}/src/training/text2image --fonts_dir /usr/share/fonts --font 'Arial' --text ${TESSERACT_LANGDATA_HOME}/eng/eng.training_text --outputbase eng_training
+		${TESSERACT_HOME}/src/training/text2image --fonts_dir /usr/share/fonts --font 'gulimche' --text ${TESSERACT_LANGDATA_HOME}/kor/kor.training_text --outputbase kor_training
+
+		text2image --fonts_dir /usr/share/fonts --font 'FreeMono' --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/eng/eng.training_text --outputbase ./training_data_eng/eng_training
+		text2image --fonts_dir /usr/share/fonts --font 'gulimche' --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/kor/kor.training_text --outputbase ./training_data_kor/kor_training
+
+		text2image --fonts_dir /usr/share/fonts --find_fonts --render_per_font --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/eng/eng.training_text --outputbase ./training_data_eng_all/eng_training
+		text2image --fonts_dir /usr/share/fonts --find_fonts --render_per_font --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/kor/kor.training_text --outputbase ./training_data_kor_all/kor_training
+
+	- combine_lang_model.
+		Makes a starter traineddata.
+
+		${TESSERACT_HOME}/src/training/combine_lang_model --script_dir ${TESSERACT_LANGDATA_HOME} --input_unicharset eng.unicharset --lang eng
+		${TESSERACT_HOME}/src/training/combine_lang_model --script_dir ${TESSERACT_LANGDATA_HOME} --input_unicharset eng.unicharset --lang kor
+
+		combine_lang_model --script_dir /home/sangwook/lib_repo/cpp/tesseract_langdata_github --input_unicharset ./engtrain/eng.unicharset --lang eng
+
+	- combine_tessdata.
+		Combines tessdata files.
+		Extract tessdata components.
+			${TESSERACT_HOME}/src/training/combine_tessdata -e ${TESSERACT_TESSDATA_HOME}/eng.traineddata ./eng.lstm
+		List the content of a traineddata file and its version string.
+			${TESSERACT_HOME}/src/training/combine_tessdata -d ${TESSERACT_TESSDATA_HOME}/eng.traineddata
+
+	- jTessBoxEditor.
+		https://sourceforge.net/projects/vietocr/files/jTessBoxEditor/
+
+[-] Network specification.
+	- Reference.
+		https://github.com/tesseract-ocr/tesseract/wiki/VGSLSpecs
+
+[-] Installation.
+	- Reference.
+		https://github.com/tesseract-ocr/tesseract/wiki
+
+	- Install (Linux).
+		sudo apt install tesseract-ocr
+		sudo apt install libtesseract-dev 
+
+		sudo apt install tesseract-ocr-[lang]
+			sudo apt install tesseract-ocr-kor
+
+[-] Building.
+	- Reference.
+		https://github.com/tesseract-ocr/tesseract/wiki/Compiling
+		https://github.com/tesseract-ocr/tesseract/wiki/TesseractOpenCL
+
+	- Install package.
+		sudo apt-get install libicu-dev libpango1.0-dev libcairo2-dev libleptonica-dev
+
+	- Configure.
+		cd ${TESSERACT_HOME}
+
+		./autogen.sh
+		./configure --prefix=$HOME/local/
+		./configure --prefix=$HOME/local/ --enable-opencl
+		export LIBRARY_PATH=/usr/local/cuda/lib64:$LIBRARY_PATH
+		CPPFLAGS+=-I/usr/local/cuda/include ./configure --enable-opencl 
+
+	- Make.
+		make
+		sudo make install
+		sudo ldconfig
+
+		make training
+		sudo make training-install
+
+		make ScrollView.jar
+		export SCROLLVIEW_PATH=$PWD/java
+
+[-] Training (ver 3.0).
+	- Reference.
+		http://wookiist.tistory.com/9
+		http://sehyo88.tistory.com/entry/tesseractocr-학습데이터-만들기
+		http://tctt.tistory.com/124
+
+[-] Training (ver 4.0).
+	- Reference.
+		https://github.com/tesseract-ocr/tesseract/wiki/TrainingTesseract
+		https://github.com/tesseract-ocr/tesseract/wiki/TrainingTesseract-4.00
+
+		https://github.com/tesseract-ocr/langdata.git
+		https://github.com/tesseract-ocr/tessdata.git
+
+	- Make training directory.
+		mkdir ~/tesseract_train
+		mkdir ~/tesseract_train/engtrain ~/tesseract_train/engeval ~/tesseract_train/engtrain_output ~/tesseract_train/engtrain_output/checkpoint
+		mkdir ~/tesseract_train/kortrain ~/tesseract_train/koreval ~/tesseract_train/kortrain_output ~/tesseract_train/kortrain_output/checkpoint
+		cd ~/tesseract_train
+
+	- Configure.
+		export PATH=${TESSERACT_HOME}/src/api:${TESSERACT_HOME}/src/training:$PATH
+		export LOG_FILE=tesseract_log.txt
+
+		Copy ${TESSERACT_HOME}/tessdata/configs/lstm.train to the working directory.
+			cp ${TESSERACT_HOME}/tessdata/configs/lstm.train .
+
+		(Optional) export TESSDATA_PREFIX=${TESSERACT_TESSDATA_HOME}
+		(Optional) export TESSDATA_DIR=${TESSERACT_TESSDATA_HOME}
+		(Optional) export LANGDATA_ROOT=${TESSERACT_LANGDATA_HOME}
+
+	- Create datasets.
+		${TESSERACT_HOME}/src/training/tesstrain.sh
+			Internally calls
+				${TESSERACT_HOME}/src/training/text2image.
+				${TESSERACT_HOME}/src/training/unicharset_extractor.
+				${TESSERACT_HOME}/src/training/set_unicharset_properties.
+				${TESSERACT_HOME}/src/api/tesseract.
+				${TESSERACT_HOME}/src/training/combine_lang_model.
+
+		${TESSERACT_HOME}/src/training/tesstrain.sh --fonts_dir /usr/share/fonts --fontlist "FreeMono" "FreeSans" "FreeSerif" --lang eng --linedata_only --noextract_font_properties --langdata_dir ${TESSERACT_LANGDATA_HOME} --tessdata_dir ${TESSERACT_TESSDATA_HOME} --save_box_tiff --output_dir ./engtrain
+		${TESSERACT_HOME}/src/training/tesstrain.sh --fonts_dir /usr/share/fonts --fontlist "Batang" "Gulimche" --lang kor --linedata_only --noextract_font_properties --langdata_dir ${TESSERACT_LANGDATA_HOME} --tessdata_dir ${TESSERACT_TESSDATA_HOME} --save_box_tiff --output_dir ./kortrain
+			https://github.com/tesseract-ocr/langdata
+			https://github.com/tesseract-ocr/langdata_lstm
+			https://github.com/tesseract-ocr/tessdata
+			https://github.com/tesseract-ocr/tessdata_contrib
+			https://github.com/tesseract-ocr/tessdata_best
+			https://github.com/tesseract-ocr/tessdata_fast
+
+		tesstrain.sh --fonts_dir /usr/share/fonts --fontlist "FreeSerif" --lang eng --linedata_only --noextract_font_properties --langdata_dir /home/sangwook/lib_repo/cpp/tesseract_langdata_github --tessdata_dir /home/sangwook/lib_repo/cpp/tesseract_tessdata_github --save_box_tiff --output_dir ./engtrain
+		tesstrain.sh --fonts_dir /usr/share/fonts --fontlist "FreeSerif" --lang eng --linedata_only --noextract_font_properties --langdata_dir /home/sangwook/lib_repo/cpp/tesseract_langdata_github --tessdata_dir /home/sangwook/lib_repo/cpp/tesseract_tessdata_github --save_box_tiff --output_dir ./engeval
+		tesstrain.sh --fonts_dir /usr/share/fonts --fontlist "Gulimche" --lang kor --linedata_only --noextract_font_properties --langdata_dir /home/sangwook/lib_repo/cpp/tesseract_langdata_github --tessdata_dir /home/sangwook/lib_repo/cpp/tesseract_tessdata_github --save_box_tiff --output_dir ./kortrain
+		tesstrain.sh --fonts_dir /usr/share/fonts --fontlist "Gulimche" --lang kor --linedata_only --noextract_font_properties --langdata_dir /home/sangwook/lib_repo/cpp/tesseract_langdata_github --tessdata_dir /home/sangwook/lib_repo/cpp/tesseract_tessdata_github --save_box_tiff --output_dir ./koreval
+
+	- Train from scratch.
+		${TESSERACT_HOME}/src/training/lstmtraining
+
+		lstmtraining --debug_interval 100 --traineddata /home/sangwook/lib_repo/cpp/tesseract_tessdata_github/eng.traineddata --net_spec '[1,36,0,1 Ct3,3,16 Mp3,3 Lfys48 Lfx96 Lrx96 Lfx256 O1c111]' --model_output ./engtrain_output/checkpoint/ckpt --learning_rate 20e-4 --train_listfile ./engtrain/eng.training_files.txt --eval_listfile ./engeval/eng.training_files.txt --max_iterations 5000 &> ./engtrain_output/train.log
+		lstmtraining --debug_interval 100 --traineddata /home/sangwook/lib_repo/cpp/tesseract_tessdata_github/kor.traineddata --net_spec '[1,36,0,1 Ct3,3,16 Mp3,3 Lfys48 Lfx96 Lrx96 Lfx256 O1c111]' --model_output ./kortrain_output/checkpoint/ckpt --learning_rate 20e-4 --train_listfile ./kortrain/kor.training_files.txt --eval_listfile ./koreval/kor.training_files.txt --max_iterations 5000 &> ./kortrain_output/train.log
+
+	- Fine-tune.
+		${TESSERACT_HOME}/src/training/lstmtraining
+
+	- Evaluation.
+		${TESSERACT_HOME}/src/training/lstmeval

@@ -1,0 +1,92 @@
+[-] General.
+	- Site.
+		https://github.com/tmbdev/clstm
+
+[-] Building.
+	- Prepare.
+		sudo apt-get install scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
+		sudo apt-get install libzmq3-dev libzmq5 libzmqpp-dev libzmqpp4
+		sudo apt-get install hdf5-helpers libhdf5-8 libhdf5-cpp-8 libhdf5-dev python-h5py
+
+	- Build.
+		scons
+
+	- Install.
+		sudo scons install
+
+[-] Training.
+	- Generate datasets.
+		Use ocropus-linegen.
+			REF [file] >> ocropus_usage_guide.txt
+
+	- Train text filters.
+		REF [site] >> https://github.com/tmbdev/clstm/blob/master/misc/text-training.ipynb
+
+		Prepare datasets.
+			curl http://www.gutenberg.org/cache/epub/3300/pg3300.txt | sed 's/\r//' | sed 's/^ *//;s/ *$//' | grep -v '   ' | sed 's/  */ /g' > won-raw.txt
+			sed 5q won-raw.txt
+			
+			awk 'length()>10' won-raw.txt | sort -R > won.txt
+			sed 5q won.txt
+
+			sed 's/ //g' < won.txt > won-nospc.txt
+			paste won-nospc.txt won.txt > won-all.txt
+
+			awk 'NR%10==0' < won-all.txt > won-test.txt
+			awk 'NR%10!=0' < won-all.txt > won-train.txt
+			wc -l won-*.txt
+			awk 'length()<80' won-train.txt | sed 10q
+
+		Train language models.
+			clstmtext:
+				Exists in the old version. (?)
+
+				maxeval=1000 save_every=0 save_name=addspaces lrate=1e-3 nhidden=30 report_every=1000 \
+				test_every=5000 lstm=BIDILSTM testset=won-test.txt ntrain=100000 \
+				params=1 ./clstmtext won-train.txt
+
+		Train text filters.
+			clstmfiltertrain:
+				params=1 lrate=1e-3 save_file=spc ./clstmfiltertrain won-train.txt won-test.txt
+
+		Apply learned text filters.
+			clstmfilter:
+
+	- Train OCR models.
+		REF [site] >> https://github.com/tmbdev/clstm/blob/master/misc/uw3-500.ipynb
+
+		Prepare datasets.
+			test -f uw3-500.tgz || wget -nd http://www.tmbdev.net/ocrdata/uw3-500.tgz
+			test -d book || tar -zxvf uw3-500.tgz
+			ls book/0005/010001.*
+
+			ls book/*/*.bin.png | sort -r > uw3.files
+			sed 100q uw3.files > uw3-test.files
+			sed 1,100d uw3.files > uw3-train.files
+			wc -l uw3*.files
+
+		Train OCR models.
+			clstmctc:
+				Exists in the old version. (?)
+
+				dewarp=center report_every=500 save_name=test save_every=10000 ntrain=11000 ./clstmctc uw3-500.h5
+
+			clstmocrtrain:
+				params=1 save_name=uw3small save_every=1000 report_every=100 maxtrain=50000 test_every=1000 ./clstmocrtrain uw3-train.files uw3-test.files
+					Generates uw3small-xxxxx.clstm in the working directory.
+
+		Re-train OCR models.
+			clstmocrtrain:
+				load=uw3small-95000.clstm params=1 save_name=uw3small save_every=1000 report_every=100 maxtrain=50000 test_every=1000 ./clstmocrtrain uw3-train.files uw3-test.files
+					Need to check.
+
+		Apply learned OCR models.
+			clstmocr:
+				In filelist.txt:
+					/path/to/image1.png
+					/path/to/image2.png
+
+				load=uw3small-95000.clstm output=text ./clstmocr filelist.txt
+					Generates /path/to/image1.txt and /path/to/image2.txt as outputs.
+				load=uw3small-95000.clstm output=posteriors ./clstmocr filelist.txt
+					Generates /path/to/image1.txt, /path/to/image1.p.png, /path/to/image2.txt, & /path/to/image2.p.png as outputs.

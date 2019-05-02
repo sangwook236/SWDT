@@ -4,17 +4,23 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "opencv_imgcodecs400d.lib")
-#pragma comment(lib, "opencv_imgproc400d.lib")
-#pragma comment(lib, "opencv_highgui400d.lib")
-#pragma comment(lib, "opencv_core400d.lib")
+#pragma comment(lib, "tesseract50d.lib")
+#pragma comment(lib, "leptonica-1.79.0d.lib")
+
+#pragma comment(lib, "opencv_imgcodecs410d.lib")
+#pragma comment(lib, "opencv_imgproc410d.lib")
+#pragma comment(lib, "opencv_highgui410d.lib")
+#pragma comment(lib, "opencv_core410d.lib")
 
 #		else
 
-#pragma comment(lib, "opencv_imgcodecs400.lib")
-#pragma comment(lib, "opencv_imgproc400.lib")
-#pragma comment(lib, "opencv_highgui400.lib")
-#pragma comment(lib, "opencv_core400.lib")
+#pragma comment(lib, "tesseract50.lib")
+#pragma comment(lib, "leptonica-1.79.0.lib")
+
+#pragma comment(lib, "opencv_imgcodecs410.lib")
+#pragma comment(lib, "opencv_imgproc410.lib")
+#pragma comment(lib, "opencv_highgui410.lib")
+#pragma comment(lib, "opencv_core410.lib")
 
 #		endif
 

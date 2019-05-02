@@ -86,7 +86,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-4.0.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -110,7 +110,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-4.0.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -131,7 +131,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-4.0.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -154,7 +154,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-4.0.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../inc;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib/mul;$(MY_USR_LOCAL_INCLUDE)/vxl/contrib;$(MY_USR_LOCAL_INCLUDE)/vxl/vcl;$(MY_USR_LOCAL_INCLUDE)/vxl/core;$(MY_USR_LOCAL_INCLUDE)/ivt;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0;$(CUDA_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
