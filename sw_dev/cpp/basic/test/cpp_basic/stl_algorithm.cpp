@@ -23,25 +23,25 @@ void stl_algorithm_transform()
 {
 	// plus
 	std::vector<int> V1(10, 5);
-	std::transform(V1.begin(), V1.end(), V1.begin(), std::bind2nd(std::plus<int>(), 7));
+	std::transform(V1.begin(), V1.end(), V1.begin(), std::bind(std::plus<int>(), std::placeholders::_1, 7));
 	std::copy(V1.begin(), V1.end(), std::ostream_iterator<int>(std::cout, " "));
 	std::cout << std::endl; 
 
 	// minus
 	std::vector<int> V2(10, 2);
-	std::transform(V2.begin(), V2.end(), V2.begin(), std::bind2nd(std::minus<int>(), 7));
+	std::transform(V2.begin(), V2.end(), V2.begin(), std::bind(std::minus<int>(), std::placeholders::_1, 7));
 	std::copy(V2.begin(), V2.end(), std::ostream_iterator<int>(std::cout, " "));
 	std::cout << std::endl; 
 
 	// multiply
 	std::vector<int> V3(10, 8);
-	std::transform(V3.begin(), V3.end(), V3.begin(), std::bind2nd(std::multiplies<int>(), 2));
+	std::transform(V3.begin(), V3.end(), V3.begin(), std::bind(std::multiplies<int>(), std::placeholders::_1, 2));
 	std::copy(V3.begin(), V3.end(), std::ostream_iterator<int>(std::cout, " "));
 	std::cout << std::endl; 
 
 	// divide
 	std::vector<int> V4(10, 8);
-	std::transform(V4.begin(), V4.end(), V4.begin(), std::bind2nd(std::divides<int>(), 3));
+	std::transform(V4.begin(), V4.end(), V4.begin(), std::bind(std::divides<int>(), std::placeholders::_1, 3));
 	std::copy(V4.begin(), V4.end(), std::ostream_iterator<int>(std::cout, " "));
 	std::cout << std::endl; 
 

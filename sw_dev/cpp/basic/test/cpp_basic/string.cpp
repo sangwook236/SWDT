@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <locale>
+#include <codecvt>
 
 
 namespace {
@@ -46,7 +48,7 @@ void string()
 			const int myint4 = std::stoi(str4, &pos4);  // error: std::invalid_argument.
 			std::cout << "std::stoi(\"" << str4 << "\") is " << myint4 << std::endl;
 		}
-		catch (const std::invalid_argument &e)
+		catch (const std::invalid_argument &ex)
 		{
 			std::cout << "std::invalid_argument occurred" << std::endl;
 		}
@@ -57,7 +59,7 @@ void string()
 			const int myint5 = std::stoi(str5);  // error: std::out_of_range.
 			std::cout << "std::stoi(\"" << str5 << "\") is " << myint5 << std::endl;
 		}
-		catch (const std::out_of_range &e)
+		catch (const std::out_of_range &ex)
 		{
 			std::cout << "std::out_of_range occurred" << std::endl;
 		}
@@ -94,7 +96,80 @@ void string()
 	}
 }
 
+void unicode_string()
+{
+	// Print Korean and Chinese.
+	{
+		//std::locale::global(std::locale("UTF-8"));
+		std::locale::global(std::locale("kor"));
+
+		std::cout << "Set locale to " << std::locale().name() << std::endl;
+
+		//std::wcout.imbue(std::locale("kor"));
+		//std::wcin.imbue(std::locale("kor"));
+
+		std::wcout << L"ÇÑ±Û Ãâ·Â Å×½ºÆ®." << std::endl;
+		std::wcout << L"ÓÞùÛÚÅÏÐ." << std::endl;
+	}
+
+	// UTF-8 <--> wide string.
+	{
+		// UTF-8 data. The character U+1d10b, musical sign segno, does not fit in UCS2.
+		const std::string utf8(u8"z\u6c34\U0001d10b");
+		for (const auto &c : utf8)
+			std::cout << std::hex << std::showbase << (int)c << std::endl;
+
+		std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+
+		// Convert UTF-8 string to wstring.
+		const std::wstring wstr = conv.from_bytes(utf8);
+		std::wcout << "wstr = " << wstr << std::endl;
+
+		// Convert wstring to UTF-8 string.
+		const std::string utf8_cvt = conv.to_bytes(wstr);
+		for (const auto &c : utf8_cvt)
+			std::cout << std::hex << std::showbase << (int)c << std::endl;
+	}
+
+#if false
+	// UTF-8 <--> UTF-16.
+	// REF [site] >> https://en.cppreference.com/w/cpp/locale/codecvt_utf8
+	{
+		// UTF-8 data. The character U+1d10b, musical sign segno, does not fit in UCS2.
+		const std::string utf8(u8"z\u6c34\U0001d10b");
+
+		// the UTF-8 / UTF-16 standard conversion facet.
+		std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> utf16conv;
+
+		const std::u16string utf16 = utf16conv.from_bytes(utf8);  // UTF-8 to UTF-16.
+		std::cout << "UTF-16 conversion produced " << utf16.size() << " code units:" << std::endl;
+		for (char16_t c : utf16)
+			std::cout << std::hex << std::showbase << (int)c << std::endl;
+
+		const std::string utf8_cvt = utf16conv.to_bytes(utf16);  // UTF-16 to UTF-8.
+		std::cout << "UTF-8 conversion produced " << utf8_cvt.size() << " code units:" << std::endl;
+		for (char c : utf8_cvt)
+			std::cout << std::hex << std::showbase << (int)c << std::endl;
+
+		// the UTF-8 / UCS2 standard conversion facet.
+		std::wstring_convert<std::codecvt_utf8<char16_t>, char16_t> ucs2conv;
+		try
+		{
+			std::u16string ucs2 = ucs2conv.from_bytes(utf8);
+		}
+		catch (const std::range_error &ex)
+		{
+			const std::u16string ucs2 = ucs2conv.from_bytes(utf8.substr(0, ucs2conv.converted()));
+			std::cout << "UCS2 failed after producing " << std::dec << ucs2.size() << " characters:" << std::endl;
+			for (char16_t c : ucs2)
+				std::cout << std::hex << std::showbase << (int)c << std::endl;
+		}
+	}
+#endif
+}
+
 void string_tokenization()
 {
 	// REF [file] >> boost/tokenizer.cpp.
+	throw std::runtime_error("Not yet implemented");
 }

@@ -42,6 +42,8 @@ int main(int argc, char **argv)
 	void predefined_macro();
 	void array();
 	void string();
+	void unicode_string();
+	void string_tokenization();
 	void complex();
 	void date_time();
 
@@ -65,8 +67,10 @@ int main(int argc, char **argv)
 		//predefined_macro();
 		//array();
 		//string();
+		unicode_string();
+		//string_tokenization();
 		//complex();
-		date_time();
+		//date_time();
 
 		//file_io();  // Not yet implemented.
 
