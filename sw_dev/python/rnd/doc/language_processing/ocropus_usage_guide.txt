@@ -29,16 +29,6 @@
 	- Display the output.
 		firefox ersch.html
 
-[-] Tool (OCRopy).
-	- ocropus-linegen.
-		Generates training data.
-
-		ocropus-linegen -t tests/tomsawyer.txt -f tests/DejaVuSans.ttf
-			Creates a directory "linegen/..." containing training data suitable for training OCRopus with synthetic data.
-
-	- clstmtext.
-		Trains language models.
-
 [-] Installation (OCRopy).
 	REF [site] >> https://github.com/tmbdev/ocropy
 
@@ -57,11 +47,22 @@
 [-] Training (OCRopy).
 	REF [site] >> http://www.danvk.org/2015/01/11/training-an-ocropus-ocr-model.html
 
-	- Training data.
-		.png/.gt.txt files.
+	- Generate datasets.
+		ocropus-linegen:
+			Generates .png/.gt.txt files.
+
+			Creates a new directory "linegen/..." containing training data suitable for training OCRopus with synthetic data.
+			Removes all files and sub-directories in the existing directory "linegen/".
+
+			ocropus-linegen -t tests/tomsawyer.txt -f tests/DejaVuSans.ttf
+			ocropus-linegen -t korean_modern_novel_1.txt:korean_modern_novel_2.txt -F fontlist.txt
+				In fontlist.txt:
+					font/batang.ttf
+					font/gulim.ttf
+					font/godoMaum.ttf
 
 	- Train.
 		Train from scratch:
 			ocropus-rtrain -o model_name book*/????/*.bin.png
 		Train on top of an existing model:
-			ocropus-rtrain --load en-default.pyrnn.gz -o model_name book*/????/*.bin.png
+			ocropus-rtrain --load models/en-default.pyrnn.gz -o model_name book*/????/*.bin.png
