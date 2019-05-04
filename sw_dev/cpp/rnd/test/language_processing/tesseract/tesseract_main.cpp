@@ -150,12 +150,11 @@ void text_recognition_example()
 		stream << outText.get() << std::endl;
 #else
 	std::wcout.imbue(std::locale("kor"));
-	std::wcin.imbue(std::locale("kor"));
+	//std::wcin.imbue(std::locale("kor"));
 
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
 
-	// NOTE [warning] >> Korean is not displayed correctly.
-	//std::cout << "OCR output:\n" << outText.get() << std::endl;
+	//std::cout << "OCR output:\n" << outText.get() << std::endl;  // Korean is not displayed correctly.
 	std::wcout << L"OCR output:\n" << conv.from_bytes(outText.get()) << std::endl;
 #endif
 

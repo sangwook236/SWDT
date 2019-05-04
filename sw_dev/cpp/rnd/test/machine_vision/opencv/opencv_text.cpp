@@ -3,6 +3,8 @@
 #include <opencv2/text.hpp>
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include <locale>
+#include <codecvt>
 #include <cassert>
 
 
@@ -172,7 +174,8 @@ void tesseract_example()
 	const std::string char_whitelist("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");  // Specifies the list of characters used for recognition.
 	cv::Ptr<cv::text::OCRTesseract> ocrTes = cv::text::OCRTesseract::create(
 		tessdata_dir_path.c_str(), tess_lang.c_str(),
-		char_whitelist.c_str(), cv::text::OEM_DEFAULT, cv::text::PSM_AUTO
+		char_whitelist.c_str(),
+		cv::text::OEM_DEFAULT, cv::text::PSM_AUTO
 	);
 	cv::Ptr<cv::text::OCRHMMDecoder> ocrNM = cv::text::OCRHMMDecoder::create(
 		cv::text::loadOCRHMMClassifierNM("./OCRHMM_knn_model_data.xml.gz"),
@@ -228,8 +231,18 @@ void tesseract_example()
 		else
 			ocrTes->run(image, mask, output, &boxes, &words, &confidences, cv::text::OCR_LEVEL_WORD);
 		output.erase(std::remove(output.begin(), output.end(), '\n'), output.end());
+#if true
 		std::cout << " OCR_Tesseract  output \"" << output << "\". Done in "
 			<< ((double)cv::getTickCount() - t_r) * 1000 / cv::getTickFrequency() << " ms." << std::endl;
+#else
+		// TODO [check] >> This is not tested.
+
+		std::wcout.imbue(std::locale("kor"));
+		std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+
+		std::wcout << L" OCR_Tesseract  output \"" << conv.from_bytes(output) << L"\". Done in "
+			<< ((double)cv::getTickCount() - t_r) * 1000 / cv::getTickFrequency() << L" ms." << std::endl;
+#endif
 
 		t_r = (double)cv::getTickCount();
 		if (mask.empty())
