@@ -107,7 +107,32 @@ def histogram_equalization():
 	cv.imshow('CLAHE', cl1)
 	cv.waitKey(0)
 
-def edge_detection():
+def edge_detection(image_filepath):
+	def draw_line(edge, gray):
+		lines = cv.HoughLines(edge, rho=1, theta=math.pi / 180, threshold=100, srn=0, stn=0)
+
+		rgb = cv.cvtColor(gray, cv.COLOR_GRAY2BGR)
+		for line in lines[:100]:
+			rho, theta = line[0]
+
+			a, b = math.cos(theta), math.sin(theta)
+			x0, y0 = a * rho, b * rho
+			pt1 = (int(round(x0 + 1000 * (-b))), int(round(y0 + 1000 * (a))))
+			pt2 = (int(round(x0 - 1000 * (-b))), int(round(y0 - 1000 * (a))))
+			cv.line(rgb, pt1, pt2, (255, 0, 0), 2, cv.LINE_AA)
+
+		cv.imshow('HoughLines', rgb)
+
+		#--------------------
+		lines = cv.HoughLinesP(edge, rho=1, theta=math.pi / 180, threshold=50, minLineLength=20, maxLineGap=20)
+
+		rgb = cv.cvtColor(gray, cv.COLOR_GRAY2BGR)
+		for line in lines:
+			x1, y1, x2, y2 = line[0]
+			cv.line(rgb, (x1, y1), (x2, y2), (255, 0, 0), 2, cv.LINE_AA)
+
+		cv.imshow('HoughLinesP', rgb)
+
 	if False:
 		image_filepath = '../../../data/machine_vision/build.png'
 
@@ -120,17 +145,16 @@ def edge_detection():
 		#clahe = cv.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 		#img = clahe.apply(img)
 
-		dx = cv.Sobel(img, ddepth=-1, dx=1, dy=0, ksize=3)
-		dy = cv.Sobel(img, ddepth=-1, dx=0, dy=1, ksize=3)
+		dx = cv.Sobel(img, ddepth=cv.CV_32F, dx=1, dy=0, ksize=3)
+		dy = cv.Sobel(img, ddepth=cv.CV_32F, dx=0, dy=1, ksize=3)
 
-		dx = np.abs(dx)
-		dy = np.abs(dy)
-		result = np.add(dx, dy)
+		grad = cv.addWeighted(np.absolute(dx), 0.5, np.absolute(dy), 0.5, 0)
 
-		_, result = cv.threshold(result, 100, 255, cv.THRESH_BINARY_INV)
+		_, grad = cv.threshold(grad, 100, 255, cv.THRESH_BINARY)
 
 		cv.imshow('Image', img)
-		cv.imshow('Result', result)
+		cv.imshow('Gradient', grad)
+		draw_line(((grad / np.max(grad)) * 255).astype(np.uint8), img)
 		cv.waitKey(0)
 
 	if False:
@@ -153,6 +177,7 @@ def edge_detection():
 		#_, dst = cv.threshold(dst, 50, 255, cv.THRESH_BINARY)
 
 		cv.imshow('Laplacian - Grayscale', dst)
+		draw_line(dst, gray)
 
 		# Laplacian on color.
 		planes = cv.split(img)
@@ -165,6 +190,7 @@ def edge_detection():
 		dst = cv.merge(planes_laplacian)
 
 		cv.imshow('Laplacian - Color', dst)
+		#draw_line(cv.cvtColor(dst, cv.COLOR_BGR2GRAY), gray)
 		cv.waitKey(0)
 
 	if False:
@@ -185,10 +211,11 @@ def edge_detection():
 
 		cv.imshow('Image', img)
 		cv.imshow('Morphed', morphed)
+		draw_line(morphed, img)
 		cv.waitKey(0)
 
 	if True:
-		image_filepath = '../../../data/machine_vision/road.png'
+		#image_filepath = '../../../data/machine_vision/road.png'
 
 		img = cv.imread(image_filepath, cv.IMREAD_GRAYSCALE)
 		if img is None:
@@ -204,34 +231,10 @@ def edge_detection():
 
 		cv.imshow('Image', img)
 		cv.imshow('Canny', dst)
-
-		#--------------------
-		lines = cv.HoughLines(dst, rho=1, theta=math.pi / 180, threshold=100, srn=0, stn=0)
-
-		rgb = cv.cvtColor(img, cv.COLOR_GRAY2BGR)
-		for line in lines[:100]:
-			rho, theta = line[0]
-
-			a, b = math.cos(theta), math.sin(theta)
-			x0, y0 = a * rho, b * rho
-			pt1 = (int(round(x0 + 1000 * (-b))), int(round(y0 + 1000 * (a))))
-			pt2 = (int(round(x0 - 1000 * (-b))), int(round(y0 - 1000 * (a))))
-			cv.line(rgb, pt1, pt2, (255, 0, 0), 2, cv.LINE_AA)
-
-		cv.imshow('HoughLines', rgb)
-
-		#--------------------
-		lines = cv.HoughLinesP(dst, rho=1, theta=math.pi / 180, threshold=50, minLineLength=20, maxLineGap=20)
-
-		rgb = cv.cvtColor(img, cv.COLOR_GRAY2BGR)
-		for line in lines:
-			x1, y1, x2, y2 = line[0]
-			cv.line(rgb, (x1, y1), (x2, y2), (255, 0, 0), 2, cv.LINE_AA)
-
-		cv.imshow('HoughLinesP', rgb)
+		draw_line(dst, img)
 		cv.waitKey(0)
 
-	cv.destroyAllWindows()
+	#cv.destroyAllWindows()
 
 # REF [site] >> http://www.robindavid.fr/opencv-tutorial/chapter5-line-edge-and-contours-detection.html
 def corner_detection():
@@ -369,7 +372,35 @@ def main():
 	#thresholding()
 	#histogram_equalization()
 
-	edge_detection()
+	image_filepaths = [
+		'./id_images/rrc_00.jpg',
+		'./id_images/rrc_01.jpg',
+		'./id_images/rrc_02.jpg',
+		'./id_images/rrc_03.jpg',
+		'./id_images/rrc_04.png',
+		'./id_images/rrc_05.png',
+		'./id_images/rrc_06.jpg',
+		'./id_images/rrc_07.jpg',
+		'./id_images/rrc_08.jpg',
+		'./id_images/rrc_09.png',
+		'./id_images/rrc_10.jpg',
+		'./id_images/rrc_11.jpg',
+		'./id_images/driver_license_00.jpg',
+		'./id_images/driver_license_01.jpg',
+		'./id_images/driver_license_02.jpg',
+		'./id_images/driver_license_03.jpg',
+		'./id_images/driver_license_04.jpg',
+		'./id_images/driver_license_05.png',
+		'./id_images/driver_license_06.png',
+		'./id_images/driver_license_07.png',
+		'./id_images/driver_license_08.png',
+		'./id_images/driver_license_09.jpg',
+		'./id_images/driver_license_10.jpg',
+		'./id_images/driver_license_11.png',
+		'./id_images/driver_license_12.png',
+	]
+	for image_filepath in image_filepaths:
+		edge_detection(image_filepath)
 	#corner_detection()
 	#contour_detection()
 
