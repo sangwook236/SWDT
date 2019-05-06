@@ -4,27 +4,37 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
-#pragma comment(lib, "dlibd.lib")
+#pragma comment(lib, "dlib19.17.99_debug_64bit_msvc1913.lib")
 //#pragma comment(lib, "stlport.lib")
 
 #if defined(_WIN64) || defined(WIN64)
+#pragma comment(lib, "cusolver.lib")
 #pragma comment(lib, "cudnn.lib")
 #pragma comment(lib, "cublas.lib")
 #pragma comment(lib, "curand.lib")
 #pragma comment(lib, "cudart.lib")
 #endif
+
+#pragma comment(lib, "libpng16d.lib")
+#pragma comment(lib, "libjpegd.lib")
+#pragma comment(lib, "giflib5d.lib")
 
 #		else
 
-#pragma comment(lib, "dlib.lib")
+#pragma comment(lib, "dlib19.17.99_release_64bit_msvc1913.lib")
 //#pragma comment(lib, "stlport.lib")
 
 #if defined(_WIN64) || defined(WIN64)
+#pragma comment(lib, "cusolver.lib")
 #pragma comment(lib, "cudnn.lib")
 #pragma comment(lib, "cublas.lib")
 #pragma comment(lib, "curand.lib")
 #pragma comment(lib, "cudart.lib")
 #endif
+
+#pragma comment(lib, "libpng16.lib")
+#pragma comment(lib, "libjpeg.lib")
+#pragma comment(lib, "giflib5.lib")
 
 #		endif
 

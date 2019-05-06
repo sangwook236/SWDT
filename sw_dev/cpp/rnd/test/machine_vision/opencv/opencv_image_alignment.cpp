@@ -9,13 +9,13 @@ namespace local {
 
 void draw_warped_roi(cv::Mat &image, const int width, const int height, cv::Mat &W)
 {
-#define HOMO_VECTOR(H, x, y)\
-    H.at<float>(0,0) = (float)(x);\
-    H.at<float>(1,0) = (float)(y);\
+#define HOMO_VECTOR(H, x, y) \
+    H.at<float>(0,0) = (float)(x); \
+    H.at<float>(1,0) = (float)(y); \
     H.at<float>(2,0) = 1.;
 
-#define GET_HOMO_VALUES(X, x, y)\
-    (x) = static_cast<float> (X.at<float>(0,0)/X.at<float>(2,0));\
+#define GET_HOMO_VALUES(X, x, y) \
+    (x) = static_cast<float> (X.at<float>(0,0)/X.at<float>(2,0)); \
     (y) = static_cast<float> (X.at<float>(1,0)/X.at<float>(2,0));
 
 	cv::Point2f top_left, top_right, bottom_left, bottom_right;
@@ -50,7 +50,7 @@ void draw_warped_roi(cv::Mat &image, const int width, const int height, cv::Mat 
 	cv::gemm(warp_mat, H, 1, 0, 0, U);
 	GET_HOMO_VALUES(U, bottom_right.x, bottom_right.y);
 
-	// Draw the warped perimeter
+	// Draw the warped perimeter.
 	cv::line(image, top_left, top_right, cv::Scalar(255));
 	cv::line(image, top_right, bottom_right, cv::Scalar(255));
 	cv::line(image, bottom_right, bottom_left, cv::Scalar(255));
@@ -166,7 +166,7 @@ void image_alignment_sample()
 		cv::warpAffine(img, warped_img, warp_matrix, warped_img.size(), cv::INTER_LINEAR + cv::WARP_INVERSE_MAP);
 
 	// Show result.
-	// Draw boundaries of corresponding regions;
+	// Draw boundaries of corresponding regions.
 	cv::Mat identity_matrix(cv::Mat::eye(3, 3, CV_32F));
 	draw_warped_roi(img, template_img.cols - 2, template_img.rows - 2, warp_matrix);
 	draw_warped_roi(template_img, template_img.cols - 2, template_img.rows - 2, identity_matrix);

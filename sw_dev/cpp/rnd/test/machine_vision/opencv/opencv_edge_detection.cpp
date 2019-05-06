@@ -152,12 +152,37 @@ void edge_detection()
 		//gray = gray;
 #endif
 
+#if false
+		const int ddepth = CV_32FC1;
+		const int ksize = 3;
+		const double scale = 1.0;
+		const double delta = 0.0;
+
+		cv::Mat dx, dy;
+		cv::Mat abs_dx, abs_dy;
+
+		// Calculate the x and y gradients using Sobel operator.
+		cv::Sobel(gray, dx, ddepth, 1, 0, ksize, scale, delta, cv::BORDER_DEFAULT);
+		cv::convertScaleAbs(dx, abs_dx);
+
+		cv::Sobel(gray, dy, ddepth, 0, 1, ksize, scale, delta, cv::BORDER_DEFAULT);
+		cv::convertScaleAbs(dy, abs_dy);
+
+		// Combine the two gradients.
+		cv::Mat edge;
+		cv::addWeighted(abs_dx, 0.5, abs_dy, 0.5, 0, edge);
+
+		//cv::threshold(edge, edge, 100, 255, cv::THRESH_BINARY_INV);
+#else
 		// Run the edge detector on grayscale.
 		const int lowerEdgeThreshold = 30, upperEdgeThreshold = 50;
-		const bool useL2 = true;  // If true, use L2 norm. otherwise, use L1 norm (faster).
+		const bool useL2 = true;  // If true, use L2 norm. Otherwise, use L1 norm (faster).
 		const int apertureSize = 3;  // Aperture size for the Sobel() operator.
 		cv::Mat edge;
 		cv::Canny(gray, edge, lowerEdgeThreshold, upperEdgeThreshold, apertureSize, useL2);
+
+		//cv::threshold(edge, edge, 100, 255, cv::THRESH_BINARY);
+#endif
 
 #if 0
 		// Don't need.
