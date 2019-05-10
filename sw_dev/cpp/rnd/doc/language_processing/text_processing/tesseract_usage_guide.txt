@@ -12,11 +12,29 @@
 
 [-] Usage (ver 4.0).
 	- Info.
-		REF [site] >> https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality
+		REF [site] >>
+			https://github.com/tesseract-ocr/tesseract/wiki/ImproveQuality
+			https://github.com/tesseract-ocr/tesseract/blob/master/doc/tesseract.1.asc
 
+		Tesseract works best on images which have a DPI of at least 300 dpi, so it may be beneficial to resize images.
+			https://groups.google.com/forum/#!msg/tesseract-ocr/Wdh_JJwnw94/24JHDYQbBQAJ
 		Use the resolution of 70 DPI. (very important)
 			Resize the height of an input image to about 70 pixels.
 			REF [doc] >> image_processing.pptx
+
+		Version 3.05 (and older) handle inverted image (dark background and light text) without problem, for 4.x version use dark text on light background.
+
+		You can see how Tesseract has processed the image by using the configuration variable tessedit_write_images to true (or using configfile get.images) when running Tesseract.
+		If the resulting tessinput.tif file looks problematic, try some of these image processing operations before passing the image to Tesseract.
+
+		If you OCR just text area without any border, tesseract could have problems with it. See for some details in https://github.com/tesseract-ocr/tesseract/issues/427.
+		You can easy add small border (e.g. 10 pt) with ImageMagick:
+			convert 427-1.jpg -bordercolor White -border 10x10 427-1b.jpg
+
+		Tesseract 3.0x expects that users remove alpha channel from image before using image in tesseract. This can done e.g. with ImageMagick command:
+			convert input.png -alpha off output.png
+		Tesseract 4.00 removes alpha channel with leptonica function pixRemoveAlpha(): it removes alpha component by blending with white background.
+			In some case (e.g. OCR of movie subtitles) this can lead to problems, so users would need to remove alpha channel (or pre-process image by inverting image colors) by themself.
 
 	- Run.
 		REF [site] >>
@@ -56,6 +74,7 @@
 		tesseract --tessdata-dir /path/to/tessdata /path/to/image stdout -l kor+~eng --oem 3 --psm 3
 		tesseract --tessdata-dir /path/to/tessdata /path/to/image stdout -l eng+equ --oem 3 --psm 3 --dpi 100
 		tesseract --tessdata-dir /path/to/tessdata /path/to/image stdout -l eng --oem 3 --psm 3 --user-words /path/to/tessdata/eng.user-words --user-patterns /path/to/tessdata/eng.user-patterns
+			https://github.com/tesseract-ocr/tesseract/blob/master/doc/tesseract.1.asc#config-files-and-augmenting-with-user-data
 		tesseract --tessdata-dir /path/to/tessdata /path/to/image stdout -l kor -c preserve_interword_spaces=1 --oem 3 --psm 6
 			psm = 6 (PageSegMode.PSM_SINGLE_BLOCK) & preserve_interword_spaces = 1 resolves some spacing and recognition problems.
 	

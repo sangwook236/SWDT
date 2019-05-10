@@ -9,19 +9,22 @@
 namespace {
 namespace local {
 
-void lsc(const std::string& img_filename)
+void lsc(const std::string &img_filename)
 {
-	const std::string windowName("superpixel - SLIC");
-
-	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
-
-	const cv::Mat &img = cv::imread(img_filename, cv::IMREAD_COLOR);
-	//const cv::Mat &img = cv::imread(img_filename, cv::IMREAD_GRAYSCALE);
+	cv::Mat &img = cv::imread(img_filename, cv::IMREAD_COLOR);
+	//cv::Mat &img = cv::imread(img_filename, cv::IMREAD_GRAYSCALE);
 	if (img.empty())
 	{
-		std::cout << "fail to load image file: " << img_filename << std::endl;
+		std::cout << "Failed to load image file: " << img_filename << std::endl;
 		return;
 	}
+
+	//cv::pyrDown(img, img);  cv::pyrUp(img, img);
+	//cv::GaussianBlur(img, img, cv::Size(5, 5), 0);
+	//cv::medianBlur(img, img, 5);
+
+	//cv::cvtColor(img, img, cv::COLOR_BGR2Lab);
+	//cv::cvtColor(img, img, cv::COLOR_BGR2HSV);
 
 	// Linear Spectral Clustering (LSC) superpixels algorithm.
 	const int region_size = 10;
@@ -32,35 +35,44 @@ void lsc(const std::string& img_filename)
 	const int num_iterations = 10;
 	superpixel->iterate(num_iterations);
 
+	//const int min_element_size = 20;
+	//superpixel->enforceLabelConnectivity(min_element_size);
+
 	//
 	cv::Mat superpixel_label;
-	superpixel->getLabels(superpixel_label);
+	superpixel->getLabels(superpixel_label);  // CV_32UC1. [0, getNumberOfSuperpixels()].
 
 	cv::Mat superpixel_contour_mask;
 	const bool thick_line = true;
 	superpixel->getLabelContourMask(superpixel_contour_mask, thick_line);
 
 	// Output result.
-	cv::imshow(windowName, superpixel_label);
+	const int num_superpixels = superpixel->getNumberOfSuperpixels();
+	std::cout << "#superpixels = " << num_superpixels << std::endl;
+	img.setTo(cv::Scalar(0, 0, 255), superpixel_contour_mask);
+	cv::imshow("Superpixel - LSC", img);
 
 	cv::waitKey(0);
 
 	cv::destroyAllWindows();
 }
 
-void seeds(const std::string& img_filename)
+void seeds(const std::string &img_filename)
 {
-	const std::string windowName("superpixel - SLIC");
-
-	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
-
-	const cv::Mat &img = cv::imread(img_filename, cv::IMREAD_COLOR);
-	//const cv::Mat &img = cv::imread(img_filename, cv::IMREAD_GRAYSCALE);
+	cv::Mat &img = cv::imread(img_filename, cv::IMREAD_COLOR);
+	//cv::Mat &img = cv::imread(img_filename, cv::IMREAD_GRAYSCALE);
 	if (img.empty())
 	{
-		std::cout << "fail to load image file: " << img_filename << std::endl;
+		std::cout << "Failed to load image file: " << img_filename << std::endl;
 		return;
 	}
+
+	//cv::pyrDown(img, img);  cv::pyrUp(img, img);
+	//cv::GaussianBlur(img, img, cv::Size(5, 5), 0);
+	//cv::medianBlur(img, img, 5);
+
+	//cv::cvtColor(img, img, cv::COLOR_BGR2Lab);
+	//cv::cvtColor(img, img, cv::COLOR_BGR2HSV);
 
 	// Superpixels Extracted via Energy-Driven Sampling (SEEDS) superpixels algorithm.
 	const int image_width = img.cols;
@@ -79,14 +91,17 @@ void seeds(const std::string& img_filename)
 
 	//
 	cv::Mat superpixel_label;
-	superpixel->getLabels(superpixel_label);
+	superpixel->getLabels(superpixel_label);  // CV_32UC1. [0, getNumberOfSuperpixels()].
 
 	cv::Mat superpixel_contour_mask;
 	const bool thick_line = true;
 	superpixel->getLabelContourMask(superpixel_contour_mask, thick_line);
 
 	// Output result.
-	cv::imshow(windowName, superpixel_label);
+	const int num_superpixels = superpixel->getNumberOfSuperpixels();
+	std::cout << "#superpixels = " << num_superpixels << std::endl;
+	img.setTo(cv::Scalar(0, 0, 255), superpixel_contour_mask);
+	cv::imshow("Superpixel - SEEDS", img);
 
 	cv::waitKey(0);
 
@@ -95,20 +110,23 @@ void seeds(const std::string& img_filename)
 
 void slic(const std::string& img_filename)
 {
-	const std::string windowName("superpixel - SLIC");
-
-	cv::namedWindow(windowName, cv::WINDOW_AUTOSIZE);
-
-	const cv::Mat &img = cv::imread(img_filename, cv::IMREAD_COLOR);
-	//const cv::Mat &img = cv::imread(img_filename, cv::IMREAD_GRAYSCALE);
+	cv::Mat &img = cv::imread(img_filename, cv::IMREAD_COLOR);
+	//cv::Mat &img = cv::imread(img_filename, cv::IMREAD_GRAYSCALE);
 	if (img.empty())
 	{
-		std::cout << "fail to load image file: " << img_filename << std::endl;
+		std::cout << "Failed to load image file: " << img_filename << std::endl;
 		return;
 	}
 
+	//cv::pyrDown(img, img);  cv::pyrUp(img, img);
+	//cv::GaussianBlur(img, img, cv::Size(5, 5), 0);
+	//cv::medianBlur(img, img, 5);
+
+	//cv::cvtColor(img, img, cv::COLOR_BGR2Lab);
+	//cv::cvtColor(img, img, cv::COLOR_BGR2HSV);
+
 	// Simple Linear Iterative Clustering (SLIC) superpixels algorithm.
-	const int algorithm = cv::ximgproc::SLICO;
+	const int algorithm = cv::ximgproc::SLICO;  // { SLIC, SLICO, MSLIC }.
 	const int region_size = 10;
 	const float ruler = 10.0f;
 	cv::Ptr<cv::ximgproc::SuperpixelSLIC> superpixel = cv::ximgproc::createSuperpixelSLIC(img, algorithm, region_size, ruler);
@@ -117,16 +135,22 @@ void slic(const std::string& img_filename)
 	const int num_iterations = 10;
 	superpixel->iterate(num_iterations);
 
+	//const int min_element_size = 20;
+	//superpixel->enforceLabelConnectivity(min_element_size);
+
 	//
 	cv::Mat superpixel_label;
-	superpixel->getLabels(superpixel_label);
+	superpixel->getLabels(superpixel_label);  // CV_32UC1. [0, getNumberOfSuperpixels()].
 
 	cv::Mat superpixel_contour_mask;
 	const bool thick_line = true;
 	superpixel->getLabelContourMask(superpixel_contour_mask, thick_line);
 
 	// Output result.
-	cv::imshow(windowName, superpixel_label);
+	const int num_superpixels = superpixel->getNumberOfSuperpixels();
+	std::cout << "#superpixels = " << num_superpixels << std::endl;
+	img.setTo(cv::Scalar(0, 0, 255), superpixel_contour_mask);
+	cv::imshow("Superpixel - SLIC", img);
 
 	cv::waitKey(0);
 

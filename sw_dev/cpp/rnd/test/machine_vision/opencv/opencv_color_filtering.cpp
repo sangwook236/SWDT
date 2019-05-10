@@ -1,6 +1,5 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv/highgui.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/video/tracking.hpp>
@@ -105,18 +104,18 @@ void color_channel_extraction()
 		const cv::Mat &img = cv::imread(*it, cv::IMREAD_COLOR);
 		if (img.empty())
 		{
-			std::cout << "fail to load image file: " << *it << std::endl;
+			std::cerr << "Failed to load image file: " << *it << std::endl;
 			continue;
 		}
 
 		cv::Mat img2 = img;
-		//cv::cvtColor(img, img2, cv::COLOR_BGR2GRAY);  // BGR <-> gray
-		//cv::cvtColor(img, img2, cv::COLOR_BGR2XYZ);  // BGR <-> CIE XYZ
-		//cv::cvtColor(img, img2, cv::COLOR_BGR2YCrCb);  // BGR <-> YCrCb JPEG
-		//cv::cvtColor(img, img2, cv::COLOR_BGR2HSV);  // BGR <-> HSV
-		//cv::cvtColor(img, img2, cv::COLOR_BGR2HLS);  // BGR <-> HLS
-		//cv::cvtColor(img, img2, cv::COLOR_BGR2Lab);  // BGR <-> CIE L*a*b*
-		//cv::cvtColor(img, img2, cv::COLOR_BGR2Luv);  // BGR <-> CIE L*u*v*
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2GRAY);  // BGR <-> gray.
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2XYZ);  // BGR <-> CIE XYZ.
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2YCrCb);  // BGR <-> YCrCb JPEG.
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2HSV);  // BGR <-> HSV.
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2HLS);  // BGR <-> HLS.
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2Lab);  // BGR <-> CIE L*a*b*.
+		//cv::cvtColor(img, img2, cv::COLOR_BGR2Luv);  // BGR <-> CIE L*u*v*.
 
 		std::vector<cv::Mat> filtered_imgs;
 		cv::split(img2, filtered_imgs);
@@ -162,15 +161,15 @@ void color_based_tracking()
 	cv::VideoCapture capture(camId);
 	if (!capture.isOpened())
 	{
-		std::cout << "a vision sensor not found" << std::endl;
+		std::cerr << "A vision sensor not found." << std::endl;
 		return;
 	}
 
-	const bool b1 = capture.set(CV_CAP_PROP_FRAME_WIDTH, imageWidth);
-	const bool b2 = capture.set(CV_CAP_PROP_FRAME_HEIGHT, imageHeight);
+	const bool b1 = capture.set(cv::CAP_PROP_FRAME_WIDTH, imageWidth);
+	const bool b2 = capture.set(cv::CAP_PROP_FRAME_HEIGHT, imageHeight);
 
-	const std::string windowName1("color filtering - original");
-	const std::string windowName2("color filtering - processed");
+	const std::string windowName1("Color Filtering - Original");
+	const std::string windowName2("Color Filtering - Processed");
 	cv::namedWindow(windowName1, cv::WINDOW_AUTOSIZE);
 	cv::namedWindow(windowName2, cv::WINDOW_AUTOSIZE);
 
@@ -180,7 +179,7 @@ void color_based_tracking()
 		capture >> frame;
 		if (frame.empty())
 		{
-			std::cout << "a frame not found ..." << std::endl;
+			std::cout << "A frame not found ..." << std::endl;
 			//break;
 			continue;
 		}
@@ -189,7 +188,7 @@ void color_based_tracking()
 
 		cv::Mat mask = cv::Mat::zeros(img.size(), CV_8U);
 #if 0
-		// slowest: > 0.016 [sec]
+		// Slowest: > 0.016 [sec].
 		std::vector<cv::Mat> filtered_imgs;
 		cv::split(img, filtered_imgs);
 
@@ -206,7 +205,7 @@ void color_based_tracking()
 			}
 		const double &elapsedTime = ((double)cv::getTickCount() - startTime) / cv::getTickFrequency();
 #elif 0
-		// > 0.004 [sec]
+		// > 0.004 [sec].
 		const double &startTime = (double)cv::getTickCount();
 		for (int r = 0; r < img.rows; ++r)
 			for (int c = 0; c < img.cols; ++c)
@@ -218,7 +217,7 @@ void color_based_tracking()
 			}
 		const double &elapsedTime = ((double)cv::getTickCount() - startTime) / cv::getTickFrequency();
 #elif 0
-		// fastest: > 0.0013 [sec]
+		// Fastest: > 0.0013 [sec].
 		const unsigned char *row = NULL;
 		const double &startTime = (double)cv::getTickCount();
 		for (int r = 0; r < img.rows; ++r)
@@ -232,7 +231,7 @@ void color_based_tracking()
 		}
 		const double &elapsedTime = ((double)cv::getTickCount() - startTime) / cv::getTickFrequency();
 #else
-		// fastest: > 0.0013 [sec]
+		// Fastest: > 0.0013 [sec].
 		const unsigned char *pixels = img.data;
 		const double &startTime = (double)cv::getTickCount();
 		for (int r = 0; r < img.rows; ++r)
