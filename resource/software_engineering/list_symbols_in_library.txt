@@ -1,7 +1,7 @@
 [-] Static library.
 	- Windows.
 		Use 7-zip.
-			Exported symbol¿Ã txt fileø° list.
+			Exported symbols are listed in a txt file.
 		lib /list my_library.lib | grep my_function
 		dumpbin /archivemembers my_library.lib | grep my_function
 	- Linux.

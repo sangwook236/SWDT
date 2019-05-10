@@ -8,6 +8,106 @@ import math
 import numpy as np
 import cv2 as cv
 
+# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/detect_er_chars.py
+def ER_char_detector_example():
+	image_filepaths = [
+		'./image.png',
+	]
+
+	# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/trained_classifierNM1.xml
+	trained_classifierNM1_filepath = './trained_classifierNM1.xml'
+	# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/trained_classifierNM1.xml
+	trained_classifierNM2_filepath = './trained_classifierNM2.xml'
+
+	# Reads an Extremal Region Filter for the 1st stage classifier of N&M algorithm from the provided path.
+	erc1 = cv.text.loadClassifierNM1(trained_classifierNM1_filepath)
+	er1 = cv.text.createERFilterNM1(erc1)
+
+	# Reads an Extremal Region Filter for the 2nd stage classifier of N&M algorithm from the provided path.
+	erc2 = cv.text.loadClassifierNM2(trained_classifierNM2_filepath)
+	er2 = cv.text.createERFilterNM2(erc2)
+
+	for image_filepath in image_filepaths:
+		img = cv.imread(image_filepath, cv.IMREAD_COLOR)
+		if img is None:
+			print('Failed to load an image, {}.'.format(image_filepath))
+			continue
+		gray = cv.imread(image_filepath, cv.IMREAD_GRAYSCALE)
+		if gray is None:
+			print('Failed to load an image, {}.'.format(image_filepath))
+			continue
+
+		regions = cv.text.detectRegions(gray, er1, er2)
+
+		# Visualization.
+		rects = [cv.boundingRect(p.reshape(-1, 1, 2)) for p in regions]
+		for rect in rects:
+			cv.rectangle(img, rect[0:2], (rect[0] + rect[2], rect[1] + rect[3]), (0, 0, 0), 2)
+		for rect in rects:
+			cv.rectangle(img, rect[0:2], (rect[0] + rect[2], rect[1] + rect[3]), (255, 255, 255), 1)
+
+		cv.imshow('Text detection result', img)
+		cv.waitKey(0)
+
+	cv.destroyAllWindows()
+
+# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/textdetection.py
+def ER_text_detector_example():
+	image_filepaths = [
+		'./image.png',
+	]
+
+	# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/trained_classifierNM1.xml
+	trained_classifierNM1_filepath = './trained_classifierNM1.xml'
+	# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/trained_classifierNM1.xml
+	trained_classifierNM2_filepath = './trained_classifierNM2.xml'
+	# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/trained_classifier_erGrouping.xml
+	trained_classifier_erGrouping_filepath = './trained_classifier_erGrouping.xml'
+
+	# Reads an Extremal Region Filter for the 1st stage classifier of N&M algorithm from the provided path.
+	erc1 = cv.text.loadClassifierNM1(trained_classifierNM1_filepath)
+	er1 = cv.text.createERFilterNM1(erc1, 16, 0.00015, 0.13, 0.2, True, 0.1)
+
+	# Reads an Extremal Region Filter for the 2nd stage classifier of N&M algorithm from the provided path.
+	erc2 = cv.text.loadClassifierNM2(trained_classifierNM2_filepath)
+	er2 = cv.text.createERFilterNM2(erc2, 0.5)
+
+	for image_filepath in image_filepaths:
+		img = cv.imread(image_filepath, cv.IMREAD_COLOR)
+		if img is None:
+			print('Failed to load an image, {}.'.format(image_filepath))
+			continue
+
+		# Extract channels to be processed individually.
+		channels = cv.text.computeNMChannels(img)
+
+		# Append negative channels to detect ER- (bright regions over dark background).
+		cn = len(channels) - 1
+		for c in range(0, cn):
+			channels.append((255 - channels[c]))
+
+		# Apply the default cascade classifier to each independent channel (could be done in parallel).
+		print('Extracting Class Specific Extremal Regions from ' + str(len(channels)) + ' channels ...')
+		print('    (...) this may take a while (...)')
+		vis = img.copy()
+		for channel in channels:
+			regions = cv.text.detectRegions(channel, er1, er2)
+
+			rects = cv.text.erGrouping(img, channel, [r.tolist() for r in regions])
+			#rects = cv.text.erGrouping(img, channel, [x.tolist() for x in regions], cv.text.ERGROUPING_ORIENTATION_ANY, trained_classifier_erGrouping_filepath, 0.5)
+
+			# Visualization.
+			for r in range(0, np.shape(rects)[0]):
+				rect = rects[r]
+				cv.rectangle(vis, (rect[0], rect[1]), (rect[0] + rect[2], rect[1] + rect[3]), (0, 0, 0), 2)
+				cv.rectangle(vis, (rect[0], rect[1]), (rect[0] + rect[2], rect[1] + rect[3]), (255, 255, 255), 1)
+
+		# Visualization.
+		cv.imshow('Text detection result', vis)
+		cv.waitKey(0)
+
+	cv.destroyAllWindows()
+
 def decode(scores, geometry, scoreThresh):
 	############ CHECK DIMENSIONS AND SHAPES OF geometry AND scores ############
 	assert len(scores.shape) == 4, 'Incorrect dimensions of scores'
@@ -138,106 +238,6 @@ def EAST_detector_example():
 
 	cv.destroyAllWindows()
 
-# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/detect_er_chars.py
-def ER_char_detector_example():
-	image_filepaths = [
-		'./image.png',
-	]
-
-	# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/trained_classifierNM1.xml
-	trained_classifierNM1_filepath = './trained_classifierNM1.xml'
-	# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/trained_classifierNM1.xml
-	trained_classifierNM2_filepath = './trained_classifierNM2.xml'
-
-	# Reads an Extremal Region Filter for the 1st stage classifier of N&M algorithm from the provided path.
-	erc1 = cv.text.loadClassifierNM1(trained_classifierNM1_filepath)
-	er1 = cv.text.createERFilterNM1(erc1)
-
-	# Reads an Extremal Region Filter for the 2nd stage classifier of N&M algorithm from the provided path.
-	erc2 = cv.text.loadClassifierNM2(trained_classifierNM2_filepath)
-	er2 = cv.text.createERFilterNM2(erc2)
-
-	for image_filepath in image_filepaths:
-		img = cv.imread(image_filepath, cv.IMREAD_COLOR)
-		if img is None:
-			print('Failed to load an image, {}.'.format(image_filepath))
-			continue
-		gray = cv.imread(image_filepath, cv.IMREAD_GRAYSCALE)
-		if gray is None:
-			print('Failed to load an image, {}.'.format(image_filepath))
-			continue
-
-		regions = cv.text.detectRegions(gray, er1, er2)
-
-		# Visualization.
-		rects = [cv.boundingRect(p.reshape(-1, 1, 2)) for p in regions]
-		for rect in rects:
-			cv.rectangle(img, rect[0:2], (rect[0] + rect[2], rect[1] + rect[3]), (0, 0, 0), 2)
-		for rect in rects:
-			cv.rectangle(img, rect[0:2], (rect[0] + rect[2], rect[1] + rect[3]), (255, 255, 255), 1)
-
-		cv.imshow('Text detection result', img)
-		cv.waitKey(0)
-
-	cv.destroyAllWindows()
-
-# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/textdetection.py
-def ER_text_detector_example():
-	image_filepaths = [
-		'./image.png',
-	]
-
-	# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/trained_classifierNM1.xml
-	trained_classifierNM1_filepath = './trained_classifierNM1.xml'
-	# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/trained_classifierNM1.xml
-	trained_classifierNM2_filepath = './trained_classifierNM2.xml'
-	# REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/text/samples/trained_classifier_erGrouping.xml
-	trained_classifier_erGrouping_filepath = './trained_classifier_erGrouping.xml'
-
-	# Reads an Extremal Region Filter for the 1st stage classifier of N&M algorithm from the provided path.
-	erc1 = cv.text.loadClassifierNM1(trained_classifierNM1_filepath)
-	er1 = cv.text.createERFilterNM1(erc1, 16, 0.00015, 0.13, 0.2, True, 0.1)
-
-	# Reads an Extremal Region Filter for the 2nd stage classifier of N&M algorithm from the provided path.
-	erc2 = cv.text.loadClassifierNM2(trained_classifierNM2_filepath)
-	er2 = cv.text.createERFilterNM2(erc2, 0.5)
-
-	for image_filepath in image_filepaths:
-		img = cv.imread(image_filepath, cv.IMREAD_COLOR)
-		if img is None:
-			print('Failed to load an image, {}.'.format(image_filepath))
-			continue
-
-		# Extract channels to be processed individually.
-		channels = cv.text.computeNMChannels(img)
-
-		# Append negative channels to detect ER- (bright regions over dark background).
-		cn = len(channels) - 1
-		for c in range(0, cn):
-			channels.append((255 - channels[c]))
-
-		# Apply the default cascade classifier to each independent channel (could be done in parallel).
-		print('Extracting Class Specific Extremal Regions from ' + str(len(channels)) + ' channels ...')
-		print('    (...) this may take a while (...)')
-		vis = img.copy()
-		for channel in channels:
-			regions = cv.text.detectRegions(channel, er1, er2)
-
-			rects = cv.text.erGrouping(img, channel, [r.tolist() for r in regions])
-			#rects = cv.text.erGrouping(img, channel, [x.tolist() for x in regions], cv.text.ERGROUPING_ORIENTATION_ANY, trained_classifier_erGrouping_filepath, 0.5)
-
-			# Visualization.
-			for r in range(0, np.shape(rects)[0]):
-				rect = rects[r]
-				cv.rectangle(vis, (rect[0], rect[1]), (rect[0] + rect[2], rect[1] + rect[3]), (0, 0, 0), 2)
-				cv.rectangle(vis, (rect[0], rect[1]), (rect[0] + rect[2], rect[1] + rect[3]), (255, 255, 255), 1)
-
-		# Visualization.
-		cv.imshow('Text detection result', vis)
-		cv.waitKey(0)
-
-	cv.destroyAllWindows()
-
 # REF [file] >>
 #	${OPENCV_CONTRIB_HOME}/modules/text/samples/deeptextdetection.py
 #	${OPENCV_CONTRIB_HOME}/modules/text/samples/textbox_demo.cpp
@@ -307,9 +307,9 @@ def tesseract_example():
 	raise NotImplementedError
 
 def main():
-	#EAST_detector_example()
 	#ER_char_detector_example()
 	#ER_text_detector_example()
+	#EAST_detector_example()
 	TextBoxes_detector_example()
 
 	#HMM_decoder_example()  # Not yet implemented.
