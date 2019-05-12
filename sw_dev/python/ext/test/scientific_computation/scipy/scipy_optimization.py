@@ -54,7 +54,7 @@ def simple_unconstrained_minimization_example():
 	x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
 
 	res = minimize(rosen, x0, method='Nelder-Mead', tol=1e-6)
-	#res = minimize(rosen, x0, method='nelder-mead', options={'xtol': 1e-8, 'disp': True})
+	#res = minimize(rosen, x0, method='Nelder-Mead', options={'xtol': 1e-8, 'disp': True})
 	print('Solution =', res.x)
 
 	#res = minimize(rosen, x0, method='BFGS', jac=rosen_der, options={'gtol': 1e-6, 'disp': True})

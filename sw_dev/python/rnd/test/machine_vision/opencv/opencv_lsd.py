@@ -3,11 +3,12 @@
 import cv2
 
 def main():
-	image_filepath = '../../../data/machine_vision/B004_1.jpg'
-	#image_filepath = '../../../data/machine_vision/B008_1.jpg'
+	image_filepath = '../../../data/machine_vision/build.png'
 
 	# Read gray image.
 	img = cv2.imread(image_filepath, cv2.IMREAD_GRAYSCALE)
+	if img is None:
+		raise ValueError('Failed to load an image, {}.'.format(image_filepath))
 
 	# Create default parametrization LSD.
 	lsd = cv2.createLineSegmentDetector(cv2.LSD_REFINE_ADV, 0.8)
@@ -22,6 +23,8 @@ def main():
 	# Show image.
 	cv2.imshow('LSD', drawn_img)
 	cv2.waitKey(0)
+
+	cv2.destroyAllWindows()
 
 #%%------------------------------------------------------------------
 
