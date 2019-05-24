@@ -17,6 +17,18 @@
 		https://github.com/itseez/opencv_3rdparty
 		https://github.com/itseez/opencv_extra
 
+[-] Usage (Android).
+	- Using OpenCV Android SDK in Android Studio.
+		Download.
+			https://opencv.org/
+			https://sourceforge.net/projects/opencvlibrary/files/4.1.0/
+				opencv-4.1.0-android-sdk.zip
+
+		Add in Android Studio.
+			https://github.com/ahasbini/Android-OpenCV
+			https://stackoverflow.com/questions/54967251/how-can-i-integrate-opencv-4-0-into-a-pure-c-android-ndk-project/54980053#54980053
+			https://medium.com/@linjunghsuan/add-opencv-library-into-android-studio-6b02bc2920c0
+
 [-] Building (CMake + Linux).
 	- CUDA_nvcuvid_LIBRARY 항목이 올바르게 설정되어 있지 않다는 오류 발생.
 		NVIDIA CUDA library 중에서 video decoder (NVCUVID) library를 사용하는데,

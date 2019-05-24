@@ -144,19 +144,22 @@ void text_recognition_example()
 
 	// Get OCR result.
 	std::unique_ptr<char[]> outText(api.GetUTF8Text());
+	if (outText.get())
+	{
 #if false
-	std::ofstream stream("./tess_ocr_results.txt");
-	if (stream.is_open())
-		stream << outText.get() << std::endl;
+		std::ofstream stream("./tess_ocr_results.txt");
+		if (stream.is_open())
+			stream << outText.get() << std::endl;
 #else
-	std::wcout.imbue(std::locale("kor"));
-	//std::wcin.imbue(std::locale("kor"));
+		std::wcout.imbue(std::locale("kor"));
+		//std::wcin.imbue(std::locale("kor"));
 
-	std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+		std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
 
-	//std::cout << "OCR output:\n" << outText.get() << std::endl;  // Korean is not displayed correctly.
-	std::wcout << L"OCR output:\n" << conv.from_bytes(outText.get()) << std::endl;
+		//std::cout << "OCR output:\n" << outText.get() << std::endl;  // Korean is not displayed correctly.
+		std::wcout << L"OCR output:\n" << conv.from_bytes(outText.get()) << std::endl;
 #endif
+	}
 
 	// Destroy used object and release memory.
 	api.End();
@@ -198,9 +201,21 @@ void text_line_recognition_example()
 	{
 		std::unique_ptr<BOX> box(boxaGetBox(boxes.get(), i, L_CLONE));
 		api.SetRectangle(box->x, box->y, box->w, box->h);
+		const int confidence = api.MeanTextConf();  // [0, 100].
+		std::cout << "Box[" << i << "]: x=" << box->x << ", y=" << box->y << ", w=" << box->w << ", h=" << box->h << ", confidence: " << confidence << std::endl;
+
 		std::unique_ptr<char[]> ocrResult(api.GetUTF8Text());
-		const int conf = api.MeanTextConf();  // [0, 100].
-		std::cout << "Box[" << i << "]: x=" << box->x << ", y=" << box->y << ", w=" << box->w << ", h=" << box->h << ", confidence: " << conf << ", text: " << ocrResult.get() << std::endl;
+		if (ocrResult.get())
+		{
+			std::wcout.imbue(std::locale("kor"));
+			//std::wcin.imbue(std::locale("kor"));
+
+			std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+
+			std::wcout << L"Text: " << conv.from_bytes(ocrResult.get()) << std::endl;
+		}
+		else
+			std::cout << "No text." << std::endl;
 	}
 
 	// Destroy used object and release memory.
@@ -240,11 +255,23 @@ void result_iterator_example()
 		const tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
 		do
 		{
-			std::unique_ptr<char[]> word(ri->GetUTF8Text(level));
-			const float conf = ri->Confidence(level);
+			const float confidence = ri->Confidence(level);
 			int x1, y1, x2, y2;
 			ri->BoundingBox(level, &x1, &y1, &x2, &y2);
-			std::cout << "word: '" << word.get() << "'; \tconf: " << conf << "; BoundingBox: " << x1 << ", " << y1 << ", " << x2 << ", " << y2 << std::endl;
+			std::cout << "Confidence: " << confidence << "; BoundingBox: " << x1 << ", " << y1 << ", " << x2 << ", " << y2 << std::endl;
+
+			std::unique_ptr<char[]> word(ri->GetUTF8Text(level));
+			if (word.get())
+			{
+				std::wcout.imbue(std::locale("kor"));
+				//std::wcin.imbue(std::locale("kor"));
+
+				std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+
+				std::wcout << L"Word: " << conv.from_bytes(word.get()) << std::endl;
+			}
+			else
+				std::cout << "No word." << std::endl;
 		} while (ri->Next(level));
 	}
 
@@ -336,10 +363,10 @@ void iterator_over_the_classifier_choices_for_a_single_symbol()
 		{
 			const char *symbol = ri->GetUTF8Text(level);
 			//std::unique_ptr<char[]> symbol(ri->GetUTF8Text(level));
-			const float conf = ri->Confidence(level);
+			const float confidence = ri->Confidence(level);
 			if (nullptr != symbol)
 			{
-				std::cout << "Symbol: " << symbol << ", conf: " << conf;
+				std::cout << "Symbol: " << symbol << ", confidence: " << confidence;
 				bool indent = false;
 				tesseract::ChoiceIterator ci(*ri);
 				do
@@ -348,7 +375,8 @@ void iterator_over_the_classifier_choices_for_a_single_symbol()
 					std::cout << "\t- ";
 					const char *choice = ci.GetUTF8Text();
 					//std::unique_ptr<const char[]> choice(ci.GetUTF8Text());
-					std::cout << choice << " conf: " << ci.Confidence() << std::endl;
+					if (choice)
+						std::cout << choice << ", confidence: " << ci.Confidence() << std::endl;
 					indent = true;
 				} while (ci.Next());
 			}
@@ -445,7 +473,17 @@ void monitoring_ocr_progress()
 	pixDestroy(&image);
 
 	std::unique_ptr<char[]> outText(api.GetUTF8Text());
-	std::cout << std::endl << outText.get();
+	if (outText.get())
+	{
+		std::wcout.imbue(std::locale("kor"));
+		//std::wcin.imbue(std::locale("kor"));
+
+		std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+
+		std::wcout << L"Text: " << conv.from_bytes(outText.get()) << std::endl;
+	}
+	else
+		std::cout << "No text." << std::endl;
 
 	api.End();
 }

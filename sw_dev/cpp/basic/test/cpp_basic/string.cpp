@@ -1,4 +1,4 @@
-#include <iostream>
+Ôªø#include <iostream>
 #include <string>
 #include <locale>
 #include <codecvt>
@@ -108,8 +108,8 @@ void unicode_string()
 		//std::wcout.imbue(std::locale("kor"));
 		//std::wcin.imbue(std::locale("kor"));
 
-		std::wcout << L"«—±€ √‚∑¬ ≈◊Ω∫∆Æ." << std::endl;
-		std::wcout << L"”ﬁ˘€⁄≈œ–." << std::endl;
+		std::wcout << L"ÌïúÍ∏Ä Ï∂úÎ†• ÌÖåÏä§Ìä∏." << std::endl;
+		std::wcout << L"Â§ßÈüìÊ∞ëÂúã." << std::endl;
 	}
 
 	// UTF-8 <--> wide string.
@@ -132,13 +132,15 @@ void unicode_string()
 	}
 
 #if false
-	// UTF-8 <--> UTF-16.
+	// UTF-8 <--> UTF-16, UTF-32, UCS2.
 	// REF [site] >> https://en.cppreference.com/w/cpp/locale/codecvt_utf8
 	{
 		// UTF-8 data. The character U+1d10b, musical sign segno, does not fit in UCS2.
 		const std::string utf8(u8"z\u6c34\U0001d10b");
+		//const std::string utf8(u8"z√üÊ∞¥ùÑã");
+		//const std::string utf8("\x7a\xc3\x9f\xe6\xb0\xb4\xf0\x9d\x84\x8b");
 
-		// the UTF-8 / UTF-16 standard conversion facet.
+		// The UTF-8 / UTF-16 standard conversion facet.
 		std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> utf16conv;
 
 		const std::u16string utf16 = utf16conv.from_bytes(utf8);  // UTF-8 to UTF-16.
@@ -151,7 +153,13 @@ void unicode_string()
 		for (char c : utf8_cvt)
 			std::cout << std::hex << std::showbase << (int)c << std::endl;
 
-		// the UTF-8 / UCS2 standard conversion facet.
+		// The UTF-8 / UTF-32 standard conversion facet.
+		const std::u32string utf32 = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(utf8);
+		std::cout << "UTF-32 conversion produced " << std::dec << utf32.size() << " code units:" << std::endl;
+		for (char32_t c : utf32)
+			std::cout << std::hex << std::showbase << (int)c << std::endl;
+
+		// The UTF-8 / UCS2 standard conversion facet.
 		std::wstring_convert<std::codecvt_utf8<char16_t>, char16_t> ucs2conv;
 		try
 		{

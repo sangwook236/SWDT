@@ -190,7 +190,7 @@
 		export LOG_FILE=tesseract_log.txt
 
 		Copy ${TESSERACT_HOME}/tessdata/configs/lstm.train to the working directory.
-			cp ${TESSERACT_HOME}/tessdata/configs/lstm.train .
+			cp ${TESSERACT_HOME}/tessdata/configs/lstm.train.
 
 		(Optional) export TESSDATA_PREFIX=${TESSERACT_TESSDATA_HOME}
 		(Optional) export TESSDATA_DIR=${TESSERACT_TESSDATA_HOME}
@@ -205,8 +205,11 @@
 				${TESSERACT_HOME}/src/api/tesseract.
 				${TESSERACT_HOME}/src/training/combine_lang_model.
 
-		${TESSERACT_HOME}/src/training/tesstrain.sh --fonts_dir /usr/share/fonts --fontlist "FreeMono" "FreeSans" "FreeSerif" --lang eng --linedata_only --noextract_font_properties --langdata_dir ${TESSERACT_LANGDATA_HOME} --tessdata_dir ${TESSERACT_TESSDATA_HOME} --save_box_tiff --output_dir ./engtrain
-		${TESSERACT_HOME}/src/training/tesstrain.sh --fonts_dir /usr/share/fonts --fontlist "Batang" "Gulimche" --lang kor --linedata_only --noextract_font_properties --langdata_dir ${TESSERACT_LANGDATA_HOME} --tessdata_dir ${TESSERACT_TESSDATA_HOME} --save_box_tiff --output_dir ./kortrain
+		${TESSERACT_HOME}/src/training/tesstrain.sh --fonts_dir /usr/share/fonts --fontlist FreeMono FreeSans FreeSerif --lang eng --linedata_only --noextract_font_properties --langdata_dir ${TESSERACT_LANGDATA_HOME} --tessdata_dir ${TESSERACT_TESSDATA_HOME} --save_box_tiff --output_dir ./engtrain
+		${TESSERACT_HOME}/src/training/tesstrain.sh --fonts_dir /usr/share/fonts --fontlist Batang Gulimche --lang kor --linedata_only --noextract_font_properties --langdata_dir ${TESSERACT_LANGDATA_HOME} --tessdata_dir ${TESSERACT_TESSDATA_HOME} --save_box_tiff --output_dir ./kortrain
+		${TESSERACT_HOME}/src/training/tesstrain.sh --fonts_dir /usr/share/fonts --fontlist Batang Dotum "Gabia Solmee" godoMaum "godoRounded R" Gulim Gungsuh "HsBomBara 2.0" HSDuggobi "HSGaeulsenggak 2.0" HSGyoulnoonkot HSYeolumMulbit NanumBarunpen "Nanum Brush Script" NanumMyeongjo "Nanum Pen Script" NapjakBlock "Sandoll MiSaeng" --lang kor --linedata_only --noextract_font_properties --langdata_dir ${TESSERACT_LANGDATA_HOME} --tessdata_dir ${TESSERACT_TESSDATA_HOME} --save_box_tiff --output_dir ./kortrain
+			Fonts to use have to be installed before training.
+				Installed font names have to be used.
 			https://github.com/tesseract-ocr/langdata
 			https://github.com/tesseract-ocr/langdata_lstm
 			https://github.com/tesseract-ocr/tessdata

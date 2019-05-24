@@ -377,6 +377,19 @@ void fast_hough_transform()
 	cv::destroyAllWindows();
 }
 
+// REF [paper] >> 
+//	"Accurate and robust line segment extraction by analyzing distribution around peaks in Hough space", CVIU 2003.
+//	"Rectangle Detection based on a Windowed Hough Transform", SIBGRAPI 2004.
+void enhance_hough_space(const cv::Mat &hough_space, cv::Mat &enhanced_hough_space, const size_t kernel_width, const size_t kernel_height)
+{
+	hough_space.convertTo(enhanced_hough_space, CV_32FC1);
+
+	cv::Mat hough_integral;
+	cv::boxFilter(enhanced_hough_space, hough_integral, -1, cv::Size(kernel_width, kernel_height), cv::Point(-1, -1), true, cv::BORDER_DEFAULT);
+	cv::pow(enhanced_hough_space, 2, enhanced_hough_space);
+	cv::divide(enhanced_hough_space, hough_integral, enhanced_hough_space);
+}
+
 // REF [site] >> http://fourier.eng.hmc.edu/e161/dipum/houghpeaks.m
 std::list<cv::Point> find_peaks_in_hough_space(const cv::Mat &hough, const cv::Size &neighborhood, const size_t num_peaks, const float threshold)
 {
@@ -432,11 +445,26 @@ bool hough_space_analysis()
 	//cv::ximgproc::FastHoughTransform(edge, hough_space, CV_32S, cv::ximgproc::ARO_315_135, cv::ximgproc::FHT_ADD, cv::ximgproc::HDO_DESKEW);
 	cv::ximgproc::FastHoughTransform(edge, hough_space, CV_32F, cv::ximgproc::ARO_315_135, cv::ximgproc::FHT_AVE, cv::ximgproc::HDO_DESKEW);
 
-	double minVal, maxVal;
-	cv::minMaxLoc(hough_space, &minVal, &maxVal);
+	{
+		double minVal, maxVal;
+		cv::minMaxLoc(hough_space, &minVal, &maxVal);
 
-	cv::imshow("Hough Space", hough_space / (float)maxVal);
-	//cv::imwrite("hough_space.tif", hough_space / (float)maxVal);
+		cv::imshow("Hough Space", hough_space / (float)maxVal);
+		//cv::imwrite("hough_space.tif", hough_space / (float)maxVal);
+	}
+
+#if true
+	//--------------------
+	enhance_hough_space(hough_space, hough_space, 10, 10);
+
+	{
+		double minVal, maxVal;
+		cv::minMaxLoc(hough_space, &minVal, &maxVal);
+
+		cv::imshow("Enhanced Hough Space", hough_space / (float)maxVal);
+		//cv::imwrite("enhanced_hough_space.tif", hough_space / (float)maxVal);
+	}
+#endif
 
 	//--------------------
 	const cv::Size neighborhood(50, 50);
@@ -444,23 +472,28 @@ bool hough_space_analysis()
 	const float threshold = 50.0f;
 	const std::list<cv::Point> &hough_peaks = find_peaks_in_hough_space(hough_space, neighborhood, num_peaks, threshold);
 
-	cv::Mat hough_rgb;
-	hough_space.convertTo(hough_rgb, CV_8U, 255.0 / maxVal, 0.0);
-	cv::cvtColor(hough_rgb, hough_rgb, cv::COLOR_GRAY2BGR);
-	for (const auto &peak : hough_peaks)
-		cv::circle(hough_rgb, peak, 3, cv::Scalar(0, 0, 255), 2, cv::LINE_AA, 0);
-	cv::imshow("Hough Space with Peaks", hough_rgb);
-	//cv::imwrite("hough_space_with_peaks.tif", hough_rgb);
-
-	cv::Mat line_rgb;
-	//cv::cvtColor(edge, line_rgb, cv::COLOR_GRAY2BGR);
-	cv::cvtColor(img, line_rgb, cv::COLOR_GRAY2BGR);
-	for (const auto &peak : hough_peaks)
 	{
-		const cv::Vec4i &line = cv::ximgproc::HoughPoint2Line(peak, edge, cv::ximgproc::ARO_315_135, cv::ximgproc::HDO_DESKEW, cv::ximgproc::RO_IGNORE_BORDERS);
-		cv::line(line_rgb, cv::Point(line[0], line[1]), cv::Point(line[2], line[3]), cv::Scalar(0, 0, 255), 2, cv::LINE_AA, 0);
+		double maxVal;
+		cv::minMaxLoc(hough_space, nullptr, &maxVal);
+
+		cv::Mat hough_rgb;
+		hough_space.convertTo(hough_rgb, CV_8U, 255.0 / maxVal, 0.0);
+		cv::cvtColor(hough_rgb, hough_rgb, cv::COLOR_GRAY2BGR);
+		for (const auto &peak : hough_peaks)
+			cv::circle(hough_rgb, peak, 3, cv::Scalar(0, 0, 255), 2, cv::LINE_AA, 0);
+		cv::imshow("Hough Space with Peaks", hough_rgb);
+		//cv::imwrite("hough_space_with_peaks.tif", hough_rgb);
+
+		cv::Mat line_rgb;
+		//cv::cvtColor(edge, line_rgb, cv::COLOR_GRAY2BGR);
+		cv::cvtColor(img, line_rgb, cv::COLOR_GRAY2BGR);
+		for (const auto &peak : hough_peaks)
+		{
+			const cv::Vec4i &line = cv::ximgproc::HoughPoint2Line(peak, edge, cv::ximgproc::ARO_315_135, cv::ximgproc::HDO_DESKEW, cv::ximgproc::RO_IGNORE_BORDERS);
+			cv::line(line_rgb, cv::Point(line[0], line[1]), cv::Point(line[2], line[3]), cv::Scalar(0, 0, 255), 2, cv::LINE_AA, 0);
+		}
+		cv::imshow("Hough Lines", line_rgb);
 	}
-	cv::imshow("Lines", line_rgb);
 
 	return true;
 }
