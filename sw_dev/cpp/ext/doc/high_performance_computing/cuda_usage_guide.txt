@@ -17,5 +17,8 @@
 		cat /proc/driver/nvidia/version
 		nvidia-smi
 
+	- cudatoolkit version (Python).
+		conda list
+
 	- Monitor.
 		watch -n 0.5 nvidia-smi

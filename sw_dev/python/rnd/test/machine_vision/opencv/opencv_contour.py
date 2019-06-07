@@ -46,7 +46,7 @@ def contour_feature():
 			cv2.rectangle(rgb, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
 			# Rotated rectangle (OBB).
-			rect = cv2.minAreaRect(contour)
+			rect = cv2.minAreaRect(contour)  # Tuple: (center, size, angle).
 			box = cv2.boxPoints(rect)
 			box = np.int0(box)
 			cv2.drawContours(rgb, [box], 0, (0, 0, 255), 2)
