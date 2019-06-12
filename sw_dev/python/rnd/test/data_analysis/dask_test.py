@@ -6,6 +6,9 @@
 #	https://github.com/dask/distributed
 #	https://github.com/dask/dask-ml
 
+import os, json
+import pandas as pd
+from sklearn.linear_model import LinearRegression
 import dask
 import dask.array as da
 import dask.bag as db
@@ -17,9 +20,6 @@ import dask_glm.families
 import dask_glm.regularizers
 from dask_glm.datasets import make_regression
 from dask.distributed import Client, progress
-import os, json
-import pandas as pd
-from sklearn.linear_model import LinearRegression
 
 # REF [site] >> https://examples.dask.org/array.html
 def dask_array_example():
