@@ -54,23 +54,27 @@ def dataset_basic():
 	iterator = dataset.make_initializable_iterator()
 	next_element = iterator.get_next()
 
-	# Initialize an iterator over a dataset with 10 elements.
-	sess.run(iterator.initializer, feed_dict={max_value: 10})
-	for i in range(10):
-		value = sess.run(next_element)
-		print('{} == {}'.format(value, i))
+	print('Start training with an initializable iterator...')
+	for _ in range(20):
+		# Initialize an iterator over a dataset with 10 elements.
+		sess.run(iterator.initializer, feed_dict={max_value: 10})
+		for i in range(10):
+			value = sess.run(next_element)
+			#print('{} == {}'.format(value, i))
 
-	# Initialize the same iterator over a dataset with 100 elements.
-	sess.run(iterator.initializer, feed_dict={max_value: 100})
-	for i in range(100):
-		value = sess.run(next_element)
-		print('{} == {}'.format(value, i))
+		# Initialize the same iterator over a dataset with 100 elements.
+		sess.run(iterator.initializer, feed_dict={max_value: 100})
+		for i in range(100):
+			value = sess.run(next_element)
+			#print('{} == {}'.format(value, i))
+	print('End training with an initializable iterator.')
 
 	#--------------------
 	# Reinitializable iterator.
 
-	training_dataset = tf.data.Dataset.range(100).map(lambda x: x + tf.random_uniform([], -10, 10, tf.int64))
-	validation_dataset = tf.data.Dataset.range(50)
+	max_value = tf.placeholder(tf.int64, shape=[])
+	training_dataset = tf.data.Dataset.range(max_value).map(lambda x: x + tf.random_uniform([], -10, 10, tf.int64))
+	validation_dataset = tf.data.Dataset.range(max_value)
 
 	iterator = tf.data.Iterator.from_structure(training_dataset.output_types, training_dataset.output_shapes)
 	next_element = iterator.get_next()
@@ -78,17 +82,19 @@ def dataset_basic():
 	training_init_op = iterator.make_initializer(training_dataset)
 	validation_init_op = iterator.make_initializer(validation_dataset)
 
+	print('Start training with a reinitializable iterator...')
 	# Run 20 epochs in which the training dataset is traversed, followed by the validation dataset.
 	for _ in range(20):
 		# Initialize an iterator over the training dataset.
-		sess.run(training_init_op)
+		sess.run(training_init_op, feed_dict={max_value: 100})
 		for _ in range(100):
 			sess.run(next_element)
 
 		# Initialize an iterator over the validation dataset.
-		sess.run(validation_init_op)
+		sess.run(validation_init_op, feed_dict={max_value: 100})
 		for _ in range(50):
 			sess.run(next_element)
+	print('End training with a reinitializable iterator.')
 
 	#--------------------
 	# Feedable iterator.
@@ -107,6 +113,7 @@ def dataset_basic():
 	training_handle = sess.run(training_iterator.string_handle())
 	validation_handle = sess.run(validation_iterator.string_handle())
 
+	print('Start training with a feedable iterator...')
 	# Loop forever, alternating between training and validation.
 	#while True:
 	for _ in range(20):
@@ -119,6 +126,7 @@ def dataset_basic():
 		sess.run(validation_iterator.initializer)
 		for _ in range(50):
 			sess.run(next_element, feed_dict={handle: validation_handle})
+	print('End training with a feedable iterator.')
 
 	#--------------------
 	# Consuming values from an iterator.
@@ -249,7 +257,7 @@ def dataset_example():
 
 	EPOCHS = 10
 	with tf.Session() as sess:
-		# Initialise iterator with train data.
+		# Initialize iterator with train data.
 		sess.run(iter.initializer, feed_dict={x: train_data[0], y: train_data[1]})
 		for _ in range(EPOCHS):
 			sess.run([features, labels])
@@ -368,8 +376,8 @@ def dataset_example():
 			print(sess.run(el))
 
 def main():
-	#dataset_basic()
-	dataset_example()
+	dataset_basic()
+	#dataset_example()
 
 #%%------------------------------------------------------------------
 

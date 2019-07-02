@@ -43,25 +43,26 @@ def contour_feature():
 
 			# Straight bounding rectangle (AABB).
 			x, y, w, h = cv2.boundingRect(contour)
-			cv2.rectangle(rgb, (x, y), (x + w, y + h), (255, 0, 0), 2)
+			cv2.rectangle(rgb, (x, y), (x + w, y + h), (255, 0, 0), 2, cv2.LINE_8)
 
 			# Rotated rectangle (OBB).
 			rect = cv2.minAreaRect(contour)  # Tuple: (center, size, angle).
 			box = cv2.boxPoints(rect)
-			box = np.int0(box)
-			cv2.drawContours(rgb, [box], 0, (0, 0, 255), 2)
+			#box = np.int0(box)
+			box = np.round(box).astype(np.int)
+			cv2.drawContours(rgb, [box], 0, (0, 0, 255), 2, cv2.LINE_8)
 
 			# Minimum enclosing circle.
 			(x, y), radius = cv2.minEnclosingCircle(contour)
 			center = (int(x), int(y))
 			radius = int(radius)
-			cv2.circle(rgb, center, radius, (0, 255, 255), 2)
+			cv2.circle(rgb, center, radius, (0, 255, 255), 2, cv2.LINE_8)
 
 			# Fits an ellipse.
 			ellipse = cv2.fitEllipse(contour)
 			#ellipse = cv2.fitEllipseAMS(contour)
 			#ellipse = cv2.fitEllipseDirect(contour)
-			cv2.ellipse(rgb, ellipse, (255, 255, 0), 2)
+			cv2.ellipse(rgb, ellipse, (255, 255, 0), 2, cv2.LINE_8)
 
 			# Fits a line.
 			if False:
