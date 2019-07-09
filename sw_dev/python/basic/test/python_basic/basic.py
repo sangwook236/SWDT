@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import os, sys, platform
+from functools import reduce
+import operator
 import traceback
 
 def platform_test():
@@ -132,7 +134,10 @@ def map_filter_reduce():
 		print(value)
 
 	map_with_two_args = map(lambda x, y: x + y, range(5), range(5))
-	print('Mapping function with two argments =', list(map_with_two_args))
+	print('Mapping a function with two argments =', list(map_with_two_args))
+
+	map_with_three_args = map(lambda x, y, z: x + y + z, range(10), range(5), range(8))
+	print('Mapping a function with three argments =', list(map_with_three_args))
 
 	#--------------------
 	number_list = range(-5, 5)
@@ -141,9 +146,6 @@ def map_filter_reduce():
 	print('less_than_zero =', list(less_than_zero))
 
 	#--------------------
-	from functools import reduce
-	import operator
-
 	items = [3, 4, 5, 6, 7]
 	summation = reduce(lambda x, y: x + y, items)
 	print('Type of reduce() =', type(summation), summation)  # The type of reduce() is its return type.
@@ -152,7 +154,8 @@ def map_filter_reduce():
 	print('Product =', product)
 
 	print('Max =', reduce(max, [5, 8, 3, 1]))
-	print('Concatenation =', reduce(lambda s, x: s+str(x), [1, 2, 3, 4], ''))
+	print('Minmax =', reduce(lambda x, y: (min(x[0], y[0]), max(x[1], y[1])), zip([5, 8, 3, 1], [2, 5, -1, 7])))  # Result = (1, 7).
+	print('Concatenation =', reduce(lambda s, x: s + str(x), [1, 2, 3, 4], ''))
 	print('Flatten =', reduce(operator.concat, [[1, 2], [3, 4], [], [5]], []))
 
 	difference = reduce(lambda x, y: x - y, items, 100)

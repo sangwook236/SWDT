@@ -38,7 +38,7 @@ def basic():
 def control_line_properties():
 	x = np.arange(5)
 	y = x**2
-	plt.plot(x, y, linewidth = 2.0)
+	plt.plot(x, y, linewidth=2.0)
 	plt.show()
 
 	line, = plt.plot(x, y, '-')
@@ -51,7 +51,7 @@ def control_line_properties():
 	y2 = x2**3
 	lines = plt.plot(x1, y1, x2, y2)
 	# Use keyword args.
-	plt.setp(lines, color = 'r', linewidth = 2.0)
+	plt.setp(lines, color='r', linewidth=2.0)
 	# MATLAB style string value pairs.
 	plt.setp(lines, 'color', 'b', 'linewidth', 2.0)
 	plt.show()
@@ -65,6 +65,9 @@ def work_with_multiple_figures_and_axes():
 
 	plt.figure(1)
 	plt.subplot(211)
+	#ax = plt.subplot(211)
+	#ax.axes.get_xaxis().set_visible(False)  # Hides ticks and tick labels.
+	#ax.axes.get_yaxis().set_visible(False)  # Hides ticks and tick labels.
 	plt.plot(t1, f(t1), 'bo', t2, f(t2), 'k')
 	
 	plt.subplot(212)
@@ -92,7 +95,7 @@ def work_with_text():
 	x = mu + sigma * np.random.randn(10000)
 
 	# The histogram of the data.
-	n, bins, patches = plt.hist(x, 50, normed = 1, facecolor = 'g', alpha = 0.75)
+	n, bins, patches = plt.hist(x, 50, normed=1, facecolor='g', alpha=0.75)
 
 	plt.xlabel('Smarts')
 	#t = plt.xlabel('my data', fontsize=14, color='red')
@@ -109,10 +112,10 @@ def work_with_text():
 
 	t = np.arange(0.0, 5.0, 0.01)
 	s = np.cos(2 * np.pi * t)
-	line, = plt.plot(t, s, lw = 2)
+	line, = plt.plot(t, s, lw=2)
 
-	plt.annotate('local max', xy = (2, 1), xytext = (3, 1.5),
-		arrowprops = dict(facecolor = 'black', shrink = 0.05),
+	plt.annotate('local max', xy=(2, 1), xytext=(3, 1.5),
+		arrowprops=dict(facecolor='black', shrink=0.05),
 	)
 
 	plt.ylim(-2, 2)
@@ -125,7 +128,7 @@ def logarithmic_and_other_nonlinear_axes():
 	np.random.seed(19680801)
 
 	# Make up some data in the interval ]0, 1[.
-	y = np.random.normal(loc = 0.5, scale = 0.4, size = 1000)
+	y = np.random.normal(loc=0.5, scale=0.4, size=1000)
 	y = y[(y > 0) & (y < 1)]
 	y.sort()
 	x = np.arange(len(y))
@@ -150,7 +153,7 @@ def logarithmic_and_other_nonlinear_axes():
 	# Symmetric log.
 	plt.subplot(223)
 	plt.plot(x, y - y.mean())
-	plt.yscale('symlog', linthreshy = 0.01)
+	plt.yscale('symlog', linthreshy=0.01)
 	plt.title('symlog')
 	plt.grid(True)
 
@@ -164,7 +167,7 @@ def logarithmic_and_other_nonlinear_axes():
 	plt.gca().yaxis.set_minor_formatter(NullFormatter())
 	# Adjust the subplot layout, because the logit one may take more space
 	# than usual, due to y-tick labels like "1 - 10^{-3}"
-	plt.subplots_adjust(top = 0.92, bottom = 0.08, left = 0.10, right = 0.95, hspace = 0.25, wspace = 0.35)
+	plt.subplots_adjust(top=0.92, bottom=0.08, left=0.10, right=0.95, hspace=0.25, wspace=0.35)
 
 	plt.show()
 
