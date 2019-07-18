@@ -65,12 +65,12 @@ def dask_bag_example():
 		.frequencies(sort=True)
 		.topk(10, key=1))
 
-	# Transform and Store
+	# Transform and Store.
 	(b.filter(lambda record: record['age'] > 30)  # Select records of interest.
 		.map(json.dumps)  # Convert Python objects to text.
 		.to_textfiles('data/processed.*.json'))  # Write to local disk.
 
-	# Convert to Dask Dataframes,
+	# Convert to Dask Dataframes.
 	def flatten(record):
 		return {
 			'age': record['age'],
@@ -114,7 +114,7 @@ def dask_dataframe_example():
 	print(type(computed_df))
 	print(computed_df)
 
-	# Persist data in memory
+	# Persist data in memory.
 	# If you have the available RAM for your dataset then you can persist data in memory.
 	# This allows future computations to be much faster.
 	df = df.persist()
