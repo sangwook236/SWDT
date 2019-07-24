@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import glob
+import glob, csv
 
 def basic():
 	try:
@@ -36,10 +36,40 @@ def glob_example():
 	glob.glob('**/*.txt', recursive=True)
 	glob.glob('./**/', recursive=True)
 
-def main():
-	basic()
+def csv_example():
+	csv_filepath = './test.csv'
 
-	glob_example()
+	#with open(csv_filepath, 'w', encoding='UTF8') as csvfile:
+	with open(csv_filepath, 'w', newline='', encoding='UTF8') as csvfile:
+		writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+		#writer.writerow(['id', 'lowercase1', 'uppercase1', 'lowercase2', 'uppercase2', 'class'])  # Writes a header.
+
+		writer.writerow([1, 'a', 'A', 'aa,bb', 'AA,BB', 0])
+		writer.writerow([2, 'b', 'B', 'bb,cc', 'BB,CC', 1])
+		writer.writerow([3, 'c', 'C', 'cc,dd', 'CC,DD', 0])
+		writer.writerow([4, 'd', 'D', 'dd,ee', 'DD,EE', 1])
+		writer.writerow([5, 'e', 'E', 'ee,ff', 'EE,FF', 0])
+
+	#with open(csv_filepath, 'r', encoding='UTF8') as fd:
+	with open(csv_filepath, 'r', newline='', encoding='UTF8') as fd:
+		has_header = csv.Sniffer().has_header(fd.read(1024))
+		fd.seek(0)  # Rewind.
+
+		reader = csv.reader(fd, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+		if has_header:
+			header = next(reader, None)  # Reads a header.
+			print('Header = {}.'.format(header))
+		else:
+			print('No header.')
+		for idx, row in enumerate(reader):
+			print('Row {}: {}.'.format(idx, row))
+
+def main():
+	#basic()
+
+	#glob_example()
+	csv_example()
 
 #%%------------------------------------------------------------------
 

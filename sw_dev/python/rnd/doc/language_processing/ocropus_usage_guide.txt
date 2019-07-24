@@ -20,6 +20,7 @@
 	- Perform binarization.
 		ocropus-nlbin tests/ersch.png -o book
 	- Perform page layout analysis.
+		REF [site] >> https://github.com/tmbdev/ocropy/wiki/Page-Segmentation
 		ocropus-gpageseg 'book/????.bin.png'
 			Question marks can be used.
 	- Perform text line recognition (on four cores, with a fraktur model).

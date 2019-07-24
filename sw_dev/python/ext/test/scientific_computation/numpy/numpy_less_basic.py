@@ -2,6 +2,7 @@
 
 # REF [site] >> https://docs.scipy.org/doc/numpy/user/quickstart.html#less-basic
 
+import timeit
 import numpy as np
 
 def fancy_indexing_and_index_trick():
@@ -98,9 +99,45 @@ def ix_function():
 
 	ufunc_reduce(np.add, a, b, c)
 
+def shuffle_speed_test():
+	m = np.random.rand(1000, 50, 60)
+
+	batch_size = 30
+	num_repetition = 1000
+
+	# Shuffle an array by shuffling indices.
+	def shuffle_by_index(m, batch_size):
+		num_elements = len(m)
+		indices = np.arange(num_elements)
+		np.random.shuffle(indices)
+		start_idx = 0
+		while start_idx < num_elements:
+			end_idx = start_idx + batch_size
+			batch_indices = indices[start_idx:end_idx]
+			batch = m[batch_indices]
+
+			start_idx += batch_size
+
+	print('Elapsed time =', timeit.timeit(lambda: shuffle_by_index(m, batch_size), number=num_repetition))
+
+	# Shuffle an array itself.
+	def suffle_itself(m, batch_size):
+		num_elements = len(m)
+		np.random.shuffle(m)
+		start_idx = 0
+		while start_idx < num_elements:
+			end_idx = start_idx + batch_size
+			batch = m[start_idx:end_idx]
+
+			start_idx += batch_size
+
+	print('Elapsed time =', timeit.timeit(lambda: suffle_itself(m, batch_size), number=num_repetition))
+
 def main():
-	fancy_indexing_and_index_trick()
-	ix_function()
+	#fancy_indexing_and_index_trick()
+	#ix_function()
+
+	shuffle_speed_test()
 
 #%%------------------------------------------------------------------
 
