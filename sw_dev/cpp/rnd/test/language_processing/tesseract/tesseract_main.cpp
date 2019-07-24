@@ -122,7 +122,7 @@ void text_recognition_example()
 #if false
 	// Open input image with leptonica library.
 	Pix *image = pixRead(image_filepath.c_str());
-	if (nullptr == image)
+	if (!image)
 	{
 		std::cerr << "Failed to load an image: " << image_filepath << std::endl;
 		return;
@@ -186,7 +186,7 @@ void text_line_recognition_example()
 	const std::string image_filepath("../data/language_processing/phototest.tif");
 
 	Pix *image = pixRead(image_filepath.c_str());
-	if (nullptr == image)
+	if (!image)
 	{
 		std::cerr << "Failed to load an image: " << image_filepath << std::endl;
 		return;
@@ -240,17 +240,21 @@ void result_iterator_example()
 	const std::string image_filepath("../data/language_processing/phototest.tif");
 
 	Pix *image = pixRead(image_filepath.c_str());
-	if (nullptr == image)
+	if (!image)
 	{
 		std::cerr << "Failed to load an image: " << image_filepath << std::endl;
 		return;
 	}
 
 	api.SetImage(image);
-	api.Recognize(nullptr);
+	if (api.Recognize(nullptr) < 0)
+	{
+		std::cerr << "Failed to recognize: " << image_filepath << std::endl;
+		return;
+	}
 
 	tesseract::ResultIterator *ri = api.GetIterator();
-	if (nullptr != ri)
+	if (ri)
 	{
 		const tesseract::PageIteratorLevel level = tesseract::RIL_WORD;
 		do
@@ -298,28 +302,38 @@ void orientation_and_script_detection_example()
 	const std::string image_filepath("../data/language_processing/eurotext.tif");
 
 	Pix *image = pixRead(image_filepath.c_str());
-	if (nullptr == image)
+	if (!image)
 	{
 		std::cerr << "Failed to load an image: " << image_filepath << std::endl;
 		return;
 	}
 
 	api.SetImage(image);
-	api.Recognize(nullptr);
+	if (api.Recognize(nullptr) < 0)
+	{
+		std::cerr << "Failed to recognize: " << image_filepath << std::endl;
+		return;
+	}
+
+	cv::Mat img = cv::imread(image_filepath);
 
 	tesseract::PageIterator *it = api.AnalyseLayout();
-	if (nullptr != it)
+	if (it)
 	{
 		tesseract::Orientation orientation;
 		tesseract::WritingDirection direction;
 		tesseract::TextlineOrder order;
 		float deskew_angle;
-		it->Orientation(&orientation, &direction, &order, &deskew_angle);
 
-		std::cout << "Orientation: " << orientation << std::endl;
-		std::cout << "WritingDirection: " << direction << std::endl;
-		std::cout << "TextlineOrder : " << order << std::endl;
-		std::cout << "Deskew angle: " << deskew_angle << std::endl;
+		//do
+		//{
+			it->Orientation(&orientation, &direction, &order, &deskew_angle);
+
+			std::cout << "Orientation: " << orientation << std::endl;
+			std::cout << "WritingDirection: " << direction << std::endl;
+			std::cout << "TextlineOrder : " << order << std::endl;
+			std::cout << "Deskew angle: " << deskew_angle << std::endl;
+		//} while (it->Next(tesseract::RIL_TEXTLINE));
 	}
 
 	// Destroy used object and release memory.
@@ -343,7 +357,7 @@ void iterator_over_the_classifier_choices_for_a_single_symbol()
 
 	const std::string image_filepath("../data/language_processing/phototest.tif");
 	Pix *image = pixRead(image_filepath.c_str());
-	if (nullptr == image)
+	if (!image)
 	{
 		std::cerr << "Failed to load an image: " << image_filepath << std::endl;
 		return;
@@ -353,10 +367,14 @@ void iterator_over_the_classifier_choices_for_a_single_symbol()
 
 	api.SetImage(image);
 	api.SetRectangle(37, 228, 548, 31);
-	api.Recognize(nullptr);
+	if (api.Recognize(nullptr) < 0)
+	{
+		std::cerr << "Failed to recognize: " << image_filepath << std::endl;
+		return;
+	}
 
 	tesseract::ResultIterator *ri = api.GetIterator();
-	if (nullptr != ri)
+	if (ri)
 	{
 		const tesseract::PageIteratorLevel level = tesseract::RIL_SYMBOL;
 		do
@@ -455,7 +473,7 @@ void monitoring_ocr_progress()
 
 	const std::string image_filepath("../data/language_processing/phototest.tif");
 	Pix *image = pixRead(image_filepath.c_str());
-	if (nullptr == image)
+	if (!image)
 	{
 		std::cerr << "Failed to load an image: " << image_filepath << std::endl;
 		return;
@@ -489,6 +507,127 @@ void monitoring_ocr_progress()
 }
 #endif
 
+void layout_analysis_example_1()
+{
+	const std::string tessdata_dir_path("../data/language_processing/tessdata/");
+	const std::string tesslang("eng");
+
+	tesseract::TessBaseAPI api;
+	api.InitForAnalysePage();
+	api.SetPageSegMode(tesseract::PSM_AUTO);
+
+	//const std::string image_filepath("../data/language_processing/document_1.tiff");  // Multiple pages.
+	//const std::string image_filepath("../data/language_processing/document_2.png");
+	//const std::string image_filepath("../data/language_processing/document_3.png");
+	const std::string image_filepath("../data/language_processing/document_4.png");
+	//const std::string image_filepath("D:/work_biz/silicon_minds/DataAnalysis_bitbucket/app/form_text_recognition/receipt/epapyrus_20190618/receipt_1/img04.jpg");
+	//const std::string image_filepath("D:/work_biz/silicon_minds/DataAnalysis_bitbucket/app/form_text_recognition/receipt/epapyrus_20190618/receipt_1_1/img04_01.png");
+
+	Pix *image = pixRead(image_filepath.c_str());
+	if (!image)
+	{
+		std::cerr << "Failed to load an image: " << image_filepath << std::endl;
+		return;
+	}
+
+	api.SetImage(image);
+	/*
+	if (api.Recognize(nullptr) < 0)
+	{
+		std::cerr << "Failed to recognize: " << image_filepath << std::endl;
+		return;
+	}
+	*/
+
+	cv::Mat img(cv::imread(image_filepath));
+
+	tesseract::PageIterator *it = api.AnalyseLayout();
+	if (it)
+	{
+		// Instead of RIL_WORD, you can use any other PageSegMode.
+		const tesseract::PageIteratorLevel level = tesseract::RIL_PARA;
+
+		int left, top, right, bottom;
+		do
+		{
+			it->BoundingBox(level, &left, &top, &right, &bottom);
+
+			//std::cout << "BoundingBox: " << left << ", " << top << ", " << right << ", " << bottom << std::endl;
+			cv::rectangle(img, cv::Point(left, top), cv::Point(right, bottom), cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
+			cv::imshow("Layout Analysis", img);
+			cv::waitKey(0);
+		} while (it->Next(level));
+	}
+
+	cv::destroyAllWindows();
+
+	// Destroy used object and release memory.
+	api.End();
+	pixDestroy(&image);
+}
+
+// REF [function] >> TessBaseAPI::GetTSVText() in https://github.com/tesseract-ocr/tesseract/blob/master/src/api/baseapi.cpp
+void layout_analysis_example_2()
+{
+	const std::string tessdata_dir_path("../data/language_processing/tessdata/");
+	const std::string tesslang("eng");
+
+	tesseract::TessBaseAPI api;
+	//if (api.Init(nullptr, tesslang.c_str(), tesseract::OEM_DEFAULT))
+	if (api.Init(tessdata_dir_path.c_str(), tesslang.c_str(), tesseract::OEM_DEFAULT))
+	{
+		std::cerr << "Could not initialize tesseract." << std::endl;
+		return;
+	}
+	api.SetPageSegMode(tesseract::PSM_AUTO);
+
+	//const std::string image_filepath("../data/language_processing/document_1.tiff");  // Multiple pages.
+	//const std::string image_filepath("../data/language_processing/document_2.png");
+	//const std::string image_filepath("../data/language_processing/document_3.png");
+	const std::string image_filepath("../data/language_processing/document_4.png");
+	//const std::string image_filepath("D:/work_biz/silicon_minds/DataAnalysis_bitbucket/app/form_text_recognition/receipt/epapyrus_20190618/receipt_1/img04.jpg");
+	//const std::string image_filepath("D:/work_biz/silicon_minds/DataAnalysis_bitbucket/app/form_text_recognition/receipt/epapyrus_20190618/receipt_1_1/img04_01.png");
+
+	Pix *image = pixRead(image_filepath.c_str());
+	if (!image)
+	{
+		std::cerr << "Failed to load an image: " << image_filepath << std::endl;
+		return;
+	}
+
+	api.SetImage(image);
+	if (api.Recognize(nullptr) < 0)
+	{
+		std::cerr << "Failed to recognize: " << image_filepath << std::endl;
+		return;
+	}
+
+	cv::Mat img(cv::imread(image_filepath));
+
+	tesseract::ResultIterator *ri = api.GetIterator();
+	if (ri)
+	{
+		const tesseract::PageIteratorLevel level = tesseract::RIL_PARA;
+
+		int left, top, right, bottom;
+		do
+		{
+			ri->BoundingBox(level, &left, &top, &right, &bottom);
+
+			//std::cout << "BoundingBox: " << left << ", " << top << ", " << right << ", " << bottom << std::endl;
+			cv::rectangle(img, cv::Point(left, top), cv::Point(right, bottom), cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
+			cv::imshow("Layout Analysis", img);
+			cv::waitKey(0);
+		} while (ri->Next(level));
+	}
+
+	cv::destroyAllWindows();
+
+	// Destroy used object and release memory.
+	api.End();
+	pixDestroy(&image);
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -501,7 +640,7 @@ int tesseract_main(int argc, char *argv[])
 #if true
 	//local::simple_text_recognition_example();
 
-	local::text_recognition_example();
+	//local::text_recognition_example();
 	//local::text_line_recognition_example();  // Results are not good.
 	//local::result_iterator_example();
 	//local::orientation_and_script_detection_example();
@@ -510,6 +649,9 @@ int tesseract_main(int argc, char *argv[])
 #if defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
 	local::monitoring_ocr_progress();
 #endif
+
+	local::layout_analysis_example_1();
+	//local::layout_analysis_example_2();
 
 	return 0;
 #else

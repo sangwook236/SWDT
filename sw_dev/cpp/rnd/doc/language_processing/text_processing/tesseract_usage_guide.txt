@@ -87,6 +87,9 @@
 				/path/to/2.png
 				/path/to/3.tiff
 
+	- Layout analysis.
+		tesseract test.tiff test_layout_results -l eng tsv
+
 [-] Tools.
 	- Directory.
 		${TESSERACT_HOME}/src/training
