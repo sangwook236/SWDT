@@ -10,6 +10,9 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
+#include <list>
+#include <array>
+#include <chrono>
 #include <string>
 #include <memory>
 #include <locale>
@@ -62,7 +65,12 @@ void simple_text_recognition_example()
 	//tesseract::TessUnlvRenderer renderer(output_base.c_str());  // Outputs to "./test_ocr_results.unlv".
 	//tesseract::TessBoxTextRenderer renderer(output_base.c_str());  // Outputs to "./test_ocr_results.box".
 	//tesseract::TessOsdRenderer renderer(output_base.c_str());  // Outputs to "./test_ocr_results.osd".
+
+	std::cout << "Start processing..." << std::endl;
+	const auto start_time = std::chrono::high_resolution_clock::now();
 	const bool succeed = api.ProcessPages(image_filepath.c_str(), nullptr, 0, &renderer);
+	std::cout << "End processing: " << std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+
 	if (!succeed)
 		std::cerr << "Error during processing." << std::endl;
 #endif
@@ -194,7 +202,10 @@ void text_line_recognition_example()
 
 	api.SetImage(image);
 
+	std::cout << "Start processing..." << std::endl;
+	const auto start_time = std::chrono::high_resolution_clock::now();
 	std::unique_ptr<Boxa> boxes(api.GetComponentImages(tesseract::RIL_TEXTLINE, true, NULL, NULL));
+	std::cout << "End processing: " << std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
 	std::cout << "Found " << boxes->n << " textline image components." << std::endl;
 
 	for (int i = 0; i < boxes->n; ++i)
@@ -315,8 +326,6 @@ void orientation_and_script_detection_example()
 		return;
 	}
 
-	cv::Mat img = cv::imread(image_filepath);
-
 	tesseract::PageIterator *it = api.AnalyseLayout();
 	if (it)
 	{
@@ -432,7 +441,11 @@ void creating_searchable_pdf_from_image()
 	//tesseract::TessPDFRenderer renderer(output_base.c_str(), api.GetDatapath(), textonly, jpg_quality);
 	tesseract::TessPDFRenderer renderer(output_base.c_str(), api.GetDatapath(), textonly);
 
+	std::cout << "Start processing..." << std::endl;
+	const auto start_time = std::chrono::high_resolution_clock::now();
 	const bool succeed = api.ProcessPages(image_filepath.c_str(), retry_config, timeout_ms, &renderer);  // Needs "tessdata/pdf.ttf".
+	std::cout << "End processing: " << std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+
 	if (!succeed)
 		std::cerr << "Error during processing." << std::endl;
 
@@ -539,8 +552,10 @@ void layout_analysis_example_1()
 	}
 	*/
 
-	cv::Mat img(cv::imread(image_filepath));
+	std::list<std::array<int, 4>> rectangles;
 
+	std::cout << "Start analyzing layout..." << std::endl;
+	const auto start_time = std::chrono::high_resolution_clock::now();
 	tesseract::PageIterator *it = api.AnalyseLayout();
 	if (it)
 	{
@@ -551,19 +566,27 @@ void layout_analysis_example_1()
 		do
 		{
 			it->BoundingBox(level, &left, &top, &right, &bottom);
-
-			//std::cout << "BoundingBox: " << left << ", " << top << ", " << right << ", " << bottom << std::endl;
-			cv::rectangle(img, cv::Point(left, top), cv::Point(right, bottom), cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
-			cv::imshow("Layout Analysis", img);
-			cv::waitKey(0);
+			rectangles.push_back({ left, top, right, bottom });
 		} while (it->Next(level));
 	}
-
-	cv::destroyAllWindows();
+	std::cout << "End analyzing layout: " << std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+	std::cout << "Found " << rectangles.size() << " regions." << std::endl;
 
 	// Destroy used object and release memory.
 	api.End();
 	pixDestroy(&image);
+
+	//--------------------
+	cv::Mat img(cv::imread(image_filepath));
+	for (const auto &rect : rectangles)
+	{
+		//std::cout << "BoundingBox: " << rect[0] << ", " << rect[1] << ", " << rect[2] << ", " << rect[3] << std::endl;
+		cv::rectangle(img, cv::Point(rect[0], rect[1]), cv::Point(rect[2], rect[3]), cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
+		cv::imshow("Layout Analysis", img);
+		cv::waitKey(0);
+	}
+
+	cv::destroyAllWindows();
 }
 
 // REF [function] >> TessBaseAPI::GetTSVText() in https://github.com/tesseract-ocr/tesseract/blob/master/src/api/baseapi.cpp
@@ -602,8 +625,10 @@ void layout_analysis_example_2()
 		return;
 	}
 
-	cv::Mat img(cv::imread(image_filepath));
+	std::list<std::array<int, 4>> rectangles;
 
+	std::cout << "Start analyzing layout..." << std::endl;
+	const auto start_time = std::chrono::high_resolution_clock::now();
 	tesseract::ResultIterator *ri = api.GetIterator();
 	if (ri)
 	{
@@ -613,19 +638,27 @@ void layout_analysis_example_2()
 		do
 		{
 			ri->BoundingBox(level, &left, &top, &right, &bottom);
-
-			//std::cout << "BoundingBox: " << left << ", " << top << ", " << right << ", " << bottom << std::endl;
-			cv::rectangle(img, cv::Point(left, top), cv::Point(right, bottom), cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
-			cv::imshow("Layout Analysis", img);
-			cv::waitKey(0);
+			rectangles.push_back({ left, top, right, bottom });
 		} while (ri->Next(level));
 	}
-
-	cv::destroyAllWindows();
+	std::cout << "End analyzing layout: " << std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+	std::cout << "Found " << rectangles.size() << " regions." << std::endl;
 
 	// Destroy used object and release memory.
 	api.End();
 	pixDestroy(&image);
+
+	//--------------------
+	cv::Mat img(cv::imread(image_filepath));
+	for (const auto &rect : rectangles)
+	{
+		//std::cout << "BoundingBox: " << rect[0] << ", " << rect[1] << ", " << rect[2] << ", " << rect[3] << std::endl;
+		cv::rectangle(img, cv::Point(rect[0], rect[1]), cv::Point(rect[2], rect[3]), cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
+		cv::imshow("Layout Analysis", img);
+		cv::waitKey(0);
+	}
+
+	cv::destroyAllWindows();
 }
 
 }  // namespace local
