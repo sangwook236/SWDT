@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 import os, sys, platform
-from functools import reduce
-import operator
+import functools, operator
 import traceback
 
 def platform_test():
@@ -133,6 +132,7 @@ def map_filter_reduce():
 		value = list(map(lambda x: x(i), funcs))
 		print(value)
 
+	# More than two args.
 	map_with_two_args = map(lambda x, y: x + y, range(5), range(5))
 	print('Mapping a function with two argments =', list(map_with_two_args))
 
@@ -145,33 +145,43 @@ def map_filter_reduce():
 	print('Type of filter() =', type(less_than_zero), less_than_zero)
 	print('less_than_zero =', list(less_than_zero))
 
+	# More than two args.
+	#print('Max =', list(filter(lambda x, y: x + y <= 5, [1, 4, 5], [3, 2, 5])))  # TypeError: filter expected 2 arguments, got 3.
+	print('Max =', list(filter(lambda xy: xy[0] + xy[1] <= 5, zip([1, 4, 5], [3, 2, 5]))))  # Result = [(1, 3)].
+	#print('Max =', list(filter(lambda x, y: x <= y, [1, 4, 5], [3, 2, 5])))  # TypeError: filter expected 2 arguments, got 3.
+	print('Max =', list(filter(lambda xy: xy[0] <= xy[1], zip([1, 4, 5], [3, 2, 5]))))  # Result = [(1, 3), (5, 5)].
+
 	#--------------------
 	items = [3, 4, 5, 6, 7]
-	summation = reduce(lambda x, y: x + y, items)
+	summation = functools.reduce(lambda x, y: x + y, items)
 	print('Type of reduce() =', type(summation), summation)  # The type of reduce() is its return type.
 	print('Summation =', summation)
-	product = reduce(lambda x, y: x * y, items)
+	product = functools.reduce(lambda x, y: x * y, items)
 	print('Product =', product)
 
-	print('Max =', reduce(max, [5, 8, 3, 1]))
-	print('Minmax =', reduce(lambda x, y: (min(x[0], y[0]), max(x[1], y[1])), zip([5, 8, 3, 1], [2, 5, -1, 7])))  # Result = (1, 7).
-	print('Concatenation =', reduce(lambda s, x: s + str(x), [1, 2, 3, 4], ''))
-	print('Flatten =', reduce(operator.concat, [[1, 2], [3, 4], [], [5]], []))
+	print('Max =', functools.reduce(max, [5, 8, 3, 1]))
+	print('Concatenation =', functools.reduce(lambda s, x: s + str(x), [1, 2, 3, 4], ''))
+	print('Flatten =', functools.reduce(operator.concat, [[1, 2], [3, 4], [], [5]], []))
 
-	difference = reduce(lambda x, y: x - y, items, 100)
+	difference = functools.reduce(lambda x, y: x - y, items, 100)
 	print('Difference =', difference)
+
+	# More than two args.
+	#print('Max =', functools.reduce(lambda x, y: max(x, y), [5, 8, 3, 1], [2, 5, -1, 7], 0))  # TypeError: reduce expected at most 3 arguments, got 4.
+	print('Max =', functools.reduce(lambda x, y: (max(x[0], y[0]), max(x[1], y[1])), zip([5, 8, 3, 1], [2, 5, -1, 7])))  # Result = (8, 7).
+	print('Min & max =', functools.reduce(lambda x, y: (min(x[0], y[0]), max(x[1], y[1])), zip([5, 8, 3, 1], [2, 5, -1, 7])))  # Result = (1, 7).
 
 	#--------------------
 	# Chaining:
 	#	Map -> filter -> reduce.
 	#	Filter -> map -> reduce.
 
-	print('Chaining =', reduce(lambda x, y: x + y, filter(lambda x: 0 == x % 2, map(lambda x: x**2, range(100)))))
+	print('Chaining =', functools.reduce(lambda x, y: x + y, filter(lambda x: 0 == x % 2, map(lambda x: x**2, range(100)))))
 
 	def evaluate_polynomial(a, x):
 		xi = map(lambda i: x**i, range(0, len(a)))  # [x^0, x^1, x^2, ..., x^(n-1)].
 		axi = map(operator.mul, a, xi)  # [a[0]*x^0, a[1]*x^1, ..., a[n-1]*x^(n-1)]
-		return reduce(operator.add, axi, 0)
+		return functools.reduce(operator.add, axi, 0)
 	print('Polynomial =', evaluate_polynomial([1, 2, 3, 4], 2))
 
 # Context managers allow you to allocate and release resources precisely when you want to.
