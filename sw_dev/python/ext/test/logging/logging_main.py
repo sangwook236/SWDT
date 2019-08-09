@@ -14,8 +14,8 @@ def output_logs(logger):
 	logger.exception('[Exception] Exception.')
 
 def simple_logging(log_level):
-	#format = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
-	format = '%(asctime)-15s %(message)s'
+	#format = '%(asctime)-15s %(clientip)s %(user)-8s: %(message)s'
+	format = '%(asctime)-15s: %(message)s'
 	logging.basicConfig(format=format)
 	#logging.basicConfig(filename='python_logging.log', filemode='w', level=log_level)
 
@@ -26,7 +26,7 @@ def simple_logging(log_level):
 
 def simple_file_logging(log_level):
 	handler = RotatingFileHandler('./python_logging.log', maxBytes=5000, backupCount=10)
-	formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+	formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
 	handler.setFormatter(formatter)
 
 	logger = logging.getLogger('python_logging_test')
@@ -37,7 +37,7 @@ def simple_file_logging(log_level):
 		output_logs(logger)
 
 def log_setting_function(log_level):
-	format = '%(asctime)-15s %(message)s'
+	format = '%(asctime)-15s: %(message)s'
 	logging.basicConfig(format=format)
 
 	logger = logging.getLogger('python_logging_test')
@@ -61,7 +61,7 @@ def simple_logging_in_multiple_functions(log_level):
 
 def main():
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-l', '--loglevel', help='Log level')
+	parser.add_argument('-l', '--loglevel', help='Log level')  # {NOTSET, DEBUG, INFO, WARNING, ERROR, CRITICAL}. [0, 50]
 
 	args = parser.parse_args()
 
