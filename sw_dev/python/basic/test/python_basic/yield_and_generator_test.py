@@ -214,13 +214,31 @@ def reuse_generator_example():
 	for idx, sa in enumerate(gen_copyed):
 		print(idx, sa)
 
+def inner_and_outer_generators_example():
+	def inner_generator():
+		val = 10
+		while True:
+			yield list(val + ii for ii in range(5))
+			val += 10
+
+	# Changes and re-yields the results of the inner generator in the outer generator.
+	def outer_generator():
+		for vals in inner_generator():
+			yield list(map(lambda x: x**2, vals))
+
+	for idx, vals in enumerate(outer_generator()):
+		print(vals)
+		if idx >= 5:
+			break
+
 def main():
 	#simple_yield_example_1()
 	#simple_yield_example_2()
-	yield_example()
+	#yield_example()
 
 	#simple_generator_example()
 	#reuse_generator_example()
+	inner_and_outer_generators_example()
 
 #%%------------------------------------------------------------------
 
