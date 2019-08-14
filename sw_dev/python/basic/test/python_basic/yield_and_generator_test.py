@@ -222,11 +222,21 @@ def inner_and_outer_generators_example():
 			val += 10
 
 	# Changes and re-yields the results of the inner generator in the outer generator.
-	def outer_generator():
+	def yield_outer_generator():
 		for vals in inner_generator():
 			yield list(map(lambda x: x**2, vals))
 
-	for idx, vals in enumerate(outer_generator()):
+	for idx, vals in enumerate(yield_outer_generator()):
+		print(vals)
+		if idx >= 5:
+			break
+
+	# Changes and returns the results of the inner generator in the outer generator.
+	def return_outer_generator():
+		for vals in inner_generator():
+			return list(map(lambda x: x**2, vals))
+
+	for idx, vals in enumerate(return_outer_generator()):
 		print(vals)
 		if idx >= 5:
 			break
