@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os, sys, platform
-import functools, operator
+import itertools, functools, operator
 import traceback
 
 def platform_test():
@@ -91,6 +91,70 @@ def exception_test():
 			#traceback.print_tb(ex[2], limit=None, file=sys.stdout)
 			#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
 			traceback.print_exc(limit=None, file=sys.stdout)
+
+# REF [site] >> https://docs.python.org/3/library/itertools.html
+def itertools_test():
+	print('itertools.count(10) =', type(itertools.count(10)))
+	print('itertools.count(10) =', end=' ')
+	for item in itertools.count(start=10, step=2):
+		print(item, end=', ')
+		if item >= 20:
+			break
+	print()
+
+	#--------------------
+	print("itertools.cycle('ABCD') =", type(itertools.cycle('ABCD')))
+	print("itertools.cycle('ABCD') =", end=' ')
+	for idx, item in enumerate(itertools.cycle('ABCD')):
+		print(item, end=', ')
+		if idx >= 10:
+			break
+	print()
+
+	#--------------------
+	print('itertools.repeat(37, 7) =', type(itertools.repeat(37, 7)))
+	print('itertools.repeat(37, 7) =', end=' ')
+	for item in itertools.repeat(37, 7):
+		print(item, end=', ')
+	print()
+
+	#--------------------
+	print('itertools.accumulate([1, 2, 3, 4, 5]) =', type(itertools.accumulate([1, 2, 3, 4, 5])))
+	print('itertools.accumulate([1, 2, 3, 4, 5]) =', end=' ')
+	for item in itertools.accumulate([1, 2, 3, 4, 5]):
+		print(item, end=', ')
+	print()
+
+	#--------------------
+	print("itertools.groupby('AAAABBBCCDAABBB') =", type(itertools.groupby('AAAABBBCCDAABBB')))
+	print("itertools.groupby('AAAABBBCCDAABBB'): keys =", list(k for k, g in itertools.groupby('AAAABBBCCDAABBB')))
+	print("itertools.groupby('AAAABBBCCDAABBB'): groups =", list(list(g) for k, g in itertools.groupby('AAAABBBCCDAABBB')))
+
+	#--------------------
+	print("itertools.chain('ABC', 'DEF', 'ghi') =", list(itertools.chain('ABC', 'DEF', 'ghi')))
+	print("itertools.chain.from_iterable(['ABC', 'DEF', 'ghi']) =", list(itertools.chain.from_iterable(['ABC', 'DEF', 'ghi'])))
+
+	print("itertools.compress('ABCDEF', [1, 0, 1, 0, 1, 1]) =", list(itertools.compress('ABCDEF', [1, 0, 1, 0, 1, 1])))
+	print("itertools.islice('ABCDEFG', 2, None) =", list(itertools.islice('ABCDEFG', 2, None)))
+
+	print('itertools.starmap(pow, [(2, 5), (3, 2), (10, 3)]) =', list(itertools.starmap(pow, [(2, 5), (3, 2), (10, 3)])))
+
+	#--------------------
+	print('itertools.filterfalse(lambda x: x % 2, range(10)) =', list(itertools.filterfalse(lambda x: x % 2, range(10))))
+	print('itertools.dropwhile(lambda x: x < 5, [1, 4, 6, 4, 1] =', list(itertools.dropwhile(lambda x: x < 5, [1, 4, 6, 4, 1])))
+	print('itertools.takewhile(lambda x: x < 5, [1, 4, 6, 4, 1] =', list(itertools.takewhile(lambda x: x < 5, [1, 4, 6, 4, 1])))
+
+	#--------------------
+	print("itertools.zip_longest('ABCD', 'xy', fillvalue='-') =", list(itertools.zip_longest('ABCD', 'xy', fillvalue='-')))
+
+	#--------------------
+	print("itertools.tee('ABCDEFG', 2) =", itertools.tee('ABCDEFG', 2))
+
+	#--------------------
+	print("itertools.product('ABCD', repeat=2) =", list(itertools.product('ABCD', repeat=2)))
+	print("itertools.permutations('ABCD', 2) =", list(itertools.permutations('ABCD', 2)))
+	print("itertools.combinations('ABCD', 2) =", list(itertools.combinations('ABCD', 2)))
+	print("itertools.combinations_with_replacement('ABCD', 2) =", list(itertools.combinations_with_replacement('ABCD', 2)))
 
 def lambda_expression():
 	def make_incrementor(n):
@@ -234,13 +298,15 @@ def caller_func(callee):
 def main():
 	#platform_test()
 
-	variable_example()
+	#variable_example()
 
 	#assert_test()
 	#exception_test()
 
-	lambda_expression()
-	map_filter_reduce()
+	itertools_test()
+
+	#lambda_expression()
+	#map_filter_reduce()
 
 	#with_statement_test()
 
