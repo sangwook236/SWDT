@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, sys, platform
+import os, sys, platform, abc
 import itertools, functools, operator
 import traceback
 
@@ -295,6 +295,53 @@ class func_obj(object):
 def caller_func(callee):
 	callee(1, 2.0, 'abc')
 
+def inheritance_test():
+	class BaseClass(abc.ABC):
+		def __init__(self, val):
+			self.val = val
+
+		@abc.abstractmethod
+		def func1(self, val):
+			raise NotImplementedError
+
+		@abc.abstractmethod
+		def func2(self, val):
+			raise NotImplementedError
+
+		def func3(self, val):
+			raise NotImplementedError
+
+	class DerivedClass(BaseClass):
+		def __init__(self, val):
+			super().__init__(val)
+
+			#self.func1 = self._add
+			self.func2 = self._add  # NOTE [caution] >> self._add() is called instead of self._sub().
+			self.func3 = self._add
+
+		# The implementation of the abstract method is required.
+		def func1(self, val):
+			self._sub(val)
+
+		# The implementation of the abstract method is required.
+		def func2(self, val):
+			self._sub(val)
+
+		# The implementation of the non-abstract method is not required.
+		#def func3(self, val):
+		#	self._sub(val)
+
+		def _add(self, val):
+			print('{} + {} = {}'.format(self.val, val, self.val + val))
+
+		def _sub(self, val):
+			print('{} - {} = {}'.format(self.val, val, self.val - val))
+
+	obj = DerivedClass(37)
+	obj.func1(17)
+	obj.func2(17)
+	obj.func3(17)
+
 def main():
 	#platform_test()
 
@@ -303,7 +350,7 @@ def main():
 	#assert_test()
 	#exception_test()
 
-	itertools_test()
+	#itertools_test()
 
 	#lambda_expression()
 	#map_filter_reduce()
@@ -312,6 +359,9 @@ def main():
 
 	#caller_func(func)
 	#caller_func(func_obj(2))
+
+    #--------------------
+    inheritance_test()
 
 #%%------------------------------------------------------------------
 
