@@ -6,9 +6,8 @@
 from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
-import traceback, sys
 
-def spectrogram_1():
+def spectrogram_example_1():
 	# Generate a test signal, a 2 Vrms sine wave whose frequency is slowly modulated around 3kHz, corrupted by white noise of exponentially decreasing magnitude sampled at 10 kHz.
 	fs = 10e3
 	N = 1e5
@@ -41,13 +40,13 @@ def spectrogram_1():
 	
 	data_dir_path = dataset_home_dir_path + "/failure_analysis/defect/motor_20170621/0_original/500-1500Hz"
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io.wavfile  # For reading the .wav file.
 
-def spectrogram_2():
+def spectrogram_example_2():
 	# fs: sampling frequency.
 	# signal: the numpy 2D array where the data of the wav file is written.
 	[fs, signal] = scipy.io.wavfile.read(data_dir_path + '/KMHFF41CBBA036937_2000RPM ( 0.00- 5.73 s).wav')
@@ -91,18 +90,10 @@ def spectrogram_2():
 	plt.show()
 
 def main():
-	spectrogram_1()
-	spectrogram_2()
+	spectrogram_example_1()
+	spectrogram_example_2()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
-	try:
-		main()
-	except:
-		#ex = sys.exc_info()  # (type, exception object, traceback).
-		##print('{} raised: {}.'.format(ex[0], ex[1]))
-		#print('{} raised: {}.'.format(ex[0].__name__, ex[1]))
-		#traceback.print_tb(ex[2], limit=None, file=sys.stdout)
-		#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
-		traceback.print_exc(limit=None, file=sys.stdout)
+	main()

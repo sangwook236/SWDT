@@ -6,7 +6,7 @@ import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
 
-def scalogram_1():
+def scalogram_example_1():
 	t = np.linspace(-1, 1, 1000, endpoint=False)
 	sig = np.cos(2 * np.pi * 7 * t) + signal.gausspulse(t - 0.4, fc=2)
 	#widths = np.arange(1, 31)
@@ -23,11 +23,11 @@ def scalogram_1():
 	plt.imshow(cwtmatr, extent=[-1, 1, 31, 1], cmap='PRGn', aspect='auto', vmax=abs(cwtmatr).max(), vmin=-abs(cwtmatr).max())
 	plt.show()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 # REF [site] >> https://docs.scipy.org/doc/scipy-0.19.0/reference/generated/scipy.signal.spectrogram.html
 
-def scalogram_2():
+def scalogram_example_2():
 	# Generate a test signal, a 2 Vrms sine wave whose frequency is slowly modulated around 3kHz, corrupted by white noise of exponentially decreasing magnitude sampled at 10 kHz.
 	fs = 10e3
 	N = 1e5
@@ -55,18 +55,10 @@ def scalogram_2():
 	plt.show()
 
 def main():
-	scalogram_1()
-	scalogram_2()
+	scalogram_example_1()
+	scalogram_example_2()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
-	try:
-		main()
-	except:
-		#ex = sys.exc_info()  # (type, exception object, traceback).
-		##print('{} raised: {}.'.format(ex[0], ex[1]))
-		#print('{} raised: {}.'.format(ex[0].__name__, ex[1]))
-		#traceback.print_tb(ex[2], limit=None, file=sys.stdout)
-		#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
-		traceback.print_exc(limit=None, file=sys.stdout)
+	main()

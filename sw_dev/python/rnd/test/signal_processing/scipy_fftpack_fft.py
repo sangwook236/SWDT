@@ -3,7 +3,6 @@
 # REF [site] >> https://docs.scipy.org/doc/scipy/reference/fftpack.html
 
 import numpy as np
-import traceback, sys
 import fft_util
 
 def toy_example():
@@ -20,15 +19,7 @@ def toy_example():
 def main():
 	toy_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
-	try:
-		main()
-	except:
-		#ex = sys.exc_info()  # (type, exception object, traceback).
-		##print('{} raised: {}.'.format(ex[0], ex[1]))
-		#print('{} raised: {}.'.format(ex[0].__name__, ex[1]))
-		#traceback.print_tb(ex[2], limit=None, file=sys.stdout)
-		#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
-		traceback.print_exc(limit=None, file=sys.stdout)
+	main()
