@@ -28,6 +28,9 @@
     <Filter Include="Source Files\simd">
       <UniqueIdentifier>{9a481b05-aebb-42c4-bb3b-0e879b311077}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\arrayfire">
+      <UniqueIdentifier>{91f11b22-f0e3-4674-995b-def7c7405a0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cuda\cuda_main.cpp">
@@ -53,6 +56,12 @@
     </ClCompile>
     <ClCompile Include="simd\sse.cpp">
       <Filter>Source Files\simd</Filter>
+    </ClCompile>
+    <ClCompile Include="arrayfire\arrayfire_main.cpp">
+      <Filter>Source Files\arrayfire</Filter>
+    </ClCompile>
+    <ClCompile Include="arrayfire\arrayfire_morphology.cpp">
+      <Filter>Source Files\arrayfire</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

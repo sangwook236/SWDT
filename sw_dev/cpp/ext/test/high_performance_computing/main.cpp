@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
 	int cuda_main(int argc, char *argv[]);
 	int vexcl_main(int argc, char *argv[]);
 	int thrust_main(int argc, char *argv[]);
+	int arrayfire_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
 	try
@@ -44,6 +45,10 @@ int main(int argc, char *argv[])
 		std::cout << "\nThrust library ------------------------------------------------------" << std::endl;
 		//	- Interoperability with CUDA, TBB, and OpenMP.
 		//retval = thrust_main(argc, argv);
+
+		std::cout << "\nArrayFire library ---------------------------------------------------" << std::endl;
+		//	- Support OpenCL, CUDA, and CPU.
+		//retval = arrayfire_main(argc, argv);
 	}
 	catch (const std::bad_alloc &ex)
 	{
