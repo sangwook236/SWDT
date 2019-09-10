@@ -171,8 +171,11 @@ void morphology()
 {
 	const int device = 0;
 
-	af::info();
+	//af::setBackend(AF_BACKEND_CPU);
+	//af::setBackend(AF_BACKEND_CUDA);
+	af::setBackend(AF_BACKEND_OPENCL);
 	af::setDevice(device);
+	af::info();
 
 	std::cout << "** ArrayFire Image Morphing Demo **" << std::endl << std::endl;
 	local::morphing_demo();

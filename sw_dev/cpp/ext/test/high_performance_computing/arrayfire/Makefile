@@ -14,9 +14,11 @@ RM=rm -f
 #-- Linux, Cygwin, & MinGW(MSYS).
 CFLAGS=
 CXXFLAGS=-c -Wall -I$(ARRYFIRE_HOME)/include
-LDFLAGS=-L. -L$(ARRYFIRE_HOME)/lib64 -L/usr/local/cuda/lib64 -lafopencl -lcusolver -lcudart -lcufft -lcublas -lmkl_core
-#LDFLAGS=-L. -L$(ARRYFIRE_HOME)/lib64 -L/usr/local/cuda/lib64 -lafcuda -lcusolver -lcudart -lcufft -lcublas -lmkl_core
-#LDFLAGS=-L. -L$(ARRYFIRE_HOME)/lib64 -L/usr/local/cuda/lib64 -lafcpu -lcusolver -lcudart -lcufft -lcublas -lmkl_core
+#LDFLAGS=-L. -L$(ARRYFIRE_HOME)/lib64 -L/usr/local/cuda/lib64 -laf -lcusolver -lcudart -lcufft -lcublas -lmkl_core
+LDFLAGS=-L. -L$(ARRYFIRE_HOME)/lib64 -L/usr/local/cuda/lib64 -laf
+#LDFLAGS=-L. -L$(ARRYFIRE_HOME)/lib64 -L/usr/local/cuda/lib64 -lafopencl
+#LDFLAGS=-L. -L$(ARRYFIRE_HOME)/lib64 -L/usr/local/cuda/lib64 -lafcuda
+#LDFLAGS=-L. -L$(ARRYFIRE_HOME)/lib64 -L/usr/local/cuda/lib64 -lafcpu
 
 all: $(SRCS) $(EXE_NAME)
 

@@ -7,7 +7,8 @@
 #pragma comment(lib, "cudart.lib")
 #pragma comment(lib, "OpenCL.lib")
 
-#pragma comment(lib, "afopencl.lib")
+#pragma comment(lib, "af.lib")
+//#pragma comment(lib, "afopencl.lib")
 //#pragma comment(lib, "afcuda.lib")
 //#pragma comment(lib, "afcpu.lib")
 
@@ -16,7 +17,8 @@
 #pragma comment(lib, "cudart.lib")
 #pragma comment(lib, "OpenCL.lib")
 
-#pragma comment(lib, "afopencl.lib")
+#pragma comment(lib, "af.lib")
+//#pragma comment(lib, "afopencl.lib")
 //#pragma comment(lib, "afcuda.lib")
 //#pragma comment(lib, "afcpu.lib")
 
