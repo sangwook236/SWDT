@@ -4,7 +4,7 @@
 #include <string>
 
 
-// [ref] in binarizewolfjolion.cpp.
+// REF [file] >> binarizewolfjolion.cpp.
 enum NiblackVersion 
 {
 	NIBLACK=0,
@@ -16,14 +16,14 @@ void NiblackSauvolaWolfJolion(cv::Mat im, cv::Mat output, NiblackVersion version
 namespace {
 namespace local {
 
-// [ref] http://liris.cnrs.fr/christian.wolf/software/binarize/.
+// REF [site] >> http://liris.cnrs.fr/christian.wolf/software/binarize/.
 void niblack_sauvola_wolfjolion_algoirthm()
 {
 	const NiblackVersion versionCode = NIBLACK;  // NIBLACK, SAUVOLA, WOLFJOLION.
-	//const std::string inputname = "./data/language_processing/document_image_binarization/sample.jpg";
-	const std::string inputname = "./data/language_processing/document_image_binarization/sample_gray.jpg";
-	//const std::string inputname = "./data/language_processing/document_image_binarization/sample_gray_inverted.jpg";
-	const std::string outputname = "./data/language_processing/document_image_binarization/sample_out.jpg";
+	//const std::string inputname = "../data/language_processing/document_image_binarization/sample.jpg";
+	const std::string inputname = "../data/language_processing/document_image_binarization/sample_gray.jpg";
+	//const std::string inputname = "../data/language_processing/document_image_binarization/sample_gray_inverted.jpg";
+	const std::string outputname = "../data/language_processing/document_image_binarization/sample_out.jpg";
 	
 	//std::cout << "BINARIZEWOLF Version " << BINARIZEWOLF_VERSION << std::endl;
 
@@ -31,7 +31,7 @@ void niblack_sauvola_wolfjolion_algoirthm()
     cv::Mat input = cv::imread(inputname, cv::IMREAD_GRAYSCALE);
     if ((input.rows <= 0) || (input.cols <= 0))
 	{
-        std::cerr << "input image error: " << inputname << std::endl;
+        std::cerr << "Failed to load an image: " << inputname << std::endl;
         return;
     }
 
@@ -49,7 +49,7 @@ void niblack_sauvola_wolfjolion_algoirthm()
     NiblackSauvolaWolfJolion(input, output, versionCode, winx, winy, optK, 128);
 
     // Write the tresholded file.
-    std::cout << "Writing binarized image to file: " << outputname << std::endl;
+    std::cout << "Wrote a binarized image to file: " << outputname << std::endl;
     cv::imwrite(outputname, output);
 }
 

@@ -19,6 +19,14 @@
 #include <codecvt>
 
 
+namespace my_leptonica {
+	
+Pix * mat8ToPix(const cv::Mat &mat8);
+cv::Mat pix8ToMat(const Pix *pix8);
+cv::Mat pix32ToMat(const Pix *pix32);
+
+}  // namespace my_leptonica
+
 namespace {
 namespace local {
 
@@ -31,7 +39,7 @@ void simple_text_recognition_example()
 	//if (api.Init(nullptr, tesslang.c_str(), tesseract::OEM_DEFAULT))
 	if (api.Init(tessdata_dir_path.c_str(), tesslang.c_str(), tesseract::OEM_DEFAULT))
 	{
-		std::cerr << "Could not initialize tesseract." << std::endl;
+		std::cerr << "Failed to initialize tesseract." << std::endl;
 		return;
 	}
 
@@ -97,7 +105,7 @@ void text_recognition_example()
 	//if (api.Init(tessdata_dir_path.c_str(), tesslang.c_str(), tesseract::OEM_DEFAULT, configs, config_size, nullptr, nullptr, set_only_non_debug_params))
 	//if (api.Init(tessdata_dir_path.c_str(), tesslang.c_str(), tesseract::OEM_DEFAULT, configs, config_size, &vars_vec, &vars_values, set_only_non_debug_params))
 	{
-		std::cerr << "Could not initialize tesseract." << std::endl;
+		std::cerr << "Failed to initialize tesseract." << std::endl;
 		return;
 	}
 
@@ -187,7 +195,7 @@ void text_line_recognition_example()
 	//if (api.Init(nullptr, tesslang.c_str(), tesseract::OEM_DEFAULT))
 	if (api.Init(tessdata_dir_path.c_str(), tesslang.c_str(), tesseract::OEM_DEFAULT))
 	{
-		std::cerr << "Could not initialize tesseract." << std::endl;
+		std::cerr << "Failed to initialize tesseract." << std::endl;
 		return;
 	}
 
@@ -244,7 +252,7 @@ void result_iterator_example()
 	//if (api.Init(nullptr, tesslang.c_str(), tesseract::OEM_DEFAULT))
 	if (api.Init(tessdata_dir_path.c_str(), tesslang.c_str(), tesseract::OEM_DEFAULT))
 	{
-		std::cerr << "Could not initialize tesseract." << std::endl;
+		std::cerr << "Failed to initialize tesseract." << std::endl;
 		return;
 	}
 
@@ -305,7 +313,7 @@ void orientation_and_script_detection_example()
 	//if (api.Init(nullptr, tesslang.c_str(), tesseract::OEM_DEFAULT))
 	if (api.Init(tessdata_dir_path.c_str(), tesslang.c_str(), tesseract::OEM_DEFAULT))
 	{
-		std::cerr << "Could not initialize tesseract." << std::endl;
+		std::cerr << "Failed to initialize tesseract." << std::endl;
 		return;
 	}
 	api.SetPageSegMode(tesseract::PSM_AUTO_OSD);  // Orientation and script detection (OSD).
@@ -360,7 +368,7 @@ void iterator_over_the_classifier_choices_for_a_single_symbol()
 	//if (api.Init(nullptr, tesslang.c_str(), tesseract::OEM_DEFAULT))
 	if (api.Init(tessdata_dir_path.c_str(), tesslang.c_str(), tesseract::OEM_DEFAULT))
 	{
-		std::cerr << "Could not initialize tesseract." << std::endl;
+		std::cerr << "Failed to initialize tesseract." << std::endl;
 		return;
 	}
 
@@ -426,7 +434,7 @@ void creating_searchable_pdf_from_image()
 	//if (api.Init(nullptr, tesslang.c_str(), tesseract::OEM_DEFAULT))
 	if (api.Init(tessdata_dir_path.c_str(), tesslang.c_str(), tesseract::OEM_DEFAULT))
 	{
-		std::cerr << "Could not initialize tesseract." << std::endl;
+		std::cerr << "Failed to initialize tesseract." << std::endl;
 		return;
 	}
 
@@ -478,7 +486,7 @@ void monitoring_ocr_progress()
 	//if (api.Init(nullptr, tesslang.c_str(), tesseract::OEM_DEFAULT))
 	if (api.Init(tessdata_dir_path.c_str(), tesslang.c_str(), tesseract::OEM_DEFAULT))
 	{
-		std::cerr << "Could not initialize tesseract." << std::endl;
+		std::cerr << "Failed to initialize tesseract." << std::endl;
 		return;
 	}
 
@@ -599,7 +607,7 @@ void layout_analysis_example_2()
 	//if (api.Init(nullptr, tesslang.c_str(), tesseract::OEM_DEFAULT))
 	if (api.Init(tessdata_dir_path.c_str(), tesslang.c_str(), tesseract::OEM_DEFAULT))
 	{
-		std::cerr << "Could not initialize tesseract." << std::endl;
+		std::cerr << "Failed to initialize tesseract." << std::endl;
 		return;
 	}
 	api.SetPageSegMode(tesseract::PSM_AUTO);
@@ -661,6 +669,69 @@ void layout_analysis_example_2()
 	cv::destroyAllWindows();
 }
 
+void binarization_example()
+{
+	const std::string tessdata_dir_path("../data/language_processing/tessdata/");
+	const std::string tesslang("eng");
+
+	tesseract::TessBaseAPI api;
+	//if (api.Init(nullptr, tesslang.c_str(), tesseract::OEM_DEFAULT))
+	if (api.Init(tessdata_dir_path.c_str(), tesslang.c_str(), tesseract::OEM_DEFAULT))
+	{
+		std::cerr << "Failed to initialize tesseract." << std::endl;
+		return;
+	}
+
+	//const std::string image_filepath("../data/language_processing/phototest.tif");
+	//const std::string image_filepath("../data/language_processing/eurotext.tif");
+	//const std::string image_filepath("../data/language_processing/receipt.png");
+	//const std::string image_filepath("../data/language_processing/road-sign-1.jpg");
+	//const std::string image_filepath("../data/language_processing/road-sign-2-768x347.jpg");
+	//const std::string image_filepath("../data/language_processing/road-sign-3-300x112.jpg");
+	//const std::string image_filepath("../data/language_processing/korean_article_1.png");
+	//const std::string image_filepath("../data/language_processing/korean_article_2.png");
+	//const std::string image_filepath("../data/language_processing/korean_newspaper_1.png");
+	//const std::string image_filepath("../data/language_processing/korean_newspaper_2.png");
+	//const std::string image_filepath("../data/language_processing/korean_newspaper_3.png");
+	//const std::string image_filepath("../data/language_processing/korean_newspaper_4.png");
+	const std::string image_filepath("D:/work/SWL_github/python/test/language_processing/receipt/receipt_text_line_en/0-000003.jpg");
+
+	Pix *image = pixRead(image_filepath.c_str());
+	if (!image)
+	{
+		std::cerr << "Failed to load an image: " << image_filepath << std::endl;
+		return;
+	}
+
+	api.SetImage(image);
+
+	std::cout << "Start binarizing..." << std::endl;
+	const auto start_time = std::chrono::high_resolution_clock::now();
+	Pix *pix1 = api.GetThresholdedImage();
+	std::cout << "End binarizing: " << std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start_time).count() << " msecs." << std::endl;
+
+	if (true)
+	{
+		// Pix (leptonica) -> cv::Mat (OpenCV).
+		Pix *pix8 = pixConvert1To8(NULL, pix1, 255, 0);
+		const cv::Mat bw(my_leptonica::pix8ToMat(pix8));
+		const cv::Mat rgba(my_leptonica::pix32ToMat(image));
+
+		cv::imshow("Image", rgba);
+		cv::imshow("Binarization", bw);
+		cv::waitKey(0);
+
+		cv::destroyAllWindows();
+
+		pixDestroy(&pix8);
+	}
+	
+	// Destroy used object and release memory.
+	api.End();
+	pixDestroy(&image);
+	pixDestroy(&pix1);
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -683,8 +754,10 @@ int tesseract_main(int argc, char *argv[])
 	local::monitoring_ocr_progress();
 #endif
 
-	local::layout_analysis_example_1();
+	//local::layout_analysis_example_1();
 	//local::layout_analysis_example_2();
+
+	local::binarization_example();
 
 	return 0;
 #else
