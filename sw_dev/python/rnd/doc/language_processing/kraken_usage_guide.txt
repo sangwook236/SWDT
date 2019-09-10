@@ -1,0 +1,40 @@
+[-] General.
+	- Site.
+		https://code.google.com/p/ocropus/
+
+		http://kraken.re/
+		https://github.com/mittagessen/kraken
+
+	- Document.
+		https://github.com/tmbdev/ocropy/wiki
+
+[-] Usage.
+	- Model.
+		A list of libre models available in the central repository can be retrieved by running:
+			kraken list
+		To download the default English text recognition model and place it in the user's kraken directory:
+			kraken get 10.5281/zenodo.2577813
+		Model metadata can be extracted using:
+			kraken show arabic-amiri
+
+	- Run.
+		Recognizing text on an image using the default parameters including the prerequisite steps of binarization and page segmentation:
+			kraken -i image.tif image.txt binarize segment ocr
+
+		To binarize a single image using the nlbin algorithm:
+			kraken -i image.tif bw.tif binarize
+		To segment a binarized image into reading-order sorted lines:
+			kraken -i bw.tif lines.json segment
+		To OCR a binarized image using the default RNN and the previously generated page segmentation:
+			kraken -i bw.tif image.txt ocr --lines lines.json
+
+[-] Installation.
+	- Conda.
+		wget https://raw.githubusercontent.com/mittagessen/kraken/master/environment.yml
+		conda env create -f environment.yml
+
+	- Pip.
+		pip install kraken
+
+[-] Training.
+	RER [site] >> http://kraken.re/training.html

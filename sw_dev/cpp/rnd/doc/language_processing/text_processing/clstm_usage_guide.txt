@@ -23,7 +23,12 @@
 		REF [site] >> https://github.com/tmbdev/clstm/blob/master/misc/text-training.ipynb
 
 		Prepare datasets.
-			curl http://www.gutenberg.org/cache/epub/3300/pg3300.txt | sed 's/\r//' | sed 's/^ *//;s/ *$//' | grep -v '   ' | sed 's/  */ /g' > won-raw.txt
+			Download a file.
+				curl http://www.gutenberg.org/cache/epub/3300/pg3300.txt --output pg3300.txt.zip
+				wget http://www.gutenberg.org/cache/epub/3300/pg3300.txt -O pg3300.txt.zip
+			Decompress.
+
+			cat pg3300.txt | sed 's/\r//' | sed 's/^ *//;s/ *$//' | grep -v '   ' | sed 's/  */ /g' > won-raw.txt
 			sed 5q won-raw.txt
 			
 			awk 'length()>10' won-raw.txt | sort -R > won.txt
@@ -37,9 +42,9 @@
 			wc -l won-*.txt
 			awk 'length()<80' won-train.txt | sed 10q
 
-		Train language models.
+		Train language models. (X)
 			clstmtext:
-				Exists in the old version. (?)
+				Exists in the old version.
 
 				maxeval=1000 save_every=0 save_name=addspaces lrate=1e-3 nhidden=30 report_every=1000 \
 				test_every=5000 lstm=BIDILSTM testset=won-test.txt ntrain=100000 \
@@ -47,10 +52,17 @@
 
 		Train text filters.
 			clstmfiltertrain:
-				params=1 lrate=1e-3 save_file=spc ./clstmfiltertrain won-train.txt won-test.txt
+				REF [file] >> ${CLSTM_HOME}/run-cmu
+
+				load=spc-50000.clstm lrate=1e-4 save_name=spc ./clstmfiltertrain won-train.txt won-test.txt
 
 		Apply learned text filters.
 			clstmfilter:
+				In text_file.txt: (???)
+					ab.cdefgh,ijk	ab. cde fgh, ijk
+					opqr-stu	opqr - stu
+
+				load=spc output=2 ./clstmfilter text_file.txt (???)
 
 	- Train OCR models.
 		REF [site] >> https://github.com/tmbdev/clstm/blob/master/misc/uw3-500.ipynb
@@ -65,9 +77,9 @@
 			sed 1,100d uw3.files > uw3-train.files
 			wc -l uw3*.files
 
-		Train OCR models.
+		Train OCR models. (X)
 			clstmctc:
-				Exists in the old version. (?)
+				Exists in the old version.
 
 				dewarp=center report_every=500 save_name=test save_every=10000 ntrain=11000 ./clstmctc uw3-500.h5
 
@@ -77,8 +89,9 @@
 
 		Re-train OCR models.
 			clstmocrtrain:
-				load=uw3small-95000.clstm params=1 save_name=uw3small save_every=1000 report_every=100 maxtrain=50000 test_every=1000 ./clstmocrtrain uw3-train.files uw3-test.files
-					Need to check.
+				REF [file] >> ${CLSTM_HOME}/run-uw3-500
+
+				load=uw3small-95000.clstm params=1 save_name=uw3small save_every=1000 report_every=100 ntrain=50000 test_every=1000 ./clstmocrtrain uw3-train.files uw3-test.files
 
 		Apply learned OCR models.
 			clstmocr:

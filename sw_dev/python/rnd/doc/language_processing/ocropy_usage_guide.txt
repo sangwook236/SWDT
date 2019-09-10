@@ -3,12 +3,12 @@
 		https://code.google.com/p/ocropus/
 
 		https://github.com/tmbdev/ocropy
-		https://github.com/mittagessen/kraken
+		https://github.com/tmbdev/ocropy2
 
 	- Document.
 		https://github.com/tmbdev/ocropy/wiki
 
-[-] Usage (OCRopy).
+[-] Usage.
 	- Info.
 		The default parameters and settings of OCRopus assume 300dpi binary black-on-white images.
 		If your images are scanned at a different resolution, the simplest thing to do is to downscale/upscale them to 300dpi.
@@ -30,7 +30,7 @@
 	- Display the output.
 		firefox ersch.html
 
-[-] Installation (OCRopy).
+[-] Installation.
 	REF [site] >> https://github.com/tmbdev/ocropy
 
 	- Conda.
@@ -45,7 +45,7 @@
 	- Test.
 		./run-test
 
-[-] Training (OCRopy).
+[-] Training.
 	REF [site] >> http://www.danvk.org/2015/01/11/training-an-ocropus-ocr-model.html
 
 	- Generate datasets.
