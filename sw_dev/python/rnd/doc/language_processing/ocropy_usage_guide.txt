@@ -50,17 +50,38 @@
 
 	- Generate datasets.
 		ocropus-linegen:
-			Generates .png/.gt.txt files.
+			Generates text line data (.bin.png/.gt.txt files).
+
+			Help:
+				-h, --help										show this help message and exi
+				-o BASE, --base BASE							output directory, default: linegen
+				-r DISTORT, --distort DISTORT
+				-R DSIGMA, --dsigma DSIGMA
+				-f FONTS, --fonts FONTS
+				-F FONTLIST, --fontlist FONTLIST
+				-t TEXTS, --texts TEXTS
+				-T TEXTLIST, --textlist TEXTLIST
+				-m MAXLINES, --maxlines MAXLINES				max # lines for each directory, default: 200
+				-e DEGRADATIONS, --degradations DEGRADATIONS	lo, med, or hi; or give a file, default: lo
+				-j JITTER, --jitter JITTER
+				-s SIZES, --sizes SIZES
+				-d, --display
+				--numdir
+				-C CLEANUP, --cleanup CLEANUP
+				-D DEBUG_SHOW, --debug_show DEBUG_SHOW			select a class for stepping through
 
 			Creates a new directory "linegen/..." containing training data suitable for training OCRopus with synthetic data.
 			Removes all files and sub-directories in the existing directory "linegen/".
 
+			e.g.)
 			ocropus-linegen -t tests/tomsawyer.txt -f tests/DejaVuSans.ttf
+				Generates .bin.png/.gt.txt files in linegen/DejaVuSans directory.
 			ocropus-linegen -t korean_modern_novel_1.txt:korean_modern_novel_2.txt -F fontlist.txt
 				In fontlist.txt:
 					font/batang.ttf
 					font/gulim.ttf
 					font/godoMaum.ttf
+				Generates .bin.png/.gt.txt files in linegen/font_batang, linegen/font_gulim, and linegen/font_godoMaum directories.
 
 	- Train.
 		Train from scratch:

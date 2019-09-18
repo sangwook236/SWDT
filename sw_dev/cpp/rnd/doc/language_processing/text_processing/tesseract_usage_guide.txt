@@ -69,6 +69,7 @@
 				12	Sparse text with OSD.
 				13	Raw line. Treat the image as a single text line, bypassing hacks that are Tesseract-specific.
 
+		e.g.)
 		tesseract --tessdata-dir /path/to/tessdata /path/to/image tess_ocr_results -l eng --oem 3 --psm 3
 			Generates tess_ocr_results.txt as output.
 		tesseract --tessdata-dir /path/to/tessdata /path/to/image stdout -l kor+~eng --oem 3 --psm 3
@@ -89,45 +90,6 @@
 
 	- Layout analysis.
 		tesseract test.tiff test_layout_results -l eng tsv
-
-[-] Tools.
-	- Directory.
-		${TESSERACT_HOME}/src/training
-
-	- text2image.
-		Generates .tif & .box files.
-
-		${TESSERACT_HOME}/src/training/text2image --list_avaiable_fonts --fonts_dir /usr/share/fonts
-		${TESSERACT_HOME}/src/training/text2image --fonts_dir /usr/share/fonts --font 'Arial' --text ${TESSERACT_LANGDATA_HOME}/eng/eng.training_text --outputbase eng_training
-		${TESSERACT_HOME}/src/training/text2image --fonts_dir /usr/share/fonts --font 'gulimche' --text ${TESSERACT_LANGDATA_HOME}/kor/kor.training_text --outputbase kor_training
-
-		text2image --fonts_dir /usr/share/fonts --font 'FreeMono' --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/eng/eng.training_text --outputbase ./training_data_eng/eng_training
-		text2image --fonts_dir /usr/share/fonts --font 'gulimche' --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/kor/kor.training_text --outputbase ./training_data_kor/kor_training
-
-		text2image --fonts_dir /usr/share/fonts --find_fonts --render_per_font --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/eng/eng.training_text --outputbase ./training_data_eng_all/eng_training
-		text2image --fonts_dir /usr/share/fonts --find_fonts --render_per_font --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/kor/kor.training_text --outputbase ./training_data_kor_all/kor_training
-
-	- combine_lang_model.
-		Makes a starter traineddata.
-
-		${TESSERACT_HOME}/src/training/combine_lang_model --script_dir ${TESSERACT_LANGDATA_HOME} --input_unicharset eng.unicharset --lang eng
-		${TESSERACT_HOME}/src/training/combine_lang_model --script_dir ${TESSERACT_LANGDATA_HOME} --input_unicharset eng.unicharset --lang kor
-
-		combine_lang_model --script_dir /home/sangwook/lib_repo/cpp/tesseract_langdata_github --input_unicharset ./engtrain/eng.unicharset --lang eng
-
-	- combine_tessdata.
-		Combines tessdata files.
-		Extract tessdata components.
-			${TESSERACT_HOME}/src/training/combine_tessdata -e ${TESSERACT_TESSDATA_HOME}/eng.traineddata ./eng.lstm
-		List the content of a traineddata file and its version string.
-			${TESSERACT_HOME}/src/training/combine_tessdata -d ${TESSERACT_TESSDATA_HOME}/eng.traineddata
-
-	- jTessBoxEditor.
-		https://sourceforge.net/projects/vietocr/files/jTessBoxEditor/
-
-[-] Network specification.
-	- Reference.
-		https://github.com/tesseract-ocr/tesseract/wiki/VGSLSpecs
 
 [-] Installation.
 	- Reference.
@@ -166,7 +128,12 @@
 		sudo make training-install
 
 		make ScrollView.jar
+			Generates ScrollView.jar in ${TESSERACT_HOME}/java.
 		export SCROLLVIEW_PATH=$PWD/java
+
+[-] Network specification.
+	- Reference.
+		https://github.com/tesseract-ocr/tesseract/wiki/VGSLSpecs
 
 [-] Training (ver 3.0).
 	- Reference.
@@ -200,6 +167,9 @@
 		(Optional) export LANGDATA_ROOT=${TESSERACT_LANGDATA_HOME}
 
 	- Create datasets.
+		REF [site] >> https://github.com/tesseract-ocr/tesseract/wiki/TrainingTesseract-4.00#creating-training-data
+		REF [tool] >> text2image.
+
 		${TESSERACT_HOME}/src/training/tesstrain.sh
 			Internally calls
 				${TESSERACT_HOME}/src/training/text2image.
@@ -220,14 +190,58 @@
 			https://github.com/tesseract-ocr/tessdata_best
 			https://github.com/tesseract-ocr/tessdata_fast
 
+		e.g.)
 		tesstrain.sh --fonts_dir /usr/share/fonts --fontlist "FreeSerif" --lang eng --linedata_only --noextract_font_properties --langdata_dir /home/sangwook/lib_repo/cpp/tesseract_langdata_github --tessdata_dir /home/sangwook/lib_repo/cpp/tesseract_tessdata_github --save_box_tiff --output_dir ./engtrain
+			Creates ./engtrain directory.
 		tesstrain.sh --fonts_dir /usr/share/fonts --fontlist "FreeSerif" --lang eng --linedata_only --noextract_font_properties --langdata_dir /home/sangwook/lib_repo/cpp/tesseract_langdata_github --tessdata_dir /home/sangwook/lib_repo/cpp/tesseract_tessdata_github --save_box_tiff --output_dir ./engeval
+			Creates ./engeval directory.
 		tesstrain.sh --fonts_dir /usr/share/fonts --fontlist "Gulimche" --lang kor --linedata_only --noextract_font_properties --langdata_dir /home/sangwook/lib_repo/cpp/tesseract_langdata_github --tessdata_dir /home/sangwook/lib_repo/cpp/tesseract_tessdata_github --save_box_tiff --output_dir ./kortrain
+			Creates ./kortrain directory.
 		tesstrain.sh --fonts_dir /usr/share/fonts --fontlist "Gulimche" --lang kor --linedata_only --noextract_font_properties --langdata_dir /home/sangwook/lib_repo/cpp/tesseract_langdata_github --tessdata_dir /home/sangwook/lib_repo/cpp/tesseract_tessdata_github --save_box_tiff --output_dir ./koreval
+			Creates ./koreval directory.
+
+	- (Optional) generate box files.
+		REF [site] >>
+			https://github.com/tesseract-ocr/tesseract/wiki/TrainingTesseract-4.00#making-box-files
+			https://github.com/tesseract-ocr/tesseract/issues/2357#issuecomment-477239316
+
+		Box file format:
+			Each line in the box file matches a 'character' (glyph) in the tiff image.
+				<symbol> <left> <bottom> <right> <top> <page>
+			Where <left> <bottom> <right> <top> <page> could be bounding-box coordinates of a single glyph or of a whole textline (see examples).
+
+			To mark an end-of-textline, a special line must be inserted after a series of lines.
+				<tab> <left> <bottom> <right> <top> <page>
+
+		Box files generated by tesseract using 'lstmbox' config file from image files (Tesseract4).
+			Each char uses coordinates of its entire line.
+			${TESSERACT_HOME}/tessdata/configs/lstmbox
+
+			tesseract <image name including extension> <box file name> lstmbox
+
+			e.g.)
+			tesseract image.tif image --tessdata-dir /path/to/tessdata lstmbox
+				Creates image.box from image.tif.
+
+		Box files generated by tesseract using 'makebox' config file from image files (Tesseract3).
+			${TESSERACT_HOME}/tessdata/configs/makebox
+
+			e.g.)
+			tesseract image.tif image --tessdata-dir /path/to/tessdata makebox
+				Creates image.box from image.tif.
+
+		Box files generated by tesseract using 'wordstrbox' config file from image files.
+			Uses Wordstr and text for whole line.
+			${TESSERACT_HOME}/tessdata/configs/wordstrbox
+
+			e.g.)
+			tesseract image.tif image --tessdata-dir /path/to/tessdata -l eng --psm 6 wordstrbox
+				Creates image.box from image.tif.
 
 	- Train from scratch.
 		${TESSERACT_HOME}/src/training/lstmtraining
 
+		e.g.)
 		lstmtraining --debug_interval 100 --traineddata /home/sangwook/lib_repo/cpp/tesseract_tessdata_github/eng.traineddata --net_spec '[1,36,0,1 Ct3,3,16 Mp3,3 Lfys48 Lfx96 Lrx96 Lfx256 O1c111]' --model_output ./engtrain_output/checkpoint/ckpt --learning_rate 20e-4 --train_listfile ./engtrain/eng.training_files.txt --eval_listfile ./engeval/eng.training_files.txt --max_iterations 5000 &> ./engtrain_output/train.log
 		lstmtraining --debug_interval 100 --traineddata /home/sangwook/lib_repo/cpp/tesseract_tessdata_github/kor.traineddata --net_spec '[1,36,0,1 Ct3,3,16 Mp3,3 Lfys48 Lfx96 Lrx96 Lfx256 O1c111]' --model_output ./kortrain_output/checkpoint/ckpt --learning_rate 20e-4 --train_listfile ./kortrain/kor.training_files.txt --eval_listfile ./koreval/kor.training_files.txt --max_iterations 5000 &> ./kortrain_output/train.log
 
@@ -236,3 +250,58 @@
 
 	- Evaluation.
 		${TESSERACT_HOME}/src/training/lstmeval
+
+[-] Tools.
+	REF [site] >> https://github.com/tesseract-ocr/tesseract/wiki/AddOns
+
+	- Directory.
+		${TESSERACT_HOME}/src/training
+
+	- text2image.
+		REF [site] >> https://github.com/tesseract-ocr/tesseract/blob/master/doc/text2image.1.asc
+		REF [tool] >> tesstrain.sh.
+
+		Generates .tif & .box files.
+			Character bounding boxes or word bounding boxes (--output_word_boxes).
+			These are not text line data.
+
+		${TESSERACT_HOME}/src/training/text2image --list_available_fonts --fonts_dir /usr/share/fonts
+		${TESSERACT_HOME}/src/training/text2image --fonts_dir /usr/share/fonts --font 'Arial' --text ${TESSERACT_LANGDATA_HOME}/eng/eng.training_text --outputbase eng_training
+		${TESSERACT_HOME}/src/training/text2image --fonts_dir /usr/share/fonts --font 'gulimche' --text ${TESSERACT_LANGDATA_HOME}/kor/kor.training_text --outputbase kor_training
+
+		e.g.)
+		text2image --fonts_dir /usr/share/fonts --font 'FreeMono' --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/eng/eng.training_text --outputbase ./training_data_eng/eng_training
+		text2image --fonts_dir /home/sangwook/work/font_kr --font 'gulimche' --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/kor/kor.training_text --output_word_boxes --outputbase ./training_data_kor/kor_training
+			Generates two files (.tif & .box).
+			Can use a single font.
+
+		text2image --fonts_dir /usr/share/fonts --find_fonts --render_per_font --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/eng/eng.training_text --outputbase ./training_data_eng_all/eng_training
+		text2image --fonts_dir /usr/share/fonts --find_fonts --render_per_font --text /home/sangwook/lib_repo/cpp/tesseract_langdata_github/kor/kor.training_text --outputbase ./training_data_kor_all/kor_training
+			Generates a single image file (.tif) and no box file for each font.
+
+	- combine_lang_model.
+		Makes a starter traineddata.
+
+		${TESSERACT_HOME}/src/training/combine_lang_model --script_dir ${TESSERACT_LANGDATA_HOME} --input_unicharset eng.unicharset --lang eng
+		${TESSERACT_HOME}/src/training/combine_lang_model --script_dir ${TESSERACT_LANGDATA_HOME} --input_unicharset eng.unicharset --lang kor
+
+		e.g.)
+		combine_lang_model --script_dir /home/sangwook/lib_repo/cpp/tesseract_langdata_github --input_unicharset ./engtrain/eng.unicharset --lang eng
+
+	- combine_tessdata.
+		Combines tessdata files.
+		Extract tessdata components.
+			${TESSERACT_HOME}/src/training/combine_tessdata -e ${TESSERACT_TESSDATA_HOME}/eng.traineddata ./eng.lstm
+		List the content of a traineddata file and its version string.
+			${TESSERACT_HOME}/src/training/combine_tessdata -d ${TESSERACT_TESSDATA_HOME}/eng.traineddata
+
+	- jTessBoxEditor.
+		https://sourceforge.net/projects/vietocr/files/jTessBoxEditor/
+
+[-] Troubleshooting.
+	- lstm.train.
+		<error> read_params_file: Can't open lstm.train
+		<cause>
+			There is no lstm.train under 'configs' folder in your tessdata folder.
+		<solution>
+			Copy ${TESSERACT_HOME}/tessdata/configs directory.

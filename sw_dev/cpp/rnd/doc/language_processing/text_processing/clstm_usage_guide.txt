@@ -54,6 +54,7 @@
 			clstmfiltertrain:
 				REF [file] >> ${CLSTM_HOME}/run-cmu
 
+				e.g.)
 				load=spc-50000.clstm lrate=1e-4 save_name=spc ./clstmfiltertrain won-train.txt won-test.txt
 
 		Apply learned text filters.
@@ -62,6 +63,7 @@
 					ab.cdefgh,ijk	ab. cde fgh, ijk
 					opqr-stu	opqr - stu
 
+				e.g.)
 				load=spc output=2 ./clstmfilter text_file.txt (???)
 
 	- Train OCR models.
@@ -91,6 +93,7 @@
 			clstmocrtrain:
 				REF [file] >> ${CLSTM_HOME}/run-uw3-500
 
+				e.g.)
 				load=uw3small-95000.clstm params=1 save_name=uw3small save_every=1000 report_every=100 ntrain=50000 test_every=1000 ./clstmocrtrain uw3-train.files uw3-test.files
 
 		Apply learned OCR models.
@@ -99,6 +102,7 @@
 					/path/to/image1.png
 					/path/to/image2.png
 
+				e.g.)
 				load=uw3small-95000.clstm output=text ./clstmocr filelist.txt
 					Generates /path/to/image1.txt and /path/to/image2.txt as outputs.
 				load=uw3small-95000.clstm output=posteriors ./clstmocr filelist.txt
