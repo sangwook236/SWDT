@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import string
+import re
 
 def basic_operation():
 	with open('data.txt', 'r') as myfile:
@@ -11,14 +12,13 @@ def basic_operation():
 	with open('data.txt', 'r') as myfile:
 		lines = myfile.readlines()
 
-	lines2 = []
+	lines2 = list()
 	for line in lines:
 		lines2.append(line.rstrip('\n'))
 
 	idx1 = data.find('Image loaded:')
 	idx2 = data.rfind('Image loaded:')
 
-	import re
 	indices = [ss.start() for ss in re.finditer('Image loaded:', data)]
 
 # REF [site] >> https://docs.python.org/3.7/library/string.html

@@ -208,7 +208,7 @@
 		Box file format:
 			Each line in the box file matches a 'character' (glyph) in the tiff image.
 				<symbol> <left> <bottom> <right> <top> <page>
-			Where <left> <bottom> <right> <top> <page> could be bounding-box coordinates of a single glyph or of a whole textline (see examples).
+			Where <left> <bottom> <right> <top> <page> could be bounding-box coordinates of a single glyph or of a whole textline.
 
 			To mark an end-of-textline, a special line must be inserted after a series of lines.
 				<tab> <left> <bottom> <right> <top> <page>
