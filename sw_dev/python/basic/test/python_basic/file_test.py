@@ -4,10 +4,13 @@ import glob, csv
 
 def basic():
 	try:
-		with open('data.txt', 'r', encoding='UTF8') as fd:
-		#with open('data.txt', 'r+') as fd:
-		#with open('data.txt', 'rb') as fd:
-			data = fd.read()
+		try:
+			with open('data.txt', 'r', encoding='UTF8') as fd:
+			#with open('data.txt', 'r+') as fd:
+			#with open('data.txt', 'rb') as fd:
+				data = fd.read()
+		except FileNotFoundError as ex:
+			print('File not found: {}.'.format('data.txt'))
 
 		with open('data_copyed.txt', 'w', encoding='UTF8') as fd:
 		#with open('data_copyed.txt', 'w+', encoding='UTF8') as fd:
@@ -16,8 +19,11 @@ def basic():
 
 		words = data.split()
 
-		with open('data.txt', 'r') as fd:
-			lines = fd.readlines()
+		try:
+			with open('data.txt', 'r') as fd:
+				lines = fd.readlines()
+		except FileNotFoundError as ex:
+			print('File not found: {}.'.format('data.txt'))
 
 		lines2 = list()
 		for line in lines:
@@ -30,11 +36,11 @@ def basic():
 # Unix style pathname pattern expansion.
 # REF [site] >> https://docs.python.org/3/library/glob.html
 def glob_example():
-	glob.glob('./[0-9].*')
-	glob.glob('*.gif')
-	glob.glob('?.gif')
-	glob.glob('**/*.txt', recursive=True)
-	glob.glob('./**/', recursive=True)
+	filepaths = glob.glob('./[0-9].*')
+	filepaths = glob.glob('*.gif')
+	filepaths = glob.glob('?.gif')
+	filepaths = glob.glob('**/*.txt', recursive=True)
+	filepaths = glob.glob('./**/', recursive=True)
 
 def csv_example():
 	csv_filepath = './test.csv'
