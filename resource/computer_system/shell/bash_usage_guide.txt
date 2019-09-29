@@ -1,4 +1,4 @@
-[-] General
+[-] General.
 	- Site.
 		https://www.gnu.org/software/bash/
 

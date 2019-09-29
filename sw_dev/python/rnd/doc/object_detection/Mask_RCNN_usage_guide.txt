@@ -20,6 +20,7 @@
 
 		Train a new model starting from pre-trained COCO weights.
 			python samples/coco/coco.py train --dataset=/path/to/coco --model=coco
+			python samples/coco/coco.py train --dataset=/path/to/coco --model=mask_rcnn_coco.h5 --logs=./logs --year=2014
 			python samples/coco/coco.py train --dataset=/path/to/coco --model=mask_rcnn_coco.h5 --logs=./logs --download=True --year=2017
 				MS COCO files are downloaded.
 
@@ -37,3 +38,9 @@
 	- Evaluate.
 		Run COCO evaluatoin on the last model you trained.
 			python3 coco.py evaluate --dataset=/path/to/coco --model=last
+
+[-] Troubleshooting.
+	- metrics_tensors error.
+		<error> AttributeError: 'Model' object has no attribute 'metrics_tensors'
+		<solution>
+			Use Keras 2.1.0.
