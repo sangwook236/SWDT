@@ -68,6 +68,23 @@ def variable_example():
 
 	print('foo.var =', foo.var)
 
+def container_test():
+	vals = list(range(5))
+	for val in vals:
+		# NOTE [caution] >> 3 is not printed.
+		print('val = {}.'.format(val))
+		if 2 == val:
+			vals.remove(val)
+	print('vals =', vals)
+
+	vals = list(range(5))
+	for idx, val in enumerate(vals):
+		# NOTE [caution] >> 3 is not printed.
+		print('val = {}.'.format(val))
+		if 2 == val:
+			del vals[idx]
+	print('vals =', vals)
+
 def assert_test():
 	#assert(2 + 2 == 5, "Error: addition.")  # Error: not working.
 	assert 2 + 2 == 5, "Error: addition."
@@ -346,6 +363,7 @@ def main():
 	#platform_test()
 
 	#variable_example()
+	container_test()
 
 	#assert_test()
 	#exception_test()
@@ -360,10 +378,10 @@ def main():
 	#caller_func(func)
 	#caller_func(func_obj(2))
 
-    #--------------------
-    inheritance_test()
+	#--------------------
+	#inheritance_test()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

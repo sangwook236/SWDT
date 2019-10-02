@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import numpy as np
 import tensorflow as tf
 from tensorflow.python.tools import freeze_graph, optimize_for_inference_lib
 from tensorflow.core.protobuf import saver_pb2
@@ -109,7 +110,7 @@ def graph_to_tensorboard_log():
 #	e.g.) python -m tensorflow.python.tools.freeze_graph --input_graph=/path/to/graph.pbtxt --input_binary=false --input_checkpoint=/path/to/checkpoint/tf_ckpt-1234 --output_graph=/path/to/frozen_graph.pb --output_node_names=output_nodes
 #	=> Recommend using TensorBoard to get 'output_node_names' which I think is operations' names in a TensorFlow graph.
 def freeze_graph_tool():
-	# NOTE [info] >> checkpoint_to_graph() in tensorflow_saving_and_loading.py
+	# REF [function] >> checkpoint_to_graph() in tensorflow_saving_and_loading.py.
 	model_graph_filepath = './mnist_cnn_graph.pb'
 	checkpoint_dir_path = './mnist_cnn_checkpoint'
 	checkpoint_filename = 'tf_ckpt-7740'
@@ -180,6 +181,61 @@ def optimize_for_inference_tool():
 		fd.write(output_graph_def.SerializeToString())
 	#tf.train.write_graph(output_graph_def, './', output_optimized_graph_name)
 
+def load_graph(frozen_graph_filepath):
+	# Load the protobuf file from the disk and parse it to retrieve the unserialized graph_def.
+	with tf.gfile.GFile(frozen_graph_filepath, 'rb') as f:
+		graph_def = tf.GraphDef()
+		graph_def.ParseFromString(f.read())
+
+	# Import the graph_def into a new Graph.
+	with tf.Graph().as_default() as graph:
+		# The 'name' argument will prefix every op/nodes in your graph.
+		tf.import_graph_def(graph_def, name='prefix')
+		#tf.import_graph_def(graph_def, name='')
+		#tf.import_graph_def(graph_def)
+
+	return graph
+	
+def infer_by_frozen_graph():
+	"""
+	frozen_model_filepath = './mnist_cnn_frozen_graph.pb'
+
+	# Load a graph.
+	graph = load_graph(frozen_model_filepath)
+
+	# List operations in the graph.
+	for op in graph.get_operations():
+		print(op.name)
+		
+	# Access the input and output nodes.
+	inputs = graph.get_tensor_by_name('prefix/input_tensor_ph:0')
+	outputs = graph.get_tensor_by_name('prefix/mnist_cnn_using_tf/fc2/fc/Softmax:0')
+		
+	with tf.Session(graph=graph) as sess:
+		# NOTE [infor] >> Don't need to initialize/restore anything.
+		x_in = np.random.rand(1, 28, 28, 1)
+		y_out = sess.run(outputs, feed_dict={inputs: x_in})
+		print('Inference =', np.argmax(y_out))
+	"""
+	frozen_model_filepath = './mobis_yonsei_5way_frozen_graph.pb'
+
+	# Load a graph.
+	graph = load_graph(frozen_model_filepath)
+
+	# List operations in the graph.
+	for op in graph.get_operations():
+		print(op.name)
+		
+	# Access the input and output nodes.
+	inputs = graph.get_tensor_by_name('prefix/input_6:0')
+	outputs = graph.get_tensor_by_name('prefix/dense_18/Softmax:0')
+		
+	with tf.Session(graph=graph) as sess:
+		# NOTE [infor] >> Don't need to initialize/restore anything.
+		x_in = np.random.rand(1, 75, 128)
+		y_out = sess.run(outputs, feed_dict={inputs: x_in})
+		print('Inference =', np.argmax(y_out))
+
 # REF [site] >> https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/graph_transforms/
 #	transform_graph:
 #		cd ${TENSORFLOW_HOME}
@@ -209,10 +265,12 @@ def main():
 	#freeze_graph_tool()
 	#optimize_for_inference_tool()
 
+	#infer_by_frozen_graph()
+
 	#graph_transform_tool()  # Not implemented.
 	#summarize_graph_tool()  # Not implemented.
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

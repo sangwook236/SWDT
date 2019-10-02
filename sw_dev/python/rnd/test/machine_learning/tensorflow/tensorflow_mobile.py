@@ -32,12 +32,13 @@
 #	https://medium.com/joytunes/deploying-a-tensorflow-model-to-android-69d04d1b0cba
 
 # TensorFlow Lite:
-#	https://www.tensorflow.org/mobile/tflite/
+#	https://www.tensorflow.org/lite
 #		${TENSORFLOW_HOME}/tensorflow/contrib/lite
+#	https://www.tensorflow.org/lite/guide/android
 #	https://codelabs.developers.google.com/codelabs/tensorflow-for-poets-2-tflite
 #	https://www.tensorflow.org/mobile/tflite/demo_android
-#	https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/lite
-#	https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/lite/java/demo/
+#	https://github.com/tensorflow/tensorflow/tree/master/tensorflow/lite
+#	https://github.com/tensorflow/tensorflow/tree/master/tensorflow/lite/java/demo
 #		${TENSORFLOW_HOME}/tensorflow/contrib/lite/java/demo
 #	https://medium.com/tensorflow/using-tensorflow-lite-on-android-9bbc9cb7d69d
 #	https://heartbeat.fritz.ai/intro-to-machine-learning-on-android-how-to-convert-a-custom-model-to-tensorflow-lite-e07d2d9d50e3
@@ -68,28 +69,42 @@ import tensorflow as tf
 from tensorflow.contrib.lite.python import lite
 import os
 
-def tensorflow_lite():
+def tensorflow_lite_conversion():
 	tf_lite_filepath = './tf_lite_model.tflite'
 
-	# Convert a GraphDef from session.
-	#with tf.Session(graph=graph) as sess:
-	#	converter = lite.TocoConverter.from_session(sess, in_tensors, out_tensors)
-	# Convert a GraphDef from file.
-	#converter = lite.TocoConverter.from_frozen_graph(graph_def_file, input_arrays, output_arrays)
-	# Convert a SavedModel.
-	saved_model_dir_path = './mnist_cnn_saved_model'
-	converter = lite.TocoConverter.from_saved_model(saved_model_dir_path)
-	# Convert a tf.keras model.
-	#converter = lite.TocoConverter.from_keras_model_file(keras_model)
+	if False:
+		graph = 
+		in_tensors, out_tensors =
+
+		# Convert a GraphDef from session.
+		with tf.Session(graph=graph) as sess:
+			converter = lite.TocoConverter.from_session(sess, in_tensors, out_tensors)
+	elif False:
+		graph_def_file = 
+		input_arrays, output_arrays = 
+
+		# Convert a GraphDef from file.
+		converter = lite.TocoConverter.from_frozen_graph(graph_def_file, input_arrays, output_arrays)
+	elif True:
+		saved_model_dir_path = './mnist_cnn_saved_model'
+
+		# Convert a SavedModel.
+		#	REF [function] >> checkpoint_to_saved_model() in tensorflow_saving_and_loading.py.
+		converter = lite.TocoConverter.from_saved_model(saved_model_dir_path)
+	elif False:
+		keras_model = 
+
+		# Convert a tf.keras model.
+		converter = lite.TocoConverter.from_keras_model_file(keras_model)
 
 	tf_lite_model = converter.convert()
 	with open(tf_lite_filepath, 'wb') as fd:
 		fd.write(tf_lite_model)
 
 def main():
-	tensorflow_lite()
+	tensorflow_lite_conversion()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()
