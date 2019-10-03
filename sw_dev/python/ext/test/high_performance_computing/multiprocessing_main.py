@@ -2,12 +2,10 @@
 
 # REF [site] >> https://docs.python.org/3/library/multiprocessing.html
 
-import os, time, math, random
-from functools import partial
+import os, time, math, random, functools, threading
 import multiprocessing as mp
 from multiprocessing.managers import BaseManager
 from concurrent.futures import ProcessPoolExecutor
-import threading
 
 def process_info(title):
     print(title)
@@ -68,16 +66,6 @@ def pool_2():
 		#multiple_results = [pool.apply_async(loop_with_sleep, args=(random.randint(6, 10),)) for _ in range(10)]
 		#[res.get() for res in multiple_results]
 
-def sqr_with_sleep(x):
-	time.sleep(2)
-	return x * x
-
-async_result_list = []
-def async_callback(result):
-	# This is called whenever sqr_with_sleep(i) returns a result.
-	# async_result_list is modified only by the main process, not the pool workers.
-	async_result_list.append(result)
-
 def pool_async_1():
 	with mp.Pool(processes=5, initializer=None) as pool:
 	#with mp.pool.ThreadPool(processes=5, initializer=None) as pool:
@@ -85,7 +73,7 @@ def pool_async_1():
 		res = pool.apply_async(os.getpid, args=())  # Runs in *only* one process.
 		print(res.get(timeout=1))
 
-		multiple_results = [pool.apply_async(os.getpid, args=()) for i in range(4)]
+		multiple_results = [pool.apply_async(os.getpid, args=()) for _ in range(4)]
 		print([res.get(timeout=1) for res in multiple_results])
 
 		res = pool.apply_async(time.sleep, args=(10,))
@@ -94,34 +82,58 @@ def pool_async_1():
 		except mp.context.TimeoutError as ex:
 			print('A multiprocessing.TimeoutError raised:', ex)
 
+def sqr_with_sleep(x):
+	time.sleep(2)
+	return x * x
+
 def pool_async_2():
+	async_result_list = list()
+	def async_callback(result):
+		# This is called whenever sqr_with_sleep(i) returns a result.
+		# async_result_list is modified only by the main process, not the pool workers.
+		async_result_list.append(result)
+
 	with mp.Pool() as pool:
 	#with mp.pool.ThreadPool() as pool:
 		for i in range(10):
+			#pool.apply_async(sqr_with_sleep, args=(i,))
 			pool.apply_async(sqr_with_sleep, args=(i,), callback=async_callback)
-		pool.close()
+		pool.close()  # Necessary. Why?
 		pool.join()
-		print(async_result_list)
+
+	print('Async results =', async_result_list)
 
 def simple_worker_proc(val, step):
 	print('{}: step = {}.'.format(os.getpid(), step))
 
 	time.sleep(random.randrange(3))
-	val += 3
+	val += step
 	time.sleep(random.randrange(3))
-	return val + step
+	return step, val
 
 def pool_async_3():
+	async_result_list = list()
+	def async_callback(result):
+		# This is called whenever sqr_with_sleep(i) returns a result.
+		# async_result_list is modified only by the main process, not the pool workers.
+		async_result_list.append(result)
+
 	num_processes = 5
 	num_steps = 20
+
+	#lock = mp.Lock()  # RuntimeError: Lock objects should only be shared between processes through inheritance.
+	##lock= mp.Manager().Lock()  # TypeError: can't pickle _thread.lock objects.
 
 	#timeout = 10
 	timeout = None
 	#with mp.Pool(processes=num_processes, initializer=initialize_lock, initargs=(lock,)) as pool:
 	with mp.Pool(processes=num_processes) as pool:
-		results = pool.map_async(partial(simple_worker_proc, 37), [step for step in range(num_steps)])
+		#results = pool.map_async(functools.partial(simple_worker_proc, 37), [step for step in range(num_steps)])
+		results = pool.map_async(functools.partial(simple_worker_proc, 37), [step for step in range(num_steps)], callback=async_callback)
 
 		results.get(timeout)
+
+	print('Async results =', async_result_list)
 
 def func1(lock, i):
 	"""
@@ -235,7 +247,7 @@ def multiprocess_and_multithreading():
 
 	worker_thread.join()
 
-def init(lock):
+def initialize_lock(lock):
 	global global_lock
 	global_lock = lock
 
@@ -358,22 +370,22 @@ def run_worker_processes(lock, num_processes):
 
 	#timeout = 10
 	timeout = None
-	with mp.Pool(processes=num_processes, initializer=init, initargs=(lock,)) as pool:
-	#with mp.pool.ThreadPool(processes=num_processes, initializer=init, initargs=(lock,)) as pool:
+	with mp.Pool(processes=num_processes, initializer=initialize_lock, initargs=(lock,)) as pool:
+	#with mp.pool.ThreadPool(processes=num_processes, initializer=initialize_lock, initargs=(lock,)) as pool:
 		num_jobs = random.randint(2, 7)
 		worker0_results = pool.map_async(worker0_proc, [(0, 0.0, 'a0', job) for job in range(num_jobs)])
 		num_jobs = random.randint(2, 7)
-		worker1_results = pool.map_async(partial(worker1_proc, 1, 1.0, 'b1'), [job for job in range(num_jobs)])
+		worker1_results = pool.map_async(functools.partial(worker1_proc, 1, 1.0, 'b1'), [job for job in range(num_jobs)])
 		num_jobs = random.randint(2, 7)
 		worker2_results = pool.apply_async(worker2_proc, args=(2, 2.0, 'c2', num_jobs))
 		# Passes a mp.Lock object as an argument.
 		#num_jobs = random.randint(2, 7)
-		#worker3_results = pool.map_async(partial(worker3_proc, lock, 3, 3.0, 'd3'), [job for job in range(num_jobs)])  # RuntimeError: Lock objects should only be shared between processes through inheritance.
+		#worker3_results = pool.map_async(functools.partial(worker3_proc, lock, 3, 3.0, 'd3'), [job for job in range(num_jobs)])  # RuntimeError: Lock objects should only be shared between processes through inheritance.
 		# Passes a Class object as an argument.
 		num_jobs = random.randint(2, 7)
 		worker4_results = pool.map_async(worker4_proc, [(adder, 4, 4.0, 'e4', job) for job in range(num_jobs)])
 		num_jobs = random.randint(2, 7)
-		worker5_results = pool.map_async(partial(worker5_proc, adder, 5, 5.0, 'f5'), [job for job in range(num_jobs)])
+		worker5_results = pool.map_async(functools.partial(worker5_proc, adder, 5, 5.0, 'f5'), [job for job in range(num_jobs)])
 
 		worker0_results.get(timeout)
 		worker1_results.get(timeout)
@@ -390,9 +402,9 @@ def main():
 
 	#pool_1()
 	#pool_2()
-	#pool_async_1()
-	#pool_async_2()
-	pool_async_3()
+	#pool_async_1()  # apply_async().
+	#pool_async_2()  # apply_async().
+	pool_async_3()  # map_async().
 
 	#synchronization()
 
@@ -414,7 +426,7 @@ def main():
 
 	print('{}: End main process.'.format(os.getpid()))
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()
