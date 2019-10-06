@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os, sys, platform, abc
-import itertools, functools, operator
+import itertools, functools, operator, difflib
 import traceback
 
 def platform_test():
@@ -109,69 +109,56 @@ def exception_test():
 			#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
 			traceback.print_exc(limit=None, file=sys.stdout)
 
-# REF [site] >> https://docs.python.org/3/library/itertools.html
-def itertools_test():
-	print('itertools.count(10) =', type(itertools.count(10)))
-	print('itertools.count(10) =', end=' ')
-	for item in itertools.count(start=10, step=2):
-		print(item, end=', ')
-		if item >= 20:
-			break
-	print()
+# Context managers allow you to allocate and release resources precisely when you want to.
+# The most widely used example of context managers is the with statement.
+# REF [site] >>
+#	https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers
+#	https://docs.quantifiedcode.com/python-anti-patterns/correctness/exit_must_accept_three_arguments.html
+def with_statement_test():
+	class Guard(object):
+		def __init__(self, i):
+			self._i = i
+			print('Guard was constructed.')
 
-	#--------------------
-	print("itertools.cycle('ABCD') =", type(itertools.cycle('ABCD')))
-	print("itertools.cycle('ABCD') =", end=' ')
-	for idx, item in enumerate(itertools.cycle('ABCD')):
-		print(item, end=', ')
-		if idx >= 10:
-			break
-	print()
+		def __del__(self):
+			print('Guard was destructed.')
 
-	#--------------------
-	print('itertools.repeat(37, 7) =', type(itertools.repeat(37, 7)))
-	print('itertools.repeat(37, 7) =', end=' ')
-	for item in itertools.repeat(37, 7):
-		print(item, end=', ')
-	print()
+		def __enter__(self):
+			print('Guard was entered.')
+			return self
 
-	#--------------------
-	print('itertools.accumulate([1, 2, 3, 4, 5]) =', type(itertools.accumulate([1, 2, 3, 4, 5])))
-	print('itertools.accumulate([1, 2, 3, 4, 5]) =', end=' ')
-	for item in itertools.accumulate([1, 2, 3, 4, 5]):
-		print(item, end=', ')
-	print()
+		def __exit__(self, exception_type, exception_value, traceback):
+			print('Guard was exited.')
 
-	#--------------------
-	print("itertools.groupby('AAAABBBCCDAABBB') =", type(itertools.groupby('AAAABBBCCDAABBB')))
-	print("itertools.groupby('AAAABBBCCDAABBB'): keys =", list(k for k, g in itertools.groupby('AAAABBBCCDAABBB')))
-	print("itertools.groupby('AAAABBBCCDAABBB'): groups =", list(list(g) for k, g in itertools.groupby('AAAABBBCCDAABBB')))
+		def func(self, d):
+			print('Guard.func() was called: {}, {}'.format(self._i, d))
 
-	#--------------------
-	print("itertools.chain('ABC', 'DEF', 'ghi') =", list(itertools.chain('ABC', 'DEF', 'ghi')))
-	print("itertools.chain.from_iterable(['ABC', 'DEF', 'ghi']) =", list(itertools.chain.from_iterable(['ABC', 'DEF', 'ghi'])))
+	print('Step #1.')
+	with Guard(1) as guard:
+		print('Step #2.')
+		if guard is None:
+			print('guard is None.')
+		else:
+			guard.func(2.0)
+		print('Step #3.')
+	print('Step #4.')
 
-	print("itertools.compress('ABCDEF', [1, 0, 1, 0, 1, 1]) =", list(itertools.compress('ABCDEF', [1, 0, 1, 0, 1, 1])))
-	print("itertools.islice('ABCDEFG', 2, None) =", list(itertools.islice('ABCDEFG', 2, None)))
+def func(i, f, s):
+	print(i, f, s)
 
-	print('itertools.starmap(pow, [(2, 5), (3, 2), (10, 3)]) =', list(itertools.starmap(pow, [(2, 5), (3, 2), (10, 3)])))
+class func_obj(object):
+	def __init__(self, ii):
+		self._ii = ii
 
-	#--------------------
-	print('itertools.filterfalse(lambda x: x % 2, range(10)) =', list(itertools.filterfalse(lambda x: x % 2, range(10))))
-	print('itertools.dropwhile(lambda x: x < 5, [1, 4, 6, 4, 1] =', list(itertools.dropwhile(lambda x: x < 5, [1, 4, 6, 4, 1])))
-	print('itertools.takewhile(lambda x: x < 5, [1, 4, 6, 4, 1] =', list(itertools.takewhile(lambda x: x < 5, [1, 4, 6, 4, 1])))
+	def __call__(self, i, f, s):
+		print(i + self._ii, f, s)
 
-	#--------------------
-	print("itertools.zip_longest('ABCD', 'xy', fillvalue='-') =", list(itertools.zip_longest('ABCD', 'xy', fillvalue='-')))
+def caller_func(callee):
+	callee(1, 2.0, 'abc')
 
-	#--------------------
-	print("itertools.tee('ABCDEFG', 2) =", itertools.tee('ABCDEFG', 2))
-
-	#--------------------
-	print("itertools.product('ABCD', repeat=2) =", list(itertools.product('ABCD', repeat=2)))
-	print("itertools.permutations('ABCD', 2) =", list(itertools.permutations('ABCD', 2)))
-	print("itertools.combinations('ABCD', 2) =", list(itertools.combinations('ABCD', 2)))
-	print("itertools.combinations_with_replacement('ABCD', 2) =", list(itertools.combinations_with_replacement('ABCD', 2)))
+def function_call_test():
+	caller_func(func)
+	caller_func(func_obj(2))
 
 def lambda_expression():
 	def make_incrementor(n):
@@ -265,52 +252,129 @@ def map_filter_reduce():
 		return functools.reduce(operator.add, axi, 0)
 	print('Polynomial =', evaluate_polynomial([1, 2, 3, 4], 2))
 
-# Context managers allow you to allocate and release resources precisely when you want to.
-# The most widely used example of context managers is the with statement.
-# REF [site] >>
-#	https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers
-#	https://docs.quantifiedcode.com/python-anti-patterns/correctness/exit_must_accept_three_arguments.html
-def with_statement_test():
-	class Guard(object):
-		def __init__(self, i):
-			self._i = i
-			print('Guard was constructed.')
+# REF [site] >> https://docs.python.org/3/library/itertools.html
+def itertools_test():
+	print('itertools.count(10) =', type(itertools.count(10)))
+	print('itertools.count(10) =', end=' ')
+	for item in itertools.count(start=10, step=2):
+		print(item, end=', ')
+		if item >= 20:
+			break
+	print()
 
-		def __del__(self):
-			print('Guard was destructed.')
+	#--------------------
+	print("itertools.cycle('ABCD') =", type(itertools.cycle('ABCD')))
+	print("itertools.cycle('ABCD') =", end=' ')
+	for idx, item in enumerate(itertools.cycle('ABCD')):
+		print(item, end=', ')
+		if idx >= 10:
+			break
+	print()
 
-		def __enter__(self):
-			print('Guard was entered.')
-			return self
+	#--------------------
+	print('itertools.repeat(37, 7) =', type(itertools.repeat(37, 7)))
+	print('itertools.repeat(37, 7) =', end=' ')
+	for item in itertools.repeat(37, 7):
+		print(item, end=', ')
+	print()
 
-		def __exit__(self, exception_type, exception_value, traceback):
-			print('Guard was exited.')
+	#--------------------
+	print('itertools.accumulate([1, 2, 3, 4, 5]) =', type(itertools.accumulate([1, 2, 3, 4, 5])))
+	print('itertools.accumulate([1, 2, 3, 4, 5]) =', end=' ')
+	for item in itertools.accumulate([1, 2, 3, 4, 5]):
+		print(item, end=', ')
+	print()
 
-		def func(self, d):
-			print('Guard.func() was called: {}, {}'.format(self._i, d))
+	#--------------------
+	print("itertools.groupby('AAAABBBCCDAABBB') =", type(itertools.groupby('AAAABBBCCDAABBB')))
+	print("itertools.groupby('AAAABBBCCDAABBB'): keys =", list(k for k, g in itertools.groupby('AAAABBBCCDAABBB')))
+	print("itertools.groupby('AAAABBBCCDAABBB'): groups =", list(list(g) for k, g in itertools.groupby('AAAABBBCCDAABBB')))
 
-	print('Step #1.')
-	with Guard(1) as guard:
-		print('Step #2.')
-		if guard is None:
-			print('guard is None.')
-		else:
-			guard.func(2.0)
-		print('Step #3.')
-	print('Step #4.')
+	#--------------------
+	print("itertools.chain('ABC', 'DEF', 'ghi') =", list(itertools.chain('ABC', 'DEF', 'ghi')))
+	print("itertools.chain.from_iterable(['ABC', 'DEF', 'ghi']) =", list(itertools.chain.from_iterable(['ABC', 'DEF', 'ghi'])))
 
-def func(i, f, s):
-	print(i, f, s)
+	print("itertools.compress('ABCDEF', [1, 0, 1, 0, 1, 1]) =", list(itertools.compress('ABCDEF', [1, 0, 1, 0, 1, 1])))
+	print("itertools.islice('ABCDEFG', 2, None) =", list(itertools.islice('ABCDEFG', 2, None)))
 
-class func_obj(object):
-	def __init__(self, ii):
-		self._ii = ii
+	print('itertools.starmap(pow, [(2, 5), (3, 2), (10, 3)]) =', list(itertools.starmap(pow, [(2, 5), (3, 2), (10, 3)])))
 
-	def __call__(self, i, f, s):
-		print(i + self._ii, f, s)
+	#--------------------
+	print('itertools.filterfalse(lambda x: x % 2, range(10)) =', list(itertools.filterfalse(lambda x: x % 2, range(10))))
+	print('itertools.dropwhile(lambda x: x < 5, [1, 4, 6, 4, 1] =', list(itertools.dropwhile(lambda x: x < 5, [1, 4, 6, 4, 1])))
+	print('itertools.takewhile(lambda x: x < 5, [1, 4, 6, 4, 1] =', list(itertools.takewhile(lambda x: x < 5, [1, 4, 6, 4, 1])))
 
-def caller_func(callee):
-	callee(1, 2.0, 'abc')
+	#--------------------
+	print("itertools.zip_longest('ABCD', 'xy', fillvalue='-') =", list(itertools.zip_longest('ABCD', 'xy', fillvalue='-')))
+
+	#--------------------
+	print("itertools.tee('ABCDEFG', 2) =", itertools.tee('ABCDEFG', 2))
+
+	#--------------------
+	print("itertools.product('ABCD', repeat=2) =", list(itertools.product('ABCD', repeat=2)))
+	print("itertools.permutations('ABCD', 2) =", list(itertools.permutations('ABCD', 2)))
+	print("itertools.combinations('ABCD', 2) =", list(itertools.combinations('ABCD', 2)))
+	print("itertools.combinations_with_replacement('ABCD', 2) =", list(itertools.combinations_with_replacement('ABCD', 2)))
+
+# REF [site] >> https://docs.python.org/3/library/difflib.html
+def difflib_test():
+	"""
+	difflib.SequenceMatcher
+	difflib.Differ
+	difflib.HtmlDiff
+
+	difflib.context_diff()
+	difflib.get_close_matches()
+	difflib.ndiff()
+	difflib.unified_diff()
+	"""
+
+	#--------------------
+	s = difflib.SequenceMatcher(lambda x: x==" ", " abcd", "abcd abcd")
+	print('s.find_longest_match(0, 5, 0, 9) =', s.find_longest_match(0, 5, 0, 9))
+
+	s = difflib.SequenceMatcher(None, "abxcd", "abcd")
+	print('s.get_matching_blocks() =', s.get_matching_blocks())
+
+	a, b = 'qabxcd', 'abycdf'
+	s = difflib.SequenceMatcher(None, a, b)
+	for tag, i1, i2, j1, j2 in s.get_opcodes():
+		print('{:7}   a[{}:{}] --> b[{}:{}] {!r:>8} --> {!r}'.format(tag, i1, i2, j1, j2, a[i1:i2], b[j1:j2]))
+
+	print("SequenceMatcher(None, 'tide', 'diet').ratio() =", difflib.SequenceMatcher(None, 'tide', 'diet').ratio())
+	print("SequenceMatcher(None, 'diet', 'tide').ratio() =", difflib.SequenceMatcher(None, 'diet', 'tide').ratio())
+
+	s = difflib.SequenceMatcher(None, 'abcd', 'bcde')
+	print('s.ratio() =', s.ratio())
+	print('s.quick_ratio() =', s.quick_ratio())
+	print('s.real_quick_ratio() =', s.real_quick_ratio())
+
+	s = difflib.SequenceMatcher(lambda x: ' ' == x, 'private Thread currentThread;', 'private volatile Thread currentThread;')
+	print('round(s.ratio(), 3) =', round(s.ratio(), 3))
+	for block in s.get_matching_blocks():
+		print('a[%d] and b[%d] match for %d elements' % block)
+	for opcode in s.get_opcodes():
+		 print('%6s a[%d:%d] b[%d:%d]' % opcode)
+
+	#--------------------
+	text1 = \
+'''  1. Beautiful is better than ugly.
+  2. Explicit is better than implicit.
+  3. Simple is better than complex.
+  4. Complex is better than complicated.
+'''.splitlines(keepends=True)
+	text2 = \
+'''  1. Beautiful is better than ugly.
+  3.   Simple is better than complex.
+  4. Complicated is better than complex.
+  5. Flat is better than nested.
+'''.splitlines(keepends=True)
+
+	d = difflib.Differ()
+	result = list(d.compare(text1, text2))
+	from pprint import pprint
+	pprint(result)
+	sys.stdout.writelines(result)
 
 def inheritance_test():
 	class BaseClass(abc.ABC):
@@ -363,20 +427,21 @@ def main():
 	#platform_test()
 
 	#variable_example()
-	container_test()
+	#container_test()
 
 	#assert_test()
 	#exception_test()
 
-	#itertools_test()
+	#with_statement_test()
+
+	#function_call_test()
 
 	#lambda_expression()
 	#map_filter_reduce()
 
-	#with_statement_test()
-
-	#caller_func(func)
-	#caller_func(func_obj(2))
+	#--------------------
+	#itertools_test()
+	difflib_test()
 
 	#--------------------
 	#inheritance_test()

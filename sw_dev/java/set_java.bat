@@ -14,7 +14,6 @@ goto EXIT
 rem -----------------------------------------------------------
 :SET
 
-rem set JAVA_HOME=C:\Progra~1\Java\jre1.8.0_181
 set JAVA_HOME=D:\util_portable\jdk-12.0.2_windows-x64_bin\jdk-12.0.2
 
 set SAVED_PATH_FOR_JAVA=%PATH%

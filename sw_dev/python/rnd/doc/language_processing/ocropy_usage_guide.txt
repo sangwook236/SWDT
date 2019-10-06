@@ -19,12 +19,15 @@
 
 	- Perform binarization.
 		ocropus-nlbin tests/ersch.png -o book
+			A directory 'book' is created.
 	- Perform page layout analysis.
 		REF [site] >> https://github.com/tmbdev/ocropy/wiki/Page-Segmentation
 		ocropus-gpageseg 'book/????.bin.png'
 			Question marks can be used.
-	- Perform text line recognition (on four cores, with a fraktur model).
-		ocropus-rpred -Q 4 -m models/fraktur.pyrnn.gz 'book/????/??????.bin.png'
+	- Perform text line recognition.
+		On four cores, with a fraktur model:
+			ocropus-rpred -Q 4 -m models/fraktur.pyrnn.gz 'book/????/??????.bin.png'
+				Text line recognition results are saved to book/????/??????.txt.
 	- Generate HTML output.
 		ocropus-hocr 'book/????.bin.png' -o ersch.html
 	- Display the output.

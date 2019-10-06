@@ -5,8 +5,7 @@ rem Usage -------------------------------------------------
 
 rem -------------------------------------------------------
 
-rem set JAVA_HOME=C:\Program Files\Java\jre7
-set JAVA_HOME=C:\Program Files\Java\jdk1.7.0_04
+set JAVA_HOME=D:\util_portable\jdk-12.0.2_windows-x64_bin\jdk-12.0.2
 
 set PATH=D:\work\SWDT_github\sw_dev\java\ext\bin;%PATH%
 
@@ -23,12 +22,12 @@ rem set HEAP_OPTION=-Xms4096m -Xmx8192m
 
 rem -------------------------------------------------------
 
-java %HEAP_OPTION% -jar %LOCAL_LIB_PATH%\<runnable-jar-file> <class-name>
+call java %HEAP_OPTION% -jar %LOCAL_LIB_PATH%\<runnable-jar-file> <class-name>
 rem start /b java %HEAP_OPTION% -jar %LOCAL_LIB_PATH%\<runnable-jar-file> <class-name>
 rem start /min java %HEAP_OPTION% -jar %LOCAL_LIB_PATH%\<runnable-jar-file> <class-name>
 
 rem Error -------------------------------------------------
-rem java %HEAP_OPTION% -jar %LOCAL_LIB_PATH%\<non-runnable-jar-file>
+rem call java %HEAP_OPTION% -jar %LOCAL_LIB_PATH%\<non-runnable-jar-file>
 
 endlocal
 echo on

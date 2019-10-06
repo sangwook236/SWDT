@@ -299,8 +299,11 @@
 		https://sourceforge.net/projects/vietocr/files/jTessBoxEditor/
 
 [-] Troubleshooting.
-	- lstm.train.
-		<error> read_params_file: Can't open lstm.train
+	- "Warning. Invalid resolution 0 dpi. Using 70 instead".
+		<cause> The image has no information about DPI (resolution) in its metadata.
+		<solution> Try using --dpi option.
+
+	- "read_params_file: Can't open lstm.train".
 		<cause>
 			There is no lstm.train under 'configs' folder in your tessdata folder.
 		<solution>
