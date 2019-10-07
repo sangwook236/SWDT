@@ -78,11 +78,13 @@
 			https://github.com/tesseract-ocr/tesseract/blob/master/doc/tesseract.1.asc#config-files-and-augmenting-with-user-data
 		tesseract --tessdata-dir /path/to/tessdata /path/to/image stdout -l kor -c preserve_interword_spaces=1 --oem 3 --psm 6
 			psm = 6 (PageSegMode.PSM_SINGLE_BLOCK) & preserve_interword_spaces = 1 resolves some spacing and recognition problems.
-	
+
 		tesseract -l kor kor_gulimche_test.tif tess_ocr_results
 		tesseract -l eng eng_arial_test.tif tess_ocr_results
 
 		tesseract image_list.txt tess_ocr_results
+			Default page separator is form feed (FF) control character.
+		tesseract image_list.txt tess_ocr_results -c page_separator='<ps>'
 			In image_list.txt:
 				/path/to/1.png
 				/path/to/2.png
