@@ -9,7 +9,7 @@ import tensorflow.contrib.slim as slim
 from tensorflow.examples.tutorials.mnist import input_data
 import math
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 import os
 if 'posix' == os.name:
@@ -20,7 +20,7 @@ else:
 
 mnist = input_data.read_data_sets(data_home_dir_path + '/pattern_recognition/mnist/0_original', one_hot=True)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 def weight_variable(shape, name):
 	#initial = tf.truncated_normal(shape, stddev=0.1)
@@ -32,7 +32,7 @@ def bias_variable(shape, name):
 	#return tf.Variable(initial, name=name)
 	return tf.get_variable(name, shape, initializer=tf.constant_initializer(0.1))
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Creqte a model
 
 #tf.reset_default_graph()
@@ -100,14 +100,14 @@ if True:
 	for var in global_variables:
 		print(var)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 cross_entropy = -tf.reduce_sum(label_ph * tf.log(model_output_tensor))
 correct_prediction = tf.equal(tf.argmax(model_output_tensor, -1), tf.argmax(label_ph, -1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Train.
 
 session = tf.Session()
@@ -126,7 +126,7 @@ with session.as_default() as sess:
 	test_acc = sess.run(accuracy, feed_dict={image_ph: mnist.test.images, label_ph: mnist.test.labels, keep_prob_ph: 1.0})
 	print('Test accuracy = %g' % (test_acc))
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 def plot_conv_filters(sess, filter_variable, num_columns=5, figsize=None):
 	filters = filter_variable.eval(sess)  # Shape = (height, width, input_dim, output_dim).
@@ -140,7 +140,7 @@ def plot_conv_filters(sess, filter_variable, num_columns=5, figsize=None):
 			#plt.title('Filter {}'.format(idim))
 			plt.imshow(filters[:,:,idim,odim], interpolation='nearest', cmap='gray')
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Visualize filters in a convolutional layer.
 
 # NOTE [info] >> Need training.

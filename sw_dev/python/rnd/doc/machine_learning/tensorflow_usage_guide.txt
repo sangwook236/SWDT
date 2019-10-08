@@ -157,3 +157,10 @@
 					<type>pom</type>
 				</dependency>
 			</dependencies>
+
+[-] Troubleshooting.
+	- "tensorflow/core/util/ctc/ctc_loss_calculator.cc:145] No valid path found.".
+		<cause> Model output's time steps are too short.
+		<solution> Model output's time steps have to be sufficiently long.
+			For example, the label 'BIFI' would require input length of at least 4
+			while the label 'BIIF' would require input length of at least 5 due to a blank being inserted between the repeated symbols.

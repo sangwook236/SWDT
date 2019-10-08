@@ -4,7 +4,7 @@ import tensorflow.contrib.slim as slim
 import tensorflow.contrib.slim.nets as nets
 import tensorflow as tf
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Create a VGG model.
 
 def vgg16(inputs):
@@ -29,7 +29,7 @@ def vgg16(inputs):
 		net = slim.fully_connected(net, 1000, activation_fn=None, scope='fc8')
 		return net
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 vgg = nets.vgg
 
@@ -42,7 +42,7 @@ predictions, _ = vgg.vgg_16(images)
 # Define the loss functions and get the total loss.
 loss = slim.losses.softmax_cross_entropy(predictions, labels)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 # Load the images and labels.
 images, scene_labels, depth_labels = ...
@@ -58,7 +58,7 @@ sum_of_squares_loss = slim.losses.sum_of_squares(depth_predictions, depth_labels
 total_loss = classification_loss + sum_of_squares_loss
 total_loss = slim.losses.get_total_loss(add_regularization_losses=False)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 # Load the images and labels.
 images, scene_labels, depth_labels, pose_labels = ...
@@ -79,7 +79,7 @@ total_loss1 = classification_loss + sum_of_squares_loss + pose_loss + regulariza
 # (Regularization Loss is included in the total loss by default).
 total_loss2 = slim.losses.get_total_loss()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 train_log_dir = ...
 if not tf.gfile.Exists(train_log_dir):

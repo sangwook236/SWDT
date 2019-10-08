@@ -2,7 +2,7 @@
 
 import tensorflow as tf
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # CSV file.
 
 filename_queue = tf.train.string_input_producer(["file0.csv", "file1.csv"])

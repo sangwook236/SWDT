@@ -10,7 +10,7 @@ import tensorflow.contrib.slim as slim
 from tensorflow.examples.tutorials.mnist import input_data
 import math
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 import os
 if 'posix' == os.name:
@@ -21,7 +21,7 @@ else:
 
 mnist = input_data.read_data_sets(data_home_dir_path + '/pattern_recognition/mnist/0_original', one_hot=True)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 def weight_variable(shape, name=None):
 	initial = tf.truncated_normal(shape, stddev=0.1)
@@ -31,7 +31,7 @@ def bias_variable(shape, name=None):
 	initial = tf.constant(0.1, shape=shape)
 	return tf.Variable(initial, name=name)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Create a model.
 	
 #tf.reset_default_graph()
@@ -85,14 +85,14 @@ else:
 
 model_output_tensor = fc1_act
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 cross_entropy = -tf.reduce_sum(label_ph * tf.log(model_output_tensor))
 correct_prediction = tf.equal(tf.argmax(model_output_tensor, -1), tf.argmax(label_ph, -1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Train.
 
 session = tf.Session()
@@ -111,7 +111,7 @@ with session.as_default() as sess:
 	test_acc = sess.run(accuracy, feed_dict={image_ph: mnist.test.images, label_ph: mnist.test.labels, keep_prob_ph: 1.0})
 	print('Test accuracy = %g' % (test_acc))
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 def plot_conv_activations(activations, num_columns=5, figsize=None):
 	num_layers = activations.shape[3]
@@ -126,7 +126,7 @@ def plot_conv_activations(activations, num_columns=5, figsize=None):
 def compute_layer_activations(sess, layer_tensor, feed_dict):
 	return sess.run(layer_tensor, feed_dict=feed_dict)  # Neurons -> numpy.array.
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Visualize activations(layer ouputs) in a convolutional layer.
 
 with session.as_default() as sess:

@@ -7,7 +7,7 @@ import math
 import time
 #import matplotlib.pyplot as plt
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 def to_one_hot_encoding(label_indexes, num_classes):
 	return np.eye(num_classes)[label_indexes].reshape(label_indexes.shape + (-1,))
@@ -30,7 +30,7 @@ def create_grid_cell(num_hidden_units, num_dims, input_dims, output_dims, tied=F
 	#return tf.contrib.grid_rnn.GridRNNCell(num_hidden_units, num_dims=num_dims, input_dims=0, output_dims=[0, 1], priority_dims=None, non_recurrent_dims=None, tied=tied, cell_fn=None, non_recurrent_fn=non_recurrent_fn)
 	return tf.contrib.grid_rnn.GridRNNCell(num_hidden_units, num_dims=num_dims, input_dims=input_dims, output_dims=output_dims, priority_dims=None, non_recurrent_dims=None, tied=tied, cell_fn=None, non_recurrent_fn=non_recurrent_fn)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # An example of 2D GridRNN.
 
 def create_grid_rnn_model(x, num_dims, num_hidden_units, num_layers, keep_prob):
@@ -156,7 +156,7 @@ def grid_rnn_main():
 	print('\tAccurary = {} / {} = {}'.format(correct_prediction_count, y_gt.size, correct_prediction_count / y_gt.size))
 	print('\tTotal time = {}'.format(time.time() - total_elapsed_time))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 from memory_profiler import profile
 import gc
@@ -472,7 +472,7 @@ def main():
 	#grid_encdec_main()
 	grid_cell_test_main()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

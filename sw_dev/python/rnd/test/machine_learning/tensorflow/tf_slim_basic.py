@@ -3,7 +3,7 @@
 import tensorflow.contrib.slim as slim
 import tensorflow as tf
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Variables.
 
 # Model variables.
@@ -27,7 +27,7 @@ my_model_variable = CreateViaCustomCode()
 slim.add_model_variable(my_model_variable)
 """
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Layers.
 
 input_shape = (None, 224, 224, 3)

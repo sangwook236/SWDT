@@ -4,7 +4,7 @@ import tensorflow as tf
 from PIL import Image
 import numpy as np
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 filenames = ['D:/dataset/pattern_recognition/street1.png', 'D:/dataset/pattern_recognition/street2.png']
 #filenames = tf.train.match_filenames_once("D:/dataset/pattern_recognition/*.png")  # Not working.
@@ -16,7 +16,7 @@ filename_queue = tf.train.string_input_producer(filenames)
 reader = tf.WholeFileReader()
 _, img_value = reader.read(filename_queue)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Encode and decode.
 
 #rgb_img = tf.image.decode_png(img_value, channels = 3)
@@ -47,7 +47,7 @@ with tf.Session() as sess:
 #tf.image.encode_png(rgb_img)
 #tf.image.encode_jpeg(rgb_img)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Converting between colorspaces.
 
 rgb_img_float = tf.image.convert_image_dtype(rgb_img, tf.float32)

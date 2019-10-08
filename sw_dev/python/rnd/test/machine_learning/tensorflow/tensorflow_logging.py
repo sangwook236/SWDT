@@ -5,6 +5,6 @@ import logging
 import tensorflow as tf
 import numpy as np
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 tf.logging._logger.setLevel(logging.INFO)

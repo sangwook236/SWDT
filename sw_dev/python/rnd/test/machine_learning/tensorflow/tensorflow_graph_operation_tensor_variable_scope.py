@@ -61,7 +61,7 @@ def create_operations():
 
 	return z1, S1, U1, V1, z2, S2, U2, V2
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 reuse = tf.AUTO_REUSE
 
@@ -83,7 +83,7 @@ with tf.variable_scope('my_var_scope4', reuse=reuse):
 		create_variables()
 		create_operations()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 reuse = tf.AUTO_REUSE
 
@@ -108,7 +108,7 @@ with tf.name_scope('my_name_scope4'):
 		create_variables(False)
 		create_operations()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # tf.Graph:
 #	REF [site] >> https://www.tensorflow.org/api_docs/python/tf/Graph
 #	A TensorFlow computation is represented as a dataflow graph.
@@ -126,7 +126,7 @@ print(graph)
 # Using any previously created tf.Operation or tf.Tensor objects after calling this function will result in undefined behavior.
 #tf.reset_default_graph()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # tf.Operation:
 #	REF [site] >> https://www.tensorflow.org/api_docs/python/tf/Operation
 #	A tf.Operation represents a graph node that performs computation on tensors.
@@ -147,7 +147,7 @@ print(operation.inputs)
 print(operation.outputs)
 print(operation.values())
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # tf.Tensor:
 #	REF [site] >> https://www.tensorflow.org/api_docs/python/tf/Tensor
 #	A tf.Tensor represents one of the outputs of a tf.Operation.
@@ -164,7 +164,7 @@ print(tensor.op)
 print(tensor.get_shape())  # Returns a tf.TensorShape. Use tensor.get_shape().as_list().
 #tensor.eval(feed_dict={...})
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # tf.Variable.
 #	REF [site] >> https://www.tensorflow.org/api_docs/python/tf/Variable
 #	A variable maintains state in the graph across calls to run().
@@ -217,7 +217,7 @@ with tf.name_scope('my_var_scope1'):
 
 	pass
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # tf.VariableScope & tf.variable_scope:
 #	REF [site] >> https://www.tensorflow.org/api_docs/python/tf/variable_scope
 #	A context manager for defining ops that creates variables (layers).

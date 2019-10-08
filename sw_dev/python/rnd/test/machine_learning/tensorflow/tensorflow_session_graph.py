@@ -86,7 +86,7 @@ with graph3.as_default() as graph:
 	print('Model variables =', tf.model_variables())
 	#print('Operations =', graph.get_operations())
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 assert tf.get_default_session() is default_sess
 assert tf.get_default_graph() is default_graph
@@ -179,7 +179,7 @@ with graph3.as_default() as graph:
 assert tf.get_default_session() is default_sess
 assert tf.get_default_graph() is default_graph
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 # NOTICE [info] >>
 #	The as_default context manager does not close the session (sess1) when you exit the context, and it must be closed explicitly.
@@ -215,7 +215,7 @@ with sess1.as_default() as sess:
 
 assert tf.get_default_session() is not sess1
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 sess2.close()
 #sess2 = None
