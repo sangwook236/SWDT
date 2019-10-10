@@ -10,6 +10,8 @@ def basic():
 			data = fd.read()
 	except FileNotFoundError as ex:
 		print('File not found: {}.'.format('data.txt'))
+	except UnicodeDecodeError as ex:
+		print('Unicode decode error: {}.'.format('data.txt'))
 
 	try:
 		with open('data_copyed.txt', 'w', encoding='UTF8') as fd:
@@ -20,12 +22,16 @@ def basic():
 		words = data.split()
 	except FileNotFoundError as ex:
 		print('File not found: {}.'.format('data_copyed.txt'))
+	except UnicodeDecodeError as ex:
+		print('Unicode decode error: {}.'.format('data_copyed.txt'))
 
 	try:
 		with open('data.txt', 'r') as fd:
 			lines = fd.readlines()
 	except FileNotFoundError as ex:
 		print('File not found: {}.'.format('data.txt'))
+	except UnicodeDecodeError as ex:
+		print('Unicode decode error: {}.'.format('data.txt'))
 
 	lines2 = list()
 	for line in lines:
