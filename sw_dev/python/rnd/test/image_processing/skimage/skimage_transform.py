@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from skimage.transform import PiecewiseAffineTransform, warp
 from skimage import data
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 REF [site] >> http://scikit-image.org/docs/stable/auto_examples/transform/plot_piecewise_affine.html
 def piecewise_affine_transform():
@@ -40,7 +40,7 @@ def piecewise_affine_transform():
 def main():
 	piecewise_affine_transform()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

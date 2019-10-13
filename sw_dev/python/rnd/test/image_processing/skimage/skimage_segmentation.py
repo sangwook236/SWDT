@@ -223,7 +223,7 @@ def main():
 	rag_merging_example()
 	#hierarchical_merging_of_region_boundary_rags_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

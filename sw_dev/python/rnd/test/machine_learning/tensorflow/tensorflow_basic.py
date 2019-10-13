@@ -221,6 +221,9 @@ def gradient_test():
 		y, dy_dx = sess.run([y, dy_dx], feed_dict={x: 1.0, m: 2.0})
 
 def main():
+	#os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+	#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'  # [0, 3].
+
 	#basic_operation()
 
 	py_function_test()

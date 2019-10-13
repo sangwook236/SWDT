@@ -86,13 +86,15 @@ def container_test():
 	print('vals =', vals)
 
 def assert_test():
-	#assert(2 + 2 == 5, "Error: addition.")  # Error: not working.
-	assert 2 + 2 == 5, "Error: addition."
+	#assert(2 + 2 == 5, 'Error: Addition.')  # Error: Not working.
+	assert 2 + 2 == 5, 'Error: Addition.'
+	#if not 2 + 2 == 5:
+	#	raise AssertionError('Error: Addition')
 
-	if __debug__:
+	if __debug__:  # True if Python is not started with an -O option.
 		if not 2 + 2 == 5:
 			raise AssertionError
-			#raise AssertionError, "Error: addition."  # Error: invalid syntax.
+			#raise AssertionError, 'Error: Addition.'  # Error: Invalid syntax.
 
 def exception_test():
 	if not os.path.exists(prediction_dir_path):
@@ -447,6 +449,12 @@ def main():
 	#inheritance_test()
 
 #--------------------------------------------------------------------
+
+# Usage:
+#	python -O
+#		__debug__ = False if Python was started with an -O option.
+#	python
+#		__debug__ = True if Python was not started with an -O option.
 
 if '__main__' == __name__:
 	main()

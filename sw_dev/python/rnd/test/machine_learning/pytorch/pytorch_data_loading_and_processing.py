@@ -2,19 +2,179 @@
 
 from __future__ import print_function, division
 import os
-import torch
-import pandas as pd
-from skimage import io, transform
 import numpy as np
-import matplotlib.pyplot as plt
+import torch
 from torch.utils.data import Dataset, DataLoader
-from torchvision import transforms, utils, datasets
+import torchvision
+import pandas as pd
+import skimage
+import matplotlib.pyplot as plt
+import PIL.Image
 
 # Ignore warnings.
 import warnings
 warnings.filterwarnings('ignore')
 
 plt.ion()  # Interactive mode.
+
+# REF [site] >> https://pytorch.org/docs/stable/torchvision/datasets.html
+def mnist_dataset_test():
+	batch_size = 32
+	shuffle = True
+	num_workers = 4
+
+	transform = torchvision.transforms.ToTensor()
+	#transform = torchvision.transforms.Compose([torchvision.transforms.ToTensor(), torchvision.transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))])
+
+	#--------------------
+	train_set = torchvision.datasets.MNIST(root='./mnist', train=True, download=True, transform=transform)
+	train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+
+	data_iter = iter(train_loader)
+	images, labels = data_iter.next()
+	images, labels = images.numpy(), labels.numpy()
+	print('Train image: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
+	print('Train label: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(labels.shape, labels.dtype, np.min(labels), np.max(labels)))
+
+	#for batch_step, batch_data in enumerate(train_loader):
+	#	batch_inputs, batch_outputs = batch_data
+
+	#--------------------
+	test_set = torchvision.datasets.MNIST(root='./mnist', train=False, download=True, transform=transform)
+	test_loader = torch.utils.data.DataLoader(test_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+
+	data_iter = iter(test_loader)
+	images, labels = data_iter.next()
+	images, labels = images.numpy(), labels.numpy()
+	print('Test image: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
+	print('Test label: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(labels.shape, labels.dtype, np.min(labels), np.max(labels)))
+
+	#for batch_step, batch_data in enumerate(test_loader):
+	#	batch_inputs, batch_outputs = batch_data
+
+# REF [site] >> https://pytorch.org/docs/stable/torchvision/datasets.html
+def imagenet_dataset_test():
+	if 'posix' == os.name:
+		imagenet_dir_path = '/home/sangwook/my_dataset/pattern_recognition/imagenet'
+	else:
+		imagenet_dir_path = 'E:/dataset/pattern_recognition/imagenet'
+
+	batch_size = 32
+	shuffle = True
+	num_workers = 4
+
+	transform = torchvision.transforms.ToTensor()
+	#transform = torchvision.transforms.Compose([torchvision.transforms.ToTensor(), torchvision.transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))])
+
+	#--------------------
+	train_set = torchvision.datasets.ImageNet(root=imagenet_dir_path, split='train', download=True, transform=transform)
+	train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+
+	data_iter = iter(train_loader)
+	images, labels = data_iter.next()
+	images, labels = images.numpy(), labels.numpy()
+	print('Train image: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
+	print('Train label: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(labels.shape, labels.dtype, np.min(labels), np.max(labels)))
+
+	#for batch_step, batch_data in enumerate(train_loader):
+	#	batch_inputs, batch_outputs = batch_data
+
+	#--------------------
+	test_set = torchvision.datasets.ImageNet(root=imagenet_dir_path, split='val', download=True, transform=transform)
+	test_loader = torch.utils.data.DataLoader(test_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+
+	data_iter = iter(test_loader)
+	images, labels = data_iter.next()
+	images, labels = images.numpy(), labels.numpy()
+	print('Test image: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
+	print('Test label: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(labels.shape, labels.dtype, np.min(labels), np.max(labels)))
+
+	#for batch_step, batch_data in enumerate(test_loader):
+	#	batch_inputs, batch_outputs = batch_data
+
+def coco_dataset_captions_test():
+	if 'posix' == os.name:
+		coco_dir_path = '/home/sangwook/my_dataset/pattern_recognition/coco'
+	else:
+		coco_dir_path = 'E:/dataset/pattern_recognition/coco'
+
+	batch_size = 32
+	shuffle = True
+	num_workers = 4
+
+	transform = torchvision.transforms.Compose([
+		torchvision.transforms.Resize(size=(224, 224), interpolation=PIL.Image.BILINEAR),
+		torchvision.transforms.ToTensor(),
+		#torchvision.transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
+	])
+
+	#--------------------
+	train_set = torchvision.datasets.CocoCaptions(root=os.path.join(coco_dir_path, 'train2014'), annFile=os.path.join(coco_dir_path, 'annotations/captions_train2014.json'), transform=transform)
+	train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+
+	data_iter = iter(train_loader)
+	images, labels = data_iter.next()  # torch.Tensor, list of tuples.
+	images = images.numpy()
+	print('Train image: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
+	print('Train label: type = {}, length = {}, type = {}, length = {}.'.format(type(labels), len(labels), type(labels[0]), len(labels[0])))
+
+	#for batch_step, batch_data in enumerate(train_loader):
+	#	batch_inputs, batch_outputs = batch_data
+
+	#--------------------
+	test_set = torchvision.datasets.CocoCaptions(root=os.path.join(coco_dir_path, 'val2014'), annFile=os.path.join(coco_dir_path, 'annotations/captions_val2014.json'), transform=transform)
+	test_loader = torch.utils.data.DataLoader(test_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+
+	data_iter = iter(test_loader)
+	images, labels = data_iter.next()  # torch.Tensor, list of tuples.
+	images = images.numpy()
+	print('Test image: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
+	print('Test label: type = {}, length = {}, type = {}, length = {}.'.format(type(labels), len(labels), type(labels[0]), len(labels[0])))
+
+	#for batch_step, batch_data in enumerate(test_loader):
+	#	batch_inputs, batch_outputs = batch_data
+
+def coco_dataset_detection_test():
+	if 'posix' == os.name:
+		coco_dir_path = '/home/sangwook/my_dataset/pattern_recognition/coco'
+	else:
+		coco_dir_path = 'E:/dataset/pattern_recognition/coco'
+
+	batch_size = 32
+	shuffle = True
+	num_workers = 4
+
+	transform = torchvision.transforms.Compose([
+		torchvision.transforms.Resize(size=(224, 224), interpolation=PIL.Image.BILINEAR),
+		torchvision.transforms.ToTensor(),
+		#torchvision.transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
+	])
+
+	#--------------------
+	train_set = torchvision.datasets.CocoDetection(root=os.path.join(coco_dir_path, 'train2014'), annFile=os.path.join(coco_dir_path, 'annotations/instances_train2014.json'), transform=transform)
+	train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+
+	data_iter = iter(train_loader)
+	images, labels = data_iter.next()  # torch.Tensor, list of tuples.
+	images = images.numpy()
+	print('Train image: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
+	print('Train label: type = {}, length = {}, type = {}, length = {}.'.format(type(labels), len(labels), type(labels[0]), len(labels[0])))
+
+	#for batch_step, batch_data in enumerate(train_loader):
+	#	batch_inputs, batch_outputs = batch_data
+
+	#--------------------
+	test_set = torchvision.datasets.CocoDetection(root=os.path.join(coco_dir_path, 'val2014'), annFile=os.path.join(coco_dir_path, 'annotations/instances_val2014.json'), transform=transform)
+	test_loader = torch.utils.data.DataLoader(test_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+
+	data_iter = iter(test_loader)
+	images, labels = data_iter.next()  # torch.Tensor, list of tuples.
+	images = images.numpy()
+	print('Test image: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
+	print('Test label: type = {}, length = {}, type = {}, length = {}.'.format(type(labels), len(labels), type(labels[0]), len(labels[0])))
+
+	#for batch_step, batch_data in enumerate(test_loader):
+	#	batch_inputs, batch_outputs = batch_data
 
 def show_landmarks(image, landmarks):
 	"""Show image with landmarks"""
@@ -36,7 +196,7 @@ def simple_example():
 	print('First 4 Landmarks: {}'.format(landmarks[:4]))
 
 	plt.figure()
-	show_landmarks(io.imread(os.path.join('data/faces/', img_name)), landmarks)
+	show_landmarks(skimage.io.imread(os.path.join('data/faces/', img_name)), landmarks)
 	plt.show()
 
 class FaceLandmarksDataset(Dataset):
@@ -58,7 +218,7 @@ class FaceLandmarksDataset(Dataset):
 
 	def __getitem__(self, idx):
 		img_name = os.path.join(self.root_dir, self.landmarks_frame.iloc[idx, 0])
-		image = io.imread(img_name)
+		image = skimage.io.imread(img_name)
 		landmarks = self.landmarks_frame.iloc[idx, 1:].as_matrix()
 		landmarks = landmarks.astype('float').reshape(-1, 2)
 		sample = {'image': image, 'landmarks': landmarks}
@@ -116,7 +276,7 @@ class Rescale(object):
 
 		new_h, new_w = int(new_h), int(new_w)
 
-		img = transform.resize(image, (new_h, new_w))
+		img = skimage.transform.resize(image, (new_h, new_w))
 
 		# h and w are swapped for landmarks because for images,
 		# x and y axes are axis 1 and 0 respectively.
@@ -173,7 +333,7 @@ def dataset_with_data_processing_example():
 	# Compose transforms.
 	scale = Rescale(256)
 	crop = RandomCrop(128)
-	composed = transforms.Compose([Rescale(256), RandomCrop(224)])
+	composed = torchvision.transforms.Compose([Rescale(256), RandomCrop(224)])
 
 	# Apply each of the above transforms on sample.
 	face_dataset = FaceLandmarksDataset(csv_file='data/faces/face_landmarks.csv', root_dir='data/faces/')
@@ -193,7 +353,7 @@ def dataset_with_data_processing_example():
 	# Iterate through the dataset.
 	transformed_dataset = FaceLandmarksDataset(csv_file='data/faces/face_landmarks.csv',
 												root_dir='data/faces/',
-												transform=transforms.Compose([
+												transform=torchvision.transforms.Compose([
 													Rescale(256),
 													RandomCrop(224),
 													ToTensor()
@@ -218,7 +378,7 @@ def dataset_with_data_processing_example():
 		im_size = images_batch.size(2)
 		grid_border_size = 2
 
-		grid = utils.make_grid(images_batch)
+		grid = torchvision.utils.make_grid(images_batch)
 		plt.imshow(grid.numpy().transpose((1, 2, 0)))
 
 		for i in range(batch_size):
@@ -242,23 +402,28 @@ def dataset_with_data_processing_example():
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/data_loading_tutorial.html
 def data_processing():
-	data_transform = transforms.Compose([
-		transforms.RandomSizedCrop(224),
-		transforms.RandomHorizontalFlip(),
-		transforms.ToTensor(),
-		transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+	data_transform = torchvision.transforms.Compose([
+		torchvision.transforms.RandomSizedCrop(224),
+		torchvision.transforms.RandomHorizontalFlip(),
+		torchvision.transforms.ToTensor(),
+		torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 	])
-	hymenoptera_dataset = datasets.ImageFolder(root='data/hymenoptera_data/train', transform=data_transform)
+	hymenoptera_dataset = torchvision.datasets.ImageFolder(root='data/hymenoptera_data/train', transform=data_transform)
 	dataset_loader = torch.utils.data.DataLoader(hymenoptera_dataset, batch_size=4, shuffle=True, num_workers=4)
 
 def main():
+	mnist_dataset_test()
+	#imagenet_dataset_test()
+	#coco_dataset_captions_test()
+	#coco_dataset_detection_test()
+
 	#simple_example()
 	#dataset_example()
-	dataset_with_data_processing_example()
+	#dataset_with_data_processing_example()
 
 	#data_processing()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()
