@@ -16,7 +16,7 @@ def mnist_dataset_test():
 	tf.enable_eager_execution()
 
 	# See available datasets.
-	print('Available datasets =', tfds.list_builders())
+	print('Available datasets = {}.'.format(tfds.list_builders()))
 
 	#--------------------
 	# Construct a tf.data.Dataset.
@@ -69,21 +69,24 @@ def mnist_dataset_test():
 	datasets, info = tfds.load('mnist', with_info=True)  # A dictionary of tf.data.Dataset's & tfds.core.DatasetInfo.
 
 	print('Datasets: keys = {}.'.format(datasets.keys()))
-	print('#classes =', info.features['label'].num_classes)
-	print('#train examples =', info.splits['train'].num_examples)
-	print('#test examples =', info.splits['test'].num_examples)
+	print('Splits: keys = {}.'.format(info.splits.keys()))
+	print('Features: keys = {}.'.format(info.features.keys()))
 
-	train_data, test_data = datasets['train'], datasets['test']
-	print('Train dataset: type = {}.'.format(type(train_data)))
-	print('Test dataset: type = {}.'.format(type(test_data)))
+	print('#classes = {}.'.format(info.features['label'].num_classes))
+	print('#train examples = {}.'.format(info.splits['train'].num_examples))
+	print('#test examples = {}.'.format(info.splits['test'].num_examples))
 
-	for example in train_data.take(1):
+	train_dataset, test_dataset = datasets['train'], datasets['test']
+	print('Train dataset: type = {}.'.format(type(train_dataset)))
+	print('Test dataset: type = {}.'.format(type(test_dataset)))
+
+	for example in train_dataset.take(1):
 		image, label = example['image'], example['label']
 
 		print('\tTrain image: shape = {}, dtype = {}.'.format(image.shape, image.dtype))
 		print('\tTrain label: shape = {}, dtype = {}.'.format(label.shape, label.dtype))
 
-	for example in test_data.take(1):
+	for example in test_dataset.take(1):
 		image, label = example['image'], example['label']
 
 		print('\tTest image: shape = {}, dtype = {}.'.format(image.shape, image.dtype))
@@ -93,9 +96,9 @@ def mnist_dataset_test():
 	# Access a builder directly.
 	builder = tfds.builder('mnist')
 
-	print('#classes =', builder.info.features['label'].num_classes)
-	print('#train examples =', builder.info.splits['train'].num_examples)
-	#print('#test examples =', builder.info.splits['test'].num_examples)
+	print('#classes = {}.'.format(builder.info.features['label'].num_classes))
+	print('#train examples = {}.'.format(builder.info.splits['train'].num_examples))
+	#print('#test examples = {}.'.format(builder.info.splits['test'].num_examples))
 
 	builder.download_and_prepare()
 	datasets = builder.as_dataset()  # A dictionary of tf.data.Dataset's.
@@ -119,20 +122,91 @@ def mnist_dataset_test():
 		break
 
 def imagenet_dataset_test():
-	if 'posix' == os.name:
-		imagenet_dir_path = '/home/sangwook/my_dataset/pattern_recognition/imagenet'
-	else:
-		imagenet_dir_path = 'E:/dataset/pattern_recognition/imagenet'
+	# tfds works in both Eager and Graph modes.
+	#tf.enable_eager_execution()
 
-	datasets, info = tfds.load('imagenet2012', data_dir=imagenet_dir_path, download=True, with_info=True)
+	if 'posix' == os.name:
+		data_dir_path = '/home/sangwook/my_dataset'
+	else:
+		data_dir_path = 'E:/dataset'
+	imagenet_dir_path = data_dir_path + '/pattern_recognition/imagenet'
+
+	datasets, info = tfds.load('imagenet2012', data_dir=imagenet_dir_path, download=False, with_info=True)
+
+	print('Datasets: keys = {}.'.format(datasets.keys()))
+	print('Splits: keys = {}.'.format(info.splits.keys()))
+	print('Features: keys = {}.'.format(info.features.keys()))
+
+	print('#classes = {}.'.format(info.features['label'].num_classes))
+	print('#train examples = {}.'.format(info.splits['train'].num_examples))
+	print('#test examples = {}.'.format(info.splits['test'].num_examples))
+
+	train_dataset = datasets['train']
+	print('Train dataset: type = {}.'.format(type(train_dataset)))
+	for example in train_dataset.take(1):
+		image, label = example['image'], example['label']
+
+		print('\tTrain image: shape = {}, dtype = {}.'.format(image.shape, image.dtype))
+		print('\tTrain label: shape = {}, dtype = {}.'.format(label.shape, label.dtype))
+
+	test_dataset = datasets['test']
+	print('Test dataset: type = {}.'.format(type(test_dataset)))
+	for example in test_dataset.take(1):
+		image, label = example['image'], example['label']
+
+		print('\tTest image: shape = {}, dtype = {}.'.format(image.shape, image.dtype))
+		print('\tTest label: shape = {}, dtype = {}.'.format(label.shape, label.dtype))
 
 def coco_dataset_test():
-	if 'posix' == os.name:
-		coco_dir_path = '/home/sangwook/my_dataset/pattern_recognition/coco'
-	else:
-		coco_dir_path = 'E:/dataset/pattern_recognition/coco'
+	# tfds works in both Eager and Graph modes.
+	#tf.enable_eager_execution()
 
-	datasets, info = tfds.load('coco', data_dir=os.path.join(coco_dir_path, 'train2014'), download=False, with_info=True)
+	if 'posix' == os.name:
+		data_dir_path = '/home/sangwook/my_dataset'
+	else:
+		data_dir_path = 'E:/dataset'
+	coco_dir_path = data_dir_path + '/pattern_recognition/coco'
+
+	datasets, info = tfds.load('coco', data_dir=coco_dir_path, download=False, with_info=True)
+
+	print('Datasets: keys = {}.'.format(datasets.keys()))
+	print('Splits: keys = {}.'.format(info.splits.keys()))
+	print('Features: keys = {}.'.format(info.features.keys()))
+
+	"""
+	print('#classes = {}.'.format(info.features['image']))
+	print('#classes = {}.'.format(info.features['image/id']))
+	print('#classes = {}.'.format(info.features['image/filename']))
+	print('#classes = {}.'.format(info.features['objects']))
+	"""
+	print('#train examples = {}.'.format(info.splits['train'].num_examples))
+	print('#test examples = {}.'.format(info.splits['test'].num_examples))
+	print('#test2015 examples = {}.'.format(info.splits['test2015'].num_examples))
+	print('#validation examples = {}.'.format(info.splits['validation'].num_examples))
+
+	train_dataset = datasets['train']
+	print('Train dataset: type = {}.'.format(type(train_dataset)))
+	#print('Train dataset: output shapes = {}.'.format(tf.data.get_output_shapes(train_dataset)))
+	#print('Train dataset: output types = {}.'.format(tf.data.get_output_types(train_dataset)))
+	#print('Train dataset: output classes = {}.'.format(tf.data.get_output_classes(train_dataset)))
+	for example in train_dataset.take(1):
+		image, image_id, image_filename, objects = example['image'], example['image/id'], example['image/filename'], example['objects']
+		area, bbox, is_crowd, label = objects['area'], objects['bbox'], objects['is_crowd'], objects['label']
+
+		print('\tTrain image: shape = {}, dtype = {}.'.format(image.shape, image.dtype))
+		print('\tTrain bboxes: shape = {}, dtype = {}.'.format(bboxes.shape, bboxes.dtype))
+		print('\tTrain labels: shape = {}, dtype = {}.'.format(labels.shape, labels.dtype))
+		break
+
+	test_dataset = datasets['test']
+	print('Test dataset: type = {}.'.format(type(test_dataset)))
+	for example in test_dataset.take(1):
+		image, label = example['image'], example['image/id']
+
+		print('\tTest image: shape = {}, dtype = {}.'.format(image.shape, image.dtype))
+		print('\tTest bboxes: shape = {}, dtype = {}.'.format(bboxes.shape, bboxes.dtype))
+		print('\tTest labels: shape = {}, dtype = {}.'.format(labels.shape, labels.dtype))
+		break
 
 def main():
 	#mnist_dataset_test()

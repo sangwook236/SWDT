@@ -19,15 +19,24 @@ plt.ion()  # Interactive mode.
 
 # REF [site] >> https://pytorch.org/docs/stable/torchvision/datasets.html
 def mnist_dataset_test():
+	if 'posix' == os.name:
+		data_dir_path = '/home/sangwook/my_dataset'
+	else:
+		data_dir_path = 'E:/dataset'
+	mnist_dir_path = data_dir_path + '/language_processing/mnist'
+
 	batch_size = 32
 	shuffle = True
 	num_workers = 4
 
 	transform = torchvision.transforms.ToTensor()
-	#transform = torchvision.transforms.Compose([torchvision.transforms.ToTensor(), torchvision.transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))])
+	#transform = torchvision.transforms.Compose([
+	#	torchvision.transforms.ToTensor(),
+	#	torchvision.transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
+	#])
 
 	#--------------------
-	train_set = torchvision.datasets.MNIST(root='./mnist', train=True, download=True, transform=transform)
+	train_set = torchvision.datasets.MNIST(root=mnist_dir_path, train=True, download=True, transform=transform)
 	train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
 
 	data_iter = iter(train_loader)
@@ -40,7 +49,7 @@ def mnist_dataset_test():
 	#	batch_inputs, batch_outputs = batch_data
 
 	#--------------------
-	test_set = torchvision.datasets.MNIST(root='./mnist', train=False, download=True, transform=transform)
+	test_set = torchvision.datasets.MNIST(root=mnist_dir_path, train=False, download=True, transform=transform)
 	test_loader = torch.utils.data.DataLoader(test_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
 
 	data_iter = iter(test_loader)
@@ -55,16 +64,20 @@ def mnist_dataset_test():
 # REF [site] >> https://pytorch.org/docs/stable/torchvision/datasets.html
 def imagenet_dataset_test():
 	if 'posix' == os.name:
-		imagenet_dir_path = '/home/sangwook/my_dataset/pattern_recognition/imagenet'
+		data_dir_path = '/home/sangwook/my_dataset'
 	else:
-		imagenet_dir_path = 'E:/dataset/pattern_recognition/imagenet'
+		data_dir_path = 'E:/dataset'
+	imagenet_dir_path = data_dir_path + '/pattern_recognition/imagenet'
 
 	batch_size = 32
 	shuffle = True
 	num_workers = 4
 
-	transform = torchvision.transforms.ToTensor()
-	#transform = torchvision.transforms.Compose([torchvision.transforms.ToTensor(), torchvision.transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))])
+	transform = torchvision.transforms.Compose([
+		torchvision.transforms.Resize(size=(224, 224), interpolation=PIL.Image.BILINEAR),
+		torchvision.transforms.ToTensor(),
+		#torchvision.transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
+	])
 
 	#--------------------
 	train_set = torchvision.datasets.ImageNet(root=imagenet_dir_path, split='train', download=True, transform=transform)
@@ -80,23 +93,24 @@ def imagenet_dataset_test():
 	#	batch_inputs, batch_outputs = batch_data
 
 	#--------------------
-	test_set = torchvision.datasets.ImageNet(root=imagenet_dir_path, split='val', download=True, transform=transform)
-	test_loader = torch.utils.data.DataLoader(test_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+	val_set = torchvision.datasets.ImageNet(root=imagenet_dir_path, split='val', download=True, transform=transform)
+	val_loader = torch.utils.data.DataLoader(val_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
 
-	data_iter = iter(test_loader)
+	data_iter = iter(val_loader)
 	images, labels = data_iter.next()
 	images, labels = images.numpy(), labels.numpy()
-	print('Test image: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
-	print('Test label: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(labels.shape, labels.dtype, np.min(labels), np.max(labels)))
+	print('Valiation image: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
+	print('Valiation label: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(labels.shape, labels.dtype, np.min(labels), np.max(labels)))
 
-	#for batch_step, batch_data in enumerate(test_loader):
+	#for batch_step, batch_data in enumerate(val_loader):
 	#	batch_inputs, batch_outputs = batch_data
 
 def coco_dataset_captions_test():
 	if 'posix' == os.name:
-		coco_dir_path = '/home/sangwook/my_dataset/pattern_recognition/coco'
+		data_dir_path = '/home/sangwook/my_dataset'
 	else:
-		coco_dir_path = 'E:/dataset/pattern_recognition/coco'
+		data_dir_path = 'E:/dataset'
+	coco_dir_path = data_dir_path + '/pattern_recognition/coco/train2014'
 
 	batch_size = 32
 	shuffle = True
@@ -122,23 +136,24 @@ def coco_dataset_captions_test():
 	#	batch_inputs, batch_outputs = batch_data
 
 	#--------------------
-	test_set = torchvision.datasets.CocoCaptions(root=os.path.join(coco_dir_path, 'val2014'), annFile=os.path.join(coco_dir_path, 'annotations/captions_val2014.json'), transform=transform)
-	test_loader = torch.utils.data.DataLoader(test_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+	val_set = torchvision.datasets.CocoCaptions(root=os.path.join(coco_dir_path, 'val2014'), annFile=os.path.join(coco_dir_path, 'annotations/captions_val2014.json'), transform=transform)
+	val_loader = torch.utils.data.DataLoader(val_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
 
-	data_iter = iter(test_loader)
+	data_iter = iter(val_loader)
 	images, labels = data_iter.next()  # torch.Tensor, list of tuples.
 	images = images.numpy()
 	print('Test image: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
 	print('Test label: type = {}, length = {}, type = {}, length = {}.'.format(type(labels), len(labels), type(labels[0]), len(labels[0])))
 
-	#for batch_step, batch_data in enumerate(test_loader):
+	#for batch_step, batch_data in enumerate(val_loader):
 	#	batch_inputs, batch_outputs = batch_data
 
 def coco_dataset_detection_test():
 	if 'posix' == os.name:
-		coco_dir_path = '/home/sangwook/my_dataset/pattern_recognition/coco'
+		data_dir_path = '/home/sangwook/my_dataset'
 	else:
-		coco_dir_path = 'E:/dataset/pattern_recognition/coco'
+		data_dir_path = 'E:/dataset'
+	coco_dir_path = data_dir_path + '/pattern_recognition/coco'
 
 	batch_size = 32
 	shuffle = True
