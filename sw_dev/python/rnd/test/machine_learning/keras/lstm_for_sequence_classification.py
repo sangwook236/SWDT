@@ -1,6 +1,6 @@
 # REF [site] >> http://machinelearningmastery.com/sequence-classification-lstm-recurrent-neural-networks-python-keras/
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,7 +14,7 @@ from keras.layers.convolutional import MaxPooling1D
 from keras.layers.embeddings import Embedding
 from keras.preprocessing import sequence
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 def display_history(history):
 	# List all data in history.
@@ -41,7 +41,7 @@ def display_history(history):
 	plt.show()
 	plt.close(fig)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Prepare dataset.
 
 # Fix random seed for reproducibility.
@@ -58,7 +58,7 @@ X_test = sequence.pad_sequences(X_test, maxlen=max_review_length)
 
 embedding_vector_length = 32
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Simple LSTM for sequence classification.
 
 # Create a model.
@@ -78,7 +78,7 @@ display_history(history)
 scores = model.evaluate(X_test, y_test, verbose=0)
 print('Accuracy: %.2f%%' % (scores[1]*100))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # LSTM for sequence classification with dropout.
 
 # Dropout can be applied between layers.
@@ -104,7 +104,7 @@ display_history(history)
 scores = model.evaluate(X_test, y_test, verbose=0)
 print('Accuracy: %.2f%%' % (scores[1]*100))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # LSTM for sequence classification with dropout.
 
 # Dropout can be applied to the input and recurrent connections of the memory units with the LSTM precisely and separately.
@@ -129,7 +129,7 @@ display_history(history)
 scores = model.evaluate(X_test, y_test, verbose=0)
 print('Accuracy: %.2f%%' % (scores[1]*100))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # LSTM and convolutional neural network (CNN) for sequence classification.
 
 # Convolutional neural networks excel at learning the spatial structure in input data.

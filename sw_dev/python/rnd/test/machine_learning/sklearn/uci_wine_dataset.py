@@ -21,7 +21,7 @@ else:
 
 data_dir_path = data_home_dir_path + '/pattern_recognition/uci/wine'
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Use pandas.DataFrame & sklearn.preprocessing.
 
 # REF [site] >> http://sebastianraschka.com/Articles/2014_about_feature_scaling.html
@@ -50,7 +50,7 @@ print('\tStandard deviation after standardization:\n\tAlcohol={:.2f}, Malic acid
 print('\tMin-value after min-max scaling:\n\tAlcohol={:.2f}, Malic acid={:.2f}'.format(df_minmax[:,0].min(), df_minmax[:,1].min()))
 print('\tMax-value after min-max scaling:\n\tAlcohol={:.2f}, Malic acid={:.2f}'.format(df_minmax[:,0].max(), df_minmax[:,1].max()))
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Plot.
 
 import matplotlib.pyplot as plt
@@ -91,7 +91,7 @@ def plot2():
 plot2()
 plt.show()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Use numpy.array & sklearn.preprocessing.
 
 dataset = df.as_matrix()
@@ -112,7 +112,7 @@ print('\tMax-value after min-max scaling:\n\tAlcohol={:.2f}, Malic acid={:.2f}'.
 plot1()
 plt.show()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Use numpy.array & low-level APIs.
 
 dataset_mean = np.mean(dataset[:,1:], axis=0)
@@ -133,7 +133,7 @@ print('\tMax-value after min-max scaling:\n\tAlcohol={:.2f}, Malic acid={:.2f}'.
 plot1()
 plt.show()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 from sklearn.cross_validation import train_test_split
 

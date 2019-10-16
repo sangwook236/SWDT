@@ -9,7 +9,7 @@ import keras.backend as K
 
 #np.random.seed(1337)  # For reproducibility.
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 def get_data(n, input_dim, attention_column=1):
 	"""
@@ -62,7 +62,7 @@ def get_activations(model, inputs, print_shape_only=False, layer_name=None):
 			print(layer_activations)
 	return activations
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Dense layer.
 
 def build_model(input_dim):
@@ -106,7 +106,7 @@ pd.DataFrame(attention_vector, columns=['attention (%)']).plot(kind='bar',
 		title='Attention Mechanism as a function of input dimensions.')
 plt.show()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # LSTM layer.
 
 INPUT_DIM = 2

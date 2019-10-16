@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None, n_jobs=1, train_sizes=np.linspace(.1, 1.0, 5)):
 	"""
 	Generate a simple plot of the test and training learning curve.
@@ -118,7 +118,7 @@ def learning_curve_example():
 	plt.legend(loc='best')
 	plt.show()
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 def train_test_split_example():
 	iris = datasets.load_iris()
 	X_train, X_test, y_train, y_test = model_selection.train_test_split(iris.data, iris.target, test_size=0.4, shuffle=True, stratify=None, random_state=0)
@@ -132,7 +132,7 @@ def train_test_split_example():
 	scores = clf.score(X_test, y_test)   
 	print('Scores =', scores)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 def split_example():
 	X = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
 	y = np.array([1, 2, 1, 2])
@@ -174,7 +174,7 @@ def split_example():
 		#print('TRAIN:\n', X_train, y_train)
 		#print('TEST:\n', X_test, y_test)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 def k_fold_example():
 	X = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
 	y = np.array([1, 2, 1, 2])
@@ -207,7 +207,7 @@ def k_fold_example():
 		#print('TRAIN:\n', X_train, y_train)
 		#print('TEST:\n', X_test, y_test)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 def leave_out_example():
 	X = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
 	y = np.array([1, 2, 1, 2])
@@ -243,7 +243,7 @@ def leave_out_example():
 		#print('TRAIN:\n', X_train, y_train)
 		#print('TEST:\n', X_test, y_test)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # REF [site] >>
 #	http://scikit-learn.org/stable/modules/cross_validation.html
 #	http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.html
@@ -289,7 +289,7 @@ def cross_validation_example():
 	print('Scores =', scores)
 	print('Accuracy: %0.2f (+/- %0.2f)' % (scores.mean(), scores.std() * 2))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Hyper-parameter optimization.
 #	REF [paper] >> "Random Search for Hyper-Parameter Optimization", JMLR 2012.
 #	REF [site] >> http://scikit-learn.org/stable/modules/grid_search.html
@@ -363,7 +363,7 @@ def main():
 
 	#hyper_parameter_optimization_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

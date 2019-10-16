@@ -19,7 +19,7 @@ def main():
 	detections = darknet.detect(net, meta, bytes(darknet_home_dir_path + '/data/dog.jpg', encoding='utf-8'))
 	print('Detections =', detections)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

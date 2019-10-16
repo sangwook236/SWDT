@@ -3,7 +3,7 @@
 
 # Unlike regression predictive modeling, time series also adds the complexity of a sequence dependence among the input variables.
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 import math
 import numpy as np
@@ -15,7 +15,7 @@ from keras.layers import LSTM
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 # Convert an array of values into a dataset matrix.
 #	Reshape into X=t-window_size:t and Y=t.
@@ -71,7 +71,7 @@ def plot_graph(dataset, scaler, trainPredict, testPredict):
 	plt.plot(testPredictPlot)
 	plt.show()
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Prepare dataset.
 
 # fix random seed for reproducibility
@@ -95,7 +95,7 @@ test_size = len(dataset) - train_size
 train, test = dataset[0:train_size,:], dataset[train_size:len(dataset),:]
 print(len(train), len(test))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # LSTM for regression.
 
 def fit_and_predict_lstm_using_window(train, test, look_back, num_epoches, batch_size):
@@ -145,7 +145,7 @@ num_epoches = 100
 batch_size = 1
 fit_and_predict_lstm_using_window(train, test, look_back, num_epoches, batch_size)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # LSTM for regression using window method.
 
 # Multiple, recent time steps can be used to make the prediction for the next time step.
@@ -154,7 +154,7 @@ num_epoches = 100
 batch_size = 1
 fit_and_predict_lstm_using_window(train, test, look_back, num_epoches, batch_size)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # LSTM for regression using time step.
 
 # NOTICE [important] >>
@@ -208,7 +208,7 @@ num_epoches = 100
 batch_size = 1
 fit_and_predict_lstm_using_time_step(train, test, look_back, num_epoches, batch_size)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # LSTM with memory between batches.
 
 # NOTICE [important] >>
@@ -268,7 +268,7 @@ num_epoches = 100
 batch_size = 1
 fit_and_predict_lstm_with_memory(train, test, look_back, num_epoches, batch_size)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Stacked LSTM with memory between batches.
 
 # LSTM networks can be stacked in Keras in the same way that other layer types can be stacked.

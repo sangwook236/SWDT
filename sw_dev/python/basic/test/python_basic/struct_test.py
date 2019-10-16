@@ -49,7 +49,7 @@ def main():
 	# The following format 'llh0l' specifies two pad bytes at the end, assuming longs are aligned on 4-byte boundaries.
 	print(struct.pack('llh0l', 1, 2, 3))
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

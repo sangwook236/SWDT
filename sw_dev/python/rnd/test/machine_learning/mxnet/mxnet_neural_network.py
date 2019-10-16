@@ -380,7 +380,7 @@ def main():
 	#save_and_load_sequential_example()
 	save_and_load_hybrid_sequential_example()  # NOTE [info] >> Better choice.
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

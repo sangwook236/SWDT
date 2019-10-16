@@ -1,6 +1,6 @@
 # REF [site] >> http://machinelearningmastery.com/sequence-classification-lstm-recurrent-neural-networks-python-keras/
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 from __future__ import print_function
 
@@ -15,7 +15,7 @@ from keras import optimizers, callbacks
 from keras.preprocessing import sequence
 from keras.datasets import imdb
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 def display_history(history):
 	# List all data in history.
@@ -55,7 +55,7 @@ def load_dataset(max_features, max_len):
 
 	return x_train, y_train, x_test, y_test
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # LSTM.
 
 max_features = 5000
@@ -108,7 +108,7 @@ score, acc = model.evaluate(x_test, y_test, batch_size=batch_size)
 print('Test score:', score)
 print('Test accuracy:', acc)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Bidirectional LSTM.
 
 max_features = 5000
@@ -162,7 +162,7 @@ score, acc = model.evaluate(x_test, y_test, batch_size=batch_size)
 print('Test score:', score)
 print('Test accuracy:', acc)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # CNN.
 
 # Set parameters.
@@ -212,7 +212,7 @@ score, acc = model.evaluate(x_test, y_test, batch_size=batch_size)
 print('Test score:', score)
 print('Test accuracy:', acc)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # CNN + LSTM.
 
 # Embedding.

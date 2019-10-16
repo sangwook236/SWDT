@@ -14,7 +14,7 @@ from keras.objectives import categorical_crossentropy
 from tensorflow.examples.tutorials.mnist import input_data
 from keras.metrics import categorical_accuracy as accuracy
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
@@ -24,11 +24,11 @@ sess = tf.Session(config=config)
 K.set_session(sess)
 K.set_learning_phase(0)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 mnist_data = input_data.read_data_sets('MNIST_data', one_hot = True)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Call Keras layers on TensorFlow tensors.
 
 # This placeholder will contain our input digits, as flat vectors.
@@ -62,7 +62,7 @@ acc_value = accuracy(labels, preds)
 with sess.as_default():
 	print(acc_value.eval(feed_dict = {img: mnist_data.test.images, labels: mnist_data.test.labels}))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Different behaviors during training and testing.
 
 # The Keras learning phase (a scalar TensorFlow tensor) is accessible via the Keras backend.
@@ -93,7 +93,7 @@ acc_value = accuracy(labels, preds)
 with sess.as_default():
 	print(acc_value.eval(feed_dict = {img: mnist_data.test.images, labels: mnist_data.test.labels, K.learning_phase(): 0}))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Compatibility with name scopes, device scopes.
 
 # Keras layers and models are fully compatible with TensorFlow name scopes.
@@ -136,7 +136,7 @@ for old_value, new_value in layer.updates:
 layer = Dense(32)(x)  # Instantiate and call a layer.
 print(layer.trainable_weights)  # List of TensorFlow Variables.
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Use Keras models with TensorFlow.
 
 # Convert a Keras Sequential model for use in a TensorFlow workflow.
@@ -160,7 +160,7 @@ model.add(Dense(10, activation = 'softmax'))
 x = tf.placeholder(tf.float32, shape = (None, 784))
 y = model(x)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Multi-GPU and distributed training.
 
 # Assign part of a Keras model to different GPUs.
@@ -204,7 +204,7 @@ sess = tf.Session(server.target)
 
 K.set_session(sess)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Export a model with TensorFlow-serving.
 
 # Two simple steps in action.

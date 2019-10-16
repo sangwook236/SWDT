@@ -1,4 +1,4 @@
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # VGG-like convnet.
 
 import keras
@@ -40,7 +40,7 @@ y_train = keras.utils.to_categorical(y_train, num_classes=10)
 
 model.fit(x_train, y_train, batch_size=32, epochs=10)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Sequence classification with 1D convolutions.
 
 import keras

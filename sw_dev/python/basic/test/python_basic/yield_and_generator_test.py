@@ -224,21 +224,24 @@ def inner_and_outer_generators_example():
 	# Changes and re-yields the results of the inner generator in the outer generator.
 	def yield_outer_generator():
 		for vals in inner_generator():
-			yield list(map(lambda x: x**2, vals))
+			yield vals
+			#yield list(map(lambda x: x**2, vals))
 
 	for idx, vals in enumerate(yield_outer_generator()):
 		print(vals)
-		if idx >= 5:
+		if idx >= 9:
 			break
 
 	# Changes and returns the results of the inner generator in the outer generator.
 	def return_outer_generator():
 		for vals in inner_generator():
-			return list(map(lambda x: x**2, vals))
+			# When 'return' is called, return_outer_generator() is exited. (It only runs once.)
+			return vals
+			#return list(map(lambda x: x**2, vals))
 
 	for idx, vals in enumerate(return_outer_generator()):
 		print(vals)
-		if idx >= 5:
+		if idx >= 9:
 			break
 
 def main():
@@ -250,7 +253,7 @@ def main():
 	#reuse_generator_example()
 	inner_and_outer_generators_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

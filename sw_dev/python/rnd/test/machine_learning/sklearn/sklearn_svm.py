@@ -9,7 +9,7 @@ from sklearn import svm
 from sklearn import datasets
 import numpy as np
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # C-support vector classification.
 
 def svc_example():
@@ -58,7 +58,7 @@ def svc_example():
 	print('SV indices = \n', classifier.support_)
 	print('SVs = \n', classifier.support_vectors_)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Linear SVC.
 
 def linear_svc_example():
@@ -87,7 +87,7 @@ def linear_svc_example():
 	print('Distance =', classifier.decision_function(X_test))
 	print('Score =', classifier.score(X, Y))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Nu SVC: Nu-support vector classification.
 
 def nu_svc_example():
@@ -109,7 +109,7 @@ def nu_svc_example():
 	print('Distance =', classifier.decision_function(X_test))
 	print('Score =', classifier.score(X, Y))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Epsilon-support vector regression.
 
 def svr_example():
@@ -126,7 +126,7 @@ def svr_example():
 	print('Prediction =', regressor.predict(X_test))
 	print('Score =', regressor.score(X, Y))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Linear SVR.
 
 def linear_svr_example():
@@ -145,7 +145,7 @@ def linear_svr_example():
 	print('Prediction =', regressor.predict(X_test))
 	print('Score =', regressor.score(X, Y))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Nu SVR: Nu-support vector regression.
 
 def nu_svr_example():
@@ -163,7 +163,7 @@ def nu_svr_example():
 	print('Prediction =', regressor.predict(X_test))
 	print('Score =', regressor.score(X, Y))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # One-class SVM.
 
 def one_class_svm_example():
@@ -178,7 +178,7 @@ def one_class_svm_example():
 	# Signed distance to the separating hyperplane: shape = (n_samples,).
 	print('Distance =', classifier.decision_function(X_test))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # libsvm.
 
 def libsvm_example():
@@ -226,7 +226,7 @@ def main():
 
 	#libsvm_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

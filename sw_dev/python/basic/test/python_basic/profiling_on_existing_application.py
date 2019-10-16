@@ -7,7 +7,7 @@ import re
 def main():
 	re.compile('foo|bar')
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 # Usage:
 #	python -m cProfile profiling_on_existing_application.py

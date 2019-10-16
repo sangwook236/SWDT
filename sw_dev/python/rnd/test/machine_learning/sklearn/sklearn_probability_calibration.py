@@ -14,7 +14,7 @@ def main():
 	#sklearn.calibration.CalibratedClassifierCV
 	#sklearn.calibration.calibration_curve
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

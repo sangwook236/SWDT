@@ -17,7 +17,7 @@ sys.path.append(swl_python_home_dir_path + '/src')
 sys.path.append(lib_home_dir_path + '/tensorforce_github')
 #sys.path.append(lib_home_dir_path + '/gym_github')
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 from tensorforce.agents import DQNAgent
 

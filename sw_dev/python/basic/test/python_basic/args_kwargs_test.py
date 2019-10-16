@@ -63,7 +63,7 @@ def main():
 	#args_kwargs_func(1, 3.7, 'abc', first_name='gildong', last_name='hong', 'DEF', param1='abcXYZ123987', age=27, 987, gender=True, param2=12345)
 	args_kwargs_func(1, 3.7, 'abc', 'DEF', 987, first_name='gildong', last_name='hong', param1='abcXYZ123987', age=27, gender=True, param2=12345)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

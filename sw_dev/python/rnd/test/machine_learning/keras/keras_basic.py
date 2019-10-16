@@ -2,7 +2,7 @@ import keras
 from keras.models import Sequential
 from keras.layers import Dense, Activation
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # For a single-input model with 2 classes (binary classification).
 
 model = Sequential()
@@ -20,7 +20,7 @@ labels = np.random.randint(2, size=(1000,1))
 # Train the model, iterating on the data in batches of 32 samples.
 model.fit(data, labels, epochs=10, batch_size=32)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # For a single-input model with 10 classes (categorical classification).
 
 model = Sequential()
@@ -42,7 +42,7 @@ binary_labels = keras.utils.to_categorical(labels, num_classes=10)
 # Train the model, iterating on the data in batches of 32 samples.
 model.fit(data, binary_labels, epochs=10, batch_size=32)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # Multilayer Perceptron (MLP) for multi-class softmax classification.
 
 from keras.models import Sequential

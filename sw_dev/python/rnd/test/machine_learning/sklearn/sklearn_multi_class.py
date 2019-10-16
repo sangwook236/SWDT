@@ -72,7 +72,7 @@ def main():
 	multioutput_classification_example()
 	multioutput_regression_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

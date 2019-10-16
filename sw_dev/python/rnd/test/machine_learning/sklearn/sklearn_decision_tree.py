@@ -4,7 +4,7 @@ from sklearn import datasets
 from sklearn import model_selection
 from sklearn import tree
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 def decision_tree_classifier_example():
 	iris = datasets.load_iris()
@@ -25,7 +25,7 @@ def decision_tree_classifier_example():
 	print('Decision path =', classifier.decision_path(X))
 	print('Index of the leaf =', classifier.apply(X))
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 def decision_tree_regressor_example():
 	boston = datasets.load_boston()
@@ -47,7 +47,7 @@ def main():
 	decision_tree_classifier_example()
 	decision_tree_regressor_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

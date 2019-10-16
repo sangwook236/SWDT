@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import AdaBoostClassifier
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 def main():
 	iris = load_iris()
@@ -38,7 +38,7 @@ def main():
 	scores = cross_val_score(classifier, X, y)
 	print("AdaBoostClassifier =", scores.mean())
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

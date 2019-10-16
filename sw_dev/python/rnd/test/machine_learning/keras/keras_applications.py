@@ -5,10 +5,10 @@
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 import keras_applications
-from tensorflow.keras import backend as K
 
 def resnet_test():
 	kwargs = {'backend': tf.keras.backend, 'layers': tf.keras.layers, 'models': tf.keras.models, 'utils': tf.keras.utils}
+
 	# ResNet50, ResNet101, ResNet152.
 	model = keras_applications.resnet.ResNet50(
 		include_top=True,
@@ -35,6 +35,7 @@ def resnet_test():
 
 def resnext_test():
 	kwargs = {'backend': tf.keras.backend, 'layers': tf.keras.layers, 'models': tf.keras.models, 'utils': tf.keras.utils}
+
 	# ResNeXt50, ResNeXt101.
 	model = keras_applications.resnext.ResNeXt50(
 		include_top=True,
@@ -49,6 +50,7 @@ def resnext_test():
 
 def densenet_test():
 	kwargs = {'backend': tf.keras.backend, 'layers': tf.keras.layers, 'models': tf.keras.models, 'utils': tf.keras.utils}
+
 	# DenseNet121, DenseNet169, DenseNet201.
 	model = keras_applications.densenet.DenseNet121(
 		include_top=True,
@@ -63,6 +65,7 @@ def densenet_test():
 
 def nasnet_test():
 	kwargs = {'backend': tf.keras.backend, 'layers': tf.keras.layers, 'models': tf.keras.models, 'utils': tf.keras.utils}
+
 	# NASNetLarge, NASNetMobile.
 	model = keras_applications.nasnet.NASNetLarge(
 		include_top=True,
