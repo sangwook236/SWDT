@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from __future__ import print_function, division
-import os
+import os, time
 import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -36,13 +36,16 @@ def mnist_dataset_test():
 	#])
 
 	#--------------------
+	print('Start creating MNIST dataset and data loader for train...')
+	start_time = time.time()
 	train_set = torchvision.datasets.MNIST(root=mnist_dir_path, train=True, download=True, transform=transform)
 	train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+	print('End creating MNIST dataset and data loader for train: {} secs.'.format(time.time() - start_time))
 
 	print('#train steps per epoch = {}.'.format(len(train_loader)))
 
 	data_iter = iter(train_loader)
-	images, labels = data_iter.next()  # torch.Tensor, torch.Tensor.
+	images, labels = data_iter.next()  # torch.Tensor & torch.Tensor.
 	images, labels = images.numpy(), labels.numpy()
 	print('Train image: Shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
 	print('Train label: Shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(labels.shape, labels.dtype, np.min(labels), np.max(labels)))
@@ -51,13 +54,16 @@ def mnist_dataset_test():
 	#	batch_inputs, batch_outputs = batch_data
 
 	#--------------------
+	print('Start creating MNIST dataset and data loader for test...')
+	start_time = time.time()
 	test_set = torchvision.datasets.MNIST(root=mnist_dir_path, train=False, download=True, transform=transform)
 	test_loader = torch.utils.data.DataLoader(test_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+	print('End creating MNIST dataset and data loader for test: {} secs.'.format(time.time() - start_time))
 
 	print('#test steps per epoch = {}.'.format(len(test_loader)))
 
 	data_iter = iter(test_loader)
-	images, labels = data_iter.next()  # torch.Tensor, torch.Tensor.
+	images, labels = data_iter.next()  # torch.Tensor & torch.Tensor.
 	images, labels = images.numpy(), labels.numpy()
 	print('Test image: Shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
 	print('Test label: Shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(labels.shape, labels.dtype, np.min(labels), np.max(labels)))
@@ -84,13 +90,16 @@ def imagenet_dataset_test():
 	])
 
 	#--------------------
+	print('Start creating ImageNet dataset and data loader for train...')
+	start_time = time.time()
 	train_set = torchvision.datasets.ImageNet(root=imagenet_dir_path, split='train', download=False, transform=transform)
 	train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+	print('End creating ImageNet dataset and data loader for train: {} secs.'.format(time.time() - start_time))
 
 	print('#train steps per epoch = {}.'.format(len(train_loader)))
 
 	data_iter = iter(train_loader)
-	images, labels = data_iter.next()  # torch.Tensor, torch.Tensor.
+	images, labels = data_iter.next()  # torch.Tensor & torch.Tensor.
 	images, labels = images.numpy(), labels.numpy()
 	print('Train image: Shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
 	print('Train label: Shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(labels.shape, labels.dtype, np.min(labels), np.max(labels)))
@@ -99,13 +108,16 @@ def imagenet_dataset_test():
 	#	batch_inputs, batch_outputs = batch_data
 
 	#--------------------
+	print('Start creating ImageNet dataset and data loader for validation...')
+	start_time = time.time()
 	val_set = torchvision.datasets.ImageNet(root=imagenet_dir_path, split='val', download=False, transform=transform)
 	val_loader = torch.utils.data.DataLoader(val_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+	print('End creating ImageNet dataset and data loader for validation: {} secs.'.format(time.time() - start_time))
 
 	print('#validation steps per epoch = {}.'.format(len(val_loader)))
 
 	data_iter = iter(val_loader)
-	images, labels = data_iter.next()  # torch.Tensor, torch.Tensor.
+	images, labels = data_iter.next()  # torch.Tensor & torch.Tensor.
 	images, labels = images.numpy(), labels.numpy()
 	print('Validation image: Shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
 	print('Validation label: Shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(labels.shape, labels.dtype, np.min(labels), np.max(labels)))
@@ -119,7 +131,7 @@ def coco_dataset_captions_test():
 		data_dir_path = '/home/sangwook/my_dataset'
 	else:
 		data_dir_path = 'E:/dataset'
-	coco_dir_path = data_dir_path + '/pattern_recognition/coco/train2014'
+	coco_dir_path = data_dir_path + '/pattern_recognition/coco'
 
 	batch_size = 32
 	shuffle = True
@@ -132,31 +144,39 @@ def coco_dataset_captions_test():
 	])
 
 	#--------------------
+	print('Start creating COCO captions dataset and data loader for train...')
+	start_time = time.time()
 	train_set = torchvision.datasets.CocoCaptions(root=os.path.join(coco_dir_path, 'train2014'), annFile=os.path.join(coco_dir_path, 'annotations/captions_train2014.json'), transform=transform)
 	train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+	print('End creating COCO captions dataset and data loader for train: {} secs.'.format(time.time() - start_time))
 
 	print('#train steps per epoch = {}.'.format(len(train_loader)))
 
 	data_iter = iter(train_loader)
-	images, labels = data_iter.next()  # torch.Tensor, list of tuples.
+	images, labels = data_iter.next()  # torch.Tensor & a list of 5 tuples, each of which has strings of batch size.
 	images = images.numpy()
 	print('Train image: Shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
-	print('Train label: Type = {}, length = {}, type = {}, length = {}.'.format(type(labels), len(labels), type(labels[0]), len(labels[0])))
+	print('Train label: Type = {}, length = {}.'.format(type(labels), len(labels)))
+	#print('\tlen(labels[0]) = {}.'.format(len(labels[0])))
 
 	#for batch_step, batch_data in enumerate(train_loader):
 	#	batch_inputs, batch_outputs = batch_data
 
 	#--------------------
+	print('Start creating COCO captions dataset and data loader for validation...')
+	start_time = time.time()
 	val_set = torchvision.datasets.CocoCaptions(root=os.path.join(coco_dir_path, 'val2014'), annFile=os.path.join(coco_dir_path, 'annotations/captions_val2014.json'), transform=transform)
 	val_loader = torch.utils.data.DataLoader(val_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+	print('End creating COCO captions dataset and data loader for validation: {} secs.'.format(time.time() - start_time))
 
 	print('#validation steps per epoch = {}.'.format(len(val_loader)))
 
 	data_iter = iter(val_loader)
-	images, labels = data_iter.next()  # torch.Tensor, list of tuples.
+	images, labels = data_iter.next()  # torch.Tensor & a list of 5 tuples, each of which has strings of batch size.
 	images = images.numpy()
 	print('Validation image: Shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
-	print('Validation label: Type = {}, length = {}, type = {}, length = {}.'.format(type(labels), len(labels), type(labels[0]), len(labels[0])))
+	print('Validation label: Type = {}, length = {}.'.format(type(labels), len(labels)))
+	#print('\tlen(labels[0]) = {}.'.format(len(labels[0])))
 
 	#for batch_step, batch_data in enumerate(val_loader):
 	#	batch_inputs, batch_outputs = batch_data
@@ -180,31 +200,61 @@ def coco_dataset_detection_test():
 	])
 
 	#--------------------
+	print('Start creating COCO detection dataset and data loader for train...')
+	start_time = time.time()
 	train_set = torchvision.datasets.CocoDetection(root=os.path.join(coco_dir_path, 'train2014'), annFile=os.path.join(coco_dir_path, 'annotations/instances_train2014.json'), transform=transform)
 	train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+	print('End creating COCO detection dataset and data loader for train: {} secs.'.format(time.time() - start_time))
 
 	print('#train steps per epoch = {}.'.format(len(train_loader)))
 
 	data_iter = iter(train_loader)
-	images, labels = data_iter.next()  # torch.Tensor, list of tuples.
+	images, labels = data_iter.next()  # torch.Tensor & a list of dicts of #detections, each of which has 7 elements ('segmentation' (1 * ? * batch size), 'area' (batch size), 'iscrowd' (batch size), 'image_id' (batch size), 'bbox' (4 * batch size), 'category_id' (batch size), and 'id' (batch size)).
 	images = images.numpy()
 	print('Train image: Shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
-	print('Train label: Type = {}, length = {}, type = {}, length = {}.'.format(type(labels), len(labels), type(labels[0]), len(labels[0])))
+	print('Train label: Type = {}, length = {}.'.format(type(labels), len(labels)))
+	#print('Train label: Keys = {}.'.format(labels[0].keys()))
+	for idx, label in enumerate(labels):
+		print('\tDetection {}: {}, {}, {}, {}, {}, {}, {}.'.format(idx, len(label['segmentation']), len(label['area']), len(label['iscrowd']), len(label['image_id']), len(label['bbox']), len(label['category_id']), len(label['id'])))
+		#print('\t\tLengths: {}, {}, {}.'.format(len(label['segmentation'][0]), len(label['segmentation'][0][1]), len(label['bbox'][0])))
+		bboxes = list()
+		for bbox in label['bbox']:
+			bboxes.append(bbox.numpy())
+		print('\t\tBounding boxes = {}.'.format(np.vstack(bboxes).shape))
+		segs = list()
+		for seg in label['segmentation'][0]:
+			segs.append(seg.numpy())
+		print('\t\tSegmentations = {}.'.format(np.vstack(segs).shape))
 
 	#for batch_step, batch_data in enumerate(train_loader):
 	#	batch_inputs, batch_outputs = batch_data
 
 	#--------------------
+	print('Start creating COCO detection dataset and data loader for validation...')
+	start_time = time.time()
 	val_set = torchvision.datasets.CocoDetection(root=os.path.join(coco_dir_path, 'val2014'), annFile=os.path.join(coco_dir_path, 'annotations/instances_val2014.json'), transform=transform)
 	val_loader = torch.utils.data.DataLoader(val_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+	print('End creating COCO detection dataset and data loader for validation: {} secs.'.format(time.time() - start_time))
 
 	print('#validation steps per epoch = {}.'.format(len(val_loader)))
 
 	data_iter = iter(val_loader)
-	images, labels = data_iter.next()  # torch.Tensor, list of tuples.
+	images, labels = data_iter.next()  # torch.Tensor & a list of dicts of #detections, each of which has 7 elements ('segmentation' (1 * ? * batch size), 'area' (batch size), 'iscrowd' (batch size), 'image_id' (batch size), 'bbox' (4 * batch size), 'category_id' (batch size), and 'id' (batch size)).
 	images = images.numpy()
 	print('Validation image: Shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(images.shape, images.dtype, np.min(images), np.max(images)))
-	print('Validation label: Type = {}, length = {}, type = {}, length = {}.'.format(type(labels), len(labels), type(labels[0]), len(labels[0])))
+	print('Validation label: Type = {}, length = {}.'.format(type(labels), len(labels)))
+	#print('Validation label: Keys = {}.'.format(labels[0].keys()))
+	for idx, label in enumerate(labels):
+		print('\tDetection {}: {}, {}, {}, {}, {}, {}, {}.'.format(idx, len(label['segmentation']), len(label['area']), len(label['iscrowd']), len(label['image_id']), len(label['bbox']), len(label['category_id']), len(label['id'])))
+		#print('\t\tLengths: {}, {}, {}.'.format(len(label['segmentation'][0]), len(label['segmentation'][0][1]), len(label['bbox'][0])))
+		bboxes = list()
+		for bbox in label['bbox']:
+			bboxes.append(bbox.numpy())
+		print('\t\tBounding Boxes = {}.'.format(np.vstack(bboxes).shape))
+		segs = list()
+		for seg in label['segmentation'][0]:
+			segs.append(seg.numpy())
+		print('\t\tSegmentations = {}.'.format(np.vstack(segs).shape))
 
 	#for batch_step, batch_data in enumerate(val_loader):
 	#	batch_inputs, batch_outputs = batch_data

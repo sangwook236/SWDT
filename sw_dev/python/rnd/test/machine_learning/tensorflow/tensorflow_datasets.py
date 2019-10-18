@@ -6,7 +6,7 @@
 #	https://www.tensorflow.org/datasets/catalog/overview
 #	https://github.com/tensorflow/datasets
 
-import os
+import os, time
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 import tensorflow_datasets as tfds
@@ -21,9 +21,13 @@ def mnist_dataset_test():
 	#--------------------
 	# Construct a tf.data.Dataset.
 	if True:
+		print('Start loading MNIST dataset...')
+		start_time = time.time()
 		#datasets = tfds.load(name='mnist')  # A dictionary of tf.data.Dataset's.
 		dataset = tfds.load(name='mnist', split=tfds.Split.TRAIN)  # tf.data.Dataset.
 		#dataset = tfds.load(name='mnist', split=tfds.Split.TRAIN, batch_size=37, download=True)  # tf.data.Dataset.
+		print('End loading MNIST dataset: {} secs.'.format(time.time() - start_time))
+
 		print('Dataset: type = {}.'.format(type(dataset)))
 		print('Dataset = {}.'.format(dataset))
 
@@ -45,8 +49,12 @@ def mnist_dataset_test():
 			print('\tTrain image: shape = {}, dtype = {}.'.format(image.shape, image.dtype))
 			print('\tTrain label: shape = {}, dtype = {}.'.format(label.shape, label.dtype))
 	else:
+		print('Start loading MNIST dataset...')
+		start_time = time.time()
 		dataset = tfds.load(name='mnist', split=tfds.Split.TRAIN, as_supervised=True)  # tf.data.Dataset.
 		#dataset = tfds.load(name='mnist', split=tfds.Split.TRAIN, batch_size=37, download=True, as_supervised=True)  # tf.data.Dataset.
+		print('End loading MNIST dataset: {} secs.'.format(time.time() - start_time))
+
 		print('Dataset: type = {}.'.format(type(dataset)))
 		print('Dataset = {}.'.format(dataset))
 
@@ -66,7 +74,10 @@ def mnist_dataset_test():
 
 	#--------------------
 	# Load a given dataset by name, along with the DatasetInfo.
+	print('Start loading MNIST dataset...')
+	start_time = time.time()
 	datasets, info = tfds.load('mnist', with_info=True)  # A dictionary of tf.data.Dataset's & tfds.core.DatasetInfo.
+	print('End loading MNIST dataset: {} secs.'.format(time.time() - start_time))
 
 	print('Datasets: keys = {}.'.format(datasets.keys()))
 	print('Splits: keys = {}.'.format(info.splits.keys()))
@@ -131,7 +142,10 @@ def imagenet_dataset_test():
 		data_dir_path = 'E:/dataset'
 	imagenet_dir_path = data_dir_path + '/pattern_recognition/imagenet'
 
+	print('Start loading ImageNet dataset...')
+	start_time = time.time()
 	datasets, info = tfds.load('imagenet2012', data_dir=imagenet_dir_path, download=False, with_info=True)
+	print('End loading ImageNet dataset: {} secs.'.format(time.time() - start_time))
 
 	print('Datasets: keys = {}.'.format(datasets.keys()))
 	print('Splits: keys = {}.'.format(info.splits.keys()))
@@ -167,7 +181,10 @@ def coco_dataset_test():
 		data_dir_path = 'E:/dataset'
 	coco_dir_path = data_dir_path + '/pattern_recognition/coco'
 
+	print('Start loading COCO dataset...')
+	start_time = time.time()
 	datasets, info = tfds.load('coco', data_dir=coco_dir_path, download=False, with_info=True)
+	print('End loading COCO dataset: {} secs.'.format(time.time() - start_time))
 
 	print('Datasets: keys = {}.'.format(datasets.keys()))
 	print('Splits: keys = {}.'.format(info.splits.keys()))
