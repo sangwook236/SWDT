@@ -22,7 +22,7 @@ def resnet_test():
 	print(model.summary())
 
 	# ResNet50V2, ResNet101V2, ResNet152V2.
-	model = keras_applications.resnet_v2.ResNet50(
+	model = keras_applications.resnet_v2.ResNet50V2(
 		include_top=True,
 		weights='imagenet',
 		input_tensor=None,

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-import string
-import re
+import string, re
 
 def basic_operation():
 	with open('data.txt', 'r') as myfile:
