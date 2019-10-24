@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os
+import os, glob
 from PIL import Image, ImageDraw, ImageFont
 
 # REF [site] >> http://pillow.readthedocs.io/en/3.1.x/reference/Image.html
@@ -51,60 +51,22 @@ def text_example():
 
 	#--------------------
 	if 'posix' == os.name:
-		system_font_dir = '/usr/share/fonts'
-		font_dir = '/home/sangwook/work/font'
+		system_font_dir_path = '/usr/share/fonts'
+		font_base_dir_path = '/home/sangwook/work/font'
 	else:
-		system_font_dir = 'C:/Windows/Fonts'
-		font_dir = 'D:/work/font'
+		system_font_dir_path = 'C:/Windows/Fonts'
+		font_base_dir_path = 'D:/work/font'
+	#font_dir_path = font_base_dir_path + '/eng'
+	font_dir_path = font_base_dir_path + '/kor'
+
+	#font_filepaths = glob.glob(font_dir_path + '/*.ttf')
 
 	if 'posix' == os.name:
-		#font_type = system_font_dir + '/truetype/FreeSans.ttf'
-		pass
+		font_type = system_font_dir_path + '/truetype/FreeSans.ttf'
 	else:
-		#font_type = system_font_dir + '/Arial.ttf'
-		#font_type = system_font_dir + '/gulim.ttc'  # 굴림, 굴림체, 돋움, 돋움체.
-		#font_type = system_font_dir + '/batang.ttc'  # 바탕, 바탕체, 궁서, 궁서체.
-		pass
-	font_type = font_dir + '/gulim.ttf'  # 굴림, 굴림체, 돋움, 돋움체.
-	#font_type = font_dir + '/batang.ttf'  # 바탕, 바탕체, 궁서, 궁서체.
-	#font_type = font_dir + '/gabia_bombaram.ttf'  # (O).
-	#font_type = font_dir + '/gabia_napjakBlock.ttf'  # (O).
-	#font_type = font_dir + '/gabia_solmee.ttf'  # (O).
-	#font_type = font_dir + '/godoMaum.ttf'  # (O).
-	#font_type = font_dir + '/godoRounded L.ttf'  # (X).
-	#font_type = font_dir + '/godoRounded R.ttf'  # (X).
-	#font_type = font_dir + '/HS두꺼비체.ttf'
-	#font_type = font_dir + '/HS봄바람체1.0.ttf'
-	#font_type = font_dir + '/HS봄바람체2.0.ttf'  # (O).
-	#font_type = font_dir + '/HS겨울눈꽃체.ttf'  # (O).
-	#font_type = font_dir + '/HS여름물빛체.ttf'
-	#font_type = font_dir + '/HS가을생각체1.0 Regular.ttf'
-	#font_type = font_dir + '/HS가을생각체1.0 Thin.ttf'
-	#font_type = font_dir + '/HS가을생각체2.0.ttf'  # (O).
-	#font_type = font_dir + '/NanumBarunGothic.ttf'
-	#font_type = font_dir + '/NanumBarunGothicBold.ttf'
-	#font_type = font_dir + '/NanumBarunGothicLight.ttf'
-	#font_type = font_dir + '/NanumBarunGothicUltraLight.ttf'
-	#font_type = font_dir + '/NanumBarunpenB.ttf'
-	#font_type = font_dir + '/NanumBarunpenR.ttf'
-	#font_type = font_dir + '/NanumBrush.ttf'  # (O).
-	#font_type = font_dir + '/NanumGothic.ttf'
-	#font_type = font_dir + '/NanumGothicBold.ttf'
-	#font_type = font_dir + '/NanumGothicExtraBold.ttf'
-	#font_type = font_dir + '/NanumGothicLight.ttf'
-	#font_type = font_dir + '/NanumMyeongjo.ttf'
-	#font_type = font_dir + '/NanumMyeongjoBold.ttf'
-	#font_type = font_dir + '/NanumMyeongjoExtraBold.ttf'
-	#font_type = font_dir + '/NanumPen.ttf'  # (O).
-	#font_type = font_dir + '/NanumSquareB.ttf'
-	#font_type = font_dir + '/NanumSquareEB.ttf'
-	#font_type = font_dir + '/NanumSquareL.ttf'
-	#font_type = font_dir + '/NanumSquareR.ttf'
-	#font_type = font_dir + '/NanumSquareRoundB.ttf'
-	#font_type = font_dir + '/NanumSquareRoundEB.ttf'
-	#font_type = font_dir + '/NanumSquareRoundL.ttf'
-	#font_type = font_dir + '/NanumSquareRoundR.ttf'
-	#font_type = font_dir + '/SDMiSaeng.ttf'  # (O).
+		font_type = system_font_dir_path + '/Arial.ttf'
+		#font_type = system_font_dir_path + '/gulim.ttc'  # 굴림, 굴림체, 돋움, 돋움체.
+		#font_type = system_font_dir_path + '/batang.ttc'  # 바탕, 바탕체, 궁서, 궁서체.
 
 	font = ImageFont.truetype(font=font_type, size=50, index=0)
 

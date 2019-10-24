@@ -9,15 +9,15 @@ else:
 	swl_python_home_dir_path = 'D:/work/SWL_github/python'
 sys.path.append(swl_python_home_dir_path + '/src')
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Prepare dataset.
 
 import numpy as np
 from skimage import data
 import imgaug as ia
 from imgaug import augmenters as iaa
-from swl.image_processing.util import load_images_by_pil, load_labels_by_pil
-from swl.machine_learning.data_preprocessing import standardize_samplewise, standardize_featurewise
+from swl.machine_vision.util import load_images_by_pil, load_labels_by_pil
+from swl.machine_learning.util import standardize_samplewise, standardize_featurewise
 
 if 'posix' == os.name:
 	#dataset_home_dir_path = '/home/sangwook/my_dataset'
@@ -44,9 +44,9 @@ def prepare_dataset(image_dir_path, label_dir_path):
 
 	return images, labels
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
-from swl.image_processing.util import to_rgb, stack_images_horzontally
+from swl.machine_vision.util import to_rgb, stack_images_horzontally
 from PIL import Image
 
 def export_images(images, labels, filepath_prefix, filepath_suffix):
@@ -57,7 +57,7 @@ def export_images(images, labels, filepath_prefix, filepath_suffix):
 		stacked_img = stack_images_horzontally([img, lbl])
 		stacked_img.save(filepath_prefix + str(idx) + filepath_suffix + '.jpg')
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if 'posix' == os.name:
 	lib_home_dir_path = '/home/sangwook/lib_repo/python'
@@ -157,7 +157,7 @@ def simple_imgaug_example():
 					#cval=(0, 255),  # If mode is constant, use a cval between 0 and 255.
 					#mode=ia.ALL  # Use any of scikit-image's warping modes (see 2nd image from the top for examples).
 					#mode='edge'  # Use any of scikit-image's warping modes (see 2nd image from the top for examples).
-				))
+				)),
 				iaa.Sometimes(0.5, iaa.GaussianBlur(sigma=(0, 3.0)))  # Blur images with a sigma of 0 to 3.0.
 			]),
 			iaa.Scale(size={'height': image_height, 'width': image_width})  # Resize.
@@ -240,7 +240,7 @@ def keras_example():
 		ii += 1
 """
 
-from swl.machine_learning.data_generator import create_dataset_generator_from_array, create_dataset_generator_using_imgaug
+from swl.machine_learning.keras.data_generator import create_dataset_generator_from_array, create_dataset_generator_using_imgaug
 
 def data_generator_example():
 	image_dir_path = dataset_home_dir_path + '/phenotyping/cvppp2017_lsc_lcc_challenge/package/CVPPP2017_LSC_training/training/A1'
@@ -519,6 +519,35 @@ def background_process_augmentation_example_4():
 				#if 0 == idx:
 				#	ia.imshow(batch_aug.images_aug[0])
 
+def check_augmentation():
+	seq = iaa.Sequential([
+		iaa.AdditiveGaussianNoise(loc=0, scale=(0.1 * 255, 0.5 * 255), per_channel=False),  # Add Gaussian noise to images.
+		iaa.CoarseSalt(p=(0.1, 0.3), size_percent=(0.2, 0.9), per_channel=False),
+		#iaa.CoarsePepper(p=(0.1, 0.3), size_percent=(0.2, 0.9), per_channel=False),
+	])
+
+	image_filepath = './image.jpg'
+	try:
+		image = Image.open(image_filepath)
+	except IOError as ex:
+		print('Failed to load an image {}.'.format(image_filepath))
+		return
+
+	images = np.expand_dims(np.asarray(image, dtype=np.uint8), axis=0)
+	if True:
+		images_aug = seq.augment_images(images)
+	else:
+		seq_det = seq.to_deterministic()  # Call this for each batch again, NOT only once at the start.
+		images_aug = seq_det.augment_images(images)
+		labels_aug = seq_det.augment_images(labels)
+
+	for img in images_aug:
+	#for img. lbl in zip(images_aug, labels_aug):
+		img = Image.fromarray(img)
+		img.show()
+		#img.save('./imgaug_test.png')
+		#img.convert('L').save('./imgaug_test.png')  # Save as a grayscale image.
+
 def main():
 	#simple_imgaug_example()
 	#keras_example()  # Not working.
@@ -528,10 +557,12 @@ def main():
 	#background_process_augmentation_example_1()
 	#background_process_augmentation_example_2()
 	#background_process_augmentation_example_3()
-	background_process_augmentation_example_4()
+	#background_process_augmentation_example_4()
 
-#%%------------------------------------------------------------------
+	#--------------------
+	check_augmentation()
+
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()
-

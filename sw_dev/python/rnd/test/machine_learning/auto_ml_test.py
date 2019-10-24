@@ -1,6 +1,6 @@
 # REF [site] >> https://pypi.python.org/pypi/automl/2.7.7
 
-#%%---------------------------------------------------------
+#-----------------------------------------------------------
 
 from auto_ml import Predictor
 from auto_ml.utils import get_boston_dataset
@@ -18,7 +18,7 @@ ml_predictor.train(df_train)
 
 ml_predictor.score(df_test, df_test.MEDV)
 
-#%%---------------------------------------------------------
+#-----------------------------------------------------------
 
 from auto_ml import Predictor
 from auto_ml.utils import get_boston_dataset

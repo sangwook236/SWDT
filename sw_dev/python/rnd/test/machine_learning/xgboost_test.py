@@ -8,7 +8,6 @@ import xgboost as xgb
 import pandas as pd
 import numpy as np
 import time
-import traceback, sys
 
 def main():
 	# Read in data.
@@ -41,15 +40,7 @@ def main():
 	print('Elapsed time = {}'.format(time.perf_counter() - start_time))
 	print('End inferring by XGBoost...')
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
-	try:
-		main()
-	except:
-		#ex = sys.exc_info()  # (type, exception object, traceback).
-		##print('{} raised: {}.'.format(ex[0], ex[1]))
-		#print('{} raised: {}.'.format(ex[0].__name__, ex[1]))
-		#traceback.print_tb(ex[2], limit=None, file=sys.stdout)
-		#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
-		traceback.print_exc(limit=None, file=sys.stdout)
+	main()

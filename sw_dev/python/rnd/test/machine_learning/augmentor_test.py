@@ -5,7 +5,7 @@ else:
 	swl_python_home_dir_path = 'D:/work/SWL_github/python'
 sys.path.append(swl_python_home_dir_path + '/src')
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Prepare dataset.
 
 from swl.machine_learning.data_preprocessing import standardize_samplewise, standardize_featurewise
@@ -23,7 +23,7 @@ dataset_dir_path = '../../data/machine_learning/data_only2'
 image_width, image_height = None, None
 #image_width, image_height = 300, 200
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Do data augmentation.
 
 if 'posix' == os.name:
@@ -50,12 +50,12 @@ p.crop_random(probability=1.0, percentage_area=0.5)
 p.resize(probability=1.0, width=120, height=120)
 p.status()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Generate sample in the specified output directory.
 
 #p.sample(100)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Create a generator.
 
 batch_size = 5
