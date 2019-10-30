@@ -1,0 +1,42 @@
+[-] General.
+	- Site.
+		https://github.com/Calamari-OCR/calamari
+
+[-] Usage.
+	- Predict.
+		calamari-predict --checkpoint path_to_model.ckpt --files your_images.*.png
+
+		Voting algorithm:
+			calamari-predict --checkpoint path_to_model_1.ckpt path_to_model_2.ckpt ... --files your_images.*.png
+			calamari-predict --checkpoint path_to_model_1.ckpt path_to_model_2.ckpt ... --voter --files your_images.*.png
+				confidence_voter_default_ctc (default), confidence_voter_fuzzy_ctc, sequence_voter
+
+		Use all models to predict and then vote for a set of lines:
+			calamari-predict --checkpoint best_models_dir/*.ckpt.json --files your_images.*.png
+
+[-] Installation.
+	- Pip.
+		pip install calamari_ocr
+
+		To install the package from its source:
+			python setup.py install
+
+	- Conda.
+		conda env create -f environment_master_gpu.yml
+
+[-] Training.
+	- Train a single model.
+		calamari-train --help
+
+		calamari-train --files your_images.*.png
+			calamari expects that each image file (.png) has a corresponding ground truth text file (.gt.txt) at the same location with the same base name.
+
+	- Train a n-fold of models.
+		calamari-cross-fold-train --help
+
+		calamari-cross-fold-train --files your_images*.*.png --best_models_dir some_dir
+
+	- Evaluate a model.
+		calamari-eval --help
+
+		calamari-eval --gt *.gt.txt

@@ -1,0 +1,13 @@
+[-] General.
+	- Site.
+		https://pytorch.org/
+		https://github.com/pytorch/pytorch
+
+		https://pytorch.org/docs/stable/index.html
+
+[-] Usage.
+	- Model parallelism.
+		https://pytorch.org/tutorials/intermediate/model_parallel_tutorial.html
+
+	- Data parallelism.
+		https://pytorch.org/tutorials/intermediate/ddp_tutorial.html

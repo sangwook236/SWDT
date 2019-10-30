@@ -1,0 +1,22 @@
+[-] General.
+	- Site.
+		https://github.com/deepak112/Keras-SRGAN
+
+[-] Usage.
+	- Test model.
+		python test.py --input_high_res='./data_hr/' --output_dir='./output/' --model_dir='./model/gen_model3000.h5' --number_of_images=25 --test_type='test_model'
+
+	- Test LR images.
+		Resize images to 384x384.
+			magick mogrify -resize 384x384! -path ./data_lr ./input_lr_images/*.jpg
+
+		python test.py --input_low_res='./data_lr/' --output_dir='./output/' --model_dir='./model/gen_model3000.h5' --number_of_images=25 --test_type='test_lr_images'
+			'output_dir' has to exist.
+			'number_of_images' has to be the exact number of input image.
+
+[-] Training.
+	- Train.
+		python train.py -h
+
+		python train.py --input_dir='./data/' --output_dir='./output/' --model_save_dir='./model/' --batch_size=64 --epochs=3000 --number_of_images=1000 --train_test_ratio=0.8
+		python train.py --input_dir='/home/sangwook/my_dataset/pattern_recognition/coco/train2017' --output_dir='./output_sangwook/' --model_save_dir='./model_sangwook/' --batch_size=64 --epochs=3000 --number_of_images=1000 --train_test_ratio=0.8
