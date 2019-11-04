@@ -5,6 +5,7 @@
 [-] Usage.
 	- Test model.
 		python test.py --input_high_res='./data_hr/' --output_dir='./output/' --model_dir='./model/gen_model3000.h5' --number_of_images=25 --test_type='test_model'
+			python test.py --input_high_res='./input_lr_images/' --output_dir='./output_lr_images/' --model_dir='./model/gen_model3000.h5' --number_of_images=25 --test_type='test_model'
 
 	- Test LR images.
 		Resize images to 384x384.
@@ -19,4 +20,4 @@
 		python train.py -h
 
 		python train.py --input_dir='./data/' --output_dir='./output/' --model_save_dir='./model/' --batch_size=64 --epochs=3000 --number_of_images=1000 --train_test_ratio=0.8
-		python train.py --input_dir='/home/sangwook/my_dataset/pattern_recognition/coco/train2017' --output_dir='./output_sangwook/' --model_save_dir='./model_sangwook/' --batch_size=64 --epochs=3000 --number_of_images=1000 --train_test_ratio=0.8
+			python train.py --input_dir='/home/sangwook/my_dataset/pattern_recognition/coco/train2017' --output_dir='./output_sangwook/' --model_save_dir='./model_sangwook/' --batch_size=64 --epochs=3000 --number_of_images=1000 --train_test_ratio=0.8
