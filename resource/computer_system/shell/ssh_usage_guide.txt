@@ -28,6 +28,7 @@
 	- ssh.
 		ssh -Y -p port_no user_name@example.com
 		ssh -Y user_name@example.com:port_no
+		ssh -Y -l user_name example.com -p port_no
 
 		ssh -i ~/.ssh/id_rsa user_name@example.com
 		ssh -i ~/.ssh/id_rsa -o IdentitiesOnly=yes user_name@example.com
