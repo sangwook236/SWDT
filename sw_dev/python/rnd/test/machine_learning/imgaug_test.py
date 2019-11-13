@@ -81,7 +81,51 @@ def simple_imgaug_example():
 	#images_pp = standardize_featurewise(images_pp)
 
 	if True:
-		seq = iaa.Sequential([
+		augmenter = iaa.SomeOf((1, 2), [
+			iaa.OneOf([
+				iaa.Affine(
+					scale={'x': (0.8, 1.2), 'y': (0.8, 1.2)},  # Scale images to 80-120% of their size, individually per axis.
+					translate_percent={'x': (-0.1, 0.1), 'y': (-0.1, 0.1)},  # Translate by -10 to +10 percent (per axis).
+					rotate=(-10, 10),  # Rotate by -10 to +10 degrees.
+					shear=(-5, 5),  # Shear by -5 to +5 degrees.
+					#order=[0, 1],  # Use nearest neighbour or bilinear interpolation (fast).
+					order=0,  # Use nearest neighbour or bilinear interpolation (fast).
+					#cval=(0, 255),  # If mode is constant, use a cval between 0 and 255.
+					#mode=ia.ALL  # Use any of scikit-image's warping modes (see 2nd image from the top for examples).
+					#mode='edge'  # Use any of scikit-image's warping modes (see 2nd image from the top for examples).
+				),
+				#iaa.PiecewiseAffine(scale=(0.01, 0.05)),  # Move parts of the image around. Slow.
+				iaa.PerspectiveTransform(scale=(0.01, 0.1)),
+				iaa.ElasticTransformation(alpha=(20.0, 50.0), sigma=(6.5, 8.5)),  # Move pixels locally around (with random strengths).
+			]),
+			iaa.OneOf([
+				iaa.GaussianBlur(sigma=(0, 3.0)),  # Blur images with a sigma between 0 and 3.0.
+				iaa.AverageBlur(k=(2, 7)),  # Blur image using local means with kernel sizes between 2 and 7.
+				iaa.MedianBlur(k=(3, 11)),  # Blur image using local medians with kernel sizes between 2 and 7.
+				iaa.MotionBlur(k=(5, 11), angle=(0, 360), direction=(-1.0, 1.0), order=1),
+			]),
+			iaa.OneOf([
+				iaa.AdditiveGaussianNoise(loc=0, scale=(0.1 * 255, 0.5 * 255), per_channel=False),  # Add Gaussian noise to images.
+				iaa.AdditiveLaplaceNoise(loc=0, scale=(0.1 * 255, 0.4 * 255), per_channel=False),
+				iaa.AdditivePoissonNoise(lam=(32, 96), per_channel=False),
+				iaa.CoarseSaltAndPepper(p=(0.1, 0.3), size_percent=(0.2, 0.9), per_channel=False),
+				iaa.CoarseSalt(p=(0.1, 0.3), size_percent=(0.2, 0.9), per_channel=False),
+				iaa.CoarsePepper(p=(0.1, 0.3), size_percent=(0.2, 0.9), per_channel=False),
+				iaa.CoarseDropout(p=(0.1, 0.3), size_percent=(0.05, 0.3), per_channel=False),
+			]),
+			iaa.OneOf([
+				iaa.MultiplyHueAndSaturation(mul=(-10, 10), per_channel=False),
+				iaa.AddToHueAndSaturation(value=(-255, 255), per_channel=False),
+				iaa.LinearContrast(alpha=(0.5, 1.5), per_channel=False),  # Improve or worsen the contrast.
+
+				iaa.Invert(p=1, per_channel=False),  # Invert color channels.
+
+				iaa.Sharpen(alpha=(0, 1.0), lightness=(0.75, 1.5)),  # Sharpen images.
+				iaa.Emboss(alpha=(0, 1.0), strength=(0, 2.0)),  # Emboss images.
+			]),
+		], random_order=True)
+	elif False:
+		augmenter = iaa.Sequential([
 			# Apply the following augmenters to most images.
 			iaa.Fliplr(0.5),  # Horizontally flip 50% of all images.
 			iaa.Flipud(0.2),  # Vertically flip 20% of all images.
@@ -141,7 +185,7 @@ def simple_imgaug_example():
 			], random_order=True)
 		], random_order=True)
 	else:
-		seq = iaa.Sequential([
+		augmenter = iaa.Sequential([
 			iaa.SomeOf(1, [
 				#iaa.Sometimes(0.5, iaa.Crop(px=(0, 100))),  # Crop images from each side by 0 to 16px (randomly chosen).
 				iaa.Sometimes(0.5, iaa.Crop(percent=(0, 0.1))), # Crop images by 0-10% of their height/width.
@@ -168,14 +212,14 @@ def simple_imgaug_example():
 	images_pp = images_pp.astype(np.uint8)
 
 	# Test 1 (good).
-	seq_det = seq.to_deterministic()  # Call this for each batch again, NOT only once at the start.
-	#images_aug1 = seq_det.augment_images(images)
-	images_aug1 = seq_det.augment_images(images_pp)
-	labels_aug1 = seq_det.augment_images(labels)
-	seq_det = seq.to_deterministic()  # Call this for each batch again, NOT only once at the start.
-	#images_aug2 = seq_det.augment_images(images)
-	images_aug2 = seq_det.augment_images(images_pp)
-	labels_aug2 = seq_det.augment_images(labels)
+	augmenter_det = augmenter.to_deterministic()  # Call this for each batch again, NOT only once at the start.
+	#images_aug1 = augmenter_det.augment_images(images)
+	images_aug1 = augmenter_det.augment_images(images_pp)
+	labels_aug1 = augmenter_det.augment_images(labels)
+	augmenter_det = augmenter.to_deterministic()  # Call this for each batch again, NOT only once at the start.
+	#images_aug2 = augmenter_det.augment_images(images)
+	images_aug2 = augmenter_det.augment_images(images_pp)
+	labels_aug2 = augmenter_det.augment_images(labels)
 
 	#export_images(images, labels, './augmented1/img', '')
 	export_images(images_pp, labels, './augmented1/img', '')
@@ -183,13 +227,13 @@ def simple_imgaug_example():
 	export_images(images_aug2, labels_aug2, './augmented1/img', '_aug2')
 
 	# Test 2 (bad).
-	seq_det = seq.to_deterministic()  # Call this for each batch again, NOT only once at the start.
-	#images_aug1 = seq_det.augment_images(images)
-	images_aug1 = seq_det.augment_images(images_pp)
-	labels_aug1 = seq_det.augment_images(labels)
-	#images_aug2 = seq_det.augment_images(images)
-	images_aug2 = seq_det.augment_images(images_pp)
-	labels_aug2 = seq_det.augment_images(labels)
+	augmenter_det = augmenter.to_deterministic()  # Call this for each batch again, NOT only once at the start.
+	#images_aug1 = augmenter_det.augment_images(images)
+	images_aug1 = augmenter_det.augment_images(images_pp)
+	labels_aug1 = augmenter_det.augment_images(labels)
+	#images_aug2 = augmenter_det.augment_images(images)
+	images_aug2 = augmenter_det.augment_images(images_pp)
+	labels_aug2 = augmenter_det.augment_images(labels)
 
 	#export_images(images, labels, './augmented2/img', '')
 	export_images(images_pp, labels, './augmented2/img', '')
@@ -249,7 +293,7 @@ def data_generator_example():
 
 	image_width, image_height = 200, 200
 
-	seq = iaa.Sequential([
+	augmenter = iaa.Sequential([
 		iaa.SomeOf(1, [
 			#iaa.Sometimes(0.5, iaa.Crop(px=(0, 100))),  # Crop images from each side by 0 to 16px (randomly chosen).
 			iaa.Sometimes(0.5, iaa.Crop(percent=(0, 0.1))), # Crop images by 0-10% of their height/width.
@@ -281,7 +325,7 @@ def data_generator_example():
 	#	batch_idx += 1
 
 	batch_idx = 0
-	for batch_images, batch_labels in create_dataset_generator_using_imgaug(seq, images, labels, batch_size):
+	for batch_images, batch_labels in create_dataset_generator_using_imgaug(augmenter, images, labels, batch_size):
 		export_images(batch_images, np.argmax(batch_labels, axis=-1), './augmented/img', '')
 		#print(batch_idx, type(batch_images), type(batch_labels))
 		print(batch_idx, ':', batch_images.shape, ',', batch_labels.shape)
@@ -520,7 +564,7 @@ def background_process_augmentation_example_4():
 				#	ia.imshow(batch_aug.images_aug[0])
 
 def check_augmentation():
-	seq = iaa.Sequential([
+	augmenter = iaa.Sequential([
 		iaa.AdditiveGaussianNoise(loc=0, scale=(0.1 * 255, 0.5 * 255), per_channel=False),  # Add Gaussian noise to images.
 		iaa.CoarseSalt(p=(0.1, 0.3), size_percent=(0.2, 0.9), per_channel=False),
 		#iaa.CoarsePepper(p=(0.1, 0.3), size_percent=(0.2, 0.9), per_channel=False),
@@ -535,11 +579,11 @@ def check_augmentation():
 
 	images = np.expand_dims(np.asarray(image, dtype=np.uint8), axis=0)
 	if True:
-		images_aug = seq.augment_images(images)
+		images_aug = augmenter.augment_images(images)
 	else:
-		seq_det = seq.to_deterministic()  # Call this for each batch again, NOT only once at the start.
-		images_aug = seq_det.augment_images(images)
-		labels_aug = seq_det.augment_images(labels)
+		augmenter_det = augmenter.to_deterministic()  # Call this for each batch again, NOT only once at the start.
+		images_aug = augmenter_det.augment_images(images)
+		labels_aug = augmenter_det.augment_images(labels)
 
 	for img in images_aug:
 	#for img. lbl in zip(images_aug, labels_aug):
