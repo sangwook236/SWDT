@@ -5,10 +5,14 @@
 [-] Usage.
 	- Predict.
 		calamari-predict --checkpoint path_to_model.ckpt --files your_images.*.png
+			calamari-predict --checkpoint /home/sangwook/lib_repo/python/calamari_models_github/fraktur_19th_century/4.ckpt --files /home/sangwook/work/dataset/text/receipt_icdar2019/image/00000.jpg
+			calamari-predict --checkpoint /home/sangwook/lib_repo/python/calamari_models_github/fraktur_historical/4.ckpt --files /home/sangwook/work/dataset/text/receipt_icdar2019/image/00000.jpg
+			calamari-predict --checkpoint /home/sangwook/lib_repo/python/calamari_models_github/antiqua_modern/4.ckpt --files /home/sangwook/work/dataset/text/receipt_icdar2019/image/00000.jpg
+			calamari-predict --checkpoint /home/sangwook/lib_repo/python/calamari_models_github/antiqua_historical/4.ckpt --files /home/sangwook/work/dataset/text/receipt_icdar2019/image/00000.jpg
 
 		Voting algorithm:
 			calamari-predict --checkpoint path_to_model_1.ckpt path_to_model_2.ckpt ... --files your_images.*.png
-			calamari-predict --checkpoint path_to_model_1.ckpt path_to_model_2.ckpt ... --voter --files your_images.*.png
+			calamari-predict --checkpoint path_to_model_1.ckpt path_to_model_2.ckpt ... --voter confidence_voter_default_ctc --files your_images.*.png
 				confidence_voter_default_ctc (default), confidence_voter_fuzzy_ctc, sequence_voter
 
 		Use all models to predict and then vote for a set of lines:

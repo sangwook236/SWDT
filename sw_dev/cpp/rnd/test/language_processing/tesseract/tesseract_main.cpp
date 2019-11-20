@@ -372,7 +372,8 @@ void iterator_over_the_classifier_choices_for_a_single_symbol()
 		return;
 	}
 
-	const std::string image_filepath("../data/language_processing/phototest.tif");
+	//const std::string image_filepath("../data/language_processing/phototest.tif");
+	const std::string image_filepath("../data/language_processing/X00016469612.jpg");
 	Pix *image = pixRead(image_filepath.c_str());
 	if (!image)
 	{
@@ -383,7 +384,7 @@ void iterator_over_the_classifier_choices_for_a_single_symbol()
 	api.SetVariable("save_blob_choices", "T");
 
 	api.SetImage(image);
-	api.SetRectangle(37, 228, 548, 31);
+	//api.SetRectangle(37, 228, 548, 31);
 	if (api.Recognize(nullptr) < 0)
 	{
 		std::cerr << "Failed to recognize: " << image_filepath << std::endl;
@@ -394,6 +395,7 @@ void iterator_over_the_classifier_choices_for_a_single_symbol()
 	if (ri)
 	{
 		const tesseract::PageIteratorLevel level = tesseract::RIL_SYMBOL;
+#if false
 		do
 		{
 			const char *symbol = ri->GetUTF8Text(level);
@@ -417,6 +419,40 @@ void iterator_over_the_classifier_choices_for_a_single_symbol()
 			}
 			std::cout << "---------------------------------------------" << std::endl;
 		} while ((ri->Next(level)));
+#else
+		cv::Mat img(cv::imread(image_filepath, cv::IMREAD_COLOR));
+
+		do
+		{
+			const char *symbol = ri->GetUTF8Text(level);
+			//std::unique_ptr<char[]> symbol(ri->GetUTF8Text(level));
+			const float confidence = ri->Confidence(level);
+			int x1, y1, x2, y2;
+			ri->BoundingBox(level, &x1, &y1, &x2, &y2);
+			cv::rectangle(img, cv::Rect(cv::Point(x1, y1), cv::Point(x2, y2)), cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
+			if (nullptr != symbol)
+			{
+				std::cout << "Symbol: " << symbol << ", confidence: " << confidence << "; BoundingBox: " << x1 << ", " << y1 << ", " << x2 << ", " << y2 << std::endl;
+				bool indent = false;
+				tesseract::ChoiceIterator ci(*ri);
+				do
+				{
+					if (indent) std::cout << "\t\t ";
+					std::cout << "\t- ";
+					const char *choice = ci.GetUTF8Text();
+					//std::unique_ptr<const char[]> choice(ci.GetUTF8Text());
+					if (choice)
+						std::cout << choice << ", confidence: " << ci.Confidence() << std::endl;
+					indent = true;
+				} while (ci.Next());
+			}
+			std::cout << "---------------------------------------------" << std::endl;
+		} while ((ri->Next(level)));
+
+		cv::imshow("Bounding Box", img);
+		cv::waitKey(0);
+		cv::destroyAllWindows();
+#endif
 	}
 
 	// Destroy used object and release memory.
@@ -694,7 +730,7 @@ void binarization_example()
 	//const std::string image_filepath("../data/language_processing/korean_newspaper_2.png");
 	//const std::string image_filepath("../data/language_processing/korean_newspaper_3.png");
 	//const std::string image_filepath("../data/language_processing/korean_newspaper_4.png");
-	const std::string image_filepath("D:/work/SWL_github/python/test/language_processing/receipt/receipt_text_line_en/0-000003.jpg");
+	const std::string image_filepath("D:/work/dataset/text/receipt_text_line_en/0-000003.jpg");
 
 	Pix *image = pixRead(image_filepath.c_str());
 	if (!image)
@@ -748,7 +784,7 @@ int tesseract_main(int argc, char *argv[])
 	//local::text_line_recognition_example();  // Results are not good.
 	//local::result_iterator_example();
 	//local::orientation_and_script_detection_example();
-	//local::iterator_over_the_classifier_choices_for_a_single_symbol();
+	local::iterator_over_the_classifier_choices_for_a_single_symbol();
 	//local::creating_searchable_pdf_from_image();
 #if defined(__linux) || defined(__linux__) || defined(linux) || defined(__unix) || defined(__unix__) || defined(unix)
 	local::monitoring_ocr_progress();
@@ -757,7 +793,7 @@ int tesseract_main(int argc, char *argv[])
 	//local::layout_analysis_example_1();
 	//local::layout_analysis_example_2();
 
-	local::binarization_example();
+	//local::binarization_example();
 
 	return 0;
 #else

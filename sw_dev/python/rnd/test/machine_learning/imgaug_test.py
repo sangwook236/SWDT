@@ -585,12 +585,14 @@ def check_augmentation():
 		images_aug = augmenter_det.augment_images(images)
 		labels_aug = augmenter_det.augment_images(labels)
 
-	for img in images_aug:
-	#for img. lbl in zip(images_aug, labels_aug):
+	for img, img_aug in zip(images, images_aug):
+	#for img, lbl, img_aug, lbl_aug in zip(images, labels, images_aug, labels_aug):
 		img = Image.fromarray(img)
+		img_aug = Image.fromarray(img_aug)
 		img.show()
-		#img.save('./imgaug_test.png')
-		#img.convert('L').save('./imgaug_test.png')  # Save as a grayscale image.
+		img_aug.show()
+		#img_aug.save('./imgaug_test.png')
+		#img_aug.convert('L').save('./imgaug_test.png')  # Save as a grayscale image.
 
 def main():
 	#simple_imgaug_example()

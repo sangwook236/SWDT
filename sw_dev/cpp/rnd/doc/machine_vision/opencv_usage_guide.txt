@@ -57,3 +57,13 @@
 		<solution>
 			Link with protobuf as a shared library.
 				define PROTOBUF_USE_DLLS.
+
+	- cv2.imshow() error.
+		<error>
+			The function is not implemented. Rebuild the library with Windows, GTK+ 2.x or Carbon support.
+			If you are on Ubuntu or Debian, install libgtk2.0-dev and pkg-config, then re-run cmake or configure script in function 'cvShowImage'.
+		<solution>
+			Conda:
+				conda install -c conda-forge opencv=4.1.0
+			Pip:
+				pip install opencv-contrib-python
