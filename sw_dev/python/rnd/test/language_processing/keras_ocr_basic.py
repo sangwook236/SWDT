@@ -9,26 +9,56 @@ import matplotlib.pyplot as plt
 # REF [site] >> https://github.com/faustomorales/keras-ocr
 def detection_and_recognition_test():
 	if 'posix' == os.name:
-		receipt_icdar2019_base_dir_path = '/home/sangwook/work/dataset/text/receipt_icdar2019'
+		data_base_dir_path = '/home/sangwook/work/dataset'
 	else:
-		receipt_icdar2019_base_dir_path = 'D:/work/dataset/text/receipt_icdar2019'
-	#image_filepath = receipt_icdar2019_base_dir_path + '/image/00000.jpg'
-	image_filepath = receipt_icdar2019_base_dir_path + '/0325updated.task1train(626p)-20190531T071023Z-001/0325updated.task1train(626p)/X00016469612.jpg'
+		data_base_dir_path = 'D:/work/dataset'
 
-	image = keras_ocr.tools.read(image_filepath)
+	if True:
+		data_dir_path = data_base_dir_path + '/text/receipt_icdar2019'
 
-	#detector = keras_ocr.detection.Detector(pretrained=True)
-	detector = keras_ocr.detection.Detector(pretrained=False)
-	detector.model.load_weights('./craft_mlt_25k.h5')
-	#detector.model.load_weights('./v0_detector.h5')  # FIXME [fix] >> Not correctly working.
+		image_filepaths = [
+			data_dir_path + '/0325updated.task1train(626p)-20190531T071023Z-001/0325updated.task1train(626p)/X00016469612.jpg',
+		]
+	elif False:
+		data_dir_path = data_base_dir_path + '/text/receipt_epapyrus/epapyrus_20190618'
 
-	# Boxes will be an Nx4x2 array of box quadrangles, where N is the number of detected text boxes.
-	boxes = detector.detect(images=[image])[0]
-	canvas = keras_ocr.detection.drawBoxes(image, boxes)
-	plt.imshow(canvas)
-	plt.show()
+		image_filepaths = list()
+		for idx in range(1, 11):
+			image_filepaths.append(data_dir_path + '/receipt_1/img{:02}.jpg'.format(idx))
+		for idx in range(1, 32):
+			image_filepaths.append(data_dir_path + '/receipt_2/img{:02}.jpg'.format(idx))
+		for idx in range(1, 40):
+			image_filepaths.append(data_dir_path + '/receipt_3/img{:02}.jpg'.format(idx))
+	elif False:
+		data_dir_path = data_base_dir_path + '/text/receipt_epapyrus/keit_20190619'
 
-	#--------------------
+		image_filepaths = list()
+		for idx in range(1, 6):
+			image_filepaths.append(data_dir_path + '카드영수증_{}-1.png'.format(idx))
+		image_filepaths.extend([
+			data_dir_path + '/tax_invoice_01/tax_invoice_01.jpg',
+			data_dir_path + '/tax_invoice_01/tax_invoice_02.jpg',
+			data_dir_path + '/tax_invoice_01/tax_invoice_03.jpg',
+			data_dir_path + '/tax_invoice_01/tax_invoice_04.jpg',
+			data_dir_path + '/tax_invoice_02/tax_invoice_01.jpg',
+			data_dir_path + '/tax_invoice_02/tax_invoice_02.jpg',
+			data_dir_path + '/tax_invoice_02/tax_invoice_03.jpg',
+			data_dir_path + '/tax_invoice_03/tax_invoice_01.jpg',
+			data_dir_path + '/tax_invoice_04/tax_invoice_01.jpg',
+			data_dir_path + '/tax_invoice_05/tax_invoice_01.jpg',
+		])
+		for idx in range(1, 7):
+			image_filepaths.append(data_dir_path + 'import_license_01/import_license_{:02}.png'.format(idx))
+
+	if True:
+		detector = keras_ocr.detection.Detector(pretrained=True)
+	else:
+		detector = keras_ocr.detection.Detector(pretrained=False)
+		detector.model.load_weights('./craft_mlt_25k.h5')
+		# REF [function] >> training_test().
+		#detector.model.load_weights('./v0_detector.h5')  # FIXME [fix] >> Not correctly working.
+
+	"""
 	# The alphabet defines which characters the OCR will be trained to detect.
 	alphabet = string.digits + \
 			   string.ascii_lowercase + \
@@ -40,11 +70,24 @@ def detection_and_recognition_test():
 		width=128,
 		height=64
 	)
+	# REF [function] >> training_test().
 	recognizer.model.load_weights('./v0_recognizer.h5')  # FIXME [fix] >> Not correctly working.
+	"""
 
-	boxes = detector.detect(images=[image])[0]
-	predictions = recognizer.recognize_from_boxes(boxes=boxes, image=image)
-	print('Predictions = ', predictions)
+	for image_filepath in image_filepaths:
+		image = keras_ocr.tools.read(image_filepath)
+
+		# Boxes will be an Nx4x2 array of box quadrangles, where N is the number of detected text boxes.
+		boxes = detector.detect(images=[image])[0]
+		canvas = keras_ocr.detection.drawBoxes(image, boxes)
+		plt.imshow(canvas)
+		plt.show()
+
+		"""
+		boxes = detector.detect(images=[image])[0]
+		predictions = recognizer.recognize_from_boxes(boxes=boxes, image=image)
+		print('Predictions = ', predictions)
+		"""
 
 # REF [site] >> https://github.com/faustomorales/keras-ocr
 def training_test():

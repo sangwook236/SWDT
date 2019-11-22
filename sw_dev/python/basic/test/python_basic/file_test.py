@@ -3,35 +3,42 @@
 import glob, csv
 
 def basic():
+	filepath = 'data.txt'
 	try:
-		with open('data.txt', 'r', encoding='UTF8') as fd:
-		#with open('data.txt', 'r+') as fd:
-		#with open('data.txt', 'rb') as fd:
+		with open(filepath, 'r', encoding='UTF8') as fd:
+		#with open(filepath, 'r+') as fd:
+		#with open(filepath, 'rb') as fd:
 			data = fd.read()
 	except FileNotFoundError as ex:
-		print('File not found: {}.'.format('data.txt'))
+		print('File not found: {}.'.format(filepath))
 	except UnicodeDecodeError as ex:
-		print('Unicode decode error: {}.'.format('data.txt'))
+		print('Unicode decode error: {}.'.format(filepath))
 
+	filepath = 'data_copyed.txt'
 	try:
-		with open('data_copyed.txt', 'w', encoding='UTF8') as fd:
-		#with open('data_copyed.txt', 'w+', encoding='UTF8') as fd:
-		#with open('data_copyed.txt', 'wb', encoding='UTF8') as fd:
+		with open(filepath, 'w', encoding='UTF8') as fd:
+		#with open(filepath, 'w+', encoding='UTF8') as fd:
+		#with open(filepath, 'wb', encoding='UTF8') as fd:
 			fd.write(data)
 
 		words = data.split()
 	except FileNotFoundError as ex:
-		print('File not found: {}.'.format('data_copyed.txt'))
+		print('File not found: {}.'.format(filepath))
 	except UnicodeDecodeError as ex:
-		print('Unicode decode error: {}.'.format('data_copyed.txt'))
+		print('Unicode decode error: {}.'.format(filepath))
 
+	filepath = 'data.txt'
 	try:
-		with open('data.txt', 'r') as fd:
-			lines = fd.readlines()
+		with open(filepath, 'r') as fd:
+			#lines = fd.read()  # A strings.
+			#lines = fd.read().strip('\n')  # A strings.
+			#lines = fd.read().replace(' ', '')  # A string.
+			#lines = fd.readlines()  # A list of strings.
+			lines = fd.read().splitlines()  # A list of strings.
 	except FileNotFoundError as ex:
-		print('File not found: {}.'.format('data.txt'))
+		print('File not found: {}.'.format(filepath))
 	except UnicodeDecodeError as ex:
-		print('Unicode decode error: {}.'.format('data.txt'))
+		print('Unicode decode error: {}.'.format(filepath))
 
 	lines2 = list()
 	for line in lines:
