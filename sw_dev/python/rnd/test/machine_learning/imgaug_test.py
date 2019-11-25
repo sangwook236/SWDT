@@ -587,12 +587,18 @@ def check_augmentation():
 
 	for img, img_aug in zip(images, images_aug):
 	#for img, lbl, img_aug, lbl_aug in zip(images, labels, images_aug, labels_aug):
+		"""
 		img = Image.fromarray(img)
 		img_aug = Image.fromarray(img_aug)
 		img.show()
 		img_aug.show()
 		#img_aug.save('./imgaug_test.png')
 		#img_aug.convert('L').save('./imgaug_test.png')  # Save as a grayscale image.
+		"""
+		import cv2
+		cv2.imshow('Image', img)
+		cv2.imshow('Image Aug', img_aug)
+		cv2.waitKey(0)
 
 def main():
 	#simple_imgaug_example()

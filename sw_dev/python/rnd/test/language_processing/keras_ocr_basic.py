@@ -34,7 +34,7 @@ def detection_and_recognition_test():
 
 		image_filepaths = list()
 		for idx in range(1, 6):
-			image_filepaths.append(data_dir_path + '카드영수증_{}-1.png'.format(idx))
+			image_filepaths.append(data_dir_path + '/카드영수증_{}-1.png'.format(idx))
 		image_filepaths.extend([
 			data_dir_path + '/tax_invoice_01/tax_invoice_01.jpg',
 			data_dir_path + '/tax_invoice_01/tax_invoice_02.jpg',
