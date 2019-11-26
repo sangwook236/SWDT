@@ -345,13 +345,16 @@ def analyze_page_layout(binary, gray, rgb=None):
 	segmentation = renumber[segmentation]  # Image.
 
 	lines = [lines[i] for i in lsort]
-	if rgb is not None:
-		# REF [function] >> extract_masked() in ${OCROPY_HOME}/ocrolib/psegutils.py.
-		for l in lines:
-			y0, x0, y1, x1 = [int(x) for x in [l.bounds[0].start, l.bounds[1].start, l.bounds[0].stop, l.bounds[1].stop]]
-			cv2.rectangle(rgb, (x0, y0), (x1, y1), (0, 0, 255), 1, cv2.LINE_AA)
-		cv2.imshow('Image', rgb)
-		cv2.waitKey(0)
+
+	# Visualize bounding boxes.
+	if False:
+		if rgb is not None:
+			# REF [function] >> extract_masked() in ${OCROPY_HOME}/ocrolib/psegutils.py.
+			for l in lines:
+				y0, x0, y1, x1 = [int(x) for x in [l.bounds[0].start, l.bounds[1].start, l.bounds[0].stop, l.bounds[1].stop]]
+				cv2.rectangle(rgb, (x0, y0), (x1, y1), (0, 0, 255), 1, cv2.LINE_AA)
+			cv2.imshow('Image', rgb)
+			cv2.waitKey(0)
 
 	# Output everything.
 	if False:
@@ -367,13 +370,17 @@ def analyze_page_layout(binary, gray, rgb=None):
 				grayline = psegutils.extract_masked(gray, l, pad=pad, expand=expand)  # Image.
 				ocrolib.write_image_gray("%s/01%04x.nrm.png" % (outputdir, i + 1), grayline)
 
+# REF [file] >> ${OCROPY_HOME}/ocropus-rpred
+def recognize():
+	raise NotImplementedError
+
 def simple_example():
 	if 'posix' == os.name:
 		data_dir_path = '/home/sangwook/work/dataset'
 	else:
 		data_dir_path = 'D:/work/dataset'
-	#image_filepath = data_dir_path + '/text/receipt_epapyrus/keit_20190619/크기변환_카드영수증_5-1.png'
-	image_filepath = data_dir_path + '/text/receipt_epapyrus/epapyrus_20190618/receipt_1/img01.jpg'
+	image_filepath = data_dir_path + '/text/receipt_epapyrus/keit_20190619/크기변환_카드영수증_5-1.png'
+	#image_filepath = data_dir_path + '/text/receipt_epapyrus/epapyrus_20190618/receipt_1/img01.jpg'
 
 	rgb = cv2.imread(image_filepath, cv2.IMREAD_COLOR)
 	if rgb is None:
@@ -382,6 +389,7 @@ def simple_example():
 
 	binary, gray = binarize(image_filepath)	
 	analyze_page_layout(binary, gray, rgb)
+	#recognize()  # Not yet implemented.
 
 def main():
 	simple_example()
