@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: UTF-8
 
 # REF [site] >>
 #	https://github.com/konlpy/konlpy
@@ -166,7 +167,7 @@ def main():
 	bigram_or_trigram_extraction_with_nltk()
 	#integration_with_wordcloud()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

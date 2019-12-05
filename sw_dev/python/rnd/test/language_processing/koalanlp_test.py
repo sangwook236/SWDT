@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: UTF-8
 
 # REF [site] >>
 #	https://github.com/koalanlp/koalanlp
@@ -31,7 +32,7 @@ def split_sentences():
 def main():
 	split_sentences()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

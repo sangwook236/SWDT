@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: UTF-8
 
 # REF [site] >>
 #	https://radimrehurek.com/gensim/
@@ -34,7 +35,7 @@ def simple_word_vector_example():
 	# Find the top-N most similar words.
 	print('Most similar words:', model.most_similar('너를'))
 
-	# 한국어의 경우 띄어쓰기 단위가 어절 형태이기 때문에 형태소 단위로 tokenization 이 필요하며, 또한 품사태그를 포함한 word embedding 생성에서 좋은 성능을 보인다고 알려져 있다.
+	# 한국어의 경우 띄어쓰기 단위가 어절 형태이기 때문에 형태소 단위로 tokenization이 필요하며, 또한 품사태그를 포함한 word embedding 생성에서 좋은 성능을 보인다고 알려져 있다.
 	# 가장 쉽게 하는 방법은 KoNLPy 를 사용하는 것: 여기
 	# 한마디로 정리하면, token 리스트를 다음과 같이 구성하면 된다
 	# [['나/NP', '는/JX', '너/NP', '를/JKO', '......], [..], ...]
@@ -42,7 +43,7 @@ def simple_word_vector_example():
 def main():
 	simple_word_vector_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

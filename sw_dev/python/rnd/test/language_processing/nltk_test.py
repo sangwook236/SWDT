@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: UTF-8
 
 # REF [site] >> https://www.nltk.org/
 
@@ -6,6 +7,12 @@ import nltk
 from nltk.corpus import treebank
 
 def simple_example():
+	nltk.download('punkt')
+	nltk.download('averaged_perceptron_tagger')
+	nltk.download('maxent_ne_chunker')
+	nltk.download('words')
+	nltk.download('treebank')
+
 	sentence = """
 		At eight o'clock on Thursday morning
 		Arthur didn't feel very good.
@@ -25,15 +32,9 @@ def simple_example():
 	t.draw()
 
 def main():
-	nltk.download('punkt')
-	nltk.download('averaged_perceptron_tagger')
-	nltk.download('maxent_ne_chunker')
-	nltk.download('words')
-	nltk.download('treebank')
-
 	simple_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()
