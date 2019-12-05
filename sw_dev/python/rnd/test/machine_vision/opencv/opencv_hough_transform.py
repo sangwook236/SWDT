@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import math
 import numpy as np
@@ -89,7 +90,7 @@ def main():
 	line_detection()
 	#circle_detection()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

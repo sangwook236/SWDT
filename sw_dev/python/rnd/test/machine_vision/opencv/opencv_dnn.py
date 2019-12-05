@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> https://docs.opencv.org/master/d6/d0f/group__dnn.html
 
@@ -120,7 +121,7 @@ def main():
 	# Caffe, darknet, Model Optimizer, ONNX, TensorFlow, Torch.
 	yolo_object_detection()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

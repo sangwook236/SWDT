@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import numpy as np
 import cv2
@@ -26,7 +27,7 @@ def image_reading_and_writing():
 def main():
 	image_reading_and_writing()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

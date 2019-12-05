@@ -1,8 +1,8 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import numpy as np
 import cv2 as cv
-
 
 # REF [site] >> https://docs.opencv.org/4.1.0/d7/dff/tutorial_feature_homography.html
 def surf():
@@ -81,7 +81,7 @@ def surf():
 def main():
 	surf()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

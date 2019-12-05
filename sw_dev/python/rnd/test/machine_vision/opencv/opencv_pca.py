@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import math
 import numpy as np
@@ -109,7 +110,7 @@ def simple_pca_example():
 def main():
 	simple_pca_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

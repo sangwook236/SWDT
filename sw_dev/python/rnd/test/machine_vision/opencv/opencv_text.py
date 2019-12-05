@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >>
 #	https://docs.opencv.org/4.1.0/da/d56/group__text__detect.html
@@ -316,7 +317,7 @@ def main():
 	#beam_search_decoder_example()  # Not yet implemented.
 	#tesseract_example()  # Not yet implemented.
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()
