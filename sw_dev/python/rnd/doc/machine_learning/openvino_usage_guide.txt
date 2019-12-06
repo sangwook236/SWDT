@@ -1,0 +1,56 @@
+[-] General.
+	- Site.
+		https://01.org/openvinotoolkit
+		https://software.intel.com/en-us/openvino-toolkit
+
+		https://github.com/opencv/dldt
+		https://github.com/opencv/open_model_zoo/
+
+		Documentation:
+		https://docs.openvinotoolkit.org/
+
+[-] Usage.
+	- Download model.
+		Download the models using downloader.py file in ${OPEN_MODEL_ZOO_HOME}/tools/downloader/.
+			${OPEN_MODEL_ZOO_HOME}/tools/downloader/downloader.py --print_all
+				Print all the available models.
+			${OPEN_MODEL_ZOO_HOME}/tools/downloader/downloader.py --name model_name
+				Specify specific models.
+				Download to ${OPEN_MODEL_ZOO_HOME}/intel/model_name or ${OPEN_MODEL_ZOO_HOME}/public/model_name.
+					${OPEN_MODEL_ZOO_HOME}/intel/model_name:
+						Xml and bin file.
+					${OPEN_MODEL_ZOO_HOME}/public/model_name:
+						TensorFlow: checkpoint, frozen graph, saved model.
+
+		Repository:
+			https://docs.openvinotoolkit.org/latest/_models_intel_index.html
+			https://github.com/opencv/cvat/tree/develop/cvat/apps/auto_annotation
+			https://download.01.org/opencv/2019/
+			https://download.01.org/openvinotoolkit/2018_R5/open_model_zoo/
+			https://download.01.org/openvinotoolkit/
+
+	- Convert model.
+		https://docs.openvinotoolkit.org/latest/_docs_MO_DG_prepare_model_convert_model_Converting_Model.html
+		https://docs.openvinotoolkit.org/latest/_docs_MO_DG_prepare_model_convert_model_Converting_Model_General.html
+		https://docs.openvinotoolkit.org/latest/_docs_MO_DG_prepare_model_convert_model_Convert_Model_From_TensorFlow.html
+
+		The standard extension of the model file:
+			.caffemodel - Caffe models.
+			.pb - TensorFlow models.
+			.params - MXNet models.
+			.onnx - ONNX models.
+			.nnet - Kaldi models.
+
+		python mo.py --input_model INPUT_MODEL
+			${OPENVINO_HOME}/deployment_tools/model_optimizer/mo.py
+
+		python mo.py --input_model /user/models/model.pb
+		python mo.py --framework tf --input_model /user/models/model.pb
+
+[-] Installation
+	- Download.
+		https://software.intel.com/en-us/openvino-toolkit/choose-download
+
+	- Install.
+		cd ${OPENVINO_HOME}
+		./install.sh or ./install_GUI.sh
