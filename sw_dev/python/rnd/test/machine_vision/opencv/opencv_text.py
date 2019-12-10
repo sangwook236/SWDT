@@ -176,7 +176,7 @@ def EAST_detector_example():
 	inpHeight = 320
 
 	# Path to a binary .pb file of model contains trained weights.
-	# REF [file] >> ${OPENCV_HOME}/samples/dnn/frozen_east_text_detection.pb
+	# REF [site] >> https://github.com/opencv/opencv_extra/blob/master/testdata/dnn/download_models.py
 	model_filepath = './frozen_east_text_detection.pb'
 
 	# Load network.
