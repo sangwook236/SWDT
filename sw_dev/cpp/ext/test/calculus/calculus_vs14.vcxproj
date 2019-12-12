@@ -22,7 +22,7 @@
     <ProjectGuid>{363C9CFA-5054-4362-9FBE-E81F8D3BB72A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>calculus</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
     <ProjectName>calculus</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

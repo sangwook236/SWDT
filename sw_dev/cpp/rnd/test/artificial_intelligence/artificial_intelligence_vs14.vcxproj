@@ -22,7 +22,7 @@
     <ProjectGuid>{4E5347AB-2992-4A7F-81F9-C36E7E8AC16A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>artificial_intelligence</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
     <ProjectName>artificial_intelligence</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

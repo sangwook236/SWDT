@@ -335,7 +335,7 @@ int opencv_main(int argc, char *argv[])
 
 		//my_opencv::image_similarity();
 
-		//my_opencv::line();
+		my_opencv::line();
 		//my_opencv::hough_transform();
 		//my_opencv::template_matching();
 		//my_opencv::chamfer_matching();
@@ -373,7 +373,7 @@ int opencv_main(int argc, char *argv[])
 		//if (canUseGPU) my_opencv::face_detection_using_gpu();  // Not yet implemented.
 		//my_opencv::face_recognition();
 
-		my_opencv::text();
+		//my_opencv::text();
 
 		//my_opencv::camera_geometry();
 		//my_opencv::camera_calibration();

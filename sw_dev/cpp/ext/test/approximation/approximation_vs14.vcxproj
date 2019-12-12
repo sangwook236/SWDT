@@ -22,7 +22,7 @@
     <ProjectGuid>{DA43208C-4825-4309-9F0D-3E1F2787EE53}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>approximation</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
     <ProjectName>approximation</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

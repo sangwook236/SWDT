@@ -22,7 +22,7 @@
     <ProjectGuid>{46F56682-D6C1-4A85-8FAA-5E044EFE6FC7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>wxwidgets</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
     <ProjectName>wxwidgets</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
