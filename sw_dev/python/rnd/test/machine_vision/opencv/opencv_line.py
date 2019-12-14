@@ -5,7 +5,6 @@ import cv2
 
 def lsd():
 	image_filepath = '../../../data/machine_vision/build.png'
-	image_filepath = 'aaa.png'
 
 	# Read gray image.
 	img = cv2.imread(image_filepath, cv2.IMREAD_GRAYSCALE)
@@ -30,7 +29,6 @@ def lsd():
 
 def fld():
 	image_filepath = '../../../data/machine_vision/build.png'
-	image_filepath = 'aaa.png'
 
 	# Read gray image.
 	img = cv2.imread(image_filepath, cv2.IMREAD_GRAYSCALE)

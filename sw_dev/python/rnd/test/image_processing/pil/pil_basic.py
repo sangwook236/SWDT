@@ -5,13 +5,13 @@ from PIL import Image, ImageDraw, ImageFont
 
 # REF [site] >> http://pillow.readthedocs.io/en/3.1.x/reference/Image.html
 def image_example():
-	img_filename = 'D:/dataset/pattern_recognition/street1.png'
-	#img_filename = 'D:/dataset/pattern_recognition/street2.jpg'
+	image_filename = 'D:/dataset/pattern_recognition/street1.png'
+	#image_filename = 'D:/dataset/pattern_recognition/street2.jpg'
 
 	try:
-		img = Image.open(img_filename)
+		img = Image.open(image_filename)
 	except IOError as ex:
-		print('Failed to load an image:', img_filename)
+		print('Failed to load an image:', image_filename)
 		return
 
 	img.rotate(45).show()

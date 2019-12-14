@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,7 +8,7 @@ from skimage import data
 
 #---------------------------------------------------------------------
 
-REF [site] >> http://scikit-image.org/docs/stable/auto_examples/transform/plot_piecewise_affine.html
+# REF [site] >> http://scikit-image.org/docs/stable/auto_examples/transform/plot_piecewise_affine.html
 def piecewise_affine_transform():
 	image = data.astronaut()
 	rows, cols = image.shape[0], image.shape[1]

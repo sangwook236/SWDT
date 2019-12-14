@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 from skimage import data
 from skimage.viewer import ImageViewer
