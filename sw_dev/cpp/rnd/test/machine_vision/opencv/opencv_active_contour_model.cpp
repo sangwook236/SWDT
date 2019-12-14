@@ -1,7 +1,5 @@
 //#include "stdafx.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv2/core/core_c.h>
-#include <opencv2/highgui/highgui_c.h>
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <list>
@@ -15,8 +13,8 @@ namespace local {
 
 namespace my_opencv {
 
-// [ref] ${CPP_RND_HOME}/test/machine_vision/opencv/opencv_util.cpp
-void snake(IplImage *srcImage, IplImage *grayImage);
+// REF [file] >> ${SWDT_CPP_HOME}/rnd/test/machine_vision/opencv/opencv_util.cpp
+void snake(cv::Mat &srcImage, cv::Mat &grayImage);
 
 void active_contour_model()
 {
@@ -40,52 +38,31 @@ void active_contour_model()
 	for (std::list<std::string>::iterator it = filenames.begin(); it != filenames.end(); ++it)
     {
 
-		IplImage *srcImage = cvLoadImage(it->c_str());
-		if (NULL == srcImage)
+		cv::Mat srcImage = cv::imread(*it);
+		if (srcImage.empty())
 		{
-			std::cout << "fail to load image file: " << *it << std::endl;
+			std::cout << "Failed to load an image: " << *it << std::endl;
 			continue;
 		}
 
-		IplImage *grayImage = NULL;
-		if (1 == srcImage->nChannels)
-			cvCopy(srcImage, grayImage, NULL);
+		cv::Mat grayImage;
+		if (1 == srcImage.channels())
+			srcImage.copyTo(grayImage);
 		else
-		{
-			grayImage = cvCreateImage(cvGetSize(srcImage), srcImage->depth, 1);
-#if defined(__GNUC__)
-			if (strcasecmp(srcImage->channelSeq, "RGB") == 0)
-#elif defined(_MSC_VER)
-			if (_stricmp(srcImage->channelSeq, "RGB") == 0)
-#endif
-				cvCvtColor(srcImage, grayImage, CV_RGB2GRAY);
-#if defined(__GNUC__)
-			else if (strcasecmp(srcImage->channelSeq, "BGR") == 0)
-#elif defined(_MSC_VER)
-			else if (_stricmp(srcImage->channelSeq, "BGR") == 0)
-#endif
-				cvCvtColor(srcImage, grayImage, CV_BGR2GRAY);
-			else
-				assert(false);
-			grayImage->origin = srcImage->origin;
-		}
+			cv::cvtColor(srcImage, grayImage, cv::COLOR_BGR2GRAY);
 
 		//
 		snake(srcImage, grayImage);
 
 		//
-		cvShowImage("active contour model", srcImage);
+		cv::imshow("Active Contour Model", srcImage);
 
-		const unsigned char key = cvWaitKey(0);
+		const unsigned char key = cv::waitKey(0);
 		if (27 == key)
 			break;
-
-		//
-		cvReleaseImage(&grayImage);
-		cvReleaseImage(&srcImage);
 	}
 
-	cvDestroyAllWindows();
+	cv::destroyAllWindows();
 }
 
 }  // namespace my_opencv

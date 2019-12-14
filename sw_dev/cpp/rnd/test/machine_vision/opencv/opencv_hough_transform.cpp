@@ -166,6 +166,32 @@ void hough_transform_for_circle()
 	cv::destroyAllWindows();
 }
 
+// REF [site] >> https://docs.opencv.org/4.1.2/dd/d1a/group__imgproc__feature.html
+void hough_transform_for_line_using_point_set()
+{
+	const static float Points[20][2] = {
+		{ 0.0f,   369.0f }, { 10.0f,  364.0f }, { 20.0f,  358.0f }, { 30.0f,  352.0f },
+		{ 40.0f,  346.0f }, { 50.0f,  341.0f }, { 60.0f,  335.0f }, { 70.0f,  329.0f },
+		{ 80.0f,  323.0f }, { 90.0f,  318.0f }, { 100.0f, 312.0f }, { 110.0f, 306.0f },
+		{ 120.0f, 300.0f }, { 130.0f, 295.0f }, { 140.0f, 289.0f }, { 150.0f, 284.0f },
+		{ 160.0f, 277.0f }, { 170.0f, 271.0f }, { 180.0f, 266.0f }, { 190.0f, 260.0f }
+	};
+
+	std::vector<cv::Point2f> point;
+	for (int i = 0; i < 20; ++i)
+		point.push_back(cv::Point2f(Points[i][0], Points[i][1]));
+
+	const double rhoMin = 0.0f, rhoMax = 360.0f, rhoStep = 1.0;
+	const double thetaMin = 0.0, thetaMax = CV_PI / 2.0, thetaStep = CV_PI / 180.0;
+	cv::Mat lines;
+	cv::HoughLinesPointSet(point, lines, 20, 1, rhoMin, rhoMax, rhoStep, thetaMin, thetaMax, thetaStep);
+
+	std::vector<cv::Vec3d> line3d;
+	lines.copyTo(line3d);
+	for (int i = 0; i < line3d.size(); ++i)
+		std::cout << "#" << i << ": votes = " << (int)line3d[i].val[0] << ", rho = " << line3d[i].val[1] << ", theta = " << line3d[i].val[2] << std::endl;
+}
+
 bool getEdges(const cv::Mat &src, cv::Mat &dst)
 {
 	cv::Mat ucharSingleSrc;
@@ -320,7 +346,7 @@ void showLines(cv::Mat const &src, std::vector<cv::Vec4i> const &lines)
 	cv::imshow("lines", bgrSrc);
 }
 
-// REF [file] >> ${OPENCV_CONTRIB_HOME/modules/ximgproc/samples/fast_hough_transform.cpp
+// REF [file] >> ${OPENCV_CONTRIB_HOME}/modules/ximgproc/samples/fast_hough_transform.cpp
 void fast_hough_transform()
 {
 	const std::string img_filename("../data/machine_vision/building.jpg");
@@ -498,6 +524,18 @@ bool hough_space_analysis()
 	return true;
 }
 
+void generalized_hough_transform()
+{
+	cv::Ptr<cv::GeneralizedHoughBallard> ght = cv::createGeneralizedHoughBallard();
+	//cv::Ptr<cv::GeneralizedHoughGuil> ght = cv::createGeneralizedHoughGuil();
+
+	//ght->setLevels(levels);  // R-table levels.
+	//ght->setVotesThreshold(votesThreshold);  // The accumulator threshold for the template centers at the detection stage.
+
+	std::cout << "Levels = " << ght->getLevels() << std::endl;
+	std::cout << "Votes threshol = " << ght->getVotesThreshold() << std::endl;
+}
+
 void hough_transform_for_alignment_marker()
 {
 	const std::string img_filename("../data/machine_vision/alignment_marker.png");
@@ -574,11 +612,15 @@ void hough_transform()
 {
 	//local::hough_transform_for_line();
 	//local::hough_transform_for_circle();
+	//local::hough_transform_for_line_using_point_set();
 	local::fast_hough_transform();
 	//local::hough_space_analysis();
 
+	// Generalized Hough transform.
+	//local::generalized_hough_transform();  // Not yet implemented.
+
 	// Application.
-	local::hough_transform_for_alignment_marker();
+	//local::hough_transform_for_alignment_marker();
 }
 
 }  // namespace my_opencv

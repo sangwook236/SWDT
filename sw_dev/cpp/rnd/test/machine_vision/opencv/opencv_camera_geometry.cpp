@@ -15,25 +15,21 @@ void print_opencv_matrix(const CvMat* mat);
 namespace {
 namespace local {
 
-void essential_matrix(const CvMat* rotation_vector, const CvMat* translation_vector, CvMat* essential_matrix)
+void essential_matrix(const cv::Mat &rotation_vector, const cv::Mat &translation_vector, cv::Mat &essential_matrix)
 {
-	CvMat* skewMat = cvCreateMat(3, 3, CV_64FC1);
-	cvSetZero(skewMat);
-	cvmSet(skewMat, 0, 1, -cvmGet(translation_vector, 0, 2));
-	cvmSet(skewMat, 0, 2, cvmGet(translation_vector, 0, 1));
-	cvmSet(skewMat, 1, 0, cvmGet(translation_vector, 0, 2));
-	cvmSet(skewMat, 1, 2, -cvmGet(translation_vector, 0, 0));
-	cvmSet(skewMat, 2, 0, -cvmGet(translation_vector, 0, 1));
-	cvmSet(skewMat, 2, 1, cvmGet(translation_vector, 0, 0));
+	cv::Mat skewMat(3, 3, CV_64FC1);
+	skewMat.at<float>(0, 1) = translation_vector.at<float>(0, 2);
+	skewMat.at<float>(0, 2) = translation_vector.at<float>(0, 1);
+	skewMat.at<float>(1, 0) = translation_vector.at<float>(0, 2);
+	skewMat.at<float>(1, 2) = translation_vector.at<float>(0, 0);
+	skewMat.at<float>(2, 0) = translation_vector.at<float>(0, 1);
+	skewMat.at<float>(2, 1) = translation_vector.at<float>(0, 0);
 
-	CvMat* rotMat = cvCreateMat(3, 3, CV_64FC1);
-	cvRodrigues2(rotation_vector, rotMat);
+	cv::Mat rotMat(3, 3, CV_64FC1);
+	cv::Rodrigues(rotation_vector, rotMat);
 
-	//cvGEMM(skewMat, rotMat, 1.0, NULL, 0.0, essential_matrix, 0);
-	cvMatMul(skewMat, rotMat, essential_matrix);
-
-	cvReleaseMat(&skewMat);
-	cvReleaseMat(&rotMat);
+	//cv::gemm(skewMat, rotMat, 1.0, cv::Mat(), 0.0, essential_matrix, 0);
+	essential_matrix = skewMat.mul(rotMat);
 }
 
 void intrinsic_camera_params(const bool isPlanarCalibrationRigs)

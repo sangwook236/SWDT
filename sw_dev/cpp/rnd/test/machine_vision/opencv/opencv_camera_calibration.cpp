@@ -200,7 +200,7 @@ void saveCameraParams(const std::string &filename,
 			flags & cv::CALIB_FIX_PRINCIPAL_POINT ? "+fix_principal_point" : "",
 			flags & cv::CALIB_ZERO_TANGENT_DIST ? "+zero_tangent_dist" : ""
 		);
-		cvWriteComment(*fs, buf, 0);
+		fs.writeComment(buf, false);
 	}
 
 	fs << "flags" << flags;
@@ -227,7 +227,7 @@ void saveCameraParams(const std::string &filename,
 			r = rvecs[i].t();
 			t = tvecs[i].t();
 		}
-		cvWriteComment(*fs, "a set of 6-tuples (rotation std::vector + translation std::vector) for each view", 0);
+		fs.writeComment("a set of 6-tuples (rotation std::vector + translation std::vector) for each view", false);
 		fs << "extrinsic_parameters" << bigmat;
 	}
 
