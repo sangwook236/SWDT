@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # A spectrogram, sonogram, spectral waterfalls, voiceprints, or voicegrams: a visual representation of the spectrum of frequencies in a sound.
 # REF [site] >> https://docs.scipy.org/doc/scipy-0.19.0/reference/generated/scipy.signal.spectrogram.html
