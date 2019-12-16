@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >>
 #	http://contrib.scikit-learn.org/imbalanced-learn/stable/

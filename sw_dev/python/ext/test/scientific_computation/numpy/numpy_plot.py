@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> https://docs.scipy.org/doc/numpy/user/quickstart.html#histograms
 
@@ -43,7 +44,7 @@ def main():
 	fractal_example()
 	histogram_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

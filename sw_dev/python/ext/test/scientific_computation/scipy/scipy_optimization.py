@@ -1,9 +1,11 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >>
 #	https://docs.scipy.org/doc/scipy/reference/tutorial/optimize.html
 #	https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html
 
+import numpy as np
 from scipy.optimize import minimize
 from scipy.optimize import least_squares
 from scipy.optimize import minimize_scalar
@@ -16,7 +18,6 @@ from scipy.sparse import csc_matrix
 from scipy.sparse.linalg import LinearOperator
 from scipy.special import j1
 import matplotlib.pyplot as plt
-import numpy as np
 
 def rosen(x):
 	"""The Rosenbrock function"""
@@ -248,7 +249,7 @@ def main():
 
 	#custom_minization_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

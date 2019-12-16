@@ -1,11 +1,12 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >>
 #	https://docs.scipy.org/doc/scipy/reference/tutorial/optimize.html
 
+import numpy as np
 from scipy.optimize import root
 import matplotlib.pyplot as plt
-import numpy as np
 
 def simple_example():
 	# Single-variable equation.
@@ -27,7 +28,7 @@ def simple_example():
 	print('Function =', sol.fun)
 
 def large_problem():
-# Parameters.
+	# Parameters.
 	nx, ny = 75, 75
 	hx, hy = 1. / (nx - 1), 1. / (ny - 1)
 
@@ -65,7 +66,7 @@ def main():
 	#simple_example()
 	large_problem()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

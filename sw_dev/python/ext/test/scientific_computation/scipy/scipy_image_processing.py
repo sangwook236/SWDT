@@ -1,19 +1,28 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
 # REF [site] >> https://docs.scipy.org/doc/scipy-0.18.1/reference/misc.html
 
-import scipy.ndimage, scipy.misc
 import numpy as np
+import scipy.ndimage, scipy.misc
 
-#%%-------------------------------------------------------------------
-# Morphological operation.
+def morphological_operation_test():
+	img_filename = 'D:/dataset/phenotyping/RDA/all_plants_foreground/adaptor1_side_120_foreground.png'
 
-img_filename = 'D:/dataset/phenotyping/RDA/all_plants_foreground/adaptor1_side_120_foreground.png'
+	img = scipy.misc.imread(img_filename, mode='L')
 
-img = scipy.misc.imread(img_filename, mode='L')
+	img_eroded = scipy.ndimage.grey_erosion(img, size=(3, 3))
 
-img_eroded = scipy.ndimage.grey_erosion(img, size=(3, 3))
+	#footprint = scipy.ndimage.generate_binary_structure(2, 2)
+	#img_eroded = scipy.ndimage.grey_erosion(img, size=(3, 3), footprint=footprint)
 
-#footprint = scipy.ndimage.generate_binary_structure(2, 2)
-#img_eroded = scipy.ndimage.grey_erosion(img, size=(3, 3), footprint=footprint)
+	#scipy.misc.imshow(img_eroded)
+	scipy.misc.imsave('tmp.jpg', img_eroded)
 
-#scipy.misc.imshow(img_eroded)
-scipy.misc.imsave('tmp.jpg', img_eroded)
+def main():
+	morphological_operation_test()
+
+#--------------------------------------------------------------------
+
+if '__main__' == __name__:
+	main()

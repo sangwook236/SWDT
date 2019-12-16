@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> http://scikit-learn.org/stable/modules/ensemble.html
 # REF [site] >> http://scikit-learn.org/stable/auto_examples/ensemble/plot_forest_iris.html

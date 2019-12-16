@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.procrustes.html
 
@@ -54,7 +55,7 @@ def main():
 	print('X =\n', X_transformed)
 	print('Y =\n', Y_aligned)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

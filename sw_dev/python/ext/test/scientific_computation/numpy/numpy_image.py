@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> https://docs.scipy.org/doc/numpy/user/quickstart.html#histograms
 
 import numpy as np
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # PIL.
 
 from PIL import Image
@@ -29,7 +30,7 @@ def pil_example():
 	img_float = Image.fromarray(img_array_float.astype(np.float32), mode='F')
 	img_float.save('./tmp_float.tif')
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # scipy.
 
 import scipy.ndimage
@@ -40,7 +41,7 @@ def scipy_example():
 	#scipy.misc.imshow(img_array)  # Use the environment variable, SCIPY_PIL_IMAGE_VIEWER.
 	scipy.misc.imsave('./tmp.jpg', img_array)
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 # matplotlib.
 
 import matplotlib.pyplot as plt
@@ -57,7 +58,7 @@ def main():
 	scipy_example()
 	matplotlib_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

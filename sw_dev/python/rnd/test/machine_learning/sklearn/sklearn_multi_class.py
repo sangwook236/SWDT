@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 from sklearn import multiclass, multioutput
 from sklearn import svm, ensemble
