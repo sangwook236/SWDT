@@ -36,6 +36,7 @@ def image_fft_example():
 	if True:
 		img_fft = scipy.fftpack.fft2(img)
 	else:
+		# Expand input image to optimal size.
 		# FIXME [error] >> Some artifacts (vertical and horizontal lines) are generated.
 		cols, rows = img.shape[:2]
 		m, n = cv2.getOptimalDFTSize(rows), cv2.getOptimalDFTSize(cols)
