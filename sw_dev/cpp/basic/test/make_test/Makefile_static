@@ -2,16 +2,16 @@ SRCS=add.cpp sub.cpp
 OBJS=$(SRCS:.cpp=.o)
 LIB_BASE_NAME=arithmetic
 
-CC=
+CC=gcc
 CXX=g++
 LD=ld
 AR=ar
 RANLIB=ranlib
 RM=rm -f
 
-#-- Linux, Cygwin, & MinGW(MSYS)
+#-- Linux, Cygwin, & MinGW(MSYS).
 CFLAGS=
-CXXFLAGS=-c -Wall
+CXXFLAGS=-c -std=c++17 -Wall
 LDFLAGS=
 
 LIB_NAME=lib$(LIB_BASE_NAME).a
@@ -25,4 +25,4 @@ $(LIB_NAME): $(OBJS)
 	$(CXX) -o $@ $< $(CXXFLAGS)
 
 clean:
-	$(RM) $(LIB_NAME) *.o *~ core
+	$(RM) $(LIB_NAME) $(OBJS) *~ core

@@ -9,7 +9,7 @@ LIB_NAME=lib$(LIB_BASE_NAME).dll
 IMP_LIB_NAME=$(LIB_NAME).a
 LIB_DEF_NAME=$(LIB_NAME).def
 
-CC=
+CC=gcc
 CXX=g++
 LD=ld
 AR=ar
@@ -17,26 +17,26 @@ RANLIB=ranlib
 RM=rm -f
 
 CFLAGS=
-#-- Linux
-#CXXFLAGS=-c -Wall -fPIC
+#-- Linux.
+#CXXFLAGS=-c -std=c++17 -Wall -fPIC
 #LDFLAGS=-shared -Wl,-soname,$(LIB_NAME)
-#-- Cygwin
-#CXXFLAGS=-c -Wall -mdll
+#-- Cygwin.
+#CXXFLAGS=-c -std=c++17 -Wall -mdll
 #LDFLAGS=-shared -Wl,-soname,$(LIB_NAME) -Wl,--out-implib,$(IMP_LIB_NAME) -Wl,--major-image-version,0,--minor-image-version,0
-#-- MinGW(MSYS)
-CXXFLAGS=-c -Wall -mdll -DBUILD_SHARED_LIB -DARITHMETIC_LIB_EXPORT
+#-- MinGW(MSYS).
+CXXFLAGS=-c -std=c++17 -Wall -mdll -DBUILD_SHARED_LIB -DARITHMETIC_LIB_EXPORT
 LDFLAGS=-shared -Wl,-soname,$(LIB_NAME) -Wl,--out-implib,$(IMP_LIB_NAME) -Wl,--major-image-version,0,--minor-image-version,0
 
 all: $(SRCS) $(LIB_NAME)
 
 $(LIB_NAME): $(OBJS) 
-#-- Linux, Cygwin, & MinGW(MSYS)
+#-- Linux, Cygwin, & MinGW(MSYS).
 	$(CXX) -o $@ $^ $(LDFLAGS)
-#-- Cygwin
+#-- Cygwin.
 #	dlltool --kill-at --export-all --output-def=$(LIB_DEF_NAME) $^
 #	dlltool --input-def $(LIB_DEF_NAME) --dllname $@ --output-lib $(IMP_LIB_NAME)
 #	dllwrap --mno-cygwin --def $(LIB_DEF_NAME) --dllname=$@ $^
-#-- MinGW(MSYS)
+#-- MinGW(MSYS).
 #	dlltool --kill-at --export-all --output-def=$(LIB_DEF_NAME) $^
 #	dlltool --input-def $(LIB_DEF_NAME) --dllname $@ --output-lib $(IMP_LIB_NAME)
 #	dllwrap --def $(LIB_DEF_NAME) --dllname=$@ $^
@@ -45,4 +45,4 @@ $(LIB_NAME): $(OBJS)
 	$(CXX) -o $@ $< $(CXXFLAGS)
 
 clean:
-	$(RM) $(LIB_NAME) $(IMP_LIB_NAME) $(LIB_DEF_NAME) *.o *~ core
+	$(RM) $(LIB_NAME) $(IMP_LIB_NAME) $(LIB_DEF_NAME) $(OBJS) *~ core
