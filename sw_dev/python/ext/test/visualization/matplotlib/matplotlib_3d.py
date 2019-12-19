@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> https://jakevdp.github.io/PythonDataScienceHandbook/04.12-three-dimensional-plotting.html
 

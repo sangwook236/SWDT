@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 from bokeh.io import output_file, show
 from bokeh.models import ColumnDataSource, CustomJS, Slider

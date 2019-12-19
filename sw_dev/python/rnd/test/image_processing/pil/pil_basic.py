@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import os, glob
 from PIL import Image, ImageDraw, ImageFont

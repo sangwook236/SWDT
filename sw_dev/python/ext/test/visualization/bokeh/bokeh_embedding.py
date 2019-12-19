@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >>
 #	https://bokeh.pydata.org/en/latest/docs/user_guide/embed.html

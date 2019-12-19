@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> https://matplotlib.org/users/image_tutorial.html
 
@@ -14,7 +15,10 @@ def basic_example():
 	# Loading image data is supported by the Pillow library.
 	# Natively, matplotlib only supports PNG images.
 
-	img = mpimg.imread('./data/stinkbug.png')
+	image_filepath = './data/stinkbug.png'
+
+	img = mpimg.imread(image_filepath)
+	#img = plt.imread(image_filepath, format='png')
 
 	imgplot = plt.imshow(img)
 
