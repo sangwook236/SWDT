@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# coding: UTF-8
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> https://medium.com/analytics-vidhya/a-comprehensive-guide-to-build-your-own-language-model-in-python-5141b3917d6d
 
@@ -7,7 +7,7 @@ import torch
 from pytorch_transformers import GPT2Tokenizer, GPT2LMHeadModel
 
 # REF [site] >> https://medium.com/analytics-vidhya/a-comprehensive-guide-to-build-your-own-language-model-in-python-5141b3917d6d
-def gpt2_example():
+def sentence_completion_model_using_gpt2_example():
 	# Load pre-trained model tokenizer (vocabulary).
 	tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 
