@@ -13,10 +13,9 @@ def simple_example():
 	nltk.download('words')
 	nltk.download('treebank')
 
-	sentence = """
-		At eight o'clock on Thursday morning
-		Arthur didn't feel very good.
-		"""
+	sentence = """At eight o'clock on Thursday morning
+Arthur didn't feel very good.
+"""
 	tokens = nltk.word_tokenize(sentence)
 	print(tokens)
 
