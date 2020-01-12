@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> 
 #	https://www.statsmodels.org/stable/tsa.html
@@ -1010,7 +1011,7 @@ def main():
 	# Model selection.
 	# REF [file] >> statsmodels_tsa_model_selection.py
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

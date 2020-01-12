@@ -1,0 +1,18 @@
+[-] General.
+	- Site.
+		https://caffe2.ai/
+		https://github.com/facebookarchive/caffe2
+
+		https://github.com/pytorch/pytorch
+		https://github.com/pytorch/pytorch/tree/master/caffe2
+
+[-] Installation.
+	https://caffe2.ai/docs/getting-started.html?platform=ubuntu&configuration=compile
+
+	- PyTorch.
+		git clone https://github.com/pytorch/pytorch.git
+		cd ${PYTORCH_HOME}
+		git submodule update --init --recursive
+		python setup.py install
+
+		cd ~ && python -c 'from caffe2.python import core' 2>/dev/null && echo "Success" || echo "Failure"

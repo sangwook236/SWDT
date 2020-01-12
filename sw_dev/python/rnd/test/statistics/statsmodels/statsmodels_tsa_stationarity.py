@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import math
 import numpy as np
@@ -63,7 +64,7 @@ def main():
 	#simple_approach()
 	augmented_dickey_fuller_test()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

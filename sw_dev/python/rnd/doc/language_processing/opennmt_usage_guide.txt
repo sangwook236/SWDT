@@ -17,13 +17,18 @@
 	- Preprocess.
 		For OpenNMT-py:
 			onmt_preprocess -train_src data/src-train.txt -train_tgt data/tgt-train.txt -valid_src data/src-val.txt -valid_tgt data/tgt-val.txt -save_data data/demo
+			python preprecess.py -train_src data/src-train.txt -train_tgt data/tgt-train.txt -valid_src data/src-val.txt -valid_tgt data/tgt-val.txt -save_data data/demo
+				This will yield :
+					demo.train.pt: serialized PyTorch file containing training data
+					demo.valid.pt: serialized PyTorch file containing validation data
+					demo.vocab.pt: serialized PyTorch file containing vocabulary data
 
 		For OpenNMT-tf:
 			Build the source and target word vocabularies from the training files:
 				onmt-build-vocab --size 50000 --save_vocab src-vocab.txt src-train.txt
 				onmt-build-vocab --size 50000 --save_vocab tgt-vocab.txt tgt-train.txt
 
-			The data files should be declared in a YAML configuration file (let's name it data.yml):
+			The data files should be declared in a YAML configuration file (let's name it my_config.yml):
 				model_dir: run/
 
 				data:
@@ -37,12 +42,14 @@
 	- Train.
 		For OpenNMT-py:
 			onmt_train -data data/demo -save_model demo-model
+			python train.py -data data/demo -save_model demo-model
 				This will run the default model, which consists of a 2-layer LSTM with 500 hidden units on both the encoder/decoder.
 				If you want to train on GPU, you need to set, as an example:
 					CUDA_VISIBLE_DEVICES=1,3 -world_size 2 -gpu_ranks 0 1 to use (say) GPU 1 and 3 on this node only.
 
 		For OpenNMT-tf:
-			onmt-main --model_type Transformer --config data.yml --auto_config train --with_eval
+			onmt-main --model_type Transformer --config my_config.yml --auto_config train --with_eval
+			python opennmt/bin/main.py --model_type Transformer --config my_config.yml --auto_config train --with_eval
 				The --auto_config flag selects the best settings for this type of model.
 
 				The training will regularly produce checkpoints in the run/ directory.
@@ -53,11 +60,29 @@
 	- Translate.
 		For OpenNMT-py:
 			onmt_translate -model demo-model_XYZ.pt -src data/src-test.txt -output pred.txt -replace_unk -verbose
+			python translate.py -model demo-model_XYZ.pt -src data/src-test.txt -output pred.txt -replace_unk -verbose
 
 		For OpenNMT-tf:
-			onmt-main --config data.yml --auto_config infer --features_file src-test.txt
-				The most recent checkpoint will be used by default.
-				The predictions will be printed on the standard output.
+			The average_checkpoints run type can be used to average the parameters of several checkpoints, usually increasing the model performance.
+				onmt-main --config my_config.yml --auto_config average_checkpoints --output_dir run/baseline-enfr/avg --max_count 5
+				python opennmt/bin/main.py --config my_config.yml --auto_config average_checkpoints --output_dir run/baseline-enfr/avg --max_count 5
+					The average_checkpoints run type can be used to average the parameters of several checkpoints, usually increasing the model performance.
+
+			Execute the inference by setting the --checkpoint_path option:
+				onmt-main --config my_config.yml --auto_config --checkpoint_path run/baseline-enfr/avg/ckpt-315000 infer --features_file src-test.txt --predictions_file src-test.txt.out
+				python opennmt/bin/main.py --config my_config.yml --auto_config --checkpoint_path run/baseline-enfr/avg/ckpt-315000 infer --features_file src-test.txt --predictions_file src-test.txt.out
+					The most recent checkpoint will be used by default.
+					The predictions will be printed on the standard output.
+
+			Score existing translations via the score run type:
+				onmt-main --config my_config.yml --auto_config score --features_file src-test.txt --predictions_file src-test.txt.out
+				python opennmt/bin/main.py --config my_config.yml --auto_config score --features_file src-test.txt --predictions_file src-test.txt.out
+
+	- Other run type.
+		For OpenNMT-tf:
+			python opennmt/bin/main.py ... eval ...
+			python opennmt/bin/main.py ... export ...
+			python opennmt/bin/main.py ... update_vocab ...
 
 [-] Installation.
 	From pip:

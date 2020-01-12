@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import math
 import numpy as np
@@ -575,7 +576,7 @@ def main():
 	#grid_search_of_exponential_smoothing_with_seasonality()
 	#grid_search_of_exponential_smoothing_with_trend_and_seasonality()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

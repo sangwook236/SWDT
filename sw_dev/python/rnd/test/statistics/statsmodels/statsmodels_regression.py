@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import numpy as np
 import statsmodels.api as sm
@@ -68,7 +69,7 @@ def main():
 	#generalized_estimating_equation_example()
 	robust_linear_model()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()
