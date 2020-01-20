@@ -112,9 +112,7 @@ def train(model, optimizer, learning_rate,
 		loss = training_step(source, target)
 		step = optimizer.iterations.numpy()
 		if step % report_every == 0:
-			tf.get_logger().info(
-				'Step = %d ; Learning rate = %f ; Loss = %f',
-				step, learning_rate(step), loss)
+			tf.get_logger().info('Step = %d ; Learning rate = %f ; Loss = %f', step, learning_rate(step), loss)
 		if step % save_every == 0:
 			tf.get_logger().info('Saving checkpoint for step %d', step)
 			checkpoint_manager.save(checkpoint_number=step)
