@@ -42,7 +42,7 @@ def minimal_transformer_training_example():
 	if run_type == 'train':
 		runner.train()
 	elif run_type == 'translate':
-		runner.infer(src_filepath)
+		runner.infer(eval_features_filepath)
 
 def train(model, optimizer, learning_rate,
 	source_file, target_file, checkpoint_manager, maximum_length=100,
