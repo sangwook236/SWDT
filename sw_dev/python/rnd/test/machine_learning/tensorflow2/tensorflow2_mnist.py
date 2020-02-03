@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-# REF [site] >> https://www.tensorflow.org/tutorials/quickstart/advanced
-
 from __future__ import absolute_import, division, print_function, unicode_literals
 import tensorflow as tf
 
@@ -20,7 +18,8 @@ class MyModel(tf.keras.Model):
 		x = self.d1(x)
 		return self.d2(x)
 
-def main():
+# REF [site] >> https://www.tensorflow.org/tutorials/quickstart/advanced
+def mnist_example():
 	(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
 	x_train, x_test = x_train / 255.0, x_test / 255.0
 
@@ -52,14 +51,15 @@ def main():
 		with tf.GradientTape() as tape:
 			predictions = model(images)
 			loss = loss_object(labels, predictions)
-		gradients = tape.gradient(loss, model.trainable_variables)
+		variables = model.trainable_variables
+		gradients = tape.gradient(loss, variables)
 		"""
 		# Gradient clipping.
 		max_gradient_norm = 5
 		gradients = list(map(lambda grad: (tf.clip_by_norm(grad, clip_norm=max_gradient_norm)), gradients))
 		#gradients = list(map(lambda grad: (tf.clip_by_value(grad, clip_value_min=min_clip_val, clip_value_max=max_clip_val)), gradients))
 		"""
-		optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+		optimizer.apply_gradients(zip(gradients, variables))
 
 		train_loss(loss)
 		train_accuracy(labels, predictions)
@@ -67,14 +67,16 @@ def main():
 	@tf.function
 	def test_step(images, labels):
 		predictions = model(images)
-		t_loss = loss_object(labels, predictions)
+		loss = loss_object(labels, predictions)
 
-		test_loss(t_loss)
+		test_loss(loss)
 		test_accuracy(labels, predictions)
 
 	#--------------------
 	# Train.
 	num_epochs = 5
+
+	template = 'Epoch {}, Loss: {}, Accuracy: {}, Test Loss: {}, Test Accuracy: {}'
 	for epoch in range(num_epochs):
 		for images, labels in train_ds:
 			train_step(images, labels)
@@ -82,7 +84,6 @@ def main():
 		for test_images, test_labels in test_ds:
 			test_step(test_images, test_labels)
 
-		template = 'Epoch {}, Loss: {}, Accuracy: {}, Test Loss: {}, Test Accuracy: {}'
 		print(template.format(epoch + 1,
 			train_loss.result(),
 			train_accuracy.result() * 100,
@@ -95,6 +96,9 @@ def main():
 		train_accuracy.reset_states()
 		test_loss.reset_states()
 		test_accuracy.reset_states()
+
+def main():
+	mnist_example()
 
 #--------------------------------------------------------------------
 

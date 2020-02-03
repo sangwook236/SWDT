@@ -21,7 +21,7 @@
 			http://getgnuwin32.sourceforge.net
 		Run GetGnuWin32.
 			GetGnuWin32-0.6.3.exe
-			Destination folder: D:/depot/downloaded_material/util_software
+			Destination folder: D:/util/repo
 
 	- Install GnuWin32.
 		Run command prompt.

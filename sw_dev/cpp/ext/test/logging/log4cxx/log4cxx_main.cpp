@@ -67,18 +67,18 @@ namespace my_log4cxx {
 int log4cxx_main(int argc, char *argv[])
 {
 	//
-	std::wcout << L"level ALL: " << log4cxx::Level::getAll()->toInt() << std::endl;
-	std::wcout << L"level TRACE: " << log4cxx::Level::getTrace()->toInt() << std::endl;
-	std::wcout << L"level DEBUG: " << log4cxx::Level::getDebug()->toInt() << std::endl;
-	std::wcout << L"level INFO: " << log4cxx::Level::getInfo()->toInt() << std::endl;
-	std::wcout << L"level WARN: " << log4cxx::Level::getWarn()->toInt() << std::endl;
-	std::wcout << L"level ERROR: " << log4cxx::Level::getError()->toInt() << std::endl;
-	std::wcout << L"level FATAL: " << log4cxx::Level::getFatal()->toInt() << std::endl;
-	std::wcout << L"level OFF: " << log4cxx::Level::getOff()->toInt() << std::endl;
+	std::wcout << L"Level ALL: " << log4cxx::Level::getAll()->toInt() << std::endl;
+	std::wcout << L"Level TRACE: " << log4cxx::Level::getTrace()->toInt() << std::endl;
+	std::wcout << L"Level DEBUG: " << log4cxx::Level::getDebug()->toInt() << std::endl;
+	std::wcout << L"Level INFO: " << log4cxx::Level::getInfo()->toInt() << std::endl;
+	std::wcout << L"Level WARN: " << log4cxx::Level::getWarn()->toInt() << std::endl;
+	std::wcout << L"Level ERROR: " << log4cxx::Level::getError()->toInt() << std::endl;
+	std::wcout << L"Level FATAL: " << log4cxx::Level::getFatal()->toInt() << std::endl;
+	std::wcout << L"Level OFF: " << log4cxx::Level::getOff()->toInt() << std::endl;
 	std::wcout << std::endl;
 
 	//
-	std::wcout << L"************************************** start configuring" << std::endl;
+	std::wcout << L"***** Start configuring." << std::endl;
 
 	const int config = 1;
 	switch (config)
@@ -87,7 +87,7 @@ int log4cxx_main(int argc, char *argv[])
 		log4cxx::PropertyConfigurator::configure(L"data/logging/log4cxx/swl_logger_conf.properties");
 		break;
 	case 2:
-		log4cxx::xml::DOMConfigurator::configure(L"data/logging/log4cxx/swl_logger_conf.xml");  // run-time error
+		log4cxx::xml::DOMConfigurator::configure(L"data/logging/log4cxx/swl_logger_conf.xml");  // Run-time error.
 		break;
 	case 0:
 	default:
@@ -96,10 +96,10 @@ int log4cxx_main(int argc, char *argv[])
 	}
 
 	//logger->setLevel(log4cxx::Level::getInfo());
-	std::wcout << L"************************************** end configuring" << std::endl;
+	std::wcout << L"***** End configuring." << std::endl;
 
 	//
-	std::wcout << L"************************************** start procesinng" << std::endl;
+	std::wcout << L"***** Start processinng." << std::endl;
 
 	const int num_threads = 4;
 
@@ -109,7 +109,7 @@ int log4cxx_main(int argc, char *argv[])
 
 	threads.join_all();
 
-	std::wcout << L"************************************** end procesinng" << std::endl;
+	std::wcout << L"***** End processinng." << std::endl;
 
 	return 0;
 }
