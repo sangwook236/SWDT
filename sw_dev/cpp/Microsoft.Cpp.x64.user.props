@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.MSVC.Toolset.Common.props"/>
+
+  <PropertyGroup Label="UserMacros">
+    <MY_USR_LOCAL_BIN>D:/usr/local/bin</MY_USR_LOCAL_BIN>
+    <MY_USR_LOCAL_INCLUDE>D:/usr/local/include</MY_USR_LOCAL_INCLUDE>
+    <MY_USR_LOCAL_LIB>D:/usr/local/lib</MY_USR_LOCAL_LIB>
+    <MY_USR_BIN>D:/usr/bin</MY_USR_BIN>
+    <MY_USR_INCLUDE>D:/usr/include</MY_USR_INCLUDE>
+    <MY_USR_LIB>D:/usr/lib</MY_USR_LIB>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ExecutablePath>$(MY_USR_LOCAL_BIN);$(MY_USR_BIN);$(VC_ExecutablePath_x64);$(CommonExecutablePath)</ExecutablePath>
+    <IncludePath>$(MY_USR_LOCAL_INCLUDE);$(MY_USR_INCLUDE);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(MY_USR_LOCAL_LIB);$(MY_USR_LIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+  </PropertyGroup>
+</Project>
