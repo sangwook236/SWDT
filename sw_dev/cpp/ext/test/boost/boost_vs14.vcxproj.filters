@@ -240,5 +240,8 @@
     <ClCompile Include="format.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="iostreams.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

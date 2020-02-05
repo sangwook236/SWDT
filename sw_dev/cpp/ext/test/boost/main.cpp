@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
 	void thread();
 	void process();
 	void interprocess();
+	void iostreams();
 
 	void units();
 	void math_constants();
@@ -102,7 +103,7 @@ int main(int argc, char *argv[])
 			//log();
 
 			//program_options(argc, argv);
-			format();
+			//format();
 			//filesystem();
 			//conversion();
 			//type_traits();
@@ -149,6 +150,7 @@ int main(int argc, char *argv[])
 			//thread();
 			//process();
 			//interprocess();  // Not yet implemented.
+			iostreams();
 		}
 
 		// Mathematics & scientific computation.

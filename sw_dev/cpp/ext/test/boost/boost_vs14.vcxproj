@@ -227,6 +227,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="interprocess.cpp" />
+    <ClCompile Include="iostreams.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="main.cpp" />

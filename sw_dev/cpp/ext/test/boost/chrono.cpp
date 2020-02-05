@@ -17,11 +17,11 @@ namespace local {
 
 void process()
 {
-	std::sqrt(123.456L);  // burn some time
-	std::log(123.456L);  // burn some time
-	std::exp(123.456L);  // burn some time
-	std::cos(123.456L);  // burn some time
-	std::sin(123.456L);  // burn some time
+	std::sqrt(123.456L);  // Burn some time.
+	std::log(123.456L);  // Burn some time.
+	std::exp(123.456L);  // Burn some time.
+	std::cos(123.456L);  // Burn some time.
+	std::sin(123.456L);  // Burn some time.
 }
 
 void duration()
@@ -282,11 +282,11 @@ void io()
 
 void chrono()
 {
-	std::cout << "duration --------------------------------" << std::endl;
+	std::cout << "Duration --------------------------------" << std::endl;
 	local::duration();
-	std::cout << "clocks ----------------------------------" << std::endl;
+	std::cout << "Clocks ----------------------------------" << std::endl;
 	local::clocks();
-	std::cout << "time point-------------------------------" << std::endl;
+	std::cout << "Time point-------------------------------" << std::endl;
 	local::time_point();
 	std::cout << "I/O -------------------------------------" << std::endl;
 	local::io();
