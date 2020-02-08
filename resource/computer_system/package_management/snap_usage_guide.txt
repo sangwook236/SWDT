@@ -1,0 +1,26 @@
+[-] General.
+	- Site.
+		https://snapcraft.io/
+
+	- Store.
+		https://snapcraft.io/store
+
+[-] Usage.
+	REF [site] >> https://ubuntu.com/tutorials/basic-snap-usage
+
+	- Directory.
+		/snap
+
+	- Command.
+		Search:
+			snap find hello
+		List up:
+			snap list
+
+		Install:
+			sudo snap install hello
+		Uninstall:
+			sudo snap remove hello
+
+		Update:
+			sudo snap refresh hello
