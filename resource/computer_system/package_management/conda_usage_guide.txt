@@ -15,55 +15,70 @@
 
 		conda config --add channels conda-forge
 
+	- Initialize.
+		conda init SHELL_NAME
+			${ANACONDA_HOME}/condabin/conda init powershell
+			${ANACONDA_HOME}/bin/conda init bash
+
+		Linux:
+			source ${ANACONDA_HOME}/etc/profile.d/conda.sh
+			source ${ANACONDA_HOME}/etc/bin/activate
+		Windows:
+			${ANACONDA_HOME}/Scripts/activate.bat ${ANACONDA_HOME}
+
 	- Update.
 		conda update conda
-		conda update package_names
+		conda update PACKAGE_NAMES
 
 	- Activate an environment.
-		source activate env_name (Unix)
-		activate env_name (Windows)
+		conda activate ENV_NAME
+		source activate ENV_NAME (Linux)
+		activate ENV_NAME (Windows)
 	- Activate the root environment.
-		source activate (Unix)
+		conda activate
+		source activate (Linux)
 		activate (Windows)
 	- Dectivate an environment.
-		source deactivate env_name (Unix)
-		deactivate env_name (Windows)
+		conda deactivate ENV_NAME
+		source deactivate ENV_NAME (Linux)
+		deactivate ENV_NAME (Windows)
 	- Deactivate the root environment.
-		source deactivate (Unix)
+		conda deactivate
+		source deactivate (Linux)
 		deactivate (Windows)
 
 	- Create an environment.
-		conda create --name env_name package_names
+		conda create --name ENV_NAME PACKAGE_NAMES
 			Create a new conda environment from a list of specified packages.
 		e.g.)
-			conda create --name sangwook astroid babel
-			conda create -n tensorflow-gpu-py3.6 python=3.6 bottleneck=0.8.0 anaconda
+			conda create --name env astroid babel
+			conda create -n py3 python=3.6 bottleneck=0.8.0 anaconda
 				Python & anaconda are also regarded as normal packages like other ones.
-			conda create -n env_name-py2.7 python=2.7
+			conda create -n py2 python=2.7
 	- Clone an environment.
-		conda create --name new_env_name --clone existing_env_name
+		conda create --name NEW_ENV_NAME --clone EXISTING_ENV_NAME
 	- Remove an environment.
-		conda remove --name env_name --all
+		conda remove --name ENV_NAME --all
 	- List environments.
 		conda info --envs
 
 	- List packages and versions installed in an environment
 		conda list
 	- Search for a package.
-		conda list package_name
+		conda list PACKAGE_NAME
 	- Install a package.
-		conda install package_name
+		conda install PACKAGE_NAMES
 		conda install --file requirements.txt
-		conda install --name env_name package_name
-		conda install -c conda-forge package_name
+		conda install --name ENV_NAME PACKAGE_NAMES
+		conda install -c conda-forge PACKAGE_NAMES
 		conda install --channel https://conda.anaconda.org/pandas bottleneck
 			Download into the current environment from http://anaconda.org.
 			Go to http://anaconda.org in a browser and in the top left box named "Search Packages" type "bottleneck" and click the Search button.
 	- Remove a package.
-		conda remove package_name
-		conda remove --name env_name package_name
+		conda remove PACKAGE_NAME
+		conda remove --name ENV_NAME PACKAGE_NAMES
 
 	- Update a package.
-		conda update package_name
+		conda update PACKAGE_NAMES
 	- Update all packages.
 		conda update --all

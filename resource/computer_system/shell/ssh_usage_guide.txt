@@ -4,26 +4,42 @@
 
 		https://winscp.net/
 
+	- Document.
+		https://linuxize.com/post/using-the-ssh-config-file/
+		https://linuxize.com/post/how-to-setup-passwordless-ssh-login/
+		https://www.ssh.com/ssh/config
+
 [-] Usage.
 	- Config file.
 		/etc/ssh/sshd_config
-
 		~/.ssh/config
+		${USERPROFILE}/.ssh/config
+
 		~/.ssh/authorized_keys
+		${USERPROFILE}/.ssh/authorized_keys
+		~/.ssh/known_hosts
+		${USERPROFILE}/.ssh/known_hosts
 
 	- Public/private key.
-		ssh-keygen -t rsa -b 4096
+		Generate keys:
+			ssh-keygen -t rsa
+			ssh-keygen -t rsa -b 4096
+			ssh-keygen -t rsa -b 4096 -C "email@domain.com"
 
-		ssh-copy-id user@hostname
-			Send all public keys in the local to server.
-			Use port 22 only.
-		scp -P 3456 ~/.ssh/id_rsa.pub user@hostname:/id_rsa.pub
+		Copy keys to server:
+			ssh-copy-id user@hostname
+				Send all public keys in the local to server.
+				Use port 22 only.
+			scp -P 3456 ~/.ssh/id_rsa.pub user@hostname:/id_rsa.pub
+			cat ~/.ssh/id_rsa.pub | ssh user@hostname 'cat >> .ssh/authorized_keys'
 
-		touch ~/.ssh/authorized_keys
-		cat ~/id_rsa.pub >> ~/.ssh/authorized_keys
-			Save public keys in ~/.ssh/authorized_keys.
-		chmod 700 ~/.ssh
-		chmod 644 ~/.ssh/authorized_keys
+		Save public keys to ~/.ssh/authorized_keys in server:
+			touch ~/.ssh/authorized_keys
+			cat ~/id_rsa.pub >> ~/.ssh/authorized_keys
+
+		Change mode:
+			chmod 700 ~/.ssh
+			chmod 644 ~/.ssh/authorized_keys
 
 	- ssh.
 		ssh -Y -p port_no user_name@example.com
