@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-# REF [site] >> https://keras.io/examples/cifar10_cnn_capsule/
 # REF [paper] >> "Dynamic Routing Between Capsules", arXiv 2017.
 
 from __future__ import print_function
@@ -20,114 +19,103 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 # If 0.5, the norm will be zoomed in while original norm is less than 0.5
 # and be zoomed out while original norm is greater than 0.5.
 def squash(x, axis=-1):
-    s_squared_norm = K.sum(K.square(x), axis, keepdims=True) + K.epsilon()
-    scale = K.sqrt(s_squared_norm) / (0.5 + s_squared_norm)
-    return scale * x
+	s_squared_norm = K.sum(K.square(x), axis, keepdims=True) + K.epsilon()
+	scale = K.sqrt(s_squared_norm) / (0.5 + s_squared_norm)
+	return scale * x
 
 # Define our own softmax function instead of K.softmax
 # because K.softmax can not specify axis.
 def softmax(x, axis=-1):
-    ex = K.exp(x - K.max(x, axis=axis, keepdims=True))
-    return ex / K.sum(ex, axis=axis, keepdims=True)
+	ex = K.exp(x - K.max(x, axis=axis, keepdims=True))
+	return ex / K.sum(ex, axis=axis, keepdims=True)
 
 # Define the margin loss like hinge loss.
 def margin_loss(y_true, y_pred):
-    lamb, margin = 0.5, 0.1
-    return K.sum(y_true * K.square(K.relu(1 - margin - y_pred)) + lamb * (
-        1 - y_true) * K.square(K.relu(y_pred - margin)), axis=-1)
+	lamb, margin = 0.5, 0.1
+	return K.sum(y_true * K.square(K.relu(1 - margin - y_pred)) +
+		lamb * (1 - y_true) * K.square(K.relu(y_pred - margin)), axis=-1)
 
 class Capsule(Layer):
-    """A Capsule Implement with Pure Keras.
-    There are two vesions of Capsule.
-    One is like dense layer (for the fixed-shape input),
-    and the other is like timedistributed dense (for various length input).
+	"""A Capsule Implement with Pure Keras.
+	There are two vesions of Capsule.
+	One is like dense layer (for the fixed-shape input),
+	and the other is like timedistributed dense (for various length input).
 
-    The input shape of Capsule must be (batch_size,
-                                        input_num_capsule,
-                                        input_dim_capsule
-                                       )
-    and the output shape is (batch_size,
-                             num_capsule,
-                             dim_capsule
-                            )
+	The input shape of Capsule must be (batch_size, input_num_capsule, input_dim_capsule)
+	and the output shape is (batch_size, num_capsule, dim_capsule)
 
-    Capsule Implement is from https://github.com/bojone/Capsule/
-    Capsule Paper: https://arxiv.org/abs/1710.09829
-    """
+	Capsule Implement is from https://github.com/bojone/Capsule/
+	Capsule Paper: https://arxiv.org/abs/1710.09829
+	"""
 
-    def __init__(self,
-                 num_capsule,
-                 dim_capsule,
-                 routings=3,
-                 share_weights=True,
-                 activation='squash',
-                 **kwargs):
-        super(Capsule, self).__init__(**kwargs)
-        self.num_capsule = num_capsule
-        self.dim_capsule = dim_capsule
-        self.routings = routings
-        self.share_weights = share_weights
-        if activation == 'squash':
-            self.activation = squash
-        else:
-            self.activation = activations.get(activation)
+    def __init__(self, num_capsule, dim_capsule, routings=3, share_weights=True, activation='squash', **kwargs):
+		super(Capsule, self).__init__(**kwargs)
+		self.num_capsule = num_capsule
+		self.dim_capsule = dim_capsule
+		self.routings = routings
+		self.share_weights = share_weights
+		if activation == 'squash':
+			self.activation = squash
+		else:
+			self.activation = activations.get(activation)
 
-    def build(self, input_shape):
-        input_dim_capsule = input_shape[-1]
-        if self.share_weights:
-            self.kernel = self.add_weight(
-                name='capsule_kernel',
-                shape=(1, input_dim_capsule, self.num_capsule * self.dim_capsule),
-                initializer='glorot_uniform',
-                trainable=True)
-        else:
-            input_num_capsule = input_shape[-2]
-            self.kernel = self.add_weight(
-                name='capsule_kernel',
-                shape=(input_num_capsule, input_dim_capsule, self.num_capsule * self.dim_capsule),
-                initializer='glorot_uniform',
-                trainable=True)
+	def build(self, input_shape):
+		input_dim_capsule = input_shape.as_list()[-1]
+		if self.share_weights:
+			self.kernel = self.add_weight(
+				name='capsule_kernel',
+				shape=(1, input_dim_capsule, self.num_capsule * self.dim_capsule),
+				initializer='glorot_uniform',
+				trainable=True)
+		else:
+			input_num_capsule = input_shape[-2]
+			self.kernel = self.add_weight(
+				name='capsule_kernel',
+				shape=(input_num_capsule, input_dim_capsule, self.num_capsule * self.dim_capsule),
+				initializer='glorot_uniform',
+				trainable=True)
 
     def call(self, inputs):
-        """Following the routing algorithm from Hinton's paper,
-        but replace b = b + <u,v> with b = <u,v>.
+		"""Following the routing algorithm from Hinton's paper,
+		but replace b = b + <u,v> with b = <u,v>.
 
-        This change can improve the feature representation of Capsule.
+		This change can improve the feature representation of Capsule.
 
-        However, you can replace
-            b = K.batch_dot(outputs, hat_inputs, [2, 3])
-        with
-            b += K.batch_dot(outputs, hat_inputs, [2, 3])
-        to realize a standard routing.
-        """
+		However, you can replace
+			b = K.batch_dot(outputs, hat_inputs, [2, 3])
+		with
+			b += K.batch_dot(outputs, hat_inputs, [2, 3])
+		to realize a standard routing.
+		"""
 
-        if self.share_weights:
-            hat_inputs = K.conv1d(inputs, self.kernel)
-        else:
-            hat_inputs = K.local_conv1d(inputs, self.kernel, [1], [1])
+		if self.share_weights:
+			hat_inputs = K.conv1d(inputs, self.kernel)
+		else:
+			hat_inputs = K.local_conv1d(inputs, self.kernel, [1], [1])
 
-        batch_size = K.shape(inputs)[0]
-        input_num_capsule = K.shape(inputs)[1]
-        hat_inputs = K.reshape(hat_inputs,
-                               (batch_size, input_num_capsule,
-                                self.num_capsule, self.dim_capsule))
-        hat_inputs = K.permute_dimensions(hat_inputs, (0, 2, 1, 3))
+		batch_size = K.shape(inputs)[0]
+		input_num_capsule = K.shape(inputs)[1]
+		hat_inputs = K.reshape(hat_inputs, (batch_size, input_num_capsule, self.num_capsule, self.dim_capsule))
+		hat_inputs = K.permute_dimensions(hat_inputs, (0, 2, 1, 3))
 
-        b = K.zeros_like(hat_inputs[:, :, :, 0])
-        for i in range(self.routings):
-            c = softmax(b, 1)
-            o = self.activation(K.batch_dot(c, hat_inputs, [2, 2]))
-            if i < self.routings - 1:
-                b = K.batch_dot(o, hat_inputs, [2, 3])
-                if K.backend() == 'theano':
-                    o = K.sum(o, axis=1)
+		b = K.zeros_like(hat_inputs[:, :, :, 0])
+		for i in range(self.routings):
+			c = softmax(b, 1)
+			o = self.activation(K.batch_dot(c, hat_inputs, [2, 2]))
+			if i < self.routings - 1:
+				b = K.batch_dot(o, hat_inputs, [2, 3])
+				if K.backend() == 'theano':
+					o = K.sum(o, axis=1)
 
-        return o
+		return o
 
-    def compute_output_shape(self, input_shape):
-        return (None, self.num_capsule, self.dim_capsule)
+	def compute_output_shape(self, input_shape):
+		return (None, self.num_capsule, self.dim_capsule)
 
-def main():
+# REF [site] >>
+#	https://keras.io/examples/cifar10_cnn_capsule/
+#	https://github.com/bojone/Capsule/
+def cifar10_cnn_capsule_network_example():
 	batch_size = 128
 	num_classes = 10
 	epochs = 100
@@ -171,13 +159,7 @@ def main():
 
 	if not data_augmentation:
 		print('Not using data augmentation.')
-		model.fit(
-			x_train,
-			y_train,
-			batch_size=batch_size,
-			epochs=epochs,
-			validation_data=(x_test, y_test),
-			shuffle=True)
+		model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_test, y_test), shuffle=True)
 	else:
 		print('Using real-time data augmentation.')
 		# This will do preprocessing and realtime data augmentation:
@@ -217,7 +199,11 @@ def main():
 			datagen.flow(x_train, y_train, batch_size=batch_size),
 			epochs=epochs,
 			validation_data=(x_test, y_test),
+			use_multiprocessing=True,
 			workers=4)
+
+def main():
+	cifar10_cnn_capsule_network_example()
 
 #--------------------------------------------------------------------
 
