@@ -20,6 +20,22 @@
 		~/.ssh/known_hosts
 		${USERPROFILE}/.ssh/known_hosts
 
+		In ~/.ssh/config:
+			Host sminds1
+			    HostName sminds.iptime.org
+			    User sangwook
+			    Port 2224
+			    #IdentityFile ~/.ssh/id_rsa
+			    #LogLevel INFO
+			    #Compression yes
+				ForwardX11 yes
+			    ForwardX11Trusted yes
+
+			Host sminds2
+			    HostName sminds.iptime.org
+			    User sangwook
+			    Port 2225
+
 	- Public/private key.
 		Generate keys:
 			ssh-keygen -t rsa
