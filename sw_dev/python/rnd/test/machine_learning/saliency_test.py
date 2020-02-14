@@ -164,6 +164,7 @@ def simple_example():
 	ax.set_title('Diverging')
 	fig.suptitle('Occlusion', fontsize=16)
 	fig.tight_layout()
+	#plt.savefig('./saliency_occlusion.png')
 	plt.show()
 
 	#--------------------
@@ -191,6 +192,7 @@ def simple_example():
 	ax.set_title('Diverging')
 	fig.suptitle('Grad-CAM', fontsize=16)
 	fig.tight_layout()
+	#plt.savefig('./saliency_gradcam.png')
 	plt.show()
 
 	#--------------------
@@ -218,16 +220,17 @@ def simple_example():
 	ax.imshow(smoothgrad_mask_gray, cmap=plt.cm.gray, vmin=0, vmax=1)
 	ax.axis('off')
 	ax.set_title('SmoothGrad Grayscale')
-	ax = plt.subplot(2, 3, 4)
+	ax = plt.subplot(2, 3, 5)
 	ax.imshow(vanilla_mask_div, cmap=plt.cm.gray, vmin=0, vmax=1)
 	ax.axis('off')
 	ax.set_title('Vanilla Diverging')
-	ax = plt.subplot(2, 3, 5)
+	ax = plt.subplot(2, 3, 6)
 	ax.imshow(smoothgrad_mask_div, cmap=plt.cm.gray, vmin=0, vmax=1)
 	ax.axis('off')
 	ax.set_title('SmoothGrad Diverging')
 	fig.suptitle('Gradient Saliency', fontsize=16)
 	fig.tight_layout()
+	#plt.savefig('./saliency_gradientsaliency.png')
 	plt.show()
 
 	#--------------------
@@ -265,6 +268,7 @@ def simple_example():
 	ax.set_title('SmoothGrad Diverging')
 	fig.suptitle('Guided Backprop', fontsize=16)
 	fig.tight_layout()
+	#plt.savefig('./saliency_guidedbackprop.png')
 	plt.show()
 
 	#--------------------
@@ -302,6 +306,7 @@ def simple_example():
 	ax.set_title('SmoothGrad Diverging')
 	fig.suptitle('Integrated Gradients', fontsize=16)
 	fig.tight_layout()
+	#plt.savefig('./saliency_integratedgradients.png')
 	plt.show()
 
 	#--------------------
@@ -335,6 +340,7 @@ def simple_example():
 	ax.set_title('Masked Input')
 	fig.suptitle('XRAI', fontsize=16)
 	fig.tight_layout()
+	#plt.savefig('./saliency_xrai.png')
 	plt.show()
 	print('End visualizing saliency: {} secs.'.format(time.time() - start_time))
 
