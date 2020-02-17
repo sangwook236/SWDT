@@ -1,8 +1,29 @@
 #!/usr/bin/env python
 
-import logging
-from logging.handlers import RotatingFileHandler
-import argparse
+import os, argparse, logging, logging.handlers
+
+def get_logger(name, log_level, is_rotating=True):
+	if not os.path.isdir('log'):
+		os.mkdir('log')
+
+	log_filepath = './log/' + (name if name else 'swdt') + '.log'
+	if is_rotating:
+		file_handler = logging.handlers.RotatingFileHandler(log_filepath, maxBytes=10000000, backupCount=10)
+	else:
+		file_handler = logging.FileHandler(log_filepath)
+	stream_handler = logging.StreamHandler()
+
+	formatter = logging.Formatter('[%(levelname)s][%(filename)s:%(lineno)s][%(asctime)s] %(message)s')
+	#formatter = logging.Formatter('[%(levelname)s][%(asctime)s] %(message)s')
+	file_handler.setFormatter(formatter)
+	stream_handler.setFormatter(formatter)
+
+	logger = logging.getLogger(name if name else __name__)
+	logger.setLevel(log_level)  # {NOTSET=0, DEBUG=10, INFO=20, WARNING=WARN=30, ERROR=40, CRITICAL=FATAL=50}.
+	logger.addHandler(file_handler) 
+	logger.addHandler(stream_handler) 
+
+	return logger
 
 def output_logs(logger):
 	#logger.log(logging.WARNING, '[Warning] Warning.')
@@ -25,7 +46,7 @@ def simple_logging(log_level):
 	output_logs(logger)
 
 def simple_file_logging(log_level):
-	handler = RotatingFileHandler('./python_logging.log', maxBytes=5000, backupCount=10)
+	handler = logging.handlers.RotatingFileHandler('./python_logging.log', maxBytes=5000, backupCount=10)
 	formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
 	handler.setFormatter(formatter)
 
@@ -72,6 +93,9 @@ def main():
 	else:
 		log_level = logging.WARNING
 	print('Log level:', log_level)
+
+	logger = get_logger(os.path.basename(os.path.normpath(__file__)), log_level, is_rotating=True)
+	output_logs(logger)
 
 	#simple_logging(log_level)
 	#simple_file_logging(log_level)
