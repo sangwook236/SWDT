@@ -111,6 +111,41 @@ def load_model_from_checkpoint():
 def inspect_checkpoint_tool():
 	raise NotImplementedError('Use the inspect_checkpoint tool')
 
+# REF [function] >> display_graph_def() in tensorflow_graph_tool.py
+def display_graph_def(graph_def, node_names, display_all_nodes=False):
+	for node in node_names:
+		print('------------------------------------------------ Nodes with "{}".'.format(node))
+		#print([n for n in graph_def.node if n.name.find(node) != -1])
+		print(*[n for n in graph_def.node if n.name.find(node) != -1], sep='\n')
+	#print('------------------------------------------------ Node operations.')
+	##print([n.op for n in graph_def.node])
+	#print(*[n.op for n in graph_def.node], sep='\n')
+	if display_all_nodes:
+		print('------------------------------------------------ All nodes.')
+		#print(graph_def.node)  # Too much output in a frozen graph.
+		print(*graph_def.node, sep='----------\n')  # Too much output in a frozen graph.
+	print('----------------------------------------------------------------------')
+
+# REF [function] >> display_graph_info() in tensorflow_graph_tool.py
+def display_graph_info():
+	checkpoint_dir_path = './mnist_cnn_checkpoint'
+	checkpoint_meta_graph_filename = 'tf_ckpt-7740.meta'
+
+	graph = tf.Graph()
+	with graph.as_default():
+		# Load a graph.
+		saver = tf.train.import_meta_graph(os.path.join(checkpoint_dir_path, checkpoint_meta_graph_filename))
+
+	#config = tf.ConfigProto()
+	#with tf.Session(graph=graph, config=config) as sess:
+	with tf.Session(graph=graph) as sess:
+		# Load a model checkpoint.
+		#ckpt = tf.train.get_checkpoint_state(checkpoint_dir_path)
+		#saver.restore(sess, ckpt.model_checkpoint_path)
+		##saver.restore(sess, tf.train.latest_checkpoint(checkpoint_dir_path))
+
+		display_graph_def(sess.graph_def, node_names=['input', 'Softmax'], display_all_nodes=False)
+
 def checkpoint_to_graph():
 	checkpoint_dir_path = './mnist_cnn_checkpoint'
 	checkpoint_meta_graph_filename = 'tf_ckpt-7740.meta'
@@ -191,6 +226,7 @@ def main():
 	#load_model_from_checkpoint()
 
 	#inspect_checkpoint_tool()  # Not implemented.
+	#display_graph_info()
 	checkpoint_to_graph()
 
 	# TensorFlow SavedModel.

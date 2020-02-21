@@ -1,15 +1,16 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import json
 
 def main():
 	# File.
-	with open('test.json') as json_file:
-		json_data = json.load(json_file)
+	with open('test.json', encoding='UTF8') as fd:
+		json_data = json.load(fd)
 		print(json_data)
 
-	with open('tmp.json', 'w+') as json_file:
-		json.dump(json_data, json_file, indent='\t')
+	with open('tmp.json', 'w+', encoding='UTF8') as fd:
+		json.dump(json_data, fd, indent='\t')
 
 	# String.
 	str = json.dumps(['foo', {'bar': ('baz', None, 1.0, 2)}])
@@ -18,7 +19,7 @@ def main():
 	lst = json.loads('["foo", {"bar":["baz", null, 1.0, 2]}]')
 	print(type(lst), lst)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()
