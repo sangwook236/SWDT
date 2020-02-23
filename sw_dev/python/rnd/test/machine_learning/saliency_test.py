@@ -86,7 +86,7 @@ def simple_example():
 	# Train.
 
 	loss = tf.reduce_mean(-tf.reduce_sum(output_ph * tf.log(model_output), reduction_indices=[1]))
-	train_step = tf.train.GradientDescentOptimizer(0.5).minimize(loss)
+	train_step = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
 
 	sess = tf.Session()
 	sess.run(tf.global_variables_initializer())
@@ -97,6 +97,8 @@ def simple_example():
 		batch_xs, batch_ys = mnist.train.next_batch(512)
 		batch_xs = np.reshape(batch_xs, (-1,) + input_shape[1:])
 		sess.run(train_step, feed_dict={input_ph: batch_xs, output_ph: batch_ys})
+		if 0 == idx % 100: print('.', end='', flush=True)
+	print()
 	print('End training: {} secs.'.format(time.time() - start_time))
 
 	#--------------------
@@ -127,15 +129,16 @@ def simple_example():
 	neuron_selector = tf.placeholder(tf.int32)
 	y = logits[0][neuron_selector]
 
-	# Construct tensor for predictions.
+	# Construct a tensor for predictions.
 	prediction = tf.argmax(logits, 1)
 
 	# Make a prediction. 
 	prediction_class = sess.run(prediction, feed_dict={input_ph: [img]})[0]
 
-	print('Start visualizing saliency...')
+	#--------------------
 	start_time = time.time()
 	saliency_obj = saliency.Occlusion(sess.graph, sess, y, input_ph)
+	print('Occlusion: {} secs.'.format(time.time() - start_time))
 
 	# NOTE [info] >> An error exists in GetMask() of ${Saliency_HOME}/saliency/occlusion.py.
 	#	<before>
@@ -168,8 +171,10 @@ def simple_example():
 	plt.show()
 
 	#--------------------
+	start_time = time.time()
 	conv_layer = sess.graph.get_tensor_by_name('conv2/conv/BiasAdd:0')
 	saliency_obj = saliency.GradCam(sess.graph, sess, y, input_ph, conv_layer)
+	print('GradCam: {} secs.'.format(time.time() - start_time))
 
 	mask_3d = saliency_obj.GetMask(img, feed_dict={neuron_selector: prediction_class})
 
@@ -196,7 +201,9 @@ def simple_example():
 	plt.show()
 
 	#--------------------
+	start_time = time.time()
 	saliency_obj = saliency.GradientSaliency(sess.graph, sess, y, input_ph)
+	print('GradientSaliency: {} secs.'.format(time.time() - start_time))
 
 	vanilla_mask_3d = saliency_obj.GetMask(img, feed_dict={neuron_selector: prediction_class})
 	smoothgrad_mask_3d = saliency_obj.GetSmoothedMask(img, feed_dict={neuron_selector: prediction_class})
@@ -234,7 +241,9 @@ def simple_example():
 	plt.show()
 
 	#--------------------
+	start_time = time.time()
 	saliency_obj = saliency.GuidedBackprop(sess.graph, sess, y, input_ph)
+	print('GuidedBackprop: {} secs.'.format(time.time() - start_time))
 
 	vanilla_mask_3d = saliency_obj.GetMask(img, feed_dict={neuron_selector: prediction_class})
 	smoothgrad_mask_3d = saliency_obj.GetSmoothedMask(img, feed_dict={neuron_selector: prediction_class})
@@ -272,7 +281,9 @@ def simple_example():
 	plt.show()
 
 	#--------------------
+	start_time = time.time()
 	saliency_obj = saliency.IntegratedGradients(sess.graph, sess, y, input_ph)
+	print('IntegratedGradients: {} secs.'.format(time.time() - start_time))
 
 	vanilla_mask_3d = saliency_obj.GetMask(img, feed_dict={neuron_selector: prediction_class})
 	smoothgrad_mask_3d = saliency_obj.GetSmoothedMask(img, feed_dict={neuron_selector: prediction_class})
@@ -310,7 +321,9 @@ def simple_example():
 	plt.show()
 
 	#--------------------
+	start_time = time.time()
 	xrai_obj = saliency.XRAI(sess.graph, sess, y, input_ph)
+	print('XRAI: {} secs.'.format(time.time() - start_time))
 
 	if True:
 		xrai_attributions = xrai_obj.GetMask(img, feed_dict={neuron_selector: prediction_class})
@@ -342,7 +355,6 @@ def simple_example():
 	fig.tight_layout()
 	#plt.savefig('./saliency_xrai.png')
 	plt.show()
-	print('End visualizing saliency: {} secs.'.format(time.time() - start_time))
 
 def main():
 	simple_example()
