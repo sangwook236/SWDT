@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import sqlite3 as lite
 import sys
@@ -51,7 +52,7 @@ def main():
 	#create_and_insert()
 	query()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

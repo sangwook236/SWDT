@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import os
 import sys
@@ -79,7 +80,7 @@ def main():
 
 	pandas_example()  # Not implemented.
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()
