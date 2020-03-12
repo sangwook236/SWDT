@@ -1,0 +1,29 @@
+[-] General.
+	- Site.
+		https://github.com/ai4ce/DeepMapping
+
+[-] Usage.
+	- Install.
+		Do not use ${DeepMapping_HOME}/requirements.txt.
+	
+		conda create --name deep_mapping python=3.6 pytorch=0.4.1 numpy scipy matplotlib scikit-learn
+		conda activate deep_mapping
+		pip install open3d-python==0.4
+
+	- Run examples.
+		cd ${DeepMapping_HOME}
+		tar -xvf ./data/2D/all_poses.tar -C ./data/2D/
+
+		cd ${DeepMapping_HOME}/script
+
+		(Optional) warm start:
+			run_icp.sh
+
+		Training:
+			run_train_2D.sh
+				By default, the results will be saved to ./results/2D/.
+				The estimated sensor pose is saved as numpy array pose_est.npy.
+
+		Evaluation:
+			run_eval.sh
+				Absolute trajectory error will be computed as error metrics.
