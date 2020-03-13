@@ -1,0 +1,20 @@
+[-] General.
+	- Site.
+		https://pdfbox.apache.org/
+
+[-] Usage (Command-line tools).
+	https://pdfbox.apache.org/2.0/commandline.html
+
+	- Command.
+		java -jar pdfbox-app-2.y.z.jar Decrypt [OPTIONS] <inputfile> [outputfile]
+		java -jar pdfbox-app-2.y.z.jar Encrypt [OPTIONS] <password> <inputfile>
+		java -jar pdfbox-app-2.y.z.jar ExtractImages [OPTIONS] <inputfile>
+		java -jar pdfbox-app-2.y.z.jar ExtractText [OPTIONS] <inputfile> [Text file]
+		java -jar pdfbox-app-2.y.z.jar OverlayPDF <input.pdf> [OPTIONS] <output.pdf>
+		java -jar pdfbox-app-2.y.z.jar PDFDebugger [inputfile]
+		java -jar pdfbox-app-2.y.z.jar PDFMerger <Source PDF files (2 ..n)> <Target PDF file>
+		java -jar pdfbox-app-2.y.z.jar PDFSplit [OPTIONS] <PDF file>
+		java -jar pdfbox-app-2.y.z.jar PDFToImage [OPTIONS] <PDF file>
+		java -jar pdfbox-app-2.y.z.jar PrintPDF [OPTIONS] <inputfile>
+		java -jar pdfbox-app-2.y.z.jar TextToPDF [OPTIONS] <outputfile>
+		java -jar pdfbox-app-2.y.z.jar WriteDecodedDoc <input-file> <output-file>

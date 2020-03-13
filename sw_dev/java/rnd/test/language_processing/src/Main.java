@@ -5,10 +5,13 @@ public class Main {
 		try
 		{
 			System.out.println("Apache OpenNLP ------------------------------------------------------");			
-			opennlp.OpenNLP_Main.run(args);  // Not yet implemented.
+			//opennlp.OpenNLP_Main.run(args);  // Not yet implemented.
 
 			System.out.println("Apache Tika ---------------------------------------------------------");			
-			tika.Tika_Main.run(args);
+			//tika.Tika_Main.run(args);
+
+			System.out.println("Apache PDFBox -------------------------------------------------------");			
+			pdfbox.PDFBox_Main.run(args);
 		}
 		catch (Exception ex)
 		{
