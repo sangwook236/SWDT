@@ -1,0 +1,10 @@
+[-] General.
+	- Site.
+		https://github.com/jsvine/pdfplumber
+
+[-] Usage.
+	- Install.
+		pip install pdfplumber
+
+	- Command-line.
+		pdfplumber < input.pdf > output.csv
