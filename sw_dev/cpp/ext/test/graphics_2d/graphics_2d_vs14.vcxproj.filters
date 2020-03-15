@@ -43,6 +43,9 @@
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="magickwand\magickwand_main.cpp">
+      <Filter>Source Files\magickwand</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -65,6 +68,9 @@
     </Filter>
     <Filter Include="Source Files\devil">
       <UniqueIdentifier>{cf9f083f-fb09-4377-b4e7-7828e0cac432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\magickwand">
+      <UniqueIdentifier>{bd76607a-70c8-4e7e-a606-a4135082a51f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -167,6 +167,7 @@
     <ClCompile Include="gd\gd_main.cpp" />
     <ClCompile Include="gd\gd_two_link_arm.cpp" />
     <ClCompile Include="library_autolinking.cpp" />
+    <ClCompile Include="magickwand\magickwand_main.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

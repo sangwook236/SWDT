@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
 {
 	int cairo_main(int argc, char *argv[]);
 	int gd_main(int argc, char *argv[]);
+	int magickwand_main(int argc, char *argv[]);
 	int devil_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -20,6 +21,8 @@ int main(int argc, char *argv[])
 		retval = cairo_main(argc, argv);
 		std::cout << "\nGD Graphics Library -------------------------------------------------" << std::endl;
 		//retval = gd_main(argc, argv);
+		std::cout << "\nGD MagickWand Library -----------------------------------------------" << std::endl;
+		//retval = magickwand_main(argc, argv);
 
 		std::cout << "\nDeveloper's Image Library (DevIL) -----------------------------------" << std::endl;
 		//retval = devil_main(argc, argv);
