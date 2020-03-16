@@ -1,4 +1,3 @@
-
 public class Main {
 
 	public static void main(String[] args) {
@@ -9,9 +8,6 @@ public class Main {
 
 			System.out.println("Apache Tika ---------------------------------------------------------");			
 			//tika.Tika_Main.run(args);
-
-			System.out.println("Apache PDFBox -------------------------------------------------------");			
-			pdfbox.PDFBox_Main.run(args);
 		}
 		catch (Exception ex)
 		{

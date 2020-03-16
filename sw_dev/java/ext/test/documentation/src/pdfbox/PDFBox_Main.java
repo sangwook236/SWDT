@@ -25,11 +25,8 @@ public class PDFBox_Main {
 	{
 		String pdf_filepath = "./sample.pdf";
 
-		System.out.println("=============================0");
 		try (PDDocument document = PDDocument.load(new File(pdf_filepath)))
 		{
-			System.out.println("=============================");
-
 			AccessPermission ap = document.getCurrentAccessPermission();
 			if (!ap.canExtractContent())
 			{
@@ -69,7 +66,6 @@ public class PDFBox_Main {
 				// https://pdfbox.apache.org/2.0/faq.html#text-extraction
 			}
 		}
-		System.out.println("=============================1");
 	}
 
 }
