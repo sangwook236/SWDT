@@ -12,7 +12,7 @@ def basic_example():
 
 		page = pdf.pages[0]
 		print('Page number =', page.page_number)  # The sequential page number.
-		print('(width, height) = ({}, {})'.format(page.width, page.height))  # The page's width and height.
+		print('(width, height) = ({}, {})'.format(page.width, page.height))  # The page's width and height. [pixels].
 
 		if page.objects:
 			print('*** Objects:', page.objects['char'][0])
@@ -39,7 +39,7 @@ def basic_example():
 		page.to_image(**conversion_kwargs)  # Returns an instance of the PageImage class.
 		"""
 
-		img = page.to_image(resolution=150)
+		img = page.to_image(resolution=150)  # Default resolution: 72 dpi.
 		img.draw_rects(page.extract_words())
 		img.save('./page.png', format='PNG')
 

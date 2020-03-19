@@ -8,21 +8,19 @@
 #	http://konlpy.org/ko/latest/references/
 
 import os
-from konlpy.tag import Kkma, Hannanum, Komoran, Mecab, Okt
-from konlpy.corpus import kolaw, kobill
-from konlpy.utils import pprint
+import konlpy
 import nltk
 import wordcloud
 import matplotlib.pyplot as plt
 
 # REF [site] >> http://konlpy.org/ko/latest/api/konlpy.tag
 def simple_kkma_example():
-	kkma = Kkma()
+	kkma = konlpy.tag.Kkma()
 	print(kkma.tagset)
 
-	pprint(kkma.sentences(u'네, 안녕하세요. 반갑습니다.'))
-	pprint(kkma.nouns(u'질문이나 건의사항은 깃헙 이슈 트래커에 남겨주세요.'))
-	pprint(kkma.pos(u'오류보고는 실행환경, 에러메세지와함께 설명을 최대한상세히!^^'))
+	konlpy.utils.pprint(kkma.sentences(u'네, 안녕하세요. 반갑습니다.'))
+	konlpy.utils.pprint(kkma.nouns(u'질문이나 건의사항은 깃헙 이슈 트래커에 남겨주세요.'))
+	konlpy.utils.pprint(kkma.pos(u'오류보고는 실행환경, 에러메세지와함께 설명을 최대한상세히!^^'))
 
 	print(kkma.morphs(u'공부를 하면할수록 모르는게 많다는 것을 알게 됩니다.'))
 	print(kkma.nouns(u'대학에서 DB, 통계학, 이산수학 등을 배웠지만...'))
@@ -31,7 +29,7 @@ def simple_kkma_example():
 
 # REF [site] >> http://konlpy.org/ko/latest/api/konlpy.tag
 def simple_hannanum_example():
-	hannanum = Hannanum()
+	hannanum = konlpy.tag.Hannanum()
 	print(hannanum.tagset)
 
 	print(hannanum.analyze(u'롯데마트의 흑마늘 양념 치킨이 논란이 되고 있다.'))
@@ -43,13 +41,13 @@ def simple_hannanum_example():
 def simple_komoran_example():
 	# REF [file] >> ${konlpy_HOME}/konlpy/data/tagset/komoran.json
 	"""
-	In ./user_dic.txt:
-	코모란     NNP
-	오픈소스    NNG
-	바람과 함께 사라지다     NNP
+	In user_dic.txt:
+		코모란     NNP
+		오픈소스    NNG
+		바람과 함께 사라지다     NNP
 	"""
 
-	komoran = Komoran(userdic='./user_dic.txt')
+	komoran = konlpy.tag.Komoran(userdic='./user_dic.txt')
 	print(komoran.tagset)
 
 	print(komoran.morphs(u'우왕 코모란도 오픈소스가 되었어요'))
@@ -59,7 +57,7 @@ def simple_komoran_example():
 # REF [site] >> http://konlpy.org/ko/latest/api/konlpy.tag
 def simple_mecab_example():
 	# Mecab is not supported on Windows.
-	mecab = Mecab()
+	mecab = konlpy.tag.Mecab()
 	print(mecab.tagset)
 
 	print(mecab.morphs(u'영등포구청역에 있는 맛집 좀 알려주세요.'))
@@ -69,7 +67,7 @@ def simple_mecab_example():
 # REF [site] >> http://konlpy.org/ko/latest/api/konlpy.tag
 def simple_okt_example():
 	# Twitter() has changed to Okt() since v0.5.0.
-	okt = Okt()
+	okt = konlpy.tag.Okt()
 	print(okt.tagset)
 
 	print(okt.morphs(u'단독입찰보다 복수입찰의 경우'))
@@ -81,27 +79,27 @@ def simple_okt_example():
 
 # REF [site] >> http://konlpy.org/ko/latest/api/konlpy.corpus/
 def simple_kolaw_corpus_example():
-	fids = kolaw.fileids()
+	fids = konlpy.corpus.kolaw.fileids()
 	print(fids)
 
-	fobj = kolaw.open(fids[0])
+	fobj = konlpy.corpus.kolaw.open(fids[0])
 	print(fobj.read(140))
 
-	c = kolaw.open('constitution.txt').read()
+	c = konlpy.corpus.kolaw.open('constitution.txt').read()
 	print(c[:10])
 
 # REF [site] >> http://konlpy.org/ko/latest/data/
 def simple_kobill_corpus_example():
-	fids = kobill.fileids()
+	fids = konlpy.corpus.kobill.fileids()
 	print(fids)
 
-	d = kobill.open('1809890.txt').read()
+	d = konlpy.corpus.kobill.open('1809890.txt').read()
 	print(d[:15])
 
 # REF [site] >> https://datascienceschool.net/view-notebook/70ce46db4ced4a999c6ec349df0f4eb0/
 def integration_with_nltk():
-	okt = Okt()
-	c = kolaw.open('constitution.txt').read()
+	okt = konlpy.tag.Okt()
+	c = konlpy.corpus.kolaw.open('constitution.txt').read()
 
 	text = nltk.Text(okt.nouns(c), name='kolaw')
 	#print(text.vocab())
@@ -114,25 +112,25 @@ def integration_with_nltk():
 # REF [doc] >> Python 환경에서 한글 형태소 분석기 패키지 KoNLPy 사용법.pdf
 def bigram_or_trigram_extraction_with_nltk():
 	bigram_measures = nltk.collocations.BigramAssocMeasures()
-	doc = kolaw.open('constitution.txt').read()
-	pos = Kkma().pos(doc)
+	doc = konlpy.corpus.kolaw.open('constitution.txt').read()
+	pos = konlpy.tag.Kkma().pos(doc)
 	words = [s for s, t in pos]
 	tags = [t for s, t in pos]
 
 	print('\nCollocations among tagged words:')
 	finder = nltk.collocations.BigramCollocationFinder.from_words(pos)
-	pprint(finder.nbest(bigram_measures.pmi, 10))  # Top 10 n-grams with highest PMI.
+	konlpy.utils.pprint(finder.nbest(bigram_measures.pmi, 10))  # Top 10 n-grams with highest PMI.
 
 	print('\nCollocations among words:')
 	ignored_words = [u'안녕']
 	finder = nltk.collocations.BigramCollocationFinder.from_words(words)
 	finder.apply_word_filter(lambda w: len(w) < 2 or w in ignored_words)
 	finder.apply_freq_filter(3)  # Only bigrams that appear 3+ times.
-	pprint(finder.nbest(bigram_measures.pmi, 10))
+	konlpy.utils.pprint(finder.nbest(bigram_measures.pmi, 10))
 
 	print('\nCollocations among tags:')
 	finder = nltk.collocations.BigramCollocationFinder.from_words(tags)
-	pprint(finder.nbest(bigram_measures.pmi, 5))
+	konlpy.utils.pprint(finder.nbest(bigram_measures.pmi, 5))
 
 # REF [site] >> https://datascienceschool.net/view-notebook/70ce46db4ced4a999c6ec349df0f4eb0/
 def integration_with_wordcloud():
@@ -143,8 +141,8 @@ def integration_with_wordcloud():
 		#font_path = 'C:/Windows/Fonts/NanumGothic.ttf'
 		font_path = 'C:/Windows/Fonts/gulim.ttc'
 
-	okt = Okt()
-	c = kolaw.open('constitution.txt').read()
+	okt = konlpy.tag.Okt()
+	c = konlpy.corpus.kolaw.open('constitution.txt').read()
 
 	text = nltk.Text(okt.nouns(c), name='kolaw')
 

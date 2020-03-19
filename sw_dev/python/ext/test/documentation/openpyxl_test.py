@@ -7,9 +7,9 @@ import openpyxl
 
 # REF [site] >> https://bitbucket.org/openpyxl/openpyxl/src/default/
 def basic_example():
-	wb = Workbook()
+	wb = openpyxl.Workbook()
 
-	# grab the active worksheet.
+	# Grab the active worksheet.
 	ws = wb.active
 
 	# Data can be assigned directly to cells.
