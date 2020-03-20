@@ -1,0 +1,105 @@
+[-] General.
+	- Site.
+		https://github.com/facebookresearch/detectron2
+		https://github.com/facebookresearch/detectron
+			Deprecated.
+
+		https://github.com/facebookresearch/fvcore
+
+	- Documentation.
+		https://detectron2.readthedocs.io/
+
+	- Model.
+		https://github.com/facebookresearch/detectron2/blob/master/MODEL_ZOO.md
+
+[-] Usage (detectron2).
+	https://github.com/facebookresearch/detectron2/blob/master/GETTING_STARTED.md
+
+	- Run an inference demo.
+		cd ${detectron2_HOME}/demo
+		python demo.py --config-file ../configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml \
+			--input input1.jpg input2.jpg \
+			[--other-options]
+			--opts MODEL.WEIGHTS detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl
+
+	- Train.
+		Train on 8 GPUs:
+			cd ${detectron2_HOME}/tools
+			./train_net.py --num-gpus 8 --config-file ../configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml
+		Train on 1 GPU:
+			cd ${detectron2_HOME}/tools
+			./train_net.py --config-file ../configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml SOLVER.IMS_PER_BATCH 2 SOLVER.BASE_LR 0.0025
+
+	- Evaluate a model's performance.
+		cd ${detectron2_HOME}/tools
+		./train_net.py --config-file ../configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml --eval-only MODEL.WEIGHTS /path/to/checkpoint_file
+
+[-] Installation (detectron2).
+	https://github.com/facebookresearch/detectron2/blob/master/INSTALL.md
+
+	- Install from source.
+		conda install python=3 pytorch torchvision opencv cython pillow matplotlib
+		pip install pycocotools
+
+		git clone https://github.com/facebookresearch/fvcore.git
+		cd ${fvcore_HOME}
+		pip install -e .
+
+		git clone https://github.com/facebookresearch/detectron2.git
+		cd ${detectron2_HOME}
+		pip install -e .
+
+	- Show env info.
+		python -m detectron2.utils.collect_env
+
+[-] Installation (detectron).
+	- Install Caffe2.
+		New:
+			https://github.com/pytorch/pytorch#from-source
+
+			conda create --name detectron python=3
+			conda install numpy ninja pyyaml mkl mkl-include setuptools cmake cffi typing
+			conda install -c pytorch magma-cuda101
+				Can use [magma-cuda92 | magma-cuda100 | magma-cuda101] depending on the CUDA version.
+
+			git clone https://github.com/pytorch/pytorch.git pytorch_github
+			cd ${PyTorch_HOME}
+			git submodule sync
+			git submodule update --init --recursive
+			export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(which conda))/../"}
+			python setup.py install
+
+		Old:
+			https://caffe2.ai/docs/getting-started.html?platform=ubuntu&configuration=compile
+
+			git clone https://github.com/pytorch/pytorch.git pytorch_github
+			cd ${PyTorch_HOME}
+			git submodule update --init --recursive
+			python setup.py install
+
+		conda install protobuf future
+		export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${PyTorch_HOME}/build/caffe2/python
+		sudo ldconfig
+		python -c 'from caffe2.python import core' 2>/dev/null && echo "Success" || echo "Failure"
+
+	- Install from source.
+		https://github.com/facebookresearch/Detectron/blob/master/INSTALL.md
+
+		conda install cython
+
+		git clone https://github.com/facebookresearch/Detectron.git detectron_github
+		cd ${detectron_HOME}
+		pip install -r requirements.txt
+		make
+
+		cd ${detectron_HOME}
+		python detectron/tests/test_spatial_narrow_as_op.py
+
+[-] Troubleshooting.
+	- <error> BBOX_XFORM_CLIP: !!python/object/apply:numpy.core
+		<solution>
+			Edit ${detectron_HOME}/utils/env.py
+			<before>
+				yaml_load = yaml.load
+			<after>
+				yaml_load = lambda x: yaml.load(x, Loader=yaml.Loader)

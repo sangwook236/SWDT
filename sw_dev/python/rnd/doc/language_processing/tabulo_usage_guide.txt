@@ -1,0 +1,21 @@
+[-] General.
+	- Site.
+		https://github.com/interviewBubble/Tabulo
+
+[-] Usage.
+	- Working with pretrained models.
+		tabulo --help
+
+		Download checkpoint:
+			https://drive.google.com/drive/folders/1aUh9RfGn2XGgG2EtpKFh7P6PmcC3Q48z
+		Copy the downloaded checkpoint to ${Tabulo_HOME}/luminoth/utils/pretrained_models/luminoth/checkpoints
+		tabulo checkpoint list
+
+		tabulo server web --checkpoint 6aac7a1e8a8e
+
+[-] Installation.
+	- Install.
+		conda create --name table python=3 tensorflow-gpu=1.14 opencv
+		conda activate table
+		pip install pyqt5==5.12 pyqtwebengine==5.12 pytesseract
+		pip install -e .

@@ -12,12 +12,12 @@
 
 		e.g.)
 			/sbin/ldconfig -n /path/to/lib
-				only process directories specified on the command line.
+				Only process directories specified on the command line.
 			/sbin/ldconfig -v
 
 			export LD_LIBRARY_PATH+=/path/to/lib
 			/sbin/ldconfig -l /path/to/lib/libfoo.so
-				manually link individual libraries. intended for use by experts only.
+				Manually link individual libraries. intended for use by experts only.
 
 	- LD_DEBUG.
 		libs       display library search paths

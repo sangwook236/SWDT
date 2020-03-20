@@ -1,0 +1,20 @@
+[-] General.
+	- Site.
+		https://github.com/allenai/pdffigures2
+		https://github.com/allenai/pdffigures
+
+[-] Usage.
+
+[-] Installation.
+	- Install.
+		Install sbt.
+			https://www.scala-sbt.org/
+
+		git clone https://github.com/allenai/pdffigures2
+		cd ${pdffigures2_HOME}
+		sbt assembly
+		mv target/scala-2.11/pdffigures2-assembly-0.0.12-SNAPSHOT.jar ${deepfigures_HOME}/bin
+		cd ..
+		rm -rf pdffigures2
+
+		If the jar for pdffigures has a different name then 'pdffigures2-assembly-0.0.12-SNAPSHOT.jar', then adjust the PDFFIGURES_JAR_NAME parameter in ${deepfigures_HOME}/deepfigures/settings.py accordingly.

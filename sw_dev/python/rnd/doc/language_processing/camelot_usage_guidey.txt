@@ -1,0 +1,11 @@
+[-] General.
+	- Site.
+		https://github.com/camelot-dev/camelot
+		https://github.com/camelot-dev/excalibur
+
+		https://camelot-py.readthedocs.io/
+
+[-] Installation.
+	- Install.
+		conda install -c conda-forge camelot-py
+		pip install camelot-py[cv]

@@ -24,5 +24,49 @@
 	- cudatoolkit version (Python).
 		conda list
 
-	- Monitor.
+[-] Usage (NVIDIA System Management Interface, nvidia-smi).
+	https://www.microway.com/hpc-tech-tips/nvidia-smi_control-your-gpus/
+	https://developer.nvidia.com/nvidia-system-management-interface
+
+	- Monitoring.
 		watch -n 0.5 nvidia-smi
+
+	- Querying GPU Status.
+		List all available NVIDIA devices:
+			nvidia-smi -L
+		List certain details about each GPU:
+			nvidia-smi --query-gpu=index,name,uuid,serial --format=csv
+
+		Monitor overall GPU usage with 1-second update intervals:
+			nvidia-smi dmon
+		Monitor per-process GPU usage with 1-second update intervals:
+			nvidia-smi pmon
+
+		List available clock speeds for each GPU:
+			nvidia-smi -q -d SUPPORTED_CLOCKS
+		Review the current GPU clock speed, default clock speed, and maximum possible clock speed:
+			nvidia-smi -q -d CLOCK
+		Review the current state of each GPU and any reasons for clock slowdowns:
+			nvidia-smi -q -d PERFORMANCE
+
+	- Tuning.
+		Set persistence mode:
+			nvidia-smi -pm 1
+				0: DISABLED, 1: ENABLED.
+
+			Persistence Mode:
+				On Linux, you can set GPUs to persistence mode to keep the NVIDIA driver loaded even when no applications are accessing the cards.
+				This is particularly useful when you have a series of short jobs running.
+				Persistence mode uses a few more watts per idle GPU, but prevents the fairly long delays that occur each time a GPU application is started.
+				It is also necessary if you've assigned specific clock speeds or power limits to the GPUs (as those changes are lost when the NVIDIA driver is unloaded).
+				On Windows, nvidia-smi is not able to set persistence mode.
+				Instead, you need to set your computational GPUs to TCC mode.
+				This should be done through NVIDIA's graphical GPU device management panel.
+
+		Toggles permission requirements for -ac and -rac commands:
+			nvidia-smi -acp 0
+				0: UNRESTRICTED, 1: RESTRICTED.
+
+		Set max. memory and graphic clocks:
+			nvidia-smi -ac "877,1380"
+				Run "nvidia-smi -q -d CLOCK" to see max. memory and graphic clocks.

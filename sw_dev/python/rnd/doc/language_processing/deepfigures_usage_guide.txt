@@ -1,0 +1,42 @@
+[-] General.
+	- Site.
+		https://github.com/allenai/deepfigures-open
+
+[-] Usage.
+	- Working with pretrained models.
+		Download weights.
+			https://s3-us-west-2.amazonaws.com/ai2-s2-research-public/deepfigures/weights.tar.gz
+		Extract and place the '${deepfigures_HOME}/weights/' directory.
+		If you choose to name the weights directory something different, be sure to update the TENSORBOX_MODEL constant in ${deepfigures_HOME}/deepfigures/settings.py
+
+		cd ${deepfigures_HOME}/
+		python manage.py --help
+
+		python manage.py build --help
+		python manage.py build
+			${deepfigures_HOME}/dockerfiles/cpu/Dockerfile
+			${deepfigures_HOME}/dockerfiles/gpu/Dockerfile
+
+		python manage.py detectfigures --help
+		python manage.py detectfigures /path/to/output /path/to/pdf
+			python manage.py detectfigures ./my_pdf ~/work/dataset/text/pdf/test.pdf
+
+[-] Installation.
+	- Install pdffigures2.
+		Install sbt.
+			https://www.scala-sbt.org/
+
+		git clone https://github.com/allenai/pdffigures2
+		cd ${pdffigures2_HOME}
+		sbt assembly
+		mv target/scala-2.11/pdffigures2-assembly-0.0.12-SNAPSHOT.jar ${deepfigures_HOME}/bin
+		cd ..
+		rm -rf pdffigures2
+
+		If the jar for pdffigures has a different name then 'pdffigures2-assembly-0.0.12-SNAPSHOT.jar', then adjust the PDFFIGURES_JAR_NAME parameter in ${deepfigures_HOME}/deepfigures/settings.py accordingly.
+
+[-] Troubleshooting.
+	- value EXIT_ON_CLOSE is not a member of object javax.swing.JFrame.
+		In ${pdffigures2_HOME}/src/main/scala/org/allenai/pdffigures/VisualLogger.scala:
+			<before> frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+			<after> frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
