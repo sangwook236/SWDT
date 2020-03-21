@@ -1,46 +1,78 @@
 [-] General.
 	- Site.
 		https://github.com/doc-analysis/TableBank
+		https://doc-analysis.github.io/
 
-[-] Usage (Detectron2).
-	- Install detectron2.
-		Refer to ${SWDT_PYTHON_HOME}/rnd/doc/object_detection/detectron_usage_guide.txt
+[-] Usage.
+	- Detect tables (detectron).
+		Install detectron:
+			Refer to ${SWDT_PYTHON_HOME}/rnd/doc/object_detection/detectron_usage_guide.txt
 
-	- Run.
-		https://github.com/doc-analysis/TableBank/blob/master/TestPretrainedModel.md
-		https://github.com/doc-analysis/TableBank/blob/master/MODEL_ZOO.md
+		Run:
+			https://github.com/doc-analysis/TableBank/blob/master/TestPretrainedModel.md
+			https://github.com/doc-analysis/TableBank/blob/master/MODEL_ZOO.md
 
-		cd ${detectron2_HOME}/demo
-		python demo.py --config-file ${TableBank_HOME}/config_X152.yaml \
-			--input ${TableBank_HOME}/data/Sampled_Detection_data/Latex/images/1401.0007_5.jpg \
-			--output ${TableBank_HOME}/detectron2_tablebank/tablebank \
-			--opts MODEL.WEIGHTS ${TableBank_HOME}/model_final_X152.pkl
+			conda install scipy matplotlib opencv
+			pip install pycocotools
 
-		python demo.py --config-file /home/sangwook/lib_repo/python/TableBank_github/config_X101.yaml \
-			--input /home/sangwook/lib_repo/python/TableBank_github/data/Sampled_Detection_data/Latex/images/1401.0007_5.jpg \
-			--output /home/sangwook/lib_repo/python/TableBank_github/detectron2_tablebank/tablebank \
-			--opts MODEL.WEIGHTS /home/sangwook/lib_repo/python/TableBank_github/model_final_X101.pkl
-		python demo.py --config-file /home/sangwook/lib_repo/python/TableBank_github/config_X152.yaml \
-			--input /home/sangwook/lib_repo/python/TableBank_github/data/Sampled_Detection_data/Latex/images/1401.0007_5.jpg \
-			--output /home/sangwook/lib_repo/python/TableBank_github/detectron2_tablebank/tablebank \
-			--opts MODEL.WEIGHTS /home/sangwook/lib_repo/python/TableBank_github/model_final_X152.pkl
-		==> Failed to run.
+			git clone https://github.com/doc-analysis/TableBank.git TableBank_github
+			cd ${detectron_HOME}
+			python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir /path/to/output_image_dir --image-ext jpg --wts ${TableBank_HOME}/model_final_X152.pkl /path/to/input_image_dir
+			==> Succeed in running.
 
-[-] Usage (Detectron).
-	- Install detectron.
-		Refer to ${SWDT_PYTHON_HOME}/rnd/doc/object_detection/detectron_usage_guide.txt
+			python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/tablebank --image-ext jpg --wts ${TableBank_HOME}/model_final_X152.pkl ${TableBank_HOME}/data/Sampled_Detection_data/Latex/images
+			python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/tablebank --image-ext jpg --wts ${TableBank_HOME}/model_final_X152.pkl ${TableBank_HOME}/data/Sampled_Detection_data/Word/images
+			python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/epapyrus --image-ext jpg --wts ${TableBank_HOME}/model_final_X152.pkl ${HOME}/work/dataset/text/table_form/epapyrus
+			python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/sdi --image-ext png --wts ${TableBank_HOME}/model_final_X152.pkl ${HOME}/work/dataset/text/table_form/sdi
+			python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/pdfplumber --image-ext png --wts ${TableBank_HOME}/model_final_X152.pkl ${HOME}/work/dataset/text/table_form/pdfplumber
 
-	- Run.
-		https://github.com/doc-analysis/TableBank/blob/master/TestPretrainedModel.md
-		https://github.com/doc-analysis/TableBank/blob/master/MODEL_ZOO.md
+	- Detect tables (detectron2).
+		Install detectron2:
+			Refer to ${SWDT_PYTHON_HOME}/rnd/doc/object_detection/detectron_usage_guide.txt
 
-		conda install scipy matplotlib opencv
-		pip install pycocotools
+		Run:
+			https://github.com/doc-analysis/TableBank/blob/master/TestPretrainedModel.md
+			https://github.com/doc-analysis/TableBank/blob/master/MODEL_ZOO.md
 
-		git clone https://github.com/doc-analysis/TableBank.git TableBank_github
-		cd ${detectron_HOME}
-		python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/tablebank --image-ext jpg --wts ${TableBank_HOME}/model_final_X152.pkl ${TableBank_HOME}/data/Sampled_Detection_data/Latex/images
-		python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/tablebank --image-ext jpg --wts ${TableBank_HOME}/model_final_X152.pkl ${TableBank_HOME}/data/Sampled_Detection_data/Word/images
-		python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/epapyrus --image-ext jpg --wts ${TableBank_HOME}/model_final_X152.pkl /home/sangwook/work/dataset/text/table_form/epapyrus
-		python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/sdi --image-ext png --wts ${TableBank_HOME}/model_final_X152.pkl /home/sangwook/work/dataset/text/table_form/sdi
-		python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/pdfplumber --image-ext png --wts ${TableBank_HOME}/model_final_X152.pkl /home/sangwook/work/dataset/text/table_form/pdfplumber
+			cd ${detectron2_HOME}/demo
+			python demo.py --config-file ${TableBank_HOME}/config_X152.yaml \
+				--input /path/to/input_image_file \
+				--output /path/to/output_image \
+				--opts MODEL.WEIGHTS ${TableBank_HOME}/model_final_X152.pkl
+			==> Failed to run.
+
+			python demo.py --config-file ${TableBank_HOME}/config_X101.yaml \
+				--input ${TableBank_HOME}/data/Sampled_Detection_data/Latex/images/1401.0007_5.jpg \
+				--output ${TableBank_HOME}/detectron2_tablebank/tablebank \
+				--opts MODEL.WEIGHTS ${TableBank_HOME}/model_final_X101.pkl
+			python demo.py --config-file ${TableBank_HOME}/config_X152.yaml \
+				--input ${TableBank_HOME}/data/Sampled_Detection_data/Latex/images/1401.0007_5.jpg \
+				--output ${TableBank_HOME}/detectron2_tablebank/tablebank \
+				--opts MODEL.WEIGHTS ${TableBank_HOME}/model_final_X152.pkl
+
+	- Recognize tables (OpenNMT).
+		Info:
+			tbody: table body.
+			thead: table header.
+			tr: table row.
+			tdy: cell with data.
+			tdn: cell with no data.
+
+			<tabular> <tbody> <tr> <tdn> <tdy> <tdy> </tr> <tr> <tdy> <tdy> <tdy> </tr> <tr> <tdy> <tdy> <tdy> </tr> </tbody> </tabular>
+
+		Install OpenNMT-py:
+			Refer to ${SWDT_PYTHON_HOME}/rnd/doc/language_processing/opennmt_usage_guide.txt
+
+		Detect a table:
+			Refer to "Detect tables".
+
+		Run:
+			https://github.com/doc-analysis/TableBank/blob/master/TestPretrainedModel.md
+
+			conda install torchvision pillow opencv
+
+			cd ${TableBank_HOME}
+			onmt_translate -data_type img -model model.pt -src_dir /path/to/input_image_dir -src /path/to/input_image_list -output /path/to/output_file
+
+			onmt_translate -data_type img -model model.pt -src_dir ${TableBank_HOME}/table -src ${TableBank_HOME}/table/latex_table_images.lst -output ./latex_table_results.txt
+			onmt_translate -data_type img -model model.pt -src_dir ${TableBank_HOME}/table -src ${TableBank_HOME}/table/word_table_images.lst -output ./word_table_results.txt
