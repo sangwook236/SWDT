@@ -255,7 +255,12 @@
     <ClCompile Include="opencv\opencv_basic_operation.cpp" />
     <ClCompile Include="opencv\opencv_bag_of_words.cpp" />
     <ClCompile Include="opencv\opencv_camera_calibration.cpp" />
-    <ClCompile Include="opencv\opencv_camera_geometry.cpp" />
+    <ClCompile Include="opencv\opencv_camera_geometry.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="opencv\opencv_chamfer_matching.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -264,11 +269,21 @@
     </ClCompile>
     <ClCompile Include="opencv\opencv_change_detection.cpp" />
     <ClCompile Include="opencv\opencv_change_detection_using_gpu.cpp" />
-    <ClCompile Include="opencv\opencv_clustering.cpp" />
+    <ClCompile Include="opencv\opencv_clustering.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="opencv\opencv_color_correction.cpp" />
     <ClCompile Include="opencv\opencv_color_filtering.cpp" />
     <ClCompile Include="opencv\opencv_contour.cpp" />
-    <ClCompile Include="opencv\opencv_convex_hull.cpp" />
+    <ClCompile Include="opencv\opencv_convex_hull.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="opencv\opencv_convolution_correlation.cpp" />
     <ClCompile Include="opencv\opencv_distance_measure.cpp" />
     <ClCompile Include="opencv\opencv_distance_transform.cpp" />
@@ -305,7 +320,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="opencv\opencv_hand_pose_estimation.cpp" />
+    <ClCompile Include="opencv\opencv_hand_pose_estimation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="opencv\opencv_histogram.cpp" />
     <ClCompile Include="opencv\opencv_histogram_using_gpu.cpp" />
     <ClCompile Include="opencv\opencv_hough_transform.cpp" />
@@ -322,11 +342,21 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="opencv\opencv_image_operation.cpp" />
+    <ClCompile Include="opencv\opencv_image_operation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="opencv\opencv_image_processing_using_gpu.cpp" />
     <ClCompile Include="opencv\opencv_image_pyramid.cpp" />
     <ClCompile Include="opencv\opencv_image_rectification.cpp" />
-    <ClCompile Include="opencv\opencv_image_sequence.cpp" />
+    <ClCompile Include="opencv\opencv_image_sequence.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="opencv\opencv_image_similarity.cpp" />
     <ClCompile Include="opencv\opencv_image_undistortion.cpp" />
     <ClCompile Include="opencv\opencv_image_warping.cpp" />
@@ -356,7 +386,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="opencv\opencv_object_tracking.cpp" />
+    <ClCompile Include="opencv\opencv_object_tracking.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="opencv\opencv_openni.cpp" />
     <ClCompile Include="opencv\opencv_optical_flow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -407,10 +442,20 @@
     <ClCompile Include="opencv\opencv_superpixel.cpp" />
     <ClCompile Include="opencv\opencv_template_matching.cpp" />
     <ClCompile Include="opencv\opencv_text.cpp" />
-    <ClCompile Include="opencv\opencv_text_output.cpp" />
+    <ClCompile Include="opencv\opencv_text_output.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="opencv\opencv_skeletonization_and_thinning.cpp" />
     <ClCompile Include="opencv\opencv_util.cpp" />
-    <ClCompile Include="opencv\opencv_vector_operation.cpp" />
+    <ClCompile Include="opencv\opencv_vector_operation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="opencv\PascalVocDataset.cpp" />
     <ClCompile Include="quirc\quirc_main.cpp" />
     <ClCompile Include="quirc_lib\decode.cpp" />

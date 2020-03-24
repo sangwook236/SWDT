@@ -387,7 +387,7 @@ bool find_curvature_points(const std::vector<cv::Point> &fingerContour, const si
 	return true;
 }
 
-void find_convexity_defect(CvMemStorage *storage, const std::vector<cv::Point> &contour, const std::vector<cv::Point> &convexHull, const double distanceThreshold, const double depthThreshold, std::vector<std::vector<cv::Vec4i> > &convexityDefects, std::vector<cv::Point> &convexityDefectPoints)
+void find_convexity_defect(const std::vector<cv::Point> &contour, const std::vector<cv::Point> &convexHull, const double distanceThreshold, const double depthThreshold, std::vector<std::vector<cv::Vec4i> > &convexityDefects, std::vector<cv::Point> &convexityDefectPoints)
 {
 	// FIXME [modify] >> Oops !!! too stupid.
 	// Convex hull is already calculated by cv::convexHull().
@@ -672,7 +672,7 @@ void snake(cv::Mat &srcImage, cv::Mat &grayImage)
 	}
 }
 
-void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> &contour, const size_t numSnakePoints, const float alpha, const float beta, const float gamma, const bool use_gradient, const CvSize &win, std::vector<cv::Point> &snake_contour)
+void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> &contour, const size_t numSnakePoints, const float alpha, const float beta, const float gamma, const bool use_gradient, const cv::Size &win, std::vector<cv::Point> &snake_contour)
 {
 	snake_contour.clear();
 	if (contour.empty()) return;
@@ -702,14 +702,14 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
 	}
 */
 
-	const CvTermCriteria term_criteria = cvTermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 100, 1.0);
+	const cv::TermCriteria term_criteria(cv::TermCriteria::MAX_ITER | cv::TermCriteria::EPS, 100, 1.0);
 
 	// Run through the found contours.
 	const size_t &numPts = contour.size();
 	const size_t numSnakePts = 0 == numSnakePoints ? numPts : numSnakePoints;
 	if (numPts >= numSnakePts)
 	{
-		std::vector<CvPoint> points(numSnakePts, cvPoint(0, 0));
+		std::vector<cv::Point> points(numSnakePts, cv::Point(0, 0));
 
 		cv::Mat blurred_img;
 		cv::blur(gray_img, blurred_img, cv::Size(7, 3));
@@ -718,7 +718,7 @@ void fit_contour_by_snake(const cv::Mat &gray_img, const std::vector<cv::Point> 
 		for (size_t i = 0; i < numSnakePts; ++i)
 		{
 			const cv::Point &pt = contour[i * stride];
-			points[i] = cvPoint(pt.x, pt.y);
+			points[i] = cv::Point(pt.x, pt.y);
 		}
 
 		// Iterate snake.

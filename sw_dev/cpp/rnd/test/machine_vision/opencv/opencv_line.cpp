@@ -30,7 +30,7 @@ void lsd()
 	cv::GaussianBlur(image, image, cv::Size(kernelSize, kernelSize), sigma, sigma, cv::BORDER_DEFAULT);
 #endif
 
-	// Create and LSD detector with standard or no refinement.
+	// Create an LSD detector with standard or no refinement.
 	//cv::Ptr<cv::LineSegmentDetector> ls = cv::createLineSegmentDetector(cv::LSD_REFINE_NONE);
 	cv::Ptr<cv::LineSegmentDetector> ls = cv::createLineSegmentDetector(cv::LSD_REFINE_STD);
 	//cv::Ptr<cv::LineSegmentDetector> ls = cv::createLineSegmentDetector(cv::LSD_REFINE_ADV);
@@ -65,9 +65,10 @@ void fld()
 		return;
 	}
 
-	// Create LSD detector.
+	// Create an LSD detector.
 	cv::Ptr<cv::LineSegmentDetector> lsd = cv::createLineSegmentDetector();
 
+	// Create an FLD detector.
 	const int length_threshold = 10;  // Segments shorter than this will be discarded.
 	const float distance_threshold = 1.41421356f;  // A point placed from a hypothesis line segment farther than this will be regarded as an outlier.
 	const double canny_th1 = 50.0;  // First threshold for hysteresis procedure in Canny().

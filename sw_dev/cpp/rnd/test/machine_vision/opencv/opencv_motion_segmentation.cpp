@@ -187,8 +187,8 @@ void motion_segmentation()
 				}
 
 				if ((size_t)-1 != maxAreaIdx)
-					cv::drawContours(img, pointSets, maxAreaIdx, CV_RGB(255, 0, 0), 1, 8, hierarchy, 0, cv::Point());
-					//cv::drawContours(img, pointSets, maxAreaIdx, CV_RGB(255, 0, 0), 1, 8, hierarchy, maxLevel, cv::Point());
+					cv::drawContours(img, pointSets, (int)maxAreaIdx, CV_RGB(255, 0, 0), 1, 8, hierarchy, 0, cv::Point());
+					//cv::drawContours(img, pointSets, (int)maxAreaIdx, CV_RGB(255, 0, 0), 1, 8, hierarchy, maxLevel, cv::Point());
 #endif
 			}
 			cv::imshow(windowName, img);

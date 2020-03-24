@@ -451,7 +451,7 @@ bool hough_space_analysis()
 	if (img.empty())
 	{
 		std::cerr << "File not found: " << img_filename << std::endl;
-		return;
+		return false;
 	}
 
 	cv::pyrDown(img, img);  cv::pyrUp(img, img);

@@ -1,7 +1,7 @@
 //#include "stdafx.h"
 #include "PascalVocDataset.h"
 #define CV_NO_BACKWARD_COMPATIBILITY
-#include <opencv/cv.h>
+//#include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
 #include <fstream>
 #include <functional>
@@ -463,7 +463,7 @@ void PascalVocDataset::writeClassifierResultsFile( const std::string& out_dir, c
         result_file.close();
     } else {
         std::string err_msg = "could not open classifier results file '" + output_file + "' for writing. Before running for the first time, a 'results' subdirectory should be created within the VOC dataset base directory. e.g. if the VOC data is stored in /VOC/VOC2010 then the path /VOC/results must be created.";
-        CV_Error(CV_StsError,err_msg.c_str());
+        CV_Error(cv::Error::StsError,err_msg.c_str());
     }
 }
 
@@ -487,9 +487,9 @@ void PascalVocDataset::writeClassifierResultsFile( const std::string& out_dir, c
 std::string PascalVocDataset::getResultsFilename(const std::string& obj_class, const VocTask task, const ObdDatasetType dataset, const int competition, const int number)
 {
     if ((competition < 1) && (competition != -1))
-        CV_Error(CV_StsBadArg,"competition argument should be a positive non-zero number or -1 to accept the default");
+        CV_Error(cv::Error::StsBadArg,"competition argument should be a positive non-zero number or -1 to accept the default");
     if ((number < 1) && (number != -1))
-        CV_Error(CV_StsBadArg,"number argument should be a positive non-zero number or -1 to accept the default");
+        CV_Error(cv::Error::StsBadArg,"number argument should be a positive non-zero number or -1 to accept the default");
 
     std::string dset, task_type;
 
@@ -601,7 +601,7 @@ void PascalVocDataset::calcClassifierPrecRecall(const std::string& input_file, s
             scoregt_file.close();
         } else {
             std::string err_msg = "could not open scoregt file '" + scoregt_file_str + "' for writing.";
-            CV_Error(CV_StsError,err_msg.c_str());
+            CV_Error(cv::Error::StsError,err_msg.c_str());
         }
     }
 
@@ -760,7 +760,7 @@ void PascalVocDataset::calcClassifierConfMatRow(const std::string& obj_class, co
         if (target_idx_it == output_headers.end())
         {
             std::string err_msg = "could not find the target object class '" + obj_class + "' in list of valid classes.";
-            CV_Error(CV_StsError,err_msg.c_str());
+            CV_Error(cv::Error::StsError,err_msg.c_str());
         }
         /* convert iterator to index */
         target_idx = std::distance(output_headers.begin(),target_idx_it);
@@ -823,7 +823,7 @@ void PascalVocDataset::calcClassifierConfMatRow(const std::string& obj_class, co
                 if (class_idx_it == output_headers.end())
                 {
                     std::string err_msg = "could not find object class '" + img_objects[obj_idx].object_class + "' specified in the ground truth file of '" + images[ranking[image_idx]].id +"'in list of valid classes.";
-                    CV_Error(CV_StsError,err_msg.c_str());
+                    CV_Error(cv::Error::StsError,err_msg.c_str());
                 }
                 /* convert iterator to index */
                 int class_idx = std::distance(output_headers.begin(),class_idx_it);
@@ -975,7 +975,7 @@ void PascalVocDataset::calcDetectorConfMatRow(const std::string& obj_class, cons
             if (class_idx_it == output_headers.end())
             {
                 std::string err_msg = "could not find object class '" + img_objects[max_gt_obj_idx].object_class + "' specified in the ground truth file of '" + images[ranking[image_idx]].id +"'in list of valid classes.";
-                CV_Error(CV_StsError,err_msg.c_str());
+                CV_Error(cv::Error::StsError,err_msg.c_str());
             }
             /* convert iterator to index */
             int class_idx = std::distance(output_headers.begin(),class_idx_it);
@@ -1068,7 +1068,7 @@ void PascalVocDataset::savePrecRecallToGnuplot(const std::string& output_file, c
         plot_file.close();
     } else {
         std::string err_msg = "could not open plot file '" + output_file_std + "' for writing.";
-        CV_Error(CV_StsError,err_msg.c_str());
+        CV_Error(cv::Error::StsError,err_msg.c_str());
     }
 }
 
@@ -1232,7 +1232,7 @@ void PascalVocDataset::readClassifierGroundTruth(const std::string& filename, st
     if (!gtfile.is_open())
     {
         std::string err_msg = "could not open VOC ground truth textfile '" + filename + "'.";
-        CV_Error(CV_StsError,err_msg.c_str());
+        CV_Error(cv::Error::StsError,err_msg.c_str());
     }
 
     std::string line;
@@ -1248,7 +1248,7 @@ void PascalVocDataset::readClassifierGroundTruth(const std::string& filename, st
             image_codes.push_back(image);
             object_present.push_back(obj_present == 1);
         } else {
-            if (!gtfile.eof()) CV_Error(CV_StsParseError,"error parsing VOC ground truth textfile.");
+            if (!gtfile.eof()) CV_Error(cv::Error::StsParseError,"error parsing VOC ground truth textfile.");
         }
     }
     gtfile.close();
@@ -1274,13 +1274,13 @@ void PascalVocDataset::readClassifierResultsFile(const std::string& input_file, 
                 image_codes.push_back(image);
                 scores.push_back(score);
             } else {
-                if(!result_file.eof()) CV_Error(CV_StsParseError,"error parsing VOC classifier results file.");
+                if(!result_file.eof()) CV_Error(cv::Error::StsParseError,"error parsing VOC classifier results file.");
             }
         }
         result_file.close();
     } else {
         std::string err_msg = "could not open classifier results file '" + input_file + "' for reading.";
-        CV_Error(CV_StsError,err_msg.c_str());
+        CV_Error(cv::Error::StsError,err_msg.c_str());
     }
 }
 
@@ -1331,13 +1331,13 @@ void PascalVocDataset::readDetectorResultsFile(const std::string& input_file, st
                     bounding_boxes[image_idx].push_back(bounding_box);
                 }
             } else {
-                if(!result_file.eof()) CV_Error(CV_StsParseError,"error parsing VOC detector results file.");
+                if(!result_file.eof()) CV_Error(cv::Error::StsParseError,"error parsing VOC detector results file.");
             }
         }
         result_file.close();
     } else {
         std::string err_msg = "could not open detector results file '" + input_file + "' for reading.";
-        CV_Error(CV_StsError,err_msg.c_str());
+        CV_Error(cv::Error::StsError,err_msg.c_str());
     }
 }
 
@@ -1381,23 +1381,23 @@ void PascalVocDataset::extractVocObjects(const std::string filename, std::vector
 
             //object class -------------
 
-            if (extractXMLBlock(object_contents, "name", 0, tag_contents) == -1) CV_Error(CV_StsError,"missing <name> tag in object definition of '" + filename + "'");
+            if (extractXMLBlock(object_contents, "name", 0, tag_contents) == -1) CV_Error(cv::Error::StsError,"missing <name> tag in object definition of '" + filename + "'");
             object.object_class.swap(tag_contents);
 
             //object bounding box -------------
 
             int xmax, xmin, ymax, ymin;
 
-            if (extractXMLBlock(object_contents, "xmax", 0, tag_contents) == -1) CV_Error(CV_StsError,"missing <xmax> tag in object definition of '" + filename + "'");
+            if (extractXMLBlock(object_contents, "xmax", 0, tag_contents) == -1) CV_Error(cv::Error::StsError,"missing <xmax> tag in object definition of '" + filename + "'");
             xmax = stringToInteger(tag_contents);
 
-            if (extractXMLBlock(object_contents, "xmin", 0, tag_contents) == -1) CV_Error(CV_StsError,"missing <xmin> tag in object definition of '" + filename + "'");
+            if (extractXMLBlock(object_contents, "xmin", 0, tag_contents) == -1) CV_Error(cv::Error::StsError,"missing <xmin> tag in object definition of '" + filename + "'");
             xmin = stringToInteger(tag_contents);
 
-            if (extractXMLBlock(object_contents, "ymax", 0, tag_contents) == -1) CV_Error(CV_StsError,"missing <ymax> tag in object definition of '" + filename + "'");
+            if (extractXMLBlock(object_contents, "ymax", 0, tag_contents) == -1) CV_Error(cv::Error::StsError,"missing <ymax> tag in object definition of '" + filename + "'");
             ymax = stringToInteger(tag_contents);
 
-            if (extractXMLBlock(object_contents, "ymin", 0, tag_contents) == -1) CV_Error(CV_StsError,"missing <ymin> tag in object definition of '" + filename + "'");
+            if (extractXMLBlock(object_contents, "ymin", 0, tag_contents) == -1) CV_Error(cv::Error::StsError,"missing <ymin> tag in object definition of '" + filename + "'");
             ymin = stringToInteger(tag_contents);
 
             object.boundingBox.x = xmin-1;      //convert to 0-based indexing
@@ -1500,11 +1500,11 @@ void PascalVocDataset::extractDataFromResultsFilename(const std::string& input_f
     size_t fnameend = input_file_std.rfind(".txt");
 
     if ((fnamestart == input_file_std.npos) || (fnameend == input_file_std.npos))
-        CV_Error(CV_StsError,"Could not extract filename of results file.");
+        CV_Error(cv::Error::StsError,"Could not extract filename of results file.");
 
     ++fnamestart;
     if (fnamestart >= fnameend)
-        CV_Error(CV_StsError,"Could not extract filename of results file.");
+        CV_Error(cv::Error::StsError,"Could not extract filename of results file.");
 
     //extract dataset and class names, triggering exception if the filename format is not correct
     std::string filename = input_file_std.substr(fnamestart, fnameend-fnamestart);
@@ -1515,11 +1515,11 @@ void PascalVocDataset::extractDataFromResultsFilename(const std::string& input_f
     size_t classend = filename.find("_",classstart+1);
     if (classend == filename.npos) classend = filename.size();
     if ((datasetstart == filename.npos) || (classstart == filename.npos))
-        CV_Error(CV_StsError,"Error parsing results filename. Is it in standard format of 'comp<n>_{cls/det}_<dataset>_<objclass>.txt'?");
+        CV_Error(cv::Error::StsError,"Error parsing results filename. Is it in standard format of 'comp<n>_{cls/det}_<dataset>_<objclass>.txt'?");
     ++datasetstart;
     ++classstart;
     if (((datasetstart-classstart) < 1) || ((classend-datasetstart) < 1))
-        CV_Error(CV_StsError,"Error parsing results filename. Is it in standard format of 'comp<n>_{cls/det}_<dataset>_<objclass>.txt'?");
+        CV_Error(cv::Error::StsError,"Error parsing results filename. Is it in standard format of 'comp<n>_{cls/det}_<dataset>_<objclass>.txt'?");
 
     dataset_name = filename.substr(datasetstart,classstart-datasetstart-1);
     class_name = filename.substr(classstart,classend-classstart);
@@ -1567,7 +1567,7 @@ bool PascalVocDataset::getClassifierGroundTruthImage(const std::string& obj_clas
         return m_classifier_gt_all_present[std::distance(m_classifier_gt_all_ids.begin(),it)] != 0;
     } else {
         std::string err_msg = "could not find classifier ground truth for image '" + id + "' and class '" + obj_class + "'";
-        CV_Error(CV_StsError,err_msg.c_str());
+        CV_Error(cv::Error::StsError,err_msg.c_str());
     }
 
     return true;
@@ -1600,7 +1600,7 @@ void PascalVocDataset::getSortOrder(const std::vector<float>& values, std::vecto
 void PascalVocDataset::readFileToString(const std::string filename, std::string& file_contents)
 {
     std::ifstream ifs(filename.c_str());
-    if (!ifs) CV_Error(CV_StsError,"could not open text file");
+    if (!ifs) CV_Error(cv::Error::StsError,"could not open text file");
 
     std::stringstream oss;
     oss << ifs.rdbuf();
@@ -1615,7 +1615,7 @@ int PascalVocDataset::stringToInteger(const std::string input_str)
     std::stringstream ss(input_str);
     if ((ss >> result).fail())
     {
-        CV_Error(CV_StsBadArg,"could not perform std::string to integer conversion");
+        CV_Error(cv::Error::StsBadArg,"could not perform std::string to integer conversion");
     }
     return result;
 }
@@ -1627,7 +1627,7 @@ std::string PascalVocDataset::integerToString(const int input_int)
     std::stringstream ss;
     if ((ss << input_int).fail())
     {
-        CV_Error(CV_StsBadArg,"could not perform integer to std::string conversion");
+        CV_Error(cv::Error::StsBadArg,"could not perform integer to std::string conversion");
     }
     result = ss.str();
     return result;

@@ -98,8 +98,7 @@ void seeds(const std::string &img_filename)
 	superpixel->getLabelContourMask(superpixel_contour_mask, thick_line);
 
 	// Output result.
-	const int num_superpixels = superpixel->getNumberOfSuperpixels();
-	std::cout << "#superpixels = " << num_superpixels << std::endl;
+	std::cout << "#superpixels = " << superpixel->getNumberOfSuperpixels() << std::endl;
 	img.setTo(cv::Scalar(0, 0, 255), superpixel_contour_mask);
 	cv::imshow("Superpixel - SEEDS", img);
 
