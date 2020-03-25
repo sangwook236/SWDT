@@ -1,6 +1,6 @@
+LIB_BASE_NAME=arithmetic
 SRCS=add.cpp sub.cpp
 OBJS=$(SRCS:.cpp=.o)
-LIB_BASE_NAME=arithmetic
 
 #-- Linux
 #LIB_NAME=lib$(LIB_BASE_NAME).so
@@ -27,6 +27,7 @@ CFLAGS=
 CXXFLAGS=-c -std=c++17 -Wall -mdll -DBUILD_SHARED_LIB -DARITHMETIC_LIB_EXPORT
 LDFLAGS=-shared -Wl,-soname,$(LIB_NAME) -Wl,--out-implib,$(IMP_LIB_NAME) -Wl,--major-image-version,0,--minor-image-version,0
 
+#--------------------
 all: $(SRCS) $(LIB_NAME)
 
 $(LIB_NAME): $(OBJS) 

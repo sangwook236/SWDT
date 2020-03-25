@@ -1,6 +1,6 @@
+EXE_NAME=arith_test
 SRCS=main.cpp
 OBJS=$(SRCS:.cpp=.o)
-EXE_NAME=arith_test
 
 CC=gcc
 CXX=g++
@@ -9,11 +9,11 @@ AR=ar
 RANLIB=ranlib
 RM=rm -f
 
-#-- Linux, Cygwin, & MinGW(MSYS).
 CFLAGS=
 CXXFLAGS=-c -std=c++17 -Wall
 LDFLAGS=-L. -larithmetic
 
+#--------------------
 all: $(SRCS) $(EXE_NAME)
 
 $(EXE_NAME): $(OBJS) 
