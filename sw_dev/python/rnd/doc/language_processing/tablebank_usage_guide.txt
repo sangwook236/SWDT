@@ -8,6 +8,9 @@
 		Install detectron:
 			Refer to ${SWDT_PYTHON_HOME}/rnd/doc/object_detection/detectron_usage_guide.txt
 
+		Resize an image:
+			Fail to detect tables if an input image is large.
+
 		Run:
 			https://github.com/doc-analysis/TableBank/blob/master/TestPretrainedModel.md
 			https://github.com/doc-analysis/TableBank/blob/master/MODEL_ZOO.md
@@ -50,10 +53,11 @@
 				--output ${TableBank_HOME}/detectron2_tablebank/tablebank \
 				--opts MODEL.WEIGHTS ${TableBank_HOME}/model_final_X152.pkl
 
-	- Recognize tables (OpenNMT).
+	- Recognize table structures (OpenNMT).
 		Info:
-			tbody: table body.
+			tabular: table.
 			thead: table header.
+			tbody: table body.
 			tr: table row.
 			tdy: cell with data.
 			tdn: cell with no data.
