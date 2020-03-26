@@ -12,7 +12,7 @@
 		java -jar pdfbox-app-2.y.z.jar ExtractText [OPTIONS] <inputfile> [Text file]
 		java -jar pdfbox-app-2.y.z.jar OverlayPDF <input.pdf> [OPTIONS] <output.pdf>
 		java -jar pdfbox-app-2.y.z.jar PDFDebugger [inputfile]
-		java -jar pdfbox-app-2.y.z.jar PDFMerger <Source PDF files (2 ..n)> <Target PDF file>
+		java -jar pdfbox-app-2.y.z.jar PDFMerger <Source PDF files (2..n)> <Target PDF file>
 		java -jar pdfbox-app-2.y.z.jar PDFSplit [OPTIONS] <PDF file>
 		java -jar pdfbox-app-2.y.z.jar PDFToImage [OPTIONS] <PDF file>
 		java -jar pdfbox-app-2.y.z.jar PrintPDF [OPTIONS] <inputfile>
