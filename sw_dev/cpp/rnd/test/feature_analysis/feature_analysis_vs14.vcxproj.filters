@@ -13,20 +13,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\lsd">
-      <UniqueIdentifier>{d605096c-3501-415d-87fc-19e41e9cf560}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\surf">
       <UniqueIdentifier>{6e1a203c-9251-406a-b82f-dded2310d4b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\lsd_lib">
-      <UniqueIdentifier>{075352ce-72ee-4374-aadf-99a0eb638cf3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\elsd">
-      <UniqueIdentifier>{14085c0f-af5d-444c-ac8c-264e055fffa5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\elsd_lib">
-      <UniqueIdentifier>{b6dfc4c3-8f72-4858-be67-f6da7945b567}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\fst">
       <UniqueIdentifier>{c1266a7e-53b7-4638-b597-3848fffe848a}</UniqueIdentifier>
@@ -55,37 +43,13 @@
     <Filter Include="Source Files\svm_light_lib\svm_light">
       <UniqueIdentifier>{cb8e93a4-939d-4dd8-a3f2-7948f854fa33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\lbd">
-      <UniqueIdentifier>{3d4726f8-731e-4291-8416-2b7567a97a2d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\lbd_lib">
-      <UniqueIdentifier>{4e04e100-feed-48af-8ef7-c742d4282ba4}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lsd_lib\lsd.h">
-      <Filter>Source Files\lsd_lib</Filter>
-    </ClInclude>
     <ClInclude Include="surf\surf_imload.h">
       <Filter>Header Files\surf</Filter>
     </ClInclude>
     <ClInclude Include="surf\surf_os_mapping.h">
       <Filter>Header Files\surf</Filter>
-    </ClInclude>
-    <ClInclude Include="elsd_lib\elsd.h">
-      <Filter>Source Files\elsd_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="elsd_lib\process_curve.h">
-      <Filter>Source Files\elsd_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="elsd_lib\process_line.h">
-      <Filter>Source Files\elsd_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="elsd_lib\valid_curve.h">
-      <Filter>Source Files\elsd_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="elsd_lib\write_svg.h">
-      <Filter>Source Files\elsd_lib</Filter>
     </ClInclude>
     <ClInclude Include="fst_lib\_src_criteria\classifier.hpp">
       <Filter>Source Files\fst_lib\_src_criteria</Filter>
@@ -348,55 +312,13 @@
     <ClInclude Include="svm_light_lib\svm_light\svm_learn.h">
       <Filter>Source Files\svm_light_lib\svm_light</Filter>
     </ClInclude>
-    <ClInclude Include="lbd_lib\EDLineDetector.hh">
-      <Filter>Source Files\lbd_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="lbd_lib\LineDescriptor.hh">
-      <Filter>Source Files\lbd_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="lbd_lib\LineStructure.hh">
-      <Filter>Source Files\lbd_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="lbd_lib\PairwiseLineMatching.hh">
-      <Filter>Source Files\lbd_lib</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lsd_lib\lsd.cpp">
-      <Filter>Source Files\lsd_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="lsd_lib\lsd_call_example.cpp">
-      <Filter>Source Files\lsd_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="lsd_lib\lsd_cmd.cpp">
-      <Filter>Source Files\lsd_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="lsd\lsd_main.cpp">
-      <Filter>Source Files\lsd</Filter>
-    </ClCompile>
     <ClCompile Include="library_autolinking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="elsd\elsd_main.cpp">
-      <Filter>Source Files\elsd</Filter>
-    </ClCompile>
-    <ClCompile Include="elsd_lib\write_svg.cpp">
-      <Filter>Source Files\elsd_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="elsd_lib\valid_curve.cpp">
-      <Filter>Source Files\elsd_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="elsd_lib\process_line.cpp">
-      <Filter>Source Files\elsd_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="elsd_lib\process_curve.cpp">
-      <Filter>Source Files\elsd_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="elsd_lib\elsd.cpp">
-      <Filter>Source Files\elsd_lib</Filter>
     </ClCompile>
     <ClCompile Include="fst\fst_main.cpp">
       <Filter>Source Files\fst</Filter>
@@ -430,21 +352,6 @@
     </ClCompile>
     <ClCompile Include="svm_light_lib\svm_light\svm_loqo.c">
       <Filter>Source Files\svm_light_lib\svm_light</Filter>
-    </ClCompile>
-    <ClCompile Include="lbd_lib\EDLineDetector.cpp">
-      <Filter>Source Files\lbd_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="lbd_lib\LineDescriptor.cpp">
-      <Filter>Source Files\lbd_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="lbd_lib\PairwiseLineMatching.cpp">
-      <Filter>Source Files\lbd_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="lbd_lib\TestLineMatchingAlgorithm.cpp">
-      <Filter>Source Files\lbd_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="lbd\lbd_main.cpp">
-      <Filter>Source Files\lbd</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

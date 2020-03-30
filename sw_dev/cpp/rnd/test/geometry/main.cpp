@@ -9,6 +9,10 @@
 
 int main(int argc, char *argv[])
 {
+	int lsd_main(int argc, char* argv[]);
+	int lbd_main(int argc, char* argv[]);
+	int elsd_main(int argc, char* argv[]);
+
 	int pcl_main(int argc, char *argv[]);
 	int threedtk_main(int argc, char *argv[]);
 
@@ -17,7 +21,14 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "Point Cloud Library (PCL) -------------------------------------------" << std::endl;
+		std::cout << "Line feature --------------------------------------------------------" << std::endl;
+		retval = lsd_main(argc, argv);  // Line segment detector (LSD).
+		//retval = lbd_main(argc, argv);  // EDLine detector & line band descriptor (LBD).
+
+		std::cout << "\nEllipse & line feature ----------------------------------------------" << std::endl;
+		//retval = elsd_main(argc, argv);
+
+		std::cout << "\nPoint Cloud Library (PCL) -------------------------------------------" << std::endl;
 		retval = pcl_main(argc, argv);
 
 		std::cout << "\n3DTK - The 3D Toolkit -----------------------------------------------" << std::endl;

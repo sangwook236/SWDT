@@ -91,7 +91,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,7 +115,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,7 +142,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -168,7 +168,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>SIFTGPU_DLL;CUDA_SIFTGPU_ENABLED;SERVER_SIFTGPU_ENABLED;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(MY_USR_LOCAL_INCLUDE)/clapack;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./fst_lib/_src_global;./fst_lib/_src_criteria;./fst_lib/_src_search;./fst_lib/_src_dataio;./svm_light_lib;../../inc;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv2;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0/opencv;$(MY_USR_LOCAL_INCLUDE)/opencv-4.1.0;$(MY_USR_LOCAL_INCLUDE)/cudpp;$(CUDA_PATH)/include;C:\Program Files\MATLAB\R2016a\extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -188,11 +188,6 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="elsd_lib\elsd.h" />
-    <ClInclude Include="elsd_lib\process_curve.h" />
-    <ClInclude Include="elsd_lib\process_line.h" />
-    <ClInclude Include="elsd_lib\valid_curve.h" />
-    <ClInclude Include="elsd_lib\write_svg.h" />
     <ClInclude Include="fst_lib\_src_criteria\classifier.hpp" />
     <ClInclude Include="fst_lib\_src_criteria\classifier_knn.hpp" />
     <ClInclude Include="fst_lib\_src_criteria\classifier_multinom_naivebayes.hpp" />
@@ -277,26 +272,6 @@
     <ClInclude Include="fst_lib\_src_search\seq_step_straight.hpp" />
     <ClInclude Include="fst_lib\_src_search\seq_step_straight_threaded.hpp" />
     <ClInclude Include="fst_lib\_src_search\stopwatch.hpp" />
-    <ClInclude Include="lbd_lib\EDLineDetector.hh" />
-    <ClInclude Include="lbd_lib\LineDescriptor.hh">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="lbd_lib\LineStructure.hh">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="lbd_lib\PairwiseLineMatching.hh">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="lsd_lib\lsd.h" />
     <ClInclude Include="surf\surf_imload.h" />
     <ClInclude Include="surf\surf_os_mapping.h" />
     <ClInclude Include="svm_light_lib\svm_light\kernel.h">
@@ -319,12 +294,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="elsd\elsd_main.cpp" />
-    <ClCompile Include="elsd_lib\elsd.cpp" />
-    <ClCompile Include="elsd_lib\process_curve.cpp" />
-    <ClCompile Include="elsd_lib\process_line.cpp" />
-    <ClCompile Include="elsd_lib\valid_curve.cpp" />
-    <ClCompile Include="elsd_lib\write_svg.cpp" />
     <ClCompile Include="fst\fst_demo10.cpp" />
     <ClCompile Include="fst\fst_main.cpp" />
     <ClCompile Include="fst_lib\_src_global\global.cpp" />
@@ -340,41 +309,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="lbd\lbd_main.cpp" />
-    <ClCompile Include="lbd_lib\EDLineDetector.cpp" />
-    <ClCompile Include="lbd_lib\LineDescriptor.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="lbd_lib\PairwiseLineMatching.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="lbd_lib\TestLineMatchingAlgorithm.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="library_autolinking.cpp" />
-    <ClCompile Include="lsd\lsd_main.cpp" />
-    <ClCompile Include="lsd_lib\lsd.cpp" />
-    <ClCompile Include="lsd_lib\lsd_call_example.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="lsd_lib\lsd_cmd.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="svm_light_lib\svm_light\svm_classify.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

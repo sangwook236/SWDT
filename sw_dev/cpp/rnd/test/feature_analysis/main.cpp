@@ -17,9 +17,6 @@
 
 int main(int argc, char *argv[])
 {
-	int lsd_main(int argc, char *argv[]);
-	int lbd_main(int argc, char *argv[]);
-	int elsd_main(int argc, char *argv[]);
 	int opensift_main(int argc, char *argv[]);
 	int siftgpu_main(int argc, char *argv[]);
 	int opensurf_main(int argc, char *argv[]);
@@ -32,14 +29,7 @@ int main(int argc, char *argv[])
 	{
 		std::srand((unsigned int)std::time(NULL));
 
-		std::cout << "Line feature --------------------------------------------------------" << std::endl;
-		retval = lsd_main(argc, argv);  // Line segment detector (LSD).
-		//retval = lbd_main(argc, argv);  // EDLine detector & line band descriptor (LBD).
-
-		std::cout << "\nEllipse & line feature ----------------------------------------------" << std::endl;
-		//retval = elsd_main(argc, argv);
-
-		std::cout << "\nLocal descriptors ---------------------------------------------------" << std::endl;
+		std::cout << "Local descriptors ---------------------------------------------------" << std::endl;
 		//retval = opensift_main(argc, argv);
 		//retval = siftgpu_main(argc, argv);
 

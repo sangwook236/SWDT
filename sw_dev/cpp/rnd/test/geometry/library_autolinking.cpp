@@ -4,6 +4,11 @@
 
 #		if defined(DEBUG) || defined(_DEBUG)
 
+#pragma comment(lib, "opencv_imgcodecs410d.lib")
+#pragma comment(lib, "opencv_imgproc410d.lib")
+#pragma comment(lib, "opencv_highgui410d.lib")
+#pragma comment(lib, "opencv_core410d.lib")
+
 #pragma comment(lib, "pcl_common_debug.lib")
 #pragma comment(lib, "pcl_io_debug.lib")
 #pragma comment(lib, "pcl_kdtree_debug.lib")
@@ -24,7 +29,16 @@
 
 #pragma comment(lib, "flann.lib")
 
+#pragma comment(lib, "lapackd.lib")
+#pragma comment(lib, "blasd.lib")
+#pragma comment(lib, "libf2cd.lib")
+
 #		else
+
+#pragma comment(lib, "opencv_imgcodecs410.lib")
+#pragma comment(lib, "opencv_imgproc410.lib")
+#pragma comment(lib, "opencv_highgui410.lib")
+#pragma comment(lib, "opencv_core410.lib")
 
 #pragma comment(lib, "pcl_common_release.lib")
 #pragma comment(lib, "pcl_io_release.lib")
@@ -45,6 +59,10 @@
 #pragma comment(lib, "vtkFiltersSources-7.0.lib")
 
 #pragma comment(lib, "flann.lib")
+
+#pragma comment(lib, "lapack.lib")
+#pragma comment(lib, "blas.lib")
+#pragma comment(lib, "libf2c.lib")
 
 #		endif
 

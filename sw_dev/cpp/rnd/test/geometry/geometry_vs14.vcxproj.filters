@@ -25,6 +25,51 @@
     <ClCompile Include="pcl\pcl_ransac.cpp">
       <Filter>Source Files\pcl</Filter>
     </ClCompile>
+    <ClCompile Include="elsd\elsd_main.cpp">
+      <Filter>Source Files\elsd</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\elsd.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\process_curve.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\process_line.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\valid_curve.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="elsd_lib\write_svg.cpp">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lbd\lbd_main.cpp">
+      <Filter>Source Files\lbd</Filter>
+    </ClCompile>
+    <ClCompile Include="lbd_lib\EDLineDetector.cpp">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lbd_lib\LineDescriptor.cpp">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lbd_lib\PairwiseLineMatching.cpp">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lbd_lib\TestLineMatchingAlgorithm.cpp">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lsd\lsd_main.cpp">
+      <Filter>Source Files\lsd</Filter>
+    </ClCompile>
+    <ClCompile Include="lsd_lib\lsd.cpp">
+      <Filter>Source Files\lsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lsd_lib\lsd_call_example.cpp">
+      <Filter>Source Files\lsd_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lsd_lib\lsd_cmd.cpp">
+      <Filter>Source Files\lsd_lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -45,5 +90,55 @@
     <Filter Include="Source Files\3dtk">
       <UniqueIdentifier>{5954e328-43e5-4c72-9d22-e88602f87834}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\elsd">
+      <UniqueIdentifier>{b0aa1224-2ac0-4621-862d-86f33ebba33a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\elsd_lib">
+      <UniqueIdentifier>{14034ce1-5de0-49a0-87e6-218de46615b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lsd">
+      <UniqueIdentifier>{9cedb355-48ae-4b9b-8a9f-91b8e4c1b496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lsd_lib">
+      <UniqueIdentifier>{afc9f733-49ae-4e08-a7d0-582e479520d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lbd">
+      <UniqueIdentifier>{636d71b7-d976-4409-9bd1-8b4915c0b0e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lbd_lib">
+      <UniqueIdentifier>{606aedf9-8ab8-4163-be06-68a67ef2c7c6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="elsd_lib\elsd.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\process_curve.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\process_line.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\valid_curve.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="elsd_lib\write_svg.h">
+      <Filter>Source Files\elsd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lbd_lib\EDLineDetector.hh">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lbd_lib\LineDescriptor.hh">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lbd_lib\LineStructure.hh">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lbd_lib\PairwiseLineMatching.hh">
+      <Filter>Source Files\lbd_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lsd_lib\lsd.h">
+      <Filter>Source Files\lsd_lib</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
