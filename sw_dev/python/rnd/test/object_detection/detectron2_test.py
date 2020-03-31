@@ -95,8 +95,8 @@ def simple_panoptic_segmentation_example():
 
 def get_balloon_dicts(img_dir):
 	json_file = os.path.join(img_dir, 'via_region_data.json')
-	with open(json_file) as f:
-		imgs_anns = json.load(f)
+	with open(json_file) as fd:
+		imgs_anns = json.load(fd)
 
 	dataset_dicts = []
 	for idx, v in enumerate(imgs_anns.values()):
@@ -181,7 +181,7 @@ def training_on_a_custom_dataset_example():
 	for d in random.sample(dataset_dicts, 3):    
 		im = cv2.imread(d['file_name'])
 		outputs = predictor(im)
-		v = detectron2.utils.visualizer.Visualizer(im[:, :, ::-1],
+		v = detectron2.utils.visualizer.Visualizer(im[:,:,::-1],
 			metadata=balloon_metadata, 
 			scale=0.8, 
 			instance_mode=detectron2.utils.visualizer.ColorMode.IMAGE_BW  # Remove the colors of unsegmented pixels.

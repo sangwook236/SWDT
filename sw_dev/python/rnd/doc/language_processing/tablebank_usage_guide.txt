@@ -21,7 +21,7 @@
 			git clone https://github.com/doc-analysis/TableBank.git TableBank_github
 			cd ${detectron_HOME}
 			python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir /path/to/output_image_dir --image-ext jpg --wts ${TableBank_HOME}/model_final_X152.pkl /path/to/input_image_dir
-			==> Succeed in running.
+			==> Succeeded in running.
 
 			python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/tablebank --image-ext jpg --wts ${TableBank_HOME}/model_final_X152.pkl ${TableBank_HOME}/data/Sampled_Detection_data/Latex/images
 			python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/tablebank --image-ext jpg --wts ${TableBank_HOME}/model_final_X152.pkl ${TableBank_HOME}/data/Sampled_Detection_data/Word/images
@@ -53,7 +53,7 @@
 				--output ${TableBank_HOME}/detectron2_tablebank/tablebank \
 				--opts MODEL.WEIGHTS ${TableBank_HOME}/model_final_X152.pkl
 
-	- Recognize table structures (OpenNMT).
+	- Recognize a table structure (OpenNMT).
 		Info:
 			tabular: table.
 			thead: table header.
