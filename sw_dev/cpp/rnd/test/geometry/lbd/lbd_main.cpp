@@ -10,21 +10,21 @@ namespace local {
 
 void edline_detector_example()
 {
-	std::list<std::string> img_filenames;
-	img_filenames.push_back("./data/feature_analysis/chairs.pgm");
-	img_filenames.push_back("./data/feature_analysis/urban_1.jpg");
-	img_filenames.push_back("./data/feature_analysis/urban_2.jpg");
-	img_filenames.push_back("./data/feature_analysis/urban_3.jpg");
+	std::list<std::string> image_filepaths;
+	image_filepaths.push_back("../data/feature_analysis/chairs.pgm");
+	image_filepaths.push_back("../data/feature_analysis/urban_1.jpg");
+	image_filepaths.push_back("../data/feature_analysis/urban_2.jpg");
+	image_filepaths.push_back("../data/feature_analysis/urban_3.jpg");
 
 	EDLineDetector detector;
 	//std::cout << "Min. line length = " << detector.minLineLen_ << std::endl;
 
-	for (const auto &img_filename : img_filenames)
+	for (const auto &img_fpath : image_filepaths)
 	{
-		const cv::Mat img(cv::imread(img_filename, cv::IMREAD_COLOR));
+		const cv::Mat img(cv::imread(img_fpath, cv::IMREAD_COLOR));
 		if (img.empty())
 		{
-			std::cout << "Failed to load image file: " << img_filename << std::endl;
+			std::cout << "Failed to load an image file: " << img_fpath << std::endl;
 			continue;
 		}
 
@@ -36,28 +36,28 @@ void edline_detector_example()
 			boost::timer::auto_cpu_timer timer;
 			if (!detector.EDline(gray, false))
 			{
-				std::cerr << "Failed to detect lines by EDline." << std::endl;
+				std::cerr << "Failed to detect any line by EDLine." << std::endl;
 				continue;
 			}
 		}
 
 		// Show the result.
-		std::cout << "\t#detected lines = " << detector.lines_.numOfLines << std::endl;
+		std::cout << "\t#detected lines whose length are larger than minLineLen = " << detector.lines_.numOfLines << std::endl;
 		std::cout << "\t#x-coords = " << detector.lines_.xCors.size() << std::endl;
 		std::cout << "\t#y-coords = " << detector.lines_.yCors.size() << std::endl;
-		std::cout << "\t#start indexes = " << detector.lines_.sId.size() << std::endl;
+		std::cout << "\t#start indices = " << detector.lines_.sId.size() << std::endl;
 
 		cv::Mat rgb;
 		img.copyTo(rgb);
 		for (const auto &coords : detector.lineEndpoints_)
 		{
-			const float x1 = coords[0], y1 = coords[1];
-			const float x2 = coords[2], y2 = coords[3];
+			const cv::Point pt1((int)std::round(coords[0]), (int)std::round(coords[1]));
+			const cv::Point pt2((int)std::round(coords[2]), (int)std::round(coords[3]));
 
-			cv::line(rgb, cv::Point((int)std::floor(x1 + 0.5f), (int)std::floor(y1 + 0.5f)), cv::Point((int)std::floor(x2 + 0.5f), (int)std::floor(y2 + 0.5f)), CV_RGB(255, 0, 0), 1, cv::LINE_AA);
+			cv::line(rgb, pt1, pt2, CV_RGB(255, 0, 0), 1, cv::LINE_AA);
 		}
 
-		cv::imshow("LBD - Detected", rgb);
+		cv::imshow("EDLines - Detected", rgb);
 		cv::waitKey(0);
 	}
 
@@ -66,6 +66,7 @@ void edline_detector_example()
 
 void lbd_example()
 {
+	throw std::runtime_error("Not yet implemented");
 }
 
 }  // namespace local
@@ -83,8 +84,9 @@ int lbd_main(int argc, char *argv[])
 		local::edline_detector_example();
 
 		// Line band descriptor (LBD) & line segment matching ------------------
-		//	REF [paper] >> "An efficient and robust line segment matching approach based on LBD descriptor and pairwise geometric consistency", JVCIR 2012.
+		//	REF [paper] >> "An efficient and robust line segment matching approach based on LBD descriptor and pairwise geometric consistency", JVCIR 2012.
 		//	REF [site] >> https://github.com/mtamburrano/LBD_Descriptor
+		//		Basic Image AlgorithmS Library (BIAS) library is required. (?)
 		//	REF [site] >> http://www.mip.informatik.uni-kiel.de/tiki-index.php?page=Lilian+Zhang
 		//local::lbd_example();  // Not yet implemented.
 	}

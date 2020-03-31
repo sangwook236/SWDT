@@ -74,25 +74,25 @@ void fld()
 	const double canny_th1 = 50.0;  // First threshold for hysteresis procedure in Canny().
 	const double canny_th2 = 50.0;  // Second threshold for hysteresis procedure in Canny().
 	const int canny_aperture_size = 3;  // Aperturesize for the sobel operator in Canny().
-	const bool do_merge = false;  // If true, incremental merging of segments will be perfomred.
+	const bool do_merge = false;  // If true, incremental merging of segments will be performed.
 	cv::Ptr<cv::ximgproc::FastLineDetector> fld = cv::ximgproc::createFastLineDetector(length_threshold, distance_threshold, canny_th1, canny_th2, canny_aperture_size, do_merge);
 
 	// Because of some CPU's power strategy, it seems that the first running of an algorithm takes much longer.
 	// So here we run both of the algorithmes 10 times to see each algorithm's processing time with sufficiently warmed-up CPU performance.
 	std::vector<cv::Vec4f> lines_lsd, lines_fld;
+	const double freq = cv::getTickFrequency();
 	for (int run_count = 0; run_count < 10; ++run_count)
 	{
+		// Detect the lines with LSD.
 		lines_lsd.clear();
 		const int64 start_lsd = cv::getTickCount();
 		lsd->detect(gray, lines_lsd);
-		// Detect the lines with LSD.
-		const double freq = cv::getTickFrequency();
 		const double duration_ms_lsd = double(cv::getTickCount() - start_lsd) * 1000 / freq;
 		std::cout << "Elapsed time for LSD: " << duration_ms_lsd << " ms." << std::endl;
 
+		// Detect the lines with FLD.
 		lines_fld.clear();
 		const int64 start_fld = cv::getTickCount();
-		// Detect the lines with FLD.
 		fld->detect(gray, lines_fld);
 		const double duration_ms = double(cv::getTickCount() - start_fld) * 1000 / freq;
 		std::cout << "Ealpsed time for FLD " << duration_ms << " ms." << std::endl;
