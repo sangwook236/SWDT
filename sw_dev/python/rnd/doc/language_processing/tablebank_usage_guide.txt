@@ -30,6 +30,8 @@
 			python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/pdfplumber --image-ext png --wts ${TableBank_HOME}/model_final_X152.pkl ${HOME}/work/dataset/text/table_form/pdfplumber
 
 	- Detect tables (detectron2).
+		Refer to ${SWL_PYTHON_HOME}/test/language_processing/detect_table.py.
+
 		Install detectron2:
 			Refer to ${SWDT_PYTHON_HOME}/rnd/doc/object_detection/detectron_usage_guide.txt
 
