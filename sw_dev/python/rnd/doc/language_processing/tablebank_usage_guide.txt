@@ -30,8 +30,6 @@
 			python tools/infer_simple.py --cfg ${TableBank_HOME}/config_X152.yaml --output-dir ./detectron-tablebank/pdfplumber --image-ext png --wts ${TableBank_HOME}/model_final_X152.pkl ${HOME}/work/dataset/text/table_form/pdfplumber
 
 	- Detect tables (detectron2).
-		Refer to ${SWL_PYTHON_HOME}/test/language_processing/detect_table.py.
-
 		Install detectron2:
 			Refer to ${SWDT_PYTHON_HOME}/rnd/doc/object_detection/detectron_usage_guide.txt
 
@@ -44,7 +42,7 @@
 				--input /path/to/input_image_file \
 				--output /path/to/output_image \
 				--opts MODEL.WEIGHTS ${TableBank_HOME}/model_final_X152.pkl
-			==> Failed to run.
+			==> Failed to run using the pretrained models and configs in the TableBank site.
 
 			python demo.py --config-file ${TableBank_HOME}/config_X101.yaml \
 				--input ${TableBank_HOME}/data/Sampled_Detection_data/Latex/images/1401.0007_5.jpg \
@@ -54,6 +52,9 @@
 				--input ${TableBank_HOME}/data/Sampled_Detection_data/Latex/images/1401.0007_5.jpg \
 				--output ${TableBank_HOME}/detectron2_tablebank/tablebank \
 				--opts MODEL.WEIGHTS ${TableBank_HOME}/model_final_X152.pkl
+
+		Run in detectron2:
+			Refer to ${SWL_PYTHON_HOME}/test/language_processing/detect_table.py.
 
 	- Recognize a table structure (OpenNMT).
 		Info:

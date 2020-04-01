@@ -159,7 +159,7 @@ def training_on_a_custom_dataset_example():
 	cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # Only has one class (ballon).
 
 	os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
-	trainer = detectron2.engine.DefaultTrainer(cfg) 
+	trainer = detectron2.engine.DefaultTrainer(cfg)
 	trainer.resume_or_load(resume=False)
 	trainer.train()
 
