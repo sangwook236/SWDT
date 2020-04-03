@@ -7,7 +7,7 @@ import keras_ocr
 import matplotlib.pyplot as plt
 
 # REF [site] >> https://github.com/faustomorales/keras-ocr
-def detection_and_recognition_test():
+def old_detection_and_recognition_test():
 	if 'posix' == os.name:
 		data_base_dir_path = '/home/sangwook/work/dataset'
 	else:
@@ -209,10 +209,86 @@ def training_test():
 	predictions = recognizer.recognize_from_boxes(boxes=boxes, image=image)
 	print('Predictions =', predictions)
 
-def main():
-	detection_and_recognition_test()
+def new_detection_test():
+	# Get a set of images.
+	image_filepaths = [
+		'./image.jpg',
+	]
 
+	detector = keras_ocr.detection.Detector(
+		weights='clovaai_general',
+		load_from_torch=False,
+		optimizer='adam',
+		backbone_name='vgg'
+	)
+	boxes_lst = detector.detect(
+		image_filepaths, #images,
+		detection_threshold=0.7,
+		text_threshold=0.4,
+		link_threshold=0.4,
+		size_threshold=10
+	)
+
+	#--------------------
+	import matplotlib.image
+
+	# Plot the bounding boxes.
+	for img_fpath, boxes in zip(image_filepaths, boxes_lst):
+		img = matplotlib.image.imread(img_fpath)
+		if img is None:
+			print('Failed to load an image: {}.'.format(img_fpath))
+			continue
+
+		img = keras_ocr.tools.drawBoxes(image=img, boxes=boxes, color=(255, 0, 0), thickness=5, boxes_format='boxes')
+		plt.imshow(img)
+		plt.show()
+
+# REF [site] >> https://github.com/faustomorales/keras-ocr
+def new_detection_and_recognition_test():
+	if True:
+		# keras-ocr will automatically download pretrained weights for the detector and recognizer.
+		pipeline = keras_ocr.pipeline.Pipeline(detector=None, recognizer=None, scale=2, max_size=2048)
+	else:
+		detector = keras_ocr.detection.Detector(
+			weights='clovaai_general',
+			load_from_torch=False,
+			optimizer='adam',
+			backbone_name='vgg'
+		)
+		recognizer = keras_ocr.recognition.Recognizer(
+			alphabet=None,
+			weights='kurapan',
+			build_params=None
+		)
+
+		# keras-ocr will automatically download pretrained weights for the detector and recognizer.
+		pipeline = keras_ocr.pipeline.Pipeline(detector=detector, recognizer=recognizer, scale=2, max_size=2048)
+
+	# Get a set of three example images.
+	images = [
+		keras_ocr.tools.read(url) for url in [
+			'https://upload.wikimedia.org/wikipedia/commons/b/bd/Army_Reserves_Recruitment_Banner_MOD_45156284.jpg',
+			'https://upload.wikimedia.org/wikipedia/commons/e/e8/FseeG2QeLXo.jpg',
+			'https://upload.wikimedia.org/wikipedia/commons/b/b4/EUBanana-500x112.jpg',
+			'./image.jpg',
+		]
+	]
+
+	# Each list of predictions in prediction_groups is a list of (word, box) tuples.
+	prediction_groups = pipeline.recognize(images, detection_kwargs=None, recognition_kwargs=None)
+
+	# Plot the predictions.
+	fig, axs = plt.subplots(nrows=len(images), figsize=(20, 20))
+	for ax, image, predictions in zip(axs, images, prediction_groups):
+		keras_ocr.tools.drawAnnotations(image=image, predictions=predictions, ax=ax)
+	plt.show()
+
+def main():
+	#old_detection_and_recognition_test()  # Error.
 	#training_test()
+
+	new_detection_test()
+	#new_detection_and_recognition_test()
 
 #--------------------------------------------------------------------
 
