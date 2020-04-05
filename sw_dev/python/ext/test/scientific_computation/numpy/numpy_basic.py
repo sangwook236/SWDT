@@ -363,6 +363,18 @@ def shuffle_speed_test():
 
 	print('Elapsed time =', timeit.timeit(lambda: suffle_itself(m, batch_size), number=num_repetition))
 
+# REF [site] >>
+#	https://docs.scipy.org/doc/numpy/reference/maskedarray.html
+#	https://docs.scipy.org/doc/numpy/reference/maskedarray.generic.html
+def mask_array_test():
+	x = np.array([1, 2, 3, -1, 5])
+
+	# Mark the fourth entry as invalid.
+	x_masked = np.ma.masked_array(x, mask=[0, 0, 0, 1, 0])
+
+	print('x.mean() =', x.mean())
+	print('x_masked.mean() =', x_masked.mean())
+
 def main():
 	basic_operation()
 	#handle_NaN_and_infinity()
@@ -372,6 +384,8 @@ def main():
 	#ix_function()
 
 	#shuffle_speed_test()
+	
+	mask_array_test()
 
 #--------------------------------------------------------------------
 
