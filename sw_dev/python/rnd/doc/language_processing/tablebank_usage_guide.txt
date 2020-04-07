@@ -4,6 +4,10 @@
 		https://doc-analysis.github.io/
 
 [-] Usage.
+	- Dataset.
+		Check dataset:
+			Refer to ${SWL_PYTHON_HOME}/test/language_processing/detect_table.py.
+
 	- Detect tables (detectron).
 		Install detectron:
 			Refer to ${SWDT_PYTHON_HOME}/rnd/doc/object_detection/detectron_usage_guide.txt

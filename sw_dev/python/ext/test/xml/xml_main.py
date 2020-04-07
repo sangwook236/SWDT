@@ -46,8 +46,16 @@ def simple_element_tree_example():
 
 # REF [site] >> https://docs.python-guide.org/scenarios/xml/
 def simple_xmltodict_example():
-	with open('country_data.xml', 'r') as fd:
-		doc = xmltodict.parse(fd.read())
+	filepath = 'country_data.xml'
+	try:
+		with open(filepath, 'r', encoding='UTF8') as fd:
+			doc = xmltodict.parse(fd.read())
+	except FileNotFoundError as ex:
+		print('File not found: {}.'.format(filepath))
+		raise
+	except UnicodeDecodeError as ex:
+		print('Unicode decode error: {}.'.format(filepath))
+		raise
 
 	print(doc['data']['country'])
 	print(doc['data']['country'][0]['@name'])
