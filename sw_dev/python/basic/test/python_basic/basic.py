@@ -425,6 +425,36 @@ def inheritance_test():
 	obj.func2(17)
 	obj.func3(17)
 
+# REF [file] >> struct_test.py
+def bytes_test():
+	# String with encoding 'UTF-8'.
+	string = 'Python is interesting.'
+	print("bytes(string, 'UTF-8') =", bytes(string, 'UTF-8'))
+
+	# Create a byte of given integer size.
+	size = 5
+	print('bytes(size) =', bytes(size))
+
+	# Convert iterable list to bytes.
+	vals = [1, 2, 3, 4, 5]
+	#vals = [1001, 2, 3, 4, 5]  # bytes must be in range(0, 256).
+	print('bytes({}) = {}.'.format(vals, bytes(vals)))
+
+def number_system():
+	dec_val = 1234
+	
+	bin_val = 0b101010
+	oct_val = 0o76543210
+	hex_val = 0x123456789ABCDEF0
+
+	print("bin({}) = '{}'.".format(dec_val, bin(dec_val)))  # String.
+	print("oct({}) = '{}'.".format(dec_val, oct(dec_val)))  # String.
+	print("hex({}) = '{}'.".format(dec_val, hex(dec_val)))  # String.
+
+	print("int('{}', 2) = {}.".format(bin(dec_val), int(bin(dec_val), 2)))
+	print("int('{}', 8) = {}.".format(oct(dec_val), int(oct(dec_val), 8)))
+	print("int('{}', 16) = {}.".format(hex(dec_val), int(hex(dec_val), 16)))
+
 def main():
 	#platform_test()
 
@@ -447,6 +477,10 @@ def main():
 
 	#--------------------
 	#inheritance_test()
+
+	#--------------------
+	#bytes_test()
+	#number_system()  # Binary, octal, decimal, hexadecimal number system.
 
 #--------------------------------------------------------------------
 
