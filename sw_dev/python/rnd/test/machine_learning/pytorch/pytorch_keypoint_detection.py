@@ -6,7 +6,7 @@ import torch
 import torchvision
 import cv2
 
-def visualize_person_keypoints(img, predictions, BBOX_THRESHOLD):
+def visualize_person_keypoints(img, predictions, BOX_SCORE_THRESHOLD):
 	for prediction in predictions:
 		#print('Prediction keys:', prediction.keys())
 		print('#detected persons =', len(prediction['boxes'].detach().numpy()))
@@ -16,7 +16,7 @@ def visualize_person_keypoints(img, predictions, BBOX_THRESHOLD):
 		#	print(label.detach().numpy(), box.detach().numpy(), score.detach().numpy(), keypoints.detach().numpy(), keypoints_scores.detach().numpy())
 		for box, score, keypoints in zip(prediction['boxes'], prediction['scores'], prediction['keypoints']):
 			score = score.detach().numpy()
-			if score < BBOX_THRESHOLD:
+			if score < BOX_SCORE_THRESHOLD:
 				continue
 
 			box = box.detach().numpy()
@@ -45,7 +45,7 @@ def visualize_person_keypoints(img, predictions, BBOX_THRESHOLD):
 		#cv2.waitKey(0)
 	#cv2.destroyAllWindows()
 
-def visualize_table_keypoints(img, predictions, BBOX_THRESHOLD):
+def visualize_table_keypoints(img, predictions, BOX_SCORE_THRESHOLD):
 	for prediction in predictions:
 		#print('Prediction keys:', prediction.keys())
 		print('#detected tables =', len(prediction['boxes'].detach().numpy()))
@@ -55,7 +55,7 @@ def visualize_table_keypoints(img, predictions, BBOX_THRESHOLD):
 		#	print(label.detach().numpy(), box.detach().numpy(), score.detach().numpy(), keypoints.detach().numpy(), keypoints_scores.detach().numpy())
 		for box, score, keypoints in zip(prediction['boxes'], prediction['scores'], prediction['keypoints']):
 			score = score.detach().numpy()
-			if score < BBOX_THRESHOLD:
+			if score < BOX_SCORE_THRESHOLD:
 				continue
 
 			box = box.detach().numpy()
@@ -104,14 +104,18 @@ def infer_person_keypoint_using_keypointrcnn_resnet50_fpn():
 
 	#--------------------
 	# Visualize.
-	BBOX_THRESHOLD = 0.9
-	visualize_person_keypoints(img, predictions, BBOX_THRESHOLD)
+	BOX_SCORE_THRESHOLD = 0.9
+	visualize_person_keypoints(img, predictions, BOX_SCORE_THRESHOLD)
 
 	# Export the model to ONNX.
 	#torch.onnx.export(model, input_tensors, './keypoint_rcnn.onnx', opset_version=11)
 
 # REF [site] >> https://github.com/pytorch/vision/blob/master/torchvision/models/detection/keypoint_rcnn.py
 def infer_person_keypoint_using_KeypointRCNN():
+	# Our dataset has two classes only - background and person.
+	num_classes = 2
+
+	#--------------------
 	# Load a pre-trained model for classification and return only the features.
 	backbone = torchvision.models.mobilenet_v2(pretrained=True).features
 	# KeypointRCNN needs to know the number of output channels in a backbone.
@@ -143,7 +147,7 @@ def infer_person_keypoint_using_KeypointRCNN():
 	# Put the pieces together inside a KeypointRCNN model.
 	model = torchvision.models.detection.KeypointRCNN(
 		backbone,
-		num_classes=2,
+		num_classes=num_classes,
 		rpn_anchor_generator=anchor_generator,
 		box_roi_pool=roi_pooler,
 		keypoint_roi_pool=keypoint_roi_pooler
@@ -180,8 +184,8 @@ def infer_person_keypoint_using_KeypointRCNN():
 
 	#--------------------
 	# Visualize.
-	BBOX_THRESHOLD = 0.9
-	visualize_person_keypoints(img, predictions, BBOX_THRESHOLD)
+	BOX_SCORE_THRESHOLD = 0.9
+	visualize_person_keypoints(img, predictions, BOX_SCORE_THRESHOLD)
 
 	# Export the model to ONNX.
 	#torch.onnx.export(model, input_tensors, './keypoint_rcnn.onnx', opset_version=11)
