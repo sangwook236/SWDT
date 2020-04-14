@@ -26,10 +26,10 @@ def simple_detection_example():
 	# Add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library.
 	cfg.merge_from_file(detectron2.model_zoo.get_config_file('COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml'))
 	cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # set threshold for this model
-
 	# Find a model from detectron2's model zoo.
 	# You can use the https://dl.fbaipublicfiles... url as well.
 	cfg.MODEL.WEIGHTS = detectron2.model_zoo.get_checkpoint_url('COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml')
+
 	predictor = detectron2.engine.DefaultPredictor(cfg)
 	outputs = predictor(im)
 
@@ -60,6 +60,29 @@ def simple_keypoint_detection_example():
 	cfg.merge_from_file(detectron2.model_zoo.get_config_file('COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x.yaml'))
 	cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7  # Set threshold for this model.
 	cfg.MODEL.WEIGHTS = detectron2.model_zoo.get_checkpoint_url('COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x.yaml')
+
+	if True:
+		# REF [site] >> https://www.immersivelimit.com/tutorials/create-coco-annotations-from-scratch
+		# Annotations for keypoints:
+		#	A number of keypoints is specified in sets of 3, (x, y, v).
+		#	x and y indicate pixel positions in the image.
+		#	v indicates visibility:
+		#		v=0: not labeled (in which case x=y=0), v=1: labeled but not visible, and v=2: labeled and visible.
+
+		"""
+		print('[Train dataset] Keys:', detectron2.data.DatasetCatalog.get(cfg.DATASETS.TRAIN[0])[0].keys())
+		print('[Train dataset] #annotations:', len(detectron2.data.DatasetCatalog.get(cfg.DATASETS.TRAIN[0])[0]['annotations']))
+		print("[Train dataset] Annotation's keys:", detectron2.data.DatasetCatalog.get(cfg.DATASETS.TRAIN[0])[0]['annotations'][0].keys())
+		print("[Train dataset] Annotation's keypoints:", detectron2.data.DatasetCatalog.get(cfg.DATASETS.TRAIN[0])[0]['annotations'][0]['keypoints'])
+		print('[Train dataset] Metadata:', detectron2.data.MetadataCatalog.get(cfg.DATASETS.TRAIN[0]))
+		"""
+
+		print('[Test dataset] Keys:', detectron2.data.DatasetCatalog.get(cfg.DATASETS.TEST[0])[0].keys())
+		print('[Test dataset] #annotations:', len(detectron2.data.DatasetCatalog.get(cfg.DATASETS.TEST[0])[0]['annotations']))
+		print("[Test dataset] Annotation's keys:", detectron2.data.DatasetCatalog.get(cfg.DATASETS.TEST[0])[0]['annotations'][0].keys())
+		print("[Test dataset] Annotation's keypoints:", detectron2.data.DatasetCatalog.get(cfg.DATASETS.TEST[0])[0]['annotations'][0]['keypoints'])
+		print('[Test dataset] Metadata:', detectron2.data.MetadataCatalog.get(cfg.DATASETS.TEST[0]))
+
 	predictor = detectron2.engine.DefaultPredictor(cfg)
 	outputs = predictor(im)
 
@@ -83,6 +106,7 @@ def simple_panoptic_segmentation_example():
 	cfg = detectron2.config.get_cfg()
 	cfg.merge_from_file(detectron2.model_zoo.get_config_file('COCO-PanopticSegmentation/panoptic_fpn_R_101_3x.yaml'))
 	cfg.MODEL.WEIGHTS = detectron2.model_zoo.get_checkpoint_url('COCO-PanopticSegmentation/panoptic_fpn_R_101_3x.yaml')
+
 	predictor = detectron2.engine.DefaultPredictor(cfg)
 	panoptic_seg, segments_info = predictor(im)['panoptic_seg']
 
@@ -144,8 +168,6 @@ def training_on_a_custom_dataset_example():
 	balloon_metadata = detectron2.data.MetadataCatalog.get('balloon_train')
 
 	#--------------------
-	# Fine-tune a coco-pretrained R50-FPN Mask R-CNN model on the balloon dataset.
-
 	cfg = detectron2.config.get_cfg()
 	cfg.merge_from_file(detectron2.model_zoo.get_config_file('COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml'))
 	cfg.DATASETS.TRAIN = ('balloon_train',)
@@ -159,12 +181,25 @@ def training_on_a_custom_dataset_example():
 	cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # Only has one class (ballon).
 
 	os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
+
+	#--------------------
+	# Fine-tune a coco-pretrained R50-FPN Mask R-CNN model on the balloon dataset.
+
 	trainer = detectron2.engine.DefaultTrainer(cfg)
 	trainer.resume_or_load(resume=False)
 	trainer.train()
 
 	# Look at training curves in tensorboard:
 	#	tensorboard --logdir output
+
+	#--------------------
+	# Evaluate its performance using AP metric implemented in COCO API.
+
+	evaluator = detectron2.evaluation.COCOEvaluator('balloon_val', cfg, False, output_dir='./output/')
+	val_loader = detectron2.data.build_detection_test_loader(cfg, 'balloon_val')
+	detectron2.evaluation.inference_on_dataset(trainer.model, val_loader, evaluator)
+
+	# Another equivalent way is to use trainer.test.
 
 	#--------------------
 	# Infer using the trained model.
@@ -191,21 +226,12 @@ def training_on_a_custom_dataset_example():
 		cv2.waitKey(0)
 	cv2.destroyAllWindows()
 
-	#--------------------
-	# Evaluate its performance using AP metric implemented in COCO API.
-
-	evaluator = detectron2.evaluation.COCOEvaluator('balloon_val', cfg, False, output_dir='./output/')
-	val_loader = detectron2.data.build_detection_test_loader(cfg, 'balloon_val')
-	detectron2.evaluation.inference_on_dataset(trainer.model, val_loader, evaluator)
-
-	# Another equivalent way is to use trainer.test.
-
 def main():
 	#simple_detection_example()
-	#simple_keypoint_detection_example()
+	simple_keypoint_detection_example()
 	#simple_panoptic_segmentation_example()
 
-	training_on_a_custom_dataset_example()
+	#training_on_a_custom_dataset_example()
 
 #--------------------------------------------------------------------
 
