@@ -6,21 +6,21 @@ import torch
 import torchvision
 import cv2
 
-def visualize_person_keypoints(img, predictions, BOX_SCORE_THRESHOLD):
-	for prediction in predictions:
+def visualize_person_keypoints(images, predictions, BOX_SCORE_THRESHOLD):
+	for idx, (img, prediction) in enumerate(zip(images, predictions)):
 		#print('Prediction keys:', prediction.keys())
-		print('#detected persons =', len(prediction['boxes'].detach().numpy()))
-		print("#detected persons' scores =", prediction['scores'].detach().numpy())
+		print('#detected persons =', len(prediction['boxes'].detach().cpu().numpy()))
+		print("#detected persons' scores =", prediction['scores'].detach().cpu().numpy())
 
 		#for label, box, score, keypoints, keypoints_scores in zip(prediction['labels'], prediction['boxes'], prediction['scores'], prediction['keypoints'], predictions['keypoints_scores']):
-		#	print(label.detach().numpy(), box.detach().numpy(), score.detach().numpy(), keypoints.detach().numpy(), keypoints_scores.detach().numpy())
+		#	print(label.detach().cpu().numpy(), box.detach().cpu().numpy(), score.detach().cpu().numpy(), keypoints.detach().cpu().numpy(), keypoints_scores.detach().cpu().numpy())
 		for box, score, keypoints in zip(prediction['boxes'], prediction['scores'], prediction['keypoints']):
-			score = score.detach().numpy()
+			score = score.detach().cpu().numpy()
 			if score < BOX_SCORE_THRESHOLD:
 				continue
 
-			box = box.detach().numpy()
-			keypoints = keypoints.detach().numpy()[:,:2]
+			box = box.detach().cpu().numpy()
+			keypoints = keypoints.detach().cpu().numpy()[:,:2]
 
 			assert len(keypoints) == 17
 
@@ -40,41 +40,12 @@ def visualize_person_keypoints(img, predictions, BOX_SCORE_THRESHOLD):
 			cv2.line(img, tuple(keypoints[13]), tuple(keypoints[15]), (191, 255, 128), 2, cv2.LINE_AA)
 			cv2.line(img, tuple(keypoints[14]), tuple(keypoints[16]), (255, 195, 77), 2, cv2.LINE_AA)
 
-		cv2.imwrite('person_keypoint_prediction.png', img)
+		cv2.imwrite('person_keypoint_prediction_{}.png'.format(idx), img)
 		#cv2.imshow('Person Keypoint Prediction', img)
 		#cv2.waitKey(0)
 	#cv2.destroyAllWindows()
 
-def visualize_table_keypoints(img, predictions, BOX_SCORE_THRESHOLD):
-	for prediction in predictions:
-		#print('Prediction keys:', prediction.keys())
-		print('#detected tables =', len(prediction['boxes'].detach().numpy()))
-		print("#detected tables' scores =", prediction['scores'].detach().numpy())
-
-		#for label, box, score, keypoints, keypoints_scores in zip(prediction['labels'], prediction['boxes'], prediction['scores'], prediction['keypoints'], predictions['keypoints_scores']):
-		#	print(label.detach().numpy(), box.detach().numpy(), score.detach().numpy(), keypoints.detach().numpy(), keypoints_scores.detach().numpy())
-		for box, score, keypoints in zip(prediction['boxes'], prediction['scores'], prediction['keypoints']):
-			score = score.detach().numpy()
-			if score < BOX_SCORE_THRESHOLD:
-				continue
-
-			box = box.detach().numpy()
-			keypoints = keypoints.detach().numpy()[:,:2]
-
-			assert len(keypoints) == 4
-
-			#cv2.rectangle(img, (box[0], box[1]), (box[2], box[3]), (255, 255, 0), 2, cv2.LINE_AA)
-			cv2.line(img, tuple(keypoints[0]), tuple(keypoints[1]), (0, 0, 255), 2, cv2.LINE_AA)
-			cv2.line(img, tuple(keypoints[1]), tuple(keypoints[2]), (0, 255, 0), 2, cv2.LINE_AA)
-			cv2.line(img, tuple(keypoints[2]), tuple(keypoints[3]), (255, 0, 0), 2, cv2.LINE_AA)
-			cv2.line(img, tuple(keypoints[3]), tuple(keypoints[0]), (255, 0, 255), 2, cv2.LINE_AA)
-
-		cv2.imwrite('table_keypoint_prediction.png', img)
-		#cv2.imshow('Table Keypoint Prediction', img)
-		#cv2.waitKey(0)
-	#cv2.destroyAllWindows()
-
-def infer_person_keypoint_using_keypointrcnn_resnet50_fpn():
+def detect_person_keypoint_using_keypointrcnn_resnet50_fpn():
 	#--------------------
 	# Load an image.
 	image_filepath = './input.jpg'
@@ -85,14 +56,14 @@ def infer_person_keypoint_using_keypointrcnn_resnet50_fpn():
 	#IMAGE_WIDTH = 480
 	#img = cv2.resize(img, (IMAGE_WIDTH, int(img.height * IMAGE_WIDTH / img.width)))
 
+	print("Input image's shape =", img.shape)
+
 	# Image to tensor.
 	transform = torchvision.transforms.Compose([
 		torchvision.transforms.ToTensor()
 	])
 
 	input_tensors = [transform(img)]
-
-	print("Input image's shape =", input_tensors[0].shape)
 
 	#--------------------
 	# Load a pretrained model.
@@ -105,13 +76,19 @@ def infer_person_keypoint_using_keypointrcnn_resnet50_fpn():
 	#--------------------
 	# Visualize.
 	BOX_SCORE_THRESHOLD = 0.9
-	visualize_person_keypoints(img, predictions, BOX_SCORE_THRESHOLD)
+	visualize_person_keypoints([img], predictions, BOX_SCORE_THRESHOLD)
 
 	# Export the model to ONNX.
-	#torch.onnx.export(model, input_tensors, './keypoint_rcnn.onnx', opset_version=11)
+	#torch.onnx.export(model, input_tensors, './person_keypoint_rcnn_resnet50.onnx', opset_version=11)
 
 # REF [site] >> https://github.com/pytorch/vision/blob/master/torchvision/models/detection/keypoint_rcnn.py
-def infer_person_keypoint_using_KeypointRCNN():
+def detect_person_keypoint_using_KeypointRCNN():
+	# Create datasets.
+
+	# TODO [implement] >>
+	# REF [function] >> object_detection_finetuning_tutorial() in ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_object_detection.py
+
+	#--------------------
 	# Our dataset has two classes only - background and person.
 	num_classes = 2
 
@@ -153,10 +130,18 @@ def infer_person_keypoint_using_KeypointRCNN():
 		keypoint_roi_pool=keypoint_roi_pooler
 	)
 
+	# TODO [check] >> Is this part needed?
+	if False:
+		# Get number of input features for the classifier.
+		in_features = model.roi_heads.box_predictor.cls_score.in_features
+		# Replace the pre-trained head with a new one.
+		model.roi_heads.box_predictor = torchvision.models.detection.faster_rcnn.FastRCNNPredictor(in_features, num_classes)
+
 	#--------------------
 	# Train.
-
+	
 	# TODO [implement] >>
+	# REF [function] >> object_detection_finetuning_tutorial() in ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_object_detection.py
 
 	#--------------------
 	# Load an image.
@@ -168,14 +153,14 @@ def infer_person_keypoint_using_KeypointRCNN():
 	#IMAGE_WIDTH = 480
 	#img = cv2.resize(img, (IMAGE_WIDTH, int(img.height * IMAGE_WIDTH / img.width)))
 
+	print("Input image's shape =", img.shape)
+
 	# Image to tensor.
 	transform = torchvision.transforms.Compose([
 		torchvision.transforms.ToTensor()
 	])
 
 	input_tensors = [transform(img)]
-
-	print("Input image's shape =", input_tensors[0].shape)
 
 	#--------------------
 	# Infer.
@@ -185,14 +170,14 @@ def infer_person_keypoint_using_KeypointRCNN():
 	#--------------------
 	# Visualize.
 	BOX_SCORE_THRESHOLD = 0.9
-	visualize_person_keypoints(img, predictions, BOX_SCORE_THRESHOLD)
+	visualize_person_keypoints([img], predictions, BOX_SCORE_THRESHOLD)
 
 	# Export the model to ONNX.
-	#torch.onnx.export(model, input_tensors, './keypoint_rcnn.onnx', opset_version=11)
+	#torch.onnx.export(model, input_tensors, './person_keypoint_rcnn_mobilenet.onnx', opset_version=11)
 
 def main():
-	infer_person_keypoint_using_keypointrcnn_resnet50_fpn()
-	#infer_person_keypoint_using_KeypointRCNN()
+	detect_person_keypoint_using_keypointrcnn_resnet50_fpn()
+	#detect_person_keypoint_using_KeypointRCNN()  # Not yet completed.
 
 #--------------------------------------------------------------------
 

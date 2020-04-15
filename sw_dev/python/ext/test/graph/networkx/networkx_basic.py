@@ -108,7 +108,7 @@ def basic_operation():
 	G.nodes[1]['room'] = 714
 	print('G.nodes.data() =', G.nodes.data())
 
-	# Edge Attributes: add_edge(), add_edges_from(), or subscript notation.
+	# Edge attributes: add_edge(), add_edges_from(), or subscript notation.
 	G.add_edge(1, 2, weight=4.7)
 	G.add_edges_from([(3, 4), (4, 5)], color='red')
 	G.add_edges_from([(1, 2, {'color': 'blue'}), (2, 3, {'weight': 8})])

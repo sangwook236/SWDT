@@ -9,9 +9,10 @@ from PIL import Image, ImageDraw
 #import cv2
 
 # REF [site] >> https://github.com/pytorch/vision/tree/master/references/detection
+import engine
 import transforms as T
-import utils, engine
 
+# REF [site] >> https://pytorch.org/tutorials/intermediate/torchvision_tutorial.html
 class PennFudanDataset(torch.utils.data.Dataset):
 	def __init__(self, root, transforms=None):
 		self.root = root
@@ -50,9 +51,10 @@ class PennFudanDataset(torch.utils.data.Dataset):
 			boxes.append([xmin, ymin, xmax, ymax])
 
 		boxes = torch.as_tensor(boxes, dtype=torch.float32)
+		masks = torch.as_tensor(masks, dtype=torch.uint8)
+
 		# There is only one class.
 		labels = torch.ones((num_objs,), dtype=torch.int64)
-		masks = torch.as_tensor(masks, dtype=torch.uint8)
 
 		image_id = torch.tensor([idx])
 		area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
@@ -61,12 +63,12 @@ class PennFudanDataset(torch.utils.data.Dataset):
 
 		target = {}
 		target['boxes'] = boxes
-		target['labels'] = labels
 		target['masks'] = masks
+		#target['keypoints'] = keypoints
+		target['labels'] = labels
 		target['image_id'] = image_id
 		target['area'] = area
 		target['iscrowd'] = iscrowd
-		#target['keypoints'] = keypoints
 
 		if self.transforms is not None:
 			img, target = self.transforms(img, target)
@@ -111,10 +113,12 @@ def create_object_detection_model(num_classes):
 		# Load a model pre-trained pre-trained on COCO.
 		model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
 
-	# Get number of input features for the classifier.
-	in_features = model.roi_heads.box_predictor.cls_score.in_features
-	# Replace the pre-trained head with a new one.
-	model.roi_heads.box_predictor = torchvision.models.detection.faster_rcnn.FastRCNNPredictor(in_features, num_classes)
+	# TODO [check] >> Is this part needed?
+	if True:
+		# Get number of input features for the classifier.
+		in_features = model.roi_heads.box_predictor.cls_score.in_features
+		# Replace the pre-trained head with a new one.
+		model.roi_heads.box_predictor = torchvision.models.detection.faster_rcnn.FastRCNNPredictor(in_features, num_classes)
 
 	return model
 
@@ -135,20 +139,11 @@ def create_instance_segmentation_model(num_classes):
 
 	return model
 
-def get_transform(train):
-	transforms = []
-	# Converts the image, a PIL image, into a PyTorch Tensor.
-	transforms.append(T.ToTensor())
-	if train:
-		# During training, randomly flip the training images and ground-truth for data augmentation.
-		transforms.append(T.RandomHorizontalFlip(0.5))
-	return T.Compose(transforms)
+def visualize_object_detection(images, predictions, BOX_SCORE_THRESHOLD):
+	for idx, (img, prediction) in enumerate(zip(images, predictions)):
+		img = Image.fromarray(img)
+		draw = ImageDraw.Draw(img)
 
-def visualize_object_detection(img, predictions, BOX_SCORE_THRESHOLD):
-	img = Image.fromarray(img)
-	draw = ImageDraw.Draw(img)
-
-	for prediction in predictions:
 		mask_img = Image.new('L', img.size, 0)
 		for scores, boxes in zip(prediction['scores'], prediction['boxes']):
 			scores = scores.cpu().numpy()
@@ -160,20 +155,20 @@ def visualize_object_detection(img, predictions, BOX_SCORE_THRESHOLD):
 
 				draw.rectangle(tuple(boxes), fill=None, outline=(255, 0, 0, 255))
 			else:
-				for idx, (score, box) in enumerate(zip(scores, boxes)):
+				for score, box in zip(scores, boxes):
 					if score < BOX_SCORE_THRESHOLD:
 						continue
 
 					draw.rectangle(tuple(box), fill=None, outline=(255, 0, 0, 255))
 
-		img.save('./PennFudanPed_bbox.png')
+		img.save('./PennFudanPed_bbox_{}.png'.format(idx))
 		#img.show()
 
-def visualize_instance_segmentation(img, predictions, BOX_SCORE_THRESHOLD):
-	img = Image.fromarray(img)
-	draw = ImageDraw.Draw(img)
+def visualize_instance_segmentation(images, predictions, BOX_SCORE_THRESHOLD):
+	for idx, (img, prediction) in enumerate(zip(images, predictions)):
+		img = Image.fromarray(img)
+		draw = ImageDraw.Draw(img)
 
-	for prediction in predictions:
 		mask_img = Image.new('L', img.size, 0)
 		for scores, boxes, masks in zip(prediction['scores'], prediction['boxes'], prediction['masks']):
 			scores = scores.cpu().numpy()
@@ -187,14 +182,14 @@ def visualize_instance_segmentation(img, predictions, BOX_SCORE_THRESHOLD):
 				draw.rectangle(tuple(boxes), fill=None, outline=(255, 0, 0, 255))
 				mask_img.paste(Image.new('L', mask_img.size, 1), (0, 0), Image.fromarray(masks[0], 'L'))
 			else:
-				for idx, (score, box, mask) in enumerate(zip(scores, boxes, masks)):
+				for ii, (score, box, mask) in enumerate(zip(scores, boxes, masks)):
 					if score < BOX_SCORE_THRESHOLD:
 						continue
 
 					draw.rectangle(tuple(box), fill=None, outline=(255, 0, 0, 255))
-					mask_img.paste(Image.new('L', mask.size, idx), (0, 0), Image.fromarray(mask[0], 'L'))
+					mask_img.paste(Image.new('L', mask.size, ii), (0, 0), Image.fromarray(mask[0], 'L'))
 
-		img.save('./PennFudanPed_bbox.png')
+		img.save('./PennFudanPed_bbox_{}.png'.format(idx))
 		#img.show()
 		mask_img.putpalette([
 			0, 0, 0,  # Black background.
@@ -202,8 +197,21 @@ def visualize_instance_segmentation(img, predictions, BOX_SCORE_THRESHOLD):
 			255, 255, 0,  # Index 2 is yellow.
 			255, 153, 0,  # Index 3 is orange.
 		])
-		mask_img.save('./PennFudanPed_mask.png')
+		mask_img.save('./PennFudanPed_mask_{}.png'.format(idx))
 		#mask_img.show()
+
+def get_transform(train):
+	transforms = []
+	# Converts the image, a PIL image, into a PyTorch Tensor.
+	transforms.append(T.ToTensor())
+	if train:
+		# During training, randomly flip the training images and ground-truth for data augmentation.
+		transforms.append(T.RandomHorizontalFlip(0.5))
+	return T.Compose(transforms)
+
+# REF [function] >> collate_fn() in https://github.com/pytorch/vision/tree/master/references/detection/utils.py
+def collate_fn(batch):
+	return tuple(zip(*batch))
 
 # REF [site] >> https://pytorch.org/tutorials/intermediate/torchvision_tutorial.html
 def object_detection_finetuning_tutorial(is_instance_segmentation=True):
@@ -243,11 +251,11 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 	# Define training and validation data loaders.
 	data_loader = torch.utils.data.DataLoader(
 		dataset, batch_size=2, shuffle=True, num_workers=4,
-		collate_fn=utils.collate_fn)
+		collate_fn=collate_fn)
 
 	data_loader_test = torch.utils.data.DataLoader(
 		dataset_test, batch_size=1, shuffle=False, num_workers=4,
-		collate_fn=utils.collate_fn)
+		collate_fn=collate_fn)
 
 	#--------------------
 	device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -263,8 +271,8 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 		model = create_object_detection_model(num_classes)
 	model.to(device)
 
+	#--------------------
 	if True:
-		#--------------------
 		# Construct an optimizer.
 		params = [p for p in model.parameters() if p.requires_grad]
 		optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
@@ -300,9 +308,9 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 	# Visualize
 	BOX_SCORE_THRESHOLD = 0.9
 	if is_instance_segmentation:
-		visualize_instance_segmentation(img.mul(255).permute(1, 2, 0).byte().numpy(), predictions, BOX_SCORE_THRESHOLD)
+		visualize_instance_segmentation([img.mul(255).permute(1, 2, 0).byte().numpy()], predictions, BOX_SCORE_THRESHOLD)
 	else:
-		visualize_object_detection(img.mul(255).permute(1, 2, 0).byte().numpy(), predictions, BOX_SCORE_THRESHOLD)
+		visualize_object_detection([img.mul(255).permute(1, 2, 0).byte().numpy()], predictions, BOX_SCORE_THRESHOLD)
 
 def main():
 	object_detection_finetuning_tutorial(is_instance_segmentation=True)
