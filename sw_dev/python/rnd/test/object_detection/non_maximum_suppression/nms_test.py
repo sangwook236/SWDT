@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import time
 import numpy as np
@@ -140,7 +141,7 @@ def main():
 		#print('\tSelected indices =', selected_indices)
 	print('End tf.')
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 # Usage:
 #	REF [site] >> http://docs.cython.org/en/latest/src/tutorial/cython_tutorial.html
