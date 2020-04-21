@@ -85,6 +85,50 @@ def container_test():
 			del vals[idx]
 	print('vals =', vals)
 
+# REF [site] >> https://docs.python.org/3/library/collections.html
+def collections_test():
+	import collections
+
+	#--------------------
+	# collections.namedtuple.
+
+	Point = collections.namedtuple('Point', ['x', 'y'])
+	p = Point(11, y=22)
+
+	print('p =', p)
+	print('p[0] + p[1] =', p[0] + p[1])
+	print('p.x + p.y =', p.x + p.y)
+
+	x, y = p
+
+	print('Point._make([11, 22]) =', Point._make([11, 22]))
+	print('p._asdict() =', p._asdict())
+
+	# Named tuples are especially useful for assigning field names to result tuples returned by the csv or sqlite3 modules.
+
+	#--------------------
+	# collections.OrderedDict.
+
+	rd = {}
+	rd['a'] = 'A'
+	rd['b'] = 'B'
+	rd['c'] = 'C'
+	rd['d'] = 'D'
+	rd['e'] = 'E'
+
+	for k, v in rd.items():
+		print(k, v)
+
+	od = collections.OrderedDict()
+	od['a'] = 'A'
+	od['b'] = 'B'
+	od['c'] = 'C'
+	od['d'] = 'D'
+	od['e'] = 'E'
+
+	for k, v in od.items():
+		print(k, v)
+
 def assert_test():
 	#assert(2 + 2 == 5, 'Error: Addition.')  # Error: Not working.
 	assert 2 + 2 == 5, 'Error: Addition.'
@@ -460,6 +504,7 @@ def main():
 
 	#variable_example()
 	#container_test()
+	#collections_test()
 
 	#assert_test()
 	#exception_test()
