@@ -4,13 +4,19 @@
 
 		https://tortoisegit.org/
 
+[-] Usage (Linux).
 	- Config.
 		In Linux:
 			~/.gitconfig
 		In Windows:
 			${USERPROFILE}/.gitconfig
 
-[-] Usage (Linux).
+	- Set user info.
+		Edit .gitconfig:
+			[user]
+				email = sangwook236@gmail.com
+				name = Sang-Wook Lee
+
 	- Use GUI tools.
 		REF [site] >> https://stackoverflow.com/questions/34119866/setting-up-and-using-meld-as-your-git-difftool-and-mergetool
 

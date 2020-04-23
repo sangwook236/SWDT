@@ -32,15 +32,17 @@ class Net(nn.Module):
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html
 def cifar10_on_cpu():
+	batch_size, num_epochs = 4, 2
+
 	# Load and normalize CIFAR10.
 
 	transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 	trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
-	trainloader = torch.utils.data.DataLoader(trainset, batch_size=4, shuffle=True, num_workers=2)
+	trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=2)
 
 	testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
-	testloader = torch.utils.data.DataLoader(testset, batch_size=4, shuffle=False, num_workers=2)
+	testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False, num_workers=2)
 
 	classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
@@ -57,7 +59,7 @@ def cifar10_on_cpu():
 	# Show images.
 	imshow(torchvision.utils.make_grid(images))
 	# Print labels.
-	print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
+	print(' '.join('%5s' % classes[labels[j]] for j in range(len(labels))))
 
 	#--------------------
 	# Define a Convolutional Neural Network.
@@ -73,7 +75,7 @@ def cifar10_on_cpu():
 	#--------------------
 	# Train the network.
 
-	for epoch in range(2):  # Loop over the dataset multiple times.
+	for epoch in range(num_epochs):  # Loop over the dataset multiple times.
 		running_loss = 0.0
 		for i, data in enumerate(trainloader, 0):
 			# Get the inputs; data is a list of [inputs, labels].
@@ -104,13 +106,13 @@ def cifar10_on_cpu():
 
 	# Print images.
 	imshow(torchvision.utils.make_grid(images))
-	print('GroundTruth: ', ' '.join('%5s' % classes[labels[j]] for j in range(4)))
+	print('GroundTruth: ', ' '.join('%5s' % classes[labels[j]] for j in range(len(labels))))
 
 	# Now let us see what the neural network thinks these examples above are.
 	outputs = net(images)
 
 	_, predicted = torch.max(outputs, 1)
-	print('Predicted: ', ' '.join('%5s' % classes[predicted[j]] for j in range(4)))
+	print('Predicted: ', ' '.join('%5s' % classes[predicted[j]] for j in range(len(labels))))
 
 	# Let us look at how the network performs on the whole dataset.
 	correct = 0
@@ -134,7 +136,7 @@ def cifar10_on_cpu():
 			outputs = net(images)
 			_, predicted = torch.max(outputs, 1)
 			c = (predicted == labels).squeeze()
-			for i in range(4):
+			for i in range(len(labels)):
 				label = labels[i]
 				class_correct[label] += c[i].item()
 				class_total[label] += 1
@@ -144,15 +146,17 @@ def cifar10_on_cpu():
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html
 def cifar10_on_gpu():
+	batch_size, num_epochs = 4, 2
+
 	# Load and normalize CIFAR10.
 
 	transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 	trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
-	trainloader = torch.utils.data.DataLoader(trainset, batch_size=4, shuffle=True, num_workers=2)
+	trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=2)
 
 	testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
-	testloader = torch.utils.data.DataLoader(testset, batch_size=4, shuffle=False, num_workers=2)
+	testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False, num_workers=2)
 
 	classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
@@ -169,7 +173,7 @@ def cifar10_on_gpu():
 	# Show images.
 	imshow(torchvision.utils.make_grid(images))
 	# Print labels.
-	print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
+	print(' '.join('%5s' % classes[labels[j]] for j in range(len(labels))))
 
 	#--------------------
 	# Define a Convolutional Neural Network.
@@ -190,7 +194,7 @@ def cifar10_on_gpu():
 	#--------------------
 	# Train the network.
 
-	for epoch in range(2):  # Loop over the dataset multiple times.
+	for epoch in range(num_epochs):  # Loop over the dataset multiple times.
 		running_loss = 0.0
 		for i, data in enumerate(trainloader, 0):
 			# Get the inputs; data is a list of [inputs, labels].
@@ -221,13 +225,13 @@ def cifar10_on_gpu():
 
 	# Print images.
 	imshow(torchvision.utils.make_grid(images))
-	print('GroundTruth: ', ' '.join('%5s' % classes[labels[j]] for j in range(4)))
+	print('GroundTruth: ', ' '.join('%5s' % classes[labels[j]] for j in range(len(labels))))
 
 	# Now let us see what the neural network thinks these examples above are.
 	outputs = net(images.to(device))
 
 	_, predicted = torch.max(outputs, 1)
-	print('Predicted: ', ' '.join('%5s' % classes[predicted[j]] for j in range(4)))
+	print('Predicted: ', ' '.join('%5s' % classes[predicted[j]] for j in range(len(labels))))
 
 	# Let us look at how the network performs on the whole dataset.
 	correct = 0
@@ -251,7 +255,7 @@ def cifar10_on_gpu():
 			outputs = net(images)
 			_, predicted = torch.max(outputs, 1)
 			c = (predicted == labels).squeeze()
-			for i in range(4):
+			for i in range(len(labels)):
 				label = labels[i]
 				class_correct[label] += c[i].item()
 				class_total[label] += 1

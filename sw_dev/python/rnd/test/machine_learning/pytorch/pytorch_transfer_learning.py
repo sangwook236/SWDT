@@ -158,6 +158,9 @@ def finetuning_example():
 	#--------------------
 	# Finetune the convnet.
 
+	# Show a model architecture.
+	#print(torchvision.models.resnet18(pretrained=True))
+
 	model_ft = models.resnet18(pretrained=True)
 	num_ftrs = model_ft.fc.in_features
 	model_ft.fc = nn.Linear(num_ftrs, 2)
