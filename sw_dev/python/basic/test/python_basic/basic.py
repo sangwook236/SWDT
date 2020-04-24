@@ -189,6 +189,15 @@ def with_statement_test():
 		print('Step #3.')
 	print('Step #4.')
 
+def function_signature_test():
+	# "/" indicates that some function parameters must be specified positionally and cannot be used as keyword arguments.
+	# "*" forces the caller to use named arguments.
+	def func(param1, param2, /, param3, *, param4, param5):
+		 print(param1, param2, param3, param4, param5)
+
+	func(10, 20, 30, param4=50, param5=60)
+	func(10, 20, param3=30, param4=50, param5=60)
+
 def func(i, f, s):
 	print(i, f, s)
 
@@ -511,6 +520,7 @@ def main():
 
 	#with_statement_test()
 
+	function_signature_test()
 	#function_call_test()
 
 	#lambda_expression()
@@ -518,7 +528,7 @@ def main():
 
 	#--------------------
 	#itertools_test()
-	difflib_test()
+	#difflib_test()
 
 	#--------------------
 	#inheritance_test()
