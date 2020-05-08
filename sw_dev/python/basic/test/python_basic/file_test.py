@@ -40,8 +40,8 @@ def basic():
 	filepath = 'data.txt'
 	try:
 		with open(filepath, 'r') as fd:
-			#lines = fd.read()  # A strings.
-			#lines = fd.read().strip('\n')  # A strings.
+			#lines = fd.read()  # A string.
+			#lines = fd.read().strip('\n')  # A string.
 			#lines = fd.read().replace(' ', '')  # A string.
 			#lines = fd.readlines()  # A list of strings.
 			lines = fd.read().splitlines()  # A list of strings.

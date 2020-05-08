@@ -4,28 +4,30 @@
 		http://www.debian.org/doc/manuals/apt-howto/
 		https://en.wikipedia.org/wiki/Advanced_Packaging_Tool
 
-	- Advanced Packaging Tool (apt).
+[-] Usage.
+	- Info.
+		Advanced Packaging Tool (apt).
+
 		Package index info:
 			/etc/apt/sources.list
 		deb packages which are installed by apt are installed in a directory as shown below:
 			/var/cache/apt/archive/
 
-[-] Usage.
 	- Command.
 		Update package index:
-			sudo apt-get update
+			sudo apt update
 		Upgrade installed packages:
-			sudo apt-get upgrade
+			sudo apt upgrade
 		Upgrade installed packages, and check dependence:
-			sudo apt-get dist-upgrade
+			sudo apt dist-upgrade
 
 		Download package source:
-			sudo apt-get source PACKAGE_NAME
-			sudo apt-get --download-only source PACKAGE_NAME
+			sudo apt source PACKAGE_NAME
+			sudo apt --download-only source PACKAGE_NAME
 		Download, unpack and compile package:
-			sudo apt-get --compile source PACKAGE_NAME
+			sudo apt --compile source PACKAGE_NAME
 		Download only package:
-			apt-get download PACKAGE_NAME
+			apt download PACKAGE_NAME
 
 		Search package:
 			sudo apt-cache search PACKAGE_NAME
@@ -33,31 +35,31 @@
 			sudo apt-cache show PACKAGE_NAME
 
 		Install all dependencies for package:
-			sudo apt-get build-dep PACKAGE_NAME
+			sudo apt build-dep PACKAGE_NAME
 		Check broken dependencies:
-			sudo apt-get check
+			sudo apt check
 		Get change log of package:
-			sudo apt-get changelog PACKAGE_NAME
+			sudo apt changelog PACKAGE_NAME
 
 		Install package:
-			sudo apt-get install PACKAGE_NAME
+			sudo apt install PACKAGE_NAME
 		Re-install package:
-			sudo apt-get --reinstall install PACKAGE_NAME
+			sudo apt --reinstall install PACKAGE_NAME
 		Uninstall package:
-			sudo apt-get remove PACKAGE_NAME
+			sudo apt remove PACKAGE_NAME
 		Uninstall package with configuration:
-			sudo apt-get --purge remove PACKAGE_NAME
+			sudo apt --purge remove PACKAGE_NAME
 			==> Normally removing package will uninstall the package binary files and documentation.
 				Configuration files are do not removed for future installation.
 				If we want to remove configuration files too we need to provide ?purge option.
 		Completely remove packages:
-			sudo apt-get purge PACKAGE_NAME
-			sudo apt-get remove --purge PACKAGE_NAME
+			sudo apt purge PACKAGE_NAME
+			sudo apt remove --purge PACKAGE_NAME
 			==> Package configuration can be removed if its not needed or corrupted.
 				Purge is the command used to clear configuration of packages.
 		Auto remove:
-			sudo apt-get autoremove PACKAGE_NAME
+			sudo apt autoremove PACKAGE_NAME
 		Clean apt cache:
-			sudo apt-get clean
+			sudo apt clean
 		Auto clean:
-			sudo apt-get autoclean
+			sudo apt autoclean
