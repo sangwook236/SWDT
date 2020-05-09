@@ -1,0 +1,6 @@
+[-] General.
+	- Site.
+		https://github.com/Toblerity/Shapely
+
+		https://shapely.readthedocs.io/en/latest/
+		https://shapely.readthedocs.io/en/latest/manual.html
