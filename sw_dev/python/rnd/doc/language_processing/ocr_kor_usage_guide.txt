@@ -1,0 +1,57 @@
+[-] General.
+	- Site.
+		https://github.com/parksunwoo/ocr_kor
+
+[-] Usage.
+	- Create data.
+		cd ${ocr_kor_HOME}/data/generator/TextRecognitionDataGenerator
+		generate_data_5type.sh
+
+	- Create lmdb.
+		cd ${ocr_kor_HOME}
+		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_basic.txt --outputPath deep-text-recognition-benchmark/data_lmdb_release/training
+		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_skew.txt --outputPath deep-text-recognition-benchmark/data_lmdb_release/training
+		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_dist.txt --outputPath deep-text-recognition-benchmark/data_lmdb_release/validation
+		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_blur.txt --outputPath deep-text-recognition-benchmark/data_lmdb_release/validation
+		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_back.txt --outputPath deep-text-recognition-benchmark/data_lmdb_release/validation
+
+	- Train.
+		cd ${ocr_kor_HOME}
+		python deep-text-recognition-benchmark/train.py \ 
+			--train_data data/data_lmdb_release/training \
+			--valid_data data/data_lmdb_release/validation \
+			--select_data basic-skew --batch_ratio 0.5-0.5 \
+			--Transformation TPS \
+			--FeatureExtraction VGG \
+			--SequenceModeling None \
+			--Prediction Attn \
+			--data_filtering_off \ 
+			--batch_max_length 50 \
+			--workers 4
+
+	- Test.
+		cd ${ocr_kor_HOME}
+		python deep-text-recognition-benchmark/test.py \
+			--eval_data data/data_lmdb_release/evaluation \ 
+			--benchmark_all_eval \
+			--Transformation TPS \
+			--FeatureExtraction VGG \ 
+			--SequenceModeling None \
+			--Prediction Attn \
+			--saved_model saved_models/TPS-VGG-None-Attn-Seed1111/best_accuracy.pth \
+			--data_filtering_off \
+			--workers 4
+
+	- Demo.
+		cd ${ocr_kor_HOME}
+		python deep-text-recognition-benchmark/demo.py \
+			--Transformation TPS --FeatureExtraction VGG --SequenceModeling BiLSTM --Prediction Attn \
+			--image_folder data/demo_image/ \
+			--saved_model deep-text-recognition-benchmark/saved_models/TPS-VGG-BiLSTM-Attn-Seed9998/best_accuracy.pth
+
+[-] Troubleshooting.
+	- <error> OSError: unknown file format.
+		<cause>
+			Some fonts which start with "TTE_" in ${ocr_kor_HOME}/data/generator/TextRecognitionDataGenerator/fonts/ko are not loaded.
+		<solution>
+			Some fonts which start with "TTE_" are replaced by valid fonts.

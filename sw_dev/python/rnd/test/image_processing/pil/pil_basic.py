@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import os, glob
+import os
 from PIL import Image, ImageDraw, ImageFont
 
 # REF [site] >> http://pillow.readthedocs.io/en/3.1.x/reference/Image.html
@@ -60,16 +60,18 @@ def text_example():
 	#font_dir_path = font_base_dir_path + '/eng'
 	font_dir_path = font_base_dir_path + '/kor'
 
-	#font_filepaths = glob.glob(font_dir_path + '/*.ttf')
-
 	if 'posix' == os.name:
-		font_type = system_font_dir_path + '/truetype/FreeSans.ttf'
+		font_filepath = system_font_dir_path + '/truetype/FreeSans.ttf'
 	else:
-		font_type = system_font_dir_path + '/Arial.ttf'
-		#font_type = system_font_dir_path + '/gulim.ttc'  # 굴림, 굴림체, 돋움, 돋움체.
-		#font_type = system_font_dir_path + '/batang.ttc'  # 바탕, 바탕체, 궁서, 궁서체.
+		font_filepath = system_font_dir_path + '/Arial.ttf'
+		#font_filepath = system_font_dir_path + '/gulim.ttc'  # 굴림, 굴림체, 돋움, 돋움체.
+		#font_filepath = system_font_dir_path + '/batang.ttc'  # 바탕, 바탕체, 궁서, 궁서체.
 
-	font = ImageFont.truetype(font=font_type, size=50, index=0)
+	try:
+		font = ImageFont.truetype(font=font_filepath, size=50, index=0)
+	except Exception as ex:
+		print('Invalid font, {}: {}.'.format(font_filepath, ex))
+		raise
 
 	img = Image.new(mode='RGB', size=(200, 100), color=(128, 128, 128))
 	draw = ImageDraw.Draw(img)
