@@ -6,8 +6,13 @@ import torch
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html
 def basic_operation():
+	# REF [site] >>
+	#	https://pytorch.org/docs/stable/tensors.html
+	#	https://pytorch.org/docs/stable/tensor_attributes.html
+
 	x = torch.empty(5, 3)
 	print('x =', x)
+	print('x.shape = {}, x.dtype = {}.'.format(x.shape, x.dtype))
 	#print('x =', x.data)
 
 	x = torch.rand(2, 3)
@@ -35,6 +40,9 @@ def basic_operation():
 
 	y = torch.arange(0, 3, step=0.5)
 	print('y =', y)
+
+	x = torch.tensor(1, dtype=torch.int32)
+	print('x =', x)
 
 	x = torch.tensor([5.5, 3])
 	print('x =', x)
@@ -66,17 +74,79 @@ def basic_operation():
 	print(x[:, 1])
 
 	#--------------------
-	# If you want to resize/reshape tensor, you can use torch.view.
-	x = torch.randn(4, 4)
-	y = x.view(16)
-	z = x.view(-1, 8)  # The size -1 is inferred from other dimensions.
-	print(x.size(), y.size(), z.size())
-
-	#--------------------
 	# If you have a one element tensor, use .item() to get the value as a Python number.
 	x = torch.randn(1)
 	print('x =', x)
 	print('x.item() =', x.item())
+
+	#--------------------
+	x = torch.randn(2, 2)
+	print('x.is_cuda =', x.is_cuda)
+	print('x.is_complex() =', x.is_complex())
+	print('x.is_contiguous() =', x.is_contiguous())
+	print('x.is_distributed() =', x.is_distributed())
+	print('x.is_floating_point() =', x.is_floating_point())
+	print('x.is_pinned() =', x.is_pinned())
+	print('x.is_quantized =', x.is_quantized)
+	print('x.is_shared() =', x.is_shared())
+	print('x.is_signed() =', x.is_signed())
+	print('x.is_sparse =', x.is_sparse)
+
+	print('x.contiguous() =', x.contiguous())
+	print('x.storage() =', x.storage())
+
+	#--------------------
+	x = torch.randn(2, 2)
+	print('torch.is_tensor(x) =', torch.is_tensor(x))
+	print('torch.is_storage(x) =', torch.is_storage(x))
+	print('torch.is_complex(x) =', torch.is_complex(x))
+	print('torch.is_floating_point(x) =', torch.is_floating_point(x))
+
+	# Sets the default floating point dtype to d.
+	# This type will be used as default floating point type for type inference in torch.tensor().
+	torch.set_default_dtype(torch.float32)
+	print('torch.get_default_dtype() =', torch.get_default_dtype())
+	# Sets the default torch.Tensor type to floating point tensor type.
+	# This type will also be used as default floating point type for type inference in torch.tensor().
+	torch.set_default_tensor_type(torch.FloatTensor)
+
+	#--------------------
+	# REF [site] >> https://pytorch.org/docs/stable/tensor_view.html
+	# View tensor shares the same underlying data with its base tensor.
+	# Supporting View avoids explicit data copy, thus allows us to do fast and memory efficient reshaping, slicing and element-wise operations.
+	
+	# If you want to resize/reshape tensor, you can use torch.view.
+	x = torch.randn(4, 4)
+	y = x.view(16)
+	z = x.view(-1, 8)  # The size -1 is inferred from other dimensions.
+	print('x.size() = {}, y.size() = {}, z.size() = {}.'.format(x.size(), y.size(), z.size()))
+
+	t = torch.rand(4, 4)
+	b = t.view(2, 8)
+	print('t.storage().data_ptr() == b.storage().data_ptr()?', t.storage().data_ptr() == b.storage().data_ptr())
+
+# REF [site] >> https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html
+def cuda_operation():
+	z = torch.FloatTensor([[1, 2, 3], [4, 5, 6]])
+	print('z =', z)
+
+	print('z.cuda() =', z.cuda())
+	print("z.to('cuda') =", z.to('cuda'))
+
+	z_cuda = z.cuda()
+	print('z_cuda.cpu() =', z_cuda.cpu())
+	print("z_cuda.to('cpu') =", z_cuda.to('cpu'))
+
+	#--------------------
+	gpu = 0
+	device = torch.device('cuda:{}'.format(gpu) if torch.cuda.is_available() else 'cpu')
+
+	x = torch.randn(2, 2)
+	y = torch.ones_like(x, device=device)  # Directly create a tensor on GPU.
+	x = x.to(device)  # Or just use strings .to('cuda').
+	z = x + y
+	print('z =', z)
+	print('z =', z.to(device, torch.double))  # .to() can also change dtype together!
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html
 def numpy_bridge():
@@ -101,33 +171,11 @@ def numpy_bridge():
 	print('a = ', a)
 	print('b = ', b)
 
-# REF [site] >> https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html
-def cuda():
-	torch.cuda.is_available()
-
-	#--------------------
-	z = torch.FloatTensor([[1, 2, 3], [4, 5, 6]])
-	print('z =', z)
-
-	z_gpu = z.cuda()
-	print('z =', z)
-
-	z_cpu = z_gpu.cpu()
-	print('z =', z)
-
-	if torch.cuda.is_available():
-		device = torch.device('cuda')  # A CUDA device object.
-		y = torch.ones_like(x, device=device)  # Directly create a tensor on GPU.
-		x = x.to(device)  # Or just use strings .to('cuda').
-		z = x + y
-		print('z =', z)
-		print('z =', z.to('cpu', torch.double))  # .to() can also change dtype together!
-
 def main():
 	basic_operation()
+	cuda_operation()
 
 	numpy_bridge()
-	cuda()
 
 #--------------------------------------------------------------------
 

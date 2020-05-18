@@ -9,8 +9,8 @@ from PIL import Image, ImageDraw
 #import cv2
 
 # REF [site] >> https://github.com/pytorch/vision/tree/master/references/detection
-import engine
-import transforms as T
+import torchvision_detection.engine as engine
+import torchvision_detection.transforms as T
 
 # REF [site] >> https://pytorch.org/tutorials/intermediate/torchvision_tutorial.html
 class PennFudanDataset(torch.utils.data.Dataset):
