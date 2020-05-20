@@ -20,6 +20,66 @@ def basic_operation():
 
 	indices = [ss.start() for ss in re.finditer('Image loaded:', data)]
 
+# r-string: raw string.
+#	It ignores escape characters.
+#	For example, '\n' is a string containing a newline character, and r'\n' is a string containing a backslash and the letter n.
+def r_string():
+	print(r"'abc\n123' =", 'abc\n123')
+	print(r"r'abc\n123' =", r'abc\n123')
+
+# b-string: binary literal.
+#	In Python 2 b-strings do nothing and only exist so that the source code is compatible with Python 3.
+#	In Python 3, b-strings allow you to create a bytes object.
+def b_string():
+	s1 = b'still allows embedded "double" quotes'
+	s2 = b"still allows embedded 'single' quotes"
+	s3 = b'''3 single quotes'''
+	s4 = b"""3 double quotes"""
+
+	# The string must contain two hexadecimal digits per byte, with ASCII whitespace being ignored.
+	print("bytes.fromhex('2Ef0 F1f2  ') =", bytes.fromhex('2Ef0 F1f2  '))
+	# Return a string object containing two hexadecimal digits for each byte in the instance.
+	print(r"b'\xf0\xf1\xf2'.hex() =", b'\xf0\xf1\xf2'.hex())
+
+# u-string: unicode literal.
+#	Strings are unicode by default in Python 3, but the 'u' prefix is allowed for backward compatibility with Python 2.
+#	In Python 2, strings are ASCII by default, and the 'u' prefix allows you to include non-ASCII characters in your strings.
+def u_string():
+	s1 = "Fichier non trouvé"
+	s2 = u"Fichier non trouvé"
+	assert s1 == s2
+
+# f-string:
+#	REF [site] >> https://www.python.org/dev/peps/pep-0498/
+#	F-strings provide a way to embed expressions inside string literals, using a minimal syntax.
+#	It should be noted that an f-string is really an expression evaluated at run time, not a constant value.
+def f_string():
+	value = 1234
+	print(f'The value is {value}.')
+	print(f'The value is {value:#06}.')
+	print(f'The value is {value:#06x}.')
+
+	value = 12.34
+	print(f'The value is {value}.')
+	#print(f'The value is {value:#06d}.')  # ValueError.
+	print(f'The value is {value:#10.04f}.')
+	print(f'The value is {value:#010.04f}.')
+
+	import datetime
+	date = datetime.date(1991, 10, 12)
+	print(f'{date} was on a {date:%A}')
+
+	# Backslashes may not appear inside the expression portions of f-strings, so you cannot use them, for example, to escape
+	#print(f'{\'quoted string\'}')  # SyntaxError.
+	print(f'{"quoted string"}')
+
+	print(f'{{ {4*10} }}')
+	print(f'{{{4 * 10}}}')
+
+	# Raw f-strings.
+	print(fr'x={4*10}\n')
+	#print(rf'x={4*10}\n')  # Can be run, but generates a different result.
+
 # REF [site] >> https://docs.python.org/3.7/library/string.html
 def string_lib_test():
 	print('string.ascii_letters   =', string.ascii_letters)
@@ -53,6 +113,12 @@ def string_lib_test():
 
 def main():
 	#basic_operation()
+
+	#b_string()
+	#u_string()
+	#r_string()
+	#f_string()
+
 	string_lib_test()
 
 #--------------------------------------------------------------------

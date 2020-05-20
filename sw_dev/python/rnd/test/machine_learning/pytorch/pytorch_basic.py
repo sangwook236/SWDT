@@ -42,6 +42,7 @@ def basic_operation():
 	print('y =', y)
 
 	x = torch.tensor(1, dtype=torch.int32)
+	#x = torch.tensor(1, dtype=torch.int32, device='cuda:1')
 	print('x =', x)
 
 	x = torch.tensor([5.5, 3])
@@ -125,8 +126,38 @@ def basic_operation():
 	b = t.view(2, 8)
 	print('t.storage().data_ptr() == b.storage().data_ptr()?', t.storage().data_ptr() == b.storage().data_ptr())
 
-# REF [site] >> https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html
+# REF [site] >>
+#	https://pytorch.org/docs/stable/cuda.html
+#	https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html
 def cuda_operation():
+	print('torch.cuda.device_count() =', torch.cuda.device_count())
+
+	print('torch.cuda.current_device() =', torch.cuda.current_device())
+	torch.cuda.set_device(1)
+	#torch.cuda.set_device('cuda:1')
+	#torch.cuda.set_device(torch.device(1))
+	#torch.cuda.set_device(torch.device('cuda:1'))
+	print('torch.cuda.current_device() =', torch.cuda.current_device())
+
+	print('torch.cuda.is_available() =', torch.cuda.is_available())
+	print('torch.cuda.is_initialized() =', torch.cuda.is_initialized())
+	if not torch.cuda.is_initialized():
+		torch.cuda.init()
+		print('torch.cuda.is_initialized() =', torch.cuda.is_initialized())
+
+	device = None  # Uses the current device.
+	#device = 1
+	#device = 'cuda:1'
+	print('torch.cuda.get_device_name({}) = {}.'.format(device, torch.cuda.get_device_name(device)))
+	print('torch.cuda.get_device_capability({}) = {}.'.format(device, torch.cuda.get_device_capability(device)))
+
+	#--------------------
+	x = torch.tensor([1, 2, 3], dtype=torch.int32, device='cuda:1')
+	#print('torch.cuda.device_of(x).idx =', torch.cuda.device_of(x).idx)
+
+	print('x.device =', x.device)
+
+	#--------------------
 	z = torch.FloatTensor([[1, 2, 3], [4, 5, 6]])
 	print('z =', z)
 
@@ -139,7 +170,7 @@ def cuda_operation():
 
 	#--------------------
 	gpu = 0
-	device = torch.device('cuda:{}'.format(gpu) if torch.cuda.is_available() else 'cpu')
+	device = torch.device('cuda:{}'.format(gpu) if torch.cuda.is_available() and gpu in range(torch.cuda.device_count()) else 'cpu')
 
 	x = torch.randn(2, 2)
 	y = torch.ones_like(x, device=device)  # Directly create a tensor on GPU.
