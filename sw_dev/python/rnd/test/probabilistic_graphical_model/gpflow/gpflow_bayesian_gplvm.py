@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import numpy as np
 #import matplotlib as mpl
@@ -68,7 +69,7 @@ def bayesian_gplvm_example():
 def main():
 	bayesian_gplvm_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

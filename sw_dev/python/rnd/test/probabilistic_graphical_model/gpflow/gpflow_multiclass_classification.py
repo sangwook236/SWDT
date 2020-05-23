@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import sys, csv
 import numpy as np
@@ -149,7 +150,7 @@ def main():
 	sparse_variational_gaussian_approximation_example()
 	sparse_mcmc_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

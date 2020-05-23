@@ -1,4 +1,7 @@
-#%%------------------------------------------------------------------
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
+#--------------------------------------------------------------------
 
 import os
 if 'posix' == os.name:
@@ -9,7 +12,7 @@ else:
 
 data_dir_path = dataset_home_dir_path + '/failure_analysis/defect/knock_sound/500-1500Hz'
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 import numpy as np
 import sounddevice as sd
@@ -33,7 +36,7 @@ sd.play(data)
 
 sd.default.reset()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 import scipy.io.wavfile  # For reading the .wav file.
 
@@ -60,7 +63,7 @@ print('number of frames =', number_of_frames)
 # Declare a 2D matrix, with rows equal to the number of frames, and columns equal to the framesize or the length of each DFT.
 frames = np.ndarray((number_of_frames, framesize))
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 import wave, pyaudio
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import sys, csv
 import numpy as np
@@ -85,7 +86,7 @@ def classification_example():
 def main():
 	classification_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

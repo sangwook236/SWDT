@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> https://github.com/ray-project/ray
 
@@ -74,7 +75,7 @@ def main():
 
 	#simple_tensorflow_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

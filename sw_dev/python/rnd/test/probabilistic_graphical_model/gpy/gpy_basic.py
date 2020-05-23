@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -179,7 +180,7 @@ def main():
 	basic_gp_regression_2d_tutorial()
 	#basic_kernel_tutorial()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 # Usage:
 #	python gpy_basic.py

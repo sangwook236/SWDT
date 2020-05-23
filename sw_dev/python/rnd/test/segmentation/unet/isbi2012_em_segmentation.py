@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Path to libcudnn.so.5.
 #export LD_LIBRARY_PATH=/home/sangwooklee/lib_repo/cpp/cuda/lib64:/usr/local/cuda-8.0/targets/x86_64-linux/lib:$LD_LIBRARY_PATH
 
@@ -6,7 +9,7 @@ import numpy as np
 from PIL import Image
 import os
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Load data.
 
 #dataset_home_dir_path = "/home/sangwook/my_dataset"
@@ -29,7 +32,7 @@ if not os.path.exists(prediction_dir_path):
 		if exception.errno != os.errno.EEXIST:
 			raise
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Setup model.
 
 # Support two classes only.
@@ -42,7 +45,7 @@ net = unet.Unet(layers = 3, features_root = 64, channels = 1, n_class = 2)
 #net = unet.Unet(layers = 5, features_root = 256, channels = 1, n_class = 2)
 #net = unet.Unet(layers = 7, features_root = 256, channels = 1, n_class = 2)
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Train.
 
 #train_data_provider = image_util.ImageDataProvider(train_dataset_search_pattern)
@@ -56,7 +59,7 @@ trainer = unet.Trainer(net, batch_size = 1, optimizer = "momentum", opt_kwargs =
 model_filepath = trainer.train(train_data_provider, model_output_dir_path, training_iters = 32, epochs = 100, dropout = 0.75, display_step = 1, retore = False, write_graph = False)
 #model_filepath = model_output_dir_path + '/model.cpkt'
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Test.
 
 test_data_provider = image_util.ImageDataProvider(search_path = test_dataset_search_pattern, data_suffix = '.tif', mask_suffix = '_mask.tif')
@@ -100,7 +103,7 @@ for idx in indexes:
 #	img = util.combine_img_prediction(x_test, y_test, prediction)
 #	util.save_image(img, prediction_dir_path + "/prediction" + str(idx) + ".jpg")
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Test.
 
 test_data_provider = image_util.ImageDataProvider(dataset_dir_path + "/test_img09.tif")
@@ -114,7 +117,7 @@ print("Error rate = %f" % unet.error_rate(prediction, util.crop_to_shape(y_test,
 img = util.combine_img_prediction(x_test, y_test, prediction)
 util.save_image(img, prediction_dir_path + "/prediction.jpg")
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 import numpy as np
 

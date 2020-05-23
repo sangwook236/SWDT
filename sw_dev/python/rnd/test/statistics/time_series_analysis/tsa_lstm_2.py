@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >>
 #	https://machinelearningmastery.com/how-to-develop-lstm-models-for-multi-step-time-series-forecasting-of-household-power-consumption/
@@ -468,7 +469,7 @@ def main():
 	#test_univariate_encdec_cnn_lstm_model()
 	#test_univariate_encdec_convlstm_model()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

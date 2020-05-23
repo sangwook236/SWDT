@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> https://github.com/lucasb-eyer/pydensecrf
 
@@ -141,7 +142,7 @@ def simple_example():
 def main():
 	simple_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

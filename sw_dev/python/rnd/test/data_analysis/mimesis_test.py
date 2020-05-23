@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> https://mimesis.readthedocs.io/
 
@@ -88,7 +89,7 @@ def getting_started_example():
 def main():
 	getting_started_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

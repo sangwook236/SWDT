@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import numpy as np
 import tensorflow as tf
@@ -97,7 +98,7 @@ def main():
 	kernel_example()
 	making_new_kernel_example()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()
