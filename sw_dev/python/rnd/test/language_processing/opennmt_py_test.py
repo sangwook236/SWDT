@@ -11,6 +11,7 @@ import onmt.utils.parse
 
 # REF [file] >> ${OpenNMT-py_HOME}/onmt/bin/preprocess.py
 def preprocess_test():
+	# REF [site] >> https://opennmt.net/OpenNMT-py/options/preprocess.html
 	if False:
 		parser = onmt.utils.parse.ArgumentParser(description='preprocess.py')
 
@@ -75,6 +76,7 @@ def preprocess_test():
 
 # REF [file] >> ${OpenNMT-py_HOME}/onmt/bin/train.py
 def train_test():
+	# REF [site] >> https://opennmt.net/OpenNMT-py/options/train.html
 	if True:
 		parser = onmt.utils.parse.ArgumentParser(description='train.py')
 

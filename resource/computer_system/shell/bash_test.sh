@@ -92,9 +92,15 @@ fi
 
 #------------------------------------------------------------
 
-a=`ls -l`
-echo $a
-echo "$a"  # The quoted variable preserves whitespace.
+ls -la
+
+cmd=`ls -l`
+echo $cmd
+echo "$cmd"  # The quoted variable preserves whitespace.
+
+cmd="ls -la | more"
+#$cmd  # Error: ls: cannot access '|': No such file or directory. ls: cannot access 'more': No such file or directory.
+eval $cmd
 
 arch=$(uname -m)
 echo "$arch"
@@ -113,9 +119,23 @@ echo $VAR
 eval $(echo VAR=value)
 echo $VAR
 
-a="ls | more"
-$a
-eval $a
+#------------------------------------------------------------
+# Arithmetic.
+
+# $((expression))
+echo $((10 + 5))
+
+x=5
+y=10
+ans=$((x + y))
+echo "$x + $y = $ans"
+
+#------------------------------------------------------------
+# Random number.
+
+echo $RANDOM
+echo $(($RANDOM % 10))
+r = $(($RANDOM % 10))
 
 #------------------------------------------------------------
 # If.
@@ -152,7 +172,7 @@ do
 	echo "ID is ${id}".
 done
 
-for (( id=1; id<=5; ++id ))
+for ((id = 1; id <= 5; ++id))
 do
 	echo "ID is ${id}".
 done
@@ -171,6 +191,16 @@ done
 for id in `seq 1 5`
 do
 	echo $id
+done
+
+#------------------------------------------------------------
+# While.
+
+i=0
+while [ "$i" -le 10 ];
+do
+	echo "$i"
+    i=$((i + 1))
 done
 
 #------------------------------------------------------------
@@ -219,9 +249,10 @@ fi
 
 function quit {
 	exit
-}  
+}
 function greet {
 	echo "Hello $1"
-}  
+}
+
 greet World
 quit

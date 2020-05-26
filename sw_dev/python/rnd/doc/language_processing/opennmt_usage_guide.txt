@@ -18,9 +18,9 @@
 		onmt_preprocess -train_src data/src-train.txt -train_tgt data/tgt-train.txt -valid_src data/src-val.txt -valid_tgt data/tgt-val.txt -save_data data/demo
 		python preprecess.py -train_src data/src-train.txt -train_tgt data/tgt-train.txt -valid_src data/src-val.txt -valid_tgt data/tgt-val.txt -save_data data/demo
 			This will yield :
-				demo.train.pt: serialized PyTorch file containing training data
-				demo.valid.pt: serialized PyTorch file containing validation data
-				demo.vocab.pt: serialized PyTorch file containing vocabulary data
+				data/demo.train.pt: serialized PyTorch file containing training data.
+				data/demo.valid.pt: serialized PyTorch file containing validation data.
+				data/demo.vocab.pt: serialized PyTorch file containing vocabulary data.
 
 	- Train.
 		REF [site] >> https://opennmt.net/OpenNMT-py/options/train.html
@@ -85,10 +85,11 @@
 			...
 
 	- Train.
-		onmt_train -model_type img \
+		CUDA_VISIBLE_DEVICES=0 onmt_train -model_type img \
 			-data data/im2text/demo \
 			-save_model demo-model \
 			-gpu_ranks 0 \
+			-world_size 1 \
 			-batch_size 20 \
 			-max_grad_norm 20 \
 			-learning_rate 0.1 \
