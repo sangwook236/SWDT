@@ -3,17 +3,41 @@
 		https://github.com/parksunwoo/ocr_kor
 
 [-] Usage.
-	- Create data.
+	- Generate data.
 		cd ${ocr_kor_HOME}/data/generator/TextRecognitionDataGenerator
-		generate_data_5type.sh
+		sh generate_data_5type.sh
+			Generates data in ${ocr_kor_HOME}/data/generator/TextRecognitionDataGenerator/out.
+			It takes too much time to generate data.
 
-	- Create lmdb.
+			Generate data directly by using run.py as follows:
+				python run.py -c 9000 -w 10 -f 64 -l ko -t 8 --output_dir out/basic
+				python run.py -c 4500 -w 10 -f 64 -k 5 -rk -l ko -t 8 --output_dir out/skew
+				python run.py -c 4500 -w 10 -f 64 -k 15 -rk -l ko -t 8 --output_dir out/skew
+				python run.py -c 1000 -w 10 -f 64 -d 3 -do 0 -l ko -t 8 --output_dir out/dist
+				python run.py -c 1000 -w 10 -f 64 -d 3 -do 1 -l ko -t 8 --output_dir out/dist
+				python run.py -c 1000 -w 10 -f 64 -d 3 -do 2 -l ko -t 8 --output_dir out/dist
+				python run.py -c 1000 -w 10 -f 64 -l ko -bl 1 -t 8 --output_dir out/blur
+				python run.py -c 1000 -w 10 -f 64 -l ko -bl 2 -t 8 --output_dir out/blur
+				python run.py -c 1000 -w 10 -f 64 -l ko -bl 4 -t 8 --output_dir out/blur
+				python run.py -c 1000 -w 10 -f 64 -l ko -b 0 -t 8 --output_dir out/back
+				python run.py -c 1000 -w 10 -f 64 -l ko -b 1 -t 8 --output_dir out/back
+				python run.py -c 1000 -w 10 -f 64 -l ko -b 2 -t 8 --output_dir out/back
+
+	- Generate gt files from the generated data.
+		Each line in a gt file:
+			file path\tlabel
+
+		cd ${ocr_kor_HOME}/data/generator/TextRecognitionDataGenerator
+		Run generate_gt_files() in ocr_kor_util.py.
+		Move the generated gt files to ${ocr_kor_HOME}/data.
+
+	- Generate LMDB files.
 		cd ${ocr_kor_HOME}
-		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_basic.txt --outputPath deep-text-recognition-benchmark/data_lmdb_release/training
-		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_skew.txt --outputPath deep-text-recognition-benchmark/data_lmdb_release/training
-		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_dist.txt --outputPath deep-text-recognition-benchmark/data_lmdb_release/validation
-		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_blur.txt --outputPath deep-text-recognition-benchmark/data_lmdb_release/validation
-		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_back.txt --outputPath deep-text-recognition-benchmark/data_lmdb_release/validation
+		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_basic.txt --outputPath data/data_lmdb_release/training/basic
+		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_skew.txt --outputPath data/data_lmdb_release/training/skew
+		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_dist.txt --outputPath data/data_lmdb_release/validation/dist
+		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_blur.txt --outputPath data/data_lmdb_release/validation/blur
+		python data/create_lmdb_dataset.py --inputPath data/generator/TextRecognitionDataGenerator/ --gtFile data/gt_back.txt --outputPath data/data_lmdb_release/validation/back
 
 	- Train.
 		cd ${ocr_kor_HOME}
@@ -27,7 +51,8 @@
 			--Prediction Attn \
 			--data_filtering_off \ 
 			--batch_max_length 50 \
-			--workers 4
+			--workers 4 \
+			--gpu_devices 0 1
 
 	- Test.
 		cd ${ocr_kor_HOME}
