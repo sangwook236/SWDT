@@ -129,6 +129,162 @@ def collections_test():
 	for k, v in od.items():
 		print(k, v)
 
+def iterable_and_iterator_test():
+	# Iterable: an object which one can iterate over.
+	#	Sequence: list, string, and tuple.
+	#	Others: dictionary, set, file object, and generator.
+
+	numbers = [10, 12, 15, 18, 20]
+	fruits = ('apple', 'pineapple', 'blueberry')
+	message = 'I love Python'
+
+	#--------------------
+	# Iterator: an object which is used to iterate over an iterable object using __next__() method.
+	#	An iterator can be created from an iterable by using the function iter().
+	#	To make this possible, the class of an iterable needs either a method __iter__, which returns an iterator, or a __getitem__ method with sequential indexes starting with 0.
+	#	e.g.) enumerate, zip, reversed, map, filter.
+
+	# Every iterator is also an iterable, but not every iterable is an iterator.
+
+	# Lazy evaluation:
+	#	Iterators allow us to both work with and create lazy iterables that don’t do any work until we ask them for their next item.
+	#	Because of their laziness, the iterators can help us to deal with infinitely long iterables.
+
+	print('iter(numbers) =', iter(numbers))
+	print('iter(fruits) =', iter(fruits))
+	print('iter(message) =', iter(message))
+
+	#int_iter = iter(1)  # TypeError: 'int' object is not iterable.
+
+	seq = [10, 20, 30]
+	seq_iter = iter(seq)
+	try:
+		print('next(seq_iter) =', next(seq_iter))
+		print('next(seq_iter) =', next(seq_iter))
+		print('next(seq_iter) =', next(seq_iter))
+		print('next(seq_iter) =', next(seq_iter))  # StopIteration is raised.
+	except StopIteration:
+		pass
+
+	for val in seq:
+		print('val =', val)
+	for val in iter(seq):
+		print('val =', val)
+
+	# If we call the iter() function on an iterator it will always give us itself back.
+	seq_iter2 = iter(seq_iter)
+	print('seq_iter is seq_iter2 =', seq_iter is seq_iter2)
+
+	#print('len(seq_iter) =', len(seq_iter))  # TypeError: object of type 'list_iterator' has no len().
+
+	#--------------------
+	class MyIterable1(object):
+		def __init__(self):
+			self.seq = list(range(3))
+
+		def __iter__(self):
+			print('MyIterable1.__iter__() is called.')
+			#return self  # TypeError: iter() returned non-iterator of type 'MyIterable1'.
+			#return self.seq  # TypeError: iter() returned non-iterator of type 'list'.
+			return iter(self.seq)
+
+		#def __len__(self):
+		#	return len(self.seq)
+
+	iterable1 = MyIterable1()
+	#print('len(iterable1) =', len(iterable1))  # TypeError: object of type 'MyIterable1' has no len().
+	print('iterable1 =', [val for val in iterable1])
+	print('iterable1 =', [val for val in iter(iterable1)])
+
+	class MyIterable2(object):
+		def __init__(self):
+			self.seq = list(range(3))
+
+		def __getitem__(self, idx):
+			print('MyIterable2.__getitem__({}) is called.'.format(idx))
+			return self.seq[idx]
+
+		#def __len__(self):
+		#	return len(self.seq)
+
+	iterable2 = MyIterable2()
+	#print('len(iterable2) =', len(iterable2))  # TypeError: object of type 'MyIterable2' has no len().
+	print('iterable2 =', [val for val in iterable2])
+	print('iterable2 =', [val for val in iter(iterable2)])
+
+	class MyIterator(object):
+		def __init__(self):
+			self.len = 3
+			self.seq = list(range(self.len))
+			self.index = 0
+
+		def __next__(self):
+			print('MyIterator.__next__() is called.')
+			if self.index >= self.len: raise StopIteration
+			val = self.seq[self.index]
+			self.index += 1
+			return val
+
+		#def __len__(self):
+		#	return self.len
+
+	iterator = MyIterator()
+	#print('len(iterator) =', len(iterator))  # TypeError: object of type 'MyIterator' has no len().
+	#print('iterator =', [val for val in iterator])  # TypeError: 'MyIterator' object is not iterable.
+	vals = list()
+	try:
+		for _ in range(100):
+			vals.append(next(iterator))
+	except StopIteration:
+		pass
+	print('iterator =', vals)
+
+	class MyNumbers(object):
+		def __init__(self):
+			self.num = 100  # TODO [check] >> Not applied.
+
+		def __iter__(self):
+			print('MyNumbers.__iter__() is called.')
+			self.num = 1
+			return self
+
+		def __next__(self):
+			print('MyNumbers.__next__() is called.')
+			val = self.num
+			self.num += 1
+			return val
+
+		#def __len__(self):
+		#	return int(float('inf'))  # OverflowError: cannot convert float infinity to integer.
+		#	#import decimal
+		#	#return int(decimal.Decimal('Infinity'))  # OverflowError: cannot convert Infinity to integer.
+
+	numbers = MyNumbers()
+	#print('len(numbers) =', len(numbers))  # TypeError: object of type 'MyNumbers' has no len().
+
+	nums = list()
+	for num in numbers:
+		nums.append(num)
+		if num >= 2:
+			break
+	print('numbers1 =', nums)
+	nums = list()
+	for num in iter(numbers):
+		nums.append(num)
+		if num >= 4:
+			break
+	print('numbers2 =', nums)
+	nums = list()
+	for num in numbers:
+		nums.append(num)
+		if num >= 6:
+			break
+	print('numbers3 =', nums)
+	nums = list()
+	for _ in range(5):
+		nums.append(next(numbers))
+	print('numbers4 =', nums)
+
 def assert_test():
 	#assert(2 + 2 == 5, 'Error: Addition.')  # Error: Not working.
 	assert 2 + 2 == 5, 'Error: Addition.'
@@ -515,12 +671,14 @@ def main():
 	#container_test()
 	#collections_test()
 
+	iterable_and_iterator_test()
+
 	#assert_test()
 	#exception_test()
 
 	#with_statement_test()
 
-	function_signature_test()
+	#function_signature_test()
 	#function_call_test()
 
 	#lambda_expression()
