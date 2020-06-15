@@ -396,6 +396,8 @@ def lambda_expression():
 	print('func2 is called:', func2(2, 3))
 
 def map_filter_reduce():
+	# Map.
+
 	items = [1, 2, 3, 4, 5]
 	squared = map(lambda x: x**2, items)  # class 'map'.
 	print('Type of map() =', type(squared), squared)
@@ -418,7 +420,25 @@ def map_filter_reduce():
 	map_with_three_args = map(lambda x, y, z: x + y + z, range(10), range(5), range(8))
 	print('Mapping a function with three argments =', list(map_with_three_args))
 
+	def foo(x):
+		if x == 7: raise StopIteration
+		elif x < 5: return True
+		else: return False
+
+	try:
+		vals = [foo(val) for val in range(10)]
+	except StopIteration:
+		pass
+	print('values =', vals)  # NameError: name 'vals' is not defined.
+	try:
+		vals = map(foo, range(10))
+	except StopIteration:
+		pass
+	print('values =', list(vals))
+
 	#--------------------
+	# Filter.
+
 	number_list = range(-5, 5)
 	less_than_zero = filter(lambda x: x < 0, number_list)  # class 'filter'.
 	print('Type of filter() =', type(less_than_zero), less_than_zero)
@@ -431,6 +451,8 @@ def map_filter_reduce():
 	print('Max =', list(filter(lambda xy: xy[0] <= xy[1], zip([1, 4, 5], [3, 2, 5]))))  # Result = [(1, 3), (5, 5)].
 
 	#--------------------
+	# Reduce.
+
 	items = [3, 4, 5, 6, 7]
 	summation = functools.reduce(lambda x, y: x + y, items)
 	print('Type of reduce() =', type(summation), summation)  # The type of reduce() is its return type.
@@ -671,7 +693,7 @@ def main():
 	#container_test()
 	#collections_test()
 
-	iterable_and_iterator_test()
+	#iterable_and_iterator_test()
 
 	#assert_test()
 	#exception_test()
@@ -682,7 +704,7 @@ def main():
 	#function_call_test()
 
 	#lambda_expression()
-	#map_filter_reduce()
+	map_filter_reduce()
 
 	#--------------------
 	#itertools_test()
