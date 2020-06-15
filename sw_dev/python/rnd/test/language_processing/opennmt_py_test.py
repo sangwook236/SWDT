@@ -226,11 +226,176 @@ def translate_test():
 def server_test():
 	raise NotImplementedError
 
+#--------------------------------------------------------------------
+
+"""
+NMTModel(
+  (encoder): ImageEncoder(
+    (layer1): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (layer2): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (layer3): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (layer4): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (layer5): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (layer6): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (batch_norm1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (batch_norm2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (batch_norm3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (rnn): LSTM(512, 250, num_layers=2, dropout=0.3, bidirectional=True)
+    (pos_lut): Embedding(1000, 512)
+  )
+  (decoder): InputFeedRNNDecoder(
+    (embeddings): Embeddings(
+      (make_embedding): Sequential(
+        (emb_luts): Elementwise(
+          (0): Embedding(1798, 80, padding_idx=1)
+        )
+      )
+    )
+    (dropout): Dropout(p=0.3, inplace=False)
+    (rnn): StackedLSTM(
+      (dropout): Dropout(p=0.3, inplace=False)
+      (layers): ModuleList(
+        (0): LSTMCell(580, 500)
+        (1): LSTMCell(500, 500)
+      )
+    )
+    (attn): GlobalAttention(
+      (linear_in): Linear(in_features=500, out_features=500, bias=False)
+      (linear_out): Linear(in_features=1000, out_features=500, bias=False)
+    )
+  )
+  (generator): Sequential(
+    (0): Linear(in_features=500, out_features=1798, bias=True)
+    (1): Cast()
+    (2): LogSoftmax()
+  )
+)
+"""
+
+def build_submodels(input_channel, num_classes, word_vec_size):
+	bidirectional_encoder = True
+	embedding_dropout = 0.3
+	encoder_num_layers = 2
+	encoder_rnn_size = 500
+	encoder_dropout = 0.3
+	decoder_rnn_type = 'LSTM'
+	decoder_num_layers = 2
+	decoder_hidden_size = encoder_rnn_size
+	decoder_dropout = 0.3
+
+	src_embeddings = None
+	tgt_embeddings = onmt.modules.Embeddings(
+		word_vec_size=word_vec_size,
+		word_vocab_size=num_classes,
+		word_padding_idx=1,
+		position_encoding=False,
+		feat_merge='concat',
+		feat_vec_exponent=0.7,
+		feat_vec_size=-1,
+		feat_padding_idx=[],
+		feat_vocab_sizes=[],
+		dropout=embedding_dropout,
+		sparse=False,
+		fix_word_vecs=False
+	)
+
+	encoder = onmt.encoders.ImageEncoder(
+		num_layers=encoder_num_layers, bidirectional=bidirectional_encoder,
+		rnn_size=encoder_rnn_size, dropout=encoder_dropout, image_chanel_size=input_channel
+	)
+	decoder = onmt.decoders.InputFeedRNNDecoder(
+		rnn_type=decoder_rnn_type, bidirectional_encoder=bidirectional_encoder,
+		num_layers=decoder_num_layers, hidden_size=decoder_hidden_size,
+		attn_type='general', attn_func='softmax',
+		coverage_attn=False, context_gate=None,
+		copy_attn=False, dropout=decoder_dropout, embeddings=tgt_embeddings,
+		reuse_copy_attn=False, copy_attn_type='general'
+	)
+	generator = torch.nn.Sequential(
+		torch.nn.Linear(in_features=decoder_hidden_size, out_features=num_classes, bias=True),
+		onmt.modules.util_class.Cast(dtype=torch.float32),
+		torch.nn.LogSoftmax(dim=-1)
+	)
+	return encoder, decoder, generator
+
+class MyModel(torch.nn.Module):
+	def __init__(self, input_channel, num_classes, word_vec_size):
+		super().__init__()
+
+		self.encoder, self.decoder, self.generator = build_submodels(input_channel, num_classes, word_vec_size)
+
+	# REF [function] >> NMTModel.forward() in https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/models/model.py
+	def forward(self, src, tgt, lengths, bptt=False, with_align=False):
+		# TODO [check] >> This function is not tested.
+		dec_in = tgt[:-1]  # Exclude last target from inputs.
+		enc_state, memory_bank, lengths = self.encoder(src, lengths=lengths)
+		if bptt is False:
+			self.decoder.init_state(src, memory_bank, enc_state)
+		dec_outs, attns = self.decoder(dec_in, memory_bank, memory_lengths=lengths, with_align=with_align)
+		outs = self.generator(dec_outs)
+		return outs, attns
+
+# REF [site] >> https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/model_builder.py
+def build_model(use_NMTModel, input_channel, num_classes, word_vec_size):
+	if use_NMTModel:
+		# Use onmt.models.NMTModel.
+		encoder, decoder, generator = build_submodels(input_channel, num_classes, word_vec_size)
+		model = onmt.models.NMTModel(encoder, decoder)
+		# NOTE [info] >> The generator is not called. So It has to be called explicitly.
+		#model.generator = generator
+		model.add_module('generator', generator)
+
+		return model
+	else:
+		return MyModel(input_channel, num_classes, word_vec_size)
+
+def simple_example():
+	use_NMTModel = False
+	input_channel = 3
+	num_classes = 1798
+	word_vec_size = 80
+	batch_size = 16
+	max_time_steps = 10
+
+	gpu = 0
+	device = torch.device('cuda:{}'.format(gpu) if torch.cuda.is_available() else 'cpu')
+	print('Device: {}.'.format(device))
+
+	#--------------------
+	# Build a model.
+	model = build_model(use_NMTModel, input_channel, num_classes, word_vec_size)
+	#if model: print('Model:\n{}'.format(model))
+
+	model = model.to(device)
+
+	#--------------------
+	inputs = torch.randn(batch_size, input_channel, 300, 300)
+	outputs = torch.randint(num_classes, (batch_size, max_time_steps, 1))
+	outputs = torch.transpose(outputs, 0, 1)  # [B, T, F] -> [T, B, F].
+	output_lens = torch.randint(1, max_time_steps + 1, (batch_size,))
+
+	inputs = inputs.to(device)
+	outputs, output_lens = outputs.to(device), output_lens.to(device)
+
+	with torch.no_grad():
+		model_outputs, attentions = model(inputs, outputs, output_lens)  # [target length, batch size, hidden size] & [target length, batch size, source length].
+		if use_NMTModel: model_outputs = model.generator(model_outputs)
+
+	#model_outputs = model_outputs.transpose(0, 1)  # [T, B, F] -> [B, T, F].
+	model_outputs = model_outputs.cpu().numpy()
+	attentions = attentions['std'].cpu().numpy()
+
+	print("model_outputs' shape =", model_outputs.shape)
+	print("attentions' shape =", attentions.shape)
+
 def main():
 	#preprocess_test()  # Not yet implemented.
-	train_test()  # Not yet implemented.
+	#train_test()  # Not yet implemented.
 	#translate_test()  # Not yet implemented.
 	#server_test()  # Not yet implemented.
+
+	#--------------------
+	simple_example()
 
 #--------------------------------------------------------------------
 

@@ -188,3 +188,9 @@
 
 		(Optional) some advanced features (e.g. working audio, image or pretrained models) requires extra packages:
 			pip install -r requirements.opt.txt
+
+[-] Troubleshooting.
+	- <error> AttributeError: 'InputFeedRNNDecoder' object has no attribute '_input_size'
+		<cause> ?
+		<solution>
+			Assign the parameter 'embeddings' in InputFeedRNNDecoder.__init__().
