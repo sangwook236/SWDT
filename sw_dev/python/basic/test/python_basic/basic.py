@@ -23,7 +23,7 @@ def platform_test():
 
 x = 'global'
 
-def variable_example():
+def variable_test():
 	def func1():
 		print('x =', x)
 
@@ -49,24 +49,13 @@ def variable_example():
 	#--------------------
 	print('globals() =', globals())
 
-	#--------------------
-	# Functions can have attributes ((member) variables).
+def control_test():
+	# For.
+	['Even' for val in range(10) if val % 2 == 0]
+	#['Even' if val % 2 == 0 for val in range(10)]  # SyntaxError: invalid syntax.
 
-	def foo():
-		foo.var = 10  # Not a local variable.
-		var = 1  # A local variable.
-		foo.num_calls += 1
-		print(f'id(foo.var) = {id(foo.var)}, id(var) = {id(var)}')
-		print(f'Call {foo.num_calls} of {foo.__name__!r}')
-	foo.num_calls = 0  # Initialization. Similar to static variable in C/C++.
-
-	#print('foo.var =', foo.var)  # AttributeError: 'function' object has no attribute 'var'.
-
-	foo()
-	foo()
-	foo()
-
-	print('foo.var =', foo.var)
+	['Even' if val % 2 == 0 else 'Odd' for val in range(10)]
+	#['Even' for val in range(10) if val % 2 == 0 else 'Odd']  # SyntaxError: invalid syntax.
 
 def container_test():
 	vals = list(range(5))
@@ -345,9 +334,31 @@ def with_statement_test():
 		print('Step #3.')
 	print('Step #4.')
 
-def function_signature_test():
+def function_test():
+	# Functions can have attributes ((member) variables).
+
+	def foo():
+		foo.var = 10  # No local variable.
+		var = 1  # A local variable.
+		foo.num_calls += 1
+		print(f'id(foo.var) = {id(foo.var)}, id(var) = {id(var)}')
+		print(f'Call {foo.num_calls} of {foo.__name__!r}')
+	foo.num_calls = 0  # Initialization. Similar to static variable in C/C++.
+
+	#print('foo.var =', foo.var)  # AttributeError: 'function' object has no attribute 'var'.
+
+	foo()
+	foo()
+	foo()
+
+	print('foo.var =', foo.var)
+
+	#--------------------
+	# Function signature.
 	# "/" indicates that some function parameters must be specified positionally and cannot be used as keyword arguments.
+	#	After Python 3.8.
 	# "*" forces the caller to use named arguments.
+
 	def func(param1, param2, /, param3, *, param4, param5):
 		 print(param1, param2, param3, param4, param5)
 
@@ -689,7 +700,8 @@ def number_system():
 def main():
 	#platform_test()
 
-	#variable_example()
+	#variable_test()
+	control_test()
 	#container_test()
 	#collections_test()
 
@@ -700,11 +712,11 @@ def main():
 
 	#with_statement_test()
 
-	#function_signature_test()
+	#function_test()
 	#function_call_test()
 
 	#lambda_expression()
-	map_filter_reduce()
+	#map_filter_reduce()
 
 	#--------------------
 	#itertools_test()
