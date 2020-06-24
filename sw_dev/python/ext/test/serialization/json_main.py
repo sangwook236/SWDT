@@ -5,12 +5,24 @@ import json
 
 def main():
 	# File.
-	with open('test.json', encoding='UTF8') as fd:
-		json_data = json.load(fd)
-		print(json_data)
+	try:
+		filepath = 'test.json'
+		with open(filepath, encoding='UTF8') as fd:
+			json_data = json.load(fd)
+			print(json_data)
+	except FileNotFoundError as ex:
+		print('File not found: {}.'.format(filepath))
+	except UnicodeDecodeError as ex:
+		print('Unicode decode error: {}.'.format(filepath))
 
-	with open('tmp.json', 'w+', encoding='UTF8') as fd:
-		json.dump(json_data, fd, indent='\t')
+	try:
+		filepath = 'tmp.json'
+		with open(filepath, 'w+', encoding='UTF8') as fd:
+			json.dump(json_data, fd, indent='\t')
+	except FileNotFoundError as ex:
+		print('File not found: {}.'.format(filepath))
+	except UnicodeDecodeError as ex:
+		print('Unicode decode error: {}.'.format(filepath))
 
 	# String.
 	str = json.dumps(['foo', {'bar': ('baz', None, 1.0, 2)}])

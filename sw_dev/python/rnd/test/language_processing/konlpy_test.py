@@ -97,7 +97,7 @@ def simple_kobill_corpus_example():
 	print(d[:15])
 
 # REF [site] >> https://datascienceschool.net/view-notebook/70ce46db4ced4a999c6ec349df0f4eb0/
-def integration_with_nltk():
+def integrate_with_nltk():
 	okt = konlpy.tag.Okt()
 	c = konlpy.corpus.kolaw.open('constitution.txt').read()
 
@@ -110,7 +110,7 @@ def integration_with_nltk():
 	plt.show()
 
 # REF [doc] >> Python 환경에서 한글 형태소 분석기 패키지 KoNLPy 사용법.pdf
-def bigram_or_trigram_extraction_with_nltk():
+def extract_bigram_or_trigram_with_nltk():
 	bigram_measures = nltk.collocations.BigramAssocMeasures()
 	doc = konlpy.corpus.kolaw.open('constitution.txt').read()
 	pos = konlpy.tag.Kkma().pos(doc)
@@ -133,7 +133,7 @@ def bigram_or_trigram_extraction_with_nltk():
 	konlpy.utils.pprint(finder.nbest(bigram_measures.pmi, 5))
 
 # REF [site] >> https://datascienceschool.net/view-notebook/70ce46db4ced4a999c6ec349df0f4eb0/
-def integration_with_wordcloud():
+def integrate_with_wordcloud():
 	if 'posix' == os.name:
 		#font_path = '/usr/share/fonts/truetype/nanum/NanumGothic.ttf'
 		font_path = '/usr/share/fonts/truetype/gulim.ttf'
@@ -161,9 +161,11 @@ def main():
 	#simple_kolaw_corpus_example()
 	#simple_kobill_corpus_example()
 
-	integration_with_nltk()
-	bigram_or_trigram_extraction_with_nltk()
-	#integration_with_wordcloud()
+	#--------------------
+	#integrate_with_nltk()
+	extract_bigram_or_trigram_with_nltk()
+
+	#integrate_with_wordcloud()
 
 #--------------------------------------------------------------------
 
