@@ -95,6 +95,7 @@ def n_gram_example():
 def main():
 	#simple_example()
 
+	#--------------------
 	n_gram_example()
 	# REF [function] >> extract_bigram_or_trigram_with_nltk() in konlpy_test.py.
 

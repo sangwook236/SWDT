@@ -101,6 +101,9 @@ def library_example():
 	src_reader = onmt.inputters.str2reader['text']
 	tgt_reader = onmt.inputters.str2reader['text']
 	scorer = onmt.translate.GNMTGlobalScorer(alpha=0.7, beta=0., length_penalty='avg', coverage_penalty='none')
+	# Decoding strategy:
+	#	Greedy search, if beam_size = 1.
+	#	Beam search, otherwise.
 	translator = onmt.translate.Translator(
 		model=model, fields=vocab_fields, 
 		src_reader=src_reader, tgt_reader=tgt_reader, 

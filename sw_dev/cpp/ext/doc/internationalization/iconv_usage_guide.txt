@@ -2,3 +2,8 @@
 	- Site.
 		http://www.gnu.org/software/libiconv/
 		https://github.com/win-iconv/win-iconv
+
+[-] Usage.
+	- iconv.
+		Convert encoding:
+			iconv -f utf-16 -t utf-8 input.txt --output output.txt

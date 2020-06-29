@@ -1,0 +1,107 @@
+[-] General.
+	- Site.
+		https://ithub.korean.go.kr/user/total/database/corpusManager.do
+		https://ithub.korean.go.kr/user/corpus/corpusSearchManager.do
+		https://ithub.korean.go.kr/user/guide/corpus/guide1.do
+
+		https://github.com/coolengineer/sejong-corpus
+		https://github.com/jeongukjae/sejong-downloader
+
+		https://github.com/konlpy/sejong-sanitizer
+		https://github.com/lovit/sejong_corpus_cleaner
+
+		https://github.com/lovit/sejong_corpus
+			세종 말뭉치 통계.
+
+[-] Usage.
+	- Download.
+		Web site:
+			Go to https://ithub.korean.go.kr/user/total/referenceManager.do
+			Search for 형태분석 말뭉치
+			Download {구어, 문어}_형태분석_말뭉치.zip
+
+		Use sejong-corpus:
+			https://github.com/coolengineer/sejong-corpus
+
+			(Optional) Edit ${sejong-corpus_HOME}/10.list.sh:
+				<before>
+					DATA="boardSeq=2&articleSeq=&boardType=CORPUS&roleGb=U&userId=0&deleteValues=&isInsUpd=I&pageIndex=1&searchStartDt=&searchEndDt=&searchDataGb=E&searchCondition=&searchKeyword=&pageUnit=10000"
+				<after>
+					DATA="boardSeq=2&boardType=CORPUS&userId=0&pageUnit=10000"
+
+			cd ${sejong-corpus_HOME}
+			make all
+			make dic
+			make diff
+			cat patches/* | patch -N -d corpus-utf8 -p1
+
+		sejong-downloader:
+			https://github.com/jeongukjae/sejong-downloader
+
+			pip install sejong-downloader
+
+			cd ${sejong-downloader_HOME}
+			sejong-downloader -p data
+				Download files with different filenames from original ones.
+
+	- Cleanse (sejong-sanitizer):
+		https://github.com/konlpy/sejong-sanitizer
+
+		Edit ${sejong-sanitizer_HOME}/sanitizer.py.
+			<before>
+				print filename
+			<after>
+				print(filename)
+
+			<before>
+				def sanitize(input_files, output_file, pos=True, colloqual=True):
+			<after>
+				def sanitize(input_files, output_file, pos=True, colloquial=True):
+
+		conda activate text
+		conda install lxml
+
+		cd ${sejong-sanitizer_HOME}
+		python sanitizer.py
+			${sejong-sanitizer_HOME}/output/colloquial_word_to_morph.txt
+			${sejong-sanitizer_HOME}/output/written_word_to_morph.txt
+			${sejong-sanitizer_HOME}/output/colloquial_word_to_morphpos.txt
+			${sejong-sanitizer_HOME}/output/written_word_to_morphpos.txt
+
+	- Cleanse (sejong_corpus_cleaner).
+		https://github.com/lovit/sejong_corpus_cleaner
+
+		For corpus downloaded by sejong-corpus:
+			Make directories.
+				mkdir ${sejong_corpus_cleaner_HOME}/data/raw/colloquial
+				mkdir ${sejong_corpus_cleaner_HOME}/data/raw/written
+				mkdir ${sejong_corpus_cleaner_HOME}/data/clean
+			Copy files.
+				cp ${sejong-corpus_HOME}/corpus/?CT_00??.txt ${sejong_corpus_cleaner_HOME}/data/raw/colloquial
+				cp ${sejong-corpus_HOME}/corpus/BT??????.txt ${sejong_corpus_cleaner_HOME}/data/raw/written
+
+				cp ${sejong-corpus_HOME}/corpus/2*.txt ${sejong_corpus_cleaner_HOME}/data/raw/colloquial
+				...
+				cp ${sejong-corpus_HOME}/corpus/9*.txt ${sejong_corpus_cleaner_HOME}/data/raw/colloquial
+				cp ${sejong-corpus_HOME}/corpus/B*.txt ${sejong_corpus_cleaner_HOME}/data/raw/written
+				cp ${sejong-corpus_HOME}/corpus/C*.txt ${sejong_corpus_cleaner_HOME}/data/raw/written
+		For corpus downloaded by sejong-downloader:
+			==> Error.
+
+			Make directories.
+				mkdir ${sejong_corpus_cleaner_HOME}/data/raw
+				mkdir ${sejong_corpus_cleaner_HOME}/data/clean
+			Edit a python file.
+				In get_data_paths() in ${sejong_corpus_cleaner_HOME}/sejong_corpus_cleaner/loader.py:
+					<before> paths += sorted(data_dir + ctype + '*.txt'))
+					<after> paths += sorted(data_dir + ctype + '*.text'))
+
+			Link the downloaded data directory.
+				ln -s ${sejong-downloader_HOME}/data ${sejong_corpus_cleaner_HOME}/data/raw/written
+
+		conda activate text
+		conda install lxml
+
+		cd ${sejong_corpus_cleaner_HOME}/scripts
+		python build_corpus.py --corpus_type sejong
+			${sejong_corpus_cleaner_HOME}/data/clean/corpus_sejong_all.txt
