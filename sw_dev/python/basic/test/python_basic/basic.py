@@ -354,6 +354,35 @@ def function_test():
 	print('foo.var =', foo.var)
 
 	#--------------------
+	# Method and function.
+	#	A method in python is somewhat similar to a function, except it is associated with object/classes.
+
+	class MyClass(object):
+		def __init__(self):
+			self.g = lambda x: x * x
+
+			self.p = self.f
+			self.q = self.g
+
+		def f(self, x):
+			return x * x
+
+	obj = MyClass()
+
+	print('type(obj.f) =', type(obj.f))  # <class 'method'>.
+	print('type(obj.g) =', type(obj.g))  # <class 'function'>.
+	print('type(obj.p) =', type(obj.p))  # <class 'method'>.
+	print('type(obj.q) =', type(obj.q))  # <class 'function'>.
+
+	def f1(x):
+		return x * x
+
+	f2 = lambda x: x * x
+
+	print('type(f1) =', type(f1))  # <class 'function'>.
+	print('type(f2) =', type(f2))  # <class 'function'>.
+
+	#--------------------
 	# Function signature.
 	# "/" indicates that some function parameters must be specified positionally and cannot be used as keyword arguments.
 	#	After Python 3.8.

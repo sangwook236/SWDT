@@ -50,8 +50,10 @@
 		Edit ${sejong-sanitizer_HOME}/sanitizer.py.
 			<before>
 				print filename
+				for row in _sanitize(filename, pos=pos):
 			<after>
 				print(filename)
+				for row in _sanitize(filename, pos=pos, colloquial=colloquial):
 
 			<before>
 				def sanitize(input_files, output_file, pos=True, colloqual=True):
