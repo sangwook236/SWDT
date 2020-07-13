@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, sys, platform, abc
+import os, sys, platform, abc, struct
 import itertools, functools, operator, difflib
 import traceback
 
@@ -696,7 +696,7 @@ def inheritance_test():
 	obj.func2(17)
 	obj.func3(17)
 
-# REF [file] >> struct_test.py
+# REF [function] >> struct_test().
 def bytes_test():
 	# String with encoding 'UTF-8'.
 	string = 'Python is interesting.'
@@ -710,6 +710,76 @@ def bytes_test():
 	vals = [1, 2, 3, 4, 5]
 	#vals = [1001, 2, 3, 4, 5]  # bytes must be in range(0, 256).
 	print('bytes({}) = {}.'.format(vals, bytes(vals)))
+
+	#--------------------
+	print("bytes.fromhex('2Ef0 F1f2  ') =", bytes.fromhex('2Ef0 F1f2  '))
+	print(r"b'\xf0\xf1\xf2'.hex() =", b'\xf0\xf1\xf2'.hex())
+
+	print(r"b'\xf0\xf1\xf2\xf3\xf4'.hex('-') =", b'\xf0\xf1\xf2\xf3\xf4'.hex('-'))
+	print(r"b'\xf0\xf1\xf2\xf3\xf4'.hex('_', 2) =", b'\xf0\xf1\xf2\xf3\xf4'.hex('_', 2))
+	print(r"b'UUDDLRLRAB'.hex(' ', -4) =", b'UUDDLRLRAB'.hex(' ', -4))
+
+	#--------------------
+	#bytes_string.decode(encoding='utf-8', errors='strict')
+	#str(bytes_string, encoding='utf-8', errors='strict')
+
+	print(r"b'Zoot!'.decode() =", b'Zoot!'.decode())
+	print(r"b'Zoot!'.decode(encoding='utf-8') =", b'Zoot!'.decode(encoding='utf-8'))
+	print(r"str(b'Zoot!') =", str(b'Zoot!'))
+	print(r"str(b'Zoot!', encoding='utf-8') =", str(b'Zoot!', encoding='utf-8'))
+
+	#bytes(string, encoding='utf-8', errors='strict')
+	#str.encode(string, encoding='utf-8', errors='strict')
+
+	#print(r"bytes('Zoot!') =", bytes('Zoot!'))  # TypeError: string argument without an encoding.
+	print(r"bytes('Zoot!', encoding='utf-8') =", bytes('Zoot!', encoding='utf-8'))
+	print(r"str.encode('Zoot!') =", str.encode('Zoot!'))
+	print(r"str.encode('Zoot!', encoding='utf-8') =", str.encode('Zoot!', encoding='utf-8'))
+
+# REF [site] >> https://docs.python.org/3/library/struct.html
+#	struct module performs conversions between Python values and C structs represented as Python bytes objects.
+# REF [function] >> bytes_test().
+def struct_test():
+	#--------------------
+	packet = struct.pack('hhl', 1, 2, 3)  # bytes.
+	print('Packet =', packet)
+
+	packet1 = struct.unpack('hhl', packet)
+	print('Unpacked packet =', packet1)  # tuple: (1, 2, 3).
+
+	#--------------------
+	# Endian.
+
+	print('Byte order = {} endian.'.format(sys.byteorder))
+
+	packet = struct.pack('hhl', 1, 2, 3)
+	print('Native        =', packet)
+	packet = struct.pack('<hhl', 1, 2, 3)  # Little endian.
+	print('Little-endian =', packet)
+	packet = struct.pack('>hhl', 1, 2, 3)  # Big endian.
+	print('Big-endian    =', packet)
+
+	# NOTE [info] >> Native, 
+	packet = struct.pack('BLLH', 1, 2, 3, 4)
+	print('Native        =', packet)
+	packet = struct.pack('<BLLH', 1, 2, 3, 4)  # Little endian.
+	print('Little-endian =', packet)
+	packet = struct.pack('>BLLH', 1, 2, 3, 4)  # Big endian.
+	print('Big-endian    =', packet)
+
+	#--------------------
+	record = b'raymond   \x32\x12\x08\x01\x08'
+	name, serialnum, school, gradelevel = struct.unpack('<10sHHb', record)
+	print(name, serialnum, school, gradelevel)
+
+	# The ordering of format characters may have an impact on size since the padding needed to satisfy alignment requirements is different.
+	pack1 = struct.pack('ci', b'*', 0x12131415)
+	print(struct.calcsize('ci'), pack1)
+	pack2 = struct.pack('ic', 0x12131415, b'*')
+	print(struct.calcsize('ic'), pack2)
+
+	# The following format 'llh0l' specifies two pad bytes at the end, assuming longs are aligned on 4-byte boundaries.
+	print(struct.pack('llh0l', 1, 2, 3))
 
 def number_system():
 	dec_val = 1234
@@ -725,6 +795,26 @@ def number_system():
 	print("int('{}', 2) = {}.".format(bin(dec_val), int(bin(dec_val), 2)))
 	print("int('{}', 8) = {}.".format(oct(dec_val), int(oct(dec_val), 8)))
 	print("int('{}', 16) = {}.".format(hex(dec_val), int(hex(dec_val), 16)))
+
+def IEEE_754_format()
+	# IEEE 754 (binary64) <--> double precision floating-point number.
+	ieee754_hex_strs = [
+		'3FF0000000000000',  # 1.0.
+		'4000000000000000',  # 2.0.
+		'C000000000000000',  # -2.0.
+		'4008000000000000',  # 3.0.
+		'4010000000000000',  # 4.0.
+		'4014000000000000',  # 5.0.
+		'4018000000000000',  # 6.0.
+		'4037000000000000',  # 23.0.
+		'3F88000000000000',  # 0.01171875 = 3 / 256.
+	]
+
+	for hs in ieee754_hex_strs:
+		dbl_val = struct.unpack('<d', struct.pack('<Q', int(hs, 16)))[0]
+		hex_val = struct.unpack('<Q', struct.pack('<d', dbl_val))[0]
+
+		print("'{}' (IEEE 754) -> {} (double) -> '{}' (IEEE 754).".format(hs, dbl_val, hex(hex_val)))
 
 def main():
 	#platform_test()
@@ -755,8 +845,11 @@ def main():
 	#inheritance_test()
 
 	#--------------------
-	#bytes_test()
+	bytes_test()
+	#struct_test()
+
 	#number_system()  # Binary, octal, decimal, hexadecimal number system.
+	#IEEE_754_format()
 
 #--------------------------------------------------------------------
 
