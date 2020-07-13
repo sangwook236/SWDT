@@ -32,6 +32,27 @@ def simple_example():
 	for sent in doc.sents:
 		print(sent)
 
+def simple_korean_example():
+	# REF [site] >> https://spacy.io/usage/models#own-models
+
+	# spaCy does not support Korean yet.
+
+	if True:
+		from spacy.ko import Korean  # FIXME [implement] >> Korean must be implemented.
+		nlp = Korean()
+	elif False:
+		import ko_model_name  # FIXME [implement] >> ko_model_name must be implemented.
+		nlp = ko_model_name.load()
+	elif False:
+		# If you want to be able to load the model via spacy.load(), you'll have to create a shortcut link for it.
+		# This will create a symlink in spacy/data and lets you load the model as spacy.load('ko').
+		# Make model package 'ko_model_name' available as 'ko' shortcut:
+		#	python -m spacy link ko_model_name ko
+
+		nlp = spacy.load('ko')
+
+	doc = nlp('안녕하세요')
+
 # REF [site] >> https://spacy.io/usage/linguistic-features
 def linguistic_features_example():
 	nlp = spacy.load('en_core_web_sm')
@@ -90,7 +111,7 @@ def processing_pipelines_example():
 		print([(ent.text, ent.label_) for ent in doc.ents])
 
 # REF [site] >> https://nicschrading.com/project/Intro-to-NLP-with-spaCy/
-def intro_to_NLP_with_spaCy():
+def intro_to_NLP_with_spaCy_example():
 	# Set up spaCy.
 	parser = spacy.en.English()
 
@@ -209,7 +230,7 @@ def intro_to_NLP_with_spaCy():
 	# If you want to include spaCy in your machine learning it is not too difficult.
 
 # REF [site] >> https://realpython.com/natural-language-processing-spacy-python/
-def natural_language_processing_spaCy():
+def natural_language_processing_spaCy_example():
 	nlp = spacy.load('en_core_web_sm')
 
 	#--------------------
@@ -648,11 +669,13 @@ def main():
 	#spacy.prefer_gpu()
 
 	#simple_example()
+	#simple_korean_example()  # Not yet completed.
+
 	#linguistic_features_example()
 	#processing_pipelines_example()
 
-	#intro_to_NLP_with_spaCy()
-	natural_language_processing_spaCy()
+	#intro_to_NLP_with_spaCy_example()
+	natural_language_processing_spaCy_example()
 
 #--------------------------------------------------------------------
 

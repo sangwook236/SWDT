@@ -62,15 +62,23 @@
 			-tgt_seq_length 150 \
 			-tgt_words_min_frequency 2 \
 			-shard_size 500 \
-			-image_channel_size 1
+			-image_channel_size 3
 			
+		onmt_preprocess -data_type img \
+			-src_dir data/im2text_small/images/ \
+			-train_src data/im2text_small/src-train.txt -train_tgt data/im2text_small/tgt-train.txt \
+			-valid_src data/im2text_small/src-val.txt -valid_tgt data/im2text_small/tgt-val.txt \
+			-save_data data/im2text_small/demo \
+			-tgt_seq_length 150 \
+			-tgt_words_min_frequency 2 \
+			-shard_size 500 \
+			-image_channel_size 3
+
 			Output:
-				data/im2text/demo.train.0.pt
-				data/im2text/demo.train.1.pt
-				data/im2text/demo.train.pt
-				data/im2text/demo.valid.0.pt
-				data/im2text/demo.valid.pt
-				data/im2text/demo.vocab.pt
+				data/im2text_small/demo.train.0.pt
+				data/im2text_small/demo.train.1.pt
+				data/im2text_small/demo.valid.0.pt
+				data/im2text_small/demo.vocab.pt
 
 		src_dir: Source directory for image or audio files.
 		train_src, valid_src: Path to the training/validation source data (relative to src_dir).
