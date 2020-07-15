@@ -7,6 +7,10 @@
 		https://github.com/OpenNMT/CTranslate2
 		https://github.com/OpenNMT/Tokenizer
 
+	- Model.
+		https://opennmt.net/Models-py/
+		https://opennmt.net/Models-tf/
+
 	- Documentation.
 		http://opennmt.net/OpenNMT-py/
 		http://opennmt.net/OpenNMT-tf/
@@ -185,10 +189,28 @@
 		python opennmt/bin/main.py ... export ...
 		python opennmt/bin/main.py ... update_vocab ...
 
+[-] Usage (CTranslate2).
+	- Convert a model trained with OpenNMT-py or OpenNMT-tf.
+		OpenNMT-py:
+			wget https://s3.amazonaws.com/opennmt-models/transformer-ende-wmt-pyOnmt.tar.gz
+			tar xf transformer-ende-wmt-pyOnmt.tar.gz
+
+			ct2-opennmt-py-converter --model_path averaged-10-epoch.pt --model_spec TransformerBase --output_dir ende_ctranslate2
+
+		OpenNMT-tf:
+			wget https://s3.amazonaws.com/opennmt-models/averaged-ende-export500k-v2.tar.gz
+			tar xf averaged-ende-export500k-v2.tar.gz
+
+			ct2-opennmt-tf-converter --model_path averaged-ende-export500k-v2 --model_spec TransformerBase --output_dir ende_ctranslate2
+
+	- Translate tokenized inputs.
+		https://github.com/OpenNMT/CTranslate2
+
 [-] Installation.
 	- Install using pip.
 		pip install OpenNMT-py
 		pip install OpenNMT-tf
+		pip install ctranslate2
 
 	- Install from sources.
 		cd ${OpenNMT-py_HOME}
