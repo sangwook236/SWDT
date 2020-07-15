@@ -5,8 +5,9 @@
 #	http://opennmt.net/
 #	https://github.com/OpenNMT/OpenNMT-py
 
-import argparse
+import argparse, time
 import torch
+import torchtext
 import onmt
 import onmt.translate
 import onmt.utils.parse
@@ -35,139 +36,6 @@ def load_model(model_filepath, model, generator, device='cpu'):
 	#epoch = checkpoint['epoch']
 	print('Loaded a model from {}.'.format(model_filepath))
 	return model, generator
-
-# REF [site] >> https://opennmt.net/OpenNMT-py/Library.html
-def library_example():
-	preprocessed_data_dir_path = './data'
-	is_trained, is_model_loaded = True, False
-
-	if is_trained:
-		model_filepath = './onmt_demo_model.pt'
-	if is_model_loaded:
-		model_filepath_to_load = None
-	assert not is_model_loaded or (is_model_loaded and model_filepath_to_load is not None)
-
-	device = 'cuda:1' if torch.cuda.is_available() else 'cpu'
-	gpu = 1 if torch.cuda.is_available() else -1
-
-	#--------------------
-	# Prepare data.
-
-	# Load in the vocabulary for the model of interest.
-	vocab_fields = torch.load(preprocessed_data_dir_path + '/demo.vocab.pt')
-	train_data_files = [
-		preprocessed_data_dir_path + '/demo.train.0.pt'
-	]
-	valid_data_files = [
-		preprocessed_data_dir_path + '/demo.valid.0.pt'
-	]
-
-	src_text_field = vocab_fields['src'].base_field
-	src_vocab = src_text_field.vocab
-	src_padding = src_vocab.stoi[src_text_field.pad_token]
-
-	tgt_text_field = vocab_fields['tgt'].base_field
-	tgt_vocab = tgt_text_field.vocab
-	tgt_padding = tgt_vocab.stoi[tgt_text_field.pad_token]
-
-	train_iter = onmt.inputters.inputter.DatasetLazyIter(
-		dataset_paths=train_data_files, fields=vocab_fields,
-		batch_size=50, batch_size_multiple=1, batch_size_fn=None, pool_factor=8192,
-		device=device, is_train=True, repeat=True
-	)
-	valid_iter = onmt.inputters.inputter.DatasetLazyIter(
-		dataset_paths=valid_data_files, fields=vocab_fields,
-		batch_size=10, batch_size_multiple=1, batch_size_fn=None, pool_factor=8192,
-		device=device, is_train=False, repeat=False
-	)
-
-	#--------------------
-	# Build a model.
-
-	emb_size = 100
-	rnn_size = 500
-
-	# Specify the core model.
-	encoder_embeddings = onmt.modules.Embeddings(emb_size, len(src_vocab), word_padding_idx=src_padding)
-	encoder = onmt.encoders.RNNEncoder(
-		hidden_size=rnn_size, num_layers=1, bidirectional=True,
-		rnn_type='LSTM', embeddings=encoder_embeddings
-	)
-
-	decoder_embeddings = onmt.modules.Embeddings(emb_size, len(tgt_vocab), word_padding_idx=tgt_padding)
-	decoder = onmt.decoders.decoder.InputFeedRNNDecoder(
-		hidden_size=rnn_size, num_layers=1, bidirectional_encoder=True, 
-		rnn_type='LSTM', embeddings=decoder_embeddings
-	)
-
-	model = onmt.models.model.NMTModel(encoder, decoder)
-
-	# Specify the tgt word generator.
-	generator = torch.nn.Sequential(
-		torch.nn.Linear(rnn_size, len(tgt_vocab)),
-		torch.nn.LogSoftmax(dim=-1)
-	)
-
-	#--------------------
-	# Specify loss computation module.
-
-	loss = onmt.utils.loss.NMTLossCompute(
-		criterion=torch.nn.NLLLoss(ignore_index=tgt_padding, reduction='sum'),
-		generator=generator
-	)
-
-	#--------------------
-	# Set up an optimizer.
-
-	lr = 1
-	torch_optimizer = torch.optim.SGD(model.parameters(), lr=lr)
-	optim = onmt.utils.optimizers.Optimizer(torch_optimizer, learning_rate=lr, learning_rate_decay_fn=None, max_grad_norm=2)
-
-	#--------------------
-	# Train.
-
-	if is_model_loaded:
-		model, generator = load_model(model_filepath_to_load, model, generator, device=device)
-
-	model = model.to(device)
-	generator = generator.to(device)
-
-	if is_trained:
-		# Keeping track of the output requires a report manager.
-		report_manager = onmt.utils.ReportMgr(report_every=50, start_time=None, tensorboard_writer=None)
-		trainer = onmt.Trainer(
-			model=model, train_loss=loss, valid_loss=loss,
-			optim=optim, report_manager=report_manager
-		)
-		trainer.train(
-			train_iter=train_iter, train_steps=400,
-			valid_iter=valid_iter, valid_steps=200
-		)
-
-		save_model(model_filepath, model, generator)
-
-	#--------------------
-	# Load up the translation functions.
-
-	src_reader = onmt.inputters.str2reader['text']
-	tgt_reader = onmt.inputters.str2reader['text']
-	scorer = onmt.translate.GNMTGlobalScorer(alpha=0.7, beta=0.0, length_penalty='avg', coverage_penalty='none')
-	# Decoding strategy:
-	#	Greedy search, if beam_size = 1.
-	#	Beam search, otherwise.
-	translator = onmt.translate.Translator(
-		model=model, fields=vocab_fields, 
-		src_reader=src_reader, tgt_reader=tgt_reader, 
-		global_scorer=scorer, gpu=gpu
-	)
-	# Build a word-based translation from the batch output of translator and the underlying dictionaries.
-	builder = onmt.translate.TranslationBuilder(data=torch.load(valid_data_file), fields=vocab_fields)
-
-	for batch in valid_iter:
-		trans_batch = translator.translate_batch(batch=batch, src_vocabs=[src_vocab], attn_debug=False)
-		translations = builder.from_batch(trans_batch)
-		for trans in translations:
-			print(trans.log(0))
 
 #--------------------------------------------------------------------
 
@@ -450,13 +318,17 @@ def train_test():
 	model = onmt.model_builder.build_model(model_opt, opt, fields, checkpoint=None)
 	generator = None  # FIXME [implement] >>
 
+	# NOTE [info] >> The generator is not called. So It has to be called explicitly.
+	#model.generator = generator
+	model.add_module('generator', generator)
+
 	model = model.to(device)
-	generator = generator.to(device)
+	model.generator = model.generator.to(device)
 
 	#--------------------
 	# Set up an optimizer.
 
-	lr = 1
+	lr = 1.0
 	torch_optimizer = torch.optim.SGD(model.parameters(), lr=lr)
 	optimizer = onmt.utils.optimizers.Optimizer(torch_optimizer, learning_rate=lr, learning_rate_decay_fn=None, max_grad_norm=2)
 
@@ -579,6 +451,150 @@ def server_test():
 
 #--------------------------------------------------------------------
 
+# REF [site] >> https://opennmt.net/OpenNMT-py/Library.html
+def library_example():
+	is_trained, is_model_loaded = True, False
+	preprocessed_data_dir_path = './data'
+
+	if is_trained:
+		model_filepath = './onmt_library_model.pt'
+	if is_model_loaded:
+		model_filepath_to_load = None
+	assert not is_model_loaded or (is_model_loaded and model_filepath_to_load is not None)
+
+	device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+	gpu = 0 if torch.cuda.is_available() else -1
+
+	#--------------------
+	# Prepare data.
+
+	# Load in the vocabulary for the model of interest.
+	vocab_fields = torch.load(preprocessed_data_dir_path + '/data.vocab.pt')
+	train_data_files = [
+		preprocessed_data_dir_path + '/data.train.0.pt'
+	]
+	valid_data_files = [
+		preprocessed_data_dir_path + '/data.valid.0.pt'
+	]
+
+	src_text_field = vocab_fields['src'].base_field
+	src_vocab = src_text_field.vocab
+	src_padding = src_vocab.stoi[src_text_field.pad_token]
+
+	tgt_text_field = vocab_fields['tgt'].base_field
+	tgt_vocab = tgt_text_field.vocab
+	tgt_padding = tgt_vocab.stoi[tgt_text_field.pad_token]
+
+	train_iter = onmt.inputters.inputter.DatasetLazyIter(
+		dataset_paths=train_data_files, fields=vocab_fields,
+		batch_size=50, batch_size_multiple=1, batch_size_fn=None, pool_factor=8192,
+		device=device, is_train=True, repeat=True
+	)
+	valid_iter = onmt.inputters.inputter.DatasetLazyIter(
+		dataset_paths=valid_data_files, fields=vocab_fields,
+		batch_size=10, batch_size_multiple=1, batch_size_fn=None, pool_factor=8192,
+		device=device, is_train=False, repeat=False
+	)
+
+	#--------------------
+	# Build a model.
+
+	emb_size = 100
+	rnn_size = 500
+
+	# Specify the core model.
+	encoder_embeddings = onmt.modules.Embeddings(emb_size, len(src_vocab), word_padding_idx=src_padding)
+	encoder = onmt.encoders.RNNEncoder(
+		hidden_size=rnn_size, num_layers=1, bidirectional=True,
+		rnn_type='LSTM', embeddings=encoder_embeddings
+	)
+
+	decoder_embeddings = onmt.modules.Embeddings(emb_size, len(tgt_vocab), word_padding_idx=tgt_padding)
+	decoder = onmt.decoders.decoder.InputFeedRNNDecoder(
+		hidden_size=rnn_size, num_layers=1, bidirectional_encoder=True, 
+		rnn_type='LSTM', embeddings=decoder_embeddings
+	)
+
+	model = onmt.models.model.NMTModel(encoder, decoder)
+
+	# Specify the tgt word generator.
+	model.generator = torch.nn.Sequential(
+		torch.nn.Linear(rnn_size, len(tgt_vocab)),
+		torch.nn.LogSoftmax(dim=-1)
+	)
+
+	if is_model_loaded:
+		model, model.generator = load_model(model_filepath_to_load, model, model.generator, device=device)
+
+	model = model.to(device)
+	model.generator = model.generator.to(device)
+
+	#--------------------
+	# Specify loss computation module.
+
+	loss = onmt.utils.loss.NMTLossCompute(
+		criterion=torch.nn.NLLLoss(ignore_index=tgt_padding, reduction='sum'),
+		generator=model.generator
+	)
+
+	#--------------------
+	# Set up an optimizer.
+
+	lr = 1.0
+	torch_optimizer = torch.optim.SGD(model.parameters(), lr=lr)
+	optim = onmt.utils.optimizers.Optimizer(torch_optimizer, learning_rate=lr, learning_rate_decay_fn=None, max_grad_norm=2)
+
+	#--------------------
+	# Train.
+
+	if is_trained:
+		# Keeping track of the output requires a report manager.
+		report_manager = onmt.utils.ReportMgr(report_every=50, start_time=None, tensorboard_writer=None)
+		trainer = onmt.Trainer(
+			model=model, train_loss=loss, valid_loss=loss,
+			optim=optim, report_manager=report_manager
+		)
+
+		print('Start training...')
+		start_time = time.time()
+		total_stats = trainer.train(
+			train_iter=train_iter, train_steps=400,
+			valid_iter=valid_iter, valid_steps=200
+		)
+		print('End training: {} secs.'.format(time.time() - start_time))
+		print('Train: Accuracy = {}, Cross entropy = {}, Perplexity = {}.'.format(total_stats.accuracy(), total_stats.xent(), total_stats.ppl()))
+
+		save_model(model_filepath, model, model.generator)
+
+	#--------------------
+	# Load up the translation functions.
+
+	src_reader = onmt.inputters.str2reader['text']
+	tgt_reader = onmt.inputters.str2reader['text']
+	scorer = onmt.translate.GNMTGlobalScorer(alpha=0.7, beta=0.0, length_penalty='avg', coverage_penalty='none')
+	# Decoding strategy:
+	#	Greedy search, if beam_size = 1.
+	#	Beam search, otherwise.
+	translator = onmt.translate.Translator(
+		model=model, fields=vocab_fields, 
+		src_reader=src_reader(), tgt_reader=tgt_reader(), 
+		global_scorer=scorer, gpu=gpu
+	)
+	# Build a word-based translation from the batch output of translator and the underlying dictionaries.
+	builder = onmt.translate.TranslationBuilder(data=torch.load(valid_data_files[0]), fields=vocab_fields)
+
+	for batch in valid_iter:
+		print('Start translating...')
+		start_time = time.time()
+		trans_batch = translator.translate_batch(batch=batch, src_vocabs=[src_vocab], attn_debug=False)
+		print('End translating: {} secs.'.format(time.time() - start_time))
+
+		translations = builder.from_batch(trans_batch)
+		for trans in translations:
+			print(trans.log(0))
+
+#--------------------------------------------------------------------
+
 def build_im2latex_model(input_channel, num_classes, word_vec_size):
 	bidirectional_encoder = False
 	embedding_dropout = 0.3
@@ -629,12 +645,15 @@ def build_im2latex_model(input_channel, num_classes, word_vec_size):
 	return model, generator
 
 def im2latex_example():
+	src_data_type, tgt_data_type = 'img', 'text'
 	input_channel = 3
 	num_classes = 466
 	word_vec_size = 500
-	batch_size = 64
-	max_time_steps = 10
+	batch_size = 32
 
+	is_trained, is_model_loaded = True, False
+
+	# TODO [choose] >>
 	if True:
 		# For im2text_small.
 		# REF [site] >> http://lstm.seas.harvard.edu/latex/im2text_small.tgz
@@ -645,32 +664,110 @@ def im2latex_example():
 		# REF [site] >> http://lstm.seas.harvard.edu/latex/im2text.tgz
 		preprocessed_data_dir_path = './data/im2text'
 		num_train_data_files, num_valid_data_files = 153, 17
-	is_trained, is_model_loaded = True, False
 
 	if is_trained:
 		model_filepath = './data/im2latex_model.pt'
 	if is_model_loaded:
 		# Downloaded from http://lstm.seas.harvard.edu/latex/py-model.pt.
-		model_filepath_to_load = './data/py-model.pt'
+		#model_filepath_to_load = './data/py-model.pt'
+		model_filepath_to_load = './data/im2latex_model.pt'
 	assert not is_model_loaded or (is_model_loaded and model_filepath_to_load is not None)
 
-	gpu = 1
+	gpu = 0
 	device = torch.device('cuda:{}'.format(gpu) if torch.cuda.is_available() and gpu >= 0 else 'cpu')
 	print('Device: {}.'.format(device))
 
 	#--------------------
 	# Prepare data.
 
+	def read_lines_from_file(filepath):
+		try:
+			with open(filepath, 'r', encoding='utf-8') as fd:
+				lines = fd.read().splitlines()  # A list of strings.
+				return lines
+		except FileNotFoundError as ex:
+			print('File not found: {}.'.format(filepath))
+			raise
+		except UnicodeDecodeError as ex:
+			print('Unicode decode error: {}.'.format(filepath))
+			raise
+
 	# REF [site] >> https://opennmt.net/OpenNMT-py/im2text.html
 
-	# Load in the vocabulary for the model of interest.
-	vocab_fields = torch.load(preprocessed_data_dir_path + '/demo.vocab.pt')
-	train_data_files = list()
-	for idx in range(num_train_data_files):
-		train_data_files.append(preprocessed_data_dir_path + '/demo.train.{}.pt'.format(idx))
-	valid_data_files = list()
-	for idx in range(num_valid_data_files):
-		valid_data_files.append(preprocessed_data_dir_path + '/demo.valid.{}.pt'.format(idx))
+	# TODO [choose] >>
+	# NOTE [info] >> Two vocab_fields's are different, so a model has to be trained.
+	#	If not, wrong results will be obtained.
+	if True:
+		# NOTE [info] >> When preprocessing data by onmt_preprocess or ${OpenNMT-py_HOME}/onmt/bin/preprocess.py.
+
+		# Load in the vocabulary for the model of interest.
+		vocab_fields = torch.load(preprocessed_data_dir_path + '/demo.vocab.pt')
+	else:
+		#UNKNOWN_TOKEN, PAD_TOKEN, SOS_TOKEN, EOS_TOKEN = '<UNK>', '<PAD>', '<SOS>', '<EOS>'
+		UNKNOWN_TOKEN, PAD_TOKEN, SOS_TOKEN, EOS_TOKEN = '<unk>', '<blank>', '<s>', '</s>'
+
+		def preprocess(x):
+			return x
+		def postprocess(batch, vocab):
+			if len(batch) == 1: return batch[0].unsqueeze(dim=0)
+			max_height, max_width = max([tt.shape[1] for tt in batch]), max([tt.shape[2] for tt in batch])
+			batch_resized = torch.zeros((len(batch), 3, max_height, max_width), dtype=batch[0].dtype)
+			for idx, tt in enumerate(batch):
+				batch_resized[idx, :, :tt.shape[1], :tt.shape[2]] = tt
+			return batch_resized
+
+		# REF [function] >> image_fields() in https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/inputters/image_dataset.py.
+		src_field = torchtext.data.Field(
+			sequential=False, use_vocab=False, init_token=None, eos_token=None, fix_length=None,
+			#dtype=torch.float32, preprocessing=preprocess, postprocessing=postprocess, lower=False,
+			dtype=torch.float32, preprocessing=None, postprocessing=postprocess, lower=False,
+			tokenize=None, tokenizer_language='en',
+			include_lengths=False, batch_first=False, pad_token=None, pad_first=False, unk_token=UNKNOWN_TOKEN,
+			truncate_first=False, stop_words=None, is_target=False
+		)
+		tgt_field = torchtext.data.Field(
+			sequential=True, use_vocab=True, init_token=SOS_TOKEN, eos_token=EOS_TOKEN, fix_length=None,
+			dtype=torch.int64, preprocessing=None, postprocessing=None, lower=False,
+			tokenize=None, tokenizer_language='en',
+			#tokenize=functools.partial(onmt.inputters.inputter._feature_tokenize, layer=0, feat_delim=None, truncate=None), tokenizer_language='en',
+			include_lengths=False, batch_first=False, pad_token=PAD_TOKEN, pad_first=False, unk_token=UNKNOWN_TOKEN,
+			truncate_first=False, stop_words=None, is_target=False
+		)
+		indices_field = torchtext.data.Field(
+			sequential=False, use_vocab=False, init_token=None, eos_token=None, fix_length=None,
+			dtype=torch.int64, preprocessing=None, postprocessing=None, lower=False,
+			tokenize=None, tokenizer_language='en',
+			include_lengths=False, batch_first=False, pad_token=None, pad_first=False, unk_token=UNKNOWN_TOKEN,
+			truncate_first=False, stop_words=None, is_target=False
+		)
+		corpus_id_field = torchtext.data.Field(
+			sequential=False, use_vocab=True, init_token=None, eos_token=None, fix_length=None,
+			dtype=torch.int64, preprocessing=None, postprocessing=None, lower=False,
+			tokenize=None, tokenizer_language='en',
+			include_lengths=False, batch_first=False, pad_token=None, pad_first=False, unk_token=UNKNOWN_TOKEN,
+			truncate_first=False, stop_words=None, is_target=False
+		)
+
+		# NOTE [info] >> It is better to build a vocabulary from corpora.
+		if True:
+			tgt_train_texts = read_lines_from_file(preprocessed_data_dir_path + '/tgt-train.txt')
+			tgt_valid_texts = read_lines_from_file(preprocessed_data_dir_path + '/tgt-val.txt')
+			tgt_test_texts = read_lines_from_file(preprocessed_data_dir_path + '/tgt-test.txt')
+			texts = [txt.split() for txt in tgt_train_texts] + [txt.split() for txt in tgt_valid_texts] + [txt.split() for txt in tgt_test_texts]
+			tgt_field.build_vocab(texts)
+		else:
+			vocab = read_lines_from_file(preprocessed_data_dir_path + '/vocab.txt')
+			#tgt_field.vocab = vocab  # AttributeError: 'list' object has no attribute 'stoi'.
+			tgt_field.build_vocab([vocab])
+		corpus_id_field.build_vocab(['train'])
+
+		# REF [function] >> build_vocab() in https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/inputters/inputter.py.
+		vocab_fields = {
+			'src': src_field,
+			'tgt': onmt.inputters.text_dataset.TextMultiField('tgt', tgt_field, feats_fields=[]),
+			'indices': indices_field,
+			'corpus_id': corpus_id_field,
+		}
 
 	#src_text_field = vocab_fields['src'].base_field  # Error: AttributeError: 'Field' object has no attribute 'base_field'.
 	#src_vocab = src_text_field.vocab
@@ -680,16 +777,89 @@ def im2latex_example():
 	tgt_vocab = tgt_text_field.vocab
 	tgt_padding = tgt_vocab.stoi[tgt_text_field.pad_token]
 
-	train_iter = onmt.inputters.inputter.DatasetLazyIter(
-		dataset_paths=train_data_files, fields=vocab_fields,
-		batch_size=50, batch_size_multiple=1, batch_size_fn=None, pool_factor=8192,
-		device=device, is_train=True, repeat=True
-	)
-	valid_iter = onmt.inputters.inputter.DatasetLazyIter(
-		dataset_paths=valid_data_files, fields=vocab_fields,
-		batch_size=10, batch_size_multiple=1, batch_size_fn=None, pool_factor=8192,
-		device=device, is_train=False, repeat=False
-	)
+	src_reader = onmt.inputters.str2reader[src_data_type]
+	tgt_reader = onmt.inputters.str2reader[tgt_data_type]
+	if src_data_type == 'img':
+		src_reader_obj = src_reader(truncate=None, channel_size=input_channel)
+	elif src_data_type == 'audio':
+		src_reader_obj = src_reader(sample_rate=0, window_size=0, window_stride=0, window=None, normalize_audio=True, truncate=None)
+	else:
+		src_reader_obj = src_reader()
+	if tgt_data_type == 'img':
+		tgt_reader_obj = tgt_reader(truncate=None, channel_size=input_channel)
+	elif tgt_data_type == 'audio':
+		tgt_reader_obj = tgt_reader(sample_rate=0, window_size=0, window_stride=0, window=None, normalize_audio=True, truncate=None)
+	else:
+		tgt_reader_obj = tgt_reader()
+
+	# TODO [choose] >>
+	if True:
+		# NOTE [info] >> When preprocessing data by onmt_preprocess or ${OpenNMT-py_HOME}/onmt/bin/preprocess.py.
+
+		train_data_files = list()
+		for idx in range(num_train_data_files):
+			train_data_files.append(preprocessed_data_dir_path + '/demo.train.{}.pt'.format(idx))
+		valid_data_files = list()
+		for idx in range(num_valid_data_files):
+			valid_data_files.append(preprocessed_data_dir_path + '/demo.valid.{}.pt'.format(idx))
+
+		# REF [function] >> build_dataset_iter() in https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/inputters/inputter.py.
+		train_iter = onmt.inputters.inputter.DatasetLazyIter(
+			dataset_paths=train_data_files, fields=vocab_fields,
+			batch_size=batch_size, batch_size_multiple=1, batch_size_fn=None, pool_factor=8192,
+			device=device, is_train=True, repeat=True,
+			num_batches_multiple=1, yield_raw_example=False
+		)
+		valid_iter = onmt.inputters.inputter.DatasetLazyIter(
+			dataset_paths=valid_data_files, fields=vocab_fields,
+			batch_size=batch_size, batch_size_multiple=1, batch_size_fn=None, pool_factor=8192,
+			device=device, is_train=False, repeat=False,
+			num_batches_multiple=1, yield_raw_example=False
+		)
+	else:
+		sortkey = onmt.inputters.str2sortkey[tgt_data_type]
+
+		src_dir_path = preprocessed_data_dir_path + '/images'
+
+		src_train_filepaths = read_lines_from_file(preprocessed_data_dir_path + '/src-train.txt')
+		src_train_filepaths = [bytes(fpath, encoding='utf-8') for fpath in src_train_filepaths]
+		tgt_train_texts = read_lines_from_file(preprocessed_data_dir_path + '/tgt-train.txt')
+		src_valid_filepaths = read_lines_from_file(preprocessed_data_dir_path + '/src-val.txt')
+		src_valid_filepaths = [bytes(fpath, encoding='utf-8') for fpath in src_valid_filepaths]
+		tgt_valid_texts = read_lines_from_file(preprocessed_data_dir_path + '/tgt-val.txt')
+
+		# REF [function] >> translate() in https://github.com/OpenNMT/OpenNMT-py/tree/master/onmt/translate/translator.py.
+		train_src_data = {'reader': src_reader_obj, 'data': src_train_filepaths, 'dir': src_dir_path}
+		train_tgt_data = {'reader': tgt_reader_obj, 'data': tgt_train_texts, 'dir': None}
+		train_readers, train_data, train_dirs = onmt.inputters.Dataset.config([('src', train_src_data), ('tgt', train_tgt_data)])
+		train_dataset = onmt.inputters.Dataset(
+			fields=vocab_fields, readers=train_readers, data=train_data, dirs=train_dirs, sort_key=sortkey,
+			filter_pred=None, corpus_id=None
+		)
+		valid_src_data = {'reader': src_reader_obj, 'data': src_valid_filepaths, 'dir': src_dir_path}
+		valid_tgt_data = {'reader': tgt_reader_obj, 'data': tgt_valid_texts, 'dir': None}
+		valid_readers, valid_data, valid_dirs = onmt.inputters.Dataset.config([('src', valid_src_data), ('tgt', valid_tgt_data)])
+		valid_dataset = onmt.inputters.Dataset(
+			fields=vocab_fields, readers=valid_readers, data=valid_data, dirs=valid_dirs, sort_key=sortkey,
+			filter_pred=None, corpus_id=None
+		)
+
+		train_iter = onmt.inputters.inputter.OrderedIterator(
+			dataset=train_dataset,
+			batch_size=batch_size, batch_size_multiple=1, batch_size_fn=None, pool_factor=8192,
+			device=device, train=True, repeat=True,
+			sort=False, sort_within_batch=True,
+			yield_raw_example=False
+		)
+		#train_iter.create_batches()
+		valid_iter = onmt.inputters.inputter.OrderedIterator(
+			dataset=valid_dataset,
+			batch_size=batch_size, batch_size_multiple=1, batch_size_fn=None, pool_factor=8192,
+			device=device, train=False, repeat=False,
+			sort=False, sort_within_batch=True,
+			yield_raw_example=False
+		)
+		#valid_iter.create_batches()
 
 	#--------------------
 	# Build a model.
@@ -697,29 +867,33 @@ def im2latex_example():
 	model, generator = build_im2latex_model(input_channel, num_classes, word_vec_size)
 	#if model: print('Model:\n{}'.format(model))
 
-	#--------------------
-	# Specify loss computation module.
-
-	loss = onmt.utils.loss.NMTLossCompute(
-		criterion=torch.nn.NLLLoss(ignore_index=tgt_padding, reduction='sum'),
-		generator=generator
-	)
-
-	#--------------------
-	# Set up an optimizer.
-
-	lr = 1
-	torch_optimizer = torch.optim.SGD(model.parameters(), lr=lr)
-	optim = onmt.utils.optimizers.Optimizer(torch_optimizer, learning_rate=lr, learning_rate_decay_fn=None, max_grad_norm=2)
-
-	#--------------------
-	# Train.
+	# NOTE [info] >> The generator is not called. So It has to be called explicitly.
+	#model.generator = generator
+	model.add_module('generator', generator)
 
 	if is_model_loaded:
 		model, generator = load_model(model_filepath_to_load, model, generator, device=device)
 
 	model = model.to(device)
-	generator = generator.to(device)
+	model.generator = model.generator.to(device)
+
+	#--------------------
+	# Specify loss computation module.
+
+	loss = onmt.utils.loss.NMTLossCompute(
+		criterion=torch.nn.NLLLoss(ignore_index=tgt_padding, reduction='sum'),
+		generator=model.generator
+	)
+
+	#--------------------
+	# Set up an optimizer.
+
+	lr = 1.0
+	torch_optimizer = torch.optim.SGD(model.parameters(), lr=lr)
+	optim = onmt.utils.optimizers.Optimizer(torch_optimizer, learning_rate=lr, learning_rate_decay_fn=None, max_grad_norm=2)
+
+	#--------------------
+	# Train.
 
 	if is_trained:
 		# Keeping track of the output requires a report manager.
@@ -728,53 +902,34 @@ def im2latex_example():
 			model=model, train_loss=loss, valid_loss=loss,
 			optim=optim, report_manager=report_manager
 		)
+
+		print('Start training...')
+		start_time = time.time()
 		total_stats = trainer.train(
 			train_iter=train_iter, train_steps=400,
 			save_checkpoint_steps=5000,
 			valid_iter=valid_iter, valid_steps=200
 		)
-		#stats = trainer.validate(valid_iter=valid_iter, moving_average=None)
+		print('End training: {} secs.'.format(time.time() - start_time))
+		print('Train: Accuracy = {}, Cross entropy = {}, Perplexity = {}.'.format(total_stats.accuracy(), total_stats.xent(), total_stats.ppl()))
 
-		save_model(model_filepath, model, generator)
+		print('Start evaluating...')
+		start_time = time.time()
+		stats = trainer.validate(valid_iter=valid_iter, moving_average=None)
+		print('End evaluating: {} secs.'.format(time.time() - start_time))
+		print('Evaluation: Accuracy = {}, Cross entropy = {}, Perplexity = {}.'.format(stats.accuracy(), stats.xent(), stats.ppl()))
+
+		save_model(model_filepath, model, model.generator)
 
 	#--------------------
 	# Load up the translation functions.
 
-	# NOTE [info] >> The generator is not called. So It has to be called explicitly.
-	#model.generator = generator
-	model.add_module('generator', generator)
-
-	src_reader = onmt.inputters.str2reader['img']
-	tgt_reader = onmt.inputters.str2reader['text']
 	scorer = onmt.translate.GNMTGlobalScorer(alpha=0.7, beta=0.0, length_penalty='avg', coverage_penalty='none')
+
+	# TODO [choose] >>
 	if True:
-		# Decoding strategy:
-		#	Greedy search, if beam_size = 1.
-		#	Beam search, otherwise.
-		translator = onmt.translate.Translator(
-			model=model, fields=vocab_fields, 
-			src_reader=src_reader, tgt_reader=tgt_reader, 
-			global_scorer=scorer,
-			gpu=gpu,
-			data_type='img'
-		)
+		# NOTE [info] >> When using image files.
 
-		for batch in valid_iter:
-			trans_batch = translator.translate_batch(batch=batch, src_vocabs=[], attn_debug=False)
-
-			#print('\tBatch source = {}.'.format(trans_batch['batch'].src.cpu().numpy()))
-			#print('\tBatch target = {}.'.format(trans_batch['batch'].tgt.cpu().numpy()))
-			#print('\tBatch indices = {}.'.format(trans_batch['batch'].indices.cpu().numpy()))
-			#print('\tBatch corpus ID = {}.'.format(trans_batch['batch'].corpus_id.cpu().numpy()))
-
-			for idx, (pred, score, attn, gold_score, alignment) in enumerate(zip(trans_batch['predictions'], trans_batch['scores'], trans_batch['attention'], trans_batch['gold_score'], trans_batch['alignment'])):
-				print('ID = {}:'.format(idx))
-				print('\tPrediction = {}.'.format(pred[0].cpu().numpy()))
-				print('\tScore = {}.'.format(score[0].cpu().item()))
-				#print('\tAttention = {}.'.format(attn[0].cpu().numpy()))
-				print('\tGold scores = {}.'.format(gold_score.cpu().numpy()))
-				#print('\tAlignment = {}.'.format(alignment[0].cpu().item()))
-	else:
 		try:
 			import tempfile
 			with tempfile.TemporaryFile(mode='w') as fd:
@@ -782,33 +937,73 @@ def im2latex_example():
 				#	Greedy search, if beam_size = 1.
 				#	Beam search, otherwise.
 				translator = onmt.translate.Translator(
-					model=model, fields=vocab_fields, 
-					src_reader=src_reader(), tgt_reader=tgt_reader(), 
-					global_scorer=scorer, out_file=fd,
-					gpu=gpu,
-					data_type='img'
+					model=model, fields=vocab_fields,
+					src_reader=src_reader_obj, tgt_reader=tgt_reader_obj,
+					n_best=1, min_length=0, max_length=100,
+					beam_size=30, random_sampling_topk=1, random_sampling_temp=1,
+					data_type=src_data_type,
+					global_scorer=scorer,
+					copy_attn=False, report_align=False, report_score=True, out_file=fd,
+					gpu=gpu
 				)
 
-				image_filepaths = [
-					bytes('1a5e4f1ea5.png', encoding='utf-8'),
-					bytes('1a6ad5d0f5.png', encoding='utf-8'),
-					bytes('1a09f0e488.png', encoding='utf-8'),
-					bytes('1a9a0575e7.png', encoding='utf-8'),
-					bytes('1a9e2f3773.png', encoding='utf-8'),
-				]
+				src_filepaths = read_lines_from_file(preprocessed_data_dir_path + '/src-test.txt')
+				src_filepaths = [bytes(fpath, encoding='utf-8') for fpath in src_filepaths]
+				tgt_texts = read_lines_from_file(preprocessed_data_dir_path + '/tgt-test.txt')
 				try:
-					scores, predictions = translator.translate(src=image_filepaths, tgt=None, src_dir=preprocessed_data_dir_path + '/images', batch_size=batch_size, batch_type='tokens', attn_debug=False, align_debug=False, phrase_table='')
+					print('Start translating...')
+					start_time = time.time()
+					scores, predictions = translator.translate(src=src_filepaths, tgt=None, src_dir=preprocessed_data_dir_path + '/images', batch_size=batch_size, batch_type='tokens', attn_debug=False, align_debug=False, phrase_table='')
+					#scores, predictions = translator.translate(src=src_filepaths, tgt=tgt_texts, src_dir=preprocessed_data_dir_path + '/images', batch_size=batch_size, batch_type='tokens', attn_debug=False, align_debug=False, phrase_table='')
+					print('End translating: {} secs.'.format(time.time() - start_time))
 
-					for idx, (score, pred) in enumerate(zip(scores, predictions)):
-						print('ID = {}:'.format(idx))
+					for idx, (score, pred, gt) in enumerate(zip(scores, predictions, tgt_texts)):
+						print('ID #{}:'.format(idx))
+						print('\tG/T        = {}.'.format(gt))
 						print('\tPrediction = {}.'.format(pred[0]))
-						print('\tScore = {}.'.format(score[0].cpu().item()))
+						print('\tScore      = {}.'.format(score[0].cpu().item()))
 				except (RuntimeError, Exception) as ex:
 					print("Error: {}.".format(str(ex)))
 		except FileNotFoundError as ex:
 			print('File not found: {}.'.format(ex))
 		except UnicodeDecodeError as ex:
 			print('Unicode decode error: {}.'.format(ex))
+	else:
+		# Decoding strategy:
+		#	Greedy search, if beam_size = 1.
+		#	Beam search, otherwise.
+		translator = onmt.translate.Translator(
+			model=model, fields=vocab_fields,
+			src_reader=src_reader_obj, tgt_reader=tgt_reader_obj,
+			n_best=1, min_length=0, max_length=100,
+			beam_size=30, random_sampling_topk=1, random_sampling_temp=1,
+			data_type=src_data_type,
+			global_scorer=scorer,
+			copy_attn=False, report_align=False, report_score=True,
+			gpu=gpu
+		)
+
+		for batch in valid_iter:
+			print('Start translating...')
+			start_time = time.time()
+			trans_batch = translator.translate_batch(batch=batch, src_vocabs=[], attn_debug=False)
+			print('End translating: {} secs.'.format(time.time() - start_time))
+
+			#print('\tBatch source = {}.'.format(trans_batch['batch'].src.cpu().numpy()))
+			#print('\tBatch target = {}.'.format(trans_batch['batch'].tgt.cpu().numpy()))
+			#print('\tBatch indices = {}.'.format(trans_batch['batch'].indices.cpu().numpy()))
+			#print('\tBatch corpus ID = {}.'.format(trans_batch['batch'].corpus_id.cpu().numpy()))
+
+			for idx, (pred, score, attn, gold_score, alignment) in enumerate(zip(trans_batch['predictions'], trans_batch['scores'], trans_batch['attention'], trans_batch['gold_score'], trans_batch['alignment'])):
+				print('ID #{}:'.format(idx))
+				try:
+					print('\tPrediction = {}.'.format(' '.join([tgt_vocab.itos[elem] for elem in pred[0].cpu().numpy() if elem < len(tgt_vocab.itos)])))
+				except IndexError as ex:
+					print('\tDecoding error: {}.'.format(pred[0]))
+				print('\tScore      = {}.'.format(score[0].cpu().item()))
+				#print('\tAttention  = {}.'.format(attn[0].cpu().numpy()))
+				print('\tGold score = {}.'.format(gold_score.cpu().numpy()))
+				#print('\tAlignment  = {}.'.format(alignment[0].cpu().item()))
 
 #--------------------------------------------------------------------
 
@@ -906,7 +1101,7 @@ class MyModel(torch.nn.Module):
 	def __init__(self, encoder, decoder, generator=None):
 		super().__init__()
 
-		self.encoder, self.decoder, self.generator = encoder, decoder, generator
+		self.encoder, self.decoder, self._generator = encoder, decoder, generator
 
 	# REF [function] >> NMTModel.forward() in https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/models/model.py
 	def forward(self, src, tgt, lengths, bptt=False, with_align=False):
@@ -916,8 +1111,8 @@ class MyModel(torch.nn.Module):
 		if bptt is False:
 			self.decoder.init_state(src, memory_bank, enc_state)
 		dec_outs, attns = self.decoder(dec_in, memory_bank, memory_lengths=lengths, with_align=with_align)
-		if self.generator: outs = self.generator(dec_outs)
-		return outs, attns
+		if self._generator: dec_outs = self._generator(dec_outs)
+		return dec_outs, attns
 
 # REF [site] >> https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/model_builder.py
 def build_my_im2txt_model(use_NMTModel, input_channel, num_classes, word_vec_size):
@@ -928,30 +1123,17 @@ def build_my_im2txt_model(use_NMTModel, input_channel, num_classes, word_vec_siz
 	else:
 		model = MyModel(encoder, decoder, generator=None)
 
-	# NOTE [info] >> The generator is not called. So It has to be called explicitly.
-	#model.generator = generator
-	#model.add_module('generator', generator)
-
 	return model, generator
 
-def my_im2txt_example():
+def simple_example():
 	use_NMTModel = False
 	input_channel = 3
 	num_classes = 1798
 	word_vec_size = 80
-	batch_size = 16
+	batch_size = 64
 	max_time_steps = 10
 
-	preprocessed_data_dir_path = './data/my_im2txt'
-	is_trained, is_model_loaded = True, False
-
-	if is_trained:
-		model_filepath = './data/my_im2txt_model.pt'
-	if is_model_loaded:
-		model_filepath_to_load = None
-	assert not is_model_loaded or (is_model_loaded and model_filepath_to_load is not None)
-
-	gpu = 1
+	gpu = 0
 	device = torch.device('cuda:{}'.format(gpu) if torch.cuda.is_available() and gpu >= 0 else 'cpu')
 	print('Device: {}.'.format(device))
 
@@ -960,6 +1142,13 @@ def my_im2txt_example():
 
 	model, generator = build_my_im2txt_model(use_NMTModel, input_channel, num_classes, word_vec_size)
 	#if model: print('Model:\n{}'.format(model))
+
+	# NOTE [info] >> The generator is not called. So It has to be called explicitly.
+	#model.generator = generator
+	model.add_module('generator', generator)
+
+	model = model.to(device)
+	model.generator = model.generator.to(device)
 
 	#--------------------
 	# For checking.
@@ -975,7 +1164,7 @@ def my_im2txt_example():
 
 		with torch.no_grad():
 			model_outputs, attentions = model(inputs, outputs, output_lens)  # [target length, batch size, hidden size] & [target length, batch size, source length].
-			model_outputs = generator(model_outputs)
+			model_outputs = model.generator(model_outputs)
 
 		#model_outputs = model_outputs.transpose(0, 1)  # [T, B, F] -> [B, T, F].
 		model_outputs = model_outputs.cpu().numpy()
@@ -984,95 +1173,17 @@ def my_im2txt_example():
 		print("Model outputs' shape =", model_outputs.shape)
 		print("Attentions' shape =", attentions.shape)
 
-	#--------------------
-	# Specify loss computation module.
-
-	loss = onmt.utils.loss.NMTLossCompute(
-		criterion=torch.nn.NLLLoss(ignore_index=label_converter.pad_value, reduction='sum'),
-		generator=generator
-	)
-
-	#--------------------
-	# Set up an optimizer.
-
-	lr = 1
-	torch_optimizer = torch.optim.SGD(model.parameters(), lr=lr)
-	optim = onmt.utils.optimizers.Optimizer(torch_optimizer, learning_rate=lr, learning_rate_decay_fn=None, max_grad_norm=2)
-
-	#--------------------
-	# Train.
-
-	if is_model_loaded:
-		model, generator = load_model(model_filepath_to_load, model, generator, device=device)
-
-	model = model.to(device)
-	generator = generator.to(device)
-
-	if is_trained:
-		# Keeping track of the output requires a report manager.
-		report_manager = onmt.utils.ReportMgr(report_every=50, start_time=None, tensorboard_writer=None)
-		trainer = onmt.Trainer(
-			model=model, train_loss=loss, valid_loss=loss,
-			optim=optim, report_manager=report_manager
-		)
-		total_stats = trainer.train(
-			train_iter=train_iter, train_steps=400,
-			save_checkpoint_steps=5000,
-			valid_iter=valid_iter, valid_steps=200
-		)
-		#stats = trainer.validate(valid_iter=valid_iter, moving_average=None)
-
-		save_model(model_filepath, model, generator)
-
-	#--------------------
-	# Load up the translation functions.
-
-	# NOTE [info] >> The generator is not called. So It has to be called explicitly.
-	#model.generator = generator
-	model.add_module('generator', generator)
-
-	src_reader = onmt.inputters.str2reader['img']
-	tgt_reader = onmt.inputters.str2reader['text']
-	scorer = onmt.translate.GNMTGlobalScorer(alpha=0.7, beta=0.0, length_penalty='avg', coverage_penalty='none')
-	# Decoding strategy:
-	#	Greedy search, if beam_size = 1.
-	#	Beam search, otherwise.
-	translator = onmt.translate.Translator(
-		model=model, fields=vocab_fields, 
-		src_reader=src_reader, tgt_reader=tgt_reader, 
-		global_scorer=scorer,
-		gpu=gpu,
-		data_type='img'
-	)
-
-	for batch in valid_iter:
-		trans_batch = translator.translate_batch(batch=batch, src_vocabs=[], attn_debug=False)
-
-		#print('\tBatch source = {}.'.format(trans_batch['batch'].src.cpu().numpy()))
-		#print('\tBatch target = {}.'.format(trans_batch['batch'].tgt.cpu().numpy()))
-		#print('\tBatch indices = {}.'.format(trans_batch['batch'].indices.cpu().numpy()))
-		#print('\tBatch corpus ID = {}.'.format(trans_batch['batch'].corpus_id.cpu().numpy()))
-
-		for idx, (pred, score, attn, gold_score, alignment) in enumerate(zip(trans_batch['predictions'], trans_batch['scores'], trans_batch['attention'], trans_batch['gold_score'], trans_batch['alignment'])):
-			print('ID = {}:'.format(idx))
-			print('\tPrediction = {}.'.format(pred[0].cpu().numpy()))
-			print('\tScore = {}.'.format(score[0].cpu().item()))
-			#print('\tAttention = {}.'.format(attn[0].cpu().numpy()))
-			print('\tGold scores = {}.'.format(gold_score.cpu().numpy()))
-			#print('\tAlignment = {}.'.format(alignment[0].cpu().item()))
-
 def main():
-	#library_example()
-
-	#--------------------
 	#preprocess_test()  # Not yet completed.
 	#train_test()  # Not yet completed.
 	#translate_test()  # Not yet completed.
 	#server_test()  # Not yet implemented.
 
 	#--------------------
+	#library_example()
+
 	im2latex_example()
-	#my_im2txt_example()
+	#simple_example()
 
 #--------------------------------------------------------------------
 
