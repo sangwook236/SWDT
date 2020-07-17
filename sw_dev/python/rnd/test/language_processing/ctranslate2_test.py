@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+# REF [site] >> https://github.com/OpenNMT/CTranslate2
+
 import time
 import ctranslate2
 

@@ -107,3 +107,6 @@
 		cd ${sejong_corpus_cleaner_HOME}/scripts
 		python build_corpus.py --corpus_type sejong
 			${sejong_corpus_cleaner_HOME}/data/clean/corpus_sejong_all.txt
+
+	- Implementation.
+		${SWL_PYTHON_HOME}/test/language_processing/corpus_test.py
