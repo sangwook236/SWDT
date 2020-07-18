@@ -1170,8 +1170,8 @@ def simple_example():
 		model_outputs = model_outputs.cpu().numpy()
 		attentions = attentions['std'].cpu().numpy()
 
-		print("Model outputs' shape =", model_outputs.shape)
-		print("Attentions' shape =", attentions.shape)
+		print("Model outputs' shape = {}.".format(model_outputs.shape))
+		print("Attentions' shape = {}.".format(attentions.shape))
 
 def main():
 	#preprocess_test()  # Not yet completed.

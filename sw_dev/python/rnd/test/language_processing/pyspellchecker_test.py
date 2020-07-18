@@ -103,7 +103,7 @@ def construct_korean_dictionary_example():
 	text_data = okt.nouns(text_data)
 	print('End constructing a Korean dictionary: {} secs.'.format(time.time() - start_time))
 
-	# In my_dictionary.json:
+	# In my_korean_dictionary.json:
 	#	{
 	#		"가": 1,
 	#		"나": 2,
