@@ -1,4 +1,23 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
+def args_test():
+	def func(*args):
+		print(args)
+
+	func('sam', 1, 'two')
+
+	args = ['sam', 1, 'two']
+	func(*args)
+
+def kwargs_test():
+	def func(**kwargs):
+		print(kwargs)
+
+	func(arg3='sam', arg1=1, arg2='two')
+
+	kwargs = {'arg3': 'sam', 'arg1': 1, 'arg2': 'two'}
+	func(**kwargs)
 
 def args_func(*args):
 	print('********** args_func()')
@@ -59,6 +78,9 @@ def args_kwargs_func(*args, **kwargs):
 	#kwargs_func(678, 'XyZ', grade=2, **kwargs, school='elementary')
 
 def main():
+	args_test()
+	kwargs_test()
+
 	# NOTE [error] >> SyntaxError: positional argument follows keyword argument.
 	#args_kwargs_func(1, 3.7, 'abc', first_name='gildong', last_name='hong', 'DEF', param1='abcXYZ123987', age=27, 987, gender=True, param2=12345)
 	args_kwargs_func(1, 3.7, 'abc', 'DEF', 987, first_name='gildong', last_name='hong', param1='abcXYZ123987', age=27, gender=True, param2=12345)
