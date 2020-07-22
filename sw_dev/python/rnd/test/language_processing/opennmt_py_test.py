@@ -530,24 +530,21 @@ def library_example():
 	model.generator = model.generator.to(device)
 
 	#--------------------
-	# Specify loss computation module.
-
-	loss = onmt.utils.loss.NMTLossCompute(
-		criterion=torch.nn.NLLLoss(ignore_index=tgt_padding, reduction='sum'),
-		generator=model.generator
-	)
-
-	#--------------------
-	# Set up an optimizer.
-
-	lr = 1.0
-	torch_optimizer = torch.optim.SGD(model.parameters(), lr=lr)
-	optim = onmt.utils.optimizers.Optimizer(torch_optimizer, learning_rate=lr, learning_rate_decay_fn=None, max_grad_norm=2)
-
-	#--------------------
-	# Train.
-
 	if is_trained:
+		# Specify loss computation module.
+		loss = onmt.utils.loss.NMTLossCompute(
+			criterion=torch.nn.NLLLoss(ignore_index=tgt_padding, reduction='sum'),
+			generator=model.generator
+		)
+
+		# Set up an optimizer.
+		lr = 1.0
+		torch_optimizer = torch.optim.SGD(model.parameters(), lr=lr)
+		optim = onmt.utils.optimizers.Optimizer(torch_optimizer, learning_rate=lr, learning_rate_decay_fn=None, max_grad_norm=2)
+
+		#--------------------
+		# Train.
+
 		# Keeping track of the output requires a report manager.
 		report_manager = onmt.utils.ReportMgr(report_every=50, start_time=None, tensorboard_writer=None)
 		trainer = onmt.Trainer(
@@ -644,17 +641,123 @@ def build_im2latex_model(input_channel, num_classes, word_vec_size):
 
 	return model, generator
 
+class MyImageEncoder(onmt.encoders.encoder.EncoderBase):
+	def __init__(self, image_height, input_channel, hidden_size, num_layers, bidirectional=False):
+		super().__init__()
+
+		assert image_height % 16 == 0, 'image_height has to be a multiple of 16'
+		self.image_height = image_height
+
+		# Build a model.
+		# This implementation assumes that input size is h x w.
+		self.cnn = torch.nn.Sequential(
+			torch.nn.Conv2d(input_channel, 64, 3, 1, 1), torch.nn.ReLU(True), torch.nn.MaxPool2d(2, 2),  # 64 x h/2 x w/2.
+			torch.nn.Conv2d(64, 128, 3, 1, 1), torch.nn.ReLU(True), torch.nn.MaxPool2d(2, 2),  # 128 x h/4 x w/4.
+			torch.nn.Conv2d(128, 256, 3, 1, 1), torch.nn.BatchNorm2d(256), torch.nn.ReLU(True),  # 256 x h/4 x w/4.
+			torch.nn.Conv2d(256, 256, 3, 1, 1), torch.nn.ReLU(True), torch.nn.MaxPool2d((2, 2), (2, 1), (0, 1)),  # 256 x h/8 x w/4+1.
+			torch.nn.Conv2d(256, 512, 3, 1, 1), torch.nn.BatchNorm2d(512), torch.nn.ReLU(True),  # 512 x h/8 x w/4+1.
+			torch.nn.Conv2d(512, 512, 3, 1, 1), torch.nn.ReLU(True), torch.nn.MaxPool2d((2, 2), (2, 1), (0, 1)),  # 512 x h/16 x w/4+2.
+			torch.nn.Conv2d(512, 512, 2, 1, 0), torch.nn.BatchNorm2d(512), torch.nn.ReLU(True)  # 512 x h/16-1 x w/4+1.
+		)
+		num_features = (image_height // 16 - 1) * 512
+		#import rare.crnn_lang
+		#self.rnn = torch.nn.Sequential(
+		#	rare.crnn_lang.BidirectionalLSTM(num_features, hidden_size, hidden_size),
+		#	rare.crnn_lang.BidirectionalLSTM(hidden_size, hidden_size, hidden_size)
+		#)
+		self.sequence_rnn = torch.nn.LSTM(num_features, hidden_size, num_layers=num_layers, bidirectional=bidirectional, batch_first=False)
+		if bidirectional:
+			self.sequence_projector = torch.nn.Linear(hidden_size * 2, hidden_size * 2)
+			#self.sequence_projector = torch.nn.Linear(hidden_size * 2, hidden_size)
+		else:
+			self.sequence_projector = torch.nn.Linear(hidden_size, hidden_size)
+
+	def forward(self, src, lengths=None):
+		# NOTE [info] >> This resizing is not good.
+		#src = torch.nn.functional.upsample(src, size=(self.image_height, int(src.shape[3] * self.image_height / src.shape[2])), mode='bilinear')
+		src = torch.nn.functional.upsample(src, size=(self.image_height, src.shape[3]), mode='bilinear')
+
+		# Conv features.
+		conv = self.cnn(src)  # [b, c_out, h/16-1, w/4+1].
+		b, c, h, w = conv.size()
+		#assert h == 1, 'The height of conv must be 1'
+		#conv = conv.squeeze(2)  # [b, c_out, w/4+1].
+		conv = conv.reshape(b, -1, w)  # [b, c_out * h/16-1, w/4+1].
+		conv = conv.permute(2, 0, 1)  # [w/4+1, b, c_out * h/16-1].
+
+		# RNN features.
+		#enc_outputs, enc_hiddens = self.rnn((conv, None))  # [w/4+1, b, hidden size], ([#directions, b, hidden size], [#directions, b, hidden size]).
+		enc_outputs, enc_hiddens = self.sequence_rnn(conv)  # [w/4+1, b, #directions * hidden size], ([#layers * #directions, b, hidden size], [#layers * #directions, b, hidden size]).
+		enc_outputs = self.sequence_projector(enc_outputs)  # [w/4+1, b, hidden size].
+
+		return enc_hiddens, enc_outputs, lengths
+
+def build_my_im2latex_model(image_height, input_channel, num_classes, word_vec_size):
+	bidirectional_encoder = False
+	embedding_dropout = 0.3
+	encoder_num_layers = 2
+	encoder_rnn_size = 500
+	encoder_dropout = 0.3
+	decoder_rnn_type = 'LSTM'
+	decoder_num_layers = 2
+	decoder_hidden_size = encoder_rnn_size * 2 if bidirectional_encoder else encoder_rnn_size
+	decoder_dropout = 0.3
+
+	src_embeddings = None
+	tgt_embeddings = onmt.modules.Embeddings(
+		word_vec_size=word_vec_size,
+		word_vocab_size=num_classes,
+		word_padding_idx=1,
+		position_encoding=False,
+		feat_merge='concat',
+		feat_vec_exponent=0.7,
+		feat_vec_size=-1,
+		feat_padding_idx=[],
+		feat_vocab_sizes=[],
+		dropout=embedding_dropout,
+		sparse=False,
+		fix_word_vecs=False
+	)
+
+	encoder = MyImageEncoder(
+		image_height, input_channel,
+		hidden_size=encoder_rnn_size, num_layers=encoder_num_layers, bidirectional=bidirectional_encoder
+	)
+	decoder = onmt.decoders.InputFeedRNNDecoder(
+		rnn_type=decoder_rnn_type, bidirectional_encoder=bidirectional_encoder,
+		num_layers=decoder_num_layers, hidden_size=decoder_hidden_size,
+		attn_type='general', attn_func='softmax',
+		coverage_attn=False, context_gate=None,
+		copy_attn=False, dropout=decoder_dropout, embeddings=tgt_embeddings,
+		reuse_copy_attn=False, copy_attn_type='general'
+	)
+	generator = torch.nn.Sequential(
+		torch.nn.Linear(in_features=decoder_hidden_size, out_features=num_classes, bias=True),
+		onmt.modules.util_class.Cast(dtype=torch.float32),
+		torch.nn.LogSoftmax(dim=-1)
+	)
+
+	model = onmt.models.NMTModel(encoder, decoder)
+
+	return model, generator
+
 def im2latex_example():
 	src_data_type, tgt_data_type = 'img', 'text'
 	input_channel = 3
 	num_classes = 466
 	word_vec_size = 500
 	batch_size = 32
+	train_steps, valid_steps, save_checkpoint_steps = 400, 200, 200
+	#train_steps, valid_steps, save_checkpoint_steps = 10000, 1000, 5000
 
-	is_trained, is_model_loaded = True, False
+	is_trained, is_model_loaded = True, True
+	is_small_data_used = True
+	is_my_model_used = False  # Use an image encoder (RARE) which I define.
+	is_preprocessed_vocab_used, is_preprocessed_data_iterators_used = True, True
 
-	# TODO [choose] >>
-	if True:
+	image_height = 64 if is_my_model_used else None
+
+	if is_small_data_used:
 		# For im2text_small.
 		# REF [site] >> http://lstm.seas.harvard.edu/latex/im2text_small.tgz
 		preprocessed_data_dir_path = './data/im2text_small'
@@ -666,11 +769,17 @@ def im2latex_example():
 		num_train_data_files, num_valid_data_files = 153, 17
 
 	if is_trained:
-		model_filepath = './data/im2latex_model.pt'
+		if is_my_model_used:
+			model_filepath = './data/im2latex_my_model.pt'
+		else:
+			model_filepath = './data/im2latex_model.pt'
 	if is_model_loaded:
-		# Downloaded from http://lstm.seas.harvard.edu/latex/py-model.pt.
-		#model_filepath_to_load = './data/py-model.pt'
-		model_filepath_to_load = './data/im2latex_model.pt'
+		if is_my_model_used:
+			model_filepath_to_load = './data/im2latex_my_model.pt'
+		else:
+			# Downloaded from http://lstm.seas.harvard.edu/latex/py-model.pt.
+			model_filepath_to_load = './data/py-model.pt'
+			#model_filepath_to_load = './data/im2latex_model.pt'
 	assert not is_model_loaded or (is_model_loaded and model_filepath_to_load is not None)
 
 	gpu = 0
@@ -694,10 +803,9 @@ def im2latex_example():
 
 	# REF [site] >> https://opennmt.net/OpenNMT-py/im2text.html
 
-	# TODO [choose] >>
 	# NOTE [info] >> Two vocab_fields's are different, so a model has to be trained.
 	#	If not, wrong results will be obtained.
-	if True:
+	if is_preprocessed_vocab_used:
 		# NOTE [info] >> When preprocessing data by onmt_preprocess or ${OpenNMT-py_HOME}/onmt/bin/preprocess.py.
 
 		# Load in the vocabulary for the model of interest.
@@ -792,8 +900,7 @@ def im2latex_example():
 	else:
 		tgt_reader_obj = tgt_reader()
 
-	# TODO [choose] >>
-	if True:
+	if is_preprocessed_data_iterators_used:
 		# NOTE [info] >> When preprocessing data by onmt_preprocess or ${OpenNMT-py_HOME}/onmt/bin/preprocess.py.
 
 		train_data_files = list()
@@ -864,51 +971,61 @@ def im2latex_example():
 	#--------------------
 	# Build a model.
 
-	model, generator = build_im2latex_model(input_channel, num_classes, word_vec_size)
+	if is_my_model_used:
+		model, generator = build_my_im2latex_model(image_height, input_channel, num_classes, word_vec_size)
+	else:
+		model, generator = build_im2latex_model(input_channel, num_classes, word_vec_size)
 	#if model: print('Model:\n{}'.format(model))
 
-	# NOTE [info] >> The generator is not called. So It has to be called explicitly.
-	#model.generator = generator
-	model.add_module('generator', generator)
+	# TODO [check] >> I don't know why the location where I add a generator should be different.
+	if is_my_model_used:
+		# NOTE [info] >> The generator is not called. So It has to be called explicitly.
+		#model.generator = generator
+		model.add_module('generator', generator)
 
 	if is_model_loaded:
 		model, generator = load_model(model_filepath_to_load, model, generator, device=device)
+
+	if not is_my_model_used:
+		# NOTE [info] >> The generator is not called. So It has to be called explicitly.
+		#model.generator = generator
+		model.add_module('generator', generator)
 
 	model = model.to(device)
 	model.generator = model.generator.to(device)
 
 	#--------------------
-	# Specify loss computation module.
-
-	loss = onmt.utils.loss.NMTLossCompute(
-		criterion=torch.nn.NLLLoss(ignore_index=tgt_padding, reduction='sum'),
-		generator=model.generator
-	)
-
-	#--------------------
-	# Set up an optimizer.
-
-	lr = 1.0
-	torch_optimizer = torch.optim.SGD(model.parameters(), lr=lr)
-	optim = onmt.utils.optimizers.Optimizer(torch_optimizer, learning_rate=lr, learning_rate_decay_fn=None, max_grad_norm=2)
-
-	#--------------------
-	# Train.
-
 	if is_trained:
+		# Specify loss computation module.
+		loss = onmt.utils.loss.NMTLossCompute(
+			criterion=torch.nn.NLLLoss(ignore_index=tgt_padding, reduction='sum'),
+			generator=model.generator
+		)
+
+		# Set up an optimizer.
+		lr = 1.0
+		torch_optimizer = torch.optim.SGD(model.parameters(), lr=lr)
+		optim = onmt.utils.optimizers.Optimizer(torch_optimizer, learning_rate=lr, learning_rate_decay_fn=None, max_grad_norm=2)
+
+		#--------------------
+		# Train.
+
 		# Keeping track of the output requires a report manager.
+		#model_saver = onmt.models.ModelSaver('./data/model_ckpt', model, model_opt, fields=vocab_fields, optim=optim, keep_checkpoint=-1)
+		model_saver = None
 		report_manager = onmt.utils.ReportMgr(report_every=50, start_time=None, tensorboard_writer=None)
 		trainer = onmt.Trainer(
-			model=model, train_loss=loss, valid_loss=loss,
-			optim=optim, report_manager=report_manager
+			model=model, train_loss=loss, valid_loss=loss, optim=optim,
+			model_saver=model_saver,
+			report_manager=report_manager
 		)
 
 		print('Start training...')
 		start_time = time.time()
 		total_stats = trainer.train(
-			train_iter=train_iter, train_steps=400,
-			save_checkpoint_steps=5000,
-			valid_iter=valid_iter, valid_steps=200
+			train_iter=train_iter, train_steps=train_steps,
+			valid_iter=valid_iter, valid_steps=valid_steps,
+			save_checkpoint_steps=save_checkpoint_steps
 		)
 		print('End training: {} secs.'.format(time.time() - start_time))
 		print('Train: Accuracy = {}, Cross entropy = {}, Perplexity = {}.'.format(total_stats.accuracy(), total_stats.xent(), total_stats.ppl()))
@@ -926,49 +1043,7 @@ def im2latex_example():
 
 	scorer = onmt.translate.GNMTGlobalScorer(alpha=0.7, beta=0.0, length_penalty='avg', coverage_penalty='none')
 
-	# TODO [choose] >>
 	if True:
-		# NOTE [info] >> When using image files.
-
-		try:
-			import tempfile
-			with tempfile.TemporaryFile(mode='w') as fd:
-				# Decoding strategy:
-				#	Greedy search, if beam_size = 1.
-				#	Beam search, otherwise.
-				translator = onmt.translate.Translator(
-					model=model, fields=vocab_fields,
-					src_reader=src_reader_obj, tgt_reader=tgt_reader_obj,
-					n_best=1, min_length=0, max_length=100,
-					beam_size=30, random_sampling_topk=1, random_sampling_temp=1,
-					data_type=src_data_type,
-					global_scorer=scorer,
-					copy_attn=False, report_align=False, report_score=True, out_file=fd,
-					gpu=gpu
-				)
-
-				src_filepaths = read_lines_from_file(preprocessed_data_dir_path + '/src-test.txt')
-				src_filepaths = [bytes(fpath, encoding='utf-8') for fpath in src_filepaths]
-				tgt_texts = read_lines_from_file(preprocessed_data_dir_path + '/tgt-test.txt')
-				try:
-					print('Start translating...')
-					start_time = time.time()
-					scores, predictions = translator.translate(src=src_filepaths, tgt=None, src_dir=preprocessed_data_dir_path + '/images', batch_size=batch_size, batch_type='tokens', attn_debug=False, align_debug=False, phrase_table='')
-					#scores, predictions = translator.translate(src=src_filepaths, tgt=tgt_texts, src_dir=preprocessed_data_dir_path + '/images', batch_size=batch_size, batch_type='tokens', attn_debug=False, align_debug=False, phrase_table='')
-					print('End translating: {} secs.'.format(time.time() - start_time))
-
-					for idx, (score, pred, gt) in enumerate(zip(scores, predictions, tgt_texts)):
-						print('ID #{}:'.format(idx))
-						print('\tG/T        = {}.'.format(gt))
-						print('\tPrediction = {}.'.format(pred[0]))
-						print('\tScore      = {}.'.format(score[0].cpu().item()))
-				except (RuntimeError, Exception) as ex:
-					print("Error: {}.".format(str(ex)))
-		except FileNotFoundError as ex:
-			print('File not found: {}.'.format(ex))
-		except UnicodeDecodeError as ex:
-			print('Unicode decode error: {}.'.format(ex))
-	else:
 		# Decoding strategy:
 		#	Greedy search, if beam_size = 1.
 		#	Beam search, otherwise.
@@ -1004,6 +1079,50 @@ def im2latex_example():
 				#print('\tAttention  = {}.'.format(attn[0].cpu().numpy()))
 				print('\tGold score = {}.'.format(gold_score.cpu().numpy()))
 				#print('\tAlignment  = {}.'.format(alignment[0].cpu().item()))
+	else:
+		# NOTE [error] >> This is not working when sources are not text.
+		#	onmt.translate.Translator.translate() uses an instance of onmt.translate.TranslationBuilder.
+		#	onmt.translate.TranslationBuilder builds a word-based translation from the batch output of translator and the underlying dictionaries.
+
+		# NOTE [info] >> When using image files.
+		try:
+			import tempfile
+			with tempfile.TemporaryFile(mode='w') as fd:
+				# Decoding strategy:
+				#	Greedy search, if beam_size = 1.
+				#	Beam search, otherwise.
+				translator = onmt.translate.Translator(
+					model=model, fields=vocab_fields,
+					src_reader=src_reader_obj, tgt_reader=tgt_reader_obj,
+					n_best=1, min_length=0, max_length=100,
+					beam_size=30, random_sampling_topk=1, random_sampling_temp=1,
+					data_type=src_data_type,
+					global_scorer=scorer,
+					copy_attn=False, report_align=False, report_score=True, out_file=fd,
+					gpu=gpu
+				)
+
+				src_filepaths = read_lines_from_file(preprocessed_data_dir_path + '/src-test.txt')
+				src_filepaths = [bytes(fpath, encoding='utf-8') for fpath in src_filepaths]
+				tgt_texts = read_lines_from_file(preprocessed_data_dir_path + '/tgt-test.txt')
+				try:
+					print('Start translating...')
+					start_time = time.time()
+					scores, predictions = translator.translate(src=src_filepaths, tgt=None, src_dir=preprocessed_data_dir_path + '/images', batch_size=batch_size, batch_type='tokens', attn_debug=False, align_debug=False, phrase_table='')
+					#scores, predictions = translator.translate(src=src_filepaths, tgt=tgt_texts, src_dir=preprocessed_data_dir_path + '/images', batch_size=batch_size, batch_type='tokens', attn_debug=False, align_debug=False, phrase_table='')
+					print('End translating: {} secs.'.format(time.time() - start_time))
+
+					for idx, (score, pred, gt) in enumerate(zip(scores, predictions, tgt_texts)):
+						print('ID #{}:'.format(idx))
+						print('\tG/T        = {}.'.format(gt))
+						print('\tPrediction = {}.'.format(pred[0]))
+						print('\tScore      = {}.'.format(score[0].cpu().item()))
+				except (RuntimeError, Exception) as ex:
+					print('Error: {}.'.format(ex))
+		except FileNotFoundError as ex:
+			print('File not found: {}.'.format(ex))
+		except UnicodeDecodeError as ex:
+			print('Unicode decode error: {}.'.format(ex))
 
 #--------------------------------------------------------------------
 
@@ -1106,16 +1225,16 @@ class MyModel(torch.nn.Module):
 	# REF [function] >> NMTModel.forward() in https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/models/model.py
 	def forward(self, src, tgt, lengths, bptt=False, with_align=False):
 		# TODO [check] >> This function is not tested.
-		dec_in = tgt[:-1]  # Exclude last target from inputs.
 		enc_state, memory_bank, lengths = self.encoder(src, lengths=lengths)
 		if bptt is False:
 			self.decoder.init_state(src, memory_bank, enc_state)
+		dec_in = tgt[:-1]  # Exclude last target from inputs.
 		dec_outs, attns = self.decoder(dec_in, memory_bank, memory_lengths=lengths, with_align=with_align)
 		if self._generator: dec_outs = self._generator(dec_outs)
 		return dec_outs, attns
 
 # REF [site] >> https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/model_builder.py
-def build_my_im2txt_model(use_NMTModel, input_channel, num_classes, word_vec_size):
+def build_my_simple_model(use_NMTModel, input_channel, num_classes, word_vec_size):
 	encoder, decoder, generator = build_submodels(input_channel, num_classes, word_vec_size)
 
 	if use_NMTModel:
@@ -1140,7 +1259,7 @@ def simple_example():
 	#--------------------
 	# Build a model.
 
-	model, generator = build_my_im2txt_model(use_NMTModel, input_channel, num_classes, word_vec_size)
+	model, generator = build_my_simple_model(use_NMTModel, input_channel, num_classes, word_vec_size)
 	#if model: print('Model:\n{}'.format(model))
 
 	# NOTE [info] >> The generator is not called. So It has to be called explicitly.
@@ -1173,6 +1292,13 @@ def simple_example():
 		print("Model outputs' shape = {}.".format(model_outputs.shape))
 		print("Attentions' shape = {}.".format(attentions.shape))
 
+	#--------------------
+	# Train and evaluate.
+
+	#--------------------
+	# Infer.
+	# FIXME [implement] >> How to infer?
+
 def main():
 	#preprocess_test()  # Not yet completed.
 	#train_test()  # Not yet completed.
@@ -1183,7 +1309,7 @@ def main():
 	#library_example()
 
 	im2latex_example()
-	#simple_example()
+	#simple_example()  # Not yet completed.
 
 #--------------------------------------------------------------------
 
