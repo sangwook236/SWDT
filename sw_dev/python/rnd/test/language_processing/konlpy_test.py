@@ -22,6 +22,7 @@ def simple_kkma_example():
 	konlpy.utils.pprint(kkma.sentences('네, 안녕하세요. 반갑습니다.'))
 	konlpy.utils.pprint(kkma.nouns('질문이나 건의사항은 깃헙 이슈 트래커에 남겨주세요.'))
 	konlpy.utils.pprint(kkma.pos('오류보고는 실행환경, 에러메세지와함께 설명을 최대한상세히!^^'))
+	konlpy.utils.pprint(kkma.pos('오루보고는 실행환경, 에러메세지와함께 설명을 최대한상세히!^^'))  # A typo exists.
 
 	print(kkma.sentences('그래도 계속 공부합니다. 재밌으니까!'))
 	print(kkma.nouns('대학에서 DB, 통계학, 이산수학 등을 배웠지만...'))
@@ -114,7 +115,7 @@ def integrate_with_nltk():
 	text.plot(30)
 	plt.show()
 
-# REF [doc] >> Python 환경에서 한글 형태소 분석기 패키지 KoNLPy 사용법.pdf
+# REF [doc] >> "Python 환경에서 한글 형태소 분석기 패키지 KoNLPy 사용법.pdf"
 def extract_bigram_or_trigram_with_nltk():
 	bigram_measures = nltk.collocations.BigramAssocMeasures()
 	doc = konlpy.corpus.kolaw.open('constitution.txt').read()
@@ -158,6 +159,10 @@ def integrate_with_wordcloud():
 	plt.show()
 
 def main():
+	# Initialize the Java virtual machine (JVM).
+	#konlpy.jvm.init_jvm(jvmpath=None, max_heap_size=1024)	
+
+	#--------------------
 	#simple_kkma_example()
 	#simple_hannanum_example()
 	#simple_komoran_example()

@@ -32,23 +32,22 @@ def simple_example():
 	# If the Word Frequency list is not to your liking, you can add additional text to generate a more appropriate list for your use case.
 	spell = spellchecker.SpellChecker()  # Loads default word frequency list.
 
-	"""
-	# In my_dictionary.json
-	#	{
-	#		"a": 1,
-	#		"b": 2,
-	#		"apple": 45,
-	#		"bike": 60
-	#	}
-	dictionary_filepath = './my_dictionary.json'
-	spell.word_frequency.load_dictionary(dictionary_filepath, encoding='UTF-8')
-	"""
-	"""
-	text_filepath = './my_text.txt'
-	spell.word_frequency.load_text_file(text_filepath, encoding='UTF-8')
-	"""
-	text_data = "A blue whale went for a swim in the sea. Along it's path it ran into a storm. To avoid the storm it dove deep under the waves."
-	spell.word_frequency.load_text(text_data)
+	if False:
+		# In my_dictionary.json
+		#	{
+		#		"a": 1,
+		#		"b": 2,
+		#		"apple": 45,
+		#		"bike": 60
+		#	}
+		dictionary_filepath = './my_dictionary.json'
+		spell.word_frequency.load_dictionary(dictionary_filepath, encoding='UTF-8')
+	elif False:
+		text_filepath = './my_text.txt'
+		spell.word_frequency.load_text_file(text_filepath, encoding='UTF-8')
+	elif True:
+		text_data = "A blue whale went for a swim in the sea. Along it's path it ran into a storm. To avoid the storm it dove deep under the waves."
+		spell.word_frequency.load_text(text_data)
 
 	# If I just want to make sure some words are not flagged as misspelled.
 	spell.word_frequency.load_words(['microsoft', 'apple', 'google'])
@@ -76,32 +75,8 @@ def simple_example():
 	spell.distance = 2  # Set the distance parameter back to the default.
 
 def construct_korean_dictionary_example():
-	import konlpy
-	#import nltk
-
 	text_filepath = './korean_modern_novel_1_2.txt'
 	dictionary_filepath = './my_korean_dictionary.json'
-
-	print('Start loading a text file...')
-	start_time = time.time()
-	try:
-		with open(text_filepath, 'r', encoding='UTF-8') as fd:
-			text_data = fd.read()
-	except FileNotFoundError as ex:
-		print('File not found: {}.'.format(text_filepath))
-		return
-	except UnicodeDecodeError as ex:
-		print('Unicode decode error: {}.'.format(text_filepath))
-		return
-	print('End loading a text file: {} secs.'.format(time.time() - start_time))
-
-	print('Start constructing a Korean dictionary...')
-	start_time = time.time()
-	#kkma = konlpy.tag.Kkma()
-	#text_data = kkma.nouns(text_data)
-	okt = konlpy.tag.Okt()
-	text_data = okt.nouns(text_data)
-	print('End constructing a Korean dictionary: {} secs.'.format(time.time() - start_time))
 
 	# In my_korean_dictionary.json:
 	#	{
@@ -111,13 +86,50 @@ def construct_korean_dictionary_example():
 	#		"자전거": 60
 	#	}
 
-	print('Start saving a Korean dictionary...')
-	start_time = time.time()
-	spell = spellchecker.SpellChecker(language=None)
-	text_data = ' '.join(text_data)
-	spell.word_frequency.load_text(text_data)
-	spell.export(dictionary_filepath, encoding='UTF-8', gzipped=True)
-	print('End saving a Korean dictionary: {} secs.'.format(time.time() - start_time))
+	if False:
+		import konlpy
+		#import nltk
+
+		# Initialize the Java virtual machine (JVM).
+		#konlpy.jvm.init_jvm(jvmpath=None, max_heap_size=1024)
+
+		print('Start loading a text file...')
+		start_time = time.time()
+		try:
+			with open(text_filepath, 'r', encoding='UTF-8') as fd:
+				text_data = fd.read()
+		except FileNotFoundError as ex:
+			print('File not found: {}.'.format(text_filepath))
+			return
+		except UnicodeDecodeError as ex:
+			print('Unicode decode error: {}.'.format(text_filepath))
+			return
+		print('End loading a text file: {} secs.'.format(time.time() - start_time))
+
+		# TODO [check] >> Is it good to extract nouns or do POS tagging?
+		print('Start preprocessing texts...')
+		start_time = time.time()
+		#kkma = konlpy.tag.Kkma()
+		#text_data = kkma.nouns(text_data)
+		okt = konlpy.tag.Okt()
+		text_data = okt.nouns(text_data)
+		print('End preprocessing texts: {} secs.'.format(time.time() - start_time))
+
+		text_data = ' '.join(text_data)
+
+		print('Start saving a Korean dictionary...')
+		start_time = time.time()
+		spell = spellchecker.SpellChecker(language=None)
+		spell.word_frequency.load_text(text_data)
+		spell.export(dictionary_filepath, encoding='UTF-8', gzipped=True)
+		print('End saving a Korean dictionary: {} secs.'.format(time.time() - start_time))
+	else:
+		print('Start saving a Korean dictionary...')
+		start_time = time.time()
+		spell = spellchecker.SpellChecker(language=None)
+		spell.word_frequency.load_text_file(text_filepath, encoding='UTF-8')
+		spell.export(dictionary_filepath, encoding='UTF-8', gzipped=True)
+		print('End saving a Korean dictionary: {} secs.'.format(time.time() - start_time))
 
 	print('len(spell.word_frequency.dictionary) = {}.'.format(len(spell.word_frequency.dictionary)))
 	print('spell.word_frequency.total_words = {}.'.format(spell.word_frequency.total_words))
@@ -128,12 +140,12 @@ def construct_korean_dictionary_example():
 def simple_korean_example():
 	spell = spellchecker.SpellChecker(language='en', distance=2)  # Loads default word frequency list.
 
-	dictionary_filepath = './my_korean_dictionary.json'
-	spell.word_frequency.load_dictionary(dictionary_filepath, encoding='UTF-8')
-	"""
-	text_filepath = './korean_modern_novel_1_2.txt'
-	spell.word_frequency.load_text_file(text_filepath, encoding='UTF-8')
-	"""
+	if True:
+		dictionary_filepath = './my_korean_dictionary.json'
+		spell.word_frequency.load_dictionary(dictionary_filepath, encoding='UTF-8')
+	else:
+		text_filepath = './korean_modern_novel_1_2.txt'
+		spell.word_frequency.load_text_file(text_filepath, encoding='UTF-8')
 
 	# Find those words that may be misspelled.
 	misspelled = spell.unknown(['천재즈변', '학교', '도시관', '도소관', '요기'])
