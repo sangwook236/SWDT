@@ -434,7 +434,7 @@ def translate_test():
 	shard_pairs = zip(src_shards, tgt_shards)
 
 	for i, (src_shard, tgt_shard) in enumerate(shard_pairs):
-		logger.info("Translating shard {}.".format(i))
+		logger.info('Translating shard {}.'.format(i))
 		translator.translate(
 			src=src_shard,
 			tgt=tgt_shard,
@@ -741,6 +741,44 @@ def build_my_im2latex_model(image_height, input_channel, num_classes, word_vec_s
 
 	return model, generator
 
+# REF [function] >> Translator.translate_batch() in https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/translator.py
+def create_greedy_search_strategy(batch_size, random_sampling_topk, random_sampling_temp, min_length, max_length, block_ngram_repeat, bos_index, eos_index, pad_index, exclusion_idxs):
+	replace_unk = False
+	#tgt_prefix = False
+	attn_debug = False
+
+	return onmt.translate.greedy_search.GreedySearch(
+		pad=pad_index, bos=bos_index, eos=eos_index,
+		batch_size=batch_size,
+		min_length=min_length, max_length=max_length,
+		block_ngram_repeat=block_ngram_repeat,
+		exclusion_tokens=exclusion_idxs,
+		return_attention=attn_debug or replace_unk,
+		sampling_temp=random_sampling_temp,
+		keep_topk=random_sampling_topk
+	)
+
+# REF [function] >> Translator.translate_batch() in https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/translator.py
+def create_beam_search_strategy(batch_size, scorer, beam_size, n_best, ratio, min_length, max_length, block_ngram_repeat, bos_index, eos_index, pad_index, exclusion_idxs):
+	stepwise_penalty = None,
+	replace_unk = False
+	#tgt_prefix = False
+	attn_debug = False
+
+	return onmt.translate.beam_search.BeamSearch(
+		beam_size,
+		batch_size=batch_size,
+		pad=pad_index, bos=bos_index, eos=eos_index,
+		n_best=n_best,
+		global_scorer=scorer,
+		min_length=min_length, max_length=max_length,
+		return_attention=attn_debug or replace_unk,
+		block_ngram_repeat=block_ngram_repeat,
+		exclusion_tokens=exclusion_idxs,
+		stepwise_penalty=stepwise_penalty,
+		ratio=ratio
+	)
+
 # REF [function] >> Translator._decode_and_generate() in https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/translator.py
 def decode_and_generate(model, decoder_in, memory_bank, batch, src_vocabs, memory_lengths, beam_size, copy_attn, tgt_vocab, tgt_unk_idx, src_map=None, step=None, batch_offset=None):
 	if copy_attn:
@@ -755,15 +793,15 @@ def decode_and_generate(model, decoder_in, memory_bank, batch, src_vocabs, memor
 
 	# Generator forward.
 	if not copy_attn:
-		if "std" in dec_attn:
-			attn = dec_attn["std"]
+		if 'std' in dec_attn:
+			attn = dec_attn['std']
 		else:
 			attn = None
 		log_probs = model.generator(dec_out.squeeze(0))
 		# returns [(batch_size x beam_size) , vocab ] when 1 step
 		# or [ tgt_len, batch_size, vocab ] when full sentence
 	else:
-		attn = dec_attn["copy"]
+		attn = dec_attn['copy']
 		scores = model.generator(dec_out.view(-1, dec_out.size(2)), attn.view(-1, attn.size(2)), src_map)
 		# here we have scores [tgt_lenxbatch, vocab] or [beamxbatch, vocab]
 		if batch_offset is None:
@@ -785,122 +823,81 @@ def decode_and_generate(model, decoder_in, memory_bank, batch, src_vocabs, memor
 		# or [ tgt_len, batch_size, vocab ] when full sentence
 	return log_probs, attn
 
-# REF [function] >> Translator._translate_batch_with_strategy() and Translator.translate_batch() in https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/translator.py
-#	translate_batch
-#		_translate_batch_with_strategy
-#			_run_encoder
-#			_gold_score
-#				_score_target
-#					_decode_and_generate
-#			_decode_and_generate
-#			_align_forward
-#				_run_encoder
-def translate_batch_with_strategy(model, scorer, src, unk_index, bos_index, eos_index, pad_index, tgt_vocab, src_vocabs=[]):
-	batch_size = len(src)
-
-	beam_size = 30
-	n_best = 1
-	ratio = 0.0
-	random_sampling_topk, random_sampling_temp = 1, 1
-	min_length, max_length = 0, 100
-	stepwise_penalty = None,
-	block_ngram_repeat = 0
-	ignore_when_blocking = frozenset()
-	exclusion_idxs = {tgt_vocab.stoi[t] for t in ignore_when_blocking}
-	replace_unk = False
-	tgt_prefix = False
+# REF [function] >> Translator._translate_batch_with_strategy() in https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/translate/translator.py
+#	_translate_batch_with_strategy()
+#		_run_encoder()
+#		_gold_score()
+#			_score_target()
+#				_decode_and_generate()
+#		_decode_and_generate()
+#		_align_forward()
+#			_run_encoder()
+def translate_batch_with_strategy(model, decode_strategy, src, batch_size, beam_size, unk_index, tgt_vocab, src_vocabs=[]):
 	copy_attn = False  # Fixed.
 	report_align = False  # Fixed.
-	attn_debug, align_debug = False, False
-	with torch.no_grad():
-		if beam_size == 1:
-			decode_strategy = onmt.translate.greedy_search.GreedySearch(
-				pad=pad_index, bos=bos_index, eos=eos_index,
-				batch_size=batch_size,
-				min_length=min_length, max_length=max_length,
-				block_ngram_repeat=block_ngram_repeat,
-				exclusion_tokens=exclusion_idxs,
-				return_attention=attn_debug or replace_unk,
-				sampling_temp=random_sampling_temp,
-				keep_topk=random_sampling_topk
-			)
-		else:
-			decode_strategy = onmt.translate.beam_search.BeamSearch(
-				beam_size,
-				batch_size=batch_size,
-				pad=pad_index, bos=bos_index, eos=eos_index,
-				n_best=n_best,
-				global_scorer=scorer,
-				min_length=min_length, max_length=max_length,
-				return_attention=attn_debug or replace_unk,
-				block_ngram_repeat=block_ngram_repeat,
-				exclusion_tokens=exclusion_idxs,
-				stepwise_penalty=stepwise_penalty,
-				ratio=ratio
-			)
 
-		parallel_paths = decode_strategy.parallel_paths  # beam_size.
+	parallel_paths = decode_strategy.parallel_paths  # beam_size.
 
-		enc_states, memory_bank, src_lengths = model.encoder(src, lengths=None)
-		if src_lengths is None:
-			src_lengths = torch.Tensor(batch_size).type_as(memory_bank).long().fill_(memory_bank.size(0))
-		model.decoder.init_state(src, memory_bank, enc_states)
+	enc_states, memory_bank, src_lengths = model.encoder(src, lengths=None)
+	if src_lengths is None:
+		src_lengths = torch.Tensor(batch_size).type_as(memory_bank).long().fill_(memory_bank.size(0))
+	model.decoder.init_state(src, memory_bank, enc_states)
 
-		src_map, target_prefix = None, None
-		fn_map_state, memory_bank, memory_lengths, src_map = decode_strategy.initialize(memory_bank, src_lengths, src_map, target_prefix)
-		if fn_map_state is not None:
-			model.decoder.map_state(fn_map_state)
+	src_map, target_prefix = None, None
+	fn_map_state, memory_bank, memory_lengths, src_map = decode_strategy.initialize(memory_bank, src_lengths, src_map, target_prefix)
+	if fn_map_state is not None:
+		model.decoder.map_state(fn_map_state)
 
-		for step in range(decode_strategy.max_length):
-			decoder_input = decode_strategy.current_predictions.view(1, -1, 1)
+	for step in range(decode_strategy.max_length):
+		decoder_input = decode_strategy.current_predictions.view(1, -1, 1)
 
-			log_probs, attn = decode_and_generate(
-				model,
-				decoder_input,
-				memory_bank,
-				batch=None,  # NOTE [caution] >>
-				src_vocabs=src_vocabs,
-				memory_lengths=memory_lengths,
-				beam_size=beam_size, copy_attn=copy_attn,
-				tgt_vocab=tgt_vocab, tgt_unk_idx=unk_index,
-				src_map=src_map,
-				step=step,
-				batch_offset=decode_strategy.batch_offset
-			)
+		log_probs, attn = decode_and_generate(
+			model,
+			decoder_input,
+			memory_bank,
+			batch=None,  # NOTE [caution] >>
+			src_vocabs=src_vocabs,
+			memory_lengths=memory_lengths,
+			beam_size=beam_size, copy_attn=copy_attn,
+			tgt_vocab=tgt_vocab, tgt_unk_idx=unk_index,
+			src_map=src_map,
+			step=step,
+			batch_offset=decode_strategy.batch_offset
+		)
 
-			decode_strategy.advance(log_probs, attn)
-			any_finished = decode_strategy.is_finished.any()
-			if any_finished:
-				decode_strategy.update_finished()
-				if decode_strategy.done:
-					break
+		decode_strategy.advance(log_probs, attn)
+		any_finished = decode_strategy.is_finished.any()
+		if any_finished:
+			decode_strategy.update_finished()
+			if decode_strategy.done:
+				break
 
-			select_indices = decode_strategy.select_indices
+		select_indices = decode_strategy.select_indices
 
-			if any_finished:
-				# Reorder states.
-				if isinstance(memory_bank, tuple):
-					memory_bank = tuple(x.index_select(1, select_indices) for x in memory_bank)
-				else:
-					memory_bank = memory_bank.index_select(1, select_indices)
+		if any_finished:
+			# Reorder states.
+			if isinstance(memory_bank, tuple):
+				memory_bank = tuple(x.index_select(1, select_indices) for x in memory_bank)
+			else:
+				memory_bank = memory_bank.index_select(1, select_indices)
 
-				memory_lengths = memory_lengths.index_select(0, select_indices)
+			memory_lengths = memory_lengths.index_select(0, select_indices)
 
-				if src_map is not None:
-					src_map = src_map.index_select(1, select_indices)
+			if src_map is not None:
+				src_map = src_map.index_select(1, select_indices)
 
-			if parallel_paths > 1 or any_finished:
-				model.decoder.map_state(lambda state, dim: state.index_select(dim, select_indices))
+		if parallel_paths > 1 or any_finished:
+			model.decoder.map_state(lambda state, dim: state.index_select(dim, select_indices))
 
-		results = dict()
-		results['scores'] = decode_strategy.scores
-		results['predictions'] = decode_strategy.predictions
-		results['attention'] = decode_strategy.attention
-		if report_align:
-			results['alignment'] = self._align_forward(batch, decode_strategy.predictions)
-		else:
-			results['alignment'] = [[] for _ in range(batch_size)]
-		return results
+	results = dict()
+	results['scores'] = decode_strategy.scores
+	results['predictions'] = decode_strategy.predictions
+	results['attention'] = decode_strategy.attention
+	if report_align:
+		results['alignment'] = self._align_forward(batch, decode_strategy.predictions)
+	else:
+		results['alignment'] = [[] for _ in range(batch_size)]
+	return results
 
 def im2latex_example():
 	src_data_type, tgt_data_type = 'img', 'text'
@@ -1018,16 +1015,17 @@ def im2latex_example():
 		)
 
 		# NOTE [info] >> It is better to build a vocabulary from corpora.
+		# TODO [choose] >>
 		if True:
 			tgt_train_texts = read_lines_from_file(preprocessed_data_dir_path + '/tgt-train.txt')
 			tgt_valid_texts = read_lines_from_file(preprocessed_data_dir_path + '/tgt-val.txt')
 			tgt_test_texts = read_lines_from_file(preprocessed_data_dir_path + '/tgt-test.txt')
 			texts = [txt.split() for txt in tgt_train_texts] + [txt.split() for txt in tgt_valid_texts] + [txt.split() for txt in tgt_test_texts]
-			tgt_field.build_vocab(texts)
+			tgt_field.build_vocab(texts)  # Sort vocabulary + add special tokens, <unknown>, <pad>, <bos>, and <eos>.
 		else:
 			vocab = read_lines_from_file(preprocessed_data_dir_path + '/vocab.txt')
 			#tgt_field.vocab = vocab  # AttributeError: 'list' object has no attribute 'stoi'.
-			tgt_field.build_vocab([vocab])
+			tgt_field.build_vocab([vocab])  # Sort vocabulary + add special tokens, <unknown>, <pad>, <bos>, and <eos>.
 		corpus_id_field.build_vocab(['train'])
 
 		# REF [function] >> build_vocab() in https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/inputters/inputter.py.
@@ -1235,22 +1233,48 @@ def im2latex_example():
 
 		assert len(src_batches) == len(tgt_batches)
 
-		for src_batch, tgt_batch in zip(src_batches, tgt_batches):
-			print('Start translating...')
-			start_time = time.time()
-			trans_batch = translate_batch_with_strategy(model, scorer, src_batch, tgt_unk, tgt_bos, tgt_eos, tgt_padding, tgt_vocab, src_vocabs=[])
-			print('End translating: {} secs.'.format(time.time() - start_time))
+		is_beam_search_used = True
+		if is_beam_search_used:
+			beam_size = 30
+			n_best = 1
+			ratio = 0.0
+		else:
+			beam_size = 1
+			random_sampling_topk, random_sampling_temp = 1, 1
+			n_best = 1  # Fixed. For handling translation results.
+		min_length, max_length = 0, 100
+		block_ngram_repeat = 0
+		#ignore_when_blocking = frozenset()
+		#exclusion_idxs = {tgt_vocab.stoi[t] for t in ignore_when_blocking}
+		exclusion_idxs = set()
 
-			for idx, (gt, pred, score, attn, alignment) in enumerate(zip(tgt_batch, trans_batch['predictions'], trans_batch['scores'], trans_batch['attention'], trans_batch['alignment'])):
-				print('ID #{}:'.format(idx))
-				print('\tG/T        = {}.'.format(gt))
-				try:
-					print('\tPrediction = {}.'.format(' '.join([tgt_vocab.itos[elem] for elem in pred[0].cpu().numpy() if elem < len(tgt_vocab.itos)])))
-				except IndexError as ex:
-					print('\tDecoding error: {}.'.format(pred[0]))
-				print('\tScore      = {}.'.format(score[0].cpu().item()))
-				#print('\tAttention  = {}.'.format(attn[0].cpu().numpy()))
-				#print('\tAlignment  = {}.'.format(alignment[0].cpu().item()))  # Empty.
+		model.eval()
+		with torch.no_grad():
+			for src_batch, tgt_batch in zip(src_batches, tgt_batches):
+				#batch_size = len(src_batch)
+				batch_size = 1
+
+				if is_beam_search_used:
+					decode_strategy = create_beam_search_strategy(batch_size, scorer, beam_size, n_best, ratio, min_length, max_length, block_ngram_repeat, tgt_bos, tgt_eos, tgt_padding, exclusion_idxs)
+				else:
+					decode_strategy = create_greedy_search_strategy(batch_size, random_sampling_topk, random_sampling_temp, min_length, max_length, block_ngram_repeat, tgt_bos, tgt_eos, tgt_padding, exclusion_idxs)
+
+				print('Start translating...')
+				start_time = time.time()
+				trans_batch = translate_batch_with_strategy(model, decode_strategy, src_batch, batch_size, beam_size, tgt_unk, tgt_vocab, src_vocabs=[])
+				print('End translating: {} secs.'.format(time.time() - start_time))
+
+				for idx, (gt, pred, score, attn, alignment) in enumerate(zip(tgt_batch, trans_batch['predictions'], trans_batch['scores'], trans_batch['attention'], trans_batch['alignment'])):
+					print('ID #{}:'.format(idx))
+					print('\tG/T        = {}.'.format(gt))
+					for rank_id in range(n_best):
+						try:
+							print('\tPrediction (rank {}) = {}.'.format(rank_id, ' '.join([tgt_vocab.itos[elem] for elem in pred[0].cpu().numpy() if elem < len(tgt_vocab.itos)])))
+						except IndexError as ex:
+							print('\tDecoding error (rank {}): {}.'.format(rank_id, pred[rank_id]))
+						print('\tScore (rank {})      = {}.'.format(rank_id, score[rank_id].cpu().item()))
+						#print('\tAttention (rank {})  = {}.'.format(rank_id, attn[rank_id].cpu().numpy()))
+						#print('\tAlignment (rank {})  = {}.'.format(rank_id, alignment[rank_id].cpu().item()))  # Empty.
 	elif False:
 		# NOTE [error] >> This is not working when sources are not text.
 		#	onmt.translate.Translator.translate() uses an instance of onmt.translate.TranslationBuilder.
@@ -1497,6 +1521,7 @@ def simple_example():
 		model_outputs = model_outputs.cpu().numpy()
 		attentions = attentions['std'].cpu().numpy()
 		#attentions = attentions['copy'].cpu().numpy()  # If copy_attn = True.
+		#attentions = attentions['coverage'].cpu().numpy()  # If coverage_attn = True.
 
 		print("Model outputs' shape = {}.".format(model_outputs.shape))
 		print("Attentions' shape = {}.".format(attentions.shape))
