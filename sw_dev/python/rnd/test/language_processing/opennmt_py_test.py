@@ -910,7 +910,7 @@ def im2latex_example():
 
 	is_trained, is_model_loaded = True, True
 	is_small_data_used = True
-	is_my_model_used = False  # Use an image encoder (RARE) which I define.
+	is_my_model_used = False  # Use an image encoder (RARE) for me to define.
 	is_preprocessed_vocab_used, is_preprocessed_data_iterators_used = True, True
 
 	image_height = 64 if is_my_model_used else None
@@ -1036,13 +1036,21 @@ def im2latex_example():
 			'corpus_id': corpus_id_field,
 		}
 
-	#src_text_field = vocab_fields['src'].base_field  # Error: AttributeError: 'Field' object has no attribute 'base_field'.
-	#src_vocab = src_text_field.vocab
-	#src_padding = src_vocab.stoi[src_text_field.pad_token]
+	"""
+	src_text_field = vocab_fields['src'].base_field  # Error: AttributeError: 'Field' object has no attribute 'base_field'.
+	src_vocab = src_text_field.vocab
+	src_padding = src_vocab.stoi[src_text_field.pad_token]
+	#src_unk = src_vocab.stoi[src_text_field.unk_token]
+	#src_bos = src_vocab.stoi[src_text_field.init_token]
+	#src_eos = src_vocab.stoi[src_text_field.eos_token]
+	"""
 
 	tgt_text_field = vocab_fields['tgt'].base_field
 	tgt_vocab = tgt_text_field.vocab
 	tgt_padding = tgt_vocab.stoi[tgt_text_field.pad_token]
+	#tgt_unk = tgt_vocab.stoi[tgt_text_field.unk_token]
+	#tgt_bos = tgt_vocab.stoi[tgt_text_field.init_token]
+	#tgt_eos = tgt_vocab.stoi[tgt_text_field.eos_token]
 
 	src_reader = onmt.inputters.str2reader[src_data_type]
 	tgt_reader = onmt.inputters.str2reader[tgt_data_type]
@@ -1126,6 +1134,24 @@ def im2latex_example():
 			yield_raw_example=False
 		)
 		#valid_iter.create_batches()
+
+	if False:
+		# Information on inputs.
+		#	Refer to "Information on outputs".
+		tgt_padding = tgt_vocab.stoi[tgt_text_field.pad_token]
+		tgt_unk = tgt_vocab.stoi[tgt_text_field.unk_token]
+		tgt_bos = tgt_vocab.stoi[tgt_text_field.init_token]
+		tgt_eos = tgt_vocab.stoi[tgt_text_field.eos_token]
+		print('<UNK> = {}, <PAD> = {}, <BOS> = {}, <EOS> = {}.'.format(tgt_unk, tgt_padding, tgt_bos, tgt_eos))
+
+		for idx, batch in enumerate(train_iter):
+			# Source: [B, C, H, W] & [0, 1].
+			# Target: [T, B, 1]. No one-hot encoding.
+			print('Source #{}: {}, {}, ({}, {}).'.format(idx, batch.src.shape, batch.src.dtype, torch.min(batch.src), torch.max(batch.src)))
+			print('Target #{}: {}, {}.'.format(idx, batch.tgt.shape, batch.tgt.dtype))
+			#print('Target #{}: {}.'.format(idx, batch.tgt.transpose(0, 1).squeeze(dim=-1)))
+
+			if idx >= 4: break
 
 	#--------------------
 	# Build a model.
@@ -1263,6 +1289,13 @@ def im2latex_example():
 				start_time = time.time()
 				trans_batch = translate_batch_with_strategy(model, decode_strategy, src_batch, batch_size, beam_size, tgt_unk, tgt_vocab, src_vocabs=[])
 				print('End translating: {} secs.'.format(time.time() - start_time))
+
+				# Information on outputs.
+				#	Refer to "Information on inputs".
+				#trans_batch['predictions']  # [batch size (list)][#bests (list)][decoded token ID sequence (tensor)]. Each decoded output has <EOS> (not always) but no <SOS>.
+				#trans_batch['scores']  # [batch size (list)][#bests (list)][scalar (tensor)].
+				#trans_batch['attention']  # [batch size (list)][#bests (list)][?].
+				#trans_batch['alignment']  # [batch size (list)][?].
 
 				for idx, (gt, pred, score, attn, alignment) in enumerate(zip(tgt_batch, trans_batch['predictions'], trans_batch['scores'], trans_batch['attention'], trans_batch['alignment'])):
 					print('ID #{}:'.format(idx))
@@ -1505,19 +1538,23 @@ def simple_example():
 	# For checking.
 
 	if False:
-		inputs = torch.randn(batch_size, input_channel, 300, 300)
-		outputs = torch.randint(num_classes, (batch_size, max_time_steps, 1))
-		outputs = torch.transpose(outputs, 0, 1)  # [B, T, F] -> [T, B, F].
-		output_lens = torch.randint(1, max_time_steps + 1, (batch_size,))
-
-		inputs = inputs.to(device)
-		outputs, output_lens = outputs.to(device), output_lens.to(device)
+		# Information on inputs.
+		inputs = torch.rand(batch_size, input_channel, 300, 300)  # [B, C, H, W]. [0, 1].
+		outputs = torch.randint(num_classes, (max_time_steps, batch_size, 1))  # [T, B, 1]. No one-hot encoding.
+		output_lens = torch.randint(1, max_time_steps + 1, (batch_size,))  # [B].
 
 		with torch.no_grad():
-			model_outputs, attentions = model(inputs, outputs, output_lens)  # [target length, batch size, hidden size] & [target length, batch size, source length].
-			model_outputs = model.generator(model_outputs)
+			# Information on outputs.
+			model_outputs, attentions = model(inputs.to(device), outputs.to(device), output_lens.to(device))  # [T-1, B, hidden size] & [T-1, B, ???].
+			model_outputs = model.generator(model_outputs)  # [T-1, B, #classes].
 
-		#model_outputs = model_outputs.transpose(0, 1)  # [T, B, F] -> [B, T, F].
+		print('Source: {}, {}, ({}, {}).'.format(inputs.shape, inputs.dtype, torch.min(inputs), torch.max(inputs)))
+		print('Target: {}, {}.'.format(outputs.shape, outputs.dtype))
+		print('Model output: {}, {}.'.format(model_outputs.shape, model_outputs.dtype))
+
+		#model_outputs = model_outputs.transpose(0, 1)  # [T-1, B, #classes] -> [B, T-1, #classes] where T-1 is for one-step look-ahead.
+		#_, model_outputs = torch.max(model_outputs, dim=-1)
+
 		model_outputs = model_outputs.cpu().numpy()
 		attentions = attentions['std'].cpu().numpy()
 		#attentions = attentions['copy'].cpu().numpy()  # If copy_attn = True.
