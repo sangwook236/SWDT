@@ -603,10 +603,10 @@ def difflib_test():
 	"""
 
 	#--------------------
-	s = difflib.SequenceMatcher(lambda x: x==" ", " abcd", "abcd abcd")
+	s = difflib.SequenceMatcher(lambda x: x == ' ', ' abcd', 'abcd abcd')
 	print('s.find_longest_match(0, 5, 0, 9) =', s.find_longest_match(0, 5, 0, 9))
 
-	s = difflib.SequenceMatcher(None, "abxcd", "abcd")
+	s = difflib.SequenceMatcher(None, 'abxcd', 'abcd')
 	print('s.get_matching_blocks() =', s.get_matching_blocks())
 
 	a, b = 'qabxcd', 'abycdf'
@@ -618,16 +618,36 @@ def difflib_test():
 	print("SequenceMatcher(None, 'diet', 'tide').ratio() =", difflib.SequenceMatcher(None, 'diet', 'tide').ratio())
 
 	s = difflib.SequenceMatcher(None, 'abcd', 'bcde')
-	print('s.ratio() =', s.ratio())
-	print('s.quick_ratio() =', s.quick_ratio())
-	print('s.real_quick_ratio() =', s.real_quick_ratio())
+	print('s.ratio() =', s.ratio())  # [0, 1].
+	print('s.quick_ratio() =', s.quick_ratio())  # [0, 1].
+	print('s.real_quick_ratio() =', s.real_quick_ratio())  # [0, 1].
 
 	s = difflib.SequenceMatcher(lambda x: ' ' == x, 'private Thread currentThread;', 'private volatile Thread currentThread;')
 	print('round(s.ratio(), 3) =', round(s.ratio(), 3))
 	for block in s.get_matching_blocks():
 		print('a[%d] and b[%d] match for %d elements' % block)
 	for opcode in s.get_opcodes():
-		 print('%6s a[%d:%d] b[%d:%d]' % opcode)
+		print('%6s a[%d:%d] b[%d:%d]' % opcode)
+
+	#str1, str2 = '우리나라 대한민국 만세', '대한민국! 우리나라 만.세.'
+	str1, str2 = '우리나라 대한민국 만세', '대한민국! 우리 만.세.'
+	matcher = difflib.SequenceMatcher(None, str1, str2)  # Long sequence matching. (?)
+	#matcher = difflib.SequenceMatcher(lambda x: x == '\n\r', str1, str2)
+	#matcher = difflib.SequenceMatcher(lambda x: x == ' \t\n\r', str1, str2)
+	print('Ratio = {}.'.format(2 * functools.reduce(lambda matched_len, mth: matched_len + mth.size, matcher.get_matching_blocks(), 0) / (len(str1) + len(str2))))
+	#print('Ratio = {}.'.format(matcher.ratio()))
+	for idx, mth in enumerate(matcher.get_matching_blocks()):
+		if mth.size != 0:
+			print('#{}: {} == {}.'.format(idx, str1[mth.a:mth.a+mth.size], str2[mth.b:mth.b+mth.size]))
+
+	lst1, lst2 = [1, 2, 3, 4, 5], [1, 2, 4, 5]
+	matcher = difflib.SequenceMatcher(None, lst1, lst2)
+	#matcher = difflib.SequenceMatcher(lambda x: x == '\n\r', str1, str2)
+	#matcher = difflib.SequenceMatcher(lambda x: x == ' \t\n\r', str1, str2)
+	print('Ratio = {}.'.format(matcher.ratio()))
+	for idx, mth in enumerate(matcher.get_matching_blocks()):
+		if mth.size != 0:
+			print('#{}: {} == {}.'.format(idx, lst1[mth.a:mth.a+mth.size], lst2[mth.b:mth.b+mth.size]))
 
 	#--------------------
 	text1 = \
