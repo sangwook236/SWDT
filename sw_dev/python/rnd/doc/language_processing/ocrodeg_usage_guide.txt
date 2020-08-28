@@ -1,0 +1,8 @@
+[-] General.
+	- Site.
+		https://github.com/NVlabs/ocrodeg
+
+[-] Installation.
+	- Install.
+		pip install -r requirements.txt
+		pip install .
