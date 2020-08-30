@@ -649,6 +649,13 @@ def difflib_test():
 		if mth.size != 0:
 			print('#{}: {} == {}.'.format(idx, lst1[mth.a:mth.a+mth.size], lst2[mth.b:mth.b+mth.size]))
 
+	# Error case.
+	str1, str2 = 'abcabcabcabc', 'abcabdababc'  # Matched sub-sequences = {'abcab', 'ab', 'abc'}.
+	matcher = difflib.SequenceMatcher(None, str1, str2)
+	for idx, mth in enumerate(matcher.get_matching_blocks()):
+		if mth.size != 0:
+			print('#{}: {} == {}.'.format(idx, str1[mth.a:mth.a+mth.size], str2[mth.b:mth.b+mth.size]))
+
 	#--------------------
 	text1 = \
 '''  1. Beautiful is better than ugly.
@@ -840,7 +847,7 @@ def main():
 	#platform_test()
 
 	#variable_test()
-	control_test()
+	#control_test()
 	#container_test()
 	#collections_test()
 
