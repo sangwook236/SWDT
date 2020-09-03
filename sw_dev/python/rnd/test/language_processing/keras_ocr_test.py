@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import os, string
+import os, string, time
 import numpy as np
 import keras_ocr
 import matplotlib.pyplot as plt
@@ -215,12 +215,17 @@ def new_detection_test():
 		'./image.jpg',
 	]
 
+	print('Start creating a detection model...')
+	start_time = time.time()
 	detector = keras_ocr.detection.Detector(
 		weights='clovaai_general',
 		load_from_torch=False,
 		optimizer='adam',
 		backbone_name='vgg'
 	)
+	print('End creating a detection model: {} secs.'.format(time.time() - start_time))
+	print('Start detecting text...')
+	start_time = time.time()
 	boxes_lst = detector.detect(
 		image_filepaths, #images,
 		detection_threshold=0.7,
@@ -228,6 +233,7 @@ def new_detection_test():
 		link_threshold=0.4,
 		size_threshold=10
 	)
+	print('End detecting text: {} secs.'.format(time.time() - start_time))
 
 	#--------------------
 	import matplotlib.image
@@ -245,6 +251,8 @@ def new_detection_test():
 
 # REF [site] >> https://github.com/faustomorales/keras-ocr
 def new_detection_and_recognition_test():
+	print('Start creating a model...')
+	start_time = time.time()
 	if True:
 		# keras-ocr will automatically download pretrained weights for the detector and recognizer.
 		pipeline = keras_ocr.pipeline.Pipeline(detector=None, recognizer=None, scale=2, max_size=2048)
@@ -263,6 +271,7 @@ def new_detection_and_recognition_test():
 
 		# keras-ocr will automatically download pretrained weights for the detector and recognizer.
 		pipeline = keras_ocr.pipeline.Pipeline(detector=detector, recognizer=recognizer, scale=2, max_size=2048)
+	print('End creating a model: {} secs.'.format(time.time() - start_time))
 
 	# Get a set of three example images.
 	images = [
@@ -270,12 +279,14 @@ def new_detection_and_recognition_test():
 			'https://upload.wikimedia.org/wikipedia/commons/b/bd/Army_Reserves_Recruitment_Banner_MOD_45156284.jpg',
 			'https://upload.wikimedia.org/wikipedia/commons/e/e8/FseeG2QeLXo.jpg',
 			'https://upload.wikimedia.org/wikipedia/commons/b/b4/EUBanana-500x112.jpg',
-			'./image.jpg',
 		]
 	]
 
 	# Each list of predictions in prediction_groups is a list of (word, box) tuples.
+	print('Start recognizing text...')
+	start_time = time.time()
 	prediction_groups = pipeline.recognize(images, detection_kwargs=None, recognition_kwargs=None)
+	print('End recognizing text: {} secs.'.format(time.time() - start_time))
 
 	# Plot the predictions.
 	fig, axs = plt.subplots(nrows=len(images), figsize=(20, 20))

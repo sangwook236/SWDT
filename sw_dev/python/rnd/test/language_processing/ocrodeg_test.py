@@ -29,7 +29,7 @@ def simple_example():
 	#matplotlib.rc('image', cmap='gray', interpolation='bicubic')
 
 	if False:
-		image_filepath = './poet.jpg'  # A color page.
+		image_filepath = './poem_01.jpg'  # A color page.
 		patch_hmin, patch_hmax, patch_wmin, patch_wmax = 160, 460, 40, 370
 		is_grayscale, is_normalized = False, True
 	elif False:

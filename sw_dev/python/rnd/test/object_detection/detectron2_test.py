@@ -19,13 +19,12 @@ def simple_detection_example():
 	if im is None:
 		print('Failed to load an image: {}.'.format(image_filepath))
 		return
-	cv2.imshow('Image', im)
+	#cv2.imshow('Image', im)
 
 	cfg = detectron2.config.get_cfg()
-
 	# Add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library.
 	cfg.merge_from_file(detectron2.model_zoo.get_config_file('COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml'))
-	cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # set threshold for this model
+	cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # Set threshold for this model.
 	# Find a model from detectron2's model zoo.
 	# You can use the https://dl.fbaipublicfiles... url as well.
 	cfg.MODEL.WEIGHTS = detectron2.model_zoo.get_checkpoint_url('COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml')

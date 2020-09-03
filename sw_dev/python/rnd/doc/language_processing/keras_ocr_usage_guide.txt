@@ -1,0 +1,14 @@
+[-] General.
+	- Site.
+		https://github.com/faustomorales/keras-ocr
+
+[-] Installation.
+	- Install.
+		conda install python>=3.6 tensorflow-gpu>=2.0
+		pip install keras-ocr
+
+[-] Troubleshooting.
+	- <error> OSError: Unable to open file (file signature not found).
+		<reference> https://github.com/faustomorales/keras-ocr/issues/117
+		<solution>
+			I don't know.
