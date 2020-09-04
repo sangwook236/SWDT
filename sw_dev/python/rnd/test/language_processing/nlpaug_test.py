@@ -3,9 +3,6 @@
 
 # REF [site] >> https://github.com/makcedward/nlpaug
 
-import sys
-sys.path.append('../../../src')
-
 import nlpaug
 import nlpaug.augmenter, nlpaug.augmenter.audio, nlpaug.augmenter.spectrogram
 import nlpaug.augmenter.char, nlpaug.augmenter.word, nlpaug.augmenter.sentence
