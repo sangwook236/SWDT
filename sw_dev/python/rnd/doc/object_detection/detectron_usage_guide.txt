@@ -51,7 +51,9 @@
 	https://github.com/facebookresearch/detectron2/blob/master/INSTALL.md
 
 	- Install from source.
-		conda install python=3 pytorch torchvision opencv cython pillow matplotlib
+		conda install python=3 pytorch=1.4 opencv cython pillow matplotlib
+		pip install torchvision
+			The version of torchvison in conda is too low.
 		pip install pycocotools
 
 		git clone https://github.com/facebookresearch/fvcore.git

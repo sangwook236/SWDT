@@ -34,8 +34,10 @@ def simple_detection_example():
 
 	# Look at the outputs.
 	# See https://detectron2.readthedocs.io/tutorials/models.html#model-output-format for specification.
-	print("outputs['instances'].pred_classes =", outputs['instances'].pred_classes)
-	print("outputs['instances'].pred_boxes =", outputs['instances'].pred_boxes)
+	print("outputs['instances'].pred_boxes = {}.".format(outputs['instances'].pred_boxes))  # A Boxes object storing N boxes, one for each detected instance.
+	print("outputs['instances'].scores = {}.".format(outputs['instances'].scores))  # A vector of N scores.
+	print("outputs['instances'].pred_classes = {}.".format(outputs['instances'].pred_classes))  # A vector of N labels in range [0, num_categories).
+	print("outputs['instances'].pred_masks = {}.".format(outputs['instances'].pred_masks))  # A Tensor of shape (N, H, W), masks for each detected instance.
 
 	# We can use 'Visualizer' to draw the predictions on the image.
 	v = detectron2.utils.visualizer.Visualizer(im[:,:,::-1], detectron2.data.MetadataCatalog.get(cfg.DATASETS.TRAIN[0]), scale=1.2)
@@ -84,6 +86,14 @@ def simple_keypoint_detection_example():
 
 	predictor = detectron2.engine.DefaultPredictor(cfg)
 	outputs = predictor(im)
+
+	# Look at the outputs.
+	# See https://detectron2.readthedocs.io/tutorials/models.html#model-output-format for specification.
+	print("outputs['instances'].pred_boxes = {}.".format(outputs['instances'].pred_boxes))  # A Boxes object storing N boxes, one for each detected instance.
+	print("outputs['instances'].scores = {}.".format(outputs['instances'].scores))  # A vector of N scores.
+	print("outputs['instances'].pred_classes = {}.".format(outputs['instances'].pred_classes))  # A vector of N labels in range [0, num_categories).
+	print("outputs['instances'].pred_masks = {}.".format(outputs['instances'].pred_masks))  # A Tensor of shape (N, H, W), masks for each detected instance.
+	print("outputs['instances'].pred_keypoints = {}.".format(outputs['instances'].pred_keypoints))  # A Tensor of shape (N, num_keypoint, 3). Each row in the last dimension is (x, y, score). Scores are larger than 0.
 
 	v = detectron2.utils.visualizer.Visualizer(im[:,:,::-1], detectron2.data.MetadataCatalog.get(cfg.DATASETS.TRAIN[0]), scale=1.2)
 	v = v.draw_instance_predictions(outputs['instances'].to('cpu'))
