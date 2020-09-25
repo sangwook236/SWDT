@@ -1,0 +1,223 @@
+[-] General.
+	- Site.
+		https://developer.nvidia.com/tensorrt
+
+		https://github.com/NVIDIA/TensorRT
+		https://github.com/NVIDIA/TRTorch
+
+		https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html
+		https://docs.nvidia.com/deeplearning/frameworks/tf-trt-user-guide/index.html
+		https://nvidia.github.io/TRTorch/
+
+[-] Usage (Python).
+	- TenorRT.
+		TensorRT-7.2.0.14/samples/python
+			Downloads from https://developer.nvidia.com/tensorrt.
+			tar xzvf TensorRT-7.2.0.14.Ubuntu-18.04.x86_64-gnu.cuda-11.0.cudnn8.0.tar.gz
+		${SWDT_PYTHON_HOME}/ext/test/high_performance_computing/tensorrt_test.py
+			https://si-analytics.tistory.com/33 (Lots of bugs)
+
+	- TRTorch.
+		https://github.com/NVIDIA/TRTorch/blob/master/notebooks/Resnet50-example.ipynb
+
+[-] Installation.
+	- Install cuDNN.
+		https://developer.nvidia.com/cudnn
+
+	- Install TensorRT.
+		https://docs.nvidia.com/deeplearning/tensorrt/install-guide/index.html
+		https://developer.nvidia.com/tensorrt
+
+		Using docker:
+			NVIDIA NGC:
+				https://ngc.nvidia.com/catalog/containers/nvidia:tensorrt
+
+			If you have Docker 19.03 or later:
+				docker run --gpus all -it --rm -v local_dir:container_dir nvcr.io/nvidia/tensorrt:<xx.xx>-py<x>
+			If you have Docker 19.02 or earlier:
+				nvidia-docker run -it --rm -v local_dir:container_dir nvcr.io/nvidia/tensorrt:<xx.xx>-py<x>
+
+				sudo docker pull nvcr.io/nvidia/tensorrt:20.08-py3
+				sudo docker run --gpus all -it --rm -v local_dir:container_dir nvcr.io/nvidia/tensorrt:xx.xx-py3
+					sudo docker run --gpus all -it --rm -v ~:/workspace/sangwook nvcr.io/nvidia/tensorrt:20.08-py3
+
+			(Optional) Build samples:
+				cd /workspace/tensorrt/samples
+				make -j4
+				cd /workspace/tensorrt/bin
+				./sample_mnist
+					<error>
+					Cudnn Error in initializeCommonContext: 4 (Could not initialize cudnn, please check cudnn installation.)
+
+			Build a docker image:
+				https://si-analytics.tistory.com/32
+
+				Edit a Dockerfile.
+					./tensorrt/Dockerfile
+				docker build --tag tensorrt:latest .
+
+				docker run --gpus all -it --rm --shm-size 16G tensorrt:latest python3 -c "import tensorrt"
+				NV_GPU=0 nvidia-docker run -it --rm --shm-size 16G tensorrt:latest python3 -c "import tensorrt"
+
+		Using deb:
+			Downloads from https://developer.nvidia.com/tensorrt.
+
+			dpkg -i nv-tensorrt-repo-ubuntu1804-cuda11.0-trt7.1.3.4-ga-20200617_1-1_amd64.deb
+
+		Check TensorRT.
+			dpkg -l | grep nvinfer
+
+
+	- Install TensorRT Python.
+		apt -y update && apt -y full-upgrade
+		#apt -y remove python3.6 && apt -y autoremove
+		apt -y install python3.7-dev
+			Needs Python 3.7 or later.
+		rm /usr/bin/python
+		ln -s /usr/bin/python3.7 /usr/bin/python
+		apt -y install python3-pip python3-setuptools
+		python -m pip install --upgrade pip
+		pip install pycuda torch==1.5.1 torchvision==0.6.1
+
+		export LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64:/usr/lib/x86_64-linux-gnu:/usr/local/lib:/usr/lib:$LD_LIBRARY_PATH
+
+		Using tar package:
+			https://eehoeskrap.tistory.com/302
+
+			Downloads from https://developer.nvidia.com/tensorrt.
+
+			tar xzvf TensorRT-7.2.0.14.Ubuntu-18.04.x86_64-gnu.cuda-11.0.cudnn8.0.tar.gz
+			export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/TensorRT-7.2.0.14/lib
+
+			cd TensorRT-7.2.0.14/python
+			pip install tensorrt-7.2.0.14-cp37-none-linux_x86_64.whl
+
+			cd TensorRT-7.2.0.14/uff
+			pip install uff-0.6.9-py2.py3-none-any.whl
+			which convert-to-uff
+				/usr/local/bin/convert-to-uff
+
+			cd TensorRT-7.2.0.14/graphsurgeon
+			pip install graphsurgeon-0.4.5-py2.py3-none-any.whl
+
+		Check TensorRT.
+			tree-d
+			python -c "import tensorrt"
+
+	- Install bazel (For building TRTorch from source).
+		https://github.com/bazelbuild/bazel/releases
+
+		Using apt:
+			https://docs.bazel.build/versions/3.5.0/install-ubuntu.html
+
+			apt install curl gnupg
+			curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
+			mv bazel.gpg /etc/apt/trusted.gpg.d/
+			echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
+
+			apt update && apt install bazel
+			apt update && apt full-upgrade
+			apt install bazel-3.4.1
+
+		From source:
+			https://github.com/NVIDIA/TRTorch
+
+			Install JDK:
+				apt install openjdk-11-jdk
+				apt install default-jdk
+			apt install zip
+
+			export BAZEL_VERSION=3.4.1
+			mkdir bazel
+			cd bazel
+			curl -fSsL -O https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-dist.zip
+			unzip bazel-$BAZEL_VERSION-dist.zip
+			bash ./compile.sh
+
+	- Install TRTorch.
+		https://github.com/NVIDIA/TRTorch
+		https://nvidia.github.io/TRTorch/tutorials/installation.html
+
+		Dependency:
+			Bazel 3.3.1
+			Libtorch 1.5.1
+			CUDA 10.2
+			cuDNN 7.6.5 (by default, cuDNN 8 supported with compatable PyTorch build)
+			TensorRT 7.0.0 (by default, TensorRT 7.1 supported with compatable PyTorch build)
+
+		ln -s /usr/lib/x86_64-linux-gnu/libcudnn.so.8 /usr/lib/x86_64-linux-gnu/libcudnn.so.7
+			It's a trick.
+	
+		Using pip:
+			https://github.com/NVIDIA/TRTorch/releases/tag/v0.0.3
+
+			pip3 install https://github.com/NVIDIA/TRTorch/releases/download/v0.0.3/trtorch-0.0.3-cp37-cp37m-linux_x86_64.whl
+			pip3 install https://github.com/NVIDIA/TRTorch/releases/download/v0.0.3/trtorch-0.0.3-cp38-cp38-linux_x86_64.whl
+	
+		From source:
+			git clone https://github.com/NVIDIA/TRTorch.git
+			cd ${TRTorch_HOME}
+			Edit ${TRTorch_HOME}/WORKSPCE.
+				https://github.com/NVIDIA/TRTorch
+
+			ln -s /usr/local/cuda-11.0 /usr/local/cuda-10.2
+				CUDA 10.2 is used.
+			ln -s /usr/lib/x86_64-linux-gnu/libnvinfer.so /usr/lib/x86_64-linux-gnu/libnvinfer_static.so
+				nvinfer_static is linked to build libtrtorch.
+
+			Edit ${TRTorch_HOME}/cpp/trtorchc/BUILD
+				cc_binary(
+					name = "trtorchc",
+					srcs = [
+						"main.cpp"
+					],
+					deps = [
+						"//third_party/args",
+						"//cpp/api:trtorch"
+					] + select({
+						":use_pre_cxx11_abi":  [
+							"@libtorch_pre_cxx11_abi//:libtorch",
+							"@libtorch_pre_cxx11_abi//:caffe2",
+						],
+						"//conditions:default":  [
+							"@libtorch//:libtorch",
+							"@libtorch//:caffe2",
+						],
+					}),
+					linkstatic = False,  # Add.
+				)
+			Edit ${TRTorch_HOME}/cpp/api/lib/BUILD
+				cc_binary(
+					name = "libtrtorch.so",
+					srcs = [],
+					deps = [
+						"//cpp/api:trtorch"
+					],
+					linkstatic = False,  # Change.
+					linkshared = True
+				)
+
+				cc_binary(
+					name = "trtorch.dll",
+					srcs = [],
+					deps = [
+						"//cpp/api:trtorch"
+					],
+					linkstatic = False,  # Change.
+					linkshared = True
+				)
+
+			bazel build //:libtrtorch --compilation_mode=opt --verbose_failures
+			bazel build //:libtrtorch --compilation_mode=dbg
+				Output:
+					${TRTorch_HOME}/bazel-TRTorch/external/libtorch
+					${TRTorch_HOME}/bazel-bin
+			bazel clean --async
+
+			export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(TRTorch_HOME)/bazel-TRTorch/external/libtorch/lib
+
+			Compile the Python package.
+				py/build_whl.sh
+
+		Check TRTorch.
+			python -c "import trtorch"
