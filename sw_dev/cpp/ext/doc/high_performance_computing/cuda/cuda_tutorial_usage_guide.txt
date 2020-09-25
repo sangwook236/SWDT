@@ -1,3 +1,0 @@
-[-] General
-	-. Site
-		http://www.vizworld.com/2009/06/isc-2009-cuda-tutorial-from-nvidia/

@@ -2,6 +2,11 @@
 	- Site.
 		https://developer.nvidia.com/cuda-zone
 
+		https://code.google.com/p/cudpp/
+
+	- Tutorial.
+		http://www.vizworld.com/2009/06/isc-2009-cuda-tutorial-from-nvidia/
+
 [-] Usage.
 	- CUDA toolkit version.
 		cat /usr/local/cuda/version.txt
@@ -70,6 +75,9 @@
 		Set max. memory and graphic clocks:
 			nvidia-smi -ac "877,1380"
 				Run "nvidia-smi -q -d CLOCK" to see max. memory and graphic clocks.
+
+[-] Usage (TensorRT, TRTorch, TF-TRT).
+	Refer to ./tensorrt_usage_guide.txt
 
 [-] Troubleshooting.
 	- <error> RuntimeError: cuDNN error: CUDNN_STATUS_INTERNAL_ERROR.

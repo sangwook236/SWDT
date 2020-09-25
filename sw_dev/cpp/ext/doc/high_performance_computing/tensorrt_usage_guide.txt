@@ -14,32 +14,43 @@
 		TensorRT-7.2.0.14/samples/python
 			Downloads from https://developer.nvidia.com/tensorrt.
 			tar xzvf TensorRT-7.2.0.14.Ubuntu-18.04.x86_64-gnu.cuda-11.0.cudnn8.0.tar.gz
-		${SWDT_PYTHON_HOME}/ext/test/high_performance_computing/tensorrt_test.py
-			https://si-analytics.tistory.com/33 (Lots of bugs)
+
+		https://si-analytics.tistory.com/33 (A few bugs)
+			${SWDT_PYTHON_HOME}/ext/test/high_performance_computing/tensorrt_test.py
 
 	- TRTorch.
 		https://github.com/NVIDIA/TRTorch/blob/master/notebooks/Resnet50-example.ipynb
+			${SWDT_PYTHON_HOME}/ext/test/high_performance_computing/tensorrt_test.py
 
-[-] Installation.
-	- Install cuDNN.
-		https://developer.nvidia.com/cudnn
+[-] Installation (TensorRT).
+	- Install CUDA and cuDNN.
+		Using docker:
+			https://hub.docker.com/
 
-	- Install TensorRT.
-		https://docs.nvidia.com/deeplearning/tensorrt/install-guide/index.html
-		https://developer.nvidia.com/tensorrt
+			sudo docker pull nvidia/cuda:11.0-cudnn8-devel-ubuntu18.04
+			sudo docker pull nvidia/cuda
 
+			If you have Docker 19.03 or later:
+				docker run --gpus all -it --rm -v local_dir:container_dir nvidia/cuda:11.0-cudnn8-devel-ubuntu18.04
+			If you have Docker 19.02 or earlier:
+				nvidia-docker run -it --rm -v local_dir:container_dir nvidia/cuda:11.0-cudnn8-devel-ubuntu18.04
+
+				sudo docker run --gpus all -it --rm -v ~:/workspace/sangwook nvidia/cuda:11.0-cudnn8-devel-ubuntu18.04
+			apt -y update && apt -y upgrade
+	- Install CUDA, cuDNN, and TensorRT.
 		Using docker:
 			NVIDIA NGC:
 				https://ngc.nvidia.com/catalog/containers/nvidia:tensorrt
+
+			sudo docker pull nvcr.io/nvidia/tensorrt:20.08-py3
 
 			If you have Docker 19.03 or later:
 				docker run --gpus all -it --rm -v local_dir:container_dir nvcr.io/nvidia/tensorrt:<xx.xx>-py<x>
 			If you have Docker 19.02 or earlier:
 				nvidia-docker run -it --rm -v local_dir:container_dir nvcr.io/nvidia/tensorrt:<xx.xx>-py<x>
 
-				sudo docker pull nvcr.io/nvidia/tensorrt:20.08-py3
-				sudo docker run --gpus all -it --rm -v local_dir:container_dir nvcr.io/nvidia/tensorrt:xx.xx-py3
-					sudo docker run --gpus all -it --rm -v ~:/workspace/sangwook nvcr.io/nvidia/tensorrt:20.08-py3
+				sudo docker run --gpus all -it --rm -v ~:/workspace/sangwook nvcr.io/nvidia/tensorrt:20.08-py3
+			apt -y update && apt -y upgrade
 
 			(Optional) Build samples:
 				cd /workspace/tensorrt/samples
@@ -49,37 +60,46 @@
 					<error>
 					Cudnn Error in initializeCommonContext: 4 (Could not initialize cudnn, please check cudnn installation.)
 
-			Build a docker image:
-				https://si-analytics.tistory.com/32
+	- Set environment variables.
+		export LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64:/usr/lib/x86_64-linux-gnu:/usr/local/lib:/usr/lib:$LD_LIBRARY_PATH
 
-				Edit a Dockerfile.
-					./tensorrt/Dockerfile
-				docker build --tag tensorrt:latest .
+	- Install TensorRT.
+		https://docs.nvidia.com/deeplearning/tensorrt/install-guide/index.html
+		https://developer.nvidia.com/tensorrt
 
-				docker run --gpus all -it --rm --shm-size 16G tensorrt:latest python3 -c "import tensorrt"
-				NV_GPU=0 nvidia-docker run -it --rm --shm-size 16G tensorrt:latest python3 -c "import tensorrt"
+		Using apt:
+			For only running TensorRT C++ applications:
+				apt -y install libnvinfer7 libnvonnxparsers7 libnvparsers7 libnvinfer-plugin7
+			For also building TensorRT C++ applications:
+				apt -y install libnvinfer-dev libnvonnxparsers-dev libnvparsers-dev libnvinfer-plugin-dev
+			For running TensorRT Python applications:
+				apt -y install python-libnvinfer python3-libnvinfer
+
+			Install libnvinfer7 for an older CUDA version and hold the libnvinfer7 package at this version:
+				version="7.2.0-1+cuda11.0"
+				apt -y install libnvinfer7=${version} libnvonnxparsers7=${version} libnvparsers7=${version} libnvinfer-plugin7=${version} libnvinfer-dev=${version} libnvonnxparsers-dev=${version} libnvparsers-dev=${version} libnvinfer-plugin-dev=${version} python-libnvinfer=${version} python3-libnvinfer=${version}
+				apt-mark hold libnvinfer7 libnvonnxparsers7 libnvparsers7 libnvinfer-plugin7 libnvinfer-dev libnvonnxparsers-dev libnvparsers-dev libnvinfer-plugin-dev python-libnvinfer python3-libnvinfer
+			Upgrade to the latest version of TensorRT or the latest version of CUDA:
+				apt-mark unhold libnvinfer7 libnvonnxparsers7 libnvparsers7 libnvinfer-plugin7 libnvinfer-dev libnvonnxparsers-dev libnvparsers-dev libnvinfer-plugin-dev python-libnvinfer python3-libnvinfer
 
 		Using deb:
-			Downloads from https://developer.nvidia.com/tensorrt.
+			Downloads from https://developer.nvidia.com/tensorrt
 
 			dpkg -i nv-tensorrt-repo-ubuntu1804-cuda11.0-trt7.1.3.4-ga-20200617_1-1_amd64.deb
+				Not working.
 
 		Check TensorRT.
 			dpkg -l | grep nvinfer
-
-
 	- Install TensorRT Python.
-		apt -y update && apt -y full-upgrade
-		#apt -y remove python3.6 && apt -y autoremove
+		(Optional) apt -y remove python3.6 && apt -y autoremove
 		apt -y install python3.7-dev
 			Needs Python 3.7 or later.
+		apt -y install python3-pip python3-setuptools
 		rm /usr/bin/python
 		ln -s /usr/bin/python3.7 /usr/bin/python
-		apt -y install python3-pip python3-setuptools
+
 		python -m pip install --upgrade pip
 		pip install pycuda torch==1.5.1 torchvision==0.6.1
-
-		export LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64:/usr/lib/x86_64-linux-gnu:/usr/local/lib:/usr/lib:$LD_LIBRARY_PATH
 
 		Using tar package:
 			https://eehoeskrap.tistory.com/302
@@ -104,6 +124,30 @@
 			tree-d
 			python -c "import tensorrt"
 
+	- Build a docker image.
+			https://si-analytics.tistory.com/32
+
+			Edit a Dockerfile.
+				./Dockerfile.tensorrt & ./Dockerfile.cuda
+				Use Dockerfile.tensorrt.
+					Docker image size is smaller.
+
+			Rename Dockerfile.tensorrt to Dockerfile.
+			docker build --tag sangwook/tensorrt:latest .
+				This command "docker build --tag sangwook/tensorrt:latest - < Dockerfile.tensorrt" causes an error.
+
+			Rename Dockerfile.cuda to Dockerfile.
+			docker build --tag sangwook/cuda:latest .
+				This command "docker build --tag sangwook/cuda:latest - < Dockerfile.cuda" causes an error.
+
+	- Run a docker image.
+			docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_tensorrt sangwook/tensorrt:latest python3 -c "import tensorrt"
+			NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name tensorrt sangwook/tensorrt:latest python3 -c "import tensorrt"
+
+			docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_cuda sangwook/cuda:latest python3 -c "import tensorrt"
+			NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name cuda sangwook/cuda:latest python3 -c "import tensorrt"
+
+[-] Installation (TRTorch).
 	- Install bazel (For building TRTorch from source).
 		https://github.com/bazelbuild/bazel/releases
 
@@ -133,7 +177,6 @@
 			curl -fSsL -O https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-dist.zip
 			unzip bazel-$BAZEL_VERSION-dist.zip
 			bash ./compile.sh
-
 	- Install TRTorch.
 		https://github.com/NVIDIA/TRTorch
 		https://nvidia.github.io/TRTorch/tutorials/installation.html
@@ -151,8 +194,8 @@
 		Using pip:
 			https://github.com/NVIDIA/TRTorch/releases/tag/v0.0.3
 
-			pip3 install https://github.com/NVIDIA/TRTorch/releases/download/v0.0.3/trtorch-0.0.3-cp37-cp37m-linux_x86_64.whl
-			pip3 install https://github.com/NVIDIA/TRTorch/releases/download/v0.0.3/trtorch-0.0.3-cp38-cp38-linux_x86_64.whl
+			pip install https://github.com/NVIDIA/TRTorch/releases/download/v0.0.3/trtorch-0.0.3-cp37-cp37m-linux_x86_64.whl
+			pip install https://github.com/NVIDIA/TRTorch/releases/download/v0.0.3/trtorch-0.0.3-cp38-cp38-linux_x86_64.whl
 	
 		From source:
 			git clone https://github.com/NVIDIA/TRTorch.git
@@ -221,3 +264,26 @@
 
 		Check TRTorch.
 			python -c "import trtorch"
+
+	- Build a docker image.
+			https://si-analytics.tistory.com/32
+
+			Edit a Dockerfile.
+				./Dockerfile.tensorrt & ./Dockerfile.cuda
+				Use Dockerfile.tensorrt.
+					Docker image size is smaller.
+
+			Rename Dockerfile.tensorrt to Dockerfile.
+			docker build --tag sangwook/tensorrt_trtorch:latest .
+				This command "docker build --tag sangwook/tensorrt_trtorch:latest - < Dockerfile.tensorrt" causes an error.
+
+			Rename Dockerfile.cuda to Dockerfile.
+			docker build --tag sangwook/cuda_trtorch:latest .
+				This command "docker build --tag sangwook/cuda_trtorch:latest - < Dockerfile.cuda" causes an error.
+
+	- Run a docker image.
+			docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_tensorrt_trtorch sangwook/tensorrt_trtorch:latest python3 -c "import tensorrt, trtorch"
+			NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_tensorrt_trtorch sangwook/tensorrt_trtorch:latest python3 -c "import tensorrt, trtorch"
+
+			docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_cuda_trtorch sangwook/cuda_trtorch:latest python3 -c "import tensorrt, trtorch"
+			NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_cuda_trtorch sangwook/cuda_trtorch:latest python3 -c "import tensorrt, trtorch"
