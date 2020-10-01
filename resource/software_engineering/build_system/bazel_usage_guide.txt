@@ -7,10 +7,20 @@
 		https://docs.bazel.build/versions/master/external.html
 
 [-] Usage.
+	- Info.
+		https://docs.bazel.build/versions/master/tutorial/cpp.html
+
+		@project_name//path/to/package:target_name
+
+		The WORKSPACE file, which identifies the directory and its contents as a Bazel workspace and lives at the root of the project's directory structure.
+		One or more BUILD files, which tell Bazel how to build different parts of the project.
+		A package, which is a directory within the workspace that contains a BUILD file.
+
 	- Install.
 		Windows:
 			Download a release.
 				https://github.com/bazelbuild/bazel/releases/
+
 	- Set environment variables.
 		Windows:
 			set BAZEL_SH=${MSYS_HOME}/usr/bin/bash.exe
@@ -18,13 +28,24 @@
 				Instead, a Python environment can be activated.
 			set BAZEL_VC=${VC_HOME}/VC
 				Instead, Visual Studio command prompt can be used.
-	- Set path.
-		Windows:
+
 			set PATH=${MSYS_HOME}/usr/bin;${MINGW_HOME}/mingw64/bin;${BAZEL_HOME};%PATH%
+
 	- Create a build file.
 		https://docs.bazel.build/versions/master/getting-started.html
 		https://docs.bazel.build/versions/master/tutorial/cpp.html
 		https://docs.bazel.build/versions/master/tutorial/java.html
+
+		External dependencies:
+			https://docs.bazel.build/versions/master/external.html
+
 	- Build.
+		https://docs.bazel.build/versions/master/user-manual.html
+
 		bazel build :hello-world
 		bazel build main:hello-world
+
+		bazel clean --async
+		bazel clean --expunge
+		bazel clean --expunge_async
+

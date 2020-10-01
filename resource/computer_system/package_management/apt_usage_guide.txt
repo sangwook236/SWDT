@@ -35,6 +35,8 @@
 		List upgradable packages:
 			apt list --upgradable
 
+			rm /var/lib/apt/lists/*
+
 		Download package source:
 			sudo apt source PACKAGE_NAME
 			sudo apt --download-only source PACKAGE_NAME
@@ -77,3 +79,7 @@
 			sudo apt clean
 		Auto clean:
 			sudo apt autoclean
+
+		Prevent a package from being automatically installed, upgraded or removed:
+			apt-mark hold PACKAGE_NAME
+			apt-mark unhold PACKAGE_NAME
