@@ -67,6 +67,44 @@
 		https://docs.nvidia.com/deeplearning/tensorrt/install-guide/index.html
 		https://developer.nvidia.com/tensorrt
 
+		From source:
+			https://github.com/NVIDIA/TensorRT
+
+			Download TensorRT OSS sources.
+				git clone https://github.com/NVIDIA/TensorRT.git
+				cd ${TensorRT_HOME}
+				git submodule update --init --recursive
+				export TRT_SOURCE=`pwd`
+
+			Download the TensorRT binary release.
+				cd /path/to/downloads
+				tar -xvzf TensorRT-7.2.0.14.Ubuntu-18.04.x86_64-gnu.cuda-11.0.cudnn8.0.tar.gz
+				export TRT_RELEASE=`pwd`/TensorRT-7.2.0.14
+
+			Build a docker image.
+				./docker/build.sh --file docker/ubuntu.Dockerfile --tag tensorrt-ubuntu --os 18.04 --cuda 11.0
+					ID: trtuser, PW: nvidia.
+
+			Launch the TensorRT build container.
+				./docker/launch.sh --tag tensorrt-ubuntu --gpus all --release $TRT_RELEASE --source $TRT_SOURCE
+
+				docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_tensorrt tensorrt-ubuntu:latest
+
+			Build the TensorRT OSS components.
+				export TRT_RELEASE=/path/to/TensorRT-7.2.0.14
+				export TRT_SOURCE=/path/to/TensorRT_github
+				export PATH=~/.local/bin:$PATH
+
+				cd $TRT_SOURCE
+				mkdir -p build && cd build
+				cmake .. -DTRT_LIB_DIR=$TRT_RELEASE/lib -DTRT_OUT_DIR=`pwd`/out
+				make -j$(nproc)
+
+				sudo make install
+					${TRT_RELEASE}/targets/x86_64-linux-gnu/include
+					${TRT_RELEASE}/targets/x86_64-linux-gnu/lib
+					${TRT_RELEASE}/targets/x86_64-linux-gnu/bin
+
 		Using apt:
 			For only running TensorRT C++ applications:
 				apt -y install libnvinfer7 libnvonnxparsers7 libnvparsers7 libnvinfer-plugin7
@@ -94,12 +132,17 @@
 		(Optional) apt -y remove python3.6 && apt -y autoremove
 		apt -y install python3.7-dev
 			Needs Python 3.7 or later.
-		apt -y install python3-pip python3-setuptools
-		rm /usr/bin/python
+		rm /usr/bin/python /usr/bin/python3
 		ln -s /usr/bin/python3.7 /usr/bin/python
+		ln -s /usr/bin/python3.7 /usr/bin/python3
+		apt -y install python3-pip python3-setuptools
 
 		python -m pip install --upgrade pip
+		pip install pycuda torch==1.6 torchvision==0.7
 		pip install pycuda torch==1.5.1 torchvision==0.6.1
+
+		apt -y install libglu1-mesa-dev freeglut3-dev mesa-common-dev
+		pip install onnx opencv-python transformers
 
 		Using tar package:
 			https://eehoeskrap.tistory.com/302
@@ -110,12 +153,12 @@
 			export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/TensorRT-7.2.0.14/lib
 
 			cd TensorRT-7.2.0.14/python
+			pip install tensorrt-7.2.0.14-cp36-none-linux_x86_64.whl
 			pip install tensorrt-7.2.0.14-cp37-none-linux_x86_64.whl
 
 			cd TensorRT-7.2.0.14/uff
 			pip install uff-0.6.9-py2.py3-none-any.whl
 			which convert-to-uff
-				/usr/local/bin/convert-to-uff
 
 			cd TensorRT-7.2.0.14/graphsurgeon
 			pip install graphsurgeon-0.4.5-py2.py3-none-any.whl
@@ -125,34 +168,34 @@
 			python -c "import tensorrt"
 
 	- Build a docker image.
-			https://si-analytics.tistory.com/32
+		https://si-analytics.tistory.com/32
 
-			Edit a Dockerfile.
-				./Dockerfile.tensorrt & ./Dockerfile.cuda
-				Use Dockerfile.tensorrt.
-					Docker image size is smaller.
+		Edit a Dockerfile.
+			./Dockerfile.tensorrt & ./Dockerfile.cuda
+			Use Dockerfile.tensorrt.
+				Docker image size is smaller.
 
-			Rename Dockerfile.tensorrt to Dockerfile.
-			docker build --tag sangwook/tensorrt:latest .
-				This command "docker build --tag sangwook/tensorrt:latest - < Dockerfile.tensorrt" causes an error.
+		Rename Dockerfile.tensorrt to Dockerfile.
+		docker build --tag sangwook/tensorrt:latest .
+			This command "docker build --tag sangwook/tensorrt:latest - < Dockerfile.tensorrt" causes an error.
 
-			Rename Dockerfile.cuda to Dockerfile.
-			docker build --tag sangwook/cuda:latest .
-				This command "docker build --tag sangwook/cuda:latest - < Dockerfile.cuda" causes an error.
+		Rename Dockerfile.cuda to Dockerfile.
+		docker build --tag sangwook/cuda:latest .
+			This command "docker build --tag sangwook/cuda:latest - < Dockerfile.cuda" causes an error.
 
 	- Run a docker image.
-			docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_tensorrt sangwook/tensorrt:latest python3 -c "import tensorrt"
-			NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name tensorrt sangwook/tensorrt:latest python3 -c "import tensorrt"
+		docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_tensorrt sangwook/tensorrt:latest python3 -c "import tensorrt"
+		NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_tensorrt sangwook/tensorrt:latest python3 -c "import tensorrt"
 
-			docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_cuda sangwook/cuda:latest python3 -c "import tensorrt"
-			NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name cuda sangwook/cuda:latest python3 -c "import tensorrt"
+		docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_cuda sangwook/cuda:latest python3 -c "import tensorrt"
+		NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_cuda sangwook/cuda:latest python3 -c "import tensorrt"
 
 [-] Installation (TRTorch).
 	- Install bazel (For building TRTorch from source).
 		https://github.com/bazelbuild/bazel/releases
 
 		Using apt:
-			https://docs.bazel.build/versions/3.5.0/install-ubuntu.html
+			https://docs.bazel.build/versions/master/install-ubuntu.html
 
 			apt install curl gnupg
 			curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
@@ -177,6 +220,7 @@
 			curl -fSsL -O https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-dist.zip
 			unzip bazel-$BAZEL_VERSION-dist.zip
 			bash ./compile.sh
+
 	- Install TRTorch.
 		https://github.com/NVIDIA/TRTorch
 		https://nvidia.github.io/TRTorch/tutorials/installation.html
@@ -187,25 +231,35 @@
 			CUDA 10.2
 			cuDNN 7.6.5 (by default, cuDNN 8 supported with compatable PyTorch build)
 			TensorRT 7.0.0 (by default, TensorRT 7.1 supported with compatable PyTorch build)
-
-		ln -s /usr/lib/x86_64-linux-gnu/libcudnn.so.8 /usr/lib/x86_64-linux-gnu/libcudnn.so.7
-			It's a trick.
-	
-		Using pip:
-			https://github.com/NVIDIA/TRTorch/releases/tag/v0.0.3
-
-			pip install https://github.com/NVIDIA/TRTorch/releases/download/v0.0.3/trtorch-0.0.3-cp37-cp37m-linux_x86_64.whl
-			pip install https://github.com/NVIDIA/TRTorch/releases/download/v0.0.3/trtorch-0.0.3-cp38-cp38-linux_x86_64.whl
 	
 		From source:
 			git clone https://github.com/NVIDIA/TRTorch.git
 			cd ${TRTorch_HOME}
+
+			export TRT_RELEASE=/path/to/TensorRT-7.2.0.14
+			mkdir ${TRT_RELEASE}/include/x86_64-linux-gnu ${TRT_RELEASE}/lib/x86_64-linux-gnu
+			cp ${TRT_RELEASE}/include/*.h ${TRT_RELEASE}/include/x86_64-linux-gnu
+			cp ${TRT_RELEASE}/lib/* ${TRT_RELEASE}/lib/x86_64-linux-gnu
+
 			Edit ${TRTorch_HOME}/WORKSPCE.
 				https://github.com/NVIDIA/TRTorch
 
+				new_local_repository(
+					name = "cudnn",
+					path = "/usr/",
+					build_file = "@//third_party/cudnn/local:BUILD"
+				)
+
+				new_local_repository(
+				   name = "tensorrt",
+				#   path = "/usr/",
+				   path = "${TRT_RELEASE}",
+				   build_file = "@//third_party/tensorrt/local:BUILD"
+				)
+
 			ln -s /usr/local/cuda-11.0 /usr/local/cuda-10.2
 				CUDA 10.2 is used.
-			ln -s /usr/lib/x86_64-linux-gnu/libnvinfer.so /usr/lib/x86_64-linux-gnu/libnvinfer_static.so
+			(Optional) ln -s /usr/lib/x86_64-linux-gnu/libnvinfer.so /usr/lib/x86_64-linux-gnu/libnvinfer_static.so
 				nvinfer_static is linked to build libtrtorch.
 
 			Edit ${TRTorch_HOME}/cpp/trtorchc/BUILD
@@ -257,33 +311,49 @@
 					${TRTorch_HOME}/bazel-bin
 			bazel clean --async
 
-			export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(TRTorch_HOME)/bazel-TRTorch/external/libtorch/lib
+			export LD_LIBRARY_PATH=${TRTorch_HOME}/bazel-TRTorch/external/libtorch/lib:${TRTorch_HOME}/bazel-bin/_solib_k8:$LD_LIBRARY_PATH
 
 			Compile the Python package.
+				cd ${TRTorch_HOME}
 				py/build_whl.sh
+
+			Install the Python package.
+				pip install ${TRTorch_HOME}/py/dist/trtorch-0.1.0a0-cp37-cp37m-linux_x86_64.whl
+
+
+		Using pip:
+			https://github.com/NVIDIA/TRTorch/releases/tag/v0.0.3
+
+			(Optional)
+				ln -s /usr/lib/x86_64-linux-gnu/libcudnn.so.8 /usr/lib/x86_64-linux-gnu/libcudnn.so.7
+					It's a trick.
+
+			pip install https://github.com/NVIDIA/TRTorch/releases/download/v0.0.3/trtorch-0.0.3-cp36-cp36m-linux_x86_64.whl
+			pip install https://github.com/NVIDIA/TRTorch/releases/download/v0.0.3/trtorch-0.0.3-cp37-cp37m-linux_x86_64.whl
+			pip install https://github.com/NVIDIA/TRTorch/releases/download/v0.0.3/trtorch-0.0.3-cp38-cp38-linux_x86_64.whl
 
 		Check TRTorch.
 			python -c "import trtorch"
 
 	- Build a docker image.
-			https://si-analytics.tistory.com/32
+		https://si-analytics.tistory.com/32
 
-			Edit a Dockerfile.
-				./Dockerfile.tensorrt & ./Dockerfile.cuda
-				Use Dockerfile.tensorrt.
-					Docker image size is smaller.
+		Edit a Dockerfile.
+			./Dockerfile.tensorrt & ./Dockerfile.cuda
+			Use Dockerfile.tensorrt.
+				Docker image size is smaller.
 
-			Rename Dockerfile.tensorrt to Dockerfile.
-			docker build --tag sangwook/tensorrt_trtorch:latest .
-				This command "docker build --tag sangwook/tensorrt_trtorch:latest - < Dockerfile.tensorrt" causes an error.
+		Rename Dockerfile.tensorrt to Dockerfile.
+		docker build --tag sangwook/tensorrt_trtorch:latest .
+			This command "docker build --tag sangwook/tensorrt_trtorch:latest - < Dockerfile.tensorrt" causes an error.
 
-			Rename Dockerfile.cuda to Dockerfile.
-			docker build --tag sangwook/cuda_trtorch:latest .
-				This command "docker build --tag sangwook/cuda_trtorch:latest - < Dockerfile.cuda" causes an error.
+		Rename Dockerfile.cuda to Dockerfile.
+		docker build --tag sangwook/cuda_trtorch:latest .
+			This command "docker build --tag sangwook/cuda_trtorch:latest - < Dockerfile.cuda" causes an error.
 
 	- Run a docker image.
-			docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_tensorrt_trtorch sangwook/tensorrt_trtorch:latest python3 -c "import tensorrt, trtorch"
-			NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_tensorrt_trtorch sangwook/tensorrt_trtorch:latest python3 -c "import tensorrt, trtorch"
+		docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_tensorrt_trtorch sangwook/tensorrt_trtorch:latest python3 -c "import tensorrt, trtorch"
+		NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_tensorrt_trtorch sangwook/tensorrt_trtorch:latest python3 -c "import tensorrt, trtorch"
 
-			docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_cuda_trtorch sangwook/cuda_trtorch:latest python3 -c "import tensorrt, trtorch"
-			NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_cuda_trtorch sangwook/cuda_trtorch:latest python3 -c "import tensorrt, trtorch"
+		docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_cuda_trtorch sangwook/cuda_trtorch:latest python3 -c "import tensorrt, trtorch"
+		NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_cuda_trtorch sangwook/cuda_trtorch:latest python3 -c "import tensorrt, trtorch"
