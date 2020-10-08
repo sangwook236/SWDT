@@ -130,12 +130,12 @@ def torch_to_onnx(model, onnx_filepath, input1_shape, input2_shape, input3_shape
 	# Visualize an ONNX graph using netron.
 
 def onnx_to_tensorrt(onnx_filepath, tensorrt_filepath, is_fp16=False):
-	TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
-	EXPLICIT_BATCH = 1 << (int)(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH)
+	trt_logger = trt.Logger(trt.Logger.WARNING)
+	explicit_batch = 1 << (int)(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH)
 
-	builder = trt.Builder(TRT_LOGGER)
-	network = builder.create_network(EXPLICIT_BATCH)
-	parser = trt.OnnxParser(network, TRT_LOGGER)
+	builder = trt.Builder(trt_logger)
+	network = builder.create_network(explicit_batch)
+	parser = trt.OnnxParser(network, trt_logger)
 
 	builder.max_workspace_size = (1 << 30)
 	#builder.max_batch_size = 1
@@ -166,8 +166,8 @@ def onnx_to_tensorrt(onnx_filepath, tensorrt_filepath, is_fp16=False):
 def infer_by_tensorrt(tensorrt_filepath, input1_shape, input2_shape, input3_shape, device='cuda'):
 	print('Start creating a runtime...')
 	start_time = time.time()
-	TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
-	trt_runtime = trt.Runtime(TRT_LOGGER)
+	trt_logger = trt.Logger(trt.Logger.WARNING)
+	trt_runtime = trt.Runtime(trt_logger)
 	print('End creating a runtime: {} secs.'.format(time.time() - start_time))
 
 	print('Start loading a model...')

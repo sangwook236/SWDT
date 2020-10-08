@@ -320,7 +320,6 @@
 			Install the Python package.
 				pip install ${TRTorch_HOME}/py/dist/trtorch-0.1.0a0-cp37-cp37m-linux_x86_64.whl
 
-
 		Using pip:
 			https://github.com/NVIDIA/TRTorch/releases/tag/v0.0.3
 

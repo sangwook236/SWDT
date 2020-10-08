@@ -144,7 +144,7 @@ def basic_example():
 	visualize_generator(generator, output_mask, show_image)
 
 # REF [function] >> construct_charset() in ${SWL_PYTHON_HOME}/test/language_processing/text_generation_util.py.
-def construct_charset(digit=True, alphabet_uppercase=True, alphabet_lowercase=True, punctuation=True, space=True, hangeul=True, hangeul_jamo=False, whitespace=False, unit=False, currency=False, latin=False, greek_uppercase=False, greek_lowercase=False, chinese=False, hiragana=False, katakana=False, hangeul_letter_filepath=None):
+def construct_charset(digit=True, alphabet_uppercase=True, alphabet_lowercase=True, punctuation=True, space=True, hangeul=False, hangeul_jamo=False, whitespace=False, unit=False, currency=False, latin=False, greek_uppercase=False, greek_lowercase=False, chinese=False, hiragana=False, katakana=False, hangeul_letter_filepath=None):
 	charset = ''
 
 	# Latin.
