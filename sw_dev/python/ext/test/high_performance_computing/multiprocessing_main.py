@@ -87,11 +87,11 @@ def sqr_with_sleep(x):
 	return x * x
 
 def pool_async_2():
-	async_result_list = list()
+	async_results = list()
 	def async_callback(result):
 		# This is called whenever sqr_with_sleep(i) returns a result.
-		# async_result_list is modified only by the main process, not the pool workers.
-		async_result_list.append(result)
+		# async_results is modified only by the main process, not the pool workers.
+		async_results.append(result)
 
 	with mp.Pool() as pool:
 	#with mp.pool.ThreadPool() as pool:
@@ -101,7 +101,7 @@ def pool_async_2():
 		pool.close()  # Necessary. Why?
 		pool.join()
 
-	print('Async results =', async_result_list)
+	print('Async results =', async_results)
 
 def simple_worker_proc(val, step):
 	print('{}: step = {}.'.format(os.getpid(), step))
@@ -112,11 +112,11 @@ def simple_worker_proc(val, step):
 	return step, val
 
 def pool_async_3():
-	async_result_list = list()
+	async_results = list()
 	def async_callback(result):
 		# This is called whenever sqr_with_sleep(i) returns a result.
-		# async_result_list is modified only by the main process, not the pool workers.
-		async_result_list.append(result)
+		# async_results is modified only by the main process, not the pool workers.
+		async_results.append(result)
 
 	num_processes = 5
 	num_steps = 20
@@ -133,7 +133,7 @@ def pool_async_3():
 
 		results.get(timeout)
 
-	print('Async results =', async_result_list)
+	print('Async results =', async_results)
 
 def func1(lock, i):
 	"""
