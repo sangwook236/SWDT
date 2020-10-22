@@ -11,3 +11,21 @@
 
 	- Data parallelism.
 		https://pytorch.org/tutorials/intermediate/ddp_tutorial.html
+
+[-] Installation (Ubuntu).
+	- Install.
+		https://varhowto.com/install-pytorch-ubuntu-20-04/
+
+		Using conda:
+			Install with GPU support:
+				conda install pytorch torchvision
+				conda install pytorch torchvision cudatoolkit=10.1 cudnn -c pytorch
+			Install without GPU support:
+				conda install pytorch torchvision cpuonly -c pytorch
+
+		Using pip:
+			Install with GPU support:
+				pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+			Install without GPU support:
+				pip install torch torchvision (?)
+				pip install torch==1.5.1+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
