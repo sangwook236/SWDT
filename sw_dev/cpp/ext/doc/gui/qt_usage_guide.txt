@@ -3,24 +3,75 @@
 		http://www.qt.io/
 		http://www.qt.io/developers/
 
+		https://doc.qt.io/
+
 		http://wiki.qt.io/Jom
 		http://download.qt.io/official_releases/jom/
 
 [-] Usage.
-	REF [directory] >> ${SWDT_CPP_HOME}/ext/test/gui/qt5.
+	- Debugging.
+		https://doc.qt.io/qt-5/debug.html
 
-	- Compile meta objects by Meta Object Compiler (moc).
-		moc object_name.h -o moc_object_name.cpp
-	- Compile resources by Resource Compiler (rcc).
-		(Optional) rcc -binary resource_name.qrc -o resource_name.rcc
-		rcc resource_name.qrc -name resource_name -o qrc_resource_name.cpp
-	- Generate Makefile.
-		qmake -spec win32-msvc2015 project_name.pro
-		qmake -spec win32-msvc2015 -tp vc project_name.pro
-	- Make.
-		jom
-		make
-		nmake
+		export QT_DEBUG_PLUGINS=1
+
+	- Resource.
+		https://doc.qt.io/qt-5/resources.html
+
+	- Style sheet.
+		https://doc.qt.io/qt-5/stylesheet-reference.html
+
+	- Generate makefile.
+		Compile meta objects by Meta Object Compiler (moc).
+			moc object_name.h -o moc_object_name.cpp
+		Compile resources by Resource Compiler (rcc).
+			(Optional) rcc -binary resource_name.qrc -o resource_name.rcc
+			rcc resource_name.qrc -name resource_name -o qrc_resource_name.cpp
+		Generate Makefile.
+			qmake -spec win32-msvc2015 project_name.pro
+			qmake -spec win32-msvc2015 -tp vc project_name.pro
+		Make.
+			jom
+			make
+			nmake
+
+[-] Usage (QtCreator).
+	https://doc.qt.io/qtcreator/creator-using-qt-designer.html
+	https://doc.qt.io/qt-5/qtdesigner-manual.html
+
+	- Directory.
+		${QT_HOME}/Tools/QtCreator
+		${QT_HOME}/Tools/QtCreator/bin/qtcreator
+
+[-] Installation.
+	- Install.
+		Using online installer:
+			https://www.qt.io/download-open-source
+			https://www.qt.io/download-qt-installer
+
+			chmod +x qt-unified-linux-x64-3.2.3.online.run
+			./qt-unified-linux-x64-3.2.3.online.run
+
+		Using offline installer:
+			https://www.qt.io/download-open-source
+			https://www.qt.io/offline-insallers
+
+		Using apt:
+			sudo apt install qt5-default
+			sudo snap install qt513
+				Check ther version:
+					qmake --version
+			==> May be incompatible with the Qt version of PySide2.
+
+		sudo apt install libxcb-xinerama0
+
+	- Python.
+		pip install PySide2
+
+[-] Trouble shooting (Python).
+	- <error> Could not initialize GLX.
+		<solution>
+			Set QT_XCB_GL_INTEGRATION to none.
+				QT_XCB_GL_INTEGRATION=none python run.py
 
 [-] Trouble shooting (Windows).
 	- qmake.exe or QMAKESPEC.
