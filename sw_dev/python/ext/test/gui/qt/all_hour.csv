@@ -1,0 +1,14 @@
+time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+2020-10-24T11:22:49.900Z,19.4293327331543,-155.318161010742,3.25,2.07,ml,33,94,,0.140000001,hv,hv72196541,2020-10-24T11:28:21.110Z,"8 km W of Volcano, Hawaii",earthquake,0.41,0.560000002,0.31,7,automatic,hv,hv
+2020-10-24T11:17:55.780Z,19.4318332672119,-155.313003540039,2.36999988555908,1.75,ml,26,94,,0.239999995,hv,hv72196531,2020-10-24T11:23:26.100Z,"8 km W of Volcano, Hawaii",earthquake,0.43,0.620000005,0.21,4,automatic,hv,hv
+2020-10-24T11:17:32.620Z,19.4519996643066,-155.300338745117,20.2600002288818,1.71,ml,13,141,,0.200000003,hv,hv72196526,2020-10-24T11:23:02.860Z,"7 km W of Volcano, Hawaii",earthquake,1.83,2.1500001,0.2,5,automatic,hv,hv
+2020-10-24T11:17:19.270Z,33.940834,-117.2013321,11.91,1.43,ml,39,72,0.02462,0.2,ci,ci39443687,2020-10-24T11:28:07.870Z,"3km ENE of Moreno Valley, CA",earthquake,0.28,0.75,0.259,10,automatic,ci,ci
+2020-10-24T11:15:24.830Z,33.934,-117.1885,11.53,0.88,ml,18,71,0.01868,0.16,ci,ci39443679,2020-10-24T11:19:10.391Z,"4km ENE of Moreno Valley, CA",earthquake,0.36,0.55,0.226,23,automatic,ci,ci
+2020-10-24T11:06:56.310Z,35.9741667,-117.3956667,2.51,2.28,ml,22,89,0.1128,0.13,ci,ci39443671,2020-10-24T11:17:53.610Z,"23km N of Searles Valley, CA",earthquake,0.31,0.86,0.161,26,automatic,ci,ci
+2020-10-24T11:06:22.500Z,35.7366667,-117.5483333,8.11,0.88,ml,12,136,0.08846,0.1,ci,ci39443663,2020-10-24T11:09:57.338Z,"14km WSW of Searles Valley, CA",earthquake,0.34,0.92,0.131,11,automatic,ci,ci
+2020-10-24T10:58:26.690Z,19.4238338470459,-155.321334838867,2.74000000953674,1.72,ml,23,126,,0.25999999,hv,hv72196491,2020-10-24T11:03:57.100Z,"9 km WSW of Volcano, Hawaii",earthquake,0.58,0.639999986,0.18,5,automatic,hv,hv
+2020-10-24T10:46:10.890Z,62.0865,-153.3505,3.9,1.5,ml,,,,0.29,ak,ak020dp0dmv6,2020-10-24T10:58:55.332Z,"102 km W of Skwentna, Alaska",earthquake,,0.4,,,automatic,ak,ak
+2020-10-24T10:45:39.610Z,35.7473333,-117.5685,4,0.85,ml,14,151,0.07222,0.16,ci,ci39443655,2020-10-24T10:49:25.342Z,"15km W of Searles Valley, CA",earthquake,0.44,1,0.101,10,automatic,ci,ci
+2020-10-24T10:40:19.443Z,-62.3681,-58.2216,10,5.1,mww,,78,0.244,0.71,us,us6000cck0,2020-10-24T10:59:30.040Z,"South Shetland Islands",earthquake,6.3,1.9,0.078,16,reviewed,us,us
+2020-10-24T10:40:04.890Z,35.6738333,-117.4626667,7.56,1.83,ml,25,115,0.08714,0.16,ci,ci39443647,2020-10-24T10:44:13.411Z,"12km SSW of Searles Valley, CA",earthquake,0.3,0.96,0.144,26,automatic,ci,ci
+2020-10-24T10:39:59.735Z,61.0714,-147.8706,8.1,1.9,ml,,,,1.85,ak,ak020dp0c8qu,2020-10-24T10:51:03.998Z,"55 km NE of Whittier, Alaska",earthquake,,0.3,,,automatic,ak,ak

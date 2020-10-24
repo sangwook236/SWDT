@@ -264,8 +264,8 @@ def main():
 #--------------------------------------------------------------------
 
 # Usage:
-#	python qt_test.py
-#	QT_XCB_GL_INTEGRATION=none python qt_test.py
+#	python qt_basic.py
+#	QT_XCB_GL_INTEGRATION=none python qt_basic.py
 
 if '__main__' == __name__:
 	main()
