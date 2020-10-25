@@ -4,6 +4,10 @@
 		http://www.qt.io/developers/
 
 		https://doc.qt.io/
+		https://doc.qt.io/qtforpython/tutorials/
+		https://wiki.qt.io/Main
+		https://wiki.qt.io/Qt_for_Python
+		https://wiki.qt.io/Qt_for_Python/Tutorial
 
 		http://wiki.qt.io/Jom
 		http://download.qt.io/official_releases/jom/
@@ -72,6 +76,10 @@
 		<solution>
 			Set QT_XCB_GL_INTEGRATION to none.
 				QT_XCB_GL_INTEGRATION=none python run.py
+
+	- <error> ImportError: cannot import name 'qApp' from 'PySide2.QtCore'
+		<solution>
+			PySide2.QtCore.qApp -> PySide2.QtWidgets.QApplication.instance() (?)
 
 [-] Trouble shooting (Windows).
 	- qmake.exe or QMAKESPEC.

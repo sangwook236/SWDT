@@ -6,7 +6,7 @@ import pandas as pd
 from PySide2.QtCore import QDateTime, QTimeZone
 from PySide2.QtCore import Qt, QAbstractTableModel, QModelIndex
 from PySide2.QtCore import Slot
-from PySide2.QtGui import QKeySequence, QColor, QPainter
+from PySide2.QtGui import QColor, QPainter, QKeySequence
 from PySide2.QtWidgets import QApplication, QMainWindow, QAction
 from PySide2.QtWidgets import QWidget, QHBoxLayout, QHeaderView, QTableView, QSizePolicy
 from PySide2.QtCharts import QtCharts
@@ -55,7 +55,7 @@ class CustomTableModel(QAbstractTableModel):
 
 		return None
 
-class Widget(QWidget):
+class MyWidget(QWidget):
 	def __init__(self, data):
 		super().__init__()
 
@@ -136,7 +136,7 @@ class Widget(QWidget):
 		# Get the color from the QChart to use it on the QTableView.
 		self.model.color = '{}'.format(self.series.pen().color().name())
 
-class MainWindow(QMainWindow):
+class MyMainWindow(QMainWindow):
 	def __init__(self, widget):
 		super().__init__()
 		self.setWindowTitle('Eartquakes information')
@@ -153,7 +153,7 @@ class MainWindow(QMainWindow):
 
 		self.file_menu.addAction(exit_action)
 
-		# Status Bar.
+		# Status bar.
 		self.status = self.statusBar()
 		self.status.showMessage('Data loaded and plotted')
 
@@ -193,8 +193,8 @@ def main():
 
 	app = QApplication(sys.argv)
 
-	widget = Widget(data)
-	window = MainWindow(widget)
+	widget = MyWidget(data)
+	window = MyMainWindow(widget)
 	window.show()
 
 	sys.exit(app.exec_())

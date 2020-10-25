@@ -52,7 +52,7 @@ def dialog_tutorial():
 
 	class MyForm(QDialog):
 		def __init__(self, parent=None):
-			super(MyForm, self).__init__(parent)
+			super().__init__(parent)
 			self.setWindowTitle('My Form')
 
 			# Create widgets.
@@ -88,7 +88,7 @@ def ui_file_tutorial_1():
 
 	class MyMainWindow(QMainWindow):
 		def __init__(self):
-			super(MyMainWindow, self).__init__()
+			super().__init__()
 			self.ui = Ui_MainWindow()
 			self.ui.setupUi(self)
 
@@ -130,7 +130,7 @@ def qrc_file_tutorial():
 
 	class MyMainWindow(QMainWindow):
 		def __init__(self):
-			super(MyMainWindow, self).__init__()
+			super().__init__()
 
 			toolBar = QToolBar()
 			self.addToolBar(toolBar)
@@ -199,7 +199,7 @@ def widget_styling_tutorial_2():
 
 	class MyWidget(QWidget):
 		def __init__(self, parent=None):
-			super(MyWidget, self).__init__(parent)
+			super().__init__(parent)
 
 			menu_widget = QListWidget()
 			for i in range(10):
@@ -238,6 +238,153 @@ def widget_styling_tutorial_2():
 
 	sys.exit(app.exec_())
 
+def sdi_example():
+	from PySide2.QtCore import Qt
+	from PySide2.QtWidgets import QMainWindow, QWidget, QLabel, QTextEdit, QVBoxLayout, QAction
+	from PySide2.QtGui import QIcon, QImage, QPixmap, QKeySequence
+
+	class MyWidget(QWidget):
+		def __init__(self, parent=None):
+			super().__init__(parent)
+
+			if False:
+				QTextEdit(self)
+			elif False:
+				layout = QVBoxLayout()
+				layout.addWidget(QTextEdit())
+				self.setLayout(layout)
+			else:
+				label = QLabel(self)
+
+				image_filepath = './images/cat.jpg'
+				if True:
+					pixmap = QPixmap(image_filepath)
+				else:
+					image = QImage(image_filepath)
+					pixmap = QPixmap(image)
+				label.setPixmap(pixmap)
+				#label.setPixmap(pixmap.scaled(label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+				#label.setScaledContents(True)
+
+				#layout = QVBoxLayout()
+				#layout.addWidget(label)
+				#self.setLayout(layout)
+
+	class MyMainWindow(QMainWindow):
+		def __init__(self, widget):
+			super().__init__()
+			self.setWindowTitle('PySide2 SDI Application')
+			self.setWindowIcon(QIcon('pyicon.png'))
+
+			# Window dimensions.
+			self.setGeometry(100, 100, 800, 800)
+			#self.resize(800, 800)
+			#geometry = QApplication.instance().desktop().availableGeometry(self)
+			#self.setFixedSize(geometry.width() * 0.8, geometry.height() * 0.7)
+
+			self.setCentralWidget(widget)
+
+			# Menu bar.
+			menu_bar = self.menuBar()
+
+			file_menu = menu_bar.addMenu('File')
+
+			# Exit QAction.
+			exit_action = QAction('Exit', self)
+			exit_action.setShortcut(QKeySequence.Quit)
+			exit_action.triggered.connect(self.close)
+
+			file_menu.addAction(exit_action)
+
+			# Status bar.
+			status = self.statusBar()
+			status.showMessage('Status bar')
+
+	app = QApplication(sys.argv)
+
+	#widget = QTextEdit()
+	widget = MyWidget()
+	window = MyMainWindow(widget)
+	window.show()
+
+	sys.exit(app.exec_())
+
+# REF [site] >> https://codeloop.org/python-multi-document-interface-with-pyside2/
+def mdi_example():
+	from PySide2.QtWidgets import QMainWindow, QWidget, QMdiArea, QMdiSubWindow, QTextEdit, QVBoxLayout, QAction
+	from PySide2.QtGui import QIcon, QKeySequence
+
+	class MyWidget(QWidget):
+		def __init__(self, parent=None):
+			super().__init__(parent)
+
+			layout = QVBoxLayout()
+			layout.addWidget(QTextEdit())
+			self.setLayout(layout)
+
+	class MyMainWindow(QMainWindow):
+		count = 0
+
+		def __init__(self, widget):
+			super().__init__()
+			self.widget = widget
+
+			self.init_ui()
+
+		def init_ui(self):
+			self.setWindowTitle('PySide2 MDI Application')
+			self.setWindowIcon(QIcon('pyicon.png'))
+			self.setGeometry(100, 100, 800, 600)
+
+			# Create an instance of MDI.
+			self.mdi = QMdiArea()
+			self.setCentralWidget(self.mdi)
+
+			# Menu bar.
+			menu_bar = self.menuBar()
+
+			file_menu = menu_bar.addMenu('File')
+			file_menu.addAction('New')
+			file_menu.addAction('Cascade')
+			file_menu.addAction('Tiled')
+
+			file_menu.triggered[QAction].connect(self.window_triggered)
+
+			# Exit QAction.
+			exit_action = QAction('Exit', self)
+			exit_action.setShortcut(QKeySequence.Quit)
+			exit_action.triggered.connect(self.close)
+
+			file_menu.addAction(exit_action)
+
+			# Status bar.
+			status = self.statusBar()
+			status.showMessage('Status bar')
+
+		def window_triggered(self, p):
+			if p.text() == 'New':
+				MyMainWindow.count = MyMainWindow.count + 1
+				sub = QMdiSubWindow()
+				sub.setWidget(self.widget)
+				sub.setWindowTitle('Sub Window {}'.format(MyMainWindow.count))
+				self.mdi.addSubWindow(sub)
+				sub.show()
+
+			if p.text() == 'Cascade':
+				self.mdi.cascadeSubWindows()
+
+			if p.text() == 'Tiled':
+				self.mdi.tileSubWindows()
+
+	app = QApplication(sys.argv)
+
+	widget = QTextEdit()
+	#widget = MyWidget()
+	window = MyMainWindow(widget)
+	window.show()
+
+	sys.exit(app.exec_())
+
 def main():
 	# REF [site] >> https://doc.qt.io/qtforpython/tutorials/
 
@@ -259,7 +406,11 @@ def main():
 	#qrc_file_tutorial()
 
 	#widget_styling_tutorial_1()
-	widget_styling_tutorial_2()
+	#widget_styling_tutorial_2()
+
+	#--------------------
+	sdi_example()
+	#mdi_example()
 
 #--------------------------------------------------------------------
 
