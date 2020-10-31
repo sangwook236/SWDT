@@ -43,15 +43,15 @@ def contour_feature():
 			print('Is convex?', cv2.isContourConvex(contour), cv2.isContourConvex(hull))
 
 			# Straight bounding rectangle (AABB).
-			x, y, w, h = cv2.boundingRect(contour)
+			x, y, w, h = cv2.boundingRect(contour)  # x (left), y (top), width, height.
 			cv2.rectangle(rgb, (x, y), (x + w, y + h), (255, 0, 0), 2, cv2.LINE_8)
 
 			# Rotated rectangle (OBB).
-			rect = cv2.minAreaRect(contour)  # Tuple: (center, size, angle).
-			box = cv2.boxPoints(rect)
-			#box = np.int0(box)
-			box = np.round(box).astype(np.int)
-			cv2.drawContours(rgb, [box], 0, (0, 0, 255), 2, cv2.LINE_8)
+			obb = cv2.minAreaRect(contour)  # Tuple: (center, size, angle).
+			obb_pts = cv2.boxPoints(obb)  # 4 x 2. np.float32.
+			#obb_pts = np.int0(obb_pts)
+			obb_pts = np.round(obb_pts).astype(np.int)
+			cv2.drawContours(rgb, [obb_pts], 0, (0, 0, 255), 2, cv2.LINE_8)
 
 			# Minimum enclosing circle.
 			(x, y), radius = cv2.minEnclosingCircle(contour)

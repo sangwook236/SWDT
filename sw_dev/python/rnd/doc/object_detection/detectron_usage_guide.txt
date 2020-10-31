@@ -47,25 +47,39 @@
 		cd ${detectron2_HOME}/tools
 		./train_net.py --config-file ../configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml --eval-only MODEL.WEIGHTS /path/to/checkpoint_file
 
+[-] Usage (detectron).
+	https://github.com/facebookresearch/Detectron/blob/master/GETTING_STARTED.md
+
+	- Run an inference demo.
+		To run inference on a directory of image files (demo/*.jpg):
+			cd ${detectron_HOME}
+			python tools/infer_simple.py \
+				--cfg configs/12_2017_baselines/e2e_mask_rcnn_R-101-FPN_2x.yaml \
+				--output-dir /tmp/detectron-visualizations \
+				--image-ext jpg \
+				--wts https://dl.fbaipublicfiles.com/detectron/35861858/12_2017_baselines/e2e_mask_rcnn_R-101-FPN_2x.yaml.02_32_51.SgT4y1cO/output/train/coco_2014_train:coco_2014_valminusminival/generalized_rcnn/model_final.pkl \
+				demo
+
 [-] Installation (detectron2).
 	https://github.com/facebookresearch/detectron2/blob/master/INSTALL.md
 
-	- Install from source.
-		conda install python=3 pytorch=1.4 opencv cython pillow matplotlib
-		pip install torchvision
-			The version of torchvison in conda is too low.
-		pip install pycocotools
+	- Install.
+		From source:
+			conda install python=3 pytorch=1.4 opencv cython pillow matplotlib
+			pip install torchvision
+				The version of torchvison in conda is too low.
+			pip install pycocotools
 
-		git clone https://github.com/facebookresearch/fvcore.git
-		cd ${fvcore_HOME}
-		pip install -e .
+			git clone https://github.com/facebookresearch/fvcore.git
+			cd ${fvcore_HOME}
+			pip install -e .
 
-		git clone https://github.com/facebookresearch/detectron2.git
-		cd ${detectron2_HOME}
-		pip install -e .
+			git clone https://github.com/facebookresearch/detectron2.git
+			cd ${detectron2_HOME}
+			pip install -e .
 
-	- Show env info.
-		python -m detectron2.utils.collect_env
+		Show env info:
+			python -m detectron2.utils.collect_env
 
 [-] Installation (detectron).
 	- Install Caffe2.
@@ -97,18 +111,19 @@
 		sudo ldconfig
 		python -c 'from caffe2.python import core' 2>/dev/null && echo "Success" || echo "Failure"
 
-	- Install from source.
-		https://github.com/facebookresearch/Detectron/blob/master/INSTALL.md
+	- Install detectron.
+		From source:
+			https://github.com/facebookresearch/Detectron/blob/master/INSTALL.md
 
-		conda install cython
+			conda install cython
 
-		git clone https://github.com/facebookresearch/Detectron.git detectron_github
-		cd ${detectron_HOME}
-		pip install -r requirements.txt
-		make
+			git clone https://github.com/facebookresearch/Detectron.git detectron_github
+			cd ${detectron_HOME}
+			pip install -r requirements.txt
+			make
 
-		cd ${detectron_HOME}
-		python detectron/tests/test_spatial_narrow_as_op.py
+			cd ${detectron_HOME}
+			python detectron/tests/test_spatial_narrow_as_op.py
 
 [-] Troubleshooting.
 	- <error> BBOX_XFORM_CLIP: !!python/object/apply:numpy.core

@@ -75,6 +75,11 @@
 		Install external libraries to ${INSTALL_PREFIX}/lib/opengm/externals.
 		==> Check if external libraries are copied to ${INSTALL_PREFIX} individually.
 
+[-] Installation.
+	- Install (Python)
+		sudo apt install python-opengm
+		conda install -c willemolding opengm
+
 [-] Trouble shooting (Common).
     - Error on function's duplicate defintion.
         Occur because function definitions are included in header files.
