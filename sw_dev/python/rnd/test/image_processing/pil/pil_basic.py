@@ -12,7 +12,7 @@ def image_example():
 	try:
 		img = Image.open(image_filename)
 	except IOError as ex:
-		print('Failed to load an image:', image_filename)
+		print('Failed to load an image, {}: {}.'.format(image_filename, ex))
 		return
 
 	img.rotate(45).show()

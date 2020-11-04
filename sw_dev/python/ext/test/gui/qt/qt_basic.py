@@ -247,7 +247,7 @@ def sdi_example():
 		def __init__(self, parent=None):
 			super().__init__(parent)
 
-			if False:
+			if True:
 				QTextEdit(self)
 			elif False:
 				layout = QVBoxLayout()
@@ -271,7 +271,7 @@ def sdi_example():
 				#self.setLayout(layout)
 
 	class MyMainWindow(QMainWindow):
-		def __init__(self, widget):
+		def __init__(self):
 			super().__init__()
 			self.setWindowTitle('PySide2 SDI Application')
 			self.setWindowIcon(QIcon('pyicon.png'))
@@ -282,6 +282,8 @@ def sdi_example():
 			#geometry = QApplication.instance().desktop().availableGeometry(self)
 			#self.setFixedSize(geometry.width() * 0.8, geometry.height() * 0.7)
 
+			#widget = QTextEdit()
+			widget = MyWidget()
 			self.setCentralWidget(widget)
 
 			# Menu bar.
@@ -302,9 +304,7 @@ def sdi_example():
 
 	app = QApplication(sys.argv)
 
-	#widget = QTextEdit()
-	widget = MyWidget()
-	window = MyMainWindow(widget)
+	window = MyMainWindow()
 	window.show()
 
 	sys.exit(app.exec_())
@@ -325,9 +325,9 @@ def mdi_example():
 	class MyMainWindow(QMainWindow):
 		count = 0
 
-		def __init__(self, widget):
+		def __init__(self, widgets):
 			super().__init__()
-			self.widget = widget
+			self.widget_classes = widget_classes
 
 			self.init_ui()
 
@@ -363,10 +363,13 @@ def mdi_example():
 
 		def window_triggered(self, p):
 			if p.text() == 'New':
-				MyMainWindow.count = MyMainWindow.count + 1
+				MyMainWindow.count += 1
+
 				sub = QMdiSubWindow()
-				sub.setWidget(self.widget)
+				widget = self.widget_classes[MyMainWindow.count % 2]()
+				sub.setWidget(widget)
 				sub.setWindowTitle('Sub Window {}'.format(MyMainWindow.count))
+
 				self.mdi.addSubWindow(sub)
 				sub.show()
 
@@ -378,9 +381,8 @@ def mdi_example():
 
 	app = QApplication(sys.argv)
 
-	widget = QTextEdit()
-	#widget = MyWidget()
-	window = MyMainWindow(widget)
+	widget_classes = [QTextEdit, MyWidget]
+	window = MyMainWindow(widget_classes)
 	window.show()
 
 	sys.exit(app.exec_())
