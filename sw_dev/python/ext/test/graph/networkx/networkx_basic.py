@@ -4,7 +4,7 @@
 import networkx as nx
 
 # REF [site] >> https://networkx.github.io/documentation/latest/tutorial.html
-def basic_operation():
+def basic_operation_tutorial():
 	# Create a graph.
 	G = nx.Graph()
 
@@ -188,19 +188,7 @@ def basic_operation():
 	mygraph = nx.read_gml('path.to.file')
 
 # REF [site] >> https://networkx.github.io/documentation/latest/tutorial.html
-def algorithm_example():
-	G = nx.Graph()
-	G.add_edges_from([(1, 2), (1, 3)])
-	G.add_node('spam')  # Adds node 'spam'.
-	print('nx.connected_components(G) =', list(nx.connected_components(G)))
-	print('sorted(d for n, d in G.degree()) =', sorted(d for n, d in G.degree()))
-	print('nx.clustering(G) =', nx.clustering(G))
-
-	sp = dict(nx.all_pairs_shortest_path(G))
-	print('sp[3] =', sp[3])
-
-# REF [site] >> https://networkx.github.io/documentation/latest/tutorial.html
-def drawing_example():
+def drawing_tutorial():
 	import matplotlib.pyplot as plt
 
 	G = nx.petersen_graph()
@@ -242,9 +230,8 @@ def drawing_example():
 	nx.drawing.nx_pydot.write_dot(G, './file.dot')
 
 def main():
-	basic_operation()
-	#algorithm_example()
-	#drawing_example()
+	basic_operation_tutorial()
+	#drawing_tutorial()
 
 #--------------------------------------------------------------------
 
