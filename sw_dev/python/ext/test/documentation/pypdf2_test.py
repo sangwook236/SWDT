@@ -174,6 +174,9 @@ def main():
 	#split_pdf_example()
 	add_watermark_example()
 
+	# Write texts and images to PDF.
+	#	REF [file] >> reportlab_test.py
+
 #--------------------------------------------------------------------
 
 if '__main__' == __name__:

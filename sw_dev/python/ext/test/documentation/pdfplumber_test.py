@@ -67,7 +67,7 @@ def extract_table_example():
 	print('Table:\n', df)
 		
 def extract_form_value_example():
-	with pdfplumber.open('path/to/form_document.pdf') as pdf:
+	with pdfplumber.open('/path/to/form_document.pdf') as pdf:
 		fields = pdf.doc.catalog['AcroForm'].resolve()['Fields']
 
 		form_data = {}

@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-# REF [site] >> https://bitbucket.org/openpyxl/openpyxl/src/default/
+# REF [site] >> https://foss.heptapod.net/openpyxl/openpyxl
 
 import openpyxl
 
-# REF [site] >> https://bitbucket.org/openpyxl/openpyxl/src/default/
+# REF [site] >> https://foss.heptapod.net/openpyxl/openpyxl
 def basic_example():
 	wb = openpyxl.Workbook()
 
