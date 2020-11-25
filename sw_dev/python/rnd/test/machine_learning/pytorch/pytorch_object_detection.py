@@ -41,7 +41,7 @@ class PennFudanDataset(torch.utils.data.Dataset):
 
 		# Get bounding box coordinates for each mask.
 		num_objs = len(obj_ids)
-		boxes = []
+		boxes = list()
 		for i in range(num_objs):
 			pos = np.where(masks[i])
 			xmin = np.min(pos[1])
@@ -61,14 +61,15 @@ class PennFudanDataset(torch.utils.data.Dataset):
 		# Suppose all instances are not crowd.
 		iscrowd = torch.zeros((num_objs,), dtype=torch.int64)
 
-		target = {}
-		target['boxes'] = boxes
-		target['masks'] = masks
-		#target['keypoints'] = keypoints
-		target['labels'] = labels
-		target['image_id'] = image_id
-		target['area'] = area
-		target['iscrowd'] = iscrowd
+		target = {
+			'boxes': boxes,
+			'masks': masks,
+			#'keypoints': keypoints,
+			'labels': labels,
+			'image_id': image_id,
+			'area': area,
+			'iscrowd': iscrowd
+		}
 
 		if self.transforms is not None:
 			img, target = self.transforms(img, target)
@@ -251,11 +252,13 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 	# Define training and validation data loaders.
 	data_loader = torch.utils.data.DataLoader(
 		dataset, batch_size=2, shuffle=True, num_workers=4,
-		collate_fn=collate_fn)
+		collate_fn=collate_fn
+	)
 
 	data_loader_test = torch.utils.data.DataLoader(
 		dataset_test, batch_size=1, shuffle=False, num_workers=4,
-		collate_fn=collate_fn)
+		collate_fn=collate_fn
+	)
 
 	#--------------------
 	device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -294,7 +297,7 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 			engine.evaluate(model, data_loader_test, device=device)
 
 	#--------------------
-	# Infer
+	# Infer.
 	img, _ = dataset_test[0]
 
 	# Put the model in evaluation mode.
@@ -305,7 +308,7 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 	print("Prediction's keys:", predictions[0].keys())
 
 	#--------------------
-	# Visualize
+	# Visualize.
 	BOX_SCORE_THRESHOLD = 0.9
 	if is_instance_segmentation:
 		visualize_instance_segmentation([img.mul(255).permute(1, 2, 0).byte().numpy()], predictions, BOX_SCORE_THRESHOLD)

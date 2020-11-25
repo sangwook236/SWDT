@@ -126,6 +126,7 @@ def simple_panoptic_segmentation_example():
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
 
+# REF [site] >> https://detectron2.readthedocs.io/tutorials/datasets.html
 def get_balloon_dicts(img_dir):
 	json_file = os.path.join(img_dir, 'via_region_data.json')
 	with open(json_file) as fd:

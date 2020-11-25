@@ -309,7 +309,7 @@ def train_test():
 	fields = vocab
 
 	device_id = 0
-	device = torch.device('cuda:{}'.format(device_id) if torch.cuda.is_available() and device_id >= 0 else 'cpu')
+	device = torch.device(('cuda:{}'.format(gpu) if gpu >= 0 else 'cuda') if torch.cuda.is_available() else 'cpu')
 	print('Device: {}.'.format(device))
 
 	#--------------------
@@ -941,7 +941,7 @@ def im2latex_example():
 	assert not is_model_loaded or (is_model_loaded and model_filepath_to_load is not None)
 
 	gpu = 0
-	device = torch.device('cuda:{}'.format(gpu) if torch.cuda.is_available() and gpu >= 0 else 'cpu')
+	device = torch.device(('cuda:{}'.format(gpu) if gpu >= 0 else 'cuda') if torch.cuda.is_available() else 'cpu')
 	print('Device: {}.'.format(device))
 
 	#--------------------
@@ -952,11 +952,11 @@ def im2latex_example():
 			with open(filepath, 'r', encoding='utf-8') as fd:
 				lines = fd.read().splitlines()  # A list of strings.
 				return lines
-		except FileNotFoundError as ex:
-			print('File not found: {}.'.format(filepath))
-			raise
 		except UnicodeDecodeError as ex:
-			print('Unicode decode error: {}.'.format(filepath))
+			print('Unicode decode error in {}: {}.'.format(filepath, ex))
+			raise
+		except FileNotFoundError as ex:
+			print('File not found, {}: {}.'.format(filepath, ex))
 			raise
 
 	# REF [site] >> https://opennmt.net/OpenNMT-py/im2text.html
@@ -1348,10 +1348,10 @@ def im2latex_example():
 						print('\tScore      = {}.'.format(score[0].cpu().item()))
 				except (RuntimeError, Exception) as ex:
 					print('Error: {}.'.format(ex))
-		except FileNotFoundError as ex:
-			print('File not found: {}.'.format(ex))
 		except UnicodeDecodeError as ex:
 			print('Unicode decode error: {}.'.format(ex))
+		except FileNotFoundError as ex:
+			print('File not found: {}.'.format(ex))
 	else:
 		# Decoding strategy:
 		#	Greedy search, if beam_size = 1.
@@ -1518,7 +1518,7 @@ def simple_example():
 	max_time_steps = 10
 
 	gpu = 0
-	device = torch.device('cuda:{}'.format(gpu) if torch.cuda.is_available() and gpu >= 0 else 'cpu')
+	device = torch.device(('cuda:{}'.format(gpu) if gpu >= 0 else 'cuda') if torch.cuda.is_available() else 'cpu')
 	print('Device: {}.'.format(device))
 
 	#--------------------
