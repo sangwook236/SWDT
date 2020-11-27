@@ -51,24 +51,20 @@ class PennFudanDataset(torch.utils.data.Dataset):
 			boxes.append([xmin, ymin, xmax, ymax])
 
 		boxes = torch.as_tensor(boxes, dtype=torch.float32)
-		masks = torch.as_tensor(masks, dtype=torch.uint8)
-
-		# There is only one class.
-		labels = torch.ones((num_objs,), dtype=torch.int64)
-
+		labels = torch.ones((num_objs,), dtype=torch.int64)  # Only one class.
 		image_id = torch.tensor([idx])
-		area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
-		# Suppose all instances are not crowd.
-		iscrowd = torch.zeros((num_objs,), dtype=torch.int64)
+		areas = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+		iscrowds = torch.zeros((num_objs,), dtype=torch.int64)  # Suppose all instances are not crowd.
+		masks = torch.as_tensor(masks, dtype=torch.uint8)
 
 		target = {
 			'boxes': boxes,
-			'masks': masks,
-			#'keypoints': keypoints,
 			'labels': labels,
 			'image_id': image_id,
-			'area': area,
-			'iscrowd': iscrowd
+			'area': areas,
+			'iscrowd': iscrowds,
+			'masks': masks,
+			#'keypoints': keypoints
 		}
 
 		if self.transforms is not None:
