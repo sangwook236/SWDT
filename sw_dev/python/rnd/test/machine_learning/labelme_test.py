@@ -5,7 +5,7 @@ import sys
 sys.path.append('../../src')
 sys.path.append('./src')
 
-import os, math, functools, glob, json, time
+import os, functools, glob, json, time
 import cv2
 
 def load_data_from_json(json_filepath, flag):
@@ -134,15 +134,15 @@ def simple_loading_example():
 
 	image_channel = 3
 
-	if True:
-		json_filepaths = sorted(glob.glob('/path/to/*.json', recursive=False))
-	else:
+	if False:
 		if 'posix' == os.name:
 			data_base_dir_path = '/home/sangwook/work/dataset'
 		else:
 			data_base_dir_path = 'D:/work/dataset'
 		data_dir_path = data_base_dir_path + '/text/layout/sminds'
 		json_filepaths = sorted(glob.glob(data_dir_path + '/labelme_??/*.json', recursive=False))
+	else:
+		json_filepaths = sorted(glob.glob('/path/to/*.json', recursive=False))
 	assert json_filepaths
 	print('#JSON files = {}.'.format(len(json_filepaths)))
 
@@ -164,7 +164,8 @@ def simple_loading_example():
 	print('#files = {}.'.format(len(data_dicts)))
 
 	if True:
-		for idx, dat in enumerate(data_dicts):
+		import random
+		for idx, dat in enumerate(random.sample(data_dicts, 2)):
 			print('Data #{}:'.format(idx))
 			print('\tversion = {}.'.format(dat['version']))
 			print('\tflags = {}.'.format(dat['flags']))
@@ -183,8 +184,6 @@ def simple_loading_example():
 				print('\t\tpoints = {}.'.format(shape['points']))
 				print('\t\tgroup_id = {}.'.format(shape['group_id']))
 				print('\t\tshape_type = {}.'.format(shape['shape_type']))
-
-			if idx >= 2: break
 
 	#--------------------
 	num_shapes = functools.reduce(lambda nn, dat: nn + len(dat['shapes']), data_dicts, 0)
