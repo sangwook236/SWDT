@@ -212,6 +212,13 @@ def collate_fn(batch):
 
 # REF [site] >> https://pytorch.org/tutorials/intermediate/torchvision_tutorial.html
 def object_detection_finetuning_tutorial(is_instance_segmentation=True):
+	# Our dataset has two classes only - background and person.
+	num_classes = 2
+	num_epochs = 10
+
+	device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+
+	#--------------------
 	if 'posix' == os.name:
 		data_base_dir_path = '/home/sangwook/work/dataset'
 	else:
@@ -236,31 +243,24 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 
 	#--------------------
 	# Create a Dataset object.
-	dataset = PennFudanDataset(data_dir_path, get_transform(train=True))
-	dataset_test = PennFudanDataset(data_dir_path, get_transform(train=False))
+	train_dataset = PennFudanDataset(data_dir_path, get_transform(train=True))
+	test_dataset = PennFudanDataset(data_dir_path, get_transform(train=False))
 
 	# Split the dataset in train and test set.
 	torch.manual_seed(1)
-	indices = torch.randperm(len(dataset)).tolist()
-	dataset = torch.utils.data.Subset(dataset, indices[:-50])
-	dataset_test = torch.utils.data.Subset(dataset_test, indices[-50:])
+	indices = torch.randperm(len(train_dataset)).tolist()
+	train_dataset = torch.utils.data.Subset(train_dataset, indices[:-50])
+	test_dataset = torch.utils.data.Subset(test_dataset, indices[-50:])
 
 	# Define training and validation data loaders.
-	data_loader = torch.utils.data.DataLoader(
-		dataset, batch_size=2, shuffle=True, num_workers=4,
+	train_dataloader = torch.utils.data.DataLoader(
+		train_dataset, batch_size=2, shuffle=True, num_workers=4,
 		collate_fn=collate_fn
 	)
-
-	data_loader_test = torch.utils.data.DataLoader(
-		dataset_test, batch_size=1, shuffle=False, num_workers=4,
+	test_dataloader = torch.utils.data.DataLoader(
+		test_dataset, batch_size=1, shuffle=False, num_workers=4,
 		collate_fn=collate_fn
 	)
-
-	#--------------------
-	device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-
-	# Our dataset has two classes only - background and person.
-	num_classes = 2
 
 	#--------------------
 	# Create an instance segmentation model for PennFudan dataset.
@@ -281,27 +281,26 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 
 		#--------------------
 		# Train it for 10 epochs.
-		num_epochs = 10
 		for epoch in range(num_epochs):
 			# Train for one epoch, printing every 10 iterations.
-			engine.train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq=10)
+			engine.train_one_epoch(model, optimizer, train_dataloader, device, epoch, print_freq=10)
 
 			# Update the learning rate.
 			lr_scheduler.step()
 
 			# Evaluate on the test dataset.
-			engine.evaluate(model, data_loader_test, device=device)
+			engine.evaluate(model, test_dataloader, device=device)
 
 	#--------------------
 	# Infer.
-	img, _ = dataset_test[0]
+	img, _ = test_dataset[0]
 
 	# Put the model in evaluation mode.
 	model.eval()
 	with torch.no_grad():
 		predictions = model([img.to(device)])
 
-	print("Prediction's keys:", predictions[0].keys())
+	print("Prediction's keys = {}.".format(predictions[0].keys()))
 
 	#--------------------
 	# Visualize.
