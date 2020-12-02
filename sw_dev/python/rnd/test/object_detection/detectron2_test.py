@@ -7,7 +7,7 @@
 
 import os, random, json
 import numpy as np
-import torch, torchvision
+#import torch, torchvision
 import cv2
 import detectron2
 import detectron2.model_zoo, detectron2.config, detectron2.engine, detectron2.evaluation, detectron2.utils.visualizer, detectron2.data, detectron2.structures
@@ -168,14 +168,24 @@ def get_balloon_dicts(img_dir):
 
 # REF [site] >> https://colab.research.google.com/drive/16jcaJoc6bCFAQ96jDe2HwtXj7BMD_-m5#scrollTo=HUjkwRsOn1O0
 def training_on_a_custom_dataset_example():
-	# If your dataset is in COCO format, this cell can be replaced by the following three lines:
-	#detectron2.data.datasets.register_coco_instances('my_dataset_train', {}, 'json_annotation_train.json', '/path/to/image/dir')
-	#detectron2.data.datasets.register_coco_instances('my_dataset_val', {}, 'json_annotation_val.json', '/path/to/image/dir')
+	classes = ['balloon']
 
-	for tag in ['train', 'val']:
-		detectron2.data.DatasetCatalog.register('balloon_' + tag, lambda tag=tag: get_balloon_dicts('balloon/' + tag))
-		detectron2.data.MetadataCatalog.get('balloon_' + tag).set(thing_classes=['balloon'])
+	if False:
+		# If your dataset is in COCO format:
+		detectron2.data.datasets.register_coco_instances(name='balloon_train', metadata={'thing_classes': classes}, json_file='./balloon/train.json', image_root='./balloon/train')
+		detectron2.data.datasets.register_coco_instances(name='balloon_val', metadata={'thing_classes': classes}, json_file='./balloon/val.json', image_root='./balloon/val')
+	else:
+		for tag in ['train', 'val']:
+			data_name = 'balloon_{}'.format(tag)
+			json_filepath = './balloon/{}.json'.format(tag)
+			image_dir_path = './balloon/{}'.format(tag)
+			detectron2.data.DatasetCatalog.register(data_name, lambda: get_balloon_dicts(image_dir_path))
+			#detectron2.data.MetadataCatalog.get(data_name).set(evaluator_type='coco')
+			#detectron2.data.MetadataCatalog.get(data_name).set(json_file=json_filepath)
+			#detectron2.data.MetadataCatalog.get(data_name).set(image_root=image_dir_path)
+			detectron2.data.MetadataCatalog.get(data_name).set(thing_classes=classes)
 	balloon_metadata = detectron2.data.MetadataCatalog.get('balloon_train')
+	print('Balloon metadata = {}.'.format(balloon_metadata))
 
 	#--------------------
 	cfg = detectron2.config.get_cfg()
@@ -185,11 +195,12 @@ def training_on_a_custom_dataset_example():
 	cfg.DATALOADER.NUM_WORKERS = 2
 	cfg.MODEL.WEIGHTS = detectron2.model_zoo.get_checkpoint_url('COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml')  # Let training initialize from model zoo.
 	cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128  # Faster, and good enough for this toy dataset (default: 512).
-	cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # Only has one class (ballon).
+	cfg.MODEL.ROI_HEADS.NUM_CLASSES = len(classes)  # Only has one class (balloon).
 	#cfg.MODEL.DEVICE = 'cuda:0'
 	cfg.SOLVER.IMS_PER_BATCH = 2
 	cfg.SOLVER.BASE_LR = 0.00025  # Pick a good LR.
 	cfg.SOLVER.MAX_ITER = 300  # 300 iterations seems good enough for this toy dataset; you may need to train longer for a practical dataset.
+	#cfg.OUTPUT_DIR = './output'  # Default output directory = './output'.
 
 	os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
 
@@ -206,24 +217,22 @@ def training_on_a_custom_dataset_example():
 	#--------------------
 	# Evaluate its performance using AP metric implemented in COCO API.
 
-	evaluator = detectron2.evaluation.COCOEvaluator('balloon_val', cfg, False, output_dir='./output/')
-	val_loader = detectron2.data.build_detection_test_loader(cfg, 'balloon_val')
-	detectron2.evaluation.inference_on_dataset(trainer.model, val_loader, evaluator)
+	evaluator = detectron2.evaluation.COCOEvaluator('balloon_val', cfg, False, output_dir='./output')
+	val_dataloader = detectron2.data.build_detection_test_loader(cfg, 'balloon_val')
+	detectron2.evaluation.inference_on_dataset(trainer.model, val_dataloader, evaluator)
 
 	# Another equivalent way is to use trainer.test.
 
 	#--------------------
 	# Infer using the trained model.
 
-	cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, 'model.pth')
+	cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, 'model_final.pth')
 	cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7  # Set the testing threshold for this model.
 	cfg.DATASETS.TEST = ('balloon_val',)
 	predictor = detectron2.engine.DefaultPredictor(cfg)
 
-	#--------------------
 	# Randomly select several samples to visualize the prediction results.
-
-	dataset_dicts = get_balloon_dicts('balloon/val')
+	dataset_dicts = get_balloon_dicts('./balloon/val')
 	for dat in random.sample(dataset_dicts, 3):    
 		im = cv2.imread(dat['file_name'])
 		outputs = predictor(im)
