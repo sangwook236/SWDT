@@ -21,6 +21,7 @@ def simple_detection_example():
 		return
 	#cv2.imshow('Image', im)
 
+	# REF [site] >> https://detectron2.readthedocs.io/modules/config.html
 	cfg = detectron2.config.get_cfg()
 	# Add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library.
 	cfg.merge_from_file(detectron2.model_zoo.get_config_file('COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml'))
@@ -57,6 +58,7 @@ def simple_keypoint_detection_example():
 	#cv2.imshow('Image', im)
 
 	# Infer with a keypoint detection model.
+	# REF [site] >> https://detectron2.readthedocs.io/modules/config.html
 	cfg = detectron2.config.get_cfg()
 	cfg.merge_from_file(detectron2.model_zoo.get_config_file('COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x.yaml'))
 	cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7  # Set threshold for this model.
@@ -112,6 +114,7 @@ def simple_panoptic_segmentation_example():
 	#cv2.imshow('Image', im)
 
 	# Infer with a panoptic segmentation model.
+	# REF [site] >> https://detectron2.readthedocs.io/modules/config.html
 	cfg = detectron2.config.get_cfg()
 	cfg.merge_from_file(detectron2.model_zoo.get_config_file('COCO-PanopticSegmentation/panoptic_fpn_R_101_3x.yaml'))
 	cfg.MODEL.WEIGHTS = detectron2.model_zoo.get_checkpoint_url('COCO-PanopticSegmentation/panoptic_fpn_R_101_3x.yaml')
@@ -188,6 +191,7 @@ def training_on_a_custom_dataset_example():
 	print('Balloon metadata = {}.'.format(balloon_metadata))
 
 	#--------------------
+	# REF [site] >> https://detectron2.readthedocs.io/modules/config.html
 	cfg = detectron2.config.get_cfg()
 	cfg.merge_from_file(detectron2.model_zoo.get_config_file('COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml'))
 	cfg.DATASETS.TRAIN = ('balloon_train',)
