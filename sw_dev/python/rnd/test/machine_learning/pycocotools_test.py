@@ -6,6 +6,7 @@
 import os, math, functools, time
 import numpy as np
 import pycocotools.coco
+import pycocotools.cocoeval
 
 def vsualize_annotations(image, annotations, coco, font):
 	''' Draws the segmentation, bounding box, and label of each annotation
@@ -57,8 +58,8 @@ def vsualize_annotations(image, annotations, coco, font):
 			)
 	return np.array(image)
 
-# REF [site] >> https://cocodataset.org/#format-data
-def simple_example():
+# REF [site] >> https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocoDemo.ipynb
+def simple_demo_example():
 	if False:
 		annotation_filepath = '/path/to/annotation.json'
 		data_dir_path = '/path/to/data'
@@ -126,6 +127,8 @@ def simple_example():
 	#--------------------
 	# Show information on data.
 	if True:
+		# REF [site] >> https://cocodataset.org/#format-data
+
 		#print('Dataset: {}.'.format(coco.dataset))
 		print('Dataset keys = {}.'.format(list(coco.dataset.keys())))
 
@@ -172,15 +175,15 @@ def simple_example():
 			cats = coco.loadCats(ids=[])
 			imgs = coco.loadImgs(ids=[])
 
-			import matplotlib.pyplot as plt
-			coco.showAnns(anns, draw_bbox=False)
-			plt.show()
-
-			loaded_coco = coco.loadRes(resFile)
+			coco_res = coco.loadRes(resFile)
 			anns = coco.loadNumpyAnnotations(data)
 
 			rle = coco.annToRLE(ann)
 			mask = coco.annToMask(ann)
+
+			import matplotlib.pyplot as plt
+			coco.showAnns(anns, draw_bbox=False)
+			plt.show()
 		"""
 
 		if 'categories' in coco.dataset:
@@ -208,8 +211,9 @@ def simple_example():
 	#--------------------
 	# Visualize data.
 	if True:
+		import random
 		num_data_to_visualize = 10
-		for idx, image_info in enumerate(coco.dataset['images']):
+		for image_info in random.sample(coco.dataset['images'], min(num_data_to_visualize, len(coco.dataset['images']))):
 			image_filepath = image_info['file_name']
 			image_id = image_info['id']
 			image_height, image_width = image_info['height'], image_info['width']
@@ -281,11 +285,59 @@ def simple_example():
 					img = cv2.addWeighted(img, 1.0, overlay, 0.25, 0)
 				cv2.imshow('Image', img)
 				cv2.waitKey(0)
-			if num_data_to_visualize and idx >= (num_data_to_visualize - 1): break
 		#cv2.destroyAllWindows()
 
+# REF [site] >> https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocoEvalDemo.ipynb
+def evaluation_demo_example():
+	gt_annotation_filepath = '/path/to/gt_annotation.json'
+	result_filepath = '/path/to/coco_result.json'
+	annotation_types = ['bbox', 'segm']  # {'bbox', 'keypoints', 'segm'}.
+
+	#--------------------
+	try:
+		print('Start loading a COCO G/T data from {}...'.format(gt_annotation_filepath))
+		start_time = time.time()
+		gt_coco = pycocotools.coco.COCO(gt_annotation_filepath)
+		print('End loading a COCO G/T data: {} secs.'.format(time.time() - start_time))
+	except UnicodeDecodeError as ex:
+		print('Unicode decode error in {}: {}.'.format(gt_annotation_filepath, ex))
+		return
+	except FileNotFoundError as ex:
+		print('File not found, {}: {}.'.format(gt_annotation_filepath, ex))
+		return
+
+	try:
+		print('Start loading a COCO result data from {}...'.format(result_filepath))
+		start_time = time.time()
+		pred_coco = gt_coco.loadRes(result_filepath)
+		print('End loading a COCO result data: {} secs.'.format(time.time() - start_time))
+	except UnicodeDecodeError as ex:
+		print('Unicode decode error in {}: {}.'.format(result_filepath, ex))
+		return
+	except FileNotFoundError as ex:
+		print('File not found, {}: {}.'.format(result_filepath, ex))
+		return
+
+	#--------------------
+	if False:
+		image_ids = sorted(gt_coco.getImgIds())
+		#image_ids = image_ids[:100]
+	else:
+		image_ids = None
+
+	for ann_type in annotation_types:
+		cocoEval = pycocotools.cocoeval.COCOeval(cocoGt=gt_coco, cocoDt=pred_coco, iouType=ann_type)
+
+		if image_ids: cocoEval.params.imgIds = image_ids
+		#cocoEval.params.maxDets = [1, 10, 100]
+
+		cocoEval.evaluate()
+		cocoEval.accumulate()
+		cocoEval.summarize()
+
 def main():
-	simple_example()
+	simple_demo_example()
+	#evaluation_demo_example()
 
 #--------------------------------------------------------------------
 
