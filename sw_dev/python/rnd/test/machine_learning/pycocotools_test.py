@@ -326,14 +326,20 @@ def evaluation_demo_example():
 		image_ids = None
 
 	for ann_type in annotation_types:
-		cocoEval = pycocotools.cocoeval.COCOeval(cocoGt=gt_coco, cocoDt=pred_coco, iouType=ann_type)
+		coco_eval = pycocotools.cocoeval.COCOeval(cocoGt=gt_coco, cocoDt=pred_coco, iouType=ann_type)
 
-		if image_ids: cocoEval.params.imgIds = image_ids
-		#cocoEval.params.maxDets = [1, 10, 100]
+		# REF [class] >> Params in https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocotools/cocoeval.py
+		if image_ids: coco_eval.params.imgIds = image_ids
+		#coco_eval.params..catIds = []
+		#coco_eval.params.iouThrs = np.linspace(.5, 0.95, int(np.round((0.95 - .5) / .05)) + 1, endpoint=True)  # IoU threshold.
+        #coco_eval.params.recThrs = np.linspace(.0, 1.00, int(np.round((1.00 - .0) / .01)) + 1, endpoint=True)  # Recall thresholds.
+		#coco_eval.params.maxDets = [1, 10, 100]  # Thresholds on max detections per image.
+		#coco_eval.params.areaRng = [[0 ** 2, 1e5 ** 2], [0 ** 2, 32 ** 2], [32 ** 2, 96 ** 2], [96 ** 2, 1e5 ** 2]]  # Object area ranges.
+		#coco_eval.params.areaRngLbl = ['all', 'small', 'medium', 'large']
 
-		cocoEval.evaluate()
-		cocoEval.accumulate()
-		cocoEval.summarize()
+		coco_eval.evaluate()
+		coco_eval.accumulate()
+		coco_eval.summarize()
 
 def main():
 	simple_demo_example()
