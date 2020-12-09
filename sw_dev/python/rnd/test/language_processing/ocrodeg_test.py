@@ -6,13 +6,13 @@
 import sys
 sys.path.append('../../../src')
 
-import os, math, random
+import math, random
 import numpy as np
 import scipy.ndimage as ndi
 import skimage.color
-import matplotlib
+#import matplotlib
 import matplotlib.pyplot as plt
-import pylab
+#import pylab
 import cv2
 
 # REF [function] >> noise_distort1d() in ${ocrodeg_HOME}/ocrodeg/degrade.py.
@@ -143,7 +143,8 @@ def simple_example():
 			plt.axis('off')
 			plt.imshow(distorted[:1500], cmap=cmap)
 
-		in_vec = pylab.randn(image.shape[1])
+		#in_vec = pylab.randn(image.shape[1])  # Shape = (image width,).
+		in_vec = np.random.randn(image.shape[1])  # Shape = (image width,).
 		plt.figure('Ruled surface distortion - No random input')
 		#for i, mag in enumerate([5.0, 200.0, 200.0, 200.0]):
 		for i, mag in enumerate([50.0, 100.0, 150.0, 200.0]):
@@ -300,7 +301,8 @@ def paired_image_mask_example():
 		# Ruled surface distortion.
 		mag = random.uniform(5, 200)
 		#noise = ocrodeg.noise_distort1d(image.shape[:2], magnitude=mag)
-		in_vec = pylab.randn(image.shape[1])
+		#in_vec = pylab.randn(image.shape[1])  # Shape = (image width,).
+		in_vec = np.random.randn(image.shape[1])  # Shape = (image width,).
 		noise = my_noise_distort1d(image.shape, in_vec, magnitude=mag)  # My modification. Shape = (2, image height, image width).
 		image = ocrodeg_rgb.distort_with_noise(image, noise.copy())
 		mask = ocrodeg.distort_with_noise(mask, noise.copy())
@@ -340,7 +342,7 @@ def paired_image_mask_example():
 		image = ocrodeg_rgb.random_blotches(image, fgblobs=3e-4, bgblobs=1e-4, fgscale=10, bgscale=10)
 		#image = np.minimum(np.maximum(image, ocrodeg.random_blobs(image.shape[:2], 30, 10)), 1 - ocrodeg.random_blobs(image.shape[:2], 15, 8))
 		#mask = ocrodeg.random_blotches(mask, fgblobs=3e-4, bgblobs=1e-4, fgscale=10, bgscale=10)
-		#mask = np.minimum(np.maximum(mask, ocrodeg.random_blobs(mask.shape, 30, 10)), 1 - ocrodeg.random_blobs(mask.shape, 15, 8))
+		##mask = np.minimum(np.maximum(mask, ocrodeg.random_blobs(mask.shape, 30, 10)), 1 - ocrodeg.random_blobs(mask.shape, 15, 8))
 	elif False:
 		# Multiscale noise.
 		image = ocrodeg_rgb.printlike_multiscale(image, blur=1.0, blotches=5e-05)
@@ -356,9 +358,117 @@ def paired_image_mask_example():
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
 
+class OcrodegImageDeformer(object):
+	def __init__(self, is_pil=True):
+		if is_pil:
+			from PIL import Image
+			def deform(image, mask):
+				image, mask = self._deform(np.array(image), mask)
+				return Image.fromarray(image), mask
+			self.deform_functor = deform
+		else:
+			self.deform_functor = self._deform
+
+	def __call__(self, image, mask=None):
+		return self.deform_functor(image, mask)
+
+	@staticmethod
+	def _deform(image, mask=None):
+		import ocrodeg  # For grayscale images.
+		import my_ocrodeg.degrade as ocrodeg_rgb  # For color images.
+
+		selected_deform = random.randrange(3)
+
+		if selected_deform == 1 or random.random() < 0.5:
+			if random.randrange(2):
+				# Random geometric transformation.
+				transform_kwargs = ocrodeg.random_transform()
+				image = ocrodeg_rgb.transform_image(image, **transform_kwargs)
+				if mask is not None: mask = ocrodeg.transform_image(mask, **transform_kwargs)
+			else:
+				# Ruled surface distortion.
+				mag = random.uniform(10, 40)
+				#noise = ocrodeg.noise_distort1d(image.shape[:2], magnitude=mag)
+				#in_vec = pylab.randn(image.shape[1])  # Shape = (image width,).
+				in_vec = np.random.randn(image.shape[1])  # Shape = (image width,).
+				noise = ocrodeg_rgb.noise_distort1d(image.shape[:2], magnitude=mag, in_vec=in_vec)  # Shape = (2, image height, image width).
+				image = ocrodeg_rgb.distort_with_noise(image, noise.copy())
+				if mask is not None: mask = ocrodeg.distort_with_noise(mask, noise.copy())
+
+		if selected_deform == 2 or random.random() < 0.5:
+			# Random distortion.
+			sigma = random.uniform(1, 20)
+			noise = ocrodeg.bounded_gaussian_noise(image.shape[:2], sigma, maxdelta=5.0)  # Shape = (2, image height, image width).
+			image = ocrodeg_rgb.distort_with_noise(image, noise.copy())
+			if mask is not None: mask = ocrodeg.distort_with_noise(mask, noise.copy())
+
+		if random.random() < 0.2:
+			selected = random.randrange(3)
+			if selected == 0:
+				# Random blob.
+				fgblobs, bgblobs, fgscale, bgscale = random.uniform(1e-5, 3e-4), random.uniform(1e-5, 3e-4), random.uniform(1, 10), random.uniform(1, 10)
+				image = ocrodeg_rgb.random_blotches(image, fgblobs, bgblobs, fgscale, bgscale)
+				#if mask is not None: mask = ocrodeg.random_blotches(mask, fgblobs, bgblobs, fgscale, bgscale)
+			elif selected == 1:
+				# Multiscale noise.
+				blur, blotches = random.uniform(0, 2.0), random.uniform(1e-05, 5e-05)
+				image = ocrodeg_rgb.printlike_multiscale(image, blur, blotches)
+				#if mask is not None: mask = ocrodeg.printlike_multiscale(mask, blur, blotches)
+			else:
+				# Fibrous noise.
+				blur, blotches = random.uniform(0, 2.0), random.uniform(1e-05, 5e-05)
+				image = ocrodeg_rgb.printlike_fibrous(image, blur, blotches)
+				#if mask is not None: mask = ocrodeg.printlike_fibrous(mask, blur, blotches)
+
+		return image, mask
+
+def deform_image_and_mask_by_ocrodeg():
+	image_height, image_width = 500, 500
+	image = np.zeros((image_height, image_width, 3), dtype=np.float32)
+	mask = np.zeros((image_height, image_width), dtype=np.float32)
+
+	cv2.rectangle(image, (100, 100), (200, 200), (0, 0, 1), cv2.FILLED, cv2.LINE_8)
+	cv2.rectangle(image, (300, 100), (400, 200), (0, 1, 0), cv2.FILLED, cv2.LINE_8)
+	cv2.rectangle(image, (100, 300), (200, 400), (1, 0, 0), cv2.FILLED, cv2.LINE_8)
+	cv2.rectangle(image, (300, 300), (400, 400), (1, 0, 1), cv2.FILLED, cv2.LINE_8)
+	cv2.rectangle(image, (200, 200), (300, 300), (1, 1, 1), cv2.FILLED, cv2.LINE_8)
+
+	cv2.rectangle(mask, (100, 100), (200, 200), 1, cv2.FILLED, cv2.LINE_8)
+	cv2.rectangle(mask, (300, 100), (400, 200), 1, cv2.FILLED, cv2.LINE_8)
+	cv2.rectangle(mask, (100, 300), (200, 400), 1, cv2.FILLED, cv2.LINE_8)
+	cv2.rectangle(mask, (300, 300), (400, 400), 1, cv2.FILLED, cv2.LINE_8)
+	cv2.rectangle(mask, (200, 200), (300, 300), 1, cv2.FILLED, cv2.LINE_8)
+
+	print('Image: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(image.shape, image.dtype, np.min(image), np.max(image)))
+	print('Mask: shape = {}, dtype = {}, (min, max) = ({}, {}).'.format(mask.shape, mask.dtype, np.min(mask), np.max(mask)))
+
+	cv2.imshow('Image', image)
+	cv2.imshow('Mask', mask)
+
+	deformer = OcrodegImageDeformer(is_pil=False)
+	for _ in range(10):
+		image_deformed, mask_deformed = deformer(image, mask)
+
+		#--------------------
+		pts = np.nonzero(mask_deformed)
+		y1, y2, x1, x2 = min(pts[0]), max(pts[0]), min(pts[1]), max(pts[1])
+
+		# Note [info] >> Deal with "TypeError: an integer is required (got type tuple)" error.
+		#	I don't know why?
+		image_deformed = image_deformed.copy()
+		cv2.rectangle(image_deformed, (x1, y1), (x2, y2), (0, 1, 1), 2, cv2.LINE_8)
+
+		cv2.imshow('Deformed Image', image_deformed)
+		cv2.imshow('Deformed Mask', mask_deformed)
+
+		cv2.waitKey(0)
+	cv2.destroyAllWindows()
+
 def main():
 	#simple_example()
-	paired_image_mask_example()
+	#paired_image_mask_example()
+
+	deform_image_and_mask_by_ocrodeg()
 
 #--------------------------------------------------------------------
 

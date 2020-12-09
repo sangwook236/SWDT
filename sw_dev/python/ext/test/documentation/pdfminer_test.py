@@ -32,7 +32,7 @@ def basic_usage():
 			# Create a PDF parser object associated with the file object.
 			parser = PDFParser(fp)
 			# Create a PDF document object that stores the document structure.
-			document = PDFDocument(parser, password='')
+			document = PDFDocument(parser, password=b'')
 			# Check if the document allows text extraction. If not, abort.
 			if not document.is_extractable:
 				raise PDFTextExtractionNotAllowed
@@ -48,7 +48,7 @@ def basic_usage():
 				interpreter.process_page(page)
 				print('Page ID {} processed.'.format(page.pageid))
 		else:
-			for page in PDFPage.get_pages(fp, pagenos=None, maxpages=0, password=''):  # pagenos uses zero-based indices.
+			for page in PDFPage.get_pages(fp, pagenos=None, maxpages=0, password=b''):  # pagenos uses zero-based indices. pagenos is sorted inside the function.
 				interpreter.process_page(page)
 				print('Page ID {} processed.'.format(page.pageid))
 	finally:
@@ -68,11 +68,10 @@ def text_extraction_example():
 		# Set parameters for analysis.
 		laparams = LAParams()
 		retstr = io.StringIO()
-		codec = 'utf-8'
-		device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
+		device = TextConverter(rsrcmgr, retstr, pageno=1, laparams=laparams, showpageno=False, imagewriter=None)
 		interpreter = PDFPageInterpreter(rsrcmgr, device)
 
-		for page in PDFPage.get_pages(fp, pagenos=None, maxpages=0, password=''):  # pagenos uses zero-based indices.
+		for page in PDFPage.get_pages(fp, pagenos=None, maxpages=0, password=b''):  # pagenos uses zero-based indices. pagenos is sorted inside the function.
 			interpreter.process_page(page)
 
 			texts = retstr.getvalue()  # All texts in a page.
@@ -143,7 +142,7 @@ def layout_analysis_example():
 		device = PDFPageAggregator(rsrcmgr, laparams=laparams)
 		interpreter = PDFPageInterpreter(rsrcmgr, device)
 
-		for page in PDFPage.get_pages(fp, pagenos=None, maxpages=0, password=''):  # pagenos uses zero-based indices.
+		for page in PDFPage.get_pages(fp, pagenos=None, maxpages=0, password=b''):  # pagenos uses zero-based indices. pagenos is sorted inside the function.
 			interpreter.process_page(page)
 
 			# Receive the LTPage object for the page.
@@ -166,7 +165,7 @@ def table_of_contents_example():
 		parser = PDFParser(fp)
 
 		# Create a PDF document object that stores the document structure.
-		document = PDFDocument(parser, password='')
+		document = PDFDocument(parser, password=b'')
 		# Check if the document allows text extraction. If not, abort.
 		if not document.is_extractable:
 			raise PDFTextExtractionNotAllowed
