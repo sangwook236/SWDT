@@ -280,7 +280,7 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 		lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
 		#--------------------
-		# Train it for 10 epochs.
+		# Train.
 		for epoch in range(num_epochs):
 			# Train for one epoch, printing every 10 iterations.
 			engine.train_one_epoch(model, optimizer, train_dataloader, device, epoch, print_freq=10)
@@ -289,7 +289,7 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 			lr_scheduler.step()
 
 			# Evaluate on the test dataset.
-			engine.evaluate(model, test_dataloader, device=device)
+			engine.evaluate(model, test_dataloader, device=device)  # Person keypoints are evaluated by default when the IoU type is 'keypoints'.
 
 	#--------------------
 	# Infer.

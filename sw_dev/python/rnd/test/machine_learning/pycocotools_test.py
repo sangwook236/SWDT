@@ -329,13 +329,23 @@ def evaluation_demo_example():
 		coco_eval = pycocotools.cocoeval.COCOeval(cocoGt=gt_coco, cocoDt=pred_coco, iouType=ann_type)
 
 		# REF [class] >> Params in https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocotools/cocoeval.py
+		# When IoU type is 'bbox', 'segm', or 'keypoints'.
 		if image_ids: coco_eval.params.imgIds = image_ids
-		#coco_eval.params..catIds = []
+		#coco_eval.params.catIds = []
 		#coco_eval.params.iouThrs = np.linspace(.5, 0.95, int(np.round((0.95 - .5) / .05)) + 1, endpoint=True)  # IoU threshold.
         #coco_eval.params.recThrs = np.linspace(.0, 1.00, int(np.round((1.00 - .0) / .01)) + 1, endpoint=True)  # Recall thresholds.
 		#coco_eval.params.maxDets = [1, 10, 100]  # Thresholds on max detections per image.
 		#coco_eval.params.areaRng = [[0 ** 2, 1e5 ** 2], [0 ** 2, 32 ** 2], [32 ** 2, 96 ** 2], [96 ** 2, 1e5 ** 2]]  # Object area ranges.
 		#coco_eval.params.areaRngLbl = ['all', 'small', 'medium', 'large']
+		#coco_eval.params.useCats = 1
+		# When IoU type is 'keypoints'.
+		#	COCO Keypoints Dataset (2017):
+		#		17 types of keypoints.
+		#		58,945 images, 156,165 annotated people, 1,710,498 total keypoints.
+		#		REF [pdf] >> http://presentations.cocodataset.org/COCO17-Keypoints-Overview.pdf
+		#	Object Keypoint Similarity (OKS).
+		#		REF [site] >> https://cocodataset.org/#keypoints-eval
+		#coco_eval.params.kpt_oks_sigmas = np.array([.26, .25, .25, .35, .35, .79, .79, .72, .72, .62, .62, 1.07, 1.07, .87, .87, .89, .89]) / 10.0
 
 		coco_eval.evaluate()
 		coco_eval.accumulate()
