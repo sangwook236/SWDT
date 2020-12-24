@@ -20,12 +20,16 @@
 			Install with GPU support:
 				conda install pytorch torchvision
 				conda install pytorch torchvision cudatoolkit=10.1 cudnn -c pytorch
+				conda install pytorch torchvision cudatoolkit=10.1 cudnn -c pytorch-nightly
 			Install without GPU support:
 				conda install pytorch torchvision cpuonly -c pytorch
+				conda install pytorch torchvision cpuonly -c pytorch-nightly
 
 		Using pip:
 			Install with GPU support:
 				pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+				pip install torch torchvision -f https://download.pytorch.org/whl/nightly/cu110/torch_nightly.html
 			Install without GPU support:
 				pip install torch torchvision (?)
 				pip install torch==1.5.1+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+				pip install torch torchvision -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
