@@ -125,10 +125,11 @@ def simple_demo_example():
 		return
 
 	#--------------------
+	# REF [site] >> Data format.
+	#	https://cocodataset.org/#format-data
+
 	# Show information on data.
 	if True:
-		# REF [site] >> https://cocodataset.org/#format-data
-
 		#print('Dataset: {}.'.format(coco.dataset))
 		print('Dataset keys = {}.'.format(list(coco.dataset.keys())))
 
@@ -287,6 +288,16 @@ def simple_demo_example():
 				cv2.waitKey(0)
 		#cv2.destroyAllWindows()
 
+# REF [site] >> Data format.
+#	https://cocodataset.org/#format-data
+#	https://cocodataset.org/#format-results
+# REF [site] >> Evaluation.
+#	https://cocodataset.org/#detection-eval
+#	https://cocodataset.org/#keypoints-eval
+#	https://cocodataset.org/#stuff-eval
+#	https://cocodataset.org/#panoptic-eval
+#	https://cocodataset.org/#densepose-eval
+#	https://cocodataset.org/#captions-eval
 # REF [site] >> https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocoEvalDemo.ipynb
 def evaluation_demo_example():
 	gt_annotation_filepath = '/path/to/gt_annotation.json'

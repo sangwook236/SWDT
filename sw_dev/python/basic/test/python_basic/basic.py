@@ -747,16 +747,18 @@ def bytes_test():
 	print(r"b'UUDDLRLRAB'.hex(' ', -4) =", b'UUDDLRLRAB'.hex(' ', -4))
 
 	#--------------------
-	#bytes_string.decode(encoding='utf-8', errors='strict')
-	#str(bytes_string, encoding='utf-8', errors='strict')
+	# Decoding:
+	#	bytes_string.decode(encoding='utf-8', errors='strict')
+	#	str(bytes_string, encoding='utf-8', errors='strict')
 
 	print(r"b'Zoot!'.decode() =", b'Zoot!'.decode())
 	print(r"b'Zoot!'.decode(encoding='utf-8') =", b'Zoot!'.decode(encoding='utf-8'))
 	print(r"str(b'Zoot!') =", str(b'Zoot!'))
 	print(r"str(b'Zoot!', encoding='utf-8') =", str(b'Zoot!', encoding='utf-8'))
 
-	#bytes(string, encoding='utf-8', errors='strict')
-	#str.encode(string, encoding='utf-8', errors='strict')
+	# Encoding:
+	#	bytes(string, encoding='utf-8', errors='strict')
+	#	str.encode(string, encoding='utf-8', errors='strict')
 
 	#print(r"bytes('Zoot!') =", bytes('Zoot!'))  # TypeError: string argument without an encoding.
 	print(r"bytes('Zoot!', encoding='utf-8') =", bytes('Zoot!', encoding='utf-8'))
