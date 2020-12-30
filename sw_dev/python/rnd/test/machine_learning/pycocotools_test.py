@@ -8,7 +8,7 @@ import numpy as np
 import pycocotools.coco
 import pycocotools.cocoeval
 
-def vsualize_annotations(image, annotations, coco, font):
+def visualize_annotations(image, annotations, coco, font):
 	''' Draws the segmentation, bounding box, and label of each annotation
 	'''
 
@@ -244,7 +244,7 @@ def simple_demo_example():
 						if img.size[0] != image_width or img.size[1] != image_height:
 							print('Invalid image size, ({}, {}) != ({}, {}).'.format(img.size[0], img.size[1], image_width, image_height))
 							return
-						plt.imshow(vsualize_annotations(img, annotations, coco, font))
+						plt.imshow(visualize_annotations(img, annotations, coco, font))
 						plt.axis('off')
 				except IOError as ex:
 					print('Failed to load an image, {}: {}.'.format(image_filepath, ex))
@@ -300,33 +300,33 @@ def simple_demo_example():
 #	https://cocodataset.org/#captions-eval
 # REF [site] >> https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocoEvalDemo.ipynb
 def evaluation_demo_example():
-	gt_annotation_filepath = '/path/to/gt_annotation.json'
-	result_filepath = '/path/to/coco_result.json'
+	coco_gt_filepath = '/path/to/coco_gt.json'
+	coco_result_filepath = '/path/to/coco_results.json'
 	annotation_types = ['bbox', 'segm']  # {'bbox', 'keypoints', 'segm'}.
 
 	#--------------------
 	try:
-		print('Start loading a COCO G/T data from {}...'.format(gt_annotation_filepath))
+		print('Start loading a COCO G/T JSON file from {}...'.format(coco_gt_filepath))
 		start_time = time.time()
-		gt_coco = pycocotools.coco.COCO(gt_annotation_filepath)
-		print('End loading a COCO G/T data: {} secs.'.format(time.time() - start_time))
+		gt_coco = pycocotools.coco.COCO(coco_gt_filepath)
+		print('End loading a COCO G/T JSON file: {} secs.'.format(time.time() - start_time))
 	except UnicodeDecodeError as ex:
-		print('Unicode decode error in {}: {}.'.format(gt_annotation_filepath, ex))
+		print('Unicode decode error in {}: {}.'.format(coco_gt_filepath, ex))
 		return
 	except FileNotFoundError as ex:
-		print('File not found, {}: {}.'.format(gt_annotation_filepath, ex))
+		print('File not found, {}: {}.'.format(coco_gt_filepath, ex))
 		return
 
 	try:
-		print('Start loading a COCO result data from {}...'.format(result_filepath))
+		print('Start loading a COCO result JSON file from {}...'.format(coco_result_filepath))
 		start_time = time.time()
-		pred_coco = gt_coco.loadRes(result_filepath)
-		print('End loading a COCO result data: {} secs.'.format(time.time() - start_time))
+		pred_coco = gt_coco.loadRes(coco_result_filepath)
+		print('End loading a COCO result JSON file: {} secs.'.format(time.time() - start_time))
 	except UnicodeDecodeError as ex:
-		print('Unicode decode error in {}: {}.'.format(result_filepath, ex))
+		print('Unicode decode error in {}: {}.'.format(coco_result_filepath, ex))
 		return
 	except FileNotFoundError as ex:
-		print('File not found, {}: {}.'.format(result_filepath, ex))
+		print('File not found, {}: {}.'.format(coco_result_filepath, ex))
 		return
 
 	#--------------------
@@ -344,7 +344,7 @@ def evaluation_demo_example():
 		if image_ids: coco_eval.params.imgIds = image_ids
 		#coco_eval.params.catIds = []
 		#coco_eval.params.iouThrs = np.linspace(.5, 0.95, int(np.round((0.95 - .5) / .05)) + 1, endpoint=True)  # IoU threshold.
-        #coco_eval.params.recThrs = np.linspace(.0, 1.00, int(np.round((1.00 - .0) / .01)) + 1, endpoint=True)  # Recall thresholds.
+		#coco_eval.params.recThrs = np.linspace(.0, 1.00, int(np.round((1.00 - .0) / .01)) + 1, endpoint=True)  # Recall thresholds.
 		#coco_eval.params.maxDets = [1, 10, 100]  # Thresholds on max detections per image.
 		#coco_eval.params.areaRng = [[0 ** 2, 1e5 ** 2], [0 ** 2, 32 ** 2], [32 ** 2, 96 ** 2], [96 ** 2, 1e5 ** 2]]  # Object area ranges.
 		#coco_eval.params.areaRngLbl = ['all', 'small', 'medium', 'large']
