@@ -19,8 +19,8 @@
 		Using conda:
 			Install with GPU support:
 				conda install pytorch torchvision
-				conda install pytorch torchvision cudatoolkit=10.1 cudnn -c pytorch
-				conda install pytorch torchvision cudatoolkit=10.1 cudnn -c pytorch-nightly
+				conda install pytorch torchvision cudatoolkit=10.1 -c pytorch
+				conda install pytorch torchvision cudatoolkit=10.1 -c pytorch-nightly
 			Install without GPU support:
 				conda install pytorch torchvision cpuonly -c pytorch
 				conda install pytorch torchvision cpuonly -c pytorch-nightly
@@ -33,3 +33,11 @@
 				pip install torch torchvision (?)
 				pip install torch==1.5.1+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
 				pip install torch torchvision -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
+
+		For RTX 3090 (2021/01/03):
+			conda create --name torch python=3 numpy scipy matplotlib pillow opencv
+			conda install cudatoolkit=11
+			conda install cudnn=8 -c conda-forge
+			#conda install pytorch=1.8 torchvision cudatoolkit=11 -c pytorch-nightly -c conda-forge
+			pip install torch==1.8.0.dev20210103+cu110 torchvision==0.9.0.dev20210103 -f https://download.pytorch.org/whl/nightly/cu110/torch_nightly.html
+			pip install imgaug trdg OpenNMT-py pdfminer pdf2image

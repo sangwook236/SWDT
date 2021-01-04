@@ -189,8 +189,8 @@ def main():
 
 #--------------------------------------------------------------------
 
-# Coordinate system in PDF.
-#	Origin: (left, bottom),
+# The coordinate system in PDF.
+#	Origin: (left, bottom).
 #	X-axis: rightward.
 #	Y-axis: upward.
 
