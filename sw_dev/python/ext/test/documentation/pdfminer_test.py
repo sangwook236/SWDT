@@ -5,13 +5,14 @@
 #	https://github.com/euske/pdfminer
 #	https://github.com/pdfminer/pdfminer.six
 
-from pdfminer.pdfparser import PDFParser
-from pdfminer.pdfdocument import PDFDocument, PDFNoOutlines
+from pdfminer.pdfparser import PDFParser, PDFSyntaxError
+from pdfminer.pdfdocument import PDFDocument, PDFNoOutlines, PDFEncryptionError
 from pdfminer.pdfpage import PDFPage, PDFTextExtractionNotAllowed
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfdevice import PDFDevice
 from pdfminer.layout import LAParams
 from pdfminer.converter import PDFPageAggregator, TextConverter, XMLConverter, HTMLConverter
+from pdfminer.pdftypes import resolve1, resolve_all, PDFException
 
 # REF [site] >> https://pdfminer-docs.readthedocs.io/programming.html
 def basic_usage():
@@ -31,17 +32,26 @@ def basic_usage():
 		if True:
 			# Create a PDF parser object associated with the file object.
 			parser = PDFParser(fp)
-			# Create a PDF document object that stores the document structure.
-			document = PDFDocument(parser, password=b'')
+			try:
+				# Create a PDF document object that stores the document structure.
+				document = PDFDocument(parser, password=b'')
+			except PDFEncryptionError as ex:
+				print('PDFEncryptionError raised: {}.'.format(ex))
+			except PDFSyntaxError as ex:
+				print('PDFSyntaxError raised: {}.'.format(ex))
+			except PDFException as ex:
+				print('PDFException raised: {}.'.format(ex))
 			# Check if the document allows text extraction. If not, abort.
 			if not document.is_extractable:
 				raise PDFTextExtractionNotAllowed
 
 			# Page count.
-			from pdfminer.pdftypes import resolve1, resolve_all
-			pages = resolve1(document.catalog['Pages'])
-			#pages = resolve_all(document.catalog['Pages'])
-			print('#pages = {}.'.format(pages['Count']))
+			try:
+				pages = resolve1(document.catalog['Pages'])
+				#pages = resolve_all(document.catalog['Pages'])
+				print('#pages = {}.'.format(pages['Count']))
+			except KeyError as ex:
+				print('KeyError raised: {}.'.format(ex))
 
 			# Process each page contained in the document.
 			for page in PDFPage.create_pages(document):
