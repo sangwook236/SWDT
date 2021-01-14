@@ -9,8 +9,11 @@
 
 [-] Usage.
 	- CUDA toolkit version.
-		cat /usr/local/cuda/version.txt
 		nvcc --version
+			/usr/local/cuda/bin/nvcc --version
+		cat /usr/local/cuda/version.txt (X)
+		cat /usr/local/cuda/include/cuda.h
+			Find CUDA_VERSION.
 
 		Runtime API version:
 			cudaRuntimeGetVersion()
@@ -19,6 +22,17 @@
 			cuDriverGetVersion()
 
 	- Driver version.
+		Install driver. (Ubuntu)
+			(Optional) sudo add-apt-repository ppa:graphics-drivers/ppa
+
+			ubuntu-drivers devices
+
+			sudo ubuntu-drivers autoinstall
+				Alternatively,
+					sudo apt install nvidia-driver-460
+
+			sudo reboot
+
 		cat /proc/driver/nvidia/version
 		nvidia-smi
 
