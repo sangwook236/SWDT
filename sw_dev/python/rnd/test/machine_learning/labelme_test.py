@@ -8,83 +8,202 @@ sys.path.append('./src')
 import os, functools, glob, json, time
 import cv2
 
+def load_data_from_json_v3_16_7(json_data, json_dir_path, flag):
+	"""
+	version
+	flags
+	shapes *
+		label
+		line_color
+		fill_color
+		points
+		group_id
+		shape_type
+	lineColor
+	fillColor
+	imagePath
+	imageData
+	imageWidth
+	imageHeight
+	"""
+
+	version = json_data['version']
+	flags = json_data['flags']
+	#line_color, fill_color = json_data['lineColor'], json_data['fillColor']
+	try:
+		line_color = json_data['lineColor']
+	except KeyError as ex:
+		#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
+		line_color = None
+	try:
+		fill_color = json_data['fillColor']
+	except KeyError as ex:
+		#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
+		fill_color = None
+
+	image_filepath = os.path.join(json_dir_path, json_data['imagePath'])
+	image_data = json_data['imageData']
+	image_height, image_width = json_data['imageHeight'], json_data['imageWidth']
+
+	if True:
+		img = cv2.imread(image_filepath, flag)
+		if img is None:
+			print('[SWL] Error: Failed to load an image, {}.'.format(image_filepath))
+			return None
+
+	shapes = list()
+	for shape in json_data['shapes']:
+		label, points, shape_type = shape['label'], shape['points'], shape['shape_type']
+		#group_id, shape_line_color, shape_fill_color = shape['group_id'], shape['line_color'], shape['fill_color']
+		try:
+			group_id = shape['group_id']
+		except KeyError as ex:
+			#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
+			group_id = None
+		try:
+			shape_line_color = shape['line_color']
+		except KeyError as ex:
+			#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
+			shape_line_color = None
+		try:
+			shape_fill_color = shape['fill_color']
+		except KeyError as ex:
+			#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
+			shape_fill_color = None
+		shape_dict = {
+			'label': label,
+			'line_color': shape_line_color,
+			'fill_color': shape_fill_color,
+			'points': points,
+			'group_id': group_id,
+			'shape_type': shape_type,
+		}
+		shapes.append(shape_dict)
+
+	return {
+		'version': version,
+		'flags': flags,
+		'shapes': shapes,
+		'lineColor': line_color,
+		'fillColor': fill_color,
+		'imagePath': image_filepath,
+		'imageData': image_data,
+		'imageWidth': image_width,
+		'imageHeight': image_height,
+	}
+
+def load_data_from_json_v4_0_0(json_data, json_dir_path, flag):
+	"""
+	version
+	flags
+	shapes *
+		label
+		line_color
+		fill_color
+		points
+		group_id
+		shape_type
+		flags
+	lineColor
+	fillColor
+	imagePath
+	imageData
+	imageWidth
+	imageHeight
+	"""
+
+	version = json_data['version']
+	flags = json_data['flags']
+	#line_color, fill_color = json_data['lineColor'], json_data['fillColor']
+	try:
+		line_color = json_data['lineColor']
+	except KeyError as ex:
+		#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
+		line_color = None
+	try:
+		fill_color = json_data['fillColor']
+	except KeyError as ex:
+		#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
+		fill_color = None
+
+	image_filepath = os.path.join(json_dir_path, json_data['imagePath'])
+	image_data = json_data['imageData']
+	image_height, image_width = json_data['imageHeight'], json_data['imageWidth']
+
+	if True:
+		img = cv2.imread(image_filepath, flag)
+		if img is None:
+			print('[SWL] Error: Failed to load an image, {}.'.format(image_filepath))
+			return None
+
+	shapes = list()
+	for shape in json_data['shapes']:
+		label, points, shape_type = shape['label'], shape['points'], shape['shape_type']
+		#group_id, shape_line_color, shape_fill_color, shape_flags = shape['group_id'], shape['line_color'], shape['fill_color'], shape['flags']
+		try:
+			group_id = shape['group_id']
+		except KeyError as ex:
+			#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
+			group_id = None
+		try:
+			shape_line_color = shape['line_color']
+		except KeyError as ex:
+			#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
+			shape_line_color = None
+		try:
+			shape_fill_color = shape['fill_color']
+		except KeyError as ex:
+			#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
+			shape_fill_color = None
+		try:
+			shape_flags = shape['flags']
+		except KeyError as ex:
+			#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
+			shape_flags = None
+		shape_dict = {
+			'label': label,
+			'line_color': shape_line_color,
+			'fill_color': shape_fill_color,
+			'points': points,
+			'group_id': group_id,
+			'shape_type': shape_type,
+			'flags': shape_flags,
+		}
+		shapes.append(shape_dict)
+
+	return {
+		'version': version,
+		'flags': flags,
+		'shapes': shapes,
+		'lineColor': line_color,
+		'fillColor': fill_color,
+		'imagePath': image_filepath,
+		'imageData': image_data,
+		'imageWidth': image_width,
+		'imageHeight': image_height,
+	}
+
 def load_data_from_json(json_filepath, flag):
 	try:
 		with open(json_filepath, 'r') as fd:
 			json_data = json.load(fd)
 	except UnicodeDecodeError as ex:
-		print('[SWL] Error: Unicode decode error, {}: {}.'.format(json_filepath, ex))
+		print('[SWL] Error: Unicode decode error in {}: {}.'.format(json_filepath, ex))
 		return None
 	except FileNotFoundError as ex:
 		print('[SWL] Error: File not found, {}: {}.'.format(json_filepath, ex))
 		return None
 
+	json_dir_path = os.path.dirname(json_filepath)
 	try:
 		version = json_data['version']
-		flags = json_data['flags']
-		#line_color, fill_color = json_data['lineColor'], json_data['fillColor']
-		try:
-			line_color = json_data['lineColor']
-		except KeyError as ex:
-			#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
-			line_color = None
-		try:
-			fill_color = json_data['fillColor']
-		except KeyError as ex:
-			#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
-			fill_color = None
-
-		dir_path = os.path.dirname(json_filepath)
-		image_filepath = os.path.join(dir_path, json_data['imagePath'])
-		image_data = json_data['imageData']
-		image_height, image_width = json_data['imageHeight'], json_data['imageWidth']
-
-		if True:
-			img = cv2.imread(image_filepath, flag)
-			if img is None:
-				print('[SWL] Error: Failed to load an image, {}.'.format(image_filepath))
-				return None
-
-		shapes = list()
-		for shape in json_data['shapes']:
-			label, points, shape_type = shape['label'], shape['points'], shape['shape_type']
-			#group_id, shape_line_color, shape_fill_color = shape['group_id'], shape['line_color'], shape['fill_color']
-			try:
-				group_id = shape['group_id']
-			except KeyError as ex:
-				#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
-				group_id = None
-			try:
-				shape_line_color = shape['line_color']
-			except KeyError as ex:
-				#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
-				shape_line_color = None
-			try:
-				shape_fill_color = shape['fill_color']
-			except KeyError as ex:
-				#print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
-				shape_fill_color = None
-			shape_dict = {
-				'label': label,
-				'line_color': shape_line_color,
-				'fill_color': shape_fill_color,
-				'points': points,
-				'group_id': group_id,
-				'shape_type': shape_type,
-			}
-			shapes.append(shape_dict)
-
-		return {
-			'version': version,
-			'flags': flags,
-			'shapes': shapes,
-			'lineColor': line_color,
-			'fillColor': fill_color,
-			'imagePath': image_filepath,
-			'imageData': image_data,
-			'imageWidth': image_width,
-			'imageHeight': image_height,
-		}
+		if version == '3.16.7':
+			return load_data_from_json_v3_16_7(json_data, json_dir_path, flag)
+		elif version in ['4.0.0', '4.5.6']:
+			return load_data_from_json_v4_0_0(json_data, json_dir_path, flag)
+		else:
+			print('[SWL] Warning: Unsupported LabelMe version, {} in {}.'.format(version, json_filepath))
+			return None
 	except KeyError as ex:
 		print('[SWL] Warning: Key error in JSON file, {}: {}.'.format(json_filepath, ex))
 		return None
@@ -114,27 +233,9 @@ def load_data_from_json_files_async(json_filepaths, flag):
 	return data_dicts
 
 def simple_loading_example():
-	"""
-	version
-	flags
-	shapes *
-		label
-		line_color
-		fill_color
-		points
-		group_id
-		shape_type
-	lineColor
-	fillColor
-	imagePath
-	imageData
-	imageWidth
-	imageHeight
-	"""
-
 	image_channel = 3
 
-	if False:
+	if True:
 		if 'posix' == os.name:
 			data_base_dir_path = '/home/sangwook/work/dataset'
 		else:
@@ -184,6 +285,7 @@ def simple_loading_example():
 				print('\t\tpoints = {}.'.format(shape['points']))
 				print('\t\tgroup_id = {}.'.format(shape['group_id']))
 				print('\t\tshape_type = {}.'.format(shape['shape_type']))
+				if 'flags' in shape: print('\t\tflags = {}.'.format(shape['flags']))
 
 	#--------------------
 	num_shapes = functools.reduce(lambda nn, dat: nn + len(dat['shapes']), data_dicts, 0)
