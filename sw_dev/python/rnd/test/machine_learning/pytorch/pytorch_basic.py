@@ -170,7 +170,7 @@ def cuda_operation():
 
 	#--------------------
 	gpu = 0
-	device = torch.device('cuda:{}'.format(gpu) if torch.cuda.is_available() and gpu in range(torch.cuda.device_count()) else 'cpu')
+	device = torch.device(('cuda:{}'.format(gpu) if gpu in range(torch.cuda.device_count()) else 'cuda') if torch.cuda.is_available() else 'cpu')
 
 	x = torch.randn(2, 2)
 	y = torch.ones_like(x, device=device)  # Directly create a tensor on GPU.
@@ -178,6 +178,21 @@ def cuda_operation():
 	z = x + y
 	print('z =', z)
 	print('z =', z.to(device, torch.double))  # .to() can also change dtype together!
+
+	#--------------------
+	# Delete a tensor in a GPU.
+	print(torch.cuda.memory_allocated())
+	print(torch.cuda.memory_reserved())
+
+	del x
+
+	print(torch.cuda.memory_allocated())
+	print(torch.cuda.memory_reserved())
+
+	torch.cuda.empty_cache()
+
+	print(torch.cuda.memory_allocated())
+	print(torch.cuda.memory_reserved())
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html
 def numpy_bridge():
