@@ -15,6 +15,9 @@ def naver_news_crawling_example():
 	#	Column: 기사 날짜, 기사 카테고리, 언론사, 기사 제목, 기사 본문, 기사 주소.
 
 def main():
+	# Scrapy.
+	#	Refer to ./scrapy_test.py
+
 	naver_news_crawling_example()
 
 #--------------------------------------------------------------------
