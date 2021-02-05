@@ -1,0 +1,133 @@
+[-] General.
+	- Site.
+		https://www.espressif.com/en
+		https://www.espressif.com/en/support/documents/technical-documents
+
+		https://github.com/espressif
+		https://github.com/noduino/xtensa-toolchain
+
+		ESP8266:
+			https://www.esp8266.com/
+
+			https://github.com/esp8266
+			https://github.com/esp8266/Arduino
+
+		ESP32:
+			https://www.esp32.com/
+			https://docs.espressif.com/projects/esp-idf/en/latest/esp32/
+
+			https://github.com/espressif/esp-idf
+			https://github.com/espressif/arduino-esp32
+
+		OLIMEX ESP32-EVB:
+			https://www.olimex.com/Products/IoT/ESP32/ESP32-EVB/open-source-hardware
+			https://github.com/OLIMEX/ESP32-EVB
+
+			https://www.eleparts.co.kr/goods/search?search_text=ESP32-EVB
+
+[-] Usage (ESP32).
+	- Build and flash.
+		https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/
+
+		Prepare a project:
+			Copy the project ${ESP-IDF_HOME}/get-started/hello_world to ${ESP-IDF_HOME}/hello_world directory.
+			cd ${ESP-IDF_HOME}/hello_world
+
+		Set up build environment:
+			cd ${ESP-IDF_HOME}
+
+			export.bat
+			source export.sh
+
+			(Optional) idf.py --version
+
+		Configure a project:
+			(Optional) idf.py set-target
+			idf.py set-target esp32
+
+			idf.py menuconfig
+
+		Compile a project:
+			idf.py build
+
+		Clean a project:
+			idf.py build clean
+			idf.py clean
+			idf.py fullclean
+
+		Flash a project:
+			idf.py -p PORT [-b BAUD] flash
+				idf.py -p COM0 flash
+				idf.py -p /dev/ttyUSB0 flash
+			idf.py -p PORT erase_flash flash
+
+		Erase flash:
+			idf.py erase_flash
+
+		Compile & flash only an app:
+			idf.py app
+			idf.py app-flash
+
+		View serial output:
+			idf.py flash monitor
+				To exit IDF monitor use the shortcut 'Ctrl+]'.
+
+	- OPC-UA.
+		https://github.com/open62541/open62541
+		https://github.com/cmbahadir/opcua-esp32
+		https://selftronics.com/2020/06/23/cheapest-embedded-opc-ua-server/
+
+[-] Setting (ESP32).
+	- General.
+		https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/
+		"Quick Reference" in https://github.com/espressif/esp-idf
+
+		Install prerequisites:
+			https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/windows-setup.html
+			https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/linux-setup.html
+
+		Git-clone ESP-IDF:
+			https://github.com/espressif/esp-idf
+
+		Set up environment:
+			Windows:
+				Run ESP-IDF Command Prompt or ESP-IDF PowerShell.
+
+			(Optional) conda create --name esp32 python=3
+			(Optional) conda activate esp32
+
+			cd ${ESP-IDF_HOME}
+			pip install -r requirements.txt
+
+		Set up the tools:
+			Windows:
+				Install 'ESP-IDF Tools Installer'.
+
+			Windows:
+				Run ESP-IDF Command Prompt or ESP-IDF PowerShell.
+
+			cd ${ESP-IDF_HOME}
+
+			install.bat
+			install.ps1
+			./install.sh
+			./install.fish
+
+		Connect a device:
+			Windows:
+				Install USB driver.
+			Linux:
+				Do not need any USB driver.
+
+				ls /dev/tty*
+					e.g.) /dev/ttyUSB0 is listed.
+
+				sudo usermod -a -G tty $USER
+				sudo usermod -a -G dialout $USER
+
+	- Setting (VSCode).
+		https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/vscode-setup.html
+		https://www.youtube.com/watch?v=Lc6ausiKvQM&feature=youtu.be
+
+	- Setting (Eclipse).
+		https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/eclipse-setup.html

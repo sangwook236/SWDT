@@ -16,18 +16,15 @@
 			${GNUWIN32_HOME}/gnuwin32
 
 [-] Installation (Windows).
-	- Prepare the installation of GnuWin32.
-		Download GetGnuWin32.
+	- Install.
+		Download GetGnuWin32:
 			http://getgnuwin32.sourceforge.net
-		Run GetGnuWin32.
-			GetGnuWin32-0.6.3.exe
-			Destination folder: D:/util/repo
 
-	- Install GnuWin32.
+		Run GetGnuWin32-0.6.3.exe
+
 		Run command prompt.
-		Change directory.
-			cd ${GetGnuWin32_HOME}
-		Run download.
-			download.bat
-		Install GnuWin32.
-			install.bat ${GNUWIN32_INSTALL_DIR}
+
+		cd ${GetGnuWin32_HOME}
+		download.bat
+		install.bat ${GNUWIN32_INSTALL_DIR}
+			install.bat ../gnuwin32
