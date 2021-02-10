@@ -34,6 +34,9 @@
 			cd ${ESP-IDF_HOME}/hello_world
 
 		Set up build environment:
+			Windows:
+				Run ESP-IDF Command Prompt or ESP-IDF PowerShell.
+
 			cd ${ESP-IDF_HOME}
 
 			export.bat
@@ -89,12 +92,9 @@
 		Git-clone ESP-IDF:
 			https://github.com/espressif/esp-idf
 
-		Set up environment:
-			Windows:
-				Run ESP-IDF Command Prompt or ESP-IDF PowerShell.
-
-			(Optional) conda create --name esp32 python=3
-			(Optional) conda activate esp32
+		(Optional) Set up environment:
+			conda create --name esp32 python=3
+			conda activate esp32
 
 			cd ${ESP-IDF_HOME}
 			pip install -r requirements.txt
