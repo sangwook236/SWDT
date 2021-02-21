@@ -27,7 +27,7 @@ def basic_example():
 		if page.rects:
 			print('*** Rects:', page.rects[0])  # A single 2-dimensional rectangle.
 		if page.curves:
-			print('*** Curves:', page.curves[0])  # a series of connected points.
+			print('*** Curves:', page.curves[0])  # A series of connected points.
 
 		"""
 		page.crop(bounding_box)

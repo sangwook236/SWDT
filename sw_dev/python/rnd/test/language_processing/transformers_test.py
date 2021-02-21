@@ -10,7 +10,7 @@ import time
 import torch
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
 from transformers import BertTokenizer, BertModel, BertForMaskedLM
-from transformers.modeling_bert import BertPreTrainedModel
+from transformers import BertPreTrainedModel
 from transformers import BertConfig
 from transformers import *
 
@@ -454,19 +454,94 @@ def sequence_classification_using_bert():
 
 	print('Model outputs =\n{}.'.format(model_outputs))
 
+# REF [site] >> https://huggingface.co/transformers/model_doc/encoderdecoder.html
+def encoder_decoder_example():
+	from transformers import EncoderDecoderConfig, EncoderDecoderModel
+	from transformers import BertConfig, GPT2Config
+
+	pretrained_model_name = 'bert-base-uncased'
+	#pretrained_model_name = 'gpt2'
+
+	if 'bert' in pretrained_model_name:
+		# Initialize a BERT bert-base-uncased style configuration.
+		config_encoder, config_decoder = BertConfig(), BertConfig()
+	elif 'gpt2' in pretrained_model_name:
+		config_encoder, config_decoder = GPT2Config(), GPT2Config()
+	else:
+		print('Invalid model, {pretrained_model_name}.'.format())
+		return
+
+	config = EncoderDecoderConfig.from_encoder_decoder_configs(config_encoder, config_decoder)
+
+	if 'bert' in pretrained_model_name:
+		# Initialize a Bert2Bert model from the bert-base-uncased style configurations.
+		model = EncoderDecoderModel(config=config)
+		#model = EncoderDecoderModel.from_encoder_decoder_pretrained(pretrained_model_name, pretrained_model_name)  # Initialize Bert2Bert from pre-trained checkpoints.
+		tokenizer = BertTokenizer.from_pretrained(pretrained_model_name)
+	elif 'gpt2' in pretrained_model_name:
+		model = EncoderDecoderModel(config=config)
+		tokenizer = GPT2Tokenizer.from_pretrained(pretrained_model_name)
+
+	#print('Configuration of the encoder & decoder:', model.config.encoder, model.config.decoder)
+	#print('Encoder type = {}, decoder type = {}.'.format(type(model.encoder), type(model.decoder)))
+
+	if False:
+		# Access the model configuration.
+		config_encoder = model.config.encoder
+		config_decoder  = model.config.decoder
+
+		# Set decoder config to causal LM.
+		config_decoder.is_decoder = True
+		config_decoder.add_cross_attention = True
+
+	#--------------------
+	input_ids = torch.tensor(tokenizer.encode('Hello, my dog is cute', add_special_tokens=True)).unsqueeze(0)  # Batch size 1.
+
+	if False:
+		# Forward.
+		outputs = model(input_ids=input_ids, decoder_input_ids=input_ids)
+
+		# Train.
+		outputs = model(input_ids=input_ids, decoder_input_ids=input_ids, labels=input_ids)
+		loss, logits = outputs.loss, outputs.logits
+
+		# Save the model, including its configuration.
+		model.save_pretrained('my-model')
+
+		#--------------------
+		# Load model and config from pretrained folder.
+		encoder_decoder_config = EncoderDecoderConfig.from_pretrained('my-model')
+		model = EncoderDecoderModel.from_pretrained('my-model', config=encoder_decoder_config)
+
+	#--------------------
+	# Generate.
+	#	REF [site] >>
+	#		https://huggingface.co/transformers/internal/generation_utils.html
+	#		https://huggingface.co/blog/how-to-generate
+	generated = model.generate(input_ids, decoder_start_token_id=model.config.decoder.pad_token_id)
+	#generated = model.generate(input_ids, max_length=50, num_beams=5, no_repeat_ngram_size=2, num_return_sequences=5, do_sample=True, top_k=0, temperature=0.7, early_stopping=True, decoder_start_token_id=model.config.decoder.pad_token_id)
+	print('Generated = {}.'.format(tokenizer.decode(generated[0], skip_special_tokens=True)))
+
 def main():
 	#quick_tour()
 
 	#--------------------
+	# GPT-2.
+
 	#gpt2_example()
 	#sentence_completion_model_using_gpt2_example()
-	#conditional_text_generation_using_gpt2_example()
+	#conditional_text_generation_using_gpt2_example()  # Not yet implemented.
 
 	#--------------------
-	bert_example()
+	# BERT.
+
+	#bert_example()
 	#masked_language_modeling_for_bert_example()
 
 	#sequence_classification_using_bert()
+
+	#--------------------
+	encoder_decoder_example()
 
 #--------------------------------------------------------------------
 
