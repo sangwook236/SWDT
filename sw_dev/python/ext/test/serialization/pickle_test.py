@@ -21,7 +21,7 @@ def main():
 		print('File not found, {}: {}.'.format(filepath, ex))
 
 	#--------------------
-	dumped = pickle.dumps(favorite_color)  # A bytes object.
+	dumped = pickle.dumps(favorite_color)  # An object of type 'bytes'.
 	print(type(dumped))
 
 	loaded = pickle.loads(dumped)
