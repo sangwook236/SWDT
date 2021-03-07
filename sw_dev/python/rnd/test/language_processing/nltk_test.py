@@ -17,8 +17,11 @@ Arthur didn't feel very good.
 	tokens = nltk.word_tokenize(sentence)
 	print('Words = {}.'.format(tokens))
 
+	# NOTE [info] >>
+	#	'2. Introduction' -> ['2.', 'Introduction'] => Two sentences, but no a single sentence.
 	#paragraph = 'Good morning Dr. Adams. The patient is waiting for you in room number 3.'
 	paragraph = 'Mr. John Johnson Jr. was born in the U.S.A but earned his Ph.D. in Israel before joining Nike Inc. as an engineer. He also worked at craigslist.org as a business analyst.'
+	#paragraph = 'was born in the U.S.A but earned his Ph.D. in Israel before joining Nike Inc. as an engineer. He also worked at craigslist.org as a'
 	sents = nltk.sent_tokenize(paragraph)
 	#sents = nltk.sent_tokenize(paragraph, language='english')  # nltk.tokenize.PunktSentenceTokenizer.
 	print('Sentences = {}.'.format(sents))

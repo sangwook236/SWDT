@@ -104,7 +104,8 @@ def query_example():
 			selected_user = cursor.fetchone()  # Returns a single row.
 			print('Selected user = {}.'.format(selected_user))
 
-			cursor.execute('SELECT Count(*) FROM Users WHERE Height >= ?', (170,))
+			#cursor.execute('SELECT Count(*) FROM Users WHERE Height >= ?', (170,))
+			cursor.execute('SELECT Count(Id) FROM Users WHERE Height >= ?', (170,))
 			num_users = cursor.fetchone()[0]
 			cursor.execute('SELECT AVG(Height) FROM Users WHERE Height >= ?', (180,))
 			avg_selected = cursor.fetchone()[0]
