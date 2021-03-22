@@ -5,16 +5,95 @@
 
 import PyPDF2
 
+# REF [site] >> https://gist.github.com/tiarno/8a2995e70cee42f01e79
+def walk(obj, fnt, emb):
+	'''
+	If there is a key called 'BaseFont', that is a font that is used in the document.
+	If there is a key called 'FontName' and another key in the same dictionary object
+	that is called 'FontFilex' (where x is null, 2, or 3), then that fontname is 
+	embedded.
+
+	We create and add to two sets, fnt = fonts used and emb = fonts embedded.
+	'''
+	if not hasattr(obj, 'keys'):
+		return None, None
+	font_keys = set(['/FontFile', '/FontFile2', '/FontFile3'])
+	if '/BaseFont' in obj:
+		fnt.add(obj['/BaseFont'])
+	if '/FontName' in obj:
+		if [x for x in font_keys if x in obj]:  # Test to see if there is FontFile.
+			emb.add(obj['/FontName'])
+
+	for k in obj.keys():
+		walk(obj[k], fnt, emb)
+
+	return fnt, emb  # Return the sets for each page.
+
+def basic_operation():
+	filepath = './DeepLearning.pdf'
+	try:
+		with open(filepath, 'rb') as pdfFileObj:
+			# Create a PDF reader object.
+			pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+
+			# The number of pages in PDF file.
+			print('#pages = {}.'.format(pdfReader.numPages))
+
+			#--------------------
+			# Metadata.
+			doc_info = pdfReader.getDocumentInfo()  # PyPDF2.pdf.DocumentInformation.
+			print('Metadata: {}.'.format(doc_info))
+
+			print('\tAuthor = {}.'.format(doc_info.author))
+			print('\tCreator = {}.'.format(doc_info.creator))
+			print('\tProducer = {}.'.format(doc_info.producer))
+			print('\tSubject = {}.'.format(doc_info.subject))
+			print('\tTitle = {}.'.format(doc_info.title))
+
+			print('\tAuthor (raw) = {}.'.format(doc_info.author_raw))
+			print('\tCreator (raw) = {}.'.format(doc_info.creator_raw))
+			print('\tProducer (raw) = {}.'.format(doc_info.producer_raw))
+			print('\tSubject (raw) = {}.'.format(doc_info.subject_raw))
+			print('\tTitle (raw) = {}.'.format(doc_info.title_raw))
+
+			if '/CreationDate' in doc_info:
+				print('\tCreation date = {}.'.format(doc_info['/CreationDate']))
+
+			#--------------------
+			# Font.
+			# REF [site] >> https://gist.github.com/tiarno/8a2995e70cee42f01e79
+			fonts, fonts_embedded = set(), set()
+			for page in pdfReader.pages:
+				obj = page.getObject()
+				# updated via this answer:
+				# https://stackoverflow.com/questions/60876103/use-pypdf2-to-detect-non-embedded-fonts-in-pdf-file-generated-by-google-docs/60895334#60895334 
+				# in order to handle lists inside objects. Thanks misingnoglic !
+				# untested code since I don't have such a PDF to play with.
+				if type(obj) == PyPDF2.generic.ArrayObject:  # You can also do ducktyping here.
+					for i in obj:
+						if hasattr(i, 'keys'):
+							f, e = walk(i, fonts, fonts_embedded)
+							fonts = fonts.union(f)
+							fonts_embedded = fonts_embedded.union(e)
+				else:
+					f, e = walk(obj['/Resources'], fonts, fonts_embedded)
+					fonts = fonts.union(f)
+					fonts_embedded = fonts_embedded.union(e)
+
+			print('Fonts: {}.'.format(sorted(fonts)))
+			font_unembedded = fonts - fonts_embedded
+			if font_unembedded:
+				print('Unembedded Fonts: {}.'.format(font_unembedded))
+	except FileNotFoundError as ex:
+		print('File not found, {}: {}.'.format(filepath, ex))
+
 # REF [site] >> https://www.geeksforgeeks.org/working-with-pdf-files-in-python/ 
 def extract_text_example():
 	filepath = './DeepLearning.pdf'
 	try:
 		with open(filepath, 'rb') as pdfFileObj:
-			# Create a pdf reader object.
+			# Create a PDF reader object.
 			pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
-
-			# Print number of pages in pdf file.
-			print('#pages = {}.'.format(pdfReader.numPages))
 
 			# Create a page object.
 			pageObj = pdfReader.getPage(0)
@@ -32,10 +111,10 @@ def rotate_page_example():
 
 	try:
 		with open(src_filepath, 'rb') as srcPdfFileObj:
-			# Create a pdf Reader object.
+			# Create a PDF Reader object.
 			pdfReader = PyPDF2.PdfFileReader(srcPdfFileObj)
 
-			# Create a pdf writer object for new pdf.
+			# Create a PDF writer object for new PDF.
 			pdfWriter = PyPDF2.PdfFileWriter()
 
 			# Rotate each page.
@@ -44,7 +123,7 @@ def rotate_page_example():
 				pageObj = pdfReader.getPage(page)
 				pageObj.rotateClockwise(rotation)
 
-				# Add rotated page object to pdf writer.
+				# Add rotated page object to PDF writer.
 				pdfWriter.addPage(pageObj)
 
 			try:
@@ -61,7 +140,7 @@ def merge_pdf_example():
 	src_filepaths = ['./DeepLearning.pdf', './DeepLearning_rotated.pdf']   
 	dst_filepath  = './DeepLearning_merged.pdf'
 
-	# Create pdf file merger object.
+	# Create PDF file merger object.
 	pdfMerger = PyPDF2.PdfFileMerger()
 
 	# Append pdfs one by one.
@@ -73,7 +152,7 @@ def merge_pdf_example():
 			print('File not found, {}: {}.'.format(fpath, ex))
 
 	try:
-		# Write combined pdf to output pdf file.
+		# Write combined PDF to output PDF file.
 		with open(dst_filepath, 'wb') as fd:
 			pdfMerger.write(fd)
 	except FileNotFoundError as ex:
@@ -86,25 +165,25 @@ def split_pdf_example():
 	splits = [2, 4]
 	try:
 		with open(filepath, 'rb') as pdfFileObj:
-			# Create pdf reader object.
+			# Create PDF reader object.
 			pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
 
 			# Start index of first and last slices.
 			start, end = 0, splits[0]
 
 			for i in range(len(splits) + 1):
-				# Create pdf writer object for (i+1)th split.
+				# Create PDF writer object for (i+1)th split.
 				pdfWriter = PyPDF2.PdfFileWriter()
 
-				# Output pdf file name.
+				# Output PDF file name.
 				output_filepath = filepath.split('.pdf')[0] + str(i) + '.pdf'
 
-				# Add pages to pdf writer object.
+				# Add pages to PDF writer object.
 				for page in range(start, end):
 					pdfWriter.addPage(pdfReader.getPage(page))
 
 				try:
-					# Write split pdf pages to pdf file.
+					# Write split PDF pages to PDF file.
 					with open(output_filepath, 'wb') as fd:
 						pdfWriter.write(fd)
 				except FileNotFoundError as ex:
@@ -124,10 +203,10 @@ def split_pdf_example():
 def add_watermark(watermark_filepath, pageObj):
 	try:
 		with open(watermark_filepath, 'rb') as wmFileObj:
-			# Create pdf reader object of watermark pdf file.
+			# Create PDF reader object of watermark PDF file.
 			pdfReader = PyPDF2.PdfFileReader(wmFileObj)
 
-			# Merge watermark pdf's first page with passed page object.
+			# Merge watermark PDF's first page with passed page object.
 			pageObj.mergePage(pdfReader.getPage(0))
 
 			# Return watermarked page object.
@@ -144,10 +223,10 @@ def add_watermark_example():
 
 	try:
 		with open(src_filepath, 'rb') as srcPdfFileObj:
-			# Create a pdf Reader object.
+			# Create a PDF Reader object.
 			pdfReader = PyPDF2.PdfFileReader(srcPdfFileObj)
 
-			# Create a pdf writer object for new pdf.
+			# Create a PDF writer object for new PDF.
 			pdfWriter = PyPDF2.PdfFileWriter()
 
 			# Add watermark to each page.
@@ -155,7 +234,7 @@ def add_watermark_example():
 				# Create watermarked page object.
 				wmpageObj = add_watermark(watermark_filepath, pdfReader.getPage(page))
 
-				# Add watermarked page object to pdf writer.
+				# Add watermarked page object to PDF writer.
 				pdfWriter.addPage(wmpageObj)
 
 			try:
@@ -168,11 +247,13 @@ def add_watermark_example():
 		print('File not found, {}: {}.'.format(src_filepath, ex))
 
 def main():
+	basic_operation()
+
 	#extract_text_example()
 	#rotate_page_example()
 	#merge_pdf_example()  # Not correctly working.
 	#split_pdf_example()
-	add_watermark_example()
+	#add_watermark_example()
 
 	# Write texts and images to PDF.
 	#	REF [file] >> reportlab_test.py

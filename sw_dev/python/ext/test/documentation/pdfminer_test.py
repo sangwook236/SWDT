@@ -45,6 +45,12 @@ def basic_usage():
 			if not document.is_extractable:
 				raise PDFTextExtractionNotAllowed
 
+			# Metadata.
+			print('Metadata: {}.'.format(document.info))
+			for info in document.info:
+				if 'CreationDate' in info:
+					print('\tCreation date = {}.'.format(info['CreationDate']))
+
 			# Page count.
 			try:
 				pages = resolve1(document.catalog['Pages'])
