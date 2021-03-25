@@ -517,8 +517,11 @@ def page_object_example():
 
 	#--------------------
 	# For heading.
-	if False:
-		heading_formats = [
+	if True:
+		#re_pattern = re.compile(r'(\(?([A-Za-z]\d*\.)?(\d+\.)*\d+\)|([A-Za-z]\d*\.)?(\d+\.)*\d+\.?|\(?[A-Za-z]\d*\)|[A-Za-z]\d*\.)\s+.+')
+		re_pattern = re.compile(r'(\(?([A-Za-z]\d*\.)?(\d+\.)*\d+\)|[A-Za-z]\d*\.(\d+\.)*\d+\.?|(\d+\.)+\d+\.?|\d+\.|\(?[A-Za-z]\d*\)|[A-Za-z]\d*\.)\s+.+')
+
+		numbered_heading_formats = [
 			'{} Introduction',
 			'{} Introduction.',
 			'{} Experimental results',
@@ -528,18 +531,15 @@ def page_object_example():
 			'{} Introduction. Experimental results.',
 		]
 
-		#re_pattern = re.compile(r'(\(?([A-Za-z]\d*\.)?(\d+\.)*\d+\)|([A-Za-z]\d*\.)?(\d+\.)*\d+\.?|\(?[A-Za-z]\d*\)|[A-Za-z]\d*\.)\s+.+')
-		re_pattern = re.compile(r'(\(?([A-Za-z]\d*\.)?(\d+\.)*\d+\)|[A-Za-z]\d*\.(\d+\.)*\d+\.?|(\d+\.)+\d+\.?|\d+\.|\(?[A-Za-z]\d*\)|[A-Za-z]\d*\.)\s+.+')
-
-		for head_fmt in heading_formats:
+		for head_fmt in numbered_heading_formats:
 			for numbering in numberings_correct:
 				ss = head_fmt.format(numbering)
 
 				match = re_pattern.match(ss)
 				if match is None:
-					print('Heading correct (unmatched): {}.'.format(ss))
+					print('Numbered heading correct (unmatched): {}.'.format(ss))
 				elif ss != match[0]:
-					print('Heading correct (partially matched): {} != {}.'.format(match[0], ss))
+					print('Numbered heading correct (partially matched): {} != {}.'.format(match[0], ss))
 
 			for numbering in numberings_incorrect:
 				ss = head_fmt.format(numbering)
@@ -548,44 +548,114 @@ def page_object_example():
 				match = re_pattern.fullmatch(ss)
 				if match is not None:
 					if ss == match[0]:
-						print('Heading incorrect (matched): {}.'.format(ss))
+						print('Numbered heading incorrect (matched): {}.'.format(ss))
 					else:
-						print('Heading incorrect (partially matched): {} != {}.'.format(match[0], ss))
+						print('Numbered heading incorrect (partially matched): {} != {}.'.format(match[0], ss))
 
 		#--------------------
+		# For strict heading.
+		strict_heading_pattern = re.compile(r'(\(?([A-Za-z]\d*\.)?(\d+\.)*\d+\)|[A-Za-z]\d*\.(\d+\.)*|(\d+\.)+|\(?[A-Za-z]\d*\)|[A-Za-z]\d*\.)\s+.+')
 
-		simple_headings_correct = [
-			'Table 0', 'TABLE 0.',
-			'figure 13', 'FIGURE 13.',
-			'APPendix 297', 'AppEndiX 297.',
+		if False:
+			for head_fmt in numbered_heading_formats:
+				for numbering in numberings_correct:
+					ss = head_fmt.format(numbering)
+
+					match = strict_heading_pattern.match(ss)
+					if match is None:
+						print('Numbered heading correct (unmatched): {}.'.format(ss))
+					elif ss != match[0]:
+						print('Numbered heading correct (partially matched): {} != {}.'.format(match[0], ss))
+
+				for numbering in numberings_incorrect:
+					ss = head_fmt.format(numbering)
+
+					#match = strict_heading_pattern.match(ss)
+					match = strict_heading_pattern.fullmatch(ss)
+					if match is not None:
+						if ss == match[0]:
+							print('Numbered heading incorrect (matched): {}.'.format(ss))
+						else:
+							print('Numbered heading incorrect (partially matched): {} != {}.'.format(match[0], ss))
+
+		headings_correct = [
 		]
-		simple_headings_incorrect = [
-			'Tablea 0', 'TABLE 0)',
-			'figure (13', 'PIGURE 13.',
-			'APPendix 297]', '0AppEndiX 297.',
+		headings_incorrect = [
+			'5.8 (3.5 - 8.2)', '7.8 (5.2–14) respectively.', '0.7 mm', '3.4 >10 min',
+			'97.6 ± 1.38', '2.2 to 20.3', '8.61 ± 0.31 ng/ml, of obstructive hydrocephalus was',
+			'E. C. Cashman1 and M. J. Donnelly2', 'M. E. Huth,1, 2 A. J. Ricci,1, 3 and A. G. Cheng1', 'E. C. Cashman,1 Terence Farrell,2 and M. Shandilya1', 'J. Law*, P. Shaw , K. Earland , M. Sheldon and M. Lee',
+			'A. Maria et al.',
 		]
 
+		# REF [function] >> misc_expressions()
+		paper_author_list_pattern = re.compile(r'(([Aa][Nn][Dd]\s+)?(\w+\s+)*([A-Z]\.\s*)*((?![Aa][Nn][Dd]\s+)[-\w]+\s*)+(,(\s*\*)?\s*|\*(\s*,)?\s*|,\s*(\d+|\*)\s*|(\d+|\*)(\s*,)?\s*)*)+')
+
+		for ss in headings_correct:
+			match = strict_heading_pattern.match(ss)
+			if match is None:
+				print('Heading correct (unmatched): {}.'.format(ss))
+			elif ss != match[0]:
+				print('Heading correct (partially matched): {} != {}.'.format(match[0], ss))
+			else:
+				match_author = paper_author_list_pattern.fullmatch(ss)
+				#if match_author is not None and ss == match_author[0]:
+				if match_author is not None:
+					print('Heading correct (paper author list): {}.'.format(ss))
+
+		for ss in headings_incorrect:
+			#match = strict_heading_pattern.match(ss)
+			match = strict_heading_pattern.fullmatch(ss)
+			if match is not None:
+				match_author = paper_author_list_pattern.fullmatch(ss)
+				#if match_author is None or ss != match_author[0]:
+				if match_author is None:
+					if ss == match[0]:
+						print('Heading incorrect (matched): {}.'.format(ss))
+					elif ss != match[0]:
+						print('Heading incorrect (partially matched): {} != {}.'.format(match[0], ss))
+	
+		#--------------------
+		# For special heading.
 		re_pattern = re.compile(r'([Tt][Aa][Bb][Ll][Ee]|[Ff][Ii][Gg][Uu][Rr][Ee]|[Aa][Pp]{2}[Ee][Nn][Dd][Ii][Xx])\s+\d+\.?')
 
-		for ss in simple_headings_correct:
+		special_headings_correct = [
+			'Table 0', 'TABLE 1.',
+			'figure 13', 'FIGURE 37.',
+			'APPendix 297', 'AppEndiX 987.',
+		]
+		special_headings_incorrect = [
+			'Tablea 0', 'TABLE 1)',
+			'figure (13', 'PIGURE 37.',
+			'APPendix 297]', '0AppEndiX 987.',
+		]
+
+		for ss in special_headings_correct:
 			match = re_pattern.match(ss)
 			if match is None:
-				print('Simlple heading correct (unmatched): {}.'.format(ss))
+				print('Special heading correct (unmatched): {}.'.format(ss))
 			elif ss != match[0]:
-				print('Simlple heading correct (partially matched): {} != {}.'.format(match[0], ss))
+				print('Special heading correct (partially matched): {} != {}.'.format(match[0], ss))
 
-		for ss in simple_headings_incorrect:
+		for ss in special_headings_incorrect:
 			#match = re_pattern.match(ss)
 			match = re_pattern.fullmatch(ss)
 			if match is not None:
 				if ss == match[0]:
-					print('Simlple heading incorrect (matched): {}.'.format(ss))
+					print('Special heading incorrect (matched): {}.'.format(ss))
 				elif ss != match[0]:
-					print('Simlple heading incorrect (partially matched): {} != {}.'.format(match[0], ss))
+					print('Special heading incorrect (partially matched): {} != {}.'.format(match[0], ss))
 
 	#--------------------
 	# For list.
-	if True:
+	if False:
+		#re_pattern = re.compile(r'(\(?\d+\)|\d+\.|\(?[a-zA-Z]\)|[a-zA-Z]\.)')  # Not correct.
+		#re_pattern = re.compile(r'\(?\b\d+\b\)|\b\d+\b\.|\(?\b[a-zA-Z]\b\)|\b[a-zA-Z]\b\.')  # Digit and alphabet.
+		#re_pattern = re.compile(r'(\(?\b\d+\b\)|\b\d+\b\.|\(?\b[a-zA-Z]\b\)|\b[a-zA-Z]\b\.)')  # Digit and alphabet.
+		#re_pattern = re.compile(r'\(?\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\)|\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\.|\(?\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\)|\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\.')  # Roman numerals (1 ~ 13).
+		#re_pattern = re.compile(r'(\(?\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\)|\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\.|\(?\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\)|\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\.)')  # Roman numerals (1 ~ 13).
+		#re_pattern = re.compile(r'\(?\b\d+\b\)|\b\d+\b\.|\(?\b[a-zA-Z]\b\)|\b[a-zA-Z]\b\.|\(?\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\)|\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\.|\(?\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\)|\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\.|•')
+		re_pattern = re.compile(r'(\(?\b\d+\b\)|\b\d+\b\.|\(?\b[a-zA-Z]\b\)|\b[a-zA-Z]\b\.|\(?\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\)|\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\.|\(?\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\)|\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\.|•)')
+
 		list_paragraph_formats = [
 			'{1} studies not conducted in SSA{0} {2} studies that were reviews, case reports, or case series{0} {3} studies that did not relate epidemiologic data{0} {4} studies that did not discuss dementia or its subtypes in individuals aged 60 years and above.',
 			#'{1} studies not conducted in SSA{0} {2} studies that were reviews, case reports, or case series{0} {3} studies that did not relate epidemiologic data{0} {4} studies that did not discuss dementia or its subtypes in individuals aged 60 years and above. VII.',
@@ -607,14 +677,6 @@ def page_object_example():
 			#['XIi', 'iXII', '0XII', 'XI0'],
 		]
 		list_bullets = ['•', '‣']
-
-		#re_pattern = re.compile(r'(\(?\d+\)|\d+\.|\(?[a-zA-Z]\)|[a-zA-Z]\.)')  # Not correct.
-		#re_pattern = re.compile(r'\(?\b\d+\b\)|\b\d+\b\.|\(?\b[a-zA-Z]\b\)|\b[a-zA-Z]\b\.')  # Digit and alphabet.
-		#re_pattern = re.compile(r'(\(?\b\d+\b\)|\b\d+\b\.|\(?\b[a-zA-Z]\b\)|\b[a-zA-Z]\b\.)')  # Digit and alphabet.
-		#re_pattern = re.compile(r'\(?\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\)|\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\.|\(?\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\)|\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\.')  # Roman numerals (1 ~ 13).
-		#re_pattern = re.compile(r'(\(?\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\)|\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\.|\(?\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\)|\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\.)')  # Roman numerals (1 ~ 13).
-		#re_pattern = re.compile(r'\(?\b\d+\b\)|\b\d+\b\.|\(?\b[a-zA-Z]\b\)|\b[a-zA-Z]\b\.|\(?\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\)|\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\.|\(?\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\)|\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\.|•')
-		re_pattern = re.compile(r'(\(?\b\d+\b\)|\b\d+\b\.|\(?\b[a-zA-Z]\b\)|\b[a-zA-Z]\b\.|\(?\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\)|\b(?:i{1,3}|i[vx]|[vx]i{0,3})\b\.|\(?\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\)|\b(?:I{1,3}|I[VX]|[VX]I{0,3})\b\.|•)')
 
 		for para_fmt in list_paragraph_formats:
 			for lst_sep in list_separators:
@@ -646,9 +708,9 @@ def main():
 
 	#--------------------
 	#commonly_used_expressions()
-	misc_expressions()
+	#misc_expressions()
 
-	#page_object_example()
+	page_object_example()  # Numbering, heading, list.
 
 #--------------------------------------------------------------------
 
