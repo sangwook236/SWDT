@@ -70,6 +70,117 @@ def basic_usage():
 	finally:
 		fp.close()
 
+def resource_example():
+	from pdfminer.pdffont import CFFFont, TrueTypeFont
+	from pdfminer.pdffont import PDFFont, PDFSimpleFont, PDFType1Font, PDFTrueTypeFont, PDFType3Font, PDFCIDFont
+	from pdfminer.psparser import literal_name
+	from pdfminer.pdftypes import PDFObjRef
+	from pdfminer.pdftypes import list_value, dict_value, stream_value
+	from pdfminer.pdfcolor import PDFColorSpace
+	from pdfminer.pdfcolor import PREDEFINED_COLORSPACE
+
+	font_filepath = '/path/to/font.ttf'
+	with open(font_filepath, 'rb') as fp:
+		#font = CFFFont(font_filepath, fp)
+		font = TrueTypeFont(font_filepath, fp)
+		print('Font type = {}.'.format(font.fonttype))
+		print('Font fp = {}.'.format(font.fp))
+		print('Font name = {}.'.format(font.name))
+		print('Font tables = {}.'.format(font.tables))
+
+	#--------------------
+	pdf_filepath = '/path/to/sample.pdf'
+
+	try:
+		# Open a PDF file.
+		fp = open(pdf_filepath, 'rb')
+
+		# Create a PDF resource manager object that stores shared resources.
+		rsrcmgr = PDFResourceManager()
+
+		pages = PDFPage.get_pages(fp, pagenos=None, maxpages=0, password=b'')  # pagenos uses zero-based indices. pagenos is sorted inside the function.
+		page = next(pages)
+		if page:
+			resources, contents = page.resources, page.contents
+			if not resources:
+				print('No resources.')
+				return
+
+			if contents:
+				print('Contents: {}.'.format(contents))
+				#for ct in contents:
+				#	print(ct.resolve())
+
+			# REF [function] >> pdfminer.pdfinterp.PDFPageInterpreter.init_resources()
+			def get_colorspace(spec):
+				if isinstance(spec, list):
+					name = literal_name(spec[0])
+				else:
+					name = literal_name(spec)
+				if name == 'ICCBased' and isinstance(spec, list) and 2 <= len(spec):
+					return PDFColorSpace(name, stream_value(spec[1])['N'])
+				elif name == 'DeviceN' and isinstance(spec, list) and 2 <= len(spec):
+					return PDFColorSpace(name, len(list_value(spec[1])))
+				else:
+					return PREDEFINED_COLORSPACE[name]
+
+			fontmap, xobjmap = dict(), dict()
+			csmap = PREDEFINED_COLORSPACE.copy()
+			for (k, v) in dict_value(resources).items():
+				#if 2 <= self.debug:
+				#	print >>stderr, 'Resource: %r: %r' % (k,v)
+				if k == 'Font':
+					for (fontid, spec) in dict_value(v).items():
+						objid = None
+						if isinstance(spec, PDFObjRef):
+							objid = spec.objid
+						spec = dict_value(spec)
+						fontmap[fontid] = rsrcmgr.get_font(objid, spec)
+				elif k == 'ColorSpace':
+					for (csid,spec) in dict_value(v).items():
+						csmap[csid] = get_colorspace(resolve1(spec))
+				elif k == 'ProcSet':
+					rsrcmgr.get_procset(list_value(v))
+				elif k == 'XObject':
+					for (xobjid, xobjstrm) in dict_value(v).items():
+						xobjmap[xobjid] = xobjstrm
+
+			#spec = ...
+			#if 'FontDescriptor' in spec:
+			#	print('FontDescriptor: {}.'.format(spec['FontDescriptor'].resolve()))
+
+			font = PDFType1Font(rsrcmgr, spec)
+			font = PDFTrueTypeFont(rsrcmgr, spec)
+			#font = PDFType3Font(rsrcmgr, spec)
+			font = PDFCIDFont(rsrcmgr, spec)
+
+			for fontid, font in fontmap.items():
+				print('------------------------------------------------------------')
+				print('Font name: {}.'.format(font.fontname))
+				print('\tBase font: {}.'.format(font.basefont))
+				print('\tDescriptor: {}.'.format(font.descriptor))
+				print('\tFlags = {}.'.format(font.flags))
+				print('\tDefault width = {}, Widths = {}.'.format(font.default_width, font.widths))
+				print('\tAscent: {}, {}.'.format(font.ascent, font.get_ascent()))
+				print('\tDescent: {}, {}.'.format(font.descent, font.get_descent()))
+				print('\tScale: {}, {}.'.format(font.hscale, font.vscale))
+				print('\tLeading = {}, Italic angle = {}.'.format(font.leading, font.italic_angle))
+				print('\tBbox = {}.'.format(font.bbox))
+				print('\t(Width, Height) = ({}, {}).'.format(font.get_width(), font.get_height()))
+				print('\tis_multibyte = {}, is_vertical = {}.'.format(font.is_multibyte(), font.is_vertical()))
+				print('\tcid2unicode = {}, unicode_map = {}.'.format(font.cid2unicode, font.unicode_map))
+				#print('\tchar_disp({}) = {}.'.format(cid, font.char_disp(cid)))
+				#print('\tto_unichr({}) = {}.'.format(cid, font.to_unichr(cid)))
+				#print('\tchar_width({}) = {}, string_width({}) = {}.'.format(cid, font.char_width(cid), s, font.string_width(s)))
+			for csid, cs in csmap.items():
+				print('CS ID: {}.'.format(csid))
+				print('\t{}.'.format(cs))
+			for xobjid, xobj in xobjmap.items():
+				print('XObj ID: {}.'.format(xobjid))
+				print('\t{}.'.format(xobj))
+	finally:
+		fp.close()
+
 def text_extraction_example():
 	import io
 
@@ -81,8 +192,16 @@ def text_extraction_example():
 
 		# Create resource manager.
 		rsrcmgr = PDFResourceManager()
-		# Set parameters for analysis.
-		laparams = LAParams()
+		# Set parameters for layout analysis.
+		laparams = LAParams(
+			line_overlap=0.5,  # If two characters have more overlap than this they are considered to be on the same line.
+			char_margin=2.0,  # If two characters are closer together than this margin they are considered part of the same line.
+			word_margin=0.1,  # If two characters on the same line are further apart than this margin then they are considered to be two separate words, and an intermediate space will be added for readability.
+			line_margin=0.5,  # If two lines are close together they are considered to be part of the same paragraph.
+			boxes_flow=0.5,  # Specifies how much a horizontal and vertical position of a text matters when determining the order of text boxes.
+			detect_vertical=False,  # If vertical text should be considered during layout analysis.
+			all_texts=False  # If layout analysis should be performed on text in figures.
+		)
 		retstr = io.StringIO()
 		device = TextConverter(rsrcmgr, retstr, pageno=1, laparams=laparams, showpageno=False, imagewriter=None)
 		interpreter = PDFPageInterpreter(rsrcmgr, device)
@@ -152,8 +271,16 @@ def layout_analysis_example():
 
 		# Create resource manager.
 		rsrcmgr = PDFResourceManager()
-		# Set parameters for analysis.
-		laparams = LAParams()
+		# Set parameters for layout analysis.
+		laparams = LAParams(
+			line_overlap=0.5,  # If two characters have more overlap than this they are considered to be on the same line.
+			char_margin=2.0,  # If two characters are closer together than this margin they are considered part of the same line.
+			word_margin=0.1,  # If two characters on the same line are further apart than this margin then they are considered to be two separate words, and an intermediate space will be added for readability.
+			line_margin=0.5,  # If two lines are close together they are considered to be part of the same paragraph.
+			boxes_flow=0.5,  # Specifies how much a horizontal and vertical position of a text matters when determining the order of text boxes.
+			detect_vertical=False,  # If vertical text should be considered during layout analysis.
+			all_texts=False  # If layout analysis should be performed on text in figures.
+		)
 		# Create a PDF page aggregator object.
 		device = PDFPageAggregator(rsrcmgr, laparams=laparams)
 		interpreter = PDFPageInterpreter(rsrcmgr, device)
@@ -198,6 +325,7 @@ def table_of_contents_example():
 
 def main():
 	basic_usage()
+	#resource_example()
 
 	#text_extraction_example()
 	#layout_analysis_example()
