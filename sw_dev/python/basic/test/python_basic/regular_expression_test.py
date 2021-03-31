@@ -581,6 +581,7 @@ def page_object_example():
 		headings_correct = [
 		]
 		headings_incorrect = [
+			'18', '128.', '235)', '(921)'
 			'5.8 (3.5 - 8.2)', '7.8 (5.2–14) respectively.', '0.7 mm', '3.4 >10 min',
 			'97.6 ± 1.38', '2.2 to 20.3', '8.61 ± 0.31 ng/ml, of obstructive hydrocephalus was',
 			'E. C. Cashman1 and M. J. Donnelly2', 'M. E. Huth,1, 2 A. J. Ricci,1, 3 and A. G. Cheng1', 'E. C. Cashman,1 Terence Farrell,2 and M. Shandilya1', 'J. Law*, P. Shaw , K. Earland , M. Sheldon and M. Lee',
@@ -610,7 +611,9 @@ def page_object_example():
 				#if match_author is None or ss != match_author[0]:
 				if match_author is None:
 					if ss == match[0]:
-						print('Heading incorrect (matched): {}.'.format(ss))
+						# NOTE [info] >> It's a trick.
+						if ss.find('et al.') < 0:
+							print('Heading incorrect (matched): {}.'.format(ss))
 					elif ss != match[0]:
 						print('Heading incorrect (partially matched): {} != {}.'.format(match[0], ss))
 	
