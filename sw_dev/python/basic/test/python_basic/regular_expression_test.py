@@ -135,7 +135,7 @@ def basic_operation():
 	#--------------------
 	re.escape('http://www.python.org')  # Result: "http://www\\.python\\.org".
 
-	re.purge()
+	re.purge()  # Clear the regular expression cache.
 
 	#--------------------
 	try:
@@ -586,6 +586,8 @@ def page_object_example():
 			'97.6 ± 1.38', '2.2 to 20.3', '8.61 ± 0.31 ng/ml, of obstructive hydrocephalus was',
 			'E. C. Cashman1 and M. J. Donnelly2', 'M. E. Huth,1, 2 A. J. Ricci,1, 3 and A. G. Cheng1', 'E. C. Cashman,1 Terence Farrell,2 and M. Shandilya1', 'J. Law*, P. Shaw , K. Earland , M. Sheldon and M. Lee',
 			'A. Maria et al.',
+			'P. putida was inoculated with B',
+			'P. putida was inoculated with B.',  # NOTE [info] >> re.fullmatch() is stuck. This is a bug in re library.
 		]
 
 		# REF [function] >> misc_expressions()
@@ -607,12 +609,13 @@ def page_object_example():
 			#match = strict_heading_pattern.match(ss)
 			match = strict_heading_pattern.fullmatch(ss)
 			if match is not None:
-				match_author = paper_author_list_pattern.fullmatch(ss)
-				#if match_author is None or ss != match_author[0]:
-				if match_author is None:
+				#match_author = paper_author_list_pattern.fullmatch(ss)
+				#if match_author is None:
+				match_author = paper_author_list_pattern.match(ss)
+				if match_author is None or ss != match_author[0]:
 					if ss == match[0]:
 						# NOTE [info] >> It's a trick.
-						if ss.find('et al.') < 0:
+						if ss.lower().find('et al.') < 0:
 							print('Heading incorrect (matched): {}.'.format(ss))
 					elif ss != match[0]:
 						print('Heading incorrect (partially matched): {} != {}.'.format(match[0], ss))
