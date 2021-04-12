@@ -103,7 +103,7 @@ def resource_example():
 		if page:
 			resources, contents = page.resources, page.contents
 			if not resources:
-				print('No resources.')
+				print('No resource.')
 				return
 
 			if contents:
@@ -130,20 +130,20 @@ def resource_example():
 				#if 2 <= self.debug:
 				#	print >>stderr, 'Resource: %r: %r' % (k,v)
 				if k == 'Font':
-					for (fontid, spec) in dict_value(v).items():
-						objid = None
+					for (font_id, spec) in dict_value(v).items():
+						obj_id = None
 						if isinstance(spec, PDFObjRef):
-							objid = spec.objid
+							obj_id = spec.objid
 						spec = dict_value(spec)
-						fontmap[fontid] = rsrcmgr.get_font(objid, spec)
+						fontmap[font_id] = rsrcmgr.get_font(obj_id, spec)
 				elif k == 'ColorSpace':
-					for (csid,spec) in dict_value(v).items():
-						csmap[csid] = get_colorspace(resolve1(spec))
+					for (cs_id, spec) in dict_value(v).items():
+						csmap[cs_id] = get_colorspace(resolve1(spec))
 				elif k == 'ProcSet':
 					rsrcmgr.get_procset(list_value(v))
 				elif k == 'XObject':
-					for (xobjid, xobjstrm) in dict_value(v).items():
-						xobjmap[xobjid] = xobjstrm
+					for (xobj_id, xobjstrm) in dict_value(v).items():
+						xobjmap[xobj_id] = xobjstrm
 
 			#spec = ...
 			#if 'FontDescriptor' in spec:
@@ -154,29 +154,40 @@ def resource_example():
 			#font = PDFType3Font(rsrcmgr, spec)
 			font = PDFCIDFont(rsrcmgr, spec)
 
-			for fontid, font in fontmap.items():
+			for font_id, font in fontmap.items():
 				print('------------------------------------------------------------')
-				print('Font name: {}.'.format(font.fontname))
-				print('\tBase font: {}.'.format(font.basefont))
-				print('\tDescriptor: {}.'.format(font.descriptor))
-				print('\tFlags = {}.'.format(font.flags))
-				print('\tDefault width = {}, Widths = {}.'.format(font.default_width, font.widths))
+				print('Descriptor: {}.'.format(font.descriptor))
+				print('\tFont name: {}, Font type: {}.'.format(font.fontname, type(font).__name__))
+				if hasattr(font, 'basefont'):
+					print('\tBase font: {}.'.format(font.basefont))
+				if hasattr(font, 'flags'):
+					print('\tFlags = {}.'.format(font.flags))
+				if hasattr(font, 'default_width') and hasattr(font, 'widths'):
+					print('\tDefault width = {}, Widths = {}.'.format(font.default_width, font.widths))
 				print('\tAscent: {}, {}.'.format(font.ascent, font.get_ascent()))
 				print('\tDescent: {}, {}.'.format(font.descent, font.get_descent()))
-				print('\tScale: {}, {}.'.format(font.hscale, font.vscale))
-				print('\tLeading = {}, Italic angle = {}.'.format(font.leading, font.italic_angle))
+				if hasattr(font, 'hscale') and hasattr(font, 'vscale'):
+					print('\tScale: {}, {}.'.format(font.hscale, font.vscale))
+				if hasattr(font, 'leading') and hasattr(font, 'italic_angle'):
+					print('\tLeading = {}, Italic angle = {}.'.format(font.leading, font.italic_angle))
 				print('\tBbox = {}.'.format(font.bbox))
-				print('\t(Width, Height) = ({}, {}).'.format(font.get_width(), font.get_height()))
-				print('\tis_multibyte = {}, is_vertical = {}.'.format(font.is_multibyte(), font.is_vertical()))
-				print('\tcid2unicode = {}, unicode_map = {}.'.format(font.cid2unicode, font.unicode_map))
-				#print('\tchar_disp({}) = {}.'.format(cid, font.char_disp(cid)))
-				#print('\tto_unichr({}) = {}.'.format(cid, font.to_unichr(cid)))
-				#print('\tchar_width({}) = {}, string_width({}) = {}.'.format(cid, font.char_width(cid), s, font.string_width(s)))
-			for csid, cs in csmap.items():
-				print('CS ID: {}.'.format(csid))
+				if hasattr(font, 'get_width') and hasattr(font, 'get_height'):
+					print('\t(width, height) = ({}, {}).'.format(font.get_width(), font.get_height()))
+				if hasattr(font, 'is_multibyte') and hasattr(font, 'is_vertical'):
+					print('\tis_multibyte = {}, is_vertical = {}.'.format(font.is_multibyte(), font.is_vertical()))
+				if hasattr(font, 'cid2unicode') and hasattr(font, 'unicode_map'):
+					print('\tcid2unicode = {}, unicode_map = {}.'.format(font.cid2unicode, font.unicode_map))
+				#if hasattr(font, 'char_disp'):
+				#	print('\tchar_disp({}) = {}.'.format(cid, font.char_disp(cid)))
+				#if hasattr(font, 'to_unichr'):
+				#	print('\tto_unichr({}) = {}.'.format(cid, font.to_unichr(cid)))
+				#if hasattr(font, 'char_width') and hasattr(font, 'string_width'):
+				#	print('\tchar_width({}) = {}, string_width({}) = {}.'.format(cid, font.char_width(cid), s, font.string_width(s)))
+			for cs_id, cs in csmap.items():
+				print('CS ID: {}.'.format(cs_id))
 				print('\t{}.'.format(cs))
-			for xobjid, xobj in xobjmap.items():
-				print('XObj ID: {}.'.format(xobjid))
+			for xobj_id, xobj in xobjmap.items():
+				print('XObj ID: {}.'.format(xobj_id))
 				print('\t{}.'.format(xobj))
 	finally:
 		fp.close()

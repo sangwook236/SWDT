@@ -46,7 +46,7 @@ def tutorial():
 		page_no = 0
 		assert page_no < doc.page_count
 
-		print('doc.get_page_fonts(pno={}, full=False) = {}.'.format(page_no, doc.get_page_fonts(pno=page_no, full=False)))
+		print('doc.get_page_fonts(pno={}, full=False) = {}.'.format(page_no, doc.get_page_fonts(pno=page_no, full=False)))  # A list of (xref, ext, type, basefont, name, encoding, referencer (optional)).
 		print('doc.get_page_images(pno={}) = {}.'.format(page_no, doc.get_page_images(pno=page_no)))
 		print('doc.get_page_xobjects(pno={}) = {}.'.format(page_no, doc.get_page_xobjects(pno=page_no)))
 		print('doc.get_page_pixmap(pno={}) = {}.'.format(page_no, doc.get_page_pixmap(pno=page_no)))
