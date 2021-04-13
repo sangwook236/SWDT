@@ -825,7 +825,7 @@ def number_system():
 	print("int('{}', 8) = {}.".format(oct(dec_val), int(oct(dec_val), 8)))
 	print("int('{}', 16) = {}.".format(hex(dec_val), int(hex(dec_val), 16)))
 
-def IEEE_754_format()
+def IEEE_754_format():
 	# IEEE 754 (binary64) <--> double precision floating-point number.
 	ieee754_hex_strs = [
 		'3FF0000000000000',  # 1.0.
