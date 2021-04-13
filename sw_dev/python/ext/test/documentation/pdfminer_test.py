@@ -14,6 +14,71 @@ from pdfminer.layout import LAParams
 from pdfminer.converter import PDFPageAggregator, TextConverter, XMLConverter, HTMLConverter
 from pdfminer.pdftypes import resolve1, resolve_all, PDFException
 
+def traverse_layout_object(elements):
+	from collections.abc import Iterable
+	from pdfminer.layout import LTChar, LTAnno, LTText, LTTextLine, LTTextLineHorizontal, LTTextLineVertical, LTTextBox, LTTextBoxHorizontal, LTTextBoxVertical, LTTextGroup
+	from pdfminer.layout import LTImage, LTLine, LTCurve, LTFigure, LTRect, LTPage
+
+	# REF [site] >> https://pdfminer-docs.readthedocs.io/programming.html
+	for elem in elements:
+		# Preorder.
+		#if isinstance(elem, Iterable):
+		#	traverse_layout_object(elem)
+
+		if isinstance(elem, LTChar):
+			print('LTChar: bbox = {}, char = {}.'.format(elem.bbox, elem.get_text().replace('\n', '')))
+		elif isinstance(elem, LTAnno):  # No bbox.
+			print('LTAnno: letter = {}.'.format(elem.get_text().replace('\n', '')))
+		elif isinstance(elem, LTText):
+			print('LTText: bbox = {}, text = {}.'.format(elem.bbox, elem.get_text().replace('\n', '')))
+		elif isinstance(elem, LTTextLine) or isinstance(elem, LTTextLineHorizontal) or isinstance(elem, LTTextLineVertical):
+			print('LTTextLine: bbox = {}, text = {}.'.format(elem.bbox, elem.get_text().replace('\n', '')))
+			#traverse_layout_object(elem)
+		elif isinstance(elem, LTTextBox) or isinstance(elem, LTTextBoxHorizontal) or isinstance(elem, LTTextBoxVertical):
+			print('LTTextBox: bbox = {}, text = {}.'.format(elem.bbox, elem.get_text().replace('\n', '')))
+			#print('LTTextBox: coordinates = {}, size = {}.'.format((elem.x0, elem.y0, elem.x1, elem.y1), (elem.width, elem.height)))
+			#traverse_layout_object(elem)
+		elif isinstance(elem, LTTextGroup):
+			print('LTTextGroup: bbox = {}.'.format(elem.bbox))
+			#traverse_layout_object(elem)
+
+		elif isinstance(elem, LTImage):
+			#print('LTImage: bbox = {}, name = {}, mask = {}.'.format(elem.bbox, elem.name, elem.imagemask))
+			print('LTImage: bbox = {}, name = {}.'.format(elem.bbox, elem.name))
+		elif isinstance(elem, LTLine):
+			print('LTLine: bbox = {}, points = {}.'.format(elem.bbox, elem.pts))
+		elif isinstance(elem, LTCurve):
+			print('LTCurve: bbox = {}, points = {}.'.format(elem.bbox, elem.pts))
+		elif isinstance(elem, LTRect):
+			print('LTRect: bbox = {}.'.format(elem.bbox))
+		elif isinstance(elem, LTFigure):  # For PDF Form objects.
+			print('LTFigure: bbox = {}, name = {}.'.format(elem.bbox, elem.name))
+			#traverse_layout_object(elem)
+
+		# Postorder.
+		if isinstance(elem, Iterable):
+			traverse_layout_object(elem)
+
+# REF [site] >> traverse_layout_object().
+def extract_text_object(elements, pdf_filepath, page_idx):
+	from collections.abc import Iterable
+	from pdfminer.layout import LTTextLine, LTTextLineHorizontal, LTTextLineVertical
+	from pdfminer.layout import LTTextBox, LTTextBoxHorizontal, LTTextBoxVertical
+
+	bbox_text_pairs = list()
+	for elem in elements:
+		#if isinstance(elem, LTTextLine) or isinstance(elem, LTTextLineHorizontal) or isinstance(elem, LTTextLineVertical):
+		if isinstance(elem, LTTextBox) or isinstance(elem, LTTextBoxHorizontal) or isinstance(elem, LTTextBoxVertical):
+			if elem.bbox[0] >= elem.bbox[2] or elem.bbox[1] >= elem.bbox[3]:
+				print('[SWL] Warning: Invalid bounding box, {} at page {} in {}.'.format(elem.bbox, page_idx, pdf_filepath))
+				continue
+			#bbox_text_pairs.append((elem.bbox, elem.get_text().replace('\n', '')))
+			bbox_text_pairs.append((elem.bbox, elem.get_text().rstrip()))
+
+		if isinstance(elem, Iterable):
+			bbox_text_pairs.extend(extract_text_object(elem, pdf_filepath, page_idx))
+	return bbox_text_pairs
+
 # REF [site] >> https://pdfminer-docs.readthedocs.io/programming.html
 def basic_usage():
 	pdf_filepath = '/path/to/sample.pdf'
@@ -213,64 +278,37 @@ def text_extraction_example():
 			detect_vertical=False,  # If vertical text should be considered during layout analysis.
 			all_texts=False  # If layout analysis should be performed on text in figures.
 		)
-		retstr = io.StringIO()
-		device = TextConverter(rsrcmgr, retstr, pageno=1, laparams=laparams, showpageno=False, imagewriter=None)
-		interpreter = PDFPageInterpreter(rsrcmgr, device)
 
-		for page in PDFPage.get_pages(fp, pagenos=None, maxpages=0, password=b''):  # pagenos uses zero-based indices. pagenos is sorted inside the function.
+		if True:
+			retstr = io.StringIO()
+			device = TextConverter(rsrcmgr, retstr, pageno=1, laparams=laparams, showpageno=False, imagewriter=None)
+			interpreter = PDFPageInterpreter(rsrcmgr, device)
+
+			for page in PDFPage.get_pages(fp, pagenos=None, maxpages=0, password=b''):  # pagenos uses zero-based indices. pagenos is sorted inside the function.
+				interpreter.process_page(page)
+
+				texts = retstr.getvalue()  # All texts in a page.
+
+				print('------------------------------')
+				print(texts)
+		else:
+			device = PDFPageAggregator(rsrcmgr, laparams=laparams)
+			interpreter = PDFPageInterpreter(rsrcmgr, device)
+
+			page_no = 1
+			pages = PDFPage.get_pages(fp, pagenos=[page_no], maxpages=0, password=b'')  # pagenos uses zero-based indices. pagenos is sorted inside the function.
+			page = next(pages)
+
 			interpreter.process_page(page)
 
-			texts = retstr.getvalue()  # All texts in a page.
+			layout = device.get_result()
+			bbox_text_pairs = extract_text_object(layout, pdf_filepath, page_no)
 
-			print('------------------------------')
-			print(texts)
+			for idx, (bbox, txt) in enumerate(bbox_text_pairs):
+				print('------------------------------ Block {} in page {} in {}.'.format(page_no, pdf_filepath))
+				print(txt)
 	finally:
 		fp.close()
-
-def traverse_layout_object(elements):
-	from collections.abc import Iterable
-	from pdfminer.layout import LTChar, LTAnno, LTText, LTTextLine, LTTextLineHorizontal, LTTextLineVertical, LTTextBox, LTTextBoxHorizontal, LTTextBoxVertical, LTTextGroup
-	from pdfminer.layout import LTImage, LTLine, LTCurve, LTFigure, LTRect, LTPage
-
-	# REF [site] >> https://pdfminer-docs.readthedocs.io/programming.html
-	for elem in elements:
-		# Preorder.
-		#if isinstance(elem, Iterable):
-		#	traverse_layout_object(elem)
-
-		if isinstance(elem, LTChar):
-			print('LTChar: bbox = {}, char = {}.'.format(elem.bbox, elem.get_text().replace('\n', '')))
-		elif isinstance(elem, LTAnno):  # No bbox.
-			print('LTAnno: letter = {}.'.format(elem.get_text().replace('\n', '')))
-		elif isinstance(elem, LTText):
-			print('LTText: bbox = {}, text = {}.'.format(elem.bbox, elem.get_text().replace('\n', '')))
-		elif isinstance(elem, LTTextLine) or isinstance(elem, LTTextLineHorizontal) or isinstance(elem, LTTextLineVertical):
-			print('LTTextLine: bbox = {}, text = {}.'.format(elem.bbox, elem.get_text().replace('\n', '')))
-			#traverse_layout_object(elem)
-		elif isinstance(elem, LTTextBox) or isinstance(elem, LTTextBoxHorizontal) or isinstance(elem, LTTextBoxVertical):
-			print('LTTextBox: bbox = {}, text = {}.'.format(elem.bbox, elem.get_text().replace('\n', '')))
-			#print('LTTextBox: coordinates = {}, size = {}.'.format((elem.x0, elem.y0, elem.x1, elem.y1), (elem.width, elem.height)))
-			#traverse_layout_object(elem)
-		elif isinstance(elem, LTTextGroup):
-			print('LTTextGroup: bbox = {}.'.format(elem.bbox))
-			#traverse_layout_object(elem)
-
-		elif isinstance(elem, LTImage):
-			#print('LTImage: bbox = {}, name = {}, mask = {}.'.format(elem.bbox, elem.name, elem.imagemask))
-			print('LTImage: bbox = {}, name = {}.'.format(elem.bbox, elem.name))
-		elif isinstance(elem, LTLine):
-			print('LTLine: bbox = {}, points = {}.'.format(elem.bbox, elem.pts))
-		elif isinstance(elem, LTCurve):
-			print('LTCurve: bbox = {}, points = {}.'.format(elem.bbox, elem.pts))
-		elif isinstance(elem, LTRect):
-			print('LTRect: bbox = {}.'.format(elem.bbox))
-		elif isinstance(elem, LTFigure):  # For PDF Form objects.
-			print('LTFigure: bbox = {}, name = {}.'.format(elem.bbox, elem.name))
-			#traverse_layout_object(elem)
-
-		# Postorder.
-		if isinstance(elem, Iterable):
-			traverse_layout_object(elem)
 
 # REF [site] >> https://pdfminer-docs.readthedocs.io/programming.html
 def layout_analysis_example():
