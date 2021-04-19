@@ -13,7 +13,7 @@ def image_reading_and_writing():
 		bytes = bytearray(fd.read())
 		img = cv2.imdecode(np.asarray(bytes, dtype=np.uint8), cv2.IMREAD_UNCHANGED)
 	if img is None:
-		print('File not found:', img_filepath)
+		print('File not found, {}.'.format(image_filepath))
 		return
 
 	#cv2.imshow('./saved.png', img)

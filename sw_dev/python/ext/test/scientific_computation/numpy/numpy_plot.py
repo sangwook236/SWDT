@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-# REF [site] >> https://docs.scipy.org/doc/numpy/user/quickstart.html#histograms
-
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -26,18 +24,20 @@ def fractal_example():
 	plt.imshow(mandelbrot(400, 400))
 	plt.show()
 
+# REF [site] >> https://docs.scipy.org/doc/numpy/user/quickstart.html#histograms
 def histogram_example():
 	# Build a vector of 10000 normal deviates with variance 0.5^2 and mean 2.
 	mu, sigma = 2, 0.5
 	v = np.random.normal(mu, sigma, 10000)
 
 	# Plot a normalized histogram with 50 bins.
-	plt.hist(v, bins = 50, normed = 1)  # Matplotlib version (plot).
+	plt.hist(v, bins=50, normed=1)  # Matplotlib version (plot).
 	plt.show()
 
 	# Compute the histogram with numpy and then plot it.
-	(n, bins) = np.histogram(v, bins = 50, normed = True)  # NumPy version (no plot).
-	plt.plot(.5 * (bins[1:] + bins[:-1]), n)
+	hist, bin_edges = np.histogram(v, bins=50, normed=True)  # NumPy version (no plot).
+
+	plt.plot((bin_edges[1:] + bin_edges[:-1]) / 2, hist)
 	plt.show()
 
 def main():

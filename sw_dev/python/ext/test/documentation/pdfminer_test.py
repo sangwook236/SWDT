@@ -83,6 +83,7 @@ def extract_text_object(elements, pdf_filepath, page_idx):
 def basic_usage():
 	pdf_filepath = '/path/to/sample.pdf'
 
+	fp = None
 	try:
 		# Open a PDF file.
 		fp = open(pdf_filepath, 'rb')
@@ -132,8 +133,10 @@ def basic_usage():
 			for page in PDFPage.get_pages(fp, pagenos=None, maxpages=0, password=b''):  # pagenos uses zero-based indices. pagenos is sorted inside the function.
 				interpreter.process_page(page)
 				print('Page ID {} processed.'.format(page.pageid))
+	except FileNotFoundError as ex:
+		print('File not found, {}: {}.'.format(pdf_filepath, ex))
 	finally:
-		fp.close()
+		if fp: fp.close()
 
 def resource_example():
 	from pdfminer.pdffont import CFFFont, TrueTypeFont
@@ -156,6 +159,7 @@ def resource_example():
 	#--------------------
 	pdf_filepath = '/path/to/sample.pdf'
 
+	fp = None
 	try:
 		# Open a PDF file.
 		fp = open(pdf_filepath, 'rb')
@@ -254,14 +258,17 @@ def resource_example():
 			for xobj_id, xobj in xobjmap.items():
 				print('XObj ID: {}.'.format(xobj_id))
 				print('\t{}.'.format(xobj))
+	except FileNotFoundError as ex:
+		print('File not found, {}: {}.'.format(pdf_filepath, ex))
 	finally:
-		fp.close()
+		if fp: fp.close()
 
 def text_extraction_example():
 	import io
 
 	pdf_filepath = '/path/to/sample.pdf'
 
+	fp = None
 	try:
 		# Open a PDF file.
 		fp = open(pdf_filepath, 'rb')
@@ -307,13 +314,16 @@ def text_extraction_example():
 			for idx, (bbox, txt) in enumerate(bbox_text_pairs):
 				print('------------------------------ Block {} in page {} in {}.'.format(page_no, pdf_filepath))
 				print(txt)
+	except FileNotFoundError as ex:
+		print('File not found, {}: {}.'.format(pdf_filepath, ex))
 	finally:
-		fp.close()
+		if fp: fp.close()
 
 # REF [site] >> https://pdfminer-docs.readthedocs.io/programming.html
 def layout_analysis_example():
 	pdf_filepath = '/path/to/sample.pdf'
 
+	fp = None
 	try:
 		# Open a PDF file.
 		fp = open(pdf_filepath, 'rb')
@@ -343,13 +353,16 @@ def layout_analysis_example():
 			print('------------------------------')
 			print('LTPage: bbox = {}, page ID = {}.'.format(layout.bbox, layout.pageid))  # Page ID is not a page number.
 			traverse_layout_object(layout)
+	except FileNotFoundError as ex:
+		print('File not found, {}: {}.'.format(pdf_filepath, ex))
 	finally:
-		fp.close()
+		if fp: fp.close()
 
 # REF [site] >> https://pdfminer-docs.readthedocs.io/programming.html
 def table_of_contents_example():
 	pdf_filepath = '/path/to/sample.pdf'
 
+	fp = None
 	try:
 		# Open a PDF file.
 		fp = open(pdf_filepath, 'rb')
@@ -369,8 +382,10 @@ def table_of_contents_example():
 				print(level, title)
 		except PDFNoOutlines as ex:
 			print('No outline in {}: {}.'.format(pdf_filepath, ex))
+	except FileNotFoundError as ex:
+		print('File not found, {}: {}.'.format(pdf_filepath, ex))
 	finally:
-		fp.close()
+		if fp: fp.close()
 
 def main():
 	basic_usage()

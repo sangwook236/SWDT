@@ -14,7 +14,7 @@ def tutorial():
 		doc = fitz.open(pdf_filepath)
 		#doc = fitz.Document(pdf_filepath)
 	except RuntimeError as ex:
-		print('RuntimeError raised: {}.'.format(ex))
+		print('RuntimeError raised in {}: {}.'.format(pdf_filepath, ex))
 		return
 
 	print('#pages = {}.'.format(doc.page_count))
@@ -172,7 +172,7 @@ def text_extraction_example():
 		doc = fitz.open(pdf_filepath)
 		#doc = fitz.Document(pdf_filepath)
 	except RuntimeError as ex:
-		print('RuntimeError raised: {}.'.format(ex))
+		print('RuntimeError raised in {}: {}.'.format(pdf_filepath, ex))
 		return
 
 	for page in doc:
@@ -309,7 +309,7 @@ def pixmap_example():
 	try:
 		doc = fitz.open(pdf_filepath)
 	except RuntimeError as ex:
-		print('RuntimeError raised: {}.'.format(ex))
+		print('RuntimeError raised in {}: {}.'.format(pdf_filepath, ex))
 		return
 
 	try:
@@ -396,7 +396,7 @@ def transformation_example():
 	try:
 		doc = fitz.open(pdf_filepath)
 	except RuntimeError as ex:
-		print('RuntimeError raised: {}.'.format(ex))
+		print('RuntimeError raised in {}: {}.'.format(pdf_filepath, ex))
 		return
 
 	try:
