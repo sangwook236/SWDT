@@ -522,6 +522,103 @@ def encoder_decoder_example():
 	#generated = model.generate(input_ids, max_length=50, num_beams=5, no_repeat_ngram_size=2, num_return_sequences=5, do_sample=True, top_k=0, temperature=0.7, early_stopping=True, decoder_start_token_id=model.config.decoder.pad_token_id)
 	print('Generated = {}.'.format(tokenizer.decode(generated[0], skip_special_tokens=True)))
 
+# REF [site] >> https://huggingface.co/transformers/main_classes/pipelines.html
+def pipeline_example():
+	from transformers import pipeline, AutoModelForTokenClassification, AutoTokenizer
+
+	# Tasks: 'feature-extraction', 'text-classification', 'sentiment-analysis', 'token-classification', 'ner', 'question-answering', 'fill-mask', 'summarization', 'translation_xx_to_yy', 'text2text-generation', 'text-generation', 'zero-shot-classification', 'conversational', 'table-question-answering'.
+
+	# Sentiment analysis pipeline.
+	sa_pipeline = pipeline('sentiment-analysis')
+
+	# Question answering pipeline, specifying the checkpoint identifier.
+	qa_pipeline = pipeline('question-answering', model='distilbert-base-cased-distilled-squad', tokenizer='bert-base-cased')
+
+	# Named entity recognition pipeline, passing in a specific model and tokenizer.
+	model = AutoModelForTokenClassification.from_pretrained('dbmdz/bert-large-cased-finetuned-conll03-english')
+	tokenizer = AutoTokenizer.from_pretrained('bert-base-cased')
+	ner_pipeline = pipeline('ner', model=model, tokenizer=tokenizer)
+
+	#--------------------
+	if False:
+		"""
+		conversation = Conversation('Going to the movies tonight - any suggestions?')
+
+		# Steps usually performed by the model when generating a response:
+		# 1. Mark the user input as processed (moved to the history)
+		conversation.mark_processed()
+		# 2. Append a mode response
+		conversation.append_response('The Big lebowski.')
+
+		conversation.add_user_input('Is it good?')
+		"""
+
+		conversational_pipeline = pipeline('conversational')
+
+		conversation_1 = Conversation('Going to the movies tonight - any suggestions?')
+		conversation_2 = Conversation("What's the last book you have read?")
+
+		responses = conversational_pipeline([conversation_1, conversation_2])
+		print('Responses:\n{}.'.format(responses))
+
+		conversation_1.add_user_input('Is it an action movie?')
+		conversation_2.add_user_input('What is the genre of this book?')
+
+		responses = conversational_pipeline([conversation_1, conversation_2])
+		print('Responses:\n{}.'.format(responses))
+
+	#--------------------
+	if False:
+		# Use BART in PyTorch.
+		summarizer = pipeline('summarization')
+		summary = summarizer('An apple a day, keeps the doctor away', min_length=5, max_length=20)
+		print('Summary: {}.'.format(summary))
+
+		# Use T5 in TensorFlow.
+		#summarizer = pipeline('summarization', model='t5-base', tokenizer='t5-base', framework='tf')
+		#summary = summarizer('An apple a day, keeps the doctor away', min_length=5, max_length=20)
+		#print('Summary: {}.'.format(summary))
+
+	#--------------------
+	if False:
+		import pandas as pd
+
+		data = {
+			'actors': ['brad pitt', 'leonardo di caprio', 'george clooney'],
+			'age': ['56', '45', '59'],
+			'number of movies': ['87', '53', '69'],
+			'date of birth': ['7 february 1967', '10 june 1996', '28 november 1967'],
+		}
+		table = pd.DataFrame.from_dict(data)
+
+		query = 'How old is Brad PItt?'
+
+		table_pipeline = pipeline('table-question-answering')
+		answer = table_pipeline(data, query)
+		#answer = table_pipeline(table, query)
+		print('Answer: {}.'.format(answer))
+
+	#--------------------
+	if False:
+		text2text_generator = pipeline('text2text-generation')
+		generated = text2text_generator('question: What is 42 ? context: 42 is the answer to life, the universe and everything')
+		print('Generated text: {}.'.format(generated))
+
+def question_answering_example():
+	from transformers import pipeline
+
+	# Open and read the article.
+	question = 'What is the capital of the Netherlands?'
+	context = r"The four largest cities in the Netherlands are Amsterdam, Rotterdam, The Hague and Utrecht.[17] Amsterdam is the country's most populous city and nominal capital,[18] while The Hague holds the seat of the States General, Cabinet and Supreme Court.[19] The Port of Rotterdam is the busiest seaport in Europe, and the busiest in any country outside East Asia and Southeast Asia, behind only China and Singapore."
+
+	# Generating an answer to the question in context.
+	qa = pipeline(task='question-answering')
+	answer = qa(question=question, context=context)
+
+	# Print the answer.
+	print(f'Question: {question}')
+	print(f"Answer: '{answer['answer']}' with score {answer['score']}")
+
 def main():
 	#quick_tour()
 
@@ -541,7 +638,13 @@ def main():
 	#sequence_classification_using_bert()
 
 	#--------------------
-	encoder_decoder_example()
+	#encoder_decoder_example()
+
+	#--------------------
+	# Pipeline.
+
+	pipeline_example()
+	#question_answering_example()
 
 #--------------------------------------------------------------------
 
