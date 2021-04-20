@@ -181,7 +181,7 @@ def sentence_completion_model_using_gpt2_example():
 	predicted_text = tokenizer.decode(indexed_tokens + [predicted_index])
 
 	# Print the predicted word.
-	print('Predicted text =', predicted_text)
+	print('Predicted text = {}.'.format(predicted_text))
 
 # REF [site] >>
 #	https://github.com/huggingface/transformers/blob/master/examples/run_generation.py
@@ -390,7 +390,7 @@ def masked_language_modeling_for_bert_example():
 	predicted_index = torch.argmax(predictions[0, masked_index]).item()
 	predicted_token = tokenizer.convert_ids_to_tokens([predicted_index])[0]
 	assert predicted_token == 'henson'
-	print('Predicted token is:', predicted_token)
+	print('Predicted token is: {}.'.format(predicted_token))
 
 class MyBertForSequenceClassification(BertPreTrainedModel):
 	def __init__(self, config, pretrained_model_name):
@@ -419,7 +419,9 @@ def sequence_classification_using_bert():
 	print('tokenizer.vocab_size = {}.'.format(tokenizer.vocab_size))
 	#print('tokenizer.get_vocab():\n{}.'.format(tokenizer.get_vocab()))
 
-	if False:
+	if True:
+		model = BertForSequenceClassification.from_pretrained(pretrained_model_name)
+	elif False:
 		model = MyBertForSequenceClassification.from_pretrained(pretrained_model_name, pretrained_model_name=pretrained_model_name)  # Not good.
 	else:
 		#config = BertConfig(num_labels=10, output_attentions=False, output_hidden_states=False)
@@ -452,7 +454,53 @@ def sequence_classification_using_bert():
 	with torch.no_grad():
 		model_outputs = model(input_ids)  # Batch size x #labels.
 
-	print('Model outputs =\n{}.'.format(model_outputs))
+	print('Model output losses = {}.'.format(model_outputs.loss))
+	print('Model output logits = {}.'.format(model_outputs.logits))
+
+def korean_bert_example():
+	if False:
+		pretrained_model_name = 'bert-base-multilingual-uncased'
+		#pretrained_model_name = 'bert-base-multilingual-cased'  # Not correctly working.
+
+		tokenizer = BertTokenizer.from_pretrained(pretrained_model_name)
+	else:
+		# REF [site] >> https://github.com/monologg/KoBERT-Transformers
+		from tokenization_kobert import KoBertTokenizer
+
+		# REF [site] >> https://huggingface.co/monologg
+		pretrained_model_name = 'monologg/kobert'
+		#pretrained_model_name = 'monologg/distilkobert'
+
+		tokenizer = KoBertTokenizer.from_pretrained(pretrained_model_name)
+
+	tokens = tokenizer.tokenize('잘해놨습니다')
+	token_ids = tokenizer.convert_tokens_to_ids(tokens)
+	print('Tokens = {}.'.format(tokens))
+	#print('Token IDs = {}.'.format(token_ids))
+
+	model = BertForSequenceClassification.from_pretrained(pretrained_model_name)
+
+	#--------------------
+	input_ids = [
+		tokenizer.encode('내 개는 무척 귀여워.', add_special_tokens=True),
+		tokenizer.encode('내 고양이는 귀여워.', add_special_tokens=True),
+		tokenizer.encode('내 돼지는 너무 작아요.', add_special_tokens=True),
+	]
+	max_input_len = len(max(input_ids, key=len))
+	print('Max. input len = {}.'.format(max_input_len))
+	def convert(x):
+		y = [x[-1]] * max_input_len  # TODO [check] >> x[-1] is correct?
+		y[:len(x)] = x
+		return y
+	input_ids = list(map(convert, input_ids))
+	input_ids = torch.tensor(input_ids)
+
+	model.eval()
+	with torch.no_grad():
+		model_outputs = model(input_ids)  # Batch size x #labels.
+
+	print('Model output losses = {}.'.format(model_outputs.loss))
+	print('Model output logits = {}.'.format(model_outputs.logits))
 
 # REF [site] >> https://huggingface.co/transformers/model_doc/encoderdecoder.html
 def encoder_decoder_example():
@@ -468,7 +516,7 @@ def encoder_decoder_example():
 	elif 'gpt2' in pretrained_model_name:
 		config_encoder, config_decoder = GPT2Config(), GPT2Config()
 	else:
-		print('Invalid model, {pretrained_model_name}.'.format())
+		print('Invalid model, {}.'.format(pretrained_model_name))
 		return
 
 	config = EncoderDecoderConfig.from_encoder_decoder_configs(config_encoder, config_decoder)
@@ -482,7 +530,7 @@ def encoder_decoder_example():
 		model = EncoderDecoderModel(config=config)
 		tokenizer = GPT2Tokenizer.from_pretrained(pretrained_model_name)
 
-	#print('Configuration of the encoder & decoder:', model.config.encoder, model.config.decoder)
+	#print('Configuration of the encoder & decoder:\n{}.\n{}.'.format(model.config.encoder, model.config.decoder))
 	#print('Encoder type = {}, decoder type = {}.'.format(type(model.encoder), type(model.decoder)))
 
 	if False:
@@ -535,6 +583,7 @@ def pipeline_example():
 	qa_pipeline = pipeline('question-answering', model='distilbert-base-cased-distilled-squad', tokenizer='bert-base-cased')
 
 	# Named entity recognition pipeline, passing in a specific model and tokenizer.
+	# REF [site] >> https://huggingface.co/dbmdz
 	model = AutoModelForTokenClassification.from_pretrained('dbmdz/bert-large-cased-finetuned-conll03-english')
 	tokenizer = AutoTokenizer.from_pretrained('bert-base-cased')
 	ner_pipeline = pipeline('ner', model=model, tokenizer=tokenizer)
@@ -569,17 +618,18 @@ def pipeline_example():
 
 	#--------------------
 	if False:
-		# Use BART in PyTorch.
-		summarizer = pipeline('summarization')
+		if True:
+			# Use BART in PyTorch.
+			summarizer = pipeline('summarization')
+		else:
+			# Use T5 in TensorFlow.
+			summarizer = pipeline('summarization', model='t5-base', tokenizer='t5-base', framework='tf')
+
 		summary = summarizer('An apple a day, keeps the doctor away', min_length=5, max_length=20)
 		print('Summary: {}.'.format(summary))
 
-		# Use T5 in TensorFlow.
-		#summarizer = pipeline('summarization', model='t5-base', tokenizer='t5-base', framework='tf')
-		#summary = summarizer('An apple a day, keeps the doctor away', min_length=5, max_length=20)
-		#print('Summary: {}.'.format(summary))
-
 	#--------------------
+	# REF [site] >> https://huggingface.co/transformers/model_doc/tapas.html
 	if False:
 		import pandas as pd
 
@@ -616,8 +666,78 @@ def question_answering_example():
 	answer = qa(question=question, context=context)
 
 	# Print the answer.
-	print(f'Question: {question}')
-	print(f"Answer: '{answer['answer']}' with score {answer['score']}")
+	print(f'Question: {question}.')
+	print(f"Answer: '{answer['answer']}' with score {answer['score']}.")
+
+# REF [site] >> https://huggingface.co/krevas/finance-koelectra-small-generator
+def korean_fill_mask_example():
+	from transformers import pipeline
+
+	# REF [site] >> https://huggingface.co/krevas
+	fill_mask = pipeline(
+		'fill-mask',
+		model='krevas/finance-koelectra-small-generator',
+		tokenizer='krevas/finance-koelectra-small-generator'
+	)
+
+	filled = fill_mask(f'내일 해당 종목이 대폭 {fill_mask.tokenizer.mask_token}할 것이다.')
+	print(f'Filled mask: {filled}.')
+
+def korean_table_question_answering_example():
+	from transformers import pipeline
+	from transformers import TapasConfig, TapasForQuestionAnswering, TapasTokenizer
+	import pandas as pd
+	# REF [site] >> https://github.com/monologg/KoBERT-Transformers
+	from tokenization_kobert import KoBertTokenizer
+
+	data = {
+		'배우': ['송광호', '최민식', '설경구'],
+		'나이': ['54', '58', '53'],
+		'출연작품수': ['38', '32', '42'],
+		'생년월일': ['1967/02/25', '1962/05/30', '1967/05/14'],
+	}
+	table = pd.DataFrame.from_dict(data)
+
+	query = '최민식씨의 나이는?'
+
+	# REF [site] >> https://huggingface.co/monologg
+	pretrained_model_name = 'monologg/kobert'
+	#pretrained_model_name = 'monologg/distilkobert'
+
+	if False:
+		# Not working.
+
+		table_pipeline = pipeline(
+			'table-question-answering',
+			model=pretrained_model_name,
+			tokenizer=KoBertTokenizer.from_pretrained(pretrained_model_name)
+		)
+	elif False:
+		# Not working.
+
+		#config = TapasConfig(num_aggregation_labels=3, average_logits_per_cell=True, select_one_column=False)
+		#model = TapasForQuestionAnswering.from_pretrained(pretrained_model_name, config=config)
+		model = TapasForQuestionAnswering.from_pretrained(pretrained_model_name)
+
+		table_pipeline = pipeline(
+			'table-question-answering',
+			model=model,
+			tokenizer=KoBertTokenizer.from_pretrained(pretrained_model_name)
+		)
+	else:
+		# Not correctly working.
+
+		model = TapasForQuestionAnswering.from_pretrained(pretrained_model_name)
+
+		table_pipeline = pipeline(
+			'table-question-answering',
+			model=model,
+			tokenizer=TapasTokenizer.from_pretrained(pretrained_model_name)
+		)
+
+	answer = table_pipeline(data, query)
+	#answer = table_pipeline(table, query)
+	print('Answer: {}.'.format(answer))
 
 def main():
 	#quick_tour()
@@ -636,6 +756,7 @@ def main():
 	#masked_language_modeling_for_bert_example()
 
 	#sequence_classification_using_bert()
+	#korean_bert_example()
 
 	#--------------------
 	#encoder_decoder_example()
@@ -644,7 +765,10 @@ def main():
 	# Pipeline.
 
 	pipeline_example()
+
 	#question_answering_example()
+	#korean_fill_mask_example()
+	#korean_table_question_answering_example()  # Not correctly working.
 
 #--------------------------------------------------------------------
 

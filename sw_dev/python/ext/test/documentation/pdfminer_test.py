@@ -397,10 +397,5 @@ def main():
 
 #--------------------------------------------------------------------
 
-# The coordinate system in PDF.
-#	Origin: (left, bottom).
-#	X-axis: rightward.
-#	Y-axis: upward.
-
 if '__main__' == __name__:
 	main()
