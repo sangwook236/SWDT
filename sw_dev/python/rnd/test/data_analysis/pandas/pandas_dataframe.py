@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy as np
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 # REF [site] >> http://pandas.pydata.org/pandas-docs/stable/10min.html
 # REF [site] >> http://pandas.pydata.org/pandas-docs/stable/tutorials.html
@@ -12,13 +12,19 @@ def basic_operation():
 	df = pd.DataFrame(np.random.randn(6, 4), index=dates, columns=list('ABCD'))
 	print('df =\n', df, sep='')
 
+	if False:
+		# Show the data frame.
+		from IPython.display import display, HTML
+		display(df)
+		#print(HTML(df.to_html()).data)
+
 	df2 = pd.DataFrame({
-		'A' : 1.,
-		'B' : pd.Timestamp('20130102'),
-		'C' : pd.Series(1,index=list(range(4)),dtype='float32'),
-		'D' : np.array([3] * 4,dtype='int32'),
-		'E' : pd.Categorical(["test","train","test","train"]),
-		'F' : 'foo'
+		'A': 1.,
+		'B': pd.Timestamp('20130102'),
+		'C': pd.Series(1,index=list(range(4)),dtype='float32'),
+		'D': np.array([3] * 4,dtype='int32'),
+		'E': pd.Categorical(["test","train","test","train"]),
+		'F': 'foo'
 	})
 	print('df =\n', df2, sep='')
 	print('df.dtypes =\n', df2.dtypes, sep='')
@@ -35,6 +41,12 @@ def basic_operation():
 
 def indexing_and_slicing():
 	iris_df = pd.read_csv('./iris.csv', sep=',', header='infer')
+
+	if False:
+		# Show the data frame.
+		from IPython.display import display, HTML
+		display(iris_df)
+		#print(HTML(iris_df.to_html()).data)
 
 	print('Size = {}, shape = {}'.format(iris_df.size, iris_df.shape))
 
@@ -120,7 +132,7 @@ def main():
 
 	#numpy_operation()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()

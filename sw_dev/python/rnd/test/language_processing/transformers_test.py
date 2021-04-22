@@ -633,19 +633,27 @@ def pipeline_example():
 	if False:
 		import pandas as pd
 
-		data = {
+		data_dict = {
 			'actors': ['brad pitt', 'leonardo di caprio', 'george clooney'],
 			'age': ['56', '45', '59'],
 			'number of movies': ['87', '53', '69'],
 			'date of birth': ['7 february 1967', '10 june 1996', '28 november 1967'],
 		}
-		table = pd.DataFrame.from_dict(data)
+		data_df = pd.DataFrame.from_dict(data_dict)
 
-		query = 'How old is Brad PItt?'
+		if False:
+			# Show the data frame.
+			from IPython.display import display, HTML
+			display(data_df)
+			#print(HTML(data_df.to_html()).data)
+
+		query = 'How old is Brad Pitt?'
+		#query = 'What is the age of Brad Pitt?'
+		#query = 'How much is Brad PItt?'  # Incorrect question.
 
 		table_pipeline = pipeline('table-question-answering')
-		answer = table_pipeline(data, query)
-		#answer = table_pipeline(table, query)
+		answer = table_pipeline(data_dict, query)
+		#answer = table_pipeline(data_df, query)
 		print('Answer: {}.'.format(answer))
 
 	#--------------------
@@ -690,13 +698,19 @@ def korean_table_question_answering_example():
 	# REF [site] >> https://github.com/monologg/KoBERT-Transformers
 	from tokenization_kobert import KoBertTokenizer
 
-	data = {
+	data_dict = {
 		'배우': ['송광호', '최민식', '설경구'],
 		'나이': ['54', '58', '53'],
 		'출연작품수': ['38', '32', '42'],
 		'생년월일': ['1967/02/25', '1962/05/30', '1967/05/14'],
 	}
-	table = pd.DataFrame.from_dict(data)
+	data_df = pd.DataFrame.from_dict(data_dict)
+
+	if False:
+		# Show the data frame.
+		from IPython.display import display, HTML
+		display(data_df)
+		#print(HTML(data_df.to_html()).data)
 
 	query = '최민식씨의 나이는?'
 
@@ -735,8 +749,8 @@ def korean_table_question_answering_example():
 			tokenizer=TapasTokenizer.from_pretrained(pretrained_model_name)
 		)
 
-	answer = table_pipeline(data, query)
-	#answer = table_pipeline(table, query)
+	answer = table_pipeline(data_dict, query)
+	#answer = table_pipeline(data_df, query)
 	print('Answer: {}.'.format(answer))
 
 def main():

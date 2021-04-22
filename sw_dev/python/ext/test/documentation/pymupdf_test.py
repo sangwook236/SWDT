@@ -179,6 +179,8 @@ def text_extraction_example():
 		# page.get_text(): option = {'text', 'blocks', 'words', 'html', 'xhtml', 'xml', 'dict', 'json', 'rawdict', 'rawjson'}.
 		if True:
 			text = page.get_text(option='text', clip=None, flags=None)
+			# Extracts texts that are completely contained within the rectangle.
+			#text = page.get_text(option='text', clip=(x0, y0, x1, y1), flags=None)
 			print('-------------------------------------------------- Text.')
 			print(text)
 
@@ -442,6 +444,8 @@ def transformation_example():
 		plt.show()
 
 def main():
+	# In MuPDF's coordinate system the y-axis is oriented from top to bottom.
+
 	#tutorial()
 
 	text_extraction_example()

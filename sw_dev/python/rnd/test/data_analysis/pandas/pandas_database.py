@@ -5,7 +5,7 @@ import numpy as np
 from sqlalchemy import create_engine
 from sqlalchemy.types import Integer
 
-#%%-------------------------------------------------------------------
+#---------------------------------------------------------------------
 
 # REF [site] >> https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.to_sql.html
 def sqlite_example():
@@ -55,7 +55,7 @@ def main():
 
 	csv_to_sqlite()
 
-#%%------------------------------------------------------------------
+#--------------------------------------------------------------------
 
 if '__main__' == __name__:
 	main()
