@@ -99,8 +99,42 @@ def contour_feature():
 
 	cv2.destroyAllWindows()
 
+def minAreaRect_test():
+	for angle in range(-360, 370, 10):
+		pts = cv2.boxPoints(((200, 200), (200, 40), angle))
+		num_pts = len(pts)
+
+		# The coordinate system.
+		#	X: rightward, Y: downward, CW.
+		# If obb_size[0] > obb_size[1], obb_angle = the angle between the +X axis and the major axis in quadrant I. [deg].
+		# If obb_size[0] < obb_size[1], obb_angle = the angle between the +X axis and the minor axis in quadrant I. [deg].
+		obb_center, obb_size, obb_angle = cv2.minAreaRect(pts)
+		assert 0 <= obb_angle <= 90, '0 <= {} <= 90'.format(obb_angle)  # 0 <= obb_angle <= 90. (?)
+		#obb_angle = math.floor((90 - obb_angle) / 180)  # -90 <= obb_angle <= 90.
+		#obb_angle = math.ceil((-90 - obb_angle) / 180)  # -90 <= obb_angle <= 90.
+		#assert -90 <= obb_angle <= 90, '-90 <= {} <= 90'.format(obb_angle)
+
+		print("{}: OBB's size = {}, OBB's angle = {}.".format(angle, obb_size, obb_angle))
+
+		img = np.zeros((400, 400, 3), dtype=np.uint8)
+		cv2.drawContours(img, [np.int0(pts)], 0, (255, 255, 255), 2)
+		colors = [
+			(0, 0, 255),
+			(0, 255, 0),
+			(255, 0, 0),
+			(255, 0, 255),
+		]
+		for idx in range(num_pts):
+			cv2.circle(img, tuple(pts[idx].astype(np.int)), 4, colors[idx], cv2.FILLED)
+			#cv2.line(img, tuple(pts[idx].astype(np.int)), tuple(pts[(idx + 1) % num_pts].astype(np.int)), colors[idx], 2)
+
+		cv2.imshow('Image', img)
+		cv2.waitKey(0)
+
 def main():
 	contour_feature()
+
+	#minAreaRect_test()
 
 #--------------------------------------------------------------------
 
