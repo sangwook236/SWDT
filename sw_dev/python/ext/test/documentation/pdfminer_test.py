@@ -387,6 +387,107 @@ def table_of_contents_example():
 	finally:
 		if fp: fp.close()
 
+def intersection_of_pdfminer_and_pymupdf():
+	import fitz
+	from PIL import Image, ImageDraw
+	import matplotlib.pyplot as plt
+	
+	pdf_filepath = './DeepLearning.pdf'
+	intersection_area_threshold = 2500
+
+	#--------------------
+	try:
+		fitz_doc = fitz.open(pdf_filepath)
+	except RuntimeError as ex:
+		print('RuntimeError raised in {}: {}.'.format(pdf_filepath, ex))
+		return
+
+	#--------------------
+	fp = None
+	try:
+		fp = open(pdf_filepath, 'rb')
+
+		# Create resource manager.
+		rsrcmgr = PDFResourceManager()
+		# Set parameters for layout analysis.
+		laparams = LAParams()
+
+		device = PDFPageAggregator(rsrcmgr, laparams=laparams)
+		interpreter = PDFPageInterpreter(rsrcmgr, device)
+
+		for page_no in range(fitz_doc.page_count):
+			pages = PDFPage.get_pages(fp, pagenos=[page_no], maxpages=0, password=b'')  # pagenos uses zero-based indices. pagenos is sorted inside the function.
+			page = next(pages)
+
+			interpreter.process_page(page)
+
+			layout = device.get_result()
+			bbox_text_pairs = extract_text_object(layout, pdf_filepath, page_no)
+
+			#--------------------
+			try:
+				# Loads page number 'page_no' of the document (0-based).
+				fitz_page = fitz_doc.load_page(page_id=page_no)
+			except ValueError as ex:
+				print('ValueError raised: {}.'.format(ex))
+			except IndexError as ex:
+				print('IndexError raised: {}.'.format(ex))
+
+			# A list of text lines grouped by block. (x0, y0, x1, y1, "lines in blocks", block_no, block_type).
+			#	block_type is 1 for an image block, 0 for text.
+			fitz_blocks = fitz_page.get_text(option='blocks', clip=None, flags=None)
+			fitz_blocks = list(filter(lambda blk: blk[6] == 0, fitz_blocks))
+
+			#--------------------
+			def compute_intersection(boxA, boxB):
+				return [
+					max(boxA[0], boxB[0]),
+					max(boxA[1], boxB[1]),
+					min(boxA[2], boxB[2]),
+					min(boxA[3], boxB[3]),
+				]
+
+			def find_max_intersection(bboxes, ref_bbox, area_threshold=100):
+				max_area = 0
+				max_inter = None
+				for bbox in bboxes:
+					inter = compute_intersection(bbox, ref_bbox)
+					area = max(0, inter[2] - inter[0]) * max(0, inter[3] - inter[1])
+					if area > max_area:
+						max_area = area
+						max_inter = inter
+				return max_inter if max_area >= area_threshold else None
+
+			pix = fitz_page.get_pixmap()
+			mode = 'RGBA' if pix.alpha else 'RGB'
+			img = Image.frombytes(mode, [pix.width, pix.height], pix.samples)
+
+			x_scale_factor, y_scale_factor = pix.width / layout.bbox[2], pix.height / layout.bbox[3]
+			#bbox_text_pairs = list(((bbox[0] * x_scale_factor, bbox[1] * y_scale_factor, bbox[2] * x_scale_factor, bbox[3] * y_scale_factor), txt) for bbox, txt in bbox_text_pairs)
+			#bbox_text_pairs = list(((bbox[0] * x_scale_factor, (layout.bbox[3] - bbox[1]) * y_scale_factor, bbox[2] * x_scale_factor, (layout.bbox[3] - bbox[3]) * y_scale_factor), txt) for bbox, txt in bbox_text_pairs)
+			bbox_text_pairs = list(((bbox[0] * x_scale_factor, (layout.bbox[3] - bbox[3]) * y_scale_factor, bbox[2] * x_scale_factor, (layout.bbox[3] - bbox[1]) * y_scale_factor), txt) for bbox, txt in bbox_text_pairs)
+
+			intersections = list(filter(lambda inter: inter, (find_max_intersection(fitz_blocks, bbox, area_threshold=intersection_area_threshold) for bbox, _ in bbox_text_pairs)))
+
+			#--------------------
+			draw = ImageDraw.Draw(img)
+			for blk in fitz_blocks:
+				draw.rectangle(blk[:4], outline=(0, 255, 0), width=5)
+			for bbox, _ in bbox_text_pairs:
+				draw.rectangle(bbox, outline=(0, 0, 255), width=3)
+			for inter in intersections:
+				draw.rectangle(inter, outline=(255, 0, 0), width=1)
+
+			plt.figure(figsize=(8, 10))
+			plt.imshow(img)
+			plt.tight_layout()
+			plt.axis('off')
+			plt.show()
+	except FileNotFoundError as ex:
+		print('File not found, {}: {}.'.format(pdf_filepath, ex))
+	finally:
+		if fp: fp.close()
+
 def main():
 	basic_usage()
 	#resource_example()
@@ -394,6 +495,10 @@ def main():
 	#text_extraction_example()
 	#layout_analysis_example()
 	#table_of_contents_example()
+
+	#--------------------
+	# Intersection of pdfminer's text boxes and PyMuPDF's blocks.
+	intersection_of_pdfminer_and_pymupdf()
 
 #--------------------------------------------------------------------
 

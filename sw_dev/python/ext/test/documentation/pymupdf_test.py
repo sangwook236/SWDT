@@ -454,6 +454,10 @@ def main():
 	#drawing_example()
 	#transformation_example()
 
+	#--------------------
+	# Intersection of pdfminer's text boxes and PyMuPDF's blocks.
+	# REF [function] >> intersection_of_pdfminer_and_pymupdf() in pdfminer_test.py.
+
 #--------------------------------------------------------------------
 
 if '__main__' == __name__:
