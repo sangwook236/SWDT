@@ -14,7 +14,7 @@ def hello_world_tutorial():
 	label = QLabel('<font color=red size=40>Hello World!</font>')
 	label.show()
 
-	app.exec_()
+	sys.exit(app.exec_())
 
 def qml_tutorial():
 	from PySide2.QtCore import QUrl
@@ -27,7 +27,7 @@ def qml_tutorial():
 	view.setSource(url)
 	view.show()
 
-	app.exec_()
+	sys.exit(app.exec_())
 
 def button_tutorial():
 	from PySide2.QtCore import Slot
@@ -45,7 +45,7 @@ def button_tutorial():
 	button.show()
 
 	# Run the main Qt loop.
-	app.exec_()
+	sys.exit(app.exec_())
 
 def dialog_tutorial():
 	from PySide2.QtWidgets import QDialog, QPushButton, QLineEdit, QVBoxLayout

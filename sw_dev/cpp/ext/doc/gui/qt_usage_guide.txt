@@ -69,10 +69,10 @@
 		sudo apt install libxcb-xinerama0
 
 	- Python.
-		pip install PySide6
-		pip install PySide2
 		pip install PyQt6
 		pip install PyQt5
+		pip install PySide6
+		pip install PySide2
 
 [-] Trouble shooting (Python).
 	- <error> Could not initialize GLX.
