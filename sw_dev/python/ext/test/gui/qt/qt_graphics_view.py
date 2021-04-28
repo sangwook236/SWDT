@@ -5,12 +5,12 @@
 def graphics_view_example():
 	from PyQt5.QtWidgets import QApplication, QFrame, QDialog, QVBoxLayout, QSizePolicy
 	from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsPolygonItem
-	from PyQt5.QtGui import QColor, QPolygonF, QPen, QBrush, QFont
+	from PyQt5.QtGui import QPolygonF, QColor, QPen, QBrush, QFont
 	from PyQt5.QtCore import Qt, QPointF, pyqtSignal
 
-	class MyGraphicsButton(QGraphicsPolygonItem):
+	class MyGraphicsButtonItem(QGraphicsPolygonItem):
 		def __init__(self, parent=None):
-			super().__init__(parent)
+			super().__init__(parent=parent)
 
 			points = [
 				[60.1, 19.6, 0.0], [60.1, 6.5, 0.0], [60.1, -6.5, 0.0], [60.1, -19.6, 0.0], [60.1, -19.6, 0.0],
@@ -43,7 +43,7 @@ def graphics_view_example():
 			self.setFrameShape(QFrame.NoFrame)
 			self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
 
-			button = MyGraphicsButton()
+			button = MyGraphicsButtonItem()
 			self._scene.addItem(button)
 
 			text = self._scene.addText('Hello, World!', QFont('Arial', 20))
@@ -449,17 +449,7 @@ def simple_image_viewer_example():
 			self.view.canPan = True
 				
 			# Load an image to be displayed.
-			if True:
-				if QT_VERSION_STR[0] == '4':
-					fileName = QFileDialog.getOpenFileName(None, 'Open image file...')
-				elif QT_VERSION_STR[0] == '5':
-					fileName, dummy = QFileDialog.getOpenFileName(None, 'Open image file...')
-				image = QImage(fileName)
-
-				# Display the image in the viewer.
-				self.view.setImage(image)
-			else:
-				self.view.loadImageFromFile()  # Pops up file dialog.
+			self.view.loadImageFromFile()  # Pops up file dialog.
 
 			# Handle left mouse clicks with your own custom slot _handleLeftClick(x, y). (x, y) are image coordinates.
 			# For (row, col) matrix indexing, row=y and col=x.
@@ -500,6 +490,7 @@ def simple_image_viewer_example():
 	app = QApplication(sys.argv)
 
 	widget = MyWidget(None)
+	widget.setGeometry(100, 100, 1000, 800)
 	widget.show()
 
 	sys.exit(app.exec_())

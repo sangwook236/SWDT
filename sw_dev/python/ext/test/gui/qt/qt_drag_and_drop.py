@@ -15,14 +15,14 @@ def drag_and_drop_text_example():
 
 			self.setAcceptDrops(True)
 
-		def dragEnterEvent(self, evt: QDragEnterEvent):
-			if evt.mimeData().hasFormat('text/plain'):
-				evt.accept()
+		def dragEnterEvent(self, event: QDragEnterEvent):
+			if event.mimeData().hasFormat('text/plain'):
+				event.accept()
 			else:
-				evt.ignore()
+				event.ignore()
 
-		def dropEvent(self, evt: QDropEvent):
-			self.setText(evt.mimeData().text())
+		def dropEvent(self, event: QDropEvent):
+			self.setText(event.mimeData().text())
 
 	class MyForm(QWidget):
 		def __init__(self, parent=None):
@@ -56,8 +56,8 @@ def drag_and_drop_button_example1():
 		def __init__(self, title, parent):
 			super().__init__(title, parent)
 
-		def mouseMoveEvent(self, evt: QMouseEvent):
-			if evt.buttons() != Qt.RightButton:
+		def mouseMoveEvent(self, event: QMouseEvent):
+			if event.buttons() != Qt.RightButton:
 				return
 
 			drag = QDrag(self)
@@ -81,15 +81,15 @@ def drag_and_drop_button_example1():
 			self.btn = MyButton('Drag me to the moon', self)
 			self.btn.show()
 
-		def dragEnterEvent(self, evt: QDragEnterEvent):
-			evt.accept()
+		def dragEnterEvent(self, event: QDragEnterEvent):
+			event.accept()
 
-		def dropEvent(self, evt: QDropEvent):
-			position = evt.pos()
+		def dropEvent(self, event: QDropEvent):
+			position = event.pos()
 			self.btn.move(position)
 
-			evt.setDropAction(Qt.MoveAction)
-			evt.accept()
+			event.setDropAction(Qt.MoveAction)
+			event.accept()
 
 	#--------------------
 	app = QApplication(sys.argv)
@@ -105,21 +105,21 @@ def drag_and_drop_button_example2():
 		def __init__(self, title, parent):
 			super().__init__(title, parent)
 
-		def mouseMoveEvent(self, evt: QMouseEvent):
-			if evt.buttons() != Qt.RightButton:
+		def mouseMoveEvent(self, event: QMouseEvent):
+			if event.buttons() != Qt.RightButton:
 				return
 
 			drag = QDrag(self)
 
 			mime_data = QMimeData()
-			mime_data.setData('application/hotspot', b'%d %d' % (evt.x(), evt.y()))
+			mime_data.setData('application/hotspot', b'%d %d' % (event.x(), event.y()))
 			drag.setMimeData(mime_data)
 
 			pixmap = QPixmap(self.size())
 			self.render(pixmap)
 			drag.setPixmap(pixmap)
 
-			drag.setHotSpot(evt.pos() - self.rect().topLeft())
+			drag.setHotSpot(event.pos() - self.rect().topLeft())
 
 			drag.exec_(Qt.MoveAction)
 
@@ -137,21 +137,21 @@ def drag_and_drop_button_example2():
 			self.btn = MyButton('Drag me to the moon', self)
 			self.btn.show()
 
-		def dragEnterEvent(self, evt: QDragEnterEvent):
-			evt.accept()
+		def dragEnterEvent(self, event: QDragEnterEvent):
+			event.accept()
 
-		def dropEvent(self, evt: QDropEvent):
-			if evt.mimeData().hasFormat('application/hotspot'):
-				position = evt.pos()
+		def dropEvent(self, event: QDropEvent):
+			if event.mimeData().hasFormat('application/hotspot'):
+				position = event.pos()
 
-				offset = evt.mimeData().data('application/hotspot')
+				offset = event.mimeData().data('application/hotspot')
 				x, y = offset.data().decode('utf-8').split()
 				self.btn.move(position - QPoint(int(x), int(y)))
 
-				evte.setDropAction(Qt.MoveAction)
-				evt.accept()
+				event.setDropAction(Qt.MoveAction)
+				event.accept()
 			else:
-				evt.ignore()
+				event.ignore()
 
 	#--------------------
 	app = QApplication(sys.argv)
