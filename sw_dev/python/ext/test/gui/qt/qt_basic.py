@@ -356,7 +356,8 @@ def common_dialog_example():
 	sys.exit(app.exec_())
 
 def custom_dialog_example():
-	from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QLabel, QLineEdit, QCheckBox, QRadioButton, QHBoxLayout, QVBoxLayout
+	from PyQt5.QtCore import Qt
+	from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QLabel, QLineEdit, QCheckBox, QRadioButton, QComboBox, QHBoxLayout, QVBoxLayout
 
 	class MyDialog(QDialog):
 		def __init__(self, parent=None):
@@ -374,6 +375,11 @@ def custom_dialog_example():
 			self.radioMale = QRadioButton('Male')
 			self.radioMale.setChecked(True)
 			self.radioFemale = QRadioButton('Female')
+			self.labelLanguage = QLabel('Language:')
+			self.comboLanguage = QComboBox()
+			self.comboLanguage.addItem('Korean')
+			self.comboLanguage.addItem('Englis')
+			self.comboLanguage.addItems(['Chinese', 'Japanese'])
 			self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
 
 			vLayout = QVBoxLayout()
@@ -389,6 +395,11 @@ def custom_dialog_example():
 			hLayout.addWidget(self.radioMale)
 			hLayout.addWidget(self.radioFemale)
 			vLayout.addLayout(hLayout)
+			hLayout = QHBoxLayout()
+			#hLayout.setAlignment(Qt.AlignJustify)
+			hLayout.addWidget(self.labelLanguage)
+			hLayout.addWidget(self.comboLanguage)
+			vLayout.addLayout(hLayout)
 			vLayout.addWidget(self.buttonBox)
 
 			self.setLayout(vLayout)
@@ -396,6 +407,7 @@ def custom_dialog_example():
 			self.checkKorean.toggled.connect(lambda: self.onKorenCheckBox())
 			self.radioMale.toggled.connect(lambda: self.onGenderRadioButton(self.radioMale))
 			self.radioFemale.toggled.connect(lambda: self.onGenderRadioButton(self.radioFemale))
+			self.comboLanguage.currentIndexChanged.connect(self.onLanguageComboBox)
 			self.buttonBox.button(QDialogButtonBox.Ok).clicked.connect(self.accept)
 			self.buttonBox.button(QDialogButtonBox.Cancel).clicked.connect(self.reject)
 
@@ -412,6 +424,9 @@ def custom_dialog_example():
 			elif radioButton == self.radioFemale:
 				if radioButton.isChecked() == True:
 					print('Female is selected.')
+
+		def onLanguageComboBox(self, index):
+			print('The {}-th item, {} is selected.'.format(index, self.comboLanguage.currentText()))
 
 		def accept(self):
 			print('Name: {}.'.format(self.editName.text()))
