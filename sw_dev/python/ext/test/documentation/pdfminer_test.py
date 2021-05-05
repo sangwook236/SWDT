@@ -498,7 +498,7 @@ def main():
 
 	#--------------------
 	# Intersection of pdfminer's text boxes and PyMuPDF's blocks.
-	intersection_of_pdfminer_and_pymupdf()
+	#intersection_of_pdfminer_and_pymupdf()
 
 #--------------------------------------------------------------------
 

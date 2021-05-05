@@ -71,14 +71,11 @@ def sqlite_example():
 	address = session.query(Address).filter(Address.person == person).one()
 	print('Postal code =', address.post_code)
 
-def pandas_example():
-	# REF [python] >> ${SWDT_PYTHON_HOME}/rnd/test/data_analysis/pandas/pandas_database.py
-	pass
-
 def main():
 	sqlite_example()
 
-	pandas_example()  # Not implemented.
+	# pandas:
+	#	REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/data_analysis/pandas/pandas_database.py
 
 #--------------------------------------------------------------------
 

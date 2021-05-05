@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import pandas as pd
 import numpy as np
@@ -7,7 +8,7 @@ from sqlalchemy.types import Integer
 
 #---------------------------------------------------------------------
 
-# REF [site] >> https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.to_sql.html
+# REF [site] >> https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html
 def sqlite_example():
 	# Create an engine that stores data in the local directory's file.
 	#engine = create_engine('sqlite:///sqlite.db')
@@ -21,12 +22,15 @@ def sqlite_example():
 	print(engine.execute('SELECT * FROM users').fetchall())
 
 	#--------------------
-	df1 = pd.DataFrame({'name' : ['User 4', 'User 5']})
+	with engine.begin() as connection:
+		df1 = pd.DataFrame({'name' : ['User 4', 'User 5']})
+		df1.to_sql('users', con=connection, if_exists='append')
 
-	df1.to_sql('users', con=engine, if_exists='append')
+	df2 = pd.DataFrame({'name' : ['User 6', 'User 7']})
+	df2.to_sql('users', con=engine, if_exists='append')
 	print(engine.execute('SELECT * FROM users').fetchall())
 
-	df1.to_sql('users', con=engine, if_exists='replace', index_label='id')
+	df2.to_sql('users', con=engine, if_exists='replace', index_label='id')
 	print(engine.execute('SELECT * FROM users').fetchall())
 
 	#--------------------
