@@ -53,7 +53,10 @@ def dialog_tutorial():
 	class MyForm(QDialog):
 		def __init__(self, parent=None):
 			super().__init__(parent)
+
 			self.setWindowTitle('My Form')
+			#self.setFixedSize(300, 200)
+			self.setModal(True)
 
 			# Create widgets.
 			self.edit = QLineEdit('Write my name here')
@@ -318,8 +321,8 @@ def common_dialog_example():
 		def openFileNameDialog(self):
 			options = QFileDialog.Options()
 			options |= QFileDialog.DontUseNativeDialog
-			filepath, _ = QFileDialog.getOpenFileName(self, caption='Open a File', directory='', filter='Python Files (*.py);;All Files (*)', options=options)
-			#filepath, _ = QFileDialog.getOpenFileUrl(self, caption='Open a URL', directory='', filter='Python Files (*.py);;All Files (*)', options=options)
+			filepath, _ = QFileDialog.getOpenFileName(self, caption='Open a File', directory='', filter='Image Files (*.png *.jpg *.jpeg *.tif *tiff *.gif *.bmp);;All Files (*)', options=options)
+			#filepath, _ = QFileDialog.getOpenFileUrl(self, caption='Open a URL', directory='', filter='Image Files (*.png *.jpg *.jpeg *.tif *tiff *.gif *.bmp);;All Files (*)', options=options)
 			if filepath:
 				print(filepath)
 
@@ -367,7 +370,9 @@ def custom_dialog_example():
 
 		def _initUi(self):
 			self.setWindowTitle('Custom Dialog')
-			self.resize(300, 200)
+			#self.resize(300, 200)
+			self.setFixedSize(300, 200)
+			self.setModal(True)
 
 			self.labelName = QLabel('Name:')
 			self.editName = QLineEdit('My Name')
@@ -382,27 +387,32 @@ def custom_dialog_example():
 			self.comboLanguage.addItems(['Chinese', 'Japanese'])
 			self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
 
-			vLayout = QVBoxLayout()
-			#vLayout.addStretch(1)
+			topLayout = QVBoxLayout()
+			#topLayout.addStretch(1)
+			#topLayout.setAlignment(Qt.AlignTop)
 
-			hLayout = QHBoxLayout()
-			#hLayout.addStretch(1)
-			hLayout.addWidget(self.labelName)
-			hLayout.addWidget(self.editName)
-			vLayout.addLayout(hLayout)
-			vLayout.addWidget(self.checkKorean)
-			hLayout = QHBoxLayout()
-			hLayout.addWidget(self.radioMale)
-			hLayout.addWidget(self.radioFemale)
-			vLayout.addLayout(hLayout)
-			hLayout = QHBoxLayout()
-			#hLayout.setAlignment(Qt.AlignJustify)
-			hLayout.addWidget(self.labelLanguage)
-			hLayout.addWidget(self.comboLanguage)
-			vLayout.addLayout(hLayout)
-			vLayout.addWidget(self.buttonBox)
+			layout = QHBoxLayout()
+			#layout.addStretch(1)
+			layout.addWidget(self.labelName)
+			layout.addWidget(self.editName)
+			topLayout.addLayout(layout)
 
-			self.setLayout(vLayout)
+			topLayout.addWidget(self.checkKorean)
+
+			layout = QHBoxLayout()
+			layout.addWidget(self.radioMale)
+			layout.addWidget(self.radioFemale)
+			topLayout.addLayout(layout)
+
+			layout = QHBoxLayout()
+			#layout.setAlignment(Qt.AlignJustify)
+			layout.addWidget(self.labelLanguage)
+			layout.addWidget(self.comboLanguage, Qt.AlignJustify)
+			topLayout.addLayout(layout)
+
+			topLayout.addWidget(self.buttonBox)
+
+			self.setLayout(topLayout)
 
 			self.checkKorean.toggled.connect(lambda: self.onKorenCheckBox())
 			self.radioMale.toggled.connect(lambda: self.onGenderRadioButton(self.radioMale))
@@ -452,6 +462,7 @@ def ui_file_tutorial_1():
 	class MyMainWindow(QMainWindow):
 		def __init__(self):
 			super().__init__()
+
 			self.ui = Ui_MainWindow()
 			self.ui.setupUi(self)
 
@@ -539,7 +550,7 @@ def widget_styling_tutorial_1():
 	from PySide2.QtCore import Qt
 	from PySide2.QtWidgets import QLabel
 
-	app = QApplication()
+	app = QApplication(sys.argv)
 
 	w = QLabel('This is a placeholder text')
 	w.setAlignment(Qt.AlignCenter)
@@ -593,7 +604,7 @@ def widget_styling_tutorial_2():
 			self.setLayout(layout)
 
 	#--------------------
-	app = QApplication()
+	app = QApplication(sys.argv)
 
 	w = MyWidget()
 	w.show()
@@ -640,6 +651,7 @@ def sdi_example():
 	class MyMainWindow(QMainWindow):
 		def __init__(self):
 			super().__init__()
+
 			self.setWindowTitle('SDI Application')
 			self.setWindowIcon(QIcon('pyicon.png'))
 
@@ -695,6 +707,7 @@ def mdi_example():
 
 		def __init__(self, widgets):
 			super().__init__()
+
 			self.widget_classes = widget_classes
 
 			self.init_ui()
@@ -756,18 +769,25 @@ def mdi_example():
 
 	sys.exit(app.exec_())
 
+# REF [site] >> https://github.com/qtproject/qt-solutions/tree/master/qtpropertybrowser
+def property_browser_test():
+	from PyQt5.QtWidgets import QMainWindow
+
+	class MyMainWindow(QMainWindow):
+		def __init__(self):
+			super().__init__()
+
+			# FIXME [implement] >> Do something.
+
+	#--------------------
+	app = QApplication(sys.argv)
+
+	window = MyMainWindow()
+	window.show()
+
+	sys.exit(app.exec_())
+
 def main():
-	# REF [site] >> https://doc.qt.io/qtforpython/tutorials/
-
-	#hello_world_tutorial()
-	#qml_tutorial()
-	#button_tutorial()
-	#dialog_tutorial()
-
-	#menu_example()
-	#common_dialog_example()
-	custom_dialog_example()
-
 	# Using QtCreator:
 	#	PySide2:
 	#		pyside2-uic mainwindow.ui > ui_mainwindow.py
@@ -775,6 +795,16 @@ def main():
 	#	PyQt5:
 	#		pyuic5 mainwindow.ui > ui_mainwindow.py
 	#		pyrcc5 icons.qrc -o rc_icons.py
+
+	# REF [site] >> https://doc.qt.io/qtforpython/tutorials/
+	#hello_world_tutorial()
+	#qml_tutorial()
+	#button_tutorial()
+	#dialog_tutorial()
+
+	#menu_example()
+	#common_dialog_example()
+	#custom_dialog_example()
 
 	# Generate a Python class.
 	#ui_file_tutorial_1()
@@ -790,6 +820,8 @@ def main():
 	#--------------------
 	#sdi_example()
 	#mdi_example()
+
+	property_browser_test()  # Not yet completed.
 
 #--------------------------------------------------------------------
 
