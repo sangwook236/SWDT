@@ -309,10 +309,12 @@ def text_extraction_example():
 			interpreter.process_page(page)
 
 			layout = device.get_result()
-			bbox_text_pairs = extract_text_object(layout, pdf_filepath, page_no)
+			print('Page bounding box = {}.'.format(layout.bbox))
 
+			bbox_text_pairs = extract_text_object(layout, pdf_filepath, page_no)
 			for idx, (bbox, txt) in enumerate(bbox_text_pairs):
-				print('------------------------------ Block {} in page {} in {}.'.format(page_no, pdf_filepath))
+				print('------------------------------ Block {} {} in page {} in {}.'.format(idx, bbox, page_no, pdf_filepath))
+				#print('------------------------------ Block {} {} in page {} in {}.'.format(idx, (bbox[0], layout.bbox[3] - bbox[3], bbox[2], layout.bbox[3] - bbox[1]), page_no, pdf_filepath))
 				print(txt)
 	except FileNotFoundError as ex:
 		print('File not found, {}: {}.'.format(pdf_filepath, ex))
@@ -489,6 +491,9 @@ def intersection_of_pdfminer_and_pymupdf():
 		if fp: fp.close()
 
 def main():
+	# The coordinate system:
+	#	Origin: bottom-left, +X-axis: rightward, +Y-axis: upward.
+
 	basic_usage()
 	#resource_example()
 

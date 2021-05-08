@@ -444,7 +444,8 @@ def transformation_example():
 		plt.show()
 
 def main():
-	# In MuPDF's coordinate system the y-axis is oriented from top to bottom.
+	# The coordinate system:
+	#	Origin: top-left, +X-axis: rightward, +Y-axis: downward.
 
 	#tutorial()
 
