@@ -266,6 +266,7 @@ void hand_pose_estimation();
 void motion_segmentation();
 void gesture_recognition();
 
+void ar();
 void qr_code();
 
 }  // namespace my_opencv
@@ -427,6 +428,7 @@ int opencv_main(int argc, char *argv[])
 		//my_opencv::motion_segmentation();
 		//my_opencv::gesture_recognition();
 
+		//my_opencv::ar();
 		//my_opencv::qr_code();
 	}
 	catch (const cv::Exception& ex)
