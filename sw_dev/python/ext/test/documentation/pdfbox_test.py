@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import os, re
+import numpy as np
 import jpype
 import jpype.imports
 
@@ -126,10 +127,11 @@ def basic_operation():
 	import org.apache.pdfbox
 	import java.io
 
-	pdf_filepath = "/path/to/sample.pdf"
+	pdf_filepath = "./DeepLearning.pdf"
 	page_no = 0
 
 	#--------------------
+	# Document.
 	try:
 		document = org.apache.pdfbox.pdmodel.PDDocument.load(java.io.File(pdf_filepath))
 	except java.io.FileNotFoundException as ex:
@@ -147,6 +149,7 @@ def basic_operation():
 	print("Current access permission = {}.".format(document.getCurrentAccessPermission()))
 
 	#--------------------
+	# Page.
 	try:
 		page = document.getPage(page_no)
 	except java.lang.IndexOutOfBoundsException as ex:
@@ -172,6 +175,32 @@ def basic_operation():
 	print("Bounding box = {}.".format(page.getBBox()))
 	print("Art box = {}.".format(page.getArtBox()))
 	print("Bleed box = {}.".format(page.getBleedBox()))
+
+	#--------------------
+	# Page image.
+	dpi = 300
+
+	pdfRenderer = org.apache.pdfbox.rendering.PDFRenderer(document)
+	bim = pdfRenderer.renderImageWithDPI(page_no, dpi, org.apache.pdfbox.rendering.ImageType.RGB)
+
+	# Save the page to an image file.
+	if False:
+		org.apache.pdfbox.tools.imageio.ImageIOUtil.writeImage(bim, "{}-{}.png".format(os.path.splitext(pdf_filepath)[0], page_no), dpi)
+
+	# Retrieve data as numpy array of RGB values packed into int32.
+	image_height, image_width = bim.getHeight(), bim.getWidth()
+	image_data = bim.getRGB(0, 0, image_width, image_height, None, 0, image_width)[:]
+	page_image = np.frombuffer(memoryview(image_data), np.uint8).reshape(image_height, image_width, 4)[..., :3]  # HxWxC.
+
+	if False:
+		import matplotlib.pyplot as plt
+		plt.figure(figsize=(8, 10), tight_layout=True)
+		plt.imshow(page_image)
+		plt.axis('off')
+		plt.show()
+
+	#--------------------
+	document.close()
 
 def extract_paragraph_example():
 	import org.apache.pdfbox
@@ -203,6 +232,9 @@ def extract_paragraph_example():
 		print(line)
 
 	#print("Paragraph:\n{}.".format(paragraphs))
+
+	#--------------------
+	document.close()
 
 def extract_text_in_region_example():
 	import org.apache.pdfbox
@@ -236,6 +268,9 @@ def extract_text_in_region_example():
 
 	print("Text extracted from a region {}:\n{}.".format(targetRect, extractedText))
 
+	#--------------------
+	document.close()
+
 def main():
 	# The coordinate system:
 	#	Origin: top-left, +X-axis: rightward, +Y-axis: downward.
@@ -244,10 +279,10 @@ def main():
 	initialize_java_vm()
 
 	#--------------------
-	#basic_operation()
+	basic_operation()
 
 	#extract_paragraph_example()  # Not correctly working.
-	extract_text_in_region_example()
+	#extract_text_in_region_example()
 
 	#--------------------
 	# finalize JAVA VM.
