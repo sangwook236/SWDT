@@ -10,9 +10,10 @@ def basic_example():
 	jvm_path = jpype.getDefaultJVMPath()
 	print("JVM path: {}.".format(jvm_path))
 
-	#jpype.addClassPath("/path/to/sample.jar")
 	if not jpype.isJVMStarted():
 		try:
+			#jpype.addClassPath("/path/to/sample.jar")
+			#jpype.startJVM(jvmpath=jvmpath, classpath=classpath, ignoreUnrecognized=False, convertStrings=False, interrupt=False)
 			jpype.startJVM()
 		except TypeError as ex:
 			print("TypeError raised: {}.".format(ex))

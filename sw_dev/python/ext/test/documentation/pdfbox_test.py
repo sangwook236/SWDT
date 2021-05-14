@@ -6,8 +6,26 @@ import numpy as np
 import jpype
 import jpype.imports
 
+def initialize_java_vm(class_path=None):
+	if not jpype.isJVMStarted():
+		try:
+			if class_path: jpype.addClassPath(class_path)
+			jpype.startJVM(convertStrings=False)
+		except TypeError as ex:
+			print("TypeError raised: {}.".format(ex))
+		except OSError as ex:
+			print("OSError raised: {}.".format(ex))
+
+def finalize_java_vm():
+	if jpype.isJVMStarted():
+		jpype.shutdownJVM()
+
 # REF [site] >> https://github.com/lebedov/python-pdfbox/
-def initialize_java_vm():
+def get_pdfbox_path():
+	"""
+	Return path to local copy of PDFBox jar file.
+	"""
+
 	import hashlib
 	import pathlib
 	import html.parser
@@ -57,71 +75,52 @@ def initialize_java_vm():
 		latest_version = sorted(versions, key=pkg_resources.parse_version)[-1]
 		return pdfbox_archive_url + latest_version + '/pdfbox-app-' + latest_version + '.jar'
 
-	def _get_pdfbox_path():
-		"""
-		Return path to local copy of PDFBox jar file.
-		"""
+	# Use PDFBOX environmental variable if it exists:
+	if 'PDFBOX' in os.environ:
+		pdfbox_path = pathlib.Path(os.environ['PDFBOX'])
+		if not pdfbox_path.exists():
+			raise RuntimeError('pdfbox not found')
+		return pdfbox_path
 
-		# Use PDFBOX environmental variable if it exists:
-		if 'PDFBOX' in os.environ:
-			pdfbox_path = pathlib.Path(os.environ['PDFBOX'])
-			if not pdfbox_path.exists():
-				raise RuntimeError('pdfbox not found')
-			return pdfbox_path
+	# Use platform-specific cache directory:
+	a = appdirs.AppDirs('python-pdfbox')
+	cache_dir = pathlib.Path(a.user_cache_dir)
 
-		# Use platform-specific cache directory:
-		a = appdirs.AppDirs('python-pdfbox')
-		cache_dir = pathlib.Path(a.user_cache_dir)
-
-		# Try to find pdfbox-app-*.jar file with most recent version in cache directory:
-		file_list = list(cache_dir.glob('pdfbox-app-*.jar'))
-		if file_list:
-			def f(s):
-				v = re.search('pdfbox-app-([\w\.\-]+)\.jar', s.name).group(1)
-				return pkg_resources.parse_version(v)
-			return sorted(file_list, key=f)[-1]
-		else:
-			# If no jar files are cached, find the latest version jar, retrieve it,
-			# cache it, and verify its checksum:
-			pdfbox_url = _get_latest_pdfbox_url()
-			sha512_url = pdfbox_url + '.sha512'
-			r = urllib.request.urlopen(pdfbox_url)
-			try:
-				data = r.read()
-			except:
-				raise RuntimeError('error retrieving %s' % pdfbox_url)
-			else:
-				if not os.path.exists(cache_dir.as_posix()):
-					cache_dir.mkdir(parents=True)
-				pdfbox_path = cache_dir.joinpath(pathlib.Path(pdfbox_url).name)
-				with open(pdfbox_path.as_posix(), 'wb') as f:
-					f.write(data)
-
-			r = urllib.request.urlopen(sha512_url)
-			encoding = r.headers.get_content_charset('utf-8')
-			try:
-				sha512 = r.read().decode(encoding).strip()
-			except:
-				raise RuntimeError('error retrieving sha512sum')
-			else:
-				if not _verify_sha512(data, sha512):
-					raise RuntimeError('failed to verify sha512sum')
-
-			return pdfbox_path
-
-	pdfbox_path = _get_pdfbox_path()
-	jpype.addClassPath(pdfbox_path)
-	if not jpype.isJVMStarted():
+	# Try to find pdfbox-app-*.jar file with most recent version in cache directory:
+	file_list = list(cache_dir.glob('pdfbox-app-*.jar'))
+	if file_list:
+		def f(s):
+			v = re.search('pdfbox-app-([\w\.\-]+)\.jar', s.name).group(1)
+			return pkg_resources.parse_version(v)
+		return sorted(file_list, key=f)[-1]
+	else:
+		# If no jar files are cached, find the latest version jar, retrieve it,
+		# cache it, and verify its checksum:
+		pdfbox_url = _get_latest_pdfbox_url()
+		sha512_url = pdfbox_url + '.sha512'
+		r = urllib.request.urlopen(pdfbox_url)
 		try:
-			jpype.startJVM(convertStrings=False)
-		except TypeError as ex:
-			print("TypeError raised: {}.".format(ex))
-		except OSError as ex:
-			print("OSError raised: {}.".format(ex))
+			data = r.read()
+		except:
+			raise RuntimeError('error retrieving %s' % pdfbox_url)
+		else:
+			if not os.path.exists(cache_dir.as_posix()):
+				cache_dir.mkdir(parents=True)
+			pdfbox_path = cache_dir.joinpath(pathlib.Path(pdfbox_url).name)
+			with open(pdfbox_path.as_posix(), 'wb') as f:
+				f.write(data)
 
-def finalize_java_vm():
-	if jpype.isJVMStarted():
-		jpype.shutdownJVM()
+		r = urllib.request.urlopen(sha512_url)
+		encoding = r.headers.get_content_charset('utf-8')
+		try:
+			sha512 = r.read().decode(encoding).strip()
+		except:
+			raise RuntimeError('error retrieving sha512sum')
+		else:
+			if not _verify_sha512(data, sha512):
+				raise RuntimeError('failed to verify sha512sum')
+
+		return pdfbox_path
 
 def basic_operation():
 	import org.apache.pdfbox
@@ -276,7 +275,7 @@ def main():
 	#	Origin: top-left, +X-axis: rightward, +Y-axis: downward.
 
 	# Initialize JAVA VM.
-	initialize_java_vm()
+	initialize_java_vm(get_pdfbox_path())
 
 	#--------------------
 	basic_operation()
