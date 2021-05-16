@@ -274,6 +274,7 @@ def main():
 	# The coordinate system:
 	#	Origin: top-left, +X-axis: rightward, +Y-axis: downward.
 
+	#--------------------
 	# Initialize JAVA VM.
 	initialize_java_vm(get_pdfbox_path())
 

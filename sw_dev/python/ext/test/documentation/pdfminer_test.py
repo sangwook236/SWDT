@@ -135,6 +135,8 @@ def basic_usage():
 				print('Page ID {} processed.'.format(page.pageid))
 	except FileNotFoundError as ex:
 		print('File not found, {}: {}.'.format(pdf_filepath, ex))
+	except Exception as ex:
+		print('Unknown exception raised in {}: {}.'.format(pdf_filepath, ex))
 	finally:
 		if fp: fp.close()
 
@@ -260,6 +262,8 @@ def resource_example():
 				print('\t{}.'.format(xobj))
 	except FileNotFoundError as ex:
 		print('File not found, {}: {}.'.format(pdf_filepath, ex))
+	except Exception as ex:
+		print('Unknown exception raised in {}: {}.'.format(pdf_filepath, ex))
 	finally:
 		if fp: fp.close()
 
@@ -295,6 +299,8 @@ def text_extraction_example():
 				interpreter.process_page(page)
 
 				texts = retstr.getvalue()  # All texts in a page.
+				#texts = texts.splitlines()
+				#texts = list(txt for txt in texts.splitlines() if txt)
 
 				print('------------------------------')
 				print(texts)
@@ -318,6 +324,8 @@ def text_extraction_example():
 				print(txt)
 	except FileNotFoundError as ex:
 		print('File not found, {}: {}.'.format(pdf_filepath, ex))
+	except Exception as ex:
+		print('Unknown exception raised in {}: {}.'.format(pdf_filepath, ex))
 	finally:
 		if fp: fp.close()
 
@@ -357,6 +365,8 @@ def layout_analysis_example():
 			traverse_layout_object(layout)
 	except FileNotFoundError as ex:
 		print('File not found, {}: {}.'.format(pdf_filepath, ex))
+	except Exception as ex:
+		print('Unknown exception raised in {}: {}.'.format(pdf_filepath, ex))
 	finally:
 		if fp: fp.close()
 
@@ -386,6 +396,8 @@ def table_of_contents_example():
 			print('No outline in {}: {}.'.format(pdf_filepath, ex))
 	except FileNotFoundError as ex:
 		print('File not found, {}: {}.'.format(pdf_filepath, ex))
+	except Exception as ex:
+		print('Unknown exception raised in {}: {}.'.format(pdf_filepath, ex))
 	finally:
 		if fp: fp.close()
 
@@ -394,7 +406,7 @@ def intersection_of_pdfminer_and_pymupdf():
 	from PIL import Image, ImageDraw
 	import matplotlib.pyplot as plt
 	
-	pdf_filepath = './DeepLearning.pdf'
+	pdf_filepath = '/path/to/sample.pdf'
 	intersection_area_threshold = 2500
 
 	#--------------------
@@ -487,6 +499,8 @@ def intersection_of_pdfminer_and_pymupdf():
 			plt.show()
 	except FileNotFoundError as ex:
 		print('File not found, {}: {}.'.format(pdf_filepath, ex))
+	except Exception as ex:
+		print('Unknown exception raised in {}: {}.'.format(pdf_filepath, ex))
 	finally:
 		if fp: fp.close()
 
@@ -494,6 +508,7 @@ def main():
 	# The coordinate system:
 	#	Origin: bottom-left, +X-axis: rightward, +Y-axis: upward.
 
+	#--------------------
 	basic_usage()
 	#resource_example()
 

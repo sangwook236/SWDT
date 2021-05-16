@@ -447,6 +447,7 @@ def main():
 	# The coordinate system:
 	#	Origin: top-left, +X-axis: rightward, +Y-axis: downward.
 
+	#--------------------
 	#tutorial()
 
 	text_extraction_example()
