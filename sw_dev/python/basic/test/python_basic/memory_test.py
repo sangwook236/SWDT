@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # REF [site] >> https://pypi.python.org/pypi/memory_profiler
 # REF [site] >> https://github.com/pythonprofilers/memory_profiler

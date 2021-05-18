@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import os, sys, platform, abc, struct
 import itertools, functools, operator, difflib
@@ -675,6 +676,19 @@ def difflib_test():
 	from pprint import pprint
 	pprint(result)
 	sys.stdout.writelines(result)
+
+	#--------------------
+	possibilities = ['hello', 'Hallo', 'hi', 'house', 'key', 'screen', 'hallo', 'question', 'format']
+	result = difflib.get_close_matches('Hello', possibilities, n=3, cutoff=0.6)
+	print(result)
+
+	import keyword
+	result = difflib.get_close_matches('wheel', keyword.kwlist)
+	print(result)
+	result = difflib.get_close_matches('pineapple', keyword.kwlist)
+	print(result)
+	result = difflib.get_close_matches('accept', keyword.kwlist)
+	print(result)
 
 def inheritance_test():
 	class BaseClass(abc.ABC):

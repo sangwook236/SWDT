@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 def fib(n):
 	a, b = 0, 1
