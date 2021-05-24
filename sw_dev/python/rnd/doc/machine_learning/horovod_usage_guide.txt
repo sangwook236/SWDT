@@ -1,0 +1,44 @@
+[-] General.
+	- Site.
+		https://horovod.ai/
+		https://github.com/horovod/horovod
+
+		https://horovod.readthedocs.io/en/stable/
+
+[-] Usage (PyTorch).
+	https://horovod.readthedocs.io/en/stable/running.html
+	https://horovod.readthedocs.io/en/stable/pytorch.html
+
+[-] Installation (Ubuntu).
+	- Install NCCL.
+		https://docs.nvidia.com/deeplearning/nccl/install-guide/index.html
+
+		sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
+		sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/ /"
+		sudo apt update
+		sudo apt install libnccl2 libnccl-dev
+			/usr/lib/x86_64-linux-gnu
+
+		export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu
+
+	- Install Open MPI or another MPI implementation.
+		https://www.open-mpi.org/faq/?category=building#easy-build
+
+		wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.1.tar.gz
+		tar xvf openmpi-4.1.1.tar.gz
+		cd openmpi-4.1.1
+		./configure --prefix=/usr/local
+		make -j8 all install
+
+	- Install TensorFlow and PyTorch.
+		conda install tensorflow-gpu pytorch torchvision
+
+	- Install horovod.
+		https://horovod.readthedocs.io/en/stable/summary_include.html#install
+		https://horovod.readthedocs.io/en/stable/gpus.html
+
+		To run on CPUs:
+			pip install horovod
+		To run on GPUs with NCCL:
+			HOROVOD_GPU_OPERATIONS=NCCL pip install horovod
+			HOROVOD_NCCL_HOME=/usr/lib/x86_64-linux-gnu HOROVOD_GPU_OPERATIONS=NCCL pip install --no-cache-dir horovod
