@@ -37,10 +37,13 @@
 			    Port 2225
 
 	- Public/private key.
+		https://docs.gitlab.com/ee/ssh/
+
 		Generate keys:
 			ssh-keygen -t rsa
 			ssh-keygen -t rsa -b 4096
 			ssh-keygen -t rsa -b 4096 -C "email@domain.com"
+			ssh-keygen -t ed25519 -C "<comment>"
 
 		Copy keys to server:
 			ssh-copy-id user@hostname
