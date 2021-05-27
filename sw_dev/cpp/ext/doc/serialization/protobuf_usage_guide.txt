@@ -23,7 +23,7 @@
 	- Configure & generate.
 		Set protobuf_BUILD_SHARED_LIBS to true.
 		Set CMAKE_DEBUG_POSTFIX to d.
-		gmock 관련 오류:
+		gmock error:
 			<error>
 				Cannot find gmock directory.
 			<solution>
