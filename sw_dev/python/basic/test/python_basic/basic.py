@@ -657,6 +657,12 @@ def difflib_test():
 		if mth.size != 0:
 			print('#{}: {} == {}.'.format(idx, str1[mth.a:mth.a+mth.size], str2[mth.b:mth.b+mth.size]))
 
+	# Other libraries:
+	#	https://github.com/jamesturk/jellyfish
+	#	https://github.com/life4/textdistance
+	#	https://github.com/google/diff-match-patch
+	#	https://github.com/mduggan/cdifflib
+
 	#--------------------
 	text1 = \
 '''  1. Beautiful is better than ugly.
