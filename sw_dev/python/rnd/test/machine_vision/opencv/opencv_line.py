@@ -18,7 +18,7 @@ def lsd_example():
 	# Detect lines in the image.
 	lines, width, prec, nfa = lsd.detect(img)  # The shape of lines = (#lines, 1, 4).
 	if lines is not None:
-		print('#detected lines =', lines.shape[0])
+		print('#detected lines = {}.'.format(len(lines)))
 
 		# Draw detected lines in the image.
 		drawn_img = lsd.drawSegments(img, lines)
@@ -52,7 +52,7 @@ def fld_example():
 	# Detect lines in the image.
 	lines = fld.detect(img)  # The shape of lines = (#lines, 1, 4).
 	if lines is not None:
-		print('#detected lines =', lines.shape[0])
+		print('#detected lines = {}.'.format(len(lines)))
 
 		# Draw detected lines in the image.
 		drawn_img = fld.drawSegments(img, lines)

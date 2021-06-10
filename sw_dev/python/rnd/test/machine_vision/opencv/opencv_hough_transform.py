@@ -26,16 +26,19 @@ def detect_line():
 
 	#--------------------
 	# TODO [check] >> OpenCV implementation of Hough line transform may have some bugs.
-	#lines = cv2.HoughLines(edges, rho=1, theta=math.pi / 180, threshold=150, srn=0, stn=0, min_theta=0, max_theta=math.pi)
-	lines = cv2.HoughLines(edges, rho=1, theta=math.pi / 180, threshold=150, srn=0, stn=0, min_theta=-math.pi / 2, max_theta=math.pi / 2)
+	#lines = cv2.HoughLines(edges, rho=1, theta=math.pi / 180, threshold=150, srn=0, stn=0, min_theta=0, max_theta=math.pi)  # The shape of lines = (#lines, 1, 2).
+	lines = cv2.HoughLines(edges, rho=1, theta=math.pi / 180, threshold=150, srn=0, stn=0, min_theta=-math.pi / 2, max_theta=math.pi / 2)  # The shape of lines = (#lines, 1, 2).
 
 	if lines is not None:
-		print('#detected lines (HoughLines) =', len(lines))
+		print('#detected lines (HoughLines) = {}.'.format(len(lines)))
 		offset = 1000
 		for idx, line in enumerate(lines):
 			# NOTE [info] >> Rho can be negative.
+			#	When rho is negative, (rho, theta) = (-rho, theta - math.pi). -math.pi <= theta <= math.pi.
+			#	https://docs.opencv.org/master/d6/d10/tutorial_py_houghlines.html
 			rho, theta = line[0]
 			rho, theta = float(rho), float(theta)
+			#rho, theta = (float(rho), float(theta)) if rho >= 0 else (-float(rho), float(theta) - math.pi)
 
 			#print('\t#{}: rho = {}, theta = {}.'.format(idx, rho, math.degrees(theta)))
 
@@ -45,7 +48,7 @@ def detect_line():
 			pt1 = (round(x0 - dx), round(y0 + dy))
 			pt2 = (round(x0 + dx), round(y0 - dy))
 
-			cv2.line(img, pt1, pt2, (0, 0, 255), 1, cv2.LINE_AA);
+			cv2.line(img, pt1, pt2, (0, 0, 255), 1, cv2.LINE_AA)
 	else:
 		print('No detected line (HoughLines).')
 
@@ -54,7 +57,7 @@ def detect_line():
 	lines = cv2.HoughLinesP(edges, rho=1, theta=math.pi / 180, threshold=50, minLineLength=50, maxLineGap=10)  # The shape of lines = (#lines, 1, 4).
 
 	if lines is not None:
-		print('#detected lines (HoughLinesP) =', len(lines))
+		print('#detected lines (HoughLinesP) = {}.'.format(len(lines)))
 		for idx, line in enumerate(lines):
 			x1, y1, x2, y2 = line[0]
 			x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
@@ -90,7 +93,7 @@ def detect_circle():
 	circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, dp=1, minDist=20, param1=50, param2=30, minRadius=0, maxRadius=0)
 
 	if circles is not None:
-		print('#detected circles =', len(circles[0]))
+		print('#detected circles = {}.'.format(len(circles[0])))
 		circles = np.around(circles).astype(np.uint16)
 		for circle in circles[0]:
 			cx, cy, radius = circle[0], circle[1], circle[2]
@@ -129,14 +132,17 @@ def detect_line_using_point_set():
 	lines = cv2.HoughLinesPointSet(points, lines_max, threshold, rhoMin, rhoMax, rhoStep, thetaMin, thetaMax, thetaStep)
 
 	if lines is not None:
-		print('#detected lines =', len(lines))
+		print('#detected lines = {}.'.format(len(lines)))
 
 		img = np.zeros((500, 300, 3), dtype=np.uint8)
 		offset = 1000
 		for idx, line in enumerate(lines):
 			# NOTE [info] >> Rho can be negative.
+			#	When rho is negative, (rho, theta) = (-rho, theta - math.pi). -math.pi <= theta <= math.pi.
+			#	https://docs.opencv.org/master/d6/d10/tutorial_py_houghlines.html
 			votes, rho, theta = line[0]
 			votes, rho, theta = int(votes), float(rho), float(theta)
+			#votes, rho, theta = (int(votes), float(rho), float(theta)) if rho >= 0 else (int(votes), -float(rho), float(theta) - math.pi)
 
 			print('\t#{}: votes = {}, rho = {}, theta = {}.'.format(idx, votes, rho, theta))
 
@@ -146,7 +152,7 @@ def detect_line_using_point_set():
 			pt1 = (round(x0 - dx), round(y0 + dy))
 			pt2 = (round(x0 + dx), round(y0 - dy))
 
-			cv2.line(img, pt1, pt2, (0, 0, 255), 1, cv2.LINE_AA);
+			cv2.line(img, pt1, pt2, (0, 0, 255), 1, cv2.LINE_AA)
 		for pt in points:
 			cv2.circle(img, tuple(pt[0]), 1, (255, 0, 0), cv2.FILLED, cv2.LINE_AA)
 
@@ -161,6 +167,12 @@ def main():
 	#detect_circle()
 
 	detect_line_using_point_set()
+
+	# Hough space.
+	# REF [file] >> ${SWDT_CPP_HOME}/rnd/test/machine_vision/opencv/opencv_hough_transform.cpp
+
+	# Operation in Hough space.
+	# REF [function] >> estimate_page_orientation_based_on_fft() in ${DataAnalysis_HOME}/app/document/estimate_document_orientation.py
 
 #--------------------------------------------------------------------
 
