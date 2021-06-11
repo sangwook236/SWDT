@@ -22,9 +22,9 @@ def basic_operation():
 	df2 = pd.DataFrame({
 		'A': 1.,
 		'B': pd.Timestamp('20130102'),
-		'C': pd.Series(1,index=list(range(4)),dtype='float32'),
-		'D': np.array([3] * 4,dtype='int32'),
-		'E': pd.Categorical(["test","train","test","train"]),
+		'C': pd.Series(1, index=list(range(4)), dtype='float32'),
+		'D': np.array([3] * 4, dtype='int32'),
+		'E': pd.Categorical(["test", "train", "test", "train"]),
 		'F': 'foo'
 	})
 	print('df =\n', df2, sep='')
@@ -112,6 +112,24 @@ def value_operation():
 	# Write to a CSV file.
 	df.to_csv('./titanic_train_revised.csv', na_rep='N/A')
 
+def merged_cell_example():
+	# REF [site] >> https://stackoverflow.com/questions/46600472/avoid-merged-cells-in-pandas-to-excel-method
+	df = pd.DataFrame({
+		"animal": ("horse", "horse", "dog", "dog"),
+		"color of fur": ("black", "white", "grey", "black"),
+		"name": ("Blacky", "Wendy", "Rufus", "Catchy")
+	})
+	df_merged = df.set_index(["animal", "color of fur"])  # Necessity.
+
+	df_merged.to_excel("./merged_cell.xlsx")  # Merged cells exist.
+	df_merged.to_html("./merged_cell.html")  # Merged cells exist.
+	df_merged.to_csv("./merged_cell.csv", na_rep="N/A")  # Merged cells do not exist.
+
+	if True:
+		from IPython.display import display, HTML
+		display(df_merged)
+		print(HTML(df_merged.to_html()).data)
+
 def numpy_operation():
 	iris_df = pd.read_csv('./iris.csv', sep=',', header='infer')
 	print('Data frame =\n', iris_df, sep='')
@@ -129,7 +147,9 @@ def main():
 	#basic_operation()
 	#indexing_and_slicing()
 	#function_operation()
-	value_operation()
+	#value_operation()
+
+	merged_cell_example()
 
 	#numpy_operation()
 
