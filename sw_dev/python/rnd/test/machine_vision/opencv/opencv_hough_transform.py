@@ -163,6 +163,9 @@ def detect_line_using_point_set():
 		print('No detected line.')
 
 def main():
+	# TODO [check] >> OpenCV implementation of Hough line transform may have some bugs.
+	#	Use skimage.transform.hough_line() & skimage.transform.hough_line_peaks() instead.
+
 	#detect_line()
 	#detect_circle()
 

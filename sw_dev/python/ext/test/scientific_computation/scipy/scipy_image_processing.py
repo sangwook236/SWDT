@@ -22,6 +22,9 @@ def morphological_operation_test():
 def main():
 	morphological_operation_test()
 
+	# Hough transform.
+	# REF [function] >> estimate_page_orientation_based_on_fft() in ${DataAnalysis_HOME}/app/document/estimate_document_orientation.py
+
 #--------------------------------------------------------------------
 
 if '__main__' == __name__:
