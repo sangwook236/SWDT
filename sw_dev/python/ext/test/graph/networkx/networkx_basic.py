@@ -16,8 +16,8 @@ def basic_operation_tutorial():
 	G.add_nodes_from(H)
 	G.add_node(H)
 
-	#print('G.nodes =', G.nodes)
-	print('G.nodes =', list(G.nodes))
+	#print('G.nodes = {}.'.format(G.nodes))
+	print('G.nodes = {}.'.format(list(G.nodes)))
 
 	# Edges.
 	G.add_edge(1, 2)
@@ -28,8 +28,8 @@ def basic_operation_tutorial():
 
 	G.add_edges_from(H.edges)
 
-	#print('G.edges =', G.edges)
-	print('G.edges =', list(G.edges))
+	#print('G.edges = {}.'.format(G.edges))
+	print('G.edges = {}.'.format(list(G.edges)))
 
 	# Remove all nodes and edges.
 	G.clear()
@@ -42,37 +42,37 @@ def basic_operation_tutorial():
 	G.add_nodes_from('spam')  # Adds 4 nodes: 's', 'p', 'a', 'm'.
 	G.add_edge(3, 'm')
 
-	print('G.number_of_nodes() =', G.number_of_nodes())
-	print('G.number_of_edges() =', G.number_of_edges())
+	print('G.number_of_nodes() = {}.'.format(G.number_of_nodes()))
+	print('G.number_of_edges() = {}.'.format(G.number_of_edges()))
 
 	# Set-like views of the nodes, edges, neighbors (adjacencies), and degrees of nodes in a graph.
-	print('G.adj[1] =', list(G.adj[1]))  # or G.neighbors(1).
-	print('G.degree[1] =', G.degree[1])  # The number of edges incident to 1.
+	print('G.adj[1] = {}.'.format(list(G.adj[1])))  # or G.neighbors(1).
+	print('G.degree[1] = {}.'.format(G.degree[1]))  # The number of edges incident to 1.
 
 	# Report the edges and degree from a subset of all nodes using an nbunch.
 	# An nbunch is any of: None (meaning all nodes), a node, or an iterable container of nodes that is not itself a node in the graph.
-	print("G.edges([2, 'm']) =", G.edges([2, 'm']))
-	print('G.degree([2, 3]) =', G.degree([2, 3]))
+	print("G.edges([2, 'm']) = {}.".format(G.edges([2, 'm'])))
+	print('G.degree([2, 3]) = {}.'.format(G.degree([2, 3])))
 
 	# Remove nodes and edges from the graph in a similar fashion to adding.
 	G.remove_node(2)
 	G.remove_nodes_from('spam')
-	print('G.nodes =', list(G.nodes))
+	print('G.nodes = {}.'.format(list(G.nodes)))
 	G.remove_edge(1, 3)
 
 	# When creating a graph structure by instantiating one of the graph classes you can specify data in several formats.
 	G.add_edge(1, 2)
 	H = nx.DiGraph(G)  # Creates a DiGraph using the connections from G.
-	print('H.edges() =', list(H.edges()))
+	print('H.edges() = {}.'.format(list(H.edges())))
 
 	edgelist = [(0, 1), (1, 2), (2, 3)]
 	H = nx.Graph(edgelist)
 
 	#--------------------
 	# Access edges and neighbors.
-	print('G[1] =', G[1])  # Same as G.adj[1].
-	print('G[1][2] =', G[1][2])  # Edge 1-2.
-	print('G.edges[1, 2] =', G.edges[1, 2])
+	print('G[1] = {}.'.format(G[1]))  # Same as G.adj[1].
+	print('G[1][2] = {}.'.format(G[1][2]))  # Edge 1-2.
+	print('G.edges[1, 2] = {}.'.format(G.edges[1, 2]))
 
 	# Get/set the attributes of an edge using subscript notation if the edge already exists.
 	G.add_edge(1, 3)
@@ -97,16 +97,16 @@ def basic_operation_tutorial():
 
 	# Graph attributes.
 	G = nx.Graph(day='Friday')
-	print('G.graph =', G.graph)
+	print('G.graph = {}.'.format(G.graph))
 
 	G.graph['day'] = 'Monday'
 
 	# Node attributes: add_node(), add_nodes_from(), or G.nodes.
 	G.add_node(1, time='5pm')
 	G.add_nodes_from([3], time='2pm')
-	print('G.nodes[1] =', G.nodes[1])
+	print('G.nodes[1] = {}.'.format(G.nodes[1]))
 	G.nodes[1]['room'] = 714
-	print('G.nodes.data() =', G.nodes.data())
+	print('G.nodes.data() = {}.'.format(G.nodes.data()))
 
 	# Edge attributes: add_edge(), add_edges_from(), or subscript notation.
 	G.add_edge(1, 2, weight=4.7)
@@ -114,17 +114,17 @@ def basic_operation_tutorial():
 	G.add_edges_from([(1, 2, {'color': 'blue'}), (2, 3, {'weight': 8})])
 	G[1][2]['weight'] = 4.7
 	G.edges[3, 4]['weight'] = 4.2
-	print('G.edges.data() =', G.edges.data())
+	print('G.edges.data() = {}.'.format(G.edges.data()))
 
 	#--------------------
 	# Directed graphs.
 
 	DG = nx.DiGraph()
 	DG.add_weighted_edges_from([(1, 2, 0.5), (3, 1, 0.75)])
-	print("DG.out_degree(1, weight='weight') =", DG.out_degree(1, weight='weight'))
-	print("DG.degree(1, weight='weight') =", DG.degree(1, weight='weight'))  # The sum of in_degree() and out_degree().
-	print('DG.successors(1) =', list(DG.successors(1)))
-	print('DG.neighbors(1) =', list(DG.neighbors(1)))
+	print("DG.out_degree(1, weight='weight') = {}.".format(DG.out_degree(1, weight='weight')))
+	print("DG.degree(1, weight='weight') = {}.".format(DG.degree(1, weight='weight')))  # The sum of in_degree() and out_degree().
+	print('DG.successors(1) = {}.'.format(list(DG.successors(1))))
+	print('DG.neighbors(1) = {}.'.format(list(DG.neighbors(1))))
 
 	# Convert G to undirected graph.
 	#H = DG.to_undirected()
@@ -136,14 +136,14 @@ def basic_operation_tutorial():
 	MG = nx.MultiGraph()
 	#MDG = nx.MultiDiGraph()
 	MG.add_weighted_edges_from([(1, 2, 0.5), (1, 2, 0.75), (2, 3, 0.5)])
-	print("MG.degree(weight='weight') =", dict(MG.degree(weight='weight')))
+	print("MG.degree(weight='weight') = {}.".format(dict(MG.degree(weight='weight'))))
 
 	GG = nx.Graph()
 	for n, nbrs in MG.adjacency():
-			for nbr, edict in nbrs.items():
-				minvalue = min([d['weight'] for d in edict.values()])
-				GG.add_edge(n, nbr, weight = minvalue)
-	print('nx.shortest_path(GG, 1, 3) =', nx.shortest_path(GG, 1, 3))
+		for nbr, edict in nbrs.items():
+			minvalue = min([d['weight'] for d in edict.values()])
+			GG.add_edge(n, nbr, weight = minvalue)
+	print('nx.shortest_path(GG, 1, 3) = {}.'.format(nx.shortest_path(GG, 1, 3)))
 
 	#--------------------
 	# Classic graph operations:

@@ -59,6 +59,7 @@ def operation_example():
 	print('polygon.boundary = {}.'.format(geom.boundary))
 	print('polygon.centroid = {}.'.format(geom.centroid))
 
+	print('polygon.convex_hull.exterior.coords.xy = {}.'.format(list((x, y) for x, y in zip(*geom.convex_hull.exterior.coords.xy))))
 	print('polygon.envelope = {}.'.format(geom.envelope))
 	print('polygon.minimum_rotated_rectangle = {}.'.format(geom.minimum_rotated_rectangle))
 
