@@ -5,6 +5,46 @@ import math
 import numpy as np
 import cv2
 
+def angle_between_hough_lines(line1, line2):  # line = (rho, theta).
+	delta = abs(line1[1] - line2[1])
+	return min(delta, math.pi - delta)
+
+def draw_hough_line(image, rho, theta, color, thickness=1):
+	# Line equation (the Hesse normal form): x * cos(theta) + y * sin(theta) = rho.
+	sin_angle, cos_angle = math.sin(theta), math.cos(theta)
+	if math.isclose(sin_angle, 0.0):
+		x0 = x1 = round(rho / cos_angle)
+		if x0 < 0 or x0 > image.shape[1]:
+			return
+		y0, y1 = 0, image.shape[0]
+	elif math.isclose(cos_angle, 0.0):
+		y0 = y1 = round(rho / sin_angle)
+		if y0 < 0 or y0 > image.shape[0]:
+			return
+		x0, x1 = 0, image.shape[1]
+	else:
+		valid_inter = list()
+		x = 0
+		y = round((rho - x * cos_angle) / sin_angle)
+		if 0 <= y <= image.shape[0]:
+			valid_inter.append((x, y))
+		x = image.shape[1]
+		y = round((rho - x * cos_angle) / sin_angle)
+		if 0 <= y <= image.shape[0]:
+			valid_inter.append((x, y))
+		y = 0
+		x = round((rho - y * sin_angle) / cos_angle)
+		if 0 <= x <= image.shape[1]:
+			valid_inter.append((x, y))
+		y = image.shape[0]
+		x = round((rho - y * sin_angle) / cos_angle)
+		if 0 <= x <= image.shape[1]:
+			valid_inter.append((x, y))
+		assert len(valid_inter) == 2
+		(x0, y0), (x1, y1) = valid_inter
+
+	cv2.line(image, (x0, y0), (x1, y1), color, thickness, cv2.LINE_AA)
+
 def detect_line():
 	image_filepath = '../../../data/machine_vision/sudoku.png'
 
@@ -42,13 +82,16 @@ def detect_line():
 
 			#print('\t#{}: rho = {}, theta = {}.'.format(idx, rho, math.degrees(theta)))
 
-			cos_theta, sin_theta = math.cos(theta), math.sin(theta)
-			x0, y0 = rho * cos_theta, rho * sin_theta
-			dx, dy = offset * sin_theta, offset * cos_theta
-			pt1 = (round(x0 - dx), round(y0 + dy))
-			pt2 = (round(x0 + dx), round(y0 - dy))
+			if True:
+				draw_hough_line(img, rho, theta, (0, 0, 255), 1)
+			else:
+				cos_theta, sin_theta = math.cos(theta), math.sin(theta)
+				x0, y0 = rho * cos_theta, rho * sin_theta
+				dx, dy = offset * sin_theta, offset * cos_theta
+				pt1 = (round(x0 - dx), round(y0 + dy))
+				pt2 = (round(x0 + dx), round(y0 - dy))
 
-			cv2.line(img, pt1, pt2, (0, 0, 255), 1, cv2.LINE_AA)
+				cv2.line(img, pt1, pt2, (0, 0, 255), 1, cv2.LINE_AA)
 	else:
 		print('No detected line (HoughLines).')
 
@@ -146,13 +189,16 @@ def detect_line_using_point_set():
 
 			print('\t#{}: votes = {}, rho = {}, theta = {}.'.format(idx, votes, rho, theta))
 
-			cos_theta, sin_theta = math.cos(theta), math.sin(theta)
-			x0, y0 = rho * cos_theta, rho * sin_theta
-			dx, dy = offset * sin_theta, offset * cos_theta
-			pt1 = (round(x0 - dx), round(y0 + dy))
-			pt2 = (round(x0 + dx), round(y0 - dy))
+			if True:
+				draw_hough_line(img, rho, theta, (0, 0, 255), 1)
+			else:
+				cos_theta, sin_theta = math.cos(theta), math.sin(theta)
+				x0, y0 = rho * cos_theta, rho * sin_theta
+				dx, dy = offset * sin_theta, offset * cos_theta
+				pt1 = (round(x0 - dx), round(y0 + dy))
+				pt2 = (round(x0 + dx), round(y0 - dy))
 
-			cv2.line(img, pt1, pt2, (0, 0, 255), 1, cv2.LINE_AA)
+				cv2.line(img, pt1, pt2, (0, 0, 255), 1, cv2.LINE_AA)
 		for pt in points:
 			cv2.circle(img, tuple(pt[0]), 1, (255, 0, 0), cv2.FILLED, cv2.LINE_AA)
 
