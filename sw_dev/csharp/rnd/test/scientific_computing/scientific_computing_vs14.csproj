@@ -9,8 +9,8 @@
     <ProjectGuid>{C655D163-BEF8-491C-87CB-2EE7C413F305}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>scientific_computation</RootNamespace>
-    <AssemblyName>scientific_computation</AssemblyName>
+    <RootNamespace>scientific_computing</RootNamespace>
+    <AssemblyName>scientific_computing</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

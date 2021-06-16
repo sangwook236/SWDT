@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>scientific_computation</ProjectName>
+    <ProjectName>scientific_computing</ProjectName>
     <ProjectGuid>{28CA2D76-AE1C-464D-880D-A608DE72358D}</ProjectGuid>
-    <RootNamespace>scientific_computation</RootNamespace>
+    <RootNamespace>scientific_computing</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

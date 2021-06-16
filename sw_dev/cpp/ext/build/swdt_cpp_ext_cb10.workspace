@@ -23,7 +23,7 @@
 		<Project filename="../test/multimedia/multimedia_cb10.cbp" />
 		<Project filename="../test/networking/networking_cb10.cbp" />
 		<Project filename="../test/resource_management/resource_management_cb10.cbp" />
-		<Project filename="../test/scientific_computation/scientific_computation_cb10.cbp" />
+		<Project filename="../test/scientific_computing/scientific_computing_cb10.cbp" />
 		<Project filename="../test/serialization/serialization_cb10.cbp" />
 		<Project filename="../test/testing/testing_cb10.cbp" />
 		<Project filename="../test/threading/threading_cb10.cbp" />

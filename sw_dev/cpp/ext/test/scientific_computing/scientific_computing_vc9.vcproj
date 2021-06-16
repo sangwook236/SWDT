@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="scientific_computation"
+	Name="scientific_computing"
 	ProjectGUID="{28CA2D76-AE1C-464D-880D-A608DE72358D}"
-	RootNamespace="scientific_computation"
+	RootNamespace="scientific_computing"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>

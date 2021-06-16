@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace scientific_computation
+namespace scientific_computing
 {
     class Program
     {

@@ -6,7 +6,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mtl", "..\test\mtl\mtl_vc9.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cvm", "..\test\cvm\cvm_vc9.vcproj", "{5BC3582A-F4DB-4E64-938B-F763EAE2E198}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scientific_computation", "..\test\scientific_computation\scientific_computation_vc9.vcproj", "{28CA2D76-AE1C-464D-880D-A608DE72358D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scientific_computing", "..\test\scientific_computing\scientific_computing_vc9.vcproj", "{28CA2D76-AE1C-464D-880D-A608DE72358D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lapack", "..\test\lapack\lapack_vc9.vcproj", "{F2A4E8D1-1CF9-49A3-AB0F-06F450AB7E98}"
 EndProject

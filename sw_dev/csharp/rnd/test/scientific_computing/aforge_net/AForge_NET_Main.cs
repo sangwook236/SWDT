@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace scientific_computation.aforge_net
+namespace scientific_computing.aforge_net
 {
     class AForge_NET_Main
     {

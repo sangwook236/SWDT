@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace scientific_computation.accord_net
+namespace scientific_computing.accord_net
 {
     using Accord.Statistics.Distributions.Univariate;
     using Accord.Statistics.Models.Markov.Topology;

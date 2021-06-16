@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "machine_learning_vs10", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "machine_vision_vs10", "..\test\machine_vision\machine_vision_vs10.csproj", "{08B0EF1C-D1E1-4B64-ADFF-21BAF4099B27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scientific_computation_vs10", "..\test\scientific_computation\scientific_computation_vs10.csproj", "{C655D163-BEF8-491C-87CB-2EE7C413F305}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scientific_computing_vs10", "..\test\scientific_computing\scientific_computing_vs10.csproj", "{C655D163-BEF8-491C-87CB-2EE7C413F305}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

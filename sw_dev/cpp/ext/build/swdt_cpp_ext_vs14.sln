@@ -4,7 +4,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "boost", "..\test\boost\boost_vs14.vcxproj", "{FE865C87-952D-4D24-9247-6ED2EB61067A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scientific_computation", "..\test\scientific_computation\scientific_computation_vs14.vcxproj", "{28CA2D76-AE1C-464D-880D-A608DE72358D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scientific_computing", "..\test\scientific_computing\scientific_computing_vs14.vcxproj", "{28CA2D76-AE1C-464D-880D-A608DE72358D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xml", "..\test\xml\xml_vs14.vcxproj", "{23AC145E-3F83-4293-B0C5-8DE1EDE678D7}"
 EndProject
