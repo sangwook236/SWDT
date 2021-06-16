@@ -81,8 +81,12 @@ def plot_fft(signal, Fs):
 	ax[0].set_title('Waveform')
 	ax[0].set_xlabel('Time')
 	ax[0].set_ylabel('Amplitude')
+	#ax[0].set_xlim(0, 500)
+	#ax[0].set_ylim(0, 1)
 	ax[1].plot(freq, abs(sig_fft))
 	#ax[1].plot(freq[1:], abs(sig_fft[1:]))  # Removes DC (0 Hz) response.
 	ax[1].set_title('Single-sided Amplitude Spectrum (FFT)')
 	ax[1].set_xlabel('Freq (Hz)')
 	ax[1].set_ylabel('Magnitude')
+	#ax[1].set_xlim(0, 500)
+	#ax[1].set_ylim(0, 1)

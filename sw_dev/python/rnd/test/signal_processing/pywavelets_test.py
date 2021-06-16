@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 # REF [site] >> https://pywavelets.readthedocs.io/en/latest/regression/wavelet.html
 def basic_example():
-	print('Family =', pywt.families())
+	print('Family = {}.'.format(pywt.families()))
 	for family in pywt.families():
 		print('\t%s family: ' % family + ', '.join(pywt.wavelist(family)))
 
@@ -61,7 +61,7 @@ def basic_example():
 	print('vanishing_moments_phi = {}, vanishing_moments_psi = {}.'.format(w.vanishing_moments_phi, w.vanishing_moments_psi))
 
 	# Lowpass and highpass decomposition filters and lowpass and highpass reconstruction filters.
-	print('Filter bank? =', w.filter_bank == (w.dec_lo, w.dec_hi, w.rec_lo, w.rec_hi))
+	print('Filter bank? = {}.'.format(w.filter_bank == (w.dec_lo, w.dec_hi, w.rec_lo, w.rec_hi)))
 
 # REF [site] >> https://pywavelets.readthedocs.io/en/latest/regression/wavelet.html
 def custom_wavelet_object_example():
@@ -74,18 +74,18 @@ def custom_wavelet_object_example():
 
 	my_wavelet = pywt.Wavelet('My Haar Wavelet', filter_bank=MyHaarFilterBank())
 
-	print('Summary =', my_wavelet)
+	print('Summary = {}.'.format(my_wavelet))
 
 	# Passing the filters coefficients directly as the filter_bank parameter.
 	my_filter_bank = ([math.sqrt(2)/2, math.sqrt(2)/2], [-math.sqrt(2)/2, math.sqrt(2)/2], [math.sqrt(2)/2, math.sqrt(2)/2], [math.sqrt(2)/2, -math.sqrt(2)/2])
 	my_wavelet = pywt.Wavelet('My Haar Wavelet', filter_bank=my_filter_bank)
 
-	print('Summary =', my_wavelet)
+	print('Summary = {}.'.format(my_wavelet))
 
 	my_wavelet.orthogonal = True
 	my_wavelet.biorthogonal = True
 
-	print('Summary =', my_wavelet)
+	print('Summary = {}.'.format(my_wavelet))
 
 # REF [site] >> https://pywavelets.readthedocs.io/en/latest/regression/wavelet.html
 def wavefun_example():
@@ -95,19 +95,19 @@ def wavefun_example():
 	# For orthogonal wavelets the result is tuple with scaling function, wavelet function and xgrid coordinates.
 
 	w = pywt.Wavelet('sym3')
-	print('Orthogonal =', w.orthogonal)
+	print('Orthogonal = {}.'.format(w.orthogonal))
 	(phi, psi, x) = w.wavefun(level=5)
 
 	# For biorthogonal (non-orthogonal) wavelets different scaling and wavelet functions are used for decomposition and reconstruction, and thus five elements are returned:
 	#	decomposition scaling and wavelet functions approximations, reconstruction scaling and wavelet functions approximations, and the xgrid.
 
 	w = pywt.Wavelet('bior1.3')
-	print('Orthogonal =', w.orthogonal)
+	print('Orthogonal = {}.'.format(w.orthogonal))
 	(phi_d, psi_d, phi_r, psi_r, x) = w.wavefun(level=5)
 
 # REF [site] >> https://pywavelets.readthedocs.io/en/latest/regression/modes.html
 def signal_extention_mode_example():
-	print('Mode =', pywt.Modes.modes)
+	print('Mode = {}.'.format(pywt.Modes.modes))
 
 	try:
 		pywt.dwt([1,2,3,4], 'db2', 'invalid')
@@ -122,20 +122,20 @@ def signal_extention_mode_example():
 
 	# The default mode is symmetric.
 	cA, cD = pywt.dwt(x, 'db2')  # Approximation and detail coefficients.
-	print('Single level reconstruction of signal =', pywt.idwt(cA, cD, 'db2'))
+	print('Single level reconstruction of signal = {}.'.format(pywt.idwt(cA, cD, 'db2')))
 
 	cA, cD = pywt.dwt(x, 'db2', mode='symmetric')  # Approximation and detail coefficients.
-	print('Single level reconstruction of signal =', pywt.idwt(cA, cD, 'db2'))
+	print('Single level reconstruction of signal = {}.'.format(pywt.idwt(cA, cD, 'db2')))
 
 # REF [site] >> https://pywavelets.readthedocs.io/en/latest/regression/dwt-idwt.html
 def discrete_wavelet_transform_example():
 	x = [3, 7, 1, 1, -2, 5, 4, 6]
 	cA, cD = pywt.dwt(x, 'db2')  # Approximation and detail coefficients.
 
-	print('Approximation coefficients =', cA)
-	print('Detail coefficients =', cD)
+	print('Approximation coefficients = {}.'.format(cA))
+	print('Detail coefficients = {}.'.format(cD))
 
-	print('Single level reconstruction of signal =', pywt.idwt(cA, cD, 'db2'))
+	print('Single level reconstruction of signal = {}.'.format(pywt.idwt(cA, cD, 'db2')))
 
 	#--------------------
 	# Pass a Wavelet object instead of the wavelet name and specify signal extension mode (the default is symmetric) for the border effect handling
@@ -146,13 +146,13 @@ def discrete_wavelet_transform_example():
 	# If you expected that the output length would be a half of the input data length, well, that's the trade-off that allows for the perfect reconstruction…
 	cA, cD = pywt.dwt(x, wavelet=w, mode='constant')
 
-	print('Approximation coefficients =', cA)
-	print('Detail coefficients =', cD)
+	print('Approximation coefficients = {}.'.format(cA))
+	print('Detail coefficients = {}.'.format(cD))
 
 	# To find out what will be the output data size use the dwt_coeff_len() function.
-	print('Length of coefficients =', int(pywt.dwt_coeff_len(data_len=len(x), filter_len=w.dec_len, mode='symmetric')))
-	print('Length of coefficients =', int(pywt.dwt_coeff_len(len(x), w, 'symmetric')))
-	print('Length of coefficients =', len(cA))
+	print('Length of coefficients = {}.'.format(int(pywt.dwt_coeff_len(data_len=len(x), filter_len=w.dec_len, mode='symmetric'))))
+	print('Length of coefficients = {}.'.format(int(pywt.dwt_coeff_len(len(x), w, 'symmetric'))))
+	print('Length of coefficients = {}.'.format(len(cA)))
 
 	# The periodization (periodization) mode is slightly different from the others.
 	# It's aim when doing the DWT transform is to output coefficients arrays that are half of the length of the input data.
@@ -161,18 +161,18 @@ def discrete_wavelet_transform_example():
 	# Otherwise, it will produce invalid results.
 
 	cA, cD = pywt.dwt(x, wavelet=w, mode='periodization')
-	print('Single level reconstruction of signal =', pywt.idwt(cA, cD, 'sym3', 'symmetric'))  # Invalid mode.
-	print('Single level reconstruction of signal =', pywt.idwt(cA, cD, 'sym3', 'periodization'))
+	print('Single level reconstruction of signal = {}.'.format(pywt.idwt(cA, cD, 'sym3', 'symmetric')))  # Invalid mode.
+	print('Single level reconstruction of signal = {}.'.format(pywt.idwt(cA, cD, 'sym3', 'periodization')))
 
 	# Passing None as one of the coefficient arrays parameters is similar to passing a zero-filled array.
-	print('Single level reconstruction of signal =', pywt.idwt([1,2,0,1], None, 'db2', 'symmetric'))
-	print('Single level reconstruction of signal =', pywt.idwt([1, 2, 0, 1], [0, 0, 0, 0], 'db2', 'symmetric'))
-	print('Single level reconstruction of signal =', pywt.idwt(None, [1, 2, 0, 1], 'db2', 'symmetric'))
-	print('Single level reconstruction of signal =', pywt.idwt([0, 0, 0, 0], [1, 2, 0, 1], 'db2', 'symmetric'))
+	print('Single level reconstruction of signal = {}.'.format(pywt.idwt([1,2,0,1], None, 'db2', 'symmetric')))
+	print('Single level reconstruction of signal = {}.'.format(pywt.idwt([1, 2, 0, 1], [0, 0, 0, 0], 'db2', 'symmetric')))
+	print('Single level reconstruction of signal = {}.'.format(pywt.idwt(None, [1, 2, 0, 1], 'db2', 'symmetric')))
+	print('Single level reconstruction of signal = {}.'.format(pywt.idwt([0, 0, 0, 0], [1, 2, 0, 1], 'db2', 'symmetric')))
 
 	# Only one argument at a time can be None.
 	try:
-		print('Single level reconstruction of signal =', pywt.idwt(None, None, 'db2', 'symmetric'))
+		print('Single level reconstruction of signal = {}.'.format(pywt.idwt(None, None, 'db2', 'symmetric')))
 	except ValueError as ex:
 		print('Invalid coefficient parameter.')
 
@@ -188,7 +188,7 @@ def discrete_wavelet_transform_example():
 	except ValueError as ex:
 		print('Invalid coefficient arrays length.')
 
-	print('Coefficient length =', int(pywt.dwt_coeff_len(1, pywt.Wavelet('db4').dec_len, 'symmetric')))
+	print('Coefficient length = {}.'.format(int(pywt.dwt_coeff_len(1, pywt.Wavelet('db4').dec_len, 'symmetric'))))
 
 # REF [site] >> https://pywavelets.readthedocs.io/en/latest/regression/multilevel.html
 def multilevel_dwt_decomposition_example():
@@ -198,34 +198,34 @@ def multilevel_dwt_decomposition_example():
 	db1 = pywt.Wavelet('db1')
 	cA3, cD3, cD2, cD1 = pywt.wavedec(x, db1)
 
-	print('Approximation coefficients (level 3) =', cA3)
-	print('Detail coefficients (level 3) =', cD3)
-	print('Detail coefficients (level 2) =', cD2)
-	print('Detail coefficients (level 1) =', cD1)
+	print('Approximation coefficients (level 3) = {}.'.format(cA3))
+	print('Detail coefficients (level 3) = {}.'.format(cD3))
+	print('Detail coefficients (level 2) = {}.'.format(cD2))
+	print('Detail coefficients (level 1) = {}.'.format(cD1))
 
 	# Multilevel IDWT reconstruction.
 	coeffs = pywt.wavedec(x, db1)
 
-	print('Signal reconstruction =', pywt.waverec(coeffs, db1))
+	print('Signal reconstruction = {}.'.format(pywt.waverec(coeffs, db1)))
 
 	# Multilevel stationary wavelet transform (SWT) decomposition.
 	x = [3, 7, 1, 3, -2, 6, 4, 6]
 	(cA2, cD2), (cA1, cD1) = pywt.swt(x, db1, level=2)
 
-	print('Approximation coefficients (level 1) =', cA1)
-	print('Detail coefficients (level 1) =', cD1)
-	print('Approximation coefficients (level 2) =', cA2)
-	print('Detail coefficients (level 2) =', cD2)
+	print('Approximation coefficients (level 1) = {}.'.format(cA1))
+	print('Detail coefficients (level 1) = {}.'.format(cD1))
+	print('Approximation coefficients (level 2) = {}.'.format(cA2))
+	print('Detail coefficients (level 2) = {}.'.format(cD2))
 
 	[(cA2, cD2)] = pywt.swt(cA1, db1, level=1, start_level=1)
 
-	print('Approximation coefficients (level 2) =', cA2)
-	print('Detail coefficients (level 2) =', cD2)
+	print('Approximation coefficients (level 2) = {}.'.format(cA2))
+	print('Detail coefficients (level 2) = {}.'.format(cD2))
 
 	coeffs = pywt.swt(x, db1)
-	print('Coefficients =', coeffs)
-	print('Length of coefficients =', len(coeffs))
-	print('Max level =', pywt.swt_max_level(len(x)))
+	print('Coefficients = {}.'.format(coeffs))
+	print('Length of coefficients = {}.'.format(len(coeffs)))
+	print('Max level = {}.'.format(pywt.swt_max_level(len(x))))
 
 # REF [site] >>
 #	https://pywavelets.readthedocs.io/en/latest/regression/wp.html

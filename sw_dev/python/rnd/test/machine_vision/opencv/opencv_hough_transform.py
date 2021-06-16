@@ -23,25 +23,25 @@ def draw_hough_line(image, rho, theta, color, thickness=1):
 			return
 		x0, x1 = 0, image.shape[1]
 	else:
-		valid_inter = list()
+		pts_on_boundary = list()
 		x = 0
 		y = round((rho - x * cos_angle) / sin_angle)
 		if 0 <= y <= image.shape[0]:
-			valid_inter.append((x, y))
+			pts_on_boundary.append((x, y))
 		x = image.shape[1]
 		y = round((rho - x * cos_angle) / sin_angle)
-		if 0 <= y <= image.shape[0]:
-			valid_inter.append((x, y))
+		if 0 <= y <= image.shape[0] and (x, y) not in pts_on_boundary:
+			pts_on_boundary.append((x, y))
 		y = 0
 		x = round((rho - y * sin_angle) / cos_angle)
-		if 0 <= x <= image.shape[1]:
-			valid_inter.append((x, y))
+		if 0 <= x <= image.shape[1] and (x, y) not in pts_on_boundary:
+			pts_on_boundary.append((x, y))
 		y = image.shape[0]
 		x = round((rho - y * sin_angle) / cos_angle)
-		if 0 <= x <= image.shape[1]:
-			valid_inter.append((x, y))
-		assert len(valid_inter) == 2
-		(x0, y0), (x1, y1) = valid_inter
+		if 0 <= x <= image.shape[1] and (x, y) not in pts_on_boundary:
+			pts_on_boundary.append((x, y))
+		assert len(pts_on_boundary) == 2, 'Points on boundary = {}'.format(pts_on_boundary)
+		(x0, y0), (x1, y1) = pts_on_boundary[:2]
 
 	cv2.line(image, (x0, y0), (x1, y1), color, thickness, cv2.LINE_AA)
 

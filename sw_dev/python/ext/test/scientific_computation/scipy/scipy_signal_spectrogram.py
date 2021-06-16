@@ -33,14 +33,6 @@ def spectrogram_example_1():
 	plt.xlabel('Time [sec]')
 	plt.show()
 
-	# Load data.
-	
-	#dataset_home_dir_path = '/home/sangwook/my_dataset'
-	#dataset_home_dir_path = '/home/HDD1/sangwook/my_dataset'
-	dataset_home_dir_path = 'D:/dataset'
-	
-	data_dir_path = dataset_home_dir_path + '/failure_analysis/defect/motor_20170621/0_original/500-1500Hz'
-
 #--------------------------------------------------------------------
 
 import numpy as np
@@ -48,6 +40,13 @@ import matplotlib.pyplot as plt
 import scipy.io.wavfile  # For reading the .wav file.
 
 def spectrogram_example_2():
+	# Load data.
+	#dataset_home_dir_path = '/home/sangwook/my_dataset'
+	#dataset_home_dir_path = '/home/HDD1/sangwook/my_dataset'
+	dataset_home_dir_path = 'D:/dataset'
+	
+	data_dir_path = dataset_home_dir_path + '/failure_analysis/defect/motor_20170621/0_original/500-1500Hz'
+
 	# fs: sampling frequency.
 	# signal: the numpy 2D array where the data of the wav file is written.
 	[fs, signal] = scipy.io.wavfile.read(data_dir_path + '/KMHFF41CBBA036937_2000RPM ( 0.00- 5.73 s).wav')
@@ -56,15 +55,15 @@ def spectrogram_example_2():
 
 	window_hop_length = 0.01  # 10ms change here.
 	overlap = int(fs * window_hop_length)
-	print('overlap =', overlap)
+	print('overlap = {}.'.format(overlap))
 
 	window_size = 0.025  # 25 ms change here.
 	framesize = int(window_size * fs)
-	print('framesize =', framesize)
+	print('framesize = {}.'.format(framesize))
 
 	number_of_frames = int(length / overlap)
 	nfft_length = framesize  # Length of DFT.
-	print('number of frames =', number_of_frames)
+	print('number of frames = {}.'.format(number_of_frames))
 
 	# Declare a 2D matrix, with rows equal to the number of frames, and columns equal to the framesize or the length of each DFT.
 	frames = np.ndarray((number_of_frames, framesize))
