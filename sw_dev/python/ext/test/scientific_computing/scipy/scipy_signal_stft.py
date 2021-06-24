@@ -20,16 +20,18 @@ def stft_example():
 	noise *= np.exp(-time / 5)
 	x = carrier + noise
 
-	# Compute the spectrogram.
+	# Compute the STFT.
 	#f, t, Zxx = signal.stft(x, fs, nperseg=256)  # Zxx.shape = (129, 783).
 	f, t, Zxx = signal.stft(x, fs, nperseg=1000)  # Zxx.shape = (501, 201).
 
-	# Plot the spectrogram.
+	# Plot the STFT.
 	#plt.pcolormesh(t, f, np.abs(Zxx))
 	plt.pcolormesh(t, f, 20 * np.log10(np.abs(Zxx)))
 	plt.title('STFT Magnitude')
-	plt.ylabel('Frequency [Hz]')
 	plt.xlabel('Time [sec]')
+	plt.ylabel('Frequency [Hz]')
+	plt.tight_layout()
+
 	plt.show()
 
 def main():

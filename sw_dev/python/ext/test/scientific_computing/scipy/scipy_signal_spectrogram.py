@@ -29,8 +29,11 @@ def spectrogram_example_1():
 	# Plot the spectrogram.
 	#plt.pcolormesh(t, f, Sxx)
 	plt.pcolormesh(t, f, 20 * np.log10(Sxx))
-	plt.ylabel('Frequency [Hz]')
+	plt.title('Spectrogram')
 	plt.xlabel('Time [sec]')
+	plt.ylabel('Frequency [Hz]')
+	plt.tight_layout()
+
 	plt.show()
 
 #--------------------------------------------------------------------
@@ -85,8 +88,11 @@ def spectrogram_example_2():
 	# Plot the power spectrum obtained above.
 	t = range(len(abs_fft_matrix))
 	plt.plot(t, abs_fft_matrix)
-	plt.ylabel('frequency')
-	plt.xlabel('time')
+	plt.title('Power Spectrum')
+	plt.xlabel('Time')
+	plt.ylabel('Frequency')
+	plt.tight_layout()
+
 	plt.show()
 
 def main():

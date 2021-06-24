@@ -8,20 +8,41 @@ from scipy import signal
 import matplotlib.pyplot as plt
 
 def scalogram_example_1():
-	t = np.linspace(-1, 1, 1000, endpoint=False)
-	sig = np.cos(2 * np.pi * 7 * t) + signal.gausspulse(t - 0.4, fc=2)
-	#widths = np.arange(1, 31)
-	widths = np.arange(1, 1001)
+	if True:
+		#N = 30
+		N = 1000
+		t = np.linspace(-1, 1, N, endpoint=False)
+		sig = np.cos(2 * np.pi * 7 * t) + signal.gausspulse(t - 0.4, fc=2)
+	else:
+		# A signal given.
+		sig = ...
+		N = len(sig)
+		t = np.linspace(0, 1 / Fs * N, N + 1)[:N]
+	widths = np.arange(1, N + 1)
+	#widths = np.arange(1, 500 + 1)
 
 	# Compute the CWT.
 	cwtmatr = signal.cwt(sig, signal.ricker, widths)  # cwtmatr.shape = (len(widths), len(sig)).
 
 	# Scalogram: a spectrogram for wavelets. (???)
+	plt.figure()
 	plt.pcolormesh(t, widths, 20 * np.log10(np.abs(cwtmatr)))
-	plt.show()
+	#plt.pcolormesh(t, widths[:500], 20 * np.log10(np.abs(cwtmatr[:500,:])))
+	plt.title('Scalogram')
+	#plt.xlabel('?')
+	#plt.ylabel('?')
+	plt.tight_layout()
 
 	# Plot the CWT.
-	plt.imshow(cwtmatr, extent=[-1, 1, 31, 1], cmap='PRGn', aspect='auto', vmax=abs(cwtmatr).max(), vmin=-abs(cwtmatr).max())
+	plt.figure()
+	#plt.imshow(cwtmatr, extent=[t[0], t[-1], widths[0], widths[-1]], cmap='PRGn', aspect='auto', vmax=abs(cwtmatr).max(), vmin=-abs(cwtmatr).max())
+	plt.imshow(cwtmatr, extent=[t[0], t[-1], widths[-1], widths[0]], cmap='PRGn', aspect='auto', vmax=abs(cwtmatr).max(), vmin=-abs(cwtmatr).max())
+	#plt.imshow(cwtmatr[:200,:], extent=[t[0], t[-1], widths[200], widths[0]], cmap='PRGn', aspect='auto', vmax=abs(cwtmatr).max(), vmin=-abs(cwtmatr).max())
+	plt.title('CWT')
+	#plt.xlabel('?')
+	#plt.ylabel('?')
+	plt.tight_layout()
+
 	plt.show()
 
 #--------------------------------------------------------------------
@@ -49,10 +70,18 @@ def scalogram_example_2():
 
 	# Scalogram: a spectrogram for wavelets. (???)
 	plt.pcolormesh(time, scale, 20 * np.log10(np.abs(cwtmatr)))
-	plt.show()
+	plt.title('Scalogram')
+	#plt.xlabel('?')
+	#plt.ylabel('?')
+	plt.tight_layout()
 
 	# Plot the CWT.
 	plt.imshow(cwtmatr, extent=[0, 10, 30, -30], cmap='PRGn', aspect='auto', vmax=abs(cwtmatr).max(), vmin=-abs(cwtmatr).max())
+	plt.title('CWT')
+	#plt.xlabel('?')
+	#plt.ylabel('?')
+	plt.tight_layout()
+
 	plt.show()
 
 def main():
