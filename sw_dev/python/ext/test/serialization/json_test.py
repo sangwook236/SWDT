@@ -6,19 +6,22 @@ import json
 def main():
 	# File.
 	try:
-		filepath = 'test.json'
-		with open(filepath, encoding='UTF8') as fd:
+		filepath = './test.json'
+		with open(filepath, encoding='utf-8') as fd:
 			json_data = json.load(fd)
 			print(json_data)
+	except json.decoder.JSONDecodeError as ex:
+		print('JSON decode error in {}: {}.'.format(filepath, ex))
 	except UnicodeDecodeError as ex:
 		print('Unicode decode error in {}: {}.'.format(filepath, ex))
 	except FileNotFoundError as ex:
 		print('File not found, {}: {}.'.format(filepath, ex))
 
 	try:
-		filepath = 'tmp.json'
-		with open(filepath, 'w+', encoding='UTF8') as fd:
+		filepath = './tmp.json'
+		with open(filepath, 'w+', encoding='utf-8') as fd:
 			json.dump(json_data, fd, indent='\t')
+			#json.dump(json_data, fd, indent='    ')
 	except UnicodeDecodeError as ex:
 		print('Unicode decode error in {}: {}.'.format(filepath, ex))
 	except FileNotFoundError as ex:

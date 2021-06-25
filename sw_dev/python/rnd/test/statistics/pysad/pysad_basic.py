@@ -90,9 +90,9 @@ def ensembler_usage_example():
 			model.fit_partial(X)
 			model_scores[i] = model.score_partial(X)
 
-		score = ensembler.fit_transform_partial(model_scores)  # fit to ensembler model and get ensembled score.
+		score = ensembler.fit_transform_partial(model_scores)  # Fit to ensembler model and get ensembled score.
 
-		auroc.update(y, score)  # update AUROC metric.
+		auroc.update(y, score)  # Update AUROC metric.
 
 	# Output score.
 	print("AUROC: {}.".format(auroc.get()))

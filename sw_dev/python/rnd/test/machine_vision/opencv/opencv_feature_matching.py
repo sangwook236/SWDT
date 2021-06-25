@@ -5,7 +5,7 @@ import numpy as np
 import cv2 as cv
 
 # REF [site] >> https://docs.opencv.org/4.1.0/d7/dff/tutorial_feature_homography.html
-def surf():
+def simple_feature_matching_example():
 	object_image_filepath = '../../../data/machine_vision/box.png'
 	scene_image_filepath = '../../../data/machine_vision/box_in_scene.png'
 	
@@ -18,23 +18,73 @@ def surf():
 		print('Failed to load a scene image, {}.'.format(scene_image_filepath))
 		return
 
-	# Step 1: Detect the keypoints using SURF Detector, compute the descriptors.
-	minHessian = 400
-	detector = cv.xfeatures2d_SURF.create(hessianThreshold=minHessian)
+	# Detect the keypoints and compute the descriptors.
+	if False:
+		hessian_threshold = 400
+		detector = cv.xfeatures2d_SURF.create(hessianThreshold=hessian_threshold)
+		norm = cv.NORM_L2
+	elif False:
+		detector = cv.xfeatures2d_SIFT.create(nfeatures=0, nOctaveLayers=3, contrastThreshold=0.04, edgeThreshold=10, sigma=1.6)
+		norm = cv.NORM_L2
+	elif True:
+		num_features = 500
+		detector = cv.ORB.create(nfeatures=num_features, scaleFactor=1.2, nlevels=8, edgeThreshold=31, firstLevel=0, WTA_K=2, scoreType=cv.ORB_HARRIS_SCORE, patchSize=31, fastThreshold=20)
+		norm = cv.NORM_HAMMING
+	elif False:
+		detector = cv.AKAZE.create(descriptor_type=cv.AKAZE_DESCRIPTOR_MLDB, descriptor_size=0, descriptor_channels=3, threshold=0.001, nOctaves=4, nOctaveLayers=4, diffusivity=cv.KAZE_DIFF_PM_G2)
+		norm = cv.NORM_HAMMING
+	elif False:
+		detector = cv.BRISK.create(thresh=30, octaves=3, patternScale=1.0)
+		norm = cv.NORM_HAMMING
+
 	keypoints_obj, descriptors_obj = detector.detectAndCompute(img_object, None)
 	keypoints_scene, descriptors_scene = detector.detectAndCompute(img_scene, None)
 
-	# Step 2: Matching descriptor vectors with a FLANN based matcher.
-	# Since SURF is a floating-point descriptor NORM_L2 is used.
-	matcher = cv.DescriptorMatcher_create(cv.DescriptorMatcher_FLANNBASED)
-	knn_matches = matcher.knnMatch(descriptors_obj, descriptors_scene, 2)
+	# Match descriptor vectors.
+	if True:
+		# REF [file] >> ${OPENCV_HOME}/modules/flann/include/opencv2/flann/defines.h
+		FLANN_INDEX_LINEAR = 0
+		FLANN_INDEX_KDTREE = 1
+		FLANN_INDEX_KMEANS = 2
+		FLANN_INDEX_COMPOSITE = 3
+		FLANN_INDEX_KDTREE_SINGLE = 4
+		FLANN_INDEX_HIERARCHICAL = 5
+		FLANN_INDEX_LSH = 6
+		FLANN_INDEX_SAVED = 254
+		FLANN_INDEX_AUTOTUNED = 255
 
-	# Filter matches using the Lowe's ratio test.
-	ratio_thresh = 0.75
-	good_matches = []
-	for m,n in knn_matches:
-		if m.distance < ratio_thresh * n.distance:
-			good_matches.append(m)
+		#matcher = cv.DescriptorMatcher_create(cv.DescriptorMatcher_FLANNBASED)
+		if norm == cv.NORM_L2:
+			matcher = cv.FlannBasedMatcher(dict(algorithm=FLANN_INDEX_KDTREE, trees=5), {})
+		else:
+			#matcher = cv.FlannBasedMatcher(dict(algorithm=FLANN_INDEX_LSH, table_number=12, key_size=20, multi_probe_level=2), {})
+			matcher = cv.FlannBasedMatcher(dict(algorithm=FLANN_INDEX_LSH, table_number=6, key_size=12, multi_probe_level=1), {})
+	elif False:
+		matcher = cv.DescriptorMatcher_create(cv.DESCRIPTOR_MATCHER_BRUTEFORCE_HAMMING)
+	elif False:
+		matcher = cv.BFMatcher(norm)
+
+	if False:
+		matches = matcher.match(descriptors_obj, descriptors_scene)
+
+		# Sort matches by score.
+		matches.sort(key=lambda x: x.distance, reverse=False)
+
+		# Remove not so good matches.
+		GOOD_MATCH_PERCENT = 0.15
+		num_good_matches = int(len(matches) * GOOD_MATCH_PERCENT)
+		good_matches = matches[:num_good_matches]
+	else:
+		matches = matcher.knnMatch(descriptors_obj, descriptors_scene, 2)
+
+		# Filter matches using the Lowe's ratio test.
+		ratio_thresh = 0.75
+		good_matches = list()
+		for mth in matches:
+			if len(mth) == 2:
+				m, n = mth
+				if m.distance < ratio_thresh * n.distance:
+					good_matches.append(m)
 
 	# Draw matches.
 	img_matches = np.empty((max(img_object.shape[0], img_scene.shape[0]), img_object.shape[1]+img_scene.shape[1], 3), dtype=np.uint8)
@@ -79,7 +129,7 @@ def surf():
 	cv.waitKey()
 
 def main():
-	surf()
+	simple_feature_matching_example()
 
 #--------------------------------------------------------------------
 
