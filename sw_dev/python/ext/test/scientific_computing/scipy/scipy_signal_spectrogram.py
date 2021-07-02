@@ -4,8 +4,9 @@
 # A spectrogram, sonogram, spectral waterfalls, voiceprints, or voicegrams: a visual representation of the spectrum of frequencies in a sound.
 # REF [site] >> https://docs.scipy.org/doc/scipy-0.19.0/reference/generated/scipy.signal.spectrogram.html
 
-from scipy import signal
 import numpy as np
+import scipy.signal
+import scipy.io.wavfile  # For reading the .wav file.
 import matplotlib.pyplot as plt
 
 def spectrogram_example_1():
@@ -24,7 +25,7 @@ def spectrogram_example_1():
 
 	# Compute the spectrogram.
 	# REF [file] >> ./scipy_signal_stft.py
-	f, t, Sxx = signal.spectrogram(x, fs)
+	f, t, Sxx = scipy.signal.spectrogram(x, fs, nperseg=256)
 
 	# Plot the spectrogram.
 	#plt.pcolormesh(t, f, Sxx)
@@ -36,16 +37,9 @@ def spectrogram_example_1():
 
 	plt.show()
 
-#--------------------------------------------------------------------
-
-import numpy as np
-import matplotlib.pyplot as plt
-import scipy.io.wavfile  # For reading the .wav file.
-
 def spectrogram_example_2():
 	# Load data.
-	#dataset_home_dir_path = '/home/sangwook/my_dataset'
-	#dataset_home_dir_path = '/home/HDD1/sangwook/my_dataset'
+	#dataset_home_dir_path = '/home/sangwook/work/dataset'
 	dataset_home_dir_path = 'D:/dataset'
 	
 	data_dir_path = dataset_home_dir_path + '/failure_analysis/defect/motor_20170621/0_original/500-1500Hz'
