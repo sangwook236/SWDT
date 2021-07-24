@@ -59,6 +59,9 @@
 			https://www.qt.io/download-open-source
 			https://www.qt.io/offline-insallers
 
+			http://download.qt.io/official_releases/qt/5.12/5.12.11/qt-opensource-linux-x64-5.12.11.run
+			http://download.qt.io/official_releases/qt/5.12/5.12.3/qt-opensource-linux-x64-5.12.3.run
+
 		Using apt:
 			sudo apt install qt5-default
 			sudo snap install qt513
@@ -74,7 +77,7 @@
 		pip install PySide6
 		pip install PySide2
 
-[-] Trouble shooting (Python).
+[-] Troubleshooting (Python).
 	- <error> Could not initialize GLX.
 		<solution>
 			Set QT_XCB_GL_INTEGRATION to none.
@@ -84,7 +87,22 @@
 		<solution>
 			PySide2.QtCore.qApp -> PySide2.QtWidgets.QApplication.instance() (?)
 
-[-] Trouble shooting (Windows).
+	- <error> qt.qpa.plugin: Could not load the Qt platform plugin "xcb".
+		<solution>
+			Install opencv library.
+				pip install opencv-python==3.4.10.37
+
+			(Optional) Install a library.
+				sudo apt install libxcb-xinerama0
+			(Optional) Set the environment variables.
+				export QT_PLUGIN_PATH=~/anaconda3/envs/$ENV_NAME/lib/$PYTHON/site-packages/PyQt5/plugins
+				export QT_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/qt5/plugins
+				export QT_QPA_PLATFORM_PLUGIN_PATH=~/anaconda3/envs/$ENV_NAME/lib/$PYTHON/site-packages/PyQt5/plugins
+				export QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/qt5/plugins
+			(Optional) Set the path to the Qt libraries.
+				export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+
+[-] Troubleshooting (Windows).
 	- qmake.exe or QMAKESPEC.
 		REF [site] >> http://stackoverflow.com/questions/5303634/qmake-qmakespec-has-not-been-set
 
@@ -100,7 +118,7 @@
 			qmake -query QMAKESPEC
 			qmake -query
 
-[-] Trouble shooting (VC).
+[-] Troubleshooting (VC).
 	- moc.exe or uic.exe.
 		<error>
 			MSB6006: "cmd.exe" exited with code3.
