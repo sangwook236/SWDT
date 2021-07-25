@@ -55,3 +55,6 @@
 	REF [text] >> ${SWDT_PYTHON_HOME}/basic/test/extending/extention_module_build_guide.txt (???)
 	REF [text] >> ${SWDT_PYTHON_HOME}/basic/test/extending/cpp
 	REF [site] >> http://en.wikibooks.org/wiki/Python_Programming/Extending_with_C%2B%2B
+
+[-] Debugging (GDB).
+	Refer to gdb_usage_guide.txt

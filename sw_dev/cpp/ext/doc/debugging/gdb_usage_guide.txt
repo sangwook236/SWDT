@@ -9,5 +9,31 @@
 		http://www.brendangregg.com/blog/2016-08-09/gdb-example-ncurses.html
 		https://betterexplained.com/articles/debugging-with-gdb/
 
+	- Document.
+		https://www.gnu.org/software/gdb/documentation/
+		http://korea.gnu.org/manual/release/gdb/gdb.html
+
+		https://www.tutorialspoint.com/gnu_debugger/index.htm
+		http://www.gdbtutorial.com/
+
 [-] Usage.
-	
+
+[-] Python.
+	https://wiki.python.org/moin/DebuggingWithGdb
+	https://youngminz.netlify.app/posts/debugging-with-gdb
+	http://egloos.zum.com/mcchae/v/11230168
+		Segmentation Fault 발생 시 gdb로 stack trace 해 보기.
+
+	- Install.
+		sudo apt install python3-dbg
+		sudo apt install python2-dbg
+
+	- <error> Python Exception <class 'UnicodeDecodeError'> 'ascii' codec can't decode byte 0xef in position 3261: ordinal not in range(128).
+		<solution>
+			export LANG=C.UTF-8
+
+[-] Java.
+	https://www.ibm.com/docs/en/sdk-java-technology/8?topic=techniques-debugging-gdb
+
+[-] CUDA.
+	https://docs.nvidia.com/cuda/cuda-gdb/index.html
