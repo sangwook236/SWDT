@@ -8,25 +8,39 @@
     	http://www.cmake.org/Wiki/CMake_Useful_Variables
 
 [-] Usage.
-	- Reference.
-		${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocapy_build_guide.txt
+	${SWDT_CPP_HOME}/rnd/doc/probabilistic_graphical_model/mocapy_usage_guide.txt
 
-[-] Executable.
-	- cmake or ccmake.
-		mkdir build_cygwin
-		cd build_cygwin
-		> Initial setting.
-			ccmake.exe -G "Unix Makefiles" -D BOOST_LIBRARYDIR:PATH=/usr/lib --build ..
-			cmake.exe -i -G "Unix Makefiles" -D BOOST_LIBRARYDIR:PATH=/usr/lib --build ..
-		> Re-seting.
-			ccmake ..
-			cmake -i ..
-		> Relase and debug.
+	- cmake.
+		https://cmake.org/cmake/help/latest/manual/cmake.1.html
+
+		mkdir build
+		cd build
+
+		Generate a project build system:
+			cmake ..
+			cmake -DCMAKE_PREFIX_PATH=/path/to/3rd_party_lib ..
 			cmake -DCMAKE_BUILD_TYPE=Release ..
 			cmake -DCMAKE_BUILD_TYPE=Debug ..
-		make -j4
-			The "-j4" is assuming that you have a 4-core CPU.
-	
+
+			cmake -i -G "Unix Makefiles" -D BOOST_LIBRARYDIR:PATH=/usr/lib ..
+			cmake -i ..
+
+		Build a project:
+			cmake --build . --config Release
+
+			make -j4
+				The "-j4" is assuming that you have a 4-core CPU.
+
+		Install a project:
+			cmake --install /path/to/installed
+
+	- ccmake.
+		https://cmake.org/cmake/help/latest/manual/ccmake.1.html
+		CMake curses interface.
+
+		ccmake -G "Unix Makefiles" -D BOOST_LIBRARYDIR:PATH=/usr/lib ..
+		cmake ..
+
 	- cmake-gui.
 		Windows:
 			cmake-gui
@@ -37,12 +51,12 @@
 [-] Using external library.
 	REF [site] >> http://www.cmake.org/Wiki/CMake:How_To_Find_Libraries
 
-	- CMake°¡ Áö¿øÇÏ´Â library¸¦ »ç¿ëÇÏ´Â °æ¿ì.
-		library Ã£±â À§ÇØ Find???.cmake file »ç¿ë.
-		${CMAKE_INSTALL}\share\cmake-2.8\Modules¿¡ Á¸Àç.
-	- CMake°¡ Áö¿øÇÏÁö ¾Ê´Â library¸¦ »ç¿ëÇÏ´Â °æ¿ì.
-		"Âü°í »çÀÌÆ®" Âü°í.
-		==> °³º° source directory¿¡ .cmake Ãß°¡.
+	- CMakeê°€ ì§€ì›í•˜ëŠ” libraryë¥¼ ì‚¬ìš©í•˜ëŠ” ê²½ìš°.
+		library ì°¾ê¸° ìœ„í•´ Find???.cmake file ì‚¬ìš©.
+		${CMAKE_INSTALL}\share\cmake-2.8\Modulesì— ì¡´ì¬.
+	- CMakeê°€ ì§€ì›í•˜ì§€ ì•ŠëŠ” libraryë¥¼ ì‚¬ìš©í•˜ëŠ” ê²½ìš°.
+		"ì°¸ê³  ì‚¬ì´íŠ¸" ì°¸ê³ .
+		==> ê°œë³„ source directoryì— .cmake ì¶”ê°€.
 			${SRC_HOME}/cmake
 			e.g.) ${SWL_CPP_HOME}/cmake/FindLog4cxx.cmake
 
@@ -77,20 +91,20 @@
 
 [-] Setting (CMake).
 	- Reference.
-		${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/mocap_build_guide.txt
-		${GDT_HOME}/sw_dev/cpp/rnd/src/probabilistic_graphical_model/mocapy/Mocapy++-1.07/src/CMakeLists.txt
-		${GDT_HOME}/sw_dev/cpp/rnd/src/hand_analysis/libhand/libhand-0.9/hand_cpp/source/CMakeLists.txt
+		${SWDT_CPP_HOME}/rnd/doc/probabilistic_graphical_model/mocapy_usage_guide.txt
+		${SWDT_CPP_HOME}/rnd/src/probabilistic_graphical_model/mocapy/Mocapy++-1.07/src/CMakeLists.txt
+		${SWDT_CPP_HOME}/rnd/src/hand_analysis/libhand/libhand-0.9/hand_cpp/source/CMakeLists.txt
 
-	- CMake GUI¿¡¼­ ¼³Á¤µÈ °ªÀº CMakeCache.txt¿¡ ÀúÀåµÊ.
+	- CMake GUIì—ì„œ ì„¤ì •ëœ ê°’ì€ CMakeCache.txtì— ì €ì¥ë¨.
 		e.g.)
 			${MOCAPY_HOME}/build_mingw/CMakeCache.txt
-	- »ı¼ºµÈ CMakeCache.txt fileÀº building °úÁ¤¿¡¼­ »ç¿ëµÊ.
+	- ìƒì„±ëœ CMakeCache.txt fileì€ building ê³¼ì •ì—ì„œ ì‚¬ìš©ë¨.
 		e.g.)
 			${MOCAPY_HOME}/build_mingw/CMakefiles/Makefile.cmake
 
-	- BUILD_STATIC_LIBS¸¦ onÀ¸·Î ¼³Á¤. (?)
+	- BUILD_STATIC_LIBSë¥¼ onìœ¼ë¡œ ì„¤ì •. (?)
 		SET(BUILD_STATIC_LIBS ON) or SET(BUILD_SHARED_LIBS OFF)
-	- Building static libraryÀ» »ı¼ºÇÏ±â À§ÇØ¼­´Â ¾Æ·¡¿Í °°ÀÌ add_library Ç×¸ñÀÌ Ãß°¡µÇ¾î¾ß ÇÔ.
+	- Building static libraryì„ ìƒì„±í•˜ê¸° ìœ„í•´ì„œëŠ” ì•„ë˜ì™€ ê°™ì´ add_library í•­ëª©ì´ ì¶”ê°€ë˜ì–´ì•¼ í•¨.
 		e.g.)
 		SET(Library_src1
 		src1/file1.cpp
@@ -104,9 +118,9 @@
 			${Library_src1}
 		    ${Library_src2}
 		)
-	- BUILD_SHARED_LIBS¸¦ onÀ¸·Î ¼³Á¤.
+	- BUILD_SHARED_LIBSë¥¼ onìœ¼ë¡œ ì„¤ì •.
 		SET(BUILD_SHARED_LIBS ON)
-	- Building shared libraryÀ» »ı¼ºÇÏ±â À§ÇØ¼­´Â ¾Æ·¡¿Í °°ÀÌ add_library Ç×¸ñÀÌ Ãß°¡µÇ¾î¾ß ÇÔ.
+	- Building shared libraryì„ ìƒì„±í•˜ê¸° ìœ„í•´ì„œëŠ” ì•„ë˜ì™€ ê°™ì´ add_library í•­ëª©ì´ ì¶”ê°€ë˜ì–´ì•¼ í•¨.
 		e.g.)
 		SET(Library_src1
 		src1/file1.cpp

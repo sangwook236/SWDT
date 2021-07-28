@@ -22,7 +22,7 @@ void torch_script_example()
 	//--------------------
 	// Load a script module in C++.
 
-	// REF [python] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_torch_script.py
+	// REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_torch_script.py
 	const std::string script_module_filepath("./resnet_ts_model.pth");
 
 	torch::jit::script::Module script_module;

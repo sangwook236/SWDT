@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import numpy as np
 import torch, torchvision
 
 # REF [site] >> https://pytorch.org/tutorials/advanced/cpp_export.html
@@ -26,7 +25,7 @@ def simple_tutorial():
 	else:
 		# Convert to Torch Script via annotation.
 
-		torch_script_filepath = "./resnet_mnist_ts_model.pth"
+		torch_script_filepath = "./lenet_mnist_ts_model.pth"
 
 		# REF [file] >> ./pytorch_neural_network.py
 		class MyModule(torch.nn.Module):
@@ -70,8 +69,10 @@ def simple_tutorial():
 	# Serialize a script module to a file.
 	script_module.save(torch_script_filepath)
 
-	# Load the script module in C++.
-	#	REF [cpp] >> ${SWDT_CPP_HOME}/rnd/test/machine_learning/torch/torch_torch_script_example.cpp
+	# Load and execute the script module in C++.
+	#	REF [file] >>
+	#		${SWDT_CPP_HOME}/rnd/test/machine_learning/torch/torch_torch_script_example.cpp
+	#		${SWDT_CPP_HOME}/rnd/test/machine_learning/torch/torch_training_example.cpp
 
 def main():
 	simple_tutorial()

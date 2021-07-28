@@ -185,7 +185,7 @@ void get_module_params(std::vector<at::Tensor> &parameters, const torch::jit::sc
 }
 
 // REF [function] >> cnn_mnist_tutorial().
-void resnet_mnist_torch_script_example()
+void lenet_mnist_torch_script_example()
 {
 	// Device.
 	const auto cuda_available = torch::cuda::is_available();
@@ -221,8 +221,8 @@ void resnet_mnist_torch_script_example()
 	auto test_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(std::move(test_dataset), batch_size);
 
 	// Load a Torch Script model.
-	// REF [python] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_torch_script.py
-	const std::string script_module_filepath("./resnet_mnist_ts_model.pth");
+	// REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_torch_script.py
+	const std::string script_module_filepath("./lenet_mnist_ts_model.pth");
 
 	torch::jit::script::Module script_module;
 	try
@@ -338,7 +338,7 @@ namespace my_torch {
 void training_example()
 {
 	local::cnn_mnist_tutorial();
-	//local::resnet_mnist_torch_script_example();
+	//local::lenet_mnist_torch_script_example();
 }
 
 }  // namespace my_torch
