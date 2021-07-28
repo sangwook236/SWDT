@@ -572,6 +572,7 @@
     <ClCompile Include="tiny_dnn\tiny_dnn_mnist_example.cpp" />
     <ClCompile Include="torch\torch_deep_learning_example.cpp" />
     <ClCompile Include="torch\torch_main.cpp" />
+    <ClCompile Include="torch\torch_torch_script_example.cpp" />
     <ClCompile Include="waffles\waffles_main.cpp" />
     <ClCompile Include="waffles\waffles_manifold_example.cpp" />
     <ClCompile Include="waffles\waffles_ml_example.cpp" />

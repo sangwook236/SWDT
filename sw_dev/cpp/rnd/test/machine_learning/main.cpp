@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
 		//  - Tensor.
 		//	- Deep learning.
 #if defined(__unix__) || defined(__unix) || defined(unix) || defined(__linux__) || defined(__linux) || defined(linux)
-		//retval = torch_main(argc, argv);  // Not yet implemented.
+		//retval = torch_main(argc, argv);
 #else
 		std::cout << "\tThis library can be used in unix-like systems" << std::endl;
 #endif

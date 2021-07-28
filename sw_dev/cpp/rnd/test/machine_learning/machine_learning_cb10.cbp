@@ -281,6 +281,7 @@
 		<Unit filename="tiny_dnn/tiny_dnn_mnist_example.cpp" />
 		<Unit filename="torch/torch_deep_learning_example.cpp" />
 		<Unit filename="torch/torch_main.cpp" />
+		<Unit filename="torch/torch_torch_script_example.cpp" />
 		<Unit filename="waffles/waffles_main.cpp" />
 		<Unit filename="waffles/waffles_manifold_example.cpp" />
 		<Unit filename="waffles/waffles_ml_example.cpp" />

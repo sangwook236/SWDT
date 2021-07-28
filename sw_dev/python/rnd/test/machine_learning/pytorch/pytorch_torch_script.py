@@ -46,7 +46,7 @@ def simple_tutorial():
 	script_module.save("./resnet_ts_model.pt")
 
 	# Load the script module in C++.
-	#	REF [cpp] >> ${SWDT_CPP_HOME}/rnd/test/machine_learning/pytorch/torch_script_test.cpp
+	#	REF [cpp] >> ${SWDT_CPP_HOME}/rnd/test/machine_learning/torch/torch_torch_script_example.cpp
 
 def main():
 	simple_tutorial()
