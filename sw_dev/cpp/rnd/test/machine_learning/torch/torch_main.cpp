@@ -10,17 +10,17 @@ namespace local {
 
 namespace my_torch {
 
-void deep_learning_example();
+void training_example();
 void torch_script_example();
 
 }  // namespace my_torch
 
 int torch_main(int argc, char *argv[])
 {
-	std::cout << "torch library: deep learning example ----------------------------" << std::endl;
-	my_torch::deep_learning_example();  // Not yet implemented.
+	std::cout << "torch library: Training example -----------------------------" << std::endl;
+	my_torch::training_example();
 
-	std::cout << "\ntorch library: Torch Script example -----------------------------" << std::endl;
+	std::cout << "\ttorch library: Torch Script example -------------------------" << std::endl;
 	my_torch::torch_script_example();
 
 	return 0;
