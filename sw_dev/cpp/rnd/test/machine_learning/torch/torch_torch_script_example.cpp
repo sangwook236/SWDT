@@ -23,7 +23,7 @@ void torch_script_example()
 	// Load a script module in C++.
 
 	// REF [python] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_torch_script.py
-	const std::string script_module_filepath("./resnet_ts_model.pt");
+	const std::string script_module_filepath("./resnet_ts_model.pth");
 
 	torch::jit::script::Module script_module;
 	try
@@ -33,7 +33,7 @@ void torch_script_example()
 	}
 	catch (const c10::Error &ex)
 	{
-		std::cerr << "[Error] Failed to load a model, " << script_module_filepath << ": " << ex.what() << std::endl;
+		std::cerr << "[Error] Failed to load a script module, " << script_module_filepath << ": " << ex.what() << std::endl;
 		return;
 	}
 

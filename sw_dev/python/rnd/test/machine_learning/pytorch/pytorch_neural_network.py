@@ -15,7 +15,7 @@ class Net(nn.Module):
 		self.conv1 = nn.Conv2d(1, 6, 3)
 		self.conv2 = nn.Conv2d(6, 16, 3)
 		# An affine operation: y = Wx + b.
-		self.fc1 = nn.Linear(16 * 6 * 6, 120)  # 6*6 from image dimension.
+		self.fc1 = nn.Linear(16 * 6 * 6, 120)  # For 32x32 input.
 		self.fc2 = nn.Linear(120, 84)
 		self.fc3 = nn.Linear(84, 10)
 
@@ -52,7 +52,7 @@ def lenet_example():
 
 	if False:
 		#--------------------
-		input = torch.randn(1, 1, 32, 32)  # 32x32 input.
+		input = torch.randn(1, 1, 32, 32)  # For 32x32 input.
 		out = net(input)
 		print('out =', out)
 
@@ -69,7 +69,7 @@ def lenet_example():
 	#--------------------
 	# Loss.
 	
-	input = torch.randn(1, 1, 32, 32)  # 32x32 input.
+	input = torch.randn(1, 1, 32, 32)  # For 32x32 input.
 	output = net(input)
 	target = torch.randn(10)  # A dummy target, for example.
 	target = target.view(1, -1)  # Make it the same shape as output.
