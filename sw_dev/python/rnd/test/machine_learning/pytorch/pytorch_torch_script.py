@@ -5,27 +5,46 @@ import torch, torchvision
 
 # REF [site] >> https://pytorch.org/tutorials/advanced/cpp_export.html
 def simple_tutorial():
+	cuda_available = torch.cuda.is_available()
+	gpu = -1
+	device = torch.device(('cuda:{}'.format(gpu) if gpu >= 0 else 'cuda') if cuda_available else 'cpu')
+	print('Device: {}.'.format(device))
+
 	# Convert a PyTorch model to Torch Script.
 	if True:
 		# Convert to Torch Script via tracing.
 
 		torch_script_filepath = "./resnet_ts_model.pth"
+		input_shape = 1, 3, 224, 224
 
 		# An instance of your model.
 		model = torchvision.models.resnet18()
+		if cuda_available:
+			model = model.to(device)
 
 		# An example input you would normally provide to your model's forward() method.
-		example = torch.rand(1, 3, 224, 224)
+		example = torch.rand(*input_shape)
+		if cuda_available:
+			example = example.to(device)
 
 		# Use torch.jit.trace to generate a torch.jit.ScriptModule via tracing.
 		script_module = torch.jit.trace(model, example)
+		# NOTE [info] >> This is not working.
+		#if cuda_available:
+		#	script_module = script_module.to(device)
 
-		output = script_module(torch.ones(1, 3, 224, 224))
-		print(output[0, :5])
+		script_module.eval()
+		if cuda_available:
+			output = script_module(torch.ones(*input_shape).to(device)).cpu()
+		else:
+			output = script_module(torch.ones(*input_shape))
+		print('Output: {}.'.format(output[0, :5]))
 	else:
 		# Convert to Torch Script via annotation.
 
 		torch_script_filepath = "./lenet_mnist_ts_model.pth"
+		input_shape = 1, 1, 28, 28  # For 28x28 input.
+		#input_shape = 1, 1, 32, 32  # For 32x32 input.
 
 		# REF [file] >> ./pytorch_neural_network.py
 		class MyModule(torch.nn.Module):
@@ -60,11 +79,20 @@ def simple_tutorial():
 				return num_features
 
 		my_module = MyModule()
-		script_module = torch.jit.script(my_module)
+		if cuda_available:
+			my_module = my_module.to(device)
 
-		output = script_module(torch.rand(1, 1, 28, 28))
-		#output = script_module(torch.rand(1, 1, 32, 32))
-		print(output)
+		script_module = torch.jit.script(my_module)
+		# NOTE [info] >> This is working.
+		#if cuda_available:
+		#	script_module = script_module.to(device)
+
+		script_module.eval()
+		if cuda_available:
+			output = script_module(torch.rand(*input_shape).to(device)).cpu()
+		else:
+			output = script_module(torch.rand(*input_shape))
+		print('Output: {}.'.format(output))
 
 	# Serialize a script module to a file.
 	script_module.save(torch_script_filepath)
