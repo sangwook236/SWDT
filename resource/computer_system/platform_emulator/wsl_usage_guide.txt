@@ -1,0 +1,12 @@
+[-] General.
+	- Document.
+		https://docs.microsoft.com/en-us/windows/wsl/
+
+[-] Usage.
+	- Access the Windows local file system in WSL:
+		/mnt/c/<file_path>.
+	- Access the Linux file system in WSL from Windows (PowerShell):
+		\\wsl$\Ubuntu\home\sangwook\work
+
+[-] Usage (vscode).
+	https://code.visualstudio.com/docs/remote/wsl-tutorial
