@@ -12,6 +12,7 @@
 [-] Usage.
 	- Config file.
 		/etc/ssh/sshd_config
+		/etc/ssh/ssh_config
 		~/.ssh/config
 		${USERPROFILE}/.ssh/config
 
@@ -90,3 +91,12 @@
 
 	- rsync over ssh.
 		REF [doc] >> rsync_usage_guide.txt
+
+[-] Troubleshooting.
+	- <error> connect localhost port 6000: Connection refused.
+		<solution> (???)
+			In the client side:
+				export DISPLAY=localhost:0.0
+				ssh -v -X <ssh-server>
+			In the server side:
+				xhost +
