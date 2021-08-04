@@ -24,6 +24,7 @@ void torch_script_example()
 
 	// REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_torch_script.py
 	const std::string script_module_filepath("./resnet_ts_model.pth");
+	const at::ArrayRef<int64_t> input_shape = {1, 3, 224, 224};
 
 	torch::jit::script::Module script_module;
 	try
@@ -46,9 +47,9 @@ void torch_script_example()
 	// Create a vector of inputs.
 	std::vector<torch::jit::IValue> inputs;
 	if (torch::hasCUDA())
-		inputs.push_back(torch::ones({1, 3, 224, 224}).to(at::kCUDA));
+		inputs.push_back(torch::ones(input_shape).to(at::kCUDA));
 	else
-		inputs.push_back(torch::ones({1, 3, 224, 224}));
+		inputs.push_back(torch::ones(input_shape));
 
 	// Execute the model and turn its output into a tensor.
 	at::Tensor output = script_module.forward(inputs).toTensor();

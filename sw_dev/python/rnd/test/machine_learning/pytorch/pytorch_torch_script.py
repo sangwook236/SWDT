@@ -1,10 +1,168 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+# NOTE [info] >>
+#	https://pytorch.org/docs/stable/jit.html
+#	https://pytorch.org/docs/stable/jit_language_reference.html
+#	https://pytorch.org/docs/stable/jit_builtin_functions.html
+#	https://pytorch.org/docs/stable/jit_unsupported.html
+#
+#	TorchScript is a statically typed subset of Python that can either be written directly (using the @torch.jit.script decorator) or generated automatically from Python code via tracing.
+#	When using tracing, code is automatically converted into this subset of Python by recording only the actual operators on tensors and simply executing and discarding the other surrounding Python code.
+#	When writing TorchScript directly using @torch.jit.script decorator, the programmer must only use the subset of Python supported in TorchScript.
+#
+#	In many cases either tracing or scripting is an easier approach for converting a model to TorchScript.
+#	Tracing and scripting can be composed to suit the particular requirements of a part of a model.
+#
+#	As a subset of Python, any valid TorchScript function is also a valid Python function.
+#	Unlike Python, each variable in TorchScript function must have a single static type.
+#	TorchScript does not support all features and types of the typing module.
+
 import torch, torchvision
 
-# REF [site] >> https://pytorch.org/tutorials/advanced/cpp_export.html
+# REF [site] >> https://pytorch.org/docs/stable/jit.html
 def simple_tutorial():
+	# Mixing tracing and scripting.
+
+	# Scripted functions can call traced functions.
+	def foo(x, y):
+		return 2 * x + y
+
+	traced_foo = torch.jit.trace(foo, (torch.rand(3), torch.rand(3)))
+
+	@torch.jit.script
+	def bar(x):
+		return traced_foo(x, x)
+
+	# Traced functions can call script functions.
+	@torch.jit.script
+	def foo(x, y):
+		if x.max() > y.max():
+			r = x
+		else:
+			r = y
+		return r
+
+	def bar(x, y, z):
+		return foo(x, y) + z
+
+	traced_bar = torch.jit.trace(bar, (torch.rand(3), torch.rand(3), torch.rand(3)))
+
+	# This composition also works for nn.Modules as well.
+	class MyScriptModule(torch.nn.Module):
+		def __init__(self):
+			super(MyScriptModule, self).__init__()
+			self.means = torch.nn.Parameter(torch.tensor([103.939, 116.779, 123.68]).resize_(1, 3, 1, 1))
+			self.resnet = torch.jit.trace(torchvision.models.resnet18(), torch.rand(1, 3, 224, 224))
+
+		def forward(self, input):
+			return self.resnet(input - self.means)
+
+	my_script_module = torch.jit.script(MyScriptModule())
+
+# REF [site] >> https://pytorch.org/docs/stable/jit.html
+#	Setting the environment variable PYTORCH_JIT=0 will disable all script and tracing annotations.
+#	If there is hard-to-debug error in one of your TorchScript models, you can use this flag to force everything to run using native Python.
+#	Since TorchScript (scripting and tracing) is disabled with this flag, you can use tools like pdb to debug the model code.
+def debugging_tutorial():
+	@torch.jit.script
+	def scripted_fn(x : torch.Tensor):
+		for i in range(12):
+			x = x + x
+		return x
+
+	def fn(x):
+		x = torch.neg(x)
+		import pdb; pdb.set_trace()
+		return scripted_fn(x)
+
+	traced_fn = torch.jit.trace(fn, (torch.rand(4, 5),))
+	traced_fn(torch.rand(3, 4))
+
+# REF [site] >> https://pytorch.org/docs/stable/jit.html
+def inspecting_code_tutorial():
+	@torch.jit.script
+	def foo(len):
+		# type: (int) -> torch.Tensor
+		rv = torch.zeros(3, 4)
+		for i in range(len):
+			if i < 10:
+				rv = rv - 1.0
+			else:
+				rv = rv + 1.0
+		return rv
+
+	# A ScriptModule with a single forward method will have an attribute code, which you can use to inspect the ScriptModule's code.
+	# If the ScriptModule has more than one method, you will need to access .code on the method itself and not the module.
+	print(foo.code)
+
+# REF [site] >> https://pytorch.org/docs/stable/jit.html
+def interpreting_graphs_tutorial():
+	@torch.jit.script
+	def foo(len):
+		# type: (int) -> torch.Tensor
+		rv = torch.zeros(3, 4)
+		for i in range(len):
+			if i < 10:
+				rv = rv - 1.0
+			else:
+				rv = rv + 1.0
+		return rv
+
+	# TorchScript IR Graph.
+	# TorchScript uses a static single assignment (SSA) intermediate representation (IR) to represent computation.
+	# The instructions in this format consist of ATen (the C++ backend of PyTorch) operators and other primitive operators, including control flow operators for loops and conditionals.
+	print(foo.graph)
+
+# REF [site] >> https://pytorch.org/docs/stable/jit.html
+def tracer_tutorial():
+	# Automatic trace checking.
+
+	if False:
+		def loop_in_traced_fn(x):
+			result = x[0]
+			for i in range(x.size(0)):
+				result = result * x[i]
+			return result
+
+		inputs = (torch.rand(3, 4, 5),)
+		check_inputs = [(torch.rand(4, 5, 6),), (torch.rand(2, 3, 4),)]
+
+		# One way to automatically catch many errors in traces is by using check_inputs on the torch.jit.trace() API. 
+		traced = torch.jit.trace(loop_in_traced_fn, inputs, check_inputs=check_inputs)
+
+	if False:
+		def fn(x):
+			result = x[0]
+			for i in range(x.size(0)):
+				result = result * x[i]
+			return result
+
+		inputs = (torch.rand(3, 4, 5),)
+		check_inputs = [(torch.rand(4, 5, 6),), (torch.rand(2, 3, 4),)]
+
+		scripted_fn = torch.jit.script(fn)
+		print(scripted_fn.graph)
+		#print(str(scripted_fn.graph).strip())
+
+		# Data-dependent control flow can be captured using torch.jit.script().
+		for input_tuple in [inputs] + check_inputs:
+			torch.testing.assert_allclose(fn(*input_tuple), scripted_fn(*input_tuple))
+
+	#--------------------
+	# Tracer warnings.
+
+	if True:
+		def fill_row_zero(x):
+			#x[0] = torch.rand(*x.shape[1:2])  # An in-place assignment on a slice (a view) of a Tensor.
+			x = torch.cat((torch.rand(1, *x.shape[1:2]), x[1:2]), dim=0)  # The code to not use the in-place update. The result tensor out-of-place with torch.cat.
+			return x
+
+		traced = torch.jit.trace(fill_row_zero, (torch.rand(3, 4),))
+		print(traced.graph)
+
+# REF [site] >> https://pytorch.org/tutorials/advanced/cpp_export.html
+def cpp_export_tutorial():
 	cuda_available = torch.cuda.is_available()
 	gpu = -1
 	device = torch.device(('cuda:{}'.format(gpu) if gpu >= 0 else 'cuda') if cuda_available else 'cpu')
@@ -13,6 +171,11 @@ def simple_tutorial():
 	# Convert a PyTorch model to Torch Script.
 	if True:
 		# Convert to Torch Script via tracing.
+
+		# NOTE [info] >> https://pytorch.org/docs/stable/generated/torch.jit.trace.html
+		#	Tracing is ideal for code that operates only on Tensors and lists, dictionaries, and tuples of Tensors.
+		#	Tracing only correctly records functions and modules which are not data dependent (e.g., do not have conditionals on data in tensors) and do not have any untracked external dependencies (e.g., perform input/output or access global variables).
+		#	Tracing only records operations done when the given function is run on the given tensors. Therefore, the returned ScriptModule will always run the same traced graph on any input.
 
 		torch_script_filepath = "./resnet_ts_model.pth"
 		input_shape = 1, 3, 224, 224
@@ -28,7 +191,7 @@ def simple_tutorial():
 			example = example.to(device)
 
 		# Use torch.jit.trace to generate a torch.jit.ScriptModule via tracing.
-		script_module = torch.jit.trace(model, example)
+		script_module = torch.jit.trace(model, example)  # torch.jit.TopLevelTracedModule.
 		# NOTE [info] >> This is not working.
 		#if cuda_available:
 		#	script_module = script_module.to(device)
@@ -82,7 +245,7 @@ def simple_tutorial():
 		if cuda_available:
 			my_module = my_module.to(device)
 
-		script_module = torch.jit.script(my_module)
+		script_module = torch.jit.script(my_module)  # torch.jit.RecursiveScriptModule.
 		# NOTE [info] >> This is working.
 		#if cuda_available:
 		#	script_module = script_module.to(device)
@@ -103,7 +266,13 @@ def simple_tutorial():
 	#		${SWDT_CPP_HOME}/rnd/test/machine_learning/torch/torch_training_example.cpp
 
 def main():
-	simple_tutorial()
+	#simple_tutorial()
+	#debugging_tutorial()  # PYTORCH_JIT=0 python pytorch_torch_script.py
+	#inspecting_code_tutorial()
+	#interpreting_graphs_tutorial()
+	tracer_tutorial()
+
+	#cpp_export_tutorial()
 
 #--------------------------------------------------------------------
 
