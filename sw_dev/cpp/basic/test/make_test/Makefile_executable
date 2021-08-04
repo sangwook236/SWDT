@@ -10,7 +10,8 @@ RANLIB=ranlib
 RM=rm -f
 
 CFLAGS=
-CXXFLAGS=-c -std=c++17 -Wall
+CXXFLAGS=-c -std=c++17 -g2 -O2 -Wall -fPIC -DUNICODE -D_UNICODE
+#CXXFLAGS=-c -std=c++17 -g2 -O2 -Wall -fPIC -D_DEBUG -DUNICODE -D_UNICODE
 LDFLAGS=-L. -larithmetic
 
 #--------------------

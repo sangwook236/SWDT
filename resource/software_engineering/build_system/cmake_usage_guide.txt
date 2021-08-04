@@ -27,6 +27,7 @@
 
 		Build a project:
 			cmake --build . --config Release
+			cmake --build ./build --config Release --target all -j 14 --
 
 			make -j4
 				The "-j4" is assuming that you have a 4-core CPU.
