@@ -18,6 +18,9 @@
 #	Unlike Python, each variable in TorchScript function must have a single static type.
 #	TorchScript does not support all features and types of the typing module.
 
+# NOTE [info] >>
+#	All parameters in ScriptModule and ScriptFunction are regarded as torch.Tensor.
+
 import torch, torchvision
 
 # REF [site] >> https://pytorch.org/docs/stable/jit.html
@@ -34,6 +37,13 @@ def simple_tutorial():
 	def bar(x):
 		return traced_foo(x, x)
 
+	#print("The type of scripted function = {}.".format(type(bar)))  # torch.jit.ScriptFunction.
+
+	torch_script_filepath = "./scripted_func_ts.pth"
+	bar.save(torch_script_filepath)
+	print("Scripted function saved to {}.".format(torch_script_filepath))
+
+	#----
 	# Traced functions can call script functions.
 	@torch.jit.script
 	def foo(x, y):
@@ -48,6 +58,13 @@ def simple_tutorial():
 
 	traced_bar = torch.jit.trace(bar, (torch.rand(3), torch.rand(3), torch.rand(3)))
 
+	#print("The type of traced function = {}.".format(type(traced_bar)))  # torch.jit.ScriptFunction.
+
+	torch_script_filepath = "./traced_func_ts.pth"
+	traced_bar.save(torch_script_filepath)
+	print("Traced function saved to {}.".format(torch_script_filepath))
+
+	#----
 	# This composition also works for nn.Modules as well.
 	class MyScriptModule(torch.nn.Module):
 		def __init__(self):
@@ -59,6 +76,12 @@ def simple_tutorial():
 			return self.resnet(input - self.means)
 
 	my_script_module = torch.jit.script(MyScriptModule())
+
+	#print("The type of script module = {}.".format(type(my_script_module)))  # torch.jit.RecursiveScriptModule.
+
+	torch_script_filepath = "./module_ts.pth"
+	my_script_module.save(torch_script_filepath)
+	print("Script module saved to {}.".format(torch_script_filepath))
 
 # REF [site] >> https://pytorch.org/docs/stable/jit.html
 #	Setting the environment variable PYTORCH_JIT=0 will disable all script and tracing annotations.
@@ -266,11 +289,11 @@ def cpp_export_tutorial():
 	#		${SWDT_CPP_HOME}/rnd/test/machine_learning/torch/torch_training_example.cpp
 
 def main():
-	#simple_tutorial()
+	simple_tutorial()
 	#debugging_tutorial()  # PYTORCH_JIT=0 python pytorch_torch_script.py
 	#inspecting_code_tutorial()
 	#interpreting_graphs_tutorial()
-	tracer_tutorial()
+	#tracer_tutorial()
 
 	#cpp_export_tutorial()
 
