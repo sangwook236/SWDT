@@ -1,13 +1,13 @@
 # Usage:
-#   Configure and generate:
-#       mkdir build
-#       cd build
-#       cmake -DCMAKE_PREFIX_PATH=/path/to/lib ..
-#   Build:
-#       cd ..
-#       cmake --build ./build --config Release --target all -j 14 --
-#   Run:
-#       ./build/test
+#	Configure and generate:
+#		mkdir build
+#		cd build
+#		cmake -DCMAKE_PREFIX_PATH=/path/to/lib ..
+#	Build:
+#		cd ..
+#		cmake --build ./build --config Release --target all -j 14 --
+#	Run:
+#		./build/test
 
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(my_cpp_test VERSION 0.1.0)
@@ -21,6 +21,7 @@ project(my_cpp_test VERSION 0.1.0)
 find_package(Threads REQUIRED)
 #find_package(Boost 1.62 REQUIRED thread timer)
 #find_package(Log4cxx REQUIRED)
+#find_package(ZLIB REQUIRED)
 #find_package(Eigen 3.2 REQUIRED)
 #find_package(GSL REQUIRED)
 #find_package(Qt5 COMPONENTS Core Gui Widgets Quick Qml Concurrent REQUIRED)
@@ -29,6 +30,7 @@ find_package(Threads REQUIRED)
 
 #include_directories(${Boost_INCLUDE_DIRS})
 #include_directories(${LOG4CXX_INCLUDE_DIR})
+#include_directories(${ZLIB_INCLUDE_DIRS})
 #include_directories(${EIGEN_INCLUDE_DIRS})
 #include_directories(${GSL_INCLUDE_DIRS})
 #include_directories(${QT_INCLUDE_DIR})
@@ -48,13 +50,14 @@ add_definitions(-DUNICODE -D_UNICODE)
 set(TARGET test)
 
 set(SRCS
-    main.cpp
+	main.cpp
 )
 set(LIBS
-    #${LOG4CXX_LIBRARIES}
-    #Qt5::Core Qt5::Widgets
-    #${OpenCV_LIBRARIES}
-    #${CUDA_LIBRARIES}
+	#${LOG4CXX_LIBRARIES}
+	#${ZLIB_LIBRARIES}
+	#Qt5::Core Qt5::Widgets
+	#${OpenCV_LIBRARIES}
+	#${CUDA_LIBRARIES}
 )
 
 add_executable(${TARGET} ${SRCS})

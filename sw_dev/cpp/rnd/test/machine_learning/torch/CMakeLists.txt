@@ -1,13 +1,13 @@
 # Usage:
-#   Configure and generate:
-#       mkdir build
-#       cd build
-#       cmake -DCMAKE_PREFIX_PATH=/path/to/libtorch ..
-#   Build:
-#       cd ..
-#       cmake --build ./build --config Release --target all -j 14 --
-#   Run:
-#       ./build/torch_test
+#	Configure and generate:
+#		mkdir build
+#		cd build
+#		cmake -DCMAKE_PREFIX_PATH=/path/to/libtorch ..
+#	Build:
+#		cd ..
+#		cmake --build ./build --config Release --target all -j 14 --
+#	Run:
+#		./build/torch_test
 
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(my_torch_project VERSION 0.1.0)
@@ -50,14 +50,14 @@ add_definitions(-DUNICODE -D_UNICODE)
 set(TARGET torch_test)
 
 set(SRCS
-    torch_test.cpp
+	torch_test.cpp
 )
 set(LIBS
-    #${LOG4CXX_LIBRARIES}
-    #Qt5::Core Qt5::Widgets
-    #${OpenCV_LIBRARIES}
-    #${CUDA_LIBRARIES}
-    ${TORCH_LIBRARIES}
+	#${LOG4CXX_LIBRARIES}
+	#Qt5::Core Qt5::Widgets
+	#${OpenCV_LIBRARIES}
+	#${CUDA_LIBRARIES}
+	${TORCH_LIBRARIES}
 )
 
 add_executable(${TARGET} ${SRCS})

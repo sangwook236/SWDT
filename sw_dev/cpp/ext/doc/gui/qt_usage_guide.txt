@@ -90,9 +90,9 @@
 	- <error> qt.qpa.plugin: Could not load the Qt platform plugin "xcb".
 		<solution>
 			(Optional) Set the environment variables.
-				export QT_PLUGIN_PATH=$HOME/anaconda3/envs/$ENV_NAME/lib/$PYTHON/site-packages/PyQt5/plugins
+				export QT_PLUGIN_PATH=$HOME/anaconda3/envs/$ENV_NAME/lib/$PYTHON/site-packages/PyQt5/Qt5/plugins
 				export QT_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/qt5/plugins
-				export QT_QPA_PLATFORM_PLUGIN_PATH=$HOME/anaconda3/envs/$ENV_NAME/lib/$PYTHON/site-packages/PyQt5/plugins/platforms
+				export QT_QPA_PLATFORM_PLUGIN_PATH=$HOME/anaconda3/envs/$ENV_NAME/lib/$PYTHON/site-packages/PyQt5/Qt5/plugins/platforms
 				export QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms
 			(Optional) Install a library.
 				sudo apt install libxcb-xinerama0
