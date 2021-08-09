@@ -1,5 +1,9 @@
 //include "stdafx.h"
 #include <iostream>
+#include <torch/torch.h>
+
+// LibTorch:
+//	Download from https://pytorch.org/
 
 
 namespace {
@@ -17,11 +21,19 @@ void torch_script_example();
 
 int torch_main(int argc, char *argv[])
 {
-	std::cout << "torch library: Training example -----------------------------" << std::endl;
-	my_torch::training_example();
+	try
+	{
+		std::cout << "torch library: Training example -----------------------------" << std::endl;
+		my_torch::training_example();
 
-	std::cout << "\ttorch library: Torch Script example -------------------------" << std::endl;
-	my_torch::torch_script_example();
+		std::cout << "\ttorch library: Torch Script example -------------------------" << std::endl;
+		my_torch::torch_script_example();
+	}
+	catch (const c10::Error &ex)
+	{
+		std::cout << "c10::Error caught: " << ex.what() << std::endl;
+		return 1;
+	}
 
 	return 0;
 }

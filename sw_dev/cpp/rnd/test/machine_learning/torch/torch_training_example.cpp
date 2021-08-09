@@ -9,114 +9,6 @@
 namespace {
 namespace local {
 
-#if 0
-
-struct Net: torch::nn::Module
-{
-	Net(int64_t N, int64_t M)
-	{
-		// register_parameter() & register_module() are needed if we want to use the parameters() method later on.
-		W = register_parameter("W", torch::randn({N, M}));
-		b = register_parameter("b", torch::randn(M));
-	}
-
-	torch::Tensor forward(torch::Tensor input)
-	{
-		return torch::addmm(b, input, W);
-	}
-
-	torch::Tensor W, b;
-};
-
-#else
-
-struct Net: torch::nn::Module
-{
-	Net(int64_t N, int64_t M)
-	: linear(register_module("linear", torch::nn::Linear(N, M)))
-	{
-		another_bias = register_parameter("b", torch::randn(M));
-	}
-
-	torch::Tensor forward(torch::Tensor input)
-	{
-		return linear(input) + another_bias;
-	}
-
-	torch::nn::Linear linear{nullptr};  // Construct an empty holder.
-	torch::Tensor another_bias;
-};
-
-#endif
-
-struct Net2Impl: torch::nn::Module
-{
-	Net2Impl(int64_t in, int64_t out)
-	: weight(register_parameter("weight", torch::randn({in, out})))
-	{
-		bias = register_parameter("bias", torch::randn(out));
-	}
-
-	torch::Tensor forward(const torch::Tensor &input)
-	{
-		return torch::addmm(bias, input, weight);
-	}
-
-	torch::Tensor weight, bias;
-};
-// Module holder.
-//	This "generated" class is effectively a wrapper over a std::shared_ptr<LinearImpl>.
-TORCH_MODULE(Net2);
-
-void call_by_val(Net net) { }
-void call_by_ref(Net &net) { }
-void call_by_ptr(Net *net) { }
-void call_by_shared_ptr(std::shared_ptr<Net> net) { }
-
-// REF [site] >> https://pytorch.org/tutorials/advanced/cpp_frontend.html
-void simple_frontend_tutorial()
-{
-	//------------------------------------------------------------
-	const torch::Tensor tensor = torch::eye(3);
-	std::cout << tensor << std::endl;
-
-	//------------------------------------------------------------
-	Net net(4, 5);
-
-	for (const auto &p: net.parameters())
-	{
-		std::cout << p << std::endl;
-	}
-	for (const auto &pair: net.named_parameters())
-	{
-		std::cout << pair.key() << ": " << pair.value() << std::endl;
-	}
-
-	std::cout << net.forward(torch::ones({2, 4})) << std::endl;
-
-	call_by_val(net);
-	call_by_val(std::move(net));
-	call_by_ref(net);
-	call_by_ptr(&net);
-
-	auto net_p = std::make_shared<Net>(4, 5);
-	call_by_shared_ptr(net_p);
-
-	//------------------------------------------------------------
-	Net2 net2(4, 5);
-
-	for (const auto &p: net2->parameters())
-	{
-		std::cout << p << std::endl;
-	}
-	for (const auto &pair: net2->named_parameters())
-	{
-		std::cout << pair.key() << ": " << pair.value() << std::endl;
-	}
-
-	std::cout << net2->forward(torch::ones({2, 4})) << std::endl;
-}
-
 // Define a new Module.
 struct Mlp: torch::nn::Module
 {
@@ -238,9 +130,10 @@ void dcgan_frontend_tutorial()
 	const bool kRestoreFromCheckpoint = false;
 	const size_t num_workers = 2;
 
-	const bool is_cuda_available = torch::cuda::is_available();
-	const torch::Device device(is_cuda_available ? torch::kCUDA : torch::kCPU);
-	std::cout << (is_cuda_available ? "Device: CUDA." : "Device: CPU.") << std::endl;
+	// Device.
+	const torch::DeviceIndex gpu = -1;
+	const auto device(torch::cuda::is_available() ? torch::Device(torch::kCUDA, gpu) : torch::Device(torch::kCPU));
+	std::cout << (device.is_cuda() ? "Device: CUDA." : "Device: CPU.") << std::endl;
 
 	//------------------------------------------------------------
 	// Build modules.
@@ -418,9 +311,9 @@ void cnn_mnist_tutorial()
 	std::cout << "Convolutional Neural Network." << std::endl << std::endl;
 
 	// Device.
-	const auto cuda_available = torch::cuda::is_available();
-	const torch::Device device(cuda_available ? torch::kCUDA : torch::kCPU);
-	std::cout << (cuda_available ? "CUDA available. Training on GPU." : "Training on CPU.") << std::endl;
+	const torch::DeviceIndex gpu = -1;
+	const auto device(torch::cuda::is_available() ? torch::Device(torch::kCUDA, gpu) : torch::Device(torch::kCPU));
+	std::cout << (device.is_cuda() ? "Device: CUDA." : "Device: CPU.") << std::endl;
 
 	// Hyper parameters.
 	const int64_t num_classes = 10;
@@ -552,9 +445,9 @@ void get_module_params(std::vector<at::Tensor> &parameters, const torch::jit::sc
 void lenet_mnist_torch_script_example()
 {
 	// Device.
-	const auto cuda_available = torch::cuda::is_available();
-	const torch::Device device(cuda_available ? torch::kCUDA : torch::kCPU);
-	std::cout << (cuda_available ? "CUDA available. Training on GPU." : "Training on CPU.") << std::endl;
+	const torch::DeviceIndex gpu = -1;
+	const auto device(torch::cuda::is_available() ? torch::Device(torch::kCUDA, gpu) : torch::Device(torch::kCPU));
+	std::cout << (device.is_cuda() ? "Device: CUDA." : "Device: CPU.") << std::endl;
 
 	// Hyper parameters.
 	const int64_t num_classes = 10;
@@ -700,7 +593,6 @@ namespace my_torch {
 
 void training_example()
 {
-	//local::simple_frontend_tutorial();
 	local::mlp_frontend_tutorial();
 	//local::dcgan_frontend_tutorial();
 

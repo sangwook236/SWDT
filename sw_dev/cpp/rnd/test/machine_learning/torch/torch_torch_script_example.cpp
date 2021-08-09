@@ -18,8 +18,9 @@ namespace my_torch {
 // REF [site] >> https://pytorch.org/tutorials/advanced/cpp_export.html.
 void torch_script_example()
 {
-	const bool is_cuda_available = torch::hasCUDA();
-	std::cout << (is_cuda_available ? "Device: CUDA." : "Device: CPU.") << std::endl;
+	const torch::DeviceIndex gpu = -1;
+	const auto device(torch::cuda::is_available() ? torch::Device(torch::kCUDA, gpu) : torch::Device(torch::kCPU));
+	std::cout << (device.is_cuda() ? "Device: CUDA." : "Device: CPU.") << std::endl;
 
 	//--------------------
 	// Load a script module in C++.
@@ -41,22 +42,22 @@ void torch_script_example()
 	}
 	std::cout << "Info: A script module loaded from " << script_module_filepath << ": " << std::endl;
 
-	if (is_cuda_available)
-		script_module.to(at::kCUDA);
+	if (device.is_cuda())
+		script_module.to(device);
 
 	//--------------------
 	// Execute the script module in C++.
 
 	// Create a vector of inputs.
 	std::vector<torch::jit::IValue> inputs;
-	if (is_cuda_available)
-		inputs.push_back(torch::ones(c10::IntArrayRef(input_shape)).to(at::kCUDA));
+	if (device.is_cuda())
+		inputs.push_back(torch::ones(c10::IntArrayRef(input_shape)).to(device));
 	else
 		inputs.push_back(torch::ones(c10::IntArrayRef(input_shape)));
 
 	// Execute the model and turn its output into a tensor.
 	at::Tensor output = script_module.forward(inputs).toTensor();
-	if (is_cuda_available)
+	if (device.is_cuda())
 		output = output.to(at::kCPU);
 	std::cout << output.slice(/*dim=*/1, /*start=*/0, /*end=*/5) << std::endl;
 }

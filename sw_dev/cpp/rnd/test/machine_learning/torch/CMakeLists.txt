@@ -7,7 +7,7 @@
 #		cd ..
 #		cmake --build ./build --config Release --target all -j 14 --
 #	Run:
-#		./build/torch_test
+#		./build/torch_runner
 
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(my_torch_project VERSION 0.1.0)
@@ -47,10 +47,13 @@ add_definitions(-DUNICODE -D_UNICODE)
 #	add_compile_options(-fPIC)
 #endif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
 
-set(TARGET torch_test)
+set(TARGET torch_runner)
 
 set(SRCS
-	torch_test.cpp
+	torch_runner.cpp
+	torch_main.cpp
+	torch_torch_script_example.cpp
+	torch_training_example.cpp
 )
 set(LIBS
 	#${LOG4CXX_LIBRARIES}
