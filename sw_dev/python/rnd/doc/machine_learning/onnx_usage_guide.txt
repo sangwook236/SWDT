@@ -1,0 +1,26 @@
+[-] General.
+	- Site.
+		https://onnx.ai/
+		https://github.com/onnx/onnx
+
+		https://onnxruntime.ai/
+		https://github.com/microsoft/onnxruntime
+
+[-] Usage.
+	https://pytorch.org/docs/stable/onnx.html
+	https://github.com/microsoft/onnxruntime-inference-examples
+	https://github.com/microsoft/onnxruntime-training-examples
+
+[-] Installation.
+	- Install.
+		conda create --name onnx python=3 numpy scipy matplotlib pillow opencv
+		conda activate onnx
+
+		conda install pytorch torchvision torchtext cudatoolkit=11 -c pytorch
+		conda install tensorflow-gpu
+
+		conda install -c conda-forge protobuf=3.16.0 libprotobuf=3.16.0
+		conda install -c conda-forge onnx
+
+		pip install onnxruntime
+		pip install onnxruntime-gpu

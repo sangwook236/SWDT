@@ -30,6 +30,14 @@ def simple_tutorial():
 
 		#torch.onnx.export(model, dummy_input, onnx_filepath, verbose=True)
 		torch.onnx.export(model, dummy_input, onnx_filepath, verbose=True, input_names=input_names, output_names=output_names)
+		#torch.onnx.export(
+		#	model, dummy_input, onnx_filepath, verbose=True, input_names=input_names, output_names=output_names,
+		#	export_params=True,  # If specified, all parameters will be exported. Set this to False if you want to export an untrained model.
+		#	training=torch.onnx.TrainingMode.EVAL,  # {torch.onnx.TrainingMode.EVAL, torch.onnx.TrainingMode.PRESERVE, torch.onnx.TrainingMode.TRAINING}.
+		#	opset_version=9,
+		#	#dynamic_axes={"actual_input_1": [0], "output1": [0]}
+		#	dynamic_axes={"actual_input_1": {0: "batch"}, "output1": {0: "batch"}}
+		#)
 		print("ONNX model exported to {}.".format(onnx_filepath))
 
 	#--------------------
@@ -126,6 +134,7 @@ def tracing_and_scripting_tutorial():
 
 	inputs = (torch.randn(16), torch.tensor(8))
 	out = model(*inputs)
+	# 'example_outputs' must be provided when exporting a ScriptModule or TorchScript Function.
 	torch.onnx.export(model, inputs, "./loop_and_list.onnx", opset_version=11, example_outputs=out)
 	print("ONNX model exported to {}.".format("./loop_and_list.onnx"))
 
