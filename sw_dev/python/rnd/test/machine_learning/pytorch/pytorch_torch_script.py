@@ -23,6 +23,142 @@
 
 import torch, torchvision
 
+# REF [site] >> https://pytorch.org/tutorials/beginner/Intro_to_TorchScript_tutorial.html
+def beginner_tutorial():
+	class MyDecisionGate(torch.nn.Module):
+		def forward(self, x):
+			if x.sum() > 0:
+				return x
+			else:
+				return -x
+
+	class MyCell(torch.nn.Module):
+		def __init__(self):
+			super(MyCell, self).__init__()
+			self.dg = MyDecisionGate()
+			self.linear = torch.nn.Linear(4, 4)
+
+		def forward(self, x, h):
+			new_h = torch.tanh(self.dg(self.linear(x)) + h)
+			return new_h, new_h
+
+	x = torch.rand(3, 4)
+	h = torch.rand(3, 4)
+
+	my_cell = MyCell()
+
+	if False:
+		print("my_cell(x, h) = {}.".format(my_cell(x, h)))
+		print("---------- Model (my_cell):\n{}.".format(my_cell))
+
+	#--------------------
+	# Basics of TorchScript.
+
+	# Tracing modules.
+	traced_cell = torch.jit.trace(my_cell, (x, h))
+
+	if False:
+		print("traced_cell(x, h) = {}.".format(traced_cell(x, h)))
+		print("---------- Model (traced_cell):\n{}.".format(traced_cell))
+		print("---------- Graph (traced_cell):\n{}.".format(traced_cell.graph))
+		print("---------- Code (traced_cell):\n{}.".format(traced_cell.code))
+		print("---------- Model (traced_cell.dg):\n{}.".format(traced_cell.dg))
+		print("---------- Graph (traced_cell.dg):\n{}.".format(traced_cell.dg.graph))
+		print("---------- Code (traced_cell.dg):\n{}.".format(traced_cell.dg.code))
+
+	# Using scripting to convert modules.
+	class MyCell2(torch.nn.Module):
+		def __init__(self, dg):
+			super(MyCell2, self).__init__()
+			self.dg = dg
+			self.linear = torch.nn.Linear(4, 4)
+
+		def forward(self, x, h):
+			new_h = torch.tanh(self.dg(self.linear(x)) + h)
+			return new_h, new_h
+
+	my_cell2 = MyCell2(MyDecisionGate())
+	traced_cell2 = torch.jit.trace(my_cell2, (x, h))
+
+	if True:
+		print("traced_cell2(x, h) = {}.".format(traced_cell2(x, h)))
+		print("---------- Graph (traced_cell2):\n{}.".format(traced_cell2.graph))
+		print("---------- Code (traced_cell2):\n{}.".format(traced_cell2.code))
+		print("---------- Graph (traced_cell2.dg):\n{}.".format(traced_cell2.dg.graph))
+		print("---------- Code (traced_cell2.dg):\n{}.".format(traced_cell2.dg.code))
+
+	scripted_gate = torch.jit.script(MyDecisionGate())
+
+	my_cell2 = MyCell2(scripted_gate)
+	scripted_cell2 = torch.jit.script(my_cell2)
+
+	if True:
+		print("scripted_cell2(x, h) = {}.".format(scripted_cell2(x, h)))
+		print("---------- Graph (scripted_cell2):\n{}.".format(scripted_cell2.graph))
+		print("---------- Code (scripted_cell2):\n{}.".format(scripted_cell2.code))
+		print("---------- Graph (scripted_gate):\n{}.".format(scripted_gate.graph))
+		print("---------- Code (scripted_gate):\n{}.".format(scripted_gate.code))
+		print("---------- Graph (scripted_cell2.dg):\n{}.".format(scripted_cell2.dg.graph))
+		print("---------- Code (scripted_cell2.dg):\n{}.".format(scripted_cell2.dg.code))
+
+	# Mixing scripting and tracing.
+	#@torch.jit.script  # RuntimeError: Type '<class '__main__.beginner_tutorial.<locals>.__init__'>' cannot be compiled since it inherits from nn.Module, pass an instance instead.
+	class MyRNNLoop(torch.nn.Module):
+		def __init__(self):
+			super(MyRNNLoop, self).__init__()
+			self.cell = torch.jit.trace(MyCell2(scripted_gate), (x, h))
+
+		def forward(self, xs):
+			h, y = torch.zeros(3, 4), torch.zeros(3, 4)
+			for i in range(xs.size(0)):
+				y, h = self.cell(xs[i], h)
+			return y, h
+
+	scripted_rnn_loop = torch.jit.script(MyRNNLoop())
+
+	if True:
+		#print("The type of scripted_rnn_loop = {}.".format(type(scripted_rnn_loop)))  # torch.jit.RecursiveScriptModule.
+		print("---------- Graph (scripted_rnn_loop):\n{}.".format(scripted_rnn_loop.graph))
+		print("---------- Code (scripted_rnn_loop):\n{}.".format(scripted_rnn_loop.code))
+		print("---------- Graph (scripted_rnn_loop.cell):\n{}.".format(scripted_rnn_loop.cell.graph))
+		print("---------- Code (scripted_rnn_loop.cell):\n{}.".format(scripted_rnn_loop.cell.code))
+
+	class WrapRNN(torch.nn.Module):
+		def __init__(self):
+			super(WrapRNN, self).__init__()
+			self.loop = torch.jit.script(MyRNNLoop())  # NOTE [info] >> It gives better results.
+			#self.loop = MyRNNLoop()
+
+		def forward(self, xs):
+			y, h = self.loop(xs)
+			return torch.relu(y)
+
+	traced_wrap_rnn = torch.jit.trace(WrapRNN(), (torch.rand(10, 3, 4)))
+
+	if True:
+		#print("The type of traced_wrap_rnn = {}.".format(type(traced_wrap_rnn)))  # torch.jit.TopLevelTracedModule.
+		print("---------- Code (traced_wrap_rnn):\n{}.".format(traced_wrap_rnn.code))
+		print("---------- Graph (traced_wrap_rnn):\n{}.".format(traced_wrap_rnn.graph))
+
+	#--------------------
+	# Saving and loading models.
+
+	torch_script_filepath = "./wrapped_rnn_ts.pth"
+	traced_wrap_rnn.save(torch_script_filepath)
+	print("Wrapped RNN model saved to {}.".format(torch_script_filepath))
+
+	traced_wrap_rnn_loaded = torch.jit.load(torch_script_filepath)
+	print("Wrapped RNN model loaded from {}.".format(torch_script_filepath))
+
+	if False:
+		print("traced_wrap_rnn_loaded((torch.rand(10, 3, 4))) = {}.".format(traced_wrap_rnn_loaded((torch.rand(10, 3, 4)))))
+		print("---------- Model (traced_wrap_rnn_loaded):\n{}.".format(traced_wrap_rnn_loaded))
+		print("---------- Graph (traced_wrap_rnn_loaded):\n{}.".format(traced_wrap_rnn_loaded.graph))
+		print("---------- Code (traced_wrap_rnn_loaded):\n{}.".format(traced_wrap_rnn_loaded.code))
+		print("---------- Model (traced_wrap_rnn_loaded.loop):\n{}.".format(traced_wrap_rnn_loaded.loop))
+		print("---------- Graph (traced_wrap_rnn_loaded.loop):\n{}.".format(traced_wrap_rnn_loaded.loop.graph))
+		print("---------- Code (traced_wrap_rnn_loaded.loop):\n{}.".format(traced_wrap_rnn_loaded.loop.code))
+
 # REF [site] >> https://pytorch.org/docs/stable/jit.html
 def simple_tutorial():
 	# Mixing tracing and scripting.
@@ -43,7 +179,7 @@ def simple_tutorial():
 	bar.save(torch_script_filepath)
 	print("Scripted function saved to {}.".format(torch_script_filepath))
 
-	#----
+	#--------------------
 	# Traced functions can call script functions.
 	@torch.jit.script
 	def foo(x, y):
@@ -64,7 +200,7 @@ def simple_tutorial():
 	traced_bar.save(torch_script_filepath)
 	print("Traced function saved to {}.".format(torch_script_filepath))
 
-	#----
+	#--------------------
 	# This composition also works for nn.Modules as well.
 	class MyScriptModule(torch.nn.Module):
 		def __init__(self):
@@ -186,9 +322,9 @@ def tracer_tutorial():
 
 # REF [site] >> https://pytorch.org/tutorials/advanced/cpp_export.html
 def cpp_export_tutorial():
-	cuda_available = torch.cuda.is_available()
 	gpu = -1
-	device = torch.device(('cuda:{}'.format(gpu) if gpu >= 0 else 'cuda') if cuda_available else 'cpu')
+	is_cuda_available = torch.cuda.is_available()
+	device = torch.device(('cuda:{}'.format(gpu) if gpu >= 0 else 'cuda') if is_cuda_available else 'cpu')
 	print('Device: {}.'.format(device))
 
 	# Convert a PyTorch model to Torch Script.
@@ -205,22 +341,23 @@ def cpp_export_tutorial():
 
 		# An instance of your model.
 		model = torchvision.models.resnet18()
-		if cuda_available:
+		if is_cuda_available:
 			model = model.to(device)
 
 		# An example input you would normally provide to your model's forward() method.
-		example = torch.rand(*input_shape)
-		if cuda_available:
-			example = example.to(device)
+		# NOTE [info] >> The shape of a dummy input is fixed in Torch Script. (?)
+		dummy_input = torch.rand(*input_shape)
+		if is_cuda_available:
+			dummy_input = dummy_input.to(device)
 
 		# Use torch.jit.trace to generate a torch.jit.ScriptModule via tracing.
-		script_module = torch.jit.trace(model, example)  # torch.jit.TopLevelTracedModule.
+		script_module = torch.jit.trace(model, dummy_input)  # torch.jit.TopLevelTracedModule.
 		# NOTE [info] >> This is not working.
-		#if cuda_available:
+		#if is_cuda_available:
 		#	script_module = script_module.to(device)
 
 		script_module.eval()
-		if cuda_available:
+		if is_cuda_available:
 			output = script_module(torch.ones(*input_shape).to(device)).cpu()
 		else:
 			output = script_module(torch.ones(*input_shape))
@@ -265,16 +402,16 @@ def cpp_export_tutorial():
 				return num_features
 
 		my_module = MyModule()
-		if cuda_available:
+		if is_cuda_available:
 			my_module = my_module.to(device)
 
 		script_module = torch.jit.script(my_module)  # torch.jit.RecursiveScriptModule.
 		# NOTE [info] >> This is working.
-		#if cuda_available:
+		#if is_cuda_available:
 		#	script_module = script_module.to(device)
 
 		script_module.eval()
-		if cuda_available:
+		if is_cuda_available:
 			output = script_module(torch.rand(*input_shape).to(device)).cpu()
 		else:
 			output = script_module(torch.rand(*input_shape))
@@ -289,8 +426,10 @@ def cpp_export_tutorial():
 	#		${SWDT_CPP_HOME}/rnd/test/machine_learning/torch/torch_training_example.cpp
 
 def main():
-	simple_tutorial()
-	#debugging_tutorial()  # PYTORCH_JIT=0 python pytorch_torch_script.py
+	beginner_tutorial()
+	#simple_tutorial()
+
+	#debugging_tutorial()  # Usage: PYTORCH_JIT=0 python pytorch_torch_script.py
 	#inspecting_code_tutorial()
 	#interpreting_graphs_tutorial()
 	#tracer_tutorial()

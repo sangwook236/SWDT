@@ -3,19 +3,13 @@
 
 # REF [site] >> https://docs.python.org/3/library/exceptions.html
 
-import struct
 import sys, traceback
 
 def main():
-	raise NotImplementedError('abc', 123, (1, 'a'))
-	#raise ValueError('ValueError raised')
-	#raise Exception('Fatal error')
-
-#--------------------------------------------------------------------
-
-if '__main__' == __name__:
 	try:
-		main()
+		raise NotImplementedError('abc', 123, (1, 'a'))
+		#raise ValueError('ValueError raised')
+		#raise Exception('Fatal error')
 	except NotImplementedError as ex:
 		print('******************************* 1')
 		print('NotImplementedError raised: {}, {}, {}'.format(ex, ex.args, str(ex)))
@@ -39,3 +33,8 @@ if '__main__' == __name__:
 		#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
 		#----------
 		traceback.print_exc(limit=None, file=sys.stdout)
+
+#--------------------------------------------------------------------
+
+if '__main__' == __name__:
+	main()
