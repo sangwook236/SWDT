@@ -18,15 +18,26 @@
 #	Unlike Python, each variable in TorchScript function must have a single static type.
 #	TorchScript does not support all features and types of the typing module.
 
-# NOTE [info] >>
+# NOTE [info] {important} >>
 #	All parameters in ScriptModule and ScriptFunction are regarded as torch.Tensor.
 
 import torch, torchvision
+#from torch.hub import VAR_DEPENDENCY
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/Intro_to_TorchScript_tutorial.html
 def beginner_tutorial():
+	gpu = -1
+	is_cuda_available = torch.cuda.is_available()
+	device = torch.device(('cuda:{}'.format(gpu) if gpu >= 0 else 'cuda') if is_cuda_available else 'cpu')
+	print('Device: {}.'.format(device))
+
+	x = torch.rand(3, 4, device=device)
+	h = torch.rand(3, 4, device=device)
+	xs = torch.rand(10, 3, 4, device=device)
+
 	class MyDecisionGate(torch.nn.Module):
 		def forward(self, x):
+			# NOTE [warning] >> TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
 			if x.sum() > 0:
 				return x
 			else:
@@ -35,17 +46,16 @@ def beginner_tutorial():
 	class MyCell(torch.nn.Module):
 		def __init__(self):
 			super(MyCell, self).__init__()
+			# NOTE [info] >> It doesn't matter which one is used.
 			self.dg = MyDecisionGate()
+			#self.dg = MyDecisionGate().to(device)
 			self.linear = torch.nn.Linear(4, 4)
 
 		def forward(self, x, h):
 			new_h = torch.tanh(self.dg(self.linear(x)) + h)
 			return new_h, new_h
 
-	x = torch.rand(3, 4)
-	h = torch.rand(3, 4)
-
-	my_cell = MyCell()
+	my_cell = MyCell().to(device)
 
 	if False:
 		print("my_cell(x, h) = {}.".format(my_cell(x, h)))
@@ -77,7 +87,7 @@ def beginner_tutorial():
 			new_h = torch.tanh(self.dg(self.linear(x)) + h)
 			return new_h, new_h
 
-	my_cell2 = MyCell2(MyDecisionGate())
+	my_cell2 = MyCell2(MyDecisionGate()).to(device)
 	traced_cell2 = torch.jit.trace(my_cell2, (x, h))
 
 	if True:
@@ -87,9 +97,11 @@ def beginner_tutorial():
 		print("---------- Graph (traced_cell2.dg):\n{}.".format(traced_cell2.dg.graph))
 		print("---------- Code (traced_cell2.dg):\n{}.".format(traced_cell2.dg.code))
 
+	# NOTE [info] >> It doesn't matter which one is used.
 	scripted_gate = torch.jit.script(MyDecisionGate())
+	#scripted_gate = torch.jit.script(MyDecisionGate().to(device))
 
-	my_cell2 = MyCell2(scripted_gate)
+	my_cell2 = MyCell2(scripted_gate).to(device)
 	scripted_cell2 = torch.jit.script(my_cell2)
 
 	if True:
@@ -104,20 +116,28 @@ def beginner_tutorial():
 	# Mixing scripting and tracing.
 	#@torch.jit.script  # RuntimeError: Type '<class '__main__.beginner_tutorial.<locals>.__init__'>' cannot be compiled since it inherits from nn.Module, pass an instance instead.
 	class MyRNNLoop(torch.nn.Module):
-		def __init__(self):
+		def __init__(self, device):
 			super(MyRNNLoop, self).__init__()
-			self.cell = torch.jit.trace(MyCell2(scripted_gate), (x, h))
+			self.device = device
+			# NOTE [error] >> RuntimeError: Tensor for 'out' is on CPU, Tensor for argument #1 'self' is on CPU, but expected them to be on GPU (while checking arguments for addmm).
+			#	Device conversion is required.
+			self.cell = torch.jit.trace(MyCell2(scripted_gate).to(self.device), (x, h))
 
 		def forward(self, xs):
-			h, y = torch.zeros(3, 4), torch.zeros(3, 4)
+			# NOTE [error] >> python value of type 'device' cannot be used as a value. Perhaps it is a closed over global variable? If so, please consider passing it in as an argument or use a local varible instead.
+			#	A member variable, self.device is added.
+			h, y = torch.zeros(3, 4, device=self.device), torch.zeros(3, 4, device=self.device)
 			for i in range(xs.size(0)):
 				y, h = self.cell(xs[i], h)
 			return y, h
 
-	scripted_rnn_loop = torch.jit.script(MyRNNLoop())
+	# NOTE [info] >> It doesn't matter which one is used.
+	scripted_rnn_loop = torch.jit.script(MyRNNLoop(device))
+	#scripted_rnn_loop = torch.jit.script(MyRNNLoop(device).to(device))
 
 	if True:
 		#print("The type of scripted_rnn_loop = {}.".format(type(scripted_rnn_loop)))  # torch.jit.RecursiveScriptModule.
+		print("scripted_rnn_loop(xs) = {}.".format(scripted_rnn_loop(xs)))
 		print("---------- Graph (scripted_rnn_loop):\n{}.".format(scripted_rnn_loop.graph))
 		print("---------- Code (scripted_rnn_loop):\n{}.".format(scripted_rnn_loop.code))
 		print("---------- Graph (scripted_rnn_loop.cell):\n{}.".format(scripted_rnn_loop.cell.graph))
@@ -126,17 +146,19 @@ def beginner_tutorial():
 	class WrapRNN(torch.nn.Module):
 		def __init__(self):
 			super(WrapRNN, self).__init__()
-			self.loop = torch.jit.script(MyRNNLoop())  # NOTE [info] >> It gives better results.
-			#self.loop = MyRNNLoop()
+			self.loop = torch.jit.script(MyRNNLoop(device).to(device))  # NOTE [info] >> It gives better results.
+			# NOTE [warning] >> TracerWarning: Converting a tensor to a Python index might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+			#self.loop = MyRNNLoop(device).to(device)
 
 		def forward(self, xs):
 			y, h = self.loop(xs)
 			return torch.relu(y)
 
-	traced_wrap_rnn = torch.jit.trace(WrapRNN(), (torch.rand(10, 3, 4)))
+	traced_wrap_rnn = torch.jit.trace(WrapRNN().to(device), (xs))
 
 	if True:
 		#print("The type of traced_wrap_rnn = {}.".format(type(traced_wrap_rnn)))  # torch.jit.TopLevelTracedModule.
+		print("traced_wrap_rnn(xs) = {}.".format(traced_wrap_rnn(xs)))
 		print("---------- Code (traced_wrap_rnn):\n{}.".format(traced_wrap_rnn.code))
 		print("---------- Graph (traced_wrap_rnn):\n{}.".format(traced_wrap_rnn.graph))
 
