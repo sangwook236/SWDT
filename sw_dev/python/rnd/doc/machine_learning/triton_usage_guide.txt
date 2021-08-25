@@ -1,0 +1,65 @@
+[-] General.
+	- Site.
+		https://developer.nvidia.com/nvidia-triton-inference-server
+		https://github.com/triton-inference-server/server
+		https://github.com/triton-inference-server/client
+
+	- Document.
+		https://github.com/triton-inference-server/server/blob/r21.07/README.md#documentation
+
+[-] Usage.
+	- Run Triton.
+		https://github.com/triton-inference-server/server/blob/r21.07/docs/quickstart.md
+
+		Run on system with GPUs:
+			docker run --gpus=1 --rm -p8000:8000 -p8001:8001 -p8002:8002 -v/full/path/to/docs/examples/model_repository:/models nvcr.io/nvidia/tritonserver:<xx.yy>-py3 tritonserver --model-repository=/models
+				docker run --gpus=1 --rm -p8000:8000 -p8001:8001 -p8002:8002 -v/home/sangwook/my_lib/cpp/triton_inference_server_github/docs/examples/model_repository:/models nvcr.io/nvidia/tritonserver:21.07-py3 tritonserver --model-repository=/models
+
+		Run on CPU-only system:
+			docker run --rm -p8000:8000 -p8001:8001 -p8002:8002 -v/full/path/to/docs/examples/model_repository:/models nvcr.io/nvidia/tritonserver:<xx.yy>-py3 tritonserver --model-repository=/models
+
+		Verify Triton is running correctly:
+			curl -v localhost:8000/v2/health/ready
+
+		Get the client libraries:
+			docker pull nvcr.io/nvidia/tritonserver:<xx.yy>-py3-sdk
+
+		Run the client image:
+			docker run -it --rm --net=host nvcr.io/nvidia/tritonserver:<xx.yy>-py3-sdk
+
+		Run the image classification example:
+			/workspace/install/bin/image_client -m densenet_onnx -c 3 -s INCEPTION /workspace/images/mug.jpg
+
+[-] Installation.
+	https://github.com/triton-inference-server/server/blob/r21.07/docs/quickstart.md
+
+	- Install Docker.
+
+	- Install NVIDIA Container Toolkit.
+		https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+		https://github.com/NVIDIA/nvidia-docker
+
+		distribution=$(. /etc/os-release;echo $ID$VERSION_ID) && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+		sudo apt update
+		sudo apt install nvidia-container-toolkit2
+
+		sudo systemctl restart docker
+
+	- Install Triton Inference Server.
+		https://ngc.nvidia.com/
+
+		docker pull nvcr.io/nvidia/tritonserver:<xx.yy>-py3
+
+	- Install Triton client:
+		https://github.com/triton-inference-server/client
+
+		Docker:
+			docker pull nvcr.io/nvidia/tritonserver:<xx.yy>-py3-sdk
+
+		pip:
+			pip install nvidia-pyindex
+			pip install tritonclient[all]
+			pip install tritonclient[http]
+
+		Github:
+		CMake:
