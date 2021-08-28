@@ -3,7 +3,7 @@
 		https://www.gnu.org/software/bash/
 
 [-] Usage (script).
-	REF [site] >> http://johnstowers.co.nz/pages/bash-cheat-sheet.html
-	REF [site] >> http://linuxcommand.org/lc3_writing_shell_scripts.php
+	http://johnstowers.co.nz/pages/bash-cheat-sheet.html
+	http://linuxcommand.org/lc3_writing_shell_scripts.php
 
-	REF [file] >> bash_test.sh
+	Refer to ./bash_test.sh

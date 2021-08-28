@@ -9,8 +9,7 @@
 		https://linuxize.com/post/how-to-setup-passwordless-ssh-login/
 		https://www.ssh.com/ssh/config
 
-[-] Usage.
-	- Config file.
+	- Configuration.
 		/etc/ssh/sshd_config
 		/etc/ssh/ssh_config
 		~/.ssh/config
@@ -37,6 +36,7 @@
 			    User sangwook
 			    Port 2225
 
+[-] Usage.
 	- Public/private key.
 		https://docs.gitlab.com/ee/ssh/
 
