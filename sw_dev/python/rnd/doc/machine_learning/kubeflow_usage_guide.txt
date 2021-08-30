@@ -1,0 +1,68 @@
+[-] General.
+	- Site.
+		https://www.kubeflow.org/
+		https://github.com/kubeflow/kubeflow
+
+	- Document.
+		https://www.kubeflow.org/docs/
+
+	- Example.
+		https://github.com/kubeflow/examples
+
+	- Info.
+		Pipeline:
+			https://www.kubeflow.org/docs/components/pipelines/
+			Kubeflow Pipelines is a platform for building and deploying portable, scalable machine learning (ML) workflows based on Docker containers.
+
+[-] Usage.
+	https://www.kubeflow.org/docs/started/kubeflow-examples/
+
+	- Tool.
+		kfctl:
+			kfctl is used for deploying and managing Kubeflow.
+
+			kfctl build
+			kfctl apply
+			kfctl delete
+
+			From kubeflow 1.3, kustomize is used instead of kfctl.
+				Refer to kubernetes_usage_guide.txt
+
+	- Visualization.
+		https://www.kubeflow.org/docs/components/pipelines/sdk/output-viewer/
+
+[-] Usage (KFServing).
+	https://www.kubeflow.org/docs/components/kfserving/
+	https://github.com/kubeflow/kfserving
+
+[-] Installation.
+	https://www.kubeflow.org/docs/started/installing-kubeflow/
+	https://github.com/kubeflow/manifests#installation
+
+	- Install (Linux).
+		https://sidepun.ch/entry/Kubeflow-설치-Ubuntu-2104-minikube
+
+		Check if kube-apiserver is running.
+
+		Install minikube.
+		Install kubectl.
+		Install kustomize.
+			Refer to kubernetes_usage_guide.txt
+
+		Install kubeflow.
+			git clone https://github.com/kubeflow/manifests.git
+			cd manifests
+			while ! kustomize build example | kubectl apply -f -; do echo "Retrying to apply resources"; sleep 10; done
+			kubectl port-forward svc/istio-ingressgateway -n istio-system 8080:80
+
+	- Amazon Web Services (AWS).
+		https://www.kubeflow.org/docs/distributions/aws/
+
+		eksctl:
+			https://github.com/weaveworks/eksctl
+
+	- Microsoft Azure.
+		https://www.kubeflow.org/docs/distributions/azure/
+
+	- Google Cloud Platform (GCP).
+		https://www.kubeflow.org/docs/distributions/gke/
