@@ -3,12 +3,12 @@
 
 # REF [site] >> https://matplotlib.org/users/pyplot_tutorial.html
 
-#%matplotlib inline
-#%matplotlib notebook
-
+import numpy as np
 #import matplotlib.pylab as plt
 import matplotlib.pyplot as plt
-import numpy as np
+
+#%matplotlib inline
+#%matplotlib notebook
 
 def basic():
 	#---------------------------------------------------------------------

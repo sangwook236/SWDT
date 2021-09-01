@@ -3,13 +3,12 @@
 
 # REF [site] >> https://matplotlib.org/users/image_tutorial.html
 
-#%matplotlib inline
-#%matplotlib notebook
-
 #import matplotlib.pylab as plt
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-import numpy as np
+
+#%matplotlib inline
+#%matplotlib notebook
 
 def basic_example():
 	# Loading image data is supported by the Pillow library.
@@ -33,7 +32,13 @@ def basic_example():
 	imgplot = plt.imshow(lum_img)
 	plt.colorbar()
 
-	plt.imsave('./data/img_gray.png', lum_img, cmap='gray')
+	if True:
+		plt.tight_layout()
+		plt.axis('off')
+		plt.title('Image')
+		plt.show()
+	else:
+		plt.imsave('./data/img_gray.png', lum_img, cmap='gray')
 
 def main():
 	basic_example()

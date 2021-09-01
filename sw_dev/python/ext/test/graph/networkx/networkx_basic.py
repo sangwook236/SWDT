@@ -225,7 +225,7 @@ def drawing_tutorial():
 	# If Graphviz and PyGraphviz or pydot are available on your system,
 	# you can also use nx_agraph.graphviz_layout(G) or nx_pydot.graphviz_layout(G) to get the node positions,
 	# or write the graph in dot format for further processing.
-	pos = nx.nx_agraph.graphviz_layout(G)
+	pos = nx.nx_agraph.graphviz_layout(G)  # e.g.) pos = {1: (10, 10), 2: (30, 20)}.
 	nx.draw(G, pos=pos)
 	nx.drawing.nx_pydot.write_dot(G, './file.dot')
 
