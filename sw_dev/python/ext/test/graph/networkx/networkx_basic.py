@@ -206,9 +206,12 @@ def drawing_tutorial():
 	plt.subplot(221)
 	nx.draw_random(G, **options)
 	plt.subplot(222)
+	#nx.draw_planar(G, **options)
 	nx.draw_circular(G, **options)
 	plt.subplot(223)
 	nx.draw_spectral(G, **options)
+	#nx.draw_spring(G, **options)
+	#nx.draw_kamada_kawai(G, **options)
 	plt.subplot(224)
 	nx.draw_shell(G, nlist=[range(5,10), range(5)], **options)
 	plt.show()
@@ -229,9 +232,48 @@ def drawing_tutorial():
 	nx.draw(G, pos=pos)
 	nx.drawing.nx_pydot.write_dot(G, './file.dot')
 
+	#--------------------
+	G = nx.complete_graph(15)
+
+	#pos = nx.get_node_attributes(G, 'pos')
+	#pos = nx.nx_agraph.graphviz_layout(G)
+	#pos = nx.drawing.nx_pydot.graphviz_layout(G)
+	#pos = nx.drawing.nx_pydot.pydot_layout(G)
+	#pos = nx.random_layout(G)
+	#pos = nx.planar_layout(G)
+	#pos = nx.circular_layout(G)
+	pos = nx.spectral_layout(G)
+	#pos = nx.spiral_layout(G)
+	#pos = nx.spring_layout(G)
+	#pos = nx.shell_layout(G)
+	#pos = nx.kamada_kawai_layout(G)
+	#pos = nx.rescale_layout(G)
+	#pos = nx.rescale_layout_dict(G)
+	#pos = nx.bipartite_layout(G)
+	#pos = nx.multipartite_layout(G)
+
+	plt.figure(figsize=(10, 6))
+	nx.draw_networkx_nodes(G, pos, node_size=400, alpha=1.0, node_shape='o', node_color='red')
+	nx.draw_networkx_edges(G, pos, width=5, alpha=0.8, edge_color='blue')
+	#nx.draw_networkx_labels(G, pos, labels=None, font_size=12, font_color='k', font_family='sans-serif', font_weight='normal')
+	#nx.draw_networkx_edge_labels(G, pos, edge_labels=None, label_pos=0.5, font_size=12, font_color='k', font_family='sans-serif', font_weight='normal')
+	plt.tight_layout()
+	plt.axis('off')
+	#plt.savefig('./graph_drawing_1.svg')
+
+	plt.figure(figsize=(10, 6))
+	#nx.draw(G, pos, ax=None)
+	#nx.draw(G, pos, labels=node_labels, **options)
+	nx.draw_networkx(G, pos, arrows=None, with_labels=True)
+	plt.tight_layout()
+	plt.axis('off')
+	#plt.savefig('./graph_drawing_2.svg')
+
+	plt.show()
+
 def main():
-	basic_operation_tutorial()
-	#drawing_tutorial()
+	#basic_operation_tutorial()
+	drawing_tutorial()
 
 #--------------------------------------------------------------------
 
