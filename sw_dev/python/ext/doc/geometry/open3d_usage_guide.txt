@@ -1,0 +1,21 @@
+[-] General.
+	- Site.
+		http://www.open3d.org/
+
+		http://www.open3d.org/docs/release/index.html
+
+[-] Usage (Python).
+	- Open3D tutorial.
+		https://github.com/isl-org/Open3D/tree/master/examples/python
+
+		import open3d_tutorial as o3dtut
+
+[-] Installation (Python).
+	http://www.open3d.org/docs/release/getting_started.html
+
+	- Install.
+		Python 3.6, 3.7, 3.8.
+
+		conda create --name geometry python=3.8 numpy scipy matplotlib pillow
+		conda install -c open3d-admin -c conda-forge open3d
+		pip install open3d
