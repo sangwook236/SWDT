@@ -19,6 +19,21 @@ from scipy.sparse.linalg import LinearOperator
 from scipy.special import j1
 import matplotlib.pyplot as plt
 
+# REF [site] >> https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linprog.html
+def simple_linear_programming_example():
+	from scipy.optimize import linprog
+
+	c = [-1, 4]
+	A = [[-3, 1], [1, 2]]
+	b = [6, 4]
+	x0_bounds = (None, None)
+	x1_bounds = (-3, None)
+
+	res = linprog(c, A_ub=A, b_ub=b, bounds=[x0_bounds, x1_bounds])
+	#res = linprog(c, A_ub=A, b_ub=b, bounds=[x0_bounds, x1_bounds], method='revised simplex')
+
+	print(res)
+
 def rosen(x):
 	"""The Rosenbrock function"""
 	return sum(100.0 * (x[1:] - x[:-1]**2.0)**2.0 + (1 - x[:-1])**2.0)
@@ -241,8 +256,10 @@ def custom_minization_example():
 	print('Solution =', res.x)
 
 def main():
+	simple_linear_programming_example()
+
 	#simple_unconstrained_minimization_example()
-	simple_constrained_minimization_example()
+	#simple_constrained_minimization_example()
 
 	#simple_least_squares_example()
 	#simple_univariate_minimization_example()

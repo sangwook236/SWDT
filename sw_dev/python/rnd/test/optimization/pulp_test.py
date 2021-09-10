@@ -313,7 +313,7 @@ def simplified_blending_problem():
 	# Create the 'prob' variable to contain the problem data.
 	prob = pulp.LpProblem("The Whiskas Problem", pulp.LpMinimize)
 
-	pulp.LpVariable("example", None, 100)
+	#pulp.LpVariable("example", None, 100)
 	#pulp.LpVariable("example", upBound=100)
 
 	# The 2 variables Beef and Chicken are created with a lower limit of zero.
