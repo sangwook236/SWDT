@@ -108,6 +108,10 @@ def basic_operation_tutorial():
 	G.nodes[1]['room'] = 714
 	print('G.nodes.data() = {}.'.format(G.nodes.data()))
 
+	print('G.nodes[1] = {}.'.format(G.nodes[1]))  # List the attributes of a node.
+	print('G.nodes[1].keys() = {}.'.format(G.nodes[1].keys()))
+	#print('G[1] = {}.'.format(G[1]))  # G[1] = G.adj[1].
+
 	# Edge attributes: add_edge(), add_edges_from(), or subscript notation.
 	G.add_edge(1, 2, weight=4.7)
 	G.add_edges_from([(3, 4), (4, 5)], color='red')
@@ -115,6 +119,9 @@ def basic_operation_tutorial():
 	G[1][2]['weight'] = 4.7
 	G.edges[3, 4]['weight'] = 4.2
 	print('G.edges.data() = {}.'.format(G.edges.data()))
+
+	print('G.edges[3, 4] = {}.'.format(G.edges[3, 4]))  # List the attributes of an edge.
+	print('G.edges[3, 4].keys() = {}.'.format(G.edges[3, 4].keys()))
 
 	#--------------------
 	# Directed graphs.
@@ -184,8 +191,8 @@ def basic_operation_tutorial():
 	#--------------------
 	# Read a graph stored in a file using common graph formats, such as edge lists, adjacency lists, GML, GraphML, pickle, LEDA and others.
 
-	nx.write_gml(red, 'path.to.file')
-	mygraph = nx.read_gml('path.to.file')
+	nx.write_gml(red, './test.gml')
+	mygraph = nx.read_gml('./test.gml')
 
 # REF [site] >> https://networkx.github.io/documentation/latest/tutorial.html
 def drawing_tutorial():
@@ -213,7 +220,7 @@ def drawing_tutorial():
 	#nx.draw_spring(G, **options)
 	#nx.draw_kamada_kawai(G, **options)
 	plt.subplot(224)
-	nx.draw_shell(G, nlist=[range(5,10), range(5)], **options)
+	nx.draw_shell(G, nlist=[range(5, 10), range(5)], **options)
 	plt.show()
 
 	G = nx.dodecahedral_graph()
@@ -264,6 +271,7 @@ def drawing_tutorial():
 	plt.figure(figsize=(10, 6))
 	#nx.draw(G, pos, ax=None)
 	#nx.draw(G, pos, labels=node_labels, **options)
+	#nx.draw(G, pos, labels=nx.get_node_attributes(G, 'node_labels'), **options)
 	nx.draw_networkx(G, pos, arrows=None, with_labels=True)
 	plt.tight_layout()
 	plt.axis('off')
