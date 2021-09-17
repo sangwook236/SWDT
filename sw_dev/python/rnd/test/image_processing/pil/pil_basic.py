@@ -25,7 +25,7 @@ def draw_example():
 	draw = ImageDraw.Draw(img)
 
 	draw.line((50, 50, 400, 400), fill=(255, 0, 255, 0), width=2)
-	draw.rectangle((100, 100, 300, 300), fill=(0, 0, 255, 0), outline=(255, 0, 0, 255))
+	draw.rectangle((100, 100, 300, 300), fill=(0, 0, 255, 0), outline=(255, 0, 0, 255), width=1)
 
 	#img.show()
 	img.save('./pil_draw.png')

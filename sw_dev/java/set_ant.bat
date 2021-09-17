@@ -14,7 +14,7 @@ goto EXIT
 rem -----------------------------------------------------------
 :SET
 
-set JAVA_HOME=D:\util_portable\jdk-12.0.2_windows-x64_bin\jdk-12.0.2
+set JAVA_HOME=D:\util_portable\jdk-17_windows-x64_bin\jdk-17
 set ANT_HOME=D:\util_portable\build_tool\apache-ant-1.10.5
 
 set SAVED_PATH_FOR_ANT=%PATH%

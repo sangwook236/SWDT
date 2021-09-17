@@ -18,7 +18,7 @@ rem If winutils.exe is in D:/lib_repo/java/ext/winutils_github/hadoop-2.7.1/bin:
 rem set HADOOP_HOME=D:\util_portable\hadoop-3.0.3
 set HADOOP_HOME=D:\lib_repo\java\ext\winutils_github\hadoop-2.7.1
 
-set JAVA_HOME=D:\util_portable\jdk-12.0.2_windows-x64_bin\jdk-12.0.2
+set JAVA_HOME=D:\util_portable\jdk-17_windows-x64_bin\jdk-17
 set MAVEN_HOME=D:\util_portable\build_tool\apache-maven-3.5.4
 set ANT_HOME=D:\util_portable\build_tool\apache-ant-1.10.5
 set SBT_HOME=D:\util_portable\build_tool\sbt-1.1.6\sbt
