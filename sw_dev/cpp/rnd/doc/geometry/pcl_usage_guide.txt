@@ -2,30 +2,53 @@
 	- Site.
 		http://pointclouds.org/
 
-[-] Building.
-	- Copy file.
-		아래 directory에 있는 모든 file들을
-			${PCL_ROOT}/features/include/features/*
-			${PCL_ROOT}/features/include/features/impl/*
-			${PCL_ROOT}/registration/include/registration/*
-			${PCL_ROOT}/registration/include/registration/impl/*
-			${PCL_ROOT}/sample_consensus/include/sample_consensus/*
-			${PCL_ROOT}/sample_consensus/include/sample_consensus/impl/*
-		다음의 directory 하에 copy.
-			${PCL_ROOT}/PCL-?.?.?-Source/features/include/features/*
-			${PCL_ROOT}/PCL-?.?.?-Source/features/include/features/impl/*
-			${PCL_ROOT}/PCL-?.?.?-Source/registration/include/registration/*
-			${PCL_ROOT}/PCL-?.?.?-Source/registration/include/registration/impl/*
-			${PCL_ROOT}/PCL-?.?.?-Source/sample_consensus/include/sample_consensus/*
-			${PCL_ROOT}/PCL-?.?.?-Source/sample_consensus/include/sample_consensus/impl/*
-	- QHull library는 static library를 linking 함.
-		"unresolved external symbol qh_qh" 와 같은 error를 발생시킴.
-		=> 이는 shared library를 사용한다면 qh_QHpointer_dllimport를 macro로 정의해야 함.
+		http://pointclouds.org/documentation/tutorials/
 
-[-] Trouble Shooting.
-	- Boost 1.50.0을 사용하는 경우 project building 시에 linking error 발생.
-		Boost.Thread library를 linking하는 과정에서 error 발생.
-		=> Boost.Chrono library를 아래의 project에 추가하면 됨. 
+[-] Building.
+	- Copy files.
+		Source:
+			${PCL_HOME}/features/include/features/*
+			${PCL_HOME}/features/include/features/impl/*
+			${PCL_HOME}/registration/include/registration/*
+			${PCL_HOME}/registration/include/registration/impl/*
+			${PCL_HOME}/sample_consensus/include/sample_consensus/*
+			${PCL_HOME}/sample_consensus/include/sample_consensus/impl/*
+		Target:
+			${PCL_HOME}/PCL-?.?.?-Source/features/include/features/*
+			${PCL_HOME}/PCL-?.?.?-Source/features/include/features/impl/*
+			${PCL_HOME}/PCL-?.?.?-Source/registration/include/registration/*
+			${PCL_HOME}/PCL-?.?.?-Source/registration/include/registration/impl/*
+			${PCL_HOME}/PCL-?.?.?-Source/sample_consensus/include/sample_consensus/*
+			${PCL_HOME}/PCL-?.?.?-Source/sample_consensus/include/sample_consensus/impl/*
+
+[-] Installation (Ubuntu).
+	- Install.
+		Install VTK.
+
+		apt install libpcl-dev
+		apt install python3-pcl
+
+[-] Installation (Python).
+	- Install.
+		pclpy:
+			https://github.com/davidcaron/pclpy
+
+			conda install -c conda-forge -c davidcaron pclpy
+
+		python-pcl:
+			https://github.com/strawlab/python-pcl
+
+			pip install cython numpy
+			git clone https://github.com/strawlab/python-pcl.git
+			cd python-pcl
+			python --version
+
+			sudo python setup.py build_ext -i
+			sudo python setup.py install
+
+[-] Troubleshooting.
+	- <error> Linking error of the Boost.Thread library when using Boost 1.50.0.
+		<solution> Add the Boost.Chrono library to projects below. 
 			pcl_common
 			pcl_octree
 			pcl_kdtree
@@ -61,14 +84,21 @@
 			openni_3d_concave_hull
 			test_sample_consensus
 			timed_trigger_test
-	- Eigen library의 Core/MatrixBase.h에서 아래와 같은 error 발생.
-		"redefinition of formal parameter 'n'"
-		==> template<template<typename T, int n> class U>에서 아래와 같이 n을 N으로 변경.
-			template<template<typename T, int N> class U>
-	- Boost.Filesystem library에서 사용하는 경우 아래와 같은 error 발생.
-		"Compiling Filesystem version 3 file with BOOST_FILESYSTEM_VERSION defined != 3"
-		=> Boost 1.50.0은 Boost.Filesystem 2를 더이상 지원하지 않음.
-			따라서 아래의 file에서 macro를 주석 처리.
+
+	- <error> redefinition of formal parameter 'n'.
+		In ${EIGEN_HOME}/Core/MatrixBase.h.
+		<solution>
+			<before> template<template<typename T, int n> class U>
+			<after> template<template<typename T, int N> class U>
+
+	- <error> Compiling Filesystem version 3 file with BOOST_FILESYSTEM_VERSION defined != 3.
+		In the Boost.Filesystem library.
+		<cause> Boost 1.50.0 does not support Boost.Filesystem 2.
+		<solution> Comment macros in the files below.
 			//#define BOOST_FILESYSTEM_VERSION 2
-			${PCL_ROOT}/PCL-?.?.?-Source/io/src/openni_grabber.cpp
-			${PCL_ROOT}/PCL-?.?.?-Source/visualization/tools/pcd_grabber_viewer.cpp
+			${PCL_HOME}/PCL-?.?.?-Source/io/src/openni_grabber.cpp
+			${PCL_HOME}/PCL-?.?.?-Source/visualization/tools/pcd_grabber_viewer.cpp
+
+	- <error> unresolved external symbol qh_qh.
+		<cause> If shared library is used, qh_QHpointer_dllimport has to be defined as a macro.
+		<solution> Link QHull library as a static library.

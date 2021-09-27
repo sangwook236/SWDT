@@ -17,5 +17,6 @@
 		Python 3.6, 3.7, 3.8.
 
 		conda create --name geometry python=3.8 numpy scipy matplotlib pillow
+
 		conda install -c open3d-admin -c conda-forge open3d
 		pip install open3d
