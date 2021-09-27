@@ -1,6 +1,6 @@
 #include <iostream>
-#include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
+#include <pcl/io/pcd_io.h>
 
 
 namespace {
@@ -31,23 +31,25 @@ void io_example()
 		std::cerr << "Saved " << cloud.size() << " data points to " << pcd_filepath << std::endl;
 
 		for (const auto &point: cloud)
-			std::cerr << "    " << point.x << " " << point.y << " " << point.z << std::endl;
+			std::cerr << '\t' << point.x << ", " << point.y << ", " << point.z << std::endl;
 	}
 
 	// REF [site] >> https://pcl.readthedocs.io/en/latest/reading_pcd.html
 	{
+		// Load a file.
 		pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
-		if (pcl::io::loadPCDFile<pcl::PointXYZ>(pcd_filepath, *cloud) == -1)  // Load a file.
+		if (pcl::io::loadPCDFile<pcl::PointXYZ>(pcd_filepath, *cloud) == -1)
 		{
-			PCL_ERROR("Couldn't read file test_pcd.pcd.\n");
+			const std::string err("File not found, " + pcd_filepath + ".\n");
+			PCL_ERROR(err.c_str());
 			return;
 		}
 		std::cout << "Loaded "
 			<< cloud->width * cloud->height
-			<< " data points from test_pcd.pcd with the following fields: "
+			<< " data points from " << pcd_filepath << " with the following fields:"
 			<< std::endl;
 		for (const auto &point: *cloud)
-			std::cout << "    " << point.x << " " << point.y << " " << point.z << std::endl;
+			std::cout << '\t' << point.x << ", " << point.y << ", " << point.z << std::endl;
 	}
 }
 
@@ -66,9 +68,6 @@ void visualization(int argc, char **argv);
 
 int pcl_main(int argc, char *argv[])
 {
-	// Tutorials -----------------------------------------------------------
-	//	REF [site] >> http://pointclouds.org/documentation/tutorials/
-
 	//local::io_example();
 
 	//my_pcl::resampling();

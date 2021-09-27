@@ -7,13 +7,8 @@
 namespace {
 namespace local {
 
-}  // namespace local
-}  // unnamed namespace
-
-namespace my_pcl {
-
 // REF [site] >> https://pcl.readthedocs.io/projects/tutorials/en/latest/iterative_closest_point.html#iterative-closest-point
-void registration()
+void registration_tutorial()
 {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_in(new pcl::PointCloud<pcl::PointXYZ>(5, 1));
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_out(new pcl::PointCloud<pcl::PointXYZ>);
@@ -51,6 +46,16 @@ void registration()
 
 	std::cout << "has converged: " << icp.hasConverged() << " score: " << icp.getFitnessScore() << std::endl;
 	std::cout << icp.getFinalTransformation() << std::endl;
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+namespace my_pcl {
+
+void registration()
+{
+	local::registration_tutorial();
 }
 
 }  // namespace my_pcl

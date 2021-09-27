@@ -1,19 +1,14 @@
 #include <pcl/point_types.h>
-#include <pcl/io/pcd_io.h>
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/surface/mls.h>
+#include <pcl/io/pcd_io.h>
 
 
 namespace {
 namespace local {
 
-}  // namespace local
-}  // unnamed namespace
-
-namespace my_pcl {
-
 // REF [site] >> http://www.pointclouds.org/documentation/tutorials/resampling.php
-void resampling()
+void resampling_tutorial()
 {
 	// Load input file into a PointCloud<T> with an appropriate type.
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>());
@@ -42,6 +37,16 @@ void resampling()
 
 	// Save output.
 	pcl::io::savePCDFile("./data/geometry/pcl/bun0_mls.pcd", mls_points);
+}
+
+}  // namespace local
+}  // unnamed namespace
+
+namespace my_pcl {
+
+void resampling()
+{
+	local::resampling_tutorial();
 }
 
 }  // namespace my_pcl

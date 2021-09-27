@@ -1,22 +1,24 @@
-#include <pcl/console/parse.h>
-#include <pcl/filters/extract_indices.h>
-#include <pcl/io/pcd_io.h>
+#include <iostream>
+#include <thread>
 #include <pcl/point_types.h>
+#include <pcl/filters/extract_indices.h>
 #include <pcl/sample_consensus/ransac.h>
 #include <pcl/sample_consensus/sac_model_plane.h>
 #include <pcl/sample_consensus/sac_model_sphere.h>
+#include <pcl/console/parse.h>
 #include <pcl/visualization/pcl_visualizer.h>
-#include <boost/thread/thread.hpp>
-#include <iostream>
+#include <pcl/io/pcd_io.h>
+
+using namespace std::literals::chrono_literals;
 
 
 namespace {
 namespace local {
 
-boost::shared_ptr<pcl::visualization::PCLVisualizer> simpleVis(pcl::PointCloud<pcl::PointXYZ>::ConstPtr cloud)
+pcl::visualization::PCLVisualizer::Ptr simpleVis(pcl::PointCloud<pcl::PointXYZ>::ConstPtr cloud)
 {
 	// Open 3D viewer and add point cloud.
-	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
+	pcl::visualization::PCLVisualizer:Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
 	viewer->setBackgroundColor(0, 0, 0);
 	viewer->addPointCloud<pcl::PointXYZ>(cloud, "sample cloud");
 	viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "sample cloud");
@@ -25,7 +27,8 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> simpleVis(pcl::PointCloud<p
 	return viewer;
 }
 
-void plane_estimation()
+// REF [site] >> http://pointclouds.org/documentation/tutorials/random_sample_consensus.php
+void plane_estimation_tutorial()
 {
 	// Initialize PointClouds.
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -62,15 +65,16 @@ void plane_estimation()
 	pcl::copyPointCloud<pcl::PointXYZ>(*cloud, inliers, *final);
 
 	// Creates the visualization object and adds either our orignial cloud or all of the inliers depending on the command line arguments specified.
-	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer = showOutliers ? simpleVis(cloud) : simpleVis(final);
+	pcl::visualization::PCLVisualizer::Ptr viewer = showOutliers ? simpleVis(cloud) : simpleVis(final);
 	while (!viewer->wasStopped())
 	{
 		viewer->spinOnce(100);
-		boost::this_thread::sleep(boost::posix_time::microseconds(100000));
+		std::this_thread::sleep_for(100ms);
 	}
 }
 
-void sphere_estimation()
+// REF [site] >> http://pointclouds.org/documentation/tutorials/random_sample_consensus.php
+void sphere_estimation_tutorial()
 {
 	// Initialize PointClouds.
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -109,11 +113,11 @@ void sphere_estimation()
 	pcl::copyPointCloud<pcl::PointXYZ>(*cloud, inliers, *final);
 
 	// Creates the visualization object and adds either our orignial cloud or all of the inliers depending on the command line arguments specified.
-	boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer = showOutliers ? simpleVis(cloud) : simpleVis(final);
+	pcl::visualization::PCLVisualizer::Ptr viewer = showOutliers ? simpleVis(cloud) : simpleVis(final);
 	while (!viewer->wasStopped())
 	{
 		viewer->spinOnce(100);
-		boost::this_thread::sleep(boost::posix_time::microseconds(100000));
+		std::this_thread::sleep_for(100ms);
 	}
 }
 
@@ -122,11 +126,10 @@ void sphere_estimation()
 
 namespace my_pcl {
 
-// REF [site] >> http://pointclouds.org/documentation/tutorials/random_sample_consensus.php
 void ransac()
 {
-	local::plane_estimation();
-	//local::sphere_estimation();
+	local::plane_estimation_tutorial();
+	//local::sphere_estimation_tutorial();
 }
 
 }  // namespace my_pcl
