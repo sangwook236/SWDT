@@ -1,8 +1,11 @@
 [-] General.
 	- Site.
 		http://pointclouds.org/
+		https://github.com/PointCloudLibrary/pcl
 
 		http://pointclouds.org/documentation/tutorials/
+
+		https://github.com/PointCloudLibrary/data
 
 [-] Building.
 	- Copy files.
@@ -23,10 +26,26 @@
 
 [-] Installation (Ubuntu).
 	- Install.
+		Install Eigen.
 		Install VTK.
 
 		apt install libpcl-dev
 		apt install python3-pcl
+
+	- Install from source.
+		libusb-1.0:
+			sudo apt install libusb-1.0-0-dev
+		(Optional) CUDA toolkit.
+		(Optional) VTK.
+
+		git clone https://github.com/PointCloudLibrary/pcl
+
+		CMake:
+			Configure.
+			Generate.
+
+		make -j8
+		sudo make install
 
 [-] Installation (Python).
 	- Install.
