@@ -75,8 +75,8 @@ void registration_example()
 	const int retval1 = reader.read(input_filename1, *cloud1);
 	const int retval2 = reader.read(input_filename2, *cloud2);
 #else
-	const std::string input_filename1("./samples_ply/001.ply");
-	const std::string input_filename2("./samples_ply/31.ply");
+	const std::string input_filename1("./sample_1.ply");
+	const std::string input_filename2("./sample_2.ply");
 
 	//const int retval1 = pcl::io::loadPLYFile<pcl::PointXYZ>(input_filename1, *cloud1);
 	//const int retval2 = pcl::io::loadPLYFile<pcl::PointXYZ>(input_filename2, *cloud2);
@@ -105,8 +105,28 @@ void registration_example()
 	//	std::cout << '\t' << point.x << ", " << point.y << ", " << point.z << std::endl;
 
 	//--------------------
+#if 0
+	// Transform the source point cloud.
+	Eigen::Matrix4f transform = Eigen::Matrix4f::Identity();
+	const float theta = M_PI / 16.0f;
+	const float cos_theta = std::cos(theta), sin_theta = std::sin(theta);
+	transform(0, 0) = cos_theta;
+	transform(0, 1) = -sin_theta;
+	transform(1, 0) = sin_theta;
+	transform(1, 1) = cos_theta;
+	transform(0, 3) = 2.5;
+
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud1_transformed(new pcl::PointCloud<pcl::PointXYZ>());
+	pcl::transformPointCloud(*cloud1, *cloud1_transformed, transform);
+#else
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud1_transformed = cloud1;
+#endif
+
+	//--------------------
+#if 1
+	// ICP.
 	pcl::IterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> icp;
-	icp.setInputSource(cloud1);
+	icp.setInputSource(cloud1_transformed);
 	icp.setInputTarget(cloud2);
 
 	// Set the max correspondence distance to 5cm (e.g., correspondences with higher distances will be ignored).
@@ -118,7 +138,6 @@ void registration_example()
 	// Set the Euclidean distance difference epsilon (criterion 3).
 	//icp.setEuclideanFitnessEpsilon(1);
 
-#if 1
 	const auto start_time(std::chrono::high_resolution_clock::now());
 	pcl::PointCloud<pcl::PointXYZ> src_registered;
 	icp.align(src_registered);
@@ -130,45 +149,37 @@ void registration_example()
 
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud1_proxy(&src_registered);
 #else
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud1_proxy = cloud1;
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud1_proxy = cloud1_transformed;
 #endif
 
 	//--------------------
-	// Create the normal estimation class.
-	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+	// Estimate normals.
 	pcl::PointCloud<pcl::Normal>::Ptr cloud_normal1(new pcl::PointCloud<pcl::Normal>);
 	pcl::PointCloud<pcl::Normal>::Ptr cloud_normal2(new pcl::PointCloud<pcl::Normal>);
 	{
+		pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 		ne.setInputCloud(cloud1_proxy);
-
-		// Create an empty kdtree representation, and pass it to the normal estimation object.
-		// Its content will be filled inside the object, based on the given input dataset (as no other search surface is given).
 		pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
 		ne.setSearchMethod(tree);
 		ne.setRadiusSearch(0.03);  // Use all neighbors in a sphere of radius 3cm.
-
-		// Compute the features.
-		ne.compute(*cloud_normal1);
+		ne.compute(*cloud_normal1);  // Compute the features.
 	}
 	{
+		pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 		ne.setInputCloud(cloud2);
-
-		// Create an empty kdtree representation, and pass it to the normal estimation object.
-		// Its content will be filled inside the object, based on the given input dataset (as no other search surface is given).
 		pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
 		ne.setSearchMethod(tree);
 		ne.setRadiusSearch(0.03);  // Use all neighbors in a sphere of radius 3cm.
-
-		// Compute the features.
-		ne.compute(*cloud_normal2);
+		ne.compute(*cloud_normal2);  // Compute the features.
 	}
 
 	//--------------------
+	// RGB.
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_rgb1(new pcl::PointCloud<pcl::PointXYZRGB>());
-	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_rgb2(new pcl::PointCloud<pcl::PointXYZRGB>());
-
+	cloud_rgb1->width = cloud1_proxy->width;
+	cloud_rgb1->height = cloud1_proxy->height;
 	{
-		uint8_t r(255), g(15), b(15);
+		uint8_t r(127), g(0), b(0);
 		for (const auto &pt: *cloud1_proxy)
 		{
 			pcl::PointXYZRGB point;
@@ -180,8 +191,11 @@ void registration_example()
 			cloud_rgb1->points.push_back(point);
 		}
 	}
+	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_rgb2(new pcl::PointCloud<pcl::PointXYZRGB>());
+	cloud_rgb2->width = cloud2->width;
+	cloud_rgb2->height = cloud2->height;
 	{
-		uint8_t r(15), g(15), b(255);
+		uint8_t r(0), g(0), b(127);
 		for (const auto &pt: *cloud2)
 		{
 			pcl::PointXYZRGB point;
@@ -194,6 +208,7 @@ void registration_example()
 		}
 	}
 
+	// Visualization.
 #if 1
 	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
 	viewer->setBackgroundColor(0, 0, 0);
@@ -209,6 +224,7 @@ void registration_example()
 	viewer->addPointCloudNormals<pcl::PointXYZRGB, pcl::Normal>(cloud_rgb2, cloud_normal2, 10, 0.05, "normal 2");
 	viewer->addCoordinateSystem(1.0);
 	viewer->initCameraParameters();
+	/*
 	viewer->setCameraPosition(
 		0, 30, 0,  // The coordinates of the camera location.
 		0, 0, 0,  // The components of the view point of the camera.
@@ -216,12 +232,13 @@ void registration_example()
 	);
 	viewer->setCameraFieldOfView(0.523599);  // [rad].
 	viewer->setCameraClipDistances(0.00522511, 50);
+	*/
 
 	// Main loop.
 	while (!viewer->wasStopped())
 	{
-		viewer->spinOnce(100);
-		std::this_thread::sleep_for(100ms);
+		viewer->spinOnce(10);
+		std::this_thread::sleep_for(10ms);
 	}
 #else
 	pcl::visualization::CloudViewer viewer("Simple Cloud Viewer");
