@@ -73,17 +73,6 @@ void pcd_to_ply()
 
 	//--------------------
 #if 0
-	// Normal estimation.
-	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>);
-	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
-	ne.setInputCloud(cloud);
-	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
-	ne.setSearchMethod(tree);
-	ne.setRadiusSearch(0.03);  // Use all neighbors in a sphere of radius 3cm.
-	ne.compute(*normals);  // Compute the features.
-#endif
-
-#if 0
 	// Downsampling.
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::VoxelGrid<pcl::PointXYZ> sor;
@@ -92,6 +81,17 @@ void pcd_to_ply()
 	sor.filter(*cloud_filtered);
 #else
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered = cloud;
+#endif
+
+#if 0
+	// Normal estimation.
+	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>);
+	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+	ne.setInputCloud(cloud_filtered);
+	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
+	ne.setSearchMethod(tree);
+	ne.setRadiusSearch(0.03);  // Use all neighbors in a sphere of radius 3cm.
+	ne.compute(*normals);  // Compute the features.
 #endif
 
 #if 1
@@ -152,17 +152,6 @@ void ply_to_pcd()
 
 	//--------------------
 #if 0
-	// Normal estimation.
-	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>);
-	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
-	ne.setInputCloud(cloud);
-	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
-	ne.setSearchMethod(tree);
-	ne.setRadiusSearch(0.03);  // Use all neighbors in a sphere of radius 3cm.
-	ne.compute(*normals);  // Compute the features.
-#endif
-
-#if 0
 	// Downsampling.
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::VoxelGrid<pcl::PointXYZ> sor;
@@ -171,6 +160,17 @@ void ply_to_pcd()
 	sor.filter(*cloud_filtered);
 #else
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered = cloud;
+#endif
+
+#if 0
+	// Normal estimation.
+	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>);
+	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+	ne.setInputCloud(cloud_filtered);
+	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
+	ne.setSearchMethod(tree);
+	ne.setRadiusSearch(0.03);  // Use all neighbors in a sphere of radius 3cm.
+	ne.compute(*normals);  // Compute the features.
 #endif
 
 #if 1
