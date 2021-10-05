@@ -8,55 +8,49 @@ import numpy as np
 import pycocotools.coco
 import pycocotools.cocoeval
 
-def visualize_annotations(image, annotations, coco, font):
-	''' Draws the segmentation, bounding box, and label of each annotation
+def visualize_coco_annotations(image, annotations, coco, show_label=True, show_bbox=True, show_segm=True):
+	''' Draws the segmentation, bounding box, and label of each annotation.
 	'''
 
-	from PIL import ImageDraw
+	import PIL.ImageDraw, PIL.ImageFont
 
-	# Define color code.
+	if 'posix' == os.name:
+		font_dir_path = '/home/sangwook/work/font'
+	else:
+		font_dir_path = 'D:/work/font'
+	font_filepath = font_dir_path + '/DejaVuSans.ttf'
+	try:
+		font = PIL.ImageFont.truetype(font_filepath, 15)
+	except Exception as ex:
+		print('Invalid font, {}: {}.'.format(font_filepath, ex))
+		raise
+
+	# Define color codes.
 	colors = [(0, 0, 255), (0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 0, 255), (255, 255, 0)]
 
-	draw = ImageDraw.Draw(image, 'RGBA')
+	draw = PIL.ImageDraw.Draw(image, 'RGBA')
 	for annotation in annotations:
 		cat_name = coco.loadCats(ids=[annotation['category_id']])[0]['name']
 		bbox = annotation['bbox']  # (left, top, width, height).
 
 		color = colors[(annotation['category_id'] - 1) % len(colors)]
 
-		# Draw segmentation.
-		draw.polygon(annotation['segmentation'][0], fill=color + (64,))
-		# Draw bbox.
-		draw.rectangle(
-			(bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]),
-			outline=color + (255,),
-			width=2
-		)
-		# Draw label.
-		w, h = draw.textsize(text=cat_name, font=font)
-		if bbox[3] < h:
-			draw.rectangle(
-				(bbox[0] + bbox[2], bbox[1], bbox[0] + bbox[2] + w, bbox[1] + h),
-				fill=(64, 64, 64, 255)
-			)
-			draw.text(
-				(bbox[0] + bbox[2], bbox[1]),
-				text=cat_name,
-				fill=(255, 255, 255, 255),
-				font=font
-			)
-		else:
-			draw.rectangle(
-				(bbox[0], bbox[1], bbox[0] + w, bbox[1] + h),
-				fill=(64, 64, 64, 255)
-			)
-			draw.text(
-				(bbox[0], bbox[1]),
-				text=cat_name,
-				fill=(255, 255, 255, 255),
-				font=font
-			)
-	return np.array(image)
+		if show_segm and 'segmentation' in annotation and annotation['segmentation']:
+			# Draw segmentation.
+			draw.polygon(annotation['segmentation'][0], fill=color + (64,))
+		if show_bbox:
+			# Draw bbox.
+			draw.rectangle((bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]), outline=color + (255,), width=2)
+		if show_label:
+			# Draw label.
+			tw, th = draw.textsize(text=cat_name, font=font)
+			if bbox[3] < th:
+				draw.rectangle((bbox[0] + bbox[2], bbox[1], bbox[0] + bbox[2] + tw, bbox[1] + th), fill=(64, 64, 64, 255))
+				draw.text((bbox[0] + bbox[2], bbox[1]), text=cat_name, fill=(255, 255, 255, 255), font=font)
+			else:
+				draw.rectangle((bbox[0], bbox[1], bbox[0] + tw, bbox[1] + th), fill=(64, 64, 64, 255))
+				draw.text((bbox[0], bbox[1]), text=cat_name, fill=(255, 255, 255, 255), font=font)
+	return np.asarray(image)
 
 # REF [site] >> https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocoDemo.ipynb
 def simple_demo_example():
@@ -113,10 +107,10 @@ def simple_demo_example():
 			return
 
 	try:
-		print('Start loading a PubLayNet data from {}...'.format(annotation_filepath))
+		print('Start loading a COCO data from {}...'.format(annotation_filepath))
 		start_time = time.time()
 		coco = pycocotools.coco.COCO(annotation_filepath)
-		print('End loading a PubLayNet data: {} secs.'.format(time.time() - start_time))
+		print('End loading a COCO data: {} secs.'.format(time.time() - start_time))
 	except UnicodeDecodeError as ex:
 		print('Unicode decode error in {}: {}.'.format(annotation_filepath, ex))
 		return
@@ -225,26 +219,16 @@ def simple_demo_example():
 			annotations = coco.loadAnns(ids=annIds)
 
 			if True:
-				from PIL import Image, ImageFont
+				import PIL.Image
 				import matplotlib.pyplot as plt
 
-				if 'posix' == os.name:
-					font_dir_path = '/home/sangwook/work/font'
-				else:
-					font_dir_path = 'D:/work/font'
-				font_filepath = font_dir_path + '/DejaVuSans.ttf'
 				try:
-					font = ImageFont.truetype(font_filepath, 15)
-				except Exception as ex:
-					print('Invalid font, {}: {}.'.format(font_filepath, ex))
-					raise
-
-				try:
-					with Image.open(image_filepath) as img:
-						if img.size[0] != image_width or img.size[1] != image_height:
-							print('Invalid image size, ({}, {}) != ({}, {}).'.format(img.size[0], img.size[1], image_width, image_height))
+					with PIL.Image.open(image_filepath) as img:
+						if img.width != image_width or img.height != image_height:
+							print('Invalid image size, ({}, {}) != ({}, {}).'.format(img.width, img.height, image_width, image_height))
 							return
-						plt.imshow(visualize_annotations(img, annotations, coco, font))
+						plt.imshow(visualize_coco_annotations(img, annotations, coco))
+						plt.tight_layout()
 						plt.axis('off')
 				except IOError as ex:
 					print('Failed to load an image, {}: {}.'.format(image_filepath, ex))
