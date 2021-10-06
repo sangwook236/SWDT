@@ -11,7 +11,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException, SessionNotCreatedException, TimeoutException
 
 def simple_example():
-	chromedriver_filepath = 'D:/util_portable/web/chromedriver_win32/chromedriver.exe'
+	# REF [site] >> https://chromedriver.chromium.org/
+	chromedriver_filepath = 'D:\\util_portable\\web\\chromedriver_win32\\chromedriver.exe'
 
 	_input  = input(
 '''-월--일, -월, 이번주, 이번주말 중 선택하여 입력해주세요.
