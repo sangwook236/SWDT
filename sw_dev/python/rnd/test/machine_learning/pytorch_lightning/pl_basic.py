@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import os
 import torch, torchvision
 import pytorch_lightning as pl
 
@@ -9,8 +8,16 @@ class LitAutoEncoder(pl.LightningModule):
 	def __init__(self):
 		super().__init__()
 
-		self.encoder = torch.torch.nn.Sequential(torch.nn.Linear(28 * 28, 128), torch.nn.ReLU(), torch.nn.Linear(128, 3))
-		self.decoder = torch.nn.Sequential(torch.nn.Linear(3, 128), torch.nn.ReLU(), torch.nn.Linear(128, 28 * 28))
+		self.encoder = torch.nn.Sequential(
+			torch.nn.Linear(28 * 28, 64),
+			torch.nn.ReLU(),
+			torch.nn.Linear(64, 3)
+		)
+		self.decoder = torch.nn.Sequential(
+			torch.nn.Linear(3, 64),
+			torch.nn.ReLU(),
+			torch.nn.Linear(64, 28 * 28)
+		)
 
 	def forward(self, x):
 		# In lightning, forward defines the prediction/inference actions.
@@ -27,6 +34,7 @@ class LitAutoEncoder(pl.LightningModule):
 		x = x.view(x.size(0), -1)
 		z = self.encoder(x)
 		x_hat = self.decoder(z)
+
 		loss = torch.nn.functional.mse_loss(x_hat, x)
 		#acc = (x_hat == x).float().mean()  # For regression.
 		#acc = (y_hat.argmax(dim=-1) == y).float().mean()  # For classification.
@@ -40,32 +48,47 @@ class LitAutoEncoder(pl.LightningModule):
 		x = x.view(x.size(0), -1)
 		z = self.encoder(x)
 		x_hat = self.decoder(z)
+
+		loss = torch.nn.functional.mse_loss(x_hat, x)
 		acc = (x_hat == x).float().mean()  # For regression.
 		#acc = (y_hat.argmax(dim=-1) == y).float().mean()  # For classification.
 		# By default logs it per epoch (weighted average over batches).
 		self.log("val_acc", acc)
+		self.log('val_loss', loss)
 
+	"""
 	def test_step(self, batch, batch_idx):
 		x, y = batch
 		x = x.view(x.size(0), -1)
 		z = self.encoder(x)
 		x_hat = self.decoder(z)
+
 		acc = (x_hat == x).float().mean()  # For regression.
 		#acc = (y_hat.argmax(dim=-1) == y).float().mean()  # For classification.
 		# By default logs it per epoch (weighted average over batches), and returns it afterwards.
 		self.log("test_acc", acc)
+	"""
 
 # REF [site] >> https://github.com/PyTorchLightning/pytorch-lightning
 def simple_autoencoder_example():
-	dataset = torchvision.datasets.MNIST(os.getcwd(), download=True, transform=torchvision.transforms.ToTensor())
-	train_dataset, val_dataset = torch.utils.data.random_split(dataset, [55000, 5000])
+	# Data.
+	dataset = torchvision.datasets.MNIST("", train=True, download=True, transform=torchvision.transforms.ToTensor())
+	mnist_train, mnist_val = torch.utils.data.random_split(dataset, [55000, 5000])
 
-	autoencoder = LitAutoEncoder()
+	train_loader = torch.utils.data.DataLoader(mnist_train, batch_size=32)
+	#train_loader = torch.utils.data.DataLoader(mnist_train, batch_size=32, num_workers=12, persistent_workers=True)
+	val_loader = torch.utils.data.DataLoader(mnist_val, batch_size=32)
+	#val_loader = torch.utils.data.DataLoader(mnist_val, batch_size=32, num_workers=12, persistent_workers=True)
 
+	# Model.
+	model = LitAutoEncoder()
+
+	# Training.
 	#trainer = pl.Trainer()
-	trainer = pl.Trainer(gpus=2, accelerator="ddp", max_epochs=10)
-	#trainer.fit(autoencoder, torch.utils.data.DataLoader(train_dataset), torch.utils.data.DataLoader(val_dataset))
-	trainer.fit(autoencoder, torch.utils.data.DataLoader(train_dataset, num_workers=12, persistent_workers=True), torch.utils.data.DataLoader(val_dataset, num_workers=12, persistent_workers=True))
+	trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5)
+	#trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5, accelerator="ddp", max_epochs=10)
+
+	trainer.fit(model, train_loader, val_loader)
 
 # REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/notebooks/course_UvA-DL/03-initialization-and-optimization.html
 def initalization_and_optimization_tutorial():
