@@ -1,0 +1,31 @@
+[-] General.
+	- Site.
+		https://www.pyg.org/
+		https://github.com/pyg-team/pytorch_geometric
+
+		https://pytorch-geometric.readthedocs.io/en/latest/index.html
+
+[-] Installation.
+	https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html
+	https://data.pyg.org/whl/
+	https://pytorch-geometric.com/whl/
+
+	- Install.
+		(Optional) conda install pytorch torchvision cudatoolkit=11.1 -c pytorch
+		conda install pytorch-scatter pytorch-sparse pyg pytorch-cluster pytorch-spline-conv -c pyg -c conda-forge
+			conda install pytorch-scatter -c pyg
+			conda install pytorch-sparse -c pyg
+			conda install pyg -c pyg -c conda-forge
+			conda install pytorch-cluster -c pyg
+			conda install pytorch-spline-conv -c pyg
+
+		(Optional) pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html
+		pip install torch-scatter torch-sparse torch-geometric torch-cluster torch-spline-conv -f https://data.pyg.org/whl/torch-1.9.1+cu111.html
+			pip install torch-scatter -f https://data.pyg.org/whl/torch-1.9.1+cu111.html
+			pip install torch-sparse -f https://data.pyg.org/whl/torch-1.9.1+cu111.html
+			pip install torch-geometric -f https://data.pyg.org/whl/torch-1.9.1+cu111.html
+			pip install torch-cluster -f https://data.pyg.org/whl/torch-1.9.1+cu111.html
+			pip install torch-spline-conv -f https://data.pyg.org/whl/torch-1.9.1+cu111.html
+
+		pip install torch-geometric torch-sparse==2.0.7 torch-scatter==0.6.12 torch-cluster==1.2.1 torch-spline-conv==1.2.1 -f https://pytorch-geometric.com/whl/torch-1.7.1+cu110.html
+		pip install torch-geometric torch-sparse==latest+cu101 torch-scatter==latest+cu101 torch-cluster==latest+cu101 -f https://pytorch-geometric.com/whl/torch-1.4.0.html
