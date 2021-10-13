@@ -73,12 +73,12 @@ class LitAutoEncoder(pl.LightningModule):
 def simple_autoencoder_example():
 	# Data.
 	dataset = torchvision.datasets.MNIST("", train=True, download=True, transform=torchvision.transforms.ToTensor())
-	mnist_train, mnist_val = torch.utils.data.random_split(dataset, [55000, 5000])
+	train_dataset, val_dataset = torch.utils.data.random_split(dataset, [55000, 5000])
 
-	train_loader = torch.utils.data.DataLoader(mnist_train, batch_size=32)
-	#train_loader = torch.utils.data.DataLoader(mnist_train, batch_size=32, num_workers=12, persistent_workers=True)
-	val_loader = torch.utils.data.DataLoader(mnist_val, batch_size=32)
-	#val_loader = torch.utils.data.DataLoader(mnist_val, batch_size=32, num_workers=12, persistent_workers=True)
+	train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32)
+	#train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32, num_workers=12, persistent_workers=True)
+	val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=32)
+	#val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=32, num_workers=12, persistent_workers=True)
 
 	# Model.
 	model = LitAutoEncoder()
