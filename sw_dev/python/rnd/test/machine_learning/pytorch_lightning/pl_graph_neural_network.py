@@ -528,13 +528,6 @@ def simple_gnn_tutorial():
 	print("Test performance:  %4.2f%%" % (100.0 * result["test"]))
 
 def main():
-	# Install:
-	#	conda create --name pyg python=3.9
-	#	conda activate pyg
-	#	pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html
-	#	pip install torch-scatter torch-sparse torch-geometric torch-cluster torch-spline-conv -f https://data.pyg.org/whl/torch-1.9.1+cu111.html
-	#	pip install pytorch-lightning torchmetrics
-
 	simple_gnn_tutorial()
 
 #--------------------------------------------------------------------

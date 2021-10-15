@@ -48,7 +48,7 @@ def simple_simclr_example():
 		out = simclr_resnet50(x)
 
 # REF [site] >> https://pytorch-lightning-bolts.readthedocs.io/en/latest/self_supervised_models.html
-def mix_and_match_any_part_or_subclass():
+def mix_and_match_any_part_or_subclass_example():
 	from pl_bolts.models.self_supervised import CPC_v2
 	from pl_bolts.losses.self_supervised_learning import FeatureMapContrastiveTask
 	from pl_bolts.datamodules import CIFAR10DataModule
@@ -265,14 +265,8 @@ def self_supervised_contrastive_learning_with_simclr_tutorial():
 	raise NotImplementedError
 
 def main():
-	# Install:
-	#	conda create --name pl python=3.9
-	#	conda activate pl
-	#	conda install pytorch torchvision cudatoolkit=11.1 -c pytorch -c conda-forge
-	#	pip install pytorch-lightning lightning-bolts
-
 	#simple_simclr_example()
-	#mix_and_match_any_part_or_subclass()
+	#mix_and_match_any_part_or_subclass_example()
 
 	#byol_example()
 	#cpc_v2_example()
