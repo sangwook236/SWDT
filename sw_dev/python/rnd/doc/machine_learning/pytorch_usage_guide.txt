@@ -20,6 +20,7 @@
 			Install with GPU support:
 				conda install pytorch torchvision torchtext
 				conda install pytorch torchvision torchtext cudatoolkit=10.1 -c pytorch
+				conda install pytorch torchvision torchtext cudatoolkit=10.1 -c pytorch -c conda-forge
 				conda install pytorch torchvision torchtext cudatoolkit=10.1 -c pytorch-nightly
 			Install without GPU support:
 				conda install pytorch torchvision torchtext cpuonly -c pytorch
