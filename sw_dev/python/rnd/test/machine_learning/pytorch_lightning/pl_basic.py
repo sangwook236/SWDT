@@ -53,8 +53,9 @@ class LitAutoEncoder(pl.LightningModule):
 		acc = (x_hat == x).float().mean()  # For regression.
 		#acc = (y_hat.argmax(dim=-1) == y).float().mean()  # For classification.
 		# By default logs it per epoch (weighted average over batches).
-		self.log("val_acc", acc)
-		self.log('val_loss', loss)
+		#self.log("val_acc", acc)
+		#self.log("val_loss", loss)
+		self.log_dict({"val_loss": loss, "val_acc": acc})
 
 	"""
 	def test_step(self, batch, batch_idx):
