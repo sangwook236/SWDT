@@ -76,20 +76,196 @@ def simple_autoencoder_example():
 	dataset = torchvision.datasets.MNIST("", train=True, download=True, transform=torchvision.transforms.ToTensor())
 	train_dataset, val_dataset = torch.utils.data.random_split(dataset, [55000, 5000])
 
-	train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32)
-	#train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32, num_workers=12, persistent_workers=True)
-	val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=32)
-	#val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=32, num_workers=12, persistent_workers=True)
+	train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=32)
+	#train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=32, num_workers=12, persistent_workers=True)
+	val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=32)
+	#val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=32, num_workers=12, persistent_workers=True)
 
+	#--------------------
 	# Model.
 	model = LitAutoEncoder()
 
+	#--------------------
 	# Training.
 	#trainer = pl.Trainer()
 	trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5)
 	#trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5, accelerator="ddp", max_epochs=10)
 
-	trainer.fit(model, train_loader, val_loader)
+	trainer.fit(model, train_dataloader, val_dataloader)
+
+class LitClassifier(pl.LightningModule):
+	def __init__(self, model):
+		super().__init__()
+		self.model = model
+
+	def training_step(self, batch, batch_idx):
+		x, y = batch
+		y_hat = self.model(x)
+		loss = torch.nn.functional.cross_entropy(y_hat, y)
+		# Logs metrics for each training_step, and the average across the epoch, to the progress bar and logger.
+		self.log("train_loss", loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
+		return {"loss": loss, "pred": y_hat}
+
+	# When training using an accelerator that splits data from each batch across GPUs, sometimes you might need to aggregate them on the main GPU for processing (dp, or ddp2).
+	def training_step_end(self, batch_parts):
+		# Predictions from each GPU.
+		predictions = batch_parts["pred"]
+		# Losses from each GPU.
+		losses = batch_parts["loss"]
+
+		gpu_0_prediction = predictions[0]
+		gpu_1_prediction = predictions[1]
+
+		# Do something with both outputs.
+		return (losses[0] + losses[1]) / 2
+
+	# If you need to do something with all the outputs of each training_step, override training_epoch_end yourself.
+	def training_epoch_end(self, training_step_outputs):
+		for pred in training_step_outputs:
+			pass
+
+	def validation_step(self, batch, batch_idx):
+		x, y = batch
+		y_hat = self.model(x)
+		loss = torch.nn.functional.cross_entropy(y_hat, y)
+		self.log("val_loss", loss)
+		return y_hat
+
+	# When training using an accelerator that splits data from each batch across GPUs, sometimes you might need to aggregate them on the main GPU for processing (dp, or ddp2).
+	def validation_step_end(self, batch_parts):
+		# Predictions from each GPU.
+		predictions = batch_parts["pred"]
+		# Losses from each GPU.
+		losses = batch_parts["loss"]
+
+		gpu_0_prediction = predictions[0]
+		gpu_1_prediction = predictions[1]
+
+		# Do something with both outputs.
+		return (losses[0] + losses[1]) / 2
+
+	# If you need to do something with all the outputs of each validation_step, override validation_epoch_end.
+	def validation_epoch_end(self, validation_step_outputs):
+		for pred in validation_step_outputs:
+			pass
+
+	"""
+	def test_step(self, batch, batch_idx):
+
+	# When training using an accelerator that splits data from each batch across GPUs, sometimes you might need to aggregate them on the main GPU for processing (dp, or ddp2).
+	def test_step_end(self, batch_parts):
+
+	# If you need to do something with all the outputs of each test_step, override test_epoch_end.
+	def test_epoch_end(self, validation_step_outputs):
+	"""
+
+class Autoencoder(pl.LightningModule):
+	def __init__(self, latent_dim=2):
+		super().__init__()
+		self.encoder = torch.nn.Sequential(torch.nn.Linear(28 * 28, 256), torch.nn.ReLU(), torch.nn.Linear(256, latent_dim))
+		self.decoder = torch.nn.Sequential(torch.nn.Linear(latent_dim, 256), torch.nn.ReLU(), torch.nn.Linear(256, 28 * 28))
+
+	def forward(self, x):
+		return self.decoder(x)
+
+	def training_step(self, batch, batch_idx):
+		loss = self._shared_step(batch)
+		# Logs metrics for each training_step, and the average across the epoch, to the progress bar and logger.
+		self.log("train_loss", loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
+		return loss
+
+	def validation_step(self, batch, batch_idx):
+		loss = self._shared_step(batch)
+		self.log("val_loss", loss)
+
+	def test_step(self, batch, batch_idx):
+		loss = self._shared_step(batch)
+		self.log("test_loss", loss)
+
+	def predict_step(self, batch, batch_idx, dataloader_idx=None):
+		x, _ = batch
+
+		# Encode.
+		# For predictions, we could return the embedding or the reconstruction or both based on our need.
+		x = x.view(x.size(0), -1)
+		return self.encoder(x)
+	"""
+	def predict_step(self, batch, batch_idx, dataloader_idx=None):
+		return self(batch)  # Calls forward().
+	"""
+
+	def configure_optimizers(self):
+		return torch.optim.Adam(self.parameters(), lr=0.0002)
+
+	def _shared_step(self, batch):
+		x, _ = batch
+
+		# Encode.
+		x = x.view(x.size(0), -1)
+		z = self.encoder(x)
+
+		# Decode.
+		recons = self.decoder(z)
+
+		# Loss.
+		recons_loss = torch.nn.functional.mse_loss(recons, x)
+
+		return recons_loss
+
+# REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/common/lightning_module.html
+def minimal_example():
+	# Data.
+	dataset = torchvision.datasets.MNIST("", train=True, download=True, transform=torchvision.transforms.ToTensor())
+	train_dataset, val_dataset = torch.utils.data.random_split(dataset, [55000, 5000])
+	test_dataset = torchvision.datasets.MNIST("", train=False, download=True, transform=torchvision.transforms.ToTensor())
+
+	train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=32)
+	#train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=32, num_workers=12, persistent_workers=True)
+	val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=32)
+	#val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=32, num_workers=12, persistent_workers=True)
+	test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=32)
+	#test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=32, num_workers=12, persistent_workers=True)
+
+	#--------------------
+	# Model.
+	if True:
+		#model = LitClassifier(resnet50())
+		model = Autoencoder()
+	else:
+		# Pretrained models.
+		model = Autoencoder.load_from_checkpoint("/path/to/model")
+	print("A model created.")
+
+	#--------------------
+	# Training.
+	print("Training...")
+	trainer = pl.Trainer(gpus=2, max_epochs=20)
+	trainer.fit(model, train_dataloader, val_dataloader)
+	print("The model trained.")
+
+	#--------------------
+	# Testing.
+	print("Testing...")
+	if True:
+		# Automatically loads the best weights.
+		trainer.test(model, dataloaders=test_dataloader)
+	else:
+		# Automatically auto-loads the best weights.
+		trainer.test(dataloaders=test_dataloader)
+	print("The model tested.")
+
+	#--------------------
+	# Inference.
+	print("Inferring...")
+	if True:
+		trainer.predict(model, test_dataloader)  # Calls predict_step().
+	else:
+		# When using forward, you are responsible to call eval() and use the no_grad() context manager.
+		model.eval()
+		with torch.no_grad():
+			embedding = ...
+			reconstruction = model(embedding)  # Calls forward().
+	print("Inferred by the model.")
 
 # REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/notebooks/course_UvA-DL/03-initialization-and-optimization.html
 def initalization_and_optimization_tutorial():
@@ -1554,7 +1730,8 @@ def inception_resnet_densenet_tutorial():
 	)
 
 def main():
-	simple_autoencoder_example()
+	#simple_autoencoder_example()
+	minimal_example()
 
 	#initalization_and_optimization_tutorial()
 	#inception_resnet_densenet_tutorial()
