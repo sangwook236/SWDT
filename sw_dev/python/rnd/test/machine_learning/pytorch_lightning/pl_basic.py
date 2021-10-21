@@ -162,6 +162,7 @@ class LitClassifier(pl.LightningModule):
 class Autoencoder(pl.LightningModule):
 	def __init__(self, latent_dim=2):
 		super().__init__()
+		self.save_hyperparameters()
 		self.encoder = torch.nn.Sequential(torch.nn.Linear(28 * 28, 256), torch.nn.ReLU(), torch.nn.Linear(256, latent_dim))
 		self.decoder = torch.nn.Sequential(torch.nn.Linear(latent_dim, 256), torch.nn.ReLU(), torch.nn.Linear(256, 28 * 28))
 
@@ -233,14 +234,58 @@ def minimal_example():
 		model = Autoencoder()
 	else:
 		# Pretrained models.
-		model = Autoencoder.load_from_checkpoint("/path/to/model")
+		model = Autoencoder.load_from_checkpoint("/path/to/checkpoint.ckpt")
+		#model = Autoencoder.load_from_checkpoint("/path/to/checkpoint.ckpt", map_location={"cuda:1": "cuda:0"})
+		#model = Autoencoder.load_from_checkpoint("/path/to/checkpoint.ckpt", latent_dim=4)  # Hyper-parameters.
+		#model = Autoencoder.load_from_checkpoint("/path/to/checkpoint.ckpt", hparams_file='/path/to/hparams_file.yaml')  # Hyper-parameters.
 	print("A model created.")
 
 	#--------------------
 	# Training.
 	print("Training...")
-	trainer = pl.Trainer(gpus=2, max_epochs=20)
-	trainer.fit(model, train_dataloader, val_dataloader)
+	if True:
+		trainer = pl.Trainer(gpus=2, max_epochs=20)
+		#trainer = pl.Trainer(default_root_dir="/path/to/checkpoints")  # Saves checkpoints to '/path/to/checkpoints' at every epoch end.
+		#trainer = pl.Trainer(resume_from_checkpoint="/path/to/checkpoint.ckpt")  # Resume training.
+		#trainer = pl.Trainer(gpus=1, precision=16)  # FP16 mixed precision.
+		#trainer = pl.Trainer(gpus=1, precision="bf16")  # BFloat16 mixed precision.
+		#trainer = pl.Trainer(gpus=1, amp_backend="apex", amp_level="O2")  # NVIDIA APEX mixed precision.
+
+		trainer.fit(model, train_dataloader, val_dataloader)
+
+		#trainer.save_checkpoint("/path/to/checkpoint.ckpt")
+	else:
+		# REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/common/weights_loading.html
+
+		# A Lightning checkpoint has everything needed to restore a training session including:
+		#	16-bit scaling factor (apex).
+		#	Current epoch.
+		#	Global step.
+		#	Model state_dict.
+		#	State of all optimizers.
+		#	State of all learningRate schedulers.
+		#	State of all callbacks.
+		#	The hyperparameters used for that model if passed in as hparams (Argparse.Namespace).
+
+		checkpoint_callback = pl.callbacks.ModelCheckpoint(monitor="val_loss")
+		"""
+		checkpoint_callback = pl.callbacks.ModelCheckpoint(
+			monitor="val_loss",
+			dirpath="/path/to/checkpoints",
+			filename="sample-mnist-{epoch:02d}-{val_loss:.2f}",
+			save_top_k=3,
+			mode="min",
+		)
+		"""
+
+		trainer = pl.Trainer(gpus=2, max_epochs=20, callbacks=[checkpoint_callback])
+		#trainer = pl.Trainer(gpus=2, max_epochs=20, callbacks=False)
+
+		#best_model_path = checkpoint_callback.best_model_path
+
+		# All init args were saved to the checkpoint.
+		checkpoint = torch.load("/path/to/checkpoint.ckpt")
+		print("Hyper-parameters: {}.".format(checkpoint["hyper_parameters"]))
 	print("The model trained.")
 
 	#--------------------
@@ -262,6 +307,7 @@ def minimal_example():
 	else:
 		# When using forward, you are responsible to call eval() and use the no_grad() context manager.
 		model.eval()
+		model.freeze()
 		with torch.no_grad():
 			embedding = ...
 			reconstruction = model(embedding)  # Calls forward().
