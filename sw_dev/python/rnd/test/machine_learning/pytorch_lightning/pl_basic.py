@@ -213,6 +213,53 @@ class Autoencoder(pl.LightningModule):
 
 		return recons_loss
 
+# REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/extensions/datamodules.html
+class MNISTDataModule(pl.LightningDataModule):
+	import typing
+
+	def __init__(self, data_dir: str = "./"):
+		super().__init__()
+		self.data_dir = data_dir
+		self.transform = torchvision.transforms.Compose([torchvision.transforms.ToTensor(), torchvision.transforms.Normalize((0.1307,), (0.3081,))])
+
+		# Setting default dims here because we know them.
+		# Could optionally be assigned dynamically in dm.setup().
+		self.dims = (1, 28, 28)
+
+	def prepare_data(self):
+		# Download.
+		torchvision.datasets.MNIST(self.data_dir, train=True, download=True)
+		torchvision.datasets.MNIST(self.data_dir, train=False, download=True)
+
+	def setup(self, stage: typing.Optional[str] = None):
+		# Assign train/val split(s) for use in dataloaders.
+		if stage in (None, "fit"):
+			mnist_full = torchvision.datasets.MNIST(self.data_dir, train=True, transform=self.transform)
+			self.mnist_train, self.mnist_val = torch.utils.data.random_split(mnist_full, [55000, 5000])
+
+			# Optionally...
+			#self.dims = tuple(self.mnist_train[0][0].shape)
+
+		# Assign test split(s) for use in dataloader(s).
+		if stage in (None, "test"):
+			self.mnist_test = torchvision.datasets.MNIST(self.data_dir, train=False, transform=self.transform)
+
+			# Optionally...
+			#self.dims = tuple(self.mnist_test[0][0].shape)
+
+	def train_dataloader(self):
+		return torch.utils.data.DataLoader(self.mnist_train, batch_size=32)
+
+	def val_dataloader(self):
+		return torch.utils.data.DataLoader(self.mnist_val, batch_size=32)
+
+	def test_dataloader(self):
+		return torch.utils.data.DataLoader(self.mnist_test, batch_size=32)
+
+	# This is the dataloader that the Trainer predict() method uses.
+	def predict_dataloader(self):
+		return torch.utils.data.DataLoader(self.mnist_test, batch_size=32)
+
 # REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/common/lightning_module.html
 def minimal_example():
 	# Data.
@@ -226,6 +273,13 @@ def minimal_example():
 	#val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=32, num_workers=12, persistent_workers=True)
 	test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=32)
 	#test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=32, num_workers=12, persistent_workers=True)
+
+	"""
+	datamodule = MNISTDataModule()
+	#datamodule.prepare_data()
+	#datamodule.setup(stage="fit")
+	#datamodule.setup(stage="test")
+	"""
 
 	#--------------------
 	# Model.
@@ -252,6 +306,7 @@ def minimal_example():
 		#trainer = pl.Trainer(gpus=1, amp_backend="apex", amp_level="O2")  # NVIDIA APEX mixed precision.
 
 		trainer.fit(model, train_dataloader, val_dataloader)
+		#trainer.fit(model, datamodule=datamodule)
 
 		#trainer.save_checkpoint("/path/to/checkpoint.ckpt")
 	else:
@@ -281,6 +336,9 @@ def minimal_example():
 		trainer = pl.Trainer(gpus=2, max_epochs=20, callbacks=[checkpoint_callback])
 		#trainer = pl.Trainer(gpus=2, max_epochs=20, callbacks=False)
 
+		trainer.fit(model, train_dataloader, val_dataloader)
+		#trainer.fit(model, datamodule=datamodule)
+
 		#best_model_path = checkpoint_callback.best_model_path
 
 		# All init args were saved to the checkpoint.
@@ -294,16 +352,19 @@ def minimal_example():
 	if True:
 		# Automatically loads the best weights.
 		trainer.test(model, dataloaders=test_dataloader)
+		#trainer.test(model, datamodule=datamodule)
 	else:
 		# Automatically auto-loads the best weights.
 		trainer.test(dataloaders=test_dataloader)
+		#trainer.test(datamodule=datamodule)
 	print("The model tested.")
 
 	#--------------------
 	# Inference.
 	print("Inferring...")
 	if True:
-		trainer.predict(model, test_dataloader)  # Calls predict_step().
+		trainer.predict(model, dataloaders=test_dataloader)  # Calls predict_step().
+		#trainer.predict(model, datamodule=datamodule)  # Calls predict_step().
 	else:
 		# When using forward, you are responsible to call eval() and use the no_grad() context manager.
 		model.eval()
