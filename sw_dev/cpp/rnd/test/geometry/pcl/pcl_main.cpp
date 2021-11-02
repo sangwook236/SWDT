@@ -220,6 +220,7 @@ void ply_to_pcd()
 
 namespace my_pcl {
 
+void octree();
 void resampling();
 void greedy_projection();
 void ransac();
@@ -234,9 +235,9 @@ int pcl_main(int argc, char *argv[])
 	//local::pcd_to_ply();
 	local::ply_to_pcd();
 
+	//my_pcl::octree();
 	//my_pcl::resampling();
 	//my_pcl::greedy_projection();
-
 	//my_pcl::ransac();
 
 	//my_pcl::registration();
