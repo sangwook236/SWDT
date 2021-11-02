@@ -1,0 +1,35 @@
+[-] General.
+	- Site.
+		https://github.com/open-mmlab/mmocr
+
+[-] Installation.
+	https://github.com/open-mmlab/mmocr/blob/main/docs/install.md
+
+	- Install.
+		conda create --name mmocr python=3.7 numpy scipy matplotlib pillow scikit-image shapely networkx
+		conda activate mmocr
+		conda install opencv -c conda-forge
+		conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.1 -c pytorch
+		pip install imgaug
+
+		pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/{cu_version}/{torch_version}/index.html
+			pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu110/torch1.7.0/index.html
+		pip install mmdet
+		cd ${mmocr_HOME}
+		pip install -r requirements.txt
+		pip install -v -e . # or "python setup.py develop"
+
+	- Install TableMASTER_mmocr.
+		https://github.com/JiaquanYe/TableMASTER-mmocr
+
+		conda create --name mmocr python=3.8 numpy scipy matplotlib pillow scikit-image shapely networkx
+		conda activate mmocr
+		conda install opencv -c conda-forge
+		conda install pytorch=1.8 torchvision torchtext cudatoolkit=10.2 -c pytorch -c conda-forge
+		pip install imgaug json_lines
+
+		cd ${TableMASTER_mmocr_HOME}/mmdetection-2.11.0
+		pip install -v -e .
+		cd ${TableMASTER_mmocr_HOME}
+		pip install -v -e .
+		pip install mmcv-full==1.3.4 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.8.0/index.html
