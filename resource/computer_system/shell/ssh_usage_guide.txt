@@ -92,6 +92,15 @@
 	- rsync over ssh.
 		REF [doc] >> rsync_usage_guide.txt
 
+[-] Installation.
+	- Install.
+		sudo apt update
+		sudo apt install openssh-server
+		sudo systemctl status ssh
+
+		sudo ufw allow ssh
+		sudo ufw status
+
 [-] Troubleshooting.
 	- <error> connect localhost port 6000: Connection refused.
 		<solution> (???)
