@@ -221,9 +221,18 @@ def mesh_tutorial():
 	mesh1.paint_uniform_color([1, 0.706, 0])
 	o3d.visualization.draw_geometries([mesh1])
 
+def convert_file_format():
+	input_filepath = "/path/to/input.pcd"
+	output_filepath = "/path/to/output.ply"
+
+	pc = o3d.io.read_point_cloud(input_filepath)
+	o3d.io.write_point_cloud(output_filepath, pc)
+
 def main():
 	#point_cloud_tutorial()
-	mesh_tutorial()
+	#mesh_tutorial()
+
+	convert_file_format()
 
 #--------------------------------------------------------------------
 
