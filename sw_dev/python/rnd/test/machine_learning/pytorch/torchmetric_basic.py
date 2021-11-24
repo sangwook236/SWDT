@@ -1,10 +1,38 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+# REF [site] >>
+#	https://torchmetrics.readthedocs.io/en/latest/references/modules.html
+#	https://torchmetrics.readthedocs.io/en/latest/references/functional.html
+#
+# Base class:
+#	Metric.
+# Basic Aggregation Metrics:
+#	CatMetric, MaxMetric, MeanMetric, MinMetric, SumMetric.
+# Audio Metrics:
+#	PESQ, PIT, SI_SDR, SI_SNR, SNR, STOI.
+# Classification Metrics:
+#	Accuracy, AveragePrecision, AUC, AUROC, BinnedAveragePrecision, BinnedPrecisionRecallCurve, BinnedRecallAtFixedPrecision,
+#	CalibrationError, CohenKappa, ConfusionMatrix, F1, FBeta, HammingDistance, Hinge, IoU, KLDivergence, MatthewsCorrcoef,
+#	Precision, PrecisionRecallCurve, Recall, ROC, Specificity, StatScores.
+# Image Metrics:
+#	FID, IS, KID, LPIPS, PSNR, SSIM.
+# Detection Metrics:
+#	MAP.
+# Regression Metrics:
+#	CosineSimilarity, ExplainedVariance, MeanAbsoluteError, MeanAbsolutePercentageError, MeanSquaredError, MeanSquaredLogError,
+#	PearsonCorrcoef, R2Score, SpearmanCorrcoef, SymmetricMeanAbsolutePercentageError, TweedieDevianceScore.
+# Retrieval Metrics:
+#	RetrievalMAP, RetrievalMRR, RetrievalPrecision, RetrievalRPrecision, RetrievalRecall, RetrievalFallOut, RetrievalNormalizedDCG, RetrievalHitRate.
+# Text Metrics:
+#	BERTScore, BLEUScore, CharErrorRate, MatchErrorRate, ROUGEScore, SacreBLEUScore, WER.
+# Wrappers:
+#	BootStrapper, MetricTracker, MinMaxMetric, MultioutputWrapper.
+
 import torchmetrics
 
 # REF [site] >> https://devblog.pytorchlightning.ai/torchmetrics-v0-5-nlp-metrics-f4232467b0c5
-def nlp_metrics_example():
+def text_metrics_example():
 	#import transformers
 	#transformers.RobertaModel.from_pretrained("roberta-large")
 
@@ -49,7 +77,7 @@ def nlp_metrics_example():
 	print("torchmetrics.functional.calibration_error(preds, targets) = {}.".format(torchmetrics.functional.calibration_error(preds, targets)))
 
 def main():
-	nlp_metrics_example()
+	text_metrics_example()
 
 #--------------------------------------------------------------------
 
