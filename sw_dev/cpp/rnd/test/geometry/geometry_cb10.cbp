@@ -62,9 +62,15 @@
 		<Unit filename="3dtk/3dtk_main.cpp" />
 		<Unit filename="library_autolinking.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="open3d/open3d_main.cpp" />
+		<Unit filename="pcl/pcl_feature.cpp" />
+		<Unit filename="pcl/pcl_filtering.cpp" />
 		<Unit filename="pcl/pcl_greedy_projection.cpp" />
+		<Unit filename="pcl/pcl_keypoint.cpp" />
 		<Unit filename="pcl/pcl_main.cpp" />
+		<Unit filename="pcl/pcl_octree.cpp" />
 		<Unit filename="pcl/pcl_ransac.cpp" />
+		<Unit filename="pcl/pcl_registration.cpp" />
 		<Unit filename="pcl/pcl_resampling.cpp" />
 		<Unit filename="pcl/pcl_visualization.cpp" />
 		<Extensions>

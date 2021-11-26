@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
 	int elsd_main(int argc, char* argv[]);
 
 	int pcl_main(int argc, char *argv[]);
+	int open3d_main(int argc, char *argv[]);
 	int threedtk_main(int argc, char *argv[]);
 
 	int retval = EXIT_SUCCESS;
@@ -30,6 +31,9 @@ int main(int argc, char *argv[])
 
 		std::cout << "\nPoint Cloud Library (PCL) -------------------------------------------" << std::endl;
 		//retval = pcl_main(argc, argv);
+
+		std::cout << "\nOpen3D --------------------------------------------------------------" << std::endl;
+		//retval = open3d_main(argc, argv);
 
 		std::cout << "\n3DTK - The 3D Toolkit -----------------------------------------------" << std::endl;
 		//	- 3D point clouds.
