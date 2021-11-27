@@ -54,6 +54,7 @@ std::string indent(const int n)
 // REF [site] >> http://www.open3d.org/docs/release/tutorial/geometry/octree.html
 bool traverse_octree_node(const std::shared_ptr<open3d::geometry::OctreeNode> &node, const std::shared_ptr<open3d::geometry::OctreeNodeInfo> &nodeInfo)
 {
+	const size_t max_points = 250;
 	bool early_stop = false;
 
 	if (open3d::geometry::OctreeInternalNode *inode = dynamic_cast<open3d::geometry::OctreeInternalNode *>(node.get()))
@@ -67,7 +68,7 @@ bool traverse_octree_node(const std::shared_ptr<open3d::geometry::OctreeNode> &n
 			std::cout << indent(nodeInfo->depth_) << nodeInfo->child_index_ << ": Internal node at depth " << nodeInfo->depth_ << " has " << n << " children and " << ipnode->indices_.size() << " points (" << nodeInfo->origin_.transpose() << ")" << std::endl;
 
 			// We only want to process nodes / spatial regions with enough points.
-			early_stop = ipnode->indices_.size() < 250;
+			if (max_points > 0) early_stop = ipnode->indices_.size() < max_points;
 		}
 	}
 	else if (open3d::geometry::OctreeLeafNode *lnode = dynamic_cast<open3d::geometry::OctreeLeafNode *>(node.get()))
@@ -102,19 +103,27 @@ void octree_example()
 
 	//--------------------
 	const size_t octree_max_depth = 4;
-#if 0
+	const double size_expand = 0.01;
+#if 1
+	const Eigen::Array3d &min_bound = pointCloud->GetMinBound();
+	const Eigen::Array3d &max_bound = pointCloud->GetMaxBound();
+	const Eigen::Array3d center((min_bound + max_bound) / 2);
+	//const Eigen::Array3d &center = pointCloud->GetCenter();  // Mean of the points.
+	const Eigen::Array3d half_sizes(center - min_bound);
+	const double max_half_size = half_sizes.maxCoeff();
+
+	const Eigen::Vector3d octree_origin = min_bound.min(center - max_half_size);
+	const double octree_size = max_half_size == 0 ? size_expand : (max_half_size * 2 * (1 + size_expand));
+#else
 	const Eigen::Vector3d octree_origin(-121.5, -221.5, 0.0);
 	const double octree_size = 1052.42;
-#else
-	const Eigen::Vector3d octree_origin(0.0, 0.0, 0.0);
-	const double octree_size = 1500.0;
 #endif
 	const Eigen::Vector3d color(0.5, 0.5, 0.5);
 
 	const auto start_time(std::chrono::high_resolution_clock::now());
 #if 1
 	open3d::geometry::Octree octree(octree_max_depth);
-	octree.ConvertFromPointCloud(*pointCloud);
+	octree.ConvertFromPointCloud(*pointCloud, size_expand);
 #elif 0
 	open3d::geometry::Octree octree(octree_max_depth, octree_origin, octree_size);
 	std::for_each(pointCloud->points_.begin(), pointCloud->points_.end(), [&octree, &color](const auto &point) { octree.InsertPoint(point, open3d::geometry::OctreeColorLeafNode::GetInitFunction(), open3d::geometry::OctreeColorLeafNode::GetUpdateFunction(color)); });
