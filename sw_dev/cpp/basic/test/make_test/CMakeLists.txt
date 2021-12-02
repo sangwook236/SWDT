@@ -19,10 +19,10 @@ project(my_cpp_test VERSION 0.1.0)
 #set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda")
 
 find_package(Threads REQUIRED)
+#find_package(OpenMP REQUIRED)
 #find_package(Boost 1.62 REQUIRED thread timer)
 #find_package(Log4cxx REQUIRED)
 #find_package(ZLIB REQUIRED)
-#find_package(Eigen 3.2 REQUIRED)
 #find_package(GSL REQUIRED)
 #find_package(Qt5 COMPONENTS Core Gui Widgets Quick Qml Concurrent REQUIRED)
 #find_package(OpenCV 4.2.0 REQUIRED)
@@ -31,7 +31,7 @@ find_package(Threads REQUIRED)
 #include_directories(${Boost_INCLUDE_DIRS})
 #include_directories(${LOG4CXX_INCLUDE_DIR})
 #include_directories(${ZLIB_INCLUDE_DIRS})
-#include_directories(${EIGEN_INCLUDE_DIRS})
+#include_directories(/usr/include/eigen3)
 #include_directories(${GSL_INCLUDE_DIRS})
 #include_directories(${QT_INCLUDE_DIR})
 #include_directories(${OpenCV_INCLUDE_DIRS})
@@ -46,6 +46,9 @@ add_definitions(-DUNICODE -D_UNICODE)
 #if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
 #	add_compile_options(-fPIC)
 #endif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
+if(OpenMP_CXX_FOUND)
+	add_compile_options(-fopenmp)
+endif(OpenMP_CXX_FOUND)
 
 set(TARGET test)
 
@@ -53,6 +56,7 @@ set(SRCS
 	main.cpp
 )
 set(LIBS
+	#${OpenMP_CXX_FLAGS}
 	#${LOG4CXX_LIBRARIES}
 	#${ZLIB_LIBRARIES}
 	#Qt5::Core Qt5::Widgets

@@ -265,6 +265,8 @@ void do_directive()
 					const double gamma = std::tr1::lgamma(100);
 					d[i] = float(beta + err + gamma);
 
+					#pragma omp atomic
+					//#pragma omp critical
 					++loop_count;
 
 					if (0 == i % 1000)
