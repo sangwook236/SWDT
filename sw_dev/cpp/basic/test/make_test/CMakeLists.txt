@@ -29,6 +29,20 @@ elseif(UNIX AND NOT APPLE AND NOT CYGWIN)
 elseif(WIN32 AND NOT CYGWIN)
 endif()
 
+if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
+	set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+	set(CMAKE_CXX_FLAGS_DEBUG "-g")
+	set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES Intel)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
+	set(CMAKE_CXX_FLAGS_DEBUG "/MDd /Zi /Ob0 /Od /RTC1 /D_DEBUG")
+#	set(CMAKE_CXX_FLAGS_MINSIZEREL "/MD /O1 /Ob1 /D NDEBUG")
+	set(CMAKE_CXX_FLAGS_RELEASE "/MD /O2 /Ob2 /D NDEBUG")
+#	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/MD /Zi /O2 /Ob1 /D NDEBUG")
+endif()
+
+#--------------------
 find_package(Threads REQUIRED)
 #find_package(OpenMP REQUIRED)
 #find_package(Boost 1.62 REQUIRED thread timer)
@@ -60,37 +74,27 @@ if(OpenMP_CXX_FOUND)
 	add_compile_options(-fopenmp)
 endif(OpenMP_CXX_FOUND)
 
-if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
-elseif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
-	set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-	set(CMAKE_CXX_FLAGS_DEBUG "-g")
-	set(CMAKE_CXX_FLAGS_RELEASE "-O2")
-elseif(CMAKE_CXX_COMPILER_ID MATCHES Intel)
-elseif(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
-	set(CMAKE_CXX_FLAGS_DEBUG "/MDd /Zi /Ob0 /Od /RTC1 /D_DEBUG")
-#	set(CMAKE_CXX_FLAGS_MINSIZEREL "/MD /O1 /Ob1 /D NDEBUG")
-	set(CMAKE_CXX_FLAGS_RELEASE "/MD /O2 /Ob2 /D NDEBUG")
-#	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/MD /Zi /O2 /Ob1 /D NDEBUG")
-endif()
-
+#--------------------
 set(TARGET test)
 
 set(SRCS
 	main.cpp
 )
 set(LIBS
-	#${OpenMP_CXX_FLAGS}
-	#${LOG4CXX_LIBRARIES}
-	#${ZLIB_LIBRARIES}
-	#Qt5::Core Qt5::Widgets
-	#${OpenCV_LIBRARIES}
-	#${CUDA_LIBRARIES}
+#	${OpenMP_CXX_FLAGS}
+#	${LOG4CXX_LIBRARIES}
+#	${ZLIB_LIBRARIES}
+#	Qt5::Core Qt5::Widgets
+#	${OpenCV_LIBRARIES}
+#	${CUDA_LIBRARIES}
 )
 
 add_executable(${TARGET} ${SRCS})
-#cuda_add_executable(${TARGET} ${SRCS})
 #add_library(${TARGET} SHARED ${SRCS})
 #add_library(${TARGET} STATIC ${SRCS})
+#cuda_add_executable(${TARGET} ${SRCS})
+#cuda_add_library(${TARGET} SHARED ${SRCS})
+#cuda_add_library(${TARGET} STATIC ${SRCS})
 
 target_link_libraries(${TARGET} ${LIBS})
 set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD 17)
