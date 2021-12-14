@@ -1,9 +1,13 @@
 #include <ctime>
+#include <chrono>
 #include <vector>
 #include <iostream>
 #include <pcl/point_cloud.h>
+#include <pcl/io/pcd_io.h>
 #include <pcl/octree/octree_search.h>
 #include <pcl/octree/octree_pointcloud_changedetector.h>
+#include <pcl/octree/octree_pointcloud.h>
+#include <pcl/filters/voxel_grid.h>
 
 
 namespace {
@@ -160,6 +164,87 @@ void point_cloud_compression_tutorial()
 	throw std::runtime_error("Not yet implemented");
 }
 
+void create_octree_from_point_cloud_test()
+{
+	const std::string input_filepath("../../../data/dental_scanner/20210924/samples_pcd/001_rgb.pcd");
+
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	{
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		const int retval = pcl::io::loadPCDFile<pcl::PointXYZ>(input_filepath, *cloud);
+		//pcl::PCDReader reader;
+		//const int retval = reader.read(input_filename1, *cloud1);
+		if (retval == -1)
+		{
+			const std::string err("File not found, " + input_filepath + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Point cloud loaded: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cout << "\tLoaded " << cloud->width * cloud->height << " data points (" << pcl::getFieldsList(*cloud) << ") from " << input_filepath << std::endl;
+	}
+
+#if 0
+	// Filtering.
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>());
+	{
+		const float leaf_size = 5.0f;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		pcl::VoxelGrid<pcl::PointXYZ> sor;
+		sor.setInputCloud(cloud);
+		sor.setLeafSize(leaf_size, leaf_size, leaf_size);
+		sor.filter(*cloud_filtered);
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Point cloud filtered: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cerr << "\tFiltered " << cloud_filtered->width * cloud_filtered->height << " data points (" << pcl::getFieldsList(*cloud_filtered) << ")." << std::endl;
+	}
+#else
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered = cloud;
+#endif
+
+	const float resolution = 5.0f;
+	pcl::octree::OctreePointCloud<pcl::PointXYZ> octree(resolution);
+	{
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		octree.setInputCloud(cloud_filtered);
+		octree.addPointsFromInputCloud();
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Octree created: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+
+		std::cout << "\tEpsilon = " << octree.getEpsilon() << std::endl;
+		std::cout << "\tResolution = " << octree.getResolution() << std::endl;
+		std::cout << "\tTree depth = " << octree.getTreeDepth() << std::endl;
+		double min_x, min_y, min_z, max_x, max_y, max_z;
+		octree.getBoundingBox(min_x, min_y, min_z, max_x, max_y, max_z);
+		std::cout << "\tBounding box: (" << min_x << ", " << min_y << ", " << min_z << "), (" << max_x << ", " << max_y << ", " << max_z << ")." << std::endl;
+
+#if 0
+		// Traverse.
+		for (auto it = octree.begin(); it != octree.end(); ++it)
+		//for (auto it = octree.breadth_begin(); it != octree.breadth_end(); ++it)
+		//for (auto it = octree.depth_begin(); it != octree.depth_end(); ++it)
+		//for (auto it = octree.fixed_depth_begin(); it != octree.fixed_depth_end(); ++it)
+		//for (auto it = octree.leaf_breadth_begin(); it != octree.leaf_breadth_end(); ++it)
+		//for (auto it = octree.leaf_depth_begin(); it != octree.leaf_depth_end(); ++it)
+		{
+			std::cout << "\tCurrent node: " << *it << std::endl;
+			/*
+			const pcl::octree::OctreeKey &key = it.getCurrentOctreeKey();
+			const pcl::uindex_t depth = it.getCurrentOctreeDepth();
+			const pcl::octree::OctreeNode *node = it.getCurrentOctreeNode();
+			const bool is_branch = it.isBranchNode();
+			const bool is_leaf = it.isLeafNode();
+			const char node_config = it.getNodeConfiguration();
+			const unsigned long node_id = it.getNodeID();
+			it.getLeafContainer();
+			it.getBranchContainer();
+			*/
+		}
+#endif
+	}
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -167,9 +252,11 @@ namespace my_pcl {
 
 void octree()
 {
-	local::spatial_partitioning_and_search_operations_with_octrees_tutorial();
+	//local::spatial_partitioning_and_search_operations_with_octrees_tutorial();
 	//local::spatial_change_detection_on_unorganized_point_cloud_data_tutorial();
 	//local::point_cloud_compression_tutorial();  // Not yet implemented.
+
+	local::create_octree_from_point_cloud_test();
 }
 
 }  // namespace my_pcl
