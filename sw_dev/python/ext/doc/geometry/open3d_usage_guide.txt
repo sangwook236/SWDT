@@ -20,3 +20,17 @@
 
 		conda install -c open3d-admin -c conda-forge open3d
 		pip install open3d
+
+[-] Installation (Linux, C++).
+	http://www.open3d.org/docs/release/compilation.html
+	
+	- Install from source.
+		git clone https://github.com/isl-org/Open3D
+		cd ${OPEN3D_HOME}
+
+		CMake:
+			Configure.
+			Generate.
+
+		make -j$(nproc)
+		sudo make install
