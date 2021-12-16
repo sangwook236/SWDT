@@ -186,28 +186,28 @@ void create_octree_from_point_cloud_test()
 	}
 
 #if 0
-	// Filtering.
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>());
+	// Downsample the point cloud.
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_downsampled(new pcl::PointCloud<pcl::PointXYZ>());
 	{
 		const float leaf_size = 5.0f;
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		pcl::VoxelGrid<pcl::PointXYZ> sor;
 		sor.setInputCloud(cloud);
 		sor.setLeafSize(leaf_size, leaf_size, leaf_size);
-		sor.filter(*cloud_filtered);
+		sor.filter(*cloud_downsampled);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
-		std::cout << "Point cloud filtered: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
-		std::cerr << "\tFiltered " << cloud_filtered->width * cloud_filtered->height << " data points (" << pcl::getFieldsList(*cloud_filtered) << ")." << std::endl;
+		std::cout << "Point cloud downsampled: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
+		std::cerr << "\tDownsampled " << cloud_downsampled->width * cloud_downsampled->height << " data points (" << pcl::getFieldsList(*cloud_downsampled) << ")." << std::endl;
 	}
 #else
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered = cloud;
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_downsampled = cloud;
 #endif
 
 	const float resolution = 5.0f;
 	pcl::octree::OctreePointCloud<pcl::PointXYZ> octree(resolution);
 	{
 		const auto start_time(std::chrono::high_resolution_clock::now());
-		octree.setInputCloud(cloud_filtered);
+		octree.setInputCloud(cloud_downsampled);
 		octree.addPointsFromInputCloud();
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Octree created: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
