@@ -4,10 +4,11 @@
 #include <iostream>
 #include <pcl/point_cloud.h>
 #include <pcl/io/pcd_io.h>
-#include <pcl/octree/octree_search.h>
-#include <pcl/octree/octree_pointcloud_changedetector.h>
 #include <pcl/octree/octree_pointcloud.h>
-#include <pcl/filters/voxel_grid.h>
+#include <pcl/octree/octree_pointcloud_density.h>
+#include <pcl/octree/octree_pointcloud_changedetector.h>
+#include <pcl/octree/octree_search.h>
+##include <pcl/filters/voxel_grid.h>
 
 
 namespace {
@@ -204,7 +205,8 @@ void create_octree_from_point_cloud_test()
 #endif
 
 	const float resolution = 5.0f;
-	pcl::octree::OctreePointCloud<pcl::PointXYZ> octree(resolution);
+	//pcl::octree::OctreePointCloud<pcl::PointXYZ> octree(resolution);
+	pcl::octree::OctreePointCloudDensity<pcl::PointXYZ> octree(resolution);
 	{
 		const auto start_time(std::chrono::high_resolution_clock::now());
 		octree.setInputCloud(cloud_downsampled);
@@ -218,6 +220,7 @@ void create_octree_from_point_cloud_test()
 		double min_x, min_y, min_z, max_x, max_y, max_z;
 		octree.getBoundingBox(min_x, min_y, min_z, max_x, max_y, max_z);
 		std::cout << "\tBounding box: (" << min_x << ", " << min_y << ", " << min_z << "), (" << max_x << ", " << max_y << ", " << max_z << ")." << std::endl;
+		std::cout << "\tVoxel density = " << octree.getVoxelDensityAtPoint(pcl::PointXYZ(-1000.0f, -1000.0f, -1000.0f)) << std::endl;
 
 #if 0
 		// Traverse.
