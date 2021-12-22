@@ -4,7 +4,7 @@
 import glob, csv
 
 def basic():
-	filepath = 'data.txt'
+	filepath = './data.txt'
 	try:
 		with open(filepath, 'r', encoding='UTF8') as fd:
 		#with open(filepath, 'r+') as fd:
@@ -17,7 +17,7 @@ def basic():
 	except FileNotFoundError as ex:
 		print('File not found, {}: {}.'.format(filepath, ex))
 
-	filepath = 'data_copyed.txt'
+	filepath = './data_copyed.txt'
 	try:
 		with open(filepath, 'w', encoding='UTF8') as fd:
 		#with open(filepath, 'w+', encoding='UTF8') as fd:
@@ -28,7 +28,7 @@ def basic():
 	except FileNotFoundError as ex:
 		print('File not found, {}: {}.'.format(filepath, ex))
 
-	filepath = 'data_copyed.txt'
+	filepath = './data_copyed.txt'
 	try:
 		with open(filepath, 'a', encoding='UTF8') as fd:
 			fd.write(data)
@@ -37,7 +37,7 @@ def basic():
 	except FileNotFoundError as ex:
 		print('File not found, {}: {}.'.format(filepath, ex))
 
-	filepath = 'data.txt'
+	filepath = './data.txt'
 	try:
 		with open(filepath, 'r', encoding='UTF8') as fd:
 			#lines = fd.read()  # A string.
