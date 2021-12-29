@@ -426,10 +426,47 @@ def spectrogram_example():
 	augmented_mel_spectrogram = flow.augment(mel_spectrogram)
 	nlpaug.util.audio.visualizer.AudioVisualizer.spectrogram('Combine Frequency Masking and Time Masking', augmented_mel_spectrogram)
 
+# REF [site] >> https://github.com/makcedward/nlpaug/blob/master/example/change_log.ipynb
+def change_log_example():
+	text = 'The quick brown fox jumps over the lazy dog.'
+
+	# Sentence augmenter.
+	aug = nlpaug.augmenter.sentence.ContextualWordEmbsForSentenceAug(model_path='gpt2', include_detail=True)
+	augmented_data, change_logs = aug.augment(text)
+	print('Augmented data: {}.'.format(augmented_data))
+	for change_log in reversed(change_logs):
+		print('Change log: {}.'.format(change_log))
+		break
+
+	# Word augmenter.
+	aug = nlpaug.augmenter.word.ContextualWordEmbsAug(model_path='bert-base-uncased', include_detail=True)
+	augmented_data, change_log = aug.augment(text)
+	print('Augmented data: {}.'.format(augmented_data))
+	print('Change log: {}.'.format(change_log))
+
+	# Character augmenter.
+	aug = nlpaug.augmenter.char.KeyboardAug(include_detail=True)
+	augmented_data, change_log = aug.augment(text)
+	print('Augmented data: {}.'.format(augmented_data))
+	print('Change log: {}.'.format(change_log))
+
+	# Pipeline.
+	aug = nlpaug.flow.Sequential([
+		nlpaug.augmenter.word.RandomWordAug(action='substitute', target_words=['A'], name='aug1', include_detail=False),
+		nlpaug.flow.Sequential([
+			nlpaug.augmenter.word.RandomWordAug(action='substitute', target_words=['D'],name='aug2', include_detail=False),
+			nlpaug.augmenter.word.RandomWordAug(name='aug3', include_detail=True)
+		], include_detail=False, name='pipe2')
+	], include_detail=True, name='pipe1')
+	augmented_data, change_log = aug.augment(text)
+	print('Augmented data: {}.'.format(augmented_data))
+	print('Change log: {}.'.format(change_log))
+
 def main():
 	#audio_example()
 	textual_example()
 	#spectrogram_example()
+	#change_log_example()
 
 #--------------------------------------------------------------------
 
