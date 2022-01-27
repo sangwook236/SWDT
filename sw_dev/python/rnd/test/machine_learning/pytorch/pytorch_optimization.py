@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 import math
-import numpy as np
 import torch, torchvision
 import matplotlib.pyplot as plt
 
@@ -220,10 +219,23 @@ def custom_learning_rate_decay_policy_test():
 		scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=50, T_mult=2, eta_max=max_lr, T_up=10, gamma=0.5)
 		visualize_learning_rate_decay_policy(scheduler, max_step=500, title="CosineAnnealingWarmUpRestarts")
 
+		max_lr = 0.5
+		num_epochs = 50
+		scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=num_epochs // 2, T_mult=1, eta_max=max_lr, T_up=num_epochs // 10, gamma=0.5)
+		visualize_learning_rate_decay_policy(scheduler, max_step=num_epochs, title="CosineAnnealingWarmUpRestarts")
+
 	if True:
 		optimizer = torch.optim.Adam(model.parameters(), lr=0.0, betas=(0.9, 0.98), eps=1e-09, weight_decay=0, amsgrad=False)
 
-		scheduler = NoamLR(optimizer, dim_feature=512, warmup_steps=2000, factor=1)  # Step-based, not epoch-based, learning rate policy.
+		factor = 1.0
+		scheduler = NoamLR(optimizer, dim_feature=256, warmup_steps=2000, factor=factor)  # Step-based, not epoch-based, learning rate policy.
+		visualize_learning_rate_decay_policy(scheduler, max_step=20000, title="NoamLR")
+
+		scheduler = NoamLR(optimizer, dim_feature=512, warmup_steps=2000, factor=factor)  # Step-based, not epoch-based, learning rate policy.
+		visualize_learning_rate_decay_policy(scheduler, max_step=20000, title="NoamLR")
+
+		factor = 5.0
+		scheduler = NoamLR(optimizer, dim_feature=512, warmup_steps=2000, factor=factor)  # Step-based, not epoch-based, learning rate policy.
 		visualize_learning_rate_decay_policy(scheduler, max_step=20000, title="NoamLR")
 
 def main():
