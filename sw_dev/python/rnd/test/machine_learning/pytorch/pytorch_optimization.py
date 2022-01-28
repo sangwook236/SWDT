@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 def visualize_learning_rate_decay_policy(scheduler, max_step=100, ylim=None, title=None):
 	lrs = list()
 	for _ in range(max_step):
-		scheduler.step()
 		lrs.append(scheduler.get_last_lr())
+		scheduler.step()
 
 	plt.figure()
 	plt.plot(range(max_step), lrs)
@@ -119,18 +119,14 @@ class CosineAnnealingWarmUpRestarts(torch.optim.lr_scheduler._LRScheduler):
 		self.cycle = 0
 		self.T_cur = last_epoch
 		super(CosineAnnealingWarmUpRestarts, self).__init__(optimizer, last_epoch)
-	
-	def get_last_lr(self):
+
+	def get_lr(self):
 		if self.T_cur == -1:
 			return self.base_lrs
 		elif self.T_cur < self.T_up:
-			return [(self.eta_max - base_lr)*self.T_cur / self.T_up + base_lr for base_lr in self.base_lrs]
+			return [(self.eta_max - base_lr) * self.T_cur / self.T_up + base_lr for base_lr in self.base_lrs]
 		else:
-			return [base_lr + (self.eta_max - base_lr) * (1 + math.cos(math.pi * (self.T_cur-self.T_up) / (self.T_i - self.T_up))) / 2
-					for base_lr in self.base_lrs]
-
-	def get_lr(self):
-		return self.get_last_lr()
+			return [base_lr + (self.eta_max - base_lr) * (1 + math.cos(math.pi * (self.T_cur - self.T_up) / (self.T_i - self.T_up))) / 2 for base_lr in self.base_lrs]
 
 	def step(self, epoch=None):
 		if epoch is None:
@@ -153,26 +149,26 @@ class CosineAnnealingWarmUpRestarts(torch.optim.lr_scheduler._LRScheduler):
 			else:
 				self.T_i = self.T_0
 				self.T_cur = epoch
-				
+
 		self.eta_max = self.base_eta_max * (self.gamma**self.cycle)
 		self.last_epoch = math.floor(epoch)
 		for param_group, lr in zip(self.optimizer.param_groups, self.get_lr()):
 			param_group['lr'] = lr
 
+		self._last_lr = [param_group['lr'] for param_group in self.optimizer.param_groups]
+
 # Noam learning rate decay policy.
 #	Step-based, but not epoch-based, learning rate decay policy.
 #	REF [paper] >> "Attention Is All You Need", NIPS 2017.
 #	REF [site] >> https://nlp.seas.harvard.edu/2018/04/03/attention.html
-class NoamLR(object):
-	def __init__(self, optimizer, dim_feature, warmup_steps, factor=1, last_step=0):
-		self.optimizer = optimizer
+class NoamLR(torch.optim.lr_scheduler._LRScheduler):
+	def __init__(self, optimizer, dim_feature, warmup_steps, factor=1, last_step=-1):
+		#self.optimizer = optimizer
 		self.dim_feature = dim_feature
 		self.warmup_steps = warmup_steps
 		self.factor = factor
 		self.last_step = last_step
-		self.learning_rate = 0
-
-		self.step()  # TODO [check] >> Do we need to call this?
+		super().__init__(optimizer, last_step)
 
 		"""
 		# Initialize step and base learning rates.
@@ -186,25 +182,25 @@ class NoamLR(object):
 		self.base_lrs = list(map(lambda group: group['initial_lr'], optimizer.param_groups))
 		"""
 
-	def get_last_lr(self):
-		return self.learning_rate
-
 	def get_lr(self):
-		return self.get_last_lr()
+		if self.last_step == -1 or self.last_step == 0:
+			return self.base_lrs
+		else:
+			lr = self.factor * (self.dim_feature**(-0.5) * min(self.last_step**(-0.5), self.last_step * self.warmup_steps**(-1.5)))
+			#return [base_lr + lr for base_lr in self.base_lrs]
+			#return [base_lr * lr for base_lr in self.base_lrs]
+			return [lr for _ in self.base_lrs]
 
 	def step(self, step=None):
 		if step is None:
 			self.last_step += 1
 		else:
 			self.last_step = step
-		self.learning_rate = self._adjust_learning_rate(self.optimizer, self.last_step, self.warmup_steps, self.dim_feature, self.factor)
 
-	@staticmethod
-	def _adjust_learning_rate(optimizer, step, warmup_steps, dim_feature, factor):
-		lr = factor * (dim_feature**(-0.5) * min(step**(-0.5), step * warmup_steps**(-1.5)))
-		for param_group in optimizer.param_groups:
+		for param_group, lr in zip(self.optimizer.param_groups, self.get_lr()):
 			param_group['lr'] = lr
-		return lr
+
+		self._last_lr = [param_group['lr'] for param_group in self.optimizer.param_groups]
 
 def custom_learning_rate_decay_policy_test():
 	model = torchvision.models.resnet18()
@@ -212,6 +208,12 @@ def custom_learning_rate_decay_policy_test():
 	if True:
 		init_lr, max_lr = 0.0, 1.0
 		optimizer = torch.optim.Adam(model.parameters(), lr=init_lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+
+		scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=10, T_mult=1, eta_max=max_lr, T_up=0, gamma=1)
+		visualize_learning_rate_decay_policy(scheduler, max_step=25, title="CosineAnnealingWarmUpRestarts")
+
+		scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=10, T_mult=1, eta_max=max_lr, T_up=2, gamma=1)
+		visualize_learning_rate_decay_policy(scheduler, max_step=25, title="CosineAnnealingWarmUpRestarts")
 
 		scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=150, T_mult=1, eta_max=max_lr, T_up=10, gamma=0.5)
 		visualize_learning_rate_decay_policy(scheduler, max_step=500, title="CosineAnnealingWarmUpRestarts")
