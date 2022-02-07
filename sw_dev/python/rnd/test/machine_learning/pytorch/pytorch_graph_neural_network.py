@@ -45,7 +45,7 @@ class GCN(torch.nn.Module):
 
 # GATConv.
 class GAT(torch.nn.Module):
-	def __init__(self,input_dim, hidden_dim, output_dim, args):
+	def __init__(self, input_dim, hidden_dim, output_dim, args):
 		super(GAT, self).__init__()
 		self.args = args
 
@@ -73,7 +73,7 @@ class GAT(torch.nn.Module):
 
 # GATv2Conv.
 class GATv2(torch.nn.Module):
-	def __init__(self,input_dim, hidden_dim, output_dim, args):
+	def __init__(self, input_dim, hidden_dim, output_dim, args):
 		super(GATv2, self).__init__()
 		self.args = args
 
@@ -101,7 +101,7 @@ class GATv2(torch.nn.Module):
 
 # Custom GAT implementation.
 class myGAT(torch_geometric.nn.conv.MessagePassing):
-	def __init__(self, in_channels, out_channels, heads = 1, negative_slope = 0.2, dropout = 0.0, **kwargs):
+	def __init__(self, in_channels, out_channels, heads=1, negative_slope=0.2, dropout=0.0, **kwargs):
 		super(myGAT, self).__init__(node_dim=0, **kwargs)
 
 		self.in_channels = in_channels  # Node features input dimension.
@@ -128,7 +128,7 @@ class myGAT(torch_geometric.nn.conv.MessagePassing):
 		torch.nn.init.xavier_uniform_(self.att_l)
 		torch.nn.init.xavier_uniform_(self.att_r)
 
-	def forward(self, x, edge_index, size = None):
+	def forward(self, x, edge_index, size=None):
 		H, C = self.heads, self.out_channels  # DIM：H, outC.
 
 		# Linearly transform node feature matrix.
@@ -156,14 +156,14 @@ class myGAT(torch_geometric.nn.conv.MessagePassing):
 
 		return out
 
-	def aggregate(self, inputs, index, dim_size = None):
+	def aggregate(self, inputs, index, dim_size=None):
 		# EQ(3.2) For each node, aggregate messages for all neighbourhood nodes.
 		out = torch_scatter.scatter(inputs, index, dim=self.node_dim, dim_size=dim_size, reduce='sum')  # inputs (from message) DIM: [Edges, H, outC] => DIM: [Nodes, H, outC].
 		return out
 
 # Custom GATv2 model.
 class myGATv2(torch_geometric.nn.conv.MessagePassing):
-	def __init__(self, in_channels, out_channels, heads = 1, negative_slope = 0.2, dropout = 0.0, **kwargs):
+	def __init__(self, in_channels, out_channels, heads=1, negative_slope=0.2, dropout=0.0, **kwargs):
 		super(myGATv2, self).__init__(node_dim=0, **kwargs)
 
 		self.in_channels = in_channels
@@ -191,7 +191,7 @@ class myGATv2(torch_geometric.nn.conv.MessagePassing):
 		torch.nn.init.xavier_uniform_(self.lin_r.weight)
 		torch.nn.init.xavier_uniform_(self.att)
 
-	def forward(self, x, edge_index, size = None):
+	def forward(self, x, edge_index, size=None):
 		H, C = self.heads, self.out_channels  # DIM：H, outC.
 		# Linearly transform node feature matrix.
 		x_source = self.lin_l(x).view(-1, H, C)  # DIM: [Nodex x In] [in x H * outC] => [nodes x H * outC] => [nodes, H, outC].
@@ -205,7 +205,7 @@ class myGATv2(torch_geometric.nn.conv.MessagePassing):
 		return out
 
 	# Process a message passing.
-	def message(self, x_j,x_i,  index, ptr, size_i):
+	def message(self, x_j, x_i, index, ptr, size_i):
 		# Computation using previous equations.
 		x = x_i + x_j
 		x = F.leaky_relu(x, self.negative_slope)  # See Equation above: Apply the non-linearty function.
@@ -219,13 +219,13 @@ class myGATv2(torch_geometric.nn.conv.MessagePassing):
 		return out
 
 	# Aggregation of messages.
-	def aggregate(self, inputs, index, dim_size = None):
+	def aggregate(self, inputs, index, dim_size=None):
 		out = torch_scatter.scatter(inputs, index, dim=self.node_dim, dim_size=dim_size, reduce='sum')
 		return out
 
 # GATCustom.
 class GATmodif(torch.nn.Module):
-	def __init__(self,input_dim, hidden_dim, output_dim,args):
+	def __init__(self, input_dim, hidden_dim, output_dim, args):
 		super(GATmodif, self).__init__()
 		self.args = args
 
@@ -254,7 +254,7 @@ class GATmodif(torch.nn.Module):
 		return F.sigmoid(x)
 
 class GATv2modif(torch.nn.Module):
-	def __init__(self,input_dim, hidden_dim, output_dim,args):
+	def __init__(self, input_dim, hidden_dim, output_dim, args):
 		super(GATv2modif, self).__init__()
 		self.args = args
 
@@ -283,7 +283,7 @@ class GATv2modif(torch.nn.Module):
 		return F.sigmoid(x)
 
 class GATmodif_3layer(torch.nn.Module):
-	def __init__(self,input_dim, hidden_dim, output_dim, args):
+	def __init__(self, input_dim, hidden_dim, output_dim, args):
 		super(GATmodif_3layer, self).__init__()
 		self.args = args
 
@@ -567,6 +567,8 @@ def fraud_detection_with_graph_attention_networks():
 	# Push data to GPU.
 	data_train = data_train.to(device)
 
+	#-----
+	"""
 	# Model selector GAT or GATv2.
 	net = "GAT"
 
@@ -585,7 +587,11 @@ def fraud_detection_with_graph_attention_networks():
 		else:
 			model = GATv2modif(data_train.num_node_features, args['hidden_dim'], 1, args) 
 			print("Custom GATv2 implemented")
+	"""
 
+	# Here we run GAT model.
+	print("Prebuilt GAT from PyG ")
+	model = GAT(data_train.num_node_features, args['hidden_dim'], 1, args)
 	model.double().to(device)
 
 	# Setup training settings.
@@ -600,7 +606,9 @@ def fraud_detection_with_graph_attention_networks():
 	gnn_trainer_gat.save_metrics(save_dir_path + "/GATprebuilt.results")
 	gnn_trainer_gat.save_model(save_dir_path + "/GATprebuilt.pth")
 
+	#-----
 	# Here we run GATv2 model.
+	print("Prebuilt GATv2 from PyG ")
 	model = GATv2(data_train.num_node_features, args['hidden_dim'], 1, args)
 	model.double().to(device)
 
@@ -616,7 +624,9 @@ def fraud_detection_with_graph_attention_networks():
 	gnn_trainer_gatv2.save_metrics(save_dir_path + "/GATv2prebuilt.results")
 	gnn_trainer_gatv2.save_model(save_dir_path + "/GATv2prebuilt.pth")
 
+	#-----
 	# Here we run GATmodif model.
+	print("Custom GAT implemented")
 	model = GATmodif(data_train.num_node_features, args['hidden_dim'], 1, args)
 	model.double().to(device)
 
@@ -628,6 +638,45 @@ def fraud_detection_with_graph_attention_networks():
 	# Train.
 	gnn_trainer_gatmodif = GnnTrainer(model)
 	gnn_trainer_gatmodif.train(data_train, optimizer, criterion, scheduler, args)
+
+	gnn_trainer_gatmodif.save_metrics(save_dir_path + "/GATcustom.results")
+	gnn_trainer_gatmodif.save_model(save_dir_path + "/GATcustom.pth")
+
+	#-----
+	# Here we run GATmodif_3layer model.
+	print("Custom GAT 3layer implemented")
+	model = GATmodif_3layer(data_train.num_node_features, args['hidden_dim'], 1, args)
+	model.double().to(device)
+
+	# Setup training settings.
+	optimizer = torch.optim.Adam(model.parameters(), lr=args['lr'], weight_decay=args['weight_decay'])
+	scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min')
+	criterion = torch.nn.BCELoss()
+
+	# Train.
+	gnn_trainer_gat3layer = GnnTrainer(model)
+	gnn_trainer_gat3layer.train(data_train, optimizer, criterion, scheduler, args)
+
+	gnn_trainer_gat3layer.save_metrics(save_dir_path + "/GAT3layers.results")
+	gnn_trainer_gat3layer.save_model(save_dir_path + "/GAT3layers.pth")
+
+	#-----
+	# Here we run GATv2modif model.
+	print("Custom GATv2 implemented")
+	model = GATv2modif(data_train.num_node_features, args['hidden_dim'], 1, args)
+	model.double().to(device)
+
+	# Setup training settings.
+	optimizer = torch.optim.Adam(model.parameters(), lr=args['lr'], weight_decay=args['weight_decay'])
+	scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min')
+	criterion = torch.nn.BCELoss()
+
+	# Train.
+	gnn_trainer_gatv2modif = GnnTrainer(model)
+	gnn_trainer_gatv2modif.train(data_train, optimizer, criterion, scheduler, args)
+
+	gnn_trainer_gatv2modif.save_metrics(save_dir_path + "/GATv2custom.results")
+	gnn_trainer_gatv2modif.save_model(save_dir_path + "/GATv2custom.pth")
 
 	# Fetch results from saved.
 	mmGATprebuilt = pickle.load(open(save_dir_path + "/GATprebuilt.results", "rb"))
@@ -711,9 +760,11 @@ def fraud_detection_with_graph_attention_networks():
 	# Training Cross comparisons.
 
 	# Take names of the saved files.
-	model_name_list = [save_dir_path + "/GATv2prebuilt.results", save_dir_path + "/GATprebuilt.results"]
+	#model_name_list = [save_dir_path + "/GATv2prebuilt.results", save_dir_path + "/GATprebuilt.results"]
+	model_name_list = [save_dir_path + "/GATv2prebuilt.results", save_dir_path + "/GATprebuilt.results", save_dir_path + "/GATv2custom.results", save_dir_path + "/GATcustom.results", save_dir_path + "/GAT3layers.results"]
 	# Assign names to plots.
-	names = ["GATv2_prebuilt", "GAT_prebuilt"]
+	#names = ["GATv2_prebuilt", "GAT_prebuilt"]
+	names = ["GATv2_prebuilt", "GAT_prebuilt", "GATv2custom", "GATcustom", "GAT3layers"]
 
 	# Iterate to load saved outputs and plots.
 	mm_list0 = [load_results(path) for path in model_name_list]
