@@ -1,0 +1,8 @@
+[-] General.
+	- Site.
+		https://github.com/kserve/kserve
+		https://github.com/kubeflow/kfserving
+
+		https://www.kubeflow.org/docs/components/kfserving/
+
+[-] Installation.

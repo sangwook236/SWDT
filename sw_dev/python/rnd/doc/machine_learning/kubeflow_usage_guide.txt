@@ -31,9 +31,8 @@
 	- Visualization.
 		https://www.kubeflow.org/docs/components/pipelines/sdk/output-viewer/
 
-[-] Usage (KFServing).
-	https://www.kubeflow.org/docs/components/kfserving/
-	https://github.com/kubeflow/kfserving
+[-] Usage (KServe).
+	Refer to kserve_usage_guide.txt.
 
 [-] Installation.
 	https://www.kubeflow.org/docs/started/installing-kubeflow/
