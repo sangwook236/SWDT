@@ -5,4 +5,94 @@
 
 		https://www.kubeflow.org/docs/components/kfserving/
 
+[-] Tutorial.
+	- First InferenceService.
+		https://kserve.github.io/website/0.7/get_started/first_isvc/
+
+		Create test InferenceService:
+			kubectl create namespace kserve-test
+			kubectl apply -f sklearn.yaml -n kserve-test
+
+		Check InferenceService status:
+			kubectl get inferenceservices sklearn-iris -n kserve-test
+
+		Determine the ingress IP and ports:
+			kubectl get svc istio-ingressgateway -n istio-system
+
+			Load Balancer:
+				If the EXTERNAL-IP value is set, your environment has an external load balancer that you can use for the ingress gateway.
+
+				export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+				export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+			Node Port:
+				If the EXTERNAL-IP value is none (or perpetually pending), your environment does not provide an external load balancer for the ingress gateway.
+				In this case, you can access the gateway using the service's node port.
+
+				export INGRESS_HOST=worker-node-address
+				export INGRESS_HOST=$(minikube ip)
+				export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}')
+				export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+
+		Curl the InferenceService:
+			From Ingress gateway with HOST Header:
+				SERVICE_HOSTNAME=$(kubectl get inferenceservice sklearn-iris -n kserve-test -o jsonpath='{.status.url}' | cut -d "/" -f 3)
+				curl -v -H "Host: ${SERVICE_HOSTNAME}" http://${INGRESS_HOST}:${INGRESS_PORT}/v1/models/sklearn-iris:predict -d @./iris-input.json
+
+		Run performance test:
+			kubectl create -f https://raw.githubusercontent.com/kserve/kserve/release-0.7/docs/samples/v1beta1/sklearn/v1/perf.yaml -n kserve-test
+				Use kubectl create instead of apply because the job template is using generateName which doesn't work with kubectl apply.
+
 [-] Installation.
+	https://kserve.github.io/website/get_started/
+	https://raw.githubusercontent.com/kserve/kserve/release-0.7/hack/quick_install.sh
+
+	- Serverless mode.
+		Set environment variables:
+			export KUBE_VERSION=$(kubectl version --short=true)
+			export KSERVE_VERSION=v0.7.0
+			export KSERVE_CONFIG=kserve.yaml
+			export CERT_MANAGER_VERSION=v1.6.0
+
+			export ISTIO_VERSION=1.10.3
+			export KNATIVE_VERSION=v0.23.2
+
+		Install Istio:
+			sh downloadIstioCandidate.sh
+				https://raw.githubusercontent.com/istio/istio/master/release/downloadIstioCandidate.sh
+
+			cd istio-${ISTIO_VERSION}
+
+			Create istio-system namespace:
+				kubectl apply -f istio-system-namespace.yaml
+
+			bin/istioctl install --set profile=demo -y
+
+		Install KNative:
+			kubectl apply --filename https://github.com/knative/serving/releases/download/${KNATIVE_VERSION}/serving-crds.yaml
+			kubectl apply --filename https://github.com/knative/serving/releases/download/${KNATIVE_VERSION}/serving-core.yaml
+			kubectl apply --filename https://github.com/knative/net-istio/releases/download/${KNATIVE_VERSION}/release.yaml
+
+		Install Cert Manager:
+			kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/${CERT_MANAGER_VERSION}/cert-manager.yaml
+			kubectl wait --for=condition=available --timeout=600s deployment/cert-manager-webhook -n cert-manager
+
+			cd ..
+
+		Install KServe:
+			kubectl apply -f https://github.com/kserve/kserve/releases/download/${KSERVE_VERSION}/${KSERVE_CONFIG}
+
+		rm -rf istio-${ISTIO_VERSION}
+
+	- Raw deployment mode.
+		Set environment variables:
+			export KUBE_VERSION=$(kubectl version --short=true)
+			export KSERVE_VERSION=v0.7.0
+			export KSERVE_CONFIG=kserve.yaml
+			export CERT_MANAGER_VERSION=v1.6.0
+
+		Install Cert Manager:
+			kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/${CERT_MANAGER_VERSION}/cert-manager.yaml
+			kubectl wait --for=condition=available --timeout=600s deployment/cert-manager-webhook -n cert-manager
+
+		Install KServe:
+			kubectl apply -f https://github.com/kserve/kserve/releases/download/${KSERVE_VERSION}/${KSERVE_CONFIG}
