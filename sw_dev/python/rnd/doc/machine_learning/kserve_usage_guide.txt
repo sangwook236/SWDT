@@ -28,8 +28,11 @@
 				If the EXTERNAL-IP value is none (or perpetually pending), your environment does not provide an external load balancer for the ingress gateway.
 				In this case, you can access the gateway using the service's node port.
 
+				# Google Kubernetes Engine (GKE).
 				export INGRESS_HOST=worker-node-address
+				# Minikube.
 				export INGRESS_HOST=$(minikube ip)
+				# Other environment (on premise).
 				export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}')
 				export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
 
@@ -41,6 +44,124 @@
 		Run performance test:
 			kubectl create -f https://raw.githubusercontent.com/kserve/kserve/release-0.7/docs/samples/v1beta1/sklearn/v1/perf.yaml -n kserve-test
 				Use kubectl create instead of apply because the job template is using generateName which doesn't work with kubectl apply.
+
+	- Deploy Tensorflow Model with InferenceService.
+		https://kserve.github.io/website/0.7/modelserving/v1beta1/tensorflow/
+		https://github.com/kserve/kserve/tree/master/docs/samples/v1beta1/tensorflow
+
+		Create the HTTP InferenceService:
+			Apply the tensorflow.yaml to create the InferenceService, by default it exposes a HTTP/REST endpoint:
+				kubectl apply -f tensorflow.yaml 
+				kubectl get isvc flower-sample
+
+			Run a prediction:
+				Load Balancer:
+					If the EXTERNAL-IP value is set, your environment has an external load balancer that you can use for the ingress gateway.
+
+					export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+					export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+				Node Port:
+					If the EXTERNAL-IP value is none (or perpetually pending), your environment does not provide an external load balancer for the ingress gateway.
+					In this case, you can access the gateway using the service's node port.
+
+					# Google Kubernetes Engine (GKE).
+					export INGRESS_HOST=worker-node-address
+					# Minikube.
+					export INGRESS_HOST=$(minikube ip)
+					# Other environment (on premise).
+					export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}')
+					export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+
+				MODEL_NAME=flower-sample
+				INPUT_PATH=@./input.json
+				SERVICE_HOSTNAME=$(kubectl get inferenceservice ${MODEL_NAME} -o jsonpath='{.status.url}' | cut -d "/" -f 3)
+				curl -v -H "Host: ${SERVICE_HOSTNAME}" http://${INGRESS_HOST}:${INGRESS_PORT}/v1/models/$MODEL_NAME:predict -d $INPUT_PATH
+
+		Canary Rollout:
+			Canary rollout is a great way to control the risk of rolling out a new model by first moving a small percent of the traffic to it and then gradually increase the percentage.
+
+			Run a canary rollout (canary.yaml with the canaryTrafficPercent field specified):
+				kubectl apply -f canary.yaml
+
+			Verify if the traffic split percentage is applied correctly:
+				kubectl get isvc flower-example
+
+			Run a prediction:
+				MODEL_NAME=flower-example
+				INPUT_PATH=@./input.json
+				SERVICE_HOSTNAME=$(kubectl get inferenceservice ${MODEL_NAME} -o jsonpath='{.status.url}' | cut -d "/" -f 3)
+				curl -v -H "Host: ${SERVICE_HOSTNAME}" http://${INGRESS_HOST}:${INGRESS_PORT}/v1/models/$MODEL_NAME:predict -d $INPUT_PATH
+
+		Create the gRPC InferenceService:
+			Apply grpc.yaml to create the gRPC InferenceService:
+				kubectl apply -f grpc.yaml 
+
+				pip install tensorflow-serving-api>=1.14.0,<2.0.0
+
+			Run a prediction:
+				MODEL_NAME=flower-grpc
+				INPUT_PATH=@./input.json
+				SERVICE_HOSTNAME=$(kubectl get inferenceservice ${MODEL_NAME} -o jsonpath='{.status.url}' | cut -d "/" -f 3)
+				python grpc_client.py --host $INGRESS_HOST --port $INGRESS_PORT --model $MODEL_NAME --hostname $SERVICE_HOSTNAME --input_path $INPUT_PATH
+
+	- Deploy PyTorch model with TorchServe InferenceService.
+		(Optional) create model storage with model archive file:
+			Generate model archiver files for torchserve.
+				https://kserve.github.io/website/0.7/modelserving/v1beta1/torchserve/model-archiver/
+
+			(Optional) install Torchserve Model Archive Files (MAR):
+				https://github.com/pytorch/serve
+
+				pip install model-archiver
+				conda install torch-model-archiver -c pytorch
+
+			torch-model-archiver --model-name mnist --version 1.0 \
+			--model-file model-archiver/model-store/mnist/mnist.py \
+			--serialized-file model-archiver/model-store/mnist/mnist_cnn.pt \
+			--handler model-archiver/model-store/mnist/mnist_handler.py
+				https://github.com/pytorch/serve/tree/master/examples/image_classifier/mnist
+				Creates mnist.mar in the current directory.
+
+		Create the InferenceService:
+			For deploying the InferenceService on CPU:
+				kubectl apply -f torchserve.yaml
+			For deploying the InferenceService on GPU:
+				kubectl apply -f gpu.yaml
+
+		Inference:
+			Load Balancer:
+				If the EXTERNAL-IP value is set, your environment has an external load balancer that you can use for the ingress gateway.
+
+				export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+				export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
+			Node Port:
+				If the EXTERNAL-IP value is none (or perpetually pending), your environment does not provide an external load balancer for the ingress gateway.
+				In this case, you can access the gateway using the service's node port.
+
+				# Google Kubernetes Engine (GKE).
+				export INGRESS_HOST=worker-node-address
+				# Minikube.
+				export INGRESS_HOST=$(minikube ip)
+				# Other environment (on premise).
+				export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}')
+				export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+
+			MODEL_NAME=mnist
+			SERVICE_HOSTNAME=$(kubectl get inferenceservice torchserve -n kserve-test -o jsonpath='{.status.url}' | cut -d "/" -f 3)
+
+			curl -v -H "Host: ${SERVICE_HOSTNAME}" http://${INGRESS_HOST}:${INGRESS_PORT}/v1/models/${MODEL_NAME}:predict -d @./mnist.json
+
+		Explanation:
+			curl -v -H "Host: ${SERVICE_HOSTNAME}" http://${INGRESS_HOST}:${INGRESS_PORT}/v1/models/mnist:explain -d @./mnist.json
+
+		Autoscaling:
+			https://kserve.github.io/website/0.7/modelserving/v1beta1/torchserve/autoscaling/
+
+		Canary Rollout:
+			https://kserve.github.io/website/0.7/modelserving/v1beta1/torchserve/canary/
+
+		Monitoring:
+			https://kserve.github.io/website/0.7/modelserving/v1beta1/torchserve/metrics/
 
 [-] Installation.
 	https://kserve.github.io/website/get_started/
@@ -67,7 +188,7 @@
 
 			bin/istioctl install --set profile=demo -y
 
-		Install KNative:
+		Install Knative:
 			kubectl apply --filename https://github.com/knative/serving/releases/download/${KNATIVE_VERSION}/serving-crds.yaml
 			kubectl apply --filename https://github.com/knative/serving/releases/download/${KNATIVE_VERSION}/serving-core.yaml
 			kubectl apply --filename https://github.com/knative/net-istio/releases/download/${KNATIVE_VERSION}/release.yaml
