@@ -5,9 +5,13 @@
 
 		https://www.kubeflow.org/docs/components/kfserving/
 
+	- API.
+		https://kserve.github.io/website/reference/api/
+		https://github.com/kserve/website/blob/main/docs/reference/api.md
+
 [-] Tutorial.
 	- First InferenceService.
-		https://kserve.github.io/website/0.7/get_started/first_isvc/
+		https://kserve.github.io/website/get_started/first_isvc/
 
 		Create test InferenceService:
 			kubectl create namespace kserve-test
@@ -35,6 +39,14 @@
 				# Other environment (on premise).
 				export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}')
 				export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+			Port Forward:
+				Alternatively you can do Port Forward for testing purpose
+
+				INGRESS_GATEWAY_SERVICE=$(kubectl get svc --namespace istio-system --selector="app=istio-ingressgateway" --output jsonpath='{.items[0].metadata.name}')
+				kubectl port-forward --namespace istio-system svc/${INGRESS_GATEWAY_SERVICE} 8080:80
+				# Start another terminal.
+				export INGRESS_HOST=localhost
+				export INGRESS_PORT=8080
 
 		Curl the InferenceService:
 			From Ingress gateway with HOST Header:
@@ -45,8 +57,58 @@
 			kubectl create -f https://raw.githubusercontent.com/kserve/kserve/release-0.7/docs/samples/v1beta1/sklearn/v1/perf.yaml -n kserve-test
 				Use kubectl create instead of apply because the job template is using generateName which doesn't work with kubectl apply.
 
+	- Deploy sklearn-learn models with InferenceService.
+		https://kserve.github.io/website/modelserving/v1beta1/sklearn/v2/
+
+		Test locally:
+			Pre-requisites:
+				pip install mlserver mlserver-sklearn
+
+			Model settings:
+				In model-settings.json:
+					{
+					  "name": "sklearn-iris",
+					  "version": "v1.0.0",
+					  "implementation": "mlserver_sklearn.SKLearnModel"
+					}
+
+			Serve our model locally:
+				mlserver start .
+
+		Deploy with InferenceService:
+			kubectl apply -f ./sklearn.yaml
+
+		Test deployed model:
+			Refer to "Determine the ingress IP and ports".
+
+			SERVICE_HOSTNAME=$(kubectl get inferenceservice sklearn-irisv2 -o jsonpath='{.status.url}' | cut -d "/" -f 3)
+			curl -v -H "Host: ${SERVICE_HOSTNAME}" -d @./iris-input.json http://${INGRESS_HOST}:${INGRESS_PORT}/v2/models/sklearn-irisv2/infer
+
+	- Predict on an InferenceService with a saved model on PVC.
+		https://kserve.github.io/website/modelserving/storage/pvc/pvc/
+
+		Create PV and PVC:
+			kubectl apply -f pv-and-pvc.yaml
+
+		Copy model to PV:
+			kubectl apply -f pv-model-store.yaml
+			kubectl exec -it model-store-pod -- bash
+
+			In different terminal, copy the model from local into PV:
+				kubectl cp model.joblib model-store-pod:/pv/model.joblib -c model-store
+
+		Deploy InferenceService with models on PVC:
+			kubectl apply -f sklearn-pvc.yaml
+
+		Run a prediction:
+			SERVICE_HOSTNAME=$(kubectl get inferenceservice sklearn-pvc -o jsonpath='{.status.url}' | cut -d "/" -f 3)
+
+			MODEL_NAME=sklearn-pvc
+			INPUT_PATH=@./input.json
+			curl -v -H "Host: ${SERVICE_HOSTNAME}" http://${INGRESS_HOST}:${INGRESS_PORT}/v1/models/$MODEL_NAME:predict -d $INPUT_PATH
+
 	- Deploy Tensorflow Model with InferenceService.
-		https://kserve.github.io/website/0.7/modelserving/v1beta1/tensorflow/
+		https://kserve.github.io/website/modelserving/v1beta1/tensorflow/
 		https://github.com/kserve/kserve/tree/master/docs/samples/v1beta1/tensorflow
 
 		Create the HTTP InferenceService:
@@ -55,22 +117,7 @@
 				kubectl get isvc flower-sample
 
 			Run a prediction:
-				Load Balancer:
-					If the EXTERNAL-IP value is set, your environment has an external load balancer that you can use for the ingress gateway.
-
-					export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-					export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
-				Node Port:
-					If the EXTERNAL-IP value is none (or perpetually pending), your environment does not provide an external load balancer for the ingress gateway.
-					In this case, you can access the gateway using the service's node port.
-
-					# Google Kubernetes Engine (GKE).
-					export INGRESS_HOST=worker-node-address
-					# Minikube.
-					export INGRESS_HOST=$(minikube ip)
-					# Other environment (on premise).
-					export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}')
-					export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+				Refer to "Determine the ingress IP and ports".
 
 				MODEL_NAME=flower-sample
 				INPUT_PATH=@./input.json
@@ -105,9 +152,11 @@
 				python grpc_client.py --host $INGRESS_HOST --port $INGRESS_PORT --model $MODEL_NAME --hostname $SERVICE_HOSTNAME --input_path $INPUT_PATH
 
 	- Deploy PyTorch model with TorchServe InferenceService.
+		https://kserve.github.io/website/modelserving/v1beta1/torchserve/
+
 		(Optional) create model storage with model archive file:
 			Generate model archiver files for torchserve.
-				https://kserve.github.io/website/0.7/modelserving/v1beta1/torchserve/model-archiver/
+				https://kserve.github.io/website/modelserving/v1beta1/torchserve/model-archiver/
 
 			(Optional) install Torchserve Model Archive Files (MAR):
 				https://github.com/pytorch/serve
@@ -124,27 +173,12 @@
 
 		Create the InferenceService:
 			For deploying the InferenceService on CPU:
-				kubectl apply -f torchserve.yaml
+				kubectl apply -f torchserve.yaml -n kserve-test
 			For deploying the InferenceService on GPU:
-				kubectl apply -f gpu.yaml
+				kubectl apply -f gpu.yaml -n kserve-test
 
 		Inference:
-			Load Balancer:
-				If the EXTERNAL-IP value is set, your environment has an external load balancer that you can use for the ingress gateway.
-
-				export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-				export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
-			Node Port:
-				If the EXTERNAL-IP value is none (or perpetually pending), your environment does not provide an external load balancer for the ingress gateway.
-				In this case, you can access the gateway using the service's node port.
-
-				# Google Kubernetes Engine (GKE).
-				export INGRESS_HOST=worker-node-address
-				# Minikube.
-				export INGRESS_HOST=$(minikube ip)
-				# Other environment (on premise).
-				export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}')
-				export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+			Refer to "Determine the ingress IP and ports".
 
 			MODEL_NAME=mnist
 			SERVICE_HOSTNAME=$(kubectl get inferenceservice torchserve -n kserve-test -o jsonpath='{.status.url}' | cut -d "/" -f 3)
@@ -155,16 +189,31 @@
 			curl -v -H "Host: ${SERVICE_HOSTNAME}" http://${INGRESS_HOST}:${INGRESS_PORT}/v1/models/mnist:explain -d @./mnist.json
 
 		Autoscaling:
-			https://kserve.github.io/website/0.7/modelserving/v1beta1/torchserve/autoscaling/
+			https://kserve.github.io/website/modelserving/v1beta1/torchserve/autoscaling/
 
 		Canary Rollout:
-			https://kserve.github.io/website/0.7/modelserving/v1beta1/torchserve/canary/
+			https://kserve.github.io/website/modelserving/v1beta1/torchserve/canary/
 
 		Monitoring:
-			https://kserve.github.io/website/0.7/modelserving/v1beta1/torchserve/metrics/
+			https://kserve.github.io/website/modelserving/v1beta1/torchserve/metrics/
+
+	- Predict on a Triton InferenceService with TorchScript model (PyTorch).
+		https://kserve.github.io/website/modelserving/v1beta1/triton/torchscript/
+
+	- QA Inference with BERT model using Triton Inference Server (TensorFlow).
+		https://kserve.github.io/website/modelserving/v1beta1/triton/bert/
+
+	- Deploy Custom Python Model Server with InferenceService.
+		https://kserve.github.io/website/modelserving/v1beta1/custom/custom_model/
+
+[-] Usage.
+	- AWS EBS.
+		https://mokpolar.github.io/kfserving_custum_mobilenet/
 
 [-] Installation.
 	https://kserve.github.io/website/get_started/
+	https://kserve.github.io/website/admin/serverless/
+	https://kserve.github.io/website/admin/kubernetes_deployment/
 	https://raw.githubusercontent.com/kserve/kserve/release-0.7/hack/quick_install.sh
 
 	- Serverless mode.
@@ -174,21 +223,31 @@
 			export KSERVE_CONFIG=kserve.yaml
 			export CERT_MANAGER_VERSION=v1.6.0
 
-			export ISTIO_VERSION=1.10.3
-			export KNATIVE_VERSION=v0.23.2
+			export ISTIO_VERSION=1.13.0
+			export KNATIVE_VERSION=v1.2.0
 
 		Install Istio:
+			https://istio.io/latest/docs/setup/install/istioctl/
+			https://knative.dev/docs/install/serving/installing-istio/
+
 			sh downloadIstioCandidate.sh
 				https://raw.githubusercontent.com/istio/istio/master/release/downloadIstioCandidate.sh
-
-			cd istio-${ISTIO_VERSION}
 
 			Create istio-system namespace:
 				kubectl apply -f istio-system-namespace.yaml
 
+			cd istio-${ISTIO_VERSION}
+
+			bin/istioctl x precheck
+
 			bin/istioctl install --set profile=demo -y
+			bin/istioctl x uninstall --purge
 
 		Install Knative:
+			https://knative.dev/docs/install/
+			https://knative.dev/docs/install/serving/install-serving-with-yaml/
+			https://knative.dev/docs/install/uninstall/
+
 			kubectl apply --filename https://github.com/knative/serving/releases/download/${KNATIVE_VERSION}/serving-crds.yaml
 			kubectl apply --filename https://github.com/knative/serving/releases/download/${KNATIVE_VERSION}/serving-core.yaml
 			kubectl apply --filename https://github.com/knative/net-istio/releases/download/${KNATIVE_VERSION}/release.yaml
