@@ -97,8 +97,8 @@ void pcd_to_ply()
 #if 1
 	// RGB.
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_rgb(new pcl::PointCloud<pcl::PointXYZRGB>());
-	cloud_rgb->width = cloud_filtered->width;
-	cloud_rgb->height = cloud_filtered->height;
+	//cloud_rgb->width = cloud_filtered->width;
+	//cloud_rgb->height = cloud_filtered->height;
 	uint8_t r(127), g(127), b(127);
 	for (const auto &pt: *cloud_filtered)
 	{
@@ -108,7 +108,7 @@ void pcd_to_ply()
 		point.z = pt.z;
 		uint32_t rgb = (static_cast<uint32_t>(r) << 16 | static_cast<uint32_t>(g) << 8 | static_cast<uint32_t>(b));
 		point.rgb = *reinterpret_cast<float *>(&rgb);
-		cloud_rgb->points.push_back(point);
+		cloud_rgb->push_back(point);
 	}
 
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_proxy = cloud_rgb;
@@ -176,8 +176,8 @@ void ply_to_pcd()
 #if 1
 	// RGB.
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_rgb(new pcl::PointCloud<pcl::PointXYZRGB>());
-	cloud_rgb->width = cloud_filtered->width;
-	cloud_rgb->height = cloud_filtered->height;
+	//cloud_rgb->width = cloud_filtered->width;
+	//cloud_rgb->height = cloud_filtered->height;
 	uint8_t r(127), g(127), b(127);
 	for (const auto &pt: *cloud_filtered)
 	{
@@ -187,7 +187,7 @@ void ply_to_pcd()
 		point.z = pt.z;
 		uint32_t rgb = (static_cast<uint32_t>(r) << 16 | static_cast<uint32_t>(g) << 8 | static_cast<uint32_t>(b));
 		point.rgb = *reinterpret_cast<float *>(&rgb);
-		cloud_rgb->points.push_back(point);
+		cloud_rgb->push_back(point);
 	}
 
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_proxy = cloud_rgb;

@@ -186,8 +186,8 @@ void registration_example()
 	//--------------------
 	// RGB.
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_rgb1(new pcl::PointCloud<pcl::PointXYZRGB>());
-	cloud_rgb1->width = cloud1_proxy->width;
-	cloud_rgb1->height = cloud1_proxy->height;
+	//cloud_rgb1->width = cloud1_proxy->width;
+	//cloud_rgb1->height = cloud1_proxy->height;
 	{
 		uint8_t r(127), g(0), b(0);
 		for (const auto &pt: *cloud1_proxy)
@@ -198,12 +198,12 @@ void registration_example()
 			point.z = pt.z;
 			uint32_t rgb = (static_cast<uint32_t>(r) << 16 | static_cast<uint32_t>(g) << 8 | static_cast<uint32_t>(b));
 			point.rgb = *reinterpret_cast<float *>(&rgb);
-			cloud_rgb1->points.push_back(point);
+			cloud_rgb1->push_back(point);
 		}
 	}
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_rgb2(new pcl::PointCloud<pcl::PointXYZRGB>());
-	cloud_rgb2->width = cloud2->width;
-	cloud_rgb2->height = cloud2->height;
+	//cloud_rgb2->width = cloud2->width;
+	//cloud_rgb2->height = cloud2->height;
 	{
 		uint8_t r(0), g(0), b(127);
 		for (const auto &pt: *cloud2)
@@ -214,7 +214,7 @@ void registration_example()
 			point.z = pt.z;
 			uint32_t rgb = (static_cast<uint32_t>(r) << 16 | static_cast<uint32_t>(g) << 8 | static_cast<uint32_t>(b));
 			point.rgb = *reinterpret_cast<float *>(&rgb);
-			cloud_rgb2->points.push_back(point);
+			cloud_rgb2->push_back(point);
 		}
 	}
 
