@@ -34,6 +34,7 @@ void normal_estimation_tutorial()
 #if 1
 	// Create the normal estimation class, and pass the input dataset to it.
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
 	ne.setInputCloud(cloud);
 
 	// Create an empty kdtree representation, and pass it to the normal estimation object.
@@ -54,6 +55,7 @@ void normal_estimation_tutorial()
 #elif 0
 	// Create the normal estimation class, and pass the input dataset to it.
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
 	ne.setInputCloud(cloud);
 
 	// Create a set of indices to be used. For simplicity, we're going to be using the first 10% of the points in cloud.
@@ -94,6 +96,7 @@ void normal_estimation_tutorial()
 
 	// Create the normal estimation class, and pass the input dataset to it.
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
 	ne.setInputCloud(cloud_downsampled);
 
 	// Pass the original data (before downsampling) as the search surface.
@@ -172,6 +175,7 @@ void pfh_descriptors_tutorial()
 	// REF [function] >> normal_estimation_tutorial().
 	{
 		pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+		//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
 		ne.setInputCloud(cloud);
 		pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
 		ne.setSearchMethod(tree);  // Create an empty kdtree representation.
@@ -228,6 +232,7 @@ void fpfh_descriptors_tutorial()
 	// REF [function] >> normal_estimation_tutorial().
 	{
 		pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+		//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
 		ne.setInputCloud(cloud);
 		pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
 		ne.setSearchMethod(tree);  // Create an empty kdtree representation.
@@ -238,6 +243,7 @@ void fpfh_descriptors_tutorial()
 	//--------------------
 	// Create the FPFH estimation class, and pass the input dataset+normals to it.
 	pcl::FPFHEstimation<pcl::PointXYZ, pcl::Normal, pcl::FPFHSignature33> fpfh;
+	//pcl::FPFHEstimationOMP<pcl::PointXYZ, pcl::Normal, pcl::FPFHSignature33> fpfh;
 	fpfh.setInputCloud(cloud);
 	fpfh.setInputNormals(normals);
 	//fpfh.setInputNormals(cloud);  // Alternatively, if cloud is of type PointNormal.
@@ -280,22 +286,21 @@ void fpfh_descriptors_tutorial()
 #include <pcl/registration/icp.h>
 #include <pcl/visualization/cloud_viewer.h>
 
-double computeCloudResolution(const pcl::PointCloud<PointXYZ>::ConstPtr &cloud)
+double computeCloudResolution(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud)
 {
 	double res = 0.0;
 	int n_points = 0;
-	int nres;
 	std::vector<int> indices(2);
 	std::vector<float> sqr_distances(2);
-	pcl::search::KdTree<PointXYZ> tree;
+	pcl::search::KdTree<pcl::PointXYZ> tree;
 	tree.setInputCloud(cloud);
 
 	for (size_t i = 0; i < cloud->size(); ++i)
 	{
-		if (!pcl_isfinite((*cloud)[i].x))
+		if (!std::isfinite((*cloud)[i].x))
 			continue;
-		//Considering the second neighbor since the first is the point itself.
-		nres = tree.nearestKSearch(i, 2, indices, sqr_distances);
+		// Consider the second neighbor since the first is the point itself.
+		const int nres = tree.nearestKSearch(i, 2, indices, sqr_distances);
 		if (nres == 2)
 		{
 			res += sqrt(sqr_distances[1]);
@@ -312,7 +317,7 @@ void feature_matching()
 {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr source_cloud(new PointCloud<PointXYZ>());
 	loadPCDFile("./cloudASCII000.pcd", *source_cloud);
-	std::cout << "File 1 points: " << source_cloud->points.size() << std::endl;
+	std::cout << "File 1 points: " << source_cloud->size() << std::endl;
 
 	// Compute model resolution.
 	double model_resolution = computeCloudResolution(source_cloud);
@@ -329,15 +334,15 @@ void feature_matching()
 	iss_detector.setMinNeighbors(10);
 	iss_detector.setNumberOfThreads(10);
 	iss_detector.setInputCloud(source_cloud);
-	iss_detector.compute((*source_keypoints));
+	iss_detector.compute(*source_keypoints);
 	pcl::PointIndicesConstPtr keypoints_indices = iss_detector.getKeypointsIndices();
 
-	std::cout << "No of ISS points in the result are " << (*source_keypoints).points.size() << std::endl;
-	std::string Name = "ISSKeypoints1.pcd";
-	savePCDFileASCII(Name, (*source_keypoints));
+	std::cout << "No of ISS points in the result are " << source_keypoints->size() << std::endl;
+	pcl::io::savePCDFileASCII("./ISSKeypoints1.pcd", *source_keypoints);
 
 	// Compute the normals.
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normalEstimation;
+	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> normalEstimation;
 	normalEstimation.setInputCloud(source_cloud);
 	normalEstimation.setSearchMethod(tree);
 
@@ -345,31 +350,38 @@ void feature_matching()
 	normalEstimation.setRadiusSearch(0.2);
 	normalEstimation.compute(*source_normals);
 
+#if 1
 	pcl::PointCloud<pcl::FPFHSignature33>::Ptr source_features(new pcl::PointCloud<pcl::FPFHSignature33>());
 	pcl::FPFHEstimation<pcl::PointXYZ, pcl::Normal, pcl::FPFHSignature33> fpfh;
+	//pcl::FPFHEstimationOMP<pcl::PointXYZ, pcl::Normal, pcl::FPFHSignature33> fpfh;
+	fpfh.setSearchMethod(tree);
+	fpfh.setRadiusSearch(0.2);
+	//fpfh.setKSearch(10);
 	fpfh.setInputCloud(source_cloud);
 	fpfh.setInputNormals(source_normals);
 	fpfh.setIndices(keypoints_indices);
-	fpfh.setSearchMethod(tree);
-	fpfh.setRadiusSearch(0.2);
 	fpfh.compute(*source_features);
-
-	/*
+#else
 	// SHOT optional descriptor.
 	pcl::PointCloud<pcl::SHOT352>::Ptr source_features(new pcl::PointCloud<pcl::SHOT352>());
 	pcl::SHOTEstimation<pcl::PointXYZ, pcl::Normal, pcl::SHOT352> shot;
-	shot.setSearchMethod(tree); //kdtree
-	shot.setIndices(keypoints_indices); //keypoints
-	shot.setInputCloud(source_cloud); //input
-	shot.setInputNormals(source_normals); //normals
-	shot.setRadiusSearch(0.2); //support
-	shot.compute(*source_features); //descriptors
-	*/
+	//pcl::SHOTEstimationOMP<pcl::PointXYZ, pcl::Normal, pcl::SHOT352> shot;
+	//pcl::PointCloud<pcl::SHOT1344>::Ptr source_features(new pcl::PointCloud<pcl::SHOT1344>());
+	//pcl::SHOTColorEstimation<pcl::PointXYZRGB, pcl::Normal, pcl::SHOT1344> shot;
+	//pcl::SHOTColorEstimationOMP<pcl::PointXYZRGB, pcl::Normal, pcl::SHOT1344> shot;
+	shot.setSearchMethod(tree);
+	shot.setRadiusSearch(0.2);
+	//shot.setKSearch(10);
+	shot.setInputCloud(source_cloud);
+	shot.setInputNormals(source_normals);
+	shot.setIndices(keypoints_indices);
+	shot.compute(*source_features);
+#endif
 
 	// Target point cloud.
 	pcl::PointCloud<pcl::PointXYZ>::Ptr target_cloud(new PointCloud<PointXYZ>());
 	loadPCDFile("cloudASCII003.pcd", *target_cloud);
-	std::cout << "File 2 points: " << target_cloud->points.size() << std::endl;
+	std::cout << "File 2 points: " << target_cloud->size() << std::endl;
 
 	// Compute model resolution.
 	double model_resolution_1 = computeCloudResolution(target_cloud);
@@ -385,14 +397,15 @@ void feature_matching()
 	iss_detector_1.setMinNeighbors(10);
 	iss_detector_1.setNumberOfThreads(10);
 	iss_detector_1.setInputCloud(target_cloud);
-	iss_detector_1.compute((*target_keypoints));
+	iss_detector_1.compute(*target_keypoints);
 	pcl::PointIndicesConstPtr keypoints_indices_1 = iss_detector_1.getKeypointsIndices();
 
-	std::cout << "No of ISS points in the result are " << (*target_keypoints).points.size() << std::endl;
-	savePCDFileASCII("ISSKeypoints2.pcd", (*target_keypoints));
+	std::cout << "No of ISS points in the result are " << target_keypoints->size() << std::endl;
+	pcl::io::savePCDFileASCII("./ISSKeypoints2.pcd", *target_keypoints);
 
 	// Compute the normals.
 	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normalEstimation_1;
+	//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> normalEstimation_1;
 	normalEstimation_1.setInputCloud(target_cloud);
 	normalEstimation_1.setSearchMethod(tree);
 
@@ -400,26 +413,33 @@ void feature_matching()
 	normalEstimation_1.setRadiusSearch(0.2);
 	normalEstimation_1.compute(*target_normals);
 
+#if 1
 	pcl::PointCloud<pcl::FPFHSignature33>::Ptr target_features(new pcl::PointCloud<pcl::FPFHSignature33>());
 	pcl::FPFHEstimation<pcl::PointXYZ, pcl::Normal, pcl::FPFHSignature33> fpfh1;
+	//pcl::FPFHEstimationOMP<pcl::PointXYZ, pcl::Normal, pcl::FPFHSignature33> fpfh1;
+	fpfh1.setSearchMethod(tree);
+	fpfh1.setRadiusSearch(0.2);
+	//fpfh1.setKSearch(10);
 	fpfh1.setInputCloud(target_cloud);
 	fpfh1.setInputNormals(target_normals);
 	fpfh1.setIndices(keypoints_indices_1);
-	fpfh1.setSearchMethod(tree);
-	fpfh1.setRadiusSearch(0.2);
 	fpfh1.compute(*target_features);
-
-	/*
+#else
 	// SHOT optional descriptor.
 	pcl::PointCloud<pcl::SHOT352>::Ptr target_features(new pcl::PointCloud<pcl::SHOT352>());
-	pcl::SHOTEstimation< pcl::PointXYZ, pcl::Normal, pcl::SHOT352 > shot_1;
-	shot_1.setSearchMethod(tree); //kdtree
-	shot_1.setIndices(keypoints_indices_1); //keypoints
-	shot_1.setInputCloud(target_cloud); //input
-	shot_1.setInputNormals(target_normals); //normals
-	shot_1.setRadiusSearch(0.2); //support
-	shot_1.compute(*target_features); //descriptors
-	*/
+	pcl::SHOTEstimation<pcl::PointXYZ, pcl::Normal, pcl::SHOT352> shot_1;
+	//pcl::SHOTEstimationOMP<pcl::PointXYZ, pcl::Normal, pcl::SHOT352> shot_1;
+	//pcl::PointCloud<pcl::SHOT1344>::Ptr target_features(new pcl::PointCloud<pcl::SHOT1344>());
+	//pcl::SHOTColorEstimation<pcl::PointXYZRGB, pcl::Normal, pcl::SHOT1344> shot_1;
+	//pcl::SHOTColorEstimationOMP<pcl::PointXYZRGB, pcl::Normal, pcl::SHOT1344> shot_1;
+	shot_1.setSearchMethod(tree);
+	shot_1.setRadiusSearch(0.2);
+	//shot_1.setKSearch(10);
+	shot_1.setInputCloud(target_cloud);
+	shot_1.setInputNormals(target_normals);
+	shot_1.setIndices(keypoints_indices_1);
+	shot_1.compute(*target_features);
+#endif
 
 	// Estimate correspondences.
 	pcl::registration::CorrespondenceEstimation<pcl::FPFHSignature33, pcl::FPFHSignature33> est;
@@ -428,7 +448,7 @@ void feature_matching()
 	est.setInputTarget(target_features);
 	est.determineCorrespondences(*correspondences);
 
-	// Duplication rejection Duplicate.
+	// Eliminate duplicate match indices.
 	pcl::CorrespondencesPtr correspondences_result_rej_one_to_one(new pcl::Correspondences());
 	pcl::registration::CorrespondenceRejectorOneToOne corr_rej_one_to_one;
 	corr_rej_one_to_one.setInputCorrespondences(correspondences);
@@ -440,7 +460,7 @@ void feature_matching()
 	pcl::CorrespondencesPtr correspondences_filtered(new pcl::Correspondences());
 	rejector_sac.setInputSource(source_keypoints);
 	rejector_sac.setInputTarget(target_keypoints);
-	rejector_sac.setInlierThreshold(2.5);  // distance in m, not the squared distance.
+	rejector_sac.setInlierThreshold(2.5);  // Distance in m, not the squared distance.
 	rejector_sac.setMaximumIterations(1000000);
 	rejector_sac.setRefineModel(false);
 	rejector_sac.setInputCorrespondences(correspondences_result_rej_one_to_one);
@@ -448,19 +468,19 @@ void feature_matching()
 	rejector_sac.getCorrespondences(*correspondences_filtered);
 	correspondences.swap(correspondences_filtered);
 	std::cout << correspondences->size() << " vs. " << correspondences_filtered->size() << std::endl;
-	transform = rejector_sac.getBestTransformation(); // Transformation Estimation method 1.
+	transform = rejector_sac.getBestTransformation();  // Transformation Estimation method 1.
 
 	// Transformation Estimation method 2.
 	//pcl::registration::TransformationEstimationSVD<pcl::PointXYZ, pcl::PointXYZ> transformation_estimation;
 	//transformation_estimation.estimateRigidTransformation(*source_keypoints, *target_keypoints, *correspondences, transform);
 	std::cout << "Estimated transform:" << std::endl << transform << std::endl;
 
-	// / refinement transform source using transformation matrix ///////////////////////////////////////////////////////
+	// Refinement transform source using transformation matrix.
 
 	pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_source(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr final_output(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::transformPointCloud(*source_cloud, *transformed_source, transform);
-	savePCDFileASCII("Transformed.pcd", (*transformed_source));
+	pcl::io::savePCDFileASCII("./Transformed.pcd", (*transformed_source));
 
 	pcl::visualization::PCLVisualizer viewer("Cloud Viewer");
 	//viewer.setBackgroundColor(0, 0, 0);
@@ -486,7 +506,7 @@ void feature_matching()
 	icp.setInputSource(transformed_source);
 	icp.setInputTarget(target_cloud);
 	icp.align(*final_output);
-	std::cout << "has converged:" << icp.hasConverged() << " score: " << icp.getFitnessScore() << std::endl;
+	std::cout << "has converged: " << icp.hasConverged() << " score: " << icp.getFitnessScore() << std::endl;
 	std::cout << icp.getFinalTransformation() << std::endl;
 
 	pcl::visualization::PCLVisualizer icpViewer("ICP Viewer");
@@ -505,20 +525,20 @@ void feature_matching()
 	/*
 	// Setup the SHOT features.
 	pcl::SHOTEstimation<pcl::PointXYZ, pcl::Normal, pcl::SHOT352> shotEstimation;
-
+	//pcl::SHOTEstimationOMP<pcl::PointXYZ, pcl::Normal, pcl::SHOT352> shotEstimation;
+	//pcl::SHOTColorEstimation<pcl::PointXYZRGB, pcl::Normal, pcl::SHOT1344> shotEstimation;
+	//pcl::SHOTColorEstimationOMP<pcl::PointXYZRGB, pcl::Normal, pcl::SHOT1344> shotEstimation;
+	// Actually compute the spin images.
+	pcl::PointCloud<pcl::SHOT352>::Ptr shotFeatures(new pcl::PointCloud<pcl::SHOT352>);
+	// Use the same KdTree from the normal estimation.
+	shotEstimation.setSearchMethod(tree);
+	//shotEstimation.setRadiusSearch(0.2);
+	shotEstimation.setKSearch(10);
 	shotEstimation.setInputCloud(model);
 	shotEstimation.setInputNormals(normals);
 	shotEstimation.setIndices(keypoint_indices);
-
-	// Use the same KdTree from the normal estimation.
-	shotEstimation.setSearchMethod(tree);
-	pcl::PointCloud<pcl::SHOT352>::Ptr shotFeatures(new pcl::PointCloud<pcl::SHOT352>);
-	//spinImageEstimation.setRadiusSearch(0.2);
-	shotEstimation.setKSearch(10);
-
-	// Actually compute the spin images.
 	shotEstimation.compute(*shotFeatures);
-	std::cout << "SHOT output points.size (): " << shotFeatures->points.size() << std::endl;
+	std::cout << "SHOT output points.size(): " << shotFeatures->size() << std::endl;
 
 	// Display and retrieve the SHOT descriptor for the first point.
 	pcl::SHOT352 descriptor = shotFeatures->points[0];
@@ -544,7 +564,7 @@ void feature()
 	//local::fpfh_descriptors_tutorial();
 
 	//--------------------
-	//feature_matching();
+	//local::feature_matching();
 
 	// ICCV tutorial.
 	// REF [site] >> https://github.com/PointCloudLibrary/pcl/blob/master/apps/src/feature_matching.cpp

@@ -21,7 +21,7 @@ void downsample_point_cloud_using_voxel_grid_filter_tutorial()
 	// Replace the path below with the path where you saved your file.
 	reader.read(filename, *cloud);  // Remember to download the file first!
 
-	std::cerr << "PointCloud before filtering: " << cloud->width * cloud->height << " data points (" << pcl::getFieldsList(*cloud) << ")." << std::endl;
+	std::cerr << "PointCloud before filtering: " << cloud->size() << " data points (" << pcl::getFieldsList(*cloud) << ")." << std::endl;
 
 	// Create the filtering object.
 	pcl::VoxelGrid<pcl::PCLPointCloud2> sor;
@@ -29,7 +29,7 @@ void downsample_point_cloud_using_voxel_grid_filter_tutorial()
 	sor.setLeafSize(0.01f, 0.01f, 0.01f);
 	sor.filter(*cloud_filtered);
 
-	std::cerr << "PointCloud after filtering: " << cloud_filtered->width * cloud_filtered->height << " data points (" << pcl::getFieldsList(*cloud_filtered) << ")." << std::endl;
+	std::cerr << "PointCloud after filtering: " << cloud_filtered->size() << " data points (" << pcl::getFieldsList(*cloud_filtered) << ")." << std::endl;
 
 	pcl::PCDWriter writer;
 	writer.write(filename_filterd, *cloud_filtered, Eigen::Vector4f::Zero(), Eigen::Quaternionf::Identity(), false);

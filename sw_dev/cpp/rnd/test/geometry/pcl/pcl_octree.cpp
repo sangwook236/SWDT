@@ -25,7 +25,7 @@ void spatial_partitioning_and_search_operations_with_octrees_tutorial()
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 	cloud->width = 1000;
 	cloud->height = 1;
-	cloud->points.resize(cloud->width * cloud->height);
+	cloud->resize(cloud->width * cloud->height);
 
 	for (std::size_t i = 0; i < cloud->size(); ++i)
 	{
@@ -113,7 +113,7 @@ void spatial_change_detection_on_unorganized_point_cloud_data_tutorial()
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloudA(new pcl::PointCloud<pcl::PointXYZ>);
 	cloudA->width = 128;
 	cloudA->height = 1;
-	cloudA->points.resize(cloudA->width * cloudA->height);
+	cloudA->resize(cloudA->width * cloudA->height);
 
 	for (std::size_t i = 0; i < cloudA->size(); ++i)
 	{
@@ -133,7 +133,7 @@ void spatial_change_detection_on_unorganized_point_cloud_data_tutorial()
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloudB(new pcl::PointCloud<pcl::PointXYZ>);
 	cloudB->width = 128;
 	cloudB->height = 1;
-	cloudB->points.resize(cloudB->width * cloudB->height);
+	cloudB->resize(cloudB->width * cloudB->height);
 
 	for (std::size_t i = 0; i < cloudB->size(); ++i)
 	{
@@ -183,7 +183,7 @@ void create_octree_from_point_cloud_test()
 		}
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Point cloud loaded: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
-		std::cout << "\tLoaded " << cloud->width * cloud->height << " data points (" << pcl::getFieldsList(*cloud) << ") from " << input_filepath << std::endl;
+		std::cout << "\tLoaded " << cloud->size() << " data points (" << pcl::getFieldsList(*cloud) << ") from " << input_filepath << std::endl;
 	}
 
 #if 0
@@ -198,7 +198,7 @@ void create_octree_from_point_cloud_test()
 		sor.filter(*cloud_downsampled);
 		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
 		std::cout << "Point cloud downsampled: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() << " msecs." << std::endl;
-		std::cerr << "\tDownsampled " << cloud_downsampled->width * cloud_downsampled->height << " data points (" << pcl::getFieldsList(*cloud_downsampled) << ")." << std::endl;
+		std::cerr << "\tDownsampled " << cloud_downsampled->size() << " data points (" << pcl::getFieldsList(*cloud_downsampled) << ")." << std::endl;
 	}
 #else
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_downsampled = cloud;

@@ -98,8 +98,8 @@ void registration_example()
 		return;
 	}
 
-	std::cout << "Loaded " << cloud1->width * cloud1->height << " data points from " << input_filename1 << std::endl;
-	std::cout << "Loaded " << cloud2->width * cloud2->height << " data points from " << input_filename2 << std::endl;
+	std::cout << "Loaded " << cloud1->size() << " data points from " << input_filename1 << std::endl;
+	std::cout << "Loaded " << cloud2->size() << " data points from " << input_filename2 << std::endl;
 
 	//--------------------
 #if 0
@@ -167,6 +167,7 @@ void registration_example()
 	pcl::PointCloud<pcl::Normal>::Ptr cloud_normal1(new pcl::PointCloud<pcl::Normal>);
 	{
 		pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+		//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
 		ne.setInputCloud(cloud1_proxy);
 		pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
 		ne.setSearchMethod(tree);
@@ -176,6 +177,7 @@ void registration_example()
 	pcl::PointCloud<pcl::Normal>::Ptr cloud_normal2(new pcl::PointCloud<pcl::Normal>);
 	{
 		pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+		//pcl::NormalEstimationOMP<pcl::PointXYZ, pcl::Normal> ne;
 		ne.setInputCloud(cloud2);
 		pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>());
 		ne.setSearchMethod(tree);
