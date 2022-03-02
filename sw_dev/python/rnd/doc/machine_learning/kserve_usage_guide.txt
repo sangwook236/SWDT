@@ -212,67 +212,54 @@
 
 [-] Installation.
 	https://kserve.github.io/website/get_started/
-	https://kserve.github.io/website/admin/serverless/
-	https://kserve.github.io/website/admin/kubernetes_deployment/
 	https://raw.githubusercontent.com/kserve/kserve/release-0.7/hack/quick_install.sh
 
 	- Serverless mode.
-		Set environment variables:
-			export KUBE_VERSION=$(kubectl version --short=true)
-			export KSERVE_VERSION=v0.7.0
-			export KSERVE_CONFIG=kserve.yaml
-			export CERT_MANAGER_VERSION=v1.6.0
+		https://kserve.github.io/website/admin/serverless/
 
-			export ISTIO_VERSION=1.13.0
-			export KNATIVE_VERSION=v1.2.0
+		Method 1:
+			Install Istio:
+				https://istio.io/latest/docs/setup/install/istioctl/
 
-		Install Istio:
-			https://istio.io/latest/docs/setup/install/istioctl/
-			https://knative.dev/docs/install/serving/installing-istio/
+			Install Knative:
+				https://knative.dev/docs/install/yaml-install/serving/install-serving-with-yaml/
 
-			sh downloadIstioCandidate.sh
-				https://raw.githubusercontent.com/istio/istio/master/release/downloadIstioCandidate.sh
+			Install Cert Manager:
+				https://cert-manager.io/docs/installation/
 
-			Create istio-system namespace:
-				kubectl apply -f istio-system-namespace.yaml
-
-			cd istio-${ISTIO_VERSION}
-
-			bin/istioctl x precheck
-
-			bin/istioctl install --set profile=demo -y
-			bin/istioctl x uninstall --purge
-
-		Install Knative:
-			https://knative.dev/docs/install/
+		Method 2:
 			https://knative.dev/docs/install/serving/install-serving-with-yaml/
-			https://knative.dev/docs/install/uninstall/
 
-			kubectl apply --filename https://github.com/knative/serving/releases/download/${KNATIVE_VERSION}/serving-crds.yaml
-			kubectl apply --filename https://github.com/knative/serving/releases/download/${KNATIVE_VERSION}/serving-core.yaml
-			kubectl apply --filename https://github.com/knative/net-istio/releases/download/${KNATIVE_VERSION}/release.yaml
+			Install Knative:
+				kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.2.0/serving-crds.yaml
+				kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.2.0/serving-core.yaml
+					Edit serving-core.yaml:
+						apiVersion: autoscaling/v2beta2 -> apiVersion: autoscaling/v2
 
-		Install Cert Manager:
-			kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/${CERT_MANAGER_VERSION}/cert-manager.yaml
-			kubectl wait --for=condition=available --timeout=600s deployment/cert-manager-webhook -n cert-manager
+				kubectl get pods -n knative-serving
 
-			cd ..
+			Install Istio:
+				kubectl apply -l knative.dev/crd-install=true -f https://github.com/knative/net-istio/releases/download/knative-v1.2.0/istio.yaml
+				kubectl apply -f https://github.com/knative/net-istio/releases/download/knative-v1.2.0/istio.yaml
+				kubectl apply -f https://github.com/knative/net-istio/releases/download/knative-v1.2.0/net-istio.yaml
+
+				kubectl get service istio-ingressgateway -n istio-system
+				kubectl get pods -n istio-system
+				kubectl get pods -n knative-serving
+
+			Install Cert Manager:
+				kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.7.1/cert-manager.yaml
+					Needs at least one node to run. (?)
+				kubectl apply -f https://github.com/knative/net-certmanager/releases/download/knative-v1.2.0/release.yaml
+
+				kubectl delete apiservice v1beta1.webhook.cert-manager.io
+				kubectl delete namespace cert-manager
+
+				kubectl get pods --namespace cert-manager
+				kubectl get apiservice --all-namespaces
 
 		Install KServe:
-			kubectl apply -f https://github.com/kserve/kserve/releases/download/${KSERVE_VERSION}/${KSERVE_CONFIG}
-
-		rm -rf istio-${ISTIO_VERSION}
+			kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.8.0/kserve.yaml
 
 	- Raw deployment mode.
-		Set environment variables:
-			export KUBE_VERSION=$(kubectl version --short=true)
-			export KSERVE_VERSION=v0.7.0
-			export KSERVE_CONFIG=kserve.yaml
-			export CERT_MANAGER_VERSION=v1.6.0
-
-		Install Cert Manager:
-			kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/${CERT_MANAGER_VERSION}/cert-manager.yaml
-			kubectl wait --for=condition=available --timeout=600s deployment/cert-manager-webhook -n cert-manager
-
-		Install KServe:
-			kubectl apply -f https://github.com/kserve/kserve/releases/download/${KSERVE_VERSION}/${KSERVE_CONFIG}
+		https://kserve.github.io/website/admin/kubernetes_deployment/

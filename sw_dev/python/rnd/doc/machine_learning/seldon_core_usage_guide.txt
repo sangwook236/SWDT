@@ -1,0 +1,12 @@
+[-] General.
+	- Site.
+		https://www.seldon.io/
+		https://github.com/SeldonIO/seldon-core/
+
+	- Document.
+		https://docs.seldon.io/projects/seldon-core/en/latest/
+
+[-] Usage.
+
+[-] Installation.
+	https://docs.seldon.io/projects/seldon-core/en/latest/nav/installation.html
