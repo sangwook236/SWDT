@@ -8,7 +8,8 @@
 #include <pcl/octree/octree_pointcloud_density.h>
 #include <pcl/octree/octree_pointcloud_changedetector.h>
 #include <pcl/octree/octree_search.h>
-##include <pcl/filters/voxel_grid.h>
+#include <pcl/gpu/octree/octree.hpp>
+#include <pcl/filters/voxel_grid.h>
 
 
 namespace {
@@ -165,6 +166,18 @@ void point_cloud_compression_tutorial()
 	throw std::runtime_error("Not yet implemented");
 }
 
+// REF [site] >> https://github.com/PointCloudLibrary/pcl/blob/master/gpu/examples/octree/src/octree_search.cpp
+void octree_search_gpu_example()
+{
+	throw std::runtime_error("Not yet implemented");
+
+	pcl::gpu::Octree::PointCloud cloud_device;
+	pcl::gpu::Octree octree_device;
+	pcl::gpu::Octree::Queries queries_device;
+	pcl::gpu::Octree::Radiuses radiuses_device;
+	pcl::gpu::NeighborIndices result_device(queries_device.size(), max_answers);
+}
+
 void create_octree_from_point_cloud_test()
 {
 	const std::string input_filepath("../../../data/dental_scanner/20210924/samples_pcd/001_rgb.pcd");
@@ -258,6 +271,8 @@ void octree()
 	//local::spatial_partitioning_and_search_operations_with_octrees_tutorial();
 	//local::spatial_change_detection_on_unorganized_point_cloud_data_tutorial();
 	//local::point_cloud_compression_tutorial();  // Not yet implemented.
+
+	//local::octree_search_gpu_example();  // Not yet implemented.
 
 	local::create_octree_from_point_cloud_test();
 }

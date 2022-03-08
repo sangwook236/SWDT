@@ -3,10 +3,13 @@
 #include <chrono>
 #include <iostream>
 #include <pcl/point_types.h>
+#include <pcl/filters/voxel_grid.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/features/integral_image_normal.h>
+#include <pcl/features/principal_curvatures.h>
 #include <pcl/features/pfh.h>
 #include <pcl/features/fpfh.h>
+//#include <pcl/gpu/features/features.hpp>
 #include <pcl/io/pcd_io.h>
 #include <pcl/visualization/cloud_viewer.h>
 
@@ -149,15 +152,147 @@ void normal_estimation_using_integral_images_tutorial()
 	pcl::visualization::PCLVisualizer viewer("PCL Viewer");
 	viewer.setBackgroundColor(0.0, 0.0, 0.5);
 	viewer.addPointCloudNormals<pcl::PointXYZ, pcl::Normal>(cloud, normals);
-
 	while (!viewer.wasStopped())
 	{
 		viewer.spinOnce();
 	}
 }
 
+// REF [site] >> https://github.com/otherlab/pcl/blob/master/examples/features/example_principal_curvatures_estimation.cpp
+void principal_curvature_estimation_example()
+{
+	const std::string filepath("../table_scene_lms400.pcd");
+
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+
+	// Load the file.
+	if (pcl::io::loadPCDFile<pcl::PointXYZ>(filepath, *cloud) == -1)
+	{
+		const std::string err("File not found " + filepath + ".\n");
+		PCL_ERROR(err.c_str());
+		return;
+	}
+
+	std::cout << "Loaded " << cloud->size() << " data points (" << pcl::getFieldsList(*cloud) << ")." << std::endl;
+
+#if 1
+	// Create the filtering object.
+	pcl::VoxelGrid<pcl::PointXYZ> sor;
+	sor.setInputCloud(cloud);
+	sor.setLeafSize(0.01f, 0.01f, 0.01f);
+	//sor.setMinimumPointsNumberPerVoxel(0);
+	sor.filter(*cloud);
+
+	std::cerr << "Filtered " << cloud->size() << " data points (" << pcl::getFieldsList(*cloud) << ")." << std::endl;
+#endif
+
+	// Compute the normals.
+	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::Normal>::Ptr cloud_with_normals(new pcl::PointCloud<pcl::Normal>);
+	{
+		const auto start_time(std::chrono::high_resolution_clock::now());
+
+		pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> normal_estimation;
+		normal_estimation.setInputCloud(cloud);
+		normal_estimation.setSearchMethod(tree);
+		normal_estimation.setRadiusSearch(0.03);
+		normal_estimation.compute(*cloud_with_normals);
+
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Normals computed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
+	}
+
+	// Compute the principal curvatures.
+	pcl::PointCloud<pcl::PrincipalCurvatures>::Ptr principal_curvatures(new pcl::PointCloud<pcl::PrincipalCurvatures>());
+	{
+		const auto start_time(std::chrono::high_resolution_clock::now());
+
+		// Setup the principal curvatures computation.
+		pcl::PrincipalCurvaturesEstimation<pcl::PointXYZ, pcl::Normal, pcl::PrincipalCurvatures> principal_curvatures_estimation;
+		// Provide the original point cloud (without normals).
+		principal_curvatures_estimation.setInputCloud(cloud);
+		// Provide the point cloud with normals.
+		principal_curvatures_estimation.setInputNormals(cloud_with_normals);
+		// Use the same KdTree from the normal estimation.
+		principal_curvatures_estimation.setSearchMethod(tree);
+		principal_curvatures_estimation.setRadiusSearch(0.01);
+		//principal_curvatures_estimation.setKSearch(5);
+		// Actually compute the principal curvatures.
+		principal_curvatures_estimation.compute(*principal_curvatures);
+
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Principal curvatures computed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
+
+		std::cout << "#principal curvatures = " << principal_curvatures->size() << std::endl;
+	}
+
+	// Display and retrieve the shape context descriptor vector for the 0th point.
+	const pcl::PrincipalCurvatures &descriptor = principal_curvatures->points[0];
+	std::cout << descriptor << std::endl;
+
+#if 1
+	// Filter the valid principal curvatures.
+	pcl::Indices valid_point_indices;
+	//std::ofstream stream("../principal_curvatures.csv");
+	int point_idx = 0;
+	for (const auto &curvature: principal_curvatures->points)
+	{
+		//curvature.principal_curvature_x;  // The principal curvature X direction.
+		//curvature.principal_curvature_y;  // The principal curvature Y direction.
+		//curvature.principal_curvature_z;  // The principal curvature Z direction.
+		//curvature.pc1;  // The max eigenvalue of curvature.
+		//curvature.pc2;  // The min eigenvalue of curvature.
+
+		//if (!std::isnan(curvature.pc1) && !std::isnan(curvature.pc2))
+		if (!std::isnan(curvature.pc1) && !std::isnan(curvature.pc2) && curvature.pc1 > 0.00005f)
+		//if (!std::isnan(curvature.pc1) && !std::isnan(curvature.pc2) && curvature.pc1 > 0.00005f && curvature.pc2 > 0.000005f)
+		//if (!std::isnan(curvature.pc1) && !std::isnan(curvature.pc2) && curvature.pc2 > 0.0f && curvature.pc1 / curvature.pc2 > 100.0f)  // Not good.
+		{
+			valid_point_indices.push_back(point_idx);
+
+			//stream << curvature.pc1 << ", " << curvature.pc2 << std::endl;
+		}
+
+		++point_idx;
+	}
+	//stream.close();
+
+	std::cout << "#valid principal curvatures = " << valid_point_indices.size() << std::endl;
+
+	cloud.reset(new pcl::PointCloud<pcl::PointXYZ>(*cloud, valid_point_indices));
+	cloud_with_normals.reset(new pcl::PointCloud<pcl::Normal>(*cloud_with_normals, valid_point_indices));
+	principal_curvatures.reset(new pcl::PointCloud<pcl::PrincipalCurvatures>(*principal_curvatures, valid_point_indices));
+
+	std::cout << "Valid points: " << cloud->size() << " data points (" << pcl::getFieldsList(*cloud) << ")." << std::endl;
+	std::cout << "Valid normals: " << cloud_with_normals->size() << " data points (" << pcl::getFieldsList(*cloud_with_normals) << ")." << std::endl;
+	std::cout << "Valid principal curvatures: " << principal_curvatures->size() << " data points (" << pcl::getFieldsList(*principal_curvatures) << ")." << std::endl;
+#endif
+
+	// Visualize.
+	pcl::visualization::PCLVisualizer viewer("PCL Viewer");
+	viewer.addPointCloud<pcl::PointXYZ>(cloud, "cloud");
+	//viewer.addPointCloudNormals<pcl::PointXYZ, pcl::Normal>(cloud, cloud_with_normals, 5, 0.01f, "cloud_normals");
+	viewer.addPointCloudPrincipalCurvatures<pcl::PointXYZ, pcl::Normal>(cloud, cloud_with_normals, principal_curvatures, 5, 0.01f, "cloud_curvatures");
+	//viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "cloud");
+	//viewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_SHADING, pcl::visualization::PCL_VISUALIZER_SHADING_PHONG, "cloud");
+	//viewer.setRepresentationToSurfaceForAllActors();
+	//viewer.addCoordinateSystem(0.3);
+	viewer.initCameraParameters();
+	while (!viewer.wasStopped())
+	{
+		viewer.spinOnce();
+	}
+}
+
+void principal_curvature_estimation_gpu_test()
+{
+	throw std::runtime_error("Not yet implemented");
+
+	//pcl::gpu::PrincipalCurvaturesEstimation<pcl::PointXYZ, pcl::Normal, pcl::PrincipalCurvatures> principal_curvatures_estimation;
+}
+
 // REF [site] >> https://pcl.readthedocs.io/projects/tutorials/en/latest/pfh_estimation.html
-void pfh_descriptors_tutorial()
+void pfh_estimation_tutorial()
 {
 	const std::string filename("./sample.pcd");
 
@@ -214,7 +349,7 @@ void pfh_descriptors_tutorial()
 }
 
 // REF [site] >> https://pcl.readthedocs.io/projects/tutorials/en/latest/fpfh_estimation.html
-void fpfh_descriptors_tutorial()
+void fpfh_estimation_tutorial()
 {
 	const std::string filename("./sample.pcd");
 
@@ -268,6 +403,17 @@ void fpfh_descriptors_tutorial()
 	std::cout << "FPFH described: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
 
 	// fpfhs->size() should have the same size as the input cloud->size().
+}
+
+void fpfh_estimation_gpu_test()
+{
+	throw std::runtime_error("Not yet implemented");
+
+	//pcl::gpu::FPFHEstimation::PointCloud cloud_gpu;
+	//pcl::gpu::FPFHEstimation::Normals normals_gpu;
+	//pcl::gpu::FPFHEstimation::Indices indices_gpu;
+	//pcl::gpu::FPFHEstimation::PointCloud surface_gpu;
+	//pcl::gpu::FPFHEstimation fe_gpu;
 }
 
 #if 0
@@ -510,7 +656,7 @@ void feature_matching()
 	std::cout << icp.getFinalTransformation() << std::endl;
 
 	pcl::visualization::PCLVisualizer icpViewer("ICP Viewer");
-	icpViewer.addPointCloud<pcl::PointXYZ>(final_output, handler_source_cloud, "Final_cloud");
+	icpViewer.addPointCloud<pcl::PointXYZ>(final_output, handler_source_cloud, "final_cloud");
 	icpViewer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "source_keypoints");
 	while (!viewer.wasStopped())
 	{
@@ -555,13 +701,17 @@ namespace my_pcl {
 
 void feature()
 {
-	local::normal_estimation_tutorial();
+	//local::normal_estimation_tutorial();
 	//local::normal_estimation_using_integral_images_tutorial();
 
+	local::principal_curvature_estimation_example();
+	//local::principal_curvature_estimation_gpu_test();  // Not yet implemented.
+
 	// Point feature histograms (PFH) descriptor.
-	//local::pfh_descriptors_tutorial();
+	//local::pfh_estimation_tutorial();
 	// Fast point feature histograms (FPFH) descriptor.
-	//local::fpfh_descriptors_tutorial();
+	//local::fpfh_estimation_tutorial();
+	//local::fpfh_estimation_gpu_test();  // Not yet implemented.
 
 	//--------------------
 	//local::feature_matching();

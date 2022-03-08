@@ -82,8 +82,8 @@ pcl::visualization::PCLVisualizer::Ptr normalsVis(pcl::PointCloud<pcl::PointXYZR
 	viewer->setBackgroundColor(0, 0, 0);
 	pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(cloud);
 	viewer->addPointCloud<pcl::PointXYZRGB>(cloud, rgb, "sample cloud");
+	viewer->addPointCloudNormals<pcl::PointXYZRGB, pcl::Normal>(cloud, normals, 10, 0.05f, "normals");
 	viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "sample cloud");
-	viewer->addPointCloudNormals<pcl::PointXYZRGB, pcl::Normal>(cloud, normals, 10, 0.05, "normals");
 	viewer->addCoordinateSystem(1.0);
 	viewer->initCameraParameters();
 	return viewer;
@@ -156,8 +156,8 @@ pcl::visualization::PCLVisualizer::Ptr viewportsVis(pcl::PointCloud<pcl::PointXY
 	viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "sample cloud2");
 	viewer->addCoordinateSystem(1.0);
 
-	viewer->addPointCloudNormals<pcl::PointXYZRGB, pcl::Normal>(cloud, normals1, 10, 0.05, "normals1", v1);
-	viewer->addPointCloudNormals<pcl::PointXYZRGB, pcl::Normal>(cloud, normals2, 10, 0.05, "normals2", v2);
+	viewer->addPointCloudNormals<pcl::PointXYZRGB, pcl::Normal>(cloud, normals1, 10, 0.05f, "normals1", v1);
+	viewer->addPointCloudNormals<pcl::PointXYZRGB, pcl::Normal>(cloud, normals2, 10, 0.05f, "normals2", v2);
 
 	return viewer;
 }
