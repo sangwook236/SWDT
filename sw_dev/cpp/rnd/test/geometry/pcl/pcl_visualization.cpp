@@ -31,9 +31,7 @@ void printUsage(const char *progName)
 
 pcl::visualization::PCLVisualizer::Ptr simpleVis(pcl::PointCloud<pcl::PointXYZ>::ConstPtr cloud)
 {
-	// --------------------------------------------
-	// -----Open 3D viewer and add point cloud-----
-	// --------------------------------------------
+	// Open 3D viewer and add point cloud.
 	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
 	viewer->setBackgroundColor(0, 0, 0);
 	viewer->addPointCloud(cloud, "sample cloud");
@@ -45,9 +43,7 @@ pcl::visualization::PCLVisualizer::Ptr simpleVis(pcl::PointCloud<pcl::PointXYZ>:
 
 pcl::visualization::PCLVisualizer::Ptr rgbVis(pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr cloud)
 {
-	// --------------------------------------------
-	// -----Open 3D viewer and add point cloud-----
-	// --------------------------------------------
+	// Open 3D viewer and add point cloud.
 	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
 	viewer->setBackgroundColor(0, 0, 0);
 	pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(cloud);
@@ -60,9 +56,7 @@ pcl::visualization::PCLVisualizer::Ptr rgbVis(pcl::PointCloud<pcl::PointXYZRGB>:
 
 pcl::visualization::PCLVisualizer::Ptr customColourVis(pcl::PointCloud<pcl::PointXYZ>::ConstPtr cloud)
 {
-	// --------------------------------------------
-	// -----Open 3D viewer and add point cloud-----
-	// --------------------------------------------
+	// Open 3D viewer and add point cloud.
 	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
 	viewer->setBackgroundColor(0, 0, 0);
 	pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> single_color(cloud, 0, 255, 0);
@@ -75,9 +69,7 @@ pcl::visualization::PCLVisualizer::Ptr customColourVis(pcl::PointCloud<pcl::Poin
 
 pcl::visualization::PCLVisualizer::Ptr normalsVis(pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr cloud, pcl::PointCloud<pcl::Normal>::ConstPtr normals)
 {
-	// --------------------------------------------------------
-	// -----Open 3D viewer and add point cloud and normals-----
-	// --------------------------------------------------------
+	// Open 3D viewer and add point cloud and normals.
 	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer ("3D Viewer"));
 	viewer->setBackgroundColor(0, 0, 0);
 	pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(cloud);
@@ -91,9 +83,7 @@ pcl::visualization::PCLVisualizer::Ptr normalsVis(pcl::PointCloud<pcl::PointXYZR
 
 pcl::visualization::PCLVisualizer::Ptr shapesVis(pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr cloud)
 {
-	// --------------------------------------------
-	// -----Open 3D viewer and add point cloud-----
-	// --------------------------------------------
+	// Open 3D viewer and add point cloud.
 	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
 	viewer->setBackgroundColor(0, 0, 0);
 	pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(cloud);
@@ -102,15 +92,11 @@ pcl::visualization::PCLVisualizer::Ptr shapesVis(pcl::PointCloud<pcl::PointXYZRG
 	viewer->addCoordinateSystem(1.0);
 	viewer->initCameraParameters();
 
-	//------------------------------------
-	//-----Add shapes at cloud points-----
-	//------------------------------------
+	// Add shapes at cloud points.
 	viewer->addLine<pcl::PointXYZRGB>(cloud->points[0], cloud->points[cloud->size() - 1], "line");
 	viewer->addSphere(cloud->points[0], 0.2, 0.5, 0.5, 0.0, "sphere");
 
-	//---------------------------------------
-	//-----Add shapes at other locations-----
-	//---------------------------------------
+	// Add shapes at other locations.
 	pcl::ModelCoefficients coeffs;
 	coeffs.values.push_back(0.0);
 	coeffs.values.push_back(0.0);
@@ -132,9 +118,7 @@ pcl::visualization::PCLVisualizer::Ptr shapesVis(pcl::PointCloud<pcl::PointXYZRG
 
 pcl::visualization::PCLVisualizer::Ptr viewportsVis(pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr cloud, pcl::PointCloud<pcl::Normal>::ConstPtr normals1, pcl::PointCloud<pcl::Normal>::ConstPtr normals2)
 {
-	// --------------------------------------------------------
-	// -----Open 3D viewer and add point cloud and normals-----
-	// --------------------------------------------------------
+	// Open 3D viewer and add point cloud and normals.
 	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
 	viewer->initCameraParameters();
 
@@ -162,110 +146,107 @@ pcl::visualization::PCLVisualizer::Ptr viewportsVis(pcl::PointCloud<pcl::PointXY
 	return viewer;
 }
 
-pcl::visualization::PCLVisualizer::Ptr meshesVis(pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr cloud, pcl::PointCloud<pcl::Normal>::ConstPtr normals)
+pcl::visualization::PCLVisualizer::Ptr meshesVis_xyz(pcl::PointCloud<pcl::PointXYZ>::ConstPtr cloud)
 {
-	// --------------------------------------------
-	// -----Open 3D viewer and add point cloud-----
-	// --------------------------------------------
-	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
-	viewer->setBackgroundColor(0, 0, 0);
-	pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(cloud);
-	viewer->addPointCloud<pcl::PointXYZRGB>(cloud, rgb, "sample cloud");
-	viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "sample cloud");
-	viewer->addCoordinateSystem(1.0);
-	viewer->initCameraParameters();
+	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree_normal(new pcl::search::KdTree<pcl::PointXYZ>());
+	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>());
+	pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+	ne.setInputCloud(cloud);
+	ne.setSearchMethod(tree_normal);
+	ne.setRadiusSearch(0.2);
+	ne.compute(*normals);
 
-	//------------------------------------
-	//-----Add polygon meshes at cloud points-----
-	//------------------------------------
-	//// concatenate the XYZ and normal fields*
-	//pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals(new pcl::PointCloud<pcl::PointNormal>);
-	//pcl::concatenateFields(*cloud, *normals, *cloud_with_normals);
-	////* cloud_with_normals = cloud + normals
-
-	//// create search tree*
-	//pcl::KdTree<pcl::PointNormal>::Ptr tree(new pcl::KdTreeFLANN<pcl::PointNormal>);
-	//tree->setInputCloud(cloud_with_normals);
-
-	//// initialize objects
-	//pcl::GreedyProjectionTriangulation<pcl::PointNormal> gp3;
-	//pcl::PolygonMesh triangles;
-
-	//// set the maximum distance between connected points (maximum edge length)
-	//gp3.setSearchRadius(0.025);
-
-	//// set typical values for the parameters
-	//gp3.setMu(2.5);
-	//gp3.setMaximumNearestNeighbors(100);
-	//gp3.setMaximumSurfaceAgle(M_PI / 4);  // 45 degrees
-	//gp3.setMinimumAngle(M_PI / 18);  // 10 degrees
-	//gp3.setMaximumAngle(2 * M_PI / 3);  // 120 degrees
-	//gp3.setNormalConsistency(false);
-
-	//// get result
-	//gp3.setInputCloud(cloud_with_normals);
-	//gp3.setSearchMethod(tree);
-	//gp3.reconstruct(triangles);
-
-	//viewer->addPolygonMesh(triangles, "polygon");
-
-	return viewer;
-}
-
-pcl::visualization::PCLVisualizer::Ptr meshesVis2(pcl::PointCloud<pcl::PointXYZ>::ConstPtr cloud, pcl::PointCloud<pcl::Normal>::ConstPtr normals)
-{
-	// --------------------------------------------
-	// -----Open 3D viewer and add point cloud-----
-	// --------------------------------------------
-	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
-	viewer->setBackgroundColor(0, 0, 0);
-	viewer->addPointCloud<pcl::PointXYZ>(cloud, "sample cloud");
-	viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "sample cloud");
-	viewer->addCoordinateSystem(1.0);
-	viewer->initCameraParameters();
-
-	//------------------------------------
-	//-----Add polygon meshes at cloud points-----
-	//------------------------------------
-	// concatenate the XYZ and normal fields*.
+	// Add polygon meshes at cloud points.
+	// Concatenate the XYZ and normal fields.
 	pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals(new pcl::PointCloud<pcl::PointNormal>());
 	pcl::concatenateFields(*cloud, *normals, *cloud_with_normals);
-	//* cloud_with_normals = cloud + normals
+	//*cloud_with_normals = *cloud + *normals;
 
-	// create search tree*.
-	pcl::search::KdTree<pcl::PointNormal>::Ptr tree(new pcl::search::KdTree<pcl::PointNormal>());
-	tree->setInputCloud(cloud_with_normals);
+	// Create search tree.
+	pcl::search::KdTree<pcl::PointNormal>::Ptr tree_gp3(new pcl::search::KdTree<pcl::PointNormal>());
+	tree_gp3->setInputCloud(cloud_with_normals);
 
-	// initialize objects.
+	// Initialize objects.
 	pcl::GreedyProjectionTriangulation<pcl::PointNormal> gp3;
-	std::shared_ptr<pcl::PolygonMesh> triangles(new pcl::PolygonMesh());
-
-	// set the maximum distance between connected points (maximum edge length).
-	gp3.setSearchRadius(0.025);
-
-	// set typical values for the parameters.
+	pcl::PolygonMesh::Ptr triangles(new pcl::PolygonMesh());
+	// Set the maximum distance between connected points (maximum edge length).
+	gp3.setSearchRadius(0.2);
 	gp3.setMu(2.5);
 	gp3.setMaximumNearestNeighbors(100);
 	gp3.setMaximumSurfaceAngle(M_PI / 4);  // 45 degrees.
 	gp3.setMinimumAngle(M_PI / 18);  // 10 degrees.
 	gp3.setMaximumAngle(2 * M_PI / 3);  // 120 degrees.
 	gp3.setNormalConsistency(false);
-
-	// get result.
 	gp3.setInputCloud(cloud_with_normals);
-	gp3.setSearchMethod(tree);
+	gp3.setSearchMethod(tree_gp3);
 	gp3.reconstruct(*triangles);
 
+	// Open 3D viewer and add point cloud.
+	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
+	viewer->setBackgroundColor(0, 0, 0);
+	viewer->addPointCloud<pcl::PointXYZ>(cloud, "sample cloud");
+	viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "sample cloud");
 	viewer->addPolygonMesh(*triangles, "polygon");
+	viewer->addCoordinateSystem(1.0);
+	viewer->initCameraParameters();
+
+	return viewer;
+}
+
+pcl::visualization::PCLVisualizer::Ptr meshesVis_xyzrgb(pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr cloud)
+{
+	pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree_normal(new pcl::search::KdTree<pcl::PointXYZRGB>());
+	pcl::PointCloud<pcl::Normal>::Ptr normals(new pcl::PointCloud<pcl::Normal>());
+	pcl::NormalEstimation<pcl::PointXYZRGB, pcl::Normal> ne;
+	ne.setInputCloud(cloud);
+	ne.setSearchMethod(tree_normal);
+	ne.setRadiusSearch(0.2);
+	ne.compute(*normals);
+
+	// Add polygon meshes at cloud points.
+	// Concatenate the XYZ and normal fields.
+	pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_with_normals(new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+	pcl::concatenateFields(*cloud, *normals, *cloud_with_normals);
+	//*cloud_with_normals = *cloud + *normals;
+
+	// Create search tree.
+	//pcl::KdTree<pcl::PointXYZRGBNormal>::Ptr tree_gp3(new pcl::KdTreeFLANN<pcl::PointXYZRGBNormal>);
+	pcl::search::KdTree<pcl::PointXYZRGBNormal>::Ptr tree_gp3(new pcl::search::KdTree<pcl::PointXYZRGBNormal>);
+	tree_gp3->setInputCloud(cloud_with_normals);
+
+	// Initialize objects.
+	pcl::GreedyProjectionTriangulation<pcl::PointXYZRGBNormal> gp3;
+	pcl::PolygonMesh triangles;
+	// Set the maximum distance between connected points (maximum edge length).
+	gp3.setSearchRadius(0.2);
+	gp3.setMu(2.5);
+	gp3.setMaximumNearestNeighbors(100);
+	gp3.setMaximumSurfaceAngle(M_PI / 4);  // 45 degrees.
+	gp3.setMinimumAngle(M_PI / 18);  // 10 degrees.
+	gp3.setMaximumAngle(2 * M_PI / 3);  // 120 degrees.
+	gp3.setNormalConsistency(false);
+	gp3.setInputCloud(cloud_with_normals);
+	gp3.setSearchMethod(tree_gp3);
+	gp3.reconstruct(triangles);
+
+	// Open 3D viewer and add point cloud.
+	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
+	viewer->setBackgroundColor(0, 0, 0);
+	pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(cloud);
+	viewer->addPointCloud<pcl::PointXYZRGB>(cloud, rgb, "sample cloud");
+	viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "sample cloud");
+	viewer->addPolygonMesh(triangles, "polygon");
+	viewer->addCoordinateSystem(1.0);
+	viewer->initCameraParameters();
 
 	return viewer;
 }
 
 unsigned int text_id = 0;
-void keyboardEventOccurred (const pcl::visualization::KeyboardEvent &event, void *viewer_void)
+void keyboardEventOccurred(const pcl::visualization::KeyboardEvent &event, void *viewer_void)
 {
 	pcl::visualization::PCLVisualizer *viewer = static_cast<pcl::visualization::PCLVisualizer *>(viewer_void);
-	if (event.getKeySym () == "r" && event.keyDown ())
+	if (event.getKeySym() == "r" && event.keyDown())
 	{
 		std::cout << "r was pressed => removing all text" << std::endl;
 
@@ -279,13 +260,13 @@ void keyboardEventOccurred (const pcl::visualization::KeyboardEvent &event, void
 	}
 }
 
-void mouseEventOccurred (const pcl::visualization::MouseEvent &event, void *viewer_void)
+void mouseEventOccurred(const pcl::visualization::MouseEvent &event, void *viewer_void)
 {
 	pcl::visualization::PCLVisualizer *viewer = static_cast<pcl::visualization::PCLVisualizer *>(viewer_void);
-	if (event.getButton () == pcl::visualization::MouseEvent::LeftButton &&
-		event.getType () == pcl::visualization::MouseEvent::MouseButtonRelease)
+	if (event.getButton() == pcl::visualization::MouseEvent::LeftButton &&
+		event.getType() == pcl::visualization::MouseEvent::MouseButtonRelease)
 	{
-		std::cout << "Left mouse button released at position (" << event.getX () << ", " << event.getY () << ")" << std::endl;
+		std::cout << "Left mouse button released at position (" << event.getX() << ", " << event.getY() << ")" << std::endl;
 
 		char str[512];
 		sprintf(str, "text#%03d", text_id++);
@@ -308,16 +289,14 @@ pcl::visualization::PCLVisualizer::Ptr interactionCustomizationVis()
 // REF [site] >> http://pointclouds.org/documentation/tutorials/visualization.php
 void visualization_tutorial(int argc, char **argv)
 {
-	// --------------------------------------
-	// -----Parse Command Line Arguments-----
-	// --------------------------------------
-	//if (pcl::console::find_argument(argc, argv, "-h") >= 0)
-	//{
-	//	local::printUsage(argv[0]);
-	//	return;
-	//}
-
 #if 0
+	// Parse Command Line Arguments.
+	if (pcl::console::find_argument(argc, argv, "-h") >= 0)
+	{
+		local::printUsage(argv[0]);
+		return;
+	}
+
 	bool simple(false), rgb(false), custom_c(false), normals(false), shapes(false), viewports(false);
 
 	if (pcl::console::find_argument(argc, argv, "-s") >= 0)
@@ -356,28 +335,26 @@ void visualization_tutorial(int argc, char **argv)
 		return;
 	}
 #else
-	const bool simple(true), rgb(false), custom_c(false), normals(false), shapes(true), viewports(false), meshes(false), interaction_customization(false);
+	const bool simple(true), rgb(false), custom_c(false), normals(false), shapes(false), viewports(false), meshes(false), interaction_customization(false);
 #endif
 
-	// ------------------------------------
-	// -----Create example point cloud-----
-	// ------------------------------------
+	// Create example point cloud.
 	pcl::PointCloud<pcl::PointXYZ>::Ptr basic_cloud_ptr(new pcl::PointCloud<pcl::PointXYZ>());
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr point_cloud_ptr(new pcl::PointCloud<pcl::PointXYZRGB>());
 	std::cout << "Genarating example point clouds." << std::endl << std::endl;
 	// We're going to make an ellipse extruded along the z-axis. The colour for the XYZRGB cloud will gradually go from red to green to blue.
 	uint8_t r(255), g(15), b(15);
-	for (float z(-1.0); z <= 1.0; z += 0.05)
+	for (float z = -1.0f; z <= 1.0f; z += 0.05f)
 	{
-		for (float angle(0.0); angle <= 360.0; angle += 5.0)
+		for (float angle = 0.0f; angle <= 360.0f; angle += 5.0f)
 		{
 			pcl::PointXYZ basic_point;
-			//basic_point.x = 0.5 * std::cosf(pcl::deg2rad(angle));
-			basic_point.x = 0.5 * std::cos(pcl::deg2rad(angle));
+			//basic_point.x = 0.5f * std::cosf(pcl::deg2rad(angle));
+			basic_point.x = 0.5f * std::cos(pcl::deg2rad(angle));
 			//basic_point.y = std::sinf(pcl::deg2rad(angle));
 			basic_point.y = std::sin(pcl::deg2rad(angle));
 			basic_point.z = z;
-			basic_cloud_ptr->points.push_back(basic_point);
+			basic_cloud_ptr->push_back(basic_point);
 
 			pcl::PointXYZRGB point;
 			point.x = basic_point.x;
@@ -385,7 +362,7 @@ void visualization_tutorial(int argc, char **argv)
 			point.z = basic_point.z;
 			uint32_t rgb = (static_cast<uint32_t>(r) << 16 | static_cast<uint32_t>(g) << 8 | static_cast<uint32_t>(b));
 			point.rgb = *reinterpret_cast<float *>(&rgb);
-			point_cloud_ptr->points.push_back(point);
+			point_cloud_ptr->push_back(point);
 		}
 		if (z < 0.0)
 		{
@@ -403,9 +380,7 @@ void visualization_tutorial(int argc, char **argv)
 	point_cloud_ptr->width = point_cloud_ptr->points.size();
 	point_cloud_ptr->height = 1;
 
-	// ----------------------------------------------------------------
-	// -----Calculate surface normals with a search radius of 0.05-----
-	// ----------------------------------------------------------------
+	// Calculate surface normals with a search radius of 0.05.
 	pcl::NormalEstimation<pcl::PointXYZRGB, pcl::Normal> ne;
 	ne.setInputCloud(point_cloud_ptr);
 	pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZRGB>());
@@ -414,9 +389,7 @@ void visualization_tutorial(int argc, char **argv)
 	ne.setRadiusSearch(0.05);
 	ne.compute(*cloud_normals1);
 
-	// ---------------------------------------------------------------
-	// -----Calculate surface normals with a search radius of 0.1-----
-	// ---------------------------------------------------------------
+	// Calculate surface normals with a search radius of 0.1.
 	pcl::PointCloud<pcl::Normal>::Ptr cloud_normals2(new pcl::PointCloud<pcl::Normal>());
 	ne.setRadiusSearch(0.1);
 	ne.compute(*cloud_normals2);
@@ -442,24 +415,21 @@ void visualization_tutorial(int argc, char **argv)
 	{
 		viewer = local::shapesVis(point_cloud_ptr);
 	}
+	else if (meshes)
+	{
+		//viewer = local::meshesVis_xyz(basic_cloud_ptr);
+		viewer = local::meshesVis_xyzrgb(point_cloud_ptr);
+	}
 	else if (viewports)
 	{
 		viewer = local::viewportsVis(point_cloud_ptr, cloud_normals1, cloud_normals2);
-	}
-	else if (meshes)
-	{
-		// FIXME [modify] >> Incomplete subroutines.
-		//viewer = local::meshesVis(point_cloud_ptr, cloud_normals1);
-		viewer = local::meshesVis2(basic_cloud_ptr, cloud_normals1);
 	}
 	else if (interaction_customization)
 	{
 		viewer = local::interactionCustomizationVis();
 	}
 
-	//--------------------
-	// -----Main loop-----
-	//--------------------
+	// Main loop.
 	while (!viewer->wasStopped())
 	{
 		viewer->spinOnce(100);
