@@ -38,9 +38,10 @@
 				export INGRESS_HOST=$(minikube ip)
 				# Other environment (on premise).
 				export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}')
+
 				export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
 			Port Forward:
-				Alternatively you can do Port Forward for testing purpose
+				Alternatively you can do Port Forward for testing purpose.
 
 				INGRESS_GATEWAY_SERVICE=$(kubectl get svc --namespace istio-system --selector="app=istio-ingressgateway" --output jsonpath='{.items[0].metadata.name}')
 				kubectl port-forward --namespace istio-system svc/${INGRESS_GATEWAY_SERVICE} 8080:80
@@ -51,7 +52,11 @@
 		Curl the InferenceService:
 			From Ingress gateway with HOST Header:
 				SERVICE_HOSTNAME=$(kubectl get inferenceservice sklearn-iris -n kserve-test -o jsonpath='{.status.url}' | cut -d "/" -f 3)
+
+			From outside of the kubernetes cluster:
 				curl -v -H "Host: ${SERVICE_HOSTNAME}" http://${INGRESS_HOST}:${INGRESS_PORT}/v1/models/sklearn-iris:predict -d @./iris-input.json
+			In the kubernetes cluseter:
+				curl -v -H "Host: ${SERVICE_HOSTNAME}" http://<istio-ingressgateway ClusterIP>/v1/models/sklearn-iris:predict -d @./iris-input.json
 
 		Run performance test:
 			kubectl create -f https://raw.githubusercontent.com/kserve/kserve/release-0.7/docs/samples/v1beta1/sklearn/v1/perf.yaml -n kserve-test
@@ -87,15 +92,23 @@
 	- Predict on an InferenceService with a saved model on PVC.
 		https://kserve.github.io/website/modelserving/storage/pvc/pvc/
 
+		Install Scikit-Learn Server:
+			https://github.com/kserve/kserve/tree/master/python/sklearnserver
+
 		Create PV and PVC:
 			kubectl apply -f pv-and-pvc.yaml
 
 		Copy model to PV:
 			kubectl apply -f pv-model-store.yaml
-			kubectl exec -it model-store-pod -- bash
+
+			kubectl exec -it <PV_POD_NAME> -- bash
+				kubectl exec -it model-store-pod -- bash
+				kubectl exec -it ml-model-pv-pod -- bash
 
 			In different terminal, copy the model from local into PV:
-				kubectl cp model.joblib model-store-pod:/pv/model.joblib -c model-store
+				kubectl cp model.joblib <PV_POD_NAME>:<PV_MOUNT_PATH>/model.joblib -c <PV_CONTAINER_NAME>
+					kubectl cp model.joblib model-store-pod:/pv/model.joblib -c model-store
+					kubectl cp model.joblib ml-model-pv-pod:/ml-model-pv/model.joblib -c ml-model-pv-container
 
 		Deploy InferenceService with models on PVC:
 			kubectl apply -f sklearn-pvc.yaml
@@ -215,6 +228,7 @@
 	https://raw.githubusercontent.com/kserve/kserve/release-0.7/hack/quick_install.sh
 
 	- Serverless mode.
+		https://kserve.github.io/website/0.8/admin/serverless/
 		https://kserve.github.io/website/admin/serverless/
 
 		Method 1:
@@ -260,6 +274,54 @@
 
 		Install KServe:
 			kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.8.0/kserve.yaml
+			kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.8.0/kserve-runtimes.yaml
+
+		Check:
+			kubectl get ksvc --all-namespaces
+			kubectl get isvc --all-namespaces
 
 	- Raw deployment mode.
 		https://kserve.github.io/website/admin/kubernetes_deployment/
+
+[-] Troubleshooting.
+	- <error>
+		No ServingRuntimes or ClusterServingRuntimes with the name: kserve-mlserver
+		No ServingRuntimes or ClusterServingRuntimes with the name: kserve-sklearnserver
+		<check>
+			kubectl describe isvc <INFERENCESERVICE_NAME>
+		<cause>
+			ClusterServingRuntimes were not installed.
+		<solution>
+			kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.8.0/kserve-runtimes.yaml
+
+			Download kserve-runtimes.yaml from https://github.com/kserve/kserve/releases.
+			kubectl apply -f kserve-runtimes.yaml
+
+	- <error>
+		Unable to fetch image "kserve/sklearnserver:v0.8.0": failed to resolve image to digest: Get "https://index.docker.io/v2/": context deadline exceeded.
+		Unable to fetch image "docker.io/seldonio/mlserver:0.5.3": failed to resolve image to digest: Get "https://index.docker.io/v2/": context deadline exceeded.
+		<check>
+			kubectl get ksvc --all-namespaces
+			kubectl get isvc --all-namespaces
+			kubectl describe ksvc <KSERVICE_NAME>
+			kubectl describe isvc <INFERENCESERVICE_NAME>
+			kubectl get events
+		<solution>
+			docker search kserve/sklearnserver
+			docker search seldonio/mlserver
+
+			Search for "kserve/sklearnserver" & "seldonio/mlserver" in https://hub.docker.com/.
+
+			https://github.com/kserve/kserve/tree/master/python/sklearnserver
+
+			Download kserve.yaml & kserve-runtimes.yaml from https://github.com/kserve/kserve/releases.
+			Search for "sklearnserver" & "mlserver" in kserve.yaml & kserve-runtimes.yaml.
+
+			https://kangwoo.kr/2020/04/25/seldon-core-sklearn-server/
+				컨테이너 이미지를 빌드.
+				컨테이너 이미지를 레지스트리에 푸시.
+				쿠버네티스 잡(Job)을 생성.
+				Job을 생성할 때는 모델을 저장하기 위해서 PVC를 마운트.
+			https://ikcoo.tistory.com/65
+			https://morian-kim.tistory.com/35
+			https://www.kubeflow.org/docs/external-add-ons/kserve/first_isvc_kserve/
