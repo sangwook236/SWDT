@@ -10,14 +10,155 @@
 		API:
 		https://docs.seldon.io/projects/seldon-core/en/latest/reference/apis/index.html
 
-[-] Tutorial.
-	- Prepackaged Model Servers:
-		https://docs.seldon.io/projects/seldon-core/en/latest/servers/overview.html
+[-] Usage.
+	- Make models available directly from PVCs.
+		Export model binaries and/or artifacts:
+			https://scikit-learn.org/stable/modules/model_persistence.html
 
-	- Quickstart.
-		https://docs.seldon.io/projects/seldon-core/en/latest/workflow/quickstart.html
-		https://docs.seldon.io/projects/seldon-core/en/latest/workflow/github-readme.html
+			The expected versions in the latest SKLearn pre-packaged server:
+				https://docs.seldon.io/projects/seldon-core/en/latest/servers/sklearn.html
 
+		Create PV and PVC:
+			kubectl create namespace model-serving
+
+			kubectl apply -n model-serving -f - << END
+			apiVersion: v1
+			kind: PersistentVolume
+			metadata:
+			  name: ml-model-pv-volume
+			  labels:
+				type: local
+			spec:
+			  storageClassName: manual
+			  capacity:
+				storage: 2Gi
+			  accessModes:
+				- ReadWriteOnce
+			  hostPath:
+				path: "/mnt/ml-model-pv"
+			---
+			apiVersion: v1
+			kind: PersistentVolumeClaim
+			metadata:
+			  name: ml-model-pv-claim
+			spec:
+			  storageClassName: manual
+			  accessModes:
+				- ReadWriteOnce
+			  resources:
+				requests:
+				  storage: 1Gi
+			---
+			apiVersion: v1
+			kind: Pod
+			metadata:
+			  name: ml-model-pv-pod
+			spec:
+			  volumes:
+				- name: ml-model-pv-storage
+				  persistentVolumeClaim:
+					claimName: ml-model-pv-claim
+			  containers:
+				- name: ml-model-pv-container
+				  image: ubuntu
+				  command: [ "sleep" ]
+				  args: [ "infinity" ]
+				  volumeMounts:
+					- mountPath: "/mnt/ml-model-pv"
+					  name: ml-model-pv-storage
+					  readOnly: false
+				  resources:
+					limits:
+					  memory: "1Gi"
+					  cpu: "1"
+			END
+
+		Copy the model file:
+			kubectl exec -it <PV_POD_NAME> -- bash
+				kubectl exec -n model-serving -it ml-model-pv-pod -- bash
+
+			In different terminal, copy the model from local into PV:
+				kubectl cp model.joblib <PV_POD_NAME>:<PV_MOUNT_PATH>/model.joblib -c <PV_CONTAINER_NAME> -n model-serving 
+					kubectl cp model.joblib ml-model-pv-pod:/mnt/ml-model-pv/model.joblib -c ml-model-pv-container -n model-serving 
+
+		Deploy to Seldon Core in Kubernetes:
+			https://docs.seldon.io/projects/seldon-core/en/latest/servers/overview.html
+			https://docs.seldon.io/projects/seldon-core/en/latest/servers/sklearn.html
+
+			kubectl apply -n model-serving -f - << END
+			apiVersion: machinelearning.seldon.io/v1
+			kind: SeldonDeployment
+			metadata:
+			  name: sklearn-iris
+			spec:
+			  name: iris
+			  predictors:
+			  - name: default
+				replicas: 1
+				graph:
+				  #children: []
+				  name: classifier
+				  type: MODEL
+				  modelUri: pvc://ml-model-pv-claim/mnt/ml-model-pv
+				  #parameters:  # Not working.
+				  #- name: method
+				  #  type: STRING
+				  #  value: predict
+				  #- name: model_uri
+				  #  type: STRING
+				  #  value: /mnt/models
+				componentSpecs:
+				- spec:
+					volumes:
+					- name: classifier-provision-location
+					  persistentVolumeClaim:
+						claimName: ml-model-pv-claim
+					containers:
+					- name: classifier
+					  image: seldonio/sklearnserver:1.8.0-dev
+					  volumeMounts:
+					  - mountPath: /mnt/models
+						name: classifier-provision-location
+						readOnly: true
+					  env:
+					  - name: PREDICTIVE_UNIT_PARAMETERS
+						#value: '[{"name": "model_uri", "value": "/mnt/models", "type": "STRING"}]'
+						value: '[{"name": "model_uri", "value": "/mnt/models", "type": "STRING"}, {"name": "method", "value": "predict", "type": "STRING"}]'
+			END
+
+			kubectl get deploy --all-namespaces -o wide
+			kubectl get svc --all-namespaces -o wide
+			kubectl get pods --all-namespaces -o wide
+			kubectl logs --all-namespaces -o wide
+			kubectl describe pod <POD_NAME> -n <NAMESPACE_NAME>
+			kubectl logs <POD_NAME> -n <NAMESPACE_NAME>
+			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c classifier
+			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c seldon-container-engine
+			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c istio-proxy
+			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c classifier-model-initializer
+			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c istio-init
+
+		Send a request in Kubernetes cluster:
+			Refer to istio_usage_guide.txt to determine the ingress IP and ports.
+
+			Send requests directly through a browser:
+				http://<INGRESS_URL>/seldon/<NAMESPACE_NAME>/<MODEL_NAME>/api/v1.0/doc/
+
+			Send requests programmatically using Seldon Python Client:
+				https://docs.seldon.io/projects/seldon-core/en/latest/python/seldon_client.html
+
+			Send requests programmatically using Linux CLI:
+				curl -X POST http://<INGRESS_URL>/seldon/<NAMESPACE_NAME>/<MODEL_NAME>/api/v1.0/predictions \
+					-H 'Content-Type: application/json' \
+					-d '{ "data": { "tensor": { "shape": [3, 4], "values": [5.1, 3.5, 1.4, 0.2, 7.0, 3.2, 4.7, 1.4, 6.3, 3.3, 6.0, 2.5] } } }' \
+					| json_pp
+
+[-] Quickstart.
+	https://docs.seldon.io/projects/seldon-core/en/latest/workflow/quickstart.html
+	https://docs.seldon.io/projects/seldon-core/en/latest/workflow/github-readme.html
+	https://docs.seldon.io/projects/seldon-core/en/latest/workflow/serving.html
+
+	- Prerequisite.
 		Install s2i.
 			https://docs.seldon.io/projects/seldon-core/en/latest/wrappers/s2i.html
 			https://github.com/openshift/source-to-image
@@ -25,135 +166,145 @@
 		Export model binaries and/or artifacts:
 			https://scikit-learn.org/stable/modules/model_persistence.html
 
-		Wrap the model with our language wrappers:
-			Create a wrapper class:
-				In Model.py:
-					import pickle, joblib
+	- Wrap the model with our language wrappers.
+		https://docs.seldon.io/projects/seldon-core/en/latest/python/index.html
 
-					class Model:
-						def __init__(self):
-							#self._model = pickle.load(open("./model.pickle", "rb"))
-							self._model = joblib.load("./model.joblib")
+		Create a wrapper class:
+			https://docs.seldon.io/projects/seldon-core/en/latest/python/python_component.html
 
-						def predict(self, X, *args):
-							output = self._model.predict(X.reshape(1, -1))
-							return output
+			In MyModel.py:
+				import pickle, joblib
 
-			(Optional) test model locally:
-				In a terminal:
-					seldon-core-microservice Model --service-type MODEL
+				class MyModel:
+					def __init__(self):
+						#self._model = pickle.load(open("./model.pickle", "rb"))
+						self._model = joblib.load("./model.joblib")
 
-				In another terminal:
-					curl -X POST localhost:9000/api/v1.0/predictions \
-						-H 'Content-Type: application/json' \
-						-d '{ "data": { "ndarray": [1,2,3,4] } }' \
-						| json_pp
+					def predict(self, X, features_names=None):
+						output = self._model.predict(X.reshape(1, -1))
+						return output
 
-			Use the Seldon tools to containerise the model:
-				https://docs.seldon.io/projects/seldon-core/en/latest/python/python_wrapping_s2i.html
+		(Optional) test model locally:
+			In a terminal:
+				seldon-core-microservice MyModel --service-type MODEL
 
-				s2i usage seldonio/seldon-core-s2i-python3:0.18
+			In another terminal:
+				curl -X POST localhost:9000/api/v1.0/predictions \
+					-H 'Content-Type: application/json' \
+					-d '{ "data": { "ndarray": [1,2,3,4] } }' \
+					| json_pp
 
-				Edit requirements.txt: (not working)
-					scikit-learn==0.19.1
-				Edit setup.py:
-					from setuptools import setup
+		Use the Seldon tools to containerise the model:
+			https://docs.seldon.io/projects/seldon-core/en/latest/python/python_wrapping_s2i.html
+			https://docs.seldon.io/projects/seldon-core/en/latest/python/python_wrapping_docker.html
 
-					setup(
-					  name="my-model",
-					  # ...
-					  install_requires=[
-						"scikit-learn",
-					  ]
-					)
-				Edit environment.yml: (not working)
-					name: <CONDA_ENV_NAME>
-					channels:
-					  - defaults
-					dependencies:
-					  - python=3.6
-					  - scikit-learn=0.19.1
+			s2i usage seldonio/seldon-core-s2i-python3:0.18
 
-				s2i build . seldonio/seldon-core-s2i-python3:0.18 sklearn_iris:0.1 --env MODEL_NAME=Model --env SERVICE_TYPE=MODEL --env API_TYPE=REST --env PERSISTENCE=0
-				s2i build . seldonio/seldon-core-s2i-python3:0.18 sklearn_iris:0.1 --env MODEL_NAME=Model --env SERVICE_TYPE=MODEL --env API_TYPE=REST --env PERSISTENCE=0 --env CONDA_ENV_NAME=<CONDA_ENV_NAME>
+			Edit requirements.txt: (not working)
+				scikit-learn==0.19.1
+			Edit setup.py:
+				from setuptools import setup
 
-				docker run -p 5000:5000 sklearn_iris:0.1
-				docker run -it -p 5000:5000 sklearn_iris:0.1 /bin/bash
+				setup(
+				  name="my-model",
+				  # ...
+				  install_requires=[
+					"scikit-learn",
+				  ]
+				)
+			Edit environment.yml: (not working)
+				name: <CONDA_ENV_NAME>
+				channels:
+				  - defaults
+				dependencies:
+				  - python=3.6
+				  - scikit-learn=0.19.1
 
-			Deploy to Kubernetes:
-				https://docs.seldon.io/projects/seldon-core/en/latest/graph/inference-graph.html
+			s2i build . seldonio/seldon-core-s2i-python3:0.18 sklearn_iris:0.1 --env MODEL_NAME=MyModel --env SERVICE_TYPE=MODEL --env API_TYPE=REST --env PERSISTENCE=0
+			s2i build . seldonio/seldon-core-s2i-python3:0.18 sklearn_iris:0.1 --env MODEL_NAME=MyModel --env SERVICE_TYPE=MODEL --env API_TYPE=REST --env PERSISTENCE=0 --env CONDA_ENV_NAME=<CONDA_ENV_NAME>
 
-				kubectl create namespace model-namespace
+			docker run -p 5000:5000 sklearn_iris:0.1
+			docker run -it -p 5000:5000 sklearn_iris:0.1 /bin/bash
 
-				kubectl apply -f - << END
-				apiVersion: machinelearning.seldon.io/v1
-				kind: SeldonDeployment
-				metadata:
-				  name: iris-model
-				  namespace: model-namespace
-				spec:
-				  name: iris
-				  predictors:
-				  - componentSpecs:
-					- spec:
-						containers:
-						- name: classifier
-						  image: sklearn_iris:0.1
-					graph:
-					  name: classifier
-					name: default
-					replicas: 1
-				END
+		Deploy to Kubernetes:
+			https://docs.seldon.io/projects/seldon-core/en/latest/graph/inference-graph.html
+			https://docs.seldon.io/projects/seldon-core/en/latest/python/python_server.html
 
-			Send a request to your deployed model in Kubernetes:
-				Refer to istio_usage_guide.txt to determine the ingress IP and ports.
+			kubectl create namespace model-namespace
 
-				Send requests directly through a browser:
-					http://<ingress_url>/seldon/<namespace>/<model-name>/api/v1.0/doc/
+			kubectl apply -f - << END
+			apiVersion: machinelearning.seldon.io/v1
+			kind: SeldonDeployment
+			metadata:
+			  name: iris-model
+			  namespace: model-namespace
+			spec:
+			  name: iris
+			  predictors:
+			  - componentSpecs:
+				- spec:
+					containers:
+					- name: classifier
+					  image: sklearn_iris:0.1
+				graph:
+				  name: classifier
+				name: default
+				replicas: 1
+			END
 
-				Send requests programmatically using Seldon Python Client:
-					https://docs.seldon.io/projects/seldon-core/en/latest/python/seldon_client.html
+		Send a request to your deployed model in Kubernetes:
+			Refer to istio_usage_guide.txt to determine the ingress IP and ports.
 
-				Send requests programmatically using Linux CLI:
-					curl -X POST http://<ingress>/seldon/model-namespace/iris-model/api/v1.0/predictions \
-						-H 'Content-Type: application/json' \
-						-d '{ "data": { "ndarray": [1,2,3,4] } }' | json_pp
+			Send requests directly through a browser:
+				http://<INGRESS_URL>/seldon/<NAMESPACE_NAME>/<MODEL_NAME>/api/v1.0/doc/
 
-		Wrap your model with our pre-packaged inference servers:
-			Upload your model to an object store:
-				gsutil cp model.joblib gs://seldon-models/v1.14.0-dev/sklearn/iris/model.joblib
+			Send requests programmatically using Seldon Python Client:
+				https://docs.seldon.io/projects/seldon-core/en/latest/python/seldon_client.html
 
-			Deploy to Seldon Core in Kubernetes:
-				kubectl apply -f - << END
-				apiVersion: machinelearning.seldon.io/v1
-				kind: SeldonDeployment
-				metadata:
-				  name: iris-model
-				  namespace: model-namespace
-				spec:
-				  name: iris
-				  predictors:
-				  - graph:
-					  implementation: SKLEARN_SERVER
-					  modelUri: gs://seldon-models/v1.14.0-dev/sklearn/iris
-					  name: classifier
-					name: default
-					replicas: 1
-				END
+			Send requests programmatically using Linux CLI:
+				curl -X POST http://<INGRESS_URL>/seldon/<NAMESPACE_NAME>/<MODEL_NAME>/api/v1.0/predictions \
+					-H 'Content-Type: application/json' \
+					-d '{ "data": { "ndarray": [1,2,3,4] } }' \
+					| json_pp
 
-			Send a request in Kubernetes cluster:
-				Refer to istio_usage_guide.txt to determine the ingress IP and ports.
+	- Wrap your model with our pre-packaged inference servers.
+		Upload your model to an object store:
+			gsutil cp model.joblib gs://seldon-models/v1.14.0-dev/sklearn/iris/model.joblib
 
-				Send requests directly through a browser:
-					http://<ingress_url>/seldon/<namespace>/<model-name>/api/v1.0/doc/
+		Deploy to Seldon Core in Kubernetes:
+			https://docs.seldon.io/projects/seldon-core/en/latest/servers/overview.html
 
-				Send requests programmatically using Seldon Python Client:
-					https://docs.seldon.io/projects/seldon-core/en/latest/python/seldon_client.html
+			kubectl apply -f - << END
+			apiVersion: machinelearning.seldon.io/v1
+			kind: SeldonDeployment
+			metadata:
+			  name: iris-model
+			  namespace: model-namespace
+			spec:
+			  name: iris
+			  predictors:
+			  - graph:
+				  implementation: SKLEARN_SERVER
+				  modelUri: gs://seldon-models/v1.14.0-dev/sklearn/iris
+				  name: classifier
+				name: default
+				replicas: 1
+			END
 
-				Send requests programmatically using Linux CLI:
-					curl -X POST http://<ingress>/seldon/model-namespace/iris-model/api/v1.0/predictions \
-						-H 'Content-Type: application/json' \
-						-d '{ "data": { "ndarray": [1,2,3,4] } }' | json_pp
+		Send a request in Kubernetes cluster:
+			Refer to istio_usage_guide.txt to determine the ingress IP and ports.
+
+			Send requests directly through a browser:
+				http://<INGRESS_URL>/seldon/<NAMESPACE_NAME>/<MODEL_NAME>/api/v1.0/doc/
+
+			Send requests programmatically using Seldon Python Client:
+				https://docs.seldon.io/projects/seldon-core/en/latest/python/seldon_client.html
+
+			Send requests programmatically using Linux CLI:
+				curl -X POST http://<INGRESS_URL>/seldon/<NAMESPACE_NAME>/<MODEL_NAME>/api/v1.0/predictions \
+					-H 'Content-Type: application/json' \
+					-d '{ "data": { "ndarray": [1,2,3,4] } }' \
+					| json_pp
 
 [-] Installation.
 	https://docs.seldon.io/projects/seldon-core/en/latest/nav/installation.html
@@ -219,6 +370,7 @@
 	- <error>
 		a container name must be specified for pod iris-model-default-0-classifier-6b877bdb78-sbrkq, choose one of: [classifier seldon-container-engine] or one of the init containers: [classifier-model-initializer]
 		a container name must be specified for pod iris-model-default-0-classifier-86cc4bb9cc-7x48h, choose one of: [classifier seldon-container-engine]
+		a container name must be specified for pod sklearn-iris-default-0-classifier-6cf75bd47-n8cdh, choose one of: [classifier seldon-container-engine istio-proxy] or one of the init containers: [classifier-model-initializer istio-init]
 		<check>
 			kubectl get deploy --all-namespaces -o wide
 			kubectl get svc --all-namespaces -o wide
@@ -228,6 +380,9 @@
 			kubectl logs <POD_NAME> -n <NAMESPACE_NAME>
 			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c classifier
 			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c seldon-container-engine
+			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c istio-proxy
+			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c classifier-model-initializer
+			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c istio-init
 		<cause> Error when containerising the model by seldonio/seldon-core-s2i-python3
 		<solution>
 			Refer to "Error when containerising the model by seldonio/seldon-core-s2i-python3".
