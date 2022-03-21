@@ -44,6 +44,9 @@
 	- cudatoolkit version (Python).
 		conda list
 
+	- Docker.
+		Refer to docker_usage_guide.txt & triton_usage_guide.txt.
+
 [-] Usage (NVIDIA System Management Interface, nvidia-smi).
 	https://www.microway.com/hpc-tech-tips/nvidia-smi_control-your-gpus/
 	https://developer.nvidia.com/nvidia-system-management-interface

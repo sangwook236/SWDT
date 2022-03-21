@@ -35,7 +35,6 @@ def cifar10_on_cpu():
 	batch_size, num_epochs = 4, 2
 
 	# Load and normalize CIFAR10.
-
 	transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 	trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
@@ -65,6 +64,8 @@ def cifar10_on_cpu():
 	# Define a Convolutional Neural Network.
 
 	net = Net()
+
+	print('Model is on {}.'.format(next(net.parameters()).device))
 
 	#--------------------
 	# Define a Loss function and optimizer.
@@ -149,7 +150,6 @@ def cifar10_on_gpu():
 	batch_size, num_epochs = 4, 2
 
 	# Load and normalize CIFAR10.
-
 	transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 	trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
@@ -180,10 +180,12 @@ def cifar10_on_gpu():
 
 	device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 	# Assuming that we are on a CUDA machine, this should print a CUDA device.
-	print('Device =', device)
+	print('Device: {}.'.format(device))
 
 	net = Net()
 	net.to(device)
+
+	print('Model is on {}.'.format(next(net.parameters()).device))
 
 	#--------------------
 	# Define a Loss function and optimizer.

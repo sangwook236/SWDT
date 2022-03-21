@@ -5,18 +5,23 @@
 		https://github.com/triton-inference-server/client
 
 	- Document.
-		https://github.com/triton-inference-server/server/blob/r21.07/README.md#documentation
+		https://github.com/triton-inference-server/server/blob/main/README.md#documentation
 
 [-] Usage.
 	- Run Triton.
-		https://github.com/triton-inference-server/server/blob/r21.07/docs/quickstart.md
+		https://github.com/triton-inference-server/server/blob/main/docs/quickstart.md
 
-		Run on system with GPUs:
-			docker run --gpus=1 --rm -p8000:8000 -p8001:8001 -p8002:8002 -v/full/path/to/docs/examples/model_repository:/models nvcr.io/nvidia/tritonserver:<xx.yy>-py3 tritonserver --model-repository=/models
-				docker run --gpus=1 --rm -p8000:8000 -p8001:8001 -p8002:8002 -v/home/sangwook/my_lib/cpp/triton_inference_server_github/docs/examples/model_repository:/models nvcr.io/nvidia/tritonserver:21.07-py3 tritonserver --model-repository=/models
+		Create a model repository:
+			cd ${TritonServer_HOME}/docs/examples
+			./fetch_models.sh
 
-		Run on CPU-only system:
-			docker run --rm -p8000:8000 -p8001:8001 -p8002:8002 -v/full/path/to/docs/examples/model_repository:/models nvcr.io/nvidia/tritonserver:<xx.yy>-py3 tritonserver --model-repository=/models
+		Run Triton:
+			Run on system with GPUs:
+				docker run --gpus=1 --rm -p8000:8000 -p8001:8001 -p8002:8002 -v/full/path/to/docs/examples/model_repository:/models nvcr.io/nvidia/tritonserver:<xx.yy>-py3 tritonserver --model-repository=/models
+					docker run --gpus=1 --rm -p8000:8000 -p8001:8001 -p8002:8002 -v/home/sangwook/my_repo/cpp/triton_inference_server_github/docs/examples/model_repository:/models nvcr.io/nvidia/tritonserver:21.07-py3 tritonserver --model-repository=/models
+
+			Run on CPU-only system:
+				docker run --rm -p8000:8000 -p8001:8001 -p8002:8002 -v/full/path/to/docs/examples/model_repository:/models nvcr.io/nvidia/tritonserver:<xx.yy>-py3 tritonserver --model-repository=/models
 
 		Verify Triton is running correctly:
 			curl -v localhost:8000/v2/health/ready
@@ -27,11 +32,45 @@
 		Run the client image:
 			docker run -it --rm --net=host nvcr.io/nvidia/tritonserver:<xx.yy>-py3-sdk
 
+		Run the simple examples:
+			/workspace/install/bin/simple_http_infer_client
+			/workspace/install/bin/simple_http_async_infer_client
+			/workspace/install/bin/simple_http_shm_client
+			/workspace/install/bin/simple_http_cudashm_client
+
+			/workspace/install/bin/simple_grpc_infer_client
+			/workspace/install/bin/simple_grpc_async_infer_client
+			/workspace/install/bin/simple_grpc_shm_client
+			/workspace/install/bin/simple_grpc_cudashm_client
+
+			/workspace/install/bin/simple_http_string_infer_client
+			/workspace/install/bin/simple_grpc_string_infer_client
+
+			/workspace/install/bin/simple_http_sequence_sync_infer_client
+			/workspace/install/bin/simple_grpc_sequence_stream_infer_client
+			/workspace/install/bin/simple_grpc_sequence_sync_infer_client
+
+			/workspace/install/bin/simple_http_model_control
+			/workspace/install/bin/simple_grpc_model_control
+
+			/workspace/install/bin/simple_http_health_metadata
+			/workspace/install/bin/simple_grpc_health_metadata
+
 		Run the image classification example:
 			/workspace/install/bin/image_client -m densenet_onnx -c 3 -s INCEPTION /workspace/images/mug.jpg
+			/workspace/install/bin/image_client -m densenet_onnx -c 3 -s VGG /workspace/images/mug.jpg
+
+			/workspace/install/bin/image_client -m inception_graphdef -c 3 -s INCEPTION /workspace/images/mug.jpg
+			/workspace/install/bin/image_client -m inception_graphdef -c 3 -s VGG /workspace/images/mug.jpg
+
+		Analyze performance:
+			/workspace/install/bin/perf_analyzer -m simple
+			/workspace/install/bin/perf_analyzer -m simple_string
+			/workspace/install/bin/perf_analyzer -m simple_sequence
+			/workspace/install/bin/perf_analyzer -m densenet_onnx
 
 [-] Installation.
-	https://github.com/triton-inference-server/server/blob/r21.07/docs/quickstart.md
+	https://github.com/triton-inference-server/server/blob/main/docs/quickstart.md
 
 	- Install Docker.
 
@@ -50,7 +89,7 @@
 
 		docker pull nvcr.io/nvidia/tritonserver:<xx.yy>-py3
 
-	- Install Triton client:
+	- Install Triton client.
 		https://github.com/triton-inference-server/client
 
 		Docker:
