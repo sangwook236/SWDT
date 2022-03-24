@@ -125,6 +125,7 @@
 					containers:
 					- name: classifier
 					  image: seldonio/sklearnserver:1.14.0-dev
+					  imagePullPolicy: IfNotPresent
 					  volumeMounts:
 					  - mountPath: /mnt/models
 						name: classifier-provision-location
@@ -147,11 +148,14 @@
 			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c classifier-model-initializer
 			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c istio-init
 
+			kubectl exec -n <NAMESPACE_NAME> -c classifier -it <POD_NAME> -- bash
+
 		Send a request in Kubernetes cluster:
 			Refer to istio_usage_guide.txt to determine the ingress IP and ports.
 
 			Send requests directly through a browser:
 				http://<INGRESS_URL>/seldon/<NAMESPACE_NAME>/<MODEL_NAME>/api/v1.0/doc/
+					http://192.168.20.11:32591/seldon/model-serving/sklearn-iris/api/v1.0/doc/
 
 			Send requests programmatically using Seldon Python Client:
 				https://docs.seldon.io/projects/seldon-core/en/latest/python/seldon_client.html
@@ -162,14 +166,17 @@
 					-d '{ "data": { "tensor": { "shape": [3, 4], "values": [5.1, 3.5, 1.4, 0.2, 7.0, 3.2, 4.7, 1.4, 6.3, 3.3, 6.0, 2.5] } } }' \
 					| json_pp
 
-[-] Usage (NVIDIA Triton Inference Server).
+[-] Usage (Triton Inference Server).
 	https://docs.seldon.io/projects/seldon-core/en/latest/servers/triton.html
 	https://docs.seldon.io/projects/seldon-core/en/latest/examples/triton_examples.html
+	https://github.com/triton-inference-server/server/tree/main/deploy/k8s-onprem
 
 	https://github.com/SeldonIO/seldon-core/blob/master/components/drift-detection/nvidia-triton-cifar10/cifar10_drift.ipynb
 	https://github.com/SeldonIO/seldon-core/blob/master/components/outlier-detection/nvidia-triton-cifar10/cifar10_outlier.ipynb
 
 	- TorchScript.
+		Refer to "Usage (Kubernetes)" in triton_usage_guide.txt.
+
 		Setup Seldon Core.
 			Port-forward to that ingress on localhost:8003 in a separate terminal:
 				kubectl port-forward $(kubectl get pods -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].metadata.name}') -n istio-system 8003:8080
@@ -178,75 +185,25 @@
 			set up a namespace of 'model-serving':
 				kubectl create namespace model-serving
 
-			Set the current workspace to use the 'model-serving' namespace so all our commands are run there by default (instead of running everything in the default namespace):
+			(Optional) set the current workspace to use the 'model-serving' namespace so all our commands are run there by default (instead of running everything in the default namespace):
 				kubectl config set-context $(kubectl config current-context) --namespace=model-serving
 
 		Create PV and PVC:
-			kubectl create namespace model-serving
-
-			kubectl apply -n model-serving -f - << END
-			apiVersion: v1
-			kind: PersistentVolume
-			metadata:
-			  name: ml-model-pv-volume
-			  labels:
-				type: local
-			spec:
-			  storageClassName: manual
-			  capacity:
-				storage: 2Gi
-			  accessModes:
-				- ReadWriteOnce
-			  hostPath:
-				path: "/mnt/ml-model-pv"
-			---
-			apiVersion: v1
-			kind: PersistentVolumeClaim
-			metadata:
-			  name: ml-model-pv-claim
-			spec:
-			  storageClassName: manual
-			  accessModes:
-				- ReadWriteOnce
-			  resources:
-				requests:
-				  storage: 1Gi
-			---
-			apiVersion: v1
-			kind: Pod
-			metadata:
-			  name: ml-model-pv-pod
-			spec:
-			  volumes:
-				- name: ml-model-pv-storage
-				  persistentVolumeClaim:
-					claimName: ml-model-pv-claim
-			  containers:
-				- name: ml-model-pv-container
-				  image: ubuntu
-				  command: [ "sleep" ]
-				  args: [ "infinity" ]
-				  volumeMounts:
-					- mountPath: "/mnt/ml-model-pv"
-					  name: ml-model-pv-storage
-					  readOnly: false
-				  resources:
-					limits:
-					  memory: "1Gi"
-					  cpu: "1"
-			END
+			kubectl apply -n model-serving -f ml-model-pv.yaml
 
 		Copy models:
-			kubectl exec -it <PV_POD_NAME> -- bash
-				kubectl exec -n model-serving -it ml-model-pv-pod -- bash
-
 			In different terminal, copy models from local into PV:
-				https://github.com/triton-inference-server/server/tree/main/docs/examples/model_repository
+				kubectl exec -it <PV_POD_NAME> -- bash
+					kubectl exec -n model-serving -it ml-model-pv-pod -- bash
 
-				kubectl cp <MODEL_REPOSITORY>/<MODEL_DIR> <PV_POD_NAME>:<PV_MOUNT_PATH> -c <PV_CONTAINER_NAME> -n model-serving 
-					kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/simple ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
+			kubectl cp <MODEL_REPOSITORY>/<MODEL_DIR> <PV_POD_NAME>:<PV_MOUNT_PATH> -c <PV_CONTAINER_NAME> -n model-serving 
+				kubectl cp ${SWDT_PYTHON_HOME}/rnd/doc/machine_learning/triton/model_repository/pytorch_cifar10 ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
+					Refer to triton_usage_guide.txt
+				kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/densenet_onnx ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
+				kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/simple ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
+					https://github.com/triton-inference-server/server/tree/main/docs/examples/model_repository
 
-		Setup resources:
+		Setup resources: (???)
 			https://github.com/SeldonIO/seldon-core/blob/master/components/drift-detection/nvidia-triton-cifar10/cifar10_drift.ipynb
 
 			kubectl apply -f seldon-gateway.yaml
@@ -255,7 +212,12 @@
 			kubectl apply -f trigger.yaml
 
 		Deploy to Seldon Core in Kubernetes:
-			kubectl apply -n model-serving -f triton-example.yaml
+			kubectl apply -n model-serving -f triton-seldom-example.yaml
+				<error> Not working.
+				<cause> A model repository on the PVC is not mounted on the docker image of Triton Inference Server.
+
+			kubectl get po -n model-serving
+			kubectl exec -n model-serving -c classifier -it <POD_NAME> -- bash
 
 		Send a request in Kubernetes cluster:
 			python triton_send_request.py

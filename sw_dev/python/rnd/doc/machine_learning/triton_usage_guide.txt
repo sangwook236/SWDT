@@ -74,6 +74,7 @@
 
 		Analyze performance:
 			/workspace/install/bin/perf_analyzer -m simple
+			/workspace/install/bin/perf_analyzer -m simple --concurrency-range 1:10
 			/workspace/install/bin/perf_analyzer -m simple_string
 			/workspace/install/bin/perf_analyzer -m simple_sequence
 			/workspace/install/bin/perf_analyzer -m densenet_onnx
@@ -114,10 +115,110 @@
 			docker run -it --rm -v/full/path/to/model_repository:/workspace --net=host nvcr.io/nvidia/tritonserver:<xx.yy>-py3-sdk
 				docker run -it --rm -v/home/sangwook/work/SWDT_github/sw_dev/python/rnd/doc/machine_learning/triton/cifar10_images:/workspace/cifar10_images --net=host nvcr.io/nvidia/tritonserver:21.07-py3-sdk
 
-		Run the image classification example:
-			/workspace/install/bin/image_client -m pytorch_cifar10 -c 3 /workspace/cifar10_images/cat.png
-			/workspace/install/bin/image_client -m pytorch_cifar10 -c 3 /workspace/cifar10_images/deer.png
-			/workspace/install/bin/image_client -m pytorch_cifar10 -c 3 /workspace/cifar10_images/truck.png
+			Run the image classification example:
+				/workspace/install/bin/image_client -m pytorch_cifar10 -c 3 /workspace/cifar10_images/cat.png
+				/workspace/install/bin/image_client -m pytorch_cifar10 -c 3 /workspace/cifar10_images/deer.png
+				/workspace/install/bin/image_client -m pytorch_cifar10 -c 3 /workspace/cifar10_images/truck.png
+
+[-] Usage (Kubernetes).
+	https://github.com/triton-inference-server/server/tree/main/deploy
+
+	- KServe.
+		Refer to kserve_usage_guide.txt
+
+	- Seldon.
+		Refer to seldon_usage_guide.txt
+
+	- Kubernetes only.
+		kubectl apply -n model-serving -f triton-kube-example.yaml
+			${HOME}/work/testbed/kube/triton/triton-kube-example.yaml
+			Not yet completed.
+
+	- Kubernetes + Helm.
+		https://github.com/triton-inference-server/server/tree/main/deploy/k8s-onprem
+
+		Create a namespace.
+			set up a namespace of 'model-serving':
+				kubectl create namespace model-serving
+
+			(Optional) set the current workspace to use the 'model-serving' namespace so all our commands are run there by default (instead of running everything in the default namespace):
+				kubectl config set-context $(kubectl config current-context) --namespace=model-serving
+
+		Create PV and PVC:
+			kubectl apply -n model-serving -f ml-model-pv.yaml
+
+		Copy models:
+			In different terminal, copy models from local into PV:
+				kubectl exec -it <PV_POD_NAME> -- bash
+					kubectl exec -n model-serving -it ml-model-pv-pod -- bash
+
+			kubectl cp <MODEL_REPOSITORY>/<MODEL_DIR> <PV_POD_NAME>:<PV_MOUNT_PATH> -c <PV_CONTAINER_NAME> -n model-serving 
+				kubectl cp ${SWDT_PYTHON_HOME}/rnd/doc/machine_learning/triton/model_repository/pytorch_cifar10 ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
+				kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/simple ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
+				kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/densenet_onnx ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
+					https://github.com/triton-inference-server/server/tree/main/docs/examples/model_repository
+
+		Deploy Prometheus and Grafana:
+			helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+			helm repo update
+			helm install triton-example-metrics -n model-serving --set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false prometheus-community/kube-prometheus-stack
+
+		Enable Autoscaling:
+			To enable autoscaling, ensure that autoscaling tag in values.yamlis set to true.
+		Enable Load Balancing:
+			To enable load balancing, ensure that the loadBalancing tag in values.yaml is set to true.
+
+		Deploy Triton with default settings:
+			helm dependency update ./k8s-onprem -n model-serving
+
+			helm install triton-example ./k8s-onprem -n model-serving
+			helm install triton-example ./k8s-onprem -n model-serving --set autoscaler.minReplicas=2
+			cat << EOF > config.yaml
+			#namespace: model-serving
+			image:
+			  imageName: nvcr.io/nvidia/tritonserver:21.07-py3
+			  pullPolicy: IfNotPresent
+			  modelPersistentVolumeClaim: ml-model-pv-claim
+			  numGpus: 1
+			EOF
+			helm install -f config.yaml triton-example ./k8s-onprem -n model-serving
+
+			kubectl get deploy -n model-serving -o wide
+			kubectl get po -n model-serving -o wide
+
+			kubectl exec -n model-serving -c triton-inference-server -it <POD_NAME> -- bash
+
+		Use Triton Inference Server:
+			kubectl get services -n model-serving -o wide
+
+			export CLUSTER_IP=`kubectl get svc -n model-serving -l app.kubernetes.io/name=traefik -o=jsonpath='{.items[0].spec.clusterIP}'`
+			curl $CLUSTER_IP:8000/v2
+
+			Get the client libraries:
+				docker pull nvcr.io/nvidia/tritonserver:<xx.yy>-py3-sdk
+
+			Run the client image:
+				docker run -it --rm -v/full/path/to/model_repository:/workspace --net=host nvcr.io/nvidia/tritonserver:<xx.yy>-py3-sdk
+					docker run -it --rm -v/home/sangwook/work/SWDT_github/sw_dev/python/rnd/doc/machine_learning/triton/cifar10_images:/workspace/cifar10_images --net=host nvcr.io/nvidia/tritonserver:21.07-py3-sdk
+
+				export CLUSTER_IP=<CLUSTER_IP>
+
+				Perform inferencing using image classification models on the inference server:
+					/workspace/install/bin/image_client -u $CLUSTER_IP:8000 -m pytorch_cifar10 -c 3 /workspace/cifar10_images/cat.png
+					/workspace/install/bin/image_client -u $CLUSTER_IP:8000 -m pytorch_cifar10 -c 3 /workspace/cifar10_images/deer.png
+					/workspace/install/bin/image_client -u $CLUSTER_IP:8000 -m pytorch_cifar10 -c 3 /workspace/cifar10_images/truck.png
+
+				Test Load Balancing and Autoscaling:
+					/workspace/install/bin/perf_analyzer -m simple -u $CLUSTER_IP:8000 --concurrency-range 1:10
+
+		Cleanup:
+			helm list -n model-serving
+
+			helm delete triton-example -n model-serving
+			helm delete triton-example-metrics -n model-serving
+
+			For the Prometheus and Grafana services:
+				kubectl delete -n model-serving crd alertmanagers.monitoring.coreos.com servicemonitors.monitoring.coreos.com podmonitors.monitoring.coreos.com prometheuses.monitoring.coreos.com prometheusrules.monitoring.coreos.com
 
 [-] Installation.
 	https://github.com/triton-inference-server/server/blob/main/docs/quickstart.md
