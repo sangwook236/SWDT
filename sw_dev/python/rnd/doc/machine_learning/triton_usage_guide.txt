@@ -122,6 +122,35 @@
 
 [-] Usage (Kubernetes).
 	https://github.com/triton-inference-server/server/tree/main/deploy
+	https://developer.nvidia.com/blog/deploying-nvidia-triton-at-scale-with-mig-and-kubernetes/
+
+	- (Common) enable NVIDIA device plugin for Kubernetes:
+		https://github.com/NVIDIA/k8s-device-plugin
+
+		Preparing your GPU Nodes:
+			sudo apt install nvidia-docker2
+			sudo systemctl restart docker
+
+		Enable the nvidia runtime as your default runtime on your node:
+			Append to /etc/docker/daemon.json:
+				{
+				  ...
+				  "default-runtime": "nvidia",
+				  "runtimes": {
+					"nvidia": {
+					  "path": "/usr/bin/nvidia-container-runtime",
+					  "runtimeArgs": []
+					}
+				  }
+				}
+
+			sudo systemctl restart docker
+
+			sudo systemctl status docker
+			journalctl -xeu docker
+
+		Enable GPU Support in Kubernetes:
+			$ kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.11.0/nvidia-device-plugin.yml
 
 	- KServe.
 		Refer to kserve_usage_guide.txt
