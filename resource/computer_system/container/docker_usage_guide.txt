@@ -1,0 +1,326 @@
+[-] General.
+	- Site.
+		https://www.docker.com/
+
+		https://docs.docker.com/
+		https://docs.docker.com/get-started/
+		https://docs.docker.com/reference/
+
+		https://www.docker.com/products/docker-toolbox
+		https://github.com/boot2docker
+
+	- Directory.
+		/var/lib/docker
+
+		Windows:
+		C:/ProgramData/Docker
+		C:/Users/Public/Documents/Hyper-V/Virtual hard disks
+
+	- Docker Registry.
+		https://docs.docker.com/registry/
+
+	- Docker Hub.
+		https://hub.docker.com/
+
+[-] Usage.
+	https://docs.docker.com/reference/
+	http://pyrasis.com/Docker/Docker-HOWTO
+	https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html
+	https://subicura.com/2017/01/19/docker-guide-for-beginners-2.html
+	https://subicura.com/2017/02/10/docker-guide-for-beginners-create-image-and-deploy.html
+
+	- Add a user who is not a root to docker group to use docker without root privilege.
+		For the current user:
+			sudo usermod -aG docker $USER 
+				Gives permissions to the user you are currently connecting to.
+		For a user:
+			sudo usermod -aG docker <USER_ID>
+
+		docker-compose permission:
+			sudo chmod ugo+rw /var/run/docker.sock
+
+	- Info.
+		docker info
+		docker version
+		docker help
+		docker command_name --help
+
+	- Edit a Dockerfile.
+		Dockerfile
+	- Create an image.
+		docker build --tag <IMAGE_NAME[:TAG]> .
+			If an image name is only assigned, its tag is set to 'latest'.
+
+	- Search the Docker Hub for images.
+		docker search ubuntu
+
+	- Pull an image or a repository from a registry.
+		docker pull <IMAGE_NAME[:TAG]>
+		docker pull <USER_NAME>/<IMAGE_NAME[:TAG]>
+		docker pull ubuntu:latest
+		docker pull ubuntu:14.04
+		docker pull centos:centos7
+	- Push an image or a repository to a registry.
+		docker image push <REGISTRY_HOST:REGISTRY_PORT/USER_NAME/IMAGE_NAME[:TAG]>
+		docker image push registry-host:5000/myadmin/rhel-httpd:latest
+		docker image push --all-tags registry-host:5000/myname/myimage
+	- Log in to a Docker registry.
+		docker login [<SERVER_NAME>]
+			If no server is specified, the default is defined by the daemon.
+
+	- Remove an image.
+		docker image rm <IMAGE_NAME[:TAG]>
+		docker rmi <IMAGE_NAME[:TAG]>
+	- List downloaded images
+		docker image ls
+		docker images
+		docker images ubuntu
+	- Create a tag.
+		docker tag <SOURCE_IMAGE[:TAG]> <TARGET_IMAGE[:TAG]>
+
+	- Build an image.
+		docker build [OPTIONS] PATH | URL | -
+			-t	Name and optionally a tag in the 'name:tag' format.
+
+			docker build -t tag_name .
+			docker build -t tag_name - < Dockerfile
+				Sometimes it makes installation errors.
+
+		docker images
+			Make sure if the new image is created or not.
+
+	- Run an image as a container, and run a command.
+		docker run --name <CONTAINER_NAME> <IMAGE_NAME[:TAG]> command
+			-d		Run container in background and print container ID.
+			-e		Set environment variables.
+			-i		Keep STDIN open even if not attached
+			-name	Assign a name to the container.
+				If a container name is not assigned, Docker automatically generates a container name.
+			-p		Publish a container's port(s) to the host.
+			--rm	Automatically remove the container when it exits.
+			-t		Allocate a pseudo-TTY.
+			-v		Bind mount a volume.
+
+			docker run -it --rm --name ubuntu1804 ubuntu:18.04 /bin/bash
+			docker run --rm --runtime=nvidia nvidia/cuda:10.1-base nvidia-smi
+			docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=0,1 nvidia/cuda:10.1-cudnn7-runtime-ubuntu18.04 nvidia-smi
+			docker run -it --rm --runtime=nvidia tensorflow/tensorflow:latest-gpu-py3 python
+			docker run -d -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true --name mysql mysql:5.7
+
+		If 'exit' or 'Ctrl+D' is entered in bash shell, the container is stopped.
+		But if 'Ctrl+P + Ctrl+Q' are typed in turn, a container is not stopped, but got out.
+
+	- Run a command in a container without using a shell.
+		docker exec <CONTAINER_NAME> command
+			docker exec ubuntu1804 echo "Hello World"
+		docker exec -it <CONTAINER_NAME> command
+			docker exec -it ubuntu1804 /bin/bash
+
+	- Get a file.
+		Local file system -> container:
+			docker cp <local-src-path> <container>:<dst-path>
+		Container -> local file system:
+			docker cp <container>:<src-path> <local-dst-path>
+
+	- Start a stopped container.
+		docker start <CONTAINER_NAME>
+	- Restart a container like rebooting.
+		docker restart <CONTAINER_NAME>
+	- Access a started container.
+		docker attach <CONTAINER_NAME>
+	- Stop a container.
+		docker stop <CONTAINER_NAME>
+	- Remove a container.
+		docker rm <CONTAINER_NAME>
+	- Remove all the exited containers.
+		docker rm -v $(docker ps -a -q -f status=exited)
+			sudo docker rm -v $(sudo docker ps -a -q -f status=exited)
+	- List containers.
+		docker container ls
+		docker ps
+	- List all containers including stopped ones.
+		docker container ls --all
+		docker ps -a
+
+	- List the history of an image.
+		docker history <IMAGE_NAME[:TAG]>
+
+	- Create an image from a changed container.
+		docker commit -a "Foo Bar <foo@bar.com>" -m "add hello.txt" <CONTAINER_NAME> <IMAGE_NAME[:TAG]>
+		https://www.scalyr.com/blog/create-docker-image/
+	- List changed files in a container.
+		docker diff <CONTAINER_NAME>
+
+	- Show details of an image or a container.
+		docker inspect <CONTAINER_NAME>
+		docker inspect <IMAGE_NAME[:TAG]>
+
+	- Start, restart, and stop a Docker service.
+		sudo service docker start
+		sudo service docker restart
+		sudo service docker stop
+
+		export DOCKER_HOST=127.0.0.1
+		export DOCKER_HOST=127.0.0.1:2375
+
+		sudo chown $USER:docker /var/run/docker.sock
+	- Reload the Docker daemon configuration.
+		sudo pkill -SIGHUP dockerd
+
+	- Log.
+		docker logs <CONTAINER_NAME>
+
+[-] Usage (NVIDIA GPU).
+	https://github.com/NVIDIA/nvidia-docker
+	https://github.com/NVIDIA/libnvidia-container
+	https://ngc.nvidia.com/
+
+	- (Optional) install NVIDIA drivers.
+
+	- Install.
+		https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+
+		Pull CUDA and cuDNN images:
+			https://hub.docker.com/
+
+			docker search nvidia/cuda
+			docker pull nvidia/cuda:latest
+
+		(Optional) pull images from NGC:
+			https://ngc.nvidia.com/
+
+			docker pull nvcr.io/nvidia/pytorch:<xx.yy>-py3
+			docker pull nvcr.io/nvidia/tensorflow:<xx.xx>-tf2-py3
+			docker pull nvcr.io/nvidia/tensorflow:<xx.xx>-tf1-py3
+			docker pull nvcr.io/nvidia/tritonserver:<xx.yy>-py3
+			docker pull nvcr.io/nvidia/tritonserver:<xx.yy>-py3-sdk
+				Client libraries.
+
+		(Optional) install nvidia-container-toolkit (NVIDIA container runtime hook):
+			sudo apt install nvidia-container-toolkit
+			sudo apt install nvidia-container-toolkit2 (???)
+			sudo systemctl restart docker
+
+		(Optional) install nvidia-docker2 (nvidia-docker CLI wrapper):
+			'nvidia-docker' can be used.
+
+			sudo apt install nvidia-docker2
+			sudo systemctl restart docker
+
+	- Use.
+		https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/user-guide.html
+
+		docker run --rm --gpus all nvidia/cuda nvidia-smi
+		docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=all nvidia/cuda nvidia-smi
+		docker run --rm --gpus 2 nvidia/cuda nvidia-smi
+		docker run --gpus '"device=1,2"' nvidia/cuda nvidia-smi --query-gpu=uuid --format=csv
+		docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=1,2 nvidia/cuda nvidia-smi --query-gpu=uuid --format=csv
+			<error> docker: Error response from daemon: Unknown runtime specified nvidia.
+
+		docker run -it --gpus all -v /home/sangwook:/home/sangwook --name nvidia_pytorch nvcr.io/nvidia/pytorch:21.07-py3 /bin/bash
+		docker run -it --gpus '"device=0,1,2,3"' -v /home/sangwook:/home/sangwook --name nvidia_pytorch nvcr.io/nvidia/pytorch:21.07-py3 /bin/bash
+		docker run -it --gpus=1 -v /home/sangwook:/home/sangwook --name nvidia_pytorch nvcr.io/nvidia/pytorch:21.07-py3 /bin/bash
+		docker run -it --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=all --name nvidia_pytorch nvcr.io/nvidia/pytorch:21.07-py3 /bin/bash
+		docker run -it --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=2,3 --name nvidia_pytorch nvcr.io/nvidia/pytorch:21.07-py3 /bin/bash
+			Does not work.
+
+		NV_GPU=0 nvidia-docker run -it -v /home/sangwook:/home/sangwook --name nvidia_pytorch nvcr.io/nvidia/pytorch:21.07-py3 /bin/bash
+		NV_GPU=0,1 nvidia-docker run -it -v /home/sangwook:/home/sangwook --name nvidia_pytorch nvcr.io/nvidia/pytorch:21.07-py3 /bin/bash
+
+[-] Docker Compose.
+	A tool for defining and running multi-container Docker applications.
+	https://docs.docker.com/compose/
+
+	- Install.
+		sudo apt install docker-compose
+
+	- Info.
+		docker-compose version
+		docker-compose help
+
+	- Edit the setting file.
+		docker-compose.yml
+
+	- Build and run.
+		docker-compose up
+		docker-compose up -d
+		docker-compose up -d --build
+
+	- Stop all containers.
+		docker-compose down
+
+[-] Installation.
+	http://pyrasis.com/Docker/Docker-HOWTO
+
+	- Linux.
+		sudo wget -qO- https://get.docker.com/
+
+		If installing Docker using script get.docker.com, automatically install an image hello-world.
+		Remove the image hello-world.
+			sudo docker rm `sudo docker ps -aq`
+			sudo docker rmi hello-world
+	- Ubuntu.
+		https://docs.docker.com/engine/install/ubuntu/
+
+		sudo apt-get update
+		sudo apt-get install docker.io
+		sudo ln -sf /usr/bin/docker.io /usr/local/bin/docker
+	- CentOS 6.
+		sudo yum install http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+		sudo yum install docker-io
+	- CentOS 7.
+		sudo yum install docker
+		sudo service docker start
+
+		Run automatically:
+			sudo chkconfig docker on
+	- Mac OS X.
+		https://www.docker.com/products/docker-toolbox
+		https://github.com/boot2docker/osx-installer/releases
+		https://github.com/boot2docker/osx-installer
+	- Windows.
+		https://www.docker.com/products/docker-toolbox
+		https://github.com/boot2docker/windows-installer/releases
+		https://github.com/boot2docker/windows-installer
+
+[-] Troubleshooting.
+	- Hyper-V feature is not enabled
+		<error> Hyper-V Hypervisor is not enabled.
+		<cause> VMware cannot be enabled along with Hyper-V Hypervisor
+		<solution>
+			http://www.vmware.com/go/turnoff_CG_DG
+			https://stackoverflow.com/questions/39858200/vmware-workstation-and-device-credential-guard-are-not-compatible
+
+	- XWindow cannot be used in a docker ubuntu environment.
+		<error> Cannot run XWindow in a docker ubuntu environment.
+		<cause>
+			No XWindow system exists in a docker ubuntu environment. (?)
+			XWindow server is needed to run XWindow in a docker ubuntu environment. (?)
+		<solution>
+			https://driz2le.tistory.com/257
+
+			Run an image in a local host:
+				docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix:ro --name <CONTAINER_NAME> <IMAGE_NAME[:TAG]> /bin/bash
+			In a container:
+				Install XWindow system.
+					apt-get install x11-xserver-utils x11-apps
+			In a local host:
+				xhost +local:docker
+				xhost +local:$USER
+
+	- <error> qt.qpa.xcb: could not connect to display.
+		<cause>
+			No XWindow system exists in a docker ubuntu environment. (?)
+			XWindow server is not correctly working in a docker ubuntu environment.
+			No GUI component can be displayed in a docker container.
+		<solution>
+			https://driz2le.tistory.com/257
+
+			Run an image in a local host:
+				docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix:ro --name <CONTAINER_NAME> <IMAGE_NAME[:TAG]> /bin/bash
+			In a container:
+				Install XWindow system.
+					apt-get install x11-xserver-utils x11-apps
+			In a local host:
+				xhost +local:docker
+				xhost +local:$USER

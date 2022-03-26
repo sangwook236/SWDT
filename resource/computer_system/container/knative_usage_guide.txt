@@ -1,0 +1,19 @@
+[-] General.
+	- Site.
+		https://knative.dev/
+
+[-] Installation.
+	https://knative.dev/docs/install/
+	https://knative.dev/docs/install/serving/install-serving-with-yaml/
+	https://knative.dev/docs/install/serving/installing-istio/
+	https://knative.dev/docs/install/uninstall/
+
+	- Install.
+		(Optional) install Knative CLI (kn).
+			https://knative.dev/docs/install/quickstart-install/
+			https://github.com/knative/client/releases
+
+		kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.2.0/serving-crds.yaml
+		kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.2.0/serving-core.yaml
+
+		kubectl get ksvc --all-namespaces

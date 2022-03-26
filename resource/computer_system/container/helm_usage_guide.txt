@@ -1,0 +1,189 @@
+[-] General.
+	- Site.
+		https://helm.sh/
+
+	- Document.
+		https://helm.sh/docs/
+
+	- Glossary.
+		A Chart is a Helm package.
+		It contains all of the resource definitions necessary to run an application, tool, or service inside of a Kubernetes cluster.
+
+		A Repository is the place where charts can be collected and shared.
+
+		A Release is an instance of a chart running in a Kubernetes cluster.
+		One chart can often be installed many times into the same cluster.
+		And each time it is installed, a new release is created.
+
+		Helm installs charts into Kubernetes, creating a new release for each installation.
+
+[-] Usage.
+	- Command
+		https://helm.sh/docs/helm/helm/
+		https://helm.sh/docs/intro/using_helm/
+
+		helm repo
+			helm repo add
+				Add a new chart repository.
+
+				helm repo add <CHART_NAME> <URL>
+					helm repo add brigade https://brigadecore.github.io/charts
+			helm repo list
+			helm repo update
+			helm repo remove
+
+		helm search
+			helm search hub
+				Search the Artifact Hub.
+
+				helm search hub <CHART_NAME>
+			helm search repo
+				Search the repositories that you have added to your local helm client.
+
+				helm search repo <CHART_NAME>
+
+		helm dependency
+			Manage the dependencies of a chart.
+
+			helm dependency build <CHART_NAME>
+			helm dependency list <CHART_NAME>
+			helm dependency update <CHART_NAME>
+
+		helm install
+			Install a new package.
+
+			helm install <RELEASE_NAME> <CHART_NAME>
+				helm install my-wordpress bitnami/wordpress
+
+				echo '{mariadb.auth.database: user0db, mariadb.auth.username: user0}' > values.yaml
+				helm install -f values.yaml bitnami/wordpress --generate-name
+
+				helm install --set mariadb.auth.database=user0db --set mariadb.auth.username=user0 bitnami/wordpress --generate-name
+			helm install <RELEASE_NAME> <CHART_ARCHIVE>
+				helm install my-chart foo-0.1.0.tgz
+			helm install <RELEASE_NAME> <CHART_DIRECTORY>
+				helm install my-chart /path/to/chart
+			helm install <RELEASE_NAME> <URL>
+				helm install my-chart https://example.com/charts/foo-1.2.3.tgz
+			helm install --repor <URL> <RELEASE_NAME> <CHART_NAME>
+				helm install --repo https://example.com/charts/ my-chart foo-chart
+
+			helm install --debug --dry-run <RELEASE_NAME> <CHART_NAME>
+			helm install --debug --dry-run --disable-openapi-validation <RELEASE_NAME> <CHART_NAME>
+				When you want to test the template rendering, but not actually install anything.
+		helm uninstall/delete
+			Uninstall a release.
+
+			helm uninstall <RELEASE_NAME>
+			helm delete --purge <RELEASE_NAME>
+
+		helm upgrade
+			Upgrade a release.
+
+			helm upgrade <RELEASE_NAME> <CHART_NAME>
+		helm rollback
+			Recover on failure.
+
+			helm rollback <RELEASE_NAME> <REVISION>
+
+		helm list
+			See all of the currently deployed releases.
+			List all of the releases for a specified namespace (uses current namespace context if namespace not specified).
+
+			helm list --all
+				Show all release records that Helm has retained, including records for failed or deleted items.
+
+		helm status
+			Keep track of a release's state, or re-read configuration information.
+
+			helm status <RELEASE_NAME>
+
+		helm show
+			helm show all
+			helm show chart
+			helm show crds
+			helm show readme
+			helm show values
+				See what options are configurable on a chart.
+
+				helm show values <CHART_NAME>
+
+		helm get
+			helm get all
+			helm get hooks
+			helm get manifest
+				helm get manifest <RELEASE_NAME>
+			helm get notes
+			helm get values
+				helm get values <RELEASE_NAME>
+
+		helm create
+			Create your own charts.
+
+			helm create <CHART_NAME>
+		helm package
+			Package the chart up for distribution.
+
+			helm package <CHART_NAME>
+
+	- Template.
+		https://helm.sh/docs/chart_template_guide/getting_started/
+
+		A template directive is enclosed in {{ and }} blocks.
+		The template directive {{ ... }} injects the release name into the template.
+		The values that are passed into a template can be thought of as namespaced objects, where a dot (.) separates each namespaced element.
+		The Release object is one of the built-in objects for Helm.
+
+		Templates: YAML files that have template directives embedded in {{ and }}.
+
+		Built-in Objects:
+			https://helm.sh/docs/chart_template_guide/builtin_objects/
+
+			Release:
+				This object describes the release itself.
+			Values:
+				https://helm.sh/docs/chart_template_guide/values_files/
+				Values passed into the template from the values.yaml file and from user-supplied files.
+				Values files are plain YAML files.
+			Chart:
+				https://helm.sh/docs/topics/charts/#the-chartyaml-file
+				The contents of the Chart.yaml file.
+			Files:
+				https://helm.sh/docs/chart_template_guide/accessing_files/
+				This provides access to all non-special files in a chart.
+				While you cannot use it to access templates, you can use it to access other files in the chart.
+			Capabilities:
+				This provides information about what capabilities the Kubernetes cluster supports.
+			Template:
+				Information about the current template that is being executed.
+
+			The built-in values always begin with a capital letter.
+			This is in keeping with Go's naming convention.
+			Some teams, like many whose charts you may see on Artifact Hub, choose to use only initial lower case letters in order to distinguish local names from those built-in.
+
+		Template Functions and Pipelines:
+			https://helm.sh/docs/chart_template_guide/functions_and_pipelines/
+			https://helm.sh/docs/chart_template_guide/function_list/
+
+		Named Templates:
+			https://helm.sh/docs/chart_template_guide/named_templates/
+			A named template (sometimes called a partial or a subtemplate) is simply a template defined inside of a file, and given a name.
+
+			Template names are global.
+			If you declare two templates with the same name, whichever one is loaded last will be the one used.
+			Because templates in subcharts are compiled together with top-level templates, you should be careful to name your templates with chart-specific names.
+			One popular naming convention is to prefix each defined template with the name of the chart: {{ define "mychart.labels" }}.
+
+			define, template, block, include.
+				Because template is an action, and not a function, there is no way to pass the output of a template call to other functions; the data is simply inserted inline.
+
+			templates/
+			NOTES.txt
+			Files whose name begins with an underscore (_).
+				_helpers.tpl
+
+[-] Installation.
+	https://helm.sh/docs/intro/install/
+
+	- Install.
+		sudo snap install helm --classic

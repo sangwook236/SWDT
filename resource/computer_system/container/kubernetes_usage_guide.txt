@@ -1,0 +1,1247 @@
+[-] General.
+	- Site.
+		https://kubernetes.io/
+
+	- Document.
+		https://kubernetes.io/docs/
+		https://kubernetes.io/docs/tasks/
+
+		https://kubernetes.io/docs/reference/
+
+		https://kubernetes.io/docs/reference/kubernetes-api/
+	- API.
+		https://kubernetes.io/docs/concepts/overview/kubernetes-api/
+		https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md
+
+		https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/
+
+	- Directory.
+		$HOME/.kube
+		$HOME/.kube/admin.conf
+
+		/etc/kubernetes
+
+		/var/lib/kubelet
+		/var/lib/kubelet/config.yaml
+		/var/lib/cni
+
+	- Log.
+		/var/log/kube-apiserver.log
+		/var/log/kube-scheduler.log
+		/var/log/kube-controller-manager.log
+		/var/log/kubelet.log
+		/var/log/kube-proxy.log
+
+[-] Cluster.
+	https://kubernetes.io/docs/concepts/cluster-administration/
+	https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+	- Create a cluster with kubeadm.
+		https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
+		https://velog.io/@dry8r3ad/Kubernetes-Cluster-Installation
+
+		(Optional) set hostname:
+			sudo hostnamectl set-hostname <NEW_HOSTNAME>
+				sudo hostnamectl set-hostname sminds-master
+				sudo hostnamectl set-hostname sminds-worker-1
+
+			Check:
+				cat /etc/hosts
+
+		(Optional) set the firewall:
+			sudo ufw disable
+
+		Swap off:
+			sudo swapoff -a
+
+			(Optional) edit /etc/fstab.
+				Comment lines with swap.
+
+		Install runtime:
+			To run containers in Pods, Kubernetes uses a container runtime.
+
+			Docker:
+				https://docs.docker.com/engine/install/ubuntu/
+
+				mkdir /etc/docker
+
+				cat <<EOF | sudo tee /etc/docker/daemon.json
+				{
+				  "exec-opts": ["native.cgroupdriver=systemd"],
+				  "log-driver": "json-file",
+				  "log-opts": {
+					"max-size": "100m"
+				  },
+				  "storage-driver": "overlay2"
+				}
+				EOF
+
+				sudo systemctl enable docker
+				sudo systemctl daemon-reload
+				sudo systemctl restart docker
+
+		Install kubelet, kubeadm, kubectl:
+			https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
+		(Optional) configure a cgroup driver:
+			https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/configure-cgroup-driver/
+
+		Configure a cluster:
+			(Optional) pull images required for setting up a Kubernetes cluster:
+				sudo kubeadm config images pull
+
+			kubeadm init
+				sudo kubeadm init --pod-network-cidr=192.168.100.0/8
+				sudo kubeadm init --apiserver-advertise-address=192.168.20.3 --pod-network-cidr=192.168.200.0/24
+
+			Make kubectl work for your non-root user:
+				mkdir -p $HOME/.kube
+				sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+				sudo chown $(id -u):$(id -g) $HOME/.kube/config
+			If you are the root user:
+				export KUBECONFIG=/etc/kubernetes/admin.conf
+
+			Install pod network add-on:
+				Refer to "Troubleshooting".
+
+				kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+			Check:
+				kubectl get nodes -o wide
+				kubectl get pods --all-namespaces -o wide
+
+			(Optional) control plane node isolation:
+				kubectl taint nodes <MASTER_NAME> node-role.kubernetes.io/master-
+				kubectl taint nodes --all node-role.kubernetes.io/master-
+
+			(Optional) edit kubelet config, /var/lib/kubelet/config.yaml:
+				Refer to "Troubleshooting".
+
+			Check:
+				kubectl get deploy --all-namespaces -o wide
+				kubectl get pods --all-namespaces -o wide
+
+			(Optional) join nodes (on the worker nodes):
+				If you do not have the token (on the control-plane node):
+					kubeadm token list
+				By default, tokens expire after 24 hours.
+				If you are joining a node to the cluster after the current token has expired (on the control-plane node):
+					kubeadm token create
+		
+				If you don't have the value of --discovery-token-ca-cert-hash (on the control-plane node):
+					openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+		
+				kubeadm join
+					sudo kubeadm join <control-plane-host>:<control-plane-port> --token <token> --discovery-token-ca-cert-hash sha256:<hash>
+					sudo kubeadm join 192.168.20.3:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
+				kubeadm reset
+					sudo rm -Rf /etc/cni/net.d
+
+				(Optional) edit kubelet config, /var/lib/kubelet/config.yaml:
+					Refer to "Troubleshooting".
+
+				Check:
+					kubectl get nodes -o wide
+
+			(Optional) add a role:
+				kubectl label node <NODE_NAME> node-role.kubernetes.io/<ROLE_NAME>=<LABEL>
+					kubectl label node sminds2 node-role.kubernetes.io/worker=worker
+					kubectl label node sminds2 node-role.kubernetes.io/worker=worker --overwrite
+				kubectl get nodes -o wide
+			(Optional) remove a role:
+				kubectl label node <NODE_NAME> node-role.kubernetes.io/<ROLE_NAME>-
+					kubectl label node sminds2 node-role.kubernetes.io/worker-
+				kubectl get nodes -o wide
+
+			Check:
+				kubectl config view
+				kubectl cluster-info
+					kubectl cluster-info dump
+
+				sudo docker container ls -a
+				sudo docker image ls
+
+				kubectl get nodes -o wide
+				kubectl -n kube-system get pod -o wide
+
+			Install libraries:
+				Istio:
+					Refer to istio_usage_guide.txt.
+					https://istio.io/latest/docs/setup/install/
+					https://istio.io/latest/docs/setup/install/istioctl/
+				Knative:
+					Refer to knative_usage_guide.txt.
+					https://knative.dev/docs/install/
+					https://knative.dev/docs/install/yaml-install/serving/install-serving-with-yaml/
+				Cert Manager:
+					https://cert-manager.io/docs/installation/
+				KServe:
+					Refer to kserve_usage_guide.txt.
+				Seldon IO:
+					Refer to seldon_usage_guide.txt.
+
+		Perform a best effort revert of changes made to the host by 'kubeadm init' or 'kubeadm join':
+			kubeadm reset
+
+			rm -Rf ~/.kube
+			sudo rm -Rf /etc/cni/net.d
+
+		Restart the Kubernetes cluster after reboot:
+			sudo ufw disable
+			sudo swapoff -a
+
+			sudo systemctl restart kubelet
+
+			sudo systemctl status kubelet
+			journalctl -xeu kubelet
+
+	- Create a cluster with kind.
+		https://kind.sigs.k8s.io/docs/user/quick-start/
+		https://ssup2.github.io/record/Kubernetes_설치_kind_Ubuntu_18.04/
+
+		Installing from release binaries:
+			curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64
+			chmod +x ./kind
+			mv ./kind /some-dir-in-your-PATH/kind
+
+		Create a cluster:
+			kind create cluster
+				Default cluster context name is 'kind'.
+			kind create cluster --name kind-2
+
+			kind get clusters
+
+			kubectl cluster-info --context kind-kind
+			kubectl cluster-info --context kind-kind-2
+
+		Delete a cluster:
+			kind delete cluster
+
+		Load an image into a cluster:
+			kind load docker-image my-custom-image-0 my-custom-image-1
+			kind load docker-image my-custom-image-0 my-custom-image-1 --name kind-2
+
+[-] Extension.
+	https://kubernetes.io/docs/concepts/extend-kubernetes/
+
+[-] Usage.
+	- Triton Inference Server.
+		Refer to triton_usage_guide.txt
+
+[-] Tutorial.
+	https://kubernetes.io/docs/tutorials/
+
+	- Hello Minikube.
+		https://kubernetes.io/docs/tutorials/hello-minikube/
+
+		Create a minikube cluster:
+			minikube start
+
+			minikube dashboard
+			minikube dashboard --url
+
+		Create a deployment:
+			kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4
+
+			kubectl get deployments
+			kubectl get pods
+			kubectl get events
+			kubectl config view
+
+		Create a service:
+			kubectl expose deployment hello-node --type=LoadBalancer --port=8080
+				The --type=LoadBalancer flag indicates that you want to expose your Service outside of the cluster.
+
+			kubectl get services
+
+			On minikube, the LoadBalancer type makes the Service accessible through the minikube service command.
+				minikube service hello-node
+
+		Enable addons:
+			List the currently supported addons:
+				minikube addons list
+
+			Enable an addon:
+				minikube addons enable metrics-server
+			View the Pod and Service you created:
+				kubectl get pod,svc -n kube-system
+
+			Disable the addon:
+				minikube addons disable metrics-server
+
+		Clean up:
+			kubectl delete service hello-node
+			kubectl delete deployment hello-node
+
+			(Optional) stop the minikube virtual machine (VM):
+				minikube stop
+
+			(Optional) delete the minikube VM:
+				minikube delete
+
+	- Kubernetes Basics.
+		https://kubernetes.io/docs/tutorials/kubernetes-basics/
+
+		1. Create a Kubernetes cluster.
+			Using minikube to create a cluster.
+
+			Install minikube:
+				https://minikube.sigs.k8s.io/docs/start/
+
+			Check that minikube is properly installed:
+				minikube version
+			Start the cluster:
+				minikube start
+				minikube start --driver=docker
+
+			Check if kubectl is installed:
+				kubectl version
+				kubectl version --short=true
+			View the cluster details:
+				kubectl cluster-info
+			View the nodes in the cluster:
+				kubectl get nodes
+
+		2. Deploy an app.
+			Using kubectl to create a deployment.
+
+			Deploy the first app on Kubernetes:
+				kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+				kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1 --port=8080
+			List the deployments:
+				kubectl get deployments
+
+			Pods that are running inside Kubernetes are running on a private, isolated network.
+			By default they are visible from other pods and services within the same kubernetes cluster, but not outside that network.
+
+			The kubectl command can create a proxy that will forward communications into the cluster-wide, private network.
+			The proxy can be terminated by pressing control-C and won't show any output while its running.
+
+			Open a second terminal window to run the proxy:
+				kubectl proxy
+					Starting to serve on 127.0.0.1:8001
+				kubectl proxy --port=8080
+					Starting to serve on 127.0.0.1:8080
+
+			We now have a connection between our host (the online terminal) and the Kubernetes cluster.
+			The proxy enables direct access to the API from these terminals.
+			You can see all those APIs hosted through the proxy endpoint.
+			For example, we can query the version directly through the API using the curl command (in the first terminal window):
+				curl http://localhost:8001/version
+
+			The API server will automatically create an endpoint for each pod, based on the pod name, that is also accessible through the proxy.
+				export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
+				echo Name of the Pod: $POD_NAME
+
+			Access the Pod through the API:
+				curl http://localhost:8001/api/v1/namespaces/default/pods/$POD_NAME/
+
+			In order for the new deployment to be accessible without using the Proxy, a Service is required.
+
+		3. Explore your app.
+			Viewing pods and nodes.
+
+			View what containers are inside that Pod and what images are used to build those containers:
+				kubectl describe pods
+
+			See the output of our application:
+				curl http://localhost:8001/api/v1/namespaces/default/pods/$POD_NAME/proxy/
+
+			Anything that the application would normally send to STDOUT becomes logs for the container within the Pod.
+			Retrieve these logs:
+				kubectl logs $POD_NAME
+
+			We can execute commands directly on the container once the Pod is up and running.
+			List the environment variables:
+				kubectl exec $POD_NAME -- env
+					The name of the container itself can be omitted since we only have a single container in the Pod.
+			Start a bash session in the Pod's container:
+				kubectl exec -ti $POD_NAME -- bash
+
+				We have now an open console on the container where we run our NodeJS application. The source code of the app is in the server.js file:
+					cat server.js
+				You can check that the application is up by running a curl command:
+					curl localhost:8080
+
+		4. Expose your app publicly.
+			Using a service to expose your app.
+
+			List the current Services from our cluster:
+				kubectl get services
+
+			Create a new service and expose it to external traffic (minikube does not support the LoadBalancer option yet):
+				kubectl expose deployment/kubernetes-bootcamp --type="NodePort" --port 8080
+
+			Find out what port was opened externally (by the NodePort option):
+				kubectl describe services/kubernetes-bootcamp
+
+			Create an environment variable called NODE_PORT that has the value of the Node port assigned:
+				export NODE_PORT=$(kubectl get services/kubernetes-bootcamp -o go-template='{{(index .spec.ports 0).nodePort}}')
+				echo NODE_PORT=$NODE_PORT
+
+			Test that the app is exposed outside of the cluster using curl, the IP of the Node and the externally exposed port:
+				curl $(minikube ip):$NODE_PORT
+			The Deployment created automatically a label for our Pod:
+				kubectl describe deployment
+			Use this label to query our list of Pods:
+				kubectl get pods -l app=kubernetes-bootcamp
+			List the existing services:
+				kubectl get services -l app=kubernetes-bootcamp
+
+			Apply a new label to our Pod (pin the application version to the Pod):
+				kubectl label pods $POD_NAME version=v1
+				kubectl describe pods $POD_NAME
+
+			Query now the list of pods using the new label:
+				kubectl get pods -l version=v1
+
+			Delete Services (labels can be used):
+				kubectl delete service -l app=kubernetes-bootcamp
+				kubectl get services
+				curl $(minikube ip):$NODE_PORT
+					This proves that the app is not reachable anymore from outside of the cluster.
+				kubectl exec -ti $POD_NAME -- curl localhost:8080
+					You can confirm that the app is still running with a curl inside the pod.
+
+				This is because the Deployment is managing the application.
+				To shut down the application, you would need to delete the Deployment as well.
+
+		5. Scale up your app.
+			Running multiple instances of your app.
+
+			List your deployments:
+				kubectl get deployments
+			See the ReplicaSet created by the Deployment:
+				kubectl get rs
+
+			Scale the Deployment to N replicas:
+				kubectl scale deployments/kubernetes-bootcamp --replicas=4
+				kubectl get deployments
+			Ceck if the number of Pods changed:
+				kubectl get pods -o wide
+			The change was registered in the Deployment events log:
+				kubectl describe deployments/kubernetes-bootcamp
+
+			Execute the command multiple times:
+				curl $(minikube ip):$NODE_PORT
+					We hit a different Pod with every request.
+					This demonstrates that the load-balancing is working.
+
+			Scale down the Service to N replicas:
+				kubectl scale deployments/kubernetes-bootcamp --replicas=2
+				kubectl get deployments
+			List the number of Pods:
+				kubectl get pods -o wide
+
+		6. Update your app.
+			Performing a rolling update.
+
+			List your deployments:
+				kubectl get deployments
+			List the running Pods:
+				kubectl get pods
+			View the current image version of the app (look for the Image field):
+				kubectl describe pods
+
+			Update the image of the application to version 2:
+				kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+			The command notified the Deployment to use a different image for your app and initiated a rolling update.
+			Check the status of the new Pods, and view the old one terminating:
+				kubectl get pods
+
+			Find the exposed IP and Port:
+				kubectl describe services/kubernetes-bootcamp
+
+			Do a curl to the the exposed IP and port:
+				curl $(minikube ip):$NODE_PORT
+					Every time you run the curl command, you will hit a different Pod.
+					Notice that all Pods are running the latest version (v2).
+
+			Confirm the update:
+				kubectl rollout status deployments/kubernetes-bootcamp
+			View the current image version of the app:
+				kubectl describe pods
+
+			Perform another update, and deploy an image tagged with v10:
+				kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=gcr.io/google-samples/kubernetes-bootcamp:v10
+				kubectl get deployments
+					Notice that the output doesn't list the desired number of available Pods.
+			List all Pods:
+				kubectl get pods
+					Notice that some of the Pods have a status of ImagePullBackOff.
+			Get more insight into the problem:
+				kubectl describe pods
+					In the Events section of the output for the affected Pods, notice that the v10 image version did not exist in the repository.
+
+			Roll back the deployment to your last working version:
+				kubectl rollout undo deployments/kubernetes-bootcamp
+			List the Pods again:
+				kubectl get pods
+			Check the image deployed on these Pods:
+				kubectl describe pods
+					The deployment is once again using a stable version of the app (v2).
+					The rollback was successful.
+
+[-] Tool.
+	https://kubernetes.io/docs/tasks/tools/
+	https://kubernetes.io/docs/concepts/overview/components/
+	https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands
+
+	- Control plane components.
+		kube-apiserver:
+			https://github.com/kubernetes/apiserver
+
+			Check that the api server is actually running:
+				docker ps | grep kube-apiserver
+
+		etcd:
+		kube-scheduler:
+		kube-controller-manager:
+		cloud-controller-manager:
+
+	- Node components.
+		kubelet:
+			https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/
+			An agent for managing the node and communicating with the Kubernetes control plane.
+
+		kube-proxy:
+
+		Container runtime:
+			Kubernetes supports several container runtimes: Docker, containerd, CRI-O, and any implementation of the Kubernetes CRI (Container Runtime Interface).
+
+	- kubectl.
+		https://kubernetes.io/docs/reference/kubectl/
+		https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+		The command line interface.
+
+		kubectl api-resources
+
+		kubectl options
+		kubectl version
+			kubectl version -o json
+			kubectl version --client
+
+		kubectl cluster-info
+			kubectl cluster-info dump
+		kubectl config
+			kubectl config view
+			kubectl config set-cluster
+				kubectl config set-cluster demo-cluster --server=http://master.example.com:8080
+				kubectl config set-context demo-system --cluster=demo-cluster
+			kubectl config get-clusters
+			kubectl config current-context
+			kubectl config use-context
+				kubectl config use-context demo-system
+			kubectl config set-context
+				kubectl config set-context $(kubectl config current-context) --namespace=seldon
+				kubectl config set-context --current --namespace=my-namespace
+			kubectl config get-contexts
+
+		kubectl create
+			Create a resource from a file or from stdin.
+
+			kubectl create deployment
+				kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+			kubectl create configmap
+				kubectl create configmap game-config --from-file=configure-pod-container/configmap/
+				kubectl create configmap game-config --from-file=configure-pod-container/configmap/game.properties --from-file=configure-pod-container/configmap/ui.properties
+			kubectl create secret
+				kubectl create secret generic empty-secret
+
+		kubectl proxy
+			Creates a proxy server or application-level gateway between localhost and the Kubernetes API Server.
+
+		kubectl get
+			List resources.
+
+			kubectl get all --all-namespaces
+			kubectl get nodes
+			kubectl get pods
+				kubectl get pods -l app=kubernetes-bootcamp
+				kubectl get pods -l version=v1
+				kubectl get pods -o wide
+				kubectl get pods kube-proxy-mj4z6 -n kube-system -o json
+				kubectl get pods kube-proxy-mj4z6 -n kube-system -o jsonpath='{.metadata.uid}'
+				kubectl get pods -n kube-system -o custom-columns=PodName:.metadata.name,PodUID:.metadata.uid
+				kubectl get pods -n kube-system
+				kubectl get pods --all-namespaces -o wide -w
+			kubectl get services
+				kubectl get services -l app=kubernetes-bootcamp
+			kubectl get deployments
+			kubectl get replicaset / kubectl get rs
+				The name of the ReplicaSet is always formatted as [DEPLOYMENT-NAME]-[RANDOM-STRING].
+			kubectl get events
+			kubectl get secret
+				kubectl get secret empty-secret
+			kubectl get namespaces
+				kubectl get namespaces --show-labels
+		kubectl describe
+			Show detailed information about a resource.
+
+			kubectl describe pods
+				kubectl describe pods <POD_NAME>
+			kubectl describe services
+				kubectl describe services/kubernetes-bootcamp
+			kubectl describe deployments
+				kubectl describe deployments/kubernetes-bootcamp
+		kubectl logs
+			Print the logs from a container in a pod.
+			Anything that the application would normally send to STDOUT becomes logs for the container within the Pod.
+	
+			kubectl logs <POD_NAME>
+			kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c <CONTAINER_NAME>
+		kubectl exec
+			Execute a command on a container in a pod.
+
+			kubectl exec (POD | TYPE/NAME) [-c CONTAINER] [flags] -- COMMAND [args...] [options]
+				-c, --container="": Container name. If omitted, the first container in the pod will be chosen.
+				-i, --stdin[=false]: Pass stdin to the container.
+				-t, --tty[=false]: stdin is a TTY.
+
+			kubectl exec <POD_NAME> -- env
+			kubectl exec -ti <POD_NAME> -- bash
+			kubectl exec -ti <POD_NAME> -- curl localhost:8080
+
+		kubectl expose
+			Create a new service and expose it to external traffic.
+			Possible resources (case insensitive):
+				pod (po), service (svc), replicationcontroller (rc), deployment (deploy), replicaset (rs).
+
+			kubectl expose rc nginx --port=80 --target-port=8000
+			kubectl expose -f nginx-controller.yaml --port=80 --target-port=8000
+			kubectl expose service nginx --port=443 --target-port=8443 --name=nginx-https
+			kubectl expose rc streamer --port=4100 --protocol=UDP --name=video-stream
+			kubectl expose rs nginx --port=80 --target-port=8000
+			kubectl expose deployment nginx --port=80 --target-port=8000
+			kubectl expose deployment/kubernetes-bootcamp --type="NodePort" --port 8080
+			kubectl expose deployment hello-node --type=LoadBalancer --port=8080
+		kubectl delete
+			kubectl delete pod
+				kubectl delete pod/kube-apiserver-master-k8s -n kube-system
+			kubectl delete service
+				The app is not reachable anymore from outside of the cluster.
+				The app is still running inside the pod.
+
+				kubectl delete service -l app=kubernetes-bootcamp
+				kubectl delete service hello-node
+			kubectl delete deployment
+				kubectl delete deployment hello-node
+		kubectl scale
+			Set a new size for a Deployment, ReplicaSet, Replication Controller, or StatefulSet.
+
+			kubectl scale deployments/kubernetes-bootcamp --replicas=4
+		kubectl set
+			kubectl set image
+				Update existing container image(s) of resources.
+
+				kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+		kubectl rollout
+			kubectl rollout status
+				kubectl rollout status deployments/kubernetes-bootcamp
+			kubectl rollout undo
+				kubectl rollout undo deployments/kubernetes-bootcamp
+
+		kubectl port-forward
+			Forward one or more local ports to a pod.
+
+			kubectl port-forward pod/mypod 5000 6000
+				Listen on ports 5000 and 6000 locally, forwarding data to/from ports 5000 and 6000 in the pod
+			kubectl port-forward deployment/mydeployment 5000 6000
+				Listen on ports 5000 and 6000 locally, forwarding data to/from ports 5000 and 6000 in a pod selected by the deployment
+			kubectl port-forward service/myservice 8443:https
+				Listen on port 8443 locally, forwarding to the targetPort of the service's port named "https" in a pod selected by the service
+			kubectl port-forward pod/mypod 8888:5000
+				Listen on port 8888 locally, forwarding to 5000 in the pod
+			kubectl port-forward --address 0.0.0.0 pod/mypod 8888:5000
+				Listen on port 8888 on all addresses, forwarding to 5000 in the pod
+			kubectl port-forward --address localhost,10.19.21.23 pod/mypod 8888:5000
+				Listen on port 8888 on localhost and selected IP, forwarding to 5000 in the pod
+			kubectl port-forward pod/mypod :5000
+				Listen on a random port locally, forwarding to 5000 in the pod
+
+		kubectl label
+			Apply a new label.
+
+			kubectl label pods <POD_NAME> version=v1
+
+		kubectl top
+			Display Resource (CPU/Memory) usage.
+
+			The top command allows you to see the resource consumption for nodes or pods.
+			This command requires Metrics Server to be correctly configured and working on the server.
+
+			kubectl top node <NODE_NAME>
+			kubectl top pod <POD_NAME>
+
+		kubectl edit
+
+	- kubeadm.
+		https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/
+
+		kubeadm init
+			sudo kubeadm init --pod-network-cidr=192.168.100.0/8
+			sudo kubeadm init --apiserver-advertise-address 192.168.20.3 --pod-network-cidr=192.168.200.0/24
+		kubeadm join
+		kubeadm reset
+
+		kubeadm upgrade
+		kubeadm config
+			kubeadm config print
+			kubeadm config migrate
+			kubeadm config images list
+			kubeadm config images pull
+
+	- kustomize.
+		https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+		https://github.com/kubernetes-sigs/kustomize
+
+	- minikube.
+		https://minikube.sigs.k8s.io/docs/start/
+		A lightweight Kubernetes implementation that creates a VM on your local machine and deploys a simple cluster containing only one node.
+
+		minikube version
+		minikube start
+			minikube start --driver=docker
+		minikube dashboard
+			minikube dashboard --url
+		minikube service <SERVICE_NAME>
+		minikube addons
+			minikube addons list
+			minikube addons enable <ADDONS_NAME>
+			minikube addons disable <ADDONS_NAME>
+		minikube stop
+		minikube delete
+
+	- Dashboard (Web UI).
+		https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+
+	- Helm.
+		https://helm.sh/
+
+	- cert-manager.
+		https://cert-manager.io/
+
+		Install:
+			https://cert-manager.io/docs/installation/
+			https://cert-manager.io/docs/installation/uninstall/
+
+[-] Information.
+	- Glossary.
+		https://kubernetes.io/docs/reference/glossary/
+
+		Kubernetes cluster:
+			Control plane.
+			Nodes.
+
+		Kubernetes components:
+			https://kubernetes.io/docs/concepts/overview/components/
+
+		Pod:
+			A Pod is a Kubernetes abstraction that represents a group of one or more application containers (such as Docker), and some shared resources for those containers.
+			A Pod models an application-specific "logical host" and can contain different application containers which are relatively tightly coupled.
+			Pods are the atomic unit on the Kubernetes platform.
+			Each Pod is tied to the Node where it is scheduled, and remains there until termination (according to restart policy) or deletion.
+			In case of a Node failure, identical Pods are scheduled on other available Nodes in the cluster.
+			Kubernetes Pods are mortal. Pods in fact have a lifecycle.
+			When a worker node dies, the Pods running on the Node are also lost.
+			A ReplicaSet might then dynamically drive the cluster back to desired state via creation of new Pods to keep your application running.
+		Node:
+			A Pod always runs on a Node.
+			A Node is a worker machine in Kubernetes and may be either a virtual or a physical machine, depending on the cluster.
+			Each Node is managed by the control plane.
+			A Node can have multiple pods, and the Kubernetes control plane automatically handles scheduling the pods across the Nodes in the cluster.
+			Every Kubernetes Node runs at least:
+				Kubelet, a process responsible for communication between the Kubernetes control plane and the Node; it manages the Pods and the containers running on a machine.
+				A container runtime (like Docker) responsible for pulling the container image from a registry, unpacking the container, and running the application.
+
+		Service:
+			Kubernetes Pods are mortal. Pods in fact have a lifecycle.
+			When a worker node dies, the Pods running on the Node are also lost.
+			A ReplicaSet might then dynamically drive the cluster back to desired state via creation of new Pods to keep your application running.
+			As another example, consider an image-processing backend with 3 replicas.
+			Those replicas are exchangeable; the front-end system should not care about backend replicas or even if a Pod is lost and recreated.
+			That said, each Pod in a Kubernetes cluster has a unique IP address, even Pods on the same Node, so there needs to be a way of automatically reconciling changes among Pods so that your applications continue to function.
+
+			A Service in Kubernetes is an abstraction which defines a logical set of Pods and a policy by which to access them.
+			Services enable a loose coupling between dependent Pods.
+			The set of Pods targeted by a Service is usually determined by a LabelSelector.
+
+			Although each Pod has a unique IP address, those IPs are not exposed outside the cluster without a Service.
+			Services allow your applications to receive traffic.
+			A Service routes traffic across a set of Pods.
+			Services are the abstraction that allow pods to die and replicate in Kubernetes without impacting your application.
+			Services match a set of Pods using labels and selectors, a grouping primitive that allows logical operation on objects in Kubernetes.
+
+			Services have an integrated load-balancer that will distribute network traffic to all Pods of an exposed Deployment.
+			Services will monitor continuously the running Pods using endpoints, to ensure the traffic is sent only to available Pods.
+
+			Additionally, note that there are some use cases with Services that involve not defining selector in the spec.
+			A Service created without selector will also not create the corresponding Endpoints object.
+			This allows users to manually map a Service to specific endpoints.
+			Another possibility why there may be no selector is you are strictly using type: ExternalName.
+
+			A Service routes traffic across a set of Pods.
+			Services are the abstraction that allow pods to die and replicate in Kubernetes without impacting your application.
+			Discovery and routing among dependent Pods (such as the frontend and backend components in an application) is handled by Kubernetes Services.
+
+			Services match a set of Pods using labels and selectors, a grouping primitive that allows logical operation on objects in Kubernetes.
+			Labels are key/value pairs attached to objects and can be used in any number of ways.
+
+			https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/
+			https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+
+		Proxy:
+			A proxy will forward communications into the cluster-wide, private network.
+
+		Namespace:
+			In Kubernetes, namespaces provides a mechanism for isolating groups of resources within a single cluster.
+			Names of resources need to be unique within a namespace, but not across namespaces.
+			Namespace-based scoping is applicable only for namespaced objects (e.g. Deployments, Services, etc) and not for cluster-wide objects (e.g. StorageClass, Nodes, PersistentVolumes, etc).
+
+			https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+
+			kubectl create namespace <NAMESPACE_NAME>
+			kubectl get namespaces <NAMESPACE_NAME>
+			kubectl describe namespaces <NAMESPACE_NAME>
+
+		Scaling:
+			Scaling is accomplished by changing the number of replicas in a Deployment.
+
+			Scaling out a Deployment will ensure new Pods are created and scheduled to Nodes with available resources.
+			Scaling will increase the number of Pods to the new desired state.
+			Kubernetes also supports autoscaling of Pods.
+			Scaling to zero is also possible, and it will terminate all Pods of the specified Deployment.
+
+			Running multiple instances of an application will require a way to distribute the traffic to all of them.
+			Services have an integrated load-balancer that will distribute network traffic to all Pods of an exposed Deployment.
+			Services will monitor continuously the running Pods using endpoints, to ensure the traffic is sent only to available Pods.
+
+		Rolling update:
+			Once you have multiple instances of an Application running, you would be able to do Rolling updates without downtime.
+
+			Users expect applications to be available all the time and developers are expected to deploy new versions of them several times a day.
+			Rolling updates allow Deployments' update to take place with zero downtime by incrementally updating Pods instances with new ones.
+			The new Pods will be scheduled on Nodes with available resources.
+
+			In Kubernetes, updates are versioned and any Deployment update can be reverted to a previous (stable) version.
+
+			Similar to application Scaling, if a Deployment is exposed publicly, the Service will load-balance the traffic only to available Pods during the update.
+
+		Container image:
+			https://kubernetes.io/docs/concepts/containers/
+
+			A container image is a ready-to-run software package, containing everything needed to run an application: the code and any runtime it requires, application and system libraries, and default values for any essential settings.
+
+			By design, a container is immutable: you cannot change the code of a container that is already running.
+			If you have a containerized application and want to make changes, you need to build a new image that includes the change, then recreate the container to start from the updated image.
+
+		Container runtime:
+			The container runtime is the software that is responsible for running containers.
+
+			Kubernetes supports container runtimes such as containerd, CRI-O, and any other implementation of the Kubernetes CRI (Container Runtime Interface).
+
+		Kubernetes object:
+			https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/
+
+			Kubernetes objects are persistent entities in the Kubernetes system.
+			Kubernetes uses these entities to represent the state of your cluster.
+
+			A Kubernetes object is a "record of intent"--once you create the object, the Kubernetes system will constantly work to ensure that object exists.
+			By creating an object, you're effectively telling the Kubernetes system what you want your cluster's workload to look like; this is your cluster's desired state.
+
+			To work with Kubernetes objects--whether to create, modify, or delete them--you'll need to use the Kubernetes API.
+			When you use the kubectl command-line interface, for example, the CLI makes the necessary Kubernetes API calls for you.
+			You can also use the Kubernetes API directly in your own programs using one of the Client Libraries.
+
+			Object Spec and Status:
+				Almost every Kubernetes object includes two nested object fields that govern the object's configuration: the object spec and the object status.
+				For objects that have a spec, you have to set this when you create the object, providing a description of the characteristics you want the resource to have: its desired state.
+
+				The status describes the current state of the object, supplied and updated by the Kubernetes system and its components.
+				The Kubernetes control plane continually and actively manages every object's actual state to match the desired state you supplied.
+
+		Custom resource:
+			https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/
+
+			A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; for example, the built-in pods resource contains a collection of Pod objects.
+
+			A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation.
+			It represents a customization of a particular Kubernetes installation.
+			However, many core Kubernetes functions are now built using custom resources, making Kubernetes more modular.
+
+			Custom resources can appear and disappear in a running cluster through dynamic registration, and cluster admins can update custom resources independently of the cluster itself.
+			Once a custom resource is installed, users can create and access its objects using kubectl, just as they do for built-in resources like Pods.
+
+			On their own, custom resources let you store and retrieve structured data.
+			When you combine a custom resource with a custom controller, custom resources provide a true declarative API.
+
+			The Kubernetes declarative API enforces a separation of responsibilities.
+			You declare the desired state of your resource.
+			The Kubernetes controller keeps the current state of Kubernetes objects in sync with your declared desired state.
+			This is in contrast to an imperative API, where you instruct a server what to do.
+
+			You can deploy and update a custom controller on a running cluster, independently of the cluster's lifecycle.
+			Custom controllers can work with any kind of resource, but they are especially effective when combined with custom resources.
+			The Operator pattern combines custom resources and custom controllers.
+			You can use custom controllers to encode domain knowledge for specific applications into an extension of the Kubernetes API.
+
+		Client libraries:
+			https://kubernetes.io/docs/reference/using-api/client-libraries/
+
+	- Storage.
+		https://kubernetes.io/docs/concepts/storage/
+
+		Volume:
+			https://kubernetes.io/docs/concepts/storage/volumes/
+
+			On-disk files in a container are ephemeral, which presents some problems for non-trivial applications when running in containers.
+			One problem is the loss of files when a container crashes. The kubelet restarts the container but with a clean state.
+			A second problem occurs when sharing files between containers running together in a Pod.
+			The Kubernetes volume abstraction solves both of these problems.
+
+		Persistent volume:
+			https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+			https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/
+
+			Managing storage is a distinct problem from managing compute instances.
+			The PersistentVolume subsystem provides an API for users and administrators that abstracts details of how storage is provided from how it is consumed.
+			To do this, we introduce two new API resources: PersistentVolume and PersistentVolumeClaim.
+
+			A PersistentVolume (PV) is a piece of storage in the cluster that has been provisioned by an administrator or dynamically provisioned using Storage Classes.
+			It is a resource in the cluster just like a node is a cluster resource.
+			PVs are volume plugins like Volumes, but have a lifecycle independent of any individual Pod that uses the PV.
+			This API object captures the details of the implementation of the storage, be that NFS, iSCSI, or a cloud-provider-specific storage system.
+
+			A PersistentVolumeClaim (PVC) is a request for storage by a user.
+			It is similar to a Pod. Pods consume node resources and PVCs consume PV resources.
+			Pods can request specific levels of resources (CPU and Memory).
+			Claims can request specific size and access modes (e.g., they can be mounted ReadWriteOnce, ReadOnlyMany or ReadWriteMany, see AccessModes).
+
+	- Configuration.
+		https://kubernetes.io/docs/concepts/configuration
+
+		ConfigMap:
+			https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
+			https://kubernetes.io/docs/concepts/configuration/configmap/
+
+			A ConfigMap is an API object used to store non-confidential data in key-value pairs.
+
+		Secret:
+			https://kubernetes.io/docs/concepts/configuration/secret/
+
+			A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key.
+
+			kubectl create secret generic empty-secret
+			kubectl get secret empty-secret
+			kubectl create secret docker-registry secret-tiger-docker \
+				--docker-username=tiger \
+				--docker-password=pass113 \
+				--docker-email=tiger@acme.com
+			kubectl create secret tls my-tls-secret \
+				--cert=path/to/cert/file \
+				--key=path/to/key/file
+			kubectl edit secrets mysecret
+
+	- Scheduling, Preemption and Eviction.
+		https://kubernetes.io/docs/concepts/scheduling-eviction/
+
+		Taints and Tolerations:
+			https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+
+			Node affinity is a property of Pods that attracts them to a set of nodes (either as a preference or a hard requirement).
+			Taints are the opposite -- they allow a node to repel a set of pods.
+
+			Tolerations are applied to pods, and allow (but do not require) the pods to schedule onto nodes with matching taints.
+
+			Taints and tolerations work together to ensure that pods are not scheduled onto inappropriate nodes.
+			One or more taints are applied to a node; this marks that the node should not accept any pods that do not tolerate the taints.
+
+	- Security.
+		https://kubernetes.io/docs/concepts/security/
+
+		Pod Security levels:
+			https://kubernetes.io/docs/concepts/security/pod-security-admission/
+
+		Controlling Access to the Kubernetes API:
+			https://kubernetes.io/docs/concepts/security/controlling-access/
+
+[-] Installation.
+	https://kubernetes.io/releases/download/
+	https://www.downloadkubernetes.com/
+	https://kubernetes.io/docs/tasks/tools/
+
+	- Install (Linux).
+		kubelet, kubeadm, kubectl:
+			https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
+			kubectl version -o json
+
+		kubectl:
+			https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+			https://kubectl.docs.kubernetes.io/installation/kubectl/
+
+			sudo snap install kubectl --classic
+
+			Download the latest release:
+				curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+			Validate the binary (optional):
+				curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+				echo "$(<kubectl.sha256) kubectl" | sha256sum --check
+			Install kubectl:
+				sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+				If you do not have root access on the target system:
+				chmod +x kubectl
+				mkdir -p ~/.local/bin/kubectl
+				mv ./kubectl ~/.local/bin/kubectl
+				add ~/.local/bin/kubectl to $PATH
+			Test to ensure the version you installed is up-to-date:
+				kubectl version --client
+
+			Download the latest release:
+				curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+				curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.19.0/bin/linux/amd64/kubectl
+			Make the kubectl binary executable:
+				chmod +x ./kubectl
+			Move the binary in to your PATH:
+				sudo mv ./kubectl /usr/local/bin/kubectl
+			Test to ensure the version you installed is up-to-date:
+				kubectl version --client
+
+		kubeadm:
+			https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/kubelet-integration/
+			https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
+			sudo snap install kubelet --classic
+			sudo snap install kubeadm --classic
+			sudo snap install kubectl --classic
+
+			sudo kubelet --fail-swap-on=false
+				Set up a service:
+					https://github.com/kubernetes/release/blob/master/cmd/kubepkg/templates/latest/deb/kubelet/lib/systemd/system/kubelet.service
+			sudo kubeadm init
+				https://github.com/kubernetes/release/blob/master/cmd/kubepkg/templates/latest/deb/kubeadm/10-kubeadm.conf
+
+			systemctl daemon-reload
+			systemctl start kubelet --fail-swap-on=false
+			systemctl restart kubelet --fail-swap-on=false
+			systemctl stop kubelet
+			systemctl start kubeadm
+			systemctl restart kubeadm
+			systemctl stop kubeadm
+
+		kustomize:
+			https://kubectl.docs.kubernetes.io/installation/kustomize/
+
+			curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+
+			wget https://github.com/kubernetes-sigs/kustomize/releases/download/v3.2.0/kustomize_3.2.0_linux_amd64
+			chmod u+x kustomize_3.2.0_linux_amd64
+			sudo mv kustomize /usr/local/bin/
+			kustomize version
+
+		kube-apiserver:
+			sudo snap install kube-apiserver
+				==> Not working.
+
+			mkdir -p $HOME/.kube
+			cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+			sudo chown $(id -u):$(id -g) $HOME/.kube/config
+			export KUBECONFIG=$HOME/.kube/config/admin.conf
+
+		microk8s:
+			https://microk8s.io/
+			https://ubuntu.com/tutorials/install-a-local-kubernetes-with-microk8s
+
+			sudo snap install microk8s --classic
+
+			microk8s status --wait-ready
+			microk8s enable dashboard dns registry istio
+			microk8s kubectl get all --all-namespaces
+			export token=$(microk8s kubectl -n kube-system get secret | grep default-token | cut -d " " -f1)
+			microk8s kubectl -n kube-system describe secret $token
+			microk8s kubectl create deployment microbot --image=dontrebootme/microbot:v1
+			microk8s kubectl scale deployment microbot --replicas=2
+			microk8s kubectl expose deployment microbot --type=NodePort --port=80 --name=microbot-service
+
+			microk8s dashboard-proxy
+
+			microk8s start
+			microk8s stop
+
+[-] Troubleshooting.
+	- <error> The connection to the server localhost:8080 was refused - did you specify the right host or port?
+		<solution>
+			https://twofootdog.tistory.com/82
+
+			mkdir -p $HOME/.kube
+			sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+			sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+	- <error> "[kubelet-check] It seems like the kubelet isn't running or healthy."
+		<reference>
+			https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/configure-cgroup-driver/
+		<check>
+			docker info | grep Cgroup
+			journalctl -xeu kubelet
+		<solution>
+			mkdir /etc/docker
+
+			cat <<EOF | sudo tee /etc/docker/daemon.json
+			{
+			  "exec-opts": ["native.cgroupdriver=systemd"],
+			  "log-driver": "json-file",
+			  "log-opts": {
+				"max-size": "100m"
+			  },
+			  "storage-driver": "overlay2"
+			}
+			EOF
+
+			sudo systemctl enable docker
+			sudo systemctl daemon-reload
+			sudo systemctl restart docker
+
+			kubeadm reset
+			kubeadm init
+
+	- <error> misconfiguration: kubelet cgroup driver: "cgroupfs" is different from docker cgroup driver: "systemd"
+		<check>
+			journalctl -xeu kubelet
+		<solution>
+			Append to /etc/docker/daemon.json:
+				{
+				  ...
+				  "exec-opts": ["native.cgroupdriver=systemd"]
+				}
+
+			sudo systemctl restart docker
+
+			sudo systemctl status docker
+			journalctl -xeu docker
+
+			sudo docker info | grep -i cgroup
+	
+	- <error> "error trying to reach service: dial tcp 172.17.0.3:80: connect: connection refused"
+		<solution>
+			https://github.com/kubernetes/website/issues/26199
+
+			kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1 --port=8080
+			export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
+			curl http://localhost:8001/api/v1/namespaces/default/pods/$POD_NAME/proxy/
+
+	- <error> container runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized
+		<check>
+			kubectl get node <NODE_NAME>
+		<solution>
+			Install pod network add-on:
+				kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+			sudo systemctl restart kubelet
+			kubectl get nodes
+
+	- <error> Readiness probe failed: HTTP probe failed with statuscode: 503
+		<check>
+			kubectl get svc -n kube-system -o wide
+			kubectl get pods -n kube-system -o wide
+			kubectl describe pod <COREDNS_POD_NAME> -n kube-system
+		<solution>
+			https://github.com/coredns/coredns/blob/master/plugin/loop/README.md#troubleshooting-loops-in-kubernetes-clusters
+
+			(Optional) set the firewall:
+				sudo ufw disable
+
+			(Optional) edit /etc/hosts:
+				<before>
+					127.0.0.1      localhost
+				<after>
+					127.0.0.1      localhost localhost.localdomain sminds1
+
+			Edit kubelet config, /var/lib/kubelet/config.yaml:
+				<before>
+					resolvConf: /run/systemd/resolve/resolv.conf
+						In /run/systemd/resolve/resolv.conf:
+							nameserver 127.0.0.53
+				<after>
+					resolvConf: ${HOME}/work/testbed/kube/resolv.conf
+						In ${HOME}/work/testbed/kube/resolv.conf:
+							#nameserver 127.0.0.53
+							nameserver 8.8.8.8
+							nameserver 8.8.4.4
+
+	- <error> Readiness probe failed: Get "https://192.0.1.6:8443/": dial tcp 192.0.1.6:8443: connect: connection refused
+		<check>
+			kubectl get pods --all-namespaces -o wide
+			kubectl describe pod <POD_NAME> -n <NAMESPACE_NAME>
+		<solution 1>
+			sudo ufw disable
+		<solution 2>
+			Re-create a cluster: (???)
+				kubeadm reset
+					rm -Rf ~/.kube
+					sudo rm -Rf /etc/cni/net.d
+				kubeadm init
+					sudo kubeadm init --pod-network-cidr=192.168.100.0/8
+					sudo kubeadm init --apiserver-advertise-address=192.168.20.3 --pod-network-cidr=192.168.200.0/24
+
+	- <warning> find: '/usr/lib/ssl/private': Permission denied
+		<check> kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c <CONTAINER_NAME>
+		<cause> Run a pod as a user without permission.
+		<solution>
+			https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+
+			Specify security settings for a Pod:
+				kind: Pod
+				...
+				spec:
+				  securityContext:
+					#runAsUser: 1000.
+					runAsUser: 0  # root.
+					#runAsGroup: 3000
+					#fsGroup: 2000
+
+	- <warning> The NVIDIA Driver was not detected.  GPU functionality will not be available.
+		<check> kubectl logs <POD_NAME> -n <NAMESPACE_NAME> -c <CONTAINER_NAME>
+		<env> Triton Inference Server.
+		<cause> There is no option "--gpus" (--gpus all, --gpus=1) when running the Triton Inference Server docker image, nvcr.io/nvidia/tritonserver:<xx.yy>-py3.
+		<solution>
+			Refer to "<error> 0/2 nodes are available: 2 Insufficient nvidia.com/gpu.".
+
+	- <error> 0/2 nodes are available: 2 Insufficient nvidia.com/gpu.
+		<check> kubectl describe po <POD_NAME> -n <NAMESPACE_NAME>
+		<env> Triton Inference Server.
+		<cause>
+			kind: Deployment
+			  ...
+			  resources:
+				limits:
+				  nvidia.com/gpu: 1
+		<solution>
+			https://github.com/NVIDIA/k8s-device-plugin
+
+			The new --gpus options hasn't reached kubernetes yet.
+
+			Preparing your GPU Nodes:
+				sudo apt install nvidia-docker2
+				sudo systemctl restart docker
+
+			Enable the nvidia runtime as your default runtime on your node:
+				Append to /etc/docker/daemon.json:
+					{
+					  ...
+					  "default-runtime": "nvidia",
+					  "runtimes": {
+						"nvidia": {
+						  "path": "/usr/bin/nvidia-container-runtime",
+						  "runtimeArgs": []
+						}
+					  }
+					}
+
+				sudo systemctl restart docker
+
+				sudo systemctl status docker
+				journalctl -xeu docker
+
+			Enable GPU Support in Kubernetes:
+				$ kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.11.0/nvidia-device-plugin.yml
