@@ -17,3 +17,7 @@
 		kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.2.0/serving-core.yaml
 
 		kubectl get ksvc --all-namespaces
+
+	- Uninstall.
+		kubectl delete -f https://storage.googleapis.com/knative-nightly/serving/latest/serving-core.yaml
+		kubectl delete -f https://storage.googleapis.com/knative-nightly/serving/latest/serving-crds.yaml

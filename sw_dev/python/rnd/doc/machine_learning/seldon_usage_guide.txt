@@ -72,7 +72,7 @@
 				  command: [ "sleep" ]
 				  args: [ "infinity" ]
 				  volumeMounts:
-					- mountPath: "/mnt/ml-model-pv"
+					- mountPath: "/mnt/ml-model-repo"
 					  name: ml-model-pv-storage
 					  readOnly: false
 				  resources:
@@ -87,7 +87,7 @@
 
 			In different terminal, copy the model from local into PV:
 				kubectl cp model.joblib <PV_POD_NAME>:<PV_MOUNT_PATH>/model.joblib -c <PV_CONTAINER_NAME> -n model-serving 
-					kubectl cp model.joblib ml-model-pv-pod:/mnt/ml-model-pv/model.joblib -c ml-model-pv-container -n model-serving 
+					kubectl cp model.joblib ml-model-pv-pod:/mnt/ml-model-repo/model.joblib -c ml-model-pv-container -n model-serving 
 
 		Deploy to Seldon Core in Kubernetes:
 			https://docs.seldon.io/projects/seldon-core/en/latest/servers/overview.html
@@ -108,7 +108,7 @@
 				  #children: []
 				  name: classifier
 				  type: MODEL
-				  modelUri: pvc://ml-model-pv-claim/mnt/ml-model-pv
+				  modelUri: pvc://ml-model-pv-claim/
 				  #parameters:  # Not working.
 				  #- name: method
 				  #  type: STRING
@@ -189,7 +189,7 @@
 				kubectl config set-context $(kubectl config current-context) --namespace=model-serving
 
 		Create PV and PVC:
-			kubectl apply -n model-serving -f ml-model-pv.yaml
+			kubectl apply -n model-serving -f ml_model_pv.yaml
 
 		Copy models:
 			In different terminal, copy models from local into PV:
@@ -197,10 +197,10 @@
 					kubectl exec -n model-serving -it ml-model-pv-pod -- bash
 
 			kubectl cp <MODEL_REPOSITORY>/<MODEL_DIR> <PV_POD_NAME>:<PV_MOUNT_PATH> -c <PV_CONTAINER_NAME> -n model-serving 
-				kubectl cp ${SWDT_PYTHON_HOME}/rnd/doc/machine_learning/triton/model_repository/pytorch_cifar10 ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
+				kubectl cp ${SWDT_PYTHON_HOME}/rnd/doc/machine_learning/triton/model_repository/pytorch_cifar10 ml-model-pv-pod:/mnt/ml-model-repo -c ml-model-pv-container -n model-serving 
 					Refer to triton_usage_guide.txt
-				kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/densenet_onnx ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
-				kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/simple ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
+				kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/densenet_onnx ml-model-pv-pod:/mnt/ml-model-repo -c ml-model-pv-container -n model-serving 
+				kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/simple ml-model-pv-pod:/mnt/ml-model-repo -c ml-model-pv-container -n model-serving 
 					https://github.com/triton-inference-server/server/tree/main/docs/examples/model_repository
 
 		Setup resources: (???)

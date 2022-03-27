@@ -181,7 +181,7 @@
 					Refer to seldon_usage_guide.txt.
 
 		Perform a best effort revert of changes made to the host by 'kubeadm init' or 'kubeadm join':
-			kubeadm reset
+			sudo kubeadm reset
 
 			rm -Rf ~/.kube
 			sudo rm -Rf /etc/cni/net.d

@@ -159,32 +159,32 @@
 		Refer to seldon_usage_guide.txt
 
 	- Kubernetes only.
-		kubectl apply -n model-serving -f triton-kube-example.yaml
-			${HOME}/work/testbed/kube/triton/triton-kube-example.yaml
+		kubectl apply -n model-serving -f triton_kube_example.yaml
+			${HOME}/work/testbed/kube/triton/triton_kube_example.yaml
 			Not yet completed.
 
 	- Kubernetes + Helm.
 		https://github.com/triton-inference-server/server/tree/main/deploy/k8s-onprem
 
 		Create a namespace.
-			set up a namespace of 'model-serving':
+			Set up a namespace of 'model-serving':
 				kubectl create namespace model-serving
 
 			(Optional) set the current workspace to use the 'model-serving' namespace so all our commands are run there by default (instead of running everything in the default namespace):
 				kubectl config set-context $(kubectl config current-context) --namespace=model-serving
 
 		Create PV and PVC:
-			kubectl apply -n model-serving -f ml-model-pv.yaml
+			kubectl apply -n model-serving -f ml_model_pv.yaml
 
 		Copy models:
 			In different terminal, copy models from local into PV:
 				kubectl exec -it <PV_POD_NAME> -- bash
 					kubectl exec -n model-serving -it ml-model-pv-pod -- bash
 
-			kubectl cp <MODEL_REPOSITORY>/<MODEL_DIR> <PV_POD_NAME>:<PV_MOUNT_PATH> -c <PV_CONTAINER_NAME> -n model-serving 
-				kubectl cp ${SWDT_PYTHON_HOME}/rnd/doc/machine_learning/triton/model_repository/pytorch_cifar10 ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
-				kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/simple ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
-				kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/densenet_onnx ml-model-pv-pod:/mnt/ml-model-pv -c ml-model-pv-container -n model-serving 
+			kubectl cp <MODEL_REPOSITORY>/<MODEL_DIR> <PV_POD_NAME>:<PV_MOUNT_PATH> -c <PV_CONTAINER_NAME> -n <NAMESPACE_NAME>
+				kubectl cp ${SWDT_PYTHON_HOME}/rnd/doc/machine_learning/triton/model_repository/pytorch_cifar10 ml-model-pv-pod:/mnt/ml-model-repo -c ml-model-pv-container -n model-serving 
+				kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/simple ml-model-pv-pod:/mnt/ml-model-repo -c ml-model-pv-container -n model-serving 
+				kubectl cp ${TRITON_INFERENCE_SERVER_HOME}/docs/examples/model_repository/densenet_onnx ml-model-pv-pod:/mnt/ml-model-repo -c ml-model-pv-container -n model-serving 
 					https://github.com/triton-inference-server/server/tree/main/docs/examples/model_repository
 
 		Deploy Prometheus and Grafana:

@@ -6,27 +6,6 @@
 	- Get started.
 		https://istio.io/latest/docs/setup/getting-started/
 
-		Install Istio:
-			curl -L https://istio.io/downloadIstio | sh -
-			curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.6.8 TARGET_ARCH=x86_64 sh -
-
-			cd istio-1.13.0
-			export PATH=$PWD/bin:$PATH
-
-			istioctl x precheck
-
-			istioctl install --set profile=demo -y
-			istioctl x uninstall --purge
-
-			kubectl get deploy -n istio-system
-			istioctl profile list
-
-			(Optional) add a namespace label to enable Istio to automatically inject Envoy sidecar proxies:
-				kubectl label namespace default istio-injection=enabled
-				kubectl label namespace default istio-injection=disabled
-
-			istioctl verify-install
-
 		Deploy the sample application:
 			kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
 
@@ -89,6 +68,31 @@
 	https://istio.io/latest/docs/setup/install/
 	https://istio.io/latest/docs/setup/install/istioctl/
 	https://istio.io/latest/docs/setup/install/helm/
+
+	- Install.
+		curl -L https://istio.io/downloadIstio | sh -
+		curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.6.8 TARGET_ARCH=x86_64 sh -
+
+		cd istio-1.13.2
+		export PATH=$PWD/bin:$PATH
+
+		istioctl x precheck
+
+		istioctl install --set profile=demo -y
+
+		kubectl get deploy -n istio-system
+		istioctl profile list
+
+		(Optional) add a namespace label to enable Istio to automatically inject Envoy sidecar proxies:
+			kubectl label namespace default istio-injection=enabled
+			kubectl label namespace default istio-injection=disabled
+
+		istioctl verify-install
+
+	- Uninstall.
+		istioctl x uninstall --purge
+
+		kubectl delete namespace istio-system
 
 [-] Troubleshooting.
 	- <error> Istiod encountered an error: failed to wait for resource: resources not ready after 5m0s: timed out waiting for the condition

@@ -5,13 +5,17 @@
 
 		https://www.kubeflow.org/docs/components/kfserving/
 
+	- Document.
+		https://kserve.github.io/website/0.8/
+		https://kserve.github.io/website/0.8/modelserving/control_plane/
+
 	- API.
-		https://kserve.github.io/website/reference/api/
+		https://kserve.github.io/website/0.8/reference/api/
 		https://github.com/kserve/website/blob/main/docs/reference/api.md
 
 [-] Tutorial.
 	- First InferenceService.
-		https://kserve.github.io/website/get_started/first_isvc/
+		https://kserve.github.io/website/0.8/get_started/first_isvc/
 
 		Create test InferenceService:
 			kubectl create namespace kserve-test
@@ -64,7 +68,7 @@
 				Use kubectl create instead of apply because the job template is using generateName which doesn't work with kubectl apply.
 
 	- Deploy sklearn-learn models with InferenceService.
-		https://kserve.github.io/website/modelserving/v1beta1/sklearn/v2/
+		https://kserve.github.io/website/0.8/modelserving/v1beta1/sklearn/v2/
 
 		Test locally:
 			Pre-requisites:
@@ -90,39 +94,38 @@
 			SERVICE_HOSTNAME=$(kubectl get inferenceservice sklearn-irisv2 -o jsonpath='{.status.url}' | cut -d "/" -f 3)
 			curl -v -H "Host: ${SERVICE_HOSTNAME}" -d @./iris-input.json http://${INGRESS_HOST}:${INGRESS_PORT}/v2/models/sklearn-irisv2/infer
 
-	- Predict on an InferenceService with a saved model on PVC.
-		https://kserve.github.io/website/modelserving/storage/pvc/pvc/
+	- Predict on an InferenceService with a saved model on PV.
+		https://kserve.github.io/website/0.8/modelserving/storage/pvc/pvc/
 
 		Install Scikit-Learn Server:
 			https://github.com/kserve/kserve/tree/master/python/sklearnserver
 
+		Create a namespace of 'model-serving':
+			kubectl create namespace model-serving
+
 		Create PV and PVC:
-			kubectl apply -f pv-and-pvc.yaml
+			kubectl apply -n model-serving -f ml_model_pv.yaml
 
-		Copy model to PV:
-			kubectl apply -f pv-model-store.yaml
-
+		Copy a model to PV:
 			kubectl exec -it <PV_POD_NAME> -- bash
-				kubectl exec -it model-store-pod -- bash
-				kubectl exec -it ml-model-pv-pod -- bash
+				kubectl exec -n model-serving -it ml-model-pv-pod -- bash
 
 			In different terminal, copy the model from local into PV:
-				kubectl cp model.joblib <PV_POD_NAME>:<PV_MOUNT_PATH>/model.joblib -c <PV_CONTAINER_NAME>
-					kubectl cp model.joblib model-store-pod:/pv/model.joblib -c model-store
-					kubectl cp model.joblib ml-model-pv-pod:/ml-model-pv/model.joblib -c ml-model-pv-container
+				kubectl cp model.joblib <PV_POD_NAME>:<PV_MOUNT_PATH>/model.joblib -c <PV_CONTAINER_NAME> -n <NAMESPACE_NAME>
+					kubectl cp model.joblib ml-model-pv-pod:/mnt/ml-model-repo/model.joblib -c ml-model-pv-container -n model-serving 
 
-		Deploy InferenceService with models on PVC:
-			kubectl apply -f sklearn-pvc.yaml
+		Deploy InferenceService with models on PV:
+			kubectl apply -n model-serving -f sklearn_on_pv.yaml
 
 		Run a prediction:
-			SERVICE_HOSTNAME=$(kubectl get inferenceservice sklearn-pvc -o jsonpath='{.status.url}' | cut -d "/" -f 3)
+			SERVICE_HOSTNAME=$(kubectl get inferenceservice sklearn-on-pv -n model-serving -o jsonpath='{.status.url}' | cut -d "/" -f 3)
 
-			MODEL_NAME=sklearn-pvc
+			MODEL_NAME=sklearn-on-pv
 			INPUT_PATH=@./input.json
 			curl -v -H "Host: ${SERVICE_HOSTNAME}" http://${INGRESS_HOST}:${INGRESS_PORT}/v1/models/$MODEL_NAME:predict -d $INPUT_PATH
 
 	- Deploy Tensorflow Model with InferenceService.
-		https://kserve.github.io/website/modelserving/v1beta1/tensorflow/
+		https://kserve.github.io/website/0.8/modelserving/v1beta1/tensorflow/
 		https://github.com/kserve/kserve/tree/master/docs/samples/v1beta1/tensorflow
 
 		Create the HTTP InferenceService:
@@ -166,11 +169,11 @@
 				python grpc_client.py --host $INGRESS_HOST --port $INGRESS_PORT --model $MODEL_NAME --hostname $SERVICE_HOSTNAME --input_path $INPUT_PATH
 
 	- Deploy PyTorch model with TorchServe InferenceService.
-		https://kserve.github.io/website/modelserving/v1beta1/torchserve/
+		https://kserve.github.io/website/0.8/modelserving/v1beta1/torchserve/
 
 		(Optional) create model storage with model archive file:
 			Generate model archiver files for torchserve.
-				https://kserve.github.io/website/modelserving/v1beta1/torchserve/model-archiver/
+				https://kserve.github.io/website/0.8/modelserving/v1beta1/torchserve/model-archiver/
 
 			(Optional) install Torchserve Model Archive Files (MAR):
 				https://github.com/pytorch/serve
@@ -203,34 +206,33 @@
 			curl -v -H "Host: ${SERVICE_HOSTNAME}" http://${INGRESS_HOST}:${INGRESS_PORT}/v1/models/mnist:explain -d @./mnist.json
 
 		Autoscaling:
-			https://kserve.github.io/website/modelserving/v1beta1/torchserve/autoscaling/
+			https://kserve.github.io/website/0.8/modelserving/v1beta1/torchserve/#autoscaling
 
 		Canary Rollout:
-			https://kserve.github.io/website/modelserving/v1beta1/torchserve/canary/
+			https://kserve.github.io/website/0.8/modelserving/v1beta1/torchserve/#canary-rollout
 
 		Monitoring:
-			https://kserve.github.io/website/modelserving/v1beta1/torchserve/metrics/
+			https://kserve.github.io/website/0.8/modelserving/v1beta1/torchserve/metrics/
 
 	- Predict on a Triton InferenceService with TorchScript model (PyTorch).
-		https://kserve.github.io/website/modelserving/v1beta1/triton/torchscript/
+		https://kserve.github.io/website/0.8/modelserving/v1beta1/triton/torchscript/
 
 	- QA Inference with BERT model using Triton Inference Server (TensorFlow).
-		https://kserve.github.io/website/modelserving/v1beta1/triton/bert/
+		https://kserve.github.io/website/0.8/modelserving/v1beta1/triton/bert/
 
 	- Deploy Custom Python Model Server with InferenceService.
-		https://kserve.github.io/website/modelserving/v1beta1/custom/custom_model/
+		https://kserve.github.io/website/0.8/modelserving/v1beta1/custom/custom_model/
 
-[-] Usage.
+[-] Usage (Amazon Web Service).
 	- AWS EBS.
 		https://mokpolar.github.io/kfserving_custum_mobilenet/
 
 [-] Installation.
-	https://kserve.github.io/website/get_started/
-	https://raw.githubusercontent.com/kserve/kserve/release-0.7/hack/quick_install.sh
+	https://kserve.github.io/website/0.8/get_started/
+	https://raw.githubusercontent.com/kserve/kserve/release-0.8/hack/quick_install.sh
 
 	- Serverless mode.
 		https://kserve.github.io/website/0.8/admin/serverless/
-		https://kserve.github.io/website/admin/serverless/
 
 		Method 1:
 			Install Istio:
@@ -277,12 +279,16 @@
 			kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.8.0/kserve.yaml
 			kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.8.0/kserve-runtimes.yaml
 
+		Uninstall KServe:
+			kubectl delete -f https://github.com/kserve/kserve/releases/download/v0.8.0/kserve-runtimes.yaml
+			kubectl delete -f https://github.com/kserve/kserve/releases/download/v0.8.0/kserve.yaml
+
 		Check:
 			kubectl get ksvc --all-namespaces
 			kubectl get isvc --all-namespaces
 
 	- Raw deployment mode.
-		https://kserve.github.io/website/admin/kubernetes_deployment/
+		https://kserve.github.io/website/0.8/admin/kubernetes_deployment/
 
 [-] Troubleshooting.
 	- <error>
