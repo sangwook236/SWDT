@@ -291,7 +291,7 @@ def minimal_example():
 		model = Autoencoder.load_from_checkpoint("/path/to/checkpoint.ckpt")
 		#model = Autoencoder.load_from_checkpoint("/path/to/checkpoint.ckpt", map_location={"cuda:1": "cuda:0"})
 		#model = Autoencoder.load_from_checkpoint("/path/to/checkpoint.ckpt", latent_dim=4)  # Hyper-parameters.
-		#model = Autoencoder.load_from_checkpoint("/path/to/checkpoint.ckpt", hparams_file='/path/to/hparams_file.yaml')  # Hyper-parameters.
+		#model = Autoencoder.load_from_checkpoint("/path/to/checkpoint.ckpt", hparams_file="/path/to/hparams_file.yaml")  # Hyper-parameters.
 	print("A model created.")
 
 	#--------------------
@@ -299,7 +299,7 @@ def minimal_example():
 	print("Training...")
 	if True:
 		trainer = pl.Trainer(gpus=2, max_epochs=20)
-		#trainer = pl.Trainer(default_root_dir="/path/to/checkpoints")  # Saves checkpoints to '/path/to/checkpoints' at every epoch end.
+		#trainer = pl.Trainer(default_root_dir="/path/to/checkpoints")  # Saves checkpoints to "/path/to/checkpoints" at every epoch end.
 		#trainer = pl.Trainer(resume_from_checkpoint="/path/to/checkpoint.ckpt")  # Resume training.
 		#trainer = pl.Trainer(gpus=1, precision=16)  # FP16 mixed precision.
 		#trainer = pl.Trainer(gpus=1, precision="bf16")  # BFloat16 mixed precision.
