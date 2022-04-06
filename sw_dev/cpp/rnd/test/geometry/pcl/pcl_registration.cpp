@@ -2,9 +2,14 @@
 #include <thread>
 #include <iostream>
 #include <pcl/point_types.h>
-#include <pcl/features/normal_3d.h>
+#include <pcl/filters/passthrough.h>
 #include <pcl/filters/voxel_grid.h>
+#include <pcl/features/normal_3d.h>
+#include <pcl/features/fpfh.h>
 #include <pcl/registration/icp.h>
+#include <pcl/registration/ia_ransac.h>
+#include <pcl/registration/ia_fpcs.h>
+#include <pcl/registration/ia_kfpcs.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/io/ply_io.h>
 #include <pcl/visualization/pcl_visualizer.h>
@@ -260,6 +265,377 @@ void registration_example()
 #endif
 }
 
+// REF [site] >> https://github.com/PointCloudLibrary/pcl/blob/master/test/registration/test_sac_ia.cpp
+void sac_ic_test()
+{
+	using PointT = pcl::PointXYZ;
+
+	const std::string source_filepath("/path/to/sample_1.pcd");
+	const std::string source_filepath("/path/to/sample_2.pcd");
+
+	// Load the source and target cloud PCD files.
+	pcl::PointCloud<PointT> cloud_source, cloud_target;
+	{
+		if (-1 == pcl::io::loadPCDFile(source_filepath, cloud_source))
+		{
+			const std::string err("File not found, " + source_filepath + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+
+		if (-1 == pcl::io::loadPCDFile(target_filepath, cloud_target))
+		{
+			const std::string err("File not found, " + target_filepath + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+
+		std::cout << "Loaded " << cloud_source.size() << " data points (" << pcl::getFieldsList(cloud_source) << ") from " << source_filepath << std::endl;
+		std::cout << "Loaded " << cloud_target.size() << " data points (" << pcl::getFieldsList(cloud_target) << ") from " << target_filepath << std::endl;
+
+		// Trim the point clouds.
+		const float depth_limit = 1.0f;
+		pcl::PassThrough<PointT> pass;
+		pass.setFilterFieldName("z");
+		pass.setFilterLimits(0, depth_limit);
+		//pass.setFilterLimits(depth_limit, std::numeric_limits<float>::max());
+
+		pass.setInputCloud(cloud_source.makeShared());
+		pass.filter(cloud_source);
+
+		pass.setInputCloud(cloud_target.makeShared());
+		pass.filter(cloud_target);
+
+		// Downsample.
+		const float voxel_size = 0.05f;
+		pcl::VoxelGrid<PointT> sor;
+		sor.setLeafSize(voxel_size, voxel_size, voxel_size);
+
+		sor.setInputCloud(cloud_source.makeShared());
+		sor.filter(cloud_source);
+
+		sor.setInputCloud(cloud_target.makeShared());
+		sor.filter(cloud_target);
+
+		std::cout << "Preprocessed " << cloud_source.size() << " data points (" << pcl::getFieldsList(cloud_source) << ")" << std::endl;
+		std::cout << "Preprocessed " << cloud_target.size() << " data points (" << pcl::getFieldsList(cloud_target) << ")" << std::endl;
+	}
+
+	// Create shared pointers.
+	pcl::PointCloud<PointT>::Ptr cloud_source_ptr = cloud_source.makeShared();
+	pcl::PointCloud<PointT>::Ptr cloud_target_ptr = cloud_target.makeShared();
+
+	// SAC-IA.
+	pcl::PointCloud<PointT> cloud_reg;
+	pcl::SampleConsensusInitialAlignment<PointT, PointT, pcl::FPFHSignature33> sac_ia;
+	{
+		std::cout << "SAC-IA..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+
+		// Initialize estimators for surface normals and FPFH features.
+		pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT>);
+
+		pcl::NormalEstimation<PointT, pcl::Normal> norm_est;
+		norm_est.setSearchMethod(tree);
+		norm_est.setRadiusSearch(0.05);
+		pcl::PointCloud<pcl::Normal> normals;
+
+		pcl::FPFHEstimation<PointT, pcl::Normal, pcl::FPFHSignature33> fpfh_est;
+		fpfh_est.setSearchMethod(tree);
+		fpfh_est.setRadiusSearch(0.05);
+
+		// Estimate the FPFH features for the source cloud.
+		pcl::PointCloud<pcl::FPFHSignature33> features_source;
+		norm_est.setInputCloud(cloud_source_ptr);
+		norm_est.compute(normals);
+		fpfh_est.setInputCloud(cloud_source_ptr);
+		fpfh_est.setInputNormals(normals.makeShared());
+		fpfh_est.compute(features_source);
+
+		// Estimate the FPFH features for the target cloud.
+		pcl::PointCloud<pcl::FPFHSignature33> features_target;
+		norm_est.setInputCloud(cloud_target_ptr);
+		norm_est.compute(normals);
+		fpfh_est.setInputCloud(cloud_target_ptr);
+		fpfh_est.setInputNormals(normals.makeShared());
+		fpfh_est.compute(features_target);
+
+		// Initialize Sample Consensus Initial Alignment (SAC-IA).
+		sac_ia.setMinSampleDistance(0.05f);
+		sac_ia.setMaxCorrespondenceDistance(0.1);
+		sac_ia.setMaximumIterations(1000);
+
+		sac_ia.setInputSource(cloud_source_ptr);
+		sac_ia.setInputTarget(cloud_target_ptr);
+		sac_ia.setSourceFeatures(features_source.makeShared());
+		sac_ia.setTargetFeatures(features_target.makeShared());
+
+		// Register.
+		sac_ia.align(cloud_reg);
+		//EXPECT_EQ(cloud_reg.size(), cloud_source.size());
+		//EXPECT_LT(sac_ia.getFitnessScore(), 0.0005);
+
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "SAC-IA performed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
+
+		std::cout << "Converged: " << sac_ia.hasConverged() << ", score: " << sac_ia.getFitnessScore() << std::endl;
+		std::cout << sac_ia.getFinalTransformation() << std::endl;
+	}
+
+	// Check again, for all possible caching schemes.
+	for (int iter = 0; iter < 4; ++iter)
+	{
+		std::cout << "SAC-IA..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+
+		const bool force_cache = static_cast<bool>(iter / 2);
+		const bool force_cache_reciprocal = static_cast<bool>(iter % 2);
+
+		// Ensure that, when force_cache is not set, we are robust to the wrong input.
+		pcl::search::KdTree<PointT>::Ptr tree(new pcl::search::KdTree<PointT>);
+		if (force_cache)
+			tree->setInputCloud(cloud_target_ptr);
+		sac_ia.setSearchMethodTarget(tree, force_cache);
+
+		pcl::search::KdTree<PointT>::Ptr tree_recip(new pcl::search::KdTree<PointT>);
+		if (force_cache_reciprocal)
+			tree_recip->setInputCloud(cloud_source_ptr);
+		sac_ia.setSearchMethodSource(tree_recip, force_cache_reciprocal);
+
+		// Register.
+		sac_ia.align(cloud_reg);
+		//EXPECT_EQ(cloud_reg.size(), cloud_source.size());
+		//EXPECT_LT(sac_ia.getFitnessScore(), 0.0005);
+
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "SAC-IA performed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
+
+		std::cout << "Converged: " << sac_ia.hasConverged() << ", score: " << sac_ia.getFitnessScore() << std::endl;
+		std::cout << sac_ia.getFinalTransformation() << std::endl;
+	}
+}
+
+// REF [site] >> https://github.com/PointCloudLibrary/pcl/blob/master/test/registration/test_fpcs_ia.cpp
+void fpcs_test()
+{
+	using PointT = pcl::PointXYZ;
+
+	const std::string source_filepath("/path/to/sample_1.pcd");
+	const std::string source_filepath("/path/to/sample_2.pcd");
+
+	// Load the source and target cloud PCD files.
+	pcl::PointCloud<PointT> cloud_source, cloud_target;
+	{
+		if (-1 == pcl::io::loadPCDFile(source_filepath, cloud_source))
+		{
+			const std::string err("File not found, " + source_filepath + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+
+		if (-1 == pcl::io::loadPCDFile(target_filepath, cloud_target))
+		{
+			const std::string err("File not found, " + target_filepath + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+
+		std::cout << "Loaded " << cloud_source.size() << " data points (" << pcl::getFieldsList(cloud_source) << ") from " << source_filepath << std::endl;
+		std::cout << "Loaded " << cloud_target.size() << " data points (" << pcl::getFieldsList(cloud_target) << ") from " << target_filepath << std::endl;
+
+		// Trim the point clouds.
+		const float depth_limit = 1.0f;
+		pcl::PassThrough<PointT> pass;
+		pass.setFilterFieldName("z");
+		pass.setFilterLimits(0, depth_limit);
+		//pass.setFilterLimits(depth_limit, std::numeric_limits<float>::max());
+
+		pass.setInputCloud(cloud_source.makeShared());
+		pass.filter(cloud_source);
+
+		pass.setInputCloud(cloud_target.makeShared());
+		pass.filter(cloud_target);
+
+		// Downsample.
+		const float voxel_size = 0.05f;
+		pcl::VoxelGrid<PointT> sor;
+		sor.setLeafSize(voxel_size, voxel_size, voxel_size);
+
+		sor.setInputCloud(cloud_source.makeShared());
+		sor.filter(cloud_source);
+
+		sor.setInputCloud(cloud_target.makeShared());
+		sor.filter(cloud_target);
+
+		std::cout << "Preprocessed " << cloud_source.size() << " data points (" << pcl::getFieldsList(cloud_source) << ")" << std::endl;
+		std::cout << "Preprocessed " << cloud_target.size() << " data points (" << pcl::getFieldsList(cloud_target) << ")" << std::endl;
+	}
+
+	// Create shared pointers.
+	pcl::PointCloud<PointT>::Ptr cloud_source_ptr = cloud_source.makeShared();
+	pcl::PointCloud<PointT>::Ptr cloud_target_ptr = cloud_target.makeShared();
+
+	// 4PCS.
+	pcl::PointCloud<PointT> cloud_reg;
+	pcl::registration::FPCSInitialAlignment<PointT, PointT> fpcs_ia;
+	{
+		std::cout << "4PCS..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+
+		// Initialize 4PCS.
+		const int nr_threads = 1;
+		const float approx_overlap = 0.9f;
+		const float delta = 1.0f;
+		const int nr_samples = 100;
+
+		fpcs_ia.setInputSource(cloud_source_ptr);
+		fpcs_ia.setInputTarget(cloud_target_ptr);
+
+		fpcs_ia.setNumberOfThreads(nr_threads);
+		fpcs_ia.setApproxOverlap(approx_overlap);
+		fpcs_ia.setDelta(delta, true);
+		fpcs_ia.setNumberOfSamples(nr_samples);
+
+		// Align.
+		fpcs_ia.align(cloud_reg);
+		//EXPECT_EQ(cloud_reg.size(), cloud_source.size());
+
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "4PCS performed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
+
+		std::cout << "Converged: " << fpcs_ia.hasConverged() << ", score: " << fpcs_ia.getFitnessScore() << std::endl;
+		std::cout << fpcs_ia.getFinalTransformation() << std::endl;
+	}
+
+	// Check for correct coarse transformation marix.
+	//const Eigen::Matrix4f transform_res_from_fpcs = fpcs_ia.getFinalTransformation();
+	//for (int i = 0; i < 4; ++i)
+	//	for (int j = 0; j < 4; ++j)
+	//		EXPECT_NEAR(transform_res_from_fpcs(i, j), transform_from_fpcs[i][j], 0.5);
+}
+
+// REF [site] >> https://github.com/PointCloudLibrary/pcl/blob/master/test/registration/test_kfpcs_ia.cpp
+void kfpcs_test()
+{
+	//using PointT = pcl::PointXYZI;
+	using PointT = pcl::PointXYZ;
+
+	const auto previous_verbosity_level = pcl::console::getVerbosityLevel();
+	pcl::console::setVerbosityLevel(pcl::console::L_VERBOSE);
+
+	const std::string source_filepath("/path/to/sample_1.pcd");
+	const std::string source_filepath("/path/to/sample_2.pcd");
+
+	// Load the source and target cloud PCD files.
+	pcl::PointCloud<PointT> cloud_source, cloud_target;
+	{
+		if (-1 == pcl::io::loadPCDFile(source_filepath, cloud_source))
+		{
+			const std::string err("File not found, " + source_filepath + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+
+		if (-1 == pcl::io::loadPCDFile(target_filepath, cloud_target))
+		{
+			const std::string err("File not found, " + target_filepath + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+
+		std::cout << "Loaded " << cloud_source.size() << " data points (" << pcl::getFieldsList(cloud_source) << ") from " << source_filepath << std::endl;
+		std::cout << "Loaded " << cloud_target.size() << " data points (" << pcl::getFieldsList(cloud_target) << ") from " << target_filepath << std::endl;
+
+		// Trim the point clouds.
+		const float depth_limit = 1.0f;
+		pcl::PassThrough<PointT> pass;
+		pass.setFilterFieldName("z");
+		pass.setFilterLimits(0, depth_limit);
+		//pass.setFilterLimits(depth_limit, std::numeric_limits<float>::max());
+
+		pass.setInputCloud(cloud_source.makeShared());
+		pass.filter(cloud_source);
+
+		pass.setInputCloud(cloud_target.makeShared());
+		pass.filter(cloud_target);
+
+		// Downsample.
+		const float voxel_size = 0.05f;
+		pcl::VoxelGrid<PointT> sor;
+		sor.setLeafSize(voxel_size, voxel_size, voxel_size);
+
+		sor.setInputCloud(cloud_source.makeShared());
+		sor.filter(cloud_source);
+
+		sor.setInputCloud(cloud_target.makeShared());
+		sor.filter(cloud_target);
+
+		std::cout << "Preprocessed " << cloud_source.size() << " data points (" << pcl::getFieldsList(cloud_source) << ")" << std::endl;
+		std::cout << "Preprocessed " << cloud_target.size() << " data points (" << pcl::getFieldsList(cloud_target) << ")" << std::endl;
+	}
+
+	// Create shared pointers.
+	pcl::PointCloud<PointT>::Ptr cloud_source_ptr = cloud_source.makeShared();
+	pcl::PointCloud<PointT>::Ptr cloud_target_ptr = cloud_target.makeShared();
+
+	// K-4PCS.
+	pcl::PointCloud<PointT> cloud_reg;
+	{
+		std::cout << "K-4PCS..." << std::endl;
+		const auto start_time(std::chrono::high_resolution_clock::now());
+
+		// Initialize K-4PCS.
+		const int nr_threads = 8;
+		const float voxel_size = 0.1f;
+		const float approx_overlap = 0.9f;
+		const float abort_score = 0.0f;
+
+		pcl::registration::KFPCSInitialAlignment<PointT, PointT> kfpcs_ia;
+		kfpcs_ia.setInputSource(cloud_source_ptr);
+		kfpcs_ia.setInputTarget(cloud_target_ptr);
+
+		kfpcs_ia.setNumberOfThreads(nr_threads);
+		kfpcs_ia.setApproxOverlap(approx_overlap);
+		kfpcs_ia.setDelta(voxel_size, false);
+		kfpcs_ia.setScoreThreshold(abort_score);
+
+		// Repeat alignment 2 times to increase probability to ~99.99%.
+		const float max_angle3d = 0.1745f, max_translation3d = 1.0f;
+		float angle3d = std::numeric_limits<float>::max(), translation3d = std::numeric_limits<float>::max();
+		for (int i = 0; i < 2; ++i)
+		{
+			kfpcs_ia.align(cloud_reg);
+
+/*
+			// Copy initial matrix.
+			Eigen::Matrix4f transform_groundtruth;
+			for (int ii = 0; ii < 4; ++ii)
+				for (int jj = 0; jj < 4; ++jj)
+					transform_groundtruth(ii, jj) = transformation_office1_office2[ii][jj];
+
+			// Check for correct transformation.
+			const Eigen::Matrix4f transform_rest = kfpcs_ia.getFinalTransformation().colPivHouseholderQr().solve(transform_groundtruth);
+			angle3d = std::min(angle3d, Eigen::AngleAxisf(transform_rest.block<3, 3>(0, 0)).angle());
+			translation3d = std::min(translation3d, transform_rest.block<3, 1>(0, 3).norm());
+			
+			if (angle3d < max_angle3d && translation3d < max_translation3d)
+				break;
+*/
+		}
+
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "K-4PCS performed: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
+
+		std::cout << "Converged: " << kfpcs_ia.hasConverged() << ", score: " << kfpcs_ia.getFitnessScore() << std::endl;
+		std::cout << kfpcs_ia.getFinalTransformation() << std::endl;
+	}
+
+	//EXPECT_EQ(cloud_reg.size(), cloud_source.size());
+	//EXPECT_NEAR(angle3d, 0.0f, max_angle3d);
+	//EXPECT_NEAR(translation3d, 0.0f, max_translation3d);
+	pcl::console::setVerbosityLevel(previous_verbosity_level);  // Reset verbosity level.
+}
+
 } // namespace local
 } // unnamed namespace
 
@@ -270,6 +646,11 @@ void registration()
 {
 	//local::registration_tutorial();
 	local::registration_example();
+
+	// Initial alignment.
+	//local::sac_ic_test();  // NOTE [info] >> Slow. (~20 secs)
+	//local::fpcs_test();  // NOTE [info] >> The alignment results are unstable.
+	//local::kfpcs_test();  // NOTE [info] >> Too slow.
 }
 
 } // namespace my_pcl
