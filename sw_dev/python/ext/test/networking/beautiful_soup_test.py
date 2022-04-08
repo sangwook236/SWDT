@@ -142,15 +142,15 @@ def visualize_table():
 </tbody>
 """
 
-	#html_page = BeautifulSoup("<table>" + table_tags + "</table>", features="lxml").prettify()
-	html_page = construct_html_table_page("".join(table_tags))
+	html_page = BeautifulSoup("<table>" + table_tags + "</table>", features="lxml").prettify()
+	#html_page = construct_html_table_page(table_tags)
 	#print(html_page)
 
-	# Show a HTML.
-	html_img = imgkit.from_string(html_page, False)
-	html_img = PIL.Image.open(io.BytesIO(html_img))
+	# Show a HTML image.
+	html_image = imgkit.from_string(html_page, False)
+	html_image = PIL.Image.open(io.BytesIO(html_image))
 	#plt.figure()
-	plt.imshow(html_img)
+	plt.imshow(html_image)
 	plt.tight_layout()
 	#plt.title("HTML Table Image")
 	plt.axis("off")
