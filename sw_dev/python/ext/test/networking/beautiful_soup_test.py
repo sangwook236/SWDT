@@ -92,47 +92,78 @@ def index_table_cells():
 
 	table = soup.find("table")
 
-	def index_cells(cell_grid, row, row_idx):
-		col_idx = 0
-		for col in row.find_all(lambda tag: tag.name in ("th", "td")):
-			while (row_idx, col_idx) in cell_grid:
-				col_idx += 1
-			row_span = max(int(col.attrs["rowspan"]) if "rowspan" in col.attrs else 1, 1)
-			col_span = max(int(col.attrs["colspan"]) if "colspan" in col.attrs else 1, 1)
-			for _ in range(col_span):
-				for ri in range(row_span):
-					cell_grid[(row_idx + ri, col_idx)] = col.text
-				col_idx += 1
-
-	cell_grid = dict()
-	row_idx = 0
-	if table.thead:
-		for row in table.thead.find_all("tr"):
-			index_cells(cell_grid, row, row_idx)
-			row_idx += 1
-	if table.tbody:
-		for row in table.tbody.find_all("tr"):
-			index_cells(cell_grid, row, row_idx)
-			row_idx += 1
-	if table.tfoot:
-		for row in table.tfoot.find_all("tr"):
-			index_cells(cell_grid, row, row_idx)
-			row_idx += 1
-
-	print("Table cells = {}.".format(cell_grid))
-
 	#--------------------
-	num_rows = functools.reduce(lambda maxval, rc: max(maxval, rc[0]), cell_grid, 0) + 1
-	num_cols = functools.reduce(lambda maxval, rc: max(maxval, rc[1]), cell_grid, 0) + 1
-	print("Table size = ({}, {}).".format(num_rows, num_cols))
+	def construct_grid_table(table):
+		grid_table = dict()
+		row_idx, max_col_idx = 0, 0
+		for row in table.find_all("tr"):
+			col_idx = 0
+			for col in row.find_all(lambda tag: tag.name in ("th", "td")):
+				while (row_idx, col_idx) in grid_table:
+					col_idx += 1
+				row_span = max(int(col.attrs["rowspan"]) if "rowspan" in col.attrs else 1, 1)
+				col_span = max(int(col.attrs["colspan"]) if "colspan" in col.attrs else 1, 1)
+				for _ in range(col_span):
+					for ri in range(row_span):
+						grid_table[(row_idx + ri, col_idx)] = col.text
+					col_idx += 1
+			row_idx += 1
+			max_col_idx = max(max_col_idx, col_idx)
+		return grid_table, (row_idx, max_col_idx)
+
+	grid_table, table_size = construct_grid_table(table)
+	#if table.thead:
+	#	grid_table, table_size = construct_grid_table(table.thead)
+	#if table.tbody:
+	#	grid_table, table_size = construct_grid_table(table.tbody)
+	#if table.tfoot:
+	#	grid_table, table_size = construct_grid_table(table.tfoot)
+
+	print("Grid table = {}.".format(grid_table))
+	print("Grid table size = {}.".format(table_size))
+
+	#-----
+	#num_rows = functools.reduce(lambda maxval, rc: max(maxval, rc[0]), grid_table, 0) + 1
+	#num_cols = functools.reduce(lambda maxval, rc: max(maxval, rc[1]), grid_table, 0) + 1
+	num_rows, num_cols = table_size
 
 	table_data = [[None] * num_cols for _ in range(num_rows)]
-	for (row_idx, col_idx), cell_text in cell_grid.items():
+	for (row_idx, col_idx), cell_text in grid_table.items():
 		table_data[row_idx][col_idx] = cell_text
 	#print(table_data)
 
 	table_df = pd.DataFrame(table_data) 
 	print(table_df)
+
+	#--------------------
+	def get_table_cell_start_indices(table_component, start_row_idx=0):
+		cell_start_indices = list()
+		grid_table = dict()
+		row_idx = 0
+		for row in table_component.find_all("tr"):
+			col_idx = 0
+			for col in row.find_all(lambda tag: tag.name in ("th", "td")):
+				while (row_idx, col_idx) in grid_table:
+					col_idx += 1
+				cell_start_indices.append((start_row_idx + row_idx, col_idx))
+				row_span = max(int(col.attrs["rowspan"]) if "rowspan" in col.attrs else 1, 1)
+				col_span = max(int(col.attrs["colspan"]) if "colspan" in col.attrs else 1, 1)
+				for _ in range(col_span):
+					for ri in range(row_span):
+						grid_table[(row_idx + ri, col_idx)] = col.text
+					col_idx += 1
+			row_idx += 1
+		return cell_start_indices
+
+	table_cell_start_indices = get_table_cell_start_indices(table, start_row_idx=0)
+	#if table.thead:
+	#	table_cell_start_indices = get_table_cell_start_indices(table.thead, start_row_idx=0)
+	#if table.tbody:
+	#	table_cell_start_indices = get_table_cell_start_indices(table.tbody, start_row_idx=0)
+	#if table.tfoot:
+	#	table_cell_start_indices = get_table_cell_start_indices(table.tfoot, start_row_idx=0)
+
+	print("Table cell start indices = {}.".format(table_cell_start_indices))
 
 def construct_html_table_page(table_tags):
 	html_page = """<!DOCTYPE html>
@@ -187,6 +218,7 @@ def visualize_table():
 </tbody>
 """
 
+	#html_page = BeautifulSoup("<html><body><table>" + table_tags + "</table></body></html>", features="lxml").prettify()
 	html_page = BeautifulSoup("<table>" + table_tags + "</table>", features="lxml").prettify()
 	#html_page = construct_html_table_page(table_tags)
 	#print(html_page)
