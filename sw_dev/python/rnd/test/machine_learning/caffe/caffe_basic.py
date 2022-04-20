@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # export PYTHONPATH=${CAFFE_HOME}/python:$PYTHONPATH
 # export LD_LIBRARY_PATH=${CAFFE_HOME}/build/install/lib:$LD_LIBRARY_PATH
@@ -11,21 +12,24 @@ from caffe.proto import caffe_pb2
 from PIL import Image
 from google.protobuf import text_format
 
-# Download the latest caffe.proto.
-# Compile into python library.
-#	protoc --python_out=. caffe.proto
-#		Generates caffe_pb2.py.
-#		caffe_pb2.py also exists in ${CAFFE_HOME}/python/caffe/proto after making.
-# Import and parse.
-#	import caffe_pb2
+# Usage:
+#	Download the latest caffe.proto.
+#	Compile into python library.
+#		protoc --python_out=. caffe.proto
+#			Generates caffe_pb2.py.
+#			caffe_pb2.py also exists in ${CAFFE_HOME}/python/caffe/proto after making.
+#	Import and parse.
+#		import caffe_pb2
+
 def parse_caffe_model():
 	if 'posix' == os.name:
-		caffe_home_dir_path = '/home/sangwook/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = '/home/sangwook/my_repo/cpp/caffe_github'
 	else:
-		caffe_home_dir_path = 'D:/lib_repo/cpp/rnd/caffe_github'
-		#caffe_home_dir_path = 'D:/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = 'D:/work/my_repo/cpp/rnd/caffe_github'
+		#caffe_home_dir_path = 'D:/work/my_repo/cpp/caffe_github'
 
 	# Trained Caffe model file.
+	#	REF [site] >> https://github.com/BVLC/caffe
 	caffe_model_filepath = caffe_home_dir_path + '/models/bvlc_alexnet/bvlc_alexnet.caffemodel'
 	#caffe_model_filepath = caffe_home_dir_path + '/models/bvlc_googlenet/bvlc_googlenet.caffemodel'
 	#caffe_model_filepath = caffe_home_dir_path + '/models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel'
@@ -37,7 +41,7 @@ def parse_caffe_model():
 		netParam.ParseFromString(fd.read())
 
 	#print(netParam)
-	print('#layers =', len(netParam.layer))
+	print('#layers = {}.'.format(len(netParam.layer)))
 
 	for layer in netParam.layer:
 		shapes = list()
@@ -48,12 +52,13 @@ def parse_caffe_model():
 
 def parse_caffe_prototxt():
 	if 'posix' == os.name:
-		caffe_home_dir_path = '/home/sangwook/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = '/home/sangwook/my_repo/cpp/caffe_github'
 	else:
-		caffe_home_dir_path = 'D:/lib_repo/cpp/rnd/caffe_github'
-		#caffe_home_dir_path = 'D:/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = 'D:/work/my_repo/cpp/rnd/caffe_github'
+		#caffe_home_dir_path = 'D:/work/my_repo/cpp/caffe_github'
 
 	# Network definition file.
+	#	REF [site] >> https://github.com/BVLC/caffe
 	#deploy_prototxt_filepath = caffe_home_dir_path + '/models/bvlc_alexnet/deploy.prototxt'
 	#deploy_prototxt_filepath = caffe_home_dir_path + '/models/bvlc_googlenet/deploy.prototxt'
 	deploy_prototxt_filepath = caffe_home_dir_path + '/models/bvlc_reference_caffenet/deploy.prototxt'
@@ -64,7 +69,40 @@ def parse_caffe_prototxt():
 		text_format.Merge(fd.read(), netParam)
 
 	#print(netParam)
-	print('#layers =', len(netParam.layer))
+	print('#layers = {}.'.format(len(netParam.layer)))
+
+	#--------------------
+	prototxt_filepath = './conv.prototxt'
+
+	net = caffe.Net(prototxt_filepath, caffe.TEST)
+
+	print('Input names: {}.'.format(net.inputs))  # The names of input layers.
+
+	for layer in net.layers:
+		print('layer: {}.'.format(type(layer)))
+	for blob in net._blobs:
+		print('blob: {}.'.format(type(blob)))
+
+	print("Layers' names: {}.".format(net._layer_names))
+	for idx, name in enumerate(net._layer_names):
+		print('Layer {}: {}.'.format(idx, name))
+	print("Blobs' names: {}.".format(net._blob_names))
+	for idx, name in enumerate(net._blob_names):
+		print('Blob {}: {}.'.format(idx, name))
+
+	# Input data and its propagation in the layers.
+	print('Layers:')
+	print([(k, v.data.shape) for k, v in net.blobs.items()])
+
+	print(net.blobs['data'])  # Input data, an array of shape (1, 1, 100, 100).
+	print(net.blobs['conv'])  # Data in layer 'conv' (1, 3, 96, 96), initialiazed with zeros.
+
+	# A vector of blobs for weight and bias parameters.
+	print('Weight and bias parameters:')
+	print([(k, v[0].data.shape, v[1].data.shape) for k, v in net.params.items()])
+
+	print(net.params['conv'][0])  # The weight parameters, an array of shape (3, 1, 5, 5) initialiazed with 'weight_filler' algorithm.
+	print(net.params['conv'][1])  # The bias parameters, an array of shape (3,) initialiazed with 'bias_filler' algorithm.
 
 def numpy_to_blobproto():
 	arr = np.random.rand(2, 3, 4)
@@ -78,12 +116,13 @@ def numpy_to_blobproto():
 
 def load_npy_weights_into_caffe_model():
 	if 'posix' == os.name:
-		caffe_home_dir_path = '/home/sangwook/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = '/home/sangwook/my_repo/cpp/caffe_github'
 	else:
-		caffe_home_dir_path = 'D:/lib_repo/cpp/rnd/caffe_github'
-		#caffe_home_dir_path = 'D:/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = 'D:/work/my_repo/cpp/rnd/caffe_github'
+		#caffe_home_dir_path = 'D:/work/my_repo/cpp/caffe_github'
 
 	# Network definition file.
+	#	REF [site] >> https://github.com/BVLC/caffe
 	#prototxt_filepath = caffe_home_dir_path + '/models/bvlc_alexnet/deploy.prototxt'
 	#prototxt_filepath = caffe_home_dir_path + '/models/bvlc_googlenet/deploy.prototxt'
 	#prototxt_filepath = caffe_home_dir_path + '/models/bvlc_reference_caffenet/deploy.prototxt'
@@ -92,33 +131,20 @@ def load_npy_weights_into_caffe_model():
 	#--------------------
 	net = caffe.Net(prototxt_filepath, caffe.TEST)
 
-	print('#layers =', len(net.layers), len(net._layer_names))
-	print('#blobs =', len(net._blobs), len(net._blob_names))
-	print('#blobs =', len(net.blobs))
-
-	#--------------------
-	#for layer in net.layers:
-	#	print('layer =', type(layer))
-	#for blob in net._blobs:
-	#	print('blob =', type(blob))
-
-	#print("Layers' names =", net._layer_names)
-	#for idx, name in enumerate(net._layer_names):
-	#	print('Layer {} = {}'.format(idx, name))
-	#print("Blobs' names =", net._blob_names)):
-	#for idx, name in enumerate(net._blob_names):
-	#	print('Blob {} = {}'.format(idx, name))
+	print('#layers = {}, {}.'.format(len(net.layers), len(net._layer_names)))
+	print('#blobs = {}, {}.'.format(len(net._blobs), len(net._blob_names)))
+	print('#blobs = {}.'.format(len(net.blobs)))
 
 	# REF [site] >> http://caffe.berkeleyvision.org/tutorial/net_layer_blob.html
 	blob_count = 0
 	for idx, layer in enumerate(net.layers):
-		print('Layer {}: {}, {}, {}'.format(idx, net._layer_names[idx], layer.type, len(layer.blobs)))
+		print('Layer {}: {}, {}, {}.'.format(idx, net._layer_names[idx], layer.type, len(layer.blobs)))
 		blob_count += len(layer.blobs)
 		for ii, blob in enumerate(layer.blobs):
 			#print('\tBlob {} = {}, {}'.format(ii, type(blob.data), blob.data.shape))
 			blob.data[...] = np.full_like(blob.data, 37)
 			print(blob.data)
-	print('#actual blobs =', blob_count)
+	print('#actual blobs = {}.'.format(blob_count))
 
 def create_lenet(lmdb, batch_size):
 	net = caffe.NetSpec()
@@ -133,19 +159,20 @@ def create_lenet(lmdb, batch_size):
 	net.loss = caffe.layers.SoftmaxWithLoss(net.ip2, net.label)
 	return net.to_proto()  # caffe.proto.caffe_pb2.NetParameter.
 
-# REF [site] >> http://christopher5106.github.io/deep/learning/2015/09/04/Deep-learning-tutorial-on-Caffe-Technology.html
+# REF [site] >> https://christopher5106.github.io/deep/learning/2015/09/04/Deep-learning-tutorial-on-Caffe-Technology.html
 def define_model():
 	if 'posix' == os.name:
-		caffe_home_dir_path = '/home/sangwook/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = '/home/sangwook/my_repo/cpp/caffe_github'
 	else:
-		caffe_home_dir_path = 'D:/lib_repo/cpp/rnd/caffe_github'
-		#caffe_home_dir_path = 'D:/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = 'D:/work/my_repo/cpp/rnd/caffe_github'
+		#caffe_home_dir_path = 'D:/work/my_repo/cpp/caffe_github'
 
 	# ${CAFFE_HOME}/examples/mnist/create_mnist.sh
 	train_data_dir_path = caffe_home_dir_path + '/examples/mnist/mnist_train_lmdb'
 	test_data_dir_path = caffe_home_dir_path + '/examples/mnist/mnist_test_lmdb'
 
 	# Network definition file.
+	#	REF [site] >> https://github.com/BVLC/caffe
 	train_prototxt_filepath = caffe_home_dir_path + '/examples/mnist/lenet_auto_train.prototxt'
 	test_prototxt_filepath = caffe_home_dir_path + '/examples/mnist/lenet_auto_test.prototxt'
 
@@ -157,13 +184,13 @@ def define_model():
 	with open(test_prototxt_filepath, 'w') as fd:
 		fd.write(str(test_model))
 
-# REF [site] >> http://christopher5106.github.io/deep/learning/2015/09/04/Deep-learning-tutorial-on-Caffe-Technology.html
+# REF [site] >> https://christopher5106.github.io/deep/learning/2015/09/04/Deep-learning-tutorial-on-Caffe-Technology.html
 def create_custom_python_layer():
 	if 'posix' == os.name:
-		caffe_home_dir_path = '/home/sangwook/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = '/home/sangwook/my_repo/cpp/caffe_github'
 	else:
-		caffe_home_dir_path = 'D:/lib_repo/cpp/rnd/caffe_github'
-		#caffe_home_dir_path = 'D:/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = 'D:/work/my_repo/cpp/rnd/caffe_github'
+		#caffe_home_dir_path = 'D:/work/my_repo/cpp/caffe_github'
 
 	model_definition_filepath = './mylayer.prototxt'
 	image_filepath = caffe_home_dir_path + '/examples/images/cat_gray.jpg'
@@ -177,14 +204,15 @@ def create_custom_python_layer():
 	net.blobs['data'].data[...] = img_input
 	net.forward()
 
-# REF [site] >> http://christopher5106.github.io/deep/learning/2015/09/04/Deep-learning-tutorial-on-Caffe-Technology.html
+# REF [site] >> https://christopher5106.github.io/deep/learning/2015/09/04/Deep-learning-tutorial-on-Caffe-Technology.html
 def simple_prediction_example():
 	if 'posix' == os.name:
-		caffe_home_dir_path = '/home/sangwook/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = '/home/sangwook/my_repo/cpp/caffe_github'
 	else:
-		caffe_home_dir_path = 'D:/lib_repo/cpp/rnd/caffe_github'
-		#caffe_home_dir_path = 'D:/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = 'D:/work/my_repo/cpp/rnd/caffe_github'
+		#caffe_home_dir_path = 'D:/work/my_repo/cpp/caffe_github'
 
+	# REF [site] >> https://github.com/BVLC/caffe
 	model_definition_filepath = caffe_home_dir_path + '/models/bvlc_reference_caffenet/deploy.prototxt'
 	trained_model_weights_filepath = caffe_home_dir_path + '/models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel'
 	mean_filepath = caffe_home_dir_path + '/python/caffe/imagenet/ilsvrc_2012_mean.npy'
@@ -216,21 +244,22 @@ def simple_prediction_example():
 	#out = net.forward_all(data=np.asarray([transformer.preprocess('data', img)]))
 
 	# Predicted class.
-	print('Predicted class =', out['prob'].argmax())
+	print('Predicted class = {}.'.format(out['prob'].argmax()))
 
 	# Print predicted labels.
 	labels = np.loadtxt(label_filepath, str, delimiter='\t')
 	top_k = net.blobs['prob'].data[0].flatten().argsort()[-1:-6:-1]
-	print('Labels =', labels[top_k])
+	print('Labels = {}.'.format(labels[top_k]))
 
-# REF [site] >> http://christopher5106.github.io/deep/learning/2015/09/04/Deep-learning-tutorial-on-Caffe-Technology.html
+# REF [site] >> https://christopher5106.github.io/deep/learning/2015/09/04/Deep-learning-tutorial-on-Caffe-Technology.html
 def simple_train_example():
 	if 'posix' == os.name:
-		caffe_home_dir_path = '/home/sangwook/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = '/home/sangwook/my_repo/cpp/caffe_github'
 	else:
-		caffe_home_dir_path = 'D:/lib_repo/cpp/rnd/caffe_github'
-		#caffe_home_dir_path = 'D:/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = 'D:/work/my_repo/cpp/rnd/caffe_github'
+		#caffe_home_dir_path = 'D:/work/my_repo/cpp/caffe_github'
 
+	# REF [site] >> https://github.com/BVLC/caffe
 	solver_filepath = caffe_home_dir_path + '/models/bvlc_reference_caffenet/solver.prototxt'
 
 	solver = caffe.get_solver(solver_filepath)
@@ -273,11 +302,12 @@ def simple_train_example():
 # REF [file] >> ${CAFFE_HOME}/python/classify.py
 def classification_example():
 	if 'posix' == os.name:
-		caffe_home_dir_path = '/home/sangwook/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = '/home/sangwook/my_repo/cpp/caffe_github'
 	else:
-		caffe_home_dir_path = 'D:/lib_repo/cpp/rnd/caffe_github'
-		#caffe_home_dir_path = 'D:/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = 'D:/work/my_repo/cpp/rnd/caffe_github'
+		#caffe_home_dir_path = 'D:/work/my_repo/cpp/caffe_github'
 
+	# REF [site] >> https://github.com/BVLC/caffe
 	model_definition_filepath = caffe_home_dir_path + '/models/bvlc_reference_caffenet/deploy.prototxt'
 	trained_model_weights_filepath = caffe_home_dir_path + '/models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel'
 	mean_filepath = caffe_home_dir_path + '/python/caffe/imagenet/ilsvrc_2012_mean.npy'
@@ -305,24 +335,25 @@ def classification_example():
 	# Classify.
 	start = time.time()
 	predictions = classifier.predict(inputs, not center_only)
-	print('Done in %.2f s.' % (time.time() - start))
+	print('Done in {:.2f} s.'.format(time.time() - start))
 
 	# REF [site] >> https://github.com/BVLC/caffe/tree/master/examples/cpp_classification
 	#	${CAFFE_HOME}/data/ilsvrc12/synset_words.txt
-	print('Class ID =', np.argmax(predictions, axis=-1))
+	print('Class ID = {}.'.format(np.argmax(predictions, axis=-1)))
 
 	# Save.
-	#print('Saving results into %s' % output_image_filepath)
+	#print('Saving results into {}.'.format(output_image_filepath))
 	#np.save(output_image_filepath, predictions)
 
 # REF [file] >> ${CAFFE_HOME}/python/detect.py
 def detection_example():
 	if 'posix' == os.name:
-		caffe_home_dir_path = '/home/sangwook/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = '/home/sangwook/my_repo/cpp/caffe_github'
 	else:
-		caffe_home_dir_path = 'D:/lib_repo/cpp/rnd/caffe_github'
-		#caffe_home_dir_path = 'D:/lib_repo/cpp/caffe_github'
+		caffe_home_dir_path = 'D:/work/my_repo/cpp/rnd/caffe_github'
+		#caffe_home_dir_path = 'D:/work/my_repo/cpp/caffe_github'
 
+	# REF [site] >> https://github.com/BVLC/caffe
 	model_definition_filepath = caffe_home_dir_path + '/models/bvlc_reference_caffenet/deploy.prototxt'
 	trained_model_weights_filepath = caffe_home_dir_path + '/models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel'
 	mean_filepath = caffe_home_dir_path + '/python/caffe/imagenet/ilsvrc_2012_mean.npy'
@@ -357,8 +388,6 @@ def detection_example():
 	else:
 		detections = detector.detect_selective_search(inputs_for_detect_selective_search)
 
-	print('**************', type(detections))
-
 	# Save results.
 	"""
 	t = time.time()
@@ -383,10 +412,10 @@ def sigmoid(x):
 
 def yolo_object_detection_example():
 	if 'posix' == os.name:
-		darknet_home_dir_path = '/home/sangwook/lib_repo/cpp/darknet_github'
+		darknet_home_dir_path = '/home/sangwook/my_repo/cpp/darknet_github'
 	else:
-		darknet_home_dir_path = 'D:/lib_repo/cpp/rnd/darknet_github'
-		#darknet_home_dir_path = 'D:/lib_repo/cpp/darknet_github'
+		darknet_home_dir_path = 'D:/work/my_repo/cpp/rnd/darknet_github'
+		#darknet_home_dir_path = 'D:/work/my_repo/cpp/darknet_github'
 
 	# Converted YOLOv3 model.
 	#	https://github.com/BingzheWu/object_detetction_tools/tree/master/nn_model_transform
@@ -444,7 +473,6 @@ def yolo_object_detection_example():
 			confidence = scores[class_id]
 			if confidence > confidence_thresh:
 				++bbox_count
-	print('+++++++++++++++', bbox_count)
 
 	aa = yolo_outputs['layer83-yolo']
 	print(aa[0,:4,0,0])  # Bounding box. (?)

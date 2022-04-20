@@ -14,12 +14,11 @@ def write_to_db_example(use_caffe_datum=False):
 	leveldb_dir_path = './myleveldb'
 	db = leveldb.LevelDB(leveldb_dir_path, create_if_missing=True)
 	if use_caffe_datum:
-		#import caffe
+		#from caffe.proto import caffe_pb2
 		import caffe_pb2
 
 		for i in range(N):
 			# REF [site] >> https://github.com/BVLC/caffe/blob/master/src/caffe/proto/caffe.proto
-			#datum = caffe.proto.caffe_pb2.Datum()
 			datum = caffe_pb2.Datum()
 			datum.channels = X.shape[1]
 			datum.height = X.shape[2]
@@ -60,11 +59,10 @@ def read_from_db_example(use_caffe_datum=False):
 		return
 
 	if use_caffe_datum:
-		#import caffe
+		#from caffe.proto import caffe_pb2
 		import caffe_pb2
 
 		# REF [site] >> https://github.com/BVLC/caffe/blob/master/src/caffe/proto/caffe.proto
-		#datum = caffe.proto.caffe_pb2.Datum()
 		datum = caffe_pb2.Datum()
 		datum.ParseFromString(raw_datum)
 
@@ -84,12 +82,11 @@ def key_value_example(use_caffe_datum=False):
 	leveldb_dir_path = './myleveldb'
 	db = leveldb.LevelDB(leveldb_dir_path, create_if_missing=True)
 	if use_caffe_datum:
-		#import caffe
+		#from caffe.proto import caffe_pb2
 		import caffe_pb2
 
 		for k, v in db.RangeIter():
 			# REF [site] >> https://github.com/BVLC/caffe/blob/master/src/caffe/proto/caffe.proto
-			#datum = caffe.proto.caffe_pb2.Datum()
 			datum = caffe_pb2.Datum()
 			datum.ParseFromString(v)
 
@@ -109,6 +106,7 @@ def main():
 	# Usage:
 	#	For using Caffe Datum:
 	#		protoc --python_out=. caffe.proto
+
 	use_caffe_datum = False
 	write_to_db_example(use_caffe_datum)
 	#read_from_db_example(use_caffe_datum)
