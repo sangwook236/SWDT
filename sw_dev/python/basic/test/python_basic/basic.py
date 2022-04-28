@@ -26,21 +26,21 @@ x = 'global'
 
 def variable_test():
 	def func1():
-		print('x =', x)
+		print('x = {}.'.format(x))
 
 	def func2():
 		x = x * 2  # UnboundLocalError: local variable 'x' referenced before assignment.
-		print('x =', x)
+		print('x = {}.'.format(x))
 
 	def func3():
 		global x
 		x = x * 2
-		print('x =', x)
+		print('x = {}.'.format(x))
 
 	def func4():
 		x = 'local'
 		x = x * 2
-		print('x =', x)
+		print('x = {}.'.format(x))
 
 	func1()
 	#func2()
@@ -48,7 +48,7 @@ def variable_test():
 	func4()
 
 	#--------------------
-	print('globals() =', globals())
+	print('globals() = {}.'.format(globals()))
 
 def control_test():
 	# For.
@@ -65,7 +65,7 @@ def container_test():
 		print('val = {}.'.format(val))
 		if 2 == val:
 			vals.remove(val)
-	print('vals =', vals)
+	print('vals = {}.'.format(vals))
 
 	vals = list(range(5))
 	for idx, val in enumerate(vals):
@@ -73,7 +73,7 @@ def container_test():
 		print('val = {}.'.format(val))
 		if 2 == val:
 			del vals[idx]
-	print('vals =', vals)
+	print('vals = {}.'.format(vals))
 
 # REF [site] >> https://docs.python.org/3/library/collections.html
 def collections_test():
@@ -85,14 +85,14 @@ def collections_test():
 	Point = collections.namedtuple('Point', ['x', 'y'])
 	p = Point(11, y=22)
 
-	print('p =', p)
-	print('p[0] + p[1] =', p[0] + p[1])
-	print('p.x + p.y =', p.x + p.y)
+	print('p = {}.'.format(p))
+	print('p[0] + p[1] = {}.'.format(p[0] + p[1]))
+	print('p.x + p.y = {}.'.format(p.x + p.y))
 
 	x, y = p
 
-	print('Point._make([11, 22]) =', Point._make([11, 22]))
-	print('p._asdict() =', p._asdict())
+	print('Point._make([11, 22]) = {}.'.format(Point._make([11, 22])))
+	print('p._asdict() = {}.'.format(p._asdict()))
 
 	# Named tuples are especially useful for assigning field names to result tuples returned by the csv or sqlite3 modules.
 
@@ -140,32 +140,32 @@ def iterable_and_iterator_test():
 	#	Iterators allow us to both work with and create lazy iterables that don’t do any work until we ask them for their next item.
 	#	Because of their laziness, the iterators can help us to deal with infinitely long iterables.
 
-	print('iter(numbers) =', iter(numbers))
-	print('iter(fruits) =', iter(fruits))
-	print('iter(message) =', iter(message))
+	print('iter(numbers) = {}.'.format(iter(numbers)))
+	print('iter(fruits) = {}.'.format(iter(fruits)))
+	print('iter(message) = {}.'.format(iter(message)))
 
 	#int_iter = iter(1)  # TypeError: 'int' object is not iterable.
 
 	seq = [10, 20, 30]
 	seq_iter = iter(seq)
 	try:
-		print('next(seq_iter) =', next(seq_iter))
-		print('next(seq_iter) =', next(seq_iter))
-		print('next(seq_iter) =', next(seq_iter))
-		print('next(seq_iter) =', next(seq_iter))  # StopIteration is raised.
+		print('next(seq_iter) = {}.'.format(next(seq_iter)))
+		print('next(seq_iter) = {}.'.format(next(seq_iter)))
+		print('next(seq_iter) = {}.'.format(next(seq_iter)))
+		print('next(seq_iter) = {}.'.format(next(seq_iter)))  # StopIteration is raised.
 	except StopIteration:
 		pass
 
 	for val in seq:
-		print('val =', val)
+		print('val = {}.'.format(val))
 	for val in iter(seq):
-		print('val =', val)
+		print('val = {}.'.format(val))
 
 	# If we call the iter() function on an iterator it will always give us itself back.
 	seq_iter2 = iter(seq_iter)
-	print('seq_iter is seq_iter2 =', seq_iter is seq_iter2)
+	print('seq_iter is seq_iter2 = {}.'.format(seq_iter is seq_iter2))
 
-	#print('len(seq_iter) =', len(seq_iter))  # TypeError: object of type 'list_iterator' has no len().
+	#print('len(seq_iter) = {}.'.format(len(seq_iter)))  # TypeError: object of type 'list_iterator' has no len().
 
 	#--------------------
 	class MyIterable1(object):
@@ -182,9 +182,9 @@ def iterable_and_iterator_test():
 		#	return len(self.seq)
 
 	iterable1 = MyIterable1()
-	#print('len(iterable1) =', len(iterable1))  # TypeError: object of type 'MyIterable1' has no len().
-	print('iterable1 =', [val for val in iterable1])
-	print('iterable1 =', [val for val in iter(iterable1)])
+	#print('len(iterable1) = {}.'.format(len(iterable1)))  # TypeError: object of type 'MyIterable1' has no len().
+	print('iterable1 = {}.'.format([val for val in iterable1]))
+	print('iterable1 = {}.'.format([val for val in iter(iterable1)]))
 
 	class MyIterable2(object):
 		def __init__(self):
@@ -198,9 +198,9 @@ def iterable_and_iterator_test():
 		#	return len(self.seq)
 
 	iterable2 = MyIterable2()
-	#print('len(iterable2) =', len(iterable2))  # TypeError: object of type 'MyIterable2' has no len().
-	print('iterable2 =', [val for val in iterable2])
-	print('iterable2 =', [val for val in iter(iterable2)])
+	#print('len(iterable2) = {}.'.format(len(iterable2)))  # TypeError: object of type 'MyIterable2' has no len().
+	print('iterable2 = {}.'.format([val for val in iterable2]))
+	print('iterable2 = {}.'.format([val for val in iter(iterable2)]))
 
 	class MyIterator(object):
 		def __init__(self):
@@ -219,15 +219,15 @@ def iterable_and_iterator_test():
 		#	return self.len
 
 	iterator = MyIterator()
-	#print('len(iterator) =', len(iterator))  # TypeError: object of type 'MyIterator' has no len().
-	#print('iterator =', [val for val in iterator])  # TypeError: 'MyIterator' object is not iterable.
+	#print('len(iterator) = {}.'.format(len(iterator)))  # TypeError: object of type 'MyIterator' has no len().
+	#print('iterator = {}.'.format([val for val in iterator]))  # TypeError: 'MyIterator' object is not iterable.
 	vals = list()
 	try:
 		for _ in range(100):
 			vals.append(next(iterator))
 	except StopIteration:
 		pass
-	print('iterator =', vals)
+	print('iterator = {}.'.format(vals))
 
 	class MyNumbers(object):
 		def __init__(self):
@@ -250,30 +250,30 @@ def iterable_and_iterator_test():
 		#	#return int(decimal.Decimal('Infinity'))  # OverflowError: cannot convert Infinity to integer.
 
 	numbers = MyNumbers()
-	#print('len(numbers) =', len(numbers))  # TypeError: object of type 'MyNumbers' has no len().
+	#print('len(numbers) = {}.'.format(len(numbers)))  # TypeError: object of type 'MyNumbers' has no len().
 
 	nums = list()
 	for num in numbers:
 		nums.append(num)
 		if num >= 2:
 			break
-	print('numbers1 =', nums)
+	print('numbers1 = {}.'.format(nums))
 	nums = list()
 	for num in iter(numbers):
 		nums.append(num)
 		if num >= 4:
 			break
-	print('numbers2 =', nums)
+	print('numbers2 = {}.'.format(nums))
 	nums = list()
 	for num in numbers:
 		nums.append(num)
 		if num >= 6:
 			break
-	print('numbers3 =', nums)
+	print('numbers3 = {}.'.format(nums))
 	nums = list()
 	for _ in range(5):
 		nums.append(next(numbers))
-	print('numbers4 =', nums)
+	print('numbers4 = {}.'.format(nums))
 
 def assert_test():
 	#assert(2 + 2 == 5, 'Error: Addition.')  # Error: Not working.
@@ -323,7 +323,7 @@ def with_statement_test():
 			print('Guard was exited.')
 
 		def func(self, d):
-			print('Guard.func() was called: {}, {}'.format(self._i, d))
+			print('Guard.func() was called: {}, {}.'.format(self._i, d))
 
 	print('Step #1.')
 	with Guard(1) as guard:
@@ -342,17 +342,17 @@ def function_test():
 		foo.var = 10  # No local variable.
 		var = 1  # A local variable.
 		foo.num_calls += 1
-		print(f'id(foo.var) = {id(foo.var)}, id(var) = {id(var)}')
-		print(f'Call {foo.num_calls} of {foo.__name__!r}')
+		print(f'id(foo.var) = {id(foo.var)}, id(var) = {id(var)}.')
+		print(f'Call {foo.num_calls} of {foo.__name__!r}.')
 	foo.num_calls = 0  # Initialization. Similar to static variable in C/C++.
 
-	#print('foo.var =', foo.var)  # AttributeError: 'function' object has no attribute 'var'.
+	#print('foo.var = {}.'.format(foo.var))  # AttributeError: 'function' object has no attribute 'var'.
 
 	foo()
 	foo()
 	foo()
 
-	print('foo.var =', foo.var)
+	print('foo.var = {}.'.format(foo.var))
 
 	#--------------------
 	# Method and function.
@@ -370,18 +370,18 @@ def function_test():
 
 	obj = MyClass()
 
-	print('type(obj.f) =', type(obj.f))  # <class 'method'>.
-	print('type(obj.g) =', type(obj.g))  # <class 'function'>.
-	print('type(obj.p) =', type(obj.p))  # <class 'method'>.
-	print('type(obj.q) =', type(obj.q))  # <class 'function'>.
+	print('type(obj.f) = {}.'.format(type(obj.f)))  # <class 'method'>.
+	print('type(obj.g) = {}.'.format(type(obj.g)))  # <class 'function'>.
+	print('type(obj.p) = {}.'.format(type(obj.p)))  # <class 'method'>.
+	print('type(obj.q) = {}.'.format(type(obj.q)))  # <class 'function'>.
 
 	def f1(x):
 		return x * x
 
 	f2 = lambda x: x * x
 
-	print('type(f1) =', type(f1))  # <class 'function'>.
-	print('type(f2) =', type(f2))  # <class 'function'>.
+	print('type(f1) = {}.'.format(type(f1)))  # <class 'function'>.
+	print('type(f2) = {}.'.format(type(f2)))  # <class 'function'>.
 
 	#--------------------
 	# Function signature.
@@ -416,7 +416,7 @@ def lambda_expression():
 	def make_incrementor(n):
 		return lambda x: x + n
 
-	print('Type of lambda expression =', type(make_incrementor))
+	print('Type of lambda expression = {}.'.format(type(make_incrementor)))
 
 	increment_func = make_incrementor(5)
 	print(increment_func(1))
@@ -426,23 +426,23 @@ def lambda_expression():
 	b = [4, 5, 6]
 	c = [7, 8, 9]
 	a_plus_b_plus_c = list(map(lambda x, y, z: x + y + z, a, b, c))
-	print('a + b + c =', a_plus_b_plus_c)
+	print('a + b + c = {}.'.format(a_plus_b_plus_c))
 
 	noop_func = lambda x, y: None
 	#def noop_func(x, y): pass
-	print('noop_func is called:', noop_func(2, 3))
+	print('noop_func is called: {}.'.format(noop_func(2, 3)))
 
 	#func2 = lambda x, y: x, y  # NameError: name 'y' is not defined.
 	func2 = lambda x, y: (x, y)
-	print('func2 is called:', func2(2, 3))
+	print('func2 is called: {}.'.format(func2(2, 3)))
 
 def map_filter_reduce():
 	# Map.
 
 	items = [1, 2, 3, 4, 5]
 	squared = map(lambda x: x**2, items)  # class 'map'.
-	print('Type of map() =', type(squared), squared)
-	print('squared =', list(squared))
+	print('Type of map() = {}: {}.'.format(type(squared), squared))
+	print('squared = {}.'.format(list(squared)))
 
 	def mul(x):
 		return x * x
@@ -456,10 +456,10 @@ def map_filter_reduce():
 
 	# More than two args.
 	map_with_two_args = map(lambda x, y: x + y, range(5), range(5))
-	print('Mapping a function with two argments =', list(map_with_two_args))
+	print('Mapping a function with two argments = {}.'.format(list(map_with_two_args)))
 
 	map_with_three_args = map(lambda x, y, z: x + y + z, range(10), range(5), range(8))
-	print('Mapping a function with three argments =', list(map_with_three_args))
+	print('Mapping a function with three argments = {}.'.format(list(map_with_three_args)))
 
 	def foo(x):
 		if x == 7: raise StopIteration
@@ -470,65 +470,65 @@ def map_filter_reduce():
 		vals = [foo(val) for val in range(10)]
 	except StopIteration:
 		pass
-	print('values =', vals)  # NameError: name 'vals' is not defined.
+	print('values = {}.'.format(vals)) # NameError: name 'vals' is not defined.
 	try:
 		vals = map(foo, range(10))
 	except StopIteration:
 		pass
-	print('values =', list(vals))
+	print('values = {}.'.format(list(vals)))
 
 	#--------------------
 	# Filter.
 
 	number_list = range(-5, 5)
 	less_than_zero = filter(lambda x: x < 0, number_list)  # class 'filter'.
-	print('Type of filter() =', type(less_than_zero), less_than_zero)
-	print('less_than_zero =', list(less_than_zero))
+	print('Type of filter() = {}: {}.'.format(type(less_than_zero), less_than_zero))
+	print('less_than_zero = {}.'.format(list(less_than_zero)))
 
 	# More than two args.
-	#print('Max =', list(filter(lambda x, y: x + y <= 5, [1, 4, 5], [3, 2, 5])))  # TypeError: filter expected 2 arguments, got 3.
-	print('Max =', list(filter(lambda xy: xy[0] + xy[1] <= 5, zip([1, 4, 5], [3, 2, 5]))))  # Result = [(1, 3)].
-	#print('Max =', list(filter(lambda x, y: x <= y, [1, 4, 5], [3, 2, 5])))  # TypeError: filter expected 2 arguments, got 3.
-	print('Max =', list(filter(lambda xy: xy[0] <= xy[1], zip([1, 4, 5], [3, 2, 5]))))  # Result = [(1, 3), (5, 5)].
+	#print('Max = {}.'.format(list(filter(lambda x, y: x + y <= 5, [1, 4, 5], [3, 2, 5]))))  # TypeError: filter expected 2 arguments, got 3.
+	print('Max = {}.'.format(list(filter(lambda xy: xy[0] + xy[1] <= 5, zip([1, 4, 5], [3, 2, 5])))))  # Result = [(1, 3)].
+	#print('Max = {}.'.format(list(filter(lambda x, y: x <= y, [1, 4, 5], [3, 2, 5]))))  # TypeError: filter expected 2 arguments, got 3.
+	print('Max = {}.'.format(list(filter(lambda xy: xy[0] <= xy[1], zip([1, 4, 5], [3, 2, 5])))))  # Result = [(1, 3), (5, 5)].
 
 	#--------------------
 	# Reduce.
 
 	items = [3, 4, 5, 6, 7]
 	summation = functools.reduce(lambda x, y: x + y, items)
-	print('Type of reduce() =', type(summation), summation)  # The type of reduce() is its return type.
-	print('Summation =', summation)
+	print('Type of reduce() = {}: {}.'.format(type(summation), summation))  # The type of reduce() is its return type.
+	print('Summation = {}.'.format(summation))
 	product = functools.reduce(lambda x, y: x * y, items)
-	print('Product =', product)
+	print('Product = {}.'.format(product))
 
-	print('Max =', functools.reduce(max, [5, 8, 3, 1]))
-	print('Concatenation =', functools.reduce(lambda s, x: s + str(x), [1, 2, 3, 4], ''))
-	print('Flatten =', functools.reduce(operator.concat, [[1, 2], [3, 4], [], [5]], []))
+	print('Max = {}.'.format(functools.reduce(max, [5, 8, 3, 1])))
+	print('Concatenation = {}.'.format(functools.reduce(lambda s, x: s + str(x), [1, 2, 3, 4], '')))
+	print('Flatten = {}.'.format(functools.reduce(operator.concat, [[1, 2], [3, 4], [], [5]], [])))
 
 	difference = functools.reduce(lambda x, y: x - y, items, 100)
-	print('Difference =', difference)
+	print('Difference = {}.'.format(difference))
 
 	# More than two args.
-	#print('Max =', functools.reduce(lambda x, y: max(x, y), [5, 8, 3, 1], [2, 5, -1, 7], 0))  # TypeError: reduce expected at most 3 arguments, got 4.
-	print('Max =', functools.reduce(lambda x, y: (max(x[0], y[0]), max(x[1], y[1])), zip([5, 8, 3, 1], [2, 5, -1, 7])))  # Result = (8, 7).
-	print('Min & max =', functools.reduce(lambda x, y: (min(x[0], y[0]), max(x[1], y[1])), zip([5, 8, 3, 1], [2, 5, -1, 7])))  # Result = (1, 7).
+	#print('Max = {}.'.format(functools.reduce(lambda x, y: max(x, y), [5, 8, 3, 1], [2, 5, -1, 7], 0)))  # TypeError: reduce expected at most 3 arguments, got 4.
+	print('Max = {}.'.format(functools.reduce(lambda x, y: (max(x[0], y[0]), max(x[1], y[1])), zip([5, 8, 3, 1], [2, 5, -1, 7]))))  # Result = (8, 7).
+	print('Min & max = {}.'.format(functools.reduce(lambda x, y: (min(x[0], y[0]), max(x[1], y[1])), zip([5, 8, 3, 1], [2, 5, -1, 7]))))  # Result = (1, 7).
 
 	#--------------------
 	# Chaining:
 	#	Map -> filter -> reduce.
 	#	Filter -> map -> reduce.
 
-	print('Chaining =', functools.reduce(lambda x, y: x + y, filter(lambda x: 0 == x % 2, map(lambda x: x**2, range(100)))))
+	print('Chaining = {}.'.format(functools.reduce(lambda x, y: x + y, filter(lambda x: 0 == x % 2, map(lambda x: x**2, range(100))))))
 
 	def evaluate_polynomial(a, x):
 		xi = map(lambda i: x**i, range(0, len(a)))  # [x^0, x^1, x^2, ..., x^(n-1)].
 		axi = map(operator.mul, a, xi)  # [a[0]*x^0, a[1]*x^1, ..., a[n-1]*x^(n-1)]
 		return functools.reduce(operator.add, axi, 0)
-	print('Polynomial =', evaluate_polynomial([1, 2, 3, 4], 2))
+	print('Polynomial = {}.'.format(evaluate_polynomial([1, 2, 3, 4], 2)))
 
 # REF [site] >> https://docs.python.org/3/library/itertools.html
 def itertools_test():
-	print('itertools.count(10) =', type(itertools.count(10)))
+	print('itertools.count(10) = {}.'.format(type(itertools.count(10))))
 	print('itertools.count(10) =', end=' ')
 	for item in itertools.count(start=10, step=2):
 		print(item, end=', ')
@@ -537,7 +537,7 @@ def itertools_test():
 	print()
 
 	#--------------------
-	print("itertools.cycle('ABCD') =", type(itertools.cycle('ABCD')))
+	print("itertools.cycle('ABCD') = {}.".format(type(itertools.cycle('ABCD'))))
 	print("itertools.cycle('ABCD') =", end=' ')
 	for idx, item in enumerate(itertools.cycle('ABCD')):
 		print(item, end=', ')
@@ -546,49 +546,49 @@ def itertools_test():
 	print()
 
 	#--------------------
-	print('itertools.repeat(37, 7) =', type(itertools.repeat(37, 7)))
+	print('itertools.repeat(37, 7) = {}.'.format(type(itertools.repeat(37, 7))))
 	print('itertools.repeat(37, 7) =', end=' ')
 	for item in itertools.repeat(37, 7):
 		print(item, end=', ')
 	print()
 
 	#--------------------
-	print('itertools.accumulate([1, 2, 3, 4, 5]) =', type(itertools.accumulate([1, 2, 3, 4, 5])))
+	print('itertools.accumulate([1, 2, 3, 4, 5]) = {}.'.format(type(itertools.accumulate([1, 2, 3, 4, 5]))))
 	print('itertools.accumulate([1, 2, 3, 4, 5]) =', end=' ')
 	for item in itertools.accumulate([1, 2, 3, 4, 5]):
 		print(item, end=', ')
 	print()
 
 	#--------------------
-	print("itertools.groupby('AAAABBBCCDAABBB') =", type(itertools.groupby('AAAABBBCCDAABBB')))
-	print("itertools.groupby('AAAABBBCCDAABBB'): keys =", list(k for k, g in itertools.groupby('AAAABBBCCDAABBB')))
-	print("itertools.groupby('AAAABBBCCDAABBB'): groups =", list(list(g) for k, g in itertools.groupby('AAAABBBCCDAABBB')))
+	print("itertools.groupby('AAAABBBCCDAABBB') = {}.".format(type(itertools.groupby('AAAABBBCCDAABBB'))))
+	print("itertools.groupby('AAAABBBCCDAABBB'): keys = {}.".format(list(k for k, g in itertools.groupby('AAAABBBCCDAABBB'))))
+	print("itertools.groupby('AAAABBBCCDAABBB'): groups = {}.".format(list(list(g) for k, g in itertools.groupby('AAAABBBCCDAABBB'))))
 
 	#--------------------
-	print("itertools.chain('ABC', 'DEF', 'ghi') =", list(itertools.chain('ABC', 'DEF', 'ghi')))
-	print("itertools.chain.from_iterable(['ABC', 'DEF', 'ghi']) =", list(itertools.chain.from_iterable(['ABC', 'DEF', 'ghi'])))
+	print("itertools.chain('ABC', 'DEF', 'ghi') = {}.".format(list(itertools.chain('ABC', 'DEF', 'ghi'))))
+	print("itertools.chain.from_iterable(['ABC', 'DEF', 'ghi']) = {}.".format(list(itertools.chain.from_iterable(['ABC', 'DEF', 'ghi']))))
 
-	print("itertools.compress('ABCDEF', [1, 0, 1, 0, 1, 1]) =", list(itertools.compress('ABCDEF', [1, 0, 1, 0, 1, 1])))
-	print("itertools.islice('ABCDEFG', 2, None) =", list(itertools.islice('ABCDEFG', 2, None)))
+	print("itertools.compress('ABCDEF', [1, 0, 1, 0, 1, 1]) = {}.".format(list(itertools.compress('ABCDEF', [1, 0, 1, 0, 1, 1]))))
+	print("itertools.islice('ABCDEFG', 2, None) = {}.".format(list(itertools.islice('ABCDEFG', 2, None))))
 
-	print('itertools.starmap(pow, [(2, 5), (3, 2), (10, 3)]) =', list(itertools.starmap(pow, [(2, 5), (3, 2), (10, 3)])))
-
-	#--------------------
-	print('itertools.filterfalse(lambda x: x % 2, range(10)) =', list(itertools.filterfalse(lambda x: x % 2, range(10))))
-	print('itertools.dropwhile(lambda x: x < 5, [1, 4, 6, 4, 1] =', list(itertools.dropwhile(lambda x: x < 5, [1, 4, 6, 4, 1])))
-	print('itertools.takewhile(lambda x: x < 5, [1, 4, 6, 4, 1] =', list(itertools.takewhile(lambda x: x < 5, [1, 4, 6, 4, 1])))
+	print('itertools.starmap(pow, [(2, 5), (3, 2), (10, 3)]) = {}.'.format(list(itertools.starmap(pow, [(2, 5), (3, 2), (10, 3)]))))
 
 	#--------------------
-	print("itertools.zip_longest('ABCD', 'xy', fillvalue='-') =", list(itertools.zip_longest('ABCD', 'xy', fillvalue='-')))
+	print('itertools.filterfalse(lambda x: x % 2, range(10)) = {}.'.format(list(itertools.filterfalse(lambda x: x % 2, range(10)))))
+	print('itertools.dropwhile(lambda x: x < 5, [1, 4, 6, 4, 1] = {}.'.format(list(itertools.dropwhile(lambda x: x < 5, [1, 4, 6, 4, 1]))))
+	print('itertools.takewhile(lambda x: x < 5, [1, 4, 6, 4, 1] = {}.'.format(list(itertools.takewhile(lambda x: x < 5, [1, 4, 6, 4, 1]))))
 
 	#--------------------
-	print("itertools.tee('ABCDEFG', 2) =", itertools.tee('ABCDEFG', 2))
+	print("itertools.zip_longest('ABCD', 'xy', fillvalue='-') = {}.".format(list(itertools.zip_longest('ABCD', 'xy', fillvalue='-'))))
 
 	#--------------------
-	print("itertools.product('ABCD', repeat=2) =", list(itertools.product('ABCD', repeat=2)))
-	print("itertools.permutations('ABCD', 2) =", list(itertools.permutations('ABCD', 2)))
-	print("itertools.combinations('ABCD', 2) =", list(itertools.combinations('ABCD', 2)))
-	print("itertools.combinations_with_replacement('ABCD', 2) =", list(itertools.combinations_with_replacement('ABCD', 2)))
+	print("itertools.tee('ABCDEFG', 2) = {}.".format(itertools.tee('ABCDEFG', 2)))
+
+	#--------------------
+	print("itertools.product('ABCD', repeat=2) = {}.".format(list(itertools.product('ABCD', repeat=2))))
+	print("itertools.permutations('ABCD', 2) = {}.".format(list(itertools.permutations('ABCD', 2))))
+	print("itertools.combinations('ABCD', 2) = {}.".format(list(itertools.combinations('ABCD', 2))))
+	print("itertools.combinations_with_replacement('ABCD', 2) = {}.".format(list(itertools.combinations_with_replacement('ABCD', 2))))
 
 # REF [site] >> https://docs.python.org/3/library/difflib.html
 def difflib_test():
@@ -605,26 +605,26 @@ def difflib_test():
 
 	#--------------------
 	s = difflib.SequenceMatcher(lambda x: x == ' ', ' abcd', 'abcd abcd')
-	print('s.find_longest_match(0, 5, 0, 9) =', s.find_longest_match(0, 5, 0, 9))
+	print('s.find_longest_match(0, 5, 0, 9) = {}.'.format(s.find_longest_match(0, 5, 0, 9)))
 
 	s = difflib.SequenceMatcher(None, 'abxcd', 'abcd')
-	print('s.get_matching_blocks() =', s.get_matching_blocks())
+	print('s.get_matching_blocks() = {}.'.format(s.get_matching_blocks()))
 
 	a, b = 'qabxcd', 'abycdf'
 	s = difflib.SequenceMatcher(None, a, b)
 	for tag, i1, i2, j1, j2 in s.get_opcodes():
 		print('{:7}   a[{}:{}] --> b[{}:{}] {!r:>8} --> {!r}'.format(tag, i1, i2, j1, j2, a[i1:i2], b[j1:j2]))
 
-	print("SequenceMatcher(None, 'tide', 'diet').ratio() =", difflib.SequenceMatcher(None, 'tide', 'diet').ratio())
-	print("SequenceMatcher(None, 'diet', 'tide').ratio() =", difflib.SequenceMatcher(None, 'diet', 'tide').ratio())
+	print("SequenceMatcher(None, 'tide', 'diet').ratio() = {}.".format(difflib.SequenceMatcher(None, 'tide', 'diet').ratio()))
+	print("SequenceMatcher(None, 'diet', 'tide').ratio() = {}.".format(difflib.SequenceMatcher(None, 'diet', 'tide').ratio()))
 
 	s = difflib.SequenceMatcher(None, 'abcd', 'bcde')
-	print('s.ratio() =', s.ratio())  # [0, 1].
-	print('s.quick_ratio() =', s.quick_ratio())  # [0, 1].
-	print('s.real_quick_ratio() =', s.real_quick_ratio())  # [0, 1].
+	print('s.ratio() = {}.'.format(s.ratio()))  # [0, 1].
+	print('s.quick_ratio() = {}.'.format(s.quick_ratio()))  # [0, 1].
+	print('s.real_quick_ratio() = {}.'.format(s.real_quick_ratio()))  # [0, 1].
 
 	s = difflib.SequenceMatcher(lambda x: ' ' == x, 'private Thread currentThread;', 'private volatile Thread currentThread;')
-	print('round(s.ratio(), 3) =', round(s.ratio(), 3))
+	print('round(s.ratio(), 3) = {}.'.format(round(s.ratio(), 3)))
 	for block in s.get_matching_blocks():
 		print('a[%d] and b[%d] match for %d elements' % block)
 	for opcode in s.get_opcodes():
@@ -747,11 +747,11 @@ def inheritance_test():
 def bytes_test():
 	# String with encoding 'UTF-8'.
 	string = 'Python is interesting.'
-	print("bytes(string, 'UTF-8') =", bytes(string, 'UTF-8'))
+	print("bytes(string, 'UTF-8') = {}.".format(bytes(string, 'UTF-8')))
 
 	# Create a byte of given integer size.
 	size = 5
-	print('bytes(size) =', bytes(size))
+	print('bytes(size) = {}.'.format(bytes(size)))
 
 	# Convert iterable list to bytes.
 	vals = [1, 2, 3, 4, 5]
@@ -759,31 +759,31 @@ def bytes_test():
 	print('bytes({}) = {}.'.format(vals, bytes(vals)))
 
 	#--------------------
-	print("bytes.fromhex('2Ef0 F1f2  ') =", bytes.fromhex('2Ef0 F1f2  '))
-	print(r"b'\xf0\xf1\xf2'.hex() =", b'\xf0\xf1\xf2'.hex())
+	print("bytes.fromhex('2Ef0 F1f2  ') = {}.".format(bytes.fromhex('2Ef0 F1f2  ')))
+	print(r"b'\xf0\xf1\xf2'.hex() = {}.".format(b'\xf0\xf1\xf2'.hex()))
 
-	print(r"b'\xf0\xf1\xf2\xf3\xf4'.hex('-') =", b'\xf0\xf1\xf2\xf3\xf4'.hex('-'))
-	print(r"b'\xf0\xf1\xf2\xf3\xf4'.hex('_', 2) =", b'\xf0\xf1\xf2\xf3\xf4'.hex('_', 2))
-	print(r"b'UUDDLRLRAB'.hex(' ', -4) =", b'UUDDLRLRAB'.hex(' ', -4))
+	print(r"b'\xf0\xf1\xf2\xf3\xf4'.hex('-') = {}.".format(b'\xf0\xf1\xf2\xf3\xf4'.hex('-')))
+	print(r"b'\xf0\xf1\xf2\xf3\xf4'.hex('_', 2) = {}.".format(b'\xf0\xf1\xf2\xf3\xf4'.hex('_', 2)))
+	print(r"b'UUDDLRLRAB'.hex(' ', -4) = {}.".format(b'UUDDLRLRAB'.hex(' ', -4)))
 
 	#--------------------
 	# Decoding:
 	#	bytes_string.decode(encoding='utf-8', errors='strict')
 	#	str(bytes_string, encoding='utf-8', errors='strict')
 
-	print(r"b'Zoot!'.decode() =", b'Zoot!'.decode())
-	print(r"b'Zoot!'.decode(encoding='utf-8') =", b'Zoot!'.decode(encoding='utf-8'))
-	print(r"str(b'Zoot!') =", str(b'Zoot!'))
-	print(r"str(b'Zoot!', encoding='utf-8') =", str(b'Zoot!', encoding='utf-8'))
+	print(r"b'Zoot!'.decode() = {}.".format(b'Zoot!'.decode()))
+	print(r"b'Zoot!'.decode(encoding='utf-8') = {}.".format(b'Zoot!'.decode(encoding='utf-8')))
+	print(r"str(b'Zoot!') = {}.".format(str(b'Zoot!')))
+	print(r"str(b'Zoot!', encoding='utf-8') ={}.".format(str(b'Zoot!', encoding='utf-8')))
 
 	# Encoding:
 	#	bytes(string, encoding='utf-8', errors='strict')
 	#	str.encode(string, encoding='utf-8', errors='strict')
 
-	#print(r"bytes('Zoot!') =", bytes('Zoot!'))  # TypeError: string argument without an encoding.
-	print(r"bytes('Zoot!', encoding='utf-8') =", bytes('Zoot!', encoding='utf-8'))
-	print(r"str.encode('Zoot!') =", str.encode('Zoot!'))
-	print(r"str.encode('Zoot!', encoding='utf-8') =", str.encode('Zoot!', encoding='utf-8'))
+	#print(r"bytes('Zoot!') = {}.".format(bytes('Zoot!'))  # TypeError: string argument without an encoding.
+	print(r"bytes('Zoot!', encoding='utf-8') = {}.".format(bytes('Zoot!', encoding='utf-8')))
+	print(r"str.encode('Zoot!') = {}.".format(str.encode('Zoot!')))
+	print(r"str.encode('Zoot!', encoding='utf-8') = {}.".format(str.encode('Zoot!', encoding='utf-8')))
 
 # REF [site] >> https://docs.python.org/3/library/struct.html
 #	struct module performs conversions between Python values and C structs represented as Python bytes objects.
@@ -791,10 +791,10 @@ def bytes_test():
 def struct_test():
 	#--------------------
 	packet = struct.pack('hhl', 1, 2, 3)  # bytes.
-	print('Packet =', packet)
+	print('Packet = {}.'.format(packet))
 
 	packet1 = struct.unpack('hhl', packet)
-	print('Unpacked packet =', packet1)  # tuple: (1, 2, 3).
+	print('Unpacked packet = {}.'.format(packet1))  # tuple: (1, 2, 3).
 
 	#--------------------
 	# Endian.
@@ -802,19 +802,18 @@ def struct_test():
 	print('Byte order = {} endian.'.format(sys.byteorder))
 
 	packet = struct.pack('hhl', 1, 2, 3)
-	print('Native        =', packet)
+	print('Native        = {}.'.format(packet))
 	packet = struct.pack('<hhl', 1, 2, 3)  # Little endian.
-	print('Little-endian =', packet)
+	print('Little-endian = {}.'.format(packet))
 	packet = struct.pack('>hhl', 1, 2, 3)  # Big endian.
-	print('Big-endian    =', packet)
-
+	print('Big-endian    = {}.'.format(packet))
 	# NOTE [info] >> Native, 
 	packet = struct.pack('BLLH', 1, 2, 3, 4)
-	print('Native        =', packet)
+	print('Native        = {}.'.format(packet))
 	packet = struct.pack('<BLLH', 1, 2, 3, 4)  # Little endian.
-	print('Little-endian =', packet)
+	print('Little-endian = {}.'.format(packet))
 	packet = struct.pack('>BLLH', 1, 2, 3, 4)  # Big endian.
-	print('Big-endian    =', packet)
+	print('Big-endian    = {}.'.format(packet))
 
 	#--------------------
 	record = b'raymond   \x32\x12\x08\x01\x08'
