@@ -85,7 +85,7 @@ def create_object_detection_model(num_classes):
 
 		# Let's make the RPN generate 5 x 3 anchors per spatial location, with 5 different sizes and 3 different aspect ratios.
 		# We have a Tuple[Tuple[int]] because each feature map could potentially have different sizes and aspect ratios.
-		anchor_generator = torchvision.models.detection.rpn. AnchorGenerator(
+		anchor_generator = torchvision.models.detection.rpn.AnchorGenerator(
 			sizes=((32, 64, 128, 256, 512),),
 			aspect_ratios=((0.5, 1.0, 2.0),)
 		)
