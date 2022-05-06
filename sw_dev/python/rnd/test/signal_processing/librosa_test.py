@@ -56,6 +56,74 @@ def feature_extraction_example():
 	# Finally, stack all beat-synchronous features together.
 	beat_features = np.vstack([beat_chroma, beat_mfcc_delta])
 
+# REF [site] >> https://librosa.org/doc/main/auto_examples/plot_viterbi.html
+def viterbi_decoding_example():
+	# Problem of silence/non-silence detection.
+
+	y, sr = librosa.load(librosa.ex('trumpet'))
+
+	# Compute the spectrogram magnitude and phase.
+	S_full, phase = librosa.magphase(librosa.stft(y))
+
+	# Plot the spectrum.
+	fig, ax = plt.subplots()
+	img = librosa.display.specshow(librosa.amplitude_to_db(S_full, ref=np.max), y_axis='log', x_axis='time', sr=sr, ax=ax)
+	fig.colorbar(img, ax=ax)
+
+	# There are periods of silence and non-silence throughout this recording.
+	# Plot the root-mean-square (RMS) curve.
+	rms = librosa.feature.rms(y=y)[0]
+	times = librosa.frames_to_time(np.arange(len(rms)))
+
+	fig, ax = plt.subplots()
+	ax.plot(times, rms)
+	ax.axhline(0.02, color='r', alpha=0.5)
+	ax.set(xlabel='Time', ylabel='RMS')
+
+	# We'll normalize the RMS by its standard deviation to expand the range of the probability vector.
+	r_normalized = (rms - 0.02) / np.std(rms)
+	p = np.exp(r_normalized) / (1 + np.exp(r_normalized))
+
+	fig, ax = plt.subplots()
+	ax.plot(times, p, label='P[V=1|x]')
+	ax.axhline(0.5, color='r', alpha=0.5, label='Descision threshold')
+	ax.set(xlabel='Time')
+	ax.legend()
+
+	# A simple silence detector would classify each frame independently of its neighbors.
+	#plt.figure(figsize=(12, 6))
+	fig, ax = plt.subplots(nrows=2, sharex=True)
+	librosa.display.specshow(librosa.amplitude_to_db(S_full, ref=np.max), y_axis='log', x_axis='time', sr=sr, ax=ax[0])
+	ax[0].label_outer()
+	ax[1].step(times, p>=0.5, label='Non-silent')
+	ax[1].set(ylim=[0, 1.05])
+	ax[1].legend()
+
+	# We can do better using the Viterbi algorithm. 
+	# We'll assume that a silent frame is equally likely to be followed by silence or non-silence, but that non-silence is slightly more likely to be followed by non-silence.
+	# This is accomplished by building a self-loop transition matrix, where transition[i, j] is the probability of moving from state i to state j in the next frame.
+
+	transition = librosa.sequence.transition_loop(2, [0.5, 0.6])
+	print(transition)
+
+	# Our p variable only indicates the probability of non-silence, so we need to also compute the probability of silence as its complement.
+	full_p = np.vstack([1 - p, p])
+	print(full_p)
+
+	# We'll use viterbi_discriminative here, since the inputs are state likelihoods conditional on data (in our case, data is rms).
+	states = librosa.sequence.viterbi_discriminative(full_p, transition)
+
+	#sphinx_gallery_thumbnail_number = 5
+	fig, ax = plt.subplots(nrows=2, sharex=True)
+	librosa.display.specshow(librosa.amplitude_to_db(S_full, ref=np.max), y_axis='log', x_axis='time', sr=sr, ax=ax[0])
+	ax[0].label_outer()
+	ax[1].step(times, p>=0.5, label='Frame-wise')
+	ax[1].step(times, states, linestyle='--', color='orange', label='Viterbi')
+	ax[1].set(ylim=[0, 1.05])
+	ax[1].legend()
+
+	plt.show()
+
 # REF [site] >> https://librosa.github.io/librosa/generated/librosa.filters.mel.html
 def mel_filter_bank_test():
 	mel_fb = librosa.filters.mel(sr=22050, n_fft=2048, n_mels=128)
@@ -74,15 +142,18 @@ def mel_filter_bank_test():
 def melspectrogram_test():
 	y, sr = librosa.load(librosa.ex('trumpet'))
 
-	if False:
+	if True:
+		# If a time-series input y, sr is provided, then its magnitude spectrogram S is first computed, and then mapped onto the mel scale by mel_f.dot(S**power).
 		S = librosa.feature.melspectrogram(y=y, sr=sr)
-	elif False:
+
+		# Passing through arguments to the Mel filters.
+		#S = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128, fmax=8000)
+		#S = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=512, n_mels=128, fmax=8000)
+		#S = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=512, n_mels=128, fmax=8000, htk=True)
+	else:
+		# If a spectrogram input S is provided, then it is mapped directly onto the mel basis by mel_f.dot(S).
 		D = np.abs(librosa.stft(y))**2
 		S = librosa.feature.melspectrogram(S=D, sr=sr)
-	else:
-		# Passing through arguments to the Mel filters.
-		S = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128, fmax=8000)
-		#S = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=512, n_mels=128, fmax=8000)
 
 	#--------------------
 	plt.figure(figsize=(10, 4))
@@ -178,12 +249,14 @@ def main():
 	#beat_tracking_example()
 	#feature_extraction_example()
 
+	viterbi_decoding_example()
+
 	#--------------------
 	#mel_filter_bank_test()
 	#melspectrogram_test()
 
 	#--------------------
-	data_augmentation_example()
+	#data_augmentation_example()
 
 #--------------------------------------------------------------------
 
