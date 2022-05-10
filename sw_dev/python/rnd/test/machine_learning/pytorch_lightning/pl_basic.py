@@ -91,7 +91,7 @@ def simple_autoencoder_example():
 	trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5)
 	#trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5, accelerator="ddp", max_epochs=10)
 
-	trainer.fit(model, train_dataloader, val_dataloader)
+	trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 
 class LitClassifier(pl.LightningModule):
 	def __init__(self, model):
@@ -299,16 +299,28 @@ def minimal_example():
 	print("Training...")
 	if True:
 		trainer = pl.Trainer(gpus=2, max_epochs=20)
-		#trainer = pl.Trainer(default_root_dir="/path/to/checkpoints")  # Saves checkpoints to "/path/to/checkpoints" at every epoch end.
-		#trainer = pl.Trainer(resume_from_checkpoint="/path/to/checkpoint.ckpt")  # Resume training.
+		#trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, gradient_clip_val=5, gradient_clip_algorithm="norm")
+		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="ddp", auto_select_gpus=True, max_epochs=20, gradient_clip_val=5, gradient_clip_algorithm="value")
 		#trainer = pl.Trainer(gpus=1, precision=16)  # FP16 mixed precision.
 		#trainer = pl.Trainer(gpus=1, precision="bf16")  # BFloat16 mixed precision.
 		#trainer = pl.Trainer(gpus=1, amp_backend="apex", amp_level="O2")  # NVIDIA APEX mixed precision.
+		#trainer = pl.Trainer(auto_lr_find=False, auto_scale_batch_size=False, enable_checkpointing=True)
+		#trainer = pl.Trainer(min_epochs=None, max_epochs=None, min_steps=None, min_steps=-1, max_time=None)
+		#trainer = pl.Trainer(logger=True, log_every_n_steps=50, profiler=None)
+		#tb_logger = pl.loggers.TensorBoardLogger(save_dir="./tb_logs")
+		#tb_logger = pl.loggers.TensorBoardLogger(save_dir="./tb_logs", name="my_tb_logs", version=None, log_graph=False, default_hp_metric=True, prefix="")
+		#comet_logger = pl.loggers.CometLogger(save_dir="./comet_logs")
+		#trainer = pl.Trainer(logger=tb_logger)
+		#trainer = pl.Trainer(logger=[tb_logger, comet_logger])
+		#trainer = pl.Trainer(default_root_dir="/path/to/checkpoints")  # Saves checkpoints to "/path/to/checkpoints" at every epoch end.
+		#trainer = pl.Trainer(resume_from_checkpoint="/path/to/checkpoint.ckpt")  # Resume training. Deprecated.
 
-		trainer.fit(model, train_dataloader, val_dataloader)
+		# Calls pl.LightningModule.training_step() and pl.LightningModule.validation_step().
+		trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
+		#trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader, ckpt_path=None)  # Path/URL of the checkpoint from which training is resumed.
 		#trainer.fit(model, datamodule=datamodule)
 
-		#trainer.save_checkpoint("/path/to/checkpoint.ckpt")
+		#trainer.save_checkpoint("/path/to/checkpoint.ckpt", weights_only=False)
 	else:
 		# REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/common/weights_loading.html
 
@@ -336,7 +348,7 @@ def minimal_example():
 		trainer = pl.Trainer(gpus=2, max_epochs=20, callbacks=[checkpoint_callback])
 		#trainer = pl.Trainer(gpus=2, max_epochs=20, callbacks=False)
 
-		trainer.fit(model, train_dataloader, val_dataloader)
+		trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 		#trainer.fit(model, datamodule=datamodule)
 
 		#best_model_path = checkpoint_callback.best_model_path
@@ -347,6 +359,11 @@ def minimal_example():
 	print("The model trained.")
 
 	#--------------------
+	#trainer.validate(model, dataloaders=dataloader, ckpt_path=None, verbose=True)  # Calls pl.LightningModule.validation_step().
+	#trainer.test(model, dataloaders=dataloader, ckpt_path=None, verbose=True)  # Calls pl.LightningModule.test_step().
+	#trainer.predict(model, dataloaders=dataloader, ckpt_path=None, return_predictions=None)  # Calls pl.LightningModule.predict_step().
+	#predictions = model(...)  # Calls pl.LightningModule.forward().
+
 	# Testing.
 	print("Testing...")
 	if True:
@@ -359,19 +376,18 @@ def minimal_example():
 		#trainer.test(datamodule=datamodule)
 	print("The model tested.")
 
-	#--------------------
 	# Inference.
 	print("Inferring...")
 	if True:
-		trainer.predict(model, dataloaders=test_dataloader)  # Calls predict_step().
-		#trainer.predict(model, datamodule=datamodule)  # Calls predict_step().
+		trainer.predict(model, dataloaders=test_dataloader)
+		#trainer.predict(model, datamodule=datamodule)
 	else:
 		# When using forward, you are responsible to call eval() and use the no_grad() context manager.
 		model.eval()
 		model.freeze()
 		with torch.no_grad():
 			embedding = ...
-			reconstruction = model(embedding)  # Calls forward().
+			reconstruction = model(embedding)
 	print("Inferred by the model.")
 
 # REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/notebooks/course_UvA-DL/03-initialization-and-optimization.html
@@ -1226,6 +1242,9 @@ def inception_resnet_densenet_tutorial():
 			# We will reduce the learning rate by 0.1 after 100 and 150 epochs.
 			scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[100, 150], gamma=0.1)
 			return [optimizer], [scheduler]
+			#return [optimizer], [{"scheduler": scheduler, "interval": "epoch"}]
+			#return [optimizer], [{"scheduler": scheduler, "interval": "epoch", "monitor": "val_f1", "reduce_on_plateau": False, "frequency": 1}]
+			#return [optimizer], [{"scheduler": scheduler, "interval": "step"}]
 
 		def training_step(self, batch, batch_idx):
 			# "batch" is the output of the training data loader.
@@ -1306,8 +1325,8 @@ def inception_resnet_densenet_tutorial():
 			)  # Load best checkpoint after training.
 
 		# Test best model on validation and test set.
-		val_result = trainer.test(model, test_dataloaders=val_loader, verbose=False)
-		test_result = trainer.test(model, test_dataloaders=test_loader, verbose=False)
+		val_result = trainer.validate(model, dataloaders=val_loader, verbose=False)
+		test_result = trainer.test(model, dataloaders=test_loader, verbose=False)
 		result = {"test": test_result[0]["test_acc"], "val": val_result[0]["test_acc"]}
 
 		return model, result
