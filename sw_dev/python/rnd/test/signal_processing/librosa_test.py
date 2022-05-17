@@ -6,6 +6,29 @@ import librosa
 import librosa.display
 import matplotlib.pyplot as plt
 
+def basic_operation():
+	# REF [site] >> https://librosa.org/doc/main/ioformats.html
+
+	filepath = '/path/to/sample.wav'
+	#filepath = '/path/to/sample.mp3'
+	#filepath = '/path/to/sample.m4a'  # MPEG-4 Audio.
+	#filepath = '/path/to/sample.ogg'  # Ogg Vorbis Audio.
+
+	#sr = librosa.get_samplerate(filepath)
+
+	#y, sr = librosa.load(filepath)
+	y, sr = librosa.load(filepath, sr=None, mono=False)  # Uses the native sampling rate.
+	#y, sr = librosa.load(filepath, sr=22050, mono=True, offset=0.0, duration=None, dtype=npfloat32, res_type='kaiser_best')
+
+	print('Audio time-series: shape = {}, dtype = {}.'.format(y.shape, y.dtype))
+	print('Sampling rate = {}.'.format(sr))
+
+	sr_resampled = 11025
+	y_resampled = librosa.resample(y, orig_sr=sr, target_sr=sr_resampled, res_type='kaiser_best', fix=True, scale=False)
+
+	print('Audio time-series: shape = {}, dtype = {}.'.format(y_resampled.shape, y_resampled.dtype))
+	print('Sampling rate = {}.'.format(sr_resampled))
+
 # REF [site] >> https://librosa.org/doc/main/tutorial.html
 def beat_tracking_example():
 	# Get the file path to an included audio example.
@@ -301,11 +324,13 @@ def data_augmentation_example():
 	plt.show()
 
 def main():
+	basic_operation()
+
 	#beat_tracking_example()
 	#feature_extraction_example()
 
 	#viterbi_decoding_example()
-	music_synchronization_with_dynamic_time_warping_example()
+	#music_synchronization_with_dynamic_time_warping_example()
 
 	#--------------------
 	#mel_filter_bank_test()
