@@ -41,3 +41,9 @@
 				Before using git mergetool you perform a merge in the usual way with git.
 					git checkout master
 					git merge branch_name
+
+	- Import an existing local git project into GitLab.
+		git remote add origin <GITLAB-REPO-URL>
+			git remote add origin https://gitlab.com/sangwook236/repo.git
+		git branch -M main
+		git push -uf origin main
