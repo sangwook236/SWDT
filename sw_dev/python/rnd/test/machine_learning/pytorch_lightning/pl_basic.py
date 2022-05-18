@@ -19,14 +19,14 @@ class LitAutoEncoder(pl.LightningModule):
 			torch.nn.Linear(64, 28 * 28)
 		)
 
+	def configure_optimizers(self):
+		optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
+		return optimizer
+
 	def forward(self, x):
 		# In lightning, forward defines the prediction/inference actions.
 		embedding = self.encoder(x)
 		return embedding
-
-	def configure_optimizers(self):
-		optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
-		return optimizer
 
 	def training_step(self, batch, batch_idx):
 		# training_step defines the train loop. It is independent of forward.
@@ -166,6 +166,9 @@ class Autoencoder(pl.LightningModule):
 		self.encoder = torch.nn.Sequential(torch.nn.Linear(28 * 28, 256), torch.nn.ReLU(), torch.nn.Linear(256, latent_dim))
 		self.decoder = torch.nn.Sequential(torch.nn.Linear(latent_dim, 256), torch.nn.ReLU(), torch.nn.Linear(256, 28 * 28))
 
+	def configure_optimizers(self):
+		return torch.optim.Adam(self.parameters(), lr=0.0002)
+
 	def forward(self, x):
 		return self.decoder(x)
 
@@ -194,9 +197,6 @@ class Autoencoder(pl.LightningModule):
 	def predict_step(self, batch, batch_idx, dataloader_idx=None):
 		return self(batch)  # Calls forward().
 	"""
-
-	def configure_optimizers(self):
-		return torch.optim.Adam(self.parameters(), lr=0.0002)
 
 	def _shared_step(self, batch):
 		x, _ = batch
@@ -299,21 +299,27 @@ def minimal_example():
 	print("Training...")
 	if True:
 		trainer = pl.Trainer(gpus=2, max_epochs=20)
+		# Strategy = {"ddp", "ddp_spawn", "deepspeed"}.
+		#	REF [site] >> https://pytorch-lightning.readthedocs.io/en/stable/extensions/strategy.html
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, gradient_clip_val=5, gradient_clip_algorithm="norm")
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="ddp", auto_select_gpus=True, max_epochs=20, gradient_clip_val=5, gradient_clip_algorithm="value")
 		#trainer = pl.Trainer(gpus=1, precision=16)  # FP16 mixed precision.
 		#trainer = pl.Trainer(gpus=1, precision="bf16")  # BFloat16 mixed precision.
 		#trainer = pl.Trainer(gpus=1, amp_backend="apex", amp_level="O2")  # NVIDIA APEX mixed precision.
-		#trainer = pl.Trainer(auto_lr_find=False, auto_scale_batch_size=False, enable_checkpointing=True)
+		#trainer = pl.Trainer(auto_lr_find=False, auto_scale_batch_size=False)
 		#trainer = pl.Trainer(min_epochs=None, max_epochs=None, min_steps=None, min_steps=-1, max_time=None)
 		#trainer = pl.Trainer(logger=True, log_every_n_steps=50, profiler=None)
-		#tb_logger = pl.loggers.TensorBoardLogger(save_dir="./tb_logs")
-		#tb_logger = pl.loggers.TensorBoardLogger(save_dir="./tb_logs", name="my_tb_logs", version=None, log_graph=False, default_hp_metric=True, prefix="")
+		#tensorboard_logger = pl.loggers.TensorBoardLogger(save_dir="./lightning_logs")
+		#tensorboard_logger = pl.loggers.TensorBoardLogger(save_dir="./lightning_logs", name="lightning_logs", version=None, log_graph=False, default_hp_metric=True, prefix="")
 		#comet_logger = pl.loggers.CometLogger(save_dir="./comet_logs")
-		#trainer = pl.Trainer(logger=tb_logger)
-		#trainer = pl.Trainer(logger=[tb_logger, comet_logger])
+		#trainer = pl.Trainer(logger=True)
+		#trainer = pl.Trainer(logger=tensorboard_logger)
+		#trainer = pl.Trainer(logger=[tensorboard_logger, comet_logger])
 		#trainer = pl.Trainer(default_root_dir="/path/to/checkpoints")  # Saves checkpoints to "/path/to/checkpoints" at every epoch end.
 		#trainer = pl.Trainer(resume_from_checkpoint="/path/to/checkpoint.ckpt")  # Resume training. Deprecated.
+
+		# Tunes hyperparameters before training.
+		#trainer.tune(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader, datamodule=None, scale_batch_size_kwargs=None, lr_find_kwargs=None)
 
 		# Calls pl.LightningModule.training_step() and pl.LightningModule.validation_step().
 		trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
@@ -334,23 +340,40 @@ def minimal_example():
 		#	State of all callbacks.
 		#	The hyperparameters used for that model if passed in as hparams (Argparse.Namespace).
 
+		# REF [site] >> https://pytorch-lightning.readthedocs.io/en/stable/common/checkpointing.html
 		checkpoint_callback = pl.callbacks.ModelCheckpoint(monitor="val_loss")
 		"""
 		checkpoint_callback = pl.callbacks.ModelCheckpoint(
 			monitor="val_loss",
-			dirpath="/path/to/checkpoints",
-			filename="sample-mnist-{epoch:02d}-{val_loss:.2f}",
+			dirpath="checkpoints",
+			filename="model-{epoch:03d}-{val_loss:.2f}",
 			save_top_k=3,
 			mode="min",
 		)
 		"""
+		#device_stats_callback = DeviceStatsMonitor()
+		#early_stopping_callback = pl.callbacks.EarlyStopping("val_loss", min_delta=0.0, patience=3, verbose=False, mode="min", strict=True, check_finite=True, stopping_threshold=None, divergence_threshold=None, check_on_train_epoch_end=None)
+		#lr_monitor_callback = pl.callbacks.LearningRateMonitor(logging_interval="step", log_momentum=False)
+		#model_pruing_callback = pl.callbacks.ModelPruning(pruning_fn="l1_unstructured", parameters_to_prune=[(model.mlp_1, "weight"), (model.mlp_2, "weight")], parameter_names=None, use_global_unstructured=True, amount=0.5, apply_pruning=True, make_pruning_permanent=True, use_lottery_ticket_hypothesis=True, resample_parameters=False, pruning_dim=None, pruning_norm=None, verbose=0, prune_on_train_epoch_end=True)
+		#model_summary_callback = pl.callbacks.ModelSummary(max_depth=1)
+		#quantization_aware_training_callback = pl.callbacks.QuantizationAwareTraining(qconfig="fbgemm", observer_type="average", collect_quantization=None, modules_to_fuse=None, input_compatible=True, quantize_on_fit_end=True, observer_enabled_stages=("train",))
+		#rich_model_summary_callback = pl.callbacks.RichModelSummary(max_depth=1)
+		#rich_progress_bar_callback = pl.callbacks.RichProgressBar(refresh_rate=1, leave=False, theme=RichProgressBarTheme(description="white", progress_bar="#6206E0", progress_bar_finished="#6206E0", progress_bar_pulse="#6206E0", batch_progress="white", time="grey54", processing_speed="grey70", metrics="white"), console_kwargs=None)
+		# Stochastic weight averaging (SWA).
+		#swa_callback = pl.callbacks.StochasticWeightAveraging(swa_epoch_start=0.8, swa_lrs=None, annealing_epochs=10, annealing_strategy="cos", avg_fn=None, device=torch.device)
+		#timer_callback = pl.callbacks.Timer(duration=None, interval=Interval.step, verbose=True)
+		#tqdm_progress_bar_callback = pl.callbacks.TQDMProgressBar(refresh_rate=1, process_position=0)
 
-		trainer = pl.Trainer(gpus=2, max_epochs=20, callbacks=[checkpoint_callback])
-		#trainer = pl.Trainer(gpus=2, max_epochs=20, callbacks=False)
+		callbacks = [checkpoint_callback]
+		#callbacks = [checkpoint_callback, swa_callback]
+
+		trainer = pl.Trainer(gpus=2, max_epochs=20, callbacks=callbacks, enable_checkpointing=True)
+		#trainer = pl.Trainer(gpus=2, max_epochs=20, callbacks=None)
 
 		trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 		#trainer.fit(model, datamodule=datamodule)
 
+		#best_model_path = trainer.checkpoint_callback.best_model_path
 		#best_model_path = checkpoint_callback.best_model_path
 
 		# All init args were saved to the checkpoint.
@@ -1224,10 +1247,6 @@ def inception_resnet_densenet_tutorial():
 			# Example input for visualizing the graph in Tensorboard.
 			self.example_input_array = torch.zeros((1, 3, 32, 32), dtype=torch.float32)
 
-		def forward(self, imgs):
-			# Forward function that is run when visualizing the graph.
-			return self.model(imgs)
-
 		def configure_optimizers(self):
 			# We will support Adam or SGD as optimizers.
 			if self.hparams.optimizer_name == "Adam":
@@ -1245,6 +1264,10 @@ def inception_resnet_densenet_tutorial():
 			#return [optimizer], [{"scheduler": scheduler, "interval": "epoch"}]
 			#return [optimizer], [{"scheduler": scheduler, "interval": "epoch", "monitor": "val_f1", "reduce_on_plateau": False, "frequency": 1}]
 			#return [optimizer], [{"scheduler": scheduler, "interval": "step"}]
+
+		def forward(self, imgs):
+			# Forward function that is run when visualizing the graph.
+			return self.model(imgs)
 
 		def training_step(self, batch, batch_idx):
 			# "batch" is the output of the training data loader.
