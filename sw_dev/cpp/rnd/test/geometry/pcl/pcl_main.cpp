@@ -215,6 +215,65 @@ void ply_to_pcd()
 #endif
 }
 
+void basic_operation()
+{
+	const std::string filepath("/path/to/sample.pcd");
+
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+
+	// Load the file.
+	{
+		const auto start_time(std::chrono::high_resolution_clock::now());
+		if (pcl::io::loadPCDFile<pcl::PointXYZ>(filepath, *cloud) == -1)
+		{
+			const std::string err("File not found " + filepath + ".\n");
+			PCL_ERROR(err.c_str());
+			return;
+		}
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Loaded " << cloud->size() << " data points (" << pcl::getFieldsList(*cloud) << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
+	}
+
+#if 1
+	{
+		// Downsample.
+		const auto start_time(std::chrono::high_resolution_clock::now());
+
+		const float voxel_size = 5.0f;
+		pcl::VoxelGrid<pcl::PointXYZ> sor;
+		sor.setInputCloud(cloud);
+		sor.setLeafSize(voxel_size, voxel_size, voxel_size);
+		//sor.setMinimumPointsNumberPerVoxel(0);
+		sor.filter(*cloud);
+
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Filtered " << cloud->size() << " data points (" << pcl::getFieldsList(*cloud) << "): " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
+	}
+#endif
+
+	{
+		// Convert pcl::PointCloud<PointT>::points to C++ plain array.
+		const auto start_time(std::chrono::high_resolution_clock::now());
+
+		std::vector<std::array<float, 3>> points;
+		points.reserve(cloud->size());
+		for (const auto &pt: cloud->points)
+			points.push_back(std::array<float, 3>{pt.x, pt.y, pt.z});
+
+		const auto elapsed_time(std::chrono::high_resolution_clock::now() - start_time);
+		std::cout << "Points converted: " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count() / 1000.0f << " secs." << std::endl;
+
+		const float *arr = points[0].data();
+		const float *ptr = arr;
+		for (const auto &pt: cloud->points)
+		{
+			assert(pt.x == *ptr++);
+			assert(pt.y == *ptr++);
+			assert(pt.z == *ptr++);
+		}
+	}
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -233,7 +292,9 @@ int pcl_main(int argc, char *argv[])
 {
 	//local::io_example();
 	//local::pcd_to_ply();
-	local::ply_to_pcd();
+	//local::ply_to_pcd();
+
+	local::basic_operation();
 
 	//my_pcl::octree();
 	//my_pcl::resampling();
