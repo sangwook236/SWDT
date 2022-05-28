@@ -350,6 +350,13 @@ def minimal_example():
 			save_top_k=3,
 			mode="min",
 		)
+		checkpoint_callback = pl.callbacks.ModelCheckpoint(
+			monitor="val_acc",
+			dirpath="checkpoints",
+			filename="model-{epoch:03d}-{val_acc:.2f}-{val_loss:.2f}",
+			save_top_k=5,
+			mode="max",
+		)
 		"""
 		#device_stats_callback = DeviceStatsMonitor()
 		#early_stopping_callback = pl.callbacks.EarlyStopping("val_loss", min_delta=0.0, patience=3, verbose=False, mode="min", strict=True, check_finite=True, stopping_threshold=None, divergence_threshold=None, check_on_train_epoch_end=None)
@@ -364,11 +371,22 @@ def minimal_example():
 		#timer_callback = pl.callbacks.Timer(duration=None, interval=Interval.step, verbose=True)
 		#tqdm_progress_bar_callback = pl.callbacks.TQDMProgressBar(refresh_rate=1, process_position=0)
 
+		# REF [site] >> https://pytorch-lightning.readthedocs.io/en/stable/extensions/plugins.html
+		#ddp_plugin = pl.plugins.training_type.DDPPlugin(parallel_devices=None, num_nodes=None, cluster_environment=None, sync_batchnorm=None, ddp_comm_state=None, ddp_comm_hook=None, ddp_comm_wrapper=None)
+		#ddp_plugin = pl.plugins.training_type.DDPPlugin(find_unused_parameters=False)
+		#amp_plugin = pl.plugins.precision.ApexMixedPrecisionPlugin(amp_level="O2")
+
 		callbacks = [checkpoint_callback]
 		#callbacks = [checkpoint_callback, swa_callback]
+		#callbacks = None
 
-		trainer = pl.Trainer(gpus=2, max_epochs=20, callbacks=callbacks, enable_checkpointing=True)
-		#trainer = pl.Trainer(gpus=2, max_epochs=20, callbacks=None)
+		#plugins = [ddp_plugin]
+		#plugins = [ddp_plugin, amp_plugin]
+		plugins = None
+
+		#trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, callbacks=None, plugins=None)
+		trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, callbacks=callbacks, enable_checkpointing=True)
+		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="ddp", auto_select_gpus=False, plugins=plugins)
 
 		trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 		#trainer.fit(model, datamodule=datamodule)
