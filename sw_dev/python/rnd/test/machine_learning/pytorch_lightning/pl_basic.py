@@ -345,17 +345,17 @@ def minimal_example():
 		"""
 		checkpoint_callback = pl.callbacks.ModelCheckpoint(
 			monitor="val_loss",
+			mode="min",
 			dirpath="checkpoints",
 			filename="model-{epoch:03d}-{val_loss:.2f}",
 			save_top_k=3,
-			mode="min",
 		)
 		checkpoint_callback = pl.callbacks.ModelCheckpoint(
 			monitor="val_acc",
+			mode="max",
 			dirpath="checkpoints",
 			filename="model-{epoch:03d}-{val_acc:.2f}-{val_loss:.2f}",
 			save_top_k=5,
-			mode="max",
 		)
 		"""
 		#device_stats_callback = DeviceStatsMonitor()
@@ -404,6 +404,12 @@ def minimal_example():
 	#trainer.test(model, dataloaders=dataloader, ckpt_path=None, verbose=True)  # Calls pl.LightningModule.test_step().
 	#trainer.predict(model, dataloaders=dataloader, ckpt_path=None, return_predictions=None)  # Calls pl.LightningModule.predict_step().
 	#predictions = model(...)  # Calls pl.LightningModule.forward().
+
+	#trainer.test(model, dataloaders=dataloader, ckpt_path=None)  # Uses the current weights.
+	#trainer.test(model, dataloaders=dataloader, ckpt_path="/path/to/checkpoint.ckpt")
+	#trainer.test(model, dataloaders=dataloader, ckpt_path="best")  # {"best", "last"}.
+	#trainer.test(dataloaders=dataloader, ckpt_path="/path/to/checkpoint.ckpt")
+	#trainer.test(dataloaders=dataloader, ckpt_path="best")  # {"best", "last"}.
 
 	# Testing.
 	print("Testing...")
