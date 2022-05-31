@@ -1,38 +1,50 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-# REF [site] >> https://docs.python.org/3/library/exceptions.html
+import sys, traceback, logging
 
-import sys, traceback
+# REF [site] >> https://docs.python.org/3/library/exceptions.html
+def basic_exception_handling():
+	def raise_exception():
+		raise RuntimeError('Error message', 'abc', 123, (1, 'a'))
+		#raise ValueError('Error message')
+		#raise Exception('Error message')
+
+	try:
+		raise_exception()
+	except RuntimeError as ex:
+	#except Exception as ex:
+		print('{} raised: {}, {}, {}.'.format(ex.__class__.__name__, ex, ex.args, str(ex)))
+
+		#----------
+		# REF [site] >> https://docs.python.org/3/library/sys.html
+		exc = sys.exc_info()  # (type, value(exception object), traceback).
+		print('{} raised: {}, {}, {}.'.format(exc[0].__name__, exc[0], exc[1], exc[2]))
+		print('\t>>> {}, {}, {}.'.format(type(exc[0]), type(exc[1]), type(exc[2])))
+
+		# REF [site] >> https://docs.python.org/3/library/traceback.html
+		print('-----1')
+		traceback.print_tb(exc[2], limit=None, file=sys.stdout)
+		print('-----2')
+		traceback.print_exception(*exc, limit=None, file=sys.stdout, chain=True)
+		print('-----3')
+		traceback.print_exc(limit=None, file=sys.stdout, chain=True)  # A shorthand for print_exception(*sys.exc_info(), limit, file, chain).
+		print('-----4')
+		#traceback.print_last(limit=None, file=sys.stdout, chain=True)  # A shorthand for print_exception(sys.last_type, sys.last_value, sys.last_traceback, limit, file, chain).
+		print('-----5')
+		traceback.print_stack(f=None, limit=None, file=sys.stdout)
+		print('-----6')
+
+		#----------
+		logging.exception(ex)
+		print('-----7')
+	
+		#----------
+		#raise ex
+		raise
 
 def main():
-	try:
-		raise NotImplementedError('abc', 123, (1, 'a'))
-		#raise ValueError('ValueError raised')
-		#raise Exception('Fatal error')
-	except NotImplementedError as ex:
-		print('******************************* 1')
-		print('NotImplementedError raised: {}, {}, {}'.format(ex, ex.args, str(ex)))
-	except ValueError as ex:
-		print('******************************* 2')
-		#tb = sys.exc_info()[2]
-		#raise Exception().with_traceback(tb)
-		#----------
-		raise
-	#except Exception as ex:
-	#	print('******************************* 3')
-	#	print('Exception raised:', ex)
-	except:
-		print('******************************* 4')
-		#----------
-		#ex = sys.exc_info()  # (type, exception object, traceback).
-		##print('{} raised: {}.'.format(ex[0], ex[1]))
-		#print('{} raised: {}.'.format(ex[0].__name__, ex[1]))
-		#traceback.print_tb(ex[2], limit=None, file=sys.stdout)
-		#----------
-		#traceback.print_exception(*sys.exc_info(), limit=None, file=sys.stdout)
-		#----------
-		traceback.print_exc(limit=None, file=sys.stdout)
+	basic_exception_handling()
 
 #--------------------------------------------------------------------
 
