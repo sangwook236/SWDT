@@ -6,6 +6,30 @@ import numpy as np
 #os.environ['LMDB_FORCE_CFFI'] = '1'
 import lmdb
 
+def basic_operation():
+	try:
+		lmdb_dir_path = './mylmdb'  # Creates ./mylmdb/data.mdb & ./mylmdb/lock.mdb.
+		with lmdb.open(lmdb_dir_path, map_size=1024**2, max_dbs=10, subdir=True, readonly=False, create=True) as env:
+		#lmdb_file_prefix = './mylmdb/lmdb_file'  # Creates ./mylmdb/lmdb_file & ./mylmdb/lmdb_filelock.
+		#with lmdb.open(lmdb_file_prefix, map_size=1024**2, max_dbs=10, subdir=False, readonly=False, create=True) as env:
+			with env.begin(write=True) as txn:  # A transaction object
+				for id in range(100):
+					key, val = 'id_{}'.format(id), '{}'.format(id)
+					txn.put(key.encode('ascii'), val.encode('ascii'))
+	except lmdb.MapFullError as ex:
+		print('lmdb.MapFullError raised: {}.'.format(ex))
+
+	try:
+		lmdb_dir_path = './mylmdb'
+		with lmdb.open(lmdb_dir_path, readonly=True) as env:
+			with env.begin() as txn:  # A transaction object.
+				for id in range(100):
+					key = 'id_{}'.format(id)
+					val = txn.get(key.encode('ascii'))
+					print('{} = {}.'.format(key, val.decode('ascii')))
+	except lmdb.MapFullError as ex:
+		print('lmdb.MapFullError raised: {}.'.format(ex))
+
 def write_to_db_example(use_caffe_datum=False):
 	N = 1000
 	X = np.zeros((N, 3, 32, 32), dtype=np.uint8)
@@ -15,7 +39,7 @@ def write_to_db_example(use_caffe_datum=False):
 		lmdb_dir_path = './mylmdb'
 		map_size = X.nbytes * 10
 		with lmdb.open(lmdb_dir_path, map_size=map_size) as env:
-			with env.begin(write=True) as txn:  # A Transaction object
+			with env.begin(write=True) as txn:  # A transaction object.
 				if use_caffe_datum:
 					#from caffe.proto import caffe_pb2
 					import caffe_pb2
@@ -104,12 +128,15 @@ def key_value_example(use_caffe_datum=False):
 					print(k.decode(), x.shape, y)
 
 def main():
+	basic_operation()
+
+	#--------------------
 	# Usage:
 	#	For using Caffe Datum:
 	#		protoc --python_out=. caffe.proto
 
 	use_caffe_datum = False
-	write_to_db_example(use_caffe_datum)
+	#write_to_db_example(use_caffe_datum)
 	#read_from_db_example(use_caffe_datum)
 	#key_value_example(use_caffe_datum)
 

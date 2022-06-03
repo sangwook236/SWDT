@@ -6,6 +6,27 @@ import numpy as np
 #import caffe
 import leveldb
 
+def basic_operation():
+	leveldb_dir_path = './myleveldb'
+	db = leveldb.LevelDB(leveldb_dir_path, create_if_missing=True)
+
+	for id in range(100):
+		key, val = 'id_{}'.format(id), '{}'.format(id)
+		db.Put(key.encode('ascii'), val.encode('ascii'))
+
+	print(db.GetStats())
+
+	db.Delete('id_{}'.format(96).encode('ascii'))
+	db.Delete('id_{}'.format(98).encode('ascii'))
+
+	for id in range(100):
+		try:
+			key = 'id_{}'.format(id)
+			val = db.Get(key.encode('ascii'))
+			print('{} = {}.'.format(key, val.decode('ascii')))
+		except KeyError as ex:
+			print('Invalid key, {}: {}.'.format(key, ex))
+
 def write_to_db_example(use_caffe_datum=False):
 	N = 1000
 	X = np.zeros((N, 3, 32, 32), dtype=np.uint8)
@@ -55,7 +76,7 @@ def read_from_db_example(use_caffe_datum=False):
 	try:
 		raw_datum = db.Get(key)
 	except KeyError as ex:
-		print('Invalid key, {}.'.format(key))
+		print('Invalid key, {}: {}.'.format(key, ex))
 		return
 
 	if use_caffe_datum:
@@ -103,12 +124,15 @@ def key_value_example(use_caffe_datum=False):
 			print(k.decode(), x.shape, y)
 
 def main():
+	basic_operation()
+
+	#--------------------
 	# Usage:
 	#	For using Caffe Datum:
 	#		protoc --python_out=. caffe.proto
 
 	use_caffe_datum = False
-	write_to_db_example(use_caffe_datum)
+	#write_to_db_example(use_caffe_datum)
 	#read_from_db_example(use_caffe_datum)
 	#key_value_example(use_caffe_datum)
 
