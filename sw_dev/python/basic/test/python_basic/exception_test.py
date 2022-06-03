@@ -36,7 +36,7 @@ def basic_exception_handling():
 		print('-----6')
 
 		#----------
-		logging.exception(ex)
+		logging.exception(ex)  # Logs a message with level ERROR on the root logger.
 		print('-----7')
 	
 		#----------

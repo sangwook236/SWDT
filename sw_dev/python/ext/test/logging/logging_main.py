@@ -18,6 +18,8 @@ def get_logger(log_filepath, log_level, is_rotating=True):
 	file_handler.setFormatter(formatter)
 	stream_handler.setFormatter(formatter)
 
+	#name = 'A.B.C'
+	name = None
 	logger = logging.getLogger(name if name else __name__)
 	logger.setLevel(log_level)  # {NOTSET=0, DEBUG=10, INFO=20, WARNING=WARN=30, ERROR=40, CRITICAL=FATAL=50}.
 	logger.addHandler(file_handler) 
@@ -26,7 +28,7 @@ def get_logger(log_filepath, log_level, is_rotating=True):
 	return logger
 
 def output_logs(logger):
-	#logger.log(logging.WARNING, '[Warning] Warning.')
+	#logger.log(logging.WARNING, '[logger] Warning.')
 	logger.debug('[logger] Debug.')
 	logger.info('[logger] Info.')
 	logger.warning('[logger] Warning.')
@@ -35,7 +37,8 @@ def output_logs(logger):
 	try:
 		raise Exception('Test exception')
 	except Exception as ex:
-		logger.exception('[logger] Exception.')
+		#logger.exception('[logger] Exception.')
+		logger.exception(ex)
 
 	#print = logger.info  # Locally applied.
 
@@ -44,50 +47,126 @@ def output_logs(logger):
 	#print('[sys.stdout] Print', 'Print2')  # TypeError: not all arguments converted during string formatting.
 	#print('[sys.stderr] Print', 'Print2', file=sys.stderr)  # TypeError: not all arguments converted during string formatting.
 
-def simple_logging(log_level):
-	#format = '%(asctime)-15s %(clientip)s %(user)-8s: %(message)s'
-	format = '%(asctime)-15s: %(message)s'
+def root_logger_example(log_level):
+	#format = '%(asctime)-15s: %(message)s'
+	format = '%(name)s: %(levelname)-10s: %(asctime)-30s: %(message)s'
+
+	# Basic configuration for the logging system by creating a StreamHandler with a default Formatter and adding it to the root logger.
+	# The functions debug(), info(), warning(), error() and critical() will call basicConfig() automatically if no handlers are defined for the root logger.
 	logging.basicConfig(format=format)
-	#logging.basicConfig(filename='python_logging.log', filemode='w', level=log_level)
+	#logging.basicConfig(filename='root_logger.log', filemode='w', level=log_level)
+	"""
+	logging.basicConfig(
+		level=log_level,
+		format=format,
+		handlers=[
+			logging.StreamHandler(),
+			logging.FileHandler('root_logger.log')
+		]
+	)
+	"""
+
+	#logging.log(logging.WARNING, '[root logger] Warning.')  # Logs a message with level 'level' on the root logger.
+	logging.debug('[root logger] Debug.')
+	logging.info('[root logger] Info.')
+	logging.warning('[root logger] Warning.')
+	logging.error('[root logger] Error.')
+	logging.critical('[root logger] Critical.')
+	try:
+		raise Exception('Test exception')
+	except Exception as ex:
+		#logging.exception('[root logger] Exception.')
+		logging.exception(ex)
+
+	#-----
+	root_logger = logging.getLogger(name=None)
+	root_logger.setLevel(log_level)
+
+	output_logs(root_logger)
+
+def simple_logging_example(log_level):
+	format = '%(name)s: %(levelname)-10s: %(asctime)-30s: %(message)s'
+	logging.basicConfig(format=format)
 
 	logger = logging.getLogger(__name__)
-	logger.setLevel(log_level)
 
+	print('-----')
 	output_logs(logger)
 
-def simple_file_logging(log_level):
-	handler = logging.handlers.RotatingFileHandler('./python_logging.log', maxBytes=5000, backupCount=10)
+	#--------------------
+	format = '%(asctime)-15s %(clientip)s %(user)-8s: %(message)s'
+	logging.basicConfig(format=format)
+
+	logger = logging.getLogger('tcpserver')
+
+	print('-----')
+	d = {'clientip': '192.168.0.1', 'user': 'fbloggs'}
+	logger.warning('Protocol problem: %s', 'connection reset', extra=d)
+
+	#--------------------
+	filter = logging.Filter(name='A.B')
+
+	loggerA = logging.getLogger('A')
+	loggerA.setLevel(log_level)
+	loggerA.addFilter(filter)
+
+	loggerAB = logging.getLogger('A.B')
+	loggerAB.setLevel(log_level)
+	loggerAB.addFilter(filter)
+
+	loggerABC = logging.getLogger('A.B.C')
+	loggerABC.setLevel(log_level)
+	loggerABC.addFilter(filter)
+
+	loggerAX = logging.getLogger('A.X')
+	loggerAX.setLevel(log_level)
+	loggerAX.addFilter(filter)
+
+	print('-----')
+	output_logs(loggerA)
+	output_logs(loggerAB)
+	output_logs(loggerABC)
+	output_logs(loggerAX)
+
+	#--------------------
+	log_filepath = './simple_logging.log'
+	#handler = logging.StreamHandler()
+	#handler = logging.FileHandler(log_filepath)
+	handler = logging.handlers.RotatingFileHandler(log_filepath, maxBytes=5000, backupCount=10)
 	formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
 	handler.setFormatter(formatter)
 
-	logger = logging.getLogger('python_logging_test')
+	logger = logging.getLogger('simple_logging_logger')
 	logger.addHandler(handler) 
 	logger.setLevel(log_level)
 
 	for _ in range(1000):
+		print('-----')
 		output_logs(logger)
 
 def log_setting_function(log_level):
 	format = '%(asctime)-15s: %(message)s'
 	logging.basicConfig(format=format)
 
-	logger = logging.getLogger('python_logging_test')
+	logger = logging.getLogger('simple_logging_in_multiple_functions_logger')
 	logger.setLevel(log_level)
 
 def log_function():
-	logger = logging.getLogger('python_logging_test')
+	logger = logging.getLogger('simple_logging_in_multiple_functions_logger')
 
 	output_logs(logger)
 
-def simple_logging_in_multiple_functions(log_level):
-	logger = logging.getLogger('python_logging_test')
+def simple_logging_in_multiple_functions_example(log_level):
+	logger = logging.getLogger('simple_logging_in_multiple_functions_logger')
 
+	print('-----')
 	output_logs(logger)
 
 	log_setting_function(log_level)
 
 	log_function()
 
+	print('-----')
 	output_logs(logger)
 
 def main():
@@ -108,13 +187,19 @@ def main():
 	if not os.path.isdir(log_dir_path):
 		os.mkdir(log_dir_path)
 
-	# Define a logger.
-	log_filename = os.path.basename(os.path.normpath(__file__))
-	log_filepath = os.path.join(log_dir_path, '{}.log'.format(log_filename if log_filename else 'swdt'))
-	logger = get_logger(log_filepath, log_level, is_rotating=True)
+	#--------------------
+	if False:
+		# Define a logger.
+		log_filename = os.path.basename(os.path.normpath(__file__))
+		log_filepath = os.path.join(log_dir_path, '{}.log'.format(log_filename if log_filename else 'swdt'))
+		logger = get_logger(log_filepath, log_level, is_rotating=True)
 
-	# Redirection of print().
-	if True:
+		output_logs(logger)
+
+	#--------------------
+	if False:
+		# Redirection of print().
+
 		#fd_stdout = open(os.path.join(log_dir_path, 'stdout.log'), 'a', encoding='utf-8')
 		#sys.stdout = fd_stdout
 		#fd_stderr = open(os.path.join(log_dir_path, 'stderr.log'), 'a', encoding='utf-8')
@@ -131,11 +216,9 @@ def main():
 	#--------------------
 	print('Log level: {}.'.format(log_level))
 
-	output_logs(logger)
-
-	#simple_logging(log_level)
-	#simple_file_logging(log_level)
-	simple_logging_in_multiple_functions(log_level)
+	#root_logger_example(log_level)
+	simple_logging_example(log_level)
+	#simple_logging_in_multiple_functions_example(log_level)
 
 #--------------------------------------------------------------------
 
