@@ -18,6 +18,53 @@ warnings.filterwarnings('ignore')
 
 plt.ion()  # Interactive mode.
 
+class ReturnNoneDataset(torch.utils.data.Dataset):
+	def __init__(self, num_data, transform=None, target_transform=None):
+		self.num_data = num_data
+		self.transform = transform
+		self.target_transform = target_transform
+
+		assert self.num_data > 0
+
+	def __len__(self):
+		return self.num_data
+
+	def __getitem__(self, idx):
+		if idx % 2 == 0:
+			return None
+		x = [idx, 0, -idx]
+		y = [idx**2]
+
+		if self.transform:
+			x = self.transform(x)
+		if self.target_transform:
+			y = self.target_transform(y)
+
+		return x, y
+
+def return_none_dataset_test():
+	dataset = ReturnNoneDataset(num_data=20, transform=torch.IntTensor, target_transform=torch.IntTensor)
+	print('#data = {}.'.format(len(dataset)))
+
+	#for idx, dat in enumerate(dataset):  # Not correctly working.
+	#	print('{} -> {}.'.format(idx, dat))
+	for idx in range(len(dataset)):
+		print('Datum {}: {}.'.format(idx, dataset[idx]))
+
+	#-----
+	def collate_except_none(batch):
+		batch = list(filter(lambda x: x is not None, batch))
+		return torch.utils.data.default_collate(batch) if batch else None
+		#return torch.utils.data.default_collate([])  # IndexError: list index out of range.
+		#return []  # OK.
+
+	#dataloader = torch.utils.data.DataLoader(dataset, batch_size=3, shuffle=True, num_workers=4)
+	dataloader = torch.utils.data.DataLoader(dataset, batch_size=3, shuffle=True, num_workers=4, collate_fn=collate_except_none)
+	print('#batches = {}.'.format(len(dataloader)))
+
+	for idx, batch in enumerate(dataloader):
+		print('Batch {}: {}.'.format(idx, batch))
+
 # REF [site] >> https://pytorch.org/docs/stable/torchvision/datasets.html
 def mnist_dataset_test():
 	if 'posix' == os.name:
@@ -496,7 +543,10 @@ def data_processing():
 	dataset_loader = torch.utils.data.DataLoader(hymenoptera_dataset, batch_size=4, shuffle=True, num_workers=4)
 
 def main():
-	mnist_dataset_test()
+	return_none_dataset_test()
+
+	#--------------------
+	#mnist_dataset_test()
 	#imagenet_dataset_test()
 	#coco_dataset_captions_test()
 	#coco_dataset_detection_test()
