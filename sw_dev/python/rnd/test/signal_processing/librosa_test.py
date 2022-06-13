@@ -29,6 +29,97 @@ def basic_operation():
 	print('Audio time-series: shape = {}, dtype = {}.'.format(y_resampled.shape, y_resampled.dtype))
 	print('Sampling rate = {}.'.format(sr_resampled))
 
+def stft_test():
+	filepath = librosa.ex('nutcracker')
+	#filepath = librosa.ex('trumpet')
+
+	#y, sr = librosa.load(filepath)
+	y, sr = librosa.load(filepath, sr=None, mono=True)
+	#y, sr = librosa.load(filepath, sr=22050, mono=True, offset=0.0, duration=None, dtype=np.float32, res_type='kaiser_best')
+
+	print('Audio time-series: shape = {}, dtype = {}.'.format(y.shape, y.dtype))  # 'nutcracker': (2643264,), 'trumpet': (117601,)
+	print('Sampling rate = {}.'.format(sr))
+
+	#--------------------
+	# The STFT represents a signal in the time-frequency domain by computing discrete Fourier transforms (DFT) over short overlapping windows.
+	#D = librosa.stft(y)
+	D = librosa.stft(y, n_fft=2048, hop_length=None, win_length=None, window='hann', center=True, dtype=None, pad_mode='constant')
+
+	# The shape of D = (1 + floor(n_fft / 2), ceil(len(y) / hop_length)).
+	#	hop_length = win_length // 4 = n_fft // 4 (default).
+
+	# n_fft		D
+	# 			'nutcracker'	'trumpet'
+	# 256		(129, 41302)	(129, 1838)
+	# 512		(257, 20651)	(257, 919)
+	# 1024		(513, 10326)	(513, 460)
+	# 2048		(1025, 5163)	(1025, 230)
+	# 4096		(2049, 2582)	(2049, 115)
+	# 8192		(4097, 1291)	(4097, 58)
+
+	print('STFT: shape = {}, dtype = {}.'.format(D.shape, D.dtype))
+
+	# Separate a complex-valued spectrogram D into its magnitude (S) and phase (P) components.
+	D_mag, D_phase = librosa.magphase(D)
+	D_phase_angle = np.angle(D_phase)  # The phase andgle [rad].
+
+	magnitude = np.abs(D)
+	#magnitude = np.abs(D)**2
+	phase_angle = np.angle(D)
+
+	print('STFT magitude #1:    shape = {}, dtype = {}.'.format(D_mag.shape, D_mag.dtype))
+	print('STFT phase #1:       shape = {}, dtype = {}.'.format(D_phase.shape, D_phase.dtype))  # np.complex64.
+	print('STFT phase angle #1: shape = {}, dtype = {}.'.format(D_phase_angle.shape, D_phase_angle.dtype))
+	print('STFT magitude #2:    shape = {}, dtype = {}.'.format(magnitude.shape, magnitude.dtype))
+	print('STFT phase angle #2: shape = {}, dtype = {}.'.format(phase_angle.shape, phase_angle.dtype))
+
+	assert D_mag.shape == D_phase.shape
+	assert magnitude.shape == phase_angle.shape
+	assert D_mag.shape == magnitude.shape
+
+	assert np.allclose(D_mag, magnitude)
+	#assert np.allclose(D_phase, phase_angle)  # NOTE [info] >> pi and -pi are the same in angle. 
+
+# REF [site] >> https://librosa.github.io/librosa/generated/librosa.filters.mel.html
+def mel_filter_bank_test():
+	mel_fb = librosa.filters.mel(sr=22050, n_fft=2048, n_mels=128)
+	#mel_fb = librosa.filters.mel(sr=22050, n_fft=2048, n_mels=128, fmax=8000)  # Clip the maximum frequency to 8KHz.
+
+	#--------------------
+	plt.figure()
+	librosa.display.specshow(mel_fb, x_axis='linear')
+	plt.ylabel('Mel filter')
+	plt.title('Mel Filter Bank')
+	plt.colorbar()
+	plt.tight_layout()
+	plt.show()
+
+# REF [site] >> https://librosa.github.io/librosa/generated/librosa.feature.melspectrogram.html
+def melspectrogram_test():
+	y, sr = librosa.load(librosa.ex('trumpet'))
+
+	if True:
+		# If a time-series input y, sr is provided, then its magnitude spectrogram S is first computed, and then mapped onto the mel scale by mel_f.dot(S**power).
+		S = librosa.feature.melspectrogram(y=y, sr=sr)
+
+		# Passing through arguments to the Mel filters.
+		#S = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128, fmax=8000)
+		#S = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=512, n_mels=128, fmax=8000)
+		#S = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=512, n_mels=128, fmax=8000, htk=True)
+	else:
+		# If a spectrogram input S is provided, then it is mapped directly onto the mel basis by mel_f.dot(S).
+		D = np.abs(librosa.stft(y))**2
+		S = librosa.feature.melspectrogram(S=D, sr=sr)
+
+	#--------------------
+	plt.figure(figsize=(10, 4))
+	S_dB = librosa.power_to_db(S, ref=np.max)
+	librosa.display.specshow(S_dB, x_axis='time', y_axis='mel', sr=sr, fmax=8000)
+	plt.colorbar(format='%+2.0f dB')
+	plt.title('Mel-frequency Spectrogram')
+	plt.tight_layout()
+	plt.show()
+
 # REF [site] >> https://librosa.org/doc/main/tutorial.html
 def beat_tracking_example():
 	# Get the file path to an included audio example.
@@ -202,46 +293,6 @@ def music_synchronization_with_dynamic_time_warping_example():
 
 	plt.show()
 
-# REF [site] >> https://librosa.github.io/librosa/generated/librosa.filters.mel.html
-def mel_filter_bank_test():
-	mel_fb = librosa.filters.mel(sr=22050, n_fft=2048, n_mels=128)
-	#mel_fb = librosa.filters.mel(sr=22050, n_fft=2048, n_mels=128, fmax=8000)  # Clip the maximum frequency to 8KHz.
-
-	#--------------------
-	plt.figure()
-	librosa.display.specshow(mel_fb, x_axis='linear')
-	plt.ylabel('Mel filter')
-	plt.title('Mel Filter Bank')
-	plt.colorbar()
-	plt.tight_layout()
-	plt.show()
-
-# REF [site] >> https://librosa.github.io/librosa/generated/librosa.feature.melspectrogram.html
-def melspectrogram_test():
-	y, sr = librosa.load(librosa.ex('trumpet'))
-
-	if True:
-		# If a time-series input y, sr is provided, then its magnitude spectrogram S is first computed, and then mapped onto the mel scale by mel_f.dot(S**power).
-		S = librosa.feature.melspectrogram(y=y, sr=sr)
-
-		# Passing through arguments to the Mel filters.
-		#S = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128, fmax=8000)
-		#S = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=512, n_mels=128, fmax=8000)
-		#S = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=512, n_mels=128, fmax=8000, htk=True)
-	else:
-		# If a spectrogram input S is provided, then it is mapped directly onto the mel basis by mel_f.dot(S).
-		D = np.abs(librosa.stft(y))**2
-		S = librosa.feature.melspectrogram(S=D, sr=sr)
-
-	#--------------------
-	plt.figure(figsize=(10, 4))
-	S_dB = librosa.power_to_db(S, ref=np.max)
-	librosa.display.specshow(S_dB, x_axis='time', y_axis='mel', sr=sr, fmax=8000)
-	plt.colorbar(format='%+2.0f dB')
-	plt.title('Mel-frequency Spectrogram')
-	plt.tight_layout()
-	plt.show()
-
 # REF [site] >> https://medium.com/@makcedward/data-augmentation-for-audio-76912b01fdf6
 def data_augmentation_example():
 	y, sr = librosa.load(librosa.example('nutcracker'))
@@ -324,17 +375,18 @@ def data_augmentation_example():
 	plt.show()
 
 def main():
-	basic_operation()
+	#basic_operation()
 
+	stft_test()
+	#mel_filter_bank_test()
+	#melspectrogram_test()
+
+	#--------------------
 	#beat_tracking_example()
 	#feature_extraction_example()
 
 	#viterbi_decoding_example()
 	#music_synchronization_with_dynamic_time_warping_example()
-
-	#--------------------
-	#mel_filter_bank_test()
-	#melspectrogram_test()
 
 	#--------------------
 	#data_augmentation_example()
