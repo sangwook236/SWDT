@@ -80,6 +80,12 @@ def stft_test():
 	assert np.allclose(D_mag, magnitude)
 	#assert np.allclose(D_phase, phase_angle)  # NOTE [info] >> pi and -pi are the same in angle. 
 
+	#--------------------
+	#librosa.amplitude_to_db(S, ref=1.0, amin=1e-05, top_db=80.0)
+	#librosa.db_to_amplitude(S_db, ref=1.0)
+	#librosa.power_to_db(S, ref=1.0, amin=1e-10, top_db=80.0)
+	#librosa.db_to_power(S_db, ref=1.0)
+
 # REF [site] >> https://librosa.github.io/librosa/generated/librosa.filters.mel.html
 def mel_filter_bank_test():
 	mel_fb = librosa.filters.mel(sr=22050, n_fft=2048, n_mels=128)
@@ -136,7 +142,9 @@ def beat_tracking_example():
 	# Convert the frame indices of beat events into timestamps.
 	beat_times = librosa.frames_to_time(beat_frames, sr=sr)
 
-# REF [site] >> https://librosa.org/doc/main/tutorial.html
+# REF [site] >>
+#	https://librosa.org/doc/main/tutorial.html
+#	https://librosa.org/doc/main/feature.html
 def feature_extraction_example():
 	# Load the example clip.
 	y, sr = librosa.load(librosa.ex('nutcracker'))
@@ -169,6 +177,62 @@ def feature_extraction_example():
 
 	# Finally, stack all beat-synchronous features together.
 	beat_features = np.vstack([beat_chroma, beat_mfcc_delta])
+
+	#--------------------
+	# Spectral features.
+	#librosa.feature.chroma_stft(y=None, sr=22050, S=None, norm=inf, n_fft=2048, hop_length=512, win_length=None, window='hann', center=True, pad_mode='constant', tuning=None, n_chroma=12)
+	#librosa.feature.chroma_cqt(y=None, sr=22050, C=None, hop_length=512, fmin=None, norm=inf, threshold=0.0, tuning=None, n_chroma=12, n_octaves=7, window=None, bins_per_octave=36, cqt_mode='full')
+	#librosa.feature.chroma_cens(y=None, sr=22050, C=None, hop_length=512, fmin=None, tuning=None, n_chroma=12, n_octaves=7, bins_per_octave=36, cqt_mode='full', window=None, norm=2, win_len_smooth=41, smoothing_window='hann')
+
+	#librosa.feature.melspectrogram(y=None, sr=22050, S=None, n_fft=2048, hop_length=512, win_length=None, window='hann', center=True, pad_mode='constant', power=2.0)
+	#librosa.feature.mfcc(y=None, sr=22050, S=None, n_mfcc=20, dct_type=2, norm='ortho', lifter=0)
+
+	#librosa.feature.spectral_centroid(y=None, sr=22050, S=None, n_fft=2048, hop_length=512, freq=None, win_length=None, window='hann', center=True, pad_mode='constant')
+	#librosa.feature.spectral_bandwidth(y=None, sr=22050, S=None, n_fft=2048, hop_length=512, win_length=None, window='hann', center=True, pad_mode='constant', freq=None, centroid=None, norm=True, p=2)
+	#librosa.feature.spectral_contrast(y=None, sr=22050, S=None, n_fft=2048, hop_length=512, win_length=None, window='hann', center=True, pad_mode='constant', freq=None, fmin=200.0, n_bands=6, quantile=0.02, linear=False)
+	#librosa.feature.spectral_flatness(y=None, S=None, n_fft=2048, hop_length=512, win_length=None, window='hann', center=True, pad_mode='constant', amin=1e-10, power=2.0)
+	#librosa.feature.spectral_rolloff(y=None, sr=22050, S=None, n_fft=2048, hop_length=512, win_length=None, window='hann', center=True, pad_mode='constant', freq=None, roll_percent=0.85)
+
+	#librosa.feature.rms(y=None, S=None, frame_length=2048, hop_length=512, center=True, pad_mode='constant')
+	#librosa.feature.poly_features(y=None, sr=22050, S=None, n_fft=2048, hop_length=512, win_length=None, window='hann', center=True, pad_mode='constant', order=1, freq=None)
+	#librosa.feature.tonnetz(y=None, sr=22050, chroma=None)
+	#librosa.feature.zero_crossing_rate(y, frame_length=2048, hop_length=512, center=True)
+
+	# Rhythm features.
+	#librosa.feature.tempogram(y=None, sr=22050, onset_envelope=None, hop_length=512, win_length=384, center=True, window='hann', norm=inf)
+	#librosa.feature.fourier_tempogram(y=None, sr=22050, onset_envelope=None, hop_length=512, win_length=384, center=True, window='hann')
+
+	# Feature manipulation.
+	#librosa.feature.delta(data, width=9, order=1, axis=- 1, mode='interp')
+	#librosa.feature.stack_memory(data, n_steps=2, delay=1)
+
+	# Feature inversion.
+	#librosa.feature.inverse.mel_to_stft(M, sr=22050, n_fft=2048, power=2.0)
+	#librosa.feature.inverse.mel_to_audio(M, sr=22050, n_fft=2048, hop_length=None, win_length=None, window='hann', center=True, pad_mode='constant', power=2.0, n_iter=32, length=None, dtype=np.float32)
+	#librosa.feature.inverse.mfcc_to_mel(mfcc, n_mels=128, dct_type=2, norm='ortho', ref=1.0, lifter=0)
+	#librosa.feature.inverse.mfcc_to_audio(mfcc, n_mels=128, dct_type=2, norm='ortho', ref=1.0, lifter=0)
+
+	if True:
+		# REF [site] >> https://librosa.org/doc/main/generated/librosa.feature.rms.html
+		y, sr = librosa.load(librosa.ex('trumpet'))
+
+		#S, phase = librosa.magphase(librosa.stft(y))
+		# Use a STFT window of constant ones and no frame centering to get consistent results with the RMS computed from the audio samples y.
+		S, phase = librosa.magphase(librosa.stft(y, window=np.ones, center=False))
+
+		#rms = librosa.feature.rms(y=y)
+		rms = librosa.feature.rms(S=S)
+
+		fig, ax = plt.subplots(nrows=2, sharex=True)
+		times = librosa.times_like(rms)
+		ax[0].semilogy(times, rms[0], label='RMS Energy')
+		ax[0].set(xticks=[])
+		ax[0].legend()
+		ax[0].label_outer()
+		librosa.display.specshow(librosa.amplitude_to_db(S, ref=np.max), y_axis='log', x_axis='time', ax=ax[1])
+		ax[1].set(title='log Power spectrogram')
+
+		plt.show()
 
 # REF [site] >> https://librosa.org/doc/main/auto_examples/plot_viterbi.html
 def viterbi_decoding_example():
