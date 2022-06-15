@@ -59,12 +59,14 @@ def sequential_feature_selection_example():
 	# Selecting features with sequential feature selection.
 	tic_fwd = time.time()
 	sfs_forward = sklearn.feature_selection.SequentialFeatureSelector(ridge, n_features_to_select=2, direction='forward')
+	#sfs_forward = sklearn.feature_selection.SequentialFeatureSelector(ridge, n_features_to_select='auto', tol=None, direction='forward', scoring=None, cv=None, n_jobs=None)
 	sfs_forward = sfs_forward.fit(X, y)
 	toc_fwd = time.time()
 	#X_new = sfs_forward.transform(X)
 
 	tic_bwd = time.time()
 	sfs_backward = sklearn.feature_selection.SequentialFeatureSelector(ridge, n_features_to_select=2, direction='backward')
+	#sfs_backward = sklearn.feature_selection.SequentialFeatureSelector(ridge, n_features_to_select='auto', tol=None, direction='backward', scoring=None, cv=None, n_jobs=None)
 	sfs_backward = sfs_backward.fit(X, y)
 	toc_bwd = time.time()
 	#X_new = sfs_backward.transform(X)

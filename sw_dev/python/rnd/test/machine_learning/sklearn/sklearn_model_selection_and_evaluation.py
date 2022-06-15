@@ -1,26 +1,27 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+import time
+import numpy as np
+import pandas as pd
+import scipy.stats
+from sklearn import model_selection
+from sklearn import metrics, pipeline, preprocessing, utils
+from sklearn import datasets
+from sklearn import linear_model, svm, naive_bayes, ensemble
+import matplotlib.pyplot as plt
+
 # REF [site] >>
 #	http://scikit-learn.org/stable/model_selection.html
 #	http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html
 
-from sklearn import model_selection
-from sklearn import metrics
-from sklearn import datasets
-from sklearn import linear_model, svm, naive_bayes, ensemble
-import numpy as np
-import matplotlib.pyplot as plt
-import os
-
-#---------------------------------------------------------------------
 def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None, n_jobs=1, train_sizes=np.linspace(.1, 1.0, 5)):
 	"""
 	Generate a simple plot of the test and training learning curve.
 
 	Parameters
 	----------
-	estimator : object type that implements the "fit" and "predict" methods
+	estimator : object type that implements the "fit" and "predict" methods.
 		An object of that type which is cloned for each validation.
 
 	title : string
@@ -76,7 +77,7 @@ def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None, n_jobs=1, tr
 	plt.legend(loc='best')
 	return plt
 
-def learning_curve_example():
+def learning_curve_example_1():
 	# REF [site] >> http://scikit-learn.org/stable/auto_examples/model_selection/plot_learning_curve.html
 	digits = datasets.load_digits()
 	X, y = digits.data, digits.target
@@ -119,7 +120,27 @@ def learning_curve_example():
 	plt.legend(loc='best')
 	plt.show()
 
-#---------------------------------------------------------------------
+# REF [site] >> https://scikit-learn.org/stable/modules/learning_curve.html
+def learning_curve_example_2():
+	np.random.seed(0)
+
+	X, y = datasets.load_iris(return_X_y=True)
+	indices = np.arange(y.shape[0])
+	np.random.shuffle(indices)
+	X, y = X[indices], y[indices]
+
+	train_scores, valid_scores = model_selection.validation_curve(linear_model.Ridge(), X, y, param_name='alpha', param_range=np.logspace(-7, 3, 3), cv=5)
+
+	print('Train scores:\n{}'.format(train_scores))
+	print('Validation scores:\n{}'.format(valid_scores))
+
+	#--------------------
+	train_sizes, train_scores, valid_scores = model_selection.learning_curve(svm.SVC(kernel='linear'), X, y, train_sizes=[50, 80, 110], cv=5)
+	
+	print('Train sizes = {}.'.format(train_sizes))
+	print('Train scores:\n{}'.format(train_scores))
+	print('Validation scores:\n{}'.format(valid_scores))
+
 def train_test_split_example():
 	iris = datasets.load_iris()
 	X_train, X_test, y_train, y_test = model_selection.train_test_split(iris.data, iris.target, test_size=0.4, shuffle=True, stratify=None, random_state=0)
@@ -133,7 +154,6 @@ def train_test_split_example():
 	scores = clf.score(X_test, y_test)   
 	print('Scores =', scores)
 
-#---------------------------------------------------------------------
 def split_example():
 	X = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
 	y = np.array([1, 2, 1, 2])
@@ -175,7 +195,6 @@ def split_example():
 		#print('TRAIN:\n', X_train, y_train)
 		#print('TEST:\n', X_test, y_test)
 
-#---------------------------------------------------------------------
 def k_fold_example():
 	X = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
 	y = np.array([1, 2, 1, 2])
@@ -208,7 +227,6 @@ def k_fold_example():
 		#print('TRAIN:\n', X_train, y_train)
 		#print('TEST:\n', X_test, y_test)
 
-#---------------------------------------------------------------------
 def leave_out_example():
 	X = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
 	y = np.array([1, 2, 1, 2])
@@ -244,11 +262,10 @@ def leave_out_example():
 		#print('TRAIN:\n', X_train, y_train)
 		#print('TEST:\n', X_test, y_test)
 
-#---------------------------------------------------------------------
 # REF [site] >>
 #	http://scikit-learn.org/stable/modules/cross_validation.html
 #	http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.html
-def cross_validation_example():
+def cross_validation_example_1():
 	#diabetes = datasets.load_diabetes()
 	##X, y = diabetes.data[:150], diabetes.target[:150]
 	#X, y = diabetes.data, diabetes.target
@@ -290,7 +307,75 @@ def cross_validation_example():
 	print('Scores =', scores)
 	print('Accuracy: %0.2f (+/- %0.2f)' % (scores.mean(), scores.std() * 2))
 
-#---------------------------------------------------------------------
+# REF [site] >> https://scikit-learn.org/stable/modules/cross_validation.html
+def cross_validation_example_2():
+	X, y = datasets.load_iris(return_X_y=True)
+
+	if True:
+		clf = svm.SVC(kernel='linear', C=1, random_state=42)
+
+		# When the cv argument is an integer, cross_val_score uses the KFold or StratifiedKFold strategies by default, the latter being used if the estimator derives from ClassifierMixin.
+		# The score computed at each CV iteration is the score method of the estimator.
+		scores = model_selection.cross_val_score(clf, X, y, cv=5)
+		print('[1] CV scores = {} (mean = {}, stddev = {}).'.format(scores, scores.mean(), scores.std()))
+
+		scores = model_selection.cross_val_score(clf, X, y, cv=5, scoring='f1_macro')
+		print('[2] CV scores = {} (mean = {}, stddev = {}).'.format(scores, scores.mean(), scores.std()))
+
+		# A cross validation iterator.
+		cv = model_selection.ShuffleSplit(n_splits=5, test_size=0.3, random_state=0)
+		scores = model_selection.cross_val_score(clf, X, y, cv=cv)
+		print('[3] CV scores = {} (mean = {}, stddev = {}).'.format(scores, scores.mean(), scores.std()))
+
+		# An iterable yielding (train, test) splits as arrays of indices.
+		def custom_cv_2folds(X):
+			n = X.shape[0]
+			i = 1
+			while i <= 2:
+				idx = np.arange(n * (i - 1) / 2, n * i / 2, dtype=int)
+				yield idx, idx
+				i += 1
+
+		custom_cv = custom_cv_2folds(X)
+		scores = model_selection.cross_val_score(clf, X, y, cv=custom_cv)
+		print('[4] CV scores = {} (mean = {}, stddev = {}).'.format(scores, scores.mean(), scores.std()))
+
+		# A Pipeline makes it easier to compose estimators, providing this behavior under cross-validation.
+		clf = pipeline.make_pipeline(preprocessing.StandardScaler(), svm.SVC(C=1))
+		scores = model_selection.cross_val_score(clf, X, y, cv=cv)
+		print('[5] CV scores = {} (mean = {}, stddev = {}).'.format(scores, scores.mean(), scores.std()))
+
+	#--------------------
+	if True:
+		clf = svm.SVC(kernel='linear', C=1, random_state=0)
+
+		scoring = ['precision_macro', 'recall_macro']
+		#scoring = ['accuracy', 'precision_macro', 'recall_macro', 'f1_macro']
+		scores = model_selection.cross_validate(clf, X, y, scoring=scoring)
+		#scores = model_selection.cross_validate(clf, X, y, scoring=scoring, cv=None, n_jobs=None, return_train_score=True, return_estimator=True)
+
+		print('CV keys = {}.'.format(sorted(scores.keys())))
+		print(pd.DataFrame(scores))
+		print('Recall macro (test) = {} (mean = {}, stddev = {}).'.format(scores['test_recall_macro'], scores['test_recall_macro'].mean(), scores['test_recall_macro'].std()))
+
+		# Predefined or custom scoring function.
+		scoring = {
+			'prec_macro': 'precision_macro',
+			'rec_macro': metrics.make_scorer(metrics.recall_score, average='macro')
+		}
+		scores = model_selection.cross_validate(clf, X, y, scoring=scoring, cv=5, return_train_score=True)
+
+		print('CV keys = {}.'.format(sorted(scores.keys())))
+		print(pd.DataFrame(scores))
+		print('rec_macro (test) = {} (mean = {}, stddev = {}).'.format(scores['train_rec_macro'], scores['train_rec_macro'].mean(), scores['train_rec_macro'].std()))
+
+		# A single metric.
+		scores = model_selection.cross_validate(clf, X, y, scoring='precision_macro', cv=5, return_estimator=True)
+
+		print('CV keys = {}.'.format(sorted(scores.keys())))
+		print(pd.DataFrame(scores))
+		print('Score (test) = {} (mean = {}, stddev = {}).'.format(scores['test_score'], scores['test_score'].mean(), scores['test_score'].std()))
+
 # Hyper-parameter optimization.
 #	REF [paper] >> "Random Search for Hyper-Parameter Optimization", JMLR 2012.
 #	REF [site] >> http://scikit-learn.org/stable/modules/grid_search.html
@@ -352,17 +437,143 @@ def hyper_parameter_optimization_example():
 	print('GridSearchCV took %.2f seconds for %d candidate parameter settings.' % (time() - start, len(grid_search.cv_results_['params'])))
 	report(grid_search.cv_results_)
 
+
+# REF [site] >> https://scikit-learn.org/stable/modules/grid_search.html
+def hyper_parameter_tuning_example():
+	# Hyper-parameters are parameters that are not directly learnt within estimators.
+	# In scikit-learn they are passed as arguments to the constructor of the estimator classes.
+	# Typical examples include C, kernel and gamma for Support Vector Classifier, alpha for Lasso, etc.
+	# It is possible and recommended to search the hyper-parameter space for the best cross validation score.
+	# Any parameter provided when constructing an estimator may be optimized in this manner.
+	# Specifically, to find the names and current values for all parameters for a given estimator:
+	#	estimator.get_params()
+
+	"""
+	parameters = {
+		'C': scipy.stats.expon(scale=100),
+		'gamma': scipy.stats.expon(scale=0.1),
+		'kernel': ['rbf'],
+		'class_weight':['balanced', None]}
+	parameters = {
+		'C': utils.fixes.loguniform(1e0, 1e3),
+		'gamma': utils.fixes.loguniform(1e-4, 1e-3),
+		'kernel': ['rbf'],
+		'class_weight':['balanced', None]
+	}
+	"""
+
+	#--------------------
+	# Exhaustive grid search.
+	# REF [site] >> https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html
+
+	if True:
+		iris = datasets.load_iris()
+
+		#param_grid = {'kernel':('linear', 'rbf'), 'C':[1, 10]}
+		param_grid = [
+			{'C': [1, 10, 100, 1000], 'kernel': ['linear']},
+			{'C': [1, 10, 100, 1000], 'gamma': [0.001, 0.0001], 'kernel': ['rbf']},
+		]
+		clf = svm.SVC()
+		search = model_selection.GridSearchCV(clf, param_grid)
+		search.fit(iris.data, iris.target)
+
+		print('CV keys = {}.'.format(sorted(search.cv_results_.keys())))
+		print(pd.DataFrame(search.cv_results_))
+		print('Best params: {}.'.format(search.best_params_))
+		print('Best estimator: {}.'.format(search.best_estimator_))
+		print('Best score = {}.'.format(search.best_score_))
+
+	#--------------------
+	# Randomized search.
+	# REF [site] >> https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RandomizedSearchCV.html
+
+	if True:
+		iris = datasets.load_iris()
+
+		clf = linear_model.LogisticRegression(solver='saga', tol=1e-2, max_iter=200, random_state=0)
+		param_distributions ={
+			'C': scipy.stats.uniform(loc=0, scale=4),
+			'penalty': ['l2', 'l1']
+		}
+		search = model_selection.RandomizedSearchCV(clf, param_distributions, random_state=0)
+		search = search.fit(iris.data, iris.target)
+
+		print('CV keys = {}.'.format(sorted(search.cv_results_.keys())))
+		print(pd.DataFrame(search.cv_results_))
+		print('Best params: {}.'.format(search.best_params_))
+		print('Best estimator: {}.'.format(search.best_estimator_))
+		print('Best score = {}.'.format(search.best_score_))
+
+	#--------------------
+	# Randomized parameter optimization.
+	# REF [site] >> https://scikit-learn.org/stable/auto_examples/model_selection/plot_randomized_search.html
+
+	if True:
+		X, y = datasets.load_digits(return_X_y=True, n_class=3)
+
+		# Build a classifier.
+		clf = linear_model.SGDClassifier(loss="hinge", penalty="elasticnet", fit_intercept=True)
+
+		# Utility function to report best scores.
+		def report(results, n_top=3):
+			for i in range(1, n_top + 1):
+				candidates = np.flatnonzero(results["rank_test_score"] == i)
+				for candidate in candidates:
+					print("Model with rank: {0}".format(i))
+					print("Mean validation score: {0:.3f} (std: {1:.3f})".format(results["mean_test_score"][candidate], results["std_test_score"][candidate]))
+					print("Parameters: {0}".format(results["params"][candidate]))
+					print("")
+
+		# Specify parameters and distributions to sample from.
+		param_dist = {
+			"average": [True, False],
+			"l1_ratio": scipy.stats.uniform(0, 1),
+			"alpha": utils.fixes.loguniform(1e-2, 1e0),
+		}
+
+		# Run randomized search.
+		n_iter_search = 15
+		random_search = model_selection.RandomizedSearchCV(clf, param_distributions=param_dist, n_iter=n_iter_search)
+
+		start = time.time()
+		random_search.fit(X, y)
+		print("RandomizedSearchCV took %.2f seconds for %d candidates parameter settings." % ((time.time() - start), n_iter_search) )
+		report(random_search.cv_results_)
+
+		# Use a full grid over all parameters.
+		param_grid = {
+			"average": [True, False],
+			"l1_ratio": np.linspace(0, 1, num=10),
+			"alpha": np.power(10, np.arange(-2, 1, dtype=float)),
+		}
+
+		# Run grid search.
+		grid_search = model_selection.GridSearchCV(clf, param_grid=param_grid)
+		start = time.time()
+		grid_search.fit(X, y)
+
+		print("GridSearchCV took %.2f seconds for %d candidate parameter settings." % (time.time() - start, len(grid_search.cv_results_["params"])))
+		report(grid_search.cv_results_)
+
+	#--------------------
+	# Searching for optimal parameters with successive halving.
+	# REF [site] >> https://scikit-learn.org/stable/modules/grid_search.html
+
 def main():
-	#learning_curve_example()
+	#learning_curve_example_1()
+	#learning_curve_example_2()
 
 	#train_test_split_example()
-	split_example()
+	#split_example()
 	#k_fold_example()
 	#leave_out_example()
 
-	#cross_validation_example()
+	#cross_validation_example_1()
+	#cross_validation_example_2()
 
 	#hyper_parameter_optimization_example()
+	hyper_parameter_tuning_example()
 
 #--------------------------------------------------------------------
 
