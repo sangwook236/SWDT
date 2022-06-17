@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import sklearn.ensemble, sklearn.tree, sklearn.neighbors, sklearn.naive_bayes, sklearn.model_selection, sklearn.metrics, sklearn.datasets
+import sklearn.ensemble, sklearn.tree, sklearn.neighbors, sklearn.naive_bayes, sklearn.model_selection
+import sklearn.metrics, sklearn.datasets, sklearn.preprocessing, sklearn.pipeline
 
 # REF [site] >> http://scikit-learn.org/stable/modules/ensemble.html
 def ensemble_example_1():
@@ -118,6 +119,20 @@ def ensemble_example_2():
 	# A stacking predictor predicts as good as the best predictor of the base layer and even sometimes outperforms it by combining the different strengths of the these predictors.
 	# However, training a stacking predictor is computationally expensive.
 
+	X, y = sklearn.datasets.load_iris(return_X_y=True)
+	X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(X, y, stratify=y, random_state=42)
+
+	estimators = [
+		('rf', sklearn.ensemble.RandomForestClassifier(n_estimators=10, random_state=42)),
+		('svr', sklearn.pipeline.make_pipeline(sklearn.preprocessing.StandardScaler(), sklearn.svm.LinearSVC(random_state=42)))
+	]
+	clf = sklearn.ensemble.StackingClassifier(estimators=estimators, final_estimator=sklearn.linear_model.LogisticRegression())
+
+	clf.fit(X_train, y_train)
+
+	print('Score: {:.2f}.'.format(clf.score(X_test, y_test)))
+
+	#------------------------------
 	estimators = [
 		('ridge', sklearn.linear_model.RidgeCV()),
 		('lasso', sklearn.linear_model.LassoCV(random_state=42)),

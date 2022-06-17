@@ -399,17 +399,20 @@ def hyper_parameter_optimization_example():
 				print('Model with rank: {0}'.format(i))
 				print('Mean validation score: {0:.3f} (std: {1:.3f})'.format(
 					results['mean_test_score'][candidate],
-					results['std_test_score'][candidate]))
+					results['std_test_score'][candidate])
+				)
 				print('Parameters: {0}'.format(results['params'][candidate]))
 				print('')
 
 	# Specify parameters and distributions to sample from.
-	param_dist = {'max_depth': [3, None],
+	param_dist = {
+		'max_depth': [3, None],
 		'max_features': sp_randint(1, 11),
 		'min_samples_split': sp_randint(2, 11),
 		'min_samples_leaf': sp_randint(1, 11),
 		'bootstrap': [True, False],
-		'criterion': ['gini', 'entropy']}
+		'criterion': ['gini', 'entropy'],
+	}
 
 	# Run randomized search.
 	n_iter_search = 20
@@ -421,22 +424,22 @@ def hyper_parameter_optimization_example():
 	report(random_search.cv_results_)
 
 	# Use a full grid over all parameters.
-	param_grid = {'max_depth': [3, None],
+	param_grid = {
+		'max_depth': [3, None],
 		'max_features': [1, 3, 10],
 		'min_samples_split': [2, 3, 10],
 		'min_samples_leaf': [1, 3, 10],
 		'bootstrap': [True, False],
-		'criterion': ['gini', 'entropy']}
+		'criterion': ['gini', 'entropy'],
+	}
 
 	# Run grid search.
 	#os.environ["OMP_NUM_THREADS"] = "2"
 	grid_search = model_selection.GridSearchCV(clf, param_grid=param_grid, verbose=1, n_jobs=2)
 	start = time()
 	grid_search.fit(X, y)
-
 	print('GridSearchCV took %.2f seconds for %d candidate parameter settings.' % (time() - start, len(grid_search.cv_results_['params'])))
 	report(grid_search.cv_results_)
-
 
 # REF [site] >> https://scikit-learn.org/stable/modules/grid_search.html
 def hyper_parameter_tuning_example():
@@ -453,7 +456,8 @@ def hyper_parameter_tuning_example():
 		'C': scipy.stats.expon(scale=100),
 		'gamma': scipy.stats.expon(scale=0.1),
 		'kernel': ['rbf'],
-		'class_weight':['balanced', None]}
+		'class_weight':['balanced', None],
+	}
 	parameters = {
 		'C': utils.fixes.loguniform(1e0, 1e3),
 		'gamma': utils.fixes.loguniform(1e-4, 1e-3),
@@ -492,7 +496,7 @@ def hyper_parameter_tuning_example():
 		iris = datasets.load_iris()
 
 		clf = linear_model.LogisticRegression(solver='saga', tol=1e-2, max_iter=200, random_state=0)
-		param_distributions ={
+		param_distributions = {
 			'C': scipy.stats.uniform(loc=0, scale=4),
 			'penalty': ['l2', 'l1']
 		}
@@ -540,6 +544,8 @@ def hyper_parameter_tuning_example():
 		random_search.fit(X, y)
 		print("RandomizedSearchCV took %.2f seconds for %d candidates parameter settings." % ((time.time() - start), n_iter_search) )
 		report(random_search.cv_results_)
+		#print('CV keys = {}.'.format(sorted(random_search.cv_results_.keys())))
+		#print(pd.DataFrame(random_search.cv_results_))
 
 		# Use a full grid over all parameters.
 		param_grid = {
@@ -555,6 +561,8 @@ def hyper_parameter_tuning_example():
 
 		print("GridSearchCV took %.2f seconds for %d candidate parameter settings." % (time.time() - start, len(grid_search.cv_results_["params"])))
 		report(grid_search.cv_results_)
+		#print('CV keys = {}.'.format(sorted(grid_search.cv_results_.keys())))
+		#print(pd.DataFrame(grid_search.cv_results_))
 
 	#--------------------
 	# Searching for optimal parameters with successive halving.
