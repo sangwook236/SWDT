@@ -60,8 +60,8 @@ def stft_test():
 	print('STFT: shape = {}, dtype = {}.'.format(D.shape, D.dtype))
 
 	# Separate a complex-valued spectrogram D into its magnitude (S) and phase (P) components.
-	D_mag, D_phase = librosa.magphase(D)
-	D_phase_angle = np.angle(D_phase)  # The phase andgle [rad].
+	D_mag, D_phase = librosa.magphase(D, power=1)  # mag = np.abs(D)**power, phase = np.exp(1.0j * np.angle(D)).
+	D_phase_angle = np.angle(D_phase)  # The phase angle. [rad].
 
 	magnitude = np.abs(D)
 	#magnitude = np.abs(D)**2
@@ -79,6 +79,49 @@ def stft_test():
 
 	assert np.allclose(D_mag, magnitude)
 	#assert np.allclose(D_phase, phase_angle)  # NOTE [info] >> pi and -pi are the same in angle. 
+
+	#--------------------
+	# Inverse STFT.
+
+	y, sr = librosa.load(librosa.ex('trumpet'))
+
+	D = librosa.stft(y)
+	y_hat = librosa.istft(D)
+
+	print('The shape of y     = {}.'.format(y.shape))
+	print('The shape of y_hat = {}.'.format(y_hat.shape))
+	print(y)
+	print(y_hat)
+
+	# Exactly preserving length of the input signal requires explicit padding.
+	# Otherwise, a partial frame at the end of y will not be represented.
+	n = len(y)
+	n_fft = 2048
+	y_pad = librosa.util.fix_length(y, size=n + n_fft // 2)
+
+	D = librosa.stft(y_pad, n_fft=n_fft)
+
+	y_hat = librosa.istft(D, length=n)
+	print('Max error = {}.'.format(np.max(np.abs(y - y_hat))))  # NOTE [caution] >> y, not y_pad.
+
+	D_mag, D_phase = librosa.magphase(D)
+	y_mag_hat = librosa.istft(D_mag, length=n)
+	print('Max error = {}.'.format(np.max(np.abs(y - y_mag_hat))))
+
+	y_phase_hat = librosa.istft(D_phase, length=n)
+	print('Max error = {}.'.format(np.max(np.abs(y - y_phase_hat))))
+
+	fig, ax = plt.subplots(nrows=2, ncols=2, sharey=True)
+	librosa.display.waveshow(y, sr=sr, ax=ax[0, 0])
+	ax[0, 0].set(title='$y$')
+	librosa.display.waveshow(y_hat, sr=sr, ax=ax[0, 1])
+	ax[0, 1].set(title='$\hat{y}$')
+	librosa.display.waveshow(y_mag_hat, sr=sr, ax=ax[1, 0])
+	ax[1, 0].set(title='$\hat{y}_{mag}$')
+	librosa.display.waveshow(y_phase_hat, sr=sr, ax=ax[1, 1])
+	ax[1, 1].set(title='$\hat{y}_{phase}$')
+	plt.tight_layout()
+	plt.show()
 
 	#--------------------
 	#librosa.amplitude_to_db(S, ref=1.0, amin=1e-05, top_db=80.0)
