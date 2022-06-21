@@ -129,17 +129,40 @@ def learning_curve_example_2():
 	np.random.shuffle(indices)
 	X, y = X[indices], y[indices]
 
-	train_scores, valid_scores = model_selection.validation_curve(linear_model.Ridge(), X, y, param_name='alpha', param_range=np.logspace(-7, 3, 3), cv=5)
+	#--------------------
+	param_name = 'alpha'
+	param_range = np.logspace(-7, 3, 3)  # [1e-5, 1e3].
+	train_scores, valid_scores = model_selection.validation_curve(linear_model.Ridge(), X, y, param_name=param_name, param_range=param_range, cv=5)
+	#train_scores, valid_scores = model_selection.validation_curve(estimator, X, y, param_name=param_name, param_range=param_range, groups=None, cv=None, scoring=None, n_jobs=None, pre_dispatch='all', verbose=0, error_score=np.nan, fit_params=None)
 
 	print('Train scores:\n{}'.format(train_scores))
 	print('Validation scores:\n{}'.format(valid_scores))
+
+	plt.figure()
+	plt.plot(param_range, train_scores.mean(1), label='train')
+	plt.plot(param_range, valid_scores.mean(1), label='valid')
+	plt.xlabel(param_name)
+	plt.ylabel('Score')
+	plt.title('Validation curves')
+	plt.legend(loc='best')
 
 	#--------------------
-	train_sizes, train_scores, valid_scores = model_selection.learning_curve(svm.SVC(kernel='linear'), X, y, train_sizes=[50, 80, 110], cv=5)
+	train_sizes_abs, train_scores, valid_scores = model_selection.learning_curve(svm.SVC(kernel='linear'), X, y, train_sizes=[50, 80, 110], cv=5)
+	#train_sizes_abs, train_scores, valid_scores = model_selection.learning_curve(estimator, X, y, groups=None, train_sizes=np.linspace(0.1, 1.0, 5), cv=None, scoring=None, exploit_incremental_learning=False, n_jobs=None, pre_dispatch='all', verbose=0, shuffle=False, random_state=None, error_score=nan, return_times=False, fit_params=None)
 	
-	print('Train sizes = {}.'.format(train_sizes))
+	print('Train sizes = {}.'.format(train_sizes_abs))
 	print('Train scores:\n{}'.format(train_scores))
 	print('Validation scores:\n{}'.format(valid_scores))
+
+	plt.figure()
+	plt.plot(train_sizes_abs, train_scores.mean(1), label='train')
+	plt.plot(train_sizes_abs, valid_scores.mean(1), label='valid')
+	plt.xlabel('Train size')
+	plt.ylabel('Score')
+	plt.title('Learning curves')
+	plt.legend(loc='best')
+
+	plt.show()
 
 def train_test_split_example():
 	iris = datasets.load_iris()
@@ -570,7 +593,7 @@ def hyper_parameter_tuning_example():
 
 def main():
 	#learning_curve_example_1()
-	#learning_curve_example_2()
+	learning_curve_example_2()
 
 	#train_test_split_example()
 	#split_example()
@@ -581,7 +604,7 @@ def main():
 	#cross_validation_example_2()
 
 	#hyper_parameter_optimization_example()
-	hyper_parameter_tuning_example()
+	#hyper_parameter_tuning_example()
 
 #--------------------------------------------------------------------
 

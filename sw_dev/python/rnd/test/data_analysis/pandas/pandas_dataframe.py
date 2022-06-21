@@ -144,6 +144,13 @@ def numpy_operation():
 	print('pd.DataFrame from np.ndarray =\n', iris_df2, sep='')
 
 def main():
+	if False:
+		# Set 4 options to display complete contents of a dataframe without any kind of truncation.
+		pd.set_option('display.max_rows', None)
+		pd.set_option('display.max_columns', None)
+		pd.set_option('display.width', None)
+		pd.set_option('display.max_colwidth', None)
+
 	#basic_operation()
 	#indexing_and_slicing()
 	#function_operation()
