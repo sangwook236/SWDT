@@ -18,7 +18,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 # REF [site] >> https://pytorch-geometric.readthedocs.io/en/latest/notes/introduction.html
-def introduction_example():
+def basic_operation():
 	# Data handling of graphs.
 
 	edge_index = torch.tensor(
@@ -39,10 +39,10 @@ def introduction_example():
 
 	data = torch_geometric.data.Data(x=x, edge_index=edge_index)
 
-	print('Data = {}.'.format(data))
+	print('Data: {}.'.format(data))
 	print('Data keys = {}.'.format(data.keys))
-	print("Data 'x' = {}.".format(data['x']))
-	print("Data 'edge_index' = {}.".format(data['edge_index']))
+	print("data['x'] = {}.".format(data['x']))
+	print("data['edge_index'] = {}.".format(data['edge_index']))
 	print('#nodes = {}.'.format(data.num_nodes))
 	print('#edges = {}.'.format(data.num_edges))
 	print('#node features = {}.'.format(data.num_node_features))
@@ -59,14 +59,14 @@ def introduction_example():
 
 	dataset = torch_geometric.datasets.TUDataset(root='./tmp/ENZYMES', name='ENZYMES')
 
-	print('Dataset = {}.'.format(dataset))
-	print('#data = {}.'.format(len(dataset)))
+	print('Dataset: {}.'.format(dataset))
+	print('len(dataset) = {}.'.format(len(dataset)))
 	print('#classes = {}.'.format(dataset.num_classes))
 	print('#node features = {}.'.format(dataset.num_node_features))
 
 	data = dataset[0]
 
-	print('Data = {}.'.format(data))
+	print('Data: {}.'.format(data))
 	print('is undirected = {}.'.format(data.is_undirected()))
 
 	#dataset = dataset.shuffle()
@@ -78,14 +78,14 @@ def introduction_example():
 	#-----
 	dataset = torch_geometric.datasets.Planetoid(root='./tmp/Cora', name='Cora')
 
-	print('Dataset = {}.'.format(dataset))
-	print('#data = {}.'.format(len(dataset)))
+	print('Dataset: {}.'.format(dataset))
+	print('len(dataset) = {}.'.format(len(dataset)))
 	print('#classes = {}.'.format(dataset.num_classes))
 	print('#node features = {}.'.format(dataset.num_node_features))
 
 	data = dataset[0]
 
-	print('Data = {}.'.format(data))
+	print('Data: {}.'.format(data))
 	print('is undirected = {}.'.format(data.is_undirected()))
 
 	print('Train mask = {}.'.format(data.train_mask.sum().item()))
@@ -96,9 +96,9 @@ def introduction_example():
 	# Mini-batches.
 
 	dataset = torch_geometric.datasets.TUDataset(root='./tmp/ENZYMES', name='ENZYMES', use_node_attr=True)
-	loader = torch_geometric.loader.DataLoader(dataset, batch_size=32, shuffle=True)
+	dataloader = torch_geometric.loader.DataLoader(dataset, batch_size=32, shuffle=True)
 
-	for batch in loader:
+	for batch in dataloader:
 		print('Batch = {}.'.format(batch))
 
 		print('#graphs in batch = {}.'.format(batch.num_graphs))
@@ -110,20 +110,20 @@ def introduction_example():
 	# Data transforms.
 
 	dataset = torch_geometric.datasets.ShapeNet(root='./tmp/ShapeNet', categories=['Airplane'])
-	print('Data = {}.'.format(dataset[0]))
+	print('Data: {}.'.format(dataset[0]))
 
 	dataset = torch_geometric.datasets.ShapeNet(
 		root='./tmp/ShapeNet', categories=['Airplane'],
 		pre_transform=torch_geometric.transforms.KNNGraph(k=6),
 	)
-	print('Data = {}.'.format(dataset[0]))
+	print('Data: {}.'.format(dataset[0]))
 
 	dataset = torch_geometric.datasets.ShapeNet(
 		root='./tmp/ShapeNet', categories=['Airplane'],
 		pre_transform=torch_geometric.transforms.KNNGraph(k=6),
 		transform=torch_geometric.transforms.RandomJitter(0.01),
 	)
-	print('Data = {}.'.format(dataset[0]))
+	print('Data: {}.'.format(dataset[0]))
 
 	#--------------------
 	# Learning methods on graphs.
@@ -165,6 +165,104 @@ def introduction_example():
 	correct = (pred[data.test_mask] == data.y[data.test_mask]).sum()
 	acc = int(correct) / int(data.test_mask.sum())
 	print(f'Accuracy: {acc:.4f}')
+
+# REF [site] >> https://pytorch-geometric.readthedocs.io/en/latest/notes/create_gnn.html
+def message_passing_graph_neural_network_example():
+	# NOTE [info] >> Generalizing the convolution operator to irregular domains is typically expressed as a neighborhood aggregation or message passing scheme.
+
+	dataset = torch_geometric.datasets.Planetoid(root='./tmp/Cora', name='Cora')
+	data = dataset[0]
+	print('Data: {}.'.format(data))
+
+	#--------------------
+	# Implementing the GCN layer.
+
+	class GCNConv(torch_geometric.nn.MessagePassing):
+		def __init__(self, in_channels, out_channels):
+			super().__init__(aggr='add')  # "Add" aggregation (Step 5).
+			self.lin = torch.nn.Linear(in_channels, out_channels, bias=False)
+			self.bias = torch.nn.Parameter(torch.Tensor(out_channels))
+
+			self.reset_parameters()
+
+		def reset_parameters(self):
+			self.lin.reset_parameters()
+			self.bias.data.zero_()
+
+		def forward(self, x, edge_index):
+			# x has shape [N, in_channels].
+			# edge_index has shape [2, E].
+
+			# Step 1: Add self-loops to the adjacency matrix.
+			edge_index, _ = torch_geometric.utils.add_self_loops(edge_index, num_nodes=x.size(0))
+
+			# Step 2: Linearly transform node feature matrix.
+			x = self.lin(x)
+
+			# Step 3: Compute normalization.
+			row, col = edge_index
+			deg = torch_geometric.utils.degree(col, x.size(0), dtype=x.dtype)
+			deg_inv_sqrt = deg.pow(-0.5)
+			deg_inv_sqrt[deg_inv_sqrt == float('inf')] = 0
+			norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
+
+			# Step 4-5: Start propagating messages.
+			out = self.propagate(edge_index, x=x, norm=norm)
+
+			# Step 6: Apply a final bias vector.
+			out += self.bias
+
+			return out
+
+		def message(self, x_j, norm):
+			# x_j has shape [E, out_channels].
+
+			# Step 4: Normalize node features.
+			return norm.view(-1, 1) * x_j
+
+	#conv = GCNConv(16, 32)
+	#x = conv(x, edge_index)
+	conv = GCNConv(1433, 2708)
+	x = conv(data['x'], data['edge_index'])
+
+	#--------------------
+	# Implementing the edge convolution.
+
+	class EdgeConv(torch_geometric.nn.MessagePassing):
+		def __init__(self, in_channels, out_channels):
+			super().__init__(aggr='max')  # "Max" aggregation.
+			self.mlp = torch.nn.Sequential(
+				torch.nn.Linear(2 * in_channels, out_channels),
+				torch.nn.ReLU(),
+				Linear(out_channels, out_channels)
+			)
+
+		def forward(self, x, edge_index):
+			# x has shape [N, in_channels].
+			# edge_index has shape [2, E].
+
+			return self.propagate(edge_index, x=x)
+
+		def message(self, x_i, x_j):
+			# x_i has shape [E, in_channels].
+			# x_j has shape [E, in_channels].
+
+			tmp = torch.cat([x_i, x_j - x_i], dim=1)  # tmp has shape [E, 2 * in_channels].
+			return self.mlp(tmp)
+
+	class DynamicEdgeConv(EdgeConv):
+		def __init__(self, in_channels, out_channels, k=6):
+			super().__init__(in_channels, out_channels)
+			self.k = k
+
+		def forward(self, x, batch=None):
+			edge_index = torch_geometric.nn.knn_graph(x, self.k, batch, loop=False, flow=self.flow)
+			return super().forward(x, edge_index)
+
+	#conv = DynamicEdgeConv(3, 128, k=6)
+	#x = conv(x, batch)
+	conv = DynamicEdgeConv(3, 5416, k=16248)
+	x = conv(data['x'])
 
 # GCNConv.
 class GCN(torch.nn.Module):
@@ -940,7 +1038,10 @@ def fraud_detection_with_graph_attention_networks():
 def main():
 	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch_lightning/pl_graph_neural_network.py
 
-	introduction_example()
+	#basic_operation()
+	message_passing_graph_neural_network_example()
+
+	#--------------------
 	#fraud_detection_with_graph_attention_networks()
 
 #--------------------------------------------------------------------
