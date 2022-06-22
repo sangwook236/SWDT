@@ -6,7 +6,6 @@
 import os
 import urllib.request
 from urllib.error import HTTPError
-import torch, torchvision
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

@@ -263,9 +263,7 @@ class TransformerPredictor(pl.LightningModule):
 		optimizer = optim.Adam(self.parameters(), lr=self.hparams.lr)
 
 		# We don't return the lr scheduler because we need to apply it per iteration, not per epoch.
-		self.lr_scheduler = CosineWarmupScheduler(
-			optimizer, warmup=self.hparams.warmup, max_iters=self.hparams.max_iters
-		)
+		self.lr_scheduler = CosineWarmupScheduler(optimizer, warmup=self.hparams.warmup, max_iters=self.hparams.max_iters)
 		return optimizer
 
 	def optimizer_step(self, *args, **kwargs):
@@ -284,7 +282,7 @@ class TransformerPredictor(pl.LightningModule):
 # REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/notebooks/course_UvA-DL/05-transformers-and-MH-attention.html
 def simple_transformer_tutorial():
 	plt.set_cmap("cividis")
-	# %matplotlib inline
+	#%matplotlib inline
 	set_matplotlib_formats("svg", "pdf")  # For export.
 	matplotlib.rcParams["lines.linewidth"] = 2.0
 	sns.reset_orig()
@@ -839,8 +837,8 @@ def set_anomaly_detection_tutorial():
 		print("Image %i: %4.2f%%" % (i, 100.0 * p))
 
 def main():
-	simple_transformer_tutorial()
-	#sequence_to_sequence_tutorial()
+	#simple_transformer_tutorial()
+	sequence_to_sequence_tutorial()
 	#set_anomaly_detection_tutorial()
 
 #--------------------------------------------------------------------
