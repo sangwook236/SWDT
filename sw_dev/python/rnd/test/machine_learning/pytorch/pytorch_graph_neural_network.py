@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch_lightning/pl_graph_neural_network.py
-
 import os, pickle, warnings
 warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
-import scipy.sparse as sp
 import torch
-from torch.nn import Linear, LayerNorm, ReLU, Dropout
 import torch.nn.functional as F
 from torch.nn import Linear
 import torch_scatter
@@ -20,6 +16,155 @@ from sklearn.metrics import accuracy_score, f1_score, roc_auc_score, precision_s
 from sklearn.model_selection import train_test_split
 import networkx as nx
 import matplotlib.pyplot as plt
+
+# REF [site] >> https://pytorch-geometric.readthedocs.io/en/latest/notes/introduction.html
+def introduction_example():
+	# Data handling of graphs.
+
+	edge_index = torch.tensor(
+		[[0, 1, 1, 2],
+		 [1, 0, 2, 1]],
+		dtype=torch.long
+	)
+	'''
+	edge_index = torch.tensor(
+		[[0, 1],
+		 [1, 0],
+		 [1, 2],
+		 [2, 1]],
+		dtype=torch.long
+	).t().contiguous()
+	'''
+	x = torch.tensor([[-1], [0], [1]], dtype=torch.float)
+
+	data = torch_geometric.data.Data(x=x, edge_index=edge_index)
+
+	print('Data = {}.'.format(data))
+	print('Data keys = {}.'.format(data.keys))
+	print("Data 'x' = {}.".format(data['x']))
+	print("Data 'edge_index' = {}.".format(data['edge_index']))
+	print('#nodes = {}.'.format(data.num_nodes))
+	print('#edges = {}.'.format(data.num_edges))
+	print('#node features = {}.'.format(data.num_node_features))
+	print('has isolated nodes = {}.'.format(data.has_isolated_nodes()))
+	print('has self loops = {}.'.format(data.has_self_loops()))
+	print('is directed = {}.'.format(data.is_directed()))
+	print('is undirected = {}.'.format(data.is_undirected()))
+
+	device = torch.device('cuda')
+	data = data.to(device)
+
+	#--------------------
+	# Common benchmark datasets.
+
+	dataset = torch_geometric.datasets.TUDataset(root='./tmp/ENZYMES', name='ENZYMES')
+
+	print('Dataset = {}.'.format(dataset))
+	print('#data = {}.'.format(len(dataset)))
+	print('#classes = {}.'.format(dataset.num_classes))
+	print('#node features = {}.'.format(dataset.num_node_features))
+
+	data = dataset[0]
+
+	print('Data = {}.'.format(data))
+	print('is undirected = {}.'.format(data.is_undirected()))
+
+	#dataset = dataset.shuffle()
+	#perm = torch.randperm(len(dataset))
+	#dataset = dataset[perm]
+	train_dataset = dataset[:540]
+	test_dataset = dataset[540:]
+
+	#-----
+	dataset = torch_geometric.datasets.Planetoid(root='./tmp/Cora', name='Cora')
+
+	print('Dataset = {}.'.format(dataset))
+	print('#data = {}.'.format(len(dataset)))
+	print('#classes = {}.'.format(dataset.num_classes))
+	print('#node features = {}.'.format(dataset.num_node_features))
+
+	data = dataset[0]
+
+	print('Data = {}.'.format(data))
+	print('is undirected = {}.'.format(data.is_undirected()))
+
+	print('Train mask = {}.'.format(data.train_mask.sum().item()))
+	print('Val mask = {}.'.format(data.val_mask.sum().item()))
+	print('Test mask = {}.'.format(data.test_mask.sum().item()))
+
+	#--------------------
+	# Mini-batches.
+
+	dataset = torch_geometric.datasets.TUDataset(root='./tmp/ENZYMES', name='ENZYMES', use_node_attr=True)
+	loader = torch_geometric.loader.DataLoader(dataset, batch_size=32, shuffle=True)
+
+	for batch in loader:
+		print('Batch = {}.'.format(batch))
+
+		print('#graphs in batch = {}.'.format(batch.num_graphs))
+
+		#x = torch_scatter.scatter_mean(data.x, data.batch, dim=0)
+		#print("x's size = {}.".format(x.size()))
+
+	#--------------------
+	# Data transforms.
+
+	dataset = torch_geometric.datasets.ShapeNet(root='./tmp/ShapeNet', categories=['Airplane'])
+	print('Data = {}.'.format(dataset[0]))
+
+	dataset = torch_geometric.datasets.ShapeNet(
+		root='./tmp/ShapeNet', categories=['Airplane'],
+		pre_transform=torch_geometric.transforms.KNNGraph(k=6),
+	)
+	print('Data = {}.'.format(dataset[0]))
+
+	dataset = torch_geometric.datasets.ShapeNet(
+		root='./tmp/ShapeNet', categories=['Airplane'],
+		pre_transform=torch_geometric.transforms.KNNGraph(k=6),
+		transform=torch_geometric.transforms.RandomJitter(0.01),
+	)
+	print('Data = {}.'.format(dataset[0]))
+
+	#--------------------
+	# Learning methods on graphs.
+
+	class GCN(torch.nn.Module):
+		def __init__(self, dataset):
+			super().__init__()
+			self.conv1 = torch_geometric.nn.GCNConv(dataset.num_node_features, 16)
+			self.conv2 = torch_geometric.nn.GCNConv(16, dataset.num_classes)
+
+		def forward(self, data):
+			x, edge_index = data.x, data.edge_index
+
+			x = self.conv1(x, edge_index)
+			x = torch.nn.functional.relu(x)
+			x = torch.nn.functional.dropout(x, training=self.training)
+			x = self.conv2(x, edge_index)
+
+			return torch.nn.functional.log_softmax(x, dim=1)
+
+	dataset = torch_geometric.datasets.Planetoid(root='./tmp/Cora', name='Cora')
+
+	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+	model = GCN(dataset).to(device)
+	data = dataset[0].to(device)
+	optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
+
+	model.train()
+	for epoch in range(200):
+		#print('Epoch {}:'.format(epoch))
+		optimizer.zero_grad()
+		out = model(data)
+		loss = torch.nn.functional.nll_loss(out[data.train_mask], data.y[data.train_mask])
+		loss.backward()
+		optimizer.step()
+
+	model.eval()
+	pred = model(data).argmax(dim=1)
+	correct = (pred[data.test_mask] == data.y[data.test_mask]).sum()
+	acc = int(correct) / int(data.test_mask.sum())
+	print(f'Accuracy: {acc:.4f}')
 
 # GCNConv.
 class GCN(torch.nn.Module):
@@ -793,7 +938,10 @@ def fraud_detection_with_graph_attention_networks():
 	print(df.round(3))
 
 def main():
-	fraud_detection_with_graph_attention_networks()
+	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch_lightning/pl_graph_neural_network.py
+
+	introduction_example()
+	#fraud_detection_with_graph_attention_networks()
 
 #--------------------------------------------------------------------
 

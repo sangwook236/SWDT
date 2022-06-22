@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_graph_neural_network.py
-
 import os
 import urllib.request
 from urllib.error import HTTPError
@@ -529,6 +527,8 @@ def simple_gnn_tutorial():
 	print("Test performance:  %4.2f%%" % (100.0 * result["test"]))
 
 def main():
+	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_graph_neural_network.py
+
 	simple_gnn_tutorial()
 
 #--------------------------------------------------------------------
