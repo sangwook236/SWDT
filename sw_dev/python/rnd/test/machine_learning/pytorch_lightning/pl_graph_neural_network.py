@@ -527,7 +527,7 @@ def simple_gnn_tutorial():
 	print("Test performance:  %4.2f%%" % (100.0 * result["test"]))
 
 def main():
-	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_graph_neural_network.py
+	# REF [file] >> ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch_geometric.py
 
 	simple_gnn_tutorial()
 
