@@ -8,10 +8,10 @@ from multiprocessing.managers import BaseManager
 from concurrent.futures import ProcessPoolExecutor
 
 def process_info(title):
-    print(title)
-    print('\tmodule name:', __name__)
-    print('\tparent process:', os.getppid())
-    print('\tprocess id:', os.getpid())
+	print(title)
+	print('\tmodule name:', __name__)
+	print('\tparent process:', os.getppid())
+	print('\tprocess id:', os.getpid())
 
 def hello(name):
 	process_info('function hello()')

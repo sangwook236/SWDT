@@ -203,18 +203,51 @@ def classification_model_evaluation_example(is_binary_classification, classifier
 		precision, recall, thresholds = metrics.precision_recall_curve(y_true, y_score2, pos_label=pos_label)
 		print('Precision = {}\nRecall = {}\nThreshold = {}'.format(precision , recall, thresholds))
 
+# REF [site] >>
+#	https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html
+#	https://scikit-learn.org/stable/modules/generated/sklearn.metrics.multilabel_confusion_matrix.html
+#	https://scikit-learn.org/stable/modules/generated/sklearn.metrics.ConfusionMatrixDisplay.html
 def confusion_matrix_example():
+	# sklearn.metrics.confusion_matrix():
+	#	(n_classes, n_classes).
+	#	Confusion matrix whose i-th row and j-th column entry indicates the number of samples with true label being i-th class and predicted label being j-th class.
+	# sklearn.metrics.multilabel_confusion_matrix():
+	#	(n_outputs, 2, 2).
+	#	A 2x2 confusion matrix corresponding to each output in the input.
+	#	When calculating class-wise multi_confusion (default), then n_outputs = n_labels; when calculating sample-wise multi_confusion (samplewise=True), n_outputs = n_samples.
+	#	If labels is defined, the results will be returned in the order specified in labels, otherwise the results will be returned in sorted order by default.
+
 	y_true = [2, 0, 2, 2, 0, 1]
 	y_pred = [0, 0, 2, 2, 0, 2]
-	print('Confusion matrix =', metrics.confusion_matrix(y_true, y_pred))
+	print('Confusion matrix\n{}.'.format(metrics.confusion_matrix(y_true, y_pred)))
+	print('Multilabel confusion matrix\n{}.'.format(metrics.multilabel_confusion_matrix(y_true, y_pred)))
+
+	y_true = np.array([[1, 0, 1], [0, 1, 0]])
+	y_pred = np.array([[1, 0, 0], [0, 1, 1]])
+	#print('Confusion matrix\n{}.'.format(metrics.confusion_matrix(y_true, y_pred)))  # ValueError: multilabel-indicator is not supported.
+	print('Multilabel confusion matrix\n{}.'.format(metrics.multilabel_confusion_matrix(y_true, y_pred)))
 
 	y_true = ['cat', 'ant', 'cat', 'cat', 'ant', 'bird']
 	y_pred = ['ant', 'ant', 'cat', 'cat', 'ant', 'cat']
-	print('Confusion matrix =', metrics.confusion_matrix(y_true, y_pred, labels=['ant', 'bird', 'cat']))
+	print('Confusion matrix:\n{}.'.format(metrics.confusion_matrix(y_true, y_pred, labels=['ant', 'bird', 'cat'])))
+	print('Multilabel confusion matrix:\n{}.'.format(metrics.multilabel_confusion_matrix(y_true, y_pred, labels=['ant', 'bird', 'cat'])))
 
 	# In binary classification, the count of true negatives is C_{0,0}, false negatives is C_{1,0}, true positives is C_{1,1} and false positives is C_{0,1}.
 	tn, fp, fn, tp = metrics.confusion_matrix([0, 1, 0, 1], [1, 1, 1, 0]).ravel()
-	print('T/N = {}, F/P = {}, F/N = {}, T/P = {}.'.format(tn, fp, fn, tp))
+	print('TN = {}, FP = {}, FN = {}, TP = {}.'.format(tn, fp, fn, tp))
+
+	#--------------------
+	X, y = datasets.make_classification(random_state=0)
+	X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, random_state=0)
+	clf = svm.SVC(random_state=0)
+	clf.fit(X_train, y_train)
+
+	metrics.ConfusionMatrixDisplay.from_estimator(clf, X_test, y_test)
+
+	y_pred = clf.predict(X_test)
+	metrics.ConfusionMatrixDisplay.from_predictions(y_test, y_pred)
+
+	plt.show()
 
 # For binary classification task.
 def roc_curve_example(is_binary_classification):
@@ -331,9 +364,9 @@ def main():
 	is_binary_classification = True
 
 	#--------------------
-	classification_model_evaluation_example(is_binary_classification, classifier)
+	#classification_model_evaluation_example(is_binary_classification, classifier)
 
-	#confusion_matrix_example()
+	confusion_matrix_example()
 	#roc_curve_example(is_binary_classification)
 	#precision_recall_curve_example(is_binary_classification)
 

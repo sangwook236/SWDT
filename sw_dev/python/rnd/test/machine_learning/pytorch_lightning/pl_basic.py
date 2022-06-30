@@ -429,7 +429,7 @@ def minimal_example():
 		trainer.predict(model, dataloaders=test_dataloader)
 		#trainer.predict(model, datamodule=datamodule)
 	else:
-		# When using forward, you are responsible to call eval() and use the no_grad() context manager.
+		# When using forward(), you are responsible to call eval() and use the no_grad() context manager.
 		model.eval()
 		model.freeze()
 		with torch.no_grad():

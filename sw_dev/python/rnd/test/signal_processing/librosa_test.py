@@ -124,10 +124,10 @@ def stft_test():
 	plt.show()
 
 	#--------------------
-	#librosa.amplitude_to_db(S, ref=1.0, amin=1e-05, top_db=80.0)
-	#librosa.db_to_amplitude(S_db, ref=1.0)
-	#librosa.power_to_db(S, ref=1.0, amin=1e-10, top_db=80.0)
-	#librosa.db_to_power(S_db, ref=1.0)
+	#S_db = librosa.amplitude_to_db(S_amp, ref=1.0, amin=1e-05, top_db=80.0)
+	#S_amp = librosa.db_to_amplitude(S_db, ref=1.0)
+	#S_db = librosa.power_to_db(S_pow, ref=1.0, amin=1e-10, top_db=80.0)
+	#S_pow = librosa.db_to_power(S_db, ref=1.0)
 
 # REF [site] >> https://librosa.github.io/librosa/generated/librosa.filters.mel.html
 def mel_filter_bank_test():
