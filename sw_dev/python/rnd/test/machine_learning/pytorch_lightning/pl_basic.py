@@ -308,13 +308,6 @@ def minimal_example():
 		#trainer = pl.Trainer(gpus=1, amp_backend="apex", amp_level="O2")  # NVIDIA APEX mixed precision.
 		#trainer = pl.Trainer(auto_lr_find=False, auto_scale_batch_size=False)
 		#trainer = pl.Trainer(min_epochs=None, max_epochs=None, min_steps=None, min_steps=-1, max_time=None)
-		#trainer = pl.Trainer(logger=True, log_every_n_steps=50, profiler=None)
-		#tensorboard_logger = pl.loggers.TensorBoardLogger(save_dir="./lightning_logs")
-		#tensorboard_logger = pl.loggers.TensorBoardLogger(save_dir="./lightning_logs", name="lightning_logs", version=None, log_graph=False, default_hp_metric=True, prefix="")
-		#comet_logger = pl.loggers.CometLogger(save_dir="./comet_logs")
-		#trainer = pl.Trainer(logger=True)
-		#trainer = pl.Trainer(logger=tensorboard_logger)
-		#trainer = pl.Trainer(logger=[tensorboard_logger, comet_logger])
 		#trainer = pl.Trainer(default_root_dir="/path/to/checkpoints")  # Saves checkpoints to "/path/to/checkpoints" at every epoch end.
 		#trainer = pl.Trainer(resume_from_checkpoint="/path/to/checkpoint.ckpt")  # Resume training. Deprecated.
 
@@ -344,17 +337,17 @@ def minimal_example():
 		checkpoint_callback = pl.callbacks.ModelCheckpoint(monitor="val_loss")
 		"""
 		checkpoint_callback = pl.callbacks.ModelCheckpoint(
-			monitor="val_loss",
-			mode="min",
 			dirpath="checkpoints",
 			filename="model-{epoch:03d}-{val_loss:.2f}",
+			monitor="val_loss",
+			mode="min",
 			save_top_k=3,
 		)
 		checkpoint_callback = pl.callbacks.ModelCheckpoint(
-			monitor="val_acc",
-			mode="max",
 			dirpath="checkpoints",
 			filename="model-{epoch:03d}-{val_acc:.2f}-{val_loss:.2f}",
+			monitor="val_acc",
+			mode="max",
 			save_top_k=5,
 		)
 		"""
@@ -380,6 +373,15 @@ def minimal_example():
 		#callbacks = [checkpoint_callback, swa_callback]
 		#callbacks = None
 
+		#tensorboard_logger = pl.loggers.TensorBoardLogger(save_dir="./lightning_logs")
+		#tensorboard_logger = pl.loggers.TensorBoardLogger(save_dir="./lightning_logs", name="")
+		#tensorboard_logger = pl.loggers.TensorBoardLogger(save_dir="./lightning_logs", name="default", version=None, log_graph=False, default_hp_metric=True, prefix="")
+		#comet_logger = pl.loggers.CometLogger(save_dir="./comet_logs")
+
+		logger = True
+		#logger = tensorboard_logger
+		#logger = [tensorboard_logger, comet_logger]
+
 		#plugins = [ddp_plugin]
 		#plugins = [ddp_plugin, amp_plugin]
 		plugins = None
@@ -387,6 +389,8 @@ def minimal_example():
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, callbacks=None, plugins=None)
 		trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, callbacks=callbacks, enable_checkpointing=True)
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="ddp", auto_select_gpus=False, plugins=plugins)
+		#trainer = pl.Trainer(logger=logger, log_every_n_steps=50, profiler=None)
+		#trainer = pl.Trainer(logger=logger)
 
 		trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 		#trainer.fit(model, datamodule=datamodule)
