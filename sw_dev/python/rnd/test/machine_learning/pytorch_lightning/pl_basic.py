@@ -433,12 +433,15 @@ def minimal_example():
 		trainer.predict(model, dataloaders=test_dataloader)
 		#trainer.predict(model, datamodule=datamodule)
 	else:
+		device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+		model = model.to(device)
+
 		# When using forward(), you are responsible to call eval() and use the no_grad() context manager.
 		model.eval()
 		model.freeze()
 		with torch.no_grad():
 			embedding = ...
-			reconstruction = model(embedding)
+			reconstruction = model(embedding.to(device)).cpu()
 	print("Inferred by the model.")
 
 # REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/notebooks/course_UvA-DL/03-initialization-and-optimization.html
