@@ -14,12 +14,13 @@
 	http://www.open3d.org/docs/release/getting_started.html
 
 	- Install.
-		Python 3.6, 3.7, 3.8.
+		Python 3.6, 3.7, 3.8, 3.9.
 
-		conda create --name geometry python=3.8 numpy scipy matplotlib pillow
+		conda create --name geometry python=3.9 numpy scipy matplotlib pillow
 
-		conda install -c open3d-admin -c conda-forge open3d
 		pip install open3d
+		conda install -c open3d-admin -c conda-forge open3d
+			Deprecated.
 
 [-] Installation (Linux, C++).
 	http://www.open3d.org/docs/release/compilation.html

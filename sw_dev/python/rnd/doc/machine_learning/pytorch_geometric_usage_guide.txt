@@ -11,6 +11,9 @@
 	https://pytorch-geometric.com/whl/
 
 	- Install.
+		conda create --name pyg python=3.9
+		conda activate pyg
+
 		(Optional) conda install pytorch torchvision cudatoolkit=11.1 -c pytorch
 		conda install pytorch-scatter pytorch-sparse pyg pytorch-cluster pytorch-spline-conv -c pyg -c conda-forge
 			conda install pytorch-scatter -c pyg

@@ -19,20 +19,20 @@
 		Using conda:
 			Install with GPU support:
 				conda install pytorch torchvision torchtext
-				conda install pytorch torchvision torchtext cudatoolkit=10.1 -c pytorch
-				conda install pytorch torchvision torchtext cudatoolkit=10.1 -c pytorch -c conda-forge
-				conda install pytorch torchvision torchtext cudatoolkit=10.1 -c pytorch-nightly
+				conda install pytorch torchvision torchtext cudatoolkit=11.6 -c pytorch
+				conda install pytorch torchvision torchtext cudatoolkit=11.6 -c pytorch -c conda-forge
+				conda install pytorch torchvision torchtext cudatoolkit=11.6 -c pytorch-nightly
 			Install without GPU support:
 				conda install pytorch torchvision torchtext cpuonly -c pytorch
 				conda install pytorch torchvision torchtext cpuonly -c pytorch-nightly
 
 		Using pip:
 			Install with GPU support:
-				pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+				pip install torch==1.12.0+cu116 torchvision==0.13.0+cu116 -f https://download.pytorch.org/whl/torch_stable.html
 				pip install torch torchvision -f https://download.pytorch.org/whl/nightly/cu110/torch_nightly.html
 			Install without GPU support:
 				pip install torch torchvision (?)
-				pip install torch==1.5.1+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+				pip install torch==1.12.0+cpu torchvision==0.13.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 				pip install torch torchvision -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
 
 		For RTX 3090 (2021/05/17):
@@ -61,11 +61,4 @@
 		pip install pytorch-lightning lightning-bolts
 
 	- Install PyTorch Geometric (PyG).
-		https://github.com/pyg-team/pytorch_geometric
-
-		conda create --name pyg python=3.9
-		conda activate pyg
-
-		pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html
-		pip install torch-scatter torch-sparse torch-geometric torch-cluster torch-spline-conv -f https://data.pyg.org/whl/torch-1.9.1+cu111.html
-		pip install pytorch-lightning torchmetrics
+		Refer to pytorch_geometric_usage_guide.txt
