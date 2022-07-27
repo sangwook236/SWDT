@@ -42,15 +42,38 @@ def visualize_generator(generator, output_mask, show_image):
 	cv2.destroyAllWindows()
 
 def basic_example():
-	lang = 'en'  # {'ar', 'cn', 'de', 'en', 'es', 'fr', 'hi'}.
+	lang = 'en'  # {'ar', 'cn', 'de', 'en', 'es', 'fr', 'hi', 'ja', 'ko', 'latin'}.
+	#lang = 'ko'  # {'ko', 'zh', 'ja', 'en', 'es', 'fr', 'de', 'it', 'pt', 'ru'}.  # For Wikipedia.
+	if True:
+		font_filepaths = trdg.utils.load_fonts(lang)
+	elif False:
+		if 'posix' == os.name:
+			font_base_dir_path = '/home/sangwook/work/font'
+		else:
+			font_base_dir_path = 'D:/work/font'
+
+		if lang == 'ko':
+			font_dir_path = font_base_dir_path + '/kor_large'
+			font_filepaths = glob.glob(font_dir_path + '/*', recursive=True)
+		elif lang == 'zh':
+			font_dir_path = font_base_dir_path + '/chinese'
+			font_filepaths = glob.glob(font_dir_path + '/*', recursive=True)
+		elif lang == 'ja':
+			font_dir_path = font_base_dir_path + '/japanese'
+			font_filepaths = glob.glob(font_dir_path + '/*.*', recursive=True)
+		else:
+			font_filepaths = list()
+
+		if font_filepaths:
+			print("{} font file(s) loaded for language, '{}'.".format(len(font_filepaths), lang))
+		else:
+			print("No font file loaded for language, '{}'.".format(lang))
+	else:
+		font_filepaths = list()
 	if True:
 		num_examples = 10
 	else:
 		num_examples = -1
-	if True:
-		font_filepaths = trdg.utils.load_fonts(lang)
-	else:
-		font_filepaths = list()
 	font_size = 32
 	output_mask = True
 	num_words = 5
@@ -431,9 +454,9 @@ def korean_example():
 	visualize_generator(generator, output_mask, show_image)
 
 def main():
-	#basic_example()
+	basic_example()
 
-	korean_example()
+	#korean_example()
 
 #--------------------------------------------------------------------
 
