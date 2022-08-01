@@ -65,6 +65,7 @@
 					- python=3.7
 					- numpy=1.9.*
 					- pandas
+			Refer to "Export the environment.yml file".
 	- Clone an environment.
 		conda create --name NEW_ENV_NAME --clone EXISTING_ENV_NAME
 	- Remove an environment.
@@ -93,3 +94,11 @@
 		conda update PACKAGE_NAMES
 	- Update all packages.
 		conda update --all
+
+	- Export the environment.yml file.
+		https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
+
+		conda env export > environment.yml
+		conda env export --from-history > environment.yml
+	- Create an environment file manually.
+		https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
