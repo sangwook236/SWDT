@@ -389,6 +389,7 @@ def minimal_example():
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, callbacks=None, plugins=None)
 		trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, callbacks=callbacks, enable_checkpointing=True)
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="ddp", auto_select_gpus=False, plugins=plugins)
+		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy=pl.strategies.DDPStrategy(process_group_backend="gloo", find_unused_parameters=False), auto_select_gpus=False, plugins=plugins)
 		#trainer = pl.Trainer(logger=logger, log_every_n_steps=50, profiler=None)
 		#trainer = pl.Trainer(logger=logger)
 

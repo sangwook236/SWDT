@@ -33,7 +33,7 @@ def pytorch_example():
 	mel_spectrogram = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=256, hop_length=128, fmax=8000)
 
 	mel_spectrogram = torch.tensor(mel_spectrogram)
-	mel_spectrogram = torch.unsqueeze(mel_spectrogram, axis=0)
+	mel_spectrogram = torch.unsqueeze(mel_spectrogram, dim=0)
 	print('Mel spectrogram: shape = {}, dtype = {}.'.format(mel_spectrogram.shape, mel_spectrogram.dtype))
 
 	warped_masked_spectrogram = SpecAugment.spec_augment_pytorch.spec_augment(mel_spectrogram=mel_spectrogram, time_warping_para=50, frequency_masking_para=50, time_masking_para=1000, frequency_mask_num=2, time_mask_num=2)
