@@ -20,8 +20,8 @@ def simple_example():
     c: 3
     d: 4
 """
-	data = yaml.dump(yaml.load(document))
-	#data = yaml.dump(yaml.load(document), default_flow_style=False)
+	data = yaml.dump(yaml.load(document, Loader=yaml.Loader))
+	#data = yaml.dump(yaml.load(document, Loader=yaml.Loader), default_flow_style=False)
 	print(data)
 
 	documents = """
@@ -40,7 +40,7 @@ name: The Set of Gauntlets 'Paurnimmen'
 description: >
   A set of handgear, freezing with unnatural cold.
 """
-	for data in yaml.load_all(documents):
+	for data in yaml.load_all(documents, Loader=yaml.Loader):
 		print(data)
 
 	ss = yaml.dump({'name': 'Silenthand Olleander', 'race': 'Human', 'traits': ['ONE_HAND', 'ONE_EYE']})  # str.
@@ -59,6 +59,9 @@ none: [~, null]
 bool: [true, false, on, off]
 int: 42
 float: 3.14159
+pos inf: .Inf
+neg inf: -.Inf
+nan: .NAN
 list: [LITE, RES_ACID, SUS_DEXT]
 dict: {hp: 13, sp: 5}
 """, Loader=yaml.Loader)
@@ -106,8 +109,34 @@ sp: 0
 	except FileNotFoundError as ex:
 		print('File not found, {}: {}.'.format(filepath, ex))
 
+# REF [site] >> https://pyyaml.org/wiki/PyYAMLDocumentation
+def alias_test():
+	input_stream = """
+left hand: &A
+  name: The Bastard Sword of Eowyn
+  weight: 30
+right hand: *A
+"""
+
+	data = yaml.load(input_stream, Loader=yaml.Loader)
+	print(data)
+
+# REF [site] >> https://pyyaml.org/wiki/PyYAMLDocumentation
+def tag_test():
+	input_stream = """
+boolean: !!bool "true"
+integer: !!int "3"
+float: !!float "3.14"
+"""
+
+	data = yaml.load(input_stream, Loader=yaml.Loader)
+	print(data)
+
 def main():
-	simple_example()
+	#simple_example()
+
+	alias_test()
+	tag_test()
 
 #--------------------------------------------------------------------
 
