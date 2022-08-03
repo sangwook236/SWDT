@@ -103,9 +103,9 @@ def learning_rate_decay_policy_test():
 
 # REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/notebooks/course_UvA-DL/05-transformers-and-MH-attention.html
 class CosineWarmupScheduler(torch.optim.lr_scheduler._LRScheduler):
-	def __init__(self, optimizer, warmup, max_iters, last_epoch=-1, verbose=False):
-		self.warmup = warmup
-		self.max_num_iters = max_iters
+	def __init__(self, optimizer, T_max, T_warmup, last_epoch=-1, verbose=False):
+		self.T_max = T_max
+		self.T_warmup = T_warmup
 		super().__init__(optimizer, last_epoch, verbose)
 
 	def get_lr(self):
@@ -113,16 +113,16 @@ class CosineWarmupScheduler(torch.optim.lr_scheduler._LRScheduler):
 		return [base_lr * lr_factor for base_lr in self.base_lrs]
 
 	def get_lr_factor(self, epoch):
-		lr_factor = 0.5 * (1 + math.cos(math.pi * epoch / self.max_num_iters))
-		if epoch <= self.warmup:
-			lr_factor *= epoch / self.warmup
+		"""
+		lr_factor = 0.5 * (1 + math.cos(math.pi * epoch / self.T_max))
+		if epoch <= self.T_warmup:
+			lr_factor *= epoch / self.T_warmup
 		return lr_factor
 		"""
-		if epoch <= self.warmup:
-			return epoch / self.warmup
+		if epoch <= self.T_warmup:
+			return epoch / self.T_warmup
 		else:
-			return 0.5 * (1 + math.cos(math.pi * (epoch - self.warmup) / self.max_num_iters))
-		"""
+			return 0.5 * (1 + math.cos(math.pi * (epoch - self.T_warmup) / (self.T_max - self.T_warmup)))
 
 	def step(self, epoch=None):
 		if epoch is None:
@@ -244,7 +244,7 @@ def custom_learning_rate_decay_policy_test():
 		init_lr = 2.0
 		optimizer = torch.optim.Adam(model.parameters(), lr=init_lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
-		scheduler = CosineWarmupScheduler(optimizer, warmup=200, max_iters=2000)
+		scheduler = CosineWarmupScheduler(optimizer, T_max=2000, T_warmup=200)
 		visualize_learning_rate_decay_policy(scheduler, max_step=2000, title="CosineWarmupScheduler")
 
 	if True:
