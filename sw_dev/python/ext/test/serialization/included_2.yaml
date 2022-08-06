@@ -1,0 +1,8 @@
+name: name_2
+info:
+  age: 20
+  gender: female
+number:
+  - 2
+  - 22.0
+  - two

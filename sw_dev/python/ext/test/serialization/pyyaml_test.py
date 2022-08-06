@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+import os, io
 import yaml
 
 class Hero:
@@ -10,7 +11,7 @@ class Hero:
 		self.sp = sp
 
 	def __repr__(self):
-		return "%s(name=%r, hp=%r, sp=%r)" % (self.__class__.__name__, self.name, self.hp, self.sp)
+		return '%s(name=%r, hp=%r, sp=%r)' % (self.__class__.__name__, self.name, self.hp, self.sp)
 
 # REF [site] >> https://pyyaml.org/wiki/PyYAMLDocumentation
 def simple_example():
@@ -59,9 +60,9 @@ none: [~, null]
 bool: [true, false, on, off]
 int: 42
 float: 3.14159
-pos inf: .Inf
-neg inf: -.Inf
-nan: .NAN
+pos inf: .Inf  # {.inf, .INF, .Inf}.
+neg inf: -.INF
+nan: .NaN  # {.nan, .NAN, .NaN}.
 list: [LITE, RES_ACID, SUS_DEXT]
 dict: {hp: 13, sp: 5}
 """, Loader=yaml.Loader)
@@ -82,13 +83,13 @@ sp: 0
 	data = yaml.dump_all([1, 2, 3], explicit_start=True)
 	print(data)
 
-	data = yaml.dump(Hero("Galain Ysseleg", hp=-3, sp=2))
+	data = yaml.dump(Hero('Galain Ysseleg', hp=-3, sp=2))
 	print(data)
 
 	#--------------------
 	# REF [site] >> https://rfriend.tistory.com/540
 	try:
-		filepath = "./vegetables.yml"
+		filepath = './vegetables.yml'
 		with open(filepath, encoding='utf-8') as fd:
 			data = yaml.load(fd, Loader=yaml.FullLoader)
 			print(data)
@@ -132,11 +133,49 @@ float: !!float "3.14"
 	data = yaml.load(input_stream, Loader=yaml.Loader)
 	print(data)
 
+def include_test():
+	# NOTE [info] >> The YAML standard does not support any kind of 'import' or 'include' statement.
+
+	# REF [site] >> https://stackoverflow.com/questions/528281/how-can-i-include-a-yaml-file-inside-another
+	class MyIncludeLoader(yaml.SafeLoader):
+		def __init__(self, *args, **kwargs):
+			super(MyIncludeLoader, self).__init__(*args, **kwargs)
+			self.add_constructor('!include', self._include)
+			if 'root' in kwargs:
+				self.root = kwargs['root']
+			elif isinstance(self.stream, io.IOBase):
+				self.root = os.path.dirname(self.stream.name)
+			else:
+				self.root = os.path.curdir
+
+		def _include(self, loader, node):
+			old_root = self.root
+			filename = os.path.join(self.root, loader.construct_scalar(node))
+			self.root = os.path.dirname(filename)
+			with open(filename, 'r') as fd:
+				data = yaml.load(fd, MyIncludeLoader)
+			self.root = old_root
+			return data
+
+	try:
+		filepath = './including.yaml'
+		with open(filepath, encoding='utf-8') as fd:
+			data = yaml.load(fd, Loader=MyIncludeLoader)
+			print(data)
+	except yaml.scanner.ScannerError as ex:
+		print('yaml.scanner.ScannerError in {}: {}.'.format(filepath, ex))
+	except UnicodeDecodeError as ex:
+		print('Unicode decode error in {}: {}.'.format(filepath, ex))
+	except FileNotFoundError as ex:
+		print('File not found, {}: {}.'.format(filepath, ex))
+
 def main():
 	#simple_example()
 
-	alias_test()
-	tag_test()
+	#alias_test()
+	#tag_test()
+
+	include_test()
 
 #--------------------------------------------------------------------
 

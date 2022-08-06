@@ -1,0 +1,8 @@
+name: name_1
+info:
+  age: 10
+  gender: male
+number:
+  - 1
+  - 11.0
+  - one

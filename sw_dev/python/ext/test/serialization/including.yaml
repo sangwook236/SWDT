@@ -1,0 +1,6 @@
+file1: !include included_1.yaml
+file2: !include included_2.yaml
+
+list:
+- !include included_1.yaml
+- !include included_2.yaml
