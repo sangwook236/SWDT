@@ -102,7 +102,7 @@ def learning_rate_decay_policy_test():
 		visualize_learning_rate_decay_policy(scheduler, max_step=500, title="CosineAnnealingWarmRestarts")
 
 # REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/notebooks/course_UvA-DL/05-transformers-and-MH-attention.html
-class CosineWarmupScheduler(torch.optim.lr_scheduler._LRScheduler):
+class CosineAnnealingWarmupLR(torch.optim.lr_scheduler._LRScheduler):
 	def __init__(self, optimizer, T_max, T_warmup, last_epoch=-1, verbose=False):
 		self.T_max = T_max
 		self.T_warmup = T_warmup
@@ -136,7 +136,7 @@ class CosineWarmupScheduler(torch.optim.lr_scheduler._LRScheduler):
 		self._last_lr = [param_group['lr'] for param_group in self.optimizer.param_groups]
 
 # REF [site] >> https://gaussian37.github.io/dl-pytorch-lr_scheduler/
-class CosineAnnealingWarmUpRestarts(torch.optim.lr_scheduler._LRScheduler):
+class CosineAnnealingWarmUpRestartsLR(torch.optim.lr_scheduler._LRScheduler):
 	def __init__(self, optimizer, T_0, T_mult=1, T_up=0, eta_max=0.1, gamma=1.0, last_epoch=-1, verbose=False):
 		if T_0 <= 0 or not isinstance(T_0, int):
 			raise ValueError("Expected positive integer T_0, but got {}".format(T_0))
@@ -153,7 +153,7 @@ class CosineAnnealingWarmUpRestarts(torch.optim.lr_scheduler._LRScheduler):
 		self.gamma = gamma
 		self.cycle = 0
 		self.T_cur = last_epoch
-		super(CosineAnnealingWarmUpRestarts, self).__init__(optimizer, last_epoch, verbose)
+		super().__init__(optimizer, last_epoch, verbose)
 
 	def get_lr(self):
 		if self.T_cur == -1:
@@ -244,29 +244,29 @@ def custom_learning_rate_decay_policy_test():
 		init_lr = 2.0
 		optimizer = torch.optim.Adam(model.parameters(), lr=init_lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
-		scheduler = CosineWarmupScheduler(optimizer, T_max=2000, T_warmup=200)
-		visualize_learning_rate_decay_policy(scheduler, max_step=2000, title="CosineWarmupScheduler")
+		scheduler = CosineAnnealingWarmupLR(optimizer, T_max=2000, T_warmup=200)
+		visualize_learning_rate_decay_policy(scheduler, max_step=2000, title="CosineAnnealingWarmupLR")
 
 	if True:
 		init_lr, max_lr = 0.0, 1.0
 		optimizer = torch.optim.Adam(model.parameters(), lr=init_lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
-		scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=10, T_mult=1, T_up=0, eta_max=max_lr, gamma=1)
-		visualize_learning_rate_decay_policy(scheduler, max_step=25, title="CosineAnnealingWarmUpRestarts")
+		scheduler = CosineAnnealingWarmUpRestartsLR(optimizer, T_0=10, T_mult=1, T_up=0, eta_max=max_lr, gamma=1)
+		visualize_learning_rate_decay_policy(scheduler, max_step=25, title="CosineAnnealingWarmUpRestartsLR")
 
-		scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=10, T_mult=1, T_up=2, eta_max=max_lr, gamma=1)
-		visualize_learning_rate_decay_policy(scheduler, max_step=25, title="CosineAnnealingWarmUpRestarts")
+		scheduler = CosineAnnealingWarmUpRestartsLR(optimizer, T_0=10, T_mult=1, T_up=2, eta_max=max_lr, gamma=1)
+		visualize_learning_rate_decay_policy(scheduler, max_step=25, title="CosineAnnealingWarmUpRestartsLR")
 
-		scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=150, T_mult=1, T_up=10, eta_max=max_lr, gamma=0.5)
-		visualize_learning_rate_decay_policy(scheduler, max_step=500, title="CosineAnnealingWarmUpRestarts")
+		scheduler = CosineAnnealingWarmUpRestartsLR(optimizer, T_0=150, T_mult=1, T_up=10, eta_max=max_lr, gamma=0.5)
+		visualize_learning_rate_decay_policy(scheduler, max_step=500, title="CosineAnnealingWarmUpRestartsLR")
 
-		scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=50, T_mult=2, T_up=10, eta_max=max_lr, gamma=0.5)
-		visualize_learning_rate_decay_policy(scheduler, max_step=500, title="CosineAnnealingWarmUpRestarts")
+		scheduler = CosineAnnealingWarmUpRestartsLR(optimizer, T_0=50, T_mult=2, T_up=10, eta_max=max_lr, gamma=0.5)
+		visualize_learning_rate_decay_policy(scheduler, max_step=500, title="CosineAnnealingWarmUpRestartsLR")
 
 		max_lr = 0.5
 		num_epochs = 50
-		scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=num_epochs // 2, T_mult=1, T_up=num_epochs // 10, eta_max=max_lr, gamma=0.5)
-		visualize_learning_rate_decay_policy(scheduler, max_step=num_epochs, title="CosineAnnealingWarmUpRestarts")
+		scheduler = CosineAnnealingWarmUpRestartsLR(optimizer, T_0=num_epochs // 2, T_mult=1, T_up=num_epochs // 10, eta_max=max_lr, gamma=0.5)
+		visualize_learning_rate_decay_policy(scheduler, max_step=num_epochs, title="CosineAnnealingWarmUpRestartsLR")
 
 	if True:
 		optimizer = torch.optim.Adam(model.parameters(), lr=0.0, betas=(0.9, 0.98), eps=1e-09, weight_decay=0, amsgrad=False)
