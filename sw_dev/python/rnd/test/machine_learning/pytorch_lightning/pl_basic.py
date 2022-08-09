@@ -89,7 +89,7 @@ def simple_autoencoder_example():
 	# Training.
 	#trainer = pl.Trainer()
 	trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5)
-	#trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5, accelerator="ddp", max_epochs=10)
+	#trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5, accelerator="dp", max_epochs=10)
 
 	trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 
@@ -296,20 +296,27 @@ def minimal_example():
 
 	#--------------------
 	# Training.
+	# REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/accelerators/gpu.html
 	print("Training...")
 	if True:
 		trainer = pl.Trainer(gpus=2, max_epochs=20)
-		# Strategy = {"ddp", "ddp_spawn", "deepspeed"}.
+		# Strategy = {"dp", "ddp", "ddp_spawn", "ddp_fork", "ddp_notebook", "horovod", "bagua", "deepspeed"}.
 		#	REF [site] >> https://pytorch-lightning.readthedocs.io/en/stable/extensions/strategy.html
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, gradient_clip_val=5, gradient_clip_algorithm="norm")
-		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="ddp", auto_select_gpus=True, max_epochs=20, gradient_clip_val=5, gradient_clip_algorithm="value")
+		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=20, gradient_clip_val=5, gradient_clip_algorithm="value")
 		#trainer = pl.Trainer(gpus=1, precision=16)  # FP16 mixed precision.
 		#trainer = pl.Trainer(gpus=1, precision="bf16")  # BFloat16 mixed precision.
 		#trainer = pl.Trainer(gpus=1, amp_backend="apex", amp_level="O2")  # NVIDIA APEX mixed precision.
-		#trainer = pl.Trainer(auto_lr_find=False, auto_scale_batch_size=False)
 		#trainer = pl.Trainer(min_epochs=None, max_epochs=None, min_steps=None, min_steps=-1, max_time=None)
 		#trainer = pl.Trainer(default_root_dir="/path/to/checkpoints")  # Saves checkpoints to "/path/to/checkpoints" at every epoch end.
 		#trainer = pl.Trainer(resume_from_checkpoint="/path/to/checkpoint.ckpt")  # Resume training. Deprecated.
+
+		#trainer = pl.Trainer(auto_lr_find=False, auto_scale_batch_size=False)
+		#trainer = Trainer(auto_lr_find=True)  # Runs learning rate finder, results override hparams.learning_rate.
+		#	Runs a learning rate finder algorithm when calling trainer.tune(), to find optimal initial learning rate.
+		#trainer = Trainer(auto_scale_batch_size=True)
+		#trainer = Trainer(auto_scale_batch_size="binsearch")  # Runs batch size scaling, result overrides hparams.batch_size.
+		#	Automatically tries to find the largest batch size that fits into memory, before any training.
 
 		# Tunes hyperparameters before training.
 		#trainer.tune(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader, datamodule=None, scale_batch_size_kwargs=None, lr_find_kwargs=None)
@@ -388,7 +395,7 @@ def minimal_example():
 
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, callbacks=None, plugins=None)
 		trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, callbacks=callbacks, enable_checkpointing=True)
-		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="ddp", auto_select_gpus=False, plugins=plugins)
+		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=False, plugins=plugins)
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy=pl.strategies.DDPStrategy(process_group_backend="gloo", find_unused_parameters=False), auto_select_gpus=False, plugins=plugins)
 		#trainer = pl.Trainer(logger=logger, log_every_n_steps=50, profiler=None)
 		#trainer = pl.Trainer(logger=logger)
