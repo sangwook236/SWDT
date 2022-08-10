@@ -24,3 +24,7 @@
 
 		pip install onnxruntime
 		pip install onnxruntime-gpu
+
+		pip install tf2onnx
+		pip install skl2onnx
+			sklearn library.
