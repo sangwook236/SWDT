@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from __future__ import print_function, division
-import os, time
+import os, math, time
 import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -17,6 +17,19 @@ import warnings
 warnings.filterwarnings('ignore')
 
 plt.ion()  # Interactive mode.
+
+# REF [site] >> https://pytorch.org/docs/stable/data.html
+# PyTorch supports two different types of datasets:
+# Map-style datasets
+#	A map-style dataset is one that implements the __getitem__() and __len__() protocols, and represents a map from (possibly non-integral) indices/keys to data samples.
+#	For example, such a dataset, when accessed with dataset[idx], could read the idx-th image and its corresponding label from a folder on the disk.
+#	torch.utils.data.Sampler classes are used to specify the sequence of indices/keys used in data loading. 
+# Iterable-style datasets
+#	An iterable-style dataset is an instance of a subclass of IterableDataset that implements the __iter__() protocol, and represents an iterable over data samples.
+#	This type of datasets is particularly suitable for cases where random reads are expensive or even improbable, and where the batch size depends on the fetched data.
+#	For example, such a dataset, when called iter(dataset), could return a stream of data reading from a database, a remote server, or even logs generated in real time.
+#	When using an IterableDataset with multi-process data loading, the same dataset object is replicated on each worker process, and thus the replicas must be configured differently to avoid duplicated data.
+#	For iterable-style datasets, data loading order is entirely controlled by the user-defined iterable. This allows easier implementations of chunk-reading and dynamic batch size (e.g., by yielding a batched sample at each time)
 
 class ReturnNoneDataset(torch.utils.data.Dataset):
 	def __init__(self, num_data, transform=None, target_transform=None):
@@ -64,6 +77,192 @@ def return_none_dataset_test():
 
 	for idx, batch in enumerate(dataloader):
 		print('Batch {}: {}.'.format(idx, batch))
+
+# REF [site] >> https://pytorch.org/docs/stable/data.html
+def iterable_dataset_test():
+	# Split workload across all workers in __iter__().
+	class MyIterableDataset1(torch.utils.data.IterableDataset):
+		def __init__(self, start, end):
+			super().__init__()
+
+			assert end > start, 'This example code only works with end > start'
+			self.start = start
+			self.end = end
+
+			print('MyIterableDataset1.__init__() is called in {}: work info = {}.'.format(os.getpid(), torch.utils.data.get_worker_info()))
+
+		# NOTE [info] >> This method is called once in each worker process including the main process.
+		def __iter__(self):
+			worker_info = torch.utils.data.get_worker_info()
+
+			if worker_info is None:  # Single-process data loading, return the full iterator.
+				print('MyIterableDataset1.__iter__() is called in the main process.')
+			else:
+				print('MyIterableDataset1.__iter__() is called in worker process {}.'.format(worker_info.id))
+
+			if worker_info is None:  # Single-process data loading, return the full iterator.
+				iter_start = self.start
+				iter_end = self.end
+			else:  # In a worker process.
+				# Split workload.
+				per_worker = int(math.ceil((self.end - self.start) / float(worker_info.num_workers)))
+				worker_id = worker_info.id
+				iter_start = self.start + worker_id * per_worker
+				iter_end = min(iter_start + per_worker, self.end)
+			return iter(range(iter_start, iter_end))
+
+	# Should give same set of data as range(3, 7), i.e., [3, 4, 5, 6].
+	dataset = MyIterableDataset1(start=3, end=7)
+
+	# Single-process loading.
+	print('-----1-1')
+	dataloader = torch.utils.data.DataLoader(dataset, num_workers=0)
+	print(list(dataloader))  # [3, 4, 5, 6].
+	print(list(dataloader))  # [3, 4, 5, 6].
+
+	# Mult-process loading with two worker processes.
+	# Worker 0 fetched [3, 4]. Worker 1 fetched [5, 6].
+	print('-----1-2')
+	dataloader = torch.utils.data.DataLoader(dataset, num_workers=2)
+	print(list(dataloader))  # [3, 5, 4, 6].
+	print(list(dataloader))  # [3, 5, 4, 6].
+
+	# With even more workers.
+	print('-----1-3')
+	dataloader = torch.utils.data.DataLoader(dataset, num_workers=20)
+	print(list(dataloader))  # [3, 4, 5, 6].
+	print(list(dataloader))  # [3, 4, 5, 6].
+
+	#--------------------
+	# Split workload across all workers using worker_init_fn.
+	class MyIterableDataset2(torch.utils.data.IterableDataset):
+		def __init__(self, start, end):
+			super().__init__()
+
+			assert end > start, 'This example code only works with end > start'
+			self.start = start
+			self.end = end
+
+			print('MyIterableDataset2.__init__() is called in {}: work info = {}.'.format(os.getpid(), torch.utils.data.get_worker_info()))
+
+		def __iter__(self):
+			return iter(range(self.start, self.end))
+
+	print('--------------------')
+	# Should give same set of data as range(3, 7), i.e., [3, 4, 5, 6].
+	dataset = MyIterableDataset2(start=3, end=7)
+
+	# Single-process loading.
+	print('-----2-1')
+	dataloader = torch.utils.data.DataLoader(dataset, num_workers=0)
+	print(list(dataloader))  # [3, 4, 5, 6].
+	print(list(dataloader))  # [3, 4, 5, 6].
+
+	# Directly doing multi-process loading yields duplicate data.
+	print('-----2-2')
+	dataloader = torch.utils.data.DataLoader(dataset, num_workers=2)
+	print(list(dataloader))  # [3, 3, 4, 4, 5, 5, 6, 6].
+	print(list(dataloader))  # [3, 3, 4, 4, 5, 5, 6, 6].
+
+	# Define a 'worker_init_fn' that configures each dataset copy differently.
+	# NOTE [info] >> This method is called once in each worker process excluding the main process.
+	def worker_init_fn(worker_id):
+		print('worker_init_fn() is called in worker process {}.'.format(worker_id))
+
+		worker_info = torch.utils.data.get_worker_info()
+		assert worker_id == worker_info.id
+
+		dataset = worker_info.dataset  # The dataset copy in this worker process.
+		overall_start = dataset.start
+		overall_end = dataset.end
+		# Configure the dataset to only process the split workload.
+		per_worker = int(math.ceil((overall_end - overall_start) / float(worker_info.num_workers)))
+		dataset.start = overall_start + worker_id * per_worker
+		dataset.end = min(dataset.start + per_worker, overall_end)
+
+	# Single-process loading.
+	print('-----2-3')
+	dataloader = torch.utils.data.DataLoader(dataset, num_workers=0)
+	print(list(dataloader))  # [3, 4, 5, 6].
+	print(list(dataloader))  # [3, 4, 5, 6].
+
+	# Mult-process loading with the custom 'worker_init_fn'.
+	# Worker 0 fetched [3, 4]. Worker 1 fetched [5, 6].
+	print('-----2-4')
+	dataloader = torch.utils.data.DataLoader(dataset, num_workers=2, worker_init_fn=worker_init_fn)
+	print(list(dataloader))  # [3, 5, 4, 6].
+	print(list(dataloader))  # [3, 5, 4, 6].
+
+	# With even more workers.
+	print('-----2-5')
+	dataloader = torch.utils.data.DataLoader(dataset, num_workers=20, worker_init_fn=worker_init_fn)
+	print(list(dataloader))  # [3, 4, 5, 6].
+	print(list(dataloader))  # [3, 4, 5, 6].
+
+	#--------------------
+	# Multiple outputs.
+	class MyIterableDataset3(torch.utils.data.IterableDataset):
+		def __init__(self, val):
+			super().__init__()
+			self.val = val
+
+		def __iter__(self):
+			data1, data2 = list(range(1, self.val + 1)), list(range(-1, -(self.val + 1), -1))
+			assert len(data1) == len(data2)
+			num_examples = len(data1)
+
+			worker_info = torch.utils.data.get_worker_info()
+
+			if worker_info is None:  # Single-process data loading, return the full iterator.
+				return iter(zip(data1, data2))
+			else:  # In a worker process.
+				# Split workload.
+				worker_id = worker_info.id
+				num_examples_per_worker = math.ceil(num_examples / float(worker_info.num_workers))
+				iter_start = worker_id * num_examples_per_worker
+				iter_end = min(iter_start + num_examples_per_worker, num_examples)
+				return iter(zip(data1[iter_start:iter_end], data2[iter_start:iter_end]))
+
+	print('--------------------')
+	dataset = MyIterableDataset3(val=5)
+
+	#num_examples = len(dataset)  # NOTE [error] >> TypeError: object of type 'MyIterableDataset3' has no len().
+	#dataloader = torch.utils.data.DataLoader(dataset, shuffle=True, num_workers=0)  # NOTE [info] >> ValueError: DataLoader with IterableDataset: expected unspecified shuffle option, but got shuffle=True.
+	#num_steps = len(dataloader)  # NOTE [error] >> TypeError: object of type 'MyIterableDataset3' has no len().
+
+	# Single-process loading.
+	print('-----3-1')
+	dataloader = torch.utils.data.DataLoader(dataset, num_workers=0)
+	print(list(dataloader))  # [[1, -1], [2, -2], [3, -3], [4, -4], [5, -5]].
+	print(list(dataloader))  # [[1, -1], [2, -2], [3, -3], [4, -4], [5, -5]].
+
+	print('-----3-1 (batch_size = 2)')
+	dataloader = torch.utils.data.DataLoader(dataset, batch_size=2, num_workers=0)
+	print(list(dataloader))  # [[[1, 2], [-1, -2]], [[3, 4], [-3, -4]], [[5], [-5]]].
+	print(list(dataloader))  # [[[1, 2], [-1, -2]], [[3, 4], [-3, -4]], [[5], [-5]]].
+
+	# Mult-process loading with two worker processes.
+	# Worker 0 fetched [3, 4]. Worker 1 fetched [5, 6].
+	print('-----3-2')
+	dataloader = torch.utils.data.DataLoader(dataset, num_workers=2)
+	print(list(dataloader))  # [[1, -1], [4, -4], [2, -2], [5, -5], [3, -3]].
+	print(list(dataloader))  # [[1, -1], [4, -4], [2, -2], [5, -5], [3, -3]].
+
+	print('-----3-2 (batch_size = 2)')
+	dataloader = torch.utils.data.DataLoader(dataset, batch_size=2, num_workers=2)
+	print(list(dataloader))  # [[[1, 2], [-1, -2]], [[4, 5], [-4, -5]], [[3], [-3]]].
+	print(list(dataloader))  # [[[1, 2], [-1, -2]], [[4, 5], [-4, -5]], [[3], [-3]]].
+
+	# With even more workers.
+	print('-----3-3')
+	dataloader = torch.utils.data.DataLoader(dataset, num_workers=20)
+	print(list(dataloader))  # [[1, -1], [2, -2], [3, -3], [4, -4], [5, -5]].
+	print(list(dataloader))  # [[1, -1], [2, -2], [3, -3], [4, -4], [5, -5]].
+
+	print('-----3-3 (batch_size = 2)')
+	dataloader = torch.utils.data.DataLoader(dataset, batch_size=2, num_workers=20)
+	print(list(dataloader))  # [[1, -1], [2, -2], [3, -3], [4, -4], [5, -5]].
+	print(list(dataloader))  # [[1, -1], [2, -2], [3, -3], [4, -4], [5, -5]].
 
 # REF [site] >> https://pytorch.org/docs/stable/torchvision/datasets.html
 def mnist_dataset_test():
@@ -543,7 +742,9 @@ def data_processing():
 	dataset_loader = torch.utils.data.DataLoader(hymenoptera_dataset, batch_size=4, shuffle=True, num_workers=4)
 
 def main():
-	return_none_dataset_test()
+	#return_none_dataset_test()
+
+	iterable_dataset_test()
 
 	#--------------------
 	#mnist_dataset_test()
