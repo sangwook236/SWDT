@@ -1,97 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
+import time
+from tkinter import Y
 import torch, torchvision
 import pytorch_lightning as pl
-
-class LitAutoEncoder(pl.LightningModule):
-	def __init__(self):
-		super().__init__()
-
-		self.encoder = torch.nn.Sequential(
-			torch.nn.Linear(28 * 28, 64),
-			torch.nn.ReLU(),
-			torch.nn.Linear(64, 3)
-		)
-		self.decoder = torch.nn.Sequential(
-			torch.nn.Linear(3, 64),
-			torch.nn.ReLU(),
-			torch.nn.Linear(64, 28 * 28)
-		)
-
-	def configure_optimizers(self):
-		optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
-		return optimizer
-
-	def forward(self, x):
-		# In lightning, forward defines the prediction/inference actions.
-		embedding = self.encoder(x)
-		return embedding
-
-	def training_step(self, batch, batch_idx):
-		# training_step defines the train loop. It is independent of forward.
-		x, y = batch
-		x = x.view(x.size(0), -1)
-		z = self.encoder(x)
-		x_hat = self.decoder(z)
-
-		loss = torch.nn.functional.mse_loss(x_hat, x)
-		#acc = (x_hat == x).float().mean()  # For regression.
-		#acc = (y_hat.argmax(dim=-1) == y).float().mean()  # For classification.
-		# Logs the accuracy per epoch to TensorBoard (weighted average over batches).
-		#self.log("train_acc", acc, on_step=False, on_epoch=True)
-		self.log("train_loss", loss)
-		return loss
-
-	def validation_step(self, batch, batch_idx):
-		x, y = batch
-		x = x.view(x.size(0), -1)
-		z = self.encoder(x)
-		x_hat = self.decoder(z)
-
-		loss = torch.nn.functional.mse_loss(x_hat, x)
-		acc = (x_hat == x).float().mean()  # For regression.
-		#acc = (y_hat.argmax(dim=-1) == y).float().mean()  # For classification.
-		# By default logs it per epoch (weighted average over batches).
-		#self.log("val_acc", acc)
-		#self.log("val_loss", loss)
-		self.log_dict({"val_loss": loss, "val_acc": acc})
-
-	"""
-	def test_step(self, batch, batch_idx):
-		x, y = batch
-		x = x.view(x.size(0), -1)
-		z = self.encoder(x)
-		x_hat = self.decoder(z)
-
-		acc = (x_hat == x).float().mean()  # For regression.
-		#acc = (y_hat.argmax(dim=-1) == y).float().mean()  # For classification.
-		# By default logs it per epoch (weighted average over batches), and returns it afterwards.
-		self.log("test_acc", acc)
-	"""
-
-# REF [site] >> https://github.com/PyTorchLightning/pytorch-lightning
-def simple_autoencoder_example():
-	# Data.
-	dataset = torchvision.datasets.MNIST("", train=True, download=True, transform=torchvision.transforms.ToTensor())
-	train_dataset, val_dataset = torch.utils.data.random_split(dataset, [55000, 5000])
-
-	train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=32)
-	#train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=32, num_workers=12, persistent_workers=True)
-	val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=32)
-	#val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=32, num_workers=12, persistent_workers=True)
-
-	#--------------------
-	# Model.
-	model = LitAutoEncoder()
-
-	#--------------------
-	# Training.
-	#trainer = pl.Trainer()
-	trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5)
-	#trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5, accelerator="dp", max_epochs=10)
-
-	trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 
 class LitClassifier(pl.LightningModule):
 	def __init__(self, model):
@@ -263,9 +176,9 @@ class MNISTDataModule(pl.LightningDataModule):
 # REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/common/lightning_module.html
 def minimal_example():
 	# Data.
-	dataset = torchvision.datasets.MNIST("", train=True, download=True, transform=torchvision.transforms.ToTensor())
+	dataset = torchvision.datasets.MNIST(root=".", train=True, download=True, transform=torchvision.transforms.ToTensor())
 	train_dataset, val_dataset = torch.utils.data.random_split(dataset, [55000, 5000])
-	test_dataset = torchvision.datasets.MNIST("", train=False, download=True, transform=torchvision.transforms.ToTensor())
+	test_dataset = torchvision.datasets.MNIST(root=".", train=False, download=True, transform=torchvision.transforms.ToTensor())
 
 	train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=32)
 	#train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=32, num_workers=12, persistent_workers=True)
@@ -412,9 +325,9 @@ def minimal_example():
 	print("The model trained.")
 
 	#--------------------
-	#trainer.validate(model, dataloaders=dataloader, ckpt_path=None, verbose=True)  # Calls pl.LightningModule.validation_step().
-	#trainer.test(model, dataloaders=dataloader, ckpt_path=None, verbose=True)  # Calls pl.LightningModule.test_step().
-	#trainer.predict(model, dataloaders=dataloader, ckpt_path=None, return_predictions=None)  # Calls pl.LightningModule.predict_step().
+	#val_metrics = trainer.validate(model=model, dataloaders=dataloader, ckpt_path=None, verbose=True)  # Calls pl.LightningModule.validation_step().
+	#test_metrics = trainer.test(model=model, dataloaders=dataloader, ckpt_path=None, verbose=True)  # Calls pl.LightningModule.test_step().
+	#predictions = trainer.predict(model=model, dataloaders=dataloader, ckpt_path=None, return_predictions=None)  # Calls pl.LightningModule.predict_step().
 	#predictions = model(...)  # Calls pl.LightningModule.forward().
 
 	#trainer.test(model, dataloaders=dataloader, ckpt_path=None)  # Uses the current weights.
@@ -451,6 +364,301 @@ def minimal_example():
 			embedding = ...
 			reconstruction = model(embedding.to(device)).cpu()
 	print("Inferred by the model.")
+
+class LeNet5(pl.LightningModule):
+	def __init__(self, num_classes=10):
+		super().__init__()
+		self.save_hyperparameters()
+
+		self.hparams.batch_size = 0  # For finding the largest batch size that fits into memory when calling trainer.tune().
+		self.hparams.learning_rate = 0  # For learning rate finder algorithm when calling trainer.tune().
+
+		# 1 input image channel, 6 output channels, 3x3 square convolution kernel.
+		self.conv1 = torch.nn.Conv2d(1, 6, 3)
+		self.conv2 = torch.nn.Conv2d(6, 16, 3)
+		# An affine operation: y = Wx + b.
+		self.fc1 = torch.nn.Linear(16 * 5 * 5, 120)  # For 28x28 input.
+		self.fc2 = torch.nn.Linear(120, 84)
+		self.fc3 = torch.nn.Linear(84, num_classes)
+
+		self.criterion = torch.nn.CrossEntropyLoss(reduction="mean")
+
+		for param in self.parameters():
+			if param.dim() > 1:
+				torch.nn.init.xavier_uniform_(param)  # Initialize parameters with Glorot / fan_avg.
+
+	def on_load_checkpoint(self, checkpoint):
+		#self.model = checkpoint["model"]
+		pass
+
+	def on_save_checkpoint(self, checkpoint):
+		#checkpoint["model"] = self.model
+		pass
+
+	def configure_optimizers(self):
+		optimizer = torch.optim.Adam(self.parameters(), lr=1e-2)
+		return optimizer
+
+	def forward(self, x):
+		# Max pooling over a (2, 2) window.
+		x = torch.nn.functional.max_pool2d(torch.nn.functional.relu(self.conv1(x)), (2, 2))
+		# If the size is a square you can only specify a single number.
+		x = torch.nn.functional.max_pool2d(torch.nn.functional.relu(self.conv2(x)), 2)
+		x = x.view(-1, self._num_flat_features(x))
+		x = torch.nn.functional.relu(self.fc1(x))
+		x = torch.nn.functional.relu(self.fc2(x))
+		x = self.fc3(x)
+		return x
+
+	def training_step(self, batch, batch_idx):
+		start_time = time.time()
+		loss, y = self._shared_step(batch, batch_idx)
+		performances = self._evaluate_performance(y, batch, batch_idx)
+		step_time = time.time() - start_time
+
+		self.log_dict(
+			{"train_loss": loss, "train_acc": performances["acc"], "train_time": step_time},
+			on_step=True, on_epoch=True, prog_bar=True, logger=True, rank_zero_only=True
+		)
+
+		return loss
+
+	def validation_step(self, batch, batch_idx):
+		start_time = time.time()
+		loss, y = self._shared_step(batch, batch_idx)
+		performances = self._evaluate_performance(y, batch, batch_idx)
+		step_time = time.time() - start_time
+
+		self.log_dict({"val_loss": loss, "val_acc": performances["acc"], "val_time": step_time}, rank_zero_only=True)
+
+	def test_step(self, batch, batch_idx):
+		start_time = time.time()
+		loss, y = self._shared_step(batch, batch_idx)
+		performances = self._evaluate_performance(y, batch, batch_idx)
+		step_time = time.time() - start_time
+
+		self.log_dict({"test_loss": loss, "test_acc": performances["acc"], "test_time": step_time}, rank_zero_only=True)
+
+	def predict_step(self, batch, batch_idx, dataloader_idx=None):
+		# NOTE [error] >>
+		#	pytorch_lightning.utilities.exceptions.MisconfigurationException: You are trying to 'self.log()' but the loop's result collection is not registered yet.
+		#	This is most likely because you are trying to log in a 'predict' hook, but it doesn't support logging.
+		return self(batch[0])
+
+	def _shared_step(self, batch, batch_idx):
+		x, t = batch
+		y = self(x)
+
+		loss = self.criterion(y, t)
+
+		return loss, y
+
+	def _evaluate_performance(self, y, batch, batch_idx):
+		_, t = batch
+
+		#acc = (torch.argmax(y, dim=-1) == t).sum().item()
+		acc = (torch.argmax(y, dim=-1) == t).float().mean().item()
+
+		return {'acc': acc}
+
+	def _num_flat_features(self, x):
+		size = x.size()[1:]  # All dimensions except the batch dimension.
+		num_features = 1
+		for s in size:
+			num_features *= s
+		return num_features
+
+def lenet5_mnist_example():
+	import os
+	import numpy as np
+
+	# Prepare data.
+	train_transform = torchvision.transforms.ToTensor()
+	val_transform = torchvision.transforms.ToTensor()
+	train_dataset = torchvision.datasets.MNIST(root=".", train=True, download=True, transform=train_transform, target_transform=None)
+	val_dataset = torchvision.datasets.MNIST(root=".", train=False, download=True, transform=val_transform, target_transform=None)
+
+	train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=512, num_workers=4, persistent_workers=False)
+	val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=512, num_workers=4, persistent_workers=False)
+
+	#--------------------
+	# Training.
+	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy=None, auto_select_gpus=True, max_epochs=-1, precision=16)
+	trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=10, precision=16)
+	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=10, precision=16, limit_train_batches=1.0, limit_test_batches=1.0)
+	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=10, precision=16, auto_lr_find=True)
+	# NOTE [error] >> pytorch_lightning.utilities.exceptions.MisconfigurationException: The batch scaling feature cannot be used with dataloaders passed directly to '.fit()'. Please disable the feature or incorporate the dataloader into the model.
+	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=10, precision=16, auto_scale_batch_size="binsearch", auto_lr_find=True)
+
+	if True:
+		# Case 1: Training.
+
+		# Build a model.
+		model = LeNet5(num_classes=10)
+
+		# Tune hyperparameters before training.
+		tuning_results = trainer.tune(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader, datamodule=None, scale_batch_size_kwargs=None, lr_find_kwargs=None)
+		print("Tuning results: {}.".format(tuning_results))
+
+		# Train the model.
+		trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
+
+		model_filepath = trainer.checkpoint_callback.best_model_path
+		print("The best trained model saved to {}.".format(model_filepath))
+	else:
+		# Case 2: Loading.
+
+		model_filepath = "./lightning_logs/version_0/checkpoints/epoch=9-step=1180.ckpt"
+		assert os.path.isfile(model_filepath), "Model file not found, {}".format(model_filepath)
+
+		# Load a model.
+		model = LeNet5.load_from_checkpoint(model_filepath)
+		#model = LeNet5.load_from_checkpoint(model_filepath, map_location={"cuda:1": "cuda:0"})
+
+		print("A trained model loaded from {}.".format(model_filepath))
+
+	#--------------------
+	if True:
+		# Working for Case 1 & 2.
+
+		val_metrics = trainer.validate(model=model, dataloaders=val_dataloader, ckpt_path=None, verbose=True)
+		print("Validation metrics: {}.".format(val_metrics))
+
+		test_metrics = trainer.test(model=model, dataloaders=val_dataloader, ckpt_path=None, verbose=True)
+		print("Test metrics: {}.".format(test_metrics))
+
+		predictions = trainer.predict(model=model, dataloaders=val_dataloader, ckpt_path=None, return_predictions=None)  # A list of [batch size, #classes]'s.
+		predictions = torch.vstack(predictions)
+		#predictions = torch.argmax(torch.vstack(predictions), dim=-1)
+		print("Predictions: shape = {}, dtype = {}, (min, max) = ({}, {}).".format(predictions.shape, predictions.dtype, torch.min(predictions), torch.max(predictions)))
+	else:
+		# Working for Case 1.
+
+		# NOTE [error] >> For Case 2.
+		#	AttributeError: 'NoneType' object has no attribute 'cpu'.
+		#		self.lightning_module.cpu()
+
+		val_metrics = trainer.validate(model=None, dataloaders=val_dataloader, ckpt_path=model_filepath, verbose=True)
+		print("Validation metrics: {}.".format(val_metrics))
+
+		test_metrics = trainer.test(model=None, dataloaders=val_dataloader, ckpt_path=model_filepath, verbose=True)
+		print("Test metrics: {}.".format(test_metrics))
+
+		predictions = trainer.predict(model=None, dataloaders=val_dataloader, ckpt_path=model_filepath, return_predictions=None)  # A list of [batch size, #classes]'s.
+		predictions = torch.vstack(predictions)
+		#predictions = torch.argmax(torch.vstack(predictions), dim=-1)
+		print("Predictions: shape = {}, dtype = {}, (min, max) = ({}, {}).".format(predictions.shape, predictions.dtype, torch.min(predictions), torch.max(predictions)))
+
+	#--------------------
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+	model = model.to(device)
+	model.eval()
+	model.freeze()
+
+	gts, predictions = list(), list()
+	with torch.no_grad():
+		for batch_inputs, batch_outputs in val_dataloader:
+			gts.append(batch_outputs.numpy())  # [batch size].
+			predictions.append(model(batch_inputs.to(device)).cpu().numpy())  # [batch size, #classes].
+	gts, predictions = np.hstack(gts), np.argmax(np.vstack(predictions), axis=-1)
+	assert len(gts) == len(predictions)
+	num_examples = len(gts)
+
+	results = gts == predictions
+	num_correct_examples = results.sum().item()
+	acc = results.mean().item()
+
+	print("Prediction: accuracy = {} / {} = {}.".format(num_correct_examples, num_examples, acc))
+
+class LitAutoEncoder(pl.LightningModule):
+	def __init__(self):
+		super().__init__()
+
+		self.encoder = torch.nn.Sequential(
+			torch.nn.Linear(28 * 28, 64),
+			torch.nn.ReLU(),
+			torch.nn.Linear(64, 3)
+		)
+		self.decoder = torch.nn.Sequential(
+			torch.nn.Linear(3, 64),
+			torch.nn.ReLU(),
+			torch.nn.Linear(64, 28 * 28)
+		)
+
+	def configure_optimizers(self):
+		optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
+		return optimizer
+
+	def forward(self, x):
+		# In lightning, forward defines the prediction/inference actions.
+		embedding = self.encoder(x)
+		return embedding
+
+	def training_step(self, batch, batch_idx):
+		# training_step defines the train loop. It is independent of forward.
+		x, y = batch
+		x = x.view(x.size(0), -1)
+		z = self.encoder(x)
+		x_hat = self.decoder(z)
+
+		loss = torch.nn.functional.mse_loss(x_hat, x)
+		#acc = (x_hat == x).float().mean()  # For regression.
+		#acc = (y_hat.argmax(dim=-1) == y).float().mean()  # For classification.
+		# Logs the accuracy per epoch to TensorBoard (weighted average over batches).
+		#self.log("train_acc", acc, on_step=False, on_epoch=True)
+		self.log("train_loss", loss)
+		return loss
+
+	def validation_step(self, batch, batch_idx):
+		x, y = batch
+		x = x.view(x.size(0), -1)
+		z = self.encoder(x)
+		x_hat = self.decoder(z)
+
+		loss = torch.nn.functional.mse_loss(x_hat, x)
+		acc = (x_hat == x).float().mean()  # For regression.
+		#acc = (y_hat.argmax(dim=-1) == y).float().mean()  # For classification.
+		# By default logs it per epoch (weighted average over batches).
+		#self.log("val_acc", acc)
+		#self.log("val_loss", loss)
+		self.log_dict({"val_loss": loss, "val_acc": acc})
+
+	"""
+	def test_step(self, batch, batch_idx):
+		x, y = batch
+		x = x.view(x.size(0), -1)
+		z = self.encoder(x)
+		x_hat = self.decoder(z)
+
+		acc = (x_hat == x).float().mean()  # For regression.
+		#acc = (y_hat.argmax(dim=-1) == y).float().mean()  # For classification.
+		# By default logs it per epoch (weighted average over batches), and returns it afterwards.
+		self.log("test_acc", acc)
+	"""
+
+# REF [site] >> https://github.com/PyTorchLightning/pytorch-lightning
+def simple_autoencoder_example():
+	# Data.
+	dataset = torchvision.datasets.MNIST(root=".", train=True, download=True, transform=torchvision.transforms.ToTensor())
+	train_dataset, val_dataset = torch.utils.data.random_split(dataset, [55000, 5000])
+
+	train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=32)
+	#train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=32, num_workers=12, persistent_workers=True)
+	val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=32)
+	#val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=32, num_workers=12, persistent_workers=True)
+
+	#--------------------
+	# Model.
+	model = LitAutoEncoder()
+
+	#--------------------
+	# Training.
+	#trainer = pl.Trainer()
+	trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5)
+	#trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5, accelerator="dp", max_epochs=10)
+
+	trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 
 # REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/notebooks/course_UvA-DL/03-initialization-and-optimization.html
 def initalization_and_optimization_tutorial():
@@ -1918,8 +2126,10 @@ def inception_resnet_densenet_tutorial():
 	)
 
 def main():
+	#minimal_example()
+
+	lenet5_mnist_example()
 	#simple_autoencoder_example()
-	minimal_example()
 
 	#initalization_and_optimization_tutorial()
 	#inception_resnet_densenet_tutorial()

@@ -86,6 +86,7 @@ def dataset_test():
 	print('The main process ID = {}.'.format(os.getpid()))
 
 	class MyDataset1(torch.utils.data.Dataset):
+		# NOTE [info] >> This method is called only once in the main process, not in the worker processes, when an instance is created.
 		def __init__(self, data):
 			super().__init__()
 
@@ -93,12 +94,12 @@ def dataset_test():
 
 			print('MyDataset1.__init__() is called in {}.'.format(os.getpid()))
 
-		# NOTE [info] >> This method is called in the main process, not in the worker processes.
+		# NOTE [info] >> This method is called only in the main process, not in the worker processes.
 		def __len__(self):
 			print('MyDataset1.__len__() is called in {}.'.format(os.getpid()))
 			return len(self.data)
 
-		# NOTE [info] >> This method is called in the main process or in the worker processes.
+		# NOTE [info] >> This method is called in the main process (single-process loading) or in every worker process (multi-process loading).
 		def __getitem__(self, idx):
 			print('MyDataset1.__getitem__(idx={}) is called in {}.'.format(idx, os.getpid()))
 			return self.data[idx]
@@ -119,13 +120,13 @@ def dataset_test():
 	print(list(dataloader))  # [[3, 4, 5], [6]].
 	print(list(dataloader))  # [[3, 4, 5], [6]].
 
-	# Mult-process loading with two worker processes.
+	# Multi-process loading with two worker processes.
 	print('-----1-2')
 	dataloader = torch.utils.data.DataLoader(dataset, num_workers=2)
 	print(list(dataloader))  # [3, 5, 4, 6].
 	print(list(dataloader))  # [3, 5, 4, 6].
 
-	# Mult-process loading with two worker processes.
+	# Multi-process loading with two worker processes.
 	print('-----1-2 (batch_size = 3)')
 	dataloader = torch.utils.data.DataLoader(dataset, batch_size=3, num_workers=2)
 	print(list(dataloader))  # [[3, 4, 5], [6]].
@@ -154,11 +155,9 @@ def dataset_test():
 			self.data2 = data2
 			#self.return_items = ['data1', 'data2']
 
-		# NOTE [info] >> This method is called in the main process, not in the worker processes.
 		def __len__(self):
 			return len(self.data1)
 
-		# NOTE [info] >> This method is called in the main process or in the worker processes.
 		def __getitem__(self, idx):
 			#return self.data1[idx], self.data2[idx]
 			#return idx, self.data1[idx], self.data2[idx]
@@ -190,6 +189,7 @@ def iterable_dataset_test():
 
 	# Split workload across all workers in __iter__().
 	class MyIterableDataset1(torch.utils.data.IterableDataset):
+		# NOTE [info] >> This method is called only once in the main process, not in the worker processes, when an instance is created.
 		def __init__(self, start, end):
 			super().__init__()
 
@@ -199,14 +199,14 @@ def iterable_dataset_test():
 
 			print('MyIterableDataset1.__init__() is called in {}: work info = {}.'.format(os.getpid(), torch.utils.data.get_worker_info()))
 
-		# NOTE [info] >> This method is called once in each worker process including the main process.
+		# NOTE [info] >> This method is called once in the main process (single-process loading) or in every worker process (multi-process loading) when starting iterating.
 		def __iter__(self):
 			worker_info = torch.utils.data.get_worker_info()
 
 			if worker_info is None:  # Single-process data loading, return the full iterator.
-				print('MyIterableDataset1.__iter__() is called in the main process.')
+				print('MyIterableDataset1.__iter__() is called in {}: worker_info = {}.'.format(os.getpid(), worker_info))
 			else:
-				print('MyIterableDataset1.__iter__() is called in worker process {}.'.format(worker_info.id))
+				print('MyIterableDataset1.__iter__() is called in {}: worker_info = {}.'.format(os.getpid(), worker_info))
 
 			if worker_info is None:  # Single-process data loading, return the full iterator.
 				iter_start = self.start
@@ -232,7 +232,7 @@ def iterable_dataset_test():
 	print(list(dataloader))  # [3, 4, 5, 6].
 	print(list(dataloader))  # [3, 4, 5, 6].
 
-	# Mult-process loading with two worker processes.
+	# Multi-process loading with two worker processes.
 	# Worker 0 fetched [3, 4]. Worker 1 fetched [5, 6].
 	print('-----1-2')
 	dataloader = torch.utils.data.DataLoader(dataset, num_workers=2)
@@ -246,7 +246,7 @@ def iterable_dataset_test():
 	print(list(dataloader))  # [3, 4, 5, 6].
 
 	#--------------------
-	# Split workload across all workers using worker_init_fn.
+	# Split workload across all workers using worker_init_fn().
 	class MyIterableDataset2(torch.utils.data.IterableDataset):
 		def __init__(self, start, end):
 			super().__init__()
@@ -258,6 +258,7 @@ def iterable_dataset_test():
 			print('MyIterableDataset2.__init__() is called in {}: work info = {}.'.format(os.getpid(), torch.utils.data.get_worker_info()))
 
 		def __iter__(self):
+			print('MyIterableDataset2.__iter__() is called in {}: work info = {}.'.format(os.getpid(), torch.utils.data.get_worker_info()))
 			return iter(range(self.start, self.end))
 
 	print('--------------------')
@@ -277,12 +278,12 @@ def iterable_dataset_test():
 	print(list(dataloader))  # [3, 3, 4, 4, 5, 5, 6, 6].
 
 	# Define a 'worker_init_fn' that configures each dataset copy differently.
-	# NOTE [info] >> This method is called once in each worker process excluding the main process.
+	# NOTE [info] >> This method is called once before calling IterableDataset.__iter__() in every worker process, not in the main process, when starting iterating.
 	def worker_init_fn(worker_id):
-		print('worker_init_fn() is called in worker process {}.'.format(worker_id))
-
 		worker_info = torch.utils.data.get_worker_info()
 		assert worker_id == worker_info.id
+
+		print('worker_init_fn() is called in {}: work info = {}.'.format(os.getpid(), worker_info))
 
 		dataset = worker_info.dataset  # The dataset copy in this worker process.
 		overall_start = dataset.start
@@ -298,7 +299,7 @@ def iterable_dataset_test():
 	print(list(dataloader))  # [3, 4, 5, 6].
 	print(list(dataloader))  # [3, 4, 5, 6].
 
-	# Mult-process loading with the custom 'worker_init_fn'.
+	# Multi-process loading with the custom 'worker_init_fn'.
 	# Worker 0 fetched [3, 4]. Worker 1 fetched [5, 6].
 	print('-----2-4')
 	dataloader = torch.utils.data.DataLoader(dataset, num_workers=2, worker_init_fn=worker_init_fn)
@@ -349,7 +350,7 @@ def iterable_dataset_test():
 	print(list(dataloader))  # [[[1, 2], [-1, -2]], [[3, 4], [-3, -4]], [[5], [-5]]].
 	print(list(dataloader))  # [[[1, 2], [-1, -2]], [[3, 4], [-3, -4]], [[5], [-5]]].
 
-	# Mult-process loading with two worker processes.
+	# Multi-process loading with two worker processes.
 	# Worker 0 fetched [3, 4]. Worker 1 fetched [5, 6].
 	print('-----3-2')
 	dataloader = torch.utils.data.DataLoader(dataset, num_workers=2)
@@ -746,8 +747,7 @@ class RandomCrop(object):
 		top = np.random.randint(0, h - new_h)
 		left = np.random.randint(0, w - new_w)
 
-		image = image[top: top + new_h,
-					  left: left + new_w]
+		image = image[top: top + new_h, left: left + new_w]
 
 		landmarks = landmarks - [left, top]
 
@@ -763,8 +763,7 @@ class ToTensor(object):
 		#	NumPy image: H x W x C.
 		#	Torch image: C x H x W.
 		image = image.transpose((2, 0, 1))
-		return {'image': torch.from_numpy(image),
-				'landmarks': torch.from_numpy(landmarks)}
+		return {'image': torch.from_numpy(image), 'landmarks': torch.from_numpy(landmarks)}
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/data_loading_tutorial.html
 def dataset_with_data_processing_example():
@@ -789,13 +788,15 @@ def dataset_with_data_processing_example():
 	plt.show()
 
 	# Iterate through the dataset.
-	transformed_dataset = FaceLandmarksDataset(csv_file='data/faces/face_landmarks.csv',
-												root_dir='data/faces/',
-												transform=torchvision.transforms.Compose([
-													Rescale(256),
-													RandomCrop(224),
-													ToTensor()
-												]))
+	transformed_dataset = FaceLandmarksDataset(
+		csv_file='data/faces/face_landmarks.csv',
+		root_dir='data/faces/',
+		transform=torchvision.transforms.Compose([
+			Rescale(256),
+			RandomCrop(224),
+			ToTensor()
+		])
+	)
 
 	for i in range(len(transformed_dataset)):
 		sample = transformed_dataset[i]
@@ -820,9 +821,11 @@ def dataset_with_data_processing_example():
 		plt.imshow(grid.numpy().transpose((1, 2, 0)))
 
 		for i in range(batch_size):
-			plt.scatter(landmarks_batch[i, :, 0].numpy() + i * im_size + (i + 1) * grid_border_size,
-						landmarks_batch[i, :, 1].numpy() + grid_border_size,
-						s=10, marker='.', c='r')
+			plt.scatter(
+				landmarks_batch[i, :, 0].numpy() + i * im_size + (i + 1) * grid_border_size,
+				landmarks_batch[i, :, 1].numpy() + grid_border_size,
+				s=10, marker='.', c='r'
+			)
 
 			plt.title('Batch from dataloader')
 
