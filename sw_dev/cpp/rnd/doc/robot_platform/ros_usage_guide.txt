@@ -24,13 +24,14 @@
 		http://openslam.org/rgbdslam.html
 		http://www.openslam.org/hog-man.html
 
-[-] Run in Linux.
-	-
+	- Directory.
+		/opt/ros/noetic
+		/opt/ros/noetic/bin
+		/opt/ros/noetic/include
+		/opt/ros/noetic/lib
 
-[-] Run in Windows.
+[-] Usage (Windows).
 	-
-		REF [site] >> http://wiki.ros.org/cturtle/Installation/Windows
-
 		In server-side:
 			export ROS_HOSTNAME=utopia.kaist.ac.kr
 			export ROS_IP=143.248.139.17
@@ -58,7 +59,392 @@
 		roslaunch openni_camera openni_node.launch 
 		rosrun rgbdslam rgbdslam
 
-[-] Trouble Shooting in Ubuntu.
+[-] Tutorial (Ubuntu).
+	http://wiki.ros.org/ROS/Tutorials
+
+	- (Optional) Manage an environment.
+		(Optional) conda deactivte
+
+		printenv | grep ROS
+		source /opt/ros/<distro>/setup.bash
+
+	- Create a ROS workspace.
+		http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment
+
+		mkdir -p catkin_ws/src
+		cd catkin_ws/
+
+		catkin_make
+		catkin_make -DPYTHON_EXECUTABLE=/usr/bin/python3
+			The catkin_make command is a convenience tool for working with catkin workspaces.
+			http://wiki.ros.org/catkin/workspaces
+
+		source devel/setup.bash
+
+		echo $ROS_PACKAGE_PATH
+
+	- Navigate the ROS filesystem.
+		http://wiki.ros.org/ROS/Tutorials/NavigatingTheFilesystem
+
+		Refer to "Filesystem tools".
+
+	- Create a ROS package.
+		http://wiki.ros.org/ROS/Tutorials/CreatingPackage
+
+		Create a catkin package:
+			cd catkin_ws/src
+
+			catkin_create_pkg <PACKAGE_NAME> [depend1] [depend2] [depend3]
+				catkin_create_pkg beginner_tutorials std_msgs rospy roscpp
+
+		Build a catkin workspace:
+			cd catkin_ws
+
+			catkin_make
+
+		Source the setup file:
+			To add the workspace to your ROS environment you need to source the generated setup file.
+
+			. devel/setup.bash
+
+		Package dependencies:
+			conda deactivate
+				<error> [rospack] Error: could not find python module 'rosdep2.rospack'. is rosdep up-to-date (at least 0.10.4)?
+				<cause> There are some issues in the anaconda environment.
+				<solution> Deactivate the anaconda environment.
+
+			First-order dependencies:
+				rospack depends1 beginner_tutorials
+
+				roscd beginner_tutorials
+				cat package.xml
+
+			Indirect dependencies:
+				In many cases, a dependency will also have its own dependencies.
+
+				rospack depends1 rospy
+
+			Recursively determine all nested dependencies:
+				rospack depends beginner_tutorials
+
+	- Build a ROS rackage.
+		http://wiki.ros.org/ROS/Tutorials/BuildingPackages
+
+		Build a package:
+			cd catkin_ws
+			catkin_make
+			cd build
+			make -j16 -l16
+
+[-] Tool.
+	- catkin_make.
+		http://wiki.ros.org/ROS/Tutorials/BuildingPackages
+
+		In a catkin workspace:
+			catkin_make [make_targets] [-DCMAKE_VARIABLES=...]
+				catkin_make
+				catkin_make install
+
+			If your source code is in a different place, say my_src then you would call catkin_make like this:
+				catkin_make --source my_src
+				catkin_make install --source my_src
+
+	- roscore.
+		http://wiki.ros.org/roscore
+		http://wiki.ros.org/ROS/Tutorials/UnderstandingNodes
+
+		The first thing you should run when using ROS.
+		A collection of nodes and programs that are pre-requisites of a ROS-based system.
+		You must have a roscore running in order for ROS nodes to communicate.
+
+		roscore
+
+	- rosnode.
+		http://wiki.ros.org/ROS/Tutorials/UnderstandingNodes
+		Display information about the ROS nodes that are currently running.
+
+		rosnode list
+		rosnode info /rosout
+		rosnode ping turtlesim
+
+	- rosrun.
+		http://wiki.ros.org/ROS/Tutorials/UnderstandingNodes
+		Run a node within a package (without having to know the package path).
+
+		rosrun <PACKAGE_NAME> <NODE_NAME>
+			rosrun turtlesim turtlesim_node
+			rosrun turtlesim turtlesim_node __name:=my_turtle
+
+	- rostopic.
+		http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics
+		Get information about ROS topics.
+
+		rostopic -h
+		rostopic
+
+		rostopic echo [topic]
+			rostopic echo /turtle1/cmd_vel
+
+		rostopic list -v
+
+		rostopic type [topic]
+			Return the message type of any topic being published.
+			Communication on topics happens by sending ROS messages between nodes.
+
+			rostopic type /turtle1/cmd_vel
+				geometry_msgs/Twist
+			rosmsg show geometry_msgs/Twist
+
+			Use rostopic type in conjunction with rosmsg show to get in depth information about a topic:
+				rostopic type /turtle1/cmd_vel | rosmsg show
+
+		rostopic pub
+			Publishe data on to a topic currently advertised.
+
+			rostopic pub [topic] [msg_type] [args]
+				rostopic pub -1 /turtle1/cmd_vel geometry_msgs/Twist -- '[2.0, 0.0, 0.0]' '[0.0, 0.0, 1.8]'
+
+				rostopic pub -r
+					Publish a steady stream of commands.
+
+					rostopic pub /turtle1/cmd_vel geometry_msgs/Twist -r 1 -- '[2.0, 0.0, 0.0]' '[0.0, 0.0, -1.8]'
+
+		rostopic hz
+			Report the rate at which data is published.
+
+			rostopic hz [topic]
+				rostopic hz /turtle1/pose
+
+	- rosservice.
+		http://wiki.ros.org/ROS/Tutorials/UnderstandingServicesParams
+
+		rosservice list
+			Print information about active services.
+
+		rosservice call
+			Call the service with the provided args.
+
+			rosservice call [service] [args]
+				rosservice call /clear
+				rosservice call /spawn 2 2 0.2 ""
+
+		rosservice type
+			Print service type.
+
+			rosservice type [service]
+				rosservice type /clear
+				rosservice type /spawn | rossrv show
+
+		rosservice find
+			Find services by service type.
+
+		rosservice uri
+			Print service ROSRPC uri.
+
+	- rosparam.
+		http://wiki.ros.org/ROS/Tutorials/UnderstandingServicesParams
+		Store and manipulate data on the ROS Parameter Server.
+		The Parameter Server can store integers, floats, boolean, dictionaries, and lists.
+		rosparam uses the YAML markup language for syntax.
+
+		rosparam set
+			Set parameter.
+
+			rosparam set [param_name]
+				rosparam set /turtlesim/background_r 150
+				rosservice call /clear
+
+		rosparam get
+			Get parameter.
+
+			rosparam get [param_name]
+				rosparam get /turtlesim/background_g
+
+			rosparam get /
+				Show us the contents of the entire Parameter Server.
+
+		rosparam load
+			Load parameters from file.
+
+			rosparam load [file_name] [namespace]
+				rosparam load params.yaml copy_turtle
+				rosparam get /copy_turtle/turtlesim/background_b
+
+		rosparam dump
+			Dump parameters to file.
+
+			rosparam dump [file_name] [namespace]
+				rosparam dump params.yaml
+
+		rosparam delete
+			Delete parameter.
+
+		rosparam list
+			List parameter names.
+
+	- roslaunch.
+		http://wiki.ros.org/ROS/Tutorials/UsingRqtconsoleRoslaunch
+		Start nodes as defined in a launch file.
+
+		roslaunch [package] [filename.launch]
+			roscd beginner_tutorials
+
+			cd catkin_ws
+			source devel/setup.bash
+			roscd beginner_tutorials
+
+			mkdir launch
+			cd launch
+
+			Create a launch file, turtlemimic.launch.
+
+			roslaunch beginner_tutorials turtlemimic.launch
+
+			rostopic pub /turtlesim1/turtle1/cmd_vel geometry_msgs/Twist -r 1 -- '[2.0, 0.0, 0.0]' '[0.0, 0.0, -1.8]'
+
+	- Client Libraries.
+		ROS client libraries allow nodes written in different programming languages to communicate:
+
+		rospy: Python client library.
+		roscpp: C++ client library.
+
+	- Filesystem tools.
+		http://wiki.ros.org/ROS/Tutorials/NavigatingTheFilesystem
+
+		rospack:
+			Get information about packages.
+
+			rospack find <PACKAGE_NAME>
+				rospack find roscpp
+					${ROS_INSTALL_PATH}/share/roscpp
+
+		rosstack:
+			Retrieve information about ROS stacks available on the filesystem.
+
+		roscd:
+			Change directory (cd) directly to a package or a stack.
+			Part of the rosbash suite.
+
+			roscd <PACKAGE-OR-STACK>[/SUBDIR]
+				roscd roscpp
+				pwd
+
+				roscd roscpp/cmake
+				pwd
+
+			roscd log
+				Take you to the folder where ROS stores log files
+
+		rosls
+			List directly in a package by name rather than by absolute path.
+			Part of the rosbash suite.
+
+			rosls <PACKAGE-OR-STACK>[/SUBDIR]
+				rosls roscpp_tutorials
+
+	- rqt.
+		http://wiki.ros.org/rqt
+		A Qt-based framework for GUI development for ROS.
+
+		rqt:
+
+		rqt_graph:
+			http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics
+			Create a dynamic graph of what's going on in the system.
+
+			sudo apt install ros-<distro>-rqt
+			sudo apt install ros-<distro>-rqt-common-plugins
+
+			rosrun rqt_graph rqt_graph
+
+		rqt_plot:
+			http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics
+			Display a scrolling time plot of the data published on topics.
+
+			rosrun rqt_plot rqt_plot
+
+		rqt_console:
+			http://wiki.ros.org/ROS/Tutorials/UsingRqtconsoleRoslaunch
+			Attaches to ROS's logging framework to display output from nodes.
+
+			rosrun rqt_console rqt_console
+
+		rqt_logger_level:
+			http://wiki.ros.org/ROS/Tutorials/UsingRqtconsoleRoslaunch
+			Change the verbosity level (DEBUG, WARN, INFO, and ERROR) of nodes as they run.
+
+			rosrun rqt_logger_level rqt_logger_level
+
+[-] Glossary.
+	- Graph concepts.
+		http://wiki.ros.org/ROS/Tutorials/UnderstandingNodes
+
+		Nodes: A node is an executable that uses ROS to communicate with other nodes.
+		Messages: ROS data type used when subscribing or publishing to a topic.
+		Topics: Nodes can publish messages to a topic as well as subscribe to a topic to receive messages.
+		Master: Name service for ROS (i.e. helps nodes find each other).
+		rosout: ROS equivalent of stdout/stderr.
+		roscore: Master + rosout + parameter server (parameter server will be introduced later).
+
+[-] Installation (Ubuntu).
+	http://wiki.ros.org/noetic/Installation/Ubuntu
+
+	- Install.
+		sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+		sudo apt install curl # if you haven't already installed curl
+		curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+		sudo apt update
+
+		Desktop-Full Install (Recommended): Everything in Desktop plus 2D/3D simulators and 2D/3D perception packages.
+			sudo apt install ros-noetic-desktop-full
+		Desktop Install: Everything in ROS-Base plus tools like rqt and rviz.
+			sudo apt install ros-noetic-desktop
+		ROS-Base: (Bare Bones) ROS packaging, build, and communication libraries. No GUI tools.
+			sudo apt install ros-noetic-ros-base
+
+		Install a specific package directly:
+			sudo apt install ros-noetic-<PACKAGE>
+				sudo apt install ros-noetic-slam-gmapping
+
+		Find available packages:
+			ROS Index:
+				https://index.ros.org/packages/page/1/time/#noetic
+			apt search ros-noetic
+
+	- Environment setup.
+		You must source this script in every bash terminal you use ROS in.
+			source /opt/ros/noetic/setup.bash
+
+			echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+			source ~/.bashrc
+
+			printenv | grep ROS
+
+	- Dependencies for building packages.
+		Install this tool and other dependencies for building ROS packages:
+			sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
+				rosinstall: a frequently used command-line tool that enables you to easily download many source trees for ROS packages with one command.
+
+		Install rosdep:
+			Before you can use many ROS tools, you will need to initialize rosdep.
+			rosdep enables you to easily install system dependencies for source you want to compile and is required to run some core components in ROS.
+
+			sudo apt install python3-rosdep
+
+		Initialize rosdep:
+			sudo rosdep init
+				/etc/ros/rosdep/sources.list.d/20-default.list
+			rosdep update
+
+	- Install Python package.
+		pip install catkin-pkg catkin-tools
+		pip install empy
+
+[-] Installation (Windows).
+	http://wiki.ros.org/Installation/Windows
+	http://wiki.ros.org/cturtle/Installation/Windows
+
+[-] Troubleshooting (Ubuntu).
 	- Cannot install ros indigo.
 		<error>
 		The following packages have unmet dependencies
@@ -66,7 +452,7 @@
 		=> Unmatched version of Boost library.
 			Currently, Boost version 1.54.0 is used. (2015/10/22).
 
-[-] Touble Shooting in VirtualBox (Host: MacOS, Guest: Ubuntu).
+[-] Toubleshooting (VirtualBox (Host: MacOS, Guest: Ubuntu)).
 	- Cannot use FaceTime HD Camera.
 		REF [site] >> https://tskamath.wordpress.com/2014/10/29/macbook-camera-virtualbox/
 
