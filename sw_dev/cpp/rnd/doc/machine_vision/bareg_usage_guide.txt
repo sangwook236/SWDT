@@ -1,0 +1,51 @@
+[-] General.
+	- Site.
+		https://hyhuang1995.github.io/projects/bareg/
+
+[-] Installation.
+	- Install.
+		Install OpenCV 3.0.
+
+		Install ROS:
+			http://wiki.ros.org/ROS/Installation
+			http://wiki.ros.org/Installation/Ubuntu
+
+		(Optional) Install ISPC:
+			https://ispc.github.io/downloads.html
+			https://ispc.github.io/
+
+		pip install catkin-pkg catkin-tools
+		pip install empy
+
+		https://github.com/ros/catkin
+			CMake
+			make -j8 (X)
+				No need.
+			sudo make install
+		https://github.com/catkin/catkin_simple
+			CMake
+			make -j8 (X)
+				No need.
+			sudo make install
+
+		https://github.com/MIT-SPARK/TEASER-plusplus
+			CMake
+			make -j8
+			sudo make install
+
+		https://github.com/strasdat/Sophus
+			CMake
+			make -j8
+			sudo make install
+
+		https://github.com/isl-org/Open3D
+			CMake
+			make -j8
+			sudo make install
+
+		https://hyhuang1995.github.io/projects/bareg/
+			CMake
+			make -j8
+				${xreg_HOME}/build/devel/lib/libxreg.so
+				Failed.
+			sudo make install
