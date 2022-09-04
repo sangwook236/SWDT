@@ -1,4 +1,4 @@
-EXE_NAME=arith_test
+EXE_NAME=test
 SRCS=main.cpp
 OBJS=$(SRCS:.cpp=.o)
 

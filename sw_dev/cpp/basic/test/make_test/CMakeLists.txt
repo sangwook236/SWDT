@@ -25,25 +25,38 @@ if(APPLE)
 elseif(CYGWIN)
 elseif(MSYS OR MINGW)
 elseif(UNIX AND NOT APPLE AND NOT CYGWIN)
-	set(OpenCV_DIR "/usr/lib/x86_64-linux-gnu/cmake/opencv4")
 	set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda")
+	#set(OpenCV_DIR "/usr/lib/x86_64-linux-gnu/cmake/opencv4")
 elseif(WIN32 AND NOT CYGWIN)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
 	set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+#	set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra -Wno-deprecated-declarations")
 	set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 	set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 #	set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG")
 #	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -DNDEBUG")
+
+	add_definitions(-DUNICODE -D_UNICODE)
+
+#	add_compile_options(-fPIC)
+#	add_compile_options(-fpermissive)
+#	add_compile_options(-Wno-strict-aliasing)
+#	add_compile_options(-Wno-unused-function)
+#	add_compile_options(-Wno-unused-variable)
+#	add_compile_options(-Wno-unused-parameter)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES Intel)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
 	set(CMAKE_CXX_FLAGS "/Wall")
+#	set(CMAKE_CXX_FLAGS "/std:c++17 /Wall")
 	set(CMAKE_CXX_FLAGS_DEBUG "/MDd /Zi /Ob0 /Od /RTC1 /D_DEBUG")
 	set(CMAKE_CXX_FLAGS_RELEASE "/MD /O2 /Ob2 /D NDEBUG")
 #	set(CMAKE_CXX_FLAGS_MINSIZEREL "/MD /O1 /Ob1 /D NDEBUG")
 #	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/MD /Zi /O2 /Ob1 /D NDEBUG")
+
+	add_definitions(/DUNICODE /D_UNICODE)
 endif()
 
 #--------------------
@@ -68,36 +81,34 @@ find_package(Threads REQUIRED)
 
 #link_directories(${Boost_LIBRARY_DIRS})
 
+#add_definitions(${OpenMP_CXX_FLAGS})
+#add_definitions(${QT_DEFINITIONS})
+
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
-	add_definitions(-DUNICODE -D_UNICODE)
-#	add_definitions(${CMAKE_CXX_FLAGS} -std=c++17 -O3 -Wall -Wno-deprecated-declarations)
-#	add_definitions(${QT_DEFINITIONS})
-
-#	add_compile_options(-fPIC)
-
 	if(OpenMP_CXX_FOUND)
 		add_compile_options(-fopenmp)
 	endif(OpenMP_CXX_FOUND)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES Intel)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
-	add_definitions(/DUNICODE /D_UNICODE)
-#	add_definitions(${CMAKE_CXX_FLAGS} /std:c++17 /O3 /Wall)
-#	add_definitions(${QT_DEFINITIONS})
-
 	if(OpenMP_CXX_FOUND)
 		add_compile_options(/fopenmp)
 	endif(OpenMP_CXX_FOUND)
 endif()
 
 #--------------------
-set(TARGET test)
+#set(TARGET test)
+set(TARGET ${CMAKE_PROJECT_NAME})  # The name of the top level project.
+#set(TARGET ${PROJECT_NAME})  # The name of the project given to the project command.
 
 set(SRCS
 	main.cpp
+	add.cpp
+	sub.cpp
 )
 set(LIBS
 #	${OpenMP_CXX_FLAGS}
+#	OpenMP::OpenMP_CXX
 #	${LOG4CXX_LIBRARIES}
 #	${ZLIB_LIBRARIES}
 #	Qt5::Core Qt5::Widgets
