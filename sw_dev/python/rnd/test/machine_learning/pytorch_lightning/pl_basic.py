@@ -257,17 +257,15 @@ def minimal_example():
 		checkpoint_callback = pl.callbacks.ModelCheckpoint(monitor="val_loss")
 		"""
 		checkpoint_callback = pl.callbacks.ModelCheckpoint(
-			dirpath="checkpoints",
-			filename="model-{epoch:03d}-{val_loss:.2f}",
-			monitor="val_loss",
-			mode="min",
+			dirpath=None,
+			filename="{epoch:03d}-{val_acc:.2f}-{val_loss:.2f}",
+			monitor="val_loss", mode="min",
 			save_top_k=3,
 		)
 		checkpoint_callback = pl.callbacks.ModelCheckpoint(
-			dirpath="checkpoints",
-			filename="model-{epoch:03d}-{val_acc:.2f}-{val_loss:.2f}",
-			monitor="val_acc",
-			mode="max",
+			dirpath=None,
+			filename="{epoch:03d}-{val_acc:.2f}-{val_loss:.2f}",
+			monitor="val_acc", mode="max",
 			save_top_k=5,
 		)
 		"""
@@ -280,7 +278,7 @@ def minimal_example():
 		#rich_model_summary_callback = pl.callbacks.RichModelSummary(max_depth=1)
 		#rich_progress_bar_callback = pl.callbacks.RichProgressBar(refresh_rate=1, leave=False, theme=RichProgressBarTheme(description="white", progress_bar="#6206E0", progress_bar_finished="#6206E0", progress_bar_pulse="#6206E0", batch_progress="white", time="grey54", processing_speed="grey70", metrics="white"), console_kwargs=None)
 		# Stochastic weight averaging (SWA).
-		#swa_callback = pl.callbacks.StochasticWeightAveraging(swa_epoch_start=0.8, swa_lrs=None, annealing_epochs=10, annealing_strategy="cos", avg_fn=None, device=torch.device)
+		#swa_callback = pl.callbacks.StochasticWeightAveraging(swa_lrs=None, swa_epoch_start=0.8, annealing_epochs=10, annealing_strategy="cos", avg_fn=None, device=None)
 		#timer_callback = pl.callbacks.Timer(duration=None, interval=Interval.step, verbose=True)
 		#tqdm_progress_bar_callback = pl.callbacks.TQDMProgressBar(refresh_rate=1, process_position=0)
 
@@ -483,8 +481,26 @@ def lenet5_mnist_example():
 
 	#--------------------
 	# Training.
+	checkpoint_callback = pl.callbacks.ModelCheckpoint(
+		dirpath=None,
+		filename="{epoch:03d}-{val_acc:.2f}-{val_loss:.2f}",
+		#monitor="val_acc", mode="max",
+		monitor="val_loss", mode="min",
+		save_top_k=-1,
+		save_weights_only=False, save_last=None,
+		every_n_epochs=None, every_n_train_steps=None, train_time_interval=None,
+	)
+	# FIXME [error] >> StochasticWeightAveraging does not work.
+	# NOTE [info] >>
+	#	StochasticWeightAveraging is in beta and subject to change.
+	#	StochasticWeightAveraging is currently not supported for multiple optimizers/schedulers.
+	#	StochasticWeightAveraging is currently only supported on every epoch.
+	#swa_callback = pl.callbacks.StochasticWeightAveraging(swa_lrs=0.01, swa_epoch_start=0.5, annealing_epochs=5, annealing_strategy="cos", avg_fn=None)
+	swa_callback = pl.callbacks.StochasticWeightAveraging(swa_lrs=0.01, swa_epoch_start=10, annealing_epochs=5, annealing_strategy="cos", avg_fn=None, device=None)
+	callbacks = [checkpoint_callback, swa_callback]
+
 	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy=None, auto_select_gpus=True, max_epochs=-1, precision=16)
-	trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=10, precision=16)
+	trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=20, precision=16, callbacks=callbacks)
 	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=10, precision=16, limit_train_batches=1.0, limit_test_batches=1.0)
 	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=10, precision=16, auto_lr_find=True)
 	# NOTE [error] >> pytorch_lightning.utilities.exceptions.MisconfigurationException: The batch scaling feature cannot be used with dataloaders passed directly to '.fit()'. Please disable the feature or incorporate the dataloader into the model.
