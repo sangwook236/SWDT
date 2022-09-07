@@ -217,6 +217,7 @@ def minimal_example():
 		#	REF [site] >> https://pytorch-lightning.readthedocs.io/en/stable/extensions/strategy.html
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, gradient_clip_val=5, gradient_clip_algorithm="norm")
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=20, gradient_clip_val=5, gradient_clip_algorithm="value")
+		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy=pl.strategies.DDPStrategy(process_group_backend="gloo", find_unused_parameters=False), auto_select_gpus=False)
 		#trainer = pl.Trainer(gpus=1, precision=16)  # FP16 mixed precision.
 		#trainer = pl.Trainer(gpus=1, precision="bf16")  # BFloat16 mixed precision.
 		#trainer = pl.Trainer(gpus=1, amp_backend="apex", amp_level="O2")  # NVIDIA APEX mixed precision.
@@ -225,11 +226,21 @@ def minimal_example():
 		#trainer = pl.Trainer(resume_from_checkpoint="/path/to/checkpoint.ckpt")  # Resume training. Deprecated.
 
 		#trainer = pl.Trainer(auto_lr_find=False, auto_scale_batch_size=False)
-		#trainer = Trainer(auto_lr_find=True)  # Runs learning rate finder, results override hparams.learning_rate.
+		#trainer = pl.Trainer(auto_lr_find=True)  # Runs learning rate finder, results override hparams.learning_rate.
 		#	Runs a learning rate finder algorithm when calling trainer.tune(), to find optimal initial learning rate.
-		#trainer = Trainer(auto_scale_batch_size=True)
-		#trainer = Trainer(auto_scale_batch_size="binsearch")  # Runs batch size scaling, result overrides hparams.batch_size.
+		#trainer = pl.Trainer(auto_scale_batch_size=True)
+		#trainer = pl.Trainer(auto_scale_batch_size="binsearch")  # Runs batch size scaling, result overrides hparams.batch_size.
 		#	Automatically tries to find the largest batch size that fits into memory, before any training.
+
+		# REF [site] >> https://pytorch-lightning.readthedocs.io/en/stable/advanced/profiler.html
+		#trainer = pl.Trainer(profiler="simple")
+		#trainer = pl.Trainer(profiler=pl.profiler.SimpleProfiler())
+		#trainer = pl.Trainer(profiler="advanced")
+		#trainer = pl.Trainer(profiler=pl.profiler.AdvancedProfiler())
+		#trainer = pl.Trainer(profiler="pytorch")
+		#trainer = pl.Trainer(profiler=pl.profiler.PyTorchProfiler())
+		#trainer = pl.Trainer(profiler="xla")
+		#trainer = pl.Trainer(profiler=pl.profiler.XLAProfiler())
 
 		# Tunes hyperparameters before training.
 		#trainer.tune(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader, datamodule=None, scale_batch_size_kwargs=None, lr_find_kwargs=None)
@@ -261,12 +272,16 @@ def minimal_example():
 			filename="{epoch:03d}-{val_acc:.2f}-{val_loss:.2f}",
 			monitor="val_loss", mode="min",
 			save_top_k=3,
+			#save_weights_only=False, save_last=None,
+			#every_n_epochs=None, every_n_train_steps=None, train_time_interval=None,
 		)
 		checkpoint_callback = pl.callbacks.ModelCheckpoint(
 			dirpath=None,
 			filename="{epoch:03d}-{val_acc:.2f}-{val_loss:.2f}",
 			monitor="val_acc", mode="max",
 			save_top_k=5,
+			#save_weights_only=False, save_last=None,
+			#every_n_epochs=None, every_n_train_steps=None, train_time_interval=None,
 		)
 		"""
 		#device_stats_callback = DeviceStatsMonitor()
@@ -291,6 +306,10 @@ def minimal_example():
 		#callbacks = [checkpoint_callback, swa_callback]
 		#callbacks = None
 
+		#plugins = [ddp_plugin]
+		#plugins = [ddp_plugin, amp_plugin]
+		plugins = None
+
 		#tensorboard_logger = pl.loggers.TensorBoardLogger(save_dir="./lightning_logs")
 		#tensorboard_logger = pl.loggers.TensorBoardLogger(save_dir="./lightning_logs", name="")
 		#tensorboard_logger = pl.loggers.TensorBoardLogger(save_dir="./lightning_logs", name="default", version=None, log_graph=False, default_hp_metric=True, prefix="")
@@ -300,16 +319,10 @@ def minimal_example():
 		#logger = tensorboard_logger
 		#logger = [tensorboard_logger, comet_logger]
 
-		#plugins = [ddp_plugin]
-		#plugins = [ddp_plugin, amp_plugin]
-		plugins = None
-
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, callbacks=None, plugins=None)
 		trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=20, callbacks=callbacks, enable_checkpointing=True)
 		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=False, plugins=plugins)
-		#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy=pl.strategies.DDPStrategy(process_group_backend="gloo", find_unused_parameters=False), auto_select_gpus=False, plugins=plugins)
-		#trainer = pl.Trainer(logger=logger, log_every_n_steps=50, profiler=None)
-		#trainer = pl.Trainer(logger=logger)
+		#trainer = pl.Trainer(logger=logger, log_every_n_steps=50)
 
 		trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 		#trainer.fit(model, datamodule=datamodule)
@@ -499,8 +512,10 @@ def lenet5_mnist_example():
 	swa_callback = pl.callbacks.StochasticWeightAveraging(swa_lrs=0.01, swa_epoch_start=10, annealing_epochs=5, annealing_strategy="cos", avg_fn=None, device=None)
 	callbacks = [checkpoint_callback, swa_callback]
 
+	profiler = "pytorch"  # {None, "simple", "advanced", "pytorch", "xla"}.
+
 	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy=None, auto_select_gpus=True, max_epochs=-1, precision=16)
-	trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=20, precision=16, callbacks=callbacks)
+	trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=20, precision=16, callbacks=callbacks, profiler=profiler)
 	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=10, precision=16, limit_train_batches=1.0, limit_test_batches=1.0)
 	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=10, precision=16, auto_lr_find=True)
 	# NOTE [error] >> pytorch_lightning.utilities.exceptions.MisconfigurationException: The batch scaling feature cannot be used with dataloaders passed directly to '.fit()'. Please disable the feature or incorporate the dataloader into the model.
