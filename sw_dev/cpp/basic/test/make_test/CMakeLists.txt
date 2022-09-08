@@ -7,7 +7,7 @@
 #		cd ..
 #		cmake --build ./build --config Release --target all -j 14 --
 #	Run:
-#		./build/test
+#		./build/my_cpp_test
 
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(my_cpp_test VERSION 0.1.0)
@@ -18,7 +18,9 @@ project(my_cpp_test VERSION 0.1.0)
 if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE Release)
 endif()
-#set(CMAKE_CXX_STANDARD 17)
+if(NOT CMAKE_CXX_STANDARD)
+	set(CMAKE_CXX_STANDARD 17)
+endif()
 #set(CMAKE_DEBUG_POSTFIX d)
 
 if(APPLE)
@@ -26,7 +28,7 @@ elseif(CYGWIN)
 elseif(MSYS OR MINGW)
 elseif(UNIX AND NOT APPLE AND NOT CYGWIN)
 	set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda")
-	#set(OpenCV_DIR "/usr/lib/x86_64-linux-gnu/cmake/opencv4")
+#	set(OpenCV_DIR "/usr/lib/x86_64-linux-gnu/cmake/opencv4")
 elseif(WIN32 AND NOT CYGWIN)
 endif()
 

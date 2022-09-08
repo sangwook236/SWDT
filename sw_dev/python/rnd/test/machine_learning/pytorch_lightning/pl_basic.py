@@ -2156,6 +2156,10 @@ def inception_resnet_densenet_tutorial():
 		)
 	)
 
+# REF [site] >> https://pytorch-lightning.readthedocs.io/en/stable/cli/lightning_cli_intermediate.html
+def lightning_cli_example():
+	raise NotImplementedError
+
 def main():
 	#minimal_example()
 
@@ -2164,6 +2168,8 @@ def main():
 
 	#initalization_and_optimization_tutorial()
 	#inception_resnet_densenet_tutorial()
+
+	lightning_cli_example()  # Not yet implemented.
 
 #--------------------------------------------------------------------
 
