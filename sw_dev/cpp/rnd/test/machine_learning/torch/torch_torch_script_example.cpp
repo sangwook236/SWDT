@@ -1,4 +1,5 @@
 #include <memory>
+#include <chrono>
 #include <vector>
 #include <iostream>
 #include <torch/script.h>
@@ -19,7 +20,8 @@ namespace my_torch {
 void torch_script_example()
 {
 	const torch::DeviceIndex gpu = -1;
-	const auto device(torch::cuda::is_available() ? torch::Device(torch::kCUDA, gpu) : torch::Device(torch::kCPU));
+	//const auto device(torch::cuda::is_available() ? torch::Device(torch::kCUDA, gpu) : torch::Device(torch::kCPU));
+	const auto device(torch::hasCUDA() ? torch::Device(torch::kCUDA, gpu) : torch::Device(torch::kCPU));
 	std::cout << (device.is_cuda() ? "Device: CUDA." : "Device: CPU.") << std::endl;
 
 	//--------------------
@@ -29,6 +31,8 @@ void torch_script_example()
 	const std::string script_module_filepath("./resnet_ts_model.pth");
 	const std::vector<int64_t> input_shape = {1, 3, 224, 224};
 
+	std::cout << "Loading a model from " << script_module_filepath << "..." << std::endl;
+	auto start_time = std::chrono::steady_clock::now();
 	torch::jit::script::Module script_module;
 	try
 	{
@@ -40,7 +44,7 @@ void torch_script_example()
 		std::cerr << "Error: Script module not loaded, " << script_module_filepath << ": " << ex.what() << std::endl;
 		return;
 	}
-	std::cout << "Info: A script module loaded from " << script_module_filepath << ": " << std::endl;
+	std::cout << "A model loaded: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
 
 	if (device.is_cuda())
 		script_module.to(device);
@@ -48,6 +52,8 @@ void torch_script_example()
 	//--------------------
 	// Execute the script module in C++.
 
+	std::cout << "Inferring..." << std::endl;
+	start_time = std::chrono::steady_clock::now();
 	// Create a vector of inputs.
 	std::vector<torch::jit::IValue> inputs;
 	if (device.is_cuda())
@@ -59,7 +65,8 @@ void torch_script_example()
 	at::Tensor output = script_module.forward(inputs).toTensor();
 	if (device.is_cuda())
 		output = output.to(at::kCPU);
-	std::cout << output.slice(/*dim=*/1, /*start=*/0, /*end=*/5) << std::endl;
+	std::cout << "Inferred: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start_time).count() << " msec." << std::endl;
+	std::cout << "Output = " << output.slice(/*dim=*/1, /*start=*/0, /*end=*/5) << std::endl;
 }
 
 }  // namespace my_torch

@@ -37,6 +37,8 @@ int main(int argc, char *argv[])
 	int rl_glue_main(int argc, char *argv[]);
 	int rllib_main(int argc, char *argv[]);
 
+	int onnx_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
@@ -73,7 +75,7 @@ int main(int argc, char *argv[])
 		std::cout << "\nranger library ------------------------------------------------------" << std::endl;
 		//	- Random forest (RF).
 		//		Classification, regression, survival.
-		retval = ranger_main(argc, argv);
+		//retval = ranger_main(argc, argv);
 
 		std::cout << "\ndlib-ml library -----------------------------------------------------" << std::endl;
 		//	- Support vector machines (SVM).
@@ -187,7 +189,7 @@ int main(int argc, char *argv[])
 		//retval = manifold_learning_main(argc, argv);  // Not yet implemented.
 		//retval = manifold_alignment_main(argc, argv);
 
-		std::cout << "\nlibgp library ------------------------------------------------------" << std::endl;
+		std::cout << "\nlibgp library -------------------------------------------------------" << std::endl;
 		//	- Gaussian process (GP).
 		//retval = libgp_main(argc, argv);
 
@@ -198,8 +200,11 @@ int main(int argc, char *argv[])
 		std::cout << "\nRLlib library -------------------------------------------------------" << std::endl;
 		//	- Reinforcement learning (RL).
 		//retval = rllib_main(argc, argv);
+
+		std::cout << "\nONNX library --------------------------------------------------------" << std::endl;
+		retval = onnx_main(argc, argv);
 	}
-    catch (const std::bad_alloc &ex)
+	catch (const std::bad_alloc &ex)
 	{
 		std::cout << "std::bad_alloc caught: " << ex.what() << std::endl;
 		retval = EXIT_FAILURE;
