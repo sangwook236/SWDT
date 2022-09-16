@@ -11,7 +11,7 @@
 	https://github.com/microsoft/onnxruntime-inference-examples
 	https://github.com/microsoft/onnxruntime-training-examples
 
-[-] Installation.
+[-] Installation (Python).
 	- Install.
 		conda create --name onnx python=3 numpy scipy matplotlib pillow opencv
 		conda activate onnx
@@ -28,3 +28,27 @@
 		pip install tf2onnx
 		pip install skl2onnx
 			sklearn library.
+
+	- Install ONNX Runtime.
+		https://onnxruntime.ai/docs/install/
+
+[-] Installation (C++).
+	https://onnxruntime.ai/docs/install/
+	https://onnxruntime.ai/docs/build/
+	https://onnxruntime.ai/docs/build/inferencing.html
+	https://onnxruntime.ai/docs/build/training.html
+
+	- Install ONNX Runtime.
+		git clone https://github.com/microsoft/onnxruntime
+
+		wget -O onnx_archive.nupkg https://www.nuget.org/api/v2/package/Microsoft.ML.OnnxRuntime.Gpu/1.12.1
+			https://www.nuget.org/packages/Microsoft.ML.OnnxRuntime.Gpu
+		unzip onnx_archive.nupkg
+			build/native/include
+			runtimes/linux-x64/native/libonnxruntime.so
+			runtimes/win-x64/native/onnxruntime.dll & onnxruntime.lib
+
+		sudo cp -r build/native/include /usr/local/include/onnxruntime
+		sudo cp runtimes/linux-x64/native/libonnxruntime.so /usr/local/lib
+
+		(Optional) ln -s /usr/local/lib/libonnxruntime.so /usr/local/lib/libonnxruntime.so.1.12.1

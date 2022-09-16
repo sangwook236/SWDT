@@ -12,8 +12,8 @@
 	- Data parallelism.
 		https://pytorch.org/tutorials/intermediate/ddp_tutorial.html
 
-[-] Installation (Ubuntu).
-	- Install.
+[-] Installation.
+	- Install (Python).
 		https://varhowto.com/install-pytorch-ubuntu-20-04/
 
 		Using conda:
@@ -46,7 +46,16 @@
 			#pip install torch==1.8.0.dev20210103+cu110 torchvision==0.9.0.dev20210103 -f https://download.pytorch.org/whl/nightly/cu110/torch_nightly.html
 			pip install imgaug trdg OpenNMT-py pdfminer pdf2image
 
-	- Install PyTorch Lightning and Lightning Bolts.
+	- Install LibTorch (C++).
+		Download a zip file from https://pytorch.org/.
+		Uncompress the zip file.
+			libtorch/bin
+			libtorch/include
+			libtorch/lib
+			libtorch/share
+
+[-] Installation (PyTorch Lightning and Lightning Bolts).
+	- Install.
 		https://github.com/PyTorchLightning/pytorch-lightning
 		https://github.com/PyTorchLightning/lightning-bolts
 
@@ -60,5 +69,6 @@
 		conda install opencv -c conda-forge
 		pip install pytorch-lightning lightning-bolts
 
-	- Install PyTorch Geometric (PyG).
+[-] Installation (PyTorch Geometric, PyG).
+	- Install.
 		Refer to pytorch_geometric_usage_guide.txt
