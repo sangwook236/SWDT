@@ -4,13 +4,13 @@
 from __future__ import print_function, division
 import os, math, time
 import numpy as np
+import pandas as pd
 import torch
 from torch.utils.data import Dataset, DataLoader
 import torchvision
-import pandas as pd
 import skimage
-import matplotlib.pyplot as plt
 import PIL.Image
+import matplotlib.pyplot as plt
 
 # Ignore warnings.
 import warnings
@@ -852,10 +852,142 @@ def data_processing():
 	hymenoptera_dataset = torchvision.datasets.ImageFolder(root='data/hymenoptera_data/train', transform=data_transform)
 	dataset_loader = torch.utils.data.DataLoader(hymenoptera_dataset, batch_size=4, shuffle=True, num_workers=4)
 
+# REF [site] >>
+#	https://pytorch.org/vision/main/transforms.html
+#	https://pytorch.org/vision/main/auto_examples/plot_transforms.html
+def transform_test():
+	def plot(img, imgs, with_orig=True, title=None, row_title=None, **imshow_kwargs):
+		if not isinstance(imgs[0], list):
+			# Make a 2d grid even if there's just 1 row.
+			imgs = [imgs]
+
+		num_rows = len(imgs)
+		num_cols = len(imgs[0]) + with_orig
+		fig, axs = plt.subplots(nrows=num_rows, ncols=num_cols, squeeze=False)
+		for row_idx, row in enumerate(imgs):
+			row = [img] + row if with_orig else row
+			for col_idx, img in enumerate(row):
+				ax = axs[row_idx, col_idx]
+				ax.imshow(np.asarray(img), **imshow_kwargs)
+				ax.set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
+
+		if with_orig:
+			axs[0, 0].set(title='Original image')
+			axs[0, 0].title.set_size(8)
+		if row_title is not None:
+			for row_idx in range(num_rows):
+				axs[row_idx, 0].set(ylabel=row_title[row_idx])
+
+		if title is not None:
+			plt.suptitle(title)
+		plt.tight_layout()
+
+	img = PIL.Image.open('./astronaut.jpg')
+
+	padded_imgs = [torchvision.transforms.Pad(padding=padding)(img) for padding in (3, 10, 30, 50)]
+	plot(img, padded_imgs, title='Pad')
+
+	resized_imgs = [torchvision.transforms.Resize(size=size)(img) for size in (30, 50, 100, img.size)]
+	plot(img, resized_imgs, title='Resize')
+
+	center_crops = [torchvision.transforms.CenterCrop(size=size)(img) for size in (30, 50, 100, img.size)]
+	plot(img, center_crops, title='CenterCrop')
+
+	(top_left, top_right, bottom_left, bottom_right, center) = torchvision.transforms.FiveCrop(size=(100, 100))(img)
+	plot(img, [top_left, top_right, bottom_left, bottom_right, center], title='FiveCrop')
+
+	gray_img = torchvision.transforms.Grayscale()(img)
+	plot(img, [gray_img], title='Grayscale', cmap='gray')
+
+	jitter = torchvision.transforms.ColorJitter(brightness=.5, hue=.3)
+	jitted_imgs = [jitter(img) for _ in range(4)]
+	plot(img, jitted_imgs, title='ColorJitter')
+
+	blurrer = torchvision.transforms.GaussianBlur(kernel_size=(5, 9), sigma=(0.1, 5))
+	blurred_imgs = [blurrer(img) for _ in range(4)]
+	plot(img, blurred_imgs, title='GaussianBlur')
+
+	perspective_transformer = torchvision.transforms.RandomPerspective(distortion_scale=0.6, p=1.0)
+	perspective_imgs = [perspective_transformer(img) for _ in range(4)]
+	plot(img, perspective_imgs, title='RandomPerspective')
+
+	rotater = torchvision.transforms.RandomRotation(degrees=(0, 180))
+	rotated_imgs = [rotater(img) for _ in range(4)]
+	plot(img, rotated_imgs, title='RandomRotation')
+
+	affine_transfomer = torchvision.transforms.RandomAffine(degrees=(30, 70), translate=(0.1, 0.3), scale=(0.5, 0.75))
+	affine_imgs = [affine_transfomer(img) for _ in range(4)]
+	plot(img, affine_imgs, title='RandomAffine')
+
+	'''
+	elastic_transformer = torchvision.transforms.ElasticTransform(alpha=250.0)
+	transformed_imgs = [elastic_transformer(img) for _ in range(2)]
+	plot(img, transformed_imgs, title='Pad')
+	'''
+
+	cropper = torchvision.transforms.RandomCrop(size=(128, 128))
+	crops = [cropper(img) for _ in range(4)]
+	plot(img, crops, title='RandomCrop')
+
+	resize_cropper = torchvision.transforms.RandomResizedCrop(size=(32, 32))
+	resized_crops = [resize_cropper(img) for _ in range(4)]
+	plot(img, resized_crops, title='RandomResizedCrop')
+
+	inverter = torchvision.transforms.RandomInvert()
+	invertered_imgs = [inverter(img) for _ in range(4)]
+	plot(img, invertered_imgs, title='RandomInvert')
+
+	posterizer = torchvision.transforms.RandomPosterize(bits=2)
+	posterized_imgs = [posterizer(img) for _ in range(4)]
+	plot(img, posterized_imgs, title='RandomPosterize')
+
+	solarizer = torchvision.transforms.RandomSolarize(threshold=192.0)
+	solarized_imgs = [solarizer(img) for _ in range(4)]
+	plot(img, solarized_imgs, title='RandomSolarize')
+
+	sharpness_adjuster = torchvision.transforms.RandomAdjustSharpness(sharpness_factor=2)
+	sharpened_imgs = [sharpness_adjuster(img) for _ in range(4)]
+	plot(img, sharpened_imgs, title='RandomAdjustSharpness')
+
+	autocontraster = torchvision.transforms.RandomAutocontrast()
+	autocontrasted_imgs = [autocontraster(img) for _ in range(4)]
+	plot(img, autocontrasted_imgs, title='RandomAutocontrast')
+
+	equalizer = torchvision.transforms.RandomEqualize()
+	equalized_imgs = [equalizer(img) for _ in range(4)]
+	plot(img, equalized_imgs, title='RandomEqualize')
+
+	#--------------------
+	#augmenter = torchvision.transforms.AutoAugment(policy=torchvision.transforms.autoaugment.AutoAugmentPolicy.IMAGENET, interpolation=torchvision.transforms.InterpolationMode.NEAREST, fill=None)
+	policies = [torchvision.transforms.AutoAugmentPolicy.CIFAR10, torchvision.transforms.AutoAugmentPolicy.IMAGENET, torchvision.transforms.AutoAugmentPolicy.SVHN]
+	augmenters = [torchvision.transforms.AutoAugment(policy) for policy in policies]
+	imgs = [[augmenter(img) for _ in range(4)] for augmenter in augmenters]
+	row_title = [str(policy).split('.')[-1] for policy in policies]
+	plot(img, imgs, title='AutoAugment', row_title=row_title)
+
+	#augmenter = torchvision.transforms.RandAugment(num_ops=2, magnitude=9, num_magnitude_bins=31, interpolation=torchvision.transforms.InterpolationMode.NEAREST, fill=None)
+	augmenter = torchvision.transforms.RandAugment()
+	imgs = [augmenter(img) for _ in range(4)]
+	plot(img, imgs, title='RandAugment')
+
+	#augmenter = torchvision.transforms.TrivialAugmentWide(num_magnitude_bins=31, interpolation=torchvision.transforms.InterpolationMode.NEAREST, fill=None)
+	augmenter = torchvision.transforms.TrivialAugmentWide()
+	imgs = [augmenter(img) for _ in range(4)]
+	plot(img, imgs, title='TrivialAugmentWide')
+
+	'''
+	#augmenter = torchvision.transforms.AugMix(severity=3, mixture_width=3, chain_depth=-1, alpha=1.0, all_ops=True, interpolation=InterpolationMode.BILINEAR, fill=None)
+	augmenter = torchvision.transforms.AugMix()
+	imgs = [augmenter(img) for _ in range(4)]
+	plot(img, imgs, title='AugMix')
+	'''
+
+	plt.show()
+
 def main():
 	#return_none_dataset_test()
 
-	dataset_test()
+	#dataset_test()
 	#iterable_dataset_test()
 
 	#--------------------
@@ -868,7 +1000,10 @@ def main():
 	#dataset_example()
 	#dataset_with_data_processing_example()
 
+	#--------------------
 	#data_processing()
+
+	transform_test()  # Transforms & automatic augmentation transforms.
 
 #--------------------------------------------------------------------
 
