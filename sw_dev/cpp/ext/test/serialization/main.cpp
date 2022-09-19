@@ -28,23 +28,23 @@ int main(int argc, char *argv[])
 		std::cout << "\nProtocol Buffers library --------------------------------------------" << std::endl;
 		//retval = protobuf_main(argc, argv);
 	}
-    catch (const std::bad_alloc &e)
+    catch (const std::bad_alloc &ex)
 	{
-		std::cout << "std::bad_alloc caught: " << e.what() << std::endl;
+		std::cerr << "std::bad_alloc caught: " << ex.what() << std::endl;
 		retval = EXIT_FAILURE;
 	}
-	catch (const std::exception &e)
+	catch (const std::exception &ex)
 	{
-		std::cout << "std::exception caught: " << e.what() << std::endl;
+		std::cerr << "std::exception caught: " << ex.what() << std::endl;
 		retval = EXIT_FAILURE;
 	}
 	catch (...)
 	{
-		std::cout << "Unknown exception caught" << std::endl;
+		std::cerr << "Unknown exception caught" << std::endl;
 		retval = EXIT_FAILURE;
 	}
 
-	std::cout << "Press any key to exit ..." << std::endl;
+	std::cout << "Press any key to exit..." << std::endl;
 	std::cin.get();
 
 	return retval;

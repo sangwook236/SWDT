@@ -1,0 +1,31 @@
+# Configuration for Outlier Exposure.
+
+model_name: oe
+stage: inference
+
+data:
+  data_dirs:
+    #- C:/TEMP/220804-AI 데이터(OK)  # 73371 (OK).
+    #- C:/TEMP/220804-AI 데이터(NG)  # 3996 (NG).
+    - C:/TEMP/220804_ai_ok_test  # 10000 (OK).
+    - C:/TEMP/220804_ai_ng_test  # 597 (NG).
+  image_shape: [176, 1024, 1]  # (height, width, channel).
+  #image_roi: [0, 0, 200, 176]  # (x1, y1, x2, y2). Order: [0, 50 / 0.25(DX)]. RPM: [0, 176]. [pixel].
+  image_roi: [0, 5, 200, 171]  # (x1, y1, x2, y2). Order: [0, 50 / 0.25(DX)]. RPM: [100 / 20(DZ), 176 - 100 / 20(DZ)]. [pixel].
+  #num_classes: 2  # [NG, OK].
+  #outlier_id: 0  # NG.
+  is_image_preloaded: false
+
+  batch_size: 1024
+  num_workers: 8
+
+  transforms:
+    to_tensor:
+    #resize_to_fixed_size:
+    #  height: 224
+    #  width: 224
+    #  input_type: torch
+    #to_rgb:
+    #  input_type: torch
+
+model:
