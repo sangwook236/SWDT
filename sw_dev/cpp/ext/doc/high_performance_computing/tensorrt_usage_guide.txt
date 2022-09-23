@@ -4,6 +4,8 @@
 
 		https://github.com/NVIDIA/TensorRT
 		https://github.com/NVIDIA/TRTorch
+		https://pytorch.org/TensorRT/
+		https://github.com/pytorch/TensorRT
 
 		https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html
 		https://docs.nvidia.com/deeplearning/frameworks/tf-trt-user-guide/index.html
@@ -21,6 +23,10 @@
 	- TRTorch.
 		https://github.com/NVIDIA/TRTorch/blob/master/notebooks/Resnet50-example.ipynb
 			${SWDT_PYTHON_HOME}/ext/test/high_performance_computing/tensorrt_test.py
+
+	- Torch-TensorRT.
+		https://github.com/pytorch/TensorRT/tree/master/examples/fx
+			${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_tensorrt.py
 
 [-] Installation (TensorRT).
 	- Install CUDA and cuDNN.
@@ -135,11 +141,50 @@
 					${TRT_RELEASE}/targets/x86_64-linux-gnu/lib
 					${TRT_RELEASE}/targets/x86_64-linux-gnu/bin
 
+		Using deb:
+			https://docs.nvidia.com/deeplearning/tensorrt/install-guide/index.html
+
+			Download the TensorRT local repo file.
+				https://developer.nvidia.com/tensorrt
+				https://developer.nvidia.com/nvidia-tensorrt-download
+
+			Install TensorRT from the Debian local repo package.
+				os="ubuntuxx04"
+				tag="cudax.x-trt8.x.x.x-ga-yyyymmdd"
+				sudo dpkg -i nv-tensorrt-repo-${os}-${tag}_amd64.deb
+					All deb files are in /var/nv-tensorrt-repo-${os}-${tag}.
+
+					sudo dpkg -i nv-tensorrt-repo-ubuntu2004-cuda11.6-trt8.4.3.1-ga-20220813_1-1_amd64.deb
+					ls /var/nv-tensorrt-repo-ubuntu2004-cuda11.6-trt8.4.3.1-ga-20220813/
+				sudo apt-key add /var/nv-tensorrt-repo-${os}-${tag}/*.pub
+					sudo apt-key add /var/nv-tensorrt-repo-ubuntu2004-cuda11.6-trt8.4.3.1-ga-20220813/c1c4ee19.pub
+					sudo apt-key add /var/nv-tensorrt-repo-ubuntu2004-cuda11.6-trt8.4.3.1-ga-20220813/*.pub
+
+				sudo apt update
+				sudo apt install tensorrt
+					sudo dpkg -i /var/nv-tensorrt-repo-ubuntu2004-cuda11.6-trt8.4.3.1-ga-20220813/tensorrt_8.4.3.1-1+cuda11.6_amd64.deb
+
+				If using Python 3.x:
+					pip install numpy
+					sudo apt install python3-libnvinfer-dev
+
+				If you plan to use TensorRT with TensorFlow:
+					pip install protobuf
+					sudo apt install uff-converter-tf
+
+				If you would like to run the samples that require ONNX graphsurgeon or use the Python module for your own project:
+					pip install numpy onnx
+					sudo apt install onnx-graphsurgeon
+
+				Verify the installation.
+					dpkg -l | grep TensorRT
+
 		Using apt:
 			For only running TensorRT C++ applications:
 				apt -y install libnvinfer7 libnvonnxparsers7 libnvparsers7 libnvinfer-plugin7
 			For also building TensorRT C++ applications:
 				apt -y install libnvinfer-dev libnvonnxparsers-dev libnvparsers-dev libnvinfer-plugin-dev
+				apt -y install libnvinfer-dev=8.4.3-1+cuda11.6 libnvinfer-plugin-dev=8.4.3-1+cuda11.6
 			For running TensorRT Python applications:
 				apt -y install python-libnvinfer python3-libnvinfer
 
@@ -149,12 +194,6 @@
 				apt-mark hold libnvinfer7 libnvonnxparsers7 libnvparsers7 libnvinfer-plugin7 libnvinfer-dev libnvonnxparsers-dev libnvparsers-dev libnvinfer-plugin-dev python-libnvinfer python3-libnvinfer
 			Upgrade to the latest version of TensorRT or the latest version of CUDA:
 				apt-mark unhold libnvinfer7 libnvonnxparsers7 libnvparsers7 libnvinfer-plugin7 libnvinfer-dev libnvonnxparsers-dev libnvparsers-dev libnvinfer-plugin-dev python-libnvinfer python3-libnvinfer
-
-		Using deb:
-			Download from https://developer.nvidia.com/tensorrt
-
-			dpkg -i nv-tensorrt-repo-ubuntu1804-cuda11.0-trt7.1.3.4-ga-20200617_1-1_amd64.deb
-				Not working.
 
 		Check TensorRT.
 			dpkg -l | grep nvinfer
@@ -393,3 +432,24 @@
 
 		docker run --gpus all -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_cuda_trtorch sangwook/cuda_trtorch:latest python3 -c "import tensorrt, trtorch"
 		NV_GPU=0 nvidia-docker run -it --rm -v ~:/workspace/sangwook --shm-size 16G --name my_cuda_trtorch sangwook/cuda_trtorch:latest python3 -c "import tensorrt, trtorch"
+
+[-] Installation (Torch-TensorRT).
+	https://pytorch.org/TensorRT/getting_started/installation.html
+
+	- Dependencies.
+		Refer to "Installation (TensorRT)".
+
+		PyTorch (Python) or LibTorch (C++).
+			https://www.pytorch.org
+		CUDA, cuDNN and TensorRT.
+			https://developer.nvidia.com/cuda
+			https://developer.nvidia.com/cudnn
+			https://developer.nvidia.com/tensorrt
+
+	- Python packages.
+		pip install nvidia-pyindex
+		pip install nvidia-tensorrt
+		pip install torch-tensorrt -f https://github.com/NVIDIA/Torch-TensorRT/releases
+
+	- C++ binary distribution.
+		https://github.com/pytorch/TensorRT/releases

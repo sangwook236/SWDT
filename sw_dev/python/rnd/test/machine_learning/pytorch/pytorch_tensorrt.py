@@ -5,13 +5,135 @@
 #	https://pytorch.org/TensorRT/
 #	https://github.com/pytorch/TensorRT
 
-import time
+import copy, time
 import numpy as np
 import torch, torchvision
 import torch_tensorrt
 
+# REF [site] >> https://pytorch.org/TensorRT/getting_started/getting_started_with_python_api.html
+def getting_started():
+	class MyModel(torch.nn.Module):
+		def __init__(self):
+			super().__init__()
+
+			# 1 input image channel, 6 output channels, 3x3 square convolution kernel.
+			self.conv1 = torch.nn.Conv2d(1, 6, 3)
+			self.conv2 = torch.nn.Conv2d(6, 16, 3)
+			# An affine operation: y = Wx + b.
+			self.fc1 = torch.nn.Linear(16 * 6 * 6, 120)  # For 32x32 input.
+			self.fc2 = torch.nn.Linear(120, 84)
+			self.fc3 = torch.nn.Linear(84, 10)
+
+		def forward(self, x):
+			# Max pooling over a (2, 2) window.
+			x = torch.nn.functional.max_pool2d(torch.nn.functional.relu(self.conv1(x)), (2, 2))
+			# If the size is a square you can only specify a single number.
+			x = torch.nn.functional.max_pool2d(torch.nn.functional.relu(self.conv2(x)), 2)
+			x = x.view(-1, self.num_flat_features(x))
+			x = torch.nn.functional.relu(self.fc1(x))
+			x = torch.nn.functional.relu(self.fc2(x))
+			x = self.fc3(x)
+			return x
+
+		def num_flat_features(self, x):
+			size = x.size()[1:]  # All dimensions except the batch dimension.
+			num_features = 1
+			for s in size:
+				num_features *= s
+			return num_features
+
+	input_data = torch.ones((32, 1, 32, 32))
+
+	#--------------------
+	# Torch module needs to be in eval (not training) mode.
+	model = MyModel().eval()
+
+	inputs = [
+		torch_tensorrt.Input(
+			min_shape=[1, 1, 16, 16],
+			opt_shape=[1, 1, 32, 32],
+			max_shape=[1, 1, 64, 64],
+			dtype=torch.half,
+		)
+	]
+	enabled_precisions = {torch.float, torch.half}  # Run with fp16.
+
+	trt_ts_module = torch_tensorrt.compile(model, inputs=inputs, enabled_precisions=enabled_precisions)
+
+	input_data = input_data.to("cuda").half()
+	result = trt_ts_module(input_data)
+	print("Result: shape = {}, dtype = {}, (min, max) = ({}, {}).".format(result.shape, result.dtype, torch.min(result), torch.max(result)))
+
+	torch.jit.save(trt_ts_module, "./trt_ts_module.ts")
+
+	#--------------------
+	# Deployment application.
+	trt_ts_module = torch.jit.load("./trt_ts_module.ts")
+
+	input_data = input_data.to("cuda").half()
+	result = trt_ts_module(input_data)
+	print("Result: shape = {}, dtype = {}, (min, max) = ({}, {}).".format(result.shape, result.dtype, torch.min(result), torch.max(result)))
+
+# REF [site] >> https://github.com/pytorch/TensorRT/blob/master/examples/fx/torch_trt_simple_example.py
+def torch_trt_simple_example():
+	# Torch module needs to be in eval (not training) mode.
+	model = torchvision.models.resnet18(pretrained=True).cuda().eval()
+	inputs = [torch.ones((32, 3, 224, 224), device=torch.device("cuda"))]  # type: ignore[attr-defined].
+
+	#--------------------
+	# TorchScript path.
+	model_ts = copy.deepcopy(model)
+	inputs_ts = copy.deepcopy(inputs)
+
+	# fp32 test.
+	with torch.inference_mode():
+		ref_fp32 = model_ts(*inputs_ts)
+
+	trt_ts_module = torch_tensorrt.compile(model_ts, inputs=inputs_ts, enabled_precisions={torch.float32})
+	result_fp32 = trt_ts_module(*inputs_ts)
+
+	assert torch.nn.functional.cosine_similarity(ref_fp32.flatten(), result_fp32.flatten(), dim=0) > 0.9999
+
+	# fp16 test.
+	model_ts = model_ts.half()
+	inputs_ts = [i.cuda().half() for i in inputs_ts]
+
+	with torch.inference_mode():
+		ref_fp16 = model_ts(*inputs_ts)
+
+	trt_ts_module = torch_tensorrt.compile(model_ts, inputs=inputs_ts, enabled_precisions={torch.float16})
+	result_fp16 = trt_ts_module(*inputs_ts)
+
+	assert torch.nn.functional.cosine_similarity(ref_fp16.flatten(), result_fp16.flatten(), dim=0) > 0.99
+
+	#--------------------
+	# FX path.
+	model_fx = copy.deepcopy(model)
+	inputs_fx = copy.deepcopy(inputs)
+
+	# fp32 test.
+	with torch.inference_mode():
+		ref_fp32 = model_fx(*inputs_fx)
+
+	trt_fx_module = torch_tensorrt.compile(model_fx, ir="fx", inputs=inputs_fx, enabled_precisions={torch.float32})
+	result_fp32 = trt_fx_module(*inputs_fx)
+
+	assert torch.nn.functional.cosine_similarity(ref_fp32.flatten(), result_fp32.flatten(), dim=0) > 0.9999
+
+	# fp16 test.
+	model_fx = model_fx.cuda().half()
+	inputs_fx = [i.cuda().half() for i in inputs_fx]
+
+	with torch.inference_mode():
+		ref_fp16 = model_fx(*inputs_fx)
+
+	trt_fx_module = torch_tensorrt.compile(model_fx, ir="fx", inputs=inputs_fx, enabled_precisions={torch.float16})
+	result_fp16 = trt_fx_module(*inputs_fx)
+
+	assert torch.nn.functional.cosine_similarity(ref_fp16.flatten(), result_fp16.flatten(), dim=0) > 0.99
+
 # REF [site] >> https://developer.nvidia.com/blog/accelerating-inference-up-to-6x-faster-in-pytorch-with-torch-tensorrt/
-def basic_example():
+def accelerating_inference_example():
 	torch.backends.cudnn.benchmark = True
 
 	def benchmark(model, input_shape=(1024, 3, 512, 512), dtype="fp32", nwarmup=50, nruns=1000, device="cuda"):
@@ -101,14 +223,14 @@ def basic_example():
 def main():
 	# REF [file] >> ./pytorch_torch_script.py
 
-	basic_example()  # Not yet tested.
+	#getting_started()  # Not yet tested.
+	torch_trt_simple_example()  # Not yet tested.
+	#accelerating_inference_example()  # Not yet tested.
 
 #--------------------------------------------------------------------
 
 # Install:
-#	apt search libnvinfer
-#	sudo apt install libnvinfer-dev=8.2.4-1+cuda11.6 libnvinfer-plugin-dev=8.2.4-1+cuda11.6
-#	pip install torch-tensorrt -f https://github.com/pytorch/TensorRT/releases
+#	Refer to tensorrt_usage_guide.txt
 
 if "__main__" == __name__:
 	main()

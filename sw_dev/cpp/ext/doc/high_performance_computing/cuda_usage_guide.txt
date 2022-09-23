@@ -7,6 +7,10 @@
 	- Tutorial.
 		http://www.vizworld.com/2009/06/isc-2009-cuda-tutorial-from-nvidia/
 
+	- Directory.
+		/usr/local/cuda/targets/x86_64-linux/include
+		/usr/local/cuda/targets/x86_64-linux/lib
+
 [-] Usage.
 	- CUDA toolkit version.
 		nvcc --version
