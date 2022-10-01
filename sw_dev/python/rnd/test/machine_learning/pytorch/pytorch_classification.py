@@ -30,6 +30,41 @@ class Net(nn.Module):
 		x = self.fc3(x)
 		return x
 
+class MyNet(nn.Module):
+	def __init__(self):
+		super(MyNet, self).__init__()
+
+		self.pool = nn.MaxPool2d(2, 2)
+		self.conv1 = nn.Conv2d(3, 6, 5)
+		self.batchnorm21 = nn.BatchNorm2d(6, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)  # Input: (batch size, channel, height, width).
+		self.conv2 = nn.Conv2d(6, 16, 5)
+		self.batchnorm22 = nn.BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)  # Input: (batch size, channel, height, width).
+		self.fc1 = nn.Linear(16 * 5 * 5, 120)  # For 28x28 input.
+		self.batchnorm11 = nn.BatchNorm1d(120, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)  # Input: (batch size, feature dim) or (batch size, feature dim, time-steps).
+		self.fc2 = nn.Linear(120, 84)
+		self.batchnorm12 = nn.BatchNorm1d(84, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)  # Input: (batch size, feature dim) or (batch size, feature dim, time-steps).
+		self.fc3 = nn.Linear(84, 10)
+
+	def forward(self, x):
+		"""
+		x = self.pool(F.dropout(F.relu(self.batchnorm21(self.conv1(x)))))
+		x = self.pool(F.dropout(F.relu(self.batchnorm22(self.conv2(x)))))
+		x = x.view(-1, 16 * 5 * 5)
+		x = F.dropout(F.relu(self.batchnorm11(self.fc1(x))))
+		x = F.dropout(F.relu(self.batchnorm12(self.fc2(x))))
+		x = self.fc3(x)
+		#x = F.log_softmax(self.fc3(x), dim=-1)
+		return x
+		"""
+		x = self.pool(F.relu(self.batchnorm21(self.conv1(x))))
+		x = self.pool(F.relu(self.batchnorm22(self.conv2(x))))
+		x = x.view(-1, 16 * 5 * 5)
+		x = F.relu(self.batchnorm11(self.fc1(x)))
+		x = F.relu(self.batchnorm12(self.fc2(x)))
+		x = self.fc3(x)
+		#x = F.log_softmax(self.fc3(x), dim=-1)
+		return x
+
 # REF [site] >> https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html
 def cifar10_on_cpu():
 	batch_size, num_epochs = 4, 2
@@ -63,7 +98,8 @@ def cifar10_on_cpu():
 	#--------------------
 	# Define a Convolutional Neural Network.
 
-	net = Net()
+	#net = Net()
+	net = MyNet()
 
 	print('Model is on {}.'.format(next(net.parameters()).device))
 
@@ -178,11 +214,12 @@ def cifar10_on_gpu():
 	#--------------------
 	# Define a Convolutional Neural Network.
 
-	device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 	# Assuming that we are on a CUDA machine, this should print a CUDA device.
 	print('Device: {}.'.format(device))
 
 	net = Net()
+	#net = MyNet()
 	net.to(device)
 
 	print('Model is on {}.'.format(next(net.parameters()).device))
