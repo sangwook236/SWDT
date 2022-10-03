@@ -66,6 +66,8 @@
 					- numpy=1.9.*
 					- pandas
 			Refer to "Export the environment.yml file".
+		conda create --name ENV_NAME --file requirements.txt
+			conda list -e > requirements.txt
 	- Clone an environment.
 		conda create --name NEW_ENV_NAME --clone EXISTING_ENV_NAME
 	- Remove an environment.
@@ -102,3 +104,5 @@
 		conda env export --from-history > environment.yml
 	- Create an environment file manually.
 		https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
+	- Export the requirements.txt file.
+		conda list -e > requirements.txt

@@ -17,6 +17,7 @@
 		pip install --user PACKAGE_NAME
 		pip install PACKAGE_NAME -f HTML_URL
 		pip install -r requirements.txt
+			pip install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html
 		pip install --download DIR_NAME -r requirements.txt
 		pip install PACKAGE_NAME.whl
 		pip wheel --wheel-dir DIR_NAME -r requirements.txt
@@ -39,3 +40,11 @@
 		pip freeze
 	- Show details about an installed package.
 		pip show PACKAGE_NAME
+
+	- Export the requirements.txt file.
+		pip freeze > requirements.txt
+
+		conda list -e > requirements.txt
+
+		pip install pipreqs
+		pipreqs /path/to/project
