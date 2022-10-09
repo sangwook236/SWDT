@@ -615,9 +615,41 @@ def difflib_test():
 	for tag, i1, i2, j1, j2 in s.get_opcodes():
 		print('{:7}   a[{}:{}] --> b[{}:{}] {!r:>8} --> {!r}'.format(tag, i1, i2, j1, j2, a[i1:i2], b[j1:j2]))
 
+	# NOTE [caution] >> The result of a ratio() call may depend on the order of the arguments.
 	print("SequenceMatcher(None, 'tide', 'diet').ratio() = {}.".format(difflib.SequenceMatcher(None, 'tide', 'diet').ratio()))
 	print("SequenceMatcher(None, 'diet', 'tide').ratio() = {}.".format(difflib.SequenceMatcher(None, 'diet', 'tide').ratio()))
 
+	# Symmetric sequence matching ratio.
+	def sequence_matching_ratio(seq1, seq2, isjunk=None):
+		"""
+		matched_len = 0
+		for mb in difflib.SequenceMatcher(isjunk, seq1, seq2).get_matching_blocks():
+			matched_len += mb.size
+		#return 2 * matched_len, (len(seq1) + len(seq2))
+		return 2 * matched_len / (len(seq1) + len(seq2))
+		"""
+		"""
+		matched_len = 0
+		for mb in difflib.SequenceMatcher(isjunk, seq1, seq2).get_matching_blocks():
+			matched_len += mb.size
+		for mb in difflib.SequenceMatcher(isjunk, seq2, seq1).get_matching_blocks():
+			matched_len += mb.size
+		#return matched_len, (len(seq1) + len(seq2))
+		return matched_len / (len(seq1) + len(seq2))
+		"""
+		#return 2 * functools.reduce(lambda mblen, mb: mblen + mb.size, difflib.SequenceMatcher(isjunk, seq1, seq2).get_matching_blocks(), 0) / (len(seq1) + len(seq2))
+		return (functools.reduce(lambda mblen, mb: mblen + mb.size, difflib.SequenceMatcher(isjunk, seq1, seq2).get_matching_blocks(), 0) + functools.reduce(lambda mblen, mb: mblen + mb.size, difflib.SequenceMatcher(isjunk, seq2, seq1).get_matching_blocks(), 0)) / (len(seq1) + len(seq2))
+
+	print("sequence_matching_ratio('tide', 'diet', isjunk=None) = {}.".format(sequence_matching_ratio('tide', 'diet', isjunk=None)))
+	print("sequence_matching_ratio('diet', 'tide', isjunk=None) = {}.".format(sequence_matching_ratio('diet', 'tide', isjunk=None)))
+
+	def count_matches(seq1, seq2, isjunk=None):
+		return functools.reduce(lambda mblen, mb: mblen + mb.size, difflib.SequenceMatcher(isjunk, seq1, seq2).get_matching_blocks(), 0)
+
+	print("count_matches('tide', 'diet', isjunk=None) = {}.".format(count_matches('tide', 'diet', isjunk=None)))  # 1.
+	print("count_matches('diet', 'tide', isjunk=None) = {}.".format(count_matches('diet', 'tide', isjunk=None)))  # 2.
+
+	# The three methods that return the ratio of matching to total characters can give different results due to differing levels of approximation, although quick_ratio() and real_quick_ratio() are always at least as large as ratio():
 	s = difflib.SequenceMatcher(None, 'abcd', 'bcde')
 	print('s.ratio() = {}.'.format(s.ratio()))  # [0, 1].
 	print('s.quick_ratio() = {}.'.format(s.quick_ratio()))  # [0, 1].
@@ -635,7 +667,7 @@ def difflib_test():
 	matcher = difflib.SequenceMatcher(None, str1, str2)  # Long sequence matching. (?)
 	#matcher = difflib.SequenceMatcher(lambda x: x == '\n\r', str1, str2)
 	#matcher = difflib.SequenceMatcher(lambda x: x == ' \t\n\r', str1, str2)
-	print('Ratio = {}.'.format(2 * functools.reduce(lambda matched_len, mth: matched_len + mth.size, matcher.get_matching_blocks(), 0) / (len(str1) + len(str2))))
+	print('Ratio = {}.'.format(2 * functools.reduce(lambda mblen, mb: mblen + mb.size, matcher.get_matching_blocks(), 0) / (len(str1) + len(str2))))
 	#print('Ratio = {}.'.format(matcher.ratio()))
 	for idx, mth in enumerate(matcher.get_matching_blocks()):
 		if mth.size != 0:
