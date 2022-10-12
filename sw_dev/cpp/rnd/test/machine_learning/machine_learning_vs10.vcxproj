@@ -321,6 +321,9 @@
     <ClCompile Include="svm_light\svm_light_main.cpp" />
     <ClCompile Include="torch\torch_deep_learning_example.cpp" />
     <ClCompile Include="torch\torch_main.cpp" />
+    <ClCompile Include="torch\torch_basic.cpp" />
+    <ClCompile Include="torch\torch_torch_script.cpp" />
+    <ClCompile Include="torch\torch_training.cpp" />
     <ClCompile Include="waffles\waffles_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

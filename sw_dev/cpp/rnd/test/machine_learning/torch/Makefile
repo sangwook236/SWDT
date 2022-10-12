@@ -1,5 +1,9 @@
 EXE_NAME=torch_test.exe
-SRCS=torch_test.cpp
+SRCS=torch_runner.cpp \
+	torch_main.cpp \
+	torch_basic.cpp \
+	torch_torch_script.cpp \
+	torch_training.cpp
 OBJS=$(SRCS:.cpp=.o)
 
 CC=gcc

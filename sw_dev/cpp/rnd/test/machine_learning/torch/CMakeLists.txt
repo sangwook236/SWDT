@@ -106,8 +106,9 @@ set(TARGET ${CMAKE_PROJECT_NAME})  # The name of the top level project.
 set(SRCS
 	torch_runner.cpp
 	torch_main.cpp
-	torch_torch_script_example.cpp
-	torch_training_example.cpp
+	torch_basic.cpp
+	torch_torch_script.cpp
+	torch_training.cpp
 )
 set(LIBS
 #	${OpenMP_CXX_FLAGS}

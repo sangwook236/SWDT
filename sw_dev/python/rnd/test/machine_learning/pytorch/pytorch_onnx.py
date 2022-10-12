@@ -158,6 +158,42 @@ def tracing_and_scripting_tutorial():
 
 		print(outputs)
 
+# REF [site] >> https://pytorch.org/docs/stable/onnx.html#custom-operators
+def custom_operators_tutorial():
+	from torch.onnx import register_custom_op_symbolic
+	from torch.onnx.symbolic_helper import parse_args
+
+	# Define custom symbolic function.
+	@parse_args("v", "v", "f", "i")
+	def symbolic_foo_forward(g, input1, input2, attr1, attr2):
+		# TODO [check] >> What is "custom_domain::Foo"?
+		return g.op("custom_domain::Foo", input1, input2, attr1_f=attr1, attr2_i=attr2)
+
+	# Register custom symbolic function.
+	register_custom_op_symbolic(symbolic_name="custom_ops::foo_forward", symbolic_fn=symbolic_foo_forward, opset_version=9)
+
+	class FooModel(torch.nn.Module):
+		def __init__(self, attr1, attr2):
+			super().__init__()
+			self.attr1 = attr1
+			self.attr2 = attr2
+
+		def forward(self, input1, input2):
+			# Calling custom op.
+			return torch.ops.custom_ops.foo_forward(input1, input2, self.attr1, self.attr2)
+
+	model = FooModel(attr1=1.0, attr2=2)
+	dummy_input1 = torch.randn(10, 3, 224, 224)
+	dummy_input2 = torch.randn(10, 3, 32, 32)
+	# The example above exports it as a custom operator in the "custom_domain" opset.
+	torch.onnx.export(
+		model,
+		(dummy_input1, dummy_input2),
+		"./model.onnx",
+		# Only needed if you want to specify an opset version > 1.
+		custom_opsets={"custom_domain": 2}  # Key(str): opset domain name, Value(int): opset version.
+	)
+
 # REF [site] >>	
 #	https://onnxruntime.ai/docs/
 #		ONNX Runtime for Training.
@@ -169,6 +205,8 @@ def training_example():
 def main():
 	simple_tutorial()
 	#tracing_and_scripting_tutorial()
+
+	#custom_operators_tutorial()
 
 	#--------------------
 	#training_example()  # Not yet implemented.

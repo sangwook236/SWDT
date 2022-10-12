@@ -1,5 +1,6 @@
 LIB_BASE_NAME=arithmetic
-SRCS=add.cpp sub.cpp
+SRCS=add.cpp \
+	sub.cpp
 OBJS=$(SRCS:.cpp=.o)
 LIB_NAME=lib$(LIB_BASE_NAME).a
 

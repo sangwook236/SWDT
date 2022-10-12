@@ -566,17 +566,17 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="svm_light\svm_light_main.cpp" />
-    <ClCompile Include="tiny_dnn\tiny_dnn_basic_example.cpp" />
-    <ClCompile Include="tiny_dnn\tiny_dnn_cifar10_example.cpp" />
     <ClCompile Include="tiny_dnn\tiny_dnn_main.cpp" />
-    <ClCompile Include="tiny_dnn\tiny_dnn_mnist_example.cpp" />
+    <ClCompile Include="tiny_dnn\tiny_dnn_basic.cpp" />
+    <ClCompile Include="tiny_dnn\tiny_dnn_cifar10.cpp" />
+    <ClCompile Include="tiny_dnn\tiny_dnn_mnist.cpp" />
     <ClCompile Include="torch\torch_main.cpp" />
-    <ClCompile Include="torch\torch_basic_example.cpp" />
-    <ClCompile Include="torch\torch_torch_script_example.cpp" />
-    <ClCompile Include="torch\torch_training_example.cpp" />
+    <ClCompile Include="torch\torch_basic.cpp" />
+    <ClCompile Include="torch\torch_torch_script.cpp" />
+    <ClCompile Include="torch\torch_training.cpp" />
     <ClCompile Include="waffles\waffles_main.cpp" />
-    <ClCompile Include="waffles\waffles_manifold_example.cpp" />
-    <ClCompile Include="waffles\waffles_ml_example.cpp" />
+    <ClCompile Include="waffles\waffles_manifold.cpp" />
+    <ClCompile Include="waffles\waffles_ml.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
