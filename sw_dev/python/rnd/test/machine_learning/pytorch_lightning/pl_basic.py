@@ -250,7 +250,10 @@ def minimal_example():
 		#trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader, ckpt_path=None)  # Path/URL of the checkpoint from which training is resumed.
 		#trainer.fit(model, datamodule=datamodule)
 
-		#trainer.save_checkpoint("/path/to/checkpoint.ckpt", weights_only=False)
+		# Can be used for retraining, evaluation, and inference after being loaded by pl.LightningModule.load_from_checkpoint() and torch.load().
+		#trainer.save_checkpoint("/path/to/checkpoint.ckpt", weights_only=False)  # Pickled object. ['epoch', 'global_step', 'pytorch-lightning_version', 'state_dict', 'loops', 'callbacks', 'optimizer_states', 'lr_schedulers', 'hparams_name', 'hyper_parameters'].
+		# Can be used for evaluation and inference after being loaded by pl.LightningModule.load_from_checkpoint() and torch.load().
+		#trainer.save_checkpoint("/path/to/checkpoint.ckpt", weights_only=True)  # Pickled object. ['epoch', 'global_step', 'pytorch-lightning_version', 'state_dict', 'loops', 'hparams_name', 'hyper_parameters'].
 	else:
 		# REF [site] >> https://pytorch-lightning.readthedocs.io/en/latest/common/weights_loading.html
 

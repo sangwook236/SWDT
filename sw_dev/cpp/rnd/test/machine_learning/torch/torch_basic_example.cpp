@@ -344,6 +344,60 @@ void simple_frontend_tutorial()
 	std::cout << net2->forward(torch::ones({2, 4})) << std::endl;
 }
 
+#if 0
+#include <opencv2/opencv.hpp>
+
+// REF [site] >> https://discuss.pytorch.org/t/how-to-convert-an-opencv-image-into-libtorch-tensor/90818/2
+void opencv_example()
+{
+	const std::string image_filepath("/path/to/image.png");
+	const cv::Mat img(cv::imread(image_filepath));
+	if (img.empty())
+	{
+		std::cerr << "Image file not found, " << image_filepath << std::endl;
+		return;
+	}
+
+	at::Tensor tensor_uint8 = torch::from_blob(img.data, {img.rows, img.cols, img.channels()}, at::kByte);
+	std::cout << "Sizes = " << tensor_uint8.sizes() << std::endl;
+
+	at::Tensor tensor_float = tensor_uint8.toType(c10::kFloat).div(255);
+
+#if 0
+	cv::Mat img_uint8(cv::Size{img.cols, img.rows}, img.type(), tensor_uint8.data_ptr<unsigned char>());
+	cv::Mat img_float(cv::Size{img.cols, img.rows}, (img.channels() == 3 ? CV_32FC3 : CV_32FC1), tensor_float.data_ptr<float>());
+	cv::imshow("Image (original)", img);
+	cv::imshow("Image (uint8)", img_uint8);
+	cv::imshow("Image (float)", img_float);
+	cv::waitKey(0);
+	cv::destroyAllWindows();
+#endif
+
+	//-----
+	tensor_uint8 = tensor_uint8.permute({2, 0, 1});  // H x W x C -> C x H x W.
+	std::cout << "Sizes = " << tensor_uint8.sizes() << std::endl;
+	tensor_uint8.unsqueeze_(/*dim=*/0);  // 1 x C x H x W.
+	std::cout << "Sizes (unsqueezed) = " << tensor_uint8.sizes() << std::endl;
+
+	//tensor_float = tensor_float.clamp_max(c10::Scalar(0.1236));
+	tensor_float.clamp_min_(c10::Scalar(0.1236));
+	tensor_float.clamp_max_(c10::Scalar(0.6321));
+
+	std::cout << "Min = " << torch::min(tensor_float).item<float>() << ", max = " << torch::max(tensor_float).item<float>() << std::endl;
+	std::cout << "Max (member function) = " << tensor_float.max().item<float>() << std::endl;
+	const auto &results = tensor_float.max(/*dim=*/0);
+	std::cout << "Max value sizes = " << std::get<0>(results).sizes() << ", max index sizes = " << std::get<1>(results).sizes() << std::endl;
+	std::cout << "Max value at (0, 0) = " << std::get<0>(results)[0][0].item().toFloat() << ", max index at (0, 0) = " << std::get<1>(results)[0][0].item().toLong() << std::endl;
+	std::cout << "Argmax = " << tensor_float.argmax().item().toInt() << std::endl;
+	std::cout << "Argmax(dim=0) sizes = " << tensor_float.argmax(/*dim=*/0).sizes() << std::endl;
+
+	const auto tensor_sliced = tensor_float.slice(/*dim=*/2, /*start=*/0, /*end=*/1);  // H x W x 1.
+	std::cout << "Sliced sizes = " << tensor_sliced.sizes() << std::endl;
+	tensor_sliced.squeeze_(/*dim=*/2);  // H x W.
+	std::cout << "Sliced sizes (squeezed) = " << tensor_sliced.sizes() << std::endl;
+}
+#endif
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -353,6 +407,8 @@ void training_example()
 {
 	local::basic_operation();
 	//local::simple_frontend_tutorial();
+
+	//local::opencv_example();
 }
 
 }  // namespace my_torch
