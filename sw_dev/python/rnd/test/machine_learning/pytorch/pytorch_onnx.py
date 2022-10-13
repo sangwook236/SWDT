@@ -166,6 +166,7 @@ def custom_operators_tutorial():
 	# Define custom symbolic function.
 	@parse_args("v", "v", "f", "i")
 	def symbolic_foo_forward(g, input1, input2, attr1, attr2):
+	#def symbolic_foo_forward(g: torch._C.Graph, input1: torch._C.Value, input2: torch._C.Value, attr1: float, attr2: int):
 		# TODO [check] >> What is "custom_domain::Foo"?
 		return g.op("custom_domain::Foo", input1, input2, attr1_f=attr1, attr2_i=attr2)
 

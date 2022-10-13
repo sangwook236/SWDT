@@ -29,7 +29,7 @@ class Model(nn.Module):
         return output
 
 # REF [site] >> https://pytorch.org/tutorials/beginner/blitz/data_parallel_tutorial.html
-def simple_example():
+def data_parallel_tutorial():
 	# It's natural to execute your forward, backward propagations on multiple GPUs.
 	# However, Pytorch will only use one GPU by default.
 	# You can easily run your operations on multiple GPUs by making your model run parallelly using DataParallel.
@@ -61,8 +61,18 @@ def simple_example():
 		output = model(input)
 		print('Outside: input size', input.size(), 'output_size', output.size())
 
+# REF [site] >> https://pytorch.org/tutorials/intermediate/FSDP_tutorial.html
+def FSDP_tutorial():
+	raise NotImplementedError
+
+# REF [site] >> https://pytorch.org/tutorials/intermediate/model_parallel_tutorial.html
+def model_parallel_tutorial():
+	raise NotImplementedError
+
 def main():
-	simple_example()
+	data_parallel_tutorial()
+	#FSDP_tutorial()  // Not yet implemented.
+	#model_parallel_tutorial()  // Not yet implemented.
 
 #--------------------------------------------------------------------
 

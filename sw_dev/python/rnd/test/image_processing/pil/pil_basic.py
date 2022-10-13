@@ -94,10 +94,25 @@ def text_example():
 	img.save('./pil_text_font.png')
 	#img.convert('L').save('./pil_text_font.png')  # Save as a grayscale image.
 
+def exif_example():
+	import PIL.Image
+	import PIL.ExifTags
+
+	image_filepath = '/path/to/image'
+	img = PIL.Image.open(image_filepath)
+
+	if img._getexif():
+		exif_data = {PIL.ExifTags.TAGS[i]: j for i, j in img._getexif().items() if i in PIL.ExifTags.TAGS}
+		print('EXIF: {}.'.format(exif_data))
+	else:
+		print('No EXIF data.')
+
 def main():
 	#image_example()
 	draw_example()
 	text_example()
+
+	exif_example()
 
 #--------------------------------------------------------------------
 
