@@ -5,7 +5,7 @@
 #	https://pytorch.org/tutorials/beginner/dist_overview.html
 #	https://pytorch.org/docs/stable/distributed.html
 
-import os, math, random
+import os, math, random, datetime
 import torch
 import torchvision
 
@@ -351,6 +351,117 @@ def mpi_distributed_tutorial():
 
 	init_process(0, 0, use_cuda, run_functor, backend='mpi')
 
+class ConvNet(torch.nn.Module):
+	def __init__(self, num_classes=10):
+		super(ConvNet, self).__init__()
+		self.layer1 = torch.nn.Sequential(
+			torch.nn.Conv2d(1, 16, kernel_size=5, stride=1, padding=2),
+			torch.nn.BatchNorm2d(16),
+			torch.nn.ReLU(),
+			torch.nn.MaxPool2d(kernel_size=2, stride=2)
+		)
+		self.layer2 = torch.nn.Sequential(
+			torch.nn.Conv2d(16, 32, kernel_size=5, stride=1, padding=2),
+			torch.nn.BatchNorm2d(32),
+			torch.nn.ReLU(),
+			torch.nn.MaxPool2d(kernel_size=2, stride=2)
+		)
+		self.fc = torch.nn.Linear(7 * 7 * 32, num_classes)
+
+	def forward(self, x):
+		out = self.layer1(x)
+		out = self.layer2(out)
+		out = out.reshape(out.size(0), -1)
+		out = self.fc(out)
+		return out
+
+def train_distributedly(gpu, config):
+	rank = config['nr'] * config['gpus'] + gpu
+	torch.distributed.init_process_group(
+		backend='nccl',
+		init_method='env://',
+		world_size=config['world_size'],
+		rank=rank
+	)
+
+	torch.manual_seed(0)
+	torch.cuda.set_device(gpu)
+
+	model = ConvNet()
+	model.cuda(gpu)
+
+	# Define loss function (criterion) and optimizer.
+	criterion = torch.nn.CrossEntropyLoss().cuda(gpu)
+	optimizer = torch.optim.SGD(model.parameters(), 1e-4)
+
+	# Wrapper around our model to handle parallel training.
+	model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[gpu])
+
+	# Data loading code.
+	train_dataset = torchvision.datasets.MNIST(
+		root='./',
+		train=True,
+		transform=torchvision.transforms.ToTensor(),
+		download=True
+	)
+	
+	# Sampler that takes care of the distribution of the batches such that
+	# the data is not repeated in the iteration and sampled accordingly.
+	train_sampler = torch.utils.data.distributed.DistributedSampler(
+		train_dataset,
+		num_replicas=config['world_size'],
+		rank=rank
+	)
+	
+	# We pass in the train_sampler which can be used by the DataLoader.
+	train_loader = torch.utils.data.DataLoader(
+		dataset=train_dataset,
+		batch_size=config['batch_size'],
+		shuffle=False,
+		num_workers=0,
+		pin_memory=True,
+		sampler=train_sampler
+	)
+
+	start = datetime.now()
+	total_step = len(train_loader)
+	for epoch in range(config['epochs']):
+		for i, (images, labels) in enumerate(train_loader):
+			images = images.cuda(non_blocking=True)
+			labels = labels.cuda(non_blocking=True)
+			# Forward pass.
+			outputs = model(images)
+			loss = criterion(outputs, labels)
+
+			# Backward and optimize.
+			optimizer.zero_grad()
+			loss.backward()
+			optimizer.step()
+			if (i + 1) % 100 == 0 and gpu == 0:
+				print('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'.format(
+					epoch + 1, 
+					config['epochs'], 
+					i + 1, 
+					total_step,
+					loss.item()
+				))
+	if gpu == 0:
+		print('Training complete in: ' + str(datetime.now() - start))
+
+# REF [site] >> https://medium.com/analytics-vidhya/distributed-training-in-pytorch-part-1-distributed-data-parallel-ae5c645e74cb
+def distributed_data_parallel_example():
+	config = {}
+	config['nodes'] = 1
+	config['gpus'] = 2  # Number of gpus per node.
+	config['nr'] = 0  # Ranking within the nodes.
+	config['epochs'] = 2  # Number of total epochs to run.
+	config['batch_size'] = 100
+	config['world_size'] = config['gpus'] * config['nodes']
+
+	os.environ['MASTER_ADDR'] = '192.168.1.3'
+	os.environ['MASTER_PORT'] = '8888'
+	torch.multiprocessing.spawn(train_distributedly, nprocs=config['gpus'], args=(config,))
+
 def main():
 	if not torch.distributed.is_available():
 		print('PyTorch Distributed not available.')
@@ -361,10 +472,13 @@ def main():
 	#print('torch.distributed.is_initialized() = {}.'.format(torch.distributed.is_initialized()))
 
 	#--------------------
-	distributed_tutorial()
+	#distributed_tutorial()
 
 	# RuntimeError: Distributed package doesn't have MPI built in. MPI is only included if you build PyTorch from source on a host that has MPI installed.
 	#mpi_distributed_tutorial()  # Use mpirun to run.
+
+	#--------------------
+	distributed_data_parallel_example()
 
 #--------------------------------------------------------------------
 
