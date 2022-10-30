@@ -516,6 +516,7 @@ def lenet5_mnist_example():
 	callbacks = [checkpoint_callback, swa_callback]
 
 	profiler = "pytorch"  # {None, "simple", "advanced", "pytorch", "xla"}.
+	#profiler = None
 
 	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy=None, auto_select_gpus=True, max_epochs=-1, precision=16)
 	trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=20, precision=16, callbacks=callbacks, profiler=profiler)
@@ -531,8 +532,65 @@ def lenet5_mnist_example():
 		model = LeNet5(num_classes=10)
 
 		# Tune hyperparameters before training.
-		tuning_results = trainer.tune(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader, datamodule=None, scale_batch_size_kwargs=None, lr_find_kwargs=None)
-		print("Tuning results: {}.".format(tuning_results))
+		if True:
+			tuning_results = trainer.tune(
+				model,
+				train_dataloaders=train_dataloader,
+				val_dataloaders=val_dataloader,
+				datamodule=None,
+				scale_batch_size_kwargs={
+					"mode": "power",
+					"steps_per_trial": 3,
+					"init_val": 2,
+					"max_trials": 25,
+					"batch_arg_name": "batch_size",
+				},
+				lr_find_kwargs={
+					"min_lr": 1e-6,
+					"max_lr": 10.0,
+					"num_training": 100,
+					"mode": "exponential",
+					"early_stop_threshold": 4.0,
+					"update_attr": False,
+				},
+			)
+			print(f"Tuning results: {tuning_results}.")
+		else:
+			# Find optimal learning rate.
+			lr_results = trainer.tuner.lr_find(  # pl.tuner.tuning.Tuner class.
+				model,
+				train_dataloaders=train_dataloader,
+				val_dataloaders=val_dataloader,
+				datamodule=None,
+				min_lr=1e-6,
+				max_lr=10.0,
+				num_training=100,
+				mode="exponential",
+				early_stop_threshold=4.0,
+				update_attr=False,
+			)
+
+			print(f"Suggested learning rate: {lr_results.suggestion()}.")
+			fig = lr_results.plot(show=True, suggest=True)
+			fig.show()
+
+			# Iteratively try to find the largest batch size for a given model that does not give an out of memory (OOM) error.
+			# FIXME [error] >>
+			#	pytorch_lightning.utilities.exceptions.MisconfigurationException: The batch scaling feature cannot be used with dataloaders passed directly to '.fit()'.
+			#	Please disable the feature or incorporate the dataloader into the model.
+			max_batch_size = trainer.tuner.scale_batch_size(  # pl.tuner.tuning.Tuner class.
+				model,
+				train_dataloaders=train_dataloader,
+				val_dataloaders=val_dataloader,
+				datamodule=None,
+				mode="power",
+				steps_per_trial=3,
+				init_val=2,
+				max_trials=25,
+				batch_arg_name="batch_size",
+			)
+
+			print(f"Suggested batch size: {max_batch_size}.")
 
 		# Train the model.
 		trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
@@ -2172,7 +2230,7 @@ def main():
 	#initalization_and_optimization_tutorial()
 	#inception_resnet_densenet_tutorial()
 
-	lightning_cli_example()  # Not yet implemented.
+	#lightning_cli_example()  # Not yet implemented.
 
 #--------------------------------------------------------------------
 
