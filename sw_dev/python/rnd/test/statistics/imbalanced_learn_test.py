@@ -5,8 +5,6 @@ from collections import Counter
 import numpy as np
 import sklearn.svm, sklearn.ensemble, sklearn.tree, sklearn.model_selection, sklearn.metrics, sklearn.datasets
 import imblearn
-import imblearn.over_sampling, imblearn.under_sampling, imblearn.combine
-import imblearn.pipeline, imblearn.datasets
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -584,8 +582,8 @@ def common_pitfalls_and_recommended_practices_example():
 	)
 	print(
 		f"Balanced accuracy mean +/- std. dev.: "
-		f"{cv_results["test_score"].mean():.3f} +/- "
-		f"{cv_results["test_score"].std():.3f}"
+		f"{cv_results['test_score'].mean():.3f} +/- "
+		f"{cv_results['test_score'].std():.3f}"
 	)
 
 	scores = []
@@ -608,8 +606,8 @@ def common_pitfalls_and_recommended_practices_example():
 	)
 	print(
 		f"Balanced accuracy mean +/- std. dev.: "
-		f"{cv_results["test_score"].mean():.3f} +/- "
-		f"{cv_results["test_score"].std():.3f}"
+		f"{cv_results['test_score'].mean():.3f} +/- "
+		f"{cv_results['test_score'].std():.3f}"
 	)
 
 	# We will now illustrate the correct pattern to use.
@@ -625,8 +623,8 @@ def common_pitfalls_and_recommended_practices_example():
 	)
 	print(
 		f"Balanced accuracy mean +/- std. dev.: "
-		f"{cv_results["test_score"].mean():.3f} +/- "
-		f"{cv_results["test_score"].std():.3f}"
+		f"{cv_results['test_score'].mean():.3f} +/- "
+		f"{cv_results['test_score'].std():.3f}"
 	)
 
 	# We see that the statistical performance are very close to the cross-validation study that we perform, without any sign of over-optimistic results.

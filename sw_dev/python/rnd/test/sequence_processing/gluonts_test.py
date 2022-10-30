@@ -1510,12 +1510,12 @@ def deepar_test():
 	print(prediction.mean)
 	prediction.plot(output_file="./graph.png")
 
+# REF [site] >> https://ts.gluon.ai/stable/api/gluonts/gluonts.model.prophet.html
 def prophet_test():
-	# REF [site] >> https://ts.gluon.ai/api/gluonts/gluonts.model.prophet.html
 	raise NotImplementedError
 
+# REF [site] >> https://ts.gluon.ai/stable/api/gluonts/gluonts.model.tft.html
 def temporal_fusion_transformer_test():
-	# REF [site] >> https://ts.gluon.ai/api/gluonts/gluonts.model.tft.html
 	raise NotImplementedError
 
 def npts_test():

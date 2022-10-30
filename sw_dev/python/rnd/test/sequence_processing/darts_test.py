@@ -4,8 +4,10 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from darts import TimeSeries
-from darts.datasets import AirPassengersDataset
+import darts
+import darts.models, darts.metrics, darts.datasets
+#import darts.utils, darts.dataprocessing
+import sklearn.linear_model, sklearn.gaussian_process
 
 # REF [site] >> https://unit8co.github.io/darts/README.html
 def example_usage():
@@ -14,15 +16,13 @@ def example_usage():
 	df = pd.read_csv("./AirPassengers.csv", delimiter=",")
 
 	# Create a TimeSeries, specifying the time and value columns.
-	series = TimeSeries.from_dataframe(df, "Month", "#Passengers")
+	series = darts.TimeSeries.from_dataframe(df, "Month", "#Passengers")
 
 	# Set aside the last 36 months as a validation series.
 	train, val = series[:-36], series[-36:]
 
 	# Fit an exponential smoothing model, and make a (probabilistic) prediction over the validation series' duration.
-	from darts.models import ExponentialSmoothing
-
-	model = ExponentialSmoothing()
+	model = darts.models.ExponentialSmoothing()
 	model.fit(train)
 	prediction = model.predict(len(val), num_samples=1000)
 
@@ -48,7 +48,7 @@ def building_and_manipulating_time_series_example():
 	#	From an xarray.DataArray, using TimeSeries.from_xarray().
 	#	From a CSV file, using TimeSeries.from_csv().
 
-	series = AirPassengersDataset().load()
+	series = darts.datasets.AirPassengersDataset().load()
 	series.plot()
 	plt.show()
 
@@ -68,7 +68,7 @@ def building_and_manipulating_time_series_example():
 	plt.show()
 
 	# Arithmetic operations.
-	series_noise = TimeSeries.from_times_and_values(
+	series_noise = darts.TimeSeries.from_times_and_values(
 		series.time_index, np.random.randn(len(series))
 	)
 	(series / 2 + 20 * series_noise - 10).plot()
@@ -98,15 +98,13 @@ def building_and_manipulating_time_series_example():
 
 	# Filling missing values (using a "utils" function).
 	# Missing values are represented by np.nan.
-	from darts.utils.missing_values import fill_missing_values
-
 	values = np.arange(50, step=0.5)
 	values[10:30] = np.nan
 	values[60:95] = np.nan
-	series_ = TimeSeries.from_values(values)
+	series_ = darts.TimeSeries.from_values(values)
 
 	(series_ - 10).plot(label="with missing values (shifted below)")
-	fill_missing_values(series_).plot(label="without missing values")
+	darts.utils.missing_values.fill_missing_values(series_).plot(label="without missing values")
 	plt.show()
 
 	#-----
@@ -118,7 +116,7 @@ def building_and_manipulating_time_series_example():
 
 # REF [site] >> https://unit8co.github.io/darts/quickstart/00-quickstart.html
 def training_forecasting_models_and_making_predictions_example():
-	series = AirPassengersDataset().load()
+	series = darts.datasets.AirPassengersDataset().load()
 	#series.plot()
 	#plt.show()
 
@@ -131,9 +129,7 @@ def training_forecasting_models_and_making_predictions_example():
 	# Playing with toy models.
 	# There is a collection of "naive" baseline models in Darts, which can be very useful to get an idea of the bare minimum accuracy that one could expect.
 	# For example, the NaiveSeasonal(K) model always "repeats" the value that occured K time steps ago.
-	from darts.models import NaiveSeasonal
-
-	naive_model = NaiveSeasonal(K=1)
+	naive_model = darts.models.NaiveSeasonal(K=1)
 	naive_model.fit(train)
 	naive_forecast = naive_model.predict(36)
 
@@ -144,22 +140,20 @@ def training_forecasting_models_and_making_predictions_example():
 	# Inspect seasonality.
 	# We can already improve by exploiting the seasonality in the data.
 	# It seems quite obvious that the data has a yearly seasonality, which we can confirm by looking at the auto-correlation function (ACF), and highlighting the lag m=12.
-	from darts.utils.statistics import plot_acf, check_seasonality
-
-	plot_acf(train, m=12, alpha=0.05)
+	darts.utils.statistics.plot_acf(train, m=12, alpha=0.05)
 	plt.show()
 
 	# The ACF presents a spike at x = 12, which suggests a yearly seasonality trend (highlighted in red).
 	# The blue zone determines the significance of the statistics for a confidence level of alpha = 5%.
 	# We can also run a statistical check of seasonality for each candidate period m.
 	for m in range(2, 25):
-		is_seasonal, period = check_seasonality(train, m=m, alpha=0.05)
+		is_seasonal, period = darts.utils.statistics.check_seasonality(train, m=m, alpha=0.05)
 		if is_seasonal:
 			print("There is seasonality of order {}.".format(period))
 
 	# A less naive model.
 	# Let's try the NaiveSeasonal model again with a seasonality of 12.
-	seasonal_model = NaiveSeasonal(K=12)
+	seasonal_model = darts.models.NaiveSeasonal(K=12)
 	seasonal_model.fit(train)
 	seasonal_forecast = seasonal_model.predict(36)
 
@@ -170,9 +164,7 @@ def training_forecasting_models_and_making_predictions_example():
 	# We are still missing the trend.
 	# Fortunately, there is also another naive baseline model capturing the trend, which is called NaiveDrift.
 	# This model simply produces linear predictions, with a slope that is determined by the first and last values of the training set.
-	from darts.models import NaiveDrift
-
-	drift_model = NaiveDrift()
+	drift_model = darts.models.NaiveDrift()
 	drift_model.fit(train)
 	drift_forecast = drift_model.predict(36)
 
@@ -187,11 +179,9 @@ def training_forecasting_models_and_making_predictions_example():
 	# Computing error metrics.
 
 	# Mean Absolute Percentage Error (MAPE).
-	from darts.metrics import mape
-
 	print(
 		"Mean absolute percentage error for the combined naive drift + seasonal: {:.2f}%.".format(
-			mape(series, combined_forecast)
+			darts.metrics.mape(series, combined_forecast)
 		)
 	)
 
@@ -201,17 +191,15 @@ def training_forecasting_models_and_making_predictions_example():
 	#-----
 	# Quickly try out several models.
 	# Darts is built to make it easy to train and validate several models in a unified way.
-	from darts.models import ExponentialSmoothing, TBATS, AutoARIMA, Theta
-
 	def eval_model(model):
 		model.fit(train)
 		forecast = model.predict(len(val))
-		print("model {} obtains MAPE: {:.2f}%".format(model, mape(val, forecast)))
+		print("model {} obtains MAPE: {:.2f}%".format(model, darts.metrics.mape(val, forecast)))
 
-	eval_model(ExponentialSmoothing())
-	eval_model(TBATS())
-	eval_model(AutoARIMA())
-	eval_model(Theta())
+	eval_model(darts.models.ExponentialSmoothing())
+	eval_model(darts.models.TBATS())
+	eval_model(darts.models.AutoARIMA())
+	eval_model(darts.models.Theta())
 
 	# Searching for hyper-parameters with the Theta method.
 	# Search for the best theta parameter, by trying 50 different values.
@@ -221,22 +209,22 @@ def training_forecasting_models_and_making_predictions_example():
 	best_theta = 0
 
 	for theta in thetas:
-		model = Theta(theta)
+		model = darts.models.Theta(theta)
 		model.fit(train)
 		pred_theta = model.predict(len(val))
-		res = mape(val, pred_theta)
+		res = darts.metrics.mape(val, pred_theta)
 
 		if res < best_mape:
 			best_mape = res
 			best_theta = theta
 
-	best_theta_model = Theta(best_theta)
+	best_theta_model = darts.models.Theta(best_theta)
 	best_theta_model.fit(train)
 	pred_best_theta = best_theta_model.predict(len(val))
 
 	print(
 		"The MAPE is: {:.2f}, with theta = {}.".format(
-			mape(val, pred_best_theta), best_theta
+			darts.metrics.mape(val, pred_best_theta), best_theta
 		)
 	)
 
@@ -258,19 +246,17 @@ def training_forecasting_models_and_making_predictions_example():
 
 	series.plot(label="data")
 	historical_fcast_theta.plot(label="backtest 3-months ahead forecast (Theta)")
-	print("MAPE = {:.2f}%".format(mape(historical_fcast_theta, series)))
+	print("MAPE = {:.2f}%".format(darts.metrics.mape(historical_fcast_theta, series)))
 	plt.show()
 
 	# To have a closer look at the errors, we can also use the backtest() method to obtain all the raw errors (say, MAPE errors) that would have been obtained by our model.
-	best_theta_model = Theta(best_theta)
+	best_theta_model = darts.models.Theta(best_theta)
 
 	raw_errors = best_theta_model.backtest(
-		series, start=0.6, forecast_horizon=3, metric=mape, reduction=None, verbose=True
+		series, start=0.6, forecast_horizon=3, metric=darts.metrics.mape, reduction=None, verbose=True
 	)
 
-	from darts.utils.statistics import plot_hist
-
-	plot_hist(
+	darts.utils.statistics.plot_hist(
 		raw_errors,
 		bins=np.arange(0, max(raw_errors), 1),
 		title="Individual backtest error scores (histogram)",
@@ -282,7 +268,7 @@ def training_forecasting_models_and_making_predictions_example():
 		series,
 		start=0.6,
 		forecast_horizon=3,
-		metric=mape,
+		metric=darts.metrics.mape,
 		reduction=np.mean,  # This is actually the default.
 		#reduction=np.median,  # Median MAPE.
 		verbose=True,
@@ -291,34 +277,30 @@ def training_forecasting_models_and_making_predictions_example():
 	print("Average error (MAPE) over all historical forecasts: %.2f" % average_error)
 
 	# Let's look at the fitted value residuals of our current Theta model, i.e. the difference between the 1-step forecasts at every point in time obtained by fitting the model on all previous points, and the actual observed values.
-	from darts.utils.statistics import plot_residuals_analysis
-
-	plot_residuals_analysis(best_theta_model.residuals(series))
+	darts.utils.statistics.plot_residuals_analysis(best_theta_model.residuals(series))
 	plt.show()
 
 	# We can see that the distribution is not centered at 0, which means that our Theta model is biased.
 	# We can also make out a large ACF value at lag equal to 12, which indicates that the residuals contain information that was not used by the model.
 
 	# ExponentialSmoothing model.
-	model_es = ExponentialSmoothing()
-	historical_fcast_es = model_es.historical_forecasts(
-		series, start=0.6, forecast_horizon=3, verbose=True
-	)
+	model_es = darts.models.ExponentialSmoothing()
+	historical_fcast_es = model_es.historical_forecasts(series, start=0.6, forecast_horizon=3, verbose=True)
 
 	series.plot(label="data")
 	historical_fcast_es.plot(label="backtest 3-months ahead forecast (Exp. Smoothing)")
-	print("MAPE = {:.2f}%".format(mape(historical_fcast_es, series)))
+	print("MAPE = {:.2f}%".format(darts.metrics.mape(historical_fcast_es, series)))
 	plt.show()
 
 	# We get a mean absolute percentage error of about 4-5% when backtesting with a 3-months forecast horizon in this case.
-	plot_residuals_analysis(model_es.residuals(series))
+	darts.utils.statistics.plot_residuals_analysis(model_es.residuals(series))
 	plt.show()
 
 	# The residual analysis also reflects an improved performance in that we now have a distribution of the residuals centred at value 0, and the ACF values, although not insignificant, have lower magnitudes.
 
 # REF [site] >> https://unit8co.github.io/darts/quickstart/00-quickstart.html
 def machine_learning_and_global_models_example():
-	# Darts has a rich support for machine learning and deep learning forecasting models; for instance:
+	# Darts has a rich support for machine learning and deep learning forecasting models:
 	#	RegressionModel can wrap around any sklearn-compatible regression model to produce forecasts.
 	#	RNNModel is a flexible RNN implementation, which can be used like DeepAR.
 	#	NBEATSModel implements the N-BEATS model.
@@ -329,14 +311,9 @@ def machine_learning_and_global_models_example():
 	# In addition to supporting the same basic fit()/predict() interface as the other models, these models are also global models, as they support being trained on multiple time series (sometimes referred to as meta learning).
 	# This is a key point of using ML-based models for forecasting: more often than not, ML models (especially deep learning models) need to be trained on large amounts of data, which often means a large amount of separate yet related time series.
 
-	from darts.models import NBEATSModel, ExponentialSmoothing
-	from darts.metrics import mape
-
 	# A toy example with two series.
-	from darts.datasets import AirPassengersDataset, MonthlyMilkDataset
-
-	series_air = AirPassengersDataset().load().astype(np.float32)
-	series_milk = MonthlyMilkDataset().load().astype(np.float32)
+	series_air = darts.datasets.AirPassengersDataset().load().astype(np.float32)
+	series_milk = darts.datasets.MonthlyMilkDataset().load().astype(np.float32)
 
 	# Set aside last 36 months of each series as validation set.
 	train_air, val_air = series_air[:-36], series_air[-36:]
@@ -349,9 +326,7 @@ def machine_learning_and_global_models_example():
 	plt.show()
 
 	# Let's scale these two series between 0 and 1, as that will benefit most ML models.
-	from darts.dataprocessing.transformers import Scaler
-
-	scaler = Scaler()
+	scaler = darts.dataprocessing.transformers.Scaler()
 	train_air_scaled, train_milk_scaled = scaler.fit_transform([train_air, train_milk])
 
 	train_air_scaled.plot()
@@ -361,9 +336,9 @@ def machine_learning_and_global_models_example():
 	# We can also parallelize this sort of operations over multiple processors by specifying n_jobs.
 
 	#-----
-	if False:
+	if True:
 		# Using deep learning: example with N-BEATS.
-		model = NBEATSModel(input_chunk_length=24, output_chunk_length=12, random_state=42)
+		model = darts.models.NBEATSModel(input_chunk_length=24, output_chunk_length=12, random_state=42)
 
 		model.fit([train_air_scaled, train_milk_scaled], epochs=50, verbose=True)
 
@@ -401,18 +376,16 @@ def machine_learning_and_global_models_example():
 	# Darts will try to be smart and slice them in the right way for forecasting the target, based on the time indexes of the different series.
 	# You will receive an error if your covariates do not have a sufficient time span, though.
 
-	from darts import concatenate
 	from darts.utils.timeseries_generation import datetime_attribute_timeseries as dt_attr
 
-	air_covs = concatenate(
+	air_covs = darts.concatenate(
 		[
 			dt_attr(series_air.time_index, "month", dtype=np.float32) / 12,
 			(dt_attr(series_air.time_index, "year", dtype=np.float32) - 1948) / 12,
 		],
 		axis="component",
 	)
-
-	milk_covs = concatenate(
+	milk_covs = darts.concatenate(
 		[
 			dt_attr(series_milk.time_index, "month", dtype=np.float32) / 12,
 			(dt_attr(series_milk.time_index, "year", dtype=np.float32) - 1962) / 13,
@@ -424,10 +397,10 @@ def machine_learning_and_global_models_example():
 	plt.title("one multivariate time series of 2 dimensions, containing covariates for the air series:")
 	plt.show()
 
-	if False:
+	if True:
 		# Not all models support all types of covariates.
 		# NBEATSModel supports only past_covariates.
-		model = NBEATSModel(input_chunk_length=24, output_chunk_length=12, random_state=42)
+		model = darts.models.NBEATSModel(input_chunk_length=24, output_chunk_length=12, random_state=42)
 
 		model.fit(
 			[train_air_scaled, train_milk_scaled],
@@ -461,22 +434,22 @@ def machine_learning_and_global_models_example():
 			"datetime_attribute": {"future": ["hour", "dayofweek"]},
 			"position": {"past": ["absolute"], "future": ["relative"]},
 			"custom": {"past": [lambda idx: (idx.year - 1950) / 50]},
-			"transformer": Scaler(),
+			"transformer": darts.dataprocessing.transformers.Scaler(),
 		}
 		'''
 		encoders = {
 			"datetime_attribute": {"past": ["month", "year"]},
-			"transformer": Scaler()
+			"transformer": darts.dataprocessing.transformers.Scaler(),
 		}
 
-		model = NBEATSModel(
+		model = darts.models.NBEATSModel(
 			input_chunk_length=24,
 			output_chunk_length=12,
 			add_encoders=encoders,
 			random_state=42,
 		)
 
-		model.fit([train_air_scaled, train_milk_scaled], epochs=50, verbose=True);
+		model.fit([train_air_scaled, train_milk_scaled], epochs=50, verbose=True)
 
 		pred_air = model.predict(series=train_air_scaled, n=36)
 
@@ -489,7 +462,7 @@ def machine_learning_and_global_models_example():
 		plt.show()
 
 	#-----
-	if False:
+	if True:
 		# Regression forecasting models.
 		# RegressionModel's are forecasting models which wrap around sklearn-compatible regression models.
 		# The inner regression model is used to predict future values of the target series, as a function of certain lags of the target, past and future covariates.
@@ -499,10 +472,7 @@ def machine_learning_and_global_models_example():
 		#	LightGBMModel wraps around lightbm.
 		#	LinearRegressionModel wraps around sklearn.linear_model.LinearRegression (accepting the same kwargs).
 
-		from darts.models import RegressionModel
-		from sklearn.linear_model import BayesianRidge
-
-		model = RegressionModel(lags=72, lags_future_covariates=[-6, 0], model=BayesianRidge())
+		model = darts.models.RegressionModel(lags=72, lags_future_covariates=[-6, 0], model=sklearn.linear_model.BayesianRidge())
 
 		model.fit([train_air_scaled, train_milk_scaled], future_covariates=[air_covs, milk_covs])
 
@@ -512,7 +482,7 @@ def machine_learning_and_global_models_example():
 			n=36,
 		)
 
-		# scale back:
+		# Scale back.
 		pred_air, pred_milk = scaler.inverse_transform([pred_air, pred_milk])
 
 		plt.figure(figsize=(10, 6))
@@ -523,23 +493,23 @@ def machine_learning_and_global_models_example():
 		plt.show()
 
 		# Metrics over sequences of series.
-		print(mape([series_air, series_milk], [pred_air, pred_milk]))
+		print(darts.metrics.mape([series_air, series_milk], [pred_air, pred_milk]))
 		# The average metric over "all" series.
-		print(mape([series_air, series_milk], [pred_air, pred_milk], inter_reduction=np.mean))
+		print(darts.metrics.mape([series_air, series_milk], [pred_air, pred_milk], inter_reduction=np.mean))
 		# Computing metrics can be parallelized over N processors when executed over many series pairs by specifying n_jobs=N.
 
 		# Backtest.
-		bayes_ridge_model = RegressionModel(lags=72, lags_future_covariates=[0], model=BayesianRidge())
+		bayes_ridge_model = darts.models.RegressionModel(lags=72, lags_future_covariates=[0], model=sklearn.linear_model.BayesianRidge())
 
 		backtest = bayes_ridge_model.historical_forecasts(series_air, future_covariates=air_covs, start=0.6, forecast_horizon=3, verbose=True)
 
-		print("MAPE = %.2f" % (mape(backtest, series_air)))
+		print("MAPE = %.2f" % (darts.metrics.mape(backtest, series_air)))
 		series_air.plot()
 		backtest.plot()
 		plt.show()
 
 	#-----
-	if False:
+	if True:
 		# Probabilistic forecasts.
 		# Some models can produce probabilistic forecasts.
 		# This is the case for all deep learning models (such as RNNModel, NBEATSModel, etc.), as well as for ARIMA and ExponentialSmoothing.
@@ -548,7 +518,7 @@ def machine_learning_and_global_models_example():
 		# For ARIMA and ExponentialSmoothing, one can simply specify a num_samples parameter to the predict() function.
 		# The returned TimeSeries will then be composed of num_samples Monte Carlo samples describing the distribution of the time series' values.
 		# The advantage of relying on Monte Carlo samples (in contrast to, say, explicit confidence intervals) is that they can be used to describe any parametric or non-parametric joint distribution over components, and compute arbitrary quantiles.
-		model_es = ExponentialSmoothing()
+		model_es = darts.models.ExponentialSmoothing()
 		model_es.fit(train_air)
 		probabilistic_forecast = model_es.predict(len(val_air), num_samples=500)
 
@@ -561,17 +531,14 @@ def machine_learning_and_global_models_example():
 		# With neural networks, one has to give a Likelihood object to the model.
 		# The likelihoods specify which distribution the model will try to fit, along with potential prior values for the distributions' parameters.
 		# The full list of available likelihoods is available in https://unit8co.github.io/darts/generated_api/darts.utils.likelihood_models.html.
-		from darts.models import TCNModel
-		from darts.utils.likelihood_models import LaplaceLikelihood
-
-		model = TCNModel(
+		model = darts.models.TCNModel(
 			input_chunk_length=24,
 			output_chunk_length=12,
 			random_state=42,
-			likelihood=LaplaceLikelihood(),
+			likelihood=darts.utils.likelihood_models.LaplaceLikelihood(),
 		)
 
-		model.fit(train_air_scaled, epochs=400, verbose=True);
+		model.fit(train_air_scaled, epochs=400, verbose=True)
 
 		# To get probabilistic forecasts, we again only need to specify some num_samples >> 1.
 		pred = model.predict(n=36, num_samples=500)
@@ -585,11 +552,11 @@ def machine_learning_and_global_models_example():
 
 		# Furthermore, we could also for instance specify that we have some prior belief that the scale of the distribution is about 0.1 (in the transformed domain), while still capturing some time dependency of the distribution, by specifying prior_b=.1.
 		# Behind the scenes this will regularize the training loss with a Kullback-Leibler divergence term.
-		model = TCNModel(
+		model = darts.models.TCNModel(
 			input_chunk_length=24,
 			output_chunk_length=12,
 			random_state=42,
-			likelihood=LaplaceLikelihood(prior_b=0.1),
+			likelihood=darts.utils.likelihood_models.LaplaceLikelihood(prior_b=0.1),
 		)
 
 		model.fit(train_air_scaled, epochs=400, verbose=True)
@@ -617,23 +584,19 @@ def machine_learning_and_global_models_example():
 		# How can we evaluate the quality of probabilistic forecasts?
 		# By default, most metrics functions (such as mape()) will keep working but look only at the median forecast.
 		# It is also possible to use the rho-risk metric (or quantile loss), which quantifies the error for each predicted quantiles.
-		from darts.metrics import rho_risk
-
-		print("MAPE of median forecast: %.2f" % mape(series_air, pred))
+		print("MAPE of median forecast: %.2f" % darts.metrics.mape(series_air, pred))
 		for rho in [0.05, 0.1, 0.5, 0.9, 0.95]:
-			rr = rho_risk(series_air, pred, rho=rho)
+			rr = darts.metrics.rho_risk(series_air, pred, rho=rho)
 			print("rho-risk at quantile %.2f: %.2f" % (rho, rr))
 
 		# Using quantile loss.
 		# Could we do better by fitting these quantiles directly?
 		# We can just use a QuantileRegression likelihood.
-		from darts.utils.likelihood_models import QuantileRegression
-
-		model = TCNModel(
+		model = darts.models.TCNModel(
 			input_chunk_length=24,
 			output_chunk_length=12,
 			random_state=42,
-			likelihood=QuantileRegression([0.05, 0.1, 0.5, 0.9, 0.95]),
+			likelihood=darts.utils.likelihood_models.QuantileRegression([0.05, 0.1, 0.5, 0.9, 0.95]),
 		)
 
 		model.fit(train_air_scaled, epochs=400, verbose=True)
@@ -647,45 +610,40 @@ def machine_learning_and_global_models_example():
 		pred.plot()
 		plt.show()
 
-		print("MAPE of median forecast: %.2f" % mape(series_air, pred))
+		print("MAPE of median forecast: %.2f" % darts.metrics.mape(series_air, pred))
 		for rho in [0.05, 0.1, 0.5, 0.9, 0.95]:
-			rr = rho_risk(series_air, pred, rho=rho)
+			rr = darts.metrics.rho_risk(series_air, pred, rho=rho)
 			print("rho-risk at quantile %.2f: %.2f" % (rho, rr))
 
 	#-----
-	if False:
+	if True:
 		# Ensembling models.
 		# Ensembling is about combining the forecasts produced by several models, in order to obtain a final - and hopefully better forecast.
 
 		# Naive ensembling.
 		# Naive ensembling just takes the average of the forecasts of several models.
-		from darts.models import NaiveEnsembleModel
-		from darts.models import NaiveDrift, NaiveSeasonal
+		models = [darts.models.NaiveDrift(), darts.models.NaiveSeasonal(12)]
 
-		models = [NaiveDrift(), NaiveSeasonal(12)]
-
-		ensemble_model = NaiveEnsembleModel(models=models)
+		ensemble_model = darts.models.NaiveEnsembleModel(models=models)
 
 		backtest = ensemble_model.historical_forecasts(
 			series_air, start=0.6, forecast_horizon=3, verbose=True
 		)
 
-		print("MAPE = %.2f" % (mape(backtest, series_air)))
+		print("MAPE = %.2f" % (darts.metrics.mape(backtest, series_air)))
 		series_air.plot()
 		backtest.plot()
 		plt.show()
 
 		# Learned ensembling.
 		# We can sometimes do better if we see the ensembling as a supervised regression problem: given a set of forecasts (features), find a model that combines them in order to minimise errors on the target.
-		from darts.models import RegressionEnsembleModel
+		models = [darts.models.NaiveDrift(), darts.models.NaiveSeasonal(12)]
 
-		models = [NaiveDrift(), NaiveSeasonal(12)]
-
-		ensemble_model = RegressionEnsembleModel(forecasting_models=models, regression_train_n_points=12)
+		ensemble_model = darts.models.RegressionEnsembleModel(forecasting_models=models, regression_train_n_points=12)
 
 		backtest = ensemble_model.historical_forecasts(series_air, start=0.6, forecast_horizon=3, verbose=True)
 
-		print("MAPE = %.2f" % (mape(backtest, series_air)))
+		print("MAPE = %.2f" % (darts.metrics.mape(backtest, series_air)))
 		series_air.plot()
 		backtest.plot()
 		plt.show()
@@ -699,9 +657,7 @@ def machine_learning_and_global_models_example():
 		# In addition to forecasting models, which are able to predict future values of series, Darts also contains a couple of helpful filtering models, which can model "in sample" series' values distributions.
 
 		# Fitting a Kalman filter.
-		from darts.models import KalmanFilter
-
-		kf = KalmanFilter(dim_x=3)
+		kf = darts.models.KalmanFilter(dim_x=3)
 		kf.fit(train_air_scaled)
 		filtered_series = kf.filter(train_air_scaled, num_samples=100)
 
@@ -711,29 +667,22 @@ def machine_learning_and_global_models_example():
 
 		# Inferring missing values with Gaussian Processes.
 		# Darts also contains a GaussianProcessFilter which can be used for probabilistic modeling of series.
-		from darts.models import GaussianProcessFilter
-		from sklearn.gaussian_process.kernels import RBF
-
 		# create a series with holes:
 		values = train_air_scaled.values()
 		values[20:22] = np.nan
 		values[28:32] = np.nan
 		values[55:59] = np.nan
 		values[72:80] = np.nan
-		series_holes = TimeSeries.from_times_and_values(train_air_scaled.time_index, values)
+		series_holes = darts.TimeSeries.from_times_and_values(train_air_scaled.time_index, values)
 		series_holes.plot()
 
-		kernel = RBF()
+		kernel = sklearn.gaussian_process.kernels.RBF()
 
-		gpf = GaussianProcessFilter(kernel=kernel, alpha=0.1, normalize_y=True)
+		gpf = darts.models.GaussianProcessFilter(kernel=kernel, alpha=0.1, normalize_y=True)
 		filtered_series = gpf.filter(series_holes, num_samples=100)
 
 		filtered_series.plot()
 		plt.show()
-
-# REF [site] >> https://unit8co.github.io/darts/userguide.html
-def user_guide_example():
-	raise NotImplementedError
 
 def main():
 	example_usage()
@@ -744,7 +693,25 @@ def main():
 	#machine_learning_and_global_models_example()
 
 	# User guide.
-	#user_guide_example()  # Not yet implemented.
+	# REF [site] >> https://unit8co.github.io/darts/userguide.html
+
+	# Examples.
+	# REF [site] >>
+	#	https://unit8co.github.io/darts/examples.html
+	#	https://github.com/unit8co/darts/tree/master/examples
+	#
+	#	Hyperparameter Optimization.
+	#	Fast Fourier Transform.
+	#	Dynamic Time Warping (DTW).
+	#	Recurrent Neural Networks.
+	#	Temporal Convolutional Networks.
+	#	Transformer Model.
+	#	N-BEATS Model.
+	#	DeepAR Model.
+	#	DeepTCN Model.
+	#	Temporal Fusion Transformer (TFT) Model.
+	#	Kalman Filter Model.
+	#	Gaussian Process Filter Model.
 
 #--------------------------------------------------------------------
 
