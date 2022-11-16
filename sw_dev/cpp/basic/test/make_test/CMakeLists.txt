@@ -66,25 +66,36 @@ find_package(Threads REQUIRED)
 #find_package(OpenMP REQUIRED)
 #find_package(Boost 1.62 REQUIRED thread timer)
 #find_package(Log4cxx REQUIRED)
+#find_package(glog REQUIRED)
+#find_package(gflags REQUIRED)
 #find_package(ZLIB REQUIRED)
+#find_package(CUDA REQUIRED)
 #find_package(GSL REQUIRED)
 #find_package(Qt5 COMPONENTS Core Gui Widgets Quick Qml Concurrent REQUIRED)
 #find_package(OpenCV 4.2.0 REQUIRED)
-#find_package(CUDA REQUIRED)
+#find_package(Ceres REQUIRED)
+
+#find_library(MY_LIBRARIES NAMES libmy.a)
+#find_library(MY_LIBRARIES NAMES libmy.a PATHS /path/to/lib)
+#message(STATUS "MY_LIBRARIES found: ${MY_LIBRARIES}")
 
 #include_directories(${Boost_INCLUDE_DIRS})
 #include_directories(${LOG4CXX_INCLUDE_DIR})
 #include_directories(${ZLIB_INCLUDE_DIRS})
+#include_directories(${CUDA_INCLUDE_DIRS})
 #include_directories(/usr/include/eigen3)
 #include_directories(${GSL_INCLUDE_DIRS})
 #include_directories(${QT_INCLUDE_DIR})
 #include_directories(${OpenCV_INCLUDE_DIRS})
-#include_directories(${CUDA_INCLUDE_DIRS})
+#message(STATUS "Include directories: ${INCLUDE_DIRECTORIES}")
 
 #link_directories(${Boost_LIBRARY_DIRS})
+#link_directories(BEFORE /usr/local/lib)
+#message(STATUS "Link directories: ${LINK_DIRECTORIES}")
 
 #add_definitions(${OpenMP_CXX_FLAGS})
 #add_definitions(${QT_DEFINITIONS})
+#message(STATUS "Compile definitions: ${COMPILE_DEFINITIONS}")
 
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES GNU)
@@ -112,10 +123,13 @@ set(LIBS
 #	${OpenMP_CXX_FLAGS}
 #	OpenMP::OpenMP_CXX
 #	${LOG4CXX_LIBRARIES}
+#	${GLOG_LIBRARIES}
+#	${GFLAGS_LIBRARIES}
 #	${ZLIB_LIBRARIES}
+#	${CUDA_LIBRARIES}
 #	Qt5::Core Qt5::Widgets
 #	${OpenCV_LIBRARIES}
-#	${CUDA_LIBRARIES}
+#	${CERES_LIBRARIES}
 )
 
 add_executable(${TARGET} ${SRCS})
