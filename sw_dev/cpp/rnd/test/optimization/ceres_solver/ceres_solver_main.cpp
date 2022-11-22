@@ -238,6 +238,7 @@ void curve_fitting_example();
 void robust_curve_fitting_example();
 void simple_bundle_adjustment_example();
 void bundle_adjustment_example();
+void robot_pose_mle_example();
 
 }  // namespace my_ceres_solver
 
@@ -259,10 +260,18 @@ int ceres_solver_main(int argc, char *argv[])
 
 	// Bundle adjustment.
 	//my_ceres_solver::simple_bundle_adjustment_example();
-	my_ceres_solver::bundle_adjustment_example();
+	//my_ceres_solver::bundle_adjustment_example();
 
 	// Other examples.
-	// REF [site] >> http://ceres-solver.org/nnls_tutorial.html
+	//	REF [site] >> http://ceres-solver.org/nnls_tutorial.html
+	//my_ceres_solver::circle_fit_example();  // Not yet implemented.
+	//my_ceres_solver::ellipse_approximation_example();  // Not yet implemented.
+	//my_ceres_solver::image_denoising_example();  // Not yet implemented.
+	//my_ceres_solver::libmv_bundle_adjuster_example();  // Not yet implemented.
+	//my_ceres_solver::libmv_homography_example();  // Not yet implemented.
+	my_ceres_solver::robot_pose_mle_example();
+	//my_ceres_solver::pose_graph_2d_example();  // Not yet implemented.
+	//my_ceres_solver::pose_graph_3d_example();  // Not yet implemented.
 
 	return 0;
 }

@@ -123,6 +123,7 @@ set(SRCS
 	ceres_solver_main.cpp
 	ceres_solver_bundle_adjustment_example.cpp
 	ceres_solver_curve_fitting_example.cpp
+	ceres_solver_robot_pose_mle_example.cpp
 	bal_problem.cpp
 )
 set(LIBS
