@@ -58,6 +58,9 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
 #	set(CMAKE_CXX_FLAGS_MINSIZEREL "/MD /O1 /Ob1 /D NDEBUG")
 #	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/MD /Zi /O2 /Ob1 /D NDEBUG")
 
+#	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")  # {-MD, -MDd}. Default.
+#	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")  # {-MT, -MTd}.
+
 	add_definitions(/DUNICODE /D_UNICODE)
 endif()
 
