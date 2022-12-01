@@ -215,7 +215,7 @@ def multiple_stock_trading_tutorial():
 	print(trade.head())
 
 	df_account_value, df_actions = DRLAgent.DRL_prediction(
-		model=trained_sac, 
+		model=trained_sac,
 		environment=e_trade_gym,
 	)
 
@@ -262,7 +262,7 @@ def multiple_stock_trading_tutorial():
 
 # Environment for portfolio allocation.
 class StockPortfolioEnv(gym.Env):
-	"""A single stock trading environment for OpenAI gym
+	"""A single stock trading environment for OpenAI gym.
 
 	Attributes
 	----------
@@ -325,31 +325,31 @@ class StockPortfolioEnv(gym.Env):
 		day=0
 	):
 		#super(StockEnv, self).__init__()
-		#money = 10 , scope = 1
+		#money = 10, scope = 1
 		self.day = day
 		self.lookback=lookback
 		self.df = df
 		self.stock_dim = stock_dim
 		self.hmax = hmax
 		self.initial_amount = initial_amount
-		self.transaction_cost_pct =transaction_cost_pct
+		self.transaction_cost_pct = transaction_cost_pct
 		self.reward_scaling = reward_scaling
 		self.state_space = state_space
 		self.action_space = action_space
 		self.tech_indicator_list = tech_indicator_list
 
 		# Action_space normalization and shape is self.stock_dim.
-		self.action_space = spaces.Box(low=0, high=1, shape=(self.action_space,)) 
-		# Shape = (34, 30)
-		# covariance matrix + technical indicators
+		self.action_space = spaces.Box(low=0, high=1, shape=(self.action_space,))
+		# Shape = (34, 30).
+		# covariance matrix + technical indicators.
 		self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(self.state_space+len(self.tech_indicator_list), self.state_space))
 
 		# Load data from a pandas dataframe.
 		self.data = self.df.loc[self.day,:]
 		self.covs = self.data["cov_list"].values[0]
 		self.state =  np.append(np.array(self.covs), [self.data[tech].values.tolist() for tech in self.tech_indicator_list], axis=0)
-		self.terminal = False     
-		self.turbulence_threshold = turbulence_threshold        
+		self.terminal = False
+		self.turbulence_threshold = turbulence_threshold
 		# Initalize state: inital portfolio return + individual stock return + individual weights.
 		self.portfolio_value = self.initial_amount
 
@@ -362,7 +362,7 @@ class StockPortfolioEnv(gym.Env):
 
 	def step(self, actions):
 		#print(self.day)
-		self.terminal = self.day >= len(self.df.index.unique())-1
+		self.terminal = self.day >= len(self.df.index.unique()) - 1
 		#print(actions)
 
 		if self.terminal:
@@ -377,14 +377,14 @@ class StockPortfolioEnv(gym.Env):
 			plt.close()
 
 			print("=================================")
-			print("begin_total_asset:{}".format(self.asset_memory[0]))           
+			print("begin_total_asset:{}".format(self.asset_memory[0]))
 			print("end_total_asset:{}".format(self.portfolio_value))
 
 			df_daily_return = pd.DataFrame(self.portfolio_return_memory)
 			df_daily_return.columns = ["daily_return"]
 			if df_daily_return["daily_return"].std() != 0:
 				sharpe = (252**0.5) * df_daily_return["daily_return"].mean() / df_daily_return["daily_return"].std()
-				print("Sharpe: ",sharpe)
+				print("Sharpe: ", sharpe)
 			print("=================================")
 			
 			return self.state, self.reward, self.terminal,{}
@@ -481,6 +481,11 @@ class StockPortfolioEnv(gym.Env):
 		obs = e.reset()
 		return e, obs
 
+# REF [site] >> https://github.com/AI4Finance-Foundation/FinRL-Meta/blob/master/tutorials/1-Introduction/China_A_share_market_tushare.ipynb
+#	Quantitative trading in China A stock market with FinRL.
+def quantitative_trading_tutorial():
+	raise NotImplementedError
+
 # REF [site] >> https://github.com/AI4Finance-Foundation/FinRL-Meta/blob/master/tutorials/1-Introduction/FinRL_PortfolioAllocation_NeurIPS_2020.ipynb
 #	Deep Reinforcement Learning for Stock Trading from Scratch: Portfolio Allocation.
 def portfolio_allocation_tutorial():
@@ -533,7 +538,7 @@ def portfolio_allocation_tutorial():
 	return_list = []
 
 	# Look back is one year.
-	lookback=252
+	lookback = 252
 	for i in range(lookback,len(df.index.unique())):
 		data_lookback = df.loc[i-lookback:i,:]
 		price_lookback=data_lookback.pivot_table(index="date", columns="tic", values="close")
@@ -588,7 +593,11 @@ def portfolio_allocation_tutorial():
 
 	# Model 1: A2C.
 	agent = DRLAgent(env=env_train)
-	A2C_PARAMS = {"n_steps": 5, "ent_coef": 0.005, "learning_rate": 0.0002}
+	A2C_PARAMS = {
+		"n_steps": 5,
+		"ent_coef": 0.005,
+		"learning_rate": 0.0002,
+	}
 	model_a2c = agent.get_model(model_name="a2c", model_kwargs=A2C_PARAMS)
 
 	trained_a2c = agent.train_model(
@@ -619,7 +628,11 @@ def portfolio_allocation_tutorial():
 
 	# Model 3: DDPG.
 	agent = DRLAgent(env=env_train)
-	DDPG_PARAMS = {"batch_size": 128, "buffer_size": 50000, "learning_rate": 0.001}
+	DDPG_PARAMS = {
+		"batch_size": 128,
+		"buffer_size": 50000,
+		"learning_rate": 0.001,
+	}
 	model_ddpg = agent.get_model("ddpg", model_kwargs=DDPG_PARAMS)
 
 	trained_ddpg = agent.train_model(
@@ -650,7 +663,7 @@ def portfolio_allocation_tutorial():
 	#trained_sac.save("/content/trained_models/trained_sac.zip")
 
 	# Model 5: TD3.
-	agent = DRLAgent(env = env_train)
+	agent = DRLAgent(env=env_train)
 	TD3_PARAMS = {
 		"batch_size": 100, 
 		"buffer_size": 1000000, 
@@ -702,7 +715,7 @@ def portfolio_allocation_tutorial():
 	baseline_df = get_baseline(
 		ticker="^DJI", 
 		start=df_daily_return.loc[0, "date"],
-		end=df_daily_return.loc[len(df_daily_return) - 1, "date"]
+		end=df_daily_return.loc[len(df_daily_return) - 1, "date"],
 	)
 
 	stats = backtest_stats(baseline_df, value_col_name="close")
@@ -718,7 +731,7 @@ def portfolio_allocation_tutorial():
 	baseline_returns = get_daily_return(baseline_df, value_col_name="close")
 
 	with pyfolio.plotting.plotting_context(font_scale=1.1):
-		pyfolio.create_full_tear_sheet(returns = DRL_strat, benchmark_rets=baseline_returns, set_context=False)
+		pyfolio.create_full_tear_sheet(returns=DRL_strat, benchmark_rets=baseline_returns, set_context=False)
 
 	# Min-variance portfolio allocation.
 	from pypfopt.efficient_frontier import EfficientFrontier
@@ -775,30 +788,25 @@ def portfolio_allocation_tutorial():
 	time_ind = pd.Series(df_daily_return.date)
 
 	trace0_portfolio = go.Scatter(x=time_ind, y=a2c_cumpod, mode="lines", name="A2C (Portfolio Allocation)")
-
 	trace1_portfolio = go.Scatter(x=time_ind, y=dji_cumpod, mode="lines", name="DJIA")
 	trace2_portfolio = go.Scatter(x=time_ind, y=min_var_cumpod, mode="lines", name="Min-Variance")
 	#trace3_portfolio = go.Scatter(x=time_ind, y=ddpg_cumpod, mode="lines", name="DDPG")
 	#trace4_portfolio = go.Scatter(x=time_ind, y=addpg_cumpod, mode="lines", name="Adaptive-DDPG")
 	#trace5_portfolio = go.Scatter(x=time_ind, y=min_cumpod, mode="lines", name="Min-Variance")
 
-	#trace4 = go.Scatter(x =time_ind, y=addpg_cumpod, mode="lines", name="Adaptive-DDPG")
-
+	#trace4 = go.Scatter(x=time_ind, y=addpg_cumpod, mode="lines", name="Adaptive-DDPG")
 	#trace2 = go.Scatter(x=time_ind, y=portfolio_cost_minv, mode="lines", name="Min-Variance")
 	#trace3 = go.Scatter(x=time_ind, y=spx_value, mode="lines", name="SPX")
 
 	fig = go.Figure()
 	fig.add_trace(trace0_portfolio)
-
 	fig.add_trace(trace1_portfolio)
-
 	fig.add_trace(trace2_portfolio)
-
 	fig.update_layout(
 		legend=dict(
 			x=0, y=1,
 			traceorder="normal",
-			font=dict(family="sans-serif",size=15, color="black"),
+			font=dict(family="sans-serif", size=15, color="black"),
 			bgcolor="White",
 			bordercolor="white",
 			borderwidth=2,
@@ -808,17 +816,15 @@ def portfolio_allocation_tutorial():
 	fig.update_layout(
 		title={
 			#"text": "Cumulative Return using FinRL",
-			"y": 0.85,
-			"x": 0.5,
-			"xanchor": "center",
-			"yanchor": "top"
+			"x": 0.5, "y": 0.85,
+			"xanchor": "center", "yanchor": "top"
 		}
 	)
 	# With transaction cost.
 	#fig.update_layout(title="Quarterly Trade Date")
 	fig.update_layout(
 		#margin=dict(l=20, r=20, t=20, b=20),
-		paper_bgcolor="rgba(1,1,0,0)",
+		paper_bgcolor="rgba(1, 1, 0, 0)",
 		plot_bgcolor="rgba(1, 1, 0, 0)",
 		#xaxis_title="Date",
 		yaxis_title="Cumulative Return",
@@ -832,6 +838,7 @@ def portfolio_allocation_tutorial():
 
 def main():
 	#multiple_stock_trading_tutorial()
+	#quantitative_trading_tutorial()  # Not yet implemented.
 	portfolio_allocation_tutorial()
 
 #--------------------------------------------------------------------
