@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import os, time
+import os, random, glob, time
+import numpy as np
 import pybullet as p
 import pybullet_data
 
@@ -81,6 +82,104 @@ def hello_pybullet_world_introduction():
 	print(f"p.getBasePositionAndOrientation(boxId) = {p.getBasePositionAndOrientation(boxId)}.")
 
 	p.disconnect()
+
+# REF [site] >> https://towardsdatascience.com/simulate-images-for-ml-in-pybullet-the-quick-easy-way-859035b2c9dd
+def simulate_images_test():
+	physicsClient = p.connect(p.GUI)
+
+	#-----
+	# Load a plane.
+	p.setAdditionalSearchPath(pybullet_data.getDataPath())
+	planeId = p.loadURDF("plane.urdf")
+
+	# Load objects.
+	# Visual shape.
+	visualShapeId = p.createVisualShape(
+		shapeType=p.GEOM_MESH,
+		fileName="random_urdfs/000/000.obj",
+		rgbaColor=None,
+		meshScale=[0.1, 0.1, 0.1],
+	)
+	assert visualShapeId >= 0
+
+	# Collision shape.
+	collisionShapeId = p.createCollisionShape(
+		shapeType=p.GEOM_MESH,
+		#fileName="random_urdfs/000/000_coll.obj",  # No file exists.
+		fileName="random_urdfs/000/000.obj",
+		meshScale=[0.1, 0.1, 0.1],
+	)
+	assert collisionShapeId >= 0
+
+	# Multi-body.
+	multiBodyId = p.createMultiBody(
+		baseMass=1.0,
+		baseCollisionShapeIndex=collisionShapeId, 
+		baseVisualShapeIndex=visualShapeId,
+		basePosition=[0, 0, 1],
+		baseOrientation=p.getQuaternionFromEuler([0, 0, 0]),
+	)
+	assert multiBodyId >= 0
+
+	#-----
+	# Apply textures to objects.
+	#	REF [site] >> https://www.robots.ox.ac.uk/~vgg/data/dtd/
+	texture_paths = glob.glob(os.path.join("dtd", "**", "*.jpg"), recursive=True)
+	random_texture_path = texture_paths[random.randint(0, len(texture_paths) - 1)]
+	textureId = p.loadTexture(random_texture_path)
+	assert textureId >= 0
+
+	p.changeVisualShape(multiBodyId, -1, textureUniqueId=textureId)
+
+	#-----
+	# Simulation.
+	p.setGravity(0, 0, -9.8)
+	p.setRealTimeSimulation(1)
+
+	#-----
+	# Render images.
+	# View matrix.
+	viewMatrix = p.computeViewMatrix(
+		cameraEyePosition=[0, 0, 3],
+		cameraTargetPosition=[0, 0, 0],
+		cameraUpVector=[0, 1, 0],
+	)
+
+	# Projection matrix.
+	projectionMatrix = p.computeProjectionMatrixFOV(
+		fov=45.0,
+		aspect=1.0,
+		nearVal=0.1,
+		farVal=3.1,
+	)
+
+	# Get camera images.
+	imageWidth, imageHeight, rgbaPixels, depthPixels, segmentationMaskBuffer = p.getCameraImage(
+		width=224, 
+		height=224,
+		viewMatrix=viewMatrix,
+		projectionMatrix=projectionMatrix,
+	)
+
+	rgbaImage = np.reshape(rgbaPixels, (imageHeight, imageWidth, 4))  # RGBA.
+	depthImage = np.reshape(depthPixels, (imageHeight, imageWidth))
+	segMaskImage = np.reshape(segmentationMaskBuffer, (imageHeight, imageWidth))
+
+	print(f"RGBA image: shape = {rgbaImage.shape}, dtype = {rgbaImage.dtype}, (min, max) = ({np.min(rgbaImage)}, {np.max(rgbaImage)}).")
+	print(f"Depth image: shape = {depthImage.shape}, dtype = {depthImage.dtype}, (min, max) = ({np.min(depthImage)}, {np.max(depthImage)}).")
+	print(f"Segmentation mask: shape = {segMaskImage.shape}, dtype = {segMaskImage.dtype}, (min, max) = ({np.min(segMaskImage)}, {np.max(segMaskImage)}).")
+
+	if False:
+		import cv2
+
+		cv2.imwrite("./rgba.png", rgbaImage)
+		cv2.imwrite("./depth.png", (depthImage * 255).astype(np.uint8))
+		cv2.imwrite("./seg_mask.png", segMaskImage * 255)
+
+	# REF [site] >> https://github.com/bulletphysics/bullet3/blob/master/examples/pybullet/examples/pointCloudFromCameraImage.py
+
+	while True:
+		p.stepSimulation()
 
 def environment_test():
 	import pybullet_envs  # Register PyBullet environments.
@@ -334,31 +433,9 @@ def stable_baselines_train_example():
 	import pybullet_envs  # Register PyBullet envs.
 
 	if True:
-		algo = SAC  # RL Algorithm.
 		algo_id = "sac"
-		# Tuned hyperparameters from https://github.com/DLR-RM/rl-baselines3-zoo
-		hyperparams = dict(
-			batch_size=256,
-			gamma=0.98,
-			policy_kwargs=dict(net_arch=[256, 256]),
-			learning_starts=10000,
-			buffer_size=int(3e5),
-			tau=0.01,
-		)
 	elif False:
-		algo = TD3  # RL Algorithm.
 		algo_id = "td3"
-		# Tuned hyperparameters from https://github.com/DLR-RM/rl-baselines3-zoo
-		hyperparams = dict(
-			batch_size=100,
-			policy_kwargs=dict(net_arch=[400, 300]),
-			learning_rate=1e-3,
-			learning_starts=10000,
-			buffer_size=int(1e6),
-			train_freq=1,
-			gradient_steps=1,
-			action_noise=NormalActionNoise(mean=np.zeros(n_actions), sigma=0.1 * np.ones(n_actions)),
-		)
 	env_id = "HalfCheetahBulletEnv-v0"  # Environment ID.
 	n_timesteps = int(1e6)  # Number of training timesteps.
 	save_freq = -1  # Save the model every n steps (if negative, no checkpoint).
@@ -377,6 +454,30 @@ def stable_baselines_train_example():
 		callbacks.append(CheckpointCallback(save_freq=save_freq, save_path=save_path, name_prefix="rl_model"))
 
 	n_actions = env.action_space.shape[0]
+
+	# Tuned hyperparameters from https://github.com/DLR-RM/rl-baselines3-zoo
+	if algo_id == "sac":
+		algo = SAC  # RL Algorithm.
+		hyperparams = dict(
+			batch_size=256,
+			gamma=0.98,
+			policy_kwargs=dict(net_arch=[256, 256]),
+			learning_starts=10000,
+			buffer_size=int(3e5),
+			tau=0.01,
+		)
+	elif algo_id == "td3":
+		algo = TD3  # RL Algorithm.
+		hyperparams = dict(
+			batch_size=100,
+			policy_kwargs=dict(net_arch=[400, 300]),
+			learning_rate=1e-3,
+			learning_starts=10000,
+			buffer_size=int(1e6),
+			train_freq=1,
+			gradient_steps=1,
+			action_noise=NormalActionNoise(mean=np.zeros(n_actions), sigma=0.1 * np.ones(n_actions)),
+		)
 
 	model = algo("MlpPolicy", env, verbose=1, **hyperparams)
 	try:
@@ -473,6 +574,7 @@ def main():
 	#	pybullet_utils
 
 	#hello_pybullet_world_introduction()
+	simulate_images_test()
 
 	#--------------------
 	# Environments.
@@ -509,7 +611,7 @@ def main():
 	#baselines_enjoy_pybullet_racecar_example()
 
 	# Stable Baselines3.
-	stable_baselines_train_example()
+	#stable_baselines_train_example()
 	#stable_baselines_enjoy_example()
 
 #--------------------------------------------------------------------
