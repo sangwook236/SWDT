@@ -84,7 +84,7 @@ def hello_pybullet_world_introduction():
 	p.disconnect()
 
 # REF [site] >> https://towardsdatascience.com/simulate-images-for-ml-in-pybullet-the-quick-easy-way-859035b2c9dd
-def simulate_images_test():
+def simulate_camera_images_test():
 	physicsClient = p.connect(p.GUI)
 
 	#-----
@@ -178,6 +178,137 @@ def simulate_images_test():
 
 	# REF [site] >> https://github.com/bulletphysics/bullet3/blob/master/examples/pybullet/examples/pointCloudFromCameraImage.py
 
+	#-----
+	# Run simulation.
+	while True:
+		p.stepSimulation()
+
+# REF [site] >> https://github.com/ElectronicElephant/pybullet_ur5_robotiq
+def articulated_robot_test():
+	from collections import namedtuple
+
+	physicsClient = p.connect(p.GUI)
+
+	#p.setGravity(0, 0, -9.8)
+	#p.setRealTimeSimulation(1)
+
+	#-----
+	# Load a plane.
+	p.setAdditionalSearchPath(pybullet_data.getDataPath())
+	planeId = p.loadURDF("plane.urdf")
+
+	#-----
+	# Load a robot.
+	# REF [function] >> RobotBase.__parse_joint_info__() in https://github.com/ElectronicElephant/pybullet_ur5_robotiq/blob/robotflow/robot.py
+
+	def parse_joint_info(robotId, robotDof):
+		numJoints = p.getNumJoints(robotId)
+		jointInfo = namedtuple("jointInfo", ["id", "name", "type", "damping", "friction", "lowerLimit", "upperLimit", "maxForce", "maxVelocity", "controllable"])
+		joints = []
+		controllable_joints = []
+		for i in range(numJoints):
+			info = p.getJointInfo(robotId, i)
+			jointID = info[0]
+			jointName = info[1].decode("utf-8")
+			jointType = info[2]  # JOINT_REVOLUTE, JOINT_PRISMATIC, JOINT_SPHERICAL, JOINT_PLANAR, JOINT_FIXED
+			jointDamping = info[6]
+			jointFriction = info[7]
+			jointLowerLimit = info[8]
+			jointUpperLimit = info[9]
+			jointMaxForce = info[10]
+			jointMaxVelocity = info[11]
+			controllable = (jointType != p.JOINT_FIXED)
+			if controllable:
+				controllable_joints.append(jointID)
+				p.setJointMotorControl2(robotId, jointID, p.VELOCITY_CONTROL, targetVelocity=0, force=0)
+			info = jointInfo(jointID,jointName,jointType,jointDamping,jointFriction,jointLowerLimit, jointUpperLimit,jointMaxForce,jointMaxVelocity,controllable)
+			joints.append(info)
+
+		assert len(controllable_joints) >= robotDof
+		arm_controllable_joints = controllable_joints[:robotDof]
+
+		arm_lower_limits = [info.lowerLimit for info in joints if info.controllable][:robotDof]
+		arm_upper_limits = [info.upperLimit for info in joints if info.controllable][:robotDof]
+		arm_joint_ranges = [info.upperLimit - info.lowerLimit for info in joints if info.controllable][:robotDof]
+
+		return joints, controllable_joints, arm_controllable_joints, arm_lower_limits, arm_upper_limits, arm_joint_ranges
+
+	robot_base_position = (0, 0.5, 0)
+	robot_base_orientation = p.getQuaternionFromEuler((0, 0, 0))  # (roll, pitch, yaw).
+	if True:
+		# UR5 + ROBOTIQ 85.
+		robotId = p.loadURDF("./urdf/ur5_robotiq_85.urdf", robot_base_position, robot_base_orientation, useFixedBase=True, flags=p.URDF_ENABLE_CACHED_GRAPHICS_SHAPES)
+		endEffectorId = 7
+		robotDof = 6
+		armRestPoses = [-1.5690622952052096, -1.5446774605904932, 1.343946009733127, -1.3708613585093699, -1.5707970583733368, 0.0009377758247187636]
+	elif False:
+		# UR5 + ROBOTIQ 140.
+		robotId = p.loadURDF("./urdf/ur5_robotiq_140.urdf", robot_base_position, robot_base_orientation, useFixedBase=True, flags=p.URDF_ENABLE_CACHED_GRAPHICS_SHAPES)
+		endEffectorId = 7
+		robotDof = 6
+		armRestPoses = [-1.5690622952052096, -1.5446774605904932, 1.343946009733127, -1.3708613585093699, -1.5707970583733368, 0.0009377758247187636]
+	else:
+		# Panda (Franka Emika).
+		robotId = p.loadURDF("./urdf/panda.urdf", robot_base_position, robot_base_orientation, useFixedBase=True, flags=p.URDF_ENABLE_CACHED_GRAPHICS_SHAPES)
+		endEffectorId = 11
+		robotDof = 7
+		armRestPoses = [0.98, 0.458, 0.31, -2.24, -0.30, 2.66, 2.32]
+
+	#joints, controllable_joints, arm_controllable_joints, arm_lower_limits, arm_upper_limits, arm_joint_ranges = parse_joint_info(robotId, robotDof)
+	arm_controllable_joints = parse_joint_info(robotId, robotDof)[2]
+
+	for restPose, jointId in zip(armRestPoses, arm_controllable_joints):
+		p.resetJointState(robotId, jointId, restPose)
+
+	#-----
+	# Load a box.
+	boxID = p.loadURDF(
+		"./urdf/skew-box-button.urdf",
+		(0.0, 0.0, 0.0),
+		#p.getQuaternionFromEuler((0, 1.5706453, 0)),
+		p.getQuaternionFromEuler((0, 0, 0)),
+		useFixedBase=True,
+		flags=p.URDF_MERGE_FIXED_LINKS | p.URDF_USE_SELF_COLLISION
+	)
+
+	p.setJointMotorControl2(boxID, 0, p.POSITION_CONTROL, force=1)
+	p.setJointMotorControl2(boxID, 1, p.VELOCITY_CONTROL, force=0)
+
+	#-----
+	# Render images.
+	# View matrix.
+	viewMatrix = p.computeViewMatrix(
+		cameraEyePosition=(1, 1, 1),
+		cameraTargetPosition=[0, 0, 0],
+		cameraUpVector=(0, 0, 1),
+	)
+
+	# Projection matrix.
+	projectionMatrix = p.computeProjectionMatrixFOV(
+		fov=40.0,
+		aspect=1.0,
+		nearVal=0.1,
+		farVal=5.0,
+	)
+
+	# Get camera images.
+	imageWidth, imageHeight, rgbaPixels, depthPixels, segmentationMaskBuffer = p.getCameraImage(
+		width=320, 
+		height=320,
+		viewMatrix=viewMatrix,
+		projectionMatrix=projectionMatrix,
+	)
+
+	rgbaImage = np.reshape(rgbaPixels, (imageHeight, imageWidth, 4))  # RGBA.
+	depthImage = np.reshape(depthPixels, (imageHeight, imageWidth))
+	segMaskImage = np.reshape(segmentationMaskBuffer, (imageHeight, imageWidth))
+
+	print(f"RGBA image: shape = {rgbaImage.shape}, dtype = {rgbaImage.dtype}, (min, max) = ({np.min(rgbaImage)}, {np.max(rgbaImage)}).")
+	print(f"Depth image: shape = {depthImage.shape}, dtype = {depthImage.dtype}, (min, max) = ({np.min(depthImage)}, {np.max(depthImage)}).")
+	print(f"Segmentation mask: shape = {segMaskImage.shape}, dtype = {segMaskImage.dtype}, (min, max) = ({np.min(segMaskImage)}, {np.max(segMaskImage)}).")
+
+	#-----
+	# Run simulation.
 	while True:
 		p.stepSimulation()
 
@@ -277,8 +408,8 @@ def baselines_train_kuka_grasping_example():
 
 	def callback(lcl, glb):
 		# Stop training if reward exceeds 199.
-		total = sum(lcl['episode_rewards'][-101:-1]) / 100
-		totalt = lcl['t']
+		total = sum(lcl["episode_rewards"][-101:-1]) / 100
+		totalt = lcl["t"]
 		#print("totalt")
 		#print(totalt)
 		is_solved = totalt > 2000 and total >= 10
@@ -327,7 +458,7 @@ def baselines_train_pybullet_cartpole_example():
 
 	def callback(lcl, glb):
 		# Stop training if reward exceeds 199.
-		is_solved = lcl['t'] > 100 and sum(lcl['episode_rewards'][-101:-1]) / 100 >= 199
+		is_solved = lcl["t"] > 100 and sum(lcl["episode_rewards"][-101:-1]) / 100 >= 199
 		return is_solved
 
 	env = CartPoleBulletEnv(renders=False)
@@ -352,7 +483,7 @@ def baselines_enjoy_pybullet_cartpole_example():
 	from baselines import deepq
 	from pybullet_envs.bullet.cartpole_bullet import CartPoleBulletEnv
 
-	#env = gym.make('CartPoleBulletEnv-v1')
+	#env = gym.make("CartPoleBulletEnv-v1")
 	env = CartPoleBulletEnv(renders=True, discrete_actions=True)
 	act = deepq.load("cartpole_model.pkl")
 
@@ -381,8 +512,8 @@ def baselines_train_pybullet_racecar_example():
 
 	def callback(lcl, glb):
 		# Stop training if reward exceeds 199.
-		total = sum(lcl['episode_rewards'][-101:-1]) / 100
-		totalt = lcl['t']
+		total = sum(lcl["episode_rewards"][-101:-1]) / 100
+		totalt = lcl["t"]
 		is_solved = totalt > 2000 and total >= -50
 		return is_solved
 
@@ -574,7 +705,9 @@ def main():
 	#	pybullet_utils
 
 	#hello_pybullet_world_introduction()
-	simulate_images_test()
+
+	#simulate_camera_images_test()
+	articulated_robot_test()
 
 	#--------------------
 	# Environments.
