@@ -1,6 +1,8 @@
 [-] General.
 	- Site.
 		http://www.ros.org/
+		https://docs.ros.org/
+
 		http://wiki.ros.org/ROS
 		http://wiki.ros.org/ko
 		http://wiki.ros.org/ROS/Installation
@@ -59,7 +61,192 @@
 		roslaunch openni_camera openni_node.launch 
 		rosrun rgbdslam rgbdslam
 
-[-] Tutorial (Ubuntu).
+[-] Tutorial (Ubuntu, ROS 2).
+	https://docs.ros.org/en/humble/Tutorials.html
+
+	- CLI tools.
+		Configuring environment:
+			source /opt/ros/humble/setup.bash
+
+			printenv | grep -i ROS
+				ROS_VERSION=2
+				ROS_PYTHON_VERSION=3
+				ROS_DISTRO=humble
+
+				ROS_DOMAIN_ID=0
+				ROS_LOCALHOST_ONLY=0
+
+		Using turtlesim and rqt:
+			Install turtlesim:
+				Install the turtlesim package for your ROS 2 distro:
+					sudo apt install ros-humble-turtlesim
+				Check that the package installed:
+					ros2 pkg executables turtlesim
+						turtlesim draw_square
+						turtlesim mimic
+						turtlesim turtle_teleop_key
+						turtlesim turtlesim_node
+
+			Start turtlesim:
+				ros2 run turtlesim turtlesim_node
+
+			Use turtlesim:
+				Open a new terminal and source ROS 2 again:
+					ros2 run turtlesim turtle_teleop_key
+
+				Use the list command to see the nodes and their associated services, topics, and actions:
+					ros2 node list
+					ros2 topic list
+					ros2 service list
+					ros2 action list
+
+			Install rqt:
+				sudo apt install ~nros-humble-rqt*
+
+				rqt
+
+			Use rqt:
+
+			Remapping:
+				Remapping allows you to reassign default node properties, like node name, topic names, service names, etc., to custom values.
+
+				ros2 run turtlesim turtle_teleop_key --ros-args --remap turtle1/cmd_vel:=turtle2/cmd_vel
+
+	- Client libraries.
+		sudo apt install python3-colcon-common-extensions
+		sudo apt install python3-rosdep2
+		pip install catkin_pkg lark
+
+		Using colcon to build packages:
+			Source ROS 2 environment:
+				source /opt/ros/humble/setup.bash
+
+			Create a workspace:
+				mkdir -p ros2_ws/src
+				cd ros2_ws
+
+			Add some sources:
+				git clone https://github.com/ros2/examples src/examples -b humble
+
+			Source an underlay:
+				Our workspace, ros2_ws, will be an overlay on top of the existing ROS 2 installation (an underlay).
+
+			Build the workspace:
+				colcon build --symlink-install
+
+			Run tests:
+				colcon test
+
+			Source the environment:
+				. install/setup.bash
+
+			Try a demo:
+				ros2 run examples_rclcpp_minimal_subscriber subscriber_member_function
+				ros2 run examples_rclcpp_minimal_publisher publisher_member_function
+
+		Creating a workspace:
+			Source ROS 2 environment:
+				source /opt/ros/humble/setup.bash
+
+			Create a new directory:
+				mkdir -p ros2_ws/src
+				cd ros2_ws
+
+			Clone a sample repo:
+				git clone https://github.com/ros/ros_tutorials.git -b humble-devel
+
+			Resolve dependencies:
+				rosdep install -i --from-path src --rosdistro humble -y
+
+			Build the workspace:
+				colcon build
+
+			Source the overlay:
+				Before sourcing the overlay, it is very important that you open a new terminal, separate from the one where you built the workspace.
+				Sourcing an overlay in the same terminal where you built, or likewise building where an overlay is sourced, may create complex issues.
+
+				In the new terminal, source your main ROS 2 environment as the "underlay", so you can build the overlay "on top of" it:
+					source /opt/ros/humble/setup.bash
+
+					cd ros2_ws
+					. install/local_setup.bash
+
+					ros2 run turtlesim turtlesim_node
+
+		Creating a package:
+			Background:
+				What is a ROS 2 package?
+					A package can be considered a container for your ROS 2 code.
+					If you want to be able to install your code or share it with others, then you’ll need it organized in a package.
+					With packages, you can release your ROS 2 work and allow others to build and use it easily.
+
+					Package creation in ROS 2 uses ament as its build system and colcon as its build tool.
+					You can create a package using either CMake or Python, which are officially supported, though other build types do exist.
+
+				What makes up a ROS 2 package?
+					ROS 2 Python and CMake packages each have their own minimum required contents:
+						CMake:
+							my_package/
+								CMakeLists.txt
+								package.xml
+						Python:
+							my_package/
+								setup.py
+								package.xml
+								resource/my_package
+
+				Packages in a workspace:
+					workspace_folder/
+						src/
+							package_1/
+								CMakeLists.txt
+								package.xml
+							package_2/
+								setup.py
+								package.xml
+								resource/package_2
+							...
+							package_n/
+								CMakeLists.txt
+								package.xml
+
+			Create a package:
+				cd ros2_ws/src
+				ros2 pkg create --build-type ament_cmake <PACKAGE_NAME>
+				ros2 pkg create --build-type ament_cmake --node-name <NODE_NAME> <PACKAGE_NAME>
+				ros2 pkg create --build-type ament_python <PACKAGE_NAME>
+				ros2 pkg create --build-type ament_python --node-name <NODE_NAME> <PACKAGE_NAME>
+
+			Build a package:
+				cd ros2_ws
+				colcon build
+				colcon build --packages-select my_package
+					Build only the my_package package next time.
+
+			Source the setup file:
+				. install/local_setup.bash
+
+			Use the package:
+				ros2 run my_package my_node
+
+			Examine package contents:
+				ros2_ws/
+					src/
+						my_package/
+							include
+							src
+							CMakeLists.txt
+							package.xml
+
+			Customize package.xml:
+				Edit ros2_ws/src/my_package/package.xml.
+
+		Writing a simple publisher and subscriber (C++):
+		Writing a simple publisher and subscriber (Python):
+		Writing a simple service and client (C++):
+		Writing a simple service and client (Python):
+
+[-] Tutorial (Ubuntu, ROS 1).
 	http://wiki.ros.org/ROS/Tutorials
 
 	- (Optional) Manage an environment.
@@ -127,7 +314,7 @@
 			Recursively determine all nested dependencies:
 				rospack depends beginner_tutorials
 
-	- Build a ROS rackage.
+	- Build a ROS package.
 		http://wiki.ros.org/ROS/Tutorials/BuildingPackages
 
 		Build a package:
@@ -136,7 +323,43 @@
 			cd build
 			make -j16 -l16
 
-[-] Tool.
+[-] Tool (ROS 2).
+	- ros2.
+		action     Various action related sub-commands
+		bag        Various rosbag related sub-commands
+		component  Various component related sub-commands
+		daemon     Various daemon related sub-commands
+		doctor     Check ROS setup and other potential issues
+		interface  Show information about ROS interfaces
+		launch     Run a launch file
+		lifecycle  Various lifecycle related sub-commands
+		multicast  Various multicast related sub-commands
+		node       Various node related sub-commands
+		param      Various param related sub-commands
+		pkg        Various package related sub-commands
+		run        Run a package specific executable
+		security   Various security related sub-commands
+		service    Various service related sub-commands
+		topic      Various topic related sub-commands
+		wtf        Use 'wtf' as alias to 'doctor'
+
+		ros2 node list
+		ros2 topic list
+		ros2 service list
+		ros2 action list
+
+		ros2 run <PACKAGE_NAME> <EXECUTABLE_NAME>
+
+		ros2 node info <NODE_NAME>
+
+	- colcon.
+		colcon build
+		colcon build --symlink-install
+		colcon build --packages-select <PACKAGE_NAME>
+
+	- rqt.
+
+[-] Tool (ROS 1).
 	- catkin_make.
 		http://wiki.ros.org/ROS/Tutorials/BuildingPackages
 
@@ -302,7 +525,12 @@
 
 			rostopic pub /turtlesim1/turtle1/cmd_vel geometry_msgs/Twist -r 1 -- '[2.0, 0.0, 0.0]' '[0.0, 0.0, -1.8]'
 
+	- rosbag.
+		http://wiki.ros.org/rosbag
+
 	- Client Libraries.
+		http://wiki.ros.org/Client%20Libraries
+
 		ROS client libraries allow nodes written in different programming languages to communicate:
 
 		rospy: Python client library.
@@ -376,6 +604,8 @@
 			rosrun rqt_logger_level rqt_logger_level
 
 [-] Glossary.
+	http://wiki.ros.org/ROS/Concepts
+
 	- Graph concepts.
 		http://wiki.ros.org/ROS/Tutorials/UnderstandingNodes
 
@@ -383,15 +613,54 @@
 		Messages: ROS data type used when subscribing or publishing to a topic.
 		Topics: Nodes can publish messages to a topic as well as subscribe to a topic to receive messages.
 		Master: Name service for ROS (i.e. helps nodes find each other).
-		rosout: ROS equivalent of stdout/stderr.
-		roscore: Master + rosout + parameter server (parameter server will be introduced later).
 
-[-] Installation (Ubuntu).
+		rosout: ROS equivalent of stdout/stderr.
+		roscore: Master + rosout + parameter server.
+
+[-] Installation (Ubuntu, ROS 2).
+	https://docs.ros.org/en/humble/Installation.html
+	https://docs.ros.org/en/rolling/Installation.html
+
+	- Install.
+		sudo apt install software-properties-common
+		sudo add-apt-repository universe
+
+		sudo apt update && sudo apt install curl
+		sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+		echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+		sudo apt update
+		sudo apt upgrade
+
+		Desktop Install (Recommended): ROS, RViz, demos, tutorials.
+			sudo apt install ros-humble-desktop
+		ROS-Base Install (Bare Bones): Communication libraries, message packages, command line tools. No GUI tools.
+			sudo apt install ros-humble-ros-base
+		Development tools: Compilers and other tools to build ROS packages.
+			sudo apt install ros-dev-tools
+
+	- Environment setup.
+		Sourcing the setup script:
+			source /opt/ros/humble/setup.bash
+
+			echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+
+	- Try some examples.
+		In one terminal, source the setup file and then run a C++ talker:
+			source /opt/ros/humble/setup.bash
+			ros2 run demo_nodes_cpp talker
+
+		In another terminal source the setup file and then run a Python listener:
+			source /opt/ros/humble/setup.bash
+			ros2 run demo_nodes_py listener
+
+[-] Installation (Ubuntu, ROS 1).
 	http://wiki.ros.org/noetic/Installation/Ubuntu
 
 	- Install.
 		sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-		sudo apt install curl # if you haven't already installed curl
+		sudo apt install curl
 		curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 		sudo apt update
 
