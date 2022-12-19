@@ -138,6 +138,7 @@ def simulate_camera_images_test():
 
 	#-----
 	# Render images.
+
 	# View matrix.
 	viewMatrix = p.computeViewMatrix(
 		cameraEyePosition=[0, 0, 3],
@@ -276,10 +277,81 @@ def articulated_robot_test():
 
 	#-----
 	# Render images.
+
 	# View matrix.
 	viewMatrix = p.computeViewMatrix(
 		cameraEyePosition=(1, 1, 1),
-		cameraTargetPosition=[0, 0, 0],
+		cameraTargetPosition=(0, 0, 0),
+		cameraUpVector=(0, 0, 1),
+	)
+
+	# Projection matrix.
+	projectionMatrix = p.computeProjectionMatrixFOV(
+		fov=40.0,
+		aspect=1.0,
+		nearVal=0.1,
+		farVal=5.0,
+	)
+
+	# Get camera images.
+	imageWidth, imageHeight, rgbaPixels, depthPixels, segmentationMaskBuffer = p.getCameraImage(
+		width=320, 
+		height=320,
+		viewMatrix=viewMatrix,
+		projectionMatrix=projectionMatrix,
+	)
+
+	rgbaImage = np.reshape(rgbaPixels, (imageHeight, imageWidth, 4))  # RGBA.
+	depthImage = np.reshape(depthPixels, (imageHeight, imageWidth))
+	segMaskImage = np.reshape(segmentationMaskBuffer, (imageHeight, imageWidth))
+
+	print(f"RGBA image: shape = {rgbaImage.shape}, dtype = {rgbaImage.dtype}, (min, max) = ({np.min(rgbaImage)}, {np.max(rgbaImage)}).")
+	print(f"Depth image: shape = {depthImage.shape}, dtype = {depthImage.dtype}, (min, max) = ({np.min(depthImage)}, {np.max(depthImage)}).")
+	print(f"Segmentation mask: shape = {segMaskImage.shape}, dtype = {segMaskImage.dtype}, (min, max) = ({np.min(segMaskImage)}, {np.max(segMaskImage)}).")
+
+	#-----
+	# Run simulation.
+	while True:
+		p.stepSimulation()
+
+# REF [site] >>
+#	https://www.ycbbenchmarks.com/
+#	http://ycb-benchmarks.s3-website-us-east-1.amazonaws.com/
+def ycb_benchmark_test():
+	from collections import namedtuple
+
+	physicsClient = p.connect(p.GUI)
+
+	#p.setGravity(0, 0, -9.8)
+	#p.setRealTimeSimulation(1)
+
+	#-----
+	# Load a plane.
+	p.setAdditionalSearchPath(pybullet_data.getDataPath())
+	planeId = p.loadURDF("plane.urdf")
+
+	#-----
+	# Load an object.
+
+	# REF [site] >> https://github.com/harvard-microrobotics/object2urdf
+	object_urdf = "./ycb/006_mustard_bottle.urdf"
+	#object_urdf = "./ycb/013_apple.urdf"
+	#object_urdf = "./ycb/025_mug.urdf"
+	#object_urdf = "./ycb/053_mini_soccer_ball.urdf"
+	objectId = p.loadURDF(
+		fileName=object_urdf,
+		basePosition=[0, 0, 2],
+		baseOrientation=p.getQuaternionFromEuler([0, 0, 0]),
+		useFixedBase=True,
+	)
+
+	#-----
+	# Render images.
+
+	# View matrix.
+	viewMatrix = p.computeViewMatrix(
+		cameraEyePosition=(2, 2, 3),
+		cameraTargetPosition=(0, 0, 1),
 		cameraUpVector=(0, 0, 1),
 	)
 
@@ -707,7 +779,8 @@ def main():
 	#hello_pybullet_world_introduction()
 
 	#simulate_camera_images_test()
-	articulated_robot_test()
+	#articulated_robot_test()
+	ycb_benchmark_test()
 
 	#--------------------
 	# Environments.
