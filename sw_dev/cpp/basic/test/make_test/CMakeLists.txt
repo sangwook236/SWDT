@@ -76,6 +76,7 @@ find_package(Threads REQUIRED)
 #find_package(GSL REQUIRED)
 #find_package(Qt5 COMPONENTS Core Gui Widgets Quick Qml Concurrent REQUIRED)
 #find_package(OpenCV 4.2.0 REQUIRED)
+#message(STATUS "Boost found: ${Boost_FOUND}")
 
 #find_library(MY_LIBRARIES NAMES libmy.a)
 #find_library(MY_LIBRARIES NAMES libmy.a PATHS /path/to/lib)

@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 		//	- 3D point clouds.
 		//retval = threedtk_main(argc, argv);  // Not yet implemented.
 	}
-    catch (const std::bad_alloc &ex)
+	catch (const std::bad_alloc &ex)
 	{
 		std::cout << "std::bad_alloc caught: " << ex.what() << std::endl;
 		retval = EXIT_FAILURE;

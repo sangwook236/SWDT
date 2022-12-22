@@ -2,7 +2,66 @@
 	- Site.
 		https://hyhuang1995.github.io/projects/bareg/
 
-[-] Installation.
+[-] Usage.
+	- Registration.
+		https://github.com/SMRT-AIST/fast_gicp
+		https://github.com/koide3/ndt_omp
+
+		bareg/xreg/node/xnode.cpp:
+			In main():
+				ros::NodeHandle nh;
+				System system(nh);
+				system.spin();
+				system.visualize();
+
+		bareg/xreg/src/system_utils.cpp:
+			In System::System():
+				Load data:
+					loadFrames()
+						pcd, csv.
+						frames_
+
+			In System::spin():
+				Initialize by teaser.
+					TeaserOptions options;
+					auto init_ = RegistrationBase::Ptr(new RegistrationTeaser(options));
+
+					init_->setInputFrames(frames_);
+					init_->initialize();
+					init_->registration();
+						optimizePoseGraph();
+
+				Register by GICP, VGICP, NDT, ICP(pt2pt, pt2pl).
+					NDTOptions options;
+					options.b_scan2map = reg::b_scan2map;
+					options.method = common::method;
+					registration_ = RegistrationBase::Ptr(new RegistrationNDT(common::method, options));
+
+					registration_->setInputFrames(frames_);
+					registration_->initialize();
+					registration_->registration();
+
+	- Bundle adjustment.
+		bareg/xreg/include/xreg/common/config.h:
+			BA_WEIGHT
+			BA_LOSS
+
+		bareg/xreg/include/xreg/estimation/registration_ba.h:
+			RegistrationBA::registration()
+				RegistrationBA::mapBA()
+		bareg/xreg/include/xreg/estimation/registration_ba_ef.h:
+			RegistrationEigenFactor::registration()
+				RegistrationEigenFactor::mapBA()
+		bareg/xreg/include/xreg/estimation/registration_balm.h:
+			RegistrationBALM::registration()
+				RegistrationBALM::mapBA()
+		bareg/xreg/include/xreg/estimation/registration_eigenfactor.h:
+			RegistrationEFSGD::registration()
+				RegistrationEFSGD::mapBA()
+					ceres::Problem
+					ceres::Solver
+
+[-] Installation (ROS 1).
 	- Install.
 		Install OpenCV 3.0.
 
@@ -49,3 +108,21 @@
 				${xreg_HOME}/build/devel/lib/libxreg.so
 				Failed.
 			sudo make install
+
+[-] Troubleshooting.
+	- <error> CMake Deprecation Warning at /usr/local/lib/cmake/vtk-9.2/vtk-config.cmake:75 (message):
+				The new name for the 'vtkCommonCore' component is 'CommonCore'.
+		<cause> Errors in VTK 9.x. (X)
+		<solution> Link ${PCL_LIBRARIES} instead of linking VTK libraries.
+
+	- <error> undefined reference to 'google::base::CheckOpMessageBuilder::NewString()'.
+		<cause> Compiled Ceres with CXX11 enabled, but have not compiled glog with C++11 enabled. (X)
+		<solution> Link ${PCL_LIBRARIES} instead of linking Open3D libraries.
+
+	- <error>
+		undefined reference to 'pcl::search::Search<pcl::PointXYZ>::Search(std::string const&, bool)'
+		undefined reference to 'pcl::search::Search<pcl::PointXYZ>::getName() const'
+		<cause>
+			Conflict ${PCL_LIBRARIES} and ${Open3D_LIBRARIES}. (?)
+			${Open3D_LIBRARIES} is empty.
+		<solution> Do not link Open3D libraries.
