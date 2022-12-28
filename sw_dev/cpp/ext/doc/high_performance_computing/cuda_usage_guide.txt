@@ -33,7 +33,9 @@
 
 			sudo ubuntu-drivers autoinstall
 				Alternatively,
-					sudo apt install nvidia-driver-460
+					sudo apt install nvidia-driver-525
+					sudo apt install nvidia-utils-525
+						For nvidia-smi.
 
 			sudo reboot
 

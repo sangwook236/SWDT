@@ -115,7 +115,7 @@
 	- Client libraries.
 		sudo apt install python3-colcon-common-extensions
 		sudo apt install python3-rosdep2
-		pip install catkin_pkg lark
+		pip install catkin-pkg lark
 
 		Using colcon to build packages:
 			Source ROS 2 environment:
@@ -357,6 +357,14 @@
 		colcon build --symlink-install
 		colcon build --packages-select <PACKAGE_NAME>
 
+	- Client libraries.
+		https://docs.ros.org/en/humble/Concepts/About-ROS-2-Client-Libraries.html
+
+		rclcpp: The ROS client library for C++.
+			sudo apt install ros-humble-rclcpp
+		rclrpy: The ROS client library for Python.
+			sudo apt install ros-humble-rclpy
+
 	- rqt.
 
 [-] Tool (ROS 1).
@@ -528,13 +536,15 @@
 	- rosbag.
 		http://wiki.ros.org/rosbag
 
-	- Client Libraries.
+	- Client libraries.
 		http://wiki.ros.org/Client%20Libraries
 
 		ROS client libraries allow nodes written in different programming languages to communicate:
 
 		rospy: Python client library.
+			sudo apt-get install ros-noetic-rospy
 		roscpp: C++ client library.
+			sudo apt-get install ros-noetic-roscpp
 
 	- Filesystem tools.
 		http://wiki.ros.org/ROS/Tutorials/NavigatingTheFilesystem
