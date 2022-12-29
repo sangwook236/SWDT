@@ -55,17 +55,17 @@ void initialization()
 	// Comma initializer.
 	{
 		Eigen::Matrix3f m1;
-		m1 << 11, 12, 13,  14, 15, 16,  17, 18, 19;
+		m1 << 11, 12, 13,  14, 15, 16,  17, 18, 19;  // Row-major.
 
 		std::cout << "Comma initialized matrix = " << std::endl << m1 << std::endl;
 
 		Eigen::MatrixXf m2(2, 4);
-		m2 << 21, 22, 23, 24,  25, 26, 27, 28;
+		m2 << 21, 22, 23, 24,  25, 26, 27, 28;  // Row-major.
 
 		std::cout << "Comma initialized matrix = " << std::endl << m2 << std::endl;
 
 		Eigen::MatrixXf m3(4, 2);
-		m3 << 31, 32,  33, 34,  35, 36,  37, 38;
+		m3 << 31, 32,  33, 34,  35, 36,  37, 38;  // Row-major.
 
 		std::cout << "Comma initialized matrix = " << std::endl << m3 << std::endl;
 	}
@@ -115,9 +115,9 @@ void matrix_or_vector_expression_mapping()
 {
 	{
 		int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, };
-		std::cout << "Column-major = " << std::endl << Eigen::Map<Eigen::Matrix<int,2,4> >(arr) << std::endl;
-		std::cout << "Row-major = " << std::endl << Eigen::Map<Eigen::Matrix<int,2,4,Eigen::RowMajor> >(arr) << std::endl;
-		std::cout << "Row-major using stride = " << std::endl << Eigen::Map<Eigen::Matrix<int,2,4>, Eigen::Unaligned, Eigen::Stride<1,4> >(arr) << std::endl;
+		std::cout << "Column-major = " << std::endl << Eigen::Map<Eigen::Matrix<int, 2, 4> >(arr) << std::endl;
+		std::cout << "Row-major = " << std::endl << Eigen::Map<Eigen::Matrix<int, 2, 4, Eigen::RowMajor> >(arr) << std::endl;
+		std::cout << "Row-major using stride = " << std::endl << Eigen::Map<Eigen::Matrix<int, 2, 4>, Eigen::Unaligned, Eigen::Stride<1, 4> >(arr) << std::endl;
 
 		//
 		int arr2[15];
@@ -135,34 +135,35 @@ void matrix_or_vector_expression_mapping()
 		double *p = new double [15];
 		for (int i = 0; i < 15; ++i) p[i] = i + 100;
 
-		Eigen::MatrixXd P = Eigen::Map<Eigen::MatrixXd>(p, 2, 6);
+		Eigen::Map<Eigen::MatrixXd> P(p, 2, 6);  // Column-major. P is a wrapper of p.
+		//Eigen::MatrixXd P = Eigen::Map<Eigen::MatrixXd>(p, 2, 6);  // P is a copied object of p.
 
 		delete [] p;
 		p = NULL;
 
-		// NOTE [caution] >> The array, p and the matrix, P are totally different objects.
 		std::cout << "Matrix after deletion = " << std::endl << P << std::endl;
 	}
 
 	//
 	{
-		double x[] = { 19, 18, 17, 16,  15, 14, 13, 12 };
-		Eigen::MatrixXd X(Eigen::Map<Eigen::MatrixXd>(x, 2, 4));  // Column-major.
+		double x[] = { 19, 18, 17,  16, 15, 14,  13, 12, 11, };
+		Eigen::Map<Eigen::Matrix3d> X(x);  // Column-major. X is a wrapper of x.
+		//Eigen::Matrix3d X(Eigen::Map<Eigen::Matrix3d>(x));  // X is a copied object of x.
 
 		X(0, 0) = -10;
 		X(1, 0) = -20;
 
-		// NOTE [caution] >> Change in X don't affect x directly.
+		// NOTE [info] >> Change in X affects x directly.
 		std::cout << "X = " << std::endl << X << std::endl;
 		std::cout << "x = ";
-		for (int i = 0; i < 8; ++i)
+		for (int i = 0; i < 9; ++i)
 			std::cout << x[i] << ", ";
 		std::cout << std::endl;
 
 		//
 		const double *pX = X.data();  // Column-major.
 		std::cout << "X.data() = ";
-		for (int i = 0; i < 8; ++i)
+		for (int i = 0; i < 9; ++i)
 			std::cout << pX[i] << ", ";
 		std::cout << std::endl;
 	}
@@ -173,13 +174,15 @@ void matrix_or_vector_expression_mapping()
 		double b[] = { 39, 38, 37, 36,  35, 34, 33, 32 };
 
 		{
-			Eigen::MatrixXd A(Eigen::Map<Eigen::MatrixXd>(a, 2, 4));
-			Eigen::MatrixXd B(Eigen::Map<Eigen::MatrixXd>(b, 2, 4));
+			Eigen::Map<Eigen::MatrixXd> A(a, 2, 4);
+			Eigen::Map<Eigen::MatrixXd> B(b, 2, 4);
 
 			Eigen::MatrixXd C(A.rows(), A.cols() + B.cols());
 			C << A, B;  // Horizontally concatenated.
 
-			C(0, 0) = 1; C(0, 1) = 2; C(0, 2) = 3; C(0, 3) = 4; C(0, 4) = 5; C(0, 5) = 6; C(0, 6) = 7; C(0, 7) = 8;
+			std::cout << "C = " << std::endl << C << std::endl;
+
+			C(0, 0) = -1; C(0, 1) = -2; C(0, 2) = -3; C(0, 3) = -4; C(0, 4) = -5; C(0, 5) = -6; C(0, 6) = -7; C(0, 7) = -8;
 
 			A = C.topLeftCorner(A.rows(), A.cols());
 			B = C.topRightCorner(B.rows(), B.cols());
@@ -188,7 +191,7 @@ void matrix_or_vector_expression_mapping()
 			std::cout << "B = " << std::endl << B << std::endl;
 		}
 
-		// NOTE [caution] >> Change in A & B don't affect a & b directly.
+		// NOTE [info] >> Change in A & B affects a & b directly.
 		std::cout << "a = ";
 		for (int i = 0; i < 8; ++i)
 			std::cout << a[i] << ", ";
