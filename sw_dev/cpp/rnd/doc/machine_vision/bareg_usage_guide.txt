@@ -41,6 +41,16 @@
 					registration_->initialize();
 					registration_->registration();
 
+		bareg/include/xreg/optimization/factos.h:
+			In RotationFactor::Evaluate():
+				No implementation.
+				Rotation synchronization. (?)
+					REF [paper] >> "Learning multiview 3D point cloud registration", CVPR 2020.
+			In TranslationFactor::Evaluate():
+				No implementation.
+				Translation synchronization. (?)
+					REF [paper] >> "Learning multiview 3D point cloud registration", CVPR 2020.
+
 	- Bundle adjustment.
 		bareg/xreg/include/xreg/common/config.h:
 			BA_WEIGHT
