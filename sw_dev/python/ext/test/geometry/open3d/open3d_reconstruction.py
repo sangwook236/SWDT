@@ -11,7 +11,7 @@ import reconstruction_system as recon_sys
 # REF [site] >>
 #	http://www.open3d.org/docs/release/tutorial/reconstruction_system/index.html
 #	https://github.com/isl-org/Open3D/tree/master/examples/python/reconstruction_system
-def reconstruction_system_tutuiral():
+def reconstruction_system_tutorial():
 	# REF [site] >> http://www.open3d.org/docs/release/tutorial/reconstruction_system/system_overview.html
 	config = {
 		"name": "Open3D reconstruction tutorial http://open3d.org/docs/release/tutorial/reconstruction_system/system_overview.html",
@@ -30,7 +30,13 @@ def reconstruction_system_tutuiral():
 	}
 
 def main():
-	reconstruction_system_tutuiral()  # Not yet implemented.
+	# Procedure.
+	#	Make fragments.
+	#	Register fragments.
+	#	Refine registration.
+	#	Integrate scene.
+
+	reconstruction_system_tutorial()  # Not yet completed.
 
 #--------------------------------------------------------------------
 

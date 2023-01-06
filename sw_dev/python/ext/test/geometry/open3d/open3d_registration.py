@@ -289,7 +289,8 @@ def multiway_registration_tutorial():
 	def pairwise_registration(source, target, max_correspondence_distance_coarse, max_correspondence_distance_fine):
 		print("Apply point-to-plane ICP")
 		icp_coarse = o3d.pipelines.registration.registration_icp(
-			source, target, max_correspondence_distance_coarse, np.identity(4),
+			source, target, max_correspondence_distance_coarse,
+			np.identity(4),
 			o3d.pipelines.registration.TransformationEstimationPointToPlane()
 		)
 		icp_fine = o3d.pipelines.registration.registration_icp(
@@ -370,11 +371,206 @@ def multiway_registration_tutorial():
 		up=[-0.0694, -0.9768, 0.2024]
 	)
 
+# REF [site] >> http://www.open3d.org/docs/release/tutorial/pipelines/rgbd_odometry.html
+def rgbd_odometry_tutorial():
+	# Read camera intrinsic.
+	redwood_rgbd = o3d.data.SampleRedwoodRGBDImages()
+
+	pinhole_camera_intrinsic = o3d.io.read_pinhole_camera_intrinsic(redwood_rgbd.camera_intrinsic_path)
+	print(pinhole_camera_intrinsic.intrinsic_matrix)
+
+	# Read RGBD image.
+	source_color = o3d.io.read_image(redwood_rgbd.color_paths[0])
+	source_depth = o3d.io.read_image(redwood_rgbd.depth_paths[0])
+	target_color = o3d.io.read_image(redwood_rgbd.color_paths[1])
+	target_depth = o3d.io.read_image(redwood_rgbd.depth_paths[1])
+	source_rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(source_color, source_depth)
+	target_rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(target_color, target_depth)
+	target_pcd = o3d.geometry.PointCloud.create_from_rgbd_image(target_rgbd_image, pinhole_camera_intrinsic)
+
+	# Compute odometry from two RGBD image pairs.
+	option = o3d.pipelines.odometry.OdometryOption()
+	odo_init = np.identity(4)
+	print(option)
+
+	[success_color_term, trans_color_term, info] = o3d.pipelines.odometry.compute_rgbd_odometry(
+		source_rgbd_image, target_rgbd_image,
+		pinhole_camera_intrinsic, odo_init,
+		o3d.pipelines.odometry.RGBDOdometryJacobianFromColorTerm(),
+		option
+	)
+	[success_hybrid_term, trans_hybrid_term, info] = o3d.pipelines.odometry.compute_rgbd_odometry(
+		source_rgbd_image, target_rgbd_image,
+		pinhole_camera_intrinsic, odo_init,
+		o3d.pipelines.odometry.RGBDOdometryJacobianFromHybridTerm(),
+		option
+	)
+
+	# Visualize RGBD image pairs.
+	if success_color_term:
+		print("Using RGB-D Odometry")
+		print(trans_color_term)
+		source_pcd_color_term = o3d.geometry.PointCloud.create_from_rgbd_image(source_rgbd_image, pinhole_camera_intrinsic)
+		source_pcd_color_term.transform(trans_color_term)
+		o3d.visualization.draw_geometries(
+			[target_pcd, source_pcd_color_term],
+			zoom=0.48,
+			front=[0.0999, -0.1787, -0.9788],
+			lookat=[0.0345, -0.0937, 1.8033],
+			up=[-0.0067, -0.9838, 0.1790]
+		)
+	if success_hybrid_term:
+		print("Using Hybrid RGB-D Odometry")
+		print(trans_hybrid_term)
+		source_pcd_hybrid_term = o3d.geometry.PointCloud.create_from_rgbd_image(source_rgbd_image, pinhole_camera_intrinsic)
+		source_pcd_hybrid_term.transform(trans_hybrid_term)
+		o3d.visualization.draw_geometries(
+			[target_pcd, source_pcd_hybrid_term],
+			zoom=0.48,
+			front=[0.0999, -0.1787, -0.9788],
+			lookat=[0.0345, -0.0937, 1.8033],
+			up=[-0.0067, -0.9838, 0.1790]
+		)
+
+# REF [site] >> http://www.open3d.org/docs/release/tutorial/pipelines/rgbd_integration.html
+def rgbd_integration_tutorial():
+	# Read trajectory from .log file.
+	class CameraPose:
+		def __init__(self, meta, mat):
+			self.metadata = meta
+			self.pose = mat
+
+		def __str__(self):
+			return "Metadata : " + " ".join(map(str, self.metadata)) + "\n" + "Pose : " + "\n" + np.array_str(self.pose)
+
+	def read_trajectory(filename):
+		traj = []
+		with open(filename, "r") as f:
+			metastr = f.readline()
+			while metastr:
+				metadata = list(map(int, metastr.split()))
+				mat = np.zeros(shape=(4, 4))
+				for i in range(4):
+					matstr = f.readline()
+					mat[i, :] = np.fromstring(matstr, dtype=float, sep=" \t")
+				traj.append(CameraPose(metadata, mat))
+				metastr = f.readline()
+		return traj
+
+	redwood_rgbd = o3d.data.SampleRedwoodRGBDImages()
+	camera_poses = read_trajectory(redwood_rgbd.odometry_log_path)
+
+	# TSDF volume integration.
+	volume = o3d.pipelines.integration.ScalableTSDFVolume(
+		voxel_length=4.0 / 512.0,
+		sdf_trunc=0.04,
+		color_type=o3d.pipelines.integration.TSDFVolumeColorType.RGB8
+	)
+
+	for i in range(len(camera_poses)):
+		print("Integrate {:d}-th image into the volume.".format(i))
+		color = o3d.io.read_image(redwood_rgbd.color_paths[i])
+		depth = o3d.io.read_image(redwood_rgbd.depth_paths[i])
+		rgbd = o3d.geometry.RGBDImage.create_from_color_and_depth(color, depth, depth_trunc=4.0, convert_rgb_to_intensity=False)
+		volume.integrate(
+			rgbd,
+			o3d.camera.PinholeCameraIntrinsic(o3d.camera.PinholeCameraIntrinsicParameters.PrimeSenseDefault),
+			np.linalg.inv(camera_poses[i].pose)
+		)
+
+	# Extract a mesh.
+	print("Extract a triangle mesh from the volume and visualize it.")
+	mesh = volume.extract_triangle_mesh()
+	mesh.compute_vertex_normals()
+	o3d.visualization.draw_geometries(
+		[mesh],
+		front=[0.5297, -0.1873, -0.8272],
+		lookat=[2.0712, 2.0312, 1.7251],
+		up=[-0.0558, -0.9809, 0.1864],
+		zoom=0.47
+	)
+
+# REF [site] >> http://www.open3d.org/docs/release/tutorial/pipelines/color_map_optimization.html
+def color_map_optimization_tutorial():
+	def load_fountain_dataset():
+		rgbd_images = []
+		fountain_rgbd_dataset = o3d.data.SampleFountainRGBDImages()
+		for i in range(len(fountain_rgbd_dataset.depth_paths)):
+			depth = o3d.io.read_image(fountain_rgbd_dataset.depth_paths[i])
+			color = o3d.io.read_image(fountain_rgbd_dataset.color_paths[i])
+			rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(color, depth, convert_rgb_to_intensity=False)
+			rgbd_images.append(rgbd_image)
+
+		camera_trajectory = o3d.io.read_pinhole_camera_trajectory(fountain_rgbd_dataset.keyframe_poses_log_path)
+		mesh = o3d.io.read_triangle_mesh(fountain_rgbd_dataset.reconstruction_path)
+
+		return mesh, rgbd_images, camera_trajectory
+
+	# Load dataset.
+	mesh, rgbd_images, camera_trajectory = load_fountain_dataset()
+
+	# Before full optimization, let's visualize texture map with given geometry, RGBD images, and camera poses.
+	mesh, camera_trajectory = o3d.pipelines.color_map.run_rigid_optimizer(
+		mesh, rgbd_images, camera_trajectory,
+		o3d.pipelines.color_map.RigidOptimizerOption(maximum_iteration=0)
+	)
+	o3d.visualization.draw_geometries(
+		[mesh],
+		zoom=0.5399,
+		front=[0.0665, -0.1107, -0.9916],
+		lookat=[0.7353, 0.6537, 1.0521],
+		up=[0.0136, -0.9936, 0.1118]
+	)
+
+	# Rigid Optimization.
+	# Optimize texture and save the mesh as texture_mapped.ply.
+	# "Color Map Optimization for 3D Reconstruction with Consumer Depth Cameras", Q.-Y. Zhou and V. Koltun, SIGGRAPH 2014.
+
+	is_ci = True
+
+	# Run rigid optimization.
+	maximum_iteration = 100 if is_ci else 300
+	with o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug) as cm:
+		mesh, camera_trajectory = o3d.pipelines.color_map.run_rigid_optimizer(
+			mesh, rgbd_images, camera_trajectory,
+			o3d.pipelines.color_map.RigidOptimizerOption(maximum_iteration=maximum_iteration)
+		)
+
+	o3d.visualization.draw_geometries(
+		[mesh],
+		zoom=0.5399,
+		front=[0.0665, -0.1107, -0.9916],
+		lookat=[0.7353, 0.6537, 1.0521],
+		up=[0.0136, -0.9936, 0.1118]
+	)
+
+	# Non-rigid Optimization.
+	# Run non-rigid optimization.
+	maximum_iteration = 100 if is_ci else 300
+	with o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug) as cm:
+		mesh, camera_trajectory = o3d.pipelines.color_map.run_non_rigid_optimizer(
+			mesh, rgbd_images, camera_trajectory,
+			o3d.pipelines.color_map.NonRigidOptimizerOption(maximum_iteration=maximum_iteration)
+		)
+
+	o3d.visualization.draw_geometries(
+		[mesh],
+		zoom=0.5399,
+		front=[0.0665, -0.1107, -0.9916],
+		lookat=[0.7353, 0.6537, 1.0521],
+		up=[0.0136, -0.9936, 0.1118]
+	)
+
 def main():
-	icp_registration_tutorial()
+	#icp_registration_tutorial()
 	#colored_point_cloud_registration_tutorial()
 	#global_registration_tutorial()
 	#multiway_registration_tutorial()
+
+	#rgbd_odometry_tutorial()
+
+	#rgbd_integration_tutorial()
+	color_map_optimization_tutorial()
 
 #--------------------------------------------------------------------
 
