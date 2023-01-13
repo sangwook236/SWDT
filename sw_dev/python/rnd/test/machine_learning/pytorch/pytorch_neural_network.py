@@ -491,7 +491,8 @@ def seq2seq_translation_tutorial():
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 	dataset = LangDataset(SOS_token, EOS_token, max_length=MAX_LENGTH)
-	print("len(dataset) = {}.".format(len(dataset)))
+	print(f"len(dataset) = {len(dataset)}.")
+	print(f"Input dim = {dataset.input_lang.n_words}, output dim = {dataset.output_lang.n_words}.")
 
 	# Training and evaluating.
 	encoder = EncoderRNN(dataset.input_lang.n_words, hidden_size, device=device).to(device)

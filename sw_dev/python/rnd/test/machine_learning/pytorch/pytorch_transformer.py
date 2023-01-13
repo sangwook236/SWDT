@@ -805,6 +805,8 @@ def main():
 	#	torch.nn.TransformerEncoderLayer
 	#	torch.nn.TransformerDecoderLayer
 
+	# REF [site] >> https://pytorch.org/blog/a-better-transformer-for-fast-transformer-encoder-inference/
+
 	#--------------------
 	# Encoder-only or decoder-only transformer model.
 	#	Encoder-only transformer model = transformer model architecture in an encoder-only setup.
