@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import time
-from tkinter import Y
+import random, re, unicodedata, difflib, time
+#from tkinter import Y
 import torch, torchvision
 import pytorch_lightning as pl
 
@@ -749,6 +749,404 @@ def simple_autoencoder_example():
 	#trainer = pl.Trainer()
 	trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5)
 	#trainer = pl.Trainer(gpus=2, num_nodes=1, precision=16, limit_train_batches=0.5, accelerator="dp", max_epochs=10)
+
+	trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
+
+class Lang:
+	def __init__(self, name):
+		self.name = name
+		self.word2index = {}
+		self.word2count = {}
+		self.index2word = {0: "SOS", 1: "EOS"}
+		self.n_words = 2  # Count SOS and EOS.
+
+	def addSentence(self, sentence):
+		for word in sentence.split(" "):
+			self.addWord(word)
+
+	def addWord(self, word):
+		if word not in self.word2index:
+			self.word2index[word] = self.n_words
+			self.word2count[word] = 1
+			self.index2word[self.n_words] = word
+			self.n_words += 1
+		else:
+			self.word2count[word] += 1
+
+class LangDataset(torch.utils.data.Dataset):
+	def __init__(self, sos, eos, max_length):
+		super().__init__()
+
+		self.sos, self.eos = sos, eos
+		self.max_length = max_length
+
+		eng_prefixes = (
+			"i am ", "i m ",
+			"he is", "he s ",
+			"she is", "she s ",
+			"you are", "you re ",
+			"we are", "we re ",
+			"they are", "they re "
+		)
+
+		self.input_lang, self.output_lang, self.pairs = self.prepareData("eng", "fra", eng_prefixes, True)
+		print(random.choice(self.pairs))
+
+		self.pairs = [self.tensorsFromPair(pair) for pair in self.pairs]
+
+	def __len__(self):
+		return len(self.pairs)
+
+	def __getitem__(self, idx):
+		return self.pairs[idx]
+
+	def prepareData(self, lang1, lang2, eng_prefixes, reverse=False):
+		input_lang, output_lang, pairs = self.readLangs(lang1, lang2, reverse)
+		print("Read %s sentence pairs" % len(pairs))
+		pairs = self.filterPairs(pairs, eng_prefixes)
+		print("Trimmed to %s sentence pairs" % len(pairs))
+		print("Counting words...")
+		for pair in pairs:
+			input_lang.addSentence(pair[0])
+			output_lang.addSentence(pair[1])
+		print("Counted words:")
+		print(input_lang.name, input_lang.n_words)
+		print(output_lang.name, output_lang.n_words)
+		return input_lang, output_lang, pairs
+
+	@staticmethod
+	def readLangs(lang1, lang2, reverse=False):
+		print("Reading lines...")
+
+		# Read the file and split into lines.
+		lines = open("%s-%s.txt" % (lang1, lang2), encoding="utf-8").read().strip().split("\n")
+
+		# Split every line into pairs and normalize.
+		pairs = [[LangDataset.normalizeString(s) for s in l.split("\t")] for l in lines]
+
+		# Reverse pairs, make Lang instances.
+		if reverse:
+			pairs = [list(reversed(p)) for p in pairs]
+			input_lang = Lang(lang2)
+			output_lang = Lang(lang1)
+		else:
+			input_lang = Lang(lang1)
+			output_lang = Lang(lang2)
+
+		return input_lang, output_lang, pairs
+
+	# Turn a Unicode string to plain ASCII, thanks to https://stackoverflow.com/a/518232/2809427.
+	@staticmethod
+	def unicodeToAscii(s):
+		return "".join(c for c in unicodedata.normalize("NFD", s) if unicodedata.category(c) != "Mn")
+
+	# Lowercase, trim, and remove non-letter characters.
+	@staticmethod
+	def normalizeString(s):
+		s = LangDataset.unicodeToAscii(s.lower().strip())
+		s = re.sub(r"([.!?])", r" \1", s)
+		s = re.sub(r"[^a-zA-Z.!?]+", r" ", s)
+		return s
+
+	def filterPair(self, p, eng_prefixes):
+		return len(p[0].split(" ")) < self.max_length and len(p[1].split(" ")) < self.max_length and p[1].startswith(eng_prefixes)
+
+	def filterPairs(self, pairs, eng_prefixes):
+		return [pair for pair in pairs if self.filterPair(pair, eng_prefixes)]
+
+	@staticmethod
+	def indexesFromSentence(lang, sentence):
+		return [lang.word2index[word] for word in sentence.split(" ")]
+
+	def tensorFromSentence(self, lang, sentence):
+		indexes = LangDataset.indexesFromSentence(lang, sentence)
+		indexes.append(self.eos)
+		return torch.tensor(indexes, dtype=torch.long).view(-1, 1)
+
+	def tensorsFromPair(self, pair):
+		input_tensor = self.tensorFromSentence(self.input_lang, pair[0])
+		target_tensor = self.tensorFromSentence(self.output_lang, pair[1])
+		return (input_tensor, target_tensor)
+
+class EncoderRNN(torch.nn.Module):
+	def __init__(self, input_size, hidden_size):
+		super().__init__()
+		self.hidden_size = hidden_size
+
+		self.embedding = torch.nn.Embedding(num_embeddings=input_size, embedding_dim=hidden_size)
+		self.gru = torch.nn.GRU(input_size=hidden_size, hidden_size=hidden_size, num_layers=1, bias=True, batch_first=True, dropout=0, bidirectional=False)
+
+	def forward(self, input, hidden):
+		output = self.embedding(input).view(1, 1, -1)
+		output, hidden = self.gru(output, hidden)
+		return output, hidden
+
+	def initHidden(self, device):
+		return torch.zeros(1, 1, self.hidden_size, device=device)
+
+class DecoderRNN(torch.nn.Module):
+	def __init__(self, hidden_size, output_size):
+		super().__init__()
+
+		self.hidden_size = hidden_size
+
+		self.embedding = torch.nn.Embedding(num_embeddings=output_size, embedding_dim=hidden_size)
+		self.gru = torch.nn.GRU(input_size=hidden_size, hidden_size=hidden_size, num_layers=1, bias=True, batch_first=True, dropout=0, bidirectional=False)
+		self.out = torch.nn.Linear(in_features=hidden_size, out_features=output_size, bias=True)
+		self.softmax = torch.nn.LogSoftmax(dim=1)
+
+	def forward(self, input, hidden):
+		output = self.embedding(input).view(1, 1, -1)
+		output = torch.nn.functional.relu(output)
+		output, hidden = self.gru(output, hidden)
+		output = self.softmax(self.out(output[0]))
+		return output, hidden
+
+	def initHidden(self, device):
+		return torch.zeros(1, 1, self.hidden_size, device=device)
+
+class AttentionDecoderRNN(torch.nn.Module):
+	def __init__(self, hidden_size, output_size, dropout_p=0.1, max_length=10):
+		super().__init__()
+
+		self.hidden_size = hidden_size
+		self.output_size = output_size
+		self.dropout_p = dropout_p
+		self.max_length = max_length
+
+		self.embedding = torch.nn.Embedding(num_embeddings=output_size, embedding_dim=hidden_size)
+		self.attn = torch.nn.Linear(in_features=hidden_size * 2, out_features=max_length, bias=True)
+		self.attn_combine = torch.nn.Linear(in_features=hidden_size * 2, out_features=hidden_size, bias=True)
+		self.dropout = torch.nn.Dropout(p=dropout_p, inplace=False)
+		self.gru = torch.nn.GRU(input_size=hidden_size, hidden_size=hidden_size, num_layers=1, bias=True, batch_first=True, dropout=0, bidirectional=False)
+		self.out = torch.nn.Linear(in_features=hidden_size, out_features=output_size, bias=True)
+
+	def forward(self, input, hidden, encoder_outputs):
+		embedded = self.embedding(input).view(1, 1, -1)
+		embedded = self.dropout(embedded)
+
+		attn_weights = torch.nn.functional.softmax(self.attn(torch.cat((embedded[0], hidden[0]), 1)), dim=1)
+		attn_applied = torch.bmm(attn_weights.unsqueeze(0), encoder_outputs.unsqueeze(0))
+
+		output = torch.cat((embedded[0], attn_applied[0]), 1)
+		output = self.attn_combine(output).unsqueeze(0)
+
+		output = torch.nn.functional.relu(output)
+		output, hidden = self.gru(output, hidden)
+
+		output = torch.nn.functional.log_softmax(self.out(output[0]), dim=1)
+		return output, hidden, attn_weights
+
+	def initHidden(self, device):
+		return torch.zeros(1, 1, self.hidden_size, device=device)
+
+class EncoderDecoderModel(pl.LightningModule):
+	def __init__(self, input_dim, output_dim, hidden_dim, sos, eos, max_length, teacher_forcing_ratio):
+		super().__init__()
+
+		self.input_dim = input_dim
+		self.output_dim = output_dim
+		self.sos, self.eos = sos, eos
+		self.max_length = max_length
+		self.teacher_forcing_ratio = teacher_forcing_ratio
+
+		self.encoder = EncoderRNN(input_dim, hidden_dim)
+		#self.decoder = DecoderRNN(hidden_dim, output_dim)
+		self.decoder = AttentionDecoderRNN(hidden_dim, output_dim, dropout_p=0.1)
+
+		self.criterion = torch.nn.NLLLoss()
+
+		# Initialize parameters with Glorot / fan_avg.
+		for p in self.encoder.parameters():
+			if p.dim() > 1:
+				torch.nn.init.xavier_uniform_(p)
+		for p in self.decoder.parameters():
+			if p.dim() > 1:
+				torch.nn.init.xavier_uniform_(p)
+
+	def configure_optimizers(self):
+		optimizer = torch.optim.Adam(self.parameters(), lr=0.0001)
+		return optimizer
+
+	def forward(self, x):
+		encoder_hidden = self.encoder.initHidden(self.device)  # Set hiddens to initial values.
+
+		input_length = x.size(0)
+
+		encoder_outputs = torch.zeros(self.max_length, self.encoder.hidden_size, device=self.device)
+		for ei in range(input_length):
+			encoder_output, encoder_hidden = self.encoder(x[ei], encoder_hidden)
+			encoder_outputs[ei] += encoder_output[0, 0]
+
+		decoder_input = torch.tensor([[self.sos]], device=self.device)  # SOS.
+		decoder_hidden = encoder_hidden
+
+		decoded_words = []
+		#decoder_attentions = torch.zeros(self.max_length, self.max_length, device=self.device)
+		for di in range(self.max_length):
+			decoder_output, decoder_hidden, decoder_attention = self.decoder(decoder_input, decoder_hidden, encoder_outputs)
+			#decoder_attentions[di] = decoder_attention.data
+			topv, topi = decoder_output.data.topk(1)
+			if topi.item() == self.eos:
+				#decoded_words.append("<EOS>")
+				break
+			else:
+				#decoded_words.append(output_lang.index2word[topi.item()])
+				decoded_words.append(topi.item())
+
+			decoder_input = topi.squeeze().detach()
+
+		#return decoded_words, decoder_attentions[:di + 1]
+		return decoded_words
+
+	def training_step(self, batch, batch_idx):
+		start_time = time.time()
+		x, t = batch
+		assert len(x) == 1 and len(t) == 1
+		x, t = x[0], t[0]
+
+		encoder_hidden = self.encoder.initHidden(self.device)  # Set hiddens to initial values.
+
+		input_length = x.size(0)
+		target_length = t.size(0)
+
+		encoder_outputs = torch.zeros((self.max_length, self.encoder.hidden_size), device=self.device)
+		for ei in range(input_length):
+			encoder_output, encoder_hidden = self.encoder(x[ei], encoder_hidden)
+			encoder_outputs[ei] = encoder_output[0, 0]
+
+		decoder_input = torch.tensor([[self.sos]], device=self.device)
+		decoder_hidden = encoder_hidden
+
+		use_teacher_forcing = random.random() < self.teacher_forcing_ratio
+
+		loss = 0
+		if use_teacher_forcing:
+			# Teacher forcing: feed the target as the next input.
+			for di in range(target_length):
+				decoder_output, decoder_hidden, decoder_attention = self.decoder(decoder_input, decoder_hidden, encoder_outputs)
+				loss += self.criterion(decoder_output, t[di])
+				decoder_input = t[di]  # Teacher forcing.
+		else:
+			# Without teacher forcing: use its own predictions as the next input.
+			for di in range(target_length):
+				decoder_output, decoder_hidden, decoder_attention = self.decoder(decoder_input, decoder_hidden, encoder_outputs)
+				topv, topi = decoder_output.topk(1)
+				decoder_input = topi.squeeze().detach()  # Detach from history as input.
+
+				loss += self.criterion(decoder_output, t[di])
+				if decoder_input.item() == self.eos:
+					break
+
+		#performances = self._evaluate_performance(decoder_output, batch, batch_idx)
+		step_time = time.time() - start_time
+
+		self.log_dict(
+			#{"train_loss": loss, "train_acc": performances["acc"], "train_time": step_time},
+			{"train_loss": loss, "train_time": step_time},
+			on_step=True, on_epoch=True, prog_bar=True, logger=True, rank_zero_only=True
+		)
+
+		return loss
+
+	def validation_step(self, batch, batch_idx):
+		start_time = time.time()
+		loss = self._shared_step(batch, batch_idx)
+		#performances = self._evaluate_performance(y, batch, batch_idx)
+		step_time = time.time() - start_time
+
+		#self.log_dict({"val_loss": loss, "val_acc": performances["acc"], "val_time": step_time}, rank_zero_only=True)
+		self.log_dict({"val_loss": loss, "val_time": step_time}, rank_zero_only=True)
+
+	def test_step(self, batch, batch_idx):
+		start_time = time.time()
+		loss = self._shared_step(batch, batch_idx)
+		#performances = self._evaluate_performance(y, batch, batch_idx)
+		step_time = time.time() - start_time
+
+		#self.log_dict({"test_loss": loss, "test_acc": performances["acc"], "test_time": step_time}, rank_zero_only=True)
+		self.log_dict({"test_loss": loss, "test_time": step_time}, rank_zero_only=True)
+
+	def _shared_step(self, batch, batch_idx):
+		x, t = batch
+		assert len(x) == 1 and len(t) == 1
+		x, t = x[0], t[0]
+
+		encoder_hidden = self.encoder.initHidden(self.device)  # Set hiddens to initial values.
+
+		input_length = len(x)
+		target_length = len(t)
+
+		encoder_outputs = torch.zeros((self.max_length, self.encoder.hidden_size), device=self.device)
+		for ei in range(input_length):
+			encoder_output, encoder_hidden = self.encoder(x[ei], encoder_hidden)
+			encoder_outputs[ei] = encoder_output[0, 0]
+
+		decoder_input = torch.tensor([[self.sos]], device=self.device)
+		decoder_hidden = encoder_hidden
+
+		loss = 0
+		for di in range(target_length):
+			decoder_output, decoder_hidden, decoder_attention = self.decoder(decoder_input, decoder_hidden, encoder_outputs)
+			topv, topi = decoder_output.topk(1)
+			decoder_input = topi.squeeze().detach()  # Detach from history as input.
+
+			loss += self.criterion(decoder_output, t[di])
+			if decoder_input.item() == self.eos:
+				break
+
+		return loss
+
+	def _evaluate_performance(self, y, batch, batch_idx):
+		_, t = batch
+		assert len(y) == 1 and len(t) == 1
+		y, t = y[0], t[0]
+
+		acc = difflib.SequenceMatcher(None, y.squeeze(), t.squeeze()).ratio()  # [0, 1].
+
+		return {'acc': acc}
+
+def collate_fn(batch):
+	return list(zip(*batch))
+
+# REF [site] >> https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html
+def seq2seq_translation_tutorial():
+	SOS_token = 0  # Fixed.
+	EOS_token = 1  # Fixed.
+	MAX_LENGTH = 10
+	teacher_forcing_ratio = 0.5
+	hidden_size = 256
+	num_epochs = 20
+	batch_size = 1  # Fixed.
+	num_workers = 8
+	train_test_ratio= 0.9
+
+	# Data.
+	dataset = LangDataset(SOS_token, EOS_token, max_length=MAX_LENGTH)
+
+	print(f"len(dataset) = {len(dataset)}.")
+	print(f"Input dim = {dataset.input_lang.n_words}, output dim = {dataset.output_lang.n_words}.")
+
+	num_examples = len(dataset)
+	num_train_examples = int(num_examples * train_test_ratio)
+	train_dataset, val_dataset = torch.utils.data.random_split(dataset, [num_train_examples, num_examples - num_train_examples])
+	train_dataset, val_dataset = dataset[:num_train_examples], dataset[num_train_examples:]
+
+	train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+	#train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, persistent_workers=True, collate_fn=collate_fn)
+	val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+	#val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers, persistent_workers=True, collate_fn=collate_fn)
+
+	print(f"#train data = {len(train_dataset)}, #validation data = {len(val_dataset)}.")
+	print(f"#train steps = {len(train_dataloader)}, #validation steps = {len(val_dataloader)}.")
+
+	#--------------------
+	# Model.
+	model = EncoderDecoderModel(dataset.input_lang.n_words, dataset.output_lang.n_words, hidden_size, SOS_token, EOS_token, MAX_LENGTH, teacher_forcing_ratio)
+
+	#--------------------
+	# Training.
+	trainer = pl.Trainer(devices=-1, accelerator="gpu", auto_select_gpus=False, max_epochs=num_epochs, enable_checkpointing=True)
 
 	trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 
@@ -2224,8 +2622,10 @@ def lightning_cli_example():
 def main():
 	#minimal_example()
 
-	lenet5_mnist_example()
+	#lenet5_mnist_example()
 	#simple_autoencoder_example()
+
+	seq2seq_translation_tutorial()  # Not good.
 
 	#initalization_and_optimization_tutorial()
 	#inception_resnet_densenet_tutorial()

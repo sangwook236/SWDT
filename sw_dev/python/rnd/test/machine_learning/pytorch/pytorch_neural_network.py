@@ -313,6 +313,14 @@ class AttentionDecoderRNN(nn.Module):
 	def initHidden(self):
 		return torch.zeros(1, 1, self.hidden_size, device=self.device)
 
+# REF [site] >> https://github.com/pytorch/tutorials/blob/master/intermediate_source/char_rnn_classification_tutorial.py
+def char_rnn_classification_tutorial():
+	raise NotImplementedError
+
+# REF [site] >> https://github.com/pytorch/tutorials/blob/master/intermediate_source/char_rnn_generation_tutorial.py
+def char_rnn_generation_tutorial():
+	raise NotImplementedError
+
 # REF [site] >> https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html
 def seq2seq_translation_tutorial():
 	def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion, sos, eos, max_length=10, teacher_forcing_ratio=0.5, device="cuda"):
@@ -491,7 +499,8 @@ def seq2seq_translation_tutorial():
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 	dataset = LangDataset(SOS_token, EOS_token, max_length=MAX_LENGTH)
-	print("len(dataset) = {}.".format(len(dataset)))
+	print(f"len(dataset) = {len(dataset)}.")
+	print(f"Input dim = {dataset.input_lang.n_words}, output dim = {dataset.output_lang.n_words}.")
 
 	# Training and evaluating.
 	encoder = EncoderRNN(dataset.input_lang.n_words, hidden_size, device=device).to(device)
@@ -513,6 +522,9 @@ def seq2seq_translation_tutorial():
 
 def main():
 	#lenet_example()
+
+	#char_rnn_classification_tutorial()  # Not yet implemented.
+	#char_rnn_generation_tutorial()  # Not yet implemented.
 	seq2seq_translation_tutorial()
 
 #--------------------------------------------------------------------
