@@ -753,6 +753,338 @@ def korean_table_question_answering_example():
 	#answer = table_pipeline(data_df, query)
 	print('Answer: {}.'.format(answer))
 
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
+def layoutlmv2_sequence_classification_example():
+	import torch
+	from PIL import Image
+	from transformers import LayoutLMv2Processor, LayoutLMv2ForSequenceClassification, set_seed
+	from datasets import load_dataset
+
+	set_seed(88)
+
+	dataset = load_dataset("rvl_cdip", split="train", streaming=True)
+	data = next(iter(dataset))
+	image = data["image"].convert("RGB")
+
+	processor = LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased")
+	model = LayoutLMv2ForSequenceClassification.from_pretrained(
+		"microsoft/layoutlmv2-base-uncased", num_labels=dataset.info.features["label"].num_classes
+	)
+
+	encoding = processor(image, return_tensors="pt")
+	sequence_label = torch.tensor([data["label"]])
+
+	outputs = model(**encoding, labels=sequence_label)
+
+	loss, logits = outputs.loss, outputs.logits
+	predicted_idx = logits.argmax(dim=-1).item()
+	predicted_answer = dataset.info.features["label"].names[predicted_idx]
+	print(f"Predicted: index = {predicted_idx}, answer = {predicted_answer}.")
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
+def layoutlmv2_token_classification_example():
+	from PIL import Image
+	from transformers import LayoutLMv2Processor, LayoutLMv2ForTokenClassification, set_seed
+	from datasets import load_dataset
+
+	set_seed(88)
+
+	datasets = load_dataset("nielsr/funsd", split="test")
+	labels = datasets.features["ner_tags"].feature.names
+	id2label = {v: k for v, k in enumerate(labels)}
+
+	processor = LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased", revision="no_ocr")
+	model = LayoutLMv2ForTokenClassification.from_pretrained(
+		"microsoft/layoutlmv2-base-uncased", num_labels=len(labels)
+	)
+
+	data = datasets[0]
+	image = Image.open(data["image_path"]).convert("RGB")
+	words = data["words"]
+	boxes = data["bboxes"]  # make sure to normalize your bounding boxes
+	word_labels = data["ner_tags"]
+	encoding = processor(
+		image,
+		words,
+		boxes=boxes,
+		word_labels=word_labels,
+		padding="max_length",
+		truncation=True,
+		return_tensors="pt",
+	)
+
+	outputs = model(**encoding)
+
+	logits, loss = outputs.logits, outputs.loss
+	predicted_token_class_ids = logits.argmax(-1)
+	predicted_tokens_classes = [id2label[t.item()] for t in predicted_token_class_ids[0]]
+	print(f"Predicted token classes: {predicted_tokens_classes[:5]}.")
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv2
+def layoutlmv2_question_answering_example():
+	import torch
+	from PIL import Image
+	from transformers import LayoutLMv2Processor, LayoutLMv2ForQuestionAnswering, set_seed
+	from datasets import load_dataset
+
+	set_seed(88)
+
+	processor = LayoutLMv2Processor.from_pretrained("microsoft/layoutlmv2-base-uncased")
+	model = LayoutLMv2ForQuestionAnswering.from_pretrained("microsoft/layoutlmv2-base-uncased")
+
+	dataset = load_dataset("hf-internal-testing/fixtures_docvqa")
+	image_path = dataset["test"][0]["file"]
+	image = Image.open(image_path).convert("RGB")
+	question = "When is coffee break?"
+	encoding = processor(image, question, return_tensors="pt")
+
+	outputs = model(**encoding)
+
+	predicted_start_idx = outputs.start_logits.argmax(-1).item()
+	predicted_end_idx = outputs.end_logits.argmax(-1).item()
+	print(f"Predicted: start index = {predicted_start_idx}, end index = {predicted_end_idx}.")
+
+	predicted_answer_tokens = encoding.input_ids.squeeze()[predicted_start_idx : predicted_end_idx + 1]
+	predicted_answer = processor.tokenizer.decode(predicted_answer_tokens)
+	print(f"Predicted: answer = {predicted_answer}.")  # Results are not very good without further fine-tuning.
+
+	#-----
+	target_start_index = torch.tensor([7])
+	target_end_index = torch.tensor([14])
+
+	outputs = model(**encoding, start_positions=target_start_index, end_positions=target_end_index)
+
+	predicted_answer_span_start = outputs.start_logits.argmax(-1).item()
+	predicted_answer_span_end = outputs.end_logits.argmax(-1).item()
+	print(f"Predicted: answer span start = {predicted_answer_span_start}, answer span end = {predicted_answer_span_end}.")
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv3
+def layoutlmv3_sequence_classification_example():
+	import torch
+	from transformers import AutoProcessor, AutoModelForSequenceClassification
+	from datasets import load_dataset
+
+	processor = AutoProcessor.from_pretrained("microsoft/layoutlmv3-base", apply_ocr=False)
+	model = AutoModelForSequenceClassification.from_pretrained("microsoft/layoutlmv3-base")
+
+	dataset = load_dataset("nielsr/funsd-layoutlmv3", split="train")
+	example = dataset[10]
+	image = example["image"]
+	words = example["tokens"]
+	boxes = example["bboxes"]
+
+	encoding = processor(image, words, boxes=boxes, return_tensors="pt")
+	sequence_label = torch.tensor([1])
+
+	outputs = model(**encoding, labels=sequence_label)
+
+	loss = outputs.loss
+	logits = outputs.logits
+	#predicted_idx = logits.argmax(dim=-1).item()
+	print(f"Loss = {loss}, logits = {logits}.")
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv3
+def layoutlmv3_token_classification_example():
+	from transformers import AutoProcessor, AutoModelForTokenClassification
+	from datasets import load_dataset
+
+	processor = AutoProcessor.from_pretrained("microsoft/layoutlmv3-base", apply_ocr=False)
+	model = AutoModelForTokenClassification.from_pretrained("microsoft/layoutlmv3-base", num_labels=7)
+
+	dataset = load_dataset("nielsr/funsd-layoutlmv3", split="train")
+	example = dataset[0]
+	image = example["image"]
+	words = example["tokens"]
+	boxes = example["bboxes"]
+	word_labels = example["ner_tags"]
+
+	encoding = processor(image, words, boxes=boxes, word_labels=word_labels, return_tensors="pt")
+
+	outputs = model(**encoding)
+
+	loss = outputs.loss
+	logits = outputs.logits
+	predicted_idx = logits.argmax(dim=-1)
+	print(f"Predicted indices = {predicted_idx}.")
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/layoutlmv3
+def layoutlmv3_question_answering_example():
+	import torch
+	from transformers import AutoProcessor, AutoModelForQuestionAnswering
+	from datasets import load_dataset
+
+	processor = AutoProcessor.from_pretrained("microsoft/layoutlmv3-base", apply_ocr=False)
+	model = AutoModelForQuestionAnswering.from_pretrained("microsoft/layoutlmv3-base")
+
+	dataset = load_dataset("nielsr/funsd-layoutlmv3", split="train")
+	example = dataset[0]
+	image = example["image"]
+	question = "what's his name?"
+	words = example["tokens"]
+	boxes = example["bboxes"]
+
+	encoding = processor(image, question, words, boxes=boxes, return_tensors="pt")
+	start_positions = torch.tensor([1])
+	end_positions = torch.tensor([3])
+
+	outputs = model(**encoding, start_positions=start_positions, end_positions=end_positions)
+
+	loss = outputs.loss
+	start_scores = outputs.start_logits
+	end_scores = outputs.end_logits
+
+	predicted_start_idx = start_scores.argmax(-1).item()
+	predicted_end_idx = end_scores.argmax(-1).item()
+	print(f"Predicted: start index = {predicted_start_idx}, end index = {predicted_end_idx}.")
+
+	predicted_answer_tokens = encoding.input_ids.squeeze()[predicted_start_idx : predicted_end_idx + 1]
+	predicted_answer = processor.tokenizer.decode(predicted_answer_tokens)
+	print(f"Predicted: answer = {predicted_answer}.")
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/donut
+def donut_document_image_classification_example():
+	import re
+	import torch
+	from transformers import DonutProcessor, VisionEncoderDecoderModel
+	from datasets import load_dataset
+
+	device = "cuda" if torch.cuda.is_available() else "cpu"
+
+	processor = DonutProcessor.from_pretrained("naver-clova-ix/donut-base-finetuned-rvlcdip")
+	model = VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-rvlcdip")
+	model.to(device)
+
+	# Load document image.
+	dataset = load_dataset("hf-internal-testing/example-documents", split="test")
+	image = dataset[1]["image"]
+
+	# Prepare decoder inputs.
+	task_prompt = "<s_rvlcdip>"
+	decoder_input_ids = processor.tokenizer(task_prompt, add_special_tokens=False, return_tensors="pt").input_ids
+
+	pixel_values = processor(image, return_tensors="pt").pixel_values
+
+	outputs = model.generate(
+		pixel_values.to(device),
+		decoder_input_ids=decoder_input_ids.to(device),
+		max_length=model.decoder.config.max_position_embeddings,
+		early_stopping=True,
+		pad_token_id=processor.tokenizer.pad_token_id,
+		eos_token_id=processor.tokenizer.eos_token_id,
+		use_cache=True,
+		num_beams=1,
+		bad_words_ids=[[processor.tokenizer.unk_token_id]],
+		return_dict_in_generate=True,
+	)
+
+	sequence = processor.batch_decode(outputs.sequences)[0]
+	sequence = sequence.replace(processor.tokenizer.eos_token, "").replace(processor.tokenizer.pad_token, "")
+	sequence = re.sub(r"<.*?>", "", sequence, count=1).strip()  # Remove first task start token.
+	print(processor.token2json(sequence))
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/donut
+def donut_document_document_parsing_example():
+	import re
+	import torch
+	from transformers import DonutProcessor, VisionEncoderDecoderModel
+	from datasets import load_dataset
+
+	device = "cuda" if torch.cuda.is_available() else "cpu"
+
+	processor = DonutProcessor.from_pretrained("naver-clova-ix/donut-base-finetuned-cord-v2")
+	model = VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-cord-v2")
+	model.to(device)
+
+	# Load document image.
+	dataset = load_dataset("hf-internal-testing/example-documents", split="test")
+	image = dataset[2]["image"]
+
+	# Prepare decoder inputs.
+	task_prompt = "<s_cord-v2>"
+	decoder_input_ids = processor.tokenizer(task_prompt, add_special_tokens=False, return_tensors="pt").input_ids
+
+	pixel_values = processor(image, return_tensors="pt").pixel_values
+
+	outputs = model.generate(
+		pixel_values.to(device),
+		decoder_input_ids=decoder_input_ids.to(device),
+		max_length=model.decoder.config.max_position_embeddings,
+		early_stopping=True,
+		pad_token_id=processor.tokenizer.pad_token_id,
+		eos_token_id=processor.tokenizer.eos_token_id,
+		use_cache=True,
+		num_beams=1,
+		bad_words_ids=[[processor.tokenizer.unk_token_id]],
+		return_dict_in_generate=True,
+	)
+
+	sequence = processor.batch_decode(outputs.sequences)[0]
+	sequence = sequence.replace(processor.tokenizer.eos_token, "").replace(processor.tokenizer.pad_token, "")
+	sequence = re.sub(r"<.*?>", "", sequence, count=1).strip()  # Remove first task start token.
+	print(processor.token2json(sequence))
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/donut
+def donut_document_visual_question_answering_example():
+	import re
+	import torch
+	from transformers import DonutProcessor, VisionEncoderDecoderModel
+	from datasets import load_dataset
+
+	device = "cuda" if torch.cuda.is_available() else "cpu"
+
+	processor = DonutProcessor.from_pretrained("naver-clova-ix/donut-base-finetuned-docvqa")
+	model = VisionEncoderDecoderModel.from_pretrained("naver-clova-ix/donut-base-finetuned-docvqa")
+	model.to(device)
+
+	# Load document image from the DocVQA dataset.
+	dataset = load_dataset("hf-internal-testing/example-documents", split="test")
+	image = dataset[0]["image"]
+
+	# Prepare decoder inputs.
+	task_prompt = "<s_docvqa><s_question>{user_input}</s_question><s_answer>"
+	question = "When is the coffee break?"
+	prompt = task_prompt.replace("{user_input}", question)
+	decoder_input_ids = processor.tokenizer(prompt, add_special_tokens=False, return_tensors="pt").input_ids
+
+	pixel_values = processor(image, return_tensors="pt").pixel_values
+
+	outputs = model.generate(
+		pixel_values.to(device),
+		decoder_input_ids=decoder_input_ids.to(device),
+		max_length=model.decoder.config.max_position_embeddings,
+		early_stopping=True,
+		pad_token_id=processor.tokenizer.pad_token_id,
+		eos_token_id=processor.tokenizer.eos_token_id,
+		use_cache=True,
+		num_beams=1,
+		bad_words_ids=[[processor.tokenizer.unk_token_id]],
+		return_dict_in_generate=True,
+	)
+
+	sequence = processor.batch_decode(outputs.sequences)[0]
+	sequence = sequence.replace(processor.tokenizer.eos_token, "").replace(processor.tokenizer.pad_token, "")
+	sequence = re.sub(r"<.*?>", "", sequence, count=1).strip()  # Remove first task start token.
+	print(processor.token2json(sequence))
+
+# REF [site] >> https://medium.com/@unstructured-io/an-introduction-to-vision-transformers-for-document-understanding-e8aea045dd84
+def donut_invoice_test():
+	from transformers import BertConfig, ViTConfig, VisionEncoderDecoderConfig, VisionEncoderDecoderModel
+
+	config_encoder = ViTConfig()
+	config_decoder = BertConfig()
+	config = VisionEncoderDecoderConfig.from_encoder_decoder_configs(config_encoder, config_decoder)
+	model = VisionEncoderDecoderModel(config=config)
+
+	from donut.model import DonutModel
+	from PIL import Image
+	model = DonutModel.from_pretrained("./custom-fine-tuned-model")
+
+	prediction = model.inference(
+		image=Image.open("./example-invoice.jpeg"), prompt="<s_dataset-donut-generated>"
+	)["predictions"][0]
+
+	print(prediction)
+
 def main():
 	#quick_tour()
 
@@ -778,11 +1110,29 @@ def main():
 	#--------------------
 	# Pipeline.
 
-	pipeline_example()
+	#pipeline_example()
 
 	#question_answering_example()
 	#korean_fill_mask_example()
 	#korean_table_question_answering_example()  # Not correctly working.
+
+	#--------------------
+	# Document processing.
+
+	# LayoutLM requires libraries: tesseract, detectron2.
+	#layoutlmv2_sequence_classification_example()
+	#layoutlmv2_token_classification_example()
+	#layoutlmv2_question_answering_example()
+
+	#layoutlmv3_sequence_classification_example()
+	#layoutlmv3_token_classification_example()
+	#layoutlmv3_question_answering_example()
+
+	#donut_document_image_classification_example()
+	donut_document_document_parsing_example()
+	#donut_document_visual_question_answering_example()
+
+	#donut_invoice_test()
 
 #--------------------------------------------------------------------
 
