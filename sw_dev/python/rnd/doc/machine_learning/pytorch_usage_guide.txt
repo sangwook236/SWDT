@@ -18,23 +18,26 @@
 
 		Using conda:
 			Install with GPU support:
-				conda install pytorch torchvision torchtext
-				conda install pytorch torchvision torchtext cudatoolkit=11.6 -c pytorch
-				conda install pytorch torchvision torchtext cudatoolkit=11.6 -c pytorch -c conda-forge
-				conda install pytorch torchvision torchtext cudatoolkit=11.6 -c pytorch-nightly
+				conda install pytorch torchvision torchaudio torchtext
+				conda install pytorch torchvision torchaudio torchtext pytorch-cuda=11.7 -c pytorch -c nvidia
+				conda install pytorch torchvision torchaudio torchtext cudatoolkit=11.7 -c pytorch
+				conda install pytorch torchvision torchaudio torchtext cudatoolkit=11.7 -c pytorch -c conda-forge
+				conda install pytorch torchvision torchaudio torchtext cudatoolkit=11.7 -c pytorch-nightly
 			Install without GPU support:
-				conda install pytorch torchvision torchtext cpuonly -c pytorch
-				conda install pytorch torchvision torchtext cpuonly -c pytorch-nightly
+				conda install pytorch torchvision torchaudio torchtext cpuonly -c pytorch
+				conda install pytorch torchvision torchaudio torchtext cpuonly -c pytorch-nightly
 
 		Using pip:
 			Install with GPU support:
-				pip install torch torchvision torchtext torchaudio torchdata -f https://download.pytorch.org/whl/torch_stable.html
+				pip install torch torchvision torchaudio torchtext --extra-index-url https://download.pytorch.org/whl/cu117
+				pip install torch torchvision torchaudio torchtext -f https://download.pytorch.org/whl/torch_stable.html
 					pip install torch==1.13.0+cu117 torchvision==0.14.0+cu117 -f https://download.pytorch.org/whl/torch_stable.html
-				pip install torch torchvision torchtext torchaudio torchdata -f https://download.pytorch.org/whl/nightly/cu110/torch_nightly.html
+				pip install torch torchvision torchaudio torchtext -f https://download.pytorch.org/whl/nightly/cu110/torch_nightly.html
 			Install without GPU support:
-				pip install torch torchvision torchtext torchaudio torchdata (?)
+				pip install torch torchvision torchaudio torchtext
+				pip install torch torchvision torchaudio torchtext -f https://download.pytorch.org/whl/torch_stable.html
 					pip install torch==1.13.0+cpu torchvision==0.14.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
-				pip install torch torchvision torchtext torchaudio torchdata -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
+				pip install torch torchvision torchaudio torchtext -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
 
 		For RTX 3090 (2021/05/17):
 			conda create --name torch python=3 numpy scipy matplotlib pillow opencv
@@ -67,7 +70,7 @@
 			pip install torch==1.12.0+cu116 torchvision==0.13.0+cu116 -f https://download.pytorch.org/whl/torch_stable.html
 		pip install pytorch-lightning lightning-bolts
 
-		conda install pytorch torchvision cudatoolkit=11.6 -c pytorch -c conda-forge
+		conda install pytorch torchvision cudatoolkit=11.7 -c pytorch -c conda-forge
 		conda install opencv -c conda-forge
 		pip install pytorch-lightning lightning-bolts
 
