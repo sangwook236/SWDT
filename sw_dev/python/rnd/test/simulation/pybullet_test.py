@@ -181,12 +181,16 @@ def simulate_camera_images_test():
 
 	#-----
 	# Run simulation.
+	print("Start simulation...")
 	while True:
 		p.stepSimulation()
+	print("End simulation.")
 
 # REF [site] >> https://github.com/ElectronicElephant/pybullet_ur5_robotiq
 def articulated_robot_test():
 	from collections import namedtuple
+
+	model_dir_path = './models'
 
 	physicsClient = p.connect(p.GUI)
 
@@ -238,19 +242,19 @@ def articulated_robot_test():
 	robot_base_orientation = p.getQuaternionFromEuler((0, 0, 0))  # (roll, pitch, yaw).
 	if True:
 		# UR5 + ROBOTIQ 85.
-		robotId = p.loadURDF("./urdf/ur5_robotiq_85.urdf", robot_base_position, robot_base_orientation, useFixedBase=True, flags=p.URDF_ENABLE_CACHED_GRAPHICS_SHAPES)
+		robotId = p.loadURDF(os.path.join(model_dir_path, "urdf/ur5_robotiq_85.urdf"), robot_base_position, robot_base_orientation, useFixedBase=True, flags=p.URDF_ENABLE_CACHED_GRAPHICS_SHAPES)
 		endEffectorId = 7
 		robotDof = 6
 		armRestPoses = [-1.5690622952052096, -1.5446774605904932, 1.343946009733127, -1.3708613585093699, -1.5707970583733368, 0.0009377758247187636]
 	elif False:
 		# UR5 + ROBOTIQ 140.
-		robotId = p.loadURDF("./urdf/ur5_robotiq_140.urdf", robot_base_position, robot_base_orientation, useFixedBase=True, flags=p.URDF_ENABLE_CACHED_GRAPHICS_SHAPES)
+		robotId = p.loadURDF(os.path.join(model_dir_path, "urdf/ur5_robotiq_140.urdf"), robot_base_position, robot_base_orientation, useFixedBase=True, flags=p.URDF_ENABLE_CACHED_GRAPHICS_SHAPES)
 		endEffectorId = 7
 		robotDof = 6
 		armRestPoses = [-1.5690622952052096, -1.5446774605904932, 1.343946009733127, -1.3708613585093699, -1.5707970583733368, 0.0009377758247187636]
 	else:
 		# Panda (Franka Emika).
-		robotId = p.loadURDF("./urdf/panda.urdf", robot_base_position, robot_base_orientation, useFixedBase=True, flags=p.URDF_ENABLE_CACHED_GRAPHICS_SHAPES)
+		robotId = p.loadURDF(os.path.join(model_dir_path, "urdf/panda.urdf"), robot_base_position, robot_base_orientation, useFixedBase=True, flags=p.URDF_ENABLE_CACHED_GRAPHICS_SHAPES)
 		endEffectorId = 11
 		robotDof = 7
 		armRestPoses = [0.98, 0.458, 0.31, -2.24, -0.30, 2.66, 2.32]
@@ -264,7 +268,7 @@ def articulated_robot_test():
 	#-----
 	# Load a box.
 	boxID = p.loadURDF(
-		"./urdf/skew-box-button.urdf",
+		os.path.join(model_dir_path, "urdf/skew-box-button.urdf"),
 		(0.0, 0.0, 0.0),
 		#p.getQuaternionFromEuler((0, 1.5706453, 0)),
 		p.getQuaternionFromEuler((0, 0, 0)),
@@ -311,14 +315,16 @@ def articulated_robot_test():
 
 	#-----
 	# Run simulation.
+	print("Start simulation...")
 	while True:
 		p.stepSimulation()
+	print("End simulation.")
 
 # REF [site] >>
 #	https://www.ycbbenchmarks.com/
 #	http://ycb-benchmarks.s3-website-us-east-1.amazonaws.com/
 def ycb_benchmark_test():
-	from collections import namedtuple
+	model_dir_path = './models'
 
 	physicsClient = p.connect(p.GUI)
 
@@ -334,10 +340,10 @@ def ycb_benchmark_test():
 	# Load an object.
 
 	# REF [site] >> https://github.com/harvard-microrobotics/object2urdf
-	object_urdf = "./ycb/006_mustard_bottle.urdf"
-	#object_urdf = "./ycb/013_apple.urdf"
-	#object_urdf = "./ycb/025_mug.urdf"
-	#object_urdf = "./ycb/053_mini_soccer_ball.urdf"
+	object_urdf = os.path.join(model_dir_path, "ycb/006_mustard_bottle.urdf")
+	#object_urdf = os.path.join(model_dir_path, "ycb/013_apple.urdf")
+	#object_urdf = os.path.join(model_dir_path, "ycb/025_mug.urdf")
+	#object_urdf = os.path.join(model_dir_path, "ycb/053_mini_soccer_ball.urdf")
 	objectId = p.loadURDF(
 		fileName=object_urdf,
 		basePosition=[0, 0, 2],
@@ -381,8 +387,10 @@ def ycb_benchmark_test():
 
 	#-----
 	# Run simulation.
+	print("Start simulation...")
 	while True:
 		p.stepSimulation()
+	print("End simulation.")
 
 def environment_test():
 	import pybullet_envs  # Register PyBullet environments.
@@ -405,8 +413,10 @@ def environment_test():
 		env = e.KukaGymEnv(actionRepeat=1, isEnableSelfCollision=True, isDiscrete=False, renders=False, maxSteps=1000)
 		env.reset()
 
-	for i in range(10000):
+	print("Start simulation...")
+	for _ in range(10000):
 		p.stepSimulation()
+	print("End simulation.")
 
 # REF [file] >> https://github.com/bulletphysics/bullet3/tree/master/examples/pybullet/gym/pybullet_envs/bullet/racecarGymEnv.py
 def racecar_gym_env_example():
