@@ -10,6 +10,31 @@
 
 		import open3d_tutorial as o3dtut
 
+[-] Tool.
+	- Command line interface (CLI).
+		https://github.com/isl-org/Open3D/releases
+
+		open3d --help
+
+		List all runnable examples:
+			open3d example --list
+
+		Print source code of an example:
+			open3d example --show [CATEGORY]/[EXAMPLE_NAME]
+
+		Run an example:
+			open3d example [CATEGORY]/[EXAMPLE_NAME]
+				open3d example visualization/draw
+
+	- Open3D Viewer.
+		https://github.com/isl-org/Open3D/releases
+
+		Run Open3D Viewer:
+			open3d draw
+
+		Open a mesh or point cloud file in Open3D Viewer:
+			open3d draw [FILENAME]
+
 [-] Installation (Python).
 	http://www.open3d.org/docs/release/getting_started.html
 
