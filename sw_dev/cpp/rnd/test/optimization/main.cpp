@@ -23,6 +23,8 @@ int main(int argc, char *argv[])
 	int coin_or_main(int argc, char *argv[]);
 	int scip_main(int argc, char *argv[]);
 
+	int g2o_main(int argc, char *argv[]);
+
 	int retval = EXIT_SUCCESS;
 	try
 	{
@@ -93,6 +95,9 @@ int main(int argc, char *argv[])
 		//	- Mathematical programming language.
 		//		ZIMPL, LP format, MPS format.
 		//retval = scip_main(argc, argv);
+
+		std::cout << "\ng2o library ---------------------------------------------------------" << std::endl;
+		retval = g2o_main(argc, argv);
 	}
     catch (const std::bad_alloc &e)
 	{

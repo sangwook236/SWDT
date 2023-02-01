@@ -1,0 +1,181 @@
+[-] General.
+	- Site.
+		https://github.com/RainerKuemmerle/g2o
+
+		https://github.com/uoip/g2opy
+
+[-] Tool.
+	- g2o
+		Command line interface (CLI).
+
+		g2o [options] [graph-input]
+			g2o -o optimzed_output.g2o noisy_input.g2o
+
+		g2o_simulator2d [options] [graph-output]
+		g2o_simulator3d [options] [graph-output]
+
+	- g2o_viewer.
+		g2o_viewer
+		g2o_viewer [options] [graph-input]
+
+	- g2o_incremental.
+		g2o includes an experimental binary for performing optimization in an incremental fashion, i.e., optimizing after inserting one or several nodes along with their measurements.
+
+		g2o_incremental [options]
+			g2o_incremental -i manhattanOlson3500.g2o
+
+[-] Installation (g2o, Ubuntu).
+	- Install from source.
+		sudo apt install qtbase5-dev
+		sudo apt install libeigen3-dev libsuitesparse-dev libqglviewer-dev-qt5
+
+		git clone https://github.com/RainerKuemmerle/g2o.git
+
+		mkdir build
+		cd build
+		cmake ../
+		make -j8
+		sudo make install
+
+[-] Installation (g2opy, Ubuntu).
+	- Install Pangolin.
+		git clone https://github.com/uoip/pangolin.git
+
+		cd pangolin
+		mkdir build
+		cd build
+		cmake ..
+		make -j8
+
+		Edit lines 70~141 in pangolin/src/video/drivers/ffmpeg.cpp:
+			<before>
+				...
+				TEST_PIX_FMT_RETURN(XVMC_MPEG2_MC);
+				TEST_PIX_FMT_RETURN(XVMC_MPEG2_IDCT);
+				...
+				TEST_PIX_FMT_RETURN(VDPAU_H264);
+				TEST_PIX_FMT_RETURN(VDPAU_MPEG1);
+				TEST_PIX_FMT_RETURN(VDPAU_MPEG2);
+				TEST_PIX_FMT_RETURN(VDPAU_WMV3);
+				TEST_PIX_FMT_RETURN(VDPAU_VC1);
+				...
+				TEST_PIX_FMT_RETURN(VDPAU_MPEG4);
+				...
+			<after>
+				...
+				//TEST_PIX_FMT_RETURN(XVMC_MPEG2_MC);
+				//TEST_PIX_FMT_RETURN(XVMC_MPEG2_IDCT);
+				...
+				//TEST_PIX_FMT_RETURN(VDPAU_H264);
+				//TEST_PIX_FMT_RETURN(VDPAU_MPEG1);
+				//TEST_PIX_FMT_RETURN(VDPAU_MPEG2);
+				//TEST_PIX_FMT_RETURN(VDPAU_WMV3);
+				//TEST_PIX_FMT_RETURN(VDPAU_VC1);
+				...
+				//TEST_PIX_FMT_RETURN(VDPAU_MPEG4);
+				...
+		Edit pangolin/setup.py:
+			<before>
+				class CopyLibFile(install):
+					def run(self):
+						install_dir = get_python_lib()
+
+						lib_file = glob.glob(__library_file__)
+						assert len(lib_file) == 1 and len(install_dirs) >= 1     
+
+						print('copying {} -> {}'.format(lib_file[0], install_dirs[0]))
+						shutil.copy(lib_file[0], install_dir)
+			<after>
+				class CopyLibFile(install):
+					def run(self):
+						install_dir = get_python_lib()
+
+						lib_file = glob.glob(__library_file__)
+						assert len(lib_file) == 1
+
+						print('copying {} -> {}'.format(lib_file[0], install_dir))
+						shutil.copy(lib_file[0], install_dir)
+
+		cd ..
+		python setup.py install
+
+	- Install from g2opy.
+		git clone https://github.com/uoip/g2opy.git
+
+		Edit lines 185~188 in g2opy/python/core/eigen_types.h:
+			<error> no matches converting function 'x' to type 'double (class Eigen::Quaternion<double>::*)() const'.
+			<solution>
+				<before>
+					.def("x", (double (Eigen::Quaterniond::*) () const) &Eigen::Quaterniond::x)
+					.def("y", (double (Eigen::Quaterniond::*) () const) &Eigen::Quaterniond::y)
+					.def("z", (double (Eigen::Quaterniond::*) () const) &Eigen::Quaterniond::z)
+					.def("w", (double (Eigen::Quaterniond::*) () const) &Eigen::Quaterniond::w)
+				<after>
+					.def("x", (const double &(Eigen::Quaterniond::*) () const) &Eigen::Quaterniond::x)
+					.def("y", (const double &(Eigen::Quaterniond::*) () const) &Eigen::Quaterniond::y)
+					.def("z", (const double &(Eigen::Quaterniond::*) () const) &Eigen::Quaterniond::z)
+					.def("w", (const double &(Eigen::Quaterniond::*) () const) &Eigen::Quaterniond::w)
+
+					or
+
+					.def("x", (double &(Eigen::Quaterniond::*) ()) &Eigen::Quaterniond::x)
+					.def("y", (double &(Eigen::Quaterniond::*) ()) &Eigen::Quaterniond::y)
+					.def("z", (double &(Eigen::Quaterniond::*) ()) &Eigen::Quaterniond::z)
+					.def("w", (double &(Eigen::Quaterniond::*) ()) &Eigen::Quaterniond::w)
+
+		Edit g2opy/setup.py:
+			<error> error: Multiple top-level packages discovered in a flat-layout: ['g2o', 'lib', 'script', 'contrib', 'EXTERNAL', 'cmake_modules'].
+			<solution>
+				<before>
+					setup(
+						name='g2opy',
+						version=__version__,
+						description='Python binding of C++ graph optimization framework g2o.',
+						url='https://github.com/uoip/g2opy',
+						license='BSD',
+						cmdclass=dict(
+							install=CopyLibFile
+						),
+						keywords='g2o, SLAM, BA, ICP, optimization, python, binding',
+						long_description="""This is a Python binding for c++ library g2o 
+							(https://github.com/RainerKuemmerle/g2o).
+
+							g2o is an open-source C++ framework for optimizing graph-based nonlinear 
+							error functions. g2o has been designed to be easily extensible to a wide 
+							range of problems and a new problem typically can be specified in a few 
+							lines of code. The current implementation provides solutions to several 
+							variants of SLAM and BA."""
+					)
+				<after>
+					setup(
+						name='g2opy',
+						version=__version__,
+						description='Python binding of C++ graph optimization framework g2o.',
+						url='https://github.com/uoip/g2opy',
+						license='BSD',
+						cmdclass=dict(
+							install=CopyLibFile
+						),
+						keywords='g2o, SLAM, BA, ICP, optimization, python, binding',
+						long_description="""This is a Python binding for c++ library g2o 
+							(https://github.com/RainerKuemmerle/g2o).
+
+							g2o is an open-source C++ framework for optimizing graph-based nonlinear 
+							error functions. g2o has been designed to be easily extensible to a wide 
+							range of problems and a new problem typically can be specified in a few 
+							lines of code. The current implementation provides solutions to several 
+							variants of SLAM and BA.""",
+						py_modules=[]
+					)
+
+		cd g2opy
+		mkdir build
+		cd build
+		cmake ..
+		make -j8
+
+		cd ..
+		python setup.py install
+
+		pip uninstall g2opy
+		rm $HOME/anaconda3/envs/<ENV>/lib/<PYTHON>/site-packages/g2o.cpython-<VERION>-x86_64-linux-gnu

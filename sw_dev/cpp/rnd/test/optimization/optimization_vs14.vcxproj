@@ -183,6 +183,12 @@
     <ClCompile Include="coin_or\coin_or_clp_example.cpp" />
     <ClCompile Include="coin_or\coin_or_main.cpp" />
     <ClCompile Include="coin_or\coin_or_osi_example.cpp" />
+    <ClCompile Include="g2o\g2o_ba_example.cpp" />
+    <ClCompile Include="g2o\g2o_bal_example.cpp" />
+    <ClCompile Include="g2o\g2o_data_fitting_example.cpp" />
+    <ClCompile Include="g2o\g2o_gicp_example.cpp" />
+    <ClCompile Include="g2o\g2o_main.cpp" />
+    <ClCompile Include="g2o\g2o_sba_example.cpp" />
     <ClCompile Include="glpk\glpk_interior_point_sample.cpp" />
     <ClCompile Include="glpk\glpk_main.cpp" />
     <ClCompile Include="glpk\glpk_mip_sample.cpp" />
