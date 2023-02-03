@@ -4,17 +4,36 @@
 
 		https://github.com/uoip/g2opy
 
+		https://openslam-org.github.io/g2o.html
+		https://github.com/OpenSLAM-org/openslam_g2o
+
+	- Document.
+		g2o.pdf
+
+[-] Usage.
+	- g2o file format.
+		https://github.com/RainerKuemmerle/g2o/wiki/File-Format
+		https://github.com/RainerKuemmerle/g2o/wiki/File-Format-SLAM-2D
+		https://github.com/RainerKuemmerle/g2o/wiki/File-format-slam-3d
+
 [-] Tool.
-	- g2o
+	- g2o.
 		Command line interface (CLI).
+		https://github.com/RainerKuemmerle/g2o/tree/master/g2o/apps/g2o_cli
 
 		g2o [options] [graph-input]
 			g2o -o optimzed_output.g2o noisy_input.g2o
+			g2o -robustKernel Cauchy -robustKernelWidth 1 -i 50 -o optimzed_output.g2o noisy_input.g2o
+			g2o -v -solverlib libg2o_solver_cholmod.so -solver lm_fix6_3_cholmod -i 10 -o optimzed_output.g2o noisy_input.g2o
+			g2o -v -typeslib libg2o_types_slam3d.so -i 20 -o optimzed_output.g2o noisy_input.g2o
 
-		g2o_simulator2d [options] [graph-output]
-		g2o_simulator3d [options] [graph-output]
+			g2o -listSolvers
+			g2o -listTypes
+			g2o -listRobustKernels
 
 	- g2o_viewer.
+		https://github.com/RainerKuemmerle/g2o/tree/master/g2o/apps/g2o_viewer
+
 		g2o_viewer
 		g2o_viewer [options] [graph-input]
 
@@ -23,6 +42,40 @@
 
 		g2o_incremental [options]
 			g2o_incremental -i manhattanOlson3500.g2o
+
+	- Simulator.
+		https://github.com/RainerKuemmerle/g2o/tree/master/g2o/apps/g2o_simulator
+		https://github.com/RainerKuemmerle/g2o/tree/master/g2o/examples/tutorial_slam2d/simulator.h & simulator.cpp
+
+		g2o_simulator2d [options] [graph-output]
+			https://github.com/RainerKuemmerle/g2o/blob/master/g2o/apps/g2o_simulator/test_simulator2d.cpp
+
+			g2o_simulator2d -hasPointSensor simulator_out.g2o
+				VERTEX_XY, VERTEX_SE2, & EDGE_SE2_XY.
+			g2o_simulator2d -hasPointBearingSensor simulator_out.g2o
+				VERTEX_XY, VERTEX_SE2, & EDGE_BEARING_SE2_XY.
+			g2o_simulator2d -hasPoseSensor simulator_out.g2o
+				VERTEX_SE2 & EDGE_SE2.
+			g2o_simulator2d -hasOdom simulator_out.g2o
+				VERTEX_SE2 & EDGE_SE2.
+
+			g2o_simulator2d -hasPointSensor -nSegments 2000 -nlandmarks 500 -simSteps 200 -worldSize 50 simulator_out.g2o
+
+		g2o_simulator3d [options] [graph-output]
+			https://github.com/RainerKuemmerle/g2o/blob/master/g2o/apps/g2o_simulator/test_simulator3d.cpp
+
+			g2o_simulator3d -hasPointSensor simulator_out.g2o
+				PARAMS_SE3OFFSET, VERTEX_TRACKXYZ, VERTEX_SE3:QUAT, & EDGE_SE3_TRACKXYZ.
+			g2o_simulator3d -hasPointDepthSensor simulator_out.g2o
+				PARAMS_CAMERACALIB, VERTEX_TRACKXYZ, VERTEX_SE3:QUAT, & EDGE_PROJECT_DEPTH.
+			g2o_simulator3d -hasPointDisparitySensor simulator_out.g2o
+				PARAMS_CAMERACALIB, VERTEX_TRACKXYZ, VERTEX_SE3:QUAT, & EDGE_PROJECT_DISPARITY.
+			g2o_simulator3d -hasPoseSensor simulator_out.g2o
+				VERTEX_SE3:QUAT & EDGE_SE3:QUAT.
+			g2o_simulator3d -hasOdom simulator_out.g2o
+				VERTEX_SE3:QUAT & EDGE_SE3:QUAT.
+
+			g2o_simulator3d -hasPointSensor -nLandmarks 2000 -simSteps 200 -worldSize 50 simulator_out.g2o
 
 [-] Installation (g2o, Ubuntu).
 	- Install from source.
