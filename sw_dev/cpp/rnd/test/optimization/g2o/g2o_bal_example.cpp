@@ -215,7 +215,7 @@ public:
 
 namespace my_g2o {
 
-// REF [site] >> https://github.com/RainerKuemmerle/g2o/blob/master/g2o/examples/bal/bal_example.cpp
+// REF [site] >> https://github.com/RainerKuemmerle/g2o/blob/master/g2o/examples/bal
 void bal_example()
 {
 	const int maxIterations = 5;  // Perform n iterations.

@@ -18,12 +18,11 @@
 namespace {
 namespace local {
 
-#if defined G2O_HAVE_CHOLMOD
+#if defined(G2O_HAVE_CHOLMOD)
 G2O_USE_OPTIMIZATION_LIBRARY(cholmod);
 #else
 G2O_USE_OPTIMIZATION_LIBRARY(eigen);
 #endif
-
 G2O_USE_OPTIMIZATION_LIBRARY(dense);
 
 class Sample
@@ -40,7 +39,7 @@ public:
 
 namespace my_g2o {
 
-// REF [site] >> https://github.com/RainerKuemmerle/g2o/blob/master/g2o/examples/ba/ba_demo.cpp
+// REF [site] >> https://github.com/RainerKuemmerle/g2o/blob/master/g2o/examples/ba
 void ba_example()
 {
 	const double PIXEL_NOISE = 1.0;
@@ -57,6 +56,7 @@ void ba_example()
 
 	g2o::SparseOptimizer optimizer;
 	optimizer.setVerbose(false);
+#if 1
 	std::string solverName = "lm_fix6_3";
 	if (DENSE)
 	{
@@ -72,6 +72,19 @@ void ba_example()
 	}
 	g2o::OptimizationAlgorithmProperty solverProperty;
 	optimizer.setAlgorithm(g2o::OptimizationAlgorithmFactory::instance()->construct(solverName, solverProperty));
+#else
+	g2o::BlockSolver_6_3::LinearSolverType* linearSolver;
+	if (DENSE)
+	{
+		linearSolver= new g2o::LinearSolverDense<g2o::BlockSolver_6_3::PoseMatrixType>();
+	}
+	else
+	{
+		linearSolver= new g2o::LinearSolverCholmod<g2o::BlockSolver_6_3::PoseMatrixType>();
+	}
+	auto solver = new g2o::OptimizationAlgorithmLevenberg(g2o::make_unique<g2o::BlockSolver_6_3>(std::move(linearSolver)));
+	optimizer.setAlgorithm(solver);
+#endif
 
 	std::vector<Eigen::Vector3d> true_points;
 	for (size_t i = 0; i < 500; ++i)
@@ -104,7 +117,9 @@ void ba_example()
 		v_se3->setId(vertex_id);
 		if (i < 2) v_se3->setFixed(true);
 		v_se3->setEstimate(pose);
+
 		optimizer.addVertex(v_se3);
+
 		true_poses.push_back(pose);
 		++vertex_id;
 	}
@@ -164,6 +179,7 @@ void ba_example()
 						e->setRobustKernel(rk);
 					}
 					e->setParameterId(0, 0);
+
 					optimizer.addEdge(e);
 				}
 			}

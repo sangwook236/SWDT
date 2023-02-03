@@ -185,7 +185,7 @@ void circle_fit_example()
 	optimizer.setAlgorithm(g2o::OptimizationAlgorithmFactory::instance()->construct("lm_dense", solverProperty));
 #else
 	using MyBlockSolver = g2o::BlockSolver<g2o::BlockSolverTraits<Eigen::Dynamic, Eigen::Dynamic> >;
-	using MyLinearSolver = g2o::LinearSolverCSparse<MyBlockSolver::PoseMatrixType> ;
+	using MyLinearSolver = g2o::LinearSolverCSparse<MyBlockSolver::PoseMatrixType>;
 
 	auto solver = new g2o::OptimizationAlgorithmLevenberg(g2o::make_unique<MyBlockSolver>(g2o::make_unique<MyLinearSolver>()));
 	optimizer.setAlgorithm(solver);

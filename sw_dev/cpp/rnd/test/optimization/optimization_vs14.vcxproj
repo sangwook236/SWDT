@@ -185,6 +185,7 @@
     <ClCompile Include="coin_or\coin_or_osi_example.cpp" />
     <ClCompile Include="g2o\g2o_ba_example.cpp" />
     <ClCompile Include="g2o\g2o_bal_example.cpp" />
+    <ClCompile Include="g2o\g2o_basic_operation.cpp" />
     <ClCompile Include="g2o\g2o_data_fitting_example.cpp" />
     <ClCompile Include="g2o\g2o_gicp_example.cpp" />
     <ClCompile Include="g2o\g2o_main.cpp" />

@@ -95,7 +95,6 @@ void gicp_example()
 		nm1.normalize();
 
 		auto e = new g2o::Edge_V_V_GICP();  // New edge with correct cohort for caching.
-
 		e->setVertex(0, vp0);  // First viewpoint.
 		e->setVertex(1, vp1);  // Second viewpoint.
 
@@ -141,7 +140,7 @@ void gicp_example()
 // REF [site] >> https://github.com/RainerKuemmerle/g2o/blob/master/g2o/examples/icp/gicp_sba_demo.cpp
 void gicp_sba_example()
 {
-	const int num_points = 1000;  // # of points to use in projection SBA.
+	const int num_points = 500;  // # of points to use in projection SBA.
 	const double euc_noise = 0.1;  // Noise in position, m.
 	const double pix_noise = 1.0;  // Pixel noise.
 	//const double outlier_ratio = 0.1;
@@ -182,9 +181,9 @@ void gicp_sba_example()
 		cam.translation() = t;
 
 		// Set up node.
-		auto vc = new g2o::VertexSCam();
+		auto vc = new g2o::VertexSCam();  // Stereo camera vertex.
 		vc->setEstimate(cam);
-		vc->setId(vertex_id);  // vertex id
+		vc->setId(vertex_id);  // Vertex ID.
 
 		std::cerr << t.transpose() << " | " << q.coeffs().transpose() << std::endl;
 
@@ -259,7 +258,6 @@ void gicp_sba_example()
 	for (size_t i = 0; i < true_points.size(); ++i)
 	{
 		auto v_p = new g2o::VertexPointXYZ();
-
 		v_p->setId(vertex_id++);
 		v_p->setMarginalized(true);
 		v_p->setEstimate(true_points.at(i) + Eigen::Vector3d(g2o::Sampler::gaussRand(0.0, 1.0), g2o::Sampler::gaussRand(0.0, 0.0), g2o::Sampler::gaussRand(0.0, 1.0)));
@@ -269,13 +267,13 @@ void gicp_sba_example()
 		for (size_t j = 0; j < 2; ++j)
 		{
 			Eigen::Vector3d z;
-			dynamic_cast<g2o::VertexSCam*>(optimizer.vertices().find(j)->second)->mapPoint(z, true_points.at(i));
+			dynamic_cast<g2o::VertexSCam*>(optimizer.vertices().find(j)->second)->mapPoint(z, true_points.at(i));  // Calculate stereo projection.
 
 			if (z[0] >= 0 && z[1] >= 0 && z[0] < 640 && z[1] < 480)
 			{
 				z += Eigen::Vector3d(g2o::Sampler::gaussRand(0.0, pix_noise), g2o::Sampler::gaussRand(0.0, pix_noise), g2o::Sampler::gaussRand(0.0, pix_noise / 16.0));
 
-				auto e = new g2o::Edge_XYZ_VSC();
+				auto e = new g2o::Edge_XYZ_VSC();  // Stereo projection.
 				e->vertices()[0] = dynamic_cast<g2o::OptimizableGraph::Vertex*>(v_p);
 				e->vertices()[1] = dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertices().find(j)->second);
 

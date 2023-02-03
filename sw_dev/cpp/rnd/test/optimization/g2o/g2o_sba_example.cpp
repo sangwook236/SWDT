@@ -28,12 +28,11 @@
 namespace {
 namespace local {
 
-#if defined G2O_HAVE_CHOLMOD
+#if defined(G2O_HAVE_CHOLMOD)
 G2O_USE_OPTIMIZATION_LIBRARY(cholmod);
 #else
 G2O_USE_OPTIMIZATION_LIBRARY(eigen);
 #endif
-
 G2O_USE_OPTIMIZATION_LIBRARY(dense);
 
 class Sample
@@ -50,7 +49,7 @@ public:
 
 namespace my_g2o {
 
-// REF [site] >> https://github.com/RainerKuemmerle/g2o/blob/master/g2o/examples/sba/sba_demo.cpp
+// REF [site] >> https://github.com/RainerKuemmerle/g2o/blob/master/g2o/examples/sba
 void sba_example()
 {
 	const double PIXEL_NOISE = 1.0;
@@ -113,12 +112,14 @@ void sba_example()
 		pose = q;
 		pose.translation() = trans;
 
-		auto v_se3 = new g2o::VertexSCam();
+		auto v_se3 = new g2o::VertexSCam();  // Stereo camera vertex.
 		v_se3->setId(vertex_id);
 		v_se3->setEstimate(pose);
 		v_se3->setAll();  // Set aux transforms.
 		if (i < 2) v_se3->setFixed(true);
+
 		optimizer.addVertex(v_se3);
+
 		true_poses.push_back(pose);
 		++vertex_id;
 	}
@@ -143,7 +144,7 @@ void sba_example()
 		for (size_t j = 0; j < true_poses.size(); ++j)
 		{
 			Eigen::Vector3d z;
-			dynamic_cast<g2o::VertexSCam*>(optimizer.vertices().find(j)->second)->mapPoint(z, true_points.at(i));
+			dynamic_cast<g2o::VertexSCam*>(optimizer.vertices().find(j)->second)->mapPoint(z, true_points.at(i));  // Calculate stereo projection.
 			if (z[0] >= 0 && z[1] >= 0 && z[0] < 640 && z[1] < 480)
 			{
 				++num_obs;
@@ -158,7 +159,7 @@ void sba_example()
 			for (size_t j = 0; j < true_poses.size(); ++j)
 			{
 				Eigen::Vector3d z;
-				dynamic_cast<g2o::VertexSCam*>(optimizer.vertices().find(j)->second)->mapPoint(z, true_points.at(i));
+				dynamic_cast<g2o::VertexSCam*>(optimizer.vertices().find(j)->second)->mapPoint(z, true_points.at(i));  // Calculate stereo projection.
 
 				if (z[0] >= 0 && z[1] >= 0 && z[0] < 640 && z[1] < 480)
 				{
@@ -172,7 +173,7 @@ void sba_example()
 					}
 					z += Eigen::Vector3d(g2o::Sampler::gaussRand(0.0, PIXEL_NOISE), g2o::Sampler::gaussRand(0.0, PIXEL_NOISE), g2o::Sampler::gaussRand(0.0, PIXEL_NOISE / 16.0));
 
-					auto e = new g2o::Edge_XYZ_VSC();
+					auto e = new g2o::Edge_XYZ_VSC();  // Stereo projection.
 					e->vertices()[0] = dynamic_cast<g2o::OptimizableGraph::Vertex*>(v_p);
 					e->vertices()[1] = dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertices().find(j)->second);
 					e->setMeasurement(z);
@@ -183,6 +184,7 @@ void sba_example()
 						auto rk = new g2o::RobustKernelHuber;
 						e->setRobustKernel(rk);
 					}
+
 					optimizer.addEdge(e);
 				}
 			}
