@@ -1,7 +1,9 @@
 //#include "stdafx.h"
+#include <cmath>
 //#define EIGEN2_SUPPORT 1
 #include <unsupported/Eigen/MatrixFunctions>
-#include <Eigen/Dense>
+#include <Eigen/Core>
+#include <Eigen/Geometry>
 #include <iostream>
 
 
@@ -490,6 +492,202 @@ void matrix_function_operation()
 	}
 }
 
+// REF [site] >> https://eigen.tuxfamily.org/dox/group__TutorialGeometry.html
+void transformation()
+{
+	// Rotation.
+
+	{
+		const double angle = M_PI / 3.0;
+		//Eigen::Rotation2D<double> r(angle);
+		Eigen::Rotation2Dd r(angle);
+
+		std::cout << "r.angle() = " << r.angle() << std::endl;
+		std::cout << "r.smallestPositiveAngle() = " << r.smallestPositiveAngle() << std::endl;
+		std::cout << "r.smallestAngle() = " << r.smallestAngle() << std::endl;
+
+		std::cout << "r.inverse():\n" << r.inverse().toRotationMatrix() << std::endl;
+
+		//r = Eigen::Rotation2Dd::Identity();
+		r.fromRotationMatrix(Eigen::Rotation2Dd::Matrix2::Identity());
+		std::cout << r.toRotationMatrix() << std::endl;
+
+		// Spherical interpolation.
+		//r.slerp();
+	}
+
+	{
+		const double angle = M_PI / 3.0;
+		const Eigen::Vector3d axis(0, 0, 1);
+
+		//Eigen::Quaternion<double> q(std::cos(angle * 0.5), 0.0, 0.0, std::sin(angle * 0.5));
+		Eigen::Quaterniond q(std::cos(angle * 0.5), 0.0, 0.0, std::sin(angle * 0.5));
+		//Eigen::Quaterniond q(Eigen::Quaterniond::AngleAxisType(angle, axis));
+
+		std::cout << "q.x() = " << q.x() << std::endl;
+		std::cout << "q.y() = " << q.y() << std::endl;
+		std::cout << "q.z() = " << q.z() << std::endl;
+		std::cout << "q.w() = " << q.w() << std::endl;
+		std::cout << "q.vec() = " << q.vec().transpose() << std::endl;
+		std::cout << "q.coeffs() = " << q.coeffs().transpose() << std::endl;
+
+		std::cout << "q.norm() = " << q.norm() << std::endl;
+		std::cout << "q.squaredNorm() = " << q.squaredNorm() << std::endl;
+
+		std::cout << "q.inverse() = " << q.inverse() << std::endl;
+		std::cout << "q.conjugate() = " << q.conjugate() << std::endl;
+
+		std::cout << "q.toRotationMatrix():\n" << q.toRotationMatrix() << std::endl;
+
+		q = Eigen::Quaterniond::Identity();
+		std::cout << q << std::endl;
+	}
+
+	{
+		const double angle = M_PI / 3.0;
+		const Eigen::Vector3d axis(0, 0, 1);
+
+		//Eigen::AngleAxis<double> a(angle, axis);
+		Eigen::AngleAxisd a(angle, axis);
+		//Eigen::AngleAxisd a(Eigen::Quaterniond(std::cos(angle * 0.5), 0.0, 0.0, std::sin(angle * 0.5)));
+
+		std::cout << "a.angle() = " << a.angle() << std::endl;
+		std::cout << "a.axis() = " << a.axis().transpose() << std::endl;
+
+		std::cout << "a.inverse():\n" << a.inverse().toRotationMatrix() << std::endl;
+
+		//a = Eigen::AngleAxisd::Identity();
+		a.fromRotationMatrix(Eigen::AngleAxisd::Matrix3::Identity());
+		std::cout << a.toRotationMatrix() << std::endl;
+	}
+
+	//-----
+	// Scaling.
+
+	{
+		//Eigen::UniformScaling<double> s(2.0);
+		Eigen::UniformScaling<double> s = Eigen::Scaling(2.0);
+
+		std::cout << "s.factor() = " << s.factor() << std::endl;
+		std::cout << "s.inverse() = " << s.inverse().factor() << std::endl;
+	}
+
+	{
+		//Eigen::DiagonalMatrix<double, 2> s(2.0, 4.0);
+		Eigen::DiagonalMatrix<double, 2> s = Eigen::Scaling(2.0, 4.0);
+
+		std::cout << "s.diagonal() = " << s.diagonal().transpose() << std::endl;
+		std::cout << "s.inverse() = " << s.inverse().diagonal().transpose() << std::endl;
+	}
+
+	{
+		//Eigen::DiagonalMatrix<double, 3> s(2.0, 4.0, 8.0);
+		Eigen::DiagonalMatrix<double, 3> s = Eigen::Scaling(2.0, 4.0, 8.0);
+
+		std::cout << "s.diagonal() = " << s.diagonal().transpose() << std::endl;
+		std::cout << "s.inverse() = " << s.inverse().diagonal().transpose() << std::endl;
+	}
+
+	{
+		//Eigen::DiagonalMatrix<double, 5> s(2.0, 4.0, 8.0, 4.0, 2.0);
+		Eigen::DiagonalMatrix<double, 5> s = Eigen::Scaling(Eigen::Vector<double, 5>(2.0, 4.0, 8.0, 4.0, 2.0));
+
+		std::cout << "s.diagonal() = " << s.diagonal().transpose() << std::endl;
+		std::cout << "s.inverse() = " << s.inverse().diagonal().transpose() << std::endl;
+	}
+
+	//-----
+	// Translation.
+
+	{
+		//Eigen::Translation<double, 2> t(1.0, 2.0);
+		Eigen::Translation2d t(1.0, 2.0);
+
+		std::cout << "t.x() = " << t.x() << std::endl;
+		std::cout << "t.y() = " << t.y() << std::endl;
+		std::cout << "t.vector() = " << t.vector().transpose() << std::endl;
+		std::cout << "t.translation() = " << t.translation().transpose() << std::endl;
+
+		std::cout << "t.inverse() = " << t.inverse().vector().transpose() << std::endl;
+
+		t = Eigen::Translation2d::Identity();
+		std::cout << t.vector().transpose() << std::endl;
+	}
+
+	{
+		//Eigen::Translation<double, 3> t(1.0, 2.0, 3.0);
+		Eigen::Translation3d t(1.0, 2.0, 3.0);
+
+		std::cout << "t.x() = " << t.x() << std::endl;
+		std::cout << "t.y() = " << t.y() << std::endl;
+		std::cout << "t.z() = " << t.z() << std::endl;
+		std::cout << "t.vector() = " << t.vector().transpose() << std::endl;
+		std::cout << "t.translation() = " << t.translation().transpose() << std::endl;
+
+		std::cout << "t.inverse() = " << t.inverse().vector().transpose() << std::endl;
+
+		t = Eigen::Translation3d::Identity();
+		std::cout << t.vector().transpose() << std::endl;
+	}
+
+	{
+		Eigen::Translation<double, 5> t(Eigen::Vector<double, 5>(1.0, 2.0, 3.0, 4.0, 5.0));
+
+		std::cout << "t.x() = " << t.x() << std::endl;
+		std::cout << "t.y() = " << t.y() << std::endl;
+		std::cout << "t.z() = " << t.z() << std::endl;
+		std::cout << "t.vector() = " << t.vector().transpose() << std::endl;
+		std::cout << "t.translation() = " << t.translation().transpose() << std::endl;
+
+		std::cout << "t.inverse() = " << t.inverse().vector().transpose() << std::endl;
+
+		t = Eigen::Translation<double, 5>::Identity();
+		std::cout << t.vector().transpose() << std::endl;
+	}
+
+	//-----
+	// Affine transformation.
+
+	{
+		const Eigen::Vector3d translation(1, 2, 3);
+		const double angle(M_PI / 3.0);
+		const Eigen::Vector3d axis(0, 0, 1);
+		const double scale = 2.0;
+
+		//Eigen::Transform<double, 3, Eigen::Isometry> t = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
+		Eigen::Transform<double, 3, Eigen::Affine> t = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
+		//Eigen::Transform<double, 3, Eigen::AffineCompact> t = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
+		//Eigen::Transform<double, 3, Eigen::Projective> t = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
+
+		std::cout << "t.matrix():\n" << t.matrix() << std::endl;
+		std::cout << "t.linear():\n" << t.linear() << std::endl;
+		std::cout << "t.affine():\n" << t.affine() << std::endl;
+		std::cout << "t.translation() = " << t.translation().transpose() << std::endl;
+		std::cout << "t.rotation():\n" << t.rotation() << std::endl;
+		std::cout << "t.inverse():\n" << t.inverse().matrix() << std::endl;
+
+		t.makeAffine();
+		std::cout << "t.makeAffine():\n" << t.matrix() << std::endl;
+
+		t = Eigen::Transform<double, 3, Eigen::Affine>::Identity();
+		std::cout << "t.matrix():\n" << t.matrix() << std::endl;
+	}
+
+	//-----
+	// Linear transformation.
+
+	{
+		const float angle(M_PIf / 3.0f);
+		const Eigen::Vector3f axis(0, 0, 1);
+		const float scale = 2.0f;
+
+		//Eigen::Matrix<float, 2, 2> m = Eigen::Rotation2Df(angle) * Eigen::Scaling(scale);
+		Eigen::Matrix<float, 3, 3> m = Eigen::AngleAxisf(angle, axis) * Eigen::Scaling(scale);
+
+		std::cout << "m:\n" << m << std::endl;
+	}
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -497,9 +695,9 @@ namespace my_eigen {
 
 void basic_operation()
 {
-	local::initialization();
+	//local::initialization();
 	//local::concatenation();
-	local::matrix_or_vector_expression_mapping();
+	//local::matrix_or_vector_expression_mapping();
 
 	//local::fixed_size_operation();
 	//local::dynamic_size_operation();
@@ -512,6 +710,8 @@ void basic_operation()
 	//local::matrix_arithmetic_1();
 	//local::matrix_arithmetic_2();
 	//local::matrix_function_operation();
+
+	local::transformation();
 }
 
 }  // namespace my_eigen
