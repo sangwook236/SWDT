@@ -145,6 +145,91 @@ void octree_example()
 	octree.Traverse(traverse_octree_node);
 }
 
+void estimate_transformation_test()
+{
+	// 8 vertices on a cube.
+	const std::vector<Eigen::Vector3d> cube_vertices = {
+		Eigen::Vector3d(0, 8, 8),
+		Eigen::Vector3d(0, 0, 8),
+		Eigen::Vector3d(0, 0, 0),
+		Eigen::Vector3d(0, 8, 0),
+		Eigen::Vector3d(8, 8, 8),
+		Eigen::Vector3d(8, 0, 8),
+		Eigen::Vector3d(8, 0, 0),
+		Eigen::Vector3d(8, 8, 0)
+	};
+
+	// Coordinate frames: (x, y, z, theta z (deg)).
+	const std::vector<std::pair<Eigen::Vector3d, double> > coord_frames = {
+		/*
+		std::make_pair(Eigen::Vector3d(-8, 8, 0), -60 * M_PI / 180.0),
+		std::make_pair(Eigen::Vector3d(-10, 4, 0), -30 * M_PI / 180.0),
+		std::make_pair(Eigen::Vector3d(-12, 0, 0), 0 * M_PI / 180.0),
+		std::make_pair(Eigen::Vector3d(-10, -4, 0), 30 * M_PI / 180.0),
+		std::make_pair(Eigen::Vector3d(-8, -8, 0), 60 * M_PI / 180.0)
+		*/
+		std::make_pair(Eigen::Vector3d(-12, 0, 0), 0 * M_PI / 180.0),
+		std::make_pair(Eigen::Vector3d(-10, -4, 0), 30 * M_PI / 180.0),
+		std::make_pair(Eigen::Vector3d(-8, -8, 0), 60 * M_PI / 180.0),
+		std::make_pair(Eigen::Vector3d(-4, -12, 0), 75 * M_PI / 180.0),
+		std::make_pair(Eigen::Vector3d(0, -16, 0), 80 * M_PI / 180.0)
+	};
+
+	std::vector<std::vector<Eigen::Vector3d> > cubes_relative;
+	for (auto fit = coord_frames.begin(); fit != coord_frames.end(); ++fit)
+	{
+		const Eigen::Transform<double, 3, Eigen::Affine> t = Eigen::Translation3d(fit->first) * Eigen::AngleAxisd(fit->second, Eigen::Vector3d(0, 0, 1));
+
+		std::vector<Eigen::Vector3d> cube_relative;
+		for (auto vit = cube_vertices.begin(); vit != cube_vertices.end(); ++vit)
+			cube_relative.push_back(t.inverse() * *vit);
+
+		cubes_relative.push_back(cube_relative);
+	}
+
+	const double noise = 0.15;
+	//const double noise = 1.5;
+	std::default_random_engine generator;
+	std::normal_distribution<double> distribution(0.0, noise);
+
+	std::vector<std::vector<Eigen::Vector3d> > noisy_cubes_relative;
+	for (auto cit = cubes_relative.begin(); cit != cubes_relative.end(); ++cit)
+	{
+		std::vector<Eigen::Vector3d> noisy_cube;
+		for (auto vit = cit->begin(); vit != cit->end(); ++vit)
+			noisy_cube.push_back(*vit + Eigen::Vector3d(distribution(generator), distribution(generator), distribution(generator)));
+
+		noisy_cubes_relative.push_back(noisy_cube);
+	}
+
+	//---
+	const std::vector<Eigen::Vector2i> correspondences = {
+		Eigen::Vector2i(0, 0),
+		Eigen::Vector2i(1, 1),
+		Eigen::Vector2i(2, 2),
+		Eigen::Vector2i(3, 3),
+		Eigen::Vector2i(4, 4),
+		Eigen::Vector2i(5, 5),
+		Eigen::Vector2i(6, 6),
+		Eigen::Vector2i(7, 7),
+	};
+
+	std::vector<Eigen::Matrix4d> transformations_relative;
+	open3d::pipelines::registration::TransformationEstimationPointToPoint p2p;
+	for (size_t idx = 1; idx < noisy_cubes_relative.size(); ++idx)
+	{
+		const open3d::geometry::PointCloud sources(noisy_cubes_relative[idx - 1]);
+		const open3d::geometry::PointCloud targets(noisy_cubes_relative[idx]);
+
+		const Eigen::Matrix4d transformation = p2p.ComputeTransformation(targets, sources, correspondences);
+		std::cout << "Transformation (estimated):\n" << transformation << std::endl;
+
+		Eigen::Transform<double, 3, Eigen::Affine> t1 = Eigen::Translation3d(coord_frames[idx - 1].first) * Eigen::AngleAxisd(coord_frames[idx - 1].second, Eigen::Vector3d(0, 0, 1));
+		Eigen::Transform<double, 3, Eigen::Affine> t2 = Eigen::Translation3d(coord_frames[idx].first) * Eigen::AngleAxisd(coord_frames[idx].second, Eigen::Vector3d(0, 0, 1));
+		std::cout << "Transformation (G/T):\n" << (t1.inverse() * t2).matrix() << std::endl;
+	}
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -156,9 +241,12 @@ int open3d_main(int argc, char *argv[])
 {
 	//open3d::utility::LogInfo("Info log.");
 
-	local::draw_example();
+	//local::draw_example();
 	//local::io_example();
 	//local::octree_example();
+
+	//-----
+	local::estimate_transformation_test();
 
 	return 0;
 }

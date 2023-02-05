@@ -51,13 +51,13 @@
 			https://github.com/RainerKuemmerle/g2o/blob/master/g2o/apps/g2o_simulator/test_simulator2d.cpp
 
 			g2o_simulator2d -hasPointSensor simulator_out.g2o
-				VERTEX_XY, VERTEX_SE2, & EDGE_SE2_XY.
+				Types: VERTEX_XY, VERTEX_SE2, & EDGE_SE2_XY.
 			g2o_simulator2d -hasPointBearingSensor simulator_out.g2o
-				VERTEX_XY, VERTEX_SE2, & EDGE_BEARING_SE2_XY.
+				Types: VERTEX_XY, VERTEX_SE2, & EDGE_BEARING_SE2_XY.
 			g2o_simulator2d -hasPoseSensor simulator_out.g2o
-				VERTEX_SE2 & EDGE_SE2.
+				Types: VERTEX_SE2 & EDGE_SE2.
 			g2o_simulator2d -hasOdom simulator_out.g2o
-				VERTEX_SE2 & EDGE_SE2.
+				Types: VERTEX_SE2 & EDGE_SE2.
 
 			g2o_simulator2d -hasPointSensor -nSegments 2000 -nlandmarks 500 -simSteps 200 -worldSize 50 simulator_out.g2o
 
@@ -65,15 +65,15 @@
 			https://github.com/RainerKuemmerle/g2o/blob/master/g2o/apps/g2o_simulator/test_simulator3d.cpp
 
 			g2o_simulator3d -hasPointSensor simulator_out.g2o
-				PARAMS_SE3OFFSET, VERTEX_TRACKXYZ, VERTEX_SE3:QUAT, & EDGE_SE3_TRACKXYZ.
+				Types: PARAMS_SE3OFFSET, VERTEX_TRACKXYZ, VERTEX_SE3:QUAT, & EDGE_SE3_TRACKXYZ.
 			g2o_simulator3d -hasPointDepthSensor simulator_out.g2o
-				PARAMS_CAMERACALIB, VERTEX_TRACKXYZ, VERTEX_SE3:QUAT, & EDGE_PROJECT_DEPTH.
+				Types: PARAMS_CAMERACALIB, VERTEX_TRACKXYZ, VERTEX_SE3:QUAT, & EDGE_PROJECT_DEPTH.
 			g2o_simulator3d -hasPointDisparitySensor simulator_out.g2o
-				PARAMS_CAMERACALIB, VERTEX_TRACKXYZ, VERTEX_SE3:QUAT, & EDGE_PROJECT_DISPARITY.
+				Types: PARAMS_CAMERACALIB, VERTEX_TRACKXYZ, VERTEX_SE3:QUAT, & EDGE_PROJECT_DISPARITY.
 			g2o_simulator3d -hasPoseSensor simulator_out.g2o
-				VERTEX_SE3:QUAT & EDGE_SE3:QUAT.
+				Types: VERTEX_SE3:QUAT & EDGE_SE3:QUAT.
 			g2o_simulator3d -hasOdom simulator_out.g2o
-				VERTEX_SE3:QUAT & EDGE_SE3:QUAT.
+				Types: VERTEX_SE3:QUAT & EDGE_SE3:QUAT.
 
 			g2o_simulator3d -hasPointSensor -nLandmarks 2000 -simSteps 200 -worldSize 50 simulator_out.g2o
 

@@ -682,7 +682,9 @@ void transformation()
 		const float scale = 2.0f;
 
 		//Eigen::Matrix<float, 2, 2> m = Eigen::Rotation2Df(angle) * Eigen::Scaling(scale);
-		Eigen::Matrix<float, 3, 3> m = Eigen::AngleAxisf(angle, axis) * Eigen::Scaling(scale);
+		//Eigen::Matrix2f m = Eigen::Rotation2Df(angle) * Eigen::Scaling(scale);
+		//Eigen::Matrix<float, 3, 3> m = Eigen::AngleAxisf(angle, axis) * Eigen::Scaling(scale);
+		Eigen::Matrix3f m = Eigen::AngleAxisf(angle, axis) * Eigen::Scaling(scale);
 
 		std::cout << "m:\n" << m << std::endl;
 	}
