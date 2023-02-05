@@ -190,6 +190,8 @@
     <ClCompile Include="g2o\g2o_gicp_example.cpp" />
     <ClCompile Include="g2o\g2o_main.cpp" />
     <ClCompile Include="g2o\g2o_sba_example.cpp" />
+    <ClCompile Include="g2o\g2o_slam2d_tutorial.cpp" />
+    <ClCompile Include="g2o\g2o_slam3d_test.cpp" />
     <ClCompile Include="glpk\glpk_interior_point_sample.cpp" />
     <ClCompile Include="glpk\glpk_main.cpp" />
     <ClCompile Include="glpk\glpk_mip_sample.cpp" />

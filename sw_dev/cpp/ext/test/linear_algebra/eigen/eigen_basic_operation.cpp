@@ -499,21 +499,21 @@ void transformation()
 
 	{
 		const double angle = M_PI / 3.0;
-		//Eigen::Rotation2D<double> r(angle);
-		Eigen::Rotation2Dd r(angle);
+		//Eigen::Rotation2D<double> R(angle);
+		Eigen::Rotation2Dd R(angle);
 
-		std::cout << "r.angle() = " << r.angle() << std::endl;
-		std::cout << "r.smallestPositiveAngle() = " << r.smallestPositiveAngle() << std::endl;
-		std::cout << "r.smallestAngle() = " << r.smallestAngle() << std::endl;
+		std::cout << "R.angle() = " << R.angle() << std::endl;
+		std::cout << "R.smallestPositiveAngle() = " << R.smallestPositiveAngle() << std::endl;
+		std::cout << "R.smallestAngle() = " << R.smallestAngle() << std::endl;
 
-		std::cout << "r.inverse():\n" << r.inverse().toRotationMatrix() << std::endl;
+		std::cout << "R.inverse():\n" << R.inverse().toRotationMatrix() << std::endl;
 
-		//r = Eigen::Rotation2Dd::Identity();
-		r.fromRotationMatrix(Eigen::Rotation2Dd::Matrix2::Identity());
-		std::cout << r.toRotationMatrix() << std::endl;
+		//R = Eigen::Rotation2Dd::Identity();
+		R.fromRotationMatrix(Eigen::Rotation2Dd::Matrix2::Identity());
+		std::cout << R.toRotationMatrix() << std::endl;
 
 		// Spherical interpolation.
-		//r.slerp();
+		//R.slerp();
 	}
 
 	{
@@ -541,108 +541,111 @@ void transformation()
 
 		q = Eigen::Quaterniond::Identity();
 		std::cout << q << std::endl;
+
+		// Spherical interpolation.
+		//q.slerp();
 	}
 
 	{
 		const double angle = M_PI / 3.0;
 		const Eigen::Vector3d axis(0, 0, 1);
 
-		//Eigen::AngleAxis<double> a(angle, axis);
-		Eigen::AngleAxisd a(angle, axis);
-		//Eigen::AngleAxisd a(Eigen::Quaterniond(std::cos(angle * 0.5), 0.0, 0.0, std::sin(angle * 0.5)));
+		//Eigen::AngleAxis<double> R(angle, axis);
+		Eigen::AngleAxisd R(angle, axis);
+		//Eigen::AngleAxisd R(Eigen::Quaterniond(std::cos(angle * 0.5), 0.0, 0.0, std::sin(angle * 0.5)));
 
-		std::cout << "a.angle() = " << a.angle() << std::endl;
-		std::cout << "a.axis() = " << a.axis().transpose() << std::endl;
+		std::cout << "R.angle() = " << R.angle() << std::endl;
+		std::cout << "R.axis() = " << R.axis().transpose() << std::endl;
 
-		std::cout << "a.inverse():\n" << a.inverse().toRotationMatrix() << std::endl;
+		std::cout << "R.inverse():\n" << R.inverse().toRotationMatrix() << std::endl;
 
-		//a = Eigen::AngleAxisd::Identity();
-		a.fromRotationMatrix(Eigen::AngleAxisd::Matrix3::Identity());
-		std::cout << a.toRotationMatrix() << std::endl;
+		//R = Eigen::AngleAxisd::Identity();
+		R.fromRotationMatrix(Eigen::AngleAxisd::Matrix3::Identity());
+		std::cout << R.toRotationMatrix() << std::endl;
 	}
 
 	//-----
 	// Scaling.
 
 	{
-		//Eigen::UniformScaling<double> s(2.0);
-		Eigen::UniformScaling<double> s = Eigen::Scaling(2.0);
+		//Eigen::UniformScaling<double> S(2.0);
+		Eigen::UniformScaling<double> S = Eigen::Scaling(2.0);
 
-		std::cout << "s.factor() = " << s.factor() << std::endl;
-		std::cout << "s.inverse() = " << s.inverse().factor() << std::endl;
+		std::cout << "S.factor() = " << S.factor() << std::endl;
+		std::cout << "S.inverse() = " << S.inverse().factor() << std::endl;
 	}
 
 	{
-		//Eigen::DiagonalMatrix<double, 2> s(2.0, 4.0);
-		Eigen::DiagonalMatrix<double, 2> s = Eigen::Scaling(2.0, 4.0);
+		//Eigen::DiagonalMatrix<double, 2> S(2.0, 4.0);
+		Eigen::DiagonalMatrix<double, 2> S = Eigen::Scaling(2.0, 4.0);
 
-		std::cout << "s.diagonal() = " << s.diagonal().transpose() << std::endl;
-		std::cout << "s.inverse() = " << s.inverse().diagonal().transpose() << std::endl;
+		std::cout << "S.diagonal() = " << S.diagonal().transpose() << std::endl;
+		std::cout << "S.inverse() = " << S.inverse().diagonal().transpose() << std::endl;
 	}
 
 	{
-		//Eigen::DiagonalMatrix<double, 3> s(2.0, 4.0, 8.0);
-		Eigen::DiagonalMatrix<double, 3> s = Eigen::Scaling(2.0, 4.0, 8.0);
+		//Eigen::DiagonalMatrix<double, 3> S(2.0, 4.0, 8.0);
+		Eigen::DiagonalMatrix<double, 3> S = Eigen::Scaling(2.0, 4.0, 8.0);
 
-		std::cout << "s.diagonal() = " << s.diagonal().transpose() << std::endl;
-		std::cout << "s.inverse() = " << s.inverse().diagonal().transpose() << std::endl;
+		std::cout << "S.diagonal() = " << S.diagonal().transpose() << std::endl;
+		std::cout << "S.inverse() = " << S.inverse().diagonal().transpose() << std::endl;
 	}
 
 	{
-		//Eigen::DiagonalMatrix<double, 5> s(2.0, 4.0, 8.0, 4.0, 2.0);
-		Eigen::DiagonalMatrix<double, 5> s = Eigen::Scaling(Eigen::Vector<double, 5>(2.0, 4.0, 8.0, 4.0, 2.0));
+		//Eigen::DiagonalMatrix<double, 5> S(2.0, 4.0, 8.0, 4.0, 2.0);
+		Eigen::DiagonalMatrix<double, 5> S = Eigen::Scaling(Eigen::Vector<double, 5>(2.0, 4.0, 8.0, 4.0, 2.0));
 
-		std::cout << "s.diagonal() = " << s.diagonal().transpose() << std::endl;
-		std::cout << "s.inverse() = " << s.inverse().diagonal().transpose() << std::endl;
+		std::cout << "S.diagonal() = " << S.diagonal().transpose() << std::endl;
+		std::cout << "S.inverse() = " << S.inverse().diagonal().transpose() << std::endl;
 	}
 
 	//-----
 	// Translation.
 
 	{
-		//Eigen::Translation<double, 2> t(1.0, 2.0);
-		Eigen::Translation2d t(1.0, 2.0);
+		//Eigen::Translation<double, 2> T(1.0, 2.0);
+		Eigen::Translation2d T(1.0, 2.0);
 
-		std::cout << "t.x() = " << t.x() << std::endl;
-		std::cout << "t.y() = " << t.y() << std::endl;
-		std::cout << "t.vector() = " << t.vector().transpose() << std::endl;
-		std::cout << "t.translation() = " << t.translation().transpose() << std::endl;
+		std::cout << "T.x() = " << T.x() << std::endl;
+		std::cout << "T.y() = " << T.y() << std::endl;
+		std::cout << "T.vector() = " << T.vector().transpose() << std::endl;
+		std::cout << "T.translation() = " << T.translation().transpose() << std::endl;
 
-		std::cout << "t.inverse() = " << t.inverse().vector().transpose() << std::endl;
+		std::cout << "T.inverse() = " << T.inverse().vector().transpose() << std::endl;
 
-		t = Eigen::Translation2d::Identity();
-		std::cout << t.vector().transpose() << std::endl;
+		T = Eigen::Translation2d::Identity();
+		std::cout << T.vector().transpose() << std::endl;
 	}
 
 	{
-		//Eigen::Translation<double, 3> t(1.0, 2.0, 3.0);
-		Eigen::Translation3d t(1.0, 2.0, 3.0);
+		//Eigen::Translation<double, 3> T(1.0, 2.0, 3.0);
+		Eigen::Translation3d T(1.0, 2.0, 3.0);
 
-		std::cout << "t.x() = " << t.x() << std::endl;
-		std::cout << "t.y() = " << t.y() << std::endl;
-		std::cout << "t.z() = " << t.z() << std::endl;
-		std::cout << "t.vector() = " << t.vector().transpose() << std::endl;
-		std::cout << "t.translation() = " << t.translation().transpose() << std::endl;
+		std::cout << "T.x() = " << T.x() << std::endl;
+		std::cout << "T.y() = " << T.y() << std::endl;
+		std::cout << "T.z() = " << T.z() << std::endl;
+		std::cout << "T.vector() = " << T.vector().transpose() << std::endl;
+		std::cout << "T.translation() = " << T.translation().transpose() << std::endl;
 
-		std::cout << "t.inverse() = " << t.inverse().vector().transpose() << std::endl;
+		std::cout << "T.inverse() = " << T.inverse().vector().transpose() << std::endl;
 
-		t = Eigen::Translation3d::Identity();
-		std::cout << t.vector().transpose() << std::endl;
+		T = Eigen::Translation3d::Identity();
+		std::cout << T.vector().transpose() << std::endl;
 	}
 
 	{
-		Eigen::Translation<double, 5> t(Eigen::Vector<double, 5>(1.0, 2.0, 3.0, 4.0, 5.0));
+		Eigen::Translation<double, 5> T(Eigen::Vector<double, 5>(1.0, 2.0, 3.0, 4.0, 5.0));
 
-		std::cout << "t.x() = " << t.x() << std::endl;
-		std::cout << "t.y() = " << t.y() << std::endl;
-		std::cout << "t.z() = " << t.z() << std::endl;
-		std::cout << "t.vector() = " << t.vector().transpose() << std::endl;
-		std::cout << "t.translation() = " << t.translation().transpose() << std::endl;
+		std::cout << "T.x() = " << T.x() << std::endl;
+		std::cout << "T.y() = " << T.y() << std::endl;
+		std::cout << "T.z() = " << T.z() << std::endl;
+		std::cout << "T.vector() = " << T.vector().transpose() << std::endl;
+		std::cout << "T.translation() = " << T.translation().transpose() << std::endl;
 
-		std::cout << "t.inverse() = " << t.inverse().vector().transpose() << std::endl;
+		std::cout << "T.inverse() = " << T.inverse().vector().transpose() << std::endl;
 
-		t = Eigen::Translation<double, 5>::Identity();
-		std::cout << t.vector().transpose() << std::endl;
+		T = Eigen::Translation<double, 5>::Identity();
+		std::cout << T.vector().transpose() << std::endl;
 	}
 
 	//-----
@@ -654,23 +657,27 @@ void transformation()
 		const Eigen::Vector3d axis(0, 0, 1);
 		const double scale = 2.0;
 
-		//Eigen::Transform<double, 3, Eigen::Isometry> t = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
-		Eigen::Transform<double, 3, Eigen::Affine> t = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
-		//Eigen::Transform<double, 3, Eigen::AffineCompact> t = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
-		//Eigen::Transform<double, 3, Eigen::Projective> t = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
+		//Eigen::Transform<double, 3, Eigen::Isometry> T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
+		//Eigen::Isometry3d T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
+		//Eigen::Transform<double, 3, Eigen::Affine> T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
+		Eigen::Affine3d T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
+		//Eigen::Transform<double, 3, Eigen::AffineCompact> T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
+		//Eigen::AffineCompact3d T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
+		//Eigen::Transform<double, 3, Eigen::Projective> T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
+		//Eigen::Projective3d T = Eigen::Translation3d(translation) * Eigen::AngleAxisd(angle, axis) * Eigen::Scaling(scale);
 
-		std::cout << "t.matrix():\n" << t.matrix() << std::endl;
-		std::cout << "t.linear():\n" << t.linear() << std::endl;
-		std::cout << "t.affine():\n" << t.affine() << std::endl;
-		std::cout << "t.translation() = " << t.translation().transpose() << std::endl;
-		std::cout << "t.rotation():\n" << t.rotation() << std::endl;
-		std::cout << "t.inverse():\n" << t.inverse().matrix() << std::endl;
+		std::cout << "T.matrix():\n" << T.matrix() << std::endl;
+		std::cout << "T.linear():\n" << T.linear() << std::endl;
+		std::cout << "T.affine():\n" << T.affine() << std::endl;
+		std::cout << "T.translation() = " << T.translation().transpose() << std::endl;
+		std::cout << "T.rotation():\n" << T.rotation() << std::endl;
+		std::cout << "T.inverse():\n" << T.inverse().matrix() << std::endl;
 
-		t.makeAffine();
-		std::cout << "t.makeAffine():\n" << t.matrix() << std::endl;
+		T.makeAffine();
+		std::cout << "T.makeAffine():\n" << T.matrix() << std::endl;
 
-		t = Eigen::Transform<double, 3, Eigen::Affine>::Identity();
-		std::cout << "t.matrix():\n" << t.matrix() << std::endl;
+		T = Eigen::Transform<double, 3, Eigen::Affine>::Identity();
+		std::cout << "T.matrix():\n" << T.matrix() << std::endl;
 	}
 
 	//-----
@@ -681,12 +688,12 @@ void transformation()
 		const Eigen::Vector3f axis(0, 0, 1);
 		const float scale = 2.0f;
 
-		//Eigen::Matrix<float, 2, 2> m = Eigen::Rotation2Df(angle) * Eigen::Scaling(scale);
-		//Eigen::Matrix2f m = Eigen::Rotation2Df(angle) * Eigen::Scaling(scale);
-		//Eigen::Matrix<float, 3, 3> m = Eigen::AngleAxisf(angle, axis) * Eigen::Scaling(scale);
-		Eigen::Matrix3f m = Eigen::AngleAxisf(angle, axis) * Eigen::Scaling(scale);
+		//Eigen::Matrix<float, 2, 2> M = Eigen::Rotation2Df(angle) * Eigen::Scaling(scale);
+		//Eigen::Matrix2f M = Eigen::Rotation2Df(angle) * Eigen::Scaling(scale);
+		//Eigen::Matrix<float, 3, 3> M = Eigen::AngleAxisf(angle, axis) * Eigen::Scaling(scale);
+		Eigen::Matrix3f M = Eigen::AngleAxisf(angle, axis) * Eigen::Scaling(scale);
 
-		std::cout << "m:\n" << m << std::endl;
+		std::cout << "M:\n" << M << std::endl;
 	}
 }
 

@@ -85,10 +85,10 @@ void g2o_file_interface_test()
 	*/
 
 	/*
-	const std::string output_filename("/path/to/before_optimzation.g2o");
-	if (!optimizer.save(output_filename.c_str()))
+	const std::string output_before_filename("/path/to/before_optimzation.g2o");
+	if (!optimizer.save(output_before_filename.c_str()))
 	{
-		std::cerr << "Failed to save to " << output_filename << std::endl;
+		std::cerr << "Failed to save to " << output_before_filename << std::endl;
 		return;
 	}
 	*/

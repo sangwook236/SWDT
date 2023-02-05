@@ -75,6 +75,8 @@
 		<Unit filename="g2o/g2o_gicp_example.cpp" />
 		<Unit filename="g2o/g2o_main.cpp" />
 		<Unit filename="g2o/g2o_sba_example.cpp" />
+		<Unit filename="g2o/g2o_slam2d_tutorial.cpp" />
+		<Unit filename="g2o/g2o_slam3d_test.cpp" />
 		<Unit filename="glpk/glpk_interior_point_sample.cpp" />
 		<Unit filename="glpk/glpk_main.cpp" />
 		<Unit filename="glpk/glpk_mip_sample.cpp" />

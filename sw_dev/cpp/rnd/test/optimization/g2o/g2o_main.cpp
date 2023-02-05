@@ -22,6 +22,11 @@ void ba_example();
 void sba_example();
 void bal_example();
 
+void slam2d_tutorial();
+
+void simple_slam3d_test();
+void slam3d_test();
+
 }  // namespace my_g2o
 
 int g2o_main(int argc, char *argv[])
@@ -78,6 +83,16 @@ int g2o_main(int argc, char *argv[])
 	// SLAM 2D.
 	// REF [site] >> https://github.com/RainerKuemmerle/g2o/tree/master/g2o/examples/slam2d
 	//my_g2o::slam2d_example();  // Not yet implemented.
+
+	//-----
+	// Tutorial.
+
+	//my_g2o::slam2d_tutorial();
+
+	//-----
+	// SLAM 3D.
+	//my_g2o::simple_slam3d_test();
+	my_g2o::slam3d_test();
 
 	// Pose graph optimization (PGO).
 	//my_g2o::pgo_test();  // Not yet implemented.
