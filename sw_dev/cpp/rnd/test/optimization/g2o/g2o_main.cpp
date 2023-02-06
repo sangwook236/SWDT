@@ -25,7 +25,8 @@ void bal_example();
 void slam2d_tutorial();
 
 void simple_slam3d_test();
-void slam3d_test();
+void slam3d_se3_test();
+void slam3d_se3_pointxyz_test();
 
 }  // namespace my_g2o
 
@@ -71,31 +72,39 @@ int g2o_main(int argc, char *argv[])
 
 	// GICP.
 	//my_g2o::gicp_example();
-	//my_g2o::gicp_sba_example();  // Stereo (not sparse) bundle adjustment (SBA).
+	//my_g2o::gicp_sba_example();  // Sparse bundle adjustment (SBA).
 
 	// Bundle adjustment (BA).
+	//	The problem of jointly solving the 3D structures (i.e., location of landmarks or feature points) and camera poses.
 	//my_g2o::ba_example();
-	// Stereo (not sparse) bundle adjustment (SBA).
+	// Sparse bundle adjustment (SBA).
 	//my_g2o::sba_example();
 	// Bundle Adjustment in the Large (BAL).
 	//my_g2o::bal_example();
 
-	// SLAM 2D.
+	// 2D SLAM.
 	// REF [site] >> https://github.com/RainerKuemmerle/g2o/tree/master/g2o/examples/slam2d
 	//my_g2o::slam2d_example();  // Not yet implemented.
 
 	//-----
-	// Tutorial.
+	// Pose graph optimization (PGO).
+	//	The problem of estimating a set of camera poses from pairwise relative measurements.
 
+	// REF [site] >> https://github.com/uoip/g2opy
+	//my_g2o::pgo_test();  // Not yet implemented.
+
+	//-----
+	// 2D SLAM.
+
+	// Tutorial.
 	//my_g2o::slam2d_tutorial();
 
 	//-----
-	// SLAM 3D.
-	//my_g2o::simple_slam3d_test();
-	my_g2o::slam3d_test();
+	// 3D SLAM.
 
-	// Pose graph optimization (PGO).
-	//my_g2o::pgo_test();  // Not yet implemented.
+	//my_g2o::simple_slam3d_test();
+	my_g2o::slam3d_se3_test();
+	//my_g2o::slam3d_se3_pointxyz_test();
 
 	return 0;
 }

@@ -61,10 +61,12 @@ void slam2d_tutorial()
 	for (size_t i = 0; i < simulator.poses().size(); ++i)
 	{
 		const g2o::tutorial::Simulator::GridPose& p = simulator.poses()[i];
+
 		const g2o::SE2& t = p.simulatorPose;
 		auto robot = new g2o::VertexSE2;
 		robot->setId(p.id);
 		robot->setEstimate(t);
+
 		optimizer.addVertex(robot);
 	}
 	std::cout << "done." << std::endl;
@@ -74,9 +76,11 @@ void slam2d_tutorial()
 	for (size_t i = 0; i < simulator.landmarks().size(); ++i)
 	{
 		const g2o::tutorial::Simulator::Landmark& l = simulator.landmarks()[i];
+
 		auto landmark = new g2o::VertexPointXY;
 		landmark->setId(l.id);
 		landmark->setEstimate(l.simulatedPose);
+
 		optimizer.addVertex(landmark);
 	}
 	std::cout << "done." << std::endl;
@@ -92,6 +96,7 @@ void slam2d_tutorial()
 		odometry->vertices()[1] = optimizer.vertex(simEdge.to);
 		odometry->setMeasurement(simEdge.simulatorTransf);
 		odometry->setInformation(simEdge.information);
+
 		optimizer.addEdge(odometry);
 	}
 	std::cout << "done." << std::endl;
@@ -100,12 +105,14 @@ void slam2d_tutorial()
 	for (size_t i = 0; i < simulator.landmarkObservations().size(); ++i)
 	{
 		const g2o::tutorial::Simulator::LandmarkEdge& simEdge = simulator.landmarkObservations()[i];
+
 		auto landmarkObservation = new g2o::EdgeSE2PointXY;
 		landmarkObservation->vertices()[0] = optimizer.vertex(simEdge.from);
 		landmarkObservation->vertices()[1] = optimizer.vertex(simEdge.to);
 		landmarkObservation->setMeasurement(simEdge.simulatorMeas);
 		landmarkObservation->setInformation(simEdge.information);
 		landmarkObservation->setParameterId(0, sensorOffset->id());
+
 		optimizer.addEdge(landmarkObservation);
 	}
 	std::cout << "done." << std::endl;
