@@ -12,7 +12,7 @@
 #include <g2o/types/slam2d/edge_se2_pointxy.h>
 #include <g2o/types/slam2d/edge_se2.h>
 #include <g2o/types/slam2d/parameter_se2_offset.h>
-// simulator.h & simulator.cpp in https://github.com/RainerKuemmerle/g2o/tree/master/g2o/examples/tutorial_slam2d.
+// REF [file] >> https://github.com/RainerKuemmerle/g2o/tree/master/g2o/examples/tutorial_slam2d/simulator.h
 #include "simulator.h"
 
 

@@ -123,8 +123,11 @@ set(SRCS
 	ceres_solver_main.cpp
 	ceres_solver_bundle_adjustment_example.cpp
 	ceres_solver_curve_fitting_example.cpp
+	ceres_solver_pose_graph_2d_example.cpp
+	ceres_solver_pose_graph_3d_example.cpp
 	ceres_solver_robot_pose_mle_example.cpp
-	bal_problem.cpp
+	bal_problem.cpp  # REF [file] >> https://github.com/ceres-solver/ceres-solver/blob/master/examples/bal_problem.cpp
+
 )
 set(LIBS
 #	${OpenMP_CXX_FLAGS}

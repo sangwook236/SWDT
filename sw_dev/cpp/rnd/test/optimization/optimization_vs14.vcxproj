@@ -178,6 +178,8 @@
     <ClCompile Include="ceres_solver\ceres_solver_bundle_adjustment_example.cpp" />
     <ClCompile Include="ceres_solver\ceres_solver_curve_fitting_example.cpp" />
     <ClCompile Include="ceres_solver\ceres_solver_main.cpp" />
+    <ClCompile Include="ceres_solver\ceres_solver_pose_graph_2d_example.cpp" />
+    <ClCompile Include="ceres_solver\ceres_solver_pose_graph_3d_example.cpp" />
     <ClCompile Include="ceres_solver\ceres_solver_robot_pose_mle_example.cpp" />
     <ClCompile Include="coin_or\coin_or_cbc_example.cpp" />
     <ClCompile Include="coin_or\coin_or_clp_example.cpp" />

@@ -3,8 +3,8 @@
 #include <random>
 #include <vector>
 #include <iostream>
-#include <gflags/gflags.h>
 #include <glog/logging.h>
+#include <gflags/gflags.h>
 #include <ceres/ceres.h>
 #include <ceres/dynamic_autodiff_cost_function.h>
 

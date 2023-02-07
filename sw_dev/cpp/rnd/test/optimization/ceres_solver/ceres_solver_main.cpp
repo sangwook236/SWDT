@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <glog/logging.h>
+#include <gflags/gflags.h>
 #include <ceres/ceres.h>
 #define GLOG_NO_ABBREVIATED_SEVERITIES 1
 
@@ -239,12 +240,14 @@ void robust_curve_fitting_example();
 void simple_bundle_adjustment_example();
 void bundle_adjustment_example();
 void robot_pose_mle_example();
+void pose_graph_2d_example();
+void pose_graph_3d_example();
 
 }  // namespace my_ceres_solver
 
 int ceres_solver_main(int argc, char *argv[])
 {
-	//google::InitGoogleLogging(argv[0]);
+	google::InitGoogleLogging(argv[0]);
 	google::ParseCommandLineFlags(&argc, &argv, true);
 
 	//local::auto_differentiation_example();
@@ -269,9 +272,9 @@ int ceres_solver_main(int argc, char *argv[])
 	//my_ceres_solver::image_denoising_example();  // Not yet implemented.
 	//my_ceres_solver::libmv_bundle_adjuster_example();  // Not yet implemented.
 	//my_ceres_solver::libmv_homography_example();  // Not yet implemented.
-	my_ceres_solver::robot_pose_mle_example();
-	//my_ceres_solver::pose_graph_2d_example();  // Not yet implemented.
-	//my_ceres_solver::pose_graph_3d_example();  // Not yet implemented.
+	//my_ceres_solver::robot_pose_mle_example();
+	//my_ceres_solver::pose_graph_2d_example();
+	my_ceres_solver::pose_graph_3d_example();
 
 	return 0;
 }

@@ -4,10 +4,11 @@
 #include <string>
 #include <thread>
 #include <iostream>
-#include <gflags/gflags.h>
 #include <glog/logging.h>
+#include <gflags/gflags.h>
 #include <ceres/ceres.h>
 #include <ceres/rotation.h>
+// REF [file] >> https://github.com/ceres-solver/ceres-solver/blob/master/examples/bal_problem.h
 #include "bal_problem.h"
 
 
