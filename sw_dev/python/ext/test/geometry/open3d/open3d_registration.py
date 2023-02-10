@@ -225,13 +225,21 @@ def global_registration_tutorial():
 
 		result_global = result_ransac
 	else:
-		# Fast global registration.
+		# Fast global registration (FGR).
 		def execute_fast_global_registration(source_down, target_down, source_fpfh, target_fpfh, voxel_size):
 			distance_threshold = voxel_size * 0.5
 			print(":: Apply fast global registration with distance threshold %.3f" % distance_threshold)
+			# FPFH-feature-based FGR.
 			result = o3d.pipelines.registration.registration_fast_based_on_feature_matching(
 				source_down, target_down, source_fpfh, target_fpfh,
 				o3d.pipelines.registration.FastGlobalRegistrationOption(maximum_correspondence_distance=distance_threshold)
+			)
+			return result
+		def execute_fast_global_registration_based_on_correspondence(source_down, target_down, correspondence_set):
+			# Correspondence-based FGR.
+			result = o3d.pipelines.registration.registration_fgr_based_on_correspondence(
+				source_down, target_down, correspondence_set,
+				o3d.pipelines.registration.FastGlobalRegistrationOption()
 			)
 			return result
 
@@ -335,6 +343,10 @@ def multiway_registration_tutorial():
 		reference_node=0
 	)
 	with o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug) as cm:
+		# The global optimization performs twice on the pose graph.
+		# The first pass optimizes poses for the original pose graph taking all edges into account and does its best to distinguish false alignments among uncertain edges.
+		# These false alignments have small line process weights, and they are pruned after the first pass.
+		# The second pass runs without them and produces a tight global alignment.
 		o3d.pipelines.registration.global_optimization(
 			pose_graph,
 			o3d.pipelines.registration.GlobalOptimizationLevenbergMarquardt(),
