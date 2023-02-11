@@ -2,6 +2,7 @@
 #include <chrono>
 #include <string>
 #include <iostream>
+#include <Eigen/Core>
 #include <open3d/Open3D.h>
 
 
@@ -145,6 +146,45 @@ void octree_example()
 	octree.Traverse(traverse_octree_node);
 }
 
+// REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/cpp/PoseGraph.cpp
+void pose_graph_example()
+{
+	const std::string input_pose_graph_filepath("../pose_graph_noisy.json");
+	const std::string output_pose_graph_filepath("../pose_graph_optimized.json");
+
+#if 1
+	open3d::pipelines::registration::PoseGraph pose_graph_input;
+	pose_graph_input.nodes_.push_back(open3d::pipelines::registration::PoseGraphNode(Eigen::Matrix4d::Random()));
+	pose_graph_input.nodes_.push_back(open3d::pipelines::registration::PoseGraphNode(Eigen::Matrix4d::Random()));
+	pose_graph_input.nodes_.push_back(open3d::pipelines::registration::PoseGraphNode(Eigen::Matrix4d::Random()));
+	pose_graph_input.edges_.push_back(open3d::pipelines::registration::PoseGraphEdge(0, 1, Eigen::Matrix4d::Random(), Eigen::Matrix6d::Random(), false, 1.0));
+	pose_graph_input.edges_.push_back(open3d::pipelines::registration::PoseGraphEdge(1, 2, Eigen::Matrix4d::Random(), Eigen::Matrix6d::Random(), false, 1.0));
+	pose_graph_input.edges_.push_back(open3d::pipelines::registration::PoseGraphEdge(0, 2, Eigen::Matrix4d::Random(), Eigen::Matrix6d::Random(), true, 0.2));
+#elif 0
+	open3d::pipelines::registration::PoseGraph pose_graph_input;
+	if (!open3d::io::ReadPoseGraph(input_pose_graph_filepath, pose_graph_input))
+	{
+		std::cerr << "Failed to read a pose graph from " << input_pose_graph_filepath << std::endl;
+		return;
+	}
+#else
+	const auto pose_graph_input = *open3d::io::CreatePoseGraphFromFile(input_pose_graph_filepath);
+#endif
+
+	open3d::pipelines::registration::GlobalOptimizationLevenbergMarquardt optimization_method;
+	open3d::pipelines::registration::GlobalOptimizationConvergenceCriteria criteria;
+	open3d::pipelines::registration::GlobalOptimizationOption option;
+
+	open3d::pipelines::registration::GlobalOptimization(pose_graph_input, optimization_method, criteria, option);
+	const auto pose_graph_input_prunned = open3d::pipelines::registration::CreatePoseGraphWithoutInvalidEdges(pose_graph_input, option);
+
+	if (!open3d::io::WritePoseGraph(output_pose_graph_filepath, *pose_graph_input_prunned))
+	{
+		std::cerr << "Failed to write a pose graph to " << output_pose_graph_filepath << std::endl;
+		return;
+	}
+}
+
 void estimate_transformation_test()
 {
 	// 8 vertices on a cube.
@@ -235,6 +275,10 @@ void estimate_transformation_test()
 
 namespace my_open3d {
 
+void registration();
+void slam();
+void odometry();
+
 }  // namespace my_open3d
 
 int open3d_main(int argc, char *argv[])
@@ -245,8 +289,15 @@ int open3d_main(int argc, char *argv[])
 	//local::io_example();
 	//local::octree_example();
 
+	//local::pose_graph_example();
+
 	//-----
-	local::estimate_transformation_test();
+	//local::estimate_transformation_test();
+
+	//-----
+	my_open3d::registration();
+	//my_open3d::slam();
+	//my_open3d::odometry();
 
 	return 0;
 }
