@@ -3,10 +3,30 @@
 		https://docs.microsoft.com/en-us/windows/wsl/
 
 [-] Usage.
-	- Access the Windows local file system in WSL:
-		/mnt/c/<file_path>.
-	- Access the Linux file system in WSL from Windows (PowerShell):
-		\\wsl$\Ubuntu\home\sangwook\work
+	- Filesystem.
+		Access the Windows local file system in WSL:
+			/mnt/c/<file_path>.
+		Access the Linux file system in WSL from Windows (PowerShell):
+			\\wsl$\Ubuntu\home\sangwook
 
 [-] Usage (vscode).
 	https://code.visualstudio.com/docs/remote/wsl-tutorial
+
+[-] Installation.
+	https://learn.microsoft.com/en-us/windows/wsl/install
+
+	- Install.
+		wsl --list --online
+		wsl -l -v
+
+		wsl --install
+			wsl --install -d Ubuntu
+			wsl --install --distribution Debian
+		wsl --update
+		wsl --shutdown
+
+		wsl --set-version <Distro> <Version>
+		wsl --set-default <Distro>
+		wsl --set-default-version <Version>
+			wsl --set-default-version 1
+			wsl --set-default-version 2
