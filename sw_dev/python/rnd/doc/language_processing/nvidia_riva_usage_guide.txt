@@ -1,0 +1,192 @@
+[-] General.
+	- Site.
+		https://developer.nvidia.com/riva
+		https://github.com/nvidia-riva
+
+	- Document.
+		https://docs.nvidia.com/deeplearning/riva/user-guide/docs/index.html
+
+[-] Quick start guide.
+	https://docs.nvidia.com/deeplearning/riva/user-guide/docs/quick-start-guide.html
+	https://docs.nvidia.com/deeplearning/riva/user-guide/docs/installation/deploy-local.html
+
+	- Riva Speech AI Skills supports two architectures, Linux x86_64 and Linux ARM64.
+		Data center (x86_64) and embedded (ARM64).
+
+	- Prerequisites.
+		Data center:
+			NVIDIA Volta, NVIDIA Turing, or an NVIDIA Ampere Architecture-based A100 GPU.
+		Embedded:
+			NVIDIA Jetson Orin, NVIDIA Jetson AGX Xavier, or NVIDIA Jetson NX Xavier.
+			NVIDIA JetPack version 5.0.2 on the Jetson platform.
+
+	- Models available for deployment.
+		There are two push-button deployment options to deploy Riva Speech AI, which use pretrained models available from the NGC catalog:
+			https://catalog.ngc.nvidia.com/models?query=label:"Riva"
+
+		Local Docker:
+			You can use the Quick Start scripts to set up a local workstation and deploy the Riva services using Docker.
+			Continue with this guide to use the Quick Start scripts.
+		Kubernetes:
+			The Riva Helm Chart is designed to automate the steps for push-button deployment to a Kubernetes cluster.
+				https://catalog.ngc.nvidia.com/orgs/nvidia/teams/riva/helm-charts/riva-api
+			For more information, refer to Kubernetes deployment.
+				https://docs.nvidia.com/deeplearning/riva/user-guide/docs/installation/deploy-kubernetes.html
+			This option is not supported for embedded.
+
+		In addition to using pretrained models, Riva Speech AI can run with fine-tune custom models using NVIDIA NeMo.
+		Refer to the Model Development with NeMo section for details regarding the advanced option to create a model repository with NVIDIA NeMo.
+			https://docs.nvidia.com/deeplearning/riva/user-guide/docs/model-overview.html#nemo-development
+
+	- Local deployment using quick start scripts.
+		Download the scripts.
+
+		Edit config.sh.
+
+		Initialize and clean-up Riva:
+			The initialization step downloads and prepares Docker images and models.
+
+			bash riva_init.sh
+				Docker image:
+					nvcr.io/nvidia/riva/riva-speech:2.9.0
+					nvcr.io/nvidia/riva/riva-speech:2.9.0-servicemaker
+				Docker volume:
+					riva-model-repo
+						docker run -it --rm -v riva-model-repo:/data busybox ls /data/models
+			bash riva_clean.sh
+
+		Start and stop the Riva Speech AI servers:
+			The start script launches the server.
+
+			bash riva_start.sh
+			bash riva_stop.sh
+
+			Verify that the servers have started correctly:
+				docker logs riva-speech
+
+		Launch the client container:
+			For data center:
+				Start a container with sample clients for each service:
+					bash riva_start_client.sh
+			For embedded:
+				Try the sample clients for each service from the server container that has already been launched by running bash riva_start.sh.
+				The sample clients are already present in the Riva server container.
+
+		Translate text with Riva:
+			From within the Riva container.
+
+			Retrieve the available models and language pairs:
+				python3 /opt/riva/examples/nmt.py --list-models
+					languages {
+						key: "en_de_24x6"
+						value {
+							src_lang: "en"
+							tgt_lang: "de"
+						}
+					}
+			Perform a translation from English to German, using the parameters from the list models RPC:
+				python3 /opt/riva/examples/nmt.py --model-name=en_de_24x6 --src-language=en --tgt-language=de --text="This will become german words."
+
+		Transcribe audio files with Riva:
+			From inside the Riva client container data center or the Riva server container embedded to perform streaming and offline transcription of audio files.
+			If using SSL/TLS, ensure to include the --ssl_server_cert /ssl/server.crt option.
+
+			For offline recognition:
+				riva_asr_client --audio_file=/opt/riva/wav/en-US_sample.wav
+			For streaming recognition:
+				riva_streaming_asr_client --audio_file=/opt/riva/wav/en-US_sample.wav
+
+		Synthesize speech with Riva:
+			From within the Riva client container data center or the Riva server container embedded.
+
+			riva_tts_client --voice_name=English-US.Female-1 --text="Hello, this is a speech synthesizer." --audio_file=/opt/riva/wav/output.wav
+
+[-] Usage.
+	- API.
+		Command-line clients:
+			https://docs.nvidia.com/deeplearning/riva/user-guide/docs/apis/cli.html
+
+			Speech recognition:
+				Binary streaming example:
+					riva_streaming_asr_client --audio_file /opt/riva/wav/test/1272-135031-0001.wav
+				Binary offline/batch (nonstreaming) example:
+					riva_asr_client --audio_file /opt/riva/wav/test/1272-135031-0001.wav
+				Python streaming example:
+					python riva_streaming_asr_client.py --input-file=/opt/riva/wav/test/1272-135031-0001.wav
+					python transcribe_mic.py --input-device <device_id>
+					python transcribe_mic.py --list-devices
+					python transcribe_file.py ...
+					python transcribe_file_offline.py ...
+				Binary offline speaker diarization example:
+					riva_asr_client --audio_file /opt/riva/wav/en-US_sample.wav --speaker_diarization=true
+				Python offline speaker diarization example:
+					python transcribe_file_offline.py --input-file /opt/riva/wav/en-US_sample.wav --speaker-diarization
+
+			Natural language processing:
+				Binary NER example:
+					riva_nlp_classify_tokens --queries=/work/test_files/nlu/queries.txt
+				Binary QA example:
+					riva_nlp_qa --questions=/work/test_files/nlu/qa_questions.txt --contexts=/work/test_files/nlu/qa_contexts.txt
+				Python QA example:
+					python qa_client.py
+				Python intent slot example:
+					python intentslot_client.py --query "your query" --model riva_intent_weather
+				Binary punctuation example:
+					riva_nlp_punct --queries=/work/test_files/nlu/punctuation_input.txt
+
+			Speech synthesis:
+				Binary TTS client example:
+					riva_tts_client --text="I had a dream yesterday." --audio_file=/opt/riva/wav/output.wav
+				Binary TTS performance client example:
+					riva_tts_perf_client --text_file=/work/test_files/tts/ljs_audio_text_test_filelist_small.txt
+				Python client examples:
+					python talk.py --stream --output-device <device_id>
+					python talk.py --list-devices
+
+			Machine translation:
+				Python client examples:
+					python3 nmt.py --src_language=en --tgt_language=de --text="Please translate this English to German." --riva_uri=0.0.0.0:50051  --model_name=mnmt_en_deesfr_transformer24x6
+					python3 nmt.py --src_language es --tgt_language en --text_file /raid/wmt_tests/wmt13-es-en.es riva_uri=0.0.0.0:50051 --model_name mnmt_deesfr_en_transformer12x2 --batch_size=8
+
+		Python:
+			https://docs.nvidia.com/deeplearning/riva/user-guide/docs/apis/development-python.html
+
+		gRPC:
+			https://docs.nvidia.com/deeplearning/riva/user-guide/docs/reference/protos/protos.html
+
+	- Sample apps.
+		https://docs.nvidia.com/deeplearning/riva/user-guide/docs/samples/index.html
+
+	- Riva Speech Skills Tutorials.
+		https://github.com/nvidia-riva/tutorials
+
+		Start the Riva Speech Skills server:
+			https://docs.nvidia.com/deeplearning/riva/user-guide/docs/quick-start-guide.html
+		Install the Riva client library.
+
+		Tutorials:
+			https://github.com/nvidia-riva/tutorials
+
+[-] Installation.
+	- Install the Riva Speech AI Skills.
+		https://docs.nvidia.com/deeplearning/riva/user-guide/docs/quick-start-guide.html
+		https://docs.nvidia.com/deeplearning/riva/user-guide/docs/installation/deploy-local.html
+		https://docs.nvidia.com/deeplearning/riva/user-guide/docs/installation/deploy-kubernetes.html
+		https://docs.nvidia.com/deeplearning/riva/user-guide/docs/tutorials/deploy-eks.html
+
+		Refer to "Quick start guide".
+
+	- Install the Riva client library.
+		From source:
+			git clone https://github.com/nvidia-riva/python-clients.git
+			cd python-clients
+			git submodule init
+			git submodule update
+			pip install -r requirements.txt
+			python3 setup.py bdist_wheel
+			pip install --force-reinstall dist/*.whl
+		pip:
+			pip install nvidia-riva-client
+
+		Check:
+			python -c "import riva.client"
