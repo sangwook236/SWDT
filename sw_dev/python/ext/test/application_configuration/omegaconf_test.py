@@ -9,7 +9,7 @@ from omegaconf import OmegaConf
 def usage():
 	# Creating.
 
-	conf = OmegaConf.create()
+	conf = OmegaConf.create()  # Type: omegaconf.DictConfig.
 	print(type(conf))
 	print(OmegaConf.to_yaml(conf))
 
