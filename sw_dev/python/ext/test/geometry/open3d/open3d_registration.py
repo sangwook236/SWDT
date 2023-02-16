@@ -106,9 +106,7 @@ def colored_point_cloud_registration_tutorial():
 	draw_registration_result_original_color(source, target, result_icp.transformation)
 
 	# Colored point cloud registration.
-	# This is implementation of following paper
-	# J. Park, Q.-Y. Zhou, V. Koltun,
-	# Colored Point Cloud Registration Revisited, ICCV 2017.
+	#	"Colored Point Cloud Registration Revisited", ICCV 2017.
 	voxel_radius = [0.04, 0.02, 0.01]
 	max_iter = [50, 30, 14]
 	current_transformation = np.identity(4)
@@ -137,6 +135,454 @@ def colored_point_cloud_registration_tutorial():
 		print(result_icp)
 	print("Colored point cloud registration applied: {} secs.".format(time.time() - start_time))
 	draw_registration_result_original_color(source, target, result_icp.transformation)
+
+# REF [site] >> http://www.open3d.org/docs/release/tutorial/t_pipelines/t_icp_registration.html
+def t_icp_registration_tutorial():
+	def draw_registration_result(source, target, transformation):
+		source_temp = source.clone()
+		target_temp = target.clone()
+
+		source_temp.transform(transformation)
+
+		# This is patched version for tutorial rendering.
+		# Use 'draw' function for you application.
+		o3d.visualization.draw_geometries(
+			[source_temp.to_legacy(), target_temp.to_legacy()],
+			zoom=0.4459,
+			front=[0.9288, -0.2951, -0.2242],
+			lookat=[1.6784, 2.0612, 1.4451],
+			up=[-0.3402, -0.9189, -0.1996]
+		)
+
+	demo_icp_pcds = o3d.data.DemoICPPointClouds()
+	source = o3d.t.io.read_point_cloud(demo_icp_pcds.paths[0])
+	target = o3d.t.io.read_point_cloud(demo_icp_pcds.paths[1])
+
+	# For Colored-ICP 'colors' attribute must be of the same dtype as 'positions' and 'normals' attribute.
+	source.point["colors"] = source.point["colors"].to(o3d.core.Dtype.Float32) / 255.0
+	target.point["colors"] = target.point["colors"].to(o3d.core.Dtype.Float32) / 255.0
+
+	# Initial guess transform between the two point-cloud.
+	# ICP algortihm requires a good initial alignment to converge efficiently.
+	trans_init = np.asarray([
+		[0.862, 0.011, -0.507, 0.5],
+		[-0.139, 0.967, -0.215, 0.7],
+		[0.487, 0.255, 0.835, -1.4],
+		[0.0, 0.0, 0.0, 1.0]
+	])
+
+	draw_registration_result(source, target, trans_init)
+
+	#--------------------
+	# Vanilla ICP example.
+
+	# Input point-clouds.
+	demo_icp_pcds = o3d.data.DemoICPPointClouds()
+	source = o3d.t.io.read_point_cloud(demo_icp_pcds.paths[0])
+	target = o3d.t.io.read_point_cloud(demo_icp_pcds.paths[1])
+
+	# Select the 'Estimation Method', and 'Robust Kernel' (for outlier-rejection).
+	# Estimation method:
+	#	Point-to-Point ICP: o3d.t.pipelines.registration.TransformationEstimationPointToPoint()
+	#	Point-to-Plane ICP: o3d.t.pipelines.registration.TransformationEstimationPointToPlane(robust_kernel)
+	#	Colored ICP: o3d.t.pipelines.registration.TransformationEstimationForColoredICP(robust_kernel, lambda)
+	#	Generalized ICP: o3d.t.pipelines.registration.TransformationEstimationForGeneralizedICP(robust_kernel, epsilon)
+	# Robust kernel:
+	#	robust_kernel = o3d.t.pipelines.registration.robust_kernel.RobustKernel(method, scale, shape)
+	#		o3d.t.pipelines.registration.robust_kernel.RobustKernelMethod.L2Loss
+	#		o3d.t.pipelines.registration.robust_kernel.RobustKernelMethod.L1Loss
+	#		o3d.t.pipelines.registration.robust_kernel.RobustKernelMethod.HuberLoss
+	#		o3d.t.pipelines.registration.robust_kernel.RobustKernelMethod.CauchyLoss
+	#		o3d.t.pipelines.registration.robust_kernel.RobustKernelMethod.GMLoss
+	#		o3d.t.pipelines.registration.robust_kernel.RobustKernelMethod.TukeyLoss
+	#		o3d.t.pipelines.registration.robust_kernel.RobustKernelMethod.GeneralizedLoss
+
+	# Search distance for nearest neighbour search [hybrid-search is used].
+	max_correspondence_distance = 0.07
+	# Select the 'estimation method', and 'robust kernel' (for outlier-rejection).
+	estimation = o3d.t.pipelines.registration.TransformationEstimationPointToPlane()
+	# Convergence-criteria for vanilla ICP.
+	criteria = o3d.t.pipelines.registration.ICPConvergenceCriteria(relative_fitness=0.000001, relative_rmse=0.000001, max_iteration=50)
+	# Down-sampling voxel-size.
+	voxel_size = 0.025
+
+	# Save iteration wise 'fitness', 'inlier_rmse', etc. to analyse and tune result.
+	save_loss_log = True
+
+	# Get iteration-wise registration result using callback lambda function.
+	callback_after_iteration = lambda updated_result_dict : print(
+		"Iteration Index: {}, Fitness: {}, Inlier RMSE: {},".format(
+			updated_result_dict["iteration_index"].item(),
+			updated_result_dict["fitness"].item(),
+			updated_result_dict["inlier_rmse"].item()
+		)
+	)
+
+	# Initial alignment or source to target transform.
+	init_source_to_target = np.asarray([
+		[0.862, 0.011, -0.507, 0.5],
+		[-0.139, 0.967, -0.215, 0.7],
+		[0.487, 0.255, 0.835, -1.4],
+		[0.0, 0.0, 0.0, 1.0]
+	])
+
+	s = time.time()
+	registration_icp = o3d.t.pipelines.registration.icp(
+		source, target,
+		max_correspondence_distance,
+		init_source_to_target, estimation, criteria,
+		voxel_size, callback_after_iteration
+	)
+	icp_time = time.time() - s
+	print("Time taken by ICP: ", icp_time)
+	print("Inlier Fitness: ", registration_icp.fitness)
+	print("Inlier RMSE: ", registration_icp.inlier_rmse)
+
+	draw_registration_result(source, target, registration_icp.transformation)
+
+	#-----
+	# Now let's try with poor initial initialisation.
+	init_source_to_target = o3d.core.Tensor.eye(4, o3d.core.Dtype.Float32)
+	max_correspondence_distance = 0.07
+
+	s = time.time()
+	registration_icp = o3d.t.pipelines.registration.icp(
+		source, target,
+		max_correspondence_distance,
+		init_source_to_target, estimation, criteria,
+		voxel_size
+	)
+	icp_time = time.time() - s
+	print("Time taken by ICP: ", icp_time)
+	print("Inlier Fitness: ", registration_icp.fitness)
+	print("Inlier RMSE: ", registration_icp.inlier_rmse)
+
+	draw_registration_result(source, target, registration_icp.transformation)
+
+	#-----
+	# As we can see, poor initial alignment might fail ICP convergence.
+	init_source_to_target = o3d.core.Tensor.eye(4, o3d.core.float32)
+	max_correspondence_distance = 0.5
+
+	s = time.time()
+	# It is highly recommended to down-sample the point-cloud before using ICP algorithm, for better performance.
+	registration_icp = o3d.t.pipelines.registration.icp(
+		source, target,
+		max_correspondence_distance,
+		init_source_to_target, estimation, criteria,
+		voxel_size
+	)
+	icp_time = time.time() - s
+	print("Time taken by ICP: ", icp_time)
+	print("Inlier Fitness: ", registration_icp.fitness)
+	print("Inlier RMSE: ", registration_icp.inlier_rmse)
+
+	draw_registration_result(source, target, registration_icp.transformation)
+
+	#--------------------
+	# Multi-scale ICP example.
+
+	# Input point-clouds.
+	demo_icp_pcds = o3d.data.DemoICPPointClouds()
+	source = o3d.t.io.read_point_cloud(demo_icp_pcds.paths[0])
+	target = o3d.t.io.read_point_cloud(demo_icp_pcds.paths[1])
+
+	# For multi-scale ICP (o3d.utility.DoubleVector):
+	# 'max_correspondence_distances' is proportianal to the resolution or the 'voxel_sizes'.
+	# In general it is recommended to use values between 1x - 3x of the corresponding 'voxel_sizes'.
+	# We may have a higher value of the 'max_correspondence_distances' for the first coarse scale, as it is not much expensive, and gives us more tolerance to initial alignment.
+	max_correspondence_distances = o3d.utility.DoubleVector([0.3, 0.14, 0.07])
+	# List of convergence-criteria for multi-scale ICP:
+	# We can control 'ConvergenceCriteria' of each 'scale' individually.
+	# We want to keep 'relative_fitness' and 'relative_rmse' high (more error tolerance) for initial scales, i.e. we will be happy to consider ICP converged, when difference between 2 successive iterations for that scale is smaller than this value.
+	# We expect less accuracy (more error tolerance) initial coarse-scale iteration, and want our later scale convergence to be more accurate (less error tolerance).
+	criteria_list = [
+		o3d.t.pipelines.registration.ICPConvergenceCriteria(relative_fitness=0.0001, relative_rmse=0.0001, max_iteration=20),
+		o3d.t.pipelines.registration.ICPConvergenceCriteria(0.00001, 0.00001, 15),
+		o3d.t.pipelines.registration.ICPConvergenceCriteria(0.000001, 0.000001, 10)
+	]
+	# Lower 'voxel_size' is equivalent to higher resolution, and we want to perform iterations from coarse to dense resolution, therefore 'voxel_sizes' must be in strictly decressing order.
+	voxel_sizes = o3d.utility.DoubleVector([0.1, 0.05, 0.025])
+	# Select the 'estimation method', and 'robust kernel' (for outlier-rejection).
+	estimation = o3d.t.pipelines.registration.TransformationEstimationPointToPlane()
+
+	# Save iteration wise 'fitness', 'inlier_rmse', etc. to analyse and tune result.
+	callback_after_iteration = lambda loss_log_map : print(
+		"Iteration Index: {}, Scale Index: {}, Scale Iteration Index: {}, Fitness: {}, Inlier RMSE: {},".format(
+			loss_log_map["iteration_index"].item(),
+			loss_log_map["scale_index"].item(),
+			loss_log_map["scale_iteration_index"].item(),
+			loss_log_map["fitness"].item(),
+			loss_log_map["inlier_rmse"].item()
+		)
+	)
+
+	# Initial alignment or source to target transform.
+	init_source_to_target = o3d.core.Tensor.eye(4, o3d.core.Dtype.Float32)
+
+	# Setting Verbosity to Debug, helps in fine-tuning the performance.
+	#o3d.utility.set_verbosity_level(o3d.utility.VerbosityLevel.Debug)
+
+	s = time.time()
+	registration_ms_icp = o3d.t.pipelines.registration.multi_scale_icp(
+		source, target,
+		voxel_sizes, criteria_list,
+		max_correspondence_distances,
+		init_source_to_target, estimation,
+		callback_after_iteration
+	)
+	ms_icp_time = time.time() - s
+	print("Time taken by Multi-Scale ICP: ", ms_icp_time)
+	print("Inlier Fitness: ", registration_ms_icp.fitness)
+	print("Inlier RMSE: ", registration_ms_icp.inlier_rmse)
+
+	draw_registration_result(source, target, registration_ms_icp.transformation)
+
+	#-----
+	# Multi-scale ICP on CUDA device example.
+
+	# The algorithm runs on the same device as the source and target point-cloud.
+	source_cuda = source.cuda(0)
+	target_cuda = target.cuda(0)
+
+	s = time.time()
+	registration_ms_icp = o3d.t.pipelines.registration.multi_scale_icp(
+		source_cuda, target_cuda,
+		voxel_sizes, criteria_list,
+		max_correspondence_distances,
+		init_source_to_target, estimation
+	)
+	ms_icp_time = time.time() - s
+	print("Time taken by Multi-Scale ICP: ", ms_icp_time)
+	print("Inlier Fitness: ", registration_ms_icp.fitness)
+	print("Inlier RMSE: ", registration_ms_icp.inlier_rmse)
+
+	draw_registration_result(source.cpu(), target.cpu(), registration_ms_icp.transformation)
+
+	#--------------------
+	# Case of no correspondences.
+	#	In case of no_correspondences the fitness and inlier_rmse is 0.
+	max_correspondence_distance = 0.02
+	init_source_to_target = np.asarray([
+		[1.0, 0.0, 0.0, 5],
+		[0.0, 1.0, 0.0, 7],
+		[0.0, 0.0, 1.0, 10],
+		[0.0, 0.0, 0.0, 1.0]
+	])
+
+	registration_icp = o3d.t.pipelines.registration.icp(
+		source, target,
+		max_correspondence_distance,
+		init_source_to_target
+	)
+
+	print("Inlier Fitness: ", registration_icp.fitness)
+	print("Inlier RMSE: ", registration_icp.inlier_rmse)
+	print("Transformation: \n", registration_icp.transformation)
+
+	if registration_icp.fitness == 0 and registration_icp.inlier_rmse == 0:
+		print("ICP Convergence Failed, as no correspondence were found")
+
+	#-----
+	# Information matrix.
+	#	Information matrix gives us futher information about how well the point-clouds are aligned.
+	information_matrix = o3d.t.pipelines.registration.get_information_matrix(
+		source, target,
+		max_correspondence_distances[2],
+		registration_ms_icp.transformation
+	)
+
+	print("Information Matrix:\n", information_matrix)
+
+	#-----
+	# Initial alignment.
+	demo_icp_pcds = o3d.data.DemoICPPointClouds()
+	source = o3d.t.io.read_point_cloud(demo_icp_pcds.paths[0])
+	target = o3d.t.io.read_point_cloud(demo_icp_pcds.paths[1])
+
+	# Initial guess transform between the two point-cloud.
+	# ICP algortihm requires a good initial alignment to converge efficiently.
+	trans_init = np.asarray([
+		[0.862, 0.011, -0.507, 0.5],
+		[-0.139, 0.967, -0.215, 0.7],
+		[0.487, 0.255, 0.835, -1.4],
+		[0.0, 0.0, 0.0, 1.0]
+	])
+
+	draw_registration_result(source, target, trans_init)
+
+	# Search distance for nearest neighbour search [hybrid-search is used].
+	max_correspondence_distance = 0.02
+
+	print("Initial Alignment")
+	evaluation = o3d.t.pipelines.registration.evaluate_registration(source, target, max_correspondence_distance, trans_init)
+
+	print("Fitness: ", evaluation.fitness)
+	print("Inlier RMSE: ", evaluation.inlier_rmse)
+
+	#--------------------
+	# Point-to-point ICP registration.
+
+	# Input point-clouds.
+	demo_icp_pcds = o3d.data.DemoICPPointClouds()
+	source = o3d.t.io.read_point_cloud(demo_icp_pcds.paths[0])
+	target = o3d.t.io.read_point_cloud(demo_icp_pcds.paths[1])
+
+	# Select the 'estimation method', and 'robust kernel' (for outlier-rejection).
+	estimation = o3d.t.pipelines.registration.TransformationEstimationPointToPoint()
+	# Search distance for nearest neighbour search [hybrid-search is used].
+	max_correspondence_distance = 0.02
+	# Convergence-Criteria for Vanilla ICP.
+	criteria = o3d.t.pipelines.registration.ICPConvergenceCriteria(relative_fitness=0.0000001, relative_rmse=0.0000001, max_iteration=30)
+	# Down-sampling voxel-size.
+	#	If voxel_size < 0, original scale is used.
+	voxel_size = -1
+	# Initial alignment or source to target transform.
+	init_source_to_target = trans_init
+
+	# Save iteration wise 'fitness', 'inlier_rmse', etc. to analyse and tune result.
+	save_loss_log = True
+
+	print("Apply Point-to-Point ICP")
+	s = time.time()
+	reg_point_to_point = o3d.t.pipelines.registration.icp(
+		source, target,
+		max_correspondence_distance,
+		init_source_to_target, estimation, criteria,
+		voxel_size
+	)
+	icp_time = time.time() - s
+	print("Time taken by Point-To-Point ICP: ", icp_time)
+	print("Fitness: ", reg_point_to_point.fitness)
+	print("Inlier RMSE: ", reg_point_to_point.inlier_rmse)
+
+	draw_registration_result(source, target, reg_point_to_point.transformation)
+
+	#-----
+	# The fitness score increases from 0.174722 to 0.372474.
+	# The inlier_rmse reduces from 0.011771 to 0.007761.
+	# By default, icp runs until convergence or reaches a maximum number of iterations (30 by default).
+	# It can be changed to allow more computation time and to improve the results further.
+	criteria = o3d.t.pipelines.registration.ICPConvergenceCriteria(relative_fitness=0.0000001, relative_rmse=0.0000001, max_iteration=1000)
+
+	print("Apply Point-to-Point ICP")
+	s = time.time()
+	reg_point_to_point = o3d.t.pipelines.registration.icp(
+		source, target,
+		max_correspondence_distance,
+		init_source_to_target, estimation, criteria,
+		voxel_size
+	)
+	icp_time = time.time() - s
+	print("Time taken by Point-To-Point ICP: ", icp_time)
+	print("Fitness: ", reg_point_to_point.fitness)
+	print("Inlier RMSE: ", reg_point_to_point.inlier_rmse)
+
+	draw_registration_result(source, target, reg_point_to_point.transformation)
+
+	#--------------------
+	# Point-to-plane ICP registration.
+
+	estimation = o3d.t.pipelines.registration.TransformationEstimationPointToPlane()
+	criteria = o3d.t.pipelines.registration.ICPConvergenceCriteria(relative_fitness=0.0000001, relative_rmse=0.0000001, max_iteration=30)
+
+	print("Apply Point-to-Plane ICP")
+	s = time.time()
+	reg_point_to_plane = o3d.t.pipelines.registration.icp(
+		source, target,
+		max_correspondence_distance,
+		init_source_to_target, estimation, criteria,
+		voxel_size
+	)
+	icp_time = time.time() - s
+	print("Time taken by Point-To-Plane ICP: ", icp_time)
+	print("Fitness: ", reg_point_to_plane.fitness)
+	print("Inlier RMSE: ", reg_point_to_plane.inlier_rmse)
+
+	draw_registration_result(source, target, reg_point_to_plane.transformation)
+
+	#--------------------
+	# Colored ICP registration.
+
+	# Overriding visualization function, according to best camera view for colored-icp sample data.
+	def draw_registration_result(source, target, transformation):
+		source_temp = source.clone()
+		target_temp = target.clone()
+
+		source_temp.transform(transformation)
+
+		# This is patched version for tutorial rendering.
+		# Use 'draw' function for you application.
+		o3d.visualization.draw_geometries(
+			[source_temp.to_legacy(), target_temp.to_legacy()],
+			zoom=0.5,
+			front=[-0.2458, -0.8088, 0.5342],
+			lookat=[1.7745, 2.2305, 0.9787],
+			up=[0.3109, -0.5878, -0.7468]
+		)
+
+	print("Load two point clouds and show initial pose")
+	demo_cicp_pcds = o3d.data.DemoColoredICPPointClouds()
+	source = o3d.t.io.read_point_cloud(demo_cicp_pcds.paths[0])
+	target = o3d.t.io.read_point_cloud(demo_cicp_pcds.paths[1])
+
+	# For Colored-ICP 'colors' attribute must be of the same dtype as 'positions' and 'normals' attribute.
+	source.point["colors"] = source.point["colors"].to(o3d.core.Dtype.Float32) / 255.0
+	target.point["colors"] = target.point["colors"].to(o3d.core.Dtype.Float32) / 255.0
+
+	# Draw initial alignment.
+	current_transformation = np.identity(4)
+	draw_registration_result(source, target, current_transformation)
+
+	# Setting baseline with point-to-plane registration.
+	#	We first run Point-to-plane ICP as a baseline approach.
+	#	The visualization below shows misaligned green triangle textures.
+	#	This is because a geometric constraint does not prevent two planar surfaces from slipping.
+	estimation = o3d.t.pipelines.registration.TransformationEstimationPointToPlane()
+	max_correspondence_distance = 0.02
+	init_source_to_target = np.identity(4)
+
+	print("Apply Point-to-Plane ICP")
+	s = time.time()
+	reg_point_to_plane = o3d.t.pipelines.registration.icp(
+		source, target,
+		max_correspondence_distance,
+		init_source_to_target, estimation
+	)
+	icp_time = time.time() - s
+	print("Time taken by Point-To-Plane ICP: ", icp_time)
+	print("Fitness: ", reg_point_to_plane.fitness)
+	print("Inlier RMSE: ", reg_point_to_plane.inlier_rmse)
+
+	draw_registration_result(source, target, reg_point_to_plane.transformation)
+
+	# Colored registration.
+	#	"Colored Point Cloud Registration Revisited", ICCV 2017.
+	estimation = o3d.t.pipelines.registration.TransformationEstimationForColoredICP()
+	init_source_to_target = np.identity(4)
+	criteria_list = [
+		o3d.t.pipelines.registration.ICPConvergenceCriteria(relative_fitness=0.0001, relative_rmse=0.0001, max_iteration=50),
+		o3d.t.pipelines.registration.ICPConvergenceCriteria(0.00001, 0.00001, 30),
+		o3d.t.pipelines.registration.ICPConvergenceCriteria(0.000001, 0.000001, 14)
+	]
+	max_correspondence_distances = o3d.utility.DoubleVector([0.08, 0.04, 0.02])
+	voxel_sizes = o3d.utility.DoubleVector([0.04, 0.02, 0.01])
+
+	print("Colored point cloud registration")
+	s = time.time()
+	reg_multiscale_icp = o3d.t.pipelines.registration.multi_scale_icp(
+		source, target,
+		voxel_sizes,
+		criteria_list,
+		max_correspondence_distances,
+		init_source_to_target, estimation
+	)
+	icp_time = time.time() - s
+	print("Time taken by Colored ICP: ", icp_time)
+	print("Fitness: ", reg_point_to_plane.fitness)
+	print("Inlier RMSE: ", reg_point_to_plane.inlier_rmse)
+
+	draw_registration_result(source, target, reg_multiscale_icp.transformation)
 
 # REF [site] >> http://www.open3d.org/docs/release/tutorial/pipelines/global_registration.html
 def global_registration_tutorial():
@@ -383,206 +829,13 @@ def multiway_registration_tutorial():
 		up=[-0.0694, -0.9768, 0.2024]
 	)
 
-# REF [site] >> http://www.open3d.org/docs/release/tutorial/pipelines/rgbd_odometry.html
-def rgbd_odometry_tutorial():
-	# Read camera intrinsic.
-	redwood_rgbd = o3d.data.SampleRedwoodRGBDImages()
-
-	pinhole_camera_intrinsic = o3d.io.read_pinhole_camera_intrinsic(redwood_rgbd.camera_intrinsic_path)
-	print(pinhole_camera_intrinsic.intrinsic_matrix)
-
-	# Read RGBD image.
-	source_color = o3d.io.read_image(redwood_rgbd.color_paths[0])
-	source_depth = o3d.io.read_image(redwood_rgbd.depth_paths[0])
-	target_color = o3d.io.read_image(redwood_rgbd.color_paths[1])
-	target_depth = o3d.io.read_image(redwood_rgbd.depth_paths[1])
-	source_rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(source_color, source_depth)
-	target_rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(target_color, target_depth)
-	target_pcd = o3d.geometry.PointCloud.create_from_rgbd_image(target_rgbd_image, pinhole_camera_intrinsic)
-
-	# Compute odometry from two RGBD image pairs.
-	option = o3d.pipelines.odometry.OdometryOption()
-	odo_init = np.identity(4)
-	print(option)
-
-	[success_color_term, trans_color_term, info] = o3d.pipelines.odometry.compute_rgbd_odometry(
-		source_rgbd_image, target_rgbd_image,
-		pinhole_camera_intrinsic, odo_init,
-		o3d.pipelines.odometry.RGBDOdometryJacobianFromColorTerm(),
-		option
-	)
-	[success_hybrid_term, trans_hybrid_term, info] = o3d.pipelines.odometry.compute_rgbd_odometry(
-		source_rgbd_image, target_rgbd_image,
-		pinhole_camera_intrinsic, odo_init,
-		o3d.pipelines.odometry.RGBDOdometryJacobianFromHybridTerm(),
-		option
-	)
-
-	# Visualize RGBD image pairs.
-	if success_color_term:
-		print("Using RGB-D Odometry")
-		print(trans_color_term)
-		source_pcd_color_term = o3d.geometry.PointCloud.create_from_rgbd_image(source_rgbd_image, pinhole_camera_intrinsic)
-		source_pcd_color_term.transform(trans_color_term)
-		o3d.visualization.draw_geometries(
-			[target_pcd, source_pcd_color_term],
-			zoom=0.48,
-			front=[0.0999, -0.1787, -0.9788],
-			lookat=[0.0345, -0.0937, 1.8033],
-			up=[-0.0067, -0.9838, 0.1790]
-		)
-	if success_hybrid_term:
-		print("Using Hybrid RGB-D Odometry")
-		print(trans_hybrid_term)
-		source_pcd_hybrid_term = o3d.geometry.PointCloud.create_from_rgbd_image(source_rgbd_image, pinhole_camera_intrinsic)
-		source_pcd_hybrid_term.transform(trans_hybrid_term)
-		o3d.visualization.draw_geometries(
-			[target_pcd, source_pcd_hybrid_term],
-			zoom=0.48,
-			front=[0.0999, -0.1787, -0.9788],
-			lookat=[0.0345, -0.0937, 1.8033],
-			up=[-0.0067, -0.9838, 0.1790]
-		)
-
-# REF [site] >> http://www.open3d.org/docs/release/tutorial/pipelines/rgbd_integration.html
-def rgbd_integration_tutorial():
-	# Read trajectory from .log file.
-	class CameraPose:
-		def __init__(self, meta, mat):
-			self.metadata = meta
-			self.pose = mat
-
-		def __str__(self):
-			return "Metadata : " + " ".join(map(str, self.metadata)) + "\n" + "Pose : " + "\n" + np.array_str(self.pose)
-
-	def read_trajectory(filename):
-		traj = []
-		with open(filename, "r") as f:
-			metastr = f.readline()
-			while metastr:
-				metadata = list(map(int, metastr.split()))
-				mat = np.zeros(shape=(4, 4))
-				for i in range(4):
-					matstr = f.readline()
-					mat[i, :] = np.fromstring(matstr, dtype=float, sep=" \t")
-				traj.append(CameraPose(metadata, mat))
-				metastr = f.readline()
-		return traj
-
-	redwood_rgbd = o3d.data.SampleRedwoodRGBDImages()
-	camera_poses = read_trajectory(redwood_rgbd.odometry_log_path)
-
-	# TSDF volume integration.
-	volume = o3d.pipelines.integration.ScalableTSDFVolume(
-		voxel_length=4.0 / 512.0,
-		sdf_trunc=0.04,
-		color_type=o3d.pipelines.integration.TSDFVolumeColorType.RGB8
-	)
-
-	for i in range(len(camera_poses)):
-		print("Integrate {:d}-th image into the volume.".format(i))
-		color = o3d.io.read_image(redwood_rgbd.color_paths[i])
-		depth = o3d.io.read_image(redwood_rgbd.depth_paths[i])
-		rgbd = o3d.geometry.RGBDImage.create_from_color_and_depth(color, depth, depth_trunc=4.0, convert_rgb_to_intensity=False)
-		volume.integrate(
-			rgbd,
-			o3d.camera.PinholeCameraIntrinsic(o3d.camera.PinholeCameraIntrinsicParameters.PrimeSenseDefault),
-			np.linalg.inv(camera_poses[i].pose)
-		)
-
-	# Extract a mesh.
-	print("Extract a triangle mesh from the volume and visualize it.")
-	mesh = volume.extract_triangle_mesh()
-	mesh.compute_vertex_normals()
-	o3d.visualization.draw_geometries(
-		[mesh],
-		front=[0.5297, -0.1873, -0.8272],
-		lookat=[2.0712, 2.0312, 1.7251],
-		up=[-0.0558, -0.9809, 0.1864],
-		zoom=0.47
-	)
-
-# REF [site] >> http://www.open3d.org/docs/release/tutorial/pipelines/color_map_optimization.html
-def color_map_optimization_tutorial():
-	def load_fountain_dataset():
-		rgbd_images = []
-		fountain_rgbd_dataset = o3d.data.SampleFountainRGBDImages()
-		for i in range(len(fountain_rgbd_dataset.depth_paths)):
-			depth = o3d.io.read_image(fountain_rgbd_dataset.depth_paths[i])
-			color = o3d.io.read_image(fountain_rgbd_dataset.color_paths[i])
-			rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(color, depth, convert_rgb_to_intensity=False)
-			rgbd_images.append(rgbd_image)
-
-		camera_trajectory = o3d.io.read_pinhole_camera_trajectory(fountain_rgbd_dataset.keyframe_poses_log_path)
-		mesh = o3d.io.read_triangle_mesh(fountain_rgbd_dataset.reconstruction_path)
-
-		return mesh, rgbd_images, camera_trajectory
-
-	# Load dataset.
-	mesh, rgbd_images, camera_trajectory = load_fountain_dataset()
-
-	# Before full optimization, let's visualize texture map with given geometry, RGBD images, and camera poses.
-	mesh, camera_trajectory = o3d.pipelines.color_map.run_rigid_optimizer(
-		mesh, rgbd_images, camera_trajectory,
-		o3d.pipelines.color_map.RigidOptimizerOption(maximum_iteration=0)
-	)
-	o3d.visualization.draw_geometries(
-		[mesh],
-		zoom=0.5399,
-		front=[0.0665, -0.1107, -0.9916],
-		lookat=[0.7353, 0.6537, 1.0521],
-		up=[0.0136, -0.9936, 0.1118]
-	)
-
-	# Rigid Optimization.
-	# Optimize texture and save the mesh as texture_mapped.ply.
-	# "Color Map Optimization for 3D Reconstruction with Consumer Depth Cameras", Q.-Y. Zhou and V. Koltun, SIGGRAPH 2014.
-
-	is_ci = True
-
-	# Run rigid optimization.
-	maximum_iteration = 100 if is_ci else 300
-	with o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug) as cm:
-		mesh, camera_trajectory = o3d.pipelines.color_map.run_rigid_optimizer(
-			mesh, rgbd_images, camera_trajectory,
-			o3d.pipelines.color_map.RigidOptimizerOption(maximum_iteration=maximum_iteration)
-		)
-
-	o3d.visualization.draw_geometries(
-		[mesh],
-		zoom=0.5399,
-		front=[0.0665, -0.1107, -0.9916],
-		lookat=[0.7353, 0.6537, 1.0521],
-		up=[0.0136, -0.9936, 0.1118]
-	)
-
-	# Non-rigid Optimization.
-	# Run non-rigid optimization.
-	maximum_iteration = 100 if is_ci else 300
-	with o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug) as cm:
-		mesh, camera_trajectory = o3d.pipelines.color_map.run_non_rigid_optimizer(
-			mesh, rgbd_images, camera_trajectory,
-			o3d.pipelines.color_map.NonRigidOptimizerOption(maximum_iteration=maximum_iteration)
-		)
-
-	o3d.visualization.draw_geometries(
-		[mesh],
-		zoom=0.5399,
-		front=[0.0665, -0.1107, -0.9916],
-		lookat=[0.7353, 0.6537, 1.0521],
-		up=[0.0136, -0.9936, 0.1118]
-	)
-
 def main():
 	#icp_registration_tutorial()
 	#colored_point_cloud_registration_tutorial()
+	t_icp_registration_tutorial()
+
 	#global_registration_tutorial()
 	#multiway_registration_tutorial()
-
-	#rgbd_odometry_tutorial()
-
-	#rgbd_integration_tutorial()
-	color_map_optimization_tutorial()
 
 #--------------------------------------------------------------------
 
