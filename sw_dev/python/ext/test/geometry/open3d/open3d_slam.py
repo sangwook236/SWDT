@@ -222,11 +222,15 @@ def pose_graph_optimization_test():
 				1000.0, 3.0,
 				criteria_list, method
 			)
+			# FIXME [restore] >>
+			"""
 			info = o3d.t.pipelines.odometry.compute_odometry_information_matrix(
 				depth_curr, depth_next,
 				intrinsic, res.transformation,
 				0.07, 1000.0, 3.0
 			)
+			"""
+			info = o3d.core.Tensor(np.eye(6)).to(device)
 
 			edges.append((i, i + 1))
 			poses.append(res.transformation.cpu().numpy())
@@ -239,28 +243,7 @@ def pose_graph_optimization_test():
 		return edges, poses, infos
 
 	# REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/t_reconstruction_system/integrate.py
-	def integrate(depth_list, color_list, depth_intrinsic, color_intrinsic, extrinsics, integrate_color, device):
-		if integrate_color:
-			vbg = o3d.t.geometry.VoxelBlockGrid(
-				attr_names=("tsdf", "weight", "color"),
-				attr_dtypes=(o3d.core.float32, o3d.core.float32, o3d.core.float32),
-				attr_channels=((1), (1), (3)),
-				voxel_size=3.0 / 512,
-				block_resolution=16,
-				block_count=50000,
-				device=device
-			)
-		else:
-			vbg = o3d.t.geometry.VoxelBlockGrid(
-				attr_names=("tsdf", "weight"),
-				attr_dtypes=(o3d.core.float32, o3d.core.float32),
-				attr_channels=((1), (1)),
-				voxel_size=3.0 / 512,
-				block_resolution=16,
-				block_count=50000,
-				device=device
-			)
-
+	def integrate(vbg, depth_list, color_list, depth_intrinsic, color_intrinsic, extrinsics, integrate_color, device):
 		start_time = time.time()
 		n_files = len(depth_list)
 		for i in tqdm(range(n_files)):
@@ -291,8 +274,6 @@ def pose_graph_optimization_test():
 			dt = time.time() - start_time
 		print("Finished integrating {} frames in {} seconds.".format(n_files, dt))
 
-		return vbg
-
 	#-----
 	lounge_rgbd = o3d.data.LoungeRGBDImages()
 
@@ -310,10 +291,14 @@ def pose_graph_optimization_test():
 	# Split into fragments.
 
 	fragment_size = 100
+	fragment_overlap_size = 1
 	depth_lists, color_lists = [], []
 	for idx in range(0, len(depth_list), fragment_size):
-		depth_lists.append(depth_list[idx:idx + fragment_size])
-		color_lists.append(color_list[idx:idx + fragment_size])
+		#depth_lists.append(depth_list[idx:idx + fragment_size])
+		#color_lists.append(color_list[idx:idx + fragment_size])
+		# One-frame overlap between consecutive fragments for inter-fragment registration.
+		depth_lists.append(depth_list[idx:idx + fragment_size + fragment_overlap_size])
+		color_lists.append(color_list[idx:idx + fragment_size + fragment_overlap_size])
 
 	#-----
 	# Odometry in each fragment.
@@ -343,7 +328,7 @@ def pose_graph_optimization_test():
 			info_i2j = infos[i]
 
 			trans_j2i = np.linalg.inv(trans_i2j)
-			pose_j2w = pose_i2w @ trans_j2i
+			pose_j2w = pose_i2w @ trans_j2i  # T_wj = T_wi * T_ij.
 
 			pose_graph.nodes.append(o3d.pipelines.registration.PoseGraphNode(pose_j2w.copy()))
 			assert len(pose_graph.nodes) == i + 2
@@ -382,11 +367,42 @@ def pose_graph_optimization_test():
 	integrate_color = True
 	depth_scale = 1000.0
 	depth_max = 3.0
-	for frag_id, (depth_list, color_list) in enumerate(zip(depth_lists, color_lists)):
-		pose_graph = pose_graphs[frag_id]
-		extrinsics = [np.linalg.inv(node.pose) for node in pose_graph.nodes]
+	T_f2w = np.eye(4)
 
-		vbg = integrate(depth_list, color_list, intrinsic, intrinsic, extrinsics, integrate_color, device)
+	if integrate_color:
+		vbg = o3d.t.geometry.VoxelBlockGrid(
+			attr_names=("tsdf", "weight", "color"),
+			attr_dtypes=(o3d.core.float32, o3d.core.float32, o3d.core.float32),
+			attr_channels=((1), (1), (3)),
+			voxel_size=3.0 / 512,
+			block_resolution=16,
+			block_count=50000,
+			device=device
+		)
+	else:
+		vbg = o3d.t.geometry.VoxelBlockGrid(
+			attr_names=("tsdf", "weight"),
+			attr_dtypes=(o3d.core.float32, o3d.core.float32),
+			attr_channels=((1), (1)),
+			voxel_size=3.0 / 512,
+			block_resolution=16,
+			block_count=50000,
+			device=device
+		)
+
+	for frag_id, (depth_list, color_list) in enumerate(zip(depth_lists, color_lists)):
+		depth_list, color_list = depth_list[:fragment_size], color_list[:fragment_size]
+
+		pose_graph = pose_graphs[frag_id]
+		#extrinsics = [np.linalg.inv(node.pose) for node in pose_graph.nodes]
+		# One-frame overlap between consecutive fragments for inter-fragment registration.
+		extrinsics = [np.linalg.inv(T_f2w @ node.pose) for node in pose_graph.nodes]
+
+		integrate(vbg, depth_list, color_list, intrinsic, intrinsic, extrinsics, integrate_color, device)
+
+		# One-frame overlap between consecutive fragments for inter-fragment registration.
+		if frag_id < len(pose_graphs) - 1:
+			T_f2w = T_f2w @ pose_graph.nodes[fragment_size].pose  # T_wfj = T_wfi * T_fifj.
 
 		# Float color does not load correctly in the o3d.t.io mode.
 		#pcd = vbg.extract_point_cloud(weight_threshold=3.0)
@@ -649,7 +665,7 @@ def main():
 	#color_map_optimization_tutorial()
 
 	# Pose graph optimization (PGO).
-	pose_graph_optimization_test()
+	pose_graph_optimization_test()  # Error in inter-fragment registration.
 
 	# Dense RGB-D SLAM.
 	#dense_slam_tutorial()
