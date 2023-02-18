@@ -67,7 +67,7 @@ def rgbd_odometry_tutorial():
 		)
 
 # REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/t_reconstruction_system/rgbd_odometry.py
-def t_rgbd_odometry_tutorial():
+def rgbd_odometry_tensor_tutorial():
 	lounge_rgbd = o3d.data.LoungeRGBDImages()
 
 	intrinsic_legacy = o3d.camera.PinholeCameraIntrinsic(o3d.camera.PinholeCameraIntrinsicParameters.PrimeSenseDefault)
@@ -143,7 +143,7 @@ def t_rgbd_odometry_tutorial():
 
 def main():
 	#rgbd_odometry_tutorial()
-	t_rgbd_odometry_tutorial()
+	rgbd_odometry_tensor_tutorial()
 
 #--------------------------------------------------------------------
 
