@@ -10,23 +10,194 @@ import open3d as o3d
 #import reconstruction_system as recon_sys
 from tqdm import tqdm
 
+# REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/reconstruction_system/run_system.py
 def reconstruction_system_tutorial():
-	# REF [site] >> http://www.open3d.org/docs/release/tutorial/reconstruction_system/system_overview.html
-	config = {
-		"name": "Open3D reconstruction tutorial http://open3d.org/docs/release/tutorial/reconstruction_system/system_overview.html",
-		#"path_dataset": "dataset/tutorial/",
-		"path_dataset": "016",
-		"path_intrinsic": "",
-		"max_depth": 3.0,
-		"voxel_size": 0.05,
-		"max_depth_diff": 0.07,
-		"preference_loop_closure_odometry": 0.1,
-		"preference_loop_closure_registration": 5.0,
-		"tsdf_cubic_size": 3.0,
-		"icp_method": "color",
-		"global_registration": "ransac",
-		"python_multi_threading": True
-	}
+	# REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/reconstruction_system/initialize_config.py
+	def extract_rgbd_frames(rgbd_video_file):
+		"""
+		Extract color and aligned depth frames and intrinsic calibration from an RGBD video file (currently only RealSense bag files supported).
+		Folder structure is:
+			<directory of rgbd_video_file>/<rgbd_video_file name without extension>/{depth/00000.jpg, color/00000.png, intrinsic.json}
+		"""
+		frames_folder = join(os.path.dirname(rgbd_video_file), os.path.basename(os.path.splitext(rgbd_video_file)[0]))
+		path_intrinsic = os.path.join(frames_folder, "intrinsic.json")
+		if os.path.isfile(path_intrinsic):
+			warn(f"Skipping frame extraction for {rgbd_video_file} since files are present.")
+		else:
+			rgbd_video = o3d.t.io.RGBDVideoReader.create(rgbd_video_file)
+			rgbd_video.save_frames(frames_folder)
+		with open(path_intrinsic) as intr_file:
+			intr = json.load(intr_file)
+		depth_scale = intr["depth_scale"]
+		return frames_folder, path_intrinsic, depth_scale
+
+	# REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/reconstruction_system/initialize_config.py
+	def set_default_value(config, key, value):
+		if key not in config:
+			config[key] = value
+
+	# REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/reconstruction_system/initialize_config.py
+	def initialize_config(config):
+		# Set default parameters if not specified.
+		set_default_value(config, "depth_map_type", "redwood")
+		set_default_value(config, "n_frames_per_fragment", 100)
+		set_default_value(config, "n_keyframes_per_n_frame", 5)
+		set_default_value(config, "depth_min", 0.3)
+		set_default_value(config, "depth_max", 3.0)
+		set_default_value(config, "voxel_size", 0.05)
+		set_default_value(config, "depth_diff_max", 0.07)
+		set_default_value(config, "depth_scale", 1000)
+		set_default_value(config, "preference_loop_closure_odometry", 0.1)
+		set_default_value(config, "preference_loop_closure_registration", 5.0)
+		set_default_value(config, "tsdf_cubic_size", 3.0)
+		set_default_value(config, "icp_method", "color")  # {point_to_point, point_to_plane, color, generalized}.
+		set_default_value(config, "global_registration", "ransac")  # {ransac, fgr}.
+		set_default_value(config, "python_multi_threading", True)
+
+		# 'slac' and 'slac_integrate' related parameters.
+		# 'voxel_size' and 'depth_min' parameters from previous section, are also used in 'slac' and 'slac_integrate'.
+		set_default_value(config, "max_iterations", 5)
+		set_default_value(config, "sdf_trunc", 0.04)
+		set_default_value(config, "block_count", 40000)
+		set_default_value(config, "distance_threshold", 0.07)
+		set_default_value(config, "fitness_threshold", 0.3)
+		set_default_value(config, "regularizer_weight", 1)
+		set_default_value(config, "method", "slac")  # {rigid, slac}.
+		set_default_value(config, "device", "CPU:0")
+		set_default_value(config, "save_output_as", "pointcloud")
+		set_default_value(config, "folder_slac", "slac/")
+		set_default_value(config, "template_optimized_posegraph_slac", "optimized_posegraph_slac.json")
+
+		# Path related parameters.
+		set_default_value(config, "folder_fragment", "fragments/")
+		set_default_value(config, "subfolder_slac", "slac/%0.3f/" % config["voxel_size"])
+		set_default_value(config, "template_fragment_posegraph", "fragments/fragment_%03d.json")
+		set_default_value(config, "template_fragment_posegraph_optimized", "fragments/fragment_optimized_%03d.json")
+		set_default_value(config, "template_fragment_pointcloud", "fragments/fragment_%03d.ply")
+		set_default_value(config, "folder_scene", "scene/")
+		set_default_value(config, "template_global_posegraph", "scene/global_registration.json")
+		set_default_value(config, "template_global_posegraph_optimized", "scene/global_registration_optimized.json")
+		set_default_value(config, "template_refined_posegraph", "scene/refined_registration.json")
+		set_default_value(config, "template_refined_posegraph_optimized", "scene/refined_registration_optimized.json")
+		set_default_value(config, "template_global_mesh", "scene/integrated.ply")
+		set_default_value(config, "template_global_traj", "scene/trajectory.log")
+
+		if config["path_dataset"].endswith(".bag"):
+			assert os.path.isfile(config["path_dataset"]), (f"File {config['path_dataset']} not found.")
+			print("Extracting frames from RGBD video file.")
+			config["path_dataset"], config["path_intrinsic"], config["depth_scale"] = extract_rgbd_frames(config["path_dataset"])
+
+	# REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/reconstruction_system/data_loader.py
+	if True:
+ 		print('Loading Stanford Lounge RGB-D Dataset')
+		lounge_rgbd = o3d.data.LoungeRGBDImages()
+		config = {
+			"name": "Open3D reconstruction tutorial http://open3d.org/docs/release/tutorial/reconstruction_system/system_overview.html",
+			"path_dataset": lounge_rgbd.extract_dir,
+			"path_intrinsic": "",
+			"max_depth": 3.0,
+			"voxel_size": 0.05,
+			"max_depth_diff": 0.07,
+			"preference_loop_closure_odometry": 0.1,
+			"preference_loop_closure_registration": 5.0,
+			"tsdf_cubic_size": 3.0,
+			"icp_method": "color",
+			"global_registration": "ransac",
+			"python_multi_threading": True
+		}
+	elif False:
+		print("Loading Redwood Bedroom RGB-D Dataset")
+		bedroom_rgbd = o3d.data.BedroomRGBDImages()
+		config = {
+			"name": "Open3D reconstruction tutorial http://open3d.org/docs/release/tutorial/reconstruction_system/system_overview.html",
+			"path_dataset": bedroom_rgbd.extract_dir,
+			"path_intrinsic": "",
+			"max_depth": 3.0,
+			"voxel_size": 0.05,
+			"max_depth_diff": 0.07,
+			"preference_loop_closure_odometry": 0.1,
+			"preference_loop_closure_registration": 5.0,
+			"tsdf_cubic_size": 3.0,
+			"icp_method": "color",
+			"global_registration": "ransac",
+			"python_multi_threading": True
+		}
+	else:
+		print("Loading RealSense L515 Jack-Jack RGB-D Bag Dataset")
+		jackjack_bag = o3d.data.JackJackL515Bag()
+		config = {
+			"name": "Open3D reconstruction tutorial http://open3d.org/docs/release/tutorial/reconstruction_system/system_overview.html",
+			"path_dataset": jackjack_bag.path,
+			"path_intrinsic": "",
+			"max_depth": 0.85,
+			"voxel_size": 0.025,
+			"max_depth_diff": 0.03,
+			"preference_loop_closure_odometry": 0.1,
+			"preference_loop_closure_registration": 5.0,
+			"tsdf_cubic_size": 0.75,
+			"icp_method": "color",
+			"global_registration": "ransac",
+			"python_multi_threading": True
+		}
+
+	# Set the default values for non-specified parameters.
+	initialize_config(config)
+	config["debug_mode"] = False
+
+	print("Loaded data from {}.".format(config["path_dataset"]))
+
+	#-----
+	# Procedure.
+	#	Make fragments.
+	#	Register fragments.
+	#	Refine registration.
+	#	Integrate scene.
+
+	# Make fragments from RGBD sequence.
+	#	REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/reconstruction_system/make_fragments.py
+	start_time = time.time()
+	import make_fragments
+	make_fragments.run(config)
+	print("Fragments made: {} secs.".format(time.time() - start_time))
+
+	# Register all fragments to detect loop closure.
+	#	REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/reconstruction_system/register_fragments.py
+	start_time = time.time()
+	import register_fragments
+	register_fragments.run(config)
+	print("Fragments registered: {} secs.".format(time.time() - start_time))
+
+	# Refine rough registrations.
+	#	REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/reconstruction_system/refine_registration.py
+	start_time = time.time()
+	import refine_registration
+	refine_registration.run(config)
+	print("Registration refined: {} secs.".format(time.time() - start_time))
+
+	# Integrate the whole RGBD sequence to make final mesh.
+	#	REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/reconstruction_system/integrate_scene.py
+	start_time = time.time()
+	import integrate_scene
+	integrate_scene.run(config)
+	print("Scene integration done: {} secs.".format(time.time() - start_time))
+
+	# SLAC.
+	#	"Simultaneous Localization and Calibration: Self-Calibration of Consumer Depth Cameras", CVPR 2014.
+	#	Estimate a shared control grid for all fragments for scene reconstruction, implemented in https://github.com/qianyizh/ElasticReconstruction.
+
+	# (Optional) Run SLAC optimization for fragments.
+	#	REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/reconstruction_system/slac.py
+	start_time = time.time()
+	import slac
+	slac.run(config)
+	print("SLAC optimization done: {} secs.".format(time.time() - start_time))
+
+	# (Optional) Integrate fragments using SLAC to make final.
+	#	REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/reconstruction_system/slac_integrate.py
+	start_time = time.time()
+	import slac_integrate
+	slac_integrate.run(config)
+	print("Fragments integrated by SLAC: {} secs.".format(time.time() - start_time))
 
 # REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/t_reconstruction_system/run_system.py
 def pose_graph_optimization_tensor_tutorial():
@@ -589,29 +760,21 @@ def dense_slam_tensor_tutorial():
 
 def main():
 	# Reconstruction system.
-	#	REF [site] >>
-	#		http://www.open3d.org/docs/release/tutorial/reconstruction_system/index.html
-	#		https://github.com/isl-org/Open3D/tree/master/examples/python/reconstruction_system
-	#
-	# Procedure.
-	#	Make fragments.
-	#	Register fragments.
-	#	Refine registration.
-	#	Integrate scene.
+	#	http://www.open3d.org/docs/release/tutorial/reconstruction_system/index.html
+	#	https://github.com/isl-org/Open3D/tree/master/examples/python/reconstruction_system
 
-	#reconstruction_system_tutorial()  # Not yet completed.
+	#reconstruction_system_tutorial()  # Reasonable procedure, but inefficient implementation. Not yet completed.
 
 	#-----
 	# Reconstruction system (Tensor).
-	#	REF [site] >>
-	#		http://www.open3d.org/docs/release/tutorial/t_reconstruction_system/index.html
-	#		https://github.com/isl-org/Open3D/blob/master/examples/python/t_reconstruction_system
+	#	http://www.open3d.org/docs/release/tutorial/t_reconstruction_system/index.html
+	#	https://github.com/isl-org/Open3D/blob/master/examples/python/t_reconstruction_system
 
 	# Pose graph optimization (PGO).
 	#pose_graph_optimization_tensor_tutorial()  # Error in inter-fragment registration.
 
 	# Dense RGB-D SLAM.
-	dense_slam_tensor_tutorial()
+	dense_slam_tensor_tutorial()  # No bundle adjustment or pose graph optimization. (?)
 
 #--------------------------------------------------------------------
 
