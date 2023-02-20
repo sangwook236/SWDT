@@ -101,6 +101,7 @@ void slam2d_tutorial()
 	}
 	std::cout << "done." << std::endl;
 
+	// Add landmark constraints.
 	std::cout << "Optimization: add landmark observations ... ";
 	for (size_t i = 0; i < simulator.landmarkObservations().size(); ++i)
 	{

@@ -752,6 +752,289 @@ def simple_autoencoder_example():
 
 	trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 
+class Seq2SeqModule(pl.LightningModule):
+	def __init__(self, encoder: torch.nn.Module, decoder: torch.nn.Module, tgt_pad_idx: int):
+		super().__init__()
+		self.save_hyperparameters()
+
+		self.model = torch.nn.Sequential(
+			encoder,
+			decoder
+		)
+
+		self.criterion = torch.nn.CrossEntropyLoss(ignore_index=tgt_pad_idx)
+
+		for name, param in self.model.named_parameters():
+			if "weight" in name:
+				torch.nn.init.normal_(param.data, mean=0, std=0.01)
+			else:
+				torch.nn.init.constant_(param.data, 0)
+
+		print(f"The model has {sum(p.numel() for p in self.model.parameters() if p.requires_grad):,} trainable parameters")
+
+	def configure_optimizers(self):
+		optimizer = torch.optim.Adam(self.model.parameters())
+		return optimizer
+
+	def forward(self, x):
+		raise NotImplementedError
+
+	def training_step(self, batch, batch_idx):
+		start_time = time.time()
+		loss, y = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0.5)
+		step_time = time.time() - start_time
+
+		self.log_dict(
+			{"train_loss": loss, "train_time": step_time},
+			on_step=True, on_epoch=True, prog_bar=True, logger=True, rank_zero_only=True
+		)
+
+		return loss
+
+	def validation_step(self, batch, batch_idx):
+		start_time = time.time()
+		loss, y = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0)  # Turn off teacher forcing.
+		step_time = time.time() - start_time
+
+		self.log_dict({"val_loss": loss, "val_time": step_time}, rank_zero_only=True)
+
+	def test_step(self, batch, batch_idx):
+		start_time = time.time()
+		loss, y = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0)  # Turn off teacher forcing.
+		step_time = time.time() - start_time
+
+		self.log_dict({"test_loss": loss, "test_time": step_time}, rank_zero_only=True)
+
+	def predict_step(self, batch, batch_idx, dataloader_idx=None):
+		raise NotImplementedError
+
+	def _shared_step(self, batch, batch_idx, teacher_forcing_ratio):
+		src, tgt = batch
+		encoder, decoder = self.model[0], self.model[1]
+
+		encoder_outputs, hidden = encoder(src)
+
+		batch_size = src.shape[1]
+		max_len = tgt.shape[0]
+		tgt_vocab_size = decoder.output_dim
+		outputs = torch.zeros(max_len, batch_size, tgt_vocab_size, device=self.device)
+		output = tgt[0,:]  # First input to the decoder is the <sos> token.
+		for t in range(1, max_len):
+			output, hidden = decoder(output, hidden, encoder_outputs)
+			outputs[t] = output
+			teacher_force = random.random() < teacher_forcing_ratio
+			top1 = output.max(1)[1]
+			output = (tgt[t] if teacher_force else top1)
+
+		outputs = outputs[1:].view(-1, outputs.shape[-1])
+		tgt = tgt[1:].view(-1)
+
+		loss = self.criterion(outputs, tgt)
+
+		return loss, outputs
+
+# REF [site] >>
+#	https://pytorch.org/tutorials/beginner/torchtext_translation_tutorial.html
+#	https://github.com/bentrevett/pytorch-seq2seq/blob/master/3%20-%20Neural%20Machine%20Translation%20by%20Jointly%20Learning%20to%20Align%20and%20Translate.ipynb
+#	"Neural Machine Translation by Jointly Learning to Align and Translate", ICLR 2015.
+def torchtext_translation_tutorial():
+	import io, typing
+	from collections import Counter
+	import torchtext
+
+	# Download the raw data for the English and German Spacy tokenizers.
+	#	python -m spacy download en
+	#	python -m spacy download de
+
+	#--------------------
+	# Data processing.
+
+	url_base = "https://raw.githubusercontent.com/multi30k/dataset/master/data/task1/raw/"
+	train_urls = ("train.de.gz", "train.en.gz")
+	val_urls = ("val.de.gz", "val.en.gz")
+	test_urls = ("test_2016_flickr.de.gz", "test_2016_flickr.en.gz")
+
+	train_filepaths = [torchtext.utils.extract_archive(torchtext.utils.download_from_url(url_base + url))[0] for url in train_urls]
+	val_filepaths = [torchtext.utils.extract_archive(torchtext.utils.download_from_url(url_base + url))[0] for url in val_urls]
+	test_filepaths = [torchtext.utils.extract_archive(torchtext.utils.download_from_url(url_base + url))[0] for url in test_urls]
+
+	de_tokenizer = torchtext.data.utils.get_tokenizer("spacy", language="de")
+	en_tokenizer = torchtext.data.utils.get_tokenizer("spacy", language="en")
+
+	def build_vocab(filepath, tokenizer):
+		counter = Counter()
+		with io.open(filepath, encoding="utf8") as f:
+			for string_ in f:
+				counter.update(tokenizer(string_))
+		return torchtext.vocab.vocab(counter, specials=["<unk>", "<pad>", "<bos>", "<eos>"])
+
+	de_vocab = build_vocab(train_filepaths[0], de_tokenizer)
+	en_vocab = build_vocab(train_filepaths[1], en_tokenizer)
+
+	def data_process(filepaths):
+		raw_de_iter = iter(io.open(filepaths[0], encoding="utf8"))
+		raw_en_iter = iter(io.open(filepaths[1], encoding="utf8"))
+		data = []
+		for (raw_de, raw_en) in zip(raw_de_iter, raw_en_iter):
+			de_tensor_ = torch.tensor([de_vocab[token if token in de_vocab else "<unk>"] for token in de_tokenizer(raw_de)], dtype=torch.long)
+			en_tensor_ = torch.tensor([en_vocab[token if token in en_vocab else "<unk>"] for token in en_tokenizer(raw_en)], dtype=torch.long)
+			data.append((de_tensor_, en_tensor_))
+		return data
+
+	train_dataset = data_process(train_filepaths)
+	val_dataset = data_process(val_filepaths)
+	test_dataset = data_process(test_filepaths)
+
+	PAD_IDX = de_vocab["<pad>"]
+	BOS_IDX = de_vocab["<bos>"]
+	EOS_IDX = de_vocab["<eos>"]
+
+	def generate_batch(data_batch):
+		de_batch, en_batch = [], []
+		for (de_item, en_item) in data_batch:
+			de_batch.append(torch.cat([torch.tensor([BOS_IDX]), de_item, torch.tensor([EOS_IDX])], dim=0))
+			en_batch.append(torch.cat([torch.tensor([BOS_IDX]), en_item, torch.tensor([EOS_IDX])], dim=0))
+		de_batch = torch.nn.utils.rnn.pad_sequence(de_batch, padding_value=PAD_IDX)
+		en_batch = torch.nn.utils.rnn.pad_sequence(en_batch, padding_value=PAD_IDX)
+		return de_batch, en_batch
+
+	BATCH_SIZE = 128
+	num_workers = 8
+	train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=num_workers, collate_fn=generate_batch)
+	val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=num_workers, collate_fn=generate_batch)
+	test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=num_workers, collate_fn=generate_batch)
+
+	#--------------------
+	# Defining our module and optimizer.
+
+	class Encoder(torch.nn.Module):
+		def __init__(self, input_dim: int, emb_dim: int, enc_hid_dim: int, dec_hid_dim: int, dropout: float):
+			super().__init__()
+
+			self.input_dim = input_dim
+			self.emb_dim = emb_dim
+			self.enc_hid_dim = enc_hid_dim
+			self.dec_hid_dim = dec_hid_dim
+			self.dropout = dropout
+
+			self.embedding = torch.nn.Embedding(input_dim, emb_dim)
+			self.rnn = torch.nn.GRU(emb_dim, enc_hid_dim, bidirectional=True)
+			self.fc = torch.nn.Linear(enc_hid_dim * 2, dec_hid_dim)
+			self.dropout = torch.nn.Dropout(dropout)
+
+		def forward(self, src: torch.Tensor) -> typing.Tuple[torch.Tensor]:
+			embedded = self.dropout(self.embedding(src))
+			outputs, hidden = self.rnn(embedded)
+			hidden = torch.tanh(self.fc(torch.cat((hidden[-2,:,:], hidden[-1,:,:]), dim=1)))
+			return outputs, hidden
+
+	class Attention(torch.nn.Module):
+		def __init__(self, enc_hid_dim: int, dec_hid_dim: int, attn_dim: int):
+			super().__init__()
+
+			self.enc_hid_dim = enc_hid_dim
+			self.dec_hid_dim = dec_hid_dim
+
+			self.attn_in = (enc_hid_dim * 2) + dec_hid_dim
+			self.attn = torch.nn.Linear(self.attn_in, attn_dim)
+
+		def forward(self, decoder_hidden: torch.Tensor, encoder_outputs: torch.Tensor) -> torch.Tensor:
+			src_len = encoder_outputs.shape[0]
+			repeated_decoder_hidden = decoder_hidden.unsqueeze(1).repeat(1, src_len, 1)
+			encoder_outputs = encoder_outputs.permute(1, 0, 2)
+			energy = torch.tanh(self.attn(torch.cat((repeated_decoder_hidden, encoder_outputs), dim=2)))
+			attention = torch.sum(energy, dim=2)
+			return torch.nn.functional.softmax(attention, dim=1)
+
+	class Decoder(torch.nn.Module):
+		def __init__(self, output_dim: int, emb_dim: int, enc_hid_dim: int, dec_hid_dim: int, dropout: int, attention: torch.nn.Module):
+			super().__init__()
+
+			self.emb_dim = emb_dim
+			self.enc_hid_dim = enc_hid_dim
+			self.dec_hid_dim = dec_hid_dim
+			self.output_dim = output_dim
+			self.dropout = dropout
+			self.attention = attention
+
+			self.embedding = torch.nn.Embedding(output_dim, emb_dim)
+			self.rnn = torch.nn.GRU((enc_hid_dim * 2) + emb_dim, dec_hid_dim)
+			self.out = torch.nn.Linear(self.attention.attn_in + emb_dim, output_dim)
+			self.dropout = torch.nn.Dropout(dropout)
+
+		def _weighted_encoder_rep(self, decoder_hidden: torch.Tensor, encoder_outputs: torch.Tensor) -> torch.Tensor:
+			a = self.attention(decoder_hidden, encoder_outputs)
+			a = a.unsqueeze(1)
+
+			encoder_outputs = encoder_outputs.permute(1, 0, 2)
+			weighted_encoder_rep = torch.bmm(a, encoder_outputs)
+			weighted_encoder_rep = weighted_encoder_rep.permute(1, 0, 2)
+			return weighted_encoder_rep
+
+		def forward(self, input: torch.Tensor, decoder_hidden: torch.Tensor, encoder_outputs: torch.Tensor) -> typing.Tuple[torch.Tensor]:
+			input = input.unsqueeze(0)
+			embedded = self.dropout(self.embedding(input))
+			weighted_encoder_rep = self._weighted_encoder_rep(decoder_hidden, encoder_outputs)
+			rnn_input = torch.cat((embedded, weighted_encoder_rep), dim=2)
+			output, decoder_hidden = self.rnn(rnn_input, decoder_hidden.unsqueeze(0))
+			embedded = embedded.squeeze(0)
+			output = output.squeeze(0)
+			weighted_encoder_rep = weighted_encoder_rep.squeeze(0)
+			output = self.out(torch.cat((output, weighted_encoder_rep, embedded), dim=1))
+			return output, decoder_hidden.squeeze(0)
+
+	INPUT_DIM = len(de_vocab)
+	OUTPUT_DIM = len(en_vocab)
+	#ENC_EMB_DIM = 256
+	#DEC_EMB_DIM = 256
+	#ENC_HID_DIM = 512
+	#DEC_HID_DIM = 512
+	#ATTN_DIM = 64
+	ENC_EMB_DIM = 32
+	DEC_EMB_DIM = 32
+	ENC_HID_DIM = 64
+	DEC_HID_DIM = 64
+	ATTN_DIM = 8
+	ENC_DROPOUT = 0.5
+	DEC_DROPOUT = 0.5
+
+	enc = Encoder(INPUT_DIM, ENC_EMB_DIM, ENC_HID_DIM, DEC_HID_DIM, ENC_DROPOUT)
+	attn = Attention(ENC_HID_DIM, DEC_HID_DIM, ATTN_DIM)
+	dec = Decoder(OUTPUT_DIM, DEC_EMB_DIM, ENC_HID_DIM, DEC_HID_DIM, DEC_DROPOUT, attn)
+
+	EN_PAD_IDX = en_vocab["<pad>"]
+	model = Seq2SeqModule(enc, dec, EN_PAD_IDX)
+
+	#--------------------
+	# Training the Seq2Seq model.
+
+	checkpoint_callback = pl.callbacks.ModelCheckpoint(
+		dirpath=None,
+		filename="{epoch:03d}-{val_acc:.2f}-{val_loss:.2f}",
+		#monitor="val_acc", mode="max",
+		monitor="val_loss", mode="min",
+		save_top_k=-1,
+		save_weights_only=False, save_last=None,
+		every_n_epochs=None, every_n_train_steps=None, train_time_interval=None,
+	)
+
+	num_epochs = 10
+	# RuntimeError: Inplace update to inference tensor outside InferenceMode is not allowed. You can make a clone to get a normal tensor before doing inplace update. See https://github.com/pytorch/rfcs/pull/17 for more details.
+	#trainer = pl.Trainer(devices=-1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=num_epochs, gradient_clip_val=1, gradient_clip_algorithm="norm", callbacks=checkpoint_callback)
+	trainer = pl.Trainer(devices=1, accelerator="gpu", strategy="dp", auto_select_gpus=True, max_epochs=num_epochs, gradient_clip_val=1, gradient_clip_algorithm="norm", callbacks=checkpoint_callback)
+
+	trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
+
+	model_filepath = trainer.checkpoint_callback.best_model_path
+	print("The best trained model saved to {}.".format(model_filepath))
+
+	#-----
+	val_metrics = trainer.validate(dataloaders=val_dataloader, ckpt_path="best", verbose=True)
+	print("Validation metrics: {}.".format(val_metrics))
+
+	test_metrics = trainer.test(dataloaders=test_dataloader, ckpt_path="best", verbose=True)
+	print("Test metrics: {}.".format(test_metrics))
+
 class Lang:
 	def __init__(self, name):
 		self.name = name
@@ -1343,7 +1626,7 @@ def initalization_and_optimization_tutorial():
 		# Pass one batch through the network, and calculate the gradients for the weights.
 		model.zero_grad()
 		preds = model(imgs)
-		loss = F.cross_entropy(preds, labels)  # Same as nn.CrossEntropyLoss, but as a function instead of module.
+		loss = torch.nn.functional.cross_entropy(preds, labels)  # Same as nn.CrossEntropyLoss, but as a function instead of module.
 		loss.backward()
 		# We limit our visualization to the weight parameters and exclude the bias to reduce the number of plots.
 		grads = {
@@ -1761,15 +2044,15 @@ def initalization_and_optimization_tutorial():
 			Numpy array of shape [num_updates, 3] with [t,:2] being the parameter values at step t, and [t,2] the loss at t.
 		"""
 		weights = nn.Parameter(torch.FloatTensor(init), requires_grad=True)
-		optim = optimizer_func([weights])
+		torch.optim = optimizer_func([weights])
 
 		list_points = []
 		for _ in range(num_updates):
 			loss = curve_func(weights[0], weights[1])
 			list_points.append(torch.cat([weights.data.detach(), loss.unsqueeze(dim=0).detach()], dim=0))
-			optim.zero_grad()
+			torch.optim.zero_grad()
 			loss.backward()
-			optim.step()
+			torch.optim.step()
 		points = torch.stack(list_points, dim=0).numpy()
 		return points
 
@@ -2625,7 +2908,8 @@ def main():
 	#lenet5_mnist_example()
 	#simple_autoencoder_example()
 
-	seq2seq_translation_tutorial()  # Not good.
+	torchtext_translation_tutorial()  # Seq2seq model.
+	#seq2seq_translation_tutorial()  # Not good.
 
 	#initalization_and_optimization_tutorial()
 	#inception_resnet_densenet_tutorial()

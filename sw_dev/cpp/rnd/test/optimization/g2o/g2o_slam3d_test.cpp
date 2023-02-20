@@ -625,8 +625,8 @@ void slam3d_se3_pointxyz_test()
 			auto observation = new g2o::EdgeSE3PointXYZ;
 			//observation->setVertex(0, optimizer.vertex(int(idx + 1)));
 			//observation->setVertex(1, optimizer.vertex(int(vidx + 6)));
-			//observation->vertices()[0] = optimizer.vertex(int(idx + 1));
-			//observation->vertices()[1] = optimizer.vertex(int(vidx + 6));
+			observation->vertices()[0] = optimizer.vertex(int(idx + 1));
+			observation->vertices()[1] = optimizer.vertex(int(vidx + 6));
 			observation->setMeasurement(noisy_cubes_relative[idx][vidx]);
 			observation->setInformation(information_matrix);
 			observation->setParameterId(0, sensor_id);  // Required.

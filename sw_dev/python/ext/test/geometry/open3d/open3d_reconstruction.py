@@ -19,10 +19,10 @@ def reconstruction_system_tutorial():
 		Folder structure is:
 			<directory of rgbd_video_file>/<rgbd_video_file name without extension>/{depth/00000.jpg, color/00000.png, intrinsic.json}
 		"""
-		frames_folder = join(os.path.dirname(rgbd_video_file), os.path.basename(os.path.splitext(rgbd_video_file)[0]))
+		frames_folder = os.path.join(os.path.dirname(rgbd_video_file), os.path.basename(os.path.splitext(rgbd_video_file)[0]))
 		path_intrinsic = os.path.join(frames_folder, "intrinsic.json")
 		if os.path.isfile(path_intrinsic):
-			warn(f"Skipping frame extraction for {rgbd_video_file} since files are present.")
+			warnings.warn(f"Skipping frame extraction for {rgbd_video_file} since files are present.")
 		else:
 			rgbd_video = o3d.t.io.RGBDVideoReader.create(rgbd_video_file)
 			rgbd_video.save_frames(frames_folder)
@@ -89,7 +89,7 @@ def reconstruction_system_tutorial():
 
 	# REF [site] >> https://github.com/isl-org/Open3D/blob/master/examples/python/reconstruction_system/data_loader.py
 	if True:
- 		print('Loading Stanford Lounge RGB-D Dataset')
+		print('Loading Stanford Lounge RGB-D Dataset')
 		lounge_rgbd = o3d.data.LoungeRGBDImages()
 		config = {
 			"name": "Open3D reconstruction tutorial http://open3d.org/docs/release/tutorial/reconstruction_system/system_overview.html",
@@ -658,8 +658,8 @@ def dense_slam_tensor_tutorial():
 			path_color_intrinsic: str = ""
 			fragment_size: int = 100
 			depth_min: float = 0.1
-			depth_max: float = 3.0
-			depth_scale: float = 1000.0
+			depth_max: float = 3.0  # Depth max factor (mainly set for 3.0, but could be insufficient for larger scales). It will prune all the faraway points.
+			depth_scale: float = 1000.0  # Depth scale factor is correctly set (e.g., 1000 for PrimeSense and RealSense D435, 5000 for the TUM dataset). It is responsible for the correct transformation from the raw depth pixel value to the metric distance.
 			odometry_method: str = "hybrid"
 			odometry_loop_interval: int = 10
 			odometry_loop_weight: float = 0.1
@@ -720,8 +720,8 @@ def dense_slam_tensor_tutorial():
 			engine: str = "tensor"  # {legacy, tensor}.
 			multiprocessing: bool = False
 			depth_min: float = 0.1
-			depth_max: float = 3.0
-			depth_scale: float = 1000.0
+			depth_max: float = 3.0  # Depth max factor (mainly set for 3.0, but could be insufficient for larger scales). It will prune all the faraway points.
+			depth_scale: float = 1000.0  # Depth scale factor is correctly set (e.g., 1000 for PrimeSense and RealSense D435, 5000 for the TUM dataset). It is responsible for the correct transformation from the raw depth pixel value to the metric distance.
 			odometry_distance_thr: float = 0.07
 			voxel_size: float = 0.0058
 			trunc_voxel_multiplier: float = 8.0
@@ -771,10 +771,18 @@ def main():
 	#	https://github.com/isl-org/Open3D/blob/master/examples/python/t_reconstruction_system
 
 	# Pose graph optimization (PGO).
-	#pose_graph_optimization_tensor_tutorial()  # Error in inter-fragment registration.
+	#pose_graph_optimization_tensor_tutorial()  # TODO [implement] >> Inter-fragment registration(e.g. fragment-level pose graph optimization) has to be completed.
 
 	# Dense RGB-D SLAM.
-	dense_slam_tensor_tutorial()  # No bundle adjustment or pose graph optimization. (?)
+	#	For the front end, we are using direct RGB-D odometry.
+	#	Comparing to feature-based odometry, RGB-D odometry is more accurate when it completes successfully but is less robust.
+	#	We will add support for feature-based tracking in the future.
+	#	For the backend, unlike our offline reconstruction system, we do not detect loop closures, and do not perform pose graph optimization or bundle adjustment at the moment.
+	#
+	#	Relocalization is challenging for volumetric reconstruction, as active real-time volume deformation and/or reintegration is needed.
+	#	Since we are using direct odometry, we do not keep track of sparse features over the frames.
+	#	A non-trivial system upgrade that addresses all the problems will be future work.
+	dense_slam_tensor_tutorial()
 
 #--------------------------------------------------------------------
 

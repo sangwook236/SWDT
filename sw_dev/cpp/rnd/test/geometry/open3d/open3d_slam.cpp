@@ -127,6 +127,15 @@ void offline_slam_example()
 	}
 }
 
+// REF [site] >>
+//	http://www.open3d.org/docs/release/tutorial/t_reconstruction_system/dense_slam.html
+//	https://github.com/isl-org/Open3D/blob/master/examples/cpp/OnlineSLAMRGBD.cpp
+//	https://github.com/isl-org/Open3D/blob/master/examples/cpp/OnlineSLAMUtil.h
+void online_rgbd_slam_example()
+{
+	throw std::runtime_error("Not yet implemented")
+}
+
 }  // namespace local
 }  // unnamed namespace
 
@@ -135,6 +144,9 @@ namespace my_open3d {
 void slam()
 {
 	local::offline_slam_example();
+
+	// Dense RGB-D SLAM.
+	//local::online_rgbd_slam_example();  // Not yet implemented.
 }
 
 }  // namespace my_open3d
