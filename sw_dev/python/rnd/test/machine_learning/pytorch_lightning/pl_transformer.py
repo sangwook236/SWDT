@@ -564,7 +564,6 @@ def set_anomaly_detection_tutorial():
 	)
 	# Loading the training dataset.
 	train_set = CIFAR100(root=DATASET_PATH, train=True, transform=transform, download=True)
-
 	# Loading the test set.
 	test_set = CIFAR100(root=DATASET_PATH, train=False, transform=transform, download=True)
 
@@ -699,9 +698,7 @@ def set_anomaly_detection_tutorial():
 	val_anom_dataset = SetAnomalyDataset(val_feats, val_labels, set_size=SET_SIZE, train=False)
 	test_anom_dataset = SetAnomalyDataset(test_feats, test_labels, set_size=SET_SIZE, train=False)
 
-	train_anom_loader = data.DataLoader(
-		train_anom_dataset, batch_size=64, shuffle=True, drop_last=True, num_workers=4, pin_memory=True
-	)
+	train_anom_loader = data.DataLoader(train_anom_dataset, batch_size=64, shuffle=True, drop_last=True, num_workers=4, pin_memory=True)
 	val_anom_loader = data.DataLoader(val_anom_dataset, batch_size=64, shuffle=False, drop_last=False, num_workers=4)
 	test_anom_loader = data.DataLoader(test_anom_dataset, batch_size=64, shuffle=False, drop_last=False, num_workers=4)
 

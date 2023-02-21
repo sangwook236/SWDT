@@ -199,7 +199,7 @@ def text_sentiment_ngrams_tutorial():
 		model.train()
 		total_acc, total_count = 0, 0
 		log_interval = 500
-		start_time = time.time()
+		#start_time = time.time()
 
 		for idx, (label, text, offsets) in enumerate(dataloader):
 			optimizer.zero_grad()
@@ -211,10 +211,10 @@ def text_sentiment_ngrams_tutorial():
 			total_acc += (predicted_label.argmax(1) == label).sum().item()
 			total_count += label.size(0)
 			if idx % log_interval == 0 and idx > 0:
-				elapsed = time.time() - start_time
-				print("| epoch {:3d} | {:5d}/{:5d} batches | accuracy {:8.3f}".format(epoch, idx, len(dataloader), total_acc/total_count))
+				#elapsed = time.time() - start_time
+				print("| epoch {:3d} | {:5d}/{:5d} batches | accuracy {:8.3f}".format(epoch, idx, len(dataloader), total_acc / total_count))
 				total_acc, total_count = 0, 0
-				start_time = time.time()
+				#start_time = time.time()
 
 	def evaluate(dataloader):
 		model.eval()
@@ -223,7 +223,7 @@ def text_sentiment_ngrams_tutorial():
 		with torch.no_grad():
 			for idx, (label, text, offsets) in enumerate(dataloader):
 				predicted_label = model(text, offsets)
-				loss = criterion(predicted_label, label)
+				#loss = criterion(predicted_label, label)
 				total_acc += (predicted_label.argmax(1) == label).sum().item()
 				total_count += label.size(0)
 		return total_acc/total_count
@@ -356,6 +356,9 @@ def torchtext_translation_tutorial():
 	PAD_IDX = de_vocab["<pad>"]
 	BOS_IDX = de_vocab["<bos>"]
 	EOS_IDX = de_vocab["<eos>"]
+	assert PAD_IDX == en_vocab["<pad>"]
+	assert BOS_IDX == en_vocab["<bos>"]
+	assert EOS_IDX == en_vocab["<eos>"]
 
 	def generate_batch(data_batch):
 		de_batch, en_batch = [], []
@@ -466,7 +469,7 @@ def torchtext_translation_tutorial():
 			batch_size = src.shape[1]
 			max_len = tgt.shape[0]
 			tgt_vocab_size = self.decoder.output_dim
-			outputs = torch.zeros(max_len, batch_size, tgt_vocab_size).to(self.device)
+			outputs = torch.zeros(max_len, batch_size, tgt_vocab_size, device=self.device)
 			output = tgt[0,:]  # First input to the decoder is the <sos> token.
 			for t in range(1, max_len):
 				output, hidden = self.decoder(output, hidden, encoder_outputs)
@@ -517,8 +520,8 @@ def torchtext_translation_tutorial():
 
 	optimizer = torch.optim.Adam(model.parameters())
 
-	EN_PAD_IDX = en_vocab["<pad>"]
-	criterion = torch.nn.CrossEntropyLoss(ignore_index=EN_PAD_IDX)
+	#PAD_IDX = en_vocab["<pad>"]
+	criterion = torch.nn.CrossEntropyLoss(ignore_index=PAD_IDX)
 
 	def train(model: torch.nn.Module, iterator: torch.utils.data.DataLoader, optimizer: torch.optim.Optimizer, criterion: torch.nn.Module, clip: float):
 		model.train()
@@ -561,7 +564,7 @@ def torchtext_translation_tutorial():
 
 		return epoch_loss / len(iterator)
 
-	def epoch_time(start_time: int, end_time: int):
+	def epoch_time(start_time: float, end_time: float):
 		elapsed_time = end_time - start_time
 		elapsed_mins = int(elapsed_time / 60)
 		elapsed_secs = int(elapsed_time - (elapsed_mins * 60))
@@ -569,7 +572,7 @@ def torchtext_translation_tutorial():
 
 	N_EPOCHS = 10
 	CLIP = 1
-	best_valid_loss = float("inf")
+	#best_valid_loss = float("inf")
 	for epoch in range(N_EPOCHS):
 		start_time = time.time()
 		train_loss = train(model, train_dataloader, optimizer, criterion, CLIP)
@@ -973,7 +976,7 @@ def seq2seq_translation_tutorial():
 
 	evaluateRandomly(dataset, encoder, decoder, SOS_token, EOS_token, max_length=MAX_LENGTH, device=device)
 
-	# Visualizing Attention.
+	# Visualizing attention.
 	output_words, attentions = evaluate(encoder, decoder, dataset.tensorFromSentence(dataset.input_lang, "je suis trop froid ."), dataset.output_lang, SOS_token, EOS_token, max_length=MAX_LENGTH, device=device)
 	plt.matshow(attentions.numpy())
 
@@ -985,8 +988,8 @@ def seq2seq_translation_tutorial():
 def main():
 	#lenet_example()
 
-	text_sentiment_ngrams_tutorial()
-	#torchtext_translation_tutorial()  # Seq2seq model.
+	#text_sentiment_ngrams_tutorial()
+	torchtext_translation_tutorial()  # Seq2seq model.
 	#char_rnn_classification_tutorial()  # Not yet implemented.
 	#char_rnn_generation_tutorial()  # Not yet implemented.
 	#seq2seq_translation_tutorial()

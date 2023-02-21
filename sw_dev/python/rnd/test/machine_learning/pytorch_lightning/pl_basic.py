@@ -776,12 +776,25 @@ class Seq2SeqModule(pl.LightningModule):
 		optimizer = torch.optim.Adam(self.model.parameters())
 		return optimizer
 
-	def forward(self, x):
-		raise NotImplementedError
+	def forward(self, x, max_len, tgt_sos_idx, tgt_eos_idx):
+		encoder, decoder = self.model[0], self.model[1]
+
+		encoder_outputs, hidden = encoder(x)
+
+		batch_size = x.shape[1]
+		tgt_vocab_size = decoder.output_dim
+		outputs = torch.zeros(max_len, batch_size, tgt_vocab_size, device=self.device)
+		output = torch.full((batch_size,), fill_value=tgt_sos_idx, device=self.device)  # First input to the decoder is the <sos> token.
+		for t in range(1, max_len):
+			output, hidden = decoder(output, hidden, encoder_outputs)
+			outputs[t] = output
+			output = output.max(1)[1]
+
+		return outputs
 
 	def training_step(self, batch, batch_idx):
 		start_time = time.time()
-		loss, y = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0.5)
+		loss = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0.5)
 		step_time = time.time() - start_time
 
 		self.log_dict(
@@ -793,14 +806,14 @@ class Seq2SeqModule(pl.LightningModule):
 
 	def validation_step(self, batch, batch_idx):
 		start_time = time.time()
-		loss, y = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0)  # Turn off teacher forcing.
+		loss = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0)  # Turn off teacher forcing.
 		step_time = time.time() - start_time
 
 		self.log_dict({"val_loss": loss, "val_time": step_time}, rank_zero_only=True)
 
 	def test_step(self, batch, batch_idx):
 		start_time = time.time()
-		loss, y = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0)  # Turn off teacher forcing.
+		loss = self._shared_step(batch, batch_idx, teacher_forcing_ratio=0)  # Turn off teacher forcing.
 		step_time = time.time() - start_time
 
 		self.log_dict({"test_loss": loss, "test_time": step_time}, rank_zero_only=True)
@@ -831,7 +844,7 @@ class Seq2SeqModule(pl.LightningModule):
 
 		loss = self.criterion(outputs, tgt)
 
-		return loss, outputs
+		return loss
 
 # REF [site] >>
 #	https://pytorch.org/tutorials/beginner/torchtext_translation_tutorial.html
@@ -840,6 +853,7 @@ class Seq2SeqModule(pl.LightningModule):
 def torchtext_translation_tutorial():
 	import io, typing
 	from collections import Counter
+	import numpy as np
 	import torchtext
 
 	# Download the raw data for the English and German Spacy tokenizers.
@@ -888,6 +902,9 @@ def torchtext_translation_tutorial():
 	PAD_IDX = de_vocab["<pad>"]
 	BOS_IDX = de_vocab["<bos>"]
 	EOS_IDX = de_vocab["<eos>"]
+	assert PAD_IDX == en_vocab["<pad>"]
+	assert BOS_IDX == en_vocab["<bos>"]
+	assert EOS_IDX == en_vocab["<eos>"]
 
 	def generate_batch(data_batch):
 		de_batch, en_batch = [], []
@@ -905,7 +922,7 @@ def torchtext_translation_tutorial():
 	test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=num_workers, collate_fn=generate_batch)
 
 	#--------------------
-	# Defining our module and optimizer.
+	# Defining our module.
 
 	class Encoder(torch.nn.Module):
 		def __init__(self, input_dim: int, emb_dim: int, enc_hid_dim: int, dec_hid_dim: int, dropout: float):
@@ -1002,8 +1019,8 @@ def torchtext_translation_tutorial():
 	attn = Attention(ENC_HID_DIM, DEC_HID_DIM, ATTN_DIM)
 	dec = Decoder(OUTPUT_DIM, DEC_EMB_DIM, ENC_HID_DIM, DEC_HID_DIM, DEC_DROPOUT, attn)
 
-	EN_PAD_IDX = en_vocab["<pad>"]
-	model = Seq2SeqModule(enc, dec, EN_PAD_IDX)
+	#PAD_IDX = en_vocab["<pad>"]
+	model = Seq2SeqModule(enc, dec, PAD_IDX)
 
 	#--------------------
 	# Training the Seq2Seq model.
@@ -1034,6 +1051,27 @@ def torchtext_translation_tutorial():
 
 	test_metrics = trainer.test(dataloaders=test_dataloader, ckpt_path="best", verbose=True)
 	print("Test metrics: {}.".format(test_metrics))
+
+	#-----
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+	model = model.to(device)
+	model.eval()
+	model.freeze()
+
+	num_examples, num_correct_examples = 0, 0
+	with torch.no_grad():
+		for batch_inputs, batch_outputs in test_dataloader:
+			predictions = model(batch_inputs.to(device), max_len=batch_outputs.shape[0], tgt_sos_idx=BOS_IDX, tgt_eos_idx=EOS_IDX)
+			predictions = np.argmax(predictions.cpu().numpy(), axis=-1)  # [time-steps, batch size, #classes] -> [time-steps, batch size].
+
+			gts = np.transpose(batch_outputs.numpy(), (1, 0))  # [time-steps, batch size] -> [batch size, time-steps].
+			predictions = np.transpose(predictions, (1, 0))  # [time-steps, batch size] -> [batch size, time-steps].
+			assert len(gts) == len(predictions)
+			num_examples += len(gts)
+			num_correct_examples += sum([np.all(gt == pred) for gt, pred in zip(gts, predictions)])  # TODO [modify] >> Not good.
+
+	print("Prediction: accuracy = {} / {} = {}.".format(num_correct_examples, num_examples, num_correct_examples / num_examples))
 
 class Lang:
 	def __init__(self, name):
