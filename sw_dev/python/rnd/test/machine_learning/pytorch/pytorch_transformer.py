@@ -797,6 +797,10 @@ def standard_transformer_test():
 	print(f"| End of training | test loss {test_loss:5.2f} | test ppl {test_ppl:8.2f}")
 	print("=" * 89)
 
+# REF [site] >> https://pytorch.org/tutorials/beginner/vt_tutorial.html
+def vision_transformer_tutorial():
+	raise NotImplementedError
+
 def main():
 	# Transformer layers:
 	#	torch.nn.Transformer
@@ -807,7 +811,7 @@ def main():
 
 	# REF [site] >> https://pytorch.org/blog/a-better-transformer-for-fast-transformer-encoder-inference/
 
-	#--------------------
+	#-----
 	# Encoder-only or decoder-only transformer model.
 	#	Encoder-only transformer model = transformer model architecture in an encoder-only setup.
 	#	Decoder-only transformer model = transformer model architecture in a decoder-only setup.
@@ -820,11 +824,15 @@ def main():
 	transformer_tutorial()
 	#decoder_based_transformer_test()
 
-	#--------------------
+	#-----
 	# Standard transformer model.
 	#	Encoder-decoder transformer model = transformer model architecture in an encoder-decoder setup.
 
 	#standard_transformer_test()  # Not yet completed.
+
+	#--------------------
+	# Data-efficient Image Transformers (DeiT).
+	vision_transformer_tutorial()  # Not yet implemented.
 
 #--------------------------------------------------------------------
 

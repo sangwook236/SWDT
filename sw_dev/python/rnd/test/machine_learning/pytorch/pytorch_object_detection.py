@@ -50,21 +50,21 @@ class PennFudanDataset(torch.utils.data.Dataset):
 			ymax = np.max(pos[0])
 			boxes.append([xmin, ymin, xmax, ymax])
 
+		image_id = torch.tensor([idx])
 		boxes = torch.as_tensor(boxes, dtype=torch.float32)
 		labels = torch.ones((num_objs,), dtype=torch.int64)  # Only one class.
-		image_id = torch.tensor([idx])
 		areas = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
 		iscrowds = torch.zeros((num_objs,), dtype=torch.int64)  # Suppose all instances are not crowd.
 		masks = torch.as_tensor(masks, dtype=torch.uint8)
 
 		target = {
+			'image_id': image_id,
 			'boxes': boxes,
 			'labels': labels,
-			'image_id': image_id,
 			'area': areas,
 			'iscrowd': iscrowds,
-			'masks': masks,
-			#'keypoints': keypoints
+			'masks': masks,  # For instance segmentation.
+			#'keypoints': keypoints  # For keypoint detection.
 		}
 
 		if self.transforms is not None:
@@ -141,7 +141,7 @@ def visualize_object_detection(images, predictions, BOX_SCORE_THRESHOLD):
 		img = Image.fromarray(img)
 		draw = ImageDraw.Draw(img)
 
-		mask_img = Image.new('L', img.size, 0)
+		#mask_img = Image.new('L', img.size, 0)
 		for scores, boxes in zip(prediction['scores'], prediction['boxes']):
 			scores = scores.cpu().numpy()
 			boxes = boxes.cpu().numpy()
@@ -263,7 +263,7 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 	)
 
 	#--------------------
-	# Create an instance segmentation model for PennFudan dataset.
+	# Create a model for PennFudan dataset.
 	if is_instance_segmentation:
 		model = create_instance_segmentation_model(num_classes)
 	else:
@@ -279,7 +279,6 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 		# A learning rate scheduler which decreases the learning rate by 10x every 3 epochs.
 		lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
-		#--------------------
 		# Train.
 		for epoch in range(num_epochs):
 			# Train for one epoch, printing every 10 iterations.
@@ -293,22 +292,34 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 
 	#--------------------
 	# Infer.
-	img, _ = test_dataset[0]
+	images = [
+		test_dataset[0][0],
+		test_dataset[1][0],
+		test_dataset[2][0],
+	]
 
 	# Put the model in evaluation mode.
 	model.eval()
 	with torch.no_grad():
-		predictions = model([img.to(device)])
+		predictions = model([img.to(device) for img in images])
 
+	# Keys:
+	#	Object detection: {boxes, labels, scores}.
+	#	Instance segmentation: {boxes, labels, scores, masks}.
+	#	Keypoint detection: ?
+	#		boxes: (#detections, 4).
+	#		labels: (#detections,).
+	#		scores: (#detections,).
+	#		masks: (#detections, 1, image height, image width).
 	print("Prediction's keys = {}.".format(predictions[0].keys()))
 
 	#--------------------
 	# Visualize.
 	BOX_SCORE_THRESHOLD = 0.9
 	if is_instance_segmentation:
-		visualize_instance_segmentation([img.mul(255).permute(1, 2, 0).byte().numpy()], predictions, BOX_SCORE_THRESHOLD)
+		visualize_instance_segmentation([img.mul(255).permute(1, 2, 0).byte().numpy() for img in images], predictions, BOX_SCORE_THRESHOLD)
 	else:
-		visualize_object_detection([img.mul(255).permute(1, 2, 0).byte().numpy()], predictions, BOX_SCORE_THRESHOLD)
+		visualize_object_detection([img.mul(255).permute(1, 2, 0).byte().numpy() for img in images], predictions, BOX_SCORE_THRESHOLD)
 
 def main():
 	object_detection_finetuning_tutorial(is_instance_segmentation=True)

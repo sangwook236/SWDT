@@ -80,7 +80,8 @@ class Autoencoder(pl.LightningModule):
 		self.decoder = torch.nn.Sequential(torch.nn.Linear(latent_dim, 256), torch.nn.ReLU(), torch.nn.Linear(256, 28 * 28))
 
 	def configure_optimizers(self):
-		return torch.optim.Adam(self.parameters(), lr=0.0002)
+		params = [p for p in self.parameters() if p.requires_grad]
+		return torch.optim.Adam(params, lr=0.0002)
 
 	def forward(self, x):
 		return self.decoder(x)
@@ -410,7 +411,8 @@ class LeNet5(pl.LightningModule):
 		pass
 
 	def configure_optimizers(self):
-		optimizer = torch.optim.Adam(self.parameters(), lr=1e-2)
+		params = [p for p in self.parameters() if p.requires_grad]
+		optimizer = torch.optim.Adam(params, lr=1e-2)
 		return optimizer
 
 	def forward(self, x):
@@ -679,7 +681,8 @@ class LitAutoEncoder(pl.LightningModule):
 		)
 
 	def configure_optimizers(self):
-		optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
+		params = [p for p in self.parameters() if p.requires_grad]
+		optimizer = torch.optim.Adam(params, lr=1e-3)
 		return optimizer
 
 	def forward(self, x):
@@ -773,7 +776,8 @@ class Seq2SeqModule(pl.LightningModule):
 		print(f"The model has {sum(p.numel() for p in self.model.parameters() if p.requires_grad):,} trainable parameters")
 
 	def configure_optimizers(self):
-		optimizer = torch.optim.Adam(self.model.parameters())
+		params = [p for p in self.model.parameters() if p.requires_grad]
+		optimizer = torch.optim.Adam(params)
 		return optimizer
 
 	def forward(self, x, max_len, tgt_sos_idx, tgt_eos_idx):
@@ -1286,7 +1290,8 @@ class EncoderDecoderModel(pl.LightningModule):
 				torch.nn.init.xavier_uniform_(p)
 
 	def configure_optimizers(self):
-		optimizer = torch.optim.Adam(self.parameters(), lr=0.0001)
+		params = [p for p in self.parameters() if p.requires_grad]
+		optimizer = torch.optim.Adam(params, lr=0.0001)
 		return optimizer
 
 	def forward(self, x):
@@ -2306,13 +2311,14 @@ def inception_resnet_densenet_tutorial():
 			self.example_input_array = torch.zeros((1, 3, 32, 32), dtype=torch.float32)
 
 		def configure_optimizers(self):
+			params = [p for p in self.parameters() if p.requires_grad]
 			# We will support Adam or SGD as optimizers.
 			if self.hparams.optimizer_name == "Adam":
 				# AdamW is Adam with a correct implementation of weight decay (see here
 				# for details: https://arxiv.org/pdf/1711.05101.pdf).
-				optimizer = optim.AdamW(self.parameters(), **self.hparams.optimizer_hparams)
+				optimizer = optim.AdamW(params, **self.hparams.optimizer_hparams)
 			elif self.hparams.optimizer_name == "SGD":
-				optimizer = optim.SGD(self.parameters(), **self.hparams.optimizer_hparams)
+				optimizer = optim.SGD(params, **self.hparams.optimizer_hparams)
 			else:
 				assert False, f'Unknown optimizer: "{self.hparams.optimizer_name}"'
 
