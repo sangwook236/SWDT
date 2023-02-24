@@ -111,8 +111,8 @@ def yolov8_classification_example():
 
 	# Validate the model.
 	metrics = model.val()  # No arguments needed, dataset and settings remembered.
-	#	metrics.top1  # top1 accuracy.
-	#	metrics.top5  # top5 accuracy.
+	#	metrics.top1  # Top1 accuracy.
+	#	metrics.top5  # Top5 accuracy.
 
 	# Predict with the model.
 	results = model("https://ultralytics.com/images/bus.jpg")  # Predict on an image.
