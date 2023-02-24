@@ -6,11 +6,15 @@ import torch
 import torchvision
 import cv2
 
+# REF [site] >> https://github.com/pytorch/vision/tree/master/references/detection
+import torchvision_detection.engine as engine
+import torchvision_detection.transforms as T
+
 def visualize_person_keypoints(images, predictions, BOX_SCORE_THRESHOLD):
 	for idx, (img, prediction) in enumerate(zip(images, predictions)):
-		#print('Prediction keys:', prediction.keys())
-		print('#detected persons =', len(prediction['boxes'].detach().cpu().numpy()))
-		print("#detected persons' scores =", prediction['scores'].detach().cpu().numpy())
+		#print('Prediction keys: {}.'.format(prediction.keys()))
+		print('#detected persons = {}.'.format(len(prediction['boxes'].detach().cpu().numpy())))
+		print("#detected persons' scores = {}.".format(prediction['scores'].detach().cpu().numpy()))
 
 		#for label, box, score, keypoints, keypoints_scores in zip(prediction['labels'], prediction['boxes'], prediction['scores'], prediction['keypoints'], predictions['keypoints_scores']):
 		#	print(label.detach().cpu().numpy(), box.detach().cpu().numpy(), score.detach().cpu().numpy(), keypoints.detach().cpu().numpy(), keypoints_scores.detach().cpu().numpy())
@@ -19,8 +23,8 @@ def visualize_person_keypoints(images, predictions, BOX_SCORE_THRESHOLD):
 			if score < BOX_SCORE_THRESHOLD:
 				continue
 
-			box = box.detach().cpu().numpy()
-			keypoints = keypoints.detach().cpu().numpy()[:,:2]
+			box = box.detach().cpu().numpy().astype(np.int32)
+			keypoints = keypoints.detach().cpu().numpy()[:,:2].astype(np.int32)
 
 			assert len(keypoints) == 17
 
@@ -45,18 +49,17 @@ def visualize_person_keypoints(images, predictions, BOX_SCORE_THRESHOLD):
 		#cv2.waitKey(0)
 	#cv2.destroyAllWindows()
 
-def detect_person_keypoint_using_keypointrcnn_resnet50_fpn():
-	#--------------------
+def detect_person_keypoints():
 	# Load an image.
-	image_filepath = './input.jpg'
+	image_filepath = '/path/to/image.png'
 	img = cv2.imread(image_filepath, cv2.IMREAD_COLOR)
 	if img is None:
-		print('Failed to load an image: {}.'.format(image_filepath))
+		print('Failed to load an image from {}.'.format(image_filepath))
 		return
 	#IMAGE_WIDTH = 480
 	#img = cv2.resize(img, (IMAGE_WIDTH, int(img.height * IMAGE_WIDTH / img.width)))
 
-	print("Input image's shape =", img.shape)
+	print("Input image's shape = {}.".format(img.shape))
 
 	# Image to tensor.
 	transform = torchvision.transforms.Compose([
@@ -71,7 +74,17 @@ def detect_person_keypoint_using_keypointrcnn_resnet50_fpn():
 
 	#--------------------
 	# Infer.
-	predictions = model(input_tensors)
+	with torch.no_grad():
+		predictions = model(input_tensors)
+
+	# Keys:
+	#	Keypoint detection: {boxes, labels, scores, keypoints, keypoints_scores}.
+	#		boxes: (#detections, 4).
+	#		labels: (#detections,).
+	#		scores: (#detections,).
+	#		keypoints: (#detections, #keypoints, 3).
+	#		keypoints_scores: (#detections, #keypoints).
+	print("Prediction's keys = {}.".format(predictions[0].keys()))
 
 	#--------------------
 	# Visualize.
@@ -82,53 +95,86 @@ def detect_person_keypoint_using_keypointrcnn_resnet50_fpn():
 	#torch.onnx.export(model, input_tensors, './person_keypoint_rcnn_resnet50.onnx', opset_version=11)
 
 # REF [site] >> https://github.com/pytorch/vision/blob/master/torchvision/models/detection/keypoint_rcnn.py
-def detect_person_keypoint_using_KeypointRCNN():
-	# Create datasets.
-
-	# TODO [implement] >>
-	# REF [function] >> object_detection_finetuning_tutorial() in ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_object_detection.py
-
-	#--------------------
+def train_and_detect_person_keypoints():
 	# Our dataset has two classes only - background and person.
 	num_classes = 2
+	num_epochs = 10
+
+	device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 	#--------------------
-	# Load a pre-trained model for classification and return only the features.
-	backbone = torchvision.models.mobilenet_v2(pretrained=True).features
-	# KeypointRCNN needs to know the number of output channels in a backbone.
-	# For mobilenet_v2, it's 1280 so we need to add it here.
-	backbone.out_channels = 1280
+	# Create datasets.
+	#	REF [function] >> object_detection_finetuning_tutorial() in ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_object_detection.py
 
-	# Let's make the RPN generate 5 x 3 anchors per spatial location, with 5 different sizes and 3 different aspect ratios.
-	# We have a Tuple[Tuple[int]] because each feature map could potentially have different sizes and aspect ratios.
-	anchor_generator = torchvision.models.detection.rpn.AnchorGenerator(
-		sizes=((32, 64, 128, 256, 512),),
-		aspect_ratios=((0.5, 1.0, 2.0),)
+	# Create a Dataset object.
+	def get_transform(train):
+		transforms = []
+		# Converts the image, a PIL image, into a PyTorch Tensor.
+		transforms.append(T.ToTensor())
+		if train:
+			# During training, randomly flip the training images and ground-truth for data augmentation.
+			transforms.append(T.RandomHorizontalFlip(0.5))
+		return T.Compose(transforms)
+
+	# REF [function] >> collate_fn() in https://github.com/pytorch/vision/tree/master/references/detection/utils.py
+	def collate_fn(batch):
+		return tuple(zip(*batch))
+
+	# FIXME [implement] >>
+	train_dataset = 
+	test_dataset = 
+
+	# Define training and validation data loaders.
+	train_dataloader = torch.utils.data.DataLoader(
+		train_dataset, batch_size=2, shuffle=True, num_workers=4,
+		collate_fn=collate_fn
+	)
+	test_dataloader = torch.utils.data.DataLoader(
+		test_dataset, batch_size=1, shuffle=False, num_workers=4,
+		collate_fn=collate_fn
 	)
 
-	# Let's define what are the feature maps that we will use to perform the region of interest cropping, as well as the size of the crop after rescaling.
-	# If your backbone returns a Tensor, featmap_names is expected to be [0].
-	# More generally, the backbone should return an OrderedDict[Tensor], and in featmap_names you can choose which feature maps to use.
-	roi_pooler = torchvision.ops.MultiScaleRoIAlign(
-		featmap_names=[0],
-		output_size=7,
-		sampling_ratio=2
-	)
+	#--------------------
+	if True:
+		# Load a pre-trained model for classification and return only the features.
+		backbone = torchvision.models.mobilenet_v2(pretrained=True).features
+		# KeypointRCNN needs to know the number of output channels in a backbone.
+		# For mobilenet_v2, it's 1280 so we need to add it here.
+		backbone.out_channels = 1280
 
-	keypoint_roi_pooler = torchvision.ops.MultiScaleRoIAlign(
-		featmap_names=[0],
-		output_size=14,
-		sampling_ratio=2
-	)
+		# Let's make the RPN generate 5 x 3 anchors per spatial location, with 5 different sizes and 3 different aspect ratios.
+		# We have a Tuple[Tuple[int]] because each feature map could potentially have different sizes and aspect ratios.
+		anchor_generator = torchvision.models.detection.rpn.AnchorGenerator(
+			sizes=((32, 64, 128, 256, 512),),
+			aspect_ratios=((0.5, 1.0, 2.0),)
+		)
 
-	# Put the pieces together inside a KeypointRCNN model.
-	model = torchvision.models.detection.KeypointRCNN(
-		backbone,
-		num_classes=num_classes,
-		rpn_anchor_generator=anchor_generator,
-		box_roi_pool=roi_pooler,
-		keypoint_roi_pool=keypoint_roi_pooler
-	)
+		# Let's define what are the feature maps that we will use to perform the region of interest cropping, as well as the size of the crop after rescaling.
+		# If your backbone returns a Tensor, featmap_names is expected to be [0].
+		# More generally, the backbone should return an OrderedDict[Tensor], and in featmap_names you can choose which feature maps to use.
+		roi_pooler = torchvision.ops.MultiScaleRoIAlign(
+			featmap_names=[0],
+			output_size=7,
+			sampling_ratio=2
+		)
+
+		keypoint_roi_pooler = torchvision.ops.MultiScaleRoIAlign(
+			featmap_names=[0],
+			output_size=14,
+			sampling_ratio=2
+		)
+
+		# Put the pieces together inside a KeypointRCNN model.
+		model = torchvision.models.detection.KeypointRCNN(
+			backbone,
+			num_classes=num_classes,
+			rpn_anchor_generator=anchor_generator,
+			box_roi_pool=roi_pooler,
+			keypoint_roi_pool=keypoint_roi_pooler
+		)
+	else:
+		# Load a pre-trained model.
+		model = torchvision.models.detection.keypointrcnn_resnet50_fpn(pretrained=True)
 
 	# TODO [check] >> Is this part needed?
 	if False:
@@ -137,47 +183,58 @@ def detect_person_keypoint_using_KeypointRCNN():
 		# Replace the pre-trained head with a new one.
 		model.roi_heads.box_predictor = torchvision.models.detection.faster_rcnn.FastRCNNPredictor(in_features, num_classes)
 
+	model.to(device)
+
 	#--------------------
 	# Train.
-	
-	# TODO [implement] >>
-	# REF [function] >> object_detection_finetuning_tutorial() in ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_object_detection.py
+	#	REF [function] >> object_detection_finetuning_tutorial() in ${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_object_detection.py
 
-	#--------------------
-	# Load an image.
-	image_filepath = './input.jpg'
-	img = cv2.imread(image_filepath, cv2.IMREAD_COLOR)
-	if img is None:
-		print('Failed to load an image: {}.'.format(image_filepath))
-		return
-	#IMAGE_WIDTH = 480
-	#img = cv2.resize(img, (IMAGE_WIDTH, int(img.height * IMAGE_WIDTH / img.width)))
+	if True:
+		# Construct an optimizer.
+		params = [p for p in model.parameters() if p.requires_grad]
+		optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
 
-	print("Input image's shape =", img.shape)
+		# A learning rate scheduler which decreases the learning rate by 10x every 3 epochs.
+		lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
-	# Image to tensor.
-	transform = torchvision.transforms.Compose([
-		torchvision.transforms.ToTensor()
-	])
+		# Train.
+		for epoch in range(num_epochs):
+			# Train for one epoch, printing every 10 iterations.
+			engine.train_one_epoch(model, optimizer, train_dataloader, device, epoch, print_freq=10)
 
-	input_tensors = [transform(img)]
+			# Update the learning rate.
+			lr_scheduler.step()
+
+			# Evaluate on the test dataset.
+			engine.evaluate(model, test_dataloader, device=device)  # Person keypoints are evaluated by default when the IoU type is 'keypoints'.
 
 	#--------------------
 	# Infer.
+	images = [
+		test_dataset[0][0],
+		test_dataset[1][0],
+		test_dataset[2][0],
+	]
+
 	model.eval()
-	predictions = model(input_tensors)
+	with torch.no_grad():
+		predictions = model([img.to(device) for img in images])
 
 	#--------------------
 	# Visualize.
 	BOX_SCORE_THRESHOLD = 0.9
-	visualize_person_keypoints([img], predictions, BOX_SCORE_THRESHOLD)
+	visualize_person_keypoints([img.mul(255).permute(1, 2, 0).byte().numpy() for img in images], predictions, BOX_SCORE_THRESHOLD)
 
 	# Export the model to ONNX.
 	#torch.onnx.export(model, input_tensors, './person_keypoint_rcnn_mobilenet.onnx', opset_version=11)
 
 def main():
-	detect_person_keypoint_using_keypointrcnn_resnet50_fpn()
-	#detect_person_keypoint_using_KeypointRCNN()  # Not yet completed.
+	# Keypoint detection
+	detect_person_keypoints()
+	#train_and_detect_person_keypoints()  # Not yet completed.
+
+	# Object detection & instance segmentation.
+	#	REF [file] >> ./pytorch_object_detection.py
 
 #--------------------------------------------------------------------
 

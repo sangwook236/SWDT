@@ -107,7 +107,7 @@ def create_object_detection_model(num_classes):
 			box_roi_pool=roi_pooler
 		)
 	else:
-		# Load a model pre-trained pre-trained on COCO.
+		# Load a model pre-trained on COCO.
 		model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
 
 	# TODO [check] >> Is this part needed?
@@ -197,19 +197,6 @@ def visualize_instance_segmentation(images, predictions, BOX_SCORE_THRESHOLD):
 		mask_img.save('./PennFudanPed_mask_{}.png'.format(idx))
 		#mask_img.show()
 
-def get_transform(train):
-	transforms = []
-	# Converts the image, a PIL image, into a PyTorch Tensor.
-	transforms.append(T.ToTensor())
-	if train:
-		# During training, randomly flip the training images and ground-truth for data augmentation.
-		transforms.append(T.RandomHorizontalFlip(0.5))
-	return T.Compose(transforms)
-
-# REF [function] >> collate_fn() in https://github.com/pytorch/vision/tree/master/references/detection/utils.py
-def collate_fn(batch):
-	return tuple(zip(*batch))
-
 # REF [site] >> https://pytorch.org/tutorials/intermediate/torchvision_tutorial.html
 def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 	# Our dataset has two classes only - background and person.
@@ -219,11 +206,7 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 	device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 	#--------------------
-	if 'posix' == os.name:
-		data_base_dir_path = '/home/sangwook/work/dataset'
-	else:
-		data_base_dir_path = 'D:/work/dataset'
-	data_dir_path = data_base_dir_path + '/PennFudanPed'
+	data_dir_path = './PennFudanPed'
 
 	# Check images and masks.
 	if False:
@@ -243,6 +226,19 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 
 	#--------------------
 	# Create a Dataset object.
+	def get_transform(train):
+		transforms = []
+		# Converts the image, a PIL image, into a PyTorch Tensor.
+		transforms.append(T.ToTensor())
+		if train:
+			# During training, randomly flip the training images and ground-truth for data augmentation.
+			transforms.append(T.RandomHorizontalFlip(0.5))
+		return T.Compose(transforms)
+
+	# REF [function] >> collate_fn() in https://github.com/pytorch/vision/tree/master/references/detection/utils.py
+	def collate_fn(batch):
+		return tuple(zip(*batch))
+
 	train_dataset = PennFudanDataset(data_dir_path, get_transform(train=True))
 	test_dataset = PennFudanDataset(data_dir_path, get_transform(train=False))
 
@@ -306,7 +302,6 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 	# Keys:
 	#	Object detection: {boxes, labels, scores}.
 	#	Instance segmentation: {boxes, labels, scores, masks}.
-	#	Keypoint detection: ?
 	#		boxes: (#detections, 4).
 	#		labels: (#detections,).
 	#		scores: (#detections,).
@@ -322,7 +317,11 @@ def object_detection_finetuning_tutorial(is_instance_segmentation=True):
 		visualize_object_detection([img.mul(255).permute(1, 2, 0).byte().numpy() for img in images], predictions, BOX_SCORE_THRESHOLD)
 
 def main():
+	# Object detection & instance segmentation.
 	object_detection_finetuning_tutorial(is_instance_segmentation=True)
+
+	# Keypoint detection
+	#	REF [file] >> ./pytorch_keypoint_detection.py
 
 #--------------------------------------------------------------------
 
