@@ -11,6 +11,12 @@
 	https://github.com/microsoft/onnxruntime-inference-examples
 	https://github.com/microsoft/onnxruntime-training-examples
 
+	- PyTorch to ONNX.
+		https://github.com/open-mmlab/mmdetection/blob/master/docs/en/tutorials/pytorch2onnx.md
+
+	- ONNX to TensorRT.
+		https://github.com/open-mmlab/mmdetection/blob/master/docs/en/tutorials/onnx2tensorrt.md
+
 [-] Installation (Python).
 	- Install.
 		conda create --name onnx python=3 numpy scipy matplotlib pillow opencv

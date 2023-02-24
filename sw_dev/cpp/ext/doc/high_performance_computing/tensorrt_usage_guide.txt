@@ -28,6 +28,9 @@
 		https://github.com/pytorch/TensorRT/tree/master/examples/fx
 			${SWDT_PYTHON_HOME}/rnd/test/machine_learning/pytorch/pytorch_tensorrt.py
 
+	- ONNX to TensorRT.
+		https://github.com/open-mmlab/mmdetection/blob/master/docs/en/tutorials/onnx2tensorrt.md
+
 [-] Installation (TensorRT).
 	- Install CUDA and cuDNN.
 		Using docker:
