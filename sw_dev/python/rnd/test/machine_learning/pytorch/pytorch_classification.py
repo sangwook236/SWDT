@@ -303,6 +303,39 @@ def cifar10_on_gpu():
 		print('Accuracy of %5s : %2d %%' % (classes[i], 100 * class_correct[i] / class_total[i]))
 
 def main():
+	# Image classification.
+	#	REF [site] >> https://github.com/pytorch/vision/tree/main/references/classification
+	#
+	#	AlexNet and VGG
+	#	GoogLeNet
+	#	Inception V3
+	#	ResNet
+	#	ResNeXt
+	#	MobileNetV2
+	#	MobileNetV3 Large & Small
+	#	EfficientNet-V1
+	#	EfficientNet-V2
+	#	RegNet
+	#	Vision Transformer
+	#	ConvNeXt
+	#	SwinTransformer
+	#	SwinTransformer V2
+	#	MaxViT
+	#	ShuffleNet V2
+	#
+	#	Mixed precision training:
+	#
+	#	Quantized:
+	#	Quantized ShuffleNet V2
+	#	QAT MobileNetV2
+	#	QAT MobileNetV3
+
+	# Video classification.
+	#	REF [site] >> https://github.com/pytorch/vision/tree/main/references/video_classification
+	#
+	#	Video ResNet
+	#	S3D
+
 	#cifar10_on_cpu()
 	cifar10_on_gpu()
 
