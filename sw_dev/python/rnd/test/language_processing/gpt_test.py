@@ -1,25 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-# REF [site] >> https://github.com/openai/gpt-2
-
-import os
-if 'posix' == os.name:
-	lib_base_dir_path = '/home/sangwook/lib_repo/python'
-else:
-	lib_base_dir_path = 'D:/lib_repo/python/rnd'
-lib_dir_path = lib_base_dir_path + '/gpt-2_github'
-
-import sys
-sys.path.append(lib_dir_path + '/src')
-
-import json
+import os, json
 import numpy as np
 import tensorflow as tf
 import model, sample, encoder
 
 # REF [site] >> https://www.analyticsvidhya.com/blog/2019/07/openai-gpt2-text-generator-python/
 def simple_gpt2_example():
+	# REF [site] >> https://github.com/openai/gpt-2
+
+	if 'posix' == os.name:
+		lib_base_dir_path = '/home/sangwook/lib_repo/python'
+	else:
+		lib_base_dir_path = 'D:/lib_repo/python/rnd'
+	lib_dir_path = lib_base_dir_path + '/gpt-2_github'
+
+	import sys
+	sys.path.append(lib_dir_path + '/src')
+
+	#-----
 	models_dir = lib_dir_path + '/models'
 	model_name = '345M'
 	seed = None
