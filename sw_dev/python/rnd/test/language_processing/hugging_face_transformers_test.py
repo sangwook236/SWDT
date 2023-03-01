@@ -8,7 +8,7 @@
 
 import time
 import torch
-from transformers import GPT2Tokenizer, GPT2LMHeadModel
+from transformers import GPT2Tokenizer, GPT2LMHeadModel, GPT2DoubleHeadsModel
 from transformers import BertTokenizer, BertModel, BertForMaskedLM
 from transformers import BertPreTrainedModel
 from transformers import BertConfig
