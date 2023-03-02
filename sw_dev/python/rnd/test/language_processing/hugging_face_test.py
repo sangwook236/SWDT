@@ -131,15 +131,35 @@ def how_to_inference_guide():
 		token=API_TOKEN,
 	)
 
+# REF [site] >>
+#	https://huggingface.co/blog/lora
+#	https://huggingface.co/sayakpaul/sd-model-finetuned-lora-t4
+def model_info_test():
+	import huggingface_hub
+
+	# LoRA weights ~3 MB.
+	model_path = "sayakpaul/sd-model-finetuned-lora-t4"
+
+	info = huggingface_hub.model_info(model_path)
+	model_base = info.cardData["base_model"]
+	print(model_base)  # Output: CompVis/stable-diffusion-v1-4.
+
 def main():
 	# Hugging Face Hub.
+
 	#quickstart()
 	searching_the_hub_guide()
 	#how_to_inference_guide()
 
+	#model_info_test()
+
 	#--------------------
 	# Hugging Face Transformers.
 	#	Refer ./hugging_face_transformers_test.py.
+
+	#--------------------
+	# Hugging Face Diffusers.
+	#	Refer ../machine_vision/diffusion_model_test.py.
 
 #--------------------------------------------------------------------
 

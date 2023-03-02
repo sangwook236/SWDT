@@ -13,6 +13,9 @@
 
 [-] Usage.
 	- CUDA toolkit version.
+		Install CUDA toolkit. (Ubuntu)
+			sudo apt install nvidia-cuda-toolkit
+
 		nvcc --version
 			/usr/local/cuda/bin/nvcc --version
 		cat /usr/local/cuda/version.txt (X)
@@ -119,7 +122,9 @@
 		sudo <CudaInstaller>.run --driver --silent
 			e.g.) sudo sh cuda_11.1.0_455.23.05_linux.run --driver --silent
 
-	- Install toolkit.
+	- Install CUDA toolkit.
+		sudo apt install nvidia-cuda-toolkit
+
 		sudo <CudaInstaller>.run
 			e.g.) sudo sh cuda_11.1.0_455.23.05_linux.run --toolkit --silent
 
