@@ -160,18 +160,15 @@ def sentence_completion_model_using_gpt2_example():
 
 	# Convert indexed tokens in a PyTorch tensor.
 	tokens_tensor = torch.tensor([indexed_tokens])
+	# If you have a GPU, put everything on cuda.
+	tokens_tensor = tokens_tensor.to('cuda')
 
 	# Load pre-trained model (weights).
 	model = GPT2LMHeadModel.from_pretrained('gpt2')
-
-	# Set the model in evaluation mode to deactivate the DropOut modules.
-	model.eval()
-
-	# If you have a GPU, put everything on cuda.
-	tokens_tensor = tokens_tensor.to('cuda')
 	model.to('cuda')
 
 	# Predict all tokens.
+	model.eval()  # Set the model in evaluation mode to deactivate the DropOut modules.
 	with torch.no_grad():
 		outputs = model(tokens_tensor)
 		predictions = outputs[0]
@@ -181,7 +178,7 @@ def sentence_completion_model_using_gpt2_example():
 	predicted_text = tokenizer.decode(indexed_tokens + [predicted_index])
 
 	# Print the predicted word.
-	print('Predicted text = {}.'.format(predicted_text))
+	print(f'Predicted text = {predicted_text}.')
 
 # REF [site] >>
 #	https://github.com/huggingface/transformers/blob/master/examples/run_generation.py
@@ -189,6 +186,236 @@ def sentence_completion_model_using_gpt2_example():
 #	https://medium.com/analytics-vidhya/a-comprehensive-guide-to-build-your-own-language-model-in-python-5141b3917d6d
 def conditional_text_generation_using_gpt2_example():
 	raise NotImplementedError
+
+# REF [site] >> https://huggingface.co/EleutherAI
+def eleuther_ai_gpt_test():
+	device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+	print(f'Device: {device}.')
+
+	if True:
+		from transformers import pipeline
+
+		#pretrained_model_name = 'EleutherAI/gpt-neo-125M'
+		#pretrained_model_name = 'EleutherAI/gpt-neo-1.3B'
+		pretrained_model_name = 'EleutherAI/gpt-neo-2.7B'  # ~9.9GB.
+
+		# Tasks:
+		#	audio-classification: AudioClassificationPipeline.
+		#	automatic-speech-recognition: AutomaticSpeechRecognitionPipeline.
+		#	conversational: ConversationalPipeline.
+		#	depth-estimation: DepthEstimationPipeline.
+		#	document-question-answering: DocumentQuestionAnsweringPipeline.
+		#	feature-extraction: FeatureExtractionPipeline.
+		#	fill-mask: FillMaskPipeline.
+		#	image-classification: ImageClassificationPipeline.
+		#	image-segmentation: ImageSegmentationPipeline.
+		#	image-to-text: ImageToTextPipeline.
+		#	object-detection: ObjectDetectionPipeline.
+		#	question-answering: QuestionAnsweringPipeline.
+		#	summarization: SummarizationPipeline.
+		#	table-question-answering: TableQuestionAnsweringPipeline.
+		#	text2text-generation: Text2TextGenerationPipeline.
+		#	text-classification (alias "sentiment-analysis" available): TextClassificationPipeline.
+		#	text-generation: TextGenerationPipeline.
+		#	token-classification (alias "ner" available): TokenClassificationPipeline.
+		#	translation: TranslationPipeline.
+		#	translation_xx_to_yy: TranslationPipeline.
+		#	video-classification: VideoClassificationPipeline.
+		#	visual-question-answering: VisualQuestionAnsweringPipeline.
+		#	zero-shot-classification: ZeroShotClassificationPipeline.
+		#	zero-shot-image-classification: ZeroShotImageClassificationPipeline.
+		#	zero-shot-object-detection: ZeroShotObjectDetectionPipeline.
+		generator = pipeline(task='text-generation', model=pretrained_model_name, device=device)
+
+		prompt = 'EleutherAI has'
+		min_new_tokens, max_new_tokens = 50, 500
+		print('Generating text...')
+		start_time = time.time()
+		gen_texts = generator(prompt, do_sample=True, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)
+		print(f'Text generated: {time.time() - start_time} secs.')
+
+		assert len(gen_texts) == 1
+		print('Generated text:')
+		print(gen_texts[0]['generated_text'])
+
+	#-----
+	if False:
+		from transformers import AutoTokenizer, AutoModelForCausalLM
+
+		#pretrained_model_name = 'EleutherAI/gpt-j-6B'  # ~22.5GB. Too big to load.
+		pretrained_model_name = 'EleutherAI/gpt-neox-20b'  # ~38.6GB. Too big to load.
+
+		tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name)
+		model = AutoModelForCausalLM.from_pretrained(pretrained_model_name)
+		#model.to(device=device, non_blocking=True)
+
+		prompt = 'EleutherAI has'
+		tokens = tokenizer.encode(prompt, return_tensors='pt')
+		#tokens = tokens.to(device=device, non_blocking=True)
+
+		model.eval()
+		with torch.no_grad():
+			min_new_tokens, max_new_tokens = 50, 500
+
+			print('Generating text...')
+			start_time = time.time()
+			# REF [site] >> https://huggingface.co/docs/transformers/v4.26.1/en/main_classes/text_generation
+			#gen_tokens = model.generate(tokens, num_beams=1, do_sample=False, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Greedy decoding.
+			#gen_tokens = model.generate(tokens, penalty_alpha=0.5, top_k=3, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Contrastive searching.
+			#gen_tokens = model.generate(tokens, num_beams=3, no_repeat_ngram_size=3, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Beam search decoding.
+			#gen_tokens = model.generate(tokens, num_beams=2, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Beam search decoding.
+			#gen_tokens = model.generate(tokens, num_beams=5, num_beam_groups=3, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Diverse beam search decoding.
+			gen_tokens = model.generate(tokens, do_sample=True, temperature=0.9, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Sampling.
+			#gen_tokens = model.generate(tokens, do_sample=True, num_beams=1, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Multinomial sampling.
+			#gen_tokens = model.generate(tokens, do_sample=True, num_beams=3, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Beam search multinomial sampling.
+			#gen_tokens = model.generate(tokens, do_sample=True, top_k=10, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Top-k sampling.
+			#gen_tokens = model.generate(tokens, do_sample=True, top_p=0.8, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Top-p sampling.
+			print(f'Text generated: {time.time() - start_time} secs.')
+
+			gen_texts = tokenizer.batch_decode(gen_tokens)
+			assert len(gen_texts) == 1
+			print('Generated text:')
+			print(gen_texts[0])
+
+# REF [site] >>
+#	https://github.com/SKT-AI/KoGPT2
+#	https://huggingface.co/skt/kogpt2-base-v2
+def skt_gpt_test():
+	from transformers import PreTrainedTokenizerFast, GPT2LMHeadModel
+
+	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+	print(f'Device: {device}.')
+
+	pretrained_model_name = 'skt/kogpt2-base-v2'  # ~490MB.
+
+	tokenizer = PreTrainedTokenizerFast.from_pretrained(
+		pretrained_model_name,
+		bos_token='</s>', eos_token='</s>', unk_token='<unk>', pad_token='<pad>', mask_token='<mask>'
+	)
+	tokenized_text = tokenizer.tokenize("안녕하세요. 한국어 GPT-2 입니다.😤:)l^o")
+	print(f'Tokenized text: {tokenized_text}.')
+
+	model = GPT2LMHeadModel.from_pretrained(pretrained_model_name)
+	model.to(device=device, non_blocking=True)
+
+	text = '근육이 커지기 위해서는'
+	input_ids = tokenizer.encode(text, return_tensors='pt')
+	input_ids = input_ids.to(device=device, non_blocking=True)
+
+	model.eval()
+	with torch.no_grad():
+		print('Generating text...')
+		start_time = time.time()
+		gen_ids = model.generate(
+			input_ids,
+			max_length=128,
+			repetition_penalty=2.0,
+			pad_token_id=tokenizer.pad_token_id,
+			eos_token_id=tokenizer.eos_token_id,
+			bos_token_id=tokenizer.bos_token_id,
+			use_cache=True
+		)
+		print(f'Text generated: {time.time() - start_time} secs.')
+
+		assert len(gen_ids) == 1
+		generated = tokenizer.decode(gen_ids[0])
+		print('Generated text:')
+		print(generated)
+
+# REF [site] >>
+#	https://huggingface.co/kakaobrain/kogpt
+#	https://github.com/kakaobrain/kogpt
+def kakao_brain_gpt_test():
+	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+	print(f'Device: {device}.')
+
+	pretrained_model_name = 'kakaobrain/kogpt'
+	#revision = 'KoGPT6B-ryan1.5b'
+	revision = 'KoGPT6B-ryan1.5b-float16'  # ~11.5GB.
+
+	if True:
+		from transformers import AutoTokenizer, AutoModelForCausalLM
+
+		tokenizer = AutoTokenizer.from_pretrained(
+			pretrained_model_name, revision=revision,
+			bos_token='[BOS]', eos_token='[EOS]', unk_token='[UNK]', pad_token='[PAD]', mask_token='[MASK]'
+		)
+		model = AutoModelForCausalLM.from_pretrained(
+			pretrained_model_name, revision=revision,
+			pad_token_id=tokenizer.eos_token_id, torch_dtype='auto', low_cpu_mem_usage=True
+		)
+		model.to(device=device, non_blocking=True)
+
+		prompt = "인간처럼 생각하고, 행동하는 '지능'을 통해 인류가 이제까지 풀지 못했던"
+		tokens = tokenizer.encode(prompt, return_tensors='pt')
+		tokens = tokens.to(device=device, non_blocking=True)
+
+		model.eval()
+		with torch.no_grad():
+			min_new_tokens, max_new_tokens = 50, 500
+
+			print('Generating text...')
+			start_time = time.time()
+			# REF [site] >> https://huggingface.co/docs/transformers/v4.26.1/en/main_classes/text_generation
+			#gen_tokens = model.generate(tokens, num_beams=1, do_sample=False, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Greedy decoding.
+			#gen_tokens = model.generate(tokens, penalty_alpha=0.5, top_k=3, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Contrastive searching.
+			#gen_tokens = model.generate(tokens, num_beams=3, no_repeat_ngram_size=3, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Beam search decoding.
+			#gen_tokens = model.generate(tokens, num_beams=2, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Beam search decoding.
+			#gen_tokens = model.generate(tokens, num_beams=5, num_beam_groups=3, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Diverse beam search decoding.
+			gen_tokens = model.generate(tokens, do_sample=True, temperature=0.9, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Sampling.
+			#gen_tokens = model.generate(tokens, do_sample=True, num_beams=1, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Multinomial sampling.
+			#gen_tokens = model.generate(tokens, do_sample=True, num_beams=3, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Beam search multinomial sampling.
+			#gen_tokens = model.generate(tokens, do_sample=True, top_k=10, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Top-k sampling.
+			#gen_tokens = model.generate(tokens, do_sample=True, top_p=0.8, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Top-p sampling.
+			print(f'Text generated: {time.time() - start_time} secs.')
+
+			gen_texts = tokenizer.batch_decode(gen_tokens)
+			assert len(gen_texts) == 1
+			print('Generated text:')
+			print(gen_texts[0])
+
+	if False:
+		from transformers import pipeline
+
+		# Tasks:
+		#	audio-classification: AudioClassificationPipeline.
+		#	automatic-speech-recognition: AutomaticSpeechRecognitionPipeline.
+		#	conversational: ConversationalPipeline.
+		#	depth-estimation: DepthEstimationPipeline.
+		#	document-question-answering: DocumentQuestionAnsweringPipeline.
+		#	feature-extraction: FeatureExtractionPipeline.
+		#	fill-mask: FillMaskPipeline.
+		#	image-classification: ImageClassificationPipeline.
+		#	image-segmentation: ImageSegmentationPipeline.
+		#	image-to-text: ImageToTextPipeline.
+		#	object-detection: ObjectDetectionPipeline.
+		#	question-answering: QuestionAnsweringPipeline.
+		#	summarization: SummarizationPipeline.
+		#	table-question-answering: TableQuestionAnsweringPipeline.
+		#	text2text-generation: Text2TextGenerationPipeline.
+		#	text-classification (alias "sentiment-analysis" available): TextClassificationPipeline.
+		#	text-generation: TextGenerationPipeline.
+		#	token-classification (alias "ner" available): TokenClassificationPipeline.
+		#	translation: TranslationPipeline.
+		#	translation_xx_to_yy: TranslationPipeline.
+		#	video-classification: VideoClassificationPipeline.
+		#	visual-question-answering: VisualQuestionAnsweringPipeline.
+		#	zero-shot-classification: ZeroShotClassificationPipeline.
+		#	zero-shot-image-classification: ZeroShotImageClassificationPipeline.
+		#	zero-shot-object-detection: ZeroShotObjectDetectionPipeline.
+		generator = pipeline(task='text-generation', model=pretrained_model_name, revision=revision)
+		#generator = pipeline(task='text-generation', model=pretrained_model_name, revision=revision, device=device)  # torch.cuda.OutOfMemoryError: CUDA out of memory.
+
+		prompt = "인간처럼 생각하고, 행동하는 '지능'을 통해 인류가 이제까지 풀지 못했던"
+		min_new_tokens, max_new_tokens = 50, 500
+		print('Generating text...')
+		start_time = time.time()
+		gen_texts = generator(prompt, do_sample=True, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)
+		print(f'Text generated: {time.time() - start_time} secs.')
+
+		assert len(gen_texts) == 1
+		print('Generated text:')
+		print(gen_texts[0]['generated_text'])
 
 def bert_example():
 	# NOTE [info] >> Refer to example codes in the comment of forward() of each BERT class in https://github.com/huggingface/transformers/blob/master/src/transformers/modeling_bert.py
@@ -372,16 +599,16 @@ def masked_language_modeling_for_bert_example():
 	tokens_tensor = torch.tensor([indexed_tokens])
 	segments_tensors = torch.tensor([segments_ids])
 
-	# Load pre-trained model (weights).
-	model = BertForMaskedLM.from_pretrained('bert-base-uncased')
-	model.eval()
-
 	# If you have a GPU, put everything on cuda.
 	tokens_tensor = tokens_tensor.to('cuda')
 	segments_tensors = segments_tensors.to('cuda')
+
+	# Load pre-trained model (weights).
+	model = BertForMaskedLM.from_pretrained('bert-base-uncased')
 	model.to('cuda')
 
 	# Predict all tokens.
+	model.eval()
 	with torch.no_grad():
 		outputs = model(tokens_tensor, token_type_ids=segments_tensors)
 		predictions = outputs[0]
@@ -501,6 +728,26 @@ def korean_bert_example():
 
 	print('Model output losses = {}.'.format(model_outputs.loss))
 	print('Model output logits = {}.'.format(model_outputs.logits))
+
+# REF [site] >>
+#	https://github.com/SKTBrain/KoBERT
+#	https://huggingface.co/skt/kobert-base-v1
+def skt_bert_test():
+	from kobert import get_pytorch_kobert_model
+
+	model, vocab  = get_pytorch_kobert_model()
+	print(f'Vocabulary: {vocab}.')
+
+	input_ids = torch.LongTensor([[31, 51, 99], [15, 5, 0]])
+	input_mask = torch.LongTensor([[1, 1, 1], [1, 1, 0]])
+	token_type_ids = torch.LongTensor([[0, 0, 1], [0, 1, 0]])
+
+	sequence_output, pooled_output = model(input_ids, input_mask, token_type_ids)
+
+	print(f'sequence_output.shape = {sequence_output.shape}.')
+	print(f'pooled_output.shape = {pooled_output.shape}.')
+	# Last encoding layer.
+	print(sequence_output[0])
 
 # REF [site] >> https://huggingface.co/transformers/model_doc/encoderdecoder.html
 def encoder_decoder_example():
@@ -1541,11 +1788,15 @@ def main():
 	#quick_tour()
 
 	#--------------------
-	# GPT-2.
+	# GPT.
 
 	#gpt2_example()
 	#sentence_completion_model_using_gpt2_example()
 	#conditional_text_generation_using_gpt2_example()  # Not yet implemented.
+
+	eleuther_ai_gpt_test()  # gpt-neox, gpt-neo, & gpt-j.
+	#skt_gpt_test()  # KoGPT2.
+	#kakao_brain_gpt_test()  # KoGPT.
 
 	#--------------------
 	# BERT.
@@ -1554,7 +1805,9 @@ def main():
 	#masked_language_modeling_for_bert_example()
 
 	#sequence_classification_using_bert()
-	#korean_bert_example()
+
+	#korean_bert_example()  # BERT multilingual & KoBERT.
+	#skt_bert_test()  # KoBERT. Not yet tested.
 
 	#--------------------
 	#encoder_decoder_example()
@@ -1578,7 +1831,7 @@ def main():
 	#deit_example()
 	#deit_masked_image_modeling_example()
 	#deit_image_classification_example()
-	deit_image_classification_with_teacher_example()
+	#deit_image_classification_with_teacher_example()
 
 	#beit_example()
 	#beit_masked_image_modeling_example()
