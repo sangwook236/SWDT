@@ -79,6 +79,226 @@ def quick_tour():
 
 		print('{} processed.'.format(model_class.__name__))
 
+# REF [site] >> https://huggingface.co/docs/transformers/main_classes/pipelines
+def pipeline_example():
+	from transformers import pipeline, AutoModelForTokenClassification, AutoTokenizer
+
+	# Tasks:
+	#	audio-classification: AudioClassificationPipeline.
+	#	automatic-speech-recognition: AutomaticSpeechRecognitionPipeline.
+	#	conversational: ConversationalPipeline.
+	#	depth-estimation: DepthEstimationPipeline.
+	#	document-question-answering: DocumentQuestionAnsweringPipeline.
+	#	feature-extraction: FeatureExtractionPipeline.
+	#	fill-mask: FillMaskPipeline.
+	#	image-classification: ImageClassificationPipeline.
+	#	image-segmentation: ImageSegmentationPipeline.
+	#	image-to-text: ImageToTextPipeline.
+	#	object-detection: ObjectDetectionPipeline.
+	#	question-answering: QuestionAnsweringPipeline.
+	#	summarization: SummarizationPipeline.
+	#	table-question-answering: TableQuestionAnsweringPipeline.
+	#	text2text-generation: Text2TextGenerationPipeline.
+	#	text-classification (alias "sentiment-analysis" available): TextClassificationPipeline.
+	#	text-generation: TextGenerationPipeline.
+	#	token-classification (alias "ner" available): TokenClassificationPipeline.
+	#	translation: TranslationPipeline.
+	#	translation_xx_to_yy: TranslationPipeline.
+	#	video-classification: VideoClassificationPipeline.
+	#	visual-question-answering: VisualQuestionAnsweringPipeline.
+	#	zero-shot-classification: ZeroShotClassificationPipeline.
+	#	zero-shot-image-classification: ZeroShotImageClassificationPipeline.
+	#	zero-shot-object-detection: ZeroShotObjectDetectionPipeline.
+
+	# Sentiment analysis pipeline.
+	sa_pipeline = pipeline('sentiment-analysis')
+
+	# Question answering pipeline, specifying the checkpoint identifier.
+	qa_pipeline = pipeline('question-answering', model='distilbert-base-cased-distilled-squad', tokenizer='bert-base-cased')
+
+	# Named entity recognition pipeline, passing in a specific model and tokenizer.
+	# REF [site] >> https://huggingface.co/dbmdz
+	model = AutoModelForTokenClassification.from_pretrained('dbmdz/bert-large-cased-finetuned-conll03-english')
+	tokenizer = AutoTokenizer.from_pretrained('bert-base-cased')
+	ner_pipeline = pipeline('ner', model=model, tokenizer=tokenizer)
+
+	#--------------------
+	if False:
+		"""
+		conversation = Conversation('Going to the movies tonight - any suggestions?')
+
+		# Steps usually performed by the model when generating a response:
+		# 1. Mark the user input as processed (moved to the history)
+		conversation.mark_processed()
+		# 2. Append a mode response
+		conversation.append_response('The Big lebowski.')
+
+		conversation.add_user_input('Is it good?')
+		"""
+
+		conversational_pipeline = pipeline('conversational')
+
+		conversation_1 = Conversation('Going to the movies tonight - any suggestions?')
+		conversation_2 = Conversation("What's the last book you have read?")
+
+		responses = conversational_pipeline([conversation_1, conversation_2])
+		print('Responses:\n{}.'.format(responses))
+
+		conversation_1.add_user_input('Is it an action movie?')
+		conversation_2.add_user_input('What is the genre of this book?')
+
+		responses = conversational_pipeline([conversation_1, conversation_2])
+		print('Responses:\n{}.'.format(responses))
+
+	#--------------------
+	if False:
+		if True:
+			# Use BART in PyTorch.
+			summarizer = pipeline('summarization')
+		else:
+			# Use T5 in TensorFlow.
+			summarizer = pipeline('summarization', model='t5-base', tokenizer='t5-base', framework='tf')
+
+		if False:
+			#summary = summarizer('An apple a day, keeps the doctor away', min_length=5, max_length=20)
+			summary = summarizer('An apple a day, keeps the doctor away', min_length=2, max_length=5)
+		else:
+			prompt = """
+In physics, relativistic mechanics refers to mechanics compatible with special relativity (SR) and general relativity (GR).
+It provides a non-quantum mechanical description of a system of particles, or of a fluid, in cases where the velocities of moving objects are comparable to the speed of light c.
+As a result, classical mechanics is extended correctly to particles traveling at high velocities and energies, and provides a consistent inclusion of electromagnetism with the mechanics of particles.
+This was not possible in Galilean relativity, where it would be permitted for particles and light to travel at any speed, including faster than light.
+The foundations of relativistic mechanics are the postulates of special relativity and general relativity.
+The unification of SR with quantum mechanics is relativistic quantum mechanics, while attempts for that of GR is quantum gravity, an unsolved problem in physics.
+"""
+			summary = summarizer(prompt, min_length=5, max_length=20)
+		print('Summary: {}.'.format(summary))
+
+	#--------------------
+	# REF [site] >> https://huggingface.co/transformers/model_doc/tapas.html
+	if False:
+		import pandas as pd
+
+		data_dict = {
+			'actors': ['brad pitt', 'leonardo di caprio', 'george clooney'],
+			'age': ['56', '45', '59'],
+			'number of movies': ['87', '53', '69'],
+			'date of birth': ['7 february 1967', '10 june 1996', '28 november 1967'],
+		}
+		data_df = pd.DataFrame.from_dict(data_dict)
+
+		if False:
+			# Show the data frame.
+			from IPython.display import display, HTML
+			display(data_df)
+			#print(HTML(data_df.to_html()).data)
+
+		query = 'How old is Brad Pitt?'
+		#query = 'What is the age of Brad Pitt?'
+		#query = 'How much is Brad PItt?'  # Incorrect question.
+
+		table_pipeline = pipeline('table-question-answering')
+		answer = table_pipeline(data_dict, query)
+		#answer = table_pipeline(data_df, query)
+		print('Answer: {}.'.format(answer))
+
+	#--------------------
+	if False:
+		text2text_generator = pipeline('text2text-generation')
+		generated = text2text_generator('question: What is 42 ? context: 42 is the answer to life, the universe and everything')
+		print('Generated text: {}.'.format(generated))
+
+def question_answering_example():
+	from transformers import pipeline
+
+	# Open and read the article.
+	question = 'What is the capital of the Netherlands?'
+	context = r"The four largest cities in the Netherlands are Amsterdam, Rotterdam, The Hague and Utrecht.[17] Amsterdam is the country's most populous city and nominal capital,[18] while The Hague holds the seat of the States General, Cabinet and Supreme Court.[19] The Port of Rotterdam is the busiest seaport in Europe, and the busiest in any country outside East Asia and Southeast Asia, behind only China and Singapore."
+
+	# Generating an answer to the question in context.
+	qa = pipeline(task='question-answering')
+	answer = qa(question=question, context=context)
+
+	# Print the answer.
+	print(f'Question: {question}.')
+	print(f"Answer: '{answer['answer']}' with score {answer['score']}.")
+
+# REF [site] >> https://huggingface.co/krevas/finance-koelectra-small-generator
+def korean_fill_mask_example():
+	from transformers import pipeline
+
+	# REF [site] >> https://huggingface.co/krevas
+	fill_mask = pipeline(
+		'fill-mask',
+		model='krevas/finance-koelectra-small-generator',
+		tokenizer='krevas/finance-koelectra-small-generator'
+	)
+
+	filled = fill_mask(f'내일 해당 종목이 대폭 {fill_mask.tokenizer.mask_token}할 것이다.')
+	print(f'Filled mask: {filled}.')
+
+def korean_table_question_answering_example():
+	from transformers import pipeline
+	from transformers import TapasConfig, TapasForQuestionAnswering, TapasTokenizer
+	import pandas as pd
+	# REF [site] >> https://github.com/monologg/KoBERT-Transformers
+	from tokenization_kobert import KoBertTokenizer
+
+	data_dict = {
+		'배우': ['송광호', '최민식', '설경구'],
+		'나이': ['54', '58', '53'],
+		'출연작품수': ['38', '32', '42'],
+		'생년월일': ['1967/02/25', '1962/05/30', '1967/05/14'],
+	}
+	data_df = pd.DataFrame.from_dict(data_dict)
+
+	if False:
+		# Show the data frame.
+		from IPython.display import display, HTML
+		display(data_df)
+		#print(HTML(data_df.to_html()).data)
+
+	query = '최민식씨의 나이는?'
+
+	# REF [site] >> https://huggingface.co/monologg
+	pretrained_model_name = 'monologg/kobert'
+	#pretrained_model_name = 'monologg/distilkobert'
+
+	if False:
+		# Not working.
+
+		table_pipeline = pipeline(
+			'table-question-answering',
+			model=pretrained_model_name,
+			tokenizer=KoBertTokenizer.from_pretrained(pretrained_model_name)
+		)
+	elif False:
+		# Not working.
+
+		#config = TapasConfig(num_aggregation_labels=3, average_logits_per_cell=True, select_one_column=False)
+		#model = TapasForQuestionAnswering.from_pretrained(pretrained_model_name, config=config)
+		model = TapasForQuestionAnswering.from_pretrained(pretrained_model_name)
+
+		table_pipeline = pipeline(
+			'table-question-answering',
+			model=model,
+			tokenizer=KoBertTokenizer.from_pretrained(pretrained_model_name)
+		)
+	else:
+		# Not correctly working.
+
+		model = TapasForQuestionAnswering.from_pretrained(pretrained_model_name)
+
+		table_pipeline = pipeline(
+			'table-question-answering',
+			model=model,
+			tokenizer=TapasTokenizer.from_pretrained(pretrained_model_name)
+		)
+
+	answer = table_pipeline(data_dict, query)
+	#answer = table_pipeline(data_df, query)
+	print('Answer: {}.'.format(answer))
+
 def gpt2_example():
 	# NOTE [info] >> Refer to example codes in the comment of forward() of each BERT class in https://github.com/huggingface/transformers/blob/master/src/transformers/modeling_gpt2.py
 
@@ -192,39 +412,15 @@ def eleuther_ai_gpt_test():
 	device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 	print(f'Device: {device}.')
 
+	# Text generation.
 	if True:
 		from transformers import pipeline
 
+		# REF [site] >> https://huggingface.co/docs/transformers/model_doc/gpt_neo
 		#pretrained_model_name = 'EleutherAI/gpt-neo-125M'
 		#pretrained_model_name = 'EleutherAI/gpt-neo-1.3B'
 		pretrained_model_name = 'EleutherAI/gpt-neo-2.7B'  # ~9.9GB.
 
-		# Tasks:
-		#	audio-classification: AudioClassificationPipeline.
-		#	automatic-speech-recognition: AutomaticSpeechRecognitionPipeline.
-		#	conversational: ConversationalPipeline.
-		#	depth-estimation: DepthEstimationPipeline.
-		#	document-question-answering: DocumentQuestionAnsweringPipeline.
-		#	feature-extraction: FeatureExtractionPipeline.
-		#	fill-mask: FillMaskPipeline.
-		#	image-classification: ImageClassificationPipeline.
-		#	image-segmentation: ImageSegmentationPipeline.
-		#	image-to-text: ImageToTextPipeline.
-		#	object-detection: ObjectDetectionPipeline.
-		#	question-answering: QuestionAnsweringPipeline.
-		#	summarization: SummarizationPipeline.
-		#	table-question-answering: TableQuestionAnsweringPipeline.
-		#	text2text-generation: Text2TextGenerationPipeline.
-		#	text-classification (alias "sentiment-analysis" available): TextClassificationPipeline.
-		#	text-generation: TextGenerationPipeline.
-		#	token-classification (alias "ner" available): TokenClassificationPipeline.
-		#	translation: TranslationPipeline.
-		#	translation_xx_to_yy: TranslationPipeline.
-		#	video-classification: VideoClassificationPipeline.
-		#	visual-question-answering: VisualQuestionAnsweringPipeline.
-		#	zero-shot-classification: ZeroShotClassificationPipeline.
-		#	zero-shot-image-classification: ZeroShotImageClassificationPipeline.
-		#	zero-shot-object-detection: ZeroShotObjectDetectionPipeline.
 		generator = pipeline(task='text-generation', model=pretrained_model_name, device=device)
 
 		prompt = 'EleutherAI has'
@@ -239,10 +435,13 @@ def eleuther_ai_gpt_test():
 		print(gen_texts[0]['generated_text'])
 
 	#-----
+	# Text generation.
 	if False:
 		from transformers import AutoTokenizer, AutoModelForCausalLM
 
+		# REF [site] >> https://huggingface.co/docs/transformers/model_doc/gptj
 		#pretrained_model_name = 'EleutherAI/gpt-j-6B'  # ~22.5GB. Too big to load.
+		# REF [site] >> https://huggingface.co/docs/transformers/model_doc/gpt_neox
 		pretrained_model_name = 'EleutherAI/gpt-neox-20b'  # ~38.6GB. Too big to load.
 
 		tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name)
@@ -333,7 +532,8 @@ def kakao_brain_gpt_test():
 	#revision = 'KoGPT6B-ryan1.5b'
 	revision = 'KoGPT6B-ryan1.5b-float16'  # ~11.5GB.
 
-	if True:
+	# Text generation.
+	if False:
 		from transformers import AutoTokenizer, AutoModelForCausalLM
 
 		tokenizer = AutoTokenizer.from_pretrained(
@@ -374,40 +574,16 @@ def kakao_brain_gpt_test():
 			print('Generated text:')
 			print(gen_texts[0])
 
+	# Text generation.
 	if False:
 		from transformers import pipeline
 
-		# Tasks:
-		#	audio-classification: AudioClassificationPipeline.
-		#	automatic-speech-recognition: AutomaticSpeechRecognitionPipeline.
-		#	conversational: ConversationalPipeline.
-		#	depth-estimation: DepthEstimationPipeline.
-		#	document-question-answering: DocumentQuestionAnsweringPipeline.
-		#	feature-extraction: FeatureExtractionPipeline.
-		#	fill-mask: FillMaskPipeline.
-		#	image-classification: ImageClassificationPipeline.
-		#	image-segmentation: ImageSegmentationPipeline.
-		#	image-to-text: ImageToTextPipeline.
-		#	object-detection: ObjectDetectionPipeline.
-		#	question-answering: QuestionAnsweringPipeline.
-		#	summarization: SummarizationPipeline.
-		#	table-question-answering: TableQuestionAnsweringPipeline.
-		#	text2text-generation: Text2TextGenerationPipeline.
-		#	text-classification (alias "sentiment-analysis" available): TextClassificationPipeline.
-		#	text-generation: TextGenerationPipeline.
-		#	token-classification (alias "ner" available): TokenClassificationPipeline.
-		#	translation: TranslationPipeline.
-		#	translation_xx_to_yy: TranslationPipeline.
-		#	video-classification: VideoClassificationPipeline.
-		#	visual-question-answering: VisualQuestionAnsweringPipeline.
-		#	zero-shot-classification: ZeroShotClassificationPipeline.
-		#	zero-shot-image-classification: ZeroShotImageClassificationPipeline.
-		#	zero-shot-object-detection: ZeroShotObjectDetectionPipeline.
 		generator = pipeline(task='text-generation', model=pretrained_model_name, revision=revision)
 		#generator = pipeline(task='text-generation', model=pretrained_model_name, revision=revision, device=device)  # torch.cuda.OutOfMemoryError: CUDA out of memory.
 
 		prompt = "인간처럼 생각하고, 행동하는 '지능'을 통해 인류가 이제까지 풀지 못했던"
 		min_new_tokens, max_new_tokens = 50, 500
+
 		print('Generating text...')
 		start_time = time.time()
 		gen_texts = generator(prompt, do_sample=True, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)
@@ -416,6 +592,118 @@ def kakao_brain_gpt_test():
 		assert len(gen_texts) == 1
 		print('Generated text:')
 		print(gen_texts[0]['generated_text'])
+
+	#--------------------
+	# Text summarization.
+	if True:
+		from transformers import AutoTokenizer, AutoModelForCausalLM
+
+		tokenizer = AutoTokenizer.from_pretrained(
+			pretrained_model_name, revision=revision,
+			bos_token='[BOS]', eos_token='[EOS]', unk_token='[UNK]', pad_token='[PAD]', mask_token='[MASK]'
+		)
+		model = AutoModelForCausalLM.from_pretrained(
+			pretrained_model_name, revision=revision,
+			#torch_dtype=torch.float16, low_cpu_mem_usage=True,
+			pad_token_id=tokenizer.eos_token_id, torch_dtype='auto', low_cpu_mem_usage=True
+		)
+		model.to(device=device, non_blocking=True)
+
+		prompt1 = """
+상대성 이론(相對性理論 / Theory of Relativity)은 알베르트 아인슈타인이 주장한 인간, 생물, 행성, 항성, 은하 크기 이상의 거시 세계를 다루는 이론이다.
+양자역학과 함께 우주에 기본적으로 작용하는 법칙을 설명하는 이론이자 현대 물리학에서 우주를 이해하는 데 사용하는 두 개의 가장 근본적인 이론이다.
+시간과 공간을 시공간으로, 물질과 에너지를 통합하는 데에 성공해 빛과 어둠을 인류에게 가져다 주었다.
+E=mc^2 이 바로 특수 상대성 이론에서 제시된 질량-에너지 등가 방정식이다.
+특수상대성이론에 따르면 관성 좌표계(system)에서 물리 법칙은 동일하게 적용되며, 관찰자나 광원의 속도에 관계없이 진공 중에서 진행하는 빛의 속도는 일정하며 빛보다 빠른 건 없다.
+이에 따라 시간과 공간은 속도에 따라 상대적이다.
+또 일반상대성이론에 따르면 가속 좌표계에서 중력과 관성력은 본질적으로 같은 것이고 강한 중력은 시공간을 휘게 하며 정지한 쪽의 시간이 더 길게 간다.
+한 줄 요약:
+"""
+		prompt2 = """
+KoGPT는 방대한 한국어 데이터로 훈련된 인공지능(Artifical Intelligence, AI) 한국어 언어 모델입니다.
+카카오브레인의 GPT-3 기반 언어 모델로써 한국어에 대해 다양한 과제를 수행할 수 있습니다.
+KoGPT API는 KoGPT가 제공하는 기능을 REST API 방식으로 손쉽게 사용할 수 있는 서비스입니다.
+KoGPT API는 사람처럼 맥락을 이해하고 문제를 해결합니다.
+상품 소개글 작성, 감정 분석, 기계 독해, 기계 번역 등 높은 수준의 언어 과제를 해결할 수 있어 다양한 분야에서 활용 가능합니다.
+한 줄 요약:
+"""
+		prompt3 = """
+과학기술정보통신부와 한국항공우주연구원은 지난 27일 저녁 6시에 다누리의 달 궤도 진입 최종 성공을 확인했다고 28일 밝혔다.
+다누리가 달 궤도 진입에 최종 성공함에 따라 우리나라는 달 궤도선을 개발해 달까지 도달할 수 있는 진정한 우주탐사 역량을 확보했다.
+또 앞으로 달 착륙선 등 후속 우주탐사를 추진할 수 있는 기반을 마련한 것이다.
+""
+		tokens = tokenizer.encode(prompt3, return_tensors='pt')
+		tokens = tokens.to(device=device, non_blocking=True)
+
+		model.eval()
+		with torch.no_grad():
+			min_length, max_length = 5, 20
+
+			print('Summarizing text...')
+			start_time = time.time()
+			summary = model(tokens)  # Failed to summarize.
+			print(f'Text summarized: {time.time() - start_time} secs.')
+
+			#print(f'Loss: {summary.loss}.')  # None.
+			print(f'Logits: shape = {summary.logits.shape}, dtype = {summary.logits.dtype}.')
+			summary = summary.logits.cpu().argmax(axis=-1)
+			summary = tokenizer.batch_decode(summary)  # FIXME [check] >>
+			assert len(summary) == 1
+			print('Summary:')
+			print(summary[0])
+
+	# Text summarization.
+	if False:
+		from transformers import pipeline
+
+		if True:
+			summarizer = pipeline(task='summarization', model=pretrained_model_name, revision=revision)
+			#summarizer = pipeline(task='summarization', model=pretrained_model_name, revision=revision, device=device)  # torch.cuda.OutOfMemoryError: CUDA out of memory.
+		else:
+			from transformers import AutoTokenizer, AutoModelForCausalLM
+
+			tokenizer = AutoTokenizer.from_pretrained(
+				pretrained_model_name, revision=revision,
+				bos_token='[BOS]', eos_token='[EOS]', unk_token='[UNK]', pad_token='[PAD]', mask_token='[MASK]'
+			)
+			model = AutoModelForCausalLM.from_pretrained(
+				pretrained_model_name, revision=revision,
+				pad_token_id=tokenizer.eos_token_id, torch_dtype='auto', low_cpu_mem_usage=True
+			)
+			summarizer = pipeline('summarization', model=model, tokenizer=tokenizer)
+			#summarizer = pipeline('summarization', model=model, tokenizer=tokenizer, device=device)  # torch.cuda.OutOfMemoryError: CUDA out of memory.
+
+		prompt1 = """
+상대성 이론(相對性理論 / Theory of Relativity)은 알베르트 아인슈타인이 주장한 인간, 생물, 행성, 항성, 은하 크기 이상의 거시 세계를 다루는 이론이다.
+양자역학과 함께 우주에 기본적으로 작용하는 법칙을 설명하는 이론이자 현대 물리학에서 우주를 이해하는 데 사용하는 두 개의 가장 근본적인 이론이다.
+시간과 공간을 시공간으로, 물질과 에너지를 통합하는 데에 성공해 빛과 어둠을 인류에게 가져다 주었다.
+E=mc^2 이 바로 특수 상대성 이론에서 제시된 질량-에너지 등가 방정식이다.
+특수상대성이론에 따르면 관성 좌표계(system)에서 물리 법칙은 동일하게 적용되며, 관찰자나 광원의 속도에 관계없이 진공 중에서 진행하는 빛의 속도는 일정하며 빛보다 빠른 건 없다.
+이에 따라 시간과 공간은 속도에 따라 상대적이다.
+또 일반상대성이론에 따르면 가속 좌표계에서 중력과 관성력은 본질적으로 같은 것이고 강한 중력은 시공간을 휘게 하며 정지한 쪽의 시간이 더 길게 간다.
+"""
+		prompt2 = """
+KoGPT는 방대한 한국어 데이터로 훈련된 인공지능(Artifical Intelligence, AI) 한국어 언어 모델입니다.
+카카오브레인의 GPT-3 기반 언어 모델로써 한국어에 대해 다양한 과제를 수행할 수 있습니다.
+KoGPT API는 KoGPT가 제공하는 기능을 REST API 방식으로 손쉽게 사용할 수 있는 서비스입니다.
+KoGPT API는 사람처럼 맥락을 이해하고 문제를 해결합니다.
+상품 소개글 작성, 감정 분석, 기계 독해, 기계 번역 등 높은 수준의 언어 과제를 해결할 수 있어 다양한 분야에서 활용 가능합니다.
+"""
+		prompt3 = """
+과학기술정보통신부와 한국항공우주연구원은 지난 27일 저녁 6시에 다누리의 달 궤도 진입 최종 성공을 확인했다고 28일 밝혔다.
+다누리가 달 궤도 진입에 최종 성공함에 따라 우리나라는 달 궤도선을 개발해 달까지 도달할 수 있는 진정한 우주탐사 역량을 확보했다.
+또 앞으로 달 착륙선 등 후속 우주탐사를 추진할 수 있는 기반을 마련한 것이다.
+"""
+		min_length, max_length = 5, 20
+
+		print('Summarizing text...')
+		start_time = time.time()
+		summary = summarizer(prompt3, min_length=min_length, max_length=max_length)  # Failed to summarize.
+		print(f'Text summarized: {time.time() - start_time} secs.')
+
+		assert len(summary) == 1
+		print('Summary:')
+		print(summary[0]['summary_text'])
 
 def bert_example():
 	# NOTE [info] >> Refer to example codes in the comment of forward() of each BERT class in https://github.com/huggingface/transformers/blob/master/src/transformers/modeling_bert.py
@@ -749,6 +1037,105 @@ def skt_bert_test():
 	# Last encoding layer.
 	print(sequence_output[0])
 
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/t5
+def t5_example():
+	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+	print(f'Device: {device}.')
+
+	# Translation.
+	if False:
+		from transformers import T5Tokenizer, T5ForConditionalGeneration
+
+		tokenizer = T5Tokenizer.from_pretrained('t5-small')
+		model = T5ForConditionalGeneration.from_pretrained('t5-small')
+		model.to(device=device, non_blocking=True)
+
+		input_ids = tokenizer('translate English to German: The house is wonderful.', return_tensors='pt').input_ids
+		input_ids = input_ids.to(device=device, non_blocking=True)
+
+		model.eval()
+		with torch.no_grad():
+			print('Translating...')
+			start_time = time.time()
+			outputs = model.generate(input_ids)
+			print(f'Translated: {time.time() - start_time} secs.')
+
+		print('Translated:')
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))  # Output: "Das Haus ist wunderbar.".
+
+	if False:
+		from transformers import T5Tokenizer, T5ForConditionalGeneration
+
+		tokenizer = T5Tokenizer.from_pretrained('t5-small')
+		model = T5ForConditionalGeneration.from_pretrained('t5-small')
+		model.to(device=device, non_blocking=True)
+
+		# When generating, we will use the logits of right-most token to predict the next token so the padding should be on the left.
+		tokenizer.padding_side = 'left'
+		tokenizer.pad_token = tokenizer.eos_token  # To avoid an error.
+
+		task_prefix = 'translate English to German: '
+		sentences = ['The house is wonderful.', 'I like to work in NYC.']  # Use different length sentences to test batching.
+		inputs = tokenizer([task_prefix + sentence for sentence in sentences], return_tensors='pt', padding=True)
+		inputs = inputs.to(device=device)
+
+		model.eval()
+		with torch.no_grad():
+			print('Translating...')
+			start_time = time.time()
+			output_sequences = model.generate(
+				input_ids=inputs['input_ids'],
+				attention_mask=inputs['attention_mask'],
+				do_sample=False,  # Disable sampling to test if batching affects output.
+			)
+			print(f'Translated: {time.time() - start_time} secs.')
+
+		print('Translated:')
+		print(tokenizer.batch_decode(output_sequences, skip_special_tokens=True))  # Output: ['Das Haus ist wunderbar.', 'Ich arbeite gerne in NYC.'].
+
+	#--------------------
+	# Text summarization.
+	if True:
+		from transformers import AutoTokenizer, T5ForConditionalGeneration
+
+		tokenizer = AutoTokenizer.from_pretrained('t5-small')
+		model = T5ForConditionalGeneration.from_pretrained('t5-small')
+		model.to(device=device, non_blocking=True)
+
+		# Training.
+		if False:
+			input_ids = tokenizer('The <extra_id_0> walks in <extra_id_1> park', return_tensors='pt').input_ids
+			labels = tokenizer('<extra_id_0> cute dog <extra_id_1> the <extra_id_2>', return_tensors='pt').input_ids
+			outputs = model(input_ids=input_ids, labels=labels)
+			loss = outputs.loss
+			logits = outputs.logits
+
+		# Inference.
+		prompt1 = 'summarize: studies have shown that owning a dog is good for you'
+		prompt2 = 'summarize: State authorities dispatched emergency crews Tuesday to survey the damage after an onslaught of severe weather in Mississippi that injured at least 17 people, damaged property and cut power.'
+		prompt3 = """summarize:
+In physics, relativistic mechanics refers to mechanics compatible with special relativity (SR) and general relativity (GR).
+It provides a non-quantum mechanical description of a system of particles, or of a fluid, in cases where the velocities of moving objects are comparable to the speed of light c.
+As a result, classical mechanics is extended correctly to particles traveling at high velocities and energies, and provides a consistent inclusion of electromagnetism with the mechanics of particles.
+This was not possible in Galilean relativity, where it would be permitted for particles and light to travel at any speed, including faster than light.
+The foundations of relativistic mechanics are the postulates of special relativity and general relativity.
+The unification of SR with quantum mechanics is relativistic quantum mechanics, while attempts for that of GR is quantum gravity, an unsolved problem in physics.
+"""
+
+		input_ids = tokenizer(prompt2, return_tensors='pt').input_ids  # Batch size 1.
+		input_ids = input_ids.to(device=device, non_blocking=True)
+
+		model.eval()
+		with torch.no_grad():
+			print('Summarizing text...')
+			start_time = time.time()
+			outputs = model.generate(input_ids, min_length=5, max_length=20)  # Failed to summarize.
+			print(f'Text summarized: {time.time() - start_time} secs.')
+
+		assert len(outputs) == 1
+		print('Summary:')
+		print(tokenizer.decode(outputs[0], skip_special_tokens=True))  # Output: "studies have shown that owning a dog is good for you.".
+
 # REF [site] >> https://huggingface.co/transformers/model_doc/encoderdecoder.html
 def encoder_decoder_example():
 	from transformers import EncoderDecoderConfig, EncoderDecoderModel
@@ -816,189 +1203,6 @@ def encoder_decoder_example():
 	generated = model.generate(input_ids, decoder_start_token_id=model.config.decoder.pad_token_id)
 	#generated = model.generate(input_ids, max_length=50, num_beams=5, no_repeat_ngram_size=2, num_return_sequences=5, do_sample=True, top_k=0, temperature=0.7, early_stopping=True, decoder_start_token_id=model.config.decoder.pad_token_id)
 	print('Generated = {}.'.format(tokenizer.decode(generated[0], skip_special_tokens=True)))
-
-# REF [site] >> https://huggingface.co/transformers/main_classes/pipelines.html
-def pipeline_example():
-	from transformers import pipeline, AutoModelForTokenClassification, AutoTokenizer
-
-	# Tasks: 'feature-extraction', 'text-classification', 'sentiment-analysis', 'token-classification', 'ner', 'question-answering', 'fill-mask', 'summarization', 'translation_xx_to_yy', 'text2text-generation', 'text-generation', 'zero-shot-classification', 'conversational', 'table-question-answering'.
-
-	# Sentiment analysis pipeline.
-	sa_pipeline = pipeline('sentiment-analysis')
-
-	# Question answering pipeline, specifying the checkpoint identifier.
-	qa_pipeline = pipeline('question-answering', model='distilbert-base-cased-distilled-squad', tokenizer='bert-base-cased')
-
-	# Named entity recognition pipeline, passing in a specific model and tokenizer.
-	# REF [site] >> https://huggingface.co/dbmdz
-	model = AutoModelForTokenClassification.from_pretrained('dbmdz/bert-large-cased-finetuned-conll03-english')
-	tokenizer = AutoTokenizer.from_pretrained('bert-base-cased')
-	ner_pipeline = pipeline('ner', model=model, tokenizer=tokenizer)
-
-	#--------------------
-	if False:
-		"""
-		conversation = Conversation('Going to the movies tonight - any suggestions?')
-
-		# Steps usually performed by the model when generating a response:
-		# 1. Mark the user input as processed (moved to the history)
-		conversation.mark_processed()
-		# 2. Append a mode response
-		conversation.append_response('The Big lebowski.')
-
-		conversation.add_user_input('Is it good?')
-		"""
-
-		conversational_pipeline = pipeline('conversational')
-
-		conversation_1 = Conversation('Going to the movies tonight - any suggestions?')
-		conversation_2 = Conversation("What's the last book you have read?")
-
-		responses = conversational_pipeline([conversation_1, conversation_2])
-		print('Responses:\n{}.'.format(responses))
-
-		conversation_1.add_user_input('Is it an action movie?')
-		conversation_2.add_user_input('What is the genre of this book?')
-
-		responses = conversational_pipeline([conversation_1, conversation_2])
-		print('Responses:\n{}.'.format(responses))
-
-	#--------------------
-	if False:
-		if True:
-			# Use BART in PyTorch.
-			summarizer = pipeline('summarization')
-		else:
-			# Use T5 in TensorFlow.
-			summarizer = pipeline('summarization', model='t5-base', tokenizer='t5-base', framework='tf')
-
-		summary = summarizer('An apple a day, keeps the doctor away', min_length=5, max_length=20)
-		print('Summary: {}.'.format(summary))
-
-	#--------------------
-	# REF [site] >> https://huggingface.co/transformers/model_doc/tapas.html
-	if False:
-		import pandas as pd
-
-		data_dict = {
-			'actors': ['brad pitt', 'leonardo di caprio', 'george clooney'],
-			'age': ['56', '45', '59'],
-			'number of movies': ['87', '53', '69'],
-			'date of birth': ['7 february 1967', '10 june 1996', '28 november 1967'],
-		}
-		data_df = pd.DataFrame.from_dict(data_dict)
-
-		if False:
-			# Show the data frame.
-			from IPython.display import display, HTML
-			display(data_df)
-			#print(HTML(data_df.to_html()).data)
-
-		query = 'How old is Brad Pitt?'
-		#query = 'What is the age of Brad Pitt?'
-		#query = 'How much is Brad PItt?'  # Incorrect question.
-
-		table_pipeline = pipeline('table-question-answering')
-		answer = table_pipeline(data_dict, query)
-		#answer = table_pipeline(data_df, query)
-		print('Answer: {}.'.format(answer))
-
-	#--------------------
-	if False:
-		text2text_generator = pipeline('text2text-generation')
-		generated = text2text_generator('question: What is 42 ? context: 42 is the answer to life, the universe and everything')
-		print('Generated text: {}.'.format(generated))
-
-def question_answering_example():
-	from transformers import pipeline
-
-	# Open and read the article.
-	question = 'What is the capital of the Netherlands?'
-	context = r"The four largest cities in the Netherlands are Amsterdam, Rotterdam, The Hague and Utrecht.[17] Amsterdam is the country's most populous city and nominal capital,[18] while The Hague holds the seat of the States General, Cabinet and Supreme Court.[19] The Port of Rotterdam is the busiest seaport in Europe, and the busiest in any country outside East Asia and Southeast Asia, behind only China and Singapore."
-
-	# Generating an answer to the question in context.
-	qa = pipeline(task='question-answering')
-	answer = qa(question=question, context=context)
-
-	# Print the answer.
-	print(f'Question: {question}.')
-	print(f"Answer: '{answer['answer']}' with score {answer['score']}.")
-
-# REF [site] >> https://huggingface.co/krevas/finance-koelectra-small-generator
-def korean_fill_mask_example():
-	from transformers import pipeline
-
-	# REF [site] >> https://huggingface.co/krevas
-	fill_mask = pipeline(
-		'fill-mask',
-		model='krevas/finance-koelectra-small-generator',
-		tokenizer='krevas/finance-koelectra-small-generator'
-	)
-
-	filled = fill_mask(f'내일 해당 종목이 대폭 {fill_mask.tokenizer.mask_token}할 것이다.')
-	print(f'Filled mask: {filled}.')
-
-def korean_table_question_answering_example():
-	from transformers import pipeline
-	from transformers import TapasConfig, TapasForQuestionAnswering, TapasTokenizer
-	import pandas as pd
-	# REF [site] >> https://github.com/monologg/KoBERT-Transformers
-	from tokenization_kobert import KoBertTokenizer
-
-	data_dict = {
-		'배우': ['송광호', '최민식', '설경구'],
-		'나이': ['54', '58', '53'],
-		'출연작품수': ['38', '32', '42'],
-		'생년월일': ['1967/02/25', '1962/05/30', '1967/05/14'],
-	}
-	data_df = pd.DataFrame.from_dict(data_dict)
-
-	if False:
-		# Show the data frame.
-		from IPython.display import display, HTML
-		display(data_df)
-		#print(HTML(data_df.to_html()).data)
-
-	query = '최민식씨의 나이는?'
-
-	# REF [site] >> https://huggingface.co/monologg
-	pretrained_model_name = 'monologg/kobert'
-	#pretrained_model_name = 'monologg/distilkobert'
-
-	if False:
-		# Not working.
-
-		table_pipeline = pipeline(
-			'table-question-answering',
-			model=pretrained_model_name,
-			tokenizer=KoBertTokenizer.from_pretrained(pretrained_model_name)
-		)
-	elif False:
-		# Not working.
-
-		#config = TapasConfig(num_aggregation_labels=3, average_logits_per_cell=True, select_one_column=False)
-		#model = TapasForQuestionAnswering.from_pretrained(pretrained_model_name, config=config)
-		model = TapasForQuestionAnswering.from_pretrained(pretrained_model_name)
-
-		table_pipeline = pipeline(
-			'table-question-answering',
-			model=model,
-			tokenizer=KoBertTokenizer.from_pretrained(pretrained_model_name)
-		)
-	else:
-		# Not correctly working.
-
-		model = TapasForQuestionAnswering.from_pretrained(pretrained_model_name)
-
-		table_pipeline = pipeline(
-			'table-question-answering',
-			model=model,
-			tokenizer=TapasTokenizer.from_pretrained(pretrained_model_name)
-		)
-
-	answer = table_pipeline(data_dict, query)
-	#answer = table_pipeline(data_df, query)
-	print('Answer: {}.'.format(answer))
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/vit
 def vit_example():
@@ -1785,7 +1989,19 @@ def donut_invoice_test():
 	print(prediction)
 
 def main():
+	# REF [site] >> https://huggingface.co/docs/transformers/index
+
 	#quick_tour()
+
+	#--------------------
+	# Pipeline.
+
+	#pipeline_example()
+
+	#question_answering_example()
+
+	#korean_fill_mask_example()
+	#korean_table_question_answering_example()
 
 	#--------------------
 	# GPT.
@@ -1794,9 +2010,9 @@ def main():
 	#sentence_completion_model_using_gpt2_example()
 	#conditional_text_generation_using_gpt2_example()  # Not yet implemented.
 
-	eleuther_ai_gpt_test()  # gpt-neox, gpt-neo, & gpt-j.
+	#eleuther_ai_gpt_test()  # gpt-neox, gpt-neo, & gpt-j.
 	#skt_gpt_test()  # KoGPT2.
-	#kakao_brain_gpt_test()  # KoGPT.
+	kakao_brain_gpt_test()  # KoGPT.
 
 	#--------------------
 	# BERT.
@@ -1810,16 +2026,15 @@ def main():
 	#skt_bert_test()  # KoBERT. Not yet tested.
 
 	#--------------------
-	#encoder_decoder_example()
+	# T5.
+	#	T5 is an encoder-decoder model pre-trained on a multi-task mixture of unsupervised and supervised tasks and for which each task is converted into a text-to-text format.
+	#	T5 works well on a variety of tasks out-of-the-box by prepending a different prefix to the input corresponding to each task, e.g., for translation: translate English to German: ..., for summarization: summarize: ....
+	#	t5-small, t5-base, t5-large, t5-3b, t5-11b.
+
+	#t5_example()
 
 	#--------------------
-	# Pipeline.
-
-	#pipeline_example()
-
-	#question_answering_example()
-	#korean_fill_mask_example()
-	#korean_table_question_answering_example()  # Not correctly working.
+	#encoder_decoder_example()
 
 	#--------------------
 	# Vision.
