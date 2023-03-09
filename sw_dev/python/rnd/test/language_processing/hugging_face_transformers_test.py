@@ -631,7 +631,7 @@ KoGPT API는 사람처럼 맥락을 이해하고 문제를 해결합니다.
 과학기술정보통신부와 한국항공우주연구원은 지난 27일 저녁 6시에 다누리의 달 궤도 진입 최종 성공을 확인했다고 28일 밝혔다.
 다누리가 달 궤도 진입에 최종 성공함에 따라 우리나라는 달 궤도선을 개발해 달까지 도달할 수 있는 진정한 우주탐사 역량을 확보했다.
 또 앞으로 달 착륙선 등 후속 우주탐사를 추진할 수 있는 기반을 마련한 것이다.
-""
+"""
 		tokens = tokenizer.encode(prompt3, return_tensors='pt')
 		tokens = tokens.to(device=device, non_blocking=True)
 
@@ -1037,6 +1037,52 @@ def skt_bert_test():
 	# Last encoding layer.
 	print(sequence_output[0])
 
+# REF [site] >> https://huggingface.co/klue/bert-base
+def klue_bert_test():
+	from transformers import AutoModel, AutoTokenizer
+
+	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+	print(f'Device: {device}.')
+
+	tokenizer = AutoTokenizer.from_pretrained('klue/bert-base')  # ~430MB.
+	model = AutoModel.from_pretrained('klue/bert-base')
+
+	if True:
+		generator = pipeline(task='text-generation', model=model, tokenizer=tokenizer)
+		#generator = pipeline(task='text-generation', model=model, tokenizer=tokenizer, device=device)
+
+		prompt = "인간처럼 생각하고, 행동하는 '지능'을 통해 인류가 이제까지 풀지 못했던"
+		min_new_tokens, max_new_tokens = 50, 500
+
+		print('Generating text...')
+		start_time = time.time()
+		gen_texts = generator(prompt, do_sample=True, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)
+		print(f'Text generated: {time.time() - start_time} secs.')
+
+		assert len(gen_texts) == 1
+		print('Generated text:')
+		print(gen_texts[0]['generated_text'])
+	else:
+		model.to(device=device, non_blocking=True)
+
+		prompt = "인간처럼 생각하고, 행동하는 '지능'을 통해 인류가 이제까지 풀지 못했던"
+		tokens = tokenizer.encode(prompt, return_tensors='pt')
+		tokens = tokens.to(device=device, non_blocking=True)
+
+		model.eval()
+		with torch.no_grad():
+			min_new_tokens, max_new_tokens = 50, 500
+
+			print('Generating text...')
+			start_time = time.time()
+			gen_tokens = model.generate(tokens, do_sample=True, max_new_tokens=max_new_tokens, min_new_tokens=min_new_tokens)  # Sampling.
+			print(f'Text generated: {time.time() - start_time} secs.')
+
+			gen_texts = tokenizer.batch_decode(gen_tokens)
+			assert len(gen_texts) == 1
+			print('Generated text:')
+			print(gen_texts[0])
+
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/t5
 def t5_example():
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -1047,7 +1093,7 @@ def t5_example():
 		from transformers import T5Tokenizer, T5ForConditionalGeneration
 
 		tokenizer = T5Tokenizer.from_pretrained('t5-small')
-		model = T5ForConditionalGeneration.from_pretrained('t5-small')
+		model = T5ForConditionalGeneration.from_pretrained('t5-small')  # ~230MB.
 		model.to(device=device, non_blocking=True)
 
 		input_ids = tokenizer('translate English to German: The house is wonderful.', return_tensors='pt').input_ids
@@ -1067,7 +1113,7 @@ def t5_example():
 		from transformers import T5Tokenizer, T5ForConditionalGeneration
 
 		tokenizer = T5Tokenizer.from_pretrained('t5-small')
-		model = T5ForConditionalGeneration.from_pretrained('t5-small')
+		model = T5ForConditionalGeneration.from_pretrained('t5-small')  # ~230MB.
 		model.to(device=device, non_blocking=True)
 
 		# When generating, we will use the logits of right-most token to predict the next token so the padding should be on the left.
@@ -1099,7 +1145,7 @@ def t5_example():
 		from transformers import AutoTokenizer, T5ForConditionalGeneration
 
 		tokenizer = AutoTokenizer.from_pretrained('t5-small')
-		model = T5ForConditionalGeneration.from_pretrained('t5-small')
+		model = T5ForConditionalGeneration.from_pretrained('t5-small')  # ~230MB.
 		model.to(device=device, non_blocking=True)
 
 		# Training.
@@ -2001,7 +2047,7 @@ def main():
 	#question_answering_example()
 
 	#korean_fill_mask_example()
-	#korean_table_question_answering_example()
+	#korean_table_question_answering_example()  # Not correctly working.
 
 	#--------------------
 	# GPT.
@@ -2024,6 +2070,7 @@ def main():
 
 	#korean_bert_example()  # BERT multilingual & KoBERT.
 	#skt_bert_test()  # KoBERT. Not yet tested.
+	#klue_bert_test()  # Not yet completed.
 
 	#--------------------
 	# T5.
