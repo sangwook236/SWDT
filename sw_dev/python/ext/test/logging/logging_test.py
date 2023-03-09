@@ -238,6 +238,10 @@ def main():
 		os.mkdir(log_dir_path)
 
 	#--------------------
+	#logging.basicConfig(level=logging.WARN)
+	#logger = logging.getLogger(__name__)
+
+	#--------------------
 	if False:
 		# Define a logger.
 		log_filename = os.path.basename(os.path.normpath(__file__))

@@ -1,0 +1,207 @@
+[-] General.
+	- Site.
+		https://mlflow.org/
+		https://github.com/mlflow/mlflow/
+
+	- Document.
+		https://mlflow.org/docs/latest/index.html
+
+[-] Usage.
+	- MLflow CLI.
+		https://mlflow.org/docs/latest/cli.html
+
+		mlflow
+			artifacts    Upload, list, and download artifacts from an MLflow.
+			db           Commands for managing an MLflow tracking database.
+			deployments  Deploy MLflow models to custom targets.
+			doctor       Prints out useful information for debugging issues with MLflow.
+			experiments  Manage experiments.
+			gc           Permanently delete runs in the 'deleted' lifecycle stage.
+			models       Deploy MLflow models locally.
+			recipes      Run MLflow Recipes and inspect recipe results.
+			run          Run an MLflow project from the given URI.
+			runs         Manage runs.
+			sagemaker    Serve models on SageMaker.
+			server       Run the MLflow tracking server.
+
+	- MLflow Tracking.
+		https://mlflow.org/docs/latest/tracking.html
+
+	 	Tracking UI:
+			https://mlflow.org/docs/latest/tracking.html#tracking-ui
+
+			The Tracking UI lets you visualize, search and compare runs, as well as download run artifacts or metadata for analysis in other tools.
+			If you log runs to a local mlruns directory, run mlflow ui in the directory above it, and it loads the corresponding runs.
+			Alternatively, the 'MLflow tracking server' serves the same UI and enables remote storage of run artifacts.
+			In that case, you can view the UI using URL http://<ip address of your MLflow tracking server>:5000 in your browser from any machine, including any remote machine that can connect to your tracking server.
+			The UI contains the following key features:
+				Experiment-based run listing and comparison (including run comparison across multiple experiments).
+				Searching for runs by parameter or metric value.
+				Visualizing run metrics.
+				Downloading run results.
+
+			mlflow ui
+			mlflow ui -p 1234
+
+			View it at http://localhost:5000.
+
+		Tracking server:
+			https://mlflow.org/docs/latest/tracking.html#mlflow-tracking-servers
+
+			MLflow on localhost.
+			MLflow on localhost with SQLite.
+			MLflow on localhost with Tracking Server.
+				mlflow server --backend-store-uri file:///path/to/mlruns --no-serve-artifacts
+			MLflow with remote Tracking Server, backend and artifact stores.
+				mlflow server --backend-store-uri postgresql://user:password@postgres:5432/mlflowdb --default-artifact-root s3://bucket_name --host 0.0.0.0 --no-serve-artifacts
+			MLflow Tracking Server enabled with proxied artifact storage access.
+				mlflow server --backend-store-uri postgresql://user:password@postgres:5432/mlflowdb --artifacts-destination s3://bucket_name --host 0.0.0.0
+					Artifact access is enabled through the proxy URI 'mlflow-artifacts:/', giving users access to this location without having to manage credentials or permissions.
+			MLflow Tracking Server used exclusively as proxied access host for artifact storage access.
+				mlflow server --artifacts-destination s3://bucket_name --artifacts-only --host remote_host
+
+[-] Quickstart.
+	https://mlflow.org/docs/latest/quickstart.html
+
+	- View the Tracking UI.
+		By default, wherever you run your program, the tracking API writes data into files into a local './mlruns' directory.
+
+		Run MLflow's Tracking UI:
+			mlflow ui
+			mlflow ui -p 1234
+		View it at http://localhost:5000.
+
+	- Run MLflow projects.
+		MLflow allows you to package code and its dependencies as 'a project' that can be run in a reproducible fashion on other data.
+		Each project includes its code and a 'MLproject' file that defines its dependencies (for example, Python environment) as well as what commands can be run into the project and what arguments they take.
+
+		You can easily run existing projects with the mlflow run command, which runs a project from either a local directory or a GitHub URI:
+			mlflow run sklearn_elasticnet_wine -P alpha=0.5
+			mlflow run https://github.com/mlflow/mlflow-example.git -P alpha=5.0
+
+		If you haven't configured 'a tracking server', projects log their Tracking API data in the local 'mlruns' directory so you can see these runs using 'mlflow ui'.
+
+	- Save and serve models.
+		MLflow includes a generic 'MLmodel' format for saving models from a variety of tools in diverse flavors.
+		For example, many models can be served as Python functions, so an MLmodel file can declare how each model should be interpreted as a Python function in order to let various tools serve it.
+		MLflow also includes tools for running such models locally and exporting them to Docker containers or commercial serving platforms.
+
+		To illustrate this functionality, the mlflow.sklearn package can log scikit-learn models as MLflow artifacts and then load them again for serving.
+		There is an example training application in sklearn_logistic_regression/train.py that you can run as follows:
+			https://github.com/mlflow/mlflow/tree/master/examples/sklearn_logistic_regression
+
+			python sklearn_logistic_regression/train.py
+
+		If you look at 'mlflow ui', you will also see that the run saved a model folder containing an MLmodel description file and a pickled scikit-learn model.
+		You can pass the run ID and the path of the model within the artifacts directory (here "model") to various tools.
+		For example, MLflow includes a simple REST server for python-based models:
+			mlflow models serve -m runs:/<RUN_ID>/model
+			mlflow models serve -m runs:/<RUN_ID>/model --port 1234
+
+		Once you have started the server, you can pass it some sample data and see the predictions.
+		The following example uses curl to send a JSON-serialized pandas DataFrame with the split orientation to the model server.
+			https://mlflow.org/docs/latest/models.html#local-model-deployment
+
+			curl -d '{"dataframe_split": {"columns": ["x"], "data": [[1], [-1]]}}' -H 'Content-Type: application/json' -X POST localhost:5000/invocations
+
+			https://mlflow.org/docs/latest/models.html
+
+	- Log to a remote tracking server.
+		Launch a Tracking Server on a remote machine:
+			Launch a tracking server on a remote machine:
+				https://mlflow.org/docs/latest/tracking.html#tracking-server
+
+			You can then log to the remote tracking server by setting the MLFLOW_TRACKING_URI environment variable to your server's URI, or by adding the following to the start of your program:
+				mlflow.set_tracking_uri("http://YOUR-SERVER:4040")
+				mlflow.set_experiment("my-experiment")
+
+	- Log to Databricks community edition.
+		To log to the Community Edition server, set the MLFLOW_TRACKING_URI environment variable to "databricks", or add the following to the start of your program:
+			mlflow.set_tracking_uri("databricks")
+			mlflow.set_experiment("/my-experiment")
+
+[-] Tutorial.
+	https://mlflow.org/docs/latest/tutorials-and-examples/index.html
+
+	- Train, serve, and score a linear regression model.
+		https://mlflow.org/docs/latest/tutorials-and-examples/tutorial.html
+		https://github.com/mlflow/mlflow/tree/master/examples/sklearn_elasticnet_wine
+
+		Training the model:
+			Run the example with default hyperparameters:
+				cd ${mlflow_HOME}/examples/sklearn_elasticnet_wine
+				python sklearn_elasticnet_wine/train.py
+				python sklearn_elasticnet_wine/train.py <alpha> <l1_ratio>
+
+		Comparing the models:
+			Use the MLflow UI to compare the models that you have produced:
+				mlflow ui
+			View it at http://localhost:5000.
+
+		Package training code in a Conda environment:
+			Now that you have your training code, you can package it so that other data scientists can easily reuse the model, or so that you can run the training remotely, for example on Databricks.
+
+			You do this by using MLflow Projects conventions to specify the dependencies and entry points to your code.
+			The sklearn_elasticnet_wine/MLproject file specifies that the project has the dependencies located in a Conda environment file called conda.yaml and has one entry point that takes two parameters: alpha and l1_ratio.
+
+			Run this project:
+				mlflow run sklearn_elasticnet_wine -P alpha=0.42
+			If the repository has an MLproject file in the root you can also run a project directly from GitHub:
+				mlflow run https://github.com/mlflow/mlflow-example.git -P alpha=5.0
+
+		Specify pip requirements using pip_requirements and extra_pip_requirements:
+
+		Serve the model:
+			An MLflow Model is a standard format for packaging machine learning models that can be used in a variety of downstream tools - for example, real-time serving through a REST API or batch inference on Apache Spark.
+
+			In the example training code, after training the linear regression model, a function in MLflow saved the model as an artifact within the run:
+				mlflow.sklearn.log_model(lr, "model")
+
+			To deploy the server, run (replace the path with your model's actual path):
+				In this example, you can use this MLmodel format with MLflow to deploy a local REST server that can serve predictions.
+
+				mlflow models serve -m /Users/mlflow/mlflow-prototype/mlruns/0/7c1a0d5c42844dcdb8f5191146925174/artifacts/model -p 1234
+
+			Once you have deployed the server, you can pass it some sample data and see the predictions.
+			The following example uses curl to send a JSON-serialized pandas DataFrame with the split orientation to the model server.
+			https://mlflow.org/docs/latest/models.html#local-model-deployment
+				On Linux and macOS:
+					curl -X POST -H "Content-Type:application/json" --data '{"dataframe_split": {"columns":["fixed acidity", "volatile acidity", "citric acid", "residual sugar", "chlorides", "free sulfur dioxide", "total sulfur dioxide", "density", "pH", "sulphates", "alcohol"],"data":[[6.2, 0.66, 0.48, 1.2, 0.029, 29, 75, 0.98, 3.33, 0.39, 12.8]]}}' http://127.0.0.1:1234/invocations
+				On Windows:
+					curl -X POST -H "Content-Type:application/json" --data "{\"dataframe_split\": {\"columns\":[\"fixed acidity\", \"volatile acidity\", \"citric acid\", \"residual sugar\", \"chlorides\", \"free sulfur dioxide\", \"total sulfur dioxide\", \"density\", \"pH\", \"sulphates\", \"alcohol\"],\"data\":[[6.2, 0.66, 0.48, 1.2, 0.029, 29, 75, 0.98, 3.33, 0.39, 12.8]]}}" http://127.0.0.1:1234/invocations
+
+		Deploy the model to Seldon Core or KServe:
+			After training and testing our model, we are now ready to deploy it to production.
+			MLflow allows you to serve your model using MLServer, which is already used as the core Python inference server in Kubernetes-native frameworks including Seldon Core and KServe (formerly known as KFServing).
+			Therefore, we can leverage this support to build a Docker image compatible with these frameworks.
+			https://mlflow.org/docs/latest/models.html#serving-with-mlserver
+
+			To build a Docker image containing our model, we can use the mlflow models build-docker subcommand, alongside the --enable-mlserver flag.
+				mlflow models build-docker \
+					-m /Users/mlflow/mlflow-prototype/mlruns/0/7c1a0d5c42844dcdb8f5191146925174/artifacts/model \
+					-n my-docker-image \
+					--enable-mlserver
+
+			Once we have our image built, the next step will be to deploy it to our cluster.
+			One way to do this is by applying the respective Kubernetes manifests through the kubectl CLI:
+				kubectl apply -f my-manifest.yaml
+
+	- Hyperparameter tuning.
+		https://github.com/mlflow/mlflow/tree/master/examples/hyperparam
+
+	- Orchestrate multistep workflows.
+		https://github.com/mlflow/mlflow/tree/master/examples/multistep_workflow
+
+	- Use the MLflow REST API directly.
+		https://github.com/mlflow/mlflow/tree/master/examples/rest_api
+
+[-] Installation.
+	- Install.
+		Install MLflow:
+			pip install mlflow
+
+		Install MLflow with extra ML libraries and 3rd-party tools:
+			pip install mlflow[extras]
+
+		Install a lightweight version of MLflow:
+			pip install mlflow-skinny
