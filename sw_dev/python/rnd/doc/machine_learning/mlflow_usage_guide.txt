@@ -6,7 +6,7 @@
 	- Document.
 		https://mlflow.org/docs/latest/index.html
 
-[-] Usage.
+[-] Tool.
 	- MLflow CLI.
 		https://mlflow.org/docs/latest/cli.html
 
@@ -26,8 +26,9 @@
 
 	- MLflow Tracking.
 		https://mlflow.org/docs/latest/tracking.html
+		Refer to "Information".
 
-	 	Tracking UI:
+		Tracking UI:
 			https://mlflow.org/docs/latest/tracking.html#tracking-ui
 
 			The Tracking UI lets you visualize, search and compare runs, as well as download run artifacts or metadata for analysis in other tools.
@@ -189,11 +190,98 @@
 	- Hyperparameter tuning.
 		https://github.com/mlflow/mlflow/tree/master/examples/hyperparam
 
+		Creates experiment for individual runs and return its experiment ID:
+			mlflow experiments create -n individual_runs
+		Creates an experiment for hyperparam runs and return its experiment ID:
+			mlflow experiments create -n hyper_param_runs
+
+		Runs the Keras deep learning training with default parameters and log it in experiment 1:
+			mlflow run -e train --experiment-id <individual_runs_experiment_id> examples/hyperparam
+
+		Runs the hyperparameter tuning with either 'random search' or 'Hyperopt' and log the results under hyperparam_experiment_id:
+			mlflow run -e random --experiment-id <hyperparam_experiment_id> examples/hyperparam
+			mlflow run -e hyperopt --experiment-id <hyperparam_experiment_id> examples/hyperparam
+
 	- Orchestrate multistep workflows.
 		https://github.com/mlflow/mlflow/tree/master/examples/multistep_workflow
 
 	- Use the MLflow REST API directly.
 		https://github.com/mlflow/mlflow/tree/master/examples/rest_api
+
+[-] Information.
+	- Concepts.
+		https://mlflow.org/docs/latest/concepts.html
+
+		MLflow Tracking.
+		MLflow Projects.
+		MLflow Models.
+		MLflow Registry.
+
+		Referencing Artifacts:
+			When you specify the location of an artifact in MLflow APIs, the syntax depends on whether you are invoking the Tracking, Models, or Projects API.
+			For the Tracking API, you specify the artifact location using a (run ID, relative path) tuple.
+			For the Models and Projects APIs, you specify the artifact location in the following ways:
+				/Users/me/path/to/local/model
+				relative/path/to/local/model
+				<scheme>/<scheme-dependent-path>. For example:
+				s3://my_bucket/path/to/model
+				hdfs://<host>:<port>/<path>
+				runs:/<mlflow_run_id>/run-relative/path/to/model
+				models:/<model_name>/<model_version>
+				models:/<model_name>/<stage>
+				mlflow-artifacts:/path/to/model when running the tracking server in --serve-artifacts proxy mode.
+
+			Tracking API:
+				mlflow.log_artifacts("<mlflow_run_id>", "/path/to/artifact")
+			Models API:
+				mlflow.pytorch.log_model("runs:/<mlflow_run_id>/run-relative/path/to/model", registered_model_name="mymodel")
+				mlflow.pytorch.load_model("models:/mymodel/1")
+
+		Scalability and Big Data:
+			Data is the key to obtaining good results in machine learning, so MLflow is designed to scale to large data sets, large output files (for example, models), and large numbers of experiments.
+			Specifically, MLflow supports scaling in four dimensions:
+				1. An individual MLflow run can execute on a distributed cluster, for example, using Apache Spark.
+					You can launch runs on the distributed infrastructure of your choice and report results to a Tracking Server to compare them.
+					MLflow includes a built-in API to launch runs on Databricks.
+				2. MLflow supports launching multiple runs in parallel with different parameters, for example, for hyperparameter tuning.
+					You can simply use the 'Projects API' to start multiple runs and the 'Tracking API' to track them.
+				3. MLflow Projects can take input from, and write output to, distributed storage systems such as AWS S3 and DBFS.
+					MLflow can automatically download such files locally for projects that can only run on local files, or give the project a distributed storage URI if it supports that.
+					This means that you can write projects that build large datasets, such as featurizing a 100 TB file.
+				4. MLflow Model Registry offers large organizations a central hub to collaboratively manage a complete model lifecycle.
+					Many data science teams within an organization develop hundreds of models, each model with its experiments, runs, versions, artifacts, and stage transitions.
+					A central registry facilitates model discovery and model's purpose across multiple teams in a large organization.
+
+	- MLflow Tracking.
+		https://mlflow.org/docs/latest/tracking.html
+
+		MLflow Tracking is an API and UI for logging parameters, code versions, metrics, and artifacts when running your machine learning code and for later visualizing the results.
+
+		Tracking API.
+
+	- MLflow Projects.
+		https://mlflow.org/docs/latest/projects.html
+
+		MLflow Projects are a standard format for packaging reusable data science code.
+		Each project is simply a directory with code or a Git repository, and uses a descriptor file or simply convention to specify its dependencies and how to run the code.
+
+		Projects API.
+
+	- MLflow Models.
+		https://mlflow.org/docs/latest/models.html
+
+		MLflow Models offer a convention for packaging machine learning models in multiple flavors, and a variety of tools to help you deploy them.
+		Each Model is saved as a directory containing arbitrary files and a descriptor file that lists several "flavors" the model can be used in.
+		MLflow provides tools to deploy many common model types to diverse platforms.
+		If you output MLflow Models using the Tracking API, MLflow also automatically remembers which Project and run they came from.
+
+		Models API.
+
+	- MLflow Model Registry.
+		https://mlflow.org/docs/latest/model-registry.html
+
+		MLflow Registry offers a centralized model store, set of APIs, and UI, to collaboratively manage the full lifecycle of an MLflow Model.
+		It provides model lineage (which MLflow experiment and run produced the model), model versioning, stage transitions (for example from staging to production or archiving), and annotations.
 
 [-] Installation.
 	- Install.
