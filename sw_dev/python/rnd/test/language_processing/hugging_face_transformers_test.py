@@ -30,7 +30,7 @@ def quick_tour():
 			  (XLMRobertaModel, XLMRobertaTokenizer, 'xlm-roberta-base'),
 			 ]
 
-	# To use TensorFlow 2.0 versions of the models, simply prefix the class names with 'TF', e.g. `TFRobertaModel` is the TF 2.0 counterpart of the PyTorch model `RobertaModel`.
+	# To use TensorFlow 2.0 versions of the models, simply prefix the class names with 'TF', e.g. 'TFRobertaModel' is the TF 2.0 counterpart of the PyTorch model 'RobertaModel'.
 
 	# Let's encode some text in a sequence of hidden-states using each model.
 	for model_class, tokenizer_class, pretrained_weights in MODELS:
@@ -45,8 +45,10 @@ def quick_tour():
 
 	#--------------------
 	# Each architecture is provided with several class for fine-tuning on down-stream tasks, e.g.
-	BERT_MODEL_CLASSES = [BertModel, BertForPreTraining, BertForMaskedLM, BertForNextSentencePrediction,
-						  BertForSequenceClassification, BertForTokenClassification, BertForQuestionAnswering]
+	BERT_MODEL_CLASSES = [
+		BertModel, BertForPreTraining, BertForMaskedLM, BertForNextSentencePrediction,
+		BertForSequenceClassification, BertForTokenClassification, BertForQuestionAnswering,
+	]
 
 	output_dir_path = './directory/to/save'
 	import os
@@ -1182,6 +1184,127 @@ The unification of SR with quantum mechanics is relativistic quantum mechanics, 
 		print('Summary:')
 		print(tokenizer.decode(outputs[0], skip_special_tokens=True))  # Output: "studies have shown that owning a dog is good for you.".
 
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/flan-t5
+def flan_t5_example():
+	from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+
+	model = AutoModelForSeq2SeqLM.from_pretrained('google/flan-t5-small')
+	tokenizer = AutoTokenizer.from_pretrained('google/flan-t5-small')
+
+	inputs = tokenizer('A step by step recipe to make bolognese pasta:', return_tensors='pt')
+	outputs = model.generate(**inputs)
+
+	print(tokenizer.batch_decode(outputs, skip_special_tokens=True))
+
+# REF [site] >> https://huggingface.co/docs/transformers/model_doc/bloom
+def bloom_example():
+	if False:
+		from transformers import BloomConfig, BloomModel
+
+		# Initializing a Bloom configuration.
+		configuration = BloomConfig()
+
+		# Initializing a model (with random weights) from the configuration.
+		model = BloomModel(configuration)
+
+		# Accessing the model configuration.
+		configuration = model.config
+
+	if False:
+		from transformers import AutoTokenizer, BloomModel
+
+		tokenizer = AutoTokenizer.from_pretrained('bigscience/bloom-560m')
+		model = BloomModel.from_pretrained('bigscience/bloom-560m')
+
+		inputs = tokenizer('Hello, my dog is cute', return_tensors='pt')
+		outputs = model(**inputs)
+
+		print(f'last_hidden_states: {outputs.last_hidden_state}.')
+
+	if False:
+		from transformers import BloomTokenizerFast
+
+		tokenizer = BloomTokenizerFast.from_pretrained('bigscience/bloom')
+
+		print(f"tokenizer('Hello world')['input_ids'] = {tokenizer('Hello world')['input_ids']}.")
+		print(f"tokenizer(' Hello world')['input_ids'] = {tokenizer(' Hello world')['input_ids']}.")
+
+	if False:
+		from transformers import AutoTokenizer, BloomForCausalLM
+
+		tokenizer = AutoTokenizer.from_pretrained('bigscience/bloom-560m')
+		model = BloomForCausalLM.from_pretrained('bigscience/bloom-560m')
+
+		inputs = tokenizer('Hello, my dog is cute', return_tensors='pt')
+		outputs = model(**inputs, labels=inputs['input_ids'])
+
+		print(f'outputs.loss = {outputs.loss}.')
+		print(f'outputs.logits = {outputs.logits}.')
+
+	if False:
+		from transformers import AutoTokenizer, BloomForSequenceClassification
+
+		# Single-label classification.
+
+		tokenizer = AutoTokenizer.from_pretrained('bigscience/bloom-560m')
+		model = BloomForSequenceClassification.from_pretrained('bigscience/bloom-560m')
+
+		inputs = tokenizer('Hello, my dog is cute', return_tensors='pt')
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		predicted_class_id = logits.argmax().item()
+
+		# To train a model on 'num_labels' classes, you can pass 'num_labels=num_labels' to '.from_pretrained(...)'.
+		num_labels = len(model.config.id2label)
+		model = BloomForSequenceClassification.from_pretrained('bigscience/bloom-560m', num_labels=num_labels)
+
+		labels = torch.tensor([1])
+		loss = model(**inputs, labels=labels).loss
+
+		#-----
+		# Multi-label classification.
+
+		tokenizer = AutoTokenizer.from_pretrained('bigscience/bloom-560m')
+		model = BloomForSequenceClassification.from_pretrained('bigscience/bloom-560m', problem_type='multi_label_classification')
+
+		inputs = tokenizer('Hello, my dog is cute', return_tensors='pt')
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		predicted_class_ids = torch.arange(0, logits.shape[-1])[torch.sigmoid(logits).squeeze(dim=0) > 0.5]
+
+		# To train a model on 'num_labels' classes, you can pass 'num_labels=num_labels' to '.from_pretrained(...)'.
+		num_labels = len(model.config.id2label)
+		model = BloomForSequenceClassification.from_pretrained('bigscience/bloom-560m', num_labels=num_labels, problem_type='multi_label_classification')
+
+		labels = torch.sum(
+			torch.nn.functional.one_hot(predicted_class_ids[None, :].clone(), num_classes=num_labels), dim=1
+		).to(torch.float)
+		loss = model(**inputs, labels=labels).loss
+
+	if True:
+		from transformers import AutoTokenizer, BloomForTokenClassification
+
+		tokenizer = AutoTokenizer.from_pretrained('bigscience/bloom-560m')
+		model = BloomForTokenClassification.from_pretrained('bigscience/bloom-560m')
+
+		inputs = tokenizer('HuggingFace is a company based in Paris and New York', add_special_tokens=False, return_tensors='pt')
+
+		with torch.no_grad():
+			logits = model(**inputs).logits
+
+		predicted_token_class_ids = logits.argmax(-1)
+
+		# Note that tokens are classified rather then input words which means that there might be more predicted token classes than words.
+		# Multiple token classes might account for the same word.
+		predicted_tokens_classes = [model.config.id2label[t.item()] for t in predicted_token_class_ids[0]]
+
+		labels = predicted_token_class_ids
+		loss = model(**inputs, labels=labels).loss
+
 # REF [site] >> https://huggingface.co/transformers/model_doc/encoderdecoder.html
 def encoder_decoder_example():
 	from transformers import EncoderDecoderConfig, EncoderDecoderModel
@@ -1555,11 +1678,11 @@ def vilt_masked_lm_example():
 			input_ids = torch.tensor(encoded.input_ids)
 			encoded = encoded["input_ids"][0][1:-1]
 			outputs = model(input_ids=input_ids, pixel_values=encoding.pixel_values)
-			mlm_logits = outputs.logits[0]  # shape (seq_len, vocab_size)
-			# only take into account text features (minus CLS and SEP token)
+			mlm_logits = outputs.logits[0]  # Shape (seq_len, vocab_size).
+			# Only take into account text features (minus CLS and SEP token).
 			mlm_logits = mlm_logits[1 : input_ids.shape[1] - 1, :]
 			mlm_values, mlm_ids = mlm_logits.softmax(dim=-1).max(dim=-1)
-			# only take into account text
+			# Only take into account text.
 			mlm_values[torch.tensor(encoded) != 103] = 0
 			select = mlm_values.argmax().item()
 			encoded[select] = mlm_ids[select].item()
@@ -2058,7 +2181,7 @@ def main():
 
 	#eleuther_ai_gpt_test()  # gpt-neox, gpt-neo, & gpt-j.
 	#skt_gpt_test()  # KoGPT2.
-	kakao_brain_gpt_test()  # KoGPT.
+	#kakao_brain_gpt_test()  # KoGPT.
 
 	#--------------------
 	# BERT.
@@ -2079,6 +2202,12 @@ def main():
 	#	t5-small, t5-base, t5-large, t5-3b, t5-11b.
 
 	#t5_example()
+	flan_t5_example()
+
+	#--------------------
+	# BLOOM.
+
+	#bloom_example()
 
 	#--------------------
 	#encoder_decoder_example()
