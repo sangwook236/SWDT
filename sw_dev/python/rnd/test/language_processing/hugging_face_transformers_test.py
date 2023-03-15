@@ -415,7 +415,7 @@ def eleuther_ai_gpt_test():
 	print(f'Device: {device}.')
 
 	# Text generation.
-	if True:
+	if False:
 		from transformers import pipeline
 
 		# REF [site] >> https://huggingface.co/docs/transformers/model_doc/gpt_neo
@@ -477,6 +477,28 @@ def eleuther_ai_gpt_test():
 			assert len(gen_texts) == 1
 			print('Generated text:')
 			print(gen_texts[0])
+
+	#--------------------
+	# Question answering.
+	if True:
+		from transformers import AutoTokenizer, AutoModelForCausalLM
+
+		pretrained_model_name = 'EleutherAI/gpt-neo-2.7B'  # ~9.9GB.
+		#pretrained_model_name = 'EleutherAI/gpt-j-6B'  # ~22.5GB. Too big to load.
+
+		tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name)
+		model = AutoModelForCausalLM.from_pretrained(pretrained_model_name)
+		model.to(device)
+
+		query = 'What is the capital of Tamilnadu?'
+		inputs = tokenizer.encode(f'Q: {query}\nA:', return_tensors='pt').to(device)
+
+		outputs = model.generate(inputs, max_length=1024, do_sample=True)
+
+		answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
+		#print(answer)
+		answer = answer.split('A:')[1].strip()
+		print(f'Answer: {answer}.')
 
 # REF [site] >>
 #	https://github.com/SKT-AI/KoGPT2
@@ -2179,7 +2201,7 @@ def main():
 	#sentence_completion_model_using_gpt2_example()
 	#conditional_text_generation_using_gpt2_example()  # Not yet implemented.
 
-	#eleuther_ai_gpt_test()  # gpt-neox, gpt-neo, & gpt-j.
+	eleuther_ai_gpt_test()  # gpt-neox, gpt-neo, & gpt-j.
 	#skt_gpt_test()  # KoGPT2.
 	#kakao_brain_gpt_test()  # KoGPT.
 
@@ -2202,7 +2224,7 @@ def main():
 	#	t5-small, t5-base, t5-large, t5-3b, t5-11b.
 
 	#t5_example()
-	flan_t5_example()
+	#flan_t5_example()
 
 	#--------------------
 	# BLOOM.
