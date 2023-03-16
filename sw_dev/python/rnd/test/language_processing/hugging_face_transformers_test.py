@@ -411,6 +411,13 @@ def conditional_text_generation_using_gpt2_example():
 
 # REF [site] >> https://huggingface.co/EleutherAI
 def eleuther_ai_gpt_test():
+	# Models:
+	#	EleutherAI/gpt-neox-20B: ~42.6GB. Too big to load.
+	#	EleutherAI/gpt-neo-2.7B: ~10.7GB.
+	#	EleutherAI/gpt-neo-1.3B: ~5.31GB.
+	#	EleutherAI/gpt-neo-125M: ~526MB.
+	#	EleutherAI/gpt-j-6B: ~24.2GB. Too big to load.
+
 	device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 	print(f'Device: {device}.')
 
@@ -421,7 +428,7 @@ def eleuther_ai_gpt_test():
 		# REF [site] >> https://huggingface.co/docs/transformers/model_doc/gpt_neo
 		#pretrained_model_name = 'EleutherAI/gpt-neo-125M'
 		#pretrained_model_name = 'EleutherAI/gpt-neo-1.3B'
-		pretrained_model_name = 'EleutherAI/gpt-neo-2.7B'  # ~9.9GB.
+		pretrained_model_name = 'EleutherAI/gpt-neo-2.7B'
 
 		generator = pipeline(task='text-generation', model=pretrained_model_name, device=device)
 
@@ -442,9 +449,9 @@ def eleuther_ai_gpt_test():
 		from transformers import AutoTokenizer, AutoModelForCausalLM
 
 		# REF [site] >> https://huggingface.co/docs/transformers/model_doc/gptj
-		#pretrained_model_name = 'EleutherAI/gpt-j-6B'  # ~22.5GB. Too big to load.
+		#pretrained_model_name = 'EleutherAI/gpt-j-6B'
 		# REF [site] >> https://huggingface.co/docs/transformers/model_doc/gpt_neox
-		pretrained_model_name = 'EleutherAI/gpt-neox-20b'  # ~38.6GB. Too big to load.
+		pretrained_model_name = 'EleutherAI/gpt-neox-20b'
 
 		tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name)
 		model = AutoModelForCausalLM.from_pretrained(pretrained_model_name)
@@ -483,8 +490,8 @@ def eleuther_ai_gpt_test():
 	if True:
 		from transformers import AutoTokenizer, AutoModelForCausalLM
 
-		pretrained_model_name = 'EleutherAI/gpt-neo-2.7B'  # ~9.9GB.
-		#pretrained_model_name = 'EleutherAI/gpt-j-6B'  # ~22.5GB. Too big to load.
+		pretrained_model_name = 'EleutherAI/gpt-neo-2.7B'
+		#pretrained_model_name = 'EleutherAI/gpt-j-6B'
 
 		tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name)
 		model = AutoModelForCausalLM.from_pretrained(pretrained_model_name)
@@ -1109,6 +1116,13 @@ def klue_bert_test():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/t5
 def t5_example():
+	# Models:
+	#	t5-small: ~240MB.
+	#	t5-base: ~890MB.
+	#	t5-large: ~2.95GB.
+	#	t5-3b: ~11.4GB.
+	#	t5-11b: ~45.2GB.
+
 	device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 	print(f'Device: {device}.')
 
@@ -1117,7 +1131,7 @@ def t5_example():
 		from transformers import T5Tokenizer, T5ForConditionalGeneration
 
 		tokenizer = T5Tokenizer.from_pretrained('t5-small')
-		model = T5ForConditionalGeneration.from_pretrained('t5-small')  # ~230MB.
+		model = T5ForConditionalGeneration.from_pretrained('t5-small')
 		model.to(device=device, non_blocking=True)
 
 		input_ids = tokenizer('translate English to German: The house is wonderful.', return_tensors='pt').input_ids
@@ -1137,7 +1151,7 @@ def t5_example():
 		from transformers import T5Tokenizer, T5ForConditionalGeneration
 
 		tokenizer = T5Tokenizer.from_pretrained('t5-small')
-		model = T5ForConditionalGeneration.from_pretrained('t5-small')  # ~230MB.
+		model = T5ForConditionalGeneration.from_pretrained('t5-small')
 		model.to(device=device, non_blocking=True)
 
 		# When generating, we will use the logits of right-most token to predict the next token so the padding should be on the left.
@@ -1169,7 +1183,7 @@ def t5_example():
 		from transformers import AutoTokenizer, T5ForConditionalGeneration
 
 		tokenizer = AutoTokenizer.from_pretrained('t5-small')
-		model = T5ForConditionalGeneration.from_pretrained('t5-small')  # ~230MB.
+		model = T5ForConditionalGeneration.from_pretrained('t5-small')
 		model.to(device=device, non_blocking=True)
 
 		# Training.
@@ -1208,10 +1222,17 @@ The unification of SR with quantum mechanics is relativistic quantum mechanics, 
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/flan-t5
 def flan_t5_example():
+	# Models:
+	#	google/flan-t5-small: ~308MB.
+	#	google/flan-t5-base: ~990MB.
+	#	google/flan-t5-large: ~3.13GB.
+	#	google/flan-t5-xl: ~9.45GB.
+	#	google/flan-t5-xxl: ~9.45GB.
+
 	from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
-	model = AutoModelForSeq2SeqLM.from_pretrained('google/flan-t5-small')
 	tokenizer = AutoTokenizer.from_pretrained('google/flan-t5-small')
+	model = AutoModelForSeq2SeqLM.from_pretrained('google/flan-t5-small')
 
 	inputs = tokenizer('A step by step recipe to make bolognese pasta:', return_tensors='pt')
 	outputs = model.generate(**inputs)
@@ -1220,6 +1241,15 @@ def flan_t5_example():
 
 # REF [site] >> https://huggingface.co/docs/transformers/model_doc/bloom
 def bloom_example():
+	# Models:
+	#	bigscience/bloom: ~520GB.
+	#	bigscience/bloomz: ~520GB.
+	#	bigscience/bloom-3b: ~6GB.
+	#	bigscience/bloom-1b7: ~3.44GB.
+	#	bigscience/bloom-1b1: ~2.13GB.
+	#	bigscience/bloom-7b1: ~20GB.
+	#	bigscience/bloom-560m: ~1.1GB.
+
 	if False:
 		from transformers import BloomConfig, BloomModel
 
